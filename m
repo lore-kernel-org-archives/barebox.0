@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
+Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aOOg7-00021q-KK
- for barebox@lists.infradead.org; Wed, 27 Jan 2016 11:54:30 +0000
-Received: by mail-wm0-x243.google.com with SMTP id p63so2888787wmp.1
- for <barebox@lists.infradead.org>; Wed, 27 Jan 2016 03:54:07 -0800 (PST)
+ id 1aORwv-00037u-01
+ for barebox@lists.infradead.org; Wed, 27 Jan 2016 15:24:03 +0000
+Received: by mail-wm0-x242.google.com with SMTP id l66so912100wml.2
+ for <barebox@lists.infradead.org>; Wed, 27 Jan 2016 07:23:41 -0800 (PST)
 From: yegorslists@googlemail.com
-Date: Wed, 27 Jan 2016 12:53:09 +0100
-Message-Id: <1453895589-20941-8-git-send-email-yegorslists@googlemail.com>
-In-Reply-To: <1453895589-20941-1-git-send-email-yegorslists@googlemail.com>
-References: <1453895589-20941-1-git-send-email-yegorslists@googlemail.com>
+Date: Wed, 27 Jan 2016 16:22:58 +0100
+Message-Id: <1453908178-7106-5-git-send-email-yegorslists@googlemail.com>
+In-Reply-To: <1453908178-7106-1-git-send-email-yegorslists@googlemail.com>
+References: <1453908178-7106-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,125 +23,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] fs: ubifs: move file and file_system_type definitions to
- linux/fs.h
+Subject: [PATCH 5/5] Introduce include/linux/rwsem.h
 To: barebox@lists.infradead.org
 
 From: Yegor Yefremov <yegorslists@googlemail.com>
 
+Move semaphore related definitions to its original place.
+
 Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 ---
- fs/ubifs/ubifs.h   | 39 ---------------------------------------
- include/linux/fs.h | 39 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 39 insertions(+), 39 deletions(-)
+ include/linux/barebox-wrapper.h |  8 --------
+ include/linux/fs.h              |  2 +-
+ include/linux/rwsem.h           | 19 +++++++++++++++++++
+ 3 files changed, 20 insertions(+), 9 deletions(-)
+ create mode 100644 include/linux/rwsem.h
 
-diff --git a/fs/ubifs/ubifs.h b/fs/ubifs/ubifs.h
-index cfd37f2..50ac1c4 100644
---- a/fs/ubifs/ubifs.h
-+++ b/fs/ubifs/ubifs.h
-@@ -80,45 +80,6 @@ void iput(struct inode *inode);
- #define atomic_long_dec(a)
- #define	atomic_long_sub(a, b)
+diff --git a/include/linux/barebox-wrapper.h b/include/linux/barebox-wrapper.h
+index b52f2f4..15fd726 100644
+--- a/include/linux/barebox-wrapper.h
++++ b/include/linux/barebox-wrapper.h
+@@ -35,18 +35,10 @@ typedef int     gfp_t;
+ #define MODULE_LICENSE(x)
+ #define MODULE_ALIAS(x)
  
--/* linux/include/dcache.h */
+-struct rw_semaphore { int i; };
 -
--struct file_system_type {
--	const char *name;
--	int fs_flags;
--	int (*get_sb) (struct file_system_type *, int,
--		       const char *, void *, struct vfsmount *);
--	void (*kill_sb) (struct super_block *);
--	struct module *owner;
--	struct file_system_type * next;
--	struct list_head fs_supers;
--};
--
--struct file {
--	struct path		f_path;
--#define f_dentry	f_path.dentry
--#define f_vfsmnt	f_path.mnt
--	const struct file_operations	*f_op;
--	unsigned int 		f_flags;
--	loff_t			f_pos;
--	unsigned int		f_uid, f_gid;
--
--	u64			f_version;
--#ifdef CONFIG_SECURITY
--	void			*f_security;
--#endif
--	/* needed for tty driver, and maybe others */
--	void			*private_data;
--
--#ifdef CONFIG_EPOLL
--	/* Used by fs/eventpoll.c to link all the hooks to this file */
--	struct list_head	f_ep_links;
--	spinlock_t		f_ep_lock;
--#endif /* #ifdef CONFIG_EPOLL */
--#ifdef CONFIG_DEBUG_WRITECOUNT
--	unsigned long f_mnt_write_state;
--#endif
--};
--
- /*
-  * get_seconds() not really needed in the read-only implmentation
-  */
+ #define __user
+ #define __init
+ #define __exit
+ 
+-#define init_rwsem(...)			do { } while (0)
+-#define down_read(...)			do { } while (0)
+-#define down_write(...)			do { } while (0)
+-#define down_write_trylock(...)		1
+-#define up_read(...)			do { } while (0)
+-#define up_write(...)			do { } while (0)
+ #define kthread_create(...)	__builtin_return_address(0)
+ #define kthread_stop(...)	do { } while (0)
+ #define wake_up_process(...)	do { } while (0)
 diff --git a/include/linux/fs.h b/include/linux/fs.h
-index d0e61ba..e9fb881 100644
+index bf0f67b..7e9886a 100644
 --- a/include/linux/fs.h
 +++ b/include/linux/fs.h
-@@ -4,6 +4,8 @@
- #include <linux/barebox-wrapper.h>
+@@ -1,7 +1,6 @@
+ #ifndef _LINUX_FS_H
+ #define _LINUX_FS_H
+ 
+-#include <linux/barebox-wrapper.h>
  #include <linux/list.h>
  #include <linux/time.h>
-+#include <linux/mount.h>
-+#include <linux/path.h>
+ #include <linux/mount.h>
+@@ -9,6 +8,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/mutex.h>
+ #include <linux/wait.h>
++#include <linux/rwsem.h>
  
  /* Page cache limit. The filesystems should put that into their s_maxbytes
     limits, otherwise bad things can happen in VM. */
-@@ -176,6 +178,43 @@ struct super_block {
- 	char *s_options;
- };
- 
-+struct file_system_type {
-+	const char *name;
-+	int fs_flags;
-+	int (*get_sb) (struct file_system_type *, int,
-+		       const char *, void *, struct vfsmount *);
-+	void (*kill_sb) (struct super_block *);
-+	struct module *owner;
-+	struct file_system_type * next;
-+	struct list_head fs_supers;
-+};
+diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
+new file mode 100644
+index 0000000..5259957
+--- /dev/null
++++ b/include/linux/rwsem.h
+@@ -0,0 +1,19 @@
++/* rwsem.h: R/W semaphores, public interface
++ *
++ * Written by David Howells (dhowells@redhat.com).
++ * Derived from asm-i386/semaphore.h
++ */
 +
-+struct file {
-+	struct path		f_path;
-+#define f_dentry	f_path.dentry
-+#define f_vfsmnt	f_path.mnt
-+	const struct file_operations	*f_op;
-+	unsigned int 		f_flags;
-+	loff_t			f_pos;
-+	unsigned int		f_uid, f_gid;
++#ifndef _LINUX_RWSEM_H
++#define _LINUX_RWSEM_H
 +
-+	u64			f_version;
-+#ifdef CONFIG_SECURITY
-+	void			*f_security;
-+#endif
-+	/* needed for tty driver, and maybe others */
-+	void			*private_data;
++struct rw_semaphore { int i; };
 +
-+#ifdef CONFIG_EPOLL
-+	/* Used by fs/eventpoll.c to link all the hooks to this file */
-+	struct list_head	f_ep_links;
-+	spinlock_t		f_ep_lock;
-+#endif /* #ifdef CONFIG_EPOLL */
-+#ifdef CONFIG_DEBUG_WRITECOUNT
-+	unsigned long f_mnt_write_state;
-+#endif
-+};
++#define init_rwsem(...)			do { } while (0)
++#define down_read(...)			do { } while (0)
++#define down_write(...)			do { } while (0)
++#define down_write_trylock(...)		1
++#define up_read(...)			do { } while (0)
++#define up_write(...)			do { } while (0)
 +
- /*
-  * Inode flags - they have no relation to superblock flags now
-  */
++#endif /* _LINUX_RWSEM_H */
 -- 
 2.1.4
 
