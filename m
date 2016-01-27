@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
+Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aOOfl-0001qv-Vl
- for barebox@lists.infradead.org; Wed, 27 Jan 2016 11:54:07 +0000
-Received: by mail-wm0-x244.google.com with SMTP id p63so2886546wmp.1
- for <barebox@lists.infradead.org>; Wed, 27 Jan 2016 03:53:45 -0800 (PST)
+ id 1aOOfy-0001xj-OD
+ for barebox@lists.infradead.org; Wed, 27 Jan 2016 11:54:20 +0000
+Received: by mail-wm0-x242.google.com with SMTP id p63so2888033wmp.1
+ for <barebox@lists.infradead.org>; Wed, 27 Jan 2016 03:53:58 -0800 (PST)
 From: yegorslists@googlemail.com
-Date: Wed, 27 Jan 2016 12:53:02 +0100
-Message-Id: <1453895589-20941-1-git-send-email-yegorslists@googlemail.com>
+Date: Wed, 27 Jan 2016 12:53:05 +0100
+Message-Id: <1453895589-20941-4-git-send-email-yegorslists@googlemail.com>
+In-Reply-To: <1453895589-20941-1-git-send-email-yegorslists@googlemail.com>
+References: <1453895589-20941-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,61 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] fs: move PAGE_CACHE definitions to include/linux/pagemap.h
+Subject: [PATCH 4/8] fs: move pgoff_t definition to include/linux/types.h
 To: barebox@lists.infradead.org
 
 From: Yegor Yefremov <yegorslists@googlemail.com>
 
 Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 ---
- fs/ubifs/ubifs.h        |  5 +----
- include/linux/pagemap.h | 14 ++++++++++++++
- 2 files changed, 15 insertions(+), 4 deletions(-)
- create mode 100644 include/linux/pagemap.h
+ fs/ubifs/ubifs.h      | 2 --
+ include/linux/types.h | 5 +++++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/fs/ubifs/ubifs.h b/fs/ubifs/ubifs.h
-index 2d0cd4c..d16f780 100644
+index 53c0813..9a2d2f5 100644
 --- a/fs/ubifs/ubifs.h
 +++ b/fs/ubifs/ubifs.h
-@@ -35,6 +35,7 @@
- #include <malloc.h>
- #include <lzo.h>
- #include <linux/fs.h>
-+#include <linux/pagemap.h>
- #include <linux/ctype.h>
- #include <linux/math64.h>
- #include <linux/rbtree.h>
-@@ -173,10 +174,6 @@ struct file {
-  */
- #define get_seconds()		0
+@@ -58,8 +58,6 @@ extern unsigned int ubifs_msg_flags;
+ extern unsigned int ubifs_chk_flags;
+ extern unsigned int ubifs_tst_flags;
  
--/* 4k page size */
--#define PAGE_CACHE_SHIFT	12
--#define PAGE_CACHE_SIZE		(1 << PAGE_CACHE_SHIFT)
+-#define pgoff_t		unsigned long
 -
- /* Page cache limit. The filesystems should put that into their s_maxbytes
-    limits, otherwise bad things can happen in VM. */
- #if BITS_PER_LONG==32
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-new file mode 100644
-index 0000000..345bd40
---- /dev/null
-+++ b/include/linux/pagemap.h
-@@ -0,0 +1,14 @@
-+#ifndef _LINUX_PAGEMAP_H
-+#define _LINUX_PAGEMAP_H
-+
+ /*
+  * We "simulate" the Linux page struct much simpler here
+  */
+diff --git a/include/linux/types.h b/include/linux/types.h
+index ce1a0ec..9f8eb67 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -157,6 +157,11 @@ typedef __u32 __bitwise __wsum;
+ #define __aligned_be64 __be64 __attribute__((aligned(8)))
+ #define __aligned_le64 __le64 __attribute__((aligned(8)))
+ 
 +/*
-+ * Copyright 1995 Linus Torvalds
++ * The type of an index into the pagecache.
 + */
++#define pgoff_t unsigned long
 +
-+#include <common.h>
-+
-+#define PAGE_CACHE_SHIFT        PAGE_SHIFT
-+#define PAGE_CACHE_SIZE         PAGE_SIZE
-+#define PAGE_CACHE_MASK         PAGE_MASK
-+
-+#endif /* _LINUX_PAGEMAP_H */
+ /* A dma_addr_t can hold any valid DMA or bus address for the platform */
+ #ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
+ typedef u64 dma_addr_t;
 -- 
 2.1.4
 
