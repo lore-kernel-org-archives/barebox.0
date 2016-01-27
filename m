@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
+Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aORwv-00037u-01
- for barebox@lists.infradead.org; Wed, 27 Jan 2016 15:24:03 +0000
-Received: by mail-wm0-x242.google.com with SMTP id l66so912100wml.2
- for <barebox@lists.infradead.org>; Wed, 27 Jan 2016 07:23:41 -0800 (PST)
+ id 1aORwh-00033T-Bc
+ for barebox@lists.infradead.org; Wed, 27 Jan 2016 15:23:48 +0000
+Received: by mail-wm0-x244.google.com with SMTP id r129so3982924wmr.0
+ for <barebox@lists.infradead.org>; Wed, 27 Jan 2016 07:23:26 -0800 (PST)
 From: yegorslists@googlemail.com
-Date: Wed, 27 Jan 2016 16:22:58 +0100
-Message-Id: <1453908178-7106-5-git-send-email-yegorslists@googlemail.com>
-In-Reply-To: <1453908178-7106-1-git-send-email-yegorslists@googlemail.com>
-References: <1453908178-7106-1-git-send-email-yegorslists@googlemail.com>
+Date: Wed, 27 Jan 2016 16:22:54 +0100
+Message-Id: <1453908178-7106-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,89 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] Introduce include/linux/rwsem.h
+Subject: [PATCH 1/5] Introduce include/linux/sched.h
 To: barebox@lists.infradead.org
 
 From: Yegor Yefremov <yegorslists@googlemail.com>
 
-Move semaphore related definitions to its original place.
+Move cond_resched() from barebox-wrapper.h to its original
+place.
 
 Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 ---
- include/linux/barebox-wrapper.h |  8 --------
- include/linux/fs.h              |  2 +-
- include/linux/rwsem.h           | 19 +++++++++++++++++++
- 3 files changed, 20 insertions(+), 9 deletions(-)
- create mode 100644 include/linux/rwsem.h
+ fs/ubifs/ubifs.h                | 1 +
+ include/linux/barebox-wrapper.h | 2 --
+ include/linux/sched.h           | 6 ++++++
+ 3 files changed, 7 insertions(+), 2 deletions(-)
+ create mode 100644 include/linux/sched.h
 
+diff --git a/fs/ubifs/ubifs.h b/fs/ubifs/ubifs.h
+index 50ac1c4..a4f8523 100644
+--- a/fs/ubifs/ubifs.h
++++ b/fs/ubifs/ubifs.h
+@@ -40,6 +40,7 @@
+ #include <linux/dcache.h>
+ #include <linux/mount.h>
+ #include <linux/path.h>
++#include <linux/sched.h>
+ #include <linux/ctype.h>
+ #include <linux/math64.h>
+ #include <linux/rbtree.h>
 diff --git a/include/linux/barebox-wrapper.h b/include/linux/barebox-wrapper.h
-index b52f2f4..15fd726 100644
+index 5fe7971..3433631 100644
 --- a/include/linux/barebox-wrapper.h
 +++ b/include/linux/barebox-wrapper.h
-@@ -35,18 +35,10 @@ typedef int     gfp_t;
- #define MODULE_LICENSE(x)
- #define MODULE_ALIAS(x)
+@@ -65,8 +65,6 @@ struct rw_semaphore { int i; };
  
--struct rw_semaphore { int i; };
+ typedef int	wait_queue_head_t;
+ 
+-#define cond_resched()			do { } while (0)
 -
- #define __user
- #define __init
- #define __exit
+ #define init_waitqueue_head(...)	do { } while (0)
  
--#define init_rwsem(...)			do { } while (0)
--#define down_read(...)			do { } while (0)
--#define down_write(...)			do { } while (0)
--#define down_write_trylock(...)		1
--#define up_read(...)			do { } while (0)
--#define up_write(...)			do { } while (0)
- #define kthread_create(...)	__builtin_return_address(0)
- #define kthread_stop(...)	do { } while (0)
- #define wake_up_process(...)	do { } while (0)
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index bf0f67b..7e9886a 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -1,7 +1,6 @@
- #ifndef _LINUX_FS_H
- #define _LINUX_FS_H
- 
--#include <linux/barebox-wrapper.h>
- #include <linux/list.h>
- #include <linux/time.h>
- #include <linux/mount.h>
-@@ -9,6 +8,7 @@
- #include <linux/spinlock.h>
- #include <linux/mutex.h>
- #include <linux/wait.h>
-+#include <linux/rwsem.h>
- 
- /* Page cache limit. The filesystems should put that into their s_maxbytes
-    limits, otherwise bad things can happen in VM. */
-diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
+ typedef int irqreturn_t;
+diff --git a/include/linux/sched.h b/include/linux/sched.h
 new file mode 100644
-index 0000000..5259957
+index 0000000..3375a09
 --- /dev/null
-+++ b/include/linux/rwsem.h
-@@ -0,0 +1,19 @@
-+/* rwsem.h: R/W semaphores, public interface
-+ *
-+ * Written by David Howells (dhowells@redhat.com).
-+ * Derived from asm-i386/semaphore.h
-+ */
++++ b/include/linux/sched.h
+@@ -0,0 +1,6 @@
++#ifndef _LINUX_SCHED_H
++#define _LINUX_SCHED_H
 +
-+#ifndef _LINUX_RWSEM_H
-+#define _LINUX_RWSEM_H
++#define cond_resched()			do { } while (0)
 +
-+struct rw_semaphore { int i; };
-+
-+#define init_rwsem(...)			do { } while (0)
-+#define down_read(...)			do { } while (0)
-+#define down_write(...)			do { } while (0)
-+#define down_write_trylock(...)		1
-+#define up_read(...)			do { } while (0)
-+#define up_write(...)			do { } while (0)
-+
-+#endif /* _LINUX_RWSEM_H */
++#endif
 -- 
 2.1.4
 
