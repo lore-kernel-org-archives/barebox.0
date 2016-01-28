@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
+Received: from mail-ig0-x241.google.com ([2607:f8b0:4001:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aORws-00036n-CL
- for barebox@lists.infradead.org; Wed, 27 Jan 2016 15:23:59 +0000
-Received: by mail-wm0-x243.google.com with SMTP id l65so3961337wmf.3
- for <barebox@lists.infradead.org>; Wed, 27 Jan 2016 07:23:37 -0800 (PST)
-From: yegorslists@googlemail.com
-Date: Wed, 27 Jan 2016 16:22:56 +0100
-Message-Id: <1453908178-7106-3-git-send-email-yegorslists@googlemail.com>
-In-Reply-To: <1453908178-7106-1-git-send-email-yegorslists@googlemail.com>
-References: <1453908178-7106-1-git-send-email-yegorslists@googlemail.com>
+ id 1aOqrl-0000p4-JK
+ for barebox@lists.infradead.org; Thu, 28 Jan 2016 18:00:23 +0000
+Received: by mail-ig0-x241.google.com with SMTP id mw1so2199986igb.2
+ for <barebox@lists.infradead.org>; Thu, 28 Jan 2016 10:00:00 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <20160127072629.GG13058@pengutronix.de>
+References: <1453787758-12688-1-git-send-email-andrew.smirnov@gmail.com>
+ <1453787758-12688-7-git-send-email-andrew.smirnov@gmail.com>
+ <20160126215555.GD13058@pengutronix.de>
+ <CAHQ1cqEemyC0CfVQeshBuJtA1p0mCQaPB33noov4N7FSk5F+Ng@mail.gmail.com>
+ <20160127072629.GG13058@pengutronix.de>
+Date: Thu, 28 Jan 2016 10:00:00 -0800
+Message-ID: <CAHQ1cqG9YZbwE2CwD2c5T5F+LUOAuXbdEjT-fruTQ=yVSp52CQ@mail.gmail.com>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,121 +23,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] Introduce include/linux/mutex.h
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 7/7] commands: Add mdio_read and mdio_write
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-From: Yegor Yefremov <yegorslists@googlemail.com>
+On Tue, Jan 26, 2016 at 11:26 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Tue, Jan 26, 2016 at 06:09:00PM -0800, Andrey Smirnov wrote:
+>> On Tue, Jan 26, 2016 at 1:55 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>> > On Mon, Jan 25, 2016 at 09:55:58PM -0800, Andrey Smirnov wrote:
+>> >> Add commands for low-level access to MDIO bus.
+>> >
+>> > Do we really need this? We can already read/write phy registers using
+>> > /dev/phyx which imo is quite convenient since it can be accessed with
+>> > regular md/mw commands.
+>> >
+>> > This of course is currently limited to the phys that are actually
+>> > registered, you can't just bang on MDIO addresses on which no phys are
+>> > registered. Maybe we could register all phys on a MDIO bus instead of
+>> > only the used ones?
+>>
+>> Just to explain the purpose of this patch -- there are number of
+>> reasons we might want to be able to access "unregistered" PHYs:
+>>
+>> - Not all MDIO attached devices would have PHYSID1,2 registers
+>> available which might cause mdiobus_scan() to not detect those PHYs
+>>
+>> - MDIO bus troubleshooting
+>>
+>> As for registering all PHYs on a bus, correct me if I am wrong but
+>> that would result in 32*N number of entries in /dev, where N is number
+>> of MDIO buses in the system. The device I am working with right now
+>> has 3 MDIO buses which would mean that I'd end up with 96 additional
+>> entries in /dev, which might be a little bit overwhelming from UI
+>> point of view. The other UI problem with that approach is that
+>> /dev/phy's are numbered linearly so in order to figure out how to
+>> access device on bus N at address M, user would have to perform N*32 +
+>> M in their head.
+>
+> We could register the phys with name like:
+>
+>         "mdio%d-phy%02x", dev->bus->dev.id, mdev->addr
+>
+> That would make it clear which phy belongs to which bus.
+>
 
-Move mutex related defines to its original place.
+Fair enough, I'll update the v2 to implement your and Trent's suggestions.
 
-Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
----
- fs/pstore/platform.c            |  1 +
- fs/ubifs/ubifs.h                |  1 +
- include/linux/barebox-wrapper.h |  5 -----
- include/linux/fs.h              |  1 +
- include/linux/mtd/spi-nor.h     |  2 ++
- include/linux/mutex.h           | 18 ++++++++++++++++++
- 6 files changed, 23 insertions(+), 5 deletions(-)
- create mode 100644 include/linux/mutex.h
-
-diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
-index 98fd26d..963ecaf 100644
---- a/fs/pstore/platform.c
-+++ b/fs/pstore/platform.c
-@@ -24,6 +24,7 @@
- #include <linux/string.h>
- #include <linux/kernel.h>
- #include <linux/spinlock.h>
-+#include <linux/mutex.h>
- #include <malloc.h>
- #include <printk.h>
- #include <module.h>
-diff --git a/fs/ubifs/ubifs.h b/fs/ubifs/ubifs.h
-index 0164551..d655cfa 100644
---- a/fs/ubifs/ubifs.h
-+++ b/fs/ubifs/ubifs.h
-@@ -42,6 +42,7 @@
- #include <linux/path.h>
- #include <linux/sched.h>
- #include <linux/spinlock.h>
-+#include <linux/mutex.h>
- #include <linux/ctype.h>
- #include <linux/math64.h>
- #include <linux/rbtree.h>
-diff --git a/include/linux/barebox-wrapper.h b/include/linux/barebox-wrapper.h
-index 91b67e1..49439fa 100644
---- a/include/linux/barebox-wrapper.h
-+++ b/include/linux/barebox-wrapper.h
-@@ -35,11 +35,6 @@ typedef int     gfp_t;
- #define MODULE_LICENSE(x)
- #define MODULE_ALIAS(x)
- 
--#define mutex_init(...)
--#define mutex_lock(...)
--#define mutex_unlock(...)
--struct mutex { int i; };
--
- struct rw_semaphore { int i; };
- 
- #define __user
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 8419ebd..89fbaea 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -7,6 +7,7 @@
- #include <linux/mount.h>
- #include <linux/path.h>
- #include <linux/spinlock.h>
-+#include <linux/mutex.h>
- 
- /* Page cache limit. The filesystems should put that into their s_maxbytes
-    limits, otherwise bad things can happen in VM. */
-diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-index bd2b16d..de9ac08 100644
---- a/include/linux/mtd/spi-nor.h
-+++ b/include/linux/mtd/spi-nor.h
-@@ -10,6 +10,8 @@
- #ifndef __LINUX_MTD_SPI_NOR_H
- #define __LINUX_MTD_SPI_NOR_H
- 
-+#include <linux/mutex.h>
-+
- /*
-  * Note on opcode nomenclature: some opcodes have a format like
-  * SPINOR_OP_FUNCTION{4,}_x_y_z. The numbers x, y, and z stand for the number
-diff --git a/include/linux/mutex.h b/include/linux/mutex.h
-new file mode 100644
-index 0000000..a84085c
---- /dev/null
-+++ b/include/linux/mutex.h
-@@ -0,0 +1,18 @@
-+/*
-+ * Mutexes: blocking mutual exclusion locks
-+ *
-+ * started by Ingo Molnar:
-+ *
-+ *  Copyright (C) 2004, 2005, 2006 Red Hat, Inc., Ingo Molnar <mingo@redhat.com>
-+ *
-+ * This file contains the main data structure and API definitions.
-+ */
-+#ifndef __LINUX_MUTEX_H
-+#define __LINUX_MUTEX_H
-+
-+#define mutex_init(...)
-+#define mutex_lock(...)
-+#define mutex_unlock(...)
-+struct mutex { int i; };
-+
-+#endif /* __LINUX_MUTEX_H */
--- 
-2.1.4
-
+Thank you,
+Andrey
 
 _______________________________________________
 barebox mailing list
