@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1aP6XT-0006kG-K3
- for barebox@lists.infradead.org; Fri, 29 Jan 2016 10:44:29 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aP6XT-00009P-A4
+ for barebox@lists.infradead.org; Fri, 29 Jan 2016 10:44:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 29 Jan 2016 11:44:00 +0100
-Message-Id: <1454064243-26558-21-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 29 Jan 2016 11:43:43 +0100
+Message-Id: <1454064243-26558-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1454064243-26558-1-git-send-email-s.hauer@pengutronix.de>
 References: <1454064243-26558-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,218 +21,130 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 20/23] scripts: imx-image: Support adding a Super Root Key to
- the image
+Subject: [PATCH 03/23] hab: Add HABv3 status report function
 To: Barebox List <barebox@lists.infradead.org>
+
+Status reporting for HABv3 is different from HABv4. Add a status
+report function for HABv3.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/Kconfig |   7 +++
- scripts/imx/Makefile      |   4 ++
- scripts/imx/imx-image.c   | 130 ++++++++++++++++++++++++++++++++++++++++++++++
- scripts/imx/imx.h         |   1 +
- 4 files changed, 142 insertions(+)
+ drivers/hab/Makefile |  1 +
+ drivers/hab/habv3.c  | 78 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/hab.h        |  9 ++++++
+ 3 files changed, 88 insertions(+)
+ create mode 100644 drivers/hab/habv3.c
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 9e7be2e..9c7d51f 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -67,6 +67,12 @@ config ARCH_IMX_IMXIMAGE
- 	help
- 	  if enabled the imx-image tool is compiled
- 
-+config ARCH_IMX_IMXIMAGE_SSL_SUPPORT
-+	bool
-+	help
-+	  This enables SSL support for the imx-image tool. This is required
-+	  for created images for HABv3. This adds openssl to the build dependencies
+diff --git a/drivers/hab/Makefile b/drivers/hab/Makefile
+index 5c3b00c..8528ef9 100644
+--- a/drivers/hab/Makefile
++++ b/drivers/hab/Makefile
+@@ -1 +1,2 @@
+ obj-$(CONFIG_HABV4) += habv4.o
++obj-$(CONFIG_HABV3) += habv3.o
+diff --git a/drivers/hab/habv3.c b/drivers/hab/habv3.c
+new file mode 100644
+index 0000000..70f31a3
+--- /dev/null
++++ b/drivers/hab/habv3.c
+@@ -0,0 +1,78 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; version 2.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License for more details.
++ */
++#define pr_fmt(fmt) "HABv3: " fmt
 +
- config ARCH_IMX_XLOAD
- 	bool
- 	depends on ARCH_IMX51
-@@ -735,6 +741,7 @@ endif
- config HABV3
- 	tristate "HABv3 support"
- 	select HAB
-+	select ARCH_IMX_IMXIMAGE_SSL_SUPPORT
- 	depends on ARCH_IMX25
- 	help
- 	  High Assurance Boot, as found on i.MX25.
-diff --git a/scripts/imx/Makefile b/scripts/imx/Makefile
-index 6883659..d9f0c51 100644
---- a/scripts/imx/Makefile
-+++ b/scripts/imx/Makefile
-@@ -7,6 +7,10 @@ HOSTCFLAGS_imx-usb-loader.o = `pkg-config --cflags libusb-1.0`
- HOSTLOADLIBES_imx-usb-loader  = `pkg-config --libs libusb-1.0`
- 
- HOSTCFLAGS_imx-image.o = -I$(srctree)
-+ifdef CONFIG_ARCH_IMX_IMXIMAGE_SSL_SUPPORT
-+HOSTCFLAGS_imx-image.o += -DIMXIMAGE_SSL_SUPPORT
-+HOSTLOADLIBES_imx-image  = `pkg-config --libs openssl`
-+endif
- 
- imx-usb-loader-objs := imx-usb-loader.o imx.o
- imx-image-objs := imx-image.o imx.o
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index 4fc4994..79f644d 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -73,6 +73,130 @@ static uint32_t bb_header[] = {
- 	0x55555555,
- };
- 
-+struct hab_rsa_public_key {
-+	uint8_t rsa_exponent[4]; /* RSA public exponent */
-+	uint32_t rsa_modulus; /* RSA modulus pointer */
-+	uint16_t exponent_size; /* Exponent size in bytes */
-+	uint16_t modulus_size; /* Modulus size in bytes*/
-+	uint8_t init_flag; /* Indicates if key initialized */
++#include <common.h>
++#include <hab.h>
++#include <io.h>
++
++struct hab_status {
++	u8 value;
++	const char *str;
 +};
 +
-+#ifdef IMXIMAGE_SSL_SUPPORT
-+#define PUBKEY_ALGO_LEN 2048
++static struct hab_status hab_status[] = {
++	{ 0x8d, "data specified is out of bounds" },
++	{ 0x55, "error during assert verification" },
++	{ 0x36, "hash verification failed" },
++	{ 0x33, "certificate parsing failed or the certificate contained an unsupported key" },
++	{ 0x35, "signature verification failed" },
++	{ 0x4B, "CSF command sequence contains unsupported command identifier" },
++	{ 0x4e, "absence of expected CSF header" },
++	{ 0x4d, "CSF length is unsupported" },
++	{ 0x2e, "CSF TYPE does not match processor TYPE" },
++	{ 0x2d, "CSF UID does not match either processor UID or generic UID" },
++	{ 0x3a, "CSF customer/product code does not match processor customer/product code" },
++	{ 0x87, "key indexis either unsupported, or an attempt is made to overwrite the SRK from a CSF command" },
++	{ 0x17, "SCC unexpectedly not in secure state" },
++	{ 0x1e, "secureRAM secret key invalid" },
++	{ 0x1d, "secureRAM initialization failure" },
++	{ 0x1b, "secureRAM self test failure" },
++	{ 0x2b, "secureRAM internal failure" },
++	{ 0x27, "secureRAM secrect key unexpectedly in use" },
++	{ 0x8b, "an attempt is made to read a key from the list of subordinate public keys at a location "
++		"where no key is installed" },
++	{ 0x8e, "algorithm type is either invalid or ortherwise unsupported" },
++	{ 0x66, "write operation to register failed" },
++	{ 0x63, "DCD invalid" },
++	{ 0x6f, "RAM application pointer is NULL or ERASED_FLASH" },
++	{ 0x69, "CSF missing when HAB TYPE is not HAB-disabled" },
++	{ 0x6a, "NANDFC boot buffer load failed" },
++	{ 0x6c, "Exception has occured" },
++	{ 0x67, "INT_BOOT fuse is blown but BOOT pins are set for external boot" },
++	{ 0x88, "Successful download completion" },
++};
 +
-+#include <openssl/x509v3.h>
-+#include <openssl/bn.h>
-+#include <openssl/asn1.h>
-+#include <openssl/x509.h>
-+#include <openssl/x509_vfy.h>
-+#include <openssl/pem.h>
-+#include <openssl/bio.h>
-+
-+static int extract_key(const char *certfile, uint8_t **modulus, int *modulus_len,
-+	uint8_t **exponent, int *exponent_len)
++int imx_habv3_get_status(uint32_t status)
 +{
-+	char buf[PUBKEY_ALGO_LEN];
-+	int pubkey_algonid;
-+	const char *sslbuf;
-+	EVP_PKEY *pkey;
-+	FILE *fp;
-+	X509 *cert;
-+	RSA *rsa_key;
++	int i;
 +
-+	fp = fopen(certfile, "r");
-+	if (!fp) {
-+		fprintf(stderr, "unable to open certfile: %s\n", certfile);
-+		return -errno;
++	if (status == 0xf0) {
++		pr_info("status OK\n");
++		return 0;
 +	}
 +
-+	cert = PEM_read_X509(fp, NULL, NULL, NULL);
-+	if (!cert) {
-+		fprintf(stderr, "unable to parse certificate in: %s\n", certfile);
-+		fclose(fp);
-+		return -errno;
-+	}
-+
-+	fclose(fp);
-+
-+	pubkey_algonid = OBJ_obj2nid(cert->cert_info->key->algor->algorithm);
-+	if (pubkey_algonid == NID_undef) {
-+		fprintf(stderr, "unable to find specified public key algorithm name.\n");
-+		return -EINVAL;
-+	}
-+
-+	if (pubkey_algonid != NID_rsaEncryption)
-+		return -EINVAL;
-+
-+	sslbuf = OBJ_nid2ln(pubkey_algonid);
-+	strncpy(buf, sslbuf, PUBKEY_ALGO_LEN);
-+
-+	pkey = X509_get_pubkey(cert);
-+	if (!pkey) {
-+		fprintf(stderr, "unable to extract public key from certificate");
-+		return -EINVAL;
-+	}
-+
-+	rsa_key = pkey->pkey.rsa;
-+	if (!rsa_key) {
-+		fprintf(stderr, "unable to extract RSA public key");
-+		return -EINVAL;
-+	}
-+
-+	*modulus_len = BN_num_bytes(rsa_key->n);
-+	*modulus = malloc(*modulus_len);
-+	BN_bn2bin(rsa_key->n, *modulus);
-+
-+	*exponent_len = BN_num_bytes(rsa_key->e);
-+	*exponent = malloc(*exponent_len);
-+	BN_bn2bin(rsa_key->e, *exponent);
-+
-+	EVP_PKEY_free(pkey);
-+	X509_free(cert);
-+
-+	return 0;
-+}
-+
-+static int add_srk(void *buf, int offset, uint32_t loadaddr, const char *srkfile)
-+{
-+	struct imx_flash_header *hdr = buf + offset;
-+	struct hab_rsa_public_key *key = buf + 0xc00;
-+	uint8_t *exponent = NULL, *modulus = NULL, *modulus_dest;
-+	int exponent_len = 0, modulus_len = 0;
-+	int ret;
-+
-+	hdr->super_root_key = loadaddr + 0xc00;
-+
-+	key->init_flag = 1;
-+	key->exponent_size = htole16(3);
-+
-+	ret = extract_key(srkfile, &modulus, &modulus_len, &exponent, &exponent_len);
-+	if (ret)
-+		return ret;
-+
-+	modulus_dest = (void *)(key + 1);
-+
-+	memcpy(modulus_dest, modulus, modulus_len);
-+
-+	key->modulus_size = htole16(modulus_len);
-+	key->rsa_modulus = htole32(hdr->super_root_key + sizeof(*key));
-+
-+	if (exponent_len > 4)
-+		return -EINVAL;
-+
-+	key->exponent_size = exponent_len;
-+	memcpy(&key->rsa_exponent, exponent, key->exponent_size);
-+
-+	return 0;
-+}
-+#else
-+static int add_srk(void *buf, int offset, uint32_t loadaddr, const char *srkfile)
-+{
-+	fprintf(stderr, "This version of imx-image is compiled without SSL support\n");
-+
-+	return -EINVAL;
-+}
-+#endif /* IMXIMAGE_SSL_SUPPORT */
-+
- static int add_header_v1(struct config_data *data, void *buf)
- {
- 	struct imx_flash_header *hdr;
-@@ -431,6 +555,12 @@ int main(int argc, char *argv[])
- 	switch (data.header_version) {
- 	case 1:
- 		add_header_v1(&data, buf);
-+		if (data.srkfile) {
-+			ret = add_srk(buf, data.image_dcd_offset, data.image_load_addr,
-+				      data.srkfile);
-+			if (ret)
-+				exit(1);
++	for (i = 0; i < ARRAY_SIZE(hab_status); i++) {
++		if (hab_status[i].value == status) {
++			pr_err("status: 0x%02x: %s\n", status, hab_status[i].str);
++			return -EPERM;
 +		}
- 		break;
- 	case 2:
- 		add_header_v2(&data, buf);
-diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
-index 6466d8c..1ef4ac6 100644
---- a/scripts/imx/imx.h
-+++ b/scripts/imx/imx.h
-@@ -62,6 +62,7 @@ struct config_data {
- 	uint32_t image_size;
- 	uint32_t load_size;
- 	char *outfile;
-+	char *srkfile;
- 	int header_version;
- 	int cpu_type;
- 	int (*check)(struct config_data *data, uint32_t cmd, uint32_t addr, uint32_t mask);
++	}
++
++	pr_err("unknown status code 0x%02x\n", status);
++
++	return -EPERM;
++}
++
++int imx25_hab_get_status(void)
++{
++	return imx_habv3_get_status(readl(IOMEM(0x780018d4)));
++}
+\ No newline at end of file
+diff --git a/include/hab.h b/include/hab.h
+index f9bf74f..411e995 100644
+--- a/include/hab.h
++++ b/include/hab.h
+@@ -27,4 +27,13 @@ static inline int habv4_get_status(void)
+ }
+ #endif
+ 
++#ifdef CONFIG_HABV3
++int imx25_hab_get_status(void);
++#else
++static inline int imx25_hab_get_status(void)
++{
++	return -EPERM;
++}
++#endif
++
+ #endif /* __HABV4_H */
 -- 
 2.7.0.rc3
 
