@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1aP6XT-0006kA-K4
- for barebox@lists.infradead.org; Fri, 29 Jan 2016 10:44:29 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aP6XT-00009Q-9u
+ for barebox@lists.infradead.org; Fri, 29 Jan 2016 10:44:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 29 Jan 2016 11:43:46 +0100
-Message-Id: <1454064243-26558-7-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 29 Jan 2016 11:43:44 +0100
+Message-Id: <1454064243-26558-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1454064243-26558-1-git-send-email-s.hauer@pengutronix.de>
 References: <1454064243-26558-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/23] scripts: imx-image: Allow dcd offset 0x0
+Subject: [PATCH 04/23] scripts: imx-usb-loader: Make readonly arguments const
 To: Barebox List <barebox@lists.infradead.org>
 
-0 is a valid offset for the dcd, so do not use this value to detect
-an unset dcd offset. Use 0xffffffff instead.
+The buffers passed to dump_long and dump_bytes are not (and shouldn't
+be) modified. Make the arguments const.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/imx/imx-image.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/imx/imx-usb-loader.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index e8d9dbf..a85833b 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -38,7 +38,7 @@
- #define CSF_LEN 0x2000		/* length of the CSF (needed for HAB) */
+diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+index 94b3763..afe24d1 100644
+--- a/scripts/imx/imx-usb-loader.c
++++ b/scripts/imx/imx-usb-loader.c
+@@ -187,9 +187,10 @@ static libusb_device *find_imx_dev(libusb_device **devs, struct mach_id **pp_id)
+ 	return NULL;
+ }
  
- static uint32_t image_load_addr;
--static uint32_t image_dcd_offset;
-+static uint32_t image_dcd_offset = 0xffffffff;
- static uint32_t dcdtable[MAX_DCD];
- static int curdcd;
- static int header_version;
-@@ -733,7 +733,7 @@ int main(int argc, char *argv[])
- 	if (!buf)
- 		exit(1);
+-static void dump_long(unsigned char *src, unsigned cnt, unsigned addr)
++static void dump_long(const void *src, unsigned cnt, unsigned addr)
+ {
+-	unsigned *p = (unsigned *)src;
++	const unsigned *p = (unsigned *)src;
++
+ 	while (cnt >= 32) {
+ 		printf("%08x: %08x %08x %08x %08x  %08x %08x %08x %08x\n",
+ 				addr, p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7]);
+@@ -208,9 +209,9 @@ static void dump_long(unsigned char *src, unsigned cnt, unsigned addr)
+ 	}
+ }
  
--	if (!image_dcd_offset) {
-+	if (image_dcd_offset == 0xffffffff) {
- 		fprintf(stderr, "no dcd offset given ('dcdofs'). Defaulting to 0x%08x\n",
- 			FLASH_HEADER_OFFSET);
- 		image_dcd_offset = FLASH_HEADER_OFFSET;
+-static void dump_bytes(unsigned char *src, unsigned cnt, unsigned addr)
++static void dump_bytes(const void *src, unsigned cnt, unsigned addr)
+ {
+-	unsigned char *p = src;
++	const unsigned char *p = src;
+ 	int i;
+ 
+ 	while (cnt >= 16) {
 -- 
 2.7.0.rc3
 
