@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1aP6XY-0003eC-7H
+ id 1aP6Xa-0003eE-Qq
  for barebox@lists.infradead.org; Fri, 29 Jan 2016 10:44:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 29 Jan 2016 11:44:03 +0100
-Message-Id: <1454064243-26558-24-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 29 Jan 2016 11:44:01 +0100
+Message-Id: <1454064243-26558-22-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1454064243-26558-1-git-send-email-s.hauer@pengutronix.de>
 References: <1454064243-26558-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,334 +21,187 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 23/23] scripts: imx: Generate signed images with imx-image
+Subject: [PATCH 21/23] scripts: imx: Create CSF files from imx config file
 To: Barebox List <barebox@lists.infradead.org>
 
-The imx-image tool can now generate signed images itself, so we can
-switch to this mechanism:
+This is the first step to support creating signed images directly
+with the imx-image tool. i.MX images must be signed using the Freescale
+CST tool. CST needs informations already present in the imx-image tool,
+so it's convenient to call CST directly from imx-image.
+CST takes CSF files (Command Sequence Files) as input. This patch
+supports generating CSF files from the imx-image configuration file.
+This adds three new commands to the config file:
 
-- Move the CSF templates to header files which can be included by the
-  flash config files
-- remove images/Makefile.imxhabv4 which is no longer necessary.
+hab <str>:  All options to the hab command are directly passed through to
+            the CSF.
+hab_blocks: This generates the "Blocks =" line in the CSF. This is the
+            place where the CSF needs information which is contained in
+	    the imx-image tool: The image size, the image filename and
+	    the load address.
+super_root_key <file>: For HABv3 the super root key hash is needed in
+                       the i.MX flash header. This command is used to
+		       specify the path to the super root key. Needed
+		       for HABv3 only.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- .../arm/mach-imx/include/mach/habv3-imx25-gencsf.h | 43 +++++++++++++++++++
- arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h | 44 ++++++++++++++++++++
- images/Makefile                                    |  1 -
- images/Makefile.imxhabv4                           | 48 ----------------------
- scripts/habv4/gencsf.sh                            | 47 ---------------------
- scripts/habv4/habv4-imx28.csf.in                   | 33 ---------------
- scripts/habv4/habv4-imx6.csf.in                    | 37 -----------------
- 7 files changed, 87 insertions(+), 166 deletions(-)
- create mode 100644 arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
- create mode 100644 arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
- delete mode 100644 images/Makefile.imxhabv4
- delete mode 100755 scripts/habv4/gencsf.sh
- delete mode 100644 scripts/habv4/habv4-imx28.csf.in
- delete mode 100644 scripts/habv4/habv4-imx6.csf.in
+ scripts/imx/imx.c | 108 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ scripts/imx/imx.h |   2 +
+ 2 files changed, 109 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h b/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
-new file mode 100644
-index 0000000..4b81d49
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
-@@ -0,0 +1,43 @@
-+/*
-+ * This snippet can be included from a i.MX flash header configuration
-+ * file for generating signed images. The necessary keys/certificates
-+ * are expected in these config variables:
-+ *
-+ * CONFIG_HABV3_SRK_PEM
-+ * CONFIG_HABV3_SRK_PEM
-+ * CONFIG_HABV3_IMG_CRT_PEM
-+ */
-+super_root_key CONFIG_HABV3_SRK_PEM
-+
-+hab [Header]
-+hab Version = 3.0
-+hab Security Configuration = Engineering
-+hab Hash Algorithm = SHA256
-+hab Engine = RTIC
-+hab Certificate Format = WTLS
-+hab Signature Format = PKCS1
-+hab UID = Generic
-+hab Code = 0x00
-+
-+hab [Install SRK]
-+hab File = "not-used"
-+
-+hab [Install CSFK]
-+hab File = CONFIG_HABV3_CSF_CRT_DER
-+
-+hab [Authenticate CSF]
-+/* below is the command that unlock the access to the DryIce registers */
-+
-+hab [Write Data]
-+hab Width = 4
-+hab Address Data = 0x53FFC03C 0xCA693569
-+
-+hab [Install Key]
-+hab Verification index = 1
-+hab Target index = 2
-+hab File = CONFIG_HABV3_IMG_CRT_DER
-+
-+hab [Authenticate Data]
-+hab Verification index = 2
-+
-+hab_blocks
-diff --git a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-new file mode 100644
-index 0000000..1a143a8
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-@@ -0,0 +1,44 @@
-+/*
-+ * This snippet can be included from a i.MX flash header configuration
-+ * file for generating signed images. The necessary keys/certificates
-+ * are expected in these config variables:
-+ *
-+ * CONFIG_HABV4_TABLE_BIN
-+ * CONFIG_HABV4_CSF_CRT_PEM
-+ * CONFIG_HABV4_IMG_CRT_PEM
-+ */
-+
-+hab [Header]
-+hab Version = 4.1
-+hab Hash Algorithm = sha256
-+hab Engine Configuration = 0
-+hab Certificate Format = X509
-+hab Signature Format = CMS
-+hab Engine = CAAM
-+
-+hab [Install SRK]
-+hab File = CONFIG_HABV4_TABLE_BIN
-+hab # SRK index within SRK-Table 0..3
-+hab Source index = 0
-+
-+hab [Install CSFK]
-+hab File = CONFIG_HABV4_CSF_CRT_PEM
-+
-+hab [Authenticate CSF]
-+
-+hab [Unlock]
-+hab Engine = CAAM
-+hab Features = RNG
-+
-+hab [Install Key]
-+/* verification key index in key store (0, 2...5) */
-+hab Verification index = 0
-+/* target key index in key store (2...5) */
-+hab Target index = 2
-+hab File = CONFIG_HABV4_IMG_CRT_PEM
-+
-+hab [Authenticate Data]
-+/* verification key index in key store (2...5) */
-+hab Verification index = 2
-+
-+hab_blocks
-\ No newline at end of file
-diff --git a/images/Makefile b/images/Makefile
-index a5f589b..f2dd9ab 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -104,7 +104,6 @@ objboard = $(objtree)/arch/$(ARCH)/boards
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index 79abed2..583cb2c 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -16,6 +16,7 @@
+  *
+  */
  
- include $(srctree)/images/Makefile.am33xx
- include $(srctree)/images/Makefile.imx
--include $(srctree)/images/Makefile.imxhabv4
- include $(srctree)/images/Makefile.mvebu
- include $(srctree)/images/Makefile.mxs
- include $(srctree)/images/Makefile.omap3
-diff --git a/images/Makefile.imxhabv4 b/images/Makefile.imxhabv4
-deleted file mode 100644
-index 9eb9538..0000000
---- a/images/Makefile.imxhabv4
-+++ /dev/null
-@@ -1,48 +0,0 @@
--# -*-makefile-*-
--#
--# barebox image generation Makefile for HABv4 images
--#
--
--# default csf templates
--havb4_imx6csf = $(srctree)/scripts/habv4/habv4-imx6.csf.in
--habv4_imx2csf = $(srctree)/scripts/habv4/habv4-imx28.csf.in
--
--# %.imximg.prep - Convert in i.MX image, with preparation for signature
--# ----------------------------------------------------------------
--quiet_cmd_imx_prep_image = IMX-PREP-IMG $@
--      cmd_imx_prep_image = $(CPP) $(imxcfg_cpp_flags) -o $(imximg-tmp) $(word 2,$^) ; \
--			   $< -o $@ -b -c $(imximg-tmp) -p -f $(word 3,$^)
--
--.SECONDEXPANSION:
--$(obj)/%.imximg.prep: $(objtree)/scripts/imx/imx-image $$(CFG_%.imximg) $(obj)/%
--	$(call if_changed,imx_prep_image)
--
--# %.habv4.csf - create Command Sequence File from template
--# ----------------------------------------------------------------
--quiet_cmd_csf = CSF     $@
--      cmd_csf = TABLE_BIN=$(CONFIG_HABV4_TABLE_BIN) \
--		CSF_CRT_PEM=$(CONFIG_HABV4_CSF_CRT_PEM) \
--		IMG_CRT_PEM=$(CONFIG_HABV4_IMG_CRT_PEM) \
--		$< -f $(word 2,$^) -c $(word 3,$^) -i $(word 4,$^) -o $@
--
--.SECONDEXPANSION:
--$(obj)/%.habv4.csf: $(srctree)/scripts/habv4/gencsf.sh $(obj)/%.prep $$(CFG_%) $$(CSF_%)
--	$(call if_changed,csf)
--
--# %.habv4.sig - create signature and pad to 0x2000
--# ----------------------------------------------------------------
--CST = cst
--quiet_cmd_habv4_sig = HAB4SIG $@
--      cmd_habv4_sig = $(CST) -o $(imximg-tmp) < $(word 2,$^) > /dev/null; \
--		      $(OBJCOPY) -I binary -O binary --pad-to 0x2000 --gap-fill=0x5a $(imximg-tmp) $@
--
--$(obj)/%.habv4.sig: $(obj)/%.prep $(obj)/%.habv4.csf
--	$(call if_changed,habv4_sig)
--
--# %.imximg.signed - concatenate bootloader and signature
--# ----------------------------------------------------------------
--quiet_cmd_cat = CAT     $@
--      cmd_cat = cat $^ > $@
--
--$(obj)/%.imximg.signed: $(obj)/%.imximg.prep $(obj)/%.imximg.habv4.sig
--	$(call if_changed,cat)
-diff --git a/scripts/habv4/gencsf.sh b/scripts/habv4/gencsf.sh
-deleted file mode 100755
-index 2c1c34a..0000000
---- a/scripts/habv4/gencsf.sh
-+++ /dev/null
-@@ -1,47 +0,0 @@
--#!/bin/sh
--
--set -e
--
--while getopts "f:c:i:o:" opt; do
--    case $opt in
--	f)
--	    file=$OPTARG
--	    ;;
--	c)
--	    cfg=$OPTARG
--	    ;;
--	i)
--	    in=$OPTARG
--	    ;;
--	o)
--	    out=$OPTARG
--	    ;;
--	\?)
--	    echo "Invalid option: -$OPTARG" >&2
--	    exit 1
--	;;
--    esac
--done
--
--if [ ! -e $file -o ! -e $cfg -o ! -e $in ]; then
--    echo "file not found!"
--    exit 1
--fi
--
--#
--# extract and set as shell vars:
--# loadaddr=
--# dcdofs=
--#
--eval $(sed -n -e "s/^[[:space:]]*\(loadaddr\|dcdofs\)[[:space:]]*\(0x[0-9]*\)/\1=\2/p" $cfg)
--
--length=$(stat -c '%s' $file)
--
--sed -e "s:@TABLE_BIN@:$TABLE_BIN:" \
--    -e "s:@CSF_CRT_PEM@:$CSF_CRT_PEM:" \
--    -e "s:@IMG_CRT_PEM@:$IMG_CRT_PEM:" \
--    -e "s:@LOADADDR@:$loadaddr:" \
--    -e "s:@OFFSET@:0:" \
--    -e "s:@LENGTH@:$length:" \
--    -e "s:@FILE@:$file:" \
--    $in > $out
-diff --git a/scripts/habv4/habv4-imx28.csf.in b/scripts/habv4/habv4-imx28.csf.in
-deleted file mode 100644
-index 5efd25b..0000000
---- a/scripts/habv4/habv4-imx28.csf.in
-+++ /dev/null
-@@ -1,33 +0,0 @@
--[Header]
--Version = 4.0
--Hash Algorithm = sha256
--Engine Configuration = 0
--Certificate Format = X509
--Signature Format = CMS
--Engine = DCP
--
--[Install SRK]
--File = "@TABLE_BIN@"
--# SRK index within SRK-Table 0..3
--Source index = 0
--
--[Install CSFK]
--File = "@CSF_CRT_PEM@"
--
--[Authenticate CSF]
--
--[Install Key]
--# verification key index in key store (0, 2...5)
--Verification index = 0
--# target key index in key store (2...5)
--Target index = 2
--File = "@IMG_CRT_PEM@"
--
--[Authenticate Data]
--# verification key index in key store (2...5)
--Verification index = 2
--# "starting load address in memory"
--# "starting offset within the source file"
--# "length (in bytes)"
--# "file (binary)"
--Blocks = @LOADADDR@ @OFFSET@ @LENGTH@ "@FILE@"
-diff --git a/scripts/habv4/habv4-imx6.csf.in b/scripts/habv4/habv4-imx6.csf.in
-deleted file mode 100644
-index 11a5db9..0000000
---- a/scripts/habv4/habv4-imx6.csf.in
-+++ /dev/null
-@@ -1,37 +0,0 @@
--[Header]
--Version = 4.1
--Hash Algorithm = sha256
--Engine Configuration = 0
--Certificate Format = X509
--Signature Format = CMS
--Engine = CAAM
--
--[Install SRK]
--File = "@TABLE_BIN@"
--# SRK index within SRK-Table 0..3
--Source index = 0
--
--[Install CSFK]
--File = "@CSF_CRT_PEM@"
--
--[Authenticate CSF]
--
--[Unlock]
--Engine = CAAM
--Features = RNG
--
--[Install Key]
--# verification key index in key store (0, 2...5)
--Verification index = 0
--# target key index in key store (2...5)
--Target index = 2
--File = "@IMG_CRT_PEM@"
--
--[Authenticate Data]
--# verification key index in key store (2...5)
--Verification index = 2
--# "starting load address in memory"
--# "starting offset within the source file"
--# "length (in bytes)"
--# "file (binary)"
--Blocks = @LOADADDR@ @OFFSET@ @LENGTH@ "@FILE@"
++#define _GNU_SOURCE
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -23,7 +24,7 @@
+ #include <errno.h>
+ #include "imx.h"
+ 
+-#define MAXARGS 5
++#define MAXARGS 32
+ 
+ static int parse_line(char *line, char *argv[])
+ {
+@@ -230,6 +231,102 @@ static int do_soc(struct config_data *data, int argc, char *argv[])
+ 	return -EINVAL;
+ }
+ 
++static int hab_add_str(struct config_data *data, const char *str)
++{
++	int len = strlen(str);
++
++	if (data->csf_space < len)
++		return -ENOMEM;
++
++	strcat(data->csf, str);
++
++	data->csf_space -= len;
++
++	return 0;
++}
++
++static int do_hab(struct config_data *data, int argc, char *argv[])
++{
++	int i, ret;
++
++	if (!data->csf) {
++		data->csf_space = 0x10000;
++
++		data->csf = malloc(data->csf_space + 1);
++		if (!data->csf)
++			return -ENOMEM;
++	}
++
++	for (i = 1; i < argc; i++) {
++		ret = hab_add_str(data, argv[i]);
++		if (ret)
++			return ret;
++
++		ret = hab_add_str(data, " ");
++		if (ret)
++			return ret;
++	}
++
++	ret = hab_add_str(data, "\n");
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static int do_hab_blocks(struct config_data *data, int argc, char *argv[])
++{
++	char *str;
++	int ret;
++
++	if (!data->csf)
++		return -EINVAL;
++
++	ret = asprintf(&str, "Blocks = 0x%08x 0 %d \"%s\"\n",
++		       data->image_load_addr,
++		       data->load_size, data->outfile);
++	if (ret < 0)
++		return -ENOMEM;
++
++	ret = hab_add_str(data, str);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static int do_super_root_key(struct config_data *data, int argc, char *argv[])
++{
++	int len;
++	char *srkfile;
++
++	if (argc != 2) {
++		fprintf(stderr, "usage: super_root_key <keyfile>\n");
++		return -EINVAL;
++	}
++
++	if (data->cpu_type != 35 && data->cpu_type != 25) {
++		fprintf(stderr, "Warning: The super_root_key command is meaningless "
++			"on non HABv3 based SoCs\n");
++		return 0;
++	}
++
++	srkfile = argv[1];
++
++	if (*srkfile == '"')
++		srkfile++;
++
++	data->srkfile = strdup(srkfile);
++	if (!data->srkfile)
++		return -ENOMEM;
++
++	len = strlen(data->srkfile);
++	if (data->srkfile[len - 1] == '"')
++		data->srkfile[len - 1] = 0;
++
++	return 0;
++}
++
+ struct command cmds[] = {
+ 	{
+ 		.name = "wm",
+@@ -246,6 +343,15 @@ struct command cmds[] = {
+ 	}, {
+ 		.name = "soc",
+ 		.parse = do_soc,
++	}, {
++		.name = "hab",
++		.parse = do_hab,
++	}, {
++		.name = "hab_blocks",
++		.parse = do_hab_blocks,
++	}, {
++		.name = "super_root_key",
++		.parse = do_super_root_key,
+ 	},
+ };
+ 
+diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
+index 1ef4ac6..0b1d234 100644
+--- a/scripts/imx/imx.h
++++ b/scripts/imx/imx.h
+@@ -67,6 +67,8 @@ struct config_data {
+ 	int cpu_type;
+ 	int (*check)(struct config_data *data, uint32_t cmd, uint32_t addr, uint32_t mask);
+ 	int (*write_mem)(struct config_data *data, uint32_t addr, uint32_t val, int width);
++	int csf_space;
++	char *csf;
+ };
+ 
+ int parse_config(struct config_data *data, const char *filename);
 -- 
 2.7.0.rc3
 
