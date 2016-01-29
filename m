@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1aP6XT-0006kF-K6
- for barebox@lists.infradead.org; Fri, 29 Jan 2016 10:44:30 +0000
+ id 1aP6XT-0006kG-K3
+ for barebox@lists.infradead.org; Fri, 29 Jan 2016 10:44:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 29 Jan 2016 11:43:56 +0100
-Message-Id: <1454064243-26558-17-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 29 Jan 2016 11:44:00 +0100
+Message-Id: <1454064243-26558-21-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1454064243-26558-1-git-send-email-s.hauer@pengutronix.de>
 References: <1454064243-26558-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,117 +21,218 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 16/23] scripts: imx-usb-loader: Add -s and -i options
+Subject: [PATCH 20/23] scripts: imx-image: Support adding a Super Root Key to
+ the image
 To: Barebox List <barebox@lists.infradead.org>
-
-Normally imx-usb-loader interprets and executes the DCD table from
-an uploaded image and invalidates the DCD before uploading the image
-itself to prevent the i.MX ROM code from executing it again. With HAB
-signed images this is not possible since invalidating the DCD table
-modifies the image which also makes the signature invalid.
-To support this usecase add two new options to imx-usb-loader:
-
-The -i option allows to pass in an external config file which can be
-used to setup SDRAM. The DCD table in the image can then be made empty
-so that the ROM does not see a second SDRAM setup.
-
-The -s option allows to skip interpreting the DCD table in the image.
-This may when some setup stuff is still in the images DCD table but
-shall be executed by the ROM and not by imx-usb-loader.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/imx/imx-usb-loader.c | 37 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/Kconfig |   7 +++
+ scripts/imx/Makefile      |   4 ++
+ scripts/imx/imx-image.c   | 130 ++++++++++++++++++++++++++++++++++++++++++++++
+ scripts/imx/imx.h         |   1 +
+ 4 files changed, 142 insertions(+)
 
-diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-index 7925d2d..064212e 100644
---- a/scripts/imx/imx-usb-loader.c
-+++ b/scripts/imx/imx-usb-loader.c
-@@ -42,6 +42,7 @@
- #define FT_LOAD_ONLY	0x00
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 9e7be2e..9c7d51f 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -67,6 +67,12 @@ config ARCH_IMX_IMXIMAGE
+ 	help
+ 	  if enabled the imx-image tool is compiled
  
- int verbose;
-+static int skip_image_dcd;
- static struct libusb_device_handle *usb_dev_handle;
- static struct usb_id *usb_id;
- 
-@@ -855,6 +856,9 @@ static int perform_dcd(unsigned char *p, unsigned char *file_start, unsigned cnt
- 	struct imx_flash_header_v2 *hdr = (struct imx_flash_header_v2 *)p;
- 	int ret = 0;
- 
-+	if (skip_image_dcd)
-+		return 0;
++config ARCH_IMX_IMXIMAGE_SSL_SUPPORT
++	bool
++	help
++	  This enables SSL support for the imx-image tool. This is required
++	  for created images for HABv3. This adds openssl to the build dependencies
 +
- 	switch (usb_id->mach_id->header_type) {
- 	case HDR_MX51:
- 		ret = write_dcd_table_old(ohdr, file_start, cnt);
-@@ -1191,10 +1195,28 @@ cleanup:
- 	return ret;
- }
+ config ARCH_IMX_XLOAD
+ 	bool
+ 	depends on ARCH_IMX51
+@@ -735,6 +741,7 @@ endif
+ config HABV3
+ 	tristate "HABv3 support"
+ 	select HAB
++	select ARCH_IMX_IMXIMAGE_SSL_SUPPORT
+ 	depends on ARCH_IMX25
+ 	help
+ 	  High Assurance Boot, as found on i.MX25.
+diff --git a/scripts/imx/Makefile b/scripts/imx/Makefile
+index 6883659..d9f0c51 100644
+--- a/scripts/imx/Makefile
++++ b/scripts/imx/Makefile
+@@ -7,6 +7,10 @@ HOSTCFLAGS_imx-usb-loader.o = `pkg-config --cflags libusb-1.0`
+ HOSTLOADLIBES_imx-usb-loader  = `pkg-config --libs libusb-1.0`
  
-+static int write_mem(struct config_data *data, uint32_t addr, uint32_t val, int width)
+ HOSTCFLAGS_imx-image.o = -I$(srctree)
++ifdef CONFIG_ARCH_IMX_IMXIMAGE_SSL_SUPPORT
++HOSTCFLAGS_imx-image.o += -DIMXIMAGE_SSL_SUPPORT
++HOSTLOADLIBES_imx-image  = `pkg-config --libs openssl`
++endif
+ 
+ imx-usb-loader-objs := imx-usb-loader.o imx.o
+ imx-image-objs := imx-image.o imx.o
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index 4fc4994..79f644d 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -73,6 +73,130 @@ static uint32_t bb_header[] = {
+ 	0x55555555,
+ };
+ 
++struct hab_rsa_public_key {
++	uint8_t rsa_exponent[4]; /* RSA public exponent */
++	uint32_t rsa_modulus; /* RSA modulus pointer */
++	uint16_t exponent_size; /* Exponent size in bytes */
++	uint16_t modulus_size; /* Modulus size in bytes*/
++	uint8_t init_flag; /* Indicates if key initialized */
++};
++
++#ifdef IMXIMAGE_SSL_SUPPORT
++#define PUBKEY_ALGO_LEN 2048
++
++#include <openssl/x509v3.h>
++#include <openssl/bn.h>
++#include <openssl/asn1.h>
++#include <openssl/x509.h>
++#include <openssl/x509_vfy.h>
++#include <openssl/pem.h>
++#include <openssl/bio.h>
++
++static int extract_key(const char *certfile, uint8_t **modulus, int *modulus_len,
++	uint8_t **exponent, int *exponent_len)
 +{
-+	printf("wr 0x%08x 0x%08x\n", addr, val);
++	char buf[PUBKEY_ALGO_LEN];
++	int pubkey_algonid;
++	const char *sslbuf;
++	EVP_PKEY *pkey;
++	FILE *fp;
++	X509 *cert;
++	RSA *rsa_key;
 +
-+	return write_memory(addr, val, width);
-+}
-+
-+static int parse_initfile(const char *filename)
-+{
-+	struct config_data data = {
-+		.write_mem = write_mem,
-+	};
-+
-+	return parse_config(&data, filename);
-+}
-+
- static void usage(const char *prgname)
- {
- 	fprintf(stderr, "usage: %s [OPTIONS] [FILENAME]\n\n"
- 		"-c           check correctness of flashed image\n"
-+		"-i <cfgfile> Specify custom SoC initialization file\n"
-+		"-s           skip DCD included in image\n"
- 		"-v           verbose (give multiple times to increase)\n"
- 		"-h           this help\n", prgname);
- 	exit(1);
-@@ -1213,8 +1235,9 @@ int main(int argc, char *argv[])
- 	int verify = 0;
- 	struct usb_work w = {};
- 	int opt;
-+	char *initfile = NULL;
- 
--	while ((opt = getopt(argc, argv, "cvh")) != -1) {
-+	while ((opt = getopt(argc, argv, "cvhi:s")) != -1) {
- 		switch (opt) {
- 		case 'c':
- 			verify = 1;
-@@ -1224,6 +1247,12 @@ int main(int argc, char *argv[])
- 			break;
- 		case 'h':
- 			usage(argv[0]);
-+		case 'i':
-+			initfile = optarg;
-+			break;
-+		case 's':
-+			skip_image_dcd = 1;
-+			break;
- 		default:
- 			exit(1);
- 		}
-@@ -1290,6 +1319,12 @@ int main(int argc, char *argv[])
- 		goto out;
- 	}
- 
-+	if (initfile) {
-+		err = parse_initfile(initfile);
-+		if (err)
-+			goto out;
++	fp = fopen(certfile, "r");
++	if (!fp) {
++		fprintf(stderr, "unable to open certfile: %s\n", certfile);
++		return -errno;
 +	}
 +
- 	err = do_irom_download(&w, verify);
- 	if (err) {
- 		err = do_status();
++	cert = PEM_read_X509(fp, NULL, NULL, NULL);
++	if (!cert) {
++		fprintf(stderr, "unable to parse certificate in: %s\n", certfile);
++		fclose(fp);
++		return -errno;
++	}
++
++	fclose(fp);
++
++	pubkey_algonid = OBJ_obj2nid(cert->cert_info->key->algor->algorithm);
++	if (pubkey_algonid == NID_undef) {
++		fprintf(stderr, "unable to find specified public key algorithm name.\n");
++		return -EINVAL;
++	}
++
++	if (pubkey_algonid != NID_rsaEncryption)
++		return -EINVAL;
++
++	sslbuf = OBJ_nid2ln(pubkey_algonid);
++	strncpy(buf, sslbuf, PUBKEY_ALGO_LEN);
++
++	pkey = X509_get_pubkey(cert);
++	if (!pkey) {
++		fprintf(stderr, "unable to extract public key from certificate");
++		return -EINVAL;
++	}
++
++	rsa_key = pkey->pkey.rsa;
++	if (!rsa_key) {
++		fprintf(stderr, "unable to extract RSA public key");
++		return -EINVAL;
++	}
++
++	*modulus_len = BN_num_bytes(rsa_key->n);
++	*modulus = malloc(*modulus_len);
++	BN_bn2bin(rsa_key->n, *modulus);
++
++	*exponent_len = BN_num_bytes(rsa_key->e);
++	*exponent = malloc(*exponent_len);
++	BN_bn2bin(rsa_key->e, *exponent);
++
++	EVP_PKEY_free(pkey);
++	X509_free(cert);
++
++	return 0;
++}
++
++static int add_srk(void *buf, int offset, uint32_t loadaddr, const char *srkfile)
++{
++	struct imx_flash_header *hdr = buf + offset;
++	struct hab_rsa_public_key *key = buf + 0xc00;
++	uint8_t *exponent = NULL, *modulus = NULL, *modulus_dest;
++	int exponent_len = 0, modulus_len = 0;
++	int ret;
++
++	hdr->super_root_key = loadaddr + 0xc00;
++
++	key->init_flag = 1;
++	key->exponent_size = htole16(3);
++
++	ret = extract_key(srkfile, &modulus, &modulus_len, &exponent, &exponent_len);
++	if (ret)
++		return ret;
++
++	modulus_dest = (void *)(key + 1);
++
++	memcpy(modulus_dest, modulus, modulus_len);
++
++	key->modulus_size = htole16(modulus_len);
++	key->rsa_modulus = htole32(hdr->super_root_key + sizeof(*key));
++
++	if (exponent_len > 4)
++		return -EINVAL;
++
++	key->exponent_size = exponent_len;
++	memcpy(&key->rsa_exponent, exponent, key->exponent_size);
++
++	return 0;
++}
++#else
++static int add_srk(void *buf, int offset, uint32_t loadaddr, const char *srkfile)
++{
++	fprintf(stderr, "This version of imx-image is compiled without SSL support\n");
++
++	return -EINVAL;
++}
++#endif /* IMXIMAGE_SSL_SUPPORT */
++
+ static int add_header_v1(struct config_data *data, void *buf)
+ {
+ 	struct imx_flash_header *hdr;
+@@ -431,6 +555,12 @@ int main(int argc, char *argv[])
+ 	switch (data.header_version) {
+ 	case 1:
+ 		add_header_v1(&data, buf);
++		if (data.srkfile) {
++			ret = add_srk(buf, data.image_dcd_offset, data.image_load_addr,
++				      data.srkfile);
++			if (ret)
++				exit(1);
++		}
+ 		break;
+ 	case 2:
+ 		add_header_v2(&data, buf);
+diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
+index 6466d8c..1ef4ac6 100644
+--- a/scripts/imx/imx.h
++++ b/scripts/imx/imx.h
+@@ -62,6 +62,7 @@ struct config_data {
+ 	uint32_t image_size;
+ 	uint32_t load_size;
+ 	char *outfile;
++	char *srkfile;
+ 	int header_version;
+ 	int cpu_type;
+ 	int (*check)(struct config_data *data, uint32_t cmd, uint32_t addr, uint32_t mask);
 -- 
 2.7.0.rc3
 
