@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1aP6XY-0003eB-6f
- for barebox@lists.infradead.org; Fri, 29 Jan 2016 10:44:34 +0000
+ id 1aP6XY-0003e6-5a
+ for barebox@lists.infradead.org; Fri, 29 Jan 2016 10:44:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 29 Jan 2016 11:44:02 +0100
-Message-Id: <1454064243-26558-23-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 29 Jan 2016 11:43:49 +0100
+Message-Id: <1454064243-26558-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1454064243-26558-1-git-send-email-s.hauer@pengutronix.de>
 References: <1454064243-26558-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,329 +21,363 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 22/23] scripts: imx: Allow to create signed images
+Subject: [PATCH 09/23] scripts: imx: Consolidate flash headers in imx tools
 To: Barebox List <barebox@lists.infradead.org>
 
-This patch allows to call CST directly from imx-image to create signed
-images. CST is called whenever the config file contains the hab <str>
-commands which means a CSF is generated.
-Calling CST requires some quirks. First of all CST returns successfully
-whenever a CSF exists, no matter is the CSF actually contains something
-sensible or not. So to detect if CST has been called successfully we
-have to check if it generated output, not if it returned successfully.
-Then CST uses csfsig.bin as a temporary file which breaks when the tool
-is called multiple times at once, something which often happens in
-parallel builds. We therefore have to lock accesses to this file using
-flock().
+Both imx-image and imx-usb-loader use their own variants of the
+i.MX flash header definitions. Consolidate them to avoid code
+duplication.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/imx/imx-image.c | 175 +++++++++++++++++++++++++++++++++++++++++-------
- scripts/imx/imx.c       |   3 +
- scripts/imx/imx.h       |   2 +
- 3 files changed, 157 insertions(+), 23 deletions(-)
+ scripts/imx/imx-image.c      | 48 +-----------------------
+ scripts/imx/imx-usb-loader.c | 88 ++++++++++++++------------------------------
+ scripts/imx/imx.h            | 52 ++++++++++++++++++++++++++
+ 3 files changed, 82 insertions(+), 106 deletions(-)
+ create mode 100644 scripts/imx/imx.h
 
 diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index 79f644d..1a771c4 100644
+index a85833b..4b6359a 100644
 --- a/scripts/imx/imx-image.c
 +++ b/scripts/imx/imx-image.c
-@@ -15,6 +15,7 @@
-  * GNU General Public License for more details.
-  *
-  */
-+#define _GNU_SOURCE
- #include <stdio.h>
- #include <unistd.h>
- #include <getopt.h>
-@@ -26,7 +27,7 @@
- #include <sys/stat.h>
+@@ -27,6 +27,8 @@
  #include <fcntl.h>
  #include <endian.h>
--
-+#include <sys/file.h>
- #include "imx.h"
  
++#include "imx.h"
++
  #include <include/filetype.h>
-@@ -34,13 +35,11 @@
- #define roundup(x, y) ((((x) + ((y) - 1)) / (y)) * (y))
  
- #define MAX_DCD 1024
--#define HEADER_LEN 0x1000	/* length of the blank area + IVT + DCD */
- #define CSF_LEN 0x2000		/* length of the CSF (needed for HAB) */
- 
- static uint32_t dcdtable[MAX_DCD];
- static int curdcd;
- static int add_barebox_header;
--static int prepare_sign;
- 
- /*
+ #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+@@ -51,20 +53,8 @@ static int prepare_sign;
+  * i.MX flash header v1 handling. Found on i.MX35 and i.MX51
   * ============================================================================
-@@ -230,6 +229,11 @@ static int add_header_v1(struct config_data *data, void *buf)
+  */
+-struct imx_flash_header {
+-	uint32_t app_code_jump_vector;
+-	uint32_t app_code_barker;
+-	uint32_t app_code_csf;
+-	uint32_t dcd_ptr_ptr;
+-	uint32_t super_root_key;
+-	uint32_t dcd;
+-	uint32_t app_dest;
+-	uint32_t dcd_barker;
+-	uint32_t dcd_block_len;
+-} __attribute__((packed));
  
- 	buf += dcdsize;
+ #define FLASH_HEADER_OFFSET 0x400
+-#define DCD_BARKER       0xb17219e9
  
-+	if (data->csf) {
-+		hdr->app_code_csf = loadaddr + imagesize;
-+		imagesize += CSF_LEN;
-+	}
-+
- 	*(uint32_t *)buf = imagesize;
+ static uint32_t bb_header[] = {
+ 	0xea0003fe,	/* b 0x1000 */
+@@ -144,40 +134,6 @@ static int write_mem_v1(uint32_t addr, uint32_t val, int width)
+  * ============================================================================
+  */
  
- 	return 0;
-@@ -282,7 +286,7 @@ static int add_header_v2(struct config_data *data, void *buf)
- 	hdr->boot_data.start	= loadaddr;
- 	hdr->boot_data.size	= imagesize;
- 
--	if (prepare_sign) {
-+	if (data->csf) {
- 		hdr->csf = loadaddr + imagesize;
- 		hdr->boot_data.size += CSF_LEN;
- 	}
-@@ -310,7 +314,6 @@ static void usage(const char *prgname)
- 		"-b           add barebox header to image. If used, barebox recognizes\n"
- 		"             the image as regular barebox image which can be used as\n"
- 		"             second stage image\n"
--		"-p           prepare image for signing\n"
- 		"-h           this help\n", prgname);
- 	exit(1);
- }
-@@ -440,6 +443,132 @@ static int write_mem(struct config_data *data, uint32_t addr, uint32_t val, int
- 	}
- }
- 
-+/*
-+ * This uses the Freescale Code Signing Tool (CST) to sign the image.
-+ * The cst is expected to be executable as 'cst' or if exists, the content
-+ * of the environment variable 'CST' is used.
-+ */
-+static int hab_sign(struct config_data *data)
-+{
-+	int fd, outfd, ret, lockfd;
-+	char *csffile, *command;
-+	struct stat s;
-+	char *cst;
-+	void *buf;
-+
-+	cst = getenv("CST");
-+	if (!cst)
-+		cst = "cst";
-+
-+	ret = asprintf(&csffile, "%s.csfbin", data->outfile);
-+	if (ret < 0)
-+		exit(1);
-+
-+	ret = stat(csffile, &s);
-+	if (!ret) {
-+		if (S_ISREG(s.st_mode)) {
-+			ret = unlink(csffile);
-+			if (ret) {
-+				fprintf(stderr, "Cannot remove %s: %s\n",
-+					csffile, strerror(errno));
-+				return -errno;
-+			}
-+		} else {
-+			fprintf(stderr, "%s exists and is no regular file\n",
-+				csffile);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	ret = asprintf(&command, "%s -o %s", cst, csffile);
-+	if (ret < 0)
-+		return -ENOMEM;
-+
-+	/*
-+	 * The cst uses "csfsig.bin" as temporary file. This of course breaks when it's
-+	 * called multiple times as often happens with parallel builds. Until cst learns
-+	 * how to properly create temporary files without races lock accesses to this
-+	 * file.
-+	 */
-+	lockfd = open("csfsig.bin", O_CREAT, S_IRWXU);
-+	if (lockfd < 0) {
-+		fprintf(stderr, "Cannot open csfsig.bin: %s\n", strerror(errno));
-+		return -errno;
-+	}
-+
-+	ret = flock(lockfd, LOCK_EX);
-+	if (ret) {
-+		fprintf(stderr, "Cannot lock csfsig.bin: %s\n", strerror(errno));
-+		return -errno;
-+	}
-+
-+	FILE *f = popen(command, "w");
-+	if (!f) {
-+		perror("popen");
-+		return -errno;
-+	}
-+
-+	fwrite(data->csf, 1, strlen(data->csf) + 1, f);
-+
-+	pclose(f);
-+
-+	flock(lockfd, LOCK_UN);
-+	close(lockfd);
-+
-+	/*
-+	 * the Freescale code signing tool doesn't fail if there
-+	 * are errors in the command sequence file, it just doesn't
-+	 * produce any output, so we have to check for existence of
-+	 * the output file rather than checking the return value of
-+	 * the cst call.
-+	 */
-+	fd = open(csffile, O_RDONLY);
-+	if (fd < 0) {
-+		fprintf(stderr, "Failed to open %s: %s\n", csffile, strerror(errno));
-+		fprintf(stderr, "%s failed\n", cst);
-+		return -errno;
-+	}
-+
-+	ret = fstat(fd, &s);
-+	if (ret < 0) {
-+		fprintf(stderr, "stat failed: %s\n", strerror(errno));
-+		return -errno;
-+	}
-+
-+	buf = malloc(CSF_LEN);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	memset(buf, 0x5a, CSF_LEN);
-+
-+	if (s.st_size > CSF_LEN) {
-+		fprintf(stderr, "CSF file size exceeds maximum CSF len of %d bytes\n",
-+			CSF_LEN);
-+	}
-+
-+	ret = xread(fd, buf, s.st_size);
-+	if (ret < 0) {
-+		fprintf(stderr, "read failed: %s\n", strerror(errno));
-+		return -errno;
-+	}
-+
-+	outfd = open(data->outfile, O_WRONLY | O_APPEND);
-+
-+	ret = xwrite(outfd, buf, CSF_LEN);
-+	if (ret < 0) {
-+		fprintf(stderr, "write failed: %s\n", strerror(errno));
-+		return -errno;
-+	}
-+
-+	ret = close(outfd);
-+	if (ret) {
-+		perror("close");
-+		exit(1);
-+	}
-+
-+	return 0;
-+}
-+
- int main(int argc, char *argv[])
+-struct imx_boot_data {
+-	uint32_t start;
+-	uint32_t size;
+-	uint32_t plugin;
+-} __attribute__((packed));
+-
+-#define TAG_IVT_HEADER	0xd1
+-#define IVT_VERSION	0x40
+-#define TAG_DCD_HEADER	0xd2
+-#define DCD_VERSION	0x40
+-#define TAG_WRITE	0xcc
+-#define TAG_CHECK	0xcf
+-
+-struct imx_ivt_header {
+-	uint8_t tag;
+-	uint16_t length;
+-	uint8_t version;
+-} __attribute__((packed));
+-
+-struct imx_flash_header_v2 {
+-	struct imx_ivt_header header;
+-
+-	uint32_t entry;
+-	uint32_t reserved1;
+-	uint32_t dcd_ptr;
+-	uint32_t boot_data_ptr;
+-	uint32_t self;
+-	uint32_t csf;
+-	uint32_t reserved2;
+-
+-	struct imx_boot_data boot_data;
+-	struct imx_ivt_header dcd_header;
+-} __attribute__((packed));
+-
+ static int add_header_v2(void *buf, int offset, uint32_t loadaddr, uint32_t imagesize)
  {
- 	int opt, ret;
-@@ -458,7 +587,7 @@ int main(int argc, char *argv[])
- 		.check = check,
- 	};
+ 	struct imx_flash_header_v2 *hdr;
+diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+index 4db39d6..2bee709 100644
+--- a/scripts/imx/imx-usb-loader.c
++++ b/scripts/imx/imx-usb-loader.c
+@@ -32,6 +32,7 @@
+ #include <stdlib.h>
+ #include <libusb.h>
+ #include <getopt.h>
++#include "imx.h"
  
--	while ((opt = getopt(argc, argv, "c:hf:o:bdp")) != -1) {
-+	while ((opt = getopt(argc, argv, "c:hf:o:bd")) != -1) {
- 		switch (opt) {
- 		case 'c':
- 			configfile = optarg;
-@@ -475,9 +604,6 @@ int main(int argc, char *argv[])
- 		case 'd':
- 			dcd_only = 1;
- 			break;
--		case 'p':
--			prepare_sign = 1;
--			break;
- 		case 'h':
- 			usage(argv[0]);
- 		default:
-@@ -510,6 +636,16 @@ int main(int argc, char *argv[])
- 		data.image_size = s.st_size;
- 	}
+ #define get_min(a, b) (((a) < (b)) ? (a) : (b))
  
-+	/*
-+	 * Add HEADER_LEN to the image size for the blank aera + IVT + DCD.
-+	 * Align up to a 4k boundary, because:
-+	 * - at least i.MX5 NAND boot only reads full NAND pages and misses the
-+	 *   last partial NAND page.
-+	 * - i.MX6 SPI NOR boot corrupts the last few bytes of an image loaded
-+	 *   in ver funy ways when the image size is not 4 byte aligned
-+	 */
-+	data.load_size = roundup(data.image_size + HEADER_LEN, 0x1000);
-+
- 	ret = parse_config(&data, configfile);
- 	if (ret)
- 		exit(1);
-@@ -539,19 +675,6 @@ int main(int argc, char *argv[])
- 		exit (0);
- 	}
- 
--	/*
--	 * Add HEADER_LEN to the image size for the blank aera + IVT + DCD.
--	 * Align up to a 4k boundary, because:
--	 * - at least i.MX5 NAND boot only reads full NAND pages and misses the
--	 *   last partial NAND page.
--	 * - i.MX6 SPI NOR boot corrupts the last few bytes of an image loaded
--	 *   in ver funy ways when the image size is not 4 byte aligned
--	 */
--	data.load_size = roundup(data.image_size + HEADER_LEN, 0x1000);
--
--	if (data.cpu_type == 35)
--		data.load_size += HEADER_LEN;
--
- 	switch (data.header_version) {
- 	case 1:
- 		add_header_v1(&data, buf);
-@@ -617,7 +740,7 @@ int main(int argc, char *argv[])
- 
- 	/* pad until next 4k boundary */
- 	now = 4096 - (insize % 4096);
--	if (prepare_sign && now) {
-+	if (data.csf && now) {
- 		memset(buf, 0x5a, now);
- 
- 		ret = xwrite(outfd, buf, now);
-@@ -633,5 +756,11 @@ int main(int argc, char *argv[])
- 		exit(1);
- 	}
- 
-+	if (data.csf) {
-+		ret = hab_sign(&data);
-+		if (ret)
-+			exit(1);
-+	}
-+
- 	exit(0);
+@@ -401,39 +402,6 @@ int do_status(libusb_device_handle *h, struct usb_id *p_id)
+ 	return err;
  }
-diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-index 583cb2c..cebc3d6 100644
---- a/scripts/imx/imx.c
-+++ b/scripts/imx/imx.c
-@@ -228,6 +228,9 @@ static int do_soc(struct config_data *data, int argc, char *argv[])
- 		fprintf(stderr, "%s ", socs[i].name);
- 	fprintf(stderr, "\n");
  
-+	if (data->cpu_type == 35)
-+		data->load_size += HEADER_LEN;
-+
- 	return -EINVAL;
+-struct boot_data {
+-	uint32_t dest;
+-	uint32_t image_len;
+-	uint32_t plugin;
+-};
+-
+-struct imx_flash_header_v2 {
+-#define IVT_BARKER 0x402000d1
+-	uint32_t barker;
+-	uint32_t start_addr;
+-	uint32_t reserv1;
+-	uint32_t dcd_ptr;
+-	uint32_t boot_data_ptr;	/* struct boot_data * */
+-	uint32_t self_ptr;	/* struct imx_flash_header_v2 *, this - boot_data.start = offset linked at */
+-	uint32_t app_code_csf;
+-	uint32_t reserv2;
+-};
+-
+-/*
+- * MX51 header type
+- */
+-struct imx_flash_header_v1 {
+-	uint32_t app_start_addr;
+-#define APP_BARKER	0xb1
+-#define DCD_BARKER	0xb17219e9
+-	uint32_t app_barker;
+-	uint32_t csf_ptr;
+-	uint32_t dcd_ptr_ptr;
+-	uint32_t srk_ptr;
+-	uint32_t dcd_ptr;
+-	uint32_t app_dest_ptr;
+-};
+-
+ #define V(a) (((a) >> 24) & 0xff), (((a) >> 16) & 0xff), (((a) >> 8) & 0xff), ((a) & 0xff)
+ 
+ static int read_memory(struct libusb_device_handle *h, struct usb_id *p_id,
+@@ -673,13 +641,13 @@ static int write_dcd_table_ivt(struct libusb_device_handle *h, struct usb_id *p_
+ {
+ 	unsigned char *dcd_end;
+ 	unsigned m_length;
+-#define cvt_dest_to_src		(((unsigned char *)hdr) - hdr->self_ptr)
++#define cvt_dest_to_src		(((unsigned char *)hdr) - hdr->self)
+ 	unsigned char* dcd;
+ 	unsigned char* file_end = file_start + cnt;
+ 	int err = 0;
+ 
+ 	if (!hdr->dcd_ptr) {
+-		printf("No dcd table, barker=%x\n", hdr->barker);
++		printf("No dcd table in this ivt\n");
+ 		return 0; /* nothing to do */
+ 	}
+ 
+@@ -739,27 +707,27 @@ static int write_dcd_table_ivt(struct libusb_device_handle *h, struct usb_id *p_
+ 	return err;
  }
+ 
+-static int get_dcd_range_old(struct imx_flash_header_v1 *hdr,
++static int get_dcd_range_old(struct imx_flash_header *hdr,
+ 		unsigned char *file_start, unsigned cnt,
+ 		unsigned char **pstart, unsigned char **pend)
+ {
+ 	unsigned char *dcd_end;
+ 	unsigned m_length;
+-#define cvt_dest_to_src_old		(((unsigned char *)&hdr->dcd_ptr) - hdr->dcd_ptr_ptr)
++#define cvt_dest_to_src_old		(((unsigned char *)&hdr->dcd) - hdr->dcd_ptr_ptr)
+ 	unsigned char* dcd;
+ 	unsigned val;
+ 	unsigned char* file_end = file_start + cnt;
+ 
+-	if (!hdr->dcd_ptr) {
+-		printf("No dcd table, barker=%x\n", hdr->app_barker);
+-		*pstart = *pend = ((unsigned char *)hdr) + sizeof(struct imx_flash_header_v1);
++	if (!hdr->dcd) {
++		printf("No dcd table, barker=%x\n", hdr->app_code_barker);
++		*pstart = *pend = ((unsigned char *)hdr) + sizeof(struct imx_flash_header);
+ 		return 0; /* nothing to do */
+ 	}
+ 
+-	dcd = hdr->dcd_ptr + cvt_dest_to_src_old;
++	dcd = hdr->dcd + cvt_dest_to_src_old;
+ 
+ 	if ((dcd < file_start) || ((dcd + 8) > file_end)) {
+-		printf("bad dcd_ptr %08x\n", hdr->dcd_ptr);
++		printf("bad dcd_ptr %08x\n", hdr->dcd);
+ 		return -1;
+ 	}
+ 
+@@ -787,7 +755,7 @@ static int get_dcd_range_old(struct imx_flash_header_v1 *hdr,
+ }
+ 
+ static int write_dcd_table_old(struct libusb_device_handle *h, struct usb_id *p_id,
+-		struct imx_flash_header_v1 *hdr, unsigned char *file_start, unsigned cnt)
++		struct imx_flash_header *hdr, unsigned char *file_start, unsigned cnt)
+ {
+ 	unsigned val;
+ 	unsigned char *dcd_end;
+@@ -873,16 +841,16 @@ err:
+ 
+ static int is_header(struct usb_id *p_id, unsigned char *p)
+ {
+-	struct imx_flash_header_v1 *ohdr = (struct imx_flash_header_v1 *)p;
++	struct imx_flash_header *ohdr = (struct imx_flash_header *)p;
+ 	struct imx_flash_header_v2 *hdr = (struct imx_flash_header_v2 *)p;
+ 
+ 	switch (p_id->mach_id->header_type) {
+ 	case HDR_MX51:
+-		if (ohdr->app_barker == 0xb1)
++		if (ohdr->app_code_barker == 0xb1)
+ 			return 1;
+ 		break;
+ 	case HDR_MX53:
+-		if (hdr->barker == IVT_BARKER)
++		if (hdr->header.tag == TAG_IVT_HEADER && hdr->header.version == IVT_VERSION)
+ 			return 1;
+ 	}
+ 
+@@ -892,14 +860,14 @@ static int is_header(struct usb_id *p_id, unsigned char *p)
+ static int perform_dcd(struct libusb_device_handle *h, struct usb_id *p_id, unsigned char *p,
+ 		unsigned char *file_start, unsigned cnt)
+ {
+-	struct imx_flash_header_v1 *ohdr = (struct imx_flash_header_v1 *)p;
++	struct imx_flash_header *ohdr = (struct imx_flash_header *)p;
+ 	struct imx_flash_header_v2 *hdr = (struct imx_flash_header_v2 *)p;
+ 	int ret = 0;
+ 
+ 	switch (p_id->mach_id->header_type) {
+ 	case HDR_MX51:
+ 		ret = write_dcd_table_old(h, p_id, ohdr, file_start, cnt);
+-		ohdr->dcd_ptr = 0;
++		ohdr->dcd = 0;
+ 
+ 		break;
+ 	case HDR_MX53:
+@@ -915,13 +883,13 @@ static int perform_dcd(struct libusb_device_handle *h, struct usb_id *p_id, unsi
+ static int clear_dcd_ptr(struct libusb_device_handle *h, struct usb_id *p_id,
+ 		unsigned char *p, unsigned char *file_start, unsigned cnt)
+ {
+-	struct imx_flash_header_v1 *ohdr = (struct imx_flash_header_v1 *)p;
++	struct imx_flash_header *ohdr = (struct imx_flash_header *)p;
+ 	struct imx_flash_header_v2 *hdr = (struct imx_flash_header_v2 *)p;
+ 
+ 	switch (p_id->mach_id->header_type) {
+ 	case HDR_MX51:
+-		printf("clear dcd_ptr=0x%08x\n", ohdr->dcd_ptr);
+-		ohdr->dcd_ptr = 0;
++		printf("clear dcd_ptr=0x%08x\n", ohdr->dcd);
++		ohdr->dcd = 0;
+ 		break;
+ 	case HDR_MX53:
+ 		printf("clear dcd_ptr=0x%08x\n", hdr->dcd_ptr);
+@@ -939,13 +907,13 @@ static int get_dl_start(struct usb_id *p_id, unsigned char *p, unsigned char *fi
+ 	switch (p_id->mach_id->header_type) {
+ 	case HDR_MX51:
+ 	{
+-		struct imx_flash_header_v1 *ohdr = (struct imx_flash_header_v1 *)p;
++		struct imx_flash_header *ohdr = (struct imx_flash_header *)p;
+ 		unsigned char *dcd_end;
+ 		unsigned char* dcd;
+ 		int err = get_dcd_range_old(ohdr, file_start, cnt, &dcd, &dcd_end);
+ 
+-		*dladdr = ohdr->app_dest_ptr;
+-		*header_addr = ohdr->dcd_ptr_ptr - offsetof(struct imx_flash_header_v1, dcd_ptr);
++		*dladdr = ohdr->app_dest;
++		*header_addr = ohdr->dcd_ptr_ptr - offsetof(struct imx_flash_header, dcd);
+ 		*plugin = 0;
+ 		if (err >= 0)
+ 			*max_length = dcd_end[0] | (dcd_end[1] << 8) | (dcd_end[2] << 16) | (dcd_end[3] << 24);
+@@ -957,18 +925,18 @@ static int get_dl_start(struct usb_id *p_id, unsigned char *p, unsigned char *fi
+ 		unsigned char *bd;
+ 		struct imx_flash_header_v2 *hdr = (struct imx_flash_header_v2 *)p;
+ 
+-		*dladdr = hdr->self_ptr;
+-		*header_addr = hdr->self_ptr;
++		*dladdr = hdr->self;
++		*header_addr = hdr->self;
+ 		bd = hdr->boot_data_ptr + cvt_dest_to_src;
+ 		if ((bd < file_start) || ((bd + 4) > file_end)) {
+ 			printf("bad boot_data_ptr %08x\n", hdr->boot_data_ptr);
+ 			return -1;
+ 		}
+ 
+-		*dladdr = ((struct boot_data *)bd)->dest;
+-		*max_length = ((struct boot_data *)bd)->image_len;
+-		*plugin = ((struct boot_data *)bd)->plugin;
+-		((struct boot_data *)bd)->plugin = 0;
++		*dladdr = ((struct imx_boot_data *)bd)->start;
++		*max_length = ((struct imx_boot_data *)bd)->size;
++		*plugin = ((struct imx_boot_data *)bd)->plugin;
++		((struct imx_boot_data *)bd)->plugin = 0;
+ 
+ 		hdr->boot_data_ptr = 0;
  
 diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
-index 0b1d234..69fe943 100644
---- a/scripts/imx/imx.h
+new file mode 100644
+index 0000000..e986545
+--- /dev/null
 +++ b/scripts/imx/imx.h
-@@ -3,6 +3,8 @@
- #define offsetof(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
- #endif
- 
-+#define HEADER_LEN 0x1000	/* length of the blank area + IVT + DCD */
+@@ -0,0 +1,52 @@
++/*
++ * ============================================================================
++ * i.MX flash header v1 handling. Found on i.MX35 and i.MX51
++ * ============================================================================
++ */
++#define DCD_BARKER       0xb17219e9
 +
- /*
-  * ============================================================================
-  * i.MX flash header v1 handling. Found on i.MX35 and i.MX51
++struct imx_flash_header {
++	uint32_t app_code_jump_vector;
++	uint32_t app_code_barker;
++	uint32_t app_code_csf;
++	uint32_t dcd_ptr_ptr;
++	uint32_t super_root_key;
++	uint32_t dcd;
++	uint32_t app_dest;
++	uint32_t dcd_barker;
++	uint32_t dcd_block_len;
++} __attribute__((packed));
++
++struct imx_boot_data {
++	uint32_t start;
++	uint32_t size;
++	uint32_t plugin;
++} __attribute__((packed));
++
++#define TAG_IVT_HEADER	0xd1
++#define IVT_VERSION	0x40
++#define TAG_DCD_HEADER	0xd2
++#define DCD_VERSION	0x40
++#define TAG_WRITE	0xcc
++#define TAG_CHECK	0xcf
++
++struct imx_ivt_header {
++	uint8_t tag;
++	uint16_t length;
++	uint8_t version;
++} __attribute__((packed));
++
++struct imx_flash_header_v2 {
++	struct imx_ivt_header header;
++
++	uint32_t entry;
++	uint32_t reserved1;
++	uint32_t dcd_ptr;
++	uint32_t boot_data_ptr;
++	uint32_t self;
++	uint32_t csf;
++	uint32_t reserved2;
++
++	struct imx_boot_data boot_data;
++	struct imx_ivt_header dcd_header;
++} __attribute__((packed));
+\ No newline at end of file
 -- 
 2.7.0.rc3
 
