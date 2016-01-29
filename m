@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1aP6XY-0003eA-6D
- for barebox@lists.infradead.org; Fri, 29 Jan 2016 10:44:33 +0000
+ id 1aP6XY-0003e5-58
+ for barebox@lists.infradead.org; Fri, 29 Jan 2016 10:44:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 29 Jan 2016 11:43:59 +0100
-Message-Id: <1454064243-26558-20-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 29 Jan 2016 11:43:48 +0100
+Message-Id: <1454064243-26558-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1454064243-26558-1-git-send-email-s.hauer@pengutronix.de>
 References: <1454064243-26558-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,66 +21,206 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 19/23] scripts: imx-image: pass config data to add_header_*
+Subject: [PATCH 08/23] scripts: imx-usb-loader: Move load_file up
 To: Barebox List <barebox@lists.infradead.org>
 
-Now that we have a config data struct we can pass it to add_header_*
-to reduce the argument count.
+To avoid forward declaration in a later patch.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/imx/imx-image.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ scripts/imx/imx-usb-loader.c | 172 +++++++++++++++++++++----------------------
+ 1 file changed, 86 insertions(+), 86 deletions(-)
 
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index cb3c242..4fc4994 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -73,11 +73,14 @@ static uint32_t bb_header[] = {
- 	0x55555555,
- };
+diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+index fa2ce47..4db39d6 100644
+--- a/scripts/imx/imx-usb-loader.c
++++ b/scripts/imx/imx-usb-loader.c
+@@ -582,6 +582,92 @@ static int write_memory(struct libusb_device_handle *h, struct usb_id *p_id,
+ 	return err;
+ }
  
--static int add_header_v1(void *buf, int offset, uint32_t loadaddr, uint32_t imagesize)
-+static int add_header_v1(struct config_data *data, void *buf)
++static int load_file(struct libusb_device_handle *h, struct usb_id *p_id,
++		void *buf, unsigned len, unsigned dladdr, unsigned char type)
++{
++	static unsigned char dl_command[] = {
++		0x04,
++		0x04,
++		V(0),		/* address */
++		0x00,		/* format */
++		V(0x00000020),	/* data count */
++		V(0),		/* data */
++		0xaa,		/* type */
++	};
++	int last_trans, err;
++	int retry = 0;
++	unsigned transfer_size = 0;
++	unsigned char tmp[64];
++	void *p;
++	int cnt;
++
++	dl_command[2] = (unsigned char)(dladdr >> 24);
++	dl_command[3] = (unsigned char)(dladdr >> 16);
++	dl_command[4] = (unsigned char)(dladdr >> 8);
++	dl_command[5] = (unsigned char)(dladdr);
++
++	dl_command[7] = (unsigned char)(len >> 24);
++	dl_command[8] = (unsigned char)(len >> 16);
++	dl_command[9] = (unsigned char)(len >> 8);
++	dl_command[10] = (unsigned char)(len);
++	dl_command[15] =  type;
++
++	for (;;) {
++		err = transfer(h, 1, dl_command, 16, &last_trans, p_id);
++		if (!err)
++			break;
++
++		printf("dl_command err=%i, last_trans=%i\n", err, last_trans);
++
++		if (retry > 5)
++			return -4;
++		retry++;
++	}
++
++	retry = 0;
++
++	if (p_id->mach_id->mode == MODE_BULK) {
++		err = transfer(h, 3, tmp, sizeof(tmp), &last_trans, p_id);
++		if (err)
++			printf("in err=%i, last_trans=%i  %02x %02x %02x %02x\n",
++					err, last_trans, tmp[0], tmp[1], tmp[2], tmp[3]);
++	}
++
++	p = buf;
++	cnt = len;
++
++	while (1) {
++		int now = get_min(cnt, p_id->mach_id->max_transfer);
++
++		if (!now)
++			break;
++
++		err = transfer(h, 2, p, now, &now, p_id);
++		if (err) {
++			printf("dl_command err=%i, last_trans=%i\n", err, last_trans);
++			return err;
++		}
++
++		p += now;
++		cnt -= now;
++	}
++
++	if (p_id->mach_id->mode == MODE_HID) {
++		err = transfer(h, 3, tmp, sizeof(tmp), &last_trans, p_id);
++		if (err)
++			printf("3 in err=%i, last_trans=%i  %02x %02x %02x %02x\n",
++					err, last_trans, tmp[0], tmp[1], tmp[2], tmp[3]);
++		err = transfer(h, 4, tmp, sizeof(tmp), &last_trans, p_id);
++		if (err)
++			printf("4 in err=%i, last_trans=%i  %02x %02x %02x %02x\n",
++					err, last_trans, tmp[0], tmp[1], tmp[2], tmp[3]);
++	} else {
++		do_status(h, p_id);
++	}
++
++	return transfer_size;
++}
++
+ static int write_dcd_table_ivt(struct libusb_device_handle *h, struct usb_id *p_id,
+ 		struct imx_flash_header_v2 *hdr, unsigned char *file_start, unsigned cnt)
  {
- 	struct imx_flash_header *hdr;
- 	int dcdsize = curdcd * sizeof(uint32_t);
- 	uint32_t *psize = buf + ARM_HEAD_SIZE_OFFSET;
-+	int offset = data->image_dcd_offset;
-+	uint32_t loadaddr = data->image_load_addr;
-+	uint32_t imagesize = data->load_size;
+@@ -955,92 +1041,6 @@ static int process_header(struct libusb_device_handle *h, struct usb_id *p_id,
+ 	return -ENODEV;
+ }
  
- 	if (add_barebox_header) {
- 		memcpy(buf, bb_header, sizeof(bb_header));
-@@ -128,11 +131,14 @@ static int write_mem_v1(uint32_t addr, uint32_t val, int width)
-  * ============================================================================
-  */
- 
--static int add_header_v2(void *buf, int offset, uint32_t loadaddr, uint32_t imagesize)
-+static int add_header_v2(struct config_data *data, void *buf)
+-static int load_file(struct libusb_device_handle *h, struct usb_id *p_id,
+-		void *buf, unsigned len, unsigned dladdr, unsigned char type)
+-{
+-	static unsigned char dl_command[] = {
+-		0x04,
+-		0x04,
+-		V(0),		/* address */
+-		0x00,		/* format */
+-		V(0x00000020),	/* data count */
+-		V(0),		/* data */
+-		0xaa,		/* type */
+-	};
+-	int last_trans, err;
+-	int retry = 0;
+-	unsigned transfer_size = 0;
+-	unsigned char tmp[64];
+-	void *p;
+-	int cnt;
+-
+-	dl_command[2] = (unsigned char)(dladdr >> 24);
+-	dl_command[3] = (unsigned char)(dladdr >> 16);
+-	dl_command[4] = (unsigned char)(dladdr >> 8);
+-	dl_command[5] = (unsigned char)(dladdr);
+-
+-	dl_command[7] = (unsigned char)(len >> 24);
+-	dl_command[8] = (unsigned char)(len >> 16);
+-	dl_command[9] = (unsigned char)(len >> 8);
+-	dl_command[10] = (unsigned char)(len);
+-	dl_command[15] =  type;
+-
+-	for (;;) {
+-		err = transfer(h, 1, dl_command, 16, &last_trans, p_id);
+-		if (!err)
+-			break;
+-
+-		printf("dl_command err=%i, last_trans=%i\n", err, last_trans);
+-
+-		if (retry > 5)
+-			return -4;
+-		retry++;
+-	}
+-
+-	retry = 0;
+-
+-	if (p_id->mach_id->mode == MODE_BULK) {
+-		err = transfer(h, 3, tmp, sizeof(tmp), &last_trans, p_id);
+-		if (err)
+-			printf("in err=%i, last_trans=%i  %02x %02x %02x %02x\n",
+-					err, last_trans, tmp[0], tmp[1], tmp[2], tmp[3]);
+-	}
+-
+-	p = buf;
+-	cnt = len;
+-
+-	while (1) {
+-		int now = get_min(cnt, p_id->mach_id->max_transfer);
+-
+-		if (!now)
+-			break;
+-
+-		err = transfer(h, 2, p, now, &now, p_id);
+-		if (err) {
+-			printf("dl_command err=%i, last_trans=%i\n", err, last_trans);
+-			return err;
+-		}
+-
+-		p += now;
+-		cnt -= now;
+-	}
+-
+-	if (p_id->mach_id->mode == MODE_HID) {
+-		err = transfer(h, 3, tmp, sizeof(tmp), &last_trans, p_id);
+-		if (err)
+-			printf("3 in err=%i, last_trans=%i  %02x %02x %02x %02x\n",
+-					err, last_trans, tmp[0], tmp[1], tmp[2], tmp[3]);
+-		err = transfer(h, 4, tmp, sizeof(tmp), &last_trans, p_id);
+-		if (err)
+-			printf("4 in err=%i, last_trans=%i  %02x %02x %02x %02x\n",
+-					err, last_trans, tmp[0], tmp[1], tmp[2], tmp[3]);
+-	} else {
+-		do_status(h, p_id);
+-	}
+-
+-	return transfer_size;
+-}
+-
+ static int do_irom_download(struct libusb_device_handle *h, struct usb_id *p_id,
+ 		struct usb_work *curr, int verify)
  {
- 	struct imx_flash_header_v2 *hdr;
- 	int dcdsize = curdcd * sizeof(uint32_t);
- 	uint32_t *psize = buf + ARM_HEAD_SIZE_OFFSET;
-+	int offset = data->image_dcd_offset;
-+	uint32_t loadaddr = data->image_load_addr;
-+	uint32_t imagesize = data->load_size;
- 
- 	if (add_barebox_header)
- 		memcpy(buf, bb_header, sizeof(bb_header));
-@@ -424,10 +430,10 @@ int main(int argc, char *argv[])
- 
- 	switch (data.header_version) {
- 	case 1:
--		add_header_v1(buf, data.image_dcd_offset, data.image_load_addr, load_size);
-+		add_header_v1(&data, buf);
- 		break;
- 	case 2:
--		add_header_v2(buf, data.image_dcd_offset, data.image_load_addr, load_size);
-+		add_header_v2(&data, buf);
- 		break;
- 	default:
- 		fprintf(stderr, "Congratulations! You're welcome to implement header version %d\n",
 -- 
 2.7.0.rc3
 
