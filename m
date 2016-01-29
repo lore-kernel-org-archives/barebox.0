@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1aP6XY-0003e6-5a
+ id 1aP6XY-0003e8-7k
  for barebox@lists.infradead.org; Fri, 29 Jan 2016 10:44:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 29 Jan 2016 11:43:49 +0100
-Message-Id: <1454064243-26558-10-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 29 Jan 2016 11:43:54 +0100
+Message-Id: <1454064243-26558-15-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1454064243-26558-1-git-send-email-s.hauer@pengutronix.de>
 References: <1454064243-26558-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,363 +21,748 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/23] scripts: imx: Consolidate flash headers in imx tools
+Subject: [PATCH 14/23] scripts: imx: move config file parser to separate file
 To: Barebox List <barebox@lists.infradead.org>
 
-Both imx-image and imx-usb-loader use their own variants of the
-i.MX flash header definitions. Consolidate them to avoid code
-duplication.
+To make the config parser usable by imx-usb-loader also move
+it to a separate file.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/imx/imx-image.c      | 48 +-----------------------
- scripts/imx/imx-usb-loader.c | 88 ++++++++++++++------------------------------
- scripts/imx/imx.h            | 52 ++++++++++++++++++++++++++
- 3 files changed, 82 insertions(+), 106 deletions(-)
- create mode 100644 scripts/imx/imx.h
+ scripts/imx/Makefile    |   4 +-
+ scripts/imx/imx-image.c | 326 ----------------------------------------------
+ scripts/imx/imx.c       | 336 ++++++++++++++++++++++++++++++++++++++++++++++++
+ scripts/imx/imx.h       |  13 +-
+ 4 files changed, 350 insertions(+), 329 deletions(-)
+ create mode 100644 scripts/imx/imx.c
 
+diff --git a/scripts/imx/Makefile b/scripts/imx/Makefile
+index ee0acc1..6883659 100644
+--- a/scripts/imx/Makefile
++++ b/scripts/imx/Makefile
+@@ -8,5 +8,5 @@ HOSTLOADLIBES_imx-usb-loader  = `pkg-config --libs libusb-1.0`
+ 
+ HOSTCFLAGS_imx-image.o = -I$(srctree)
+ 
+-imx-usb-loader-objs := imx-usb-loader.o
+-imx-image-objs := imx-image.o
++imx-usb-loader-objs := imx-usb-loader.o imx.o
++imx-image-objs := imx-image.o imx.o
 diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index a85833b..4b6359a 100644
+index 03afcb6..d6ed120 100644
 --- a/scripts/imx/imx-image.c
 +++ b/scripts/imx/imx-image.c
-@@ -27,6 +27,8 @@
- #include <fcntl.h>
- #include <endian.h>
+@@ -37,15 +37,6 @@
+ #define HEADER_LEN 0x1000	/* length of the blank area + IVT + DCD */
+ #define CSF_LEN 0x2000		/* length of the CSF (needed for HAB) */
  
-+#include "imx.h"
-+
- #include <include/filetype.h>
- 
- #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
-@@ -51,20 +53,8 @@ static int prepare_sign;
-  * i.MX flash header v1 handling. Found on i.MX35 and i.MX51
-  * ============================================================================
-  */
--struct imx_flash_header {
--	uint32_t app_code_jump_vector;
--	uint32_t app_code_barker;
--	uint32_t app_code_csf;
--	uint32_t dcd_ptr_ptr;
--	uint32_t super_root_key;
--	uint32_t dcd;
--	uint32_t app_dest;
--	uint32_t dcd_barker;
--	uint32_t dcd_block_len;
--} __attribute__((packed));
- 
- #define FLASH_HEADER_OFFSET 0x400
--#define DCD_BARKER       0xb17219e9
- 
- static uint32_t bb_header[] = {
- 	0xea0003fe,	/* b 0x1000 */
-@@ -144,40 +134,6 @@ static int write_mem_v1(uint32_t addr, uint32_t val, int width)
-  * ============================================================================
-  */
- 
--struct imx_boot_data {
--	uint32_t start;
--	uint32_t size;
--	uint32_t plugin;
--} __attribute__((packed));
--
--#define TAG_IVT_HEADER	0xd1
--#define IVT_VERSION	0x40
--#define TAG_DCD_HEADER	0xd2
--#define DCD_VERSION	0x40
--#define TAG_WRITE	0xcc
--#define TAG_CHECK	0xcf
--
--struct imx_ivt_header {
--	uint8_t tag;
--	uint16_t length;
--	uint8_t version;
--} __attribute__((packed));
--
--struct imx_flash_header_v2 {
--	struct imx_ivt_header header;
--
--	uint32_t entry;
--	uint32_t reserved1;
--	uint32_t dcd_ptr;
--	uint32_t boot_data_ptr;
--	uint32_t self;
--	uint32_t csf;
--	uint32_t reserved2;
--
--	struct imx_boot_data boot_data;
--	struct imx_ivt_header dcd_header;
--} __attribute__((packed));
--
- static int add_header_v2(void *buf, int offset, uint32_t loadaddr, uint32_t imagesize)
- {
- 	struct imx_flash_header_v2 *hdr;
-diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-index 4db39d6..2bee709 100644
---- a/scripts/imx/imx-usb-loader.c
-+++ b/scripts/imx/imx-usb-loader.c
-@@ -32,6 +32,7 @@
- #include <stdlib.h>
- #include <libusb.h>
- #include <getopt.h>
-+#include "imx.h"
- 
- #define get_min(a, b) (((a) < (b)) ? (a) : (b))
- 
-@@ -401,39 +402,6 @@ int do_status(libusb_device_handle *h, struct usb_id *p_id)
- 	return err;
- }
- 
--struct boot_data {
--	uint32_t dest;
--	uint32_t image_len;
--	uint32_t plugin;
+-struct config_data {
+-	uint32_t image_load_addr;
+-	uint32_t image_dcd_offset;
+-	int header_version;
+-	int cpu_type;
+-	int (*check)(struct config_data *data, uint32_t cmd, uint32_t addr, uint32_t mask);
+-	int (*write_mem)(struct config_data *data, uint32_t addr, uint32_t val, int width);
 -};
 -
--struct imx_flash_header_v2 {
--#define IVT_BARKER 0x402000d1
--	uint32_t barker;
--	uint32_t start_addr;
--	uint32_t reserv1;
--	uint32_t dcd_ptr;
--	uint32_t boot_data_ptr;	/* struct boot_data * */
--	uint32_t self_ptr;	/* struct imx_flash_header_v2 *, this - boot_data.start = offset linked at */
--	uint32_t app_code_csf;
--	uint32_t reserv2;
--};
--
--/*
-- * MX51 header type
-- */
--struct imx_flash_header_v1 {
--	uint32_t app_start_addr;
--#define APP_BARKER	0xb1
--#define DCD_BARKER	0xb17219e9
--	uint32_t app_barker;
--	uint32_t csf_ptr;
--	uint32_t dcd_ptr_ptr;
--	uint32_t srk_ptr;
--	uint32_t dcd_ptr;
--	uint32_t app_dest_ptr;
--};
--
- #define V(a) (((a) >> 24) & 0xff), (((a) >> 16) & 0xff), (((a) >> 8) & 0xff), ((a) & 0xff)
- 
- static int read_memory(struct libusb_device_handle *h, struct usb_id *p_id,
-@@ -673,13 +641,13 @@ static int write_dcd_table_ivt(struct libusb_device_handle *h, struct usb_id *p_
- {
- 	unsigned char *dcd_end;
- 	unsigned m_length;
--#define cvt_dest_to_src		(((unsigned char *)hdr) - hdr->self_ptr)
-+#define cvt_dest_to_src		(((unsigned char *)hdr) - hdr->self)
- 	unsigned char* dcd;
- 	unsigned char* file_end = file_start + cnt;
- 	int err = 0;
- 
- 	if (!hdr->dcd_ptr) {
--		printf("No dcd table, barker=%x\n", hdr->barker);
-+		printf("No dcd table in this ivt\n");
- 		return 0; /* nothing to do */
- 	}
- 
-@@ -739,27 +707,27 @@ static int write_dcd_table_ivt(struct libusb_device_handle *h, struct usb_id *p_
- 	return err;
+ static uint32_t dcdtable[MAX_DCD];
+ static int curdcd;
+ static int add_barebox_header;
+@@ -194,50 +185,6 @@ static void usage(const char *prgname)
+ 	exit(1);
  }
  
--static int get_dcd_range_old(struct imx_flash_header_v1 *hdr,
-+static int get_dcd_range_old(struct imx_flash_header *hdr,
- 		unsigned char *file_start, unsigned cnt,
- 		unsigned char **pstart, unsigned char **pend)
- {
- 	unsigned char *dcd_end;
- 	unsigned m_length;
--#define cvt_dest_to_src_old		(((unsigned char *)&hdr->dcd_ptr) - hdr->dcd_ptr_ptr)
-+#define cvt_dest_to_src_old		(((unsigned char *)&hdr->dcd) - hdr->dcd_ptr_ptr)
- 	unsigned char* dcd;
- 	unsigned val;
- 	unsigned char* file_end = file_start + cnt;
- 
--	if (!hdr->dcd_ptr) {
--		printf("No dcd table, barker=%x\n", hdr->app_barker);
--		*pstart = *pend = ((unsigned char *)hdr) + sizeof(struct imx_flash_header_v1);
-+	if (!hdr->dcd) {
-+		printf("No dcd table, barker=%x\n", hdr->app_code_barker);
-+		*pstart = *pend = ((unsigned char *)hdr) + sizeof(struct imx_flash_header);
- 		return 0; /* nothing to do */
- 	}
- 
--	dcd = hdr->dcd_ptr + cvt_dest_to_src_old;
-+	dcd = hdr->dcd + cvt_dest_to_src_old;
- 
- 	if ((dcd < file_start) || ((dcd + 8) > file_end)) {
--		printf("bad dcd_ptr %08x\n", hdr->dcd_ptr);
-+		printf("bad dcd_ptr %08x\n", hdr->dcd);
- 		return -1;
- 	}
- 
-@@ -787,7 +755,7 @@ static int get_dcd_range_old(struct imx_flash_header_v1 *hdr,
+-#define MAXARGS 5
+-
+-static int parse_line(char *line, char *argv[])
+-{
+-	int nargs = 0;
+-
+-	while (nargs < MAXARGS) {
+-
+-		/* skip any white space */
+-		while ((*line == ' ') || (*line == '\t'))
+-			++line;
+-
+-		if (*line == '\0')	/* end of line, no more args	*/
+-			argv[nargs] = NULL;
+-
+-		if (*line == '\0') {	/* end of line, no more args	*/
+-			argv[nargs] = NULL;
+-			return nargs;
+-		}
+-
+-		argv[nargs++] = line;	/* begin of argument string	*/
+-
+-		/* find end of string */
+-		while (*line && (*line != ' ') && (*line != '\t'))
+-			++line;
+-
+-		if (*line == '\0') {	/* end of line, no more args	*/
+-			argv[nargs] = NULL;
+-			return nargs;
+-		}
+-
+-		*line++ = '\0';		/* terminate current arg	 */
+-	}
+-
+-	printf("** Too many args (max. %d) **\n", MAXARGS);
+-
+-	return nargs;
+-}
+-
+-struct command {
+-	const char *name;
+-	int (*parse)(struct config_data *data, int argc, char *argv[]);
+-};
+-
+ static uint32_t last_write_cmd;
+ static int last_cmd_len;
+ static uint32_t *last_dcd;
+@@ -283,279 +230,6 @@ static int write_mem_v2(uint32_t addr, uint32_t val, int width)
+ 	return 0;
  }
  
- static int write_dcd_table_old(struct libusb_device_handle *h, struct usb_id *p_id,
--		struct imx_flash_header_v1 *hdr, unsigned char *file_start, unsigned cnt)
-+		struct imx_flash_header *hdr, unsigned char *file_start, unsigned cnt)
+-static const char *check_cmds[] = {
+-	"while_all_bits_clear",		/* while ((*address & mask) == 0); */
+-	"while_all_bits_set"	,	/* while ((*address & mask) == mask); */
+-	"while_any_bit_clear",		/* while ((*address & mask) != mask); */
+-	"while_any_bit_set",		/* while ((*address & mask) != 0); */
+-};
+-
+-static void do_cmd_check_usage(void)
+-{
+-	fprintf(stderr,
+-			"usage: check <width> <cmd> <addr> <mask>\n"
+-			"<width> access width in bytes [1|2|4]\n"
+-			"with <cmd> one of:\n"
+-			"while_all_bits_clear: while ((*addr & mask) == 0)\n"
+-			"while_all_bits_set:   while ((*addr & mask) == mask)\n"
+-			"while_any_bit_clear:  while ((*addr & mask) != mask)\n"
+-			"while_any_bit_set:    while ((*addr & mask) != 0)\n");
+-}
+-
+-static int do_cmd_check(struct config_data *data, int argc, char *argv[])
+-{
+-	uint32_t addr, mask, cmd;
+-	int i, width;
+-	const char *scmd;
+-
+-	if (argc < 5) {
+-		do_cmd_check_usage();
+-		return -EINVAL;
+-	}
+-
+-	if (!data->check)
+-		return -ENOSYS;
+-
+-	width = strtoul(argv[1], NULL, 0) >> 3;
+-	scmd = argv[2];
+-	addr = strtoul(argv[3], NULL, 0);
+-	mask = strtoul(argv[4], NULL, 0);
+-
+-	switch (width) {
+-	case 1:
+-	case 2:
+-	case 4:
+-		break;
+-	default:
+-		fprintf(stderr, "illegal width %d\n", width);
+-		return -EINVAL;
+-	};
+-
+-	if (curdcd > MAX_DCD - 3) {
+-		fprintf(stderr, "At maximum %d dcd entried are allowed\n", MAX_DCD);
+-		return -ENOMEM;
+-	}
+-
+-	for (i = 0; i < ARRAY_SIZE(check_cmds); i++) {
+-		if (!strcmp(scmd, check_cmds[i]))
+-			break;
+-	}
+-
+-	if (i == ARRAY_SIZE(check_cmds)) {
+-		do_cmd_check_usage();
+-		return -EINVAL;
+-	}
+-
+-	cmd = (TAG_CHECK << 24) | (i << 3) | width | ((sizeof(uint32_t) * 3) << 8);
+-
+-	return data->check(data, cmd, addr, mask);
+-}
+-
+-static int do_cmd_write_mem(struct config_data *data, int argc, char *argv[])
+-{
+-	uint32_t addr, val, width;
+-	char *end;
+-
+-	if (argc != 4) {
+-		fprintf(stderr, "usage: wm [8|16|32] <addr> <val>\n");
+-		return -EINVAL;
+-	}
+-
+-	width = strtoul(argv[1], &end, 0);
+-	if (*end != '\0') {
+-		fprintf(stderr, "illegal width token \"%s\"\n", argv[1]);
+-		return -EINVAL;
+-	}
+-
+-	addr = strtoul(argv[2], &end, 0);
+-	if (*end != '\0') {
+-		fprintf(stderr, "illegal address token \"%s\"\n", argv[2]);
+-		return -EINVAL;
+-	}
+-
+-	val = strtoul(argv[3], &end, 0);
+-	if (*end != '\0') {
+-		fprintf(stderr, "illegal value token \"%s\"\n", argv[3]);
+-		return -EINVAL;
+-	}
+-
+-	width >>= 3;
+-
+-	switch (width) {
+-	case 1:
+-	case 2:
+-	case 4:
+-		break;
+-	default:
+-		fprintf(stderr, "illegal width %d\n", width);
+-		return -EINVAL;
+-	};
+-
+-	return data->write_mem(data, addr, val, width);
+-}
+-
+-static int do_loadaddr(struct config_data *data, int argc, char *argv[])
+-{
+-	if (argc < 2)
+-		return -EINVAL;
+-
+-	data->image_load_addr = strtoul(argv[1], NULL, 0);
+-
+-	return 0;
+-}
+-
+-static int do_dcd_offset(struct config_data *data, int argc, char *argv[])
+-{
+-	if (argc < 2)
+-		return -EINVAL;
+-
+-	data->image_dcd_offset = strtoul(argv[1], NULL, 0);
+-
+-	return 0;
+-}
+-
+-struct soc_type {
+-	char *name;
+-	int header_version;
+-	int cpu_type;
+-};
+-
+-static struct soc_type socs[] = {
+-	{ .name = "imx25", .header_version = 1, .cpu_type = 25},
+-	{ .name = "imx35", .header_version = 1, .cpu_type = 35 },
+-	{ .name = "imx51", .header_version = 1, .cpu_type = 51 },
+-	{ .name = "imx53", .header_version = 2, .cpu_type = 53 },
+-	{ .name = "imx6", .header_version = 2, .cpu_type = 6 },
+-};
+-
+-static int do_soc(struct config_data *data, int argc, char *argv[])
+-{
+-	char *soc;
+-	int i;
+-
+-	if (argc < 2)
+-		return -EINVAL;
+-
+-	soc = argv[1];
+-
+-	for (i = 0; i < ARRAY_SIZE(socs); i++) {
+-		if (!strcmp(socs[i].name, soc)) {
+-			data->header_version = socs[i].header_version;
+-			data->cpu_type = socs[i].cpu_type;
+-			return 0;
+-		}
+-	}
+-
+-	fprintf(stderr, "unkown SoC type \"%s\". Known SoCs are:\n", soc);
+-	for (i = 0; i < ARRAY_SIZE(socs); i++)
+-		fprintf(stderr, "%s ", socs[i].name);
+-	fprintf(stderr, "\n");
+-
+-	return -EINVAL;
+-}
+-
+-struct command cmds[] = {
+-	{
+-		.name = "wm",
+-		.parse = do_cmd_write_mem,
+-	}, {
+-		.name = "check",
+-		.parse = do_cmd_check,
+-	}, {
+-		.name = "loadaddr",
+-		.parse = do_loadaddr,
+-	}, {
+-		.name = "dcdofs",
+-		.parse = do_dcd_offset,
+-	}, {
+-		.name = "soc",
+-		.parse = do_soc,
+-	},
+-};
+-
+-static char *readcmd(struct config_data *data, FILE *f)
+-{
+-	static char *buf;
+-	char *str;
+-	ssize_t ret;
+-
+-	if (!buf) {
+-		buf = malloc(4096);
+-		if (!buf)
+-			return NULL;
+-	}
+-
+-	str = buf;
+-	*str = 0;
+-
+-	while (1) {
+-		ret = fread(str, 1, 1, f);
+-		if (!ret)
+-			return strlen(buf) ? buf : NULL;
+-
+-		if (*str == '\n' || *str == ';') {
+-			*str = 0;
+-			return buf;
+-		}
+-
+-		str++;
+-	}
+-}
+-
+-static int parse_config(struct config_data *data, const char *filename)
+-{
+-	FILE *f;
+-	int lineno = 0;
+-	char *line = NULL, *tmp;
+-	char *argv[MAXARGS];
+-	int nargs, i, ret = 0;
+-
+-	f = fopen(filename, "r");
+-	if (!f) {
+-		fprintf(stderr, "Error: %s - Can't open DCD file\n", filename);
+-		exit(1);
+-	}
+-
+-	while (1) {
+-		line = readcmd(data, f);
+-		if (!line)
+-			break;
+-
+-		lineno++;
+-
+-		tmp = strchr(line, '#');
+-		if (tmp)
+-			*tmp = 0;
+-
+-		nargs = parse_line(line, argv);
+-		if (!nargs)
+-			continue;
+-
+-		ret = -ENOENT;
+-
+-		for (i = 0; i < ARRAY_SIZE(cmds); i++) {
+-			if (!strcmp(cmds[i].name, argv[0])) {
+-				ret = cmds[i].parse(data, nargs, argv);
+-				if (ret) {
+-					fprintf(stderr, "error in line %d: %s\n",
+-							lineno, strerror(-ret));
+-					goto cleanup;
+-				}
+-				break;
+-			}
+-		}
+-
+-		if (ret == -ENOENT) {
+-			fprintf(stderr, "no such command: %s\n", argv[0]);
+-			goto cleanup;
+-		}
+-	}
+-
+-cleanup:
+-	fclose(f);
+-	return ret;
+-}
+-
+ static int xread(int fd, void *buf, int len)
  {
- 	unsigned val;
- 	unsigned char *dcd_end;
-@@ -873,16 +841,16 @@ err:
- 
- static int is_header(struct usb_id *p_id, unsigned char *p)
- {
--	struct imx_flash_header_v1 *ohdr = (struct imx_flash_header_v1 *)p;
-+	struct imx_flash_header *ohdr = (struct imx_flash_header *)p;
- 	struct imx_flash_header_v2 *hdr = (struct imx_flash_header_v2 *)p;
- 
- 	switch (p_id->mach_id->header_type) {
- 	case HDR_MX51:
--		if (ohdr->app_barker == 0xb1)
-+		if (ohdr->app_code_barker == 0xb1)
- 			return 1;
- 		break;
- 	case HDR_MX53:
--		if (hdr->barker == IVT_BARKER)
-+		if (hdr->header.tag == TAG_IVT_HEADER && hdr->header.version == IVT_VERSION)
- 			return 1;
- 	}
- 
-@@ -892,14 +860,14 @@ static int is_header(struct usb_id *p_id, unsigned char *p)
- static int perform_dcd(struct libusb_device_handle *h, struct usb_id *p_id, unsigned char *p,
- 		unsigned char *file_start, unsigned cnt)
- {
--	struct imx_flash_header_v1 *ohdr = (struct imx_flash_header_v1 *)p;
-+	struct imx_flash_header *ohdr = (struct imx_flash_header *)p;
- 	struct imx_flash_header_v2 *hdr = (struct imx_flash_header_v2 *)p;
- 	int ret = 0;
- 
- 	switch (p_id->mach_id->header_type) {
- 	case HDR_MX51:
- 		ret = write_dcd_table_old(h, p_id, ohdr, file_start, cnt);
--		ohdr->dcd_ptr = 0;
-+		ohdr->dcd = 0;
- 
- 		break;
- 	case HDR_MX53:
-@@ -915,13 +883,13 @@ static int perform_dcd(struct libusb_device_handle *h, struct usb_id *p_id, unsi
- static int clear_dcd_ptr(struct libusb_device_handle *h, struct usb_id *p_id,
- 		unsigned char *p, unsigned char *file_start, unsigned cnt)
- {
--	struct imx_flash_header_v1 *ohdr = (struct imx_flash_header_v1 *)p;
-+	struct imx_flash_header *ohdr = (struct imx_flash_header *)p;
- 	struct imx_flash_header_v2 *hdr = (struct imx_flash_header_v2 *)p;
- 
- 	switch (p_id->mach_id->header_type) {
- 	case HDR_MX51:
--		printf("clear dcd_ptr=0x%08x\n", ohdr->dcd_ptr);
--		ohdr->dcd_ptr = 0;
-+		printf("clear dcd_ptr=0x%08x\n", ohdr->dcd);
-+		ohdr->dcd = 0;
- 		break;
- 	case HDR_MX53:
- 		printf("clear dcd_ptr=0x%08x\n", hdr->dcd_ptr);
-@@ -939,13 +907,13 @@ static int get_dl_start(struct usb_id *p_id, unsigned char *p, unsigned char *fi
- 	switch (p_id->mach_id->header_type) {
- 	case HDR_MX51:
- 	{
--		struct imx_flash_header_v1 *ohdr = (struct imx_flash_header_v1 *)p;
-+		struct imx_flash_header *ohdr = (struct imx_flash_header *)p;
- 		unsigned char *dcd_end;
- 		unsigned char* dcd;
- 		int err = get_dcd_range_old(ohdr, file_start, cnt, &dcd, &dcd_end);
- 
--		*dladdr = ohdr->app_dest_ptr;
--		*header_addr = ohdr->dcd_ptr_ptr - offsetof(struct imx_flash_header_v1, dcd_ptr);
-+		*dladdr = ohdr->app_dest;
-+		*header_addr = ohdr->dcd_ptr_ptr - offsetof(struct imx_flash_header, dcd);
- 		*plugin = 0;
- 		if (err >= 0)
- 			*max_length = dcd_end[0] | (dcd_end[1] << 8) | (dcd_end[2] << 16) | (dcd_end[3] << 24);
-@@ -957,18 +925,18 @@ static int get_dl_start(struct usb_id *p_id, unsigned char *p, unsigned char *fi
- 		unsigned char *bd;
- 		struct imx_flash_header_v2 *hdr = (struct imx_flash_header_v2 *)p;
- 
--		*dladdr = hdr->self_ptr;
--		*header_addr = hdr->self_ptr;
-+		*dladdr = hdr->self;
-+		*header_addr = hdr->self;
- 		bd = hdr->boot_data_ptr + cvt_dest_to_src;
- 		if ((bd < file_start) || ((bd + 4) > file_end)) {
- 			printf("bad boot_data_ptr %08x\n", hdr->boot_data_ptr);
- 			return -1;
- 		}
- 
--		*dladdr = ((struct boot_data *)bd)->dest;
--		*max_length = ((struct boot_data *)bd)->image_len;
--		*plugin = ((struct boot_data *)bd)->plugin;
--		((struct boot_data *)bd)->plugin = 0;
-+		*dladdr = ((struct imx_boot_data *)bd)->start;
-+		*max_length = ((struct imx_boot_data *)bd)->size;
-+		*plugin = ((struct imx_boot_data *)bd)->plugin;
-+		((struct imx_boot_data *)bd)->plugin = 0;
- 
- 		hdr->boot_data_ptr = 0;
- 
-diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
+ 	int ret;
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
 new file mode 100644
-index 0000000..e986545
+index 0000000..fa705ff
 --- /dev/null
-+++ b/scripts/imx/imx.h
-@@ -0,0 +1,52 @@
++++ b/scripts/imx/imx.c
+@@ -0,0 +1,336 @@
 +/*
-+ * ============================================================================
-+ * i.MX flash header v1 handling. Found on i.MX35 and i.MX51
-+ * ============================================================================
++ * (C) Copyright 2016 Sascha Hauer, Pengutronix
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
 + */
-+#define DCD_BARKER       0xb17219e9
 +
-+struct imx_flash_header {
-+	uint32_t app_code_jump_vector;
-+	uint32_t app_code_barker;
-+	uint32_t app_code_csf;
-+	uint32_t dcd_ptr_ptr;
-+	uint32_t super_root_key;
-+	uint32_t dcd;
-+	uint32_t app_dest;
-+	uint32_t dcd_barker;
-+	uint32_t dcd_block_len;
-+} __attribute__((packed));
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <stdint.h>
++#include <errno.h>
++#include "imx.h"
 +
-+struct imx_boot_data {
-+	uint32_t start;
-+	uint32_t size;
-+	uint32_t plugin;
-+} __attribute__((packed));
++#define MAXARGS 5
 +
-+#define TAG_IVT_HEADER	0xd1
-+#define IVT_VERSION	0x40
-+#define TAG_DCD_HEADER	0xd2
-+#define DCD_VERSION	0x40
-+#define TAG_WRITE	0xcc
-+#define TAG_CHECK	0xcf
++static int parse_line(char *line, char *argv[])
++{
++	int nargs = 0;
 +
-+struct imx_ivt_header {
-+	uint8_t tag;
-+	uint16_t length;
-+	uint8_t version;
-+} __attribute__((packed));
++	while (nargs < MAXARGS) {
 +
-+struct imx_flash_header_v2 {
-+	struct imx_ivt_header header;
++		/* skip any white space */
++		while ((*line == ' ') || (*line == '\t'))
++			++line;
 +
-+	uint32_t entry;
-+	uint32_t reserved1;
-+	uint32_t dcd_ptr;
-+	uint32_t boot_data_ptr;
-+	uint32_t self;
-+	uint32_t csf;
-+	uint32_t reserved2;
++		if (*line == '\0')	/* end of line, no more args	*/
++			argv[nargs] = NULL;
 +
-+	struct imx_boot_data boot_data;
-+	struct imx_ivt_header dcd_header;
-+} __attribute__((packed));
++		if (*line == '\0') {	/* end of line, no more args	*/
++			argv[nargs] = NULL;
++			return nargs;
++		}
++
++		argv[nargs++] = line;	/* begin of argument string	*/
++
++		/* find end of string */
++		while (*line && (*line != ' ') && (*line != '\t'))
++			++line;
++
++		if (*line == '\0') {	/* end of line, no more args	*/
++			argv[nargs] = NULL;
++			return nargs;
++		}
++
++		*line++ = '\0';		/* terminate current arg	 */
++	}
++
++	printf("** Too many args (max. %d) **\n", MAXARGS);
++
++	return nargs;
++}
++
++struct command {
++	const char *name;
++	int (*parse)(struct config_data *data, int argc, char *argv[]);
++};
++
++static const char *check_cmds[] = {
++	"while_all_bits_clear",		/* while ((*address & mask) == 0); */
++	"while_all_bits_set"	,	/* while ((*address & mask) == mask); */
++	"while_any_bit_clear",		/* while ((*address & mask) != mask); */
++	"while_any_bit_set",		/* while ((*address & mask) != 0); */
++};
++
++static void do_cmd_check_usage(void)
++{
++	fprintf(stderr,
++			"usage: check <width> <cmd> <addr> <mask>\n"
++			"<width> access width in bytes [1|2|4]\n"
++			"with <cmd> one of:\n"
++			"while_all_bits_clear: while ((*addr & mask) == 0)\n"
++			"while_all_bits_set:   while ((*addr & mask) == mask)\n"
++			"while_any_bit_clear:  while ((*addr & mask) != mask)\n"
++			"while_any_bit_set:    while ((*addr & mask) != 0)\n");
++}
++
++static int do_cmd_check(struct config_data *data, int argc, char *argv[])
++{
++	uint32_t addr, mask, cmd;
++	int i, width;
++	const char *scmd;
++
++	if (argc < 5) {
++		do_cmd_check_usage();
++		return -EINVAL;
++	}
++
++	if (!data->check)
++		return -ENOSYS;
++
++	width = strtoul(argv[1], NULL, 0) >> 3;
++	scmd = argv[2];
++	addr = strtoul(argv[3], NULL, 0);
++	mask = strtoul(argv[4], NULL, 0);
++
++	switch (width) {
++	case 1:
++	case 2:
++	case 4:
++		break;
++	default:
++		fprintf(stderr, "illegal width %d\n", width);
++		return -EINVAL;
++	};
++
++	for (i = 0; i < ARRAY_SIZE(check_cmds); i++) {
++		if (!strcmp(scmd, check_cmds[i]))
++			break;
++	}
++
++	if (i == ARRAY_SIZE(check_cmds)) {
++		do_cmd_check_usage();
++		return -EINVAL;
++	}
++
++	cmd = (TAG_CHECK << 24) | (i << 3) | width | ((sizeof(uint32_t) * 3) << 8);
++
++	return data->check(data, cmd, addr, mask);
++}
++
++static int do_cmd_write_mem(struct config_data *data, int argc, char *argv[])
++{
++	uint32_t addr, val, width;
++	char *end;
++
++	if (argc != 4) {
++		fprintf(stderr, "usage: wm [8|16|32] <addr> <val>\n");
++		return -EINVAL;
++	}
++
++	width = strtoul(argv[1], &end, 0);
++	if (*end != '\0') {
++		fprintf(stderr, "illegal width token \"%s\"\n", argv[1]);
++		return -EINVAL;
++	}
++
++	addr = strtoul(argv[2], &end, 0);
++	if (*end != '\0') {
++		fprintf(stderr, "illegal address token \"%s\"\n", argv[2]);
++		return -EINVAL;
++	}
++
++	val = strtoul(argv[3], &end, 0);
++	if (*end != '\0') {
++		fprintf(stderr, "illegal value token \"%s\"\n", argv[3]);
++		return -EINVAL;
++	}
++
++	width >>= 3;
++
++	switch (width) {
++	case 1:
++	case 2:
++	case 4:
++		break;
++	default:
++		fprintf(stderr, "illegal width %d\n", width);
++		return -EINVAL;
++	};
++
++	return data->write_mem(data, addr, val, width);
++}
++
++static int do_loadaddr(struct config_data *data, int argc, char *argv[])
++{
++	if (argc < 2)
++		return -EINVAL;
++
++	data->image_load_addr = strtoul(argv[1], NULL, 0);
++
++	return 0;
++}
++
++static int do_dcd_offset(struct config_data *data, int argc, char *argv[])
++{
++	if (argc < 2)
++		return -EINVAL;
++
++	data->image_dcd_offset = strtoul(argv[1], NULL, 0);
++
++	return 0;
++}
++
++struct soc_type {
++	char *name;
++	int header_version;
++	int cpu_type;
++};
++
++static struct soc_type socs[] = {
++	{ .name = "imx25", .header_version = 1, .cpu_type = 25},
++	{ .name = "imx35", .header_version = 1, .cpu_type = 35 },
++	{ .name = "imx51", .header_version = 1, .cpu_type = 51 },
++	{ .name = "imx53", .header_version = 2, .cpu_type = 53 },
++	{ .name = "imx6", .header_version = 2, .cpu_type = 6 },
++};
++
++static int do_soc(struct config_data *data, int argc, char *argv[])
++{
++	char *soc;
++	int i;
++
++	if (argc < 2)
++		return -EINVAL;
++
++	soc = argv[1];
++
++	for (i = 0; i < ARRAY_SIZE(socs); i++) {
++		if (!strcmp(socs[i].name, soc)) {
++			data->header_version = socs[i].header_version;
++			data->cpu_type = socs[i].cpu_type;
++			return 0;
++		}
++	}
++
++	fprintf(stderr, "unkown SoC type \"%s\". Known SoCs are:\n", soc);
++	for (i = 0; i < ARRAY_SIZE(socs); i++)
++		fprintf(stderr, "%s ", socs[i].name);
++	fprintf(stderr, "\n");
++
++	return -EINVAL;
++}
++
++struct command cmds[] = {
++	{
++		.name = "wm",
++		.parse = do_cmd_write_mem,
++	}, {
++		.name = "check",
++		.parse = do_cmd_check,
++	}, {
++		.name = "loadaddr",
++		.parse = do_loadaddr,
++	}, {
++		.name = "dcdofs",
++		.parse = do_dcd_offset,
++	}, {
++		.name = "soc",
++		.parse = do_soc,
++	},
++};
++
++static char *readcmd(struct config_data *data, FILE *f)
++{
++	static char *buf;
++	char *str;
++	ssize_t ret;
++
++	if (!buf) {
++		buf = malloc(4096);
++		if (!buf)
++			return NULL;
++	}
++
++	str = buf;
++	*str = 0;
++
++	while (1) {
++		ret = fread(str, 1, 1, f);
++		if (!ret)
++			return strlen(buf) ? buf : NULL;
++
++		if (*str == '\n' || *str == ';') {
++			*str = 0;
++			return buf;
++		}
++
++		str++;
++	}
++}
++
++int parse_config(struct config_data *data, const char *filename)
++{
++	FILE *f;
++	int lineno = 0;
++	char *line = NULL, *tmp;
++	char *argv[MAXARGS];
++	int nargs, i, ret = 0;
++
++	f = fopen(filename, "r");
++	if (!f) {
++		fprintf(stderr, "Error: %s - Can't open DCD file\n", filename);
++		exit(1);
++	}
++
++	while (1) {
++		line = readcmd(data, f);
++		if (!line)
++			break;
++
++		lineno++;
++
++		tmp = strchr(line, '#');
++		if (tmp)
++			*tmp = 0;
++
++		nargs = parse_line(line, argv);
++		if (!nargs)
++			continue;
++
++		ret = -ENOENT;
++
++		for (i = 0; i < ARRAY_SIZE(cmds); i++) {
++			if (!strcmp(cmds[i].name, argv[0])) {
++				ret = cmds[i].parse(data, nargs, argv);
++				if (ret) {
++					fprintf(stderr, "error in line %d: %s\n",
++							lineno, strerror(-ret));
++					goto cleanup;
++				}
++				break;
++			}
++		}
++
++		if (ret == -ENOENT) {
++			fprintf(stderr, "no such command: %s\n", argv[0]);
++			goto cleanup;
++		}
++	}
++
++cleanup:
++	fclose(f);
++	return ret;
++}
+diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
+index 1d23e11..41a54fb 100644
+--- a/scripts/imx/imx.h
++++ b/scripts/imx/imx.h
+@@ -54,4 +54,15 @@ struct imx_flash_header_v2 {
+ 
+ 	struct imx_boot_data boot_data;
+ 	struct imx_ivt_header dcd_header;
+-} __attribute__((packed));
 \ No newline at end of file
++} __attribute__((packed));
++
++struct config_data {
++	uint32_t image_load_addr;
++	uint32_t image_dcd_offset;
++	int header_version;
++	int cpu_type;
++	int (*check)(struct config_data *data, uint32_t cmd, uint32_t addr, uint32_t mask);
++	int (*write_mem)(struct config_data *data, uint32_t addr, uint32_t val, int width);
++};
++
++int parse_config(struct config_data *data, const char *filename);
 -- 
 2.7.0.rc3
 
