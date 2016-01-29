@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aP9hj-0008B7-Ot
- for barebox@lists.infradead.org; Fri, 29 Jan 2016 14:07:17 +0000
-Received: by mail-wm0-x243.google.com with SMTP id p63so10071729wmp.1
- for <barebox@lists.infradead.org>; Fri, 29 Jan 2016 06:06:55 -0800 (PST)
-From: yegorslists@googlemail.com
-Date: Fri, 29 Jan 2016 15:06:21 +0100
-Message-Id: <1454076381-17375-2-git-send-email-yegorslists@googlemail.com>
-In-Reply-To: <1454076381-17375-1-git-send-email-yegorslists@googlemail.com>
-References: <1454076381-17375-1-git-send-email-yegorslists@googlemail.com>
+ id 1aPDPt-0005cP-0p
+ for barebox@lists.infradead.org; Fri, 29 Jan 2016 18:05:06 +0000
+Date: Fri, 29 Jan 2016 19:04:38 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20160129180437.GA2401@ravnborg.org>
+References: <1454064243-26558-1-git-send-email-s.hauer@pengutronix.de>
+ <1454064243-26558-14-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1454064243-26558-14-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,153 +19,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] fs: add super_operations infrastructure
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 13/23] scripts: imx: move macro definitions to common
+ header file
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-From: Yegor Yefremov <yegorslists@googlemail.com>
+On Fri, Jan 29, 2016 at 11:43:53AM +0100, Sascha Hauer wrote:
+> ARRAY_SIZE and offsetof are used by both imx-usb-loader and imx-image.
+> Move their definitions to the common header file.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  scripts/imx/imx-image.c      | 2 --
+>  scripts/imx/imx-usb-loader.c | 5 -----
+>  scripts/imx/imx.h            | 5 +++++
+>  3 files changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
+> index e986545..1d23e11 100644
+> --- a/scripts/imx/imx.h
+> +++ b/scripts/imx/imx.h
+> @@ -1,3 +1,8 @@
+> +#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+This macro is already defined in include/linux/kernel.h,
+so it would be better to use this version.
 
-Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
----
- fs/Makefile        |  1 +
- fs/inode.c         | 34 ++++++++++++++++++++++++++++++++++
- fs/ubifs/super.c   | 26 +++++++++++---------------
- include/linux/fs.h |  6 ++++++
- 4 files changed, 52 insertions(+), 15 deletions(-)
- create mode 100644 fs/inode.c
 
-diff --git a/fs/Makefile b/fs/Makefile
-index 7896e38..320e6fa 100644
---- a/fs/Makefile
-+++ b/fs/Makefile
-@@ -5,6 +5,7 @@ obj-y			+= devfs-core.o
- obj-$(CONFIG_FS_DEVFS)	+= devfs.o
- obj-$(CONFIG_FS_FAT)	+= fat/
- obj-y	+= fs.o
-+obj-y	+= inode.o
- obj-$(CONFIG_FS_UBIFS)	+= ubifs/
- obj-$(CONFIG_FS_TFTP)	+= tftp.o
- obj-$(CONFIG_FS_OMAP4_USBBOOT)	+= omap4_usbbootfs.o
-diff --git a/fs/inode.c b/fs/inode.c
-new file mode 100644
-index 0000000..f9b1b63
---- /dev/null
-+++ b/fs/inode.c
-@@ -0,0 +1,34 @@
-+/*
-+ * (C) 1997 Linus Torvalds
-+ * (C) 1999 Andrea Arcangeli <andrea@suse.de> (dynamic inode allocation)
-+ */
-+
-+#include <linux/mount.h>
-+
-+/**
-+ * iget_locked - obtain an inode from a mounted file system
-+ * @sb:		super block of file system
-+ * @ino:	inode number to get
-+ *
-+ * Search for the inode specified by @ino in the inode cache and if present
-+ * return it with an increased reference count. This is for file systems
-+ * where the inode number is sufficient for unique identification of an inode.
-+ *
-+ * If the inode is not in cache, allocate a new inode and return it locked,
-+ * hashed, and with the I_NEW flag set.  The file system gets to fill it in
-+ * before unlocking it via unlock_new_inode().
-+ */
-+struct inode *iget_locked(struct super_block *sb, unsigned long ino)
-+{
-+	struct inode *inode;
-+
-+	inode = sb->s_op->alloc_inode(sb);
-+	if (inode) {
-+		inode->i_ino = ino;
-+		inode->i_sb = sb;
-+		list_add(&inode->i_sb_list, &sb->s_inodes);
-+		inode->i_state = I_SYNC | I_NEW;
-+	}
-+
-+	return inode;
-+}
-diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
-index b45240d..10f922a 100644
---- a/fs/ubifs/super.c
-+++ b/fs/ubifs/super.c
-@@ -79,21 +79,6 @@ static int validate_inode(struct ubifs_info *c, const struct inode *inode)
- 	return err;
- }
- 
--struct inode *iget_locked(struct super_block *sb, unsigned long ino)
--{
--	struct inode *inode;
--
--	inode = (struct inode *)malloc(sizeof(struct ubifs_inode));
--	if (inode) {
--		inode->i_ino = ino;
--		inode->i_sb = sb;
--		list_add(&inode->i_sb_list, &sb->s_inodes);
--		inode->i_state = I_SYNC | I_NEW;
--	}
--
--	return inode;
--}
--
- int ubifs_iput(struct inode *inode)
- {
- 	list_del_init(&inode->i_sb_list);
-@@ -814,6 +799,15 @@ void ubifs_umount(struct ubifs_info *c)
- 	ubifs_debugging_exit(c);
- }
- 
-+static struct inode *ubifs_alloc_inode(struct super_block *sb)
-+{
-+	return (struct inode *)malloc(sizeof(struct ubifs_inode));
-+};
-+
-+const struct super_operations ubifs_super_operations = {
-+	.alloc_inode   = ubifs_alloc_inode,
-+};
-+
- struct super_block *ubifs_get_super(struct device_d *dev, struct ubi_volume_desc *ubi, int silent)
- {
- 	struct super_block *sb;
-@@ -888,6 +882,8 @@ struct super_block *ubifs_get_super(struct device_d *dev, struct ubi_volume_desc
- 		return ERR_PTR(-EROFS);
- 	}
- 
-+	sb->s_op = &ubifs_super_operations;
-+
- 	mutex_lock(&c->umount_mutex);
- 	err = mount_ubifs(c);
- 	if (err) {
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 7e9886a..9aec052 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -112,6 +112,10 @@ struct inode {
- 	void			*i_private; /* fs or device private pointer */
- };
- 
-+struct super_operations {
-+        struct inode *(*alloc_inode)(struct super_block *sb);
-+};
-+
- struct super_block {
- 	struct list_head	s_list;		/* Keep this first */
- 	dev_t			s_dev;		/* search index; _not_ kdev_t */
-@@ -361,4 +365,6 @@ struct file {
- #define I_DIRTY (I_DIRTY_SYNC | I_DIRTY_DATASYNC | I_DIRTY_PAGES)
- #define I_DIRTY_ALL (I_DIRTY | I_DIRTY_TIME)
- 
-+extern struct inode * iget_locked(struct super_block *, unsigned long);
-+
- #endif /* _LINUX_FS_H */
--- 
-2.1.4
+> +#ifndef offsetof
+> +#define offsetof(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
+> +#endif
+Likewise for this - use the version in include/linux/stddef.h
 
+Only from manual inspection - I did not try to replace the
+definitions to check for any incompatibilities.
+
+	Sam
 
 _______________________________________________
 barebox mailing list
