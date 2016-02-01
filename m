@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x241.google.com ([2607:f8b0:400e:c03::241])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aQ4tQ-0007cu-Cf
- for barebox@lists.infradead.org; Mon, 01 Feb 2016 03:11:09 +0000
-Received: by mail-pa0-x241.google.com with SMTP id pv5so6573274pac.0
- for <barebox@lists.infradead.org>; Sun, 31 Jan 2016 19:10:48 -0800 (PST)
+ id 1aQ4tT-0007dn-DK
+ for barebox@lists.infradead.org; Mon, 01 Feb 2016 03:11:13 +0000
+Received: by mail-pf0-x242.google.com with SMTP id 66so6413247pfe.2
+ for <barebox@lists.infradead.org>; Sun, 31 Jan 2016 19:10:50 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 31 Jan 2016 19:10:06 -0800
-Message-Id: <1454296213-12734-2-git-send-email-andrew.smirnov@gmail.com>
+Date: Sun, 31 Jan 2016 19:10:09 -0800
+Message-Id: <1454296213-12734-5-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1454296213-12734-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1454296213-12734-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,35 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/8] include/linux/phy.h: Add MII_ADDR_C45
+Subject: [PATCH v2 4/8] mdio_bus: Change dev_info to dev_dbg
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Andrey Gusakov <andrey.gusakov@cogentembedded.com>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
-
-Add MII_ADDR_C45 used by bitbanged MDIO
-
-Signed-off-by: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Change dev_info to dev_dbg in mdiobus_detect for displaying phy's
+registration status as it is in of_mdiobus_register_phy(). While that
+information is useful for debugging, user doesn't really need to see
+that information every time they call miitool for the first time.
 ---
- include/linux/phy.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/phy/mdio_bus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index a64b9b5..58e69da 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -69,6 +69,10 @@ typedef enum {
-  */
- #define MII_BUS_ID_SIZE	(20 - 3)
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 0959c45..54d2f8f 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -43,7 +43,7 @@ int mdiobus_detect(struct device_d *dev)
+ 		ret = phy_register_device(phydev);
+ 		if (ret)
+ 			dev_err(dev, "failed to register phy: %s\n", strerror(-ret));
+-		dev_info(dev, "registered phy as /dev/%s\n", phydev->cdev.name);
++		dev_dbg(dev, "registered phy as /dev/%s\n", phydev->cdev.name);
+ 	}
  
-+/* Or MII_ADDR_C45 into regnum for read/write on mii_bus to enable the 21 bit
-+   IEEE 802.3ae clause 45 addressing mode used by 10GIGE phy chips. */
-+#define MII_ADDR_C45 (1<<30)
-+
- #define PHYLIB_FORCE_10		(1 << 0)
- #define PHYLIB_FORCE_100	(1 << 1)
- #define PHYLIB_FORCE_LINK	(1 << 2)
+ 	return 0;
 -- 
 2.5.0
 
