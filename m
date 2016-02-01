@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x229.google.com ([2607:f8b0:400e:c03::229])
+Received: from mail-pf0-x22e.google.com ([2607:f8b0:400e:c00::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aQ7Uj-0007PN-Ee
- for barebox@lists.infradead.org; Mon, 01 Feb 2016 05:57:50 +0000
-Received: by mail-pa0-x229.google.com with SMTP id yy13so75859820pab.3
- for <barebox@lists.infradead.org>; Sun, 31 Jan 2016 21:57:29 -0800 (PST)
+ id 1aQ7Uk-0007PX-9L
+ for barebox@lists.infradead.org; Mon, 01 Feb 2016 05:57:51 +0000
+Received: by mail-pf0-x22e.google.com with SMTP id x125so77979014pfb.0
+ for <barebox@lists.infradead.org>; Sun, 31 Jan 2016 21:57:30 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 31 Jan 2016 21:57:13 -0800
-Message-Id: <1454306234-2299-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Sun, 31 Jan 2016 21:57:14 -0800
+Message-Id: <1454306234-2299-2-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1454306234-2299-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1454306234-2299-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,212 +23,422 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 1/2] misc: Add MAC address mapper "driver"
+Subject: [RFC 2/2] arm/dts: i.MX6: Use generic MAC address mapper
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add Barebox specific device tree provisions to allow specifying MAC
-addresses for network interfaces via device tree.
+Use generic MAC address mapper infrastructure instead of custom driver
+OCOTP driver bindings to specify OCOTP as a source of MAC address for
+'fec' interfaces.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- .../bindings/barebox/barebox,mac-address-map.rst   |  27 ++++
- drivers/misc/Makefile                              |   1 +
- drivers/misc/mac-address-map.c                     | 142 +++++++++++++++++++++
- 3 files changed, 170 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/barebox/barebox,mac-address-map.rst
- create mode 100644 drivers/misc/mac-address-map.c
 
-diff --git a/Documentation/devicetree/bindings/barebox/barebox,mac-address-map.rst b/Documentation/devicetree/bindings/barebox/barebox,mac-address-map.rst
-new file mode 100644
-index 0000000..1ac3062
---- /dev/null
-+++ b/Documentation/devicetree/bindings/barebox/barebox,mac-address-map.rst
-@@ -0,0 +1,27 @@
-+barebox MAC address map
-+=======================
+Note: imx6sx-sdb.dts was not converted in the patch because it
+specifies second MAC source as <&ocotp 0x632> which is an offset that
+due to limitations of imx6_ocotp_cdev_read cannot be read.
+
+I plan to include patches to fix the issue above in next versions of
+this patchset
+
+ arch/arm/dts/imx6dl-hummingboard.dts         | 11 ++++++++---
+ arch/arm/dts/imx6dl-tx6u-801x.dts            | 13 +++++++++----
+ arch/arm/dts/imx6dl-wandboard.dts            | 11 ++++++++---
+ arch/arm/dts/imx6q-hummingboard.dts          | 11 ++++++++---
+ arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi       | 13 +++++++++----
+ arch/arm/dts/imx6q-wandboard.dts             | 11 ++++++++---
+ arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi      | 11 ++++++++---
+ arch/arm/dts/imx6qdl-nitrogen6x.dtsi         | 13 +++++++++----
+ arch/arm/dts/imx6qdl-phytec-pfla02.dtsi      | 14 ++++++++++----
+ arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 13 +++++++++----
+ arch/arm/dts/imx6qdl-sabrelite.dtsi          | 13 +++++++++----
+ arch/arm/dts/imx6qdl-sabresd.dtsi            | 11 +++++++++--
+ arch/arm/dts/imx6qdl-tqma6x.dtsi             | 15 +++++++++++----
+ arch/arm/dts/imx6s-riotboard.dts             | 13 +++++++++----
+ 14 files changed, 124 insertions(+), 49 deletions(-)
+
+diff --git a/arch/arm/dts/imx6dl-hummingboard.dts b/arch/arm/dts/imx6dl-hummingboard.dts
+index 2314965..e47ccd5 100644
+--- a/arch/arm/dts/imx6dl-hummingboard.dts
++++ b/arch/arm/dts/imx6dl-hummingboard.dts
+@@ -17,10 +17,15 @@
+ 			device-path = &usdhc2, "partname:barebox-environment";
+ 		};
+ 	};
+-};
+ 
+-&ocotp {
+-	barebox,provide-mac-address = <&fec 0x620>;
++	mac-address-map {
++		compatible = "barebox,mac-address-map";
 +
-+This driver allows to specify each network adapter's source of MAC address from the devicetree.
-+
-+Required properties:
-+
-+* ``compatible``: should be ``barebox,mac-address-map``
-+
-+Besides ``compatible`` property the node is expected to contain a
-+number of children nodes each specifing a single "MAC source ->
-+interface" mapping.
-+
-+Child node's required properties:
-+* ``network-interface``: phandle corresponding to network interface
-+* ``mac-location``: a pair of phandle to 'cdev' containing MAC address
-+  and offset withing that 'cdev'
-+
-+Example::
-+
-+  mac-address-map {
-+	compatible = "barebox,mac-address-map";
-+	nic@0 {
-+		network-interface = <&fec>;
-+		mac-location = <&ocotp 0x88>;
++		nic@0 {
++			network-interface = <&fec>;
++			mac-location = <&ocotp 0x88>;
++		};
 +	};
-+  };
-diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
-index 487e4b8..94d2a4f 100644
---- a/drivers/misc/Makefile
-+++ b/drivers/misc/Makefile
-@@ -5,3 +5,4 @@
- obj-$(CONFIG_JTAG)		+= jtag.o
- obj-$(CONFIG_SRAM)		+= sram.o
- obj-$(CONFIG_STATE_DRV)		+= state.o
-+obj-y += mac-address-map.o
-diff --git a/drivers/misc/mac-address-map.c b/drivers/misc/mac-address-map.c
-new file mode 100644
-index 0000000..2161dc3
---- /dev/null
-+++ b/drivers/misc/mac-address-map.c
-@@ -0,0 +1,142 @@
-+/*
-+ * Copyright (C) 2016 Zodiac Inflight Innovation
-+ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
+ };
+ 
+ &usdhc2 {
+diff --git a/arch/arm/dts/imx6dl-tx6u-801x.dts b/arch/arm/dts/imx6dl-tx6u-801x.dts
+index a480408..9ebc31f 100644
+--- a/arch/arm/dts/imx6dl-tx6u-801x.dts
++++ b/arch/arm/dts/imx6dl-tx6u-801x.dts
+@@ -13,6 +13,15 @@
+ 			device-path = &gpmi, "partname:barebox-environment";
+ 		};
+ 	};
 +
-+#include <common.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include <of.h>
-+#include <state.h>
-+#include <io.h>
-+#include <fcntl.h>
-+#include <net.h>
++	mac-address-map {
++		compatible = "barebox,mac-address-map";
 +
-+#include <linux/err.h>
++		nic@0 {
++			network-interface = <&fec>;
++			mac-location = <&ocotp 0x88>;
++		};
++	};
+ };
+ 
+ &gpmi {
+@@ -59,7 +68,3 @@
+ &fec {
+ 	phy-reset-duration = <22>;
+ };
+-
+-&ocotp {
+-	barebox,provide-mac-address = <&fec 0x620>;
+-};
+diff --git a/arch/arm/dts/imx6dl-wandboard.dts b/arch/arm/dts/imx6dl-wandboard.dts
+index a867400..ff9904d 100644
+--- a/arch/arm/dts/imx6dl-wandboard.dts
++++ b/arch/arm/dts/imx6dl-wandboard.dts
+@@ -15,10 +15,15 @@
+ 	memory {
+ 		reg = <0x0 0x0>;
+ 	};
+-};
+ 
+-&ocotp {
+-	barebox,provide-mac-address = <&fec 0x620>;
++	mac-address-map {
++		compatible = "barebox,mac-address-map";
 +
-+/*
-+ * a single MAC address reference has the form
-+ * <&phandle regoffset>
-+ */
-+#define MAC_ADDRESS_PROPLEN	(2 * sizeof(__be32))
-+#define MAC_ADDRESS_SIZE	8 /* FIXME ocotp driver is broken and
-+				   * can't read non multiple of 4
-+				   * quantities of data */
++		nic@0 {
++			network-interface = <&fec>;
++			mac-location = <&ocotp 0x88>;
++		};
++	};
+ };
+ 
+ &usdhc3 {
+diff --git a/arch/arm/dts/imx6q-hummingboard.dts b/arch/arm/dts/imx6q-hummingboard.dts
+index e1d2fa8..8cc1218 100644
+--- a/arch/arm/dts/imx6q-hummingboard.dts
++++ b/arch/arm/dts/imx6q-hummingboard.dts
+@@ -17,10 +17,15 @@
+ 			device-path = &usdhc2, "partname:barebox-environment";
+ 		};
+ 	};
+-};
+ 
+-&ocotp {
+-	barebox,provide-mac-address = <&fec 0x620>;
++	mac-address-map {
++		compatible = "barebox,mac-address-map";
 +
-+static int mac_address_map_read_cdev(struct device_d *dev,
-+				     struct cdev *cdev,
-+				     size_t offset,
-+				     uint8_t *addr)
-+{
-+	int ret;
++		nic@0 {
++			network-interface = <&fec>;
++			mac-location = <&ocotp 0x88>;
++		};
++	};
+ };
+ 
+ &usdhc2 {
+diff --git a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
+index 0522465..f379517 100644
+--- a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
++++ b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
+@@ -29,6 +29,15 @@
+ 			status = "disabled";
+ 		};
+ 	};
 +
-+	ret = cdev_do_open(cdev, O_RDONLY);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to open %s\n", cdev->name);
-+		return ret;
-+	}
++	mac-address-map {
++		compatible = "barebox,mac-address-map";
 +
-+	ret = cdev_read(cdev, addr, MAC_ADDRESS_SIZE, offset, 0);
-+	cdev_close(cdev);
++		nic@0 {
++			network-interface = <&fec>;
++			mac-location = <&ocotp 0x88>;
++		};
++	};
+ };
+ 
+ &i2c1 {
+@@ -160,10 +169,6 @@
+ 	};
+ };
+ 
+-&ocotp {
+-	barebox,provide-mac-address = <&fec 0x620>;
+-};
+-
+ &uart3 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_uart3>;
+diff --git a/arch/arm/dts/imx6q-wandboard.dts b/arch/arm/dts/imx6q-wandboard.dts
+index 26d8a00..357fdfd 100644
+--- a/arch/arm/dts/imx6q-wandboard.dts
++++ b/arch/arm/dts/imx6q-wandboard.dts
+@@ -15,10 +15,15 @@
+ 	memory {
+ 		reg = <0x0 0x0>;
+ 	};
+-};
+ 
+-&ocotp {
+-	barebox,provide-mac-address = <&fec 0x620>;
++	mac-address-map {
++		compatible = "barebox,mac-address-map";
 +
-+	if (ret != MAC_ADDRESS_SIZE) {
-+		dev_err(dev, "Failed to read MAC address\n");
-+		return (ret < 0) ? ret : -EIO;
-+	}
++		nic@0 {
++			network-interface = <&fec>;
++			mac-location = <&ocotp 0x88>;
++		};
++	};
+ };
+ 
+ &usdhc3 {
+diff --git a/arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi b/arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi
+index 5c7bcd3..4fdfff1 100644
+--- a/arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi
++++ b/arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi
+@@ -9,10 +9,15 @@
+ 			device-path = &usdhc4, "partname:boot1";
+ 		};
+ 	};
+-};
+ 
+-&ocotp {
+-	barebox,provide-mac-address = <&fec 0x620>;
++	mac-address-map {
++		compatible = "barebox,mac-address-map";
 +
-+	return 0;
-+}
++		nic@0 {
++			network-interface = <&fec>;
++			mac-location = <&ocotp 0x88>;
++		};
++	};
+ };
+ 
+ &usbh1 {
+diff --git a/arch/arm/dts/imx6qdl-nitrogen6x.dtsi b/arch/arm/dts/imx6qdl-nitrogen6x.dtsi
+index 8fcd4e4..e9c64d9 100644
+--- a/arch/arm/dts/imx6qdl-nitrogen6x.dtsi
++++ b/arch/arm/dts/imx6qdl-nitrogen6x.dtsi
+@@ -23,6 +23,15 @@
+ 			device-path = &flash, "partname:barebox-environment";
+ 		};
+ 	};
 +
-+static int mac_address_map_probe(struct device_d *dev)
-+{
-+	int ret;
-+	struct device_node *np = dev->device_node;
-+	struct device_node *child;
++	mac-address-map {
++		compatible = "barebox,mac-address-map";
 +
-+	if (!np || !of_get_next_child(np, NULL))
-+		return -EINVAL;
++		nic@0 {
++			network-interface = <&fec>;
++			mac-location = <&ocotp 0x88>;
++		};
++	};
+ };
+ 
+ &flash {
+@@ -40,10 +49,6 @@
+ 	};
+ };
+ 
+-&ocotp {
+-	barebox,provide-mac-address = <&fec 0x620>;
+-};
+-
+ &usbh1 {
+ 	phy_type = "utmi";
+ 	dr_mode = "host";
+diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+index b79ce2c..6d4d067 100644
+--- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+@@ -54,6 +54,16 @@
+ 			status = "disabled";
+ 		};
+ 	};
 +
-+	for_each_child_of_node(np, child) {
-+		uint8_t addr[MAC_ADDRESS_SIZE];
++	mac-address-map {
++		compatible = "barebox,mac-address-map";
 +
-+		struct {
-+			const __be32 *prop;
-+			int plen;
-+			uint32_t phandle;
-+			size_t offset;
-+			struct cdev *cdev;
-+			struct device_node *node;
-+		} nvm;
++		nic@0 {
++			network-interface = <&fec>;
++			mac-location = <&ocotp 0x88>;
++		};
++	};
 +
-+		struct device_node *nic_node;
+ };
+ 
+ &ecspi3 {
+@@ -170,10 +180,6 @@
+ 	};
+ };
+ 
+-&ocotp {
+-	barebox,provide-mac-address = <&fec 0x620>;
+-};
+-
+ &usdhc3 {
+ 	#address-cells = <1>;
+ 	#size-cells = <1>;
+diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
+index 2a975d1..444d707 100644
+--- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
+@@ -33,6 +33,15 @@
+ 			status = "disabled";
+ 		};
+ 	};
 +
-+		nvm.prop = of_get_property(child, "mac-location", &nvm.plen);
++	mac-address-map {
++		compatible = "barebox,mac-address-map";
 +
-+		if (!nvm.prop || nvm.plen != MAC_ADDRESS_PROPLEN) {
-+			dev_err(dev, "'mac-location' lookup failed\n");
-+			return -EINVAL;
-+		}
++		nic@0 {
++			network-interface = <&fec>;
++			mac-location = <&ocotp 0x88>;
++		};
++	};
+ };
+ 
+ &ecspi1 {
+@@ -227,10 +236,6 @@
+ 	};
+ };
+ 
+-&ocotp {
+-	barebox,provide-mac-address = <&fec 0x620>;
+-};
+-
+ &uart2 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_uart2>;
+diff --git a/arch/arm/dts/imx6qdl-sabrelite.dtsi b/arch/arm/dts/imx6qdl-sabrelite.dtsi
+index d5a6ff4..b89e60c 100644
+--- a/arch/arm/dts/imx6qdl-sabrelite.dtsi
++++ b/arch/arm/dts/imx6qdl-sabrelite.dtsi
+@@ -23,6 +23,15 @@
+ 			device-path = &flash, "partname:barebox-environment";
+ 		};
+ 	};
 +
-+		nvm.phandle = be32_to_cpup(nvm.prop);
-+		nvm.offset  = be32_to_cpup(++nvm.prop);
++	mac-address-map {
++		compatible = "barebox,mac-address-map";
 +
-+		nvm.node = of_find_node_by_phandle(nvm.phandle);
-+		if (!nvm.node) {
-+			dev_err(dev, "'mac-location' lookup failed\n");
-+			return -EINVAL;
-+		}
++		nic@0 {
++			network-interface = <&fec>;
++			mac-location = <&ocotp 0x88>;
++		};
++	};
+ };
+ 
+ &flash {
+@@ -40,10 +49,6 @@
+ 	};
+ };
+ 
+-&ocotp {
+-	barebox,provide-mac-address = <&fec 0x620>;
+-};
+-
+ &usbh1 {
+ 	phy_type = "utmi";
+ 	dr_mode = "host";
+diff --git a/arch/arm/dts/imx6qdl-sabresd.dtsi b/arch/arm/dts/imx6qdl-sabresd.dtsi
+index 32318cf..5f36d1d 100644
+--- a/arch/arm/dts/imx6qdl-sabresd.dtsi
++++ b/arch/arm/dts/imx6qdl-sabresd.dtsi
+@@ -12,8 +12,15 @@
+ 
+ #include <arm/imx6qdl-sabresd.dtsi>
+ 
+-&ocotp {
+-	barebox,provide-mac-address = <&fec 0x620>;
++/ {
++	mac-address-map {
++		compatible = "barebox,mac-address-map";
 +
-+		nvm.cdev = cdev_by_device_node(nvm.node);
-+		if (!nvm.cdev) {
-+			dev_err(dev, "no OCOTP character device\n");
-+			return -ENODEV;
-+		}
++		nic@0 {
++			network-interface = <&fec>;
++			mac-location = <&ocotp 0x88>;
++		};
++	};
+ };
+ 
+ &usbh1 {
+diff --git a/arch/arm/dts/imx6qdl-tqma6x.dtsi b/arch/arm/dts/imx6qdl-tqma6x.dtsi
+index f0b1a0d..f8a66a6 100644
+--- a/arch/arm/dts/imx6qdl-tqma6x.dtsi
++++ b/arch/arm/dts/imx6qdl-tqma6x.dtsi
+@@ -9,6 +9,17 @@
+  * http://www.gnu.org/copyleft/gpl.html
+  */
+ 
++/ {
++	mac-address-map {
++		compatible = "barebox,mac-address-map";
 +
-+		nic_node = of_parse_phandle(child, "network-interface", 0);
-+		if (!nic_node) {
-+			dev_err(dev, "'network-interface' lookup failed\n");
-+			return -EINVAL;
-+		}
-+
-+		ret = mac_address_map_read_cdev(dev,
-+						nvm.cdev, nvm.offset,
-+						addr);
-+		if (ret < 0)
-+			return ret;
-+
-+		if (is_valid_ether_addr(addr))
-+			of_eth_register_ethaddr(nic_node, addr);
-+		else
-+			dev_warn(dev,
-+				 "%s @ 0x%x does not contain a vaild MAC address\n",
-+				 nvm.node->name, nvm.offset);
-+	}
-+
-+	return 0;
-+}
-+
-+static __maybe_unused struct of_device_id mac_address_map_ids[] = {
-+	{
-+		.compatible = "barebox,mac-address-map",
-+	}, {
-+		/* sentinel */
-+	}
++		nic@0 {
++			network-interface = <&fec>;
++			mac-location = <&ocotp 0x88>;
++		};
++	};
 +};
 +
-+static struct driver_d mac_address_map_driver = {
-+	.name = "mac-address-map",
-+	.probe = mac_address_map_probe,
-+	.of_compatible = DRV_OF_COMPAT(mac_address_map_ids),
-+};
-+device_platform_driver(mac_address_map_driver);
+ &ecspi1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_ecspi1>;
+@@ -91,10 +102,6 @@
+ 	};
+ };
+ 
+-&ocotp {
+-	barebox,provide-mac-address = <&fec 0x620>;
+-};
+-
+ &i2c1 {
+ 	status = "okay";
+ 	clock-frequency = <100000>;
+diff --git a/arch/arm/dts/imx6s-riotboard.dts b/arch/arm/dts/imx6s-riotboard.dts
+index e14363f..c4eda90 100644
+--- a/arch/arm/dts/imx6s-riotboard.dts
++++ b/arch/arm/dts/imx6s-riotboard.dts
+@@ -57,6 +57,15 @@
+ 			regulator-always-on;
+ 		};
+ 	};
++
++	mac-address-map {
++		compatible = "barebox,mac-address-map";
++
++		nic@0 {
++			network-interface = <&fec>;
++			mac-location = <&ocotp 0x88>;
++		};
++	};
+ };
+ 
+ &iomuxc {
+@@ -389,7 +398,3 @@
+ 	pinctrl-0 = <&pinctrl_i2c4_2>;
+ };
+ 
+-&ocotp {
+-	barebox,provide-mac-address = <&fec 0x620>;
+-};
+-
 -- 
 2.5.0
 
