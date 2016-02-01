@@ -2,14 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from krieglstein.org ([176.28.13.145]
  helo=lvps176-28-13-145.dedicated.hosteurope.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aQF9X-00064N-B4
- for barebox@lists.infradead.org; Mon, 01 Feb 2016 14:08:36 +0000
+ id 1aQH3J-0006Jm-Tt
+ for barebox@lists.infradead.org; Mon, 01 Feb 2016 16:10:17 +0000
 From: Tim Sander <tim@krieglstein.org>
-Date: Mon, 01 Feb 2016 15:07:35 +0100
-Message-ID: <1657046.j4o6hCTdX5@dabox>
-In-Reply-To: <1959143.WKNYxMdcMV@dabox>
-References: <3762339.hZBQLlnv2u@dabox> <20160201134527.GD24820@pengutronix.de>
- <1959143.WKNYxMdcMV@dabox>
+Date: Mon, 01 Feb 2016 17:09:17 +0100
+Message-ID: <2936535.PfmXjTYsqy@dabox>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,11 +20,11 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3] Terasic DE0-Nano-SoC: add support
+Subject: [PATCH v4] Terasic DE0-Nano-SoC: add support
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-v3: forgot to amend my changes in v2.
+v4: use the amended patch not the old one, doh. Sorry for the noise.
 
 A Patch for supporting the Terasic DE0 NANO-SoC with barebox.
 The pretty similar Socrates Board was taken as a starting point with pulling
@@ -55,10 +52,10 @@ Signed-off-by: Tim Sander <tim@krieglstein.org>
  arch/arm/configs/socfpga-xload_defconfig           |   1 +
  arch/arm/configs/socfpga_defconfig                 |   1 +
  arch/arm/dts/Makefile                              |   1 +
- arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts     | 136 +++++
+ arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts     |  34 ++
  arch/arm/mach-socfpga/Kconfig                      |   4 +
  images/Makefile.socfpga                            |   8 +
- 19 files changed, 2042 insertions(+)
+ 19 files changed, 1940 insertions(+)
  create mode 100644 arch/arm/boards/terasic-de0-nano-soc/Makefile
  create mode 100644 arch/arm/boards/terasic-de0-nano-soc/board.c
  create mode 100644 arch/arm/boards/terasic-de0-nano-soc/config.h
@@ -2085,10 +2082,10 @@ index 2da930e..1a1a419 100644
  pbl-dtb-$(CONFIG_MACH_SOLIDRUN_MICROSOM) += imx6dl-hummingboard.dtb.o imx6q-hummingboard.dtb.o
 diff --git a/arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts b/arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts
 new file mode 100644
-index 0000000..8b39f80
+index 0000000..2f5ffa9
 --- /dev/null
 +++ b/arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts
-@@ -0,0 +1,136 @@
+@@ -0,0 +1,34 @@
 +/*
 + *  Copyright (C) 2013 Steffen Trumtrar <s.trumtrar@pengutronix.de>
 + *
@@ -2106,11 +2103,11 @@ index 0000000..8b39f80
 + * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 + */
 +
-+#include <arm/socfpga_cyclone5_de0_nano_soc.dts>
++#include <arm/socfpga_cyclone5_de0_sockit.dts>
 +#include "socfpga.dtsi"
 +
 +/ {
-+       model = "Terasic DE0-Nano-SoC (Atlas)";
++       model = "Terasic DE0-Nano-SoC/Atlas-SoC Kit";
 +       compatible = "altr,socfpga-cyclone5", "altr,socfpga";
 +
 +       chosen {
@@ -2121,108 +2118,6 @@ index 0000000..8b39f80
 +       };
 +
 +       buttons: gpio-keys {
-+       };
-+};
-+
-+&gpio1 {
-+       status = "okay";
-+};
-+
-+&gpio2 {
-+       status = "okay";
-+};
-+
-+&leds {
-+       compatible = "gpio-leds";
-+
-+       led@0 {
-+               label = "0";
-+               gpios = <&portb 24 0>;
-+               linux,default-trigger = "heartbeat";
-+       };
-+
-+       led@1 {
-+               label = "1";
-+               gpios = <&portb 25 0>;
-+       };
-+
-+       led@2 {
-+               label = "2";
-+               gpios = <&portb 26 0>;
-+       };
-+
-+       led@3 {
-+               label = "3";
-+               gpios = <&portb 27 0>;
-+       };
-+};
-+
-+&buttons {
-+       compatible = "gpio-keys";
-+
-+        key@0 {
-+               label = "F1";
-+               gpios = <&portc 21 0>;
-+               linux,code = <59>;
-+       };
-+
-+        key@1 {
-+               label = "F2";
-+               gpios = <&portc 22 0>;
-+               linux,code = <60>;
-+       };
-+
-+        key@2 {
-+               label = "F3";
-+               gpios = <&portc 23 0>;
-+               linux,code = <61>;
-+       };
-+
-+        key@3 {
-+               label = "F4";
-+               gpios = <&portc 24 0>;
-+               linux,code = <62>;
-+       };
-+};
-+
-+&i2c0 {
-+       status = "disabled";
-+
-+       eeprom@51 {
-+               compatible = "atmel,24c32";
-+               reg = <0x51>;
-+               pagesize = <0x20>;
-+       };
-+};
-+
-+&i2c1 {
-+       status = "disabled";
-+
-+       adxl345@53 {
-+               compatible = "adi,adxl34x";
-+               reg = <0x53>;
-+               interrupt-parent = <0x2>;
-+               interrupts = <0x0 0xa6 0x4>;
-+       };
-+};
-+
-+&qspi {
-+       status = "okay";
-+
-+       flash: flash@0 {
-+               #address-cells = <1>;
-+               #size-cells = <1>;
-+               compatible = "n25q00";
-+               reg = <0>;
-+               spi-max-frequency = <108000000>;
-+               m25p,fast-read;
-+               cdns,page-size = <256>;
-+               cdns,block-size = <16>;
-+               cdns,read-delay = <4>;
-+               cdns,tshsl-ns = <50>;
-+               cdns,tsd2d-ns = <50>;
-+               cdns,tchsh-ns = <4>;
-+               cdns,tslch-ns = <4>;
 +       };
 +};
 diff --git a/arch/arm/mach-socfpga/Kconfig b/arch/arm/mach-socfpga/Kconfig
@@ -2261,6 +2156,7 @@ index f295c67..3c7d850 100644
  socfpga-xload-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += barebox-socfpga-sockit-xload.img
 -- 
 1.9.1
+
 
 _______________________________________________
 barebox mailing list
