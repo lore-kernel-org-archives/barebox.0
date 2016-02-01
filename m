@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pa0-x241.google.com ([2607:f8b0:400e:c03::241])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aSirF-0007e1-NP
- for barebox@lists.infradead.org; Mon, 08 Feb 2016 10:15:52 +0000
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Mon,  8 Feb 2016 11:15:23 +0100
-Message-Id: <1454926524-6210-1-git-send-email-mkl@pengutronix.de>
+ id 1aQ4tQ-0007dr-Ci
+ for barebox@lists.infradead.org; Mon, 01 Feb 2016 03:11:10 +0000
+Received: by mail-pa0-x241.google.com with SMTP id y7so471607paa.3
+ for <barebox@lists.infradead.org>; Sun, 31 Jan 2016 19:10:51 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Sun, 31 Jan 2016 19:10:10 -0800
+Message-Id: <1454296213-12734-6-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1454296213-12734-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1454296213-12734-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,85 +23,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] i.MX habv3: sort hab status codes numerically
+Subject: [PATCH v2 5/8] mdio_bus: Add mdiobus_get_bus() function
 To: barebox@lists.infradead.org
-Cc: kernel@pengutronix.de
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Add mdiobus_get_bus() -- a function to get a MDIO bus by its number
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/hab/habv3.c | 44 ++++++++++++++++++++++----------------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ drivers/net/phy/mdio_bus.c | 19 +++++++++++++++++++
+ include/linux/phy.h        |  2 ++
+ 2 files changed, 21 insertions(+)
 
-diff --git a/drivers/hab/habv3.c b/drivers/hab/habv3.c
-index 70f31a3c4d98..204b9095b393 100644
---- a/drivers/hab/habv3.c
-+++ b/drivers/hab/habv3.c
-@@ -20,35 +20,35 @@ struct hab_status {
- };
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 54d2f8f..b74b27e 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -187,6 +187,25 @@ struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr)
+ }
+ EXPORT_SYMBOL(mdiobus_scan);
  
- static struct hab_status hab_status[] = {
--	{ 0x8d, "data specified is out of bounds" },
--	{ 0x55, "error during assert verification" },
--	{ 0x36, "hash verification failed" },
--	{ 0x33, "certificate parsing failed or the certificate contained an unsupported key" },
--	{ 0x35, "signature verification failed" },
--	{ 0x4B, "CSF command sequence contains unsupported command identifier" },
--	{ 0x4e, "absence of expected CSF header" },
--	{ 0x4d, "CSF length is unsupported" },
--	{ 0x2e, "CSF TYPE does not match processor TYPE" },
--	{ 0x2d, "CSF UID does not match either processor UID or generic UID" },
--	{ 0x3a, "CSF customer/product code does not match processor customer/product code" },
--	{ 0x87, "key indexis either unsupported, or an attempt is made to overwrite the SRK from a CSF command" },
- 	{ 0x17, "SCC unexpectedly not in secure state" },
--	{ 0x1e, "secureRAM secret key invalid" },
--	{ 0x1d, "secureRAM initialization failure" },
- 	{ 0x1b, "secureRAM self test failure" },
--	{ 0x2b, "secureRAM internal failure" },
-+	{ 0x1d, "secureRAM initialization failure" },
-+	{ 0x1e, "secureRAM secret key invalid" },
- 	{ 0x27, "secureRAM secrect key unexpectedly in use" },
--	{ 0x8b, "an attempt is made to read a key from the list of subordinate public keys at a location "
--		"where no key is installed" },
--	{ 0x8e, "algorithm type is either invalid or ortherwise unsupported" },
--	{ 0x66, "write operation to register failed" },
-+	{ 0x2b, "secureRAM internal failure" },
-+	{ 0x2d, "CSF UID does not match either processor UID or generic UID" },
-+	{ 0x2e, "CSF TYPE does not match processor TYPE" },
-+	{ 0x33, "certificate parsing failed or the certificate contained an unsupported key" },
-+	{ 0x35, "signature verification failed" },
-+	{ 0x36, "hash verification failed" },
-+	{ 0x3a, "CSF customer/product code does not match processor customer/product code" },
-+	{ 0x4b, "CSF command sequence contains unsupported command identifier" },
-+	{ 0x4d, "CSF length is unsupported" },
-+	{ 0x4e, "absence of expected CSF header" },
-+	{ 0x55, "error during assert verification" },
- 	{ 0x63, "DCD invalid" },
--	{ 0x6f, "RAM application pointer is NULL or ERASED_FLASH" },
-+	{ 0x66, "write operation to register failed" },
-+	{ 0x67, "INT_BOOT fuse is blown but BOOT pins are set for external boot" },
- 	{ 0x69, "CSF missing when HAB TYPE is not HAB-disabled" },
- 	{ 0x6a, "NANDFC boot buffer load failed" },
- 	{ 0x6c, "Exception has occured" },
--	{ 0x67, "INT_BOOT fuse is blown but BOOT pins are set for external boot" },
-+	{ 0x6f, "RAM application pointer is NULL or ERASED_FLASH" },
-+	{ 0x87, "key indexis either unsupported, or an attempt is made to overwrite the SRK from a CSF command" },
- 	{ 0x88, "Successful download completion" },
-+	{ 0x8b, "an attempt is made to read a key from the list of subordinate public keys at a location "
-+	  "where no key is installed" },
-+	{ 0x8d, "data specified is out of bounds" },
-+	{ 0x8e, "algorithm type is either invalid or ortherwise unsupported" },
- };
- 
- int imx_habv3_get_status(uint32_t status)
-@@ -75,4 +75,4 @@ int imx_habv3_get_status(uint32_t status)
- int imx25_hab_get_status(void)
- {
- 	return imx_habv3_get_status(readl(IOMEM(0x780018d4)));
--}
-\ No newline at end of file
++
++/**
++ *
++ * mdio_get_bus - get a MDIO bus from its busnum
++ *
++ * @param	busnum	the desired bus number
++ *
++ */
++struct mii_bus *mdiobus_get_bus(int busnum)
++{
++	struct mii_bus *mii;
++
++	for_each_mii_bus(mii)
++		if (mii->dev.id == busnum)
++			return mii;
++
++	return NULL;
 +}
++
+ /**
+  * mdio_bus_match - determine if given PHY driver supports the given PHY device
+  * @dev: target PHY device
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 58e69da..4e88936 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -114,6 +114,8 @@ int mdiobus_detect(struct device_d *dev);
+ #define for_each_mii_bus(mii) \
+ 	list_for_each_entry(mii, &mii_bus_list, list)
+ 
++struct mii_bus *mdiobus_get_bus(int busnum);
++
+ /**
+  * mdiobus_read - Convenience function for reading a given MII mgmt register
+  * @bus: the mii_bus struct
 -- 
-2.7.0.rc3
+2.5.0
 
 
 _______________________________________________
