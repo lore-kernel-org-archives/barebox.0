@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from krieglstein.org ([176.28.13.145]
  helo=lvps176-28-13-145.dedicated.hosteurope.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aQF6U-0002YK-Cm
- for barebox@lists.infradead.org; Mon, 01 Feb 2016 14:05:55 +0000
+ id 1aQF9X-00064N-B4
+ for barebox@lists.infradead.org; Mon, 01 Feb 2016 14:08:36 +0000
 From: Tim Sander <tim@krieglstein.org>
-Date: Mon, 01 Feb 2016 15:04:26 +0100
-Message-ID: <1959143.WKNYxMdcMV@dabox>
-In-Reply-To: <20160201134527.GD24820@pengutronix.de>
-References: <3762339.hZBQLlnv2u@dabox> <1519322.ASLy3evpL3@dabox>
- <20160201134527.GD24820@pengutronix.de>
+Date: Mon, 01 Feb 2016 15:07:35 +0100
+Message-ID: <1657046.j4o6hCTdX5@dabox>
+In-Reply-To: <1959143.WKNYxMdcMV@dabox>
+References: <3762339.hZBQLlnv2u@dabox> <20160201134527.GD24820@pengutronix.de>
+ <1959143.WKNYxMdcMV@dabox>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,9 +23,11 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] Terasic DE0-Nano-SoC: add support
+Subject: [PATCH v3] Terasic DE0-Nano-SoC: add support
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+
+v3: forgot to amend my changes in v2.
 
 A Patch for supporting the Terasic DE0 NANO-SoC with barebox.
 The pretty similar Socrates Board was taken as a starting point with pulling
