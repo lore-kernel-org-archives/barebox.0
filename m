@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aQ4tT-0007dn-DK
- for barebox@lists.infradead.org; Mon, 01 Feb 2016 03:11:13 +0000
-Received: by mail-pf0-x242.google.com with SMTP id 66so6413247pfe.2
- for <barebox@lists.infradead.org>; Sun, 31 Jan 2016 19:10:50 -0800 (PST)
+ id 1aQ4tS-0007di-Cs
+ for barebox@lists.infradead.org; Mon, 01 Feb 2016 03:11:11 +0000
+Received: by mail-pf0-x241.google.com with SMTP id 65so6861645pfd.1
+ for <barebox@lists.infradead.org>; Sun, 31 Jan 2016 19:10:49 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 31 Jan 2016 19:10:09 -0800
-Message-Id: <1454296213-12734-5-git-send-email-andrew.smirnov@gmail.com>
+Date: Sun, 31 Jan 2016 19:10:08 -0800
+Message-Id: <1454296213-12734-4-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1454296213-12734-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1454296213-12734-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,31 +23,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/8] mdio_bus: Change dev_info to dev_dbg
+Subject: [PATCH v2 3/8] miitool: Fix PHY argument handling
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Andrey Gusakov <andrey.gusakov@cogentembedded.com>
 
-Change dev_info to dev_dbg in mdiobus_detect for displaying phy's
-registration status as it is in of_mdiobus_register_phy(). While that
-information is useful for debugging, user doesn't really need to see
-that information every time they call miitool for the first time.
+Instead of displaying the status of PHY "PHY" the tool will print status
+of all PHYs it encounters while searching for the one that was
+requested. This commit fixes the logic such that only requested
+information is printed.
+
+Signed-off-by: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/phy/mdio_bus.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ commands/miitool.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 0959c45..54d2f8f 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -43,7 +43,7 @@ int mdiobus_detect(struct device_d *dev)
- 		ret = phy_register_device(phydev);
- 		if (ret)
- 			dev_err(dev, "failed to register phy: %s\n", strerror(-ret));
--		dev_info(dev, "registered phy as /dev/%s\n", phydev->cdev.name);
-+		dev_dbg(dev, "registered phy as /dev/%s\n", phydev->cdev.name);
+diff --git a/commands/miitool.c b/commands/miitool.c
+index c62e758..9ee3597 100644
+--- a/commands/miitool.c
++++ b/commands/miitool.c
+@@ -233,18 +233,27 @@ static void mdiobus_show(struct device_d *dev, char *phydevname, int verbose)
+ 		struct phy_device *phydev;
+ 
+ 		phydev = mdiobus_scan(mii, i);
+-		if (IS_ERR(phydev))
++		if (IS_ERR(phydev) || !phydev->registered)
+ 			continue;
+-		if (phydev->registered) {
+ 
+-			show_basic_mii(mii, phydev, verbose);
++		/*
++		 * If we are looking for a secific phy, called
++		 * 'phydevname', but current phydev is not it, skip to
++		 * the next iteration
++		 */
++		if (phydevname &&
++		    strcmp(phydev->cdev.name, phydevname))
++			continue;
+ 
+-			if (phydevname &&
+-				!strcmp(phydev->cdev.name, phydevname)) {
+-				return;
+-			}
+-		}
++		show_basic_mii(mii, phydev, verbose);
+ 
++		/*
++		 * We were looking for a specific device and at this
++		 * point we already shown the info about it so end the
++		 * loop and exit
++		 */
++		if (phydevname)
++			break;
  	}
  
- 	return 0;
+ 	return;
 -- 
 2.5.0
 
