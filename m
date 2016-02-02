@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aQcG0-0002Pk-VH
- for barebox@lists.infradead.org; Tue, 02 Feb 2016 14:48:43 +0000
+ id 1aQcG0-0002Ph-VQ
+ for barebox@lists.infradead.org; Tue, 02 Feb 2016 14:48:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  2 Feb 2016 15:47:52 +0100
-Message-Id: <1454424497-7157-10-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  2 Feb 2016 15:47:49 +0100
+Message-Id: <1454424497-7157-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1454424497-7157-1-git-send-email-s.hauer@pengutronix.de>
 References: <1454424497-7157-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,46 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/34] scripts: imx-usb-loader: Make readonly arguments const
+Subject: [PATCH 06/34] ARM: i.MX: Add HABv3 Kconfig variables
 To: Barebox List <barebox@lists.infradead.org>
 
-The buffers passed to dump_long and dump_bytes are not (and shouldn't
-be) modified. Make the arguments const.
+For signing i.MX images with HABv3 we need several certificates. Add
+their pathes to Kconfig variables to make them available to the build
+system.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/imx/imx-usb-loader.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/arm/mach-imx/Kconfig | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-index 11ca914..f42ab67 100644
---- a/scripts/imx/imx-usb-loader.c
-+++ b/scripts/imx/imx-usb-loader.c
-@@ -190,9 +190,10 @@ static libusb_device *find_imx_dev(libusb_device **devs, struct mach_id **pp_id)
- 	return NULL;
- }
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 3f6dd77..c713e50 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -735,6 +735,28 @@ config HABV4_IMG_CRT_PEM
  
--static void dump_long(unsigned char *src, unsigned cnt, unsigned addr)
-+static void dump_long(const void *src, unsigned cnt, unsigned addr)
- {
--	unsigned *p = (unsigned *)src;
-+	const unsigned *p = (unsigned *)src;
+ endif
+ 
++config HABV3
++	tristate "HABv3 support"
++	depends on ARCH_IMX25
++	help
++	  High Assurance Boot, as found on i.MX25.
 +
- 	while (cnt >= 32) {
- 		printf("%08x: %08x %08x %08x %08x  %08x %08x %08x %08x\n",
- 				addr, p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7]);
-@@ -211,9 +212,9 @@ static void dump_long(unsigned char *src, unsigned cnt, unsigned addr)
- 	}
- }
++if HABV3
++
++config HABV3_SRK_PEM
++	string "Path to SRK Certificate (PEM)"
++	default "../crts/SRK1_sha256_2048_65537_v3_ca_x509_crt.pem"
++
++config HABV3_CSF_CRT_DER
++	string "Path to CSF certificate"
++	default "../crts/CSF1_1_sha256_2048_65537_v3_ca_crt.der"
++
++config HABV3_IMG_CRT_DER
++	string "Path to IMG certificate"
++	default "../crts/IMG1_1_sha256_2048_65537_v3_usr_crt.der"
++
++endif
++
+ endmenu
  
--static void dump_bytes(unsigned char *src, unsigned cnt, unsigned addr)
-+static void dump_bytes(const void *src, unsigned cnt, unsigned addr)
- {
--	unsigned char *p = src;
-+	const unsigned char *p = src;
- 	int i;
- 
- 	while (cnt >= 16) {
+ endif
 -- 
 2.7.0.rc3
 
