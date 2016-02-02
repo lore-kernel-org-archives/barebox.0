@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aQYlg-000502-Rq
- for barebox@lists.infradead.org; Tue, 02 Feb 2016 11:05:09 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=localhost)
- by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <jbe@pengutronix.de>) id 1aQYlJ-0007cX-Tj
- for barebox@lists.infradead.org; Tue, 02 Feb 2016 12:04:45 +0100
-From: Juergen Borleis <jbe@pengutronix.de>
-Date: Tue, 2 Feb 2016 12:06:30 +0100
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201602021206.30161.jbe@pengutronix.de>
+ id 1aQYyD-00082e-Em
+ for barebox@lists.infradead.org; Tue, 02 Feb 2016 11:18:07 +0000
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Tue,  2 Feb 2016 12:17:33 +0100
+Message-Id: <1454411855-4839-4-git-send-email-p.zabel@pengutronix.de>
+In-Reply-To: <1454411855-4839-1-git-send-email-p.zabel@pengutronix.de>
+References: <1454411855-4839-1-git-send-email-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,97 +16,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] nfs: forward filesystem options to the kernel command line
+Subject: [PATCH 4/6] net: phy: micrel: Center FLP timing at 16ms
 To: barebox@lists.infradead.org
 
-Using NFS in conjunction with boot spec and the feature to let barebox
-auto generate a kernel command line must keep the options the NFS filesystem
-was mounted in barebox.
+Based on kernel commit 6270e1ae804a ("net/phy: micrel: Center FLP
+timing at 16ms") by Jaeden Amero <jaeden.amero@ni.com>:
 
-This patch extends the kernel command line parameter on demand if something
-different than the defaults were used.
-    
-The command:
-    
-barebox:/ boot nfs://myhost//root
-    
-expands to the kernel command line:
-    
-nfsroot=myhost:/root,v3,tcp
-    
-while the command:
-    
-barebox:/ boot nfs://myhost:2049//root
-    
-now expands to the kernel command line:
-   
-nfsroot=myhost:/root,v3,tcp,mountport=2049,port=2049
-    
-Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+---
+ drivers/net/phy/micrel.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
-index 39084e5afe08..5b021f0662de 100644
---- a/Documentation/user/booting-linux.rst
-+++ b/Documentation/user/booting-linux.rst
-@@ -203,7 +203,7 @@ compatible NFS URI string must be passed to the boot command:
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 6f49e73..570272f 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -149,6 +149,11 @@ static int ksz9021_config_init(struct phy_device *phydev)
+ #define KSZ9031_PS_TO_REG		60
  
- .. code-block:: sh
- 
--  boot nfs://nfshost//path/
-+  boot nfs://nfshost[:port]//path/
- 
- Additionally to the options defined in the original spec barebox understands the
- ``linux-appendroot`` option. This is a boolean value and if set to ``true`` barebox
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 382475249fc8..14d7cb138e40 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -1324,11 +1324,21 @@ static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device_d *fsdev)
- 	free(str);
+ /* Extended registers */
++/* MMD Address 0x0 */
++#define MII_KSZ9031RN_FLP_BURST_TX_LO	3
++#define MII_KSZ9031RN_FLP_BURST_TX_HI	4
++
++/* MMD Address 0x2 */
+ #define MII_KSZ9031RN_CONTROL_PAD_SKEW	4
+ #define MII_KSZ9031RN_RX_DATA_PAD_SKEW	5
+ #define MII_KSZ9031RN_TX_DATA_PAD_SKEW	6
+@@ -192,6 +197,15 @@ static int ksz9031_of_load_skew_values(struct phy_device *phydev,
+ 	return 0;
  }
  
-+static void nfs_extend_options(char **opts, const char *ext)
++static int ksz9031_center_flp_timing(struct phy_device *phydev)
 +{
-+	size_t u;
++	/* Center KSZ9031RNX FLP timing at 16ms. */
++	phy_write_mmd_indirect(phydev, MII_KSZ9031RN_FLP_BURST_TX_HI, 0, 0x0006);
++	phy_write_mmd_indirect(phydev, MII_KSZ9031RN_FLP_BURST_TX_LO, 0, 0x1a80);
 +
-+	u = strlen(*opts);
-+	*opts = xrealloc(*opts, u + 1 + strlen(ext));
-+	strcat(*opts + u, ext);
++	return genphy_restart_aneg(phydev);
 +}
 +
- static int nfs_probe(struct device_d *dev)
+ static int ksz9031_config_init(struct phy_device *phydev)
  {
- 	struct fs_device_d *fsdev = dev_to_fs_device(dev);
- 	struct nfs_priv *npriv = xzalloc(sizeof(struct nfs_priv));
- 	char *tmp = xstrdup(fsdev->backingstore);
-+	char buf[20];
- 	char *path;
- 	int ret;
- 
-@@ -1367,6 +1377,9 @@ static int nfs_probe(struct device_d *dev)
- 			goto err2;
- 		}
- 		npriv->mount_port = ret;
-+	} else {
-+		snprintf(buf, sizeof(buf), ",mountport=%d", npriv->mount_port);
-+		nfs_extend_options(&rootnfsopts, buf);
+ 	const struct device_d *dev = &phydev->dev;
+@@ -227,7 +241,8 @@ static int ksz9031_config_init(struct phy_device *phydev)
+ 				MII_KSZ9031RN_TX_DATA_PAD_SKEW, 4,
+ 				tx_data_skews, 4);
  	}
- 	debug("mount port: %hu\n", npriv->mount_port);
+-	return 0;
++
++	return ksz9031_center_flp_timing(phydev);
+ }
  
-@@ -1378,6 +1391,9 @@ static int nfs_probe(struct device_d *dev)
- 			goto err2;
- 		}
- 		npriv->nfs_port = ret;
-+	} else {
-+		snprintf(buf, sizeof(buf), ",port=%d", npriv->nfs_port);
-+		nfs_extend_options(&rootnfsopts, buf);
- 	}
- 	debug("nfs port: %d\n", npriv->nfs_port);
- 
+ #define KSZ8873MLL_GLOBAL_CONTROL_4	0x06
+-- 
+2.7.0.rc3
+
 
 _______________________________________________
 barebox mailing list
