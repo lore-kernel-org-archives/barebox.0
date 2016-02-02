@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1aQcG6-0004if-Ob
- for barebox@lists.infradead.org; Tue, 02 Feb 2016 14:48:51 +0000
+ id 1aQcG2-0004iZ-6l
+ for barebox@lists.infradead.org; Tue, 02 Feb 2016 14:48:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  2 Feb 2016 15:48:08 +0100
-Message-Id: <1454424497-7157-26-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  2 Feb 2016 15:48:12 +0100
+Message-Id: <1454424497-7157-30-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1454424497-7157-1-git-send-email-s.hauer@pengutronix.de>
 References: <1454424497-7157-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,187 +21,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 25/34] scripts: imx: Create CSF files from imx config file
+Subject: [PATCH 29/34] scripts: imx-image: Factor out a read_file function
 To: Barebox List <barebox@lists.infradead.org>
 
-This is the first step to support creating signed images directly
-with the imx-image tool. i.MX images must be signed using the Freescale
-CST tool. CST needs informations already present in the imx-image tool,
-so it's convenient to call CST directly from imx-image.
-CST takes CSF files (Command Sequence Files) as input. This patch
-supports generating CSF files from the imx-image configuration file.
-This adds three new commands to the config file:
-
-hab <str>:  All options to the hab command are directly passed through to
-            the CSF.
-hab_blocks: This generates the "Blocks =" line in the CSF. This is the
-            place where the CSF needs information which is contained in
-	    the imx-image tool: The image size, the image filename and
-	    the load address.
-super_root_key <file>: For HABv3 the super root key hash is needed in
-                       the i.MX flash header. This command is used to
-		       specify the path to the super root key. Needed
-		       for HABv3 only.
+The same code will be used a second time in a followup patch, so
+factor out a common function.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/imx/imx.c | 108 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
- scripts/imx/imx.h |   2 +
- 2 files changed, 109 insertions(+), 1 deletion(-)
+ scripts/imx/imx-image.c | 46 ++++++++++++++++++++++++++++++----------------
+ 1 file changed, 30 insertions(+), 16 deletions(-)
 
-diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-index 0e260c4..6b397fc 100644
---- a/scripts/imx/imx.c
-+++ b/scripts/imx/imx.c
-@@ -16,6 +16,7 @@
-  *
-  */
- 
-+#define _GNU_SOURCE
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-@@ -25,7 +26,7 @@
- 
- #include "imx.h"
- 
--#define MAXARGS 5
-+#define MAXARGS 32
- 
- static int parse_line(char *line, char *argv[])
- {
-@@ -232,6 +233,102 @@ static int do_soc(struct config_data *data, int argc, char *argv[])
- 	return -EINVAL;
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index 5eca446..78bbbbc 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -570,6 +570,34 @@ static int hab_sign(struct config_data *data)
+ 	return 0;
  }
  
-+static int hab_add_str(struct config_data *data, const char *str)
++static void *read_file(const char *filename, size_t *size)
 +{
-+	int len = strlen(str);
++	int fd, ret;
++	void *buf;
++	struct stat s;
 +
-+	if (data->csf_space < len)
-+		return -ENOMEM;
-+
-+	strcat(data->csf, str);
-+
-+	data->csf_space -= len;
-+
-+	return 0;
-+}
-+
-+static int do_hab(struct config_data *data, int argc, char *argv[])
-+{
-+	int i, ret;
-+
-+	if (!data->csf) {
-+		data->csf_space = 0x10000;
-+
-+		data->csf = malloc(data->csf_space + 1);
-+		if (!data->csf)
-+			return -ENOMEM;
++	fd = open(filename, O_RDONLY);
++	if (fd < 0) {
++		perror("open");
++		exit(1);
 +	}
 +
-+	for (i = 1; i < argc; i++) {
-+		ret = hab_add_str(data, argv[i]);
-+		if (ret)
-+			return ret;
-+
-+		ret = hab_add_str(data, " ");
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = hab_add_str(data, "\n");
++	ret = fstat(fd, &s);
 +	if (ret)
-+		return ret;
++		return NULL;
 +
-+	return 0;
++	*size = s.st_size;
++	buf = malloc(*size);
++	if (!buf)
++		exit(1);
++
++	xread(fd, buf, *size);
++
++	close(fd);
++
++	return buf;
 +}
 +
-+static int do_hab_blocks(struct config_data *data, int argc, char *argv[])
-+{
-+	char *str;
-+	int ret;
-+
-+	if (!data->csf)
-+		return -EINVAL;
-+
-+	ret = asprintf(&str, "Blocks = 0x%08x 0 %d \"%s\"\n",
-+		       data->image_load_addr,
-+		       data->load_size, data->outfile);
-+	if (ret < 0)
-+		return -ENOMEM;
-+
-+	ret = hab_add_str(data, str);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int do_super_root_key(struct config_data *data, int argc, char *argv[])
-+{
-+	int len;
-+	char *srkfile;
-+
-+	if (argc != 2) {
-+		fprintf(stderr, "usage: super_root_key <keyfile>\n");
-+		return -EINVAL;
-+	}
-+
-+	if (data->cpu_type != 35 && data->cpu_type != 25) {
-+		fprintf(stderr, "Warning: The super_root_key command is meaningless "
-+			"on non HABv3 based SoCs\n");
-+		return 0;
-+	}
-+
-+	srkfile = argv[1];
-+
-+	if (*srkfile == '"')
-+		srkfile++;
-+
-+	data->srkfile = strdup(srkfile);
-+	if (!data->srkfile)
-+		return -ENOMEM;
-+
-+	len = strlen(data->srkfile);
-+	if (data->srkfile[len - 1] == '"')
-+		data->srkfile[len - 1] = 0;
-+
-+	return 0;
-+}
-+
- struct command cmds[] = {
- 	{
- 		.name = "wm",
-@@ -248,6 +345,15 @@ struct command cmds[] = {
- 	}, {
- 		.name = "soc",
- 		.parse = do_soc,
-+	}, {
-+		.name = "hab",
-+		.parse = do_hab,
-+	}, {
-+		.name = "hab_blocks",
-+		.parse = do_hab_blocks,
-+	}, {
-+		.name = "super_root_key",
-+		.parse = do_super_root_key,
- 	},
- };
+ int main(int argc, char *argv[])
+ {
+ 	int opt, ret;
+@@ -579,7 +607,7 @@ int main(int argc, char *argv[])
+ 	size_t insize;
+ 	void *infile;
+ 	struct stat s;
+-	int infd, outfd;
++	int outfd;
+ 	int dcd_only = 0;
+ 	int now = 0;
+ 	int sign_image = 0;
+@@ -704,24 +732,10 @@ int main(int argc, char *argv[])
+ 		exit(1);
+ 	}
  
-diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
-index bc7d4ee..0876370 100644
---- a/scripts/imx/imx.h
-+++ b/scripts/imx/imx.h
-@@ -62,6 +62,8 @@ struct config_data {
- 	int cpu_type;
- 	int (*check)(struct config_data *data, uint32_t cmd, uint32_t addr, uint32_t mask);
- 	int (*write_mem)(struct config_data *data, uint32_t addr, uint32_t val, int width);
-+	int csf_space;
-+	char *csf;
- };
+-	infd = open(imagename, O_RDONLY);
+-	if (infd < 0) {
+-		perror("open");
+-		exit(1);
+-	}
+-
+-	ret = fstat(infd, &s);
+-	if (ret)
+-		return ret;
+-
+-	insize = s.st_size;
+-	infile = malloc(insize);
++	infile = read_file(imagename, &insize);
+ 	if (!infile)
+ 		exit(1);
  
- int parse_config(struct config_data *data, const char *filename);
+-	xread(infd, infile, insize);
+-	close(infd);
+-
+ 	outfd = open(data.outfile, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+ 	if (outfd < 0) {
+ 		perror("open");
 -- 
 2.7.0.rc3
 
