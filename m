@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1aQcGA-0006tc-00
- for barebox@lists.infradead.org; Tue, 02 Feb 2016 14:48:50 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aQcG0-0002Pc-VJ
+ for barebox@lists.infradead.org; Tue, 02 Feb 2016 14:48:49 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1aQcFf-0001v3-5s
+ for barebox@lists.infradead.org; Tue, 02 Feb 2016 15:48:19 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.86)
+ (envelope-from <sha@pengutronix.de>) id 1aQcFe-0004Wh-Un
+ for barebox@lists.infradead.org; Tue, 02 Feb 2016 15:48:18 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  2 Feb 2016 15:48:10 +0100
-Message-Id: <1454424497-7157-28-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1454424497-7157-1-git-send-email-s.hauer@pengutronix.de>
-References: <1454424497-7157-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  2 Feb 2016 15:47:43 +0100
+Message-Id: <1454424497-7157-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,337 +26,168 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 27/34] scripts: imx: Generate signed images with imx-image
+Subject: [PATCH v2] i.MX HABv4 rework and HABv3 support
 To: Barebox List <barebox@lists.infradead.org>
 
-The imx-image tool can now generate signed images itself, so we can
-switch to this mechanism:
+This series reworks the i.MX HABv4 support and adds support for HABv3 as
+found on i.MX25, i.MX35 and i.MX51.
 
-- Move the CSF templates to header files which can be included by the
-  flash config files
-- remove images/Makefile.imxhabv4 which is no longer necessary.
+HABv4 support was implemented using a relatively complicated makefile
+in images/Makefile.imxhabv4. Since the makefiles in images/ are
+complicated enough already this is changed in this series. We now
+call CST directly from imx-image. With this we can configure CST
+from the imx-image configuration file. No additional Makefile changes
+are needed, so we can remove Makefile.imxhabv4.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- .../arm/mach-imx/include/mach/habv3-imx25-gencsf.h | 43 +++++++++++++++++++
- arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h | 44 ++++++++++++++++++++
- images/Makefile                                    |  1 -
- images/Makefile.imxhabv4                           | 48 ----------------------
- scripts/habv4/gencsf.sh                            | 47 ---------------------
- scripts/habv4/habv4-imx28.csf.in                   | 33 ---------------
- scripts/habv4/habv4-imx6.csf.in                    | 37 -----------------
- 7 files changed, 87 insertions(+), 166 deletions(-)
+This series also adds HABv3 support. This is slightly different from
+HABv4 support. For HABv3 the CSF needs the certificates in DER format
+rather than PEM format. Also the super root key hash is not included
+in the CSF but in the flash header.
+
+This series has been tested on an i.MX25 for HABv3 and an i.MX6 for
+HABv4.
+
+Sascha
+
+Changes since v1:
+
+- create a common include directory for commonly used defines
+- Add an option to imx-image to create images suitable for USB upload
+
+----------------------------------------------------------------
+Sascha Hauer (34):
+      scripts: Add common header files for tools
+      scripts/include: Add ARRAY_SIZE
+      scripts: Add scripts/include to host compiler includes
+      scripts: imx: Use Kernel includes
+      scripts: mxs: Use Kernel includes
+      ARM: i.MX: Add HABv3 Kconfig variables
+      imx: hab: rename driver dir to hab/
+      hab: Add HABv3 status report function
+      scripts: imx-usb-loader: Make readonly arguments const
+      scripts: imx-usb-loader: Move definitions up
+      scripts: imx-image: Allow dcd offset 0x0
+      scripts: imx-usb-loader: fully read images into memory
+      scripts: imx-usb-loader: Move load_file up
+      scripts: imx: Consolidate flash headers in imx tools
+      scripts: imx-image: Add context struct to config parsers
+      scripts: imx-image: move write_mem to context data
+      scripts: imx-image: move check to context data
+      scripts: imx: move config file parser to separate file
+      scripts: imx: make libusb variables global
+      scripts: imx-usb-loader: Add -s and -i options
+      scripts: imx: Drop double check
+      scripts: imx-image: move more variables to context data
+      scripts: imx-image: pass config data to add_header_*
+      scripts: imx-image: Support adding a Super Root Key to the image
+      scripts: imx: Create CSF files from imx config file
+      scripts: imx: Allow to create signed images
+      scripts: imx: Generate signed images with imx-image
+      scripts: imx-usb-loader: Use dcd len to invalidate dcd data
+      scripts: imx-image: Factor out a read_file function
+      scripts: imx-image: Allow to create HAB signed images suitable for USB upload
+      Make: i.MX: Allow to pass config file to cmd_imx_image
+      images: imx: Add targets for signed images and signed usb images
+      scripts: imx-usb-loader: Do not zero out boot_data_ptr
+      imx: hab: Make hab status functions SoC specific
+
+ arch/arm/mach-imx/Kconfig                          |  34 +
+ .../arm/mach-imx/include/mach/habv3-imx25-gencsf.h |  43 ++
+ arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h |  44 ++
+ drivers/Makefile                                   |   2 +-
+ drivers/hab/Makefile                               |   2 +
+ drivers/hab/habv3.c                                |  78 ++
+ drivers/{habv4 => hab}/habv4.c                     |  48 +-
+ drivers/habv4/Makefile                             |   1 -
+ images/Makefile                                    |   4 +-
+ images/Makefile.imx                                |  10 +-
+ images/Makefile.imxhabv4                           |  48 --
+ include/{habv4.h => hab.h}                         |  18 +-
+ scripts/Makefile                                   |   1 +
+ scripts/Makefile.lib                               |   4 +-
+ scripts/habv4/gencsf.sh                            |  47 --
+ scripts/habv4/habv4-imx28.csf.in                   |  33 -
+ scripts/habv4/habv4-imx6.csf.in                    |  37 -
+ scripts/imx/Makefile                               |   8 +-
+ scripts/imx/imx-image.c                            | 826 ++++++++++-----------
+ scripts/imx/imx-usb-loader.c                       | 671 +++++++----------
+ scripts/imx/imx.c                                  | 444 +++++++++++
+ scripts/imx/imx.h                                  |  72 ++
+ scripts/include/asm-generic/atomic-gcc.h           |  63 ++
+ scripts/include/asm-generic/barrier.h              |  44 ++
+ scripts/include/asm-generic/bitops.h               |  29 +
+ scripts/include/asm-generic/bitops/__ffs.h         |  43 ++
+ scripts/include/asm-generic/bitops/__fls.h         |   1 +
+ scripts/include/asm-generic/bitops/arch_hweight.h  |   1 +
+ scripts/include/asm-generic/bitops/atomic.h        |  22 +
+ scripts/include/asm-generic/bitops/const_hweight.h |   1 +
+ scripts/include/asm-generic/bitops/find.h          |  33 +
+ scripts/include/asm-generic/bitops/fls.h           |   1 +
+ scripts/include/asm-generic/bitops/fls64.h         |   1 +
+ scripts/include/asm-generic/bitops/hweight.h       |   7 +
+ scripts/include/asm/atomic.h                       |  10 +
+ scripts/include/asm/barrier.h                      |  27 +
+ scripts/include/asm/bug.h                          |  25 +
+ scripts/include/linux/atomic.h                     |   6 +
+ scripts/include/linux/bitmap.h                     |  68 ++
+ scripts/include/linux/bitops.h                     |  58 ++
+ scripts/include/linux/compiler.h                   | 118 +++
+ scripts/include/linux/err.h                        |  49 ++
+ scripts/include/linux/export.h                     |  10 +
+ scripts/include/linux/kernel.h                     | 109 +++
+ scripts/include/linux/list.h                       | 771 +++++++++++++++++++
+ scripts/include/linux/log2.h                       | 185 +++++
+ scripts/include/linux/poison.h                     |   1 +
+ scripts/include/linux/string.h                     |  15 +
+ scripts/include/linux/types.h                      |  83 +++
+ scripts/include/tools/be_byteshift.h               |  70 ++
+ scripts/include/tools/endian.h                     |  56 ++
+ scripts/include/tools/le_byteshift.h               |  70 ++
+ scripts/mxsimage.c                                 |   4 +-
+ 53 files changed, 3442 insertions(+), 1014 deletions(-)
  create mode 100644 arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
  create mode 100644 arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
+ create mode 100644 drivers/hab/Makefile
+ create mode 100644 drivers/hab/habv3.c
+ rename drivers/{habv4 => hab}/habv4.c (92%)
+ delete mode 100644 drivers/habv4/Makefile
  delete mode 100644 images/Makefile.imxhabv4
+ rename include/{habv4.h => hab.h} (71%)
  delete mode 100755 scripts/habv4/gencsf.sh
  delete mode 100644 scripts/habv4/habv4-imx28.csf.in
  delete mode 100644 scripts/habv4/habv4-imx6.csf.in
-
-diff --git a/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h b/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
-new file mode 100644
-index 0000000..4b81d49
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
-@@ -0,0 +1,43 @@
-+/*
-+ * This snippet can be included from a i.MX flash header configuration
-+ * file for generating signed images. The necessary keys/certificates
-+ * are expected in these config variables:
-+ *
-+ * CONFIG_HABV3_SRK_PEM
-+ * CONFIG_HABV3_SRK_PEM
-+ * CONFIG_HABV3_IMG_CRT_PEM
-+ */
-+super_root_key CONFIG_HABV3_SRK_PEM
-+
-+hab [Header]
-+hab Version = 3.0
-+hab Security Configuration = Engineering
-+hab Hash Algorithm = SHA256
-+hab Engine = RTIC
-+hab Certificate Format = WTLS
-+hab Signature Format = PKCS1
-+hab UID = Generic
-+hab Code = 0x00
-+
-+hab [Install SRK]
-+hab File = "not-used"
-+
-+hab [Install CSFK]
-+hab File = CONFIG_HABV3_CSF_CRT_DER
-+
-+hab [Authenticate CSF]
-+/* below is the command that unlock the access to the DryIce registers */
-+
-+hab [Write Data]
-+hab Width = 4
-+hab Address Data = 0x53FFC03C 0xCA693569
-+
-+hab [Install Key]
-+hab Verification index = 1
-+hab Target index = 2
-+hab File = CONFIG_HABV3_IMG_CRT_DER
-+
-+hab [Authenticate Data]
-+hab Verification index = 2
-+
-+hab_blocks
-diff --git a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-new file mode 100644
-index 0000000..1a143a8
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-@@ -0,0 +1,44 @@
-+/*
-+ * This snippet can be included from a i.MX flash header configuration
-+ * file for generating signed images. The necessary keys/certificates
-+ * are expected in these config variables:
-+ *
-+ * CONFIG_HABV4_TABLE_BIN
-+ * CONFIG_HABV4_CSF_CRT_PEM
-+ * CONFIG_HABV4_IMG_CRT_PEM
-+ */
-+
-+hab [Header]
-+hab Version = 4.1
-+hab Hash Algorithm = sha256
-+hab Engine Configuration = 0
-+hab Certificate Format = X509
-+hab Signature Format = CMS
-+hab Engine = CAAM
-+
-+hab [Install SRK]
-+hab File = CONFIG_HABV4_TABLE_BIN
-+hab # SRK index within SRK-Table 0..3
-+hab Source index = 0
-+
-+hab [Install CSFK]
-+hab File = CONFIG_HABV4_CSF_CRT_PEM
-+
-+hab [Authenticate CSF]
-+
-+hab [Unlock]
-+hab Engine = CAAM
-+hab Features = RNG
-+
-+hab [Install Key]
-+/* verification key index in key store (0, 2...5) */
-+hab Verification index = 0
-+/* target key index in key store (2...5) */
-+hab Target index = 2
-+hab File = CONFIG_HABV4_IMG_CRT_PEM
-+
-+hab [Authenticate Data]
-+/* verification key index in key store (2...5) */
-+hab Verification index = 2
-+
-+hab_blocks
-\ No newline at end of file
-diff --git a/images/Makefile b/images/Makefile
-index 6a44511..2422969 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -104,7 +104,6 @@ objboard = $(objtree)/arch/$(ARCH)/boards
- 
- include $(srctree)/images/Makefile.am33xx
- include $(srctree)/images/Makefile.imx
--include $(srctree)/images/Makefile.imxhabv4
- include $(srctree)/images/Makefile.mvebu
- include $(srctree)/images/Makefile.mxs
- include $(srctree)/images/Makefile.omap3
-diff --git a/images/Makefile.imxhabv4 b/images/Makefile.imxhabv4
-deleted file mode 100644
-index 9eb9538..0000000
---- a/images/Makefile.imxhabv4
-+++ /dev/null
-@@ -1,48 +0,0 @@
--# -*-makefile-*-
--#
--# barebox image generation Makefile for HABv4 images
--#
--
--# default csf templates
--havb4_imx6csf = $(srctree)/scripts/habv4/habv4-imx6.csf.in
--habv4_imx2csf = $(srctree)/scripts/habv4/habv4-imx28.csf.in
--
--# %.imximg.prep - Convert in i.MX image, with preparation for signature
--# ----------------------------------------------------------------
--quiet_cmd_imx_prep_image = IMX-PREP-IMG $@
--      cmd_imx_prep_image = $(CPP) $(imxcfg_cpp_flags) -o $(imximg-tmp) $(word 2,$^) ; \
--			   $< -o $@ -b -c $(imximg-tmp) -p -f $(word 3,$^)
--
--.SECONDEXPANSION:
--$(obj)/%.imximg.prep: $(objtree)/scripts/imx/imx-image $$(CFG_%.imximg) $(obj)/%
--	$(call if_changed,imx_prep_image)
--
--# %.habv4.csf - create Command Sequence File from template
--# ----------------------------------------------------------------
--quiet_cmd_csf = CSF     $@
--      cmd_csf = TABLE_BIN=$(CONFIG_HABV4_TABLE_BIN) \
--		CSF_CRT_PEM=$(CONFIG_HABV4_CSF_CRT_PEM) \
--		IMG_CRT_PEM=$(CONFIG_HABV4_IMG_CRT_PEM) \
--		$< -f $(word 2,$^) -c $(word 3,$^) -i $(word 4,$^) -o $@
--
--.SECONDEXPANSION:
--$(obj)/%.habv4.csf: $(srctree)/scripts/habv4/gencsf.sh $(obj)/%.prep $$(CFG_%) $$(CSF_%)
--	$(call if_changed,csf)
--
--# %.habv4.sig - create signature and pad to 0x2000
--# ----------------------------------------------------------------
--CST = cst
--quiet_cmd_habv4_sig = HAB4SIG $@
--      cmd_habv4_sig = $(CST) -o $(imximg-tmp) < $(word 2,$^) > /dev/null; \
--		      $(OBJCOPY) -I binary -O binary --pad-to 0x2000 --gap-fill=0x5a $(imximg-tmp) $@
--
--$(obj)/%.habv4.sig: $(obj)/%.prep $(obj)/%.habv4.csf
--	$(call if_changed,habv4_sig)
--
--# %.imximg.signed - concatenate bootloader and signature
--# ----------------------------------------------------------------
--quiet_cmd_cat = CAT     $@
--      cmd_cat = cat $^ > $@
--
--$(obj)/%.imximg.signed: $(obj)/%.imximg.prep $(obj)/%.imximg.habv4.sig
--	$(call if_changed,cat)
-diff --git a/scripts/habv4/gencsf.sh b/scripts/habv4/gencsf.sh
-deleted file mode 100755
-index 2c1c34a..0000000
---- a/scripts/habv4/gencsf.sh
-+++ /dev/null
-@@ -1,47 +0,0 @@
--#!/bin/sh
--
--set -e
--
--while getopts "f:c:i:o:" opt; do
--    case $opt in
--	f)
--	    file=$OPTARG
--	    ;;
--	c)
--	    cfg=$OPTARG
--	    ;;
--	i)
--	    in=$OPTARG
--	    ;;
--	o)
--	    out=$OPTARG
--	    ;;
--	\?)
--	    echo "Invalid option: -$OPTARG" >&2
--	    exit 1
--	;;
--    esac
--done
--
--if [ ! -e $file -o ! -e $cfg -o ! -e $in ]; then
--    echo "file not found!"
--    exit 1
--fi
--
--#
--# extract and set as shell vars:
--# loadaddr=
--# dcdofs=
--#
--eval $(sed -n -e "s/^[[:space:]]*\(loadaddr\|dcdofs\)[[:space:]]*\(0x[0-9]*\)/\1=\2/p" $cfg)
--
--length=$(stat -c '%s' $file)
--
--sed -e "s:@TABLE_BIN@:$TABLE_BIN:" \
--    -e "s:@CSF_CRT_PEM@:$CSF_CRT_PEM:" \
--    -e "s:@IMG_CRT_PEM@:$IMG_CRT_PEM:" \
--    -e "s:@LOADADDR@:$loadaddr:" \
--    -e "s:@OFFSET@:0:" \
--    -e "s:@LENGTH@:$length:" \
--    -e "s:@FILE@:$file:" \
--    $in > $out
-diff --git a/scripts/habv4/habv4-imx28.csf.in b/scripts/habv4/habv4-imx28.csf.in
-deleted file mode 100644
-index 5efd25b..0000000
---- a/scripts/habv4/habv4-imx28.csf.in
-+++ /dev/null
-@@ -1,33 +0,0 @@
--[Header]
--Version = 4.0
--Hash Algorithm = sha256
--Engine Configuration = 0
--Certificate Format = X509
--Signature Format = CMS
--Engine = DCP
--
--[Install SRK]
--File = "@TABLE_BIN@"
--# SRK index within SRK-Table 0..3
--Source index = 0
--
--[Install CSFK]
--File = "@CSF_CRT_PEM@"
--
--[Authenticate CSF]
--
--[Install Key]
--# verification key index in key store (0, 2...5)
--Verification index = 0
--# target key index in key store (2...5)
--Target index = 2
--File = "@IMG_CRT_PEM@"
--
--[Authenticate Data]
--# verification key index in key store (2...5)
--Verification index = 2
--# "starting load address in memory"
--# "starting offset within the source file"
--# "length (in bytes)"
--# "file (binary)"
--Blocks = @LOADADDR@ @OFFSET@ @LENGTH@ "@FILE@"
-diff --git a/scripts/habv4/habv4-imx6.csf.in b/scripts/habv4/habv4-imx6.csf.in
-deleted file mode 100644
-index 11a5db9..0000000
---- a/scripts/habv4/habv4-imx6.csf.in
-+++ /dev/null
-@@ -1,37 +0,0 @@
--[Header]
--Version = 4.1
--Hash Algorithm = sha256
--Engine Configuration = 0
--Certificate Format = X509
--Signature Format = CMS
--Engine = CAAM
--
--[Install SRK]
--File = "@TABLE_BIN@"
--# SRK index within SRK-Table 0..3
--Source index = 0
--
--[Install CSFK]
--File = "@CSF_CRT_PEM@"
--
--[Authenticate CSF]
--
--[Unlock]
--Engine = CAAM
--Features = RNG
--
--[Install Key]
--# verification key index in key store (0, 2...5)
--Verification index = 0
--# target key index in key store (2...5)
--Target index = 2
--File = "@IMG_CRT_PEM@"
--
--[Authenticate Data]
--# verification key index in key store (2...5)
--Verification index = 2
--# "starting load address in memory"
--# "starting offset within the source file"
--# "length (in bytes)"
--# "file (binary)"
--Blocks = @LOADADDR@ @OFFSET@ @LENGTH@ "@FILE@"
--- 
-2.7.0.rc3
-
+ create mode 100644 scripts/imx/imx.c
+ create mode 100644 scripts/imx/imx.h
+ create mode 100644 scripts/include/asm-generic/atomic-gcc.h
+ create mode 100644 scripts/include/asm-generic/barrier.h
+ create mode 100644 scripts/include/asm-generic/bitops.h
+ create mode 100644 scripts/include/asm-generic/bitops/__ffs.h
+ create mode 100644 scripts/include/asm-generic/bitops/__fls.h
+ create mode 100644 scripts/include/asm-generic/bitops/arch_hweight.h
+ create mode 100644 scripts/include/asm-generic/bitops/atomic.h
+ create mode 100644 scripts/include/asm-generic/bitops/const_hweight.h
+ create mode 100644 scripts/include/asm-generic/bitops/find.h
+ create mode 100644 scripts/include/asm-generic/bitops/fls.h
+ create mode 100644 scripts/include/asm-generic/bitops/fls64.h
+ create mode 100644 scripts/include/asm-generic/bitops/hweight.h
+ create mode 100644 scripts/include/asm/atomic.h
+ create mode 100644 scripts/include/asm/barrier.h
+ create mode 100644 scripts/include/asm/bug.h
+ create mode 100644 scripts/include/linux/atomic.h
+ create mode 100644 scripts/include/linux/bitmap.h
+ create mode 100644 scripts/include/linux/bitops.h
+ create mode 100644 scripts/include/linux/compiler.h
+ create mode 100644 scripts/include/linux/err.h
+ create mode 100644 scripts/include/linux/export.h
+ create mode 100644 scripts/include/linux/kernel.h
+ create mode 100644 scripts/include/linux/list.h
+ create mode 100644 scripts/include/linux/log2.h
+ create mode 100644 scripts/include/linux/poison.h
+ create mode 100644 scripts/include/linux/string.h
+ create mode 100644 scripts/include/linux/types.h
+ create mode 100644 scripts/include/tools/be_byteshift.h
+ create mode 100644 scripts/include/tools/endian.h
+ create mode 100644 scripts/include/tools/le_byteshift.h
 
 _______________________________________________
 barebox mailing list
