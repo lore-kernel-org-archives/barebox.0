@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1aQcG6-0004ih-OW
- for barebox@lists.infradead.org; Tue, 02 Feb 2016 14:48:47 +0000
+ id 1aQcG6-0004if-Ob
+ for barebox@lists.infradead.org; Tue, 02 Feb 2016 14:48:51 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  2 Feb 2016 15:48:13 +0100
-Message-Id: <1454424497-7157-31-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  2 Feb 2016 15:48:08 +0100
+Message-Id: <1454424497-7157-26-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1454424497-7157-1-git-send-email-s.hauer@pengutronix.de>
 References: <1454424497-7157-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,158 +21,187 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 30/34] scripts: imx-image: Allow to create HAB signed images
- suitable for USB upload
+Subject: [PATCH 25/34] scripts: imx: Create CSF files from imx config file
 To: Barebox List <barebox@lists.infradead.org>
 
-For USB upload we must execute the DCD table manually and
-invalidate the DCD table in the uploaded image afterwards
-to prevent the ROM from executing the DCD data again. Doing this
-changes the image and thus also invalidates the signature. To
-make HAB signed images suitable for USB upload possible we add an
-option to create HAB signed images suitable for USB upload. With
-this option the image is created like this:
+This is the first step to support creating signed images directly
+with the imx-image tool. i.MX images must be signed using the Freescale
+CST tool. CST needs informations already present in the imx-image tool,
+so it's convenient to call CST directly from imx-image.
+CST takes CSF files (Command Sequence Files) as input. This patch
+supports generating CSF files from the imx-image configuration file.
+This adds three new commands to the config file:
 
-- The image is created like usual, but with already invalidated DCD
-  data (DCD length is set to zero)
-- This image is then signed using the CST
-- After this the DCD data is made valid (Set DCD length to the real
-  length)
-
-imx-usb-loader now finds valid DCD data, executes it and by invalidating
-the DCD data it restores the state the image had during signing.
+hab <str>:  All options to the hab command are directly passed through to
+            the CSF.
+hab_blocks: This generates the "Blocks =" line in the CSF. This is the
+            place where the CSF needs information which is contained in
+	    the imx-image tool: The image size, the image filename and
+	    the load address.
+super_root_key <file>: For HABv3 the super root key hash is needed in
+                       the i.MX flash header. This command is used to
+		       specify the path to the super root key. Needed
+		       for HABv3 only.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/imx/imx-image.c | 60 ++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 54 insertions(+), 6 deletions(-)
+ scripts/imx/imx.c | 108 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ scripts/imx/imx.h |   2 +
+ 2 files changed, 109 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index 78bbbbc..20815bf 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -40,6 +40,7 @@
- static uint32_t dcdtable[MAX_DCD];
- static int curdcd;
- static int add_barebox_header;
-+static int create_usb_image;
- static char *prgname;
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index 0e260c4..6b397fc 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -16,6 +16,7 @@
+  *
+  */
  
- /*
-@@ -197,6 +198,9 @@ static int add_srk(void *buf, int offset, uint32_t loadaddr, const char *srkfile
- }
- #endif /* IMXIMAGE_SSL_SUPPORT */
++#define _GNU_SOURCE
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -25,7 +26,7 @@
  
-+static int dcd_ptr_offset;
-+static uint32_t dcd_ptr_content;
-+
- static int add_header_v1(struct config_data *data, void *buf)
+ #include "imx.h"
+ 
+-#define MAXARGS 5
++#define MAXARGS 32
+ 
+ static int parse_line(char *line, char *argv[])
  {
- 	struct imx_flash_header *hdr;
-@@ -219,10 +223,17 @@ static int add_header_v1(struct config_data *data, void *buf)
- 	hdr->app_code_csf = 0x0;
- 	hdr->dcd_ptr_ptr = loadaddr + offset + offsetof(struct imx_flash_header, dcd);
- 	hdr->super_root_key = 0x0;
--	hdr->dcd = loadaddr + offset + offsetof(struct imx_flash_header, dcd_barker);
-+	hdr->dcd =  loadaddr + offset + offsetof(struct imx_flash_header, dcd_barker);
-+
- 	hdr->app_dest = loadaddr;
- 	hdr->dcd_barker = DCD_BARKER;
--	hdr->dcd_block_len = dcdsize;
-+	if (create_usb_image) {
-+		dcd_ptr_offset = offsetof(struct imx_flash_header, dcd_block_len) + offset;
-+		hdr->dcd_block_len = 0;
-+		dcd_ptr_content = dcdsize;
-+	} else {
-+		hdr->dcd_block_len = dcdsize;
-+	}
- 
- 	buf += sizeof(struct imx_flash_header);
- 
-@@ -281,6 +292,11 @@ static int add_header_v2(struct config_data *data, void *buf)
- 
- 	hdr->entry		= loadaddr + HEADER_LEN;
- 	hdr->dcd_ptr		= loadaddr + offset + offsetof(struct imx_flash_header_v2, dcd_header);
-+	if (create_usb_image) {
-+		dcd_ptr_content = hdr->dcd_ptr;
-+		dcd_ptr_offset = offsetof(struct imx_flash_header_v2, dcd_ptr) + offset;
-+		hdr->dcd_ptr = 0;
-+	}
- 	hdr->boot_data_ptr	= loadaddr + offset + offsetof(struct imx_flash_header_v2, boot_data);
- 	hdr->self		= loadaddr + offset;
- 
-@@ -619,7 +635,7 @@ int main(int argc, char *argv[])
- 
- 	prgname = argv[0];
- 
--	while ((opt = getopt(argc, argv, "c:hf:o:bds")) != -1) {
-+	while ((opt = getopt(argc, argv, "c:hf:o:bdus")) != -1) {
- 		switch (opt) {
- 		case 'c':
- 			configfile = optarg;
-@@ -639,6 +655,9 @@ int main(int argc, char *argv[])
- 		case 's':
- 			sign_image = 1;
- 			break;
-+		case 'u':
-+			create_usb_image = 1;
-+			break;
- 		case 'h':
- 			usage(argv[0]);
- 		default:
-@@ -688,14 +707,20 @@ int main(int argc, char *argv[])
- 	if (!sign_image)
- 		data.csf = NULL;
- 
-+	if (create_usb_image && !data.csf) {
-+		fprintf(stderr, "Warning: the -u option only has effect with signed images\n");
-+		create_usb_image = 0;
-+	}
-+
- 	buf = calloc(1, HEADER_LEN);
- 	if (!buf)
- 		exit(1);
- 
- 	if (data.image_dcd_offset == 0xffffffff) {
--		fprintf(stderr, "no dcd offset given ('dcdofs'). Defaulting to 0x%08x\n",
--			FLASH_HEADER_OFFSET);
--		data.image_dcd_offset = FLASH_HEADER_OFFSET;
-+		if (create_usb_image)
-+			data.image_dcd_offset = 0x0;
-+		else
-+			data.image_dcd_offset = FLASH_HEADER_OFFSET;
- 	}
- 
- 	if (!data.header_version) {
-@@ -786,5 +811,28 @@ int main(int argc, char *argv[])
- 			exit(1);
- 	}
- 
-+	if (create_usb_image) {
-+		uint32_t *dcd;
-+
-+		infile = read_file(data.outfile, &insize);
-+
-+		dcd = infile + dcd_ptr_offset;
-+		*dcd = dcd_ptr_content;
-+
-+		outfd = open(data.outfile, O_WRONLY | O_TRUNC);
-+		if (outfd < 0) {
-+			fprintf(stderr, "Cannot open %s: %s\n", data.outfile, strerror(errno));
-+			exit(1);
-+		}
-+
-+		ret = xwrite(outfd, infile, insize);
-+		if (ret < 0) {
-+			perror("write");
-+			exit (1);
-+		}
-+
-+		close(outfd);
-+	}
-+
- 	exit(0);
+@@ -232,6 +233,102 @@ static int do_soc(struct config_data *data, int argc, char *argv[])
+ 	return -EINVAL;
  }
+ 
++static int hab_add_str(struct config_data *data, const char *str)
++{
++	int len = strlen(str);
++
++	if (data->csf_space < len)
++		return -ENOMEM;
++
++	strcat(data->csf, str);
++
++	data->csf_space -= len;
++
++	return 0;
++}
++
++static int do_hab(struct config_data *data, int argc, char *argv[])
++{
++	int i, ret;
++
++	if (!data->csf) {
++		data->csf_space = 0x10000;
++
++		data->csf = malloc(data->csf_space + 1);
++		if (!data->csf)
++			return -ENOMEM;
++	}
++
++	for (i = 1; i < argc; i++) {
++		ret = hab_add_str(data, argv[i]);
++		if (ret)
++			return ret;
++
++		ret = hab_add_str(data, " ");
++		if (ret)
++			return ret;
++	}
++
++	ret = hab_add_str(data, "\n");
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static int do_hab_blocks(struct config_data *data, int argc, char *argv[])
++{
++	char *str;
++	int ret;
++
++	if (!data->csf)
++		return -EINVAL;
++
++	ret = asprintf(&str, "Blocks = 0x%08x 0 %d \"%s\"\n",
++		       data->image_load_addr,
++		       data->load_size, data->outfile);
++	if (ret < 0)
++		return -ENOMEM;
++
++	ret = hab_add_str(data, str);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static int do_super_root_key(struct config_data *data, int argc, char *argv[])
++{
++	int len;
++	char *srkfile;
++
++	if (argc != 2) {
++		fprintf(stderr, "usage: super_root_key <keyfile>\n");
++		return -EINVAL;
++	}
++
++	if (data->cpu_type != 35 && data->cpu_type != 25) {
++		fprintf(stderr, "Warning: The super_root_key command is meaningless "
++			"on non HABv3 based SoCs\n");
++		return 0;
++	}
++
++	srkfile = argv[1];
++
++	if (*srkfile == '"')
++		srkfile++;
++
++	data->srkfile = strdup(srkfile);
++	if (!data->srkfile)
++		return -ENOMEM;
++
++	len = strlen(data->srkfile);
++	if (data->srkfile[len - 1] == '"')
++		data->srkfile[len - 1] = 0;
++
++	return 0;
++}
++
+ struct command cmds[] = {
+ 	{
+ 		.name = "wm",
+@@ -248,6 +345,15 @@ struct command cmds[] = {
+ 	}, {
+ 		.name = "soc",
+ 		.parse = do_soc,
++	}, {
++		.name = "hab",
++		.parse = do_hab,
++	}, {
++		.name = "hab_blocks",
++		.parse = do_hab_blocks,
++	}, {
++		.name = "super_root_key",
++		.parse = do_super_root_key,
+ 	},
+ };
+ 
+diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
+index bc7d4ee..0876370 100644
+--- a/scripts/imx/imx.h
++++ b/scripts/imx/imx.h
+@@ -62,6 +62,8 @@ struct config_data {
+ 	int cpu_type;
+ 	int (*check)(struct config_data *data, uint32_t cmd, uint32_t addr, uint32_t mask);
+ 	int (*write_mem)(struct config_data *data, uint32_t addr, uint32_t val, int width);
++	int csf_space;
++	char *csf;
+ };
+ 
+ int parse_config(struct config_data *data, const char *filename);
 -- 
 2.7.0.rc3
 
