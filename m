@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aQbJ5-0004hK-Ib
- for barebox@lists.infradead.org; Tue, 02 Feb 2016 13:47:48 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=localhost)
- by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <jbe@pengutronix.de>) id 1aQbIj-0005Q5-UC
- for barebox@lists.infradead.org; Tue, 02 Feb 2016 14:47:25 +0100
-From: Juergen Borleis <jbe@pengutronix.de>
-Date: Tue, 2 Feb 2016 14:49:09 +0100
-References: <201602021206.30161.jbe@pengutronix.de>
-In-Reply-To: <201602021206.30161.jbe@pengutronix.de>
+Received: from krieglstein.org ([176.28.13.145]
+ helo=lvps176-28-13-145.dedicated.hosteurope.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aQbL0-0004yd-E6
+ for barebox@lists.infradead.org; Tue, 02 Feb 2016 13:49:47 +0000
+From: Tim Sander <tim@krieglstein.org>
+Date: Tue, 02 Feb 2016 14:48:49 +0100
+Message-ID: <2242913.yZc50JEAEz@virgo>
+In-Reply-To: <1454355135.18531.23.camel@rtred1test09.kymeta.local>
+References: <3762339.hZBQLlnv2u@dabox> <1657046.j4o6hCTdX5@dabox>
+ <1454355135.18531.23.camel@rtred1test09.kymeta.local>
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201602021449.10041.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,78 +23,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] nfs: forward filesystem options to the kernel command line
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v3] Terasic DE0-Nano-SoC: add support
+To: Trent Piepho <tpiepho@kymetacorp.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Using NFS in conjunction with boot spec and the feature to let barebox
-auto generate a kernel command line must keep the options the NFS filesystem
-was mounted in barebox. This patch extends the kernel command line parameter
-on demand if something different than the defaults are used.
+On Monday 01 February 2016 19:31:53 Trent Piepho wrote:
+> On Mon, 2016-02-01 at 15:07 +0100, Tim Sander wrote:
+> 
+> > v3: forgot to amend my changes in v2.
+> > 
+> > +
+> > +static int socfpga_console_init(void)
+> > +{
+> > +       if (!of_machine_is_compatible("altr,socfpga-cyclone5"))
+> > +               return 0;
+> 
+> 
+> Seems like this should be a board specific check instead of a generic
+> one, since it's programming board specific phy timing values to a board
+> specific PHY.
+I am not sure, but as outlined below i think this is also due to the 
+compatible string of the coresponding dts within the linux kernel.
+At least i first tried a more specific dts compatible string and that failed 
+to boot.
+> 
+> > +
+> > +       if (IS_ENABLED(CONFIG_PHYLIB))
+> > +               phy_register_fixup_for_uid(PHY_ID_KSZ9021,
+> > MICREL_PHY_ID_MASK, phy_fixup);
+ +
+> > +       return 0;
+> > +}
+> 
+> 
+> 
+> > +
+> > +static inline void ledon(int led)
+> > +{
+> > +       u32 val;
+> > +
+> > +       val = readl(0xFF709000);
+> > +       val |= 1 << (led + 24);
+> > +       writel(val, 0xFF709000);
+> 
+> 
+> There a macro CYCLONE5_GPIO1_BASE that could be used instead of
+> 0xFF709000.
+> 
+> 
+> > +
+> > +       val = readl(0xFF709004);
+> > +       val |= 1 << (led + 24);
+> > +       writel(val, 0xFF709004);
+> > +}
+> > +
+> > +static inline void ledoff(int led)
+> > +{
+> > +       u32 val;
+> > +
+> > +       val = readl(0xFF709000);
+> > +       val &= ~(1 << (led + 24));
+> > +       writel(val, 0xFF709000);
+> > +
+> > +       val = readl(0xFF709004);
+> > +       val &= ~(1 << (led + 24));
+> > +       writel(val, 0xFF709004);
+> > +}
+> 
+> 
+> 
+> 
+> > +#include <arm/socfpga_cyclone5_de0_nano_soc.dts>
+> > +#include "socfpga.dtsi"
+> > +
+> > +/ {
+> > +       model = "Terasic DE0-Nano-SoC (Atlas)";
+> > +       compatible = "altr,socfpga-cyclone5", "altr,socfpga";
+> 
+> 
+> Wouldn't the right thing to do here be to have a compatible entry for
+> this board type?  Like the existing "terasic,sockit" or something more
+> specific.
+Well the problem at this point is that due to the boardspecs the compatible 
+string has to be AFAIK the same as the one used in the linux kernel. 
+Unfortunatly the coresponding dts file also has no more specific compatible 
+string.
 
-The command:
-
-barebox:/ boot nfs://myhost//root
-
-expands to the kernel command line:
-
-nfsroot=myhost:/root,v3,tcp
-
-while the command:
-
-barebox:/ boot nfs://myhost:2049//root
-
-expands now to the kernel command line:
-
-nfsroot=myhost:/root,v3,tcp,mountport=2049,port=2049
-
-Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
-
-diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
-index 39084e5afe08..5b021f0662de 100644
---- a/Documentation/user/booting-linux.rst
-+++ b/Documentation/user/booting-linux.rst
-@@ -203,7 +203,7 @@ compatible NFS URI string must be passed to the boot command:
- 
- .. code-block:: sh
- 
--  boot nfs://nfshost//path/
-+  boot nfs://nfshost[:port]//path/
- 
- Additionally to the options defined in the original spec barebox understands the
- ``linux-appendroot`` option. This is a boolean value and if set to ``true`` barebox
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 382475249fc8..effedcc6649c 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -1311,7 +1311,7 @@ static char *rootnfsopts;
- 
- static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device_d *fsdev)
- {
--	char *str;
-+	char *str, *tmp;
- 	const char *ip;
- 
- 	ip = ip_to_string(npriv->server);
-@@ -1319,6 +1319,19 @@ static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device_d *fsdev)
- 			ip, npriv->path, rootnfsopts[0] ? "," : "",
- 			rootnfsopts);
- 
-+	/* forward specific mount options on demand */
-+	if (npriv->nfs_port != PROG_NFS) {
-+		tmp = asprintf("%s,port=%hu", str, npriv->nfs_port);
-+		free(str);
-+		str = tmp;
-+	}
-+
-+	if (npriv->mount_port != PROG_MOUNT) {
-+		tmp = asprintf("%s,mountport=%hu", str, npriv->mount_port);
-+		free(str);
-+		str = tmp;
-+	}
-+
- 	fsdev_set_linux_rootarg(fsdev, str);
- 
- 	free(str);
+Best regards
+Tim
 
 _______________________________________________
 barebox mailing list
