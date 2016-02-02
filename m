@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aQcAU-0008KD-VM
- for barebox@lists.infradead.org; Tue, 02 Feb 2016 14:42:59 +0000
-Message-ID: <1454424156.5358.10.camel@pengutronix.de>
-From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Tue, 02 Feb 2016 15:42:36 +0100
-In-Reply-To: <1454411855-4839-6-git-send-email-p.zabel@pengutronix.de>
-References: <1454411855-4839-1-git-send-email-p.zabel@pengutronix.de>
- <1454411855-4839-6-git-send-email-p.zabel@pengutronix.de>
-Mime-Version: 1.0
+ id 1aQcG0-0002Pl-VB
+ for barebox@lists.infradead.org; Tue, 02 Feb 2016 14:48:44 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue,  2 Feb 2016 15:47:54 +0100
+Message-Id: <1454424497-7157-12-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1454424497-7157-1-git-send-email-s.hauer@pengutronix.de>
+References: <1454424497-7157-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,39 +16,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/6] net: phy: micrel: errata for KSZ9031
-To: barebox@lists.infradead.org
-Cc: Markus Niebel <Markus.Niebel@tqs.de>
+Subject: [PATCH 11/34] scripts: imx-image: Allow dcd offset 0x0
+To: Barebox List <barebox@lists.infradead.org>
 
-Am Dienstag, den 02.02.2016, 12:17 +0100 schrieb Philipp Zabel:
-> The KSZ9031 erratum #2 stats:
->     The 125MHz reference clock (CLK125_NDO pin) output
->     has duty cycle variation when the KSZ9031 links up in
->     1000Base-T Slave mode, resulting in wide variation on
->     the falling clock edge.
-> 
-> The recommended workaround is to either only use the rising edge of
-> the CLK125_NDO output for PLL locking, or to
-> 
->     Set KSZ9031 to always link up in 1000Base-T Master mode
->     by setting register 9h, bits [12:11] to '11'.
-> 
-> Since we can't guarantee the former, this patch does the latter.
-> Original patch by Markus Niebel <Markus.Niebel@tqs.de>.
-> 
-> Signed-off-by: Markus Niebel <Markus.Niebel@tqs.de>
-> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+0 is a valid offset for the dcd, so do not use this value to detect
+an unset dcd offset. Use 0xffffffff instead.
 
-Please disregard this one. If in fact the PLL can lock only to the
-rising CLK125_NDO edge, we shouldn't force master mode unconditionally.
-This should probably only be enabled by a boolean device tree property.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ scripts/imx/imx-image.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-regards
-Philipp
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index 5c9faee..788fa81 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -34,7 +34,7 @@
+ #define CSF_LEN 0x2000		/* length of the CSF (needed for HAB) */
+ 
+ static uint32_t image_load_addr;
+-static uint32_t image_dcd_offset;
++static uint32_t image_dcd_offset = 0xffffffff;
+ static uint32_t dcdtable[MAX_DCD];
+ static int curdcd;
+ static int header_version;
+@@ -729,7 +729,7 @@ int main(int argc, char *argv[])
+ 	if (!buf)
+ 		exit(1);
+ 
+-	if (!image_dcd_offset) {
++	if (image_dcd_offset == 0xffffffff) {
+ 		fprintf(stderr, "no dcd offset given ('dcdofs'). Defaulting to 0x%08x\n",
+ 			FLASH_HEADER_OFFSET);
+ 		image_dcd_offset = FLASH_HEADER_OFFSET;
+-- 
+2.7.0.rc3
 
 
 _______________________________________________
