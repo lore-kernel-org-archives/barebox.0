@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aQcG0-0002Pf-VJ
- for barebox@lists.infradead.org; Tue, 02 Feb 2016 14:48:43 +0000
+ id 1aQcG0-0002Pi-VD
+ for barebox@lists.infradead.org; Tue, 02 Feb 2016 14:48:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  2 Feb 2016 15:47:45 +0100
-Message-Id: <1454424497-7157-3-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  2 Feb 2016 15:47:48 +0100
+Message-Id: <1454424497-7157-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1454424497-7157-1-git-send-email-s.hauer@pengutronix.de>
 References: <1454424497-7157-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/34] scripts/include: Add ARRAY_SIZE
+Subject: [PATCH 05/34] scripts: mxs: Use Kernel includes
 To: Barebox List <barebox@lists.infradead.org>
 
-ARRAY_SIZE is another define commonly used in tools. Add it to the
-kernel includes.
+Use the common definition of ARRAY_SIZE and roundup.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/include/linux/kernel.h | 2 ++
- 1 file changed, 2 insertions(+)
+ scripts/mxsimage.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/scripts/include/linux/kernel.h b/scripts/include/linux/kernel.h
-index 76df535..5d94e98 100644
---- a/scripts/include/linux/kernel.h
-+++ b/scripts/include/linux/kernel.h
-@@ -6,6 +6,8 @@
- #include <stdlib.h>
- #include <assert.h>
+diff --git a/scripts/mxsimage.c b/scripts/mxsimage.c
+index 0a5f6a0..2b1a5f3 100644
+--- a/scripts/mxsimage.c
++++ b/scripts/mxsimage.c
+@@ -16,12 +16,10 @@
+ #include <getopt.h>
+ #include <stdint.h>
+ #include <arpa/inet.h>
++#include <linux/kernel.h>
  
-+#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
-+
- #define DIV_ROUND_UP(n,d) (((n) + (d) - 1) / (d))
+ #define SB_BLOCK_SIZE		16
  
- #define PERF_ALIGN(x, a)	__PERF_ALIGN_MASK(x, (typeof(x))(a)-1)
+-#define roundup(x, y)		((((x) + ((y) - 1)) / (y)) * (y))
+-#define ARRAY_SIZE(x)		(sizeof(x) / sizeof((x)[0]))
+-
+ static char *prepfile;
+ static char *bootloaderfile;
+ 
 -- 
 2.7.0.rc3
 
