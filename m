@@ -1,13 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aQYyH-00083R-BY
- for barebox@lists.infradead.org; Tue, 02 Feb 2016 11:18:11 +0000
-From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Tue,  2 Feb 2016 12:17:35 +0100
-Message-Id: <1454411855-4839-6-git-send-email-p.zabel@pengutronix.de>
-In-Reply-To: <1454411855-4839-1-git-send-email-p.zabel@pengutronix.de>
-References: <1454411855-4839-1-git-send-email-p.zabel@pengutronix.de>
+ id 1aQbJ5-0004hK-Ib
+ for barebox@lists.infradead.org; Tue, 02 Feb 2016 13:47:48 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=localhost)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.80)
+ (envelope-from <jbe@pengutronix.de>) id 1aQbIj-0005Q5-UC
+ for barebox@lists.infradead.org; Tue, 02 Feb 2016 14:47:25 +0100
+From: Juergen Borleis <jbe@pengutronix.de>
+Date: Tue, 2 Feb 2016 14:49:09 +0100
+References: <201602021206.30161.jbe@pengutronix.de>
+In-Reply-To: <201602021206.30161.jbe@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201602021449.10041.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,66 +23,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] net: phy: micrel: errata for KSZ9031
+Subject: [PATCH v2] nfs: forward filesystem options to the kernel command line
 To: barebox@lists.infradead.org
-Cc: Markus Niebel <Markus.Niebel@tqs.de>
 
-The KSZ9031 erratum #2 stats:
-    The 125MHz reference clock (CLK125_NDO pin) output
-    has duty cycle variation when the KSZ9031 links up in
-    1000Base-T Slave mode, resulting in wide variation on
-    the falling clock edge.
+Using NFS in conjunction with boot spec and the feature to let barebox
+auto generate a kernel command line must keep the options the NFS filesystem
+was mounted in barebox. This patch extends the kernel command line parameter
+on demand if something different than the defaults are used.
 
-The recommended workaround is to either only use the rising edge of
-the CLK125_NDO output for PLL locking, or to
+The command:
 
-    Set KSZ9031 to always link up in 1000Base-T Master mode
-    by setting register 9h, bits [12:11] to '11'.
+barebox:/ boot nfs://myhost//root
 
-Since we can't guarantee the former, this patch does the latter.
-Original patch by Markus Niebel <Markus.Niebel@tqs.de>.
+expands to the kernel command line:
 
-Signed-off-by: Markus Niebel <Markus.Niebel@tqs.de>
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
----
- drivers/net/phy/micrel.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+nfsroot=myhost:/root,v3,tcp
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index e8a566d..5227dfb 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -220,6 +220,7 @@ static int ksz9031_config_init(struct phy_device *phydev)
- 		"txd2-skew-ps", "txd3-skew-ps"
- 	};
- 	static const char *control_skews[2] = {"txen-skew-ps", "rxdv-skew-ps"};
-+	int rc;
+while the command:
+
+barebox:/ boot nfs://myhost:2049//root
+
+expands now to the kernel command line:
+
+nfsroot=myhost:/root,v3,tcp,mountport=2049,port=2049
+
+Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
+
+diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+index 39084e5afe08..5b021f0662de 100644
+--- a/Documentation/user/booting-linux.rst
++++ b/Documentation/user/booting-linux.rst
+@@ -203,7 +203,7 @@ compatible NFS URI string must be passed to the boot command:
  
- 	if (!of_node && dev->parent->device_node)
- 		of_node = dev->parent->device_node;
-@@ -242,6 +243,14 @@ static int ksz9031_config_init(struct phy_device *phydev)
- 				tx_data_skews, 4);
- 	}
+ .. code-block:: sh
  
-+	rc = phy_read(phydev, MII_CTRL1000);
-+	if (rc >= 0) {
-+		u16 val = rc;
-+		/* Enable master mode, config & prefer master */
-+		val |= (CTL1000_ENABLE_MASTER | CTL1000_AS_MASTER);
-+		phy_write(phydev, MII_CTRL1000, val);
+-  boot nfs://nfshost//path/
++  boot nfs://nfshost[:port]//path/
+ 
+ Additionally to the options defined in the original spec barebox understands the
+ ``linux-appendroot`` option. This is a boolean value and if set to ``true`` barebox
+diff --git a/fs/nfs.c b/fs/nfs.c
+index 382475249fc8..effedcc6649c 100644
+--- a/fs/nfs.c
++++ b/fs/nfs.c
+@@ -1311,7 +1311,7 @@ static char *rootnfsopts;
+ 
+ static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device_d *fsdev)
+ {
+-	char *str;
++	char *str, *tmp;
+ 	const char *ip;
+ 
+ 	ip = ip_to_string(npriv->server);
+@@ -1319,6 +1319,19 @@ static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device_d *fsdev)
+ 			ip, npriv->path, rootnfsopts[0] ? "," : "",
+ 			rootnfsopts);
+ 
++	/* forward specific mount options on demand */
++	if (npriv->nfs_port != PROG_NFS) {
++		tmp = asprintf("%s,port=%hu", str, npriv->nfs_port);
++		free(str);
++		str = tmp;
 +	}
 +
- 	return ksz9031_center_flp_timing(phydev);
- }
++	if (npriv->mount_port != PROG_MOUNT) {
++		tmp = asprintf("%s,mountport=%hu", str, npriv->mount_port);
++		free(str);
++		str = tmp;
++	}
++
+ 	fsdev_set_linux_rootarg(fsdev, str);
  
--- 
-2.7.0.rc3
-
+ 	free(str);
 
 _______________________________________________
 barebox mailing list
