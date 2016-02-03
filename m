@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x22b.google.com ([2607:f8b0:4001:c06::22b])
+Received: from mail-ig0-x244.google.com ([2607:f8b0:4001:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aQm20-0004hW-77
- for barebox@lists.infradead.org; Wed, 03 Feb 2016 01:14:52 +0000
-Received: by mail-io0-x22b.google.com with SMTP id d63so38585817ioj.2
- for <barebox@lists.infradead.org>; Tue, 02 Feb 2016 17:14:31 -0800 (PST)
+ id 1aQm3f-00069N-3Y
+ for barebox@lists.infradead.org; Wed, 03 Feb 2016 01:16:35 +0000
+Received: by mail-ig0-x244.google.com with SMTP id ik10so1686267igb.1
+ for <barebox@lists.infradead.org>; Tue, 02 Feb 2016 17:16:14 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <1454354334.18531.16.camel@rtred1test09.kymeta.local>
-References: <1454306234-2299-1-git-send-email-andrew.smirnov@gmail.com>
- <20160201101007.GA4118@pengutronix.de>
- <1454354334.18531.16.camel@rtred1test09.kymeta.local>
-Date: Tue, 2 Feb 2016 17:14:31 -0800
-Message-ID: <CAHQ1cqGaR3h9DchcYPkTNvUqDN=dR1aDW+dXCNnS_E_2Gr+7Yg@mail.gmail.com>
+In-Reply-To: <1454455837.18531.37.camel@rtred1test09.kymeta.local>
+References: <2936535.PfmXjTYsqy@dabox>
+ <CAHQ1cqEBXBziKFGPaDQBK3zMw0+D4cnjvB2KXHBF906UG8Ahwg@mail.gmail.com>
+ <1454455837.18531.37.camel@rtred1test09.kymeta.local>
+Date: Tue, 2 Feb 2016 17:16:14 -0800
+Message-ID: <CAHQ1cqEcN8UKjDOGQUyJhrxkhR4kFvh-kYE=tLFwLY_xFfPPEA@mail.gmail.com>
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,62 +25,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 1/2] misc: Add MAC address mapper "driver"
+Subject: Re: [PATCH v4] Terasic DE0-Nano-SoC: add support
 To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Steffen Trumtrar <s.trumtrar@pengutronix.de>, Tim Sander <tim@krieglstein.org>
 
-On Mon, Feb 1, 2016 at 11:18 AM, Trent Piepho <tpiepho@kymetacorp.com> wrote:
-> On Mon, 2016-02-01 at 11:10 +0100, Sascha Hauer wrote:
->> On Sun, Jan 31, 2016 at 09:57:13PM -0800, Andrey Smirnov wrote:
->> > Add Barebox specific device tree provisions to allow specifying MAC
->> > addresses for network interfaces via device tree.
->> >
->> > +
->> > +Child node's required properties:
->> > +* ``network-interface``: phandle corresponding to network interface
->> > +* ``mac-location``: a pair of phandle to 'cdev' containing MAC address
->> > +  and offset withing that 'cdev'
->> > +
->> > +Example::
->> > +
->> > +  mac-address-map {
->> > +   compatible = "barebox,mac-address-map";
->> > +   nic@0 {
->> > +           network-interface = <&fec>;
->> > +           mac-location = <&ocotp 0x88>;
->> > +   };
->> > +  };
->>
->> I wonder if the correct way to do this wouldn't be nvmem, see
->> Documentation/devicetree/bindings/nvmem/nvmem.txt in the Kernel.
->> This would mandate a binding like:
->>
->>       ocotp {
->>               mac1: mac@88 {
->>                       reg = <0x88 0x6>;
->>               };
->>       };
->>
->>       &fec {
->>               nvmem-cells = <&mac1>;
->>               nvmem-cell-names = "mac-address";
->>       };
+On Tue, Feb 2, 2016 at 3:30 PM, Trent Piepho <tpiepho@kymetacorp.com> wrote:
+> On Mon, 2016-02-01 at 11:08 -0800, Andrey Smirnov wrote:
+>> On Mon, Feb 1, 2016 at 8:09 AM, Tim Sander <tim@krieglstein.org> wrote:
 >
-> The way imx28 works in the kernel is to just store the extension in the
-> OCOTP.  The OUI is determined from the board's compatible property and a
-> hard coded table in the kernel.  See arch/arm/mach-mxs/mach-mxs.c
+>> > +
+>> > +       if (IS_ENABLED(CONFIG_PHYLIB))
+>> > +               phy_register_fixup_for_uid(PHY_ID_KSZ9021, MICREL_PHY_ID_MASK, phy_fixup);
+>>
+>> I don't think this code is correct. To the best of my knowledge, both
+>> Atlas and DE0-Nano version of the board come with KSZ9031 as a PHY,
+>> which requires different fixup. See arm/boards/tqma6x/board.c for
+>> example.
 >
-> While, IMHO, the hard coded table is ugly, and should have died long
-> ago, there are board that don't have the entire mac burned into OCOTP.
-> It seems like neither of these bindings could support a board like this.
+> I think all the fixups for the micrel phys should probably be replaced
+> with device tree properties.  If you look in drivers/net/phy/micrel.c,
+> ksz9031_config_init() will read skew properties from the DT and program
+> the phy that way.  This would make it easier to use the phy DT
+> properties already in the Linux dts files.
 >
 
-What if you created a 'nvmem' provider whose only job is to take a
-blob from DT, a phandle to another 'nvmem' provider and to return the
-combined data from both sources. Wouldn't it work for the use-case you
-are describing?
-
-Andrey
+I haven't thought about that, that does sound like a better idea.
 
 _______________________________________________
 barebox mailing list
