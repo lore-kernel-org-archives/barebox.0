@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aQs2A-00008D-Gr
- for barebox@lists.infradead.org; Wed, 03 Feb 2016 07:39:27 +0000
-Date: Wed, 3 Feb 2016 08:39:04 +0100
+ id 1aQsIH-0007jh-SK
+ for barebox@lists.infradead.org; Wed, 03 Feb 2016 07:56:08 +0000
+Date: Wed, 3 Feb 2016 08:55:43 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160203073904.GI4118@pengutronix.de>
-References: <1454411855-4839-1-git-send-email-p.zabel@pengutronix.de>
+Message-ID: <20160203075543.GJ4118@pengutronix.de>
+References: <CAGm1_kv9-A_HrydZRODtzf-00deEoakxY7r8nSEmO6DcnjGZag@mail.gmail.com>
+ <1453805349.2235.40.camel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1454411855-4839-1-git-send-email-p.zabel@pengutronix.de>
+In-Reply-To: <1453805349.2235.40.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,33 +19,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] net: phy: micrel: Staticise ksz8873mll_read_status()
-To: Philipp Zabel <p.zabel@pengutronix.de>
+Subject: Re: scripts/remote: make clean leftovers
+To: Jan =?iso-8859-15?Q?L=FCbbe?= <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Feb 02, 2016 at 12:17:30PM +0100, Philipp Zabel wrote:
-> Based on kernel commit 32d73b144eac ("net: phy: micrel: Staticise
-> ksz8873mll_read_status()") by Jingoo Han <jg1.han@samsung.com>:
-> 
->     ksz8873mll_read_status() is used only in this file.
->     Fix the following sparse warning:
-> 
->     drivers/net/phy/micrel.c:147:5: warning: symbol 'ksz8873mll_read_status' was not declared. Should it be static?
-> 
-> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-> ---
->  drivers/net/phy/micrel.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On Tue, Jan 26, 2016 at 11:49:09AM +0100, Jan L=FCbbe wrote:
+> On Di, 2016-01-26 at 11:04 +0100, Yegor Yefremov wrote:
+> > After performing make distclean I've discovered following files being r=
+emoved:
+> > =
 
-Applied except 6/6, thanks.
+> > Changes not staged for commit:
+> >   (use "git add/rm <file>..." to update what will be committed)
+> >   (use "git checkout -- <file>..." to discard changes in working direct=
+ory)
+> > =
+
+> >         deleted:    scripts/remote/__init__.py
+> >         deleted:    scripts/serial/tools/__init__.py
+> >         deleted:    scripts/serial/urlhandler/__init__.py
+> > =
+
+> > What should actually happen to these files?
+> =
+
+> Python uses these files to recognize the directory as containing a
+> module, so we need to keep them.
+
+They get removed by make distclean, supposedly because they are empty.
+What should they contain? Is it ok to put a comment in them to make them
+non-empty?
 
 Sascha
 
--- 
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
