@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aR0AV-0004II-LC
+ id 1aR0AV-0004IG-LF
  for barebox@lists.infradead.org; Wed, 03 Feb 2016 16:20:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  3 Feb 2016 17:20:10 +0100
-Message-Id: <1454516411-22858-4-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  3 Feb 2016 17:20:11 +0100
+Message-Id: <1454516411-22858-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1454516411-22858-1-git-send-email-s.hauer@pengutronix.de>
 References: <1454516411-22858-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,268 +21,284 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] mfd: mc13xxx: Switch to regmap support
+Subject: [PATCH 4/4] ARM: i.MX ocotp: Switch to regmap support
 To: Barebox List <barebox@lists.infradead.org>
-
-This moves the mc13xxx driver over to regmap.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mfd/mc13xxx.c | 123 +++++++++++++++++++++-----------------------------
- 1 file changed, 52 insertions(+), 71 deletions(-)
+ arch/arm/mach-imx/ocotp.c | 146 ++++++++++++++++++----------------------------
+ 1 file changed, 57 insertions(+), 89 deletions(-)
 
-diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
-index 0ebfc9e..496fcbb 100644
---- a/drivers/mfd/mc13xxx.c
-+++ b/drivers/mfd/mc13xxx.c
-@@ -22,6 +22,7 @@
- #include <errno.h>
- #include <malloc.h>
+diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
+index c99a003..c6c341d 100644
+--- a/arch/arm/mach-imx/ocotp.c
++++ b/arch/arm/mach-imx/ocotp.c
+@@ -26,6 +26,7 @@
+ #include <io.h>
  #include <of.h>
+ #include <clock.h>
 +#include <regmap.h>
+ #include <linux/clk.h>
  
- #include <i2c/i2c.h>
- #include <spi/spi.h>
-@@ -29,15 +30,16 @@
+ /*
+@@ -71,7 +72,7 @@
+ #define MAC_BYTES			8
  
- #define DRIVERNAME		"mc13xxx"
+ struct ocotp_priv {
+-	struct cdev cdev;
++	struct regmap *map;
+ 	void __iomem *base;
+ 	struct clk *clk;
+ 	struct device_d dev;
+@@ -159,53 +160,42 @@ int imx6_ocotp_read_one_u32(u32 index, u32 *pdata, struct ocotp_priv *priv)
  
-+#define MC13XXX_NUMREGS		0x3f
-+
- struct mc13xxx {
--	struct cdev			cdev;
-+	struct device_d			*dev;
-+	struct regmap			*map;
- 	union {
- 		struct i2c_client	*client;
- 		struct spi_device	*spi;
- 	};
- 	int				revision;
--	int				(*reg_read)(struct mc13xxx*, u8, u32*);
--	int				(*reg_write)(struct mc13xxx*, u8, u32);
- };
+ 	ret = imx6_ocotp_prepare(priv);
+ 	if (ret) {
+-		dev_err(priv->cdev.dev, "failed to prepare read fuse 0x%08x\n",
++		dev_err(&priv->dev, "failed to prepare read fuse 0x%08x\n",
+ 				index);
+ 		return ret;
+ 	}
  
- struct mc13xxx_devtype {
-@@ -100,8 +102,9 @@ static int spi_rw(struct spi_device *spi, void * buf, size_t len)
- #define MXC_PMIC_REG_NUM(reg)	(((reg) & 0x3f) << 25)
- #define MXC_PMIC_WRITE		(1 << 31)
+ 	ret = fuse_read_addr(index, pdata, priv);
+ 	if (ret) {
+-		dev_err(priv->cdev.dev, "failed to read fuse 0x%08x\n", index);
++		dev_err(&priv->dev, "failed to read fuse 0x%08x\n", index);
+ 		return ret;
+ 	}
  
--static int mc13xxx_spi_reg_read(struct mc13xxx *mc13xxx, u8 reg, u32 *val)
-+static int mc13xxx_spi_reg_read(void *ctx, unsigned int reg, unsigned int *val)
- {
-+	struct mc13xxx *mc13xxx = ctx;
- 	uint32_t buf;
+ 	if (readl(priv->base) & OCOTP_CTRL_ERROR) {
+-		dev_err(priv->cdev.dev, "bad read status at fuse 0x%08x\n", index);
++		dev_err(&priv->dev, "bad read status at fuse 0x%08x\n", index);
+ 		return -EFAULT;
+ 	}
  
- 	buf = MXC_PMIC_REG_NUM(reg);
-@@ -113,8 +116,9 @@ static int mc13xxx_spi_reg_read(struct mc13xxx *mc13xxx, u8 reg, u32 *val)
  	return 0;
  }
  
--static int mc13xxx_spi_reg_write(struct mc13xxx *mc13xxx, u8 reg, u32 val)
-+static int mc13xxx_spi_reg_write(void *ctx, unsigned int reg, unsigned int val)
+-static ssize_t imx6_ocotp_cdev_read(struct cdev *cdev, void *buf,
+-		size_t count, loff_t offset, unsigned long flags)
++static int imx_ocotp_reg_read(void *ctx, unsigned int reg, unsigned int *val)
  {
-+	struct mc13xxx *mc13xxx = ctx;
- 	uint32_t buf = MXC_PMIC_REG_NUM(reg) | MXC_PMIC_WRITE | (val & 0xffffff);
++	struct ocotp_priv *priv = ctx;
+ 	u32 index;
+-	ssize_t read_count = 0;
+-	int ret, i;
+-	struct ocotp_priv *priv = container_of(cdev, struct ocotp_priv, cdev);
+-
+-	index = offset >> 2;
+-	count >>= 2;
+-
+-	if (count > (FUSE_REGS_COUNT - index))
+-		count = FUSE_REGS_COUNT - index - 1;
+-
+-	for (i = index; i < (index + count); i++) {
+-		if (priv->sense_enable) {
+-			ret = imx6_ocotp_read_one_u32(i, buf, priv);
+-			if (ret)
+-				return ret;
+-		} else {
+-			*(u32 *)buf = readl(priv->base + 0x400 + i * 0x10);
+-		}
++	int ret;
  
- 	spi_rw(mc13xxx->spi, &buf, 4);
-@@ -124,8 +128,9 @@ static int mc13xxx_spi_reg_write(struct mc13xxx *mc13xxx, u8 reg, u32 val)
- #endif
+-		buf += 4;
+-		read_count++;
++	index = reg >> 2;
++
++	if (priv->sense_enable) {
++		ret = imx6_ocotp_read_one_u32(index, val, priv);
++		if (ret)
++			return ret;
++	} else {
++		*(u32 *)val = readl(priv->base + 0x400 + index * 0x10);
+ 	}
  
- #ifdef CONFIG_I2C
--static int mc13xxx_i2c_reg_read(struct mc13xxx *mc13xxx, u8 reg, u32 *val)
-+static int mc13xxx_i2c_reg_read(void *ctx, unsigned int reg, unsigned int *val)
+-	return read_count << 2;
++	return 0;
+ }
+ 
+ static int fuse_blow_addr(u32 addr, u32 value, struct ocotp_priv *priv)
+@@ -232,7 +222,7 @@ static int fuse_blow_addr(u32 addr, u32 value, struct ocotp_priv *priv)
+ 
+ static int imx6_ocotp_reload_shadow(struct ocotp_priv *priv)
  {
-+	struct mc13xxx *mc13xxx = ctx;
- 	u8 buf[3];
+-	dev_info(priv->cdev.dev, "reloading shadow registers...\n");
++	dev_info(&priv->dev, "reloading shadow registers...\n");
+ 	writel(OCOTP_CTRL_RELOAD_SHADOWS, priv->base + OCOTP_CTRL_SET);
+ 	udelay(1);
+ 
+@@ -246,18 +236,18 @@ int imx6_ocotp_blow_one_u32(u32 index, u32 data, u32 *pfused_value,
+ 
+ 	ret = imx6_ocotp_prepare(priv);
+ 	if (ret) {
+-		dev_err(priv->cdev.dev, "prepare to write failed\n");
++		dev_err(&priv->dev, "prepare to write failed\n");
+ 		return ret;
+ 	}
+ 
+ 	ret = fuse_blow_addr(index, data, priv);
+ 	if (ret) {
+-		dev_err(priv->cdev.dev, "fuse blow failed\n");
++		dev_err(&priv->dev, "fuse blow failed\n");
+ 		return ret;
+ 	}
+ 
+ 	if (readl(priv->base) & OCOTP_CTRL_ERROR) {
+-		dev_err(priv->cdev.dev, "bad write status\n");
++		dev_err(&priv->dev, "bad write status\n");
+ 		return -EFAULT;
+ 	}
+ 
+@@ -266,60 +256,29 @@ int imx6_ocotp_blow_one_u32(u32 index, u32 data, u32 *pfused_value,
+ 	return ret;
+ }
+ 
+-static ssize_t imx6_ocotp_cdev_write(struct cdev *cdev, const void *buf,
+-		size_t count, loff_t offset, unsigned long flags)
++static int imx_ocotp_reg_write(void *ctx, unsigned int reg, unsigned int val)
+ {
+-	struct ocotp_priv *priv = cdev->priv;
+-	int index, i;
+-	ssize_t write_count = 0;
+-	const u32 *data;
++	struct ocotp_priv *priv = ctx;
++	int index;
+ 	u32 pfuse;
  	int ret;
  
-@@ -135,8 +140,9 @@ static int mc13xxx_i2c_reg_read(struct mc13xxx *mc13xxx, u8 reg, u32 *val)
- 	return ret == 3 ? 0 : ret;
- }
- 
--static int mc13xxx_i2c_reg_write(struct mc13xxx *mc13xxx, u8 reg, u32 val)
-+static int mc13xxx_i2c_reg_write(void *ctx, unsigned int reg, unsigned int val)
- {
-+	struct mc13xxx *mc13xxx = ctx;
- 	u8 buf[] = {
- 		val >> 16,
- 		val >>  8,
-@@ -152,13 +158,13 @@ static int mc13xxx_i2c_reg_write(struct mc13xxx *mc13xxx, u8 reg, u32 val)
- 
- int mc13xxx_reg_write(struct mc13xxx *mc13xxx, u8 reg, u32 val)
- {
--	return mc13xxx->reg_write(mc13xxx, reg, val);
-+	return regmap_write(mc13xxx->map, reg, val);
- }
- EXPORT_SYMBOL(mc13xxx_reg_write);
- 
- int mc13xxx_reg_read(struct mc13xxx *mc13xxx, u8 reg, u32 *val)
- {
--	return mc13xxx->reg_read(mc13xxx, reg, val);
-+	return regmap_read(mc13xxx->map, reg, val);
- }
- EXPORT_SYMBOL(mc13xxx_reg_read);
- 
-@@ -177,54 +183,6 @@ int mc13xxx_set_bits(struct mc13xxx *mc13xxx, u8 reg, u32 mask, u32 val)
- }
- EXPORT_SYMBOL(mc13xxx_set_bits);
- 
--static ssize_t mc_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
--{
--	struct mc13xxx *mc13xxx = to_mc13xxx(cdev);
--	u32 *buf = _buf;
--	size_t i = count >> 2;
--	int err;
--
--	offset >>= 2;
--
--	while (i) {
--		err = mc13xxx_reg_read(mc13xxx, offset, buf);
--		if (err)
--			return (ssize_t)err;
--		buf++;
--		i--;
--		offset++;
+-	/* We could do better, but currently this is what's implemented */
+-	if (offset & 0x3 || count & 0x3) {
+-		dev_err(cdev->dev, "only u32 aligned writes allowed\n");
+-		return -EINVAL;
 -	}
 -
--	return count;
--}
+-	index = offset >> 2;
+-	count >>= 2;
 -
--static ssize_t mc_write(struct cdev *cdev, const void *_buf, size_t count, loff_t offset, ulong flags)
--{
--	struct mc13xxx *mc13xxx = to_mc13xxx(cdev);
--	const u32 *buf = _buf;
--	size_t i = count >> 2;
--	int err;
+-	if (count > (FUSE_REGS_COUNT - index))
+-		count = FUSE_REGS_COUNT - index - 1;
++	index = reg >> 2;
+ 
+-	data = buf;
 -
--	offset >>= 2;
+-	for (i = index; i < (index + count); i++) {
+-		if (priv->permanent_write_enable) {
+-			ret = imx6_ocotp_blow_one_u32(i, *data,
+-					&pfuse, priv);
+-			if (ret < 0) {
+-				goto out;
+-			}
+-		} else {
+-			writel(*data, priv->base + 0x400 + i * 0x10);
+-		}
 -
--	while (i) {
--		err = mc13xxx_reg_write(mc13xxx, offset, *buf);
--		if (err)
--			return (ssize_t)err;
--		buf++;
--		i--;
--		offset++;
--	}
+-		data++;
+-		write_count++;
++	if (priv->permanent_write_enable) {
++		ret = imx6_ocotp_blow_one_u32(index, val, &pfuse, priv);
++		if (ret < 0)
++			return ret;
++	} else {
++		writel(val, priv->base + 0x400 + index * 0x10);
+ 	}
+ 
+-	ret = 0;
 -
--	return count;
--}
--
--static struct file_operations mc_fops = {
+-out:
+ 	if (priv->permanent_write_enable)
+ 		imx6_ocotp_reload_shadow(priv);
+ 
+-	return ret < 0 ? ret : (write_count << 2);
++	return 0;
+ }
+ 
+-static struct file_operations imx6_ocotp_ops = {
+-	.read	= imx6_ocotp_cdev_read,
+-	.write	= imx6_ocotp_cdev_write,
 -	.lseek	= dev_lseek_default,
--	.read	= mc_read,
--	.write	= mc_write,
 -};
 -
- static int __init mc13783_revision(struct mc13xxx *mc13xxx)
+ static uint32_t inc_offset(uint32_t offset)
  {
- 	unsigned int rev_id;
-@@ -245,7 +203,7 @@ static int __init mc13783_revision(struct mc13xxx *mc13xxx)
- 	} else
- 		sprintf(revstr, "%d.%d", rev / 0x10, rev % 10);
- 
--	dev_info(mc_dev->cdev.dev, "Found MC13783 ID: 0x%06x [Rev: %s]\n",
-+	dev_info(mc_dev->dev, "Found MC13783 ID: 0x%06x [Rev: %s]\n",
- 		 rev_id, revstr);
- 
- 	return rev;
-@@ -297,7 +255,7 @@ static int __init mc13892_revision(struct mc13xxx *mc13xxx)
- 		}
- 	}
- 
--	dev_info(mc_dev->cdev.dev, "Found MC13892 ID: 0x%06x [Rev: %s]\n",
-+	dev_info(mc_dev->dev, "Found MC13892 ID: 0x%06x [Rev: %s]\n",
- 		 rev_id, revstr);
- 
- 	return rev;
-@@ -312,11 +270,34 @@ static int __init mc34708_revision(struct mc13xxx *mc13xxx)
- 	if (rev_id > 0xfff)
- 		return -ENODEV;
- 
--	dev_info(mc_dev->cdev.dev, "Found MC34708 ID: 0x%03x\n", rev_id);
-+	dev_info(mc_dev->dev, "Found MC34708 ID: 0x%03x\n", rev_id);
- 
- 	return (int)rev_id;
- }
- 
-+static struct regmap_bus regmap_mc13xxx_spi_bus = {
-+	.reg_write = mc13xxx_spi_reg_write,
-+	.reg_read = mc13xxx_spi_reg_read,
-+};
-+
-+static const struct regmap_config mc13xxx_regmap_spi_config = {
-+	.reg_bits = 7,
-+	.pad_bits = 1,
-+	.val_bits = 24,
-+	.max_register = MC13XXX_NUMREGS,
-+};
-+
-+static struct regmap_bus regmap_mc13xxx_i2c_bus = {
-+	.reg_write = mc13xxx_i2c_reg_write,
-+	.reg_read = mc13xxx_i2c_reg_read,
-+};
-+
-+static const struct regmap_config mc13xxx_regmap_i2c_config = {
-+	.reg_bits = 8,
-+	.val_bits = 24,
-+	.max_register = MC13XXX_NUMREGS,
-+};
-+
- static int __init mc13xxx_probe(struct device_d *dev)
+ 	if ((offset & 0x3) == 0x3)
+@@ -373,9 +332,11 @@ static int imx_ocotp_get_mac(struct param_d *param, void *priv)
  {
- 	struct mc13xxx_devtype *devtype;
-@@ -330,13 +311,14 @@ static int __init mc13xxx_probe(struct device_d *dev)
- 		return ret;
+ 	struct ocotp_priv *ocotp_priv = priv;
+ 	char buf[8];
+-	int i;
++	int i, ret;
  
- 	mc_dev = xzalloc(sizeof(*mc_dev));
--	mc_dev->cdev.name = DRIVERNAME;
-+	mc_dev->dev = dev;
- 
- #ifdef CONFIG_I2C
- 	if (dev->bus == &i2c_bus) {
- 		mc_dev->client = to_i2c_client(dev);
--		mc_dev->reg_read = mc13xxx_i2c_reg_read;
--		mc_dev->reg_write = mc13xxx_i2c_reg_write;
-+
-+		mc_dev->map = regmap_init(dev, &regmap_mc13xxx_i2c_bus,
-+			     mc_dev, &mc13xxx_regmap_i2c_config);
- 	}
- #endif
- #ifdef CONFIG_SPI
-@@ -345,25 +327,24 @@ static int __init mc13xxx_probe(struct device_d *dev)
- 		mc_dev->spi->mode = SPI_MODE_0 | SPI_CS_HIGH;
- 		mc_dev->spi->bits_per_word = 32;
- 		mc_dev->spi->max_speed_hz = 20000000;
--		mc_dev->reg_read = mc13xxx_spi_reg_read;
--		mc_dev->reg_write = mc13xxx_spi_reg_write;
-+		mc_dev->map = regmap_init(dev, &regmap_mc13xxx_spi_bus,
-+			     mc_dev, &mc13xxx_regmap_spi_config);
- 	}
- #endif
- 
--	mc_dev->cdev.size = 256;
--	mc_dev->cdev.dev = dev;
--	mc_dev->cdev.ops = &mc_fops;
--
- 	rev = devtype->revision(mc_dev);
- 	if (rev < 0) {
--		dev_err(mc_dev->cdev.dev, "No PMIC detected.\n");
-+		dev_err(mc_dev->dev, "No PMIC detected.\n");
- 		free(mc_dev);
- 		mc_dev = NULL;
- 		return rev;
- 	}
- 
- 	mc_dev->revision = rev;
--	devfs_create(&mc_dev->cdev);
-+
-+	ret = regmap_register_cdev(mc_dev->map, NULL);
-+	if (ret)
+-	imx6_ocotp_cdev_read(&ocotp_priv->cdev, buf, MAC_BYTES, MAC_OFFSET, 0);
++	ret = regmap_bulk_read(ocotp_priv->map, MAC_OFFSET, buf, MAC_BYTES);
++	if (ret < 0)
 +		return ret;
  
- 	if (mc13xxx_init_callback)
- 		mc13xxx_init_callback(mc_dev);
+ 	for (i = 0; i < 6; i++)
+ 		ocotp_priv->ethaddr[i] = buf[5 - i];
+@@ -393,18 +354,29 @@ static int imx_ocotp_set_mac(struct param_d *param, void *priv)
+ 		buf[5 - i] = ocotp_priv->ethaddr[i];
+ 	buf[6] = 0; buf[7] = 0;
+ 
+-	ret = imx6_ocotp_cdev_write(&ocotp_priv->cdev, buf, MAC_BYTES, MAC_OFFSET, 0);
++	ret = regmap_bulk_write(ocotp_priv->map, MAC_OFFSET, buf, MAC_BYTES);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	return 0;
+ }
+ 
++static struct regmap_bus imx_ocotp_regmap_bus = {
++	.reg_write = imx_ocotp_reg_write,
++	.reg_read = imx_ocotp_reg_read,
++};
++
++static const struct regmap_config imx_ocotp_regmap_config = {
++	.reg_bits = 32,
++	.val_bits = 32,
++	.reg_stride = 4,
++	.max_register = 0xbc,
++};
++
+ static int imx_ocotp_probe(struct device_d *dev)
+ {
+ 	void __iomem *base;
+ 	struct ocotp_priv *priv;
+-	struct cdev *cdev;
+ 	int ret = 0;
+ 
+ 	base = dev_request_mem_region(dev, 0);
+@@ -420,22 +392,18 @@ static int imx_ocotp_probe(struct device_d *dev)
+ 	if (IS_ERR(priv->clk))
+ 		return PTR_ERR(priv->clk);
+ 
+-	cdev		= &priv->cdev;
+-	cdev->dev	= dev;
+-	cdev->ops	= &imx6_ocotp_ops;
+-	cdev->priv	= priv;
+-	cdev->size	= 192;
+-	cdev->name	= "imx-ocotp";
+-
+-	ret = devfs_create(cdev);
+-
+-	if (ret < 0)
+-		return ret;
+-
+ 	strcpy(priv->dev.name, "ocotp");
+ 	priv->dev.parent = dev;
+ 	register_device(&priv->dev);
+ 
++	priv->map = regmap_init(dev, &imx_ocotp_regmap_bus, priv, &imx_ocotp_regmap_config);
++	if (IS_ERR(priv->map))
++		return PTR_ERR(priv->map);
++
++	ret = regmap_register_cdev(priv->map, "imx-ocotp");
++        if (ret)
++                return ret;
++
+ 	if (IS_ENABLED(CONFIG_IMX_OCOTP_WRITE)) {
+ 		dev_add_param_bool(&(priv->dev), "permanent_write_enable",
+ 				NULL, NULL, &priv->permanent_write_enable, NULL);
 -- 
 2.7.0.rc3
 
