@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22c.google.com ([2a00:1450:4010:c04::22c])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aRFyC-00070j-Re
- for barebox@lists.infradead.org; Thu, 04 Feb 2016 09:12:57 +0000
-Received: by mail-lb0-x22c.google.com with SMTP id bc4so27292640lbc.2
- for <barebox@lists.infradead.org>; Thu, 04 Feb 2016 01:12:36 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  4 Feb 2016 12:12:19 +0300
-Message-Id: <1454577139-31062-1-git-send-email-antonynpavlov@gmail.com>
+ id 1aRHzE-0000gh-6r
+ for barebox@lists.infradead.org; Thu, 04 Feb 2016 11:22:33 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu,  4 Feb 2016 12:21:44 +0100
+Message-Id: <1454584904-23740-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,52 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] drivers: video: drop unused of_get_display_timing()
-To: barebox@lists.infradead.org
+Subject: [PATCH] ubifs: Fix reading holes in files
+To: Barebox List <barebox@lists.infradead.org>
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+When a whole block of 4KiB in an ubifs file is zero then the block is
+not stored in the filesystem. read_block() returns -ENOENT in this case,
+so this return value must be treated as success.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/of_display_timing.c | 25 -------------------------
- 1 file changed, 25 deletions(-)
+ fs/ubifs/ubifs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/of_display_timing.c b/drivers/video/of_display_timing.c
-index eb29ec6..6a5bf62 100644
---- a/drivers/video/of_display_timing.c
-+++ b/drivers/video/of_display_timing.c
-@@ -99,31 +99,6 @@ static int of_parse_display_timing(const struct device_node *np,
- }
+diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
+index a9189f7..1f31f6f 100644
+--- a/fs/ubifs/ubifs.c
++++ b/fs/ubifs/ubifs.c
+@@ -377,7 +377,7 @@ static int ubifs_get_block(struct ubifs_file *uf, unsigned int pos)
  
- /**
-- * of_get_display_timing - parse a display_timing entry
-- * @np: device_node with the timing subnode
-- * @name: name of the timing node
-- * @dt: display_timing struct to fill
-- **/
--int of_get_display_timing(struct device_node *np, const char *name,
--		struct fb_videomode *mode)
--{
--	struct device_node *timing_np;
--
--	if (!np)
--		return -EINVAL;
--
--	timing_np = of_get_child_by_name(np, name);
--	if (!timing_np) {
--		pr_err("%s: could not find node '%s'\n",
--			np->full_name, name);
--		return -ENOENT;
--	}
--
--	return of_parse_display_timing(timing_np, mode);
--}
--EXPORT_SYMBOL_GPL(of_get_display_timing);
--
--/**
-  * of_get_display_timings - parse all display_timing entries from a device_node
-  * @np: device_node with the subnodes
-  **/
+ 	if (block != uf->block) {
+ 		ret = read_block(uf->inode, uf->buf, block, uf->dn);
+-		if (ret)
++		if (ret && ret != -ENOENT)
+ 			return ret;
+ 		uf->block = block;
+ 	}
 -- 
-2.7.0
+2.7.0.rc3
 
 
 _______________________________________________
