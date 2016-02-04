@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aREc3-0007c1-HU
- for barebox@lists.infradead.org; Thu, 04 Feb 2016 07:46:00 +0000
-Date: Thu, 4 Feb 2016 08:45:37 +0100
+ id 1aREcg-0007sg-O8
+ for barebox@lists.infradead.org; Thu, 04 Feb 2016 07:46:40 +0000
+Date: Thu, 4 Feb 2016 08:46:17 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160204074537.GP4118@pengutronix.de>
-References: <1454496543-15791-1-git-send-email-s.trumtrar@pengutronix.de>
+Message-ID: <20160204074617.GQ4118@pengutronix.de>
+References: <1454570724-12034-1-git-send-email-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1454496543-15791-1-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1454570724-12034-1-git-send-email-u.oelmann@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,28 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX25: fixup broken DryIce GPR
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH] docs: fix typos
+To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Feb 03, 2016 at 11:49:03AM +0100, Steffen Trumtrar wrote:
-> Fixup the DryIce Non-Non-Volatile-Memory GPR register.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+On Thu, Feb 04, 2016 at 08:25:24AM +0100, Ulrich =D6lmann wrote:
+> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
 > ---
->  arch/arm/mach-imx/imx25.c | 26 ++++++++++++++++++++++++++
->  1 file changed, 26 insertions(+)
+>  Documentation/devicetree/bindings/barebox/barebox,state.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> =
+
+> diff --git a/Documentation/devicetree/bindings/barebox/barebox,state.rst =
+b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+> index d1b0627..5643edc 100644
+> --- a/Documentation/devicetree/bindings/barebox/barebox,state.rst
+> +++ b/Documentation/devicetree/bindings/barebox/barebox,state.rst
 
 Applied, thanks
 
 Sascha
 
 
--- 
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
