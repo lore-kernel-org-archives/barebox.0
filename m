@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22c.google.com ([2a00:1450:4010:c07::22c])
+Received: from mail-lb0-x22c.google.com ([2a00:1450:4010:c04::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aRFxU-0006uL-Mv
- for barebox@lists.infradead.org; Thu, 04 Feb 2016 09:12:13 +0000
-Received: by mail-lf0-x22c.google.com with SMTP id 78so31679655lfy.3
- for <barebox@lists.infradead.org>; Thu, 04 Feb 2016 01:11:51 -0800 (PST)
+ id 1aRFyC-00070j-Re
+ for barebox@lists.infradead.org; Thu, 04 Feb 2016 09:12:57 +0000
+Received: by mail-lb0-x22c.google.com with SMTP id bc4so27292640lbc.2
+ for <barebox@lists.infradead.org>; Thu, 04 Feb 2016 01:12:36 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  4 Feb 2016 12:11:43 +0300
-Message-Id: <1454577103-30998-1-git-send-email-antonynpavlov@gmail.com>
+Date: Thu,  4 Feb 2016 12:12:19 +0300
+Message-Id: <1454577139-31062-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +21,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] drivers: video: fb: make locally used fb_set_shadowfb() static
+Subject: [PATCH] drivers: video: drop unused of_get_display_timing()
 To: barebox@lists.infradead.org
-
-The patch fixes this compiler's warning:
-
-    drivers/video/fb.c:233:5: warning: no previous prototype for
-    'fb_set_shadowfb' [-Wmissing-prototypes]
-     int fb_set_shadowfb(struct param_d *p, void *priv)
-         ^
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/video/fb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/of_display_timing.c | 25 -------------------------
+ 1 file changed, 25 deletions(-)
 
-diff --git a/drivers/video/fb.c b/drivers/video/fb.c
-index d159d60..09bba00 100644
---- a/drivers/video/fb.c
-+++ b/drivers/video/fb.c
-@@ -230,7 +230,7 @@ void *fb_get_screen_base(struct fb_info *info)
- 		info->screen_base_shadow : info->screen_base;
+diff --git a/drivers/video/of_display_timing.c b/drivers/video/of_display_timing.c
+index eb29ec6..6a5bf62 100644
+--- a/drivers/video/of_display_timing.c
++++ b/drivers/video/of_display_timing.c
+@@ -99,31 +99,6 @@ static int of_parse_display_timing(const struct device_node *np,
  }
  
--int fb_set_shadowfb(struct param_d *p, void *priv)
-+static int fb_set_shadowfb(struct param_d *p, void *priv)
- {
- 	struct fb_info *info = priv;
- 
+ /**
+- * of_get_display_timing - parse a display_timing entry
+- * @np: device_node with the timing subnode
+- * @name: name of the timing node
+- * @dt: display_timing struct to fill
+- **/
+-int of_get_display_timing(struct device_node *np, const char *name,
+-		struct fb_videomode *mode)
+-{
+-	struct device_node *timing_np;
+-
+-	if (!np)
+-		return -EINVAL;
+-
+-	timing_np = of_get_child_by_name(np, name);
+-	if (!timing_np) {
+-		pr_err("%s: could not find node '%s'\n",
+-			np->full_name, name);
+-		return -ENOENT;
+-	}
+-
+-	return of_parse_display_timing(timing_np, mode);
+-}
+-EXPORT_SYMBOL_GPL(of_get_display_timing);
+-
+-/**
+  * of_get_display_timings - parse all display_timing entries from a device_node
+  * @np: device_node with the subnodes
+  **/
 -- 
 2.7.0
 
