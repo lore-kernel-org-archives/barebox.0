@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aT522-0004iZ-GJ
- for barebox@lists.infradead.org; Tue, 09 Feb 2016 09:56:27 +0000
+ id 1aT527-0004mU-GB
+ for barebox@lists.infradead.org; Tue, 09 Feb 2016 09:56:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  9 Feb 2016 10:55:44 +0100
-Message-Id: <1455011748-5538-4-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  9 Feb 2016 10:55:45 +0100
+Message-Id: <1455011748-5538-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1455011748-5538-1-git-send-email-s.hauer@pengutronix.de>
 References: <1455011748-5538-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,81 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/7] mtd: Make erase_info structs 64bit where necessary
+Subject: [PATCH 4/7] mtd: Fix mtd_op_read for devices >4GiB
 To: Barebox List <barebox@lists.infradead.org>
 
-Make the userspace structs 64bit where necessary. Since we do not have
-separated kernel/userspace in barebox we can just modifiy the original
-structs instead of adding separate 64bit structs.
+The mtd read file operation has a unnecessary conversion to unsigned
+long in the read offset. Remove it to make it work with chips >4GiB
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/core.c          | 2 +-
- include/linux/mtd/mtd-abi.h | 8 ++++----
- include/linux/mtd/mtd.h     | 8 ++++----
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/mtd/core.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 62307db..586b4a0 100644
+index 586b4a0..3251bbc 100644
 --- a/drivers/mtd/core.c
 +++ b/drivers/mtd/core.c
-@@ -169,7 +169,7 @@ static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
- 	erase.len = mtd->erasesize;
+@@ -67,14 +67,13 @@ int mtd_all_ff(const void *buf, unsigned int len)
+ }
  
- 	while (count > 0) {
--		dev_dbg(cdev->dev, "erase %d %d\n", addr, erase.len);
-+		dev_dbg(cdev->dev, "erase 0x%08llx len: 0x%08llx\n", addr, erase.len);
+ static ssize_t mtd_op_read(struct cdev *cdev, void* buf, size_t count,
+-			  loff_t _offset, ulong flags)
++			  loff_t offset, ulong flags)
+ {
+ 	struct mtd_info *mtd = cdev->priv;
+ 	size_t retlen;
+ 	int ret;
+-	unsigned long offset = _offset;
  
- 		if (mtd->allow_erasebad || (mtd->master && mtd->master->allow_erasebad))
- 			ret = 0;
-diff --git a/include/linux/mtd/mtd-abi.h b/include/linux/mtd/mtd-abi.h
-index c46605d..8e778df 100644
---- a/include/linux/mtd/mtd-abi.h
-+++ b/include/linux/mtd/mtd-abi.h
-@@ -10,13 +10,13 @@
- #include <asm-generic/div64.h>
+-	dev_dbg(cdev->dev, "read ofs: 0x%08lx count: 0x%08zx\n",
++	dev_dbg(cdev->dev, "read ofs: 0x%08llx count: 0x%08zx\n",
+ 			offset, count);
  
- struct erase_info_user {
--	uint32_t start;
--	uint32_t length;
-+	uint64_t start;
-+	uint64_t length;
- };
- 
- struct mtd_oob_buf {
--	uint32_t start;
--	uint32_t length;
-+	uint64_t start;
-+	uint64_t length;
- 	unsigned char *ptr;
- };
- 
-diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
-index 7e828bc..e430217 100644
---- a/include/linux/mtd/mtd.h
-+++ b/include/linux/mtd/mtd.h
-@@ -31,9 +31,9 @@
-    specific to any particular block. */
- struct erase_info {
- 	struct mtd_info *mtd;
--	u_int32_t addr;
--	u_int32_t len;
--	u_int32_t fail_addr;
-+	u_int64_t addr;
-+	u_int64_t len;
-+	u_int64_t fail_addr;
- 	u_long time;
- 	u_long retries;
- 	u_int dev;
-@@ -45,7 +45,7 @@ struct erase_info {
- };
- 
- struct mtd_erase_region_info {
--	u_int32_t offset;			/* At which this region starts, from the beginning of the MTD */
-+	u_int64_t offset;			/* At which this region starts, from the beginning of the MTD */
- 	u_int32_t erasesize;		/* For this region */
- 	u_int32_t numblocks;		/* Number of blocks of erasesize in this region */
- 	unsigned long *lockmap;		/* If keeping bitmap of locks */
+ 	ret = mtd_read(mtd, offset, count, &retlen, buf);
 -- 
 2.7.0.rc3
 
