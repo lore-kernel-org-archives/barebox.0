@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aT52H-0004qu-GD
- for barebox@lists.infradead.org; Tue, 09 Feb 2016 09:56:43 +0000
+ id 1aT52R-0004vT-GF
+ for barebox@lists.infradead.org; Tue, 09 Feb 2016 09:56:52 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  9 Feb 2016 10:55:46 +0100
-Message-Id: <1455011748-5538-6-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  9 Feb 2016 10:55:43 +0100
+Message-Id: <1455011748-5538-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1455011748-5538-1-git-send-email-s.hauer@pengutronix.de>
 References: <1455011748-5538-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,36 +21,152 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] mtd: Fix mtd_op_erase for devices >4GiB
+Subject: [PATCH 2/7] mtd: Fix mtdraw for Nand > 4GiB
 To: Barebox List <barebox@lists.infradead.org>
 
-The mtd erase file operation has a unnecessary conversion to unsigned
-long in the offset. Remove it to make it work with chips >4GiB.
+The mtdraw code has some casts to avoid 64bit divisions. For Chips
+>4GiB using 64bit types become necessary, so use them and to the
+necessary 64bit math.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/mtdraw.c | 53 ++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 33 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 3251bbc..0bc9fed 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -148,7 +148,7 @@ static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
+diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
+index ae4bec2..837dcd1 100644
+--- a/drivers/mtd/mtdraw.c
++++ b/drivers/mtd/mtdraw.c
+@@ -83,6 +83,20 @@ static struct mtd_info *to_mtd(struct cdev *cdev)
+ 	return mtdraw->mtd;
+ }
+ 
++static unsigned int mtdraw_offset_to_block(struct mtd_info *mtd, loff_t offset)
++{
++	u64 ofs64 = offset;
++
++	do_div(ofs64, mtd->writesize + mtd->oobsize);
++
++	return ofs64;
++}
++
++static loff_t mtdraw_raw_to_mtd_offset(struct mtd_info *mtd, loff_t offset)
++{
++	return (loff_t)mtdraw_offset_to_block(mtd, offset) * mtd->writesize;
++}
++
+ static ssize_t mtdraw_read_unaligned(struct mtd_info *mtd, void *dst,
+ 				     size_t count, int skip, ulong offset)
  {
- 	struct mtd_info *mtd = cdev->priv;
+@@ -117,22 +131,21 @@ err:
+ }
+ 
+ static ssize_t mtdraw_read(struct cdev *cdev, void *buf, size_t count,
+-			    loff_t _offset, ulong flags)
++			    loff_t offset, ulong flags)
+ {
+ 	struct mtd_info *mtd = to_mtd(cdev);
+ 	ssize_t retlen = 0, ret = 1, toread;
+-	ulong numpage;
++	ulong numblock;
+ 	int skip;
+-	unsigned long offset = _offset;
+ 
+-	numpage = offset / (mtd->writesize + mtd->oobsize);
+-	skip = offset % (mtd->writesize + mtd->oobsize);
++	numblock = mtdraw_offset_to_block(mtd, offset);
++	skip = offset - numblock * (mtd->writesize + mtd->oobsize);
+ 
+ 	while (ret > 0 && count > 0) {
+ 		toread = min_t(int, count,
+ 				mtd->writesize + mtd->oobsize - skip);
+ 		ret = mtdraw_read_unaligned(mtd, buf, toread,
+-					    skip, numpage++ * mtd->writesize);
++					    skip, numblock++ * mtd->writesize);
+ 		buf += ret;
+ 		skip = 0;
+ 		count -= ret;
+@@ -171,20 +184,21 @@ static void mtdraw_fillbuf(struct mtdraw *mtdraw, const void *src, int nbbytes)
+ }
+ 
+ static ssize_t mtdraw_write(struct cdev *cdev, const void *buf, size_t count,
+-			    loff_t _offset, ulong flags)
++			    loff_t offset, ulong flags)
+ {
+ 	struct mtdraw *mtdraw = to_mtdraw(cdev);
+ 	struct mtd_info *mtd = to_mtd(cdev);
+ 	int bsz = mtd->writesize + mtd->oobsize;
+-	ulong numpage;
++	ulong numblock;
+ 	size_t retlen = 0, tofill;
+-	unsigned long offset = _offset;
+ 	int ret = 0;
+ 
++	numblock = mtdraw_offset_to_block(mtd, offset);
++
+ 	if (mtdraw->write_fill &&
+ 	    mtdraw->write_ofs + mtdraw->write_fill != offset)
+ 		return -EINVAL;
+-	if (mtdraw->write_fill == 0 && offset % bsz)
++	if (mtdraw->write_fill == 0 && offset - numblock * mtd->writesize != 0)
+ 		return -EINVAL;
+ 
+ 	if (mtdraw->write_fill) {
+@@ -196,16 +210,16 @@ static ssize_t mtdraw_write(struct cdev *cdev, const void *buf, size_t count,
+ 	}
+ 
+ 	if (mtdraw->write_fill == bsz) {
+-		numpage = mtdraw->write_ofs / (mtd->writesize + mtd->oobsize);
++		numblock = mtdraw_offset_to_block(mtd, mtdraw->write_ofs);
+ 		ret = mtdraw_blkwrite(mtd, mtdraw->writebuf,
+-				      mtd->writesize * numpage);
++				      mtd->writesize * numblock);
+ 		mtdraw->write_fill = 0;
+ 	}
+ 
+-	numpage = offset / (mtd->writesize + mtd->oobsize);
++	numblock = mtdraw_offset_to_block(mtd, offset);
+ 	while (ret >= 0 && count >= bsz) {
+ 		ret = mtdraw_blkwrite(mtd, buf + retlen,
+-				   mtd->writesize * numpage++);
++				   mtd->writesize * numblock++);
+ 		count -= ret;
+ 		retlen += ret;
+ 		offset += ret;
+@@ -225,15 +239,14 @@ static ssize_t mtdraw_write(struct cdev *cdev, const void *buf, size_t count,
+ 	}
+ }
+ 
+-static int mtdraw_erase(struct cdev *cdev, size_t count, loff_t _offset)
++static int mtdraw_erase(struct cdev *cdev, size_t count, loff_t offset)
+ {
+ 	struct mtd_info *mtd = to_mtd(cdev);
  	struct erase_info erase;
--	uint32_t addr;
-+	loff_t addr;
+-	unsigned long offset = _offset;
  	int ret;
  
- 	ret = mtd_erase_align(mtd, &count, &offset);
-@@ -178,7 +178,7 @@ static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
- 		erase.addr = addr;
+-	offset = offset / (mtd->writesize + mtd->oobsize) * mtd->writesize;
+-	count = count / (mtd->writesize + mtd->oobsize) * mtd->writesize;
++	offset = mtdraw_raw_to_mtd_offset(mtd, offset);
++	count = mtdraw_raw_to_mtd_offset(mtd, count);
+ 
+ 	memset(&erase, 0, sizeof(erase));
+ 	erase.mtd = mtd;
+@@ -241,7 +254,7 @@ static int mtdraw_erase(struct cdev *cdev, size_t count, loff_t _offset)
+ 	erase.len = mtd->erasesize;
+ 
+ 	while (count > 0) {
+-		debug("erase %d %d\n", erase.addr, erase.len);
++		debug("erase 0x%08llx len: 0x%08llx\n", erase.addr, erase.len);
+ 
+ 		if (!mtd->allow_erasebad)
+ 			ret = mtd_block_isbad(mtd, erase.addr);
+@@ -249,7 +262,7 @@ static int mtdraw_erase(struct cdev *cdev, size_t count, loff_t _offset)
+ 			ret = 0;
  
  		if (ret > 0) {
--			printf("Skipping bad block at 0x%08x\n", addr);
-+			printf("Skipping bad block at 0x%08llx\n", addr);
+-			printf("Skipping bad block at 0x%08x\n", erase.addr);
++			printf("Skipping bad block at 0x%08llx\n", erase.addr);
  		} else {
  			ret = mtd_erase(mtd, &erase);
  			if (ret)
