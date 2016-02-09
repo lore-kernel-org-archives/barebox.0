@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aT527-0004mU-GB
- for barebox@lists.infradead.org; Tue, 09 Feb 2016 09:56:32 +0000
+ id 1aT52H-0004qu-GD
+ for barebox@lists.infradead.org; Tue, 09 Feb 2016 09:56:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  9 Feb 2016 10:55:45 +0100
-Message-Id: <1455011748-5538-5-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  9 Feb 2016 10:55:46 +0100
+Message-Id: <1455011748-5538-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1455011748-5538-1-git-send-email-s.hauer@pengutronix.de>
 References: <1455011748-5538-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,38 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] mtd: Fix mtd_op_read for devices >4GiB
+Subject: [PATCH 5/7] mtd: Fix mtd_op_erase for devices >4GiB
 To: Barebox List <barebox@lists.infradead.org>
 
-The mtd read file operation has a unnecessary conversion to unsigned
-long in the read offset. Remove it to make it work with chips >4GiB
+The mtd erase file operation has a unnecessary conversion to unsigned
+long in the offset. Remove it to make it work with chips >4GiB.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/core.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/mtd/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 586b4a0..3251bbc 100644
+index 3251bbc..0bc9fed 100644
 --- a/drivers/mtd/core.c
 +++ b/drivers/mtd/core.c
-@@ -67,14 +67,13 @@ int mtd_all_ff(const void *buf, unsigned int len)
- }
- 
- static ssize_t mtd_op_read(struct cdev *cdev, void* buf, size_t count,
--			  loff_t _offset, ulong flags)
-+			  loff_t offset, ulong flags)
+@@ -148,7 +148,7 @@ static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
  {
  	struct mtd_info *mtd = cdev->priv;
- 	size_t retlen;
+ 	struct erase_info erase;
+-	uint32_t addr;
++	loff_t addr;
  	int ret;
--	unsigned long offset = _offset;
  
--	dev_dbg(cdev->dev, "read ofs: 0x%08lx count: 0x%08zx\n",
-+	dev_dbg(cdev->dev, "read ofs: 0x%08llx count: 0x%08zx\n",
- 			offset, count);
+ 	ret = mtd_erase_align(mtd, &count, &offset);
+@@ -178,7 +178,7 @@ static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
+ 		erase.addr = addr;
  
- 	ret = mtd_read(mtd, offset, count, &retlen, buf);
+ 		if (ret > 0) {
+-			printf("Skipping bad block at 0x%08x\n", addr);
++			printf("Skipping bad block at 0x%08llx\n", addr);
+ 		} else {
+ 			ret = mtd_erase(mtd, &erase);
+ 			if (ret)
 -- 
 2.7.0.rc3
 
