@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aTAji-0000uW-9v
- for barebox@lists.infradead.org; Tue, 09 Feb 2016 16:01:55 +0000
+ id 1aTAjn-0000xK-1P
+ for barebox@lists.infradead.org; Tue, 09 Feb 2016 16:02:00 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Tue,  9 Feb 2016 17:01:21 +0100
-Message-Id: <1455033684-21067-2-git-send-email-r.schwebel@pengutronix.de>
+Date: Tue,  9 Feb 2016 17:01:23 +0100
+Message-Id: <1455033684-21067-4-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1455033684-21067-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1455033684-21067-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,29 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] Documentation: m25p80: include in documentation
+Subject: [PATCH 4/5] ratp: remove unused ratp_close command
 To: barebox@lists.infradead.org
 
-Fix this warning:
-
-checking consistency...  [...]Documentation/devicetree/bindings/mtd/m25p80.rst:: WARNING: document isn't included in any toctree
-
-by including the document.
+This is a leftover from development, remove.
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
- Documentation/devicetree/index.rst | 1 +
- 1 file changed, 1 insertion(+)
+ common/ratp.c | 16 +---------------
+ 1 file changed, 1 insertion(+), 15 deletions(-)
 
-diff --git a/Documentation/devicetree/index.rst b/Documentation/devicetree/index.rst
-index abb9088..c5992c0 100644
---- a/Documentation/devicetree/index.rst
-+++ b/Documentation/devicetree/index.rst
-@@ -11,3 +11,4 @@ Contents:
-    bindings/barebox/*
-    bindings/leds/*
-    bindings/misc/*
-+   bindings/mtd/*
+diff --git a/common/ratp.c b/common/ratp.c
+index 2fef3cc..e879e2b 100644
+--- a/common/ratp.c
++++ b/common/ratp.c
+@@ -398,20 +398,6 @@ out:
+ 	ratp_console_unregister(ctx);
+ }
+ 
+-static int do_ratp_close(int argc, char *argv[])
+-{
+-	if (ratp_command_ctx && ratp_command_ctx->cdev)
+-		ratp_console_unregister(ratp_command_ctx);
+-	else
+-		printf("ratp is not active\n");
+-
+-	return 0;
+-}
+-
+-BAREBOX_CMD_START(ratp_close)
+-	.cmd	= do_ratp_close,
+-};
+-
+ int barebox_ratp_fs_call(struct ratp_bb_pkt *tx, struct ratp_bb_pkt **rx)
+ {
+ 	struct ratp_ctx *ctx = ratp_command_ctx;
+@@ -508,4 +494,4 @@ static void barebox_ratp_close(void)
+ 	if (ratp_command_ctx && ratp_command_ctx->cdev)
+ 		ratp_console_unregister(ratp_command_ctx);
+ }
+-predevshutdown_exitcall(barebox_ratp_close);
+\ No newline at end of file
++predevshutdown_exitcall(barebox_ratp_close);
 -- 
 2.7.0.rc3
 
