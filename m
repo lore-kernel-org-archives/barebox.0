@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aTSbG-0000vp-UQ
+ id 1aTSbG-0000vq-UH
  for barebox@lists.infradead.org; Wed, 10 Feb 2016 11:06:25 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed, 10 Feb 2016 12:05:51 +0100
-Message-Id: <1455102355-26102-2-git-send-email-s.trumtrar@pengutronix.de>
-In-Reply-To: <1455102355-26102-1-git-send-email-s.trumtrar@pengutronix.de>
-References: <1455102355-26102-1-git-send-email-s.trumtrar@pengutronix.de>
+Date: Wed, 10 Feb 2016 12:05:50 +0100
+Message-Id: <1455102355-26102-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,58 +19,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] include: linux: add circular buffers
+Subject: [PATCH 0/5] i.MX6: CAAM engine support
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- include/linux/circ_buf.h | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+Hi!
+
+This series adds basic support for the i.MX6
+Cryptographic Acceleration and Assurance Module (CAAM).
+
+The CAAM supports multiple hashing/encryption engines,
+this series only supports the included hardware random
+number generator.
+
+Tested with a riotboard.
+
+Regards,
+Steffen
+
+Steffen Trumtrar (5):
+  include: linux: add circular buffers
+  ARM: imx6: add caam clks
+  crypto: add i.MX6 CAAM support
+  crypto: caam: add RNG support
+  ARM: i.MX6: riotboard: enable CAAM RNG
+
+ arch/arm/dts/imx6s-riotboard.dts  |    4 +
+ arch/arm/mach-imx/clk-imx6.c      |    4 +
+ drivers/Kconfig                   |    1 +
+ drivers/Makefile                  |    1 +
+ drivers/crypto/Kconfig            |   10 +
+ drivers/crypto/Makefile           |    1 +
+ drivers/crypto/caam/Kconfig       |   44 +
+ drivers/crypto/caam/Makefile      |    6 +
+ drivers/crypto/caam/caamrng.c     |  319 +++++++
+ drivers/crypto/caam/ctrl.c        |  651 +++++++++++++++
+ drivers/crypto/caam/ctrl.h        |   13 +
+ drivers/crypto/caam/desc.h        | 1665 +++++++++++++++++++++++++++++++++++++
+ drivers/crypto/caam/desc_constr.h |  390 +++++++++
+ drivers/crypto/caam/error.c       |  257 ++++++
+ drivers/crypto/caam/error.h       |   11 +
+ drivers/crypto/caam/intern.h      |   99 +++
+ drivers/crypto/caam/jr.c          |  364 ++++++++
+ drivers/crypto/caam/jr.h          |   18 +
+ drivers/crypto/caam/regs.h        |  895 ++++++++++++++++++++
+ include/linux/circ_buf.h          |   36 +
+ 20 files changed, 4789 insertions(+)
+ create mode 100644 drivers/crypto/Kconfig
+ create mode 100644 drivers/crypto/Makefile
+ create mode 100644 drivers/crypto/caam/Kconfig
+ create mode 100644 drivers/crypto/caam/Makefile
+ create mode 100644 drivers/crypto/caam/caamrng.c
+ create mode 100644 drivers/crypto/caam/ctrl.c
+ create mode 100644 drivers/crypto/caam/ctrl.h
+ create mode 100644 drivers/crypto/caam/desc.h
+ create mode 100644 drivers/crypto/caam/desc_constr.h
+ create mode 100644 drivers/crypto/caam/error.c
+ create mode 100644 drivers/crypto/caam/error.h
+ create mode 100644 drivers/crypto/caam/intern.h
+ create mode 100644 drivers/crypto/caam/jr.c
+ create mode 100644 drivers/crypto/caam/jr.h
+ create mode 100644 drivers/crypto/caam/regs.h
  create mode 100644 include/linux/circ_buf.h
 
-diff --git a/include/linux/circ_buf.h b/include/linux/circ_buf.h
-new file mode 100644
-index 000000000000..90f2471dc6f2
---- /dev/null
-+++ b/include/linux/circ_buf.h
-@@ -0,0 +1,36 @@
-+/*
-+ * See Documentation/circular-buffers.txt for more information.
-+ */
-+
-+#ifndef _LINUX_CIRC_BUF_H
-+#define _LINUX_CIRC_BUF_H 1
-+
-+struct circ_buf {
-+	char *buf;
-+	int head;
-+	int tail;
-+};
-+
-+/* Return count in buffer.  */
-+#define CIRC_CNT(head,tail,size) (((head) - (tail)) & ((size)-1))
-+
-+/* Return space available, 0..size-1.  We always leave one free char
-+   as a completely full buffer has head == tail, which is the same as
-+   empty.  */
-+#define CIRC_SPACE(head,tail,size) CIRC_CNT((tail),((head)+1),(size))
-+
-+/* Return count up to the end of the buffer.  Carefully avoid
-+   accessing head and tail more than once, so they can change
-+   underneath us without returning inconsistent results.  */
-+#define CIRC_CNT_TO_END(head,tail,size) \
-+	({int end = (size) - (tail); \
-+	  int n = ((head) + end) & ((size)-1); \
-+	  n < end ? n : end;})
-+
-+/* Return space available up to the end of the buffer.  */
-+#define CIRC_SPACE_TO_END(head,tail,size) \
-+	({int end = (size) - 1 - (head); \
-+	  int n = (end + (tail)) & ((size)-1); \
-+	  n <= end ? n : end+1;})
-+
-+#endif /* _LINUX_CIRC_BUF_H  */
 -- 
 2.7.0.rc3
 
