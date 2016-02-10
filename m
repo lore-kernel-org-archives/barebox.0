@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aTSbG-0000vr-UO
- for barebox@lists.infradead.org; Wed, 10 Feb 2016 11:06:24 +0000
+ id 1aTSbG-0000vp-UQ
+ for barebox@lists.infradead.org; Wed, 10 Feb 2016 11:06:25 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed, 10 Feb 2016 12:05:52 +0100
-Message-Id: <1455102355-26102-3-git-send-email-s.trumtrar@pengutronix.de>
+Date: Wed, 10 Feb 2016 12:05:51 +0100
+Message-Id: <1455102355-26102-2-git-send-email-s.trumtrar@pengutronix.de>
 In-Reply-To: <1455102355-26102-1-git-send-email-s.trumtrar@pengutronix.de>
 References: <1455102355-26102-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,37 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] ARM: imx6: add caam clks
+Subject: [PATCH 1/5] include: linux: add circular buffers
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/mach-imx/clk-imx6.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/circ_buf.h | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+ create mode 100644 include/linux/circ_buf.h
 
-diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
-index 597e50205038..8568258644d5 100644
---- a/arch/arm/mach-imx/clk-imx6.c
-+++ b/arch/arm/mach-imx/clk-imx6.c
-@@ -443,6 +443,9 @@ static int imx6_ccm_probe(struct device_d *dev)
- 
- 	/*                                            name             parent_name          reg         shift */
- 	clks[IMX6QDL_CLK_APBH_DMA]     = imx_clk_gate2("apbh_dma",      "usdhc3",            base + 0x68, 4);
-+	clks[IMX6QDL_CLK_CAAM_MEM]     = imx_clk_gate2("caam_mem",      "ahb",               base + 0x68, 8);
-+	clks[IMX6QDL_CLK_CAAM_ACLK]    = imx_clk_gate2("caam_aclk",     "ahb",               base + 0x68, 10);
-+	clks[IMX6QDL_CLK_CAAM_IPG]     = imx_clk_gate2("caam_ipg",      "ipg",               base + 0x68, 12);
- 	clks[IMX6QDL_CLK_ECSPI1]       = imx_clk_gate2("ecspi1",        "ecspi_root",        base + 0x6c, 0);
- 	clks[IMX6QDL_CLK_ECSPI2]       = imx_clk_gate2("ecspi2",        "ecspi_root",        base + 0x6c, 2);
- 	clks[IMX6QDL_CLK_ECSPI3]       = imx_clk_gate2("ecspi3",        "ecspi_root",        base + 0x6c, 4);
-@@ -477,6 +480,7 @@ static int imx6_ccm_probe(struct device_d *dev)
- 	clks[IMX6QDL_CLK_USDHC2]       = imx_clk_gate2("usdhc2",        "usdhc2_podf",       base + 0x80, 4);
- 	clks[IMX6QDL_CLK_USDHC3]       = imx_clk_gate2("usdhc3",        "usdhc3_podf",       base + 0x80, 6);
- 	clks[IMX6QDL_CLK_USDHC4]       = imx_clk_gate2("usdhc4",        "usdhc4_podf",       base + 0x80, 8);
-+	clks[IMX6QDL_CLK_EIM_SLOW]     = imx_clk_gate2("eim_slow",      "eim_slow_podf",     base + 0x80, 10);
- 	clks[IMX6QDL_CLK_CKO1]         = imx_clk_gate("cko1",           "cko1_podf",         base + 0x60, 7);
- 	clks[IMX6QDL_CLK_CKO2]         = imx_clk_gate("cko2",           "cko2_podf",         base + 0x60, 24);
- 
+diff --git a/include/linux/circ_buf.h b/include/linux/circ_buf.h
+new file mode 100644
+index 000000000000..90f2471dc6f2
+--- /dev/null
++++ b/include/linux/circ_buf.h
+@@ -0,0 +1,36 @@
++/*
++ * See Documentation/circular-buffers.txt for more information.
++ */
++
++#ifndef _LINUX_CIRC_BUF_H
++#define _LINUX_CIRC_BUF_H 1
++
++struct circ_buf {
++	char *buf;
++	int head;
++	int tail;
++};
++
++/* Return count in buffer.  */
++#define CIRC_CNT(head,tail,size) (((head) - (tail)) & ((size)-1))
++
++/* Return space available, 0..size-1.  We always leave one free char
++   as a completely full buffer has head == tail, which is the same as
++   empty.  */
++#define CIRC_SPACE(head,tail,size) CIRC_CNT((tail),((head)+1),(size))
++
++/* Return count up to the end of the buffer.  Carefully avoid
++   accessing head and tail more than once, so they can change
++   underneath us without returning inconsistent results.  */
++#define CIRC_CNT_TO_END(head,tail,size) \
++	({int end = (size) - (tail); \
++	  int n = ((head) + end) & ((size)-1); \
++	  n < end ? n : end;})
++
++/* Return space available up to the end of the buffer.  */
++#define CIRC_SPACE_TO_END(head,tail,size) \
++	({int end = (size) - 1 - (head); \
++	  int n = (end + (tail)) & ((size)-1); \
++	  n <= end ? n : end+1;})
++
++#endif /* _LINUX_CIRC_BUF_H  */
 -- 
 2.7.0.rc3
 
