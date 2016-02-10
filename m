@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aTRo1-0007ML-66
- for barebox@lists.infradead.org; Wed, 10 Feb 2016 10:15:31 +0000
-Date: Wed, 10 Feb 2016 11:15:06 +0100
+ id 1aTSbG-0000vr-UO
+ for barebox@lists.infradead.org; Wed, 10 Feb 2016 11:06:24 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20160210101506.GC3432@pengutronix.de>
-References: <1455098857-25339-1-git-send-email-r.schwebel@pengutronix.de>
- <1455098857-25339-4-git-send-email-r.schwebel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1455098857-25339-4-git-send-email-r.schwebel@pengutronix.de>
+Date: Wed, 10 Feb 2016 12:05:52 +0100
+Message-Id: <1455102355-26102-3-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1455102355-26102-1-git-send-email-s.trumtrar@pengutronix.de>
+References: <1455102355-26102-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,136 +16,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] Documentation: networking: improve docs
-To: Robert Schwebel <r.schwebel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/5] ARM: imx6: add caam clks
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-On Wed, Feb 10, 2016 at 11:07:37AM +0100, Robert Schwebel wrote:
-> Add the following improvements:
-> 
-> - clarify commands vs. filesystems for network file transport protocols
-> - Beautify links with prosa text instead of standard headlines
-> - adapt 'devinfo eth0' parameter output to current code
-> - improve console texts
-> - add docs for netconsole.active
-> 
-> Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
-> ---
->  Documentation/user/networking.rst | 44 ++++++++++++++++++++++++---------------
->  1 file changed, 27 insertions(+), 17 deletions(-)
-> 
-> diff --git a/Documentation/user/networking.rst b/Documentation/user/networking.rst
-> index 6eeb93d..c1b1857 100644
-> --- a/Documentation/user/networking.rst
-> +++ b/Documentation/user/networking.rst
-> @@ -1,26 +1,25 @@
->  Networking
->  ==========
->  
-> -barebox has IPv4 networking support. Several protocols such as
-> -:ref:`command_dhcp`, :ref:`filesystems_nfs`, :ref:`command_tftp` are
-> -supported.
-> +barebox has IPv4 networking support. Several protocols such as :ref:`DHCP
-> +<command_dhcp>`, NFS and TFTP are supported.
->  
->  Network configuration
->  ---------------------
->  
->  The first step for networking is configuring the network device. The network
->  device is usually ``eth0``. The current configuration can be viewed with the
-> -:ref:`command_devinfo` command:
-> +:ref:`devinfo <command_devinfo>` command:
->  
->  .. code-block:: sh
->  
->    barebox:/ devinfo eth0
->    Parameters:
-> -    ipaddr: 192.168.23.197
-> -    serverip: 192.168.23.1
-> +    ethaddr: 00:1c:49:01:03:4b
->      gateway: 192.168.23.1
-> +    ipaddr: 192.168.23.197
->      netmask: 255.255.0.0
-> -    ethaddr: 00:1c:49:01:03:4b
-> +    serverip: 192.168.23.1
->  
->  The configuration can be changed on the command line with:
->  
-> @@ -28,19 +27,21 @@ The configuration can be changed on the command line with:
->  
->    eth0.ipaddr=172.0.0.10
->  
-> -The :ref:`command_dhcp` command will change the settings based on the answer
-> +The :ref:`dhcp command <command_dhcp>` will change the settings based on the answer
->  from the DHCP server.
->  
->  This low-level configuration of the network interface is often not necessary. Normally
->  the network settings should be edited in ``/env/network/eth0``, then the network interface
-> -can be brought up using the :ref:`command_ifup` command.
-> +can be brought up using the :ref:`ifup command <command_ifup>`.
->  
->  Network filesystems
->  -------------------
->  
-> -barebox supports NFS and TFTP as filesystem implementations. See :ref:`filesystems_nfs`
-> -and :ref:`filesystems_tftp` for more information. After the network device has been
-> -brought up a network filesystem can be mounted with:
-> +barebox supports NFS and TFTP both with commands (:ref:`nfs <command_nfs>` and
-> +:ref:`tftp <command_tftp>`) and as filesystem implementations; see
-> +:ref:`filesystems_nfs` and :ref:`filesystems_tftp` for more information. After
-> +the network device has been brought up, a network filesystem can be mounted
-> +with:
->  
->  .. code-block:: sh
->  
-> @@ -52,8 +53,9 @@ or
->  
->    mount -t nfs 192.168.2.1:/export none /mnt
->  
-> -**NOTE:** this can often be hidden behind the :ref:`command_automount` command to make
-> -mounting transparent to the user.
-> +**NOTE:** The execution of the mount command can often be hidden behind the
-> +:ref:`automount command <command_automount>`, to make mounting transparent to
-> +the user.
->  
->  Network console
->  ---------------
-> @@ -71,11 +73,19 @@ risks. It can be enabled using:
->    netconsole.ip=192.168.23.2
->    netconsole.active=ioe
->  
-> -This will send UDP packets to 192.168.23.2 on port 6666. On 192.168.23.2 the
-> -scripts/netconsole script can be used to control barebox:
-> +This will send UDP packets to a PC with IP address 192.168.23.2 and port 6666.
-> +
-> +The ``netconsole.active`` parameter consists of the fields "input" (i),
-> +"output" (o) and "error" (e); if the fields are set, the respective channel is
-> +activated on the network console.
-> +
-> +On the PC side, the ``scripts/netconsole`` script can be used to remote control
-> +barebox:
->  
->  .. code-block:: sh
->  
->    scripts/netconsole <board IP> 6666
->  
-> -The netconsole can be used just like any other console.
-> +The netconsole can be used just like any other console. Note, however, that the
-> +simple console protocol is is UDP based, so there is no guarantee about packet
-			   ^^^^^
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ arch/arm/mach-imx/clk-imx6.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Regards,
-Steffen Trumtrar
-
+diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
+index 597e50205038..8568258644d5 100644
+--- a/arch/arm/mach-imx/clk-imx6.c
++++ b/arch/arm/mach-imx/clk-imx6.c
+@@ -443,6 +443,9 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 
+ 	/*                                            name             parent_name          reg         shift */
+ 	clks[IMX6QDL_CLK_APBH_DMA]     = imx_clk_gate2("apbh_dma",      "usdhc3",            base + 0x68, 4);
++	clks[IMX6QDL_CLK_CAAM_MEM]     = imx_clk_gate2("caam_mem",      "ahb",               base + 0x68, 8);
++	clks[IMX6QDL_CLK_CAAM_ACLK]    = imx_clk_gate2("caam_aclk",     "ahb",               base + 0x68, 10);
++	clks[IMX6QDL_CLK_CAAM_IPG]     = imx_clk_gate2("caam_ipg",      "ipg",               base + 0x68, 12);
+ 	clks[IMX6QDL_CLK_ECSPI1]       = imx_clk_gate2("ecspi1",        "ecspi_root",        base + 0x6c, 0);
+ 	clks[IMX6QDL_CLK_ECSPI2]       = imx_clk_gate2("ecspi2",        "ecspi_root",        base + 0x6c, 2);
+ 	clks[IMX6QDL_CLK_ECSPI3]       = imx_clk_gate2("ecspi3",        "ecspi_root",        base + 0x6c, 4);
+@@ -477,6 +480,7 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 	clks[IMX6QDL_CLK_USDHC2]       = imx_clk_gate2("usdhc2",        "usdhc2_podf",       base + 0x80, 4);
+ 	clks[IMX6QDL_CLK_USDHC3]       = imx_clk_gate2("usdhc3",        "usdhc3_podf",       base + 0x80, 6);
+ 	clks[IMX6QDL_CLK_USDHC4]       = imx_clk_gate2("usdhc4",        "usdhc4_podf",       base + 0x80, 8);
++	clks[IMX6QDL_CLK_EIM_SLOW]     = imx_clk_gate2("eim_slow",      "eim_slow_podf",     base + 0x80, 10);
+ 	clks[IMX6QDL_CLK_CKO1]         = imx_clk_gate("cko1",           "cko1_podf",         base + 0x60, 7);
+ 	clks[IMX6QDL_CLK_CKO2]         = imx_clk_gate("cko2",           "cko2_podf",         base + 0x60, 24);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.0.rc3
+
 
 _______________________________________________
 barebox mailing list
