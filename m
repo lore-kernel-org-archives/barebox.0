@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aTRgo-0002W5-Eh
- for barebox@lists.infradead.org; Wed, 10 Feb 2016 10:08:03 +0000
+ id 1aTRgo-0002W3-EN
+ for barebox@lists.infradead.org; Wed, 10 Feb 2016 10:08:05 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Wed, 10 Feb 2016 11:07:36 +0100
-Message-Id: <1455098857-25339-3-git-send-email-r.schwebel@pengutronix.de>
+Date: Wed, 10 Feb 2016 11:07:35 +0100
+Message-Id: <1455098857-25339-2-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1455098857-25339-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1455098857-25339-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,29 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] Documentation: user manual: improve tftp description
+Subject: [PATCH 2/4] Documentation: filesystems: tftp: bring in line with
+ other filesystem docs
 To: barebox@lists.infradead.org
+
+Clarify that this is about the TFTP filesystem implementation, in
+contrast to the tftp command.
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
- Documentation/user/barebox.rst | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ Documentation/filesystems/tftp.rst | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/user/barebox.rst b/Documentation/user/barebox.rst
-index b1f06b0..530693d 100644
---- a/Documentation/user/barebox.rst
-+++ b/Documentation/user/barebox.rst
-@@ -186,7 +186,9 @@ with U-Boot's 'go' command::
-   U-Boot: tftp $load_addr barebox.bin
-   U-Boot: go $load_addr
+diff --git a/Documentation/filesystems/tftp.rst b/Documentation/filesystems/tftp.rst
+index e0a1159..b5bb1b3 100644
+--- a/Documentation/filesystems/tftp.rst
++++ b/Documentation/filesystems/tftp.rst
+@@ -2,15 +2,19 @@
  
--With barebox already running on your board, this can be used to chainload another barebox::
-+With barebox already running on your board, this can be used to chainload
-+another barebox. For instance, if you mounted a TFTP server to ``/mnt/tftp``
-+(see :ref:`filesystems_tftp` for how to do that), chainload barebox with::
+ .. _filesystems_tftp:
  
-   bootm /mnt/tftp/barebox.bin
+-TFTP support
+-============
++TFTP filesystem
++===============
  
+-barebox has read/write support for the Trivial File Transfer Protocol.
++barebox has read/write support for the Trivial File Transfer Protocol (TFTP,
++`RFC1350 <https://tools.ietf.org/html/rfc1350>`_).
+ 
+ TFTP is not designed as a filesystem. It does not have support for listing
+-directories. This means a :ref:`command_ls` to a TFTP-mounted path will show an empty
+-directory. Nevertheless, the files are there.
++directories. This means a :ref:`ls <command_ls>` to a TFTP-mounted path will
++show an empty directory. Nevertheless, the files are there.
+ 
+ Example::
+ 
+   mount -t tftp 192.168.23.4 /mnt/tftp
++
++In addition to the TFTP filesystem implementation, barebox does also have a
++:ref:`tftp command <command_tftp>`.
 -- 
 2.7.0.rc3
 
