@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aTAjn-0000wx-0Z
- for barebox@lists.infradead.org; Tue, 09 Feb 2016 16:02:00 +0000
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Tue,  9 Feb 2016 17:01:22 +0100
-Message-Id: <1455033684-21067-3-git-send-email-r.schwebel@pengutronix.de>
-In-Reply-To: <1455033684-21067-1-git-send-email-r.schwebel@pengutronix.de>
+ id 1aTP4c-0002h9-8R
+ for barebox@lists.infradead.org; Wed, 10 Feb 2016 07:20:27 +0000
+Date: Wed, 10 Feb 2016 08:20:03 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160210072003.GI4118@pengutronix.de>
 References: <1455033684-21067-1-git-send-email-r.schwebel@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1455033684-21067-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,38 +18,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] Documentation: user manual: include documentation for
- remote-control
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/5] Documentation: booting linux: improve wording
+To: Robert Schwebel <r.schwebel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This documentation snippet was already added to the tree, but not
-included anywhere.
+On Tue, Feb 09, 2016 at 05:01:20PM +0100, Robert Schwebel wrote:
+> 'bootm' is the lowlevel boot command, in contrast to 'boot', which is
+> more highlevel.
+> 
+> Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 
-Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
----
- Documentation/user/user-manual.rst | 1 +
- 1 file changed, 1 insertion(+)
+Applied, thanks
 
-diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
-index 0d6daee..be44f0d 100644
---- a/Documentation/user/user-manual.rst
-+++ b/Documentation/user/user-manual.rst
-@@ -27,6 +27,7 @@ Contents:
-    usb
-    ubi
-    booting-linux
-+   remote-control
-    system-setup
-    reset-reason
-    system-reset
+Sascha
+
+
 -- 
-2.7.0.rc3
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
