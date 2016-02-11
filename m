@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-vk0-x22f.google.com ([2607:f8b0:400c:c05::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aTsjv-0005VS-LA
- for barebox@lists.infradead.org; Thu, 11 Feb 2016 15:01:04 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 11 Feb 2016 16:00:40 +0100
-Message-Id: <1455202840-26501-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1455202840-26501-1-git-send-email-s.hauer@pengutronix.de>
-References: <1455202840-26501-1-git-send-email-s.hauer@pengutronix.de>
+ id 1aTskw-0005xo-8c
+ for barebox@lists.infradead.org; Thu, 11 Feb 2016 15:02:09 +0000
+Received: by mail-vk0-x22f.google.com with SMTP id c3so38237923vkb.3
+ for <barebox@lists.infradead.org>; Thu, 11 Feb 2016 07:01:45 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <1455202575-9855-1-git-send-email-yegorslists@googlemail.com>
+References: <1455202575-9855-1-git-send-email-yegorslists@googlemail.com>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Thu, 11 Feb 2016 16:01:25 +0100
+Message-ID: <CAGm1_ksxvKAK4C0pY-=1mex61bgyz+D6NPwGhENLkkZF3=H8cg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,38 +19,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] blspec: ignore lines beginning with '#'
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [RFC] fs: add support for SquashFS
+To: barebox <barebox@lists.infradead.org>
 
-According to the bootloader spec these should be treated as comments.
+On Thu, Feb 11, 2016 at 3:56 PM,  <yegorslists@googlemail.com> wrote:
+> From: Yegor Yefremov <yegorslists@googlemail.com>
+>
+> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/blspec.c | 3 +++
- 1 file changed, 3 insertions(+)
+This is a first attempt to add SqaushFS to Barebox. The port is still
+not fully functional, but it is possible to read files.
 
-diff --git a/common/blspec.c b/common/blspec.c
-index 0f806ca..1800556 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -86,6 +86,9 @@ static struct blspec_entry *blspec_entry_open(struct blspec *blspec,
- 			next++;
- 		}
- 
-+		if (*line == '#')
-+			continue;
-+
- 		name = line;
- 		end = name;
- 
--- 
-2.7.0.rc3
+TODO:
 
+1. improve directory listing: for now only root directory can be listed
+2. support symlinks
+3. implement freeing allocated structures on routine exit
+4. remove Linux related stuff like spinlocks, wait etc.
+5. add other decompressors (Gzip etc.)
+
+Yegor
 
 _______________________________________________
 barebox mailing list
