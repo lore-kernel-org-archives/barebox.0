@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aaP0R-0001Rq-2d
- for barebox@lists.infradead.org; Mon, 29 Feb 2016 14:41:03 +0000
-Received: by mail-wm0-x244.google.com with SMTP id p65so10245695wmp.1
- for <barebox@lists.infradead.org>; Mon, 29 Feb 2016 06:40:42 -0800 (PST)
-From: yegorslists@googlemail.com
-Date: Mon, 29 Feb 2016 15:39:51 +0100
-Message-Id: <1456756792-21321-1-git-send-email-yegorslists@googlemail.com>
+ id 1aUDX0-0007Xo-8d
+ for barebox@lists.infradead.org; Fri, 12 Feb 2016 13:13:08 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Fri, 12 Feb 2016 14:12:37 +0100
+Message-Id: <1455282758-312-3-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1455282758-312-1-git-send-email-s.trumtrar@pengutronix.de>
+References: <1455282758-312-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,99 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] Documentation/filesystems: add barebox prompt to the
- shell commands
+Subject: [PATCH v4 2/3] ARM: imx6: add caam clks
 To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-From: Yegor Yefremov <yegorslists@googlemail.com>
-
-Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- Documentation/filesystems/fat.rst   | 9 ++++-----
- Documentation/filesystems/nfs.rst   | 4 ++--
- Documentation/filesystems/ramfs.rst | 2 +-
- Documentation/filesystems/smhfs.rst | 2 +-
- Documentation/filesystems/tftp.rst  | 2 +-
- 5 files changed, 9 insertions(+), 10 deletions(-)
+ arch/arm/mach-imx/clk-imx6.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/filesystems/fat.rst b/Documentation/filesystems/fat.rst
-index 2138328..e39e34a 100644
---- a/Documentation/filesystems/fat.rst
-+++ b/Documentation/filesystems/fat.rst
-@@ -7,9 +7,8 @@ barebox supports FAT filesystems in both read and write modes with optional
- support for long filenames. A FAT filesystem can be mounted using the
- :ref:`command_mount` command::
+diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
+index 597e50205038..8568258644d5 100644
+--- a/arch/arm/mach-imx/clk-imx6.c
++++ b/arch/arm/mach-imx/clk-imx6.c
+@@ -443,6 +443,9 @@ static int imx6_ccm_probe(struct device_d *dev)
  
--  mkdir /mnt
--  mount /dev/disk0.0 fat /mnt
--  ls /mnt
-+  barebox:/ mkdir /mnt
-+  barebox:/ mount /dev/disk0.0 fat /mnt
-+  barebox:/ ls /mnt
-   zImage barebox.bin
--  umount /mnt
--
-+  barebox:/ umount /mnt
-diff --git a/Documentation/filesystems/nfs.rst b/Documentation/filesystems/nfs.rst
-index 4469ac1..ab51241 100644
---- a/Documentation/filesystems/nfs.rst
-+++ b/Documentation/filesystems/nfs.rst
-@@ -9,7 +9,7 @@ barebox has readonly support for NFSv3 in UDP mode.
+ 	/*                                            name             parent_name          reg         shift */
+ 	clks[IMX6QDL_CLK_APBH_DMA]     = imx_clk_gate2("apbh_dma",      "usdhc3",            base + 0x68, 4);
++	clks[IMX6QDL_CLK_CAAM_MEM]     = imx_clk_gate2("caam_mem",      "ahb",               base + 0x68, 8);
++	clks[IMX6QDL_CLK_CAAM_ACLK]    = imx_clk_gate2("caam_aclk",     "ahb",               base + 0x68, 10);
++	clks[IMX6QDL_CLK_CAAM_IPG]     = imx_clk_gate2("caam_ipg",      "ipg",               base + 0x68, 12);
+ 	clks[IMX6QDL_CLK_ECSPI1]       = imx_clk_gate2("ecspi1",        "ecspi_root",        base + 0x6c, 0);
+ 	clks[IMX6QDL_CLK_ECSPI2]       = imx_clk_gate2("ecspi2",        "ecspi_root",        base + 0x6c, 2);
+ 	clks[IMX6QDL_CLK_ECSPI3]       = imx_clk_gate2("ecspi3",        "ecspi_root",        base + 0x6c, 4);
+@@ -477,6 +480,7 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 	clks[IMX6QDL_CLK_USDHC2]       = imx_clk_gate2("usdhc2",        "usdhc2_podf",       base + 0x80, 4);
+ 	clks[IMX6QDL_CLK_USDHC3]       = imx_clk_gate2("usdhc3",        "usdhc3_podf",       base + 0x80, 6);
+ 	clks[IMX6QDL_CLK_USDHC4]       = imx_clk_gate2("usdhc4",        "usdhc4_podf",       base + 0x80, 8);
++	clks[IMX6QDL_CLK_EIM_SLOW]     = imx_clk_gate2("eim_slow",      "eim_slow_podf",     base + 0x80, 10);
+ 	clks[IMX6QDL_CLK_CKO1]         = imx_clk_gate("cko1",           "cko1_podf",         base + 0x60, 7);
+ 	clks[IMX6QDL_CLK_CKO2]         = imx_clk_gate("cko2",           "cko2_podf",         base + 0x60, 24);
  
- Example::
- 
--   mount -t nfs 192.168.23.4:/home/user/nfsroot /mnt/nfs
-+   barebox:/ mount -t nfs 192.168.23.4:/home/user/nfsroot /mnt/nfs
- 
- The barebox NFS driver adds a ``linux.bootargs`` device parameter to the NFS device.
- This parameter holds a Linux kernel commandline snippet containing a suitable root=
-@@ -17,7 +17,7 @@ option for booting from exactly that NFS share.
- 
- Example::
- 
--  devinfo nfs0
-+  barebox:/ devinfo nfs0
-   ...
-   linux.bootargs: root=/dev/nfs nfsroot=192.168.23.4:/home/sha/nfsroot/generic-v7,v3,tcp
- 
-diff --git a/Documentation/filesystems/ramfs.rst b/Documentation/filesystems/ramfs.rst
-index b7ece1a..d27f885 100644
---- a/Documentation/filesystems/ramfs.rst
-+++ b/Documentation/filesystems/ramfs.rst
-@@ -9,4 +9,4 @@ is ``ramfs``.
- 
- Example::
- 
--  mount none ramfs /somedir
-+  barebox:/ mount none ramfs /somedir
-diff --git a/Documentation/filesystems/smhfs.rst b/Documentation/filesystems/smhfs.rst
-index 28de146..9e9993c 100644
---- a/Documentation/filesystems/smhfs.rst
-+++ b/Documentation/filesystems/smhfs.rst
-@@ -20,7 +20,7 @@ directory. Nevertheless, the files are there.
- 
- Example::
- 
--  mount -t smhfs /dev/null /mnt/smhfs
-+  barebox:/ mount -t smhfs /dev/null /mnt/smhfs
- 
- 
- Host Side Setup
-diff --git a/Documentation/filesystems/tftp.rst b/Documentation/filesystems/tftp.rst
-index b5bb1b3..eeb3fcb 100644
---- a/Documentation/filesystems/tftp.rst
-+++ b/Documentation/filesystems/tftp.rst
-@@ -14,7 +14,7 @@ show an empty directory. Nevertheless, the files are there.
- 
- Example::
- 
--  mount -t tftp 192.168.23.4 /mnt/tftp
-+  barebox:/ mount -t tftp 192.168.23.4 /mnt/tftp
- 
- In addition to the TFTP filesystem implementation, barebox does also have a
- :ref:`tftp command <command_tftp>`.
 -- 
-2.1.4
+2.7.0.rc3
 
 
 _______________________________________________
