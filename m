@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVCgA-0006Wo-Gq
- for barebox@lists.infradead.org; Mon, 15 Feb 2016 06:30:39 +0000
-Date: Mon, 15 Feb 2016 07:30:14 +0100
+ id 1aVCj3-0006w1-PO
+ for barebox@lists.infradead.org; Mon, 15 Feb 2016 06:33:38 +0000
+Date: Mon, 15 Feb 2016 07:33:16 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160215063014.GA19372@pengutronix.de>
-References: <3814032.giLfJ2gLGN@dabox>
+Message-ID: <20160215063316.GC19372@pengutronix.de>
+References: <1455296303-32350-1-git-send-email-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <3814032.giLfJ2gLGN@dabox>
+In-Reply-To: <1455296303-32350-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +22,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v5] Terasic DE0-Nano-SoC: add support
-To: Tim Sander <tim@krieglstein.org>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Steffen Trumtrar <s.trumtrar@pengutronix.de>, Trent Piepho <tpiepho@kymetacorp.com>
+Subject: Re: [PATCH 1/2] bootm: restore load DT message for plain oftree files
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Fri, Feb 12, 2016 at 02:08:25PM +0100, Tim Sander wrote:
-> v5: remove led functions,
->       rename socfpga_console_init -> socfpga_init
->       use more specific device tree identifier, needs a kernel dts addition though:
->         add "terasic,de0-nano-soc" to compatible string in dts file of the board.
+On Fri, Feb 12, 2016 at 05:58:22PM +0100, Lucas Stach wrote:
+> This message was dropped when reorganizing the DT loading code,
+> and it's really confusing to miss this.
 > 
-> A Patch for supporting the Terasic DE0 NANO-SoC with barebox.
-> The pretty similar Socrates Board was taken as a starting point with pulling
-> in the memory timings/pinmux from
-> http://rocketboards.org/foswiki/view/Documentation/AtlasSoCCompileHardwareDesign
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  common/bootm.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-Applied, thanks
+Applied both to master, thanks
 
 Sascha
-
-
 
 -- 
 Pengutronix e.K.                           |                             |
