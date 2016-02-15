@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVCj3-0006w1-PO
- for barebox@lists.infradead.org; Mon, 15 Feb 2016 06:33:38 +0000
-Date: Mon, 15 Feb 2016 07:33:16 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160215063316.GC19372@pengutronix.de>
-References: <1455296303-32350-1-git-send-email-l.stach@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1455296303-32350-1-git-send-email-l.stach@pengutronix.de>
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+ by casper.infradead.org with esmtp (Exim 4.85 #2 (Red Hat Linux))
+ id 1aVFux-0002Z7-A1
+ for barebox@lists.infradead.org; Mon, 15 Feb 2016 09:58:08 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 779B5A001D1
+ for <barebox@lists.infradead.org>; Mon, 15 Feb 2016 10:57:15 +0100 (CET)
+From: Stefan Christ <s.christ@phytec.de>
+Date: Mon, 15 Feb 2016 10:56:53 +0100
+Message-Id: <1455530215-4394-1-git-send-email-s.christ@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,32 +17,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] bootm: restore load DT message for plain oftree files
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] ARM: i.MX6: add function cpu_is_mx6s()
+To: barebox@lists.infradead.org
 
-On Fri, Feb 12, 2016 at 05:58:22PM +0100, Lucas Stach wrote:
-> This message was dropped when reorganizing the DT loading code,
-> and it's really confusing to miss this.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  common/bootm.c | 1 +
->  1 file changed, 1 insertion(+)
+The cpu_is_mx6* function for the i.MX6 Solo was missing. All other
+functions are already defined.
 
-Applied both to master, thanks
+Signed-off-by: Stefan Christ <s.christ@phytec.de>
+---
+ arch/arm/mach-imx/include/mach/imx6.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-Sascha
-
+diff --git a/arch/arm/mach-imx/include/mach/imx6.h b/arch/arm/mach-imx/include/mach/imx6.h
+index 3ddb6d2..e8ffa47 100644
+--- a/arch/arm/mach-imx/include/mach/imx6.h
++++ b/arch/arm/mach-imx/include/mach/imx6.h
+@@ -61,6 +61,7 @@ static inline int imx6_cpu_type(void)
+ 		return cpu_mx6_is_##str();				\
+ 	}
+ 
++DEFINE_MX6_CPU_TYPE(mx6s, IMX6_CPUTYPE_IMX6S);
+ DEFINE_MX6_CPU_TYPE(mx6dl, IMX6_CPUTYPE_IMX6DL);
+ DEFINE_MX6_CPU_TYPE(mx6q, IMX6_CPUTYPE_IMX6Q);
+ DEFINE_MX6_CPU_TYPE(mx6d, IMX6_CPUTYPE_IMX6D);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
