@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aUDX0-0007Xn-8L
- for barebox@lists.infradead.org; Fri, 12 Feb 2016 13:13:08 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri, 12 Feb 2016 14:12:36 +0100
-Message-Id: <1455282758-312-2-git-send-email-s.trumtrar@pengutronix.de>
-In-Reply-To: <1455282758-312-1-git-send-email-s.trumtrar@pengutronix.de>
+ id 1aVCh5-0006f5-Bc
+ for barebox@lists.infradead.org; Mon, 15 Feb 2016 06:31:36 +0000
+Date: Mon, 15 Feb 2016 07:31:13 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160215063113.GB19372@pengutronix.de>
 References: <1455282758-312-1-git-send-email-s.trumtrar@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1455282758-312-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,66 +18,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 1/3] include: linux: add circular buffers
-To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH v4 0/3] i.MX6: CAAM engine support
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- include/linux/circ_buf.h | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
- create mode 100644 include/linux/circ_buf.h
+On Fri, Feb 12, 2016 at 02:12:35PM +0100, Steffen Trumtrar wrote:
+> Hi!
+> 
+> This series adds basic support for the i.MX6
+> Cryptographic Acceleration and Assurance Module (CAAM).
+> 
+> The CAAM supports multiple hashing/encryption engines,
+> this series only supports the included hardware random
+> number generator.
+> 
+> Changes since v3:
+> 
+>   - remove jobring config option
+>     - the CAAM driver doesn't do anything useful without
+>       them anyway, so always build the jr.c and probe the
+>       subdevices in ctrl.c instead of just registering the
+>       devices.
+>   - probe the RNG in ctrl.c
+>     - the RNG is a subdevice of the CAAM. Call the
+>       probe function manually if driver is enabled.
+>   - merge old patch 4/5 into new 3/3
+>   - get rid of superfluous old patch 5/5
+> 
+> Tested with a riotboard.
+> 
+> Regards,
+> Steffen
+> 
+> Steffen Trumtrar (3):
+>   include: linux: add circular buffers
+>   ARM: imx6: add caam clks
+>   crypto: add i.MX6 CAAM support
 
-diff --git a/include/linux/circ_buf.h b/include/linux/circ_buf.h
-new file mode 100644
-index 000000000000..90f2471dc6f2
---- /dev/null
-+++ b/include/linux/circ_buf.h
-@@ -0,0 +1,36 @@
-+/*
-+ * See Documentation/circular-buffers.txt for more information.
-+ */
-+
-+#ifndef _LINUX_CIRC_BUF_H
-+#define _LINUX_CIRC_BUF_H 1
-+
-+struct circ_buf {
-+	char *buf;
-+	int head;
-+	int tail;
-+};
-+
-+/* Return count in buffer.  */
-+#define CIRC_CNT(head,tail,size) (((head) - (tail)) & ((size)-1))
-+
-+/* Return space available, 0..size-1.  We always leave one free char
-+   as a completely full buffer has head == tail, which is the same as
-+   empty.  */
-+#define CIRC_SPACE(head,tail,size) CIRC_CNT((tail),((head)+1),(size))
-+
-+/* Return count up to the end of the buffer.  Carefully avoid
-+   accessing head and tail more than once, so they can change
-+   underneath us without returning inconsistent results.  */
-+#define CIRC_CNT_TO_END(head,tail,size) \
-+	({int end = (size) - (tail); \
-+	  int n = ((head) + end) & ((size)-1); \
-+	  n < end ? n : end;})
-+
-+/* Return space available up to the end of the buffer.  */
-+#define CIRC_SPACE_TO_END(head,tail,size) \
-+	({int end = (size) - 1 - (head); \
-+	  int n = (end + (tail)) & ((size)-1); \
-+	  n <= end ? n : end+1;})
-+
-+#endif /* _LINUX_CIRC_BUF_H  */
+Applied, thanks
+
+Sascha
+
+
+
 -- 
-2.7.0.rc3
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
