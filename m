@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVkme-000777-FM
- for barebox@lists.infradead.org; Tue, 16 Feb 2016 18:55:37 +0000
+ id 1aVkmi-00079Q-0H
+ for barebox@lists.infradead.org; Tue, 16 Feb 2016 18:55:41 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Tue, 16 Feb 2016 19:54:45 +0100
-Message-Id: <1455648888-20678-1-git-send-email-mpa@pengutronix.de>
+Date: Tue, 16 Feb 2016 19:54:46 +0100
+Message-Id: <1455648888-20678-2-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <1455648888-20678-1-git-send-email-mpa@pengutronix.de>
+References: <1455648888-20678-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,56 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] bbu: Add barebox_update search by device
+Subject: [PATCH 2/4] bbu: Add function to check if an update handler exists
 To: barebox@lists.infradead.org
 
-bbu_data includes a devicefile information. Add the possibility to make
-an update based on the given devicefile. This is in addition to the
-normal search for a barebox update handler by its name.
+This adds a function to check for the existence of an update handler
+based on the supplied bbu_data.
 
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- common/bbu.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ common/bbu.c  | 14 ++++++++++++++
+ include/bbu.h |  2 ++
+ 2 files changed, 16 insertions(+)
 
 diff --git a/common/bbu.c b/common/bbu.c
-index 4d71fa4a87cb..bf3790d13fff 100644
+index bf3790d13fff..a7f6b4b851ee 100644
 --- a/common/bbu.c
 +++ b/common/bbu.c
-@@ -97,6 +97,20 @@ static struct bbu_handler *bbu_find_handler(const char *name)
+@@ -111,6 +111,20 @@ static struct bbu_handler *bbu_find_handler_by_device(const char *devicepath)
  	return NULL;
  }
  
-+static struct bbu_handler *bbu_find_handler_by_device(const char *devicepath)
++bool barebox_update_handler_exists(struct bbu_data *data)
 +{
 +	struct bbu_handler *handler;
 +
-+	if (!devicepath)
-+		return NULL;
++	handler = bbu_find_handler_by_device(data->devicefile);
++	if (handler)
++		return true;
 +
-+	list_for_each_entry(handler, &bbu_image_handlers, list)
-+		if (!strcmp(handler->devicefile, devicepath))
-+			return handler;
++	if (!data->handler_name)
++		return false;
 +
-+	return NULL;
++	return !bbu_find_handler(data->handler_name);
 +}
 +
  /*
   * do a barebox update with data from *data
   */
-@@ -105,7 +119,11 @@ int barebox_update(struct bbu_data *data)
- 	struct bbu_handler *handler;
- 	int ret;
+diff --git a/include/bbu.h b/include/bbu.h
+index 727791171858..0fe7a1a9bcdb 100644
+--- a/include/bbu.h
++++ b/include/bbu.h
+@@ -36,6 +36,8 @@ int bbu_confirm(struct bbu_data *);
  
--	handler = bbu_find_handler(data->handler_name);
-+	handler = bbu_find_handler_by_device(data->devicefile);
-+
-+	if (!handler)
-+		handler = bbu_find_handler(data->handler_name);
-+
- 	if (!handler)
- 		return -ENODEV;
+ int barebox_update(struct bbu_data *);
  
++bool barebox_update_handler_exists(struct bbu_data *);
++
+ void bbu_handlers_list(void);
+ 
+ #ifdef CONFIG_BAREBOX_UPDATE
 -- 
 2.7.0.rc3
 
