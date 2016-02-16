@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVkmi-00079Q-0H
- for barebox@lists.infradead.org; Tue, 16 Feb 2016 18:55:41 +0000
-From: Markus Pargmann <mpa@pengutronix.de>
-Date: Tue, 16 Feb 2016 19:54:46 +0100
-Message-Id: <1455648888-20678-2-git-send-email-mpa@pengutronix.de>
-In-Reply-To: <1455648888-20678-1-git-send-email-mpa@pengutronix.de>
-References: <1455648888-20678-1-git-send-email-mpa@pengutronix.de>
+ id 1aVmx5-00051u-Pn
+ for barebox@lists.infradead.org; Tue, 16 Feb 2016 21:14:32 +0000
+Received: by mail-lb0-x229.google.com with SMTP id bc4so105008950lbc.2
+ for <barebox@lists.infradead.org>; Tue, 16 Feb 2016 13:14:10 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed, 17 Feb 2016 00:13:59 +0300
+Message-Id: <1455657239-17629-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,58 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] bbu: Add function to check if an update handler exists
-To: barebox@lists.infradead.org
+Subject: [PATCH] fs: ext4: make locally used ext4fs_get_indir_block() static
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This adds a function to check for the existence of an update handler
-based on the supplied bbu_data.
+The patch fixes this compiler's warning:
 
-Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+      CC      fs/ext4/ext4_common.o
+    fs/ext4/ext4_common.c:130:5: warning: no previous prototype for
+    'ext4fs_get_indir_block' [-Wmissing-prototypes]
+     int ext4fs_get_indir_block(struct ext2fs_node *node, struct
+    ext4fs_indir_block *indir, int blkno)
+         ^
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- common/bbu.c  | 14 ++++++++++++++
- include/bbu.h |  2 ++
- 2 files changed, 16 insertions(+)
+ fs/ext4/ext4_common.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/common/bbu.c b/common/bbu.c
-index bf3790d13fff..a7f6b4b851ee 100644
---- a/common/bbu.c
-+++ b/common/bbu.c
-@@ -111,6 +111,20 @@ static struct bbu_handler *bbu_find_handler_by_device(const char *devicepath)
- 	return NULL;
+diff --git a/fs/ext4/ext4_common.c b/fs/ext4/ext4_common.c
+index 590f54d..1ecbb8d 100644
+--- a/fs/ext4/ext4_common.c
++++ b/fs/ext4/ext4_common.c
+@@ -127,7 +127,8 @@ int ext4fs_read_inode(struct ext2_data *data, int ino, struct ext2_inode *inode)
+ 	return 0;
  }
  
-+bool barebox_update_handler_exists(struct bbu_data *data)
-+{
-+	struct bbu_handler *handler;
-+
-+	handler = bbu_find_handler_by_device(data->devicefile);
-+	if (handler)
-+		return true;
-+
-+	if (!data->handler_name)
-+		return false;
-+
-+	return !bbu_find_handler(data->handler_name);
-+}
-+
- /*
-  * do a barebox update with data from *data
-  */
-diff --git a/include/bbu.h b/include/bbu.h
-index 727791171858..0fe7a1a9bcdb 100644
---- a/include/bbu.h
-+++ b/include/bbu.h
-@@ -36,6 +36,8 @@ int bbu_confirm(struct bbu_data *);
- 
- int barebox_update(struct bbu_data *);
- 
-+bool barebox_update_handler_exists(struct bbu_data *);
-+
- void bbu_handlers_list(void);
- 
- #ifdef CONFIG_BAREBOX_UPDATE
+-int ext4fs_get_indir_block(struct ext2fs_node *node, struct ext4fs_indir_block *indir, int blkno)
++static int ext4fs_get_indir_block(struct ext2fs_node *node,
++				struct ext4fs_indir_block *indir, int blkno)
+ {
+ 	struct ext_filesystem *fs = node->data->fs;
+ 	int blksz;
 -- 
-2.7.0.rc3
+2.7.0
 
 
 _______________________________________________
