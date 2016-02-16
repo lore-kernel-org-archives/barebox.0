@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVkms-0007Be-03
- for barebox@lists.infradead.org; Tue, 16 Feb 2016 18:55:50 +0000
+ id 1aVkme-000777-FM
+ for barebox@lists.infradead.org; Tue, 16 Feb 2016 18:55:37 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Tue, 16 Feb 2016 19:54:48 +0100
-Message-Id: <1455648888-20678-4-git-send-email-mpa@pengutronix.de>
-In-Reply-To: <1455648888-20678-1-git-send-email-mpa@pengutronix.de>
-References: <1455648888-20678-1-git-send-email-mpa@pengutronix.de>
+Date: Tue, 16 Feb 2016 19:54:45 +0100
+Message-Id: <1455648888-20678-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,65 +19,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] fastboot: Add a ARM Barebox filetype handler
+Subject: [PATCH 1/4] bbu: Add barebox_update search by device
 To: barebox@lists.infradead.org
 
-This will automatically call barebox_update for the transfered file if
-it is an ARM Barebox image and the destination file is defined by some
-update handler.
+bbu_data includes a devicefile information. Add the possibility to make
+an update based on the given devicefile. This is in addition to the
+normal search for a barebox update handler by its name.
 
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- drivers/usb/gadget/f_fastboot.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ common/bbu.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-index 192c0d6eb7f4..ae18d068e93f 100644
---- a/drivers/usb/gadget/f_fastboot.c
-+++ b/drivers/usb/gadget/f_fastboot.c
-@@ -23,6 +23,7 @@
- #include <clock.h>
- #include <ioctl.h>
- #include <libbb.h>
-+#include <bbu.h>
- #include <boot.h>
- #include <dma.h>
- #include <fs.h>
-@@ -716,6 +717,34 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
- 		goto out;
- 	}
+diff --git a/common/bbu.c b/common/bbu.c
+index 4d71fa4a87cb..bf3790d13fff 100644
+--- a/common/bbu.c
++++ b/common/bbu.c
+@@ -97,6 +97,20 @@ static struct bbu_handler *bbu_find_handler(const char *name)
+ 	return NULL;
+ }
  
-+	if (filetype == filetype_arm_barebox) {
-+		struct bbu_data data = {
-+			.devicefile = filename,
-+			.imagefile = FASTBOOT_TMPFILE,
-+			.flags = BBU_FLAG_YES,
-+		};
++static struct bbu_handler *bbu_find_handler_by_device(const char *devicepath)
++{
++	struct bbu_handler *handler;
 +
-+		if (!barebox_update_handler_exists(&data))
-+			goto copy;
++	if (!devicepath)
++		return NULL;
 +
-+		fastboot_tx_print(f_fb, "INFOThis is an ARM Barebox image...");
++	list_for_each_entry(handler, &bbu_image_handlers, list)
++		if (!strcmp(handler->devicefile, devicepath))
++			return handler;
 +
-+		data.image = read_file(data.imagefile, &data.len);
-+		if (!data.image) {
-+			fastboot_tx_print(f_fb, "FAILreading bareboxs");
-+			return;
-+		}
++	return NULL;
++}
 +
-+		ret = barebox_update(&data);
+ /*
+  * do a barebox update with data from *data
+  */
+@@ -105,7 +119,11 @@ int barebox_update(struct bbu_data *data)
+ 	struct bbu_handler *handler;
+ 	int ret;
+ 
+-	handler = bbu_find_handler(data->handler_name);
++	handler = bbu_find_handler_by_device(data->devicefile);
 +
-+		if (ret) {
-+			fastboot_tx_print(f_fb, "FAILupdate barebox: %s", strerror(-ret));
-+			return;
-+		}
++	if (!handler)
++		handler = bbu_find_handler(data->handler_name);
 +
-+		goto out;
-+	}
-+
- copy:
- 	ret = copy_file(FASTBOOT_TMPFILE, filename, 1);
- 	if (ret) {
+ 	if (!handler)
+ 		return -ENODEV;
+ 
 -- 
 2.7.0.rc3
 
