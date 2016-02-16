@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.85 #2 (Red Hat Linux))
- id 1aVFyx-0007JK-PV
- for barebox@lists.infradead.org; Mon, 15 Feb 2016 10:02:16 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 45385A001D1
- for <barebox@lists.infradead.org>; Mon, 15 Feb 2016 11:01:44 +0100 (CET)
-From: Stefan Christ <s.christ@phytec.de>
-Date: Mon, 15 Feb 2016 11:01:24 +0100
-Message-Id: <1455530484-17750-1-git-send-email-s.christ@phytec.de>
+Received: from mail-wm0-x233.google.com ([2a00:1450:400c:c09::233])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aVavx-0003nC-53
+ for barebox@lists.infradead.org; Tue, 16 Feb 2016 08:24:33 +0000
+Received: by mail-wm0-x233.google.com with SMTP id a4so87842257wme.1
+ for <barebox@lists.infradead.org>; Tue, 16 Feb 2016 00:24:12 -0800 (PST)
+From: yegorslists@googlemail.com
+Date: Tue, 16 Feb 2016 09:23:15 +0100
+Message-Id: <1455610997-7608-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,54 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: core: check offset in mtd_block_markbad
+Subject: [PATCH v2 1/3] linux/types.h: add sector_t and blkcnt_t types
 To: barebox@lists.infradead.org
 
-Check if the given offset is valid for the mtd device. Print an error
-message if not to inform the user in the command 'nand'.
+From: Yegor Yefremov <yegorslists@googlemail.com>
 
-Signed-off-by: Stefan Christ <s.christ@phytec.de>
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 ---
- commands/nand.c    | 9 +++++++--
- drivers/mtd/core.c | 3 +++
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ include/linux/types.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/commands/nand.c b/commands/nand.c
-index ad1c8c9..c330ad1 100644
---- a/commands/nand.c
-+++ b/commands/nand.c
-@@ -90,8 +90,13 @@ static int do_nand(int argc, char *argv[])
- 		}
+diff --git a/include/linux/types.h b/include/linux/types.h
+index 9f8eb67..f64ec4a 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -157,6 +157,22 @@ typedef __u32 __bitwise __wsum;
+ #define __aligned_be64 __be64 __attribute__((aligned(8)))
+ #define __aligned_le64 __le64 __attribute__((aligned(8)))
  
- 		ret = ioctl(fd, MEMSETBADBLOCK, &badblock);
--		if (ret)
--			perror("ioctl");
-+		if (ret) {
-+			if (ret == -EINVAL)
-+				printf("Maybe offset %lld is out of range.\n",
-+					badblock);
-+			else
-+				perror("ioctl");
-+		}
- 
- 		close(fd);
- 		return ret;
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 62307db..d609688 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -310,6 +310,9 @@ int mtd_block_markbad(struct mtd_info *mtd, loff_t ofs)
- {
- 	int ret;
- 
-+	if (ofs < 0 || ofs >= mtd->size)
-+		return -EINVAL;
++/**
++ * The type used for indexing onto a disc or disc partition.
++ *
++ * Linux always considers sectors to be 512 bytes long independently
++ * of the devices real block size.
++ *
++ * blkcnt_t is the type of the inode's block count.
++ */
++#ifdef CONFIG_LBDAF
++typedef u64 sector_t;
++typedef u64 blkcnt_t;
++#else
++typedef unsigned long sector_t;
++typedef unsigned long blkcnt_t;
++#endif
 +
- 	if (mtd->block_markbad)
- 		ret = mtd->block_markbad(mtd, ofs);
- 	else
+ /*
+  * The type of an index into the pagecache.
+  */
 -- 
-1.9.1
+2.1.4
 
 
 _______________________________________________
