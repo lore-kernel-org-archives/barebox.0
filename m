@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVdAN-0006cK-0b
- for barebox@lists.infradead.org; Tue, 16 Feb 2016 10:47:41 +0000
+ id 1aVdAN-0006cn-0b
+ for barebox@lists.infradead.org; Tue, 16 Feb 2016 10:47:43 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 746F8A0043F
+ by root.phytec.de (Postfix) with ESMTP id B3F8AA00445
  for <barebox@lists.infradead.org>; Tue, 16 Feb 2016 11:47:09 +0100 (CET)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Tue, 16 Feb 2016 11:45:00 +0100
-Message-Id: <1455619502-19908-6-git-send-email-t.remmet@phytec.de>
+Date: Tue, 16 Feb 2016 11:45:02 +0100
+Message-Id: <1455619502-19908-8-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1455619502-19908-1-git-send-email-t.remmet@phytec.de>
 References: <1455619502-19908-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,86 +24,130 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] ARM: boards: phytec-som-am335x: New RAM Timings for
- phyCORE-AM335x-R2
+Subject: [PATCH 7/7] ARM: AM335x: Make use of ARM_USE_COMPRESSED_DTB
 To: barebox@lists.infradead.org
 
-Add RAM timings for phyCORE-AM335x-R2 256MB RAM.
+Use ARM_USE_COMPRESSED_DTB for all AM335x based board,
+to reduce the image size even more.
+
+Saves about 9kB in MLO image and 20kB in barebox image.
 
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- arch/arm/boards/phytec-som-am335x/lowlevel.c    |  1 +
- arch/arm/boards/phytec-som-am335x/ram-timings.h | 20 ++++++++++++++++++++
- images/Makefile.am33xx                          |  6 ++++++
- 3 files changed, 27 insertions(+)
+ arch/arm/boards/afi-gf/lowlevel.c            |  6 +++---
+ arch/arm/boards/beaglebone/lowlevel.c        | 12 ++++++------
+ arch/arm/boards/phytec-som-am335x/lowlevel.c |  8 ++++----
+ arch/arm/mach-omap/Kconfig                   |  1 +
+ 4 files changed, 14 insertions(+), 13 deletions(-)
 
+diff --git a/arch/arm/boards/afi-gf/lowlevel.c b/arch/arm/boards/afi-gf/lowlevel.c
+index efe15ec..91b4b68 100644
+--- a/arch/arm/boards/afi-gf/lowlevel.c
++++ b/arch/arm/boards/afi-gf/lowlevel.c
+@@ -196,7 +196,7 @@ static const struct module_pin_mux board_can_pin_mux[] = {
+ 	{-1},
+ };
+ 
+-extern char __dtb_am335x_afi_gf_start[];
++extern char __dtb_z_am335x_afi_gf_start[];
+ 
+ /**
+  * @brief The basic entry point for board initialization.
+@@ -211,7 +211,7 @@ static noinline int gf_sram_init(void)
+ {
+ 	void *fdt;
+ 
+-	fdt = __dtb_am335x_afi_gf_start;
++	fdt = __dtb_z_am335x_afi_gf_start;
+ 
+ 	/* WDT1 is already running when the bootloader gets control
+ 	 * Disable it to avoid "random" resets
+@@ -258,7 +258,7 @@ ENTRY_FUNCTION(start_am33xx_afi_gf_sdram, r0, r1, r2)
+ {
+ 	void *fdt;
+ 
+-	fdt = __dtb_am335x_afi_gf_start - get_runtime_offset();
++	fdt = __dtb_z_am335x_afi_gf_start - get_runtime_offset();
+ 
+ 	putc_ll('>');
+ 
+diff --git a/arch/arm/boards/beaglebone/lowlevel.c b/arch/arm/boards/beaglebone/lowlevel.c
+index 79d5985..100f64f 100644
+--- a/arch/arm/boards/beaglebone/lowlevel.c
++++ b/arch/arm/boards/beaglebone/lowlevel.c
+@@ -103,9 +103,9 @@ static const struct am33xx_emif_regs ddr3_regs = {
+ 	.sdram_ref_ctrl		= 0xC30,
+ };
+ 
+-extern char __dtb_am335x_boneblack_start[];
+-extern char __dtb_am335x_bone_common_start[];
+-extern char __dtb_am335x_bone_start[];
++extern char __dtb_z_am335x_boneblack_start[];
++extern char __dtb_z_am335x_bone_common_start[];
++extern char __dtb_z_am335x_bone_start[];
+ 
+ /**
+  * @brief The basic entry point for board initialization.
+@@ -121,7 +121,7 @@ static noinline int beaglebone_sram_init(void)
+ 	uint32_t sdram_size;
+ 	void *fdt;
+ 
+-	fdt = __dtb_am335x_bone_common_start;
++	fdt = __dtb_z_am335x_bone_common_start;
+ 
+ 	if (is_beaglebone_black())
+ 		sdram_size = SZ_512M;
+@@ -176,10 +176,10 @@ ENTRY_FUNCTION(start_am33xx_beaglebone_sdram, r0, r1, r2)
+ 
+ 	if (is_beaglebone_black()) {
+ 		sdram_size = SZ_512M;
+-		fdt = __dtb_am335x_boneblack_start;
++		fdt = __dtb_z_am335x_boneblack_start;
+ 	} else {
+ 		sdram_size = SZ_256M;
+-		fdt = __dtb_am335x_bone_start;
++		fdt = __dtb_z_am335x_bone_start;
+ 	}
+ 
+ 	fdt -= get_runtime_offset();
 diff --git a/arch/arm/boards/phytec-som-am335x/lowlevel.c b/arch/arm/boards/phytec-som-am335x/lowlevel.c
-index 8af450e..4240f40 100644
+index 4240f40..73e75eb 100644
 --- a/arch/arm/boards/phytec-som-am335x/lowlevel.c
 +++ b/arch/arm/boards/phytec-som-am335x/lowlevel.c
-@@ -124,6 +124,7 @@ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_512mb, am335x_phytec_phycore_s
- PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_2x512mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J512M8125IT_2x512MB);
- PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_1024mb, am335x_phytec_phycore_som_mlo, PHYCORE_IM8G16D3FBBG15EI_1024MB);
- PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_512mb, am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K256M16TW107IT_512MB);
-+PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_256mb, am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K128M16JT_256MB);
- PHYTEC_ENTRY(start_am33xx_phytec_phycore_sdram, am335x_phytec_phycore_som);
- PHYTEC_ENTRY(start_am33xx_phytec_phycore_no_spi_sdram, am335x_phytec_phycore_som_no_spi);
- PHYTEC_ENTRY(start_am33xx_phytec_phycore_no_eeprom_sdram, am335x_phytec_phycore_som_no_eeprom);
-diff --git a/arch/arm/boards/phytec-som-am335x/ram-timings.h b/arch/arm/boards/phytec-som-am335x/ram-timings.h
-index b89d561..884874c 100644
---- a/arch/arm/boards/phytec-som-am335x/ram-timings.h
-+++ b/arch/arm/boards/phytec-som-am335x/ram-timings.h
-@@ -31,6 +31,7 @@ enum {
- 	PHYCORE_MT41J512M8125IT_2x512MB,
- 	PHYCORE_IM8G16D3FBBG15EI_1024MB,
- 	PHYCORE_R2_MT41K256M16TW107IT_512MB,
-+	PHYCORE_R2_MT41K128M16JT_256MB,
+@@ -102,8 +102,8 @@ static noinline void physom_board_entry(unsigned long bootinfo, int sdram, void
+ #define PHYTEC_ENTRY_MLO(name, fdt_name, sdram)			\
+ 	ENTRY_FUNCTION(name, bootinfo, r1, r2)			\
+ 	{							\
+-		extern char __dtb_##fdt_name##_start[];		\
+-		void *fdt =__dtb_##fdt_name##_start -		\
++		extern char __dtb_z_##fdt_name##_start[];		\
++		void *fdt = __dtb_z_##fdt_name##_start -		\
+ 			get_runtime_offset();			\
+ 		physom_board_entry(bootinfo, sdram, fdt);	\
+ 	}
+@@ -111,8 +111,8 @@ static noinline void physom_board_entry(unsigned long bootinfo, int sdram, void
+ #define PHYTEC_ENTRY(name, fdt_name)				\
+ 	ENTRY_FUNCTION(name, r0, r1, r2)			\
+ 	{							\
+-		extern char __dtb_##fdt_name##_start[];		\
+-		void *fdt =__dtb_##fdt_name##_start -		\
++		extern char __dtb_z_##fdt_name##_start[];		\
++		void *fdt = __dtb_z_##fdt_name##_start -		\
+ 			get_runtime_offset();			\
+ 		am335x_barebox_entry(fdt);			\
+ 	}
+diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+index 5c68062..d7c863c 100644
+--- a/arch/arm/mach-omap/Kconfig
++++ b/arch/arm/mach-omap/Kconfig
+@@ -44,6 +44,7 @@ config ARCH_AM33XX
+ 	select GENERIC_GPIO
+ 	select OFTREE
+ 	select OMAP_CLOCK_SOURCE_DMTIMER
++	select ARM_USE_COMPRESSED_DTB
+ 	help
+ 	  Say Y here if you are using Texas Instrument's AM33xx based platform
  
- 	PHYCARD_NT5CB128M16BP_256MB,
- };
-@@ -212,6 +213,25 @@ struct am335x_sdram_timings physom_timings[] = {
- 			.wr_slave_ratio0	= 0x72,
- 		},
- 	},
-+
-+	/* 256MB R2 */
-+	[PHYCORE_R2_MT41K128M16JT_256MB] = {
-+		.regs = {
-+			.emif_read_latency	= 0x7,
-+			.emif_tim1		= 0x0AAAD4DB,
-+			.emif_tim2		= 0x26437FDA,
-+			.emif_tim3		= 0x501F83FF,
-+			.sdram_config		= 0x61C052B2,
-+			.zq_config		= 0x50074BE4,
-+			.sdram_ref_ctrl		= 0x00000C30,
-+		},
-+		.data = {
-+			.rd_slave_ratio0	= 0x36,
-+			.wr_dqs_slave_ratio0	= 0x38,
-+			.fifo_we_slave_ratio0	= 0x99,
-+			.wr_slave_ratio0	= 0x73,
-+		},
-+	},
- };
- 
- #endif
-diff --git a/images/Makefile.am33xx b/images/Makefile.am33xx
-index eec6fc5..6c7e81a 100644
---- a/images/Makefile.am33xx
-+++ b/images/Makefile.am33xx
-@@ -47,6 +47,12 @@ FILE_barebox-am33xx-phytec-phycore-mlo-256mb.spi.img = start_am33xx_phytec_phyco
- am33xx-mlo-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-mlo-256mb.img
- am33xx-mlospi-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-mlo-256mb.spi.img
- 
-+pblx-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += start_am33xx_phytec_phycore_r2_sram_256mb
-+FILE_barebox-am33xx-phytec-phycore-r2-mlo-256mb.img = start_am33xx_phytec_phycore_r2_sram_256mb.pblx.mlo
-+FILE_barebox-am33xx-phytec-phycore-r2-mlo-256mb.spi.img = start_am33xx_phytec_phycore_r2_sram_256mb.pblx.mlospi
-+am33xx-mlo-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-r2-mlo-256mb.img
-+am33xx-mlospi-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-r2-mlo-256mb.spi.img
-+
- pblx-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += start_am33xx_phytec_phycore_sram_128mb
- FILE_barebox-am33xx-phytec-phycore-mlo-128mb.img = start_am33xx_phytec_phycore_sram_128mb.pblx.mlo
- FILE_barebox-am33xx-phytec-phycore-mlo-128mb.spi.img = start_am33xx_phytec_phycore_sram_128mb.pblx.mlospi
 -- 
 1.9.1
 
