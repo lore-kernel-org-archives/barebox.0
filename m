@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVwOD-0002S2-Ag
- for barebox@lists.infradead.org; Wed, 17 Feb 2016 07:19:10 +0000
-Date: Wed, 17 Feb 2016 08:18:47 +0100
+ id 1aVwQt-0003pz-3l
+ for barebox@lists.infradead.org; Wed, 17 Feb 2016 07:21:55 +0000
+Date: Wed, 17 Feb 2016 08:21:33 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160217071847.GK19372@pengutronix.de>
-References: <1455610997-7608-1-git-send-email-yegorslists@googlemail.com>
- <1455610997-7608-3-git-send-email-yegorslists@googlemail.com>
- <CAGm1_ksKCs70eR+rmw-iWfzZO7SdGA1T6JEmkuwwhXzA=eqNWw@mail.gmail.com>
+Message-ID: <20160217072133.GL19372@pengutronix.de>
+References: <1455619502-19908-1-git-send-email-t.remmet@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAGm1_ksKCs70eR+rmw-iWfzZO7SdGA1T6JEmkuwwhXzA=eqNWw@mail.gmail.com>
+In-Reply-To: <1455619502-19908-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,47 +22,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 3/3] fs: add support for SquashFS 4.0
-To: Yegor Yefremov <yegorslists@googlemail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 0/7] AM335x related patches
+To: Teresa Remmet <t.remmet@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, Feb 16, 2016 at 09:38:03AM +0100, Yegor Yefremov wrote:
-> On Tue, Feb 16, 2016 at 9:23 AM,  <yegorslists@googlemail.com> wrote:
-> > From: Yegor Yefremov <yegorslists@googlemail.com>
-> >
-> > The driver was imported from Linux 4.4.
-> >
-> > Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
-> > ---
-> > Changes:
-> >         v2: - fix checkpatch errors
-> >             - remove spinlock/wait code from cache implementation
-> >             - fix directory listing
-> >             - add documentation entry about SquashFS
-> >             - fix compiling without XZ enabled
-> >             - fix some memory leaks
+On Tue, Feb 16, 2016 at 11:44:55AM +0100, Teresa Remmet wrote:
+> Different AM335x changes containing new RAM timings and
+> reducing image size of all am335x boards.
 > 
-> Memory leaks:
+> Patches have been tested on PHYTEC boards and beaglebone black.
 > 
-> 1. mount still produces 20 bytes, that I still haven't identified
+> Regards
+> Teresa
+> 
+> Arnd Beuscher (1):
+>   ARM: board: phytec-som-am335x: RAM timings for phyCORE-AM335x-R2
+> 
+> Jan Remmet (1):
+>   ARM: dts: am335x-phytec: eeprom name
+> 
+> Teresa Remmet (4):
+>   ARM: am335x_defconfig: Enable watchdog support
+>   ARM: boards: phytec-som-am335x: New RAM Timings for phyCORE-AM335x-R2
+>   ARM: dts: beaglebone: Strip clocks in MLO device tree
+>   ARM: AM335x: Make use of ARM_USE_COMPRESSED_DTB
+> 
+> Wadim Egorov (1):
+>   ARM: am335x_defconfig: Enable NANDTEST command
+> 
+>  arch/arm/boards/afi-gf/lowlevel.c               |  6 ++--
+>  arch/arm/boards/beaglebone/lowlevel.c           | 12 ++++----
+>  arch/arm/boards/phytec-som-am335x/lowlevel.c    | 10 ++++---
+>  arch/arm/boards/phytec-som-am335x/ram-timings.h | 40 +++++++++++++++++++++++++
+>  arch/arm/configs/am335x_defconfig               |  4 +++
+>  arch/arm/dts/am335x-bone-common.dts             |  1 +
+>  arch/arm/dts/am335x-phytec-phycard-som.dtsi     |  2 +-
+>  arch/arm/dts/am335x-phytec-phycore-som.dtsi     |  2 +-
+>  arch/arm/mach-omap/Kconfig                      |  1 +
+>  images/Makefile.am33xx                          | 12 ++++++++
+>  10 files changed, 75 insertions(+), 15 deletions(-)
 
-Does this accumulate if you repeat mount/unmount? Usually when
-allocating/freeing bunches of memory you don't have the exact amount of
-memory free afterwards.
-
-> 2. ls -l has about 300 bytes, how do I best handle qstr duplicating?
-> Its name is *const char **. If I'm doing alloc() I'm breaking this
-> qualifier.
-
-Why do you alloc? In squashfs_readdir() you can do a
-nm.name = dentry->d_name.name instead of doing an extra allocation for
-the string.
-
-> 3. reading a file, i.e. cat has no memory leak so far according to meminfo
-
-\o/
+Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
