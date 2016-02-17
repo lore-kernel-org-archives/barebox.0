@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from ganesha.gnumonks.org ([213.95.27.120])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aW0Ht-0003Jf-RB
- for barebox@lists.infradead.org; Wed, 17 Feb 2016 11:28:54 +0000
-From: Markus Pargmann <mpa@pengutronix.de>
-Date: Wed, 17 Feb 2016 12:28:18 +0100
-Message-Id: <1455708500-980-2-git-send-email-mpa@pengutronix.de>
-In-Reply-To: <1455708500-980-1-git-send-email-mpa@pengutronix.de>
-References: <1455708500-980-1-git-send-email-mpa@pengutronix.de>
+ id 1aW6Tg-0003hS-Ea
+ for barebox@lists.infradead.org; Wed, 17 Feb 2016 18:05:31 +0000
+From: Harald Welte <laforge@gnumonks.org>
+Date: Wed, 17 Feb 2016 19:02:09 +0100
+Message-Id: <1455732129-21117-1-git-send-email-laforge@gnumonks.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,56 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/4] bbu: Add function to check if an update handler exists
+Subject: [PATCH] eeprom/at25: parse partitions from device tree
 To: barebox@lists.infradead.org
 
-This adds a function to check for the existence of an update handler
-based on the supplied bbu_data.
+Unlike at24 (I2C), the at25 (spi) EEPROM driver doesn't check if the
+device tree node contains partition definitions.  This means that one
+for example cannot have bootstate partitions on an at25 EEPROM, while it
+works on an at24 EEPROM.
 
-Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+This patch adds device tree based partition support to the at25 driver.
+
+Signed-off-by: Harald Welte <laforge@gnumonks.org>
 ---
- common/bbu.c  | 14 ++++++++++++++
- include/bbu.h |  2 ++
- 2 files changed, 16 insertions(+)
+ drivers/eeprom/at25.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/common/bbu.c b/common/bbu.c
-index bf3790d13fff..a7f6b4b851ee 100644
---- a/common/bbu.c
-+++ b/common/bbu.c
-@@ -111,6 +111,20 @@ static struct bbu_handler *bbu_find_handler_by_device(const char *devicepath)
- 	return NULL;
- }
+diff --git a/drivers/eeprom/at25.c b/drivers/eeprom/at25.c
+index 3e75b56..9f054d0 100644
+--- a/drivers/eeprom/at25.c
++++ b/drivers/eeprom/at25.c
+@@ -356,6 +356,7 @@ static int at25_probe(struct device_d *dev)
  
-+bool barebox_update_handler_exists(struct bbu_data *data)
-+{
-+	struct bbu_handler *handler;
-+
-+	handler = bbu_find_handler_by_device(data->devicefile);
-+	if (handler)
-+		return true;
-+
-+	if (!data->handler_name)
-+		return false;
-+
-+	return !bbu_find_handler(data->handler_name);
-+}
-+
- /*
-  * do a barebox update with data from *data
-  */
-diff --git a/include/bbu.h b/include/bbu.h
-index 727791171858..0fe7a1a9bcdb 100644
---- a/include/bbu.h
-+++ b/include/bbu.h
-@@ -36,6 +36,8 @@ int bbu_confirm(struct bbu_data *);
+ 	dev_dbg(dev, "%s probed\n", at25->cdev.name);
+ 	devfs_create(&at25->cdev);
++	of_parse_partitions(&at25->cdev, dev->device_node);
+ 	return 0;
  
- int barebox_update(struct bbu_data *);
- 
-+bool barebox_update_handler_exists(struct bbu_data *);
-+
- void bbu_handlers_list(void);
- 
- #ifdef CONFIG_BAREBOX_UPDATE
+ fail:
 -- 
 2.7.0
 
