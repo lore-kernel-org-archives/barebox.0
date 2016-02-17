@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x230.google.com ([2607:f8b0:400e:c00::230])
+Received: from mail-pa0-x236.google.com ([2607:f8b0:400e:c03::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVqwO-0003n6-Tc
- for barebox@lists.infradead.org; Wed, 17 Feb 2016 01:30:06 +0000
-Received: by mail-pf0-x230.google.com with SMTP id x65so1519333pfb.1
- for <barebox@lists.infradead.org>; Tue, 16 Feb 2016 17:29:44 -0800 (PST)
+ id 1aVqwR-0003nH-2O
+ for barebox@lists.infradead.org; Wed, 17 Feb 2016 01:30:08 +0000
+Received: by mail-pa0-x236.google.com with SMTP id yy13so1443864pab.3
+ for <barebox@lists.infradead.org>; Tue, 16 Feb 2016 17:29:46 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 16 Feb 2016 17:29:07 -0800
-Message-Id: <1455672559-25061-7-git-send-email-andrew.smirnov@gmail.com>
+Date: Tue, 16 Feb 2016 17:29:10 -0800
+Message-Id: <1455672559-25061-10-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1455672559-25061-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1455672559-25061-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,33 +23,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/18] clk-imx6: Call clk_enable on mmdc_ch0_axi_podf
+Subject: [PATCH 09/18] fec_imx: Deallocate I/O resources if probe fails
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Call clk_enable on mmdc_ch0_axi_podf in order to properly increase
-reference counters for all of the nodes in this particular clock
-path. Otherwise it becomes possible for peripherals, located on other
-branches stemming from "periph", to shut down the whole clock tree (up
-to "pll2_bus") when they try to manage their own local clocks.
+Add a proper check for I/O memory resource allocation failure and
+replace dev_request_mem_region with dev_request_mem_resource so it would
+be possible to correctly deallocate device's I/O resources when probe
+fails.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/clk-imx6.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/fec_imx.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
-index 597e502..da8033e 100644
---- a/arch/arm/mach-imx/clk-imx6.c
-+++ b/arch/arm/mach-imx/clk-imx6.c
-@@ -501,6 +501,7 @@ static int imx6_ccm_probe(struct device_d *dev)
- 	clk_data.clk_num = IMX6QDL_CLK_END;
- 	of_clk_add_provider(dev->device_node, of_clk_src_onecell_get, &clk_data);
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index f413acd..c059882 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -686,6 +686,7 @@ static int fec_probe(struct device_d *dev)
+ 	enum fec_type type;
+ 	int phy_reset;
+ 	u32 msec = 1;
++	struct resource *res;
  
-+	clk_enable(clks[IMX6QDL_CLK_MMDC_CH0_AXI_PODF]);
- 	clk_enable(clks[IMX6QDL_CLK_PLL6_ENET]);
- 	clk_enable(clks[IMX6QDL_CLK_SATA_REF_100M]);
- 	clk_enable(clks[IMX6QDL_CLK_ENFC_PODF]);
+ 	ret = dev_get_drvdata(dev, (const void **)&type);
+ 	if (ret)
+@@ -714,7 +715,12 @@ static int fec_probe(struct device_d *dev)
+ 	if (ret < 0)
+ 		goto put_clk;
+ 
+-	fec->regs = dev_request_mem_region(dev, 0);
++	res = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(res)) {
++		ret = PTR_ERR(res);
++		goto disable_clk;
++	}
++	fec->regs = IOMEM(res->start);
+ 
+ 	phy_reset = of_get_named_gpio(dev->device_node, "phy-reset-gpios", 0);
+ 	if (gpio_is_valid(phy_reset)) {
+@@ -722,11 +728,11 @@ static int fec_probe(struct device_d *dev)
+ 
+ 		ret = gpio_request(phy_reset, "phy-reset");
+ 		if (ret)
+-			goto disable_clk;
++			goto release_res;
+ 
+ 		ret = gpio_direction_output(phy_reset, 0);
+ 		if (ret)
+-			goto disable_clk;
++			goto release_res;
+ 
+ 		mdelay(msec);
+ 		gpio_set_value(phy_reset, 1);
+@@ -766,7 +772,7 @@ static int fec_probe(struct device_d *dev)
+ 	}
+ 
+ 	if (ret)
+-		goto disable_clk;
++		goto release_res;
+ 
+ 	fec_init(edev);
+ 
+@@ -786,6 +792,8 @@ static int fec_probe(struct device_d *dev)
+ 
+ 	return 0;
+ 
++release_res:
++	release_region(res);
+ disable_clk:
+ 	clk_disable(fec->clk);
+ put_clk:
 -- 
 2.5.0
 
