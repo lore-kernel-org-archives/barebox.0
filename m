@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVxhi-0001Wn-5j
- for barebox@lists.infradead.org; Wed, 17 Feb 2016 08:43:22 +0000
-Date: Wed, 17 Feb 2016 09:43:00 +0100
+ id 1aVxqu-0000Xv-Vp
+ for barebox@lists.infradead.org; Wed, 17 Feb 2016 08:52:53 +0000
+Date: Wed, 17 Feb 2016 09:52:31 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160217084300.GR19372@pengutronix.de>
+Message-ID: <20160217085231.GS19372@pengutronix.de>
 References: <1455672559-25061-1-git-send-email-andrew.smirnov@gmail.com>
- <1455672559-25061-13-git-send-email-andrew.smirnov@gmail.com>
+ <1455672559-25061-18-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1455672559-25061-13-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1455672559-25061-18-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,43 +23,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 12/18] fec_imx: Impelemnt reset timeout
+Subject: Re: [PATCH 17/18] [RFC] nvmem: Add nvmem-ro-of-blob driver
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Feb 16, 2016 at 05:29:13PM -0800, Andrey Smirnov wrote:
-> Don't wait for more than one second for IP block to finish resetting. If
-> the block is dead it makes more sence to continue execution in hopes
-> that the rest of the processor is fine, rather than spin indefinetly
-> inside of the fec_probe function
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  drivers/net/fec_imx.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-> index 46932fe..99bd179 100644
-> --- a/drivers/net/fec_imx.c
-> +++ b/drivers/net/fec_imx.c
-> @@ -687,6 +687,7 @@ static int fec_probe(struct device_d *dev)
->  	int phy_reset;
->  	u32 msec = 1;
->  	struct resource *res;
-> +	u64 start;
->  
->  	ret = dev_get_drvdata(dev, (const void **)&type);
->  	if (ret)
-> @@ -739,9 +740,14 @@ static int fec_probe(struct device_d *dev)
->  	}
->  
->  	/* Reset chip. */
-> +	start = get_time_ns();
->  	writel(FEC_ECNTRL_RESET, fec->regs + FEC_ECNTRL);
->  	while(readl(fec->regs + FEC_ECNTRL) & FEC_ECNTRL_RESET) {
->  		udelay(10);
+On Tue, Feb 16, 2016 at 05:29:18PM -0800, Andrey Smirnov wrote:
+> Add a driver that implements provisions to allow creationg of fake nvmem
+> devices and cells whose data comes from device tree  blob.
 
-While at it you can drop the udelay here.
+This seems quite flexible. Care to create and post this for the kernel?
+It would be much better if we can agree on a binding used by the kernel
+aswell.
 
 Sascha
 
