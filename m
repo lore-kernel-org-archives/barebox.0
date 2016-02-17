@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVwgd-0001Sj-4O
- for barebox@lists.infradead.org; Wed, 17 Feb 2016 07:38:12 +0000
-Date: Wed, 17 Feb 2016 08:37:49 +0100
+ id 1aVxCE-0002fC-VI
+ for barebox@lists.infradead.org; Wed, 17 Feb 2016 08:10:52 +0000
+Date: Wed, 17 Feb 2016 09:10:28 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160217073749.GN19372@pengutronix.de>
-References: <1455648888-20678-1-git-send-email-mpa@pengutronix.de>
- <1455648888-20678-4-git-send-email-mpa@pengutronix.de>
+Message-ID: <20160217081028.GO19372@pengutronix.de>
+References: <1455657239-17629-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1455648888-20678-4-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <1455657239-17629-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,65 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] fastboot: Add a ARM Barebox filetype handler
-To: Markus Pargmann <mpa@pengutronix.de>
+Subject: Re: [PATCH] fs: ext4: make locally used ext4fs_get_indir_block()
+ static
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Feb 16, 2016 at 07:54:48PM +0100, Markus Pargmann wrote:
-> This will automatically call barebox_update for the transfered file if
-> it is an ARM Barebox image and the destination file is defined by some
-> update handler.
+On Wed, Feb 17, 2016 at 12:13:59AM +0300, Antony Pavlov wrote:
+> The patch fixes this compiler's warning:
 > 
-> Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+>       CC      fs/ext4/ext4_common.o
+>     fs/ext4/ext4_common.c:130:5: warning: no previous prototype for
+>     'ext4fs_get_indir_block' [-Wmissing-prototypes]
+>      int ext4fs_get_indir_block(struct ext2fs_node *node, struct
+>     ext4fs_indir_block *indir, int blkno)
+>          ^
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  drivers/usb/gadget/f_fastboot.c | 29 +++++++++++++++++++++++++++++
->  1 file changed, 29 insertions(+)
-> 
-> diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-> index 192c0d6eb7f4..ae18d068e93f 100644
-> --- a/drivers/usb/gadget/f_fastboot.c
-> +++ b/drivers/usb/gadget/f_fastboot.c
-> @@ -23,6 +23,7 @@
->  #include <clock.h>
->  #include <ioctl.h>
->  #include <libbb.h>
-> +#include <bbu.h>
->  #include <boot.h>
->  #include <dma.h>
->  #include <fs.h>
-> @@ -716,6 +717,34 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
->  		goto out;
->  	}
->  
-> +	if (filetype == filetype_arm_barebox) {
+>  fs/ext4/ext4_common.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-There are some other barebox image types, like filetype_mips_barebox and
-filetype_ch_image, so maybe we should check for them aswell? But then
-again, ...
-
-> +		struct bbu_data data = {
-> +			.devicefile = filename,
-> +			.imagefile = FASTBOOT_TMPFILE,
-> +			.flags = BBU_FLAG_YES,
-> +		};
-> +
-> +		if (!barebox_update_handler_exists(&data))
-> +			goto copy;
-
-... Do we need the filetype check at all? Isn't this check enough? With
-existing update handler for a device using barebox_update is the right
-way to go, no matter what the filetype check says.
-
-> +
-> +		fastboot_tx_print(f_fb, "INFOThis is an ARM Barebox image...");
-> +
-> +		data.image = read_file(data.imagefile, &data.len);
-> +		if (!data.image) {
-> +			fastboot_tx_print(f_fb, "FAILreading bareboxs");
-
-s/bareboxs/barebox/
+Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
