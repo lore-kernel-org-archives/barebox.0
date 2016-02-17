@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aW0Ht-0003IU-RA
- for barebox@lists.infradead.org; Wed, 17 Feb 2016 11:28:54 +0000
+ id 1aW0I3-0003Lu-Nd
+ for barebox@lists.infradead.org; Wed, 17 Feb 2016 11:29:04 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Wed, 17 Feb 2016 12:28:17 +0100
-Message-Id: <1455708500-980-1-git-send-email-mpa@pengutronix.de>
+Date: Wed, 17 Feb 2016 12:28:20 +0100
+Message-Id: <1455708500-980-4-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <1455708500-980-1-git-send-email-mpa@pengutronix.de>
+References: <1455708500-980-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,56 +21,108 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/4] bbu: Add barebox_update search by device
+Subject: [PATCH v2 4/4] fastboot: Add a ARM Barebox filetype handler
 To: barebox@lists.infradead.org
 
-bbu_data includes a devicefile information. Add the possibility to make
-an update based on the given devicefile. This is in addition to the
-normal search for a barebox update handler by its name.
+This will automatically call barebox_update for the transfered file if
+it is an ARM Barebox image and the destination file is defined by some
+update handler.
 
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- common/bbu.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ common/filetype.c               | 13 +++++++++++++
+ drivers/usb/gadget/f_fastboot.c | 29 +++++++++++++++++++++++++++++
+ include/filetype.h              |  2 ++
+ 3 files changed, 44 insertions(+)
 
-diff --git a/common/bbu.c b/common/bbu.c
-index 4d71fa4a87cb..bf3790d13fff 100644
---- a/common/bbu.c
-+++ b/common/bbu.c
-@@ -97,6 +97,20 @@ static struct bbu_handler *bbu_find_handler(const char *name)
- 	return NULL;
+diff --git a/common/filetype.c b/common/filetype.c
+index 8cfae88aeb35..74baf514466a 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -369,3 +369,16 @@ err_out:
+ 	cdev_close(cdev);
+ 	return type;
  }
- 
-+static struct bbu_handler *bbu_find_handler_by_device(const char *devicepath)
++
++bool filetype_is_barebox_image(enum filetype ft)
 +{
-+	struct bbu_handler *handler;
-+
-+	if (!devicepath)
-+		return NULL;
-+
-+	list_for_each_entry(handler, &bbu_image_handlers, list)
-+		if (!strcmp(handler->devicefile, devicepath))
-+			return handler;
-+
-+	return NULL;
++	switch (ft) {
++	case filetype_arm_barebox:
++	case filetype_mips_barebox:
++	case filetype_ch_image:
++	case filetype_ch_image_be:
++		return true;
++	default:
++		return false;
++	}
 +}
+diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
+index bc06c58d8dcb..9a1058a9670b 100644
+--- a/drivers/usb/gadget/f_fastboot.c
++++ b/drivers/usb/gadget/f_fastboot.c
+@@ -23,6 +23,7 @@
+ #include <clock.h>
+ #include <ioctl.h>
+ #include <libbb.h>
++#include <bbu.h>
+ #include <boot.h>
+ #include <dma.h>
+ #include <fs.h>
+@@ -716,6 +717,34 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
+ 		goto out;
+ 	}
+ 
++	if (filetype_is_barebox_image(filetype)) {
++		struct bbu_data data = {
++			.devicefile = filename,
++			.imagefile = FASTBOOT_TMPFILE,
++			.flags = BBU_FLAG_YES,
++		};
 +
++		if (!barebox_update_handler_exists(&data))
++			goto copy;
++
++		fastboot_tx_print(f_fb, "INFOThis is an ARM Barebox image...");
++
++		data.image = read_file(data.imagefile, &data.len);
++		if (!data.image) {
++			fastboot_tx_print(f_fb, "FAILreading barebox");
++			return;
++		}
++
++		ret = barebox_update(&data);
++
++		if (ret) {
++			fastboot_tx_print(f_fb, "FAILupdate barebox: %s", strerror(-ret));
++			return;
++		}
++
++		goto out;
++	}
++
+ copy:
+ 	ret = copy_file(FASTBOOT_TMPFILE, filename, 1);
+ 	if (ret) {
+diff --git a/include/filetype.h b/include/filetype.h
+index cde543e5b061..e87ca174a89d 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -2,6 +2,7 @@
+ #define __FILE_TYPE_H
+ 
+ #include <linux/string.h>
++#include <linux/types.h>
+ 
  /*
-  * do a barebox update with data from *data
-  */
-@@ -105,7 +119,11 @@ int barebox_update(struct bbu_data *data)
- 	struct bbu_handler *handler;
- 	int ret;
+  * List of file types we know
+@@ -48,6 +49,7 @@ enum filetype file_name_detect_type(const char *filename);
+ enum filetype cdev_detect_type(const char *name);
+ enum filetype is_fat_or_mbr(const unsigned char *sector, unsigned long *bootsec);
+ int is_fat_boot_sector(const void *_buf);
++bool filetype_is_barebox_image(enum filetype ft);
  
--	handler = bbu_find_handler(data->handler_name);
-+	handler = bbu_find_handler_by_device(data->devicefile);
-+
-+	if (!handler)
-+		handler = bbu_find_handler(data->handler_name);
-+
- 	if (!handler)
- 		return -ENODEV;
- 
+ #define ARM_HEAD_SIZE			0x30
+ #define ARM_HEAD_MAGICWORD_OFFSET	0x20
 -- 
 2.7.0
 
