@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x232.google.com ([2a00:1450:400c:c09::232])
+Received: from mail-pf0-x22c.google.com ([2607:f8b0:400e:c00::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVnfe-00081A-Pp
- for barebox@lists.infradead.org; Tue, 16 Feb 2016 22:00:35 +0000
-Received: by mail-wm0-x232.google.com with SMTP id b205so129852988wmb.1
- for <barebox@lists.infradead.org>; Tue, 16 Feb 2016 14:00:14 -0800 (PST)
-From: Philipp Zabel <philipp.zabel@gmail.com>
-Date: Tue, 16 Feb 2016 23:00:02 +0100
-Message-Id: <1455660002-12208-1-git-send-email-philipp.zabel@gmail.com>
+ id 1aVqwP-0003nT-Tn
+ for barebox@lists.infradead.org; Wed, 17 Feb 2016 01:30:07 +0000
+Received: by mail-pf0-x22c.google.com with SMTP id x65so1520200pfb.1
+ for <barebox@lists.infradead.org>; Tue, 16 Feb 2016 17:29:48 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 16 Feb 2016 17:29:13 -0800
+Message-Id: <1455672559-25061-13-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1455672559-25061-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1455672559-25061-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +23,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: usb: fix otg mode parameter description
+Subject: [PATCH 12/18] fec_imx: Impelemnt reset timeout
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Replace ``device`` otg.mode option with the correct ``peripheral``.
+Don't wait for more than one second for IP block to finish resetting. If
+the block is dead it makes more sence to continue execution in hopes
+that the rest of the processor is fine, rather than spin indefinetly
+inside of the fec_probe function
 
-Signed-off-by: Philipp Zabel <philipp.zabel@gmail.com>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- Documentation/user/usb.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/fec_imx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
-index 9eb1437..99158a2 100644
---- a/Documentation/user/usb.rst
-+++ b/Documentation/user/usb.rst
-@@ -151,7 +151,7 @@ barebox does not have USB OTG support. However, barebox supports some USB cores
- both host and device mode. If these are specified for otg in the device tree
- (dr_mode = "otg";) barebox registers a OTG device which can be used to decide which
- mode shall be used. The device has a ``mode`` parameter which by default has the
--value ``otg``. setting this to ``host`` or ``device`` puts the device in the corresponding
-+value ``otg``. setting this to ``host`` or ``peripheral`` puts the device in the corresponding
- mode. Once a specific mode has been selected it can't be changed later anymore.
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 46932fe..99bd179 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -687,6 +687,7 @@ static int fec_probe(struct device_d *dev)
+ 	int phy_reset;
+ 	u32 msec = 1;
+ 	struct resource *res;
++	u64 start;
  
- .. code-block:: sh
+ 	ret = dev_get_drvdata(dev, (const void **)&type);
+ 	if (ret)
+@@ -739,9 +740,14 @@ static int fec_probe(struct device_d *dev)
+ 	}
+ 
+ 	/* Reset chip. */
++	start = get_time_ns();
+ 	writel(FEC_ECNTRL_RESET, fec->regs + FEC_ECNTRL);
+ 	while(readl(fec->regs + FEC_ECNTRL) & FEC_ECNTRL_RESET) {
+ 		udelay(10);
++		if (is_timeout(start, SECOND)) {
++			ret = -ETIMEDOUT;
++			goto free_gpio;
++		}
+ 	}
+ 
+ 	/*
 -- 
-2.7.0
+2.5.0
 
 
 _______________________________________________
