@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x232.google.com ([2607:f8b0:400e:c00::232])
+Received: from mail-pf0-x230.google.com ([2607:f8b0:400e:c00::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVqwL-0003nC-R9
- for barebox@lists.infradead.org; Wed, 17 Feb 2016 01:30:02 +0000
-Received: by mail-pf0-x232.google.com with SMTP id q63so1537219pfb.0
- for <barebox@lists.infradead.org>; Tue, 16 Feb 2016 17:29:45 -0800 (PST)
+ id 1aVqwO-0003n6-Tc
+ for barebox@lists.infradead.org; Wed, 17 Feb 2016 01:30:06 +0000
+Received: by mail-pf0-x230.google.com with SMTP id x65so1519333pfb.1
+ for <barebox@lists.infradead.org>; Tue, 16 Feb 2016 17:29:44 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 16 Feb 2016 17:29:08 -0800
-Message-Id: <1455672559-25061-8-git-send-email-andrew.smirnov@gmail.com>
+Date: Tue, 16 Feb 2016 17:29:07 -0800
+Message-Id: <1455672559-25061-7-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1455672559-25061-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1455672559-25061-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,64 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/18] fec_imx: Deallocate clocks when probe fails
+Subject: [PATCH 06/18] clk-imx6: Call clk_enable on mmdc_ch0_axi_podf
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Call clk_enable on mmdc_ch0_axi_podf in order to properly increase
+reference counters for all of the nodes in this particular clock
+path. Otherwise it becomes possible for peripherals, located on other
+branches stemming from "periph", to shut down the whole clock tree (up
+to "pll2_bus") when they try to manage their own local clocks.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/fec_imx.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ arch/arm/mach-imx/clk-imx6.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 4465788..f413acd 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -710,7 +710,9 @@ static int fec_probe(struct device_d *dev)
- 		goto err_free;
- 	}
+diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
+index 597e502..da8033e 100644
+--- a/arch/arm/mach-imx/clk-imx6.c
++++ b/arch/arm/mach-imx/clk-imx6.c
+@@ -501,6 +501,7 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 	clk_data.clk_num = IMX6QDL_CLK_END;
+ 	of_clk_add_provider(dev->device_node, of_clk_src_onecell_get, &clk_data);
  
--	clk_enable(fec->clk);
-+	ret = clk_enable(fec->clk);
-+	if (ret < 0)
-+		goto put_clk;
- 
- 	fec->regs = dev_request_mem_region(dev, 0);
- 
-@@ -720,11 +722,11 @@ static int fec_probe(struct device_d *dev)
- 
- 		ret = gpio_request(phy_reset, "phy-reset");
- 		if (ret)
--			goto err_free;
-+			goto disable_clk;
- 
- 		ret = gpio_direction_output(phy_reset, 0);
- 		if (ret)
--			goto err_free;
-+			goto disable_clk;
- 
- 		mdelay(msec);
- 		gpio_set_value(phy_reset, 1);
-@@ -764,7 +766,7 @@ static int fec_probe(struct device_d *dev)
- 	}
- 
- 	if (ret)
--		goto err_free;
-+		goto disable_clk;
- 
- 	fec_init(edev);
- 
-@@ -784,6 +786,10 @@ static int fec_probe(struct device_d *dev)
- 
- 	return 0;
- 
-+disable_clk:
-+	clk_disable(fec->clk);
-+put_clk:
-+	clk_put(fec->clk);
- err_free:
- 	free(fec);
- 	return ret;
++	clk_enable(clks[IMX6QDL_CLK_MMDC_CH0_AXI_PODF]);
+ 	clk_enable(clks[IMX6QDL_CLK_PLL6_ENET]);
+ 	clk_enable(clks[IMX6QDL_CLK_SATA_REF_100M]);
+ 	clk_enable(clks[IMX6QDL_CLK_ENFC_PODF]);
 -- 
 2.5.0
 
