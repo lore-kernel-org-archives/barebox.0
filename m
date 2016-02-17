@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x22f.google.com ([2607:f8b0:400e:c03::22f])
+Received: from mail-pf0-x229.google.com ([2607:f8b0:400e:c00::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVqwQ-0003nE-9l
- for barebox@lists.infradead.org; Wed, 17 Feb 2016 01:30:08 +0000
-Received: by mail-pa0-x22f.google.com with SMTP id ho8so1499266pac.2
- for <barebox@lists.infradead.org>; Tue, 16 Feb 2016 17:29:46 -0800 (PST)
+ id 1aVqwM-0003mo-I3
+ for barebox@lists.infradead.org; Wed, 17 Feb 2016 01:30:03 +0000
+Received: by mail-pf0-x229.google.com with SMTP id x65so1518731pfb.1
+ for <barebox@lists.infradead.org>; Tue, 16 Feb 2016 17:29:42 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 16 Feb 2016 17:29:09 -0800
-Message-Id: <1455672559-25061-9-git-send-email-andrew.smirnov@gmail.com>
+Date: Tue, 16 Feb 2016 17:29:03 -0800
+Message-Id: <1455672559-25061-3-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1455672559-25061-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1455672559-25061-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,58 +23,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/18] [RFC] base: Introduce dev_request_mem_resource
+Subject: [PATCH 02/18] base: driver.c: Coalesce error checking code
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Introduce dev_request_mem_resource as a version of
-dev_request_mem_region that returns the corresponding 'struct resource'
-and thus allows to perform proper resource deallocation. This is useful
-for drivers that can experience deferred probling and need to be able to
-be probed twice.
+Both dev_get_mem_region and dev_get_mem_region_by_name do exactly the
+same thing with struct resource they obtain. Move that code into a
+dedicated helper function.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/base/driver.c | 12 ++++++++++++
- include/driver.h      |  2 ++
- 2 files changed, 14 insertions(+)
+ drivers/base/driver.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index a3ca057..9e55061 100644
+index a70fbb2..2ef7ca9 100644
 --- a/drivers/base/driver.c
 +++ b/drivers/base/driver.c
-@@ -385,6 +385,18 @@ void __iomem *dev_request_mem_region_by_name(struct device_d *dev, const char *n
+@@ -325,15 +325,18 @@ struct resource *dev_get_resource(struct device_d *dev, unsigned long type,
+ 	return ERR_PTR(-ENOENT);
  }
- EXPORT_SYMBOL(dev_request_mem_region_by_name);
  
-+struct resource *dev_request_mem_resource(struct device_d *dev, int num)
++static void *__start_or_err(const struct resource *res)
 +{
-+	struct resource *res;
-+
-+	res = dev_get_resource(dev, IORESOURCE_MEM, num);
-+	if (IS_ERR(res))
-+		return ERR_CAST(res);
-+
-+	return request_iomem_region(dev_name(dev), res->start, res->end);
++	return IS_ERR(res) ? ERR_CAST(res) : IOMEM(res->start);
 +}
-+EXPORT_SYMBOL(dev_request_mem_resource);
 +
- void __iomem *dev_request_mem_region(struct device_d *dev, int num)
+ void *dev_get_mem_region(struct device_d *dev, int num)
  {
  	struct resource *res;
-diff --git a/include/driver.h b/include/driver.h
-index 08adaf9..2e67223 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -206,6 +206,8 @@ void *dev_get_mem_region(struct device_d *dev, int num);
-  */
- void __iomem *dev_request_mem_region(struct device_d *dev, int num);
  
-+struct resource *dev_request_mem_resource(struct device_d *dev, int num);
-+
- struct device_d *device_alloc(const char *devname, int id);
+ 	res = dev_get_resource(dev, IORESOURCE_MEM, num);
+-	if (IS_ERR(res))
+-		return ERR_CAST(res);
  
- int device_add_resources(struct device_d *dev, const struct resource *res, int num);
+-	return (void __force *)res->start;
++	return __start_or_err(res);
+ }
+ EXPORT_SYMBOL(dev_get_mem_region);
+ 
+@@ -361,10 +364,8 @@ void *dev_get_mem_region_by_name(struct device_d *dev, const char *name)
+ 	struct resource *res;
+ 
+ 	res = dev_get_resource_by_name(dev, IORESOURCE_MEM, name);
+-	if (IS_ERR(res))
+-		return ERR_CAST(res);
+ 
+-	return (void __force *)res->start;
++	return __start_or_err(res);
+ }
+ EXPORT_SYMBOL(dev_get_mem_region_by_name);
+ 
 -- 
 2.5.0
 
