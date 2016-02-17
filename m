@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aW0I3-0003Lu-Nd
- for barebox@lists.infradead.org; Wed, 17 Feb 2016 11:29:04 +0000
+ id 1aW0Hy-0003LT-Nl
+ for barebox@lists.infradead.org; Wed, 17 Feb 2016 11:28:59 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Wed, 17 Feb 2016 12:28:20 +0100
-Message-Id: <1455708500-980-4-git-send-email-mpa@pengutronix.de>
+Date: Wed, 17 Feb 2016 12:28:19 +0100
+Message-Id: <1455708500-980-3-git-send-email-mpa@pengutronix.de>
 In-Reply-To: <1455708500-980-1-git-send-email-mpa@pengutronix.de>
 References: <1455708500-980-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,108 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/4] fastboot: Add a ARM Barebox filetype handler
+Subject: [PATCH v2 3/4] fastboot: Fix usage of ubiformat for UBI image
+ transfers
 To: barebox@lists.infradead.org
 
-This will automatically call barebox_update for the transfered file if
-it is an ARM Barebox image and the destination file is defined by some
-update handler.
+Currently all fastboot flash commands with UBI images are handled by a
+final call to 'ubiformat'. This only makes sense for flash commands
+where the target file is a mtd device. If we just want to transfer a UBI
+image we would expect a simple copy to the correct location.
+
+This patch checks if the destination file is a MTD device by opening it
+and calling an ioctl MEMGETINFO. Only for MTD devices, ubiformat is
+called.
 
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- common/filetype.c               | 13 +++++++++++++
- drivers/usb/gadget/f_fastboot.c | 29 +++++++++++++++++++++++++++++
- include/filetype.h              |  2 ++
- 3 files changed, 44 insertions(+)
+ drivers/usb/gadget/f_fastboot.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index 8cfae88aeb35..74baf514466a 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -369,3 +369,16 @@ err_out:
- 	cdev_close(cdev);
- 	return type;
- }
-+
-+bool filetype_is_barebox_image(enum filetype ft)
-+{
-+	switch (ft) {
-+	case filetype_arm_barebox:
-+	case filetype_mips_barebox:
-+	case filetype_ch_image:
-+	case filetype_ch_image_be:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
 diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-index bc06c58d8dcb..9a1058a9670b 100644
+index bf28f7c22aaa..bc06c58d8dcb 100644
 --- a/drivers/usb/gadget/f_fastboot.c
 +++ b/drivers/usb/gadget/f_fastboot.c
-@@ -23,6 +23,7 @@
- #include <clock.h>
- #include <ioctl.h>
- #include <libbb.h>
-+#include <bbu.h>
- #include <boot.h>
- #include <dma.h>
- #include <fs.h>
-@@ -716,6 +717,34 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
+@@ -686,7 +686,21 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
+ 	}
+ 
+ 	if (filetype == filetype_ubi) {
+-		char *cmd = asprintf("ubiformat -y -f %s %s", FASTBOOT_TMPFILE, filename);
++		char *cmd;
++		int fd;
++		struct mtd_info_user meminfo;
++
++		fd = open(filename, O_RDONLY);
++		if (fd < 0)
++			goto copy;
++
++		ret = ioctl(fd, MEMGETINFO, &meminfo);
++		close(fd);
++		/* Not a MTD device, ubiformat is not a valid operation */
++		if (ret)
++			goto copy;
++
++		cmd = asprintf("ubiformat -y -f %s %s", FASTBOOT_TMPFILE, filename);
+ 
+ 		fastboot_tx_print(f_fb, "INFOThis is an UBI image...");
+ 
+@@ -702,6 +716,7 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
  		goto out;
  	}
  
-+	if (filetype_is_barebox_image(filetype)) {
-+		struct bbu_data data = {
-+			.devicefile = filename,
-+			.imagefile = FASTBOOT_TMPFILE,
-+			.flags = BBU_FLAG_YES,
-+		};
-+
-+		if (!barebox_update_handler_exists(&data))
-+			goto copy;
-+
-+		fastboot_tx_print(f_fb, "INFOThis is an ARM Barebox image...");
-+
-+		data.image = read_file(data.imagefile, &data.len);
-+		if (!data.image) {
-+			fastboot_tx_print(f_fb, "FAILreading barebox");
-+			return;
-+		}
-+
-+		ret = barebox_update(&data);
-+
-+		if (ret) {
-+			fastboot_tx_print(f_fb, "FAILupdate barebox: %s", strerror(-ret));
-+			return;
-+		}
-+
-+		goto out;
-+	}
-+
- copy:
++copy:
  	ret = copy_file(FASTBOOT_TMPFILE, filename, 1);
  	if (ret) {
-diff --git a/include/filetype.h b/include/filetype.h
-index cde543e5b061..e87ca174a89d 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -2,6 +2,7 @@
- #define __FILE_TYPE_H
- 
- #include <linux/string.h>
-+#include <linux/types.h>
- 
- /*
-  * List of file types we know
-@@ -48,6 +49,7 @@ enum filetype file_name_detect_type(const char *filename);
- enum filetype cdev_detect_type(const char *name);
- enum filetype is_fat_or_mbr(const unsigned char *sector, unsigned long *bootsec);
- int is_fat_boot_sector(const void *_buf);
-+bool filetype_is_barebox_image(enum filetype ft);
- 
- #define ARM_HEAD_SIZE			0x30
- #define ARM_HEAD_MAGICWORD_OFFSET	0x20
+ 		fastboot_tx_print(f_fb, "FAILwrite partition: %s", strerror(-ret));
 -- 
 2.7.0
 
