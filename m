@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x22a.google.com ([2607:f8b0:400e:c03::22a])
+Received: from mail-pf0-x22e.google.com ([2607:f8b0:400e:c00::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVqwR-0003nM-Ni
+ id 1aVqwR-0003nR-W9
  for barebox@lists.infradead.org; Wed, 17 Feb 2016 01:30:09 +0000
-Received: by mail-pa0-x22a.google.com with SMTP id ho8so1499549pac.2
+Received: by mail-pf0-x22e.google.com with SMTP id e127so1489813pfe.3
  for <barebox@lists.infradead.org>; Tue, 16 Feb 2016 17:29:47 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 16 Feb 2016 17:29:11 -0800
-Message-Id: <1455672559-25061-11-git-send-email-andrew.smirnov@gmail.com>
+Date: Tue, 16 Feb 2016 17:29:12 -0800
+Message-Id: <1455672559-25061-12-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1455672559-25061-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1455672559-25061-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,47 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/18] fec_imx: Free phy_reset GPIO if when probe fails
+Subject: [PATCH 11/18] fec_imx: Use FEC_ECNTRL_RESET instead of a magic number
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/fec_imx.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/fec_imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index c059882..d132586 100644
+index d132586..46932fe 100644
 --- a/drivers/net/fec_imx.c
 +++ b/drivers/net/fec_imx.c
-@@ -732,7 +732,7 @@ static int fec_probe(struct device_d *dev)
+@@ -740,7 +740,7 @@ static int fec_probe(struct device_d *dev)
  
- 		ret = gpio_direction_output(phy_reset, 0);
- 		if (ret)
--			goto release_res;
-+			goto free_gpio;
- 
- 		mdelay(msec);
- 		gpio_set_value(phy_reset, 1);
-@@ -772,7 +772,7 @@ static int fec_probe(struct device_d *dev)
+ 	/* Reset chip. */
+ 	writel(FEC_ECNTRL_RESET, fec->regs + FEC_ECNTRL);
+-	while(readl(fec->regs + FEC_ECNTRL) & 1) {
++	while(readl(fec->regs + FEC_ECNTRL) & FEC_ECNTRL_RESET) {
+ 		udelay(10);
  	}
  
- 	if (ret)
--		goto release_res;
-+		goto free_gpio;
- 
- 	fec_init(edev);
- 
-@@ -792,6 +792,9 @@ static int fec_probe(struct device_d *dev)
- 
- 	return 0;
- 
-+free_gpio:
-+	if (gpio_is_valid(phy_reset))
-+		gpio_free(phy_reset);
- release_res:
- 	release_region(res);
- disable_clk:
 -- 
 2.5.0
 
