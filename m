@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vk0-x22f.google.com ([2607:f8b0:400c:c05::22f])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVtc6-0005sO-Sc
- for barebox@lists.infradead.org; Wed, 17 Feb 2016 04:21:19 +0000
-Received: by mail-vk0-x22f.google.com with SMTP id k196so4335502vka.0
- for <barebox@lists.infradead.org>; Tue, 16 Feb 2016 20:20:58 -0800 (PST)
+ id 1aVwDC-0005E1-B3
+ for barebox@lists.infradead.org; Wed, 17 Feb 2016 07:07:47 +0000
+Date: Wed, 17 Feb 2016 08:07:24 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160217070723.GJ19372@pengutronix.de>
+References: <1455530215-4394-1-git-send-email-s.christ@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <1455678623.18517.81.camel@rtred1test09.kymeta.local>
-References: <1455672559-25061-1-git-send-email-andrew.smirnov@gmail.com>
- <1455678623.18517.81.camel@rtred1test09.kymeta.local>
-Date: Tue, 16 Feb 2016 20:20:57 -0800
-Message-ID: <CAHQ1cqGov0qDctaUmrufTUHMdbK_g33cKpmK4GPX6TkkZDqyTA@mail.gmail.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1455530215-4394-1-git-send-email-s.christ@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,77 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/17] RFC for additional 'nvmem' plumbing
-To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/3] ARM: i.MX6: add function cpu_is_mx6s()
+To: Stefan Christ <s.christ@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, Feb 16, 2016 at 7:09 PM, Trent Piepho <tpiepho@kymetacorp.com> wrote:
-> On Tue, 2016-02-16 at 17:29 -0800, Andrey Smirnov wrote:
->> Hi everyone,
->>
->> The main purpose of this patchset is propose additional Nvmem plubing
->> needed for that subsytem's inclusion in BB and solicit feedback about
->> it (patches ## 15 to 17) . Included in this set are also a number of
->> bugfixes and RFC-for-bugfixes for problems that were discoverd during
->> development of this patch series.
->>
->> Proposed Nvmem additions are two new platform device drivers that
->> implement a nvmem interface on top of data embedded in DT as well as
->> nvmem interface that allows to combine existing nvmem-accesible bytes
->> into continuous blocks.
->>
->> Below is an example of DT code that uses both drivers in order to
->> create a MAC address as a combination of bytes from DT and OCOTP
->> module:
->
-> So for a common case Sasha has pointed out, of the MAC in the opposite
-> byte order, one would write:
->
->         scatter-gather-blob {
->                 compatible = "barebox,nvmem-sg";
->                 #address-cells = <1>;
->                 #size-cells = <1>;
->
->                 mac_address: combined-bits {
->                         reg = <0 6>;
->                         layout = <&fec_mac_address 5 1
->                                   &fec_mac_address 4 1
->                                   &fec_mac_address 3 1
->                                   &fec_mac_address 2 1
->                                   &fec_mac_address 1 1
->                                   &fec_mac_address 0 1>;
->                 };
->         };
->
->         &ocotp {
->                 #address-cells = <1>;
->                 #size-cells = <1>;
->
->                 fec_mac_address: mac_address@88 {
->                         reg = <0x88 0x8>;
->                 };
->         };
->
->         &fec {
->                 ?mac-address-location?? = <&mac_address>;
->         };
->
+On Mon, Feb 15, 2016 at 10:56:53AM +0100, Stefan Christ wrote:
+> The cpu_is_mx6* function for the i.MX6 Solo was missing. All other
+> functions are already defined.
+> 
+> Signed-off-by: Stefan Christ <s.christ@phytec.de>
+> ---
+>  arch/arm/mach-imx/include/mach/imx6.h | 1 +
+>  1 file changed, 1 insertion(+)
 
-mac_address is still a nvmem cell, so the DT code for FEC would remain the same:
+Applied these three to master, thanks
 
-&fec {
-    nvmem-cells = <&mac_address>;
-    nvmem-cell-names = "mac-address";
-}
+Sascha
 
-
-> I suppose that's a very powerful system, but it does seem a bit
-> cumbersome.
-
-I agree, those bindings don't really make me glow with pride because
-of their elegance, but unfortunately I wasn't able to come up with
-anything better that would be as generic and not tied into a
-particular use case of MAC address manipulation.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
