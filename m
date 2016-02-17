@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aW0Hy-0003LT-Nl
- for barebox@lists.infradead.org; Wed, 17 Feb 2016 11:28:59 +0000
+ id 1aW0Ht-0003Jf-RB
+ for barebox@lists.infradead.org; Wed, 17 Feb 2016 11:28:54 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Wed, 17 Feb 2016 12:28:19 +0100
-Message-Id: <1455708500-980-3-git-send-email-mpa@pengutronix.de>
+Date: Wed, 17 Feb 2016 12:28:18 +0100
+Message-Id: <1455708500-980-2-git-send-email-mpa@pengutronix.de>
 In-Reply-To: <1455708500-980-1-git-send-email-mpa@pengutronix.de>
 References: <1455708500-980-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,59 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/4] fastboot: Fix usage of ubiformat for UBI image
- transfers
+Subject: [PATCH v2 2/4] bbu: Add function to check if an update handler exists
 To: barebox@lists.infradead.org
 
-Currently all fastboot flash commands with UBI images are handled by a
-final call to 'ubiformat'. This only makes sense for flash commands
-where the target file is a mtd device. If we just want to transfer a UBI
-image we would expect a simple copy to the correct location.
-
-This patch checks if the destination file is a MTD device by opening it
-and calling an ioctl MEMGETINFO. Only for MTD devices, ubiformat is
-called.
+This adds a function to check for the existence of an update handler
+based on the supplied bbu_data.
 
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- drivers/usb/gadget/f_fastboot.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ common/bbu.c  | 14 ++++++++++++++
+ include/bbu.h |  2 ++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-index bf28f7c22aaa..bc06c58d8dcb 100644
---- a/drivers/usb/gadget/f_fastboot.c
-+++ b/drivers/usb/gadget/f_fastboot.c
-@@ -686,7 +686,21 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
- 	}
+diff --git a/common/bbu.c b/common/bbu.c
+index bf3790d13fff..a7f6b4b851ee 100644
+--- a/common/bbu.c
++++ b/common/bbu.c
+@@ -111,6 +111,20 @@ static struct bbu_handler *bbu_find_handler_by_device(const char *devicepath)
+ 	return NULL;
+ }
  
- 	if (filetype == filetype_ubi) {
--		char *cmd = asprintf("ubiformat -y -f %s %s", FASTBOOT_TMPFILE, filename);
-+		char *cmd;
-+		int fd;
-+		struct mtd_info_user meminfo;
++bool barebox_update_handler_exists(struct bbu_data *data)
++{
++	struct bbu_handler *handler;
 +
-+		fd = open(filename, O_RDONLY);
-+		if (fd < 0)
-+			goto copy;
++	handler = bbu_find_handler_by_device(data->devicefile);
++	if (handler)
++		return true;
 +
-+		ret = ioctl(fd, MEMGETINFO, &meminfo);
-+		close(fd);
-+		/* Not a MTD device, ubiformat is not a valid operation */
-+		if (ret)
-+			goto copy;
++	if (!data->handler_name)
++		return false;
 +
-+		cmd = asprintf("ubiformat -y -f %s %s", FASTBOOT_TMPFILE, filename);
++	return !bbu_find_handler(data->handler_name);
++}
++
+ /*
+  * do a barebox update with data from *data
+  */
+diff --git a/include/bbu.h b/include/bbu.h
+index 727791171858..0fe7a1a9bcdb 100644
+--- a/include/bbu.h
++++ b/include/bbu.h
+@@ -36,6 +36,8 @@ int bbu_confirm(struct bbu_data *);
  
- 		fastboot_tx_print(f_fb, "INFOThis is an UBI image...");
+ int barebox_update(struct bbu_data *);
  
-@@ -702,6 +716,7 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
- 		goto out;
- 	}
++bool barebox_update_handler_exists(struct bbu_data *);
++
+ void bbu_handlers_list(void);
  
-+copy:
- 	ret = copy_file(FASTBOOT_TMPFILE, filename, 1);
- 	if (ret) {
- 		fastboot_tx_print(f_fb, "FAILwrite partition: %s", strerror(-ret));
+ #ifdef CONFIG_BAREBOX_UPDATE
 -- 
 2.7.0
 
