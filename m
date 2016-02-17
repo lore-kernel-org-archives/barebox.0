@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVwQt-0003pz-3l
- for barebox@lists.infradead.org; Wed, 17 Feb 2016 07:21:55 +0000
-Date: Wed, 17 Feb 2016 08:21:33 +0100
+ id 1aVwYL-0006Eu-9P
+ for barebox@lists.infradead.org; Wed, 17 Feb 2016 07:29:37 +0000
+Date: Wed, 17 Feb 2016 08:29:14 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160217072133.GL19372@pengutronix.de>
-References: <1455619502-19908-1-git-send-email-t.remmet@phytec.de>
+Message-ID: <20160217072914.GM19372@pengutronix.de>
+References: <1455648888-20678-1-git-send-email-mpa@pengutronix.de>
+ <1455648888-20678-3-git-send-email-mpa@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1455619502-19908-1-git-send-email-t.remmet@phytec.de>
+In-Reply-To: <1455648888-20678-3-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +23,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/7] AM335x related patches
-To: Teresa Remmet <t.remmet@phytec.de>
+Subject: Re: [PATCH 3/4] fastboot: Fix usage of ubiformat for UBI image
+ transfers
+To: Markus Pargmann <mpa@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Feb 16, 2016 at 11:44:55AM +0100, Teresa Remmet wrote:
-> Different AM335x changes containing new RAM timings and
-> reducing image size of all am335x boards.
+On Tue, Feb 16, 2016 at 07:54:47PM +0100, Markus Pargmann wrote:
+> Currently all fastboot flash commands with UBI images are handled by a
+> final call to 'ubiformat'. This only makes sense for flash commands
+> where the target file is a mtd device. If we just want to transfer a UBI
+> image we would expect a simple copy to the correct location.
 > 
-> Patches have been tested on PHYTEC boards and beaglebone black.
+> This patch checks if the destination file is a MTD device by opening it
+> and calling an ioctl MEMGETINFO. Only for MTD devices, ubiformat is
+> called.
 > 
-> Regards
-> Teresa
+> Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+> ---
+>  drivers/usb/gadget/f_fastboot.c | 17 ++++++++++++++++-
+>  1 file changed, 16 insertions(+), 1 deletion(-)
 > 
-> Arnd Beuscher (1):
->   ARM: board: phytec-som-am335x: RAM timings for phyCORE-AM335x-R2
-> 
-> Jan Remmet (1):
->   ARM: dts: am335x-phytec: eeprom name
-> 
-> Teresa Remmet (4):
->   ARM: am335x_defconfig: Enable watchdog support
->   ARM: boards: phytec-som-am335x: New RAM Timings for phyCORE-AM335x-R2
->   ARM: dts: beaglebone: Strip clocks in MLO device tree
->   ARM: AM335x: Make use of ARM_USE_COMPRESSED_DTB
-> 
-> Wadim Egorov (1):
->   ARM: am335x_defconfig: Enable NANDTEST command
-> 
->  arch/arm/boards/afi-gf/lowlevel.c               |  6 ++--
->  arch/arm/boards/beaglebone/lowlevel.c           | 12 ++++----
->  arch/arm/boards/phytec-som-am335x/lowlevel.c    | 10 ++++---
->  arch/arm/boards/phytec-som-am335x/ram-timings.h | 40 +++++++++++++++++++++++++
->  arch/arm/configs/am335x_defconfig               |  4 +++
->  arch/arm/dts/am335x-bone-common.dts             |  1 +
->  arch/arm/dts/am335x-phytec-phycard-som.dtsi     |  2 +-
->  arch/arm/dts/am335x-phytec-phycore-som.dtsi     |  2 +-
->  arch/arm/mach-omap/Kconfig                      |  1 +
->  images/Makefile.am33xx                          | 12 ++++++++
->  10 files changed, 75 insertions(+), 15 deletions(-)
+> diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
+> index bf28f7c22aaa..192c0d6eb7f4 100644
+> --- a/drivers/usb/gadget/f_fastboot.c
+> +++ b/drivers/usb/gadget/f_fastboot.c
+> @@ -686,7 +686,21 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
+>  	}
+>  
+>  	if (filetype == filetype_ubi) {
+> -		char *cmd = asprintf("ubiformat -y -f %s %s", FASTBOOT_TMPFILE, filename);
+> +		char *cmd;
+> +		int fd;
+> +		struct mtd_info_user meminfo;
+> +
+> +		fd = open(filename, O_RDONLY);
+> +		if (!fd)
+> +			goto copy;
 
-Applied, thanks
+0 is a valid file descriptor, though one that will never be returned by
+open(). You want to check for fd < 0 here.
+
+> +
+> +		ret = ioctl(fd, MEMGETINFO, &meminfo);
+> +		close(fd);
+> +		/* Not a MTD device, ubiformat is not a valid operation */
+> +		if (ret)
+> +			goto copy;
+> +
+> +		cmd = asprintf("ubiformat -y -f %s %s", FASTBOOT_TMPFILE, filename);
+
+Hm, ubiformat should get a C api.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
