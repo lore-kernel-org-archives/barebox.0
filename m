@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVwYL-0006Eu-9P
- for barebox@lists.infradead.org; Wed, 17 Feb 2016 07:29:37 +0000
-Date: Wed, 17 Feb 2016 08:29:14 +0100
+ id 1aVwgd-0001Sj-4O
+ for barebox@lists.infradead.org; Wed, 17 Feb 2016 07:38:12 +0000
+Date: Wed, 17 Feb 2016 08:37:49 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160217072914.GM19372@pengutronix.de>
+Message-ID: <20160217073749.GN19372@pengutronix.de>
 References: <1455648888-20678-1-git-send-email-mpa@pengutronix.de>
- <1455648888-20678-3-git-send-email-mpa@pengutronix.de>
+ <1455648888-20678-4-git-send-email-mpa@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1455648888-20678-3-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <1455648888-20678-4-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,56 +23,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] fastboot: Fix usage of ubiformat for UBI image
- transfers
+Subject: Re: [PATCH 4/4] fastboot: Add a ARM Barebox filetype handler
 To: Markus Pargmann <mpa@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Feb 16, 2016 at 07:54:47PM +0100, Markus Pargmann wrote:
-> Currently all fastboot flash commands with UBI images are handled by a
-> final call to 'ubiformat'. This only makes sense for flash commands
-> where the target file is a mtd device. If we just want to transfer a UBI
-> image we would expect a simple copy to the correct location.
-> 
-> This patch checks if the destination file is a MTD device by opening it
-> and calling an ioctl MEMGETINFO. Only for MTD devices, ubiformat is
-> called.
+On Tue, Feb 16, 2016 at 07:54:48PM +0100, Markus Pargmann wrote:
+> This will automatically call barebox_update for the transfered file if
+> it is an ARM Barebox image and the destination file is defined by some
+> update handler.
 > 
 > Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 > ---
->  drivers/usb/gadget/f_fastboot.c | 17 ++++++++++++++++-
->  1 file changed, 16 insertions(+), 1 deletion(-)
+>  drivers/usb/gadget/f_fastboot.c | 29 +++++++++++++++++++++++++++++
+>  1 file changed, 29 insertions(+)
 > 
 > diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-> index bf28f7c22aaa..192c0d6eb7f4 100644
+> index 192c0d6eb7f4..ae18d068e93f 100644
 > --- a/drivers/usb/gadget/f_fastboot.c
 > +++ b/drivers/usb/gadget/f_fastboot.c
-> @@ -686,7 +686,21 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
+> @@ -23,6 +23,7 @@
+>  #include <clock.h>
+>  #include <ioctl.h>
+>  #include <libbb.h>
+> +#include <bbu.h>
+>  #include <boot.h>
+>  #include <dma.h>
+>  #include <fs.h>
+> @@ -716,6 +717,34 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
+>  		goto out;
 >  	}
 >  
->  	if (filetype == filetype_ubi) {
-> -		char *cmd = asprintf("ubiformat -y -f %s %s", FASTBOOT_TMPFILE, filename);
-> +		char *cmd;
-> +		int fd;
-> +		struct mtd_info_user meminfo;
+> +	if (filetype == filetype_arm_barebox) {
+
+There are some other barebox image types, like filetype_mips_barebox and
+filetype_ch_image, so maybe we should check for them aswell? But then
+again, ...
+
+> +		struct bbu_data data = {
+> +			.devicefile = filename,
+> +			.imagefile = FASTBOOT_TMPFILE,
+> +			.flags = BBU_FLAG_YES,
+> +		};
 > +
-> +		fd = open(filename, O_RDONLY);
-> +		if (!fd)
+> +		if (!barebox_update_handler_exists(&data))
 > +			goto copy;
 
-0 is a valid file descriptor, though one that will never be returned by
-open(). You want to check for fd < 0 here.
+... Do we need the filetype check at all? Isn't this check enough? With
+existing update handler for a device using barebox_update is the right
+way to go, no matter what the filetype check says.
 
 > +
-> +		ret = ioctl(fd, MEMGETINFO, &meminfo);
-> +		close(fd);
-> +		/* Not a MTD device, ubiformat is not a valid operation */
-> +		if (ret)
-> +			goto copy;
+> +		fastboot_tx_print(f_fb, "INFOThis is an ARM Barebox image...");
 > +
-> +		cmd = asprintf("ubiformat -y -f %s %s", FASTBOOT_TMPFILE, filename);
+> +		data.image = read_file(data.imagefile, &data.len);
+> +		if (!data.image) {
+> +			fastboot_tx_print(f_fb, "FAILreading bareboxs");
 
-Hm, ubiformat should get a C api.
+s/bareboxs/barebox/
 
 Sascha
 
