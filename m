@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x22c.google.com ([2607:f8b0:400e:c00::22c])
+Received: from mail-pf0-x22b.google.com ([2607:f8b0:400e:c00::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aVqwL-0003mb-Bu
- for barebox@lists.infradead.org; Wed, 17 Feb 2016 01:30:02 +0000
-Received: by mail-pf0-x22c.google.com with SMTP id q63so1536154pfb.0
- for <barebox@lists.infradead.org>; Tue, 16 Feb 2016 17:29:40 -0800 (PST)
+ id 1aVqwO-0003my-Kb
+ for barebox@lists.infradead.org; Wed, 17 Feb 2016 01:30:06 +0000
+Received: by mail-pf0-x22b.google.com with SMTP id c10so1560696pfc.2
+ for <barebox@lists.infradead.org>; Tue, 16 Feb 2016 17:29:43 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 16 Feb 2016 17:29:01 -0800
-Message-Id: <1455672559-25061-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Tue, 16 Feb 2016 17:29:05 -0800
+Message-Id: <1455672559-25061-5-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1455672559-25061-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1455672559-25061-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,117 +23,119 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/17] RFC for additional 'nvmem' plumbing
+Subject: [PATCH 04/18] [RFC] base/driver.c: Remove
+ dev_request_mem_region_err_null
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hi everyone,
+Having functional IS_ERR on AT91 means we no longer need that function
 
-The main purpose of this patchset is propose additional Nvmem plubing
-needed for that subsytem's inclusion in BB and solicit feedback about
-it (patches ## 15 to 17) . Included in this set are also a number of
-bugfixes and RFC-for-bugfixes for problems that were discoverd during
-development of this patch series.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/mach-at91/at91sam926x_time.c |  6 +++---
+ drivers/base/driver.c                 | 16 ----------------
+ drivers/pinctrl/pinctrl-at91.c        |  6 +++---
+ drivers/serial/atmel.c                |  6 +++---
+ include/driver.h                      |  8 --------
+ 5 files changed, 9 insertions(+), 33 deletions(-)
 
-Proposed Nvmem additions are two new platform device drivers that
-implement a nvmem interface on top of data embedded in DT as well as
-nvmem interface that allows to combine existing nvmem-accesible bytes
-into continuous blocks.
-
-Below is an example of DT code that uses both drivers in order to
-create a MAC address as a combination of bytes from DT and OCOTP
-module:
-
-	ro-blob {
-		compatible = "barebox,nvmem-ro-of-blob";
-		#address-cells = <1>;
-		#size-cells = <1>;
-
-		ro_blob: ro-blob-cell {
-			reg = <0 5>;
-			data = [aa bb cc dd ff];
-		};
-	};
-
-	scatter-gather-blob {
-		compatible = "barebox,nvmem-sg";
-		#address-cells = <1>;
-		#size-cells = <1>;
-
-		mac_address: combined-bits {
-			reg = <0 6>;
-			layout = <&ro_blob 0 2
-  			          &ro_blob 1 1
-			          &fec_mac_address 1 1
-			          &ro_blob 2 1
-			          &fec_mac_address 2 1>;
-		};
-	};
-
-	&ocotp {
-	       #address-cells = <1>;
-	       	#size-cells = <1>;
-
-		barebox,provide-mac-address = <&fec 0x620>;
-
-		fec_mac_address: mac_address@88 {
-			reg = <0x88 0x8>;
-		};
-	};
-
-This should result in 'mac_address' variable that when read returns
-[aa bb bb xx cc yy], where 'xx' and 'yy' are bytes at offsets 1 and 2
-of OCOTP's register 0x88.
-
-Please bear in mind that the code in commits ## 16, 17 is very raw and
-clunky (a lot of error checking/handling code is omitted), which was
-done for the cause of expediency in order to start this discussion
-sooner and abandon this path if this design doesn't make sense.
-
-As usual, any feedback is appreciated.
-
-Regards,
-Andrey Smirnov
-
-
-Andrey Smirnov (17):
-  base: driver.c: Coalesce error checking code
-  [RFC] at91: Make IS_ERR work for I/O pointers
-  [RFC] base/driver.c: Remove dev_request_mem_region_err_null
-  i2c-at91: Use IS_ERR instead of checking for NULL
-  clk-imx6: Call clk_enable on mmdc_ch0_axi_podf
-  fec_imx: Deallocate clocks when probe fails
-  [RFC] base: Introduce dev_request_mem_resource
-  fec_imx: Deallocate I/O resources if probe fails
-  fec_imx: Free phy_reset GPIO if when probe fails
-  fec_imx: Use FEC_ECNTRL_RESET instead of a magic number
-  fec_imx: Impelemnt reset timeout
-  fec_imx: Deallocate DMA buffers when probe fails
-  fec_imx: Unregister MDIO when probe fails
-  [RFC] net: eth: Always use DEVICE_ID_DYNAMIC
-  [RFC] nvmem: Add of_nvmem_cell_from_cell_np
-  [RFC] nvmem: Add nvmem-ro-of-blob driver
-  [RFC] nvmem: Add nvmem-sg driver
-
- arch/arm/mach-at91/at91sam926x_time.c |   6 +-
- arch/arm/mach-imx/clk-imx6.c          |   1 +
- drivers/base/driver.c                 |  25 ++-
- drivers/i2c/busses/i2c-at91.c         |   4 +-
- drivers/misc/Makefile                 |   2 +
- drivers/misc/nvmem-ro-of-blob.c       | 196 +++++++++++++++++++++++
- drivers/misc/nvmem-sg.c               | 287 ++++++++++++++++++++++++++++++++++
- drivers/net/fec_imx.c                 |  60 +++++--
- drivers/nvmem/core.c                  |  57 ++++---
- drivers/pinctrl/pinctrl-at91.c        |   6 +-
- drivers/serial/atmel.c                |   6 +-
- include/driver.h                      |   8 +-
- include/linux/nvmem-consumer.h        |  10 ++
- net/eth.c                             |   8 +-
- scripts/include/linux/err.h           |  66 ++++++++
- 15 files changed, 670 insertions(+), 72 deletions(-)
- create mode 100644 drivers/misc/nvmem-ro-of-blob.c
- create mode 100644 drivers/misc/nvmem-sg.c
-
+diff --git a/arch/arm/mach-at91/at91sam926x_time.c b/arch/arm/mach-at91/at91sam926x_time.c
+index cc7ad2f..789e1ec 100644
+--- a/arch/arm/mach-at91/at91sam926x_time.c
++++ b/arch/arm/mach-at91/at91sam926x_time.c
+@@ -89,9 +89,9 @@ static int at91_pit_probe(struct device_d *dev)
+ 		return ret;
+ 	}
+ 
+-	pit_base = dev_request_mem_region_err_null(dev, 0);
+-	if (!pit_base)
+-		return -ENOENT;
++	pit_base = dev_request_mem_region(dev, 0);
++	if (IS_ERR(pit_base))
++		return PTR_ERR(pit_base);
+ 
+ 	pit_rate = clk_get_rate(clk) / 16;
+ 
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 2ef7ca9..a3ca057 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -385,22 +385,6 @@ void __iomem *dev_request_mem_region_by_name(struct device_d *dev, const char *n
+ }
+ EXPORT_SYMBOL(dev_request_mem_region_by_name);
+ 
+-void __iomem *dev_request_mem_region_err_null(struct device_d *dev, int num)
+-{
+-	struct resource *res;
+-
+-	res = dev_get_resource(dev, IORESOURCE_MEM, num);
+-	if (IS_ERR(res))
+-		return NULL;
+-
+-	res = request_iomem_region(dev_name(dev), res->start, res->end);
+-	if (IS_ERR(res))
+-		return NULL;
+-
+-	return IOMEM(res->start);
+-}
+-EXPORT_SYMBOL(dev_request_mem_region_err_null);
+-
+ void __iomem *dev_request_mem_region(struct device_d *dev, int num)
+ {
+ 	struct resource *res;
+diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
+index ebbc6f6..816a3f3 100644
+--- a/drivers/pinctrl/pinctrl-at91.c
++++ b/drivers/pinctrl/pinctrl-at91.c
+@@ -652,9 +652,9 @@ static int at91_gpio_probe(struct device_d *dev)
+ 	}
+ 
+ 	gpio_banks = max(gpio_banks, alias_idx + 1);
+-	at91_gpio->regbase = dev_request_mem_region_err_null(dev, 0);
+-	if (!at91_gpio->regbase)
+-		return -ENOENT;
++	at91_gpio->regbase = dev_request_mem_region(dev, 0);
++	if (IS_ERR(at91_gpio->regbase))
++		return PTR_ERR(at91_gpio->regbase);
+ 
+ 	at91_gpio->chip.ops = &at91_gpio_ops;
+ 	at91_gpio->chip.ngpio = MAX_NB_GPIO_PER_BANK;
+diff --git a/drivers/serial/atmel.c b/drivers/serial/atmel.c
+index 4e4624e..1f40692 100644
+--- a/drivers/serial/atmel.c
++++ b/drivers/serial/atmel.c
+@@ -398,9 +398,9 @@ static int atmel_serial_init_port(struct console_device *cdev)
+ 	struct device_d *dev = cdev->dev;
+ 	struct atmel_uart_port *uart = to_atmel_uart_port(cdev);
+ 
+-	uart->base = dev_request_mem_region_err_null(dev, 0);
+-	if (!uart->base)
+-		return -ENOENT;
++	uart->base = dev_request_mem_region(dev, 0);
++	if (IS_ERR(uart->base))
++		return PTR_ERR(uart->base);
+ 
+ 	uart->clk = clk_get(dev, "usart");
+ 	clk_enable(uart->clk);
+diff --git a/include/driver.h b/include/driver.h
+index 31c6734..08adaf9 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -206,14 +206,6 @@ void *dev_get_mem_region(struct device_d *dev, int num);
+  */
+ void __iomem *dev_request_mem_region(struct device_d *dev, int num);
+ 
+-/*
+- * exlusively request register base 'num' for a device
+- * will return NULL on error
+- * only used on platform like at91 where the Ressource address collision with
+- * PTR errno
+- */
+-void __iomem *dev_request_mem_region_err_null(struct device_d *dev, int num);
+-
+ struct device_d *device_alloc(const char *devname, int id);
+ 
+ int device_add_resources(struct device_d *dev, const struct resource *res, int num);
 -- 
 2.5.0
 
