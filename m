@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ganesha.gnumonks.org ([213.95.27.120])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aW6sD-0001iJ-UM
- for barebox@lists.infradead.org; Wed, 17 Feb 2016 18:30:51 +0000
+ id 1aW7Gi-0000lm-6s
+ for barebox@lists.infradead.org; Wed, 17 Feb 2016 18:56:12 +0000
 From: Harald Welte <laforge@gnumonks.org>
-Date: Wed, 17 Feb 2016 19:29:46 +0100
-Message-Id: <1455733786-22229-1-git-send-email-laforge@gnumonks.org>
+Date: Wed, 17 Feb 2016 19:45:24 +0100
+Message-Id: <1455734724-22913-1-git-send-email-laforge@gnumonks.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +19,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Print error message if of_state_fixup() fails
+Subject: [PATCH] bootm: Free allocated fdt buffer in error path
 To: barebox@lists.infradead.org
 
-If of_state_fixup() fails for some reason, boot/bootm will fail, too
-
-However, it is completely unclear where the error has happened, and to
-the user it rather seems like the kernel device tree loaded from some
-file was broken/corrupt, not that in fact some fixup routine was
-failing.
-
-Adding a meaningful error message can help debugging significantly.
+It seems like there is a memory leak in an error path of
+bootm_open_oftree_uimage() where the memory allocated for the fdt is not
+released again.
 
 Signed-off-by: Harald Welte <laforge@gnumonks.org>
 ---
- common/state.c | 1 +
+ common/bootm.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/common/state.c b/common/state.c
-index 3e95efd..b55b150 100644
---- a/common/state.c
-+++ b/common/state.c
-@@ -999,6 +999,7 @@ static int of_state_fixup(struct device_node *root, void *ctx)
- 	return 0;
+diff --git a/common/bootm.c b/common/bootm.c
+index 052cffa..7d00f8e 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -288,6 +288,7 @@ static int bootm_open_oftree_uimage(struct image_data *data, size_t *size,
+ 	if (ft != filetype_oftree) {
+ 		printf("%s is not an oftree but %s\n",
+ 			data->oftree_file, file_type_to_string(ft));
++		free(*fdt);
+ 		return -EINVAL;
+ 	}
  
-  out:
-+	dev_err(&state->dev, "error fixing up device tree with boot state\n");
- 	of_delete_node(new_node);
- 	return ret;
- }
 -- 
 2.7.0
 
