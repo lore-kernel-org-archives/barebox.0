@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aWNE0-0007gJ-4A
- for barebox@lists.infradead.org; Thu, 18 Feb 2016 11:58:24 +0000
-Date: Thu, 18 Feb 2016 12:58:02 +0100
+ id 1aWNFa-0008T8-Dz
+ for barebox@lists.infradead.org; Thu, 18 Feb 2016 12:00:04 +0000
+Date: Thu, 18 Feb 2016 12:59:40 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160218115801.GI3939@pengutronix.de>
-References: <1455733786-22229-1-git-send-email-laforge@gnumonks.org>
+Message-ID: <20160218115940.GJ3939@pengutronix.de>
+References: <1455734724-22913-1-git-send-email-laforge@gnumonks.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1455733786-22229-1-git-send-email-laforge@gnumonks.org>
+In-Reply-To: <1455734724-22913-1-git-send-email-laforge@gnumonks.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +22,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Print error message if of_state_fixup() fails
+Subject: Re: [PATCH] bootm: Free allocated fdt buffer in error path
 To: Harald Welte <laforge@gnumonks.org>
 Cc: barebox@lists.infradead.org
 
-On Wed, Feb 17, 2016 at 07:29:46PM +0100, Harald Welte wrote:
-> If of_state_fixup() fails for some reason, boot/bootm will fail, too
-> 
-> However, it is completely unclear where the error has happened, and to
-> the user it rather seems like the kernel device tree loaded from some
-> file was broken/corrupt, not that in fact some fixup routine was
-> failing.
-> 
-> Adding a meaningful error message can help debugging significantly.
+On Wed, Feb 17, 2016 at 07:45:24PM +0100, Harald Welte wrote:
+> It seems like there is a memory leak in an error path of
+> bootm_open_oftree_uimage() where the memory allocated for the fdt is not
+> released again.
 > 
 > Signed-off-by: Harald Welte <laforge@gnumonks.org>
 > ---
->  common/state.c | 1 +
+>  common/bootm.c | 1 +
 >  1 file changed, 1 insertion(+)
 
 Applied, thanks
