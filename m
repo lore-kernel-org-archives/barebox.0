@@ -1,24 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aWJrp-00056v-ND
- for barebox@lists.infradead.org; Thu, 18 Feb 2016 08:23:20 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
- ident=Debian-exim)
- by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
- (Exim 4.80) (envelope-from <mol@pengutronix.de>) id 1aWJrS-0003Pu-D2
- for barebox@lists.infradead.org; Thu, 18 Feb 2016 09:22:54 +0100
-Received: from mol by ptx.hi.pengutronix.de with local (Exim 4.84)
- (envelope-from <mol@pengutronix.de>) id 1aWJrS-0005XR-6D
- for barebox@lists.infradead.org; Thu, 18 Feb 2016 09:22:54 +0100
-Date: Thu, 18 Feb 2016 09:22:54 +0100
-From: Michael Olbrich <m.olbrich@pengutronix.de>
-Message-ID: <20160218082254.GH4567@pengutronix.de>
-References: <1455708500-980-1-git-send-email-mpa@pengutronix.de>
- <1455708500-980-4-git-send-email-mpa@pengutronix.de>
+ id 1aWLnS-0006bY-UV
+ for barebox@lists.infradead.org; Thu, 18 Feb 2016 10:26:57 +0000
+Date: Thu, 18 Feb 2016 11:26:32 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160218102632.GD3939@pengutronix.de>
+References: <1455672559-25061-1-git-send-email-andrew.smirnov@gmail.com>
+ <1455672559-25061-4-git-send-email-andrew.smirnov@gmail.com>
+ <20160217083424.GQ19372@pengutronix.de>
+ <CAHQ1cqEtECwpUD8O2OdZMG9JkQ0VkfKpFfY=OYVH93==J1GvsA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1455708500-980-4-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <CAHQ1cqEtECwpUD8O2OdZMG9JkQ0VkfKpFfY=OYVH93==J1GvsA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,123 +25,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 4/4] fastboot: Add a ARM Barebox filetype handler
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 03/18] [RFC] at91: Make IS_ERR work for I/O pointers
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, Feb 17, 2016 at 12:28:20PM +0100, Markus Pargmann wrote:
-> This will automatically call barebox_update for the transfered file if
-> it is an ARM Barebox image and the destination file is defined by some
-> update handler.
+On Wed, Feb 17, 2016 at 12:39:00PM -0800, Andrey Smirnov wrote:
+> On Wed, Feb 17, 2016 at 12:34 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > On Tue, Feb 16, 2016 at 05:29:04PM -0800, Andrey Smirnov wrote:
+> >> Having this functionality partially "broken" opens the door for subtle
+> >> bugs in peripheral drivers for AT91 platform since it not straight out
+> >> obvious that IS_ERR might return a false positive.
+> >>
+> >> It also makes it much harder to judge the correctness of the driver
+> >> code, for example it is perfectly fine to use IS_ERR in at91-i2c.c since
+> >> I2C controller's register file is located at 0xFFFA_C000 (which it
+> >> doesn't but that's the subject for another patch), however one couldn't
+> >> help but wonder how the code it sam9_smc.c could possibly work given how
+> >> that module is located at 0xFFFF_EC00.
+> >
+> > 0x100000000 - MAX_ERRNO is still bigger than 0xFFFFEC00, so this should
+> > work.
+> >
+> > The workaround you suggest is sooo ugly, do we really need this? How
+> > many places are really affected by false positives in IS_ERR_VALUE?
 > 
-> Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
-> ---
->  common/filetype.c               | 13 +++++++++++++
->  drivers/usb/gadget/f_fastboot.c | 29 +++++++++++++++++++++++++++++
->  include/filetype.h              |  2 ++
->  3 files changed, 44 insertions(+)
+> Well, to be fair, it's not like IS_ERR is anything but a clever hack,
+> so code fixing it can't really get any prettier than the code it's
+> fixing. ;-)
 > 
-> diff --git a/common/filetype.c b/common/filetype.c
-> index 8cfae88aeb35..74baf514466a 100644
-> --- a/common/filetype.c
-> +++ b/common/filetype.c
-> @@ -369,3 +369,16 @@ err_out:
->  	cdev_close(cdev);
->  	return type;
->  }
-> +
-> +bool filetype_is_barebox_image(enum filetype ft)
-> +{
-> +	switch (ft) {
-> +	case filetype_arm_barebox:
-> +	case filetype_mips_barebox:
-> +	case filetype_ch_image:
-> +	case filetype_ch_image_be:
-> +		return true;
-> +	default:
-> +		return false;
-> +	}
-> +}
-> diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-> index bc06c58d8dcb..9a1058a9670b 100644
-> --- a/drivers/usb/gadget/f_fastboot.c
-> +++ b/drivers/usb/gadget/f_fastboot.c
-> @@ -23,6 +23,7 @@
->  #include <clock.h>
->  #include <ioctl.h>
->  #include <libbb.h>
-> +#include <bbu.h>
->  #include <boot.h>
->  #include <dma.h>
->  #include <fs.h>
-> @@ -716,6 +717,34 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
->  		goto out;
->  	}
->  
-> +	if (filetype_is_barebox_image(filetype)) {
-> +		struct bbu_data data = {
-> +			.devicefile = filename,
-> +			.imagefile = FASTBOOT_TMPFILE,
-> +			.flags = BBU_FLAG_YES,
-> +		};
-> +
-> +		if (!barebox_update_handler_exists(&data))
-> +			goto copy;
-> +
-> +		fastboot_tx_print(f_fb, "INFOThis is an ARM Barebox image...");
+> So I did a bunch of datasheet comparison and it looks like here's what
+> we have available on AT91 in worst case:
+> 
+> - errnos in [-1; -320) should be fine, that chunk of memory has no
+> peripherals and is marked as "reserved".
+> - errnos in [-320; 336) clash with RTC block on SAM9's
+> - errnos in [-400; -inf)  is reserved for various peripheral blocks.
+> 
+> There are 15 peripheral block located withing the last memory page (I
+> haven't checked how many of them has BB drivers)
+> 
+> Current implementation has two potential problems: false positives for
+> IS_ERR in drivers for aforementioned peripherals and also the fact
+> that buggy code that doesn't check pointers via IS_ERR could
+> potentially write bogus values to registers of actual peripheral
+> blocks.
+> 
+> Another solution for this problem would be to compact errno's. It
+> looks like out of all errnos(in errno.h) BB is using, only
+> ERESTARTSYS, ERESTARTNOINTR, ERESTARTNOHAND, ENOIOCTLCMD,
+> EPROBE_DEFER, ENOTSUPP fall outside of [-1;-320) range. Do you think
+> we can move those and define MAX_ERRNO as 320 for AT91 as a fix?
 
-With the change above, it may not be an _ARM_ image.
+I'm not very fond of changing error codes, this probably ends in a mess
+at least when Linux gets new error codes and we want to use them for
+barebox aswell.
 
-Michael
+I just jumped into the cold water and created my first coccinelle
+patches. So far it catches enough occurences of dev_request_mem_region
+that the rest can be converted by hand in reasonable time.
 
-> +
-> +		data.image = read_file(data.imagefile, &data.len);
-> +		if (!data.image) {
-> +			fastboot_tx_print(f_fb, "FAILreading barebox");
-> +			return;
-> +		}
-> +
-> +		ret = barebox_update(&data);
-> +
-> +		if (ret) {
-> +			fastboot_tx_print(f_fb, "FAILupdate barebox: %s", strerror(-ret));
-> +			return;
-> +		}
-> +
-> +		goto out;
-> +	}
-> +
->  copy:
->  	ret = copy_file(FASTBOOT_TMPFILE, filename, 1);
->  	if (ret) {
-> diff --git a/include/filetype.h b/include/filetype.h
-> index cde543e5b061..e87ca174a89d 100644
-> --- a/include/filetype.h
-> +++ b/include/filetype.h
-> @@ -2,6 +2,7 @@
->  #define __FILE_TYPE_H
->  
->  #include <linux/string.h>
-> +#include <linux/types.h>
->  
->  /*
->   * List of file types we know
-> @@ -48,6 +49,7 @@ enum filetype file_name_detect_type(const char *filename);
->  enum filetype cdev_detect_type(const char *name);
->  enum filetype is_fat_or_mbr(const unsigned char *sector, unsigned long *bootsec);
->  int is_fat_boot_sector(const void *_buf);
-> +bool filetype_is_barebox_image(enum filetype ft);
->  
->  #define ARM_HEAD_SIZE			0x30
->  #define ARM_HEAD_MAGICWORD_OFFSET	0x20
-> -- 
-> 2.7.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
