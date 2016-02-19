@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
+Received: from mail-wm0-x232.google.com ([2a00:1450:400c:c09::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aWlm7-0008Pk-66
- for barebox@lists.infradead.org; Fri, 19 Feb 2016 14:11:16 +0000
-Received: by mail-lb0-x235.google.com with SMTP id of3so47688079lbc.1
- for <barebox@lists.infradead.org>; Fri, 19 Feb 2016 06:10:54 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 19 Feb 2016 17:10:46 +0300
-Message-Id: <1455891046-23236-1-git-send-email-antonynpavlov@gmail.com>
+ id 1aWmOG-0000Eo-1h
+ for barebox@lists.infradead.org; Fri, 19 Feb 2016 14:50:41 +0000
+Received: by mail-wm0-x232.google.com with SMTP id b205so71448187wmb.1
+ for <barebox@lists.infradead.org>; Fri, 19 Feb 2016 06:50:19 -0800 (PST)
+From: yegorslists@googlemail.com
+Date: Fri, 19 Feb 2016 15:49:13 +0100
+Message-Id: <1455893355-17319-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,30 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fs: fat: fix copy-paste typo
+Subject: [PATCH v3 1/3] linux/types.h: add sector_t and blkcnt_t types
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- fs/fat/fat.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+From: Yegor Yefremov <yegorslists@googlemail.com>
 
-diff --git a/fs/fat/fat.c b/fs/fat/fat.c
-index ece937d..49cd78f 100644
---- a/fs/fat/fat.c
-+++ b/fs/fat/fat.c
-@@ -1,7 +1,7 @@
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ include/linux/types.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/include/linux/types.h b/include/linux/types.h
+index 9f8eb67..f64ec4a 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -157,6 +157,22 @@ typedef __u32 __bitwise __wsum;
+ #define __aligned_be64 __be64 __attribute__((aligned(8)))
+ #define __aligned_le64 __le64 __attribute__((aligned(8)))
+ 
++/**
++ * The type used for indexing onto a disc or disc partition.
++ *
++ * Linux always considers sectors to be 512 bytes long independently
++ * of the devices real block size.
++ *
++ * blkcnt_t is the type of the inode's block count.
++ */
++#ifdef CONFIG_LBDAF
++typedef u64 sector_t;
++typedef u64 blkcnt_t;
++#else
++typedef unsigned long sector_t;
++typedef unsigned long blkcnt_t;
++#endif
++
  /*
-- * ramfs.c - a malloc based filesystem
-+ * fat.c - FAT filesystem barebox driver
-  *
-- * Copyright (c) 2007 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-  *
-  * See file CREDITS for list of people who contributed to this
-  * project.
+  * The type of an index into the pagecache.
+  */
 -- 
-2.7.0
+2.1.4
 
 
 _______________________________________________
