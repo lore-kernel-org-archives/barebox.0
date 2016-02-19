@@ -1,19 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vk0-x230.google.com ([2607:f8b0:400c:c05::230])
+Received: from mail.mars-solutions.de ([213.239.212.107])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aWqTu-0004ND-JO
- for barebox@lists.infradead.org; Fri, 19 Feb 2016 19:12:47 +0000
-Received: by mail-vk0-x230.google.com with SMTP id k196so83780857vka.0
- for <barebox@lists.infradead.org>; Fri, 19 Feb 2016 11:12:25 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20160219082915.GO3939@pengutronix.de>
-References: <1455792617-13671-1-git-send-email-s.hauer@pengutronix.de>
- <1455792617-13671-2-git-send-email-s.hauer@pengutronix.de>
- <CAHQ1cqHOpW-iv8+wcrz1_azV0Ljs1H_z-E6WZi06opZ3dcqEWQ@mail.gmail.com>
- <20160219082915.GO3939@pengutronix.de>
-Date: Fri, 19 Feb 2016 11:12:24 -0800
-Message-ID: <CAHQ1cqGi2M1hKD0sMMWp=NRGyOmgtDvTOopE41UzUurErhXwyw@mail.gmail.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
+ id 1aWqjT-0002hA-I3
+ for barebox@lists.infradead.org; Fri, 19 Feb 2016 19:28:53 +0000
+Message-ID: <1455910105.5604.104.camel@ws-apr.office.loc>
+From: Andreas Pretzsch <apr@cn-eng.de>
+Date: Fri, 19 Feb 2016 20:28:25 +0100
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,128 +19,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] Fix return check of dev_request_mem_region
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: phytec-som-imx6: DCD setup: PLL reduction and video core settings
+To: barebox@lists.infradead.org
 
-On Fri, Feb 19, 2016 at 12:29 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Thu, Feb 18, 2016 at 04:58:49PM -0800, Andrey Smirnov wrote:
->> On Thu, Feb 18, 2016 at 2:50 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> > dev_request_mem_region returns an ERR_PTR, fix places which check for a
->> > NULL pointer instead. This patch has been generated with this semantic
->> > patch:
->> >
->> > // <smpl>
->> > @@
->> > expression e,e1,e2;
->> > @@
->> >
->> > e = dev_request_mem_region(...)
->> > ... when != e = e1
->> > if (
->> > -   e == NULL
->> > +   IS_ERR(e)
->> >    ) {
->> >      ...
->> >      return
->> > -      e2
->> > +      PTR_ERR(e)
->> >      ;
->> >      }
->> > // </smpl>
->>
->> This wouldn't handle correctly the cases where code bails out using
->> goto (look for example at diff for phy-am335x.c in this patch). I
->> played around with Cocinelle as well and here's what I came up with:
->>
->>
->> // <smpl>
->> @i@
->> @@
->>
->> #define CONFIG_TSE_USE_DEDICATED_DESC_MEM
->
-> This doesn't work for me. I assume you want to define
-> CONFIG_TSE_USE_DEDICATED_DESC_MEM to let coccinelle walk into the
-> correct path in drivers/net/altera_tse.c, but for me it still changes
-> the !CONFIG_TSE_USE_DEDICATED_DESC_MEM code path.
+While looking into a maybe boarderline RAM setup on one specific piece
+of hardware, I took a closer look at the i.MX6 DDR setup of the Phytec
+i.MX6 modules in barebox.
+And came across two things that look ... somewhat questionable, maybe
+worth a look.
 
-Hmmm, that is very strange. You are correct, I did include that bit
-for that exact purpose. Perhaps we are using different versions of the
-tool? Mine is "spatch version 1.0.1 with Python support and with PCRE
-support". The way I invoked it was "spatch --sp-file check.cocci
---very-quiet --dir barebox"
-
->
->>
->>
->> // Handle immediate returns
->> @@
->> expression e;
->> expression e1;
->> @@
->>
->> e = dev_request_mem_region(...);
->>
->> ...
->>
->> - if (e == NULL)
->> -    return e1;
->> + if (IS_ERR(e))
->> +    return PTR_ERR(e);
->>
->> @ rule1 @
->> expression e;
->> @@
->>
->> e = dev_request_mem_region(...);
->>
->> // Fix exit codepath first
->> @@
->> expression rule1.e;
->> identifier ret, label;
->> constant errno;
->> @@
->>
->> if (e == NULL)
->> {
->>
->>   ...
->>
->> // Setting the ret code and jumping to error handling code
->> (
->> - ret = -errno;
->> + ret = PTR_ERR(e);
->>
->>   ...
->>
->>   goto label;
->>
->> // Return after doing some extra steps
->> |
->>
->> - return -errno;
->> + return PTR_ERR(e);
->> )
->> }
->>
->> // Fix the check itself. Having this as a standalone rule allows
->> // to catch cases where error codepath doesn't bail out
->> @depends on i@
->
-> I assume you mean "depends on rule1", because otherwise it never
-> actually changes the wrong error check.
->
-
-Darn! I missed that regression. The problem with making it depending
-on "rule1" is that it misses the cases where only the incorrect check
-is performed and no bailing out is done (atmel_nand.c).
+In the very first setup (the DCD) in
+    arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02.h
+there is a block
+    wm 32 0x020e0010 0xf00000ff
+    wm 32 0x020e0018 0x007F007F
+    wm 32 0x020e001c 0x007F007F
+    wm 32 0x020c8000 0x80002021
+at the end.
 
 
-> Overall this looks better than my version. I recreated the patch with
-> your version and fixed up the altera-tse driver manually.
+The first three (comments about complete register meanings added by me)
+    // IOMUX_GPR4 : VDOA, PCIe, VPU, IPU cache setup ; stop acknowledge
+    wm 32 0x020e0010 0xf00000ff
+    // IOMUX_GPR6 : IPU1 QoS setup
+    wm 32 0x020e0018 0x007F007F
+    // IOMUX_GPR7 : IPU2 QoS setup
+    wm 32 0x020e001c 0x007F007F
+do setup some cache attributes of VDOA, IPU, VPU (some of the video
+cores) and IPU QoS. Beside accessing two reserved bits in GPR4, they
+maybe do not harm, and can be found also in various other board files.
+Might be some case of copy-from-copy, no idea.
+Not sure if these really should be part of lowest-level memory setup...
+Maybe - if at all - in some board-specific setup, given barebox drives a
+display.
+Also, a quick google search shows the possible origin, and that it has
+been removed in some U-Boot branch, leaving it to the Linux kernel:
+https://github.com/linksprite/u-boot-acadia1.0-beta/blob/master/u-boot-acadia1.0-beta/patches/0546-ENGR00215515-MX6-Move-IPU-QoS-and-VDOA-IPU-VPU-AXI-C.patch
+So maybe more of a cleanup issue.
+Not only in the Phytec DCDs, but maybe also the other ones.
 
-In case you missed it there's also "dove.c" that needs to be corrected manually.
+
+What concerns me more is the CPU core clock reduction:
+    // CCM_ANALOG_PLL_ARM0 : PLL setup => PLL locked, PLL on,
+    //                       bypass off, 396MHz
+    // reset default: 0x00013042 => PLL not locked, PLL off, bypass on,
+    //                              bypass 24MHz osc as src, pll divider
+    //                              for 792MHz
+    // 0x80002021 => PLL locked, PLL on, bypass off, pll divider for
+    //               396MHz ; Attn.: PLL locked is w/o ; divider for
+    //               396MHz is below valid range
+    wm 32 0x020c8000 0x80002021
+Comments again added by me.
+
+Two things here look questionable to me:
+1.) Datasheet says valid divider values are 54-108, so the
+    default 0x42=66 is in range, whereas the 0x21=33 is not.
+2.) Even if the divider value is legit, the change flow might be not.
+    A PLL normally takes some time to lock.
+
+Now, I have not looked yet at the PLL setup and/or scaling code of the
+kernel, both wrt PLL change flow as well as dividers. So this might be
+ok, and even if only implicitly (like due to some implicit delay after
+DCD got parsed).
+And obviously it works. "Only" misses a comment whats it does. And only
+present in some of the Phytec DCDs, as far as I can see.
+
+But what I like to understand is why ?
+I mean, scaling down the i.MX6 to its minimum frequency (half of
+default) in the bootloader, to get a maximum stable state, ok. Even if
+it extends the bootup time.
+
+But why after all the IOMUX, MMDC and DDR setup is through ?
+Probably too late if it is about some PMIC-reset-voltage-scaling issue.
+Or some thermal precaution ?
+
+By the way, the above setups goes back through long history, as in
+    a540c30 boards: Add phytec-som-imx6
+    c5b4f09 ARM:phyFLEX-iMX6 New Ram Timings for Q/DL
+    30f29e3 ARM: Add Phytec phyFLEX-i.MX6 board support
+and applies to other Phytec i.MX6 boards as well, beside the DL ones.
+
+
+Any comments on this, maybe also from Phytec ?
+
+Best regards,
+  Andreas Pretzsch
+
+-- 
+
+carpe noctem engineering
+Ingenieurbuero fuer Hard- & Software-Entwicklung Andreas Pretzsch
+Dipl.-Ing. (FH) Andreas Pretzsch        Tel. +49-(0)7307-936088-1
+Lange Strasse 28a                       Fax: +49-(0)7307-936088-9
+89250 Senden, Germany                   email: apr@cn-eng.de
+
 
 _______________________________________________
 barebox mailing list
