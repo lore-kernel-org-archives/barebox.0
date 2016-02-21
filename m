@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aXYPv-0002LM-Sb
+ id 1aXYPv-0002L3-Tk
  for barebox@lists.infradead.org; Sun, 21 Feb 2016 18:07:37 +0000
 From: Alexander Kurz <akurz@blala.de>
-Date: Sun, 21 Feb 2016 19:06:30 +0100
-Message-Id: <1456077990-15003-3-git-send-email-akurz@blala.de>
-In-Reply-To: <1456077990-15003-1-git-send-email-akurz@blala.de>
-References: <1456077990-15003-1-git-send-email-akurz@blala.de>
+Date: Sun, 21 Feb 2016 19:06:28 +0100
+Message-Id: <1456077990-15003-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,58 +19,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] net ep93xx mii: do not supress MII preamble transmission
+Subject: [PATCH 1/3] EP93xx eth: allow passing of phy config via platform data
 To: barebox@lists.infradead.org
 Cc: Alexander Kurz <akurz@blala.de>
 
-PHY like the ks8721bl used on the edb9302 and similare evaluation boards
-will initially not respond to the ep93xx_phy_read/write functions when
-the MII-preamble is supressed. The supression is switched on by default
-and must be switched off by clearing bit 8, see also EP93xx Users guide.
-Removing the orphaned MII_SUPPRESS_PREAMBLE config option, note:
-setting MII_SUPPRESS_PREAMBLE would actually enable the preamble transmission.
+Passing phy configuration to the ep93xx_eth driver was not supported yet
+and will be added with this patch. When no pdata is passed, the probably
+broken default of phy_addr = 0 will be used to maintain compatibility
+with the previous implementation.
 
 Signed-off-by: Alexander Kurz <akurz@blala.de>
 ---
- drivers/net/ep93xx.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/net/ep93xx.c | 14 ++++++++++++--
+ drivers/net/ep93xx.h |  2 ++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ep93xx.c b/drivers/net/ep93xx.c
-index d2458eb..226a3c6 100644
+index 90c12fc..d2458eb 100644
 --- a/drivers/net/ep93xx.c
 +++ b/drivers/net/ep93xx.c
-@@ -599,14 +599,12 @@ static int ep93xx_phy_read(struct mii_bus *bus, int phy_addr, int phy_reg)
- 	pr_debug("+ep93xx_phy_read\n");
+@@ -38,6 +38,7 @@
+ #include <linux/types.h>
+ #include <mach/ep93xx-regs.h>
+ #include <linux/phy.h>
++#include <ep93xx_eth.h>
+ #include "ep93xx.h"
  
- 	/*
--	 * Save the current SelfCTL register value.  Set MAC to suppress
-+	 * Save the current SelfCTL register value.  Set MAC to send
- 	 * preamble bits.  Wait for any previous MII command to complete
- 	 * before issuing the new command.
- 	 */
- 	self_ctl = readl(&regs->selfctl);
--#if defined(CONFIG_MII_SUPPRESS_PREAMBLE) /* TODO */
- 	writel(self_ctl & ~(1 << 8), &regs->selfctl);
--#endif	/* defined(CONFIG_MII_SUPPRESS_PREAMBLE) */
+ #define EP93XX_MAX_PKT_SIZE    1536
+@@ -203,8 +204,8 @@ static int ep93xx_eth_open(struct eth_device *edev)
  
- 	while (readl(&regs->miists) & MIISTS_BUSY)
- 		; /* noop */
-@@ -642,14 +640,12 @@ static int ep93xx_phy_write(struct mii_bus *bus, int phy_addr,
- 	pr_debug("+ep93xx_phy_write\n");
+ 	pr_debug("+ep93xx_eth_open\n");
  
- 	/*
--	 * Save the current SelfCTL register value.  Set MAC to suppress
-+	 * Save the current SelfCTL register value.  Set MAC to send
- 	 * preamble bits.  Wait for any previous MII command to complete
- 	 * before issuing the new command.
- 	 */
- 	self_ctl = readl(&regs->selfctl);
--#if defined(CONFIG_MII_SUPPRESS_PREAMBLE) /* TODO */
- 	writel(self_ctl & ~(1 << 8), &regs->selfctl);
--#endif	/* defined(CONFIG_MII_SUPPRESS_PREAMBLE) */
+-	ret = phy_device_connect(edev, &priv->miibus, 0, NULL,
+-				 0, PHY_INTERFACE_MODE_NA);
++	ret = phy_device_connect(edev, &priv->miibus, priv->phy_addr, NULL,
++				 0, priv->interface);
+ 	if (ret)
+ 		return ret;
  
- 	while (readl(&regs->miists) & MIISTS_BUSY)
- 		; /* noop */
+@@ -482,6 +483,7 @@ static int ep93xx_eth_set_ethaddr(struct eth_device *edev,
+ 
+ static int ep93xx_eth_probe(struct device_d *dev)
+ {
++	struct ep93xx_eth_platform_data *pdata = (struct ep93xx_eth_platform_data *)dev->platform_data;
+ 	struct eth_device *edev;
+ 	struct ep93xx_eth_priv *priv;
+ 	int ret = -1;
+@@ -504,6 +506,14 @@ static int ep93xx_eth_probe(struct device_d *dev)
+ 	edev->set_ethaddr = ep93xx_eth_set_ethaddr;
+ 	edev->parent = dev;
+ 
++	if (pdata) {
++		priv->interface = pdata->xcv_type;
++		priv->phy_addr = pdata->phy_addr;
++	} else {
++		priv->interface = PHY_INTERFACE_MODE_NA;
++		priv->phy_addr = 0;
++	}
++
+ 	priv->miibus.read = ep93xx_phy_read;
+ 	priv->miibus.write = ep93xx_phy_write;
+ 	priv->miibus.parent = dev;
+diff --git a/drivers/net/ep93xx.h b/drivers/net/ep93xx.h
+index 89451b8..32ae57f 100644
+--- a/drivers/net/ep93xx.h
++++ b/drivers/net/ep93xx.h
+@@ -137,6 +137,8 @@ struct ep93xx_eth_priv {
+ 	struct tx_descriptor_queue	tx_dq;
+ 	struct tx_status_queue		tx_sq;
+ 
++	int				phy_addr;
++	phy_interface_t			interface;
+ 	struct mii_bus miibus;
+ };
+ 
 -- 
 2.1.4
 
