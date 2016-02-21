@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aXYPv-0002L3-Tk
+ id 1aXYPv-0002LC-Sd
  for barebox@lists.infradead.org; Sun, 21 Feb 2016 18:07:37 +0000
 From: Alexander Kurz <akurz@blala.de>
-Date: Sun, 21 Feb 2016 19:06:28 +0100
-Message-Id: <1456077990-15003-1-git-send-email-akurz@blala.de>
+Date: Sun, 21 Feb 2016 19:06:29 +0100
+Message-Id: <1456077990-15003-2-git-send-email-akurz@blala.de>
+In-Reply-To: <1456077990-15003-1-git-send-email-akurz@blala.de>
+References: <1456077990-15003-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,79 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] EP93xx eth: allow passing of phy config via platform data
+Subject: [PATCH 2/3] edb9302 eth: privide proper phy config
 To: barebox@lists.infradead.org
 Cc: Alexander Kurz <akurz@blala.de>
 
-Passing phy configuration to the ep93xx_eth driver was not supported yet
-and will be added with this patch. When no pdata is passed, the probably
-broken default of phy_addr = 0 will be used to maintain compatibility
-with the previous implementation.
+The evaluation boards EDB9302 and  Olimex-CS-E9302 both use a
+KS8721BL transciever in default strapping which is phy_addr=1
 
 Signed-off-by: Alexander Kurz <akurz@blala.de>
 ---
- drivers/net/ep93xx.c | 14 ++++++++++++--
- drivers/net/ep93xx.h |  2 ++
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ arch/arm/boards/edb93xx/edb93xx.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ep93xx.c b/drivers/net/ep93xx.c
-index 90c12fc..d2458eb 100644
---- a/drivers/net/ep93xx.c
-+++ b/drivers/net/ep93xx.c
-@@ -38,6 +38,7 @@
- #include <linux/types.h>
+diff --git a/arch/arm/boards/edb93xx/edb93xx.c b/arch/arm/boards/edb93xx/edb93xx.c
+index c314320..4146abf 100644
+--- a/arch/arm/boards/edb93xx/edb93xx.c
++++ b/arch/arm/boards/edb93xx/edb93xx.c
+@@ -27,10 +27,16 @@
+ #include <malloc.h>
+ #include <generated/mach-types.h>
  #include <mach/ep93xx-regs.h>
- #include <linux/phy.h>
 +#include <ep93xx_eth.h>
- #include "ep93xx.h"
+ #include "edb93xx.h"
  
- #define EP93XX_MAX_PKT_SIZE    1536
-@@ -203,8 +204,8 @@ static int ep93xx_eth_open(struct eth_device *edev)
+ #define DEVCFG_U1EN (1 << 18)
  
- 	pr_debug("+ep93xx_eth_open\n");
- 
--	ret = phy_device_connect(edev, &priv->miibus, 0, NULL,
--				 0, PHY_INTERFACE_MODE_NA);
-+	ret = phy_device_connect(edev, &priv->miibus, priv->phy_addr, NULL,
-+				 0, priv->interface);
- 	if (ret)
- 		return ret;
- 
-@@ -482,6 +483,7 @@ static int ep93xx_eth_set_ethaddr(struct eth_device *edev,
- 
- static int ep93xx_eth_probe(struct device_d *dev)
- {
-+	struct ep93xx_eth_platform_data *pdata = (struct ep93xx_eth_platform_data *)dev->platform_data;
- 	struct eth_device *edev;
- 	struct ep93xx_eth_priv *priv;
- 	int ret = -1;
-@@ -504,6 +506,14 @@ static int ep93xx_eth_probe(struct device_d *dev)
- 	edev->set_ethaddr = ep93xx_eth_set_ethaddr;
- 	edev->parent = dev;
- 
-+	if (pdata) {
-+		priv->interface = pdata->xcv_type;
-+		priv->phy_addr = pdata->phy_addr;
-+	} else {
-+		priv->interface = PHY_INTERFACE_MODE_NA;
-+		priv->phy_addr = 0;
-+	}
++static struct ep93xx_eth_platform_data ep93xx_eth_info = {
++        .xcv_type = PHY_INTERFACE_MODE_MII,
++        .phy_addr = 1,
++};
 +
- 	priv->miibus.read = ep93xx_phy_read;
- 	priv->miibus.write = ep93xx_phy_write;
- 	priv->miibus.parent = dev;
-diff --git a/drivers/net/ep93xx.h b/drivers/net/ep93xx.h
-index 89451b8..32ae57f 100644
---- a/drivers/net/ep93xx.h
-+++ b/drivers/net/ep93xx.h
-@@ -137,6 +137,8 @@ struct ep93xx_eth_priv {
- 	struct tx_descriptor_queue	tx_dq;
- 	struct tx_status_queue		tx_sq;
+ static int ep93xx_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", CONFIG_EP93XX_SDRAM_BANK0_BASE,
+@@ -70,7 +76,7 @@ static int ep93xx_devices_init(void)
+ 	 * CS line 6, data width is 16 bit
+ 	 */
+ 	add_generic_device("ep93xx_eth", DEVICE_ID_DYNAMIC, NULL, 0, 0, IORESOURCE_MEM,
+-			NULL);
++			&ep93xx_eth_info);
  
-+	int				phy_addr;
-+	phy_interface_t			interface;
- 	struct mii_bus miibus;
- };
+ 	armlinux_set_architecture(MACH_TYPE);
  
 -- 
 2.1.4
