@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vs81.iboxed.net ([185.82.85.146])
+Received: from mail-wm0-x22f.google.com ([2a00:1450:400c:c09::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aXYPv-0002LC-Sd
- for barebox@lists.infradead.org; Sun, 21 Feb 2016 18:07:37 +0000
-From: Alexander Kurz <akurz@blala.de>
-Date: Sun, 21 Feb 2016 19:06:29 +0100
-Message-Id: <1456077990-15003-2-git-send-email-akurz@blala.de>
-In-Reply-To: <1456077990-15003-1-git-send-email-akurz@blala.de>
-References: <1456077990-15003-1-git-send-email-akurz@blala.de>
+ id 1aXsSa-0003H3-Id
+ for barebox@lists.infradead.org; Mon, 22 Feb 2016 15:31:41 +0000
+Received: by mail-wm0-x22f.google.com with SMTP id g62so178637581wme.1
+ for <barebox@lists.infradead.org>; Mon, 22 Feb 2016 07:31:19 -0800 (PST)
+MIME-Version: 1.0
+Date: Mon, 22 Feb 2016 16:31:18 +0100
+Message-ID: <CABQt-UmmZmRR9zPscx=8-eQ49eNUS7GQVxjBXs6D0OgiuWfquQ@mail.gmail.com>
+From: Philippe Leduc <ledphilippe@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,56 +17,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] edb9302 eth: privide proper phy config
+Subject: bootm crash - bad uimage?
 To: barebox@lists.infradead.org
-Cc: Alexander Kurz <akurz@blala.de>
 
-The evaluation boards EDB9302 and  Olimex-CS-E9302 both use a
-KS8721BL transciever in default strapping which is phy_addr=1
+Hello,
 
-Signed-off-by: Alexander Kurz <akurz@blala.de>
----
- arch/arm/boards/edb93xx/edb93xx.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Since the commit 0a37e22d638acf1b2c7c6e6ab83b6a3272b0a11c, I can't
+boot my image anymore.
+It seems that os_part is a null pointer and simple_strtoul crash on it
+(in bootm_load_os). I workaround the problem by forcing the value to 0
+if os_part if null, but I guess that it is a bad solution.
+Is this a due to a bad usage of the mkimage utility?
 
-diff --git a/arch/arm/boards/edb93xx/edb93xx.c b/arch/arm/boards/edb93xx/edb93xx.c
-index c314320..4146abf 100644
---- a/arch/arm/boards/edb93xx/edb93xx.c
-+++ b/arch/arm/boards/edb93xx/edb93xx.c
-@@ -27,10 +27,16 @@
- #include <malloc.h>
- #include <generated/mach-types.h>
- #include <mach/ep93xx-regs.h>
-+#include <ep93xx_eth.h>
- #include "edb93xx.h"
- 
- #define DEVCFG_U1EN (1 << 18)
- 
-+static struct ep93xx_eth_platform_data ep93xx_eth_info = {
-+        .xcv_type = PHY_INTERFACE_MODE_MII,
-+        .phy_addr = 1,
-+};
-+
- static int ep93xx_mem_init(void)
- {
- 	arm_add_mem_device("ram0", CONFIG_EP93XX_SDRAM_BANK0_BASE,
-@@ -70,7 +76,7 @@ static int ep93xx_devices_init(void)
- 	 * CS line 6, data width is 16 bit
- 	 */
- 	add_generic_device("ep93xx_eth", DEVICE_ID_DYNAMIC, NULL, 0, 0, IORESOURCE_MEM,
--			NULL);
-+			&ep93xx_eth_info);
- 
- 	armlinux_set_architecture(MACH_TYPE);
- 
--- 
-2.1.4
+best regards,
 
+--
+Philippe LEDUC
+ledphilippe@gmail.com
 
 _______________________________________________
 barebox mailing list
