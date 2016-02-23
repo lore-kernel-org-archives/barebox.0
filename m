@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aY7W0-0007Ig-Eg
- for barebox@lists.infradead.org; Tue, 23 Feb 2016 07:36:13 +0000
-Date: Tue, 23 Feb 2016 08:35:50 +0100
+ id 1aY7dP-0002Gj-Hn
+ for barebox@lists.infradead.org; Tue, 23 Feb 2016 07:43:52 +0000
+Date: Tue, 23 Feb 2016 08:43:29 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160223073550.GU3939@pengutronix.de>
-References: <1455891046-23236-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20160223074329.GV3939@pengutronix.de>
+References: <1455890482-28261-1-git-send-email-mpa@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1455891046-23236-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1455890482-28261-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fs: fat: fix copy-paste typo
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] Documentation: Update USB fastboot section
+To: Markus Pargmann <mpa@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Feb 19, 2016 at 05:10:46PM +0300, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  fs/fat/fat.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+On Fri, Feb 19, 2016 at 03:01:22PM +0100, Markus Pargmann wrote:
+> Add some documentation about fastboot 'flash' command and some useful
+> example how to use it to boot an initrd.
 > 
-> diff --git a/fs/fat/fat.c b/fs/fat/fat.c
-> index ece937d..49cd78f 100644
-> --- a/fs/fat/fat.c
-> +++ b/fs/fat/fat.c
+> Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+> ---
+>  Documentation/user/usb.rst | 52 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 52 insertions(+)
 
-Applied, thanks
+Applied, thanks.
+
+> 
+> diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
+> index 9eb1437135a2..24bb8d8b1fb9 100644
+> --- a/Documentation/user/usb.rst
+> +++ b/Documentation/user/usb.rst
+> @@ -113,6 +113,11 @@ The Fastboot gadget supports the following commands:
+>  **NOTE** ``fastboot erase`` is not yet implemented. This means flashing MTD partitions
+>  does not yet work.
+
+While at it removed this sentence as it's not true.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
