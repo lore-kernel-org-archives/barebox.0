@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aY7dP-0002Gj-Hn
- for barebox@lists.infradead.org; Tue, 23 Feb 2016 07:43:52 +0000
-Date: Tue, 23 Feb 2016 08:43:29 +0100
+ id 1aY7jl-0005KU-J8
+ for barebox@lists.infradead.org; Tue, 23 Feb 2016 07:50:26 +0000
+Date: Tue, 23 Feb 2016 08:50:03 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160223074329.GV3939@pengutronix.de>
-References: <1455890482-28261-1-git-send-email-mpa@pengutronix.de>
+Message-ID: <20160223075003.GW3939@pengutronix.de>
+References: <1455978465-28919-1-git-send-email-pmamonov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1455890482-28261-1-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <1455978465-28919-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +22,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: Update USB fastboot section
-To: Markus Pargmann <mpa@pengutronix.de>
+Subject: Re: [PATCH 1/2] input: usb keyboard: fix BACKSPACE
+To: Peter Mamonov <pmamonov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Feb 19, 2016 at 03:01:22PM +0100, Markus Pargmann wrote:
-> Add some documentation about fastboot 'flash' command and some useful
-> example how to use it to boot an initrd.
-> 
-> Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+On Sat, Feb 20, 2016 at 05:27:44PM +0300, Peter Mamonov wrote:
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 > ---
->  Documentation/user/usb.rst | 52 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 52 insertions(+)
+>  drivers/input/keymap.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Applied, thanks.
-
-> 
-> diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
-> index 9eb1437135a2..24bb8d8b1fb9 100644
-> --- a/Documentation/user/usb.rst
-> +++ b/Documentation/user/usb.rst
-> @@ -113,6 +113,11 @@ The Fastboot gadget supports the following commands:
->  **NOTE** ``fastboot erase`` is not yet implemented. This means flashing MTD partitions
->  does not yet work.
-
-While at it removed this sentence as it's not true.
+Applied this one with '\b' instead of 8.
 
 Sascha
 
