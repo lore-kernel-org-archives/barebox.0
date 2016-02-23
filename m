@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22a.google.com ([2a00:1450:400c:c09::22a])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aYBe0-0007Jz-Em
- for barebox@lists.infradead.org; Tue, 23 Feb 2016 12:00:46 +0000
-Received: by mail-wm0-x22a.google.com with SMTP id g62so218354743wme.1
- for <barebox@lists.infradead.org>; Tue, 23 Feb 2016 04:00:23 -0800 (PST)
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aYDEx-0006oQ-RN
+ for barebox@lists.infradead.org; Tue, 23 Feb 2016 13:43:02 +0000
+Date: Tue, 23 Feb 2016 14:42:30 +0100
+From: Stefan Christ <s.christ@phytec.de>
+Message-ID: <20160223134230.GA4919@lws-christ>
+References: <1455910105.5604.104.camel@ws-apr.office.loc>
 MIME-Version: 1.0
-In-Reply-To: <20160223080530.GZ3939@pengutronix.de>
-References: <CABQt-UmmZmRR9zPscx=8-eQ49eNUS7GQVxjBXs6D0OgiuWfquQ@mail.gmail.com>
- <20160223080530.GZ3939@pengutronix.de>
-Date: Tue, 23 Feb 2016 13:00:22 +0100
-Message-ID: <CABQt-Um-ENNbt_MbbF4NP42jmufsmgxV6pVvEsTFjw0O=++=ow@mail.gmail.com>
-From: Philippe Leduc <ledphilippe@gmail.com>
+In-Reply-To: <1455910105.5604.104.camel@ws-apr.office.loc>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,64 +18,112 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: bootm crash - bad uimage?
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: phytec-som-imx6: DCD setup: PLL reduction and video core settings
+To: Andreas Pretzsch <apr@cn-eng.de>
 Cc: barebox@lists.infradead.org
 
-This commit doesn't seem to fix the problem (in fact it was already
-applied when I saw the crash).
-
-Note: I am using mkimage to create bootable image of a real-time OS
-(PikeOS). There is no initrd or dtc at this step for now: I guess it
-is like loading an old Linux kernel without userspace.
-
-I do not want to bother you with a specific use case if this is the
-root of the problem.
-
-Best regards,
-
-Philippe LEDUC
-ledphilippe@gmail.com
-
-
-2016-02-23 9:05 GMT+01:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> Hi Philippe,
->
-> On Mon, Feb 22, 2016 at 04:31:18PM +0100, Philippe Leduc wrote:
->> Hello,
->>
->> Since the commit 0a37e22d638acf1b2c7c6e6ab83b6a3272b0a11c, I can't
->> boot my image anymore.
->> It seems that os_part is a null pointer and simple_strtoul crash on it
->> (in bootm_load_os). I workaround the problem by forcing the value to 0
->> if os_part if null, but I guess that it is a bad solution.
->> Is this a due to a bad usage of the mkimage utility?
->
-> Probably not. Is this fixed by this commit?
->
-> commit 1a180cd3b6e5c067c68f3e09f7e15e5b18af9761
-> Author: Lucas Stach <l.stach@pengutronix.de>
-> Date:   Fri Feb 12 17:58:23 2016 +0100
->
->     bootm: parse initrd and oftree into correct struct members
->
->     The code parsing the oftree and initrd file names is clearly wrong,
->     leading to bootm not loading oftree or initrd files any more.
->
->     Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
->     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgQW5kcmVhcywKCnRoYW5rcyBhIGxvdCBmb3IgeW91ciBkZXRhaWxlZCB3cml0ZS11cC4gSW5k
+ZWVkIHRoZXNlIHJlZ2lzdGVyIHNldHRpbmdzIGFyZQpjb25mdXNpbmcuIAoKPiBXaGF0IGNvbmNl
+cm5zIG1lIG1vcmUgaXMgdGhlIENQVSBjb3JlIGNsb2NrIHJlZHVjdGlvbjoKPiAgICAgLy8gQ0NN
+X0FOQUxPR19QTExfQVJNMCA6IFBMTCBzZXR1cCA9PiBQTEwgbG9ja2VkLCBQTEwgb24sCj4gICAg
+IC8vICAgICAgICAgICAgICAgICAgICAgICBieXBhc3Mgb2ZmLCAzOTZNSHoKPiAgICAgLy8gcmVz
+ZXQgZGVmYXVsdDogMHgwMDAxMzA0MiA9PiBQTEwgbm90IGxvY2tlZCwgUExMIG9mZiwgYnlwYXNz
+IG9uLAo+ICAgICAvLyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJ5cGFzcyAyNE1IeiBv
+c2MgYXMgc3JjLCBwbGwgZGl2aWRlcgo+ICAgICAvLyAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIGZvciA3OTJNSHoKPiAgICAgLy8gMHg4MDAwMjAyMSA9PiBQTEwgbG9ja2VkLCBQTEwgb24s
+IGJ5cGFzcyBvZmYsIHBsbCBkaXZpZGVyIGZvcgo+ICAgICAvLyAgICAgICAgICAgICAgIDM5Nk1I
+eiA7IEF0dG4uOiBQTEwgbG9ja2VkIGlzIHcvbyA7IGRpdmlkZXIgZm9yCj4gICAgIC8vICAgICAg
+ICAgICAgICAgMzk2TUh6IGlzIGJlbG93IHZhbGlkIHJhbmdlCj4gICAgIHdtIDMyIDB4MDIwYzgw
+MDAgMHg4MDAwMjAyMQo+IENvbW1lbnRzIGFnYWluIGFkZGVkIGJ5IG1lLgo+IAo+IFR3byB0aGlu
+Z3MgaGVyZSBsb29rIHF1ZXN0aW9uYWJsZSB0byBtZToKPiAxLikgRGF0YXNoZWV0IHNheXMgdmFs
+aWQgZGl2aWRlciB2YWx1ZXMgYXJlIDU0LTEwOCwgc28gdGhlCj4gICAgIGRlZmF1bHQgMHg0Mj02
+NiBpcyBpbiByYW5nZSwgd2hlcmVhcyB0aGUgMHgyMT0zMyBpcyBub3QuCj4gMi4pIEV2ZW4gaWYg
+dGhlIGRpdmlkZXIgdmFsdWUgaXMgbGVnaXQsIHRoZSBjaGFuZ2UgZmxvdyBtaWdodCBiZSBub3Qu
+Cj4gICAgIEEgUExMIG5vcm1hbGx5IHRha2VzIHNvbWUgdGltZSB0byBsb2NrLgoKV2UgaGF2ZSB0
+cmFja2VkIGRvd24gdGhlIG9yaWdpbiBvZiB0aGlzIERDRCBlbnRyeSBpbnRlcm5hbGx5LiBJdCBv
+cmlnaW5hdGVkCmZyb20gYSBQTUlDIHdvcmthcm91bmQgZm9yIHRoZSBwaHlGTEVYLWkuTVg2IGlu
+IGFuIG9sZGVyIGJhcmVib3ggdmVyc2lvbiB3aGljaAppc24ndCBtYWlubGluZS4gSXQgaGFkIGEg
+Y29tbWVudCBhdHRhY2hlZCB0byBpdCwgYnV0IHRoYXQgd2FzIGRyb3BwZWQgd2hpbGUKYnJpbmdp
+bmcgdGhlIHBoeUZMRVgtaS5NWDYgbWFpbmxpbmUuIFdlIHdpbGwgdGFrZSBhIGNsb3NlciBsb29r
+IHRvIHRoYXQgaXNzdWUKbmV4dCB3ZWVrLCB3aGV0aGVyIHRoZSBmaXggaXMgc3RpbGwgbmVlZGVk
+IG9yIGNhbiBiZSByZXNvbHZlZCBkaWZmZXJlbnRseS4KCk1pdCBmcmV1bmRsaWNoZW4gR3LDvMOf
+ZW4gLyBLaW5kIHJlZ2FyZHMsCglTdGVmYW4gQ2hyaXN0CgpPbiBGcmksIEZlYiAxOSwgMjAxNiBh
+dCAwODoyODoyNVBNICswMTAwLCBBbmRyZWFzIFByZXR6c2NoIHdyb3RlOgo+IFdoaWxlIGxvb2tp
+bmcgaW50byBhIG1heWJlIGJvYXJkZXJsaW5lIFJBTSBzZXR1cCBvbiBvbmUgc3BlY2lmaWMgcGll
+Y2UKPiBvZiBoYXJkd2FyZSwgSSB0b29rIGEgY2xvc2VyIGxvb2sgYXQgdGhlIGkuTVg2IEREUiBz
+ZXR1cCBvZiB0aGUgUGh5dGVjCj4gaS5NWDYgbW9kdWxlcyBpbiBiYXJlYm94Lgo+IEFuZCBjYW1l
+IGFjcm9zcyB0d28gdGhpbmdzIHRoYXQgbG9vayAuLi4gc29tZXdoYXQgcXVlc3Rpb25hYmxlLCBt
+YXliZQo+IHdvcnRoIGEgbG9vay4KPiAKPiBJbiB0aGUgdmVyeSBmaXJzdCBzZXR1cCAodGhlIERD
+RCkgaW4KPiAgICAgYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20taW14Ni9mbGFzaC1oZWFkZXIt
+cGh5dGVjLXBmbGEwMi5oCj4gdGhlcmUgaXMgYSBibG9jawo+ICAgICB3bSAzMiAweDAyMGUwMDEw
+IDB4ZjAwMDAwZmYKPiAgICAgd20gMzIgMHgwMjBlMDAxOCAweDAwN0YwMDdGCj4gICAgIHdtIDMy
+IDB4MDIwZTAwMWMgMHgwMDdGMDA3Rgo+ICAgICB3bSAzMiAweDAyMGM4MDAwIDB4ODAwMDIwMjEK
+PiBhdCB0aGUgZW5kLgo+IAo+IAo+IFRoZSBmaXJzdCB0aHJlZSAoY29tbWVudHMgYWJvdXQgY29t
+cGxldGUgcmVnaXN0ZXIgbWVhbmluZ3MgYWRkZWQgYnkgbWUpCj4gICAgIC8vIElPTVVYX0dQUjQg
+OiBWRE9BLCBQQ0llLCBWUFUsIElQVSBjYWNoZSBzZXR1cCA7IHN0b3AgYWNrbm93bGVkZ2UKPiAg
+ICAgd20gMzIgMHgwMjBlMDAxMCAweGYwMDAwMGZmCj4gICAgIC8vIElPTVVYX0dQUjYgOiBJUFUx
+IFFvUyBzZXR1cAo+ICAgICB3bSAzMiAweDAyMGUwMDE4IDB4MDA3RjAwN0YKPiAgICAgLy8gSU9N
+VVhfR1BSNyA6IElQVTIgUW9TIHNldHVwCj4gICAgIHdtIDMyIDB4MDIwZTAwMWMgMHgwMDdGMDA3
+Rgo+IGRvIHNldHVwIHNvbWUgY2FjaGUgYXR0cmlidXRlcyBvZiBWRE9BLCBJUFUsIFZQVSAoc29t
+ZSBvZiB0aGUgdmlkZW8KPiBjb3JlcykgYW5kIElQVSBRb1MuIEJlc2lkZSBhY2Nlc3NpbmcgdHdv
+IHJlc2VydmVkIGJpdHMgaW4gR1BSNCwgdGhleQo+IG1heWJlIGRvIG5vdCBoYXJtLCBhbmQgY2Fu
+IGJlIGZvdW5kIGFsc28gaW4gdmFyaW91cyBvdGhlciBib2FyZCBmaWxlcy4KPiBNaWdodCBiZSBz
+b21lIGNhc2Ugb2YgY29weS1mcm9tLWNvcHksIG5vIGlkZWEuCj4gTm90IHN1cmUgaWYgdGhlc2Ug
+cmVhbGx5IHNob3VsZCBiZSBwYXJ0IG9mIGxvd2VzdC1sZXZlbCBtZW1vcnkgc2V0dXAuLi4KPiBN
+YXliZSAtIGlmIGF0IGFsbCAtIGluIHNvbWUgYm9hcmQtc3BlY2lmaWMgc2V0dXAsIGdpdmVuIGJh
+cmVib3ggZHJpdmVzIGEKPiBkaXNwbGF5Lgo+IEFsc28sIGEgcXVpY2sgZ29vZ2xlIHNlYXJjaCBz
+aG93cyB0aGUgcG9zc2libGUgb3JpZ2luLCBhbmQgdGhhdCBpdCBoYXMKPiBiZWVuIHJlbW92ZWQg
+aW4gc29tZSBVLUJvb3QgYnJhbmNoLCBsZWF2aW5nIGl0IHRvIHRoZSBMaW51eCBrZXJuZWw6Cj4g
+aHR0cHM6Ly9naXRodWIuY29tL2xpbmtzcHJpdGUvdS1ib290LWFjYWRpYTEuMC1iZXRhL2Jsb2Iv
+bWFzdGVyL3UtYm9vdC1hY2FkaWExLjAtYmV0YS9wYXRjaGVzLzA1NDYtRU5HUjAwMjE1NTE1LU1Y
+Ni1Nb3ZlLUlQVS1Rb1MtYW5kLVZET0EtSVBVLVZQVS1BWEktQy5wYXRjaAo+IFNvIG1heWJlIG1v
+cmUgb2YgYSBjbGVhbnVwIGlzc3VlLgo+IE5vdCBvbmx5IGluIHRoZSBQaHl0ZWMgRENEcywgYnV0
+IG1heWJlIGFsc28gdGhlIG90aGVyIG9uZXMuCj4gCj4gCj4gV2hhdCBjb25jZXJucyBtZSBtb3Jl
+IGlzIHRoZSBDUFUgY29yZSBjbG9jayByZWR1Y3Rpb246Cj4gICAgIC8vIENDTV9BTkFMT0dfUExM
+X0FSTTAgOiBQTEwgc2V0dXAgPT4gUExMIGxvY2tlZCwgUExMIG9uLAo+ICAgICAvLyAgICAgICAg
+ICAgICAgICAgICAgICAgYnlwYXNzIG9mZiwgMzk2TUh6Cj4gICAgIC8vIHJlc2V0IGRlZmF1bHQ6
+IDB4MDAwMTMwNDIgPT4gUExMIG5vdCBsb2NrZWQsIFBMTCBvZmYsIGJ5cGFzcyBvbiwKPiAgICAg
+Ly8gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBieXBhc3MgMjRNSHogb3NjIGFzIHNyYywg
+cGxsIGRpdmlkZXIKPiAgICAgLy8gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBmb3IgNzky
+TUh6Cj4gICAgIC8vIDB4ODAwMDIwMjEgPT4gUExMIGxvY2tlZCwgUExMIG9uLCBieXBhc3Mgb2Zm
+LCBwbGwgZGl2aWRlciBmb3IKPiAgICAgLy8gICAgICAgICAgICAgICAzOTZNSHogOyBBdHRuLjog
+UExMIGxvY2tlZCBpcyB3L28gOyBkaXZpZGVyIGZvcgo+ICAgICAvLyAgICAgICAgICAgICAgIDM5
+Nk1IeiBpcyBiZWxvdyB2YWxpZCByYW5nZQo+ICAgICB3bSAzMiAweDAyMGM4MDAwIDB4ODAwMDIw
+MjEKPiBDb21tZW50cyBhZ2FpbiBhZGRlZCBieSBtZS4KPiAKPiBUd28gdGhpbmdzIGhlcmUgbG9v
+ayBxdWVzdGlvbmFibGUgdG8gbWU6Cj4gMS4pIERhdGFzaGVldCBzYXlzIHZhbGlkIGRpdmlkZXIg
+dmFsdWVzIGFyZSA1NC0xMDgsIHNvIHRoZQo+ICAgICBkZWZhdWx0IDB4NDI9NjYgaXMgaW4gcmFu
+Z2UsIHdoZXJlYXMgdGhlIDB4MjE9MzMgaXMgbm90Lgo+IDIuKSBFdmVuIGlmIHRoZSBkaXZpZGVy
+IHZhbHVlIGlzIGxlZ2l0LCB0aGUgY2hhbmdlIGZsb3cgbWlnaHQgYmUgbm90Lgo+ICAgICBBIFBM
+TCBub3JtYWxseSB0YWtlcyBzb21lIHRpbWUgdG8gbG9jay4KPiAKPiBOb3csIEkgaGF2ZSBub3Qg
+bG9va2VkIHlldCBhdCB0aGUgUExMIHNldHVwIGFuZC9vciBzY2FsaW5nIGNvZGUgb2YgdGhlCj4g
+a2VybmVsLCBib3RoIHdydCBQTEwgY2hhbmdlIGZsb3cgYXMgd2VsbCBhcyBkaXZpZGVycy4gU28g
+dGhpcyBtaWdodCBiZQo+IG9rLCBhbmQgZXZlbiBpZiBvbmx5IGltcGxpY2l0bHkgKGxpa2UgZHVl
+IHRvIHNvbWUgaW1wbGljaXQgZGVsYXkgYWZ0ZXIKPiBEQ0QgZ290IHBhcnNlZCkuCj4gQW5kIG9i
+dmlvdXNseSBpdCB3b3Jrcy4gIk9ubHkiIG1pc3NlcyBhIGNvbW1lbnQgd2hhdHMgaXQgZG9lcy4g
+QW5kIG9ubHkKPiBwcmVzZW50IGluIHNvbWUgb2YgdGhlIFBoeXRlYyBEQ0RzLCBhcyBmYXIgYXMg
+SSBjYW4gc2VlLgo+IAo+IEJ1dCB3aGF0IEkgbGlrZSB0byB1bmRlcnN0YW5kIGlzIHdoeSA/Cj4g
+SSBtZWFuLCBzY2FsaW5nIGRvd24gdGhlIGkuTVg2IHRvIGl0cyBtaW5pbXVtIGZyZXF1ZW5jeSAo
+aGFsZiBvZgo+IGRlZmF1bHQpIGluIHRoZSBib290bG9hZGVyLCB0byBnZXQgYSBtYXhpbXVtIHN0
+YWJsZSBzdGF0ZSwgb2suIEV2ZW4gaWYKPiBpdCBleHRlbmRzIHRoZSBib290dXAgdGltZS4KPiAK
+PiBCdXQgd2h5IGFmdGVyIGFsbCB0aGUgSU9NVVgsIE1NREMgYW5kIEREUiBzZXR1cCBpcyB0aHJv
+dWdoID8KPiBQcm9iYWJseSB0b28gbGF0ZSBpZiBpdCBpcyBhYm91dCBzb21lIFBNSUMtcmVzZXQt
+dm9sdGFnZS1zY2FsaW5nIGlzc3VlLgo+IE9yIHNvbWUgdGhlcm1hbCBwcmVjYXV0aW9uID8KPiAK
+PiBCeSB0aGUgd2F5LCB0aGUgYWJvdmUgc2V0dXBzIGdvZXMgYmFjayB0aHJvdWdoIGxvbmcgaGlz
+dG9yeSwgYXMgaW4KPiAgICAgYTU0MGMzMCBib2FyZHM6IEFkZCBwaHl0ZWMtc29tLWlteDYKPiAg
+ICAgYzViNGYwOSBBUk06cGh5RkxFWC1pTVg2IE5ldyBSYW0gVGltaW5ncyBmb3IgUS9ETAo+ICAg
+ICAzMGYyOWUzIEFSTTogQWRkIFBoeXRlYyBwaHlGTEVYLWkuTVg2IGJvYXJkIHN1cHBvcnQKPiBh
+bmQgYXBwbGllcyB0byBvdGhlciBQaHl0ZWMgaS5NWDYgYm9hcmRzIGFzIHdlbGwsIGJlc2lkZSB0
+aGUgREwgb25lcy4KPiAKPiAKPiBBbnkgY29tbWVudHMgb24gdGhpcywgbWF5YmUgYWxzbyBmcm9t
+IFBoeXRlYyA/Cj4gCj4gQmVzdCByZWdhcmRzLAo+ICAgQW5kcmVhcyBQcmV0enNjaAo+IAo+IC0t
+IAo+IAo+IGNhcnBlIG5vY3RlbSBlbmdpbmVlcmluZwo+IEluZ2VuaWV1cmJ1ZXJvIGZ1ZXIgSGFy
+ZC0gJiBTb2Z0d2FyZS1FbnR3aWNrbHVuZyBBbmRyZWFzIFByZXR6c2NoCj4gRGlwbC4tSW5nLiAo
+RkgpIEFuZHJlYXMgUHJldHpzY2ggICAgICAgIFRlbC4gKzQ5LSgwKTczMDctOTM2MDg4LTEKPiBM
+YW5nZSBTdHJhc3NlIDI4YSAgICAgICAgICAgICAgICAgICAgICAgRmF4OiArNDktKDApNzMwNy05
+MzYwODgtOQo+IDg5MjUwIFNlbmRlbiwgR2VybWFueSAgICAgICAgICAgICAgICAgICBlbWFpbDog
+YXByQGNuLWVuZy5kZQo+IAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
