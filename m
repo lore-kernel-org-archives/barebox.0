@@ -1,20 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x235.google.com ([2a00:1450:400c:c09::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aYYnV-0004NS-T2
- for barebox@lists.infradead.org; Wed, 24 Feb 2016 12:44:07 +0000
-Date: Wed, 24 Feb 2016 13:43:43 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160224124343.GO3939@pengutronix.de>
+ id 1aYYuK-0000KQ-L1
+ for barebox@lists.infradead.org; Wed, 24 Feb 2016 12:51:09 +0000
+Received: by mail-wm0-x235.google.com with SMTP id c200so267910708wme.0
+ for <barebox@lists.infradead.org>; Wed, 24 Feb 2016 04:50:48 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <20160224124343.GO3939@pengutronix.de>
 References: <CABQt-UnnTJffkX_6hCXOjh+hgkjiGausWuuCwwEWncvpoiTqAQ@mail.gmail.com>
  <20160223083236.GA3939@pengutronix.de>
  <CABQt-U=+f_5EJvw=9FFbw2cR2A54te6WN3Dgn4jtyuoPvC+CzQ@mail.gmail.com>
  <CABQt-U=jXuJMJY1Uew4cVa2Ap=dpX9rzW91JbiuRSDpeuf+C0g@mail.gmail.com>
  <20160224111516.GM3939@pengutronix.de>
  <CABQt-UnC4FvOPwkHJ8UtefBDLkc65nTr7hVSJ6vPgBYASWAS5w@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CABQt-UnC4FvOPwkHJ8UtefBDLkc65nTr7hVSJ6vPgBYASWAS5w@mail.gmail.com>
+ <20160224124343.GO3939@pengutronix.de>
+Date: Wed, 24 Feb 2016 13:50:46 +0100
+Message-ID: <CABQt-Ukb1thMQYOwCmuNmfdYTni6JeT9wKxtMH45Tfvv0mLB9w@mail.gmail.com>
+From: Philippe Leduc <ledphilippe@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,28 +30,38 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Help configuring i.MX6 IPUv3 with a parrallel display
-To: Philippe Leduc <ledphilippe@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Feb 24, 2016 at 01:39:25PM +0100, Philippe Leduc wrote:
-> > You could try setting it to
-> V4L2_PIX_FMT_RGB24 manually in ipu_crtc_mode_set().
-> It is working with this trick and I do not get any error:
-> 
-> Unfortunately, the display stay white... I tried to write it with "mw
-> -d /dev/fb0 0xXXXXXXXX +0x40000" and splash freeze the board.
+Same result with memset or cp : the screen stay white. I'll recheck my
+timings. Could it be related with the freeze of the splash utility?
 
-Try 'cp /dev/ram0 /dev/fb0' or 'memset -d /dev/fb0 0x0 0x55 1M'. With
-'mw' you can only write single words which only gives you some dots in
-one screen corner.
+BTW, it seems that of_get_display_timings() can't manage ranges of
+datas as mentionned in the binding doc (display-timings.txt).
+Philippe LEDUC
+ledphilippe@gmail.com
 
-Sascha
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2016-02-24 13:43 GMT+01:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> On Wed, Feb 24, 2016 at 01:39:25PM +0100, Philippe Leduc wrote:
+>> > You could try setting it to
+>> V4L2_PIX_FMT_RGB24 manually in ipu_crtc_mode_set().
+>> It is working with this trick and I do not get any error:
+>>
+>> Unfortunately, the display stay white... I tried to write it with "mw
+>> -d /dev/fb0 0xXXXXXXXX +0x40000" and splash freeze the board.
+>
+> Try 'cp /dev/ram0 /dev/fb0' or 'memset -d /dev/fb0 0x0 0x55 1M'. With
+> 'mw' you can only write single words which only gives you some dots in
+> one screen corner.
+>
+> Sascha
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
