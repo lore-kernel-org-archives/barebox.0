@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x230.google.com ([2a00:1450:4010:c07::230])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aYL8s-0008Va-PL
- for barebox@lists.infradead.org; Tue, 23 Feb 2016 22:09:15 +0000
-Received: by mail-lf0-x230.google.com with SMTP id 78so124663190lfy.3
- for <barebox@lists.infradead.org>; Tue, 23 Feb 2016 14:08:54 -0800 (PST)
-Date: Wed, 24 Feb 2016 01:34:48 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20160224013448.d5d2d0a95dbcf164f1a6ee20@gmail.com>
-In-Reply-To: <1455893355-17319-3-git-send-email-yegorslists@googlemail.com>
-References: <1455893355-17319-1-git-send-email-yegorslists@googlemail.com>
- <1455893355-17319-3-git-send-email-yegorslists@googlemail.com>
-Mime-Version: 1.0
+ id 1aYURI-0004Cq-G5
+ for barebox@lists.infradead.org; Wed, 24 Feb 2016 08:04:54 +0000
+Date: Wed, 24 Feb 2016 09:04:28 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160224080428.GD4207@pengutronix.de>
+References: <1456077990-15003-1-git-send-email-akurz@blala.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1456077990-15003-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,104 +18,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 3/3] fs: add support for SquashFS 4.0
-To: yegorslists@googlemail.com
+Subject: Re: [PATCH 1/3] EP93xx eth: allow passing of phy config via platform
+ data
+To: Alexander Kurz <akurz@blala.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, 19 Feb 2016 15:49:15 +0100
-yegorslists@googlemail.com wrote:
+Hi Alexander,
 
-> From: Yegor Yefremov <yegorslists@googlemail.com>
-> =
+On Sun, Feb 21, 2016 at 07:06:28PM +0100, Alexander Kurz wrote:
+> Passing phy configuration to the ep93xx_eth driver was not supported yet
+> and will be added with this patch. When no pdata is passed, the probably
+> broken default of phy_addr = 0 will be used to maintain compatibility
+> with the previous implementation.
+> 
+> Signed-off-by: Alexander Kurz <akurz@blala.de>
+> ---
+>  drivers/net/ep93xx.c | 14 ++++++++++++--
+>  drivers/net/ep93xx.h |  2 ++
+>  2 files changed, 14 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ep93xx.c b/drivers/net/ep93xx.c
+> index 90c12fc..d2458eb 100644
+> --- a/drivers/net/ep93xx.c
+> +++ b/drivers/net/ep93xx.c
+> @@ -38,6 +38,7 @@
+>  #include <linux/types.h>
+>  #include <mach/ep93xx-regs.h>
+>  #include <linux/phy.h>
+> +#include <ep93xx_eth.h>
 
-> The driver was imported from Linux 4.4.
-> =
+This file is missing. Forgot to git add it?
+While at it, could you move it to include/net/ please?
 
-> Current implementation supports only XZ decompressor.
-> =
+Thanks
+ Sascha
 
-> Cc: Antony Pavlov <antonynpavlov@gmail.com>
-> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
-
-I have just tested this series on AR9331-based board, so
-
-Tested-by: Antony Pavlov <antonynpavlov@gmail.com>
-
-However there are some issues, see below
-
-> --- /dev/null
-> +++ b/Documentation/filesystems/squashfs.rst
-> @@ -0,0 +1,15 @@
-> +.. index:: squashfs (filesystem)
-> +
-> +SquashFS filesystem
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +SquashFS is a highly compressed read-only filesystem for Linux.
-> +It uses zlib, lzo or xz compression to compress both files, inodes
-> +and directories. A SquashFS filesystem can be mounted using the
-> +:ref:`command_mount` command::
-> +
-> +  mkdir /mnt
-> +  mount -t squashfs /dev/spiflash.FileSystem /mnt
-> +  ls /mnt
-> +  zImage barebox.bin
-> +  umount /mnt
-
-Please add barebox prompt to this example, e.g.:
-
-barebox:/ mkdir /mnt
-barebox:/ mount -t squashfs /dev/spiflash.FileSystem /mnt
-barebox:/ ls /mnt
-zImage barebox.bin
-barebox:/ umount /mnt
-
-
-I suppose that the 'squashfs squashfs0: squashfs_mount' message is redundan=
-t, e.g:
-
-barebox:/ mount -t squashfs /dev/spiflash.linux /mnt/
-squashfs squashfs0: squashfs_mount
-barebox:/ ls /mnt/
-bin        boot       dev        etc        home       init
-lib        lib32      linuxrc    media      mnt        opt
-proc       root       run        sbin       sys        tmp
-usr        var
-
-
-
-Also I see a memory leak on mount (By mistake I have tried to mount non-cde=
-v squashfs image):
-
-barebox:/ meminfo
-used: 2693564
-free: 14074728
-barebox:/ mount -t squashfs rootfs.20160223.xz-squashfs /mnt/
-squashfs squashfs0: probe failed: Invalid argument
-mount: Invalid argument
-barebox:/ meminfo
-used: 2693636
-free: 14074644
-barebox:/ mount -t squashfs rootfs.20160223.xz-squashfs /mnt/
-squashfs squashfs0: probe failed: Invalid argument
-mount: Invalid argument
-barebox:/ meminfo
-used: 2693748
-free: 14074524
-barebox:/ mount -t squashfs rootfs.20160223.xz-squashfs /mnt/
-squashfs squashfs0: probe failed: Invalid argument
-mount: Invalid argument
-barebox:/ meminfo
-used: 2693832
-free: 14074428
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
