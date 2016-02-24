@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x241.google.com ([2a00:1450:4010:c04::241])
+Received: from mail-wm0-x22b.google.com ([2a00:1450:400c:c09::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aYaz0-0007jx-7z
- for barebox@lists.infradead.org; Wed, 24 Feb 2016 15:04:08 +0000
-Received: by mail-lb0-x241.google.com with SMTP id h2so661847lbs.2
- for <barebox@lists.infradead.org>; Wed, 24 Feb 2016 07:03:44 -0800 (PST)
-Date: Wed, 24 Feb 2016 18:07:01 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20160224180701.08b3d179@berta>
-In-Reply-To: <20160224172148.fd09cf0757b3b52348103638@gmail.com>
-References: <1455978465-28919-2-git-send-email-pmamonov@gmail.com>
- <1456310925-1057-1-git-send-email-pmamonov@gmail.com>
- <20160224172148.fd09cf0757b3b52348103638@gmail.com>
+ id 1aYcYh-0006Cf-Or
+ for barebox@lists.infradead.org; Wed, 24 Feb 2016 16:45:04 +0000
+Received: by mail-wm0-x22b.google.com with SMTP id c200so278740517wme.0
+ for <barebox@lists.infradead.org>; Wed, 24 Feb 2016 08:44:43 -0800 (PST)
 MIME-Version: 1.0
+Date: Wed, 24 Feb 2016 17:44:42 +0100
+Message-ID: <CABQt-U=y5nfNQpb88nEF4cRkL7oLQ+a09YYspQPnhPyX4kLQgw@mail.gmail.com>
+From: Philippe Leduc <ledphilippe@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,86 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] input: usb keyboard: fix CTRL+C
-To: Antony Pavlov <antonynpavlov@gmail.com>, s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org, Sam Ravnborg <sam@ravnborg.org>
+Subject: mount fat regression
+To: barebox@lists.infradead.org
 
-On Wed, 24 Feb 2016 17:21:48 +0300
-Antony Pavlov <antonynpavlov@gmail.com> wrote:
+Hi,
 
-> On Wed, 24 Feb 2016 13:48:45 +0300
-> Peter Mamonov <pmamonov@gmail.com> wrote:
-> 
-> > Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> > Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> > ---
-> >  drivers/input/input.c    | 4 +++-
-> >  drivers/input/keymap.c   | 4 ++++
-> >  include/input/keyboard.h | 1 +
-> >  3 files changed, 8 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/input/input.c b/drivers/input/input.c
-> > index ad7400f..1c6891c 100644
-> > --- a/drivers/input/input.c
-> > +++ b/drivers/input/input.c
-> > @@ -164,7 +164,9 @@ static void input_console_notify(struct
-> > input_notifier *in, if (ic->modstate[4] || ic->modstate[5])
-> >  		modstate |= 1 << 2;
-> >  
-> > -	if (modstate & (1 << 0))
-> > +	if (modstate & (1 << 1))
-> > +		ascii = keycode_bb_ctrl_keys[ev->code];
-> > +	else if (modstate & (1 << 0))
-> >  		ascii = keycode_bb_shift_keys[ev->code];
-> >  	else
-> >  		ascii = keycode_bb_keys[ev->code];
-> > diff --git a/drivers/input/keymap.c b/drivers/input/keymap.c
-> > index 79ca461..7e443d1 100644
-> > --- a/drivers/input/keymap.c
-> > +++ b/drivers/input/keymap.c
-> > @@ -167,3 +167,7 @@ uint8_t keycode_bb_shift_keys[NR_KEYS] = {
-> >  	[KEY_KPEQUAL] =		'=',
-> >  	[KEY_KPCOMMA] =		',',
-> >  };
-> > +
-> > +uint8_t keycode_bb_ctrl_keys[NR_KEYS] = {
-> > +	[KEY_C] =		CTL_CH('c'),
-> > +};
-> 
-> 
-> It looks like we still have empty array with NR_KEYS bytes in it.
-> 
-> Can we just drop it and satisfy with short "special case" C-code for
-> control modifier handling?
+It seems that there is a regression in the mount command for fat
+filesystem: if I try to mount a partition that is formatted with
+fatfs, I got this error:
 
-Probably I've misunderstood Sasha.
+mount /dev/mmc2.netcom
+mount: No such file or directory
 
-Sasha, did you mean to eliminate the CTRL-keymap completely?
+I do not have the problem with a fat formatted with Windows or Linux.
 
-> 
-> 
-> > diff --git a/include/input/keyboard.h b/include/input/keyboard.h
-> > index d1f5bf5..8ccdf31 100644
-> > --- a/include/input/keyboard.h
-> > +++ b/include/input/keyboard.h
-> > @@ -7,5 +7,6 @@
-> >  
-> >  extern uint8_t keycode_bb_keys[NR_KEYS];
-> >  extern uint8_t keycode_bb_shift_keys[NR_KEYS];
-> > +extern uint8_t keycode_bb_ctrl_keys[NR_KEYS];
-> >  
-> >  #endif
-> > -- 
-> > 2.1.4
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> 
-> 
+Do you have an idea?
 
+Best regards,
+
+--
+Philippe LEDUC
+ledphilippe@gmail.com
 
 _______________________________________________
 barebox mailing list
