@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22b.google.com ([2a00:1450:400c:c09::22b])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aYcYh-0006Cf-Or
- for barebox@lists.infradead.org; Wed, 24 Feb 2016 16:45:04 +0000
-Received: by mail-wm0-x22b.google.com with SMTP id c200so278740517wme.0
- for <barebox@lists.infradead.org>; Wed, 24 Feb 2016 08:44:43 -0800 (PST)
+ id 1aYdnr-0006eV-Jr
+ for barebox@lists.infradead.Org; Wed, 24 Feb 2016 18:04:48 +0000
+Date: Wed, 24 Feb 2016 19:04:25 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160224180424.GQ3939@pengutronix.de>
+References: <1456258787-28076-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Date: Wed, 24 Feb 2016 17:44:42 +0100
-Message-ID: <CABQt-U=y5nfNQpb88nEF4cRkL7oLQ+a09YYspQPnhPyX4kLQgw@mail.gmail.com>
-From: Philippe Leduc <ledphilippe@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1456258787-28076-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,27 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: mount fat regression
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] commands: magicvar: make locally used magicvar_find()
+ static
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
+On Tue, Feb 23, 2016 at 11:19:47PM +0300, Antony Pavlov wrote:
+> The patch fixes this compiler's warning:
+> 
+>     commands/magicvar.c:27:22: warning: no previous prototype for 'magicvar_find' [-Wmissing-prototypes]
+>      struct magicvar_dyn *magicvar_find(const char *name)
+>                           ^
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  commands/magicvar.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-It seems that there is a regression in the mount command for fat
-filesystem: if I try to mount a partition that is formatted with
-fatfs, I got this error:
+Applied, thanks
 
-mount /dev/mmc2.netcom
-mount: No such file or directory
+Sascha
 
-I do not have the problem with a fat formatted with Windows or Linux.
 
-Do you have an idea?
-
-Best regards,
-
---
-Philippe LEDUC
-ledphilippe@gmail.com
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
