@@ -1,23 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x231.google.com ([2a00:1450:400c:c09::231])
+Received: from mail-lf0-x22b.google.com ([2a00:1450:4010:c07::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aYZlu-0003MA-GL
- for barebox@lists.infradead.org; Wed, 24 Feb 2016 13:46:35 +0000
-Received: by mail-wm0-x231.google.com with SMTP id g62so272305985wme.1
- for <barebox@lists.infradead.org>; Wed, 24 Feb 2016 05:46:10 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <CABQt-Ukb1thMQYOwCmuNmfdYTni6JeT9wKxtMH45Tfvv0mLB9w@mail.gmail.com>
-References: <CABQt-UnnTJffkX_6hCXOjh+hgkjiGausWuuCwwEWncvpoiTqAQ@mail.gmail.com>
- <20160223083236.GA3939@pengutronix.de>
- <CABQt-U=+f_5EJvw=9FFbw2cR2A54te6WN3Dgn4jtyuoPvC+CzQ@mail.gmail.com>
- <CABQt-U=jXuJMJY1Uew4cVa2Ap=dpX9rzW91JbiuRSDpeuf+C0g@mail.gmail.com>
- <20160224111516.GM3939@pengutronix.de>
- <CABQt-UnC4FvOPwkHJ8UtefBDLkc65nTr7hVSJ6vPgBYASWAS5w@mail.gmail.com>
- <20160224124343.GO3939@pengutronix.de>
- <CABQt-Ukb1thMQYOwCmuNmfdYTni6JeT9wKxtMH45Tfvv0mLB9w@mail.gmail.com>
-Date: Wed, 24 Feb 2016 14:46:08 +0100
-Message-ID: <CABQt-UkFnrhYDYTPH8fYJqHUi-iSGh0+4rYMtZy5BC3rWJ8yjg@mail.gmail.com>
-From: Philippe Leduc <ledphilippe@gmail.com>
+ id 1aYZvL-0006rb-M5
+ for barebox@lists.infradead.org; Wed, 24 Feb 2016 13:57:14 +0000
+Received: by mail-lf0-x22b.google.com with SMTP id m1so12295970lfg.0
+ for <barebox@lists.infradead.org>; Wed, 24 Feb 2016 05:55:55 -0800 (PST)
+Date: Wed, 24 Feb 2016 17:21:48 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20160224172148.fd09cf0757b3b52348103638@gmail.com>
+In-Reply-To: <1456310925-1057-1-git-send-email-pmamonov@gmail.com>
+References: <1455978465-28919-2-git-send-email-pmamonov@gmail.com>
+ <1456310925-1057-1-git-send-email-pmamonov@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,62 +20,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Help configuring i.MX6 IPUv3 with a parrallel display
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] input: usb keyboard: fix CTRL+C
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox@lists.infradead.org, Sam Ravnborg <sam@ravnborg.org>
 
-Victory!
+On Wed, 24 Feb 2016 13:48:45 +0300
+Peter Mamonov <pmamonov@gmail.com> wrote:
 
-I checked the timings with an oscilloscope by using Linux and
-everything except one pin is identical: LCD_ENABLE ^^ ' . It is a GPIO
-that let the display in sleep mode to limit consumption.
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> ---
+>  drivers/input/input.c    | 4 +++-
+>  drivers/input/keymap.c   | 4 ++++
+>  include/input/keyboard.h | 1 +
+>  3 files changed, 8 insertions(+), 1 deletion(-)
+> =
 
-Note that splash utility continue to freeze the board.
+> diff --git a/drivers/input/input.c b/drivers/input/input.c
+> index ad7400f..1c6891c 100644
+> --- a/drivers/input/input.c
+> +++ b/drivers/input/input.c
+> @@ -164,7 +164,9 @@ static void input_console_notify(struct input_notifie=
+r *in,
+>  	if (ic->modstate[4] || ic->modstate[5])
+>  		modstate |=3D 1 << 2;
+>  =
 
-About the 'driver' that parse the dt to expose the timings, I'll clean
-up and let you review it (this time I'll use git to send you the patch
-:) ). I
+> -	if (modstate & (1 << 0))
+> +	if (modstate & (1 << 1))
+> +		ascii =3D keycode_bb_ctrl_keys[ev->code];
+> +	else if (modstate & (1 << 0))
+>  		ascii =3D keycode_bb_shift_keys[ev->code];
+>  	else
+>  		ascii =3D keycode_bb_keys[ev->code];
+> diff --git a/drivers/input/keymap.c b/drivers/input/keymap.c
+> index 79ca461..7e443d1 100644
+> --- a/drivers/input/keymap.c
+> +++ b/drivers/input/keymap.c
+> @@ -167,3 +167,7 @@ uint8_t keycode_bb_shift_keys[NR_KEYS] =3D {
+>  	[KEY_KPEQUAL] =3D		'=3D',
+>  	[KEY_KPCOMMA] =3D		',',
+>  };
+> +
+> +uint8_t keycode_bb_ctrl_keys[NR_KEYS] =3D {
+> +	[KEY_C] =3D		CTL_CH('c'),
+> +};
 
 
+It looks like we still have empty array with NR_KEYS bytes in it.
 
-Philippe LEDUC
-ledphilippe@gmail.com
+Can we just drop it and satisfy with short "special case" C-code for contro=
+l modifier handling?
 
 
-2016-02-24 13:50 GMT+01:00 Philippe Leduc <ledphilippe@gmail.com>:
-> Same result with memset or cp : the screen stay white. I'll recheck my
-> timings. Could it be related with the freeze of the splash utility?
->
-> BTW, it seems that of_get_display_timings() can't manage ranges of
-> datas as mentionned in the binding doc (display-timings.txt).
-> Philippe LEDUC
-> ledphilippe@gmail.com
->
->
-> 2016-02-24 13:43 GMT+01:00 Sascha Hauer <s.hauer@pengutronix.de>:
->> On Wed, Feb 24, 2016 at 01:39:25PM +0100, Philippe Leduc wrote:
->>> > You could try setting it to
->>> V4L2_PIX_FMT_RGB24 manually in ipu_crtc_mode_set().
->>> It is working with this trick and I do not get any error:
->>>
->>> Unfortunately, the display stay white... I tried to write it with "mw
->>> -d /dev/fb0 0xXXXXXXXX +0x40000" and splash freeze the board.
->>
->> Try 'cp /dev/ram0 /dev/fb0' or 'memset -d /dev/fb0 0x0 0x55 1M'. With
->> 'mw' you can only write single words which only gives you some dots in
->> one screen corner.
->>
->> Sascha
->>
->> --
->> Pengutronix e.K.                           |                             |
->> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
->> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> diff --git a/include/input/keyboard.h b/include/input/keyboard.h
+> index d1f5bf5..8ccdf31 100644
+> --- a/include/input/keyboard.h
+> +++ b/include/input/keyboard.h
+> @@ -7,5 +7,6 @@
+>  =
+
+>  extern uint8_t keycode_bb_keys[NR_KEYS];
+>  extern uint8_t keycode_bb_shift_keys[NR_KEYS];
+> +extern uint8_t keycode_bb_ctrl_keys[NR_KEYS];
+>  =
+
+>  #endif
+> -- =
+
+> 2.1.4
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
