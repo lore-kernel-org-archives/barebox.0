@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22e.google.com ([2a00:1450:400c:c09::22e])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aYsZp-0003Kh-SV
- for barebox@lists.infradead.org; Thu, 25 Feb 2016 09:51:19 +0000
-Received: by mail-wm0-x22e.google.com with SMTP id b205so23989510wmb.1
- for <barebox@lists.infradead.org>; Thu, 25 Feb 2016 01:50:57 -0800 (PST)
+ id 1aYsaa-0003le-PJ
+ for barebox@lists.infradead.Org; Thu, 25 Feb 2016 09:52:05 +0000
+Date: Thu, 25 Feb 2016 10:51:42 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160225095142.GF3939@pengutronix.de>
+References: <CABQt-U=y5nfNQpb88nEF4cRkL7oLQ+a09YYspQPnhPyX4kLQgw@mail.gmail.com>
+ <20160225085615.GD3939@pengutronix.de>
+ <CABQt-Unp1Kacvc5jwUcwstatUtm6VQ0ROr2CHcQVtL85YizkmA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <87bn7516ji.fsf@gmail.com>
-References: <CABQt-UmmZmRR9zPscx=8-eQ49eNUS7GQVxjBXs6D0OgiuWfquQ@mail.gmail.com>
- <20160223080530.GZ3939@pengutronix.de>
- <CABQt-Um-ENNbt_MbbF4NP42jmufsmgxV6pVvEsTFjw0O=++=ow@mail.gmail.com>
- <87bn7516ji.fsf@gmail.com>
-Date: Thu, 25 Feb 2016 10:50:56 +0100
-Message-ID: <CABQt-U=trcYcMu-uxmR-nMkDTu_te54enJZa8X-d1oN0y9aO5A@mail.gmail.com>
-From: Philippe Leduc <ledphilippe@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <CABQt-Unp1Kacvc5jwUcwstatUtm6VQ0ROr2CHcQVtL85YizkmA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,66 +24,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: bootm crash - bad uimage?
-To: Holger Schurig <holgerschurig@gmail.com>
+Subject: Re: mount fat regression
+To: Philippe Leduc <ledphilippe@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi,
+On Thu, Feb 25, 2016 at 10:37:35AM +0100, Philippe Leduc wrote:
+> Hi,
+> 
+> This was working before :) (at least with barebox version 2015.10).
+> Honestly , this may be a misconfiguration on our part (and the fact
+> that it worked doesn't mean that it was a normal behavior).
+> 
+> Here is the output:
+> filetype  /dev/mmc2.netcom
+> /dev/mmc2.netcom: MBR sector (mbr)
 
-> So if you don't have an initrd, do you need uImage at all? You can boot
-a bootable image directly
-Well, I do it this way because it was working I guess^^' but I tink
-your proposition is the right think to do!
+That's your problem. With /dev/mmc2.netcom detected as MBR barebox won't
+automatically try to mount a FAT filesystem.
+What is /dev/mmc2.netcom anyway? I assume it's a GPT partition, right?
 
-Thank you for the tip and the details, I'll check that and I'll give
-you a feedback ASAP :)
+Can you mount the same device with the -tfat option to mount?
 
-Best regards,
+Sascha
 
---
-Philippe LEDUC
-ledphilippe@gmail.com
-
-
-2016-02-25 10:30 GMT+01:00 Holger Schurig <holgerschurig@gmail.com>:
-> Philippe Leduc <ledphilippe@gmail.com> writes:
->
->> Note: I am using mkimage to create bootable image of a real-time OS
->> (PikeOS). There is no initrd or dtc at this step for now: I guess it
->> is like loading an old Linux kernel without userspace.
->
-> So if you don't have an initrd, do you need uImage at all? You can boot
-> a bootable image directly
->
-> I use Linux without an initrd and don't bother with an uImage at all. I
-> have my kernel on the SD-CARD or eMMC in /boot/vmlinuz, just like on any
-> other (x86) Linux box.
->
-> Here is my env/boot/emmc script. I use "boot", not "bootm", but AFAIK boot uses
-> bootm under the hood.
->
->    global linux.bootargs.dyn.root="root=/dev/mmcblk0p${global.boot.partition} rootwait ro"
->    global bootm.image=/emmc/boot/vmlinuz
->    detect mmc3
->    mkdir -p /emmc
->    mount /dev/mmc3.0 /emmc
->
-> I have similar scripts for SD-Card and USB.
->
->
-> The kernel is installed using the normal Linux mechanism:
->
-> make -C ${KERNEL_DIR} ARCH=arm INSTALL_PATH=${IMAGE_DIR}/boot zinstall
->
-> maybe PikeOS has something equivalent. The result is:
->
-> $ file image/boot/vmlinuz-4.4.2
-> image/boot/vmlinuz-4.4.2: Linux kernel ARM boot executable zImage (little-endian)
->
->
->
-> As you see, I boot directly into the vmlinuz ... and I don't use
-> Barebox' CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW, too.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
