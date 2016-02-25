@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aYsaa-0003le-PJ
- for barebox@lists.infradead.Org; Thu, 25 Feb 2016 09:52:05 +0000
-Date: Thu, 25 Feb 2016 10:51:42 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160225095142.GF3939@pengutronix.de>
-References: <CABQt-U=y5nfNQpb88nEF4cRkL7oLQ+a09YYspQPnhPyX4kLQgw@mail.gmail.com>
- <20160225085615.GD3939@pengutronix.de>
- <CABQt-Unp1Kacvc5jwUcwstatUtm6VQ0ROr2CHcQVtL85YizkmA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CABQt-Unp1Kacvc5jwUcwstatUtm6VQ0ROr2CHcQVtL85YizkmA@mail.gmail.com>
+ id 1aYskk-0003gq-2q
+ for barebox@lists.infradead.org; Thu, 25 Feb 2016 10:02:35 +0000
+Received: by mail-lf0-x243.google.com with SMTP id j99so1873738lfi.2
+ for <barebox@lists.infradead.org>; Thu, 25 Feb 2016 02:02:13 -0800 (PST)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Thu, 25 Feb 2016 13:05:18 +0300
+Message-Id: <1456394718-12182-1-git-send-email-pmamonov@gmail.com>
+In-Reply-To: <1456310925-1057-1-git-send-email-pmamonov@gmail.com>
+References: <1456310925-1057-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,38 +18,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: mount fat regression
-To: Philippe Leduc <ledphilippe@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v3] input: usb keyboard: fix CTRL+ combinations
+To: barebox@lists.infradead.org, s.hauer@pengutronix.de
+Cc: Sam Ravnborg <sam@ravnborg.org>, Peter Mamonov <pmamonov@gmail.com>, Trent Piepho <tpiepho@kymetacorp.com>
 
-On Thu, Feb 25, 2016 at 10:37:35AM +0100, Philippe Leduc wrote:
-> Hi,
-> 
-> This was working before :) (at least with barebox version 2015.10).
-> Honestly , this may be a misconfiguration on our part (and the fact
-> that it worked doesn't mean that it was a normal behavior).
-> 
-> Here is the output:
-> filetype  /dev/mmc2.netcom
-> /dev/mmc2.netcom: MBR sector (mbr)
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
+---
+ drivers/input/input.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-That's your problem. With /dev/mmc2.netcom detected as MBR barebox won't
-automatically try to mount a FAT filesystem.
-What is /dev/mmc2.netcom anyway? I assume it's a GPT partition, right?
-
-Can you mount the same device with the -tfat option to mount?
-
-Sascha
-
+diff --git a/drivers/input/input.c b/drivers/input/input.c
+index ad7400f..31a9c22 100644
+--- a/drivers/input/input.c
++++ b/drivers/input/input.c
+@@ -18,6 +18,7 @@
+ #include <linux/bitmap.h>
+ #include <input/keyboard.h>
+ #include <dt-bindings/input/linux-event-codes.h>
++#include <readkey.h>
+ 
+ static LIST_HEAD(input_consumers);
+ 
+@@ -164,7 +165,10 @@ static void input_console_notify(struct input_notifier *in,
+ 	if (ic->modstate[4] || ic->modstate[5])
+ 		modstate |= 1 << 2;
+ 
+-	if (modstate & (1 << 0))
++	if (modstate & (1 << 1)) {
++		ascii = keycode_bb_keys[ev->code];
++		ascii = ascii >= 'a' ? CTL_CH(ascii) : 0;
++	} else if (modstate & (1 << 0))
+ 		ascii = keycode_bb_shift_keys[ev->code];
+ 	else
+ 		ascii = keycode_bb_keys[ev->code];
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
