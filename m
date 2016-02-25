@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aYriv-0002gN-MA
- for barebox@lists.infradead.Org; Thu, 25 Feb 2016 08:56:38 +0000
-Date: Thu, 25 Feb 2016 09:56:15 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160225085615.GD3939@pengutronix.de>
-References: <CABQt-U=y5nfNQpb88nEF4cRkL7oLQ+a09YYspQPnhPyX4kLQgw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CABQt-U=y5nfNQpb88nEF4cRkL7oLQ+a09YYspQPnhPyX4kLQgw@mail.gmail.com>
+ id 1aYs1A-0004Wi-45
+ for barebox@lists.infradead.org; Thu, 25 Feb 2016 09:15:30 +0000
+Received: by mail-lf0-x241.google.com with SMTP id j99so1811711lfi.2
+ for <barebox@lists.infradead.org>; Thu, 25 Feb 2016 01:15:07 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 25 Feb 2016 12:14:52 +0300
+Message-Id: <1456391693-25172-4-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1456391693-25172-1-git-send-email-antonynpavlov@gmail.com>
+References: <1456391693-25172-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,41 +18,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: mount fat regression
-To: Philippe Leduc <ledphilippe@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/4] MIPS: tplink-mr3020: pbl: use more lowlevel init code
+ from U-Boot_mod
+To: barebox@lists.infradead.org
 
-On Wed, Feb 24, 2016 at 05:44:42PM +0100, Philippe Leduc wrote:
-> Hi,
-> 
-> It seems that there is a regression in the mount command for fat
-> filesystem: if I try to mount a partition that is formatted with
-> fatfs, I got this error:
-> 
-> mount /dev/mmc2.netcom
-> mount: No such file or directory
-> 
-> I do not have the problem with a fat formatted with Windows or Linux.
-> 
-> Do you have an idea?
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Are you sure this is a regression? Did this work before? I don't think
-that FAT support in general is broken, it's probably something with your
-special setup.
-
-What does 'filetype /dev/mmc2.netcom' give you?
-
-Sascha
-
+diff --git a/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h b/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
+index d25f5aa..ae548c9 100644
+--- a/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
++++ b/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
+@@ -26,10 +26,12 @@
+ 
+ 	mips_barebox_10h
+ 
+-	mips_disable_interrupts
++	hornet_mips24k_cp0_setup
+ 
+ 	pbl_blt 0xbf000000 skip_pll_ram_config t8
+ 
++	hornet_1_1_war
++
+ 	pbl_ar9331_pll
+ 	pbl_ar9331_ddr1_config
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.0
+
 
 _______________________________________________
 barebox mailing list
