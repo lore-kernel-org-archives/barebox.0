@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wm0-x22e.google.com ([2a00:1450:400c:c09::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aYsFl-0005IK-Do
- for barebox@lists.infradead.org; Thu, 25 Feb 2016 09:30:34 +0000
-Received: by mail-wm0-x22e.google.com with SMTP id g62so18843973wme.0
- for <barebox@lists.infradead.org>; Thu, 25 Feb 2016 01:30:12 -0800 (PST)
-From: Holger Schurig <holgerschurig@gmail.com>
-In-Reply-To: <CABQt-Um-ENNbt_MbbF4NP42jmufsmgxV6pVvEsTFjw0O=++=ow@mail.gmail.com>
- (Philippe Leduc's message of "Tue, 23 Feb 2016 13:00:22 +0100")
-References: <CABQt-UmmZmRR9zPscx=8-eQ49eNUS7GQVxjBXs6D0OgiuWfquQ@mail.gmail.com>
- <20160223080530.GZ3939@pengutronix.de>
- <CABQt-Um-ENNbt_MbbF4NP42jmufsmgxV6pVvEsTFjw0O=++=ow@mail.gmail.com>
-Date: Thu, 25 Feb 2016 10:30:09 +0100
-Message-ID: <87bn7516ji.fsf@gmail.com>
+ id 1aYsMv-0001hd-DT
+ for barebox@lists.infradead.org; Thu, 25 Feb 2016 09:37:58 +0000
+Received: by mail-wm0-x22e.google.com with SMTP id c200so19632154wme.0
+ for <barebox@lists.infradead.org>; Thu, 25 Feb 2016 01:37:37 -0800 (PST)
 MIME-Version: 1.0
+In-Reply-To: <20160225085615.GD3939@pengutronix.de>
+References: <CABQt-U=y5nfNQpb88nEF4cRkL7oLQ+a09YYspQPnhPyX4kLQgw@mail.gmail.com>
+ <20160225085615.GD3939@pengutronix.de>
+Date: Thu, 25 Feb 2016 10:37:35 +0100
+Message-ID: <CABQt-Unp1Kacvc5jwUcwstatUtm6VQ0ROr2CHcQVtL85YizkmA@mail.gmail.com>
+From: Philippe Leduc <ledphilippe@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,48 +24,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: bootm crash - bad uimage?
-To: Philippe Leduc <ledphilippe@gmail.com>
+Subject: Re: mount fat regression
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Philippe Leduc <ledphilippe@gmail.com> writes:
+Hi,
 
-> Note: I am using mkimage to create bootable image of a real-time OS
-> (PikeOS). There is no initrd or dtc at this step for now: I guess it
-> is like loading an old Linux kernel without userspace.
+This was working before :) (at least with barebox version 2015.10).
+Honestly , this may be a misconfiguration on our part (and the fact
+that it worked doesn't mean that it was a normal behavior).
 
-So if you don't have an initrd, do you need uImage at all? You can boot
-a bootable image directly
+Here is the output:
+filetype  /dev/mmc2.netcom
+/dev/mmc2.netcom: MBR sector (mbr)
 
-I use Linux without an initrd and don't bother with an uImage at all. I
-have my kernel on the SD-CARD or eMMC in /boot/vmlinuz, just like on any
-other (x86) Linux box.
+And it is cleary different with a working partition:
+filetype /dev/mmc1.0
+/dev/mmc1.0: FAT filesytem (fat)
 
-Here is my env/boot/emmc script. I use "boot", not "bootm", but AFAIK boot uses
-bootm under the hood.
+I format the partitions with fatfs f_mkfs, and I do not use f_disk to
+create partition table. This could be the problem. I'll check that
+point.
 
-   global linux.bootargs.dyn.root="root=/dev/mmcblk0p${global.boot.partition} rootwait ro"
-   global bootm.image=/emmc/boot/vmlinuz
-   detect mmc3
-   mkdir -p /emmc
-   mount /dev/mmc3.0 /emmc
+Best regards,
 
-I have similar scripts for SD-Card and USB.
-
-
-The kernel is installed using the normal Linux mechanism:
-
-make -C ${KERNEL_DIR} ARCH=arm INSTALL_PATH=${IMAGE_DIR}/boot zinstall
-
-maybe PikeOS has something equivalent. The result is:
-
-$ file image/boot/vmlinuz-4.4.2
-image/boot/vmlinuz-4.4.2: Linux kernel ARM boot executable zImage (little-endian)
+--
+Philippe LEDUC
+ledphilippe@gmail.com
 
 
-
-As you see, I boot directly into the vmlinuz ... and I don't use
-Barebox' CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW, too.
+2016-02-25 9:56 GMT+01:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> On Wed, Feb 24, 2016 at 05:44:42PM +0100, Philippe Leduc wrote:
+>> Hi,
+>>
+>> It seems that there is a regression in the mount command for fat
+>> filesystem: if I try to mount a partition that is formatted with
+>> fatfs, I got this error:
+>>
+>> mount /dev/mmc2.netcom
+>> mount: No such file or directory
+>>
+>> I do not have the problem with a fat formatted with Windows or Linux.
+>>
+>> Do you have an idea?
+>
+> Are you sure this is a regression? Did this work before? I don't think
+> that FAT support in general is broken, it's probably something with your
+> special setup.
+>
+> What does 'filetype /dev/mmc2.netcom' give you?
+>
+> Sascha
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
