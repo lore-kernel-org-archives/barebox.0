@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x22c.google.com ([2a00:1450:400c:c09::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aYtNZ-0007bE-C3
- for barebox@lists.infradead.Org; Thu, 25 Feb 2016 10:42:42 +0000
-Date: Thu, 25 Feb 2016 11:42:19 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20160225104219.GC747@pengutronix.de>
-References: <3814032.giLfJ2gLGN@dabox> <20160218161449.GB4207@pengutronix.de>
- <2696845.OufSg50XfY@dabox> <1751869.VnkfJctKHi@dabox>
+ id 1aYtXR-00082V-Td
+ for barebox@lists.infradead.org; Thu, 25 Feb 2016 10:52:55 +0000
+Received: by mail-wm0-x22c.google.com with SMTP id g62so22580923wme.1
+ for <barebox@lists.infradead.org>; Thu, 25 Feb 2016 02:52:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1751869.VnkfJctKHi@dabox>
+In-Reply-To: <CABQt-Um_GjFByhbMocKc3x1E9Wd=_gQenAPNYN66tFzFAjKQdQ@mail.gmail.com>
+References: <CABQt-U=y5nfNQpb88nEF4cRkL7oLQ+a09YYspQPnhPyX4kLQgw@mail.gmail.com>
+ <20160225085615.GD3939@pengutronix.de>
+ <CABQt-Unp1Kacvc5jwUcwstatUtm6VQ0ROr2CHcQVtL85YizkmA@mail.gmail.com>
+ <20160225095142.GF3939@pengutronix.de>
+ <CABQt-Um_GjFByhbMocKc3x1E9Wd=_gQenAPNYN66tFzFAjKQdQ@mail.gmail.com>
+Date: Thu, 25 Feb 2016 11:52:32 +0100
+Message-ID: <CABQt-Uk2HA52EHFwB3QtQ7rK3CrKs-Ad-XoOuQ_3ct8xfVGekg@mail.gmail.com>
+From: Philippe Leduc <ledphilippe@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,43 +27,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v7] Terasic DE0-Nano-SoC: add support
-To: Tim Sander <tim@krieglstein.org>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Trent Piepho <tpiepho@kymetacorp.com>
+Subject: Re: mount fat regression
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Tim!
+Hi again,
 
-On Thu, Feb 25, 2016 at 11:29:42AM +0100, Tim Sander wrote:
-> v7: eof whitespace fixes
-> 
+Thanks to you (and the filetype command), I found the root of the
+problem and what happened in barebox that change the behavior.
+The commit bc87f4399c6a290d820f2dd00ef772f0f3ef8767 change the
+behavior of the MBR detection, and it is the right thing to do. I
+discover that fatfs default behavior is to create a fdisk partition
+table while I though it was a SFD one, so my addpart was wrong.
 
-FYI changelogs actually don't belong in the patch description, but ...
+Modifiying the f_mkfs option resolve the problem.
 
-> A Patch for supporting the Terasic DE0 NANO-SoC with barebox.
-> The pretty similar Socrates Board was taken as a starting point with pulling
-> in the memory timings/pinmux from
-> http://rocketboards.org/foswiki/view/Documentation/AtlasSoCCompileHardwareDesign
-> 
-> Signed-off-by: Tim Sander <tim@krieglstein.org>
-> ---
+Thank you for the help and sorry to bother you with this report.
 
-... down here. Which doesn't mean that you necessarily need to send a
-new version of the patches IF Sascha fixes this while applying IF he does ;-)
+Best regards,
 
->  arch/arm/boards/Makefile                           |   1 +
->  arch/arm/boards/terasic-de0-nano-soc/Makefile      |   2 +
->  arch/arm/boards/terasic-de0-nano-soc/board.c       |  35 ++
+--
+Philippe LEDUC
+ledphilippe@gmail.com
 
-(...)
 
-Regards,
-Steffen
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2016-02-25 11:23 GMT+01:00 Philippe Leduc <ledphilippe@gmail.com>:
+>> Can you mount the same device with the -tfat option to mount?
+> Well same problem: mount: No such file or directory
+>
+>> I assume it's a GPT partition, right?
+> It isn't: there is no partition table, it is directly the FS on it.
+>
+>> That's your problem.With /dev/mmc2.netcom detected as MBR barebox won't
+> automatically try to mount a FAT filesystem.
+> Of course it is, and if the method I am currently using to create the
+> FS is wrong, I'll change that, don't worry :)
+>
+> Regards,
+>
+> --
+> Philippe LEDUC
+> ledphilippe@gmail.com
+>
+>
+> 2016-02-25 10:51 GMT+01:00 Sascha Hauer <s.hauer@pengutronix.de>:
+>> On Thu, Feb 25, 2016 at 10:37:35AM +0100, Philippe Leduc wrote:
+>>> Hi,
+>>>
+>>> This was working before :) (at least with barebox version 2015.10).
+>>> Honestly , this may be a misconfiguration on our part (and the fact
+>>> that it worked doesn't mean that it was a normal behavior).
+>>>
+>>> Here is the output:
+>>> filetype  /dev/mmc2.netcom
+>>> /dev/mmc2.netcom: MBR sector (mbr)
+>>
+>> That's your problem. With /dev/mmc2.netcom detected as MBR barebox won't
+>> automatically try to mount a FAT filesystem.
+>> What is /dev/mmc2.netcom anyway? I assume it's a GPT partition, right?
+>>
+>> Can you mount the same device with the -tfat option to mount?
+>>
+>> Sascha
+>>
+>> --
+>> Pengutronix e.K.                           |                             |
+>> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+>> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
