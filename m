@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
+Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aYs1A-0004Wi-45
- for barebox@lists.infradead.org; Thu, 25 Feb 2016 09:15:30 +0000
-Received: by mail-lf0-x241.google.com with SMTP id j99so1811711lfi.2
- for <barebox@lists.infradead.org>; Thu, 25 Feb 2016 01:15:07 -0800 (PST)
+ id 1aYs18-0004RV-Ia
+ for barebox@lists.infradead.org; Thu, 25 Feb 2016 09:15:29 +0000
+Received: by mail-lf0-x243.google.com with SMTP id 78so1806555lfy.1
+ for <barebox@lists.infradead.org>; Thu, 25 Feb 2016 01:15:06 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 25 Feb 2016 12:14:52 +0300
-Message-Id: <1456391693-25172-4-git-send-email-antonynpavlov@gmail.com>
+Date: Thu, 25 Feb 2016 12:14:50 +0300
+Message-Id: <1456391693-25172-2-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1456391693-25172-1-git-send-email-antonynpavlov@gmail.com>
 References: <1456391693-25172-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,33 +23,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] MIPS: tplink-mr3020: pbl: use more lowlevel init code
- from U-Boot_mod
+Subject: [PATCH 1/4] MIPS: ath79: pbl: import AR9331 CP0 init routine from
+ U-Boot_mod
 To: barebox@lists.infradead.org
+
+U-Boot_mod is a popular bootloader for Atheros AR93xx chips,
+please see https://github.com/pepe2k/u-boot_mod for details.
+
+It's reasonable to import some lowlevel AR9331 initialization
+code from U-Boot_mod.
+
+This patch imports AR9331 MIPS24K coprocessor0 initialization
+code from u-boot_mod/u-boot/cpu/mips/start_bootstrap.S.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/mips/mach-ath79/include/mach/pbl_macros.h | 44 ++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-diff --git a/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h b/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
-index d25f5aa..ae548c9 100644
---- a/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
-+++ b/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
-@@ -26,10 +26,12 @@
+diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+index c00dd28..810f49d 100644
+--- a/arch/mips/mach-ath79/include/mach/pbl_macros.h
++++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+@@ -179,4 +179,48 @@
+ 			| AR933X_GPIO_FUNC_RSRV15, GPIO_FUNC
+ .endm
  
- 	mips_barebox_10h
- 
--	mips_disable_interrupts
-+	hornet_mips24k_cp0_setup
- 
- 	pbl_blt 0xbf000000 skip_pll_ram_config t8
- 
-+	hornet_1_1_war
++.macro	hornet_mips24k_cp0_setup
++	.set push
++	.set noreorder
 +
- 	pbl_ar9331_pll
- 	pbl_ar9331_ddr1_config
- 
++	/*
++	 * Clearing CP0 registers - This is generally required for the MIPS-24k
++	 * core used by Atheros.
++	 */
++	mtc0	zero, CP0_INDEX
++	mtc0	zero, CP0_ENTRYLO0
++	mtc0	zero, CP0_ENTRYLO1
++	mtc0	zero, CP0_CONTEXT
++	mtc0	zero, CP0_PAGEMASK
++	mtc0	zero, CP0_WIRED
++	mtc0	zero, CP0_INFO
++	mtc0	zero, CP0_COUNT
++	mtc0	zero, CP0_ENTRYHI
++	mtc0	zero, CP0_COMPARE
++
++	li	t0, ST0_CU0 | ST0_ERL
++	mtc0	t0, CP0_STATUS
++
++	mtc0	zero, CP0_CAUSE
++	mtc0	zero, CP0_EPC
++
++	li	t0, CONF_CM_UNCACHED
++	mtc0	t0, CP0_CONFIG
++
++	mtc0	zero, CP0_LLADDR
++	mtc0	zero, CP0_WATCHLO
++	mtc0	zero, CP0_WATCHHI
++	mtc0	zero, CP0_XCONTEXT
++	mtc0	zero, CP0_FRAMEMASK
++	mtc0	zero, CP0_DIAGNOSTIC
++	mtc0	zero, CP0_DEBUG
++	mtc0	zero, CP0_DEPC
++	mtc0	zero, CP0_PERFORMANCE
++	mtc0	zero, CP0_ECC
++	mtc0	zero, CP0_CACHEERR
++	mtc0	zero, CP0_TAGLO
++
++	.set	pop
++.endm
++
+ #endif /* __ASM_MACH_ATH79_PBL_MACROS_H */
 -- 
 2.7.0
 
