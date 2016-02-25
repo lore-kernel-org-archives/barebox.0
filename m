@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aYttb-000304-03
- for barebox@lists.infradead.org; Thu, 25 Feb 2016 11:15:48 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id AA7D2A003EC
- for <barebox@lists.infradead.org>; Thu, 25 Feb 2016 12:15:45 +0100 (CET)
-From: Stefan Christ <s.christ@phytec.de>
-Date: Thu, 25 Feb 2016 12:15:22 +0100
-Message-Id: <1456398922-8253-1-git-send-email-s.christ@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aYv6e-0000Yl-Iu
+ for barebox@lists.infradead.Org; Thu, 25 Feb 2016 12:33:21 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 25 Feb 2016 13:32:57 +0100
+Message-Id: <1456403577-24700-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,82 +19,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX: bbu-internal: call detect for mmc devices
-To: barebox@lists.infradead.org
+Subject: [PATCH] bootm: Fix booting uImages
+To: Barebox List <barebox@lists.infradead.org>
 
-For the MMC update_handler it makes sense to probe the device before
-writing to it. If the device is not probed yet, you get errors like
+This fixes:
+0a37e22d (bootm: use names instead of numbers for image parts)
 
-    $ barebox_update -y -t mmc0 /mnt/tftp/barebox.bin
-    barebox_update: Read-only file system
+This commit switches to strings for the image numbers for better FIT
+image support (which uses names instead of numbers). These strings
+may be NULL when no image number is given. They are used uninitialzed
+in several places. Introduce a wrapper function to convert the string
+into a number. Check for NULL here in which case we return 0 which
+is the correct value.
 
-The code is nearly equivalent to
-
-    $ detect mmc0
-    $ barebox_update -y -t mmc0 /mnt/tftp/barebox.bin
-
-The function device_detect_by_name also handles device names with
-partition suffix like "/dev/mmc3.boot0".
-
-While at it, use the macro BIT for the bit field.
-
-Signed-off-by: Stefan Christ <s.christ@phytec.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/imx-bbu-internal.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ common/bootm.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-index ac90c53..1ecc0d7 100644
---- a/arch/arm/mach-imx/imx-bbu-internal.c
-+++ b/arch/arm/mach-imx/imx-bbu-internal.c
-@@ -34,9 +34,10 @@
+diff --git a/common/bootm.c b/common/bootm.c
+index 7d00f8e..6d22aab 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -75,6 +75,13 @@ static const char * const bootm_verify_names[] = {
+ 	[BOOTM_VERIFY_SIGNATURE] = "signature",
+ };
  
- #define FLASH_HEADER_OFFSET_MMC		0x400
- 
--#define IMX_INTERNAL_FLAG_NAND		(1 << 0)
--#define IMX_INTERNAL_FLAG_KEEP_DOSPART	(1 << 1)
--#define IMX_INTERNAL_FLAG_ERASE		(1 << 2)
-+#define IMX_INTERNAL_FLAG_NAND		BIT(0)
-+#define IMX_INTERNAL_FLAG_KEEP_DOSPART	BIT(1)
-+#define IMX_INTERNAL_FLAG_ERASE		BIT(2)
-+#define IMX_INTERNAL_FLAG_PROBE		BIT(3)
- 
- struct imx_internal_bbu_handler {
- 	struct bbu_handler handler;
-@@ -52,8 +53,21 @@ struct imx_internal_bbu_handler {
- static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
- 		struct bbu_data *data, void *buf, int image_len)
- {
-+	const char *devname;
- 	int fd, ret;
- 
-+	if (imx_handler->flags & IMX_INTERNAL_FLAG_PROBE) {
-+		devname = data->devicefile;
-+		if (!strncmp(devname, "/dev/", 5))
-+			devname += 5;
-+		ret = device_detect_by_name(devname);
-+		if (ret) {
-+			printf("Detecting device %s failed: %s\n", devname,
-+					strerror(-ret));
-+			return ret;
-+		}
-+	}
++static int uimage_part_num(const char *partname)
++{
++	if (!partname)
++		return 0;
++	return simple_strtoul(partname, NULL, 0);
++}
 +
- 	fd = open(data->devicefile, O_RDWR | O_CREAT);
- 	if (fd < 0)
- 		return fd;
-@@ -487,7 +501,8 @@ int imx6_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
- 	imx_handler = __init_handler(name, devicefile, flags);
- 	imx_handler->flash_header_offset = FLASH_HEADER_OFFSET_MMC;
+ /*
+  * bootm_load_os() - load OS to RAM
+  *
+@@ -109,7 +116,7 @@ int bootm_load_os(struct image_data *data, unsigned long load_address)
+ 	if (data->os) {
+ 		int num;
  
--	imx_handler->flags = IMX_INTERNAL_FLAG_KEEP_DOSPART;
-+	imx_handler->flags = IMX_INTERNAL_FLAG_KEEP_DOSPART |
-+						IMX_INTERNAL_FLAG_PROBE;
- 	imx_handler->handler.handler = imx_bbu_internal_v2_update;
+-		num = simple_strtoul(data->os_part, NULL, 0);
++		num = uimage_part_num(data->os_part);
  
- 	return __register_handler(imx_handler);
+ 		data->os_res = uimage_load_to_sdram(data->os,
+ 			num, load_address);
+@@ -224,7 +231,7 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
+ 			return ret;
+ 		}
+ 
+-		num = simple_strtoul(data->initrd_part, NULL, 0);
++		num = uimage_part_num(data->initrd_part);
+ 
+ 		data->initrd_res = uimage_load_to_sdram(data->initrd,
+ 			num, load_address);
+@@ -258,7 +265,7 @@ static int bootm_open_oftree_uimage(struct image_data *data, size_t *size,
+ {
+ 	enum filetype ft;
+ 	const char *oftree = data->oftree_file;
+-	int num = simple_strtoul(data->oftree_part, NULL, 0);
++	int num = uimage_part_num(data->oftree_part);
+ 	struct uimage_handle *of_handle;
+ 	int release = 0;
+ 
+@@ -407,8 +414,7 @@ int bootm_get_os_size(struct image_data *data)
+ 	int ret;
+ 
+ 	if (data->os)
+-		return uimage_get_size(data->os,
+-				       simple_strtoul(data->os_part, NULL, 0));
++		return uimage_get_size(data->os, uimage_part_num(data->os_part));
+ 	if (data->os_fit)
+ 		return data->os_fit->kernel_size;
+ 
+@@ -574,7 +580,7 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 			data->os_file);
+ 	if (os_type == filetype_uimage &&
+ 			data->os->header.ih_type == IH_TYPE_MULTI)
+-		printf(", multifile image %s", data->os_part);
++		printf(", multifile image %d", uimage_part_num(data->os_part));
+ 	printf("\n");
+ 
+ 	if (data->os_address == UIMAGE_SOME_ADDRESS)
 -- 
-1.9.1
+2.7.0
 
 
 _______________________________________________
