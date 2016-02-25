@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vk0-x242.google.com ([2607:f8b0:400c:c05::242])
+Received: from mail-vk0-x244.google.com ([2607:f8b0:400c:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aYxlr-0003uP-3K
- for barebox@lists.infradead.org; Thu, 25 Feb 2016 15:24:04 +0000
-Received: by mail-vk0-x242.google.com with SMTP id e185so3027687vkb.2
- for <barebox@lists.infradead.org>; Thu, 25 Feb 2016 07:23:46 -0800 (PST)
+ id 1aYxmH-0003zZ-54
+ for barebox@lists.infradead.org; Thu, 25 Feb 2016 15:24:29 +0000
+Received: by mail-vk0-x244.google.com with SMTP id c3so3021855vkb.0
+ for <barebox@lists.infradead.org>; Thu, 25 Feb 2016 07:24:11 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <1456391693-25172-3-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1456391693-25172-5-git-send-email-antonynpavlov@gmail.com>
 References: <1456391693-25172-1-git-send-email-antonynpavlov@gmail.com>
- <1456391693-25172-3-git-send-email-antonynpavlov@gmail.com>
+ <1456391693-25172-5-git-send-email-antonynpavlov@gmail.com>
 From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Thu, 25 Feb 2016 16:23:26 +0100
-Message-ID: <CAGm1_ktJ-Hwqxq-D7BV3GLcDTyeYstx4Sfdfov14-gSOBW23gA@mail.gmail.com>
+Date: Thu, 25 Feb 2016 16:23:51 +0100
+Message-ID: <CAGm1_ktBovc26ru3UcHxYzfz+Z5rLFYzNa4z2xFF5N7aboZ8Tw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,82 +24,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] MIPS: ath79: pbl: import hornet_1_1_war routine from
- U-Boot_mod
+Subject: Re: [PATCH 4/4] MIPS: black-swift: pbl: use more lowlevel init code
+ from U-Boot_mod
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox <barebox@lists.infradead.org>
 
 On Thu, Feb 25, 2016 at 10:14 AM, Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> U-Boot_mod is a popular bootloader for Atheros AR93xx chips,
-> please see https://github.com/pepe2k/u-boot_mod for details.
->
-> It's reasonable to import some lowlevel AR9331 initialization
-> code from U-Boot_mod.
->
-> AR9331 (Hornet) 1.1 currently needs an additional
-> reset at 1st boot. This patch imports necessary code
-> from u-boot_mod/u-boot/cpu/mips/start_bootstrap.S.
->
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
 Reviewed-by: Yegor Yefremov <yegorslists@googlemail.com>
 
 > ---
->  arch/mips/mach-ath79/include/mach/pbl_macros.h | 43 ++++++++++++++++++++++++++
->  1 file changed, 43 insertions(+)
+>  arch/mips/boards/black-swift/include/board/board_pbl_start.h | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
-> diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
-> index 810f49d..24cfd60 100644
-> --- a/arch/mips/mach-ath79/include/mach/pbl_macros.h
-> +++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
-> @@ -223,4 +223,47 @@
->         .set    pop
->  .endm
+> diff --git a/arch/mips/boards/black-swift/include/board/board_pbl_start.h b/arch/mips/boards/black-swift/include/board/board_pbl_start.h
+> index 7394092..3f2caa0 100644
+> --- a/arch/mips/boards/black-swift/include/board/board_pbl_start.h
+> +++ b/arch/mips/boards/black-swift/include/board/board_pbl_start.h
+> @@ -26,10 +26,12 @@
 >
-> +.macro hornet_1_1_war
-> +       .set push
-> +       .set noreorder
+>         mips_barebox_10h
+>
+> -       mips_disable_interrupts
+> +       hornet_mips24k_cp0_setup
+>
+>         pbl_blt 0xbf000000 skip_pll_ram_config t8
+>
+> +       hornet_1_1_war
 > +
-> +/*
-> + * WAR: Hornet 1.1 currently need a reset once we boot to let the resetb has
-> + *      enough time to stable, so that trigger reset at 1st boot, system team
-> + *      is investigaing the issue, will remove in short
-> + */
-> +
-> +       li  t7, 0xbd000000
-> +       lw  t8, 0(t7)
-> +       li  t9, 0x12345678
-> +
-> +       /* if value of 0xbd000000 != 0x12345678, go to do_reset */
-> +       bne t8, t9, do_reset
-> +        nop
-> +
-> +       li  t9, 0xffffffff
-> +       sw  t9, 0(t7)
-> +       b   normal_path
-> +        nop
-> +
-> +do_reset:
-> +       /* put 0x12345678 into 0xbd000000 */
-> +       sw  t9, 0(t7)
-> +
-> +       /* reset register 0x1806001c */
-> +       li  t7, 0xb806001c
-> +       lw  t8, 0(t7)
-> +       /* bit24, fullchip reset */
-> +       li  t9, 0x1000000
-> +       or  t8, t8, t9
-> +       sw  t8, 0(t7)
-> +
-> +do_reset_loop:
-> +       b   do_reset_loop
-> +        nop
-> +
-> +normal_path:
-> +       .set    pop
-> +.endm
-> +
->  #endif /* __ASM_MACH_ATH79_PBL_MACROS_H */
+>         pbl_ar9331_pll
+>         pbl_ar9331_ddr2_config
+>
 > --
 > 2.7.0
 >
