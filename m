@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aYqWA-00038d-4G
- for barebox@lists.infradead.org; Thu, 25 Feb 2016 07:39:24 +0000
+ id 1aYqWA-00038b-5A
+ for barebox@lists.infradead.org; Thu, 25 Feb 2016 07:39:23 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 6583BA00438
+ by root.phytec.de (Postfix) with ESMTP id 91704A00445
  for <barebox@lists.infradead.org>; Thu, 25 Feb 2016 08:39:20 +0100 (CET)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Thu, 25 Feb 2016 08:36:48 +0100
-Message-Id: <1456385809-46968-2-git-send-email-t.remmet@phytec.de>
+Date: Thu, 25 Feb 2016 08:36:49 +0100
+Message-Id: <1456385809-46968-3-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1456385809-46968-1-git-send-email-t.remmet@phytec.de>
 References: <1456385809-46968-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,139 +24,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/3] commands: Add of_fixup_status
+Subject: [PATCH v2 3/3] ARM: am335x_defconfig: Enable the of_fixup_status
+ command
 To: barebox@lists.infradead.org
-
-of_fixup_status enables or disables the status property of a
-given node with a device tree fixup.
 
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- commands/Kconfig           | 16 ++++++++++
- commands/Makefile          |  1 +
- commands/of_fixup_status.c | 74 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 91 insertions(+)
- create mode 100644 commands/of_fixup_status.c
+ arch/arm/configs/am335x_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index b4fdc86..9519a44 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -2114,6 +2114,22 @@ config CMD_OF_DISPLAY_TIMINGS
- 		  -s path	select display-timings and register oftree fixup
- 		  -f dtb	work on dtb. Has no effect on -s option
- 
-+config CMD_OF_FIXUP_STATUS
-+	tristate
-+	select OFTREE
-+	prompt "of_fixup_status"
-+	help
-+	  Register a fixup to enable or disable node
-+
-+	  Usage: of_fixup_node [-d] path
-+
-+	  Options:
-+		  -d		disable node
-+		  path		Node path or alias
-+
-+	  Register a fixup to enable or disable a device tree node.
-+	  Nodes are enabled on default. Disabled with -d.
-+
- config CMD_OFTREE
- 	tristate
- 	select OFTREE
-diff --git a/commands/Makefile b/commands/Makefile
-index d985341..8975d4b 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -78,6 +78,7 @@ obj-$(CONFIG_CMD_OF_PROPERTY)	+= of_property.o
- obj-$(CONFIG_CMD_OF_NODE)	+= of_node.o
- obj-$(CONFIG_CMD_OF_DUMP)	+= of_dump.o
- obj-$(CONFIG_CMD_OF_DISPLAY_TIMINGS)	+= of_display_timings.o
-+obj-$(CONFIG_CMD_OF_FIXUP_STATUS)	+= of_fixup_status.o
- obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
- obj-$(CONFIG_CMD_IOMEM)		+= iomemport.o
- obj-$(CONFIG_CMD_LINUX_EXEC)	+= linux_exec.o
-diff --git a/commands/of_fixup_status.c b/commands/of_fixup_status.c
-new file mode 100644
-index 0000000..9a4a619
---- /dev/null
-+++ b/commands/of_fixup_status.c
-@@ -0,0 +1,74 @@
-+/*
-+ * of_fixup_status.c - Register a fixup to enable or disable nodes in the
-+ * device tree
-+ *
-+ * Copyright (c) 2014-2016 PHYTEC Messtechnik GmbH
-+ * Author:
-+ *	Teresa Remmet
-+ *	Wadim Egorov
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <common.h>
-+#include <of.h>
-+#include <command.h>
-+#include <malloc.h>
-+#include <complete.h>
-+#include <asm/byteorder.h>
-+#include <linux/err.h>
-+#include <getopt.h>
-+#include <string.h>
-+
-+static int do_of_fixup_status(int argc, char *argv[])
-+{
-+	int opt;
-+	bool status = 1;
-+	char *node = NULL;
-+
-+	while ((opt = getopt(argc, argv, "d")) > 0) {
-+		switch (opt) {
-+		case 'd':
-+			status = 0;
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
-+	if (optind == argc)
-+		return COMMAND_ERROR_USAGE;
-+
-+	node = xstrdup(argv[optind]);
-+
-+	of_register_set_status_fixup(node, status);
-+
-+	return 0;
-+}
-+
-+BAREBOX_CMD_HELP_START(of_fixup_status)
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT("-d",  "disable node")
-+BAREBOX_CMD_HELP_OPT("path",  "Node path\n")
-+BAREBOX_CMD_HELP_TEXT("Register a fixup to enable or disable a device tree node.")
-+BAREBOX_CMD_HELP_TEXT("Nodes are enabled on default. Disabled with -d.")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(of_fixup_status)
-+	.cmd	= do_of_fixup_status,
-+	BAREBOX_CMD_DESC("register a fixup to enable or disable node")
-+	BAREBOX_CMD_OPTS("[-d] path")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_COMPLETE(devicetree_file_complete)
-+	BAREBOX_CMD_HELP(cmd_of_fixup_status_help)
-+BAREBOX_CMD_END
+diff --git a/arch/arm/configs/am335x_defconfig b/arch/arm/configs/am335x_defconfig
+index 7cf48b8..9196fb8 100644
+--- a/arch/arm/configs/am335x_defconfig
++++ b/arch/arm/configs/am335x_defconfig
+@@ -84,6 +84,7 @@ CONFIG_CMD_BAREBOX_UPDATE=y
+ CONFIG_CMD_OF_NODE=y
+ CONFIG_CMD_OF_PROPERTY=y
+ CONFIG_CMD_OF_DISPLAY_TIMINGS=y
++CONFIG_CMD_OF_FIXUP_STATUS=y
+ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_TIME=y
+ CONFIG_NET=y
 -- 
 1.9.1
 
