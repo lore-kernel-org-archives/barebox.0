@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([192.81.58.21])
+Received: from mail-vk0-x22e.google.com ([2607:f8b0:400c:c05::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aZ0V2-0003iA-Ku
- for barebox@lists.infradead.org; Thu, 25 Feb 2016 18:18:53 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Thu, 25 Feb 2016 18:18:27 +0000
-Message-ID: <1456424342.25961.17.camel@rtred1test09.kymeta.local>
-References: <1456385809-46968-1-git-send-email-t.remmet@phytec.de>
-In-Reply-To: <1456385809-46968-1-git-send-email-t.remmet@phytec.de>
-Content-Language: en-US
-Content-ID: <0CD639DB68E06A40ACC46BEA670885DE@kymetacorp.com>
+ id 1aZ1aE-0000wy-UT
+ for barebox@lists.infradead.org; Thu, 25 Feb 2016 19:28:20 +0000
+Received: by mail-vk0-x22e.google.com with SMTP id k196so57873036vka.0
+ for <barebox@lists.infradead.org>; Thu, 25 Feb 2016 11:27:58 -0800 (PST)
 MIME-Version: 1.0
+In-Reply-To: <56CF068C.4060901@eurek.it>
+References: <56CF068C.4060901@eurek.it>
+Date: Thu, 25 Feb 2016 11:27:57 -0800
+Message-ID: <CAHQ1cqFoYAWjAZQrjNS6S-rpePGNM7oM=6K28aOnKciJMBHHOg@mail.gmail.com>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,61 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] common: oftree: Add fuction to register set status
- fixup
-To: Teresa Remmet <t.remmet@phytec.de>
+Subject: Re: iMX6Q First boot
+To: gianluca <gianlucarenzi@eurek.it>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Thu, 2016-02-25 at 08:36 +0100, Teresa Remmet wrote:
+On Thu, Feb 25, 2016 at 5:50 AM, gianluca <gianlucarenzi@eurek.it> wrote:
+> Hello list,
+> I am trying to bootup my custom designed board (actually a rev.0, but I know
+> it will need a rev.1 ASAP ;-).
+>
+> I started with the latest (2016.02) barebox version, adding my board to the
+> Kconfig & Makefile stuff, copying the udoo stuff to the
+> arch/arm/boards/eurek-ek360 (as the board name is EK360) and cut-off any
+> unneeded initialization.
+>
+> I am using imx_v7_defconfig as a starting point for configuration.
+>
+> I kept the device tree file as short as possible, keeping only the model,
+> memory, gpio-pinmux for uart (debug) and the uart3 configurator.
+>
+> In attachment there are the board.c, the lowlevel.c and the device-tree
+> file.
 
->  
-> +struct of_fixup_status_data {
-> +	char *node;
+gianluca, the information you included is somewhat incomplete.
+Attached file is a .dsti file (include file, not a standalone .dts)
+which references phandles not defined in the file itself, so it seems
+like there should be more to it.
 
-const char *node.
+However there are a couple of things to note about the code you included:
 
-I think path would be a better name, as node usually is a device_node
-pointer, not a path.
+ - The device tree code that you provided doesn't have
+    chosen {
+          linux,stdout-path = <something>;
+     };
+     which means that BB's console subsystem doesn't have a assigned
+"stdout" device, which might explain why you don't see the output
 
-> +	bool status;
-> +};
-> +
-> +static int of_fixup_status(struct device_node *root, void *context)
-> +{
-> +	struct of_fixup_status_data *data = context;
+ - Udoo board, that you used as a reference for your implementation
+actually doesn't "support" for CONFIG_DEBUG_LL, and what I mean by
+this is that there's no code in lowlevel.c that would set-up pinmux or
+UART blocks correctly (see phytech-som-imx6/lowlevel.c for example),
+so the  fact that you were able to see any output would mean that
+either default in all involved registers are good for your board or
+that settings were set during some other initialization process (most
+likely when UART driver was probed and pinmux configured as a part of
+it)
 
-const struct of_fixup_status_data *data
+Hope this helps,
 
-> +	struct device_node *node;
-> +
-> +	node = of_find_node_by_path_or_alias(root, data->node);
-> +	if (!node)
-> +		return -ENODEV;
-> +
-> +	if (data->status)
-> +		return of_device_enable(node);
-> +	else
-> +		return of_device_disable(node);
-> +}
-> +
-> +/**
-> + * of_register_set_status_fixup - register fix up to set status of nodes
-> + * Register a fixup to enable or disable a node in the devicet tree by
-> + * passing the path or alias.
-> + */
-> +int of_register_set_status_fixup(char *node, bool status)
+Andrey
 
-(const char *path, bool status)
-
-> +{
-> +	struct of_fixup_status_data *data;
-> +
-> +	data = xzalloc(sizeof(*data));
-> +	data->node = node;
-> +	data->status = status;
-> +
-> +	return of_register_fixup(of_fixup_status, (void *)data);
-> +}
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
