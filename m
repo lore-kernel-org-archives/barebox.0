@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aYrgH-0008TA-Ok
- for barebox@lists.infradead.Org; Thu, 25 Feb 2016 08:53:54 +0000
-Date: Thu, 25 Feb 2016 09:53:31 +0100
+ id 1aYriv-0002gN-MA
+ for barebox@lists.infradead.Org; Thu, 25 Feb 2016 08:56:38 +0000
+Date: Thu, 25 Feb 2016 09:56:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160225085331.GC3939@pengutronix.de>
-References: <1456385809-46968-1-git-send-email-t.remmet@phytec.de>
+Message-ID: <20160225085615.GD3939@pengutronix.de>
+References: <CABQt-U=y5nfNQpb88nEF4cRkL7oLQ+a09YYspQPnhPyX4kLQgw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1456385809-46968-1-git-send-email-t.remmet@phytec.de>
+In-Reply-To: <CABQt-U=y5nfNQpb88nEF4cRkL7oLQ+a09YYspQPnhPyX4kLQgw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] common: oftree: Add fuction to register set
- status fixup
-To: Teresa Remmet <t.remmet@phytec.de>
+Subject: Re: mount fat regression
+To: Philippe Leduc <ledphilippe@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Feb 25, 2016 at 08:36:47AM +0100, Teresa Remmet wrote:
-> Added a function to register a fixup to enable or disable
-> device tree nodes.
+On Wed, Feb 24, 2016 at 05:44:42PM +0100, Philippe Leduc wrote:
+> Hi,
 > 
-> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
-> ---
->  common/oftree.c | 36 ++++++++++++++++++++++++++++++++++++
->  include/of.h    |  1 +
->  2 files changed, 37 insertions(+)
+> It seems that there is a regression in the mount command for fat
+> filesystem: if I try to mount a partition that is formatted with
+> fatfs, I got this error:
+> 
+> mount /dev/mmc2.netcom
+> mount: No such file or directory
+> 
+> I do not have the problem with a fat formatted with Windows or Linux.
+> 
+> Do you have an idea?
 
-Applied, thanks
+Are you sure this is a regression? Did this work before? I don't think
+that FAT support in general is broken, it's probably something with your
+special setup.
 
-Possible future enhancements could be that we can list the fixups and
-maybe even remove them.
+What does 'filetype /dev/mmc2.netcom' give you?
 
 Sascha
 
