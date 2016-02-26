@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x233.google.com ([2a00:1450:400c:c09::233])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aZEcE-0008EP-QY
- for barebox@lists.infradead.org; Fri, 26 Feb 2016 09:23:15 +0000
-Received: by mail-wm0-x233.google.com with SMTP id a4so61632773wme.1
- for <barebox@lists.infradead.org>; Fri, 26 Feb 2016 01:22:53 -0800 (PST)
+Received: from qmail.e-mind.com ([188.94.192.39])
+ by bombadil.infradead.org with smtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aZElW-0000Gh-BN
+ for barebox@lists.infradead.org; Fri, 26 Feb 2016 09:32:51 +0000
+References: <56CF068C.4060901@eurek.it>
+ <CAHQ1cqFoYAWjAZQrjNS6S-rpePGNM7oM=6K28aOnKciJMBHHOg@mail.gmail.com>
+From: gianluca <gianlucarenzi@eurek.it>
+Message-ID: <56D01BA9.9080707@eurek.it>
+Date: Fri, 26 Feb 2016 10:32:25 +0100
 MIME-Version: 1.0
-In-Reply-To: <CABQt-U=trcYcMu-uxmR-nMkDTu_te54enJZa8X-d1oN0y9aO5A@mail.gmail.com>
-References: <CABQt-UmmZmRR9zPscx=8-eQ49eNUS7GQVxjBXs6D0OgiuWfquQ@mail.gmail.com>
- <20160223080530.GZ3939@pengutronix.de>
- <CABQt-Um-ENNbt_MbbF4NP42jmufsmgxV6pVvEsTFjw0O=++=ow@mail.gmail.com>
- <87bn7516ji.fsf@gmail.com>
- <CABQt-U=trcYcMu-uxmR-nMkDTu_te54enJZa8X-d1oN0y9aO5A@mail.gmail.com>
-Date: Fri, 26 Feb 2016 10:22:52 +0100
-Message-ID: <CABQt-UknDkU-H+QoRO_=C5EqdUm=r4CL7xXtR2wZe63rH46YiA@mail.gmail.com>
-From: Philippe Leduc <ledphilippe@gmail.com>
+In-Reply-To: <CAHQ1cqFoYAWjAZQrjNS6S-rpePGNM7oM=6K28aOnKciJMBHHOg@mail.gmail.com>
+Content-Type: multipart/mixed; boundary="------------010805080104000709090007"
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,89 +19,114 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: bootm crash - bad uimage?
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: iMX6Q First boot
+To: barebox@lists.infradead.org
 
-Hi,
+This is a multi-part message in MIME format.
+--------------010805080104000709090007
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-I managed to boot a 'raw' image. It is quite straightforward in fact.
-Here is what I do:
-
-addpart /dev/mem 0x10000000@0x10020000(sys)
-uncompress raw.boot /dev/mem.sys
-go 0x10020000
-
-Thank you for your help :)
-
---
-Philippe LEDUC
-ledphilippe@gmail.com
-
-
-2016-02-25 10:50 GMT+01:00 Philippe Leduc <ledphilippe@gmail.com>:
-> Hi,
+On 02/25/2016 08:27 PM, Andrey Smirnov wrote:
+> On Thu, Feb 25, 2016 at 5:50 AM, gianluca <gianlucarenzi@eurek.it> wrote:
+>> Hello list,
+>> I am trying to bootup my custom designed board (actually a rev.0, but I know
+>> it will need a rev.1 ASAP ;-).
+>>
+>> I started with the latest (2016.02) barebox version, adding my board to the
+>> Kconfig & Makefile stuff, copying the udoo stuff to the
+>> arch/arm/boards/eurek-ek360 (as the board name is EK360) and cut-off any
+>> unneeded initialization.
+>>
+>> I am using imx_v7_defconfig as a starting point for configuration.
+>>
+>> I kept the device tree file as short as possible, keeping only the model,
+>> memory, gpio-pinmux for uart (debug) and the uart3 configurator.
+>>
+>> In attachment there are the board.c, the lowlevel.c and the device-tree
+>> file.
 >
->> So if you don't have an initrd, do you need uImage at all? You can boot
-> a bootable image directly
-> Well, I do it this way because it was working I guess^^' but I tink
-> your proposition is the right think to do!
+> gianluca, the information you included is somewhat incomplete.
+> Attached file is a .dsti file (include file, not a standalone .dts)
+> which references phandles not defined in the file itself, so it seems
+> like there should be more to it.
 >
-> Thank you for the tip and the details, I'll check that and I'll give
-> you a feedback ASAP :)
+
+The .dts file is almost empty. In attachment there is such a file. ;-)
+
+
+> However there are a couple of things to note about the code you included:
 >
-> Best regards,
+>   - The device tree code that you provided doesn't have
+>      chosen {
+>            linux,stdout-path = <something>;
+>       };
+>       which means that BB's console subsystem doesn't have a assigned
+> "stdout" device, which might explain why you don't see the output
 >
-> --
-> Philippe LEDUC
-> ledphilippe@gmail.com
+
+Even if it says: linux,stdout-path = .... ??? I suppose it was good only 
+for Linux Kernel.
+My goal is to have ONLY one device-tree for Linux & Barebox. It is 
+simpler to maintain, and if I add something to linux, it is 
+automagically added to barebox too (if barebox drivers exists...)
+
+
+>   - Udoo board, that you used as a reference for your implementation
+> actually doesn't "support" for CONFIG_DEBUG_LL, and what I mean by
+> this is that there's no code in lowlevel.c that would set-up pinmux or
+> UART blocks correctly (see phytech-som-imx6/lowlevel.c for example),
+> so the  fact that you were able to see any output would mean that
+> either default in all involved registers are good for your board or
+> that settings were set during some other initialization process (most
+> likely when UART driver was probed and pinmux configured as a part of
+> it)
 >
+
+I didn't kown it. I will try ASAP.
+
+
+> Hope this helps,
 >
-> 2016-02-25 10:30 GMT+01:00 Holger Schurig <holgerschurig@gmail.com>:
->> Philippe Leduc <ledphilippe@gmail.com> writes:
->>
->>> Note: I am using mkimage to create bootable image of a real-time OS
->>> (PikeOS). There is no initrd or dtc at this step for now: I guess it
->>> is like loading an old Linux kernel without userspace.
->>
->> So if you don't have an initrd, do you need uImage at all? You can boot
->> a bootable image directly
->>
->> I use Linux without an initrd and don't bother with an uImage at all. I
->> have my kernel on the SD-CARD or eMMC in /boot/vmlinuz, just like on any
->> other (x86) Linux box.
->>
->> Here is my env/boot/emmc script. I use "boot", not "bootm", but AFAIK boot uses
->> bootm under the hood.
->>
->>    global linux.bootargs.dyn.root="root=/dev/mmcblk0p${global.boot.partition} rootwait ro"
->>    global bootm.image=/emmc/boot/vmlinuz
->>    detect mmc3
->>    mkdir -p /emmc
->>    mount /dev/mmc3.0 /emmc
->>
->> I have similar scripts for SD-Card and USB.
->>
->>
->> The kernel is installed using the normal Linux mechanism:
->>
->> make -C ${KERNEL_DIR} ARCH=arm INSTALL_PATH=${IMAGE_DIR}/boot zinstall
->>
->> maybe PikeOS has something equivalent. The result is:
->>
->> $ file image/boot/vmlinuz-4.4.2
->> image/boot/vmlinuz-4.4.2: Linux kernel ARM boot executable zImage (little-endian)
->>
->>
->>
->> As you see, I boot directly into the vmlinuz ... and I don't use
->> Barebox' CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW, too.
+I hope too... ;-)
+
+
+-- 
+Eurek s.r.l.                          |
+Electronic Engineering                | http://www.eurek.it
+via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
+p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
+
+--------------010805080104000709090007
+Content-Type: text/plain; charset=UTF-8;
+ name="imx6q-eurek-ek360.dts"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="imx6q-eurek-ek360.dts"
+
+LyoKICogQ29weXJpZ2h0IDIwMTQgUmFwaGHDq2wgUG9nZ2kKICogQ29weXJpZ2h0IDIwMTIg
+RnJlZXNjYWxlIFNlbWljb25kdWN0b3IsIEluYy4KICogQ29weXJpZ2h0IDIwMTEgTGluYXJv
+IEx0ZC4KICoKICogVGhlIGNvZGUgY29udGFpbmVkIGhlcmVpbiBpcyBsaWNlbnNlZCB1bmRl
+ciB0aGUgR05VIEdlbmVyYWwgUHVibGljCiAqIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEg
+Y29weSBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UKICogVmVyc2lvbiAyIG9y
+IGxhdGVyIGF0IHRoZSBmb2xsb3dpbmcgbG9jYXRpb25zOgogKgogKiBodHRwOi8vd3d3Lm9w
+ZW5zb3VyY2Uub3JnL2xpY2Vuc2VzL2dwbC1saWNlbnNlLmh0bWwKICogaHR0cDovL3d3dy5n
+bnUub3JnL2NvcHlsZWZ0L2dwbC5odG1sCiAqLwoKL2R0cy12MS87CgojaW5jbHVkZSA8YXJt
+L2lteDZxLmR0c2k+CiNpbmNsdWRlICJpbXg2cS5kdHNpIgojaW5jbHVkZSAiaW14NnEtZXVy
+ZWstZWszNjAuZHRzaSIKCi8gewogICAgICAgbW9kZWwgPSAiRUszNjAgRXVyZWsgaS5NWDYg
+UXVhZCI7CiAgICAgICBjb21wYXRpYmxlID0gImV1cmVrLGVrMzYwIiwgImZzbCxpbXg2cSI7
+Cn07Cg==
+--------------010805080104000709090007
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--------------010805080104000709090007--
