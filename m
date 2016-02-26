@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aZLHB-00067H-MH
- for barebox@lists.infradead.org; Fri, 26 Feb 2016 16:30:00 +0000
+ id 1aZLHB-00067L-MC
+ for barebox@lists.infradead.org; Fri, 26 Feb 2016 16:29:59 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri, 26 Feb 2016 17:29:25 +0100
-Message-Id: <1456504168-1206-2-git-send-email-s.trumtrar@pengutronix.de>
+Date: Fri, 26 Feb 2016 17:29:27 +0100
+Message-Id: <1456504168-1206-4-git-send-email-s.trumtrar@pengutronix.de>
 In-Reply-To: <1456504168-1206-1-git-send-email-s.trumtrar@pengutronix.de>
 References: <1456504168-1206-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,55 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] include: crypto: add simplified ablkcipher struct
+Subject: [PATCH 4/5] ARM: i.MX25: dtsi: add scc node
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-The struct is based on the Linux v4.5-rc5 crypto codebase.
-As the crypto handling in barebox is implemented much simpler,
-the struct is also shrunk to the bare minimum.
-
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- include/crypto.h | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
- create mode 100644 include/crypto.h
+ arch/arm/dts/imx25.dtsi | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/crypto.h b/include/crypto.h
-new file mode 100644
-index 000000000000..d3c6a761a42e
---- /dev/null
-+++ b/include/crypto.h
-@@ -0,0 +1,29 @@
-+/*
-+ * Copyright (C) 2016 Pengutronix, Steffen Trumtrar <kernel@pengutronix.de>
-+ *
-+ * simplified version of the Linux kernel header from include/linux/crypto.h
-+ * 
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
+diff --git a/arch/arm/dts/imx25.dtsi b/arch/arm/dts/imx25.dtsi
+index 13fbcc4f8da6..1f3cdf0fe6ba 100644
+--- a/arch/arm/dts/imx25.dtsi
++++ b/arch/arm/dts/imx25.dtsi
+@@ -23,6 +23,17 @@
+ 			compatible = "mmio-sram";
+ 			reg = <0x78000000 0x20000>;
+ 		};
 +
-+#ifndef __CRYPTO_H__
-+#define __CRYPTO_H__
-+
-+struct ablkcipher_request {
-+	unsigned int nbytes;
-+
-+	void __iomem *info;
-+
-+	void __iomem *dst;
-+	void __iomem *src;
-+};
-+
-+#endif
++		aips@53f00000 {
++			scc: crypto@53fac000 {
++				compatible = "fsl,imx25-scc";
++				reg = <0x53fac000 0x4000>;
++				clocks = <&clks 111>;
++				clock-names = "ipg";
++				interrupts = <49>, <50>;
++				interrupt-names = "scm", "smn";
++			};
++		};
+ 	};
+ };
+ 
 -- 
 2.7.0
 
