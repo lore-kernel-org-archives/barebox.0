@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aZCmG-0007T6-Jy
- for barebox@lists.infradead.Org; Fri, 26 Feb 2016 07:25:30 +0000
-Date: Fri, 26 Feb 2016 08:25:06 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160226072506.GN3939@pengutronix.de>
-References: <3814032.giLfJ2gLGN@dabox> <20160218161449.GB4207@pengutronix.de>
- <2696845.OufSg50XfY@dabox> <1751869.VnkfJctKHi@dabox>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1751869.VnkfJctKHi@dabox>
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aZDDG-0001Qz-5f
+ for barebox@lists.infradead.org; Fri, 26 Feb 2016 07:53:23 +0000
+Message-ID: <1456473175.3401.4.camel@lws-tremmet.phytec.de>
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Fri, 26 Feb 2016 08:52:55 +0100
+In-Reply-To: <1456424342.25961.17.camel@rtred1test09.kymeta.local>
+References: <1456385809-46968-1-git-send-email-t.remmet@phytec.de>
+ <1456424342.25961.17.camel@rtred1test09.kymeta.local>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,45 +22,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v7] Terasic DE0-Nano-SoC: add support
-To: Tim Sander <tim@krieglstein.org>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Steffen Trumtrar <s.trumtrar@pengutronix.de>, Trent Piepho <tpiepho@kymetacorp.com>
+Subject: Re: [PATCH v2 1/3] common: oftree: Add fuction to register set
+ status fixup
+To: Trent Piepho <tpiepho@kymetacorp.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Thu, Feb 25, 2016 at 11:29:42AM +0100, Tim Sander wrote:
-> v7: eof whitespace fixes
+Hello Trent,
+
+Am Donnerstag, den 25.02.2016, 18:18 +0000 schrieb Trent Piepho:
+> On Thu, 2016-02-25 at 08:36 +0100, Teresa Remmet wrote:
 > 
-> A Patch for supporting the Terasic DE0 NANO-SoC with barebox.
-> The pretty similar Socrates Board was taken as a starting point with pulling
-> in the memory timings/pinmux from
-> http://rocketboards.org/foswiki/view/Documentation/AtlasSoCCompileHardwareDesign
+> >  
+> > +struct of_fixup_status_data {
+> > +	char *node;
 > 
-> Signed-off-by: Tim Sander <tim@krieglstein.org>
+> const char *node.
+> 
+> I think path would be a better name, as node usually is a device_node
+> pointer, not a path.
 
-Applied, thanks. Please provide a Changelog next time, otherwise it's
-hard to guess what you actually changed.
+I named it node as it could also be an alias and not only a path.
+But I don't might to rename it.
 
-BTW I noticed the xload defconfig does not build anymore with this patch
-applied because the image gets too big. I searched for the reason at got
-a step closer. The SDRAM sequencer code is compiled into the image
-multiple times, one time for each board. The intention was that the
-linker throws away the unused copies via -ffunction-section and
---gc-sections. Unfortunately this does not work because the functions in
-the different copies all end up with the same name. So for example we
-have mem_precharge_and_activate() three times in the image. Only one
-version is used, but the others can't be thrown away because they are in
-the same section.
+I'll send a fixup, also for the rest.
 
-I hope we can solve this, otherwise we have to split the xloader
-defconfigs into multiple configs.
+Regards,
+Teresa
 
-Sascha
+> 
+> > +	bool status;
+> > +};
+> > +
+> > +static int of_fixup_status(struct device_node *root, void *context)
+> > +{
+> > +	struct of_fixup_status_data *data = context;
+> 
+> const struct of_fixup_status_data *data
+> 
+> > +	struct device_node *node;
+> > +
+> > +	node = of_find_node_by_path_or_alias(root, data->node);
+> > +	if (!node)
+> > +		return -ENODEV;
+> > +
+> > +	if (data->status)
+> > +		return of_device_enable(node);
+> > +	else
+> > +		return of_device_disable(node);
+> > +}
+> > +
+> > +/**
+> > + * of_register_set_status_fixup - register fix up to set status of nodes
+> > + * Register a fixup to enable or disable a node in the devicet tree by
+> > + * passing the path or alias.
+> > + */
+> > +int of_register_set_status_fixup(char *node, bool status)
+> 
+> (const char *path, bool status)
+> 
+> > +{
+> > +	struct of_fixup_status_data *data;
+> > +
+> > +	data = xzalloc(sizeof(*data));
+> > +	data->node = node;
+> > +	data->status = status;
+> > +
+> > +	return of_register_fixup(of_fixup_status, (void *)data);
+> > +}
 
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
