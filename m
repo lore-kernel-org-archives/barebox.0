@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aZCFu-0003gH-Im
- for barebox@lists.infradead.Org; Fri, 26 Feb 2016 06:52:03 +0000
-Date: Fri, 26 Feb 2016 07:51:39 +0100
+ id 1aZCGl-0004FS-Ij
+ for barebox@lists.infradead.Org; Fri, 26 Feb 2016 06:52:56 +0000
+Date: Fri, 26 Feb 2016 07:52:33 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160226065139.GL3939@pengutronix.de>
-References: <1456391693-25172-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20160226065233.GM3939@pengutronix.de>
+References: <1456310925-1057-1-git-send-email-pmamonov@gmail.com>
+ <1456394718-12182-1-git-send-email-pmamonov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1456391693-25172-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1456394718-12182-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +23,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/4] MIPS: ath79: pbl: use more lowlevel init code from
- U-Boot_mod
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v3] input: usb keyboard: fix CTRL+ combinations
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox@lists.infradead.org, Sam Ravnborg <sam@ravnborg.org>, Trent Piepho <tpiepho@kymetacorp.com>
 
-On Thu, Feb 25, 2016 at 12:14:49PM +0300, Antony Pavlov wrote:
-> U-Boot_mod is a popular bootloader for Atheros AR93xx chips,
-> please see https://github.com/pepe2k/u-boot_mod for details.
-> 
-> It's reasonable to import some lowlevel AR9331 initialization
-> code from U-Boot_mod.
-> 
-> Antony Pavlov (4):
->   MIPS: ath79: pbl: import AR9331 CP0 init routine from U-Boot_mod
->   MIPS: ath79: pbl: import hornet_1_1_war routine from U-Boot_mod
->   MIPS: tplink-mr3020: pbl: use more lowlevel init code from U-Boot_mod
->   MIPS: black-swift: pbl: use more lowlevel init code from U-Boot_mod
+On Thu, Feb 25, 2016 at 01:05:18PM +0300, Peter Mamonov wrote:
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
+> ---
+>  drivers/input/input.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/drivers/input/input.c b/drivers/input/input.c
+> index ad7400f..31a9c22 100644
+> --- a/drivers/input/input.c
+> +++ b/drivers/input/input.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/bitmap.h>
+>  #include <input/keyboard.h>
+>  #include <dt-bindings/input/linux-event-codes.h>
+> +#include <readkey.h>
+>  
+>  static LIST_HEAD(input_consumers);
+>  
+> @@ -164,7 +165,10 @@ static void input_console_notify(struct input_notifier *in,
+>  	if (ic->modstate[4] || ic->modstate[5])
+>  		modstate |= 1 << 2;
+>  
+> -	if (modstate & (1 << 0))
+> +	if (modstate & (1 << 1)) {
+> +		ascii = keycode_bb_keys[ev->code];
+> +		ascii = ascii >= 'a' ? CTL_CH(ascii) : 0;
+> +	} else if (modstate & (1 << 0))
+>  		ascii = keycode_bb_shift_keys[ev->code];
+>  	else
+>  		ascii = keycode_bb_keys[ev->code];
+> -- 
+> 2.1.4
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
