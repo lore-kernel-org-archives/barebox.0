@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x243.google.com ([2a00:1450:4010:c04::243])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aZLeU-0008Le-EF
- for barebox@lists.infradead.org; Fri, 26 Feb 2016 16:54:05 +0000
-Received: by mail-lb0-x243.google.com with SMTP id vk4so2565219lbb.1
- for <barebox@lists.infradead.org>; Fri, 26 Feb 2016 08:53:41 -0800 (PST)
-Date: Fri, 26 Feb 2016 20:19:38 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20160226201938.be70db89f8549181645c71cd@gmail.com>
-In-Reply-To: <1456499985-22860-2-git-send-email-yegorslists@googlemail.com>
-References: <1456499985-22860-1-git-send-email-yegorslists@googlemail.com>
- <1456499985-22860-2-git-send-email-yegorslists@googlemail.com>
-Mime-Version: 1.0
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aZO1A-0003OO-I7
+ for barebox@lists.infradead.org; Fri, 26 Feb 2016 19:25:37 +0000
+From: Lucas Stach <dev@lynxeye.de>
+Date: Fri, 26 Feb 2016 20:12:37 +0100
+Message-Id: <1456513959-26781-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,110 +14,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4 2/3] linux/fs.h: add types and routines needed for
- SquashFS
-To: yegorslists@googlemail.com
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] bootm: fix uImage crashes when no partition is given
+To: barebox@lists.infradead.org
 
-On Fri, 26 Feb 2016 16:19:44 +0100
-yegorslists@googlemail.com wrote:
+From: Lucas Stach <l.stach@pengutronix.de>
 
-> From: Yegor Yefremov <yegorslists@googlemail.com>
-> =
+Before the conversion to use the partition string instead of a plain
+integer the default was partition 0, now it's just a NULL pointer.
 
-> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
-> ---
->  include/linux/fs.h | 27 +++++++++++++++++++++++++++
->  1 file changed, 27 insertions(+)
-> =
+There are a lot of places where strtoul is called on the partition string
+which crashes when encountering the NULL pointer. Instead of fixing all
+those places, plug in a default partition string that matches the old
+behavior by picking partition 0.
 
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index 7e9886a..e11a602 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -19,6 +19,26 @@
->  #endif
->  =
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ common/bootm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
->  /*
-> + * File types
-> + *
-> + * NOTE! These match bits 12..15 of stat.st_mode
-> + * (ie "(i_mode >> 12) & 15").
-> + */
-> +#define DT_UNKNOWN	0
-> +#define DT_FIFO		1
-> +#define DT_CHR		2
-> +#define DT_DIR		4
-> +#define DT_BLK		6
-> +#define DT_REG		8
-> +#define DT_LNK		10
-> +#define DT_SOCK		12
-> +#define DT_WHT		14
-> +
-> +struct dir_context {
-> +	loff_t pos;
-> +};
-> +
-> +/*
->   * These are the fs-independent mount-flags: up to 32 flags are supported
->   */
->  #define MS_RDONLY	 1	/* Mount read-only */
-> @@ -74,6 +94,7 @@ struct inode {
->  	struct timespec		i_mtime;
->  	struct timespec		i_ctime;
->  	unsigned int		i_blkbits;
-> +	blkcnt_t		i_blocks;
->  	unsigned short          i_bytes;
->  	umode_t			i_mode;
->  	spinlock_t		i_lock;	/* i_blocks, i_bytes, maybe i_size */
-> @@ -194,6 +215,7 @@ struct file_system_type {
->  =
+diff --git a/common/bootm.c b/common/bootm.c
+index 7d00f8e..1f99b61 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -465,6 +465,8 @@ static void bootm_print_info(struct image_data *data)
+ 		printf("OS image not yet relocated\n");
+ }
+ 
++static char part_zero[] = "0";
++
+ static int bootm_image_name_and_part(const char *name, char **filename, char **part)
+ {
+ 	char *at, *ret;
+@@ -475,7 +477,7 @@ static int bootm_image_name_and_part(const char *name, char **filename, char **p
+ 	ret = xstrdup(name);
+ 
+ 	*filename = ret;
+-	*part = NULL;
++	*part = part_zero;
+ 
+ 	at = strchr(ret, '@');
+ 	if (!at)
+-- 
+2.5.0
 
->  struct file {
->  	struct path		f_path;
-> +	struct inode		*f_inode;	/* cached value */
->  #define f_dentry	f_path.dentry
->  #define f_vfsmnt	f_path.mnt
->  	const struct file_operations	*f_op;
-> @@ -361,4 +383,9 @@ struct file {
->  #define I_DIRTY (I_DIRTY_SYNC | I_DIRTY_DATASYNC | I_DIRTY_PAGES)
->  #define I_DIRTY_ALL (I_DIRTY | I_DIRTY_TIME)
->  =
-
-> +static inline loff_t i_size_read(const struct inode *inode)
-> +{
-> +        return inode->i_size;
-
-checkpatch.pl reports about an error here:
-
-    ERROR: code indent should use tabs where possible
-
-> +}
-> +
->  #endif /* _LINUX_FS_H */
-> -- =
-
-> 2.1.4
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
