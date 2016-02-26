@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aZKCX-0006x7-Ef
+ id 1aZKCX-0006vv-Ee
  for barebox@lists.infradead.org; Fri, 26 Feb 2016 15:21:06 +0000
-Received: by mail-wm0-x243.google.com with SMTP id c200so9602774wme.0
- for <barebox@lists.infradead.org>; Fri, 26 Feb 2016 07:20:48 -0800 (PST)
+Received: by mail-wm0-x243.google.com with SMTP id g62so9598197wme.2
+ for <barebox@lists.infradead.org>; Fri, 26 Feb 2016 07:20:44 -0800 (PST)
 From: yegorslists@googlemail.com
-Date: Fri, 26 Feb 2016 16:19:44 +0100
-Message-Id: <1456499985-22860-2-git-send-email-yegorslists@googlemail.com>
-In-Reply-To: <1456499985-22860-1-git-send-email-yegorslists@googlemail.com>
-References: <1456499985-22860-1-git-send-email-yegorslists@googlemail.com>
+Date: Fri, 26 Feb 2016 16:19:43 +0100
+Message-Id: <1456499985-22860-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,73 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 2/3] linux/fs.h: add types and routines needed for SquashFS
+Subject: [PATCH v4 1/3] linux/types.h: add sector_t and blkcnt_t types
 To: barebox@lists.infradead.org
 
 From: Yegor Yefremov <yegorslists@googlemail.com>
 
 Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 ---
- include/linux/fs.h | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ include/linux/types.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 7e9886a..e11a602 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -19,6 +19,26 @@
- #endif
+diff --git a/include/linux/types.h b/include/linux/types.h
+index 9f8eb67..f64ec4a 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -157,6 +157,22 @@ typedef __u32 __bitwise __wsum;
+ #define __aligned_be64 __be64 __attribute__((aligned(8)))
+ #define __aligned_le64 __le64 __attribute__((aligned(8)))
  
- /*
-+ * File types
++/**
++ * The type used for indexing onto a disc or disc partition.
 + *
-+ * NOTE! These match bits 12..15 of stat.st_mode
-+ * (ie "(i_mode >> 12) & 15").
++ * Linux always considers sectors to be 512 bytes long independently
++ * of the devices real block size.
++ *
++ * blkcnt_t is the type of the inode's block count.
 + */
-+#define DT_UNKNOWN	0
-+#define DT_FIFO		1
-+#define DT_CHR		2
-+#define DT_DIR		4
-+#define DT_BLK		6
-+#define DT_REG		8
-+#define DT_LNK		10
-+#define DT_SOCK		12
-+#define DT_WHT		14
++#ifdef CONFIG_LBDAF
++typedef u64 sector_t;
++typedef u64 blkcnt_t;
++#else
++typedef unsigned long sector_t;
++typedef unsigned long blkcnt_t;
++#endif
 +
-+struct dir_context {
-+	loff_t pos;
-+};
-+
-+/*
-  * These are the fs-independent mount-flags: up to 32 flags are supported
+ /*
+  * The type of an index into the pagecache.
   */
- #define MS_RDONLY	 1	/* Mount read-only */
-@@ -74,6 +94,7 @@ struct inode {
- 	struct timespec		i_mtime;
- 	struct timespec		i_ctime;
- 	unsigned int		i_blkbits;
-+	blkcnt_t		i_blocks;
- 	unsigned short          i_bytes;
- 	umode_t			i_mode;
- 	spinlock_t		i_lock;	/* i_blocks, i_bytes, maybe i_size */
-@@ -194,6 +215,7 @@ struct file_system_type {
- 
- struct file {
- 	struct path		f_path;
-+	struct inode		*f_inode;	/* cached value */
- #define f_dentry	f_path.dentry
- #define f_vfsmnt	f_path.mnt
- 	const struct file_operations	*f_op;
-@@ -361,4 +383,9 @@ struct file {
- #define I_DIRTY (I_DIRTY_SYNC | I_DIRTY_DATASYNC | I_DIRTY_PAGES)
- #define I_DIRTY_ALL (I_DIRTY | I_DIRTY_TIME)
- 
-+static inline loff_t i_size_read(const struct inode *inode)
-+{
-+        return inode->i_size;
-+}
-+
- #endif /* _LINUX_FS_H */
 -- 
 2.1.4
 
