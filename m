@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aZDDG-0001Qz-5f
- for barebox@lists.infradead.org; Fri, 26 Feb 2016 07:53:23 +0000
-Message-ID: <1456473175.3401.4.camel@lws-tremmet.phytec.de>
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 26 Feb 2016 08:52:55 +0100
-In-Reply-To: <1456424342.25961.17.camel@rtred1test09.kymeta.local>
-References: <1456385809-46968-1-git-send-email-t.remmet@phytec.de>
- <1456424342.25961.17.camel@rtred1test09.kymeta.local>
-Mime-Version: 1.0
+Received: from krieglstein.org ([176.28.13.145]
+ helo=lvps176-28-13-145.dedicated.hosteurope.de)
+ by merlin.infradead.org with esmtp (Exim 4.85 #2 (Red Hat Linux))
+ id 1aZDoh-0004dp-GJ
+ for barebox@lists.infradead.org; Fri, 26 Feb 2016 08:32:04 +0000
+From: Tim Sander <tim@krieglstein.org>
+Date: Fri, 26 Feb 2016 09:29:43 +0100
+Message-ID: <3783021.3LzxP9NtCy@dabox>
+In-Reply-To: <20160226072506.GN3939@pengutronix.de>
+References: <3814032.giLfJ2gLGN@dabox> <1751869.VnkfJctKHi@dabox>
+ <20160226072506.GN3939@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,74 +23,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] common: oftree: Add fuction to register set
- status fixup
-To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH v7] Terasic DE0-Nano-SoC: add support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Steffen Trumtrar <s.trumtrar@pengutronix.de>, Trent Piepho <tpiepho@kymetacorp.com>
 
-Hello Trent,
+Hi
 
-Am Donnerstag, den 25.02.2016, 18:18 +0000 schrieb Trent Piepho:
-> On Thu, 2016-02-25 at 08:36 +0100, Teresa Remmet wrote:
+Am Freitag, 26. Februar 2016, 08:25:06 schrieb Sascha Hauer:
+> On Thu, Feb 25, 2016 at 11:29:42AM +0100, Tim Sander wrote:
+> > v7: eof whitespace fixes
+> > 
+> > A Patch for supporting the Terasic DE0 NANO-SoC with barebox.
+> > The pretty similar Socrates Board was taken as a starting point with
+> > pulling in the memory timings/pinmux from
+> > http://rocketboards.org/foswiki/view/Documentation/AtlasSoCCompileHardware
+> > Design
+> > 
+> > Signed-off-by: Tim Sander <tim@krieglstein.org>
 > 
-> >  
-> > +struct of_fixup_status_data {
-> > +	char *node;
-> 
-> const char *node.
-> 
-> I think path would be a better name, as node usually is a device_node
-> pointer, not a path.
+> Applied, thanks. Please provide a Changelog next time, otherwise it's
+> hard to guess what you actually changed.
+I only included the change for the last patch not the whole stuff, so if i 
+understand correctly i will include all changelog files the next time.
+ 
+> BTW I noticed the xload defconfig does not build anymore with this patch
+> applied because the image gets too big. I searched for the reason at got
+> a step closer. The SDRAM sequencer code is compiled into the image
+> multiple times, one time for each board. The intention was that the
+> linker throws away the unused copies via -ffunction-section and
+> --gc-sections. Unfortunately this does not work because the functions in
+> the different copies all end up with the same name. So for example we
+> have mem_precharge_and_activate() three times in the image. Only one
+> version is used, but the others can't be thrown away because they are in
+> the same section.
+One thing that comes to mind is gcc -flto. My experience shows that it works
+much nicer than gc-sections. It hurts on large code bases though but i guess 
+this can be neglected with barebox.
 
-I named it node as it could also be an alias and not only a path.
-But I don't might to rename it.
+> I hope we can solve this, otherwise we have to split the xloader
+> defconfigs into multiple configs.
+It would be indeed nicer if the compiler could sort that out.
 
-I'll send a fixup, also for the rest.
-
-Regards,
-Teresa
-
-> 
-> > +	bool status;
-> > +};
-> > +
-> > +static int of_fixup_status(struct device_node *root, void *context)
-> > +{
-> > +	struct of_fixup_status_data *data = context;
-> 
-> const struct of_fixup_status_data *data
-> 
-> > +	struct device_node *node;
-> > +
-> > +	node = of_find_node_by_path_or_alias(root, data->node);
-> > +	if (!node)
-> > +		return -ENODEV;
-> > +
-> > +	if (data->status)
-> > +		return of_device_enable(node);
-> > +	else
-> > +		return of_device_disable(node);
-> > +}
-> > +
-> > +/**
-> > + * of_register_set_status_fixup - register fix up to set status of nodes
-> > + * Register a fixup to enable or disable a node in the devicet tree by
-> > + * passing the path or alias.
-> > + */
-> > +int of_register_set_status_fixup(char *node, bool status)
-> 
-> (const char *path, bool status)
-> 
-> > +{
-> > +	struct of_fixup_status_data *data;
-> > +
-> > +	data = xzalloc(sizeof(*data));
-> > +	data->node = node;
-> > +	data->status = status;
-> > +
-> > +	return of_register_fixup(of_fixup_status, (void *)data);
-> > +}
-
+Best regards
+Tim
 
 
 _______________________________________________
