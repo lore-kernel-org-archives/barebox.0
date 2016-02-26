@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from erouter8.ore.mailhop.org ([54.187.218.212])
+Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aZP0T-0001QP-BR
- for barebox@lists.infradead.org; Fri, 26 Feb 2016 20:28:58 +0000
-Date: Fri, 26 Feb 2016 20:28:32 +0000
-From: Jason Cooper <barebox@lakedaemon.net>
-Message-ID: <20160226202832.GE7219@io.lakedaemon.net>
-References: <1456488287-23404-1-git-send-email-s.trumtrar@pengutronix.de>
- <1456488287-23404-3-git-send-email-s.trumtrar@pengutronix.de>
+ id 1aZPBD-0007h5-ON
+ for barebox@lists.infradead.org; Fri, 26 Feb 2016 20:40:05 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Fri, 26 Feb 2016 20:39:37 +0000
+Message-ID: <1456519213.25961.46.camel@rtred1test09.kymeta.local>
+References: <3814032.giLfJ2gLGN@dabox>	 <20160218161449.GB4207@pengutronix.de>
+ <2696845.OufSg50XfY@dabox>	 <1751869.VnkfJctKHi@dabox>
+ <20160226072506.GN3939@pengutronix.de>
+In-Reply-To: <20160226072506.GN3939@pengutronix.de>
+Content-Language: en-US
+Content-ID: <EA04E76242B0A74BB721B7669AB922C3@kymetacorp.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1456488287-23404-3-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,92 +25,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] lib: random: get_random_bytes from HWRNG if present
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v7] Terasic DE0-Nano-SoC: add support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Steffen Trumtrar <s.trumtrar@pengutronix.de>, Tim Sander <tim@krieglstein.org>
 
-Hi Steffen,
+On Fri, 2016-02-26 at 08:25 +0100, Sascha Hauer wrote:
+> BTW I noticed the xload defconfig does not build anymore with this patch
+> applied because the image gets too big. I searched for the reason at got
+> a step closer. The SDRAM sequencer code is compiled into the image
+> multiple times, one time for each board. The intention was that the
+> linker throws away the unused copies via -ffunction-section and
+> --gc-sections. Unfortunately this does not work because the functions in
+> the different copies all end up with the same name. So for example we
+> have mem_precharge_and_activate() three times in the image. Only one
+> version is used, but the others can't be thrown away because they are in
+> the same section.
 
-On Fri, Feb 26, 2016 at 01:04:44PM +0100, Steffen Trumtrar wrote:
-> Instead of generating pseudo random numbers, get random bytes
-> from an optional HW generator, if enabled and registered.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  lib/random.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
+There are two possible optimization here.
 
-I have a long interest in KASLR on arm/arm64, so I'm glad to see this
-series!  :-)
+As you say, if the two copies where in different sections, then all but
+one could be GCed by the linker, as only one will be in the call tree
+starting from the entry function for the board specific pbl being
+linked.
 
-> diff --git a/lib/random.c b/lib/random.c
-> index 210fea99466e..ff82dd1bed85 100644
-> --- a/lib/random.c
-> +++ b/lib/random.c
-> @@ -1,5 +1,6 @@
->  #include <common.h>
->  #include <stdlib.h>
-> +#include <linux/hw_random.h>
->  
->  static unsigned int random_seed;
->  
-> @@ -22,6 +23,24 @@ void get_random_bytes(void *_buf, int len)
->  {
->  	char *buf = _buf;
->  
-> +	if (IS_ENABLED(CONFIG_HWRNG)) {
-> +		struct hwrng *rng;
-> +		int bytes;
-> +
-> +		rng = hwrng_get_first();
-> +		if (!PTR_ERR(rng)) {
-> +			while (len) {
-> +				bytes = hwrng_get_data(rng, _buf, len, 0);
-> +				if (!bytes)
-> +					goto sw_fallback;
-> +				len -= bytes;
-> +			}
-> +
-> +			return;
-> +		}
-> +	}
-> +
-> +sw_fallback:
->  	while (len--)
->  		*buf++ = rand() % 256;
->  }
+But it's also the case that text of all the copies of
+mem_precharge_and_activate() is exactly the same.  And so they could
+also be merged as identical, i.e. via ICF.
 
-However, I disagree with this approach.  One of the main problems we've
-had over the years with random number generation is not being clear
-about *how* the numbers were generated.  Something designed for placing
-characters in a game is not suitable for creating long-term crypto keys,
-stack canaries, and ASLR offsets.  See the paper on iOS bootloader and
-KASLR [1].
-
-With that in mind, I'd like to suggest that we preserve the current
-functionality of get_random_bytes() as a non-strong source of entropy.
-After all, all current calls to srand() feed in a time...
-
-We can then add get_hwrng_bytes() which makes it clear where the bytes
-are coming from.  Users down the line can more easily make an assessment
-of whether the SoC hwrng is trusted or not for their usecase.
-
-My goal here is to have the bootloader grab some strong random numbers
-to hand off to the kernel.  The decompressor would consume a bit of it
-to initialize KASLR, and the rest would be consumed seeding the kernel's
-entropy pools.
-
-A second goal is to have the OS write a seed file somewhere the
-bootloader can access.  Then, on reboot, the bootloader can read it in
-and hand it off to the kernel for KASLR, etc.  But that is orthogonal to
-this patch series...
-
-thx,
-
-Jason.
-
-[1] http://mista.nu/research/early_random-paper.pdf
-
+I have an xloader that supports four socfpga board variants by
+exploiting the fact that most of the "board specific" sequencer, scan
+chain, pinmux, etc. data is in fact identical among all the board
+variants.  I can't use GC for this, as all the board data is referenced
+in the single xload image which supports all the boards.
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
