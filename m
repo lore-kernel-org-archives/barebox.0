@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aaIZI-0006We-7m
- for barebox@lists.infradead.org; Mon, 29 Feb 2016 07:48:38 +0000
-Date: Mon, 29 Feb 2016 08:48:13 +0100
+ id 1aaIhq-0001co-Ix
+ for barebox@lists.infradead.org; Mon, 29 Feb 2016 07:57:27 +0000
+Date: Mon, 29 Feb 2016 08:57:04 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160229074813.GF9224@pengutronix.de>
-References: <1456513959-26781-1-git-send-email-dev@lynxeye.de>
+Message-ID: <20160229075704.GG9224@pengutronix.de>
+References: <1456515215-32763-1-git-send-email-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1456513959-26781-1-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1456515215-32763-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,64 +22,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] bootm: fix uImage crashes when no partition is given
+Subject: Re: [PATCH 1/2] ARM: tegra: beaver: add missing serial alias
 To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Feb 26, 2016 at 08:12:37PM +0100, Lucas Stach wrote:
-> From: Lucas Stach <l.stach@pengutronix.de>
+On Fri, Feb 26, 2016 at 08:33:34PM +0100, Lucas Stach wrote:
+> Upstream has dropped those from the base dtsi, as long as we can't
+> fully switch to the upstream board DT add the correct alias to the
+> barebox copy.
 > 
-> Before the conversion to use the partition string instead of a plain
-> integer the default was partition 0, now it's just a NULL pointer.
-> 
-> There are a lot of places where strtoul is called on the partition string
-> which crashes when encountering the NULL pointer. Instead of fixing all
-> those places, plug in a default partition string that matches the old
-> behavior by picking partition 0.
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> ---
+>  arch/arm/dts/tegra30-beaver.dts | 1 +
+>  1 file changed, 1 insertion(+)
 
-This was my first approach aswell, but I didn't like the static "0"
-string, so I came up with
-http://lists.infradead.org/pipermail/barebox/2016-February/026368.html
+Applied, thanks
 
 Sascha
-
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  common/bootm.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/common/bootm.c b/common/bootm.c
-> index 7d00f8e..1f99b61 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -465,6 +465,8 @@ static void bootm_print_info(struct image_data *data)
->  		printf("OS image not yet relocated\n");
->  }
->  
-> +static char part_zero[] = "0";
-> +
->  static int bootm_image_name_and_part(const char *name, char **filename, char **part)
->  {
->  	char *at, *ret;
-> @@ -475,7 +477,7 @@ static int bootm_image_name_and_part(const char *name, char **filename, char **p
->  	ret = xstrdup(name);
->  
->  	*filename = ret;
-> -	*part = NULL;
-> +	*part = part_zero;
->  
->  	at = strchr(ret, '@');
->  	if (!at)
-> -- 
-> 2.5.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
