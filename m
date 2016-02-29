@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x241.google.com ([2a00:1450:400c:c09::241])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aaO8r-0000M3-Rk
- for barebox@lists.infradead.org; Mon, 29 Feb 2016 13:45:43 +0000
-Date: Mon, 29 Feb 2016 14:45:19 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20160229134519.GA29598@pengutronix.de>
-References: <1456488287-23404-1-git-send-email-s.trumtrar@pengutronix.de>
- <1456488287-23404-3-git-send-email-s.trumtrar@pengutronix.de>
- <20160226202832.GE7219@io.lakedaemon.net>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20160226202832.GE7219@io.lakedaemon.net>
+ id 1aaP0U-0001Rw-9W
+ for barebox@lists.infradead.org; Mon, 29 Feb 2016 14:41:07 +0000
+Received: by mail-wm0-x241.google.com with SMTP id l68so8551633wml.3
+ for <barebox@lists.infradead.org>; Mon, 29 Feb 2016 06:40:45 -0800 (PST)
+From: yegorslists@googlemail.com
+Date: Mon, 29 Feb 2016 15:39:52 +0100
+Message-Id: <1456756792-21321-2-git-send-email-yegorslists@googlemail.com>
+In-Reply-To: <1456756792-21321-1-git-send-email-yegorslists@googlemail.com>
+References: <1456756792-21321-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,117 +18,97 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] lib: random: get_random_bytes from HWRNG if present
-To: Jason Cooper <barebox@lakedaemon.net>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] Documentation/filesystems: pstore: fix formatting
+To: barebox@lists.infradead.org
 
-Hi!
+From: Yegor Yefremov <yegorslists@googlemail.com>
 
-On Fri, Feb 26, 2016 at 08:28:32PM +0000, Jason Cooper wrote:
-> Hi Steffen,
-> 
-> On Fri, Feb 26, 2016 at 01:04:44PM +0100, Steffen Trumtrar wrote:
-> > Instead of generating pseudo random numbers, get random bytes
-> > from an optional HW generator, if enabled and registered.
-> > 
-> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > ---
-> >  lib/random.c | 19 +++++++++++++++++++
-> >  1 file changed, 19 insertions(+)
-> 
-> I have a long interest in KASLR on arm/arm64, so I'm glad to see this
-> series!  :-)
-> 
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ Documentation/filesystems/pstore.rst | 51 ++++++++++++++++++------------------
+ 1 file changed, 26 insertions(+), 25 deletions(-)
 
-That is not what I had in mind when writing this ;-)
-
-> > diff --git a/lib/random.c b/lib/random.c
-> > index 210fea99466e..ff82dd1bed85 100644
-> > --- a/lib/random.c
-> > +++ b/lib/random.c
-> > @@ -1,5 +1,6 @@
-> >  #include <common.h>
-> >  #include <stdlib.h>
-> > +#include <linux/hw_random.h>
-> >  
-> >  static unsigned int random_seed;
-> >  
-> > @@ -22,6 +23,24 @@ void get_random_bytes(void *_buf, int len)
-> >  {
-> >  	char *buf = _buf;
-> >  
-> > +	if (IS_ENABLED(CONFIG_HWRNG)) {
-> > +		struct hwrng *rng;
-> > +		int bytes;
-> > +
-> > +		rng = hwrng_get_first();
-> > +		if (!PTR_ERR(rng)) {
-> > +			while (len) {
-> > +				bytes = hwrng_get_data(rng, _buf, len, 0);
-> > +				if (!bytes)
-> > +					goto sw_fallback;
-> > +				len -= bytes;
-> > +			}
-> > +
-> > +			return;
-> > +		}
-> > +	}
-> > +
-> > +sw_fallback:
-> >  	while (len--)
-> >  		*buf++ = rand() % 256;
-> >  }
-> 
-> However, I disagree with this approach.  One of the main problems we've
-> had over the years with random number generation is not being clear
-> about *how* the numbers were generated.  Something designed for placing
-> characters in a game is not suitable for creating long-term crypto keys,
-> stack canaries, and ASLR offsets.  See the paper on iOS bootloader and
-> KASLR [1].
-> 
-> With that in mind, I'd like to suggest that we preserve the current
-> functionality of get_random_bytes() as a non-strong source of entropy.
-> After all, all current calls to srand() feed in a time...
-> 
-> We can then add get_hwrng_bytes() which makes it clear where the bytes
-> are coming from.  Users down the line can more easily make an assessment
-> of whether the SoC hwrng is trusted or not for their usecase.
-> 
-
-I see your point. So, is get_random_bytes() in the kernel always a
-non-strong source? I was under the assumption, that the hwrng fills the
-same pool that get_random_bytes() sources. The kernel however has
-get_random_bytes_arch(). Shouldn't we also use this nomenclature here then?
-
-As long as a user is not left under the assumption, that enabling HWRNG
-somehow makes the randomness stronger, I think it may be a good idea to
-make the code clearer via a different function call. No problem for me.
-
-> My goal here is to have the bootloader grab some strong random numbers
-> to hand off to the kernel.  The decompressor would consume a bit of it
-> to initialize KASLR, and the rest would be consumed seeding the kernel's
-> entropy pools.
-> 
-> A second goal is to have the OS write a seed file somewhere the
-> bootloader can access.  Then, on reboot, the bootloader can read it in
-> and hand it off to the kernel for KASLR, etc.  But that is orthogonal to
-> this patch series...
-> 
-
-This is out of my comfort zone, so: send patches :-)
-
-Thanks,
-Steffen
-
+diff --git a/Documentation/filesystems/pstore.rst b/Documentation/filesystems/pstore.rst
+index 74acd87..a8079c2 100644
+--- a/Documentation/filesystems/pstore.rst
++++ b/Documentation/filesystems/pstore.rst
+@@ -12,6 +12,7 @@ messages are stored by the kernel in a specified RAM area which is never
+ overwritten by any user. This data can be accessed after a reboot through
+ /pstore in Barebox or the kernel. The pstore filesystem is automatically mounted
+ at boot::
++
+ 	none on / type ramfs
+ 	none on /dev type devfs
+ 	none on /pstore type pstore
+@@ -40,35 +41,35 @@ and RAM backend support. The kernel receives the parameters describing the
+ layout over the kernel command line. These parameters are automatically
+ generated by Barebox. You can change these parameters in Barebox menuconfig. The
+ RAMOOPS parameters for the Kernel are stored in the variable
+-global.linux.bootargs.ramoops::
++global.linux.bootargs.ramoops.
+ 
+ To see where the RAMOOPS area is located, you can execute iomem in Barebox. The
+ RAMOOPS area is listed as 'persistent ram'::
+ 
+-  0x10000000 - 0x1fffffff (size 0x10000000) ram0
+-    0x17e7c0c0 - 0x1fcf817f (size 0x07e7c0c0) malloc space
+-    0x1fcf8180 - 0x1fcfffff (size 0x00007e80) board data
+-    0x1fd00000 - 0x1fd6eeff (size 0x0006ef00) barebox
+-    0x1fd6ef00 - 0x1fd88dff (size 0x00019f00) barebox data
+-    0x1fd88e00 - 0x1fd8c3db (size 0x000035dc) bss
+-    0x1fdf4000 - 0x1fe13fff (size 0x00020000) persistent ram
+-    0x1fe14000 - 0x1fe33fff (size 0x00020000) persistent ram
+-    0x1fe34000 - 0x1fe53fff (size 0x00020000) persistent ram
+-    0x1fe54000 - 0x1fe73fff (size 0x00020000) persistent ram
+-    0x1fe74000 - 0x1fe93fff (size 0x00020000) persistent ram
+-    0x1fe94000 - 0x1feb3fff (size 0x00020000) persistent ram
+-    0x1feb4000 - 0x1fed3fff (size 0x00020000) persistent ram
+-    0x1fed4000 - 0x1fef3fff (size 0x00020000) persistent ram
+-    0x1fef4000 - 0x1ff13fff (size 0x00020000) persistent ram
+-    0x1ff14000 - 0x1ff33fff (size 0x00020000) persistent ram
+-    0x1ff34000 - 0x1ff53fff (size 0x00020000) persistent ram
+-    0x1ff54000 - 0x1ff73fff (size 0x00020000) persistent ram
+-    0x1ff74000 - 0x1ff93fff (size 0x00020000) persistent ram
+-    0x1ff94000 - 0x1ffb3fff (size 0x00020000) persistent ram
+-    0x1ffb4000 - 0x1ffd3fff (size 0x00020000) persistent ram
+-    0x1ffd4000 - 0x1fff3fff (size 0x00020000) persistent ram
+-    0x1fff4000 - 0x1fff7fff (size 0x00004000) ttb
+-    0x1fff8000 - 0x1fffffff (size 0x00008000) stack
++        0x10000000 - 0x1fffffff (size 0x10000000) ram0
++        0x17e7c0c0 - 0x1fcf817f (size 0x07e7c0c0) malloc space
++        0x1fcf8180 - 0x1fcfffff (size 0x00007e80) board data
++        0x1fd00000 - 0x1fd6eeff (size 0x0006ef00) barebox
++        0x1fd6ef00 - 0x1fd88dff (size 0x00019f00) barebox data
++        0x1fd88e00 - 0x1fd8c3db (size 0x000035dc) bss
++        0x1fdf4000 - 0x1fe13fff (size 0x00020000) persistent ram
++        0x1fe14000 - 0x1fe33fff (size 0x00020000) persistent ram
++        0x1fe34000 - 0x1fe53fff (size 0x00020000) persistent ram
++        0x1fe54000 - 0x1fe73fff (size 0x00020000) persistent ram
++        0x1fe74000 - 0x1fe93fff (size 0x00020000) persistent ram
++        0x1fe94000 - 0x1feb3fff (size 0x00020000) persistent ram
++        0x1feb4000 - 0x1fed3fff (size 0x00020000) persistent ram
++        0x1fed4000 - 0x1fef3fff (size 0x00020000) persistent ram
++        0x1fef4000 - 0x1ff13fff (size 0x00020000) persistent ram
++        0x1ff14000 - 0x1ff33fff (size 0x00020000) persistent ram
++        0x1ff34000 - 0x1ff53fff (size 0x00020000) persistent ram
++        0x1ff54000 - 0x1ff73fff (size 0x00020000) persistent ram
++        0x1ff74000 - 0x1ff93fff (size 0x00020000) persistent ram
++        0x1ff94000 - 0x1ffb3fff (size 0x00020000) persistent ram
++        0x1ffb4000 - 0x1ffd3fff (size 0x00020000) persistent ram
++        0x1ffd4000 - 0x1fff3fff (size 0x00020000) persistent ram
++        0x1fff4000 - 0x1fff7fff (size 0x00004000) ttb
++        0x1fff8000 - 0x1fffffff (size 0x00008000) stack
+ 
+ All pstore files that could be found are added to the /pstore directory. This is
+ a read-only filesystem. If you disable the Kconfig option FS_PSTORE_RAMOOPS_RO,
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
