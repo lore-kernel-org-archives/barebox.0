@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aaHfF-0007F0-4W
- for barebox@lists.infradead.org; Mon, 29 Feb 2016 06:50:41 +0000
-Date: Mon, 29 Feb 2016 07:50:19 +0100
+ id 1aaHv9-0006Ck-EF
+ for barebox@lists.infradead.org; Mon, 29 Feb 2016 07:07:08 +0000
+Date: Mon, 29 Feb 2016 08:06:43 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160229065019.GC9224@pengutronix.de>
-References: <1456416080-486-1-git-send-email-ledphilippe@gmail.com>
+Message-ID: <20160229070643.GD9224@pengutronix.de>
+References: <1456488287-23404-1-git-send-email-s.trumtrar@pengutronix.de>
+ <1456488287-23404-2-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1456416080-486-1-git-send-email-ledphilippe@gmail.com>
+In-Reply-To: <1456488287-23404-2-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,87 +23,170 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 1/1] i.MX: IPUv3: Add parallel display support
-To: Philippe Leduc <ledphilippe@gmail.com>
+Subject: Re: [PATCH 1/5] drivers: add simple hw_random implementation
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Philippe,
-
-Looks good overall, some small points.
-
-On Thu, Feb 25, 2016 at 05:01:20PM +0100, Philippe Leduc wrote:
-> Add a driver compatible with "fsl,imx-parallel-display" in order
-> to enable parallel display with the i.MX IPUv3.
+On Fri, Feb 26, 2016 at 01:04:43PM +0100, Steffen Trumtrar wrote:
+> Add a simple hw_random implementation based on code from
+> Linux v4.5-rc5.
 > 
-> Signed-off-by: Philippe Leduc<ledphilippe@gmail.com>
-> --
-> +struct imx_pd {
-> +	struct device_d *dev;
-> +	struct display_timings *timings;
-> +	u32 interface_pix_fmt;
-> +	struct vpl vpl;
-> +};
+> All the entropypool initialization stuff is left out and
+> the obsolete data_read/data_present calls are omitted.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+> +#include <common.h>
+> +#include <linux/hw_random.h>
 > +
+> +static LIST_HEAD(hwrngs);
 > +
+> +#define RNG_BUFFER_SIZE		32
 > +
-
-Plese drop multiple blank lines here.
-
-> +static int imx_pd_ioctl(struct vpl *vpl, unsigned int port,
-> +		unsigned int cmd, void *data)
+> +int hwrng_get_data(struct hwrng *rng, u8 *buffer, size_t size, int wait)
 > +{
-> +	struct imx_pd *imx_pd = container_of(vpl, struct imx_pd, vpl);
-> +	struct ipu_di_mode *mode;
-> +	struct display_timings *timings;
-> +
-> +	switch (cmd) {
-> +	case IMX_IPU_VPL_DI_MODE:
-> +		mode = data;
-> +
-> +		mode->di_clkflags = IPU_DI_CLKMODE_SYNC;
-> +		mode->interface_pix_fmt = imx_pd->interface_pix_fmt;
-> +		return 0;
-> +
-> +	case VPL_GET_VIDEOMODES:
-> +		timings = data;
-> +
-> +		timings->num_modes   = imx_pd->timings->num_modes;
-> +		timings->native_mode = imx_pd->timings->native_mode;
-> +		timings->modes       = imx_pd->timings->modes;
-> +		timings->edid        = NULL;
-> +		return 0;
-> +	}
+> +	if (rng->read)
+> +		return rng->read(rng, buffer, size, wait);
+
+When rng->read is NULL you already fail in the registration, no need to
+check here.
+
 > +
 > +	return 0;
 > +}
 > +
-> +static int imx_pd_probe(struct device_d *dev)
+> +static int hwrng_init(struct hwrng *rng)
 > +{
-> +	struct device_node *node = dev->device_node;
-> +	struct imx_pd *imx_pd;
-> +	const char *fmt;
-> +	int ret;
+> +	int ret = 0;
 > +
-> +	imx_pd = xzalloc(sizeof(*imx_pd));
-> +	imx_pd->dev = dev;
+> +	if (rng->init)
+> +		ret = rng->init(rng);
 > +
-> +	ret = of_property_read_string(node, "interface-pix-fmt", &fmt);
-> +	if (!ret) {
-> +		if (!strcmp(fmt, "rgb24"))
-> +			imx_pd->interface_pix_fmt = V4L2_PIX_FMT_RGB24;
-> +		else if (!strcmp(fmt, "rgb565"))
-> +			imx_pd->interface_pix_fmt = V4L2_PIX_FMT_RGB565;
-> +		else if (!strcmp(fmt, "bgr666"))
-> +			imx_pd->interface_pix_fmt = V4L2_PIX_FMT_BGR666;
+> +	list_add_tail(&rng->list, &hwrngs);
 
-else? You should probably bail out with an error here.
+When rng->init fails you probably don't want to add it to the list.
 
+> +
+> +	return ret;
+> +}
+> +
+> +static ssize_t rng_dev_read(struct cdev *cdev, void *buf, size_t size,
+> +			    loff_t offset, unsigned long flags)
+> +{
+> +	struct hwrng *rng = container_of(cdev, struct hwrng, cdev);
+> +	ssize_t cur = 0;
+> +	int err = 0;
+> +	int len;
+> +	size_t count = size;
+> +
+> +	memset(buf, 0, size);
+> +
+> +	while (count) {
+
+You can initialize a variable with the minimum of count and
+RNG_BUFFER_SIZE here,
+
+> +		len = hwrng_get_data(rng, rng->buf, RNG_BUFFER_SIZE, true);
+
+Use it here instead of RNG_BUFFER_SIZE
+
+> +		if (len < 0) {
+> +			err = len;
+> +			break;
+> +		}
+> +
+> +		if (len > count)
+> +			len = count;
+
+and drop this check.
+
+> +
+> +		memcpy(buf + cur, rng->buf, len);
+> +
+> +		count -= len;
+> +		cur += len;
 > +	}
 > +
-> +	imx_pd->timings = of_get_display_timings(node);
+> +	return cur ? : err;
 
-You should check the result. If no display timing is found then barebox
-will crash in the ioctl function.
+When you get an error in the second loop iteration then cur is true and
+you return it instead of the error. Is that what you want?
+
+> +}
+> +
+> +
+> +static struct file_operations rng_chrdev_ops = {
+> +	.read  = rng_dev_read,
+> +	.lseek = dev_lseek_default,
+> +};
+> +
+> +static int hwrng_register_cdev(struct hwrng *rng)
+> +{
+> +	rng->cdev.name = "hwrng";
+> +	rng->cdev.flags = DEVFS_IS_CHARACTER_DEV;
+> +	rng->cdev.ops = &rng_chrdev_ops;
+> +	rng->cdev.dev = rng->dev;
+> +
+> +	return devfs_create(&rng->cdev);
+> +}
+> +
+> +struct hwrng *hwrng_get_first(void)
+> +{
+> +	if (!list_empty(&hwrngs))
+> +		return list_first_entry(&hwrngs, struct hwrng, list);
+> +	else
+> +		return ERR_PTR(-ENODEV);
+
+Please use positive logic, it's usually easier to read.
+
+> +}
+> +
+> +int hwrng_register(struct device_d *dev, struct hwrng *rng)
+> +{
+> +	int err;
+> +
+> +	if (rng->name == NULL || rng->read == NULL)
+> +		return -EINVAL;
+> +
+> +	rng->buf = xzalloc(RNG_BUFFER_SIZE);
+
+Please make sure you do not loose memory in infrastructure code.
+
+> +
+> +	err = hwrng_init(rng);
+> +	if (err)
+> +		return err;
+> +
+> +	rng->dev = dev;
+> +
+> +	err = hwrng_register_cdev(rng);
+> +
+> +	return err;
+> +}
+> +        of the GNU General Public License, incorporated herein by reference.
+> +
+> + */
+> +
+> +#ifndef LINUX_HWRANDOM_H_
+> +#define LINUX_HWRANDOM_H_
+> +
+> +#include <linux/list.h>
+> +
+> +/**
+> + * struct hwrng - Hardware Random Number Generator driver
+> + * @name:		Unique RNG name.
+> + * @init:		Initialization callback (can be NULL).
+> + * @read:		New API. drivers can fill up to max bytes of data
+> + *			into the buffer. The buffer is aligned for any type.
+> + * @priv:		Private data, for use by the RNG driver.
+> + */
+> +struct hwrng {
+> +	const char *name;
+> +	int (*init)(struct hwrng *rng);
+> +	int (*read)(struct hwrng *rng, void *data, size_t max, bool wait);
+> +	unsigned long priv;
+
+This is unused, no?
 
 Sascha
 
