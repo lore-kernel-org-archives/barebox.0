@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([192.81.58.21])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aZPBD-0007h5-ON
- for barebox@lists.infradead.org; Fri, 26 Feb 2016 20:40:05 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Fri, 26 Feb 2016 20:39:37 +0000
-Message-ID: <1456519213.25961.46.camel@rtred1test09.kymeta.local>
-References: <3814032.giLfJ2gLGN@dabox>	 <20160218161449.GB4207@pengutronix.de>
- <2696845.OufSg50XfY@dabox>	 <1751869.VnkfJctKHi@dabox>
- <20160226072506.GN3939@pengutronix.de>
-In-Reply-To: <20160226072506.GN3939@pengutronix.de>
-Content-Language: en-US
-Content-ID: <EA04E76242B0A74BB721B7669AB922C3@kymetacorp.com>
+ id 1aaHX3-0003GD-Pl
+ for barebox@lists.infradead.org; Mon, 29 Feb 2016 06:42:14 +0000
+Date: Mon, 29 Feb 2016 07:41:49 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160229064149.GA9224@pengutronix.de>
+References: <1455792617-13671-1-git-send-email-s.hauer@pengutronix.de>
+ <1455792617-13671-4-git-send-email-s.hauer@pengutronix.de>
+ <1456475830.3401.8.camel@lws-tremmet.phytec.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1456475830.3401.8.camel@lws-tremmet.phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,38 +24,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v7] Terasic DE0-Nano-SoC: add support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Steffen Trumtrar <s.trumtrar@pengutronix.de>, Tim Sander <tim@krieglstein.org>
+Subject: Re: [PATCH 3/3] driver: replace dev_request_mem_region with
+ dev_request_mem_resource
+To: Teresa Remmet <t.remmet@phytec.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Fri, 2016-02-26 at 08:25 +0100, Sascha Hauer wrote:
-> BTW I noticed the xload defconfig does not build anymore with this patch
-> applied because the image gets too big. I searched for the reason at got
-> a step closer. The SDRAM sequencer code is compiled into the image
-> multiple times, one time for each board. The intention was that the
-> linker throws away the unused copies via -ffunction-section and
-> --gc-sections. Unfortunately this does not work because the functions in
-> the different copies all end up with the same name. So for example we
-> have mem_precharge_and_activate() three times in the image. Only one
-> version is used, but the others can't be thrown away because they are in
-> the same section.
+On Fri, Feb 26, 2016 at 09:37:10AM +0100, Teresa Remmet wrote:
+> Hello Sascha,
+> 
+> Am Donnerstag, den 18.02.2016, 11:50 +0100 schrieb Sascha Hauer:
+> > dev_request_mem_region doesn't work properly one some SoCs on which
+> > PTR_ERR() values clash with valid return values from dev_request_mem_region.
+> > Replace them with dev_request_mem_resource where possible.
+> > 
+> > This patch has been generated with the following semantic patch.
+> > 
+> > expression d;
+> > expression n;
+> > expression io;
+> > identifier func;
+> > @@
+> > func(...) {
+> > +struct resource *iores;
+> > <+...
+> > -io = dev_request_mem_region(d, n);
+> > -if (IS_ERR(io)) {
+> > +iores = dev_request_mem_resource(d, n);
+> > +if (IS_ERR(iores)) {
+> > ...
+> > -	return PTR_ERR(io);
+> > -}
+> > +	return PTR_ERR(iores);
+> > +}
+> > +io = IOMEM(iores->start);
+> > ...+>
+> > }
+> > 
+> > @@
+> > expression d;
+> > expression n;
+> > expression io;
+> > identifier func;
+> > @@
+> > func(...) {
+> > +struct resource *iores;
+> > <+...
+> > -io = dev_request_mem_region(d, n);
+> > -if (IS_ERR(io)) {
+> > +iores = dev_request_mem_resource(d, n);
+> > +if (IS_ERR(iores))
+> > -	return PTR_ERR(io);
+> > -}
+> > +	return PTR_ERR(iores);
+> > +io = IOMEM(iores->start);
+> > ...+>
+> > }
+> > 
+> > @@
+> > expression d;
+> > expression n;
+> > expression io;
+> > identifier func;
+> > @@
+> > func(...) {
+> > +struct resource *iores;
+> > <+...
+> > -io = dev_request_mem_region(d, n);
+> > -if (IS_ERR(io)) {
+> > -	ret = PTR_ERR(io);
+> > +iores = dev_request_mem_resource(d, n);
+> > +if (IS_ERR(iores)) {
+> > +	ret = PTR_ERR(iores);
+> 
+> here you seem to miss:
+> 
+> io = IOMEM(iores->start);
 
-There are two possible optimization here.
+Oh, indeed. Thanks for noting. Fixed this up
 
-As you say, if the two copies where in different sections, then all but
-one could be GCed by the linker, as only one will be in the call tree
-starting from the entry function for the board specific pbl being
-linked.
+Sascha
 
-But it's also the case that text of all the copies of
-mem_precharge_and_activate() is exactly the same.  And so they could
-also be merged as identical, i.e. via ICF.
 
-I have an xloader that supports four socfpga board variants by
-exploiting the fact that most of the "board specific" sequencer, scan
-chain, pinmux, etc. data is in fact identical among all the board
-variants.  I can't use GC for this, as all the board data is referenced
-in the single xload image which supports all the boards.
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
