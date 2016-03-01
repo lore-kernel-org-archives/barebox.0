@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x234.google.com ([2a00:1450:400c:c09::234])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aaiD0-0006nN-Bb
- for barebox@lists.infradead.org; Tue, 01 Mar 2016 11:11:19 +0000
-Received: by mail-wm0-x234.google.com with SMTP id l68so28260415wml.1
- for <barebox@lists.infradead.org>; Tue, 01 Mar 2016 03:10:57 -0800 (PST)
-From: yegorslists@googlemail.com
-Date: Tue,  1 Mar 2016 12:10:02 +0100
-Message-Id: <1456830604-8469-1-git-send-email-yegorslists@googlemail.com>
+Received: from qmail.e-mind.com ([188.94.192.39])
+ by bombadil.infradead.org with smtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aaiKj-0000Uq-R9
+ for barebox@lists.infradead.org; Tue, 01 Mar 2016 11:19:19 +0000
+From: gianluca <gianlucarenzi@eurek.it>
+Message-ID: <56D57A94.5040804@eurek.it>
+Date: Tue, 1 Mar 2016 12:18:44 +0100
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,51 +15,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 1/3] linux/types.h: add sector_t and blkcnt_t types
+Subject: iMX6 second boot: from SDCard
 To: barebox@lists.infradead.org
 
-From: Yegor Yefremov <yegorslists@googlemail.com>
+Hello everybody,
+first of all, I would say a BIG thank to everybody point me out on have 
+a USB-Serial Downloader working and Barebox up and running in my custom 
+iMX6Q based board.
 
-Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
----
- include/linux/types.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+Right now I wish to know what can be done or not done to fireup the 
+board from attached microSD card which is working because Barebox (from 
+USB Downloader) is seeing it and find any partition scheme found on it.
 
-diff --git a/include/linux/types.h b/include/linux/types.h
-index 9f8eb67..f64ec4a 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -157,6 +157,22 @@ typedef __u32 __bitwise __wsum;
- #define __aligned_be64 __be64 __attribute__((aligned(8)))
- #define __aligned_le64 __le64 __attribute__((aligned(8)))
- 
-+/**
-+ * The type used for indexing onto a disc or disc partition.
-+ *
-+ * Linux always considers sectors to be 512 bytes long independently
-+ * of the devices real block size.
-+ *
-+ * blkcnt_t is the type of the inode's block count.
-+ */
-+#ifdef CONFIG_LBDAF
-+typedef u64 sector_t;
-+typedef u64 blkcnt_t;
-+#else
-+typedef unsigned long sector_t;
-+typedef unsigned long blkcnt_t;
-+#endif
-+
- /*
-  * The type of an index into the pagecache.
-  */
+If I simply write the barebox-flash-image (currently a symlink to 
+image/barebox-[BOARD].img file) to a sdcard with command:
+
+[my usb-adapter is seeing the sdcard as /dev/sdk]
+
+dd if=barebox-flash-image of=/dev/sdk
+
+it works, but actually I have lost all MBR partition scheme at all.
+
+I read somewhere (https://community.freescale.com/docs/DOC-95015) that 
+writing the .imx file with an offset of 1K from the beginning of the 
+card it should run.
+
+Actually it is not. :-(
+
+Does barebox building this kinda of image? I see under the images 
+folder, a file named:
+
+start_imx6_[BOARD].pblx.imximg
+
+but as far as I can see, this file is the same as the 
+barebox-[BOARD]-imx6q.img...
+
+The Reference Manual in the Boot Section does not explain well on HOW TO 
+PREPARE a MICROSD card just to be sure the DCD and other stuff (like 
+PBL) have to be written just to bootstrap from microSD/MMC...
+
+
+Can anybody help me out on this?
+
+
+Best Regards,
 -- 
-2.1.4
-
+Eurek s.r.l.                          |
+Electronic Engineering                | http://www.eurek.it
+via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
+p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
 
 _______________________________________________
 barebox mailing list
