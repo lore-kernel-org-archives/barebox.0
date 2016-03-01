@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aahyf-0006OK-Bi
- for barebox@lists.infradead.org; Tue, 01 Mar 2016 10:56:31 +0000
-Date: Tue, 1 Mar 2016 11:56:05 +0100
-From: Stefan Christ <s.christ@phytec.de>
-Message-ID: <20160301105605.GA4982@lws-christ>
-References: <1456398922-8253-1-git-send-email-s.christ@phytec.de>
- <20160301092232.GM9224@pengutronix.de>
-MIME-Version: 1.0
-In-Reply-To: <20160301092232.GM9224@pengutronix.de>
-Content-Disposition: inline
+Received: from mail-wm0-x22c.google.com ([2a00:1450:400c:c09::22c])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aaiD3-0006nm-My
+ for barebox@lists.infradead.org; Tue, 01 Mar 2016 11:11:22 +0000
+Received: by mail-wm0-x22c.google.com with SMTP id p65so28363106wmp.0
+ for <barebox@lists.infradead.org>; Tue, 01 Mar 2016 03:11:01 -0800 (PST)
+From: yegorslists@googlemail.com
+Date: Tue,  1 Mar 2016 12:10:03 +0100
+Message-Id: <1456830604-8469-2-git-send-email-yegorslists@googlemail.com>
+In-Reply-To: <1456830604-8469-1-git-send-email-yegorslists@googlemail.com>
+References: <1456830604-8469-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,85 +18,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX: bbu-internal: call detect for mmc devices
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v5 2/3] linux/fs.h: add types and routines needed for SquashFS
+To: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLAoKPiBkZXZpY2VfZGV0ZWN0X2J5X25hbWUoKSBzaG91bGQgYmUgc2FmZSB0byBj
-YWxsLCBJIGRvbid0IHRoaW5rIHdlIG5lZWQKPiB0aGlzIGFkZGl0aW9uYWwgZmxhZy4gSnVzdCBh
-bHdheXMgY2FsbCBkZXZpY2VfZGV0ZWN0X2J5X25hbWUoKS4gV2UgaGF2ZQo+IHRvIGRyb3AgdGhl
-IHJldHVybiB2YWx1ZSBjaGVja2luZyB0aG91Z2guCj4gCj4gSW4gZmFjdCB3ZSBoYXZlIHRoZSBm
-b2xsb3dpbmcgcGF0Y2ggaW4gb25lIG9mIG91ciBpbnRlcm5hbCBjdXN0b21lcgo+IHRyZWVzLCB0
-aGlzIHNob3VsZCBiZSBzdWl0YWJsZSBmb3IgeW91ciBpc3N1ZSwgcmlnaHQ/CgpZZXAuIFRoZXNl
-IHR3byBsaW5lcyBvZiBjb2RlIGFyZSBzdWZmaWNlbnQgZm9yIG91ciB1c2UgY2FzZSA7LSkgSGVy
-ZSBpcyBteToKCiAgICBUZXN0ZWQtYnk6IFN0ZWZhbiBDaHJpc3QgPHMuY2hyaXN0QHBoeXRlYy5k
-ZT4KCldpbGwgeW91IGFwcGx5IHRoYXQgcGF0Y2ggdG8gbWFzdGVyPwoKTWl0IGZyZXVuZGxpY2hl
-biBHcsO8w59lbiAvIEtpbmQgcmVnYXJkcywKCVN0ZWZhbiBDaHJpc3QKCk9uIFR1ZSwgTWFyIDAx
-LCAyMDE2IGF0IDEwOjIyOjMyQU0gKzAxMDAsIFNhc2NoYSBIYXVlciB3cm90ZToKPiBIaSBTdGVm
-YW4sCj4gCj4gT24gVGh1LCBGZWIgMjUsIDIwMTYgYXQgMTI6MTU6MjJQTSArMDEwMCwgU3RlZmFu
-IENocmlzdCB3cm90ZToKPiA+IEZvciB0aGUgTU1DIHVwZGF0ZV9oYW5kbGVyIGl0IG1ha2VzIHNl
-bnNlIHRvIHByb2JlIHRoZSBkZXZpY2UgYmVmb3JlCj4gPiB3cml0aW5nIHRvIGl0LiBJZiB0aGUg
-ZGV2aWNlIGlzIG5vdCBwcm9iZWQgeWV0LCB5b3UgZ2V0IGVycm9ycyBsaWtlCj4gPiAKPiA+ICAg
-ICAkIGJhcmVib3hfdXBkYXRlIC15IC10IG1tYzAgL21udC90ZnRwL2JhcmVib3guYmluCj4gPiAg
-ICAgYmFyZWJveF91cGRhdGU6IFJlYWQtb25seSBmaWxlIHN5c3RlbQo+ID4gCj4gPiBUaGUgY29k
-ZSBpcyBuZWFybHkgZXF1aXZhbGVudCB0bwo+ID4gCj4gPiAgICAgJCBkZXRlY3QgbW1jMAo+ID4g
-ICAgICQgYmFyZWJveF91cGRhdGUgLXkgLXQgbW1jMCAvbW50L3RmdHAvYmFyZWJveC5iaW4KPiA+
-IAo+ID4gVGhlIGZ1bmN0aW9uIGRldmljZV9kZXRlY3RfYnlfbmFtZSBhbHNvIGhhbmRsZXMgZGV2
-aWNlIG5hbWVzIHdpdGgKPiA+IHBhcnRpdGlvbiBzdWZmaXggbGlrZSAiL2Rldi9tbWMzLmJvb3Qw
-Ii4KPiA+IAo+ID4gV2hpbGUgYXQgaXQsIHVzZSB0aGUgbWFjcm8gQklUIGZvciB0aGUgYml0IGZp
-ZWxkLgo+ID4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBTdGVmYW4gQ2hyaXN0IDxzLmNocmlzdEBwaHl0
-ZWMuZGU+Cj4gPiAtLS0KPiA+ICBhcmNoL2FybS9tYWNoLWlteC9pbXgtYmJ1LWludGVybmFsLmMg
-fCAyMyArKysrKysrKysrKysrKysrKysrLS0tLQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAxOSBpbnNl
-cnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
-bWFjaC1pbXgvaW14LWJidS1pbnRlcm5hbC5jIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW14LWJidS1p
-bnRlcm5hbC5jCj4gPiBpbmRleCBhYzkwYzUzLi4xZWNjMGQ3IDEwMDY0NAo+ID4gLS0tIGEvYXJj
-aC9hcm0vbWFjaC1pbXgvaW14LWJidS1pbnRlcm5hbC5jCj4gPiArKysgYi9hcmNoL2FybS9tYWNo
-LWlteC9pbXgtYmJ1LWludGVybmFsLmMKPiA+IEBAIC0zNCw5ICszNCwxMCBAQAo+ID4gIAo+ID4g
-ICNkZWZpbmUgRkxBU0hfSEVBREVSX09GRlNFVF9NTUMJCTB4NDAwCj4gPiAgCj4gPiAtI2RlZmlu
-ZSBJTVhfSU5URVJOQUxfRkxBR19OQU5ECQkoMSA8PCAwKQo+ID4gLSNkZWZpbmUgSU1YX0lOVEVS
-TkFMX0ZMQUdfS0VFUF9ET1NQQVJUCSgxIDw8IDEpCj4gPiAtI2RlZmluZSBJTVhfSU5URVJOQUxf
-RkxBR19FUkFTRQkJKDEgPDwgMikKPiA+ICsjZGVmaW5lIElNWF9JTlRFUk5BTF9GTEFHX05BTkQJ
-CUJJVCgwKQo+ID4gKyNkZWZpbmUgSU1YX0lOVEVSTkFMX0ZMQUdfS0VFUF9ET1NQQVJUCUJJVCgx
-KQo+ID4gKyNkZWZpbmUgSU1YX0lOVEVSTkFMX0ZMQUdfRVJBU0UJCUJJVCgyKQo+ID4gKyNkZWZp
-bmUgSU1YX0lOVEVSTkFMX0ZMQUdfUFJPQkUJCUJJVCgzKQo+ID4gIAo+ID4gIHN0cnVjdCBpbXhf
-aW50ZXJuYWxfYmJ1X2hhbmRsZXIgewo+ID4gIAlzdHJ1Y3QgYmJ1X2hhbmRsZXIgaGFuZGxlcjsK
-PiA+IEBAIC01Miw4ICs1MywyMSBAQCBzdHJ1Y3QgaW14X2ludGVybmFsX2JidV9oYW5kbGVyIHsK
-PiA+ICBzdGF0aWMgaW50IGlteF9iYnVfd3JpdGVfZGV2aWNlKHN0cnVjdCBpbXhfaW50ZXJuYWxf
-YmJ1X2hhbmRsZXIgKmlteF9oYW5kbGVyLAo+ID4gIAkJc3RydWN0IGJidV9kYXRhICpkYXRhLCB2
-b2lkICpidWYsIGludCBpbWFnZV9sZW4pCj4gPiAgewo+ID4gKwljb25zdCBjaGFyICpkZXZuYW1l
-Owo+ID4gIAlpbnQgZmQsIHJldDsKPiA+ICAKPiA+ICsJaWYgKGlteF9oYW5kbGVyLT5mbGFncyAm
-IElNWF9JTlRFUk5BTF9GTEFHX1BST0JFKSB7Cj4gCj4gZGV2aWNlX2RldGVjdF9ieV9uYW1lKCkg
-c2hvdWxkIGJlIHNhZmUgdG8gY2FsbCwgSSBkb24ndCB0aGluayB3ZSBuZWVkCj4gdGhpcyBhZGRp
-dGlvbmFsIGZsYWcuIEp1c3QgYWx3YXlzIGNhbGwgZGV2aWNlX2RldGVjdF9ieV9uYW1lKCkuIFdl
-IGhhdmUKPiB0byBkcm9wIHRoZSByZXR1cm4gdmFsdWUgY2hlY2tpbmcgdGhvdWdoLgo+IAo+IElu
-IGZhY3Qgd2UgaGF2ZSB0aGUgZm9sbG93aW5nIHBhdGNoIGluIG9uZSBvZiBvdXIgaW50ZXJuYWwg
-Y3VzdG9tZXIKPiB0cmVlcywgdGhpcyBzaG91bGQgYmUgc3VpdGFibGUgZm9yIHlvdXIgaXNzdWUs
-IHJpZ2h0Pwo+IAo+IFNhc2NoYQo+IAo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS04
-PC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCj4gCj4gRnJvbSA1NzcwNjQwZjRiMDY3MzBi
-ZmQ3MWVhZGNlNjBiZDQxMWU0Mzc4MzJiIE1vbiBTZXAgMTcgMDA6MDA6MDAgMjAwMQo+IEZyb206
-IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KPiBEYXRlOiBGcmksIDI2IEp1
-bCAyMDEzIDEyOjQxOjU1ICswMjAwCj4gU3ViamVjdDogW1BBVENIXSBBUk06IGkuTVg6IGJidS1p
-bnRlcm5hbDogZGV0ZWN0IGRldmljZSBiZWZvcmUgd3JpdGluZyB0byBpdAo+IAo+IFNpZ25lZC1v
-ZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KPiAtLS0KPiAgYXJj
-aC9hcm0vbWFjaC1pbXgvaW14LWJidS1pbnRlcm5hbC5jIHwgMyArKysKPiAgMSBmaWxlIGNoYW5n
-ZWQsIDMgaW5zZXJ0aW9ucygrKQo+IAo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9p
-bXgtYmJ1LWludGVybmFsLmMgYi9hcmNoL2FybS9tYWNoLWlteC9pbXgtYmJ1LWludGVybmFsLmMK
-PiBpbmRleCBhYzkwYzUzLi44MjFjZTY2IDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL21hY2gtaW14
-L2lteC1iYnUtaW50ZXJuYWwuYwo+ICsrKyBiL2FyY2gvYXJtL21hY2gtaW14L2lteC1iYnUtaW50
-ZXJuYWwuYwo+IEBAIC0xMzIsNiArMTMyLDkgQEAgc3RhdGljIGludCBpbXhfYmJ1X2NoZWNrX3By
-ZXJlcShzdHJ1Y3QgYmJ1X2RhdGEgKmRhdGEpCj4gIAlpZiAocmV0KQo+ICAJCXJldHVybiByZXQ7
-Cj4gIAo+ICsJaWYgKCFzdHJuY21wKGRhdGEtPmRldmljZWZpbGUsICIvZGV2LyIsIDUpKQo+ICsJ
-CWRldmljZV9kZXRlY3RfYnlfbmFtZShkYXRhLT5kZXZpY2VmaWxlICsgNSk7Cj4gKwo+ICAJcmV0
-dXJuIDA7Cj4gIH0KPiAgCj4gLS0gCj4gMi43LjAKPiAKPiAKPiAtLSAKPiBQZW5ndXRyb25peCBl
-LksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgfAo+IEluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6
-Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8Cj4gUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNo
-ZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPiBBbXRzZ2VyaWNo
-dCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3
-LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+From: Yegor Yefremov <yegorslists@googlemail.com>
+
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+Changes:
+	v2: fix checkpatch issues
+
+ include/linux/fs.h | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 7e9886a..d5b232b 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -19,6 +19,26 @@
+ #endif
+ 
+ /*
++ * File types
++ *
++ * NOTE! These match bits 12..15 of stat.st_mode
++ * (ie "(i_mode >> 12) & 15").
++ */
++#define DT_UNKNOWN	0
++#define DT_FIFO		1
++#define DT_CHR		2
++#define DT_DIR		4
++#define DT_BLK		6
++#define DT_REG		8
++#define DT_LNK		10
++#define DT_SOCK		12
++#define DT_WHT		14
++
++struct dir_context {
++	loff_t pos;
++};
++
++/*
+  * These are the fs-independent mount-flags: up to 32 flags are supported
+  */
+ #define MS_RDONLY	 1	/* Mount read-only */
+@@ -74,6 +94,7 @@ struct inode {
+ 	struct timespec		i_mtime;
+ 	struct timespec		i_ctime;
+ 	unsigned int		i_blkbits;
++	blkcnt_t		i_blocks;
+ 	unsigned short          i_bytes;
+ 	umode_t			i_mode;
+ 	spinlock_t		i_lock;	/* i_blocks, i_bytes, maybe i_size */
+@@ -194,6 +215,7 @@ struct file_system_type {
+ 
+ struct file {
+ 	struct path		f_path;
++	struct inode		*f_inode;	/* cached value */
+ #define f_dentry	f_path.dentry
+ #define f_vfsmnt	f_path.mnt
+ 	const struct file_operations	*f_op;
+@@ -361,4 +383,9 @@ struct file {
+ #define I_DIRTY (I_DIRTY_SYNC | I_DIRTY_DATASYNC | I_DIRTY_PAGES)
+ #define I_DIRTY_ALL (I_DIRTY | I_DIRTY_TIME)
+ 
++static inline loff_t i_size_read(const struct inode *inode)
++{
++	return inode->i_size;
++}
++
+ #endif /* _LINUX_FS_H */
+-- 
+2.1.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
