@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aagQT-0002ju-80
- for barebox@lists.infradead.org; Tue, 01 Mar 2016 09:17:06 +0000
-Date: Tue, 1 Mar 2016 10:16:42 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160301091642.GL9224@pengutronix.de>
-References: <3814032.giLfJ2gLGN@dabox> <20160218161449.GB4207@pengutronix.de>
- <2696845.OufSg50XfY@dabox> <1751869.VnkfJctKHi@dabox>
- <20160226072506.GN3939@pengutronix.de>
+Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aagTa-0004Q8-ST
+ for barebox@lists.infradead.org; Tue, 01 Mar 2016 09:20:20 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 85364A00501
+ for <barebox@lists.infradead.org>; Tue,  1 Mar 2016 10:20:16 +0100 (CET)
+Date: Tue, 1 Mar 2016 10:19:51 +0100
+From: Stefan Christ <s.christ@phytec.de>
+Message-ID: <20160301091951.GA4116@lws-christ>
+References: <1456398922-8253-1-git-send-email-s.christ@phytec.de>
 MIME-Version: 1.0
+In-Reply-To: <1456398922-8253-1-git-send-email-s.christ@phytec.de>
 Content-Disposition: inline
-In-Reply-To: <20160226072506.GN3939@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,55 +21,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v7] Terasic DE0-Nano-SoC: add support
-To: Tim Sander <tim@krieglstein.org>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Steffen Trumtrar <s.trumtrar@pengutronix.de>, Trent Piepho <tpiepho@kymetacorp.com>
+Subject: Re: [PATCH] ARM: i.MX: bbu-internal: call detect for mmc devices
+To: barebox@lists.infradead.org
 
-On Fri, Feb 26, 2016 at 08:25:06AM +0100, Sascha Hauer wrote:
-> On Thu, Feb 25, 2016 at 11:29:42AM +0100, Tim Sander wrote:
-> > v7: eof whitespace fixes
-> > 
-> > A Patch for supporting the Terasic DE0 NANO-SoC with barebox.
-> > The pretty similar Socrates Board was taken as a starting point with pulling
-> > in the memory timings/pinmux from
-> > http://rocketboards.org/foswiki/view/Documentation/AtlasSoCCompileHardwareDesign
-> > 
-> > Signed-off-by: Tim Sander <tim@krieglstein.org>
-> 
-> Applied, thanks. Please provide a Changelog next time, otherwise it's
-> hard to guess what you actually changed.
-> 
-> BTW I noticed the xload defconfig does not build anymore with this patch
-> applied because the image gets too big. I searched for the reason at got
-> a step closer. The SDRAM sequencer code is compiled into the image
-> multiple times, one time for each board. The intention was that the
-> linker throws away the unused copies via -ffunction-section and
-> --gc-sections. Unfortunately this does not work because the functions in
-> the different copies all end up with the same name. So for example we
-> have mem_precharge_and_activate() three times in the image. Only one
-> version is used, but the others can't be thrown away because they are in
-> the same section.
-> 
-> I hope we can solve this, otherwise we have to split the xloader
-> defconfigs into multiple configs.
-
-Just did that and created a socfpga-xload-2_defconfig which contains the
-DE0 NANO-SoC board. When the issue is solved somehow we can merge the
-two configs together again.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+KnBpbmcKCk1pdCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4gLyBLaW5kIHJlZ2FyZHMsCglTdGVmYW4g
+Q2hyaXN0CgpPbiBUaHUsIEZlYiAyNSwgMjAxNiBhdCAxMjoxNToyMlBNICswMTAwLCBTdGVmYW4g
+Q2hyaXN0IHdyb3RlOgo+IEZvciB0aGUgTU1DIHVwZGF0ZV9oYW5kbGVyIGl0IG1ha2VzIHNlbnNl
+IHRvIHByb2JlIHRoZSBkZXZpY2UgYmVmb3JlCj4gd3JpdGluZyB0byBpdC4gSWYgdGhlIGRldmlj
+ZSBpcyBub3QgcHJvYmVkIHlldCwgeW91IGdldCBlcnJvcnMgbGlrZQo+IAo+ICAgICAkIGJhcmVi
+b3hfdXBkYXRlIC15IC10IG1tYzAgL21udC90ZnRwL2JhcmVib3guYmluCj4gICAgIGJhcmVib3hf
+dXBkYXRlOiBSZWFkLW9ubHkgZmlsZSBzeXN0ZW0KPiAKPiBUaGUgY29kZSBpcyBuZWFybHkgZXF1
+aXZhbGVudCB0bwo+IAo+ICAgICAkIGRldGVjdCBtbWMwCj4gICAgICQgYmFyZWJveF91cGRhdGUg
+LXkgLXQgbW1jMCAvbW50L3RmdHAvYmFyZWJveC5iaW4KPiAKPiBUaGUgZnVuY3Rpb24gZGV2aWNl
+X2RldGVjdF9ieV9uYW1lIGFsc28gaGFuZGxlcyBkZXZpY2UgbmFtZXMgd2l0aAo+IHBhcnRpdGlv
+biBzdWZmaXggbGlrZSAiL2Rldi9tbWMzLmJvb3QwIi4KPiAKPiBXaGlsZSBhdCBpdCwgdXNlIHRo
+ZSBtYWNybyBCSVQgZm9yIHRoZSBiaXQgZmllbGQuCj4gCj4gU2lnbmVkLW9mZi1ieTogU3RlZmFu
+IENocmlzdCA8cy5jaHJpc3RAcGh5dGVjLmRlPgo+IC0tLQo+ICBhcmNoL2FybS9tYWNoLWlteC9p
+bXgtYmJ1LWludGVybmFsLmMgfCAyMyArKysrKysrKysrKysrKysrKysrLS0tLQo+ICAxIGZpbGUg
+Y2hhbmdlZCwgMTkgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0
+IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW14LWJidS1pbnRlcm5hbC5jIGIvYXJjaC9hcm0vbWFjaC1p
+bXgvaW14LWJidS1pbnRlcm5hbC5jCj4gaW5kZXggYWM5MGM1My4uMWVjYzBkNyAxMDA2NDQKPiAt
+LS0gYS9hcmNoL2FybS9tYWNoLWlteC9pbXgtYmJ1LWludGVybmFsLmMKPiArKysgYi9hcmNoL2Fy
+bS9tYWNoLWlteC9pbXgtYmJ1LWludGVybmFsLmMKPiBAQCAtMzQsOSArMzQsMTAgQEAKPiAgCj4g
+ICNkZWZpbmUgRkxBU0hfSEVBREVSX09GRlNFVF9NTUMJCTB4NDAwCj4gIAo+IC0jZGVmaW5lIElN
+WF9JTlRFUk5BTF9GTEFHX05BTkQJCSgxIDw8IDApCj4gLSNkZWZpbmUgSU1YX0lOVEVSTkFMX0ZM
+QUdfS0VFUF9ET1NQQVJUCSgxIDw8IDEpCj4gLSNkZWZpbmUgSU1YX0lOVEVSTkFMX0ZMQUdfRVJB
+U0UJCSgxIDw8IDIpCj4gKyNkZWZpbmUgSU1YX0lOVEVSTkFMX0ZMQUdfTkFORAkJQklUKDApCj4g
+KyNkZWZpbmUgSU1YX0lOVEVSTkFMX0ZMQUdfS0VFUF9ET1NQQVJUCUJJVCgxKQo+ICsjZGVmaW5l
+IElNWF9JTlRFUk5BTF9GTEFHX0VSQVNFCQlCSVQoMikKPiArI2RlZmluZSBJTVhfSU5URVJOQUxf
+RkxBR19QUk9CRQkJQklUKDMpCj4gIAo+ICBzdHJ1Y3QgaW14X2ludGVybmFsX2JidV9oYW5kbGVy
+IHsKPiAgCXN0cnVjdCBiYnVfaGFuZGxlciBoYW5kbGVyOwo+IEBAIC01Miw4ICs1MywyMSBAQCBz
+dHJ1Y3QgaW14X2ludGVybmFsX2JidV9oYW5kbGVyIHsKPiAgc3RhdGljIGludCBpbXhfYmJ1X3dy
+aXRlX2RldmljZShzdHJ1Y3QgaW14X2ludGVybmFsX2JidV9oYW5kbGVyICppbXhfaGFuZGxlciwK
+PiAgCQlzdHJ1Y3QgYmJ1X2RhdGEgKmRhdGEsIHZvaWQgKmJ1ZiwgaW50IGltYWdlX2xlbikKPiAg
+ewo+ICsJY29uc3QgY2hhciAqZGV2bmFtZTsKPiAgCWludCBmZCwgcmV0Owo+ICAKPiArCWlmIChp
+bXhfaGFuZGxlci0+ZmxhZ3MgJiBJTVhfSU5URVJOQUxfRkxBR19QUk9CRSkgewo+ICsJCWRldm5h
+bWUgPSBkYXRhLT5kZXZpY2VmaWxlOwo+ICsJCWlmICghc3RybmNtcChkZXZuYW1lLCAiL2Rldi8i
+LCA1KSkKPiArCQkJZGV2bmFtZSArPSA1Owo+ICsJCXJldCA9IGRldmljZV9kZXRlY3RfYnlfbmFt
+ZShkZXZuYW1lKTsKPiArCQlpZiAocmV0KSB7Cj4gKwkJCXByaW50ZigiRGV0ZWN0aW5nIGRldmlj
+ZSAlcyBmYWlsZWQ6ICVzXG4iLCBkZXZuYW1lLAo+ICsJCQkJCXN0cmVycm9yKC1yZXQpKTsKPiAr
+CQkJcmV0dXJuIHJldDsKPiArCQl9Cj4gKwl9Cj4gKwo+ICAJZmQgPSBvcGVuKGRhdGEtPmRldmlj
+ZWZpbGUsIE9fUkRXUiB8IE9fQ1JFQVQpOwo+ICAJaWYgKGZkIDwgMCkKPiAgCQlyZXR1cm4gZmQ7
+Cj4gQEAgLTQ4Nyw3ICs1MDEsOCBAQCBpbnQgaW14Nl9iYnVfaW50ZXJuYWxfbW1jX3JlZ2lzdGVy
+X2hhbmRsZXIoY29uc3QgY2hhciAqbmFtZSwgY2hhciAqZGV2aWNlZmlsZSwKPiAgCWlteF9oYW5k
+bGVyID0gX19pbml0X2hhbmRsZXIobmFtZSwgZGV2aWNlZmlsZSwgZmxhZ3MpOwo+ICAJaW14X2hh
+bmRsZXItPmZsYXNoX2hlYWRlcl9vZmZzZXQgPSBGTEFTSF9IRUFERVJfT0ZGU0VUX01NQzsKPiAg
+Cj4gLQlpbXhfaGFuZGxlci0+ZmxhZ3MgPSBJTVhfSU5URVJOQUxfRkxBR19LRUVQX0RPU1BBUlQ7
+Cj4gKwlpbXhfaGFuZGxlci0+ZmxhZ3MgPSBJTVhfSU5URVJOQUxfRkxBR19LRUVQX0RPU1BBUlQg
+fAo+ICsJCQkJCQlJTVhfSU5URVJOQUxfRkxBR19QUk9CRTsKPiAgCWlteF9oYW5kbGVyLT5oYW5k
+bGVyLmhhbmRsZXIgPSBpbXhfYmJ1X2ludGVybmFsX3YyX3VwZGF0ZTsKPiAgCj4gIAlyZXR1cm4g
+X19yZWdpc3Rlcl9oYW5kbGVyKGlteF9oYW5kbGVyKTsKPiAtLSAKPiAxLjkuMQo+IAo+IAo+IF9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFyZWJveCBt
+YWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8vbGlzdHMu
+aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
