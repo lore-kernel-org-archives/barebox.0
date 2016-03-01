@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aafb4-0000ke-0d
- for barebox@lists.infradead.org; Tue, 01 Mar 2016 08:23:58 +0000
-Date: Tue, 1 Mar 2016 09:23:35 +0100
+ id 1aafxQ-00028O-67
+ for barebox@lists.infradead.org; Tue, 01 Mar 2016 08:47:05 +0000
+Date: Tue, 1 Mar 2016 09:46:42 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160301082334.GJ9224@pengutronix.de>
-References: <1456499985-22860-1-git-send-email-yegorslists@googlemail.com>
- <1456499985-22860-3-git-send-email-yegorslists@googlemail.com>
+Message-ID: <20160301084642.GK9224@pengutronix.de>
+References: <1456756792-21321-1-git-send-email-yegorslists@googlemail.com>
+ <1456756792-21321-2-git-send-email-yegorslists@googlemail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1456499985-22860-3-git-send-email-yegorslists@googlemail.com>
+In-Reply-To: <1456756792-21321-2-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,165 +23,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4 3/3] fs: add support for SquashFS 4.0
+Subject: Re: [PATCH 2/2] Documentation/filesystems: pstore: fix formatting
 To: yegorslists@googlemail.com
 Cc: barebox@lists.infradead.org
 
-On Fri, Feb 26, 2016 at 04:19:45PM +0100, yegorslists@googlemail.com wrote:
+On Mon, Feb 29, 2016 at 03:39:52PM +0100, yegorslists@googlemail.com wrote:
 > From: Yegor Yefremov <yegorslists@googlemail.com>
 > 
-> The driver was imported from Linux 4.4.
-> 
-> Current implementation supports only XZ decompressor.
-> 
-> Tested-by: Antony Pavlov <antonynpavlov@gmail.com>
 > Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 > ---
-> Changes:
-> 	v4: - add promt to mount examples
-> 	    - rework squashfs_read to enable non linear reading
-> 	    - embed super_block into squashfs_priv
-> 	    - check malloc' return value
+>  Documentation/filesystems/pstore.rst | 51 ++++++++++++++++++------------------
+>  1 file changed, 26 insertions(+), 25 deletions(-)
 > 
->         v3: - rework inode searching
->             - eliminate memleaks in directory search
-> 
->         v2: - fix checkpatch errors
->             - remove spinlock/wait code from cache implementation
->             - fix directory listing
->             - add documentation entry about SquashFS
->             - fix compiling without XZ enabled
->             - fix some memory leaks
-> 
+> diff --git a/Documentation/filesystems/pstore.rst b/Documentation/filesystems/pstore.rst
+> index 74acd87..a8079c2 100644
+> --- a/Documentation/filesystems/pstore.rst
+> +++ b/Documentation/filesystems/pstore.rst
+> @@ -12,6 +12,7 @@ messages are stored by the kernel in a specified RAM area which is never
+>  overwritten by any user. This data can be accessed after a reboot through
+>  /pstore in Barebox or the kernel. The pstore filesystem is automatically mounted
+>  at boot::
 > +
-> +static int squashfs_read(struct device_d *_dev, FILE *f, void *buf,
-> +		size_t insize)
-> +{
-> +	unsigned int size = insize;
-> +	unsigned int pos = f->pos;
-> +	unsigned int ofs;
-> +	unsigned int now;
-> +	unsigned int idx;
-> +	unsigned int data_block_pos, data_block;
-> +	struct squashfs_page *page = f->priv;
-> +
-> +	data_block = f->pos / (32 * PAGE_CACHE_SIZE);
-> +	if (data_block != page->data_block) {
-> +		page->data_block = data_block;
-> +		page->idx = 0;
-> +	}
-> +
-> +	data_block_pos = f->pos - page->data_block * 32 * PAGE_CACHE_SIZE;
-> +	idx = data_block_pos / PAGE_CACHE_SIZE;
-> +	page->real_page.index = page->data_block * 32;
-> +
-> +	while (size) {
-> +		if (page->idx == 0)
-> +			squashfs_readpage(NULL, &page->real_page);
-> +
-> +		/* Read till end of current buffer page */
-> +		ofs = pos % PAGE_CACHE_SIZE;
-> +		if (ofs) {
-> +			now = min(size, PAGE_CACHE_SIZE - ofs);
-> +			memcpy(buf, page->buf[idx] + ofs, now);
-> +
-> +			size -= now;
-> +			pos += now;
-> +			buf += now;
-> +			idx++;
-> +			if (idx > 31) {
-> +				idx = 0;
-> +				page->idx = 0;
-> +				page->data_block++;
-> +				page->real_page.index = page->data_block * 32;
-> +				continue;
-> +			}
-> +		}
-> +
-> +		/* Do full buffer pages */
-> +		while (size >= PAGE_CACHE_SIZE) {
-> +			memcpy(buf, page->buf[idx], PAGE_CACHE_SIZE);
-> +			size -= PAGE_CACHE_SIZE;
-> +			pos += PAGE_CACHE_SIZE;
-> +			buf += PAGE_CACHE_SIZE;
-> +			idx++;
-> +			if (idx > 31) {
-> +				idx = 0;
-> +				page->idx = 0;
-> +				page->data_block++;
-> +				page->real_page.index = page->data_block * 32;
-> +				continue;
+>  	none on / type ramfs
+>  	none on /dev type devfs
+>  	none on /pstore type pstore
+> @@ -40,35 +41,35 @@ and RAM backend support. The kernel receives the parameters describing the
+>  layout over the kernel command line. These parameters are automatically
+>  generated by Barebox. You can change these parameters in Barebox menuconfig. The
+>  RAMOOPS parameters for the Kernel are stored in the variable
+> -global.linux.bootargs.ramoops::
+> +global.linux.bootargs.ramoops.
+>  
+>  To see where the RAMOOPS area is located, you can execute iomem in Barebox. The
+>  RAMOOPS area is listed as 'persistent ram'::
+>  
+> -  0x10000000 - 0x1fffffff (size 0x10000000) ram0
+> -    0x17e7c0c0 - 0x1fcf817f (size 0x07e7c0c0) malloc space
+> -    0x1fcf8180 - 0x1fcfffff (size 0x00007e80) board data
+> -    0x1fd00000 - 0x1fd6eeff (size 0x0006ef00) barebox
+> -    0x1fd6ef00 - 0x1fd88dff (size 0x00019f00) barebox data
+> -    0x1fd88e00 - 0x1fd8c3db (size 0x000035dc) bss
+> -    0x1fdf4000 - 0x1fe13fff (size 0x00020000) persistent ram
+> -    0x1fe14000 - 0x1fe33fff (size 0x00020000) persistent ram
+> -    0x1fe34000 - 0x1fe53fff (size 0x00020000) persistent ram
+> -    0x1fe54000 - 0x1fe73fff (size 0x00020000) persistent ram
+> -    0x1fe74000 - 0x1fe93fff (size 0x00020000) persistent ram
+> -    0x1fe94000 - 0x1feb3fff (size 0x00020000) persistent ram
+> -    0x1feb4000 - 0x1fed3fff (size 0x00020000) persistent ram
+> -    0x1fed4000 - 0x1fef3fff (size 0x00020000) persistent ram
+> -    0x1fef4000 - 0x1ff13fff (size 0x00020000) persistent ram
+> -    0x1ff14000 - 0x1ff33fff (size 0x00020000) persistent ram
+> -    0x1ff34000 - 0x1ff53fff (size 0x00020000) persistent ram
+> -    0x1ff54000 - 0x1ff73fff (size 0x00020000) persistent ram
+> -    0x1ff74000 - 0x1ff93fff (size 0x00020000) persistent ram
+> -    0x1ff94000 - 0x1ffb3fff (size 0x00020000) persistent ram
+> -    0x1ffb4000 - 0x1ffd3fff (size 0x00020000) persistent ram
+> -    0x1ffd4000 - 0x1fff3fff (size 0x00020000) persistent ram
+> -    0x1fff4000 - 0x1fff7fff (size 0x00004000) ttb
+> -    0x1fff8000 - 0x1fffffff (size 0x00008000) stack
+> +        0x10000000 - 0x1fffffff (size 0x10000000) ram0
+> +        0x17e7c0c0 - 0x1fcf817f (size 0x07e7c0c0) malloc space
 
-Here you increase the real_page.index without calling
-squashfs_readpage() again.
-
-The outer loop shouldn't be necessary. It is used in the if (ofs) above,
-but this doesn't look entirely correct.
-
-I think you are doing too much in this function. It should be easier if
-you create a helper function that takes the current file position and
-returns the buffer that belongs to this position. See below for a (completely
-untested) template:
-
-static int squashfs_read_buf(struct squashfs_page *page, int pos, void **buf)
-{
-	unsigned int data_block = pos / (32 * PAGE_CACHE_SIZE);
-	unsigned int data_block_pos = pos % (32 * PAGE_CACHE_SIZE);
-	unsigned int idx = data_block_pos / PAGE_CACHE_SIZE;
-
-	if (data_block != page->data_block) {
-		page->real_page.index = data_block * 32;
-		squashfs_readpage(NULL, &page->real_page);
-		page->data_block = data_block;
-	}
-
-	*buf = page->buf[idx];
-
-	return 0;
-}
-
-static int squashfs_read(struct device_d *_dev, FILE *f, void *buf,
-		size_t insize)
-{
-	unsigned int size = insize;
-	unsigned int pos = f->pos;
-	unsigned int ofs;
-	unsigned int now;
-	void *pagebuf;
-	struct squashfs_page *page = f->priv;
-
-	/* Read till end of current buffer page */
-	ofs = pos % PAGE_CACHE_SIZE;
-	if (ofs) {
-		squashfs_read_buf(page, pos, &pagebuf);
-
-		now = min(size, PAGE_CACHE_SIZE - ofs);
-		memcpy(buf, pagebuf + ofs, now);
-
-		size -= now;
-		pos += now;
-		buf += now;
-	}
-
-	/* Do full buffer pages */
-	while (size >= PAGE_CACHE_SIZE) {
-		squashfs_read_buf(page, pos, &pagebuf);
-
-		memcpy(buf, pagebuf, PAGE_CACHE_SIZE);
-		size -= PAGE_CACHE_SIZE;
-		pos += PAGE_CACHE_SIZE;
-		buf += PAGE_CACHE_SIZE;
-	}
-
-	/* And the rest */
-	if (size) {
-		squashfs_read_buf(page, pos, &pagebuf);
-		memcpy(buf, pagebuf, size);
-		size  = 0;
-	}
-
-	return insize;
-}
+It was intentional the the first line has a different indention. It's
+from the original 'iomem' output.
 
 Sascha
 
