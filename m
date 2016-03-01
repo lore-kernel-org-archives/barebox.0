@@ -1,12 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from qmail.e-mind.com ([188.94.192.39])
  by bombadil.infradead.org with smtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aaiKj-0000Uq-R9
- for barebox@lists.infradead.org; Tue, 01 Mar 2016 11:19:19 +0000
+ id 1aaie9-00014y-5Y
+ for barebox@lists.infradead.org; Tue, 01 Mar 2016 11:39:22 +0000
+References: <56D57A94.5040804@eurek.it>
 From: gianluca <gianlucarenzi@eurek.it>
-Message-ID: <56D57A94.5040804@eurek.it>
-Date: Tue, 1 Mar 2016 12:18:44 +0100
+Message-ID: <56D57F51.2020803@eurek.it>
+Date: Tue, 1 Mar 2016 12:38:57 +0100
 MIME-Version: 1.0
+In-Reply-To: <56D57A94.5040804@eurek.it>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +21,47 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: iMX6 second boot: from SDCard
+Subject: Re: iMX6 second boot: from SDCard [SOLVED]
 To: barebox@lists.infradead.org
 
-Hello everybody,
-first of all, I would say a BIG thank to everybody point me out on have 
-a USB-Serial Downloader working and Barebox up and running in my custom 
-iMX6Q based board.
+On 03/01/2016 12:18 PM, gianluca wrote:
+> Hello everybody,
+> first of all, I would say a BIG thank to everybody point me out on have
+> a USB-Serial Downloader working and Barebox up and running in my custom
+> iMX6Q based board.
+>
+> Right now I wish to know what can be done or not done to fireup the
+> board from attached microSD card which is working because Barebox (from
+> USB Downloader) is seeing it and find any partition scheme found on it.
+>
+> If I simply write the barebox-flash-image (currently a symlink to
+> image/barebox-[BOARD].img file) to a sdcard with command:
+>
+> [my usb-adapter is seeing the sdcard as /dev/sdk]
+>
+> dd if=barebox-flash-image of=/dev/sdk
+>
+> it works, but actually I have lost all MBR partition scheme at all.
+>
+> I read somewhere (https://community.freescale.com/docs/DOC-95015) that
+> writing the .imx file with an offset of 1K from the beginning of the
+> card it should run.
+>
+> Actually it is not. :-(
+>
 
-Right now I wish to know what can be done or not done to fireup the 
-board from attached microSD card which is working because Barebox (from 
-USB Downloader) is seeing it and find any partition scheme found on it.
+I can answer to this by myself ;-)
 
-If I simply write the barebox-flash-image (currently a symlink to 
-image/barebox-[BOARD].img file) to a sdcard with command:
+The issue is to write skipping the fisrt 1024 of the sdcard (bs=512 
+skip=2 and skipping the first 1k from the image itself [seek=2])
 
-[my usb-adapter is seeing the sdcard as /dev/sdk]
+dd if=barebox-flash-image of=/dev/sdk bs=512 seek=2 skip=2
 
-dd if=barebox-flash-image of=/dev/sdk
+works fine.
 
-it works, but actually I have lost all MBR partition scheme at all.
+Sorry for noise.
+;-P
 
-I read somewhere (https://community.freescale.com/docs/DOC-95015) that 
-writing the .imx file with an offset of 1K from the beginning of the 
-card it should run.
-
-Actually it is not. :-(
-
-Does barebox building this kinda of image? I see under the images 
-folder, a file named:
-
-start_imx6_[BOARD].pblx.imximg
-
-but as far as I can see, this file is the same as the 
-barebox-[BOARD]-imx6q.img...
-
-The Reference Manual in the Boot Section does not explain well on HOW TO 
-PREPARE a MICROSD card just to be sure the DCD and other stuff (like 
-PBL) have to be written just to bootstrap from microSD/MMC...
-
-
-Can anybody help me out on this?
-
-
-Best Regards,
 -- 
 Eurek s.r.l.                          |
 Electronic Engineering                | http://www.eurek.it
