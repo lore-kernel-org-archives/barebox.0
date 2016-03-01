@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aagTa-0004Q8-ST
- for barebox@lists.infradead.org; Tue, 01 Mar 2016 09:20:20 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 85364A00501
- for <barebox@lists.infradead.org>; Tue,  1 Mar 2016 10:20:16 +0100 (CET)
-Date: Tue, 1 Mar 2016 10:19:51 +0100
-From: Stefan Christ <s.christ@phytec.de>
-Message-ID: <20160301091951.GA4116@lws-christ>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aagW6-0006gc-ES
+ for barebox@lists.infradead.org; Tue, 01 Mar 2016 09:22:55 +0000
+Date: Tue, 1 Mar 2016 10:22:32 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160301092232.GM9224@pengutronix.de>
 References: <1456398922-8253-1-git-send-email-s.christ@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <1456398922-8253-1-git-send-email-s.christ@phytec.de>
 Content-Disposition: inline
+In-Reply-To: <1456398922-8253-1-git-send-email-s.christ@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,63 +18,111 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM: i.MX: bbu-internal: call detect for mmc devices
-To: barebox@lists.infradead.org
+To: Stefan Christ <s.christ@phytec.de>
+Cc: barebox@lists.infradead.org
 
-KnBpbmcKCk1pdCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4gLyBLaW5kIHJlZ2FyZHMsCglTdGVmYW4g
-Q2hyaXN0CgpPbiBUaHUsIEZlYiAyNSwgMjAxNiBhdCAxMjoxNToyMlBNICswMTAwLCBTdGVmYW4g
-Q2hyaXN0IHdyb3RlOgo+IEZvciB0aGUgTU1DIHVwZGF0ZV9oYW5kbGVyIGl0IG1ha2VzIHNlbnNl
-IHRvIHByb2JlIHRoZSBkZXZpY2UgYmVmb3JlCj4gd3JpdGluZyB0byBpdC4gSWYgdGhlIGRldmlj
-ZSBpcyBub3QgcHJvYmVkIHlldCwgeW91IGdldCBlcnJvcnMgbGlrZQo+IAo+ICAgICAkIGJhcmVi
-b3hfdXBkYXRlIC15IC10IG1tYzAgL21udC90ZnRwL2JhcmVib3guYmluCj4gICAgIGJhcmVib3hf
-dXBkYXRlOiBSZWFkLW9ubHkgZmlsZSBzeXN0ZW0KPiAKPiBUaGUgY29kZSBpcyBuZWFybHkgZXF1
-aXZhbGVudCB0bwo+IAo+ICAgICAkIGRldGVjdCBtbWMwCj4gICAgICQgYmFyZWJveF91cGRhdGUg
-LXkgLXQgbW1jMCAvbW50L3RmdHAvYmFyZWJveC5iaW4KPiAKPiBUaGUgZnVuY3Rpb24gZGV2aWNl
-X2RldGVjdF9ieV9uYW1lIGFsc28gaGFuZGxlcyBkZXZpY2UgbmFtZXMgd2l0aAo+IHBhcnRpdGlv
-biBzdWZmaXggbGlrZSAiL2Rldi9tbWMzLmJvb3QwIi4KPiAKPiBXaGlsZSBhdCBpdCwgdXNlIHRo
-ZSBtYWNybyBCSVQgZm9yIHRoZSBiaXQgZmllbGQuCj4gCj4gU2lnbmVkLW9mZi1ieTogU3RlZmFu
-IENocmlzdCA8cy5jaHJpc3RAcGh5dGVjLmRlPgo+IC0tLQo+ICBhcmNoL2FybS9tYWNoLWlteC9p
-bXgtYmJ1LWludGVybmFsLmMgfCAyMyArKysrKysrKysrKysrKysrKysrLS0tLQo+ICAxIGZpbGUg
-Y2hhbmdlZCwgMTkgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0
-IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW14LWJidS1pbnRlcm5hbC5jIGIvYXJjaC9hcm0vbWFjaC1p
-bXgvaW14LWJidS1pbnRlcm5hbC5jCj4gaW5kZXggYWM5MGM1My4uMWVjYzBkNyAxMDA2NDQKPiAt
-LS0gYS9hcmNoL2FybS9tYWNoLWlteC9pbXgtYmJ1LWludGVybmFsLmMKPiArKysgYi9hcmNoL2Fy
-bS9tYWNoLWlteC9pbXgtYmJ1LWludGVybmFsLmMKPiBAQCAtMzQsOSArMzQsMTAgQEAKPiAgCj4g
-ICNkZWZpbmUgRkxBU0hfSEVBREVSX09GRlNFVF9NTUMJCTB4NDAwCj4gIAo+IC0jZGVmaW5lIElN
-WF9JTlRFUk5BTF9GTEFHX05BTkQJCSgxIDw8IDApCj4gLSNkZWZpbmUgSU1YX0lOVEVSTkFMX0ZM
-QUdfS0VFUF9ET1NQQVJUCSgxIDw8IDEpCj4gLSNkZWZpbmUgSU1YX0lOVEVSTkFMX0ZMQUdfRVJB
-U0UJCSgxIDw8IDIpCj4gKyNkZWZpbmUgSU1YX0lOVEVSTkFMX0ZMQUdfTkFORAkJQklUKDApCj4g
-KyNkZWZpbmUgSU1YX0lOVEVSTkFMX0ZMQUdfS0VFUF9ET1NQQVJUCUJJVCgxKQo+ICsjZGVmaW5l
-IElNWF9JTlRFUk5BTF9GTEFHX0VSQVNFCQlCSVQoMikKPiArI2RlZmluZSBJTVhfSU5URVJOQUxf
-RkxBR19QUk9CRQkJQklUKDMpCj4gIAo+ICBzdHJ1Y3QgaW14X2ludGVybmFsX2JidV9oYW5kbGVy
-IHsKPiAgCXN0cnVjdCBiYnVfaGFuZGxlciBoYW5kbGVyOwo+IEBAIC01Miw4ICs1MywyMSBAQCBz
-dHJ1Y3QgaW14X2ludGVybmFsX2JidV9oYW5kbGVyIHsKPiAgc3RhdGljIGludCBpbXhfYmJ1X3dy
-aXRlX2RldmljZShzdHJ1Y3QgaW14X2ludGVybmFsX2JidV9oYW5kbGVyICppbXhfaGFuZGxlciwK
-PiAgCQlzdHJ1Y3QgYmJ1X2RhdGEgKmRhdGEsIHZvaWQgKmJ1ZiwgaW50IGltYWdlX2xlbikKPiAg
-ewo+ICsJY29uc3QgY2hhciAqZGV2bmFtZTsKPiAgCWludCBmZCwgcmV0Owo+ICAKPiArCWlmIChp
-bXhfaGFuZGxlci0+ZmxhZ3MgJiBJTVhfSU5URVJOQUxfRkxBR19QUk9CRSkgewo+ICsJCWRldm5h
-bWUgPSBkYXRhLT5kZXZpY2VmaWxlOwo+ICsJCWlmICghc3RybmNtcChkZXZuYW1lLCAiL2Rldi8i
-LCA1KSkKPiArCQkJZGV2bmFtZSArPSA1Owo+ICsJCXJldCA9IGRldmljZV9kZXRlY3RfYnlfbmFt
-ZShkZXZuYW1lKTsKPiArCQlpZiAocmV0KSB7Cj4gKwkJCXByaW50ZigiRGV0ZWN0aW5nIGRldmlj
-ZSAlcyBmYWlsZWQ6ICVzXG4iLCBkZXZuYW1lLAo+ICsJCQkJCXN0cmVycm9yKC1yZXQpKTsKPiAr
-CQkJcmV0dXJuIHJldDsKPiArCQl9Cj4gKwl9Cj4gKwo+ICAJZmQgPSBvcGVuKGRhdGEtPmRldmlj
-ZWZpbGUsIE9fUkRXUiB8IE9fQ1JFQVQpOwo+ICAJaWYgKGZkIDwgMCkKPiAgCQlyZXR1cm4gZmQ7
-Cj4gQEAgLTQ4Nyw3ICs1MDEsOCBAQCBpbnQgaW14Nl9iYnVfaW50ZXJuYWxfbW1jX3JlZ2lzdGVy
-X2hhbmRsZXIoY29uc3QgY2hhciAqbmFtZSwgY2hhciAqZGV2aWNlZmlsZSwKPiAgCWlteF9oYW5k
-bGVyID0gX19pbml0X2hhbmRsZXIobmFtZSwgZGV2aWNlZmlsZSwgZmxhZ3MpOwo+ICAJaW14X2hh
-bmRsZXItPmZsYXNoX2hlYWRlcl9vZmZzZXQgPSBGTEFTSF9IRUFERVJfT0ZGU0VUX01NQzsKPiAg
-Cj4gLQlpbXhfaGFuZGxlci0+ZmxhZ3MgPSBJTVhfSU5URVJOQUxfRkxBR19LRUVQX0RPU1BBUlQ7
-Cj4gKwlpbXhfaGFuZGxlci0+ZmxhZ3MgPSBJTVhfSU5URVJOQUxfRkxBR19LRUVQX0RPU1BBUlQg
-fAo+ICsJCQkJCQlJTVhfSU5URVJOQUxfRkxBR19QUk9CRTsKPiAgCWlteF9oYW5kbGVyLT5oYW5k
-bGVyLmhhbmRsZXIgPSBpbXhfYmJ1X2ludGVybmFsX3YyX3VwZGF0ZTsKPiAgCj4gIAlyZXR1cm4g
-X19yZWdpc3Rlcl9oYW5kbGVyKGlteF9oYW5kbGVyKTsKPiAtLSAKPiAxLjkuMQo+IAo+IAo+IF9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFyZWJveCBt
-YWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+Hi Stefan,
+
+On Thu, Feb 25, 2016 at 12:15:22PM +0100, Stefan Christ wrote:
+> For the MMC update_handler it makes sense to probe the device before
+> writing to it. If the device is not probed yet, you get errors like
+> 
+>     $ barebox_update -y -t mmc0 /mnt/tftp/barebox.bin
+>     barebox_update: Read-only file system
+> 
+> The code is nearly equivalent to
+> 
+>     $ detect mmc0
+>     $ barebox_update -y -t mmc0 /mnt/tftp/barebox.bin
+> 
+> The function device_detect_by_name also handles device names with
+> partition suffix like "/dev/mmc3.boot0".
+> 
+> While at it, use the macro BIT for the bit field.
+> 
+> Signed-off-by: Stefan Christ <s.christ@phytec.de>
+> ---
+>  arch/arm/mach-imx/imx-bbu-internal.c | 23 +++++++++++++++++++----
+>  1 file changed, 19 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+> index ac90c53..1ecc0d7 100644
+> --- a/arch/arm/mach-imx/imx-bbu-internal.c
+> +++ b/arch/arm/mach-imx/imx-bbu-internal.c
+> @@ -34,9 +34,10 @@
+>  
+>  #define FLASH_HEADER_OFFSET_MMC		0x400
+>  
+> -#define IMX_INTERNAL_FLAG_NAND		(1 << 0)
+> -#define IMX_INTERNAL_FLAG_KEEP_DOSPART	(1 << 1)
+> -#define IMX_INTERNAL_FLAG_ERASE		(1 << 2)
+> +#define IMX_INTERNAL_FLAG_NAND		BIT(0)
+> +#define IMX_INTERNAL_FLAG_KEEP_DOSPART	BIT(1)
+> +#define IMX_INTERNAL_FLAG_ERASE		BIT(2)
+> +#define IMX_INTERNAL_FLAG_PROBE		BIT(3)
+>  
+>  struct imx_internal_bbu_handler {
+>  	struct bbu_handler handler;
+> @@ -52,8 +53,21 @@ struct imx_internal_bbu_handler {
+>  static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
+>  		struct bbu_data *data, void *buf, int image_len)
+>  {
+> +	const char *devname;
+>  	int fd, ret;
+>  
+> +	if (imx_handler->flags & IMX_INTERNAL_FLAG_PROBE) {
+
+device_detect_by_name() should be safe to call, I don't think we need
+this additional flag. Just always call device_detect_by_name(). We have
+to drop the return value checking though.
+
+In fact we have the following patch in one of our internal customer
+trees, this should be suitable for your issue, right?
+
+Sascha
+
+-------------------------------8<-----------------------------
+
+From 5770640f4b06730bfd71eadce60bd411e437832b Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 26 Jul 2013 12:41:55 +0200
+Subject: [PATCH] ARM: i.MX: bbu-internal: detect device before writing to it
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/imx-bbu-internal.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index ac90c53..821ce66 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -132,6 +132,9 @@ static int imx_bbu_check_prereq(struct bbu_data *data)
+ 	if (ret)
+ 		return ret;
+ 
++	if (!strncmp(data->devicefile, "/dev/", 5))
++		device_detect_by_name(data->devicefile + 5);
++
+ 	return 0;
+ }
+ 
+-- 
+2.7.0
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
