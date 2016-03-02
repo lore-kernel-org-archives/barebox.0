@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ab9K2-0002U6-2Z
- for barebox@lists.infradead.org; Wed, 02 Mar 2016 16:08:36 +0000
+ id 1ab9Js-0002Ls-2r
+ for barebox@lists.infradead.org; Wed, 02 Mar 2016 16:08:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  2 Mar 2016 17:07:40 +0100
-Message-Id: <1456934863-30990-5-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  2 Mar 2016 17:07:39 +0100
+Message-Id: <1456934863-30990-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1456934863-30990-1-git-send-email-s.hauer@pengutronix.de>
 References: <1456934863-30990-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,93 +21,300 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] ARM: i.MX: karo-tx6: Generalize 801x support
+Subject: [PATCH 3/7] ARM: i.MX: karo-tx6: Add support for the i.MX6q 1GiB
+ variant
 To: Barebox List <barebox@lists.infradead.org>
 
-The device tree for the 801x variant only contains displays. The
-displays are not part of the SoM, but instead of the baseboard,
-so they should be described in a baseboard dts. With this patch
-we rather include the common tx6x dtsi file and drop 801x from
-the barebox device tree names.
+The i.MX6q variant is basically the same as the i.MX6dl variant, just
+with another SoC and the usual i.MX6q/i.MX6dl adjustments.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/karo-tx6x/lowlevel.c |  4 ++--
- arch/arm/dts/Makefile                |  2 +-
- arch/arm/dts/imx6dl-tx6u-801x.dts    |  9 ---------
- arch/arm/dts/imx6dl-tx6u.dts         | 12 ++++++++++++
- 4 files changed, 15 insertions(+), 12 deletions(-)
- delete mode 100644 arch/arm/dts/imx6dl-tx6u-801x.dts
- create mode 100644 arch/arm/dts/imx6dl-tx6u.dts
+ arch/arm/boards/karo-tx6x/board.c                  |   2 +-
+ .../boards/karo-tx6x/flash-header-tx6q-1g.imxcfg   | 174 +++++++++++++++++++++
+ arch/arm/boards/karo-tx6x/lowlevel.c               |  21 +++
+ arch/arm/dts/Makefile                              |   1 +
+ arch/arm/dts/imx6q-tx6q.dts                        |  12 ++
+ images/Makefile.imx                                |   5 +
+ 6 files changed, 214 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/boards/karo-tx6x/flash-header-tx6q-1g.imxcfg
+ create mode 100644 arch/arm/dts/imx6q-tx6q.dts
 
+diff --git a/arch/arm/boards/karo-tx6x/board.c b/arch/arm/boards/karo-tx6x/board.c
+index 346c4b9..b955b81 100644
+--- a/arch/arm/boards/karo-tx6x/board.c
++++ b/arch/arm/boards/karo-tx6x/board.c
+@@ -194,7 +194,7 @@ static int tx6x_devices_init(void)
+ 	    !of_machine_is_compatible("karo,imx6q-tx6q"))
+ 		return 0;
+ 
+-	barebox_set_hostname("tx6u");
++	barebox_set_hostname("tx6");
+ 
+ 	eth_init();
+ 
+diff --git a/arch/arm/boards/karo-tx6x/flash-header-tx6q-1g.imxcfg b/arch/arm/boards/karo-tx6x/flash-header-tx6q-1g.imxcfg
+new file mode 100644
+index 0000000..be4efe3
+--- /dev/null
++++ b/arch/arm/boards/karo-tx6x/flash-header-tx6q-1g.imxcfg
+@@ -0,0 +1,174 @@
++soc imx6
++loadaddr 0x20000000
++dcdofs 0x400
++
++wm 32 0x020e00a4 0x00000016
++wm 32 0x020e00c4 0x00000011
++wm 32 0x020e03b8 0x0000f079
++wm 32 0x020e03d8 0x0000f079
++wm 32 0x020e0898 0x00000000
++wm 32 0x020e089c 0x00000000
++wm 32 0x020e0248 0x00000012
++wm 32 0x020e02c8 0x00000015
++wm 32 0x020e06b0 0x000030b0
++wm 32 0x020e00a0 0x00000015
++wm 32 0x020e03b4 0x000030b0
++wm 32 0x020e024c 0x00000005
++wm 32 0x020e061c 0x000030b0
++wm 32 0x020c402c 0x006336c1
++wm 32 0x020c4034 0x00012093
++wm 32 0x020c4038 0x00012090
++wm 32 0x020c80e0 0x00002001
++wm 32 0x020c80a0 0x80082029
++wm 32 0x020c80b0 0x00065b9a
++wm 32 0x020c80c0 0x000f4240
++wm 32 0x020e0004 0x48640005
++wm 32 0x020e02a8 0x00000001
++wm 32 0x020e02ac 0x00000001
++wm 32 0x020e0920 0x00000003
++wm 32 0x020e02c0 0x00000001
++wm 32 0x020e02c4 0x00000001
++wm 32 0x020e091c 0x00000003
++wm 32 0x020e02ec 0x00000000
++wm 32 0x020e05ac 0x00020030
++wm 32 0x020e05b4 0x00020030
++wm 32 0x020e0528 0x00020030
++wm 32 0x020e0520 0x00020030
++wm 32 0x020e0514 0x00020030
++wm 32 0x020e0510 0x00020030
++wm 32 0x020e05bc 0x00020030
++wm 32 0x020e05c4 0x00020030
++wm 32 0x020e052c 0x00020200
++wm 32 0x020e0530 0x00020200
++wm 32 0x020e0534 0x00020200
++wm 32 0x020e0538 0x00020200
++wm 32 0x020e053c 0x00020200
++wm 32 0x020e0540 0x00020200
++wm 32 0x020e0544 0x00020200
++wm 32 0x020e0548 0x00020200
++wm 32 0x020e054c 0x00020200
++wm 32 0x020e0550 0x00020200
++wm 32 0x020e0554 0x00020200
++wm 32 0x020e0558 0x00020200
++wm 32 0x020e055c 0x00020200
++wm 32 0x020e0560 0x00020200
++wm 32 0x020e0564 0x00020200
++wm 32 0x020e0568 0x00020200
++wm 32 0x020e056c 0x00020030
++wm 32 0x020e0578 0x00020030
++wm 32 0x020e0588 0x00020030
++wm 32 0x020e0594 0x00020030
++wm 32 0x020e057c 0x00020030
++wm 32 0x020e0590 0x00003000
++wm 32 0x020e0598 0x00003000
++wm 32 0x020e0580 0x00000000
++wm 32 0x020e0584 0x00000000
++wm 32 0x020e058c 0x00000000
++wm 32 0x020e059c 0x00003030
++wm 32 0x020e05a0 0x00003030
++wm 32 0x020e0784 0x00000030
++wm 32 0x020e0788 0x00000030
++wm 32 0x020e0794 0x00000030
++wm 32 0x020e079c 0x00000030
++wm 32 0x020e07a0 0x00000030
++wm 32 0x020e07a4 0x00000030
++wm 32 0x020e07a8 0x00000030
++wm 32 0x020e0748 0x00000030
++wm 32 0x020e074c 0x00000030
++wm 32 0x020e0750 0x00020000
++wm 32 0x020e0758 0x00000000
++wm 32 0x020e0774 0x00020000
++wm 32 0x020e078c 0x00000030
++wm 32 0x020e0798 0x000c0000
++wm 32 0x020e0768 0x00002000
++wm 32 0x020e0770 0x00000000
++wm 32 0x020e0754 0x00000200
++wm 32 0x020e075c 0x00000200
++wm 32 0x020e0760 0x00000200
++wm 32 0x020e0764 0x00000200
++wm 32 0x020e076c 0x00000200
++wm 32 0x020e0778 0x00000200
++wm 32 0x020e077c 0x00000200
++wm 32 0x020e0780 0x00000200
++wm 32 0x021b001c 0x04008010
++wm 32 0x021b001c 0x04008040
++wm 32 0x021b0800 0xa1390001
++wm 32 0x021b080c 0x001e001e
++wm 32 0x021b0810 0x001e001e
++wm 32 0x021b480c 0x001e001e
++wm 32 0x021b4810 0x001e001e
++wm 32 0x021b083c 0x43430349
++wm 32 0x021b0840 0x03330334
++wm 32 0x021b483c 0x434b0351
++wm 32 0x021b4840 0x033d030e
++wm 32 0x021b0848 0x40404040
++wm 32 0x021b0850 0x40404040
++wm 32 0x021b4848 0x40404040
++wm 32 0x021b4850 0x40404040
++wm 32 0x021b081c 0x33333333
++wm 32 0x021b0820 0x33333333
++wm 32 0x021b0824 0x33333333
++wm 32 0x021b0828 0x33333333
++wm 32 0x021b481c 0x33333333
++wm 32 0x021b4820 0x33333333
++wm 32 0x021b4824 0x33333333
++wm 32 0x021b4828 0x33333333
++wm 32 0x021b08b8 0x00000800
++wm 32 0x021b48b8 0x00000800
++wm 32 0x021b0018 0x00000742
++check 32 while_all_bits_clear 0x021b0018 0x00000002
++wm 32 0x021b001c 0x00008000
++check 32 while_any_bit_clear 0x021b001c 0x00004000
++wm 32 0x021b0000 0x831a0000
++check 32 while_any_bit_clear 0x021b0018 0x40000000
++wm 32 0x021b000c 0x545a79a4
++wm 32 0x021b0010 0xff538e64
++wm 32 0x021b0014 0x01ff00dd
++wm 32 0x021b002c 0x000026d2
++wm 32 0x021b0030 0x005a1023
++wm 32 0x021b0008 0x24444040
++wm 32 0x021b0004 0x00020076
++wm 32 0x021b0040 0x00000027
++wm 32 0x021b001c 0x09308030
++wm 32 0x021b001c 0x00048031
++wm 32 0x021b001c 0x00488032
++wm 32 0x021b001c 0x00008033
++wm 32 0x021b0020 0x0000c000
++wm 32 0x021b001c 0x00008020
++wm 32 0x021b0818 0x00022222
++wm 32 0x021b4818 0x00022222
++wm 32 0x021b0890 0x00000003
++wm 32 0x021b0404 0x00000001
++wm 32 0x021b001c 0x04008010
++wm 32 0x021b001c 0x04008040
++wm 32 0x021b0800 0xa1390001
++check 32 while_all_bits_clear 0x021b0800 0x00010000
++wm 32 0x021b0800 0xa1380000
++wm 32 0x021b001c 0x00048033
++wm 32 0x020e05a8 0x00000030
++wm 32 0x020e05b0 0x00000030
++wm 32 0x020e0524 0x00000030
++wm 32 0x020e051c 0x00000030
++wm 32 0x020e0518 0x00000030
++wm 32 0x020e050c 0x00000030
++wm 32 0x020e05b8 0x00000030
++wm 32 0x020e05c0 0x00000030
++wm 32 0x021b001c 0x04008050
++wm 32 0x021b0860 0x00000030
++wm 32 0x021b4860 0x00000030
++check 32 while_all_bits_clear 0x021b0860 0x0000001f
++check 32 while_all_bits_clear 0x021b4860 0x0000001f
++wm 32 0x021b001c 0x04008050
++wm 32 0x021b0864 0x00000030
++check 32 while_all_bits_clear 0x021b0864 0x0000001f
++wm 32 0x021b001c 0x04008050
++wm 32 0x021b4864 0x00000030
++check 32 while_all_bits_clear 0x021b4864 0x0000001f
++wm 32 0x021b001c 0x00008033
++wm 32 0x021b0800 0xa138002b
++wm 32 0x021b0020 0x00001800
++wm 32 0x021b0404 0x00001000
++wm 32 0x021b0004 0x00025576
++wm 32 0x021b001c 0x00000000
++check 32 while_all_bits_clear 0x021b001c 0x00004000
++
 diff --git a/arch/arm/boards/karo-tx6x/lowlevel.c b/arch/arm/boards/karo-tx6x/lowlevel.c
-index e67315f..1aa24c5 100644
+index 1e44b1b..e67315f 100644
 --- a/arch/arm/boards/karo-tx6x/lowlevel.c
 +++ b/arch/arm/boards/karo-tx6x/lowlevel.c
-@@ -36,7 +36,7 @@ static inline void setup_uart(void)
- 	putc_ll('>');
- }
+@@ -18,6 +18,7 @@
+ #include <asm/barebox-arm.h>
+ #include <image-metadata.h>
+ #include <mach/generic.h>
++#include <mach/esdctl.h>
+ #include <linux/sizes.h>
  
--extern char __dtb_imx6dl_tx6u_801x_start[];
-+extern char __dtb_imx6dl_tx6u_start[];
- 
- BAREBOX_IMD_TAG_STRING(tx6x_mx6_memsize_1G, IMD_TYPE_PARAMETER, "memsize=1024", 0);
- 
-@@ -53,7 +53,7 @@ ENTRY_FUNCTION(start_imx6dl_tx6x_1g, r0, r1, r2)
- 	if (IS_ENABLED(CONFIG_DEBUG_LL))
- 		setup_uart();
- 
--	fdt = __dtb_imx6dl_tx6u_801x_start - get_runtime_offset();
-+	fdt = __dtb_imx6dl_tx6u_start - get_runtime_offset();
+ static inline void setup_uart(void)
+@@ -56,3 +57,23 @@ ENTRY_FUNCTION(start_imx6dl_tx6x_1g, r0, r1, r2)
  
  	barebox_arm_entry(0x10000000, SZ_1G, fdt);
  }
++
++extern char __dtb_imx6q_tx6q_start[];
++
++ENTRY_FUNCTION(start_imx6q_tx6x_1g, r0, r1, r2)
++{
++	void *fdt;
++
++	imx6_cpu_lowlevel_init();
++
++	arm_setup_stack(0x00920000 - 8);
++
++	IMD_USED(tx6x_mx6_memsize_1G);
++
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart();
++
++	fdt = __dtb_imx6q_tx6q_start - get_runtime_offset();
++
++	imx6q_barebox_entry(fdt);
++}
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index bd9f453..ade49c0 100644
+index d85c237..bd9f453 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -67,7 +67,7 @@ pbl-dtb-$(CONFIG_MACH_TOSHIBA_AC100) += tegra20-paz00.dtb.o
- pbl-dtb-$(CONFIG_MACH_TQMA53) += imx53-mba53.dtb.o
+@@ -68,6 +68,7 @@ pbl-dtb-$(CONFIG_MACH_TQMA53) += imx53-mba53.dtb.o
  pbl-dtb-$(CONFIG_MACH_TQMA6X) += imx6dl-mba6x.dtb.o imx6q-mba6x.dtb.o
  pbl-dtb-$(CONFIG_MACH_TX25) += imx25-karo-tx25.dtb.o
--pbl-dtb-$(CONFIG_MACH_TX6X) += imx6dl-tx6u-801x.dtb.o
-+pbl-dtb-$(CONFIG_MACH_TX6X) += imx6dl-tx6u.dtb.o
- pbl-dtb-$(CONFIG_MACH_TX6X) += imx6q-tx6q.dtb.o
+ pbl-dtb-$(CONFIG_MACH_TX6X) += imx6dl-tx6u-801x.dtb.o
++pbl-dtb-$(CONFIG_MACH_TX6X) += imx6q-tx6q.dtb.o
  pbl-dtb-$(CONFIG_MACH_UDOO) += imx6q-udoo.dtb.o
  pbl-dtb-$(CONFIG_MACH_USI_TOPKICK) += kirkwood-topkick-bb.dtb.o
-diff --git a/arch/arm/dts/imx6dl-tx6u-801x.dts b/arch/arm/dts/imx6dl-tx6u-801x.dts
-deleted file mode 100644
-index b6018a6..0000000
---- a/arch/arm/dts/imx6dl-tx6u-801x.dts
-+++ /dev/null
-@@ -1,9 +0,0 @@
--#include <arm/imx6dl-tx6u-801x.dts>
--#include "imx6qdl.dtsi"
--#include "imx6qdl-tx6x.dtsi"
--
--/ {
--	model = "Ka-Ro electronics TX6U-801x Module";
--	compatible = "karo,imx6dl-tx6dl", "fsl,imx6dl";
--};
--
-diff --git a/arch/arm/dts/imx6dl-tx6u.dts b/arch/arm/dts/imx6dl-tx6u.dts
+ pbl-dtb-$(CONFIG_MACH_VARISCITE_MX6) += imx6q-var-custom.dtb.o
+diff --git a/arch/arm/dts/imx6q-tx6q.dts b/arch/arm/dts/imx6q-tx6q.dts
 new file mode 100644
-index 0000000..77fda62
+index 0000000..6063dd4
 --- /dev/null
-+++ b/arch/arm/dts/imx6dl-tx6u.dts
++++ b/arch/arm/dts/imx6q-tx6q.dts
 @@ -0,0 +1,12 @@
 +/dts-v1/;
 +
 +#include <arm/imx6q.dtsi>
 +#include <arm/imx6qdl-tx6.dtsi>
-+#include "imx6qdl.dtsi"
++#include "imx6q.dtsi"
 +#include "imx6qdl-tx6x.dtsi"
 +
 +/ {
-+	model = "Ka-Ro electronics TX6U-801x Module";
-+	compatible = "karo,imx6dl-tx6dl", "fsl,imx6dl";
++	model = "Ka-Ro electronics TX6Q Module";
++	compatible = "karo,imx6q-tx6q", "fsl,imx6q";
 +};
 +
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 4ab2dcb..6870bce 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -288,6 +288,11 @@ CFG_start_imx6dl_tx6x_1g.pblx.imximg = $(board)/karo-tx6x/flash-header-tx6dl-1g.
+ FILE_barebox-karo-imx6dl-tx6x-1g.img = start_imx6dl_tx6x_1g.pblx.imximg
+ image-$(CONFIG_MACH_TX6X) += barebox-karo-imx6dl-tx6x-1g.img
+ 
++pblx-$(CONFIG_MACH_TX6X) += start_imx6q_tx6x_1g
++CFG_start_imx6q_tx6x_1g.pblx.imximg = $(board)/karo-tx6x/flash-header-tx6q-1g.imxcfg
++FILE_barebox-karo-imx6q-tx6x-1g.img = start_imx6q_tx6x_1g.pblx.imximg
++image-$(CONFIG_MACH_TX6X) += barebox-karo-imx6q-tx6x-1g.img
++
+ pblx-$(CONFIG_MACH_UDOO) += start_imx6_udoo
+ CFG_start_imx6_udoo.pblx.imximg = $(board)/udoo/flash-header-mx6-udoo.imxcfg
+ FILE_barebox-udoo-imx6q.img = start_imx6_udoo.pblx.imximg
 -- 
 2.7.0
 
