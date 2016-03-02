@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from forward12p.cmail.yandex.net ([87.250.241.138])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ab3aT-0005hm-Oc
- for barebox@lists.infradead.org; Wed, 02 Mar 2016 10:00:59 +0000
-Date: Wed, 2 Mar 2016 11:00:34 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160302100034.GO9224@pengutronix.de>
-References: <56D6B15B.2040206@systec-electronic.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <56D6B15B.2040206@systec-electronic.com>
+ id 1ab4qZ-0006PX-Hv
+ for barebox@lists.infradead.org; Wed, 02 Mar 2016 11:21:41 +0000
+Received: from smtp14.mail.yandex.net (smtp14.mail.yandex.net
+ [IPv6:2a02:6b8:0:801:1::13])
+ by forward12p.cmail.yandex.net (Yandex) with ESMTP id E23FC21030
+ for <barebox@lists.infradead.org>; Wed,  2 Mar 2016 14:07:19 +0300 (MSK)
+From: Aleksey Kuleshov <rndfax@yandex.ru>
+Date: Wed,  2 Mar 2016 13:50:36 +0300
+Message-Id: <1456915836-11021-1-git-send-email-rndfax@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,107 +18,133 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Crash after failed UBIFS mount
-To: =?iso-8859-15?Q?Dr=2E-Ing=2E_Martin_D=E4umler?= SYS TEC electronic GmbH <martin.daeumler@systec-electronic.com>
-Cc: barebox@lists.infradead.org, Daniel =?iso-8859-15?Q?Kr=FCger?= <daniel.krueger@systec-electronic.com>, Alexander Stein <alexander.stein@systec-electronic.com>
+Subject: [PATCH] usb_kbd: fix overpolling of keyboard
+To: barebox@lists.infradead.org
+Cc: Aleksey Kuleshov <rndfax@yandex.ru>
 
-Hi Martin,
-
-On Wed, Mar 02, 2016 at 10:24:43AM +0100, Dr.-Ing. Martin D=E4umler SYS TEC=
- electronic GmbH wrote:
-> Hello,
-> =
-
-> we encountered a problem of barebox tag 2015.05.0, which is also
-> reproducible with tag 2016.01.0. Mounting an UBIFS file system partition
-> fails (correctly) and barebox crashes while cleaning up. The call hierarc=
-hy
-> is
-> as follows:
-> =
-
-> -mount() (fs/fs.c:1243): try to mount ubifs partition; call
-> register_device()
-> --register_device() (drivers/base/driver.c:138):
-> ---match() (drivers/base/driver.c:117): look for a suitable device driver
-> ----device_probe() (drivers/base/driver.c:82): ubifs partition fails to
-> mount due to corrupted LEB
-> ----device_probe(): delete device's 'active' list ('list_del(&dev->active=
-)')
-> ---match(): set device driver to NULL and return -1 to register_device()
-> --register_device(): return 0 (success) to mount()
-> -mount(): check device driver and call unregister_device() due to invalid
-> driver
-> --unregister_device() (drivers/base/driver.c:180): delete device's 'activ=
-e'
-> list the second time -> crash
-> =
-
-> Barebox does not crash if drivers/base/driver.c:92, i.e., list deletion in
-> device_probe(), is removed. Is the removal of the list deletion a valid
-> solution or does this have side effects?
-
-This should be fixed with the following patch which currently sits in
-the master branch.
-
-Sascha
-
------------------------8<-------------------------------------
-
-From 46bb3a4d8490b318fbcfac7b69c217cec05d7a8f Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 8 Feb 2016 11:31:00 +0100
-Subject: [PATCH] driver: Fix unregister device after device probe failure
-
-When a device probe fails the device is removed from the active list.
-If then the device is unregistered afterwards it is removed from the
-active list again resulting in a crash. To fix this initialize the
-devices active list entry when removing it from the active list.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+- use async callings to call poll function
+- remove unused
+- remove unnecessary locking
 ---
- drivers/base/driver.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/input/usb_kbd.c | 41 ++++++++++++++++++++---------------------
+ 1 file changed, 20 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index a70fbb2..c529296 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -101,6 +101,8 @@ int device_probe(struct device_d *dev)
+diff --git a/drivers/input/usb_kbd.c b/drivers/input/usb_kbd.c
+index 74bc11f..03796f3 100644
+--- a/drivers/input/usb_kbd.c
++++ b/drivers/input/usb_kbd.c
+@@ -46,13 +46,10 @@
+ struct usb_kbd_pdata;
+ 
+ struct usb_kbd_pdata {
+-	uint64_t	last_report;
+ 	uint8_t		*new;
+ 	uint8_t		old[USB_KBD_BOOT_REPORT_SIZE];
+-	uint8_t		flags;
+-	struct poller_struct	poller;
++	struct poller_async	poller;
+ 	struct usb_device	*usbdev;
+-	int		lock;
+ 	unsigned long	intpipe;
+ 	int		intpktsize;
+ 	int		intinterval;
+@@ -94,23 +91,17 @@ static const unsigned char usb_kbd_keycode[256] = {
+ 	150,158,159,128,136,177,178,176,142,152,173,140
+ };
+ 
+-static void usb_kbd_poll(struct poller_struct *poller)
++static void usb_kbd_poll(void *arg)
+ {
+-	struct usb_kbd_pdata *data = container_of(poller,
+-						  struct usb_kbd_pdata, poller);
++	struct usb_kbd_pdata *data = arg;
+ 	struct usb_device *usbdev = data->usbdev;
+ 	int ret, i;
+ 
+-	if (data->lock)
+-		return;
+-
+-	data->lock = 1;
+-
+ 	ret = data->do_poll(data);
+ 	if (ret == -EAGAIN)
+ 		goto exit;
+ 	if (ret < 0) {
+-		/* exit and lock forever */
++		/* exit and die forever */
+ 		dev_err(&usbdev->dev,
+ 			"usb_submit_int_msg() failed. Keyboard disconnect?\n");
+ 		return;
+@@ -125,7 +116,6 @@ static void usb_kbd_poll(struct poller_struct *poller)
+ 		input_report_key_event(&data->input, usb_kbd_keycode[i + 224], (data->new[0] >> i) & 1);
+ 
+ 	for (i = 2; i < 8; i++) {
+-
+ 		if (data->old[i] > 3 && memscan(data->new + 2, data->old[i], 6) == data->new + 8) {
+ 			if (usb_kbd_keycode[data->old[i]])
+ 				input_report_key_event(&data->input, usb_kbd_keycode[data->old[i]], 0);
+@@ -145,10 +135,10 @@ static void usb_kbd_poll(struct poller_struct *poller)
+ 		}
  	}
- =
-
- 	list_del(&dev->active);
-+	INIT_LIST_HEAD(&dev->active);
+ 
+-	memcpy(data->old, data->new, 8);
++	memcpy(data->old, data->new, USB_KBD_BOOT_REPORT_SIZE);
+ 
+ exit:
+-	data->lock = 0;
++	poller_call_async(&data->poller, data->intinterval * MSECOND, usb_kbd_poll, data);
+ }
+ 
+ static int usb_kbd_probe(struct usb_device *usbdev,
+@@ -173,7 +163,6 @@ static int usb_kbd_probe(struct usb_device *usbdev,
+ 	data->new = dma_alloc(USB_KBD_BOOT_REPORT_SIZE);
+ 
+ 	data->usbdev = usbdev;
+-	data->last_report = get_time_ns();
+ 
+ 	data->ep = &iface->ep_desc[0];
+ 	data->intpipe = usb_rcvintpipe(usbdev, data->ep->bEndpointAddress);
+@@ -199,18 +188,28 @@ static int usb_kbd_probe(struct usb_device *usbdev,
+ 	} else
+ 		dev_dbg(&usbdev->dev, "poll keyboard via int ep\n");
+ 
+-	input_device_register(&data->input);
++	ret = input_device_register(&data->input);
++	if (ret) {
++		dev_err(&usbdev->dev, "can't register input\n");
++		return ret;
++	}
 +
- 	dev_err(dev, "probe failed: %s\n", strerror(-ret));
- =
++	ret = poller_async_register(&data->poller);
++	if (ret) {
++		dev_err(&usbdev->dev, "can't setup poller\n");
++		return ret;
++	}
+ 
+-	data->poller.func = usb_kbd_poll;
++	poller_call_async(&data->poller, data->intinterval * MSECOND, usb_kbd_poll, data);
+ 
+-	return poller_register(&data->poller);
++	return 0;
+ }
+ 
+ static void usb_kbd_disconnect(struct usb_device *usbdev)
+ {
+ 	struct usb_kbd_pdata *data = usbdev->drv_data;
+ 
+-	poller_unregister(&data->poller);
++	poller_async_unregister(&data->poller);
+ 	input_device_unregister(&data->input);
+ 	dma_free(data->new);
+ 	free(data);
+-- 
+2.6.2
 
- 	return ret;
-@@ -258,6 +260,8 @@ static int device_probe_deferred(void)
- =
-
- 		list_for_each_entry_safe(dev, tmp, &deferred, active) {
- 			list_del(&dev->active);
-+			INIT_LIST_HEAD(&dev->active);
-+
- 			dev_dbg(dev, "re-probe device\n");
- 			bus_for_each_driver(dev->bus, drv) {
- 				if (match(drv, dev))
--- =
-
-2.7.0
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
