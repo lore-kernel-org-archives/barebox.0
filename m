@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1ab9Jp-0000lq-Kk
- for barebox@lists.infradead.org; Wed, 02 Mar 2016 16:08:10 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  2 Mar 2016 17:07:38 +0100
-Message-Id: <1456934863-30990-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1456934863-30990-1-git-send-email-s.hauer@pengutronix.de>
-References: <1456934863-30990-1-git-send-email-s.hauer@pengutronix.de>
+Received: from webbox1416.server-home.net ([77.236.96.61])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ab9Ut-0005U3-8I
+ for barebox@lists.infradead.org; Wed, 02 Mar 2016 16:19:36 +0000
+Received: from imapserver.systec-electronic.com (unknown [212.185.67.146])
+ by webbox1416.server-home.net (Postfix) with ESMTPA id 7BDA727A3EF
+ for <barebox@lists.infradead.org>; Wed,  2 Mar 2016 17:19:13 +0100 (CET)
+From: Alexander Stein <alexander.stein@systec-electronic.com>
+Date: Wed, 02 Mar 2016 17:19:08 +0100
+Message-ID: <3665455.GH0lG2JcVq@ws-stein>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,137 +18,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] ARM: i.MX: karo-tx6: Support eMMC board variants
-To: Barebox List <barebox@lists.infradead.org>
+Subject: UBIFS recovery fails in barebox while Linux suceeds
+To: barebox@lists.infradead.org
+Cc: Daniel =?ISO-8859-1?Q?Kr=FCger?= <daniel.krueger@systec-electronic.com>
 
-The TX6 board come with either NAND flash or eMMC as primary
-storage medium. This adds support for the eMMC variants.
-We can detect if we have NAND or eMMC by looking at the
-bootsource which will be configured accordingly. This
-way we can modify the device tree during runtime and do
-not have to create a new image.
+Hi,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/karo-tx6x/board.c | 26 +++++++++++++++++++++++++-
- arch/arm/dts/imx6qdl-tx6x.dtsi    | 31 +++++++++++++++++++++++++++++++
- 2 files changed, 56 insertions(+), 1 deletion(-)
+in case a UBIFS needs recovery (unclean write or whatever on NOR flash) it is possible that barebox fails to do so while Linux suceeds.
+The main cause, IMHO, is that Linux takes max_write_size into account (starting with commit 2765df7da540687c4d57ca840182122f074c5b9c "UBIFS: use max_write_size during recovery") while barebox doesn't. Apparently is_last_write (fs/ubifs/recovery.c) results differently due to that fact which explains why recovery progress differently. I don't know which linux version the ubifs code in barebox is taken from but I guess this needs to be updated. Are there any plans?
 
-diff --git a/arch/arm/boards/karo-tx6x/board.c b/arch/arm/boards/karo-tx6x/board.c
-index a921541..346c4b9 100644
---- a/arch/arm/boards/karo-tx6x/board.c
-+++ b/arch/arm/boards/karo-tx6x/board.c
-@@ -183,8 +183,13 @@ static void eth_init(void)
- 	writel(val, iomux + IOMUXC_GPR1);
- }
- 
-+#define IMX6_SRC_SBMR1   0x04
-+
- static int tx6x_devices_init(void)
- {
-+	void __iomem *src_base = IOMEM(MX6_SRC_BASE_ADDR);
-+	uint32_t sbmr1;
-+
- 	if (!of_machine_is_compatible("karo,imx6dl-tx6dl") &&
- 	    !of_machine_is_compatible("karo,imx6q-tx6q"))
- 		return 0;
-@@ -195,7 +200,26 @@ static int tx6x_devices_init(void)
- 
- 	setup_pmic_voltages();
- 
--	imx6_bbu_nand_register_handler("nand", BBU_HANDLER_FLAG_DEFAULT);
-+	sbmr1 = readl(src_base + IMX6_SRC_SBMR1);
-+
-+	/*
-+	 * Check if this board is booted from eMMC or NAND to enable the
-+	 * corresponding device. We can't use the regular bootsource
-+	 * function here as it might return that we are in serial
-+	 * downloader mode. Even if we are SBMR1[7] indicates whether
-+	 * this board has eMMC or NAND.
-+	 */
-+	if (sbmr1 & (1 << 7)) {
-+		imx6_bbu_nand_register_handler("nand", BBU_HANDLER_FLAG_DEFAULT);
-+		of_device_enable_and_register_by_name("environment-nand");
-+		of_device_enable_and_register_by_name("gpmi-nand@00112000");
-+	} else {
-+		imx6_bbu_internal_mmc_register_handler("eMMC", "/dev/mmc3.boot0",
-+						       BBU_HANDLER_FLAG_DEFAULT);
-+		of_device_enable_and_register_by_name("environment-emmc");
-+		of_device_enable_and_register_by_name("usdhc@0219c000");
-+	}
-+
- 
- 	return 0;
- }
-diff --git a/arch/arm/dts/imx6qdl-tx6x.dtsi b/arch/arm/dts/imx6qdl-tx6x.dtsi
-index 7584e43..9fe6e6a 100644
---- a/arch/arm/dts/imx6qdl-tx6x.dtsi
-+++ b/arch/arm/dts/imx6qdl-tx6x.dtsi
-@@ -3,9 +3,16 @@
- 		linux,stdout-path = &uart1;
- 
- 		environment-nand {
-+			status = "disabled";
- 			compatible = "barebox,environment";
- 			device-path = &gpmi, "partname:barebox-environment";
- 		};
-+
-+		environment-emmc {
-+			status = "disabled";
-+			compatible = "barebox,environment";
-+			device-path = &usdhc4, "partname:boot1";
-+		};
- 	};
- };
- 
-@@ -14,6 +21,8 @@
- };
- 
- &gpmi {
-+	status = "disabled";
-+
- 	partition@0 {
- 		label = "barebox";
- 		reg = <0x0 0x400000>;
-@@ -51,9 +60,31 @@
- 				MX6QDL_PAD_GPIO_16__ENET_REF_CLK	0x4001b0b0
- 			>;
- 		};
-+
-+		pinctrl_usdhc4: usdhc4grp {
-+			fsl,pins = <
-+				MX6QDL_PAD_SD4_CMD__SD4_CMD		0x070b1
-+				MX6QDL_PAD_SD4_CLK__SD4_CLK		0x070b1
-+				MX6QDL_PAD_SD4_DAT0__SD4_DATA0		0x070b1
-+				MX6QDL_PAD_SD4_DAT1__SD4_DATA1		0x070b1
-+				MX6QDL_PAD_SD4_DAT2__SD4_DATA2		0x070b1
-+				MX6QDL_PAD_SD4_DAT3__SD4_DATA3		0x070b1
-+				MX6QDL_PAD_NANDF_ALE__SD4_RESET		0x0b0b1
-+			>;
-+		};
- 	};
- };
- 
- &ocotp {
- 	barebox,provide-mac-address = <&fec 0x620>;
- };
-+
-+&usdhc4 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_usdhc4>;
-+	bus-width = <4>;
-+	non-removable;
-+	no-1-8-v;
-+	fsl,wp-controller;
-+	status = "disabled";
-+};
+Best regards,
+Alexander
 -- 
-2.7.0
+Dipl.-Inf. Alexander Stein
+SYS TEC electronic GmbH
+alexander.stein@systec-electronic.com
+
+Legal and Commercial Address:
+Am Windrad 2
+08468 Heinsdorfergrund
+Germany
+
+Office: +49 (0) 3765 38600-0
+Fax:    +49 (0) 3765 38600-4100
+ 
+Managing Directors:
+	Director Technology/CEO: Dipl.-Phys. Siegmar Schmidt;
+	Director Commercial Affairs/COO: Dipl. Ing. (FH) Armin von Collrepp
+Commercial Registry:
+	Amtsgericht Chemnitz, HRB 28082; USt.-Id Nr. DE150534010
 
 
 _______________________________________________
