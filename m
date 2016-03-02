@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1abBv2-0005I9-3Q
- for barebox@lists.infradead.org; Wed, 02 Mar 2016 18:54:45 +0000
-Date: Wed, 2 Mar 2016 19:54:22 +0100
+ id 1abCst-0001nW-II
+ for barebox@lists.infradead.org; Wed, 02 Mar 2016 19:56:36 +0000
+Date: Wed, 2 Mar 2016 20:56:13 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160302185422.GT9224@pengutronix.de>
-References: <1456398922-8253-1-git-send-email-s.christ@phytec.de>
- <20160301092232.GM9224@pengutronix.de>
- <20160301105605.GA4982@lws-christ>
+Message-ID: <20160302195613.GU9224@pengutronix.de>
+References: <3665455.GH0lG2JcVq@ws-stein>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20160301105605.GA4982@lws-christ>
+In-Reply-To: <3665455.GH0lG2JcVq@ws-stein>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,28 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX: bbu-internal: call detect for mmc devices
-To: Stefan Christ <s.christ@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: UBIFS recovery fails in barebox while Linux suceeds
+To: Alexander Stein <alexander.stein@systec-electronic.com>
+Cc: barebox@lists.infradead.org, Daniel =?iso-8859-15?Q?Kr=FCger?= <daniel.krueger@systec-electronic.com>
 
-On Tue, Mar 01, 2016 at 11:56:05AM +0100, Stefan Christ wrote:
-> Hi Sascha,
+On Wed, Mar 02, 2016 at 05:19:08PM +0100, Alexander Stein wrote:
+> Hi,
 > 
-> > device_detect_by_name() should be safe to call, I don't think we need
-> > this additional flag. Just always call device_detect_by_name(). We have
-> > to drop the return value checking though.
-> > 
-> > In fact we have the following patch in one of our internal customer
-> > trees, this should be suitable for your issue, right?
-> 
-> Yep. These two lines of code are sufficent for our use case ;-) Here is my:
-> 
->     Tested-by: Stefan Christ <s.christ@phytec.de>
-> 
-> Will you apply that patch to master?
+> in case a UBIFS needs recovery (unclean write or whatever on NOR
+> flash) it is possible that barebox fails to do so while Linux suceeds.
+> The main cause, IMHO, is that Linux takes max_write_size into account
+> (starting with commit 2765df7da540687c4d57ca840182122f074c5b9c "UBIFS:
+> use max_write_size during recovery") while barebox doesn't. Apparently
+> is_last_write (fs/ubifs/recovery.c) results differently due to that
+> fact which explains why recovery progress differently. I don't know
+> which linux version the ubifs code in barebox is taken from but I
+> guess this needs to be updated. Are there any plans?
 
-As it's not a regression or serious bug I applied it to next and not to
-master.
+The barebox UBIFS code is taken from U-Boot 2013.07 which is taken from
+Linux-2.6.29-rc6, so indeed the code is quite old. U-Boot has updated
+UBIFS support to Linux-4.2. The question is if we update UBIFS from
+U-Boot or directly from the Kernel, I have no idea which way is easier.
+Currently there are no plans to update UBIFS, but of course you are
+invited to create them ;)
 
 Sascha
 
