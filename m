@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1abNir-0002Po-Vd
- for barebox@lists.infradead.org; Thu, 03 Mar 2016 07:30:59 +0000
-Date: Thu, 3 Mar 2016 08:30:28 +0100
-From: Stefan Christ <s.christ@phytec.de>
-Message-ID: <20160303073027.GA2345@lws-christ>
-References: <1456398922-8253-1-git-send-email-s.christ@phytec.de>
- <20160301092232.GM9224@pengutronix.de>
- <20160301105605.GA4982@lws-christ>
- <20160302185422.GT9224@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1abOD9-0007X2-Hc
+ for barebox@lists.infradead.org; Thu, 03 Mar 2016 08:02:17 +0000
+Date: Thu, 3 Mar 2016 09:01:52 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160303080152.GV9224@pengutronix.de>
+References: <1456915836-11021-1-git-send-email-rndfax@yandex.ru>
 MIME-Version: 1.0
-In-Reply-To: <20160302185422.GT9224@pengutronix.de>
 Content-Disposition: inline
+In-Reply-To: <1456915836-11021-1-git-send-email-rndfax@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,38 +18,158 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX: bbu-internal: call detect for mmc devices
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] usb_kbd: fix overpolling of keyboard
+To: Aleksey Kuleshov <rndfax@yandex.ru>
 Cc: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLAoKPiBBcyBpdCdzIG5vdCBhIHJlZ3Jlc3Npb24gb3Igc2VyaW91cyBidWcgSSBh
-cHBsaWVkIGl0IHRvIG5leHQgYW5kIG5vdCB0bwo+IG1hc3Rlci4KICAKT2guIHllcyBvZiBjb3Vy
-c2UuIFNyeSBteSB0eXBpbmcgd2FzIGZhc3RlciB0aGFuIG15IHRoaW5raW5nLiBUaGUgbmV4dCBi
-cmFuY2gKaXMgdGhlIGNvcnJlY3QgcGxhY2UgZm9yIGl0LgoKTWl0IGZyZXVuZGxpY2hlbiBHcsO8
-w59lbiAvIEtpbmQgcmVnYXJkcywKCVN0ZWZhbiBDaHJpc3QKCk9uIFdlZCwgTWFyIDAyLCAyMDE2
-IGF0IDA3OjU0OjIyUE0gKzAxMDAsIFNhc2NoYSBIYXVlciB3cm90ZToKPiBPbiBUdWUsIE1hciAw
-MSwgMjAxNiBhdCAxMTo1NjowNUFNICswMTAwLCBTdGVmYW4gQ2hyaXN0IHdyb3RlOgo+ID4gSGkg
-U2FzY2hhLAo+ID4gCj4gPiA+IGRldmljZV9kZXRlY3RfYnlfbmFtZSgpIHNob3VsZCBiZSBzYWZl
-IHRvIGNhbGwsIEkgZG9uJ3QgdGhpbmsgd2UgbmVlZAo+ID4gPiB0aGlzIGFkZGl0aW9uYWwgZmxh
-Zy4gSnVzdCBhbHdheXMgY2FsbCBkZXZpY2VfZGV0ZWN0X2J5X25hbWUoKS4gV2UgaGF2ZQo+ID4g
-PiB0byBkcm9wIHRoZSByZXR1cm4gdmFsdWUgY2hlY2tpbmcgdGhvdWdoLgo+ID4gPiAKPiA+ID4g
-SW4gZmFjdCB3ZSBoYXZlIHRoZSBmb2xsb3dpbmcgcGF0Y2ggaW4gb25lIG9mIG91ciBpbnRlcm5h
-bCBjdXN0b21lcgo+ID4gPiB0cmVlcywgdGhpcyBzaG91bGQgYmUgc3VpdGFibGUgZm9yIHlvdXIg
-aXNzdWUsIHJpZ2h0Pwo+ID4gCj4gPiBZZXAuIFRoZXNlIHR3byBsaW5lcyBvZiBjb2RlIGFyZSBz
-dWZmaWNlbnQgZm9yIG91ciB1c2UgY2FzZSA7LSkgSGVyZSBpcyBteToKPiA+IAo+ID4gICAgIFRl
-c3RlZC1ieTogU3RlZmFuIENocmlzdCA8cy5jaHJpc3RAcGh5dGVjLmRlPgo+ID4gCj4gPiBXaWxs
-IHlvdSBhcHBseSB0aGF0IHBhdGNoIHRvIG1hc3Rlcj8KPiAKPiBBcyBpdCdzIG5vdCBhIHJlZ3Jl
-c3Npb24gb3Igc2VyaW91cyBidWcgSSBhcHBsaWVkIGl0IHRvIG5leHQgYW5kIG5vdCB0bwo+IG1h
-c3Rlci4KPiAKPiBTYXNjaGEKPiAKPiAtLSAKPiBQZW5ndXRyb25peCBlLksuICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfAo+IEluZHVzdHJp
-YWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9u
-aXguZGUvICB8Cj4gUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwg
-UGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBI
-UkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
-IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Hi Aleksey,
+
+On Wed, Mar 02, 2016 at 01:50:36PM +0300, Aleksey Kuleshov wrote:
+> - use async callings to call poll function
+> - remove unused
+> - remove unnecessary locking
+
+The changes look ok, but could you split them up by logical changes?
+This patch does too much at once.
+
+This patch does not solve the problem with the double return key
+detected, right?
+
+Sascha
+
+> ---
+>  drivers/input/usb_kbd.c | 41 ++++++++++++++++++++---------------------
+>  1 file changed, 20 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/input/usb_kbd.c b/drivers/input/usb_kbd.c
+> index 74bc11f..03796f3 100644
+> --- a/drivers/input/usb_kbd.c
+> +++ b/drivers/input/usb_kbd.c
+> @@ -46,13 +46,10 @@
+>  struct usb_kbd_pdata;
+>  
+>  struct usb_kbd_pdata {
+> -	uint64_t	last_report;
+>  	uint8_t		*new;
+>  	uint8_t		old[USB_KBD_BOOT_REPORT_SIZE];
+> -	uint8_t		flags;
+> -	struct poller_struct	poller;
+> +	struct poller_async	poller;
+>  	struct usb_device	*usbdev;
+> -	int		lock;
+>  	unsigned long	intpipe;
+>  	int		intpktsize;
+>  	int		intinterval;
+> @@ -94,23 +91,17 @@ static const unsigned char usb_kbd_keycode[256] = {
+>  	150,158,159,128,136,177,178,176,142,152,173,140
+>  };
+>  
+> -static void usb_kbd_poll(struct poller_struct *poller)
+> +static void usb_kbd_poll(void *arg)
+>  {
+> -	struct usb_kbd_pdata *data = container_of(poller,
+> -						  struct usb_kbd_pdata, poller);
+> +	struct usb_kbd_pdata *data = arg;
+>  	struct usb_device *usbdev = data->usbdev;
+>  	int ret, i;
+>  
+> -	if (data->lock)
+> -		return;
+> -
+> -	data->lock = 1;
+> -
+>  	ret = data->do_poll(data);
+>  	if (ret == -EAGAIN)
+>  		goto exit;
+>  	if (ret < 0) {
+> -		/* exit and lock forever */
+> +		/* exit and die forever */
+>  		dev_err(&usbdev->dev,
+>  			"usb_submit_int_msg() failed. Keyboard disconnect?\n");
+>  		return;
+> @@ -125,7 +116,6 @@ static void usb_kbd_poll(struct poller_struct *poller)
+>  		input_report_key_event(&data->input, usb_kbd_keycode[i + 224], (data->new[0] >> i) & 1);
+>  
+>  	for (i = 2; i < 8; i++) {
+> -
+>  		if (data->old[i] > 3 && memscan(data->new + 2, data->old[i], 6) == data->new + 8) {
+>  			if (usb_kbd_keycode[data->old[i]])
+>  				input_report_key_event(&data->input, usb_kbd_keycode[data->old[i]], 0);
+> @@ -145,10 +135,10 @@ static void usb_kbd_poll(struct poller_struct *poller)
+>  		}
+>  	}
+>  
+> -	memcpy(data->old, data->new, 8);
+> +	memcpy(data->old, data->new, USB_KBD_BOOT_REPORT_SIZE);
+>  
+>  exit:
+> -	data->lock = 0;
+> +	poller_call_async(&data->poller, data->intinterval * MSECOND, usb_kbd_poll, data);
+>  }
+>  
+>  static int usb_kbd_probe(struct usb_device *usbdev,
+> @@ -173,7 +163,6 @@ static int usb_kbd_probe(struct usb_device *usbdev,
+>  	data->new = dma_alloc(USB_KBD_BOOT_REPORT_SIZE);
+>  
+>  	data->usbdev = usbdev;
+> -	data->last_report = get_time_ns();
+>  
+>  	data->ep = &iface->ep_desc[0];
+>  	data->intpipe = usb_rcvintpipe(usbdev, data->ep->bEndpointAddress);
+> @@ -199,18 +188,28 @@ static int usb_kbd_probe(struct usb_device *usbdev,
+>  	} else
+>  		dev_dbg(&usbdev->dev, "poll keyboard via int ep\n");
+>  
+> -	input_device_register(&data->input);
+> +	ret = input_device_register(&data->input);
+> +	if (ret) {
+> +		dev_err(&usbdev->dev, "can't register input\n");
+> +		return ret;
+> +	}
+> +
+> +	ret = poller_async_register(&data->poller);
+> +	if (ret) {
+> +		dev_err(&usbdev->dev, "can't setup poller\n");
+> +		return ret;
+> +	}
+>  
+> -	data->poller.func = usb_kbd_poll;
+> +	poller_call_async(&data->poller, data->intinterval * MSECOND, usb_kbd_poll, data);
+>  
+> -	return poller_register(&data->poller);
+> +	return 0;
+>  }
+>  
+>  static void usb_kbd_disconnect(struct usb_device *usbdev)
+>  {
+>  	struct usb_kbd_pdata *data = usbdev->drv_data;
+>  
+> -	poller_unregister(&data->poller);
+> +	poller_async_unregister(&data->poller);
+>  	input_device_unregister(&data->input);
+>  	dma_free(data->new);
+>  	free(data);
+> -- 
+> 2.6.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
