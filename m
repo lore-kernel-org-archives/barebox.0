@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x234.google.com ([2a00:1450:400c:c09::234])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1abUSP-00058H-Sj
- for barebox@lists.infradead.org; Thu, 03 Mar 2016 14:42:26 +0000
-Received: by mail-wm0-x234.google.com with SMTP id l68so134355207wml.0
- for <barebox@lists.infradead.org>; Thu, 03 Mar 2016 06:42:05 -0800 (PST)
-From: Holger Schurig <holgerschurig@gmail.com>
-In-Reply-To: <56D831C6.1010101@eurek.it> (gianluca's message of "Thu, 3 Mar
- 2016 13:44:54 +0100")
+ id 1abUdt-0003P8-1Z
+ for barebox@lists.infradead.org; Thu, 03 Mar 2016 14:54:19 +0000
+Date: Thu, 3 Mar 2016 15:53:53 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160303145353.GZ9224@pengutronix.de>
 References: <56D831C6.1010101@eurek.it>
-Date: Thu, 03 Mar 2016 15:42:01 +0100
-Message-ID: <8737s7ei86.fsf@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <56D831C6.1010101@eurek.it>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,60 +26,119 @@ Subject: Re: Ethernet PHY KSZ9031 is not working
 To: gianluca <gianlucarenzi@eurek.it>
 Cc: barebox@lists.infradead.org
 
+On Thu, Mar 03, 2016 at 01:44:54PM +0100, gianluca wrote:
+> Hello list,
+> It's me again! ;-)
+> 
+> Actually I had tested 80% of the board with barebox.
+> 
+> - USB
+> The microUSB is working (as I can use serial Downloader)
 > USB Host-A has to be tested, but if I type:
->
->>> usb
->> USB: scanning bus for devices...
->> Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
->> 1 USB Device(s) found
->
-> so I can suppose the host controller is working.
-
-I'm unsure if that is correct. When you see the USB IDs of some
-connected devices then you be (a bit) sure(rer).
-
-
+> 
+> >>usb
+> >USB: scanning bus for devices...
+> >Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+> >1 USB Device(s) found
+> 
+> so I can suppose the host controller is working. So I have to check on HOW
+> to test the usb-pendisk, but it can be done later on... I have to activate
+> the +5V by a gpio, so I have to think where is the best place to do that. At
+> the C code level in the device_initcalls()?? Or using the gpio pinmux
+> features in the device tree?
+> 
+> - I2C (i2c0, i2c1, i2c2)
+> They all three are working fine.
+> 
 > - DDR3 Memory Controller
-> Memtest is passing all tests. So I can suppose the timings are quite
-> good enough to use the Dynamic RAM correctly. I will do a stress test
-> later...
+> Memtest is passing all tests. So I can suppose the timings are quite good
+> enough to use the Dynamic RAM correctly. I will do a stress test later...
+> 
+> - SDHC (mmc1, mmc2, mmc3)
+> >-- 2194000.usdhc
+> >  `-- mmc1
+> This port is connected to a SDIO Wifi Module so I will test it with Linux
+> 
+> >-- 2198000.usdhc
+> >  `-- mmc2
+> >     `-- 0x00000000-0x1d9bfffff ( 7.4 GiB): /dev/mmc2
+> >     `-- 0x00400000-0x00bfffff ( 8 MiB): /dev/mmc2.0
+> >     `-- 0x00c00000-0x02bfffff ( 32 MiB): /dev/mmc2.1
+> >     `-- 0x02c00000-0x1d9bfffff ( 7.4 GiB): /dev/mmc2.2
+> This port has a microSD 8Gb with 3 partitions.
+> 
+> >-- 219c000.usdhc
+> >  `-- mmc3
+> >     `-- 0x00000000-0x001fffff ( 2 MiB): /dev/mmc3.boot0
+> >     `-- 0x00000000-0x001fffff ( 2 MiB): /dev/mmc3.boot1
+> >     `-- 0x00000000-0xe4ffffff ( 3.6 GiB): /dev/mmc3
+> This port has an eMMC 4GB unpartioned. 2 boot partitions and a big one for
+> boot when it starts from internal boot.
+> 
+> - GPIOS
+> The gpios can be activated/deactivated on demand. As far as I see all gpios
+> I had on this board are working as expected.
+> 
+> - SERIAL
+> In this board I have 3 serial ports (only RX/TX connected)
+> 
+> >`-- 21ec000.serial
+> >   `-- serial2
+> 
+> This is the uart3 as debug console and it works fine.
+> 
+> >`-- 21e8000.serial
+> >   `-- serial1
+> 
+> >`-- 2000000.aips-bus
+> >   `-- 2000000.spba-bus
+> >      `-- 2020000.serial
+> >         `-- serial0
+> 
+> How can I test them with barebox? Is it possible to set the baudrate, and
+> send a character with the 'echo' command? And as soon as I have the /dev/
+> node can I read from it using the 'cat' command?
+> 
+> - FEC/PHY
+> This is the worst part of the game. :-(
+> It does not work at all.
+> I was looking on other boards with the same phy (KSZ9031 by Micrel) like
+> Variscite-imx6, but with no luck.
+> 
+> In board.c I setup ONLY the fixup for ksz9031 and assert/de-assert the
+> nRESET RGMII pin
+> 
+> >static int ksz9031rn_phy_fixup(struct phy_device *dev)
+> >{
+> >	pr_info("%s Called\n", __FUNCTION__);
+> >	/*
+> >	 * min rx data delay, max rx/tx clock delay,
+> >	 * min rx/tx control delay
+> >	 */
+> >	phy_write_mmd_indirect(dev, 4, 2, 0);
+> >	phy_write_mmd_indirect(dev, 5, 2, 0);
+> >	phy_write_mmd_indirect(dev, 8, 2, 0x03ff);
+> >
+> >	pr_info("%s Exit\n", __FUNCTION__);
+> >	return 0;
+> >}
 
-I had a system once where the memtest in barebox worked, but memtester
-from Linux found issues.
+This should rather be done using the "txd0-skew-ps" and similar device
+tree properties. Make sure you have the micrel phy driver enabled.
+Note the values are board specific.
 
-Also be aware that Freecell has some DDR3 memory tester / setting
-optimizer that work via the USB port, like the USB downloader. Just in
-case, if you ever run into trouble ...
+It might also help to connect the ethernet cable to a 100MBit switch for
+testing.
 
+As Holger already noted GPR1[21] must be configured correctly.
 
-AS for the FEC/PHY, I'm on some SMSC phy. If I recall it correctly, then
-the Sabre  board also has a KSZ phy, and when I had this board here it
-worked over ethernet.
+Sascha
 
-In arch/arm/boards/boundarydevices-nitrogen6x/board.c there do something
-similar, but not identical to what you're doing.
-
-
-> When Barebox takes control over, those pins are turned off, the device
-> tree information is telling me:
-
-There is one more thing that you should be aware: the ethernet clock
-can either be driven by the i.MX6, then it's an output. Or it can be
-generated by the PHY, then it's an input. In my case it was
-MX6QDL_PAD_GPIO_16__ENET_REF_CLK. This is controlled by a bit in the
-GPR1 register. Maybe you need to adapt your device tree (search for
-"enet_ref") for this?
-
-On Linux, this is driven by arch/arm/mach-imx/mach-imx6q.c, and on
-Barebox there is an enet_ref in
-arch/arm/boards/freescale-mx6sx-sabresdb/board.c.
-
-
-> I don't know where I can check if something goes wrong. May be a
-> failure on board, but at this time this board is the ONLY BOARD I can
-> use.
-
-Time to get your oscilloscope probe ready then :-)
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
