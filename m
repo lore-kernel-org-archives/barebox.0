@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from qmail.e-mind.com ([188.94.192.39])
- by bombadil.infradead.org with smtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1abTba-0000Kg-4b
- for barebox@lists.infradead.org; Thu, 03 Mar 2016 13:47:51 +0000
+Received: from mail-wm0-x234.google.com ([2a00:1450:400c:c09::234])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1abUSP-00058H-Sj
+ for barebox@lists.infradead.org; Thu, 03 Mar 2016 14:42:26 +0000
+Received: by mail-wm0-x234.google.com with SMTP id l68so134355207wml.0
+ for <barebox@lists.infradead.org>; Thu, 03 Mar 2016 06:42:05 -0800 (PST)
+From: Holger Schurig <holgerschurig@gmail.com>
+In-Reply-To: <56D831C6.1010101@eurek.it> (gianluca's message of "Thu, 3 Mar
+ 2016 13:44:54 +0100")
 References: <56D831C6.1010101@eurek.it>
- <20160303165252.0911b6cb49599a5bc06090ca@gmail.com>
-From: gianluca <gianlucarenzi@eurek.it>
-Message-ID: <56D8406E.6020208@eurek.it>
-Date: Thu, 3 Mar 2016 14:47:26 +0100
+Date: Thu, 03 Mar 2016 15:42:01 +0100
+Message-ID: <8737s7ei86.fsf@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20160303165252.0911b6cb49599a5bc06090ca@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,54 +20,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Ethernet PHY KSZ9031 is not working
-To: Antony Pavlov <antonynpavlov@gmail.com>
+To: gianluca <gianlucarenzi@eurek.it>
 Cc: barebox@lists.infradead.org
 
-T24gMDMvMDMvMjAxNiAwMjo1MiBQTSwgQW50b255IFBhdmxvdiB3cm90ZToKCj4+IFdoZW4gQmFy
-ZWJveCB0YWtlcyBjb250cm9sIG92ZXIsIHRob3NlIHBpbnMgYXJlIHR1cm5lZCBvZmYsIHRoZSBk
-ZXZpY2UKPj4gdHJlZSBpbmZvcm1hdGlvbiBpcyB0ZWxsaW5nIG1lOgo+Pgo+Pj4gYC0tIDIxODgw
-MDAuZXRoZXJuZXQKPj4+ICAgICBgLS0gbWlpYnVzMAo+Pj4gICAgICAgIGAtLSBwaHkwCj4+PiAg
-ICAgICAgICAgYC0tIDB4MDAwMDAwMDAtMHgwMDAwMDAzZiAoIDY0IEJ5dGVzKTogL2Rldi9waHkw
-Cj4+PiAgICAgYC0tIGV0aDAKPj4KPj4gYnV0IHdoZW4gSSB0cnkgdG8gYnJpbmcgdXAgdGhlIGV0
-aGVybmV0IGNvbm5lY3Rpb24gaGVyZSBpcyB0aGUgbWVzc2FnZToKPj4KPj4+IGRoY3AKPj4+IHdh
-cm5pbmc6IE5vIE1BQyBhZGRyZXNzIHNldC4gVXNpbmcgcmFuZG9tIGFkZHJlc3MgYWU6MDU6ZjE6
-NjI6YmQ6ZDgKPj4+IGtzejkwMzFybl9waHlfZml4dXAgQ2FsbGVkCj4+PiBrc3o5MDMxcm5fcGh5
-X2ZpeHVwIEV4aXQKPj4+IGRoY3A6IE5ldHdvcmsgaXMgZG93bgo+Pgo+PiBBbmQgYWxsIGxlZHMg
-aW4gdGhlIFJKLTQ1IEphY2tNYWcgYXJlIHN0aWxsIHR1cm5lZCBvZmYuCj4+Cj4+IEkgZG9uJ3Qg
-a25vdyB3aGVyZSBJIGNhbiBjaGVjayBpZiBzb21ldGhpbmcgZ29lcyB3cm9uZy4gTWF5IGJlIGEg
-ZmFpbHVyZQo+PiBvbiBib2FyZCwgYnV0IGF0IHRoaXMgdGltZSB0aGlzIGJvYXJkIGlzIHRoZSBP
-TkxZIEJPQVJEIEkgY2FuIHVzZS4KPgo+IFVzZSAnbWlpdG9vbCAtdiAtdicgY29tbWFuZCB0byBj
-aGVjayB5b3VyIHBoeSByZWdpc3RlcnMgYW5kIHRoZSBsaW5rIHN0YXR1cy4KPgoKVGhhbmsgeW91
-IGZvciB0aGlzIGhpbnQuCkJlZm9yZSBkaWdnaW5nIG9uIHRoZSBEYXRhc2hlZXQgZm9yIHRoZSBl
-eHBsYW5hdGlvbiBvZiBhbGwgTUlJIFBIWSAKcmVnaXN0ZXJzLCBoZXJlIGlzIHRoZSBvdXRwdXQg
-b2YgdGhlIGNvbW1hbmQgeW91IHdyb3RlIGFib3ZlOgoKPiBiYXJlYm94QEVLMzYwIEV1cmVrIGku
-TVg2IFF1YWQ6LyBtaWl0b29sIC12IC12Cj4gcGh5MDogMjE4ODAwMC5ldGhlcm5ldC0xOiBubyBs
-aW5rCj4gcmVnaXN0ZXJzIGZvciBNSUkgUEhZOgo+IDExNDAgNzk0OSAwMDIyIDE2MjIgMDFlMSAw
-MDAwIDAwMDYgMjAwMQo+IDAwMDAgMDMwMCAwMDAwIDAwMDAgMDAwMCAwMDAwIDAwMDAgMzAwMAo+
-IDAwMDAgMDBmNCAwMDAwIDAwMDAgMDAwMCAwMDAwIDAwMDAgMDIwMAo+IDAwMDAgMDAwMCAwMDAw
-IDAwMjggMDAwMCAwMDAwIDAwMDAgMDMwMQo+IHByb2R1Y3QgaW5mbzogTWljcmVsIEtTWjkwMzEg
-R2lnYWJpdCBQSFkgKHZlbmRvciAwMDowODo4NSwgbW9kZWwgMzQgcmV2IDIpCj4gYmFzaWMgbW9k
-ZTogYXV0b25lZ290aWF0aW9uIGVuYWJsZWQKPiBiYXNpYyBzdGF0dXM6IG5vIGxpbmsKPiBjYXBh
-YmlsaXRpZXM6IDEwMDBiYXNlVC1GRCAxMDAwYmFzZVQtSEQgMTAwYmFzZVR4LUZEIDEwMGJhc2VU
-eC1IRCAxMGJhc2VULUZEIDEwYmFzZVQtSEQKPiBhZHZlcnRpc2luZzogMTAwMGJhc2VULUZEIDEw
-MDBiYXNlVC1IRCAxMDBiYXNlVHgtRkQgMTAwYmFzZVR4LUhEIDEwYmFzZVQtRkQgMTBiYXNlVC1I
-RAo+CgpTbywgdGhlIGxpbmsgYmV0d2VlbiB0aGUgRkVDIGFuZCB0aGUgUEhZIGl0IGlzIHNlZW1z
-IHRvIHdvcmtpbmcgZ29vZC4KSWYgZXZlcnl0aGluZyBzZWVtcyB0byBiZSBvayAoc3BlYWtpbmcg
-YWJvdXQgcmVnaXN0ZXJzKSBtYXliZSB0aGVyZSBpcyAKc29tZSBpc3N1ZSBvbiB0aGUgUkotNDUg
-TWFnSmFjayBjb25uZWN0b3IuCgpXaGF0IGtpbmQgb2YgUko0NSBhcmUgeW91IHVzaW5nPz8gSSBh
-bSB1c2luZyBhIDEwMDAvMTAwLzEwIGZyb20gV3VlcnRoIApFbGVrdHJvbmljIG5hbWVkOgpBcnRp
-a2VsbnVtbWVyIC8gcGFydCBudW1iZXIgOgpCZXplaWNobnVuZyA6CmRlc2NyaXB0aW9uIDoKNzQ5
-OTExMTEyMUEKTEFOLcOcYmVydHJhZ2VyIFdFLVJKNDVMQU4gMTAvMTAwLzEwMDAgQmFzZVQKTEFO
-LVRyYW5zZm9ybWVyIFdFLVJKNDVMQU4gMTAvMTAwLzEwMDAgQmFzZVQKCkJlc3QgUmVnYXJkcywK
-R2lhbmx1Y2EKLS0gCkV1cmVrIHMuci5sLiAgICAgICAgICAgICAgICAgICAgICAgICAgfApFbGVj
-dHJvbmljIEVuZ2luZWVyaW5nICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5ldXJlay5pdAp2
-aWEgQ2VsbGV0dGEgOC9CLCA0MDAyNiBJbW9sYSwgSXRhbHkgIHwgUGhvbmU6ICszOS0oMCk1NDIt
-NjA5MTIwCnAuaXZhIDAwNjkwNjIxMjA2IC0gYy5mLiAwNDAyMDAzMDM3NyAgfCBGYXg6ICAgKzM5
-LSgwKTU0Mi02MDkyMTIKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+> USB Host-A has to be tested, but if I type:
+>
+>>> usb
+>> USB: scanning bus for devices...
+>> Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+>> 1 USB Device(s) found
+>
+> so I can suppose the host controller is working.
+
+I'm unsure if that is correct. When you see the USB IDs of some
+connected devices then you be (a bit) sure(rer).
+
+
+> - DDR3 Memory Controller
+> Memtest is passing all tests. So I can suppose the timings are quite
+> good enough to use the Dynamic RAM correctly. I will do a stress test
+> later...
+
+I had a system once where the memtest in barebox worked, but memtester
+from Linux found issues.
+
+Also be aware that Freecell has some DDR3 memory tester / setting
+optimizer that work via the USB port, like the USB downloader. Just in
+case, if you ever run into trouble ...
+
+
+AS for the FEC/PHY, I'm on some SMSC phy. If I recall it correctly, then
+the Sabre  board also has a KSZ phy, and when I had this board here it
+worked over ethernet.
+
+In arch/arm/boards/boundarydevices-nitrogen6x/board.c there do something
+similar, but not identical to what you're doing.
+
+
+> When Barebox takes control over, those pins are turned off, the device
+> tree information is telling me:
+
+There is one more thing that you should be aware: the ethernet clock
+can either be driven by the i.MX6, then it's an output. Or it can be
+generated by the PHY, then it's an input. In my case it was
+MX6QDL_PAD_GPIO_16__ENET_REF_CLK. This is controlled by a bit in the
+GPR1 register. Maybe you need to adapt your device tree (search for
+"enet_ref") for this?
+
+On Linux, this is driven by arch/arm/mach-imx/mach-imx6q.c, and on
+Barebox there is an enet_ref in
+arch/arm/boards/freescale-mx6sx-sabresdb/board.c.
+
+
+> I don't know where I can check if something goes wrong. May be a
+> failure on board, but at this time this board is the ONLY BOARD I can
+> use.
+
+Time to get your oscilloscope probe ready then :-)
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
