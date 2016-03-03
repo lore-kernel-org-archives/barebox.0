@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22d.google.com ([2a00:1450:4010:c04::22d])
+Received: from forward8m.cmail.yandex.net ([2a02:6b8:b030::10])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1abUfO-0005Qy-8G
- for barebox@lists.infradead.org; Thu, 03 Mar 2016 14:55:51 +0000
-Received: by mail-lb0-x22d.google.com with SMTP id k15so26412172lbg.0
- for <barebox@lists.infradead.org>; Thu, 03 Mar 2016 06:55:29 -0800 (PST)
-Date: Thu, 3 Mar 2016 18:21:35 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20160303182135.38aa4d322e15c5dfb3a266dc@gmail.com>
-In-Reply-To: <56D8406E.6020208@eurek.it>
-References: <56D831C6.1010101@eurek.it>
- <20160303165252.0911b6cb49599a5bc06090ca@gmail.com>
- <56D8406E.6020208@eurek.it>
-Mime-Version: 1.0
+ id 1abV9Y-0007sN-EN
+ for barebox@lists.infradead.org; Thu, 03 Mar 2016 15:27:02 +0000
+Received: from smtp4m.mail.yandex.net (smtp4m.mail.yandex.net
+ [IPv6:2a02:6b8:0:2519::126])
+ by forward8m.cmail.yandex.net (Yandex) with ESMTP id 6563C21438
+ for <barebox@lists.infradead.org>; Thu,  3 Mar 2016 18:26:36 +0300 (MSK)
+From: Aleksey Kuleshov <rndfax@yandex.ru>
+Date: Thu,  3 Mar 2016 18:17:09 +0300
+Message-Id: <1457018230-4554-1-git-send-email-rndfax@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,82 +18,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Ethernet PHY KSZ9031 is not working
-To: gianluca <gianlucarenzi@eurek.it>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] poller: allow safely remove pollers in any time
+To: barebox@lists.infradead.org
+Cc: Aleksey Kuleshov <rndfax@yandex.ru>
 
-On Thu, 3 Mar 2016 14:47:26 +0100
-gianluca <gianlucarenzi@eurek.it> wrote:
+---
+ common/poller.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-> On 03/03/2016 02:52 PM, Antony Pavlov wrote:
-> =
+diff --git a/common/poller.c b/common/poller.c
+index 32795b6..7cec5d4 100644
+--- a/common/poller.c
++++ b/common/poller.c
+@@ -15,6 +15,7 @@
+ 
+ static LIST_HEAD(poller_list);
+ static int poller_active;
++static struct poller_struct *next;
+ 
+ int poller_register(struct poller_struct *poller)
+ {
+@@ -33,6 +34,10 @@ int poller_unregister(struct poller_struct *poller)
+ 		return -ENODEV;
+ 
+ 
++	if (&next->list == &poller->list) {
++		next = list_entry(next->list.next, struct poller_struct, list);
++	}
++
+ 	list_del(&poller->list);
+ 	poller->registered = 0;
+ 
+@@ -107,14 +112,14 @@ int poller_async_unregister(struct poller_async *pa)
+ 
+ void poller_call(void)
+ {
+-	struct poller_struct *poller, *tmp;
++	struct poller_struct *poller;
+ 
+ 	if (poller_active)
+ 		return;
+ 
+ 	poller_active = 1;
+ 
+-	list_for_each_entry_safe(poller, tmp, &poller_list, list)
++	list_for_each_entry_safe(poller, next, &poller_list, list)
+ 		poller->func(poller);
+ 
+ 	poller_active = 0;
+-- 
+2.6.2
 
-> Before digging on the Datasheet for the explanation of all MII PHY =
-
-> registers, here is the output of the command you wrote above:
-> =
-
-> > barebox@EK360 Eurek i.MX6 Quad:/ miitool -v -v
-> > phy0: 2188000.ethernet-1: no link
-> > registers for MII PHY:
-> > 1140 7949 0022 1622 01e1 0000 0006 2001
-> > 0000 0300 0000 0000 0000 0000 0000 3000
-> > 0000 00f4 0000 0000 0000 0000 0000 0200
-> > 0000 0000 0000 0028 0000 0000 0000 0301
-> > product info: Micrel KSZ9031 Gigabit PHY (vendor 00:08:85, model 34 rev=
- 2)
-> > basic mode: autonegotiation enabled
-> > basic status: no link
-
-
-'no link' here, so please check your magnetics and RJ-45 connector.
-
-> > capabilities: 1000baseT-FD 1000baseT-HD 100baseTx-FD 100baseTx-HD 10bas=
-eT-FD 10baseT-HD
-> > advertising: 1000baseT-FD 1000baseT-HD 100baseTx-FD 100baseTx-HD 10base=
-T-FD 10baseT-HD
-> >
-> =
-
-> So, the link between the FEC and the PHY it is seems to working good.
-
-KSZ9031 connects to ethernet MAC with two busses: RGMII and MDIO.
-
-You can read PHY registers, so it seems your MDIO bus works fine,
-but there is no warranty that your RGMII link actually works.
-
-> If everything seems to be ok (speaking about registers) maybe there is =
-
-> some issue on the RJ-45 MagJack connector.
-> =
-
-> What kind of RJ45 are you using??
-
-Sorry, I have not noted this hardware detail for my board.
-Mostly I work as a software developer.
-
-> I am using a 1000/100/10 from Wuerth =
-
-> Elektronic named:
-> Artikelnummer / part number :
-> Bezeichnung :
-> description :
-> 7499111121A
-> LAN-=DCbertrager WE-RJ45LAN 10/100/1000 BaseT
-> LAN-Transformer WE-RJ45LAN 10/100/1000 BaseT
-> =
-
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
