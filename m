@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward8p.cmail.yandex.net ([87.250.241.193])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1abQLm-00010E-KF
- for barebox@lists.infradead.org; Thu, 03 Mar 2016 10:19:19 +0000
-Received: from smtp13.mail.yandex.net (smtp13.mail.yandex.net [95.108.130.68])
- by forward8p.cmail.yandex.net (Yandex) with ESMTP id E4B5621C25
- for <barebox@lists.infradead.org>; Thu,  3 Mar 2016 13:07:25 +0300 (MSK)
-From: Aleksey Kuleshov <rndfax@yandex.ru>
-Date: Thu,  3 Mar 2016 12:58:12 +0300
-Message-Id: <1456999094-26928-3-git-send-email-rndfax@yandex.ru>
-In-Reply-To: <1456999094-26928-1-git-send-email-rndfax@yandex.ru>
-References: <1456999094-26928-1-git-send-email-rndfax@yandex.ru>
+ id 1abR6U-0004yL-KA
+ for barebox@lists.infradead.org; Thu, 03 Mar 2016 11:07:36 +0000
+Message-ID: <1457003231.3425.35.camel@pengutronix.de>
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Thu, 03 Mar 2016 12:07:11 +0100
+In-Reply-To: <1455910105.5604.104.camel@ws-apr.office.loc>
+References: <1455910105.5604.104.camel@ws-apr.office.loc>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,42 +17,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/5] usb_kbd: style fixes
-To: barebox@lists.infradead.org
-Cc: Aleksey Kuleshov <rndfax@yandex.ru>
+Subject: Re: phytec-som-imx6: DCD setup: PLL reduction and video core settings
+To: Andreas Pretzsch <apr@cn-eng.de>
+Cc: barebox@lists.infradead.org
 
----
- drivers/input/usb_kbd.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Am Freitag, den 19.02.2016, 20:28 +0100 schrieb Andreas Pretzsch:
+> While looking into a maybe boarderline RAM setup on one specific piece
+> of hardware, I took a closer look at the i.MX6 DDR setup of the Phytec
+> i.MX6 modules in barebox.
+> And came across two things that look ... somewhat questionable, maybe
+> worth a look.
+> 
+> In the very first setup (the DCD) in
+>     arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02.h
+> there is a block
+>     wm 32 0x020e0010 0xf00000ff
+>     wm 32 0x020e0018 0x007F007F
+>     wm 32 0x020e001c 0x007F007F
+>     wm 32 0x020c8000 0x80002021
+> at the end.
+> 
+> 
+> The first three (comments about complete register meanings added by me)
+>     // IOMUX_GPR4 : VDOA, PCIe, VPU, IPU cache setup ; stop acknowledge
+>     wm 32 0x020e0010 0xf00000ff
+>     // IOMUX_GPR6 : IPU1 QoS setup
+>     wm 32 0x020e0018 0x007F007F
+>     // IOMUX_GPR7 : IPU2 QoS setup
+>     wm 32 0x020e001c 0x007F007F
+> do setup some cache attributes of VDOA, IPU, VPU (some of the video
+> cores) and IPU QoS. Beside accessing two reserved bits in GPR4, they
+> maybe do not harm, and can be found also in various other board files.
+> Might be some case of copy-from-copy, no idea.
+> Not sure if these really should be part of lowest-level memory setup...
+> Maybe - if at all - in some board-specific setup, given barebox drives a
+> display.
+> Also, a quick google search shows the possible origin, and that it has
+> been removed in some U-Boot branch, leaving it to the Linux kernel:
+> https://github.com/linksprite/u-boot-acadia1.0-beta/blob/master/u-boot-acadia1.0-beta/patches/0546-ENGR00215515-MX6-Move-IPU-QoS-and-VDOA-IPU-VPU-AXI-C.patch
+> So maybe more of a cleanup issue.
+> Not only in the Phytec DCDs, but maybe also the other ones.
 
-diff --git a/drivers/input/usb_kbd.c b/drivers/input/usb_kbd.c
-index ff8e591..6f7a081 100644
---- a/drivers/input/usb_kbd.c
-+++ b/drivers/input/usb_kbd.c
-@@ -123,7 +123,6 @@ static void usb_kbd_poll(struct poller_struct *poller)
- 		input_report_key_event(&data->input, usb_kbd_keycode[i + 224], (data->new[0] >> i) & 1);
- 
- 	for (i = 2; i < 8; i++) {
--
- 		if (data->old[i] > 3 && memscan(data->new + 2, data->old[i], 6) == data->new + 8) {
- 			if (usb_kbd_keycode[data->old[i]])
- 				input_report_key_event(&data->input, usb_kbd_keycode[data->old[i]], 0);
-@@ -143,7 +142,7 @@ static void usb_kbd_poll(struct poller_struct *poller)
- 		}
- 	}
- 
--	memcpy(data->old, data->new, 8);
-+	memcpy(data->old, data->new, USB_KBD_BOOT_REPORT_SIZE);
- 
- exit:
- 	data->lock = 0;
--- 
-2.6.2
+Also imx6_init_lowlevel() already contains the code to enable the caches
+and set the IPU QoS priorities. There is no need to set these up in the
+DCD already, so I'd say these should just be dropped.
+
+regards
+Philipp
 
 
 _______________________________________________
