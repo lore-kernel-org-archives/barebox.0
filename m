@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from webbox1416.server-home.net ([77.236.96.61])
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1abNV1-0004Ad-8p
- for barebox@lists.infradead.org; Thu, 03 Mar 2016 07:16:40 +0000
-From: Alexander Stein <alexander.stein@systec-electronic.com>
-Date: Thu, 03 Mar 2016 08:16:13 +0100
-Message-ID: <9617410.tHQtcjn6HO@ws-stein>
-In-Reply-To: <20160302195613.GU9224@pengutronix.de>
-References: <3665455.GH0lG2JcVq@ws-stein>
- <20160302195613.GU9224@pengutronix.de>
+ id 1abNir-0002Po-Vd
+ for barebox@lists.infradead.org; Thu, 03 Mar 2016 07:30:59 +0000
+Date: Thu, 3 Mar 2016 08:30:28 +0100
+From: Stefan Christ <s.christ@phytec.de>
+Message-ID: <20160303073027.GA2345@lws-christ>
+References: <1456398922-8253-1-git-send-email-s.christ@phytec.de>
+ <20160301092232.GM9224@pengutronix.de>
+ <20160301105605.GA4982@lws-christ>
+ <20160302185422.GT9224@pengutronix.de>
 MIME-Version: 1.0
+In-Reply-To: <20160302185422.GT9224@pengutronix.de>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,63 +21,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: UBIFS recovery fails in barebox while Linux suceeds
+Subject: Re: [PATCH] ARM: i.MX: bbu-internal: call detect for mmc devices
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Daniel =?ISO-8859-1?Q?Kr=FCger?= <daniel.krueger@systec-electronic.com>
+Cc: barebox@lists.infradead.org
 
-On Wednesday 02 March 2016 20:56:13, Sascha Hauer wrote:
-> On Wed, Mar 02, 2016 at 05:19:08PM +0100, Alexander Stein wrote:
-> > Hi,
-> > 
-> > in case a UBIFS needs recovery (unclean write or whatever on NOR
-> > flash) it is possible that barebox fails to do so while Linux suceeds.
-> > The main cause, IMHO, is that Linux takes max_write_size into account
-> > (starting with commit 2765df7da540687c4d57ca840182122f074c5b9c "UBIFS:
-> > use max_write_size during recovery") while barebox doesn't. Apparently
-> > is_last_write (fs/ubifs/recovery.c) results differently due to that
-> > fact which explains why recovery progress differently. I don't know
-> > which linux version the ubifs code in barebox is taken from but I
-> > guess this needs to be updated. Are there any plans?
-> 
-> The barebox UBIFS code is taken from U-Boot 2013.07 which is taken from
-> Linux-2.6.29-rc6, so indeed the code is quite old. U-Boot has updated
-> UBIFS support to Linux-4.2. The question is if we update UBIFS from
-> U-Boot or directly from the Kernel, I have no idea which way is easier.
-
-I still wonder if this problem should have been avoided in the first place. It seems like the change in the kernel is like chaning the on-disk-format.
-
-> Currently there are no plans to update UBIFS, but of course you are
-> invited to create them ;)
-
-I expected an answer like that ;-) I did a quick compare and there are a lot of changes in barebox upon the code taken from u-boot. AFAICS those are not documented :(
-
-Best regards,
-Alexander
--- 
-Dipl.-Inf. Alexander Stein
-SYS TEC electronic GmbH
-alexander.stein@systec-electronic.com
-
-Legal and Commercial Address:
-Am Windrad 2
-08468 Heinsdorfergrund
-Germany
-
-Office: +49 (0) 3765 38600-0
-Fax:    +49 (0) 3765 38600-4100
- 
-Managing Directors:
-	Director Technology/CEO: Dipl.-Phys. Siegmar Schmidt;
-	Director Commercial Affairs/COO: Dipl. Ing. (FH) Armin von Collrepp
-Commercial Registry:
-	Amtsgericht Chemnitz, HRB 28082; USt.-Id Nr. DE150534010
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKPiBBcyBpdCdzIG5vdCBhIHJlZ3Jlc3Npb24gb3Igc2VyaW91cyBidWcgSSBh
+cHBsaWVkIGl0IHRvIG5leHQgYW5kIG5vdCB0bwo+IG1hc3Rlci4KICAKT2guIHllcyBvZiBjb3Vy
+c2UuIFNyeSBteSB0eXBpbmcgd2FzIGZhc3RlciB0aGFuIG15IHRoaW5raW5nLiBUaGUgbmV4dCBi
+cmFuY2gKaXMgdGhlIGNvcnJlY3QgcGxhY2UgZm9yIGl0LgoKTWl0IGZyZXVuZGxpY2hlbiBHcsO8
+w59lbiAvIEtpbmQgcmVnYXJkcywKCVN0ZWZhbiBDaHJpc3QKCk9uIFdlZCwgTWFyIDAyLCAyMDE2
+IGF0IDA3OjU0OjIyUE0gKzAxMDAsIFNhc2NoYSBIYXVlciB3cm90ZToKPiBPbiBUdWUsIE1hciAw
+MSwgMjAxNiBhdCAxMTo1NjowNUFNICswMTAwLCBTdGVmYW4gQ2hyaXN0IHdyb3RlOgo+ID4gSGkg
+U2FzY2hhLAo+ID4gCj4gPiA+IGRldmljZV9kZXRlY3RfYnlfbmFtZSgpIHNob3VsZCBiZSBzYWZl
+IHRvIGNhbGwsIEkgZG9uJ3QgdGhpbmsgd2UgbmVlZAo+ID4gPiB0aGlzIGFkZGl0aW9uYWwgZmxh
+Zy4gSnVzdCBhbHdheXMgY2FsbCBkZXZpY2VfZGV0ZWN0X2J5X25hbWUoKS4gV2UgaGF2ZQo+ID4g
+PiB0byBkcm9wIHRoZSByZXR1cm4gdmFsdWUgY2hlY2tpbmcgdGhvdWdoLgo+ID4gPiAKPiA+ID4g
+SW4gZmFjdCB3ZSBoYXZlIHRoZSBmb2xsb3dpbmcgcGF0Y2ggaW4gb25lIG9mIG91ciBpbnRlcm5h
+bCBjdXN0b21lcgo+ID4gPiB0cmVlcywgdGhpcyBzaG91bGQgYmUgc3VpdGFibGUgZm9yIHlvdXIg
+aXNzdWUsIHJpZ2h0Pwo+ID4gCj4gPiBZZXAuIFRoZXNlIHR3byBsaW5lcyBvZiBjb2RlIGFyZSBz
+dWZmaWNlbnQgZm9yIG91ciB1c2UgY2FzZSA7LSkgSGVyZSBpcyBteToKPiA+IAo+ID4gICAgIFRl
+c3RlZC1ieTogU3RlZmFuIENocmlzdCA8cy5jaHJpc3RAcGh5dGVjLmRlPgo+ID4gCj4gPiBXaWxs
+IHlvdSBhcHBseSB0aGF0IHBhdGNoIHRvIG1hc3Rlcj8KPiAKPiBBcyBpdCdzIG5vdCBhIHJlZ3Jl
+c3Npb24gb3Igc2VyaW91cyBidWcgSSBhcHBsaWVkIGl0IHRvIG5leHQgYW5kIG5vdCB0bwo+IG1h
+c3Rlci4KPiAKPiBTYXNjaGEKPiAKPiAtLSAKPiBQZW5ndXRyb25peCBlLksuICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfAo+IEluZHVzdHJp
+YWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9u
+aXguZGUvICB8Cj4gUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwg
+UGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBI
+UkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
+IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
+b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
