@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from forward14p.cmail.yandex.net ([2a02:6b8:0:1465::be])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1abPUF-0001at-5u
- for barebox@lists.infradead.org; Thu, 03 Mar 2016 09:23:59 +0000
-Date: Thu, 3 Mar 2016 10:23:36 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160303092336.GX9224@pengutronix.de>
-References: <3665455.GH0lG2JcVq@ws-stein> <9617410.tHQtcjn6HO@ws-stein>
- <20160303082856.GW9224@pengutronix.de>
- <2657168.Ls95HLtK4M@ws-stein>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <2657168.Ls95HLtK4M@ws-stein>
+ id 1abQAj-0003U4-Hm
+ for barebox@lists.infradead.org; Thu, 03 Mar 2016 10:07:55 +0000
+Received: from smtp13.mail.yandex.net (smtp13.mail.yandex.net
+ [IPv6:2a02:6b8:0:801:1::12])
+ by forward14p.cmail.yandex.net (Yandex) with ESMTP id 3E66920EB8
+ for <barebox@lists.infradead.org>; Thu,  3 Mar 2016 13:07:26 +0300 (MSK)
+From: Aleksey Kuleshov <rndfax@yandex.ru>
+Date: Thu,  3 Mar 2016 12:58:13 +0300
+Message-Id: <1456999094-26928-4-git-send-email-rndfax@yandex.ru>
+In-Reply-To: <1456999094-26928-1-git-send-email-rndfax@yandex.ru>
+References: <1456999094-26928-1-git-send-email-rndfax@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,76 +20,85 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: UBIFS recovery fails in barebox while Linux suceeds
-To: Alexander Stein <alexander.stein@systec-electronic.com>
-Cc: barebox@lists.infradead.org, Daniel =?iso-8859-15?Q?Kr=FCger?= <daniel.krueger@systec-electronic.com>
+Subject: [PATCH v2 4/5] usb_kbd: use async polling instead of regular polling
+To: barebox@lists.infradead.org
+Cc: Aleksey Kuleshov <rndfax@yandex.ru>
 
-On Thu, Mar 03, 2016 at 09:38:30AM +0100, Alexander Stein wrote:
-> On Thursday 03 March 2016 09:28:56, Sascha Hauer wrote:
-> > On Thu, Mar 03, 2016 at 08:16:13AM +0100, Alexander Stein wrote:
-> > > On Wednesday 02 March 2016 20:56:13, Sascha Hauer wrote:
-> > > > On Wed, Mar 02, 2016 at 05:19:08PM +0100, Alexander Stein wrote:
-> > > > > Hi,
-> > > > > 
-> > > > > in case a UBIFS needs recovery (unclean write or whatever on NOR
-> > > > > flash) it is possible that barebox fails to do so while Linux suceeds.
-> > > > > The main cause, IMHO, is that Linux takes max_write_size into account
-> > > > > (starting with commit 2765df7da540687c4d57ca840182122f074c5b9c "UBIFS:
-> > > > > use max_write_size during recovery") while barebox doesn't. Apparently
-> > > > > is_last_write (fs/ubifs/recovery.c) results differently due to that
-> > > > > fact which explains why recovery progress differently. I don't know
-> > > > > which linux version the ubifs code in barebox is taken from but I
-> > > > > guess this needs to be updated. Are there any plans?
-> > > > 
-> > > > The barebox UBIFS code is taken from U-Boot 2013.07 which is taken from
-> > > > Linux-2.6.29-rc6, so indeed the code is quite old. U-Boot has updated
-> > > > UBIFS support to Linux-4.2. The question is if we update UBIFS from
-> > > > U-Boot or directly from the Kernel, I have no idea which way is easier.
-> > > 
-> > > I still wonder if this problem should have been avoided in the first
-> > > place. It seems like the change in the kernel is like chaning the
-> > > on-disk-format.
-> > 
-> > BTW what happens after the failed recovery? Is the filesystem not
-> > readable?
-> 
-> It is not even mounted, neither in barebox in current state, nor e.g. using mtdram in Linux with a different writebuf size.
-> Recovery fails so does mounting ubifs. Once recovery suceeded everybody is happy again.
-> BTW: mtdram in barebox would suffer the same problem, writebufsize is fixed 64.
-> 
-> > > 
-> > > > Currently there are no plans to update UBIFS, but of course you are
-> > > > invited to create them ;)
-> > > 
-> > > I expected an answer like that ;-) I did a quick compare and there are
-> > > a lot of changes in barebox upon the code taken from u-boot. AFAICS
-> > > those are not documented :(
-> > 
-> > I wouldn't say that. I just checked out barebox 551b412 (the initial
-> > ubifs commit) and U-Boot 2013.07 and copied over the ubifs files from
-> > U-Boot to barebox. The diff doesn't look too bad, it nearly only shows
-> > the changes necessary to adopt to the barebox filesystem layer.
-> > I assume fs/ubifs/ubifs.c can be left nearly unmodified. The rest is
-> > copying over the kernel files and boxing them through the compiler
-> > (which indeed might be a significant amount of work given the size of
-> > the code)
-> 
-> Well, linux and u-boot, to some degree at least, IIRC gained support for fastmap, xattr and even optional atime support. Maybe it won't that easy anymore.
+This fixes the overpolling of USB keyboard which
+causes slowdown of entier barebox by using periodic
+polling occuting once per some milliseconds.
+---
+ drivers/input/usb_kbd.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-Fastmap is a UBI feature, not a UBIFS feature. barebox supports that
-aswell.
-
-Sascha
-
+diff --git a/drivers/input/usb_kbd.c b/drivers/input/usb_kbd.c
+index 6f7a081..bdaf305 100644
+--- a/drivers/input/usb_kbd.c
++++ b/drivers/input/usb_kbd.c
+@@ -48,7 +48,7 @@ struct usb_kbd_pdata;
+ struct usb_kbd_pdata {
+ 	uint8_t		*new;
+ 	uint8_t		old[USB_KBD_BOOT_REPORT_SIZE];
+-	struct poller_struct	poller;
++	struct poller_async	poller;
+ 	struct usb_device	*usbdev;
+ 	int		lock;
+ 	unsigned long	intpipe;
+@@ -92,10 +92,9 @@ static const unsigned char usb_kbd_keycode[256] = {
+ 	150,158,159,128,136,177,178,176,142,152,173,140
+ };
+ 
+-static void usb_kbd_poll(struct poller_struct *poller)
++static void usb_kbd_poll(void *arg)
+ {
+-	struct usb_kbd_pdata *data = container_of(poller,
+-						  struct usb_kbd_pdata, poller);
++	struct usb_kbd_pdata *data = arg;
+ 	struct usb_device *usbdev = data->usbdev;
+ 	int ret, i;
+ 
+@@ -146,6 +145,7 @@ static void usb_kbd_poll(struct poller_struct *poller)
+ 
+ exit:
+ 	data->lock = 0;
++	poller_call_async(&data->poller, data->intinterval * MSECOND, usb_kbd_poll, data);
+ }
+ 
+ static int usb_kbd_probe(struct usb_device *usbdev,
+@@ -201,16 +201,22 @@ static int usb_kbd_probe(struct usb_device *usbdev,
+ 		return ret;
+ 	}
+ 
+-	data->poller.func = usb_kbd_poll;
++	ret = poller_async_register(&data->poller);
++	if (ret) {
++		dev_err(&usbdev->dev, "can't setup poller\n");
++		return ret;
++	}
++
++	poller_call_async(&data->poller, data->intinterval * MSECOND, usb_kbd_poll, data);
+ 
+-	return poller_register(&data->poller);
++	return 0;
+ }
+ 
+ static void usb_kbd_disconnect(struct usb_device *usbdev)
+ {
+ 	struct usb_kbd_pdata *data = usbdev->drv_data;
+ 
+-	poller_unregister(&data->poller);
++	poller_async_unregister(&data->poller);
+ 	input_device_unregister(&data->input);
+ 	dma_free(data->new);
+ 	free(data);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.6.2
+
 
 _______________________________________________
 barebox mailing list
