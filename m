@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x244.google.com ([2a00:1450:4010:c04::244])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1abW7g-0003Dm-OP
- for barebox@lists.infradead.org; Thu, 03 Mar 2016 16:29:09 +0000
-Received: by mail-lb0-x244.google.com with SMTP id bc4so2286427lbc.0
- for <barebox@lists.infradead.org>; Thu, 03 Mar 2016 08:28:48 -0800 (PST)
-Date: Thu, 3 Mar 2016 19:54:54 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20160303195454.77b98e451fb5934675fcd864@gmail.com>
-In-Reply-To: <1457018230-4554-1-git-send-email-rndfax@yandex.ru>
-References: <1457018230-4554-1-git-send-email-rndfax@yandex.ru>
-Mime-Version: 1.0
+ id 1abjeZ-0004AY-Vw
+ for barebox@lists.infradead.org; Fri, 04 Mar 2016 06:56:02 +0000
+Date: Fri, 4 Mar 2016 07:55:37 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160304065537.GA21869@pengutronix.de>
+References: <1456951837-20843-1-git-send-email-dev@lynxeye.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1456951837-20843-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,92 +18,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] poller: allow safely remove pollers in any time
-To: Aleksey Kuleshov <rndfax@yandex.ru>
+Subject: Re: [PATCH 1/5] efi: fix memory leak in error path
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On Thu,  3 Mar 2016 18:17:09 +0300
-Aleksey Kuleshov <rndfax@yandex.ru> wrote:
-
-Please add 'Signed-off-by' to your patches.
-
+On Wed, Mar 02, 2016 at 09:50:33PM +0100, Lucas Stach wrote:
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
 > ---
->  common/poller.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> =
+>  arch/efi/efi/efi-device.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 
-> diff --git a/common/poller.c b/common/poller.c
-> index 32795b6..7cec5d4 100644
-> --- a/common/poller.c
-> +++ b/common/poller.c
-> @@ -15,6 +15,7 @@
->  =
+Applied all to master, thanks
 
->  static LIST_HEAD(poller_list);
->  static int poller_active;
-> +static struct poller_struct *next;
->  =
+Sascha
 
->  int poller_register(struct poller_struct *poller)
->  {
-> @@ -33,6 +34,10 @@ int poller_unregister(struct poller_struct *poller)
->  		return -ENODEV;
->  =
-
->  =
-
-> +	if (&next->list =3D=3D &poller->list) {
-> +		next =3D list_entry(next->list.next, struct poller_struct, list);
+> 
+> diff --git a/arch/efi/efi/efi-device.c b/arch/efi/efi/efi-device.c
+> index 7db8e48..678a283 100644
+> --- a/arch/efi/efi/efi-device.c
+> +++ b/arch/efi/efi/efi-device.c
+> @@ -168,8 +168,10 @@ static struct efi_device *efi_add_device(efi_handle_t *handle, efi_guid_t **guid
+>  
+>  	efiret = BS->open_protocol(handle, &efi_device_path_protocol_guid,
+>  			&devpath, NULL, NULL, EFI_OPEN_PROTOCOL_GET_PROTOCOL);
+> -	if (EFI_ERROR(efiret))
+> +	if (EFI_ERROR(efiret)) {
+> +		free(guidarr);
+>  		return ERR_PTR(-EINVAL);
 > +	}
-> +
->  	list_del(&poller->list);
->  	poller->registered =3D 0;
->  =
-
-> @@ -107,14 +112,14 @@ int poller_async_unregister(struct poller_async *pa)
->  =
-
->  void poller_call(void)
->  {
-> -	struct poller_struct *poller, *tmp;
-> +	struct poller_struct *poller;
->  =
-
->  	if (poller_active)
->  		return;
->  =
-
->  	poller_active =3D 1;
->  =
-
-> -	list_for_each_entry_safe(poller, tmp, &poller_list, list)
-> +	list_for_each_entry_safe(poller, next, &poller_list, list)
->  		poller->func(poller);
->  =
-
->  	poller_active =3D 0;
-> -- =
-
-> 2.6.2
-> =
-
-> =
-
+>  
+>  	efidev = xzalloc(sizeof(*efidev));
+>  
+> -- 
+> 2.5.0
+> 
+> 
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
