@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
+Received: from forward14h.cmail.yandex.net ([87.250.230.156])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1abpr3-0005Zj-Uf
- for barebox@lists.infradead.org; Fri, 04 Mar 2016 13:33:18 +0000
-Received: by mail-lb0-x230.google.com with SMTP id bc4so60993585lbc.2
- for <barebox@lists.infradead.org>; Fri, 04 Mar 2016 05:32:57 -0800 (PST)
-Date: Fri, 4 Mar 2016 16:59:04 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20160304165904.ca1b14a860e6fdb84a4a6e4f@gmail.com>
-In-Reply-To: <4943131457093089@web17h.yandex.ru>
+ id 1abrHK-0002v3-Dy
+ for barebox@lists.infradead.org; Fri, 04 Mar 2016 15:04:33 +0000
+From: Aleksey Kuleshov <rndfax@yandex.ru>
+In-Reply-To: <20160304165904.ca1b14a860e6fdb84a4a6e4f@gmail.com>
 References: <1457009332-27205-1-git-send-email-rndfax@yandex.ru>
  <20160304071152.GC21869@pengutronix.de>
  <4064341457088134@web21g.yandex.ru>
  <20160304145955.a02cc43b4d49ae2cc2897f97@gmail.com>
  <4943131457093089@web17h.yandex.ru>
-Mime-Version: 1.0
+ <20160304165904.ca1b14a860e6fdb84a4a6e4f@gmail.com>
+MIME-Version: 1.0
+Message-Id: <5405981457103825@web21g.yandex.ru>
+Date: Fri, 04 Mar 2016 18:03:45 +0300
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,99 +22,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ehci-hcd: remove useless timeout
-To: Aleksey Kuleshov <rndfax@yandex.ru>
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Fri, 04 Mar 2016 15:04:49 +0300
-Aleksey Kuleshov <rndfax@yandex.ru> wrote:
-
-> [quote]
-> To improve tracking of who did what, especially with patches that can
-> percolate to their final resting place in the kernel through several
-> layers of maintainers, we've introduced a "sign-off" procedure on
-> patches that are being emailed around.
-> [/quote]
-> =
-
-> So Linux kernel had some problems due to their huge developers/maintainer=
-s list
-> and they solved them by using "sign-off" procedure.
-> Do Barebox have that burden of "patches that can
-> percolate to their final resting place in the kernel through several
-> layers of maintainers"?
-> =
-
-> Also in chapter 11 there are rules which are pure bureaucratic. =
-
-> Bureaucracy is a thing of a large projects.
-> Is Barebox such as big as Linux that it must have these rules too?
-> =
-
-> Solving inexisting problems doesn't make life easier but complicates it.
-> =
-
-> So, the question "what this (git commit -s) will give you?" is still open.
-
-There are some full-system-image-generation frameworks: OpenWrt, buildroot =
-etc.
-These frameworks make several independant pieces of software (compiler,
-linux kernel, C lib implementation, busybox etc) work together to combine
-solid system. Often these frameworks use mainline versions of software comp=
-onents
-with additional (non-mainline) patches. E.g. here is patch for barebox from=
- buildroot:
-
-    https://github.com/maximeh/buildroot/tree/master/board/calao/qil-a9260/=
-patches/barebox
-
-It is reasonable to have as much author(s) information as possible. So your=
- Sob will be
-very usable if somebody who works with the patch.
-
-Here is a poor example: patch without any comments at all, it's very diffic=
-ult to trace origins
-of this patch:
-
-    https://github.com/openwrt/openwrt/blob/master/target/linux/ar71xx/patc=
-hes-4.4/200-MIPS-ath79-fix-ar933x-wmac-reset.patch
-
-> =
-
-> 04.03.2016, 14:33, "Antony Pavlov" <antonynpavlov@gmail.com>:
-> > On Fri, 04 Mar 2016 13:42:14 +0300
-> > Aleksey Kuleshov <rndfax@yandex.ru> wrote:
-> >
-> >> =A0Don't get me wrong, but what this (git commit -s) will give you?
-> >> =A0What is the purpose of this?
-> >
-> > You can find the answer at https://www.kernel.org/doc/Documentation/Sub=
-mittingPatches
-> > Please see chapter 11 (Sign your work).
-> >
-> >> =A004.03.2016, 10:11, "Sascha Hauer" <s.hauer@pengutronix.de>:
-> >>
-> >> =A0> Also, like you other patches this one lacks a SoB. Please commit =
-with
-> >> =A0> git commit -s.
-> >
-> > --
-> > --
-> > Best regards,
-> > =A0 Antony Pavlov
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+PiDCoMKgwqDCoGh0dHBzOi8vZ2l0aHViLmNvbS9tYXhpbWVoL2J1aWxkcm9vdC90cmVlL21hc3Rl
+ci9ib2FyZC9jYWxhby9xaWwtYTkyNjAvcGF0Y2hlcy9iYXJlYm94Cj4KPiBJdCBpcyByZWFzb25h
+YmxlIHRvIGhhdmUgYXMgbXVjaCBhdXRob3IocykgaW5mb3JtYXRpb24gYXMgcG9zc2libGUuIFNv
+IHlvdXIgU29iIHdpbGwgYmUKPiB2ZXJ5IHVzYWJsZSBpZiBzb21lYm9keSB3aG8gd29ya3Mgd2l0
+aCB0aGUgcGF0Y2guCgpUaGlzIHBhdGNoIGhhcyAiRnJvbToiIGZpZWxkIGFuZCBleGFjdGx5IHRo
+ZSBzYW1lICJTaWduZWQtb2ZmLWJ5OiIgZmllbGQuClNvIG5vIG5ldyBhZGRpdGlvbmFsIGluZm9y
+bWF0aW9uIFNvYiBnaXZlcyB5b3UgaGVyZS4KClRoZSBTb2IgaW5kZWVkIHdpbGwgZ2l2ZSB5b3Ug
+c2ltcGxpZmljYXRpb24gd2hlbiB5b3Ugd2FudCB0byBzcXVhc2ggbWFueS1tYW55IGNvbW1pdHMK
+YnkgbWFueS1tYW55IGF1dGhvcnMgYW5kIGZvciBnb2QncyBzYWtlIHlvdSBkb24ndCB3YW50IHRv
+IHJlY2xhaW0gb3duZXJzaGlwIG9mIGVhY2ggY29tbWl0IQpCdXQgYWdhaW4sIGRvZXMgQmFyZWJv
+eCBmYWNpbmcgc3VjaCBjYXNlcz8KRG9lcyBpdCByZWFsbHkgbmVjZXNzYXJ5IHRvIGZvbGxvdyBh
+bGwgbGludXgtcmVsYXRlZCB3b3JrIHByb2Nlc3MgcnVsZXM/IEp1c3QgbG9vayBhdCB0aGlzOgoK
+ICAgIFNpZ25lZC1vZmYtYnk6IEphbWVzIEhvZ2FuIDxqYW1lcy5ob2dhbkBpbWd0ZWMuY29tPgog
+ICAgRml4ZXM6IGU5ZGU2ODhkYWM2NSAoImlycWNoaXA6IG1pcHMtZ2ljOiBTdXBwb3J0IGxvY2Fs
+IGludGVycnVwdHMiKQogICAgQ2M6IEFuZHJldyBCcmVzdGlja2VyIDxhYnJlc3RpY0BjaHJvbWl1
+bS5vcmc+CiAgICBDYzogUWFpcyBZb3VzZWYgPHFhaXMueW91c2VmQGltZ3RlYy5jb20+CiAgICBD
+YzogUGF1bCBCdXJ0b24gPHBhdWwuYnVydG9uQGltZ3RlYy5jb20+CiAgICBDYzogSmFzb24gQ29v
+cGVyIDxqYXNvbkBsYWtlZGFlbW9uLm5ldD4KICAgIENjOiBUaG9tYXMgR2xlaXhuZXIgPHRnbHhA
+bGludXRyb25peC5kZT4KICAgIENjOiBsaW51eC1taXBzQGxpbnV4LW1pcHMub3JnCiAgICBSZXZp
+ZXdlZC1ieTogQW5kcmV3IEJyZXN0aWNrZXIgPGFicmVzdGljQGNocm9taXVtLm9yZz4KICAgIFBh
+dGNod29yazogaHR0cHM6Ly9wYXRjaHdvcmsubGludXgtbWlwcy5vcmcvcGF0Y2gvOTA4MS8KICAg
+IFNpZ25lZC1vZmYtYnk6IFJhbGYgQmFlY2hsZSA8cmFsZkBsaW51eC1taXBzLm9yZz4KClRoYXQn
+cyBzb21ldGhpbmchIEJlY2F1c2UgbWFueSBwZW9wbGUgYXJlIGludmxvbHZlZC4gTGludXggaXMg
+YSBodWdlIG1hY2hpbmUuCkJhcmVib3ggaXMgbm90IExpbnV4LgoKQW5kIGp1c3QgZm9yIGNvbXBh
+cnNpb24sIHRoaXMgaXMgZnJvbSBCYXJlYm94OgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpj
+b21taXQgYTZmNzNlYzUyZjVjNzk0OTM4YWExNGIxMjY0Mzc1MjI4ODkwZjEyYwpBdXRob3I6IFVs
+cmljaCDDlmxtYW5uIDx1Lm9lbG1hbm5AcGVuZ3V0cm9uaXguZGU+CkRhdGU6ICAgVGh1IEZlYiA0
+IDA4OjI1OjI0IDIwMTYgKzAxMDAKCiAgICBkb2NzOiBmaXggdHlwb3MKCiAgICBTaWduZWQtb2Zm
+LWJ5OiBVbHJpY2ggw5ZsbWFubiA8dS5vZWxtYW5uQHBlbmd1dHJvbml4LmRlPgogICAgU2lnbmVk
+LW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgoKZGlmZiAtLWdp
+dCBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9iYXJlYm94L2JhcmVib3gsc3Rh
+dGUucnN0IGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2JhcmVib3gvYmFyZWJv
+eCxzdGF0ZS5yc3QKaW5kZXggZDFiMDYyNy4uZDUwNzY1NyAxMDA2NDQKLS0tIGEvRG9jdW1lbnRh
+dGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2JhcmVib3gvYmFyZWJveCxzdGF0ZS5yc3QKKysrIGIv
+RG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2JhcmVib3gvYmFyZWJveCxzdGF0ZS5y
+c3QKQEAgLTQzLDcgKzQzLDcgQEAgVmFyaWFibGUgbm9kZXMKCiBUaGVzZSBhcmUgc3Vibm9kZXMg
+b2YgYSBzdGF0ZSBub2RlIGVhY2ggZGVzY3JpYmluZyBhIHNpbmdsZQogdmFyaWFibGUuIFRoZSBu
+b2RlIG5hbWUgbWF5IGVuZCB3aXRoIGBgQDxBRERSRVNTPmBgLCBidXQgdGhlIHN1ZmZpeCBpcwot
+c3JpcHBlZCBmcm9tIHRoZSB2YXJpYWJsZSBuYW1lLgorc3RyaXBwZWQgZnJvbSB0aGUgdmFyaWFi
+bGUgbmFtZS4KCiBTdGF0ZSB2YXJpYWJsZXMgaGF2ZSBhIHR5cGUuIEN1cnJlbnR5IHN1cHBvcnRl
+ZCB0eXBlcyBhcmU6IGBgdWludDhgYCwKIGBgdWludDMyYGAsIGBgZW51bTMyYGAsIGBgbWFjYGAg
+YWRkcmVzcyBvciBgYHN0cmluZ2BgLiBWYXJpYWJsZSBsZW5ndGgKLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KCgo+IEhlcmUgaXMgYSBwb29yIGV4YW1wbGU6IHBhdGNoIHdpdGhvdXQgYW55IGNv
+bW1lbnRzIGF0IGFsbCwgaXQncyB2ZXJ5IGRpZmZpY3VsdCB0byB0cmFjZSBvcmlnaW5zCj4gb2Yg
+dGhpcyBwYXRjaDoKPgo+IMKgwqDCoMKgaHR0cHM6Ly9naXRodWIuY29tL29wZW53cnQvb3Blbndy
+dC9ibG9iL21hc3Rlci90YXJnZXQvbGludXgvYXI3MXh4L3BhdGNoZXMtNC40LzIwMC1NSVBTLWF0
+aDc5LWZpeC1hcjkzM3gtd21hYy1yZXNldC5wYXRjaAoKSW5kZWVkLCBwbGFpbiBwYXRjaGVzIGxh
+Y2tzIG9yaWdpbnMuCjEpIFRoYXQncyB3aHkgZXZlcnlvbmUgaGVyZSB1c2VzICJnaXQgc2VuZC1l
+bWFpbCIgc28gdGhhdCAiZ2l0IGFtIgp3aWxsIGFwcGx5IHBhdGNoIHdpdGggcHJvcGVyICJBdXRo
+b3I6IiBmaWVsZC4KMikgSW4gdGhlIGNhc2Ugb2Ygb3BlbndydCBwYXRjaCwgd2h5IGRvIGFueW9u
+ZSBuZWVkcyB0aGUgb3JpZ2lucyBhbnl3YXk/CklmIHRoaXMgcGF0Y2ggYnJlYWtzIHNvbWV0aGlu
+ZyAtIGZpeCB3aXRoIG5ldyBvbmUsIGlmIG5vdCAtIG9rYXkgdGhlbi4KSWYgeW91IGtub3cgdGhh
+dCB0aGF0IHBhdGNoIHdhcyB3cml0dGVuIGJ5IFNvbWUgUGVyc29uIC0gd2hhdCB0aGlzIHdpbGwg
+Z2l2ZSB5b3U/CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
+L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
