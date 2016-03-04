@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1abjuI-00055P-Kl
- for barebox@lists.infradead.org; Fri, 04 Mar 2016 07:12:15 +0000
-Date: Fri, 4 Mar 2016 08:11:52 +0100
+ id 1abk1X-0008DK-2Y
+ for barebox@lists.infradead.org; Fri, 04 Mar 2016 07:19:43 +0000
+Date: Fri, 4 Mar 2016 08:19:21 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160304071152.GC21869@pengutronix.de>
-References: <1457009332-27205-1-git-send-email-rndfax@yandex.ru>
+Message-ID: <20160304071921.GD21869@pengutronix.de>
+References: <1457018230-4554-1-git-send-email-rndfax@yandex.ru>
+ <1457018230-4554-2-git-send-email-rndfax@yandex.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1457009332-27205-1-git-send-email-rndfax@yandex.ru>
+In-Reply-To: <1457018230-4554-2-git-send-email-rndfax@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +23,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ehci-hcd: remove useless timeout
+Subject: Re: [PATCH 2/2] input: make the Input Core be the last in the poller
+ queue
 To: Aleksey Kuleshov <rndfax@yandex.ru>
 Cc: barebox@lists.infradead.org
 
-Hi Aleksey,
-
-On Thu, Mar 03, 2016 at 03:48:52PM +0300, Aleksey Kuleshov wrote:
+On Thu, Mar 03, 2016 at 06:17:10PM +0300, Aleksey Kuleshov wrote:
+> This prevents the case when Input Core and event providers
+> have to run "at one time" so Input Core will work with non-relevant
+> data since it will be called first.
 > ---
->  drivers/usb/host/ehci-hcd.c | 8 --------
->  1 file changed, 8 deletions(-)
-> 
-> diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-> index 862444b..9327015 100644
-> --- a/drivers/usb/host/ehci-hcd.c
-> +++ b/drivers/usb/host/ehci-hcd.c
-> @@ -1189,7 +1189,6 @@ static int ehci_destroy_int_queue(struct usb_device *dev,
->  	struct usb_host *host = dev->host;
->  	struct ehci_priv *ehci = to_ehci(host);
->  	struct QH *cur = ehci->periodic_queue;
-> -	uint64_t start;
->  
->  	if (disable_periodic(ehci) < 0) {
->  		dev_err(&dev->dev,
-> @@ -1198,7 +1197,6 @@ static int ehci_destroy_int_queue(struct usb_device *dev,
->  	}
->  	ehci->periodic_schedules--;
->  
-> -	start = get_time_ns();
->  	while (!(cur->qh_link & cpu_to_hc32(QH_LINK_TERMINATE))) {
->  		dev_dbg(&dev->dev,
->  			"considering %p, with qh_link %x\n",
-> @@ -1211,12 +1209,6 @@ static int ehci_destroy_int_queue(struct usb_device *dev,
->  			break;
->  		}
->  		cur = NEXT_QH(cur);
-> -		if (is_timeout_non_interruptible(start, 500 * MSECOND)) {
-> -			dev_err(&dev->dev,
-> -				"Timeout destroying interrupt endpoint queue\n");
-> -			result = -ETIMEDOUT;
-> -			goto out;
-> -		}
+>  drivers/input/input.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-My first reaction was to ask you why you think that this timeout is
-useless. Looking close at it I see that this is no register polling loop
-but an iteration loop. Could you add a explanation to the commit log?
-
-Also, like you other patches this one lacks a SoB. Please commit with
-git commit -s.
+I tested the approach to add a .poll callback into struct input_device
+and to let the input core register one poller for all input devices
+rather than one poller for each device. This also gives the input core
+better control when the input devices are polled. Would that approach go
+into the right direction?
+I have no ready-to-post patch for this approach, partly because it doesn't
+solve the double-return problem and I currently don't understand why.
 
 Sascha
+
+> 
+> diff --git a/drivers/input/input.c b/drivers/input/input.c
+> index 31a9c22..1a8efc6 100644
+> --- a/drivers/input/input.c
+> +++ b/drivers/input/input.c
+> @@ -178,11 +178,13 @@ static void input_console_notify(struct input_notifier *in,
+>  	if (ev->value) {
+>  		kfifo_putc(ic->fifo, ascii);
+>  		ic->current_key = ascii;
+> +		poller_async_register(&ic->poller);
+>  		poller_call_async(&ic->poller, 400 * MSECOND,
+>  				  input_console_repeat, ic);
+>  	} else {
+>  		ic->current_key = 0;
+>  		poller_async_cancel(&ic->poller);
+> +		poller_async_unregister(&ic->poller);
+>  	}
+>  }
+>  
+> @@ -199,7 +201,6 @@ static int input_init(void)
+>  	ic->fifo = kfifo_alloc(32);
+>  	ic->notifier.notify = input_console_notify;
+>  	input_register_notfier(&ic->notifier);
+> -	poller_async_register(&ic->poller);
+>  
+>  	return console_register(&ic->console);
+>  }
+> -- 
+> 2.6.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
