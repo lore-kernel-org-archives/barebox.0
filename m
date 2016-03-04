@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1abkFj-0005Rv-UH
- for barebox@lists.infradead.org; Fri, 04 Mar 2016 07:34:24 +0000
+ id 1abkFy-0005W3-S5
+ for barebox@lists.infradead.org; Fri, 04 Mar 2016 07:34:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  4 Mar 2016 08:33:33 +0100
-Message-Id: <1457076814-29170-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  4 Mar 2016 08:34:12 +0100
+Message-Id: <1457076852-16471-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1457076852-16471-1-git-send-email-s.hauer@pengutronix.de>
+References: <1457076852-16471-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,77 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] mtd: mtd_[read|write|erase]: check for valid input data
+Subject: [PATCH 2/2] imx-bbu-nand-fcb: Remove double write of first fcb
 To: Barebox List <barebox@lists.infradead.org>
 
-mtd_[read|write|erase] are input functions to the mtd subsystem, so
-check for valid input data here rather than relying on the drivers doing
-this. The checks are copied from the Kernel as of 4.5-rc5
+The first FCB page was written twice. One time is enough, drop the
+second write.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/core.c      | 22 ++++++++++++++++++++++
- include/linux/mtd/mtd.h |  2 ++
- 2 files changed, 24 insertions(+)
+ common/imx-bbu-nand-fcb.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index e35571d..161c6ad 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -326,6 +326,11 @@ int mtd_read(struct mtd_info *mtd, loff_t from, size_t len, size_t *retlen,
- 	int ret_code;
- 	*retlen = 0;
+diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
+index 6e33ee1..3eb9e9b 100644
+--- a/common/imx-bbu-nand-fcb.c
++++ b/common/imx-bbu-nand-fcb.c
+@@ -461,10 +461,6 @@ static int imx_bbu_nand_update(struct bbu_handler *handler, struct bbu_data *dat
+ 	 */
+ 	memset(fcb_raw_page + mtd->writesize, 0xFF, 2);
  
-+	if (from < 0 || from >= mtd->size || len > mtd->size - from)
-+		return -EINVAL;
-+	if (!len)
-+		return 0;
-+
- 	/*
- 	 * In the absence of an error, drivers return a non-negative integer
- 	 * representing the maximum number of bitflips that were corrected on
-@@ -344,11 +349,28 @@ int mtd_write(struct mtd_info *mtd, loff_t to, size_t len, size_t *retlen,
- {
- 	*retlen = 0;
- 
-+	if (to < 0 || to >= mtd->size || len > mtd->size - to)
-+		return -EINVAL;
-+	if (!mtd->write || !(mtd->flags & MTD_WRITEABLE))
-+		return -EROFS;
-+	if (!len)
-+		return 0;
-+
- 	return mtd->write(mtd, to, len, retlen, buf);
- }
- 
- int mtd_erase(struct mtd_info *mtd, struct erase_info *instr)
- {
-+	if (instr->addr >= mtd->size || instr->len > mtd->size - instr->addr)
-+		return -EINVAL;
-+	if (!(mtd->flags & MTD_WRITEABLE))
-+		return -EROFS;
-+	instr->fail_addr = MTD_FAIL_ADDR_UNKNOWN;
-+	if (!instr->len) {
-+		instr->state = MTD_ERASE_DONE;
-+		mtd_erase_callback(instr);
-+		return 0;
-+	}
- 	return mtd->erase(mtd, instr);
- }
- 
-diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
-index e430217..421a941 100644
---- a/include/linux/mtd/mtd.h
-+++ b/include/linux/mtd/mtd.h
-@@ -26,6 +26,8 @@
- #define MTD_ERASE_DONE          0x08
- #define MTD_ERASE_FAILED        0x10
- 
-+#define MTD_FAIL_ADDR_UNKNOWN -1LL
-+
- /* If the erase fails, fail_addr might indicate exactly which block failed.  If
-    fail_addr = 0xffffffff, the failure was not at the device level or was not
-    specific to any particular block. */
+-	ret = raw_write_page(mtd, fcb_raw_page, mtd->erasesize);
+-	if (ret)
+-		goto out;
+-
+ 	dbbt->Checksum = 0;
+ 	dbbt->FingerPrint = 0x54424244;
+ 	dbbt->Version = 0x01000000;
 -- 
 2.7.0
 
