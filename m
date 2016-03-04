@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vk0-x22d.google.com ([2607:f8b0:400c:c05::22d])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aleet-0002IX-PF
- for barebox@lists.infradead.org; Thu, 31 Mar 2016 15:37:20 +0000
-Received: by mail-vk0-x22d.google.com with SMTP id e185so107964931vkb.1
- for <barebox@lists.infradead.org>; Thu, 31 Mar 2016 08:36:59 -0700 (PDT)
+ id 1abjnU-0000TT-3c
+ for barebox@lists.infradead.org; Fri, 04 Mar 2016 07:05:12 +0000
+Date: Fri, 4 Mar 2016 08:04:48 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160304070448.GB21869@pengutronix.de>
+References: <1456959088-9609-1-git-send-email-akurz@blala.de>
 MIME-Version: 1.0
-In-Reply-To: <87ziterckj.fsf@gmail.com>
-References: <CABDcavYEn0e8GkEzfJnayr32X85dA5tz-dRaMg3H6J8i-aXj0w@mail.gmail.com>
- <87ziterckj.fsf@gmail.com>
-Date: Thu, 31 Mar 2016 17:36:58 +0200
-Message-ID: <CABDcavZ2HPoPqCJ9Wn_Uu7fapKcqdHEPc9jDjnM7xDvKJ5ahbg@mail.gmail.com>
-From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1456959088-9609-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,47 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Scrolling issues in edit command
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] arm/cpu/lowlevel: fix: possible processor mode change
+To: Alexander Kurz <akurz@blala.de>
+Cc: barebox@lists.infradead.org, Uwe Kleine-Koenig <ukl@pengutronix.de>
 
-Hello,
+Hi Alexander,
 
-Thank you for the answer. Some comments below.
+On Wed, Mar 02, 2016 at 11:51:28PM +0100, Alexander Kurz wrote:
+> This is a re-application of fix 17644b55.
+> arm_cpu_lowlevel_init() will set the processor mode to 0x13 (supervisor).
+> When this function is entered via a different processor mode, register
+> banking will happen to lr (r14), resulting in an invalid return address.
+> This fix will preserve the return address manually.
+> 
+> Signed-off-by: Alexander Kurz <akurz@blala.de>
+> ---
+>  arch/arm/cpu/lowlevel.S | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/cpu/lowlevel.S b/arch/arm/cpu/lowlevel.S
+> index b76222d..e5baa12 100644
+> --- a/arch/arm/cpu/lowlevel.S
+> +++ b/arch/arm/cpu/lowlevel.S
+> @@ -4,6 +4,8 @@
+>  
+>  .section ".text_bare_init_","ax"
+>  ENTRY(arm_cpu_lowlevel_init)
+> +	/* save lr, since it may be banked away with a processor mode change */
+> +	mov	r2, lr
 
-2016-03-31 15:39 GMT+02:00 Holger Schurig <holgerschurig@gmail.com>:
-> Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com> writes:
->
->> Can anyone provide any hints on why this is
->> happening or how to fix it ?
->
-> I guess this is probably because your terminal emulation doesn't match
-> what barebox assume.
+Thanks for fixing this and for adding a comment why this is done. This
+hopefully prevents us from breaking it again.
 
-Uhm, could be, however I have also been using minicom with an older
-version of barebox for a long time (2011.05.0, on a different target
-board), and never had any problems at all. I only noticed this
-behaviour when testing barebox 2016.03.0 on a new board.
+Out of interest, what system are you using where this fix is necesssary?
 
-[...]
-> Kermit is oblivious to any ANSI escape sequences, so my X11 terminal
-> emulates them. Here I use the rxvt-unicode binary `urxvt`. The effect is
-> that the "edit" commands works.
+Uwe, now we know why that was done and why e190bcf (arm/cpu/lowlevel:
+Don't save the return address in another register) was a bad idea.
 
-Perhaps I should clarify what I am seeing. The "edit" command actually
-works, more or less. If I scroll up or down one line at a time then
-there are no problems. I only see bogus A or B characters inserted
-when I do "continuous" scrolling. Also I noticed that ESC [ A is the
-ANSI escape sequence for "cursor up", and ESC [ B is the ANSI escape
-sequence for "cursor down". Perhaps when I keep the arrow up/down key
-pressed, minicom is sending these escape sequences faster than barebox
-can handle them, and that's why I see the 'A' and 'B' characters
-inserted?
+Applied this one to master.
 
-Regards,
+Sascha
 
-Guillermo Rodriguez Garcia
-guille.rodriguez@gmail.com
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
