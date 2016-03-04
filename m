@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x231.google.com ([2a00:1450:4010:c04::231])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1abnzl-00026E-Sw
- for barebox@lists.infradead.org; Fri, 04 Mar 2016 11:34:10 +0000
-Received: by mail-lb0-x231.google.com with SMTP id k15so57738827lbg.0
- for <barebox@lists.infradead.org>; Fri, 04 Mar 2016 03:33:48 -0800 (PST)
-Date: Fri, 4 Mar 2016 14:59:55 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20160304145955.a02cc43b4d49ae2cc2897f97@gmail.com>
-In-Reply-To: <4064341457088134@web21g.yandex.ru>
-References: <1457009332-27205-1-git-send-email-rndfax@yandex.ru>
- <20160304071152.GC21869@pengutronix.de>
- <4064341457088134@web21g.yandex.ru>
-Mime-Version: 1.0
+ id 1aboCO-0000lJ-4r
+ for barebox@lists.infradead.org; Fri, 04 Mar 2016 11:47:13 +0000
+From: Juergen Borleis <jbe@pengutronix.de>
+Date: Fri, 4 Mar 2016 12:48:53 +0100
+References: <1456934863-30990-1-git-send-email-s.hauer@pengutronix.de>
+ <1456934863-30990-6-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1456934863-30990-6-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201603041248.53632.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,40 +19,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ehci-hcd: remove useless timeout
-To: Aleksey Kuleshov <rndfax@yandex.ru>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 5/7] ARM: i.MX: karo-tx6: Setup other PMICs
+To: barebox@lists.infradead.org
 
-On Fri, 04 Mar 2016 13:42:14 +0300
-Aleksey Kuleshov <rndfax@yandex.ru> wrote:
-
-> Don't get me wrong, but what this (git commit -s) will give you?
-> What is the purpose of this?
-
-
-You can find the answer at https://www.kernel.org/doc/Documentation/Submitt=
-ingPatches
-Please see chapter 11 (Sign your work).
-
-
-> 04.03.2016, 10:11, "Sascha Hauer" <s.hauer@pengutronix.de>:
-> =
-
-> > Also, like you other patches this one lacks a SoB. Please commit with
-> > git commit -s.
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKT24gV2VkbmVzZGF5IDAyIE1hcmNoIDIwMTYgMTc6MDc6NDEgU2FzY2hhIEhh
+dWVyIHdyb3RlOgo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMva2Fyby10eDZ4L3BtaWMt
+cm41dDU2Ny5jCj4gYi9hcmNoL2FybS9ib2FyZHMva2Fyby10eDZ4L3BtaWMtcm41dDU2Ny5jIG5l
+dyBmaWxlIG1vZGUgMTAwNjQ0Cj4gaW5kZXggMDAwMDAwMC4uMzYzZmZiYwo+IC0tLSAvZGV2L251
+bGwKPiArKysgYi9hcmNoL2FybS9ib2FyZHMva2Fyby10eDZ4L3BtaWMtcm41dDU2Ny5jCj4gWy4u
+Ll0KPiAraW50IHJuNXQ1NjdfcG1pY19zZXR1cChzdHJ1Y3QgaTJjX2NsaWVudCAqY2xpZW50KQo+
+ICt7Cj4gK8KgwqDCoMKgwqDCoMKgaW50IHJldDsKPiArwqDCoMKgwqDCoMKgwqB1bnNpZ25lZCBj
+aGFyIHZhbHVlOwo+ICsKPiArwqDCoMKgwqDCoMKgwqByZXQgPSBpMmNfcmVhZF9yZWcoY2xpZW50
+LCAweDExLCAmdmFsdWUsIDEpOwo+ICvCoMKgwqDCoMKgwqDCoGlmIChyZXQgIT0gMSkgewo+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBwcl9lcnIoImkyYyByZWFkIGVycm9yXG4iKTsK
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIHJldDsKPiArwqDCoMKgwqDC
+oMKgwqB9Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoHJldCA9IHJuNXQ1Njdfc2V0dXBfcmVncyhjbGll
+bnQsIHJuNXQ1NjdfcmVncywKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBBUlJBWV9TSVpFKHJuNXQ1NjdfcmVncykpOwo+ICvC
+oMKgwqDCoMKgwqDCoGlmIChyZXQpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJl
+dHVybiByZXQ7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoHJldCA9IGkyY19yZWFkX3JlZyhjbGllbnQs
+IFJONVQ1NjdfREMxREFDLCAmdmFsdWUsIDEpOwo+ICvCoMKgwqDCoMKgwqDCoGlmIChyZXQgPT0g
+MSkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHJfZGVidWcoIlZERENPUkUgc2V0
+IHRvICV1bVZcbiIsIHJlZ3ZhbF90b19tVih2YWx1ZSkpOwo+ICvCoMKgwqDCoMKgwqDCoGVsc2UK
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHJfZXJyKCJpMmMgcmVhZCBlcnJvclxu
+Iik7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoHJldCA9IGkyY19yZWFkX3JlZyhjbGllbnQsIFJONVQ1
+NjdfREMyREFDLCAmdmFsdWUsIDEpOwo+ICvCoMKgwqDCoMKgwqDCoGlmIChyZXQgPT0gMSkKPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHJfZGVidWcoIlZERFNPQyDCoHNldCB0byAl
+dW1WXG4iLCByZWd2YWxfdG9fbVYodmFsdWUpKTsKCkluIHRoZSBjYXNlIG9mIGEgc3VjY2Vzc2Z1
+bGwgaW5pdCB0aGlzIHdpbGwgcmV0dXJuICcxJyBhbmQgYmFyZWJveCB0aGVuIHByaW50cwphbiBh
+bm5veWluZyBlcnJvciBtZXNzYWdlIGxpa2UgdGhpczoKCkthcm8tdHg2OiBQTUlDIHNldHVwIGZh
+aWxlZCB3aXRoIGVycm9yIC0xCgo+IFsuLi5dCgotLSAKUGVuZ3V0cm9uaXggZS5LLiDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHwgSnVlcmdlbiBCb3JsZWlzIMKg
+IMKgIMKgIMKgIMKgIMKgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvIMKgfApfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
+bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
