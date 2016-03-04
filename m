@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1abkFy-0005W2-S6
- for barebox@lists.infradead.org; Fri, 04 Mar 2016 07:34:40 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  4 Mar 2016 08:34:11 +0100
-Message-Id: <1457076852-16471-1-git-send-email-s.hauer@pengutronix.de>
+Received: from forward19h.cmail.yandex.net ([2a02:6b8:0:f35::a4])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1abmop-0002Ke-Qa
+ for barebox@lists.infradead.org; Fri, 04 Mar 2016 10:18:49 +0000
+From: Aleksey Kuleshov <rndfax@yandex.ru>
+In-Reply-To: <20160304071921.GD21869@pengutronix.de>
+References: <1457018230-4554-1-git-send-email-rndfax@yandex.ru>
+ <1457018230-4554-2-git-send-email-rndfax@yandex.ru>
+ <20160304071921.GD21869@pengutronix.de>
+MIME-Version: 1.0
+Message-Id: <4230541457086688@web17h.yandex.ru>
+Date: Fri, 04 Mar 2016 13:18:08 +0300
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,49 +19,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] imx-bbu-nand-fcb: optimize check for bad block loop
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 2/2] input: make the Input Core be the last in the poller
+ queue
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-The argument passed to dbbt_data_create() contains the number of blocks,
-not the last block. This means we can exit the loop with '<' instead of
-'<='
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/imx-bbu-nand-fcb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
-index 22031f5..6e33ee1 100644
---- a/common/imx-bbu-nand-fcb.c
-+++ b/common/imx-bbu-nand-fcb.c
-@@ -337,14 +337,14 @@ static int imx_bbu_write_firmware(struct mtd_info *mtd, unsigned block,
- 	return block;
- }
- 
--static int dbbt_data_create(struct mtd_info *mtd, void *buf, int block_last)
-+static int dbbt_data_create(struct mtd_info *mtd, void *buf, int num_blocks)
- {
- 	int n;
- 	int n_bad_blocks = 0;
- 	uint32_t *bb = buf + 0x8;
- 	uint32_t *n_bad_blocksp = buf + 0x4;
- 
--	for (n = 0; n <= block_last; n++) {
-+	for (n = 0; n < num_blocks; n++) {
- 		loff_t offset = n * mtd->erasesize;
- 		if (mtd_block_isbad(mtd, offset)) {
- 			n_bad_blocks++;
--- 
-2.7.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKMDQuMDMuMjAxNiwgMTA6MTksICJTYXNjaGEgSGF1ZXIiIDxzLmhhdWVyQHBl
+bmd1dHJvbml4LmRlPjoKPiBPbiBUaHUsIE1hciAwMywgMjAxNiBhdCAwNjoxNzoxMFBNICswMzAw
+LCBBbGVrc2V5IEt1bGVzaG92IHdyb3RlOgo+PiCaVGhpcyBwcmV2ZW50cyB0aGUgY2FzZSB3aGVu
+IElucHV0IENvcmUgYW5kIGV2ZW50IHByb3ZpZGVycwo+PiCaaGF2ZSB0byBydW4gImF0IG9uZSB0
+aW1lIiBzbyBJbnB1dCBDb3JlIHdpbGwgd29yayB3aXRoIG5vbi1yZWxldmFudAo+PiCaZGF0YSBz
+aW5jZSBpdCB3aWxsIGJlIGNhbGxlZCBmaXJzdC4KPj4gmi0tLQo+PiCammRyaXZlcnMvaW5wdXQv
+aW5wdXQuYyB8IDMgKystCj4+IJqaMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMSBk
+ZWxldGlvbigtKQo+Cj4gSSB0ZXN0ZWQgdGhlIGFwcHJvYWNoIHRvIGFkZCBhIC5wb2xsIGNhbGxi
+YWNrIGludG8gc3RydWN0IGlucHV0X2RldmljZQo+IGFuZCB0byBsZXQgdGhlIGlucHV0IGNvcmUg
+cmVnaXN0ZXIgb25lIHBvbGxlciBmb3IgYWxsIGlucHV0IGRldmljZXMKPiByYXRoZXIgdGhhbiBv
+bmUgcG9sbGVyIGZvciBlYWNoIGRldmljZS4gVGhpcyBhbHNvIGdpdmVzIHRoZSBpbnB1dCBjb3Jl
+Cj4gYmV0dGVyIGNvbnRyb2wgd2hlbiB0aGUgaW5wdXQgZGV2aWNlcyBhcmUgcG9sbGVkLiBXb3Vs
+ZCB0aGF0IGFwcHJvYWNoIGdvCj4gaW50byB0aGUgcmlnaHQgZGlyZWN0aW9uPwoKSSBkb24ndCB1
+bmRlcnN0YW5kIHRoZSBydWxlcyBvZiAiZHJpdmVycy9pbnB1dC8qIi4KCkFsbCBkcml2ZXJzIHJl
+Z2lzdGVyIHRoZW1zZWx2ZXMgYXMgcG9sbGVycz8gSXQgc2VlbXMgeWVzLgoKQWxsIGRyaXZlcnMg
+c2hvdWxkIGJlIHJlZ3VsYXIgcG9sbGVkPyBObywgYmVjYXVzZSwgZm9yIGV4YW1wbGUsIFVTQiBr
+ZXlib2FyZApzaG91bGQgYmUgcG9sbGVkIG9uY2UgcGVyIE4gbXMuCgpBbGwgZHJpdmVycyBjb3Vs
+ZCBiZSBwb2xsZWQgcGVyIHNvbWUtZHJpdmVyLXNwZWNpZmljIE4gbXM/IFllcy4KRm9yIGV4YW1w
+bGUsIG9uZSBVU0Iga2V5Ym9hcmQgYXNrcyBmb3IgMTAgbXMsIHRoZSBvdGhlciAtIGZvciA1IG1z
+LgoKV2hhdCBhYm91dCBHUElPIGtleWJvYXJkcz8gQ2FuIHRoZXkgYmUgcG9sbGVkIG9uY2UgcGVy
+IE4gbXM/Ckl0IHNlZW1zICJ3aHkgbm90PyIuCgpTbyB3ZSBoYXZlIHNvbWUgcG9sbGVycyB3aXRo
+LCBmb3IgZXhhbXBsZSwgNW1zLCAxMG1zIGFuZCByZWd1bGFyIGNhbGxpbmdzLgpEbyB5b3Ugd2Fu
+dCB0byBoYW5kbGUgdGhpcyBpbnNpZGUgdGhlIElucHV0IENvcmU/CgotLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLQpPciBtYXkgYmUgaXQgd2lsbCBiZSBlbm91Z2ggdG8gcG9sbCBldmVy
+eSBkcml2ZXIgcGVyIDEwIG1zPyBBY3R1YWxseSwgd2h5IG5vdD8KSWYgdGhhdCdzIHRoZSBjYXNl
+LCB0aGVuIHlvdXIgYXBwcm9hY2ggaXMgaW4gdGhlIHJpZ2h0IGRpcmVjdGlvbi4KCkFueXdheSwg
+eW91IHdpbGwgc3RpbGwgaGF2ZSB0byBkbyBhc3luYyBjYWxsIGZvciByZXBlYXRpbmcga2V5cyAt
+IGFuZCB0aGF0J3MKNDAwbXMgZm9yIHRoZSBmaXJzdCBwcmVzcyBldmVudCwgYW5kIHRoZW4gNDBt
+cyBmb3Igc3Vic3VxdWVudC4KClNvLCBJIGd1ZXNzLCB5b3Ugd2lsbCBoYXZlIHR3byAicG9sbGVy
+X3JlZ2lzdGVyIiBpbiBJbnB1dCBDb3JlIChpbnB1dC5jKToKMSkgZm9yIDEwbXMgcG9sbGluZyBk
+cml2ZXJzIC0gImRyaXZlciBwb2xsZXIiOwoyKSBmb3Iga2V5IHJlcGVhdGluZyAtICJyZXBlYXQg
+cG9sbGVyIi4KCkp1c3QgbWFrZSBzdXJlIHRoYXQgImRyaXZlciBwb2xsZXIiIHJlZ2lzdGVycyBm
+aXJzdCBhbmQgYWZ0ZXIgaXQgeW91IHJlZ2lzdGVyICJyZXBlYXQgcG9sbGVyIi4KLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KCgo+IEkgaGF2ZSBubyByZWFkeS10by1wb3N0IHBhdGNo
+IGZvciB0aGlzIGFwcHJvYWNoLCBwYXJ0bHkgYmVjYXVzZSBpdCBkb2Vzbid0Cj4gc29sdmUgdGhl
+IGRvdWJsZS1yZXR1cm4gcHJvYmxlbSBhbmQgSSBjdXJyZW50bHkgZG9uJ3QgdW5kZXJzdGFuZCB3
+aHkuCgpUaGUgd2hvbGUgcHJvYmxlbSBvZiBkb3VibGUtcmV0dXJuIGlzIGhlcmU6CgpzdGF0aWMg
+dm9pZCBpbnB1dF9jb25zb2xlX3JlcGVhdCh2b2lkICpjdHgpCnsKICAgICAgICBzdHJ1Y3QgaW5w
+dXRfY29uc29sZSAqaWMgPSBjdHg7CgogICAgICAgIGlmIChpYy0+Y3VycmVudF9rZXkpIHsKICAg
+ICAgICAgICAgICAgIGtmaWZvX3B1dGMoaWMtPmZpZm8sIGljLT5jdXJyZW50X2tleSk7CiAgICAg
+ICAgICAgICAgICBwb2xsZXJfY2FsbF9hc3luYygmaWMtPnBvbGxlciwgNDAgKiBNU0VDT05ELAog
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaW5wdXRfY29uc29sZV9yZXBlYXQsIGlj
+KTsKICAgICAgICB9Cn0KClRoaXMgZnVuY3Rpb24gaXMgQVNZTkMuIEFsbCB3aGF0IHlvdSBoYXZl
+IHRvIGRvIGlzIHRvIG1ha2Ugc3VyZSB0aGF0CnRoaXMgZnVuY3Rpb24gZ2V0cyBjYWxsZWQgQUZU
+RVIgYWxsIGlucHV0LWRyaXZlci1wcm92aWRlcnMgd2lsbCBiZSBwb2xsZWQuCk9yIGluIG90aGVy
+IHdvcmRzIG1ha2Ugc3VyZSB0aGF0IHRoZSBzdGF0ZSBpcyByZWxldmFudCB3aGVuIHRoaXMgZnVu
+Y3Rpb24KZ2V0cyBjYWxsZWQuCk9SIGluIG90aGVyIHdvcmRzIHRoZXJlIHNob3VsZCBiZSBwcmlv
+cml0eSBxdWV1ZSBpbiB3aGljaCBpbnB1dF9jb25zb2xlX3JlcGVhdAp3aWxsIGhhdmUgdGhlIGxv
+d2VzdCBwcmlvcml0eSBpbiByZXNwZWN0IHRvIGlucHV0LWRyaXZlci1wcm92aWRlcnMuCgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
+bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
+ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
