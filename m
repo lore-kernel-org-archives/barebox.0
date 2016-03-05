@@ -1,12 +1,10 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vk0-x230.google.com ([2607:f8b0:400c:c05::230])
+Received: from forward16m.cmail.yandex.net ([5.255.216.147])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1abyfE-0006hP-Oj
- for barebox@lists.infradead.org; Fri, 04 Mar 2016 22:57:41 +0000
-Received: by mail-vk0-x230.google.com with SMTP id e185so69074191vkb.1
- for <barebox@lists.infradead.org>; Fri, 04 Mar 2016 14:57:20 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <5582221457124464@web27h.yandex.ru>
+ id 1abzhv-0004nr-B3
+ for barebox@lists.infradead.org; Sat, 05 Mar 2016 00:04:33 +0000
+From: Aleksey Kuleshov <rndfax@yandex.ru>
+In-Reply-To: <CAHQ1cqEqTAB1jjfcacfmNuAuA_M3A=5udjiX63ZfPHNMBohv1g@mail.gmail.com>
 References: <1457009332-27205-1-git-send-email-rndfax@yandex.ru>
  <20160304071152.GC21869@pengutronix.de>
  <4064341457088134@web21g.yandex.ru>
@@ -14,9 +12,10 @@ References: <1457009332-27205-1-git-send-email-rndfax@yandex.ru>
  <4943131457093089@web17h.yandex.ru>
  <CAHQ1cqFcgVVnQvO6ACpNJx3Czgvdm+-eKyVGMDEYCRsVuFoutA@mail.gmail.com>
  <5582221457124464@web27h.yandex.ru>
-Date: Fri, 4 Mar 2016 14:57:19 -0800
-Message-ID: <CAHQ1cqEqTAB1jjfcacfmNuAuA_M3A=5udjiX63ZfPHNMBohv1g@mail.gmail.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
+ <CAHQ1cqEqTAB1jjfcacfmNuAuA_M3A=5udjiX63ZfPHNMBohv1g@mail.gmail.com>
+MIME-Version: 1.0
+Message-Id: <6507601457136246@web20j.yandex.ru>
+Date: Sat, 05 Mar 2016 03:04:06 +0300
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,146 +24,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ehci-hcd: remove useless timeout
-To: Aleksey Kuleshov <rndfax@yandex.ru>
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Fri, Mar 4, 2016 at 12:47 PM, Aleksey Kuleshov <rndfax@yandex.ru> wrote:
-> 04.03.2016, 20:58, "Andrey Smirnov" <andrew.smirnov@gmail.com>:
->> On Fri, Mar 4, 2016 at 4:04 AM, Aleksey Kuleshov <rndfax@yandex.ru> wrote:
->>>  [quote]
->>>  To improve tracking of who did what, especially with patches that can
->>>  percolate to their final resting place in the kernel through several
->>>  layers of maintainers, we've introduced a "sign-off" procedure on
->>>  patches that are being emailed around.
->>>  [/quote]
->>>
->>>  So Linux kernel had some problems due to their huge developers/maintainers list
->>>  and they solved them by using "sign-off" procedure.
->>>  Do Barebox have that burden of "patches that can
->>>  percolate to their final resting place in the kernel through several
->>>  layers of maintainers"?
->>>
->>>  Also in chapter 11 there are rules which are pure bureaucratic.
->>>  Bureaucracy is a thing of a large projects.
->>>  Is Barebox such as big as Linux that it must have these rules too?
->>
->> IANAL, but AFAIU those "rules which are pure bureaucratic" are a legal
->> framework that originated in Linux kernel and was borrowed by many
->> projects, Barebox among them.
->
-
-I wasn't the person making any of those decisions nor am I a legal
-professional, but I can venture a guess/speak out of my ass about
-this.
-
-> So why Barebox borrowed them?
-
-Because it was an established legal practice followed by a successful
-project with identical licensing whose code base has seen its day in
-court
-
-> Was it so necessary?
-
-Yes.
-
-> Was it well thought decision?
-
-No idea, as I already mentioned I wasn't present during this decision.
-
-> Does Barebox really need this?
-
-Yes.
-
-> Or it's just blindly following the rules made by Linux project?
-
-It's irrelevant if BB follows this practice blindly, or with extensive
-knowledge and understanding of all factors involved if the procedure
-involved is believed to be legally sound
-
->
->> So to answer your question: it has
->> nothing to do with the size of the project, copyright and associated
->> laws in various shapes or forms applies to everyone.Can it be done in
->> a better, less verbose, more convenient form by smaller projects?
->> Maybe or maybe not, but I don't think the question can be answered
->> without performing proper legal analysis(done by law professionals, of
->> course) which is very costly, time consuming, etc.
->
-> Well, that's what I call trying to solve problems which do not exist.
-
-IMHO, you need to be a law professional to make such assessment.
-
-> Do really small projects need to follow all such bureaucratic way rather than
-> just growing up?
-
-Yes, project with identical licensing, regardless of their size, need
-to adhere to certain legal procedures in order to have a good case if
-they are ever in court. There are two ways to establish what those
-"certain legal procedures" are, the project either have to consult law
-professionals or copy an already established procedures.
-
-> For example, btw, FreeBSD, NetBSD, OpenBSD - these projects have no SOB.
-> They have "author" field and that's enough for them.
-> They are happily evolving every day.
-
-All three projects that you mentioned are distributed under terms of
-BSD license, there's very little(if any) license compliance
-enforcement that can be done for those types of contracts (BSD
-license), so this comparison is meaningless.
-
->
-> What if git history magically disappears? Only authors written in files will be fixed,
-> but all authors of patches will disappear as well. So this SOB field is only
-> valid while "git log" gives you something to read.
-
-I don't understand the point you are trying to make. If a legal
-document magically disappears, well, it disappears. You would no
-longer be able to use it for its intended purposes. That is still not
-really an argument to not make it in the first place.
-
->
->>>  Solving inexisting problems doesn't make life easier but complicates it.
->>
->> That's very much a truism, so you won't find much opposition to that.
->> The devil, as usual, is in the details of how you define what
->> constitutes a non-existing problem. This may sound rude and I
->> apologize for not coming up with a way of better delivery, but I,
->> personally, think that even if we were to assume that the whole SOB
->> mechanism is most egregious and ridiculous legal cargo-cult,
->> necessity to type "git commit -s" as opposed "git commit -s" when
->> you are commiting changes is a non-existing problem.
->
-> Actually, I don't think, that SOB is cargo-cult.
-
-I didn't phrase myself really well. Let me correct my mistake:
-
-I, personally, think that even if we were to assume that the whole SOB
-mechanism, _as_applied_to_Barebox_,
-is most egregious and ridiculous legal cargo-cult, necessity to type
-"git commit -s" as opposed "git commit" when you are commiting changes
-planned for upstream is a non-existing problem.
-
-> Linux has it because developers
-> decided that this is necessary and they can make steel arguments why they
-> need this like "this is huge project, tons of patches, we do squashing,
-> we must be sure that every patch was given under conditions of open source ..."
-> But that's for Linux - companies, billions of dollars... What about Barebox?
-
-Same license, same rules.
-
-Aleksey, I am not really interested in continuing this discussion or
-trying to convince you to add SOB to your patch, so if any of the
-above explanations are insufficient for you, I am afraid we are going
-to have to agree to disagree on this subject.
-
-Andrey
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Pj4gIFdhcyBpdCBzbyBuZWNlc3Nhcnk/Cj4KPiBZZXMuCj4+ICBEb2VzIEJhcmVib3ggcmVhbGx5
+IG5lZWQgdGhpcz8KPgo+IFllcy4KCk9oLCB0aGVzZSBhcmUgZXhoYXVzdGl2ZSBhbnN3ZXJzLCB0
+aGFuayB5b3UgOikKCj4+IJpPciBpdCdzIGp1c3QgYmxpbmRseSBmb2xsb3dpbmcgdGhlIHJ1bGVz
+IG1hZGUgYnkgTGludXggcHJvamVjdD8KPgo+IEl0J3MgaXJyZWxldmFudCBpZiBCQiBmb2xsb3dz
+IHRoaXMgcHJhY3RpY2UgYmxpbmRseSwgb3Igd2l0aCBleHRlbnNpdmUKPiBrbm93bGVkZ2UgYW5k
+IHVuZGVyc3RhbmRpbmcgb2YgYWxsIGZhY3RvcnMgaW52b2x2ZWQgaWYgdGhlIHByb2NlZHVyZQo+
+IGludm9sdmVkIGlzIGJlbGlldmVkIHRvIGJlIGxlZ2FsbHkgc291bmQKPgo+PiCaRG8gcmVhbGx5
+IHNtYWxsIHByb2plY3RzIG5lZWQgdG8gZm9sbG93IGFsbCBzdWNoIGJ1cmVhdWNyYXRpYyB3YXkg
+cmF0aGVyIHRoYW4KPj4gmmp1c3QgZ3Jvd2luZyB1cD8KPgo+IFllcywgcHJvamVjdCB3aXRoIGlk
+ZW50aWNhbCBsaWNlbnNpbmcsIHJlZ2FyZGxlc3Mgb2YgdGhlaXIgc2l6ZSwgbmVlZAo+IHRvIGFk
+aGVyZSB0byBjZXJ0YWluIGxlZ2FsIHByb2NlZHVyZXMgaW4gb3JkZXIgdG8gaGF2ZSBhIGdvb2Qg
+Y2FzZSBpZgo+IHRoZXkgYXJlIGV2ZXIgaW4gY291cnQuCgpTbyB0aGlzIG1lYW5zIHRoYXQgZXZl
+cnkgR1BMJ2VkIGhlbGxvLXdvcmxkLmMgcHJvamVjdCBzaG91bGQgZm9sbG93CkxpbnV4J3MgcnVs
+ZXMgInRvIGhhdmUgYSBnb29kIGNhc2UgaWYgdGhleSBhcmUgZXZlciBpbiBjb3VydCI/CgpBbmQg
+SWYgdGhpbmsgaW4gdGhpcyB3YXkgdGhlbiBCYXJlYm94IHNob3VsZCBjcmVhdGUgYSBCYXJlYm94
+IEZvdW5kYXRpb24sCmhpcmUgYSBsYXd5ZXIgYW5kIHdhaXQgdW50aWwgc29tZW9uZSB3aWxsIHN1
+ZSB0aGVtLiBCdXQgdGhpcyBpcyByaWRpY3Vsb3VzLCBiZWNhdXNlCkJhcmVib3ggZG9uJ3QgbmVl
+ZCB0aGlzISBUaGF0J3Mgd2h5IHRoZXJlIGlzIG5vIEJhcmVib3ggRm91bmRhdGlvbiB3aXRoIGxh
+d3llci4KCj4+IJpXaGF0IGlmIGdpdCBoaXN0b3J5IG1hZ2ljYWxseSBkaXNhcHBlYXJzPyBPbmx5
+IGF1dGhvcnMgd3JpdHRlbiBpbiBmaWxlcyB3aWxsIGJlIGZpeGVkLAo+PiCaYnV0IGFsbCBhdXRo
+b3JzIG9mIHBhdGNoZXMgd2lsbCBkaXNhcHBlYXIgYXMgd2VsbC4gU28gdGhpcyBTT0IgZmllbGQg
+aXMgb25seQo+PiCadmFsaWQgd2hpbGUgImdpdCBsb2ciIGdpdmVzIHlvdSBzb21ldGhpbmcgdG8g
+cmVhZC4KPgo+IEkgZG9uJ3QgdW5kZXJzdGFuZCB0aGUgcG9pbnQgeW91IGFyZSB0cnlpbmcgdG8g
+bWFrZS4KClNPQiBpcyBqdXN0IGEgbWF0dGVyIG9mICJnaXQgbG9nIi4KCj4+ICBCdXQgdGhhdCdz
+IGZvciBMaW51eCAtIGNvbXBhbmllcywgYmlsbGlvbnMgb2YgZG9sbGFycy4uLiBXaGF0IGFib3V0
+IEJhcmVib3g/Cj4gU2FtZSBsaWNlbnNlLCBzYW1lIHJ1bGVzLgoKKHNlZSBhYm91dCBHUEwnZWQg
+aGVsbG8td29ybGQuYykKCj4gQWxla3NleSwgSSBhbSBub3QgcmVhbGx5IGludGVyZXN0ZWQgaW4g
+Y29udGludWluZyB0aGlzIGRpc2N1c3Npb24gb3IKPiB0cnlpbmcgdG8gY29udmluY2UgeW91IHRv
+IGFkZCBTT0IgdG8geW91ciBwYXRjaCwgc28gaWYgYW55IG9mIHRoZQo+IGFib3ZlIGV4cGxhbmF0
+aW9ucyBhcmUgaW5zdWZmaWNpZW50IGZvciB5b3UsIEkgYW0gYWZyYWlkIHdlIGFyZSBnb2luZwo+
+IHRvIGhhdmUgdG8gYWdyZWUgdG8gZGlzYWdyZWUgb24gdGhpcyBzdWJqZWN0LgoKSSBhc2tlZCBh
+IHNpbXBsZSBxdWVzdGlvbiAtIHN0aWxsIG5vIHVzZSBjYXNlIG9mIFNPQiBpbiBCYXJlYm94LgoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
