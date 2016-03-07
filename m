@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward7o.cmail.yandex.net ([37.9.109.53])
+Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1acrHt-000791-W0
- for barebox@lists.infradead.org; Mon, 07 Mar 2016 09:17:15 +0000
-From: Aleksey Kuleshov <rndfax@yandex.ru>
-In-Reply-To: <20160307073016.GG21869@pengutronix.de>
-References: <1457018230-4554-1-git-send-email-rndfax@yandex.ru>
- <1457018230-4554-2-git-send-email-rndfax@yandex.ru>
- <20160304071921.GD21869@pengutronix.de>
- <4230541457086688@web17h.yandex.ru> <20160307073016.GG21869@pengutronix.de>
-MIME-Version: 1.0
-Message-Id: <1569051457342206@web17j.yandex.ru>
-Date: Mon, 07 Mar 2016 12:16:46 +0300
+ id 1acvFX-0004vF-AI
+ for barebox@lists.infradead.org; Mon, 07 Mar 2016 13:31:04 +0000
+Received: by mail-lb0-x229.google.com with SMTP id x1so129961215lbj.3
+ for <barebox@lists.infradead.org>; Mon, 07 Mar 2016 05:30:42 -0800 (PST)
+Received: from localhost.localdomain ([31.173.84.173])
+ by smtp.gmail.com with ESMTPSA id vq10sm2751728lbb.14.2016.03.07.05.30.40
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+ Mon, 07 Mar 2016 05:30:40 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon,  7 Mar 2016 16:30:15 +0300
+Message-Id: <1457357426-9868-5-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1457357426-9868-1-git-send-email-antonynpavlov@gmail.com>
+References: <1457357426-9868-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,22 +23,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] input: make the Input Core be the last in the poller
- queue
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 04/15] MIPS: tplink-mr3020: pbl: init cache
+To: barebox@lists.infradead.org
 
-Pj4gmlRoaXMgZnVuY3Rpb24gaXMgQVNZTkMuIEFsbCB3aGF0IHlvdSBoYXZlIHRvIGRvIGlzIHRv
-IG1ha2Ugc3VyZSB0aGF0Cj4+IJp0aGlzIGZ1bmN0aW9uIGdldHMgY2FsbGVkIEFGVEVSIGFsbCBp
-bnB1dC1kcml2ZXItcHJvdmlkZXJzIHdpbGwgYmUgcG9sbGVkLgo+Cj4gSSB0aG91Z2h0IHRoYXQg
-YXN3ZWxsIGFuZCB0aG91Z2h0IEkgc2hvdWxkIGhhdmUgZml4ZWQgdGhpcyBpc3N1ZSBpbiBteQo+
-IHBhdGNoLCBidXQgaXQgZGlkbid0IHdvcmsgYXMgZXhwZWN0ZWQgc28gdGhlcmUncyBzdGlsbCBz
-b21ldGhpbmcgd3JvbmcsCj4gZWl0aGVyIGluIG15IHRob3VnaHRzIG9yIGluIG15IGltcGxlbWVu
-dGF0aW9uLgoKV2VsbCwgdW50aWwgd2UgYWxsIHNlZSB0aGlzIHBhdGNoIG5vYm9keSBjYW4gaGVs
-cCA6KQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
-ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
-cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h b/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
+index ae548c9..2400015 100644
+--- a/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
++++ b/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
+@@ -35,6 +35,12 @@
+ 	pbl_ar9331_pll
+ 	pbl_ar9331_ddr1_config
+ 
++	/* Initialize caches... */
++	mips_cache_reset
++
++	/* ... and enable them */
++	dcache_enable
++
+ skip_pll_ram_config:
+ 	pbl_ar9331_uart_enable
+ 	debug_ll_ar9331_init
+-- 
+2.7.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
