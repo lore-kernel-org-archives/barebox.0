@@ -1,20 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
+Received: from mx0b-00176a03.pphosted.com ([67.231.157.48])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1acvFg-0004zp-8q
- for barebox@lists.infradead.org; Mon, 07 Mar 2016 13:31:16 +0000
-Received: by mail-lb0-x235.google.com with SMTP id bc4so129874645lbc.2
- for <barebox@lists.infradead.org>; Mon, 07 Mar 2016 05:30:51 -0800 (PST)
-Received: from localhost.localdomain ([31.173.84.173])
- by smtp.gmail.com with ESMTPSA id vq10sm2751728lbb.14.2016.03.07.05.30.49
- for <barebox@lists.infradead.org>
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Mon, 07 Mar 2016 05:30:49 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  7 Mar 2016 16:30:23 +0300
-Message-Id: <1457357426-9868-13-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1457357426-9868-1-git-send-email-antonynpavlov@gmail.com>
-References: <1457357426-9868-1-git-send-email-antonynpavlov@gmail.com>
+ id 1acyA6-0004LV-Hk
+ for barebox@lists.infradead.org; Mon, 07 Mar 2016 16:37:39 +0000
+Received: from pps.filterd (m0048205.ppops.net [127.0.0.1])
+ by m0048205.ppops.net-00176a03. (8.15.0.59/8.15.0.59) with SMTP id
+ u27GbGZU007328
+ for <barebox@lists.infradead.org>; Mon, 7 Mar 2016 11:37:16 -0500
+Received: from cinmlip13.e2k.ad.ge.com (n165-156-000-000.static.ge.com
+ [165.156.4.1] (may be forged))
+ by m0048205.ppops.net-00176a03. with ESMTP id 21hcfx01f8-1
+ (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+ for <barebox@lists.infradead.org>; Mon, 07 Mar 2016 11:37:16 -0500
+Received: from [3.26.68.149] (unknown [3.26.68.149])
+ by selma.edi.geip.ge.com (Postfix) with ESMTP id 3E3ACE1C86
+ for <barebox@lists.infradead.org>; Mon,  7 Mar 2016 16:37:14 +0000 (GMT)
+From: Renaud Barbier <renaud.barbier@ge.com>
+Message-ID: <56DDAE3A.3030808@ge.com>
+Date: Mon, 7 Mar 2016 16:37:14 +0000
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,78 +27,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/15] MIPS: black-swift: enable GPIO LED
+Subject: arm: Question on linker script and start/end variables
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- .../boards/black-swift/include/board/board_pbl_start.h    |  6 ++++++
- arch/mips/dts/black-swift.dts                             | 15 +++++++++++++++
- 2 files changed, 21 insertions(+)
+I have a ARM-based board for which we have a running barebox.
 
-diff --git a/arch/mips/boards/black-swift/include/board/board_pbl_start.h b/arch/mips/boards/black-swift/include/board/board_pbl_start.h
-index 0d68004..ee21a85 100644
---- a/arch/mips/boards/black-swift/include/board/board_pbl_start.h
-+++ b/arch/mips/boards/black-swift/include/board/board_pbl_start.h
-@@ -46,6 +46,12 @@ skip_pll_ram_config:
- 	debug_ll_ar9331_init
- 	mips_nmon
- 
-+	/*
-+	 * It is amazing but we have to enable MDIO on GPIO
-+	 * to use GPIO27 for LED1.
-+	 */
-+	pbl_ar9331_mdio_gpio_enable
-+
- 	copy_to_link_location	pbl_start
- 
- 	.set	pop
-diff --git a/arch/mips/dts/black-swift.dts b/arch/mips/dts/black-swift.dts
-index 270374d..b0fa3b0 100644
---- a/arch/mips/dts/black-swift.dts
-+++ b/arch/mips/dts/black-swift.dts
-@@ -1,6 +1,7 @@
- /dts-v1/;
- 
- #include "ar9331.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
- 
- / {
- 	model = "Black Swift";
-@@ -13,12 +14,26 @@
- 	aliases {
- 		spiflash = &spiflash;
- 	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+
-+		s1 {
-+			label = "LED1";
-+			gpios = <&gpio 27 GPIO_ACTIVE_LOW>;
-+			default-state = "off";
-+		};
-+	};
- };
- 
- &serial0 {
- 	status = "okay";
- };
- 
-+&gpio {
-+	status = "okay";
-+};
-+
- &spi {
- 	num-chipselects = <1>;
- 	status = "okay";
--- 
-2.7.0
+In the low level code, when running from flash, I would like to get the
+start and end address of a section. For instance, &__barebox_cmd_start
+and &__barebox_cmd_end.
+
+For both I am getting 0 unless I am running from memory.
+
+Even assigning these addresses to variables always returns 0.
+
+This is not an issue on PPC platforms.
+
+All my tests and research to get the correct address on ARM has led to
+no positive results.
+
+Has anybody an explanation why these addresses cannot be obtained on ARM
+platforms?
+
+Cheers,
+Renaud
+
+
+
+
 
 
 _______________________________________________
