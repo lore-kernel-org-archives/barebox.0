@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
+Received: from mail-lb0-x232.google.com ([2a00:1450:4010:c04::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1acvFZ-0004vX-MG
- for barebox@lists.infradead.org; Mon, 07 Mar 2016 13:31:08 +0000
-Received: by mail-lb0-x233.google.com with SMTP id bc4so129871090lbc.2
- for <barebox@lists.infradead.org>; Mon, 07 Mar 2016 05:30:45 -0800 (PST)
+ id 1acvFb-0004vh-3A
+ for barebox@lists.infradead.org; Mon, 07 Mar 2016 13:31:10 +0000
+Received: by mail-lb0-x232.google.com with SMTP id xr8so33351631lbb.1
+ for <barebox@lists.infradead.org>; Mon, 07 Mar 2016 05:30:46 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  7 Mar 2016 16:30:17 +0300
-Message-Id: <1457357426-9868-7-git-send-email-antonynpavlov@gmail.com>
+Date: Mon,  7 Mar 2016 16:30:18 +0300
+Message-Id: <1457357426-9868-8-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1457357426-9868-1-git-send-email-antonynpavlov@gmail.com>
 References: <1457357426-9868-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,95 +23,150 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/15] MIPS: flush cache on shutdown
+Subject: [PATCH 07/15] MIPS: implement dma_sync_* functions
 To: barebox@lists.infradead.org
 Cc: Peter Mamonov <pmamonov@gmail.com>
+
+From: Peter Mamonov <pmamonov@gmail.com>
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- arch/mips/include/asm/cache.h |  6 ++++++
- arch/mips/lib/Makefile        |  1 +
- arch/mips/lib/c-r4k.c         | 23 +++++++++++++++++++++++
- arch/mips/lib/shutdown.c      | 12 ++++++++++++
- 4 files changed, 42 insertions(+)
+ arch/mips/Kconfig                   |  1 +
+ arch/mips/include/asm/dma-mapping.h | 11 ++++++-
+ arch/mips/lib/Makefile              |  1 +
+ arch/mips/lib/dma-default.c         | 57 +++++++++++++++++++++++++++++++++++++
+ 4 files changed, 69 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/cache.h b/arch/mips/include/asm/cache.h
-new file mode 100644
-index 0000000..cceba0a
---- /dev/null
-+++ b/arch/mips/include/asm/cache.h
-@@ -0,0 +1,6 @@
-+#ifndef _ASM_MIPS_CACHE_H
-+#define _ASM_MIPS_CACHE_H
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index fdf62e8..06a516d 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -6,6 +6,7 @@ config MIPS
+ 	select HAS_KALLSYMS
+ 	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
+ 	select HAVE_CONFIGURABLE_TEXT_BASE
++	select HAS_DMA
+ 	default y
+ 
+ config SYS_SUPPORTS_BIG_ENDIAN
+diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
+index 6395112..c71a087 100644
+--- a/arch/mips/include/asm/dma-mapping.h
++++ b/arch/mips/include/asm/dma-mapping.h
+@@ -1,10 +1,12 @@
+ #ifndef _ASM_DMA_MAPPING_H
+ #define _ASM_DMA_MAPPING_H
+ 
++#include <common.h>
+ #include <xfuncs.h>
+ #include <asm/addrspace.h>
+ #include <asm/types.h>
+ #include <malloc.h>
++#include <asm/io.h>
+ 
+ static inline void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
+ {
+@@ -12,16 +14,23 @@ static inline void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
+ 
+ 	ret = xmemalign(PAGE_SIZE, size);
+ 
++	memset(ret, 0, size);
 +
-+void flush_cache_all(void);
+ 	if (dma_handle)
+ 		*dma_handle = CPHYSADDR(ret);
+ 
++	dma_flush_range((unsigned long)ret, (unsigned long)(ret + size));
 +
-+#endif /* _ASM_MIPS_CACHE_H */
+ 	return (void *)CKSEG1ADDR(ret);
+ }
+ 
+ static inline void dma_free_coherent(void *vaddr, dma_addr_t dma_handle,
+ 				     size_t size)
+ {
+-	free(vaddr);
++	if (IS_ENABLED(CONFIG_MMU))
++		free((void *)CKSEG0ADDR(vaddr));
++	else
++		free(vaddr);
+ }
+ 
+ #endif /* _ASM_DMA_MAPPING_H */
 diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-index 02ee189..43f7af7 100644
+index 43f7af7..d25d096 100644
 --- a/arch/mips/lib/Makefile
 +++ b/arch/mips/lib/Makefile
-@@ -6,6 +6,7 @@ obj-y += ashrdi3.o
- obj-y += cpu-probe.o
+@@ -7,6 +7,7 @@ obj-y += cpu-probe.o
  obj-y += traps.o
  obj-y += genex.o
-+obj-y += shutdown.o
+ obj-y += shutdown.o
++obj-y += dma-default.o
  
  obj-$(CONFIG_MIPS_OPTIMIZED_STRING_FUNCTIONS) += memcpy.o
  obj-$(CONFIG_MIPS_OPTIMIZED_STRING_FUNCTIONS) += memset.o
-diff --git a/arch/mips/lib/c-r4k.c b/arch/mips/lib/c-r4k.c
-index 4fe046a..1502058 100644
---- a/arch/mips/lib/c-r4k.c
-+++ b/arch/mips/lib/c-r4k.c
-@@ -48,6 +48,29 @@ static inline void blast_##pfx##cache##_range(unsigned long start,	\
- __BUILD_BLAST_CACHE_RANGE(d, dcache, Hit_Writeback_Inv_D)
- __BUILD_BLAST_CACHE_RANGE(inv_d, dcache, Hit_Invalidate_D)
- 
-+void flush_cache_all(void)
-+{
-+	struct cpuinfo_mips *c = &current_cpu_data;
-+	unsigned long lsize;
-+	unsigned long addr;
-+	unsigned long aend;
-+	unsigned int icache_size, dcache_size;
-+
-+	dcache_size = c->dcache.waysize * c->dcache.ways;
-+	lsize = c->dcache.linesz;
-+	aend = (KSEG0 + dcache_size - 1) & ~(lsize - 1);
-+	for (addr = KSEG0; addr <= aend; addr += lsize)
-+		cache_op(Index_Writeback_Inv_D, addr);
-+
-+	icache_size = c->icache.waysize * c->icache.ways;
-+	lsize = c->icache.linesz;
-+	aend = (KSEG0 + icache_size - 1) & ~(lsize - 1);
-+	for (addr = KSEG0; addr <= aend; addr += lsize)
-+		cache_op(Index_Invalidate_I, addr);
-+
-+	/* secondatory cache skipped */
-+}
-+
- void dma_flush_range(unsigned long start, unsigned long end)
- {
- 	blast_dcache_range(start, end);
-diff --git a/arch/mips/lib/shutdown.c b/arch/mips/lib/shutdown.c
+diff --git a/arch/mips/lib/dma-default.c b/arch/mips/lib/dma-default.c
 new file mode 100644
-index 0000000..973cd23
+index 0000000..9b2fe7d
 --- /dev/null
-+++ b/arch/mips/lib/shutdown.c
-@@ -0,0 +1,12 @@
-+/**
-+ * This function is called by shutdown_barebox to get a clean
-+ * memory/cache state.
++++ b/arch/mips/lib/dma-default.c
+@@ -0,0 +1,57 @@
++/*
++ * (C) Copyright 2015, 2016 Peter Mamonov <pmamonov@gmail.com>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
 + */
-+#include <init.h>
-+#include <asm/cache.h>
 +
-+static void arch_shutdown(void)
++#include <dma.h>
++#include <asm/io.h>
++
++#if defined(CONFIG_CPU_MIPS32) || \
++	defined(CONFIG_CPU_MIPS64)
++static inline void __dma_sync_mips(unsigned long addr, size_t size,
++				   enum dma_data_direction direction)
 +{
-+	flush_cache_all();
++	switch (direction) {
++	case DMA_TO_DEVICE:
++		dma_flush_range(addr, addr + size);
++		break;
++
++	case DMA_FROM_DEVICE:
++		dma_inv_range(addr, addr + size);
++		break;
++
++	case DMA_BIDIRECTIONAL:
++		dma_flush_range(addr, addr + size);
++		break;
++
++	default:
++		BUG();
++	}
 +}
-+archshutdown_exitcall(arch_shutdown);
++#else
++static inline void __dma_sync_mips(void *addr, size_t size,
++	enum dma_data_direction direction)
++{
++}
++#endif
++
++void dma_sync_single_for_cpu(unsigned long address, size_t size,
++			     enum dma_data_direction dir)
++{
++	__dma_sync_mips(address, size, dir);
++}
++
++void dma_sync_single_for_device(unsigned long address, size_t size,
++				enum dma_data_direction dir)
++{
++	__dma_sync_mips(address, size, dir);
++}
 -- 
 2.7.0
 
