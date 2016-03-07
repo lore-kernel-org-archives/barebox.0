@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22a.google.com ([2a00:1450:4010:c04::22a])
+Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1acvFe-0004xf-4w
+ id 1acvFb-0004yD-VV
  for barebox@lists.infradead.org; Mon, 07 Mar 2016 13:31:12 +0000
-Received: by mail-lb0-x22a.google.com with SMTP id bc4so129873579lbc.2
- for <barebox@lists.infradead.org>; Mon, 07 Mar 2016 05:30:49 -0800 (PST)
+Received: by mail-lb0-x229.google.com with SMTP id x1so129965829lbj.3
+ for <barebox@lists.infradead.org>; Mon, 07 Mar 2016 05:30:50 -0800 (PST)
 Received: from localhost.localdomain ([31.173.84.173])
- by smtp.gmail.com with ESMTPSA id vq10sm2751728lbb.14.2016.03.07.05.30.47
+ by smtp.gmail.com with ESMTPSA id vq10sm2751728lbb.14.2016.03.07.05.30.48
  for <barebox@lists.infradead.org>
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Mon, 07 Mar 2016 05:30:47 -0800 (PST)
+ Mon, 07 Mar 2016 05:30:48 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  7 Mar 2016 16:30:21 +0300
-Message-Id: <1457357426-9868-11-git-send-email-antonynpavlov@gmail.com>
+Date: Mon,  7 Mar 2016 16:30:22 +0300
+Message-Id: <1457357426-9868-12-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1457357426-9868-1-git-send-email-antonynpavlov@gmail.com>
 References: <1457357426-9868-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -28,27 +28,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/15] MIPS: black-swift_defconfig: use cached memory region
+Subject: [PATCH 11/15] MIPS: ath79: pbl: add pbl_ar9331_mdio_gpio_enable macro
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/configs/black-swift_defconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/mach-ath79/include/mach/pbl_macros.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/mips/configs/black-swift_defconfig b/arch/mips/configs/black-swift_defconfig
-index 7444968..dda863d 100644
---- a/arch/mips/configs/black-swift_defconfig
-+++ b/arch/mips/configs/black-swift_defconfig
-@@ -9,6 +9,8 @@ CONFIG_NMON_USER_START_DELAY=0x5
- CONFIG_NMON_HELP=y
- CONFIG_PBL_IMAGE=y
- CONFIG_IMAGE_COMPRESSION_XZKERN=y
-+CONFIG_MMU=y
-+CONFIG_TEXT_BASE=0x82000000
- CONFIG_MALLOC_TLSF=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
+diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+index 24cfd60..8f4d09a 100644
+--- a/arch/mips/mach-ath79/include/mach/pbl_macros.h
++++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+@@ -179,6 +179,14 @@
+ 			| AR933X_GPIO_FUNC_RSRV15, GPIO_FUNC
+ .endm
+ 
++#define RESET_REG_BOOTSTRAP	((KSEG1 | AR71XX_RESET_BASE) \
++					| AR933X_RESET_REG_BOOTSTRAP)
++
++.macro	pbl_ar9331_mdio_gpio_enable
++	/* Bit 18 enables MDC and MDIO function on GPIO26 and GPIO28 */
++	pbl_reg_set (1 << 18), RESET_REG_BOOTSTRAP
++.endm
++
+ .macro	hornet_mips24k_cp0_setup
+ 	.set push
+ 	.set noreorder
 -- 
 2.7.0
 
