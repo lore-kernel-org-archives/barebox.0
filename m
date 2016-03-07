@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x231.google.com ([2a00:1450:4010:c04::231])
+Received: from mail-lb0-x22b.google.com ([2a00:1450:4010:c04::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1acvFT-0004up-Rm
- for barebox@lists.infradead.org; Mon, 07 Mar 2016 13:31:01 +0000
-Received: by mail-lb0-x231.google.com with SMTP id x1so129959363lbj.3
- for <barebox@lists.infradead.org>; Mon, 07 Mar 2016 05:30:39 -0800 (PST)
+ id 1acvFT-0004ug-3G
+ for barebox@lists.infradead.org; Mon, 07 Mar 2016 13:31:00 +0000
+Received: by mail-lb0-x22b.google.com with SMTP id k15so130104958lbg.0
+ for <barebox@lists.infradead.org>; Mon, 07 Mar 2016 05:30:38 -0800 (PST)
+Received: from localhost.localdomain ([31.173.84.173])
+ by smtp.gmail.com with ESMTPSA id vq10sm2751728lbb.14.2016.03.07.05.30.35
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+ Mon, 07 Mar 2016 05:30:36 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  7 Mar 2016 16:30:12 +0300
-Message-Id: <1457357426-9868-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1457357426-9868-1-git-send-email-antonynpavlov@gmail.com>
-References: <1457357426-9868-1-git-send-email-antonynpavlov@gmail.com>
+Date: Mon,  7 Mar 2016 16:30:11 +0300
+Message-Id: <1457357426-9868-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +26,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/15] MIPS: probe_scache(): use MIPS_CONF_M linux kernel macro
+Subject: [PATCH 00/15] MIPS: ar9331: use cache and fix gpio
 To: barebox@lists.infradead.org
-Cc: Peter Mamonov <pmamonov@gmail.com>
 
-We already have MIPS_CONF_M macro in <asm/mipsregs.h> so
-we have no need in homebrew CONFIG_M macro.
+This patchseries introduces initial MIPS cache support.
+Though the cache code is usable for many MIPS-based chips
+at the moment the code is tested mostly on AR9331 SoC.
+So I have decided to submit only AR9331-related cache
+patches and add AR9331 GPIO-related patches to the series.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Peter Mamonov <pmamonov@gmail.com>
----
- arch/mips/lib/c-r4k.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/lib/c-r4k.c b/arch/mips/lib/c-r4k.c
-index 0a9dd0e..ff68677 100644
---- a/arch/mips/lib/c-r4k.c
-+++ b/arch/mips/lib/c-r4k.c
-@@ -91,7 +91,6 @@ static void probe_pcache(void)
- 	}
- }
- 
--#define CONFIG_M	(1 << 31)
- #define CONFIG2_SS_OFFSET	8
- #define CONFIG2_SL_OFFSET	4
- #define CONFIG2_SA_OFFSET	0
-@@ -101,10 +100,10 @@ static void probe_scache(void)
- 	unsigned int config2, config1, config = read_c0_config();
- 	unsigned int ss, sl, sa;
- 
--	if ((config & CONFIG_M) == 0)
-+	if ((config & MIPS_CONF_M) == 0)
- 		goto noscache;
- 	config1 = read_c0_config1();
--	if ((config1 & CONFIG_M) == 0)
-+	if ((config1 & MIPS_CONF_M) == 0)
- 		goto noscache;
- 	config2 = read_c0_config2();
- 	ss = 0xf & (config2 >> CONFIG2_SS_OFFSET);
+Antony Pavlov (13):
+  MIPS: probe_scache(): use MIPS_CONF_M linux kernel macro
+  MIPS: pbl: import cache init code from U-Boot v2016.01-212-ga3ab2ae
+  MIPS: black-swift: pbl: init cache
+  MIPS: tplink-mr3020: pbl: init cache
+  MIPS: add initial R4000-style cache support
+  MIPS: flush cache on shutdown
+  MIPS: tplink-mr3020_defconfig: use cached memory region
+  MIPS: black-swift_defconfig: use cached memory region
+  MIPS: ath79: pbl: add pbl_ar9331_mdio_gpio_enable macro
+  MIPS: black-swift: enable GPIO LED
+  MIPS: black-swift: enable GPIO key
+  MIPS: black-swift_defconfig: enable gpio-related stuff
+  MIPS: tplink-mr3020: fix "WPS" and "3G" LEDs
+
+Peter Mamonov (2):
+  MIPS: implement dma_sync_* functions
+  MIPS: dtb: register only one memory bank
+
+ arch/mips/Kconfig                                  |   1 +
+ .../black-swift/include/board/board_pbl_start.h    |  12 ++
+ .../tplink-mr3020/include/board/board_pbl_start.h  |  12 ++
+ arch/mips/boot/dtb.c                               |  12 +-
+ arch/mips/configs/black-swift_defconfig            |   8 ++
+ arch/mips/configs/tplink-mr3020_defconfig          |   2 +
+ arch/mips/dts/black-swift.dts                      |  26 ++++
+ arch/mips/include/asm/cache.h                      |   6 +
+ arch/mips/include/asm/cacheops.h                   |  36 ++++++
+ arch/mips/include/asm/dma-mapping.h                |  11 +-
+ arch/mips/include/asm/io.h                         |   3 +
+ arch/mips/include/asm/mipsregs.h                   |   8 ++
+ arch/mips/include/asm/pbl_macros.h                 | 133 +++++++++++++++++++++
+ arch/mips/lib/Makefile                             |   2 +
+ arch/mips/lib/c-r4k.c                              |  76 +++++++++++-
+ arch/mips/lib/dma-default.c                        |  57 +++++++++
+ arch/mips/lib/shutdown.c                           |  12 ++
+ arch/mips/mach-ath79/Kconfig                       |   1 +
+ arch/mips/mach-ath79/include/mach/pbl_macros.h     |   8 ++
+ 19 files changed, 417 insertions(+), 9 deletions(-)
+ create mode 100644 arch/mips/include/asm/cache.h
+ create mode 100644 arch/mips/include/asm/cacheops.h
+ create mode 100644 arch/mips/lib/dma-default.c
+ create mode 100644 arch/mips/lib/shutdown.c
+
 -- 
 2.7.0
 
