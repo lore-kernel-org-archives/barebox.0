@@ -1,24 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx0b-00176a03.pphosted.com ([67.231.157.48])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1acyA6-0004LV-Hk
- for barebox@lists.infradead.org; Mon, 07 Mar 2016 16:37:39 +0000
-Received: from pps.filterd (m0048205.ppops.net [127.0.0.1])
- by m0048205.ppops.net-00176a03. (8.15.0.59/8.15.0.59) with SMTP id
- u27GbGZU007328
- for <barebox@lists.infradead.org>; Mon, 7 Mar 2016 11:37:16 -0500
-Received: from cinmlip13.e2k.ad.ge.com (n165-156-000-000.static.ge.com
- [165.156.4.1] (may be forged))
- by m0048205.ppops.net-00176a03. with ESMTP id 21hcfx01f8-1
- (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
- for <barebox@lists.infradead.org>; Mon, 07 Mar 2016 11:37:16 -0500
-Received: from [3.26.68.149] (unknown [3.26.68.149])
- by selma.edi.geip.ge.com (Postfix) with ESMTP id 3E3ACE1C86
- for <barebox@lists.infradead.org>; Mon,  7 Mar 2016 16:37:14 +0000 (GMT)
-From: Renaud Barbier <renaud.barbier@ge.com>
-Message-ID: <56DDAE3A.3030808@ge.com>
-Date: Mon, 7 Mar 2016 16:37:14 +0000
+ id 1adBz8-0002QI-AN
+ for barebox@lists.infradead.org; Tue, 08 Mar 2016 07:23:15 +0000
+Date: Tue, 8 Mar 2016 08:22:46 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160308072246.GA30994@pengutronix.de>
+References: <56DDAE3A.3030808@ge.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <56DDAE3A.3030808@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,34 +22,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: arm: Question on linker script and start/end variables
-To: barebox@lists.infradead.org
+Subject: Re: arm: Question on linker script and start/end variables
+To: Renaud Barbier <renaud.barbier@ge.com>
+Cc: barebox@lists.infradead.org
 
-I have a ARM-based board for which we have a running barebox.
+On Mon, Mar 07, 2016 at 04:37:14PM +0000, Renaud Barbier wrote:
+> I have a ARM-based board for which we have a running barebox.
+> 
+> In the low level code, when running from flash, I would like to get the
+> start and end address of a section. For instance, &__barebox_cmd_start
+> and &__barebox_cmd_end.
+> 
+> For both I am getting 0 unless I am running from memory.
+> 
+> Even assigning these addresses to variables always returns 0.
+> 
+> This is not an issue on PPC platforms.
+> 
+> All my tests and research to get the correct address on ARM has led to
+> no positive results.
+> 
+> Has anybody an explanation why these addresses cannot be obtained on ARM
+> platforms?
 
-In the low level code, when running from flash, I would like to get the
-start and end address of a section. For instance, &__barebox_cmd_start
-and &__barebox_cmd_end.
+It doesn't work for two reasons. First of all the program is not running
+at the address it is linked at. barebox on ARM is linked as position
+independent executable (-pie) to address 0x0. Usually when called from the
+SoC ROM the binary will run at another address though. This means that
+pointers to global variables that are stored in the binary will point to
+0x0 + offset in the binary. To use the variables we have to add the
+offset between 0x0 and the address we are really running to the pointer.
+The second reason comes with linker generated variables like
+__bss_start. These are set to 0x0 in the binary. They need to be fixed
+up during runtime using the dynsym table, see relocate_to_current_adr().
+I don't know a way to access these in C. In barebox we have the ld_var
+macro which uses assembly to access the linker generated variables. Note
+that you can't access arbitrary variables, to access __barebox_cmd_start
+you have to add the variable to arch/arm/lib/runtime-offset.S.
 
-For both I am getting 0 unless I am running from memory.
+Sascha
 
-Even assigning these addresses to variables always returns 0.
-
-This is not an issue on PPC platforms.
-
-All my tests and research to get the correct address on ARM has led to
-no positive results.
-
-Has anybody an explanation why these addresses cannot be obtained on ARM
-platforms?
-
-Cheers,
-Renaud
-
-
-
-
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
