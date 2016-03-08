@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1adBz8-0002QI-AN
- for barebox@lists.infradead.org; Tue, 08 Mar 2016 07:23:15 +0000
-Date: Tue, 8 Mar 2016 08:22:46 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160308072246.GA30994@pengutronix.de>
-References: <56DDAE3A.3030808@ge.com>
+Received: from qmail.e-mind.com ([188.94.192.39])
+ by bombadil.infradead.org with smtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1adDmp-0005sV-KO
+ for barebox@lists.infradead.org; Tue, 08 Mar 2016 09:18:41 +0000
+From: gianluca <gianlucarenzi@eurek.it>
+Message-ID: <56DE98CF.80104@eurek.it>
+Date: Tue, 8 Mar 2016 10:18:07 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <56DDAE3A.3030808@ge.com>
+Content-Type: multipart/mixed; boundary="------------020201020909010506090503"
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,57 +16,246 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: arm: Question on linker script and start/end variables
-To: Renaud Barbier <renaud.barbier@ge.com>
-Cc: barebox@lists.infradead.org
+Subject: Linux does not boot, unrecognized/unsupported machine ID (r1 =
+ 0x00000000).
+To: barebox@lists.infradead.org
 
-On Mon, Mar 07, 2016 at 04:37:14PM +0000, Renaud Barbier wrote:
-> I have a ARM-based board for which we have a running barebox.
-> 
-> In the low level code, when running from flash, I would like to get the
-> start and end address of a section. For instance, &__barebox_cmd_start
-> and &__barebox_cmd_end.
-> 
-> For both I am getting 0 unless I am running from memory.
-> 
-> Even assigning these addresses to variables always returns 0.
-> 
-> This is not an issue on PPC platforms.
-> 
-> All my tests and research to get the correct address on ARM has led to
-> no positive results.
-> 
-> Has anybody an explanation why these addresses cannot be obtained on ARM
-> platforms?
+This is a multi-part message in MIME format.
+--------------020201020909010506090503
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-It doesn't work for two reasons. First of all the program is not running
-at the address it is linked at. barebox on ARM is linked as position
-independent executable (-pie) to address 0x0. Usually when called from the
-SoC ROM the binary will run at another address though. This means that
-pointers to global variables that are stored in the binary will point to
-0x0 + offset in the binary. To use the variables we have to add the
-offset between 0x0 and the address we are really running to the pointer.
-The second reason comes with linker generated variables like
-__bss_start. These are set to 0x0 in the binary. They need to be fixed
-up during runtime using the dynsym table, see relocate_to_current_adr().
-I don't know a way to access these in C. In barebox we have the ld_var
-macro which uses assembly to access the linker generated variables. Note
-that you can't access arbitrary variables, to access __barebox_cmd_start
-you have to add the variable to arch/arm/lib/runtime-offset.S.
+Hello list,
+here I am (again!) ;-)
 
-Sascha
+Now I have downloaded the linux 4.5-rc6 (because I would like to use 
+etnaviv gpu driver), configured as imx_v6_v7_defconfig, added the 
+DEBUG_LL stuff for uart3 and added in the Makefile for dts my dts (more 
+or less like Barebox one [in attachment] ), but here is what I get 
+(compiling the kernel with DEBUG_LL for uart3):
 
+> barebox 2016.02.0 #1 Mon Mar 7 13:15:11 CET 2016
+>
+>
+> Board: EK360 Eurek i.MX6 Quad
+> detected i.MX6 Quad revision 1.5
+> mdio_bus: miibus0: probed
+> imx-usb 2184200.usb: USB EHCI 1.00
+> imx-esdhc 2194000.usdhc: registered as 2194000.usdhc
+> imx-esdhc 2198000.usdhc: registered as 2198000.usdhc
+> imx-esdhc 219c000.usdhc: registered as 219c000.usdhc
+> imx-ipuv3 2400000.ipu: IPUv3H probed
+> imx-ipuv3 2800000.ipu: IPUv3H probed
+> netconsole: registered as netconsole-1
+> malloc space: 0x2ff7c160 -> 0x4fef82bf (size 511.5 MiB)
+> environment load /dev/env0: No such file or directory
+> Maybe you have to create the partition.
+> running /env/bin/init...
+> mmc2: detected SD card version 2.0
+> mmc2: registered mmc2
+> ext4 ext40: EXT2 rev 1, inode_size 128
+> Hit CTRL-C key to stop autoboot: 1
+> Running boot from uSD/MMC or USB...
+> Booting...
+>     Image Name:   Linux-4.5.0-rc6-EK20160302
+>     Created:      2016-03-07 12:30:32 UTC
+>     OS:           Linux
+>     Architecture: ARM
+>     Type:         Kernel Image
+>     Compression:  uncompressed
+>     Data Size:    6636352 Bytes = 6.3 MiB
+>     Load Address: 10008000
+>     Entry Point:  10008000
+>
+> Loading U-Boot uImage '/mnt/uImage'
+> Loading devicetree from '/mnt/dtb'
+> commandline: console=ttymxc2,115200 rootwait noswap ip=none noinitrd rootfstype=nilfs2 root=/dev/mmcblk2p3 fec.macaddr=0x7a,0x3f,0x03,0xe3,0xa2,0xff
+> Uncompressing Linux... done, booting the kernel.
+>
+> Error: unrecognized/unsupported machine ID (r1 = 0x00000000).
+>
+> Available machine support:
+>
+> ID (hex) NAME
+> ffffffff Generic DT based system
+> ffffffff Freescale i.MX6 Quad/DualLite (Device Tree)
+>
+> Please check your kernel config and/or bootloader.
+
+It looks like something were wrong with devicetree or other machine 
+identifier stuff...
+
+
+Where is the issue???
+
+Regards,
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Eurek s.r.l.                          |
+Electronic Engineering                | http://www.eurek.it
+via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
+p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
+
+--------------020201020909010506090503
+Content-Type: text/plain; charset=UTF-8;
+ name="imx6q-eurek-ek360.dts"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="imx6q-eurek-ek360.dts"
+
+LyoKICogJElkOiBpbXg2cS1ldXJlay1lazM2MC5kdHMsdiAxLjUgMjAxNi8wMy8wNCAxNjoy
+MjoyNCBnaWFubHVjYSBFeHAgJAogKgogKiBDb3B5cmlnaHQgMjAxNiBHaWFubHVjYSBSZW56
+aSwgRXVyZWsgRWxldHRyb25pY2EgUy5SLkwuCiAqIENvcHlyaWdodCAyMDE0IFJhcGhhw6ts
+IFBvZ2dpCiAqIENvcHlyaWdodCAyMDEyIEZyZWVzY2FsZSBTZW1pY29uZHVjdG9yLCBJbmMu
+CiAqIENvcHlyaWdodCAyMDExIExpbmFybyBMdGQuCiAqCiAqIFRoZSBjb2RlIGNvbnRhaW5l
+ZCBoZXJlaW4gaXMgbGljZW5zZWQgdW5kZXIgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYwogKiBM
+aWNlbnNlLiBZb3UgbWF5IG9idGFpbiBhIGNvcHkgb2YgdGhlIEdOVSBHZW5lcmFsIFB1Ymxp
+YyBMaWNlbnNlCiAqIFZlcnNpb24gMiBvciBsYXRlciBhdCB0aGUgZm9sbG93aW5nIGxvY2F0
+aW9uczoKICoKICogaHR0cDovL3d3dy5vcGVuc291cmNlLm9yZy9saWNlbnNlcy9ncGwtbGlj
+ZW5zZS5odG1sCiAqIGh0dHA6Ly93d3cuZ251Lm9yZy9jb3B5bGVmdC9ncGwuaHRtbAogKi8K
+L2R0cy12MS87CiNpbmNsdWRlIDxkdC1iaW5kaW5ncy9ncGlvL2dwaW8uaD4KI2luY2x1ZGUg
+PGR0LWJpbmRpbmdzL2lucHV0L2lucHV0Lmg+CiNpbmNsdWRlICJpbXg2cS5kdHNpIgoKLyB7
+Cgltb2RlbCA9ICJFSzM2MCBFdXJlayBpLk1YNiBRdWFkIjsKCWNvbXBhdGlibGUgPSAiZXVy
+ZWssZWszNjAiLCAiZnNsLGlteDZxIjsKCgljaG9zZW4gewoJCWxpbnV4LHN0ZG91dC1wYXRo
+ID0gJnVhcnQzOwoJfTsKCgltZW1vcnkgewoJCXJlZyA9IDwweDEwMDAwMDAwIDB4NDAwMDAw
+MDA+OwoJfTsKCglyZWd1bGF0b3JzIHsKCQljb21wYXRpYmxlID0gInNpbXBsZS1idXMiOwoJ
+CSNhZGRyZXNzLWNlbGxzID0gPDE+OwoJCSNzaXplLWNlbGxzID0gPDA+OwoKCQlyZWdfMnA1
+djogcmVndWxhdG9yQDAgewoJCQljb21wYXRpYmxlID0gInJlZ3VsYXRvci1maXhlZCI7CgkJ
+CXJlZyA9IDwwPjsKCQkJcmVndWxhdG9yLW5hbWUgPSAiMlA1ViI7CgkJCXJlZ3VsYXRvci1t
+aW4tbWljcm92b2x0ID0gPDI1MDAwMDA+OwoJCQlyZWd1bGF0b3ItbWF4LW1pY3Jvdm9sdCA9
+IDwyNTAwMDAwPjsKCQkJcmVndWxhdG9yLWFsd2F5cy1vbjsKCQl9OwoKCQlyZWdfM3Azdjog
+cmVndWxhdG9yQDEgewoJCQljb21wYXRpYmxlID0gInJlZ3VsYXRvci1maXhlZCI7CgkJCXJl
+ZyA9IDwxPjsKCQkJcmVndWxhdG9yLW5hbWUgPSAiM1AzViI7CgkJCXJlZ3VsYXRvci1taW4t
+bWljcm92b2x0ID0gPDMzMDAwMDA+OwoJCQlyZWd1bGF0b3ItbWF4LW1pY3Jvdm9sdCA9IDwz
+MzAwMDAwPjsKCQkJcmVndWxhdG9yLWFsd2F5cy1vbjsKCQl9OwoKCQlyZWdfdXNiX290Z192
+YnVzOiByZWd1bGF0b3JAMiB7CgkJCWNvbXBhdGlibGUgPSAicmVndWxhdG9yLWZpeGVkIjsK
+CQkJcmVnID0gPDI+OwoJCQlyZWd1bGF0b3ItbmFtZSA9ICJ1c2Jfb3RnX3ZidXMiOwoJCQly
+ZWd1bGF0b3ItbWluLW1pY3Jvdm9sdCA9IDw1MDAwMDAwPjsKCQkJcmVndWxhdG9yLW1heC1t
+aWNyb3ZvbHQgPSA8NTAwMDAwMD47CgkJCWdwaW8gPSA8JmdwaW8zIDIyIEdQSU9fQUNUSVZF
+X0xPVz47CgkJCWVuYWJsZS1hY3RpdmUtbG93OwoJCX07CgoJCXJlZ191c2JfaDFfdmJ1czog
+cmVndWxhdG9yQDMgewoJCQljb21wYXRpYmxlID0gInJlZ3VsYXRvci1maXhlZCI7CgkJCXJl
+ZyA9IDwzPjsKCQkJcmVndWxhdG9yLW5hbWUgPSAidXNiX2gxX3ZidXMiOwoJCQlyZWd1bGF0
+b3ItbWluLW1pY3Jvdm9sdCA9IDw1MDAwMDAwPjsKCQkJcmVndWxhdG9yLW1heC1taWNyb3Zv
+bHQgPSA8NTAwMDAwMD47CgkJCWdwaW8gPSA8JmdwaW8zIDMxIEdQSU9fQUNUSVZFX0xPVz47
+CgkJCWVuYWJsZS1hY3RpdmUtbG93OwoJCX07Cgl9Owp9OwoKJmlvbXV4YyB7CglwaW5jdHJs
+LW5hbWVzID0gImRlZmF1bHQiOwoJcGluY3RybC0wID0gPCZwaW5jdHJsX3VhcnQzPjsKCWlt
+eDZxLWVrMzgwIHsKCQlwaW5jdHJsX3VhcnQxOiB1YXJ0MWdycCB7CgkJCS8qIFJTMjMyIHBv
+cnQgKi8KCQkJZnNsLHBpbnMgPSA8CgkJCQlNWDZRRExfUEFEX0NTSTBfREFUMTBfX1VBUlQx
+X1RYX0RBVEEJMHgxYjBiMQoJCQkJTVg2UURMX1BBRF9DU0kwX0RBVDExX19VQVJUMV9SWF9E
+QVRBCTB4MWIwYjEKCQkJPjsKCQl9OwoKCQlwaW5jdHJsX3VhcnQyOiB1YXJ0MmdycCB7CgkJ
+CS8qIFJTNDg1IHBvcnQgKi8KCQkJZnNsLHBpbnMgPSA8CgkJCQlNWDZRRExfUEFEX0VJTV9E
+MjZfX1VBUlQyX1RYX0RBVEEJMHgxYjBiMQoJCQkJTVg2UURMX1BBRF9FSU1fRDI3X19VQVJU
+Ml9SWF9EQVRBCTB4MWIwYjEKCQkJCS8qIFVBUlQyX0RJUiAqLwoJCQkJTVg2UURMX1BBRF9F
+SU1fRDE4X19HUElPM19JTzE4CQkweDgwMDAwMDAwCgkJCT47CgkJfTsKCgkJcGluY3RybF91
+YXJ0MzogdWFydDNncnAgewoJCQkvKiBkZWJ1ZyBwb3J0LCBzZXJpYWwgY29uc29sZSAqLwoJ
+CQlmc2wscGlucyA9IDwKCQkJCU1YNlFETF9QQURfRUlNX0QyNF9fVUFSVDNfVFhfREFUQSAw
+eDFiMGIxCgkJCQlNWDZRRExfUEFEX0VJTV9EMjVfX1VBUlQzX1JYX0RBVEEgMHgxYjBiMQoJ
+CQk+OwoJCX07CgoJCXBpbmN0cmxfdXNkaGMyOiB1c2RoYzJncnAgewoJCQkvKiBTRElPIC8g
+V2lGaSBNb2R1bGUgKi8KCQkJZnNsLHBpbnMgPSA8CgkJCQlNWDZRRExfUEFEX1NEMl9DTURf
+X1NEMl9DTUQJCQkweDE3MDU5CgkJCQlNWDZRRExfUEFEX1NEMl9DTEtfX1NEMl9DTEsJCQkw
+eDEwMDU5CgkJCQlNWDZRRExfUEFEX1NEMl9EQVQwX19TRDJfREFUQTAJCTB4MTcwNTkKCQkJ
+CU1YNlFETF9QQURfU0QyX0RBVDFfX1NEMl9EQVRBMQkJMHgxNzA1OQoJCQkJTVg2UURMX1BB
+RF9TRDJfREFUMl9fU0QyX0RBVEEyCQkweDE3MDU5CgkJCQlNWDZRRExfUEFEX1NEMl9EQVQz
+X19TRDJfREFUQTMJCTB4MTcwNTkKCQkJCS8qIFNEMl9FTiAqLwoJCQkJTVg2UURMX1BBRF9O
+QU5ERl9EM19fR1BJTzJfSU8wMwkJMHgxZjA3MQoJCQk+OwoJCX07CgoJCXBpbmN0cmxfdXNk
+aGMzOiB1c2RoYzNncnAgewoJCQkvKiB1U0QvTU1DICovCgkJCWZzbCxwaW5zID0gPAoJCQkJ
+TVg2UURMX1BBRF9TRDNfQ01EX19TRDNfQ01ECQkJMHgxNzA1OQoJCQkJTVg2UURMX1BBRF9T
+RDNfQ0xLX19TRDNfQ0xLCQkJMHgxMDA1OQoJCQkJTVg2UURMX1BBRF9TRDNfREFUMF9fU0Qz
+X0RBVEEwCQkweDE3MDU5CgkJCQlNWDZRRExfUEFEX1NEM19EQVQxX19TRDNfREFUQTEJCTB4
+MTcwNTkKCQkJCU1YNlFETF9QQURfU0QzX0RBVDJfX1NEM19EQVRBMgkJMHgxNzA1OQoJCQkJ
+TVg2UURMX1BBRF9TRDNfREFUM19fU0QzX0RBVEEzCQkweDE3MDU5CgkJCQkvKiBTRDNfQ0Qg
+Ki8KCQkJCU1YNlFETF9QQURfTkFOREZfRDBfX0dQSU8yX0lPMDAJCTB4MWYwNzEKCQkJCS8q
+IFNEM19XUCAqLwoJCQkJTVg2UURMX1BBRF9OQU5ERl9EMV9fR1BJTzJfSU8wMQkJMHgxZjA3
+MQoJCQk+OwoJCX07CgoJCXBpbmN0cmxfdXNkaGM0OiB1c2RoYzRncnAgewoJCQkvKiBlTU1D
+ICovCgkJCWZzbCxwaW5zID0gPAoJCQkJTVg2UURMX1BBRF9TRDRfQ01EX19TRDRfQ01ECQkJ
+MHgxNzA1OQoJCQkJTVg2UURMX1BBRF9TRDRfQ0xLX19TRDRfQ0xLCQkJMHgxMDA1OQoJCQkJ
+TVg2UURMX1BBRF9TRDRfREFUMF9fU0Q0X0RBVEEwCQkweDE3MDU5CgkJCQlNWDZRRExfUEFE
+X1NENF9EQVQxX19TRDRfREFUQTEJCTB4MTcwNTkKCQkJCU1YNlFETF9QQURfU0Q0X0RBVDJf
+X1NENF9EQVRBMgkJMHgxNzA1OQoJCQkJTVg2UURMX1BBRF9TRDRfREFUM19fU0Q0X0RBVEEz
+CQkweDE3MDU5CgkJCQlNWDZRRExfUEFEX1NENF9EQVQ0X19TRDRfREFUQTQJCTB4MTcwNTkK
+CQkJCU1YNlFETF9QQURfU0Q0X0RBVDVfX1NENF9EQVRBNQkJMHgxNzA1OQoJCQkJTVg2UURM
+X1BBRF9TRDRfREFUNl9fU0Q0X0RBVEE2CQkweDE3MDU5CgkJCQlNWDZRRExfUEFEX1NENF9E
+QVQ3X19TRDRfREFUQTcJCTB4MTcwNTkKCQkJPjsKCQl9OwoKCQlwaW5jdHJsX2kyYzE6IGky
+YzFncnAgewoJCQlmc2wscGlucyA9IDwKCQkJCU1YNlFETF9QQURfQ1NJMF9EQVQ4X19JMkMx
+X1NEQQkJMHg0MDAxYjhiMQoJCQkJTVg2UURMX1BBRF9DU0kwX0RBVDlfX0kyQzFfU0NMCQkw
+eDQwMDFiOGIxCgkJCT47CgkJfTsKCgkJcGluY3RybF9pMmMyOiBpMmMyZ3JwIHsKCQkJZnNs
+LHBpbnMgPSA8CgkJCQlNWDZRRExfUEFEX0tFWV9ST1czX19JMkMyX1NEQQkJMHg0MDAxYjhi
+MQoJCQkJTVg2UURMX1BBRF9LRVlfQ09MM19fSTJDMl9TQ0wJCTB4NDAwMWI4YjEKCQkJPjsK
+CQl9OwoKCQlwaW5jdHJsX2kyYzM6IGkyYzNncnAgewoJCQlmc2wscGlucyA9IDwKCQkJCU1Y
+NlFETF9QQURfR1BJT182X19JMkMzX1NEQQkJCTB4NDAwMWI4YjEKCQkJCU1YNlFETF9QQURf
+R1BJT18zX19JMkMzX1NDTAkJCTB4NDAwMWI4YjEKCQkJPjsKCQl9OwoKCQlwaW5jdHJsX3Vz
+Ym90Z19pZDogdXNib3RnZ3JwX2lkIHsKCQkJZnNsLHBpbnMgPSA8CgkJCQlNWDZRRExfUEFE
+X0dQSU9fMV9fVVNCX09UR19JRAkJMHgxNzA1OQoJCQk+OwoJCX07CgoJCXBpbmN0cmxfZW5l
+dDogZW5ldGdycCB7CgkJCWZzbCxwaW5zID0gPAoJCQkJTVg2UURMX1BBRF9SR01JSV9SWENf
+X1JHTUlJX1JYQwkJCTB4MWIwYjAKCQkJCU1YNlFETF9QQURfUkdNSUlfUkQwX19SR01JSV9S
+RDAJCQkweDFiMGIwCgkJCQlNWDZRRExfUEFEX1JHTUlJX1JEMV9fUkdNSUlfUkQxCQkJMHgx
+YjBiMAoJCQkJTVg2UURMX1BBRF9SR01JSV9SRDJfX1JHTUlJX1JEMgkJCTB4MWIwYjAKCQkJ
+CU1YNlFETF9QQURfUkdNSUlfUkQzX19SR01JSV9SRDMJCQkweDFiMGIwCgkJCQlNWDZRRExf
+UEFEX1JHTUlJX1JYX0NUTF9fUkdNSUlfUlhfQ1RMCTB4MWIwYjAKCQkJCU1YNlFETF9QQURf
+UkdNSUlfVFhDX19SR01JSV9UWEMJCQkweDFiMGIwCgkJCQlNWDZRRExfUEFEX1JHTUlJX1RE
+MF9fUkdNSUlfVEQwCQkJMHgxYjBiMAoJCQkJTVg2UURMX1BBRF9SR01JSV9URDFfX1JHTUlJ
+X1REMQkJCTB4MWIwYjAKCQkJCU1YNlFETF9QQURfUkdNSUlfVEQyX19SR01JSV9URDIJCQkw
+eDFiMGIwCgkJCQlNWDZRRExfUEFEX1JHTUlJX1REM19fUkdNSUlfVEQzCQkJMHgxYjBiMAoJ
+CQkJTVg2UURMX1BBRF9SR01JSV9UWF9DVExfX1JHTUlJX1RYX0NUTAkweDFiMGIwCgkJCQlN
+WDZRRExfUEFEX0VORVRfUkVGX0NMS19fRU5FVF9UWF9DTEsJMHgxYjBiMAoJCQkJTVg2UURM
+X1BBRF9FTkVUX01ESU9fX0VORVRfTURJTwkJCTB4MWIwYjAKCQkJCU1YNlFETF9QQURfRU5F
+VF9NRENfX0VORVRfTURDCQkJMHgxYjBiMAoJCQkJTVg2UURMX1BBRF9FSU1fRDIzX19HUElP
+M19JTzIzCQkweDgwMDAwMDAwIC8qIEtTWjkwMzEgUEhZIFJlc2V0ICovCgkJCT47CgkJfTsK
+CgkJcGluY3RybF91c2JoMV9vYzogdXNiaDFfb2MgewoJCQlmc2wscGlucyA9IDwKCQkJCU1Y
+NlFETF9QQURfRUlNX0QzMF9fVVNCX0gxX09DCQkweDAwMDAwMDAwIC8qIFVTQl9IMV9PQyBE
+YWlzeSA9IDAgZGVmYXVsdCAqLwoJCQk+OwoJCX07CgoJCXBpbmN0cmxfdXNib3RnX29jOiB1
+c2JvdGdfb2MgewoJCQlmc2wscGlucyA9IDwKCQkJCU1YNlFETF9QQURfRUlNX0QyMV9fVVNC
+X09UR19PQwkJMHgwMDAwMDAwNCAvKiBVU0JfT1RHX09DIEFMVDQg4oCUIFNlbGVjdCBzaWdu
+YWwgVVNCX09UR19PQy4gKi8KCQkJPjsKCQl9OwoKCQlwaW5jdHJsX2hvZzogaG9nIHsKCQkJ
+ZnNsLHBpbnMgPSA8CgkJCQlNWDZRRExfUEFEX0VJTV9EMjJfX0dQSU8zX0lPMjIJCTB4ODAw
+MDAwMDAgLyogVVNCIE9URyBQV1IgRU4gKi8KCQkJCU1YNlFETF9QQURfRUlNX0QzMV9fR1BJ
+TzNfSU8zMQkJMHg4MDAwMDAwMCAvKiBVU0IgSDEgUFdSIEVOICovCgkJCT47CgkJfTsKCgl9
+Owp9OwoKJmZlYyB7CglwaW5jdHJsLW5hbWVzID0gImRlZmF1bHQiOwoJcGluY3RybC0wID0g
+PCZwaW5jdHJsX2VuZXQ+OwoJcGh5LW1vZGUgPSAicmdtaWkiOwoJcGh5LXJlc2V0LWdwaW9z
+ID0gPCZncGlvMyAyMyBHUElPX0FDVElWRV9ISUdIPjsKCXBoeS1yZXNldC1kdXJhdGlvbiA9
+IDwxMDA+OwoJc3RhdHVzID0gIm9rYXkiOwp9OwoKJnVhcnQxIHsKCS8qIFJTLTIzMkMgUG9y
+dCAqLwoJcGluY3RybC1uYW1lcyA9ICJkZWZhdWx0IjsKCXBpbmN0cmwtMCA9IDwmcGluY3Ry
+bF91YXJ0MT47CglzdGF0dXMgPSAib2theSI7Cn07CgomdWFydDIgewoJLyogUlMtNDg1IFBv
+cnQgKi8KCXBpbmN0cmwtbmFtZXMgPSAiZGVmYXVsdCI7CglwaW5jdHJsLTAgPSA8JnBpbmN0
+cmxfdWFydDI+OwoJc3RhdHVzID0gIm9rYXkiOwp9OwoKJnVhcnQzIHsKCS8qIERlYnVnIHBv
+cnQgLyBjb25zb2xlICovCglwaW5jdHJsLW5hbWVzID0gImRlZmF1bHQiOwoJcGluY3RybC0w
+ID0gPCZwaW5jdHJsX3VhcnQzPjsKCXN0YXR1cyA9ICJva2F5IjsKfTsKCiZ1c2RoYzIgewoJ
+LyogV2lGaSBTRElPICovCglwaW5jdHJsLW5hbWVzID0gImRlZmF1bHQiOwoJcGluY3RybC0w
+ID0gPCZwaW5jdHJsX3VzZGhjMj47CglzdGF0dXMgPSAib2theSI7Cn07CgomdXNkaGMzIHsK
+CS8qIHVTRCAvIE1NQyAqLwoJcGluY3RybC1uYW1lcyA9ICJkZWZhdWx0IjsKCXBpbmN0cmwt
+MCA9IDwmcGluY3RybF91c2RoYzM+OwoJY2QtZ3Bpb3MgPSA8JmdwaW8yIDAgMD47Cgl3cC1n
+cGlvcyA9IDwmZ3BpbzIgMSAwPjsKCXN0YXR1cyA9ICJva2F5IjsKfTsKCiZ1c2RoYzQgewoJ
+LyogZU1NQyAqLwoJcGluY3RybC1uYW1lcyA9ICJkZWZhdWx0IjsKCXBpbmN0cmwtMCA9IDwm
+cGluY3RybF91c2RoYzQ+OwoJbm9uLXJlbW92YWJsZTsKCXN0YXR1cyA9ICJva2F5IjsKfTsK
+CiZpMmMxIHsKCWNsb2NrLWZyZXF1ZW5jeSA9IDwxMDAwMDA+OwoJcGluY3RybC1uYW1lcyA9
+ICJkZWZhdWx0IjsKCXBpbmN0cmwtMCA9IDwmcGluY3RybF9pMmMxPjsKCXN0YXR1cyA9ICJv
+a2F5IjsKCglzZ3RsNTAwMEAwYSB7CgkJY29tcGF0aWJsZSA9ICJmc2wsc2d0bDUwMDAiOwoJ
+CXJlZyA9IDwweDBhPjsKCQljbG9ja3MgPSA8JmNsa3MgMjAxPjsKCQlWRERBLXN1cHBseSA9
+IDwmcmVnXzNwM3Y+OwoJCVZERElPLXN1cHBseSA9IDwmcmVnXzNwM3Y+OwoJfTsKCglhdDI0
+QDUwIHsKCQljb21wYXRpYmxlID0gImF0MjQsMjRjNjQiOwoJCXBhZ2VzaXplID0gPDY0PjsK
+CQlyZWcgPSA8MHg1MD47Cgl9OwoKCXBjZjg1NjM6IHJ0Y0A1MSB7CgkJY29tcGF0aWJsZSA9
+ICJwaGcscGNmODU2MyI7CgkJcmVnID0gPDB4NTE+OwoJfTsKfTsKCiZpMmMyIHsKCWNsb2Nr
+LWZyZXF1ZW5jeSA9IDwxMDAwMDA+OwoJcGluY3RybC1uYW1lcyA9ICJkZWZhdWx0IjsKCXBp
+bmN0cmwtMCA9IDwmcGluY3RybF9pMmMyPjsKCXN0YXR1cyA9ICJva2F5IjsKfTsKCiZpMmMz
+IHsKCWNsb2NrLWZyZXF1ZW5jeSA9IDwxMDAwMDA+OwoJcGluY3RybC1uYW1lcyA9ICJkZWZh
+dWx0IjsKCXBpbmN0cmwtMCA9IDwmcGluY3RybF9pMmMzPjsKCXN0YXR1cyA9ICJva2F5IjsK
+fTsKCiZ1c2JoMSB7Cgl2YnVzLXN1cHBseSA9IDwmcmVnX3VzYl9oMV92YnVzPjsKCXBpbmN0
+cmwtbmFtZXMgPSAiZGVmYXVsdCI7CglwaW5jdHJsLTAgPSA8JnBpbmN0cmxfdXNiaDFfb2M+
+OwoJZHJfbW9kZSA9ICJob3N0IjsKCXN0YXR1cyA9ICJva2F5IjsKfTsKCiZ1c2JvdGcgewoJ
+dmJ1cy1zdXBwbHkgPSA8JnJlZ191c2Jfb3RnX3ZidXM+OwoJcGluY3RybC1uYW1lcyA9ICJk
+ZWZhdWx0IjsKCXBpbmN0cmwtMCA9IDwmcGluY3RybF91c2JvdGdfb2MKCQkJCSZwaW5jdHJs
+X3VzYm90Z19pZD47Cglkcl9tb2RlID0gIm90ZyI7CglzdGF0dXMgPSAib2theSI7Cn07Cgom
+aGRtaSB7CglkZGMtaTJjLWJ1cyA9IDwmaTJjMj47CglzdGF0dXMgPSAib2theSI7Cn07Cg==
+--------------020201020909010506090503
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--------------020201020909010506090503--
