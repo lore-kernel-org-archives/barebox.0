@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1adFJs-0002RT-FQ
- for barebox@lists.infradead.org; Tue, 08 Mar 2016 10:56:53 +0000
+ id 1adFJe-0002Oq-PA
+ for barebox@lists.infradead.org; Tue, 08 Mar 2016 10:56:39 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Tue,  8 Mar 2016 11:56:08 +0100
-Message-Id: <1457434569-32054-4-git-send-email-mpa@pengutronix.de>
+Date: Tue,  8 Mar 2016 11:56:07 +0100
+Message-Id: <1457434569-32054-3-git-send-email-mpa@pengutronix.de>
 In-Reply-To: <1457434569-32054-1-git-send-email-mpa@pengutronix.de>
 References: <1457434569-32054-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,94 +21,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] ubi: Helper to iterate over all ubi volumes
+Subject: [PATCH 3/5] ubi: Add helper to map a mtd device to a ubi number
 To: barebox@lists.infradead.org
 
-To find all the ubi volume ids on a given UBI, we need a helper. The
-added functions allow to use ubi_volume_for_each() to get each volume id
-of a UBI.
+ubi_num_get_by_mtd() searches for attached ubi devices for the given mtd
+and returns the number of the ubi device.
 
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- drivers/mtd/ubi/kapi.c  | 42 ++++++++++++++++++++++++++++++++++++++++++
- include/linux/mtd/ubi.h | 11 +++++++++++
- 2 files changed, 53 insertions(+)
+ drivers/mtd/ubi/build.c | 30 +++++++++++++++++++++---------
+ include/mtd/ubi-user.h  |  1 +
+ 2 files changed, 22 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/mtd/ubi/kapi.c b/drivers/mtd/ubi/kapi.c
-index c2e58e865753..f3b0f0d85d84 100644
---- a/drivers/mtd/ubi/kapi.c
-+++ b/drivers/mtd/ubi/kapi.c
-@@ -308,6 +308,48 @@ void ubi_close_volume(struct ubi_volume_desc *desc)
+diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
+index 797022636dcb..4901dde9a10f 100644
+--- a/drivers/mtd/ubi/build.c
++++ b/drivers/mtd/ubi/build.c
+@@ -481,6 +481,23 @@ static int autoresize(struct ubi_device *ubi, int vol_id)
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(ubi_close_volume);
  
-+int ubi_volume_first(int ubi_num, struct ubi_device **ubi, int *vol_id)
++int ubi_num_get_by_mtd(struct mtd_info *mtd)
 +{
 +	int i;
++	struct ubi_device *ubi;
 +
-+	/* We keep the device until the last call of ubi_volume_next
-+	 * or ubi_volume_abort */
-+	*ubi = ubi_get_device(ubi_num);
-+	if (!*ubi)
-+		return -ENODEV;
-+
-+	for (i = 0; i < (*ubi)->vtbl_slots; ++i) {
-+		if ((*ubi)->volumes[i]) {
-+			*vol_id = i;
-+			return 0;
++	for (i = 0; i < UBI_MAX_DEVICES; i++) {
++		ubi = ubi_devices[i];
++		if (ubi && mtd == ubi->mtd) {
++			ubi_debug("mtd%d is already attached to ubi%d",
++				mtd->index, i);
++			return ubi->ubi_num;
 +		}
 +	}
-+
-+	ubi_put_device(*ubi);
-+	return -ENOENT;
-+}
-+
-+int ubi_volume_next(struct ubi_device *ubi, int *vol_id)
-+{
-+	int i;
-+
-+	for (i = *vol_id + 1; i < ubi->vtbl_slots; ++i) {
-+		if (ubi->volumes[i]) {
-+			*vol_id = i;
-+			return 0;
-+		}
-+	}
-+
-+	ubi_put_device(ubi);
 +
 +	return -ENOENT;
 +}
 +
-+void ubi_volume_abort(struct ubi_device *ubi)
-+{
-+	ubi_put_device(ubi);
-+}
-+
- struct cdev *ubi_volume_get_cdev(struct ubi_volume_desc *vol)
+ /**
+  * ubi_attach_mtd_dev - attach an MTD device.
+  * @mtd: MTD device description object
+@@ -501,7 +518,7 @@ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
+ 		       int vid_hdr_offset, int max_beb_per1024)
  {
- 	return &vol->vol->cdev;
-diff --git a/include/linux/mtd/ubi.h b/include/linux/mtd/ubi.h
-index 0725b04f9dfd..344842e4ed97 100644
---- a/include/linux/mtd/ubi.h
-+++ b/include/linux/mtd/ubi.h
-@@ -220,6 +220,17 @@ int ubi_flush(int ubi_num, int vol_id, int lnum);
+ 	struct ubi_device *ubi;
+-	int i, err, ref = 0;
++	int ubi_id, err, ref = 0;
  
- struct cdev *ubi_volume_get_cdev(struct ubi_volume_desc *vol);
+ 	if (max_beb_per1024 < 0 || max_beb_per1024 > MAX_MTD_UBI_BEB_LIMIT)
+ 		return -EINVAL;
+@@ -515,14 +532,9 @@ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
+ 	 * Note, this function assumes that UBI devices creations and deletions
+ 	 * are serialized, so it does not take the &ubi_devices_lock.
+ 	 */
+-	for (i = 0; i < UBI_MAX_DEVICES; i++) {
+-		ubi = ubi_devices[i];
+-		if (ubi && mtd == ubi->mtd) {
+-			ubi_debug("mtd%d is already attached to ubi%d",
+-				mtd->index, i);
+-			return -EEXIST;
+-		}
+-	}
++	ubi_id = ubi_num_get_by_mtd(mtd);
++	if (ubi_id >= 0)
++		return -EEXIST;
  
-+struct ubi_device;
-+int ubi_volume_first(int ubi_num, struct ubi_device **ubi, int *vol_id);
-+int ubi_volume_next(struct ubi_device *ubi, int *vol_id);
-+void ubi_volume_abort(struct ubi_device *ubi);
-+
-+#define ubi_volume_for_each(ubi_num, ubi, vol_id, ret) \
-+	for (ret = ubi_volume_first(ubi_num, &(ubi), &(vol_id)); \
-+	     !ret; \
-+	     ret = ubi_volume_next(ubi, &(vol_id)))
-+
-+
- /*
-  * This function is the same as the 'ubi_leb_read()' function, but it does not
-  * provide the checking capability.
+ 	/*
+ 	 * Make sure this MTD device is not emulated on top of an UBI volume
+diff --git a/include/mtd/ubi-user.h b/include/mtd/ubi-user.h
+index 2000ef2fd00d..ab1a6630f5ee 100644
+--- a/include/mtd/ubi-user.h
++++ b/include/mtd/ubi-user.h
+@@ -407,5 +407,6 @@ struct ubi_set_vol_prop_req {
+ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
+ 		       int vid_hdr_offset, int max_beb_per1024);
+ int ubi_detach_mtd_dev(int ubi_num, int anyway);
++int ubi_num_get_by_mtd(struct mtd_info *mtd);
+ 
+ #endif /* __UBI_USER_H__ */
 -- 
 2.7.0
 
