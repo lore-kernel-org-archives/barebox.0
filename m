@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1adFJx-0002T9-FK
- for barebox@lists.infradead.org; Tue, 08 Mar 2016 10:56:58 +0000
+ id 1adFJi-0002Py-FI
+ for barebox@lists.infradead.org; Tue, 08 Mar 2016 10:56:42 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Tue,  8 Mar 2016 11:56:06 +0100
-Message-Id: <1457434569-32054-2-git-send-email-mpa@pengutronix.de>
-In-Reply-To: <1457434569-32054-1-git-send-email-mpa@pengutronix.de>
-References: <1457434569-32054-1-git-send-email-mpa@pengutronix.de>
+Date: Tue,  8 Mar 2016 11:56:05 +0100
+Message-Id: <1457434569-32054-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,46 +19,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] ubi: Add getter ubi_volume_get_cdev()
+Subject: [PATCH 1/5] fs: Add for_each_fs_device_safe()
 To: barebox@lists.infradead.org
 
-cdev is used in a future commit to find the mounted filesystems.
+We need to be able to umount specific filesystems while iterating all of
+them. This helper gives us a safe macro to do so.
 
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- drivers/mtd/ubi/kapi.c  | 5 +++++
- include/linux/mtd/ubi.h | 2 ++
- 2 files changed, 7 insertions(+)
+ include/fs.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/ubi/kapi.c b/drivers/mtd/ubi/kapi.c
-index 7fc1aa8d70cc..c2e58e865753 100644
---- a/drivers/mtd/ubi/kapi.c
-+++ b/drivers/mtd/ubi/kapi.c
-@@ -308,6 +308,11 @@ void ubi_close_volume(struct ubi_volume_desc *desc)
- }
- EXPORT_SYMBOL_GPL(ubi_close_volume);
+diff --git a/include/fs.h b/include/fs.h
+index ee7e48b0f968..3157a482d71a 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -87,6 +87,7 @@ struct fs_driver_d {
  
-+struct cdev *ubi_volume_get_cdev(struct ubi_volume_desc *vol)
-+{
-+	return &vol->vol->cdev;
-+}
-+
- /**
-  * ubi_leb_read - read data.
-  * @desc: volume descriptor
-diff --git a/include/linux/mtd/ubi.h b/include/linux/mtd/ubi.h
-index 0614681d731c..0725b04f9dfd 100644
---- a/include/linux/mtd/ubi.h
-+++ b/include/linux/mtd/ubi.h
-@@ -218,6 +218,8 @@ int ubi_is_mapped(struct ubi_volume_desc *desc, int lnum);
- int ubi_sync(int ubi_num);
- int ubi_flush(int ubi_num, int vol_id, int lnum);
+ extern struct list_head fs_device_list;
+ #define for_each_fs_device(f) list_for_each_entry(f, &fs_device_list, list)
++#define for_each_fs_device_safe(tmp, f) list_for_each_entry_safe(f, tmp, &fs_device_list, list)
+ extern struct bus_type fs_bus;
  
-+struct cdev *ubi_volume_get_cdev(struct ubi_volume_desc *vol);
-+
- /*
-  * This function is the same as the 'ubi_leb_read()' function, but it does not
-  * provide the checking capability.
+ struct fs_device_d {
 -- 
 2.7.0
 
