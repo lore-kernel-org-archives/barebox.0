@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1adFJi-0002Py-FI
- for barebox@lists.infradead.org; Tue, 08 Mar 2016 10:56:42 +0000
+ id 1adFJs-0002RT-FQ
+ for barebox@lists.infradead.org; Tue, 08 Mar 2016 10:56:53 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Tue,  8 Mar 2016 11:56:05 +0100
-Message-Id: <1457434569-32054-1-git-send-email-mpa@pengutronix.de>
+Date: Tue,  8 Mar 2016 11:56:08 +0100
+Message-Id: <1457434569-32054-4-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <1457434569-32054-1-git-send-email-mpa@pengutronix.de>
+References: <1457434569-32054-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +21,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] fs: Add for_each_fs_device_safe()
+Subject: [PATCH 4/5] ubi: Helper to iterate over all ubi volumes
 To: barebox@lists.infradead.org
 
-We need to be able to umount specific filesystems while iterating all of
-them. This helper gives us a safe macro to do so.
+To find all the ubi volume ids on a given UBI, we need a helper. The
+added functions allow to use ubi_volume_for_each() to get each volume id
+of a UBI.
 
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- include/fs.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/ubi/kapi.c  | 42 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/mtd/ubi.h | 11 +++++++++++
+ 2 files changed, 53 insertions(+)
 
-diff --git a/include/fs.h b/include/fs.h
-index ee7e48b0f968..3157a482d71a 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -87,6 +87,7 @@ struct fs_driver_d {
+diff --git a/drivers/mtd/ubi/kapi.c b/drivers/mtd/ubi/kapi.c
+index c2e58e865753..f3b0f0d85d84 100644
+--- a/drivers/mtd/ubi/kapi.c
++++ b/drivers/mtd/ubi/kapi.c
+@@ -308,6 +308,48 @@ void ubi_close_volume(struct ubi_volume_desc *desc)
+ }
+ EXPORT_SYMBOL_GPL(ubi_close_volume);
  
- extern struct list_head fs_device_list;
- #define for_each_fs_device(f) list_for_each_entry(f, &fs_device_list, list)
-+#define for_each_fs_device_safe(tmp, f) list_for_each_entry_safe(f, tmp, &fs_device_list, list)
- extern struct bus_type fs_bus;
++int ubi_volume_first(int ubi_num, struct ubi_device **ubi, int *vol_id)
++{
++	int i;
++
++	/* We keep the device until the last call of ubi_volume_next
++	 * or ubi_volume_abort */
++	*ubi = ubi_get_device(ubi_num);
++	if (!*ubi)
++		return -ENODEV;
++
++	for (i = 0; i < (*ubi)->vtbl_slots; ++i) {
++		if ((*ubi)->volumes[i]) {
++			*vol_id = i;
++			return 0;
++		}
++	}
++
++	ubi_put_device(*ubi);
++	return -ENOENT;
++}
++
++int ubi_volume_next(struct ubi_device *ubi, int *vol_id)
++{
++	int i;
++
++	for (i = *vol_id + 1; i < ubi->vtbl_slots; ++i) {
++		if (ubi->volumes[i]) {
++			*vol_id = i;
++			return 0;
++		}
++	}
++
++	ubi_put_device(ubi);
++
++	return -ENOENT;
++}
++
++void ubi_volume_abort(struct ubi_device *ubi)
++{
++	ubi_put_device(ubi);
++}
++
+ struct cdev *ubi_volume_get_cdev(struct ubi_volume_desc *vol)
+ {
+ 	return &vol->vol->cdev;
+diff --git a/include/linux/mtd/ubi.h b/include/linux/mtd/ubi.h
+index 0725b04f9dfd..344842e4ed97 100644
+--- a/include/linux/mtd/ubi.h
++++ b/include/linux/mtd/ubi.h
+@@ -220,6 +220,17 @@ int ubi_flush(int ubi_num, int vol_id, int lnum);
  
- struct fs_device_d {
+ struct cdev *ubi_volume_get_cdev(struct ubi_volume_desc *vol);
+ 
++struct ubi_device;
++int ubi_volume_first(int ubi_num, struct ubi_device **ubi, int *vol_id);
++int ubi_volume_next(struct ubi_device *ubi, int *vol_id);
++void ubi_volume_abort(struct ubi_device *ubi);
++
++#define ubi_volume_for_each(ubi_num, ubi, vol_id, ret) \
++	for (ret = ubi_volume_first(ubi_num, &(ubi), &(vol_id)); \
++	     !ret; \
++	     ret = ubi_volume_next(ubi, &(vol_id)))
++
++
+ /*
+  * This function is the same as the 'ubi_leb_read()' function, but it does not
+  * provide the checking capability.
 -- 
 2.7.0
 
