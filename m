@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x242.google.com ([2a00:1450:4010:c04::242])
+Received: from forward9h.cmail.yandex.net ([87.250.230.220])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1adb33-0005RZ-GP
- for barebox@lists.infradead.org; Wed, 09 Mar 2016 10:09:01 +0000
-Received: by mail-lb0-x242.google.com with SMTP id bc4so4442700lbc.0
- for <barebox@lists.infradead.org>; Wed, 09 Mar 2016 02:08:36 -0800 (PST)
-Date: Wed, 9 Mar 2016 13:34:48 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20160309133448.6640fb77cd9ce6182fb00699@gmail.com>
-In-Reply-To: <CAGm1_ktH2vq-kdNiKKUyAHQeK1tosaoB_2OmjUc08nV9=mLFeg@mail.gmail.com>
-References: <1457357426-9868-1-git-send-email-antonynpavlov@gmail.com>
- <20160309073141.GB30994@pengutronix.de>
- <CAGm1_ktH2vq-kdNiKKUyAHQeK1tosaoB_2OmjUc08nV9=mLFeg@mail.gmail.com>
-Mime-Version: 1.0
+ id 1adbku-0003FJ-JO
+ for barebox@lists.infradead.org; Wed, 09 Mar 2016 10:54:19 +0000
+Received: from smtp2h.mail.yandex.net (smtp2h.mail.yandex.net
+ [IPv6:2a02:6b8:0:f05::116])
+ by forward9h.cmail.yandex.net (Yandex) with ESMTP id EB0BC21D89
+ for <barebox@lists.infradead.org>; Wed,  9 Mar 2016 13:53:49 +0300 (MSK)
+From: Aleksey Kuleshov <rndfax@yandex.ru>
+Date: Wed,  9 Mar 2016 13:17:48 +0300
+Message-Id: <1457518672-30074-1-git-send-email-rndfax@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,43 +18,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/15] MIPS: ar9331: use cache and fix gpio
-To: Sascha Hauer <s.hauer@pengutronix.de>, Yegor Yefremov <yegorslists@googlemail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH v3 1/5] usb_kbd: remove unused fields
+To: barebox@lists.infradead.org
+Cc: Aleksey Kuleshov <rndfax@yandex.ru>
 
-On Wed, 9 Mar 2016 09:45:11 +0100
-Yegor Yefremov <yegorslists@googlemail.com> wrote:
+Signed-off-by: Aleksey Kuleshov <rndfax@yandex.ru>
+---
+ drivers/input/usb_kbd.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-> On Wed, Mar 9, 2016 at 8:31 AM, Sascha Hauer <s.hauer@pengutronix.de> wro=
-te:
-> > Hi Antony,
-> >
-> > On Mon, Mar 07, 2016 at 04:30:11PM +0300, Antony Pavlov wrote:
-> >> This patchseries introduces initial MIPS cache support.
-> >> Though the cache code is usable for many MIPS-based chips
-> >> at the moment the code is tested mostly on AR9331 SoC.
-> >> So I have decided to submit only AR9331-related cache
-> >> patches and add AR9331 GPIO-related patches to the series.
-> >
-> > This series probably deserves a better review than I have given it, but
-> > my knowledge of Mips is nearly not existent. I just applied it.
-> =
+diff --git a/drivers/input/usb_kbd.c b/drivers/input/usb_kbd.c
+index 74bc11f..e41266c 100644
+--- a/drivers/input/usb_kbd.c
++++ b/drivers/input/usb_kbd.c
+@@ -46,10 +46,8 @@
+ struct usb_kbd_pdata;
+ 
+ struct usb_kbd_pdata {
+-	uint64_t	last_report;
+ 	uint8_t		*new;
+ 	uint8_t		old[USB_KBD_BOOT_REPORT_SIZE];
+-	uint8_t		flags;
+ 	struct poller_struct	poller;
+ 	struct usb_device	*usbdev;
+ 	int		lock;
+@@ -173,7 +171,6 @@ static int usb_kbd_probe(struct usb_device *usbdev,
+ 	data->new = dma_alloc(USB_KBD_BOOT_REPORT_SIZE);
+ 
+ 	data->usbdev = usbdev;
+-	data->last_report = get_time_ns();
+ 
+ 	data->ep = &iface->ep_desc[0];
+ 	data->intpipe = usb_rcvintpipe(usbdev, data->ep->bEndpointAddress);
+-- 
+2.6.2
 
-> I haven't got my hands on this series, but I have used the previous
-> one. SquashFS patches were developed using the previous version
-> (Antony's GItHub branch).
-
-Actually there are only very few cosmetic differences between the maillist =
-series and my github branch.
- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
