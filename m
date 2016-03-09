@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x235.google.com ([2a00:1450:400c:c09::235])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1adZxR-00015Q-BY
- for barebox@lists.infradead.org; Wed, 09 Mar 2016 08:59:06 +0000
-Received: by mail-wm0-x235.google.com with SMTP id l68so61152391wml.1
- for <barebox@lists.infradead.org>; Wed, 09 Mar 2016 00:58:44 -0800 (PST)
-Date: Wed, 9 Mar 2016 09:58:37 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20160309085831.GA1563@omega>
-References: <56D831C6.1010101@eurek.it>
- <8737s7ei86.fsf@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <8737s7ei86.fsf@gmail.com>
+ id 1ada8p-0001Ix-Hw
+ for barebox@lists.infradead.org; Wed, 09 Mar 2016 09:10:52 +0000
+From: Markus Pargmann <mpa@pengutronix.de>
+Date: Wed,  9 Mar 2016 10:10:20 +0100
+Message-Id: <1457514620-14689-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,54 +14,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Ethernet PHY KSZ9031 is not working
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: barebox@lists.infradead.org, gianluca <gianlucarenzi@eurek.it>
+Subject: [PATCH] fastboot: Umount filesystems of target devices before flashing
+To: barebox@lists.infradead.org
 
+Before flashing data to some device, we should check whether this device
+is in use. If it is mounted it is umounted and flashed afterwards.
+
+Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+---
 Hi,
 
-On Thu, Mar 03, 2016 at 03:42:01PM +0100, Holger Schurig wrote:
-> > USB Host-A has to be tested, but if I type:
-> >
-> >>> usb
-> >> USB: scanning bus for devices...
-> >> Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
-> >> 1 USB Device(s) found
-> >
-> > so I can suppose the host controller is working.
-> 
-> I'm unsure if that is correct. When you see the USB IDs of some
-> connected devices then you be (a bit) sure(rer).
-> 
-> 
-> > - DDR3 Memory Controller
-> > Memtest is passing all tests. So I can suppose the timings are quite
-> > good enough to use the Dynamic RAM correctly. I will do a stress test
-> > later...
-> 
-> I had a system once where the memtest in barebox worked, but memtester
-> from Linux found issues.
-> 
+This patch requires the for_each_fs_device_safe() macro which was sent as a
+patch yesterday.
 
-do you know why memtester from Linux found issues?
-Maybe we can grab some patterns from [0] and simple do the same what
-linux does (inclusive disable caching).
+Best Regards,
+
+Markus
 
 
-My experience with memtester is:
+ drivers/usb/gadget/f_fastboot.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-I saw some people which use memtester under Linux and randomly
-"MTD/filesystem broken" messages blobs out while running memtester. I would
-guess that the memtester written in some memory mapped area of connected
-NAND devices.
+diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
+index 9a1058a9670b..e81392f38ae9 100644
+--- a/drivers/usb/gadget/f_fastboot.c
++++ b/drivers/usb/gadget/f_fastboot.c
+@@ -664,6 +664,37 @@ static void __maybe_unused cb_boot(struct usb_ep *ep, struct usb_request *req,
+ 	fastboot_tx_print(f_fb, "OKAY");
+ }
+ 
++/**
++ * fastboot_flash_umount_target checks whether the target file is a device and
++ * umounts mounted filesystems
++ * @param filename Target file name
++ * @return 0 on success, < 0 otherwise
++ */
++static int fastboot_flash_umount_target(const char *filename)
++{
++	struct cdev *tgt_cdev;
++	struct fs_device_d *fs;
++	struct fs_device_d *fs_tmp;
++
++	tgt_cdev = cdev_by_path(filename);
++	if (!tgt_cdev)
++		return 0;
++
++	for_each_fs_device_safe(fs_tmp, fs) {
++		int ret;
++
++		if (fs->cdev == tgt_cdev) {
++			ret = umount(fs->path);
++			if (ret) {
++				pr_err("Failed umounting %s, %d, continuing anyway\n",
++				       fs->path, ret);
++			}
++		}
++	}
++
++	return 0;
++}
++
+ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd)
+ {
+ 	struct f_fastboot *f_fb = req->context;
+@@ -745,6 +776,8 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
+ 		goto out;
+ 	}
+ 
++	fastboot_flash_umount_target(filename);
++
+ copy:
+ 	ret = copy_file(FASTBOOT_TMPFILE, filename, 1);
+ 	if (ret) {
+-- 
+2.7.0
 
-- Alex
-
-[0] http://lxr.free-electrons.com/source/mm/memtest.c#L6
 
 _______________________________________________
 barebox mailing list
