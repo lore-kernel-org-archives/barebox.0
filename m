@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x242.google.com ([2a00:1450:4010:c04::242])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ada8p-0001Ix-Hw
- for barebox@lists.infradead.org; Wed, 09 Mar 2016 09:10:52 +0000
-From: Markus Pargmann <mpa@pengutronix.de>
-Date: Wed,  9 Mar 2016 10:10:20 +0100
-Message-Id: <1457514620-14689-1-git-send-email-mpa@pengutronix.de>
+ id 1adb33-0005RZ-GP
+ for barebox@lists.infradead.org; Wed, 09 Mar 2016 10:09:01 +0000
+Received: by mail-lb0-x242.google.com with SMTP id bc4so4442700lbc.0
+ for <barebox@lists.infradead.org>; Wed, 09 Mar 2016 02:08:36 -0800 (PST)
+Date: Wed, 9 Mar 2016 13:34:48 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20160309133448.6640fb77cd9ce6182fb00699@gmail.com>
+In-Reply-To: <CAGm1_ktH2vq-kdNiKKUyAHQeK1tosaoB_2OmjUc08nV9=mLFeg@mail.gmail.com>
+References: <1457357426-9868-1-git-send-email-antonynpavlov@gmail.com>
+ <20160309073141.GB30994@pengutronix.de>
+ <CAGm1_ktH2vq-kdNiKKUyAHQeK1tosaoB_2OmjUc08nV9=mLFeg@mail.gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,86 +21,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fastboot: Umount filesystems of target devices before flashing
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 00/15] MIPS: ar9331: use cache and fix gpio
+To: Sascha Hauer <s.hauer@pengutronix.de>, Yegor Yefremov <yegorslists@googlemail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-Before flashing data to some device, we should check whether this device
-is in use. If it is mounted it is umounted and flashed afterwards.
+On Wed, 9 Mar 2016 09:45:11 +0100
+Yegor Yefremov <yegorslists@googlemail.com> wrote:
 
-Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
----
-Hi,
+> On Wed, Mar 9, 2016 at 8:31 AM, Sascha Hauer <s.hauer@pengutronix.de> wro=
+te:
+> > Hi Antony,
+> >
+> > On Mon, Mar 07, 2016 at 04:30:11PM +0300, Antony Pavlov wrote:
+> >> This patchseries introduces initial MIPS cache support.
+> >> Though the cache code is usable for many MIPS-based chips
+> >> at the moment the code is tested mostly on AR9331 SoC.
+> >> So I have decided to submit only AR9331-related cache
+> >> patches and add AR9331 GPIO-related patches to the series.
+> >
+> > This series probably deserves a better review than I have given it, but
+> > my knowledge of Mips is nearly not existent. I just applied it.
+> =
 
-This patch requires the for_each_fs_device_safe() macro which was sent as a
-patch yesterday.
+> I haven't got my hands on this series, but I have used the previous
+> one. SquashFS patches were developed using the previous version
+> (Antony's GItHub branch).
 
-Best Regards,
+Actually there are only very few cosmetic differences between the maillist =
+series and my github branch.
+ =
 
-Markus
-
-
- drivers/usb/gadget/f_fastboot.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
-
-diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-index 9a1058a9670b..e81392f38ae9 100644
---- a/drivers/usb/gadget/f_fastboot.c
-+++ b/drivers/usb/gadget/f_fastboot.c
-@@ -664,6 +664,37 @@ static void __maybe_unused cb_boot(struct usb_ep *ep, struct usb_request *req,
- 	fastboot_tx_print(f_fb, "OKAY");
- }
- 
-+/**
-+ * fastboot_flash_umount_target checks whether the target file is a device and
-+ * umounts mounted filesystems
-+ * @param filename Target file name
-+ * @return 0 on success, < 0 otherwise
-+ */
-+static int fastboot_flash_umount_target(const char *filename)
-+{
-+	struct cdev *tgt_cdev;
-+	struct fs_device_d *fs;
-+	struct fs_device_d *fs_tmp;
-+
-+	tgt_cdev = cdev_by_path(filename);
-+	if (!tgt_cdev)
-+		return 0;
-+
-+	for_each_fs_device_safe(fs_tmp, fs) {
-+		int ret;
-+
-+		if (fs->cdev == tgt_cdev) {
-+			ret = umount(fs->path);
-+			if (ret) {
-+				pr_err("Failed umounting %s, %d, continuing anyway\n",
-+				       fs->path, ret);
-+			}
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd)
- {
- 	struct f_fastboot *f_fb = req->context;
-@@ -745,6 +776,8 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
- 		goto out;
- 	}
- 
-+	fastboot_flash_umount_target(filename);
-+
- copy:
- 	ret = copy_file(FASTBOOT_TMPFILE, filename, 1);
- 	if (ret) {
--- 
-2.7.0
-
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
