@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-vk0-x235.google.com ([2607:f8b0:400c:c05::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1adYxz-0004Fd-Gw
- for barebox@lists.infradead.org; Wed, 09 Mar 2016 07:55:36 +0000
-Date: Wed, 9 Mar 2016 08:55:13 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160309075513.GD30994@pengutronix.de>
-References: <1457434569-32054-1-git-send-email-mpa@pengutronix.de>
- <1457434569-32054-5-git-send-email-mpa@pengutronix.de>
+ id 1adZke-0003ck-HA
+ for barebox@lists.infradead.org; Wed, 09 Mar 2016 08:45:53 +0000
+Received: by mail-vk0-x235.google.com with SMTP id c3so47700607vkb.3
+ for <barebox@lists.infradead.org>; Wed, 09 Mar 2016 00:45:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1457434569-32054-5-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <20160309073141.GB30994@pengutronix.de>
+References: <1457357426-9868-1-git-send-email-antonynpavlov@gmail.com>
+ <20160309073141.GB30994@pengutronix.de>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Wed, 9 Mar 2016 09:45:11 +0100
+Message-ID: <CAGm1_ktH2vq-kdNiKKUyAHQeK1tosaoB_2OmjUc08nV9=mLFeg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,75 +24,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/5] ubiformat: Cleanly umount and detach the ubi before
- formating
-To: Markus Pargmann <mpa@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 00/15] MIPS: ar9331: use cache and fix gpio
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>
 
-Hi Markus,
+On Wed, Mar 9, 2016 at 8:31 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> Hi Antony,
+>
+> On Mon, Mar 07, 2016 at 04:30:11PM +0300, Antony Pavlov wrote:
+>> This patchseries introduces initial MIPS cache support.
+>> Though the cache code is usable for many MIPS-based chips
+>> at the moment the code is tested mostly on AR9331 SoC.
+>> So I have decided to submit only AR9331-related cache
+>> patches and add AR9331 GPIO-related patches to the series.
+>
+> This series probably deserves a better review than I have given it, but
+> my knowledge of Mips is nearly not existent. I just applied it.
 
-On Tue, Mar 08, 2016 at 11:56:09AM +0100, Markus Pargmann wrote:
-> This was an open fixme for some time. ubiformat does not care about used
-> ubi volumes or attached ubis.
-> 
-> This patch adds functionality that umounts all filesystems that are
-> mounted from this nand device. After that the ubi is detached. Then the
-> normal ubiformat code reformats the ubi. If a ubi was detached
-> previously, the code tries to reattach the ubi. Filesystems are not
-> remounted.
+I haven't got my hands on this series, but I have used the previous
+one. SquashFS patches were developed using the previous version
+(Antony's GItHub branch).
 
-Normally I would expect ubiformat to fail when the mtd is used by UBI.
-Can we make the behaviour optional and by default fail if the mtd is
-busy?
-
-> +static int ubi_umount_all(const char *mtddev, struct mtd_info_user *ui,
-> +			  int *ubi_detached_num)
-> +{
-> +	struct ubi_device_info ubi_info;
-> +	struct cdev *ubi_cdev;
-> +	struct fs_device_d *fsdev;
-> +	struct fs_device_d *fsdev_tmp;
-> +	struct ubi_device *ubi_dev;
-> +	int ret;
-> +	int ubi_num;
-> +	int vol_id;
-> +
-> +
-> +	ubi_num = ubi_num_get_by_mtd(ui->mtd);
-> +	if (ubi_num < 0) /* No attached ubi found */
-> +		return 0;
-> +
-> +	ubi_get_device_info(ubi_num, &ubi_info);
-> +
-> +	ubi_volume_for_each(ubi_num, ubi_dev, vol_id, ret) {
-> +		struct ubi_volume_desc *vol;
-> +
-> +		vol = ubi_open_volume(ubi_num, vol_id, UBI_READONLY);
-> +		if (IS_ERR(vol)) {
-> +			pr_err("Failed to open ubi volume %d %d, %ld. Continuing\n",
-> +			       ubi_num, vol_id, PTR_ERR(vol));
-> +			continue;
-> +		}
-> +
-> +		for_each_fs_device_safe(fsdev_tmp, fsdev) {
-> +			ubi_cdev = ubi_volume_get_cdev(vol);
-> +
-> +			if (fsdev->cdev == ubi_volume_get_cdev(vol)) {
-> +				ret = umount(fsdev->path);
-> +				if (ret) {
-> +					pr_err("Failed umounting %s, %d, continuing anyway\n",
-> +					       fsdev->path, ret);
-> +				}
-
-Shouldn't this be an error?
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Yegor
 
 _______________________________________________
 barebox mailing list
