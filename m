@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1advzQ-0003KC-7H
- for barebox@lists.infradead.org; Thu, 10 Mar 2016 08:30:37 +0000
+ id 1advza-0003k6-7R
+ for barebox@lists.infradead.org; Thu, 10 Mar 2016 08:30:47 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Thu, 10 Mar 2016 09:29:53 +0100
-Message-Id: <1457598600-10669-1-git-send-email-mpa@pengutronix.de>
+Date: Thu, 10 Mar 2016 09:29:58 +0100
+Message-Id: <1457598600-10669-6-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <1457598600-10669-1-git-send-email-mpa@pengutronix.de>
+References: <1457598600-10669-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/8] fs: Add for_each_fs_device_safe()
+Subject: [PATCH v2 6/8] ubi: Add function to detach a UBI by using mtd_info
 To: barebox@lists.infradead.org
 
-We need to be able to umount specific filesystems while iterating all of
-them. This helper gives us a safe macro to do so.
+We may don't know which UBI is attached on a given MTD device. This adds
+a function to detach a UBI given a MTD device.
 
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- include/fs.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/ubi/build.c | 21 +++++++++++++++++++++
+ include/mtd/ubi-user.h  |  1 +
+ 2 files changed, 22 insertions(+)
 
-diff --git a/include/fs.h b/include/fs.h
-index 9ac4552dbacc..6cae157b9df8 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -87,6 +87,7 @@ struct fs_driver_d {
+diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
+index f51d10cf0d21..7ee34bc62f30 100644
+--- a/drivers/mtd/ubi/build.c
++++ b/drivers/mtd/ubi/build.c
+@@ -750,3 +750,24 @@ int ubi_detach_mtd_dev(int ubi_num, int anyway)
  
- extern struct list_head fs_device_list;
- #define for_each_fs_device(f) list_for_each_entry(f, &fs_device_list, list)
-+#define for_each_fs_device_safe(tmp, f) list_for_each_entry_safe(f, tmp, &fs_device_list, list)
- extern struct bus_type fs_bus;
+ 	return 0;
+ }
++
++/**
++ * ubi_detach_by_mtd detaches any ubi that of the given MTD
++ * @param mtd MTD used
++ * @param anyway detach MTD even if device reference count is not zero
++ * @return 0 on success, negative errno otherwise
++ *
++ * This function returns -EINVAL if the device is not attached
++ */
++int ubi_detach_by_mtd(struct mtd_info *mtd, bool anyway)
++{
++	int ubi_num = ubi_num_get_by_mtd(mtd);
++
++	if (ubi_num < 0) {
++		if (ubi_num == -ENOENT)
++			return -EINVAL;
++		return ubi_num;
++	}
++
++	return ubi_detach_mtd_dev(ubi_num, anyway);
++}
+diff --git a/include/mtd/ubi-user.h b/include/mtd/ubi-user.h
+index ab1a6630f5ee..90982743cb58 100644
+--- a/include/mtd/ubi-user.h
++++ b/include/mtd/ubi-user.h
+@@ -407,6 +407,7 @@ struct ubi_set_vol_prop_req {
+ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
+ 		       int vid_hdr_offset, int max_beb_per1024);
+ int ubi_detach_mtd_dev(int ubi_num, int anyway);
++int ubi_detach_by_mtd(struct mtd_info *mtd, bool anyway);
+ int ubi_num_get_by_mtd(struct mtd_info *mtd);
  
- struct fs_device_d {
+ #endif /* __UBI_USER_H__ */
 -- 
 2.7.0
 
