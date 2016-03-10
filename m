@@ -1,20 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1adwrh-0003uv-Lm
- for barebox@lists.infradead.org; Thu, 10 Mar 2016 09:26:43 +0000
-Date: Thu, 10 Mar 2016 10:26:19 +0100
+ id 1adxW8-0001BL-QX
+ for barebox@lists.infradead.org; Thu, 10 Mar 2016 10:08:30 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
+ ident=Debian-exim)
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1adxVn-0008Sy-4u
+ for barebox@lists.infradead.org; Thu, 10 Mar 2016 11:08:07 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.84)
+ (envelope-from <sha@pengutronix.de>) id 1adxVm-0001IZ-Tr
+ for barebox@lists.infradead.org; Thu, 10 Mar 2016 11:08:06 +0100
+Date: Thu, 10 Mar 2016 11:08:06 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160310092619.GK30994@pengutronix.de>
-References: <1457018230-4554-1-git-send-email-rndfax@yandex.ru>
- <1457018230-4554-2-git-send-email-rndfax@yandex.ru>
- <20160304071921.GD21869@pengutronix.de>
- <4230541457086688@web17h.yandex.ru>
- <20160307073016.GG21869@pengutronix.de>
- <1569051457342206@web17j.yandex.ru>
+Message-ID: <20160310100806.GM30994@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1569051457342206@web17j.yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,261 +28,236 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] input: make the Input Core be the last in the poller
- queue
-To: Aleksey Kuleshov <rndfax@yandex.ru>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: v2016.03.0
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Mar 07, 2016 at 12:16:46PM +0300, Aleksey Kuleshov wrote:
-> >> =A0This function is ASYNC. All what you have to do is to make sure that
-> >> =A0this function gets called AFTER all input-driver-providers will be =
-polled.
-> >
-> > I thought that aswell and thought I should have fixed this issue in my
-> > patch, but it didn't work as expected so there's still something wrong,
-> > either in my thoughts or in my implementation.
-> =
+barebox-2016.03.0 is out. It has been delayed by a few days because of
+the recently found bootm uImage issues. ARM uImage users should switch to
+this release as chances are good that with earlier releases the kernel
+overwrites the dtb and ends up non bootable. Beginning with this release
+we support U-Boot FIT images, basically to be able to support booting
+signed images. Another thing worth noting is RATP support which is now
+available to machine control barebox over serial lines. Users using
+send/expect sequences to control barebox should have a look.
+As usual, detailed list of patches below.
 
-> Well, until we all see this patch nobody can help :)
+Have Fun!
+ Sascha
 
-Indeed not ;)
 
-Here it is. It now works, presumable because of your recent change to
-the interrupt transactions (ehci-hcd: preserve DTC in QH for interrupt
-transactions). As the commit log says the patch is not yet ready.
+----------------------------------------------------------------
+Alexander Kurz (1):
+      arm/cpu/lowlevel: fix: possible processor mode change
 
-Sascha
+Andrey Gusakov (2):
+      include/linux/phy.h: Add MII_ADDR_C45
+      net: Port bitbanged MDIO code from Linux kernel
 
-----------------------------8<---------------------------------
+Andrey Smirnov (7):
+      miitool: Fix PHY argument handling
+      mdio_bus: Change dev_info to dev_dbg
+      mdio_bus: Add mdiobus_get_bus() function
+      miitool: Don't print negative parent IDs
+      mdio_bus: Change PHY's naming scheme
+      miitool: Add code to register a PHY
+      spi-nor: Port erase timeout fix from Linux
 
-From e0bfdea8b65572f5119fe3b47c3c04cc6ef91fc2 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 3 Mar 2016 09:04:19 +0100
-Subject: [PATCH] input: Let input core poll devices (wip)
+Antony Pavlov (2):
+      drivers: video: fb: make locally used fb_set_shadowfb() static
+      drivers: video: drop unused of_get_display_timing()
 
-So far each input device registers its own poller. This is not
-necessary: We do not have interrupt support, so every input device
-will need to poll. Let the core register one poller and drop the
-ones from the individual devices. This also has the advantage that
-we can handle the key repetition in the core.
+Daniel Schultz (2):
+      arm: am33xx: Move function to read from Master OSC
+      arm: am33xx: Master Osc clock speed handling
 
-This is not ready yet, only the USB keyboard driver is converted, the
-other drivers need fixup aswell.
+Harald Welte (1):
+      bootm: Free allocated fdt buffer in error path
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/input/input.c   | 47 ++++++++++++++++++++++++++++-----------------=
---
- drivers/input/usb_kbd.c | 26 +++++++-------------------
- include/input/input.h   |  4 ++++
- 3 files changed, 39 insertions(+), 38 deletions(-)
+Jan Luebbe (4):
+      fs: Add RATP fs support
+      include pyserial trunk
+      host side for barebox remote control
+      bootm: add initial FIT support
 
-diff --git a/drivers/input/input.c b/drivers/input/input.c
-index 31a9c22..f59bd27 100644
---- a/drivers/input/input.c
-+++ b/drivers/input/input.c
-@@ -36,7 +36,7 @@ void input_unregister_notfier(struct input_notifier *in)
- =
+Juergen Borleis (1):
+      nfs: forward filesystem options to the kernel command line
 
- void input_report_key_event(struct input_device *idev, unsigned int code, =
-int value)
- {
--	struct input_event event;
-+	struct input_event *event =3D &idev->event;
- 	struct input_notifier *in;
- =
+Lucas Stach (12):
+      ARM: tegra: clean up lowlevel entry
+      ramoops: allow to build without OFTREE support
+      ratp-console: select CRC16 and POLLER, depend on CONSOLE_FULL
+      bootm: restore load DT message for plain oftree files
+      bootm: parse initrd and oftree into correct struct members
+      arm: bootm: unify kernel load address calculation
+      arm: bootm: be more clever about kernel spacing
+      efi: fix memory leak in error path
+      net: efi: correct function signature of set_ethaddr
+      fs: efi: avoid comparison with uninitialized variable
+      bbu: use correct printf format specifier for size_t
+      ratp: use proper defines for BAREBOX_CMD
 
- 	if (code > KEY_MAX)
-@@ -47,11 +47,13 @@ void input_report_key_event(struct input_device *idev, =
-unsigned int code, int va
- 	else
- 		clear_bit(code, &idev->keys);
- =
+Peter Mamonov (2):
+      input: usb keyboard: fix BACKSPACE
+      input: usb keyboard: fix CTRL+ combinations
 
--	event.code =3D code;
--	event.value =3D value;
-+	event->code =3D code;
-+	event->value =3D value;
-+	idev->start =3D get_time_ns();
-+	idev->timeout =3D 400 * MSECOND;
- =
+Philipp Zabel (7):
+      ARM: cm-fx6: set proper hostname
+      net: phy: micrel: Staticise ksz8873mll_read_status()
+      net: phy: micrel: use BIT macro
+      net: phy: micrel: Be more const correct
+      net: phy: micrel: Center FLP timing at 16ms
+      net: phy: micrel: Add workaround for bad autoneg
+      Documentation: usb: fix otg mode parameter description
 
- 	list_for_each_entry(in, &input_consumers, list)
--		in->notify(in, &event);
-+		in->notify(in, event);
- }
- =
+Sascha Hauer (110):
+      hush: fix indentation
+      poller: Fix async poller
+      keymap: Fix braces
+      keymap: remove exotic and nonprintable keys
+      keymap: Add keypad keys
+      keymap: Add apostrophe, backslash and home
+      keymap: Add keymap for keys with shift pressed
+      input: Add input core
+      input: usb keyboard: convert to input framework
+      input: imx-keypad: Use dev_* functions
+      input: move matrix_keypad_build_keymap() to C file
+      input: imx-keypad: convert to input framework
+      input: Add device tree parsing support for matrix keymap
+      input: imx-keypad: Add device tree support
+      input: gpio-keys: Use KEY_* keycodes
+      vsprintf: Add support for %pa
+      Convert users of PRINTF_CONVERSION_RESOURCE to %pa
+      input: gpio-keys: convert to input framework
+      Add Reliable Asynchronous Transfer Protocol
+      barebox remote control
+      pyserial: decrease timeouts
+      defaultenv2: Add automount for RATPFS
+      barebox remote control: Documentation
+      ARM: zImage: add missing free() in appended device tree code
+      bootm: Do not call uimage_close twice
+      bootm: introduce bootm_get_os_size
+      bootm: use names instead of numbers for image parts
+      ARM: bootm: Use kernel handler to start barebox image
+      bootm: Push dryrun to handlers
+      bootm: move initrd code together
+      bootm: move oftree code together
+      bootm: Initialize bootm_data defaults in single place
+      crypto: add digest_alloc_by_algo()
+      crypto: add RSA support
+      bootm: make verifying/hashing configurable
+      bootm: Add option to force booting signed images
+      nios2: Add missing typedef for umode_t
+      x86: Add missing typedef for umode_t
+      scripts: Add common header files for tools
+      scripts/include: Add ARRAY_SIZE
+      scripts: Add scripts/include to host compiler includes
+      scripts: imx: Use Kernel includes
+      scripts: mxs: Use Kernel includes
+      ARM: i.MX: Add HABv3 Kconfig variables
+      imx: hab: rename driver dir to hab/
+      hab: Add HABv3 status report function
+      scripts: imx-usb-loader: Make readonly arguments const
+      scripts: imx-usb-loader: Move definitions up
+      scripts: imx-image: Allow dcd offset 0x0
+      scripts: imx-usb-loader: fully read images into memory
+      scripts: imx-usb-loader: Move load_file up
+      scripts: imx: Consolidate flash headers in imx tools
+      scripts: imx-image: Add context struct to config parsers
+      scripts: imx-image: move write_mem to context data
+      scripts: imx-image: move check to context data
+      scripts: imx: move config file parser to separate file
+      scripts: imx: make libusb variables global
+      scripts: imx-usb-loader: Add -s and -i options
+      scripts: imx: Drop double check
+      scripts: imx-image: move more variables to context data
+      scripts: imx-image: pass config data to add_header_*
+      scripts: imx-image: Support adding a Super Root Key to the image
+      scripts: imx: Create CSF files from imx config file
+      scripts: imx: Allow to create signed images
+      scripts: imx: Generate signed images with imx-image
+      scripts: imx-usb-loader: Use dcd len to invalidate dcd data
+      scripts: imx-image: Factor out a read_file function
+      scripts: imx-image: Allow to create HAB signed images suitable for US=
+B upload
+      ARM: i.MX53: CCXMX53: Move device tree out of dts/
+      dts: update to v4.4-rc5
+      dts: update to v4.4-rc6
+      dts: update to v4.4-rc7
+      dts: update to v4.4-rc8
+      dts: update to v4.4
+      dts: update to v4.5-rc1
+      Make: i.MX: Allow to pass config file to cmd_imx_image
+      images: imx: Add targets for signed images and signed usb images
+      scripts: imx-usb-loader: Do not zero out boot_data_ptr
+      imx: hab: Make hab status functions SoC specific
+      Add initial regmap support
+      mfd: mc13xxx: Switch to regmap support
+      ARM: i.MX: iim: Switch to regmap support
+      ARM: i.MX: ocotp: Fix fusebox size
+      ARM: i.MX: ocotp: Explicitly access control register
+      ARM: i.MX: ocotp: make priv the first argument of functions
+      ARM: i.MX: ocotp: Fix error bit handling
+      ARM: i.MX: ocotp: Switch to regmap support
+      i.MX habv4: Fix RVT address for newer SoCs
+      Merge branch 'for-next/arm'
+      Merge branch 'for-next/dts'
+      Merge branch 'for-next/fit'
+      Merge branch 'for-next/hab'
+      Merge branch 'for-next/input'
+      Merge branch 'for-next/linux-headers'
+      Merge branch 'for-next/misc'
+      Merge branch 'for-next/net'
+      Merge branch 'for-next/ratp'
+      Merge branch 'for-next/regmap'
+      driver: Fix unregister device after device probe failure
+      bootm: Fix resource_size_t format specifier
+      blspec: Do not crash on config files without newline on last line
+      blspec: ignore lines beginning with '#'
+      scripts: make __init__.py nonempty
+      commands: of_dump: Add description for -n option
+      regmap: Add missing prototype for regmap_exit()
+      regulator: fixed: Init gpio properly
+      bootm: Fix booting uImages
+      ARM: i.MX53-qsb: Fix gpio button polarity
+      USB: imx-usb-phy: Fix uninitialized use of variable
+      Release v2016.03.0
 
- static LIST_HEAD(input_devices);
-@@ -107,17 +109,31 @@ static int input_console_getc(struct console_device *=
-cdev)
- 	return c;
- }
- =
+Stefan Christ (3):
+      ARM: i.MX6: add function cpu_is_mx6s()
+      ARM: imx: clocksource: add new DT compatible
+      ARM: imx6: physom: fix phyflex workaround on Dual and Solo
 
--static void input_console_repeat(void *ctx)
-+static void input_devices_poller_func(struct poller_struct *poller)
- {
--	struct input_console *ic =3D ctx;
-+	struct input_device *idev;
-+	static uint64_t last_poll;
-+	struct input_notifier *in;
-+
-+	if (!is_timeout(last_poll, 10 * MSECOND))
-+		return;
- =
+Steffen Trumtrar (2):
+      bitops: Fix shift overflow in GENMASK macros
+      ARM: i.MX25: fixup broken DryIce GPR
 
--	if (ic->current_key) {
--		kfifo_putc(ic->fifo, ic->current_key);
--		poller_call_async(&ic->poller, 40 * MSECOND,
--				  input_console_repeat, ic);
-+	list_for_each_entry(idev, &input_devices, list) {
-+		idev->poll(idev);
-+
-+		if (idev->event.value && is_timeout(idev->start, idev->timeout)) {
-+			list_for_each_entry(in, &input_consumers, list)
-+				in->notify(in, &idev->event);
-+			idev->timeout =3D 40 * MSECOND;
-+			idev->start =3D get_time_ns();
-+		}
- 	}
- }
- =
+Ulrich =D6lmann (1):
+      docs: fix typos
 
-+struct poller_struct input_poller =3D {
-+	.func =3D input_devices_poller_func,
-+};
-+
- struct keycode {
- 	unsigned char key;
- 	unsigned char ascii;
-@@ -175,15 +191,8 @@ static void input_console_notify(struct input_notifier=
- *in,
- =
+Uwe Kleine-K=F6nig (2):
+      Add initial support for Netgear ReadyNAS 104
+      kwboot: do a filetype check before sending the image
 
- 	pr_debug("map %02x KEY: 0x%04x code: %d\n", modstate, ascii, ev->code);
- =
+Yegor Yefremov (17):
+      fs: move struct timespec to include/linux/time.h
+      fs: introduce include/linux/fs.h
+      fs: move PAGE_CACHE definitions to include/linux/pagemap.h
+      fs: ubifs: remove redundant macro defines
+      fs: use linux/fs.h for file system related definitions
+      fs: move pgoff_t definition to include/linux/types.h
+      fs: ubifs: move dcache related definitions to include/linux/dcache.h
+      fs: ubifs: move vfsmount definition to include/linux/mount.h
+      fs: ubifs: move path definition to include/linux/path.h
+      fs: ubifs: move file and file_system_type definitions to linux/fs.h
+      Introduce include/linux/sched.h
+      Introduce include/linux/spinlock.h
+      Introduce include/linux/mutex.h
+      Introduce include/linux/wait.h
+      Introduce include/linux/rwsem.h
+      fs: import magic.h from Linux kernel
+      dcache: add missing linux/list.h include
 
--	if (ev->value) {
-+	if (ev->value)
- 		kfifo_putc(ic->fifo, ascii);
--		ic->current_key =3D ascii;
--		poller_call_async(&ic->poller, 400 * MSECOND,
--				  input_console_repeat, ic);
--	} else {
--		ic->current_key =3D 0;
--		poller_async_cancel(&ic->poller);
--	}
- }
- =
 
- static struct input_console input_console;
-@@ -199,7 +208,7 @@ static int input_init(void)
- 	ic->fifo =3D kfifo_alloc(32);
- 	ic->notifier.notify =3D input_console_notify;
- 	input_register_notfier(&ic->notifier);
--	poller_async_register(&ic->poller);
-+	poller_register(&input_poller);
- =
-
- 	return console_register(&ic->console);
- }
-diff --git a/drivers/input/usb_kbd.c b/drivers/input/usb_kbd.c
-index 2acc95d..a0e3120 100644
---- a/drivers/input/usb_kbd.c
-+++ b/drivers/input/usb_kbd.c
-@@ -48,7 +48,7 @@ struct usb_kbd_pdata;
- struct usb_kbd_pdata {
- 	uint8_t		*new;
- 	uint8_t		old[USB_KBD_BOOT_REPORT_SIZE];
--	struct poller_async	poller;
-+	uint8_t		flags;
- 	struct usb_device	*usbdev;
- 	unsigned long	intpipe;
- 	int		intpktsize;
-@@ -91,9 +91,10 @@ static const unsigned char usb_kbd_keycode[256] =3D {
- 	150,158,159,128,136,177,178,176,142,152,173,140
- };
- =
-
--static void usb_kbd_poll(void *arg)
-+static void usb_kbd_poll(struct input_device *input)
- {
--	struct usb_kbd_pdata *data =3D arg;
-+	struct usb_kbd_pdata *data =3D container_of(input,
-+						  struct usb_kbd_pdata, input);
- 	struct usb_device *usbdev =3D data->usbdev;
- 	int ret, i;
- =
-
-@@ -138,7 +139,7 @@ static void usb_kbd_poll(void *arg)
- 	memcpy(data->old, data->new, USB_KBD_BOOT_REPORT_SIZE);
- =
-
- exit:
--	poller_call_async(&data->poller, data->intinterval * MSECOND, usb_kbd_pol=
-l, data);
-+	return;
- }
- =
-
- static int usb_kbd_probe(struct usb_device *usbdev,
-@@ -188,28 +189,15 @@ static int usb_kbd_probe(struct usb_device *usbdev,
- 	} else
- 		dev_dbg(&usbdev->dev, "poll keyboard via int ep\n");
- =
-
--	ret =3D input_device_register(&data->input);
--	if (ret) {
--		dev_err(&usbdev->dev, "can't register input\n");
--		return ret;
--	}
--
--	ret =3D poller_async_register(&data->poller);
--	if (ret) {
--		dev_err(&usbdev->dev, "can't setup poller\n");
--		return ret;
--	}
--
--	poller_call_async(&data->poller, data->intinterval * MSECOND, usb_kbd_pol=
-l, data);
-+	data->input.poll =3D usb_kbd_poll;
- =
-
--	return 0;
-+	return input_device_register(&data->input);
- }
- =
-
- static void usb_kbd_disconnect(struct usb_device *usbdev)
- {
- 	struct usb_kbd_pdata *data =3D usbdev->drv_data;
- =
-
--	poller_async_unregister(&data->poller);
- 	input_device_unregister(&data->input);
- 	dma_free(data->new);
- 	free(data);
-diff --git a/include/input/input.h b/include/input/input.h
-index dbf3e7f..44280af 100644
---- a/include/input/input.h
-+++ b/include/input/input.h
-@@ -13,6 +13,10 @@ struct input_event {
- struct input_device {
- 	struct list_head list;
- 	DECLARE_BITMAP(keys, KEY_CNT);
-+	void (*poll)(struct input_device *);
-+	struct input_event event;
-+	uint64_t start;
-+	uint64_t timeout;
- };
- =
-
- void input_report_key_event(struct input_device *idev, unsigned int code, =
-int value);
--- =
-
-2.7.0
 
 -- =
 
