@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1advza-0003k6-7R
+ id 1advza-0003k5-7T
  for barebox@lists.infradead.org; Thu, 10 Mar 2016 08:30:47 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Thu, 10 Mar 2016 09:29:58 +0100
-Message-Id: <1457598600-10669-6-git-send-email-mpa@pengutronix.de>
+Date: Thu, 10 Mar 2016 09:29:54 +0100
+Message-Id: <1457598600-10669-2-git-send-email-mpa@pengutronix.de>
 In-Reply-To: <1457598600-10669-1-git-send-email-mpa@pengutronix.de>
 References: <1457598600-10669-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,59 +21,116 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 6/8] ubi: Add function to detach a UBI by using mtd_info
+Subject: [PATCH v2 2/8] fs: umount based on device path and mount path
 To: barebox@lists.infradead.org
 
-We may don't know which UBI is attached on a given MTD device. This adds
-a function to detach a UBI given a MTD device.
+umount on Linux can be used on a mount pathes and device pathes. This
+patch adds this functionality to barebox.
 
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- drivers/mtd/ubi/build.c | 21 +++++++++++++++++++++
- include/mtd/ubi-user.h  |  1 +
- 2 files changed, 22 insertions(+)
+ commands/umount.c |  2 +-
+ fs/fs.c           | 47 ++++++++++++++++++++++++++++++++++++++++++++---
+ include/fs.h      |  1 +
+ 3 files changed, 46 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
-index f51d10cf0d21..7ee34bc62f30 100644
---- a/drivers/mtd/ubi/build.c
-+++ b/drivers/mtd/ubi/build.c
-@@ -750,3 +750,24 @@ int ubi_detach_mtd_dev(int ubi_num, int anyway)
- 
- 	return 0;
+diff --git a/commands/umount.c b/commands/umount.c
+index 84c84e42c6bc..fdf4da95a021 100644
+--- a/commands/umount.c
++++ b/commands/umount.c
+@@ -37,7 +37,7 @@ BAREBOX_CMD_HELP_END
+ BAREBOX_CMD_START(umount)
+ 	.cmd		= do_umount,
+ 	BAREBOX_CMD_DESC("umount a filesystem")
+-	BAREBOX_CMD_OPTS("MOUNTPOINT")
++	BAREBOX_CMD_OPTS("MOUNTPOINT/DEVICEPATH")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_PART)
+ 	BAREBOX_CMD_HELP(cmd_umount_help)
+ BAREBOX_CMD_END
+diff --git a/fs/fs.c b/fs/fs.c
+index 71cb43976d44..b44409bf3e4e 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -1329,6 +1329,40 @@ err_free_path:
  }
+ EXPORT_SYMBOL(mount);
+ 
++static int fsdev_umount(struct fs_device_d *fsdev)
++{
++	return unregister_device(&fsdev->dev);
++}
 +
 +/**
-+ * ubi_detach_by_mtd detaches any ubi that of the given MTD
-+ * @param mtd MTD used
-+ * @param anyway detach MTD even if device reference count is not zero
-+ * @return 0 on success, negative errno otherwise
-+ *
-+ * This function returns -EINVAL if the device is not attached
++ * umount_by_cdev Use a cdev struct to umount all mounted filesystems
++ * @param cdev cdev to the according device
++ * @return 0 on success or if cdev was not mounted, -errno otherwise
 + */
-+int ubi_detach_by_mtd(struct mtd_info *mtd, bool anyway)
++int umount_by_cdev(struct cdev *cdev)
 +{
-+	int ubi_num = ubi_num_get_by_mtd(mtd);
++	struct fs_device_d *fs;
++	struct fs_device_d *fs_tmp;
++	int first_error = 0;
 +
-+	if (ubi_num < 0) {
-+		if (ubi_num == -ENOENT)
-+			return -EINVAL;
-+		return ubi_num;
++	for_each_fs_device_safe(fs_tmp, fs) {
++		int ret;
++
++		if (fs->cdev == cdev) {
++			ret = fsdev_umount(fs);
++			if (ret) {
++				pr_err("Failed umounting %s, %d, continuing anyway\n",
++				       fs->path, ret);
++				if (!first_error)
++					first_error = ret;
++			}
++		}
 +	}
 +
-+	return ubi_detach_mtd_dev(ubi_num, anyway);
++	return first_error;
 +}
-diff --git a/include/mtd/ubi-user.h b/include/mtd/ubi-user.h
-index ab1a6630f5ee..90982743cb58 100644
---- a/include/mtd/ubi-user.h
-+++ b/include/mtd/ubi-user.h
-@@ -407,6 +407,7 @@ struct ubi_set_vol_prop_req {
- int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
- 		       int vid_hdr_offset, int max_beb_per1024);
- int ubi_detach_mtd_dev(int ubi_num, int anyway);
-+int ubi_detach_by_mtd(struct mtd_info *mtd, bool anyway);
- int ubi_num_get_by_mtd(struct mtd_info *mtd);
++EXPORT_SYMBOL(umount_by_cdev);
++
+ int umount(const char *pathname)
+ {
+ 	struct fs_device_d *fsdev = NULL, *f;
+@@ -1341,6 +1375,15 @@ int umount(const char *pathname)
+ 		}
+ 	}
  
- #endif /* __UBI_USER_H__ */
++	if (!fsdev) {
++		struct cdev *cdev = cdev_by_path(p);
++
++		if (cdev) {
++			free(p);
++			return umount_by_cdev(cdev);
++		}
++	}
++
+ 	free(p);
+ 
+ 	if (f == fs_dev_root && !list_is_singular(&fs_device_list)) {
+@@ -1353,9 +1396,7 @@ int umount(const char *pathname)
+ 		return -EFAULT;
+ 	}
+ 
+-	unregister_device(&fsdev->dev);
+-
+-	return 0;
++	return fsdev_umount(fsdev);
+ }
+ EXPORT_SYMBOL(umount);
+ 
+diff --git a/include/fs.h b/include/fs.h
+index 6cae157b9df8..b7cd128b5ee1 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -147,6 +147,7 @@ int readlink(const char *path, char *buf, size_t bufsiz);
+ int mount (const char *device, const char *fsname, const char *path,
+ 		const char *fsoptions);
+ int umount(const char *pathname);
++int umount_by_cdev(struct cdev *cdev);
+ 
+ /* not-so-standard functions */
+ int erase(int fd, size_t count, loff_t offset);
 -- 
 2.7.0
 
