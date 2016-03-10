@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1adwDb-0002P9-PW
- for barebox@lists.infradead.org; Thu, 10 Mar 2016 08:45:17 +0000
-Date: Thu, 10 Mar 2016 09:44:52 +0100
+ id 1adwQD-0000gi-58
+ for barebox@lists.infradead.org; Thu, 10 Mar 2016 08:58:17 +0000
+Date: Thu, 10 Mar 2016 09:57:54 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160310084452.GG30994@pengutronix.de>
-References: <1457357426-9868-1-git-send-email-antonynpavlov@gmail.com>
- <1457357426-9868-6-git-send-email-antonynpavlov@gmail.com>
- <20160309132814.GA31470@pengutronix.de>
- <20160309172324.8c59a55c9c6c01e958ec1288@gmail.com>
- <20160309191201.be9faa984b1459f8fb1b11b6@gmail.com>
+Message-ID: <20160310085754.GB31470@pengutronix.de>
+References: <56DE98CF.80104@eurek.it> <20160309074203.GC30994@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20160309191201.be9faa984b1459f8fb1b11b6@gmail.com>
+In-Reply-To: <20160309074203.GC30994@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,52 +22,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 05/15] MIPS: add initial R4000-style cache support
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: Linux does not boot, unrecognized/unsupported machine ID (r1 =
+ 0x00000000).
+To: gianluca <gianlucarenzi@eurek.it>
+Cc: barebox@lists.infradead.org
 
-On Wed, Mar 09, 2016 at 07:12:01PM +0300, Antony Pavlov wrote:
-> On Wed, 9 Mar 2016 17:23:24 +0300
-> Antony Pavlov <antonynpavlov@gmail.com> wrote:
+On Wed, Mar 09, 2016 at 08:42:03AM +0100, Sascha Hauer wrote:
+> Hi,
 > 
-> > On Wed, 9 Mar 2016 14:28:14 +0100
-> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Tue, Mar 08, 2016 at 10:18:07AM +0100, gianluca wrote:
+> > Hello list,
+> > here I am (again!) ;-)
 > > 
-> > > Hi Antony,
-> > > 
-> > > On Mon, Mar 07, 2016 at 04:30:16PM +0300, Antony Pavlov wrote:
-> > > > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > > > Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> > > > ---
-> > > >  arch/mips/include/asm/cacheops.h |  7 ++++++
-> > > >  arch/mips/include/asm/io.h       |  3 +++
-> > > >  arch/mips/lib/c-r4k.c            | 48 ++++++++++++++++++++++++++++++++++++++++
-> > > >  3 files changed, 58 insertions(+)
-> > > > 
-> > > > index ff68677..4fe046a 100644
-> > > > --- a/arch/mips/lib/c-r4k.c
-> > > > +++ b/arch/mips/lib/c-r4k.c
-> > > > @@ -10,10 +10,58 @@
-> > > >  #include <common.h>
-> > > >  #include <asm/io.h>
-> > > >  #include <asm/mipsregs.h>
-> > > > +#include <asm/cache.h>
-> > > 
-> > > This breaks bisectibility. asm/cache.h is introduced with the next.
-> > > patch. I tried swapping the patches but got merge conflicts. Shall I
-> > > squash both patches or do you have another preferred solution?
+> > Now I have downloaded the linux 4.5-rc6 (because I would like to use etnaviv
+> > gpu driver), configured as imx_v6_v7_defconfig, added the DEBUG_LL stuff for
+> > uart3 and added in the Makefile for dts my dts (more or less like Barebox
+> > one [in attachment] ), but here is what I get (compiling the kernel with
+> > DEBUG_LL for uart3):
 > > 
-> > I'm so sorry!
-> > I'll fix it by myself and resend the series.
+> > >barebox 2016.02.0 #1 Mon Mar 7 13:15:11 CET 2016
+> > >
+> > >
+> > >Board: EK360 Eurek i.MX6 Quad
+> > >detected i.MX6 Quad revision 1.5
+> > >mdio_bus: miibus0: probed
+> > >imx-usb 2184200.usb: USB EHCI 1.00
+> > >imx-esdhc 2194000.usdhc: registered as 2194000.usdhc
+> > >imx-esdhc 2198000.usdhc: registered as 2198000.usdhc
+> > >imx-esdhc 219c000.usdhc: registered as 219c000.usdhc
+> > >imx-ipuv3 2400000.ipu: IPUv3H probed
+> > >imx-ipuv3 2800000.ipu: IPUv3H probed
+> > >netconsole: registered as netconsole-1
+> > >malloc space: 0x2ff7c160 -> 0x4fef82bf (size 511.5 MiB)
+> > >environment load /dev/env0: No such file or directory
+> > >Maybe you have to create the partition.
+> > >running /env/bin/init...
+> > >mmc2: detected SD card version 2.0
+> > >mmc2: registered mmc2
+> > >ext4 ext40: EXT2 rev 1, inode_size 128
+> > >Hit CTRL-C key to stop autoboot: 1
+> > >Running boot from uSD/MMC or USB...
+> > >Booting...
+> > >    Image Name:   Linux-4.5.0-rc6-EK20160302
+> > >    Created:      2016-03-07 12:30:32 UTC
+> > >    OS:           Linux
+> > >    Architecture: ARM
+> > >    Type:         Kernel Image
+> > >    Compression:  uncompressed
+> > >    Data Size:    6636352 Bytes = 6.3 MiB
+> > >    Load Address: 10008000
+> > >    Entry Point:  10008000
+> > >
+> > >Loading U-Boot uImage '/mnt/uImage'
+> > >Loading devicetree from '/mnt/dtb'
+> > >commandline: console=ttymxc2,115200 rootwait noswap ip=none noinitrd rootfstype=nilfs2 root=/dev/mmcblk2p3 fec.macaddr=0x7a,0x3f,0x03,0xe3,0xa2,0xff
+> > >Uncompressing Linux... done, booting the kernel.
+> > >
+> > >Error: unrecognized/unsupported machine ID (r1 = 0x00000000).
 > 
-> Hmmm. It look like the patchseries is in the next branch.
-> 
-> So I just send fixups.
+> Looks like the device tree is not actually used. Could you boot with -v
+> please? Also, could you try a zImage instead of a uImage? Last not
+> least, does the problem persist on current barebox master?
 
-Thanks, just applied.
+Ok, I just reproduced the problem here with barebox-2016.02.0. It is
+fixed in master.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
