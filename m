@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x236.google.com ([2a00:1450:400c:c09::236])
+Received: from forward11o.cmail.yandex.net ([37.9.109.178])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1afOBF-0000iM-UY
- for barebox@lists.infradead.org; Mon, 14 Mar 2016 08:48:51 +0000
-Received: by mail-wm0-x236.google.com with SMTP id l68so92335353wml.1
- for <barebox@lists.infradead.org>; Mon, 14 Mar 2016 01:48:29 -0700 (PDT)
+ id 1afVKe-0007jx-3P
+ for barebox@lists.infradead.org; Mon, 14 Mar 2016 16:27:01 +0000
+From: Aleksey Kuleshov <rndfax@yandex.ru>
+In-Reply-To: <20160310092619.GK30994@pengutronix.de>
+References: <1457018230-4554-1-git-send-email-rndfax@yandex.ru>
+ <1457018230-4554-2-git-send-email-rndfax@yandex.ru>
+ <20160304071921.GD21869@pengutronix.de>
+ <4230541457086688@web17h.yandex.ru>
+ <20160307073016.GG21869@pengutronix.de>
+ <1569051457342206@web17j.yandex.ru> <20160310092619.GK30994@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20160229065019.GC9224@pengutronix.de>
-References: <1456416080-486-1-git-send-email-ledphilippe@gmail.com>
- <20160229065019.GC9224@pengutronix.de>
-Date: Mon, 14 Mar 2016 09:48:27 +0100
-Message-ID: <CABQt-U=YhwADLM2Ldaz8oznSHVWNQxgdme325=9h4Qe1OTg=2w@mail.gmail.com>
-From: Philippe Leduc <ledphilippe@gmail.com>
+Message-Id: <5303551457972793@web8j.yandex.ru>
+Date: Mon, 14 Mar 2016 19:26:33 +0300
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,113 +22,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 1/1] i.MX: IPUv3: Add parallel display support
+Subject: Re: [PATCH 2/2] input: make the Input Core be the last in the poller
+ queue
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
-
-Thanks for the feedback, I'll fix that ASAP.
-
-Regards,
-
---
-Philippe LEDUC
-ledphilippe@gmail.com
-
-
-2016-02-29 7:50 GMT+01:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> Hi Philippe,
->
-> Looks good overall, some small points.
->
-> On Thu, Feb 25, 2016 at 05:01:20PM +0100, Philippe Leduc wrote:
->> Add a driver compatible with "fsl,imx-parallel-display" in order
->> to enable parallel display with the i.MX IPUv3.
->>
->> Signed-off-by: Philippe Leduc<ledphilippe@gmail.com>
->> --
->> +struct imx_pd {
->> +     struct device_d *dev;
->> +     struct display_timings *timings;
->> +     u32 interface_pix_fmt;
->> +     struct vpl vpl;
->> +};
->> +
->> +
->> +
->
-> Plese drop multiple blank lines here.
->
->> +static int imx_pd_ioctl(struct vpl *vpl, unsigned int port,
->> +             unsigned int cmd, void *data)
->> +{
->> +     struct imx_pd *imx_pd = container_of(vpl, struct imx_pd, vpl);
->> +     struct ipu_di_mode *mode;
->> +     struct display_timings *timings;
->> +
->> +     switch (cmd) {
->> +     case IMX_IPU_VPL_DI_MODE:
->> +             mode = data;
->> +
->> +             mode->di_clkflags = IPU_DI_CLKMODE_SYNC;
->> +             mode->interface_pix_fmt = imx_pd->interface_pix_fmt;
->> +             return 0;
->> +
->> +     case VPL_GET_VIDEOMODES:
->> +             timings = data;
->> +
->> +             timings->num_modes   = imx_pd->timings->num_modes;
->> +             timings->native_mode = imx_pd->timings->native_mode;
->> +             timings->modes       = imx_pd->timings->modes;
->> +             timings->edid        = NULL;
->> +             return 0;
->> +     }
->> +
->> +     return 0;
->> +}
->> +
->> +static int imx_pd_probe(struct device_d *dev)
->> +{
->> +     struct device_node *node = dev->device_node;
->> +     struct imx_pd *imx_pd;
->> +     const char *fmt;
->> +     int ret;
->> +
->> +     imx_pd = xzalloc(sizeof(*imx_pd));
->> +     imx_pd->dev = dev;
->> +
->> +     ret = of_property_read_string(node, "interface-pix-fmt", &fmt);
->> +     if (!ret) {
->> +             if (!strcmp(fmt, "rgb24"))
->> +                     imx_pd->interface_pix_fmt = V4L2_PIX_FMT_RGB24;
->> +             else if (!strcmp(fmt, "rgb565"))
->> +                     imx_pd->interface_pix_fmt = V4L2_PIX_FMT_RGB565;
->> +             else if (!strcmp(fmt, "bgr666"))
->> +                     imx_pd->interface_pix_fmt = V4L2_PIX_FMT_BGR666;
->
-> else? You should probably bail out with an error here.
->
->> +     }
->> +
->> +     imx_pd->timings = of_get_display_timings(node);
->
-> You should check the result. If no display timing is found then barebox
-> will crash in the ioctl function.
->
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+R2VuaXVzIFVTQiBrZXlib2FyZCBjYW4ndCB3b3JrIHdpdGggaW50ZXJydXB0IG1zZ3MsIG9ubHkg
+Y29udHJvbCBtc2dzLgpUaGVuLCB3aXRoIGNvbnRyb2wgbXNncyBpZiB0aGVyZSB3ZXJlIG5vIHJl
+cG9ydCByZXF1ZXN0cyBkdXJpbmcgfjEwIHNlY3MsIEVIQ0kgc3RhY2sKaW4gQmFyZWJveCByZXBv
+cnRzICJ0aW1lb3V0IGVycm9yIiBpbmZpbml0ZWx5IHVudGlsICd1c2InIGNvbW1hbmQgd2lsbCBi
+ZSBleGVjdHVlZAooaS5lLiB1bnRpbCBFSENJIGhhbHQgKyByZXNldCkuCgpTbzoKCjEpIHVzYl9r
+YmQgY2FuIGRldGVjdCAidGltZW91dCBlcnJvciIgKG9yIHNvbWUgb3RoZXIgZXJyb3IpIHNvIHlv
+dXIgcGF0Y2gsIGFzIGZvciBub3csCmxhY2tzIHN0YXR1cyBjaGVja2luZyBmcm9tIGlkZXYtPnBv
+bGwoKS4KCjIpIEkga25vdyB0aGlzIGlzIGEgV0lQIHBhdGNoLCBidXQKCj4gK3N0YXRpYyB2b2lk
+IGlucHV0X2RldmljZXNfcG9sbGVyX2Z1bmMoc3RydWN0IHBvbGxlcl9zdHJ1Y3QgKnBvbGxlcikK
+PiCaewo+IC0gc3RydWN0IGlucHV0X2NvbnNvbGUgKmljID0gY3R4Owo+ICsgc3RydWN0IGlucHV0
+X2RldmljZSAqaWRldjsKPiArIHN0YXRpYyB1aW50NjRfdCBsYXN0X3BvbGw7Cj4gKyBzdHJ1Y3Qg
+aW5wdXRfbm90aWZpZXIgKmluOwo+ICsKPiArIGlmICghaXNfdGltZW91dChsYXN0X3BvbGwsIDEw
+ICogTVNFQ09ORCkpCj4gKyByZXR1cm47Cgp0aGUgbGFzdF9wb2xsIHZhciB3YXMgbmV2ZXIgc2V0
+IGFuZCB3aHkgJ2lzX3RpbWVvdXQnIGlzIGhlcmUgaWYgeW91IGhhdmUgYXN5bmNfY2FsbHM/Ck1h
+eWJlIGl0IHNob3VsZCBiZSBsaWtlIHRoaXM/OgoKc3RhdGljIHN0cnVjdCBwb2xsZXJfYXN5bmMg
+aW5wdXRfcG9sbGVyOwpzdGF0aWMgdm9pZCBpbnB1dF9kZXZpY2VzX3BvbGxlcl9mdW5jKHZvaWQg
+KmFyZykKewogICAgICAgIHN0cnVjdCBpbnB1dF9kZXZpY2UgKmlkZXY7CiAgICAgICAgc3RydWN0
+IGlucHV0X25vdGlmaWVyICppbjsKCiAgICAgICAgbGlzdF9mb3JfZWFjaF9lbnRyeShpZGV2LCAm
+aW5wdXRfZGV2aWNlcywgbGlzdCkgewogICAgICAgICAgICAgICAgaWRldi0+cG9sbChpZGV2KTsK
+CiAgICAgICAgICAgICAgICBpZiAoaWRldi0+ZXZlbnQudmFsdWUgJiYgaXNfdGltZW91dChpZGV2
+LT5zdGFydCwgaWRldi0+dGltZW91dCkpIHsKICAgICAgICAgICAgICAgICAgICAgICAgbGlzdF9m
+b3JfZWFjaF9lbnRyeShpbiwgJmlucHV0X2NvbnN1bWVycywgbGlzdCkKICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICBpbi0+bm90aWZ5KGluLCAmaWRldi0+ZXZlbnQpOwogICAgICAgICAg
+ICAgICAgICAgICAgICBpZGV2LT50aW1lb3V0ID0gNDAgKiBNU0VDT05EOwogICAgICAgICAgICAg
+ICAgICAgICAgICBpZGV2LT5zdGFydCA9IGdldF90aW1lX25zKCk7CiAgICAgICAgICAgICAgICB9
+CiAgICAgICAgfQoKICAgICAgICBwb2xsZXJfY2FsbF9hc3luYygmaW5wdXRfcG9sbGVyLCAxMCAq
+IE1TRUNPTkQsIGlucHV0X2RldmljZXNfcG9sbGVyX2Z1bmMsIE5VTEwpOwp9CgpBbmQgdGhhdCdz
+IGFsbCB3aGF0IEkgY2FuIHNheSBhYm91dCBFSENJL2lucHV0L3VzYl9rYmQgc28gZmFyLgoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
+aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
