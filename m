@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x236.google.com ([2a00:1450:400c:c09::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1afN8s-0002PT-UO
- for barebox@lists.infradead.org; Mon, 14 Mar 2016 07:42:19 +0000
-Date: Mon, 14 Mar 2016 08:41:56 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160314074156.GQ30994@pengutronix.de>
-References: <1457598600-10669-1-git-send-email-mpa@pengutronix.de>
- <1457598600-10669-8-git-send-email-mpa@pengutronix.de>
+ id 1afOBF-0000iM-UY
+ for barebox@lists.infradead.org; Mon, 14 Mar 2016 08:48:51 +0000
+Received: by mail-wm0-x236.google.com with SMTP id l68so92335353wml.1
+ for <barebox@lists.infradead.org>; Mon, 14 Mar 2016 01:48:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1457598600-10669-8-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <20160229065019.GC9224@pengutronix.de>
+References: <1456416080-486-1-git-send-email-ledphilippe@gmail.com>
+ <20160229065019.GC9224@pengutronix.de>
+Date: Mon, 14 Mar 2016 09:48:27 +0100
+Message-ID: <CABQt-U=YhwADLM2Ldaz8oznSHVWNQxgdme325=9h4Qe1OTg=2w@mail.gmail.com>
+From: Philippe Leduc <ledphilippe@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,76 +24,107 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 8/8] ubiformat: Cleanly umount and detach the ubi
- before formating
-To: Markus Pargmann <mpa@pengutronix.de>
+Subject: Re: [RFC 1/1] i.MX: IPUv3: Add parallel display support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Mar 10, 2016 at 09:30:00AM +0100, Markus Pargmann wrote:
-> This was an open fixme for some time. ubiformat does not care about used
-> ubi volumes or attached ubis.
-> 
-> This patch adds functionality that umounts all filesystems that are
-> mounted from this nand device. After that the ubi is detached. Then the
-> normal ubiformat code reformats the ubi. If a ubi was detached
-> previously, the code tries to reattach the ubi. Filesystems are not
-> remounted.
-> 
-> Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
-> ---
->  commands/ubiformat.c | 29 +++++++++++++++++++++++++++--
->  1 file changed, 27 insertions(+), 2 deletions(-)
-> 
-> diff --git a/commands/ubiformat.c b/commands/ubiformat.c
-> index f9c50b7936eb..4a80952dca61 100644
-> --- a/commands/ubiformat.c
-> +++ b/commands/ubiformat.c
-> @@ -42,6 +42,7 @@
->  #include <libbb.h>
->  #include <libfile.h>
->  #include <linux/mtd/mtd.h>
-> +#include <linux/mtd/ubi.h>
->  #include <linux/kernel.h>
->  #include <linux/stat.h>
->  #include <linux/log2.h>
-> @@ -555,6 +556,8 @@ int do_ubiformat(int argc, char *argv[])
->  	struct mtd_dev_info mtd;
->  	struct ubigen_info ui;
->  	struct ubi_scan_info *si;
-> +	int ubi_detached = -1;
-> +	struct mtd_info_user mtd_info;
->  
->  	err = parse_opt(argc, argv);
->  	if (err)
-> @@ -614,8 +617,19 @@ int do_ubiformat(int argc, char *argv[])
->  		goto out_close;
->  	}
->  
-> -	/* Make sure this MTD device is not attached to UBI */
-> -	/* FIXME! Find a proper way to do this in barebox! */
-> +	err = ioctl(args.node_fd, MEMGETINFO, &mtd_info);
-> +	if (err) {
-> +		sys_errmsg("Failed to get user info %d\n", err);
-> +		goto out_close;
-> +	}
-> +
-> +	ubi_detached = ubi_num_get_by_mtd(mtd_info.mtd);
-> +	err = ubi_detach_by_mtd(mtd_info.mtd, args.yes);
-> +	if (err) {
-> +		sys_errmsg("Cannot detach %d\n", err);
-> +		goto out_close;
-> +	}
+Hi,
 
-ubi_detach_by_mtd() returns an error if the mtd device hasn't been
-attached to ubi. I think there's a if (ubi_detached >= 0) missing here.
+Thanks for the feedback, I'll fix that ASAP.
 
-Sascha
+Regards,
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--
+Philippe LEDUC
+ledphilippe@gmail.com
+
+
+2016-02-29 7:50 GMT+01:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> Hi Philippe,
+>
+> Looks good overall, some small points.
+>
+> On Thu, Feb 25, 2016 at 05:01:20PM +0100, Philippe Leduc wrote:
+>> Add a driver compatible with "fsl,imx-parallel-display" in order
+>> to enable parallel display with the i.MX IPUv3.
+>>
+>> Signed-off-by: Philippe Leduc<ledphilippe@gmail.com>
+>> --
+>> +struct imx_pd {
+>> +     struct device_d *dev;
+>> +     struct display_timings *timings;
+>> +     u32 interface_pix_fmt;
+>> +     struct vpl vpl;
+>> +};
+>> +
+>> +
+>> +
+>
+> Plese drop multiple blank lines here.
+>
+>> +static int imx_pd_ioctl(struct vpl *vpl, unsigned int port,
+>> +             unsigned int cmd, void *data)
+>> +{
+>> +     struct imx_pd *imx_pd = container_of(vpl, struct imx_pd, vpl);
+>> +     struct ipu_di_mode *mode;
+>> +     struct display_timings *timings;
+>> +
+>> +     switch (cmd) {
+>> +     case IMX_IPU_VPL_DI_MODE:
+>> +             mode = data;
+>> +
+>> +             mode->di_clkflags = IPU_DI_CLKMODE_SYNC;
+>> +             mode->interface_pix_fmt = imx_pd->interface_pix_fmt;
+>> +             return 0;
+>> +
+>> +     case VPL_GET_VIDEOMODES:
+>> +             timings = data;
+>> +
+>> +             timings->num_modes   = imx_pd->timings->num_modes;
+>> +             timings->native_mode = imx_pd->timings->native_mode;
+>> +             timings->modes       = imx_pd->timings->modes;
+>> +             timings->edid        = NULL;
+>> +             return 0;
+>> +     }
+>> +
+>> +     return 0;
+>> +}
+>> +
+>> +static int imx_pd_probe(struct device_d *dev)
+>> +{
+>> +     struct device_node *node = dev->device_node;
+>> +     struct imx_pd *imx_pd;
+>> +     const char *fmt;
+>> +     int ret;
+>> +
+>> +     imx_pd = xzalloc(sizeof(*imx_pd));
+>> +     imx_pd->dev = dev;
+>> +
+>> +     ret = of_property_read_string(node, "interface-pix-fmt", &fmt);
+>> +     if (!ret) {
+>> +             if (!strcmp(fmt, "rgb24"))
+>> +                     imx_pd->interface_pix_fmt = V4L2_PIX_FMT_RGB24;
+>> +             else if (!strcmp(fmt, "rgb565"))
+>> +                     imx_pd->interface_pix_fmt = V4L2_PIX_FMT_RGB565;
+>> +             else if (!strcmp(fmt, "bgr666"))
+>> +                     imx_pd->interface_pix_fmt = V4L2_PIX_FMT_BGR666;
+>
+> else? You should probably bail out with an error here.
+>
+>> +     }
+>> +
+>> +     imx_pd->timings = of_get_display_timings(node);
+>
+> You should check the result. If no display timing is found then barebox
+> will crash in the ioctl function.
+>
+> Sascha
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
