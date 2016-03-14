@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1afMzf-0004rA-4f
- for barebox@lists.infradead.org; Mon, 14 Mar 2016 07:32:48 +0000
-Date: Mon, 14 Mar 2016 08:32:21 +0100
+ id 1afN8s-0002PT-UO
+ for barebox@lists.infradead.org; Mon, 14 Mar 2016 07:42:19 +0000
+Date: Mon, 14 Mar 2016 08:41:56 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160314073221.GP30994@pengutronix.de>
+Message-ID: <20160314074156.GQ30994@pengutronix.de>
 References: <1457598600-10669-1-git-send-email-mpa@pengutronix.de>
- <1457598600-10669-7-git-send-email-mpa@pengutronix.de>
+ <1457598600-10669-8-git-send-email-mpa@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1457598600-10669-7-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <1457598600-10669-8-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,90 +23,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 7/8] ubi: Let ubidetach umount all filesystems before
- detaching
+Subject: Re: [PATCH v2 8/8] ubiformat: Cleanly umount and detach the ubi
+ before formating
 To: Markus Pargmann <mpa@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Mar 10, 2016 at 09:29:59AM +0100, Markus Pargmann wrote:
-> This patch iterates through all ubi volumes and umounts all filesystems
-> that are mounted.
+On Thu, Mar 10, 2016 at 09:30:00AM +0100, Markus Pargmann wrote:
+> This was an open fixme for some time. ubiformat does not care about used
+> ubi volumes or attached ubis.
+> 
+> This patch adds functionality that umounts all filesystems that are
+> mounted from this nand device. After that the ubi is detached. Then the
+> normal ubiformat code reformats the ubi. If a ubi was detached
+> previously, the code tries to reattach the ubi. Filesystems are not
+> remounted.
 > 
 > Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 > ---
->  drivers/mtd/ubi/build.c | 29 +++++++++++++++++++++++++++++
->  1 file changed, 29 insertions(+)
+>  commands/ubiformat.c | 29 +++++++++++++++++++++++++++--
+>  1 file changed, 27 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
-> index 7ee34bc62f30..edaa98b0973c 100644
-> --- a/drivers/mtd/ubi/build.c
-> +++ b/drivers/mtd/ubi/build.c
-> @@ -25,6 +25,7 @@
->   * later using the "UBI control device".
->   */
->  
-> +#include <fs.h>
->  #include <linux/err.h>
->  #include <linux/stringify.h>
+> diff --git a/commands/ubiformat.c b/commands/ubiformat.c
+> index f9c50b7936eb..4a80952dca61 100644
+> --- a/commands/ubiformat.c
+> +++ b/commands/ubiformat.c
+> @@ -42,6 +42,7 @@
+>  #include <libbb.h>
+>  #include <libfile.h>
+>  #include <linux/mtd/mtd.h>
+> +#include <linux/mtd/ubi.h>
+>  #include <linux/kernel.h>
 >  #include <linux/stat.h>
-> @@ -713,6 +714,8 @@ out_free:
->  int ubi_detach_mtd_dev(int ubi_num, int anyway)
->  {
->  	struct ubi_device *ubi;
-> +	int vol_id;
-> +	int ret;
+>  #include <linux/log2.h>
+> @@ -555,6 +556,8 @@ int do_ubiformat(int argc, char *argv[])
+>  	struct mtd_dev_info mtd;
+>  	struct ubigen_info ui;
+>  	struct ubi_scan_info *si;
+> +	int ubi_detached = -1;
+> +	struct mtd_info_user mtd_info;
 >  
->  	if (ubi_num < 0 || ubi_num >= UBI_MAX_DEVICES)
->  		return -EINVAL;
-> @@ -723,6 +726,32 @@ int ubi_detach_mtd_dev(int ubi_num, int anyway)
+>  	err = parse_opt(argc, argv);
+>  	if (err)
+> @@ -614,8 +617,19 @@ int do_ubiformat(int argc, char *argv[])
+>  		goto out_close;
+>  	}
 >  
->  	ubi->ref_count--;
->  
-> +	ubi_volume_for_each(ubi_num, ubi, vol_id, ret) {
-> +		struct ubi_volume_desc *vol;
+> -	/* Make sure this MTD device is not attached to UBI */
+> -	/* FIXME! Find a proper way to do this in barebox! */
+> +	err = ioctl(args.node_fd, MEMGETINFO, &mtd_info);
+> +	if (err) {
+> +		sys_errmsg("Failed to get user info %d\n", err);
+> +		goto out_close;
+> +	}
 > +
-> +		vol = ubi_open_volume(ubi_num, vol_id, UBI_READONLY);
-> +		if (IS_ERR(vol)) {
-> +			pr_err("Failed to open ubi volume %d %d, %ld\n",
-> +			       ubi_num, vol_id, PTR_ERR(vol));
-> +			if (anyway)
-> +				continue;
-> +
-> +			ubi_volume_abort(ubi);
-> +			return PTR_ERR(vol);
-> +		}
-> +
-> +		ret = umount_by_cdev(ubi_volume_get_cdev(vol));
-> +		ubi_close_volume(vol);
-> +		if (ret) {
-> +			pr_err("Failed umounting ubi volume %d %d, %d\n",
-> +			       ubi_num, vol_id, ret);
-> +			if (anyway)
-> +				continue;
-> +			ubi_volume_abort(ubi);
-> +			return ret;
-> +		}
+> +	ubi_detached = ubi_num_get_by_mtd(mtd_info.mtd);
+> +	err = ubi_detach_by_mtd(mtd_info.mtd, args.yes);
+> +	if (err) {
+> +		sys_errmsg("Cannot detach %d\n", err);
+> +		goto out_close;
 > +	}
 
-Wouldn't the following do it?
-
-void ubi_umount_volumes(struct ubi_device *ubi)
-{
-	int i;
-
-	for (i = 0; i < ubi->vtbl_slots; i++) {
-		struct ubi_volume *vol = ubi->volumes[i];
-
-		if (!vol)
-			continue;
-
-		umount_by_cdev(vol->cdev);
-	}
-}
-
-We shouldn't change the UBI code too much as it makes updates harder. If
-possible, please move the code to cdev.c which is completely barebox
-specific (if needed, we may rename cdev.c to barebox.c)
+ubi_detach_by_mtd() returns an error if the mtd device hasn't been
+attached to ubi. I think there's a if (ubi_detached >= 0) missing here.
 
 Sascha
 
