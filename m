@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1afn0l-000104-DG
- for barebox@lists.infradead.org; Tue, 15 Mar 2016 11:19:41 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
- (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1afn0N-0000bw-HQ
- for barebox@lists.infradead.org; Tue, 15 Mar 2016 12:19:15 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.86_2)
- (envelope-from <sha@pengutronix.de>) id 1afn0N-0001ji-5s
- for barebox@lists.infradead.org; Tue, 15 Mar 2016 12:19:15 +0100
+ by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
+ id 1afn0o-0005Ty-AE
+ for barebox@lists.infradead.org; Tue, 15 Mar 2016 11:19:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Mar 2016 12:19:03 +0100
-Message-Id: <1458040754-32240-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 15 Mar 2016 12:19:05 +0100
+Message-Id: <1458040754-32240-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1458040754-32240-1-git-send-email-s.hauer@pengutronix.de>
+References: <1458040754-32240-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,38 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: i.MX NAND Boot: Make update robust against power failures
+Subject: [PATCH 02/11] mtd: nand: export nand_check_erased_buf
 To: Barebox List <barebox@lists.infradead.org>
 
-The i.MX6 allows to store the barebox image and all control data around
-it redundantly in the NAND. This can be used to make a barebox update
-safe against power failures. The following series implements this. It
-makes use of the just sent mtd-peb API.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/nand/nand_base.c | 2 +-
+ include/linux/mtd/nand.h     | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-Sascha
+diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+index 7eef287..79c1edd 100644
+--- a/drivers/mtd/nand/nand_base.c
++++ b/drivers/mtd/nand/nand_base.c
+@@ -957,7 +957,7 @@ EXPORT_SYMBOL(nand_lock);
+  * bitflips_threshold, or -ERROR_CODE for bitflips in excess of the
+  * threshold.
+  */
+-static int nand_check_erased_buf(void *buf, int len, int bitflips_threshold)
++int nand_check_erased_buf(void *buf, int len, int bitflips_threshold)
+ {
+ 	const unsigned char *bitmap = buf;
+ 	int bitflips = 0;
+diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
+index b787842..5beec39 100644
+--- a/include/linux/mtd/nand.h
++++ b/include/linux/mtd/nand.h
+@@ -50,6 +50,7 @@ extern int nand_check_erased_ecc_chunk(void *data, int datalen,
+ 				       void *ecc, int ecclen,
+ 				       void *extraoob, int extraooblen,
+ 				       int bitflips_threshold);
++int nand_check_erased_buf(void *buf, int len, int bitflips_threshold);
+ 
+ /* The maximum number of NAND chips in an array */
+ #define NAND_MAX_CHIPS		8
+-- 
+2.7.0
 
-----------------------------------------------------------------
-Sascha Hauer (11):
-      bbu: Allow to refresh/repair images
-      mtd: nand: export nand_check_erased_buf
-      imx-bbu-nand-fcb: factor out layout functions
-      imx-bbu-nand-fcb: Use mtd-peb API to write firmware
-      imx-bbu-nand-fcb: factor out a fcb write function
-      imx-bbu-nand-fcb: erase on demand
-      imx-bbu-nand-fcb: Only write FCBs/DBBTs when necessary
-      imx-bbu-nand-fcb: When writing firmware return new bad blocks
-      imx-bbu-nand-fcb: Print error when writing blocks fails
-      imx-bbu-nand-fcb: Make robust against power cuts
-      imx-bbu-nand-fcb: Print error message when out of pebs
-
- Documentation/user/updating.rst |   8 +
- commands/barebox-update.c       |  26 +-
- common/bbu.c                    |  12 +-
- common/imx-bbu-nand-fcb.c       | 968 +++++++++++++++++++++++++++++++++-------
- drivers/mtd/nand/nand_base.c    |   2 +-
- include/bbu.h                   |   1 +
- include/linux/mtd/nand.h        |   1 +
- 7 files changed, 854 insertions(+), 164 deletions(-)
 
 _______________________________________________
 barebox mailing list
