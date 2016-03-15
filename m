@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1afn0o-0005U0-9c
- for barebox@lists.infradead.org; Tue, 15 Mar 2016 11:19:43 +0000
+ id 1afn3v-0005WY-0s
+ for barebox@lists.infradead.org; Tue, 15 Mar 2016 11:22:56 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Mar 2016 12:19:11 +0100
-Message-Id: <1458040754-32240-9-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1458040754-32240-1-git-send-email-s.hauer@pengutronix.de>
-References: <1458040754-32240-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 15 Mar 2016 12:22:32 +0100
+Message-Id: <1458040952-6826-9-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1458040952-6826-1-git-send-email-s.hauer@pengutronix.de>
+References: <1458040952-6826-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,51 +21,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/11] imx-bbu-nand-fcb: When writing firmware return new bad
- blocks
+Subject: [PATCH 8/8] ubiformat: Cleanly umount and detach the ubi before
+ formating
 To: Barebox List <barebox@lists.infradead.org>
 
-Positive return values of imx_bbu_write_firmware() so far indicate
-the last block that has been written to. This value is unused, so
-return values > 0 to indicate if there are new bad blocks. This
-information can be used in the next step to know if the DBBT has
-to be rewritten.
+From: Markus Pargmann <mpa@pengutronix.de>
 
+This was an open fixme for some time. ubiformat does not care about used
+ubi volumes or attached ubis.
+
+This patch adds functionality that umounts all filesystems that are
+mounted from this nand device. After that the ubi is detached. Then the
+normal ubiformat code reformats the ubi. If a ubi was detached
+previously, the code tries to reattach the ubi. Filesystems are not
+remounted.
+
+Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/imx-bbu-nand-fcb.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ commands/ubiformat.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
-index 0c7f75c..3e1f35f 100644
---- a/common/imx-bbu-nand-fcb.c
-+++ b/common/imx-bbu-nand-fcb.c
-@@ -400,7 +400,7 @@ static int imx_bbu_firmware_start_block(struct mtd_info *mtd, int num)
- static int imx_bbu_write_firmware(struct mtd_info *mtd, unsigned num, void *buf,
- 				  size_t len)
- {
--	int ret, i;
-+	int ret, i, newbadblock = 0;
- 	int num_blocks = imx_bbu_firmware_max_blocks(mtd);
- 	int block = imx_bbu_firmware_start_block(mtd, num);
+diff --git a/commands/ubiformat.c b/commands/ubiformat.c
+index 0172654..2ffdd0c 100644
+--- a/commands/ubiformat.c
++++ b/commands/ubiformat.c
+@@ -42,6 +42,7 @@
+ #include <libbb.h>
+ #include <libfile.h>
+ #include <linux/mtd/mtd.h>
++#include <linux/mtd/ubi.h>
+ #include <linux/kernel.h>
+ #include <linux/stat.h>
+ #include <linux/log2.h>
+@@ -562,6 +563,7 @@ int do_ubiformat(int argc, char *argv[])
+ 	struct ubigen_info ui;
+ 	struct ubi_scan_info *si;
+ 	struct mtd_info_user mtd_user;
++	int ubi_num;
  
-@@ -437,6 +437,7 @@ static int imx_bbu_write_firmware(struct mtd_info *mtd, unsigned num, void *buf,
- 		if (ret == -EIO) {
- 			block++;
- 			num_blocks--;
-+			newbadblock = 1;
- 			continue;
- 		}
- 
-@@ -449,7 +450,7 @@ static int imx_bbu_write_firmware(struct mtd_info *mtd, unsigned num, void *buf,
- 		num_blocks--;
+ 	err = parse_opt(argc, argv);
+ 	if (err)
+@@ -622,8 +624,15 @@ int do_ubiformat(int argc, char *argv[])
+ 		goto out_close;
  	}
  
--	return block;
-+	return newbadblock;
- }
+-	/* Make sure this MTD device is not attached to UBI */
+-	/* FIXME! Find a proper way to do this in barebox! */
++	ubi_num = ubi_num_get_by_mtd(mtd_user.mtd);
++	if (ubi_num >= 0) {
++		err = ubi_detach(ubi_num);
++		if (err) {
++			sys_errmsg("Cannot detach %d\n", err);
++			goto out_close;
++		}
++	}
++
  
- static void *dbbt_data_create(struct mtd_info *mtd)
+ 	eb_cnt = mtd_div_by_eb(mtd->size, mtd);
+ 
+@@ -759,6 +768,17 @@ int do_ubiformat(int argc, char *argv[])
+ 	}
+ 
+ 	libscan_ubi_scan_free(si);
++
++	/* Reattach the ubi device in case it was attached in the beginning */
++	if (ubi_num >= 0) {
++		err = ubi_attach_mtd_dev(mtd_user.mtd, ubi_num, 0, 20);
++		if (err) {
++			pr_err("Failed to reattach ubi device to ubi number %d, %d\n",
++			       ubi_num, err);
++			return err;
++		}
++	}
++
+ 	return 0;
+ 
+ out_free:
 -- 
 2.7.0
 
