@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1afmxS-0005LI-Tl
- for barebox@lists.infradead.org; Tue, 15 Mar 2016 11:16:24 +0000
+ id 1afmxh-0005TC-Ui
+ for barebox@lists.infradead.org; Tue, 15 Mar 2016 11:16:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Mar 2016 12:15:25 +0100
-Message-Id: <1458040534-6171-8-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 15 Mar 2016 12:15:28 +0100
+Message-Id: <1458040534-6171-11-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1458040534-6171-1-git-send-email-s.hauer@pengutronix.de>
 References: <1458040534-6171-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,632 +21,118 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/16] mtd: Introduce mtd-peb API
+Subject: [PATCH 10/16] mtd: ubi: Use mtd_all_ff/mtd_check_pattern
 To: Barebox List <barebox@lists.infradead.org>
-
-Code which properly wants to handle Nand flash has to work
-in a block based way since blocks are the entities that are erased or
-may become bad. The regular mtd API works based on offsets in the device
-which introduces unhandy 64bit arithmetics and the requirement to align
-buffers to blocks.
-This introduces the mtd peb API (PEB for physical Erase Block) which
-allows the users to work in a block oriented way. The API is heavily
-inspired by the UBI IO layer and in fact can replace parts thereof
-later.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/Kconfig   |   9 +
- drivers/mtd/Makefile  |   2 +-
- drivers/mtd/peb.c     | 537 ++++++++++++++++++++++++++++++++++++++++++++++++++
- include/mtd/mtd-peb.h |  21 ++
- 4 files changed, 568 insertions(+), 1 deletion(-)
- create mode 100644 drivers/mtd/peb.c
- create mode 100644 include/mtd/mtd-peb.h
+ drivers/mtd/ubi/attach.c |  2 +-
+ drivers/mtd/ubi/io.c     | 10 +++++-----
+ drivers/mtd/ubi/misc.c   | 19 -------------------
+ drivers/mtd/ubi/ubi.h    |  1 -
+ 4 files changed, 6 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/mtd/Kconfig b/drivers/mtd/Kconfig
-index ea1be55..db9c287 100644
---- a/drivers/mtd/Kconfig
-+++ b/drivers/mtd/Kconfig
-@@ -30,6 +30,15 @@ config MTD_CONCAT
- 	  needs driver support, currently only the cfi-flash driver supports
- 	  concatenating MTD devices.
+diff --git a/drivers/mtd/ubi/attach.c b/drivers/mtd/ubi/attach.c
+index d6fe43b..88370f4 100644
+--- a/drivers/mtd/ubi/attach.c
++++ b/drivers/mtd/ubi/attach.c
+@@ -772,7 +772,7 @@ static int check_corruption(struct ubi_device *ubi, struct ubi_vid_hdr *vid_hdr,
+ 	if (err)
+ 		goto out_unlock;
  
-+comment "MTD debug options"
-+
-+config MTD_PEB_DEBUG
-+	bool "MTD PEB debug"
-+	help
-+	  When enabled the MTD PEB API will emulate bitflips. Random read
-+	  operations will return that bits are flipped. The MTD PEB API
-+	  is used by UBI and ubiformat
-+
- source "drivers/mtd/devices/Kconfig"
- source "drivers/mtd/nor/Kconfig"
- source "drivers/mtd/nand/Kconfig"
-diff --git a/drivers/mtd/Makefile b/drivers/mtd/Makefile
-index d3ae7fc..bfac8eb 100644
---- a/drivers/mtd/Makefile
-+++ b/drivers/mtd/Makefile
-@@ -3,7 +3,7 @@ obj-$(CONFIG_DRIVER_CFI)		+= nor/
- obj-$(CONFIG_MTD_SPI_NOR)		+= spi-nor/
- obj-$(CONFIG_MTD_UBI)			+= ubi/
- obj-y					+= devices/
--obj-$(CONFIG_MTD)			+= core.o partition.o
-+obj-$(CONFIG_MTD)			+= core.o partition.o peb.o
- obj-$(CONFIG_MTD_OOB_DEVICE)		+= mtdoob.o
- obj-$(CONFIG_MTD_RAW_DEVICE)		+= mtdraw.o
- obj-$(CONFIG_MTD_CONCAT)		+= mtdconcat.o
-diff --git a/drivers/mtd/peb.c b/drivers/mtd/peb.c
-new file mode 100644
-index 0000000..15420a8
---- /dev/null
-+++ b/drivers/mtd/peb.c
-@@ -0,0 +1,537 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; version 2.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-+ * General Public License for more details.
-+ */
-+
-+#include <common.h>
-+#include <malloc.h>
-+#include <stdlib.h>
-+#include <init.h>
-+#include <magicvar.h>
-+#include <globalvar.h>
-+#include <linux/mtd/mtd.h>
-+#include <mtd/mtd-peb.h>
-+#include <linux/err.h>
-+
-+#define MTD_IO_RETRIES 3
-+
-+static int __mtd_peb_chk_io;
-+
-+static int mtd_peb_chk_io(void)
-+{
-+	if (!IS_ENABLED(CONFIG_MTD_PEB_DEBUG))
-+		return 0;
-+
-+	if (!__mtd_peb_chk_io)
-+		return 0;
-+
-+	return 1;
-+}
-+
-+static u32 __mtd_peb_emulate_bitflip;
-+
-+static int mtd_peb_emulate_bitflip(void)
-+{
-+	if (!IS_ENABLED(CONFIG_MTD_PEB_DEBUG))
-+		return 0;
-+
-+	if (!__mtd_peb_emulate_bitflip)
-+		return 0;
-+
-+	return !(random32() % __mtd_peb_emulate_bitflip);
-+}
-+
-+static u32 __mtd_peb_emulate_write_failure;
-+
-+static int mtd_peb_emulate_write_failure(void)
-+{
-+	if (!IS_ENABLED(CONFIG_MTD_PEB_DEBUG))
-+		return 0;
-+
-+	if (!__mtd_peb_emulate_write_failure)
-+		return 0;
-+
-+	return !(random32() % __mtd_peb_emulate_write_failure);
-+}
-+
-+static u32 __mtd_peb_emulate_erase_failures;
-+
-+static int mtd_peb_emulate_erase_failure(void)
-+{
-+	if (!IS_ENABLED(CONFIG_MTD_PEB_DEBUG))
-+		return 0;
-+
-+	if (!__mtd_peb_emulate_erase_failures)
-+		return 0;
-+
-+	return !(random32() % __mtd_peb_emulate_erase_failures);
-+}
-+
-+#ifdef CONFIG_MTD_PEB_DEBUG
-+static int mtd_peb_debug_init(void)
-+{
-+	globalvar_add_simple_int("mtd_peb.mtd_peb_emulate_bitflip",
-+				 &__mtd_peb_emulate_bitflip, "%u");
-+	globalvar_add_simple_int("mtd_peb.mtd_peb_emulate_write_failure",
-+				 &__mtd_peb_emulate_write_failure, "%u");
-+	globalvar_add_simple_int("mtd_peb.mtd_peb_emulate_erase_failures",
-+				 &__mtd_peb_emulate_erase_failures, "%u");
-+	globalvar_add_simple_bool("mtd_peb.mtd_peb_chk_io",
-+				 &__mtd_peb_chk_io);
-+	return 0;
-+}
-+device_initcall(mtd_peb_debug_init);
-+
-+BAREBOX_MAGICVAR_NAMED(global_mtd_peb_emulate_bitflip,
-+		       global.mtd_peb.emulate_bitflip,
-+		       "random bitflips, on average every #nth access returns -EUCLEAN");
-+BAREBOX_MAGICVAR_NAMED(global_mtd_peb_emulate_write_failure,
-+		       global.mtd_peb.emulate_write_failure,
-+		       "random write failures, on average every #nth access returns write failure");
-+BAREBOX_MAGICVAR_NAMED(global_mtd_peb_emulate_erase_failures,
-+		       global.mtd_peb.emulate_erase_failures,
-+		       "random erase failures, on average every #nth access returns erase failure");
-+BAREBOX_MAGICVAR_NAMED(global_mtd_peb_chk_io,
-+		       global.mtd_peb.chk_io,
-+		       "If true, written data will be verified");
-+
-+#endif
-+
-+static int mtd_peb_valid(struct mtd_info *mtd, int pnum)
-+{
-+	if (pnum < 0)
-+		return false;
-+
-+	if ((uint64_t)pnum * mtd->erasesize >= mtd->size)
-+		return false;
-+
-+	if (mtd->numeraseregions)
-+		return false;
-+
-+	return true;
-+}
-+
-+/**
-+ * mtd_num_pebs - return number of PEBs for this device
-+ * @mtd: mtd device
-+ *
-+ * This function returns the number of physical erase blocks this device
-+ * has.
-+ */
-+int mtd_num_pebs(struct mtd_info *mtd)
-+{
-+	return mtd_div_by_eb(mtd->size, mtd);
-+}
-+
-+/**
-+ * mtd_peb_mark_bad - mark a physical eraseblock as bad
-+ * @mtd: mtd device
-+ * @pnum: The number of the block
-+ *
-+ * This function marks a physical eraseblock as bad.
-+ */
-+int mtd_peb_mark_bad(struct mtd_info *mtd, int pnum)
-+{
-+	return mtd_block_markbad(mtd, (loff_t)pnum * mtd->erasesize);
-+}
-+
-+/**
-+ * mtd_peb_is_bad - test if a physical eraseblock is bad
-+ * @mtd: mtd device
-+ * @pnum: The number of the block
-+ *
-+ * This function tests if a physical eraseblock is bad. Returns
-+ * 0 if it is good, 1 if it is bad or a negative error value if the
-+ * block is invalid
-+ */
-+int mtd_peb_is_bad(struct mtd_info *mtd, int pnum)
-+{
-+	if (!mtd_peb_valid(mtd, pnum))
-+		return -EINVAL;
-+
-+	return mtd_block_isbad(mtd, (loff_t)pnum * mtd->erasesize);
-+}
-+
-+/**
-+ * mtd_peb_read - read data from a physical eraseblock.
-+ * @mtd: mtd device
-+ * @buf: buffer where to store the read data
-+ * @pnum: physical eraseblock number to read from
-+ * @offset: offset within the physical eraseblock from where to read
-+ * @len: how many bytes to read
-+ *
-+ * This function reads data from offset @offset of physical eraseblock @pnum
-+ * and stores the read data in the @buf buffer. The following return codes are
-+ * possible:
-+ *
-+ * o %0 if all the requested data were successfully read;
-+ * o %-EUCLEAN if all the requested data were successfully read, but
-+ *   correctable bit-flips were detected; this is harmless but may indicate
-+ *   that this eraseblock may become bad soon (but do not have to);
-+ * o %-EBADMSG if the MTD subsystem reported about data integrity problems, for
-+ *   example it can be an ECC error in case of NAND; this most probably means
-+ *   that the data is corrupted;
-+ * o %-EIO if some I/O error occurred;
-+ * o other negative error codes in case of other errors.
-+ */
-+int mtd_peb_read(struct mtd_info *mtd, void *buf, int pnum, int offset,
-+		 int len)
-+{
-+	int err, retries = 0;
-+	size_t read;
-+	loff_t addr;
-+
-+	if (!mtd_peb_valid(mtd, pnum))
-+		return -EINVAL;
-+	if (offset < 0 || offset + len > mtd->erasesize)
-+		return -EINVAL;
-+	if (len <= 0)
-+		return -EINVAL;
-+	if (mtd_peb_is_bad(mtd, pnum))
-+		return -EINVAL;
-+
-+	/* Deliberately corrupt the buffer */
-+	*((uint8_t *)buf) ^= 0xFF;
-+
-+	addr = (loff_t)pnum * mtd->erasesize + offset;
-+retry:
-+	err = mtd_read(mtd, addr, len, &read, buf);
-+	if (err) {
-+		const char *errstr = mtd_is_eccerr(err) ? " (ECC error)" : "";
-+
-+		if (mtd_is_bitflip(err)) {
-+			/*
-+			 * -EUCLEAN is reported if there was a bit-flip which
-+			 * was corrected, so this is harmless.
-+			 *
-+			 * We do not report about it here unless debugging is
-+			 * enabled. A corresponding message will be printed
-+			 * later, when it is has been scrubbed.
-+			 */
-+			dev_dbg(&mtd->class_dev, "fixable bit-flip detected at PEB %d\n", pnum);
-+			if (len != read)
-+				return -EIO;
-+			return -EUCLEAN;
-+		}
-+
-+		if (mtd_is_eccerr(err) && retries++ < MTD_IO_RETRIES)
-+			goto retry;
-+
-+		dev_err(&mtd->class_dev, "error %d%s while reading %d bytes from PEB %d:%d\n",
-+			err, errstr, len, pnum, offset);
-+		return err;
-+	}
-+
-+	if (len != read)
-+		return -EIO;
-+
-+	if (mtd_peb_emulate_bitflip())
-+		return -EUCLEAN;
-+
-+	return 0;
-+}
-+
-+/**
-+ * mtd_peb_check_all_ff - check that a region of flash is empty.
-+ * @mtd: mtd device
-+ * @pnum: the physical eraseblock number to check
-+ * @offset: the starting offset within the physical eraseblock to check
-+ * @len: the length of the region to check
-+ *
-+ * This function returns zero if only 0xFF bytes are present at offset
-+ * @offset of the physical eraseblock @pnum, -EBADMSG if the buffer does
-+ * not contain all 0xFF or other negative error codes when other errors
-+ * occured
-+ */
-+int mtd_peb_check_all_ff(struct mtd_info *mtd, int pnum, int offset, int len,
-+			 int warn)
-+{
-+	size_t read;
-+	int err;
-+	void *buf;
-+
-+	buf = malloc(len);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	err = mtd_peb_read(mtd, buf, pnum, offset, len);
-+	if (err && !mtd_is_bitflip(err)) {
-+		dev_err(&mtd->class_dev,
-+			"error %d while reading %d bytes from PEB %d:%d, read %zd bytes\n",
-+			err, len, pnum, offset, read);
-+		goto out;
-+	}
-+
+-	if (ubi_check_pattern(ubi->peb_buf, 0xFF, ubi->leb_size))
++	if (mtd_buf_all_ff(ubi->peb_buf, ubi->leb_size))
+ 		goto out_unlock;
+ 
+ 	ubi_err("PEB %d contains corrupted VID header, and the data does not contain all 0xFF",
+diff --git a/drivers/mtd/ubi/io.c b/drivers/mtd/ubi/io.c
+index e55dfc5..801c0eb 100644
+--- a/drivers/mtd/ubi/io.c
++++ b/drivers/mtd/ubi/io.c
+@@ -405,7 +405,7 @@ static int torture_peb(struct ubi_device *ubi, int pnum)
+ 		if (err)
+ 			goto out;
+ 
+-		err = ubi_check_pattern(ubi->peb_buf, 0xFF, ubi->peb_size);
++		err = mtd_buf_all_ff(ubi->peb_buf, ubi->peb_size);
+ 		if (err == 0) {
+ 			ubi_err("erased PEB %d, but a non-0xFF byte found",
+ 				pnum);
+@@ -424,7 +424,7 @@ static int torture_peb(struct ubi_device *ubi, int pnum)
+ 		if (err)
+ 			goto out;
+ 
+-		err = ubi_check_pattern(ubi->peb_buf, patterns[i],
++		err = mtd_buf_check_pattern(ubi->peb_buf, patterns[i],
+ 					ubi->peb_size);
+ 		if (err == 0) {
+ 			ubi_err("pattern %x checking failed for PEB %d",
+@@ -740,7 +740,7 @@ int ubi_io_read_ec_hdr(struct ubi_device *ubi, int pnum,
+ 		 * 0xFF. If yes, this physical eraseblock is assumed to be
+ 		 * empty.
+ 		 */
+-		if (ubi_check_pattern(ec_hdr, 0xFF, UBI_EC_HDR_SIZE)) {
++		if (mtd_buf_all_ff(ec_hdr, UBI_EC_HDR_SIZE)) {
+ 			/* The physical eraseblock is supposedly empty */
+ 			if (verbose)
+ 				ubi_warn("no EC header found at PEB %d, only 0xFF bytes",
+@@ -996,7 +996,7 @@ int ubi_io_read_vid_hdr(struct ubi_device *ubi, int pnum,
+ 		if (mtd_is_eccerr(read_err))
+ 			return UBI_IO_BAD_HDR_EBADMSG;
+ 
+-		if (ubi_check_pattern(vid_hdr, 0xFF, UBI_VID_HDR_SIZE)) {
++		if (mtd_buf_all_ff(vid_hdr, UBI_VID_HDR_SIZE)) {
+ 			if (verbose)
+ 				ubi_warn("no VID header found at PEB %d, only 0xFF bytes",
+ 					 pnum);
+@@ -1382,7 +1382,7 @@ int ubi_self_check_all_ff(struct ubi_device *ubi, int pnum, int offset, int len)
+ 		goto error;
+ 	}
+ 
+-	err = ubi_check_pattern(buf, 0xFF, len);
 +	err = mtd_buf_all_ff(buf, len);
-+	if (err == 0) {
-+		if (warn)
-+			dev_err(&mtd->class_dev, "all-ff check failed for PEB %d\n",
-+				pnum);
-+		err = -EBADMSG;
-+		goto out;
-+	}
-+
-+	err = 0;
-+
-+out:
-+	free(buf);
-+
-+	return err;
-+}
-+
-+/**
-+ * mtd_peb_verify - make sure write succeeded.
-+ * @mtd: mtd device
-+ * @buf: buffer with data which were written
-+ * @pnum: physical eraseblock number the data were written to
-+ * @offset: offset within the physical eraseblock the data were written to
-+ * @len: how many bytes were written
-+ *
-+ * This functions reads data which were recently written and compares it with
-+ * the original data buffer - the data have to match. Returns zero if the data
-+ * match and a negative error code if not or in case of failure.
-+ */
-+int mtd_peb_verify(struct mtd_info *mtd, const void *buf, int pnum,
-+				int offset, int len)
-+{
-+	int err, i;
-+	size_t read;
-+	void *buf1;
-+	loff_t addr = (loff_t)pnum * mtd->erasesize + offset;
-+
-+	buf1 = malloc(len);
-+	if (!buf1)
-+		return 0;
-+
-+	err = mtd_read(mtd, addr, len, &read, buf1);
-+	if (err && !mtd_is_bitflip(err))
-+		goto out_free;
-+
-+	for (i = 0; i < len; i++) {
-+		uint8_t c = ((uint8_t *)buf)[i];
-+		uint8_t c1 = ((uint8_t *)buf1)[i];
-+		int dump_len;
-+
-+		if (c == c1)
-+			continue;
-+
-+		dev_err(&mtd->class_dev, "self-check failed for PEB %d:%d, len %d\n",
-+			pnum, offset, len);
-+		dev_info(&mtd->class_dev, "data differs at position %d\n", i);
-+		dump_len = max_t(int, 128, len - i);
-+#ifdef DEBUG
-+		dev_info(&mtd->class_dev, "hex dump of the original buffer from %d to %d\n",
-+			i, i + dump_len);
-+		memory_display(buf + i, i, dump_len, 4, 0);
-+		dev_info(&mtd->class_dev, "hex dump of the read buffer from %d to %d\n",
-+			i, i + dump_len);
-+		memory_display(buf1 + i, i, dump_len, 4, 0);
-+		dump_stack();
-+#endif
-+		err = -EBADMSG;
-+		goto out_free;
-+	}
-+
-+	err = 0;
-+
-+out_free:
-+	free(buf1);
-+	return err;
-+}
-+
-+/**
-+ * mtd_peb_write - write data to a physical eraseblock.
-+ * @mtd: mtd device
-+ * @buf: buffer with the data to write
-+ * @pnum: physical eraseblock number to write to
-+ * @offset: offset within the physical eraseblock where to write
-+ * @len: how many bytes to write
-+ *
-+ * This function writes @len bytes of data from buffer @buf to offset @offset
-+ * of physical eraseblock @pnum. If all the data was successfully written,
-+ * zero is returned. If an error occurred, this function returns a negative
-+ * error code. If %-EBADMSG is returned, the physical eraseblock most probably
-+ * went bad.
-+ *
-+ * Note, in case of an error, it is possible that something was still written
-+ * to the flash media, but may be some garbage.
-+ */
-+int mtd_peb_write(struct mtd_info *mtd, const void *buf, int pnum, int offset,
-+		  int len)
-+{
-+	int err;
-+	size_t written;
-+	loff_t addr;
-+
-+	dev_dbg(&mtd->class_dev, "write %d bytes to PEB %d:%d\n", len, pnum, offset);
-+
-+	if (!mtd_peb_valid(mtd, pnum))
-+		return -EINVAL;
-+	if (offset < 0 || offset + len > mtd->erasesize)
-+		return -EINVAL;
-+	if (len <= 0)
-+		return -EINVAL;
-+	if (len % mtd->writesize)
-+		return -EINVAL;
-+	if (mtd_peb_is_bad(mtd, pnum))
-+		return -EINVAL;
-+
-+	if (mtd_peb_emulate_write_failure()) {
-+		dev_err(&mtd->class_dev, "Cannot write %d bytes to PEB %d:%d (emulated)\n",
-+			len, pnum, offset);
-+		return -EIO;
-+	}
-+
-+	if (mtd_peb_chk_io()) {
-+		/* The area we are writing to has to contain all 0xFF bytes */
-+		err = mtd_peb_check_all_ff(mtd, pnum, offset, len, 1);
-+		if (err)
-+			return err;
-+	}
-+
-+	addr = (loff_t)pnum * mtd->erasesize + offset;
-+	err = mtd_write(mtd, addr, len, &written, buf);
-+	if (err) {
-+		dev_err(&mtd->class_dev, "error %d while writing %d bytes to PEB %d:%d, written %zd bytes\n",
-+			err, len, pnum, offset, written);
-+	} else {
-+		if (written != len)
-+			err = -EIO;
-+	}
-+
-+	if (!err && mtd_peb_chk_io())
-+		err = mtd_peb_verify(mtd, buf, pnum, offset, len);
-+
-+	return err;
-+}
-+
-+/**
-+ * mtd_peb_erase - erase a physical eraseblock.
-+ * @mtd: mtd device
-+ * @pnum: physical eraseblock number to erase
-+ *
-+ * This function erases physical eraseblock @pnum.
-+ *
-+ * This function returns 0 in case of success, %-EIO if the erasure failed,
-+ * and other negative error codes in case of other errors. Note, %-EIO means
-+ * that the physical eraseblock is bad.
-+ */
-+int mtd_peb_erase(struct mtd_info *mtd, int pnum)
-+{
-+	int ret;
-+	struct erase_info ei = {};
-+
-+	dev_dbg(&mtd->class_dev, "erase PEB %d\n", pnum);
-+
-+	if (!mtd_peb_valid(mtd, pnum))
-+		return -EINVAL;
-+
-+	ei.mtd = mtd;
-+	ei.addr = (loff_t)pnum * mtd->erasesize;
-+	ei.len = mtd->erasesize;
-+
-+	ret = mtd_erase(mtd, &ei);
-+	if (ret)
-+		return ret;
-+
-+	if (mtd_peb_chk_io()) {
-+		ret = mtd_peb_check_all_ff(mtd, pnum, 0, mtd->erasesize, 1);
-+		if (ret == -EBADMSG)
-+			ret = -EIO;
-+	}
-+
-+	if (mtd_peb_emulate_erase_failure()) {
-+		dev_err(&mtd->class_dev, "cannot erase PEB %d (emulated)", pnum);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+/* Patterns to write to a physical eraseblock when torturing it */
-+static uint8_t patterns[] = {0xa5, 0x5a, 0x0};
-+
-+/**
-+ * mtd_peb_torture - test a supposedly bad physical eraseblock.
-+ * @mtd: mtd device
-+ * @pnum: the physical eraseblock number to test
-+ *
-+ * This function is a last resort when an eraseblock is assumed to be
-+ * bad. It will write and check some patterns to the block. If the test
-+ * is passed then this function will with the block freshly erased and
-+ * the positive number returned indicaties how often the block has been
-+ * erased during this test.
-+ * If the block does not pass the test the block is marked as bad and
-+ * -EIO is returned.
-+ *  Other negative errors are returned in case of other errors.
-+ */
-+int mtd_peb_torture(struct mtd_info *mtd, int pnum)
-+{
-+	int err, i, patt_count;
-+	void *peb_buf;
-+
-+	if (!mtd_peb_valid(mtd, pnum))
-+		return -EINVAL;
-+
-+	peb_buf = malloc(mtd->erasesize);
-+	if (!peb_buf)
-+		return -ENOMEM;
-+
-+	dev_dbg(&mtd->class_dev, "run torture test for PEB %d\n", pnum);
-+
-+	patt_count = ARRAY_SIZE(patterns);
-+
-+	for (i = 0; i < patt_count; i++) {
-+		err = mtd_peb_erase(mtd, pnum);
-+		if (err)
-+			goto out;
-+
-+		/* Make sure the PEB contains only 0xFF bytes after erasing */
-+		err = mtd_peb_check_all_ff(mtd, pnum, 0, mtd->writesize, 0);
-+		if (err)
-+			goto out;
-+
-+		/* Write a pattern and check it */
-+		memset(peb_buf, patterns[i], mtd->erasesize);
-+		err = mtd_peb_write(mtd, peb_buf, pnum, 0, mtd->erasesize);
-+		if (err)
-+			goto out;
-+
-+		err = mtd_peb_verify(mtd, peb_buf, pnum, 0, mtd->erasesize);
-+		if (err)
-+			goto out;
-+	}
-+
-+	err = mtd_peb_erase(mtd, pnum);
-+	if (err)
-+		goto out;
-+
-+	err = patt_count + 1;
-+	dev_dbg(&mtd->class_dev, "PEB %d passed torture test, do not mark it as bad\n",
-+		pnum);
-+
-+out:
-+	if (err == -EUCLEAN || mtd_is_eccerr(err)) {
-+		/*
-+		 * If a bit-flip or data integrity error was detected, the test
-+		 * has not passed because it happened on a freshly erased
-+		 * physical eraseblock which means something is wrong with it.
-+		 */
-+		dev_err(&mtd->class_dev, "read problems on freshly erased PEB %d, marking it bad\n",
-+			pnum);
-+
-+		mtd_peb_mark_bad(mtd, pnum);
-+
-+		err = -EIO;
-+	}
-+
-+	free(peb_buf);
-+
-+	return err;
-+}
-diff --git a/include/mtd/mtd-peb.h b/include/mtd/mtd-peb.h
-new file mode 100644
-index 0000000..50ac9a5
---- /dev/null
-+++ b/include/mtd/mtd-peb.h
-@@ -0,0 +1,21 @@
-+#ifndef __LINUX_MTD_MTDPEB_H
-+#define __LINUX_MTD_MTDPEB_H
-+
-+#include <linux/mtd/mtd.h>
-+
-+int mtd_peb_read(struct mtd_info *mtd, void *buf, int pnum, int offset,
-+		int len);
-+int mtd_peb_write(struct mtd_info *mtd, const void *buf, int pnum, int offset,
-+		 int len);
-+
-+int mtd_peb_torture(struct mtd_info *mtd, int pnum);
-+int mtd_peb_erase(struct mtd_info *mtd, int pnum);
-+int mtd_peb_mark_bad(struct mtd_info *mtd, int pnum);
-+int mtd_peb_is_bad(struct mtd_info *mtd, int pnum);
-+int mtd_peb_check_all_ff(struct mtd_info *mtd, int pnum, int offset, int len,
-+			 int warn);
-+int mtd_peb_verify(struct mtd_info *mtd, const void *buf, int pnum,
-+				int offset, int len);
-+int mtd_num_pebs(struct mtd_info *mtd);
-+
-+#endif /* __LINUX_MTD_MTDPEB_H */
+ 	if (err == 0) {
+ 		ubi_err("flash region at PEB %d:%d, length %d does not contain all 0xFF bytes",
+ 			pnum, offset, len);
+diff --git a/drivers/mtd/ubi/misc.c b/drivers/mtd/ubi/misc.c
+index b5c6efe..9633466 100644
+--- a/drivers/mtd/ubi/misc.c
++++ b/drivers/mtd/ubi/misc.c
+@@ -128,22 +128,3 @@ void ubi_calculate_reserved(struct ubi_device *ubi)
+ 			 ubi->bad_peb_count, ubi->bad_peb_limit);
+ 	}
+ }
+-
+-/**
+- * ubi_check_pattern - check if buffer contains only a certain byte pattern.
+- * @buf: buffer to check
+- * @patt: the pattern to check
+- * @size: buffer size in bytes
+- *
+- * This function returns %1 in there are only @patt bytes in @buf, and %0 if
+- * something else was also found.
+- */
+-int ubi_check_pattern(const void *buf, uint8_t patt, int size)
+-{
+-	int i;
+-
+-	for (i = 0; i < size; i++)
+-		if (((const uint8_t *)buf)[i] != patt)
+-			return 0;
+-	return 1;
+-}
+diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
+index 61ae738..577b35d 100644
+--- a/drivers/mtd/ubi/ubi.h
++++ b/drivers/mtd/ubi/ubi.h
+@@ -757,7 +757,6 @@ int ubi_calc_data_len(const struct ubi_device *ubi, const void *buf,
+ int ubi_check_volume(struct ubi_device *ubi, int vol_id);
+ void ubi_update_reserved(struct ubi_device *ubi);
+ void ubi_calculate_reserved(struct ubi_device *ubi);
+-int ubi_check_pattern(const void *buf, uint8_t patt, int size);
+ 
+ /* eba.c */
+ int ubi_eba_unmap_leb(struct ubi_device *ubi, struct ubi_volume *vol,
 -- 
 2.7.0
 
