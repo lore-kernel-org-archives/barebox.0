@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1afmxF-0005Gv-VW
- for barebox@lists.infradead.org; Tue, 15 Mar 2016 11:16:06 +0000
+ id 1afmxI-0005IK-Tg
+ for barebox@lists.infradead.org; Tue, 15 Mar 2016 11:16:07 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Mar 2016 12:15:33 +0100
-Message-Id: <1458040534-6171-16-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 15 Mar 2016 12:15:20 +0100
+Message-Id: <1458040534-6171-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1458040534-6171-1-git-send-email-s.hauer@pengutronix.de>
 References: <1458040534-6171-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,122 +21,121 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/16] mtd: ubi: Use mtd_peb_erase
+Subject: [PATCH 02/16] mtd: nand: Add option to print bbt in nand command
 To: Barebox List <barebox@lists.infradead.org>
-
-mtd_peb_erase provides the same functionality as do_sync_erase. Use it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/ubi/debug.h | 14 -------------
- drivers/mtd/ubi/io.c    | 55 +------------------------------------------------
- 2 files changed, 1 insertion(+), 68 deletions(-)
+ commands/nand.c | 51 ++++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 40 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/mtd/ubi/debug.h b/drivers/mtd/ubi/debug.h
-index 9d0542c..c1b41b4 100644
---- a/drivers/mtd/ubi/debug.h
-+++ b/drivers/mtd/ubi/debug.h
-@@ -72,20 +72,6 @@ static inline int ubi_dbg_is_bgt_disabled(const struct ubi_device *ubi)
- 	return ubi->dbg.disable_bgt;
- }
+diff --git a/commands/nand.c b/commands/nand.c
+index 1807c92..b065a66 100644
+--- a/commands/nand.c
++++ b/commands/nand.c
+@@ -33,14 +33,18 @@
+ #define NAND_DEL	2
+ #define NAND_MARKBAD	3
+ #define NAND_MARKGOOD	4
++#define NAND_INFO	5
  
--/**
-- * ubi_dbg_is_erase_failure - if its time to emulate an erase failure.
-- * @ubi: UBI device description object
-- *
-- * Returns non-zero if an erase failure should be emulated, otherwise returns
-- * zero.
-- */
--static inline int ubi_dbg_is_erase_failure(const struct ubi_device *ubi)
--{
--	if (ubi->dbg.emulate_io_failures)
--		return !(random32() % 400);
--	return 0;
--}
--
- static inline int ubi_dbg_chk_io(const struct ubi_device *ubi)
+ static int do_nand(int argc, char *argv[])
  {
- 	return ubi->dbg.chk_io;
-diff --git a/drivers/mtd/ubi/io.c b/drivers/mtd/ubi/io.c
-index ed0cd1c..b3cb4f2 100644
---- a/drivers/mtd/ubi/io.c
-+++ b/drivers/mtd/ubi/io.c
-@@ -178,17 +178,6 @@ int ubi_io_write(struct ubi_device *ubi, const void *buf, int pnum, int offset,
- }
+ 	int opt;
+ 	int command = 0;
+ 	loff_t badblock = 0;
++	int fd;
++	int ret;
++	struct mtd_info_user mtdinfo;
  
- /**
-- * erase_callback - MTD erasure call-back.
-- * @ei: MTD erase information object.
-- *
-- * Note, even though MTD erase interface is asynchronous, all the current
-- * implementations are synchronous anyway.
-- */
--static void erase_callback(struct erase_info *ei)
--{
--}
--
--/**
-  * do_sync_erase - synchronously erase a physical eraseblock.
-  * @ubi: UBI device description object
-  * @pnum: the physical eraseblock number to erase
-@@ -199,9 +188,6 @@ static void erase_callback(struct erase_info *ei)
-  */
- static int do_sync_erase(struct ubi_device *ubi, int pnum)
- {
--	int err, retries = 0;
--	struct erase_info ei;
--
- 	dbg_io("erase PEB %d", pnum);
- 	ubi_assert(pnum >= 0 && pnum < ubi->peb_count);
- 
-@@ -210,46 +196,7 @@ static int do_sync_erase(struct ubi_device *ubi, int pnum)
- 		return -EROFS;
+-	while((opt = getopt(argc, argv, "adb:g:")) > 0) {
++	while((opt = getopt(argc, argv, "adb:g:i")) > 0) {
+ 		if (command) {
+ 			printf("only one command may be given\n");
+ 			return 1;
+@@ -61,6 +65,9 @@ static int do_nand(int argc, char *argv[])
+ 			command = NAND_MARKGOOD;
+ 			badblock = strtoull_suffix(optarg, NULL, 0);
+ 			break;
++		case 'i':
++			command = NAND_INFO;
++			break;
+ 		default:
+ 			return COMMAND_ERROR_USAGE;
+ 		}
+@@ -90,8 +97,17 @@ static int do_nand(int argc, char *argv[])
+ 		}
  	}
  
--retry:
--	memset(&ei, 0, sizeof(struct erase_info));
--
--	ei.mtd      = ubi->mtd;
--	ei.addr     = (loff_t)pnum * ubi->peb_size;
--	ei.len      = ubi->peb_size;
--	ei.callback = erase_callback;
--
--	err = mtd_erase(ubi->mtd, &ei);
--	if (err) {
--		if (retries++ < UBI_IO_RETRIES) {
--			ubi_warn("error %d while erasing PEB %d, retry",
--				 err, pnum);
--			goto retry;
++	fd = open(argv[optind], O_RDWR);
++	if (fd < 0) {
++		perror("open");
++		return 1;
++	}
++
++	ret = ioctl(fd, MEMGETINFO, &mtdinfo);
++	if (ret)
++		goto out;
++
+ 	if (command == NAND_MARKBAD || command == NAND_MARKGOOD) {
+-		int ret = 0, fd;
+ 		const char *str;
+ 		int ctl;
+ 
+@@ -106,12 +122,6 @@ static int do_nand(int argc, char *argv[])
+ 		printf("marking block at 0x%08llx on %s as %s\n",
+ 				badblock, argv[optind], str);
+ 
+-		fd = open(argv[optind], O_RDWR);
+-		if (fd < 0) {
+-			perror("open");
+-			return 1;
 -		}
--		ubi_err("cannot erase PEB %d, error %d", pnum, err);
--		dump_stack();
--		return err;
--	}
 -
--	if (ei.state == MTD_ERASE_FAILED) {
--		if (retries++ < UBI_IO_RETRIES) {
--			ubi_warn("error while erasing PEB %d, retry", pnum);
--			goto retry;
--		}
--		ubi_err("cannot erase PEB %d", pnum);
--		dump_stack();
--		return -EIO;
--	}
--
--	err = ubi_self_check_all_ff(ubi, pnum, 0, ubi->peb_size);
--	if (err)
--		return err;
--
--	if (ubi_dbg_is_erase_failure(ubi)) {
--		ubi_err("cannot erase PEB %d (emulated)", pnum);
--		return -EIO;
--	}
--
+ 		ret = ioctl(fd, ctl, &badblock);
+ 		if (ret) {
+ 			if (ret == -EINVAL)
+@@ -121,11 +131,29 @@ static int do_nand(int argc, char *argv[])
+ 				perror("ioctl");
+ 		}
+ 
+-		close(fd);
+-		return ret;
++		goto out;
+ 	}
+ 
 -	return 0;
-+	return mtd_peb_erase(ubi->mtd, pnum);
++	if (command == NAND_INFO) {
++		loff_t ofs;
++		int bad = 0;
++
++		for (ofs = 0; ofs < mtdinfo.size; ofs += mtdinfo.erasesize) {
++			if (ioctl(fd, MEMGETBADBLOCK, &ofs)) {
++				printf("Block at 0x%08llx is bad\n", ofs);
++				bad = 1;
++			}
++		}
++
++		if (!bad)
++			printf("No bad blocks\n");
++	}
++
++	ret = 0;
++out:
++	close(fd);
++
++	return ret;
  }
  
- /**
+ BAREBOX_CMD_HELP_START(nand)
+@@ -134,6 +162,7 @@ BAREBOX_CMD_HELP_OPT ("-a",  "register a bad block aware device ontop of a norma
+ BAREBOX_CMD_HELP_OPT ("-d",  "deregister a bad block aware device")
+ BAREBOX_CMD_HELP_OPT ("-b OFFS",  "mark block at OFFSet as bad")
+ BAREBOX_CMD_HELP_OPT ("-g OFFS",  "mark block at OFFSet as good")
++BAREBOX_CMD_HELP_OPT ("-i",  "info. Show information about bad blocks")
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(nand)
 -- 
 2.7.0
 
