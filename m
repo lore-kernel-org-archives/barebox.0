@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1afmxL-0005IQ-7v
- for barebox@lists.infradead.org; Tue, 15 Mar 2016 11:16:12 +0000
+ id 1afmxS-0005LL-UI
+ for barebox@lists.infradead.org; Tue, 15 Mar 2016 11:16:20 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Mar 2016 12:15:26 +0100
-Message-Id: <1458040534-6171-9-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 15 Mar 2016 12:15:27 +0100
+Message-Id: <1458040534-6171-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1458040534-6171-1-git-send-email-s.hauer@pengutronix.de>
 References: <1458040534-6171-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,720 +21,590 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/16] ubiformat: Use mtd-peb API
+Subject: [PATCH 09/16] remove now unused libmtd
 To: Barebox List <barebox@lists.infradead.org>
 
-This changes ubiformat from the libmtd API to the mtd-peb API. This
-makes the libmtd API unnecessary and it can be removed in the next
-step.
+The only user of libmtd was ubiformat which now uses the mtd-peb API,
+so remove the now unused libmtd.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/ubiformat.c    | 191 +++++++++++++++++++++++++-----------------------
- include/mtd/libscan.h   |   3 +-
- include/mtd/libubigen.h |   4 +-
- lib/libscan.c           |  28 +++----
- lib/libubigen.c         |  23 ++----
- 5 files changed, 124 insertions(+), 125 deletions(-)
+ commands/Kconfig     |   1 -
+ include/mtd/libmtd.h | 149 ---------------------
+ lib/Kconfig          |   3 -
+ lib/Makefile         |   1 -
+ lib/libmtd.c         | 368 ---------------------------------------------------
+ 5 files changed, 522 deletions(-)
+ delete mode 100644 include/mtd/libmtd.h
+ delete mode 100644 lib/libmtd.c
 
-diff --git a/commands/ubiformat.c b/commands/ubiformat.c
-index f9c50b7..0172654 100644
---- a/commands/ubiformat.c
-+++ b/commands/ubiformat.c
-@@ -46,12 +46,12 @@
- #include <linux/stat.h>
- #include <linux/log2.h>
- #include <linux/mtd/mtd-abi.h>
--#include <mtd/libmtd.h>
- #include <mtd/libscan.h>
- #include <mtd/libubigen.h>
- #include <mtd/ubi-user.h>
- #include <mtd/utils.h>
- #include <mtd/ubi-media.h>
-+#include <mtd/mtd-peb.h>
- 
- /* The variables below are set by command line arguments */
- struct args {
-@@ -68,7 +68,6 @@ struct args {
- 	long long ec;
- 	const char *image;
- 	const char *node;
--	int node_fd;
- };
- 
- static struct args args;
-@@ -166,16 +165,18 @@ static int parse_opt(int argc, char *argv[])
- 	return 0;
- }
- 
--static void print_bad_eraseblocks(const struct mtd_dev_info *mtd,
-+static void print_bad_eraseblocks(struct mtd_info *mtd,
- 				  const struct ubi_scan_info *si)
- {
--	int first = 1, eb;
-+	int first = 1, eb, eb_cnt;
-+
-+	eb_cnt = mtd_div_by_eb(mtd->size, mtd);
- 
- 	if (si->bad_cnt == 0)
- 		return;
- 
- 	normsg_cont("%d bad eraseblocks found, numbers: ", si->bad_cnt);
--	for (eb = 0; eb < mtd->eb_cnt; eb++) {
-+	for (eb = 0; eb < eb_cnt; eb++) {
- 		if (si->ec[eb] != EB_BAD)
- 			continue;
- 		if (first) {
-@@ -210,7 +211,7 @@ static int change_ech(struct ubi_ec_hdr *hdr, uint32_t image_seq,
- 	return 0;
- }
- 
--static int drop_ffs(const struct mtd_dev_info *mtd, const void *buf, int len)
-+static int drop_ffs(struct mtd_info *mtd, const void *buf, int len)
- {
- 	int i;
- 
-@@ -220,8 +221,8 @@ static int drop_ffs(const struct mtd_dev_info *mtd, const void *buf, int len)
- 
-         /* The resulting length must be aligned to the minimum flash I/O size */
- 	len = i + 1;
--	len = (len + mtd->min_io_size - 1) / mtd->min_io_size;
--	len *=  mtd->min_io_size;
-+	len = (len + mtd->writesize - 1) / mtd->writesize;
-+	len *=  mtd->writesize;
- 	return len;
- }
- 
-@@ -271,20 +272,20 @@ static int consecutive_bad_check(int eb)
- }
- 
- /* TODO: we should actually torture the PEB before marking it as bad */
--static int mark_bad(const struct mtd_dev_info *mtd, struct ubi_scan_info *si, int eb)
-+static int mark_bad(struct mtd_info *mtd, struct ubi_scan_info *si, int eb)
- {
- 	int err;
- 
- 	if (!args.quiet)
- 		normsg_cont("marking block %d bad\n", eb);
- 
--	if (!mtd->bb_allowed) {
-+	if (!mtd_can_have_bb(mtd)) {
- 		if (!args.quiet)
- 			printf("\n");
- 		return errmsg("bad blocks not supported by this flash");
- 	}
- 
--	err = mtd_mark_bad(mtd, args.node_fd, eb);
-+	err = mtd_peb_mark_bad(mtd, eb);
- 	if (err)
- 		return err;
- 
-@@ -294,24 +295,26 @@ static int mark_bad(const struct mtd_dev_info *mtd, struct ubi_scan_info *si, in
- 	return consecutive_bad_check(eb);
- }
- 
--static int flash_image(const struct mtd_dev_info *mtd,
-+static int flash_image(struct mtd_info *mtd,
- 		       const struct ubigen_info *ui, struct ubi_scan_info *si)
- {
--	int fd, img_ebs, eb, written_ebs = 0, ret = -1;
-+	int fd, img_ebs, eb, written_ebs = 0, ret = -1, eb_cnt;
- 	off_t st_size;
- 	char *buf = NULL;
- 
-+	eb_cnt = mtd_num_pebs(mtd);
-+
- 	fd = open_file(&st_size);
- 	if (fd < 0)
- 		return fd;
- 
--	buf = malloc(mtd->eb_size);
-+	buf = malloc(mtd->erasesize);
- 	if (!buf) {
--		sys_errmsg("cannot allocate %d bytes of memory", mtd->eb_size);
-+		sys_errmsg("cannot allocate %d bytes of memory", mtd->erasesize);
- 		goto out_close;
- 	}
- 
--	img_ebs = st_size / mtd->eb_size;
-+	img_ebs = st_size / mtd->erasesize;
- 
- 	if (img_ebs > si->good_cnt) {
- 		sys_errmsg("file \"%s\" is too large (%lld bytes)",
-@@ -319,10 +322,10 @@ static int flash_image(const struct mtd_dev_info *mtd,
- 		goto out_close;
- 	}
- 
--	if (st_size % mtd->eb_size) {
-+	if (st_size % mtd->erasesize) {
- 		sys_errmsg("file \"%s\" (size %lld bytes) is not multiple of "
- 			   "eraseblock size (%d bytes)",
--			   args.image, (long long)st_size, mtd->eb_size);
-+			   args.image, (long long)st_size, mtd->erasesize);
- 		goto out_close;
- 	}
- 
-@@ -332,13 +335,13 @@ static int flash_image(const struct mtd_dev_info *mtd,
- 	}
- 
- 	verbose(args.verbose, "will write %d eraseblocks", img_ebs);
--	for (eb = 0; eb < mtd->eb_cnt; eb++) {
-+	for (eb = 0; eb < eb_cnt; eb++) {
- 		int err, new_len;
- 		long long ec;
- 
- 		if (!args.quiet && !args.verbose) {
- 			printf("\rubiformat: flashing eraseblock %d -- %2u %% complete  ",
--			       eb, (eb + 1) * 100 / mtd->eb_cnt);
-+			       eb, (eb + 1) * 100 / eb_cnt);
- 		}
- 
- 		if (si->ec[eb] == EB_BAD)
-@@ -348,13 +351,13 @@ static int flash_image(const struct mtd_dev_info *mtd,
- 			normsg_cont("eraseblock %d: erase", eb);
- 		}
- 
--		err = libmtd_erase(mtd, args.node_fd, eb);
-+		err = mtd_peb_erase(mtd, eb);
- 		if (err) {
- 			if (!args.quiet)
- 				printf("\n");
- 			sys_errmsg("failed to erase eraseblock %d", eb);
- 
--			if (errno != EIO)
-+			if (err != EIO)
- 				goto out_close;
- 
- 			if (mark_bad(mtd, si, eb))
-@@ -363,7 +366,7 @@ static int flash_image(const struct mtd_dev_info *mtd,
- 			continue;
- 		}
- 
--		err = read_full(fd, buf, mtd->eb_size);
-+		err = read_full(fd, buf, mtd->erasesize);
- 		if (err < 0) {
- 			sys_errmsg("failed to read eraseblock %d from \"%s\"",
- 				   written_ebs, args.image);
-@@ -392,20 +395,21 @@ static int flash_image(const struct mtd_dev_info *mtd,
- 			printf(", write data\n");
- 		}
- 
--		new_len = drop_ffs(mtd, buf, mtd->eb_size);
-+		new_len = drop_ffs(mtd, buf, mtd->erasesize);
- 
--		err = libmtd_write(mtd, args.node_fd, eb, 0, buf, new_len);
-+		err = mtd_peb_write(mtd, buf, eb, 0, new_len);
- 		if (err) {
- 			sys_errmsg("cannot write eraseblock %d", eb);
- 
--			if (errno != EIO)
-+			if (err != EIO)
-+				goto out_close;
-+
-+			err = mtd_peb_torture(mtd, eb);
-+			if (err < 0 && err != -EIO)
-+				goto out_close;
-+			if (err == -EIO && consecutive_bad_check(eb))
- 				goto out_close;
- 
--			err = mtd_torture(mtd, args.node_fd, eb);
--			if (err) {
--				if (mark_bad(mtd, si, eb))
--					goto out_close;
--			}
- 			continue;
- 		}
- 		if (++written_ebs >= img_ebs)
-@@ -423,30 +427,32 @@ out_close:
- 	return ret;
- }
- 
--static int format(const struct mtd_dev_info *mtd,
-+static int format(struct mtd_info *mtd,
- 		  const struct ubigen_info *ui, struct ubi_scan_info *si,
--		  int start_eb, int novtbl)
-+		  int start_eb, int novtbl, int subpage_size)
- {
--	int eb, err, write_size;
-+	int eb, err, write_size, eb_cnt;
- 	struct ubi_ec_hdr *hdr;
- 	struct ubi_vtbl_record *vtbl;
- 	int eb1 = -1, eb2 = -1;
- 	long long ec1 = -1, ec2 = -1;
- 
--	write_size = UBI_EC_HDR_SIZE + mtd->subpage_size - 1;
--	write_size /= mtd->subpage_size;
--	write_size *= mtd->subpage_size;
-+	eb_cnt = mtd_num_pebs(mtd);
-+
-+	write_size = UBI_EC_HDR_SIZE + subpage_size - 1;
-+	write_size /= subpage_size;
-+	write_size *= subpage_size;
- 	hdr = malloc(write_size);
- 	if (!hdr)
- 		return sys_errmsg("cannot allocate %d bytes of memory", write_size);
- 	memset(hdr, 0xFF, write_size);
- 
--	for (eb = start_eb; eb < mtd->eb_cnt; eb++) {
-+	for (eb = start_eb; eb < eb_cnt; eb++) {
- 		long long ec;
- 
- 		if (!args.quiet && !args.verbose) {
- 			printf("\rubiformat: formatting eraseblock %d -- %2u %% complete  ",
--			       eb, (eb + 1 - start_eb) * 100 / (mtd->eb_cnt - start_eb));
-+			       eb, (eb + 1 - start_eb) * 100 / (eb_cnt - start_eb));
- 		}
- 
- 		if (si->ec[eb] == EB_BAD)
-@@ -464,13 +470,13 @@ static int format(const struct mtd_dev_info *mtd,
- 			normsg_cont("eraseblock %d: erase", eb);
- 		}
- 
--		err = libmtd_erase(mtd, args.node_fd, eb);
-+		err = mtd_peb_erase(mtd, eb);
- 		if (err) {
- 			if (!args.quiet)
- 				printf("\n");
- 
- 			sys_errmsg("failed to erase eraseblock %d", eb);
--			if (errno != EIO)
-+			if (err != EIO)
- 				goto out_free;
- 
- 			if (mark_bad(mtd, si, eb))
-@@ -495,7 +501,7 @@ static int format(const struct mtd_dev_info *mtd,
- 			printf(", write EC %lld\n", ec);
- 		}
- 
--		err = libmtd_write(mtd, args.node_fd, eb, 0, hdr, write_size);
-+		err = mtd_peb_write(mtd, hdr, eb, 0, write_size);
- 		if (err) {
- 			if (!args.quiet && !args.verbose)
- 				printf("\n");
-@@ -503,16 +509,17 @@ static int format(const struct mtd_dev_info *mtd,
- 				   write_size, eb);
- 
- 			if (errno != EIO) {
--				if (args.subpage_size != mtd->min_io_size)
-+				if (args.subpage_size != mtd->writesize)
- 					normsg("may be sub-page size is incorrect?");
- 				goto out_free;
- 			}
- 
--			err = mtd_torture(mtd, args.node_fd, eb);
--			if (err) {
--				if (mark_bad(mtd, si, eb))
--					goto out_free;
--			}
-+			err = mtd_peb_torture(mtd, eb);
-+			if (err < 0 && err != -EIO)
-+				goto out_free;
-+			if (err == -EIO && consecutive_bad_check(eb))
-+				goto out_free;
-+
- 			continue;
- 
- 		}
-@@ -532,8 +539,7 @@ static int format(const struct mtd_dev_info *mtd,
- 		if (!vtbl)
- 			goto out_free;
- 
--		err = ubigen_write_layout_vol(ui, eb1, eb2, ec1,  ec2, vtbl,
--					      args.node_fd);
-+		err = ubigen_write_layout_vol(ui, eb1, eb2, ec1,  ec2, vtbl, mtd);
- 		free(vtbl);
- 		if (err) {
- 			errmsg("cannot write layout volume");
-@@ -551,78 +557,82 @@ out_free:
- 
- int do_ubiformat(int argc, char *argv[])
- {
--	int err, verbose;
--	struct mtd_dev_info mtd;
-+	int err, verbose, fd, eb_cnt;
-+	struct mtd_info *mtd;
- 	struct ubigen_info ui;
- 	struct ubi_scan_info *si;
-+	struct mtd_info_user mtd_user;
- 
- 	err = parse_opt(argc, argv);
- 	if (err)
- 		return err;
- 
--	err = mtd_get_dev_info(args.node, &mtd);
--	if (err) {
--		sys_errmsg("cannot get information about \"%s\"", args.node);
--		goto out_close_mtd;
-+	fd = open(args.node, O_RDWR);
-+	if (fd < 0)
-+		return sys_errmsg("cannot open \"%s\"", args.node);
-+
-+	if (ioctl(fd, MEMGETINFO, &mtd_user)) {
-+		sys_errmsg("MEMGETINFO ioctl request failed");
-+		goto out_close;
- 	}
- 
--	if (!is_power_of_2(mtd.min_io_size)) {
-+	mtd = mtd_user.mtd;
-+
-+	if (!is_power_of_2(mtd->writesize)) {
- 		errmsg("min. I/O size is %d, but should be power of 2",
--		       mtd.min_io_size);
--		goto out_close_mtd;
-+		       mtd->writesize);
-+		goto out_close;
- 	}
- 
--	if (args.subpage_size && args.subpage_size != mtd.subpage_size) {
--		mtd.subpage_size = args.subpage_size;
--		args.manual_subpage = 1;
-+	if (args.subpage_size) {
-+		if (args.subpage_size != mtd->writesize >> mtd->subpage_sft)
-+			args.manual_subpage = 1;
-+	} else {
-+		args.subpage_size = mtd->writesize >> mtd->subpage_sft;
- 	}
- 
- 	if (args.manual_subpage) {
- 		/* Do some sanity check */
--		if (args.subpage_size > mtd.min_io_size) {
-+		if (args.subpage_size > mtd->writesize) {
- 			errmsg("sub-page cannot be larger than min. I/O unit");
--			goto out_close_mtd;
-+			goto out_close;
- 		}
- 
--		if (mtd.min_io_size % args.subpage_size) {
-+		if (mtd->writesize % args.subpage_size) {
- 			errmsg("min. I/O unit size should be multiple of "
- 			       "sub-page size");
--			goto out_close_mtd;
-+			goto out_close;
- 		}
- 	}
- 
--	args.node_fd = open(args.node, O_RDWR);
--	if (args.node_fd < 0) {
--		sys_errmsg("cannot open \"%s\"", args.node);
--		goto out_close_mtd;
--	}
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 9519a44..1724391 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -694,7 +694,6 @@ config CMD_UBI
+ config CMD_UBIFORMAT
+ 	tristate
+ 	depends on MTD_UBI
+-	select LIBMTD
+ 	select LIBSCAN
+ 	select LIBUBIGEN
+ 	prompt "ubiformat"
+diff --git a/include/mtd/libmtd.h b/include/mtd/libmtd.h
+deleted file mode 100644
+index 65c390a..0000000
+--- a/include/mtd/libmtd.h
++++ /dev/null
+@@ -1,149 +0,0 @@
+-/*
+- * Copyright (C) 2008, 2009 Nokia Corporation
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+- * the GNU General Public License for more details.
+- * Author: Artem Bityutskiy
+- *
+- * MTD library.
+- */
 -
- 	/* Validate VID header offset if it was specified */
- 	if (args.vid_hdr_offs != 0) {
- 		if (args.vid_hdr_offs % 8) {
- 			errmsg("VID header offset has to be multiple of min. I/O unit size");
- 			goto out_close;
- 		}
--		if (args.vid_hdr_offs + (int)UBI_VID_HDR_SIZE > mtd.eb_size) {
-+		if (args.vid_hdr_offs + (int)UBI_VID_HDR_SIZE > mtd->erasesize) {
- 			errmsg("bad VID header offset");
- 			goto out_close;
- 		}
- 	}
- 
--	if (!mtd.writable) {
--		errmsg("%s (%s) is a read-only device", mtd.node, args.node);
-+	if (!(mtd->flags & MTD_WRITEABLE)) {
-+		errmsg("%s is a read-only device", args.node);
- 		goto out_close;
- 	}
- 
- 	/* Make sure this MTD device is not attached to UBI */
- 	/* FIXME! Find a proper way to do this in barebox! */
- 
-+	eb_cnt = mtd_div_by_eb(mtd->size, mtd);
-+
- 	if (!args.quiet) {
--		normsg_cont("%s (%s), size %lld bytes (%s)", mtd.node, mtd.type_str,
--			mtd.size, size_human_readable(mtd.size));
--		printf(", %d eraseblocks of %d bytes (%s)", mtd.eb_cnt,
--			mtd.eb_size, size_human_readable(mtd.eb_size));
--		printf(", min. I/O size %d bytes\n", mtd.min_io_size);
-+		normsg_cont("%s (%s), size %lld bytes (%s)", args.node, mtd_type_str(mtd),
-+			mtd->size, size_human_readable(mtd->size));
-+		printf(", %d eraseblocks of %d bytes (%s)", eb_cnt,
-+			mtd->erasesize, size_human_readable(mtd->erasesize));
-+		printf(", min. I/O size %d bytes\n", mtd->writesize);
- 	}
- 
- 	if (args.quiet)
-@@ -631,9 +641,9 @@ int do_ubiformat(int argc, char *argv[])
- 		verbose = 2;
- 	else
- 		verbose = 1;
--	err = libscan_ubi_scan(&mtd, args.node_fd, &si, verbose);
-+	err = libscan_ubi_scan(mtd, &si, verbose);
- 	if (err) {
--		errmsg("failed to scan %s (%s)", mtd.node, args.node);
-+		errmsg("failed to scan %s", args.node);
- 		goto out_close;
- 	}
- 
-@@ -644,7 +654,7 @@ int do_ubiformat(int argc, char *argv[])
- 
- 	if (si->good_cnt < 2 && (!args.novtbl || args.image)) {
- 		errmsg("too few non-bad eraseblocks (%d) on %s",
--		       si->good_cnt, mtd.node);
-+		       si->good_cnt, args.node);
- 		goto out_free;
- 	}
- 
-@@ -656,7 +666,7 @@ int do_ubiformat(int argc, char *argv[])
- 			normsg("%d eraseblocks are supposedly empty", si->empty_cnt);
- 		if (si->corrupted_cnt)
- 			normsg("%d corrupted erase counters", si->corrupted_cnt);
--		print_bad_eraseblocks(&mtd, si);
-+		print_bad_eraseblocks(mtd, si);
- 	}
- 
- 	if (si->alien_cnt) {
-@@ -717,7 +727,7 @@ int do_ubiformat(int argc, char *argv[])
- 	if (!args.quiet && args.override_ec)
- 		normsg("use erase counter %lld for all eraseblocks", args.ec);
- 
--	ubigen_info_init(&ui, mtd.eb_size, mtd.min_io_size, mtd.subpage_size,
-+	ubigen_info_init(&ui, mtd->erasesize, mtd->writesize, args.subpage_size,
- 			 args.vid_hdr_offs, args.ubi_ver, args.image_seq);
- 
- 	if (si->vid_hdr_offs != -1 && ui.vid_hdr_offs != si->vid_hdr_offs) {
-@@ -735,28 +745,27 @@ int do_ubiformat(int argc, char *argv[])
- 	}
- 
- 	if (args.image) {
--		err = flash_image(&mtd, &ui, si);
-+		err = flash_image(mtd, &ui, si);
- 		if (err < 0)
- 			goto out_free;
- 
--		err = format(&mtd, &ui, si, err, 1);
-+		err = format(mtd, &ui, si, err, 1, args.subpage_size);
- 		if (err)
- 			goto out_free;
- 	} else {
--		err = format(&mtd, &ui, si, 0, args.novtbl);
-+		err = format(mtd, &ui, si, 0, args.novtbl, args.subpage_size);
- 		if (err)
- 			goto out_free;
- 	}
- 
- 	libscan_ubi_scan_free(si);
--	close(args.node_fd);
- 	return 0;
- 
- out_free:
- 	libscan_ubi_scan_free(si);
- out_close:
--	close(args.node_fd);
--out_close_mtd:
-+	close(fd);
-+
- 	return 1;
- }
- 
-diff --git a/include/mtd/libscan.h b/include/mtd/libscan.h
-index bb01482..e925a26 100644
---- a/include/mtd/libscan.h
-+++ b/include/mtd/libscan.h
-@@ -84,12 +84,11 @@ struct mtd_dev_info;
- /**
-  * ubi_scan - scan an MTD device.
-  * @mtd: information about the MTD device to scan
+-#ifndef __LIBMTD_H__
+-#define __LIBMTD_H__
+-
+-/* Maximum MTD device name length */
+-#define MTD_NAME_MAX 127
+-/* Maximum MTD device type string length */
+-#define MTD_TYPE_MAX 64
+-
+-/**
+- * struct mtd_dev_info - information about an MTD device.
+- * @node: node pointing to device
+- * @type: flash type (constants like %MTD_NANDFLASH defined in mtd-abi.h)
+- * @type_str: static R/O flash type string
+- * @name: device name
+- * @size: device size in bytes
+- * @eb_cnt: count of eraseblocks
+- * @eb_size: eraseblock size
+- * @min_io_size: minimum input/output unit size
+- * @subpage_size: sub-page size
+- * @oob_size: OOB size (zero if the device does not have OOB area)
+- * @region_cnt: count of additional erase regions
+- * @writable: zero if the device is read-only
+- * @bb_allowed: non-zero if the MTD device may have bad eraseblocks
+- */
+-struct mtd_dev_info
+-{
+-	const char *node;
+-	int type;
+-	const char type_str[MTD_TYPE_MAX + 1];
+-	long long size;
+-	int eb_cnt;
+-	int eb_size;
+-	int min_io_size;
+-	int subpage_size;
+-	int oob_size;
+-	int region_cnt;
+-	unsigned int writable:1;
+-	unsigned int bb_allowed:1;
+-};
+-
+-/**
+- * mtd_get_dev_info - get information about an MTD device.
+- * @desc: MTD library descriptor
+- * @node: name of the MTD device node
+- * @mtd: the MTD device information is returned here
+- *
+- * This function gets information about MTD device defined by the @node device
+- * node file and saves this information in the @mtd object. Returns %0 in case
+- * of success and %-1 in case of failure. If MTD subsystem is not present in the
+- * system, or the MTD device does not exist, errno is set to @ENODEV.
+- */
+-int mtd_get_dev_info(const char *node, struct mtd_dev_info *mtd);
+-
+-/**
+- * libmtd_erase - erase an eraseblock.
+- * @desc: MTD library descriptor
+- * @mtd: MTD device description object
 - * @fd: MTD device node file descriptor
-  * @info: the result of the scanning is returned here
-  * @verbose: verbose mode: %0 - be silent, %1 - output progress information,
-  *           2 - debugging output mode
-  */
--int libscan_ubi_scan(struct mtd_dev_info *mtd, int fd, struct ubi_scan_info **info,
-+int libscan_ubi_scan(struct mtd_info *mtd, struct ubi_scan_info **info,
- 	     int verbose);
+- * @eb: eraseblock to erase
+- *
+- * This function erases eraseblock @eb of MTD device described by @fd. Returns
+- * %0 in case of success and %-1 in case of failure.
+- */
+-int libmtd_erase(const struct mtd_dev_info *mtd, int fd, int eb);
+-
+-/**
+- * mtd_torture - torture an eraseblock.
+- * @desc: MTD library descriptor
+- * @mtd: MTD device description object
+- * @fd: MTD device node file descriptor
+- * @eb: eraseblock to torture
+- *
+- * This function tortures eraseblock @eb. Returns %0 in case of success and %-1
+- * in case of failure.
+- */
+-int mtd_torture(const struct mtd_dev_info *mtd, int fd, int eb);
+-
+-/**
+- * mtd_is_bad - check if eraseblock is bad.
+- * @mtd: MTD device description object
+- * @fd: MTD device node file descriptor
+- * @eb: eraseblock to check
+- *
+- * This function checks if eraseblock @eb is bad. Returns %0 if not, %1 if yes,
+- * and %-1 in case of failure.
+- */
+-int mtd_is_bad(const struct mtd_dev_info *mtd, int fd, int eb);
+-
+-/**
+- * mtd_mark_bad - mark an eraseblock as bad.
+- * @mtd: MTD device description object
+- * @fd: MTD device node file descriptor
+- * @eb: eraseblock to mark as bad
+- *
+- * This function marks eraseblock @eb as bad. Returns %0 in case of success and
+- * %-1 in case of failure.
+- */
+-int mtd_mark_bad(const struct mtd_dev_info *mtd, int fd, int eb);
+-
+-/**
+- * mtd_read - read data from an MTD device.
+- * @mtd: MTD device description object
+- * @fd: MTD device node file descriptor
+- * @eb: eraseblock to read from
+- * @offs: offset withing the eraseblock to read from
+- * @buf: buffer to read data to
+- * @len: how many bytes to read
+- *
+- * This function reads @len bytes of data from eraseblock @eb and offset @offs
+- * of the MTD device defined by @mtd and stores the read data at buffer @buf.
+- * Returns %0 in case of success and %-1 in case of failure.
+- */
+-int libmtd_read(const struct mtd_dev_info *mtd, int fd, int eb, int offs,
+-	     void *buf, int len);
+-
+-/**
+- * mtd_write - write data to an MTD device.
+- * @mtd: MTD device description object
+- * @fd: MTD device node file descriptor
+- * @eb: eraseblock to write to
+- * @offs: offset withing the eraseblock to write to
+- * @buf: buffer to write
+- * @len: how many bytes to write
+- *
+- * This function writes @len bytes of data to eraseblock @eb and offset @offs
+- * of the MTD device defined by @mtd. Returns %0 in case of success and %-1 in
+- * case of failure.
+- */
+-int libmtd_write(const struct mtd_dev_info *mtd, int fd, int eb, int offs,
+-	      void *buf, int len);
+-
+-#endif /* __LIBMTD_H__ */
+diff --git a/lib/Kconfig b/lib/Kconfig
+index f051751..d5f99ae 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -52,9 +52,6 @@ config LIBSCAN
+ config LIBUBIGEN
+ 	bool
  
- /**
-diff --git a/include/mtd/libubigen.h b/include/mtd/libubigen.h
-index f05978b..266f393 100644
---- a/include/mtd/libubigen.h
-+++ b/include/mtd/libubigen.h
-@@ -170,13 +170,13 @@ int ubigen_write_volume(const struct ubigen_info *ui,
-  * @ec1: erase counter value for @peb1
-  * @ec2: erase counter value for @peb1
-  * @vtbl: volume table
-- * @fd: output file descriptor seeked to the proper position
-+ * @mtd: The mtd device
-  *
-  * This function creates the UBI layout volume which contains 2 copies of the
-  * volume table. Returns zero in case of success and %-1 in case of failure.
-  */
- int ubigen_write_layout_vol(const struct ubigen_info *ui, int peb1, int peb2,
- 			    long long ec1, long long ec2,
--			    struct ubi_vtbl_record *vtbl, int fd);
-+			    struct ubi_vtbl_record *vtbl, struct mtd_info *mtd);
+-config LIBMTD
+-	bool
+-
+ config STMP_DEVICE
+ 	bool
  
- #endif /* !__LIBUBIGEN_H__ */
-diff --git a/lib/libscan.c b/lib/libscan.c
-index 29d1cdb..bf298a7 100644
---- a/lib/libscan.c
-+++ b/lib/libscan.c
-@@ -26,26 +26,28 @@
- #include <linux/mtd/mtd.h>
- #include <linux/stat.h>
- #include <linux/mtd/mtd-abi.h>
+diff --git a/lib/Makefile b/lib/Makefile
+index 44ba25b..b6da848 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -44,7 +44,6 @@ obj-$(CONFIG_BITREV)	+= bitrev.o
+ obj-$(CONFIG_QSORT)	+= qsort.o
+ obj-$(CONFIG_LIBSCAN)	+= libscan.o
+ obj-$(CONFIG_LIBUBIGEN)	+= libubigen.o
+-obj-$(CONFIG_LIBMTD)	+= libmtd.o
+ obj-y			+= gui/
+ obj-$(CONFIG_XYMODEM)	+= xymodem.o
+ obj-y			+= unlink-recursive.o
+diff --git a/lib/libmtd.c b/lib/libmtd.c
+deleted file mode 100644
+index 56672bd..0000000
+--- a/lib/libmtd.c
++++ /dev/null
+@@ -1,368 +0,0 @@
+-/*
+- * Copyright (C) 2009 Nokia Corporation
+- * Copyright (C) 2012 Wolfram Sang, Pengutronix e.K. <w.sang@pengutronix.de>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+- * the GNU General Public License for more details.
+- *
+- * Author: Artem Bityutskiy
+- * Author: Wolfram Sang
+- *
+- * This file is part of the MTD library. Based on pre-2.6.30 kernels support,
+- * now adapted to barebox.
+- *
+- * NOTE: No support for 64 bit sizes yet!
+- */
+-
+-#include <common.h>
+-#include <stdlib.h>
+-#include <string.h>
+-#include <malloc.h>
+-#include <errno.h>
+-#include <crc.h>
+-#include <fs.h>
+-#include <fcntl.h>
+-#include <ioctl.h>
+-#include <linux/stat.h>
+-#include <linux/mtd/mtd.h>
+-#include <linux/mtd/mtd-abi.h>
 -#include <mtd/libmtd.h>
-+#include <mtd/mtd-peb.h>
- #include <mtd/libscan.h>
- #include <mtd/ubi-user.h>
- #include <mtd/utils.h>
- #include <mtd/ubi-media.h>
- #include <asm-generic/div64.h>
- 
--int libscan_ubi_scan(struct mtd_dev_info *mtd, int fd, struct ubi_scan_info **info,
-+int libscan_ubi_scan(struct mtd_info *mtd, struct ubi_scan_info **info,
- 	     int verbose)
- {
--	int eb, v = (verbose == 2), pr = (verbose == 1);
-+	int eb, v = (verbose == 2), pr = (verbose == 1), eb_cnt;
- 	struct ubi_scan_info *si;
- 	unsigned long long sum = 0;
- 
-+	eb_cnt = mtd_div_by_eb(mtd->size, mtd);
-+
- 	si = calloc(1, sizeof(struct ubi_scan_info));
- 	if (!si)
- 		return sys_errmsg("cannot allocate %zd bytes of memory",
- 				  sizeof(struct ubi_scan_info));
- 
--	si->ec = calloc(mtd->eb_cnt, sizeof(uint32_t));
-+	si->ec = calloc(eb_cnt, sizeof(uint32_t));
- 	if (!si->ec) {
- 		sys_errmsg("cannot allocate %zd bytes of memory",
- 			   sizeof(struct ubi_scan_info));
-@@ -54,8 +56,8 @@ int libscan_ubi_scan(struct mtd_dev_info *mtd, int fd, struct ubi_scan_info **in
- 
- 	si->vid_hdr_offs = si->data_offs = -1;
- 
--	verbose(v, "start scanning eraseblocks 0-%d", mtd->eb_cnt);
--	for (eb = 0; eb < mtd->eb_cnt; eb++) {
-+	verbose(v, "start scanning eraseblocks 0-%d", eb_cnt);
-+	for (eb = 0; eb < eb_cnt; eb++) {
- 		int ret;
- 		uint32_t crc;
- 		struct ubi_ec_hdr ech;
-@@ -65,10 +67,10 @@ int libscan_ubi_scan(struct mtd_dev_info *mtd, int fd, struct ubi_scan_info **in
- 			normsg_cont("scanning eraseblock %d", eb);
- 		if (pr) {
- 			printf("\r" PROGRAM_NAME ": scanning eraseblock %d -- %2u %% complete  ",
--			       eb, (eb + 1) * 100 / mtd->eb_cnt);
-+			       eb, (eb + 1) * 100 / eb_cnt);
- 		}
- 
--		ret = mtd_is_bad(mtd, fd, eb);
-+		ret = mtd_peb_is_bad(mtd, eb);
- 		if (ret == -1)
- 			goto out_ec;
- 		if (ret) {
-@@ -79,7 +81,7 @@ int libscan_ubi_scan(struct mtd_dev_info *mtd, int fd, struct ubi_scan_info **in
- 			continue;
- 		}
- 
--		ret = libmtd_read(mtd, fd, eb, 0, &ech, sizeof(struct ubi_ec_hdr));
-+		ret = mtd_peb_read(mtd, &ech, eb, 0, sizeof(struct ubi_ec_hdr));
- 		if (ret < 0)
- 			goto out_ec;
- 
-@@ -121,14 +123,14 @@ int libscan_ubi_scan(struct mtd_dev_info *mtd, int fd, struct ubi_scan_info **in
- 		if (si->vid_hdr_offs == -1) {
- 			si->vid_hdr_offs = be32_to_cpu(ech.vid_hdr_offset);
- 			si->data_offs = be32_to_cpu(ech.data_offset);
--			if (si->data_offs % mtd->min_io_size) {
-+			if (si->data_offs % mtd->writesize) {
- 				if (pr)
- 					printf("\n");
- 				if (v)
- 					printf(": corrupted because of the below\n");
- 				warnmsg("bad data offset %d at eraseblock %d (n"
- 					"of multiple of min. I/O unit size %d)",
--					si->data_offs, eb, mtd->min_io_size);
-+					si->data_offs, eb, mtd->writesize);
- 				warnmsg("treat eraseblock %d as corrupted", eb);
- 				si->corrupted_cnt += 1;
- 				si->ec[eb] = EB_CORRUPTED;
-@@ -174,7 +176,7 @@ int libscan_ubi_scan(struct mtd_dev_info *mtd, int fd, struct ubi_scan_info **in
- 
- 	if (si->ok_cnt != 0) {
- 		/* Calculate mean erase counter */
--		for (eb = 0; eb < mtd->eb_cnt; eb++) {
-+		for (eb = 0; eb < eb_cnt; eb++) {
- 			if (si->ec[eb] > EC_MAX)
- 				continue;
- 			sum += si->ec[eb];
-@@ -183,7 +185,7 @@ int libscan_ubi_scan(struct mtd_dev_info *mtd, int fd, struct ubi_scan_info **in
- 		si->mean_ec = sum;
- 	}
- 
--	si->good_cnt = mtd->eb_cnt - si->bad_cnt;
-+	si->good_cnt = eb_cnt - si->bad_cnt;
- 	verbose(v, "finished, mean EC %lld, %d OK, %d corrupted, %d empty, %d "
- 		"alien, bad %d", si->mean_ec, si->ok_cnt, si->corrupted_cnt,
- 		si->empty_cnt, si->alien_cnt, si->bad_cnt);
-diff --git a/lib/libubigen.c b/lib/libubigen.c
-index 9006329..77ebb05 100644
---- a/lib/libubigen.c
-+++ b/lib/libubigen.c
-@@ -34,6 +34,7 @@
- #include <mtd/utils.h>
- #include <mtd/ubi-media.h>
- #include <mtd/libubigen.h>
-+#include <mtd/mtd-peb.h>
- 
- void ubigen_info_init(struct ubigen_info *ui, int peb_size, int min_io_size,
- 		      int subpage_size, int vid_hdr_offs, int ubi_ver,
-@@ -247,13 +248,12 @@ out_free:
- 
- int ubigen_write_layout_vol(const struct ubigen_info *ui, int peb1, int peb2,
- 			    long long ec1, long long ec2,
--			    struct ubi_vtbl_record *vtbl, int fd)
-+			    struct ubi_vtbl_record *vtbl, struct mtd_info *mtd)
- {
- 	int ret;
- 	struct ubigen_vol_info vi;
- 	char *outbuf;
- 	struct ubi_vid_hdr *vid_hdr;
--	off_t seek;
- 
- 	vi.bytes = ui->leb_size * UBI_LAYOUT_VOLUME_EBS;
- 	vi.id = UBI_LAYOUT_VOLUME_ID;
-@@ -277,29 +277,18 @@ int ubigen_write_layout_vol(const struct ubigen_info *ui, int peb1, int peb2,
- 	memset(outbuf + ui->data_offs + ui->vtbl_size, 0xFF,
- 	       ui->peb_size - ui->data_offs - ui->vtbl_size);
- 
--	seek = (off_t) peb1 * ui->peb_size;
--	if (lseek(fd, seek, SEEK_SET) != seek) {
--		sys_errmsg("cannot seek output file");
--		goto out_free;
+-#include <mtd/utils.h>
+-
+-#define PROGRAM_NAME "libmtd"
+-
+-static inline int mtd_ioctl_error(const struct mtd_dev_info *mtd, int eb,
+-				  const char *sreq)
+-{
+-	return sys_errmsg("%s ioctl failed for eraseblock %d (%s)",
+-			  sreq, eb, mtd->node);
+-}
+-
+-static int mtd_valid_erase_block(const struct mtd_dev_info *mtd, int eb)
+-{
+-	if (eb < 0 || eb >= mtd->eb_cnt) {
+-		errmsg("bad eraseblock number %d, %s has %d eraseblocks",
+-		       eb, mtd->node, mtd->eb_cnt);
+-		errno = EINVAL;
+-		return -1;
+-	}
+-	return 0;
+-}
+-
+-int libmtd_erase(const struct mtd_dev_info *mtd, int fd, int eb)
+-{
+-	int ret;
+-	struct erase_info_user ei;
+-
+-	ret = mtd_valid_erase_block(mtd, eb);
+-	if (ret)
+-		return ret;
+-
+-	ei.start = (__u64)eb * mtd->eb_size;
+-	ei.length = mtd->eb_size;
+-
+-	ret = ioctl(fd, MEMERASE, &ei);
+-	if (ret < 0)
+-		return mtd_ioctl_error(mtd, eb, "MEMERASE");
+-	return 0;
+-}
+-
+-/* Patterns to write to a physical eraseblock when torturing it */
+-static uint8_t patterns[] = {0xa5, 0x5a, 0x0};
+-
+-/**
+- * check_pattern - check if buffer contains only a certain byte pattern.
+- * @buf: buffer to check
+- * @patt: the pattern to check
+- * @size: buffer size in bytes
+- *
+- * This function returns %1 in there are only @patt bytes in @buf, and %0 if
+- * something else was also found.
+- */
+-static int check_pattern(const void *buf, uint8_t patt, int size)
+-{
+-	int i;
+-
+-	for (i = 0; i < size; i++)
+-		if (((const uint8_t *)buf)[i] != patt)
+-			return 0;
+-	return 1;
+-}
+-
+-int mtd_torture(const struct mtd_dev_info *mtd, int fd, int eb)
+-{
+-	int err, i, patt_count;
+-	void *buf;
+-
+-	normsg("run torture test for PEB %d", eb);
+-	patt_count = ARRAY_SIZE(patterns);
+-
+-	buf = xmalloc(mtd->eb_size);
+-
+-	for (i = 0; i < patt_count; i++) {
+-		err = libmtd_erase(mtd, fd, eb);
+-		if (err)
+-			goto out;
+-
+-		/* Make sure the PEB contains only 0xFF bytes */
+-		err = libmtd_read(mtd, fd, eb, 0, buf, mtd->eb_size);
+-		if (err)
+-			goto out;
+-
+-		err = check_pattern(buf, 0xFF, mtd->eb_size);
+-		if (err == 0) {
+-			errmsg("erased PEB %d, but a non-0xFF byte found", eb);
+-			errno = EIO;
+-			goto out;
+-		}
+-
+-		/* Write a pattern and check it */
+-		memset(buf, patterns[i], mtd->eb_size);
+-		err = libmtd_write(mtd, fd, eb, 0, buf, mtd->eb_size);
+-		if (err)
+-			goto out;
+-
+-		memset(buf, ~patterns[i], mtd->eb_size);
+-		err = libmtd_read(mtd, fd, eb, 0, buf, mtd->eb_size);
+-		if (err)
+-			goto out;
+-
+-		err = check_pattern(buf, patterns[i], mtd->eb_size);
+-		if (err == 0) {
+-			errmsg("pattern %x checking failed for PEB %d",
+-				patterns[i], eb);
+-			errno = EIO;
+-			goto out;
+-		}
 -	}
 -
- 	ubigen_init_ec_hdr(ui, (struct ubi_ec_hdr *)outbuf, ec1);
- 	ubigen_init_vid_hdr(ui, &vi, vid_hdr, 0, NULL, 0);
--	ret = write(fd, outbuf, ui->peb_size);
--	if (ret != ui->peb_size) {
-+	ret = mtd_peb_write(mtd, outbuf, peb1, 0, ui->peb_size);
-+	if (ret < 0) {
- 		sys_errmsg("cannot write %d bytes", ui->peb_size);
- 		goto out_free;
- 	}
- 
--	seek = (off_t) peb2 * ui->peb_size;
--	if (lseek(fd, seek, SEEK_SET) != seek) {
--		sys_errmsg("cannot seek output file");
--		goto out_free;
+-	err = 0;
+-	normsg("PEB %d passed torture test, do not mark it a bad", eb);
+-
+-out:
+-	free(buf);
+-	return -1;
+-}
+-
+-int mtd_is_bad(const struct mtd_dev_info *mtd, int fd, int eb)
+-{
+-	int ret;
+-	loff_t seek;
+-
+-	ret = mtd_valid_erase_block(mtd, eb);
+-	if (ret)
+-		return ret;
+-
+-	if (!mtd->bb_allowed)
+-		return 0;
+-
+-	seek = (loff_t)eb * mtd->eb_size;
+-	ret = ioctl(fd, MEMGETBADBLOCK, &seek);
+-	if (ret == -1)
+-		return mtd_ioctl_error(mtd, eb, "MEMGETBADBLOCK");
+-	return ret;
+-}
+-
+-int mtd_mark_bad(const struct mtd_dev_info *mtd, int fd, int eb)
+-{
+-	int ret;
+-	loff_t seek;
+-
+-	if (!mtd->bb_allowed) {
+-		errno = EINVAL;
+-		return -1;
 -	}
- 	ubigen_init_ec_hdr(ui, (struct ubi_ec_hdr *)outbuf, ec2);
- 	ubigen_init_vid_hdr(ui, &vi, vid_hdr, 1, NULL, 0);
--	ret = write(fd, outbuf, ui->peb_size);
--	if (ret != ui->peb_size) {
-+	ret = mtd_peb_write(mtd, outbuf, peb2, 0, ui->peb_size);
-+	if (ret < 0) {
- 		sys_errmsg("cannot write %d bytes", ui->peb_size);
- 		goto out_free;
- 	}
+-
+-	ret = mtd_valid_erase_block(mtd, eb);
+-	if (ret)
+-		return ret;
+-
+-	seek = (loff_t)eb * mtd->eb_size;
+-	ret = ioctl(fd, MEMSETBADBLOCK, &seek);
+-	if (ret == -1)
+-		return mtd_ioctl_error(mtd, eb, "MEMSETBADBLOCK");
+-	return 0;
+-}
+-
+-int libmtd_read(const struct mtd_dev_info *mtd, int fd, int eb, int offs,
+-	     void *buf, int len)
+-{
+-	int ret, rd = 0;
+-	loff_t seek;
+-
+-	ret = mtd_valid_erase_block(mtd, eb);
+-	if (ret)
+-		return ret;
+-
+-	if (offs < 0 || offs + len > mtd->eb_size) {
+-		errmsg("bad offset %d or length %d, %s eraseblock size is %d",
+-		       offs, len, mtd->node, mtd->eb_size);
+-		errno = EINVAL;
+-		return -1;
+-	}
+-
+-	/* Seek to the beginning of the eraseblock */
+-	seek = (loff_t)eb * mtd->eb_size + offs;
+-	if (lseek(fd, seek, SEEK_SET) != seek)
+-		return sys_errmsg("cannot seek %s to offset %llu",
+-				  mtd->node, (unsigned long long)seek);
+-
+-	while (rd < len) {
+-		ret = read(fd, buf, len);
+-		if (ret < 0)
+-			return sys_errmsg("cannot read %d bytes from %s (eraseblock %d, offset %d)",
+-					  len, mtd->node, eb, offs);
+-		rd += ret;
+-	}
+-
+-	return 0;
+-}
+-
+-int libmtd_write(const struct mtd_dev_info *mtd, int fd, int eb, int offs,
+-	      void *buf, int len)
+-{
+-	int ret;
+-	loff_t seek;
+-
+-	ret = mtd_valid_erase_block(mtd, eb);
+-	if (ret)
+-		return ret;
+-
+-	if (offs < 0 || offs + len > mtd->eb_size) {
+-		errmsg("bad offset %d or length %d, %s eraseblock size is %d",
+-		       offs, len, mtd->node, mtd->eb_size);
+-		errno = EINVAL;
+-		return -1;
+-	}
+-	if (offs % mtd->subpage_size) {
+-		errmsg("write offset %d is not aligned to %s min. I/O size %d",
+-		       offs, mtd->node, mtd->subpage_size);
+-		errno = EINVAL;
+-		return -1;
+-	}
+-	if (len % mtd->subpage_size) {
+-		errmsg("write length %d is not aligned to %s min. I/O size %d",
+-		       len, mtd->node, mtd->subpage_size);
+-		errno = EINVAL;
+-		return -1;
+-	}
+-
+-	/* Seek to the beginning of the eraseblock */
+-	seek = (loff_t)eb * mtd->eb_size + offs;
+-	if (lseek(fd, seek, SEEK_SET) != seek)
+-		return sys_errmsg("cannot seek %s to offset %llu",
+-				  mtd->node, (unsigned long long)seek);
+-
+-	ret = write(fd, buf, len);
+-	if (ret != len)
+-		return sys_errmsg("cannot write %d bytes to %s (eraseblock %d, offset %d)",
+-				  len, mtd->node, eb, offs);
+-
+-	return 0;
+-}
+-
+-/**
+- * mtd_get_dev_info - fill the mtd_dev_info structure
+- * @node: name of the MTD device node
+- * @mtd: the MTD device information is returned here
+- */
+-int mtd_get_dev_info(const char *node, struct mtd_dev_info *mtd)
+-{
+-	struct mtd_info_user ui;
+-	int fd, ret;
+-	loff_t offs = 0;
+-
+-	memset(mtd, '\0', sizeof(struct mtd_dev_info));
+-
+-	mtd->node = node;
+-
+-	fd = open(node, O_RDWR);
+-	if (fd < 0)
+-		return sys_errmsg("cannot open \"%s\"", node);
+-
+-	if (ioctl(fd, MEMGETINFO, &ui)) {
+-		sys_errmsg("MEMGETINFO ioctl request failed");
+-		goto out_close;
+-	}
+-
+-	ret = ioctl(fd, MEMGETBADBLOCK, &offs);
+-	if (ret == -1) {
+-		if (errno != EOPNOTSUPP) {
+-			sys_errmsg("MEMGETBADBLOCK ioctl failed");
+-			goto out_close;
+-		}
+-		errno = 0;
+-		mtd->bb_allowed = 0;
+-	} else
+-		mtd->bb_allowed = 1;
+-
+-	mtd->type = ui.type;
+-	mtd->size = ui.size;
+-	mtd->eb_size = ui.erasesize;
+-	mtd->min_io_size = ui.writesize;
+-	mtd->oob_size = ui.oobsize;
+-	mtd->subpage_size = ui.subpagesize;
+-
+-	if (mtd->min_io_size <= 0) {
+-		errmsg("%s has insane min. I/O unit size %d",
+-		       node, mtd->min_io_size);
+-		goto out_close;
+-	}
+-	if (mtd->eb_size <= 0 || mtd->eb_size < mtd->min_io_size) {
+-		errmsg("%s has insane eraseblock size %d",
+-		       node, mtd->eb_size);
+-		goto out_close;
+-	}
+-	if (mtd->size <= 0 || mtd->size < mtd->eb_size) {
+-		errmsg("%s has insane size %lld",
+-		       node, mtd->size);
+-		goto out_close;
+-	}
+-
+-	mtd->eb_cnt = mtd_user_div_by_eb(ui.size, &ui);
+-
+-	switch(mtd->type) {
+-	case MTD_ABSENT:
+-		errmsg("%s (%s) is removable and is not present",
+-		       mtd->node, node);
+-		goto out_close;
+-	case MTD_RAM:
+-		strcpy((char *)mtd->type_str, "ram");
+-		break;
+-	case MTD_ROM:
+-		strcpy((char *)mtd->type_str, "rom");
+-		break;
+-	case MTD_NORFLASH:
+-		strcpy((char *)mtd->type_str, "nor");
+-		break;
+-	case MTD_NANDFLASH:
+-		strcpy((char *)mtd->type_str, "nand");
+-		break;
+-	case MTD_DATAFLASH:
+-		strcpy((char *)mtd->type_str, "dataflash");
+-		break;
+-	case MTD_UBIVOLUME:
+-		strcpy((char *)mtd->type_str, "ubi");
+-		break;
+-	default:
+-		goto out_close;
+-	}
+-
+-	if (ui.flags & MTD_WRITEABLE)
+-		mtd->writable = 1;
+-
+-	close(fd);
+-
+-	return 0;
+-
+-out_close:
+-	close(fd);
+-	return -1;
+-}
 -- 
 2.7.0
 
