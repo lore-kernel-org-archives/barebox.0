@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1afn0l-000106-Ly
+ id 1afn0l-000104-DG
  for barebox@lists.infradead.org; Tue, 15 Mar 2016 11:19:41 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1afn0N-0000bw-HQ
+ for barebox@lists.infradead.org; Tue, 15 Mar 2016 12:19:15 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.86_2)
+ (envelope-from <sha@pengutronix.de>) id 1afn0N-0001ji-5s
+ for barebox@lists.infradead.org; Tue, 15 Mar 2016 12:19:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Mar 2016 12:19:09 +0100
-Message-Id: <1458040754-32240-7-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1458040754-32240-1-git-send-email-s.hauer@pengutronix.de>
-References: <1458040754-32240-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 15 Mar 2016 12:19:03 +0100
+Message-Id: <1458040754-32240-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,106 +26,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/11] imx-bbu-nand-fcb: erase on demand
+Subject: i.MX NAND Boot: Make update robust against power failures
 To: Barebox List <barebox@lists.infradead.org>
 
-Instead of erasing the whole partition on update entry, erase the areas
-separately when we actually want to write them. This is done as a step
-towards robust update.
+The i.MX6 allows to store the barebox image and all control data around
+it redundantly in the NAND. This can be used to make a barebox update
+safe against power failures. The following series implements this. It
+makes use of the just sent mtd-peb API.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/imx-bbu-nand-fcb.c | 47 ++++++++++++++---------------------------------
- 1 file changed, 14 insertions(+), 33 deletions(-)
+Sascha
 
-diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
-index 492dd92..3dc9274 100644
---- a/common/imx-bbu-nand-fcb.c
-+++ b/common/imx-bbu-nand-fcb.c
-@@ -272,34 +272,6 @@ static int fcb_create(struct imx_nand_fcb_bbu_handler *imx_handler,
- 	return 0;
- }
- 
--static int imx_bbu_erase(struct mtd_info *mtd)
--{
--	uint64_t offset = 0;
--	struct erase_info erase;
--	int ret;
--
--	while (offset < mtd->size) {
--		pr_debug("erasing at 0x%08llx\n", offset);
--		if (mtd_block_isbad(mtd, offset)) {
--			pr_debug("erase skip block @ 0x%08llx\n", offset);
--			offset += mtd->erasesize;
--			continue;
--		}
--
--		memset(&erase, 0, sizeof(erase));
--		erase.addr = offset;
--		erase.len = mtd->erasesize;
--
--		ret = mtd_erase(mtd, &erase);
--		if (ret)
--			return ret;
--
--		offset += mtd->erasesize;
--	}
--
--	return 0;
--}
--
- static int mtd_peb_write_block(struct mtd_info *mtd, void *buf, int block, int len)
- {
- 	int ret;
-@@ -352,13 +324,22 @@ static int imx_bbu_firmware_start_block(struct mtd_info *mtd, int num)
- static int imx_bbu_write_firmware(struct mtd_info *mtd, unsigned num, void *buf,
- 				  size_t len)
- {
--	int ret;
-+	int ret, i;
- 	int num_blocks = imx_bbu_firmware_max_blocks(mtd);
- 	int block = imx_bbu_firmware_start_block(mtd, num);
- 
- 	pr_info("writing firmware %d to block %d (ofs 0x%08x)\n",
- 			num, block, block * mtd->erasesize);
- 
-+	for (i = 0; i < num_blocks; i++) {
-+		if (mtd_peb_is_bad(mtd, block + i))
-+			continue;
-+
-+		ret = mtd_peb_erase(mtd, block + i);
-+		if (ret && ret != -EIO)
-+			return ret;
-+	}
-+
- 	while (len > 0) {
- 		int now = min(len, mtd->erasesize);
- 
-@@ -470,6 +451,10 @@ again:
- 	if (cpu_is_mx28())
- 		imx28_dbbt_create(dbbt, *n_bad_blocksp);
- 
-+	ret = mtd_peb_erase(mtd, block);
-+	if (ret)
-+		return ret;
-+
- 	ret = raw_write_page(mtd, fcb_raw_page, block * mtd->erasesize);
- 	if (ret) {
- 		pr_err("Writing FCB on block %d failed with %s\n",
-@@ -629,10 +614,6 @@ static int imx_bbu_nand_update(struct bbu_handler *handler, struct bbu_data *dat
- 	if (ret)
- 		goto out;
- 
--	ret = imx_bbu_erase(mtd);
--	if (ret)
--		goto out;
--
- 	ret = imx_bbu_write_firmware(mtd, 0, fw, fw_size);
- 	if (ret < 0)
- 		goto out;
--- 
-2.7.0
+----------------------------------------------------------------
+Sascha Hauer (11):
+      bbu: Allow to refresh/repair images
+      mtd: nand: export nand_check_erased_buf
+      imx-bbu-nand-fcb: factor out layout functions
+      imx-bbu-nand-fcb: Use mtd-peb API to write firmware
+      imx-bbu-nand-fcb: factor out a fcb write function
+      imx-bbu-nand-fcb: erase on demand
+      imx-bbu-nand-fcb: Only write FCBs/DBBTs when necessary
+      imx-bbu-nand-fcb: When writing firmware return new bad blocks
+      imx-bbu-nand-fcb: Print error when writing blocks fails
+      imx-bbu-nand-fcb: Make robust against power cuts
+      imx-bbu-nand-fcb: Print error message when out of pebs
 
+ Documentation/user/updating.rst |   8 +
+ commands/barebox-update.c       |  26 +-
+ common/bbu.c                    |  12 +-
+ common/imx-bbu-nand-fcb.c       | 968 +++++++++++++++++++++++++++++++++-------
+ drivers/mtd/nand/nand_base.c    |   2 +-
+ include/bbu.h                   |   1 +
+ include/linux/mtd/nand.h        |   1 +
+ 7 files changed, 854 insertions(+), 164 deletions(-)
 
 _______________________________________________
 barebox mailing list
