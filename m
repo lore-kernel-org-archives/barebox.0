@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1afmxF-0005Gp-VX
- for barebox@lists.infradead.org; Tue, 15 Mar 2016 11:16:04 +0000
+ id 1afmxF-0005Gv-VW
+ for barebox@lists.infradead.org; Tue, 15 Mar 2016 11:16:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Mar 2016 12:15:23 +0100
-Message-Id: <1458040534-6171-6-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 15 Mar 2016 12:15:33 +0100
+Message-Id: <1458040534-6171-16-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1458040534-6171-1-git-send-email-s.hauer@pengutronix.de>
 References: <1458040534-6171-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,80 +21,122 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/16] mtd: rename mtd_all_ff -> mtd_buf_all_ff
+Subject: [PATCH 15/16] mtd: ubi: Use mtd_peb_erase
 To: Barebox List <barebox@lists.infradead.org>
 
-To make clear this function checks a given buffer and not data on a mtd
-device.
+mtd_peb_erase provides the same functionality as do_sync_erase. Use it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/core.c           | 10 +++++++++-
- drivers/mtd/nand/nand_base.c |  2 +-
- include/linux/mtd/mtd.h      |  2 +-
- lib/libscan.c                |  2 +-
- 4 files changed, 12 insertions(+), 4 deletions(-)
+ drivers/mtd/ubi/debug.h | 14 -------------
+ drivers/mtd/ubi/io.c    | 55 +------------------------------------------------
+ 2 files changed, 1 insertion(+), 68 deletions(-)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 0a3f7ed..ff53a4a 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -34,7 +34,15 @@
+diff --git a/drivers/mtd/ubi/debug.h b/drivers/mtd/ubi/debug.h
+index 9d0542c..c1b41b4 100644
+--- a/drivers/mtd/ubi/debug.h
++++ b/drivers/mtd/ubi/debug.h
+@@ -72,20 +72,6 @@ static inline int ubi_dbg_is_bgt_disabled(const struct ubi_device *ubi)
+ 	return ubi->dbg.disable_bgt;
+ }
  
- static LIST_HEAD(mtd_register_hooks);
- 
--int mtd_all_ff(const void *buf, unsigned int len)
-+/**
-+ * mtd_buf_all_ff - check if buffer contains only 0xff
-+ * @buf: buffer to check
-+ * @size: buffer size in bytes
-+ *
-+ * This function returns %1 if there are only 0xff bytes in @buf, and %0 if
-+ * something else was also found.
-+ */
-+int mtd_buf_all_ff(const void *buf, unsigned int len)
+-/**
+- * ubi_dbg_is_erase_failure - if its time to emulate an erase failure.
+- * @ubi: UBI device description object
+- *
+- * Returns non-zero if an erase failure should be emulated, otherwise returns
+- * zero.
+- */
+-static inline int ubi_dbg_is_erase_failure(const struct ubi_device *ubi)
+-{
+-	if (ubi->dbg.emulate_io_failures)
+-		return !(random32() % 400);
+-	return 0;
+-}
+-
+ static inline int ubi_dbg_chk_io(const struct ubi_device *ubi)
  {
- 	while ((unsigned long)buf & 0x3) {
- 		if (*(const uint8_t *)buf != 0xff)
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index ffbf829..7eef287 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -2403,7 +2403,7 @@ static int nand_do_write_ops(struct mtd_info *mtd, loff_t to,
- 			memset(chip->oob_poi, 0xff, mtd->oobsize);
- 		}
+ 	return ubi->dbg.chk_io;
+diff --git a/drivers/mtd/ubi/io.c b/drivers/mtd/ubi/io.c
+index ed0cd1c..b3cb4f2 100644
+--- a/drivers/mtd/ubi/io.c
++++ b/drivers/mtd/ubi/io.c
+@@ -178,17 +178,6 @@ int ubi_io_write(struct ubi_device *ubi, const void *buf, int pnum, int offset,
+ }
  
--		if (oob || !mtd_all_ff(wbuf, mtd->writesize)) {
-+		if (oob || !mtd_buf_all_ff(wbuf, mtd->writesize)) {
- 			ret = chip->write_page(mtd, chip, column, bytes, wbuf,
- 					oob_required, page, cached,
- 					(ops->mode == MTD_OPS_RAW));
-diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
-index 98dd82c..4374882 100644
---- a/include/linux/mtd/mtd.h
-+++ b/include/linux/mtd/mtd.h
-@@ -312,7 +312,7 @@ int mtd_block_isbad(struct mtd_info *mtd, loff_t ofs);
- int mtd_block_markbad(struct mtd_info *mtd, loff_t ofs);
- int mtd_block_markgood(struct mtd_info *mtd, loff_t ofs);
+ /**
+- * erase_callback - MTD erasure call-back.
+- * @ei: MTD erase information object.
+- *
+- * Note, even though MTD erase interface is asynchronous, all the current
+- * implementations are synchronous anyway.
+- */
+-static void erase_callback(struct erase_info *ei)
+-{
+-}
+-
+-/**
+  * do_sync_erase - synchronously erase a physical eraseblock.
+  * @ubi: UBI device description object
+  * @pnum: the physical eraseblock number to erase
+@@ -199,9 +188,6 @@ static void erase_callback(struct erase_info *ei)
+  */
+ static int do_sync_erase(struct ubi_device *ubi, int pnum)
+ {
+-	int err, retries = 0;
+-	struct erase_info ei;
+-
+ 	dbg_io("erase PEB %d", pnum);
+ 	ubi_assert(pnum >= 0 && pnum < ubi->peb_count);
  
--int mtd_all_ff(const void *buf, unsigned int len);
-+int mtd_buf_all_ff(const void *buf, unsigned int len);
+@@ -210,46 +196,7 @@ static int do_sync_erase(struct ubi_device *ubi, int pnum)
+ 		return -EROFS;
+ 	}
  
- /*
-  * Debugging macro and defines
-diff --git a/lib/libscan.c b/lib/libscan.c
-index 0c850ae..29d1cdb 100644
---- a/lib/libscan.c
-+++ b/lib/libscan.c
-@@ -84,7 +84,7 @@ int libscan_ubi_scan(struct mtd_dev_info *mtd, int fd, struct ubi_scan_info **in
- 			goto out_ec;
+-retry:
+-	memset(&ei, 0, sizeof(struct erase_info));
+-
+-	ei.mtd      = ubi->mtd;
+-	ei.addr     = (loff_t)pnum * ubi->peb_size;
+-	ei.len      = ubi->peb_size;
+-	ei.callback = erase_callback;
+-
+-	err = mtd_erase(ubi->mtd, &ei);
+-	if (err) {
+-		if (retries++ < UBI_IO_RETRIES) {
+-			ubi_warn("error %d while erasing PEB %d, retry",
+-				 err, pnum);
+-			goto retry;
+-		}
+-		ubi_err("cannot erase PEB %d, error %d", pnum, err);
+-		dump_stack();
+-		return err;
+-	}
+-
+-	if (ei.state == MTD_ERASE_FAILED) {
+-		if (retries++ < UBI_IO_RETRIES) {
+-			ubi_warn("error while erasing PEB %d, retry", pnum);
+-			goto retry;
+-		}
+-		ubi_err("cannot erase PEB %d", pnum);
+-		dump_stack();
+-		return -EIO;
+-	}
+-
+-	err = ubi_self_check_all_ff(ubi, pnum, 0, ubi->peb_size);
+-	if (err)
+-		return err;
+-
+-	if (ubi_dbg_is_erase_failure(ubi)) {
+-		ubi_err("cannot erase PEB %d (emulated)", pnum);
+-		return -EIO;
+-	}
+-
+-	return 0;
++	return mtd_peb_erase(ubi->mtd, pnum);
+ }
  
- 		if (be32_to_cpu(ech.magic) != UBI_EC_HDR_MAGIC) {
--			if (mtd_all_ff(&ech, sizeof(struct ubi_ec_hdr))) {
-+			if (mtd_buf_all_ff(&ech, sizeof(struct ubi_ec_hdr))) {
- 				si->empty_cnt += 1;
- 				si->ec[eb] = EB_EMPTY;
- 				if (v)
+ /**
 -- 
 2.7.0
 
