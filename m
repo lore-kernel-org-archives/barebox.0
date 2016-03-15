@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1afn3u-00015l-Fi
- for barebox@lists.infradead.org; Tue, 15 Mar 2016 11:22:56 +0000
+ id 1afn0p-00010B-9w
+ for barebox@lists.infradead.org; Tue, 15 Mar 2016 11:19:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Mar 2016 12:22:27 +0100
-Message-Id: <1458040952-6826-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1458040952-6826-1-git-send-email-s.hauer@pengutronix.de>
-References: <1458040952-6826-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 15 Mar 2016 12:19:10 +0100
+Message-Id: <1458040754-32240-8-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1458040754-32240-1-git-send-email-s.hauer@pengutronix.de>
+References: <1458040754-32240-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,570 +21,280 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] mtd: ubi: rename cdev.c to barebox.c
+Subject: [PATCH 07/11] imx-bbu-nand-fcb: Only write FCBs/DBBTs when necessary
 To: Barebox List <barebox@lists.infradead.org>
 
-cdev.c exists in the kernel UBI code, but barebox has completely
-different content in this file. rename it to barebox.c to reduce the
-number of merge conflicts. Also with the name barebox.c we now have
-a place to put other barebox specific UBI code to.
+Instead of writing the FCBs/DBBTs on every update write them
+only if they have changed or if a block needs cleanup (returns
+-EUCLEAN)
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/ubi/Makefile  |   2 +-
- drivers/mtd/ubi/barebox.c | 262 ++++++++++++++++++++++++++++++++++++++++++++++
- drivers/mtd/ubi/cdev.c    | 262 ----------------------------------------------
- 3 files changed, 263 insertions(+), 263 deletions(-)
- create mode 100644 drivers/mtd/ubi/barebox.c
- delete mode 100644 drivers/mtd/ubi/cdev.c
+ common/imx-bbu-nand-fcb.c | 230 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 230 insertions(+)
 
-diff --git a/drivers/mtd/ubi/Makefile b/drivers/mtd/ubi/Makefile
-index 795b116..33ac390 100644
---- a/drivers/mtd/ubi/Makefile
-+++ b/drivers/mtd/ubi/Makefile
-@@ -1,5 +1,5 @@
- obj-$(CONFIG_MTD_UBI) += ubi.o
+diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
+index 3dc9274..0c7f75c 100644
+--- a/common/imx-bbu-nand-fcb.c
++++ b/common/imx-bbu-nand-fcb.c
+@@ -137,6 +137,22 @@ static void encode_hamming_13_8(void *_src, void *_ecc, size_t size)
+ 		ecc[i] = calculate_parity_13_8(src[i]);
+ }
  
--ubi-y += vtbl.o vmt.o upd.o build.o cdev.o kapi.o eba.o io.o wl.o attach.o
-+ubi-y += vtbl.o vmt.o upd.o build.o barebox.o kapi.o eba.o io.o wl.o attach.o
- ubi-y += misc.o debug.o
- ubi-$(CONFIG_MTD_UBI_FASTMAP) += fastmap.o
-diff --git a/drivers/mtd/ubi/barebox.c b/drivers/mtd/ubi/barebox.c
-new file mode 100644
-index 0000000..fe71a8d
---- /dev/null
-+++ b/drivers/mtd/ubi/barebox.c
-@@ -0,0 +1,262 @@
-+#include <common.h>
-+#include <fcntl.h>
-+#include <fs.h>
-+#include <ioctl.h>
-+#include "ubi-barebox.h"
-+#include "ubi.h"
-+
-+LIST_HEAD(ubi_volumes_list);
-+
-+struct ubi_volume_cdev_priv {
-+	struct ubi_device *ubi;
-+	struct ubi_volume *vol;
-+	int written;
-+};
-+
-+static ssize_t ubi_volume_cdev_read(struct cdev *cdev, void *buf, size_t size,
-+		loff_t offset, unsigned long flags)
++static int lookup_single_error_13_8(unsigned char syndrome)
 +{
-+	struct ubi_volume_cdev_priv *priv = cdev->priv;
-+	struct ubi_volume *vol = priv->vol;
-+	struct ubi_device *ubi = priv->ubi;
-+	int err, lnum, off, len;
-+	size_t count_save = size;
-+	unsigned long long tmp;
-+	loff_t offp = offset;
-+	int usable_leb_size = vol->usable_leb_size;
-+
-+	ubi_debug("%s: %zd @ 0x%08llx", __func__, size, offset);
-+
-+	len = size > usable_leb_size ? usable_leb_size : size;
-+
-+	tmp = offp;
-+	off = do_div(tmp, usable_leb_size);
-+	lnum = tmp;
-+	do {
-+		if (off + len >= usable_leb_size)
-+			len = usable_leb_size - off;
-+
-+		err = ubi_eba_read_leb(ubi, vol, lnum, buf, off, len, 0);
-+		if (err) {
-+			ubi_err("read error: %s", strerror(-err));
-+			break;
-+		}
-+		off += len;
-+		if (off == usable_leb_size) {
-+			lnum += 1;
-+			off -= usable_leb_size;
-+		}
-+
-+		size -= len;
-+		offp += len;
-+
-+		buf += len;
-+		len = size > usable_leb_size ? usable_leb_size : size;
-+	} while (size);
-+
-+	return count_save;
-+}
-+
-+static ssize_t ubi_volume_cdev_write(struct cdev* cdev, const void *buf,
-+		size_t size, loff_t offset, unsigned long flags)
-+{
-+	struct ubi_volume_cdev_priv *priv = cdev->priv;
-+	struct ubi_volume *vol = priv->vol;
-+	struct ubi_device *ubi = priv->ubi;
-+	int err;
-+
-+	if (!priv->written) {
-+		err = ubi_start_update(ubi, vol, vol->used_bytes);
-+		if (err < 0) {
-+			ubi_err("Cannot start volume update");
-+			return err;
-+		}
-+	}
-+
-+	err = ubi_more_update_data(ubi, vol, buf, size);
-+	if (err < 0) {
-+		ubi_err("Couldnt or partially wrote data");
-+		return err;
-+	}
-+
-+	priv->written += size;
-+
-+	return size;
-+}
-+
-+static int ubi_volume_cdev_open(struct cdev *cdev, unsigned long flags)
-+{
-+	struct ubi_volume_cdev_priv *priv = cdev->priv;
-+
-+	priv->written = 0;
-+
-+	return 0;
-+}
-+
-+static int ubi_volume_cdev_close(struct cdev *cdev)
-+{
-+	struct ubi_volume_cdev_priv *priv = cdev->priv;
-+	struct ubi_volume *vol = priv->vol;
-+	struct ubi_device *ubi = priv->ubi;
-+	int err;
-+
-+	if (priv->written) {
-+		int remaining = vol->usable_leb_size -
-+				(priv->written % vol->usable_leb_size);
-+
-+		if (remaining) {
-+			void *buf = kmalloc(remaining, GFP_KERNEL);
-+
-+			if (!buf)
-+				return -ENOMEM;
-+
-+			memset(buf, 0xff, remaining);
-+
-+			err = ubi_more_update_data(ubi, vol, buf, remaining);
-+
-+			kfree(buf);
-+
-+			if (err < 0) {
-+				ubi_err("Couldnt or partially wrote data");
-+				return err;
-+			}
-+		}
-+
-+		err = ubi_finish_update(ubi, vol);
-+		if (err)
-+			return err;
-+
-+		err = ubi_check_volume(ubi, vol->vol_id);
-+		if (err < 0) {
-+			ubi_err("ubi volume check failed: %s", strerror(err));
-+			return err;
-+		}
-+
-+		if (err) {
-+			ubi_warn("volume %d on UBI device %d is corrupted",
-+					vol->vol_id, ubi->ubi_num);
-+			vol->corrupted = 1;
-+		}
-+
-+		vol->checked = 1;
-+		ubi_volume_notify(ubi, vol, UBI_VOLUME_UPDATED);
-+	}
-+
-+	return 0;
-+}
-+
-+static loff_t ubi_volume_cdev_lseek(struct cdev *cdev, loff_t ofs)
-+{
-+	struct ubi_volume_cdev_priv *priv = cdev->priv;
-+
-+	/* We can only update ubi volumes sequentially */
-+	if (priv->written)
-+		return -EINVAL;
-+
-+	return ofs;
-+}
-+
-+static struct file_operations ubi_volume_fops = {
-+	.open	= ubi_volume_cdev_open,
-+	.close	= ubi_volume_cdev_close,
-+	.read   = ubi_volume_cdev_read,
-+	.write  = ubi_volume_cdev_write,
-+	.lseek	= ubi_volume_cdev_lseek,
-+};
-+
-+int ubi_volume_cdev_add(struct ubi_device *ubi, struct ubi_volume *vol)
-+{
-+	struct cdev *cdev = &vol->cdev;
-+	struct ubi_volume_cdev_priv *priv;
-+	int ret;
-+
-+	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
-+
-+	priv->vol = vol;
-+	priv->ubi = ubi;
-+
-+	cdev->ops = &ubi_volume_fops;
-+	cdev->name = asprintf("%s.%s", ubi->cdev.name, vol->name);
-+	cdev->priv = priv;
-+	cdev->size = vol->used_bytes;
-+	cdev->dev = &vol->dev;
-+	ubi_msg("registering %s as /dev/%s", vol->name, cdev->name);
-+	ret = devfs_create(cdev);
-+	if (ret) {
-+		kfree(priv);
-+		free(cdev->name);
-+	}
-+
-+	list_add_tail(&vol->list, &ubi_volumes_list);
-+
-+	return 0;
-+}
-+
-+void ubi_volume_cdev_remove(struct ubi_volume *vol)
-+{
-+	struct cdev *cdev = &vol->cdev;
-+	struct ubi_volume_cdev_priv *priv = cdev->priv;
-+
-+	list_del(&vol->list);
-+
-+	devfs_remove(cdev);
-+	unregister_device(&vol->dev);
-+	kfree(cdev->name);
-+	kfree(priv);
-+}
-+
-+static int ubi_cdev_ioctl(struct cdev *cdev, int cmd, void *buf)
-+{
-+	struct ubi_volume_desc *desc;
-+	struct ubi_device *ubi = cdev->priv;
-+	struct ubi_mkvol_req *req = buf;
-+
-+	switch (cmd) {
-+	case UBI_IOCRMVOL:
-+		desc = ubi_open_volume_nm(ubi->ubi_num, req->name,
-+                                           UBI_EXCLUSIVE);
-+		if (IS_ERR(desc))
-+			return PTR_ERR(desc);
-+		ubi_remove_volume(desc, 0);
-+		ubi_close_volume(desc);
-+		break;
-+	case UBI_IOCMKVOL:
-+		if (!req->bytes)
-+			req->bytes = (__s64)ubi->avail_pebs * ubi->leb_size;
-+		return ubi_create_volume(ubi, req);
++	int i;
++	unsigned char syndrome_table[] = {
++		0x1c, 0x16, 0x13, 0x19,
++		0x1a, 0x07, 0x15, 0x0e,
++		0x01, 0x02, 0x04, 0x08,
++		0x10,
 +	};
 +
-+	return 0;
++	for (i = 0; i < 13; i ++)
++		if (syndrome_table[i] == syndrome)
++			return i;
++	return -1;
 +}
 +
-+static struct file_operations ubi_fops = {
-+	.ioctl	= ubi_cdev_ioctl,
-+};
-+
-+int ubi_cdev_add(struct ubi_device *ubi)
+ static uint32_t calc_chksum(void *buf, size_t size)
+ {
+ 	u32 chksum = 0;
+@@ -238,6 +254,66 @@ static ssize_t raw_write_page(struct mtd_info *mtd, void *buf, loff_t offset)
+         return ret;
+ }
+ 
++static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
 +{
-+	struct cdev *cdev = &ubi->cdev;
++	int i;
++	int bitflips = 0;
++	u8 parity, np, syndrome, bit_to_flip;
++	u8 *fcb, *ecc;
 +	int ret;
++	void *rawpage;
 +
-+	cdev->ops = &ubi_fops;
-+	cdev->name = asprintf("%s.ubi", ubi->mtd->cdev.name);
-+	cdev->priv = ubi;
-+	cdev->size = 0;
++	*retfcb = NULL;
 +
-+	ubi_msg("registering /dev/%s", cdev->name);
-+	ret = devfs_create(cdev);
-+	if (ret)
-+		kfree(cdev->name);
++	rawpage = xmalloc(mtd->writesize + mtd->oobsize);
++
++	ret = raw_read_page(mtd, rawpage, mtd->erasesize * num);
++	if (ret) {
++		pr_err("Cannot read block %d\n", num);
++		goto err;
++	}
++
++	fcb = rawpage + 12;
++	ecc = rawpage + 512 + 12;
++
++	for (i = 0; i < 512; i++) {
++		parity = ecc[i];
++		np = calculate_parity_13_8(fcb[i]);
++
++		syndrome = np ^ parity;
++		if (syndrome == 0)
++			continue;
++
++		if (!(hweight8(syndrome) & 1)) {
++			pr_err("Uncorrectable error at offset %d\n", i);
++			ret = -EIO;
++			goto err;
++		}
++
++		bit_to_flip = lookup_single_error_13_8(syndrome);
++		if (bit_to_flip < 0) {
++			pr_err("Uncorrectable error at offset %d\n", i);
++			ret = -EIO;
++			goto err;
++		}
++
++		bitflips++;
++
++		if (bit_to_flip > 7)
++			ecc[i] ^= 1 << (bit_to_flip - 8);
++		else
++			fcb[i] ^= 1 << bit_to_flip;
++	}
++
++	*retfcb = xmemdup(rawpage + 12, 512);
++
++	ret = 0;
++err:
++	free(rawpage);
 +
 +	return ret;
 +}
 +
-+void ubi_cdev_remove(struct ubi_device *ubi)
+ static int fcb_create(struct imx_nand_fcb_bbu_handler *imx_handler,
+ 		struct fcb_block *fcb, struct mtd_info *mtd)
+ {
+@@ -495,6 +571,154 @@ out:
+ }
+ 
+ /**
++ * dbbt_block_is_bad - Check if according to the given DBBT a block is bad
++ * @dbbt: The DBBT data page
++ * @block: The block to test
++ *
++ * This function checks if a block is marked as bad in the given DBBT.
++ *
++ * return: true if the block is bad, false otherwise.
++ */
++static int dbbt_block_is_bad(void *_dbbt, int block)
 +{
-+	struct cdev *cdev = &ubi->cdev;
++	int i;
++	u32 *dbbt = _dbbt;
++	int num_bad_blocks;
 +
-+	ubi_msg("removing %s", cdev->name);
++	if (!_dbbt)
++		return false;
 +
-+	devfs_remove(cdev);
-+	kfree(cdev->name);
++	dbbt++; /* reserved */
++
++	num_bad_blocks = *dbbt++;
++
++	for (i = 0; i < num_bad_blocks; i++) {
++		if (*dbbt == block)
++			return true;
++		dbbt++;
++	}
++
++	return false;
 +}
-diff --git a/drivers/mtd/ubi/cdev.c b/drivers/mtd/ubi/cdev.c
-deleted file mode 100644
-index fe71a8d..0000000
---- a/drivers/mtd/ubi/cdev.c
-+++ /dev/null
-@@ -1,262 +0,0 @@
--#include <common.h>
--#include <fcntl.h>
--#include <fs.h>
--#include <ioctl.h>
--#include "ubi-barebox.h"
--#include "ubi.h"
--
--LIST_HEAD(ubi_volumes_list);
--
--struct ubi_volume_cdev_priv {
--	struct ubi_device *ubi;
--	struct ubi_volume *vol;
--	int written;
--};
--
--static ssize_t ubi_volume_cdev_read(struct cdev *cdev, void *buf, size_t size,
--		loff_t offset, unsigned long flags)
--{
--	struct ubi_volume_cdev_priv *priv = cdev->priv;
--	struct ubi_volume *vol = priv->vol;
--	struct ubi_device *ubi = priv->ubi;
--	int err, lnum, off, len;
--	size_t count_save = size;
--	unsigned long long tmp;
--	loff_t offp = offset;
--	int usable_leb_size = vol->usable_leb_size;
--
--	ubi_debug("%s: %zd @ 0x%08llx", __func__, size, offset);
--
--	len = size > usable_leb_size ? usable_leb_size : size;
--
--	tmp = offp;
--	off = do_div(tmp, usable_leb_size);
--	lnum = tmp;
--	do {
--		if (off + len >= usable_leb_size)
--			len = usable_leb_size - off;
--
--		err = ubi_eba_read_leb(ubi, vol, lnum, buf, off, len, 0);
--		if (err) {
--			ubi_err("read error: %s", strerror(-err));
--			break;
--		}
--		off += len;
--		if (off == usable_leb_size) {
--			lnum += 1;
--			off -= usable_leb_size;
--		}
--
--		size -= len;
--		offp += len;
--
--		buf += len;
--		len = size > usable_leb_size ? usable_leb_size : size;
--	} while (size);
--
--	return count_save;
--}
--
--static ssize_t ubi_volume_cdev_write(struct cdev* cdev, const void *buf,
--		size_t size, loff_t offset, unsigned long flags)
--{
--	struct ubi_volume_cdev_priv *priv = cdev->priv;
--	struct ubi_volume *vol = priv->vol;
--	struct ubi_device *ubi = priv->ubi;
--	int err;
--
--	if (!priv->written) {
--		err = ubi_start_update(ubi, vol, vol->used_bytes);
--		if (err < 0) {
--			ubi_err("Cannot start volume update");
--			return err;
--		}
--	}
--
--	err = ubi_more_update_data(ubi, vol, buf, size);
--	if (err < 0) {
--		ubi_err("Couldnt or partially wrote data");
--		return err;
--	}
--
--	priv->written += size;
--
--	return size;
--}
--
--static int ubi_volume_cdev_open(struct cdev *cdev, unsigned long flags)
--{
--	struct ubi_volume_cdev_priv *priv = cdev->priv;
--
--	priv->written = 0;
--
--	return 0;
--}
--
--static int ubi_volume_cdev_close(struct cdev *cdev)
--{
--	struct ubi_volume_cdev_priv *priv = cdev->priv;
--	struct ubi_volume *vol = priv->vol;
--	struct ubi_device *ubi = priv->ubi;
--	int err;
--
--	if (priv->written) {
--		int remaining = vol->usable_leb_size -
--				(priv->written % vol->usable_leb_size);
--
--		if (remaining) {
--			void *buf = kmalloc(remaining, GFP_KERNEL);
--
--			if (!buf)
--				return -ENOMEM;
--
--			memset(buf, 0xff, remaining);
--
--			err = ubi_more_update_data(ubi, vol, buf, remaining);
--
--			kfree(buf);
--
--			if (err < 0) {
--				ubi_err("Couldnt or partially wrote data");
--				return err;
--			}
--		}
--
--		err = ubi_finish_update(ubi, vol);
--		if (err)
--			return err;
--
--		err = ubi_check_volume(ubi, vol->vol_id);
--		if (err < 0) {
--			ubi_err("ubi volume check failed: %s", strerror(err));
--			return err;
--		}
--
--		if (err) {
--			ubi_warn("volume %d on UBI device %d is corrupted",
--					vol->vol_id, ubi->ubi_num);
--			vol->corrupted = 1;
--		}
--
--		vol->checked = 1;
--		ubi_volume_notify(ubi, vol, UBI_VOLUME_UPDATED);
--	}
--
--	return 0;
--}
--
--static loff_t ubi_volume_cdev_lseek(struct cdev *cdev, loff_t ofs)
--{
--	struct ubi_volume_cdev_priv *priv = cdev->priv;
--
--	/* We can only update ubi volumes sequentially */
--	if (priv->written)
--		return -EINVAL;
--
--	return ofs;
--}
--
--static struct file_operations ubi_volume_fops = {
--	.open	= ubi_volume_cdev_open,
--	.close	= ubi_volume_cdev_close,
--	.read   = ubi_volume_cdev_read,
--	.write  = ubi_volume_cdev_write,
--	.lseek	= ubi_volume_cdev_lseek,
--};
--
--int ubi_volume_cdev_add(struct ubi_device *ubi, struct ubi_volume *vol)
--{
--	struct cdev *cdev = &vol->cdev;
--	struct ubi_volume_cdev_priv *priv;
--	int ret;
--
--	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
--
--	priv->vol = vol;
--	priv->ubi = ubi;
--
--	cdev->ops = &ubi_volume_fops;
--	cdev->name = asprintf("%s.%s", ubi->cdev.name, vol->name);
--	cdev->priv = priv;
--	cdev->size = vol->used_bytes;
--	cdev->dev = &vol->dev;
--	ubi_msg("registering %s as /dev/%s", vol->name, cdev->name);
--	ret = devfs_create(cdev);
--	if (ret) {
--		kfree(priv);
--		free(cdev->name);
--	}
--
--	list_add_tail(&vol->list, &ubi_volumes_list);
--
--	return 0;
--}
--
--void ubi_volume_cdev_remove(struct ubi_volume *vol)
--{
--	struct cdev *cdev = &vol->cdev;
--	struct ubi_volume_cdev_priv *priv = cdev->priv;
--
--	list_del(&vol->list);
--
--	devfs_remove(cdev);
--	unregister_device(&vol->dev);
--	kfree(cdev->name);
--	kfree(priv);
--}
--
--static int ubi_cdev_ioctl(struct cdev *cdev, int cmd, void *buf)
--{
--	struct ubi_volume_desc *desc;
--	struct ubi_device *ubi = cdev->priv;
--	struct ubi_mkvol_req *req = buf;
--
--	switch (cmd) {
--	case UBI_IOCRMVOL:
--		desc = ubi_open_volume_nm(ubi->ubi_num, req->name,
--                                           UBI_EXCLUSIVE);
--		if (IS_ERR(desc))
--			return PTR_ERR(desc);
--		ubi_remove_volume(desc, 0);
--		ubi_close_volume(desc);
--		break;
--	case UBI_IOCMKVOL:
--		if (!req->bytes)
--			req->bytes = (__s64)ubi->avail_pebs * ubi->leb_size;
--		return ubi_create_volume(ubi, req);
--	};
--
--	return 0;
--}
--
--static struct file_operations ubi_fops = {
--	.ioctl	= ubi_cdev_ioctl,
--};
--
--int ubi_cdev_add(struct ubi_device *ubi)
--{
--	struct cdev *cdev = &ubi->cdev;
--	int ret;
--
--	cdev->ops = &ubi_fops;
--	cdev->name = asprintf("%s.ubi", ubi->mtd->cdev.name);
--	cdev->priv = ubi;
--	cdev->size = 0;
--
--	ubi_msg("registering /dev/%s", cdev->name);
--	ret = devfs_create(cdev);
--	if (ret)
--		kfree(cdev->name);
--
--	return ret;
--}
--
--void ubi_cdev_remove(struct ubi_device *ubi)
--{
--	struct cdev *cdev = &ubi->cdev;
--
--	ubi_msg("removing %s", cdev->name);
--
--	devfs_remove(cdev);
--	kfree(cdev->name);
--}
++
++/**
++ * dbbt_check - Check if DBBT is readable and consistent to the mtd BBT
++ * @mtd: The mtd Nand device
++ * @dbbt: The page where the DBBT is found
++ *
++ * This function checks if the DBBT is readable and consistent to the mtd
++ * layers idea of bad blocks.
++ *
++ * return: 0 if the DBBT is readable and consistent to the mtd BBT, a
++ * negative error code otherwise.
++ */
++static int dbbt_check(struct mtd_info *mtd, int page)
++{
++	int ret, needs_cleanup = 0;
++	size_t r;
++	void *dbbt_header;
++	void *dbbt_entries = NULL;
++	struct dbbt_block *dbbt;
++	int num_blocks = mtd_div_by_eb(mtd->size, mtd);
++	int n;
++
++	dbbt_header = xmalloc(mtd->writesize);
++
++	ret = mtd_read(mtd, page * mtd->writesize, mtd->writesize, &r, dbbt_header);
++	if (ret == -EUCLEAN) {
++		pr_warn("page %d needs cleaning\n", page);
++		needs_cleanup = 1;
++	} else if (ret < 0) {
++		pr_err("Cannot read page %d: %s\n", page, strerror(-ret));
++		goto out;
++	}
++
++	dbbt = dbbt_header;
++
++	if (dbbt->FingerPrint != 0x54424244) {
++		pr_err("dbbt at page %d is readable but does not contain a valid DBBT\n",
++		       page);
++		ret = -EINVAL;
++		goto out;
++	}
++
++	if (dbbt->DBBTNumOfPages) {
++		dbbt_entries = xmalloc(mtd->writesize);
++
++		ret = mtd_read(mtd, (page + 4) * mtd->writesize, mtd->writesize, &r, dbbt_entries);
++		if (ret == -EUCLEAN) {
++			pr_warn("page %d needs cleaning\n", page);
++			needs_cleanup = 1;
++		} else if (ret < 0) {
++			pr_err("Cannot read page %d: %s\n", page, strerror(-ret));
++			free(dbbt_entries);
++			goto out;
++		}
++	} else {
++		dbbt_entries = NULL;
++	}
++
++	for (n = 0; n < num_blocks; n++) {
++		if (mtd_peb_is_bad(mtd, n) != dbbt_block_is_bad(dbbt_entries, n)) {
++			ret = -EINVAL;
++			goto out;
++		}
++	}
++
++	ret = 0;
++out:
++	free(dbbt_header);
++	free(dbbt_entries);
++
++	if (ret < 0)
++		return ret;
++	if (needs_cleanup)
++		return -EUCLEAN;
++	return 0;
++}
++
++/**
++ * fcb_dbbt_check - Check if a FCB/DBBT is valid
++ * @mtd: The mtd Nand device
++ * @num: The number of the FCB, corresponds to the eraseblock number
++ * @fcb: The FCB to check against
++ *
++ * This function checks if FCB/DBBT found on a device are valid. This
++ * means:
++ * - the FCB is readable on the device
++ * - the FCB is the same as the reference passed in @fcb
++ * - the DBBT is consistent to the mtd BBT
++ *
++ * return: 0 if the FCB/DBBT are valid, a negative error code otherwise
++ */
++static int fcb_dbbt_check(struct mtd_info *mtd, int num, struct fcb_block *fcb)
++{
++	int ret;
++	struct fcb_block *f;
++	int pages_per_block = mtd->erasesize / mtd->writesize;
++
++	ret = read_fcb(mtd, num, &f);
++	if (ret)
++		return ret;
++
++	if (memcmp(fcb, f, sizeof(*fcb))) {
++		ret = -EINVAL;
++		goto out;
++	}
++
++	ret = dbbt_check(mtd, num * pages_per_block + 1);
++	if (ret)
++		goto out;
++
++	ret = 0;
++
++out:
++	free(f);
++
++	return ret;
++}
++
++/**
+  * imx_bbu_write_fcbs_dbbts - Write FCBs/DBBTs to first four blocks
+  * @mtd: The mtd device to write the FCBs/DBBTs to
+  * @fcb: The FCB block to write
+@@ -543,6 +767,12 @@ static int imx_bbu_write_fcbs_dbbts(struct mtd_info *mtd, struct fcb_block *fcb)
+ 		if (mtd_peb_is_bad(mtd, i))
+ 			continue;
+ 
++		if (!fcb_dbbt_check(mtd, i, fcb)) {
++			valid++;
++			pr_info("FCB/DBBT on block %d still valid\n", i);
++			continue;
++		}
++
+ 		pr_info("Writing FCB/DBBT on block %d\n", i);
+ 
+ 		ret = imx_bbu_write_fcb(mtd, i, fcb_raw_page, dbbt);
 -- 
 2.7.0
 
