@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1afn4A-0005WZ-0i
- for barebox@lists.infradead.org; Tue, 15 Mar 2016 11:23:10 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Mar 2016 12:22:28 +0100
-Message-Id: <1458040952-6826-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1458040952-6826-1-git-send-email-s.hauer@pengutronix.de>
-References: <1458040952-6826-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-pf0-x22b.google.com ([2607:f8b0:400e:c00::22b])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ag2EG-0007eE-JA
+ for barebox@lists.infradead.org; Wed, 16 Mar 2016 03:34:38 +0000
+Received: by mail-pf0-x22b.google.com with SMTP id x3so56150996pfb.1
+ for <barebox@lists.infradead.org>; Tue, 15 Mar 2016 20:34:16 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 15 Mar 2016 20:33:44 -0700
+Message-Id: <1458099232-9050-9-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1458099232-9050-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1458099232-9050-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,90 +23,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/8] mtd: ubi: make ubi_detach_mtd_dev ubi internal
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 09/16] fec_imx: Unregister MDIO when probe fails
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-We want to extend the functionality of the ubi detach function,
-but we don't want to change the original detach function to make
-UBI updates easier. This adds a barebox specific detach function
-which encapsulates the original UBI function. Also this makes the
-original ubi detach function internal to ubi.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- commands/ubi.c            |  2 +-
- drivers/mtd/ubi/barebox.c | 20 ++++++++++++++++++++
- drivers/mtd/ubi/ubi.h     |  1 +
- include/mtd/ubi-user.h    |  2 +-
- 4 files changed, 23 insertions(+), 2 deletions(-)
+ drivers/net/fec_imx.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/commands/ubi.c b/commands/ubi.c
-index 9463127..8e35787 100644
---- a/commands/ubi.c
-+++ b/commands/ubi.c
-@@ -128,7 +128,7 @@ static int do_ubidetach(int argc, char *argv[])
- 		return COMMAND_ERROR_USAGE;
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 465dcf9..83fdec6 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -767,14 +767,16 @@ static int fec_probe(struct device_d *dev)
  
- 	ubi_num = simple_strtoul(argv[1], NULL, 0);
--	ret = ubi_detach_mtd_dev(ubi_num, 1);
-+	ret = ubi_detach(ubi_num);
- 
+ 	ret = mdiobus_register(&fec->miibus);
  	if (ret)
- 		printf("failed to detach: %s\n", strerror(-ret));
-diff --git a/drivers/mtd/ubi/barebox.c b/drivers/mtd/ubi/barebox.c
-index fe71a8d..1643f7c 100644
---- a/drivers/mtd/ubi/barebox.c
-+++ b/drivers/mtd/ubi/barebox.c
-@@ -260,3 +260,23 @@ void ubi_cdev_remove(struct ubi_device *ubi)
- 	devfs_remove(cdev);
- 	kfree(cdev->name);
- }
-+
-+/**
-+ * ubi_detach - detach an UBI device
-+ * @ubi_num: The UBI device number
-+ *
-+ * @return: 0 for success, negative error code otherwise
-+ */
-+int ubi_detach(int ubi_num)
-+{
-+	struct ubi_device *ubi;
-+
-+	if (ubi_num < 0 || ubi_num >= UBI_MAX_DEVICES)
-+		return -EINVAL;
-+
-+	ubi = ubi_devices[ubi_num];
-+	if (!ubi)
-+		return -ENOENT;
-+
-+	return ubi_detach_mtd_dev(ubi_num, 1);
-+}
-diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
-index 03a36d2..a8ed0d7 100644
---- a/drivers/mtd/ubi/ubi.h
-+++ b/drivers/mtd/ubi/ubi.h
-@@ -809,6 +809,7 @@ int ubi_io_write_vid_hdr(struct ubi_device *ubi, int pnum,
- 			 struct ubi_vid_hdr *vid_hdr);
+-		return ret;
++		goto free_receive_packets;
  
- /* build.c */
-+int ubi_detach_mtd_dev(int ubi_num, int anyway);
- struct ubi_device *ubi_get_device(int ubi_num);
- void ubi_put_device(struct ubi_device *ubi);
- struct ubi_device *ubi_get_by_major(int major);
-diff --git a/include/mtd/ubi-user.h b/include/mtd/ubi-user.h
-index 2000ef2..2002548 100644
---- a/include/mtd/ubi-user.h
-+++ b/include/mtd/ubi-user.h
-@@ -406,6 +406,6 @@ struct ubi_set_vol_prop_req {
+ 	ret = eth_register(edev);
+ 	if (ret)
+-		return ret;
++		goto unregister_mdio;
  
- int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
- 		       int vid_hdr_offset, int max_beb_per1024);
--int ubi_detach_mtd_dev(int ubi_num, int anyway);
-+int ubi_detach(int ubi_num);
+ 	return 0;
  
- #endif /* __UBI_USER_H__ */
++unregister_mdio:
++	mdiobus_unregister(&fec->miibus);
+ free_receive_packets:
+ 	fec_free_receive_packets(fec, FEC_RBD_NUM, FEC_MAX_PKT_SIZE);
+ free_xbd:
 -- 
-2.7.0
+2.5.0
 
 
 _______________________________________________
