@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x231.google.com ([2a00:1450:400c:c09::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ag6rU-0001aG-Th
- for barebox@lists.infradead.org; Wed, 16 Mar 2016 08:31:25 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 16 Mar 2016 09:31:01 +0100
-Message-Id: <1458117061-23914-1-git-send-email-s.hauer@pengutronix.de>
+ id 1agAf3-0002Pz-5o
+ for barebox@lists.infradead.org; Wed, 16 Mar 2016 12:34:50 +0000
+Received: by mail-wm0-x231.google.com with SMTP id l68so186977691wml.0
+ for <barebox@lists.infradead.org>; Wed, 16 Mar 2016 05:34:28 -0700 (PDT)
+From: Holger Schurig <holgerschurig@gmail.com>
+In-Reply-To: <20160309085831.GA1563@omega> (Alexander Aring's message of "Wed, 
+ 9 Mar 2016 09:58:37 +0100")
+References: <56D831C6.1010101@eurek.it> <8737s7ei86.fsf@gmail.com>
+ <20160309085831.GA1563@omega>
+Date: Wed, 16 Mar 2016 13:34:24 +0100
+Message-ID: <87zityiotr.fsf@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,40 +21,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX27: Fix gpt compatible for latest device trees
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: Ethernet PHY KSZ9031 is not working
+To: Alexander Aring <alex.aring@gmail.com>
+Cc: barebox@lists.infradead.org, gianluca <gianlucarenzi@eurek.it>
 
-In v4.2-rc3 the "fsl,imx1-gpt" compatible was replaced with
-"fsl,imx21-gpt" so i.MX27 currently ends up without clocksource. Fix
-this.
+Alexander Aring <alex.aring@gmail.com> writes:
+> do you know why memtester from Linux found issues?
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/clocksource.c | 3 +++
- 1 file changed, 3 insertions(+)
+No, I actually didn't even look into the source code.
 
-diff --git a/arch/arm/mach-imx/clocksource.c b/arch/arm/mach-imx/clocksource.c
-index 66dcea4..b6873a7 100644
---- a/arch/arm/mach-imx/clocksource.c
-+++ b/arch/arm/mach-imx/clocksource.c
-@@ -140,6 +140,9 @@ static __maybe_unused struct of_device_id imx_gpt_dt_ids[] = {
- 		.compatible = "fsl,imx1-gpt",
- 		.data = &regs_imx1,
- 	}, {
-+		.compatible = "fsl,imx21-gpt",
-+		.data = &regs_imx1,
-+	}, {
- 		.compatible = "fsl,imx31-gpt",
- 		.data = &regs_imx31,
- 	}, {
--- 
-2.7.0
+> I saw some people which use memtester under Linux and randomly
+> "MTD/filesystem broken" messages blobs out while running memtester. I would
+> guess that the memtester written in some memory mapped area of connected
+> NAND devices.
 
+In my case this wasn't the issue ... I don't have NAND in my hardware.
+
+Later, when our hardware guy fixed layout and DDR3 timing values with
+the Freescale tool, memtester worked perfectly. Barebox' memory test
+however didn't show an error before the rework ... and afterwards also
+not :-)
 
 _______________________________________________
 barebox mailing list
