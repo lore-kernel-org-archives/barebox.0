@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x231.google.com ([2607:f8b0:400e:c00::231])
+Received: from mail-pf0-x230.google.com ([2607:f8b0:400e:c00::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ag2E9-0007b8-Mw
- for barebox@lists.infradead.org; Wed, 16 Mar 2016 03:34:30 +0000
-Received: by mail-pf0-x231.google.com with SMTP id x3so56147246pfb.1
- for <barebox@lists.infradead.org>; Tue, 15 Mar 2016 20:34:09 -0700 (PDT)
+ id 1ag2EF-0007dt-RY
+ for barebox@lists.infradead.org; Wed, 16 Mar 2016 03:34:37 +0000
+Received: by mail-pf0-x230.google.com with SMTP id n5so56133775pfn.2
+ for <barebox@lists.infradead.org>; Tue, 15 Mar 2016 20:34:15 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 15 Mar 2016 20:33:36 -0700
-Message-Id: <1458099232-9050-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Tue, 15 Mar 2016 20:33:43 -0700
+Message-Id: <1458099232-9050-8-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1458099232-9050-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1458099232-9050-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,152 +23,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/16] i.MX6: dts: Include local .dtsi's last
+Subject: [PATCH 08/16] fec_imx: Deallocate DMA buffers when probe fails
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Make sure that Barebox specific .dtsi files are included after .dtsi
-files imported from Linux kernel. This way those local .dtsi files can
-reference phandles defined in Linux kernel files.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/imx6dl-cm-fx6.dts           | 2 +-
- arch/arm/dts/imx6dl-dfi-fs700-m60-6s.dts | 2 +-
- arch/arm/dts/imx6dl-eltec-hipercam.dts   | 2 +-
- arch/arm/dts/imx6dl-nitrogen6x.dts       | 2 +-
- arch/arm/dts/imx6dl-phytec-pfla02.dtsi   | 2 +-
- arch/arm/dts/imx6dl-sabrelite.dts        | 2 +-
- arch/arm/dts/imx6dl-tqma6s.dtsi          | 2 +-
- arch/arm/dts/imx6s-phytec-pfla02.dtsi    | 2 +-
- arch/arm/dts/imx6s-riotboard.dts         | 2 +-
- 9 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/fec_imx.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/dts/imx6dl-cm-fx6.dts b/arch/arm/dts/imx6dl-cm-fx6.dts
-index 0d96b46..cc426e2 100644
---- a/arch/arm/dts/imx6dl-cm-fx6.dts
-+++ b/arch/arm/dts/imx6dl-cm-fx6.dts
-@@ -12,8 +12,8 @@
-  */
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index fc2c8e1..465dcf9 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -621,6 +621,12 @@ static int fec_alloc_receive_packets(struct fec_priv *fec, int count, int size)
+ 	return 0;
+ }
  
- /dts-v1/;
--#include "imx6dl.dtsi"
- #include <arm/imx6dl.dtsi>
-+#include "imx6dl.dtsi"
- #include "imx6qdl-cm-fx6.dtsi"
++static void fec_free_receive_packets(struct fec_priv *fec, int count, int size)
++{
++	void *p = phys_to_virt(fec->rbd_base[0].data_pointer);
++	dma_free_coherent(p, 0, size * count);
++}
++
+ #ifdef CONFIG_OFDEVICE
+ static int fec_probe_dt(struct device_d *dev, struct fec_priv *fec)
+ {
+@@ -722,8 +728,9 @@ static int fec_probe(struct device_d *dev)
+ 	 * reserve memory for both buffer descriptor chains at once
+ 	 * Datasheet forces the startaddress of each chain is 16 byte aligned
+ 	 */
+-	base = dma_alloc_coherent((2 + FEC_RBD_NUM) *
+-			sizeof(struct buffer_descriptor), DMA_ADDRESS_BROKEN);
++#define FEC_XBD_SIZE ((2 + FEC_RBD_NUM) * sizeof(struct buffer_descriptor))
++
++	base = dma_alloc_coherent(FEC_XBD_SIZE, DMA_ADDRESS_BROKEN);
+ 	fec->rbd_base = base;
+ 	base += FEC_RBD_NUM * sizeof(struct buffer_descriptor);
+ 	fec->tbd_base = base;
+@@ -731,7 +738,9 @@ static int fec_probe(struct device_d *dev)
+ 	writel(virt_to_phys(fec->tbd_base), fec->regs + FEC_ETDSR);
+ 	writel(virt_to_phys(fec->rbd_base), fec->regs + FEC_ERDSR);
  
- / {
-diff --git a/arch/arm/dts/imx6dl-dfi-fs700-m60-6s.dts b/arch/arm/dts/imx6dl-dfi-fs700-m60-6s.dts
-index bee4c76..b6df37f 100644
---- a/arch/arm/dts/imx6dl-dfi-fs700-m60-6s.dts
-+++ b/arch/arm/dts/imx6dl-dfi-fs700-m60-6s.dts
-@@ -14,8 +14,8 @@
- /dts-v1/;
- #endif
+-	fec_alloc_receive_packets(fec, FEC_RBD_NUM, FEC_MAX_PKT_SIZE);
++	ret = fec_alloc_receive_packets(fec, FEC_RBD_NUM, FEC_MAX_PKT_SIZE);
++	if (ret < 0)
++		goto free_xbd;
  
--#include "imx6dl.dtsi"
- #include <arm/imx6dl.dtsi>
-+#include "imx6dl.dtsi"
- #include "imx6qdl-dfi-fs700-m60.dtsi"
+ 	if (dev->device_node) {
+ 		ret = fec_probe_dt(dev, fec);
+@@ -746,7 +755,7 @@ static int fec_probe(struct device_d *dev)
+ 	}
  
- / {
-diff --git a/arch/arm/dts/imx6dl-eltec-hipercam.dts b/arch/arm/dts/imx6dl-eltec-hipercam.dts
-index 592358f..f272e78 100644
---- a/arch/arm/dts/imx6dl-eltec-hipercam.dts
-+++ b/arch/arm/dts/imx6dl-eltec-hipercam.dts
-@@ -1,7 +1,7 @@
- /dts-v1/;
+ 	if (ret)
+-		goto free_gpio;
++		goto free_receive_packets;
  
--#include "imx6dl.dtsi"
- #include <arm/imx6dl.dtsi>
-+#include "imx6dl.dtsi"
+ 	fec_init(edev);
  
- / {
- 	model = "ELTEC HiPerCam";
-diff --git a/arch/arm/dts/imx6dl-nitrogen6x.dts b/arch/arm/dts/imx6dl-nitrogen6x.dts
-index 3ac9ff3..50267b1 100644
---- a/arch/arm/dts/imx6dl-nitrogen6x.dts
-+++ b/arch/arm/dts/imx6dl-nitrogen6x.dts
-@@ -12,8 +12,8 @@
-  */
+@@ -766,6 +775,10 @@ static int fec_probe(struct device_d *dev)
  
- /dts-v1/;
--#include "imx6dl.dtsi"
- #include <arm/imx6dl.dtsi>
-+#include "imx6dl.dtsi"
- #include "imx6qdl-nitrogen6x.dtsi"
+ 	return 0;
  
- / {
-diff --git a/arch/arm/dts/imx6dl-phytec-pfla02.dtsi b/arch/arm/dts/imx6dl-phytec-pfla02.dtsi
-index e0541e0..d951c0b 100644
---- a/arch/arm/dts/imx6dl-phytec-pfla02.dtsi
-+++ b/arch/arm/dts/imx6dl-phytec-pfla02.dtsi
-@@ -9,8 +9,8 @@
-  * http://www.gnu.org/copyleft/gpl.html
-  */
- 
--#include "imx6dl.dtsi"
- #include <arm/imx6dl.dtsi>
-+#include "imx6dl.dtsi"
- #include "imx6qdl-phytec-pfla02.dtsi"
- 
- / {
-diff --git a/arch/arm/dts/imx6dl-sabrelite.dts b/arch/arm/dts/imx6dl-sabrelite.dts
-index 907ed28..849bcdd 100644
---- a/arch/arm/dts/imx6dl-sabrelite.dts
-+++ b/arch/arm/dts/imx6dl-sabrelite.dts
-@@ -11,8 +11,8 @@
-  */
- 
- /dts-v1/;
--#include "imx6dl.dtsi"
- #include <arm/imx6dl.dtsi>
-+#include "imx6dl.dtsi"
- #include "imx6qdl-sabrelite.dtsi"
- 
- / {
-diff --git a/arch/arm/dts/imx6dl-tqma6s.dtsi b/arch/arm/dts/imx6dl-tqma6s.dtsi
-index 23081ed..63459ce 100644
---- a/arch/arm/dts/imx6dl-tqma6s.dtsi
-+++ b/arch/arm/dts/imx6dl-tqma6s.dtsi
-@@ -9,8 +9,8 @@
-  * http://www.gnu.org/copyleft/gpl.html
-  */
- 
--#include "imx6dl.dtsi"
- #include <arm/imx6dl.dtsi>
-+#include "imx6dl.dtsi"
- #include "imx6qdl-tqma6x.dtsi"
- 
- &iomuxc {
-diff --git a/arch/arm/dts/imx6s-phytec-pfla02.dtsi b/arch/arm/dts/imx6s-phytec-pfla02.dtsi
-index 25af12f..7ef27fb 100644
---- a/arch/arm/dts/imx6s-phytec-pfla02.dtsi
-+++ b/arch/arm/dts/imx6s-phytec-pfla02.dtsi
-@@ -9,8 +9,8 @@
-  * http://www.gnu.org/copyleft/gpl.html
-  */
- 
--#include "imx6dl.dtsi"
- #include <arm/imx6dl.dtsi>
-+#include "imx6dl.dtsi"
- #include "imx6qdl-phytec-pfla02.dtsi"
- 
- / {
-diff --git a/arch/arm/dts/imx6s-riotboard.dts b/arch/arm/dts/imx6s-riotboard.dts
-index e14363f..3d0a930 100644
---- a/arch/arm/dts/imx6s-riotboard.dts
-+++ b/arch/arm/dts/imx6s-riotboard.dts
-@@ -6,8 +6,8 @@
-  */
- /dts-v1/;
- 
--#include "imx6dl.dtsi"
- #include <arm/imx6dl.dtsi>
-+#include "imx6dl.dtsi"
- 
- / {
- 	model = "RIoTboard Solo";
++free_receive_packets:
++	fec_free_receive_packets(fec, FEC_RBD_NUM, FEC_MAX_PKT_SIZE);
++free_xbd:
++	dma_free_coherent(fec->rbd_base, 0, FEC_XBD_SIZE);
+ free_gpio:
+ 	if (gpio_is_valid(phy_reset))
+ 		gpio_free(phy_reset);
 -- 
 2.5.0
 
