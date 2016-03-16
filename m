@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x232.google.com ([2607:f8b0:400e:c00::232])
+Received: from mail-pf0-x22d.google.com ([2607:f8b0:400e:c00::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ag2EE-0007de-U7
- for barebox@lists.infradead.org; Wed, 16 Mar 2016 03:34:35 +0000
-Received: by mail-pf0-x232.google.com with SMTP id 124so56351142pfg.0
- for <barebox@lists.infradead.org>; Tue, 15 Mar 2016 20:34:14 -0700 (PDT)
+ id 1ag2EB-0007ce-DF
+ for barebox@lists.infradead.org; Wed, 16 Mar 2016 03:34:32 +0000
+Received: by mail-pf0-x22d.google.com with SMTP id x3so56148371pfb.1
+ for <barebox@lists.infradead.org>; Tue, 15 Mar 2016 20:34:11 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 15 Mar 2016 20:33:42 -0700
-Message-Id: <1458099232-9050-7-git-send-email-andrew.smirnov@gmail.com>
+Date: Tue, 15 Mar 2016 20:33:38 -0700
+Message-Id: <1458099232-9050-3-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1458099232-9050-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1458099232-9050-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,47 +23,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/16] fec_imx: Impelemnt reset timeout
+Subject: [PATCH 03/16] fec_imx: Deallocate clocks when probe fails
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Don't wait for more than one second for IP block to finish resetting. If
-the block is dead it makes more sence to continue execution in hopes
-that the rest of the processor is fine, rather than spin indefinetly
-inside of the fec_probe function
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/fec_imx.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/fec_imx.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 601edba..fc2c8e1 100644
+index de31ec4..18a02e0 100644
 --- a/drivers/net/fec_imx.c
 +++ b/drivers/net/fec_imx.c
-@@ -656,6 +656,7 @@ static int fec_probe(struct device_d *dev)
- 	enum fec_type type;
- 	int phy_reset;
- 	u32 msec = 1;
-+	u64 start;
+@@ -680,7 +680,9 @@ static int fec_probe(struct device_d *dev)
+ 		goto err_free;
+ 	}
  
- 	ret = dev_get_drvdata(dev, (const void **)&type);
+-	clk_enable(fec->clk);
++	ret = clk_enable(fec->clk);
++	if (ret < 0)
++		goto put_clk;
+ 
+ 	iores = dev_request_mem_resource(dev, 0);
+ 	if (IS_ERR(iores))
+@@ -693,11 +695,11 @@ static int fec_probe(struct device_d *dev)
+ 
+ 		ret = gpio_request(phy_reset, "phy-reset");
+ 		if (ret)
+-			goto err_free;
++			goto disable_clk;
+ 
+ 		ret = gpio_direction_output(phy_reset, 0);
+ 		if (ret)
+-			goto err_free;
++			goto disable_clk;
+ 
+ 		mdelay(msec);
+ 		gpio_set_value(phy_reset, 1);
+@@ -737,7 +739,7 @@ static int fec_probe(struct device_d *dev)
+ 	}
+ 
  	if (ret)
-@@ -708,9 +709,13 @@ static int fec_probe(struct device_d *dev)
- 	}
+-		goto err_free;
++		goto disable_clk;
  
- 	/* Reset chip. */
-+	start = get_time_ns();
- 	writel(FEC_ECNTRL_RESET, fec->regs + FEC_ECNTRL);
- 	while(readl(fec->regs + FEC_ECNTRL) & FEC_ECNTRL_RESET) {
--		udelay(10);
-+		if (is_timeout(start, SECOND)) {
-+			ret = -ETIMEDOUT;
-+			goto free_gpio;
-+		}
- 	}
+ 	fec_init(edev);
  
- 	/*
+@@ -757,6 +759,10 @@ static int fec_probe(struct device_d *dev)
+ 
+ 	return 0;
+ 
++disable_clk:
++	clk_disable(fec->clk);
++put_clk:
++	clk_put(fec->clk);
+ err_free:
+ 	free(fec);
+ 	return ret;
 -- 
 2.5.0
 
