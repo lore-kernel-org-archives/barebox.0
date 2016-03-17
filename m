@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1agVna-0000S8-7h
- for barebox@lists.infradead.org; Thu, 17 Mar 2016 11:09:04 +0000
+ id 1agVna-0000SA-7e
+ for barebox@lists.infradead.org; Thu, 17 Mar 2016 11:09:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 17 Mar 2016 12:08:35 +0100
-Message-Id: <1458212919-30507-2-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 17 Mar 2016 12:08:37 +0100
+Message-Id: <1458212919-30507-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1458212919-30507-1-git-send-email-s.hauer@pengutronix.de>
 References: <1458212919-30507-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,58 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] mtd: nand-imx: Fix correct_data return value for v2/v3
- controllers
+Subject: [PATCH 4/6] mtd: nand-imx: remove/replace debug print
 To: Barebox List <barebox@lists.infradead.org>
 
-The correct return value for a uncorrectable page is -EBADMSG, not -1
-(which is -EPERM). Also the max_bitflips returned shall be the bitflips
-per ecc step, not per page.
+The relevant informations which command is sent for which page
+is already contained in the informations imx_nand_command() prints, so
+remove the debug prints in send_cmd and send_addr (which only exist for
+v1/v2 controllers, not for v3). Also use dev_dbg to print debug
+informations instead of MTD_DEBUG.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand_imx.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ drivers/mtd/nand/nand_imx.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
 diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/nand_imx.c
-index f0b4afb..fd80c72 100644
+index 77c0ad8..590d7fe 100644
 --- a/drivers/mtd/nand/nand_imx.c
 +++ b/drivers/mtd/nand/nand_imx.c
-@@ -521,8 +521,7 @@ static int imx_nand_correct_data_v2_v3(struct mtd_info *mtd, u_char *dat,
- 	struct imx_nand_host *host = nand_chip->priv;
- 	u32 ecc_stat, err;
- 	int no_subpages;
--	int ret = 0;
--	u8 ecc_bit_mask, err_limit;
-+	u8 ecc_bit_mask, err_limit, max_bitflips = 0;
+@@ -261,8 +261,6 @@ static void send_cmd_v3(struct imx_nand_host *host, uint16_t cmd)
  
- 	ecc_bit_mask = (host->eccsize == 4) ? 0x7 : 0xf;
- 	err_limit = (host->eccsize == 4) ? 0x4 : 0x8;
-@@ -536,19 +535,14 @@ static int imx_nand_correct_data_v2_v3(struct mtd_info *mtd, u_char *dat,
- 
- 	do {
- 		err = ecc_stat & ecc_bit_mask;
--		if (err > err_limit) {
--			printk(KERN_WARNING "UnCorrectable RS-ECC Error\n");
--			return -1;
--		} else {
--			ret += err;
--		}
-+		if (err > err_limit)
-+			return -EBADMSG;
- 		ecc_stat >>= 4;
-+		max_bitflips = max_t(unsigned int, max_bitflips, err);
-+		mtd->ecc_stats.corrected += err;
- 	} while (--no_subpages);
- 
--	mtd->ecc_stats.corrected += ret;
--	pr_debug("%d Symbol Correctable RS-ECC Error\n", ret);
+ static void send_cmd_v1_v2(struct imx_nand_host *host, u16 cmd)
+ {
+-	MTD_DEBUG(MTD_DEBUG_LEVEL3, "send_cmd(host, 0x%x)\n", cmd);
 -
--	return ret;
-+	return max_bitflips;
- }
+ 	writew(cmd, host->regs + NFC_V1_V2_FLASH_CMD);
+ 	writew(NFC_CMD, host->regs + NFC_V1_V2_CONFIG2);
  
- static int imx_nand_calculate_ecc(struct mtd_info *mtd, const u_char * dat,
+@@ -301,8 +299,6 @@ static void send_addr_v3(struct imx_nand_host *host, uint16_t addr)
+ 
+ static void send_addr_v1_v2(struct imx_nand_host *host, u16 addr)
+ {
+-	MTD_DEBUG(MTD_DEBUG_LEVEL3, "send_addr(host, 0x%x %d)\n", addr, islast);
+-
+ 	writew(addr, host->regs + NFC_V1_V2_FLASH_ADDR);
+ 	writew(NFC_ADDR, host->regs + NFC_V1_V2_CONFIG2);
+ 
+@@ -891,7 +887,7 @@ static void imx_nand_command(struct mtd_info *mtd, unsigned command,
+ 	struct nand_chip *nand_chip = mtd->priv;
+ 	struct imx_nand_host *host = nand_chip->priv;
+ 
+-	MTD_DEBUG(MTD_DEBUG_LEVEL3,
++	dev_dbg(host->dev,
+ 	      "imx_nand_command (cmd = 0x%x, col = 0x%x, page = 0x%x)\n",
+ 	      command, column, page_addr);
+ 
 -- 
 2.7.0
 
