@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from webbox1416.server-home.net ([77.236.96.61])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1agUkY-0002LW-8B
- for barebox@lists.infradead.org; Thu, 17 Mar 2016 10:01:53 +0000
+ id 1agUkv-00030Y-Bp
+ for barebox@lists.infradead.org; Thu, 17 Mar 2016 10:02:15 +0000
 Received: from imapserver.systec-electronic.com (unknown [212.185.67.146])
- by webbox1416.server-home.net (Postfix) with ESMTPA id F366A27A6FF
- for <barebox@lists.infradead.org>; Thu, 17 Mar 2016 11:01:09 +0100 (CET)
+ by webbox1416.server-home.net (Postfix) with ESMTPA id BD60827A707
+ for <barebox@lists.infradead.org>; Thu, 17 Mar 2016 11:01:29 +0100 (CET)
 From: Alexander Stein <alexander.stein@systec-electronic.com>
-Date: Thu, 17 Mar 2016 11:00:18 +0100
-Message-Id: <1458208829-25570-3-git-send-email-alexander.stein@systec-electronic.com>
+Date: Thu, 17 Mar 2016 11:00:27 +0100
+Message-Id: <1458208829-25570-12-git-send-email-alexander.stein@systec-electronic.com>
 In-Reply-To: <1458208829-25570-1-git-send-email-alexander.stein@systec-electronic.com>
 References: <1458208829-25570-1-git-send-email-alexander.stein@systec-electronic.com>
 List-Id: <barebox.lists.infradead.org>
@@ -24,33 +24,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/13] mtd: ubi: Set max_write_size to actual value read from
- flash
+Subject: [PATCH 11/13] barebox-wrapper: Implement kfree and vfree as static
+ inline functions
 To: barebox@lists.infradead.org
 Cc: Daniel Krueger <daniel.krueger@systec-electronic.com>, Alexander Stein <alexander.stein@systec-electronic.com>
 
-Currently max_write_size is set to minimal I/O size. Set to buffer size
-read from flash. Required by UBIFS recovery which uses max_write_size
-for error detection.
+If kfree/vfree is called where free is a already variable name, code will
+not compile.
+Also both take a const* in Linux kernel code.
 
 Signed-off-by: Alexander Stein <alexander.stein@systec-electronic.com>
 ---
- drivers/mtd/ubi/build.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/barebox-wrapper.h | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
-index 7970226..268cc6f 100644
---- a/drivers/mtd/ubi/build.c
-+++ b/drivers/mtd/ubi/build.c
-@@ -327,7 +327,7 @@ static int io_init(struct ubi_device *ubi, int max_beb_per1024)
- 	ubi_assert(ubi->hdrs_min_io_size <= ubi->min_io_size);
- 	ubi_assert(ubi->min_io_size % ubi->hdrs_min_io_size == 0);
+diff --git a/include/linux/barebox-wrapper.h b/include/linux/barebox-wrapper.h
+index fc1b5c2..67b332e 100644
+--- a/include/linux/barebox-wrapper.h
++++ b/include/linux/barebox-wrapper.h
+@@ -1,14 +1,21 @@
+ #ifndef __INCLUDE_LINUX_BAREBOX_WRAPPER_H
+ #define __INCLUDE_LINUX_BAREBOX_WRAPPER_H
  
--	ubi->max_write_size = ubi->mtd->writesize; /* FIXME: writebufsize */
-+	ubi->max_write_size = ubi->mtd->writebufsize;
- 	/*
- 	 * Maximum write size has to be greater or equivalent to min. I/O
- 	 * size, and be multiple of min. I/O size.
++#include <malloc.h>
+ #include <xfuncs.h>
+ 
+ #define kmalloc(len, mode)	malloc(len)
+ #define kzalloc(len, mode)	xzalloc(len)
+ #define vmalloc(len)		malloc(len)
+-#define kfree(ptr)		free(ptr)
++static inline void kfree(const void *block)
++{
++	free((void *)block);
++}
+ #define vzalloc(len)		kzalloc(len, 0)
+-#define vfree(ptr)		free(ptr)
++static inline void vfree(const void *addr)
++{
++	free((void *)addr);
++}
+ 
+ #define KERN_EMERG      ""   /* system is unusable                   */
+ #define KERN_ALERT      ""   /* action must be taken immediately     */
 -- 
 2.7.3
 
