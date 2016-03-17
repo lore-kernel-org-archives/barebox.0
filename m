@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from webbox1416.server-home.net ([77.236.96.61])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1agUkv-0002xj-Bn
- for barebox@lists.infradead.org; Thu, 17 Mar 2016 10:02:23 +0000
+ id 1agUkv-0002yI-Bq
+ for barebox@lists.infradead.org; Thu, 17 Mar 2016 10:02:29 +0000
 Received: from imapserver.systec-electronic.com (unknown [212.185.67.146])
- by webbox1416.server-home.net (Postfix) with ESMTPA id 71D7A27A701
- for <barebox@lists.infradead.org>; Thu, 17 Mar 2016 11:01:15 +0100 (CET)
+ by webbox1416.server-home.net (Postfix) with ESMTPA id 0B32727A703
+ for <barebox@lists.infradead.org>; Thu, 17 Mar 2016 11:01:20 +0100 (CET)
 From: Alexander Stein <alexander.stein@systec-electronic.com>
-Date: Thu, 17 Mar 2016 11:00:21 +0100
-Message-Id: <1458208829-25570-6-git-send-email-alexander.stein@systec-electronic.com>
+Date: Thu, 17 Mar 2016 11:00:23 +0100
+Message-Id: <1458208829-25570-8-git-send-email-alexander.stein@systec-electronic.com>
 In-Reply-To: <1458208829-25570-1-git-send-email-alexander.stein@systec-electronic.com>
 References: <1458208829-25570-1-git-send-email-alexander.stein@systec-electronic.com>
 List-Id: <barebox.lists.infradead.org>
@@ -24,349 +24,323 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/13] Add list_sort from u-boot v2016.03
+Subject: [PATCH 07/13] compiler*.h: include/linux/compiler*.h with Linux 4.5
 To: barebox@lists.infradead.org
 Cc: Daniel Krueger <daniel.krueger@systec-electronic.com>, Alexander Stein <alexander.stein@systec-electronic.com>
 
-This is required by UBIFS update.
+Include <linux/types.h> instead of uapi/linux/types.h.
+
+This is required for READ_ONCE and WRITE_ONCE for upcoming atomic_t.
 
 Signed-off-by: Alexander Stein <alexander.stein@systec-electronic.com>
 ---
- include/linux/list_sort.h |  11 ++
- lib/Makefile              |   1 +
- lib/list_sort.c           | 296 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 308 insertions(+)
- create mode 100644 include/linux/list_sort.h
- create mode 100644 lib/list_sort.c
+ include/linux/compiler-gcc.h   |  35 ++++++++-
+ include/linux/compiler-intel.h |   1 +
+ include/linux/compiler.h       | 171 ++++++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 203 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/list_sort.h b/include/linux/list_sort.h
-new file mode 100644
-index 0000000..1a2df2e
---- /dev/null
-+++ b/include/linux/list_sort.h
-@@ -0,0 +1,11 @@
-+#ifndef _LINUX_LIST_SORT_H
-+#define _LINUX_LIST_SORT_H
+diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
+index dfaa7b3..22ab246 100644
+--- a/include/linux/compiler-gcc.h
++++ b/include/linux/compiler-gcc.h
+@@ -205,11 +205,31 @@
+ 
+ #if GCC_VERSION >= 40600
+ /*
+- * Tell the optimizer that something else uses this function or variable.
++ * When used with Link Time Optimization, gcc can optimize away C functions or
++ * variables which are referenced only from assembly code.  __visible tells the
++ * optimizer that something else uses this function or variable, thus preventing
++ * this.
+  */
+ #define __visible	__attribute__((externally_visible))
+ #endif
+ 
 +
++#if GCC_VERSION >= 40900 && !defined(__CHECKER__)
++/*
++ * __assume_aligned(n, k): Tell the optimizer that the returned
++ * pointer can be assumed to be k modulo n. The second argument is
++ * optional (default 0), so we use a variadic macro to make the
++ * shorthand.
++ *
++ * Beware: Do not apply this to functions which may return
++ * ERR_PTRs. Also, it is probably unwise to apply it to functions
++ * returning extra information in the low bits (but in that case the
++ * compiler should see some alignment anyway, when the return value is
++ * massaged by 'flags = ptr & 3; ptr &= ~3;').
++ */
++#define __assume_aligned(a, ...) __attribute__((__assume_aligned__(a, ## __VA_ARGS__)))
++#endif
++
+ /*
+  * GCC 'asm goto' miscompiles certain code sequences:
+  *
+@@ -237,12 +257,25 @@
+ #define KASAN_ABI_VERSION 3
+ #endif
+ 
++#if GCC_VERSION >= 40902
++/*
++ * Tell the compiler that address safety instrumentation (KASAN)
++ * should not be applied to that function.
++ * Conflicts with inlining: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67368
++ */
++#define __no_sanitize_address __attribute__((no_sanitize_address))
++#endif
++
+ #endif	/* gcc version >= 40000 specific checks */
+ 
+ #if !defined(__noclone)
+ #define __noclone	/* not needed */
+ #endif
+ 
++#if !defined(__no_sanitize_address)
++#define __no_sanitize_address
++#endif
++
+ /*
+  * A trick to suppress uninitialized variable warning without generating any
+  * code
+diff --git a/include/linux/compiler-intel.h b/include/linux/compiler-intel.h
+index 58daccc..d4c7113 100644
+--- a/include/linux/compiler-intel.h
++++ b/include/linux/compiler-intel.h
+@@ -42,3 +42,4 @@
+ #define __HAVE_BUILTIN_BSWAP16__
+ #define __builtin_bswap16 _bswap16
+ #endif
++
+diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+index 8f0c292..020ad16 100644
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -4,8 +4,8 @@
+ #ifndef __ASSEMBLY__
+ 
+ #ifdef __CHECKER__
+-# define __user		/* no user address space in barebox */
+-# define __kernel	/* default address space */
++# define __user		__attribute__((noderef, address_space(1)))
++# define __kernel	__attribute__((address_space(0)))
+ # define __safe		__attribute__((safe))
+ # define __force	__attribute__((force))
+ # define __nocast	__attribute__((nocast))
+@@ -16,6 +16,13 @@
+ # define __acquire(x)	__context__(x,1)
+ # define __release(x)	__context__(x,-1)
+ # define __cond_lock(x,c)	((c) ? ({ __acquire(x); 1; }) : 0)
++# define __percpu	__attribute__((noderef, address_space(3)))
++# define __pmem		__attribute__((noderef, address_space(5)))
++#ifdef CONFIG_SPARSE_RCU_POINTER
++# define __rcu		__attribute__((noderef, address_space(4)))
++#else
++# define __rcu
++#endif
+ extern void __chk_user_ptr(const volatile void __user *);
+ extern void __chk_io_ptr(const volatile void __iomem *);
+ #else
+@@ -34,6 +41,9 @@ extern void __chk_io_ptr(const volatile void __iomem *);
+ # define __acquire(x) (void)0
+ # define __release(x) (void)0
+ # define __cond_lock(x,c) (c)
++# define __percpu
++# define __rcu
++# define __pmem
+ #endif
+ 
+ /* Indirect macros required for expanded argument pasting, eg. __LINE__. */
+@@ -46,7 +56,11 @@ extern void __chk_io_ptr(const volatile void __iomem *);
+ #include <linux/compiler-gcc.h>
+ #endif
+ 
++#if defined(CC_USING_HOTPATCH) && !defined(__CHECKER__)
++#define notrace __attribute__((hotpatch(0,0)))
++#else
+ #define notrace __attribute__((no_instrument_function))
++#endif
+ 
+ /* Intel compiler defines __GNUC__. So we will overwrite implementations
+  * coming from above header files here
+@@ -130,7 +144,7 @@ void ftrace_likely_update(struct ftrace_branch_data *f, int val, int expect);
+  */
+ #define if(cond, ...) __trace_if( (cond , ## __VA_ARGS__) )
+ #define __trace_if(cond) \
+-	if (__builtin_constant_p((cond)) ? !!(cond) :			\
++	if (__builtin_constant_p(!!(cond)) ? !!(cond) :			\
+ 	({								\
+ 		int ______r;						\
+ 		static struct ftrace_branch_data			\
+@@ -182,6 +196,126 @@ void ftrace_likely_update(struct ftrace_branch_data *f, int val, int expect);
+ # define __UNIQUE_ID(prefix) __PASTE(__PASTE(__UNIQUE_ID_, prefix), __LINE__)
+ #endif
+ 
 +#include <linux/types.h>
 +
-+struct list_head;
++#define __READ_ONCE_SIZE						\
++({									\
++	switch (size) {							\
++	case 1: *(__u8 *)res = *(volatile __u8 *)p; break;		\
++	case 2: *(__u16 *)res = *(volatile __u16 *)p; break;		\
++	case 4: *(__u32 *)res = *(volatile __u32 *)p; break;		\
++	case 8: *(__u64 *)res = *(volatile __u64 *)p; break;		\
++	default:							\
++		barrier();						\
++		__builtin_memcpy((void *)res, (const void *)p, size);	\
++		barrier();						\
++	}								\
++})
 +
-+void list_sort(void *priv, struct list_head *head,
-+	       int (*cmp)(void *priv, struct list_head *a,
-+			  struct list_head *b));
-+#endif
-diff --git a/lib/Makefile b/lib/Makefile
-index 44ba25b..3c65eeb 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -58,3 +58,4 @@ obj-$(CONFIG_FONTS)	+= fonts/
- obj-$(CONFIG_BAREBOX_LOGO)     += logo/
- obj-y			+= reed_solomon/
- obj-$(CONFIG_RATP)	+= ratp.o
-+obj-y			+= list_sort.o
-diff --git a/lib/list_sort.c b/lib/list_sort.c
-new file mode 100644
-index 0000000..b7e74f2
---- /dev/null
-+++ b/lib/list_sort.c
-@@ -0,0 +1,296 @@
-+#ifndef __BAREBOX__
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/slab.h>
++static __always_inline
++void __read_once_size(const volatile void *p, void *res, int size)
++{
++	__READ_ONCE_SIZE;
++}
++
++#ifdef CONFIG_KASAN
++/*
++ * This function is not 'inline' because __no_sanitize_address confilcts
++ * with inlining. Attempt to inline it may cause a build failure.
++ * 	https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67368
++ * '__maybe_unused' allows us to avoid defined-but-not-used warnings.
++ */
++static __no_sanitize_address __maybe_unused
++void __read_once_size_nocheck(const volatile void *p, void *res, int size)
++{
++	__READ_ONCE_SIZE;
++}
 +#else
-+#include <common.h>
-+#include <malloc.h>
++static __always_inline
++void __read_once_size_nocheck(const volatile void *p, void *res, int size)
++{
++	__READ_ONCE_SIZE;
++}
 +#endif
-+#include <linux/list.h>
-+#include <linux/list_sort.h>
 +
-+#define MAX_LIST_LENGTH_BITS 20
-+
-+/*
-+ * Returns a list organized in an intermediate format suited
-+ * to chaining of merge() calls: null-terminated, no reserved or
-+ * sentinel head node, "prev" links not maintained.
-+ */
-+static struct list_head *merge(void *priv,
-+				int (*cmp)(void *priv, struct list_head *a,
-+					struct list_head *b),
-+				struct list_head *a, struct list_head *b)
++static __always_inline void __write_once_size(volatile void *p, void *res, int size)
 +{
-+	struct list_head head, *tail = &head;
-+
-+	while (a && b) {
-+		/* if equal, take 'a' -- important for sort stability */
-+		if ((*cmp)(priv, a, b) <= 0) {
-+			tail->next = a;
-+			a = a->next;
-+		} else {
-+			tail->next = b;
-+			b = b->next;
-+		}
-+		tail = tail->next;
++	switch (size) {
++	case 1: *(volatile __u8 *)p = *(__u8 *)res; break;
++	case 2: *(volatile __u16 *)p = *(__u16 *)res; break;
++	case 4: *(volatile __u32 *)p = *(__u32 *)res; break;
++	case 8: *(volatile __u64 *)p = *(__u64 *)res; break;
++	default:
++		barrier();
++		__builtin_memcpy((void *)p, (const void *)res, size);
++		barrier();
 +	}
-+	tail->next = a?:b;
-+	return head.next;
 +}
 +
 +/*
-+ * Combine final list merge with restoration of standard doubly-linked
-+ * list structure.  This approach duplicates code from merge(), but
-+ * runs faster than the tidier alternatives of either a separate final
-+ * prev-link restoration pass, or maintaining the prev links
-+ * throughout.
++ * Prevent the compiler from merging or refetching reads or writes. The
++ * compiler is also forbidden from reordering successive instances of
++ * READ_ONCE, WRITE_ONCE and ACCESS_ONCE (see below), but only when the
++ * compiler is aware of some particular ordering.  One way to make the
++ * compiler aware of ordering is to put the two invocations of READ_ONCE,
++ * WRITE_ONCE or ACCESS_ONCE() in different C statements.
++ *
++ * In contrast to ACCESS_ONCE these two macros will also work on aggregate
++ * data types like structs or unions. If the size of the accessed data
++ * type exceeds the word size of the machine (e.g., 32 bits or 64 bits)
++ * READ_ONCE() and WRITE_ONCE()  will fall back to memcpy and print a
++ * compile-time warning.
++ *
++ * Their two major use cases are: (1) Mediating communication between
++ * process-level code and irq/NMI handlers, all running on the same CPU,
++ * and (2) Ensuring that the compiler does not  fold, spindle, or otherwise
++ * mutilate accesses that either do not require ordering or that interact
++ * with an explicit memory barrier or atomic instruction that provides the
++ * required ordering.
 + */
-+static void merge_and_restore_back_links(void *priv,
-+				int (*cmp)(void *priv, struct list_head *a,
-+					struct list_head *b),
-+				struct list_head *head,
-+				struct list_head *a, struct list_head *b)
-+{
-+	struct list_head *tail = head;
 +
-+	while (a && b) {
-+		/* if equal, take 'a' -- important for sort stability */
-+		if ((*cmp)(priv, a, b) <= 0) {
-+			tail->next = a;
-+			a->prev = tail;
-+			a = a->next;
-+		} else {
-+			tail->next = b;
-+			b->prev = tail;
-+			b = b->next;
-+		}
-+		tail = tail->next;
-+	}
-+	tail->next = a ? : b;
++#define __READ_ONCE(x, check)						\
++({									\
++	union { typeof(x) __val; char __c[1]; } __u;			\
++	if (check)							\
++		__read_once_size(&(x), __u.__c, sizeof(x));		\
++	else								\
++		__read_once_size_nocheck(&(x), __u.__c, sizeof(x));	\
++	__u.__val;							\
++})
++#define READ_ONCE(x) __READ_ONCE(x, 1)
 +
-+	do {
-+		/*
-+		 * In worst cases this loop may run many iterations.
-+		 * Continue callbacks to the client even though no
-+		 * element comparison is needed, so the client's cmp()
-+		 * routine can invoke cond_resched() periodically.
-+		 */
-+		(*cmp)(priv, tail->next, tail->next);
++/*
++ * Use READ_ONCE_NOCHECK() instead of READ_ONCE() if you need
++ * to hide memory access from KASAN.
++ */
++#define READ_ONCE_NOCHECK(x) __READ_ONCE(x, 0)
 +
-+		tail->next->prev = tail;
-+		tail = tail->next;
-+	} while (tail->next);
-+
-+	tail->next = head;
-+	head->prev = tail;
-+}
++#define WRITE_ONCE(x, val) \
++({							\
++	union { typeof(x) __val; char __c[1]; } __u =	\
++		{ .__val = (__force typeof(x)) (val) }; \
++	__write_once_size(&(x), __u.__c, sizeof(x));	\
++	__u.__val;					\
++})
 +
 +/**
-+ * list_sort - sort a list
-+ * @priv: private data, opaque to list_sort(), passed to @cmp
-+ * @head: the list to sort
-+ * @cmp: the elements comparison function
++ * smp_cond_acquire() - Spin wait for cond with ACQUIRE ordering
++ * @cond: boolean expression to wait for
 + *
-+ * This function implements "merge sort", which has O(nlog(n))
-+ * complexity.
++ * Equivalent to using smp_load_acquire() on the condition variable but employs
++ * the control dependency of the wait to reduce the barrier on many platforms.
 + *
-+ * The comparison function @cmp must return a negative value if @a
-+ * should sort before @b, and a positive value if @a should sort after
-+ * @b. If @a and @b are equivalent, and their original relative
-+ * ordering is to be preserved, @cmp must return 0.
++ * The control dependency provides a LOAD->STORE order, the additional RMB
++ * provides LOAD->LOAD order, together they provide LOAD->{LOAD,STORE} order,
++ * aka. ACQUIRE.
 + */
-+void list_sort(void *priv, struct list_head *head,
-+		int (*cmp)(void *priv, struct list_head *a,
-+			struct list_head *b))
-+{
-+	struct list_head *part[MAX_LIST_LENGTH_BITS+1]; /* sorted partial lists
-+						-- last slot is a sentinel */
-+	int lev;  /* index into part[] */
-+	int max_lev = 0;
-+	struct list_head *list;
++#define smp_cond_acquire(cond)	do {		\
++	while (!(cond))				\
++		cpu_relax();			\
++	smp_rmb(); /* ctrl + rmb := acquire */	\
++} while (0)
 +
-+	if (list_empty(head))
-+		return;
-+
-+	memset(part, 0, sizeof(part));
-+
-+	head->prev->next = NULL;
-+	list = head->next;
-+
-+	while (list) {
-+		struct list_head *cur = list;
-+		list = list->next;
-+		cur->next = NULL;
-+
-+		for (lev = 0; part[lev]; lev++) {
-+			cur = merge(priv, cmp, part[lev], cur);
-+			part[lev] = NULL;
-+		}
-+		if (lev > max_lev) {
-+			if (unlikely(lev >= ARRAY_SIZE(part)-1)) {
-+				printk_once(KERN_DEBUG "list passed to"
-+					" list_sort() too long for"
-+					" efficiency\n");
-+				lev--;
-+			}
-+			max_lev = lev;
-+		}
-+		part[lev] = cur;
-+	}
-+
-+	for (lev = 0; lev < max_lev; lev++)
-+		if (part[lev])
-+			list = merge(priv, cmp, part[lev], list);
-+
-+	merge_and_restore_back_links(priv, cmp, head, part[max_lev], list);
-+}
-+EXPORT_SYMBOL(list_sort);
-+
-+#ifdef CONFIG_TEST_LIST_SORT
-+
-+#include <linux/random.h>
-+
+ #endif /* __KERNEL__ */
+ 
+ #endif /* __ASSEMBLY__ */
+@@ -300,6 +434,14 @@ void ftrace_likely_update(struct ftrace_branch_data *f, int val, int expect);
+ #define __visible
+ #endif
+ 
 +/*
-+ * The pattern of set bits in the list length determines which cases
-+ * are hit in list_sort().
++ * Assume alignment of return value.
 + */
-+#define TEST_LIST_LEN (512+128+2) /* not including head */
++#ifndef __assume_aligned
++#define __assume_aligned(a, ...)
++#endif
 +
-+#define TEST_POISON1 0xDEADBEEF
-+#define TEST_POISON2 0xA324354C
 +
-+struct debug_el {
-+	unsigned int poison1;
-+	struct list_head list;
-+	unsigned int poison2;
-+	int value;
-+	unsigned serial;
-+};
+ /* Are two types/vars the same type (ignoring qualifiers)? */
+ #ifndef __same_type
+ # define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
+@@ -387,4 +529,27 @@ void ftrace_likely_update(struct ftrace_branch_data *f, int val, int expect);
+ 	(volatile typeof(x) *)&(x); })
+ #define ACCESS_ONCE(x) (*__ACCESS_ONCE(x))
+ 
++/**
++ * lockless_dereference() - safely load a pointer for later dereference
++ * @p: The pointer to load
++ *
++ * Similar to rcu_dereference(), but for situations where the pointed-to
++ * object's lifetime is managed by something other than RCU.  That
++ * "something other" might be reference counting or simple immortality.
++ */
++#define lockless_dereference(p) \
++({ \
++	typeof(p) _________p1 = READ_ONCE(p); \
++	smp_read_barrier_depends(); /* Dependency order vs. p above. */ \
++	(_________p1); \
++})
 +
-+/* Array, containing pointers to all elements in the test list */
-+static struct debug_el **elts __initdata;
-+
-+static int __init check(struct debug_el *ela, struct debug_el *elb)
-+{
-+	if (ela->serial >= TEST_LIST_LEN) {
-+		printk(KERN_ERR "list_sort_test: error: incorrect serial %d\n",
-+				ela->serial);
-+		return -EINVAL;
-+	}
-+	if (elb->serial >= TEST_LIST_LEN) {
-+		printk(KERN_ERR "list_sort_test: error: incorrect serial %d\n",
-+				elb->serial);
-+		return -EINVAL;
-+	}
-+	if (elts[ela->serial] != ela || elts[elb->serial] != elb) {
-+		printk(KERN_ERR "list_sort_test: error: phantom element\n");
-+		return -EINVAL;
-+	}
-+	if (ela->poison1 != TEST_POISON1 || ela->poison2 != TEST_POISON2) {
-+		printk(KERN_ERR "list_sort_test: error: bad poison: %#x/%#x\n",
-+				ela->poison1, ela->poison2);
-+		return -EINVAL;
-+	}
-+	if (elb->poison1 != TEST_POISON1 || elb->poison2 != TEST_POISON2) {
-+		printk(KERN_ERR "list_sort_test: error: bad poison: %#x/%#x\n",
-+				elb->poison1, elb->poison2);
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
-+static int __init cmp(void *priv, struct list_head *a, struct list_head *b)
-+{
-+	struct debug_el *ela, *elb;
-+
-+	ela = container_of(a, struct debug_el, list);
-+	elb = container_of(b, struct debug_el, list);
-+
-+	check(ela, elb);
-+	return ela->value - elb->value;
-+}
-+
-+static int __init list_sort_test(void)
-+{
-+	int i, count = 1, err = -EINVAL;
-+	struct debug_el *el;
-+	struct list_head *cur, *tmp;
-+	LIST_HEAD(head);
-+
-+	printk(KERN_DEBUG "list_sort_test: start testing list_sort()\n");
-+
-+	elts = kmalloc(sizeof(void *) * TEST_LIST_LEN, GFP_KERNEL);
-+	if (!elts) {
-+		printk(KERN_ERR "list_sort_test: error: cannot allocate "
-+				"memory\n");
-+		goto exit;
-+	}
-+
-+	for (i = 0; i < TEST_LIST_LEN; i++) {
-+		el = kmalloc(sizeof(*el), GFP_KERNEL);
-+		if (!el) {
-+			printk(KERN_ERR "list_sort_test: error: cannot "
-+					"allocate memory\n");
-+			goto exit;
-+		}
-+		 /* force some equivalencies */
-+		el->value = prandom_u32() % (TEST_LIST_LEN / 3);
-+		el->serial = i;
-+		el->poison1 = TEST_POISON1;
-+		el->poison2 = TEST_POISON2;
-+		elts[i] = el;
-+		list_add_tail(&el->list, &head);
-+	}
-+
-+	list_sort(NULL, &head, cmp);
-+
-+	for (cur = head.next; cur->next != &head; cur = cur->next) {
-+		struct debug_el *el1;
-+		int cmp_result;
-+
-+		if (cur->next->prev != cur) {
-+			printk(KERN_ERR "list_sort_test: error: list is "
-+					"corrupted\n");
-+			goto exit;
-+		}
-+
-+		cmp_result = cmp(NULL, cur, cur->next);
-+		if (cmp_result > 0) {
-+			printk(KERN_ERR "list_sort_test: error: list is not "
-+					"sorted\n");
-+			goto exit;
-+		}
-+
-+		el = container_of(cur, struct debug_el, list);
-+		el1 = container_of(cur->next, struct debug_el, list);
-+		if (cmp_result == 0 && el->serial >= el1->serial) {
-+			printk(KERN_ERR "list_sort_test: error: order of "
-+					"equivalent elements not preserved\n");
-+			goto exit;
-+		}
-+
-+		if (check(el, el1)) {
-+			printk(KERN_ERR "list_sort_test: error: element check "
-+					"failed\n");
-+			goto exit;
-+		}
-+		count++;
-+	}
-+
-+	if (count != TEST_LIST_LEN) {
-+		printk(KERN_ERR "list_sort_test: error: bad list length %d",
-+				count);
-+		goto exit;
-+	}
-+
-+	err = 0;
-+exit:
-+	kfree(elts);
-+	list_for_each_safe(cur, tmp, &head) {
-+		list_del(cur);
-+		kfree(container_of(cur, struct debug_el, list));
-+	}
-+	return err;
-+}
-+module_init(list_sort_test);
-+#endif /* CONFIG_TEST_LIST_SORT */
++/* Ignore/forbid kprobes attach on very low level functions marked by this attribute: */
++#ifdef CONFIG_KPROBES
++# define __kprobes	__attribute__((__section__(".kprobes.text")))
++# define nokprobe_inline	__always_inline
++#else
++# define __kprobes
++# define nokprobe_inline	inline
++#endif
+ #endif /* __LINUX_COMPILER_H */
 -- 
 2.7.3
 
