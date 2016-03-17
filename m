@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from webbox1416.server-home.net ([77.236.96.61])
- by casper.infradead.org with esmtp (Exim 4.85 #2 (Red Hat Linux))
- id 1agUkz-0004j7-As
- for barebox@lists.infradead.org; Thu, 17 Mar 2016 10:02:21 +0000
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1agUkv-0002xj-Bn
+ for barebox@lists.infradead.org; Thu, 17 Mar 2016 10:02:23 +0000
 Received: from imapserver.systec-electronic.com (unknown [212.185.67.146])
- by webbox1416.server-home.net (Postfix) with ESMTPA id 9827427A708
- for <barebox@lists.infradead.org>; Thu, 17 Mar 2016 11:01:32 +0100 (CET)
+ by webbox1416.server-home.net (Postfix) with ESMTPA id 71D7A27A701
+ for <barebox@lists.infradead.org>; Thu, 17 Mar 2016 11:01:15 +0100 (CET)
 From: Alexander Stein <alexander.stein@systec-electronic.com>
-Date: Thu, 17 Mar 2016 11:00:28 +0100
-Message-Id: <1458208829-25570-13-git-send-email-alexander.stein@systec-electronic.com>
+Date: Thu, 17 Mar 2016 11:00:21 +0100
+Message-Id: <1458208829-25570-6-git-send-email-alexander.stein@systec-electronic.com>
 In-Reply-To: <1458208829-25570-1-git-send-email-alexander.stein@systec-electronic.com>
 References: <1458208829-25570-1-git-send-email-alexander.stein@systec-electronic.com>
 List-Id: <barebox.lists.infradead.org>
@@ -24,31 +24,349 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/13] barebox-wrapper: Add kcalloc and __vmalloc
+Subject: [PATCH 05/13] Add list_sort from u-boot v2016.03
 To: barebox@lists.infradead.org
 Cc: Daniel Krueger <daniel.krueger@systec-electronic.com>, Alexander Stein <alexander.stein@systec-electronic.com>
 
-They call xzalloc and malloc respectively.
+This is required by UBIFS update.
 
 Signed-off-by: Alexander Stein <alexander.stein@systec-electronic.com>
 ---
- include/linux/barebox-wrapper.h | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/list_sort.h |  11 ++
+ lib/Makefile              |   1 +
+ lib/list_sort.c           | 296 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 308 insertions(+)
+ create mode 100644 include/linux/list_sort.h
+ create mode 100644 lib/list_sort.c
 
-diff --git a/include/linux/barebox-wrapper.h b/include/linux/barebox-wrapper.h
-index 67b332e..b57c58c 100644
---- a/include/linux/barebox-wrapper.h
-+++ b/include/linux/barebox-wrapper.h
-@@ -6,7 +6,9 @@
- 
- #define kmalloc(len, mode)	malloc(len)
- #define kzalloc(len, mode)	xzalloc(len)
-+#define kcalloc(n, len, mode)	xzalloc(n * len)
- #define vmalloc(len)		malloc(len)
-+#define __vmalloc(len, mode, pgsz)	malloc(len)
- static inline void kfree(const void *block)
- {
- 	free((void *)block);
+diff --git a/include/linux/list_sort.h b/include/linux/list_sort.h
+new file mode 100644
+index 0000000..1a2df2e
+--- /dev/null
++++ b/include/linux/list_sort.h
+@@ -0,0 +1,11 @@
++#ifndef _LINUX_LIST_SORT_H
++#define _LINUX_LIST_SORT_H
++
++#include <linux/types.h>
++
++struct list_head;
++
++void list_sort(void *priv, struct list_head *head,
++	       int (*cmp)(void *priv, struct list_head *a,
++			  struct list_head *b));
++#endif
+diff --git a/lib/Makefile b/lib/Makefile
+index 44ba25b..3c65eeb 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -58,3 +58,4 @@ obj-$(CONFIG_FONTS)	+= fonts/
+ obj-$(CONFIG_BAREBOX_LOGO)     += logo/
+ obj-y			+= reed_solomon/
+ obj-$(CONFIG_RATP)	+= ratp.o
++obj-y			+= list_sort.o
+diff --git a/lib/list_sort.c b/lib/list_sort.c
+new file mode 100644
+index 0000000..b7e74f2
+--- /dev/null
++++ b/lib/list_sort.c
+@@ -0,0 +1,296 @@
++#ifndef __BAREBOX__
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/slab.h>
++#else
++#include <common.h>
++#include <malloc.h>
++#endif
++#include <linux/list.h>
++#include <linux/list_sort.h>
++
++#define MAX_LIST_LENGTH_BITS 20
++
++/*
++ * Returns a list organized in an intermediate format suited
++ * to chaining of merge() calls: null-terminated, no reserved or
++ * sentinel head node, "prev" links not maintained.
++ */
++static struct list_head *merge(void *priv,
++				int (*cmp)(void *priv, struct list_head *a,
++					struct list_head *b),
++				struct list_head *a, struct list_head *b)
++{
++	struct list_head head, *tail = &head;
++
++	while (a && b) {
++		/* if equal, take 'a' -- important for sort stability */
++		if ((*cmp)(priv, a, b) <= 0) {
++			tail->next = a;
++			a = a->next;
++		} else {
++			tail->next = b;
++			b = b->next;
++		}
++		tail = tail->next;
++	}
++	tail->next = a?:b;
++	return head.next;
++}
++
++/*
++ * Combine final list merge with restoration of standard doubly-linked
++ * list structure.  This approach duplicates code from merge(), but
++ * runs faster than the tidier alternatives of either a separate final
++ * prev-link restoration pass, or maintaining the prev links
++ * throughout.
++ */
++static void merge_and_restore_back_links(void *priv,
++				int (*cmp)(void *priv, struct list_head *a,
++					struct list_head *b),
++				struct list_head *head,
++				struct list_head *a, struct list_head *b)
++{
++	struct list_head *tail = head;
++
++	while (a && b) {
++		/* if equal, take 'a' -- important for sort stability */
++		if ((*cmp)(priv, a, b) <= 0) {
++			tail->next = a;
++			a->prev = tail;
++			a = a->next;
++		} else {
++			tail->next = b;
++			b->prev = tail;
++			b = b->next;
++		}
++		tail = tail->next;
++	}
++	tail->next = a ? : b;
++
++	do {
++		/*
++		 * In worst cases this loop may run many iterations.
++		 * Continue callbacks to the client even though no
++		 * element comparison is needed, so the client's cmp()
++		 * routine can invoke cond_resched() periodically.
++		 */
++		(*cmp)(priv, tail->next, tail->next);
++
++		tail->next->prev = tail;
++		tail = tail->next;
++	} while (tail->next);
++
++	tail->next = head;
++	head->prev = tail;
++}
++
++/**
++ * list_sort - sort a list
++ * @priv: private data, opaque to list_sort(), passed to @cmp
++ * @head: the list to sort
++ * @cmp: the elements comparison function
++ *
++ * This function implements "merge sort", which has O(nlog(n))
++ * complexity.
++ *
++ * The comparison function @cmp must return a negative value if @a
++ * should sort before @b, and a positive value if @a should sort after
++ * @b. If @a and @b are equivalent, and their original relative
++ * ordering is to be preserved, @cmp must return 0.
++ */
++void list_sort(void *priv, struct list_head *head,
++		int (*cmp)(void *priv, struct list_head *a,
++			struct list_head *b))
++{
++	struct list_head *part[MAX_LIST_LENGTH_BITS+1]; /* sorted partial lists
++						-- last slot is a sentinel */
++	int lev;  /* index into part[] */
++	int max_lev = 0;
++	struct list_head *list;
++
++	if (list_empty(head))
++		return;
++
++	memset(part, 0, sizeof(part));
++
++	head->prev->next = NULL;
++	list = head->next;
++
++	while (list) {
++		struct list_head *cur = list;
++		list = list->next;
++		cur->next = NULL;
++
++		for (lev = 0; part[lev]; lev++) {
++			cur = merge(priv, cmp, part[lev], cur);
++			part[lev] = NULL;
++		}
++		if (lev > max_lev) {
++			if (unlikely(lev >= ARRAY_SIZE(part)-1)) {
++				printk_once(KERN_DEBUG "list passed to"
++					" list_sort() too long for"
++					" efficiency\n");
++				lev--;
++			}
++			max_lev = lev;
++		}
++		part[lev] = cur;
++	}
++
++	for (lev = 0; lev < max_lev; lev++)
++		if (part[lev])
++			list = merge(priv, cmp, part[lev], list);
++
++	merge_and_restore_back_links(priv, cmp, head, part[max_lev], list);
++}
++EXPORT_SYMBOL(list_sort);
++
++#ifdef CONFIG_TEST_LIST_SORT
++
++#include <linux/random.h>
++
++/*
++ * The pattern of set bits in the list length determines which cases
++ * are hit in list_sort().
++ */
++#define TEST_LIST_LEN (512+128+2) /* not including head */
++
++#define TEST_POISON1 0xDEADBEEF
++#define TEST_POISON2 0xA324354C
++
++struct debug_el {
++	unsigned int poison1;
++	struct list_head list;
++	unsigned int poison2;
++	int value;
++	unsigned serial;
++};
++
++/* Array, containing pointers to all elements in the test list */
++static struct debug_el **elts __initdata;
++
++static int __init check(struct debug_el *ela, struct debug_el *elb)
++{
++	if (ela->serial >= TEST_LIST_LEN) {
++		printk(KERN_ERR "list_sort_test: error: incorrect serial %d\n",
++				ela->serial);
++		return -EINVAL;
++	}
++	if (elb->serial >= TEST_LIST_LEN) {
++		printk(KERN_ERR "list_sort_test: error: incorrect serial %d\n",
++				elb->serial);
++		return -EINVAL;
++	}
++	if (elts[ela->serial] != ela || elts[elb->serial] != elb) {
++		printk(KERN_ERR "list_sort_test: error: phantom element\n");
++		return -EINVAL;
++	}
++	if (ela->poison1 != TEST_POISON1 || ela->poison2 != TEST_POISON2) {
++		printk(KERN_ERR "list_sort_test: error: bad poison: %#x/%#x\n",
++				ela->poison1, ela->poison2);
++		return -EINVAL;
++	}
++	if (elb->poison1 != TEST_POISON1 || elb->poison2 != TEST_POISON2) {
++		printk(KERN_ERR "list_sort_test: error: bad poison: %#x/%#x\n",
++				elb->poison1, elb->poison2);
++		return -EINVAL;
++	}
++	return 0;
++}
++
++static int __init cmp(void *priv, struct list_head *a, struct list_head *b)
++{
++	struct debug_el *ela, *elb;
++
++	ela = container_of(a, struct debug_el, list);
++	elb = container_of(b, struct debug_el, list);
++
++	check(ela, elb);
++	return ela->value - elb->value;
++}
++
++static int __init list_sort_test(void)
++{
++	int i, count = 1, err = -EINVAL;
++	struct debug_el *el;
++	struct list_head *cur, *tmp;
++	LIST_HEAD(head);
++
++	printk(KERN_DEBUG "list_sort_test: start testing list_sort()\n");
++
++	elts = kmalloc(sizeof(void *) * TEST_LIST_LEN, GFP_KERNEL);
++	if (!elts) {
++		printk(KERN_ERR "list_sort_test: error: cannot allocate "
++				"memory\n");
++		goto exit;
++	}
++
++	for (i = 0; i < TEST_LIST_LEN; i++) {
++		el = kmalloc(sizeof(*el), GFP_KERNEL);
++		if (!el) {
++			printk(KERN_ERR "list_sort_test: error: cannot "
++					"allocate memory\n");
++			goto exit;
++		}
++		 /* force some equivalencies */
++		el->value = prandom_u32() % (TEST_LIST_LEN / 3);
++		el->serial = i;
++		el->poison1 = TEST_POISON1;
++		el->poison2 = TEST_POISON2;
++		elts[i] = el;
++		list_add_tail(&el->list, &head);
++	}
++
++	list_sort(NULL, &head, cmp);
++
++	for (cur = head.next; cur->next != &head; cur = cur->next) {
++		struct debug_el *el1;
++		int cmp_result;
++
++		if (cur->next->prev != cur) {
++			printk(KERN_ERR "list_sort_test: error: list is "
++					"corrupted\n");
++			goto exit;
++		}
++
++		cmp_result = cmp(NULL, cur, cur->next);
++		if (cmp_result > 0) {
++			printk(KERN_ERR "list_sort_test: error: list is not "
++					"sorted\n");
++			goto exit;
++		}
++
++		el = container_of(cur, struct debug_el, list);
++		el1 = container_of(cur->next, struct debug_el, list);
++		if (cmp_result == 0 && el->serial >= el1->serial) {
++			printk(KERN_ERR "list_sort_test: error: order of "
++					"equivalent elements not preserved\n");
++			goto exit;
++		}
++
++		if (check(el, el1)) {
++			printk(KERN_ERR "list_sort_test: error: element check "
++					"failed\n");
++			goto exit;
++		}
++		count++;
++	}
++
++	if (count != TEST_LIST_LEN) {
++		printk(KERN_ERR "list_sort_test: error: bad list length %d",
++				count);
++		goto exit;
++	}
++
++	err = 0;
++exit:
++	kfree(elts);
++	list_for_each_safe(cur, tmp, &head) {
++		list_del(cur);
++		kfree(container_of(cur, struct debug_el, list));
++	}
++	return err;
++}
++module_init(list_sort_test);
++#endif /* CONFIG_TEST_LIST_SORT */
 -- 
 2.7.3
 
