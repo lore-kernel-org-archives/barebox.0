@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from webbox1416.server-home.net ([77.236.96.61])
  by merlin.infradead.org with esmtp (Exim 4.85 #2 (Red Hat Linux))
- id 1agUky-0003g4-QZ
- for barebox@lists.infradead.org; Thu, 17 Mar 2016 10:02:17 +0000
+ id 1agUky-0003g8-QB
+ for barebox@lists.infradead.org; Thu, 17 Mar 2016 10:02:18 +0000
 Received: from imapserver.systec-electronic.com (unknown [212.185.67.146])
- by webbox1416.server-home.net (Postfix) with ESMTPA id 8BB9E27A702
- for <barebox@lists.infradead.org>; Thu, 17 Mar 2016 11:01:19 +0100 (CET)
+ by webbox1416.server-home.net (Postfix) with ESMTPA id BB87427A706
+ for <barebox@lists.infradead.org>; Thu, 17 Mar 2016 11:01:28 +0100 (CET)
 From: Alexander Stein <alexander.stein@systec-electronic.com>
-Date: Thu, 17 Mar 2016 11:00:22 +0100
-Message-Id: <1458208829-25570-7-git-send-email-alexander.stein@systec-electronic.com>
+Date: Thu, 17 Mar 2016 11:00:26 +0100
+Message-Id: <1458208829-25570-11-git-send-email-alexander.stein@systec-electronic.com>
 In-Reply-To: <1458208829-25570-1-git-send-email-alexander.stein@systec-electronic.com>
 References: <1458208829-25570-1-git-send-email-alexander.stein@systec-electronic.com>
 List-Id: <barebox.lists.infradead.org>
@@ -24,29 +24,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/13] printk: Add pr_cont
+Subject: [PATCH 10/13] Move GFP_NOFS to barebox-wrapper
 To: barebox@lists.infradead.org
 Cc: Daniel Krueger <daniel.krueger@systec-electronic.com>, Alexander Stein <alexander.stein@systec-electronic.com>
 
-This is needed by upcoming UBIFS update.
+This will also be used by upcoming UBIFS update.
 
 Signed-off-by: Alexander Stein <alexander.stein@systec-electronic.com>
 ---
- include/printk.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/ubi/ubi-barebox.h   | 2 --
+ include/linux/barebox-wrapper.h | 3 ++-
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/include/printk.h b/include/printk.h
-index 4b76ca1..f62e57d 100644
---- a/include/printk.h
-+++ b/include/printk.h
-@@ -91,6 +91,7 @@ static inline int pr_print(int level, const char *format, ...)
- #define pr_debug(fmt, arg...)	__pr_printk(7, pr_fmt(fmt), ##arg)
- #define debug(fmt, arg...)	__pr_printk(7, pr_fmt(fmt), ##arg)
- #define pr_vdebug(fmt, arg...)	__pr_printk(8, pr_fmt(fmt), ##arg)
-+#define pr_cont(fmt, arg...)	__pr_printk(0, pr_fmt(fmt), ##arg)
+diff --git a/drivers/mtd/ubi/ubi-barebox.h b/drivers/mtd/ubi/ubi-barebox.h
+index 03069d0..ab970aa 100644
+--- a/drivers/mtd/ubi/ubi-barebox.h
++++ b/drivers/mtd/ubi/ubi-barebox.h
+@@ -42,8 +42,6 @@ static inline unsigned long copy_from_user(void *dest, const void *src,
  
- #define printk_once(fmt, ...)					\
- ({								\
+ /* common */
+ 
+-#define GFP_NOFS			1
+-
+ #define wake_up_process(...)	do { } while (0)
+ 
+ #define BUS_ID_SIZE		20
+diff --git a/include/linux/barebox-wrapper.h b/include/linux/barebox-wrapper.h
+index 15fd726..fc1b5c2 100644
+--- a/include/linux/barebox-wrapper.h
++++ b/include/linux/barebox-wrapper.h
+@@ -20,7 +20,8 @@
+ #define KERN_DEBUG      ""   /* debug-level messages                 */
+ #define KERN_CONT       ""
+ 
+-#define GFP_KERNEL	0
++#define GFP_KERNEL ((gfp_t) 0)
++#define GFP_NOFS ((gfp_t) 1)
+ 
+ typedef int     gfp_t;
+ 
 -- 
 2.7.3
 
