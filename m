@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x231.google.com ([2a00:1450:400c:c09::231])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1agAf3-0002Pz-5o
- for barebox@lists.infradead.org; Wed, 16 Mar 2016 12:34:50 +0000
-Received: by mail-wm0-x231.google.com with SMTP id l68so186977691wml.0
- for <barebox@lists.infradead.org>; Wed, 16 Mar 2016 05:34:28 -0700 (PDT)
-From: Holger Schurig <holgerschurig@gmail.com>
-In-Reply-To: <20160309085831.GA1563@omega> (Alexander Aring's message of "Wed, 
- 9 Mar 2016 09:58:37 +0100")
-References: <56D831C6.1010101@eurek.it> <8737s7ei86.fsf@gmail.com>
- <20160309085831.GA1563@omega>
-Date: Wed, 16 Mar 2016 13:34:24 +0100
-Message-ID: <87zityiotr.fsf@gmail.com>
+ id 1agSJz-0004Up-TB
+ for barebox@lists.infradead.org; Thu, 17 Mar 2016 07:26:17 +0000
+Date: Thu, 17 Mar 2016 08:25:51 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160317072551.GU30994@pengutronix.de>
+References: <1458099232-9050-1-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1458099232-9050-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,26 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Ethernet PHY KSZ9031 is not working
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: barebox@lists.infradead.org, gianluca <gianlucarenzi@eurek.it>
+Subject: Re: [PATCH 01/16] i.MX6: dts: Include local .dtsi's last
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Alexander Aring <alex.aring@gmail.com> writes:
-> do you know why memtester from Linux found issues?
+On Tue, Mar 15, 2016 at 08:33:36PM -0700, Andrey Smirnov wrote:
+> Make sure that Barebox specific .dtsi files are included after .dtsi
+> files imported from Linux kernel. This way those local .dtsi files can
+> reference phandles defined in Linux kernel files.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
 
-No, I actually didn't even look into the source code.
+Looks all good, applied with the typo Antony mentioned fixed.
 
-> I saw some people which use memtester under Linux and randomly
-> "MTD/filesystem broken" messages blobs out while running memtester. I would
-> guess that the memtester written in some memory mapped area of connected
-> NAND devices.
+Sascha
 
-In my case this wasn't the issue ... I don't have NAND in my hardware.
-
-Later, when our hardware guy fixed layout and DDR3 timing values with
-the Freescale tool, memtester worked perfectly. Barebox' memory test
-however didn't show an error before the rework ... and afterwards also
-not :-)
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
