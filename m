@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from webbox1416.server-home.net ([77.236.96.61])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ahuZr-000806-TA
- for barebox@lists.infradead.org; Mon, 21 Mar 2016 07:48:41 +0000
-Received: from imapserver.systec-electronic.com (unknown [212.185.67.146])
- by webbox1416.server-home.net (Postfix) with ESMTPA id 2521B27A5F0
- for <barebox@lists.infradead.org>; Mon, 21 Mar 2016 08:48:06 +0100 (CET)
-From: Alexander Stein <alexander.stein@systec-electronic.com>
-Date: Mon, 21 Mar 2016 08:47:56 +0100
-Message-Id: <1458546476-20624-1-git-send-email-alexander.stein@systec-electronic.com>
+Received: from mail-vk0-x242.google.com ([2607:f8b0:400c:c05::242])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ai2OC-0006Oz-59
+ for barebox@lists.infradead.org; Mon, 21 Mar 2016 16:09:09 +0000
+Received: by mail-vk0-x242.google.com with SMTP id e185so17260253vkb.2
+ for <barebox@lists.infradead.org>; Mon, 21 Mar 2016 09:08:47 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20160317073127.GA2329@lws-christ>
+References: <1458099232-9050-1-git-send-email-andrew.smirnov@gmail.com>
+ <1458099232-9050-12-git-send-email-andrew.smirnov@gmail.com>
+ <20160317073127.GA2329@lws-christ>
+Date: Mon, 21 Mar 2016 09:08:46 -0700
+Message-ID: <CAHQ1cqEnyywuHBqjuDetLtv_q4rZ0xA78HAJY58xXGSmt0=tSA@mail.gmail.com>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,72 +21,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] ARM i.MX35: Read reset source from CCM
-To: barebox@lists.infradead.org
-Cc: Alexander Stein <alexander.stein@systec-electronic.com>
+Subject: Re: [PATCH 12/16] i.MX6: Apply errata 845369 workaround
+To: Stefan Christ <s.christ@phytec.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-CCM has reset status bits with more detailed information than the
-watchdog. Set reset source with higher priority.
-
-Signed-off-by: Alexander Stein <alexander.stein@systec-electronic.com>
----
- arch/arm/mach-imx/clk-imx35.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
-
-diff --git a/arch/arm/mach-imx/clk-imx35.c b/arch/arm/mach-imx/clk-imx35.c
-index 2433d73..af6c405 100644
---- a/arch/arm/mach-imx/clk-imx35.c
-+++ b/arch/arm/mach-imx/clk-imx35.c
-@@ -14,6 +14,7 @@
- #include <linux/clkdev.h>
- #include <linux/err.h>
- #include <mach/imx35-regs.h>
-+#include <reset_source.h>
- 
- #include "clk.h"
- 
-@@ -95,12 +96,31 @@ static int imx35_ccm_probe(struct device_d *dev)
- 	struct arm_ahb_div *aad;
- 	unsigned char *hsp_div;
- 	void __iomem *base;
-+	u32 reg;
- 
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores))
- 		return PTR_ERR(iores);
- 	base = IOMEM(iores->start);
- 
-+	/* Check reset source */
-+	reg = readl(base + CCM_RCSR);
-+
-+	switch (reg & 0x0F) {
-+	case 0x00:
-+		reset_source_set_priority(RESET_POR, 200);
-+		break;
-+	case 0x02:
-+		reset_source_set_priority(RESET_JTAG, 200);
-+		break;
-+	case 0x04:
-+		reset_source_set_priority(RESET_RST, 200);
-+		break;
-+	case 0x08:
-+		reset_source_set_priority(RESET_WDG, 200);
-+		break;
-+	}
-+
- 	writel(0xffffffff, base + CCM_CGR0);
- 	writel(0xffffffff, base + CCM_CGR1);
- 	writel(0xfbffffff, base + CCM_CGR2);
--- 
-2.7.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVGh1LCBNYXIgMTcsIDIwMTYgYXQgMTI6MzEgQU0sIFN0ZWZhbiBDaHJpc3QgPHMuY2hyaXN0
+QHBoeXRlYy5kZT4gd3JvdGU6Cj4gSGksCj4KPj4gQEAgLTMxLDQgKzMxLDUgQEAgdm9pZCBpbXg2
+X2NwdV9sb3dsZXZlbF9pbml0KHZvaWQpCj4+ICAgICAgIGVuYWJsZV9hcm1fZXJyYXRhXzc1MTQ3
+Ml93YXIoKTsKPj4gICAgICAgZW5hYmxlX2FybV9lcnJhdGFfNzYxMzIwX3dhcigpOwo+PiAgICAg
+ICBlbmFibGVfYXJtX2VycmF0YV83OTQwNzJfd2FyKCk7Cj4+ICsgICAgIGVuYWJsZV9hcm1fZXJy
+YXRhXzg0NTM2OV93YXIoKTsKPgo+IFRoZSBlcnJhdGEgODQ1MzY5IHNlZW1zIHRvIGJlIGEgZ2Vu
+ZXJhbCBlcnJhdGEgZm9yIGFsbCBBUk0gQ29ydGV4LUE5IGNvcmVzLiBXaHkKPiBpcyB0aGlzIGZp
+eCBvbmx5IGFwcGx5IGZvciB0aGUgaS5NWDYgU29DIGFuZCBub3QgZm9yIG90aGVyIENvcnRleC1B
+OSBkZXZpY2VzIGluCj4gdGhlIGJhcmVib3g/CgpBRkFJUiwgdGhlcmUncyBhIGJpdCBvZiBhIGNh
+dmVhdCB0byB0aGF0IGVycmF0YSwgc2luY2UgaXQgYXBwbGllcyBvbmx5CnRvIG11bHRpLWNvcmUg
+c3lzdGVtcyBvciBzeXN0ZW1zIHdpdGggQUNQLCBzbyBzb21lIG9mIHRoZSBjb3JlcyBtaWdodApu
+b3QgbmVlZCBpdCBhbmQgSU1ITyBpbiBvcmRlciB0byBwcm9wZXJseSBhcHBseSB0aGF0IGVycmF0
+YSBvbmUgd291bGQKaGF2ZSB0byBjb25zdWx0IGluZGl2aWR1YWwgU29DJ3MgcmVmZXJlbmNlIG1h
+bnVhbHMuCgpCdXQgdGhlIG1haW4gcmVhc29uIHdoeSBJIGFwcGxpZWQgaXQgb25seSB0aGVyZSB3
+YXMgdGhhdCB0aGVyZSBkaWRuJ3QKc2VlbSB0byBiZSBhIGNvbW1vbiBwbGFjZSB3aGVyZSB0aG9z
+ZSBlcnJhdGFzIGFyZSBhcHBsaWVkIGZvciBhbGwKcGxhdGZvcm1zIChJIHN1c3BlY3QgaXQgbWln
+aHQgaGF2ZSB0byBkbyB3aXRoIHRoZSBmYWN0IHRoYXQgaXQgaXMKcG9zc2libGUgdG8gYnVpbGQg
+QkIgZm9yIG11bHRpcGxlIGdlbmVyYXRpb25zIG9yIEFSTSksIGJ1dCB0aGVyZSB3YXMgYQpwbGFj
+ZSB3aGVyZSBlcnJhdGFzIHdlcmUgYXBwbGllZCBmb3IgaS5NWDYsIHNvIEkgZm9sbG93ZWQgdGhl
+IHBhdGggb2YKbGVhc3QgcmVzaXN0YW5jZS4KCgo+Cj4gTWl0IGZyZXVuZGxpY2hlbiBHcsO8w59l
+biAvIEtpbmQgcmVnYXJkcywKPiAgICAgICAgIFN0ZWZhbiBDaHJpc3QKPgo+IE9uIFR1ZSwgTWFy
+IDE1LCAyMDE2IGF0IDA4OjMzOjQ3UE0gLTA3MDAsIEFuZHJleSBTbWlybm92IHdyb3RlOgo+PiBT
+aWduZWQtb2ZmLWJ5OiBBbmRyZXkgU21pcm5vdiA8YW5kcmV3LnNtaXJub3ZAZ21haWwuY29tPgo+
+PiAtLS0KPj4gIGFyY2gvYXJtL21hY2gtaW14L2NwdV9pbml0LmMgfCAxICsKPj4gIDEgZmlsZSBj
+aGFuZ2VkLCAxIGluc2VydGlvbigrKQo+Pgo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1p
+bXgvY3B1X2luaXQuYyBiL2FyY2gvYXJtL21hY2gtaW14L2NwdV9pbml0LmMKPj4gaW5kZXggOGIx
+MGU2My4uNzYwMzg4MyAxMDA2NDQKPj4gLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvY3B1X2luaXQu
+Ywo+PiArKysgYi9hcmNoL2FybS9tYWNoLWlteC9jcHVfaW5pdC5jCj4+IEBAIC0zMSw0ICszMSw1
+IEBAIHZvaWQgaW14Nl9jcHVfbG93bGV2ZWxfaW5pdCh2b2lkKQo+PiAgICAgICBlbmFibGVfYXJt
+X2VycmF0YV83NTE0NzJfd2FyKCk7Cj4+ICAgICAgIGVuYWJsZV9hcm1fZXJyYXRhXzc2MTMyMF93
+YXIoKTsKPj4gICAgICAgZW5hYmxlX2FybV9lcnJhdGFfNzk0MDcyX3dhcigpOwo+PiArICAgICBl
+bmFibGVfYXJtX2VycmF0YV84NDUzNjlfd2FyKCk7Cj4+ICB9Cj4+IC0tCj4+IDIuNS4wCj4+Cj4+
+Cj4+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4+IGJh
+cmVib3ggbWFpbGluZyBsaXN0Cj4+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+PiBodHRw
+Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
+aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
