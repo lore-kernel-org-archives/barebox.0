@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1akpMp-00065b-Un
- for barebox@lists.infradead.org; Tue, 29 Mar 2016 08:51:17 +0000
+ id 1akpMp-00065Y-Ul
+ for barebox@lists.infradead.org; Tue, 29 Mar 2016 08:51:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 29 Mar 2016 10:50:52 +0200
-Message-Id: <1459241454-21155-5-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 29 Mar 2016 10:50:49 +0200
+Message-Id: <1459241454-21155-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1459241454-21155-1-git-send-email-s.hauer@pengutronix.de>
 References: <1459241454-21155-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,89 +21,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] imd: export functions
+Subject: [PATCH 2/7] imd: string returned from imd_string_data should be const
 To: Barebox List <barebox@lists.infradead.org>
 
-To make the image metadata API usable for external users export
-some functions.
+imd_string_data() returns the original data, so the string should be
+const.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/imd.c             | 30 +++++++++++++++++++++++++++---
- include/image-metadata.h |  5 +++++
- 2 files changed, 32 insertions(+), 3 deletions(-)
+ common/imd.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/common/imd.c b/common/imd.c
-index 318980b..06822bb 100644
+index acaa23f..9bd1563 100644
 --- a/common/imd.c
 +++ b/common/imd.c
-@@ -169,7 +169,13 @@ static struct imd_type_names imd_types[] = {
- 	},
- };
- 
--static const char *imd_type_to_name(uint32_t type)
-+/**
-+ * imd_type_to_name - convert a imd type to a name
-+ * @type: The imd type
-+ *
-+ * This function returns a string representation of the imd type
-+ */
-+const char *imd_type_to_name(uint32_t type)
- {
- 	int i;
- 
-@@ -191,7 +197,16 @@ static uint32_t imd_name_to_type(const char *name)
+@@ -193,7 +193,7 @@ static uint32_t imd_name_to_type(const char *name)
  	return IMD_TYPE_INVALID;
  }
  
--static const char *imd_string_data(struct imd_header *imd, int index)
-+/**
-+ * imd_string_data - get string data
-+ * @imd: The IMD entry
-+ * @index: The index of the string
-+ *
-+ * This function returns the string in @imd indexed by @index.
-+ *
-+ * Return: A pointer to the string or NULL if the string is not found
-+ */
-+const char *imd_string_data(struct imd_header *imd, int index)
+-static char *imd_string_data(struct imd_header *imd, int index)
++static const char *imd_string_data(struct imd_header *imd, int index)
  {
  	int i, total = 0, l = 0;
  	int len = imd_read_length(imd);
-@@ -209,7 +224,16 @@ static const char *imd_string_data(struct imd_header *imd, int index)
- 	return NULL;
- }
+@@ -306,10 +306,15 @@ int imd_command(int argc, char *argv[])
+ 		}
  
--static char *imd_concat_strings(struct imd_header *imd)
-+/**
-+ * imd_concat_strings - get string data
-+ * @imd: The IMD entry
-+ *
-+ * This function returns the concatenated strings in @imd. The string
-+ * returned is allocated with malloc() and the caller has to free() it.
-+ *
-+ * Return: A pointer to the string or NULL if the string is not found
-+ */
-+char *imd_concat_strings(struct imd_header *imd)
- {
- 	int i, len = imd_read_length(imd);
- 	char *str;
-diff --git a/include/image-metadata.h b/include/image-metadata.h
-index 34dae5c..33ca9c6 100644
---- a/include/image-metadata.h
-+++ b/include/image-metadata.h
-@@ -80,6 +80,11 @@ static inline uint32_t imd_read_length(struct imd_header *imd)
+ 		if (imd_is_string(type)) {
+-			if (strno >= 0)
+-				str = imd_string_data(imd, strno);
+-			else
++			if (strno >= 0) {
++				const char *s = imd_string_data(imd, strno);
++				if (s)
++					str = strdup(s);
++				else
++					str = NULL;
++			} else {
+ 				str = imd_concat_strings(imd);
++			}
  
- struct imd_header *imd_find_type(struct imd_header *imd, uint32_t type);
- 
-+struct imd_header *imd_get(void *buf, int size);
-+const char *imd_string_data(struct imd_header *imd, int index);
-+const char *imd_type_to_name(uint32_t type);
-+char *imd_concat_strings(struct imd_header *imd);
-+
- extern int imd_command_verbose;
- int imd_command_setenv(const char *variable_name, const char *value);
- int imd_command(int argc, char *argv[]);
+ 			if (!str)
+ 				return -ENODATA;
 -- 
 2.7.0
 
