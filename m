@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1akq2d-0000Ei-68
- for barebox@lists.infradead.org; Tue, 29 Mar 2016 09:34:27 +0000
-Date: Tue, 29 Mar 2016 11:34:06 +0200
-From: Stefan Christ <s.christ@phytec.de>
-Message-ID: <20160329093406.GA5532@lws-christ>
-References: <1459241454-21155-1-git-send-email-s.hauer@pengutronix.de>
- <1459241454-21155-2-git-send-email-s.hauer@pengutronix.de>
+Received: from mail.kymetacorp.com ([192.81.58.21])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1akwaL-0008H9-Ul
+ for barebox@lists.infradead.org; Tue, 29 Mar 2016 16:33:43 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Tue, 29 Mar 2016 16:33:16 +0000
+Message-ID: <1459269243.20219.1.camel@rtred1test09.kymeta.local>
+References: <1458099232-9050-1-git-send-email-andrew.smirnov@gmail.com>
+ <1458099232-9050-12-git-send-email-andrew.smirnov@gmail.com>
+ <20160317073127.GA2329@lws-christ>
+ <CAHQ1cqEnyywuHBqjuDetLtv_q4rZ0xA78HAJY58xXGSmt0=tSA@mail.gmail.com>
+In-Reply-To: <CAHQ1cqEnyywuHBqjuDetLtv_q4rZ0xA78HAJY58xXGSmt0=tSA@mail.gmail.com>
+Content-Language: en-US
+Content-ID: <524F7D06DB2B944A995CC4363084302C@kymetacorp.com>
 MIME-Version: 1.0
-In-Reply-To: <1459241454-21155-2-git-send-email-s.hauer@pengutronix.de>
-Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,70 +26,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] imd: string returned from imd_string_data should be
- const
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 12/16] i.MX6: Apply errata 845369 workaround
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Sascha,
+On Mon, 2016-03-21 at 09:08 -0700, Andrey Smirnov wrote:
+> On Thu, Mar 17, 2016 at 12:31 AM, Stefan Christ <s.christ@phytec.de> wrote:
+> > Hi,
+> >
+> >> @@ -31,4 +31,5 @@ void imx6_cpu_lowlevel_init(void)
+> >>       enable_arm_errata_751472_war();
+> >>       enable_arm_errata_761320_war();
+> >>       enable_arm_errata_794072_war();
+> >> +     enable_arm_errata_845369_war();
+> >
+> > The errata 845369 seems to be a general errata for all ARM Cortex-A9 cores. Why
+> > is this fix only apply for the i.MX6 SoC and not for other Cortex-A9 devices in
+> > the barebox?
 
-On Tue, Mar 29, 2016 at 10:50:49AM +0200, Sascha Hauer wrote:
-> imd_string_data() returns the original data, so the string should be
-> const.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  common/imd.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/common/imd.c b/common/imd.c
-> index acaa23f..9bd1563 100644
-> --- a/common/imd.c
-> +++ b/common/imd.c
-> @@ -193,7 +193,7 @@ static uint32_t imd_name_to_type(const char *name)
->  	return IMD_TYPE_INVALID;
->  }
->  
-> -static char *imd_string_data(struct imd_header *imd, int index)
-> +static const char *imd_string_data(struct imd_header *imd, int index)
->  {
->  	int i, total = 0, l = 0;
->  	int len = imd_read_length(imd);
-> @@ -306,10 +306,15 @@ int imd_command(int argc, char *argv[])
->  		}
->  
->  		if (imd_is_string(type)) {
-> -			if (strno >= 0)
-> -				str = imd_string_data(imd, strno);
-> -			else
-> +			if (strno >= 0) {
-> +				const char *s = imd_string_data(imd, strno);
-> +				if (s)
-> +					str = strdup(s);
-
-The following code in the function doesn't free the string 'str' correctly. The
-code is
-
-                        if (strno < 0)
-                                free(str);
-
-
-> +				else
-> +					str = NULL;
-> +			} else {
->  				str = imd_concat_strings(imd);
-> +			}
->  
->  			if (!str)
->  				return -ENODATA;
-> -- 
-> 2.7.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Errata 761320 appears to also be fixed by the change for errata 845369.
 
 _______________________________________________
 barebox mailing list
