@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aknkv-0004OI-E1
- for barebox@lists.infradead.org; Tue, 29 Mar 2016 07:08:02 +0000
-Date: Tue, 29 Mar 2016 09:07:37 +0200
+ id 1akpMp-00065b-Un
+ for barebox@lists.infradead.org; Tue, 29 Mar 2016 08:51:17 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160329070737.GB30994@pengutronix.de>
-References: <1458546476-20624-1-git-send-email-alexander.stein@systec-electronic.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1458546476-20624-1-git-send-email-alexander.stein@systec-electronic.com>
+Date: Tue, 29 Mar 2016 10:50:52 +0200
+Message-Id: <1459241454-21155-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1459241454-21155-1-git-send-email-s.hauer@pengutronix.de>
+References: <1459241454-21155-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,87 +16,97 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] ARM i.MX35: Read reset source from CCM
-To: Alexander Stein <alexander.stein@systec-electronic.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 5/7] imd: export functions
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Mar 21, 2016 at 08:47:56AM +0100, Alexander Stein wrote:
-> CCM has reset status bits with more detailed information than the
-> watchdog. Set reset source with higher priority.
-> 
-> Signed-off-by: Alexander Stein <alexander.stein@systec-electronic.com>
-> ---
->  arch/arm/mach-imx/clk-imx35.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
+To make the image metadata API usable for external users export
+some functions.
 
-Applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/imd.c             | 30 +++++++++++++++++++++++++++---
+ include/image-metadata.h |  5 +++++
+ 2 files changed, 32 insertions(+), 3 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/arch/arm/mach-imx/clk-imx35.c b/arch/arm/mach-imx/clk-imx35.c
-> index 2433d73..af6c405 100644
-> --- a/arch/arm/mach-imx/clk-imx35.c
-> +++ b/arch/arm/mach-imx/clk-imx35.c
-> @@ -14,6 +14,7 @@
->  #include <linux/clkdev.h>
->  #include <linux/err.h>
->  #include <mach/imx35-regs.h>
-> +#include <reset_source.h>
->  
->  #include "clk.h"
->  
-> @@ -95,12 +96,31 @@ static int imx35_ccm_probe(struct device_d *dev)
->  	struct arm_ahb_div *aad;
->  	unsigned char *hsp_div;
->  	void __iomem *base;
-> +	u32 reg;
->  
->  	iores = dev_request_mem_resource(dev, 0);
->  	if (IS_ERR(iores))
->  		return PTR_ERR(iores);
->  	base = IOMEM(iores->start);
->  
-> +	/* Check reset source */
-> +	reg = readl(base + CCM_RCSR);
-> +
-> +	switch (reg & 0x0F) {
-> +	case 0x00:
-> +		reset_source_set_priority(RESET_POR, 200);
-> +		break;
-> +	case 0x02:
-> +		reset_source_set_priority(RESET_JTAG, 200);
-> +		break;
-> +	case 0x04:
-> +		reset_source_set_priority(RESET_RST, 200);
-> +		break;
-> +	case 0x08:
-> +		reset_source_set_priority(RESET_WDG, 200);
-> +		break;
-> +	}
-> +
->  	writel(0xffffffff, base + CCM_CGR0);
->  	writel(0xffffffff, base + CCM_CGR1);
->  	writel(0xfbffffff, base + CCM_CGR2);
-> -- 
-> 2.7.3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/common/imd.c b/common/imd.c
+index 318980b..06822bb 100644
+--- a/common/imd.c
++++ b/common/imd.c
+@@ -169,7 +169,13 @@ static struct imd_type_names imd_types[] = {
+ 	},
+ };
+ 
+-static const char *imd_type_to_name(uint32_t type)
++/**
++ * imd_type_to_name - convert a imd type to a name
++ * @type: The imd type
++ *
++ * This function returns a string representation of the imd type
++ */
++const char *imd_type_to_name(uint32_t type)
+ {
+ 	int i;
+ 
+@@ -191,7 +197,16 @@ static uint32_t imd_name_to_type(const char *name)
+ 	return IMD_TYPE_INVALID;
+ }
+ 
+-static const char *imd_string_data(struct imd_header *imd, int index)
++/**
++ * imd_string_data - get string data
++ * @imd: The IMD entry
++ * @index: The index of the string
++ *
++ * This function returns the string in @imd indexed by @index.
++ *
++ * Return: A pointer to the string or NULL if the string is not found
++ */
++const char *imd_string_data(struct imd_header *imd, int index)
+ {
+ 	int i, total = 0, l = 0;
+ 	int len = imd_read_length(imd);
+@@ -209,7 +224,16 @@ static const char *imd_string_data(struct imd_header *imd, int index)
+ 	return NULL;
+ }
+ 
+-static char *imd_concat_strings(struct imd_header *imd)
++/**
++ * imd_concat_strings - get string data
++ * @imd: The IMD entry
++ *
++ * This function returns the concatenated strings in @imd. The string
++ * returned is allocated with malloc() and the caller has to free() it.
++ *
++ * Return: A pointer to the string or NULL if the string is not found
++ */
++char *imd_concat_strings(struct imd_header *imd)
+ {
+ 	int i, len = imd_read_length(imd);
+ 	char *str;
+diff --git a/include/image-metadata.h b/include/image-metadata.h
+index 34dae5c..33ca9c6 100644
+--- a/include/image-metadata.h
++++ b/include/image-metadata.h
+@@ -80,6 +80,11 @@ static inline uint32_t imd_read_length(struct imd_header *imd)
+ 
+ struct imd_header *imd_find_type(struct imd_header *imd, uint32_t type);
+ 
++struct imd_header *imd_get(void *buf, int size);
++const char *imd_string_data(struct imd_header *imd, int index);
++const char *imd_type_to_name(uint32_t type);
++char *imd_concat_strings(struct imd_header *imd);
++
+ extern int imd_command_verbose;
+ int imd_command_setenv(const char *variable_name, const char *value);
+ int imd_command(int argc, char *argv[]);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.0
+
 
 _______________________________________________
 barebox mailing list
