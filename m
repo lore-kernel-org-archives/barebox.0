@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1akpMu-00065z-Uc
- for barebox@lists.infradead.org; Tue, 29 Mar 2016 08:51:23 +0000
+ id 1akpMp-00065a-Um
+ for barebox@lists.infradead.org; Tue, 29 Mar 2016 08:51:17 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 29 Mar 2016 10:50:53 +0200
-Message-Id: <1459241454-21155-6-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 29 Mar 2016 10:50:50 +0200
+Message-Id: <1459241454-21155-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1459241454-21155-1-git-send-email-s.hauer@pengutronix.de>
 References: <1459241454-21155-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,69 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] imd: Add function to read parameters
+Subject: [PATCH 3/7] scripts: Add scripts/include/ to include path for target
+ programs
 To: Barebox List <barebox@lists.infradead.org>
+
+Programs compiled for the target need -I $(srctree)/scripts/include/ to
+be able to include for example linux/err.h.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/imd.c             | 31 +++++++++++++++++++++++++++++++
- include/image-metadata.h |  1 +
- 2 files changed, 32 insertions(+)
+ scripts/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/common/imd.c b/common/imd.c
-index 06822bb..4b22f41 100644
---- a/common/imd.c
-+++ b/common/imd.c
-@@ -255,6 +255,37 @@ char *imd_concat_strings(struct imd_header *imd)
- 	return str;
- }
+diff --git a/scripts/Makefile b/scripts/Makefile
+index aeedcac..a5c16b2 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -45,12 +45,13 @@ targetprogs-$(CONFIG_IMD_TARGET) += bareboximd-target
+ subdir-	+= basic kconfig setupmbr
  
-+/**
-+ * imd_get_param - get a parameter
-+ * @imd: The IMD entry
-+ * @name: The name of the parameter.
-+ *
-+ * Parameters have the IMD type IMD_TYPE_PARAMETER and the form
-+ * "key=value". This function iterates over the IMD entries and when
-+ * it finds a parameter with name "key" it returns the value found.
-+ *
-+ * Return: A pointer to the value or NULL if the string is not found
-+ */
-+const char *imd_get_param(struct imd_header *imd, const char *name)
-+{
-+	struct imd_header *cur;
-+	int namelen = strlen(name);
-+
-+	imd_for_each(imd, cur) {
-+		char *data = (char *)(cur + 1);
-+
-+		if (cur->type != IMD_TYPE_PARAMETER)
-+			continue;
-+		if (strncmp(name, data, namelen))
-+			continue;
-+		if (data[namelen] != '=')
-+			continue;
-+		return data + namelen + 1;
-+	}
-+
-+	return NULL;
-+}
-+
- int imd_command_verbose;
+ quiet_cmd_csingle	= CC      $@
+-      cmd_csingle	= $(CC) -Wp,-MD,$(depfile) $(CFLAGS) -o $@ $<
++      cmd_csingle	= $(CC) -Wp,-MD,$(depfile) $(TARGETCFLAGS) $(CFLAGS) -o $@ $<
  
- int imd_command(int argc, char *argv[])
-diff --git a/include/image-metadata.h b/include/image-metadata.h
-index 33ca9c6..0ba9246 100644
---- a/include/image-metadata.h
-+++ b/include/image-metadata.h
-@@ -84,6 +84,7 @@ struct imd_header *imd_get(void *buf, int size);
- const char *imd_string_data(struct imd_header *imd, int index);
- const char *imd_type_to_name(uint32_t type);
- char *imd_concat_strings(struct imd_header *imd);
-+const char *imd_get_param(struct imd_header *imd, const char *name);
+ __targetprogs	:= $(sort $(targetprogs-y) $(targetprogs-m))
+ target-csingle	:= $(foreach m,$(__targetprogs),$(if $($(m)-objs),,$(m)))
+ __targetprogs	:= $(addprefix $(obj)/,$(__targetprogs))
+ target-csingle	:= $(addprefix $(obj)/,$(target-csingle))
++TARGETCFLAGS += -I$(srctree)/scripts/include/
  
- extern int imd_command_verbose;
- int imd_command_setenv(const char *variable_name, const char *value);
+ always		:= $(hostprogs-y) $(hostprogs-m) $(targetprogs-y)
+ 
 -- 
 2.7.0
 
