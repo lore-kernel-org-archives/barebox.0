@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1akpMp-00065Z-Ud
- for barebox@lists.infradead.org; Tue, 29 Mar 2016 08:51:16 +0000
+ id 1akpN4-00066j-Us
+ for barebox@lists.infradead.org; Tue, 29 Mar 2016 08:51:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 29 Mar 2016 10:50:48 +0200
-Message-Id: <1459241454-21155-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 29 Mar 2016 10:50:54 +0200
+Message-Id: <1459241454-21155-7-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1459241454-21155-1-git-send-email-s.hauer@pengutronix.de>
+References: <1459241454-21155-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,92 +21,132 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] imd: use struct imd_header * as argument
+Subject: [PATCH 7/7] bbu: print and evaluate image Metadata
 To: Barebox List <barebox@lists.infradead.org>
 
-imd_concat_strings() and imd_string_data() are easier to handle when
-they take a struct imd_header * instead of a struct imd_entry_string *.
-Change this.
+With imd we can store metadata in barebox images. Let's use this
+information to further verify that the image that is to be flashed
+is the correct one. This patch extracts the device tree compatible
+from the image and compares it with the one from the currently
+running barebox. If it doesn't match the update is aborted with a
+warning.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/imd.c | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ common/bbu.c  | 73 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/bbu.h |  1 +
+ 2 files changed, 74 insertions(+)
 
-diff --git a/common/imd.c b/common/imd.c
-index f84e344..acaa23f 100644
---- a/common/imd.c
-+++ b/common/imd.c
-@@ -193,11 +193,14 @@ static uint32_t imd_name_to_type(const char *name)
- 	return IMD_TYPE_INVALID;
+diff --git a/common/bbu.c b/common/bbu.c
+index 68812a7..b49fbe6 100644
+--- a/common/bbu.c
++++ b/common/bbu.c
+@@ -26,6 +26,7 @@
+ #include <fcntl.h>
+ #include <malloc.h>
+ #include <linux/stat.h>
++#include <image-metadata.h>
+ 
+ static LIST_HEAD(bbu_image_handlers);
+ 
+@@ -125,6 +126,76 @@ bool barebox_update_handler_exists(struct bbu_data *data)
+ 	return !bbu_find_handler(data->handler_name);
  }
  
--static char *imd_string_data(struct imd_entry_string *imd_string, int index)
-+static char *imd_string_data(struct imd_header *imd, int index)
- {
- 	int i, total = 0, l = 0;
--	int len = imd_read_length(&imd_string->header);
--	char *p = imd_string->data;
-+	int len = imd_read_length(imd);
-+	char *p = (char *)(imd + 1);
++static int bbu_check_of_compat(struct bbu_data *data)
++{
++	struct device_node *root_node;
++	const char *machine, *str;
++	int ret;
++	struct imd_header *of_compat;
 +
-+	if (!imd_is_string(imd->type))
-+		return NULL;
- 
- 	for (i = 0; total < len; total += l, p += l) {
- 		l = strlen(p) + 1;
-@@ -208,16 +211,20 @@ static char *imd_string_data(struct imd_entry_string *imd_string, int index)
- 	return NULL;
- }
- 
--static char *imd_concat_strings(struct imd_entry_string *imd_string)
-+static char *imd_concat_strings(struct imd_header *imd)
- {
--	int i, len = imd_read_length(&imd_string->header);
-+	int i, len = imd_read_length(imd);
- 	char *str;
-+	char *data = (char *)(imd + 1);
++	if (!IS_ENABLED(CONFIG_OFDEVICE) || !IS_ENABLED(CONFIG_IMD))
++		return 0;
 +
-+	if (!imd_is_string(imd->type))
-+		return NULL;
++	of_compat = imd_find_type(data->imd_data, IMD_TYPE_OF_COMPATIBLE);
++	if (!of_compat)
++		return 0;
++
++	root_node = of_get_root_node();
++	if (!root_node)
++		return 0;
++
++	str = imd_string_data(of_compat, 0);
++
++	if (of_machine_is_compatible(str)) {
++		pr_info("Devicetree compatible \"%s\" matches current machine\n", str);
++		return 0;
++	}
++
++	ret = of_property_read_string(root_node, "compatible", &machine);
++	if (ret)
++		return 0;
++
++	if (!bbu_force(data, "machine is incompatible with \"%s\", have \"%s\"\n", str, machine))
++		return -EINVAL;
++
++	return 0;
++}
++
++static int bbu_check_metadata(struct bbu_data *data)
++{
++	struct imd_header *imd;
++	int ret;
++	char *str;
++
++	if (!data->image)
++		return 0;
++
++	data->imd_data = imd_get(data->image, data->len);
++	if (IS_ERR(data->imd_data)) {
++		data->imd_data = NULL;
++		return 0;
++	}
++
++	printf("Image Metadata:\n");
++	imd_for_each(data->imd_data, imd) {
++		uint32_t type = imd_read_type(imd);
++
++		if (!imd_is_string(type))
++			continue;
++
++		str = imd_concat_strings(imd);
++
++		printf("  %s: %s\n", imd_type_to_name(type), str);
++		free(str);
++	}
++
++	ret = bbu_check_of_compat(data);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
+ /*
+  * do a barebox update with data from *data
+  */
+@@ -147,6 +218,8 @@ int barebox_update(struct bbu_data *data)
+ 	if (!data->devicefile)
+ 		data->devicefile = handler->devicefile;
  
- 	str = malloc(len);
- 	if (!str)
- 		return NULL;
++	bbu_check_metadata(data);
++
+ 	ret = handler->handler(handler, data);
+ 	if (ret == -EINTR)
+ 		printf("update aborted\n");
+diff --git a/include/bbu.h b/include/bbu.h
+index 0fe7a1a..701d7f6 100644
+--- a/include/bbu.h
++++ b/include/bbu.h
+@@ -16,6 +16,7 @@ struct bbu_data {
+ 	const char *devicefile;
+ 	size_t len;
+ 	const char *handler_name;
++	struct imd_header *imd_data;
+ };
  
--	memcpy(str, imd_string->data, len);
-+	memcpy(str, data, len);
- 
- 	for (i = 0; i < len - 1; i++)
- 		if (str[i] == 0)
-@@ -284,10 +291,7 @@ int imd_command(int argc, char *argv[])
- 			uint32_t type = imd_read_type(imd);
- 
- 			if (imd_is_string(type)) {
--				struct imd_entry_string *imd_string =
--					(struct imd_entry_string *)imd;
--
--				str = imd_concat_strings(imd_string);
-+				str = imd_concat_strings(imd);
- 
- 				printf("%s: %s\n", imd_type_to_name(type), str);
- 			} else {
-@@ -302,13 +306,10 @@ int imd_command(int argc, char *argv[])
- 		}
- 
- 		if (imd_is_string(type)) {
--			struct imd_entry_string *imd_string =
--				(struct imd_entry_string *)imd;
--
- 			if (strno >= 0)
--				str = imd_string_data(imd_string, strno);
-+				str = imd_string_data(imd, strno);
- 			else
--				str = imd_concat_strings(imd_string);
-+				str = imd_concat_strings(imd);
- 
- 			if (!str)
- 				return -ENODATA;
+ struct bbu_handler {
 -- 
 2.7.0
 
