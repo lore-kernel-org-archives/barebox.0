@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-vk0-x22b.google.com ([2607:f8b0:400c:c05::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1al9Ts-0003cb-BL
- for barebox@lists.infradead.org; Wed, 30 Mar 2016 06:19:52 +0000
-Date: Wed, 30 Mar 2016 08:19:30 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160330061930.GD30994@pengutronix.de>
-References: <1458208829-25570-1-git-send-email-alexander.stein@systec-electronic.com>
- <1458208829-25570-12-git-send-email-alexander.stein@systec-electronic.com>
+ id 1alIDD-0001mE-7w
+ for barebox@lists.infradead.org; Wed, 30 Mar 2016 15:39:16 +0000
+Received: by mail-vk0-x22b.google.com with SMTP id k1so66176100vkb.0
+ for <barebox@lists.infradead.org>; Wed, 30 Mar 2016 08:38:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1458208829-25570-12-git-send-email-alexander.stein@systec-electronic.com>
+Date: Wed, 30 Mar 2016 17:38:53 +0200
+Message-ID: <CABDcavYEn0e8GkEzfJnayr32X85dA5tz-dRaMg3H6J8i-aXj0w@mail.gmail.com>
+From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,49 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 11/13] barebox-wrapper: Implement kfree and vfree as
- static inline functions
-To: Alexander Stein <alexander.stein@systec-electronic.com>
-Cc: barebox@lists.infradead.org, Daniel Krueger <daniel.krueger@systec-electronic.com>
+Subject: Scrolling issues in edit command
+To: barebox@lists.infradead.org
 
-Hi Alexander,
+Hi all,
 
-Just to let you know, I haven't forgot this series, I am currently
-looking at it. I am currently having problems getting this compiled.
+I am trying to setup Barebox on a SAMA5D3-Xplained board. I started
+with barebox-2016.03.0. So far things are looking good.
 
-On Thu, Mar 17, 2016 at 11:00:27AM +0100, Alexander Stein wrote:
-> If kfree/vfree is called where free is a already variable name, code will
-> not compile.
-> Also both take a const* in Linux kernel code.
-> 
-> Signed-off-by: Alexander Stein <alexander.stein@systec-electronic.com>
-> ---
->  include/linux/barebox-wrapper.h | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/barebox-wrapper.h b/include/linux/barebox-wrapper.h
-> index fc1b5c2..67b332e 100644
-> --- a/include/linux/barebox-wrapper.h
-> +++ b/include/linux/barebox-wrapper.h
-> @@ -1,14 +1,21 @@
->  #ifndef __INCLUDE_LINUX_BAREBOX_WRAPPER_H
->  #define __INCLUDE_LINUX_BAREBOX_WRAPPER_H
->  
-> +#include <malloc.h>
+I have found that I have problems in the 'edit' command, when trying
+to scroll using the arrow keys. Scrolling up inserts random "A"
+characters in the text, scrolling down inserts random "B" characters.
+I am using minicom as the terminal. I don't remember seeing this
+before with older versions of barebox on different boards.
 
-This makes problems for the decompressor code using the malloc
-implementation in include/linux/decompress/mm.h. With this additional
-include the normal malloc implementation leaks into the decompressor
-code. I think I have a patch fixing it but must wait for the compile
-test.
+This is not fatal of course but it makes it very cumbersome to edit
+files from barebox itself. Can anyone provide any hints on why this is
+happening or how to fix it ?
 
-Sascha
+Thank you,
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Guillermo Rodriguez
 
 _______________________________________________
 barebox mailing list
