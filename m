@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vk0-x22b.google.com ([2607:f8b0:400c:c05::22b])
+Received: from mail-wm0-x22b.google.com ([2a00:1450:400c:c09::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1alIDD-0001mE-7w
- for barebox@lists.infradead.org; Wed, 30 Mar 2016 15:39:16 +0000
-Received: by mail-vk0-x22b.google.com with SMTP id k1so66176100vkb.0
- for <barebox@lists.infradead.org>; Wed, 30 Mar 2016 08:38:54 -0700 (PDT)
+ id 1alcpQ-0004OU-G3
+ for barebox@lists.infradead.org; Thu, 31 Mar 2016 13:40:05 +0000
+Received: by mail-wm0-x22b.google.com with SMTP id 191so126900375wmq.0
+ for <barebox@lists.infradead.org>; Thu, 31 Mar 2016 06:39:43 -0700 (PDT)
+From: Holger Schurig <holgerschurig@gmail.com>
+In-Reply-To: <CABDcavYEn0e8GkEzfJnayr32X85dA5tz-dRaMg3H6J8i-aXj0w@mail.gmail.com>
+ (Guillermo Rodriguez Garcia's message of "Wed, 30 Mar 2016 17:38:53
+ +0200")
+References: <CABDcavYEn0e8GkEzfJnayr32X85dA5tz-dRaMg3H6J8i-aXj0w@mail.gmail.com>
+Date: Thu, 31 Mar 2016 15:39:40 +0200
+Message-ID: <87ziterckj.fsf@gmail.com>
 MIME-Version: 1.0
-Date: Wed, 30 Mar 2016 17:38:53 +0200
-Message-ID: <CABDcavYEn0e8GkEzfJnayr32X85dA5tz-dRaMg3H6J8i-aXj0w@mail.gmail.com>
-From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,27 +25,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Scrolling issues in edit command
-To: barebox@lists.infradead.org
+Subject: Re: Scrolling issues in edit command
+To: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi all,
+Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com> writes:
 
-I am trying to setup Barebox on a SAMA5D3-Xplained board. I started
-with barebox-2016.03.0. So far things are looking good.
+> Can anyone provide any hints on why this is
+> happening or how to fix it ?
 
-I have found that I have problems in the 'edit' command, when trying
-to scroll using the arrow keys. Scrolling up inserts random "A"
-characters in the text, scrolling down inserts random "B" characters.
-I am using minicom as the terminal. I don't remember seeing this
-before with older versions of barebox on different boards.
+I guess this is probably because your terminal emulation doesn't match
+what barebox assume.
 
-This is not fatal of course but it makes it very cumbersome to edit
-files from barebox itself. Can anyone provide any hints on why this is
-happening or how to fix it ?
 
-Thank you,
 
-Guillermo Rodriguez
+I personally connect from Linux via the serial line with kermit to my
+target. Kermit has a simple ~/.kermrc file that looks like this:
+
+    set line /dev/ttyS0
+    set baud 115200
+    set handshake none
+    set flow-control none
+    set carrier-watch off
+    set escape-character ^X
+    log session ~/.kermlog
+    connect
+
+Kermit is oblivious to any ANSI escape sequences, so my X11 terminal
+emulates them. Here I use the rxvt-unicode binary `urxvt`. The effect is
+that the "edit" commands works.
 
 _______________________________________________
 barebox mailing list
