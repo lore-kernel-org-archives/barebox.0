@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1alxut-0002rS-Ck
+ id 1alxut-0002rT-Ce
  for barebox@lists.infradead.org; Fri, 01 Apr 2016 12:11:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Apr 2016 14:10:39 +0200
-Message-Id: <1459512644-8581-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1459512644-8581-1-git-send-email-s.hauer@pengutronix.de>
-References: <1459512644-8581-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  1 Apr 2016 14:10:38 +0200
+Message-Id: <1459512644-8581-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +19,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] ARM: i.MX6: esdctl: Fix CS0_end for 4GiB/cs
+Subject: [PATCH 1/7] ARM: i.MX6: esdctl: Fix memsize calculation for 4GiB/cs
 To: Barebox List <barebox@lists.infradead.org>
 
-On i.MX6 a single chipselect can have 4GiB. In this case the calculation
-for CS0_end overflows the 7 bit field. Clamp it to 127, the maximum
-supported value.
+On i.MX6 a single chipselect can have 4GiB, which overflows a 32bit
+type, so imx6_mmdc_sdram_size() must return a u64 to support this case.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/imx6-mmdc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-imx/esdctl.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-imx/imx6-mmdc.c b/arch/arm/mach-imx/imx6-mmdc.c
-index 146df57..8f661e3 100644
---- a/arch/arm/mach-imx/imx6-mmdc.c
-+++ b/arch/arm/mach-imx/imx6-mmdc.c
-@@ -1199,7 +1199,7 @@ void mx6_dram_cfg(const struct mx6_ddr_sysinfo *sysinfo,
- 	twtr = ROUND(max(4 * clkper, 7500) / clkper, 1) - 1;
- 	trcd = trp;
- 	trtp = twtr;
--	cs0_end = 4 * sysinfo->cs_density - 1 + 8;
-+	cs0_end = min(4 * sysinfo->cs_density - 1 + 8, 127);
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index e633b62..66ba51c 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -171,11 +171,11 @@ static inline unsigned long imx_v4_sdram_size(void __iomem *esdctlbase, int cs)
+  * MMDC - found on i.MX6
+  */
  
- 	debug("density:%d Gb (%d Gb per chip)\n",
- 	      sysinfo->cs_density, ddr3_cfg->density);
+-static inline unsigned long imx6_mmdc_sdram_size(void __iomem *mmdcbase, int cs)
++static inline u64 imx6_mmdc_sdram_size(void __iomem *mmdcbase, int cs)
+ {
+ 	u32 ctlval = readl(mmdcbase + MDCTL);
+ 	u32 mdmisc = readl(mmdcbase + MDMISC);
+-	unsigned long size;
++	u64 size;
+ 	int rows, cols, width = 2, banks = 8;
+ 
+ 	if (cs == 0 && !(ctlval & MMDCx_MDCTL_SDE0))
+@@ -201,7 +201,7 @@ static inline unsigned long imx6_mmdc_sdram_size(void __iomem *mmdcbase, int cs)
+ 	if (mdmisc & MMDCx_MDMISC_DDR_4_BANKS)
+ 		banks = 4;
+ 
+-	size = (1 << cols) * (1 << rows) * banks * width;
++	size = (u64)(1 << cols) * (1 << rows) * banks * width;
+ 
+ 	return size;
+ }
 -- 
 2.7.0
 
