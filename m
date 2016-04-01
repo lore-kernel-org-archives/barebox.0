@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vk0-x22d.google.com ([2607:f8b0:400c:c05::22d])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1anLnJ-0008U9-3B
- for barebox@lists.infradead.org; Tue, 05 Apr 2016 07:53:01 +0000
-Received: by mail-vk0-x22d.google.com with SMTP id c4so7559155vkb.3
- for <barebox@lists.infradead.org>; Tue, 05 Apr 2016 00:52:40 -0700 (PDT)
+ id 1alueP-0006mb-C2
+ for barebox@lists.infradead.org; Fri, 01 Apr 2016 08:41:54 +0000
+Date: Fri, 1 Apr 2016 10:41:29 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160401084129.GA9102@pengutronix.de>
+References: <1459241454-21155-1-git-send-email-s.hauer@pengutronix.de>
+ <1459241454-21155-7-git-send-email-s.hauer@pengutronix.de>
+ <20160329092945.GF2371@lws-christ>
 MIME-Version: 1.0
-In-Reply-To: <20160404200730.GA1618@pengutronix.de>
-References: <CABDcavYEn0e8GkEzfJnayr32X85dA5tz-dRaMg3H6J8i-aXj0w@mail.gmail.com>
- <20160404200730.GA1618@pengutronix.de>
-Date: Tue, 5 Apr 2016 09:52:39 +0200
-Message-ID: <CABDcavbN_G2MOwjxv6Ags=L0GWwj_HGEMom4ks_s9MZB+GEDVg@mail.gmail.com>
-From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20160329092945.GF2371@lws-christ>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,41 +20,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Scrolling issues in edit command
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 7/7] bbu: print and evaluate image Metadata
+To: Stefan Christ <s.christ@phytec.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-MjAxNi0wNC0wNCAyMjowNyBHTVQrMDI6MDAgVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtv
-ZW5pZ0BwZW5ndXRyb25peC5kZT46Cj4gSGVsbG8sCj4KPiBPbiBXZWQsIE1hciAzMCwgMjAxNiBh
-dCAwNTozODo1M1BNICswMjAwLCBHdWlsbGVybW8gUm9kcmlndWV6IEdhcmNpYSB3cm90ZToKPj4g
-SSBhbSB0cnlpbmcgdG8gc2V0dXAgQmFyZWJveCBvbiBhIFNBTUE1RDMtWHBsYWluZWQgYm9hcmQu
-IEkgc3RhcnRlZAo+PiB3aXRoIGJhcmVib3gtMjAxNi4wMy4wLiBTbyBmYXIgdGhpbmdzIGFyZSBs
-b29raW5nIGdvb2QuCj4+Cj4+IEkgaGF2ZSBmb3VuZCB0aGF0IEkgaGF2ZSBwcm9ibGVtcyBpbiB0
-aGUgJ2VkaXQnIGNvbW1hbmQsIHdoZW4gdHJ5aW5nCj4+IHRvIHNjcm9sbCB1c2luZyB0aGUgYXJy
-b3cga2V5cy4gU2Nyb2xsaW5nIHVwIGluc2VydHMgcmFuZG9tICJBIgo+PiBjaGFyYWN0ZXJzIGlu
-IHRoZSB0ZXh0LCBzY3JvbGxpbmcgZG93biBpbnNlcnRzIHJhbmRvbSAiQiIgY2hhcmFjdGVycy4K
-Pj4gSSBhbSB1c2luZyBtaW5pY29tIGFzIHRoZSB0ZXJtaW5hbC4gSSBkb24ndCByZW1lbWJlciBz
-ZWVpbmcgdGhpcwo+PiBiZWZvcmUgd2l0aCBvbGRlciB2ZXJzaW9ucyBvZiBiYXJlYm94IG9uIGRp
-ZmZlcmVudCBib2FyZHMuCj4KPiBDYW4geW91IGluc3RydW1lbnQgeW91ciBzZXJpYWwgZHJpdmVy
-IHRvIGNvdW50L25vdGljZSBvdmVyZmxvdyBldmVudHM/CgpZb3UgbWVhbiBpbiBiYXJlYm94LCBv
-ciBpbiB0aGUgaG9zdCB3aGVyZSBJJ20gcnVubmluZyBtaW5pY29tL21pY3JvY29tPwoKPiBJdCdz
-IHN0cmFuZ2UgdGhhdCB5b3UncmUgbWlzc2luZyBjaGFycyAzLTEyIGluIGEgbG9uZ2VyIHBhc3Rl
-Lgo+Cj4gRG9lcyBpdCBoZWxwIHRvIHVzZQo+Cj4gICAgICAgICBidXN5Ym94IG1pY3JvY29tIC1k
-IDEwIC4uLgo+Cj4gPyAoVGhhdCBpcyBhIGZlYXR1cmUgdGhhdCBpcyBtaXNzaW5nIGZyb20gdGhl
-ICJmdWxsYmxvd24iIG1pY3JvY29tIHRoYXQKPiBjb21lcyBpbiB0aGUgbWljcm9jb20gcGFja2Fn
-ZS4pCgpJbnRlcmVzdGluZy4gSSB0cmllZCB0aGF0LCB0aGUgcmVzdWx0IGlzOgoKLSBTdGlsbCB0
-aGUgc2FtZSBwcm9ibGVtIHdoZW4gc2Nyb2xsaW5nIHVwIGFuZCBkb3duIGluICJlZGl0IiAoQSBh
-bmQgQgpjaGFyYWN0ZXJzIGluc2VydGVkKQotIE1hbnkgbW9yZSBtaXNzaW5nIGNoYXJzIHdoZW4g
-cGFzdGluZyAiTG9yZW0gaXBzdW0uLiIgKF9pbiAiZWRpdCJfKS4KSGVyZSBhcmUgdGhyZWUgZXhh
-bXBsZXM6CgpMb2UgSXNtaXNteXV5ZSAgIGlpbmF0ZXN0aXMuCkxvZSBJc21pc215dXllICBlaWlu
-YXRlc3QgdXkuCkxvZSBJc21pc215dXllICAgaWluYXRlc3QgdXkuCgotIFRoZSB2ZXJ5IHNhbWUg
-dGV4dCBjYW4gYmUgcGFzdGVkIHBlcmZlY3RseSBpbiBiYXJlYm94J3MgY29tbWFuZApsaW5lLCBu
-byBtaXNzaW5nIGNoYXJzLiBUaGUgcHJvYmxlbSBpcyBvbmx5IHdpdGggdGhlICJlZGl0IiBjb21t
-YW5kLgpXaGF0IG1ha2VzICJlZGl0IiBkaWZmZXJlbnQgPwoKR3VpbGxlcm1vCgpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
-dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi Stefan,
+
+On Tue, Mar 29, 2016 at 11:29:45AM +0200, Stefan Christ wrote:
+> Hi Sascha,
+> 
+> > @@ -147,6 +218,8 @@ int barebox_update(struct bbu_data *data)
+> >  	if (!data->devicefile)
+> >  		data->devicefile = handler->devicefile;
+> >  
+> > +	bbu_check_metadata(data);
+> > +
+> >  	ret = handler->handler(handler, data);
+> >  	if (ret == -EINTR)
+> >  		printf("update aborted\n");
+> 
+> hmm. I think the code should be 
+> 
+>      ret = bbu_check_metadata(data);
+>      if (ret)
+>           return ret;
+> 
+> or something. Otherwise the verification of the compatible doesn't abort the
+> update process. The function bbu_check_metadata returns -EINVAL if the
+> compatible is wrong.
+
+Indeed, fixed this.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
