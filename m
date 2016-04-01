@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1alxpe-0005IR-GY
- for barebox@lists.infradead.org; Fri, 01 Apr 2016 12:05:46 +0000
+ id 1alxpe-0005IS-GZ
+ for barebox@lists.infradead.org; Fri, 01 Apr 2016 12:05:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Apr 2016 14:05:16 +0200
-Message-Id: <1459512319-32073-2-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  1 Apr 2016 14:05:17 +0200
+Message-Id: <1459512319-32073-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1459512319-32073-1-git-send-email-s.hauer@pengutronix.de>
 References: <1459512319-32073-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,32 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] ARM: pbl-multi: Fix SDRAM at end of address space
+Subject: [PATCH 2/4] ARM: start: Fix wrong format specifier
 To: Barebox List <barebox@lists.infradead.org>
 
-When SDRAM reaches to the end of the address space the comparison
-membase + memsize evaluates to 0, so pc - membase < memsize can never
-be true. Fix this by substracting membase on both sides of the
-comparison.
+Print a hex number after 0x, not a decimal number.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/uncompress.c | 2 +-
+ arch/arm/cpu/start.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-index 5bcce6b..b8e2e9f 100644
---- a/arch/arm/cpu/uncompress.c
-+++ b/arch/arm/cpu/uncompress.c
-@@ -60,7 +60,7 @@ void __noreturn barebox_multi_pbl_start(unsigned long membase,
- 		 * to the current address. Otherwise it may be a readonly location.
- 		 * Copy and relocate to the start of the memory in this case.
- 		 */
--		if (pc > membase && pc < membase + memsize)
-+		if (pc > membase && pc - membase < memsize)
- 			relocate_to_current_adr();
- 		else
- 			relocate_to_adr(membase);
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index d03d1ed..e037d91 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -193,7 +193,7 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
+ 		if (totalsize) {
+ 			unsigned long mem = arm_mem_boarddata(membase, endmem,
+ 							      totalsize);
+-			pr_debug("found %s in boarddata, copying to 0x%lu\n",
++			pr_debug("found %s in boarddata, copying to 0x%08lx\n",
+ 				 name, mem);
+ 			barebox_boarddata = memcpy((void *)mem, boarddata,
+ 						   totalsize);
 -- 
 2.7.0
 
