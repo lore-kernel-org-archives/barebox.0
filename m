@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pa0-x22e.google.com ([2607:f8b0:400e:c03::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1alxv8-0002yD-Co
- for barebox@lists.infradead.org; Fri, 01 Apr 2016 12:11:26 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Apr 2016 14:10:41 +0200
-Message-Id: <1459512644-8581-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1459512644-8581-1-git-send-email-s.hauer@pengutronix.de>
-References: <1459512644-8581-1-git-send-email-s.hauer@pengutronix.de>
+ id 1amszG-0007O9-2Q
+ for barebox@lists.infradead.org; Mon, 04 Apr 2016 01:07:27 +0000
+Received: by mail-pa0-x22e.google.com with SMTP id td3so131890530pab.2
+ for <barebox@lists.infradead.org>; Sun, 03 Apr 2016 18:07:05 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Sun,  3 Apr 2016 18:06:33 -0700
+Message-Id: <1459731993-14807-3-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1459731993-14807-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1459731993-14807-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +23,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] ARM: i.MX: xload-esdhc: Add GPL header
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 3/3] ds1307: Configure ds1341 for lowest power mode
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Empirical observations show that configuring INTCN=1, ECLK=0, EGFIL=0,
+DOSF=1 on DS1341 put the chip in the mode where it draws the least
+amount fo current.
+
+Add code to configure DS1341 in such a way in case Barebox is the last
+code that runs on the processor before being shut down.
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/xload-esdhc.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/rtc/rtc-ds1307.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/mach-imx/xload-esdhc.c b/arch/arm/mach-imx/xload-esdhc.c
-index 6479ce0..325e2e8 100644
---- a/arch/arm/mach-imx/xload-esdhc.c
-+++ b/arch/arm/mach-imx/xload-esdhc.c
-@@ -1,3 +1,14 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; version 2.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-+ * General Public License for more details.
-+ */
-+
- #define pr_fmt(fmt) "xload-esdhc: " fmt
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index a1cfed6..4720964 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -68,6 +68,7 @@ enum ds_type {
+ #define DS1337_REG_CONTROL	0x0e
+ #	define DS1337_BIT_nEOSC		0x80
+ #	define DS1339_BIT_BBSQI		0x20
++#	define DS1341_BIT_EGFIL		0x20
+ #	define DS3231_BIT_BBSQW		0x40 /* same as BBSQI */
+ #	define DS1337_BIT_RS2		0x10
+ #	define DS1337_BIT_RS1		0x08
+@@ -83,6 +84,7 @@ enum ds_type {
+ #	define DS1340_BIT_OSF		0x80
+ #define DS1337_REG_STATUS	0x0f
+ #	define DS1337_BIT_OSF		0x80
++#	define DS1341_BIT_DOSF		0x40
+ #	define DS1341_BIT_ECLK		0x04
+ #	define DS1337_BIT_A2I		0x02
+ #	define DS1337_BIT_A1I		0x01
+@@ -333,12 +335,22 @@ static int ds1307_probe(struct device_d *dev)
+ 		i2c_smbus_write_byte_data(client, DS1337_REG_CONTROL,
+ 					  ds1307->regs[0]);
  
- #include <common.h>
+-		/*
+-		  For the above to be true, DS1341 also has to have
+-		  ECLK bit set to 0
+-		 */
+ 		if (ds1307->type == ds_1341) {
++			/*
++			  For the above to be true, DS1341 also has to have
++			  ECLK bit set to 0
++			*/
+ 			ds1307->regs[1] &= ~DS1341_BIT_ECLK;
++
++			/*
++			 * Let's set additionale RTC bits to
++			 * facilitate maximum power saving.
++			 */
++			ds1307->regs[0] |=  DS1341_BIT_DOSF;
++			ds1307->regs[0] &= ~DS1341_BIT_EGFIL;
++
++			i2c_smbus_write_byte_data(client, DS1337_REG_CONTROL,
++						  ds1307->regs[0]);
+ 			i2c_smbus_write_byte_data(client, DS1337_REG_STATUS,
+ 						  ds1307->regs[1]);
+ 		}
 -- 
-2.7.0
+2.5.5
 
 
 _______________________________________________
