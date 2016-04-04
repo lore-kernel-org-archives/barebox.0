@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vk0-x236.google.com ([2607:f8b0:400c:c05::236])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1an4es-0003gw-Ij
- for barebox@lists.infradead.org; Mon, 04 Apr 2016 13:35:12 +0000
-Received: by mail-vk0-x236.google.com with SMTP id c4so54090030vkb.3
- for <barebox@lists.infradead.org>; Mon, 04 Apr 2016 06:34:47 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20160404063833.GC9102@pengutronix.de>
+ id 1anAmw-0001iS-6A
+ for barebox@lists.infradead.org; Mon, 04 Apr 2016 20:07:54 +0000
+Date: Mon, 4 Apr 2016 22:07:30 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20160404200730.GA1618@pengutronix.de>
 References: <CABDcavYEn0e8GkEzfJnayr32X85dA5tz-dRaMg3H6J8i-aXj0w@mail.gmail.com>
- <87ziterckj.fsf@gmail.com>
- <CABDcavZ2HPoPqCJ9Wn_Uu7fapKcqdHEPc9jDjnM7xDvKJ5ahbg@mail.gmail.com>
- <20160404063833.GC9102@pengutronix.de>
-Date: Mon, 4 Apr 2016 15:34:47 +0200
-Message-ID: <CABDcavYVyFZu_o=25bTs3e2q-rGGLn8ZYbivg_PTxjxkVt62_A@mail.gmail.com>
-From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CABDcavYEn0e8GkEzfJnayr32X85dA5tz-dRaMg3H6J8i-aXj0w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,89 +18,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Scrolling issues in edit command
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
 Cc: barebox@lists.infradead.org
 
-2016-04-04 8:38 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> On Thu, Mar 31, 2016 at 05:36:58PM +0200, Guillermo Rodriguez Garcia wrote:
->> Hello,
->>
->> Thank you for the answer. Some comments below.
->>
->> 2016-03-31 15:39 GMT+02:00 Holger Schurig <holgerschurig@gmail.com>:
->> > Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com> writes:
->> >
->> >> Can anyone provide any hints on why this is
->> >> happening or how to fix it ?
->> >
->> > I guess this is probably because your terminal emulation doesn't match
->> > what barebox assume.
->>
->> Uhm, could be, however I have also been using minicom with an older
->> version of barebox for a long time (2011.05.0, on a different target
->> board), and never had any problems at all. I only noticed this
->> behaviour when testing barebox 2016.03.0 on a new board.
->>
->> [...]
->> > Kermit is oblivious to any ANSI escape sequences, so my X11 terminal
->> > emulates them. Here I use the rxvt-unicode binary `urxvt`. The effect is
->> > that the "edit" commands works.
->>
->> Perhaps I should clarify what I am seeing. The "edit" command actually
->> works, more or less. If I scroll up or down one line at a time then
->> there are no problems. I only see bogus A or B characters inserted
->> when I do "continuous" scrolling. Also I noticed that ESC [ A is the
->> ANSI escape sequence for "cursor up", and ESC [ B is the ANSI escape
->> sequence for "cursor down". Perhaps when I keep the arrow up/down key
->> pressed, minicom is sending these escape sequences faster than barebox
->> can handle them, and that's why I see the 'A' and 'B' characters
->> inserted?
->
-> Yes, could be. I have never seen such a behaviour. Normally the rate
-> your host sends "ESC [ B" is limited by the keyboard repeat rate, not by
-> the serial port speed, so I think barebox should be able to follow this.
->
-> What we see here more and more frequently is that the signal level
-> generated on one side is not high enough for the other side to detect it
-> properly. Maybe you have similar issues? How about pasting copy/pasting
-> text on the barebox command line using middle mouse button? Does that
-> work properly?
+Hello,
 
-That's a very good question. I just tried to paste this text in
-barebox's command line:
+On Wed, Mar 30, 2016 at 05:38:53PM +0200, Guillermo Rodriguez Garcia wrote:
+> I am trying to setup Barebox on a SAMA5D3-Xplained board. I started
+> with barebox-2016.03.0. So far things are looking good.
+> =
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+> I have found that I have problems in the 'edit' command, when trying
+> to scroll using the arrow keys. Scrolling up inserts random "A"
+> characters in the text, scrolling down inserts random "B" characters.
+> I am using minicom as the terminal. I don't remember seeing this
+> before with older versions of barebox on different boards.
 
-It works perfectly. However I then tried to paste the very same text
-in a "edit" window. Every time, the following is pasted:
+Can you instrument your serial driver to count/notice overflow events?
+It's strange that you're missing chars 3-12 in a longer paste.
 
-Lois simply dummy text of the printing and typesetting industry.
+Does it help to use
 
-That's exactly 10 characters missing after the first two.
+	busybox microcom -d 10 ...
 
-What could be causing this and then only in the "edit" command, but
-not in the command line?
+? (That is a feature that is missing from the "fullblown" microcom that
+comes in the microcom package.)
 
->
-> I recommend microcom as a terminal program. Like kermit it does not
-> emulate a terminal but is just a 1:1 pass through to the host terminal.
-> Unlike kermit microcom can be passed the port to use on the command
-> line. It's part of Debian/Ubuntu.
+Best regards
+Uwe
 
-Just tried microcom. I have exactly the same problems with scrolling
-('A' and 'B' characters inserted when continuously scrolling up-down).
+-- =
 
-Any other hints ?
-
-Thank you,
-
-Guillermo Rodriguez Garcia
-guille.rodriguez@gmail.com
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
