@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-vk0-x22d.google.com ([2607:f8b0:400c:c05::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1apre8-0005XW-JO
- for barebox@lists.infradead.org; Tue, 12 Apr 2016 06:17:57 +0000
-Date: Tue, 12 Apr 2016 08:17:34 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160412061734.GR9102@pengutronix.de>
-References: <1460377586-27099-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ id 1anLnJ-0008U9-3B
+ for barebox@lists.infradead.org; Tue, 05 Apr 2016 07:53:01 +0000
+Received: by mail-vk0-x22d.google.com with SMTP id c4so7559155vkb.3
+ for <barebox@lists.infradead.org>; Tue, 05 Apr 2016 00:52:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1460377586-27099-1-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20160404200730.GA1618@pengutronix.de>
+References: <CABDcavYEn0e8GkEzfJnayr32X85dA5tz-dRaMg3H6J8i-aXj0w@mail.gmail.com>
+ <20160404200730.GA1618@pengutronix.de>
+Date: Tue, 5 Apr 2016 09:52:39 +0200
+Message-ID: <CABDcavbN_G2MOwjxv6Ags=L0GWwj_HGEMom4ks_s9MZB+GEDVg@mail.gmail.com>
+From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,72 +20,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mci: mxs: add support for dt aliases to name devices
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: Scrolling issues in edit command
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Apr 11, 2016 at 02:26:26PM +0200, Uwe Kleine-K=F6nig wrote:
-> While changing there, reformat the comment and use ; instead of , after
-> the previous call.
-> =
-
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  drivers/mci/mxs.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
-
-Applied, thanks
-
-Sascha
-
-> =
-
-> diff --git a/drivers/mci/mxs.c b/drivers/mci/mxs.c
-> index b36fb13254df..a76435e5baa5 100644
-> --- a/drivers/mci/mxs.c
-> +++ b/drivers/mci/mxs.c
-> @@ -569,7 +569,15 @@ static int mxs_mci_probe(struct device_d *hw_dev)
->  		host->f_min =3D pd->f_min;
->  		host->f_max =3D  pd->f_max;
->  	} else {
-> -		host->voltages =3D MMC_VDD_32_33 | MMC_VDD_33_34,	/* fixed to 3.3 V */
-> +		/* fixed to 3.3 V */
-> +		host->voltages =3D MMC_VDD_32_33 | MMC_VDD_33_34;
-> +
-> +		if (hw_dev->device_node) {
-> +			const char *alias =3D of_alias_get(hw_dev->device_node);
-> +			if (alias)
-> +				host->devname =3D xstrdup(alias);
-> +		}
-> +
->  		mci_of_parse(host);
->  	}
->  =
-
-> -- =
-
-> 2.7.0
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+MjAxNi0wNC0wNCAyMjowNyBHTVQrMDI6MDAgVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtv
+ZW5pZ0BwZW5ndXRyb25peC5kZT46Cj4gSGVsbG8sCj4KPiBPbiBXZWQsIE1hciAzMCwgMjAxNiBh
+dCAwNTozODo1M1BNICswMjAwLCBHdWlsbGVybW8gUm9kcmlndWV6IEdhcmNpYSB3cm90ZToKPj4g
+SSBhbSB0cnlpbmcgdG8gc2V0dXAgQmFyZWJveCBvbiBhIFNBTUE1RDMtWHBsYWluZWQgYm9hcmQu
+IEkgc3RhcnRlZAo+PiB3aXRoIGJhcmVib3gtMjAxNi4wMy4wLiBTbyBmYXIgdGhpbmdzIGFyZSBs
+b29raW5nIGdvb2QuCj4+Cj4+IEkgaGF2ZSBmb3VuZCB0aGF0IEkgaGF2ZSBwcm9ibGVtcyBpbiB0
+aGUgJ2VkaXQnIGNvbW1hbmQsIHdoZW4gdHJ5aW5nCj4+IHRvIHNjcm9sbCB1c2luZyB0aGUgYXJy
+b3cga2V5cy4gU2Nyb2xsaW5nIHVwIGluc2VydHMgcmFuZG9tICJBIgo+PiBjaGFyYWN0ZXJzIGlu
+IHRoZSB0ZXh0LCBzY3JvbGxpbmcgZG93biBpbnNlcnRzIHJhbmRvbSAiQiIgY2hhcmFjdGVycy4K
+Pj4gSSBhbSB1c2luZyBtaW5pY29tIGFzIHRoZSB0ZXJtaW5hbC4gSSBkb24ndCByZW1lbWJlciBz
+ZWVpbmcgdGhpcwo+PiBiZWZvcmUgd2l0aCBvbGRlciB2ZXJzaW9ucyBvZiBiYXJlYm94IG9uIGRp
+ZmZlcmVudCBib2FyZHMuCj4KPiBDYW4geW91IGluc3RydW1lbnQgeW91ciBzZXJpYWwgZHJpdmVy
+IHRvIGNvdW50L25vdGljZSBvdmVyZmxvdyBldmVudHM/CgpZb3UgbWVhbiBpbiBiYXJlYm94LCBv
+ciBpbiB0aGUgaG9zdCB3aGVyZSBJJ20gcnVubmluZyBtaW5pY29tL21pY3JvY29tPwoKPiBJdCdz
+IHN0cmFuZ2UgdGhhdCB5b3UncmUgbWlzc2luZyBjaGFycyAzLTEyIGluIGEgbG9uZ2VyIHBhc3Rl
+Lgo+Cj4gRG9lcyBpdCBoZWxwIHRvIHVzZQo+Cj4gICAgICAgICBidXN5Ym94IG1pY3JvY29tIC1k
+IDEwIC4uLgo+Cj4gPyAoVGhhdCBpcyBhIGZlYXR1cmUgdGhhdCBpcyBtaXNzaW5nIGZyb20gdGhl
+ICJmdWxsYmxvd24iIG1pY3JvY29tIHRoYXQKPiBjb21lcyBpbiB0aGUgbWljcm9jb20gcGFja2Fn
+ZS4pCgpJbnRlcmVzdGluZy4gSSB0cmllZCB0aGF0LCB0aGUgcmVzdWx0IGlzOgoKLSBTdGlsbCB0
+aGUgc2FtZSBwcm9ibGVtIHdoZW4gc2Nyb2xsaW5nIHVwIGFuZCBkb3duIGluICJlZGl0IiAoQSBh
+bmQgQgpjaGFyYWN0ZXJzIGluc2VydGVkKQotIE1hbnkgbW9yZSBtaXNzaW5nIGNoYXJzIHdoZW4g
+cGFzdGluZyAiTG9yZW0gaXBzdW0uLiIgKF9pbiAiZWRpdCJfKS4KSGVyZSBhcmUgdGhyZWUgZXhh
+bXBsZXM6CgpMb2UgSXNtaXNteXV5ZSAgIGlpbmF0ZXN0aXMuCkxvZSBJc21pc215dXllICBlaWlu
+YXRlc3QgdXkuCkxvZSBJc21pc215dXllICAgaWluYXRlc3QgdXkuCgotIFRoZSB2ZXJ5IHNhbWUg
+dGV4dCBjYW4gYmUgcGFzdGVkIHBlcmZlY3RseSBpbiBiYXJlYm94J3MgY29tbWFuZApsaW5lLCBu
+byBtaXNzaW5nIGNoYXJzLiBUaGUgcHJvYmxlbSBpcyBvbmx5IHdpdGggdGhlICJlZGl0IiBjb21t
+YW5kLgpXaGF0IG1ha2VzICJlZGl0IiBkaWZmZXJlbnQgPwoKR3VpbGxlcm1vCgpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
+dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
