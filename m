@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.kundenserver.de ([212.227.126.133])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1anNUH-0000Fz-DF
- for barebox@lists.infradead.org; Tue, 05 Apr 2016 09:41:30 +0000
-Date: Tue, 5 Apr 2016 11:40:51 +0200 (CEST)
-From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
-Message-ID: <alpine.DEB.2.10.1604051131350.3483@9VTHT2J-D520>
+ id 1anQ1G-0007x6-N5
+ for barebox@lists.infradead.org; Tue, 05 Apr 2016 12:23:43 +0000
+Date: Tue, 5 Apr 2016 14:23:19 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20160405122319.GF10108@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED; BOUNDARY="8323329-222724734-1459849258=:3483"
+Content-Disposition: inline
+In-Reply-To: <CABDcavY5+W7wQv19UiSGJ1-+-V4Mw4Trv8NsCCGAdWNgCPofbQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,54 +17,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Scrolling issues in edit command
-In-Reply-To: <20160405090511.GC10108@pengutronix.de>
-To: guille.rodriguez@gmail.com, u.kleine-koenig@pengutronix.de
-Cc: barebox@lists.infradead.org
+References: <alpine.DEB.2.10.1604051131350.3483@9VTHT2J-D520>
+ <CABDcavY5+W7wQv19UiSGJ1-+-V4Mw4Trv8NsCCGAdWNgCPofbQ@mail.gmail.com>
+To: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
+Cc: barebox@lists.infradead.org, Rolf Evers-Fischer <embedded24@evers-fischer.de>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hello,
 
---8323329-222724734-1459849258=:3483
-Content-Type: TEXT/PLAIN; charset=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+On Tue, Apr 05, 2016 at 01:01:02PM +0200, Guillermo Rodriguez Garcia wrote:
+> However if there are other issues I would also like to find out. If
+> you would like to suggest any new tests please let me know and I'll be
+> happy to try them here.
+There are ANSI control sequences for scrolling, too. I don't know if
+they are used, but if they were it would greatly reduce the needed
+bandwidth.
 
-Uwe Kleine-K=F6nig <u.kleine-koenig@...> writes:
+Best regards
+Uwe
 
->=20
-> Hello,
->=20
-> On Tue, Apr 05, 2016 at 10:40:48AM +0200, Guillermo Rodriguez Garcia=20
-wrote:
-> > I am wondering: If I am correct, serial in/out in barebox is not
-> > interrupt-driven. Plus, the default UART in the sama5d3_xplained board
->=20
-> right
->=20
-> > that I am using (DBGU) has no FIFOs. Plus, "edit" does a lot of
-> > repaint work while editing. Could it be the case that received chars
-> > are being missed by barebox due to the repainting work in "edit" ?
->=20
-> Sounds likely.
->=20
+-- =
 
-But if the instruction cache is enabled, the SAMA5 should be fast enough,=
-=20
-even without any interrupt handling for the UART data.
-
-Best regards,
- Rolf
---8323329-222724734-1459849258=:3483
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---8323329-222724734-1459849258=:3483--
