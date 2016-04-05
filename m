@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout.kundenserver.de ([212.227.126.133])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ao2XI-0007RK-KS
- for barebox@lists.infradead.org; Thu, 07 Apr 2016 05:31:44 +0000
-Date: Thu, 7 Apr 2016 07:30:57 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160407053057.GF9102@pengutronix.de>
-References: <1459841605-8850-1-git-send-email-m.olbrich@pengutronix.de>
+ id 1anNUH-0000Fz-DF
+ for barebox@lists.infradead.org; Tue, 05 Apr 2016 09:41:30 +0000
+Date: Tue, 5 Apr 2016 11:40:51 +0200 (CEST)
+From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Message-ID: <alpine.DEB.2.10.1604051131350.3483@9VTHT2J-D520>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1459841605-8850-1-git-send-email-m.olbrich@pengutronix.de>
+Content-Type: MULTIPART/MIXED; BOUNDARY="8323329-222724734-1459849258=:3483"
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,63 +16,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] efi: let the generic relocate code handle all relocations
-To: Michael Olbrich <m.olbrich@pengutronix.de>
+Subject: Re: Scrolling issues in edit command
+In-Reply-To: <20160405090511.GC10108@pengutronix.de>
+To: guille.rodriguez@gmail.com, u.kleine-koenig@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-On Tue, Apr 05, 2016 at 09:33:25AM +0200, Michael Olbrich wrote:
-> Part of the barebox code and variables are put in separate sections
-> (.barebox* and .initcall*). When this code is compiled as position
-> independent code then the compiler creates corresponding .rela.barebox* and
-> .rela.initcall* sections with the relocation table entries.
-> These sections don't match the .rela.data* wildcard in the linker script.
-> As a result, they are not added to the .rela section during linking but are
-> added individually after it instead. And when the EFI binary is created
-> from the ELF binary, these sections are not copied.
-> This has two side effects:
-> 
-> 1. The corresponding relocations are not handled by the generic relocation
-> code. 'fixup_tables()' was added to do these relocations manually.
-> 
-> 2. In the DYNAMIC section, the RELASZ entry contains the total size of
-> relocations in bytes. This includes the .rela.barebox* and .rela.initcall*
-> sections. This value is not modified when the EFI binary is created. So the
-> value is too large.
-> The generic relocation code in _relocate() used this value when iterating
-> over all relocation entries. With the wrong RELASZ value it iterates beyond
-> the end of the .rela section into uninitialized memory. After power-on this
-> memory is zero and the relocation code interprets this as 'nothing to do',
-> so there is no visible effect. After a soft reset, random data in that area
-> may produce a seemingly valid relocation entry, a random address is
-> modified and barebox crashes.
-> 
-> This patch adds the .rela.barebox* and .rela.initcall* sections to the
-> normal .rela section. The RELASZ now contains the correct size and the
-> generic relocation code works correctly. 'fixup_tables()' must be removed
-> at the same time to avoid relocating these entries twice.
-> 
-> Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
-> ---
->  arch/efi/efi/efi.c                | 42 ---------------------------------------
->  arch/efi/lib/elf_x86_64_efi.lds.S |  2 ++
->  2 files changed, 2 insertions(+), 42 deletions(-)
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Applied, thanks. And thanks for finally fixing this issue :)
+--8323329-222724734-1459849258=:3483
+Content-Type: TEXT/PLAIN; charset=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-Sascha
+Uwe Kleine-K=F6nig <u.kleine-koenig@...> writes:
 
+>=20
+> Hello,
+>=20
+> On Tue, Apr 05, 2016 at 10:40:48AM +0200, Guillermo Rodriguez Garcia=20
+wrote:
+> > I am wondering: If I am correct, serial in/out in barebox is not
+> > interrupt-driven. Plus, the default UART in the sama5d3_xplained board
+>=20
+> right
+>=20
+> > that I am using (DBGU) has no FIFOs. Plus, "edit" does a lot of
+> > repaint work while editing. Could it be the case that received chars
+> > are being missed by barebox due to the repainting work in "edit" ?
+>=20
+> Sounds likely.
+>=20
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+But if the instruction cache is enabled, the SAMA5 should be fast enough,=
+=20
+even without any interrupt handling for the UART data.
+
+Best regards,
+ Rolf
+--8323329-222724734-1459849258=:3483
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--8323329-222724734-1459849258=:3483--
