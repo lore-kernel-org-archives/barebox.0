@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1abjnU-0000TT-3c
- for barebox@lists.infradead.org; Fri, 04 Mar 2016 07:05:12 +0000
-Date: Fri, 4 Mar 2016 08:04:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160304070448.GB21869@pengutronix.de>
-References: <1456959088-9609-1-git-send-email-akurz@blala.de>
+ id 1anM8C-0001Vl-Mk
+ for barebox@lists.infradead.org; Tue, 05 Apr 2016 08:14:37 +0000
+Date: Tue, 5 Apr 2016 10:14:13 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20160405081413.GB10108@pengutronix.de>
+References: <CABDcavYEn0e8GkEzfJnayr32X85dA5tz-dRaMg3H6J8i-aXj0w@mail.gmail.com>
+ <20160404200730.GA1618@pengutronix.de>
+ <CABDcavbN_G2MOwjxv6Ags=L0GWwj_HGEMom4ks_s9MZB+GEDVg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1456959088-9609-1-git-send-email-akurz@blala.de>
+In-Reply-To: <CABDcavbN_G2MOwjxv6Ags=L0GWwj_HGEMom4ks_s9MZB+GEDVg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,56 +20,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm/cpu/lowlevel: fix: possible processor mode change
-To: Alexander Kurz <akurz@blala.de>
-Cc: barebox@lists.infradead.org, Uwe Kleine-Koenig <ukl@pengutronix.de>
+Subject: Re: Scrolling issues in edit command
+To: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi Alexander,
+On Tue, Apr 05, 2016 at 09:52:39AM +0200, Guillermo Rodriguez Garcia wrote:
+> 2016-04-04 22:07 GMT+02:00 Uwe Kleine-K=F6nig <u.kleine-koenig@pengutroni=
+x.de>:
+> > Hello,
+> >
+> > On Wed, Mar 30, 2016 at 05:38:53PM +0200, Guillermo Rodriguez Garcia wr=
+ote:
+> >> I am trying to setup Barebox on a SAMA5D3-Xplained board. I started
+> >> with barebox-2016.03.0. So far things are looking good.
+> >>
+> >> I have found that I have problems in the 'edit' command, when trying
+> >> to scroll using the arrow keys. Scrolling up inserts random "A"
+> >> characters in the text, scrolling down inserts random "B" characters.
+> >> I am using minicom as the terminal. I don't remember seeing this
+> >> before with older versions of barebox on different boards.
+> >
+> > Can you instrument your serial driver to count/notice overflow events?
+> =
 
-On Wed, Mar 02, 2016 at 11:51:28PM +0100, Alexander Kurz wrote:
-> This is a re-application of fix 17644b55.
-> arm_cpu_lowlevel_init() will set the processor mode to 0x13 (supervisor).
-> When this function is entered via a different processor mode, register
-> banking will happen to lr (r14), resulting in an invalid return address.
-> This fix will preserve the return address manually.
-> 
-> Signed-off-by: Alexander Kurz <akurz@blala.de>
-> ---
->  arch/arm/cpu/lowlevel.S | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/cpu/lowlevel.S b/arch/arm/cpu/lowlevel.S
-> index b76222d..e5baa12 100644
-> --- a/arch/arm/cpu/lowlevel.S
-> +++ b/arch/arm/cpu/lowlevel.S
-> @@ -4,6 +4,8 @@
->  
->  .section ".text_bare_init_","ax"
->  ENTRY(arm_cpu_lowlevel_init)
-> +	/* save lr, since it may be banked away with a processor mode change */
-> +	mov	r2, lr
+> You mean in barebox, or in the host where I'm running minicom/microcom?
 
-Thanks for fixing this and for adding a comment why this is done. This
-hopefully prevents us from breaking it again.
+in barebox. Also, what is your rs232 hardware? Some usb-to-rs232
+adapters are not reliable. The native 8250 ports on PCs are good ones I
+think.
 
-Out of interest, what system are you using where this fix is necesssary?
+> > It's strange that you're missing chars 3-12 in a longer paste.
+> >
+> > Does it help to use
+> >
+> >         busybox microcom -d 10 ...
+> >
+> > ? (That is a feature that is missing from the "fullblown" microcom that
+> > comes in the microcom package.)
+> =
 
-Uwe, now we know why that was done and why e190bcf (arm/cpu/lowlevel:
-Don't save the return address in another register) was a bad idea.
+> Interesting. I tried that, the result is:
+> =
 
-Applied this one to master.
+> - Still the same problem when scrolling up and down in "edit" (A and B
+> characters inserted)
+> - Many more missing chars when pasting "Lorem ipsum.." (_in "edit"_).
+> Here are three examples:
+> =
 
-Sascha
+> Loe Ismismyuye   iinatestis.
+> Loe Ismismyuye  eiinatest uy.
+> Loe Ismismyuye   iinatest uy.
+> =
 
--- 
-Pengutronix e.K.                           |                             |
+> - The very same text can be pasted perfectly in barebox's command
+> line, no missing chars. The problem is only with the "edit" command.
+> What makes "edit" different ?
+
+That's strange. No idea here.
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
