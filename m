@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vk0-x235.google.com ([2607:f8b0:400c:c05::235])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1anMXu-00078w-Rr
- for barebox@lists.infradead.org; Tue, 05 Apr 2016 08:41:11 +0000
-Received: by mail-vk0-x235.google.com with SMTP id c4so8841996vkb.3
- for <barebox@lists.infradead.org>; Tue, 05 Apr 2016 01:40:49 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20160405081413.GB10108@pengutronix.de>
+ id 1anMvV-0008L2-UC
+ for barebox@lists.infradead.org; Tue, 05 Apr 2016 09:05:37 +0000
+Date: Tue, 5 Apr 2016 11:05:11 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20160405090511.GC10108@pengutronix.de>
 References: <CABDcavYEn0e8GkEzfJnayr32X85dA5tz-dRaMg3H6J8i-aXj0w@mail.gmail.com>
  <20160404200730.GA1618@pengutronix.de>
  <CABDcavbN_G2MOwjxv6Ags=L0GWwj_HGEMom4ks_s9MZB+GEDVg@mail.gmail.com>
  <20160405081413.GB10108@pengutronix.de>
-Date: Tue, 5 Apr 2016 10:40:48 +0200
-Message-ID: <CABDcavZM-45JiFmvzEcALOqmf8dVN8QrJP_2XUpXQe5GyZ+Gqg@mail.gmail.com>
-From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
+ <CABDcavZM-45JiFmvzEcALOqmf8dVN8QrJP_2XUpXQe5GyZ+Gqg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CABDcavZM-45JiFmvzEcALOqmf8dVN8QrJP_2XUpXQe5GyZ+Gqg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,57 +22,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Scrolling issues in edit command
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
 Cc: barebox@lists.infradead.org
 
-SGVsbG8sCgoyMDE2LTA0LTA1IDEwOjE0IEdNVCswMjowMCBVd2UgS2xlaW5lLUvDtm5pZyA8dS5r
-bGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPjoKPiBPbiBUdWUsIEFwciAwNSwgMjAxNiBhdCAw
-OTo1MjozOUFNICswMjAwLCBHdWlsbGVybW8gUm9kcmlndWV6IEdhcmNpYSB3cm90ZToKPj4gMjAx
-Ni0wNC0wNCAyMjowNyBHTVQrMDI6MDAgVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5p
-Z0BwZW5ndXRyb25peC5kZT46Cj4+ID4gSGVsbG8sCj4+ID4KPj4gPiBPbiBXZWQsIE1hciAzMCwg
-MjAxNiBhdCAwNTozODo1M1BNICswMjAwLCBHdWlsbGVybW8gUm9kcmlndWV6IEdhcmNpYSB3cm90
-ZToKPj4gPj4gSSBhbSB0cnlpbmcgdG8gc2V0dXAgQmFyZWJveCBvbiBhIFNBTUE1RDMtWHBsYWlu
-ZWQgYm9hcmQuIEkgc3RhcnRlZAo+PiA+PiB3aXRoIGJhcmVib3gtMjAxNi4wMy4wLiBTbyBmYXIg
-dGhpbmdzIGFyZSBsb29raW5nIGdvb2QuCj4+ID4+Cj4+ID4+IEkgaGF2ZSBmb3VuZCB0aGF0IEkg
-aGF2ZSBwcm9ibGVtcyBpbiB0aGUgJ2VkaXQnIGNvbW1hbmQsIHdoZW4gdHJ5aW5nCj4+ID4+IHRv
-IHNjcm9sbCB1c2luZyB0aGUgYXJyb3cga2V5cy4gU2Nyb2xsaW5nIHVwIGluc2VydHMgcmFuZG9t
-ICJBIgo+PiA+PiBjaGFyYWN0ZXJzIGluIHRoZSB0ZXh0LCBzY3JvbGxpbmcgZG93biBpbnNlcnRz
-IHJhbmRvbSAiQiIgY2hhcmFjdGVycy4KPj4gPj4gSSBhbSB1c2luZyBtaW5pY29tIGFzIHRoZSB0
-ZXJtaW5hbC4gSSBkb24ndCByZW1lbWJlciBzZWVpbmcgdGhpcwo+PiA+PiBiZWZvcmUgd2l0aCBv
-bGRlciB2ZXJzaW9ucyBvZiBiYXJlYm94IG9uIGRpZmZlcmVudCBib2FyZHMuCj4+ID4KPj4gPiBD
-YW4geW91IGluc3RydW1lbnQgeW91ciBzZXJpYWwgZHJpdmVyIHRvIGNvdW50L25vdGljZSBvdmVy
-ZmxvdyBldmVudHM/Cj4+Cj4+IFlvdSBtZWFuIGluIGJhcmVib3gsIG9yIGluIHRoZSBob3N0IHdo
-ZXJlIEknbSBydW5uaW5nIG1pbmljb20vbWljcm9jb20/Cj4KPiBpbiBiYXJlYm94LgoKSSBjYW4g
-aW5zcGVjdCB0aGUgVUFSVCdzIHN0YXR1cyByZWdpc3RlciB1c2luZyBtZCBhbmQgY2xlYXIgdGhl
-Cm92ZXJydW4gYml0IHVzaW5nIG13LgoKWWVzLCBib3RoIHRoZSBzY3JvbGxpbmcgcHJvYmxlbSBh
-bmQgdGhlICJtaXNzaW5nIGNoYXJzIHByb2JsZW0iIHdoZW4KcGFzdGluZyB0ZXh0IGluIGJhcmVi
-b3ggYXJlIGFzc29jaWF0ZWQgd2l0aCBvdmVycnVucy4KClN0aWxsIEkgZG9uJ3QgdW5kZXJzdGFu
-ZCB3aHkgcGFzdGluZyB0aGUgc2FtZSB0ZXh0IGluIHRoZSBjb21tYW5kIGxpbmUKZG9lcyBub3Qg
-cmVzdWx0IGluIGFuIG92ZXJydW4uCgpQZXJoYXBzICJlZGl0IiBpcyBzbyBidXN5IHJlcGFpbnRp
-bmcgdGhlIHNjcmVlbiB0aGF0IHRoZSBpbmNvbWluZwpjaGFyYWN0ZXJzIGFyZSBub3QgaGFuZGxl
-ZCBpbiB0aW1lPwoKPiBBbHNvLCB3aGF0IGlzIHlvdXIgcnMyMzIgaGFyZHdhcmU/IFNvbWUgdXNi
-LXRvLXJzMjMyCj4gYWRhcHRlcnMgYXJlIG5vdCByZWxpYWJsZS4gVGhlIG5hdGl2ZSA4MjUwIHBv
-cnRzIG9uIFBDcyBhcmUgZ29vZCBvbmVzIEkKPiB0aGluay4KCkl0IGlzIGEgVVNCIHRvIHJzMjMy
-IGNvbnZlcnRlciBidXQgSSBhbSBhbHNvIHVzaW5nIHRoaXMgb24gb3RoZXIKYm9hcmRzIHJ1bm5p
-bmcgYmFyZWJveCAob2xkZXIgdmVyc2lvbiBvZiBiYXJlYm94IHRob3VnaCwgYW5kIGRpZmZlcmVu
-dAp0YXJnZXQgaGFyZHdhcmUpIGFuZCBubyBwcm9ibGVtcyB0aGVyZS4KCkp1c3QgdG8gYmUgc2Fm
-ZSBJIHJlcGVhdGVkIHRoZSB0ZXN0cyBvbiBhIFBDIHRoYXQgaGFzIG5hdGl2ZSBzZXJpYWwKcG9y
-dHMuIFRoYXQgb25lIGlzIGEgV2luZG93cyBib3ggc28gSSB1c2VkIFB1VFRZLiBPbiB0aGF0IHNl
-dHVwIEkgZG8Kbm90IHNlZSB0aGUgIm1pc3NpbmcgY2hhcnMgcHJvYmxlbSIgLCBob3dldmVyIHRo
-ZSBzY3JvbGxpbmcgcHJvYmxlbQpzdGlsbCBleGlzdHMgKHJhbmRvbSAiQSIgYW5kICJCIiBjaGFy
-YWN0ZXJzIGluc2VydGVkIHdoaWxlIHNjcm9sbGluZykuCgpJIGFtIHdvbmRlcmluZzogSWYgSSBh
-bSBjb3JyZWN0LCBzZXJpYWwgaW4vb3V0IGluIGJhcmVib3ggaXMgbm90CmludGVycnVwdC1kcml2
-ZW4uIFBsdXMsIHRoZSBkZWZhdWx0IFVBUlQgaW4gdGhlIHNhbWE1ZDNfeHBsYWluZWQgYm9hcmQK
-dGhhdCBJIGFtIHVzaW5nIChEQkdVKSBoYXMgbm8gRklGT3MuIFBsdXMsICJlZGl0IiBkb2VzIGEg
-bG90IG9mCnJlcGFpbnQgd29yayB3aGlsZSBlZGl0aW5nLiBDb3VsZCBpdCBiZSB0aGUgY2FzZSB0
-aGF0IHJlY2VpdmVkIGNoYXJzCmFyZSBiZWluZyBtaXNzZWQgYnkgYmFyZWJveCBkdWUgdG8gdGhl
-IHJlcGFpbnRpbmcgd29yayBpbiAiZWRpdCIgPwoKQmVzdCwKCkd1aWxsZXJtbyBSb2RyaWd1ZXog
-R2FyY2lhCmd1aWxsZS5yb2RyaWd1ZXpAZ21haWwuY29tCgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
-c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9iYXJlYm94Cg==
+Hello,
+
+On Tue, Apr 05, 2016 at 10:40:48AM +0200, Guillermo Rodriguez Garcia wrote:
+> I am wondering: If I am correct, serial in/out in barebox is not
+> interrupt-driven. Plus, the default UART in the sama5d3_xplained board
+
+right
+
+> that I am using (DBGU) has no FIFOs. Plus, "edit" does a lot of
+> repaint work while editing. Could it be the case that received chars
+> are being missed by barebox due to the repainting work in "edit" ?
+
+Sounds likely.
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
