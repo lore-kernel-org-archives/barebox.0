@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-vk0-x22a.google.com ([2607:f8b0:400c:c05::22a])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1anM8C-0001Vl-Mk
- for barebox@lists.infradead.org; Tue, 05 Apr 2016 08:14:37 +0000
-Date: Tue, 5 Apr 2016 10:14:13 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20160405081413.GB10108@pengutronix.de>
-References: <CABDcavYEn0e8GkEzfJnayr32X85dA5tz-dRaMg3H6J8i-aXj0w@mail.gmail.com>
- <20160404200730.GA1618@pengutronix.de>
- <CABDcavbN_G2MOwjxv6Ags=L0GWwj_HGEMom4ks_s9MZB+GEDVg@mail.gmail.com>
+ id 1anOjb-0000lk-Og
+ for barebox@lists.infradead.org; Tue, 05 Apr 2016 11:01:27 +0000
+Received: by mail-vk0-x22a.google.com with SMTP id e6so12588511vkh.2
+ for <barebox@lists.infradead.org>; Tue, 05 Apr 2016 04:01:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CABDcavbN_G2MOwjxv6Ags=L0GWwj_HGEMom4ks_s9MZB+GEDVg@mail.gmail.com>
+In-Reply-To: <alpine.DEB.2.10.1604051131350.3483@9VTHT2J-D520>
+Date: Tue, 5 Apr 2016 13:01:02 +0200
+Message-ID: <CABDcavY5+W7wQv19UiSGJ1-+-V4Mw4Trv8NsCCGAdWNgCPofbQ@mail.gmail.com>
+From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,78 +18,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Scrolling issues in edit command
-To: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
-Cc: barebox@lists.infradead.org
+References: <alpine.DEB.2.10.1604051131350.3483@9VTHT2J-D520>
+To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Cc: barebox@lists.infradead.org, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 
-On Tue, Apr 05, 2016 at 09:52:39AM +0200, Guillermo Rodriguez Garcia wrote:
-> 2016-04-04 22:07 GMT+02:00 Uwe Kleine-K=F6nig <u.kleine-koenig@pengutroni=
-x.de>:
-> > Hello,
-> >
-> > On Wed, Mar 30, 2016 at 05:38:53PM +0200, Guillermo Rodriguez Garcia wr=
-ote:
-> >> I am trying to setup Barebox on a SAMA5D3-Xplained board. I started
-> >> with barebox-2016.03.0. So far things are looking good.
-> >>
-> >> I have found that I have problems in the 'edit' command, when trying
-> >> to scroll using the arrow keys. Scrolling up inserts random "A"
-> >> characters in the text, scrolling down inserts random "B" characters.
-> >> I am using minicom as the terminal. I don't remember seeing this
-> >> before with older versions of barebox on different boards.
-> >
-> > Can you instrument your serial driver to count/notice overflow events?
-> =
-
-> You mean in barebox, or in the host where I'm running minicom/microcom?
-
-in barebox. Also, what is your rs232 hardware? Some usb-to-rs232
-adapters are not reliable. The native 8250 ports on PCs are good ones I
-think.
-
-> > It's strange that you're missing chars 3-12 in a longer paste.
-> >
-> > Does it help to use
-> >
-> >         busybox microcom -d 10 ...
-> >
-> > ? (That is a feature that is missing from the "fullblown" microcom that
-> > comes in the microcom package.)
-> =
-
-> Interesting. I tried that, the result is:
-> =
-
-> - Still the same problem when scrolling up and down in "edit" (A and B
-> characters inserted)
-> - Many more missing chars when pasting "Lorem ipsum.." (_in "edit"_).
-> Here are three examples:
-> =
-
-> Loe Ismismyuye   iinatestis.
-> Loe Ismismyuye  eiinatest uy.
-> Loe Ismismyuye   iinatest uy.
-> =
-
-> - The very same text can be pasted perfectly in barebox's command
-> line, no missing chars. The problem is only with the "edit" command.
-> What makes "edit" different ?
-
-That's strange. No idea here.
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+MjAxNi0wNC0wNSAxMTo0MCBHTVQrMDI6MDAgUm9sZiBFdmVycy1GaXNjaGVyIDxlbWJlZGRlZDI0
+QGV2ZXJzLWZpc2NoZXIuZGU+Ogo+IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdA
+Li4uPiB3cml0ZXM6Cj4KPj4KPj4gSGVsbG8sCj4+Cj4+IE9uIFR1ZSwgQXByIDA1LCAyMDE2IGF0
+IDEwOjQwOjQ4QU0gKzAyMDAsIEd1aWxsZXJtbyBSb2RyaWd1ZXogR2FyY2lhCj4gd3JvdGU6Cj4+
+ID4gSSBhbSB3b25kZXJpbmc6IElmIEkgYW0gY29ycmVjdCwgc2VyaWFsIGluL291dCBpbiBiYXJl
+Ym94IGlzIG5vdAo+PiA+IGludGVycnVwdC1kcml2ZW4uIFBsdXMsIHRoZSBkZWZhdWx0IFVBUlQg
+aW4gdGhlIHNhbWE1ZDNfeHBsYWluZWQgYm9hcmQKPj4KPj4gcmlnaHQKPj4KPj4gPiB0aGF0IEkg
+YW0gdXNpbmcgKERCR1UpIGhhcyBubyBGSUZPcy4gUGx1cywgImVkaXQiIGRvZXMgYSBsb3Qgb2YK
+Pj4gPiByZXBhaW50IHdvcmsgd2hpbGUgZWRpdGluZy4gQ291bGQgaXQgYmUgdGhlIGNhc2UgdGhh
+dCByZWNlaXZlZCBjaGFycwo+PiA+IGFyZSBiZWluZyBtaXNzZWQgYnkgYmFyZWJveCBkdWUgdG8g
+dGhlIHJlcGFpbnRpbmcgd29yayBpbiAiZWRpdCIgPwo+Pgo+PiBTb3VuZHMgbGlrZWx5Lgo+Pgo+
+Cj4gQnV0IGlmIHRoZSBpbnN0cnVjdGlvbiBjYWNoZSBpcyBlbmFibGVkLCB0aGUgU0FNQTUgc2hv
+dWxkIGJlIGZhc3QgZW5vdWdoLAo+IGV2ZW4gd2l0aG91dCBhbnkgaW50ZXJydXB0IGhhbmRsaW5n
+IGZvciB0aGUgVUFSVCBkYXRhLgoKSXQgYWN0dWFsbHkgc2VlbXMgdG8gYmUgZmFzdCBlbm91Z2gg
+Zm9yIGhhbmRsaW5nIGlucHV0IGRhdGEgdGhlCmNvbW1hbmQgbGluZS4gSSBvbmx5IHNlZSBwcm9i
+bGVtcyBpbiAiZWRpdCIuIEFuZCB0aGUgb3JpZ2luYWwgaXNzdWUKKHByb2JsZW1zIHdoaWxlIHNj
+cm9sbGluZyBjb250aW51b3VzbHkpIG1vc3RseSBoYXBwZW5zIHdoZW4gdGhlIHdpbmRvdwpuZWVk
+cyB0byBiZSBzY3JvbGxlZCwgYW5kIHRodXMgZnVsbHkgcmVwYWludGVkIGZvciBldmVyeSBzY3Jv
+bGwKdXAvZG93biBjb21tYW5kIHJlY2VpdmVkLgoKSSBkb24ndCB0aGluayB0aGUgbGltaXRhdGlv
+biBpcyBhY3R1YWxseSByZWxhdGVkIHRvIENQVSBwb3dlciBpbiB0aGUKU0FNQTUuIFdoZW4gImVk
+aXQiIGlzIHJlcGFpbnRpbmcsIGl0IG5lZWRzIHRvIHNlbmQgYWxsIHRoZSBuZXcgZGF0YQpvdXQg
+dGhyb3VnaCB0aGUgc2VyaWFsIHBvcnQuIElmIHNlcmlhbCBwb3J0IHR4IGlzIGFsc28gbm90Cmlu
+dGVycnVwdC1kcml2ZW4gKG5vdCBzdXJlIGFib3V0IHRoYXQpLCB0aGVuIHRoaXMgbWVhbnMgdGhh
+dCBiYXJlYm94CndpbGwgbm90IGhhdmUgYSBjaGFuY2UgdG8gcHJvY2VzcyBuZXcgaW5wdXQgdW50
+aWwgImVkaXQiIGlzIGRvbmUKc2VuZGluZyBkYXRhLiBDb21iaW5lIHRoaXMgd2l0aCB0aGUgbGFj
+ayBvZiBGSUZPcyBpbiB0aGUgREJHVSBwb3J0IGFuZApJIGd1ZXNzIHRoYXQgdGhpcyBjb3VsZCBl
+eHBsYWluIHRoZSByZXN1bHRzLgoKSG93ZXZlciBpZiB0aGVyZSBhcmUgb3RoZXIgaXNzdWVzIEkg
+d291bGQgYWxzbyBsaWtlIHRvIGZpbmQgb3V0LiBJZgp5b3Ugd291bGQgbGlrZSB0byBzdWdnZXN0
+IGFueSBuZXcgdGVzdHMgcGxlYXNlIGxldCBtZSBrbm93IGFuZCBJJ2xsIGJlCmhhcHB5IHRvIHRy
+eSB0aGVtIGhlcmUuCgpCZXN0LAoKR3VpbGxlcm1vIFJvZHJpZ3VleiBHYXJjaWEKZ3VpbGxlLnJv
+ZHJpZ3VlekBnbWFpbC5jb20KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
+ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
