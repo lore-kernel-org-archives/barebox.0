@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ob0-x232.google.com ([2607:f8b0:4003:c01::232])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aoV7F-0007yU-LY
- for barebox@lists.infradead.org; Fri, 08 Apr 2016 12:02:22 +0000
-Received: by mail-ob0-x232.google.com with SMTP id bg3so71242503obb.1
- for <barebox@lists.infradead.org>; Fri, 08 Apr 2016 05:02:01 -0700 (PDT)
+ id 1aoaFL-0008OX-NP
+ for barebox@lists.infradead.org; Fri, 08 Apr 2016 17:31:05 +0000
+Date: Fri, 8 Apr 2016 19:30:40 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160408173040.GM9102@pengutronix.de>
+References: <CACqcpZCMfYE=-5T+m=+fT+TM4gqmPk_6h4AqZoLVSLPL7scBkg@mail.gmail.com>
 MIME-Version: 1.0
-From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <poggi.raph@gmail.com>
-Date: Fri, 8 Apr 2016 14:01:21 +0200
-Message-ID: <CACqcpZCMfYE=-5T+m=+fT+TM4gqmPk_6h4AqZoLVSLPL7scBkg@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <CACqcpZCMfYE=-5T+m=+fT+TM4gqmPk_6h4AqZoLVSLPL7scBkg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,31 +18,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: support of arm64 architecture
-To: barebox@lists.infradead.org
+Subject: Re: support of arm64 architecture
+To: =?iso-8859-15?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
+Cc: barebox@lists.infradead.org
 
-SGkgYWxsLAoKSSBhbSB3b3JraW5nIG9uIHBvcnRpbmcgYmFyZWJveCBvbiBhcm02NCBhcmNoaXRl
-Y3R1cmUuCgpTbyBJIGhhdmUgc29tZSBxdWVzdGlvbnMgYWJvdXQgaXQ6CgotIElzIHRoZXJlIGFu
-eSBpbnRlcmVzdCBmb3IgYmFyZWJveCB0byBzdXBwb3J0IHRoaXMgYXJjaGl0ZWN0dXJlID8KCi0g
-TXkgcG9ydCBpcyBydW5uaW5nIGF0IEVMMSBmb3IgdGhlIG1vbWVudCwgZG9lcyB0aGUgYm9vdGxv
-YWRlciBoYXZlCnRvIHJ1biBhdCBFTDMgPyBJZiB5ZXMsIGRvIHlvdSBoYXZlIGhpbnQgdG8gYWNo
-aWV2ZSB0aGlzID8KICAgICAgSSB0aGluayBVRUZJIGlzIHJ1bm5pbmcgYXQgRUwzLCBidXQgSSBh
-bSBjb25mdXNlZCBhYm91dCB0aGF0LAp3aGF0IGlzIHRoZSBkaWZmZXJlbmNlIGJldHdlZW4gVUVG
-SSBhbmQgYmFyZWJveCA/IEFyZSB0aGV5IGJvdGgKYm9vbG9hZGVyID8gKEkgZ3Vlc3MgaXQgaXMg
-YSAibm9vYiIgcXVlc3Rpb24gOi8pCgotIEkgaGF2ZSBzb21lIGlzc3VlcyB3aXRoIG1hbGxvYywg
-d2hlbiBJIHVzZSB0bHNmIGFsbCBtYWxsb2MgZmFpbGVkLApidXQgbm90IHdpdGggZGxtYWxsb2Mg
-aW1wbGVtZW50YXRpb24sIGRvIHlvdSBoYXZlIGFuIGlkZWEgYWJvdXQgdGhpcyA/CgoKQXQgdGhl
-IG1vbWVudCB0aGUgY3VycmVudCBsaW1pdGF0aW9ucyBvZiBteSBwb3J0IGFyZSA6CiAgICAgLSBN
-TVUgbm90IGltcGxlbWVudGVkCiAgICAgLSBiYXJlYm94IHJ1bm5pbmcgYXQgRUwxCiAgICAgLSBi
-YXJlYm94IGVudiBub3Qgd29ya2luZwogICAgIC0gb25seSB0ZXN0IG9uIHFlbXUKCklmIHlvdSB3
-YW50IHRvIHRlc3QgaXQ6Cmh0dHBzOi8vZ2l0aHViLmNvbS9yYXBodWkvYmFyZWJveC90cmVlL2Rl
-di9hcm12OGFfY2xlYW51cAoKSSBjYW4gYWxzbyBzZW5kIGEgcGF0Y2ggd2l0aCBbUkZDXSB0YWcg
-aXMgbmVlZGVkLgoKSWYgeW91IGhhdmUgYW55IHN1Z2dlc3Rpb25zIG9yIHF1ZXN0aW9ucywgdGVs
-bCBtZS4KClRoYW5rIHlvdSwKClJhcGhhw6tsIFBvZ2dpCgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
-c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9iYXJlYm94Cg==
+Hi Rapha=EBl,
+
+On Fri, Apr 08, 2016 at 02:01:21PM +0200, Rapha=EBl Poggi wrote:
+> Hi all,
+> =
+
+> I am working on porting barebox on arm64 architecture.
+> =
+
+> So I have some questions about it:
+> =
+
+> - Is there any interest for barebox to support this architecture ?
+
+Definitely, yes.
+
+> =
+
+> - My port is running at EL1 for the moment, does the bootloader have
+> to run at EL3 ? If yes, do you have hint to achieve this ?
+>       I think UEFI is running at EL3, but I am confused about that,
+> what is the difference between UEFI and barebox ? Are they both
+> booloader ? (I guess it is a "noob" question :/)
+
+UEFI is an interface to the firmware whereas barebox is a firmware. We
+could implement a UEFI interface for barebox (the U-Boot guys already
+did this). Also barebox can run on top of firmware with a (U)Efi
+interface.
+
+> =
+
+> - I have some issues with malloc, when I use tlsf all malloc failed,
+> but not with dlmalloc implementation, do you have an idea about this ?
+
+Do you have TLSF_64BIT defined? You may have defined it automatically
+when you have CONFIG_64BIT defined, but if not tlsf malloc will not
+work.
+
+> =
+
+> =
+
+> At the moment the current limitations of my port are :
+>      - MMU not implemented
+>      - barebox running at EL1
+>      - barebox env not working
+>      - only test on qemu
+> =
+
+> If you want to test it:
+> https://github.com/raphui/barebox/tree/dev/armv8a_cleanup
+
+From a first look it the arm64 code looks very familiar. Do you think we
+could merge it into the arm architecture rather than creating a new
+architecture?
+
+I don't know in which exception level barebox should finally run in, but
+I don't think that's a showstopper.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
