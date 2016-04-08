@@ -1,20 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx0b-00176a03.pphosted.com ([67.231.157.48])
+Received: from mail-ob0-x232.google.com ([2607:f8b0:4003:c01::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aoSWy-0002NH-LB
- for barebox@lists.infradead.org; Fri, 08 Apr 2016 09:16:45 +0000
-Received: from pps.filterd (m0048204.ppops.net [127.0.0.1])
- by m0048204.ppops.net-00176a03. (8.16.0.11/8.16.0.11) with SMTP id
- u389CUE8007217
- for <barebox@lists.infradead.org>; Fri, 8 Apr 2016 05:16:23 -0400
-Received: from alpmlip10.e2k.ad.ge.com (n165-156-000-000.static.ge.com
- [165.156.5.1] (may be forged))
- by m0048204.ppops.net-00176a03. with ESMTP id 225vj1rhj2-1
- (version=TLSv1 cipher=RC4-SHA bits=128 verify=NOT)
- for <barebox@lists.infradead.org>; Fri, 08 Apr 2016 05:16:22 -0400
-From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Fri,  8 Apr 2016 10:16:10 +0100
-Message-Id: <1460106970-23144-1-git-send-email-renaud.barbier@ge.com>
+ id 1aoV7F-0007yU-LY
+ for barebox@lists.infradead.org; Fri, 08 Apr 2016 12:02:22 +0000
+Received: by mail-ob0-x232.google.com with SMTP id bg3so71242503obb.1
+ for <barebox@lists.infradead.org>; Fri, 08 Apr 2016 05:02:01 -0700 (PDT)
+MIME-Version: 1.0
+From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <poggi.raph@gmail.com>
+Date: Fri, 8 Apr 2016 14:01:21 +0200
+Message-ID: <CACqcpZCMfYE=-5T+m=+fT+TM4gqmPk_6h4AqZoLVSLPL7scBkg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,42 +17,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] lib: declared buffer is too small to hold string
+Subject: support of arm64 architecture
 To: barebox@lists.infradead.org
 
-Displaying an unsigned 64-bit integer can be represented by up to 20
-characters. The 20 bytes buffer reserved to store the formatted string
-"%llu Bytes" is to small: (20 + 6) = 26. Hence, a bigger buffer is reserved
-to hold this string.
-
-Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
----
- lib/display_options.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/lib/display_options.c b/lib/display_options.c
-index 2d695e4..0f65f59 100644
---- a/lib/display_options.c
-+++ b/lib/display_options.c
-@@ -26,7 +26,7 @@
-  */
- char *size_human_readable(unsigned long long size)
- {
--	static char buf[20];
-+	static char buf[30];
- 	unsigned long m = 0, n;
- 	unsigned long long f;
- 	static const char names[] = {'E', 'P', 'T', 'G', 'M', 'K'};
--- 
-1.7.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgYWxsLAoKSSBhbSB3b3JraW5nIG9uIHBvcnRpbmcgYmFyZWJveCBvbiBhcm02NCBhcmNoaXRl
+Y3R1cmUuCgpTbyBJIGhhdmUgc29tZSBxdWVzdGlvbnMgYWJvdXQgaXQ6CgotIElzIHRoZXJlIGFu
+eSBpbnRlcmVzdCBmb3IgYmFyZWJveCB0byBzdXBwb3J0IHRoaXMgYXJjaGl0ZWN0dXJlID8KCi0g
+TXkgcG9ydCBpcyBydW5uaW5nIGF0IEVMMSBmb3IgdGhlIG1vbWVudCwgZG9lcyB0aGUgYm9vdGxv
+YWRlciBoYXZlCnRvIHJ1biBhdCBFTDMgPyBJZiB5ZXMsIGRvIHlvdSBoYXZlIGhpbnQgdG8gYWNo
+aWV2ZSB0aGlzID8KICAgICAgSSB0aGluayBVRUZJIGlzIHJ1bm5pbmcgYXQgRUwzLCBidXQgSSBh
+bSBjb25mdXNlZCBhYm91dCB0aGF0LAp3aGF0IGlzIHRoZSBkaWZmZXJlbmNlIGJldHdlZW4gVUVG
+SSBhbmQgYmFyZWJveCA/IEFyZSB0aGV5IGJvdGgKYm9vbG9hZGVyID8gKEkgZ3Vlc3MgaXQgaXMg
+YSAibm9vYiIgcXVlc3Rpb24gOi8pCgotIEkgaGF2ZSBzb21lIGlzc3VlcyB3aXRoIG1hbGxvYywg
+d2hlbiBJIHVzZSB0bHNmIGFsbCBtYWxsb2MgZmFpbGVkLApidXQgbm90IHdpdGggZGxtYWxsb2Mg
+aW1wbGVtZW50YXRpb24sIGRvIHlvdSBoYXZlIGFuIGlkZWEgYWJvdXQgdGhpcyA/CgoKQXQgdGhl
+IG1vbWVudCB0aGUgY3VycmVudCBsaW1pdGF0aW9ucyBvZiBteSBwb3J0IGFyZSA6CiAgICAgLSBN
+TVUgbm90IGltcGxlbWVudGVkCiAgICAgLSBiYXJlYm94IHJ1bm5pbmcgYXQgRUwxCiAgICAgLSBi
+YXJlYm94IGVudiBub3Qgd29ya2luZwogICAgIC0gb25seSB0ZXN0IG9uIHFlbXUKCklmIHlvdSB3
+YW50IHRvIHRlc3QgaXQ6Cmh0dHBzOi8vZ2l0aHViLmNvbS9yYXBodWkvYmFyZWJveC90cmVlL2Rl
+di9hcm12OGFfY2xlYW51cAoKSSBjYW4gYWxzbyBzZW5kIGEgcGF0Y2ggd2l0aCBbUkZDXSB0YWcg
+aXMgbmVlZGVkLgoKSWYgeW91IGhhdmUgYW55IHN1Z2dlc3Rpb25zIG9yIHF1ZXN0aW9ucywgdGVs
+bCBtZS4KClRoYW5rIHlvdSwKClJhcGhhw6tsIFBvZ2dpCgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
+c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9iYXJlYm94Cg==
