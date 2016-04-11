@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ob0-x232.google.com ([2607:f8b0:4003:c01::232])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1apVfd-0003Q5-RI
- for barebox@lists.infradead.org; Mon, 11 Apr 2016 06:50:02 +0000
-Received: by mail-ob0-x232.google.com with SMTP id k9so8884866obk.2
- for <barebox@lists.infradead.org>; Sun, 10 Apr 2016 23:49:40 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20160408173040.GM9102@pengutronix.de>
-References: <CACqcpZCMfYE=-5T+m=+fT+TM4gqmPk_6h4AqZoLVSLPL7scBkg@mail.gmail.com>
- <20160408173040.GM9102@pengutronix.de>
-From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <poggi.raph@gmail.com>
-Date: Mon, 11 Apr 2016 08:49:00 +0200
-Message-ID: <CACqcpZA6JVmgCObnOLU-yG2Od-a50W_uCZ-vFMDoTc0pqHXbkQ@mail.gmail.com>
+Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+ by casper.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1apXHn-00083q-EV
+ for barebox@lists.infradead.org; Mon, 11 Apr 2016 08:33:32 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 06054A00324
+ for <barebox@lists.infradead.org>; Mon, 11 Apr 2016 10:33:06 +0200 (CEST)
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Mon, 11 Apr 2016 10:28:24 +0200
+Message-Id: <1460363304-1505-2-git-send-email-t.remmet@phytec.de>
+In-Reply-To: <1460363304-1505-1-git-send-email-t.remmet@phytec.de>
+References: <1460363304-1505-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,58 +19,140 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: support of arm64 architecture
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] mtd: nand: omap_gpmc: Fix bitflips in empty page
+To: barebox@lists.infradead.org
 
-SGksCgpUaGFuayB5b3UgZm9yIHlvdXIgYW5zd2VyLgoKQXQgdGhlIGJlZ2lubmluZywgSSBoYXZl
-IHRyaWVkIHRvIGFkZCBhcm02NCBzcGVjaWZpYyBjb2RlIG9uIHRoZSBhcm0KYXJjaGl0ZWN0dXJl
-IGZvbGRlciwgYnV0IGl0IGJlY29tZXMgYSBtZXNzLi4uCgpOZXZlcnRoZWxlc3MsIEkgY2FuIGdp
-dmUgYW4gYW5vdGhlciB0cnkgd2l0aCB0aGlzIHNvbHV0aW9uIGFuZCB0aGVuIHdlCmNhbiBkZWNp
-ZGUuCgoyMDE2LTA0LTA4IDE5OjMwIEdNVCswMjowMCBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVu
-Z3V0cm9uaXguZGU+Ogo+IEhpIFJhcGhhw6tsLAo+Cj4gT24gRnJpLCBBcHIgMDgsIDIwMTYgYXQg
-MDI6MDE6MjFQTSArMDIwMCwgUmFwaGHDq2wgUG9nZ2kgd3JvdGU6Cj4+IEhpIGFsbCwKPj4KPj4g
-SSBhbSB3b3JraW5nIG9uIHBvcnRpbmcgYmFyZWJveCBvbiBhcm02NCBhcmNoaXRlY3R1cmUuCj4+
-Cj4+IFNvIEkgaGF2ZSBzb21lIHF1ZXN0aW9ucyBhYm91dCBpdDoKPj4KPj4gLSBJcyB0aGVyZSBh
-bnkgaW50ZXJlc3QgZm9yIGJhcmVib3ggdG8gc3VwcG9ydCB0aGlzIGFyY2hpdGVjdHVyZSA/Cj4K
-PiBEZWZpbml0ZWx5LCB5ZXMuCj4KPj4KPj4gLSBNeSBwb3J0IGlzIHJ1bm5pbmcgYXQgRUwxIGZv
-ciB0aGUgbW9tZW50LCBkb2VzIHRoZSBib290bG9hZGVyIGhhdmUKPj4gdG8gcnVuIGF0IEVMMyA/
-IElmIHllcywgZG8geW91IGhhdmUgaGludCB0byBhY2hpZXZlIHRoaXMgPwo+PiAgICAgICBJIHRo
-aW5rIFVFRkkgaXMgcnVubmluZyBhdCBFTDMsIGJ1dCBJIGFtIGNvbmZ1c2VkIGFib3V0IHRoYXQs
-Cj4+IHdoYXQgaXMgdGhlIGRpZmZlcmVuY2UgYmV0d2VlbiBVRUZJIGFuZCBiYXJlYm94ID8gQXJl
-IHRoZXkgYm90aAo+PiBib29sb2FkZXIgPyAoSSBndWVzcyBpdCBpcyBhICJub29iIiBxdWVzdGlv
-biA6LykKPgo+IFVFRkkgaXMgYW4gaW50ZXJmYWNlIHRvIHRoZSBmaXJtd2FyZSB3aGVyZWFzIGJh
-cmVib3ggaXMgYSBmaXJtd2FyZS4gV2UKPiBjb3VsZCBpbXBsZW1lbnQgYSBVRUZJIGludGVyZmFj
-ZSBmb3IgYmFyZWJveCAodGhlIFUtQm9vdCBndXlzIGFscmVhZHkKPiBkaWQgdGhpcykuIEFsc28g
-YmFyZWJveCBjYW4gcnVuIG9uIHRvcCBvZiBmaXJtd2FyZSB3aXRoIGEgKFUpRWZpCj4gaW50ZXJm
-YWNlLgo+Cj4+Cj4+IC0gSSBoYXZlIHNvbWUgaXNzdWVzIHdpdGggbWFsbG9jLCB3aGVuIEkgdXNl
-IHRsc2YgYWxsIG1hbGxvYyBmYWlsZWQsCj4+IGJ1dCBub3Qgd2l0aCBkbG1hbGxvYyBpbXBsZW1l
-bnRhdGlvbiwgZG8geW91IGhhdmUgYW4gaWRlYSBhYm91dCB0aGlzID8KPgo+IERvIHlvdSBoYXZl
-IFRMU0ZfNjRCSVQgZGVmaW5lZD8gWW91IG1heSBoYXZlIGRlZmluZWQgaXQgYXV0b21hdGljYWxs
-eQo+IHdoZW4geW91IGhhdmUgQ09ORklHXzY0QklUIGRlZmluZWQsIGJ1dCBpZiBub3QgdGxzZiBt
-YWxsb2Mgd2lsbCBub3QKPiB3b3JrLgo+Cj4+Cj4+Cj4+IEF0IHRoZSBtb21lbnQgdGhlIGN1cnJl
-bnQgbGltaXRhdGlvbnMgb2YgbXkgcG9ydCBhcmUgOgo+PiAgICAgIC0gTU1VIG5vdCBpbXBsZW1l
-bnRlZAo+PiAgICAgIC0gYmFyZWJveCBydW5uaW5nIGF0IEVMMQo+PiAgICAgIC0gYmFyZWJveCBl
-bnYgbm90IHdvcmtpbmcKPj4gICAgICAtIG9ubHkgdGVzdCBvbiBxZW11Cj4+Cj4+IElmIHlvdSB3
-YW50IHRvIHRlc3QgaXQ6Cj4+IGh0dHBzOi8vZ2l0aHViLmNvbS9yYXBodWkvYmFyZWJveC90cmVl
-L2Rldi9hcm12OGFfY2xlYW51cAo+Cj4gRnJvbSBhIGZpcnN0IGxvb2sgaXQgdGhlIGFybTY0IGNv
-ZGUgbG9va3MgdmVyeSBmYW1pbGlhci4gRG8geW91IHRoaW5rIHdlCj4gY291bGQgbWVyZ2UgaXQg
-aW50byB0aGUgYXJtIGFyY2hpdGVjdHVyZSByYXRoZXIgdGhhbiBjcmVhdGluZyBhIG5ldwo+IGFy
-Y2hpdGVjdHVyZT8KPgo+IEkgZG9uJ3Qga25vdyBpbiB3aGljaCBleGNlcHRpb24gbGV2ZWwgYmFy
-ZWJveCBzaG91bGQgZmluYWxseSBydW4gaW4sIGJ1dAo+IEkgZG9uJ3QgdGhpbmsgdGhhdCdzIGEg
-c2hvd3N0b3BwZXIuCj4KPiBTYXNjaGEKPgo+IC0tCj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKPiBJbmR1
-c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1
-dHJvbml4LmRlLyAgfAo+IFBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFu
-eSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8Cj4gQW10c2dlcmljaHQgSGlsZGVzaGVp
-bSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKPgo+
-IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFyZWJv
-eCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8vbGlz
-dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+When using BCH8 decoding, bitflips in an empty page are
+not checked. This can cause issues if UBI/UBIFS are used.
+Extend the omap_correct_bch() function to check for them.
+
+Code is based on linux mainline mtd/nand/omap2.c driver.
+
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ drivers/mtd/nand/nand_omap_gpmc.c | 62 ++++++++++++++++++++++++++-------------
+ 1 file changed, 42 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index 1d1de5b..a4e6452 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -87,6 +87,9 @@
+ 
+ #define BCH8_MAX_ERROR	8	/* upto 8 bit correctable */
+ 
++static const uint8_t bch8_vector[] = {0xf3, 0xdb, 0x14, 0x16, 0x8b, 0xd2,
++		0xbe, 0xcc, 0xac, 0x6b, 0xff, 0x99, 0x7b};
++
+ int omap_gpmc_decode_bch(int select_4_8, unsigned char *ecc, unsigned int *err_loc);
+ 
+ static const char *ecc_mode_strings[] = {
+@@ -294,8 +297,11 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
+ {
+ 	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
+ 	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
+-	int i, j, eccflag, count, totalcount, actual_eccsize;
++	int i, j, eccflag, totalcount, actual_eccsize;
++	const uint8_t *erased_ecc_vec;
+ 	unsigned int err_loc[8];
++	int bitflip_count;
++	int bch_max_err;
+ 
+ 	int eccsteps = oinfo->nand.ecc.steps;
+ 	int eccsize = oinfo->nand.ecc.bytes;
+@@ -304,9 +310,13 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
+ 	case OMAP_ECC_BCH8_CODE_HW:
+ 		eccsize /= eccsteps;
+ 		actual_eccsize = eccsize;
++		erased_ecc_vec = bch8_vector;
++		bch_max_err = BCH8_MAX_ERROR;
+ 		break;
+ 	case OMAP_ECC_BCH8_CODE_HW_ROMCODE:
+ 		actual_eccsize = eccsize - 1;
++		erased_ecc_vec = bch8_vector;
++		bch_max_err = BCH8_MAX_ERROR;
+ 		break;
+ 	default:
+ 		dev_err(oinfo->pdev, "invalid driver configuration\n");
+@@ -316,37 +326,49 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
+ 	totalcount = 0;
+ 
+ 	for (i = 0; i < eccsteps; i++) {
+-		/* check if any ecc error */
++		bool is_error_reported = false;
++		bitflip_count = 0;
+ 		eccflag = 0;
++
++		/* check for any ecc error */
+ 		for (j = 0; (j < actual_eccsize) && (eccflag == 0); j++) {
+-			if (calc_ecc[j] != 0)
++			if (calc_ecc[j] != 0) {
+ 				eccflag = 1;
++				break;
++			}
+ 		}
+ 
+ 		if (eccflag == 1) {
+-			eccflag = 0;
+-			for (j = 0; (j < actual_eccsize) &&
+-					(eccflag == 0); j++)
+-				if (read_ecc[j] != 0xFF)
+-					eccflag = 1;
++			if (memcmp(calc_ecc, erased_ecc_vec, actual_eccsize) == 0) {
++				/*
++				 * calc_ecc[] matches pattern for ECC
++				 * (all 0xff) so this is definitely
++				 * an erased-page
++				 */
++			} else {
++				bitflip_count = nand_check_erased_ecc_chunk(
++						dat, oinfo->nand.ecc.size, read_ecc,
++						eccsize, NULL, 0, bch_max_err);
++				if (bitflip_count < 0)
++					is_error_reported = true;
++			}
+ 		}
+ 
+-		count = 0;
+-		if (eccflag == 1) {
+-			count = omap_gpmc_decode_bch(1, calc_ecc, err_loc);
+-			if (count < 0)
+-				return count;
+-			else
+-				totalcount += count;
+-		}
++		if (is_error_reported) {
++			bitflip_count = omap_gpmc_decode_bch(1,
++					calc_ecc, err_loc);
++			if (bitflip_count < 0)
++				return bitflip_count;
+ 
+-		for (j = 0; j < count; j++) {
+-			if (err_loc[j] < 4096)
+-				dat[err_loc[j] >> 3] ^=
++			for (j = 0; j < bitflip_count; j++) {
++				if (err_loc[j] < 4096)
++					dat[err_loc[j] >> 3] ^=
+ 						1 << (err_loc[j] & 7);
+-			/* else, not interested to correct ecc */
++				/* else, not interested to correct ecc */
++			}
+ 		}
+ 
++		totalcount += bitflip_count;
+ 		calc_ecc = calc_ecc + actual_eccsize;
+ 		read_ecc = read_ecc + eccsize;
+ 		dat += 512;
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
