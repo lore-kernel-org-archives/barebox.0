@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
- by casper.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1apXHn-00083q-EV
- for barebox@lists.infradead.org; Mon, 11 Apr 2016 08:33:32 +0000
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1apXHs-0004vK-N9
+ for barebox@lists.infradead.org; Mon, 11 Apr 2016 08:33:37 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 06054A00324
- for <barebox@lists.infradead.org>; Mon, 11 Apr 2016 10:33:06 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id F0EDBA00323
+ for <barebox@lists.infradead.org>; Mon, 11 Apr 2016 10:33:05 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 11 Apr 2016 10:28:24 +0200
-Message-Id: <1460363304-1505-2-git-send-email-t.remmet@phytec.de>
-In-Reply-To: <1460363304-1505-1-git-send-email-t.remmet@phytec.de>
-References: <1460363304-1505-1-git-send-email-t.remmet@phytec.de>
+Date: Mon, 11 Apr 2016 10:28:23 +0200
+Message-Id: <1460363304-1505-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,130 +22,144 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] mtd: nand: omap_gpmc: Fix bitflips in empty page
+Subject: [PATCH 1/2] mtd: nand: omap_gpmc: Remove BCH4 support
 To: barebox@lists.infradead.org
 
-When using BCH8 decoding, bitflips in an empty page are
-not checked. This can cause issues if UBI/UBIFS are used.
-Extend the omap_correct_bch() function to check for them.
-
-Code is based on linux mainline mtd/nand/omap2.c driver.
+This has no users and seems to be untested. Removed it.
 
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/nand/nand_omap_gpmc.c | 62 ++++++++++++++++++++++++++-------------
- 1 file changed, 42 insertions(+), 20 deletions(-)
+ arch/arm/mach-omap/include/mach/gpmc_nand.h |  1 -
+ drivers/bus/omap-gpmc.c                     |  3 ---
+ drivers/mtd/nand/nand_omap_gpmc.c           | 36 +----------------------------
+ 3 files changed, 1 insertion(+), 39 deletions(-)
 
+diff --git a/arch/arm/mach-omap/include/mach/gpmc_nand.h b/arch/arm/mach-omap/include/mach/gpmc_nand.h
+index 8839486..c9730a9 100644
+--- a/arch/arm/mach-omap/include/mach/gpmc_nand.h
++++ b/arch/arm/mach-omap/include/mach/gpmc_nand.h
+@@ -32,7 +32,6 @@
+ enum gpmc_ecc_mode {
+ 	OMAP_ECC_SOFT,
+ 	OMAP_ECC_HAMMING_CODE_HW_ROMCODE,
+-	OMAP_ECC_BCH4_CODE_HW,
+ 	OMAP_ECC_BCH8_CODE_HW,
+ 	OMAP_ECC_BCH8_CODE_HW_ROMCODE,
+ };
+diff --git a/drivers/bus/omap-gpmc.c b/drivers/bus/omap-gpmc.c
+index 8ae909a..be9ef92 100644
+--- a/drivers/bus/omap-gpmc.c
++++ b/drivers/bus/omap-gpmc.c
+@@ -446,9 +446,6 @@ static struct dt_eccmode modes[] = {
+ 		.name = "hw-romcode",
+ 		.mode = OMAP_ECC_HAMMING_CODE_HW_ROMCODE,
+ 	}, {
+-		.name = "bch4",
+-		.mode = OMAP_ECC_BCH4_CODE_HW,
+-	}, {
+ 		.name = "bch8",
+ 		.mode = OMAP_ECC_BCH8_CODE_HW_ROMCODE,
+ 	},
 diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-index 1d1de5b..a4e6452 100644
+index a920522..1d1de5b 100644
 --- a/drivers/mtd/nand/nand_omap_gpmc.c
 +++ b/drivers/mtd/nand/nand_omap_gpmc.c
-@@ -87,6 +87,9 @@
+@@ -86,7 +86,6 @@
+ #define GPMC_ECC_SIZE_CONFIG_ECCSIZE1(x)	((x) << 22)
  
  #define BCH8_MAX_ERROR	8	/* upto 8 bit correctable */
+-#define BCH4_MAX_ERROR	4	/* upto 4 bit correctable */
  
-+static const uint8_t bch8_vector[] = {0xf3, 0xdb, 0x14, 0x16, 0x8b, 0xd2,
-+		0xbe, 0xcc, 0xac, 0x6b, 0xff, 0x99, 0x7b};
-+
  int omap_gpmc_decode_bch(int select_4_8, unsigned char *ecc, unsigned int *err_loc);
  
- static const char *ecc_mode_strings[] = {
-@@ -294,8 +297,11 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
- {
- 	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
+@@ -239,9 +238,6 @@ static int __omap_calculate_ecc(struct mtd_info *mtd, const uint8_t *dat,
+ 	int ecc_size = 8;
+ 
+ 	switch (oinfo->ecc_mode) {
+-	case OMAP_ECC_BCH4_CODE_HW:
+-		ecc_size = 4;
+-		/* fall through */
+ 	case OMAP_ECC_BCH8_CODE_HW:
+ 	case OMAP_ECC_BCH8_CODE_HW_ROMCODE:
+ 		for (i = 0; i < 4; i++) {
+@@ -300,24 +296,17 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
  	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
--	int i, j, eccflag, count, totalcount, actual_eccsize;
-+	int i, j, eccflag, totalcount, actual_eccsize;
-+	const uint8_t *erased_ecc_vec;
+ 	int i, j, eccflag, count, totalcount, actual_eccsize;
  	unsigned int err_loc[8];
-+	int bitflip_count;
-+	int bch_max_err;
+-	int select_4_8;
  
  	int eccsteps = oinfo->nand.ecc.steps;
  	int eccsize = oinfo->nand.ecc.bytes;
-@@ -304,9 +310,13 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
+ 
+ 	switch (oinfo->ecc_mode) {
+-	case OMAP_ECC_BCH4_CODE_HW:
+-		actual_eccsize = eccsize;
+-		select_4_8 = 0;
+-		break;
  	case OMAP_ECC_BCH8_CODE_HW:
  		eccsize /= eccsteps;
  		actual_eccsize = eccsize;
-+		erased_ecc_vec = bch8_vector;
-+		bch_max_err = BCH8_MAX_ERROR;
+-		select_4_8 = 1;
  		break;
  	case OMAP_ECC_BCH8_CODE_HW_ROMCODE:
  		actual_eccsize = eccsize - 1;
-+		erased_ecc_vec = bch8_vector;
-+		bch_max_err = BCH8_MAX_ERROR;
+-		select_4_8 = 1;
  		break;
  	default:
  		dev_err(oinfo->pdev, "invalid driver configuration\n");
-@@ -316,37 +326,49 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
- 	totalcount = 0;
+@@ -344,7 +333,7 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
  
- 	for (i = 0; i < eccsteps; i++) {
--		/* check if any ecc error */
-+		bool is_error_reported = false;
-+		bitflip_count = 0;
- 		eccflag = 0;
-+
-+		/* check for any ecc error */
- 		for (j = 0; (j < actual_eccsize) && (eccflag == 0); j++) {
--			if (calc_ecc[j] != 0)
-+			if (calc_ecc[j] != 0) {
- 				eccflag = 1;
-+				break;
-+			}
- 		}
- 
+ 		count = 0;
  		if (eccflag == 1) {
--			eccflag = 0;
--			for (j = 0; (j < actual_eccsize) &&
--					(eccflag == 0); j++)
--				if (read_ecc[j] != 0xFF)
--					eccflag = 1;
-+			if (memcmp(calc_ecc, erased_ecc_vec, actual_eccsize) == 0) {
-+				/*
-+				 * calc_ecc[] matches pattern for ECC
-+				 * (all 0xff) so this is definitely
-+				 * an erased-page
-+				 */
-+			} else {
-+				bitflip_count = nand_check_erased_ecc_chunk(
-+						dat, oinfo->nand.ecc.size, read_ecc,
-+						eccsize, NULL, 0, bch_max_err);
-+				if (bitflip_count < 0)
-+					is_error_reported = true;
-+			}
- 		}
+-			count = omap_gpmc_decode_bch(select_4_8, calc_ecc, err_loc);
++			count = omap_gpmc_decode_bch(1, calc_ecc, err_loc);
+ 			if (count < 0)
+ 				return count;
+ 			else
+@@ -435,7 +424,6 @@ static int omap_correct_data(struct mtd_info *mtd, uint8_t *dat,
+ 	switch (oinfo->ecc_mode) {
+ 	case OMAP_ECC_HAMMING_CODE_HW_ROMCODE:
+ 		return omap_correct_hamming(mtd, dat, read_ecc, calc_ecc);
+-	case OMAP_ECC_BCH4_CODE_HW:
+ 	case OMAP_ECC_BCH8_CODE_HW:
+ 	case OMAP_ECC_BCH8_CODE_HW_ROMCODE:
+ 		/*
+@@ -463,17 +451,6 @@ static void omap_enable_hwecc(struct mtd_info *mtd, int mode)
+ 	int cs = 0;
  
--		count = 0;
--		if (eccflag == 1) {
--			count = omap_gpmc_decode_bch(1, calc_ecc, err_loc);
--			if (count < 0)
--				return count;
--			else
--				totalcount += count;
+ 	switch (oinfo->ecc_mode) {
+-	case OMAP_ECC_BCH4_CODE_HW:
+-		if (mode == NAND_ECC_READ) {
+-			eccsize1 = 0xD; eccsize0 = 0x48;
+-			bch_mod = 0;
+-			bch_wrapmode = 0x09;
+-		} else {
+-			eccsize1 = 0x20; eccsize0 = 0x00;
+-			bch_mod = 0;
+-			bch_wrapmode = 0x06;
 -		}
-+		if (is_error_reported) {
-+			bitflip_count = omap_gpmc_decode_bch(1,
-+					calc_ecc, err_loc);
-+			if (bitflip_count < 0)
-+				return bitflip_count;
- 
--		for (j = 0; j < count; j++) {
--			if (err_loc[j] < 4096)
--				dat[err_loc[j] >> 3] ^=
-+			for (j = 0; j < bitflip_count; j++) {
-+				if (err_loc[j] < 4096)
-+					dat[err_loc[j] >> 3] ^=
- 						1 << (err_loc[j] & 7);
--			/* else, not interested to correct ecc */
-+				/* else, not interested to correct ecc */
-+			}
- 		}
- 
-+		totalcount += bitflip_count;
- 		calc_ecc = calc_ecc + actual_eccsize;
- 		read_ecc = read_ecc + eccsize;
- 		dat += 512;
+-		break;
+ 	case OMAP_ECC_BCH8_CODE_HW:
+ 	case OMAP_ECC_BCH8_CODE_HW_ROMCODE:
+ 		if (mode == NAND_ECC_READ) {
+@@ -764,17 +741,6 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+ 		omap_oobinfo.oobfree->length = minfo->oobsize -
+ 					offset - omap_oobinfo.eccbytes;
+ 		break;
+-	case OMAP_ECC_BCH4_CODE_HW:
+-		oinfo->nand.ecc.bytes    = 7;
+-		oinfo->nand.ecc.size     = 512;
+-		oinfo->nand.ecc.strength = BCH4_MAX_ERROR;
+-		omap_oobinfo.oobfree->offset = offset;
+-		omap_oobinfo.oobfree->length = minfo->oobsize -
+-					offset - omap_oobinfo.eccbytes;
+-		offset = minfo->oobsize - oinfo->nand.ecc.bytes;
+-		for (i = 0; i < oinfo->nand.ecc.bytes; i++)
+-			omap_oobinfo.eccpos[i] = i + offset;
+-		break;
+ 	case OMAP_ECC_BCH8_CODE_HW:
+ 		oinfo->nand.ecc.bytes    = 13 * 4;
+ 		oinfo->nand.ecc.size     = 512 * 4;
 -- 
 1.9.1
 
