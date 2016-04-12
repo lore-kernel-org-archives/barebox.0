@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vk0-x22a.google.com ([2607:f8b0:400c:c05::22a])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1anOjb-0000lk-Og
- for barebox@lists.infradead.org; Tue, 05 Apr 2016 11:01:27 +0000
-Received: by mail-vk0-x22a.google.com with SMTP id e6so12588511vkh.2
- for <barebox@lists.infradead.org>; Tue, 05 Apr 2016 04:01:03 -0700 (PDT)
+ id 1aprVM-0000me-Tc
+ for barebox@lists.infradead.org; Tue, 12 Apr 2016 06:08:53 +0000
+Date: Tue, 12 Apr 2016 08:08:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160412060831.GP9102@pengutronix.de>
+References: <1460143586-1043-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.10.1604051131350.3483@9VTHT2J-D520>
-Date: Tue, 5 Apr 2016 13:01:02 +0200
-Message-ID: <CABDcavY5+W7wQv19UiSGJ1-+-V4Mw4Trv8NsCCGAdWNgCPofbQ@mail.gmail.com>
-From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1460143586-1043-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,45 +18,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Scrolling issues in edit command
-References: <alpine.DEB.2.10.1604051131350.3483@9VTHT2J-D520>
-To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
-Cc: barebox@lists.infradead.org, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] pinctrl: mxs: add raw value from device tree to debug
+ output
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-MjAxNi0wNC0wNSAxMTo0MCBHTVQrMDI6MDAgUm9sZiBFdmVycy1GaXNjaGVyIDxlbWJlZGRlZDI0
-QGV2ZXJzLWZpc2NoZXIuZGU+Ogo+IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdA
-Li4uPiB3cml0ZXM6Cj4KPj4KPj4gSGVsbG8sCj4+Cj4+IE9uIFR1ZSwgQXByIDA1LCAyMDE2IGF0
-IDEwOjQwOjQ4QU0gKzAyMDAsIEd1aWxsZXJtbyBSb2RyaWd1ZXogR2FyY2lhCj4gd3JvdGU6Cj4+
-ID4gSSBhbSB3b25kZXJpbmc6IElmIEkgYW0gY29ycmVjdCwgc2VyaWFsIGluL291dCBpbiBiYXJl
-Ym94IGlzIG5vdAo+PiA+IGludGVycnVwdC1kcml2ZW4uIFBsdXMsIHRoZSBkZWZhdWx0IFVBUlQg
-aW4gdGhlIHNhbWE1ZDNfeHBsYWluZWQgYm9hcmQKPj4KPj4gcmlnaHQKPj4KPj4gPiB0aGF0IEkg
-YW0gdXNpbmcgKERCR1UpIGhhcyBubyBGSUZPcy4gUGx1cywgImVkaXQiIGRvZXMgYSBsb3Qgb2YK
-Pj4gPiByZXBhaW50IHdvcmsgd2hpbGUgZWRpdGluZy4gQ291bGQgaXQgYmUgdGhlIGNhc2UgdGhh
-dCByZWNlaXZlZCBjaGFycwo+PiA+IGFyZSBiZWluZyBtaXNzZWQgYnkgYmFyZWJveCBkdWUgdG8g
-dGhlIHJlcGFpbnRpbmcgd29yayBpbiAiZWRpdCIgPwo+Pgo+PiBTb3VuZHMgbGlrZWx5Lgo+Pgo+
-Cj4gQnV0IGlmIHRoZSBpbnN0cnVjdGlvbiBjYWNoZSBpcyBlbmFibGVkLCB0aGUgU0FNQTUgc2hv
-dWxkIGJlIGZhc3QgZW5vdWdoLAo+IGV2ZW4gd2l0aG91dCBhbnkgaW50ZXJydXB0IGhhbmRsaW5n
-IGZvciB0aGUgVUFSVCBkYXRhLgoKSXQgYWN0dWFsbHkgc2VlbXMgdG8gYmUgZmFzdCBlbm91Z2gg
-Zm9yIGhhbmRsaW5nIGlucHV0IGRhdGEgdGhlCmNvbW1hbmQgbGluZS4gSSBvbmx5IHNlZSBwcm9i
-bGVtcyBpbiAiZWRpdCIuIEFuZCB0aGUgb3JpZ2luYWwgaXNzdWUKKHByb2JsZW1zIHdoaWxlIHNj
-cm9sbGluZyBjb250aW51b3VzbHkpIG1vc3RseSBoYXBwZW5zIHdoZW4gdGhlIHdpbmRvdwpuZWVk
-cyB0byBiZSBzY3JvbGxlZCwgYW5kIHRodXMgZnVsbHkgcmVwYWludGVkIGZvciBldmVyeSBzY3Jv
-bGwKdXAvZG93biBjb21tYW5kIHJlY2VpdmVkLgoKSSBkb24ndCB0aGluayB0aGUgbGltaXRhdGlv
-biBpcyBhY3R1YWxseSByZWxhdGVkIHRvIENQVSBwb3dlciBpbiB0aGUKU0FNQTUuIFdoZW4gImVk
-aXQiIGlzIHJlcGFpbnRpbmcsIGl0IG5lZWRzIHRvIHNlbmQgYWxsIHRoZSBuZXcgZGF0YQpvdXQg
-dGhyb3VnaCB0aGUgc2VyaWFsIHBvcnQuIElmIHNlcmlhbCBwb3J0IHR4IGlzIGFsc28gbm90Cmlu
-dGVycnVwdC1kcml2ZW4gKG5vdCBzdXJlIGFib3V0IHRoYXQpLCB0aGVuIHRoaXMgbWVhbnMgdGhh
-dCBiYXJlYm94CndpbGwgbm90IGhhdmUgYSBjaGFuY2UgdG8gcHJvY2VzcyBuZXcgaW5wdXQgdW50
-aWwgImVkaXQiIGlzIGRvbmUKc2VuZGluZyBkYXRhLiBDb21iaW5lIHRoaXMgd2l0aCB0aGUgbGFj
-ayBvZiBGSUZPcyBpbiB0aGUgREJHVSBwb3J0IGFuZApJIGd1ZXNzIHRoYXQgdGhpcyBjb3VsZCBl
-eHBsYWluIHRoZSByZXN1bHRzLgoKSG93ZXZlciBpZiB0aGVyZSBhcmUgb3RoZXIgaXNzdWVzIEkg
-d291bGQgYWxzbyBsaWtlIHRvIGZpbmQgb3V0LiBJZgp5b3Ugd291bGQgbGlrZSB0byBzdWdnZXN0
-IGFueSBuZXcgdGVzdHMgcGxlYXNlIGxldCBtZSBrbm93IGFuZCBJJ2xsIGJlCmhhcHB5IHRvIHRy
-eSB0aGVtIGhlcmUuCgpCZXN0LAoKR3VpbGxlcm1vIFJvZHJpZ3VleiBHYXJjaWEKZ3VpbGxlLnJv
-ZHJpZ3VlekBnbWFpbC5jb20KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
-ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Fri, Apr 08, 2016 at 09:26:26PM +0200, Uwe Kleine-K=F6nig wrote:
+> Not sure this is of general interest, but it helped me matching pin
+> configs from a static table to device tree entries.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  drivers/pinctrl/pinctrl-mxs.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+
+I think it's interesting enough to have it in the tree. Applied, thanks
+
+Sascha
+
+> =
+
+> diff --git a/drivers/pinctrl/pinctrl-mxs.c b/drivers/pinctrl/pinctrl-mxs.c
+> index ec0aaec67f06..fa1176fe1bd6 100644
+> --- a/drivers/pinctrl/pinctrl-mxs.c
+> +++ b/drivers/pinctrl/pinctrl-mxs.c
+> @@ -89,8 +89,8 @@ static int mxs_pinctrl_set_state(struct pinctrl_device =
+*pdev, struct device_node
+>  		writel(0x3 << shift, reg + STMP_OFFSET_REG_CLR);
+>  		writel(muxsel << shift, reg + STMP_OFFSET_REG_SET);
+>  =
+
+> -		dev_dbg(iomux->pinctrl.dev, "pin %d, mux %d, ma: %d, vol: %d, pull: %d=
+\n",
+> -				pinid, muxsel, ma, vol, pull);
+> +		dev_dbg(iomux->pinctrl.dev, "(val: 0x%x) pin %d, mux %d, ma: %d, vol: =
+%d, pull: %d\n",
+> +				val, pinid, muxsel, ma, vol, pull);
+>  =
+
+>  		/* drive */
+>  		reg =3D iomux->base + 0x300;
+> -- =
+
+> 2.7.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
