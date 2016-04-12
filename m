@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aprVM-0000me-Tc
- for barebox@lists.infradead.org; Tue, 12 Apr 2016 06:08:53 +0000
-Date: Tue, 12 Apr 2016 08:08:31 +0200
+ id 1apre8-0005XW-JO
+ for barebox@lists.infradead.org; Tue, 12 Apr 2016 06:17:57 +0000
+Date: Tue, 12 Apr 2016 08:17:34 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160412060831.GP9102@pengutronix.de>
-References: <1460143586-1043-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Message-ID: <20160412061734.GR9102@pengutronix.de>
+References: <1460377586-27099-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1460143586-1043-1-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1460377586-27099-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +22,48 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] pinctrl: mxs: add raw value from device tree to debug
- output
+Subject: Re: [PATCH] mci: mxs: add support for dt aliases to name devices
 To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Apr 08, 2016 at 09:26:26PM +0200, Uwe Kleine-K=F6nig wrote:
-> Not sure this is of general interest, but it helped me matching pin
-> configs from a static table to device tree entries.
+On Mon, Apr 11, 2016 at 02:26:26PM +0200, Uwe Kleine-K=F6nig wrote:
+> While changing there, reformat the comment and use ; instead of , after
+> the previous call.
 > =
 
 > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > ---
->  drivers/pinctrl/pinctrl-mxs.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/mci/mxs.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
 
-I think it's interesting enough to have it in the tree. Applied, thanks
+Applied, thanks
 
 Sascha
 
 > =
 
-> diff --git a/drivers/pinctrl/pinctrl-mxs.c b/drivers/pinctrl/pinctrl-mxs.c
-> index ec0aaec67f06..fa1176fe1bd6 100644
-> --- a/drivers/pinctrl/pinctrl-mxs.c
-> +++ b/drivers/pinctrl/pinctrl-mxs.c
-> @@ -89,8 +89,8 @@ static int mxs_pinctrl_set_state(struct pinctrl_device =
-*pdev, struct device_node
->  		writel(0x3 << shift, reg + STMP_OFFSET_REG_CLR);
->  		writel(muxsel << shift, reg + STMP_OFFSET_REG_SET);
+> diff --git a/drivers/mci/mxs.c b/drivers/mci/mxs.c
+> index b36fb13254df..a76435e5baa5 100644
+> --- a/drivers/mci/mxs.c
+> +++ b/drivers/mci/mxs.c
+> @@ -569,7 +569,15 @@ static int mxs_mci_probe(struct device_d *hw_dev)
+>  		host->f_min =3D pd->f_min;
+>  		host->f_max =3D  pd->f_max;
+>  	} else {
+> -		host->voltages =3D MMC_VDD_32_33 | MMC_VDD_33_34,	/* fixed to 3.3 V */
+> +		/* fixed to 3.3 V */
+> +		host->voltages =3D MMC_VDD_32_33 | MMC_VDD_33_34;
+> +
+> +		if (hw_dev->device_node) {
+> +			const char *alias =3D of_alias_get(hw_dev->device_node);
+> +			if (alias)
+> +				host->devname =3D xstrdup(alias);
+> +		}
+> +
+>  		mci_of_parse(host);
+>  	}
 >  =
 
-> -		dev_dbg(iomux->pinctrl.dev, "pin %d, mux %d, ma: %d, vol: %d, pull: %d=
-\n",
-> -				pinid, muxsel, ma, vol, pull);
-> +		dev_dbg(iomux->pinctrl.dev, "(val: 0x%x) pin %d, mux %d, ma: %d, vol: =
-%d, pull: %d\n",
-> +				val, pinid, muxsel, ma, vol, pull);
->  =
-
->  		/* drive */
->  		reg =3D iomux->base + 0x300;
 > -- =
 
 > 2.7.0
