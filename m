@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aqEQL-0008S5-Kq
- for barebox@lists.infradead.org; Wed, 13 Apr 2016 06:37:14 +0000
-Date: Wed, 13 Apr 2016 08:36:49 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160413063649.GU9102@pengutronix.de>
-References: <CAKu_b=KWS1Jce4gW+eSNzHX4SceEDPFKOfM4pxyTxBy1ZD8g7w@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAKu_b=KWS1Jce4gW+eSNzHX4SceEDPFKOfM4pxyTxBy1ZD8g7w@mail.gmail.com>
+Received: from webbox1416.server-home.net ([77.236.96.61])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aqFM6-0002cG-RR
+ for barebox@lists.infradead.org; Wed, 13 Apr 2016 07:36:56 +0000
+Received: from imapserver.systec-electronic.com (unknown [212.185.67.146])
+ by webbox1416.server-home.net (Postfix) with ESMTPA id 4B57827A5D4
+ for <barebox@lists.infradead.org>; Wed, 13 Apr 2016 09:36:24 +0200 (CEST)
+From: Alexander Stein <alexander.stein@systec-electronic.com>
+Date: Wed, 13 Apr 2016 09:36:05 +0200
+Message-Id: <1460532965-19072-1-git-send-email-alexander.stein@systec-electronic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,74 +17,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx53 memory detection
-To: Jason Cobham <cobham.jason@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] scripts: imx-image: Fix image size in flash header for
+ i.MX35
+To: barebox@lists.infradead.org
+Cc: Daniel Krueger <daniel.krueger@systec-electronic.com>, Alexander Stein <alexander.stein@systec-electronic.com>
 
-Hi Jason,
+The i.MX35 needs additional 0x1000 byte. This quirk moved to the wrong
+location during refactoring of imx-image for v2016.03.0.
 
-On Tue, Apr 12, 2016 at 10:08:01PM -0700, Jason Cobham wrote:
-> Support for Barebox on the Digi connectcore imx53 board stopped
-> working recently. I believe the memory detection never worked properly
-> to begin with. I've re-factored lowlevel.c to match similar mx53
-> boards, however the ram size is always detected incorrectly.
+Fixes: adade597593442 ""scripts: imx: Allow to create signed images")
+Signed-off-by: Daniel Krueger <daniel.krueger@systec-electronic.com>
+Signed-off-by: Alexander Stein <alexander.stein@systec-electronic.com>
+---
+ scripts/imx/imx.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-So you replaced barebox_arm_entry with imx53_barebox_entry, right? What
-memory size do you have and what size gets detected then?
-
-> I have a
-> reliable way of detecting the board memory size in device_initcall.
-> 
-> I've tried adding mem_initcall/arm_add_mem_device() however mmu
-> support causes a panic when enabled. without mmu support enabled, the
-> board boots with the correct memory size however I get an error,
-> "Cannot request SDRAM region for stack".
-> 
-> I've tried to use the freescale loco/qsb as a template since the digi
-> board is similar, but I don't see where it's memory size is defined. I
-> assume it's automatically detected.
-
-Yes, it's read back from the memory controller in arch/arm/mach-imx/esdctl.c.
-
-The whole approach goes like this:
-
-- The SDRAM controller is configured by board specific lowlevel code (or
-  DCD data)
-- barebox_arm_entry() is called with some memory passed to it. This can be
-  the full memory of the board, but doesn't necessarily have to be. It
-  is only the memory barebox will use for itself, stack, malloc area.
-  imx53_barebox_entry() is a shortcut which reads back the SDRAM
-  controller settings to automatically detect SDRAM size and which calls
-  barebox_arm_entry() with the result.
-- during mem_initcall the imx-esdctl driver is registered. This driver
-  again reads back the SDRAM controller settings and registers memory
-  banks according to the settings.
-- Also during mem_initcall the memory areas specified in the device tree
-  are registered.
-
-If there are conflicts between the different banks then the first one
-wins. If then the MMU code later detects that the SDRAM passed to
-barebox_arm_entry() is actually bigger than the memory registered in the
-memory banks it can have undesired results.
-
-
-As a first step you should remove the /memory node in
-arch/arm/dts/imx53-ccxmx53.dtsi. Since there are different possible
-memory setups for this board it is wrong anyway. Then it would be
-interesting what imx_esdctl_v4_add_mem() detects. I believe it should be
-possible to fix it if it detects the wrong memory size.
-
-Sascha
-
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index 82ef97f..ca65389 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -221,6 +221,10 @@ static int do_soc(struct config_data *data, int argc, char *argv[])
+ 		if (!strcmp(socs[i].name, soc)) {
+ 			data->header_version = socs[i].header_version;
+ 			data->cpu_type = socs[i].cpu_type;
++
++			if (data->cpu_type == 35)
++				data->load_size += HEADER_LEN;
++
+ 			return 0;
+ 		}
+ 	}
+@@ -230,9 +234,6 @@ static int do_soc(struct config_data *data, int argc, char *argv[])
+ 		fprintf(stderr, "%s ", socs[i].name);
+ 	fprintf(stderr, "\n");
+ 
+-	if (data->cpu_type == 35)
+-		data->load_size += HEADER_LEN;
+-
+ 	return -EINVAL;
+ }
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.3
+
 
 _______________________________________________
 barebox mailing list
