@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from blu004-omc4s24.hotmail.com ([65.55.111.163])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aqNHJ-0007Z1-6H
- for barebox@lists.infradead.org; Wed, 13 Apr 2016 16:04:30 +0000
-From: DU HUANPENG <no_rep1y@hotmail.com>
-Date: Wed, 13 Apr 2016 16:04:01 +0000
-Message-ID: <HK2PR04MB16188596FE161189D917398EBE960@HK2PR04MB1618.apcprd04.prod.outlook.com>
-Content-Language: en-US
+Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aqSHT-0005Jc-65
+ for barebox@lists.infradead.org; Wed, 13 Apr 2016 21:25:00 +0000
+Received: by mail-wm0-x243.google.com with SMTP id a140so17587166wma.2
+ for <barebox@lists.infradead.org>; Wed, 13 Apr 2016 14:24:38 -0700 (PDT)
+Received: from sun (min31-1-82-66-70-105.fbx.proxad.net. [82.66.70.105])
+ by smtp.gmail.com with ESMTPSA id u3sm29890080wmg.15.2016.04.13.14.24.36
+ for <barebox@lists.infradead.org> (version=TLSv1/SSLv3 cipher=OTHER);
+ Wed, 13 Apr 2016 14:24:36 -0700 (PDT)
+Date: Wed, 13 Apr 2016 23:24:34 +0200
+From: Miquel Raynal <raynal.miquel@gmail.com>
+Message-ID: <20160413212434.GA4512@sun>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,78 +26,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] NULL: keep NULL definition in stddef.h only
-To: "t-kernel@googlegroups.com" <t-kernel@googlegroups.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Cc: "norep1y@21cn.com" <norep1y@21cn.com>, Du Huanpeng <u74147@gmail.com>
+Subject: [PATCH] i2c_probe: fix wrong start and stop addresses
+To: barebox@lists.infradead.org
 
-From: Du Huanpeng <u74147@gmail.com>
+This patch fixes the wrong range of i2c addresses used by the i2c_probe
+command when a stop address is provided. In this case the start address
+(startaddr) was taking the value of the stop address and the stop address
+(stopaddr) was always set to its default value.
 
-remove other local definition of NULL, use
-  #include <linux/stddef.h>
-instead.
-I use this command to search NULL definition,
-  grep -R "define\s*\<NULL\>"
-hope there are no more definition of NULL.
-
-from ISO/IEC 9899:TC3:
-The macros are
-	NULL
-which expands to an implementation-defined null pointer constant;
-
-Signed-off-by: Du Huanpeng <u74147@gmail.com>
+Signed-off-by: Miquel Raynal <raynal.miquel@gmail.com>
 ---
- include/command.h   |  5 +----
- lib/bzlib_private.h | 11 +----------
- 2 files changed, 2 insertions(+), 14 deletions(-)
+ commands/i2c.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/command.h b/include/command.h
-index 3aca1a9..b938431 100644
---- a/include/command.h
-+++ b/include/command.h
-@@ -25,10 +25,7 @@
+diff --git a/commands/i2c.c b/commands/i2c.c
+index f4ffc99..e6750e3 100644
+--- a/commands/i2c.c
++++ b/commands/i2c.c
+@@ -55,7 +55,7 @@ static int do_i2c_probe(int argc, char *argv[])
+ 	if (argc > 2)
+ 		startaddr = simple_strtol(argv[2], NULL, 0);
+ 	if (argc > 3)
+-		startaddr = simple_strtol(argv[3], NULL, 0);
++		stopaddr = simple_strtol(argv[3], NULL, 0);
  
- #include <linux/list.h>
- #include <linux/stringify.h>
--
--#ifndef NULL
--#define NULL	0
--#endif
-+#include <linux/stddef.h>
  
- #ifndef	__ASSEMBLY__
- 
-diff --git a/lib/bzlib_private.h b/lib/bzlib_private.h
-index 87d8f94..de10dd4 100644
---- a/lib/bzlib_private.h
-+++ b/lib/bzlib_private.h
-@@ -67,6 +67,7 @@
- #define _BZLIB_PRIVATE_H
- 
- #include <malloc.h>
-+#include <linux/stddef.h>
- 
- #include "bzlib.h"
- 
-@@ -515,16 +516,6 @@ BZ2_hbCreateDecodeTables ( Int32*, Int32*, Int32*, UChar*,
- 
- #endif
- 
--
--/*-- BZ_NO_STDIO seems to make NULL disappear on some platforms. --*/
--
--#ifdef BZ_NO_STDIO
--#ifndef NULL
--#define NULL 0
--#endif
--#endif
--
--
- /*-------------------------------------------------------------*/
- /*--- end                                   bzlib_private.h ---*/
- /*-------------------------------------------------------------*/
+ 	if (startaddr > stopaddr)
 -- 
-1.9.1
-
+1.7.10.4
 
 _______________________________________________
 barebox mailing list
