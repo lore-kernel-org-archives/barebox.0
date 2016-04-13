@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aq4jX-0003DX-25
- for barebox@lists.infradead.org; Tue, 12 Apr 2016 20:16:23 +0000
-Received: from tellur.intern.lynxeye.de (p57B5ED0C.dip0.t-ipconnect.de
- [87.181.237.12]) by lynxeye.de (Postfix) with ESMTPA id 02C6226C2001
- for <barebox@lists.infradead.org>; Tue, 12 Apr 2016 22:15:23 +0200 (CEST)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Tue, 12 Apr 2016 22:15:20 +0200
-Message-Id: <1460492120-28861-1-git-send-email-dev@lynxeye.de>
+Received: from mail.kymetacorp.com ([192.81.58.21])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aq8TQ-00089I-PY
+ for barebox@lists.infradead.org; Wed, 13 Apr 2016 00:16:02 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Wed, 13 Apr 2016 00:15:36 +0000
+Message-ID: <1460506588.9103.26.camel@rtred1test09.kymeta.local>
+Content-Language: en-US
+Content-ID: <040C2C28290ADF4FB993462E60F08E86@kymetacorp.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,51 +17,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: tegra: set up stack before calling maincluster entry
-To: barebox@lists.infradead.org
+Subject: Barebox on small memory systems
+To: barebox <barebox@lists.infradead.org>
 
-Allows this code to work correct regardless of the used compiler
-optimizations.
+I'm considering porting barebox to Altera's Arria10 SoC.  A key
+difference from the existing Cyclone V support is that the SoC SDRAM
+controller is part of the FPGA scanchain.  Which means that in order to
+use SDRAM, the bootloader must load a file much larger than the maximum
+bootloader size into the FPGA.
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- arch/arm/mach-tegra/include/mach/lowlevel.h | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+With Cyclone V the code needed to use SDRAM is a few kB, fits inside the
+60 kB maximum bootloader size, and runs as part of the barebox PBL.  It
+seems almost all other ARM SoC's also have SDRAM init code that is small
+enough to fit inside barebox.  With Arria 10 the maximum bootloader size
+is increased to 204 kB but the code/data needed to use SDRAM is several
+MB.  So barebox will need to load it out of flash itself.
 
-diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-tegra/include/mach/lowlevel.h
-index f70688e..e9ba5ee 100644
---- a/arch/arm/mach-tegra/include/mach/lowlevel.h
-+++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
-@@ -255,9 +255,6 @@ void tegra_cpu_lowlevel_setup(char *fdt)
- {
- 	uint32_t r;
- 
--	if (tegra_cpu_is_maincomplex())
--		tegra_maincomplex_entry(fdt - get_runtime_offset());
--
- 	/* set the cpu to SVC32 mode */
- 	__asm__ __volatile__("mrs %0, cpsr":"=r"(r));
- 	r &= ~0x1f;
-@@ -265,6 +262,10 @@ void tegra_cpu_lowlevel_setup(char *fdt)
- 	__asm__ __volatile__("msr cpsr, %0" : : "r"(r));
- 
- 	arm_setup_stack(TEGRA_IRAM_BASE + SZ_256K - 8);
-+
-+	if (tegra_cpu_is_maincomplex())
-+		tegra_maincomplex_entry(fdt - get_runtime_offset());
-+
- 	tegra_ll_delay_setup();
- }
- 
--- 
-2.5.5
+In order to get an image file out of flash and programmed into the FPGA,
+it's useful to have a number of barebox drivers, like the MCI system,
+partition table parsing, FAT filesystem, etc.  Basically getting the
+full barebox (with a minimal set of drivers, e.g. no shell) running
+without having SDRAM access.
 
+So can one run barebox in 256 Kb?
 
+A minimal config of a non-PBL non-relocatable barebox with the necessary
+features is only about 54 Kb.  So that certainly fits.  But that doesn't
+include stack, heap, bss, etc.  Can a stripped down barebox actually run
+in 256 Kb and mount a FAT filesystem to get a next stage bootloader?
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
