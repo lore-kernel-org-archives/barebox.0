@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from m50-134.163.com ([123.125.50.134])
- by casper.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1aqJeU-00072C-TT
- for barebox@lists.infradead.org; Wed, 13 Apr 2016 12:12:13 +0000
+Received: from m50-135.163.com ([123.125.50.135])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aqK1L-0003en-TL
+ for barebox@lists.infradead.org; Wed, 13 Apr 2016 12:35:49 +0000
 From: Du Huanpeng <d-hp@163.com>
-Date: Wed, 13 Apr 2016 20:11:33 +0800
-Message-Id: <1460549493-13044-1-git-send-email-d-hp@163.com>
+Date: Wed, 13 Apr 2016 20:35:18 +0800
+Message-Id: <1460550918-15092-1-git-send-email-d-hp@163.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,70 +19,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] NULL: remove other definition of NULL
+Subject: [PATCH] wchar_t: wchar_t should go to stddef.h
 To: barebox@lists.infradead.org
 Cc: Du Huanpeng <u74147@gmail.com>
 
 From: Du Huanpeng <u74147@gmail.com>
 
-remove other definition of NULL, use
-  #include <linux/stddef.h>
-instead.
-I use this command to search NULL definition,
-  grep -R "define\s*\<NULL\>"
-hope there are no more definition of NULL.
+according to C99 standard, the definition of wchar_t
+should go stddef.h
+this patch also remove wchar_t local definition and
+use stddef.h instead.
 
 Signed-off-by: Du Huanpeng <u74147@gmail.com>
 ---
- include/command.h   |  5 +----
- lib/bzlib_private.h | 11 +----------
- 2 files changed, 2 insertions(+), 14 deletions(-)
+ fs/efi.c               | 3 +--
+ include/linux/stddef.h | 2 ++
+ include/wchar.h        | 3 +--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/command.h b/include/command.h
-index e41068a..b938431 100644
---- a/include/command.h
-+++ b/include/command.h
-@@ -25,10 +25,7 @@
+diff --git a/fs/efi.c b/fs/efi.c
+index 0f74cda..83c4682 100644
+--- a/fs/efi.c
++++ b/fs/efi.c
+@@ -32,6 +32,7 @@
+ #include <efi.h>
+ #include <mach/efi.h>
+ #include <mach/efi-device.h>
++#include <linux/stddef.h>
  
- #include <linux/list.h>
- #include <linux/stringify.h>
+ /* Open modes */
+ #define EFI_FILE_MODE_READ      0x0000000000000001
+@@ -92,8 +93,6 @@ struct efi_file_info {
+ 	s16 FileName[1];
+ };
+ 
+-typedef unsigned short wchar_t;
 -
--#ifndef NULL
--#define NULL	((void *)0)
--#endif
-+#include <linux/stddef.h>
- 
- #ifndef	__ASSEMBLY__
- 
-diff --git a/lib/bzlib_private.h b/lib/bzlib_private.h
-index 87d8f94..de10dd4 100644
---- a/lib/bzlib_private.h
-+++ b/lib/bzlib_private.h
-@@ -67,6 +67,7 @@
- #define _BZLIB_PRIVATE_H
- 
- #include <malloc.h>
-+#include <linux/stddef.h>
- 
- #include "bzlib.h"
- 
-@@ -515,16 +516,6 @@ BZ2_hbCreateDecodeTables ( Int32*, Int32*, Int32*, UChar*,
- 
+ struct efifs_priv {
+ 	struct efi_file_handle *root_dir;
+ 	struct efi_file_io_interface *protocol;
+diff --git a/include/linux/stddef.h b/include/linux/stddef.h
+index e366328..680d0c7 100644
+--- a/include/linux/stddef.h
++++ b/include/linux/stddef.h
+@@ -17,6 +17,8 @@ enum {
+ #include <linux/types.h>
  #endif
  
++typedef unsigned short wchar_t;
++
+ #undef offsetof
+ #define offsetof(TYPE, MEMBER) ((size_t) &((TYPE *)0)->MEMBER)
+ 
+diff --git a/include/wchar.h b/include/wchar.h
+index 702d8e2..adb4f37 100644
+--- a/include/wchar.h
++++ b/include/wchar.h
+@@ -2,8 +2,7 @@
+ #define __WCHAR_H
+ 
+ #include <linux/types.h>
 -
--/*-- BZ_NO_STDIO seems to make NULL disappear on some platforms. --*/
--
--#ifdef BZ_NO_STDIO
--#ifndef NULL
--#define NULL 0
--#endif
--#endif
--
--
- /*-------------------------------------------------------------*/
- /*--- end                                   bzlib_private.h ---*/
- /*-------------------------------------------------------------*/
+-typedef u16 wchar_t;
++#include <linux/stddef.h>
+ 
+ wchar_t *strdup_wchar(const wchar_t *src);
+ 
 -- 
 1.9.1
 
