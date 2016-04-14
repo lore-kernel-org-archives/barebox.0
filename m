@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
+Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aqSHT-0005Jc-65
- for barebox@lists.infradead.org; Wed, 13 Apr 2016 21:25:00 +0000
-Received: by mail-wm0-x243.google.com with SMTP id a140so17587166wma.2
- for <barebox@lists.infradead.org>; Wed, 13 Apr 2016 14:24:38 -0700 (PDT)
-Received: from sun (min31-1-82-66-70-105.fbx.proxad.net. [82.66.70.105])
- by smtp.gmail.com with ESMTPSA id u3sm29890080wmg.15.2016.04.13.14.24.36
- for <barebox@lists.infradead.org> (version=TLSv1/SSLv3 cipher=OTHER);
- Wed, 13 Apr 2016 14:24:36 -0700 (PDT)
-Date: Wed, 13 Apr 2016 23:24:34 +0200
-From: Miquel Raynal <raynal.miquel@gmail.com>
-Message-ID: <20160413212434.GA4512@sun>
+ id 1aqZ3R-00051I-0e
+ for barebox@lists.infradead.org; Thu, 14 Apr 2016 04:38:57 +0000
+Received: by mail-wm0-x242.google.com with SMTP id a140so19292358wma.2
+ for <barebox@lists.infradead.org>; Wed, 13 Apr 2016 21:38:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
+In-Reply-To: <20160413063649.GU9102@pengutronix.de>
+References: <CAKu_b=KWS1Jce4gW+eSNzHX4SceEDPFKOfM4pxyTxBy1ZD8g7w@mail.gmail.com>
+ <20160413063649.GU9102@pengutronix.de>
+Date: Wed, 13 Apr 2016 21:38:35 -0700
+Message-ID: <CAKu_b=KQt3sA7LCUCb_-315n-=rohnyJxFUB4x41z-WthHrNWg@mail.gmail.com>
+From: Jason Cobham <cobham.jason@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +20,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i2c_probe: fix wrong start and stop addresses
-To: barebox@lists.infradead.org
+Subject: Re: imx53 memory detection
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This patch fixes the wrong range of i2c addresses used by the i2c_probe
-command when a stop address is provided. In this case the start address
-(startaddr) was taking the value of the stop address and the stop address
-(stopaddr) was always set to its default value.
-
-Signed-off-by: Miquel Raynal <raynal.miquel@gmail.com>
----
- commands/i2c.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/commands/i2c.c b/commands/i2c.c
-index f4ffc99..e6750e3 100644
---- a/commands/i2c.c
-+++ b/commands/i2c.c
-@@ -55,7 +55,7 @@ static int do_i2c_probe(int argc, char *argv[])
- 	if (argc > 2)
- 		startaddr = simple_strtol(argv[2], NULL, 0);
- 	if (argc > 3)
--		startaddr = simple_strtol(argv[3], NULL, 0);
-+		stopaddr = simple_strtol(argv[3], NULL, 0);
- 
- 
- 	if (startaddr > stopaddr)
--- 
-1.7.10.4
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKVGhhbmtzIGZvciB0aGUgcXVpY2sgcmVwbHkuCgo+IFNvIHlvdSByZXBsYWNl
+ZCBiYXJlYm94X2FybV9lbnRyeSB3aXRoIGlteDUzX2JhcmVib3hfZW50cnksIHJpZ2h0PyBXaGF0
+Cj4gbWVtb3J5IHNpemUgZG8geW91IGhhdmUgYW5kIHdoYXQgc2l6ZSBnZXRzIGRldGVjdGVkIHRo
+ZW4/CgpZZXMsIEkgdXNlZCBpbXg1M19iYXJlYm94X2VudHJ5LiBJIGhhdmUgdHdvIGJvYXJkcywg
+NTEyTUIvMUcuIEluCmZ1cnRoZXIgdGVzdGluZywgSSBmb3VuZCB0aGUgNTEyTUIgYm9hcmQgd2Fz
+IGRldGVjdGVkIGNvcnJlY3RseSwgYW5kCnRoZSAxRyBib2FyZCB3YXMgZGV0ZWN0ZWQgYXQgMkcu
+CgouLi4KCj4gQXMgYSBmaXJzdCBzdGVwIHlvdSBzaG91bGQgcmVtb3ZlIHRoZSAvbWVtb3J5IG5v
+ZGUgaW4KPiBhcmNoL2FybS9kdHMvaW14NTMtY2N4bXg1My5kdHNpLiBTaW5jZSB0aGVyZSBhcmUg
+ZGlmZmVyZW50IHBvc3NpYmxlCj4gbWVtb3J5IHNldHVwcyBmb3IgdGhpcyBib2FyZCBpdCBpcyB3
+cm9uZyBhbnl3YXkuIFRoZW4gaXQgd291bGQgYmUKPiBpbnRlcmVzdGluZyB3aGF0IGlteF9lc2Rj
+dGxfdjRfYWRkX21lbSgpIGRldGVjdHMuIEkgYmVsaWV2ZSBpdCBzaG91bGQgYmUKPiBwb3NzaWJs
+ZSB0byBmaXggaXQgaWYgaXQgZGV0ZWN0cyB0aGUgd3JvbmcgbWVtb3J5IHNpemUuCgpGb3IgdGhl
+IDFHIGJvYXJkLCBJIHJlbW92ZWQgdGhlIG1lbW9yeSBub2RlIGFuZCBsb29rZWQgaW50bwppbXhf
+ZXNkY3RsX3Y0X2FkZF9tZW0oKS4gSSBmb3VuZDoKYWRkX21lbTogY3MwIGJhc2U6IDB4NzAwMDAw
+MDAgY3MwIHNpemU6IDB4NDAwMDAwMDAKYWRkX21lbTogY3MxIGJhc2U6IDB4YjAwMDAwMDAgY3Mx
+IHNpemU6IDB4NDAwMDAwMDAKCkdvaW5nIGZ1cnRoZXIgaW50byBpdCwgSSBmb3VuZCBpbiB0aGUg
+aW14X3Y0X3NkcmFtX3NpemUoKSByZWFkIHRoZQpmb2xsb3dpbmcgZnJvbSB0aGUgZXNkY3RsIHJl
+Z2lzdGVyczoKY3RsdmFsOjB4YzQxMTAwMDAsIGVzZG1pc2M6MHhjMDAwMTZkMCB3aGljaCBpcyBz
+ZXQgZnJvbSB0aGUKYXBwcm9wcmlhdGUgZmxhc2gtaGVhZGVyIGZpbGUuCgpUaGUgcmFtIHBvcHVs
+YXRlZCBvbiB0aGUgMUcgYm9hcmQgaXMgTVQ0N0gxMjhNMTYg4oCTIDEyOCBNZWcgeCAxNiAoMTYK
+TWVnIHggMTYgeCA4IGJhbmtzKS4KQ29tcGFyaW5nIHRoZSByZWdpc3RlciBzZXR0aW5nIGFnYWlu
+c3QgdGhlIGRhdGFzaGVldCBmb3IgdGhlIHJhbSBjaGlwcwpsb29rcyBsaWtlIHRoZXJlIHdhcyBh
+IG1pc3Rha2UgaW4gdGhlIHJvdyBzZXR0aW5nIG9mIHRoZSAxRwpmbGFzaC1oZWFkZXIuIEFmdGVy
+IHVwZGF0aW5nIGl0IHRvIHdoYXQgSSBiZWxpZXZlIGlzIGNvcnJlY3Qgc2V0dGluZzoKKGN0bHZh
+bDoweGMzMTEwMDAwLCBlc2RtaXNjOjB4YzAwMDE2ZDApLCB0aGUgbWVtb3J5IGlzIG5vdyBkZXRl
+Y3RlZApjb3JyZWN0bHkuCgpVbmxlc3MgeW91IHNlZSBhbnkgSXNzdWUgd2l0aCBteSBmaW5kaW5n
+cywgSSdsbCBnbyB3aXRoIHRoaXMgZml4LgoKClRoYW5rcywKCkphc29uCgpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
+YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
