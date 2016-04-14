@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aqaJ7-0000L8-6q
- for barebox@lists.infradead.org; Thu, 14 Apr 2016 05:59:14 +0000
-Date: Thu, 14 Apr 2016 07:58:50 +0200
+ id 1aqaMe-0001I1-5v
+ for barebox@lists.infradead.org; Thu, 14 Apr 2016 06:02:52 +0000
+Date: Thu, 14 Apr 2016 08:02:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160414055850.GW9102@pengutronix.de>
-References: <1460532965-19072-1-git-send-email-alexander.stein@systec-electronic.com>
+Message-ID: <20160414060222.GX9102@pengutronix.de>
+References: <HK2PR04MB16188596FE161189D917398EBE960@HK2PR04MB1618.apcprd04.prod.outlook.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1460532965-19072-1-git-send-email-alexander.stein@systec-electronic.com>
+In-Reply-To: <HK2PR04MB16188596FE161189D917398EBE960@HK2PR04MB1618.apcprd04.prod.outlook.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,21 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] scripts: imx-image: Fix image size in flash header
- for i.MX35
-To: Alexander Stein <alexander.stein@systec-electronic.com>
-Cc: barebox@lists.infradead.org, Daniel Krueger <daniel.krueger@systec-electronic.com>
+Subject: Re: [PATCH] NULL: keep NULL definition in stddef.h only
+To: DU HUANPENG <no_rep1y@hotmail.com>, g@pengutronix.de
+Cc: Du Huanpeng <u74147@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, "norep1y@21cn.com" <norep1y@21cn.com>, "t-kernel@googlegroups.com" <t-kernel@googlegroups.com>
 
-On Wed, Apr 13, 2016 at 09:36:05AM +0200, Alexander Stein wrote:
-> The i.MX35 needs additional 0x1000 byte. This quirk moved to the wrong
-> location during refactoring of imx-image for v2016.03.0.
+On Wed, Apr 13, 2016 at 04:04:01PM +0000, DU HUANPENG wrote:
+> From: Du Huanpeng <u74147@gmail.com>
 > 
-> Fixes: adade597593442 ""scripts: imx: Allow to create signed images")
-> Signed-off-by: Daniel Krueger <daniel.krueger@systec-electronic.com>
-> Signed-off-by: Alexander Stein <alexander.stein@systec-electronic.com>
+> remove other local definition of NULL, use
+>   #include <linux/stddef.h>
+> instead.
+> I use this command to search NULL definition,
+>   grep -R "define\s*\<NULL\>"
+> hope there are no more definition of NULL.
+> 
+> from ISO/IEC 9899:TC3:
+> The macros are
+> 	NULL
+> which expands to an implementation-defined null pointer constant;
+> 
+> Signed-off-by: Du Huanpeng <u74147@gmail.com>
 > ---
->  scripts/imx/imx.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+>  include/command.h   |  5 +----
+>  lib/bzlib_private.h | 11 +----------
+>  2 files changed, 2 insertions(+), 14 deletions(-)
 
 Applied, thanks
 
