@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aqbBJ-0003E4-U7
- for barebox@lists.infradead.org; Thu, 14 Apr 2016 06:55:15 +0000
-Date: Thu, 14 Apr 2016 08:54:52 +0200
+ id 1aqcAq-0002uk-Nm
+ for barebox@lists.infradead.org; Thu, 14 Apr 2016 07:58:49 +0000
+Date: Thu, 14 Apr 2016 09:58:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160414065452.GA9102@pengutronix.de>
-References: <CAKu_b=KWS1Jce4gW+eSNzHX4SceEDPFKOfM4pxyTxBy1ZD8g7w@mail.gmail.com>
- <20160413063649.GU9102@pengutronix.de>
- <CAKu_b=KQt3sA7LCUCb_-315n-=rohnyJxFUB4x41z-WthHrNWg@mail.gmail.com>
+Message-ID: <20160414075826.GB9102@pengutronix.de>
+References: <1460557139-64673-1-git-send-email-poggi.raph@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAKu_b=KQt3sA7LCUCb_-315n-=rohnyJxFUB4x41z-WthHrNWg@mail.gmail.com>
+In-Reply-To: <1460557139-64673-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,51 +18,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx53 memory detection
-To: Jason Cobham <cobham.jason@gmail.com>
+Subject: Re: [PATCH] bitops: fls64: add missing include
+To: Raphael Poggi <poggi.raph@gmail.com>
 Cc: barebox@lists.infradead.org
 
-T24gV2VkLCBBcHIgMTMsIDIwMTYgYXQgMDk6Mzg6MzVQTSAtMDcwMCwgSmFzb24gQ29iaGFtIHdy
-b3RlOgo+IEhpIFNhc2NoYSwKPiAKPiBUaGFua3MgZm9yIHRoZSBxdWljayByZXBseS4KPiAKPiA+
-IFNvIHlvdSByZXBsYWNlZCBiYXJlYm94X2FybV9lbnRyeSB3aXRoIGlteDUzX2JhcmVib3hfZW50
-cnksIHJpZ2h0PyBXaGF0Cj4gPiBtZW1vcnkgc2l6ZSBkbyB5b3UgaGF2ZSBhbmQgd2hhdCBzaXpl
-IGdldHMgZGV0ZWN0ZWQgdGhlbj8KPiAKPiBZZXMsIEkgdXNlZCBpbXg1M19iYXJlYm94X2VudHJ5
-LiBJIGhhdmUgdHdvIGJvYXJkcywgNTEyTUIvMUcuIEluCj4gZnVydGhlciB0ZXN0aW5nLCBJIGZv
-dW5kIHRoZSA1MTJNQiBib2FyZCB3YXMgZGV0ZWN0ZWQgY29ycmVjdGx5LCBhbmQKPiB0aGUgMUcg
-Ym9hcmQgd2FzIGRldGVjdGVkIGF0IDJHLgo+IAo+IC4uLgo+IAo+ID4gQXMgYSBmaXJzdCBzdGVw
-IHlvdSBzaG91bGQgcmVtb3ZlIHRoZSAvbWVtb3J5IG5vZGUgaW4KPiA+IGFyY2gvYXJtL2R0cy9p
-bXg1My1jY3hteDUzLmR0c2kuIFNpbmNlIHRoZXJlIGFyZSBkaWZmZXJlbnQgcG9zc2libGUKPiA+
-IG1lbW9yeSBzZXR1cHMgZm9yIHRoaXMgYm9hcmQgaXQgaXMgd3JvbmcgYW55d2F5LiBUaGVuIGl0
-IHdvdWxkIGJlCj4gPiBpbnRlcmVzdGluZyB3aGF0IGlteF9lc2RjdGxfdjRfYWRkX21lbSgpIGRl
-dGVjdHMuIEkgYmVsaWV2ZSBpdCBzaG91bGQgYmUKPiA+IHBvc3NpYmxlIHRvIGZpeCBpdCBpZiBp
-dCBkZXRlY3RzIHRoZSB3cm9uZyBtZW1vcnkgc2l6ZS4KPiAKPiBGb3IgdGhlIDFHIGJvYXJkLCBJ
-IHJlbW92ZWQgdGhlIG1lbW9yeSBub2RlIGFuZCBsb29rZWQgaW50bwo+IGlteF9lc2RjdGxfdjRf
-YWRkX21lbSgpLiBJIGZvdW5kOgo+IGFkZF9tZW06IGNzMCBiYXNlOiAweDcwMDAwMDAwIGNzMCBz
-aXplOiAweDQwMDAwMDAwCj4gYWRkX21lbTogY3MxIGJhc2U6IDB4YjAwMDAwMDAgY3MxIHNpemU6
-IDB4NDAwMDAwMDAKPiAKPiBHb2luZyBmdXJ0aGVyIGludG8gaXQsIEkgZm91bmQgaW4gdGhlIGlt
-eF92NF9zZHJhbV9zaXplKCkgcmVhZCB0aGUKPiBmb2xsb3dpbmcgZnJvbSB0aGUgZXNkY3RsIHJl
-Z2lzdGVyczoKPiBjdGx2YWw6MHhjNDExMDAwMCwgZXNkbWlzYzoweGMwMDAxNmQwIHdoaWNoIGlz
-IHNldCBmcm9tIHRoZQo+IGFwcHJvcHJpYXRlIGZsYXNoLWhlYWRlciBmaWxlLgo+IAo+IFRoZSBy
-YW0gcG9wdWxhdGVkIG9uIHRoZSAxRyBib2FyZCBpcyBNVDQ3SDEyOE0xNiDigJMgMTI4IE1lZyB4
-IDE2ICgxNgo+IE1lZyB4IDE2IHggOCBiYW5rcykuCj4gQ29tcGFyaW5nIHRoZSByZWdpc3RlciBz
-ZXR0aW5nIGFnYWluc3QgdGhlIGRhdGFzaGVldCBmb3IgdGhlIHJhbSBjaGlwcwo+IGxvb2tzIGxp
-a2UgdGhlcmUgd2FzIGEgbWlzdGFrZSBpbiB0aGUgcm93IHNldHRpbmcgb2YgdGhlIDFHCj4gZmxh
-c2gtaGVhZGVyLiBBZnRlciB1cGRhdGluZyBpdCB0byB3aGF0IEkgYmVsaWV2ZSBpcyBjb3JyZWN0
-IHNldHRpbmc6Cj4gKGN0bHZhbDoweGMzMTEwMDAwLCBlc2RtaXNjOjB4YzAwMDE2ZDApLCB0aGUg
-bWVtb3J5IGlzIG5vdyBkZXRlY3RlZAo+IGNvcnJlY3RseS4KClNvIHlvdSBzYXkgdGhhdCB0aGUg
-Zmxhc2ggaGVhZGVyIHNldHMgdXAgbWVtb3J5IG9mIHR3aWNlIHRoZSBhY3R1YWwgc2l6ZQp3aGlj
-aCB0aGVuIG1pc2xlYWRzIHRoZSBkZXRlY3Rpb24gY29kZT8gVGhlbiB0aGlzIGlzIHdvcnRoIGZp
-eGluZywgYWxzbwp0aGUgL21lbW9yeSBub2RlIHNob3VsZCBiZSByZW1vdmVkLiBDYXJlIHRvIHNl
-bmQgcGF0Y2hlcyBmb3IgdGhpcz8KClRoYW5rcwogU2FzY2hhCgotLSAKUGVuZ3V0cm9uaXggZS5L
-LiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3
-dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBH
-ZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVz
-aGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Wed, Apr 13, 2016 at 04:18:58PM +0200, Raphael Poggi wrote:
+> Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
+> ---
+>  include/asm-generic/bitops/fls64.h | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/include/asm-generic/bitops/fls64.h b/include/asm-generic/bitops/fls64.h
+> index 86d403f..e8eff76 100644
+> --- a/include/asm-generic/bitops/fls64.h
+> +++ b/include/asm-generic/bitops/fls64.h
+> @@ -2,6 +2,7 @@
+>  #define _ASM_GENERIC_BITOPS_FLS64_H_
+>  
+>  #include <asm/types.h>
+> +#include <asm-generic/bitops/__fls.h>
+
+This is wrong. This include must not be here to give the architecture
+the chance to provide an optimized version of __fls(), but the generic
+version of fls64(). This may not be clear in barebox context since all
+users use the generic version, but in the kernel there are some
+architectures implementing their own version of __fls() while others use
+the generic variant:
+
+arch/mips/include/asm/bitops.h:480:static inline unsigned long __fls(unsigned long word)
+...
+#include <asm-generic/bitops/fls64.h>
+
+arch/metag/include/asm/bitops.h:118:#include <asm-generic/bitops/__fls.h>
+...
+#include <asm-generic/bitops/fls64.h>
+
+Sascha
+
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
