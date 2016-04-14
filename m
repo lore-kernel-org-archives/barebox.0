@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aqZ3R-00051I-0e
- for barebox@lists.infradead.org; Thu, 14 Apr 2016 04:38:57 +0000
-Received: by mail-wm0-x242.google.com with SMTP id a140so19292358wma.2
- for <barebox@lists.infradead.org>; Wed, 13 Apr 2016 21:38:36 -0700 (PDT)
+ id 1aqaJ7-0000L8-6q
+ for barebox@lists.infradead.org; Thu, 14 Apr 2016 05:59:14 +0000
+Date: Thu, 14 Apr 2016 07:58:50 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160414055850.GW9102@pengutronix.de>
+References: <1460532965-19072-1-git-send-email-alexander.stein@systec-electronic.com>
 MIME-Version: 1.0
-In-Reply-To: <20160413063649.GU9102@pengutronix.de>
-References: <CAKu_b=KWS1Jce4gW+eSNzHX4SceEDPFKOfM4pxyTxBy1ZD8g7w@mail.gmail.com>
- <20160413063649.GU9102@pengutronix.de>
-Date: Wed, 13 Apr 2016 21:38:35 -0700
-Message-ID: <CAKu_b=KQt3sA7LCUCb_-315n-=rohnyJxFUB4x41z-WthHrNWg@mail.gmail.com>
-From: Jason Cobham <cobham.jason@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1460532965-19072-1-git-send-email-alexander.stein@systec-electronic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,41 +18,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx53 memory detection
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1] scripts: imx-image: Fix image size in flash header
+ for i.MX35
+To: Alexander Stein <alexander.stein@systec-electronic.com>
+Cc: barebox@lists.infradead.org, Daniel Krueger <daniel.krueger@systec-electronic.com>
 
-SGkgU2FzY2hhLAoKVGhhbmtzIGZvciB0aGUgcXVpY2sgcmVwbHkuCgo+IFNvIHlvdSByZXBsYWNl
-ZCBiYXJlYm94X2FybV9lbnRyeSB3aXRoIGlteDUzX2JhcmVib3hfZW50cnksIHJpZ2h0PyBXaGF0
-Cj4gbWVtb3J5IHNpemUgZG8geW91IGhhdmUgYW5kIHdoYXQgc2l6ZSBnZXRzIGRldGVjdGVkIHRo
-ZW4/CgpZZXMsIEkgdXNlZCBpbXg1M19iYXJlYm94X2VudHJ5LiBJIGhhdmUgdHdvIGJvYXJkcywg
-NTEyTUIvMUcuIEluCmZ1cnRoZXIgdGVzdGluZywgSSBmb3VuZCB0aGUgNTEyTUIgYm9hcmQgd2Fz
-IGRldGVjdGVkIGNvcnJlY3RseSwgYW5kCnRoZSAxRyBib2FyZCB3YXMgZGV0ZWN0ZWQgYXQgMkcu
-CgouLi4KCj4gQXMgYSBmaXJzdCBzdGVwIHlvdSBzaG91bGQgcmVtb3ZlIHRoZSAvbWVtb3J5IG5v
-ZGUgaW4KPiBhcmNoL2FybS9kdHMvaW14NTMtY2N4bXg1My5kdHNpLiBTaW5jZSB0aGVyZSBhcmUg
-ZGlmZmVyZW50IHBvc3NpYmxlCj4gbWVtb3J5IHNldHVwcyBmb3IgdGhpcyBib2FyZCBpdCBpcyB3
-cm9uZyBhbnl3YXkuIFRoZW4gaXQgd291bGQgYmUKPiBpbnRlcmVzdGluZyB3aGF0IGlteF9lc2Rj
-dGxfdjRfYWRkX21lbSgpIGRldGVjdHMuIEkgYmVsaWV2ZSBpdCBzaG91bGQgYmUKPiBwb3NzaWJs
-ZSB0byBmaXggaXQgaWYgaXQgZGV0ZWN0cyB0aGUgd3JvbmcgbWVtb3J5IHNpemUuCgpGb3IgdGhl
-IDFHIGJvYXJkLCBJIHJlbW92ZWQgdGhlIG1lbW9yeSBub2RlIGFuZCBsb29rZWQgaW50bwppbXhf
-ZXNkY3RsX3Y0X2FkZF9tZW0oKS4gSSBmb3VuZDoKYWRkX21lbTogY3MwIGJhc2U6IDB4NzAwMDAw
-MDAgY3MwIHNpemU6IDB4NDAwMDAwMDAKYWRkX21lbTogY3MxIGJhc2U6IDB4YjAwMDAwMDAgY3Mx
-IHNpemU6IDB4NDAwMDAwMDAKCkdvaW5nIGZ1cnRoZXIgaW50byBpdCwgSSBmb3VuZCBpbiB0aGUg
-aW14X3Y0X3NkcmFtX3NpemUoKSByZWFkIHRoZQpmb2xsb3dpbmcgZnJvbSB0aGUgZXNkY3RsIHJl
-Z2lzdGVyczoKY3RsdmFsOjB4YzQxMTAwMDAsIGVzZG1pc2M6MHhjMDAwMTZkMCB3aGljaCBpcyBz
-ZXQgZnJvbSB0aGUKYXBwcm9wcmlhdGUgZmxhc2gtaGVhZGVyIGZpbGUuCgpUaGUgcmFtIHBvcHVs
-YXRlZCBvbiB0aGUgMUcgYm9hcmQgaXMgTVQ0N0gxMjhNMTYg4oCTIDEyOCBNZWcgeCAxNiAoMTYK
-TWVnIHggMTYgeCA4IGJhbmtzKS4KQ29tcGFyaW5nIHRoZSByZWdpc3RlciBzZXR0aW5nIGFnYWlu
-c3QgdGhlIGRhdGFzaGVldCBmb3IgdGhlIHJhbSBjaGlwcwpsb29rcyBsaWtlIHRoZXJlIHdhcyBh
-IG1pc3Rha2UgaW4gdGhlIHJvdyBzZXR0aW5nIG9mIHRoZSAxRwpmbGFzaC1oZWFkZXIuIEFmdGVy
-IHVwZGF0aW5nIGl0IHRvIHdoYXQgSSBiZWxpZXZlIGlzIGNvcnJlY3Qgc2V0dGluZzoKKGN0bHZh
-bDoweGMzMTEwMDAwLCBlc2RtaXNjOjB4YzAwMDE2ZDApLCB0aGUgbWVtb3J5IGlzIG5vdyBkZXRl
-Y3RlZApjb3JyZWN0bHkuCgpVbmxlc3MgeW91IHNlZSBhbnkgSXNzdWUgd2l0aCBteSBmaW5kaW5n
-cywgSSdsbCBnbyB3aXRoIHRoaXMgZml4LgoKClRoYW5rcywKCkphc29uCgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
-YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Wed, Apr 13, 2016 at 09:36:05AM +0200, Alexander Stein wrote:
+> The i.MX35 needs additional 0x1000 byte. This quirk moved to the wrong
+> location during refactoring of imx-image for v2016.03.0.
+> 
+> Fixes: adade597593442 ""scripts: imx: Allow to create signed images")
+> Signed-off-by: Daniel Krueger <daniel.krueger@systec-electronic.com>
+> Signed-off-by: Alexander Stein <alexander.stein@systec-electronic.com>
+> ---
+>  scripts/imx/imx.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
