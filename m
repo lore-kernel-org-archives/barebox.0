@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from m50-132.163.com ([123.125.50.132])
+Received: from m50-138.163.com ([123.125.50.138])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aquy4-0004wG-KI
- for barebox@lists.infradead.org; Fri, 15 Apr 2016 04:02:53 +0000
+ id 1aqv28-000735-U1
+ for barebox@lists.infradead.org; Fri, 15 Apr 2016 04:07:06 +0000
 From: DU HUANPENG <do_not_rep1y@163.com>
-Date: Fri, 15 Apr 2016 12:02:24 +0800
-Message-Id: <1460692944-18946-1-git-send-email-do_not_rep1y@163.com>
+Date: Fri, 15 Apr 2016 12:06:32 +0800
+Message-Id: <1460693192-19178-1-git-send-email-do_not_rep1y@163.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -32,11 +32,11 @@ add vi like key support:
 
 Signed-off-by: Du Huanpeng <u74147@gmail.com>
 ---
- common/menu.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ common/menu.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/common/menu.c b/common/menu.c
-index 54f2c71..51b4cfc 100644
+index 54f2c71..9819569 100644
 --- a/common/menu.c
 +++ b/common/menu.c
 @@ -327,6 +327,7 @@ int menu_show(struct menu *m)
@@ -55,22 +55,22 @@ index 54f2c71..51b4cfc 100644
  		case BB_KEY_DOWN:
  			m->selected = list_entry(m->selected->list.next, struct menu_entry,
  						 list);
-@@ -346,13 +348,13 @@ int menu_show(struct menu *m)
+@@ -346,13 +348,14 @@ int menu_show(struct menu *m)
  			repaint = 1;
  			break;
  		case ' ':
 -			if (m->selected->type != MENU_ENTRY_BOX)
--				break;
--			m->selected->box_state = !m->selected->box_state;
--			if (m->selected->action)
--				m->selected->action(m, m->selected);
--			repaint = 1;
--			break;
 +			if (m->selected->type == MENU_ENTRY_BOX) {
 +				m->selected->box_state = !m->selected->box_state;
 +				if (m->selected->action)
 +					m->selected->action(m, m->selected);
 +				repaint = 1;
+ 				break;
+-			m->selected->box_state = !m->selected->box_state;
+-			if (m->selected->action)
+-				m->selected->action(m, m->selected);
+-			repaint = 1;
+-			break;
 +			}
 +			/* no break */
  		case BB_KEY_ENTER:
