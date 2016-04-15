@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aqxZV-0004xZ-P1
- for barebox@lists.infradead.org; Fri, 15 Apr 2016 06:49:46 +0000
+ id 1aqxZV-0004xU-P1
+ for barebox@lists.infradead.org; Fri, 15 Apr 2016 06:49:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 15 Apr 2016 08:49:18 +0200
-Message-Id: <1460702958-4012-10-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 15 Apr 2016 08:49:10 +0200
+Message-Id: <1460702958-4012-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1460702958-4012-1-git-send-email-s.hauer@pengutronix.de>
 References: <1460702958-4012-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,120 +21,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] include: Move ide platform_data to include/platform_data
+Subject: [PATCH 1/9] include: Move ep93xx eth platform_data to
+ include/platform_data
 To: Barebox List <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/phytec-phycore-imx27/pcm970.c   |  2 +-
- arch/x86/boards/x86_generic/intf_platform_ide.c |  2 +-
- drivers/ata/intf_platform_ide.c                 |  2 +-
- drivers/ata/pata-imx.c                          |  2 +-
- include/platform_data/ide.h                     | 32 +++++++++++++++++++++++++
- include/platform_ide.h                          | 32 -------------------------
- 6 files changed, 36 insertions(+), 36 deletions(-)
- create mode 100644 include/platform_data/ide.h
- delete mode 100644 include/platform_ide.h
+ arch/arm/boards/edb93xx/edb93xx.c  |  2 +-
+ drivers/net/ep93xx.c               |  2 +-
+ include/net/ep93xx_eth.h           | 26 --------------------------
+ include/platform_data/eth-ep93xx.h | 26 ++++++++++++++++++++++++++
+ 4 files changed, 28 insertions(+), 28 deletions(-)
+ delete mode 100644 include/net/ep93xx_eth.h
+ create mode 100644 include/platform_data/eth-ep93xx.h
 
-diff --git a/arch/arm/boards/phytec-phycore-imx27/pcm970.c b/arch/arm/boards/phytec-phycore-imx27/pcm970.c
-index 73df2ad..13bb7c1 100644
---- a/arch/arm/boards/phytec-phycore-imx27/pcm970.c
-+++ b/arch/arm/boards/phytec-phycore-imx27/pcm970.c
-@@ -15,7 +15,7 @@
- #include <gpio.h>
- #include <init.h>
- #include <io.h>
--#include <platform_ide.h>
-+#include <platform_data/ide.h>
- #include <linux/sizes.h>
- #include <mach/imx27-regs.h>
- #include <mach/iomux-mx27.h>
-diff --git a/arch/x86/boards/x86_generic/intf_platform_ide.c b/arch/x86/boards/x86_generic/intf_platform_ide.c
-index 18a2620..528e721 100644
---- a/arch/x86/boards/x86_generic/intf_platform_ide.c
-+++ b/arch/x86/boards/x86_generic/intf_platform_ide.c
-@@ -24,7 +24,7 @@
- #include <driver.h>
- #include <init.h>
- #include <linux/err.h>
--#include <platform_ide.h>
-+#include <platform_data/ide.h>
- #include "envsector.h"
- 
- static struct ide_port_info ide_plat = {
-diff --git a/drivers/ata/intf_platform_ide.c b/drivers/ata/intf_platform_ide.c
-index 6e74bfb..c3af083 100644
---- a/drivers/ata/intf_platform_ide.c
-+++ b/drivers/ata/intf_platform_ide.c
+diff --git a/arch/arm/boards/edb93xx/edb93xx.c b/arch/arm/boards/edb93xx/edb93xx.c
+index 0fb93d2..cdc2009 100644
+--- a/arch/arm/boards/edb93xx/edb93xx.c
++++ b/arch/arm/boards/edb93xx/edb93xx.c
 @@ -27,7 +27,7 @@
  #include <malloc.h>
- #include <errno.h>
- #include <ata_drive.h>
--#include <platform_ide.h>
-+#include <platform_data/ide.h>
- #include <linux/err.h>
- #include <of.h>
+ #include <generated/mach-types.h>
+ #include <mach/ep93xx-regs.h>
+-#include <net/ep93xx_eth.h>
++#include <platform_data/eth-ep93xx.h>
+ #include "edb93xx.h"
  
-diff --git a/drivers/ata/pata-imx.c b/drivers/ata/pata-imx.c
-index 8429573..c8098a5 100644
---- a/drivers/ata/pata-imx.c
-+++ b/drivers/ata/pata-imx.c
-@@ -28,7 +28,7 @@
- #include <malloc.h>
- #include <errno.h>
- #include <ata_drive.h>
--#include <platform_ide.h>
-+#include <platform_data/ide.h>
- #include <io.h>
- #include <of.h>
- #include <linux/err.h>
-diff --git a/include/platform_data/ide.h b/include/platform_data/ide.h
-new file mode 100644
-index 0000000..f71fbfb
---- /dev/null
-+++ b/include/platform_data/ide.h
-@@ -0,0 +1,32 @@
-+/*
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#ifndef __PLATFORM_IDE_H
-+#define __PLATFORM_IDE_H
-+
-+struct ide_port_info {
-+	/*
-+	 * I/O port shift, for platforms with ports that are
-+	 * constantly spaced and need larger than the 1-byte
-+	 * spacing
-+	 */
-+	unsigned ioport_shift;
-+	int dataif_be;	/* true if 16 bit data register is big endian */
-+
-+	/* handle hard reset of this port */
-+	void (*reset)(int);	/* true: assert reset, false: de-assert reset */
-+};
-+
-+#endif /* __PLATFORM_IDE_H */
-diff --git a/include/platform_ide.h b/include/platform_ide.h
+ #define DEVCFG_U1EN (1 << 18)
+diff --git a/drivers/net/ep93xx.c b/drivers/net/ep93xx.c
+index 0acb9b6..fd725a5 100644
+--- a/drivers/net/ep93xx.c
++++ b/drivers/net/ep93xx.c
+@@ -38,7 +38,7 @@
+ #include <linux/types.h>
+ #include <mach/ep93xx-regs.h>
+ #include <linux/phy.h>
+-#include <net/ep93xx_eth.h>
++#include <platform_data/eth-ep93xx.h>
+ #include "ep93xx.h"
+ 
+ #define EP93XX_MAX_PKT_SIZE    1536
+diff --git a/include/net/ep93xx_eth.h b/include/net/ep93xx_eth.h
 deleted file mode 100644
-index f71fbfb..0000000
---- a/include/platform_ide.h
+index 0fb11d0..0000000
+--- a/include/net/ep93xx_eth.h
 +++ /dev/null
-@@ -1,32 +0,0 @@
+@@ -1,26 +0,0 @@
 -/*
-- * See file CREDITS for list of people who contributed to this
-- * project.
+- * (C) Copyright 2016 Alexander Kurz <akurz@blala.de>
 - *
 - * This program is free software; you can redistribute it and/or
 - * modify it under the terms of the GNU General Public License as
@@ -145,25 +79,52 @@ index f71fbfb..0000000
 - * but WITHOUT ANY WARRANTY; without even the implied warranty of
 - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - * GNU General Public License for more details.
+- *
 - */
 -
--#ifndef __PLATFORM_IDE_H
--#define __PLATFORM_IDE_H
+-#ifndef __NET_EP93XX_ETH_H
+-#define __NET_EP93XX_ETH_H
 -
--struct ide_port_info {
--	/*
--	 * I/O port shift, for platforms with ports that are
--	 * constantly spaced and need larger than the 1-byte
--	 * spacing
--	 */
--	unsigned ioport_shift;
--	int dataif_be;	/* true if 16 bit data register is big endian */
+-#include <linux/phy.h>
 -
--	/* handle hard reset of this port */
--	void (*reset)(int);	/* true: assert reset, false: de-assert reset */
+-struct ep93xx_eth_platform_data {
+-	phy_interface_t	xcv_type;
+-	int		phy_addr;
 -};
 -
--#endif /* __PLATFORM_IDE_H */
+-#endif /* __NET_EP93XX_ETH_H */
+diff --git a/include/platform_data/eth-ep93xx.h b/include/platform_data/eth-ep93xx.h
+new file mode 100644
+index 0000000..0fb11d0
+--- /dev/null
++++ b/include/platform_data/eth-ep93xx.h
+@@ -0,0 +1,26 @@
++/*
++ * (C) Copyright 2016 Alexander Kurz <akurz@blala.de>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#ifndef __NET_EP93XX_ETH_H
++#define __NET_EP93XX_ETH_H
++
++#include <linux/phy.h>
++
++struct ep93xx_eth_platform_data {
++	phy_interface_t	xcv_type;
++	int		phy_addr;
++};
++
++#endif /* __NET_EP93XX_ETH_H */
 -- 
 2.7.0
 
