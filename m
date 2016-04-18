@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1as6Is-0000Y6-6Z
- for barebox@lists.infradead.org; Mon, 18 Apr 2016 10:21:14 +0000
+ id 1as6Jm-0000fC-80
+ for barebox@lists.infradead.org; Mon, 18 Apr 2016 10:22:11 +0000
+Date: Mon, 18 Apr 2016 12:21:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 18 Apr 2016 12:20:50 +0200
-Message-Id: <1460974850-8080-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20160418102148.GJ9102@pengutronix.de>
+References: <76f44565-7af7-107a-5b0e-acda33ac5321@arcor.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <76f44565-7af7-107a-5b0e-acda33ac5321@arcor.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,165 +18,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fix erasing/protecting flashes with unspecified size
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: wrong count argument to erase()
+To: Giorgio <giorgio.nicole@arcor.de>
+Cc: barebox@lists.infradead.org
 
-fixes: 81737c1 mtd: Fix erasing of devices >4GiB
+Hi Giorgio,
 
-Several places erased a complete flash partition passing ~0 as count to
-erase(). With the above commit count to erase was changed from an unsigned
-type to a signed type, so the (count > f->size - offset) check in
-erase() no longer triggers and the ~0 count is no longer adjusted to the whole
-device size. Among other things this results in saveenv failures on NOR
-flashes.
-This patch fixes this by introducing an explicit macro for erasing the
-whole device which is tested for in erase(). All other negative values
-are rejected.
+On Sat, Apr 16, 2016 at 09:15:04PM +0200, Giorgio wrote:
+> Hi,
+> 
+> I'm using barebox on an embedded system with an imx6 cpu, a nor and
+> a nand flash.
+> 
+> I recently updated the barebox to v2016.04.0 and noticed that the
+> command 'saveenv' was surprisingly quick and actually didn't work.
+> 
+> After a bit of debugging I could track the problem down to a call to the
+> function erase() within 'common/environment.c':
+> 
+> int envfs_save(const char *filename, const char *dirname, unsigned flags)
+> {
+> ...
+> 	ret = erase(envfd, ~0, 0);
+> 
+> 	/* ENOSYS and EOPNOTSUPP aren't errors here, many devices don't need it */
+> 	if (ret && errno != ENOSYS && errno != EOPNOTSUPP) {
+> 		printf("could not erase %s: %s\n", filename, errno_str());
+> 		goto out;
+> 	}
+> ...
+> 
+> The function prototype is:
+> 
+> int erase(int fd, loff_t count, loff_t offset)
+> 
+> in particular the second argument, count, is a signed long long.
+> 
+> Now when calling erase() with a count of ~0 the function will cast it
+> to -1 instead of to a 'very big' number and actually never erase
+> anything.
+> 
+> I think in these cases it is better to use cpp macros like LLONG_MAX
+> or change the type of count to a size_t.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Reported-by: Giorgio <giorgio.nicole@arcor.de>
----
- arch/arm/mach-omap/am33xx_bbu_nand.c    | 2 +-
- arch/arm/mach-omap/am33xx_bbu_spi_mlo.c | 2 +-
- commands/flash.c                        | 2 +-
- common/environment.c                    | 3 ++-
- drivers/usb/gadget/dfu.c                | 4 ++--
- drivers/usb/gadget/f_fastboot.c         | 2 +-
- fs/fs.c                                 | 4 +++-
- include/fs.h                            | 1 +
- 8 files changed, 12 insertions(+), 8 deletions(-)
+Thanks for reporting this. I stumbled over the same issue a moment ago.
+I just sent a patch fixing this to the list.
 
-diff --git a/arch/arm/mach-omap/am33xx_bbu_nand.c b/arch/arm/mach-omap/am33xx_bbu_nand.c
-index ee767d3..25f0e79 100644
---- a/arch/arm/mach-omap/am33xx_bbu_nand.c
-+++ b/arch/arm/mach-omap/am33xx_bbu_nand.c
-@@ -40,7 +40,7 @@ static int write_image(const char *devfile, const void *image, size_t size)
- 		return fd;
- 	}
- 
--	ret = erase(fd, ~0, 0);
-+	ret = erase(fd, ERASE_SIZE_ALL, 0);
- 	if (ret < 0) {
- 		pr_err("could not erase %s: %s\n", devfile,
- 			errno_str());
-diff --git a/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c b/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
-index 702bb9a..69a73ff 100644
---- a/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
-+++ b/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
-@@ -70,7 +70,7 @@ static int spi_nor_mlo_handler(struct bbu_handler *handler,
- 		goto out;
- 	}
- 
--	ret = erase(dstfd, ~0, 0);
-+	ret = erase(dstfd, ERASE_SIZE_ALL, 0);
- 	if (ret < 0) {
- 		printf("could not erase %s: %s", data->devicefile, errno_str());
- 		goto out1;
-diff --git a/commands/flash.c b/commands/flash.c
-index 99d3cb7..d881b4d 100644
---- a/commands/flash.c
-+++ b/commands/flash.c
-@@ -32,7 +32,7 @@ static int do_flerase(int argc, char *argv[])
- 	int fd;
- 	char *filename = NULL;
- 	struct stat s;
--	loff_t start = 0, size = ~0;
-+	loff_t start = 0, size;
- 	int ret = 0;
- 
- 	if (argc == 1)
-diff --git a/common/environment.c b/common/environment.c
-index 9cf44a0..be102db 100644
---- a/common/environment.c
-+++ b/common/environment.c
-@@ -88,6 +88,7 @@ static int do_compare_file(const char *filename, const char *base)
- }
- 
- #else
-+#define ERASE_SIZE_ALL 0
- static inline int protect(int fd, size_t count, unsigned long offset, int prot)
- {
- 	return 0;
-@@ -329,7 +330,7 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
- 		goto out;
- 	}
- 
--	ret = erase(envfd, ~0, 0);
-+	ret = erase(envfd, ERASE_SIZE_ALL, 0);
- 
- 	/* ENOSYS and EOPNOTSUPP aren't errors here, many devices don't need it */
- 	if (ret && errno != ENOSYS && errno != EOPNOTSUPP) {
-diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
-index 351b584..d7bf92c 100644
---- a/drivers/usb/gadget/dfu.c
-+++ b/drivers/usb/gadget/dfu.c
-@@ -359,7 +359,7 @@ static int handle_dnload(struct usb_function *f, const struct usb_ctrlrequest *c
- 				ret = -EINVAL;
- 				goto err_out;
- 			}
--			ret = erase(fd, ~0, 0);
-+			ret = erase(fd, ERASE_SIZE_ALL, 0);
- 			close(fd);
- 			if (ret && ret != -ENOSYS) {
- 				perror("erase");
-@@ -479,7 +479,7 @@ static int dfu_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
- 				goto out;
- 			}
- 
--			ret = erase(dfufd, ~0, 0);
-+			ret = erase(dfufd, ERASE_SIZE_ALL, 0);
- 			if (ret && ret != -ENOSYS) {
- 				dfu->dfu_status = DFU_STATUS_errERASE;
- 				perror("erase");
-diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-index 0df08c9..aaf7849 100644
---- a/drivers/usb/gadget/f_fastboot.c
-+++ b/drivers/usb/gadget/f_fastboot.c
-@@ -784,7 +784,7 @@ static void cb_erase(struct usb_ep *ep, struct usb_request *req, const char *cmd
- 	if (fd < 0)
- 		fastboot_tx_print(f_fb, "FAIL%s", strerror(-fd));
- 
--	ret = erase(fd, ~0, 0);
-+	ret = erase(fd, ERASE_SIZE_ALL, 0);
- 
- 	close(fd);
- 
-diff --git a/fs/fs.c b/fs/fs.c
-index 440adae..966abe9 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -935,8 +935,10 @@ int erase(int fd, loff_t count, loff_t offset)
- 	f = &files[fd];
- 	if (offset >= f->size)
- 		return 0;
--	if (count > f->size - offset)
-+	if (count == ERASE_SIZE_ALL || count > f->size - offset)
- 		count = f->size - offset;
-+	if (count < 0)
-+		return -EINVAL;
- 
- 	fsdrv = f->fsdev->driver;
- 	if (fsdrv->erase)
-diff --git a/include/fs.h b/include/fs.h
-index b9d1e6e..943ba55 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -147,6 +147,7 @@ int umount(const char *pathname);
- int umount_by_cdev(struct cdev *cdev);
- 
- /* not-so-standard functions */
-+#define ERASE_SIZE_ALL	((loff_t) - 1)
- int erase(int fd, loff_t count, loff_t offset);
- int protect(int fd, size_t count, loff_t offset, int prot);
- int protect_file(const char *file, int prot);
+Sascha
+
 -- 
-2.7.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
