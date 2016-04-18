@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1as3Bh-0001XV-FS
- for barebox@lists.infradead.org; Mon, 18 Apr 2016 07:01:38 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id C79ADA0014F
- for <barebox@lists.infradead.org>; Mon, 18 Apr 2016 09:01:51 +0200 (CEST)
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 18 Apr 2016 08:56:51 +0200
-Message-Id: <1460962611-14084-1-git-send-email-t.remmet@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1as6Is-0000Y6-6Z
+ for barebox@lists.infradead.org; Mon, 18 Apr 2016 10:21:14 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 18 Apr 2016 12:20:50 +0200
+Message-Id: <1460974850-8080-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,88 +19,159 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: board: phytec-som-am335x: RAM timings for phycore-r2 1GB
-To: barebox@lists.infradead.org
+Subject: [PATCH] fix erasing/protecting flashes with unspecified size
+To: Barebox List <barebox@lists.infradead.org>
 
-Add new RAM Timings for phyCORE R2 with MT41K512M16HA-125IT
-1024MB mounted.
+fixes: 81737c1 mtd: Fix erasing of devices >4GiB
 
-Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+Several places erased a complete flash partition passing ~0 as count to
+erase(). With the above commit count to erase was changed from an unsigned
+type to a signed type, so the (count > f->size - offset) check in
+erase() no longer triggers and the ~0 count is no longer adjusted to the whole
+device size. Among other things this results in saveenv failures on NOR
+flashes.
+This patch fixes this by introducing an explicit macro for erasing the
+whole device which is tested for in erase(). All other negative values
+are rejected.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Reported-by: Giorgio <giorgio.nicole@arcor.de>
 ---
- arch/arm/boards/phytec-som-am335x/lowlevel.c    |  1 +
- arch/arm/boards/phytec-som-am335x/ram-timings.h | 20 ++++++++++++++++++++
- images/Makefile.am33xx                          |  6 ++++++
- 3 files changed, 27 insertions(+)
+ arch/arm/mach-omap/am33xx_bbu_nand.c    | 2 +-
+ arch/arm/mach-omap/am33xx_bbu_spi_mlo.c | 2 +-
+ commands/flash.c                        | 2 +-
+ common/environment.c                    | 3 ++-
+ drivers/usb/gadget/dfu.c                | 4 ++--
+ drivers/usb/gadget/f_fastboot.c         | 2 +-
+ fs/fs.c                                 | 4 +++-
+ include/fs.h                            | 1 +
+ 8 files changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/boards/phytec-som-am335x/lowlevel.c b/arch/arm/boards/phytec-som-am335x/lowlevel.c
-index 73e75eb..33e83c5 100644
---- a/arch/arm/boards/phytec-som-am335x/lowlevel.c
-+++ b/arch/arm/boards/phytec-som-am335x/lowlevel.c
-@@ -125,6 +125,7 @@ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_2x512mb, am335x_phytec_phycore
- PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_1024mb, am335x_phytec_phycore_som_mlo, PHYCORE_IM8G16D3FBBG15EI_1024MB);
- PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_512mb, am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K256M16TW107IT_512MB);
- PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_256mb, am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K128M16JT_256MB);
-+PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_1024mb,  am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K512M16HA125IT_1024MB);
- PHYTEC_ENTRY(start_am33xx_phytec_phycore_sdram, am335x_phytec_phycore_som);
- PHYTEC_ENTRY(start_am33xx_phytec_phycore_no_spi_sdram, am335x_phytec_phycore_som_no_spi);
- PHYTEC_ENTRY(start_am33xx_phytec_phycore_no_eeprom_sdram, am335x_phytec_phycore_som_no_eeprom);
-diff --git a/arch/arm/boards/phytec-som-am335x/ram-timings.h b/arch/arm/boards/phytec-som-am335x/ram-timings.h
-index 884874c..9576d26 100644
---- a/arch/arm/boards/phytec-som-am335x/ram-timings.h
-+++ b/arch/arm/boards/phytec-som-am335x/ram-timings.h
-@@ -32,6 +32,7 @@ enum {
- 	PHYCORE_IM8G16D3FBBG15EI_1024MB,
- 	PHYCORE_R2_MT41K256M16TW107IT_512MB,
- 	PHYCORE_R2_MT41K128M16JT_256MB,
-+	PHYCORE_R2_MT41K512M16HA125IT_1024MB,
+diff --git a/arch/arm/mach-omap/am33xx_bbu_nand.c b/arch/arm/mach-omap/am33xx_bbu_nand.c
+index ee767d3..25f0e79 100644
+--- a/arch/arm/mach-omap/am33xx_bbu_nand.c
++++ b/arch/arm/mach-omap/am33xx_bbu_nand.c
+@@ -40,7 +40,7 @@ static int write_image(const char *devfile, const void *image, size_t size)
+ 		return fd;
+ 	}
  
- 	PHYCARD_NT5CB128M16BP_256MB,
- };
-@@ -232,6 +233,25 @@ struct am335x_sdram_timings physom_timings[] = {
- 			.wr_slave_ratio0	= 0x73,
- 		},
- 	},
-+
-+	/* 1024MB R2 */
-+	[PHYCORE_R2_MT41K512M16HA125IT_1024MB] = {
-+		.regs = {
-+			.emif_read_latency	= 0x7,
-+			.emif_tim1		= 0x0AAAD4DB,
-+			.emif_tim2		= 0x268F7FDA,
-+			.emif_tim3		= 0x501F88BF,
-+			.sdram_config		= 0x61C053B2,
-+			.zq_config		= 0x50074BE4,
-+			.sdram_ref_ctrl		= 0x00000C30,
-+		},
-+		.data = {
-+			.rd_slave_ratio0	= 0x38,
-+			.wr_dqs_slave_ratio0	= 0x4d,
-+			.fifo_we_slave_ratio0	= 0x9d,
-+			.wr_slave_ratio0	= 0x82,
-+		},
-+	},
- };
+-	ret = erase(fd, ~0, 0);
++	ret = erase(fd, ERASE_SIZE_ALL, 0);
+ 	if (ret < 0) {
+ 		pr_err("could not erase %s: %s\n", devfile,
+ 			errno_str());
+diff --git a/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c b/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
+index 702bb9a..69a73ff 100644
+--- a/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
++++ b/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
+@@ -70,7 +70,7 @@ static int spi_nor_mlo_handler(struct bbu_handler *handler,
+ 		goto out;
+ 	}
  
- #endif
-diff --git a/images/Makefile.am33xx b/images/Makefile.am33xx
-index 6c7e81a..8be78ef 100644
---- a/images/Makefile.am33xx
-+++ b/images/Makefile.am33xx
-@@ -83,6 +83,12 @@ FILE_barebox-am33xx-phytec-phycore-mlo-1024mb.spi.img = start_am33xx_phytec_phyc
- am33xx-mlo-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-mlo-1024mb.img
- am33xx-mlospi-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-mlo-1024mb.spi.img
+-	ret = erase(dstfd, ~0, 0);
++	ret = erase(dstfd, ERASE_SIZE_ALL, 0);
+ 	if (ret < 0) {
+ 		printf("could not erase %s: %s", data->devicefile, errno_str());
+ 		goto out1;
+diff --git a/commands/flash.c b/commands/flash.c
+index 99d3cb7..d881b4d 100644
+--- a/commands/flash.c
++++ b/commands/flash.c
+@@ -32,7 +32,7 @@ static int do_flerase(int argc, char *argv[])
+ 	int fd;
+ 	char *filename = NULL;
+ 	struct stat s;
+-	loff_t start = 0, size = ~0;
++	loff_t start = 0, size;
+ 	int ret = 0;
  
-+pblx-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += start_am33xx_phytec_phycore_r2_sram_1024mb
-+FILE_barebox-am33xx-phytec-phycore-r2-mlo-1024mb.img = start_am33xx_phytec_phycore_r2_sram_1024mb.pblx.mlo
-+FILE_barebox-am33xx-phytec-phycore-r2-mlo-1024mb.spi.img = start_am33xx_phytec_phycore_r2_sram_1024mb.pblx.mlospi
-+am33xx-mlo-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-r2-mlo-1024mb.img
-+am33xx-mlospi-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-r2-mlo-1024mb.spi.img
-+
- pblx-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += start_am33xx_phytec_phyflex_sdram
- FILE_barebox-am33xx-phytec-phyflex.img = start_am33xx_phytec_phyflex_sdram.pblx
- am33xx-barebox-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phyflex.img
+ 	if (argc == 1)
+diff --git a/common/environment.c b/common/environment.c
+index 9cf44a0..be102db 100644
+--- a/common/environment.c
++++ b/common/environment.c
+@@ -88,6 +88,7 @@ static int do_compare_file(const char *filename, const char *base)
+ }
+ 
+ #else
++#define ERASE_SIZE_ALL 0
+ static inline int protect(int fd, size_t count, unsigned long offset, int prot)
+ {
+ 	return 0;
+@@ -329,7 +330,7 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
+ 		goto out;
+ 	}
+ 
+-	ret = erase(envfd, ~0, 0);
++	ret = erase(envfd, ERASE_SIZE_ALL, 0);
+ 
+ 	/* ENOSYS and EOPNOTSUPP aren't errors here, many devices don't need it */
+ 	if (ret && errno != ENOSYS && errno != EOPNOTSUPP) {
+diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
+index 351b584..d7bf92c 100644
+--- a/drivers/usb/gadget/dfu.c
++++ b/drivers/usb/gadget/dfu.c
+@@ -359,7 +359,7 @@ static int handle_dnload(struct usb_function *f, const struct usb_ctrlrequest *c
+ 				ret = -EINVAL;
+ 				goto err_out;
+ 			}
+-			ret = erase(fd, ~0, 0);
++			ret = erase(fd, ERASE_SIZE_ALL, 0);
+ 			close(fd);
+ 			if (ret && ret != -ENOSYS) {
+ 				perror("erase");
+@@ -479,7 +479,7 @@ static int dfu_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
+ 				goto out;
+ 			}
+ 
+-			ret = erase(dfufd, ~0, 0);
++			ret = erase(dfufd, ERASE_SIZE_ALL, 0);
+ 			if (ret && ret != -ENOSYS) {
+ 				dfu->dfu_status = DFU_STATUS_errERASE;
+ 				perror("erase");
+diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
+index 0df08c9..aaf7849 100644
+--- a/drivers/usb/gadget/f_fastboot.c
++++ b/drivers/usb/gadget/f_fastboot.c
+@@ -784,7 +784,7 @@ static void cb_erase(struct usb_ep *ep, struct usb_request *req, const char *cmd
+ 	if (fd < 0)
+ 		fastboot_tx_print(f_fb, "FAIL%s", strerror(-fd));
+ 
+-	ret = erase(fd, ~0, 0);
++	ret = erase(fd, ERASE_SIZE_ALL, 0);
+ 
+ 	close(fd);
+ 
+diff --git a/fs/fs.c b/fs/fs.c
+index 440adae..966abe9 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -935,8 +935,10 @@ int erase(int fd, loff_t count, loff_t offset)
+ 	f = &files[fd];
+ 	if (offset >= f->size)
+ 		return 0;
+-	if (count > f->size - offset)
++	if (count == ERASE_SIZE_ALL || count > f->size - offset)
+ 		count = f->size - offset;
++	if (count < 0)
++		return -EINVAL;
+ 
+ 	fsdrv = f->fsdev->driver;
+ 	if (fsdrv->erase)
+diff --git a/include/fs.h b/include/fs.h
+index b9d1e6e..943ba55 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -147,6 +147,7 @@ int umount(const char *pathname);
+ int umount_by_cdev(struct cdev *cdev);
+ 
+ /* not-so-standard functions */
++#define ERASE_SIZE_ALL	((loff_t) - 1)
+ int erase(int fd, loff_t count, loff_t offset);
+ int protect(int fd, size_t count, loff_t offset, int prot);
+ int protect_file(const char *file, int prot);
 -- 
-1.9.1
+2.7.0
 
 
 _______________________________________________
