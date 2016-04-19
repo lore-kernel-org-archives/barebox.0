@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1asQDj-00031S-5R
+ id 1asQDj-00031T-5S
  for barebox@lists.infradead.org; Tue, 19 Apr 2016 07:37:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 19 Apr 2016 09:36:39 +0200
-Message-Id: <1461051412-25711-2-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 19 Apr 2016 09:36:40 +0200
+Message-Id: <1461051412-25711-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1461051412-25711-1-git-send-email-s.hauer@pengutronix.de>
 References: <1461051412-25711-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,93 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/14] include: move run_command prototype to command.h
+Subject: [PATCH 02/14] include/common.h: remove unused struct memarea_info
 To: Barebox List <barebox@lists.infradead.org>
-
-run_command fits much better into command.h, move it there.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/menutree.c               | 1 +
- common/password.c               | 1 +
- drivers/usb/gadget/f_fastboot.c | 1 +
- fs/fs.c                         | 1 +
- include/command.h               | 1 +
- include/common.h                | 1 -
- 6 files changed, 5 insertions(+), 1 deletion(-)
+ include/common.h | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/common/menutree.c b/common/menutree.c
-index 97e628d..160ba9a 100644
---- a/common/menutree.c
-+++ b/common/menutree.c
-@@ -12,6 +12,7 @@
- #include <environment.h>
- #include <libbb.h>
- #include <common.h>
-+#include <command.h>
- #include <glob.h>
- #include <menu.h>
- #include <fs.h>
-diff --git a/common/password.c b/common/password.c
-index 5b754d9..05e6180 100644
---- a/common/password.c
-+++ b/common/password.c
-@@ -24,6 +24,7 @@
- #include <digest.h>
- #include <malloc.h>
- #include <xfuncs.h>
-+#include <command.h>
- #include <magicvar.h>
- #include <clock.h>
- #include <init.h>
-diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-index 0df08c9..9a8cd4c 100644
---- a/drivers/usb/gadget/f_fastboot.c
-+++ b/drivers/usb/gadget/f_fastboot.c
-@@ -17,6 +17,7 @@
- #define pr_fmt(fmt) "fastboot: " fmt
- 
- #include <common.h>
-+#include <command.h>
- #include <errno.h>
- #include <malloc.h>
- #include <fcntl.h>
-diff --git a/fs/fs.c b/fs/fs.c
-index 440adae..d69e1e9 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -18,6 +18,7 @@
-  */
- 
- #include <common.h>
-+#include <command.h>
- #include <fs.h>
- #include <driver.h>
- #include <errno.h>
-diff --git a/include/command.h b/include/command.h
-index 3aca1a9..4ed5e37 100644
---- a/include/command.h
-+++ b/include/command.h
-@@ -71,6 +71,7 @@ extern struct command __barebox_cmd_end;
- struct command *find_cmd(const char *cmd);
- int execute_command(int argc, char **argv);
- void barebox_cmd_usage(struct command *cmdtp);
-+int run_command(const char *cmd);
- 
- #define COMMAND_SUCCESS		0
- #define COMMAND_ERROR		1
 diff --git a/include/common.h b/include/common.h
-index 38a6dbf..f653c04 100644
+index f653c04..cab98d6 100644
 --- a/include/common.h
 +++ b/include/common.h
-@@ -61,7 +61,6 @@ void __noreturn hang (void);
+@@ -87,16 +87,6 @@ static inline void dump_stack(void)
+ }
+ #endif
  
- char *size_human_readable(unsigned long long size);
+-#define MEMAREA_SIZE_SPECIFIED 1
+-
+-struct memarea_info {
+-	struct device_d *device;
+-	unsigned long start;
+-	unsigned long end;
+-	unsigned long size;
+-	unsigned long flags;
+-};
+-
+ int parse_area_spec(const char *str, loff_t *start, loff_t *size);
  
--int run_command(const char *cmd);
- int	readline	(const char *prompt, char *buf, int len);
- 
- /* common/memsize.c */
+ /* Just like simple_strtoul(), but this one honors a K/M/G suffix */
 -- 
 2.7.0
 
