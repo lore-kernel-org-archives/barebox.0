@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1asP2v-00008b-19
- for barebox@lists.infradead.org; Tue, 19 Apr 2016 06:22:01 +0000
-Date: Tue, 19 Apr 2016 08:21:38 +0200
+ id 1asP5L-00015t-22
+ for barebox@lists.infradead.org; Tue, 19 Apr 2016 06:24:32 +0000
+Date: Tue, 19 Apr 2016 08:24:09 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160419062138.GM9102@pengutronix.de>
-References: <CAKu_b=KTM7Q=nZEDXKKtBf8EPPi2SAcQxk2=HJOLzKei3R0vTQ@mail.gmail.com>
+Message-ID: <20160419062409.GN9102@pengutronix.de>
+References: <1460962611-14084-1-git-send-email-t.remmet@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAKu_b=KTM7Q=nZEDXKKtBf8EPPi2SAcQxk2=HJOLzKei3R0vTQ@mail.gmail.com>
+In-Reply-To: <1460962611-14084-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +22,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX53: ccxmx53: Fix memory detection.
-To: Jason Cobham <cobham.jason@gmail.com>
+Subject: Re: [PATCH] ARM: board: phytec-som-am335x: RAM timings for
+ phycore-r2 1GB
+To: Teresa Remmet <t.remmet@phytec.de>
 Cc: barebox@lists.infradead.org
 
-Hi Jason,
+Hi Teresa,
 
-On Sat, Apr 16, 2016 at 07:10:40PM -0700, Jason Cobham wrote:
-> This patch fixes memory detection on the Digi ccxmx53 board.
-> Also updates dts to support nand.
+On Mon, Apr 18, 2016 at 08:56:51AM +0200, Teresa Remmet wrote:
+> Add new RAM Timings for phyCORE R2 with MT41K512M16HA-125IT
+> 1024MB mounted.
 > 
-> Signed-off-by: Jason Cobham <cobham.jason@gmail.com>
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 > ---
->  .../ccxmx53/flash-header-imx53-ccxmx53_1gib.imxcfg |  2 +-
->  arch/arm/boards/ccxmx53/lowlevel.c                 | 43 +++++++++++++---------
->  arch/arm/dts/imx53-ccxmx53.dts                     |  1 +
->  arch/arm/dts/imx53-ccxmx53.dtsi                    |  5 ++-
->  4 files changed, 30 insertions(+), 21 deletions(-)
+>  arch/arm/boards/phytec-som-am335x/lowlevel.c    |  1 +
+>  arch/arm/boards/phytec-som-am335x/ram-timings.h | 20 ++++++++++++++++++++
+>  images/Makefile.am33xx                          |  6 ++++++
+>  3 files changed, 27 insertions(+)
 
-The patch itself looks ok, but unfortunately it has whitespace damages,
-so I cannot apply it. Could you resend it using git send-email?
-Alternatively a pull request from a github repository would be fine.
+Applied, thanks. The usual question: Can't the new version be
+autodetected using bootstrap pins or similar? ;)
 
 Sascha
 
