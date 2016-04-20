@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pa0-x243.google.com ([2607:f8b0:400e:c03::243])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1asRV3-00009L-5s
- for barebox@lists.infradead.org; Tue, 19 Apr 2016 08:59:13 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 19 Apr 2016 10:58:48 +0200
-Message-Id: <1461056328-2180-1-git-send-email-s.hauer@pengutronix.de>
+ id 1asjxC-0007RK-Uo
+ for barebox@lists.infradead.org; Wed, 20 Apr 2016 04:41:31 +0000
+Received: by mail-pa0-x243.google.com with SMTP id i5so3003874pag.3
+ for <barebox@lists.infradead.org>; Tue, 19 Apr 2016 21:41:09 -0700 (PDT)
+From: Jason Cobham <cobham.jason@gmail.com>
+Date: Tue, 19 Apr 2016 21:41:04 -0700
+Message-Id: <1461127264-3322-1-git-send-email-cobham.jason@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +21,146 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] filetype: Fix booting ARM Linux Kernels with CONFIG_EFI
- enabled
-To: Barebox List <barebox@lists.infradead.org>
-Cc: mgr@pengutronix.de
+Subject: [PATCH v2] ARM: i.MX53: ccxmx53: Fix memory detection.
+To: barebox@lists.infradead.org
+Cc: cobham.jason@gmail.com
 
-When an ARM kernel is built with CONFIG_EFI enabled, then the
-kernel image also looks like a EXE file. Move ARM zImage detection
-before EXE detection so that the kernel is still detected as zImage.
+This patch fixes memory detection on the Digi ccxmx53 board.
+Also updates dts to support nand.
+Cleaned up whitespace?
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Jason Cobham <cobham.jason@gmail.com>
+
 ---
- common/filetype.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ .../ccxmx53/flash-header-imx53-ccxmx53_1gib.imxcfg |  2 +-
+ arch/arm/boards/ccxmx53/lowlevel.c                 | 43 +++++++++++++---------
+ arch/arm/dts/imx53-ccxmx53.dts                     |  1 +
+ arch/arm/dts/imx53-ccxmx53.dtsi                    |  5 ++-
+ 4 files changed, 30 insertions(+), 21 deletions(-)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index 74baf51..a8666a1 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -291,8 +291,6 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 	if (bufsize < 64)
- 		return filetype_unknown;
+diff --git a/arch/arm/boards/ccxmx53/flash-header-imx53-ccxmx53_1gib.imxcfg b/arch/arm/boards/ccxmx53/flash-header-imx53-ccxmx53_1gib.imxcfg
+index 6f1cab6..68d947c 100644
+--- a/arch/arm/boards/ccxmx53/flash-header-imx53-ccxmx53_1gib.imxcfg
++++ b/arch/arm/boards/ccxmx53/flash-header-imx53-ccxmx53_1gib.imxcfg
+@@ -31,7 +31,7 @@ wm 32 0x63fd90f8 0x00000800
+ wm 32 0x63fd907c 0x020c0211
+ wm 32 0x63fd9080 0x014c0155
+ wm 32 0x63fd9018 0x000016d0
+-wm 32 0x63fd9000 0xc4110000
++wm 32 0x63fd9000 0xc3110000
+ wm 32 0x63fd900c 0x4d5122d2
+ wm 32 0x63fd9010 0x92d18a22
+ wm 32 0x63fd9014 0x00c70092
+diff --git a/arch/arm/boards/ccxmx53/lowlevel.c b/arch/arm/boards/ccxmx53/lowlevel.c
+index b321811..314ba7c 100644
+--- a/arch/arm/boards/ccxmx53/lowlevel.c
++++ b/arch/arm/boards/ccxmx53/lowlevel.c
+@@ -13,7 +13,10 @@
+  *
+  */
  
--	if (buf8[0] == 'M' && buf8[1] == 'Z')
--		return filetype_exe;
- 	if (le32_to_cpu(buf[5]) == 0x504d5453)
- 		return filetype_mxs_bootstream;
++#include <debug_ll.h>
+ #include <common.h>
++#include <linux/sizes.h>
++#include <io.h>
+ #include <mach/esdctl.h>
+ #include <mach/generic.h>
+ #include <image-metadata.h>
+@@ -26,28 +29,32 @@
+ BAREBOX_IMD_TAG_STRING(ccxmx53_memsize_SZ_512M, IMD_TYPE_PARAMETER, "memsize=512", 0);
+ BAREBOX_IMD_TAG_STRING(ccxmx53_memsize_SZ_1G, IMD_TYPE_PARAMETER, "memsize=1024", 0);
  
-@@ -301,6 +299,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 	if (buf[9] == 0x016f2818 || buf[9] == 0x18286f01)
- 		return filetype_arm_zimage;
- 
-+	if (buf8[0] == 'M' && buf8[1] == 'Z')
-+		return filetype_exe;
+-static void __noreturn start_imx53_ccxmx53_common(uint32_t size,
+-						void *fdt_blob_fixed_offset)
++extern char __dtb_imx53_ccxmx53_start[];
 +
- 	if (bufsize < 512)
- 		return filetype_unknown;
++ENTRY_FUNCTION(start_ccxmx53_512mb, r0, r1, r2)
+ {
+ 	void *fdt;
+ 
+ 	imx5_cpu_lowlevel_init();
+-	arm_setup_stack(0xf8020000 - 8);
++	arm_setup_stack(0xf8020000 - 8);
++
++	IMD_USED(ccxmx53_memsize_SZ_512M);
++
++	fdt = __dtb_imx53_ccxmx53_start - get_runtime_offset();
+ 
+-	fdt = fdt_blob_fixed_offset - get_runtime_offset();
+-	barebox_arm_entry(0x70000000, size, fdt);
++	imx53_barebox_entry(fdt);
+ }
+ 
+-#define CCMX53_ENTRY(name, fdt_name, memory_size)	\
+-	ENTRY_FUNCTION(name, r0, r1, r2)				\
+-	{								\
+-		extern char __dtb_##fdt_name##_start[];			\
+-									\
+-		IMD_USED(ccxmx53_memsize_##memory_size);		\
+-									\
+-		start_imx53_ccxmx53_common(memory_size,  \
+-					 __dtb_##fdt_name##_start);	\
+-	}
+-
+-CCMX53_ENTRY(start_ccxmx53_512mb, imx53_ccxmx53, SZ_512M);
+-CCMX53_ENTRY(start_ccxmx53_1gib, imx53_ccxmx53, SZ_1G);
++ENTRY_FUNCTION(start_ccxmx53_1gib, r0, r1, r2)
++{
++	void *fdt;
++
++	imx5_cpu_lowlevel_init();
++	arm_setup_stack(0xf8020000 - 8);
++
++	IMD_USED(ccxmx53_memsize_SZ_1G);
++
++	fdt = __dtb_imx53_ccxmx53_start - get_runtime_offset();
++
++	imx53_barebox_entry(fdt);
++}
+diff --git a/arch/arm/dts/imx53-ccxmx53.dts b/arch/arm/dts/imx53-ccxmx53.dts
+index 85d20c3..4b5ec65 100644
+--- a/arch/arm/dts/imx53-ccxmx53.dts
++++ b/arch/arm/dts/imx53-ccxmx53.dts
+@@ -12,6 +12,7 @@
+ 
+ /dts-v1/;
+ #include "imx53-ccxmx53.dtsi"
++#include "imx53.dtsi"
+ 
+ / {
+ 	model = "Digi ConnectCore ccxmx53";
+diff --git a/arch/arm/dts/imx53-ccxmx53.dtsi b/arch/arm/dts/imx53-ccxmx53.dtsi
+index 5553c68..e4b4e54 100644
+--- a/arch/arm/dts/imx53-ccxmx53.dtsi
++++ b/arch/arm/dts/imx53-ccxmx53.dtsi
+@@ -27,7 +27,7 @@
+ 
+ / {
+ 	memory {
+-		reg = <0x70000000 0x40000000>;
++		reg = <0x0 0x0>;
+ 	};
+ 
+ };
+@@ -228,6 +228,7 @@
+ 	pinctrl-0 = <&pinctrl_nand>;
+ 	nand-bus-width = <8>;
+ 	nand-ecc-mode = "hw";
++	nand-on-flash-bbt;
+ 	status = "okay";
+ 
+ 	partition@0 {
+@@ -247,7 +248,7 @@
+ 
+ 	partition@3 {
+ 		label = "rootfs";
+-		reg = <0x500000 0x07B00000>;
++		reg = <0x500000 0x0>;
+ 	};
+ };
  
 -- 
-2.8.0.rc3
+1.9.1
 
 
 _______________________________________________
