@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x243.google.com ([2607:f8b0:400e:c03::243])
+Received: from mail-vk0-x22b.google.com ([2607:f8b0:400c:c05::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1asjxC-0007RK-Uo
- for barebox@lists.infradead.org; Wed, 20 Apr 2016 04:41:31 +0000
-Received: by mail-pa0-x243.google.com with SMTP id i5so3003874pag.3
- for <barebox@lists.infradead.org>; Tue, 19 Apr 2016 21:41:09 -0700 (PDT)
-From: Jason Cobham <cobham.jason@gmail.com>
-Date: Tue, 19 Apr 2016 21:41:04 -0700
-Message-Id: <1461127264-3322-1-git-send-email-cobham.jason@gmail.com>
+ id 1asuWs-00061S-DR
+ for barebox@lists.infradead.org; Wed, 20 Apr 2016 15:59:03 +0000
+Received: by mail-vk0-x22b.google.com with SMTP id n67so56391654vkf.3
+ for <barebox@lists.infradead.org>; Wed, 20 Apr 2016 08:58:41 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20160419071110.GO9102@pengutronix.de>
+References: <CABDcavZr1PCpFrHVJFFayRQZ6vninf-xFS0H9QKSdA8u53OkDg@mail.gmail.com>
+ <CABDcavZZd4AofsfSYMVbEPfjpPyF9rbmv6BXAG_8mLiJhmeL+Q@mail.gmail.com>
+ <20160419071110.GO9102@pengutronix.de>
+Date: Wed, 20 Apr 2016 17:58:40 +0200
+Message-ID: <CABDcavYf=ts161dQRB=diaEqNcyZjLq=ogYAja0y3BLp_QU+0w@mail.gmail.com>
+From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,152 +21,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] ARM: i.MX53: ccxmx53: Fix memory detection.
-To: barebox@lists.infradead.org
-Cc: cobham.jason@gmail.com
+Subject: Re: Fwd: Micrel KSZ9031RN PHY problem
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Philipp Zabel <pza@pengutronix.de>
 
-This patch fixes memory detection on the Digi ccxmx53 board.
-Also updates dts to support nand.
-Cleaned up whitespace?
+Hello,
 
-Signed-off-by: Jason Cobham <cobham.jason@gmail.com>
+2016-04-19 9:11 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> Hi Guillermo,
+>
+> +Cc Philipp Zabel who ported the patch to barebox
+>
+> On Mon, Apr 18, 2016 at 04:49:47PM +0200, Guillermo Rodriguez Garcia wrote:
+>> Hello all,
+>>
+>> I am playing with barebox on an Atmel SAMA5D3 Xplained board. It is
+>> now working fine for the most part, however after updating to the
+>> latest sources from git I found a problem that I had not seen before.
+>>
+>> This board has two Ethernet interfaces; eth0 uses a Micrel KSZ9031RN
+>> PHY, and eth1 uses a Micrel KSZ8081RNB PHY.
+>>
+>> It seems that after release 2016.03.0, eth0 does not work anymore with
+>> some routers. Specifically I found this problem with a Comtrend
+>> VG-8050. I have tested other routers and the problem was not present
+>> there.
+>>
+>> After some research it seems that the problem is caused by this
+>> commit: http://git.pengutronix.de/?p=barebox.git;a=commit;h=da89ee8f2e04e116410632a185024f58b8262d87
+>>
+>> Before this commit eth0 was working fine. After this commit, the link
+>> cannot established anymore:
+>>
+>> [...]
+>> barebox:/# ping 192.168.0.128
+>> ping failed: Network is down
+>>
+>> Before diving further into this I thought it could be a good idea to
+>> ask, in case someone can shed some light here.
+>
+> I have no idea what the issue is here. We might have to make this option
+> configurable via devicetree to give boards different options. Since the
+> patch comes from the Linux Kernel, do you have the same problems under
+> Linux?
 
----
- .../ccxmx53/flash-header-imx53-ccxmx53_1gib.imxcfg |  2 +-
- arch/arm/boards/ccxmx53/lowlevel.c                 | 43 +++++++++++++---------
- arch/arm/dts/imx53-ccxmx53.dts                     |  1 +
- arch/arm/dts/imx53-ccxmx53.dtsi                    |  5 ++-
- 4 files changed, 30 insertions(+), 21 deletions(-)
+I'm trying to get the latest kernel to boot. The latest version
+supported by Atmel is 4.1, which doesn't have the patch yet. Will
+report back asap.
 
-diff --git a/arch/arm/boards/ccxmx53/flash-header-imx53-ccxmx53_1gib.imxcfg b/arch/arm/boards/ccxmx53/flash-header-imx53-ccxmx53_1gib.imxcfg
-index 6f1cab6..68d947c 100644
---- a/arch/arm/boards/ccxmx53/flash-header-imx53-ccxmx53_1gib.imxcfg
-+++ b/arch/arm/boards/ccxmx53/flash-header-imx53-ccxmx53_1gib.imxcfg
-@@ -31,7 +31,7 @@ wm 32 0x63fd90f8 0x00000800
- wm 32 0x63fd907c 0x020c0211
- wm 32 0x63fd9080 0x014c0155
- wm 32 0x63fd9018 0x000016d0
--wm 32 0x63fd9000 0xc4110000
-+wm 32 0x63fd9000 0xc3110000
- wm 32 0x63fd900c 0x4d5122d2
- wm 32 0x63fd9010 0x92d18a22
- wm 32 0x63fd9014 0x00c70092
-diff --git a/arch/arm/boards/ccxmx53/lowlevel.c b/arch/arm/boards/ccxmx53/lowlevel.c
-index b321811..314ba7c 100644
---- a/arch/arm/boards/ccxmx53/lowlevel.c
-+++ b/arch/arm/boards/ccxmx53/lowlevel.c
-@@ -13,7 +13,10 @@
-  *
-  */
- 
-+#include <debug_ll.h>
- #include <common.h>
-+#include <linux/sizes.h>
-+#include <io.h>
- #include <mach/esdctl.h>
- #include <mach/generic.h>
- #include <image-metadata.h>
-@@ -26,28 +29,32 @@
- BAREBOX_IMD_TAG_STRING(ccxmx53_memsize_SZ_512M, IMD_TYPE_PARAMETER, "memsize=512", 0);
- BAREBOX_IMD_TAG_STRING(ccxmx53_memsize_SZ_1G, IMD_TYPE_PARAMETER, "memsize=1024", 0);
- 
--static void __noreturn start_imx53_ccxmx53_common(uint32_t size,
--						void *fdt_blob_fixed_offset)
-+extern char __dtb_imx53_ccxmx53_start[];
-+
-+ENTRY_FUNCTION(start_ccxmx53_512mb, r0, r1, r2)
- {
- 	void *fdt;
- 
- 	imx5_cpu_lowlevel_init();
--	arm_setup_stack(0xf8020000 - 8);
-+	arm_setup_stack(0xf8020000 - 8);
-+
-+	IMD_USED(ccxmx53_memsize_SZ_512M);
-+
-+	fdt = __dtb_imx53_ccxmx53_start - get_runtime_offset();
- 
--	fdt = fdt_blob_fixed_offset - get_runtime_offset();
--	barebox_arm_entry(0x70000000, size, fdt);
-+	imx53_barebox_entry(fdt);
- }
- 
--#define CCMX53_ENTRY(name, fdt_name, memory_size)	\
--	ENTRY_FUNCTION(name, r0, r1, r2)				\
--	{								\
--		extern char __dtb_##fdt_name##_start[];			\
--									\
--		IMD_USED(ccxmx53_memsize_##memory_size);		\
--									\
--		start_imx53_ccxmx53_common(memory_size,  \
--					 __dtb_##fdt_name##_start);	\
--	}
--
--CCMX53_ENTRY(start_ccxmx53_512mb, imx53_ccxmx53, SZ_512M);
--CCMX53_ENTRY(start_ccxmx53_1gib, imx53_ccxmx53, SZ_1G);
-+ENTRY_FUNCTION(start_ccxmx53_1gib, r0, r1, r2)
-+{
-+	void *fdt;
-+
-+	imx5_cpu_lowlevel_init();
-+	arm_setup_stack(0xf8020000 - 8);
-+
-+	IMD_USED(ccxmx53_memsize_SZ_1G);
-+
-+	fdt = __dtb_imx53_ccxmx53_start - get_runtime_offset();
-+
-+	imx53_barebox_entry(fdt);
-+}
-diff --git a/arch/arm/dts/imx53-ccxmx53.dts b/arch/arm/dts/imx53-ccxmx53.dts
-index 85d20c3..4b5ec65 100644
---- a/arch/arm/dts/imx53-ccxmx53.dts
-+++ b/arch/arm/dts/imx53-ccxmx53.dts
-@@ -12,6 +12,7 @@
- 
- /dts-v1/;
- #include "imx53-ccxmx53.dtsi"
-+#include "imx53.dtsi"
- 
- / {
- 	model = "Digi ConnectCore ccxmx53";
-diff --git a/arch/arm/dts/imx53-ccxmx53.dtsi b/arch/arm/dts/imx53-ccxmx53.dtsi
-index 5553c68..e4b4e54 100644
---- a/arch/arm/dts/imx53-ccxmx53.dtsi
-+++ b/arch/arm/dts/imx53-ccxmx53.dtsi
-@@ -27,7 +27,7 @@
- 
- / {
- 	memory {
--		reg = <0x70000000 0x40000000>;
-+		reg = <0x0 0x0>;
- 	};
- 
- };
-@@ -228,6 +228,7 @@
- 	pinctrl-0 = <&pinctrl_nand>;
- 	nand-bus-width = <8>;
- 	nand-ecc-mode = "hw";
-+	nand-on-flash-bbt;
- 	status = "okay";
- 
- 	partition@0 {
-@@ -247,7 +248,7 @@
- 
- 	partition@3 {
- 		label = "rootfs";
--		reg = <0x500000 0x07B00000>;
-+		reg = <0x500000 0x0>;
- 	};
- };
- 
 -- 
-1.9.1
-
+Guillermo Rodriguez Garcia
+guille.rodriguez@gmail.com
 
 _______________________________________________
 barebox mailing list
