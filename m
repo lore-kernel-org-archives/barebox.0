@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1at9ae-0003RR-74
- for barebox@lists.infradead.org; Thu, 21 Apr 2016 08:03:57 +0000
-Message-ID: <1461225765.4164.6.camel@lws-tremmet.phytec.de>
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Thu, 21 Apr 2016 10:02:45 +0200
-In-Reply-To: <20160419062409.GN9102@pengutronix.de>
-References: <1460962611-14084-1-git-send-email-t.remmet@phytec.de>
- <20160419062409.GN9102@pengutronix.de>
-Mime-Version: 1.0
+Received: from mail-vk0-x22b.google.com ([2607:f8b0:400c:c05::22b])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1atCQC-0000ls-Et
+ for barebox@lists.infradead.org; Thu, 21 Apr 2016 11:05:21 +0000
+Received: by mail-vk0-x22b.google.com with SMTP id n67so81794493vkf.3
+ for <barebox@lists.infradead.org>; Thu, 21 Apr 2016 04:04:59 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20160421073206.GC21638@pengutronix.de>
+References: <CABDcavZr1PCpFrHVJFFayRQZ6vninf-xFS0H9QKSdA8u53OkDg@mail.gmail.com>
+ <CABDcavZZd4AofsfSYMVbEPfjpPyF9rbmv6BXAG_8mLiJhmeL+Q@mail.gmail.com>
+ <20160419071110.GO9102@pengutronix.de>
+ <CABDcavYf=ts161dQRB=diaEqNcyZjLq=ogYAja0y3BLp_QU+0w@mail.gmail.com>
+ <20160421073206.GC21638@pengutronix.de>
+Date: Thu, 21 Apr 2016 13:04:58 +0200
+Message-ID: <CABDcavYdpegHsQ9SUAUbd1i6dp7YeX3NsLSq+UsP9m-W-TVbXA@mail.gmail.com>
+From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +27,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: board: phytec-som-am335x: RAM timings for
- phycore-r2 1GB
+Subject: Re: Fwd: Micrel KSZ9031RN PHY problem
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: barebox@lists.infradead.org, Philipp Zabel <pza@pengutronix.de>
 
-Hello Sascha,
+Hello,
 
-Am Dienstag, den 19.04.2016, 08:24 +0200 schrieb Sascha Hauer:
-> Hi Teresa,
-> 
-> On Mon, Apr 18, 2016 at 08:56:51AM +0200, Teresa Remmet wrote:
-> > Add new RAM Timings for phyCORE R2 with MT41K512M16HA-125IT
-> > 1024MB mounted.
-> > 
-> > Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
-> > ---
-> >  arch/arm/boards/phytec-som-am335x/lowlevel.c    |  1 +
-> >  arch/arm/boards/phytec-som-am335x/ram-timings.h | 20 ++++++++++++++++++++
-> >  images/Makefile.am33xx                          |  6 ++++++
-> >  3 files changed, 27 insertions(+)
-> 
-> Applied, thanks. The usual question: Can't the new version be
-> autodetected using bootstrap pins or similar? ;)
+2016-04-21 9:32 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> On Wed, Apr 20, 2016 at 05:58:40PM +0200, Guillermo Rodriguez Garcia wrote:
+>> Hello,
+>>
+>> 2016-04-19 9:11 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+>> > Hi Guillermo,
+>> >
+>> > +Cc Philipp Zabel who ported the patch to barebox
+>> >
+>> > On Mon, Apr 18, 2016 at 04:49:47PM +0200, Guillermo Rodriguez Garcia wrote:
+>> >> Hello all,
+>> >>
+>> >> I am playing with barebox on an Atmel SAMA5D3 Xplained board. It is
+>> >> now working fine for the most part, however after updating to the
+>> >> latest sources from git I found a problem that I had not seen before.
+>> >>
+>> >> This board has two Ethernet interfaces; eth0 uses a Micrel KSZ9031RN
+>> >> PHY, and eth1 uses a Micrel KSZ8081RNB PHY.
+>> >>
+>> >> It seems that after release 2016.03.0, eth0 does not work anymore with
+>> >> some routers. Specifically I found this problem with a Comtrend
+>> >> VG-8050. I have tested other routers and the problem was not present
+>> >> there.
+>> >>
+>> >> After some research it seems that the problem is caused by this
+>> >> commit: http://git.pengutronix.de/?p=barebox.git;a=commit;h=da89ee8f2e04e116410632a185024f58b8262d87
+>> >>
+>> >> Before this commit eth0 was working fine. After this commit, the link
+>> >> cannot established anymore:
+>> >>
+>> >> [...]
+>> >> barebox:/# ping 192.168.0.128
+>> >> ping failed: Network is down
+>> >>
+>> >> Before diving further into this I thought it could be a good idea to
+>> >> ask, in case someone can shed some light here.
+>> >
+>> > I have no idea what the issue is here. We might have to make this option
+>> > configurable via devicetree to give boards different options. Since the
+>> > patch comes from the Linux Kernel, do you have the same problems under
+>> > Linux?
+>>
+>> I'm trying to get the latest kernel to boot. The latest version
+>> supported by Atmel is 4.1, which doesn't have the patch yet. Will
+>> report back asap.
+>
+> Thanks. We can revert this patch since Philipp only ported it to stay in
+> sync with the kernel. Anyway, if it makes problems we'll probably need a
+> solution for the kernel aswell.
 
+Linux kernel 4.3 which incorporates the patch works fine (!)
 
-the phyCORE-AM335x R2 is a pin compatible replacement of the
-phyCORE-AM335x. So we do not have any new pins left for this. But we
-will think of ways to improve this anyway. 
+On the other hand, U-Boot 2016.03, which also incorporates a
+center_flp_timing patch
+(http://www.spinics.net/lists/u-boot-v2/msg25938.html) also shows the
+same problem as Barebox.
 
-Regards,
-Teresa
+This is puzzling. The timings patch in kernel version 4.3 works fine,
+but seems to cause problems in both Barebox and U-Boot.
 
+Still investigating.
 
-
-> 
-> Sascha
-> 
-
-
+Guillermo Rodriguez Garcia
+guille.rodriguez@gmail.com
 
 _______________________________________________
 barebox mailing list
