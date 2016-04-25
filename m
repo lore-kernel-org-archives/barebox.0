@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aueov-0007K5-PX
- for barebox@lists.infradead.org; Mon, 25 Apr 2016 11:36:54 +0000
+ id 1auerf-0007rj-9X
+ for barebox@lists.infradead.org; Mon, 25 Apr 2016 11:39:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 Apr 2016 13:36:30 +0200
-Message-Id: <1461584190-3072-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 25 Apr 2016 13:39:20 +0200
+Message-Id: <1461584360-5891-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +19,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: Bootm: FIT image handler depends on CONFIG_FITIMAGE
+Subject: [PATCH] move FLEXIBLE_BOOTARGS from commands/ to common/
 To: Barebox List <barebox@lists.infradead.org>
 
-CONFIG_FITIMAGE is the variable to depend on, not
-CONFIG_CMD_BOOTM_FITIMAGE which is only a wrapper option to
-let CONFIG_FITIMAGE select from the bootm Kconfig menu.
+FLEXIBLE_BOOTARGS also works without command support being enabled.
+Move this option from commands/Kconfig to common/Kconfig so that
+it doesn't depend on COMMAND_SUPPORT.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib/bootm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ commands/Kconfig | 13 -------------
+ common/Kconfig   | 12 ++++++++++++
+ 2 files changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index b9281e9..f6024c8 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -575,7 +575,7 @@ static int armlinux_register_image_handler(void)
- 		register_image_handler(&aimage_handler);
- 		binfmt_register(&binfmt_aimage_hook);
- 	}
--	if (IS_BUILTIN(CONFIG_CMD_BOOTM_FITIMAGE))
-+	if (IS_BUILTIN(CONFIG_FITIMAGE))
- 	        register_image_handler(&arm_fit_handler);
- 	binfmt_register(&binfmt_arm_zimage_hook);
- 	binfmt_register(&binfmt_barebox_hook);
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 875c5f4..13dd9bb 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -266,19 +266,6 @@ endmenu
+ 
+ menu "Boot"
+ 
+-# TODO: isn't a command
+-config FLEXIBLE_BOOTARGS
+-	bool
+-	prompt "flexible Linux bootargs generation"
+-	depends on CMD_GLOBAL
+-	help
+-	  Select this to get a more flexible bootargs generation. With this
+-	  option the bootargs are concatenated together from global variables
+-	  beginning with 'global.linux.bootargs.' and 'global.linux.mtdparts.'
+-	  This allows for more flexible scripting since with it it's possible
+-	  to replace parts of the bootargs string without reconstructing it
+-	  completely.
+-
+ config CMD_AT91_BOOT_TEST
+ 	bool "at91_boot_test"
+ 	depends on ARCH_AT91
+diff --git a/common/Kconfig b/common/Kconfig
+index 7c09e8c..d00ca6b 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -536,6 +536,18 @@ config BLSPEC
+ 	  on a device and it allows the Operating System to install / update
+ 	  kernels.
+ 
++config FLEXIBLE_BOOTARGS
++	bool
++	prompt "flexible Linux bootargs generation"
++	depends on GLOBALVAR
++	help
++	  Select this to get a more flexible bootargs generation. With this
++	  option the bootargs are concatenated together from global variables
++	  beginning with 'global.linux.bootargs.' and 'global.linux.mtdparts.'
++	  This allows for more flexible scripting since with it it's possible
++	  to replace parts of the bootargs string without reconstructing it
++	  completely.
++
+ config IMD
+ 	bool "barebox metadata support"
+ 
 -- 
 2.8.0.rc3
 
