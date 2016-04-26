@@ -1,11 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-vk0-x244.google.com ([2607:f8b0:400c:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1auzKI-0003FY-RG
- for barebox@lists.infradead.org; Tue, 26 Apr 2016 09:30:39 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Apr 2016 11:30:16 +0200
-Message-Id: <1461663016-21908-1-git-send-email-s.hauer@pengutronix.de>
+ id 1auzig-0006S7-J8
+ for barebox@lists.infradead.org; Tue, 26 Apr 2016 09:55:51 +0000
+Received: by mail-vk0-x244.google.com with SMTP id o133so1216341vka.0
+ for <barebox@lists.infradead.org>; Tue, 26 Apr 2016 02:55:29 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20160421073206.GC21638@pengutronix.de>
+References: <CABDcavZr1PCpFrHVJFFayRQZ6vninf-xFS0H9QKSdA8u53OkDg@mail.gmail.com>
+ <CABDcavZZd4AofsfSYMVbEPfjpPyF9rbmv6BXAG_8mLiJhmeL+Q@mail.gmail.com>
+ <20160419071110.GO9102@pengutronix.de>
+ <CABDcavYf=ts161dQRB=diaEqNcyZjLq=ogYAja0y3BLp_QU+0w@mail.gmail.com>
+ <20160421073206.GC21638@pengutronix.de>
+Date: Tue, 26 Apr 2016 11:55:29 +0200
+Message-ID: <CABDcavbqwXRM2y_uTup3m-pWBqSAjOthpZZBy-8MfM9yL3a-WA@mail.gmail.com>
+From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,122 +23,97 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] globalvar: Create Kconfig symbol for NVVAR
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: Fwd: Micrel KSZ9031RN PHY problem
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Philipp Zabel <pza@pengutronix.de>
 
-nvvar support not only needs globalvar, but also persistent
-environment storage. Add a separate default-y option which
-depends on ENV_HANDLING for this case.
+Hello,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/Kconfig   |  2 +-
- common/Kconfig     |  6 ++++++
- common/globalvar.c | 18 ++++++++++++++++--
- 3 files changed, 23 insertions(+), 3 deletions(-)
+2016-04-21 9:32 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> On Wed, Apr 20, 2016 at 05:58:40PM +0200, Guillermo Rodriguez Garcia wrote:
+>> Hello,
+>>
+>> 2016-04-19 9:11 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+>> > Hi Guillermo,
+>> >
+>> > +Cc Philipp Zabel who ported the patch to barebox
+>> >
+>> > On Mon, Apr 18, 2016 at 04:49:47PM +0200, Guillermo Rodriguez Garcia wrote:
+>> >> Hello all,
+>> >>
+>> >> I am playing with barebox on an Atmel SAMA5D3 Xplained board. It is
+>> >> now working fine for the most part, however after updating to the
+>> >> latest sources from git I found a problem that I had not seen before.
+>> >>
+>> >> This board has two Ethernet interfaces; eth0 uses a Micrel KSZ9031RN
+>> >> PHY, and eth1 uses a Micrel KSZ8081RNB PHY.
+>> >>
+>> >> It seems that after release 2016.03.0, eth0 does not work anymore with
+>> >> some routers. Specifically I found this problem with a Comtrend
+>> >> VG-8050. I have tested other routers and the problem was not present
+>> >> there.
+>> >>
+>> >> After some research it seems that the problem is caused by this
+>> >> commit: http://git.pengutronix.de/?p=barebox.git;a=commit;h=da89ee8f2e04e116410632a185024f58b8262d87
+>> >>
+>> >> Before this commit eth0 was working fine. After this commit, the link
+>> >> cannot established anymore:
+>> >>
+>> >> [...]
+>> >> barebox:/# ping 192.168.0.128
+>> >> ping failed: Network is down
+>> >>
+>> >> Before diving further into this I thought it could be a good idea to
+>> >> ask, in case someone can shed some light here.
+>> >
+>> > I have no idea what the issue is here. We might have to make this option
+>> > configurable via devicetree to give boards different options. Since the
+>> > patch comes from the Linux Kernel, do you have the same problems under
+>> > Linux?
+>>
+>> I'm trying to get the latest kernel to boot. The latest version
+>> supported by Atmel is 4.1, which doesn't have the patch yet. Will
+>> report back asap.
+>
+> Thanks. We can revert this patch since Philipp only ported it to stay in
+> sync with the kernel. Anyway, if it makes problems we'll probably need a
+> solution for the kernel aswell.
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 875c5f4..1d3d530 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -715,7 +715,7 @@ endmenu
- menu "Environment"
- 
- config CMD_NV
--	select GLOBALVAR
-+	depends on NVVAR
- 	tristate
- 	prompt "nv"
- 	help
-diff --git a/common/Kconfig b/common/Kconfig
-index 7c09e8c..8f7bb02 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -81,6 +81,12 @@ config LOGBUF
- config GLOBALVAR
- 	bool
- 
-+config NVVAR
-+	bool
-+	depends on GLOBALVAR
-+	depends on ENV_HANDLING
-+	default y
-+
- config STDDEV
- 	bool
- 
-diff --git a/common/globalvar.c b/common/globalvar.c
-index 9a793ac..a777c14 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -90,6 +90,9 @@ int nvvar_add(const char *name, const char *value)
- 	struct param_d *p, *gp;
- 	int ret;
- 
-+	if (!IS_ENABLED(CONFIG_NVVAR))
-+		return -ENOSYS;
-+
- 	gp = get_param_by_name(&nv_device, name);
- 	if (gp) {
- 		ret = dev_set_param(&global_device, name, value);
-@@ -131,6 +134,9 @@ int nvvar_remove(const char *name)
- 	struct param_d *p;
- 	char *fname;
- 
-+	if (!IS_ENABLED(CONFIG_NVVAR))
-+		return -ENOSYS;
-+
- 	p = get_param_by_name(&nv_device, name);
- 	if (!p)
- 		return -ENOENT;
-@@ -153,6 +159,9 @@ int nvvar_load(void)
- 	DIR *dir;
- 	struct dirent *d;
- 
-+	if (!IS_ENABLED(CONFIG_NVVAR))
-+		return -ENOSYS;
-+
- 	dir = opendir("/env/nv");
- 	if (!dir)
- 		return -ENOENT;
-@@ -185,7 +194,7 @@ static void device_param_print(struct device_d *dev)
- 		const char *p = dev_get_param(dev, param->name);
- 		const char *nv = NULL;
- 
--		if (dev != &nv_device)
-+		if (IS_ENABLED(CONFIG_NVVAR) && dev != &nv_device)
- 			nv = dev_get_param(&nv_device, param->name);
- 
- 		printf("%s%s: %s\n", nv ? "* " : "  ", param->name, p);
-@@ -194,6 +203,9 @@ static void device_param_print(struct device_d *dev)
- 
- void nvvar_print(void)
- {
-+	if (!IS_ENABLED(CONFIG_NVVAR))
-+		return;
-+
- 	device_param_print(&nv_device);
- }
- 
-@@ -264,7 +276,9 @@ int globalvar_add_simple(const char *name, const char *value)
- static int globalvar_init(void)
- {
- 	register_device(&global_device);
--	register_device(&nv_device);
-+
-+	if (IS_ENABLED(CONFIG_NVVAR))
-+		register_device(&nv_device);
- 
- 	globalvar_add_simple("version", UTS_RELEASE);
- 
--- 
-2.8.0.rc3
+More info on this after researching the issue.
 
+Looks like problem is not directly caused by the modified FLP timings,
+but is revealed by that change.
+
+Immediately after setting the FLP timings, the autonegotiation is
+restarted by calling genphy_restart_aneg(phydev).
+Within genphy_restart_aneg, the following line:
+
+    oldadv = adv = phy_read(phydev, MII_ADVERTISE);
+
+returns 0xffff, and negotiation fails.
+
+It seems to be a timing problem. Any minimal delay _before_ that
+phy_read (1ms) is enough to make it work -- phy_read returns 481
+instead of 0xffff, and the negotiation completes. The same delay right
+after phy_read does not solve the problem.
+
+This happens even if I modify ksz9031_center_flp_timing() so that it
+does NOT touch the FLP timings. So as I said it is not directly
+related to the actual FLP timing values, but rather to some timing
+issue related to the negotiation itself. It just happens that the
+center_flp_timing function does restart the autonegotiation, and thus
+reveals the problem.
+
+Is it OK to add this 1ms delay in genphy_restart_aneg?
+
+Best,
+
+Guillermo Rodriguez Garcia
+guille.rodriguez@gmail.com
 
 _______________________________________________
 barebox mailing list
