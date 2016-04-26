@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ig0-x235.google.com ([2607:f8b0:4001:c05::235])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1av1T3-0006Bd-4C
- for barebox@lists.infradead.org; Tue, 26 Apr 2016 11:47:49 +0000
-Received: by mail-ig0-x235.google.com with SMTP id m9so11106844ige.1
- for <barebox@lists.infradead.org>; Tue, 26 Apr 2016 04:47:28 -0700 (PDT)
+ id 1av5Sk-0002js-JL
+ for barebox@lists.infradead.org; Tue, 26 Apr 2016 16:03:48 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <uol@pengutronix.de>) id 1av5SM-00032b-Sh
+ for barebox@lists.infradead.org; Tue, 26 Apr 2016 18:03:22 +0200
+Received: from uol by dude.hi.pengutronix.de with local (Exim 4.87)
+ (envelope-from <uol@pengutronix.de>) id 1av5SM-0000B4-N3
+ for barebox@lists.infradead.org; Tue, 26 Apr 2016 18:03:22 +0200
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Date: Tue, 26 Apr 2016 18:03:22 +0200
+Message-Id: <1461686602-646-1-git-send-email-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <1461653060-13481-1-git-send-email-s.hauer@pengutronix.de>
-References: <1461653060-13481-1-git-send-email-s.hauer@pengutronix.de>
-Date: Tue, 26 Apr 2016 08:47:28 -0300
-Message-ID: <CAOMZO5BvYEBGnZbT1aznEbgoZH_hZS=a+-phUz+wJPX02BmqFg@mail.gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +22,25 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] ARM: i.MX: increase barebox partition sizes
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] images: Makefile.socfpga: fix typo
+To: barebox@lists.infradead.org
 
-Hi Sascha,
-
-On Tue, Apr 26, 2016 at 3:44 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-
-> diff --git a/arch/arm/dts/imx25-karo-tx25.dts b/arch/arm/dts/imx25-karo-tx25.dts
-> index 8d79471..76847ff 100644
-> --- a/arch/arm/dts/imx25-karo-tx25.dts
-> +++ b/arch/arm/dts/imx25-karo-tx25.dts
-> @@ -123,12 +123,12 @@
->
->         partition@0 {
->                 label = "boot";
-> -               reg = <0x0 0x80000>;
-> +               reg = <0x0 0xe0000>;
->         };
->
-> -       partition@80000 {
-> +       partition@e0000 {
->                 label = "environment";
-> -               reg = <0x80000 0x80000>;
-> +               reg = <0xe0000 0x20000>;
-
-Here the environment partition size is changed from 512kB to 128kB.
-Couldn't this cause issues?
-
-Shouldn't this change be done by a separate patch?
-
-Other than that the patch looks good.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4K
+LS0tCiBpbWFnZXMvTWFrZWZpbGUuc29jZnBnYSB8IDIgKy0KIDEgZmlsZSBjaGFuZ2VkLCAxIGlu
+c2VydGlvbigrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2ltYWdlcy9NYWtlZmlsZS5z
+b2NmcGdhIGIvaW1hZ2VzL01ha2VmaWxlLnNvY2ZwZ2EKaW5kZXggZDUyYjkwOWZmMzU0Li43ZTY0
+MmMwNmM5OTUgMTAwNjQ0Ci0tLSBhL2ltYWdlcy9NYWtlZmlsZS5zb2NmcGdhCisrKyBiL2ltYWdl
+cy9NYWtlZmlsZS5zb2NmcGdhCkBAIC0yLDcgKzIsNyBAQAogIyBiYXJlYm94IGltYWdlIGdlbmVy
+YXRpb24gTWFrZWZpbGUgZm9yIEFsdGVyYSBzb2NmcGdhCiAjCiAKLSMgJS5zb2NmcGdhIC0gY29u
+dmVydCBpbnRvIHNvY2ZwZ2EgaW1hZ2UKKyMgJS5zb2NmcGdhaW1nIC0gY29udmVydCBpbnRvIHNv
+Y2ZwZ2EgaW1hZ2UKICMgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogcXVpZXRfY21kX3NvY2ZwZ2FfaW1hZ2UgPSBTT0NGUEdB
+LUlNRyAkQAogICAgICAgY21kX3NvY2ZwZ2FfaW1hZ2UgPSBzY3JpcHRzL3NvY2ZwZ2FfbWtpbWFn
+ZSAtYiAtbyAkQCAkPAotLSAKMi44LjAucmMzCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
+bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
+YmFyZWJveAo=
