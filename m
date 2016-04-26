@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x233.google.com ([2607:f8b0:400e:c00::233])
+Received: from mail-pf0-x229.google.com ([2607:f8b0:400e:c00::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1auvgz-0001ry-Mr
- for barebox@lists.infradead.org; Tue, 26 Apr 2016 05:37:50 +0000
-Received: by mail-pf0-x233.google.com with SMTP id 206so2475318pfu.0
- for <barebox@lists.infradead.org>; Mon, 25 Apr 2016 22:37:29 -0700 (PDT)
+ id 1auvh5-0001sk-Oo
+ for barebox@lists.infradead.org; Tue, 26 Apr 2016 05:37:56 +0000
+Received: by mail-pf0-x229.google.com with SMTP id y69so2451476pfb.1
+ for <barebox@lists.infradead.org>; Mon, 25 Apr 2016 22:37:35 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 25 Apr 2016 22:36:58 -0700
-Message-Id: <1461649027-5046-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 25 Apr 2016 22:37:06 -0700
+Message-Id: <1461649027-5046-9-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1461649027-5046-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1461649027-5046-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,54 +23,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/9] i.MX6Q+ fixes plus number of latest Kernel changes
+Subject: [PATCH 8/9] PCI: imx6: Remove broken Gen2 workaround
 To: barebox@lists.infradead.org
-Cc: Fabio Estevam <fabio.estevam@freescale.com>, Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Fabio Estevam <fabio.estevam@freescale.com>, Andrey Smirnov <andrew.smirnov@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
 
-Hello,
+Remove the remnants of the workaround for erratum ERR005184 which was never
+completely implemented.  The checks alone don't carry any value as we don't
+act properly on the result.
 
-This patchset continains i.MX6Q+ reset sequence fix (similar
-implementation was submitted to LKML) and besides that a number of
-ported coomits from "pci/host-imx6" branch of:
+A workaround should be added to the lane speed change in establish_link
+later.
 
-git://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git
+[Andrey Smirnov: port to Barebox codebase]
 
-Since some commits required a bit of massaging, I added my own
-Signed-off-by and a comment in square brackets, however my authorship
-of those commits is very minimal.
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/pci/pci-imx6.c | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
 
-As for commit by Fabio Estevam, there I was able to apply
-corresponding kernel patch by manually editing paths in the diff file,
-so I left the commit message as it was.
-
-Any feedback would be appreciated.
-
-Thank you,
-Andrey Smirnov
-
-Andrey Smirnov (8):
-  PCI: imx6: Simplify imx6_pcie_remove()
-  OF: Port of_match_device() and of_device_get_match_data()
-  PCI: imx6: Add proper i.MX6+ reset sequence
-  PCI: imx6: Rename imx6_pcie_start_link() to imx6_pcie_establish_link()
-  PCI: imx6: Move imx6_pcie_reset_phy() near other PHY handling
-    functions
-  PCI: imx6: Move PHY reset into imx6_pcie_establish_link()
-  PCI: imx6: Remove broken Gen2 workaround
-  PCI: imx6: Add DT bindings to configure PHY Tx driver settings
-
-Fabio Estevam (1):
-  PCI: imx6: Simplify a trivial if-return sequence
-
- drivers/of/Makefile            |   2 +-
- drivers/of/device.c            |  33 ++++++
- drivers/pci/pci-imx6.c         | 242 +++++++++++++++++++++++------------------
- include/mfd/imx6q-iomuxc-gpr.h |   1 +
- include/of_device.h            |  48 ++++++++
- 5 files changed, 217 insertions(+), 109 deletions(-)
- create mode 100644 drivers/of/device.c
- create mode 100644 include/of_device.h
-
+diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+index c564a60..ee1a0c5 100644
+--- a/drivers/pci/pci-imx6.c
++++ b/drivers/pci/pci-imx6.c
+@@ -504,7 +504,7 @@ static void imx6_pcie_host_init(struct pcie_port *pp)
+ 
+ static int imx6_pcie_link_up(struct pcie_port *pp)
+ {
+-	u32 rc, debug_r0, rx_valid;
++	u32 rc;
+ 	int count = 5;
+ 
+ 	/*
+@@ -538,21 +538,6 @@ static int imx6_pcie_link_up(struct pcie_port *pp)
+ 		 */
+ 		udelay(1000);
+ 	}
+-	/*
+-	 * From L0, initiate MAC entry to gen2 if EP/RC supports gen2.
+-	 * Wait 2ms (LTSSM timeout is 24ms, PHY lock is ~5us in gen2).
+-	 * If (MAC/LTSSM.state == Recovery.RcvrLock)
+-	 * && (PHY/rx_valid==0) then pulse PHY/rx_reset. Transition
+-	 * to gen2 is stuck
+-	 */
+-	pcie_phy_read(pp->dbi_base, PCIE_PHY_RX_ASIC_OUT, &rx_valid);
+-	debug_r0 = readl(pp->dbi_base + PCIE_PHY_DEBUG_R0);
+-
+-	if (rx_valid & 0x01)
+-		return 0;
+-
+-	if ((debug_r0 & 0x3f) != 0x0d)
+-		return 0;
+ 
+ 	return 0;
+ }
 -- 
 2.5.5
 
