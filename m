@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x233.google.com ([2607:f8b0:400e:c00::233])
+Received: from mail-pf0-x22f.google.com ([2607:f8b0:400e:c00::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1auvgz-0001s6-Mq
- for barebox@lists.infradead.org; Tue, 26 Apr 2016 05:37:50 +0000
-Received: by mail-pf0-x233.google.com with SMTP id n1so2697446pfn.2
- for <barebox@lists.infradead.org>; Mon, 25 Apr 2016 22:37:30 -0700 (PDT)
+ id 1auvh6-0001sl-Jv
+ for barebox@lists.infradead.org; Tue, 26 Apr 2016 05:37:57 +0000
+Received: by mail-pf0-x22f.google.com with SMTP id 206so2476406pfu.0
+ for <barebox@lists.infradead.org>; Mon, 25 Apr 2016 22:37:36 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 25 Apr 2016 22:37:00 -0700
-Message-Id: <1461649027-5046-3-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 25 Apr 2016 22:37:07 -0700
+Message-Id: <1461649027-5046-10-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1461649027-5046-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1461649027-5046-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,125 +23,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/9] OF: Port of_match_device() and of_device_get_match_data()
+Subject: [PATCH 9/9] PCI: imx6: Add DT bindings to configure PHY Tx driver
+ settings
 To: barebox@lists.infradead.org
-Cc: Fabio Estevam <fabio.estevam@freescale.com>, Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Fabio Estevam <fabio.estevam@freescale.com>, Andrey Smirnov <andrew.smirnov@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Justin Waters <justin.waters@timesys.com>
 
-Port of_match_device() and of_device_get_match_data() from Linux kernel
-code.
+The settings in GPR8 are dependent upon the particular layout of the
+hardware platform.  As such, they should be configurable via the device
+tree.
 
+Look up PHY Tx driver settings from the device tree.  Fall back to the
+original hard-coded values if they are not specified in the device tree.
+
+[Andrey Smirnov: port to Barebox codebase]
+
+Signed-off-by: Justin Waters <justin.waters@timesys.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/of/Makefile |  2 +-
- drivers/of/device.c | 33 +++++++++++++++++++++++++++++++++
- include/of_device.h | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 82 insertions(+), 1 deletion(-)
- create mode 100644 drivers/of/device.c
- create mode 100644 include/of_device.h
+ drivers/pci/pci-imx6.c | 34 +++++++++++++++++++++++++++++++---
+ 1 file changed, 31 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/of/Makefile b/drivers/of/Makefile
-index 0dc2f8d..f31bb29 100644
---- a/drivers/of/Makefile
-+++ b/drivers/of/Makefile
-@@ -1,4 +1,4 @@
--obj-y += address.o base.o fdt.o platform.o
-+obj-y += address.o base.o fdt.o platform.o device.o
- obj-$(CONFIG_OFTREE_MEM_GENERIC) += mem_generic.o
- obj-$(CONFIG_OF_GPIO) += of_gpio.o
- obj-$(CONFIG_OF_PCI) += of_pci.o
-diff --git a/drivers/of/device.c b/drivers/of/device.c
-new file mode 100644
-index 0000000..e2c3c02
---- /dev/null
-+++ b/drivers/of/device.c
-@@ -0,0 +1,33 @@
-+#include <common.h>
-+#include <of.h>
+diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+index ee1a0c5..e25a956 100644
+--- a/drivers/pci/pci-imx6.c
++++ b/drivers/pci/pci-imx6.c
+@@ -51,6 +51,11 @@ struct imx6_pcie {
+ 	void __iomem		*iomuxc_gpr;
+ 	enum imx6_pcie_variants variant;
+ 	void __iomem		*mem_base;
++	u32                     tx_deemph_gen1;
++	u32                     tx_deemph_gen2_3p5db;
++	u32                     tx_deemph_gen2_6db;
++	u32                     tx_swing_full;
++	u32                     tx_swing_low;
+ };
+ 
+ /* PCIe Root Complex registers (memory-mapped) */
+@@ -370,21 +375,23 @@ static void imx6_pcie_init_phy(struct pcie_port *pp)
+ 
+ 	gpr8 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
+ 	gpr8 &= ~IMX6Q_GPR8_TX_DEEMPH_GEN1;
++	gpr8 |= imx6_pcie->tx_deemph_gen1 << 0;
+ 	writel(gpr8, imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
+ 
+ 	gpr8 &= ~IMX6Q_GPR8_TX_DEEMPH_GEN2_3P5DB;
++	gpr8 |= imx6_pcie->tx_deemph_gen2_3p5db << 6;
+ 	writel(gpr8, imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
+ 
+ 	gpr8 &= ~IMX6Q_GPR8_TX_DEEMPH_GEN2_6DB;
+-	gpr8 |= 20 << 12;
++	gpr8 |= imx6_pcie->tx_deemph_gen2_6db << 12;
+ 	writel(gpr8, imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
+ 
+ 	gpr8 &= ~IMX6Q_GPR8_TX_SWING_FULL;
+-	gpr8 |= 127 << 18;
++	gpr8 |= imx6_pcie->tx_swing_full << 18;
+ 	writel(gpr8, imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
+ 
+ 	gpr8 &= ~IMX6Q_GPR8_TX_SWING_LOW;
+-	gpr8 |= 127 << 25;
++	gpr8 |= imx6_pcie->tx_swing_low << 25;
+ 	writel(gpr8, imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
+ }
+ 
+@@ -620,6 +627,27 @@ static int __init imx6_pcie_probe(struct device_d *dev)
+ 	/* Grab GPR config register range */
+ 	imx6_pcie->iomuxc_gpr = IOMEM(MX6_IOMUXC_BASE_ADDR);
+ 
++	/* Grab PCIe PHY Tx Settings */
++	if (of_property_read_u32(np, "fsl,tx-deemph-gen1",
++				 &imx6_pcie->tx_deemph_gen1))
++		imx6_pcie->tx_deemph_gen1 = 0;
 +
++	if (of_property_read_u32(np, "fsl,tx-deemph-gen2-3p5db",
++				 &imx6_pcie->tx_deemph_gen2_3p5db))
++		imx6_pcie->tx_deemph_gen2_3p5db = 0;
 +
-+/**
-+ * of_match_device - Tell if a struct device matches an of_device_id list
-+ * @ids: array of of device match structures to search in
-+ * @dev: the of device structure to match against
-+ *
-+ * Used by a driver to check whether an platform_device present in the
-+ * system is in its list of supported devices.
-+ */
-+const struct of_device_id *of_match_device(const struct of_device_id *matches,
-+					   const struct device_d *dev)
-+{
-+	if ((!matches) || (!dev->device_node))
-+		return NULL;
++	if (of_property_read_u32(np, "fsl,tx-deemph-gen2-6db",
++				 &imx6_pcie->tx_deemph_gen2_6db))
++		imx6_pcie->tx_deemph_gen2_6db = 20;
 +
-+	return of_match_node(matches, dev->device_node);
-+}
-+EXPORT_SYMBOL(of_match_device);
++	if (of_property_read_u32(np, "fsl,tx-swing-full",
++				 &imx6_pcie->tx_swing_full))
++		imx6_pcie->tx_swing_full = 127;
 +
-+const void *of_device_get_match_data(const struct device_d *dev)
-+{
-+	const struct of_device_id *match;
++	if (of_property_read_u32(np, "fsl,tx-swing-low",
++				 &imx6_pcie->tx_swing_low))
++		imx6_pcie->tx_swing_low = 127;
 +
-+	match = of_match_device(dev->driver->of_compatible, dev);
-+	if (!match)
-+		return NULL;
-+
-+	return match->data;
-+}
-+EXPORT_SYMBOL(of_device_get_match_data);
-diff --git a/include/of_device.h b/include/of_device.h
-new file mode 100644
-index 0000000..e84fc9c
---- /dev/null
-+++ b/include/of_device.h
-@@ -0,0 +1,48 @@
-+#ifndef __OF_DEVICE_H
-+#define __OF_DEVICE_H
-+
-+#include <driver.h>
-+#include <of.h>
-+
-+
-+#ifdef CONFIG_OFTREE
-+extern const struct of_device_id *of_match_device(
-+	const struct of_device_id *matches, const struct device_d *dev);
-+
-+/**
-+ * of_driver_match_device - Tell if a driver's of_match_table matches a device.
-+ * @drv: the device_driver structure to test
-+ * @dev: the device structure to match against
-+ */
-+static inline int of_driver_match_device(struct device_d *dev,
-+					 const struct driver_d *drv)
-+{
-+	return of_match_device(drv->of_compatible, dev) != NULL;
-+}
-+
-+extern const void *of_device_get_match_data(const struct device_d *dev);
-+
-+#else /* CONFIG_OF */
-+
-+static inline int of_driver_match_device(struct device_d *dev,
-+					 const struct device_d *drv)
-+{
-+	return 0;
-+}
-+
-+static inline const void *of_device_get_match_data(const struct device_d *dev)
-+{
-+	return NULL;
-+}
-+
-+static inline const struct of_device_id *__of_match_device(
-+		const struct of_device_id *matches, const struct device_d *dev)
-+{
-+	return NULL;
-+}
-+#define of_match_device(matches, dev)	\
-+	__of_match_device(of_match_ptr(matches), (dev))
-+
-+#endif /* CONFIG_OF */
-+
-+#endif /* _LINUX_OF_DEVICE_H */
+ 	ret = imx6_add_pcie_port(pp, dev);
+ 	if (ret < 0)
+ 		return ret;
 -- 
 2.5.5
 
