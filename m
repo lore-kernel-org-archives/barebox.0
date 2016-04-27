@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1avL3V-000813-1p
- for barebox@lists.infradead.org; Wed, 27 Apr 2016 08:42:45 +0000
-Date: Wed, 27 Apr 2016 10:42:23 +0200
+ id 1avLOy-0005Cl-Bu
+ for barebox@lists.infradead.org; Wed, 27 Apr 2016 09:04:57 +0000
+Date: Wed, 27 Apr 2016 11:04:34 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160427084223.GO7860@pengutronix.de>
-References: <1461686602-646-1-git-send-email-u.oelmann@pengutronix.de>
+Message-ID: <20160427090434.GR7860@pengutronix.de>
+References: <1461696366-21604-1-git-send-email-boris.brezillon@free-electrons.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1461686602-646-1-git-send-email-u.oelmann@pengutronix.de>
+In-Reply-To: <1461696366-21604-1-git-send-email-boris.brezillon@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,33 +18,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] images: Makefile.socfpga: fix typo
-To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
+Subject: Re: [PATCH] of: fix of_tree_for_each_node_from() macro
+To: Boris Brezillon <boris.brezillon@free-electrons.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Apr 26, 2016 at 06:03:22PM +0200, Ulrich =D6lmann wrote:
-> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
+Hi Boris,
+
+On Tue, Apr 26, 2016 at 08:46:06PM +0200, Boris Brezillon wrote:
+> of_tree_for_each_node_from() is supposed to iterate over all DT nodes
+> after the one pointed by the from parameter, but with the current
+> of_next_node() implementation we cannot access the root node.
+> 
+> Patch of_next_node() to point to root_node when from is NULL.
+> 
+> Doing that also simplifies users of of_tree_for_each_node_from() which
+> were duplicating the logic to point to the root_node when from is NULL.
+> 
+> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 > ---
->  images/Makefile.socfpga | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> =
+> Hi Sacha,
+> 
+> Not sure this patch is doing exactly what we want, but it fixes a bug
+> in the sunxi clk driver I'm working on. This driver declares a
+> clk provider using CLK_OF_DECLARE() with the SoC compatible (the
+> compatible attached to the root node), which means the clk core code has
+> to match the root_node, and with the current of_tree_for_each_node() it
+> never tests the root_node.
 
-> diff --git a/images/Makefile.socfpga b/images/Makefile.socfpga
-> index d52b909ff354..7e642c06c995 100644
-> --- a/images/Makefile.socfpga
-> +++ b/images/Makefile.socfpga
-
-Applied, thanks
+The patch looks good and I can't find a reason why it shouldn't work as
+expected. I applied it for now. Let's see what happens.
 
 Sascha
 
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
