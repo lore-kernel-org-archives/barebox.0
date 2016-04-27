@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1avMM4-0001LX-BY
- for barebox@lists.infradead.org; Wed, 27 Apr 2016 10:06:00 +0000
+ id 1avMM4-0001La-BW
+ for barebox@lists.infradead.org; Wed, 27 Apr 2016 10:06:01 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 094CDA00495
- for <barebox@lists.infradead.org>; Wed, 27 Apr 2016 12:05:37 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id B27B1A00466
+ for <barebox@lists.infradead.org>; Wed, 27 Apr 2016 12:05:36 +0200 (CEST)
 From: Stefan Christ <s.christ@phytec.de>
-Date: Wed, 27 Apr 2016 12:04:41 +0200
-Message-Id: <1461751489-13302-8-git-send-email-s.christ@phytec.de>
+Date: Wed, 27 Apr 2016 12:04:40 +0200
+Message-Id: <1461751489-13302-7-git-send-email-s.christ@phytec.de>
 In-Reply-To: <1461751489-13302-1-git-send-email-s.christ@phytec.de>
 References: <1461751489-13302-1-git-send-email-s.christ@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,43 +24,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH for next 07/15] ARM: phytec-som-imx6: add barebox partitions
- for MMC
+Subject: [PATCH for next 06/15] ARM: dts: pfla02: use long enough reset for
+ ethernet phy
 To: barebox@lists.infradead.org
 
-Add missing MMC barebox environment partitions for the phyCORE-i.MX6
-with EMMC. Otherwise the barebox cannot find the environment, when the
-board is boot from sd-card.
+Use a longer reset time for ethernet phy Micrel KSZ9031RNX.  Otherwise a
+small percentage of modules have 'transmission timeouts' errors like
+
+   barebox@Phytec phyFLEX-i.MX6 Quad Carrier-Board:/ ifup eth0
+   warning: No MAC address set. Using random address 7e:94:4d:02:f8:f3
+   eth0: 1000Mbps full duplex link detected
+   eth0: transmission timeout
+   T eth0: transmission timeout
+   T eth0: transmission timeout
+   T eth0: transmission timeout
+   T eth0: transmission timeout
 
 Signed-off-by: Stefan Christ <s.christ@phytec.de>
+Signed-off-by: Christian Hemp <c.hemp@phytec.de>
 ---
- arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
-index 6e19ab5..116a18d 100644
---- a/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
-+++ b/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
-@@ -43,6 +43,19 @@
+diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+index aa39fd9..9a8c702 100644
+--- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+@@ -85,6 +85,7 @@
  
- &usdhc1 {
- 	status = "okay";
-+
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	partition@0 {
-+		label = "barebox";
-+		reg = <0x0 0xe0000>;
-+	};
-+
-+	partition@e0000 {
-+		label = "barebox-environment";
-+		reg = <0xe0000 0x20000>;
-+	};
- };
+ &fec {
+ 	phy-handle = <&ethphy>;
++	phy-reset-duration = <10>; /* in msecs */
  
- &usdhc4 {
+ 	mdio {
+ 		#address-cells = <1>;
 -- 
 1.9.1
 
