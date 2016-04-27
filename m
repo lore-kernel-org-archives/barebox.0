@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1avKzt-0005qO-8a
- for barebox@lists.infradead.org; Wed, 27 Apr 2016 08:39:02 +0000
+ id 1avL3V-000813-1p
+ for barebox@lists.infradead.org; Wed, 27 Apr 2016 08:42:45 +0000
+Date: Wed, 27 Apr 2016 10:42:23 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 27 Apr 2016 10:38:25 +0200
-Message-Id: <1461746305-31995-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1461746305-31995-1-git-send-email-s.hauer@pengutronix.de>
-References: <1461746305-31995-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20160427084223.GO7860@pengutronix.de>
+References: <1461686602-646-1-git-send-email-u.oelmann@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1461686602-646-1-git-send-email-u.oelmann@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,133 +18,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] Kconfig: Create Kconfig symbol for NVVAR
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] images: Makefile.socfpga: fix typo
+To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-nvvar support not only needs globalvar, but also persistent
-environment storage. Add a separate default-y option which
-depends on ENV_HANDLING for this case. Make the option visible
-to let the user decide whether he wants to have this option
-and add a help text to make this decision easier.
+On Tue, Apr 26, 2016 at 06:03:22PM +0200, Ulrich =D6lmann wrote:
+> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
+> ---
+>  images/Makefile.socfpga | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> =
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/Kconfig   |  2 +-
- common/Kconfig     | 15 +++++++++++++++
- common/globalvar.c | 18 ++++++++++++++++--
- 3 files changed, 32 insertions(+), 3 deletions(-)
+> diff --git a/images/Makefile.socfpga b/images/Makefile.socfpga
+> index d52b909ff354..7e642c06c995 100644
+> --- a/images/Makefile.socfpga
+> +++ b/images/Makefile.socfpga
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 56b9542..0aab6ef 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -715,7 +715,7 @@ endmenu
- menu "Environment"
- 
- config CMD_NV
--	select GLOBALVAR
-+	depends on NVVAR
- 	tristate
- 	prompt "nv"
- 	help
-diff --git a/common/Kconfig b/common/Kconfig
-index 12f6e84..75e94d6 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -161,6 +161,21 @@ config GLOBALVAR
- 	  variables are used to control several aspects of the system behaviour.
- 	  If unsure, say yes here.
- 
-+config NVVAR
-+	bool "Non volatile global environment variables support"
-+	default y if !SHELL_NONE
-+	depends on GLOBALVAR
-+	depends on ENV_HANDLING
-+	help
-+	  Non volatile environment variables begin with "nv.". They behave like
-+	  global variables above, but their values are saved in the environment
-+	  storage with 'saveenv' and thus are persistent over restarts. nv variables
-+	  are coupled with global variables of the same name. Setting "nv.foo" results
-+	  in "global.foo" changed also (but not the other way round: setting "global.foo"
-+	  leaves "nv.foo" untouched). The idea is that nv variables can store defaults
-+	  while global variables can be changed during runtime without changing the
-+	  default.
-+
- menu "memory layout"
- 
- source "pbl/Kconfig"
-diff --git a/common/globalvar.c b/common/globalvar.c
-index 9a793ac..a777c14 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -90,6 +90,9 @@ int nvvar_add(const char *name, const char *value)
- 	struct param_d *p, *gp;
- 	int ret;
- 
-+	if (!IS_ENABLED(CONFIG_NVVAR))
-+		return -ENOSYS;
-+
- 	gp = get_param_by_name(&nv_device, name);
- 	if (gp) {
- 		ret = dev_set_param(&global_device, name, value);
-@@ -131,6 +134,9 @@ int nvvar_remove(const char *name)
- 	struct param_d *p;
- 	char *fname;
- 
-+	if (!IS_ENABLED(CONFIG_NVVAR))
-+		return -ENOSYS;
-+
- 	p = get_param_by_name(&nv_device, name);
- 	if (!p)
- 		return -ENOENT;
-@@ -153,6 +159,9 @@ int nvvar_load(void)
- 	DIR *dir;
- 	struct dirent *d;
- 
-+	if (!IS_ENABLED(CONFIG_NVVAR))
-+		return -ENOSYS;
-+
- 	dir = opendir("/env/nv");
- 	if (!dir)
- 		return -ENOENT;
-@@ -185,7 +194,7 @@ static void device_param_print(struct device_d *dev)
- 		const char *p = dev_get_param(dev, param->name);
- 		const char *nv = NULL;
- 
--		if (dev != &nv_device)
-+		if (IS_ENABLED(CONFIG_NVVAR) && dev != &nv_device)
- 			nv = dev_get_param(&nv_device, param->name);
- 
- 		printf("%s%s: %s\n", nv ? "* " : "  ", param->name, p);
-@@ -194,6 +203,9 @@ static void device_param_print(struct device_d *dev)
- 
- void nvvar_print(void)
- {
-+	if (!IS_ENABLED(CONFIG_NVVAR))
-+		return;
-+
- 	device_param_print(&nv_device);
- }
- 
-@@ -264,7 +276,9 @@ int globalvar_add_simple(const char *name, const char *value)
- static int globalvar_init(void)
- {
- 	register_device(&global_device);
--	register_device(&nv_device);
-+
-+	if (IS_ENABLED(CONFIG_NVVAR))
-+		register_device(&nv_device);
- 
- 	globalvar_add_simple("version", UTS_RELEASE);
- 
--- 
-2.8.0.rc3
+Applied, thanks
 
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
