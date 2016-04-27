@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1avMLh-0001GG-NV
- for barebox@lists.infradead.org; Wed, 27 Apr 2016 10:05:40 +0000
+ id 1avMLh-0001GD-Mz
+ for barebox@lists.infradead.org; Wed, 27 Apr 2016 10:05:39 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id B15FBA00450
+ by root.phytec.de (Postfix) with ESMTP id 25BC0A003E7
  for <barebox@lists.infradead.org>; Wed, 27 Apr 2016 12:05:36 +0200 (CEST)
 From: Stefan Christ <s.christ@phytec.de>
-Date: Wed, 27 Apr 2016 12:04:39 +0200
-Message-Id: <1461751489-13302-6-git-send-email-s.christ@phytec.de>
+Date: Wed, 27 Apr 2016 12:04:35 +0200
+Message-Id: <1461751489-13302-2-git-send-email-s.christ@phytec.de>
 In-Reply-To: <1461751489-13302-1-git-send-email-s.christ@phytec.de>
 References: <1461751489-13302-1-git-send-email-s.christ@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,48 +24,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH for next 05/15] ARM: dts: imx6: phyboards: reduce clock speed
- for usdhc3
+Subject: [PATCH for next 01/15] ARM: imx_v7_defconfig: enable NANDTEST command
 To: barebox@lists.infradead.org
-
-Due to hardware issues the usdhc3 interface on phyBOARD-ALCOR i.MX6 and
-phyBOARD-SUBRA i.MX6 doesn't work reliable at 50Mhz.  You get
-communication errors like
-
-    barebox@Phytec phyBOARD SUBRA:/ ls /mnt/mmc/
-    mmc2: detected SD card version 2.0
-    mmc2: registered mmc2
-    imx-esdhc 2198000.usdhc: timeout 2
-    mmc2: Cannot read MBR/partition table
-
-Therefore reduce the maximum clock speed to avoid these problems.
 
 Signed-off-by: Stefan Christ <s.christ@phytec.de>
 ---
- arch/arm/dts/imx6q-phytec-phyboard-alcor.dts    | 1 +
- arch/arm/dts/imx6qdl-phytec-phyboard-subra.dtsi | 1 +
- 2 files changed, 2 insertions(+)
+ arch/arm/configs/imx_v7_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/dts/imx6q-phytec-phyboard-alcor.dts b/arch/arm/dts/imx6q-phytec-phyboard-alcor.dts
-index a60fc18..1c4a785 100644
---- a/arch/arm/dts/imx6q-phytec-phyboard-alcor.dts
-+++ b/arch/arm/dts/imx6q-phytec-phyboard-alcor.dts
-@@ -35,4 +35,5 @@
- 
- &usdhc3 {
- 	status = "okay";
-+	max-frequency = <25000000>; /* 25 Mhz */
- };
-diff --git a/arch/arm/dts/imx6qdl-phytec-phyboard-subra.dtsi b/arch/arm/dts/imx6qdl-phytec-phyboard-subra.dtsi
-index 1efc632..a38765b 100644
---- a/arch/arm/dts/imx6qdl-phytec-phyboard-subra.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-phyboard-subra.dtsi
-@@ -26,4 +26,5 @@
- 
- &usdhc3 {
- 	status = "okay";
-+	max-frequency = <25000000>; /* 25 Mhz */
- };
+diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
+index 82b3821..044d826 100644
+--- a/arch/arm/configs/imx_v7_defconfig
++++ b/arch/arm/configs/imx_v7_defconfig
+@@ -101,6 +101,7 @@ CONFIG_CMD_FLASH=y
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_I2C=y
+ CONFIG_CMD_LED=y
++CONFIG_CMD_NANDTEST=y
+ CONFIG_CMD_SPI=y
+ CONFIG_CMD_LED_TRIGGER=y
+ CONFIG_CMD_USBGADGET=y
 -- 
 1.9.1
 
