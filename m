@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1avMLh-0001GC-NM
+ id 1avMLh-0001GJ-Nv
  for barebox@lists.infradead.org; Wed, 27 Apr 2016 10:05:40 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id EABCCA0033E
- for <barebox@lists.infradead.org>; Wed, 27 Apr 2016 12:05:35 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 62EEFA00443
+ for <barebox@lists.infradead.org>; Wed, 27 Apr 2016 12:05:36 +0200 (CEST)
 From: Stefan Christ <s.christ@phytec.de>
-Date: Wed, 27 Apr 2016 12:04:34 +0200
-Message-Id: <1461751489-13302-1-git-send-email-s.christ@phytec.de>
+Date: Wed, 27 Apr 2016 12:04:37 +0200
+Message-Id: <1461751489-13302-4-git-send-email-s.christ@phytec.de>
+In-Reply-To: <1461751489-13302-1-git-send-email-s.christ@phytec.de>
+References: <1461751489-13302-1-git-send-email-s.christ@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,79 +24,157 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH for next 00/15] New Phytec i.MX6 Patches
+Subject: [PATCH for next 03/15] ARM: imx6q: add support for
+ phyBOARD-SUBRA-i.MX6 Quad
 To: barebox@lists.infradead.org
 
-Hi,
+Add support for phyBOARD-SUBRA-i.MX6 with phyFLEX-i.MX6 Quad 1GiB on one
+bank. This patch factors out the common device tree nodes for the Quad
+and Solo variant into 'imx6qdl-phytec-phyboard-subra.dtsi'.
 
-a new round of barebox patches for the i.MX6 Phytec boards. New variants, two
-fixes for phyBOARD-SUBRA/ALCOR and phyFLEX-i.MX6 and industrial/automotive RAM
-calibration values for phyCORE-i.MX6 Solo/DualLite.
-
-These patches are based on the next branch and the current changes in patches
-
-    ARM: i.MX: increase barebox partition sizes
-    ARM: dts: Fix partition names
-
-are already integrated.
-
-Kind reagards,
-	Stefan Christ
-
-
-Christian Hemp (1):
-  ARM: phytec-som-imx6: add phyCORE-i.MX6 Quad 2GiB RAM
-
-Jan Remmet (1):
-  imx6qdl-phytec-pfla02.dtsi: add i2c eeprom
-
-Stefan Christ (13):
-  ARM: imx_v7_defconfig: enable NANDTEST command
-  ARM: imx_v7_defconfig: add command mmc_extcsd
-  ARM: imx6q: add support for phyBOARD-SUBRA-i.MX6 Quad
-  ARM: dts: imx6: phyboards: reduce clock speed for usdhc3
-  ARM: dts: pfla02: use long enough reset for ethernet phy
-  ARM: phytec-som-imx6: add barebox partitions for MMC
-  ARM: phytec-som-imx6: add boot device emmc and automount
-  ARM: phytec-som-imx6: fix bootsource for phyCORE-i.MX6
-  ARM: phytec-som-imx6: add phyCORE-i.MX6 DualLite
-  ARM: phytec-som-imx6: update RAM calibration for phycore-imx6dl
-  ARM: phytec-som-imx6: rename environment folder
-  ARM: phytec-som-imx6: adapt main update handler for eMMC
-  ARM: phytec-som-imx6: add NOR for phycore-imx6 emmc
-
- arch/arm/boards/phytec-som-imx6/Makefile           |  2 +-
- arch/arm/boards/phytec-som-imx6/board.c            | 17 +++--
- .../defaultenv-physom-imx6-mira/init/automount     | 14 -----
- .../defaultenv-physom-imx6-phycore/boot/emmc       |  5 ++
- .../defaultenv-physom-imx6-phycore/init/automount  | 17 +++++
- .../defaultenv-physom-imx6-phycore/init/bootsource | 19 ++++++
- .../flash-header-phytec-pcm058-2gib.imxcfg         |  8 +++
- .../flash-header-phytec-pcm058dl-1gib.imxcfg       |  8 +++
- .../phytec-som-imx6/flash-header-phytec-pcm058dl.h | 24 ++++----
- arch/arm/boards/phytec-som-imx6/lowlevel.c         |  3 +
- arch/arm/configs/imx_v7_defconfig                  |  2 +
- arch/arm/dts/Makefile                              |  4 +-
- arch/arm/dts/imx6dl-phytec-phyboard-subra.dts      | 17 +----
- arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts    | 72 ++++++++++++++++++++++
- arch/arm/dts/imx6q-phytec-phyboard-alcor.dts       |  1 +
- arch/arm/dts/imx6q-phytec-phyboard-subra.dts       | 20 ++++++
- arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts     | 21 +++++++
- arch/arm/dts/imx6qdl-phytec-pfla02.dtsi            | 13 ++++
- arch/arm/dts/imx6qdl-phytec-phyboard-subra.dtsi    | 30 +++++++++
- arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi       |  1 +
- images/Makefile.imx                                | 15 +++++
- 21 files changed, 265 insertions(+), 48 deletions(-)
- delete mode 100644 arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-mira/init/automount
- create mode 100644 arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/boot/emmc
- create mode 100644 arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/init/automount
- create mode 100644 arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/init/bootsource
- create mode 100644 arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-2gib.imxcfg
- create mode 100644 arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg
- create mode 100644 arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
+Signed-off-by: Stefan Christ <s.christ@phytec.de>
+---
+ arch/arm/boards/phytec-som-imx6/lowlevel.c      |  1 +
+ arch/arm/dts/Makefile                           |  1 +
+ arch/arm/dts/imx6dl-phytec-phyboard-subra.dts   | 17 +--------------
+ arch/arm/dts/imx6q-phytec-phyboard-subra.dts    | 20 +++++++++++++++++
+ arch/arm/dts/imx6qdl-phytec-phyboard-subra.dtsi | 29 +++++++++++++++++++++++++
+ images/Makefile.imx                             |  5 +++++
+ 6 files changed, 57 insertions(+), 16 deletions(-)
  create mode 100644 arch/arm/dts/imx6q-phytec-phyboard-subra.dts
  create mode 100644 arch/arm/dts/imx6qdl-phytec-phyboard-subra.dtsi
 
+diff --git a/arch/arm/boards/phytec-som-imx6/lowlevel.c b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+index eb796e7..6506e5f 100644
+--- a/arch/arm/boards/phytec-som-imx6/lowlevel.c
++++ b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+@@ -91,6 +91,7 @@ PHYTEC_ENTRY(start_phytec_pbab01s_256mb_1bank, imx6s_phytec_pbab01, SZ_256M, fal
+ PHYTEC_ENTRY(start_phytec_pbab01s_512mb_1bank, imx6s_phytec_pbab01, SZ_512M, false);
+ PHYTEC_ENTRY(start_phytec_phyboard_alcor_1gib, imx6q_phytec_phyboard_alcor, SZ_1G, false);
+ PHYTEC_ENTRY(start_phytec_phyboard_subra_512mb_1bank, imx6dl_phytec_phyboard_subra, SZ_512M, false);
++PHYTEC_ENTRY(start_phytec_phyboard_subra_1gib_1bank, imx6q_phytec_phyboard_subra, SZ_1G, false);
+ 
+ PHYTEC_ENTRY(start_phytec_phycore_imx6dl_som_nand_256mb, imx6dl_phytec_phycore_som_nand, SZ_256M, true);
+ PHYTEC_ENTRY(start_phytec_phycore_imx6q_som_nand_1gib, imx6q_phytec_phycore_som_nand, SZ_1G, true);
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index b83c110..f3129c5 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -45,6 +45,7 @@ pbl-dtb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += imx6q-phytec-pbaa03.dtb.o \
+ 				imx6dl-phytec-pbab01.dtb.o \
+ 				imx6q-phytec-pbab01.dtb.o \
+ 				imx6q-phytec-phyboard-alcor.dtb.o \
++				imx6q-phytec-phyboard-subra.dtb.o \
+ 				imx6dl-phytec-phyboard-subra.dtb.o \
+ 				imx6q-phytec-phycore-som-nand.dtb.o \
+ 				imx6q-phytec-phycore-som-emmc.dtb.o \
+diff --git a/arch/arm/dts/imx6dl-phytec-phyboard-subra.dts b/arch/arm/dts/imx6dl-phytec-phyboard-subra.dts
+index 34e4144..3d1069a 100644
+--- a/arch/arm/dts/imx6dl-phytec-phyboard-subra.dts
++++ b/arch/arm/dts/imx6dl-phytec-phyboard-subra.dts
+@@ -11,24 +11,9 @@
+ 
+ /dts-v1/;
+ #include "imx6s-phytec-pfla02.dtsi"
++#include "imx6qdl-phytec-phyboard-subra.dtsi"
+ 
+ / {
+ 	model = "Phytec phyBOARD SUBRA";
+ 	compatible = "phytec,imx6dl-pbab05", "phytec,imx6s-pfla02", "fsl,imx6dl";
+-
+-	chosen {
+-		stdout-path = &uart4;
+-	};
+-};
+-
+-&fec {
+-	status = "okay";
+-};
+-
+-&uart4 {
+-	status = "okay";
+-};
+-
+-&usdhc3 {
+-	status = "okay";
+ };
+diff --git a/arch/arm/dts/imx6q-phytec-phyboard-subra.dts b/arch/arm/dts/imx6q-phytec-phyboard-subra.dts
+new file mode 100644
+index 0000000..561e985
+--- /dev/null
++++ b/arch/arm/dts/imx6q-phytec-phyboard-subra.dts
+@@ -0,0 +1,20 @@
++/*
++ * Copyright (C) 2015 PHYTEC Messtechnik GmbH,
++ * Author: Stefan Christ <s.christ@phytec.de>
++ *
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
++
++/dts-v1/;
++#include "imx6q-phytec-pfla02.dtsi"
++#include "imx6qdl-phytec-phyboard-subra.dtsi"
++
++/ {
++	model = "Phytec phyBOARD SUBRA";
++	compatible = "phytec,imx6q-pbab05", "phytec,imx6q-pfla02", "fsl,imx6q";
++};
+diff --git a/arch/arm/dts/imx6qdl-phytec-phyboard-subra.dtsi b/arch/arm/dts/imx6qdl-phytec-phyboard-subra.dtsi
+new file mode 100644
+index 0000000..1efc632
+--- /dev/null
++++ b/arch/arm/dts/imx6qdl-phytec-phyboard-subra.dtsi
+@@ -0,0 +1,29 @@
++/*
++ * Copyright (C) 2015 PHYTEC Messtechnik GmbH,
++ * Author: Stefan Christ <s.christ@phytec.de>
++ *
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
++
++/ {
++	chosen {
++		stdout-path = &uart4;
++	};
++};
++
++&fec {
++	status = "okay";
++};
++
++&uart4 {
++	status = "okay";
++};
++
++&usdhc3 {
++	status = "okay";
++};
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 6870bce..81293fe 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -203,6 +203,11 @@ CFG_start_phytec_phyboard_subra_512mb_1bank.pblx.imximg = $(board)/phytec-som-im
+ FILE_barebox-phytec-phyboard-subra-512mb-1bank.img = start_phytec_phyboard_subra_512mb_1bank.pblx.imximg
+ image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-phyboard-subra-512mb-1bank.img
+ 
++pblx-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += start_phytec_phyboard_subra_1gib_1bank
++CFG_start_phytec_phyboard_subra_1gib_1bank.pblx.imximg = $(board)/phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank.imxcfg
++FILE_barebox-phytec-phyboard-subra-1gib-1bank.img = start_phytec_phyboard_subra_1gib_1bank.pblx.imximg
++image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-phyboard-subra-1gib-1bank.img
++
+ pblx-$(CONFIG_MACH_DFI_FS700_M60) += start_imx6dl_dfi_fs700_m60_6s
+ CFG_start_imx6dl_dfi_fs700_m60_6s.pblx.imximg = $(board)/dfi-fs700-m60/flash-header-fs700-m60-6s.imxcfg
+ FILE_barebox-dfi-fs700-m60-6s.img = start_imx6dl_dfi_fs700_m60_6s.pblx.imximg
 -- 
 1.9.1
 
