@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1avLPP-0005Z9-NI
- for barebox@lists.infradead.org; Wed, 27 Apr 2016 09:05:25 +0000
-Message-ID: <1461747901.32509.2.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 27 Apr 2016 11:05:01 +0200
-In-Reply-To: <1461649027-5046-1-git-send-email-andrew.smirnov@gmail.com>
-References: <1461649027-5046-1-git-send-email-andrew.smirnov@gmail.com>
-Mime-Version: 1.0
+ id 1avLYB-000440-Od
+ for barebox@lists.infradead.org; Wed, 27 Apr 2016 09:14:28 +0000
+Date: Wed, 27 Apr 2016 11:14:05 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160427091405.GS7860@pengutronix.de>
+References: <CABx9NuS+pLjNeUrjNCo19zvmLQGoqUiFi8eh7_gxV8P_2hmoUA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CABx9NuS+pLjNeUrjNCo19zvmLQGoqUiFi8eh7_gxV8P_2hmoUA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,39 +22,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/9] i.MX6Q+ fixes plus number of latest Kernel changes
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Fabio Estevam <fabio.estevam@freescale.com>, barebox@lists.infradead.org
+Subject: Re: Building on PC-BSD 10.3
+To: Russell Haley <russ.haley@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Am Montag, den 25.04.2016, 22:36 -0700 schrieb Andrey Smirnov:
+Hi Russell,
+
+On Tue, Apr 26, 2016 at 09:59:10PM -0700, Russell Haley wrote:
 > Hello,
 > 
-> This patchset continains i.MX6Q+ reset sequence fix (similar
-> implementation was submitted to LKML) and besides that a number of
-> ported coomits from "pci/host-imx6" branch of:
+> Just for a hoot I thought I'd build barebox on PC-BSD 10.3. I followed
+> these directions:
 > 
-> git://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git
+> https://github.com/jcobham/i.MX53-kernel-images/wiki/How-To:-Build-Barebox-for-IMX53
 > 
-> Since some commits required a bit of massaging, I added my own
-> Signed-off-by and a comment in square brackets, however my authorship
-> of those commits is very minimal.
+> and replaced "make" with "gmake". Here is the output:
 > 
-> As for commit by Fabio Estevam, there I was able to apply
-> corresponding kernel patch by manually editing paths in the diff file,
-> so I left the commit message as it was.
+> http://pastebin.com/AawYq4bR
 > 
-> Any feedback would be appreciated.
-> 
-I haven't checked those commits line-by-line, but they look familiar
-from the kernel commits I reviewed. I suppose you tested this series on
-both MX6Q and MX6QP? In that case, for the whole series:
+> It seems to be missing endian.h?
 
-Acked-by: Lucas Stach <l.stach@pengutronix.de>
+Yes, seems so. From "man 3 endian" on Linux:
 
-Regards,
-Lucas
+> These functions are nonstandard.  Similar functions are present on
+> the BSDs, where the required header file is <sys/endian.h> instead of
+> <endian.h>.  Unfortunately, NetBSD, FreeBSD, and glibc haven't
+> followed the original OpenBSD naming convention for these functions,
+> whereby the nn component always appears at the end of the function
+> name (thus, for example, in NetBSD, FreeBSD, and glibc, the
+> equivalent of OpenBSDs "betoh32" is "be32toh").
 
+We now have scripts/include/tools/endian.h from the Linux kernel. Does
+the change below help? (The same change may be needed elsewhere in
+/scripts/)
 
+Sascha
+
+------------------------8<-------------------------------
+
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index 16f086a..c8fe5bf 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -26,7 +26,7 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+-#include <endian.h>
++#include <tools/endian.h>
+ #include <linux/kernel.h>
+ #include <sys/file.h>
+ 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
