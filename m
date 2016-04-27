@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1avKzj-0005os-8W
- for barebox@lists.infradead.org; Wed, 27 Apr 2016 08:38:51 +0000
+ id 1avKzt-0005qO-8a
+ for barebox@lists.infradead.org; Wed, 27 Apr 2016 08:39:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 27 Apr 2016 10:38:24 +0200
-Message-Id: <1461746305-31995-2-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 27 Apr 2016 10:38:25 +0200
+Message-Id: <1461746305-31995-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1461746305-31995-1-git-send-email-s.hauer@pengutronix.de>
 References: <1461746305-31995-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,79 +21,125 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] Kconfig: Make ENV_HANDLING visible
+Subject: [PATCH 3/3] Kconfig: Create Kconfig symbol for NVVAR
 To: Barebox List <barebox@lists.infradead.org>
 
-ENV_HANDLING is usable even without explicit loadenv/saveenv command
-support. Instead of selecting this option from loadenv/saveenv, make
-this option visible. loadenv/saveenv can then depend on ENV_HANDLING
-rather than selecting it. This reduces Kconfig dependencies hassles.
+nvvar support not only needs globalvar, but also persistent
+environment storage. Add a separate default-y option which
+depends on ENV_HANDLING for this case. Make the option visible
+to let the user decide whether he wants to have this option
+and add a help text to make this decision easier.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig |  4 ++--
- common/Kconfig   | 16 +++++++++++-----
- 2 files changed, 13 insertions(+), 7 deletions(-)
+ commands/Kconfig   |  2 +-
+ common/Kconfig     | 15 +++++++++++++++
+ common/globalvar.c | 18 ++++++++++++++++--
+ 3 files changed, 32 insertions(+), 3 deletions(-)
 
 diff --git a/commands/Kconfig b/commands/Kconfig
-index 39a2df5..56b9542 100644
+index 56b9542..0aab6ef 100644
 --- a/commands/Kconfig
 +++ b/commands/Kconfig
-@@ -761,7 +761,7 @@ config CMD_GLOBAL
+@@ -715,7 +715,7 @@ endmenu
+ menu "Environment"
  
- config CMD_LOADENV
+ config CMD_NV
+-	select GLOBALVAR
++	depends on NVVAR
  	tristate
--	select ENV_HANDLING
-+	depends on ENV_HANDLING
- 	prompt "loadenv"
+ 	prompt "nv"
  	help
- 	  Load environment from ENVFS
-@@ -805,7 +805,7 @@ config CMD_MAGICVAR_HELP
- 
- config CMD_SAVEENV
- 	tristate
--	select ENV_HANDLING
-+	depends on ENV_HANDLING
- 	prompt "saveenv"
- 	help
- 	  Save environment to persistent storage
 diff --git a/common/Kconfig b/common/Kconfig
-index 503f43a..12f6e84 100644
+index 12f6e84..75e94d6 100644
 --- a/common/Kconfig
 +++ b/common/Kconfig
-@@ -21,10 +21,6 @@ config HAS_KALLSYMS
- config HAS_MODULES
- 	bool
+@@ -161,6 +161,21 @@ config GLOBALVAR
+ 	  variables are used to control several aspects of the system behaviour.
+ 	  If unsure, say yes here.
  
--config ENV_HANDLING
--	select CRC32
--	bool
--
- config HAS_CACHE
- 	bool
- 	help
-@@ -646,10 +642,20 @@ config PARTITION
- 
- source common/partitions/Kconfig
- 
-+config ENV_HANDLING
-+	select CRC32
-+	bool "Support environment files storage"
++config NVVAR
++	bool "Non volatile global environment variables support"
 +	default y if !SHELL_NONE
-+	help
-+	  Enabling this option will give you environment files which can be stored
-+	  over reboots. The "saveenv" command will store all files under /env/ to
-+	  the persistent environment, the "loadenv" command (also executed during
-+	  startup) will bring them back. If unsure, say yes.
-+
- config DEFAULT_ENVIRONMENT
- 	bool
- 	default y
--	select ENV_HANDLING
++	depends on GLOBALVAR
 +	depends on ENV_HANDLING
- 	prompt "Compile in default environment"
- 	help
- 	  Enabling this option will give you a default environment when
++	help
++	  Non volatile environment variables begin with "nv.". They behave like
++	  global variables above, but their values are saved in the environment
++	  storage with 'saveenv' and thus are persistent over restarts. nv variables
++	  are coupled with global variables of the same name. Setting "nv.foo" results
++	  in "global.foo" changed also (but not the other way round: setting "global.foo"
++	  leaves "nv.foo" untouched). The idea is that nv variables can store defaults
++	  while global variables can be changed during runtime without changing the
++	  default.
++
+ menu "memory layout"
+ 
+ source "pbl/Kconfig"
+diff --git a/common/globalvar.c b/common/globalvar.c
+index 9a793ac..a777c14 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -90,6 +90,9 @@ int nvvar_add(const char *name, const char *value)
+ 	struct param_d *p, *gp;
+ 	int ret;
+ 
++	if (!IS_ENABLED(CONFIG_NVVAR))
++		return -ENOSYS;
++
+ 	gp = get_param_by_name(&nv_device, name);
+ 	if (gp) {
+ 		ret = dev_set_param(&global_device, name, value);
+@@ -131,6 +134,9 @@ int nvvar_remove(const char *name)
+ 	struct param_d *p;
+ 	char *fname;
+ 
++	if (!IS_ENABLED(CONFIG_NVVAR))
++		return -ENOSYS;
++
+ 	p = get_param_by_name(&nv_device, name);
+ 	if (!p)
+ 		return -ENOENT;
+@@ -153,6 +159,9 @@ int nvvar_load(void)
+ 	DIR *dir;
+ 	struct dirent *d;
+ 
++	if (!IS_ENABLED(CONFIG_NVVAR))
++		return -ENOSYS;
++
+ 	dir = opendir("/env/nv");
+ 	if (!dir)
+ 		return -ENOENT;
+@@ -185,7 +194,7 @@ static void device_param_print(struct device_d *dev)
+ 		const char *p = dev_get_param(dev, param->name);
+ 		const char *nv = NULL;
+ 
+-		if (dev != &nv_device)
++		if (IS_ENABLED(CONFIG_NVVAR) && dev != &nv_device)
+ 			nv = dev_get_param(&nv_device, param->name);
+ 
+ 		printf("%s%s: %s\n", nv ? "* " : "  ", param->name, p);
+@@ -194,6 +203,9 @@ static void device_param_print(struct device_d *dev)
+ 
+ void nvvar_print(void)
+ {
++	if (!IS_ENABLED(CONFIG_NVVAR))
++		return;
++
+ 	device_param_print(&nv_device);
+ }
+ 
+@@ -264,7 +276,9 @@ int globalvar_add_simple(const char *name, const char *value)
+ static int globalvar_init(void)
+ {
+ 	register_device(&global_device);
+-	register_device(&nv_device);
++
++	if (IS_ENABLED(CONFIG_NVVAR))
++		register_device(&nv_device);
+ 
+ 	globalvar_add_simple("version", UTS_RELEASE);
+ 
 -- 
 2.8.0.rc3
 
