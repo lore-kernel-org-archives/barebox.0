@@ -1,17 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1avsbW-0004xn-Ei
- for barebox@lists.infradead.org; Thu, 28 Apr 2016 20:32:07 +0000
+ id 1avtCH-0007Hn-4P
+ for barebox@lists.infradead.org; Thu, 28 Apr 2016 21:10:05 +0000
 From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Thu, 28 Apr 2016 20:31:42 +0000
-Message-ID: <1461875558.9103.164.camel@rtred1test09.kymeta.local>
-References: <1461751489-13302-1-git-send-email-s.christ@phytec.de>
- <1461751489-13302-9-git-send-email-s.christ@phytec.de>
- <20160428083449.GB7860@pengutronix.de> <87a8ke9cbu.fsf@gmail.com>
-In-Reply-To: <87a8ke9cbu.fsf@gmail.com>
+Date: Thu, 28 Apr 2016 21:09:43 +0000
+Message-ID: <1461877838.9103.173.camel@rtred1test09.kymeta.local>
+References: <CABDcavZr1PCpFrHVJFFayRQZ6vninf-xFS0H9QKSdA8u53OkDg@mail.gmail.com>
+ <CABDcavZZd4AofsfSYMVbEPfjpPyF9rbmv6BXAG_8mLiJhmeL+Q@mail.gmail.com>
+ <20160419071110.GO9102@pengutronix.de>
+ <CABDcavYf=ts161dQRB=diaEqNcyZjLq=ogYAja0y3BLp_QU+0w@mail.gmail.com>
+ <20160421073206.GC21638@pengutronix.de>
+ <CABDcavbqwXRM2y_uTup3m-pWBqSAjOthpZZBy-8MfM9yL3a-WA@mail.gmail.com>
+ <20160427055908.GM7860@pengutronix.de>
+ <CABDcavbGbWKK=Arp8pth09LeohgnLd3zE4penEHZT41a_X2NPg@mail.gmail.com>
+In-Reply-To: <CABDcavbGbWKK=Arp8pth09LeohgnLd3zE4penEHZT41a_X2NPg@mail.gmail.com>
 Content-Language: en-US
-Content-ID: <8989D43D1CD94247B80BC0ADDEE35AE2@kymetacorp.com>
+Content-ID: <908686DE9BBC7C48978CFF27679251AF@kymetacorp.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,67 +30,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH for next 08/15] ARM: phytec-som-imx6: add boot device emmc
- and automount
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: Fwd: Micrel KSZ9031RN PHY problem
+To: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Philipp Zabel <pza@pengutronix.de>
 
-I added an ability to barebox to put partition GUIDs into MMC device
-attributes.  Then I can start the kernel by passing the GUID for the
-rootfs, which the kernel code (not initramfs+udev, the kernel itself)
-can parse and mount.
-
-Like:
-global.linux.bootargs.dyn.root="root=PARTUUID=${mmc0.root0} rw rootwait"
-
-I only have mmc0 to worry about (with multiple roots that barebox
-determines which to use), but I think this would allow you to say
-PARTUUID=${mmc0.root} vs PARTUUID=${mmc1.root} in barebox and have the
-kernel find the correct partition without needing to worry about what
-mmcblkXpY device it happens to be assigned to by the kernel.
-
-
-On Thu, 2016-04-28 at 13:56 +0200, Holger Schurig wrote:
-> > Does this work reliably? Is there finally a patch upstream that creates
-> > fixed numbers for MMC/SD block devices?
+On Thu, 2016-04-28 at 11:51 +0200, Guillermo Rodriguez Garcia wrote:
+> >
+> > The code you are referring to seems to be the first phy access after the
+> > network device opens. Maybe the hardware is not yet ready for some
+> > reason. Could you add the same delay in macb_open() right before the
+> > call to phy_device_connect()?
 > 
-> I have a *hack* that in my kernel that names the SD-Card to "sdblk0" and
-> my eMMC to "mmcblk0". That that is completely unacceptable for upstream,
-> I never even tried it. :-)
+> Tried this, but doesn't help. Here's the call sequence, for example
+> when you run 'dhcp' from the command line prompt:
 > 
+> macb_open
+> phy_device_connect
+> phy_device_attach
+> phy_init_hw
+> ksz9031_config_init
+> ksz9031_center_flp_timing
+> genphy_restart_aneg
+> genphy_config_advert -> fails (adv = 0xffff)
 > 
-> Index: linux-4.3/drivers/mmc/card/block.c
-> ===================================================================
-> --- linux-4.3.orig/drivers/mmc/card/block.c	2015-12-09 17:17:57.264650273 +0100
-> +++ linux-4.3/drivers/mmc/card/block.c	2015-12-10 08:46:41.874985403 +0100
-> @@ -2259,14 +2259,16 @@ static struct mmc_blk_data *mmc_blk_allo
->  	 * messages to tell when the card is present.
->  	 */
->  
-> -	snprintf(md->disk->disk_name, sizeof(md->disk->disk_name),
-> -		 "mmcblk%u%s", md->name_idx, subname ? subname : "");
-> -
-> -	if (mmc_card_mmc(card))
-> +	if (mmc_card_mmc(card)) {
-> +		snprintf(md->disk->disk_name, sizeof(md->disk->disk_name),
-> +			 "mmcblk0%s", subname ? subname : "");
->  		blk_queue_logical_block_size(md->queue.queue,
->  					     card->ext_csd.data_sector_size);
-> -	else
-> +	} else {
-> +		snprintf(md->disk->disk_name, sizeof(md->disk->disk_name),
-> +			 "sdblk0%s", subname ? subname : "");
->  		blk_queue_logical_block_size(md->queue.queue, 512);
-> +	}
->  
->  	set_capacity(md->disk, size);
->  
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> I can verify that:
+> - Any delay happening before the call to genphy_restart_aneg (which
+> itself is called at the end of ksz9031_center_flp_timing) does not fix
+> the problem.
+> - Any delay happening after the phy_read(phydev, MII_ADVERTISE) insde
+> genphy_config_advert does not fix the problem.
+> - A delay of 1ms at any point after genphy_restart_aneg and before the
+> phy_read call in genphy_config_advert fixes the problem
 
+So the same problem appears if you take out the FLP call out entirely,
+if there is an aneg restart done immediately before trying to read from
+MII_ADVERTISE?
+
+Does only MII_ADVERTISE fail to read, or does reading any PHY register
+fail?  Specifically, does reading MII_BMSR fail?
+
+Reading PHY register after restarting aneg isn't unusual.  Especially
+polling MII_BMSR to check for BMSR_ANEGCOMPLETE.  It would be odd if one
+couldn't do that.
+
+The first anreg start call will also un-powerdown the PHY if BMCR_PDOWN
+was set.  I wonder if that is happening?
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
