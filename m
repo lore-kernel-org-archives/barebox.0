@@ -1,16 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-vk0-x229.google.com ([2607:f8b0:400c:c05::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1avhPj-0005nD-NC
- for barebox@lists.infradead.org; Thu, 28 Apr 2016 08:35:12 +0000
-Date: Thu, 28 Apr 2016 10:34:49 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160428083449.GB7860@pengutronix.de>
-References: <1461751489-13302-1-git-send-email-s.christ@phytec.de>
- <1461751489-13302-9-git-send-email-s.christ@phytec.de>
+ id 1avibe-0005lS-69
+ for barebox@lists.infradead.org; Thu, 28 Apr 2016 09:51:35 +0000
+Received: by mail-vk0-x229.google.com with SMTP id o133so25143878vka.3
+ for <barebox@lists.infradead.org>; Thu, 28 Apr 2016 02:51:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1461751489-13302-9-git-send-email-s.christ@phytec.de>
+In-Reply-To: <20160427055908.GM7860@pengutronix.de>
+References: <CABDcavZr1PCpFrHVJFFayRQZ6vninf-xFS0H9QKSdA8u53OkDg@mail.gmail.com>
+ <CABDcavZZd4AofsfSYMVbEPfjpPyF9rbmv6BXAG_8mLiJhmeL+Q@mail.gmail.com>
+ <20160419071110.GO9102@pengutronix.de>
+ <CABDcavYf=ts161dQRB=diaEqNcyZjLq=ogYAja0y3BLp_QU+0w@mail.gmail.com>
+ <20160421073206.GC21638@pengutronix.de>
+ <CABDcavbqwXRM2y_uTup3m-pWBqSAjOthpZZBy-8MfM9yL3a-WA@mail.gmail.com>
+ <20160427055908.GM7860@pengutronix.de>
+Date: Thu, 28 Apr 2016 11:51:12 +0200
+Message-ID: <CABDcavbGbWKK=Arp8pth09LeohgnLd3zE4penEHZT41a_X2NPg@mail.gmail.com>
+From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,77 +29,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH for next 08/15] ARM: phytec-som-imx6: add boot device
- emmc and automount
-To: Stefan Christ <s.christ@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: Fwd: Micrel KSZ9031RN PHY problem
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Philipp Zabel <pza@pengutronix.de>
 
-On Wed, Apr 27, 2016 at 12:04:42PM +0200, Stefan Christ wrote:
-> Add boot file 'emmc' and automount configuration for phyCORE-i.MX6.
-> 
-> Signed-off-by: Stefan Christ <s.christ@phytec.de>
-> ---
->  .../arm/boards/phytec-som-imx6/defaultenv-physom-imx6-mira/boot/emmc | 5 +++++
->  .../phytec-som-imx6/defaultenv-physom-imx6-mira/init/automount       | 3 +++
->  2 files changed, 8 insertions(+)
->  create mode 100644 arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-mira/boot/emmc
-> 
-> diff --git a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-mira/boot/emmc b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-mira/boot/emmc
-> new file mode 100644
-> index 0000000..e3cc9e3
-> --- /dev/null
-> +++ b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-mira/boot/emmc
-> @@ -0,0 +1,5 @@
-> +#!/bin/sh
-> +
-> +global.bootm.image="/mnt/emmc/linuximage"
-> +global.bootm.oftree="/mnt/emmc/oftree"
-> +global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootwait rw"
+Hello,
 
-Does this work reliably? Is there finally a patch upstream that creates
-fixed numbers for MMC/SD block devices?
+2016-04-27 7:59 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> On Tue, Apr 26, 2016 at 11:55:29AM +0200, Guillermo Rodriguez Garcia wrote:
+>> Hello,
+>>
+>> 2016-04-21 9:32 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+>> > On Wed, Apr 20, 2016 at 05:58:40PM +0200, Guillermo Rodriguez Garcia wrote:
+>> >> Hello,
+>> >>
+>> >> 2016-04-19 9:11 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+>> >> > Hi Guillermo,
+>> >> >
+>> >> > +Cc Philipp Zabel who ported the patch to barebox
+>> >> >
+>> >> > On Mon, Apr 18, 2016 at 04:49:47PM +0200, Guillermo Rodriguez Garcia wrote:
+>> >> >> Hello all,
+>> >> >>
+>> >> >> I am playing with barebox on an Atmel SAMA5D3 Xplained board. It is
+>> >> >> now working fine for the most part, however after updating to the
+>> >> >> latest sources from git I found a problem that I had not seen before.
+>> >> >>
+>> >> >> This board has two Ethernet interfaces; eth0 uses a Micrel KSZ9031RN
+>> >> >> PHY, and eth1 uses a Micrel KSZ8081RNB PHY.
+>> >> >>
+>> >> >> It seems that after release 2016.03.0, eth0 does not work anymore with
+>> >> >> some routers. Specifically I found this problem with a Comtrend
+>> >> >> VG-8050. I have tested other routers and the problem was not present
+>> >> >> there.
+>> >> >>
+>> >> >> After some research it seems that the problem is caused by this
+>> >> >> commit: http://git.pengutronix.de/?p=barebox.git;a=commit;h=da89ee8f2e04e116410632a185024f58b8262d87
+>> >> >>
+>> >> >> Before this commit eth0 was working fine. After this commit, the link
+>> >> >> cannot established anymore:
+>> >> >>
+>> >> >> [...]
+>> >> >> barebox:/# ping 192.168.0.128
+>> >> >> ping failed: Network is down
+>> >> >>
+>> >> >> Before diving further into this I thought it could be a good idea to
+>> >> >> ask, in case someone can shed some light here.
+>> >> >
+>> >> > I have no idea what the issue is here. We might have to make this option
+>> >> > configurable via devicetree to give boards different options. Since the
+>> >> > patch comes from the Linux Kernel, do you have the same problems under
+>> >> > Linux?
+>> >>
+>> >> I'm trying to get the latest kernel to boot. The latest version
+>> >> supported by Atmel is 4.1, which doesn't have the patch yet. Will
+>> >> report back asap.
+>> >
+>> > Thanks. We can revert this patch since Philipp only ported it to stay in
+>> > sync with the kernel. Anyway, if it makes problems we'll probably need a
+>> > solution for the kernel aswell.
+>>
+>> More info on this after researching the issue.
+>>
+>> Looks like problem is not directly caused by the modified FLP timings,
+>> but is revealed by that change.
+>>
+>> Immediately after setting the FLP timings, the autonegotiation is
+>> restarted by calling genphy_restart_aneg(phydev).
+>> Within genphy_restart_aneg, the following line:
+>>
+>>     oldadv = adv = phy_read(phydev, MII_ADVERTISE);
+>>
+>> returns 0xffff, and negotiation fails.
+>
+> The code you are referring to seems to be the first phy access after the
+> network device opens. Maybe the hardware is not yet ready for some
+> reason. Could you add the same delay in macb_open() right before the
+> call to phy_device_connect()?
 
-When I see patches like this it's probably time to remind how barebox can
-handle bootloader spec ;)
+Tried this, but doesn't help. Here's the call sequence, for example
+when you run 'dhcp' from the command line prompt:
 
-Put a file like this to /loader/entries/loader.conf:
+macb_open
+phy_device_connect
+phy_device_attach
+phy_init_hw
+ksz9031_config_init
+ksz9031_center_flp_timing
+genphy_restart_aneg
+genphy_config_advert -> fails (adv = 0xffff)
 
-title                   Phytec-Monster-Linux
-version                 4.6
-options                 rootwait
-linux-appendroot        true
-linux                   /boot/zImage
-devicetree              /boot/imx6q-phytec-pflaxy.dtb
+I can verify that:
+- Any delay happening before the call to genphy_restart_aneg (which
+itself is called at the end of ksz9031_center_flp_timing) does not fix
+the problem.
+- Any delay happening after the phy_read(phydev, MII_ADVERTISE) insde
+genphy_config_advert does not fix the problem.
+- A delay of 1ms at any point after genphy_restart_aneg and before the
+phy_read call in genphy_config_advert fixes the problem
 
-Then you can boot the system with "boot mmc3.0", no further barebox
-configuration is needed. Set nv.boot to mmc3.0 if you always want to
-boot from there. The same can be done with nfsroot: Put the rootfs
-somewhere reachable via NFS and do:
+Looks like the phy needs a bit of time after restarting autonegotiation..
 
-boot nfs://nfshost//path/to/rootfs
-
-(You'll need a "ip=dhcp" in the options in your loader.conf)
-
-You can also create multiple loader.conf files with different device
-trees, barebox will then pick the one which is compatible to the current
-board.
-
-The above also works with NAND/UBI. "boot nand0.root.ubi.root" will boot
-from the root volume on the ubi found on the root partition from the
-nand0 device. Again, no further barebox configuration and no manual
-ubiattach required. the root= and ubi.mtd= arguments to the kernel will
-be automatically generated.
-
-Configuration files in the environment have become pretty much
-unnecessary for the common case.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Guillermo Rodriguez Garcia
+guille.rodriguez@gmail.com
 
 _______________________________________________
 barebox mailing list
