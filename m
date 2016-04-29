@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aw2om-0003jn-KZ
- for barebox@lists.infradead.org; Fri, 29 Apr 2016 07:26:30 +0000
-Date: Fri, 29 Apr 2016 09:25:28 +0200
-From: Stefan Christ <s.christ@phytec.de>
-Message-ID: <20160429072528.GA2685@lws-christ>
-References: <1461751489-13302-1-git-send-email-s.christ@phytec.de>
- <1461751489-13302-9-git-send-email-s.christ@phytec.de>
- <20160428083449.GB7860@pengutronix.de>
-MIME-Version: 1.0
-In-Reply-To: <20160428083449.GB7860@pengutronix.de>
-Content-Disposition: inline
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aw564-0002GE-GQ
+ for barebox@lists.infradead.org; Fri, 29 Apr 2016 09:52:29 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 29 Apr 2016 11:52:03 +0200
+Message-Id: <1461923525-6356-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1461923525-6356-1-git-send-email-s.hauer@pengutronix.de>
+References: <1461923525-6356-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,112 +16,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH for next 08/15] ARM: phytec-som-imx6: add boot device
- emmc and automount
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 4/6] parameter: Use strtobool
+To: Barebox List <barebox@lists.infradead.org>
 
-SGkgU2FzY2hhLAoKPiA+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1p
-bXg2L2RlZmF1bHRlbnYtcGh5c29tLWlteDYtbWlyYS9ib290L2VtbWMgYi9hcmNoL2FybS9ib2Fy
-ZHMvcGh5dGVjLXNvbS1pbXg2L2RlZmF1bHRlbnYtcGh5c29tLWlteDYtbWlyYS9ib290L2VtbWMK
-PiA+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4gPiBpbmRleCAwMDAwMDAwLi5lM2NjOWUzCj4gPiAt
-LS0gL2Rldi9udWxsCj4gPiArKysgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1pbXg2L2Rl
-ZmF1bHRlbnYtcGh5c29tLWlteDYtbWlyYS9ib290L2VtbWMKPiA+IEBAIC0wLDAgKzEsNSBAQAo+
-ID4gKyMhL2Jpbi9zaAo+ID4gKwo+ID4gK2dsb2JhbC5ib290bS5pbWFnZT0iL21udC9lbW1jL2xp
-bnV4aW1hZ2UiCj4gPiArZ2xvYmFsLmJvb3RtLm9mdHJlZT0iL21udC9lbW1jL29mdHJlZSIKPiA+
-ICtnbG9iYWwubGludXguYm9vdGFyZ3MuZHluLnJvb3Q9InJvb3Q9L2Rldi9tbWNibGszcDIgcm9v
-dHdhaXQgcnciCj4gCj4gRG9lcyB0aGlzIHdvcmsgcmVsaWFibHk/IElzIHRoZXJlIGZpbmFsbHkg
-YSBwYXRjaCB1cHN0cmVhbSB0aGF0IGNyZWF0ZXMKPiBmaXhlZCBudW1iZXJzIGZvciBNTUMvU0Qg
-YmxvY2sgZGV2aWNlcz8KCk91ciBrZXJuZWwgdHJlZSBjb250YWlucyBhIHBhdGNoIGZvciB0aGF0
-LiBUaGUgbW1jYmxrIGlkIGlzIGRlcml2ZWQgZnJvbSB0aGUKZGV2aWNlIHRyZWUgYWxpYXMgaW5k
-ZXguIEl0IGlzbid0IGEgbWFpbmxpbmUgcmVhZHkgc29sdXRpb24sIHNpbmNlIHRoZXJlIGFyZQpz
-b21lIHVuaGFuZGxlZCBlZGdlIGNhc2VzIGluIHRoZSBwYXRjaCBhbmQgaXQncyBpbXBsZW1lbnRl
-ZCBjdXJyZW50bHkgb25seSBmb3IKdGhlIGRyaXZlciAic2RoY2ktZXNkaGMtaW14Ii4KCj4gV2hl
-biBJIHNlZSBwYXRjaGVzIGxpa2UgdGhpcyBpdCdzIHByb2JhYmx5IHRpbWUgdG8gcmVtaW5kIGhv
-dyBiYXJlYm94IGNhbgo+IGhhbmRsZSBib290bG9hZGVyIHNwZWMgOykKPiAKPiBQdXQgYSBmaWxl
-IGxpa2UgdGhpcyB0byAvbG9hZGVyL2VudHJpZXMvbG9hZGVyLmNvbmY6Cj4gCj4gdGl0bGUgICAg
-ICAgICAgICAgICAgICAgUGh5dGVjLU1vbnN0ZXItTGludXgKPiB2ZXJzaW9uICAgICAgICAgICAg
-ICAgICA0LjYKPiBvcHRpb25zICAgICAgICAgICAgICAgICByb290d2FpdAo+IGxpbnV4LWFwcGVu
-ZHJvb3QgICAgICAgIHRydWUKPiBsaW51eCAgICAgICAgICAgICAgICAgICAvYm9vdC96SW1hZ2UK
-PiBkZXZpY2V0cmVlICAgICAgICAgICAgICAvYm9vdC9pbXg2cS1waHl0ZWMtcGZsYXh5LmR0YgoK
-V2UgYWxyZWFkeSBsb29rZWQgYXQgdGhlIGJvb3RzcGVjIGFuZCBjdXJyZW50bHkgZXZhbHVhdGlu
-ZyBpdCB0byB1c2UgaXQgZm9yIE1NQwphbmQgZU1NQyBib290IGRldmljZXMuIEl0IG5pY2VseSBk
-ZWNvdXBsZXMgdGhlIGJvb3Rsb2FkZXIgYW5kIGtlcm5lbC91c2Vyc3BhY2UKaGFuZGxpbmcuIEUu
-Zy4gbWFpbnRhaW5pbmcgdGhlIGtlcm5lbCBhcmd1bWVudHMgaW4gdGhlIGJvb3Rsb2FkZXIgaXMg
-bm90IGdvb2QKdGhpbmcsIGJlY2F1c2UgdGhleSBhcmUgcHJvZHVjdCwgcm9vdGZzLCBrZXJuZWwg
-YW5kIHVzZWNhc2Ugc3BlY2lmaWMuIChTYW1lCmFyZ3VtZW50IGhvbGRzIGZvciBOQU5EL05PUiBw
-YXJ0aXRpb25zIGluIHRoZSBib290bG9hZGVyIGRldmljZSB0cmVlIDstKQoKCj4gVGhlIGFib3Zl
-IGFsc28gd29ya3Mgd2l0aCBOQU5EL1VCSS4gImJvb3QgbmFuZDAucm9vdC51Ymkucm9vdCIgd2ls
-bCBib290Cj4gZnJvbSB0aGUgcm9vdCB2b2x1bWUgb24gdGhlIHViaSBmb3VuZCBvbiB0aGUgcm9v
-dCBwYXJ0aXRpb24gZnJvbSB0aGUKPiBuYW5kMCBkZXZpY2UuIEFnYWluLCBubyBmdXJ0aGVyIGJh
-cmVib3ggY29uZmlndXJhdGlvbiBhbmQgbm8gbWFudWFsCj4gdWJpYXR0YWNoIHJlcXVpcmVkLiB0
-aGUgcm9vdD0gYW5kIHViaS5tdGQ9IGFyZ3VtZW50cyB0byB0aGUga2VybmVsIHdpbGwKPiBiZSBh
-dXRvbWF0aWNhbGx5IGdlbmVyYXRlZC4KClVzaW5nIHRoZSBib290c3BlYyBmb3IgTkFORCBpcyBu
-b3QgYW4gaWRlYWwgc29sdXRpb24geWV0LiBBdHRhY2hpbmcgVUJJIGluIHRoZQpib290bG9hZGVy
-IHRvIHJlYWQga2VybmVsL2RldmljZXRyZWUgZnJvbSBVQklGUyBhbmQgdGhlbiByZWF0dGFjaGlu
-ZyB0aGUgVUJJCmFnYWluIGluIHRoZSBrZXJuZWwsIGlzIHZlcnkgdGltZSBjb25zdW1pbmcuIEZv
-ciBhIDFHQiBOQU5EIHRoZSBVQkkgYXR0YWNoIGNhbgp0YWtlIGNvdXBsZSBvZiBzZWNvbmRzLiBX
-aXRob3V0IFVCSSBmYXN0bWFwIGl0IHdpbGwgZGVsYXkgdGhlIGJvb3QgcHJvY2VzcyB0bwptdWNo
-LiAgQW5kIFVCSSBmYXN0bWFwIGhhcyBzdGlsbCBhbiBleHBlcmltZW50YWwgdG91Y2gsIGJ1dCB3
-aWxsIGJlIHRoZSB3YXkgdG8KZ28gaW4gdGhlIGZ1dHVyZS4KCkFkZGl0aW9uYWxseSBwbGFjaW5n
-IHRoZSBrZXJuZWwgYW5kIGRldmljZSB0cmVlIG9uIE5PUiBpcyBub3QgaGFuZGxlZCBieSB0aGUK
-Ym9vdHNwZWMsIGJ1dCB0aGlzIHdpbGwgbW9zdGx5IGJlIGFuIGVtYmVkZGVkIHNwZWNpYWwgY2Fz
-ZSBmb3JldmVyIDotKQoKCk1pdCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4gLyBLaW5kIHJlZ2FyZHMs
-CglTdGVmYW4gQ2hyaXN0CgpPbiBUaHUsIEFwciAyOCwgMjAxNiBhdCAxMDozNDo0OUFNICswMjAw
-LCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4gT24gV2VkLCBBcHIgMjcsIDIwMTYgYXQgMTI6MDQ6NDJQ
-TSArMDIwMCwgU3RlZmFuIENocmlzdCB3cm90ZToKPiA+IEFkZCBib290IGZpbGUgJ2VtbWMnIGFu
-ZCBhdXRvbW91bnQgY29uZmlndXJhdGlvbiBmb3IgcGh5Q09SRS1pLk1YNi4KPiA+IAo+ID4gU2ln
-bmVkLW9mZi1ieTogU3RlZmFuIENocmlzdCA8cy5jaHJpc3RAcGh5dGVjLmRlPgo+ID4gLS0tCj4g
-PiAgLi4uL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1pbXg2L2RlZmF1bHRlbnYtcGh5c29tLWlteDYt
-bWlyYS9ib290L2VtbWMgfCA1ICsrKysrCj4gPiAgLi4uL3BoeXRlYy1zb20taW14Ni9kZWZhdWx0
-ZW52LXBoeXNvbS1pbXg2LW1pcmEvaW5pdC9hdXRvbW91bnQgICAgICAgfCAzICsrKwo+ID4gIDIg
-ZmlsZXMgY2hhbmdlZCwgOCBpbnNlcnRpb25zKCspCj4gPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGFy
-Y2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWlteDYvZGVmYXVsdGVudi1waHlzb20taW14Ni1taXJh
-L2Jvb3QvZW1tYwo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1z
-b20taW14Ni9kZWZhdWx0ZW52LXBoeXNvbS1pbXg2LW1pcmEvYm9vdC9lbW1jIGIvYXJjaC9hcm0v
-Ym9hcmRzL3BoeXRlYy1zb20taW14Ni9kZWZhdWx0ZW52LXBoeXNvbS1pbXg2LW1pcmEvYm9vdC9l
-bW1jCj4gPiBuZXcgZmlsZSBtb2RlIDEwMDY0NAo+ID4gaW5kZXggMDAwMDAwMC4uZTNjYzllMwo+
-ID4gLS0tIC9kZXYvbnVsbAo+ID4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20taW14
-Ni9kZWZhdWx0ZW52LXBoeXNvbS1pbXg2LW1pcmEvYm9vdC9lbW1jCj4gPiBAQCAtMCwwICsxLDUg
-QEAKPiA+ICsjIS9iaW4vc2gKPiA+ICsKPiA+ICtnbG9iYWwuYm9vdG0uaW1hZ2U9Ii9tbnQvZW1t
-Yy9saW51eGltYWdlIgo+ID4gK2dsb2JhbC5ib290bS5vZnRyZWU9Ii9tbnQvZW1tYy9vZnRyZWUi
-Cj4gPiArZ2xvYmFsLmxpbnV4LmJvb3RhcmdzLmR5bi5yb290PSJyb290PS9kZXYvbW1jYmxrM3Ay
-IHJvb3R3YWl0IHJ3Igo+IAo+IERvZXMgdGhpcyB3b3JrIHJlbGlhYmx5PyBJcyB0aGVyZSBmaW5h
-bGx5IGEgcGF0Y2ggdXBzdHJlYW0gdGhhdCBjcmVhdGVzCj4gZml4ZWQgbnVtYmVycyBmb3IgTU1D
-L1NEIGJsb2NrIGRldmljZXM/Cj4gCj4gV2hlbiBJIHNlZSBwYXRjaGVzIGxpa2UgdGhpcyBpdCdz
-IHByb2JhYmx5IHRpbWUgdG8gcmVtaW5kIGhvdyBiYXJlYm94IGNhbgo+IGhhbmRsZSBib290bG9h
-ZGVyIHNwZWMgOykKPiAKPiBQdXQgYSBmaWxlIGxpa2UgdGhpcyB0byAvbG9hZGVyL2VudHJpZXMv
-bG9hZGVyLmNvbmY6Cj4gCj4gdGl0bGUgICAgICAgICAgICAgICAgICAgUGh5dGVjLU1vbnN0ZXIt
-TGludXgKPiB2ZXJzaW9uICAgICAgICAgICAgICAgICA0LjYKPiBvcHRpb25zICAgICAgICAgICAg
-ICAgICByb290d2FpdAo+IGxpbnV4LWFwcGVuZHJvb3QgICAgICAgIHRydWUKPiBsaW51eCAgICAg
-ICAgICAgICAgICAgICAvYm9vdC96SW1hZ2UKPiBkZXZpY2V0cmVlICAgICAgICAgICAgICAvYm9v
-dC9pbXg2cS1waHl0ZWMtcGZsYXh5LmR0Ygo+IAo+IFRoZW4geW91IGNhbiBib290IHRoZSBzeXN0
-ZW0gd2l0aCAiYm9vdCBtbWMzLjAiLCBubyBmdXJ0aGVyIGJhcmVib3gKPiBjb25maWd1cmF0aW9u
-IGlzIG5lZWRlZC4gU2V0IG52LmJvb3QgdG8gbW1jMy4wIGlmIHlvdSBhbHdheXMgd2FudCB0bwo+
-IGJvb3QgZnJvbSB0aGVyZS4gVGhlIHNhbWUgY2FuIGJlIGRvbmUgd2l0aCBuZnNyb290OiBQdXQg
-dGhlIHJvb3Rmcwo+IHNvbWV3aGVyZSByZWFjaGFibGUgdmlhIE5GUyBhbmQgZG86Cj4gCj4gYm9v
-dCBuZnM6Ly9uZnNob3N0Ly9wYXRoL3RvL3Jvb3Rmcwo+IAo+IChZb3UnbGwgbmVlZCBhICJpcD1k
-aGNwIiBpbiB0aGUgb3B0aW9ucyBpbiB5b3VyIGxvYWRlci5jb25mKQo+IAo+IFlvdSBjYW4gYWxz
-byBjcmVhdGUgbXVsdGlwbGUgbG9hZGVyLmNvbmYgZmlsZXMgd2l0aCBkaWZmZXJlbnQgZGV2aWNl
-Cj4gdHJlZXMsIGJhcmVib3ggd2lsbCB0aGVuIHBpY2sgdGhlIG9uZSB3aGljaCBpcyBjb21wYXRp
-YmxlIHRvIHRoZSBjdXJyZW50Cj4gYm9hcmQuCj4gCj4gVGhlIGFib3ZlIGFsc28gd29ya3Mgd2l0
-aCBOQU5EL1VCSS4gImJvb3QgbmFuZDAucm9vdC51Ymkucm9vdCIgd2lsbCBib290Cj4gZnJvbSB0
-aGUgcm9vdCB2b2x1bWUgb24gdGhlIHViaSBmb3VuZCBvbiB0aGUgcm9vdCBwYXJ0aXRpb24gZnJv
-bSB0aGUKPiBuYW5kMCBkZXZpY2UuIEFnYWluLCBubyBmdXJ0aGVyIGJhcmVib3ggY29uZmlndXJh
-dGlvbiBhbmQgbm8gbWFudWFsCj4gdWJpYXR0YWNoIHJlcXVpcmVkLiB0aGUgcm9vdD0gYW5kIHVi
-aS5tdGQ9IGFyZ3VtZW50cyB0byB0aGUga2VybmVsIHdpbGwKPiBiZSBhdXRvbWF0aWNhbGx5IGdl
-bmVyYXRlZC4KPiAKPiBDb25maWd1cmF0aW9uIGZpbGVzIGluIHRoZSBlbnZpcm9ubWVudCBoYXZl
-IGJlY29tZSBwcmV0dHkgbXVjaAo+IHVubmVjZXNzYXJ5IGZvciB0aGUgY29tbW9uIGNhc2UuCj4g
-Cj4gU2FzY2hhCj4gCj4gLS0gCj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKPiBJbmR1c3RyaWFsIExpbnV4
-IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAg
-fAo+IFBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiAr
-NDktNTEyMS0yMDY5MTctMCAgICB8Cj4gQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYg
-ICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+Use strtobool to convert the input string to a boolean type.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ lib/parameter.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/lib/parameter.c b/lib/parameter.c
+index fd05b49..7ceec0c 100644
+--- a/lib/parameter.c
++++ b/lib/parameter.c
+@@ -27,6 +27,7 @@
+ #include <net.h>
+ #include <malloc.h>
+ #include <driver.h>
++#include <string.h>
+ #include <linux/err.h>
+ 
+ struct param_d *get_param_by_name(struct device_d *dev, const char *name)
+@@ -314,10 +315,10 @@ static int param_int_set(struct device_d *dev, struct param_d *p, const char *va
+ 	if (!val)
+ 		return -EINVAL;
+ 
+-	*pi->value = simple_strtol(val, NULL, 0);
+-
+ 	if (pi->flags & PARAM_INT_FLAG_BOOL)
+-		*pi->value = !!*pi->value;
++		return strtobool(val, pi->value);
++
++	*pi->value = simple_strtol(val, NULL, 0);
+ 
+ 	if (!pi->set)
+ 		return 0;
+-- 
+2.8.0.rc3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
