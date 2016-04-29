@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aw56J-0002JL-9a
- for barebox@lists.infradead.org; Fri, 29 Apr 2016 09:52:43 +0000
+ id 1aw564-0002GC-GN
+ for barebox@lists.infradead.org; Fri, 29 Apr 2016 09:52:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 29 Apr 2016 11:52:01 +0200
-Message-Id: <1461923525-6356-3-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 29 Apr 2016 11:52:05 +0200
+Message-Id: <1461923525-6356-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1461923525-6356-1-git-send-email-s.hauer@pengutronix.de>
 References: <1461923525-6356-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,89 +21,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] string: Introduce strtobool
+Subject: [PATCH 6/6] blspec: push appendroot handling to bootm
 To: Barebox List <barebox@lists.infradead.org>
 
-We have at least two places which convert a string to a boolean type,
-so create a common function for this. strtobool treats
-
-- any positive (nonzero) number as true
-- "0" as false
-- "true" (case insensitive) as true
-- "false" (case insensitive) as false
-
-Every other value results in an error and the input *val is not
-modified. The caller is expected to initialize *val with the correct
-default before calling strtobool.
+The bootm code now can handle the adding of the root= option itself,
+so drop the code and let bootm do it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/string.h |  1 +
- lib/string.c     | 43 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 44 insertions(+)
+ common/blspec.c | 39 +++++++++++++--------------------------
+ 1 file changed, 13 insertions(+), 26 deletions(-)
 
-diff --git a/include/string.h b/include/string.h
-index a833da1..0c557d6 100644
---- a/include/string.h
-+++ b/include/string.h
-@@ -4,5 +4,6 @@
- #include <linux/string.h>
- 
- void *memdup(const void *, size_t);
-+int strtobool(const char *str, int *val);
- 
- #endif /* __STRING_H */
-diff --git a/lib/string.c b/lib/string.c
-index 6a39eb5..a3e9fd8 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -739,3 +739,46 @@ void *memdup(const void *orig, size_t size)
- 	return buf;
+diff --git a/common/blspec.c b/common/blspec.c
+index 1800556..ac8f512 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -637,29 +637,6 @@ int blspec_scan_devicename(struct blspec *blspec, const char *devname)
+ 	return blspec_scan_device(blspec, dev);
  }
- EXPORT_SYMBOL(memdup);
+ 
+-static int blspec_append_root(struct blspec_entry *entry)
+-{
+-	const char *appendroot;
+-	char *rootarg;
+-
+-	appendroot = blspec_entry_var_get(entry, "linux-appendroot");
+-	if (!appendroot || strcmp(appendroot, "true"))
+-		return 0;
+-
+-	rootarg = path_get_linux_rootarg(entry->rootpath);
+-	if (IS_ERR(rootarg)) {
+-		pr_err("Getting root argument for %s failed with: %s\n",
+-				entry->rootpath, strerrorp(rootarg));
+-		return PTR_ERR(rootarg);
+-	}
+-
+-	globalvar_add_simple("linux.bootargs.dyn.blspec.appendroot", rootarg);
+-
+-	free(rootarg);
+-
+-	return 0;
+-}
+-
+ /*
+  * blspec_boot - boot an entry
+  *
+@@ -671,6 +648,7 @@ int blspec_boot(struct blspec_entry *entry, int verbose, int dryrun)
+ {
+ 	int ret;
+ 	const char *abspath, *devicetree, *options, *initrd, *linuximage;
++	const char *appendroot;
+ 	struct bootm_data data = {
+ 		.initrd_address = UIMAGE_INVALID_ADDRESS,
+ 		.os_address = UIMAGE_SOME_ADDRESS,
+@@ -709,9 +687,18 @@ int blspec_boot(struct blspec_entry *entry, int verbose, int dryrun)
+ 
+ 	globalvar_add_simple("linux.bootargs.dyn.blspec", options);
+ 
+-	ret = blspec_append_root(entry);
+-	if (ret)
+-		goto err_out;
++	appendroot = blspec_entry_var_get(entry, "linux-appendroot");
++	if (appendroot) {
++		int val;
 +
-+/**
-+ * strtobool - convert a string to a boolean value
-+ * @str - The string
-+ * @val - The boolean value returned.
-+ *
-+ * This function treats
-+ * - any positive (nonzero) number as true
-+ * - "0" as false
-+ * - "true" (case insensitive) as true
-+ * - "false" (case insensitive) as false
-+ *
-+ * Every other value results in an error and the @val is not
-+ * modified. The caller is expected to initialize @val with the
-+ * correct default before calling strtobool.
-+ *
-+ * Returns 0 for success or negative error code if the variable does
-+ * not exist or contains something this function does not recognize
-+ * as true or false.
-+ */
-+int strtobool(const char *str, int *val)
-+{
-+	if (!str || !*str)
-+		return -EINVAL;
-+
-+	if (simple_strtoul(str, NULL, 0) > 0) {
-+		*val = true;
-+		return 0;
++		ret = strtobool(appendroot, &val);
++		if (ret) {
++			pr_err("Invalid value \"%s\" for appendroot option\n",
++			       appendroot);
++			goto err_out;
++		}
++		data.appendroot = val;
 +	}
-+
-+	if (!strcmp(str, "0") || !strcasecmp(str, "false")) {
-+		*val = false;
-+		return 0;
-+	}
-+
-+	if (!strcasecmp(str, "true")) {
-+		*val = true;
-+		return 0;
-+	}
-+
-+	return -EINVAL;
-+}
-+EXPORT_SYMBOL(strtobool);
+ 
+ 	pr_info("booting %s from %s\n", blspec_entry_var_get(entry, "title"),
+ 			entry->cdev ? dev_name(entry->cdev->dev) : "none");
 -- 
 2.8.0.rc3
 
