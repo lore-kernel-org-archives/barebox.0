@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ax9Tb-0006wZ-9G
- for barebox@lists.infradead.org; Mon, 02 May 2016 08:45:12 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 7095AA00258
- for <barebox@lists.infradead.org>; Mon,  2 May 2016 10:44:55 +0200 (CEST)
+ id 1ax9m7-0008KC-Nj
+ for barebox@lists.infradead.org; Mon, 02 May 2016 09:04:20 +0000
+Date: Mon, 2 May 2016 11:03:58 +0200
 From: Stefan Christ <s.christ@phytec.de>
-Date: Mon, 2 May 2016 10:44:06 +0200
-Message-Id: <1462178646-873-1-git-send-email-s.christ@phytec.de>
+Message-ID: <20160502090358.GD2601@lws-christ>
+References: <1461751489-13302-1-git-send-email-s.christ@phytec.de>
+ <1461751489-13302-9-git-send-email-s.christ@phytec.de>
+ <20160428083449.GB7860@pengutronix.de>
+ <20160429072528.GA2685@lws-christ>
+ <20160502075156.GB19714@pengutronix.de>
 MIME-Version: 1.0
+In-Reply-To: <20160502075156.GB19714@pengutronix.de>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,57 +22,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2721651319145220330=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! PCI: imx6: Move PHY reset into
- imx6_pcie_establish_link()
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH for next 08/15] ARM: phytec-som-imx6: add boot device
+ emmc and automount
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
---===============2721651319145220330==
-Content-Type: text/plain; charset=y
-Content-Transfer-Encoding: quoted-printable
-
----
-Hi Sascha,
-
-small whitespace fixup for a commit in branch "for-next/pci".
-
-Mit freundlichen Gr=C3=BC=C3=9Fen / Kind regards,
-        Stefan Christ
-
----
- drivers/pci/pci-imx6.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index e25a956..affc705 100644
---- a/drivers/pci/pci-imx6.c
-+++ b/drivers/pci/pci-imx6.c
-@@ -484,7 +484,7 @@ static int imx6=5Fpcie=5Festablish=5Flink(struct pcie=
-=5Fport *pp)
-=20
- 	tmp =3D readl(pp->dbi=5Fbase + PCIE=5FRC=5FLCSR);
- 	dev=5Fdbg(pp->dev, "Link up, Gen=3D%i\n", (tmp >> 16) & 0xf);
--=09
-+
- 	return 0;
-=20
- err=5Freset=5Fphy:
---=20
-1.9.1
-
-
-
---===============2721651319145220330==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
-
---===============2721651319145220330==--
+SGkgU2FzY2hhLAoKT24gTW9uLCBNYXkgMDIsIDIwMTYgYXQgMDk6NTE6NTZBTSArMDIwMCwgU2Fz
+Y2hhIEhhdWVyIHdyb3RlOgo+IE9uIEZyaSwgQXByIDI5LCAyMDE2IGF0IDA5OjI1OjI4QU0gKzAy
+MDAsIFN0ZWZhbiBDaHJpc3Qgd3JvdGU6Cj4gPiBIaSBTYXNjaGEsCj4gPiAKPiA+ID4gPiBkaWZm
+IC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20taW14Ni9kZWZhdWx0ZW52LXBoeXNv
+bS1pbXg2LW1pcmEvYm9vdC9lbW1jIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20taW14Ni9k
+ZWZhdWx0ZW52LXBoeXNvbS1pbXg2LW1pcmEvYm9vdC9lbW1jCj4gPiA+ID4gbmV3IGZpbGUgbW9k
+ZSAxMDA2NDQKPiA+ID4gPiBpbmRleCAwMDAwMDAwLi5lM2NjOWUzCj4gPiA+ID4gLS0tIC9kZXYv
+bnVsbAo+ID4gPiA+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWlteDYvZGVmYXVs
+dGVudi1waHlzb20taW14Ni1taXJhL2Jvb3QvZW1tYwo+ID4gPiA+IEBAIC0wLDAgKzEsNSBAQAo+
+ID4gPiA+ICsjIS9iaW4vc2gKPiA+ID4gPiArCj4gPiA+ID4gK2dsb2JhbC5ib290bS5pbWFnZT0i
+L21udC9lbW1jL2xpbnV4aW1hZ2UiCj4gPiA+ID4gK2dsb2JhbC5ib290bS5vZnRyZWU9Ii9tbnQv
+ZW1tYy9vZnRyZWUiCj4gPiA+ID4gK2dsb2JhbC5saW51eC5ib290YXJncy5keW4ucm9vdD0icm9v
+dD0vZGV2L21tY2JsazNwMiByb290d2FpdCBydyIKPiA+ID4gCj4gPiA+IERvZXMgdGhpcyB3b3Jr
+IHJlbGlhYmx5PyBJcyB0aGVyZSBmaW5hbGx5IGEgcGF0Y2ggdXBzdHJlYW0gdGhhdCBjcmVhdGVz
+Cj4gPiA+IGZpeGVkIG51bWJlcnMgZm9yIE1NQy9TRCBibG9jayBkZXZpY2VzPwo+ID4gCj4gPiBP
+dXIga2VybmVsIHRyZWUgY29udGFpbnMgYSBwYXRjaCBmb3IgdGhhdC4gVGhlIG1tY2JsayBpZCBp
+cyBkZXJpdmVkIGZyb20gdGhlCj4gPiBkZXZpY2UgdHJlZSBhbGlhcyBpbmRleC4gSXQgaXNuJ3Qg
+YSBtYWlubGluZSByZWFkeSBzb2x1dGlvbiwgc2luY2UgdGhlcmUgYXJlCj4gPiBzb21lIHVuaGFu
+ZGxlZCBlZGdlIGNhc2VzIGluIHRoZSBwYXRjaCBhbmQgaXQncyBpbXBsZW1lbnRlZCBjdXJyZW50
+bHkgb25seSBmb3IKPiA+IHRoZSBkcml2ZXIgInNkaGNpLWVzZGhjLWlteCIuCj4gCj4gVGhlcmUg
+d2FzIHlldCBhbm90aGVyIGF0dGVtcHQgZm9yIGNvbnNpc3RlbnQgbW1jYmxrIG51bWJlcmluZyBz
+aG90IGRvd24KPiBoZXJlIGp1c3QgbGFzdCB3ZWVrZW5kOiBodHRwOi8vd3d3LnNwaW5pY3MubmV0
+L2xpc3RzL2FybS1rZXJuZWwvbXNnNTAxNDk1Lmh0bWwKPiAKPiBHaXZlbiB0aGF0IHRoZXJlIHBy
+b2JhYmx5IG5ldmVyIHdpbGwgYmUgYSB3YXkgdG8gKHJlbGlhYmx5KSBwYXNzIHRoZSByb290ZnMg
+dmlhCj4gcm9vdD1tbWNibGt4eSwgSSBjYW4ndCB0YWtlIHRoaXMgcGF0Y2guIEkgc2VudCBhIHBh
+dGNoIHdoaWNoIHB1c2hlcyB0aGUKPiBwYXJ0dXVpZCBtZWNoYW5pc20gZnJvbSB0aGUgYm9vdGxv
+YWRlciBzcGVjIGNvZGUgdG8gYm9vdG0gd2hpY2ggbWlnaHQKPiBoZWxwIHRvIHNvbHZlIHRoaXMg
+cHJvYmxlbSBoZXJlLgoKVGhhbmtzIGZvciBpbXBsZW1lbnRpbmcgdGhpcyBmZWF0dXJlLiBTaW5j
+ZSBvdXIga2VybmVsIGFuZCBkZXZpY2UgdHJlZSBpcyBub3QKaW4gdGhlIHJvb3QgZmlsZXN5c3Rl
+bSBjdXJyZW50bHksIHdlIGNhbm5vdCB1c2UgaXQuIFdlIHdpbGwgdGFrZSBhIGxvb2sgYXQgdGhl
+CmJvb3RzcGVjIHRvIHNvbHZlIHRoaXMgcHJvYmxlbS4KCiAKPiBJIGFwcGxpZWQgdGhpcyBzZXJp
+ZXMgd2l0aG91dCB0aGlzIHBhdGNoLiBUaGlzIHByb3Zva2VkIGEgbGl0dGxlIG1lcmdlCj4gY29u
+ZmxpY3QgaW4gdGhlIHBhdGNoIHJlbmFtaW5nIHRoZSBlbnZpcm9ubWVudCBkaXJlY3RvcnkuIFBs
+ZWFzZSBjaGVjawo+IHRoZSByZXN1bHQgaW4gLW5leHQuCgpJIGp1c3QgZGlmZmVkIHRoZSBuZXh0
+IGJyYW5jaC4gU28gZmFyIGl0IGxvb2tzIGdvb2QuIFRoZSBkcm9wcGVkIHBhdGNoIGFsc28KaW50
+cm9kdWNlZCBhbiAnYXV0b21vdW50JyBzZXR0aW5nIGZvciB0aGUgZU1NQyBkZXZpY2UuIEhhdmUg
+eW91IGFuIG9iamVjdGlvbgphYm91dCB0aGlzPyBJZiBubywgSSB3b3VsZCBzZW50IGFuIGV4dHJh
+IHBhdGNoIGZvciB0aGF0LgoKLS0tID44IC0tLSAKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJk
+cy9waHl0ZWMtc29tLWlteDYvZGVmYXVsdGVudi1waHlzb20taW14Ni1waHljb3JlL2luaXQvYXV0
+b21vdW50IGIvYXJjaC9hcm0vYm9hcgppbmRleCAzNjU5Y2Y3Li5hMDU5ZTE5IDEwMDY0NAotLS0g
+YS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1pbXg2L2RlZmF1bHRlbnYtcGh5c29tLWlteDYt
+cGh5Y29yZS9pbml0L2F1dG9tb3VudAorKysgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1p
+bXg2L2RlZmF1bHRlbnYtcGh5c29tLWlteDYtcGh5Y29yZS9pbml0L2F1dG9tb3VudApAQCAtMTIs
+MyArMTIsNiBAQCBhdXRvbW91bnQgL21udC90ZnRwICdpZnVwIGV0aDAgJiYgbW91bnQgLXQgdGZ0
+cCAkZXRoMC5zZXJ2ZXJpcCAvbW50L3RmdHAnCiAKIG1rZGlyIC1wIC9tbnQvbW1jCiBhdXRvbW91
+bnQgLWQgL21udC9tbWMgJ21tYzAucHJvYmU9MSAmJiBbIC1lIC9kZXYvbW1jMC4wIF0gJiYgbW91
+bnQgL2Rldi9tbWMwLjAgL21udC9tbWMnCisKK21rZGlyIC1wIC9tbnQvZW1tYworYXV0b21vdW50
+IC1kIC9tbnQvZW1tYyAnbW1jMy5wcm9iZT0xICYmIFsgLWUgL2Rldi9tbWMzLjAgXSAmJiBtb3Vu
+dCAvZGV2L21tYzMuMCAvbW50L2VtbWMnCi0tLSA+OCAtLS0gCgpNaXQgZnJldW5kbGljaGVuIEdy
+w7zDn2VuIC8gS2luZCByZWdhcmRzLAoJU3RlZmFuIENocmlzdAoKCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
