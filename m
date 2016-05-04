@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1axqnF-00073b-FO
- for barebox@lists.infradead.org; Wed, 04 May 2016 07:00:26 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 8B3EFA004EE
- for <barebox@lists.infradead.org>; Wed,  4 May 2016 09:00:01 +0200 (CEST)
-From: Stefan Christ <s.christ@phytec.de>
-Date: Wed, 4 May 2016 08:59:12 +0200
-Message-Id: <1462345152-3509-1-git-send-email-s.christ@phytec.de>
+Received: from mail-wm0-x22c.google.com ([2a00:1450:400c:c09::22c])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1axrFo-0003Dq-HE
+ for barebox@lists.infradead.org; Wed, 04 May 2016 07:29:53 +0000
+Received: by mail-wm0-x22c.google.com with SMTP id e201so175089348wme.0
+ for <barebox@lists.infradead.org>; Wed, 04 May 2016 00:29:30 -0700 (PDT)
+From: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
+Date: Wed,  4 May 2016 09:28:55 +0200
+Message-Id: <1462346935-31609-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: phytec-som-imx6: add automount for first partition on
- eMMC
-To: barebox@lists.infradead.org
+Subject: [PATCH] net: fec: add simple support for fixed-link
+To: Barebox List <barebox@lists.infradead.org>
 
-For the phyCORE-i.MX6 add an automount command for the first partition
-on the eMMC device.
-
-Signed-off-by: Stefan Christ <s.christ@phytec.de>
+Signed-off-by: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
 ---
- .../phytec-som-imx6/defaultenv-physom-imx6-phycore/init/automount      | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/fec_imx.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/init/automount b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/init/automount
-index 3659cf7..a059e19 100644
---- a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/init/automount
-+++ b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/init/automount
-@@ -12,3 +12,6 @@ automount /mnt/tftp 'ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp'
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 696483f..31802c2 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -669,6 +669,8 @@ static int fec_probe(struct device_d *dev)
+ 	enum fec_type type;
+ 	int phy_reset;
+ 	u32 msec = 1;
++	struct device_node *fixed_link_node;
++	int speed;
  
- mkdir -p /mnt/mmc
- automount -d /mnt/mmc 'mmc0.probe=1 && [ -e /dev/mmc0.0 ] && mount /dev/mmc0.0 /mnt/mmc'
+ 	ret = dev_get_drvdata(dev, (const void **)&type);
+ 	if (ret)
+@@ -716,6 +718,16 @@ static int fec_probe(struct device_d *dev)
+ 		gpio_set_value(phy_reset, 1);
+ 	}
+ 
++	fixed_link_node = of_get_child_by_name(dev->device_node, "fixed-link");
++	if (fixed_link_node) {
++		if (!of_property_read_u32(fixed_link_node, "speed", &speed)) {
++			if (speed == 100)
++				fec->phy_flags |= PHYLIB_FORCE_100;
++			else if (speed == 10)
++				fec->phy_flags |= PHYLIB_FORCE_10;
++		}
++	}
 +
-+mkdir -p /mnt/emmc
-+automount -d /mnt/emmc 'mmc3.probe=1 && [ -e /dev/mmc3.0 ] && mount /dev/mmc3.0 /mnt/emmc'
+ 	/* Reset chip. */
+ 	writel(FEC_ECNTRL_RESET, fec->regs + FEC_ECNTRL);
+ 	while(readl(fec->regs + FEC_ECNTRL) & 1) {
 -- 
 1.9.1
 
