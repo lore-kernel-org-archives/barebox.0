@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1axwad-0008UM-Dr
- for barebox@lists.infradead.org; Wed, 04 May 2016 13:11:47 +0000
-Date: Wed, 4 May 2016 15:11:21 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160504131121.GO19714@pengutronix.de>
-References: <1462346935-31609-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
+Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1axwkM-0005aS-31
+ for barebox@lists.infradead.org; Wed, 04 May 2016 13:21:47 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 1407EA0028C
+ for <barebox@lists.infradead.org>; Wed,  4 May 2016 15:21:42 +0200 (CEST)
+From: Stefan Christ <s.christ@phytec.de>
+Date: Wed, 4 May 2016 15:20:52 +0200
+Message-Id: <1462368052-7344-1-git-send-email-s.christ@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1462346935-31609-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,174 +18,137 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============1508097385508588301=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: fec: add simple support for fixed-link
-To: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] mci: imx-esdhc: implement reset quirks for i.MX6 DualLite/Solo
+To: barebox@lists.infradead.org
 
-Hi Wjatscheslaw,
+--===============1508097385508588301==
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 04, 2016 at 09:28:55AM +0200, Wjatscheslaw Stoljarski wrote:
-> Signed-off-by: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
-> ---
->  drivers/net/fec_imx.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+First of all the reset values of MMC interfaces are differently between
+Quad and DualLite/Solo SoM.
 
-Instead of introducing a i.MX FEC specific solution for this problem,
-can you test the following patch? It currently lacks support for the
-speed/full-duplex properties, but with these added we could apply the
-patch.
+                Register VEND=5FSPEC2(0xC8)
+    Quad:       0x0
+    DualLite:   0x00000006
+    default:    0x00000006    (from i.MX6 Reference Manual)
 
-Sascha
+Furthermore the ROM Code of Quad and DualLite uses the MMC interfaces
+differently when it loads the bootloader from that device:
 
--------------------------------8<------------------------------
+                Register DLL=5FCTRL(0x60)  Bit 25 FBCLK=5FSEL (0x48)
+    Quad:       0x0                      0
+    DualLite:   0x01000021               1
 
-From 4a2bfb1400dff8c5d4a14e0faeb653974c3e4acf Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 11 Feb 2016 11:05:11 +0100
-Subject: [PATCH] net: phy: Add fixed link support
+Since the linux kernel and barebox driver doesn't reset all registers,
+the MMC interface is in an inconsistent state, which leads to boot
+failures for some eMMC devices on the i.MX6 DualLite SoM. The errors
+look like:
 
-Some network devices, especially when connected to a switch, are
-connected via a fixed link. This patch adds support for a fixed phy
-configured through device tree.
-TODO: Add support for the "speed" and "full-duplex" properties.
+    mmcblk3: error -110 sending stop command, original cmd response 0x900, =
+card status 0x400900
+    mmcblk3: error -84 transferring data, sector 24578, nr 2, cmd response =
+0x900, card status 0x0
+    mmcblk3: retrying using single block read
+    mmcblk3: error -84 transferring data, sector 24578, nr 2, cmd response =
+0x900, card status 0x0
+    blk=5Fupdate=5Frequest: I/O error, dev mmcblk3, sector 24578
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+It's sufficient to reset register DLL=5FCTRL and bit FBCLK=5FSEL. Register
+VEND=5FSPEC2 has no effect.
+
+Signed-off-by: Stefan Christ <s.christ@phytec.de>
 ---
- drivers/net/phy/phy.c | 49 +++++++++++++++++++++++++++++++++++++++++--------
- include/linux/phy.h   |  2 +-
- 2 files changed, 42 insertions(+), 9 deletions(-)
+Hi,
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index be2c68b..73176fb 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -52,9 +52,11 @@ int phy_update_status(struct phy_device *phydev)
- 	int ret;
- 	int oldspeed = phydev->speed, oldduplex = phydev->duplex;
- 
--	ret = drv->read_status(phydev);
--	if (ret)
--		return ret;
-+	if (drv) {
-+		ret = drv->read_status(phydev);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	if (phydev->speed == oldspeed && phydev->duplex == oldduplex)
- 		return 0;
-@@ -173,10 +175,15 @@ struct phy_device *phy_device_create(struct mii_bus *bus, int addr, int phy_id)
- 	phydev->bus = bus;
- 	phydev->dev.bus = &mdio_bus_type;
- 
--	sprintf(phydev->dev.name, "mdio%d-phy%02x",
-+	if (bus) {
-+		sprintf(phydev->dev.name, "mdio%d-phy%02x",
- 				   phydev->bus->dev.id,
- 				   phydev->addr);
--	phydev->dev.id = DEVICE_ID_SINGLE;
-+		phydev->dev.id = DEVICE_ID_SINGLE;
-+	} else {
-+		sprintf(phydev->dev.name, "fixed-phy");
-+		phydev->dev.id = DEVICE_ID_DYNAMIC;
-+	}
- 
- 	return phydev;
- }
-@@ -245,7 +252,9 @@ static void phy_config_aneg(struct phy_device *phydev)
- 	struct phy_driver *drv;
- 
- 	drv = to_phy_driver(phydev->dev.driver);
--	drv->config_aneg(phydev);
-+
-+	if (drv)
-+		drv->config_aneg(phydev);
- }
- 
- int phy_register_device(struct phy_device *phydev)
-@@ -255,13 +264,15 @@ int phy_register_device(struct phy_device *phydev)
- 	if (phydev->registered)
- 		return -EBUSY;
- 
--	phydev->dev.parent = &phydev->bus->dev;
-+	if (!phydev->dev.parent)
-+		phydev->dev.parent = &phydev->bus->dev;
- 
- 	ret = register_device(&phydev->dev);
- 	if (ret)
- 		return ret;
- 
--	phydev->bus->phy_map[phydev->addr] = phydev;
-+	if (phydev->bus)
-+		phydev->bus->phy_map[phydev->addr] = phydev;
- 
- 	phydev->registered = 1;
- 
-@@ -289,6 +300,22 @@ void phy_unregister_device(struct phy_device *phydev)
- 	phydev->registered = 0;
- }
- 
-+struct phy_device *of_phy_register_fixed_link(struct device_node *np, struct eth_device *edev)
-+{
-+	struct phy_device *phydev;
-+
-+	phydev = phy_device_create(NULL, 0, 0);
-+
-+	phydev->dev.parent = &edev->dev;
-+	phydev->registered = 1;
-+	phydev->speed = 1000;
-+	phydev->duplex = 1;
-+	phydev->pause = phydev->asym_pause = 0;
-+	phydev->link = 1;
-+
-+	return phydev;
-+}
-+
- static struct phy_device *of_mdio_find_phy(struct eth_device *edev)
+there is already a corresponding kernel patch, but it's not sufficient:
+
+    http://www.spinics.net/lists/linux-mmc/msg36331.html                 =20
+                                                       =20
+    commit db79ac243f04a7a0ee43246c51667881f7736c56    =20
+    Author: Dong Aisheng <aisheng.dong@freescale.com>
+    Date:   Mon Dec 14 15:31:43 2015 +0800          =20
+
+        MLK-12000 mmc: sdhci-esdhci-imx: disable DLL delay line settings ex=
+plicitly
+
+        Disable DLL delay line settings explicitly during driver initializa=
+tion
+        in case ROM/uBoot had set an invalid delay.
+        e.g. MX6DL ROM has set the default delay line(DLLCTRL) to 0x1000021,
+        the uSDHC clock timing will become marginal when works on DDR mode
+        due to default delay and will possibly see CRC errors in cause the =
+board
+        is not perfectly designed on the eMMC chip layout.
+
+
+It only resets the register DLL=5FCTRL, but the bit FBCLK=5FSEL must be als=
+o be
+reseted.
+
+Mit freundlichen Gr=C3=BC=C3=9Fen / Kind regards,
+        Stefan Christ
+
+---
+ drivers/mci/imx-esdhc.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 282887b..2e189fe 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -41,6 +41,8 @@
+=20
+ #define IMX=5FSDHCI=5FWML		0x44
+ #define IMX=5FSDHCI=5FMIXCTRL	0x48
++#define IMX=5FSDHCI=5FDLL=5FCTRL	0x60
++#define IMX=5FSDHCI=5FMIX=5FCTRL=5FFBCLK=5FSEL	(BIT(25))
+=20
+ struct fsl=5Fesdhc=5Fhost {
+ 	struct mci=5Fhost		mci;
+@@ -516,11 +518,23 @@ static int esdhc=5Freset(struct fsl=5Fesdhc=5Fhost *h=
+ost)
  {
- 	struct device_d *dev;
-@@ -305,6 +332,12 @@ static struct phy_device *of_mdio_find_phy(struct eth_device *edev)
- 		phy_node = of_parse_phandle(edev->parent->device_node, "phy", 0);
- 	if (!phy_node)
- 		phy_node = of_parse_phandle(edev->parent->device_node, "phy-device", 0);
-+	if (!phy_node) {
-+		phy_node = of_get_child_by_name(edev->parent->device_node, "fixed-link");
-+		if (phy_node)
-+			return of_phy_register_fixed_link(phy_node, edev);
+ 	void =5F=5Fiomem *regs =3D host->regs;
+ 	uint64=5Ft start;
++	int val;
+=20
+ 	/* reset the controller */
+ 	esdhc=5Fwrite32(regs + SDHCI=5FCLOCK=5FCONTROL=5F=5FTIMEOUT=5FCONTROL=5F=
+=5FSOFTWARE=5FRESET,
+ 			SYSCTL=5FRSTA);
+=20
++	/* extra register reset for i.MX6 Solo/DualLite */
++	if (cpu=5Fis=5Fmx6()) {
++		/* reset bit FBCLK=5FSEL */
++		val =3D esdhc=5Fread32(regs + IMX=5FSDHCI=5FMIXCTRL);
++		val &=3D ~IMX=5FSDHCI=5FMIX=5FCTRL=5FFBCLK=5FSEL;
++		esdhc=5Fwrite32(regs + IMX=5FSDHCI=5FMIXCTRL, val);
++
++		/* reset delay line settings in IMX=5FSDHCI=5FDLL=5FCTRL */
++		esdhc=5Fwrite32(regs + IMX=5FSDHCI=5FDLL=5FCTRL, 0x0);
 +	}
 +
- 	if (!phy_node)
- 		return NULL;
- 
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 38b0670..d7b10af 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -251,7 +251,7 @@ struct phy_driver {
- 
- 	struct driver_d	 drv;
- };
--#define to_phy_driver(d) container_of(d, struct phy_driver, drv)
-+#define to_phy_driver(d) ((d) ? container_of(d, struct phy_driver, drv) : NULL)
- 
- #define PHY_ANY_ID "MATCH ANY PHY"
- #define PHY_ANY_UID 0xffffffff
--- 
-2.8.0.rc3
+ 	start =3D get=5Ftime=5Fns();
+ 	/* hardware clears the bit when it is done */
+ 	while (1) {
+--=20
+1.9.1
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
+--===============1508097385508588301==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============1508097385508588301==--
