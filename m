@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-x22a.google.com ([2607:f8b0:4002:c05::22a])
+Received: from mail-yw0-x22c.google.com ([2607:f8b0:4002:c05::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1axz1a-0004cj-EA
- for barebox@lists.infradead.org; Wed, 04 May 2016 15:47:43 +0000
-Received: by mail-yw0-x22a.google.com with SMTP id g133so88443895ywb.2
- for <barebox@lists.infradead.org>; Wed, 04 May 2016 08:47:22 -0700 (PDT)
+ id 1ay4k6-0008BN-Mq
+ for barebox@lists.infradead.org; Wed, 04 May 2016 21:54:03 +0000
+Received: by mail-yw0-x22c.google.com with SMTP id o66so120926073ywc.3
+ for <barebox@lists.infradead.org>; Wed, 04 May 2016 14:53:42 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20160503061356.GH19714@pengutronix.de>
-References: <1461950646-15037-1-git-send-email-andrew.smirnov@gmail.com>
- <1461950646-15037-4-git-send-email-andrew.smirnov@gmail.com>
- <20160503061356.GH19714@pengutronix.de>
-Date: Wed, 4 May 2016 08:47:21 -0700
-Message-ID: <CAHQ1cqG+eeaTOyZmwu2QFCiw-UkweusqQ223o5BMm0Ztv+NiDA@mail.gmail.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
+In-Reply-To: <1461649027-5046-5-git-send-email-andrew.smirnov@gmail.com>
+References: <1461649027-5046-1-git-send-email-andrew.smirnov@gmail.com>
+ <1461649027-5046-5-git-send-email-andrew.smirnov@gmail.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
+Date: Wed, 4 May 2016 16:53:21 -0500
+Message-ID: <CAErSpo7_dJnSU0=LHqt2Dx=QrjatJDde0QDWdCKR5+mHR7yF1g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,177 +24,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/6] drivers: Introduce AIODEV subsystem
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Andrey Smirnov <andrew.smrinov@gmail.com>
+Subject: Re: [PATCH 4/9] PCI: imx6: Rename imx6_pcie_start_link() to
+ imx6_pcie_establish_link()
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Fabio Estevam <fabio.estevam@freescale.com>, barebox@lists.infradead.org
 
-On Mon, May 2, 2016 at 11:13 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Fri, Apr 29, 2016 at 10:24:03AM -0700, Andrey Smirnov wrote:
->> From: Sascha Hauer <s.hauer@pengutronix.de>
->>
->> AIODEV/Aiodevice is a analog I/O framework that can be thought of as a
->> simplified hybrid between 'hwmon' and 'IIO' subsystems of Linux kernel
->>
->> This commit is very heavily based on 'iodevice' framework proposal
->> written by Sascha Hauer.
->>
->> Signed-off-by: Andrey Smirnov <andrew.smrinov@gmail.com>
->> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
->> ---
->>  drivers/Kconfig         |   1 +
->>  drivers/Makefile        |   1 +
->>  drivers/aiodev/Kconfig  |   8 +++
->>  drivers/aiodev/Makefile |   2 +
->>  drivers/aiodev/core.c   | 135 ++++++++++++++++++++++++++++++++++++++++++++++++
->>  include/aiodev.h        |  39 ++++++++++++++
->>  6 files changed, 186 insertions(+)
->>  create mode 100644 drivers/aiodev/Kconfig
->>  create mode 100644 drivers/aiodev/Makefile
->>  create mode 100644 drivers/aiodev/core.c
->>  create mode 100644 include/aiodev.h
->>
->> diff --git a/drivers/aiodev/Makefile b/drivers/aiodev/Makefile
->> new file mode 100644
->> index 0000000..806464e
->> --- /dev/null
->> +++ b/drivers/aiodev/Makefile
->> @@ -0,0 +1,2 @@
->> +
->> +obj-$(CONFIG_AIODEV) += core.o
->> diff --git a/drivers/aiodev/core.c b/drivers/aiodev/core.c
->> new file mode 100644
->> index 0000000..6dcb917
->> --- /dev/null
->> +++ b/drivers/aiodev/core.c
->> @@ -0,0 +1,135 @@
->> +#include <common.h>
->> +#include <aiodev.h>
->> +#include <linux/list.h>
->> +#include <malloc.h>
+On Tue, Apr 26, 2016 at 12:37 AM, Andrey Smirnov
+<andrew.smirnov@gmail.com> wrote:
+> Rename imx6_pcie_start_link() to imx6_pcie_establish_link() to follow the
+> convention of other DesignWare-based host drivers.  No functional change.
 >
-> GPL Header missing.
+> [Andrey Smirnov: port to BB codebase]
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> Acked-by: Pratyush Anand <pratyush.anand@gmail.com>
 
-OK, will fix in v2.
+This is apparently intended for barebox (?), not for the Linux kernel,
+so I'm going to ignore it.  I assume you're not looking for any action
+from me.  If you are, note that I only act on things posted to
+linux-pci@vger.kernel.org.
 
+It would help me sort this out and maybe help future code
+archaeologists if your changelog referenced the Linux commit more
+explicitly, e.g.,
 
+  port Linux kernel commit fd5da2081b07 ("PCI: imx6: Rename
+imx6_pcie_start_link() to imx6_pcie_establish_link()") to barebox
+
+It wouldn't hurt my feelings if you didn't copy me on patches like
+this.  I don't really have anything to contribute to barebox, so it's
+just something to look at and figure out whether I'm supposed to do
+something with it.
+
+Bjorn
+
+> ---
+>  drivers/pci/pci-imx6.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
->> +
->> +LIST_HEAD(aiodevices);
->> +EXPORT_SYMBOL(aiodevices);
->> +
->> +struct aiochannel *aiochannel_get_by_name(const char *name)
->> +{
->> +     struct aiodevice *aiodev;
->> +     int i;
->> +
->> +     list_for_each_entry(aiodev, &aiodevices, list) {
->> +             for (i = 0; i < aiodev->num_channels; i++)
->> +                     if (!strcmp(name, aiodev->channels[i]->name))
->> +                             return aiodev->channels[i];
->> +     }
->> +
->> +     return ERR_PTR(-ENOENT);
->> +}
->> +EXPORT_SYMBOL(aiochannel_get_by_name);
->> +
->> +struct aiochannel *aiochannel_get(struct device_d *dev, int index)
->> +{
->> +     struct of_phandle_args spec;
->> +     struct aiodevice *aiodev;
->> +     int ret, chnum = 0;
->> +
->> +     if (!dev->device_node)
->> +             return ERR_PTR(-EINVAL);
->> +
->> +     ret = of_parse_phandle_with_args(dev->device_node,
->> +                                      "aio-channels",
->> +                                      "#aio-channel-cells",
->> +                                      index, &spec);
+> diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+> index 13a8b22..30bc4fe 100644
+> --- a/drivers/pci/pci-imx6.c
+> +++ b/drivers/pci/pci-imx6.c
+> @@ -415,7 +415,7 @@ static int imx6_pcie_wait_for_speed_change(struct pcie_port *pp)
+>  }
 >
-> #io-channel-cells is part of the official binding in
-> /dts/Bindings/iio/iio-bindings.txt. We should work with this existing
-> binding.
-
-Oh, I didn't realize that it was original IIO DT binding. Will fix in v2.
-
 >
->> +        if (ret)
->> +                return ERR_PTR(ret);
->> +
->> +     list_for_each_entry(aiodev, &aiodevices, list) {
->> +             if (aiodev->hwdev->device_node == spec.np)
->> +                     goto found;
->> +     }
->> +
->> +     return ERR_PTR(-EPROBE_DEFER);
->> +
->> +found:
->> +     if (spec.args_count)
->> +             chnum = spec.args[0];
->> +
->> +     if (chnum >= aiodev->num_channels)
->> +             return ERR_PTR(-EINVAL);
->> +
->> +     return aiodev->channels[chnum];
->> +}
->> +EXPORT_SYMBOL(aiochannel_get);
->> +
->> +int aiochannel_get_value(struct aiochannel *aiochan, int *value)
->> +{
->> +     struct aiodevice *aiodev = aiochan->aiodev;
->> +
->> +     return aiodev->read(aiochan, value);
->> +}
->> +EXPORT_SYMBOL(aiochannel_get_value);
->> +
->> +int aiochannel_get_index(struct aiochannel *aiochan)
->> +{
->> +     int i;
->> +     struct aiodevice *aiodev = aiochan->aiodev;
->> +
->> +     for (i = 0; i < aiodev->num_channels; i++)
->> +             if (aiodev->channels[i] == aiochan)
->> +                     return i;
+> -static int imx6_pcie_start_link(struct pcie_port *pp)
+> +static int imx6_pcie_establish_link(struct pcie_port *pp)
+>  {
+>         struct imx6_pcie *imx6_pcie = to_imx6_pcie(pp);
+>         uint32_t tmp;
+> @@ -483,7 +483,7 @@ static void imx6_pcie_host_init(struct pcie_port *pp)
 >
-> This function is unused in your patches. If the information this
-> function provides is needed, maybe better add a index member to struct
-> aiochannel to get rid of this loop?
+>         dw_pcie_setup_rc(pp);
 >
-
-It's used in one of the custom drivers I have in my tree. And yeah, I
-think it's a good idea to store index and get rid of the loop. Will do
-that in v2.
-
->> +
->> +     return -ENOENT;
->> +}
->> +EXPORT_SYMBOL(aiochannel_get_index);
->> +
->> +static int aiochannel_param_get_value(struct param_d *p, void *priv)
->> +{
->> +     struct aiochannel *aiochan = priv;
->> +
->> +     return aiochannel_get_value(aiochan, &aiochan->value);
->> +}
->> +
->> +int aiodevice_register(struct aiodevice *aiodev)
->> +{
->> +     int i, ret;
->> +
->> +     if (!aiodev->name) {
->> +             if (aiodev->hwdev &&
->> +                 aiodev->hwdev->device_node) {
+> -       imx6_pcie_start_link(pp);
+> +       imx6_pcie_establish_link(pp);
+>  }
 >
->         if (!aiodev->name && aiodev->hwdev &&
->             aiodev->hwdev->device_node)
+>  static void imx6_pcie_reset_phy(struct pcie_port *pp)
+> --
+> 2.5.5
 >
-> ?
-
-Agreed, there's no need to have a standalone if. Will fix in v2.
-
-Thank you for reviewing my pathes!
-
-Andrey
 
 _______________________________________________
 barebox mailing list
