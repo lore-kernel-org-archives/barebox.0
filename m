@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x230.google.com ([2607:f8b0:400e:c03::230])
+Received: from mail-pf0-x230.google.com ([2607:f8b0:400e:c00::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aygSO-00017E-79
- for barebox@lists.infradead.org; Fri, 06 May 2016 14:10:18 +0000
-Received: by mail-pa0-x230.google.com with SMTP id xk12so48350334pac.0
- for <barebox@lists.infradead.org>; Fri, 06 May 2016 07:09:55 -0700 (PDT)
+ id 1aygSK-00016j-Vl
+ for barebox@lists.infradead.org; Fri, 06 May 2016 14:10:16 +0000
+Received: by mail-pf0-x230.google.com with SMTP id c189so51851390pfb.3
+ for <barebox@lists.infradead.org>; Fri, 06 May 2016 07:09:52 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri,  6 May 2016 07:09:29 -0700
-Message-Id: <1462543770-4619-6-git-send-email-andrew.smirnov@gmail.com>
+Date: Fri,  6 May 2016 07:09:25 -0700
+Message-Id: <1462543770-4619-2-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1462543770-4619-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1462543770-4619-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,336 +23,1049 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/6] aiodev: Add TEMPMON driver
+Subject: [PATCH v2 1/6] drivers: add nvmem framework from kernel
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Port TEMPMON driver from U-Boot
+Add the nvmem framework from Linux.
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Based on the v4.4-rc3 version.
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/dts/imx6qdl.dtsi    |  14 +++
- arch/arm/dts/imx6sx.dtsi     |  14 +++
- drivers/aiodev/Kconfig       |   8 ++
- drivers/aiodev/Makefile      |   1 +
- drivers/aiodev/imx_thermal.c | 239 +++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 276 insertions(+)
- create mode 100644 drivers/aiodev/imx_thermal.c
+ drivers/Kconfig                |   2 +-
+ drivers/Makefile               |   2 +
+ drivers/nvmem/Kconfig          |   7 +
+ drivers/nvmem/Makefile         |   6 +
+ drivers/nvmem/core.c           | 749 +++++++++++++++++++++++++++++++++++++++++
+ include/linux/nvmem-consumer.h | 157 +++++++++
+ include/linux/nvmem-provider.h |  49 +++
+ 7 files changed, 971 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/nvmem/Kconfig
+ create mode 100644 drivers/nvmem/Makefile
+ create mode 100644 drivers/nvmem/core.c
+ create mode 100644 include/linux/nvmem-consumer.h
+ create mode 100644 include/linux/nvmem-provider.h
 
-diff --git a/arch/arm/dts/imx6qdl.dtsi b/arch/arm/dts/imx6qdl.dtsi
-index 828be9c..0deafbc 100644
---- a/arch/arm/dts/imx6qdl.dtsi
-+++ b/arch/arm/dts/imx6qdl.dtsi
-@@ -8,3 +8,17 @@
- 		ipu0 = &ipu1;
- 	};
- };
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index 3236696..90ab7c1 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -32,5 +32,5 @@ source "drivers/rtc/Kconfig"
+ source "drivers/firmware/Kconfig"
+ source "drivers/phy/Kconfig"
+ source "drivers/crypto/Kconfig"
+-
++source "drivers/nvmem/Kconfig"
+ endmenu
+diff --git a/drivers/Makefile b/drivers/Makefile
+index a4467a0..551b9a0 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -32,3 +32,5 @@ obj-$(CONFIG_FIRMWARE) += firmware/
+ obj-$(CONFIG_GENERIC_PHY) += phy/
+ obj-$(CONFIG_HAB) += hab/
+ obj-$(CONFIG_CRYPTO_HW) += crypto/
++obj-$(CONFIG_NVMEM) += nvmem/
 +
-+&ocotp {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	analog1: ocotp_ana1@34 {
-+		reg = <0x38 0x4>;
-+	};
-+};
-+
-+&tempmon {
-+	nvmem-cells = <&analog1>;
-+	nvmem-cell-names = "ocotp-ana1";
-+};
-diff --git a/arch/arm/dts/imx6sx.dtsi b/arch/arm/dts/imx6sx.dtsi
-index 5a8ee46..89678b2 100644
---- a/arch/arm/dts/imx6sx.dtsi
-+++ b/arch/arm/dts/imx6sx.dtsi
-@@ -10,3 +10,17 @@
- 		pwm7 = &pwm8;
- 	};
- };
-+
-+&ocotp {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	analog1: ocotp_ana1@34 {
-+		reg = <0x34 0x4>;
-+	};
-+};
-+
-+&tempmon {
-+	nvmem-cells = <&analog1>;
-+	nvmem-cell-names = "ocotp-ana1";
-+};
-diff --git a/drivers/aiodev/Kconfig b/drivers/aiodev/Kconfig
-index d6d4ac0..c877bb7 100644
---- a/drivers/aiodev/Kconfig
-+++ b/drivers/aiodev/Kconfig
-@@ -5,4 +5,12 @@ menuconfig AIODEV
- 	bool "Analog I/O drivers"
- 
- if AIODEV
-+
-+config IMX_THERMAL
-+       tristate "Temperature sensor driver for Freescale i.MX SoCs"
-+       select NVMEM
-+       help
-+         Support for Temperature Monitor (TEMPMON) found on Freescale
-+         i.MX SoCs.
-+
- endif
-diff --git a/drivers/aiodev/Makefile b/drivers/aiodev/Makefile
-index 806464e..5480a8a 100644
---- a/drivers/aiodev/Makefile
-+++ b/drivers/aiodev/Makefile
-@@ -1,2 +1,3 @@
- 
- obj-$(CONFIG_AIODEV) += core.o
-+obj-$(CONFIG_IMX_THERMAL) += imx_thermal.o
-diff --git a/drivers/aiodev/imx_thermal.c b/drivers/aiodev/imx_thermal.c
+diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
 new file mode 100644
-index 0000000..ca4f17b
+index 0000000..999a432
 --- /dev/null
-+++ b/drivers/aiodev/imx_thermal.c
-@@ -0,0 +1,239 @@
++++ b/drivers/nvmem/Kconfig
+@@ -0,0 +1,7 @@
++menuconfig NVMEM
++	bool "NVMEM Support"
++	help
++	  Support for NVMEM(Non Volatile Memory) devices like EEPROM, EFUSES...
++
++	  This framework is designed to provide a generic interface to NVMEM
++	  If unsure, say no.
+diff --git a/drivers/nvmem/Makefile b/drivers/nvmem/Makefile
+new file mode 100644
+index 0000000..6df2c69
+--- /dev/null
++++ b/drivers/nvmem/Makefile
+@@ -0,0 +1,6 @@
++#
++# Makefile for nvmem drivers.
++#
++
++obj-$(CONFIG_NVMEM)		+= nvmem_core.o
++nvmem_core-y			:= core.o
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+new file mode 100644
+index 0000000..0214253
+--- /dev/null
++++ b/drivers/nvmem/core.c
+@@ -0,0 +1,749 @@
 +/*
-+ * imx_thermal
++ * nvmem framework core.
 + *
-+ * Copyright (c) 2015 Zodiac Inflight Innovation
-+ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-+ *
-+ * based on the code of analogous driver from U-Boot:
-+ * (C) Copyright 2014-2015 Freescale Semiconductor, Inc.
-+ * Author: Nitin Garg <nitin.garg@freescale.com>
-+ *             Ye Li <Ye.Li@freescale.com>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
++ * Copyright (C) 2015 Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
++ * Copyright (C) 2013 Maxime Ripard <maxime.ripard@free-electrons.com>
 + *
 + * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
++ * it under the terms of the GNU General Public License version 2 and
++ * only version 2 as published by the Free Software Foundation.
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
 + */
-+
++#define DEBUG
 +#include <common.h>
-+#include <init.h>
++#include <libbb.h>
 +#include <malloc.h>
-+#include <clock.h>
-+#include <driver.h>
-+#include <xfuncs.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <linux/math64.h>
-+#include <linux/log2.h>
-+#include <linux/clk.h>
-+#include <mach/clock.h>
-+#include <mach/imx6-anadig.h>
-+#include <io.h>
-+#include <aiodev.h>
++#include <of.h>
++#include <regmap.h>
 +#include <linux/nvmem-consumer.h>
++#include <linux/nvmem-provider.h>
 +
-+#define FACTOR0			10000000
-+#define MEASURE_FREQ		327
-+
-+struct imx_thermal_data {
-+	int c1, c2;
-+	void __iomem *base;
-+	struct clk *clk;
-+
-+	struct aiodevice aiodev;
-+	struct aiochannel aiochan;
++struct nvmem_device {
++	const char		*name;
++	struct device_d		dev;
++	struct nvmem_bus	*bus;
++	struct list_head	node;
++	int			stride;
++	int			word_size;
++	int			ncells;
++	int			users;
++	size_t			size;
++	bool			read_only;
++	struct regmap		*regmap;
 +};
 +
-+static inline struct imx_thermal_data *
-+to_imx_thermal_data(struct aiochannel *chan)
++struct nvmem_cell {
++	const char		*name;
++	int			offset;
++	int			bytes;
++	int			bit_offset;
++	int			nbits;
++	struct nvmem_device	*nvmem;
++	struct list_head	node;
++};
++
++static LIST_HEAD(nvmem_cells);
++static LIST_HEAD(nvmem_devs);
++
++static struct nvmem_device *of_nvmem_find(struct device_node *nvmem_np)
 +{
-+	return container_of(chan, struct imx_thermal_data, aiochan);
++	struct nvmem_device *dev;
++
++	if (!nvmem_np)
++		return NULL;
++
++	list_for_each_entry(dev, &nvmem_devs, node)
++		if (dev->dev.device_node->name && !strcmp(dev->dev.device_node->name, nvmem_np->name))
++			return dev;
++
++	return NULL;
 +}
 +
-+
-+static int imx_thermal_read(struct aiochannel *chan, int *val)
++static struct nvmem_cell *nvmem_find_cell(const char *cell_id)
 +{
-+	uint64_t start;
-+	uint32_t tempsense0, tempsense1;
-+	uint16_t n_meas;
-+	struct imx_thermal_data *imx_thermal = to_imx_thermal_data(chan);
++	struct nvmem_cell *p;
 +
-+	/*
-+	 * now we only use single measure, every time we read
-+	 * the temperature, we will power on/down anadig thermal
-+	 * module
-+	 */
-+	writel(BM_ANADIG_TEMPSENSE0_POWER_DOWN,
-+	       imx_thermal->base + HW_ANADIG_TEMPSENSE0_CLR);
-+	writel(BM_ANADIG_ANA_MISC0_REFTOP_SELBIASOFF,
-+	       imx_thermal->base + HW_ANADIG_ANA_MISC0_SET);
++	list_for_each_entry(p, &nvmem_cells, node)
++		if (p && !strcmp(p->name, cell_id))
++			return p;
 +
-+	/* setup measure freq */
-+	tempsense1 = readl(imx_thermal->base + HW_ANADIG_TEMPSENSE1);
-+	tempsense1 &= ~BM_ANADIG_TEMPSENSE1_MEASURE_FREQ;
-+	tempsense1 |= MEASURE_FREQ;
-+	writel(tempsense1, imx_thermal->base + HW_ANADIG_TEMPSENSE1);
++	return NULL;
++}
 +
-+	/* start the measurement process */
-+	writel(BM_ANADIG_TEMPSENSE0_MEASURE_TEMP,
-+		imx_thermal->base + HW_ANADIG_TEMPSENSE0_CLR);
-+	writel(BM_ANADIG_TEMPSENSE0_FINISHED,
-+		imx_thermal->base + HW_ANADIG_TEMPSENSE0_CLR);
-+	writel(BM_ANADIG_TEMPSENSE0_MEASURE_TEMP,
-+	       imx_thermal->base + HW_ANADIG_TEMPSENSE0_SET);
++static void nvmem_cell_drop(struct nvmem_cell *cell)
++{
++	list_del(&cell->node);
++	kfree(cell);
++}
 +
-+	/* make sure that the latest temp is valid */
-+	start = get_time_ns();
-+	do {
-+		tempsense0 = readl(imx_thermal->base + HW_ANADIG_TEMPSENSE0);
++static void nvmem_device_remove_all_cells(const struct nvmem_device *nvmem)
++{
++	struct nvmem_cell *cell;
++	struct list_head *p, *n;
 +
-+		if (is_timeout(start, 1 * SECOND)) {
-+			dev_err(imx_thermal->aiodev.hwdev,
-+				"Timeout waiting for measurement\n");
-+			return -EIO;
-+		}
-+	} while (!(tempsense0 & BM_ANADIG_TEMPSENSE0_FINISHED));
++	list_for_each_safe(p, n, &nvmem_cells) {
++		cell = list_entry(p, struct nvmem_cell, node);
++		if (cell->nvmem == nvmem)
++			nvmem_cell_drop(cell);
++	}
++}
 +
-+	n_meas = (tempsense0 & BM_ANADIG_TEMPSENSE0_TEMP_VALUE)
-+		>> BP_ANADIG_TEMPSENSE0_TEMP_VALUE;
-+	writel(BM_ANADIG_TEMPSENSE0_FINISHED,
-+	       imx_thermal->base + HW_ANADIG_TEMPSENSE0_CLR);
++static void nvmem_cell_add(struct nvmem_cell *cell)
++{
++	list_add_tail(&cell->node, &nvmem_cells);
++}
 +
-+	*val = (int)n_meas * imx_thermal->c1 + imx_thermal->c2;
++static int nvmem_cell_info_to_nvmem_cell(struct nvmem_device *nvmem,
++				   const struct nvmem_cell_info *info,
++				   struct nvmem_cell *cell)
++{
++	cell->nvmem = nvmem;
++	cell->offset = info->offset;
++	cell->bytes = info->bytes;
++	cell->name = info->name;
 +
-+	/* power down anatop thermal sensor */
-+	writel(BM_ANADIG_TEMPSENSE0_POWER_DOWN,
-+	       imx_thermal->base + HW_ANADIG_TEMPSENSE0_SET);
-+	writel(BM_ANADIG_ANA_MISC0_REFTOP_SELBIASOFF,
-+	       imx_thermal->base + HW_ANADIG_ANA_MISC0_CLR);
++	cell->bit_offset = info->bit_offset;
++	cell->nbits = info->nbits;
++
++	if (cell->nbits)
++		cell->bytes = DIV_ROUND_UP(cell->nbits + cell->bit_offset,
++					   BITS_PER_BYTE);
++
++	if (!IS_ALIGNED(cell->offset, nvmem->stride)) {
++		dev_err(&nvmem->dev,
++			"cell %s unaligned to nvmem stride %d\n",
++			cell->name, nvmem->stride);
++		return -EINVAL;
++	}
 +
 +	return 0;
 +}
 +
-+static int imx_thermal_probe(struct device_d *dev)
++static int nvmem_add_cells(struct nvmem_device *nvmem,
++			   const struct nvmem_config *cfg)
 +{
-+	uint32_t *ocotp_ana1;
-+	struct device_node *node;
-+	struct imx_thermal_data *imx_thermal;
-+	struct device_d *anatop;
-+	struct nvmem_cell *cell;
-+	struct resource *res;
-+	int t1, n1, t2, n2;
-+	int ret;
-+	size_t len;
++	struct nvmem_cell **cells;
++	const struct nvmem_cell_info *info = cfg->cells;
++	int i, rval;
 +
-+	cell = nvmem_cell_get(dev, "ocotp-ana1");
-+	if (IS_ERR(cell)) {
-+		dev_err(dev, "Failed to get calibration data cell: %s\n",
-+			strerrorp(cell));
-+		return PTR_ERR(cell);
++	cells = kzalloc(sizeof(*cells)*cfg->ncells, GFP_KERNEL);
++	if (!cells)
++		return -ENOMEM;
++
++	for (i = 0; i < cfg->ncells; i++) {
++		cells[i] = kzalloc(sizeof(**cells), GFP_KERNEL);
++		if (!cells[i]) {
++			rval = -ENOMEM;
++			goto err;
++		}
++
++		rval = nvmem_cell_info_to_nvmem_cell(nvmem, &info[i], cells[i]);
++		if (IS_ERR_VALUE(rval)) {
++			kfree(cells[i]);
++			goto err;
++		}
++
++		nvmem_cell_add(cells[i]);
 +	}
 +
-+	ocotp_ana1 = nvmem_cell_read(cell, &len);
-+	if (IS_ERR(ocotp_ana1)) {
-+		ret = PTR_ERR(ocotp_ana1);
-+		dev_err(dev, "Failed to read calibration data cell: %s\n",
-+			strerrorp(ocotp_ana1));
-+		goto put_nvmem_cell;
-+	}
++	nvmem->ncells = cfg->ncells;
++	/* remove tmp array */
++	kfree(cells);
 +
-+	if (len != sizeof(*ocotp_ana1)) {
-+		ret = -EINVAL;
-+		dev_err(dev, "Unexpected size of calibration data cell\n");
-+		goto free_calibration_data;
-+	}
++	return 0;
++err:
++	while (--i)
++		nvmem_cell_drop(cells[i]);
 +
-+	node = of_parse_phandle(dev->device_node, "fsl,tempmon", 0);
-+	if (!node) {
-+		ret = -EINVAL;
-+		dev_err(dev, "Failed to parse fsl,tempmon\n");
-+		goto free_calibration_data;
-+	}
-+
-+	anatop = of_find_device_by_node(node);
-+	if (!anatop) {
-+		ret = -EINVAL;
-+		dev_err(dev, "No device corresponds to fsl,tempmon\n");
-+		goto free_calibration_data;
-+	}
-+
-+	imx_thermal = xzalloc(sizeof(*imx_thermal));
-+
-+	res = dev_request_mem_resource(anatop, 0);
-+	if (IS_ERR(res)) {
-+		ret = PTR_ERR(res);
-+		dev_err(dev, "Failed to request anatop resource: %s\n",
-+			strerrorp(res));
-+		goto free_imx_thermal;
-+	}
-+	imx_thermal->base = IOMEM(res->start);
-+
-+	n1 = *ocotp_ana1 >> 20;
-+	t1 = 25;
-+	n2 = (*ocotp_ana1 & 0x000FFF00) >> 8;
-+	t2 = *ocotp_ana1 & 0xFF;
-+
-+	imx_thermal->c1 = (-1000 * (t2 - t1)) / (n1 - n2);
-+	imx_thermal->c2 = 1000 * t2 + (1000 * n2 * (t2 - t1)) / (n1 - n2);
-+
-+	imx_thermal->clk = clk_get(dev, NULL);
-+	if (IS_ERR(imx_thermal->clk)) {
-+		ret = PTR_ERR(imx_thermal->clk);
-+		goto free_res;
-+	}
-+
-+	ret = clk_enable(imx_thermal->clk);
-+	if (ret) {
-+		dev_err(dev, "Failed to enable clock: %s\n",
-+			  strerror(ret));
-+		goto put_clock;
-+	}
-+
-+	imx_thermal->aiodev.num_channels = 1;
-+	imx_thermal->aiodev.hwdev = dev;
-+	imx_thermal->aiodev.channels =
-+		xmalloc(imx_thermal->aiodev.num_channels *
-+			sizeof(imx_thermal->aiodev.channels[0]));
-+	imx_thermal->aiodev.channels[0] = &imx_thermal->aiochan;
-+	imx_thermal->aiochan.unit = "mC";
-+	imx_thermal->aiodev.read = imx_thermal_read;
-+
-+	ret = aiodevice_register(&imx_thermal->aiodev);
-+	if (!ret)
-+		goto free_calibration_data;
-+
-+	clk_disable(imx_thermal->clk);
-+put_clock:
-+	clk_put(imx_thermal->clk);
-+free_res:
-+	release_region(res);
-+free_imx_thermal:
-+	kfree(imx_thermal);
-+free_calibration_data:
-+	free(ocotp_ana1);
-+put_nvmem_cell:
-+	nvmem_cell_put(cell);
-+	return ret;
++	return rval;
 +}
 +
-+static const struct of_device_id of_imx_thermal_match[] = {
-+	{ .compatible = "fsl,imx6q-tempmon", },
-+	{ .compatible = "fsl,imx6sx-tempmon", },
-+	{ /* end */ }
++/**
++ * nvmem_register() - Register a nvmem device for given nvmem_config.
++ *
++ * @config: nvmem device configuration with which nvmem device is created.
++ *
++ * Return: Will be an ERR_PTR() on error or a valid pointer to nvmem_device
++ * on success.
++ */
++
++struct nvmem_device *nvmem_register(const struct nvmem_config *config, struct regmap *map)
++{
++	struct nvmem_device *nvmem;
++	struct device_node *np;
++	int rval;
++
++	if (!config->dev)
++		return ERR_PTR(-EINVAL);
++
++	nvmem = kzalloc(sizeof(*nvmem), GFP_KERNEL);
++	if (!nvmem)
++		return ERR_PTR(-ENOMEM);
++
++	nvmem->stride = regmap_get_reg_stride(map);
++	nvmem->word_size = regmap_get_val_bytes(map);
++	nvmem->size = regmap_get_max_register(map) + nvmem->stride;
++	nvmem->dev.parent = config->dev;
++	nvmem->regmap = map;
++	np = config->dev->device_node;
++	nvmem->dev.device_node = np;
++
++	nvmem->read_only = of_property_read_bool(np, "read-only") |
++			   config->read_only;
++
++	safe_strncpy(nvmem->dev.name, config->name, MAX_DRIVER_NAME);
++	nvmem->dev.id = DEVICE_ID_DYNAMIC;
++
++	dev_dbg(&nvmem->dev, "Registering nvmem device %s\n", config->name);
++
++	rval = register_device(&nvmem->dev);
++	if (rval) {
++		kfree(nvmem);
++		return ERR_PTR(rval);
++	}
++
++	list_add_tail(&nvmem->node, &nvmem_devs);
++
++	if (config->cells)
++		nvmem_add_cells(nvmem, config);
++
++	return nvmem;
++}
++EXPORT_SYMBOL_GPL(nvmem_register);
++
++/**
++ * nvmem_unregister() - Unregister previously registered nvmem device
++ *
++ * @nvmem: Pointer to previously registered nvmem device.
++ *
++ * Return: Will be an negative on error or a zero on success.
++ */
++int nvmem_unregister(struct nvmem_device *nvmem)
++{
++	if (nvmem->users)
++		return -EBUSY;
++
++	nvmem_device_remove_all_cells(nvmem);
++	unregister_device(&nvmem->dev);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(nvmem_unregister);
++
++static struct nvmem_device *__nvmem_device_get(struct device_node *np,
++					       struct nvmem_cell **cellp,
++					       const char *cell_id)
++{
++	struct nvmem_device *nvmem = NULL;
++
++	if (np) {
++		nvmem = of_nvmem_find(np);
++		if (!nvmem)
++			return ERR_PTR(-EPROBE_DEFER);
++	} else {
++		struct nvmem_cell *cell = nvmem_find_cell(cell_id);
++
++		if (cell) {
++			nvmem = cell->nvmem;
++			*cellp = cell;
++		}
++
++		if (!nvmem)
++			return ERR_PTR(-ENOENT);
++	}
++
++	nvmem->users++;
++
++	return nvmem;
++}
++
++static void __nvmem_device_put(struct nvmem_device *nvmem)
++{
++	nvmem->users--;
++}
++
++#if IS_ENABLED(CONFIG_NVMEM) && IS_ENABLED(CONFIG_OFTREE)
++/**
++ * of_nvmem_device_get() - Get nvmem device from a given id
++ *
++ * @dev node: Device tree node that uses the nvmem device
++ * @id: nvmem name from nvmem-names property.
++ *
++ * Return: ERR_PTR() on error or a valid pointer to a struct nvmem_device
++ * on success.
++ */
++struct nvmem_device *of_nvmem_device_get(struct device_node *np, const char *id)
++{
++
++	struct device_node *nvmem_np;
++	int index;
++
++	index = of_property_match_string(np, "nvmem-names", id);
++
++	nvmem_np = of_parse_phandle(np, "nvmem", index);
++	if (!nvmem_np)
++		return ERR_PTR(-EINVAL);
++
++	return __nvmem_device_get(nvmem_np, NULL, NULL);
++}
++EXPORT_SYMBOL_GPL(of_nvmem_device_get);
++#endif
++
++/**
++ * nvmem_device_get() - Get nvmem device from a given id
++ *
++ * @dev : Device that uses the nvmem device
++ * @id: nvmem name from nvmem-names property.
++ *
++ * Return: ERR_PTR() on error or a valid pointer to a struct nvmem_device
++ * on success.
++ */
++struct nvmem_device *nvmem_device_get(struct device_d *dev, const char *dev_name)
++{
++	if (dev->device_node) { /* try dt first */
++		struct nvmem_device *nvmem;
++
++		nvmem = of_nvmem_device_get(dev->device_node, dev_name);
++
++		if (!IS_ERR(nvmem) || PTR_ERR(nvmem) == -EPROBE_DEFER)
++			return nvmem;
++
++	}
++
++	return ERR_PTR(-ENOENT);
++}
++EXPORT_SYMBOL_GPL(nvmem_device_get);
++
++/**
++ * nvmem_device_put() - put alredy got nvmem device
++ *
++ * @nvmem: pointer to nvmem device that needs to be released.
++ */
++void nvmem_device_put(struct nvmem_device *nvmem)
++{
++	__nvmem_device_put(nvmem);
++}
++EXPORT_SYMBOL_GPL(nvmem_device_put);
++
++static struct nvmem_cell *nvmem_cell_get_from_list(const char *cell_id)
++{
++	struct nvmem_cell *cell = NULL;
++	struct nvmem_device *nvmem;
++
++	nvmem = __nvmem_device_get(NULL, &cell, cell_id);
++	if (IS_ERR(nvmem))
++		return ERR_CAST(nvmem);
++
++	return cell;
++}
++
++#if IS_ENABLED(CONFIG_NVMEM) && IS_ENABLED(CONFIG_OFTREE)
++/**
++ * of_nvmem_cell_get() - Get a nvmem cell from given device node and cell id
++ *
++ * @dev node: Device tree node that uses the nvmem cell
++ * @id: nvmem cell name from nvmem-cell-names property.
++ *
++ * Return: Will be an ERR_PTR() on error or a valid pointer
++ * to a struct nvmem_cell.  The nvmem_cell will be freed by the
++ * nvmem_cell_put().
++ */
++struct nvmem_cell *of_nvmem_cell_get(struct device_node *np,
++					    const char *name)
++{
++	struct device_node *cell_np, *nvmem_np;
++	struct nvmem_cell *cell;
++	struct nvmem_device *nvmem;
++	const __be32 *addr;
++	int rval, len, index;
++
++	index = of_property_match_string(np, "nvmem-cell-names", name);
++	if (index < 0)
++		return ERR_PTR(index);
++
++	cell_np = of_parse_phandle(np, "nvmem-cells", index);
++	if (!cell_np)
++		return ERR_PTR(-EINVAL);
++
++	nvmem_np = of_get_parent(cell_np);
++	if (!nvmem_np)
++		return ERR_PTR(-EINVAL);
++
++	nvmem = __nvmem_device_get(nvmem_np, NULL, NULL);
++	if (IS_ERR(nvmem))
++		return ERR_CAST(nvmem);
++
++	addr = of_get_property(cell_np, "reg", &len);
++	if (!addr || (len < 2 * sizeof(u32))) {
++		dev_err(&nvmem->dev, "nvmem: invalid reg on %s\n",
++			cell_np->full_name);
++		rval  = -EINVAL;
++		goto err_mem;
++	}
++
++	cell = kzalloc(sizeof(*cell), GFP_KERNEL);
++	if (!cell) {
++		rval = -ENOMEM;
++		goto err_mem;
++	}
++
++	cell->nvmem = nvmem;
++	cell->offset = be32_to_cpup(addr++);
++	cell->bytes = be32_to_cpup(addr);
++	cell->name = cell_np->name;
++
++	addr = of_get_property(cell_np, "bits", &len);
++	if (addr && len == (2 * sizeof(u32))) {
++		cell->bit_offset = be32_to_cpup(addr++);
++		cell->nbits = be32_to_cpup(addr);
++	}
++
++	if (cell->nbits)
++		cell->bytes = DIV_ROUND_UP(cell->nbits + cell->bit_offset,
++					   BITS_PER_BYTE);
++
++	if (cell->bytes < nvmem->word_size)
++		cell->bytes = nvmem->word_size;
++
++	if (!IS_ALIGNED(cell->offset, nvmem->stride)) {
++			dev_err(&nvmem->dev,
++				"cell %s unaligned to nvmem stride %d\n",
++				cell->name, nvmem->stride);
++		rval  = -EINVAL;
++		goto err_sanity;
++	}
++
++	nvmem_cell_add(cell);
++
++	return cell;
++
++err_sanity:
++	kfree(cell);
++
++err_mem:
++	__nvmem_device_put(nvmem);
++
++	return ERR_PTR(rval);
++}
++EXPORT_SYMBOL_GPL(of_nvmem_cell_get);
++#endif
++
++/**
++ * nvmem_cell_get() - Get nvmem cell of device form a given cell name
++ *
++ * @dev node: Device tree node that uses the nvmem cell
++ * @id: nvmem cell name to get.
++ *
++ * Return: Will be an ERR_PTR() on error or a valid pointer
++ * to a struct nvmem_cell.  The nvmem_cell will be freed by the
++ * nvmem_cell_put().
++ */
++struct nvmem_cell *nvmem_cell_get(struct device_d *dev, const char *cell_id)
++{
++	struct nvmem_cell *cell;
++
++	if (dev->device_node) { /* try dt first */
++		cell = of_nvmem_cell_get(dev->device_node, cell_id);
++		if (!IS_ERR(cell) || PTR_ERR(cell) == -EPROBE_DEFER)
++			return cell;
++	}
++
++	return nvmem_cell_get_from_list(cell_id);
++}
++EXPORT_SYMBOL_GPL(nvmem_cell_get);
++
++/**
++ * nvmem_cell_put() - Release previously allocated nvmem cell.
++ *
++ * @cell: Previously allocated nvmem cell by nvmem_cell_get()
++ */
++void nvmem_cell_put(struct nvmem_cell *cell)
++{
++	struct nvmem_device *nvmem = cell->nvmem;
++
++	__nvmem_device_put(nvmem);
++	nvmem_cell_drop(cell);
++}
++EXPORT_SYMBOL_GPL(nvmem_cell_put);
++
++static inline void nvmem_shift_read_buffer_in_place(struct nvmem_cell *cell,
++						    void *buf)
++{
++	u8 *p, *b;
++	int i, bit_offset = cell->bit_offset;
++
++	p = b = buf;
++	if (bit_offset) {
++		/* First shift */
++		*b++ >>= bit_offset;
++
++		/* setup rest of the bytes if any */
++		for (i = 1; i < cell->bytes; i++) {
++			/* Get bits from next byte and shift them towards msb */
++			*p |= *b << (BITS_PER_BYTE - bit_offset);
++
++			p = b;
++			*b++ >>= bit_offset;
++		}
++
++		/* result fits in less bytes */
++		if (cell->bytes != DIV_ROUND_UP(cell->nbits, BITS_PER_BYTE))
++			*p-- = 0;
++	}
++	/* clear msb bits if any leftover in the last byte */
++	*p &= GENMASK((cell->nbits%BITS_PER_BYTE) - 1, 0);
++}
++
++static int __nvmem_cell_read(struct nvmem_device *nvmem,
++		      struct nvmem_cell *cell,
++		      void *buf, size_t *len)
++{
++	int rc;
++
++	rc = regmap_bulk_read(nvmem->regmap, cell->offset, buf, cell->bytes);
++	if (IS_ERR_VALUE(rc))
++		return rc;
++
++	/* shift bits in-place */
++	if (cell->bit_offset || cell->nbits)
++		nvmem_shift_read_buffer_in_place(cell, buf);
++
++	*len = cell->bytes;
++
++	return 0;
++}
++
++/**
++ * nvmem_cell_read() - Read a given nvmem cell
++ *
++ * @cell: nvmem cell to be read.
++ * @len: pointer to length of cell which will be populated on successful read.
++ *
++ * Return: ERR_PTR() on error or a valid pointer to a char * buffer on success.
++ * The buffer should be freed by the consumer with a kfree().
++ */
++void *nvmem_cell_read(struct nvmem_cell *cell, size_t *len)
++{
++	struct nvmem_device *nvmem = cell->nvmem;
++	u8 *buf;
++	int rc;
++
++	if (!nvmem)
++		return ERR_PTR(-EINVAL);
++
++	buf = kzalloc(cell->bytes, GFP_KERNEL);
++	if (!buf)
++		return ERR_PTR(-ENOMEM);
++
++	rc = __nvmem_cell_read(nvmem, cell, buf, len);
++	if (IS_ERR_VALUE(rc)) {
++		kfree(buf);
++		return ERR_PTR(rc);
++	}
++
++	return buf;
++}
++EXPORT_SYMBOL_GPL(nvmem_cell_read);
++
++static inline void *nvmem_cell_prepare_write_buffer(struct nvmem_cell *cell,
++						    u8 *_buf, int len)
++{
++	struct nvmem_device *nvmem = cell->nvmem;
++	int i, rc, nbits, bit_offset = cell->bit_offset;
++	u8 v, *p, *buf, *b, pbyte, pbits;
++
++	nbits = cell->nbits;
++	buf = kzalloc(cell->bytes, GFP_KERNEL);
++	if (!buf)
++		return ERR_PTR(-ENOMEM);
++
++	memcpy(buf, _buf, len);
++	p = b = buf;
++
++	if (bit_offset) {
++		pbyte = *b;
++		*b <<= bit_offset;
++
++		/* setup the first byte with lsb bits from nvmem */
++		rc = regmap_bulk_read(nvmem->regmap, cell->offset, &v, 1);
++		*b++ |= GENMASK(bit_offset - 1, 0) & v;
++
++		/* setup rest of the byte if any */
++		for (i = 1; i < cell->bytes; i++) {
++			/* Get last byte bits and shift them towards lsb */
++			pbits = pbyte >> (BITS_PER_BYTE - 1 - bit_offset);
++			pbyte = *b;
++			p = b;
++			*b <<= bit_offset;
++			*b++ |= pbits;
++		}
++	}
++
++	/* if it's not end on byte boundary */
++	if ((nbits + bit_offset) % BITS_PER_BYTE) {
++		/* setup the last byte with msb bits from nvmem */
++		rc = regmap_bulk_read(nvmem->regmap, cell->offset + cell->bytes - 1,
++				      &v, 1);
++		*p |= GENMASK(7, (nbits + bit_offset) % BITS_PER_BYTE) & v;
++
++	}
++
++	return buf;
++}
++
++/**
++ * nvmem_cell_write() - Write to a given nvmem cell
++ *
++ * @cell: nvmem cell to be written.
++ * @buf: Buffer to be written.
++ * @len: length of buffer to be written to nvmem cell.
++ *
++ * Return: length of bytes written or negative on failure.
++ */
++int nvmem_cell_write(struct nvmem_cell *cell, void *buf, size_t len)
++{
++	struct nvmem_device *nvmem = cell->nvmem;
++	int rc;
++
++	if (!nvmem || nvmem->read_only ||
++	    (cell->bit_offset == 0 && len != cell->bytes))
++		return -EINVAL;
++
++	if (cell->bit_offset || cell->nbits) {
++		buf = nvmem_cell_prepare_write_buffer(cell, buf, len);
++		if (IS_ERR(buf))
++			return PTR_ERR(buf);
++	}
++
++	rc = regmap_bulk_write(nvmem->regmap, cell->offset, buf, cell->bytes);
++
++	/* free the tmp buffer */
++	if (cell->bit_offset || cell->nbits)
++		kfree(buf);
++
++	if (IS_ERR_VALUE(rc))
++		return rc;
++
++	return len;
++}
++EXPORT_SYMBOL_GPL(nvmem_cell_write);
++
++/**
++ * nvmem_device_cell_read() - Read a given nvmem device and cell
++ *
++ * @nvmem: nvmem device to read from.
++ * @info: nvmem cell info to be read.
++ * @buf: buffer pointer which will be populated on successful read.
++ *
++ * Return: length of successful bytes read on success and negative
++ * error code on error.
++ */
++ssize_t nvmem_device_cell_read(struct nvmem_device *nvmem,
++			   struct nvmem_cell_info *info, void *buf)
++{
++	struct nvmem_cell cell;
++	int rc;
++	ssize_t len;
++
++	if (!nvmem)
++		return -EINVAL;
++
++	rc = nvmem_cell_info_to_nvmem_cell(nvmem, info, &cell);
++	if (IS_ERR_VALUE(rc))
++		return rc;
++
++	rc = __nvmem_cell_read(nvmem, &cell, buf, &len);
++	if (IS_ERR_VALUE(rc))
++		return rc;
++
++	return len;
++}
++EXPORT_SYMBOL_GPL(nvmem_device_cell_read);
++
++/**
++ * nvmem_device_cell_write() - Write cell to a given nvmem device
++ *
++ * @nvmem: nvmem device to be written to.
++ * @info: nvmem cell info to be written
++ * @buf: buffer to be written to cell.
++ *
++ * Return: length of bytes written or negative error code on failure.
++ * */
++int nvmem_device_cell_write(struct nvmem_device *nvmem,
++			    struct nvmem_cell_info *info, void *buf)
++{
++	struct nvmem_cell cell;
++	int rc;
++
++	if (!nvmem)
++		return -EINVAL;
++
++	rc = nvmem_cell_info_to_nvmem_cell(nvmem, info, &cell);
++	if (IS_ERR_VALUE(rc))
++		return rc;
++
++	return nvmem_cell_write(&cell, buf, cell.bytes);
++}
++EXPORT_SYMBOL_GPL(nvmem_device_cell_write);
++
++/**
++ * nvmem_device_read() - Read from a given nvmem device
++ *
++ * @nvmem: nvmem device to read from.
++ * @offset: offset in nvmem device.
++ * @bytes: number of bytes to read.
++ * @buf: buffer pointer which will be populated on successful read.
++ *
++ * Return: length of successful bytes read on success and negative
++ * error code on error.
++ */
++int nvmem_device_read(struct nvmem_device *nvmem,
++		      unsigned int offset,
++		      size_t bytes, void *buf)
++{
++	int rc;
++
++	if (!nvmem)
++		return -EINVAL;
++
++	rc = regmap_bulk_read(nvmem->regmap, offset, buf, bytes);
++
++	if (IS_ERR_VALUE(rc))
++		return rc;
++
++	return bytes;
++}
++EXPORT_SYMBOL_GPL(nvmem_device_read);
++
++/**
++ * nvmem_device_write() - Write cell to a given nvmem device
++ *
++ * @nvmem: nvmem device to be written to.
++ * @offset: offset in nvmem device.
++ * @bytes: number of bytes to write.
++ * @buf: buffer to be written.
++ *
++ * Return: length of bytes written or negative error code on failure.
++ * */
++int nvmem_device_write(struct nvmem_device *nvmem,
++		       unsigned int offset,
++		       size_t bytes, void *buf)
++{
++	int rc;
++
++	if (!nvmem)
++		return -EINVAL;
++
++	rc = regmap_bulk_write(nvmem->regmap, offset, buf, bytes);
++
++	if (IS_ERR_VALUE(rc))
++		return rc;
++
++
++	return bytes;
++}
++EXPORT_SYMBOL_GPL(nvmem_device_write);
+diff --git a/include/linux/nvmem-consumer.h b/include/linux/nvmem-consumer.h
+new file mode 100644
+index 0000000..cae6ec7
+--- /dev/null
++++ b/include/linux/nvmem-consumer.h
+@@ -0,0 +1,157 @@
++/*
++ * nvmem framework consumer.
++ *
++ * Copyright (C) 2015 Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
++ * Copyright (C) 2013 Maxime Ripard <maxime.ripard@free-electrons.com>
++ *
++ * This file is licensed under the terms of the GNU General Public
++ * License version 2.  This program is licensed "as is" without any
++ * warranty of any kind, whether express or implied.
++ */
++
++#ifndef _LINUX_NVMEM_CONSUMER_H
++#define _LINUX_NVMEM_CONSUMER_H
++
++struct device_d;
++struct device_node;
++/* consumer cookie */
++struct nvmem_cell;
++struct nvmem_device;
++
++struct nvmem_cell_info {
++	const char		*name;
++	unsigned int		offset;
++	unsigned int		bytes;
++	unsigned int		bit_offset;
++	unsigned int		nbits;
 +};
 +
++#if IS_ENABLED(CONFIG_NVMEM)
 +
-+static struct driver_d imx_thermal_driver = {
-+	.name		= "imx_thermal",
-+	.probe		= imx_thermal_probe,
-+	.of_compatible	= DRV_OF_COMPAT(of_imx_thermal_match),
++/* Cell based interface */
++struct nvmem_cell *nvmem_cell_get(struct device_d *dev, const char *name);
++struct nvmem_cell *devm_nvmem_cell_get(struct device_d *dev, const char *name);
++void nvmem_cell_put(struct nvmem_cell *cell);
++void devm_nvmem_cell_put(struct device_d *dev, struct nvmem_cell *cell);
++void *nvmem_cell_read(struct nvmem_cell *cell, size_t *len);
++int nvmem_cell_write(struct nvmem_cell *cell, void *buf, size_t len);
++
++/* direct nvmem device read/write interface */
++struct nvmem_device *nvmem_device_get(struct device_d *dev, const char *name);
++struct nvmem_device *devm_nvmem_device_get(struct device_d *dev,
++					   const char *name);
++void nvmem_device_put(struct nvmem_device *nvmem);
++void devm_nvmem_device_put(struct device_d *dev, struct nvmem_device *nvmem);
++int nvmem_device_read(struct nvmem_device *nvmem, unsigned int offset,
++		      size_t bytes, void *buf);
++int nvmem_device_write(struct nvmem_device *nvmem, unsigned int offset,
++		       size_t bytes, void *buf);
++ssize_t nvmem_device_cell_read(struct nvmem_device *nvmem,
++			   struct nvmem_cell_info *info, void *buf);
++int nvmem_device_cell_write(struct nvmem_device *nvmem,
++			    struct nvmem_cell_info *info, void *buf);
++
++#else
++
++static inline struct nvmem_cell *nvmem_cell_get(struct device_d *dev,
++						const char *name)
++{
++	return ERR_PTR(-ENOSYS);
++}
++
++static inline struct nvmem_cell *devm_nvmem_cell_get(struct device_d *dev,
++				       const char *name)
++{
++	return ERR_PTR(-ENOSYS);
++}
++
++static inline void devm_nvmem_cell_put(struct device_d *dev,
++				       struct nvmem_cell *cell)
++{
++
++}
++static inline void nvmem_cell_put(struct nvmem_cell *cell)
++{
++}
++
++static inline char *nvmem_cell_read(struct nvmem_cell *cell, size_t *len)
++{
++	return ERR_PTR(-ENOSYS);
++}
++
++static inline int nvmem_cell_write(struct nvmem_cell *cell,
++				    const char *buf, size_t len)
++{
++	return -ENOSYS;
++}
++
++static inline struct nvmem_device *nvmem_device_get(struct device_d *dev,
++						    const char *name)
++{
++	return ERR_PTR(-ENOSYS);
++}
++
++static inline struct nvmem_device *devm_nvmem_device_get(struct device_d *dev,
++							 const char *name)
++{
++	return ERR_PTR(-ENOSYS);
++}
++
++static inline void nvmem_device_put(struct nvmem_device *nvmem)
++{
++}
++
++static inline void devm_nvmem_device_put(struct device_d *dev,
++					 struct nvmem_device *nvmem)
++{
++}
++
++static inline ssize_t nvmem_device_cell_read(struct nvmem_device *nvmem,
++					 struct nvmem_cell_info *info,
++					 void *buf)
++{
++	return -ENOSYS;
++}
++
++static inline int nvmem_device_cell_write(struct nvmem_device *nvmem,
++					  struct nvmem_cell_info *info,
++					  void *buf)
++{
++	return -ENOSYS;
++}
++
++static inline int nvmem_device_read(struct nvmem_device *nvmem,
++				    unsigned int offset, size_t bytes,
++				    void *buf)
++{
++	return -ENOSYS;
++}
++
++static inline int nvmem_device_write(struct nvmem_device *nvmem,
++				     unsigned int offset, size_t bytes,
++				     void *buf)
++{
++	return -ENOSYS;
++}
++#endif /* CONFIG_NVMEM */
++
++#if IS_ENABLED(CONFIG_NVMEM) && IS_ENABLED(CONFIG_OFTREE)
++struct nvmem_cell *of_nvmem_cell_get(struct device_node *np,
++				     const char *name);
++struct nvmem_device *of_nvmem_device_get(struct device_node *np,
++					 const char *name);
++#else
++static inline struct nvmem_cell *of_nvmem_cell_get(struct device_node *np,
++				     const char *name)
++{
++	return ERR_PTR(-ENOSYS);
++}
++
++static inline struct nvmem_device *of_nvmem_device_get(struct device_node *np,
++						       const char *name)
++{
++	return ERR_PTR(-ENOSYS);
++}
++#endif /* CONFIG_NVMEM && CONFIG_OF */
++
++#endif  /* ifndef _LINUX_NVMEM_CONSUMER_H */
+diff --git a/include/linux/nvmem-provider.h b/include/linux/nvmem-provider.h
+new file mode 100644
+index 0000000..0376bb0
+--- /dev/null
++++ b/include/linux/nvmem-provider.h
+@@ -0,0 +1,49 @@
++/*
++ * nvmem framework provider.
++ *
++ * Copyright (C) 2015 Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
++ * Copyright (C) 2013 Maxime Ripard <maxime.ripard@free-electrons.com>
++ *
++ * This file is licensed under the terms of the GNU General Public
++ * License version 2.  This program is licensed "as is" without any
++ * warranty of any kind, whether express or implied.
++ */
++
++#ifndef _LINUX_NVMEM_PROVIDER_H
++#define _LINUX_NVMEM_PROVIDER_H
++
++struct device_d;
++struct nvmem_device;
++struct nvmem_cell_info;
++
++struct nvmem_config {
++	struct device_d		*dev;
++	const char		*name;
++	int			id;
++	const struct nvmem_cell_info	*cells;
++	int			ncells;
++	bool			read_only;
 +};
 +
-+device_platform_driver(imx_thermal_driver);
++#if IS_ENABLED(CONFIG_NVMEM)
++
++struct nvmem_device *nvmem_register(const struct nvmem_config *cfg,
++				    struct regmap *map);
++int nvmem_unregister(struct nvmem_device *nvmem);
++
++#else
++
++static inline struct nvmem_device *nvmem_register(const struct nvmem_config *c,
++						  struct regmap *map)
++{
++	return ERR_PTR(-ENOSYS);
++}
++
++static inline int nvmem_unregister(struct nvmem_device *nvmem)
++{
++	return -ENOSYS;
++}
++
++#endif /* CONFIG_NVMEM */
++
++#endif  /* ifndef _LINUX_NVMEM_PROVIDER_H */
 -- 
 2.5.5
 
