@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x22c.google.com ([2607:f8b0:400e:c03::22c])
+Received: from mail-pf0-x22d.google.com ([2607:f8b0:400e:c00::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aygSM-00016r-J6
+ id 1aygSN-00017A-Dj
  for barebox@lists.infradead.org; Fri, 06 May 2016 14:10:16 +0000
-Received: by mail-pa0-x22c.google.com with SMTP id r5so49262772pag.1
+Received: by mail-pf0-x22d.google.com with SMTP id 206so50572705pfu.0
  for <barebox@lists.infradead.org>; Fri, 06 May 2016 07:09:54 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri,  6 May 2016 07:09:27 -0700
-Message-Id: <1462543770-4619-4-git-send-email-andrew.smirnov@gmail.com>
+Date: Fri,  6 May 2016 07:09:28 -0700
+Message-Id: <1462543770-4619-5-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1462543770-4619-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1462543770-4619-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,294 +23,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/6] drivers: Introduce AIODEV subsystem
+Subject: [PATCH v2 4/6] commands: Add 'hwmon' command
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-AIODEV/Aiodevice is a analog I/O framework that can be thought of as a
-simplified hybrid between 'hwmon' and 'IIO' subsystems of Linux kernel
-
-This commit is very heavily based on 'iodevice' framework proposal
-written by Sascha Hauer.
+Add 'hwmon' command which allows to display the readings of all
+hardware monitoring sensors registered with Barebox.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/Kconfig         |   1 +
- drivers/Makefile        |   1 +
- drivers/aiodev/Kconfig  |   8 +++
- drivers/aiodev/Makefile |   2 +
- drivers/aiodev/core.c   | 148 ++++++++++++++++++++++++++++++++++++++++++++++++
- include/aiodev.h        |  59 +++++++++++++++++++
- 6 files changed, 219 insertions(+)
- create mode 100644 drivers/aiodev/Kconfig
- create mode 100644 drivers/aiodev/Makefile
- create mode 100644 drivers/aiodev/core.c
- create mode 100644 include/aiodev.h
+ commands/Kconfig  |  8 ++++++++
+ commands/Makefile |  1 +
+ commands/hwmon.c  | 35 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 44 insertions(+)
+ create mode 100644 commands/hwmon.c
 
-diff --git a/drivers/Kconfig b/drivers/Kconfig
-index 90ab7c1..eef68f6 100644
---- a/drivers/Kconfig
-+++ b/drivers/Kconfig
-@@ -1,6 +1,7 @@
- menu "Drivers"
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 57f2878..44a457b 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -1830,6 +1830,14 @@ config CMD_HWCLOCK
+ 	help
+ 	  The hwclock command allows to query or set the hardware clock (RTC).
  
- source "drivers/of/Kconfig"
-+source "drivers/aiodev/Kconfig"
- source "drivers/amba/Kconfig"
- source "drivers/serial/Kconfig"
- source "drivers/net/Kconfig"
-diff --git a/drivers/Makefile b/drivers/Makefile
-index 551b9a0..03bbc81 100644
---- a/drivers/Makefile
-+++ b/drivers/Makefile
-@@ -33,4 +33,5 @@ obj-$(CONFIG_GENERIC_PHY) += phy/
- obj-$(CONFIG_HAB) += hab/
- obj-$(CONFIG_CRYPTO_HW) += crypto/
- obj-$(CONFIG_NVMEM) += nvmem/
-+obj-$(CONFIG_AIODEV) += aiodev/
- 
-diff --git a/drivers/aiodev/Kconfig b/drivers/aiodev/Kconfig
-new file mode 100644
-index 0000000..d6d4ac0
---- /dev/null
-+++ b/drivers/aiodev/Kconfig
-@@ -0,0 +1,8 @@
-+#
-+# Misc strange devices
-+#
-+menuconfig AIODEV
-+	bool "Analog I/O drivers"
++config CMD_HWMON
++	bool
++	depends on AIODEV
++	prompt "hwmon command"
++	default y
++	help
++	  The hwmon command allows to query hardware sensors.
 +
-+if AIODEV
-+endif
-diff --git a/drivers/aiodev/Makefile b/drivers/aiodev/Makefile
+ config CMD_I2C
+ 	bool
+ 	depends on I2C
+diff --git a/commands/Makefile b/commands/Makefile
+index 065d649..3c8ad77 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -107,6 +107,7 @@ obj-$(CONFIG_CMD_REGULATOR)	+= regulator.o
+ obj-$(CONFIG_CMD_LSPCI)		+= lspci.o
+ obj-$(CONFIG_CMD_IMD)		+= imd.o
+ obj-$(CONFIG_CMD_HWCLOCK)	+= hwclock.o
++obj-$(CONFIG_CMD_HWMON)		+= hwmon.o
+ obj-$(CONFIG_CMD_USBGADGET)	+= usbgadget.o
+ obj-$(CONFIG_CMD_FIRMWARELOAD)	+= firmwareload.o
+ obj-$(CONFIG_CMD_CMP)		+= cmp.o
+diff --git a/commands/hwmon.c b/commands/hwmon.c
 new file mode 100644
-index 0000000..806464e
+index 0000000..ace4503
 --- /dev/null
-+++ b/drivers/aiodev/Makefile
-@@ -0,0 +1,2 @@
-+
-+obj-$(CONFIG_AIODEV) += core.o
-diff --git a/drivers/aiodev/core.c b/drivers/aiodev/core.c
-new file mode 100644
-index 0000000..79f935d
---- /dev/null
-+++ b/drivers/aiodev/core.c
-@@ -0,0 +1,148 @@
-+/*
-+ * core.c - Code implementing core functionality of AIODEV susbsystem
-+ *
-+ * Copyright (c) 2015 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * Copyright (c) 2015 Zodiac Inflight Innovation
-+ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
++++ b/commands/hwmon.c
+@@ -0,0 +1,35 @@
 +#include <common.h>
++#include <command.h>
++#include <getopt.h>
++#include <linux/err.h>
++#include <linux/ctype.h>
++#include <string.h>
++#include <environment.h>
 +#include <aiodev.h>
-+#include <linux/list.h>
-+#include <malloc.h>
 +
-+LIST_HEAD(aiodevices);
-+EXPORT_SYMBOL(aiodevices);
-+
-+struct aiochannel *aiochannel_get_by_name(const char *name)
++static int do_hwmon(int argc, char *argv[])
 +{
-+	struct aiodevice *aiodev;
 +	int i;
-+
-+	list_for_each_entry(aiodev, &aiodevices, list) {
-+		for (i = 0; i < aiodev->num_channels; i++)
-+			if (!strcmp(name, aiodev->channels[i]->name))
-+				return aiodev->channels[i];
-+	}
-+
-+	return ERR_PTR(-ENOENT);
-+}
-+EXPORT_SYMBOL(aiochannel_get_by_name);
-+
-+struct aiochannel *aiochannel_get(struct device_d *dev, int index)
-+{
-+	struct of_phandle_args spec;
 +	struct aiodevice *aiodev;
-+	int ret, chnum = 0;
 +
-+	if (!dev->device_node)
-+		return ERR_PTR(-EINVAL);
++	for_each_aiodevice(aiodev) {
++		for (i = 0; i < aiodev->num_channels; i++) {
++			struct aiochannel *chan = aiodev->channels[i];
++			int value;
++			int ret = aiochannel_get_value(chan, &value);
 +
-+	ret = of_parse_phandle_with_args(dev->device_node,
-+					 "io-channels",
-+					 "#io-channel-cells",
-+					 index, &spec);
-+        if (ret)
-+                return ERR_PTR(ret);
-+
-+	list_for_each_entry(aiodev, &aiodevices, list) {
-+		if (aiodev->hwdev->device_node == spec.np)
-+			goto found;
++			if (!ret)
++				printf("%s: %d %s\n", chan->name, value, chan->unit);
++			else
++				printf("%s: failed to read (%d)\n", chan->name, ret);
++		}
 +	}
-+
-+	return ERR_PTR(-EPROBE_DEFER);
-+
-+found:
-+	if (spec.args_count)
-+		chnum = spec.args[0];
-+
-+	if (chnum >= aiodev->num_channels)
-+		return ERR_PTR(-EINVAL);
-+
-+	return aiodev->channels[chnum];
-+}
-+EXPORT_SYMBOL(aiochannel_get);
-+
-+int aiochannel_get_value(struct aiochannel *aiochan, int *value)
-+{
-+	struct aiodevice *aiodev = aiochan->aiodev;
-+
-+	return aiodev->read(aiochan, value);
-+}
-+EXPORT_SYMBOL(aiochannel_get_value);
-+
-+int aiochannel_get_index(struct aiochannel *aiochan)
-+{
-+	return aiochan->index;
-+}
-+EXPORT_SYMBOL(aiochannel_get_index);
-+
-+static int aiochannel_param_get_value(struct param_d *p, void *priv)
-+{
-+	struct aiochannel *aiochan = priv;
-+
-+	return aiochannel_get_value(aiochan, &aiochan->value);
-+}
-+
-+int aiodevice_register(struct aiodevice *aiodev)
-+{
-+	int i, ret;
-+
-+	if (!aiodev->name && aiodev->hwdev &&
-+	    aiodev->hwdev->device_node) {
-+		aiodev->dev.id = DEVICE_ID_SINGLE;
-+
-+		aiodev->name = of_alias_get(aiodev->hwdev->device_node);
-+		if (!aiodev->name)
-+			aiodev->name = aiodev->hwdev->device_node->name;
-+	}
-+
-+	if (!aiodev->name) {
-+		aiodev->name = "aiodev";
-+		aiodev->dev.id = DEVICE_ID_DYNAMIC;
-+	}
-+
-+	strcpy(aiodev->dev.name, aiodev->name);
-+
-+	aiodev->dev.parent = aiodev->hwdev;
-+
-+	ret = register_device(&aiodev->dev);
-+	if (ret)
-+		return ret;
-+
-+	for (i = 0; i < aiodev->num_channels; i++) {
-+		struct aiochannel *aiochan = aiodev->channels[i];
-+		char *name;
-+
-+		aiochan->index  = i;
-+		aiochan->aiodev = aiodev;
-+
-+		name = xasprintf("in_value%d_%s", i, aiochan->unit);
-+
-+		dev_add_param_int(&aiodev->dev, name, NULL,
-+				  aiochannel_param_get_value,
-+				  &aiochan->value, "%d", aiochan);
-+
-+		aiochan->name = xasprintf("%s.%s", aiodev->name, name);
-+
-+		free(name);
-+	}
-+
-+	list_add_tail(&aiodev->list, &aiodevices);
 +
 +	return 0;
 +}
-+EXPORT_SYMBOL(aiodevice_register);
-diff --git a/include/aiodev.h b/include/aiodev.h
-new file mode 100644
-index 0000000..0d4f7a2
---- /dev/null
-+++ b/include/aiodev.h
-@@ -0,0 +1,59 @@
-+/*
-+ * core.c - Code implementing core functionality of AIODEV susbsystem
-+ *
-+ * Copyright (c) 2015 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ * Copyright (c) 2015 Zodiac Inflight Innovation
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
 +
-+#ifndef __AIODEVICE_H
-+#define __AIODEVICE_H
-+
-+struct aiodevice;
-+struct aiochannel {
-+	int index;
-+	char *unit;
-+	struct aiodevice *aiodev;
-+
-+	int value;
-+	char *name;
-+};
-+
-+struct aiodevice {
-+	const char *name;
-+	int (*read)(struct aiochannel *, int *val);
-+	struct device_d dev;
-+	struct device_d *hwdev;
-+	struct aiochannel **channels;
-+	int num_channels;
-+	struct list_head list;
-+};
-+
-+int aiodevice_register(struct aiodevice *aiodev);
-+
-+struct aiochannel *aiochannel_get(struct device_d *dev, int index);
-+struct aiochannel *aiochannel_get_by_name(const char *name);
-+
-+int aiochannel_get_value(struct aiochannel *aiochan, int *value);
-+int aiochannel_get_index(struct aiochannel *aiochan);
-+
-+static inline const char *aiochannel_get_unit(struct aiochannel *aiochan)
-+{
-+	return aiochan->unit;
-+}
-+
-+extern struct list_head aiodevices;
-+#define for_each_aiodevice(aiodevice) list_for_each_entry(aiodevice, &aiodevices, list)
-+
-+#endif
++BAREBOX_CMD_START(hwmon)
++	.cmd		= do_hwmon,
++	BAREBOX_CMD_DESC("query hardware sensors (HWMON)")
++	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
++BAREBOX_CMD_END
 -- 
 2.5.5
 
