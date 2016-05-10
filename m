@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1azitd-0001q4-Kh
- for barebox@lists.infradead.org; Mon, 09 May 2016 10:58:42 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Mon,  9 May 2016 12:58:17 +0200
-Message-Id: <1462791497-5107-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ id 1b00lK-0000xu-EA
+ for barebox@lists.infradead.org; Tue, 10 May 2016 06:03:19 +0000
+Date: Tue, 10 May 2016 08:02:55 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160510060255.GV19714@pengutronix.de>
+References: <1462543770-4619-1-git-send-email-andrew.smirnov@gmail.com>
+ <1462543770-4619-6-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1462543770-4619-6-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,82 +19,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: mxs: add parameter to mx28_mem_init to allow custom
- memory config
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 5/6] aiodev: Add TEMPMON driver
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-UmVuYW1lIHRoZSBhbHJlYWR5IGdsb2JhbCBhcnJheSBvZiBkZWZhdWx0IG1lbW9yeSBzZXR0aW5n
-cyB0byBtYWtlIHRoZQppbnRlbmRlZCB1c2FnZSBtb3JlIG9idmlvdXMuCgpBbHNvIG1ha2UgZ2Vu
-ZXJvdXMgdXNlIG9mIHRoZSBjb25zdCBrZXl3b3JkLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWlu
-ZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBhcmNoL2FybS9i
-b2FyZHMvZHVja2JpbGwvbG93bGV2ZWwuYyAgICAgICAgICAgfCAgMiArLQogYXJjaC9hcm0vYm9h
-cmRzL2ZyZWVzY2FsZS1teDI4LWV2ay9sb3dsZXZlbC5jIHwgIDIgKy0KIGFyY2gvYXJtL2JvYXJk
-cy9rYXJvLXR4MjgvbG93bGV2ZWwuYyAgICAgICAgICB8ICAyICstCiBhcmNoL2FybS9tYWNoLW14
-cy9pbmNsdWRlL21hY2gvaW5pdC5oICAgICAgICAgfCAgNCArKy0tCiBhcmNoL2FybS9tYWNoLW14
-cy9tZW0taW5pdC5jICAgICAgICAgICAgICAgICAgfCAxMiArKysrKystLS0tLS0KIDUgZmlsZXMg
-Y2hhbmdlZCwgMTEgaW5zZXJ0aW9ucygrKSwgMTEgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEv
-YXJjaC9hcm0vYm9hcmRzL2R1Y2tiaWxsL2xvd2xldmVsLmMgYi9hcmNoL2FybS9ib2FyZHMvZHVj
-a2JpbGwvbG93bGV2ZWwuYwppbmRleCA0OTU2M2EwODc2ZTAuLmMwMGE5YTBiMDQyMyAxMDA2NDQK
-LS0tIGEvYXJjaC9hcm0vYm9hcmRzL2R1Y2tiaWxsL2xvd2xldmVsLmMKKysrIGIvYXJjaC9hcm0v
-Ym9hcmRzL2R1Y2tiaWxsL2xvd2xldmVsLmMKQEAgLTU1LDcgKzU1LDcgQEAgc3RhdGljIG5vaW5s
-aW5lIHZvaWQgZHVja2JpbGxfaW5pdCh2b2lkKQogCiAJcHJfZGVidWcoImluaXRpYWxpemluZyBT
-RFJBTS4uLlxuIik7CiAKLQlteDI4X21lbV9pbml0KCk7CisJbXgyOF9tZW1faW5pdChteDI4X2Ry
-YW1fdmFsc19kZWZhdWx0KTsKIAogCXByX2RlYnVnKCJET05FXG4iKTsKIH0KZGlmZiAtLWdpdCBh
-L2FyY2gvYXJtL2JvYXJkcy9mcmVlc2NhbGUtbXgyOC1ldmsvbG93bGV2ZWwuYyBiL2FyY2gvYXJt
-L2JvYXJkcy9mcmVlc2NhbGUtbXgyOC1ldmsvbG93bGV2ZWwuYwppbmRleCAxZjU2NzU2OGRhNTQu
-LjRkNDVhMDNiYTI4OSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDI4
-LWV2ay9sb3dsZXZlbC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9mcmVlc2NhbGUtbXgyOC1ldmsv
-bG93bGV2ZWwuYwpAQCAtNDcsNyArNDcsNyBAQCBzdGF0aWMgbm9pbmxpbmUgdm9pZCBmcmVlc2Nh
-bGVfbXgyOGV2a19pbml0KHZvaWQpCiAKIAlwcl9kZWJ1ZygiaW5pdGlhbGl6aW5nIFNEUkFNLi4u
-XG4iKTsKIAotCW14MjhfbWVtX2luaXQoKTsKKwlteDI4X21lbV9pbml0KG14MjhfZHJhbV92YWxz
-X2RlZmF1bHQpOwogCiAJcHJfZGVidWcoIkRPTkVcbiIpOwogfQpkaWZmIC0tZ2l0IGEvYXJjaC9h
-cm0vYm9hcmRzL2thcm8tdHgyOC9sb3dsZXZlbC5jIGIvYXJjaC9hcm0vYm9hcmRzL2thcm8tdHgy
-OC9sb3dsZXZlbC5jCmluZGV4IDk2YThiOWJmYzY2Yi4uZDA3MjYzN2RlN2Q4IDEwMDY0NAotLS0g
-YS9hcmNoL2FybS9ib2FyZHMva2Fyby10eDI4L2xvd2xldmVsLmMKKysrIGIvYXJjaC9hcm0vYm9h
-cmRzL2thcm8tdHgyOC9sb3dsZXZlbC5jCkBAIC00Nyw3ICs0Nyw3IEBAIHN0YXRpYyBub2lubGlu
-ZSB2b2lkIGthcm9fdHgyOF9pbml0KHZvaWQpCiAKIAlwcl9kZWJ1ZygiaW5pdGlhbGl6aW5nIFNE
-UkFNLi4uXG4iKTsKIAotCW14MjhfbWVtX2luaXQoKTsKKwlteDI4X21lbV9pbml0KG14MjhfZHJh
-bV92YWxzX2RlZmF1bHQpOwogCiAJcHJfZGVidWcoIkRPTkVcbiIpOwogfQpkaWZmIC0tZ2l0IGEv
-YXJjaC9hcm0vbWFjaC1teHMvaW5jbHVkZS9tYWNoL2luaXQuaCBiL2FyY2gvYXJtL21hY2gtbXhz
-L2luY2x1ZGUvbWFjaC9pbml0LmgKaW5kZXggOTBiNDEzZTQ3ZWU0Li42NTI2ZDMwM2ExYTQgMTAw
-NjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtbXhzL2luY2x1ZGUvbWFjaC9pbml0LmgKKysrIGIvYXJj
-aC9hcm0vbWFjaC1teHMvaW5jbHVkZS9tYWNoL2luaXQuaApAQCAtMTgsMTEgKzE4LDExIEBAIHZv
-aWQgbXgyOF9wb3dlcl9pbml0KGludCBfX2hhc19iYXR0ZXJ5LCBpbnQgX191c2VfYmF0dGVyeV9p
-bnB1dCwKIAkJaW50IF9fdXNlXzV2X2lucHV0KTsKIHZvaWQgbXhzX3Bvd2VyX3dhaXRfcHN3aXRj
-aCh2b2lkKTsKIAotZXh0ZXJuIHVpbnQzMl90IG14MjhfZHJhbV92YWxzW107CitleHRlcm4gY29u
-c3QgdWludDMyX3QgbXgyOF9kcmFtX3ZhbHNfZGVmYXVsdFsxOTBdOwogZXh0ZXJuIHVpbnQzMl90
-IG14MjNfZHJhbV92YWxzW107CiAKIHZvaWQgbXgyM19tZW1faW5pdCh2b2lkKTsKLXZvaWQgbXgy
-OF9tZW1faW5pdCh2b2lkKTsKK3ZvaWQgbXgyOF9tZW1faW5pdChjb25zdCB1aW50MzJfdCBkcmFt
-X3ZhbHNbMTkwXSk7CiB2b2lkIG14c19tZW1fc2V0dXBfY3B1X2FuZF9oYnVzKHZvaWQpOwogdm9p
-ZCBteHNfbWVtX3NldHVwX3ZkZGEodm9pZCk7CiB2b2lkIG14c19tZW1faW5pdF9jbG9jayh1bnNp
-Z25lZCBjaGFyIGRpdmlkZXIpOwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1teHMvbWVtLWlu
-aXQuYyBiL2FyY2gvYXJtL21hY2gtbXhzL21lbS1pbml0LmMKaW5kZXggNDMxNjVhYzEwMGU0Li5h
-YzhiZmVlMThlN2MgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtbXhzL21lbS1pbml0LmMKKysr
-IGIvYXJjaC9hcm0vbWFjaC1teHMvbWVtLWluaXQuYwpAQCAtODcsNyArODcsNyBAQCBpbnQgbXhz
-X2Vhcmx5X3Jlc2V0X2Jsb2NrKHN0cnVjdCBteHNfcmVnaXN0ZXJfMzIgKnJlZykKIAlyZXR1cm4g
-MDsKIH0KIAotdWludDMyX3QgbXgyOF9kcmFtX3ZhbHNbXSA9IHsKK2NvbnN0IHVpbnQzMl90IG14
-MjhfZHJhbV92YWxzX2RlZmF1bHRbMTkwXSA9IHsKIC8qCiAgKiBpLk1YMjggRERSMiBhdCAyMDBN
-SHoKICAqLwpAQCAtMTU4LDEyICsxNTgsMTIgQEAgdWludDMyX3QgbXgyM19kcmFtX3ZhbHNbXSA9
-IHsKIAkweDAwMDEwMDAwCiB9OwogCi1zdGF0aWMgdm9pZCBteDI4X2luaXRpYWxpemVfZHJhbV92
-YWx1ZXModm9pZCkKK3N0YXRpYyB2b2lkIG14MjhfaW5pdGlhbGl6ZV9kcmFtX3ZhbHVlcyhjb25z
-dCB1aW50MzJfdCBkcmFtX3ZhbHNbMTkwXSkKIHsKIAlpbnQgaTsKIAotCWZvciAoaSA9IDA7IGkg
-PCBBUlJBWV9TSVpFKG14MjhfZHJhbV92YWxzKTsgaSsrKQotCQl3cml0ZWwobXgyOF9kcmFtX3Zh
-bHNbaV0sIElNWF9TRFJBTUNfQkFTRSArICg0ICogaSkpOworCWZvciAoaSA9IDA7IGkgPCAxOTA7
-IGkrKykKKwkJd3JpdGVsKGRyYW1fdmFsc1tpXSwgSU1YX1NEUkFNQ19CQVNFICsgKDQgKiBpKSk7
-CiB9CiAKIHN0YXRpYyB2b2lkIG14MjNfaW5pdGlhbGl6ZV9kcmFtX3ZhbHVlcyh2b2lkKQpAQCAt
-MzIwLDcgKzMyMCw3IEBAIHZvaWQgbXgyM19tZW1faW5pdCh2b2lkKQogCiAjZGVmaW5lIFBJTkNU
-UkxfRU1JX0RTX0NUUkxfRERSX01PREVfRERSMgkoMHgzIDw8IDE2KQogCi12b2lkIG14MjhfbWVt
-X2luaXQodm9pZCkKK3ZvaWQgbXgyOF9tZW1faW5pdChjb25zdCB1aW50MzJfdCBkcmFtX3ZhbHNb
-MTkwXSkKIHsKIAlteHNfZWFybHlfZGVsYXkoMTEwMDApOwogCkBAIC0zMzgsNyArMzM4LDcgQEAg
-dm9pZCBteDI4X21lbV9pbml0KHZvaWQpCiAJLyogQ2xlYXIgU1RBUlQgYml0IGZyb20gRFJBTV9D
-VEwxNiAqLwogCWNscmJpdHNfbGUzMihJTVhfU0RSQU1DX0JBU0UgKyAweDQwLCAxKTsKIAotCW14
-MjhfaW5pdGlhbGl6ZV9kcmFtX3ZhbHVlcygpOworCW14MjhfaW5pdGlhbGl6ZV9kcmFtX3ZhbHVl
-cyhkcmFtX3ZhbHMpOwogCiAJLyogQ2xlYXIgU1JFRlJFU0ggYml0IGZyb20gRFJBTV9DVEwxNyAq
-LwogCWNscmJpdHNfbGUzMihJTVhfU0RSQU1DX0JBU0UgKyAweDQ0LCAxKTsKLS0gCjIuOC4wLnJj
-MwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Fri, May 06, 2016 at 07:09:29AM -0700, Andrey Smirnov wrote:
+> Port TEMPMON driver from U-Boot
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  arch/arm/dts/imx6qdl.dtsi    |  14 +++
+>  arch/arm/dts/imx6sx.dtsi     |  14 +++
+>  drivers/aiodev/Kconfig       |   8 ++
+>  drivers/aiodev/Makefile      |   1 +
+>  drivers/aiodev/imx_thermal.c | 239 +++++++++++++++++++++++++++++++++++++++++++
+>  5 files changed, 276 insertions(+)
+>  create mode 100644 drivers/aiodev/imx_thermal.c
+> 
+> diff --git a/arch/arm/dts/imx6qdl.dtsi b/arch/arm/dts/imx6qdl.dtsi
+> index 828be9c..0deafbc 100644
+> --- a/arch/arm/dts/imx6qdl.dtsi
+> +++ b/arch/arm/dts/imx6qdl.dtsi
+> @@ -8,3 +8,17 @@
+>  		ipu0 = &ipu1;
+>  	};
+>  };
+> +
+> +&ocotp {
+> +	#address-cells = <1>;
+> +	#size-cells = <1>;
+> +
+> +	analog1: ocotp_ana1@34 {
+
+@38?
+
+> +		reg = <0x38 0x4>;
+> +	};
+> +};
+> +
+> +&tempmon {
+> +	nvmem-cells = <&analog1>;
+> +	nvmem-cell-names = "ocotp-ana1";
+> +};
+
+Why not use the existing binding? The nvmem binding may be better, but I
+think we should not introduce new bindings without need.
+
+> +	node = of_parse_phandle(dev->device_node, "fsl,tempmon", 0);
+> +	if (!node) {
+> +		ret = -EINVAL;
+> +		dev_err(dev, "Failed to parse fsl,tempmon\n");
+> +		goto free_calibration_data;
+> +	}
+> +
+> +	anatop = of_find_device_by_node(node);
+> +	if (!anatop) {
+> +		ret = -EINVAL;
+> +		dev_err(dev, "No device corresponds to fsl,tempmon\n");
+> +		goto free_calibration_data;
+> +	}
+
+syscon_base_lookup_by_phandle() instead of
+of_parse_phandle()/of_find_device_by_node()?
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
