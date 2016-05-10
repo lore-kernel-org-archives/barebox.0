@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b00lK-0000xu-EA
- for barebox@lists.infradead.org; Tue, 10 May 2016 06:03:19 +0000
-Date: Tue, 10 May 2016 08:02:55 +0200
+ id 1b016V-0000Q1-7C
+ for barebox@lists.infradead.org; Tue, 10 May 2016 06:25:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160510060255.GV19714@pengutronix.de>
-References: <1462543770-4619-1-git-send-email-andrew.smirnov@gmail.com>
- <1462543770-4619-6-git-send-email-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1462543770-4619-6-git-send-email-andrew.smirnov@gmail.com>
+Date: Tue, 10 May 2016 08:24:41 +0200
+Message-Id: <1462861483-19983-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1462861483-19983-1-git-send-email-s.hauer@pengutronix.de>
+References: <1462861483-19983-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,80 +16,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 5/6] aiodev: Add TEMPMON driver
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/4] mtd: nand: Pass page argument to read_subpage hook
+To: Barebox List <barebox@lists.infradead.org>
 
-On Fri, May 06, 2016 at 07:09:29AM -0700, Andrey Smirnov wrote:
-> Port TEMPMON driver from U-Boot
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  arch/arm/dts/imx6qdl.dtsi    |  14 +++
->  arch/arm/dts/imx6sx.dtsi     |  14 +++
->  drivers/aiodev/Kconfig       |   8 ++
->  drivers/aiodev/Makefile      |   1 +
->  drivers/aiodev/imx_thermal.c | 239 +++++++++++++++++++++++++++++++++++++++++++
->  5 files changed, 276 insertions(+)
->  create mode 100644 drivers/aiodev/imx_thermal.c
-> 
-> diff --git a/arch/arm/dts/imx6qdl.dtsi b/arch/arm/dts/imx6qdl.dtsi
-> index 828be9c..0deafbc 100644
-> --- a/arch/arm/dts/imx6qdl.dtsi
-> +++ b/arch/arm/dts/imx6qdl.dtsi
-> @@ -8,3 +8,17 @@
->  		ipu0 = &ipu1;
->  	};
->  };
-> +
-> +&ocotp {
-> +	#address-cells = <1>;
-> +	#size-cells = <1>;
-> +
-> +	analog1: ocotp_ana1@34 {
+Similar to what the kernel does in e004debda (mtd: nand: add "page" argument for
+read_subpage hook).
 
-@38?
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/nand/nand_base.c | 4 ++--
+ include/linux/mtd/nand.h     | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-> +		reg = <0x38 0x4>;
-> +	};
-> +};
-> +
-> +&tempmon {
-> +	nvmem-cells = <&analog1>;
-> +	nvmem-cell-names = "ocotp-ana1";
-> +};
-
-Why not use the existing binding? The nvmem binding may be better, but I
-think we should not introduce new bindings without need.
-
-> +	node = of_parse_phandle(dev->device_node, "fsl,tempmon", 0);
-> +	if (!node) {
-> +		ret = -EINVAL;
-> +		dev_err(dev, "Failed to parse fsl,tempmon\n");
-> +		goto free_calibration_data;
-> +	}
-> +
-> +	anatop = of_find_device_by_node(node);
-> +	if (!anatop) {
-> +		ret = -EINVAL;
-> +		dev_err(dev, "No device corresponds to fsl,tempmon\n");
-> +		goto free_calibration_data;
-> +	}
-
-syscon_base_lookup_by_phandle() instead of
-of_parse_phandle()/of_find_device_by_node()?
-
-Sascha
-
+diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+index 79c1edd..670720a 100644
+--- a/drivers/mtd/nand/nand_base.c
++++ b/drivers/mtd/nand/nand_base.c
+@@ -1185,7 +1185,7 @@ static __maybe_unused int nand_read_page_swecc(struct mtd_info *mtd,
+  */
+ static __maybe_unused int nand_read_subpage(struct mtd_info *mtd,
+ 		struct nand_chip *chip, uint32_t data_offs, uint32_t readlen,
+-		uint8_t *bufpoi)
++		uint8_t *bufpoi, int page)
+ {
+ 	int start_step, end_step, num_steps;
+ 	uint32_t *eccpos = chip->ecc.layout->eccpos;
+@@ -1540,7 +1540,7 @@ static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
+ 			else if (!aligned && NAND_HAS_SUBPAGE_READ(chip) &&
+ 				 !oob)
+ 				ret = chip->ecc.read_subpage(mtd, chip,
+-							col, bytes, bufpoi);
++							col, bytes, bufpoi, page);
+ 			else
+ 				ret = chip->ecc.read_page(mtd, chip, bufpoi,
+ 							  oob_required, page);
+diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
+index 5beec39..dfb94d7 100644
+--- a/include/linux/mtd/nand.h
++++ b/include/linux/mtd/nand.h
+@@ -352,7 +352,7 @@ struct nand_ecc_ctrl {
+ 	int (*read_page)(struct mtd_info *mtd, struct nand_chip *chip,
+ 			uint8_t *buf, int oob_required, int page);
+ 	int (*read_subpage)(struct mtd_info *mtd, struct nand_chip *chip,
+-			uint32_t offs, uint32_t len, uint8_t *buf);
++			uint32_t offs, uint32_t len, uint8_t *buf, int page);
+ 	int (*write_subpage)(struct mtd_info *mtd, struct nand_chip *chip,
+ 			uint32_t offset, uint32_t data_len,
+ 			const uint8_t *data_buf, int oob_required);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.8.0.rc3
+
 
 _______________________________________________
 barebox mailing list
