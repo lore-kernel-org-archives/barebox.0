@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from col004-omc4s12.hotmail.com ([65.55.34.214])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1awRO5-0002Wr-4t
- for barebox@lists.infradead.org; Sat, 30 Apr 2016 09:40:33 +0000
-From: DU HUANPENG <no_rep1y@hotmail.com>
-Date: Sat, 30 Apr 2016 09:40:03 +0000
-Message-ID: <HK2PR04MB16189D373352CCC75AA3DD69BE670@HK2PR04MB1618.apcprd04.prod.outlook.com>
-References: <CABx9NuS+pLjNeUrjNCo19zvmLQGoqUiFi8eh7_gxV8P_2hmoUA@mail.gmail.com>
-In-Reply-To: <CABx9NuS+pLjNeUrjNCo19zvmLQGoqUiFi8eh7_gxV8P_2hmoUA@mail.gmail.com>
-Content-Language: en-US
-Content-ID: <51F5901BE27DB14B9961BB208CABD3F6@apcprd04.prod.outlook.com>
+ id 1b00w6-0004eC-ON
+ for barebox@lists.infradead.org; Tue, 10 May 2016 06:14:27 +0000
+Date: Tue, 10 May 2016 08:14:04 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160510061404.GX19714@pengutronix.de>
+References: <1462791308-32168-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1462791308-32168-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,26 +18,102 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Building on PC-BSD 10.3
-To: Russell Haley <russ.haley@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] partitions: dos: add partuuid string for logical
+ partitions
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-aXMga2J1aWxkIGNhbiBydW4gb24gYnNkIG5vdz8NCg0KT24gVHVlLCBBcHIgMjYsIDIwMTYgYXQg
-MDk6NTk6MTBQTSAtMDcwMCwgUnVzc2VsbCBIYWxleSB3cm90ZToNCj4gSGVsbG8sDQo+IA0KPiBK
-dXN0IGZvciBhIGhvb3QgSSB0aG91Z2h0IEknZCBidWlsZCBiYXJlYm94IG9uIFBDLUJTRCAxMC4z
-LiBJIGZvbGxvd2VkDQo+IHRoZXNlIGRpcmVjdGlvbnM6DQo+IA0KPiBodHRwczovL2dpdGh1Yi5j
-b20vamNvYmhhbS9pLk1YNTMta2VybmVsLWltYWdlcy93aWtpL0hvdy1UbzotQnVpbGQtQmFyZWJv
-eC1mb3ItSU1YNTMNCj4gDQo+IGFuZCByZXBsYWNlZCAibWFrZSIgd2l0aCAiZ21ha2UiLiBIZXJl
-IGlzIHRoZSBvdXRwdXQ6DQo+IA0KPiBodHRwOi8vcGFzdGViaW4uY29tL0Fhd1lxNGJSDQo+IA0K
-PiBJdCBzZWVtcyB0byBiZSBtaXNzaW5nIGVuZGlhbi5oPw0KPiANCj4gQW55IGlucHV0IHdvdWxk
-IGJlIHN0ZWxsYXIuDQo+IA0KPiBUaGFua3MsDQo+IA0KPiBSdXNzDQo+IA0KPiBfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0KPiBiYXJlYm94IG1haWxpbmcg
-bGlzdA0KPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcNCj4gaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94DQoNCi4uLg0KZHVodWFucGVuZy4NCnU3
-NDE0N++8oGdtYWkxLmNvbQ0KDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Mon, May 09, 2016 at 12:55:08PM +0200, Uwe Kleine-K=F6nig wrote:
+> Commit bc31d85c6e23 ("cdev: Add partuuid string to struct cdev") added
+> partuuid strings for dos partitions but only for the (up to) four
+> primary partitions. Do the same for the logical partitions. Their
+> numbers start at 5 independently of the number of available primary
+> partitions.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  common/partitions/dos.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+> =
+
+> diff --git a/common/partitions/dos.c b/common/partitions/dos.c
+> index e0cb35627d33..5f08e253ee59 100644
+> --- a/common/partitions/dos.c
+> +++ b/common/partitions/dos.c
+> @@ -117,11 +117,12 @@ static int dos_get_disk_signature(struct param_d *p=
+, void *_priv)
+>  }
+>  =
+
+>  static void dos_extended_partition(struct block_device *blk, struct part=
+ition_desc *pd,
+> -		struct partition *partition)
+> +		struct partition *partition, uint32_t signature)
+>  {
+>  	uint8_t *buf =3D dma_alloc(SECTOR_SIZE);
+>  	uint32_t ebr_sector =3D partition->first_sec;
+>  	struct partition_entry *table =3D (struct partition_entry *)&buf[0x1be];
+> +	unsigned partno =3D 5;
+>  =
+
+>  	while (pd->used_entries < ARRAY_SIZE(pd->parts)) {
+>  		int rc, i;
+> @@ -153,7 +154,11 @@ static void dos_extended_partition(struct block_devi=
+ce *blk, struct partition_de
+>  			get_unaligned_le32(&table[0].partition_start);
+>  		pd->parts[n].size =3D get_unaligned_le32(&table[0].partition_size);
+>  		pd->parts[n].dos_partition_type =3D table[0].type;
+> +		if (signature)
+> +			sprintf(pd->parts[n].partuuid, "%08x-%02u",
+> +				signature, partno);
+>  		pd->used_entries++;
+> +		partno++;
+>  =
+
+>  		/* the second entry defines the start of the next ebr if !=3D 0 */
+>  		if (get_unaligned_le32(&table[1].partition_start))
+> @@ -231,7 +236,7 @@ static void dos_partition(void *buf, struct block_dev=
+ice *blk,
+>  	}
+>  =
+
+>  	if (extended_partition)
+> -		dos_extended_partition(blk, pd, extended_partition);
+> +		dos_extended_partition(blk, pd, extended_partition, signature);
+>  =
+
+>  	dsp =3D xzalloc(sizeof(*dsp));
+>  	dsp->blk =3D blk;
+> -- =
+
+> 2.8.0.rc3
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
