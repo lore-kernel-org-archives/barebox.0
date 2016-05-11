@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b0NSb-0002jX-Q9
- for barebox@lists.infradead.org; Wed, 11 May 2016 06:17:30 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 11 May 2016 08:17:00 +0200
-Message-Id: <1462947420-24562-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1462947420-24562-1-git-send-email-s.hauer@pengutronix.de>
-References: <1462947420-24562-1-git-send-email-s.hauer@pengutronix.de>
+Received: from webbox1416.server-home.net ([77.236.96.61])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1b0VNl-00070P-FP
+ for barebox@lists.infradead.org; Wed, 11 May 2016 14:45:02 +0000
+Received: from imapserver.systec-electronic.com (unknown [212.185.67.146])
+ by webbox1416.server-home.net (Postfix) with ESMTPA id C25B127A6F9
+ for <barebox@lists.infradead.org>; Wed, 11 May 2016 16:44:35 +0200 (CEST)
+From: Alexander Stein <alexander.stein@systec-electronic.com>
+Date: Wed, 11 May 2016 16:44:28 +0200
+Message-Id: <1462977868-12691-1-git-send-email-alexander.stein@systec-electronic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,55 +22,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] bootm: make verbosity controllable via global variable
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/1] reset_source: export reset_source_set_priority
+To: barebox@lists.infradead.org
+Cc: Alexander Stein <alexander.stein@systec-electronic.com>
 
-When the bootm code is not called directly by the bootm command it is
-useful to control the verbosity with a globalvar. This introduces
-global.bootm.verbose for this.
+In commit 4a7534bf07e ("reset-source: Allow different priorities") the
+function name changed from reset_source_set to reset_source_set_priority.
+Do that change in EXPORT_SYMBOL() accordingly.
+reset_source_set still exists but is a static inline now.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Fixes: 4a7534bf07e ("reset-source: Allow different priorities")
+Signed-off-by: Alexander Stein <alexander.stein@systec-electronic.com>
 ---
- common/bootm.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ common/reset_source.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 66a5bf3..27d20f2 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -50,6 +50,7 @@ static struct image_handler *bootm_find_handler(enum filetype filetype,
+diff --git a/common/reset_source.c b/common/reset_source.c
+index 0a69f90..06e2ca8 100644
+--- a/common/reset_source.c
++++ b/common/reset_source.c
+@@ -50,7 +50,7 @@ void reset_source_set_priority(enum reset_src_type st, unsigned int priority)
+ 	pr_debug("Setting reset source to %s with priority %d\n",
+ 			reset_src_names[reset_source], priority);
  }
+-EXPORT_SYMBOL(reset_source_set);
++EXPORT_SYMBOL(reset_source_set_priority);
  
- static int bootm_appendroot;
-+static int bootm_verbosity;
- 
- void bootm_data_init_defaults(struct bootm_data *data)
+ static int reset_source_init(void)
  {
-@@ -62,6 +63,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
- 	data->initrd_file = getenv_nonempty("global.bootm.initrd");
- 	data->verify = bootm_get_verify_mode();
- 	data->appendroot = bootm_appendroot;
-+	data->verbose = bootm_verbosity;
- }
- 
- static enum bootm_verify bootm_verify_mode = BOOTM_VERIFY_HASH;
-@@ -661,6 +663,8 @@ static int bootm_init(void)
- 	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES))
- 		bootm_verify_mode = BOOTM_VERIFY_SIGNATURE;
- 
-+	globalvar_add_simple_int("bootm.verbose", &bootm_verbosity, "%u");
-+
- 	globalvar_add_simple_enum("bootm.verify", (unsigned int *)&bootm_verify_mode,
- 				  bootm_verify_names, ARRAY_SIZE(bootm_verify_names));
- 
-@@ -675,4 +679,5 @@ BAREBOX_MAGICVAR_NAMED(global_bootm_initrd, global.bootm.initrd, "bootm default
- BAREBOX_MAGICVAR_NAMED(global_bootm_initrd_loadaddr, global.bootm.initrd.loadaddr, "bootm default initrd loadaddr");
- BAREBOX_MAGICVAR_NAMED(global_bootm_oftree, global.bootm.oftree, "bootm default oftree");
- BAREBOX_MAGICVAR_NAMED(global_bootm_verify, global.bootm.verify, "bootm default verify level");
-+BAREBOX_MAGICVAR_NAMED(global_bootm_verbose, global.bootm.verify, "bootm default verbosity level (0=quiet)");
- BAREBOX_MAGICVAR_NAMED(global_bootm_appendroot, global.bootm.appendroot, "Add root= option to Kernel to mount rootfs from the device the Kernel comes from");
 -- 
-2.8.0.rc3
+2.7.3
 
 
 _______________________________________________
