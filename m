@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from webbox1416.server-home.net ([77.236.96.61])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b0VNl-00070P-FP
- for barebox@lists.infradead.org; Wed, 11 May 2016 14:45:02 +0000
-Received: from imapserver.systec-electronic.com (unknown [212.185.67.146])
- by webbox1416.server-home.net (Postfix) with ESMTPA id C25B127A6F9
- for <barebox@lists.infradead.org>; Wed, 11 May 2016 16:44:35 +0200 (CEST)
-From: Alexander Stein <alexander.stein@systec-electronic.com>
-Date: Wed, 11 May 2016 16:44:28 +0200
-Message-Id: <1462977868-12691-1-git-send-email-alexander.stein@systec-electronic.com>
+Received: from mail-io0-x243.google.com ([2607:f8b0:4001:c06::243])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1b0WeT-0000qA-97
+ for barebox@lists.infradead.org; Wed, 11 May 2016 16:06:22 +0000
+Received: by mail-io0-x243.google.com with SMTP id i75so6123970ioa.2
+ for <barebox@lists.infradead.org>; Wed, 11 May 2016 09:05:59 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <1462368052-7344-1-git-send-email-s.christ@phytec.de>
+References: <1462368052-7344-1-git-send-email-s.christ@phytec.de>
+Date: Wed, 11 May 2016 13:05:58 -0300
+Message-ID: <CAOMZO5Dsr4vn8LJwuD-NR11p0vDvADva7ySMBjpwF5jSmST7Rw@mail.gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,42 +19,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] reset_source: export reset_source_set_priority
-To: barebox@lists.infradead.org
-Cc: Alexander Stein <alexander.stein@systec-electronic.com>
+Subject: Re: [PATCH] mci: imx-esdhc: implement reset quirks for i.MX6
+ DualLite/Solo
+To: Stefan Christ <s.christ@phytec.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-In commit 4a7534bf07e ("reset-source: Allow different priorities") the
-function name changed from reset_source_set to reset_source_set_priority.
-Do that change in EXPORT_SYMBOL() accordingly.
-reset_source_set still exists but is a static inline now.
+Hi Stefan,
 
-Fixes: 4a7534bf07e ("reset-source: Allow different priorities")
-Signed-off-by: Alexander Stein <alexander.stein@systec-electronic.com>
----
- common/reset_source.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, May 4, 2016 at 10:20 AM, Stefan Christ <s.christ@phytec.de> wrote:
+> First of all the reset values of MMC interfaces are differently between
+> Quad and DualLite/Solo SoM.
+>
+>                 Register VEND_SPEC2(0xC8)
+>     Quad:       0x0
+>     DualLite:   0x00000006
+>     default:    0x00000006    (from i.MX6 Reference Manual)
+>
+> Furthermore the ROM Code of Quad and DualLite uses the MMC interfaces
+> differently when it loads the bootloader from that device:
+>
+>                 Register DLL_CTRL(0x60)  Bit 25 FBCLK_SEL (0x48)
+>     Quad:       0x0                      0
+>     DualLite:   0x01000021               1
+>
+> Since the linux kernel and barebox driver doesn't reset all registers,
+> the MMC interface is in an inconsistent state, which leads to boot
+> failures for some eMMC devices on the i.MX6 DualLite SoM. The errors
+> look like:
+>
+>     mmcblk3: error -110 sending stop command, original cmd response 0x900, card status 0x400900
+>     mmcblk3: error -84 transferring data, sector 24578, nr 2, cmd response 0x900, card status 0x0
+>     mmcblk3: retrying using single block read
+>     mmcblk3: error -84 transferring data, sector 24578, nr 2, cmd response 0x900, card status 0x0
+>     blk_update_request: I/O error, dev mmcblk3, sector 24578
+>
+> It's sufficient to reset register DLL_CTRL and bit FBCLK_SEL. Register
+> VEND_SPEC2 has no effect.
+>
+> Signed-off-by: Stefan Christ <s.christ@phytec.de>
 
-diff --git a/common/reset_source.c b/common/reset_source.c
-index 0a69f90..06e2ca8 100644
---- a/common/reset_source.c
-+++ b/common/reset_source.c
-@@ -50,7 +50,7 @@ void reset_source_set_priority(enum reset_src_type st, unsigned int priority)
- 	pr_debug("Setting reset source to %s with priority %d\n",
- 			reset_src_names[reset_source], priority);
- }
--EXPORT_SYMBOL(reset_source_set);
-+EXPORT_SYMBOL(reset_source_set_priority);
- 
- static int reset_source_init(void)
- {
--- 
-2.7.3
+Do you plan to fix this in the kernel driver as well?
 
+Thanks
 
 _______________________________________________
 barebox mailing list
