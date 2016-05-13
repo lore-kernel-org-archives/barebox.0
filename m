@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-vk0-x242.google.com ([2607:f8b0:400c:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b1A2X-0001nC-1r
- for barebox@lists.infradead.org; Fri, 13 May 2016 10:09:50 +0000
-Date: Fri, 13 May 2016 12:09:27 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160513100927.GQ19714@pengutronix.de>
-References: <1461742862-27385-1-git-send-email-t.remmet@phytec.de>
+ id 1b1FH1-0006g1-98
+ for barebox@lists.infradead.org; Fri, 13 May 2016 15:45:08 +0000
+Received: by mail-vk0-x242.google.com with SMTP id v68so12724368vka.1
+ for <barebox@lists.infradead.org>; Fri, 13 May 2016 08:44:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1461742862-27385-1-git-send-email-t.remmet@phytec.de>
+In-Reply-To: <20160510060255.GV19714@pengutronix.de>
+References: <1462543770-4619-1-git-send-email-andrew.smirnov@gmail.com>
+ <1462543770-4619-6-git-send-email-andrew.smirnov@gmail.com>
+ <20160510060255.GV19714@pengutronix.de>
+Date: Fri, 13 May 2016 08:44:45 -0700
+Message-ID: <CAHQ1cqHKZTQn+PbHRkK_4F-YGbSa16cbwW6MqdoagtehgPSOmA@mail.gmail.com>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,53 +25,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: phy: micrel: KSZ9081/KSZ8091: Disable broadcast mode
-To: Teresa Remmet <t.remmet@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 5/6] aiodev: Add TEMPMON driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, Apr 27, 2016 at 09:41:02AM +0200, Teresa Remmet wrote:
-> KSZ9081 only supports two phy ids 0x0 and 0x3. 0x0 is also
-> used as broadcast address. Disable broadcast, so that id 0x0
-> can be used as unique address on a shared bus.
-> 
-> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
-> ---
->  drivers/net/phy/micrel.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, May 9, 2016 at 11:02 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Fri, May 06, 2016 at 07:09:29AM -0700, Andrey Smirnov wrote:
+>> Port TEMPMON driver from U-Boot
+>>
+>> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+>> ---
+>>  arch/arm/dts/imx6qdl.dtsi    |  14 +++
+>>  arch/arm/dts/imx6sx.dtsi     |  14 +++
+>>  drivers/aiodev/Kconfig       |   8 ++
+>>  drivers/aiodev/Makefile      |   1 +
+>>  drivers/aiodev/imx_thermal.c | 239 +++++++++++++++++++++++++++++++++++++++++++
+>>  5 files changed, 276 insertions(+)
+>>  create mode 100644 drivers/aiodev/imx_thermal.c
+>>
+>> diff --git a/arch/arm/dts/imx6qdl.dtsi b/arch/arm/dts/imx6qdl.dtsi
+>> index 828be9c..0deafbc 100644
+>> --- a/arch/arm/dts/imx6qdl.dtsi
+>> +++ b/arch/arm/dts/imx6qdl.dtsi
+>> @@ -8,3 +8,17 @@
+>>               ipu0 = &ipu1;
+>>       };
+>>  };
+>> +
+>> +&ocotp {
+>> +     #address-cells = <1>;
+>> +     #size-cells = <1>;
+>> +
+>> +     analog1: ocotp_ana1@34 {
+>
+> @38?
+>
+>> +             reg = <0x38 0x4>;
+>> +     };
+>> +};
+>> +
+>> +&tempmon {
+>> +     nvmem-cells = <&analog1>;
+>> +     nvmem-cell-names = "ocotp-ana1";
+>> +};
+>
+> Why not use the existing binding? The nvmem binding may be better, but I
+> think we should not introduce new bindings without need.
 
-Applied, thanks. Sorry, this patch slipped through the cracks somehow.
+I was using it originally (back when this was a part of HWMON RFC),
+but then "cdev_do_open" was removed, so I switched to using "nvmem".
+Granted there is not meaningful "open" or "close" operation for ocotp
+cdev, but I just liked that approach less. I'll revert to original
+code in v3
 
-Sascha
+>
+>> +     node = of_parse_phandle(dev->device_node, "fsl,tempmon", 0);
+>> +     if (!node) {
+>> +             ret = -EINVAL;
+>> +             dev_err(dev, "Failed to parse fsl,tempmon\n");
+>> +             goto free_calibration_data;
+>> +     }
+>> +
+>> +     anatop = of_find_device_by_node(node);
+>> +     if (!anatop) {
+>> +             ret = -EINVAL;
+>> +             dev_err(dev, "No device corresponds to fsl,tempmon\n");
+>> +             goto free_calibration_data;
+>> +     }
+>
+> syscon_base_lookup_by_phandle() instead of
+> of_parse_phandle()/of_find_device_by_node()?
 
-> 
-> diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-> index e8a566d..9a30cb7 100644
-> --- a/drivers/net/phy/micrel.c
-> +++ b/drivers/net/phy/micrel.c
-> @@ -357,7 +357,7 @@ static struct phy_driver ksphy_driver[] = {
->  	.phy_id_mask	= MICREL_PHY_ID_MASK,
->  	.drv.name	= "Micrel KSZ8081/91",
->  	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause),
-> -	.config_init	= kszphy_config_init,
-> +	.config_init	= ksz8021_config_init,
->  	.config_aneg	= genphy_config_aneg,
->  	.read_status	= genphy_read_status,
->  }, {
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Will fix in v3
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>
+> Sascha
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
