@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b19wF-0006bu-10
- for barebox@lists.infradead.org; Fri, 13 May 2016 10:03:20 +0000
-Date: Fri, 13 May 2016 12:02:57 +0200
+ id 1b1A2X-0001nC-1r
+ for barebox@lists.infradead.org; Fri, 13 May 2016 10:09:50 +0000
+Date: Fri, 13 May 2016 12:09:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160513100257.GP19714@pengutronix.de>
-References: <1462977868-12691-1-git-send-email-alexander.stein@systec-electronic.com>
+Message-ID: <20160513100927.GQ19714@pengutronix.de>
+References: <1461742862-27385-1-git-send-email-t.remmet@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1462977868-12691-1-git-send-email-alexander.stein@systec-electronic.com>
+In-Reply-To: <1461742862-27385-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] reset_source: export reset_source_set_priority
-To: Alexander Stein <alexander.stein@systec-electronic.com>
+Subject: Re: [PATCH] net: phy: micrel: KSZ9081/KSZ8091: Disable broadcast mode
+To: Teresa Remmet <t.remmet@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, May 11, 2016 at 04:44:28PM +0200, Alexander Stein wrote:
-> In commit 4a7534bf07e ("reset-source: Allow different priorities") the
-> function name changed from reset_source_set to reset_source_set_priority.
-> Do that change in EXPORT_SYMBOL() accordingly.
-> reset_source_set still exists but is a static inline now.
+On Wed, Apr 27, 2016 at 09:41:02AM +0200, Teresa Remmet wrote:
+> KSZ9081 only supports two phy ids 0x0 and 0x3. 0x0 is also
+> used as broadcast address. Disable broadcast, so that id 0x0
+> can be used as unique address on a shared bus.
 > 
-> Fixes: 4a7534bf07e ("reset-source: Allow different priorities")
-> Signed-off-by: Alexander Stein <alexander.stein@systec-electronic.com>
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 > ---
->  common/reset_source.c | 2 +-
+>  drivers/net/phy/micrel.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied, thanks
+Applied, thanks. Sorry, this patch slipped through the cracks somehow.
 
 Sascha
 
 > 
-> diff --git a/common/reset_source.c b/common/reset_source.c
-> index 0a69f90..06e2ca8 100644
-> --- a/common/reset_source.c
-> +++ b/common/reset_source.c
-> @@ -50,7 +50,7 @@ void reset_source_set_priority(enum reset_src_type st, unsigned int priority)
->  	pr_debug("Setting reset source to %s with priority %d\n",
->  			reset_src_names[reset_source], priority);
->  }
-> -EXPORT_SYMBOL(reset_source_set);
-> +EXPORT_SYMBOL(reset_source_set_priority);
->  
->  static int reset_source_init(void)
->  {
+> diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+> index e8a566d..9a30cb7 100644
+> --- a/drivers/net/phy/micrel.c
+> +++ b/drivers/net/phy/micrel.c
+> @@ -357,7 +357,7 @@ static struct phy_driver ksphy_driver[] = {
+>  	.phy_id_mask	= MICREL_PHY_ID_MASK,
+>  	.drv.name	= "Micrel KSZ8081/91",
+>  	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause),
+> -	.config_init	= kszphy_config_init,
+> +	.config_init	= ksz8021_config_init,
+>  	.config_aneg	= genphy_config_aneg,
+>  	.read_status	= genphy_read_status,
+>  }, {
 > -- 
-> 2.7.3
+> 1.9.1
 > 
 > 
 > _______________________________________________
