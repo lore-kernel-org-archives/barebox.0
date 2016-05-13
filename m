@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([192.81.58.21])
+Received: from mail-wm0-x232.google.com ([2a00:1450:400c:c09::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b0wUt-0006Rf-GG
- for barebox@lists.infradead.org; Thu, 12 May 2016 19:42:12 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Thu, 12 May 2016 19:41:45 +0000
-Message-ID: <1463082107.9103.271.camel@rtred1test09.kymeta.local>
-References: <5c4dfe40-5338-cdbe-f96d-a5275f75872b@arcor.de>
-In-Reply-To: <5c4dfe40-5338-cdbe-f96d-a5275f75872b@arcor.de>
-Content-Language: en-US
-Content-ID: <FA9D9D852BF49347A05131C31E95FECA@kymetacorp.com>
+ id 1b166a-0000Hv-D8
+ for barebox@lists.infradead.org; Fri, 13 May 2016 05:57:45 +0000
+Received: by mail-wm0-x232.google.com with SMTP id a17so11663073wme.0
+ for <barebox@lists.infradead.org>; Thu, 12 May 2016 22:57:23 -0700 (PDT)
+From: Holger Schurig <holgerschurig@gmail.com>
+In-Reply-To: <20160512114411.GA18890@book>
+References: <20160512114411.GA18890@book>
+Date: Fri, 13 May 2016 07:57:19 +0200
+Message-ID: <87mvnu8pq8.fsf@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,37 +23,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: variables with random values
-To: Giorgio <giorgio.nicole@arcor.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: Is barebox support usb mass storeage?
+To: DU HUANPENG <do_not_rep1y@163.com>, barebox <barebox@lists.infradead.org>
 
-Have you considered using DHCP?  It would work a lot better, as you
-won't have to worry about duplicate IPs or invalid IPs.
+> Hi, is barebox now supports load images from usb disk?
 
-I think you'll have to write a new globalvar for barebox to get a random
-value, since the shell doesn't support backtick substitution.
+better-> Hi, does barebox now support load images from USB?
 
-On Thu, 2016-05-12 at 21:34 +0200, Giorgio wrote:
-> Hi,
-> 
-> I'm writing a shell script within barebox to assist an embedded board
-> initialization process. Some commands in the script do firmware
-> download with tftp; to allow initializing more than one board at
-> a time I need to assign every board a random ip address; I would
-> like to have a shell variable that every time it is dereferenced
-> it results in a new random (8 bits) value so I could write:
-> 
-> eth0.ipaddr=10.$RND.$RND.$RND
-> 
-> Is there a way to do something similar in barebox ?
-> 
-> giorgio
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+
+Yes, this is supported. At least for my hardware (i.MX6).
+
+
+Basically you first need to detect the USB stick. After this you mount
+it and specify the path to vmlinuz, initrd, dtb etc like you'd when you
+boot from eMMC or SD-Card.
 
 _______________________________________________
 barebox mailing list
