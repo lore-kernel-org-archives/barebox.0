@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x22c.google.com ([2607:f8b0:400e:c03::22c])
+Received: from mail-pa0-x244.google.com ([2607:f8b0:400e:c03::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b2LfJ-0006Fs-A4
- for barebox@lists.infradead.org; Mon, 16 May 2016 16:46:47 +0000
-Received: by mail-pa0-x22c.google.com with SMTP id xk12so66879756pac.0
- for <barebox@lists.infradead.org>; Mon, 16 May 2016 09:46:24 -0700 (PDT)
+ id 1b2LfN-0006In-HU
+ for barebox@lists.infradead.org; Mon, 16 May 2016 16:46:52 +0000
+Received: by mail-pa0-x244.google.com with SMTP id rw9so1007157pab.2
+ for <barebox@lists.infradead.org>; Mon, 16 May 2016 09:46:29 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 16 May 2016 09:45:56 -0700
-Message-Id: <1463417161-28634-2-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 16 May 2016 09:46:00 -0700
+Message-Id: <1463417161-28634-6-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1463417161-28634-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1463417161-28634-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,90 +23,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 1/6] drivers: Introduce AIODEV subsystem
+Subject: [PATCH v3 5/6] aiodev: Add TEMPMON driver
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-AIODEV/Aiodevice is a analog I/O framework that can be thought of as a
-simplified hybrid between 'hwmon' and 'IIO' subsystems of Linux kernel
-
-This commit is very heavily based on 'iodevice' framework proposal
-written by Sascha Hauer.
+Port TEMPMON driver from U-Boot
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/Kconfig         |   1 +
- drivers/Makefile        |   2 +
- drivers/aiodev/Kconfig  |   8 +++
- drivers/aiodev/Makefile |   2 +
- drivers/aiodev/core.c   | 148 ++++++++++++++++++++++++++++++++++++++++++++++++
- include/aiodev.h        |  59 +++++++++++++++++++
- 6 files changed, 220 insertions(+)
- create mode 100644 drivers/aiodev/Kconfig
- create mode 100644 drivers/aiodev/Makefile
- create mode 100644 drivers/aiodev/core.c
- create mode 100644 include/aiodev.h
+ arch/arm/dts/imx6qdl.dtsi    |   1 +
+ drivers/aiodev/Kconfig       |   8 ++
+ drivers/aiodev/Makefile      |   1 +
+ drivers/aiodev/imx_thermal.c | 216 +++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 226 insertions(+)
+ create mode 100644 drivers/aiodev/imx_thermal.c
 
-diff --git a/drivers/Kconfig b/drivers/Kconfig
-index 3236696..cc086ac 100644
---- a/drivers/Kconfig
-+++ b/drivers/Kconfig
-@@ -1,6 +1,7 @@
- menu "Drivers"
- 
- source "drivers/of/Kconfig"
-+source "drivers/aiodev/Kconfig"
- source "drivers/amba/Kconfig"
- source "drivers/serial/Kconfig"
- source "drivers/net/Kconfig"
-diff --git a/drivers/Makefile b/drivers/Makefile
-index a4467a0..5946fb3 100644
---- a/drivers/Makefile
-+++ b/drivers/Makefile
-@@ -32,3 +32,5 @@ obj-$(CONFIG_FIRMWARE) += firmware/
- obj-$(CONFIG_GENERIC_PHY) += phy/
- obj-$(CONFIG_HAB) += hab/
- obj-$(CONFIG_CRYPTO_HW) += crypto/
-+obj-$(CONFIG_AIODEV) += aiodev/
+diff --git a/arch/arm/dts/imx6qdl.dtsi b/arch/arm/dts/imx6qdl.dtsi
+index 828be9c..06b1039 100644
+--- a/arch/arm/dts/imx6qdl.dtsi
++++ b/arch/arm/dts/imx6qdl.dtsi
+@@ -8,3 +8,4 @@
+ 		ipu0 = &ipu1;
+ 	};
+ };
 +
 diff --git a/drivers/aiodev/Kconfig b/drivers/aiodev/Kconfig
-new file mode 100644
-index 0000000..d6d4ac0
---- /dev/null
+index d6d4ac0..185c44e 100644
+--- a/drivers/aiodev/Kconfig
 +++ b/drivers/aiodev/Kconfig
-@@ -0,0 +1,8 @@
-+#
-+# Misc strange devices
-+#
-+menuconfig AIODEV
-+	bool "Analog I/O drivers"
+@@ -5,4 +5,12 @@ menuconfig AIODEV
+ 	bool "Analog I/O drivers"
+ 
+ if AIODEV
 +
-+if AIODEV
-+endif
++config IMX_THERMAL
++       tristate "Temperature sensor driver for Freescale i.MX SoCs"
++       select MFD_SYSCON
++       help
++         Support for Temperature Monitor (TEMPMON) found on Freescale
++         i.MX SoCs.
++
+ endif
 diff --git a/drivers/aiodev/Makefile b/drivers/aiodev/Makefile
-new file mode 100644
-index 0000000..806464e
---- /dev/null
+index 806464e..5480a8a 100644
+--- a/drivers/aiodev/Makefile
 +++ b/drivers/aiodev/Makefile
-@@ -0,0 +1,2 @@
-+
-+obj-$(CONFIG_AIODEV) += core.o
-diff --git a/drivers/aiodev/core.c b/drivers/aiodev/core.c
+@@ -1,2 +1,3 @@
+ 
+ obj-$(CONFIG_AIODEV) += core.o
++obj-$(CONFIG_IMX_THERMAL) += imx_thermal.o
+diff --git a/drivers/aiodev/imx_thermal.c b/drivers/aiodev/imx_thermal.c
 new file mode 100644
-index 0000000..79f935d
+index 0000000..6c36d2f
 --- /dev/null
-+++ b/drivers/aiodev/core.c
-@@ -0,0 +1,148 @@
++++ b/drivers/aiodev/imx_thermal.c
+@@ -0,0 +1,216 @@
 +/*
-+ * core.c - Code implementing core functionality of AIODEV susbsystem
-+ *
-+ * Copyright (c) 2015 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ * imx_thermal
 + *
 + * Copyright (c) 2015 Zodiac Inflight Innovation
 + * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
++ *
++ * based on the code of analogous driver from U-Boot:
++ * (C) Copyright 2014-2015 Freescale Semiconductor, Inc.
++ * Author: Nitin Garg <nitin.garg@freescale.com>
++ *             Ye Li <Ye.Li@freescale.com>
 + *
 + * See file CREDITS for list of people who contributed to this
 + * project.
@@ -122,197 +103,197 @@ index 0000000..79f935d
 + */
 +
 +#include <common.h>
-+#include <aiodev.h>
-+#include <linux/list.h>
++#include <init.h>
 +#include <malloc.h>
++#include <clock.h>
++#include <driver.h>
++#include <xfuncs.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <linux/math64.h>
++#include <linux/log2.h>
++#include <linux/clk.h>
++#include <mach/clock.h>
++#include <mach/imx6-anadig.h>
++#include <io.h>
++#include <aiodev.h>
++#include <mfd/syscon.h>
 +
-+LIST_HEAD(aiodevices);
-+EXPORT_SYMBOL(aiodevices);
++#define FACTOR0			10000000
++#define MEASURE_FREQ		327
++#define OCOTP_ANA1_OFFSET      (0xE * sizeof(uint32_t))
 +
-+struct aiochannel *aiochannel_get_by_name(const char *name)
++struct imx_thermal_data {
++	int c1, c2;
++	void __iomem *base;
++	struct clk *clk;
++
++	struct aiodevice aiodev;
++	struct aiochannel aiochan;
++};
++
++static inline struct imx_thermal_data *
++to_imx_thermal_data(struct aiochannel *chan)
 +{
-+	struct aiodevice *aiodev;
-+	int i;
-+
-+	list_for_each_entry(aiodev, &aiodevices, list) {
-+		for (i = 0; i < aiodev->num_channels; i++)
-+			if (!strcmp(name, aiodev->channels[i]->name))
-+				return aiodev->channels[i];
-+	}
-+
-+	return ERR_PTR(-ENOENT);
-+}
-+EXPORT_SYMBOL(aiochannel_get_by_name);
-+
-+struct aiochannel *aiochannel_get(struct device_d *dev, int index)
-+{
-+	struct of_phandle_args spec;
-+	struct aiodevice *aiodev;
-+	int ret, chnum = 0;
-+
-+	if (!dev->device_node)
-+		return ERR_PTR(-EINVAL);
-+
-+	ret = of_parse_phandle_with_args(dev->device_node,
-+					 "io-channels",
-+					 "#io-channel-cells",
-+					 index, &spec);
-+        if (ret)
-+                return ERR_PTR(ret);
-+
-+	list_for_each_entry(aiodev, &aiodevices, list) {
-+		if (aiodev->hwdev->device_node == spec.np)
-+			goto found;
-+	}
-+
-+	return ERR_PTR(-EPROBE_DEFER);
-+
-+found:
-+	if (spec.args_count)
-+		chnum = spec.args[0];
-+
-+	if (chnum >= aiodev->num_channels)
-+		return ERR_PTR(-EINVAL);
-+
-+	return aiodev->channels[chnum];
-+}
-+EXPORT_SYMBOL(aiochannel_get);
-+
-+int aiochannel_get_value(struct aiochannel *aiochan, int *value)
-+{
-+	struct aiodevice *aiodev = aiochan->aiodev;
-+
-+	return aiodev->read(aiochan, value);
-+}
-+EXPORT_SYMBOL(aiochannel_get_value);
-+
-+int aiochannel_get_index(struct aiochannel *aiochan)
-+{
-+	return aiochan->index;
-+}
-+EXPORT_SYMBOL(aiochannel_get_index);
-+
-+static int aiochannel_param_get_value(struct param_d *p, void *priv)
-+{
-+	struct aiochannel *aiochan = priv;
-+
-+	return aiochannel_get_value(aiochan, &aiochan->value);
++	return container_of(chan, struct imx_thermal_data, aiochan);
 +}
 +
-+int aiodevice_register(struct aiodevice *aiodev)
++
++static int imx_thermal_read(struct aiochannel *chan, int *val)
 +{
-+	int i, ret;
++	uint64_t start;
++	uint32_t tempsense0, tempsense1;
++	uint16_t n_meas;
++	struct imx_thermal_data *imx_thermal = to_imx_thermal_data(chan);
 +
-+	if (!aiodev->name && aiodev->hwdev &&
-+	    aiodev->hwdev->device_node) {
-+		aiodev->dev.id = DEVICE_ID_SINGLE;
++	/*
++	 * now we only use single measure, every time we read
++	 * the temperature, we will power on/down anadig thermal
++	 * module
++	 */
++	writel(BM_ANADIG_TEMPSENSE0_POWER_DOWN,
++	       imx_thermal->base + HW_ANADIG_TEMPSENSE0_CLR);
++	writel(BM_ANADIG_ANA_MISC0_REFTOP_SELBIASOFF,
++	       imx_thermal->base + HW_ANADIG_ANA_MISC0_SET);
 +
-+		aiodev->name = of_alias_get(aiodev->hwdev->device_node);
-+		if (!aiodev->name)
-+			aiodev->name = aiodev->hwdev->device_node->name;
-+	}
++	/* setup measure freq */
++	tempsense1 = readl(imx_thermal->base + HW_ANADIG_TEMPSENSE1);
++	tempsense1 &= ~BM_ANADIG_TEMPSENSE1_MEASURE_FREQ;
++	tempsense1 |= MEASURE_FREQ;
++	writel(tempsense1, imx_thermal->base + HW_ANADIG_TEMPSENSE1);
 +
-+	if (!aiodev->name) {
-+		aiodev->name = "aiodev";
-+		aiodev->dev.id = DEVICE_ID_DYNAMIC;
-+	}
++	/* start the measurement process */
++	writel(BM_ANADIG_TEMPSENSE0_MEASURE_TEMP,
++		imx_thermal->base + HW_ANADIG_TEMPSENSE0_CLR);
++	writel(BM_ANADIG_TEMPSENSE0_FINISHED,
++		imx_thermal->base + HW_ANADIG_TEMPSENSE0_CLR);
++	writel(BM_ANADIG_TEMPSENSE0_MEASURE_TEMP,
++	       imx_thermal->base + HW_ANADIG_TEMPSENSE0_SET);
 +
-+	strcpy(aiodev->dev.name, aiodev->name);
++	/* make sure that the latest temp is valid */
++	start = get_time_ns();
++	do {
++		tempsense0 = readl(imx_thermal->base + HW_ANADIG_TEMPSENSE0);
 +
-+	aiodev->dev.parent = aiodev->hwdev;
++		if (is_timeout(start, 1 * SECOND)) {
++			dev_err(imx_thermal->aiodev.hwdev,
++				"Timeout waiting for measurement\n");
++			return -EIO;
++		}
++	} while (!(tempsense0 & BM_ANADIG_TEMPSENSE0_FINISHED));
 +
-+	ret = register_device(&aiodev->dev);
-+	if (ret)
-+		return ret;
++	n_meas = (tempsense0 & BM_ANADIG_TEMPSENSE0_TEMP_VALUE)
++		>> BP_ANADIG_TEMPSENSE0_TEMP_VALUE;
++	writel(BM_ANADIG_TEMPSENSE0_FINISHED,
++	       imx_thermal->base + HW_ANADIG_TEMPSENSE0_CLR);
 +
-+	for (i = 0; i < aiodev->num_channels; i++) {
-+		struct aiochannel *aiochan = aiodev->channels[i];
-+		char *name;
++	*val = (int)n_meas * imx_thermal->c1 + imx_thermal->c2;
 +
-+		aiochan->index  = i;
-+		aiochan->aiodev = aiodev;
-+
-+		name = xasprintf("in_value%d_%s", i, aiochan->unit);
-+
-+		dev_add_param_int(&aiodev->dev, name, NULL,
-+				  aiochannel_param_get_value,
-+				  &aiochan->value, "%d", aiochan);
-+
-+		aiochan->name = xasprintf("%s.%s", aiodev->name, name);
-+
-+		free(name);
-+	}
-+
-+	list_add_tail(&aiodev->list, &aiodevices);
++	/* power down anatop thermal sensor */
++	writel(BM_ANADIG_TEMPSENSE0_POWER_DOWN,
++	       imx_thermal->base + HW_ANADIG_TEMPSENSE0_SET);
++	writel(BM_ANADIG_ANA_MISC0_REFTOP_SELBIASOFF,
++	       imx_thermal->base + HW_ANADIG_ANA_MISC0_CLR);
 +
 +	return 0;
 +}
-+EXPORT_SYMBOL(aiodevice_register);
-diff --git a/include/aiodev.h b/include/aiodev.h
-new file mode 100644
-index 0000000..0d4f7a2
---- /dev/null
-+++ b/include/aiodev.h
-@@ -0,0 +1,59 @@
-+/*
-+ * core.c - Code implementing core functionality of AIODEV susbsystem
-+ *
-+ * Copyright (c) 2015 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ * Copyright (c) 2015 Zodiac Inflight Innovation
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
 +
-+#ifndef __AIODEVICE_H
-+#define __AIODEVICE_H
-+
-+struct aiodevice;
-+struct aiochannel {
-+	int index;
-+	char *unit;
-+	struct aiodevice *aiodev;
-+
-+	int value;
-+	char *name;
-+};
-+
-+struct aiodevice {
-+	const char *name;
-+	int (*read)(struct aiochannel *, int *val);
-+	struct device_d dev;
-+	struct device_d *hwdev;
-+	struct aiochannel **channels;
-+	int num_channels;
-+	struct list_head list;
-+};
-+
-+int aiodevice_register(struct aiodevice *aiodev);
-+
-+struct aiochannel *aiochannel_get(struct device_d *dev, int index);
-+struct aiochannel *aiochannel_get_by_name(const char *name);
-+
-+int aiochannel_get_value(struct aiochannel *aiochan, int *value);
-+int aiochannel_get_index(struct aiochannel *aiochan);
-+
-+static inline const char *aiochannel_get_unit(struct aiochannel *aiochan)
++static int imx_thermal_probe(struct device_d *dev)
 +{
-+	return aiochan->unit;
++	uint32_t ocotp_ana1;
++	struct device_node *node;
++	struct imx_thermal_data *imx_thermal;
++	struct cdev *ocotp;
++	int t1, n1, t2, n2;
++	int ret;
++
++	node = of_parse_phandle(dev->device_node, "fsl,tempmon-data", 0);
++	if (!node) {
++		dev_err(dev, "No calibration data source\n");
++		return -ENODEV;
++	}
++
++	printf("node = %p\n", node);
++
++	ocotp = cdev_by_device_node(node);
++	if (!ocotp) {
++		dev_err(dev, "No OCOTP character device\n");
++		return -ENODEV;
++	}
++
++	ret = cdev_read(ocotp, &ocotp_ana1, sizeof(ocotp_ana1),
++			OCOTP_ANA1_OFFSET, 0);
++	if (ret != sizeof(ocotp_ana1)) {
++		dev_err(dev, "Failed to read calibration data\n");
++		return ret < 0 ? ret : -EIO;
++	}
++
++	imx_thermal = xzalloc(sizeof(*imx_thermal));
++	imx_thermal->base = syscon_base_lookup_by_phandle(dev->device_node,
++							  "fsl,tempmon");
++	if (IS_ERR(imx_thermal->base)) {
++		dev_err(dev, "Could not get ANATOP address\n");
++		ret = PTR_ERR(imx_thermal->base);
++		goto free_imx_thermal;
++	}
++
++	n1 = ocotp_ana1 >> 20;
++	t1 = 25;
++	n2 = (ocotp_ana1 & 0x000FFF00) >> 8;
++	t2 = ocotp_ana1 & 0xFF;
++
++	imx_thermal->c1 = (-1000 * (t2 - t1)) / (n1 - n2);
++	imx_thermal->c2 = 1000 * t2 + (1000 * n2 * (t2 - t1)) / (n1 - n2);
++
++	imx_thermal->clk = clk_get(dev, NULL);
++	if (IS_ERR(imx_thermal->clk)) {
++		ret = PTR_ERR(imx_thermal->clk);
++		goto free_imx_thermal;
++	}
++
++	ret = clk_enable(imx_thermal->clk);
++	if (ret) {
++		dev_err(dev, "Failed to enable clock: %s\n",
++			  strerror(ret));
++		goto put_clock;
++	}
++
++	imx_thermal->aiodev.num_channels = 1;
++	imx_thermal->aiodev.hwdev = dev;
++	imx_thermal->aiodev.channels =
++		xmalloc(imx_thermal->aiodev.num_channels *
++			sizeof(imx_thermal->aiodev.channels[0]));
++	imx_thermal->aiodev.channels[0] = &imx_thermal->aiochan;
++	imx_thermal->aiochan.unit = "mC";
++	imx_thermal->aiodev.read = imx_thermal_read;
++
++	ret = aiodevice_register(&imx_thermal->aiodev);
++	if (!ret)
++		goto done;
++
++	clk_disable(imx_thermal->clk);
++put_clock:
++	clk_put(imx_thermal->clk);
++free_imx_thermal:
++	kfree(imx_thermal);
++done:	
++	return ret;
 +}
 +
-+extern struct list_head aiodevices;
-+#define for_each_aiodevice(aiodevice) list_for_each_entry(aiodevice, &aiodevices, list)
++static const struct of_device_id of_imx_thermal_match[] = {
++	{ .compatible = "fsl,imx6q-tempmon", },
++	{ .compatible = "fsl,imx6sx-tempmon", },
++	{ /* end */ }
++};
 +
-+#endif
++
++static struct driver_d imx_thermal_driver = {
++	.name		= "imx_thermal",
++	.probe		= imx_thermal_probe,
++	.of_compatible	= DRV_OF_COMPAT(of_imx_thermal_match),
++};
++
++device_platform_driver(imx_thermal_driver);
 -- 
 2.5.5
 
