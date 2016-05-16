@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+Received: from mail-pa0-x22c.google.com ([2607:f8b0:400e:c03::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b2LfH-0006Ek-Kv
- for barebox@lists.infradead.org; Mon, 16 May 2016 16:46:44 +0000
-Received: by mail-pf0-x243.google.com with SMTP id 145so16244953pfz.1
- for <barebox@lists.infradead.org>; Mon, 16 May 2016 09:46:23 -0700 (PDT)
+ id 1b2LfJ-0006Fs-A4
+ for barebox@lists.infradead.org; Mon, 16 May 2016 16:46:47 +0000
+Received: by mail-pa0-x22c.google.com with SMTP id xk12so66879756pac.0
+ for <barebox@lists.infradead.org>; Mon, 16 May 2016 09:46:24 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 16 May 2016 09:45:55 -0700
-Message-Id: <1463417161-28634-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 16 May 2016 09:45:56 -0700
+Message-Id: <1463417161-28634-2-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1463417161-28634-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1463417161-28634-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,72 +23,296 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 0/6] AIODEV subsystem
+Subject: [PATCH v3 1/6] drivers: Introduce AIODEV subsystem
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hi everyone,
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Here's the third version of AIODEV patchset. The change list is the
-following:
+AIODEV/Aiodevice is a analog I/O framework that can be thought of as a
+simplified hybrid between 'hwmon' and 'IIO' subsystems of Linux kernel
 
-Changes since v2:
+This commit is very heavily based on 'iodevice' framework proposal
+written by Sascha Hauer.
 
-	- TEMPMON driver converted to use existing DT bindings
-
-	- As a result of the above NVMEM subsystem was dropped
-
-	- TEMPMON driver converted to use syscon_base_lookup_by_phandle
-
-Changes since v1:
-
-	- Patches fixed to use IIO DT bindings
-
-	- Channel's index is now cached and no O(n) complex lookup is
-          perfomed when a channel is queried by its index
-
-	- Added GPL v2 headers
-
-	- Incorporated Sascha's feedback to simplify code
-
-
-Andrey Smirnov (5):
-  RDU2: Add more peripheral reset code
-  commands: Add 'hwmon' command
-  syscon: Do not return NULL when driver is not selected
-  syscon: Decrease driver registration priority
-  aiodev: Add TEMPMON driver
-
-Sascha Hauer (2):
-  drivers: Introduce AIODEV subsystem
-  aiodev: Add basic LM75 temperature driver
-
- arch/arm/boards/zii-imx6q-rdu2/board.c |  65 +++++++-
- arch/arm/dts/imx6q-zii-rdu2.dts        |   5 +
- arch/arm/dts/imx6qdl.dtsi              |  14 ++
- arch/arm/dts/imx6sx.dtsi               |  14 ++
- commands/Kconfig                       |   8 +
- commands/Makefile                      |   1 +
- commands/hwmon.c                       |  35 +++++
- drivers/Kconfig                        |   1 +
- drivers/Makefile                       |   2 +
- drivers/aiodev/Kconfig                 |  22 +++
- drivers/aiodev/Makefile                |   4 +
- drivers/aiodev/core.c                  | 148 +++++++++++++++++++
- drivers/aiodev/imx_thermal.c           | 216 +++++++++++++++++++++++++++
- drivers/aiodev/lm75.c                  | 262 +++++++++++++++++++++++++++++++++
- drivers/mfd/syscon.c                   |   2 +-
- include/aiodev.h                       |  59 ++++++++
- include/mfd/syscon.h                   |   4 +-
- 17 files changed, 851 insertions(+), 11 deletions(-)
- create mode 100644 commands/hwmon.c
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/Kconfig         |   1 +
+ drivers/Makefile        |   2 +
+ drivers/aiodev/Kconfig  |   8 +++
+ drivers/aiodev/Makefile |   2 +
+ drivers/aiodev/core.c   | 148 ++++++++++++++++++++++++++++++++++++++++++++++++
+ include/aiodev.h        |  59 +++++++++++++++++++
+ 6 files changed, 220 insertions(+)
  create mode 100644 drivers/aiodev/Kconfig
  create mode 100644 drivers/aiodev/Makefile
  create mode 100644 drivers/aiodev/core.c
- create mode 100644 drivers/aiodev/imx_thermal.c
- create mode 100644 drivers/aiodev/lm75.c
  create mode 100644 include/aiodev.h
 
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index 3236696..cc086ac 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -1,6 +1,7 @@
+ menu "Drivers"
+ 
+ source "drivers/of/Kconfig"
++source "drivers/aiodev/Kconfig"
+ source "drivers/amba/Kconfig"
+ source "drivers/serial/Kconfig"
+ source "drivers/net/Kconfig"
+diff --git a/drivers/Makefile b/drivers/Makefile
+index a4467a0..5946fb3 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -32,3 +32,5 @@ obj-$(CONFIG_FIRMWARE) += firmware/
+ obj-$(CONFIG_GENERIC_PHY) += phy/
+ obj-$(CONFIG_HAB) += hab/
+ obj-$(CONFIG_CRYPTO_HW) += crypto/
++obj-$(CONFIG_AIODEV) += aiodev/
++
+diff --git a/drivers/aiodev/Kconfig b/drivers/aiodev/Kconfig
+new file mode 100644
+index 0000000..d6d4ac0
+--- /dev/null
++++ b/drivers/aiodev/Kconfig
+@@ -0,0 +1,8 @@
++#
++# Misc strange devices
++#
++menuconfig AIODEV
++	bool "Analog I/O drivers"
++
++if AIODEV
++endif
+diff --git a/drivers/aiodev/Makefile b/drivers/aiodev/Makefile
+new file mode 100644
+index 0000000..806464e
+--- /dev/null
++++ b/drivers/aiodev/Makefile
+@@ -0,0 +1,2 @@
++
++obj-$(CONFIG_AIODEV) += core.o
+diff --git a/drivers/aiodev/core.c b/drivers/aiodev/core.c
+new file mode 100644
+index 0000000..79f935d
+--- /dev/null
++++ b/drivers/aiodev/core.c
+@@ -0,0 +1,148 @@
++/*
++ * core.c - Code implementing core functionality of AIODEV susbsystem
++ *
++ * Copyright (c) 2015 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ *
++ * Copyright (c) 2015 Zodiac Inflight Innovation
++ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
++#include <aiodev.h>
++#include <linux/list.h>
++#include <malloc.h>
++
++LIST_HEAD(aiodevices);
++EXPORT_SYMBOL(aiodevices);
++
++struct aiochannel *aiochannel_get_by_name(const char *name)
++{
++	struct aiodevice *aiodev;
++	int i;
++
++	list_for_each_entry(aiodev, &aiodevices, list) {
++		for (i = 0; i < aiodev->num_channels; i++)
++			if (!strcmp(name, aiodev->channels[i]->name))
++				return aiodev->channels[i];
++	}
++
++	return ERR_PTR(-ENOENT);
++}
++EXPORT_SYMBOL(aiochannel_get_by_name);
++
++struct aiochannel *aiochannel_get(struct device_d *dev, int index)
++{
++	struct of_phandle_args spec;
++	struct aiodevice *aiodev;
++	int ret, chnum = 0;
++
++	if (!dev->device_node)
++		return ERR_PTR(-EINVAL);
++
++	ret = of_parse_phandle_with_args(dev->device_node,
++					 "io-channels",
++					 "#io-channel-cells",
++					 index, &spec);
++        if (ret)
++                return ERR_PTR(ret);
++
++	list_for_each_entry(aiodev, &aiodevices, list) {
++		if (aiodev->hwdev->device_node == spec.np)
++			goto found;
++	}
++
++	return ERR_PTR(-EPROBE_DEFER);
++
++found:
++	if (spec.args_count)
++		chnum = spec.args[0];
++
++	if (chnum >= aiodev->num_channels)
++		return ERR_PTR(-EINVAL);
++
++	return aiodev->channels[chnum];
++}
++EXPORT_SYMBOL(aiochannel_get);
++
++int aiochannel_get_value(struct aiochannel *aiochan, int *value)
++{
++	struct aiodevice *aiodev = aiochan->aiodev;
++
++	return aiodev->read(aiochan, value);
++}
++EXPORT_SYMBOL(aiochannel_get_value);
++
++int aiochannel_get_index(struct aiochannel *aiochan)
++{
++	return aiochan->index;
++}
++EXPORT_SYMBOL(aiochannel_get_index);
++
++static int aiochannel_param_get_value(struct param_d *p, void *priv)
++{
++	struct aiochannel *aiochan = priv;
++
++	return aiochannel_get_value(aiochan, &aiochan->value);
++}
++
++int aiodevice_register(struct aiodevice *aiodev)
++{
++	int i, ret;
++
++	if (!aiodev->name && aiodev->hwdev &&
++	    aiodev->hwdev->device_node) {
++		aiodev->dev.id = DEVICE_ID_SINGLE;
++
++		aiodev->name = of_alias_get(aiodev->hwdev->device_node);
++		if (!aiodev->name)
++			aiodev->name = aiodev->hwdev->device_node->name;
++	}
++
++	if (!aiodev->name) {
++		aiodev->name = "aiodev";
++		aiodev->dev.id = DEVICE_ID_DYNAMIC;
++	}
++
++	strcpy(aiodev->dev.name, aiodev->name);
++
++	aiodev->dev.parent = aiodev->hwdev;
++
++	ret = register_device(&aiodev->dev);
++	if (ret)
++		return ret;
++
++	for (i = 0; i < aiodev->num_channels; i++) {
++		struct aiochannel *aiochan = aiodev->channels[i];
++		char *name;
++
++		aiochan->index  = i;
++		aiochan->aiodev = aiodev;
++
++		name = xasprintf("in_value%d_%s", i, aiochan->unit);
++
++		dev_add_param_int(&aiodev->dev, name, NULL,
++				  aiochannel_param_get_value,
++				  &aiochan->value, "%d", aiochan);
++
++		aiochan->name = xasprintf("%s.%s", aiodev->name, name);
++
++		free(name);
++	}
++
++	list_add_tail(&aiodev->list, &aiodevices);
++
++	return 0;
++}
++EXPORT_SYMBOL(aiodevice_register);
+diff --git a/include/aiodev.h b/include/aiodev.h
+new file mode 100644
+index 0000000..0d4f7a2
+--- /dev/null
++++ b/include/aiodev.h
+@@ -0,0 +1,59 @@
++/*
++ * core.c - Code implementing core functionality of AIODEV susbsystem
++ *
++ * Copyright (c) 2015 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ * Copyright (c) 2015 Zodiac Inflight Innovation
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#ifndef __AIODEVICE_H
++#define __AIODEVICE_H
++
++struct aiodevice;
++struct aiochannel {
++	int index;
++	char *unit;
++	struct aiodevice *aiodev;
++
++	int value;
++	char *name;
++};
++
++struct aiodevice {
++	const char *name;
++	int (*read)(struct aiochannel *, int *val);
++	struct device_d dev;
++	struct device_d *hwdev;
++	struct aiochannel **channels;
++	int num_channels;
++	struct list_head list;
++};
++
++int aiodevice_register(struct aiodevice *aiodev);
++
++struct aiochannel *aiochannel_get(struct device_d *dev, int index);
++struct aiochannel *aiochannel_get_by_name(const char *name);
++
++int aiochannel_get_value(struct aiochannel *aiochan, int *value);
++int aiochannel_get_index(struct aiochannel *aiochan);
++
++static inline const char *aiochannel_get_unit(struct aiochannel *aiochan)
++{
++	return aiochan->unit;
++}
++
++extern struct list_head aiodevices;
++#define for_each_aiodevice(aiodevice) list_for_each_entry(aiodevice, &aiodevices, list)
++
++#endif
 -- 
 2.5.5
 
