@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b2LfJ-0006G8-ID
- for barebox@lists.infradead.org; Mon, 16 May 2016 16:46:47 +0000
-Received: by mail-pf0-x241.google.com with SMTP id y7so16219956pfb.0
- for <barebox@lists.infradead.org>; Mon, 16 May 2016 09:46:25 -0700 (PDT)
+ id 1b2LfM-0006Hr-40
+ for barebox@lists.infradead.org; Mon, 16 May 2016 16:46:49 +0000
+Received: by mail-pf0-x244.google.com with SMTP id 145so16245136pfz.1
+ for <barebox@lists.infradead.org>; Mon, 16 May 2016 09:46:27 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 16 May 2016 09:45:57 -0700
-Message-Id: <1463417161-28634-3-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 16 May 2016 09:45:59 -0700
+Message-Id: <1463417161-28634-5-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1463417161-28634-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1463417161-28634-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,93 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 2/6] commands: Add 'hwmon' command
+Subject: [PATCH v3 4/6] syscon: Decrease driver registration priority
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add 'hwmon' command which allows to display the readings of all
-hardware monitoring sensors registered with Barebox.
+A number of devices on i.MX6 list "syscon" as second compatibility
+string, among them, most importantly, is "iomuxv3" pinmux driver, which
+gets probed at "postcore_initcall". Probing this driver at
+"core_initcall" results in "syscon" driver usurping pinmux device and
+preventing "iomuxv3" driver from loading and correctly initializing
+pinmux of the system (which in turn results in a lot of sadness).
+
+Moving this driver to be initialized at "device_initcall" time resolves
+the issue.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- commands/Kconfig  |  8 ++++++++
- commands/Makefile |  1 +
- commands/hwmon.c  | 35 +++++++++++++++++++++++++++++++++++
- 3 files changed, 44 insertions(+)
- create mode 100644 commands/hwmon.c
+ drivers/mfd/syscon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 57f2878..44a457b 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -1830,6 +1830,14 @@ config CMD_HWCLOCK
- 	help
- 	  The hwclock command allows to query or set the hardware clock (RTC).
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index 9589a03..ee62da0 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -111,7 +111,7 @@ static int __init syscon_init(void)
+ {
+ 	return platform_driver_register(&syscon_driver);
+ }
+-core_initcall(syscon_init);
++device_initcall(syscon_init);
  
-+config CMD_HWMON
-+	bool
-+	depends on AIODEV
-+	prompt "hwmon command"
-+	default y
-+	help
-+	  The hwmon command allows to query hardware sensors.
-+
- config CMD_I2C
- 	bool
- 	depends on I2C
-diff --git a/commands/Makefile b/commands/Makefile
-index 065d649..3c8ad77 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -107,6 +107,7 @@ obj-$(CONFIG_CMD_REGULATOR)	+= regulator.o
- obj-$(CONFIG_CMD_LSPCI)		+= lspci.o
- obj-$(CONFIG_CMD_IMD)		+= imd.o
- obj-$(CONFIG_CMD_HWCLOCK)	+= hwclock.o
-+obj-$(CONFIG_CMD_HWMON)		+= hwmon.o
- obj-$(CONFIG_CMD_USBGADGET)	+= usbgadget.o
- obj-$(CONFIG_CMD_FIRMWARELOAD)	+= firmwareload.o
- obj-$(CONFIG_CMD_CMP)		+= cmp.o
-diff --git a/commands/hwmon.c b/commands/hwmon.c
-new file mode 100644
-index 0000000..ace4503
---- /dev/null
-+++ b/commands/hwmon.c
-@@ -0,0 +1,35 @@
-+#include <common.h>
-+#include <command.h>
-+#include <getopt.h>
-+#include <linux/err.h>
-+#include <linux/ctype.h>
-+#include <string.h>
-+#include <environment.h>
-+#include <aiodev.h>
-+
-+static int do_hwmon(int argc, char *argv[])
-+{
-+	int i;
-+	struct aiodevice *aiodev;
-+
-+	for_each_aiodevice(aiodev) {
-+		for (i = 0; i < aiodev->num_channels; i++) {
-+			struct aiochannel *chan = aiodev->channels[i];
-+			int value;
-+			int ret = aiochannel_get_value(chan, &value);
-+
-+			if (!ret)
-+				printf("%s: %d %s\n", chan->name, value, chan->unit);
-+			else
-+				printf("%s: failed to read (%d)\n", chan->name, ret);
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+BAREBOX_CMD_START(hwmon)
-+	.cmd		= do_hwmon,
-+	BAREBOX_CMD_DESC("query hardware sensors (HWMON)")
-+	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
-+BAREBOX_CMD_END
+ MODULE_AUTHOR("Dong Aisheng <dong.aisheng@linaro.org>");
+ MODULE_DESCRIPTION("System Control driver");
 -- 
 2.5.5
 
