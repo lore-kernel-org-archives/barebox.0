@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b2LfL-0006HB-5c
+ id 1b2LfJ-0006G8-ID
  for barebox@lists.infradead.org; Mon, 16 May 2016 16:46:47 +0000
-Received: by mail-pf0-x242.google.com with SMTP id g132so16217269pfb.3
- for <barebox@lists.infradead.org>; Mon, 16 May 2016 09:46:26 -0700 (PDT)
+Received: by mail-pf0-x241.google.com with SMTP id y7so16219956pfb.0
+ for <barebox@lists.infradead.org>; Mon, 16 May 2016 09:46:25 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 16 May 2016 09:45:58 -0700
-Message-Id: <1463417161-28634-4-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 16 May 2016 09:45:57 -0700
+Message-Id: <1463417161-28634-3-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1463417161-28634-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1463417161-28634-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,41 +23,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 3/6] syscon: Do not return NULL when driver is not selected
+Subject: [PATCH v3 2/6] commands: Add 'hwmon' command
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Both syscon_base_lookup_by_pdevname() and
-syscon_base_lookup_by_phandle(), when implemented, do not return NULL,
-so none of the code using those function is written to check for that.
-
-Change returns to ERR_PTR(-ENOSYS), to avoid having that problem.
+Add 'hwmon' command which allows to display the readings of all
+hardware monitoring sensors registered with Barebox.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- include/mfd/syscon.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ commands/Kconfig  |  8 ++++++++
+ commands/Makefile |  1 +
+ commands/hwmon.c  | 35 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 44 insertions(+)
+ create mode 100644 commands/hwmon.c
 
-diff --git a/include/mfd/syscon.h b/include/mfd/syscon.h
-index 2044520..651d4c2 100644
---- a/include/mfd/syscon.h
-+++ b/include/mfd/syscon.h
-@@ -21,13 +21,13 @@ void __iomem *syscon_base_lookup_by_phandle
- #else
- static inline void __iomem *syscon_base_lookup_by_pdevname(const char *s)
- {
--	return NULL;
-+	return ERR_PTR(-ENOSYS);
- }
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 57f2878..44a457b 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -1830,6 +1830,14 @@ config CMD_HWCLOCK
+ 	help
+ 	  The hwclock command allows to query or set the hardware clock (RTC).
  
- static inline void __iomem *syscon_base_lookup_by_phandle
- 	(struct device_node *np, const char *property)
- {
--	return NULL;
-+	return ERR_PTR(-ENOSYS);
- }
- #endif
- 
++config CMD_HWMON
++	bool
++	depends on AIODEV
++	prompt "hwmon command"
++	default y
++	help
++	  The hwmon command allows to query hardware sensors.
++
+ config CMD_I2C
+ 	bool
+ 	depends on I2C
+diff --git a/commands/Makefile b/commands/Makefile
+index 065d649..3c8ad77 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -107,6 +107,7 @@ obj-$(CONFIG_CMD_REGULATOR)	+= regulator.o
+ obj-$(CONFIG_CMD_LSPCI)		+= lspci.o
+ obj-$(CONFIG_CMD_IMD)		+= imd.o
+ obj-$(CONFIG_CMD_HWCLOCK)	+= hwclock.o
++obj-$(CONFIG_CMD_HWMON)		+= hwmon.o
+ obj-$(CONFIG_CMD_USBGADGET)	+= usbgadget.o
+ obj-$(CONFIG_CMD_FIRMWARELOAD)	+= firmwareload.o
+ obj-$(CONFIG_CMD_CMP)		+= cmp.o
+diff --git a/commands/hwmon.c b/commands/hwmon.c
+new file mode 100644
+index 0000000..ace4503
+--- /dev/null
++++ b/commands/hwmon.c
+@@ -0,0 +1,35 @@
++#include <common.h>
++#include <command.h>
++#include <getopt.h>
++#include <linux/err.h>
++#include <linux/ctype.h>
++#include <string.h>
++#include <environment.h>
++#include <aiodev.h>
++
++static int do_hwmon(int argc, char *argv[])
++{
++	int i;
++	struct aiodevice *aiodev;
++
++	for_each_aiodevice(aiodev) {
++		for (i = 0; i < aiodev->num_channels; i++) {
++			struct aiochannel *chan = aiodev->channels[i];
++			int value;
++			int ret = aiochannel_get_value(chan, &value);
++
++			if (!ret)
++				printf("%s: %d %s\n", chan->name, value, chan->unit);
++			else
++				printf("%s: failed to read (%d)\n", chan->name, ret);
++		}
++	}
++
++	return 0;
++}
++
++BAREBOX_CMD_START(hwmon)
++	.cmd		= do_hwmon,
++	BAREBOX_CMD_DESC("query hardware sensors (HWMON)")
++	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
++BAREBOX_CMD_END
 -- 
 2.5.5
 
