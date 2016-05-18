@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b2v2J-0000lu-Ol
- for barebox@lists.infradead.org; Wed, 18 May 2016 06:32:52 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 0D92AA00A43
- for <barebox@lists.infradead.org>; Wed, 18 May 2016 08:32:57 +0200 (CEST)
+ id 1b2vLR-0008Ga-4h
+ for barebox@lists.infradead.org; Wed, 18 May 2016 06:52:37 +0000
+Date: Wed, 18 May 2016 08:52:16 +0200
 From: Stefan Christ <s.christ@phytec.de>
-Date: Wed, 18 May 2016 08:32:02 +0200
-Message-Id: <1463553122-3033-1-git-send-email-s.christ@phytec.de>
+Message-ID: <20160518065216.GA2362@lws-christ>
+References: <1462861483-19983-1-git-send-email-s.hauer@pengutronix.de>
+ <1462861483-19983-4-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+In-Reply-To: <1462861483-19983-4-git-send-email-s.hauer@pengutronix.de>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,44 +19,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] imx-bbu-nand-fcb: add missing newline character
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/4] mtd: nand: nand_mxs: Add subpage read support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Signed-off-by: Stefan Christ <s.christ@phytec.de>
----
- common/imx-bbu-nand-fcb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
-index 1ffa79d..72b7b0e 100644
---- a/common/imx-bbu-nand-fcb.c
-+++ b/common/imx-bbu-nand-fcb.c
-@@ -927,13 +927,13 @@ static void read_firmware_all(struct mtd_info *mtd, struct fcb_block *fcb, void
- 	    fcb->Firmware2_startingPage == fw0) {
- 		first = 1;
- 	} else {
--		pr_warn("FCB is not what we expect. Update will not be robust");
-+		pr_warn("FCB is not what we expect. Update will not be robust\n");
- 		*used = 0;
- 		return;
- 	}
- 
- 	if (fcb->PagesInFirmware1 != fcb->PagesInFirmware2) {
--		pr_warn("FCB is not what we expect. Update will not be robust");
-+		pr_warn("FCB is not what we expect. Update will not be robust\n");
- 		return;
- 	}
- 
--- 
-1.9.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKT24gVHVlLCBNYXkgMTAsIDIwMTYgYXQgMDg6MjQ6NDNBTSArMDIwMCwgU2Fz
+Y2hhIEhhdWVyIHdyb3RlOgo+IHN1YnBhZ2UgcmVhZCBzdXBwb3J0IGNhbiBzaWduaWZpY2FudGx5
+IHNwZWVkIHVwIHNjYW5uaW5nIFVCSSB2b2x1bWVzLCBzbwo+IGFkZCBzdXBwb3J0IGZvciBpdC4g
+VGhpcyBpcyBpbnNwaXJlZCBieSB0aGUgY29ycmVzcG9uZGluZyBLZXJuZWwgY29tbWl0Lgo+IFVu
+bGlrZSBpbiB0aGUga2VybmVsIHdlIGFkZCBzdWJwYWdlIHJlYWQgc3VwcG9ydCBmb3IgaS5NWDI4
+IGFzd2VsbC4KPiBUZXN0aW5nIGl0IG9uIGkuTVgyOCByZXZlYWxlZCBubyBwcm9ibGVtcy4KPiAK
+PiBTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+CgpI
+ZXJlIGlzIG15IAoKICAgIFRlc3RlZC1ieTogU3RlZmFuIENocmlzdCA8cy5jaHJpc3RAcGh5dGVj
+LmRlPgoKSSBtZWFzdXJlZCB0aGUgdWJpYXR0YWNoIHRpbWUgZm9yIHR3byBkaWZmZXJlbnQgTkFO
+RCBjaGlwcyBhZnRlciBhbiB1Ymlmb3JtYXQKb24gdGhlIGRldmljZXMuIEl0J3MgYXJvdW5kIDMw
+JSBmYXN0ZXIuIEhlcmUgYXJlIHRoZSByZXN1bHRzOgoKICAgIG5hbmQ6IE5BTkQgZGV2aWNlOiBN
+YW51ZmFjdHVyZXIgSUQ6IDB4MDEsIENoaXAgSUQ6IDB4ZDMKICAgIChBTUQvU3BhbnNpb24gUzM0
+TUwwOEcyKSwgMTAyNE1pQiwgcGFnZSBzaXplOiAyMDQ4LCBPT0Igc2l6ZTogMTI4CgogICAgIyB3
+aXRob3V0IHBhdGNoZXMKICAgIGJhcmVib3hAUGh5dGVjIHBoeUZMRVgtaS5NWDYgUXVhZCBDYXJy
+aWVyLUJvYXJkOi8gdGltZSB1YmlhdHRhY2ggIC9kZXYvbmFuZDAucm9vdAogICAgVUJJOiBzY2Fu
+bmluZyBpcyBmaW5pc2hlZAogICAgVUJJOiByZWdpc3RlcmluZyAvZGV2L25hbmQwLnJvb3QudWJp
+CiAgICBVQkk6IGF0dGFjaGVkIG10ZDAgKG5hbWUgIm5hbmQwLnJvb3QiLCBzaXplIDEwMTAgTWlC
+KSB0byB1YmkwCiAgICB0aW1lOiA5MjA4bXMKCiAgICAjIHdpdGggcGF0Y2hlcwogICAgYmFyZWJv
+eEBQaHl0ZWMgcGh5RkxFWC1pLk1YNiBRdWFkIENhcnJpZXItQm9hcmQ6LyB0aW1lIHViaWF0dGFj
+aCAgL2Rldi9uYW5kMC5yb290CiAgICB0aW1lOiA2NTI0bXMKCiAgICAjIFNhdmVkIHRpbWUgMjY4
+NG1zICgtMjklKQogICAgCgogICAgbmFuZDogTkFORCBkZXZpY2U6IE1hbnVmYWN0dXJlciBJRDog
+MHgyYywgQ2hpcCBJRDogMHhkYwogICAgKE1pY3JvbiBNVDI5RjRHMDhBQkFEQVdQKSwgNTEyTWlC
+LCBwYWdlIHNpemU6IDIwNDgsIE9PQiBzaXplOiA2NAoKICAgICMgd2l0aG91dCBwYXRjaGVzIAog
+ICAgYmFyZWJveEBQaHl0ZWMgcGh5Q09SRS1pLk1YNiBEdWFsbGl0ZS9TT0xPIHdpdGggTkFORDov
+IHRpbWUgdWJpYXR0YWNoIC9kZXYvbmFuZDAucm9vdAogICAgdGltZTogNDE1OG1zCgogICAgIyB3
+aXRoIHBhdGNoZXMKICAgIGJhcmVib3hAUGh5dGVjIHBoeUNPUkUtaS5NWDYgRHVhbGxpdGUvU09M
+TyB3aXRoIE5BTkQ6LyB0aW1lIHViaWF0dGFjaCAvZGV2L25hbmQwLnJvb3QKICAgIHRpbWU6IDI4
+NDJtcwoKICAgICMgU2F2ZWQgdGltZSAxMzE2bXMgKC0zMSUpCgpNaXQgZnJldW5kbGljaGVuIEdy
+w7zDn2VuIC8gS2luZCByZWdhcmRzLAoJU3RlZmFuIENocmlzdAoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
+eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
+bGlzdGluZm8vYmFyZWJveAo=
