@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b2avi-0002EM-Cq
- for barebox@lists.infradead.org; Tue, 17 May 2016 09:04:43 +0000
+ id 1b2uMF-0005b0-U7
+ for barebox@lists.infradead.org; Wed, 18 May 2016 05:49:24 +0000
+Date: Wed, 18 May 2016 07:49:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 17 May 2016 11:04:14 +0200
-Message-Id: <1463475854-30224-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1463475854-30224-1-git-send-email-s.hauer@pengutronix.de>
-References: <1463475854-30224-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20160518054901.GY19714@pengutronix.de>
+References: <1463417161-28634-1-git-send-email-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1463417161-28634-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,47 +18,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] ARM: i.MX: HABv3: Set to production mode
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v3 0/6] AIODEV subsystem
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-The HABv3 images for engineering mode do not work on a production device
-and the images for production mode do not work on an engineering device.
+On Mon, May 16, 2016 at 09:45:55AM -0700, Andrey Smirnov wrote:
+> Hi everyone,
+> 
+> Here's the third version of AIODEV patchset. The change list is the
+> following:
+> 
+> Changes since v2:
+> 
+> 	- TEMPMON driver converted to use existing DT bindings
+> 
+> 	- As a result of the above NVMEM subsystem was dropped
+> 
+> 	- TEMPMON driver converted to use syscon_base_lookup_by_phandle
+> 
+> Changes since v1:
+> 
+> 	- Patches fixed to use IIO DT bindings
+> 
+> 	- Channel's index is now cached and no O(n) complex lookup is
+>           perfomed when a channel is queried by its index
+> 
+> 	- Added GPL v2 headers
+> 
+> 	- Incorporated Sascha's feedback to simplify code
+> 
+> 
+> Andrey Smirnov (5):
+>   RDU2: Add more peripheral reset code
+>   commands: Add 'hwmon' command
+>   syscon: Do not return NULL when driver is not selected
+>   syscon: Decrease driver registration priority
+>   aiodev: Add TEMPMON driver
+> 
+> Sascha Hauer (2):
+>   drivers: Introduce AIODEV subsystem
+>   aiodev: Add basic LM75 temperature driver
 
-When in engineering mode the ROM checks the images, but does not stop
-booting when the signatures are wrong. This means a production image
-can still be booted on an engineering device. This device can be
-temporarily put into production mode by writing to the HAB_TYPE shadow
-fuse register. After a reset the device will come up in production mode
-and the image can be tested for validity. This means that if we have to
-decide between production mode images and engineering images, the
-production images are a better decision. Change this accordingly.
+Applied, thanks for continuing the work on this.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sascha
 
-diff --git a/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h b/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
-index 4b81d49..f4804fe 100644
---- a/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
-+++ b/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
-@@ -11,7 +11,7 @@ super_root_key CONFIG_HABV3_SRK_PEM
- 
- hab [Header]
- hab Version = 3.0
--hab Security Configuration = Engineering
-+hab Security Configuration = Production
- hab Hash Algorithm = SHA256
- hab Engine = RTIC
- hab Certificate Format = WTLS
 -- 
-2.8.0.rc3
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
