@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b3HdC-0002LD-3G
- for barebox@lists.infradead.org; Thu, 19 May 2016 06:40:27 +0000
-Date: Thu, 19 May 2016 08:40:04 +0200
+ id 1b3HxP-0003J3-0K
+ for barebox@lists.infradead.org; Thu, 19 May 2016 07:01:19 +0000
+Date: Thu, 19 May 2016 09:00:56 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160519064004.GB11148@pengutronix.de>
-References: <1463553122-3033-1-git-send-email-s.christ@phytec.de>
+Message-ID: <20160519070056.GC11148@pengutronix.de>
+References: <1462861483-19983-1-git-send-email-s.hauer@pengutronix.de>
+ <1462861483-19983-4-git-send-email-s.hauer@pengutronix.de>
+ <20160518065216.GA2362@lws-christ>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1463553122-3033-1-git-send-email-s.christ@phytec.de>
+In-Reply-To: <20160518065216.GA2362@lws-christ>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +24,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] imx-bbu-nand-fcb: add missing newline character
+Subject: Re: [PATCH 4/4] mtd: nand: nand_mxs: Add subpage read support
 To: Stefan Christ <s.christ@phytec.de>
-Cc: barebox@lists.infradead.org
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Wed, May 18, 2016 at 08:32:02AM +0200, Stefan Christ wrote:
-> Signed-off-by: Stefan Christ <s.christ@phytec.de>
-> ---
->  common/imx-bbu-nand-fcb.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+On Wed, May 18, 2016 at 08:52:16AM +0200, Stefan Christ wrote:
+> Hi Sascha,
+> 
+> On Tue, May 10, 2016 at 08:24:43AM +0200, Sascha Hauer wrote:
+> > subpage read support can significantly speed up scanning UBI volumes, so
+> > add support for it. This is inspired by the corresponding Kernel commit.
+> > Unlike in the kernel we add subpage read support for i.MX28 aswell.
+> > Testing it on i.MX28 revealed no problems.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> 
+> Here is my 
+> 
+>     Tested-by: Stefan Christ <s.christ@phytec.de>
+> 
+> I measured the ubiattach time for two different NAND chips after an ubiformat
+> on the devices. It's around 30% faster. Here are the results:
 
-Applied, thanks
+Thanks for testing this.
+
+The results become even better with bigger pages. I have a board with 8k
+page Nand here. The scanning time reduced from 31s to 3.5s.
 
 Sascha
-
-> 
-> diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
-> index 1ffa79d..72b7b0e 100644
-> --- a/common/imx-bbu-nand-fcb.c
-> +++ b/common/imx-bbu-nand-fcb.c
-> @@ -927,13 +927,13 @@ static void read_firmware_all(struct mtd_info *mtd, struct fcb_block *fcb, void
->  	    fcb->Firmware2_startingPage == fw0) {
->  		first = 1;
->  	} else {
-> -		pr_warn("FCB is not what we expect. Update will not be robust");
-> +		pr_warn("FCB is not what we expect. Update will not be robust\n");
->  		*used = 0;
->  		return;
->  	}
->  
->  	if (fcb->PagesInFirmware1 != fcb->PagesInFirmware2) {
-> -		pr_warn("FCB is not what we expect. Update will not be robust");
-> +		pr_warn("FCB is not what we expect. Update will not be robust\n");
->  		return;
->  	}
->  
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
