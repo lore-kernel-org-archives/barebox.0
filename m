@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b3V9J-0001x3-6X
- for barebox@lists.infradead.org; Thu, 19 May 2016 21:06:29 +0000
-Received: by mail-lf0-x243.google.com with SMTP id 78so2689519lfq.0
- for <barebox@lists.infradead.org>; Thu, 19 May 2016 14:06:08 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 20 May 2016 00:05:59 +0300
-Message-Id: <1463691959-3628-1-git-send-email-antonynpavlov@gmail.com>
+ id 1b3XVy-0006BM-Cm
+ for barebox@lists.infradead.org; Thu, 19 May 2016 23:38:03 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Thu, 19 May 2016 23:37:38 +0000
+Message-ID: <1463701062.15779.31.camel@rtred1test09.kymeta.local>
+Content-Language: en-US
+Content-ID: <21F33C9B2B944344A24155DD79EE8ABF@kymetacorp.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,69 +17,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] imd: make it work on big-endian machine
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH 1/2] rtc: ds1307: Add ds1308 to driver's ID list
+To: barebox <barebox@lists.infradead.org>
 
-The commit
+As far as the driver is concerned, it's the same as a 1338.  It's too
+bad the i2c drivers can't make use of OF compatible properties with a
+list of compatible devices.
 
-    commit 5e335773e0814173b40873a891964a7858d64688
-    Author: Sascha Hauer <s.hauer@pengutronix.de>
-    Date:   Tue Mar 29 10:06:46 2016 +0200
-
-        imd: use struct imd_header * as argument
-
-introduces additional imd type checks like this
-
-    if (!imd_is_string(imd->type))
-           return NULL;
-
-These checks work incorrectly on any big-endian machine
-because imd->type field needs addition convertion
-to little-endian byteorder before use.
-
-Here is the imd command output on big-endian qemu-malta:
-
-    barebox:/ imd /dev/nor0.barebox
-    release: <NULL>
-    build: <NULL>
-
-This patch fixes the problem by adding necessary convertion
-via imd_read_type().
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
 ---
- common/imd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/rtc/rtc-ds1307.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/common/imd.c b/common/imd.c
-index 159b73a..a8a10fc 100644
---- a/common/imd.c
-+++ b/common/imd.c
-@@ -212,7 +212,7 @@ const char *imd_string_data(struct imd_header *imd, int index)
- 	int len = imd_read_length(imd);
- 	char *p = (char *)(imd + 1);
- 
--	if (!imd_is_string(imd->type))
-+	if (!imd_is_string(imd_read_type(imd)))
- 		return NULL;
- 
- 	for (i = 0; total < len; total += l, p += l) {
-@@ -239,7 +239,7 @@ char *imd_concat_strings(struct imd_header *imd)
- 	char *str;
- 	char *data = (char *)(imd + 1);
- 
--	if (!imd_is_string(imd->type))
-+	if (!imd_is_string(imd_read_type(imd)))
- 		return NULL;
- 
- 	str = malloc(len);
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index 726586a..ca630ea 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -106,6 +106,7 @@ struct ds1307 {
+ static struct platform_device_id ds1307_id[] = {
+ 	{ "ds1307", ds_1307 },
+ 	{ "ds1337", ds_1337 },
++	{ "ds1308", ds_1338 }, /* Difference 1308 to 1338 irrelevant */
+ 	{ "ds1338", ds_1338 },
+ 	{ "ds1341", ds_1341 },
+ 	{ "pt7c4338", ds_1307 },
 -- 
-2.7.0
+2.7.0.25.gfc10eb5.dirty
 
 
 _______________________________________________
