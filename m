@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b3jRS-0004th-7n
+ by casper.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1b3jRT-0000KJ-AW
  for barebox@lists.infradead.org; Fri, 20 May 2016 12:22:12 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri, 20 May 2016 14:21:43 +0200
-Message-Id: <1463746903-6676-3-git-send-email-s.trumtrar@pengutronix.de>
-In-Reply-To: <1463746903-6676-1-git-send-email-s.trumtrar@pengutronix.de>
-References: <1463746903-6676-1-git-send-email-s.trumtrar@pengutronix.de>
+Date: Fri, 20 May 2016 14:21:41 +0200
+Message-Id: <1463746903-6676-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,123 +19,128 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] firmware: add support for compressed images
+Subject: [PATCH 1/3] ARM: add fncpy.h from linux v4.6
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Allow using compressed firmware images with the firmware framework.
+Description from the linux commit 5756e9dd0de6d5c307773f8f734c0684b3098fdd:
+
+    ARM: 6640/1: Thumb-2: Symbol manipulation macros for function body copying
+
+    In low-level board support code, there is sometimes a need to
+    copy a function body to another location at run-time.
+
+    A straightforward call to memcpy doesn't work in Thumb-2,
+    because bit 0 of external Thumb function symbols is set to 1,
+    indicating that the function is Thumb.  Without corrective
+    measures, this will cause an off-by-one copy, and the copy
+    may be called using the wrong instruction set.
+
+    This patch adds an fncpy() macro to help with such copies.
+
+    Particular care is needed, because C doesn't guarantee any
+    defined behaviour when casting a function pointer to any other
+    type.  This has been observed to lead to strange optimisation
+    side-effects when doing the arithmetic which is required in
+    order to copy/move function bodies correctly in Thumb-2.
+
+    Thanks to Russell King and Nicolas Pitre for their input
+    on this patch.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- common/firmware.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 78 insertions(+), 4 deletions(-)
+ arch/arm/include/asm/fncpy.h | 82 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 82 insertions(+)
+ create mode 100644 arch/arm/include/asm/fncpy.h
 
-diff --git a/common/firmware.c b/common/firmware.c
-index 664f9107d0f8..6437005bf813 100644
---- a/common/firmware.c
-+++ b/common/firmware.c
-@@ -22,6 +22,8 @@
- #include <linux/list.h>
- #include <linux/stat.h>
- #include <linux/err.h>
-+#include <uncompress.h>
-+#include <filetype.h>
- 
- #define BUFSIZ 4096
- 
-@@ -197,16 +199,88 @@ out:
- }
- 
- /*
-+ * firmware_load_compressed - load a compressed firmware to a device
+diff --git a/arch/arm/include/asm/fncpy.h b/arch/arm/include/asm/fncpy.h
+new file mode 100644
+index 000000000000..d13876bffa23
+--- /dev/null
++++ b/arch/arm/include/asm/fncpy.h
+@@ -0,0 +1,82 @@
++/*
++ * arch/arm/include/asm/fncpy.h - helper macros for function body copying
++ *
++ * Copyright (C) 2011 Linaro Limited
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 + */
-+int firmwaremgr_load_compressed(const char *firmware, const char *dst)
-+{
-+	int srcfd = 0;
-+	int dstfd = 0;
-+	int ret;
-+
-+	srcfd = open(firmware, O_RDONLY);
-+	if (srcfd < 0) {
-+		printf("could not open %s: %s\n", firmware, errno_str());
-+		ret = srcfd;
-+		goto out;
-+	}
-+
-+	dstfd = open(dst, O_WRONLY | O_TRUNC);
-+	if (dstfd < 0) {
-+		printf("could not open %s: %s\n", dst, errno_str());
-+		ret = dstfd;
-+		goto out;
-+	}
-+
-+	ret = uncompress_fd_to_fd(srcfd, dstfd, uncompress_err_stdout);
-+
-+out:
-+	if (dstfd > 0)
-+		close(dstfd);
-+
-+	return ret;
-+}
 +
 +/*
-  * firmware_load_file - load a firmware to a device
-  */
- int firmwaremgr_load_file(struct firmware_mgr *mgr, const char *firmware)
- {
--	int ret;
--	char *name = basprintf("/dev/%s", mgr->handler->id);
-+	char *dst = basprintf("/dev/%s", mgr->handler->id);
-+	enum filetype type;
-+	int ret = -ENOENT;
-+	int srcfd = 0;
-+	char buf[32];
++ * These macros are intended for use when there is a need to copy a low-level
++ * function body into special memory.
++ *
++ * For example, when reconfiguring the SDRAM controller, the code doing the
++ * reconfiguration may need to run from SRAM.
++ *
++ * NOTE: that the copied function body must be entirely self-contained and
++ * position-independent in order for this to work properly.
++ *
++ * NOTE: in order for embedded literals and data to get referenced correctly,
++ * the alignment of functions must be preserved when copying.  To ensure this,
++ * the source and destination addresses for fncpy() must be aligned to a
++ * multiple of 8 bytes: you will be get a BUG() if this condition is not met.
++ * You will typically need a ".align 3" directive in the assembler where the
++ * function to be copied is defined, and ensure that your allocator for the
++ * destination buffer returns 8-byte-aligned pointers.
++ *
++ * Typical usage example:
++ *
++ * extern int f(args);
++ * extern uint32_t size_of_f;
++ * int (*copied_f)(args);
++ * void *sram_buffer;
++ *
++ * copied_f = fncpy(sram_buffer, &f, size_of_f);
++ *
++ * ... later, call the function: ...
++ *
++ * copied_f(args);
++ *
++ * The size of the function to be copied can't be determined from C:
++ * this must be determined by other means, such as adding assmbler directives
++ * in the file where f is defined.
++ */
 +
-+	if (firmware) {
-+		srcfd = open(firmware, O_RDONLY);
-+		if (srcfd < 0) {
-+			printf("could not open %s: %s\n", firmware, errno_str());
-+			ret = srcfd;
-+			goto out;
-+		}
- 
--	ret = copy_file(firmware, name, 0);
-+		ret = read(srcfd, buf, sizeof(buf));
-+		if (ret < sizeof(buf))
-+			goto out;
- 
--	free(name);
-+		type = file_detect_type(buf, 32);
-+		if ((int)type < 0) {
-+			printf("could not open %s: %s\n", firmware,
-+					strerror(-type));
-+			ret = (int)type;
-+			goto out;
-+		}
++#ifndef __ASM_FNCPY_H
++#define __ASM_FNCPY_H
 +
-+		close(srcfd);
++#include <linux/types.h>
++#include <linux/string.h>
 +
-+		switch (type) {
-+		case filetype_lzo_compressed:
-+		case filetype_lz4_compressed:
-+		case filetype_bzip2:
-+		case filetype_gzip:
-+			ret = firmwaremgr_load_compressed(firmware, dst);
-+			break;
-+		case filetype_unknown:
-+			ret = copy_file(firmware, dst, 0);
-+			break;
-+		default:
-+			ret = -ENOSYS;
-+			printf("unsupported filetype (%d)\n", (int) type);
-+		}
-+	}
++/*
++ * Minimum alignment requirement for the source and destination addresses
++ * for function copying.
++ */
++#define FNCPY_ALIGN 8
 +
-+out:
-+	free(dst);
- 
- 	return ret;
- }
++#define fncpy(dest_buf, funcp, size) ({					\
++	uintptr_t __funcp_address;					\
++	typeof(funcp) __result;						\
++									\
++	asm("" : "=r" (__funcp_address) : "0" (funcp));			\
++									\
++	memcpy(dest_buf, (void const *)(__funcp_address & ~1), size);	\
++									\
++	asm("" : "=r" (__result)					\
++		: "0" ((uintptr_t)(dest_buf) | (__funcp_address & 1)));	\
++									\
++	__result;							\
++})
++
++#endif /* !__ASM_FNCPY_H */
 -- 
 2.8.0.rc3
 
