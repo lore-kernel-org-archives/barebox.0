@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b3HxP-0003J3-0K
- for barebox@lists.infradead.org; Thu, 19 May 2016 07:01:19 +0000
-Date: Thu, 19 May 2016 09:00:56 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160519070056.GC11148@pengutronix.de>
-References: <1462861483-19983-1-git-send-email-s.hauer@pengutronix.de>
- <1462861483-19983-4-git-send-email-s.hauer@pengutronix.de>
- <20160518065216.GA2362@lws-christ>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20160518065216.GA2362@lws-christ>
+ id 1b3KFS-0005ne-SA
+ for barebox@lists.infradead.org; Thu, 19 May 2016 09:28:09 +0000
+Received: by mail-wm0-x244.google.com with SMTP id r12so19363811wme.0
+ for <barebox@lists.infradead.org>; Thu, 19 May 2016 02:27:46 -0700 (PDT)
+From: Raphael Poggi <poggi.raph@gmail.com>
+Date: Fri, 20 May 2016 03:11:09 +0200
+Message-Id: <1463706669-39738-4-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <1463706669-39738-1-git-send-email-poggi.raph@gmail.com>
+References: <1463706669-39738-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,44 +18,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] mtd: nand: nand_mxs: Add subpage read support
-To: Stefan Christ <s.christ@phytec.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 3/3] arm64: board: virt: set up mmu
+To: barebox@lists.infradead.org
+Cc: Raphael Poggi <poggi.raph@gmail.com>
 
-On Wed, May 18, 2016 at 08:52:16AM +0200, Stefan Christ wrote:
-> Hi Sascha,
-> 
-> On Tue, May 10, 2016 at 08:24:43AM +0200, Sascha Hauer wrote:
-> > subpage read support can significantly speed up scanning UBI volumes, so
-> > add support for it. This is inspired by the corresponding Kernel commit.
-> > Unlike in the kernel we add subpage read support for i.MX28 aswell.
-> > Testing it on i.MX28 revealed no problems.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> 
-> Here is my 
-> 
->     Tested-by: Stefan Christ <s.christ@phytec.de>
-> 
-> I measured the ubiattach time for two different NAND chips after an ubiformat
-> on the devices. It's around 30% faster. Here are the results:
+Enable mmu and set correct mapping for periph and flash memory ranges.
 
-Thanks for testing this.
+Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
+---
+ arch/arm64/boards/virt/init.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-The results become even better with bigger pages. I have a board with 8k
-page Nand here. The scanning time reduced from 31s to 3.5s.
-
-Sascha
-
+diff --git a/arch/arm64/boards/virt/init.c b/arch/arm64/boards/virt/init.c
+index 81e742d..9626067 100644
+--- a/arch/arm64/boards/virt/init.c
++++ b/arch/arm64/boards/virt/init.c
+@@ -13,6 +13,7 @@
+ #include <linux/sizes.h>
+ #include <io.h>
+ #include <globalvar.h>
++#include <asm/mmu.h>
+ 
+ static int virt_mem_init(void)
+ {
+@@ -50,3 +51,17 @@ static int virt_core_init(void)
+ 	return 0;
+ }
+ postcore_initcall(virt_core_init);
++
++static int virt_mmu_enable(void)
++{
++	/* Mapping all periph range */
++	arch_remap_range(0x09000000, 0x01000000, PMD_SECT_DEF_CACHED);
++
++	/* Mapping all flash range */
++	arch_remap_range(0x00000000, 0x08000000, PMD_SECT_DEF_CACHED);
++
++	mmu_enable();
++
++	return 0;
++}
++postmmu_initcall(virt_mmu_enable);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.0
+
 
 _______________________________________________
 barebox mailing list
