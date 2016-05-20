@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b3oaH-0007Na-UB
- for barebox@lists.infradead.org; Fri, 20 May 2016 17:51:41 +0000
+ id 1b3p69-0004k8-9J
+ for barebox@lists.infradead.org; Fri, 20 May 2016 18:24:34 +0000
 From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Fri, 20 May 2016 17:51:14 +0000
-Message-ID: <1463766678.15779.45.camel@rtred1test09.kymeta.local>
+Date: Fri, 20 May 2016 18:24:11 +0000
+Message-ID: <1463768655.15779.59.camel@rtred1test09.kymeta.local>
 References: <1463746903-6676-1-git-send-email-s.trumtrar@pengutronix.de>
- <1463746903-6676-3-git-send-email-s.trumtrar@pengutronix.de>
-In-Reply-To: <1463746903-6676-3-git-send-email-s.trumtrar@pengutronix.de>
+ <1463746903-6676-2-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1463746903-6676-2-git-send-email-s.trumtrar@pengutronix.de>
 Content-Language: en-US
-Content-ID: <DD927549511F2B45BF771381C08427BE@kymetacorp.com>
+Content-ID: <97ED6C592E98CA43B6C37801E0EE2365@kymetacorp.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,143 +24,154 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] firmware: add support for compressed images
+Subject: Re: [PATCH 2/3] firmware: socfpga: set APPLYCFG after loading
+ bitstream
 To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
 On Fri, 2016-05-20 at 14:21 +0200, Steffen Trumtrar wrote:
-> Allow using compressed firmware images with the firmware framework.
+> If the FPGA-side of the SDRAM controller is reconfigured via the bitstream,
+> the APPLYCFG bit needs to be set, so the Controller applies the new setup.
+
+Might want to mention how this patch uses the OCRAM.
+
+Would an alternative method be to lock the cache line containing the
+code in question?
+
+In fact, since the instruction cache would be enabled, why would a
+transfer to SDRAM be executing anyway?  Is the issue that a cache
+write-back could be in progress or the L2 controller could be filling
+the rest of a cache line?  If that's the case, then does copying only
+the function where APPLYCFG bit is set fix that problem?
+
 > 
 > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > ---
->  common/firmware.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 78 insertions(+), 4 deletions(-)
+>  arch/arm/mach-socfpga/include/mach/socfpga-regs.h |  1 +
+>  drivers/firmware/Makefile                         |  2 +-
+>  drivers/firmware/socfpga.c                        | 24 +++++++++++++++++++++++
+>  drivers/firmware/socfpga_sdr.S                    | 17 ++++++++++++++++
+>  4 files changed, 43 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/firmware/socfpga_sdr.S
 > 
-> diff --git a/common/firmware.c b/common/firmware.c
-> index 664f9107d0f8..6437005bf813 100644
-> --- a/common/firmware.c
-> +++ b/common/firmware.c
-> @@ -22,6 +22,8 @@
->  #include <linux/list.h>
->  #include <linux/stat.h>
->  #include <linux/err.h>
-> +#include <uncompress.h>
-> +#include <filetype.h>
+> diff --git a/arch/arm/mach-socfpga/include/mach/socfpga-regs.h b/arch/arm/mach-socfpga/include/mach/socfpga-regs.h
+> index e88daf718917..1a7d787a27bf 100644
+> --- a/arch/arm/mach-socfpga/include/mach/socfpga-regs.h
+> +++ b/arch/arm/mach-socfpga/include/mach/socfpga-regs.h
+> @@ -18,5 +18,6 @@
+>  #define CYCLONE5_SYSMGR_ADDRESS		0xffd08000
+>  #define CYCLONE5_SCANMGR_ADDRESS	0xfff02000
+>  #define CYCLONE5_SMP_TWD_ADDRESS	0xfffec600
+> +#define CYCLONE5_OCRAM_ADDRESS		0xffff0000
 >  
->  #define BUFSIZ 4096
+>  #endif /* __MACH_SOCFPGA_REGS_H */
+> diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
+> index c3a3c3400485..ac4f18bb3d78 100644
+> --- a/drivers/firmware/Makefile
+> +++ b/drivers/firmware/Makefile
+> @@ -1,2 +1,2 @@
+>  obj-$(CONFIG_FIRMWARE_ALTERA_SERIAL) += altera_serial.o
+> -obj-$(CONFIG_FIRMWARE_ALTERA_SOCFPGA) += socfpga.o
+> +obj-$(CONFIG_FIRMWARE_ALTERA_SOCFPGA) += socfpga.o socfpga_sdr.o
+> diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
+> index a0cd2011cbce..a7a86a03d8fd 100644
+> --- a/drivers/firmware/socfpga.c
+> +++ b/drivers/firmware/socfpga.c
+> @@ -38,6 +38,7 @@
+>  #include <mach/reset-manager.h>
+>  #include <mach/socfpga-regs.h>
+>  #include <mach/sdram.h>
+> +#include <asm/fncpy.h>
 >  
-> @@ -197,16 +199,88 @@ out:
+>  #define FPGAMGRREGS_STAT			0x0
+>  #define FPGAMGRREGS_CTRL			0x4
+> @@ -77,6 +78,9 @@
+>  #define CDRATIO_x4	0x2
+>  #define CDRATIO_x8	0x3
+>  
+> +extern void socfpga_sdram_apply_static_cfg(void __iomem *sdrctrlgrp);
+> +extern void socfpga_sdram_apply_static_cfg_end(void *);
+> +
+>  struct fpgamgr {
+>  	struct firmware_handler fh;
+>  	struct device_d dev;
+> @@ -353,6 +357,9 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
+>  {
+>  	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
+>  	int status;
+> +	unsigned int func_size = &socfpga_sdram_apply_static_cfg_end -
+> +				 &socfpga_sdram_apply_static_cfg;
+> +	void (*ocram_func)(void __iomem *ocram_base);
+>  
+>  	/* Ensure the FPGA entering config done */
+>  	status = fpgamgr_program_poll_cd(mgr);
+> @@ -382,6 +389,23 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
+>  		return status;
+>  	}
+>  
+> +	/*
+> +	 * When the f2sdram bridge is used in a bitstream, the configuration
+> +	 * has to be latched into the SDR controller, when no transfers from
+> +	 * or to the SDRAM happen. That means we need to run the code from
+> +	 * OCRAM.
+> +	 *
+> +	 * Copy the assembler code for setting the bit to OCRAM and then
+> +	 * execute the function.
+> +	 */
+> +	dev_dbg(&mgr->dev, "Setting APPLYCFG bit...\n");
+> +
+> +	ocram_func = fncpy((void __iomem *)CYCLONE5_OCRAM_ADDRESS,
+> +			   &socfpga_sdram_apply_static_cfg, func_size);
+
+I wonder if there is a way to use request_sdram_region() to make sure
+barebox isn't using ocram?  Like for the exception vectors, isn't it
+possible to place them at this address (0xffff0000) instead of
+0x00000000.
+
+> +
+> +	ocram_func((void __iomem *) (CYCLONE5_SDR_ADDRESS +
+> +				     SDR_CTRLGRP_STATICCFG_ADDRESS));
+> +
+>  	return 0;
 >  }
 >  
->  /*
-> + * firmware_load_compressed - load a compressed firmware to a device
-> + */
-> +int firmwaremgr_load_compressed(const char *firmware, const char *dst)
-> +{
-> +	int srcfd = 0;
-> +	int dstfd = 0;
-> +	int ret;
+> diff --git a/drivers/firmware/socfpga_sdr.S b/drivers/firmware/socfpga_sdr.S
+> new file mode 100644
+> index 000000000000..d634d6362722
+> --- /dev/null
+> +++ b/drivers/firmware/socfpga_sdr.S
+> @@ -0,0 +1,17 @@
+> +#include <linux/linkage.h>
 > +
-> +	srcfd = open(firmware, O_RDONLY);
-> +	if (srcfd < 0) {
-> +		printf("could not open %s: %s\n", firmware, errno_str());
-> +		ret = srcfd;
-> +		goto out;
-> +	}
+> +	.arch	armv7-a
+> +	.arm
 
-Since the firmware was already opened, could the fd be passed to this
-function so it doesn't need to be opened again?
+Is there a reason to force arm mode? It seems like it should be possible
+to use whatever has been selected for barebox, arm or thumb2.
 
-> +
-> +	dstfd = open(dst, O_WRONLY | O_TRUNC);
-> +	if (dstfd < 0) {
-> +		printf("could not open %s: %s\n", dst, errno_str());
-> +		ret = dstfd;
-> +		goto out;
-> +	}
-> +
-> +	ret = uncompress_fd_to_fd(srcfd, dstfd, uncompress_err_stdout);
-> +
-> +out:
-> +	if (dstfd > 0)
-> +		close(dstfd);
-> +
-> +	return ret;
-> +}
 > +
 > +/*
->   * firmware_load_file - load a firmware to a device
->   */
->  int firmwaremgr_load_file(struct firmware_mgr *mgr, const char *firmware)
->  {
-> -	int ret;
-> -	char *name = basprintf("/dev/%s", mgr->handler->id);
-> +	char *dst = basprintf("/dev/%s", mgr->handler->id);
-> +	enum filetype type;
-> +	int ret = -ENOENT;
-> +	int srcfd = 0;
-> +	char buf[32];
+> + * r0 : sdram controller staticcfg
+> + */
 > +
-> +	if (firmware) {
-> +		srcfd = open(firmware, O_RDONLY);
-> +		if (srcfd < 0) {
-> +			printf("could not open %s: %s\n", firmware, errno_str());
-> +			ret = srcfd;
-> +			goto out;
-> +		}
->  
-> -	ret = copy_file(firmware, name, 0);
-> +		ret = read(srcfd, buf, sizeof(buf));
-> +		if (ret < sizeof(buf))
-> +			goto out;
->  
-> -	free(name);
-> +		type = file_detect_type(buf, 32);
-> +		if ((int)type < 0) {
-> +			printf("could not open %s: %s\n", firmware,
-> +					strerror(-type));
-> +			ret = (int)type;
-> +			goto out;
+> +ENTRY(socfpga_sdram_apply_static_cfg)
+> +	push {ip,lr}
 
-srcfd is not closed on the error path here.
+What are the push and pop for?  You don't modify lr or ip in this code.
 
-> +		}
-> +
-> +		close(srcfd);
-> +
-> +		switch (type) {
-> +		case filetype_lzo_compressed:
-> +		case filetype_lz4_compressed:
-> +		case filetype_bzip2:
-> +		case filetype_gzip:
+> +	ldr r1, [r0]
+> +	orr r1, r1, #8
+> +	str r1, [r0]
+> +	pop {ip,pc}
 
-This is missing xz compression.
+missing:
+ENDPROC(socfpga_sdram_apply_static_cfg)
 
-Instead of trying to list all compressed types here, and also find the
-compressed type of the file, would it make more sense to have the
-uncompression code do this?  This way it's not necessary to have a list
-that matches what compression algorithms are supported and compiled in.
-And uncompress() already reads the file header and determines if the
-file type and if it can be uncompressed.  So this code is basically an
-incomplete copy of code already in uncompress.c.
+> +	.align
 
+ENTRY() includes an align.
 
-> +			ret = firmwaremgr_load_compressed(firmware, dst);
-> +			break;
-> +		case filetype_unknown:
-> +			ret = copy_file(firmware, dst, 0);
-> +			break;
-> +		default:
-> +			ret = -ENOSYS;
-> +			printf("unsupported filetype (%d)\n", (int) type);
-> +		}
-> +	}
-> +
-> +out:
-> +	free(dst);
->  
->  	return ret;
->  }
+> +ENTRY(socfpga_sdram_apply_static_cfg_end)
 
 _______________________________________________
 barebox mailing list
