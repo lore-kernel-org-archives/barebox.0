@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b3p69-0004k8-9J
- for barebox@lists.infradead.org; Fri, 20 May 2016 18:24:34 +0000
+ id 1b3tYn-0001SY-I4
+ for barebox@lists.infradead.org; Fri, 20 May 2016 23:10:27 +0000
 From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Fri, 20 May 2016 18:24:11 +0000
-Message-ID: <1463768655.15779.59.camel@rtred1test09.kymeta.local>
-References: <1463746903-6676-1-git-send-email-s.trumtrar@pengutronix.de>
- <1463746903-6676-2-git-send-email-s.trumtrar@pengutronix.de>
-In-Reply-To: <1463746903-6676-2-git-send-email-s.trumtrar@pengutronix.de>
+Date: Fri, 20 May 2016 23:09:59 +0000
+Message-ID: <1463785803.15779.60.camel@rtred1test09.kymeta.local>
 Content-Language: en-US
-Content-ID: <97ED6C592E98CA43B6C37801E0EE2365@kymetacorp.com>
+Content-ID: <ADE45648C35D67488916D0B57FE64DCD@kymetacorp.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,154 +21,133 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] firmware: socfpga: set APPLYCFG after loading
- bitstream
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] socfpga: correct start vector when not using extra
+ barebox header
+To: barebox <barebox@lists.infradead.org>
 
-On Fri, 2016-05-20 at 14:21 +0200, Steffen Trumtrar wrote:
-> If the FPGA-side of the SDRAM controller is reconfigured via the bitstream,
-> the APPLYCFG bit needs to be set, so the Controller applies the new setup.
+The barebox ARM image has a 0x50 byte header that consists of:
+Bytes 0x00 - 0x0a:  Instruction(s) to jump to start of code
+Bytes 0x20 - 0x2f:  Signature and some other data
+The rest of header is basically padding.
 
-Might want to mention how this patch uses the OCRAM.
+On SocFPGA, the ROM bootloader expects the 2nd stage bootloader
+(barebox) to have a 0x40 byte header with the following fields:
+Bytes 0x40 - 0x4b:  Signature and some other data
+Bytes 0x4c - 0x4f:  Instruction to jump to start of code
 
-Would an alternative method be to lock the cache line containing the
-code in question?
+These two headers are compatible, as everything defined in the SocFPGA
+header is at a location that is padding the barebox header.
 
-In fact, since the instruction cache would be enabled, why would a
-transfer to SDRAM be executing anyway?  Is the issue that a cache
-write-back could be in progress or the L2 controller could be filling
-the rest of a cache line?  If that's the case, then does copying only
-the function where APPLYCFG bit is set fix that problem?
+socfpga_mkimage has two methods for creating a SocFPGA image.  One method
+prepends an extra 512 byte header to the barebox image, which contains the
+SoCFPGA header described above.  The start vector at 0x4c is hard coded to
+jump to offset 512, where the barebox header's start vector will be.
 
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  arch/arm/mach-socfpga/include/mach/socfpga-regs.h |  1 +
->  drivers/firmware/Makefile                         |  2 +-
->  drivers/firmware/socfpga.c                        | 24 +++++++++++++++++++++++
->  drivers/firmware/socfpga_sdr.S                    | 17 ++++++++++++++++
->  4 files changed, 43 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/firmware/socfpga_sdr.S
-> 
-> diff --git a/arch/arm/mach-socfpga/include/mach/socfpga-regs.h b/arch/arm/mach-socfpga/include/mach/socfpga-regs.h
-> index e88daf718917..1a7d787a27bf 100644
-> --- a/arch/arm/mach-socfpga/include/mach/socfpga-regs.h
-> +++ b/arch/arm/mach-socfpga/include/mach/socfpga-regs.h
-> @@ -18,5 +18,6 @@
->  #define CYCLONE5_SYSMGR_ADDRESS		0xffd08000
->  #define CYCLONE5_SCANMGR_ADDRESS	0xfff02000
->  #define CYCLONE5_SMP_TWD_ADDRESS	0xfffec600
-> +#define CYCLONE5_OCRAM_ADDRESS		0xffff0000
->  
->  #endif /* __MACH_SOCFPGA_REGS_H */
-> diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
-> index c3a3c3400485..ac4f18bb3d78 100644
-> --- a/drivers/firmware/Makefile
-> +++ b/drivers/firmware/Makefile
-> @@ -1,2 +1,2 @@
->  obj-$(CONFIG_FIRMWARE_ALTERA_SERIAL) += altera_serial.o
-> -obj-$(CONFIG_FIRMWARE_ALTERA_SOCFPGA) += socfpga.o
-> +obj-$(CONFIG_FIRMWARE_ALTERA_SOCFPGA) += socfpga.o socfpga_sdr.o
-> diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
-> index a0cd2011cbce..a7a86a03d8fd 100644
-> --- a/drivers/firmware/socfpga.c
-> +++ b/drivers/firmware/socfpga.c
-> @@ -38,6 +38,7 @@
->  #include <mach/reset-manager.h>
->  #include <mach/socfpga-regs.h>
->  #include <mach/sdram.h>
-> +#include <asm/fncpy.h>
->  
->  #define FPGAMGRREGS_STAT			0x0
->  #define FPGAMGRREGS_CTRL			0x4
-> @@ -77,6 +78,9 @@
->  #define CDRATIO_x4	0x2
->  #define CDRATIO_x8	0x3
->  
-> +extern void socfpga_sdram_apply_static_cfg(void __iomem *sdrctrlgrp);
-> +extern void socfpga_sdram_apply_static_cfg_end(void *);
-> +
->  struct fpgamgr {
->  	struct firmware_handler fh;
->  	struct device_d dev;
-> @@ -353,6 +357,9 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
->  {
->  	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
->  	int status;
-> +	unsigned int func_size = &socfpga_sdram_apply_static_cfg_end -
-> +				 &socfpga_sdram_apply_static_cfg;
-> +	void (*ocram_func)(void __iomem *ocram_base);
->  
->  	/* Ensure the FPGA entering config done */
->  	status = fpgamgr_program_poll_cd(mgr);
-> @@ -382,6 +389,23 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
->  		return status;
->  	}
->  
-> +	/*
-> +	 * When the f2sdram bridge is used in a bitstream, the configuration
-> +	 * has to be latched into the SDR controller, when no transfers from
-> +	 * or to the SDRAM happen. That means we need to run the code from
-> +	 * OCRAM.
-> +	 *
-> +	 * Copy the assembler code for setting the bit to OCRAM and then
-> +	 * execute the function.
-> +	 */
-> +	dev_dbg(&mgr->dev, "Setting APPLYCFG bit...\n");
-> +
-> +	ocram_func = fncpy((void __iomem *)CYCLONE5_OCRAM_ADDRESS,
-> +			   &socfpga_sdram_apply_static_cfg, func_size);
+socfpga_mkimage can also not prepend this additional header and instead
+modify the barebox header to be SoCFPGA compatible.  But it only writes
+bytes 0x40-0x4b and not the start vector at 0x4c, leaving that word as
+padding.  And so this image will not boot when the ROM bootloader runs it.
 
-I wonder if there is a way to use request_sdram_region() to make sure
-barebox isn't using ocram?  Like for the exception vectors, isn't it
-possible to place them at this address (0xffff0000) instead of
-0x00000000.
+This changes the SoCFPGA header creator to write a correct start vector for
+both methods.  It will create a branch instruction at 0x4c that jumps to the
+start of the barebox image, whether it be at offset 0 or offset 512 (or any
+other location).
 
-> +
-> +	ocram_func((void __iomem *) (CYCLONE5_SDR_ADDRESS +
-> +				     SDR_CTRLGRP_STATICCFG_ADDRESS));
-> +
->  	return 0;
->  }
->  
-> diff --git a/drivers/firmware/socfpga_sdr.S b/drivers/firmware/socfpga_sdr.S
-> new file mode 100644
-> index 000000000000..d634d6362722
-> --- /dev/null
-> +++ b/drivers/firmware/socfpga_sdr.S
-> @@ -0,0 +1,17 @@
-> +#include <linux/linkage.h>
-> +
-> +	.arch	armv7-a
-> +	.arm
+This makes SoCFPGA images without the extra header bootable.
+---
+ scripts/socfpga_mkimage.c | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
-Is there a reason to force arm mode? It seems like it should be possible
-to use whatever has been selected for barebox, arm or thumb2.
+diff --git a/scripts/socfpga_mkimage.c b/scripts/socfpga_mkimage.c
+index 1a7a66d..4fbd5c7 100644
+--- a/scripts/socfpga_mkimage.c
++++ b/scripts/socfpga_mkimage.c
+@@ -12,6 +12,8 @@
+ 
+ #define VALIDATION_WORD 0x31305341
+ 
++#define BRANCH_INST 0xea /* ARM opcode for "b" (unconditional branch) */
++
+ #define MAX_IMAGE_SIZE (60 * 1024 - 4)
+ 
+ static int add_barebox_header;
+@@ -23,6 +25,7 @@ struct socfpga_header {
+ 	uint8_t program_length[2];
+ 	uint8_t spare[2];
+ 	uint8_t checksum[2];
++	uint8_t start_vector[4];
+ };
+ 
+ static uint32_t bb_header[] = {
+@@ -45,7 +48,7 @@ static uint32_t bb_header[] = {
+ 	0x00000000,	/* socfpga header */
+ 	0x00000000,	/* socfpga header */
+ 	0x00000000,	/* socfpga header */
+-	0xea00006b,	/* entry. b 0x200  */
++	0xea00006b,	/* entry. b 0x200 (offset may be adjusted) */
+ };
+ 
+ static int read_full(int fd, void *buf, size_t size)
+@@ -140,20 +143,25 @@ uint32_t crc32(uint32_t crc, void *_buf, int length)
+ 	return crc;
+ }
+ 
+-static int add_socfpga_header(void *buf, int size)
++/* start_addr is where the socfpga header's start instruction should branch to.
++ * It should be relative to the start of buf */
++static int add_socfpga_header(void *buf, size_t size, unsigned start_addr)
+ {
+ 	struct socfpga_header *header = buf + 0x40;
+-	uint8_t *buf_header = buf + 0x40;
++	uint8_t *bufp;
+ 	uint32_t *crc;
+ 	unsigned checksum;
+-	int length = size >> 2;
+-	int i;
++	size_t length = size >> 2;
+ 
+ 	if (size & 0x3) {
+ 		fprintf(stderr, "%s: size must be multiple of 4\n", __func__);
+ 		return -EINVAL;
+ 	}
+ 
++	/* Calculate relative address of requested start_addr from the
++	 * start_vector's branch instuction PC (+8 bytes on arm).  */
++	start_addr = start_addr + (int)(buf - (void*)&header->start_vector[0]) - 8;
++
+ 	header->validation_word[0] = VALIDATION_WORD & 0xff;
+ 	header->validation_word[1] = (VALIDATION_WORD >> 8) & 0xff;
+ 	header->validation_word[2] = (VALIDATION_WORD >> 16) & 0xff;
+@@ -164,10 +172,15 @@ static int add_socfpga_header(void *buf, int size)
+ 	header->program_length[1] = (length >> 8) & 0xff;
+ 	header->spare[0] = 0;
+ 	header->spare[1] = 0;
++	header->start_vector[0] = (start_addr >> 2) & 0xff; /* instruction uses offset/4 */
++	header->start_vector[1] = (start_addr >> 10) & 0xff;
++	header->start_vector[2] = (start_addr >> 18) & 0xff;
++	header->start_vector[3] = BRANCH_INST;
+ 
++	/* Sum from beginning of header to start of checksum field */
+ 	checksum = 0;
+-	for (i = 0; i < sizeof(*header) - 2; i++)
+-		checksum += buf_header[i];
++	for (bufp = (uint8_t*)header; bufp < &header->checksum[0]; bufp++)
++		checksum += *bufp;
+ 
+ 	header->checksum[0] = checksum & 0xff;;
+ 	header->checksum[1] = (checksum >> 8) & 0xff;;
+@@ -267,7 +280,7 @@ int main(int argc, char *argv[])
+ 		memcpy(buf, bb_header, sizeof(bb_header));
+ 	}
+ 
+-	ret = add_socfpga_header(buf, s.st_size + 4 + addsize + pad);
++	ret = add_socfpga_header(buf, s.st_size + 4 + addsize + pad, addsize);
+ 	if (ret)
+ 		exit(1);
+ 
+-- 
+2.7.0.25.gfc10eb5.dirty
 
-> +
-> +/*
-> + * r0 : sdram controller staticcfg
-> + */
-> +
-> +ENTRY(socfpga_sdram_apply_static_cfg)
-> +	push {ip,lr}
-
-What are the push and pop for?  You don't modify lr or ip in this code.
-
-> +	ldr r1, [r0]
-> +	orr r1, r1, #8
-> +	str r1, [r0]
-> +	pop {ip,pc}
-
-missing:
-ENDPROC(socfpga_sdram_apply_static_cfg)
-
-> +	.align
-
-ENTRY() includes an align.
-
-> +ENTRY(socfpga_sdram_apply_static_cfg_end)
 
 _______________________________________________
 barebox mailing list
