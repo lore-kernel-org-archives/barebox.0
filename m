@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from f66.i.mail.ru ([94.100.178.232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b3dTh-0001HQ-05
- for barebox@lists.infradead.org; Fri, 20 May 2016 06:00:05 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 20 May 2016 07:59:42 +0200
-Message-Id: <1463723982-20741-1-git-send-email-s.hauer@pengutronix.de>
+ id 1b3fUw-0002NA-QW
+ for barebox@lists.infradead.org; Fri, 20 May 2016 08:09:32 +0000
+Received: from [217.119.30.118] (ident=mail)
+ by f66.i.mail.ru with local (envelope-from <shc_work@mail.ru>)
+ id 1b3fUY-0007Aq-Fn
+ for barebox@lists.infradead.org; Fri, 20 May 2016 11:09:07 +0300
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+MIME-Version: 1.0
+Date: Fri, 20 May 2016 11:09:06 +0300
+Message-ID: <1463731746.897415417@f66.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,37 +19,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX: iim: Remove debug printk
-To: Barebox List <barebox@lists.infradead.org>
+Subject: =?UTF-8?B?Q29uc29sZSBub3Qgd29yayB3aXRoIENPTkZJR19DT05TT0xFX0FDVElWQVRF?=
+ =?UTF-8?B?X0ZJUlNU?=
+To: =?UTF-8?B?YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn?= <barebox@lists.infradead.org>
 
-The dev_info is a debug leftover that was never intended to go upstream.
+Hello.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Patch 05261801e9cde103b3c4df843472027c007531da changes input subsystem.
+If the CONFIG_CONSOLE_ACTIVATE_FIRST is set and barebox config contain
+one serial console and one input device (GPIO buttons, for example), the console stops working.
+Currently I haven't found a solution for this, but the CONFIG_CONSOLE_ACTIVATE_ALL
+solve the problem.
+
+Thanks.
+
 ---
- arch/arm/mach-imx/iim.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/arm/mach-imx/iim.c b/arch/arm/mach-imx/iim.c
-index 2e25f69..c3ba67e 100644
---- a/arch/arm/mach-imx/iim.c
-+++ b/arch/arm/mach-imx/iim.c
-@@ -271,7 +271,6 @@ static int imx_iim_fuse_blow(struct iim_bank *bank, unsigned offset, unsigned va
- 
- 	if (IS_ERR(iim->fuse_supply)) {
- 		iim->fuse_supply = regulator_get(iim->dev.parent, "vdd-fuse");
--		dev_info(iim->dev.parent, "regul: %p\n", iim->fuse_supply);
- 		if (IS_ERR(iim->fuse_supply))
- 			return PTR_ERR(iim->fuse_supply);
- 	}
--- 
-2.8.0.rc3
-
-
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
