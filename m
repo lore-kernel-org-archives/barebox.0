@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([192.81.58.21])
+Received: from smtp11.mail.ru ([94.100.179.252])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b3tZv-0002k2-Vb
- for barebox@lists.infradead.org; Fri, 20 May 2016 23:11:36 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Fri, 20 May 2016 23:11:13 +0000
-Message-ID: <1463785878.15779.62.camel@rtred1test09.kymeta.local>
-Content-Language: en-US
-Content-ID: <16C7626435CCC249BE6295261D1F284F@kymetacorp.com>
-MIME-Version: 1.0
+ id 1b40Vs-0000Z3-Rh
+ for barebox@lists.infradead.org; Sat, 21 May 2016 06:35:54 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sat, 21 May 2016 09:35:24 +0300
+Message-Id: <1463812524-24463-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,40 +14,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] socfpga: Stop putting 512 byte header on SocFPGA images
-To: barebox <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: imx51: Remove stale comment
+To: barebox@lists.infradead.org
 
-Since images without the extra header now boot correctly, stop adding
-it.  This makes the image 512 bytes smaller.
-
-It also gives the image a correct barebox header.  The 512 byte extra
-header looked like a barebox header (had a "barebox\n" signature) but
-had incorrect size and text start fields.
-
-Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- images/Makefile.socfpga | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-imx/imx51.c | 19 -------------------
+ 1 file changed, 19 deletions(-)
 
-diff --git a/images/Makefile.socfpga b/images/Makefile.socfpga
-index 7e642c0..21804d9 100644
---- a/images/Makefile.socfpga
-+++ b/images/Makefile.socfpga
-@@ -5,7 +5,7 @@
- # %.socfpgaimg - convert into socfpga image
- # ----------------------------------------------------------------
- quiet_cmd_socfpga_image = SOCFPGA-IMG $@
--      cmd_socfpga_image = scripts/socfpga_mkimage -b -o $@ $<
-+      cmd_socfpga_image = scripts/socfpga_mkimage -o $@ $<
+diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
+index 70e8971..a6784d0 100644
+--- a/arch/arm/mach-imx/imx51.c
++++ b/arch/arm/mach-imx/imx51.c
+@@ -83,25 +83,6 @@ int imx51_devices_init(void)
+ 	return 0;
+ }
  
- $(obj)/%.socfpgaimg: $(obj)/% FORCE
- 	$(call if_changed,socfpga_image)
+-/*
+- * Saves the boot source media into the $bootsource environment variable
+- *
+- * This information is useful for barebox init scripts as we can then easily
+- * use a kernel image stored on the same media that we launch barebox with
+- * (for example).
+- *
+- * imx25 and imx35 can boot into barebox from several media such as
+- * nand, nor, mmc/sd cards, serial roms. "mmc" is used to represent several
+- * sources as its impossible to distinguish between them.
+- *
+- * Some sources such as serial roms can themselves have 3 different boot
+- * possibilities (i2c1, i2c2 etc). It is assumed that any board will
+- * only be using one of these at any one time.
+- *
+- * Note also that I suspect that the boot source pins are only sampled at
+- * power up.
+- */
+-
+ #define DP_MFN_800_DIT 60 /* PL Dither mode */
+ 
+ /*
 -- 
-2.7.0.25.gfc10eb5.dirty
+2.4.9
 
 
 _______________________________________________
