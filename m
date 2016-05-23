@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b4lEN-0000Ju-NY
- for barebox@lists.infradead.org; Mon, 23 May 2016 08:28:57 +0000
+ id 1b4lEO-0000KC-AE
+ for barebox@lists.infradead.org; Mon, 23 May 2016 08:28:58 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 168F9A00CDA
+ by root.phytec.de (Postfix) with ESMTP id 2DD88A00CDB
  for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:25 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 23 May 2016 10:26:27 +0200
-Message-Id: <1463992010-31537-40-git-send-email-t.remmet@phytec.de>
+Date: Mon, 23 May 2016 10:26:28 +0200
+Message-Id: <1463992010-31537-41-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,86 +24,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 39/62] UBI: Fastmap: Wire up WL accessor functions
+Subject: [PATCH 40/62] UBI: Fastmap: Introduce ubi_fastmap_init()
 To: barebox@lists.infradead.org
 
 From: Richard Weinberger <richard@nod.at>
 
-Use the new WL accessor functions in fastmap.
+...and kill another #ifdef in wl.c. :-)
 
 Signed-off-by: Richard Weinberger <richard@nod.at>
 ---
- drivers/mtd/ubi/fastmap.c | 27 +++++++++++----------------
- 1 file changed, 11 insertions(+), 16 deletions(-)
+ drivers/mtd/ubi/wl.c | 5 +----
+ drivers/mtd/ubi/wl.h | 6 ++++++
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
-index 7808744..e60bc7f 100644
---- a/drivers/mtd/ubi/fastmap.c
-+++ b/drivers/mtd/ubi/fastmap.c
-@@ -1024,11 +1024,11 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
- 	struct ubi_fm_ec *fec;
- 	struct ubi_fm_volhdr *fvh;
- 	struct ubi_fm_eba *feba;
--	struct rb_node *node;
- 	struct ubi_wl_entry *wl_e;
- 	struct ubi_volume *vol;
- 	struct ubi_vid_hdr *avhdr, *dvhdr;
- 	struct ubi_work *ubi_wrk;
-+	struct rb_node *tmp_rb;
- 	int ret, i, j, free_peb_count, used_peb_count, vol_count;
- 	int scrub_peb_count, erase_peb_count;
+diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
+index aeb7f68..f9a1680 100644
+--- a/drivers/mtd/ubi/wl.c
++++ b/drivers/mtd/ubi/wl.c
+@@ -1440,10 +1440,7 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
+ 		ubi_assert(ubi->good_peb_count == found_pebs);
  
-@@ -1086,8 +1086,7 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
- 	for (i = 0; i < ubi->fm_wl_pool.size; i++)
- 		fmpl2->pebs[i] = cpu_to_be32(ubi->fm_wl_pool.pebs[i]);
+ 	reserved_pebs = WL_RESERVED_PEBS;
+-#ifdef CONFIG_MTD_UBI_FASTMAP
+-	/* Reserve enough LEBs to store two fastmaps. */
+-	reserved_pebs += (ubi->fm_size / ubi->leb_size) * 2;
+-#endif
++	ubi_fastmap_init(ubi, &reserved_pebs);
  
--	for (node = rb_first(&ubi->free); node; node = rb_next(node)) {
--		wl_e = rb_entry(node, struct ubi_wl_entry, u.rb);
-+	ubi_for_each_free_peb(ubi, wl_e, tmp_rb) {
- 		fec = (struct ubi_fm_ec *)(fm_raw + fm_pos);
- 
- 		fec->pnum = cpu_to_be32(wl_e->pnum);
-@@ -1099,8 +1098,7 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
- 	}
- 	fmh->free_peb_count = cpu_to_be32(free_peb_count);
- 
--	for (node = rb_first(&ubi->used); node; node = rb_next(node)) {
--		wl_e = rb_entry(node, struct ubi_wl_entry, u.rb);
-+	ubi_for_each_used_peb(ubi, wl_e, tmp_rb) {
- 		fec = (struct ubi_fm_ec *)(fm_raw + fm_pos);
- 
- 		fec->pnum = cpu_to_be32(wl_e->pnum);
-@@ -1111,22 +1109,19 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
- 		ubi_assert(fm_pos <= ubi->fm_size);
- 	}
- 
--	for (i = 0; i < UBI_PROT_QUEUE_LEN; i++) {
--		list_for_each_entry(wl_e, &ubi->pq[i], u.list) {
--			fec = (struct ubi_fm_ec *)(fm_raw + fm_pos);
-+	ubi_for_each_protected_peb(ubi, i, wl_e) {
-+		fec = (struct ubi_fm_ec *)(fm_raw + fm_pos);
- 
--			fec->pnum = cpu_to_be32(wl_e->pnum);
--			fec->ec = cpu_to_be32(wl_e->ec);
-+		fec->pnum = cpu_to_be32(wl_e->pnum);
-+		fec->ec = cpu_to_be32(wl_e->ec);
- 
--			used_peb_count++;
--			fm_pos += sizeof(*fec);
--			ubi_assert(fm_pos <= ubi->fm_size);
--		}
-+		used_peb_count++;
-+		fm_pos += sizeof(*fec);
-+		ubi_assert(fm_pos <= ubi->fm_size);
- 	}
- 	fmh->used_peb_count = cpu_to_be32(used_peb_count);
- 
--	for (node = rb_first(&ubi->scrub); node; node = rb_next(node)) {
--		wl_e = rb_entry(node, struct ubi_wl_entry, u.rb);
-+	ubi_for_each_scrub_peb(ubi, wl_e, tmp_rb) {
- 		fec = (struct ubi_fm_ec *)(fm_raw + fm_pos);
- 
- 		fec->pnum = cpu_to_be32(wl_e->pnum);
+ 	if (ubi->avail_pebs < reserved_pebs) {
+ 		ubi_err(ubi, "no enough physical eraseblocks (%d, need %d)",
+diff --git a/drivers/mtd/ubi/wl.h b/drivers/mtd/ubi/wl.h
+index 797d25b..0a832b0 100644
+--- a/drivers/mtd/ubi/wl.h
++++ b/drivers/mtd/ubi/wl.h
+@@ -6,6 +6,11 @@ static int anchor_pebs_avalible(struct rb_root *root);
+ static struct ubi_wl_entry *find_anchor_wl_entry(struct rb_root *root);
+ static struct ubi_wl_entry *get_peb_for_wl(struct ubi_device *ubi);
+ static void ubi_fastmap_close(struct ubi_device *ubi);
++static inline void ubi_fastmap_init(struct ubi_device *ubi, int *count)
++{
++	/* Reserve enough LEBs to store two fastmaps. */
++	*count += (ubi->fm_size / ubi->leb_size) * 2;
++}
+ #else /* !CONFIG_MTD_UBI_FASTMAP */
+ static struct ubi_wl_entry *get_peb_for_wl(struct ubi_device *ubi);
+ static inline int is_fm_block(struct ubi_device *ubi, int pnum)
+@@ -13,5 +18,6 @@ static inline int is_fm_block(struct ubi_device *ubi, int pnum)
+ 	return 0;
+ }
+ static inline void ubi_fastmap_close(struct ubi_device *ubi) { }
++static inline void ubi_fastmap_init(struct ubi_device *ubi, int *count) { }
+ #endif /* CONFIG_MTD_UBI_FASTMAP */
+ #endif /* UBI_WL_H */
 -- 
 1.9.1
 
