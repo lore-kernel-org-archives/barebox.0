@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b4kee-0002RZ-V8
- for barebox@lists.infradead.org; Mon, 23 May 2016 07:52:01 +0000
-Date: Mon, 23 May 2016 09:51:39 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160523075139.GQ11148@pengutronix.de>
-References: <1463910933-22087-1-git-send-email-shc_work@mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1463910933-22087-1-git-send-email-shc_work@mail.ru>
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1b4lDt-00006r-5W
+ for barebox@lists.infradead.org; Mon, 23 May 2016 08:28:26 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 2C8CAA00CA5
+ for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:21 +0200 (CEST)
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Mon, 23 May 2016 10:25:50 +0200
+Message-Id: <1463992010-31537-3-git-send-email-t.remmet@phytec.de>
+In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
+References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,29 +19,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: clps711x: Simplify clock initialization
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 02/62] UBI: Improve comment on work_sem
+To: barebox@lists.infradead.org
 
-On Sun, May 22, 2016 at 12:55:33PM +0300, Alexander Shiyan wrote:
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ---
->  arch/arm/mach-clps711x/clock.c | 15 ++-------------
->  1 file changed, 2 insertions(+), 13 deletions(-)
+From: Richard Weinberger <richard@nod.at>
 
-Applied, thanks
+Make clear what work_sem really does.
 
-Sascha
+Suggested-by: Artem Bityutskiy <dedekind1@gmail.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+---
+ drivers/mtd/ubi/ubi.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
+index 471d784..51a0112 100644
+--- a/drivers/mtd/ubi/ubi.h
++++ b/drivers/mtd/ubi/ubi.h
+@@ -428,7 +428,8 @@ struct ubi_debug_info {
+  *	     @move_to, @move_to_put @erase_pending, @wl_scheduled, @works,
+  *	     @erroneous, and @erroneous_peb_count fields
+  * @move_mutex: serializes eraseblock moves
+- * @work_sem: synchronizes the WL worker with use tasks
++ * @work_sem: used to wait for all the scheduled works to finish and prevent
++ * new works from being submitted
+  * @wl_scheduled: non-zero if the wear-leveling was scheduled
+  * @lookuptbl: a table to quickly find a &struct ubi_wl_entry object for any
+  *             physical eraseblock
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
