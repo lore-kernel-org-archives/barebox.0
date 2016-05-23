@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b4lES-0000K8-4y
+ id 1b4lES-0000Js-MK
  for barebox@lists.infradead.org; Mon, 23 May 2016 08:29:03 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 7B650A00CE5
+ by root.phytec.de (Postfix) with ESMTP id A8AC1A00CE6
  for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:26 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 23 May 2016 10:26:38 +0200
-Message-Id: <1463992010-31537-51-git-send-email-t.remmet@phytec.de>
+Date: Mon, 23 May 2016 10:26:39 +0200
+Message-Id: <1463992010-31537-52-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,44 +24,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 50/62] UBI: Remove unnecessary `\'
+Subject: [PATCH 51/62] UBI: Validate data_size
 To: barebox@lists.infradead.org
 
-From: shengyong <shengyong1@huawei.com>
+From: Richard Weinberger <richard@nod.at>
 
-Signed-off-by: Sheng Yong <shengyong1@huawei.com>
+Make sure that data_size is less than LEB size.
+Otherwise a handcrafted UBI image is able to trigger
+an out of bounds memory access in ubi_compare_lebs().
+
+Cc: stable@vger.kernel.org
 Signed-off-by: Richard Weinberger <richard@nod.at>
+Reviewed-by: David Gstir <david@sigma-star.at>
 ---
- drivers/mtd/ubi/fastmap.c | 2 +-
- drivers/mtd/ubi/wl.c      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/ubi/io.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
-index f33c2db..1504911 100644
---- a/drivers/mtd/ubi/fastmap.c
-+++ b/drivers/mtd/ubi/fastmap.c
-@@ -251,7 +251,7 @@ static int update_vol(struct ubi_device *ubi, struct ubi_attach_info *ai,
- 			list_add_tail(&victim->u.list, &ai->erase);
+diff --git a/drivers/mtd/ubi/io.c b/drivers/mtd/ubi/io.c
+index bb38b79..655ab50 100644
+--- a/drivers/mtd/ubi/io.c
++++ b/drivers/mtd/ubi/io.c
+@@ -618,6 +618,11 @@ static int validate_vid_hdr(const struct ubi_device *ubi,
+ 		goto bad;
+ 	}
  
- 			if (av->highest_lnum == be32_to_cpu(new_vh->lnum))
--				av->last_data_size = \
-+				av->last_data_size =
- 					be32_to_cpu(new_vh->data_size);
- 
- 			dbg_bld("vol %i: AEB %i's PEB %i is the newer",
-diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-index 3c51feb..986a2dc 100644
---- a/drivers/mtd/ubi/wl.c
-+++ b/drivers/mtd/ubi/wl.c
-@@ -1418,7 +1418,7 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
- 	dbg_wl("found %i PEBs", found_pebs);
- 
- 	if (ubi->fm) {
--		ubi_assert(ubi->good_peb_count == \
-+		ubi_assert(ubi->good_peb_count ==
- 			   found_pebs + ubi->fm->used_blocks);
- 
- 		for (i = 0; i < ubi->fm->used_blocks; i++) {
++	if (data_size > ubi->leb_size) {
++		ubi_err(ubi, "bad data_size");
++		goto bad;
++	}
++
+ 	if (vol_type == UBI_VID_STATIC) {
+ 		/*
+ 		 * Although from high-level point of view static volumes may
 -- 
 1.9.1
 
