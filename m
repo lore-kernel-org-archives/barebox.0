@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b4lEJ-0000K7-6x
- for barebox@lists.infradead.org; Mon, 23 May 2016 08:28:54 +0000
+ id 1b4lEb-0000Wx-Bx
+ for barebox@lists.infradead.org; Mon, 23 May 2016 08:29:14 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 764B0A00CC7
+ by root.phytec.de (Postfix) with ESMTP id 5605AA00CC3
  for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:23 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 23 May 2016 10:26:11 +0200
-Message-Id: <1463992010-31537-24-git-send-email-t.remmet@phytec.de>
+Date: Mon, 23 May 2016 10:26:08 +0200
+Message-Id: <1463992010-31537-21-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,37 +19,141 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 23/62] UBI: Fastmap: Fix memory leaks while closing the WL
- sub-system
+Subject: [PATCH 20/62] UBI: Split __wl_get_peb()
 To: barebox@lists.infradead.org
 
-RnJvbTogUmljaGFyZCBXZWluYmVyZ2VyIDxyaWNoYXJkQG5vZC5hdD4KCkFkZCBhIHViaV9mYXN0
-bWFwX2Nsb3NlKCkgdG8gZnJlZSBhbGwgcmVzb3VyY2VzIHVzZWQgYnkgZmFzdG1hcAphdCBXTCBz
-aHV0ZG93bi4KClNpZ25lZC1vZmYtYnk6IFJpY2hhcmQgV2VpbmJlcmdlciA8cmljaGFyZEBub2Qu
-YXQ+ClRlc3RlZC1ieTogR3VpZG8gTWFydMOtbmV6IDxndWlkb0B2YW5ndWFyZGlhc3VyLmNvbS5h
-cj4KUmV2aWV3ZWQtYnk6IEd1aWRvIE1hcnTDrW5leiA8Z3VpZG9AdmFuZ3VhcmRpYXN1ci5jb20u
-YXI+Ci0tLQogZHJpdmVycy9tdGQvdWJpL3dsLmMgfCAxNyArKysrKysrKysrKysrKysrKwogMSBm
-aWxlIGNoYW5nZWQsIDE3IGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9kcml2ZXJzL210ZC91
-Ymkvd2wuYyBiL2RyaXZlcnMvbXRkL3ViaS93bC5jCmluZGV4IGZkMzg0YzYuLjg4NzVlYzcgMTAw
-NjQ0Ci0tLSBhL2RyaXZlcnMvbXRkL3ViaS93bC5jCisrKyBiL2RyaXZlcnMvbXRkL3ViaS93bC5j
-CkBAIC0xODU3LDYgKzE4NTcsMjIgQEAgc3RhdGljIHZvaWQgcHJvdGVjdGlvbl9xdWV1ZV9kZXN0
-cm95KHN0cnVjdCB1YmlfZGV2aWNlICp1YmkpCiAJfQogfQogCitzdGF0aWMgdm9pZCB1YmlfZmFz
-dG1hcF9jbG9zZShzdHJ1Y3QgdWJpX2RldmljZSAqdWJpKQoreworI2lmZGVmIENPTkZJR19NVERf
-VUJJX0ZBU1RNQVAKKwlpbnQgaTsKKworCXJldHVybl91bnVzZWRfcG9vbF9wZWJzKHViaSwgJnVi
-aS0+Zm1fcG9vbCk7CisJcmV0dXJuX3VudXNlZF9wb29sX3BlYnModWJpLCAmdWJpLT5mbV93bF9w
-b29sKTsKKworCWlmICh1YmktPmZtKSB7CisJCWZvciAoaSA9IDA7IGkgPCB1YmktPmZtLT51c2Vk
-X2Jsb2NrczsgaSsrKQorCQkJa2ZyZWUodWJpLT5mbS0+ZVtpXSk7CisJfQorCWtmcmVlKHViaS0+
-Zm0pOworI2VuZGlmCit9CisKIC8qKgogICogdWJpX3dsX2Nsb3NlIC0gY2xvc2UgdGhlIHdlYXIt
-bGV2ZWxpbmcgc3ViLXN5c3RlbS4KICAqIEB1Ymk6IFVCSSBkZXZpY2UgZGVzY3JpcHRpb24gb2Jq
-ZWN0CkBAIC0xODY0LDYgKzE4ODAsNyBAQCBzdGF0aWMgdm9pZCBwcm90ZWN0aW9uX3F1ZXVlX2Rl
-c3Ryb3koc3RydWN0IHViaV9kZXZpY2UgKnViaSkKIHZvaWQgdWJpX3dsX2Nsb3NlKHN0cnVjdCB1
-YmlfZGV2aWNlICp1YmkpCiB7CiAJZGJnX3dsKCJjbG9zZSB0aGUgV0wgc3ViLXN5c3RlbSIpOwor
-CXViaV9mYXN0bWFwX2Nsb3NlKHViaSk7CiAJc2h1dGRvd25fd29yayh1YmkpOwogCXByb3RlY3Rp
-b25fcXVldWVfZGVzdHJveSh1YmkpOwogCXRyZWVfZGVzdHJveSgmdWJpLT51c2VkKTsKLS0gCjEu
-OS4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
-ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
-cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+From: Richard Weinberger <richard@nod.at>
+
+Make it two functions, wl_get_wle() and wl_get_peb().
+wl_get_peb() works exactly like __wl_get_peb() but wl_get_wle()
+does not call produce_free_peb().
+While refilling the fastmap user pool we cannot release ubi->wl_lock
+as produce_free_peb() does.
+Hence the fastmap logic uses now wl_get_wle().
+
+Signed-off-by: Richard Weinberger <richard@nod.at>
+
+Conflicts:
+	drivers/mtd/ubi/wl.c
+
+Fixed minor conflict.
+
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ drivers/mtd/ubi/wl.c | 63 ++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 39 insertions(+), 24 deletions(-)
+
+diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
+index adbb29b..21838f6 100644
+--- a/drivers/mtd/ubi/wl.c
++++ b/drivers/mtd/ubi/wl.c
+@@ -462,13 +462,46 @@ out:
+ #endif
+ 
+ /**
+- * __wl_get_peb - get a physical eraseblock.
++ * wl_get_wle - get a mean wl entry to be used by wl_get_peb() or
++ * refill_wl_user_pool().
++ * @ubi: UBI device description object
++ *
++ * This function returns a a wear leveling entry in case of success and
++ * NULL in case of failure.
++ */
++static struct ubi_wl_entry *wl_get_wle(struct ubi_device *ubi)
++{
++	struct ubi_wl_entry *e;
++
++	e = find_mean_wl_entry(ubi, &ubi->free);
++	if (!e) {
++		ubi_err(ubi, "no free eraseblocks");
++		return NULL;
++	}
++
++	self_check_in_wl_tree(ubi, e, &ubi->free);
++
++	/*
++	 * Move the physical eraseblock to the protection queue where it will
++	 * be protected from being moved for some time.
++	 */
++	rb_erase(&e->u.rb, &ubi->free);
++	ubi->free_count--;
++	dbg_wl("PEB %d EC %d", e->pnum, e->ec);
++
++	return e;
++}
++
++/**
++ * wl_get_peb - get a physical eraseblock.
+  * @ubi: UBI device description object
+  *
+  * This function returns a physical eraseblock in case of success and a
+  * negative error code in case of failure.
++ * It is the low level component of ubi_wl_get_peb() in the non-fastmap
++ * case.
+  */
+-static int __wl_get_peb(struct ubi_device *ubi)
++static int wl_get_peb(struct ubi_device *ubi)
+ {
+ 	int err;
+ 	struct ubi_wl_entry *e;
+@@ -487,27 +520,9 @@ retry:
+ 		goto retry;
+ 	}
+ 
+-	e = find_mean_wl_entry(ubi, &ubi->free);
+-	if (!e) {
+-		ubi_err(ubi, "no free eraseblocks");
+-		return -ENOSPC;
+-	}
+-
+-	self_check_in_wl_tree(ubi, e, &ubi->free);
+-
+-	/*
+-	 * Move the physical eraseblock to the protection queue where it will
+-	 * be protected from being moved for some time.
+-	 */
+-	rb_erase(&e->u.rb, &ubi->free);
+-	ubi->free_count--;
+-	dbg_wl("PEB %d EC %d", e->pnum, e->ec);
+-#ifndef CONFIG_MTD_UBI_FASTMAP
+-	/* We have to enqueue e only if fastmap is disabled,
+-	 * is fastmap enabled prot_queue_add() will be called by
+-	 * ubi_wl_get_peb() after removing e from the pool. */
++	e = wl_get_wle(ubi);
+ 	prot_queue_add(ubi, e);
+-#endif
++
+ 	return e->pnum;
+ }
+ 
+@@ -568,7 +583,7 @@ static void refill_wl_user_pool(struct ubi_device *ubi)
+ 	return_unused_pool_pebs(ubi, pool);
+ 
+ 	for (pool->size = 0; pool->size < pool->max_size; pool->size++) {
+-		pool->pebs[pool->size] = __wl_get_peb(ubi);
++		pool->pebs[pool->size] = wl_get_peb(ubi);
+ 		if (pool->pebs[pool->size] < 0)
+ 			break;
+ 	}
+@@ -646,7 +661,7 @@ int ubi_wl_get_peb(struct ubi_device *ubi)
+ {
+ 	int peb, err;
+ 
+-	peb = __wl_get_peb(ubi);
++	peb = wl_get_peb(ubi);
+ 
+ 	if (peb < 0)
+ 		return peb;
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
