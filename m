@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b4lEV-0000K8-QD
+ id 1b4lEW-0000KA-N5
  for barebox@lists.infradead.org; Mon, 23 May 2016 08:29:06 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id E2720A00CF5
- for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:27 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 3BCC7A00CF7
+ for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:28 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 23 May 2016 10:26:48 +0200
-Message-Id: <1463992010-31537-61-git-send-email-t.remmet@phytec.de>
+Date: Mon, 23 May 2016 10:26:50 +0200
+Message-Id: <1463992010-31537-63-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,63 +19,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 60/62] mtd: ubi: wl: avoid erasing a PEB which is empty
+Subject: [PATCH 62/62] mtd: UBI: Remove ubi_free_fastmap
 To: barebox@lists.infradead.org
 
-RnJvbTogU2ViYXN0aWFuIFNpZXdpb3IgPGJpZ2Vhc3lAbGludXRyb25peC5kZT4KCndlYXJfbGV2
-ZWxpbmdfd29ya2VyKCkgY3VycmVudGx5IHVuY29uZGl0aW9uYWxseSBwdXRzIGEgUEVCIG9uIGVy
-YXNlIGluCnRoZSBlcnJvciBjYXNlIGV2ZW4gaXQganVzdCBiZWVuIHRha2VuIGZyb20gdGhlIGZy
-ZWVfbGlzdCBhbmQgbmV2ZXIKdXNlZC4KSW4gY2FzZSB0aGUgUEVCIHdhcyBuZXZlciB1c2VkIGl0
-IGNhbiBiZSBwdXQgYmFjayBvbiB0aGUgZnJlZSBsaXN0CnNhdmluZyBhIHByZWNpb3VzIGVyYXNl
-IGN5Y2xlLgoKdjHigKZ2MjoKCS0gdG9fbGViX2NsZWFuIC0+IGRzdF9sZWJfY2xlYW4KCS0gdXNl
-IHRoZSBuZXN0ZWQgb3B0aW9uIGZvciBlbnN1cmVfd2Vhcl9sZXZlbGluZygpCgktIGRvX3N5bmNf
-ZXJhc2UoKSBjYW4ndCBnbyAtRU5PTUVNIHNvIHdlIGNhbiBqdXN0IGdvIGludG8KCSAgUk8tbW9k
-ZSBub3cuCgpTaWduZWQtb2ZmLWJ5OiBTZWJhc3RpYW4gQW5kcnplaiBTaWV3aW9yIDxiaWdlYXN5
-QGxpbnV0cm9uaXguZGU+ClNpZ25lZC1vZmYtYnk6IFJpY2hhcmQgV2VpbmJlcmdlciA8cmljaGFy
-ZEBub2QuYXQ+Ci0tLQogZHJpdmVycy9tdGQvdWJpL3dsLmMgfCAyMSArKysrKysrKysrKysrKysr
-KystLS0KIDEgZmlsZSBjaGFuZ2VkLCAxOCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoK
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL3ViaS93bC5jIGIvZHJpdmVycy9tdGQvdWJpL3dsLmMK
-aW5kZXggZTgxZjc5Ni4uNDUzNWYyZCAxMDA2NDQKLS0tIGEvZHJpdmVycy9tdGQvdWJpL3dsLmMK
-KysrIGIvZHJpdmVycy9tdGQvdWJpL3dsLmMKQEAgLTYwMyw2ICs2MDMsNyBAQCBzdGF0aWMgaW50
-IGRvX3N5bmNfZXJhc2Uoc3RydWN0IHViaV9kZXZpY2UgKnViaSwgc3RydWN0IHViaV93bF9lbnRy
-eSAqZSwKIAlyZXR1cm4gX19lcmFzZV93b3JrZXIodWJpLCAmd2xfd3JrKTsKIH0KIAorc3RhdGlj
-IGludCBlbnN1cmVfd2Vhcl9sZXZlbGluZyhzdHJ1Y3QgdWJpX2RldmljZSAqdWJpLCBpbnQgbmVz
-dGVkKTsKIC8qKgogICogd2Vhcl9sZXZlbGluZ193b3JrZXIgLSB3ZWFyLWxldmVsaW5nIHdvcmtl
-ciBmdW5jdGlvbi4KICAqIEB1Ymk6IFVCSSBkZXZpY2UgZGVzY3JpcHRpb24gb2JqZWN0CkBAIC02
-MjQsNiArNjI1LDcgQEAgc3RhdGljIGludCB3ZWFyX2xldmVsaW5nX3dvcmtlcihzdHJ1Y3QgdWJp
-X2RldmljZSAqdWJpLCBzdHJ1Y3QgdWJpX3dvcmsgKndyaywKICNlbmRpZgogCXN0cnVjdCB1Ymlf
-d2xfZW50cnkgKmUxLCAqZTI7CiAJc3RydWN0IHViaV92aWRfaGRyICp2aWRfaGRyOworCWludCBk
-c3RfbGViX2NsZWFuID0gMDsKIAogCWtmcmVlKHdyayk7CiAJaWYgKHNodXRkb3duKQpAQCAtNzI1
-LDYgKzcyNyw3IEBAIHN0YXRpYyBpbnQgd2Vhcl9sZXZlbGluZ193b3JrZXIoc3RydWN0IHViaV9k
-ZXZpY2UgKnViaSwgc3RydWN0IHViaV93b3JrICp3cmssCiAKIAllcnIgPSB1YmlfaW9fcmVhZF92
-aWRfaGRyKHViaSwgZTEtPnBudW0sIHZpZF9oZHIsIDApOwogCWlmIChlcnIgJiYgZXJyICE9IFVC
-SV9JT19CSVRGTElQUykgeworCQlkc3RfbGViX2NsZWFuID0gMTsKIAkJaWYgKGVyciA9PSBVQklf
-SU9fRkYpIHsKIAkJCS8qCiAJCQkgKiBXZSBhcmUgdHJ5aW5nIHRvIG1vdmUgUEVCIHdpdGhvdXQg
-YSBWSUQgaGVhZGVyLiBVQkkKQEAgLTc3MCwxMCArNzczLDEyIEBAIHN0YXRpYyBpbnQgd2Vhcl9s
-ZXZlbGluZ193b3JrZXIoc3RydWN0IHViaV9kZXZpY2UgKnViaSwgc3RydWN0IHViaV93b3JrICp3
-cmssCiAJCQkgKiBwcm90ZWN0aW9uIHF1ZXVlLgogCQkJICovCiAJCQlwcm90ZWN0ID0gMTsKKwkJ
-CWRzdF9sZWJfY2xlYW4gPSAxOwogCQkJZ290byBvdXRfbm90X21vdmVkOwogCQl9CiAJCWlmIChl
-cnIgPT0gTU9WRV9SRVRSWSkgewogCQkJc2NydWJiaW5nID0gMTsKKwkJCWRzdF9sZWJfY2xlYW4g
-PSAxOwogCQkJZ290byBvdXRfbm90X21vdmVkOwogCQl9CiAJCWlmIChlcnIgPT0gTU9WRV9UQVJH
-RVRfQklURkxJUFMgfHwgZXJyID09IE1PVkVfVEFSR0VUX1dSX0VSUiB8fApAQCAtNzk5LDYgKzgw
-NCw3IEBAIHN0YXRpYyBpbnQgd2Vhcl9sZXZlbGluZ193b3JrZXIoc3RydWN0IHViaV9kZXZpY2Ug
-KnViaSwgc3RydWN0IHViaV93b3JrICp3cmssCiAJCQkJCXViaS0+ZXJyb25lb3VzX3BlYl9jb3Vu
-dCk7CiAJCQkJZ290byBvdXRfZXJyb3I7CiAJCQl9CisJCQlkc3RfbGViX2NsZWFuID0gMTsKIAkJ
-CWVycm9uZW91cyA9IDE7CiAJCQlnb3RvIG91dF9ub3RfbW92ZWQ7CiAJCX0KQEAgLTg2NSwxNCAr
-ODcxLDIzIEBAIG91dF9ub3RfbW92ZWQ6CiAJCXdsX3RyZWVfYWRkKGUxLCAmdWJpLT5zY3J1Yik7
-CiAJZWxzZQogCQl3bF90cmVlX2FkZChlMSwgJnViaS0+dXNlZCk7CisJaWYgKGRzdF9sZWJfY2xl
-YW4pIHsKKwkJd2xfdHJlZV9hZGQoZTIsICZ1YmktPmZyZWUpOworCQl1YmktPmZyZWVfY291bnQr
-KzsKKwl9CisKIAl1YmlfYXNzZXJ0KCF1YmktPm1vdmVfdG9fcHV0KTsKIAl1YmktPm1vdmVfZnJv
-bSA9IHViaS0+bW92ZV90byA9IE5VTEw7CiAJdWJpLT53bF9zY2hlZHVsZWQgPSAwOwogCiAJdWJp
-X2ZyZWVfdmlkX2hkcih1YmksIHZpZF9oZHIpOwotCWVyciA9IGRvX3N5bmNfZXJhc2UodWJpLCBl
-Miwgdm9sX2lkLCBsbnVtLCB0b3J0dXJlKTsKLQlpZiAoZXJyKQotCQlnb3RvIG91dF9ybzsKKwlp
-ZiAoZHN0X2xlYl9jbGVhbikgeworCQllbnN1cmVfd2Vhcl9sZXZlbGluZyh1YmksIDEpOworCX0g
-ZWxzZSB7CisJCWVyciA9IGRvX3N5bmNfZXJhc2UodWJpLCBlMiwgdm9sX2lkLCBsbnVtLCB0b3J0
-dXJlKTsKKwkJaWYgKGVycikKKwkJCWdvdG8gb3V0X3JvOworCX0KIAogCXJldHVybiAwOwogCi0t
-IAoxLjkuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Freeing the fastmap is now done by ubi_fastmap_close() from kernel.
+No need to keep the barebox own fastmap free function.
+
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ drivers/mtd/ubi/build.c   |  1 -
+ drivers/mtd/ubi/fastmap.c | 14 --------------
+ drivers/mtd/ubi/ubi.h     |  1 -
+ 3 files changed, 16 deletions(-)
+
+diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
+index 0e8dccc..5953e36 100644
+--- a/drivers/mtd/ubi/build.c
++++ b/drivers/mtd/ubi/build.c
+@@ -723,7 +723,6 @@ int ubi_detach_mtd_dev(int ubi_num, int anyway)
+ 	/* If we don't write a new fastmap at detach time we lose all
+ 	 * EC updates that have been made since the last written fastmap. */
+ 	ubi_update_fastmap(ubi);
+-	ubi_free_fastmap(ubi);
+ #endif
+ 
+ 	uif_close(ubi);
+diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
+index ffa2859..9975722 100644
+--- a/drivers/mtd/ubi/fastmap.c
++++ b/drivers/mtd/ubi/fastmap.c
+@@ -1247,20 +1247,6 @@ out:
+ 	return ret;
+ }
+ 
+-void ubi_free_fastmap(struct ubi_device *ubi)
+-{
+-	struct ubi_fastmap_layout *fm = ubi->fm;
+-	int i;
+-
+-	if (!fm)
+-		return;
+-
+-	for (i = 0; i < fm->used_blocks; i++)
+-		kfree(fm->e[i]);
+-
+-	kfree(ubi->fm);
+-}
+-
+ /**
+  * erase_block - Manually erase a PEB.
+  * @ubi: UBI device object
+diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
+index 8b5416c..89e3347 100644
+--- a/drivers/mtd/ubi/ubi.h
++++ b/drivers/mtd/ubi/ubi.h
+@@ -842,7 +842,6 @@ size_t ubi_calc_fm_size(struct ubi_device *ubi);
+ int ubi_update_fastmap(struct ubi_device *ubi);
+ int ubi_scan_fastmap(struct ubi_device *ubi, struct ubi_attach_info *ai,
+ 		     int fm_anchor);
+-void ubi_free_fastmap(struct ubi_device *ubi);
+ #else
+ static inline int ubi_update_fastmap(struct ubi_device *ubi) { return 0; }
+ #endif
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
