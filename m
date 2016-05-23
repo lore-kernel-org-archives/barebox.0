@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b4lEW-0000Jq-BN
+ id 1b4lEV-0000K8-QD
  for barebox@lists.infradead.org; Mon, 23 May 2016 08:29:06 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 34CE3A00CF6
- for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:28 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id E2720A00CF5
+ for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:27 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 23 May 2016 10:26:49 +0200
-Message-Id: <1463992010-31537-62-git-send-email-t.remmet@phytec.de>
+Date: Mon, 23 May 2016 10:26:48 +0200
+Message-Id: <1463992010-31537-61-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +20,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 61/62] ubi: Fix out of bounds write in volume update code
+Subject: [PATCH 60/62] mtd: ubi: wl: avoid erasing a PEB which is empty
 To: barebox@lists.infradead.org
 
-From: Richard Weinberger <richard@nod.at>
-
-ubi_start_leb_change() allocates too few bytes.
-ubi_more_leb_change_data() will write up to req->upd_bytes +
-ubi->min_io_size bytes.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Reviewed-by: Boris Brezillon <boris.brezillon@free-electrons.com>
----
- drivers/mtd/ubi/upd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/mtd/ubi/upd.c b/drivers/mtd/ubi/upd.c
-index 5e06753..33d4dbf 100644
---- a/drivers/mtd/ubi/upd.c
-+++ b/drivers/mtd/ubi/upd.c
-@@ -201,7 +201,7 @@ int ubi_start_leb_change(struct ubi_device *ubi, struct ubi_volume *vol,
- 	vol->changing_leb = 1;
- 	vol->ch_lnum = req->lnum;
- 
--	vol->upd_buf = vmalloc(req->bytes);
-+	vol->upd_buf = vmalloc(ALIGN((int)req->bytes, ubi->min_io_size));
- 	if (!vol->upd_buf)
- 		return -ENOMEM;
- 
--- 
-1.9.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogU2ViYXN0aWFuIFNpZXdpb3IgPGJpZ2Vhc3lAbGludXRyb25peC5kZT4KCndlYXJfbGV2
+ZWxpbmdfd29ya2VyKCkgY3VycmVudGx5IHVuY29uZGl0aW9uYWxseSBwdXRzIGEgUEVCIG9uIGVy
+YXNlIGluCnRoZSBlcnJvciBjYXNlIGV2ZW4gaXQganVzdCBiZWVuIHRha2VuIGZyb20gdGhlIGZy
+ZWVfbGlzdCBhbmQgbmV2ZXIKdXNlZC4KSW4gY2FzZSB0aGUgUEVCIHdhcyBuZXZlciB1c2VkIGl0
+IGNhbiBiZSBwdXQgYmFjayBvbiB0aGUgZnJlZSBsaXN0CnNhdmluZyBhIHByZWNpb3VzIGVyYXNl
+IGN5Y2xlLgoKdjHigKZ2MjoKCS0gdG9fbGViX2NsZWFuIC0+IGRzdF9sZWJfY2xlYW4KCS0gdXNl
+IHRoZSBuZXN0ZWQgb3B0aW9uIGZvciBlbnN1cmVfd2Vhcl9sZXZlbGluZygpCgktIGRvX3N5bmNf
+ZXJhc2UoKSBjYW4ndCBnbyAtRU5PTUVNIHNvIHdlIGNhbiBqdXN0IGdvIGludG8KCSAgUk8tbW9k
+ZSBub3cuCgpTaWduZWQtb2ZmLWJ5OiBTZWJhc3RpYW4gQW5kcnplaiBTaWV3aW9yIDxiaWdlYXN5
+QGxpbnV0cm9uaXguZGU+ClNpZ25lZC1vZmYtYnk6IFJpY2hhcmQgV2VpbmJlcmdlciA8cmljaGFy
+ZEBub2QuYXQ+Ci0tLQogZHJpdmVycy9tdGQvdWJpL3dsLmMgfCAyMSArKysrKysrKysrKysrKysr
+KystLS0KIDEgZmlsZSBjaGFuZ2VkLCAxOCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoK
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL3ViaS93bC5jIGIvZHJpdmVycy9tdGQvdWJpL3dsLmMK
+aW5kZXggZTgxZjc5Ni4uNDUzNWYyZCAxMDA2NDQKLS0tIGEvZHJpdmVycy9tdGQvdWJpL3dsLmMK
+KysrIGIvZHJpdmVycy9tdGQvdWJpL3dsLmMKQEAgLTYwMyw2ICs2MDMsNyBAQCBzdGF0aWMgaW50
+IGRvX3N5bmNfZXJhc2Uoc3RydWN0IHViaV9kZXZpY2UgKnViaSwgc3RydWN0IHViaV93bF9lbnRy
+eSAqZSwKIAlyZXR1cm4gX19lcmFzZV93b3JrZXIodWJpLCAmd2xfd3JrKTsKIH0KIAorc3RhdGlj
+IGludCBlbnN1cmVfd2Vhcl9sZXZlbGluZyhzdHJ1Y3QgdWJpX2RldmljZSAqdWJpLCBpbnQgbmVz
+dGVkKTsKIC8qKgogICogd2Vhcl9sZXZlbGluZ193b3JrZXIgLSB3ZWFyLWxldmVsaW5nIHdvcmtl
+ciBmdW5jdGlvbi4KICAqIEB1Ymk6IFVCSSBkZXZpY2UgZGVzY3JpcHRpb24gb2JqZWN0CkBAIC02
+MjQsNiArNjI1LDcgQEAgc3RhdGljIGludCB3ZWFyX2xldmVsaW5nX3dvcmtlcihzdHJ1Y3QgdWJp
+X2RldmljZSAqdWJpLCBzdHJ1Y3QgdWJpX3dvcmsgKndyaywKICNlbmRpZgogCXN0cnVjdCB1Ymlf
+d2xfZW50cnkgKmUxLCAqZTI7CiAJc3RydWN0IHViaV92aWRfaGRyICp2aWRfaGRyOworCWludCBk
+c3RfbGViX2NsZWFuID0gMDsKIAogCWtmcmVlKHdyayk7CiAJaWYgKHNodXRkb3duKQpAQCAtNzI1
+LDYgKzcyNyw3IEBAIHN0YXRpYyBpbnQgd2Vhcl9sZXZlbGluZ193b3JrZXIoc3RydWN0IHViaV9k
+ZXZpY2UgKnViaSwgc3RydWN0IHViaV93b3JrICp3cmssCiAKIAllcnIgPSB1YmlfaW9fcmVhZF92
+aWRfaGRyKHViaSwgZTEtPnBudW0sIHZpZF9oZHIsIDApOwogCWlmIChlcnIgJiYgZXJyICE9IFVC
+SV9JT19CSVRGTElQUykgeworCQlkc3RfbGViX2NsZWFuID0gMTsKIAkJaWYgKGVyciA9PSBVQklf
+SU9fRkYpIHsKIAkJCS8qCiAJCQkgKiBXZSBhcmUgdHJ5aW5nIHRvIG1vdmUgUEVCIHdpdGhvdXQg
+YSBWSUQgaGVhZGVyLiBVQkkKQEAgLTc3MCwxMCArNzczLDEyIEBAIHN0YXRpYyBpbnQgd2Vhcl9s
+ZXZlbGluZ193b3JrZXIoc3RydWN0IHViaV9kZXZpY2UgKnViaSwgc3RydWN0IHViaV93b3JrICp3
+cmssCiAJCQkgKiBwcm90ZWN0aW9uIHF1ZXVlLgogCQkJICovCiAJCQlwcm90ZWN0ID0gMTsKKwkJ
+CWRzdF9sZWJfY2xlYW4gPSAxOwogCQkJZ290byBvdXRfbm90X21vdmVkOwogCQl9CiAJCWlmIChl
+cnIgPT0gTU9WRV9SRVRSWSkgewogCQkJc2NydWJiaW5nID0gMTsKKwkJCWRzdF9sZWJfY2xlYW4g
+PSAxOwogCQkJZ290byBvdXRfbm90X21vdmVkOwogCQl9CiAJCWlmIChlcnIgPT0gTU9WRV9UQVJH
+RVRfQklURkxJUFMgfHwgZXJyID09IE1PVkVfVEFSR0VUX1dSX0VSUiB8fApAQCAtNzk5LDYgKzgw
+NCw3IEBAIHN0YXRpYyBpbnQgd2Vhcl9sZXZlbGluZ193b3JrZXIoc3RydWN0IHViaV9kZXZpY2Ug
+KnViaSwgc3RydWN0IHViaV93b3JrICp3cmssCiAJCQkJCXViaS0+ZXJyb25lb3VzX3BlYl9jb3Vu
+dCk7CiAJCQkJZ290byBvdXRfZXJyb3I7CiAJCQl9CisJCQlkc3RfbGViX2NsZWFuID0gMTsKIAkJ
+CWVycm9uZW91cyA9IDE7CiAJCQlnb3RvIG91dF9ub3RfbW92ZWQ7CiAJCX0KQEAgLTg2NSwxNCAr
+ODcxLDIzIEBAIG91dF9ub3RfbW92ZWQ6CiAJCXdsX3RyZWVfYWRkKGUxLCAmdWJpLT5zY3J1Yik7
+CiAJZWxzZQogCQl3bF90cmVlX2FkZChlMSwgJnViaS0+dXNlZCk7CisJaWYgKGRzdF9sZWJfY2xl
+YW4pIHsKKwkJd2xfdHJlZV9hZGQoZTIsICZ1YmktPmZyZWUpOworCQl1YmktPmZyZWVfY291bnQr
+KzsKKwl9CisKIAl1YmlfYXNzZXJ0KCF1YmktPm1vdmVfdG9fcHV0KTsKIAl1YmktPm1vdmVfZnJv
+bSA9IHViaS0+bW92ZV90byA9IE5VTEw7CiAJdWJpLT53bF9zY2hlZHVsZWQgPSAwOwogCiAJdWJp
+X2ZyZWVfdmlkX2hkcih1YmksIHZpZF9oZHIpOwotCWVyciA9IGRvX3N5bmNfZXJhc2UodWJpLCBl
+Miwgdm9sX2lkLCBsbnVtLCB0b3J0dXJlKTsKLQlpZiAoZXJyKQotCQlnb3RvIG91dF9ybzsKKwlp
+ZiAoZHN0X2xlYl9jbGVhbikgeworCQllbnN1cmVfd2Vhcl9sZXZlbGluZyh1YmksIDEpOworCX0g
+ZWxzZSB7CisJCWVyciA9IGRvX3N5bmNfZXJhc2UodWJpLCBlMiwgdm9sX2lkLCBsbnVtLCB0b3J0
+dXJlKTsKKwkJaWYgKGVycikKKwkJCWdvdG8gb3V0X3JvOworCX0KIAogCXJldHVybiAwOwogCi0t
+IAoxLjkuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
+bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
