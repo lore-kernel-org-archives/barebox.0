@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b4kND-0000ZC-KJ
- for barebox@lists.infradead.org; Mon, 23 May 2016 07:34:00 +0000
-Date: Mon, 23 May 2016 09:33:37 +0200
+ id 1b4kcK-0000oA-9L
+ for barebox@lists.infradead.org; Mon, 23 May 2016 07:49:36 +0000
+Date: Mon, 23 May 2016 09:49:14 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160523073337.GN11148@pengutronix.de>
-References: <1463721951-5621-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20160523074914.GO11148@pengutronix.de>
+References: <1463785803.15779.60.camel@rtred1test09.kymeta.local>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1463721951-5621-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1463785803.15779.60.camel@rtred1test09.kymeta.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,78 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] imd: make it work on big-endian machines
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] socfpga: correct start vector when not using extra
+ barebox header
+To: Trent Piepho <tpiepho@kymetacorp.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Fri, May 20, 2016 at 08:25:51AM +0300, Antony Pavlov wrote:
-> The commit
+On Fri, May 20, 2016 at 11:09:59PM +0000, Trent Piepho wrote:
+> The barebox ARM image has a 0x50 byte header that consists of:
+> Bytes 0x00 - 0x0a:  Instruction(s) to jump to start of code
+> Bytes 0x20 - 0x2f:  Signature and some other data
+> The rest of header is basically padding.
 > 
->     commit 5e335773e0814173b40873a891964a7858d64688
->     Author: Sascha Hauer <s.hauer@pengutronix.de>
->     Date:   Tue Mar 29 10:06:46 2016 +0200
+> On SocFPGA, the ROM bootloader expects the 2nd stage bootloader
+> (barebox) to have a 0x40 byte header with the following fields:
+> Bytes 0x40 - 0x4b:  Signature and some other data
+> Bytes 0x4c - 0x4f:  Instruction to jump to start of code
 > 
->         imd: use struct imd_header * as argument
+> These two headers are compatible, as everything defined in the SocFPGA
+> header is at a location that is padding the barebox header.
 > 
-> introduces additional imd type checks like this
+> socfpga_mkimage has two methods for creating a SocFPGA image.  One method
+> prepends an extra 512 byte header to the barebox image, which contains the
+> SoCFPGA header described above.  The start vector at 0x4c is hard coded to
+> jump to offset 512, where the barebox header's start vector will be.
 > 
->     if (!imd_is_string(imd->type))
->            return NULL;
+> socfpga_mkimage can also not prepend this additional header and instead
+> modify the barebox header to be SoCFPGA compatible.  But it only writes
+> bytes 0x40-0x4b and not the start vector at 0x4c, leaving that word as
+> padding.  And so this image will not boot when the ROM bootloader runs it.
 > 
-> These checks work incorrectly on any big-endian machine
-> because the imd->type field needs addition conversion
-> to little-endian byteorder before use.
+> This changes the SoCFPGA header creator to write a correct start vector for
+> both methods.  It will create a branch instruction at 0x4c that jumps to the
+> start of the barebox image, whether it be at offset 0 or offset 512 (or any
+> other location).
 > 
-> Here is the imd command output on big-endian qemu-malta:
-> 
->     barebox:/ imd /dev/nor0.barebox
->     release: <NULL>
->     build: <NULL>
-> 
-> This patch fixes the problem by adding necessary conversion
-> via imd_read_type().
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> This makes SoCFPGA images without the extra header bootable.
+> ---
+>  scripts/socfpga_mkimage.c | 29 +++++++++++++++++++++--------
+>  1 file changed, 21 insertions(+), 8 deletions(-)
 
-Applied, thanks
+Applied both, thanks
 
 Sascha
 
-> ---
-> 
-> Changes since v1:
-> 
->   * fix typos in the commit message.
-> 
->  common/imd.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/common/imd.c b/common/imd.c
-> index 159b73a..a8a10fc 100644
-> --- a/common/imd.c
-> +++ b/common/imd.c
-> @@ -212,7 +212,7 @@ const char *imd_string_data(struct imd_header *imd, int index)
->  	int len = imd_read_length(imd);
->  	char *p = (char *)(imd + 1);
->  
-> -	if (!imd_is_string(imd->type))
-> +	if (!imd_is_string(imd_read_type(imd)))
->  		return NULL;
->  
->  	for (i = 0; total < len; total += l, p += l) {
-> @@ -239,7 +239,7 @@ char *imd_concat_strings(struct imd_header *imd)
->  	char *str;
->  	char *data = (char *)(imd + 1);
->  
-> -	if (!imd_is_string(imd->type))
-> +	if (!imd_is_string(imd_read_type(imd)))
->  		return NULL;
->  
->  	str = malloc(len);
-> -- 
-> 2.7.0
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
