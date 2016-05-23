@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
- by casper.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1b4lEg-00050t-Ar
- for barebox@lists.infradead.org; Mon, 23 May 2016 08:29:15 +0000
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1b4lEj-0003ao-QP
+ for barebox@lists.infradead.org; Mon, 23 May 2016 08:29:18 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 6E0F7A00CC6
+ by root.phytec.de (Postfix) with ESMTP id E9AB7A00CCC
  for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:23 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 23 May 2016 10:26:10 +0200
-Message-Id: <1463992010-31537-23-git-send-email-t.remmet@phytec.de>
+Date: Mon, 23 May 2016 10:26:16 +0200
+Message-Id: <1463992010-31537-29-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,62 +19,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 22/62] UBI: Fastmap: Don't allocate new ubi_wl_entry objects
+Subject: [PATCH 28/62] UBI: Fastmap: Remove bogus ubi_assert()
 To: barebox@lists.infradead.org
 
-RnJvbTogUmljaGFyZCBXZWluYmVyZ2VyIDxyaWNoYXJkQG5vZC5hdD4KClRoZXJlIGlzIG5vIG5l
-ZWQgdG8gYWxsb2NhdGUgbmV3IG9uZXMgZXZlcnkgdGltZSwgd2UgY2FuIHJldXNlCnRoZSBleGlz
-dGluZyBvbmVzLgpUaGlzIG1ha2VzIHRoZSBjb2RlIGNsZWFuZXIgYW5kIG1vcmUgZWFzeSB0byBm
-b2xsb3cuCgpTaWduZWQtb2ZmLWJ5OiBSaWNoYXJkIFdlaW5iZXJnZXIgPHJpY2hhcmRAbm9kLmF0
-PgpSZXZpZXdlZC1ieTogVGFueWEgQnJva2htYW4gPHRsaW5kZXJAY29kZWF1cm9yYS5vcmc+ClJl
-dmlld2VkLWJ5OiBHdWlkbyBNYXJ0w61uZXogPGd1aWRvQHZhbmd1YXJkaWFzdXIuY29tLmFyPgoK
-Q29uZmxpY3RzOgoJZHJpdmVycy9tdGQvdWJpL2Zhc3RtYXAuYwoKRml4ZWQgbWlub3IgY29uZmxp
-Y3QuCgpTaWdlbmQtb2ZmLWJ5OiBUZXJlc2EgUmVtbWV0IDx0LnJlbW1ldEBwaHl0ZWMuZGU+Ci0t
-LQogZHJpdmVycy9tdGQvdWJpL2Zhc3RtYXAuYyB8IDMwICsrKysrLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLQogZHJpdmVycy9tdGQvdWJpL3dsLmMgICAgICB8ICAzIC0tLQogMiBmaWxlcyBjaGFu
-Z2VkLCA1IGluc2VydGlvbnMoKyksIDI4IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvbXRkL3ViaS9mYXN0bWFwLmMgYi9kcml2ZXJzL210ZC91YmkvZmFzdG1hcC5jCmluZGV4IGJk
-M2EzMDcuLjJhY2QzZGQgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbXRkL3ViaS9mYXN0bWFwLmMKKysr
-IGIvZHJpdmVycy9tdGQvdWJpL2Zhc3RtYXAuYwpAQCAtMTQzMywxOCArMTQzMyw2IEBAIGludCB1
-YmlfdXBkYXRlX2Zhc3RtYXAoc3RydWN0IHViaV9kZXZpY2UgKnViaSkKIAkJcmV0dXJuIC1FTk9N
-RU07CiAKIAluZXdfZm0tPnVzZWRfYmxvY2tzID0gdWJpLT5mbV9zaXplIC8gdWJpLT5sZWJfc2l6
-ZTsKLQotCWZvciAoaSA9IDA7IGkgPCBuZXdfZm0tPnVzZWRfYmxvY2tzOyBpKyspIHsKLQkJbmV3
-X2ZtLT5lW2ldID0ga3phbGxvYyhzaXplb2Yoc3RydWN0IHViaV9haW5mX3BlYiksIEdGUF9LRVJO
-RUwpOwotCQlpZiAoIW5ld19mbS0+ZVtpXSkgewotCQkJd2hpbGUgKGktLSkKLQkJCQlrZnJlZShu
-ZXdfZm0tPmVbaV0pOwotCi0JCQlrZnJlZShuZXdfZm0pOwotCQkJcmV0dXJuIC1FTk9NRU07Ci0J
-CX0KLQl9Ci0KIAlvbGRfZm0gPSB1YmktPmZtOwogCXViaS0+Zm0gPSBOVUxMOwogCkBAIC0xNDc4
-LDEyICsxNDY2LDkgQEAgaW50IHViaV91cGRhdGVfZmFzdG1hcChzdHJ1Y3QgdWJpX2RldmljZSAq
-dWJpKQogCQkJCXViaV9lcnIodWJpLCAiY291bGQgbm90IGVyYXNlIG9sZCBmYXN0bWFwIFBFQiIp
-OwogCQkJCWdvdG8gZXJyOwogCQkJfQotCi0JCQluZXdfZm0tPmVbaV0tPnBudW0gPSBvbGRfZm0t
-PmVbaV0tPnBudW07Ci0JCQluZXdfZm0tPmVbaV0tPmVjID0gb2xkX2ZtLT5lW2ldLT5lYzsKKwkJ
-CW5ld19mbS0+ZVtpXSA9IG9sZF9mbS0+ZVtpXTsKIAkJfSBlbHNlIHsKLQkJCW5ld19mbS0+ZVtp
-XS0+cG51bSA9IHRtcF9lLT5wbnVtOwotCQkJbmV3X2ZtLT5lW2ldLT5lYyA9IHRtcF9lLT5lYzsK
-KwkJCW5ld19mbS0+ZVtpXSA9IHRtcF9lOwogCiAJCQlpZiAob2xkX2ZtKQogCQkJCXViaV93bF9w
-dXRfZm1fcGViKHViaSwgb2xkX2ZtLT5lW2ldLCBpLApAQCAtMTUwNiwxNiArMTQ5MSwxMyBAQCBp
-bnQgdWJpX3VwZGF0ZV9mYXN0bWFwKHN0cnVjdCB1YmlfZGV2aWNlICp1YmkpCiAJCQkJCQkJICBp
-LCAwKTsKIAkJCQlnb3RvIGVycjsKIAkJCX0KLQotCQkJbmV3X2ZtLT5lWzBdLT5wbnVtID0gb2xk
-X2ZtLT5lWzBdLT5wbnVtOworCQkJbmV3X2ZtLT5lWzBdID0gb2xkX2ZtLT5lWzBdOwogCQkJbmV3
-X2ZtLT5lWzBdLT5lYyA9IHJldDsKIAkJfSBlbHNlIHsKIAkJCS8qIHdlJ3ZlIGdvdCBhIG5ldyBh
-bmNob3IgUEVCLCByZXR1cm4gdGhlIG9sZCBvbmUgKi8KIAkJCXViaV93bF9wdXRfZm1fcGViKHVi
-aSwgb2xkX2ZtLT5lWzBdLCAwLAogCQkJCQkgIG9sZF9mbS0+dG9fYmVfdG9ydHVyZWRbMF0pOwot
-Ci0JCQluZXdfZm0tPmVbMF0tPnBudW0gPSB0bXBfZS0+cG51bTsKLQkJCW5ld19mbS0+ZVswXS0+
-ZWMgPSB0bXBfZS0+ZWM7CisJCQluZXdfZm0tPmVbMF0gPSB0bXBfZTsKIAkJfQogCX0gZWxzZSB7
-CiAJCWlmICghdG1wX2UpIHsKQEAgLTE1MjgsOSArMTUxMCw3IEBAIGludCB1YmlfdXBkYXRlX2Zh
-c3RtYXAoc3RydWN0IHViaV9kZXZpY2UgKnViaSkKIAkJCXJldCA9IC1FTk9TUEM7CiAJCQlnb3Rv
-IGVycjsKIAkJfQotCi0JCW5ld19mbS0+ZVswXS0+cG51bSA9IHRtcF9lLT5wbnVtOwotCQluZXdf
-Zm0tPmVbMF0tPmVjID0gdG1wX2UtPmVjOworCQluZXdfZm0tPmVbMF0gPSB0bXBfZTsKIAl9CiAK
-IAlyZXQgPSB1Ymlfd3JpdGVfZmFzdG1hcCh1YmksIG5ld19mbSk7CmRpZmYgLS1naXQgYS9kcml2
-ZXJzL210ZC91Ymkvd2wuYyBiL2RyaXZlcnMvbXRkL3ViaS93bC5jCmluZGV4IDVkODkzMjMuLmZk
-Mzg0YzYgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbXRkL3ViaS93bC5jCisrKyBiL2RyaXZlcnMvbXRk
-L3ViaS93bC5jCkBAIC05NDcsOSArOTQ3LDYgQEAgaW50IHViaV93bF9wdXRfZm1fcGViKHN0cnVj
-dCB1YmlfZGV2aWNlICp1YmksIHN0cnVjdCB1Ymlfd2xfZW50cnkgKmZtX2UsCiAJCWUgPSBmbV9l
-OwogCQl1YmlfYXNzZXJ0KGUtPmVjID49IDApOwogCQl1YmktPmxvb2t1cHRibFtwbnVtXSA9IGU7
-Ci0JfSBlbHNlIHsKLQkJZS0+ZWMgPSBmbV9lLT5lYzsKLQkJa2ZyZWUoZm1fZSk7CiAJfQogCiAJ
-dm9sX2lkID0gbG51bSA/IFVCSV9GTV9EQVRBX1ZPTFVNRV9JRCA6IFVCSV9GTV9TQl9WT0xVTUVf
-SUQ7Ci0tIAoxLjkuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+From: Richard Weinberger <richard@nod.at>
+
+It is legal to have PEBs left in the used list.
+This can happen if UBI copies a PEB and a powercut happens
+between writing a new fastmap and adding this PEB into the EBA table.
+In this case the old PEB will be used.
+
+Signed-off-by: Richard Weinberger <richard@nod.at>
+---
+ drivers/mtd/ubi/fastmap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
+index 2acd3dd..4331d3c 100644
+--- a/drivers/mtd/ubi/fastmap.c
++++ b/drivers/mtd/ubi/fastmap.c
+@@ -816,7 +816,9 @@ static int ubi_attach_fastmap(struct ubi_device *ubi,
+ 	list_for_each_entry_safe(tmp_aeb, _tmp_aeb, &lfree, u.list)
+ 		list_move_tail(&tmp_aeb->u.list, &ai->free);
+ 
+-	ubi_assert(list_empty(&used));
++	list_for_each_entry_safe(tmp_aeb, _tmp_aeb, &used, u.list)
++		list_move_tail(&tmp_aeb->u.list, &ai->erase);
++
+ 	ubi_assert(list_empty(&eba_orphans));
+ 	ubi_assert(list_empty(&lfree));
+ 
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
