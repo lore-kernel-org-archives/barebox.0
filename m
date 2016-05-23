@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b4lEQ-0000Jq-4w
- for barebox@lists.infradead.org; Mon, 23 May 2016 08:29:01 +0000
+ id 1b4lEO-0000KA-RJ
+ for barebox@lists.infradead.org; Mon, 23 May 2016 08:29:00 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id CC3FAA00CE0
+ by root.phytec.de (Postfix) with ESMTP id 49BB4A00CDD
  for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:25 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 23 May 2016 10:26:33 +0200
-Message-Id: <1463992010-31537-46-git-send-email-t.remmet@phytec.de>
+Date: Mon, 23 May 2016 10:26:30 +0200
+Message-Id: <1463992010-31537-43-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,42 +24,121 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 45/62] UBI: Fastmap: Remove unnecessary `\'
+Subject: [PATCH 42/62] UBI: Fastmap: Remove is_fm_block()
 To: barebox@lists.infradead.org
 
-From: shengyong <shengyong1@huawei.com>
+From: Richard Weinberger <richard@nod.at>
 
-Signed-off-by: Sheng Yong <shengyong1@huawei.com>
+This function was added to fastmap in a very early stage
+to have paranoid assertions.
+With the current fastmap implementation this assert will never
+trigger as fastmap PEBs are not seen by the WL sub-system.
+Remove it to save us some CPU cycles.
+
 Signed-off-by: Richard Weinberger <richard@nod.at>
----
- drivers/mtd/ubi/fastmap.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
-index e60bc7f..80a6224 100644
---- a/drivers/mtd/ubi/fastmap.c
-+++ b/drivers/mtd/ubi/fastmap.c
-@@ -24,13 +24,13 @@ size_t ubi_calc_fm_size(struct ubi_device *ubi)
- {
- 	size_t size;
+Conflicts:
+	drivers/mtd/ubi/fastmap-wl.c
+
+Fixed minor conflict.
+
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ drivers/mtd/ubi/fastmap-wl.c | 19 -------------------
+ drivers/mtd/ubi/wl.c         |  5 -----
+ drivers/mtd/ubi/wl.h         |  5 -----
+ 3 files changed, 29 deletions(-)
+
+diff --git a/drivers/mtd/ubi/fastmap-wl.c b/drivers/mtd/ubi/fastmap-wl.c
+index 920fd54..1885b15 100644
+--- a/drivers/mtd/ubi/fastmap-wl.c
++++ b/drivers/mtd/ubi/fastmap-wl.c
+@@ -15,25 +15,6 @@
+  */
  
--	size = sizeof(struct ubi_fm_sb) + \
--		sizeof(struct ubi_fm_hdr) + \
--		sizeof(struct ubi_fm_scan_pool) + \
--		sizeof(struct ubi_fm_scan_pool) + \
--		(ubi->peb_count * sizeof(struct ubi_fm_ec)) + \
--		(sizeof(struct ubi_fm_eba) + \
--		(ubi->peb_count * sizeof(__be32))) + \
-+	size = sizeof(struct ubi_fm_sb) +
-+		sizeof(struct ubi_fm_hdr) +
-+		sizeof(struct ubi_fm_scan_pool) +
-+		sizeof(struct ubi_fm_scan_pool) +
-+		(ubi->peb_count * sizeof(struct ubi_fm_ec)) +
-+		(sizeof(struct ubi_fm_eba) +
-+		(ubi->peb_count * sizeof(__be32))) +
- 		sizeof(struct ubi_fm_volhdr) * UBI_MAX_VOLUMES;
- 	return roundup(size, ubi->leb_size);
- }
+ /**
+- *  is_fm_block - returns 1 if a PEB is currently used in a fastmap.
+- *  @ubi: UBI device description object
+- *  @pnum: the to be checked PEB
+- */
+-static int is_fm_block(struct ubi_device *ubi, int pnum)
+-{
+-	int i;
+-
+-	if (!ubi->fm)
+-		return 0;
+-
+-	for (i = 0; i < ubi->fm->used_blocks; i++)
+-		if (ubi->fm->e[i]->pnum == pnum)
+-			return 1;
+-
+-	return 0;
+-}
+-
+-/**
+  * find_anchor_wl_entry - find wear-leveling entry to used as anchor PEB.
+  * @root: the RB-tree where to look for
+  */
+diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
+index ae9def6..3c51feb 100644
+--- a/drivers/mtd/ubi/wl.c
++++ b/drivers/mtd/ubi/wl.c
+@@ -560,7 +560,6 @@ static int schedule_erase(struct ubi_device *ubi, struct ubi_wl_entry *e,
+ 	struct ubi_work *wl_wrk;
+ 
+ 	ubi_assert(e);
+-	ubi_assert(!is_fm_block(ubi, e->pnum));
+ 
+ 	dbg_wl("schedule erasure of PEB %d, EC %d, torture %d",
+ 	       e->pnum, e->ec, torture);
+@@ -1002,8 +1001,6 @@ static int erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk,
+ 	dbg_wl("erase PEB %d EC %d LEB %d:%d",
+ 	       pnum, e->ec, wl_wrk->vol_id, wl_wrk->lnum);
+ 
+-	ubi_assert(!is_fm_block(ubi, e->pnum));
+-
+ 	err = sync_erase(ubi, e, wl_wrk->torture);
+ 	if (!err) {
+ 		/* Fine, we've erased it successfully */
+@@ -1367,7 +1364,6 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
+ 
+ 		e->pnum = aeb->pnum;
+ 		e->ec = aeb->ec;
+-		ubi_assert(!is_fm_block(ubi, e->pnum));
+ 		ubi->lookuptbl[e->pnum] = e;
+ 		if (schedule_erase(ubi, e, aeb->vol_id, aeb->lnum, 0)) {
+ 			wl_entry_destroy(ubi, e);
+@@ -1386,7 +1382,6 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
+ 		e->pnum = aeb->pnum;
+ 		e->ec = aeb->ec;
+ 		ubi_assert(e->ec >= 0);
+-		ubi_assert(!is_fm_block(ubi, e->pnum));
+ 
+ 		wl_tree_add(e, &ubi->free);
+ 		ubi->free_count++;
+diff --git a/drivers/mtd/ubi/wl.h b/drivers/mtd/ubi/wl.h
+index 0df78be..2a1899e9 100644
+--- a/drivers/mtd/ubi/wl.h
++++ b/drivers/mtd/ubi/wl.h
+@@ -1,7 +1,6 @@
+ #ifndef UBI_WL_H
+ #define UBI_WL_H
+ #ifdef CONFIG_MTD_UBI_FASTMAP
+-static int is_fm_block(struct ubi_device *ubi, int pnum);
+ static int anchor_pebs_avalible(struct rb_root *root);
+ static struct ubi_wl_entry *find_anchor_wl_entry(struct rb_root *root);
+ static struct ubi_wl_entry *get_peb_for_wl(struct ubi_device *ubi);
+@@ -16,10 +15,6 @@ static struct ubi_wl_entry *may_reserve_for_fm(struct ubi_device *ubi,
+ 					       struct rb_root *root);
+ #else /* !CONFIG_MTD_UBI_FASTMAP */
+ static struct ubi_wl_entry *get_peb_for_wl(struct ubi_device *ubi);
+-static inline int is_fm_block(struct ubi_device *ubi, int pnum)
+-{
+-	return 0;
+-}
+ static inline void ubi_fastmap_close(struct ubi_device *ubi) { }
+ static inline void ubi_fastmap_init(struct ubi_device *ubi, int *count) { }
+ static struct ubi_wl_entry *may_reserve_for_fm(struct ubi_device *ubi,
 -- 
 1.9.1
 
