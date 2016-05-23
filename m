@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1b4lEj-0003ao-QP
- for barebox@lists.infradead.org; Mon, 23 May 2016 08:29:18 +0000
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+ by casper.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1b4lEg-00050v-At
+ for barebox@lists.infradead.org; Mon, 23 May 2016 08:29:15 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id E9AB7A00CCC
- for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:23 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 98C04A00CD3
+ for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:24 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 23 May 2016 10:26:16 +0200
-Message-Id: <1463992010-31537-29-git-send-email-t.remmet@phytec.de>
+Date: Mon, 23 May 2016 10:26:20 +0200
+Message-Id: <1463992010-31537-33-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,36 +24,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 28/62] UBI: Fastmap: Remove bogus ubi_assert()
+Subject: [PATCH 32/62] UBI: Fastmap: Fix leb_count unbalance
 To: barebox@lists.infradead.org
 
 From: Richard Weinberger <richard@nod.at>
 
-It is legal to have PEBs left in the used list.
-This can happen if UBI copies a PEB and a powercut happens
-between writing a new fastmap and adding this PEB into the EBA table.
-In this case the old PEB will be used.
+If a LEB is unmapped we have to decrement leb_count as well.
 
 Signed-off-by: Richard Weinberger <richard@nod.at>
+
+Conflicts:
+	drivers/mtd/ubi/fastmap.c
+
+Fixed minor conflict.
+
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/fastmap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mtd/ubi/fastmap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
-index 2acd3dd..4331d3c 100644
+index d94e1d9..a9efc9c 100644
 --- a/drivers/mtd/ubi/fastmap.c
 +++ b/drivers/mtd/ubi/fastmap.c
-@@ -816,7 +816,9 @@ static int ubi_attach_fastmap(struct ubi_device *ubi,
- 	list_for_each_entry_safe(tmp_aeb, _tmp_aeb, &lfree, u.list)
- 		list_move_tail(&tmp_aeb->u.list, &ai->free);
- 
--	ubi_assert(list_empty(&used));
-+	list_for_each_entry_safe(tmp_aeb, _tmp_aeb, &used, u.list)
-+		list_move_tail(&tmp_aeb->u.list, &ai->erase);
-+
- 	ubi_assert(list_empty(&eba_orphans));
- 	ubi_assert(list_empty(&lfree));
- 
+@@ -361,6 +361,7 @@ static void unmap_peb(struct ubi_attach_info *ai, int pnum)
+ 			aeb = rb_entry(node2, struct ubi_ainf_peb, u.rb);
+ 			if (aeb->pnum == pnum) {
+ 				rb_erase(&aeb->u.rb, &av->root);
++				av->leb_count--;
+ 				kfree(aeb);
+ 				return;
+ 			}
 -- 
 1.9.1
 
