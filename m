@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1b4lEj-0003an-Re
- for barebox@lists.infradead.org; Mon, 23 May 2016 08:29:19 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 9D250A00CCA
- for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:23 +0200 (CEST)
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 23 May 2016 10:26:14 +0200
-Message-Id: <1463992010-31537-27-git-send-email-t.remmet@phytec.de>
-In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
-References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
+Received: from vs81.iboxed.net ([185.82.85.146])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1b4lg2-0001K9-AS
+ for barebox@lists.infradead.org; Mon, 23 May 2016 08:57:31 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Mon, 23 May 2016 10:55:22 +0200
+Message-Id: <1463993722-18538-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,60 +19,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 26/62] UBI: Fastmap: Fix fastmap usage in ubi_volume_notify()
+Subject: [PATCH] ARM: boot: add prepend option for board specific ATAGs
 To: barebox@lists.infradead.org
+Cc: Alexander Kurz <akurz@blala.de>
 
-From: Richard Weinberger <richard@nod.at>
+Board specific ATAGs might be passed to vendor provided kernels via the
+ARM_BOARD_APPEND_ATAG option. In this case, the board specific ATAGs will
+be appended to the end of the ATAG list.
+Anyway, some vendor provided kernels might crop the ATAG list at ATAG_MEM,
+also chopping off the board specific ATAGs, see linux squash_mem_tags() as
+reference. The Kindle-3 kernel is one example.
 
-There is no need to switch to ro mode if ubi_update_fastmap() fails.
-Also get rid of the ifdef.
+This conflict might be solved by a) making ATAG_MEM optional which might break
+the existing behavour around squash_mem_tags() or b) by allowing the insertion
+of board specific ATAGs in front of ATAG_MEM which violates the requirement
+from Documentation/arm/Booting to order ATAGs by increasing address.
 
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Reviewed-by: Tanya Brokhman <tlinder@codeaurora.org>
+Add option to insert board specific ATAGs in front of ATAG_MEM.
 
-Conflicts:
-	drivers/mtd/ubi/build.c
-
-Fixed minor conflict.
-
-Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+Signed-off-by: Alexander Kurz <akurz@blala.de>
 ---
- drivers/mtd/ubi/build.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/arm/Kconfig        | 10 ++++++++++
+ arch/arm/lib/armlinux.c |  8 +++++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
-index 2295c67..b505252 100644
---- a/drivers/mtd/ubi/build.c
-+++ b/drivers/mtd/ubi/build.c
-@@ -71,19 +71,21 @@ struct ubi_device *ubi_devices[UBI_MAX_DEVICES];
-  */
- int ubi_volume_notify(struct ubi_device *ubi, struct ubi_volume *vol, int ntype)
- {
-+	int ret = 0;
-+
- #ifdef CONFIG_MTD_UBI_FASTMAP
-+
- 	switch (ntype) {
- 	case UBI_VOLUME_ADDED:
- 	case UBI_VOLUME_REMOVED:
- 	case UBI_VOLUME_RESIZED:
- 	case UBI_VOLUME_RENAMED:
--		if (ubi_update_fastmap(ubi)) {
--			ubi_err(ubi, "Unable to update fastmap!");
--			ubi_ro_mode(ubi);
--		}
-+		ret = ubi_update_fastmap(ubi);
-+		if (ret)
-+			ubi_msg(ubi, "Unable to write a new fastmap: %i", ret);
- 	}
- #endif
--	return 0;
-+	return ret;
- }
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 1fc887b..71374cc 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -313,6 +313,16 @@ config ARM_BOARD_APPEND_ATAG
+ 	  This option is purely to start some vendor provided kernels.
+ 	  ** DO NOT USE FOR YOUR OWN DESIGNS! **
  
- /**
++config ARM_BOARD_PREPEND_ATAG
++	bool "Prepend the board specific ATAGs"
++	depends on ARM_BOARD_APPEND_ATAG
++	help
++	  Choose this option if your kernel crops the passed ATAG list e.g. at
++	  ATAG_MEM, also cropping off the board specific ATAGs. This option
++	  will pass all board specific ATAGs in front of all other ATAGs.
++	  This option is purely to start some vendor provided kernels.
++	  ** DO NOT USE FOR YOUR OWN DESIGNS! **
++
+ endmenu
+ 
+ menu "ARM specific settings"
+diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
+index 47b9bd3..962d086 100644
+--- a/arch/arm/lib/armlinux.c
++++ b/arch/arm/lib/armlinux.c
+@@ -234,6 +234,11 @@ static void setup_tags(unsigned long initrd_address,
+ 	const char *commandline = linux_bootargs_get();
+ 
+ 	setup_start_tag();
++#if defined(CONFIG_ARM_BOARD_APPEND_ATAG) \
++	&& defined(CONFIG_ARM_BOARD_PREPEND_ATAG)
++	if (atag_appender != NULL)
++		params = atag_appender(params);
++#endif
+ 	setup_memory_tags();
+ 	setup_commandline_tag(commandline, swap);
+ 
+@@ -242,7 +247,8 @@ static void setup_tags(unsigned long initrd_address,
+ 
+ 	setup_revision_tag();
+ 	setup_serial_tag();
+-#ifdef CONFIG_ARM_BOARD_APPEND_ATAG
++#if defined(CONFIG_ARM_BOARD_APPEND_ATAG) \
++	&& !defined(CONFIG_ARM_BOARD_PREPEND_ATAG)
+ 	if (atag_appender != NULL)
+ 		params = atag_appender(params);
+ #endif
 -- 
-1.9.1
+2.1.4
 
 
 _______________________________________________
