@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b4lEF-0000Js-IU
- for barebox@lists.infradead.org; Mon, 23 May 2016 08:28:50 +0000
+ id 1b4lEF-0000Ju-IT
+ for barebox@lists.infradead.org; Mon, 23 May 2016 08:28:51 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 08C7DA00CB6
+ by root.phytec.de (Postfix) with ESMTP id 10D3CA00CB7
  for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:22 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 23 May 2016 10:25:56 +0200
-Message-Id: <1463992010-31537-9-git-send-email-t.remmet@phytec.de>
+Date: Mon, 23 May 2016 10:25:57 +0200
+Message-Id: <1463992010-31537-10-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,74 +24,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/62] UBI: vtbl: Use ubi_eba_atomic_leb_change()
+Subject: [PATCH 09/62] UBI: Fix double free after do_sync_erase()
 To: barebox@lists.infradead.org
 
 From: Richard Weinberger <richard@nod.at>
 
-This is more a cosmetic change than a fix.
-By using ubi_eba_atomic_leb_change()
-we can guarantee that the first VTBL record is always
-correct and we don't really need the second one anymore.
-But we have to keep the second one to not break anything.
+If the erase worker is unable to erase a PEB it will
+free the ubi_wl_entry itself.
+The failing ubi_wl_entry must not free()'d again after
+do_sync_erase() returns.
 
-Artem: add a comment
-
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
----
- drivers/mtd/ubi/vtbl.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/mtd/ubi/vtbl.c b/drivers/mtd/ubi/vtbl.c
-index 6772612..bc443fb 100644
---- a/drivers/mtd/ubi/vtbl.c
-+++ b/drivers/mtd/ubi/vtbl.c
-@@ -26,9 +26,12 @@
-  * eraseblock stores one volume table copy, i.e. LEB 0 and LEB 1 duplicate each
-  * other. This redundancy guarantees robustness to unclean reboots. The volume
-  * table is basically an array of volume table records. Each record contains
-- * full information about the volume and protected by a CRC checksum.
-+ * full information about the volume and protected by a CRC checksum. Note,
-+ * nowadays we use the atomic LEB change operation when updating the volume
-+ * table, so we do not really need 2 LEBs anymore, but we preserve the older
-+ * design for the backward compatibility reasons.
-  *
-- * The volume table is changed, it is first changed in RAM. Then LEB 0 is
-+ * When the volume table is changed, it is first changed in RAM. Then LEB 0 is
-  * erased, and the updated volume table is written back to LEB 0. Then same for
-  * LEB 1. This scheme guarantees recoverability from unclean reboots.
-  *
-@@ -89,12 +92,8 @@ int ubi_change_vtbl_record(struct ubi_device *ubi, int idx,
+Conflicts:
+	drivers/mtd/ubi/wl.c
+
+Fixed small conflict.
+
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ drivers/mtd/ubi/wl.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
+index fa8f019..dcc012c 100644
+--- a/drivers/mtd/ubi/wl.c
++++ b/drivers/mtd/ubi/wl.c
+@@ -1160,7 +1160,6 @@ static int wear_leveling_worker(struct ubi_device *ubi, struct ubi_work *wrk,
  
- 	memcpy(&ubi->vtbl[idx], vtbl_rec, sizeof(struct ubi_vtbl_record));
- 	for (i = 0; i < UBI_LAYOUT_VOLUME_EBS; i++) {
--		err = ubi_eba_unmap_leb(ubi, layout_vol, i);
--		if (err)
--			return err;
--
--		err = ubi_eba_write_leb(ubi, layout_vol, i, ubi->vtbl, 0,
--					ubi->vtbl_size);
-+		err = ubi_eba_atomic_leb_change(ubi, layout_vol, i, ubi->vtbl,
-+						ubi->vtbl_size);
- 		if (err)
- 			return err;
+ 	err = do_sync_erase(ubi, e1, vol_id, lnum, 0);
+ 	if (err) {
+-		kfree(e1);
+ 		if (e2)
+ 			kfree(e2);
+ 		goto out_ro;
+@@ -1174,10 +1173,8 @@ static int wear_leveling_worker(struct ubi_device *ubi, struct ubi_work *wrk,
+ 		dbg_wl("PEB %d (LEB %d:%d) was put meanwhile, erase",
+ 		       e2->pnum, vol_id, lnum);
+ 		err = do_sync_erase(ubi, e2, vol_id, lnum, 0);
+-		if (err) {
+-			kfree(e2);
++		if (err)
+ 			goto out_ro;
+-		}
  	}
-@@ -141,12 +140,8 @@ int ubi_vtbl_rename_volumes(struct ubi_device *ubi,
  
- 	layout_vol = ubi->volumes[vol_id2idx(ubi, UBI_LAYOUT_VOLUME_ID)];
- 	for (i = 0; i < UBI_LAYOUT_VOLUME_EBS; i++) {
--		err = ubi_eba_unmap_leb(ubi, layout_vol, i);
--		if (err)
--			return err;
--
--		err = ubi_eba_write_leb(ubi, layout_vol, i, ubi->vtbl, 0,
--					ubi->vtbl_size);
-+		err = ubi_eba_atomic_leb_change(ubi, layout_vol, i, ubi->vtbl,
-+						ubi->vtbl_size);
- 		if (err)
- 			return err;
- 	}
+ 	dbg_wl("done");
+@@ -1210,10 +1207,9 @@ out_not_moved:
+ 
+ 	ubi_free_vid_hdr(ubi, vid_hdr);
+ 	err = do_sync_erase(ubi, e2, vol_id, lnum, torture);
+-	if (err) {
+-		kfree(e2);
++	if (err)
+ 		goto out_ro;
+-	}
++
+ 	return 0;
+ 
+ out_error:
 -- 
 1.9.1
 
