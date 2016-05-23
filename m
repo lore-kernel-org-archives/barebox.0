@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b4lEF-0000Jv-IE
- for barebox@lists.infradead.org; Mon, 23 May 2016 08:28:53 +0000
+ id 1b4lEJ-0000Ju-MO
+ for barebox@lists.infradead.org; Mon, 23 May 2016 08:28:55 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 191EDA00CB8
- for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:22 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 88D38A00CC9
+ for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:23 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 23 May 2016 10:25:59 +0200
-Message-Id: <1463992010-31537-12-git-send-email-t.remmet@phytec.de>
+Date: Mon, 23 May 2016 10:26:13 +0200
+Message-Id: <1463992010-31537-26-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,101 +24,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/62] UBI: extend UBI layer debug/messaging capabilities -
- cosmetics
+Subject: [PATCH 25/62] UBI: Fastmap: Wrap fastmap specific function in a ifdef
 To: barebox@lists.infradead.org
 
-From: Tanya Brokhman <tlinder@codeaurora.org>
+From: Richard Weinberger <richard@nod.at>
 
-Some cosmetic fixes to the patch "UBI: Extend UBI layer debug/messaging
-capabilities".
+...such that we can implement NOP variants of some functions.
+This will help to reduce fastmap specific ifdefs in other c files.
 
-Signed-off-by: Tanya Brokhman <tlinder@codeaurora.org>
-Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Reviewed-by: Tanya Brokhman <tlinder@codeaurora.org>
 
 Conflicts:
-	drivers/mtd/ubi/build.c
-	drivers/mtd/ubi/cdev.c
-	drivers/mtd/ubi/io.c
-	drivers/mtd/ubi/wl.c
+	drivers/mtd/ubi/ubi.h
 
-Reworked it for barebox.
+Fixed minor conflict.
 
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/build.c | 2 +-
- drivers/mtd/ubi/vtbl.c  | 7 +++----
- drivers/mtd/ubi/wl.c    | 5 +----
- 3 files changed, 5 insertions(+), 9 deletions(-)
+ drivers/mtd/ubi/ubi.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
-index ae9afa7..2295c67 100644
---- a/drivers/mtd/ubi/build.c
-+++ b/drivers/mtd/ubi/build.c
-@@ -556,7 +556,7 @@ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
+diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
+index 5bceb53..2ed28f7 100644
+--- a/drivers/mtd/ubi/ubi.h
++++ b/drivers/mtd/ubi/ubi.h
+@@ -837,11 +837,16 @@ int ubi_compare_lebs(struct ubi_device *ubi, const struct ubi_ainf_peb *aeb,
+ 		      int pnum, const struct ubi_vid_hdr *vid_hdr);
  
- 		/* Make sure ubi_num is not busy */
- 		if (ubi_devices[ubi_num]) {
--			ubi_err(ubi, "ubi%d already exists", ubi_num);
-+			ubi_err(ubi, "already exists");
- 			return -EEXIST;
- 		}
- 	}
-diff --git a/drivers/mtd/ubi/vtbl.c b/drivers/mtd/ubi/vtbl.c
-index bc443fb..0bc824e 100644
---- a/drivers/mtd/ubi/vtbl.c
-+++ b/drivers/mtd/ubi/vtbl.c
-@@ -644,14 +644,13 @@ static int init_volumes(struct ubi_device *ubi,
- 
- /**
-  * check_av - check volume attaching information.
-- * @ubi: UBI device description object
-  * @vol: UBI volume description object
-  * @av: volume attaching information
-  *
-  * This function returns zero if the volume attaching information is consistent
-  * to the data read from the volume tabla, and %-EINVAL if not.
-  */
--static int check_av(const struct ubi_device *ubi, const struct ubi_volume *vol,
-+static int check_av(const struct ubi_volume *vol,
- 		    const struct ubi_ainf_volume *av)
- {
- 	int err;
-@@ -679,7 +678,7 @@ static int check_av(const struct ubi_device *ubi, const struct ubi_volume *vol,
- 	return 0;
- 
- bad:
--	ubi_err(ubi, "bad attaching information, error %d", err);
-+	ubi_err(vol->ubi, "bad attaching information, error %d", err);
- 	ubi_dump_av(av);
- 	ubi_dump_vol_info(vol);
- 	return -EINVAL;
-@@ -740,7 +739,7 @@ static int check_attaching_info(const struct ubi_device *ubi,
- 			ubi_msg(ubi, "finish volume %d removal", av->vol_id);
- 			ubi_remove_av(ai, av);
- 		} else if (av) {
--			err = check_av(ubi, vol, av);
-+			err = check_av(vol, av);
- 			if (err)
- 				return err;
- 		}
-diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-index dcc012c..aaa882e 100644
---- a/drivers/mtd/ubi/wl.c
-+++ b/drivers/mtd/ubi/wl.c
-@@ -439,11 +439,8 @@ struct ubi_wl_entry *ubi_wl_get_fm_peb(struct ubi_device *ubi, int anchor)
- {
- 	struct ubi_wl_entry *e = NULL;
- 
--	if (!ubi->free.rb_node || (ubi->free_count - ubi->beb_rsvd_pebs < 1)) {
--		ubi_warn(ubi, "Can't get peb for fastmap:anchor=%d, free_cnt=%d, reserved=%d",
--			 anchor, ubi->free_count, ubi->beb_rsvd_pebs);
-+	if (!ubi->free.rb_node || (ubi->free_count - ubi->beb_rsvd_pebs < 1))
- 		goto out;
--	}
- 
- 	if (anchor)
- 		e = find_anchor_wl_entry(&ubi->free);
+ /* fastmap.c */
++#ifdef CONFIG_MTD_UBI_FASTMAP
+ size_t ubi_calc_fm_size(struct ubi_device *ubi);
+ int ubi_update_fastmap(struct ubi_device *ubi);
+ int ubi_scan_fastmap(struct ubi_device *ubi, struct ubi_attach_info *ai,
+ 		     int fm_anchor);
+ void ubi_free_fastmap(struct ubi_device *ubi);
++#else
++static inline int ubi_update_fastmap(struct ubi_device *ubi) { return 0; }
++#endif
++
+ /*
+  * ubi_rb_for_each_entry - walk an RB-tree.
+  * @rb: a pointer to type 'struct rb_node' to use as a loop counter
 -- 
 1.9.1
 
