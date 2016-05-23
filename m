@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b4lEM-0000Jq-F8
+ id 1b4lEN-0000Ju-NY
  for barebox@lists.infradead.org; Mon, 23 May 2016 08:28:57 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id ED9AAA00CD7
- for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:24 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 168F9A00CDA
+ for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:25 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 23 May 2016 10:26:24 +0200
-Message-Id: <1463992010-31537-37-git-send-email-t.remmet@phytec.de>
+Date: Mon, 23 May 2016 10:26:27 +0200
+Message-Id: <1463992010-31537-40-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,162 +24,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 36/62] UBI: Fix stale pointers in ubi->lookuptbl
+Subject: [PATCH 39/62] UBI: Fastmap: Wire up WL accessor functions
 To: barebox@lists.infradead.org
 
 From: Richard Weinberger <richard@nod.at>
 
-In some error paths the WL sub-system gives up on a PEB
-and frees it's ubi_wl_entry struct but does not set
-the entry in ubi->lookuptbl to NULL.
-Fastmap can stumble over such a stale pointer as it uses
-ubi->lookuptbl to find all PEBs.
-
-Fix this by introducing a new helper function which free()s
-a WL entry and removes the reference from the lookup table.
+Use the new WL accessor functions in fastmap.
 
 Signed-off-by: Richard Weinberger <richard@nod.at>
-
-Conflicts:
-	drivers/mtd/ubi/wl.c
-
-Fixed minor conflict.
-
-Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/wl.c | 47 +++++++++++++++++++++++++++++++----------------
- 1 file changed, 31 insertions(+), 16 deletions(-)
+ drivers/mtd/ubi/fastmap.c | 27 +++++++++++----------------
+ 1 file changed, 11 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-index d168abc..a7ca153 100644
---- a/drivers/mtd/ubi/wl.c
-+++ b/drivers/mtd/ubi/wl.c
-@@ -194,6 +194,20 @@ static void wl_tree_add(struct ubi_wl_entry *e, struct rb_root *root)
- 	rb_insert_color(&e->u.rb, root);
- }
+diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
+index 7808744..e60bc7f 100644
+--- a/drivers/mtd/ubi/fastmap.c
++++ b/drivers/mtd/ubi/fastmap.c
+@@ -1024,11 +1024,11 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
+ 	struct ubi_fm_ec *fec;
+ 	struct ubi_fm_volhdr *fvh;
+ 	struct ubi_fm_eba *feba;
+-	struct rb_node *node;
+ 	struct ubi_wl_entry *wl_e;
+ 	struct ubi_volume *vol;
+ 	struct ubi_vid_hdr *avhdr, *dvhdr;
+ 	struct ubi_work *ubi_wrk;
++	struct rb_node *tmp_rb;
+ 	int ret, i, j, free_peb_count, used_peb_count, vol_count;
+ 	int scrub_peb_count, erase_peb_count;
  
-+/**
-+ * wl_tree_destroy - destroy a wear-leveling entry.
-+ * @ubi: UBI device description object
-+ * @e: the wear-leveling entry to add
-+ *
-+ * This function destroys a wear leveling entry and removes
-+ * the reference from the lookup table.
-+ */
-+static void wl_entry_destroy(struct ubi_device *ubi, struct ubi_wl_entry *e)
-+{
-+	ubi->lookuptbl[e->pnum] = NULL;
-+	kfree(e);
-+}
-+
- #ifndef CONFIG_MTD_UBI_FASTMAP
- /**
-  * do_work - do one pending work.
-@@ -1182,7 +1196,7 @@ static int wear_leveling_worker(struct ubi_device *ubi, struct ubi_work *wrk,
- 	err = do_sync_erase(ubi, e1, vol_id, lnum, 0);
- 	if (err) {
- 		if (e2)
--			kfree(e2);
-+			wl_entry_destroy(ubi, e2);
- 		goto out_ro;
+@@ -1086,8 +1086,7 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
+ 	for (i = 0; i < ubi->fm_wl_pool.size; i++)
+ 		fmpl2->pebs[i] = cpu_to_be32(ubi->fm_wl_pool.pebs[i]);
+ 
+-	for (node = rb_first(&ubi->free); node; node = rb_next(node)) {
+-		wl_e = rb_entry(node, struct ubi_wl_entry, u.rb);
++	ubi_for_each_free_peb(ubi, wl_e, tmp_rb) {
+ 		fec = (struct ubi_fm_ec *)(fm_raw + fm_pos);
+ 
+ 		fec->pnum = cpu_to_be32(wl_e->pnum);
+@@ -1099,8 +1098,7 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
+ 	}
+ 	fmh->free_peb_count = cpu_to_be32(free_peb_count);
+ 
+-	for (node = rb_first(&ubi->used); node; node = rb_next(node)) {
+-		wl_e = rb_entry(node, struct ubi_wl_entry, u.rb);
++	ubi_for_each_used_peb(ubi, wl_e, tmp_rb) {
+ 		fec = (struct ubi_fm_ec *)(fm_raw + fm_pos);
+ 
+ 		fec->pnum = cpu_to_be32(wl_e->pnum);
+@@ -1111,22 +1109,19 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
+ 		ubi_assert(fm_pos <= ubi->fm_size);
  	}
  
-@@ -1244,8 +1258,8 @@ out_error:
- 	ubi->move_to_put = ubi->wl_scheduled = 0;
+-	for (i = 0; i < UBI_PROT_QUEUE_LEN; i++) {
+-		list_for_each_entry(wl_e, &ubi->pq[i], u.list) {
+-			fec = (struct ubi_fm_ec *)(fm_raw + fm_pos);
++	ubi_for_each_protected_peb(ubi, i, wl_e) {
++		fec = (struct ubi_fm_ec *)(fm_raw + fm_pos);
  
- 	ubi_free_vid_hdr(ubi, vid_hdr);
--	kfree(e1);
--	kfree(e2);
-+	wl_entry_destroy(ubi, e1);
-+	wl_entry_destroy(ubi, e2);
+-			fec->pnum = cpu_to_be32(wl_e->pnum);
+-			fec->ec = cpu_to_be32(wl_e->ec);
++		fec->pnum = cpu_to_be32(wl_e->pnum);
++		fec->ec = cpu_to_be32(wl_e->ec);
  
- out_ro:
- 	ubi_ro_mode(ubi);
-@@ -1375,7 +1389,7 @@ static int erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk,
- 	if (shutdown) {
- 		dbg_wl("cancel erasure of PEB %d EC %d", pnum, e->ec);
- 		kfree(wl_wrk);
--		kfree(e);
-+		wl_entry_destroy(ubi, e);
- 		return 0;
+-			used_peb_count++;
+-			fm_pos += sizeof(*fec);
+-			ubi_assert(fm_pos <= ubi->fm_size);
+-		}
++		used_peb_count++;
++		fm_pos += sizeof(*fec);
++		ubi_assert(fm_pos <= ubi->fm_size);
  	}
+ 	fmh->used_peb_count = cpu_to_be32(used_peb_count);
  
-@@ -1419,7 +1433,7 @@ static int erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk,
- 		return err;
- 	}
+-	for (node = rb_first(&ubi->scrub); node; node = rb_next(node)) {
+-		wl_e = rb_entry(node, struct ubi_wl_entry, u.rb);
++	ubi_for_each_scrub_peb(ubi, wl_e, tmp_rb) {
+ 		fec = (struct ubi_fm_ec *)(fm_raw + fm_pos);
  
--	kfree(e);
-+	wl_entry_destroy(ubi, e);
- 	if (err != -EIO)
- 		/*
- 		 * If this is not %-EIO, we have no idea what to do. Scheduling
-@@ -1662,9 +1676,10 @@ int ubi_wl_flush(struct ubi_device *ubi, int vol_id, int lnum)
- 
- /**
-  * tree_destroy - destroy an RB-tree.
-+ * @ubi: UBI device description object
-  * @root: the root of the tree to destroy
-  */
--static void tree_destroy(struct rb_root *root)
-+static void tree_destroy(struct ubi_device *ubi, struct rb_root *root)
- {
- 	struct rb_node *rb;
- 	struct ubi_wl_entry *e;
-@@ -1686,7 +1701,7 @@ static void tree_destroy(struct rb_root *root)
- 					rb->rb_right = NULL;
- 			}
- 
--			kfree(e);
-+			wl_entry_destroy(ubi, e);
- 		}
- 	}
- }
-@@ -1749,7 +1764,7 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
- 		ubi_assert(!ubi_is_fm_block(ubi, e->pnum));
- 		ubi->lookuptbl[e->pnum] = e;
- 		if (schedule_erase(ubi, e, aeb->vol_id, aeb->lnum, 0)) {
--			kfree(e);
-+			wl_entry_destroy(ubi, e);
- 			goto out_free;
- 		}
- 
-@@ -1839,9 +1854,9 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
- 
- out_free:
- 	shutdown_work(ubi);
--	tree_destroy(&ubi->used);
--	tree_destroy(&ubi->free);
--	tree_destroy(&ubi->scrub);
-+	tree_destroy(ubi, &ubi->used);
-+	tree_destroy(ubi, &ubi->free);
-+	tree_destroy(ubi, &ubi->scrub);
- 	kfree(ubi->lookuptbl);
- 	return err;
- }
-@@ -1858,7 +1873,7 @@ static void protection_queue_destroy(struct ubi_device *ubi)
- 	for (i = 0; i < UBI_PROT_QUEUE_LEN; ++i) {
- 		list_for_each_entry_safe(e, tmp, &ubi->pq[i], u.list) {
- 			list_del(&e->u.list);
--			kfree(e);
-+			wl_entry_destroy(ubi, e);
- 		}
- 	}
- }
-@@ -1889,10 +1904,10 @@ void ubi_wl_close(struct ubi_device *ubi)
- 	ubi_fastmap_close(ubi);
- 	shutdown_work(ubi);
- 	protection_queue_destroy(ubi);
--	tree_destroy(&ubi->used);
--	tree_destroy(&ubi->erroneous);
--	tree_destroy(&ubi->free);
--	tree_destroy(&ubi->scrub);
-+	tree_destroy(ubi, &ubi->used);
-+	tree_destroy(ubi, &ubi->erroneous);
-+	tree_destroy(ubi, &ubi->free);
-+	tree_destroy(ubi, &ubi->scrub);
- 	kfree(ubi->lookuptbl);
- }
- 
+ 		fec->pnum = cpu_to_be32(wl_e->pnum);
 -- 
 1.9.1
 
