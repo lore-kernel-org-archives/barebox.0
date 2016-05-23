@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b4lEF-0000K7-IQ
- for barebox@lists.infradead.org; Mon, 23 May 2016 08:28:50 +0000
+ id 1b4lEF-0000Jq-IZ
+ for barebox@lists.infradead.org; Mon, 23 May 2016 08:28:49 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 209C7A00CB9
- for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:22 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id A571AA00CB3
+ for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:21 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 23 May 2016 10:25:58 +0200
-Message-Id: <1463992010-31537-11-git-send-email-t.remmet@phytec.de>
+Date: Mon, 23 May 2016 10:25:53 +0200
+Message-Id: <1463992010-31537-6-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,75 +24,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/62] UBI: Fix invalid vfree()
+Subject: [PATCH 05/62] UBI: Fix trivial typo in __schedule_ubi_work
 To: barebox@lists.infradead.org
 
 From: Richard Weinberger <richard@nod.at>
 
-The logic of vfree()'ing vol->upd_buf is tied to vol->updating.
-In ubi_start_update() vol->updating is set long before vmalloc()'ing
-vol->upd_buf. If we encounter a write failure in ubi_start_update()
-before vmalloc() the UBI device release function will try to vfree()
-vol->upd_buf because vol->updating is set.
-Fix this by allocating vol->upd_buf directly after setting vol->updating.
+s/of/if/
 
-Fixes:
-[   31.559338] UBI warning: vol_cdev_release: update of volume 2 not finished, volume is damaged
-[   31.559340] ------------[ cut here ]------------
-[   31.559343] WARNING: CPU: 1 PID: 2747 at mm/vmalloc.c:1446 __vunmap+0xe3/0x110()
-[   31.559344] Trying to vfree() nonexistent vm area (ffffc90001f2b000)
-[   31.559345] Modules linked in:
-[   31.565620]  0000000000000bba ffff88002a0cbdb0 ffffffff818f0497 ffff88003b9ba148
-[   31.566347]  ffff88002a0cbde0 ffffffff8156f515 ffff88003b9ba148 0000000000000bba
-[   31.567073]  0000000000000000 0000000000000000 ffff88002a0cbe88 ffffffff8156c10a
-[   31.567793] Call Trace:
-[   31.568034]  [<ffffffff818f0497>] dump_stack+0x4e/0x7a
-[   31.568510]  [<ffffffff8156f515>] ubi_io_write_vid_hdr+0x155/0x160
-[   31.569084]  [<ffffffff8156c10a>] ubi_eba_write_leb+0x23a/0x870
-[   31.569628]  [<ffffffff81569b36>] vol_cdev_write+0x226/0x380
-[   31.570155]  [<ffffffff81179265>] vfs_write+0xb5/0x1f0
-[   31.570627]  [<ffffffff81179f8a>] SyS_pwrite64+0x6a/0xa0
-[   31.571123]  [<ffffffff818fde12>] system_call_fastpath+0x16/0x1b
-
-Cc: <stable@vger.kernel.org>
 Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
 ---
- drivers/mtd/ubi/upd.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/mtd/ubi/wl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/ubi/upd.c b/drivers/mtd/ubi/upd.c
-index c61c277..5e06753 100644
---- a/drivers/mtd/ubi/upd.c
-+++ b/drivers/mtd/ubi/upd.c
-@@ -124,6 +124,10 @@ int ubi_start_update(struct ubi_device *ubi, struct ubi_volume *vol,
- 	ubi_assert(!vol->updating && !vol->changing_leb);
- 	vol->updating = 1;
- 
-+	vol->upd_buf = vmalloc(ubi->leb_size);
-+	if (!vol->upd_buf)
-+		return -ENOMEM;
-+
- 	err = set_update_marker(ubi, vol);
- 	if (err)
- 		return err;
-@@ -143,14 +147,12 @@ int ubi_start_update(struct ubi_device *ubi, struct ubi_volume *vol,
- 		err = clear_update_marker(ubi, vol, 0);
- 		if (err)
- 			return err;
-+
-+		vfree(vol->upd_buf);
- 		vol->updating = 0;
- 		return 0;
- 	}
- 
--	vol->upd_buf = vmalloc(ubi->leb_size);
--	if (!vol->upd_buf)
--		return -ENOMEM;
--
- 	vol->upd_ebs = div_u64(bytes + vol->usable_leb_size - 1,
- 			       vol->usable_leb_size);
- 	vol->upd_bytes = bytes;
+diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
+index cdfc41c0..9c5b9b8 100644
+--- a/drivers/mtd/ubi/wl.c
++++ b/drivers/mtd/ubi/wl.c
+@@ -791,7 +791,7 @@ repeat:
+  * @wrk: the work to schedule
+  *
+  * This function adds a work defined by @wrk to the tail of the pending works
+- * list. Can only be used of ubi->work_sem is already held in read mode!
++ * list. Can only be used if ubi->work_sem is already held in read mode!
+  */
+ static void __schedule_ubi_work(struct ubi_device *ubi, struct ubi_work *wrk)
+ {
 -- 
 1.9.1
 
