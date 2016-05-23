@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b4lET-0000KA-4y
+ id 1b4lEV-0000Jv-5l
  for barebox@lists.infradead.org; Mon, 23 May 2016 08:29:04 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id B081EA00CE7
- for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:26 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 8C538A00CF1
+ for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:27 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 23 May 2016 10:26:40 +0200
-Message-Id: <1463992010-31537-53-git-send-email-t.remmet@phytec.de>
+Date: Mon, 23 May 2016 10:26:44 +0200
+Message-Id: <1463992010-31537-57-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,65 +20,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 52/62] UBI: return ENOSPC if no enough space available
+Subject: [PATCH 56/62] UBI: Fastmap: Fix PEB array type
 To: barebox@lists.infradead.org
 
-From: shengyong <shengyong1@huawei.com>
-
-UBI: attaching mtd1 to ubi0
-UBI: scanning is finished
-UBI error: init_volumes: not enough PEBs, required 706, available 686
-UBI error: ubi_wl_init: no enough physical eraseblocks (-20, need 1)
-UBI error: ubi_attach_mtd_dev: failed to attach mtd1, error -12 <= NOT ENOMEM
-UBI error: ubi_init: cannot attach mtd1
-
-If available PEBs are not enough when initializing volumes, return -ENOSPC
-directly. If available PEBs are not enough when initializing WL, return
--ENOSPC instead of -ENOMEM.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Sheng Yong <shengyong1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Reviewed-by: David Gstir <david@sigma-star.at>
----
- drivers/mtd/ubi/vtbl.c | 1 +
- drivers/mtd/ubi/wl.c   | 1 +
- 2 files changed, 2 insertions(+)
-
-diff --git a/drivers/mtd/ubi/vtbl.c b/drivers/mtd/ubi/vtbl.c
-index 6bae84c..b5eb454 100644
---- a/drivers/mtd/ubi/vtbl.c
-+++ b/drivers/mtd/ubi/vtbl.c
-@@ -638,6 +638,7 @@ static int init_volumes(struct ubi_device *ubi,
- 		if (ubi->corr_peb_count)
- 			ubi_err(ubi, "%d PEBs are corrupted and not used",
- 				ubi->corr_peb_count);
-+		return -ENOSPC;
- 	}
- 	ubi->rsvd_pebs += reserved_pebs;
- 	ubi->avail_pebs -= reserved_pebs;
-diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-index 986a2dc..2d6c6ae 100644
---- a/drivers/mtd/ubi/wl.c
-+++ b/drivers/mtd/ubi/wl.c
-@@ -1438,6 +1438,7 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
- 		if (ubi->corr_peb_count)
- 			ubi_err(ubi, "%d PEBs are corrupted and not used",
- 				ubi->corr_peb_count);
-+		err = -ENOSPC;
- 		goto out_free;
- 	}
- 	ubi->avail_pebs -= reserved_pebs;
--- 
-1.9.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogRXplcXVpZWwgR2FyY8OtYSA8ZXplcXVpZWxAdmFuZ3VhcmRpYXN1ci5jb20uYXI+CgpU
+aGUgUEVCIGFycmF5IGlzIGFuIGFycmF5IG9mIF9fYmUzMiwgc28gbGV0J3MgZml4IHRoZQpzY2Fu
+X3Bvb2woKSBwcm90b3R5cGUgYWNjb3JkaW5nbHkuCgpTaWduZWQtb2ZmLWJ5OiBFemVxdWllbCBH
+YXJjaWEgPGV6ZXF1aWVsQHZhbmd1YXJkaWFzdXIuY29tLmFyPgpTaWduZWQtb2ZmLWJ5OiBSaWNo
+YXJkIFdlaW5iZXJnZXIgPHJpY2hhcmRAbm9kLmF0PgoKQ29uZmxpY3RzOgoJZHJpdmVycy9tdGQv
+dWJpL2Zhc3RtYXAuYwoKRml4ZWQgbWlub3IgY29uZmxpY3QuCgpTaWduZWQtb2ZmLWJ5OiBUZXJl
+c2EgUmVtbWV0IDx0LnJlbW1ldEBwaHl0ZWMuZGU+Ci0tLQogZHJpdmVycy9tdGQvdWJpL2Zhc3Rt
+YXAuYyB8IDIgKy0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigt
+KQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL3ViaS9mYXN0bWFwLmMgYi9kcml2ZXJzL210ZC91
+YmkvZmFzdG1hcC5jCmluZGV4IDE3M2RhOWMuLmZmYTI4NTkgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMv
+bXRkL3ViaS9mYXN0bWFwLmMKKysrIGIvZHJpdmVycy9tdGQvdWJpL2Zhc3RtYXAuYwpAQCAtMzg1
+LDcgKzM4NSw3IEBAIHN0YXRpYyB2b2lkIHVubWFwX3BlYihzdHJ1Y3QgdWJpX2F0dGFjaF9pbmZv
+ICphaSwgaW50IHBudW0pCiAgKiA8IDAgaW5kaWNhdGVzIGFuIGludGVybmFsIGVycm9yLgogICov
+CiBzdGF0aWMgaW50IHNjYW5fcG9vbChzdHJ1Y3QgdWJpX2RldmljZSAqdWJpLCBzdHJ1Y3QgdWJp
+X2F0dGFjaF9pbmZvICphaSwKLQkJICAgICBpbnQgKnBlYnMsIGludCBwb29sX3NpemUsIHVuc2ln
+bmVkIGxvbmcgbG9uZyAqbWF4X3NxbnVtLAorCQkgICAgIF9fYmUzMiAqcGVicywgaW50IHBvb2xf
+c2l6ZSwgdW5zaWduZWQgbG9uZyBsb25nICptYXhfc3FudW0sCiAJCSAgICAgc3RydWN0IGxpc3Rf
+aGVhZCAqbGZyZWUpCiB7CiAJc3RydWN0IHViaV92aWRfaGRyICp2aDsKLS0gCjEuOS4xCgoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
+aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
