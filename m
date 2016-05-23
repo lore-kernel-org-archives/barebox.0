@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b4lEb-0000WQ-Bw
- for barebox@lists.infradead.org; Mon, 23 May 2016 08:29:11 +0000
+ id 1b4lEb-0000ZD-Cp
+ for barebox@lists.infradead.org; Mon, 23 May 2016 08:29:12 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 17A5EA00CC0
- for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:23 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 45875A00CCE
+ for <barebox@lists.infradead.org>; Mon, 23 May 2016 10:28:24 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 23 May 2016 10:26:06 +0200
-Message-Id: <1463992010-31537-19-git-send-email-t.remmet@phytec.de>
+Date: Mon, 23 May 2016 10:26:18 +0200
+Message-Id: <1463992010-31537-31-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,41 +24,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/62] UBI: initialize LEB number variable
+Subject: [PATCH 30/62] UBI: Fastmap: Switch to ro mode if invalidate_fastmap()
+ fails
 To: barebox@lists.infradead.org
 
-From: Brian Norris <computersforpeace@gmail.com>
+From: Richard Weinberger <richard@nod.at>
 
-In some of the 'out_not_moved' error paths, lnum may be used
-uninitialized. Don't ignore the warning; let's fix it.
+We have to switch to ro mode to guarantee that upon next UBI attach
+all data is consistent.
 
-This uninitialized variable doesn't have much visible effect in the end,
-since we just schedule the PEB for erasure, and its LEB number doesn't
-really matter (it just gets printed in debug messages). But let's get it
-straight anyway.
-
-Coverity CID #113449
-
-Cc: stable <stable@vger.kernel.org>
-Signed-off-by: Brian Norris <computersforpeace@gmail.com>
 Signed-off-by: Richard Weinberger <richard@nod.at>
 ---
- drivers/mtd/ubi/wl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/ubi/fastmap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-index aaa882e..adbb29b 100644
---- a/drivers/mtd/ubi/wl.c
-+++ b/drivers/mtd/ubi/wl.c
-@@ -951,7 +951,7 @@ static int wear_leveling_worker(struct ubi_device *ubi, struct ubi_work *wrk,
- 				int shutdown)
- {
- 	int err, scrubbing = 0, torture = 0, protect = 0, erroneous = 0;
--	int vol_id = -1, uninitialized_var(lnum);
-+	int vol_id = -1, lnum = -1;
- #ifdef CONFIG_MTD_UBI_FASTMAP
- 	int anchor = wrk->anchor;
- #endif
+diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
+index f683d42..d94e1d9 100644
+--- a/drivers/mtd/ubi/fastmap.c
++++ b/drivers/mtd/ubi/fastmap.c
+@@ -1458,8 +1458,10 @@ err:
+ 	ret = 0;
+ 	if (old_fm) {
+ 		ret = invalidate_fastmap(ubi, old_fm);
+-		if (ret < 0)
++		if (ret < 0) {
+ 			ubi_err(ubi, "Unable to invalidiate current fastmap!");
++			ubi_ro_mode(ubi);
++		}
+ 		else if (ret)
+ 			ret = 0;
+ 	}
 -- 
 1.9.1
 
