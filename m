@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b5UN3-0004gv-Mc
- for barebox@lists.infradead.org; Wed, 25 May 2016 08:40:54 +0000
-Date: Wed, 25 May 2016 10:40:30 +0200
+ id 1b5UOS-0004qs-Mv
+ for barebox@lists.infradead.org; Wed, 25 May 2016 08:42:21 +0000
+Date: Wed, 25 May 2016 10:41:58 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160525084030.GD23750@pengutronix.de>
-References: <1464107282-17942-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20160525084158.GE23750@pengutronix.de>
+References: <1464162673-23037-1-git-send-email-yegorslists@googlemail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1464107282-17942-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1464162673-23037-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,23 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MCI: imx-esdhc: Allow to use 1-bit bus width in board
- files
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] crypto: add CRC32 digest
+To: yegorslists@googlemail.com
 Cc: barebox@lists.infradead.org
 
-On Tue, May 24, 2016 at 07:28:02PM +0300, Alexander Shiyan wrote:
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+On Wed, May 25, 2016 at 09:51:13AM +0200, yegorslists@googlemail.com wrote:
+> From: Yegor Yefremov <yegorslists@googlemail.com>
+> 
+> CRC32 digest can be used to check CRC32 hashes in FIT images etc.
+> 
+> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 > ---
->  arch/arm/boards/freescale-mx53-smd/board.c | 1 +
->  arch/arm/boards/karo-tx53/board.c          | 1 +
->  drivers/mci/imx-esdhc.c                    | 9 +++------
->  3 files changed, 5 insertions(+), 6 deletions(-)
+>  crypto/Kconfig        |  4 +++
+>  crypto/Makefile       |  1 +
+>  crypto/crc32_digest.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  include/crypto/crc.h  | 16 +++++++++
+>  include/digest.h      |  1 +
+>  5 files changed, 112 insertions(+)
+>  create mode 100644 crypto/crc32_digest.c
+>  create mode 100644 include/crypto/crc.h
 
-Applied, thanks.
-
-If you need this patch I assume your board still has no device tree
-support. You should fix that ;)
+Applied, thanks
 
 Sascha
 
