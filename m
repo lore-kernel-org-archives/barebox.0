@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b5TkF-00039m-Ed
- for barebox@lists.infradead.org; Wed, 25 May 2016 08:00:51 +0000
-Date: Wed, 25 May 2016 10:00:25 +0200
+ id 1b5UN3-0004gv-Mc
+ for barebox@lists.infradead.org; Wed, 25 May 2016 08:40:54 +0000
+Date: Wed, 25 May 2016 10:40:30 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160525080025.GC23750@pengutronix.de>
-References: <1463993722-18538-1-git-send-email-akurz@blala.de>
+Message-ID: <20160525084030.GD23750@pengutronix.de>
+References: <1464107282-17942-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1463993722-18538-1-git-send-email-akurz@blala.de>
+In-Reply-To: <1464107282-17942-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,87 +23,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: boot: add prepend option for board specific ATAGs
-To: Alexander Kurz <akurz@blala.de>
+Subject: Re: [PATCH] MCI: imx-esdhc: Allow to use 1-bit bus width in board
+ files
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Mon, May 23, 2016 at 10:55:22AM +0200, Alexander Kurz wrote:
-> Board specific ATAGs might be passed to vendor provided kernels via the
-> ARM_BOARD_APPEND_ATAG option. In this case, the board specific ATAGs will
-> be appended to the end of the ATAG list.
-> Anyway, some vendor provided kernels might crop the ATAG list at ATAG_MEM,
-> also chopping off the board specific ATAGs, see linux squash_mem_tags() as
-> reference. The Kindle-3 kernel is one example.
-> 
-> This conflict might be solved by a) making ATAG_MEM optional which might break
-> the existing behavour around squash_mem_tags() or b) by allowing the insertion
-> of board specific ATAGs in front of ATAG_MEM which violates the requirement
-> from Documentation/arm/Booting to order ATAGs by increasing address.
-> 
-> Add option to insert board specific ATAGs in front of ATAG_MEM.
-> 
-> Signed-off-by: Alexander Kurz <akurz@blala.de>
+On Tue, May 24, 2016 at 07:28:02PM +0300, Alexander Shiyan wrote:
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 > ---
->  arch/arm/Kconfig        | 10 ++++++++++
->  arch/arm/lib/armlinux.c |  8 +++++++-
->  2 files changed, 17 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index 1fc887b..71374cc 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -313,6 +313,16 @@ config ARM_BOARD_APPEND_ATAG
->  	  This option is purely to start some vendor provided kernels.
->  	  ** DO NOT USE FOR YOUR OWN DESIGNS! **
->  
-> +config ARM_BOARD_PREPEND_ATAG
-> +	bool "Prepend the board specific ATAGs"
-> +	depends on ARM_BOARD_APPEND_ATAG
-> +	help
-> +	  Choose this option if your kernel crops the passed ATAG list e.g. at
-> +	  ATAG_MEM, also cropping off the board specific ATAGs. This option
-> +	  will pass all board specific ATAGs in front of all other ATAGs.
-> +	  This option is purely to start some vendor provided kernels.
-> +	  ** DO NOT USE FOR YOUR OWN DESIGNS! **
-> +
->  endmenu
->  
->  menu "ARM specific settings"
-> diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
-> index 47b9bd3..962d086 100644
-> --- a/arch/arm/lib/armlinux.c
-> +++ b/arch/arm/lib/armlinux.c
-> @@ -234,6 +234,11 @@ static void setup_tags(unsigned long initrd_address,
->  	const char *commandline = linux_bootargs_get();
->  
->  	setup_start_tag();
-> +#if defined(CONFIG_ARM_BOARD_APPEND_ATAG) \
-> +	&& defined(CONFIG_ARM_BOARD_PREPEND_ATAG)
-> +	if (atag_appender != NULL)
-> +		params = atag_appender(params);
-> +#endif
+>  arch/arm/boards/freescale-mx53-smd/board.c | 1 +
+>  arch/arm/boards/karo-tx53/board.c          | 1 +
+>  drivers/mci/imx-esdhc.c                    | 9 +++------
+>  3 files changed, 5 insertions(+), 6 deletions(-)
 
-You could changle to IS_ENABLED() here to make the code more readable
-and to increase compile coverage:
+Applied, thanks.
 
-	if (IS_ENABLED(CONFIG_ARM_BOARD_PREPEND_ATAG) && atag_appender)
-		...
-
-(Testing for CONFIG_ARM_BOARD_APPEND_ATAG is unnecessary here since
-CONFIG_ARM_BOARD_PREPEND_ATAG depends on CONFIG_ARM_BOARD_APPEND_ATAG)
-
->  	setup_memory_tags();
->  	setup_commandline_tag(commandline, swap);
->  
-> @@ -242,7 +247,8 @@ static void setup_tags(unsigned long initrd_address,
->  
->  	setup_revision_tag();
->  	setup_serial_tag();
-> -#ifdef CONFIG_ARM_BOARD_APPEND_ATAG
-> +#if defined(CONFIG_ARM_BOARD_APPEND_ATAG) \
-> +	&& !defined(CONFIG_ARM_BOARD_PREPEND_ATAG)
-
-Same here, IS_ENABLED() would be nicer.
+If you need this patch I assume your board still has no device tree
+support. You should fix that ;)
 
 Sascha
 
