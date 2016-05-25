@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp21.mail.ru ([94.100.179.250])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b5FC3-0006Kp-0V
- for barebox@lists.infradead.org; Tue, 24 May 2016 16:28:32 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Tue, 24 May 2016 19:28:02 +0300
-Message-Id: <1464107282-17942-1-git-send-email-shc_work@mail.ru>
+ id 1b5TGZ-0004zq-JL
+ for barebox@lists.infradead.org; Wed, 25 May 2016 07:30:08 +0000
+Date: Wed, 25 May 2016 09:29:45 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160525072945.GB23750@pengutronix.de>
+References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,69 +18,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
+Reply-To: Sascha Hauer <s.hauer@pengutronix.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MCI: imx-esdhc: Allow to use 1-bit bus width in board files
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 00/62] Update UBI
+To: Teresa Remmet <t.remmet@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/boards/freescale-mx53-smd/board.c | 1 +
- arch/arm/boards/karo-tx53/board.c          | 1 +
- drivers/mci/imx-esdhc.c                    | 9 +++------
- 3 files changed, 5 insertions(+), 6 deletions(-)
+Hi Teresa,
 
-diff --git a/arch/arm/boards/freescale-mx53-smd/board.c b/arch/arm/boards/freescale-mx53-smd/board.c
-index 354702d..12e5e5f 100644
---- a/arch/arm/boards/freescale-mx53-smd/board.c
-+++ b/arch/arm/boards/freescale-mx53-smd/board.c
-@@ -115,6 +115,7 @@ static struct esdhc_platform_data loco_sd1_data = {
- 	.wp_gpio = LOCO_SD1_WP,
- 	.cd_type = ESDHC_CD_GPIO,
- 	.wp_type = ESDHC_WP_GPIO,
-+	.caps    = MMC_BUS_WIDTH_4,
- };
- 
- static struct esdhc_platform_data loco_sd3_data = {
-diff --git a/arch/arm/boards/karo-tx53/board.c b/arch/arm/boards/karo-tx53/board.c
-index 99aa9e7..8ad5d13 100644
---- a/arch/arm/boards/karo-tx53/board.c
-+++ b/arch/arm/boards/karo-tx53/board.c
-@@ -105,6 +105,7 @@ static struct esdhc_platform_data tx53_sd1_data = {
- 	.cd_gpio = TX53_SD1_CD,
- 	.cd_type = ESDHC_CD_GPIO,
- 	.wp_type = ESDHC_WP_NONE,
-+	.caps    = MMC_BUS_WIDTH_4,
- };
- 
- struct imx_nand_platform_data nand_info = {
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index 2e189fe..66786ff 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -596,13 +596,10 @@ static int fsl_esdhc_probe(struct device_d *dev)
- 	if (caps & ESDHC_HOSTCAPBLT_VS33)
- 		mci->voltages |= MMC_VDD_32_33 | MMC_VDD_33_34;
- 
--	if (pdata && pdata->caps)
-+	if (pdata) {
- 		mci->host_caps = pdata->caps;
--	else
--		mci->host_caps = MMC_CAP_4_BIT_DATA;
--
--	if (pdata && pdata->devname) {
--		mci->devname = pdata->devname;
-+		if (pdata->devname)
-+			mci->devname = pdata->devname;
- 	} else if (dev->device_node) {
- 		const char *alias = of_alias_get(dev->device_node);
- 		if (alias)
+On Mon, May 23, 2016 at 10:25:48AM +0200, Teresa Remmet wrote:
+> Hello,
+> 
+> this series is more or less just a cherry-pick of the UBI patches
+> from kernel to version v4.6. Rework was need for some patches to make
+> them apply and work for barebox.
+> 
+> After applying this series UBI is much more noisy while attaching.
+> I am not sure if this is wanted. But could be solved in a seperate patch.
+
+It doesn't seem to get more noisy here, here is a log from a new/old
+UBI:
+
+ubi0: scanning is finished
+ubi0: registering /dev/nand0.root.ubi
+ubi0: attached mtd0 (name "nand0.root", size 1010 MiB) to ubi0
+ubi0: PEB size: 131072 bytes (128 KiB), LEB size: 126976 bytes
+ubi0: min./max. I/O unit sizes: 2048/2048, sub-page size 2048
+ubi0: VID header offset: 2048 (aligned 2048), data offset: 4096
+ubi0: good PEBs: 8076, bad PEBs: 4, corrupted PEBs: 0
+ubi0: user volume: 0, internal volumes: 1, max. volumes count: 128
+ubi0: max/mean erase counter: 1/1, WL threshold: 4096, image sequence number: 1694817280
+ubi0: available PEBs: 7914, total reserved PEBs: 162, PEBs reserved for bad PEB handling: 156
+
+UBI: attaching mtd0 to ubi0
+UBI: scanning is finished
+registering /dev/ubi0
+UBI: attached mtd0 (name "nand0.root", size 1011 MiB) to ubi0
+UBI: PEB size: 131072 bytes (128 KiB), LEB size: 126976 bytes
+UBI: min./max. I/O unit sizes: 2048/2048, sub-page size 2048
+UBI: VID header offset: 2048 (aligned 2048), data offset: 4096
+UBI: good PEBs: 8088, bad PEBs: 4, corrupted PEBs: 0
+UBI: user volume: 0, internal volumes: 1, max. volumes count: 128
+UBI: max/mean erase counter: 1/1, WL threshold: 4096, image sequence number: 1694817280
+UBI: available PEBs: 7929, total reserved PEBs: 159, PEBs reserved for bad PEB handling: 155
+
+What changes do you see in the messages?
+
+I applied the series to -next for now, let's see if this reveals any new
+UBI problems.
+
+Sascha
+
 -- 
-2.4.9
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
