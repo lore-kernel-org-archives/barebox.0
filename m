@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b5UVE-0000PH-Gv
- for barebox@lists.infradead.org; Wed, 25 May 2016 08:49:21 +0000
-Date: Wed, 25 May 2016 10:48:58 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160525084858.GF23750@pengutronix.de>
-References: <1464107282-17942-1-git-send-email-shc_work@mail.ru>
- <20160525084030.GD23750@pengutronix.de>
- <1464165907.676469722@f360.i.mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1464165907.676469722@f360.i.mail.ru>
+Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1b5XAL-0002mn-SB
+ for barebox@lists.infradead.org; Wed, 25 May 2016 11:39:58 +0000
+Message-ID: <1464176333.4917.3.camel@lws-tremmet.phytec.de>
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Wed, 25 May 2016 13:38:53 +0200
+In-Reply-To: <20160525072945.GB23750@pengutronix.de>
+References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
+ <20160525072945.GB23750@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,35 +18,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: Sascha Hauer <s.hauer@pengutronix.de>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MCI: imx-esdhc: Allow to use 1-bit bus width in board
- files
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH 00/62] Update UBI
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-T24gV2VkLCBNYXkgMjUsIDIwMTYgYXQgMTE6NDU6MDdBTSArMDMwMCwgQWxleGFuZGVyIFNoaXlh
-biB3cm90ZToKPiA+INCh0YDQtdC00LAsIDI1INC80LDRjyAyMDE2LCAxMTo0MCArMDM6MDAg0L7R
-giBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ogo+ID4gCj4gPiBPbiBUdWUs
-IE1heSAyNCwgMjAxNiBhdCAwNzoyODowMlBNICswMzAwLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3Rl
-Ogo+ID4gPiBTaWduZWQtb2ZmLWJ5OiBBbGV4YW5kZXIgU2hpeWFuIDxzaGNfd29ya0BtYWlsLnJ1
-Pgo+ID4gPiAtLS0KPiA+ID4gIGFyY2gvYXJtL2JvYXJkcy9mcmVlc2NhbGUtbXg1My1zbWQvYm9h
-cmQuYyB8IDEgKwo+ID4gPiAgYXJjaC9hcm0vYm9hcmRzL2thcm8tdHg1My9ib2FyZC5jICAgICAg
-ICAgIHwgMSArCj4gPiA+ICBkcml2ZXJzL21jaS9pbXgtZXNkaGMuYyAgICAgICAgICAgICAgICAg
-ICAgfCA5ICsrKy0tLS0tLQo+ID4gPiAgMyBmaWxlcyBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKyks
-IDYgZGVsZXRpb25zKC0pCj4gPiAKPiA+IEFwcGxpZWQsIHRoYW5rcy4KPiA+IAo+ID4gSWYgeW91
-IG5lZWQgdGhpcyBwYXRjaCBJIGFzc3VtZSB5b3VyIGJvYXJkIHN0aWxsIGhhcyBubyBkZXZpY2Ug
-dHJlZQo+ID4gc3VwcG9ydC4gWW91IHNob3VsZCBmaXggdGhhdCA7KQo+IAo+IFllcyA6KQo+IAo+
-IFBsZWFzZSBmaXggTU1DX0JVU19XSURUSF80IGluIHBhdGNoIHdpdGggTU1DX0NBUF80X0JJVF9E
-QVRBLCB0aGlzIGlzIG15IGJ1Zy4gU29ycnkuCgpKdXN0IGRpZCB0aGF0LgoKU2FzY2hhCgotLSAK
-UGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAg
-ICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEz
-NyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10
-c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIx
-LTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hello Sascha,
+
+Am Mittwoch, den 25.05.2016, 09:29 +0200 schrieb Sascha Hauer:
+> Hi Teresa,
+> 
+> On Mon, May 23, 2016 at 10:25:48AM +0200, Teresa Remmet wrote:
+> > Hello,
+> > 
+> > this series is more or less just a cherry-pick of the UBI patches
+> > from kernel to version v4.6. Rework was need for some patches to make
+> > them apply and work for barebox.
+> > 
+> > After applying this series UBI is much more noisy while attaching.
+> > I am not sure if this is wanted. But could be solved in a seperate patch.
+> 
+> It doesn't seem to get more noisy here, here is a log from a new/old
+> UBI:
+> 
+> ubi0: scanning is finished
+> ubi0: registering /dev/nand0.root.ubi
+> ubi0: attached mtd0 (name "nand0.root", size 1010 MiB) to ubi0
+> ubi0: PEB size: 131072 bytes (128 KiB), LEB size: 126976 bytes
+> ubi0: min./max. I/O unit sizes: 2048/2048, sub-page size 2048
+> ubi0: VID header offset: 2048 (aligned 2048), data offset: 4096
+> ubi0: good PEBs: 8076, bad PEBs: 4, corrupted PEBs: 0
+> ubi0: user volume: 0, internal volumes: 1, max. volumes count: 128
+> ubi0: max/mean erase counter: 1/1, WL threshold: 4096, image sequence number: 1694817280
+> ubi0: available PEBs: 7914, total reserved PEBs: 162, PEBs reserved for bad PEB handling: 156
+> 
+> UBI: attaching mtd0 to ubi0
+> UBI: scanning is finished
+> registering /dev/ubi0
+> UBI: attached mtd0 (name "nand0.root", size 1011 MiB) to ubi0
+> UBI: PEB size: 131072 bytes (128 KiB), LEB size: 126976 bytes
+> UBI: min./max. I/O unit sizes: 2048/2048, sub-page size 2048
+> UBI: VID header offset: 2048 (aligned 2048), data offset: 4096
+> UBI: good PEBs: 8088, bad PEBs: 4, corrupted PEBs: 0
+> UBI: user volume: 0, internal volumes: 1, max. volumes count: 128
+> UBI: max/mean erase counter: 1/1, WL threshold: 4096, image sequence number: 1694817280
+> UBI: available PEBs: 7929, total reserved PEBs: 159, PEBs reserved for bad PEB handling: 155
+> 
+> What changes do you see in the messages?
+
+Mhmm I must have mixed something up. Sorry I can't see it now, too.
+
+> 
+> I applied the series to -next for now, let's see if this reveals any new
+> UBI problems.
+
+
+Ok, thanks.
+
+Regards,
+Teresa
+
+> 
+> Sascha
+> 
+
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
