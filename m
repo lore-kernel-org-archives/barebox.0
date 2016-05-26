@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp20.mail.ru ([94.100.179.251])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b5z0n-0005N7-N7
- for barebox@lists.infradead.org; Thu, 26 May 2016 17:23:58 +0000
-Date: Thu, 26 May 2016 19:23:34 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160526172334.GL31666@pengutronix.de>
-References: <1463992010-31537-1-git-send-email-t.remmet@phytec.de>
- <20160525133302.GD21031@pengutronix.de>
- <1464187352.4917.26.camel@lws-tremmet.phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1464187352.4917.26.camel@lws-tremmet.phytec.de>
+ id 1b5zd0-0003Mg-Oc
+ for barebox@lists.infradead.org; Thu, 26 May 2016 18:03:27 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Thu, 26 May 2016 21:02:59 +0300
+Message-Id: <1464285779-18920-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,38 +14,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/62] Update UBI
-To: Teresa Remmet <t.remmet@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] pinctrl: iomux-v3: Cleaning SION patch before applying
+To: barebox@lists.infradead.org
 
-On Wed, May 25, 2016 at 04:42:32PM +0200, Teresa Remmet wrote:
-> Hello Robert,
-> 
-> Am Mittwoch, den 25.05.2016, 15:33 +0200 schrieb Robert Schwebel:
-> > On Mon, May 23, 2016 at 10:25:48AM +0200, Teresa Remmet wrote:
-> > > this series is more or less just a cherry-pick of the UBI patches
-> > > from kernel to version v4.6. Rework was need for some patches to make
-> > > them apply and work for barebox.
-> > 
-> > These patches should have your Signed-off-by:.
-> 
-> I added the Signed-off to all patches I had to touch manually due to a
-> conflict. A lot applied luckily just out of the box.
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ drivers/pinctrl/imx-iomux-v3.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-As mentioned, since you transferred them from one project to another
-they should have your signed-off-by. Can you resend them please?
-
-Sascha
-
+diff --git a/drivers/pinctrl/imx-iomux-v3.c b/drivers/pinctrl/imx-iomux-v3.c
+index 66443b7..92fac18 100644
+--- a/drivers/pinctrl/imx-iomux-v3.c
++++ b/drivers/pinctrl/imx-iomux-v3.c
+@@ -132,8 +132,10 @@ static int imx_iomux_v3_set_state(struct pinctrl_device *pdev, struct device_nod
+ 		u32 input_val = be32_to_cpu(*list++);
+ 		u32 conf_val = be32_to_cpu(*list++);
+ 
+-		if (conf_val & IMX_PAD_SION)
++		if (conf_val & IMX_PAD_SION) {
+ 			mux_val |= IOMUXC_CONFIG_SION;
++			conf_val &= ~IMX_PAD_SION;
++		}
+ 
+ 		if (conf_val & IMX_DT_NO_PAD_CTL)
+ 			conf_reg = 0;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.4.9
+
 
 _______________________________________________
 barebox mailing list
