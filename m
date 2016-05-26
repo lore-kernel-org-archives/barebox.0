@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b5pVz-0003g2-JX
- for barebox@lists.infradead.org; Thu, 26 May 2016 07:15:32 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 26 May 2016 09:15:09 +0200
-Message-Id: <1464246909-3024-1-git-send-email-s.hauer@pengutronix.de>
+ id 1b5sER-0003Jg-Qb
+ for barebox@lists.infradead.org; Thu, 26 May 2016 10:09:36 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.80)
+ (envelope-from <l.stach@pengutronix.de>) id 1b5sE6-00017h-8e
+ for barebox@lists.infradead.org; Thu, 26 May 2016 12:09:14 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 26 May 2016 12:09:12 +0200
+Message-Id: <1464257353-5640-2-git-send-email-l.stach@pengutronix.de>
+In-Reply-To: <1464257353-5640-1-git-send-email-l.stach@pengutronix.de>
+References: <1464257353-5640-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +26,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] console: Fix initial value of baudrate parameter
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 2/3] nvvar: add missing static inline stubs
+To: barebox@lists.infradead.org
 
-The 'baudrate' parameter has the wrong value initially, it has to
-be set to CONFIG_BAUDRATE. Otherwise a devinfo shows a baudrate of 0
-until actively changed.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- common/console.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/globalvar.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/common/console.c b/common/console.c
-index a67f169..74ccfcf 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -256,7 +256,7 @@ int console_register(struct console_device *newcdev)
- 		ret = newcdev->setbrg(newcdev, CONFIG_BAUDRATE);
- 		if (ret)
- 			return ret;
--		newcdev->baudrate = CONFIG_BAUDRATE;
-+		newcdev->baudrate_param = newcdev->baudrate = CONFIG_BAUDRATE;
- 		dev_add_param_int(dev, "baudrate", console_baudrate_set,
- 			NULL, &newcdev->baudrate_param, "%u", newcdev);
- 	}
+diff --git a/include/globalvar.h b/include/globalvar.h
+index e94e9ed6ee88..5dfa3714093e 100644
+--- a/include/globalvar.h
++++ b/include/globalvar.h
+@@ -153,6 +153,18 @@ static inline int nvvar_load(void)
+ 	return 0;
+ }
+ 
++static inline void nvvar_print(void) {}
++
++static inline int nvvar_add(const char *name, const char *value)
++{
++	return 0;
++}
++
++static inline int nvvar_remove(const char *name)
++{
++	return 0;
++}
++
+ #endif
+ 
+ #endif /* __GLOBALVAR_H */
 -- 
 2.8.1
 
