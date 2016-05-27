@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b6CTX-0004ya-Tz
+ id 1b6CTY-0004yI-Os
  for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:36 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 79290A00B4F
+ by root.phytec.de (Postfix) with ESMTP id 8E4AFA00B53
  for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:41 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:44:39 +0200
-Message-Id: <1464335095-35180-47-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:44:42 +0200
+Message-Id: <1464335095-35180-50-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,146 +24,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 46/62] UBI: Fastmap: Rename variables to make them
- meaningful
+Subject: [PATCH v2 49/62] UBI: add a helper function for updatting on-flash
+ layout volumes
 To: barebox@lists.infradead.org
 
 From: shengyong <shengyong1@huawei.com>
 
-s/fmpl1/fmpl
-s/fmpl2/fmpl_wl
-
-Add "WL" to the error message when wrong WL pool magic number is detected.
-
 Signed-off-by: Sheng Yong <shengyong1@huawei.com>
 Signed-off-by: Richard Weinberger <richard@nod.at>
-
-Conflicts:
-	drivers/mtd/ubi/fastmap.c
-
-Fixed minor conflict.
-
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/fastmap.c | 58 +++++++++++++++++++++++------------------------
- 1 file changed, 29 insertions(+), 29 deletions(-)
+ drivers/mtd/ubi/vtbl.c | 45 ++++++++++++++++++++++++---------------------
+ 1 file changed, 24 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
-index 80a6224..5483bb9 100644
---- a/drivers/mtd/ubi/fastmap.c
-+++ b/drivers/mtd/ubi/fastmap.c
-@@ -535,7 +535,7 @@ static int ubi_attach_fastmap(struct ubi_device *ubi,
- 	struct ubi_ainf_peb *aeb, *tmp_aeb, *_tmp_aeb;
- 	struct ubi_fm_sb *fmsb;
- 	struct ubi_fm_hdr *fmhdr;
--	struct ubi_fm_scan_pool *fmpl1, *fmpl2;
-+	struct ubi_fm_scan_pool *fmpl, *fmpl_wl;
- 	struct ubi_fm_ec *fmec;
- 	struct ubi_fm_volhdr *fmvhdr;
- 	struct ubi_fm_eba *fm_eba;
-@@ -570,30 +570,30 @@ static int ubi_attach_fastmap(struct ubi_device *ubi,
- 		goto fail_bad;
+diff --git a/drivers/mtd/ubi/vtbl.c b/drivers/mtd/ubi/vtbl.c
+index 0bc824e..6bae84c 100644
+--- a/drivers/mtd/ubi/vtbl.c
++++ b/drivers/mtd/ubi/vtbl.c
+@@ -63,6 +63,26 @@ static void self_vtbl_check(const struct ubi_device *ubi);
+ static struct ubi_vtbl_record empty_vtbl_record;
+ 
+ /**
++ * ubi_update_layout_vol - helper for updatting layout volumes on flash
++ * @ubi: UBI device description object
++ */
++static int ubi_update_layout_vol(struct ubi_device *ubi)
++{
++	struct ubi_volume *layout_vol;
++	int i, err;
++
++	layout_vol = ubi->volumes[vol_id2idx(ubi, UBI_LAYOUT_VOLUME_ID)];
++	for (i = 0; i < UBI_LAYOUT_VOLUME_EBS; i++) {
++		err = ubi_eba_atomic_leb_change(ubi, layout_vol, i, ubi->vtbl,
++						ubi->vtbl_size);
++		if (err)
++			return err;
++	}
++
++	return 0;
++}
++
++/**
+  * ubi_change_vtbl_record - change volume table record.
+  * @ubi: UBI device description object
+  * @idx: table index to change
+@@ -76,12 +96,10 @@ static struct ubi_vtbl_record empty_vtbl_record;
+ int ubi_change_vtbl_record(struct ubi_device *ubi, int idx,
+ 			   struct ubi_vtbl_record *vtbl_rec)
+ {
+-	int i, err;
++	int err;
+ 	uint32_t crc;
+-	struct ubi_volume *layout_vol;
+ 
+ 	ubi_assert(idx >= 0 && idx < ubi->vtbl_slots);
+-	layout_vol = ubi->volumes[vol_id2idx(ubi, UBI_LAYOUT_VOLUME_ID)];
+ 
+ 	if (!vtbl_rec)
+ 		vtbl_rec = &empty_vtbl_record;
+@@ -91,15 +109,10 @@ int ubi_change_vtbl_record(struct ubi_device *ubi, int idx,
  	}
  
--	fmpl1 = (struct ubi_fm_scan_pool *)(fm_raw + fm_pos);
--	fm_pos += sizeof(*fmpl1);
-+	fmpl = (struct ubi_fm_scan_pool *)(fm_raw + fm_pos);
-+	fm_pos += sizeof(*fmpl);
- 	if (fm_pos >= fm_size)
- 		goto fail_bad;
--	if (be32_to_cpu(fmpl1->magic) != UBI_FM_POOL_MAGIC) {
-+	if (be32_to_cpu(fmpl->magic) != UBI_FM_POOL_MAGIC) {
- 		ubi_err(ubi, "bad fastmap pool magic: 0x%x, expected: 0x%x",
--			be32_to_cpu(fmpl1->magic), UBI_FM_POOL_MAGIC);
-+			be32_to_cpu(fmpl->magic), UBI_FM_POOL_MAGIC);
- 		goto fail_bad;
+ 	memcpy(&ubi->vtbl[idx], vtbl_rec, sizeof(struct ubi_vtbl_record));
+-	for (i = 0; i < UBI_LAYOUT_VOLUME_EBS; i++) {
+-		err = ubi_eba_atomic_leb_change(ubi, layout_vol, i, ubi->vtbl,
+-						ubi->vtbl_size);
+-		if (err)
+-			return err;
+-	}
++	err = ubi_update_layout_vol(ubi);
+ 
+ 	self_vtbl_check(ubi);
+-	return 0;
++	return err ? err : 0;
+ }
+ 
+ /**
+@@ -114,9 +127,7 @@ int ubi_change_vtbl_record(struct ubi_device *ubi, int idx,
+ int ubi_vtbl_rename_volumes(struct ubi_device *ubi,
+ 			    struct list_head *rename_list)
+ {
+-	int i, err;
+ 	struct ubi_rename_entry *re;
+-	struct ubi_volume *layout_vol;
+ 
+ 	list_for_each_entry(re, rename_list, list) {
+ 		uint32_t crc;
+@@ -138,15 +149,7 @@ int ubi_vtbl_rename_volumes(struct ubi_device *ubi,
+ 		vtbl_rec->crc = cpu_to_be32(crc);
  	}
  
--	fmpl2 = (struct ubi_fm_scan_pool *)(fm_raw + fm_pos);
--	fm_pos += sizeof(*fmpl2);
-+	fmpl_wl = (struct ubi_fm_scan_pool *)(fm_raw + fm_pos);
-+	fm_pos += sizeof(*fmpl_wl);
- 	if (fm_pos >= fm_size)
- 		goto fail_bad;
--	if (be32_to_cpu(fmpl2->magic) != UBI_FM_POOL_MAGIC) {
--		ubi_err(ubi, "bad fastmap pool magic: 0x%x, expected: 0x%x",
--			be32_to_cpu(fmpl2->magic), UBI_FM_POOL_MAGIC);
-+	if (be32_to_cpu(fmpl_wl->magic) != UBI_FM_POOL_MAGIC) {
-+		ubi_err(ubi, "bad fastmap WL pool magic: 0x%x, expected: 0x%x",
-+			be32_to_cpu(fmpl_wl->magic), UBI_FM_POOL_MAGIC);
- 		goto fail_bad;
- 	}
+-	layout_vol = ubi->volumes[vol_id2idx(ubi, UBI_LAYOUT_VOLUME_ID)];
+-	for (i = 0; i < UBI_LAYOUT_VOLUME_EBS; i++) {
+-		err = ubi_eba_atomic_leb_change(ubi, layout_vol, i, ubi->vtbl,
+-						ubi->vtbl_size);
+-		if (err)
+-			return err;
+-	}
+-
+-	return 0;
++	return ubi_update_layout_vol(ubi);
+ }
  
--	pool_size = be16_to_cpu(fmpl1->size);
--	wl_pool_size = be16_to_cpu(fmpl2->size);
--	fm->max_pool_size = be16_to_cpu(fmpl1->max_size);
--	fm->max_wl_pool_size = be16_to_cpu(fmpl2->max_size);
-+	pool_size = be16_to_cpu(fmpl->size);
-+	wl_pool_size = be16_to_cpu(fmpl_wl->size);
-+	fm->max_pool_size = be16_to_cpu(fmpl->max_size);
-+	fm->max_wl_pool_size = be16_to_cpu(fmpl_wl->max_size);
- 
- 	if (pool_size > UBI_FM_MAX_POOL_SIZE || pool_size < 0) {
- 		ubi_err(ubi, "bad pool size: %i", pool_size);
-@@ -735,11 +735,11 @@ static int ubi_attach_fastmap(struct ubi_device *ubi,
- 		}
- 	}
- 
--	ret = scan_pool(ubi, ai, fmpl1->pebs, pool_size, &max_sqnum, &lfree);
-+	ret = scan_pool(ubi, ai, fmpl->pebs, pool_size, &max_sqnum, &lfree);
- 	if (ret)
- 		goto fail;
- 
--	ret = scan_pool(ubi, ai, fmpl2->pebs, wl_pool_size, &max_sqnum, &lfree);
-+	ret = scan_pool(ubi, ai, fmpl_wl->pebs, wl_pool_size, &max_sqnum, &lfree);
- 	if (ret)
- 		goto fail;
- 
-@@ -1020,7 +1020,7 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
- 	void *fm_raw;
- 	struct ubi_fm_sb *fmsb;
- 	struct ubi_fm_hdr *fmh;
--	struct ubi_fm_scan_pool *fmpl1, *fmpl2;
-+	struct ubi_fm_scan_pool *fmpl, *fmpl_wl;
- 	struct ubi_fm_ec *fec;
- 	struct ubi_fm_volhdr *fvh;
- 	struct ubi_fm_eba *feba;
-@@ -1068,23 +1068,23 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
- 	erase_peb_count = 0;
- 	vol_count = 0;
- 
--	fmpl1 = (struct ubi_fm_scan_pool *)(fm_raw + fm_pos);
--	fm_pos += sizeof(*fmpl1);
--	fmpl1->magic = cpu_to_be32(UBI_FM_POOL_MAGIC);
--	fmpl1->size = cpu_to_be16(ubi->fm_pool.size);
--	fmpl1->max_size = cpu_to_be16(ubi->fm_pool.max_size);
-+	fmpl = (struct ubi_fm_scan_pool *)(fm_raw + fm_pos);
-+	fm_pos += sizeof(*fmpl);
-+	fmpl->magic = cpu_to_be32(UBI_FM_POOL_MAGIC);
-+	fmpl->size = cpu_to_be16(ubi->fm_pool.size);
-+	fmpl->max_size = cpu_to_be16(ubi->fm_pool.max_size);
- 
- 	for (i = 0; i < ubi->fm_pool.size; i++)
--		fmpl1->pebs[i] = cpu_to_be32(ubi->fm_pool.pebs[i]);
-+		fmpl->pebs[i] = cpu_to_be32(ubi->fm_pool.pebs[i]);
- 
--	fmpl2 = (struct ubi_fm_scan_pool *)(fm_raw + fm_pos);
--	fm_pos += sizeof(*fmpl2);
--	fmpl2->magic = cpu_to_be32(UBI_FM_POOL_MAGIC);
--	fmpl2->size = cpu_to_be16(ubi->fm_wl_pool.size);
--	fmpl2->max_size = cpu_to_be16(ubi->fm_wl_pool.max_size);
-+	fmpl_wl = (struct ubi_fm_scan_pool *)(fm_raw + fm_pos);
-+	fm_pos += sizeof(*fmpl_wl);
-+	fmpl_wl->magic = cpu_to_be32(UBI_FM_POOL_MAGIC);
-+	fmpl_wl->size = cpu_to_be16(ubi->fm_wl_pool.size);
-+	fmpl_wl->max_size = cpu_to_be16(ubi->fm_wl_pool.max_size);
- 
- 	for (i = 0; i < ubi->fm_wl_pool.size; i++)
--		fmpl2->pebs[i] = cpu_to_be32(ubi->fm_wl_pool.pebs[i]);
-+		fmpl_wl->pebs[i] = cpu_to_be32(ubi->fm_wl_pool.pebs[i]);
- 
- 	ubi_for_each_free_peb(ubi, wl_e, tmp_rb) {
- 		fec = (struct ubi_fm_ec *)(fm_raw + fm_pos);
+ /**
 -- 
 1.9.1
 
