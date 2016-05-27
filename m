@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b6CT2-0004il-OV
+ id 1b6CT2-0004id-OP
  for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:02 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id D3E05A00AA0
+ by root.phytec.de (Postfix) with ESMTP id 7CCD9A00A46
  for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:37 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:43:57 +0200
-Message-Id: <1464335095-35180-5-git-send-email-t.remmet@phytec.de>
-In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
-References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:43:53 +0200
+Message-Id: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,159 +18,88 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 04/62] UBI: wl: Rename cancel flag to shutdown
+Subject: [PATCH v2 00/62] Update UBI
 To: barebox@lists.infradead.org
 
-From: Richard Weinberger <richard@nod.at>
-
-It confused me more than once that the cancel flag of the
-work function does not indicate the cancellation of a single work.
-In fact it indicates the WL sub-system shutdown and therefore
-worker functions have to free their wl_entries too.
-That's why you cannot cancel a single work, you can only shutdown
-all works.
-
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
----
- drivers/mtd/ubi/ubi.h |  9 +++++----
- drivers/mtd/ubi/wl.c  | 24 +++++++++++++-----------
- 2 files changed, 18 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
-index 51a0112..df104db 100644
---- a/drivers/mtd/ubi/ubi.h
-+++ b/drivers/mtd/ubi/ubi.h
-@@ -691,14 +691,15 @@ struct ubi_attach_info {
-  * @torture: if the physical eraseblock has to be tortured
-  * @anchor: produce a anchor PEB to by used by fastmap
-  *
-- * The @func pointer points to the worker function. If the @cancel argument is
-- * not zero, the worker has to free the resources and exit immediately. The
-- * worker has to return zero in case of success and a negative error code in
-+ * The @func pointer points to the worker function. If the @shutdown argument is
-+ * not zero, the worker has to free the resources and exit immediately as the
-+ * WL sub-system is shutting down.
-+ * The worker has to return zero in case of success and a negative error code in
-  * case of failure.
-  */
- struct ubi_work {
- 	struct list_head list;
--	int (*func)(struct ubi_device *ubi, struct ubi_work *wrk, int cancel);
-+	int (*func)(struct ubi_device *ubi, struct ubi_work *wrk, int shutdown);
- 	/* The below fields are only relevant to erasure works */
- 	struct ubi_wl_entry *e;
- 	int vol_id;
-diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-index cb2f9d7..cdfc41c0 100644
---- a/drivers/mtd/ubi/wl.c
-+++ b/drivers/mtd/ubi/wl.c
-@@ -816,7 +816,7 @@ static void schedule_ubi_work(struct ubi_device *ubi, struct ubi_work *wrk)
- }
- 
- static int erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk,
--			int cancel);
-+			int shutdown);
- 
- #ifdef CONFIG_MTD_UBI_FASTMAP
- /**
-@@ -939,14 +939,15 @@ int ubi_wl_put_fm_peb(struct ubi_device *ubi, struct ubi_wl_entry *fm_e,
-  * wear_leveling_worker - wear-leveling worker function.
-  * @ubi: UBI device description object
-  * @wrk: the work object
-- * @cancel: non-zero if the worker has to free memory and exit
-+ * @shutdown: non-zero if the worker has to free memory and exit
-+ * because the WL-subsystem is shutting down
-  *
-  * This function copies a more worn out physical eraseblock to a less worn out
-  * one. Returns zero in case of success and a negative error code in case of
-  * failure.
-  */
- static int wear_leveling_worker(struct ubi_device *ubi, struct ubi_work *wrk,
--				int cancel)
-+				int shutdown)
- {
- 	int err, scrubbing = 0, torture = 0, protect = 0, erroneous = 0;
- 	int vol_id = -1, uninitialized_var(lnum);
-@@ -957,7 +958,7 @@ static int wear_leveling_worker(struct ubi_device *ubi, struct ubi_work *wrk,
- 	struct ubi_vid_hdr *vid_hdr;
- 
- 	kfree(wrk);
--	if (cancel)
-+	if (shutdown)
- 		return 0;
- 
- 	vid_hdr = ubi_zalloc_vid_hdr(ubi, GFP_NOFS);
-@@ -1333,7 +1334,8 @@ int ubi_ensure_anchor_pebs(struct ubi_device *ubi)
-  * erase_worker - physical eraseblock erase worker function.
-  * @ubi: UBI device description object
-  * @wl_wrk: the work object
-- * @cancel: non-zero if the worker has to free memory and exit
-+ * @shutdown: non-zero if the worker has to free memory and exit
-+ * because the WL sub-system is shutting down
-  *
-  * This function erases a physical eraseblock and perform torture testing if
-  * needed. It also takes care about marking the physical eraseblock bad if
-@@ -1341,7 +1343,7 @@ int ubi_ensure_anchor_pebs(struct ubi_device *ubi)
-  * failure.
-  */
- static int erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk,
--			int cancel)
-+			int shutdown)
- {
- 	struct ubi_wl_entry *e = wl_wrk->e;
- 	int pnum = e->pnum;
-@@ -1349,7 +1351,7 @@ static int erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk,
- 	int lnum = wl_wrk->lnum;
- 	int err, available_consumed = 0;
- 
--	if (cancel) {
-+	if (shutdown) {
- 		dbg_wl("cancel erasure of PEB %d EC %d", pnum, e->ec);
- 		kfree(wl_wrk);
- 		kfree(e);
-@@ -1667,10 +1669,10 @@ static void tree_destroy(struct rb_root *root)
- }
- 
- /**
-- * cancel_pending - cancel all pending works.
-+ * shutdown_work - shutdown all pending works.
-  * @ubi: UBI device description object
-  */
--static void cancel_pending(struct ubi_device *ubi)
-+static void shutdown_work(struct ubi_device *ubi)
- {
- 	while (!list_empty(&ubi->works)) {
- 		struct ubi_work *wrk;
-@@ -1807,7 +1809,7 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
- 	return 0;
- 
- out_free:
--	cancel_pending(ubi);
-+	shutdown_work(ubi);
- 	tree_destroy(&ubi->used);
- 	tree_destroy(&ubi->free);
- 	tree_destroy(&ubi->scrub);
-@@ -1839,7 +1841,7 @@ static void protection_queue_destroy(struct ubi_device *ubi)
- void ubi_wl_close(struct ubi_device *ubi)
- {
- 	dbg_wl("close the WL sub-system");
--	cancel_pending(ubi);
-+	shutdown_work(ubi);
- 	protection_queue_destroy(ubi);
- 	tree_destroy(&ubi->used);
- 	tree_destroy(&ubi->erroneous);
--- 
-1.9.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sCgp0aGlzIHNlcmllcyBpcyBtb3JlIG9yIGxlc3MganVzdCBhIGNoZXJyeS1waWNrIG9m
+IHRoZSBVQkkgcGF0Y2hlcwpmcm9tIGtlcm5lbCB0byB2ZXJzaW9uIHY0LjYuIFJld29yayB3YXMg
+bmVlZCBmb3Igc29tZSBwYXRjaGVzIHRvIG1ha2UKdGhlbSBhcHBseSBhbmQgd29yayBmb3IgYmFy
+ZWJveC4KCkNoYW5nZXMgaW4gdjI6Ci0gQWRkZWQgbXkgUy1vLWIgdG8gYWxsIHBhdGNoZXMKClRl
+cmVzYQoKQXJ0ZW0gQml0eXV0c2tpeSAoMik6CiAgVUJJOiBjbGVhbi11cCBwcmludGluZyBoZWxw
+ZXJzCiAgVUJJOiBkbyBwcm9wYWdhdGUgcG9zaXRpdmUgZXJyb3IgY29kZXMgdXAKCkJyaWFuIE5v
+cnJpcyAoNik6CiAgVUJJOiBmaXggbWlzc2luZyBicmFjZSBjb250cm9sIGZsb3cKICBVQkk6IGFj
+Y291bnQgZm9yIGJpdGZsaXBzIGluIGJvdGggdGhlIFZJRCBoZWFkZXIgYW5kIGRhdGEKICBVQkk6
+IGZpeCBvdXQgb2YgYm91bmRzIHdyaXRlCiAgVUJJOiBpbml0aWFsaXplIExFQiBudW1iZXIgdmFy
+aWFibGUKICBVQkk6IGFsaWduIGNvbW1lbnQgZm9yIHJlYWRhYmlsaXR5CiAgVUJJOiBmaXggdXNl
+IG9mICJWSUQiIHZzLiAiRUMiIGluIGhlYWRlciBzZWxmLWNoZWNrCgpFemVxdWllbCBHYXJjw61h
+ICgxKToKICBVQkk6IEZhc3RtYXA6IEZpeCBQRUIgYXJyYXkgdHlwZQoKUmljaGFyZCBHZW5vdWQg
+KDEpOgogIFVCSTogYWRkIG1pc3Npbmcga21lbV9jYWNoZV9mcmVlKCkgaW4gcHJvY2Vzc19wb29s
+X2FlYiBlcnJvciBwYXRoCgpSaWNoYXJkIFdlaW5iZXJnZXIgKDM4KToKICBVQkk6IEltcHJvdmUg
+Y29tbWVudCBvbiB3b3JrX3NlbQogIFVCSTogdWJpX2ViYV9yZWFkX2xlYjogUmVtb3ZlIGluIHZh
+aW4gdmFyaWFibGUgYXNzaWdubWVudAogIFVCSTogd2w6IFJlbmFtZSBjYW5jZWwgZmxhZyB0byBz
+aHV0ZG93bgogIFVCSTogRml4IHRyaXZpYWwgdHlwbyBpbiBfX3NjaGVkdWxlX3ViaV93b3JrCiAg
+VUJJOiBGYXN0bWFwOiBDYWxjIGZhc3RtYXAgc2l6ZSBjb3JyZWN0bHkKICBVQkk6IHZ0Ymw6IFVz
+ZSB1YmlfZWJhX2F0b21pY19sZWJfY2hhbmdlKCkKICBVQkk6IEZpeCBkb3VibGUgZnJlZSBhZnRl
+ciBkb19zeW5jX2VyYXNlKCkKICBVQkk6IEZpeCBpbnZhbGlkIHZmcmVlKCkKICBVQkk6IEZhc3Rt
+YXA6IENhcmUgYWJvdXQgdGhlIHByb3RlY3Rpb24gcXVldWUKICBVQkk6IFNwbGl0IF9fd2xfZ2V0
+X3BlYigpCiAgVUJJOiBGYXN0bWFwOiBNYWtlIHViaV9yZWZpbGxfcG9vbHMoKSBmYWlyCiAgVUJJ
+OiBGYXN0bWFwOiBEb24ndCBhbGxvY2F0ZSBuZXcgdWJpX3dsX2VudHJ5IG9iamVjdHMKICBVQkk6
+IEZhc3RtYXA6IEZpeCBtZW1vcnkgbGVha3Mgd2hpbGUgY2xvc2luZyB0aGUgV0wgc3ViLXN5c3Rl
+bQogIFVCSTogRmFzdG1hcDogTm90aWZ5IHVzZXIgaW4gY2FzZSBvZiBhbiB1YmlfdXBkYXRlX2Zh
+c3RtYXAoKSBmYWlsdXJlCiAgVUJJOiBGYXN0bWFwOiBXcmFwIGZhc3RtYXAgc3BlY2lmaWMgZnVu
+Y3Rpb24gaW4gYSBpZmRlZgogIFVCSTogRmFzdG1hcDogRml4IGZhc3RtYXAgdXNhZ2UgaW4gdWJp
+X3ZvbHVtZV9ub3RpZnkoKQogIFVCSTogRmFzdG1hcDogRml4IHJhY2UgaW4gdWJpX2ViYV9hdG9t
+aWNfbGViX2NoYW5nZSgpCiAgVUJJOiBGYXN0bWFwOiBSZW1vdmUgYm9ndXMgdWJpX2Fzc2VydCgp
+CiAgVUJJOiBGYXN0bWFwOiBSZW1vdmUgZWJhX29ycGhhbnMgbG9naWMKICBVQkk6IEZhc3RtYXA6
+IFN3aXRjaCB0byBybyBtb2RlIGlmIGludmFsaWRhdGVfZmFzdG1hcCgpIGZhaWxzCiAgVUJJOiBG
+YXN0bWFwOiBNYWtlIFdMIHBvb2wgc2l6ZSA1MCUgb2YgdXNlciBwb29sIHNpemUKICBVQkk6IEZh
+c3RtYXA6IEZpeCBsZWJfY291bnQgdW5iYWxhbmNlCiAgVUJJOiBGYXN0bWFwOiBTZXQgdXNlZF9l
+YnMgb25seSBmb3Igc3RhdGljIHZvbHVtZXMKICBVQkk6IEZhc3RtYXA6IFByZXBhcmUgZm9yIHZh
+cmlhYmxlIHNpemVkIGZhc3RtYXBzCiAgVUJJOiBGYXN0bWFwOiBSZXdvcmsgZmFzdG1hcCBlcnJv
+ciBwYXRocwogIFVCSTogRml4IHN0YWxlIHBvaW50ZXJzIGluIHViaS0+bG9va3VwdGJsCiAgVUJJ
+OiBNb3ZlIGZhc3RtYXAgc3BlY2lmaWMgZnVuY3Rpb25zIG91dCBvZiB3bC5jCiAgVUJJOiBBZGQg
+YWNjZXNzb3IgZnVuY3Rpb25zIGZvciBXTCBkYXRhIHN0cnVjdHVyZXMKICBVQkk6IEZhc3RtYXA6
+IFdpcmUgdXAgV0wgYWNjZXNzb3IgZnVuY3Rpb25zCiAgVUJJOiBGYXN0bWFwOiBJbnRyb2R1Y2Ug
+dWJpX2Zhc3RtYXBfaW5pdCgpCiAgVUJJOiBGYXN0bWFwOiBJbnRyb2R1Y2UgbWF5X3Jlc2VydmVf
+Zm9yX2ZtKCkKICBVQkk6IEZhc3RtYXA6IFJlbW92ZSBpc19mbV9ibG9jaygpCiAgVUJJOiBGYXN0
+bWFwOiBGYWxsIGJhY2sgdG8gc2Nhbm5pbmcgbW9kZSBhZnRlciBFQ0MgZXJyb3IKICBVQkk6IFZh
+bGlkYXRlIGRhdGFfc2l6ZQogIFVCSTogRmFzdG1hcDogU2ltcGxpZnkgZXhwcmVzc2lvbgogIFVC
+STogRml4IHR5cG8gaW4gY29tbWVudAogIFVCSTogRml4IGRlYnVnIG1lc3NhZ2UKICB1Ymk6IEZp
+eCBvdXQgb2YgYm91bmRzIHdyaXRlIGluIHZvbHVtZSB1cGRhdGUgY29kZQoKU2ViYXN0aWFuIFNp
+ZXdpb3IgKDMpOgogIG10ZDogdWJpOiBmaXh1cCBlcnJvciBjb3JyZWN0aW9uIGluIGRvX3N5bmNf
+ZXJhc2UoKQogIG10ZDogdWJpOiBkb24ndCBsZWFrIGUgaWYgc2NoZWR1bGVfZXJhc2UoKSBmYWls
+cwogIG10ZDogdWJpOiB3bDogYXZvaWQgZXJhc2luZyBhIFBFQiB3aGljaCBpcyBlbXB0eQoKVGFu
+eWEgQnJva2htYW4gKDIpOgogIFVCSTogRXh0ZW5kIFVCSSBsYXllciBkZWJ1Zy9tZXNzYWdpbmcg
+Y2FwYWJpbGl0aWVzCiAgVUJJOiBleHRlbmQgVUJJIGxheWVyIGRlYnVnL21lc3NhZ2luZyBjYXBh
+YmlsaXRpZXMgLSBjb3NtZXRpY3MKClRlcmVzYSBSZW1tZXQgKDEpOgogIG10ZDogVUJJOiBSZW1v
+dmUgdWJpX2ZyZWVfZmFzdG1hcAoKc2hlbmd5b25nICg4KToKICBVQkk6IEZhc3RtYXA6IFVzZSBt
+YXgoKSB0byBnZXQgdGhlIGxhcmdlciB2YWx1ZQogIFVCSTogRmFzdG1hcDogUmVtb3ZlIHVubmVj
+ZXNzYXJ5IGBcJwogIFVCSTogRmFzdG1hcDogUmVuYW1lIHZhcmlhYmxlcyB0byBtYWtlIHRoZW0g
+bWVhbmluZ2Z1bAogIFVCSTogSW5pdCB2b2wtPnJlc2VydmVkX3BlYnMgYnkgYXNzaWdubWVudAog
+IFVCSTogRmFzdG1hcDogRG8gbm90IGFkZCB2b2wgaWYgaXQgYWxyZWFkeSBleGlzdHMKICBVQkk6
+IGFkZCBhIGhlbHBlciBmdW5jdGlvbiBmb3IgdXBkYXR0aW5nIG9uLWZsYXNoIGxheW91dCB2b2x1
+bWVzCiAgVUJJOiBSZW1vdmUgdW5uZWNlc3NhcnkgYFwnCiAgVUJJOiByZXR1cm4gRU5PU1BDIGlm
+IG5vIGVub3VnaCBzcGFjZSBhdmFpbGFibGUKCiBkcml2ZXJzL210ZC91YmkvYXR0YWNoLmMgICAg
+IHwgMTMwICsrKystLS0tCiBkcml2ZXJzL210ZC91YmkvYmFyZWJveC5jICAgIHwgIDE4ICstCiBk
+cml2ZXJzL210ZC91YmkvYnVpbGQuYyAgICAgIHwgIDgyICsrLS0tCiBkcml2ZXJzL210ZC91Ymkv
+ZGVidWcuYyAgICAgIHwgICA0ICstCiBkcml2ZXJzL210ZC91YmkvZWJhLmMgICAgICAgIHwgIDc4
+ICsrLS0tCiBkcml2ZXJzL210ZC91YmkvZmFzdG1hcC13bC5jIHwgMzE0ICsrKysrKysrKysrKysr
+KysrKysrCiBkcml2ZXJzL210ZC91YmkvZmFzdG1hcC5jICAgIHwgNDk2ICsrKysrKysrKysrKysr
+Ky0tLS0tLS0tLS0tLS0tLS0KIGRyaXZlcnMvbXRkL3ViaS9pby5jICAgICAgICAgfCAgOTggKysr
+LS0tCiBkcml2ZXJzL210ZC91Ymkva2FwaS5jICAgICAgIHwgICA2ICstCiBkcml2ZXJzL210ZC91
+YmkvbWlzYy5jICAgICAgIHwgICA0ICstCiBkcml2ZXJzL210ZC91YmkvdWJpLW1lZGlhLmggIHwg
+ICA0ICstCiBkcml2ZXJzL210ZC91YmkvdWJpLmggICAgICAgIHwgIDcwICsrKystCiBkcml2ZXJz
+L210ZC91YmkvdXBkLmMgICAgICAgIHwgIDEyICstCiBkcml2ZXJzL210ZC91Ymkvdm10LmMgICAg
+ICAgIHwgIDcyICsrLS0tCiBkcml2ZXJzL210ZC91YmkvdnRibC5jICAgICAgIHwgMTA0ICsrKy0t
+LS0KIGRyaXZlcnMvbXRkL3ViaS93bC5jICAgICAgICAgfCA2ODkgKysrKysrKysrKysrKystLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogZHJpdmVycy9tdGQvdWJpL3dsLmggICAgICAgICB8
+ICAyNiArKwogMTcgZmlsZXMgY2hhbmdlZCwgMTE3NSBpbnNlcnRpb25zKCspLCAxMDMyIGRlbGV0
+aW9ucygtKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbXRkL3ViaS9mYXN0bWFwLXdsLmMK
+IGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL210ZC91Ymkvd2wuaAoKLS0gCjEuOS4xCgoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
+aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
