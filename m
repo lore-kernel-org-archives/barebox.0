@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b6CTP-0004yH-K9
- for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:27 +0000
+ id 1b6CTO-0004yV-5C
+ for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:26 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 1136DA00AEB
- for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:39 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 9AC76A00AD3
+ for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:38 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:44:10 +0200
-Message-Id: <1464335095-35180-18-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:44:06 +0200
+Message-Id: <1464335095-35180-14-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,38 +24,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 17/62] UBI: fix out of bounds write
+Subject: [PATCH v2 13/62] UBI: do propagate positive error codes up
 To: barebox@lists.infradead.org
 
-From: Brian Norris <computersforpeace@gmail.com>
+From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
 
-If aeb->len >= vol->reserved_pebs, we should not be writing aeb into the
-PEB->LEB mapping.
+UBI uses positive function return codes internally, and should not propagate
+them up, except in the place this path fixes. Here is the original bug report
+from Dan Carpenter:
 
-Caught by Coverity, CID #711212.
+The problem is really in ubi_eba_read_leb().
 
-Cc: stable <stable@vger.kernel.org>
-Signed-off-by: Brian Norris <computersforpeace@gmail.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+drivers/mtd/ubi/eba.c
+   412                  err = ubi_io_read_vid_hdr(ubi, pnum, vid_hdr, 1);
+   413                  if (err && err != UBI_IO_BITFLIPS) {
+   414                          if (err > 0) {
+   415                                  /*
+   416                                   * The header is either absent or corrupted.
+   417                                   * The former case means there is a bug -
+   418                                   * switch to read-only mode just in case.
+   419                                   * The latter case means a real corruption - we
+   420                                   * may try to recover data. FIXME: but this is
+   421                                   * not implemented.
+   422                                   */
+   423                                  if (err == UBI_IO_BAD_HDR_EBADMSG ||
+   424                                      err == UBI_IO_BAD_HDR) {
+   425                                          ubi_warn("corrupted VID header at PEB %d, LEB %d:%d",
+   426                                                   pnum, vol_id, lnum);
+   427                                          err = -EBADMSG;
+   428                                  } else
+   429                                          ubi_ro_mode(ubi);
+
+On this path we return UBI_IO_FF and UBI_IO_FF_BITFLIPS and it
+eventually gets passed to ERR_PTR().  We probably dereference the bad
+pointer and oops.  At that point we've gone read only so it was already
+a bad situation...
+
+   430                          }
+   431                          goto out_free;
+   432                  } else if (err == UBI_IO_BITFLIPS)
+   433                          scrub = 1;
+   434
+
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/eba.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mtd/ubi/eba.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/mtd/ubi/eba.c b/drivers/mtd/ubi/eba.c
-index 1dbf126..bb89d10 100644
+index 1b0b6e6..b8f5091 100644
 --- a/drivers/mtd/ubi/eba.c
 +++ b/drivers/mtd/ubi/eba.c
-@@ -1306,7 +1306,8 @@ int ubi_eba_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
- 				 * during re-size.
- 				 */
- 				ubi_move_aeb_to_list(av, aeb, &ai->erase);
--			vol->eba_tbl[aeb->lnum] = aeb->pnum;
-+			else
-+				vol->eba_tbl[aeb->lnum] = aeb->pnum;
- 		}
- 	}
- 
+@@ -401,6 +401,7 @@ retry:
+ 						 pnum, vol_id, lnum);
+ 					err = -EBADMSG;
+ 				} else
++					err = -EINVAL;
+ 					ubi_ro_mode(ubi);
+ 			}
+ 			goto out_free;
 -- 
 1.9.1
 
