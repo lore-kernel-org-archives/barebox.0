@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b6CTd-0004y0-8Q
- for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:42 +0000
+ id 1b6CTj-0005Mk-Vr
+ for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:45 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id DC578A00B5D
- for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:42 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 24560A00AEC
+ for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:39 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:44:51 +0200
-Message-Id: <1464335095-35180-59-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:44:11 +0200
+Message-Id: <1464335095-35180-19-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,151 +24,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 58/62] mtd: ubi: fixup error correction in do_sync_erase()
+Subject: [PATCH v2 18/62] UBI: initialize LEB number variable
 To: barebox@lists.infradead.org
 
-From: Sebastian Siewior <bigeasy@linutronix.de>
+From: Brian Norris <computersforpeace@gmail.com>
 
-Since fastmap we gained do_sync_erase(). This function can return an error
-and its error handling isn't obvious. First the memory allocation for
-struct ubi_work can fail and as such struct ubi_wl_entry is leaked.
-However if the memory allocation succeeds then the tail function takes
-care of the struct ubi_wl_entry. A free here could result in a double
-free.
-To make the error handling simpler, I split the tail function into one
-piece which does the work and another which frees the struct ubi_work
-which is passed as argument. As result do_sync_erase() can keep the
-struct on stack and we get rid of one error source.
+In some of the 'out_not_moved' error paths, lnum may be used
+uninitialized. Don't ignore the warning; let's fix it.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 8199b901a ("UBI: Add fastmap support to the WL sub-system")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+This uninitialized variable doesn't have much visible effect in the end,
+since we just schedule the PEB for erasure, and its LEB number doesn't
+really matter (it just gets printed in debug messages). But let's get it
+straight anyway.
+
+Coverity CID #113449
+
+Cc: stable <stable@vger.kernel.org>
+Signed-off-by: Brian Norris <computersforpeace@gmail.com>
 Signed-off-by: Richard Weinberger <richard@nod.at>
-
-Conflicts:
-	drivers/mtd/ubi/wl.c
-
-Fixed conflicts.
-
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/wl.c | 52 ++++++++++++++++++++++++++++------------------------
- 1 file changed, 28 insertions(+), 24 deletions(-)
+ drivers/mtd/ubi/wl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-index 2d6c6ae..1feef3f 100644
+index aaa882e..adbb29b 100644
 --- a/drivers/mtd/ubi/wl.c
 +++ b/drivers/mtd/ubi/wl.c
-@@ -578,6 +578,7 @@ static int schedule_erase(struct ubi_device *ubi, struct ubi_wl_entry *e,
- 	return 0;
- }
- 
-+static int __erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk);
- /**
-  * do_sync_erase - run the erase worker synchronously.
-  * @ubi: UBI device description object
-@@ -590,20 +591,16 @@ static int schedule_erase(struct ubi_device *ubi, struct ubi_wl_entry *e,
- static int do_sync_erase(struct ubi_device *ubi, struct ubi_wl_entry *e,
- 			 int vol_id, int lnum, int torture)
+@@ -951,7 +951,7 @@ static int wear_leveling_worker(struct ubi_device *ubi, struct ubi_work *wrk,
+ 				int shutdown)
  {
--	struct ubi_work *wl_wrk;
-+	struct ubi_work wl_wrk;
- 
- 	dbg_wl("sync erase of PEB %i", e->pnum);
- 
--	wl_wrk = kmalloc(sizeof(struct ubi_work), GFP_NOFS);
--	if (!wl_wrk)
--		return -ENOMEM;
--
--	wl_wrk->e = e;
--	wl_wrk->vol_id = vol_id;
--	wl_wrk->lnum = lnum;
--	wl_wrk->torture = torture;
-+	wl_wrk.e = e;
-+	wl_wrk.vol_id = vol_id;
-+	wl_wrk.lnum = lnum;
-+	wl_wrk.torture = torture;
- 
--	return erase_worker(ubi, wl_wrk, 0);
-+	return __erase_worker(ubi, &wl_wrk);
- }
- 
- /**
-@@ -971,7 +968,7 @@ out_unlock:
- }
- 
- /**
-- * erase_worker - physical eraseblock erase worker function.
-+ * __erase_worker - physical eraseblock erase worker function.
-  * @ubi: UBI device description object
-  * @wl_wrk: the work object
-  * @shutdown: non-zero if the worker has to free memory and exit
-@@ -982,8 +979,7 @@ out_unlock:
-  * needed. Returns zero in case of success and a negative error code in case of
-  * failure.
-  */
--static int erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk,
--			int shutdown)
-+static int __erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk)
- {
- 	struct ubi_wl_entry *e = wl_wrk->e;
- 	int pnum = e->pnum;
-@@ -991,21 +987,11 @@ static int erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk,
- 	int lnum = wl_wrk->lnum;
- 	int err, available_consumed = 0;
- 
--	if (shutdown) {
--		dbg_wl("cancel erasure of PEB %d EC %d", pnum, e->ec);
--		kfree(wl_wrk);
--		wl_entry_destroy(ubi, e);
--		return 0;
--	}
--
- 	dbg_wl("erase PEB %d EC %d LEB %d:%d",
- 	       pnum, e->ec, wl_wrk->vol_id, wl_wrk->lnum);
- 
- 	err = sync_erase(ubi, e, wl_wrk->torture);
- 	if (!err) {
--		/* Fine, we've erased it successfully */
--		kfree(wl_wrk);
--
- 		wl_tree_add(e, &ubi->free);
- 		ubi->free_count++;
- 
-@@ -1021,7 +1007,6 @@ static int erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk,
- 	}
- 
- 	ubi_err(ubi, "failed to erase PEB %d, error %d", pnum, err);
--	kfree(wl_wrk);
- 
- 	if (err == -EINTR || err == -ENOMEM || err == -EAGAIN ||
- 	    err == -EBUSY) {
-@@ -1093,6 +1078,25 @@ out_ro:
- 	return err;
- }
- 
-+static int erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk,
-+			  int shutdown)
-+{
-+	int ret;
-+
-+	if (shutdown) {
-+		struct ubi_wl_entry *e = wl_wrk->e;
-+
-+		dbg_wl("cancel erasure of PEB %d EC %d", e->pnum, e->ec);
-+		kfree(wl_wrk);
-+		wl_entry_destroy(ubi, e);
-+		return 0;
-+	}
-+
-+	ret = __erase_worker(ubi, wl_wrk);
-+	kfree(wl_wrk);
-+	return ret;
-+}
-+
- /**
-  * ubi_wl_put_peb - return a PEB to the wear-leveling sub-system.
-  * @ubi: UBI device description object
+ 	int err, scrubbing = 0, torture = 0, protect = 0, erroneous = 0;
+-	int vol_id = -1, uninitialized_var(lnum);
++	int vol_id = -1, lnum = -1;
+ #ifdef CONFIG_MTD_UBI_FASTMAP
+ 	int anchor = wrk->anchor;
+ #endif
 -- 
 1.9.1
 
