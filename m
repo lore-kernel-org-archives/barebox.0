@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b6CTS-0004ya-98
+ id 1b6CTR-0004yU-R1
  for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:29 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 05794A00B33
- for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:40 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 7CD09A00B28
+ for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:39 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:44:23 +0200
-Message-Id: <1464335095-35180-31-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:44:18 +0200
+Message-Id: <1464335095-35180-26-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,37 +24,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 30/62] UBI: Fastmap: Switch to ro mode if
- invalidate_fastmap() fails
+Subject: [PATCH v2 25/62] UBI: Fastmap: Wrap fastmap specific function in a
+ ifdef
 To: barebox@lists.infradead.org
 
 From: Richard Weinberger <richard@nod.at>
 
-We have to switch to ro mode to guarantee that upon next UBI attach
-all data is consistent.
+...such that we can implement NOP variants of some functions.
+This will help to reduce fastmap specific ifdefs in other c files.
 
 Signed-off-by: Richard Weinberger <richard@nod.at>
+Reviewed-by: Tanya Brokhman <tlinder@codeaurora.org>
+
+Conflicts:
+	drivers/mtd/ubi/ubi.h
+
+Fixed minor conflict.
+
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/fastmap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mtd/ubi/ubi.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
-index f683d42..d94e1d9 100644
---- a/drivers/mtd/ubi/fastmap.c
-+++ b/drivers/mtd/ubi/fastmap.c
-@@ -1458,8 +1458,10 @@ err:
- 	ret = 0;
- 	if (old_fm) {
- 		ret = invalidate_fastmap(ubi, old_fm);
--		if (ret < 0)
-+		if (ret < 0) {
- 			ubi_err(ubi, "Unable to invalidiate current fastmap!");
-+			ubi_ro_mode(ubi);
-+		}
- 		else if (ret)
- 			ret = 0;
- 	}
+diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
+index 5bceb53..2ed28f7 100644
+--- a/drivers/mtd/ubi/ubi.h
++++ b/drivers/mtd/ubi/ubi.h
+@@ -837,11 +837,16 @@ int ubi_compare_lebs(struct ubi_device *ubi, const struct ubi_ainf_peb *aeb,
+ 		      int pnum, const struct ubi_vid_hdr *vid_hdr);
+ 
+ /* fastmap.c */
++#ifdef CONFIG_MTD_UBI_FASTMAP
+ size_t ubi_calc_fm_size(struct ubi_device *ubi);
+ int ubi_update_fastmap(struct ubi_device *ubi);
+ int ubi_scan_fastmap(struct ubi_device *ubi, struct ubi_attach_info *ai,
+ 		     int fm_anchor);
+ void ubi_free_fastmap(struct ubi_device *ubi);
++#else
++static inline int ubi_update_fastmap(struct ubi_device *ubi) { return 0; }
++#endif
++
+ /*
+  * ubi_rb_for_each_entry - walk an RB-tree.
+  * @rb: a pointer to type 'struct rb_node' to use as a loop counter
 -- 
 1.9.1
 
