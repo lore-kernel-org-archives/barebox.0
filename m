@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b6CTZ-0004yV-Cd
+ id 1b6CTa-0004xy-N7
  for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:37 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id A4885A00B54
- for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:41 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 4D25BA00B57
+ for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:42 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:44:43 +0200
-Message-Id: <1464335095-35180-51-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:44:46 +0200
+Message-Id: <1464335095-35180-54-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,45 +24,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 50/62] UBI: Remove unnecessary `\'
+Subject: [PATCH v2 53/62] UBI: Fastmap: Simplify expression
 To: barebox@lists.infradead.org
 
-From: shengyong <shengyong1@huawei.com>
+From: Richard Weinberger <richard@nod.at>
 
-Signed-off-by: Sheng Yong <shengyong1@huawei.com>
+There is no need to compute pnum again.
+
 Signed-off-by: Richard Weinberger <richard@nod.at>
+Acked-by: Brian Norris <computersforpeace@gmail.com>
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
  drivers/mtd/ubi/fastmap.c | 2 +-
- drivers/mtd/ubi/wl.c      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
-index f33c2db..1504911 100644
+index 1504911..173da9c 100644
 --- a/drivers/mtd/ubi/fastmap.c
 +++ b/drivers/mtd/ubi/fastmap.c
-@@ -251,7 +251,7 @@ static int update_vol(struct ubi_device *ubi, struct ubi_attach_info *ai,
- 			list_add_tail(&victim->u.list, &ai->erase);
+@@ -714,7 +714,7 @@ static int ubi_attach_fastmap(struct ubi_device *ubi,
+ 		for (j = 0; j < be32_to_cpu(fm_eba->reserved_pebs); j++) {
+ 			int pnum = be32_to_cpu(fm_eba->pnum[j]);
  
- 			if (av->highest_lnum == be32_to_cpu(new_vh->lnum))
--				av->last_data_size = \
-+				av->last_data_size =
- 					be32_to_cpu(new_vh->data_size);
+-			if ((int)be32_to_cpu(fm_eba->pnum[j]) < 0)
++			if (pnum < 0)
+ 				continue;
  
- 			dbg_bld("vol %i: AEB %i's PEB %i is the newer",
-diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-index 3c51feb..986a2dc 100644
---- a/drivers/mtd/ubi/wl.c
-+++ b/drivers/mtd/ubi/wl.c
-@@ -1418,7 +1418,7 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
- 	dbg_wl("found %i PEBs", found_pebs);
- 
- 	if (ubi->fm) {
--		ubi_assert(ubi->good_peb_count == \
-+		ubi_assert(ubi->good_peb_count ==
- 			   found_pebs + ubi->fm->used_blocks);
- 
- 		for (i = 0; i < ubi->fm->used_blocks; i++) {
+ 			aeb = NULL;
 -- 
 1.9.1
 
