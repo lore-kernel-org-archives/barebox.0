@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
  by casper.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1b6CTo-0002mJ-F4
- for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:50 +0000
+ id 1b6CTo-0002mL-Ez
+ for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:51 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id B1E95A00B2C
- for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:39 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 70153A00B37
+ for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:40 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:44:21 +0200
-Message-Id: <1464335095-35180-29-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:44:27 +0200
+Message-Id: <1464335095-35180-35-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,37 +24,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 28/62] UBI: Fastmap: Remove bogus ubi_assert()
+Subject: [PATCH v2 34/62] UBI: Fastmap: Prepare for variable sized fastmaps
 To: barebox@lists.infradead.org
 
 From: Richard Weinberger <richard@nod.at>
 
-It is legal to have PEBs left in the used list.
-This can happen if UBI copies a PEB and a powercut happens
-between writing a new fastmap and adding this PEB into the EBA table.
-In this case the old PEB will be used.
+The current code assumes that each fastmap has the same amount of PEBs.
+So far this is true but will change soon.
 
 Signed-off-by: Richard Weinberger <richard@nod.at>
+
+Conflicts:
+	drivers/mtd/ubi/fastmap.c
+
+Fixed minor conflict.
+
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/fastmap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mtd/ubi/fastmap.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
-index 2acd3dd..4331d3c 100644
+index ae6c044..de395d5 100644
 --- a/drivers/mtd/ubi/fastmap.c
 +++ b/drivers/mtd/ubi/fastmap.c
-@@ -816,7 +816,9 @@ static int ubi_attach_fastmap(struct ubi_device *ubi,
- 	list_for_each_entry_safe(tmp_aeb, _tmp_aeb, &lfree, u.list)
- 		list_move_tail(&tmp_aeb->u.list, &ai->free);
+@@ -1384,7 +1384,7 @@ int ubi_update_fastmap(struct ubi_device *ubi)
  
--	ubi_assert(list_empty(&used));
-+	list_for_each_entry_safe(tmp_aeb, _tmp_aeb, &used, u.list)
-+		list_move_tail(&tmp_aeb->u.list, &ai->erase);
+ 			ret = -ENOSPC;
+ 			goto err;
+-		} else if (!tmp_e && old_fm) {
++		} else if (!tmp_e && old_fm && old_fm->e[i]) {
+ 			ret = erase_block(ubi, old_fm->e[i]->pnum);
+ 			if (ret < 0) {
+ 				int j;
+@@ -1400,12 +1400,19 @@ int ubi_update_fastmap(struct ubi_device *ubi)
+ 		} else {
+ 			new_fm->e[i] = tmp_e;
+ 
+-			if (old_fm)
++			if (old_fm && old_fm->e[i])
+ 				ubi_wl_put_fm_peb(ubi, old_fm->e[i], i,
+ 						  old_fm->to_be_tortured[i]);
+ 		}
+ 	}
+ 
++	if (old_fm && new_fm->used_blocks < old_fm->used_blocks) {
++		for (i = new_fm->used_blocks; i < old_fm->used_blocks; i++) {
++			ubi_wl_put_fm_peb(ubi, old_fm->e[i], i,
++					  old_fm->to_be_tortured[i]);
++		}
++	}
 +
- 	ubi_assert(list_empty(&eba_orphans));
- 	ubi_assert(list_empty(&lfree));
+ 	tmp_e = ubi_wl_get_fm_peb(ubi, 1);
  
+ 	if (old_fm) {
 -- 
 1.9.1
 
