@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b6CTS-0004yV-CL
+ id 1b6CTS-0004yI-1u
  for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:29 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 0D24CA00B34
- for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:40 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id B8639A00B2F
+ for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:39 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:44:24 +0200
-Message-Id: <1464335095-35180-32-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:44:20 +0200
+Message-Id: <1464335095-35180-28-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,48 +24,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 31/62] UBI: Fastmap: Make WL pool size 50% of user pool size
+Subject: [PATCH v2 27/62] UBI: Fastmap: Fix race in ubi_eba_atomic_leb_change()
 To: barebox@lists.infradead.org
 
 From: Richard Weinberger <richard@nod.at>
 
-Don't use a fixed size for the WL pool.
-Make it instead 50% of the user pool.
-We don't make it 100% as it is not as heavily used as the user pool.
+This function a) requests a new PEB, b) writes data to it,
+c) returns the old PEB and d) registers the new PEB in the EBA table.
+
+For the non-fastmap case this works perfectly fine and is powercut safe.
+Is fastmap enabled this can lead to issues.
+If a new fastmap is written between a) and c) the freshly requested PEB
+is no longer in a pool and will not be scanned upon attaching.
+If now a powercut happens between c) and d) the freshly requested PEB
+will not be scanned and the old one got already scheduled for erase.
+After attaching the EBA table will point to a erased PEB.
+
+Fix this issue by swapping steps c) and d).
 
 Signed-off-by: Richard Weinberger <richard@nod.at>
+
+Conflicts:
+	drivers/mtd/ubi/eba.c
+
+Fixed minor conflict.
+
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/build.c     | 2 +-
- drivers/mtd/ubi/ubi-media.h | 2 --
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ drivers/mtd/ubi/eba.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
-index b505252..8b135c3 100644
---- a/drivers/mtd/ubi/build.c
-+++ b/drivers/mtd/ubi/build.c
-@@ -585,7 +585,7 @@ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
- 	if (ubi->fm_pool.max_size < UBI_FM_MIN_POOL_SIZE)
- 		ubi->fm_pool.max_size = UBI_FM_MIN_POOL_SIZE;
+diff --git a/drivers/mtd/ubi/eba.c b/drivers/mtd/ubi/eba.c
+index bb89d10..8747213 100644
+--- a/drivers/mtd/ubi/eba.c
++++ b/drivers/mtd/ubi/eba.c
+@@ -809,7 +809,7 @@ write_error:
+ int ubi_eba_atomic_leb_change(struct ubi_device *ubi, struct ubi_volume *vol,
+ 			      int lnum, const void *buf, int len)
+ {
+-	int err, pnum, tries = 0, vol_id = vol->vol_id;
++	int err, pnum, old_pnum, tries = 0, vol_id = vol->vol_id;
+ 	struct ubi_vid_hdr *vid_hdr;
+ 	uint32_t crc;
  
--	ubi->fm_wl_pool.max_size = UBI_FM_WL_POOL_SIZE;
-+	ubi->fm_wl_pool.max_size = ubi->fm_pool.max_size / 2;
- 	ubi->fm_disabled = !fm_autoconvert;
+@@ -871,14 +871,15 @@ retry:
+ 		goto write_error;
+ 	}
  
- 	if (!ubi->fm_disabled && (int)mtd_div_by_eb(ubi->mtd->size, ubi->mtd)
-diff --git a/drivers/mtd/ubi/ubi-media.h b/drivers/mtd/ubi/ubi-media.h
-index b83ade8..34d6747 100644
---- a/drivers/mtd/ubi/ubi-media.h
-+++ b/drivers/mtd/ubi/ubi-media.h
-@@ -399,8 +399,6 @@ struct ubi_vtbl_record {
- #define UBI_FM_MIN_POOL_SIZE	8
- #define UBI_FM_MAX_POOL_SIZE	256
+-	if (vol->eba_tbl[lnum] >= 0) {
+-		err = ubi_wl_put_peb(ubi, vol_id, lnum, vol->eba_tbl[lnum], 0);
++	old_pnum = vol->eba_tbl[lnum];
++	vol->eba_tbl[lnum] = pnum;
++
++	if (old_pnum >= 0) {
++		err = ubi_wl_put_peb(ubi, vol_id, lnum, old_pnum, 0);
+ 		if (err)
+ 			goto out_leb_unlock;
+ 	}
  
--#define UBI_FM_WL_POOL_SIZE	25
+-	vol->eba_tbl[lnum] = pnum;
 -
- /**
-  * struct ubi_fm_sb - UBI fastmap super block
-  * @magic: fastmap super block magic number (%UBI_FM_SB_MAGIC)
+ out_leb_unlock:
+ 	leb_write_unlock(ubi, vol_id, lnum);
+ out_mutex:
 -- 
 1.9.1
 
