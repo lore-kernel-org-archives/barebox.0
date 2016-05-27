@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b6CTO-0004ya-5H
+ id 1b6CTO-0004yH-5D
  for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:23 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 933E4A00AD0
+ by root.phytec.de (Postfix) with ESMTP id 7AE04A00ACD
  for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:38 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:44:05 +0200
-Message-Id: <1464335095-35180-13-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:44:03 +0200
+Message-Id: <1464335095-35180-11-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,53 +24,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 12/62] UBI: clean-up printing helpers
+Subject: [PATCH v2 10/62] UBI: Fix invalid vfree()
 To: barebox@lists.infradead.org
 
-From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+From: Richard Weinberger <richard@nod.at>
 
-Let's prefix UBI messages with 'ubiX' instead of 'UBI-X' - this is more
-consistent with the way we name UBI devices.
+The logic of vfree()'ing vol->upd_buf is tied to vol->updating.
+In ubi_start_update() vol->updating is set long before vmalloc()'ing
+vol->upd_buf. If we encounter a write failure in ubi_start_update()
+before vmalloc() the UBI device release function will try to vfree()
+vol->upd_buf because vol->updating is set.
+Fix this by allocating vol->upd_buf directly after setting vol->updating.
 
-Also, commit "32608703 UBI: Extend UBI layer debug/messaging capabilities"
-added the function name print to 'ubi_msg()' - lets revert this change, since
-these messages are supposed to be just informative messages, and not debugging
-messages.
+Fixes:
+[   31.559338] UBI warning: vol_cdev_release: update of volume 2 not finished, volume is damaged
+[   31.559340] ------------[ cut here ]------------
+[   31.559343] WARNING: CPU: 1 PID: 2747 at mm/vmalloc.c:1446 __vunmap+0xe3/0x110()
+[   31.559344] Trying to vfree() nonexistent vm area (ffffc90001f2b000)
+[   31.559345] Modules linked in:
+[   31.565620]  0000000000000bba ffff88002a0cbdb0 ffffffff818f0497 ffff88003b9ba148
+[   31.566347]  ffff88002a0cbde0 ffffffff8156f515 ffff88003b9ba148 0000000000000bba
+[   31.567073]  0000000000000000 0000000000000000 ffff88002a0cbe88 ffffffff8156c10a
+[   31.567793] Call Trace:
+[   31.568034]  [<ffffffff818f0497>] dump_stack+0x4e/0x7a
+[   31.568510]  [<ffffffff8156f515>] ubi_io_write_vid_hdr+0x155/0x160
+[   31.569084]  [<ffffffff8156c10a>] ubi_eba_write_leb+0x23a/0x870
+[   31.569628]  [<ffffffff81569b36>] vol_cdev_write+0x226/0x380
+[   31.570155]  [<ffffffff81179265>] vfs_write+0xb5/0x1f0
+[   31.570627]  [<ffffffff81179f8a>] SyS_pwrite64+0x6a/0xa0
+[   31.571123]  [<ffffffff818fde12>] system_call_fastpath+0x16/0x1b
 
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-
-Conflicts:
-	drivers/mtd/ubi/ubi.h
-
-Fixed minor conflict.
-
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/ubi.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mtd/ubi/upd.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
-index 6f93575..aa0b9df 100644
---- a/drivers/mtd/ubi/ubi.h
-+++ b/drivers/mtd/ubi/ubi.h
-@@ -38,13 +38,13 @@
+diff --git a/drivers/mtd/ubi/upd.c b/drivers/mtd/ubi/upd.c
+index c61c277..5e06753 100644
+--- a/drivers/mtd/ubi/upd.c
++++ b/drivers/mtd/ubi/upd.c
+@@ -124,6 +124,10 @@ int ubi_start_update(struct ubi_device *ubi, struct ubi_volume *vol,
+ 	ubi_assert(!vol->updating && !vol->changing_leb);
+ 	vol->updating = 1;
  
- #define ubi_debug(fmt, ...) pr_debug("UBI: " fmt "\n", ##__VA_ARGS__)
- /* Normal UBI messages */
--#define ubi_msg(ubi, fmt, ...) pr_info("UBI-%d: %s: " fmt "\n", \
--					ubi->ubi_num, __func__, ##__VA_ARGS__)
-+#define ubi_msg(ubi, fmt, ...) pr_notice(UBI_NAME_STR "%d: " fmt "\n", \
-+					 ubi->ubi_num, ##__VA_ARGS__)
- /* UBI warning messages */
--#define ubi_warn(ubi, fmt, ...) pr_warn("UBI-%d warning: %s: " fmt "\n", \
-+#define ubi_warn(ubi, fmt, ...) pr_warn(UBI_NAME_STR "%d warning: %s: " fmt "\n", \
- 					ubi->ubi_num, __func__, ##__VA_ARGS__)
- /* UBI error messages */
--#define ubi_err(ubi, fmt, ...) pr_err("UBI-%d error: %s: " fmt "\n", \
-+#define ubi_err(ubi, fmt, ...) pr_err(UBI_NAME_STR "%d error: %s: " fmt "\n", \
- 				      ubi->ubi_num, __func__, ##__VA_ARGS__)
++	vol->upd_buf = vmalloc(ubi->leb_size);
++	if (!vol->upd_buf)
++		return -ENOMEM;
++
+ 	err = set_update_marker(ubi, vol);
+ 	if (err)
+ 		return err;
+@@ -143,14 +147,12 @@ int ubi_start_update(struct ubi_device *ubi, struct ubi_volume *vol,
+ 		err = clear_update_marker(ubi, vol, 0);
+ 		if (err)
+ 			return err;
++
++		vfree(vol->upd_buf);
+ 		vol->updating = 0;
+ 		return 0;
+ 	}
  
- /* Background thread name pattern */
+-	vol->upd_buf = vmalloc(ubi->leb_size);
+-	if (!vol->upd_buf)
+-		return -ENOMEM;
+-
+ 	vol->upd_ebs = div_u64(bytes + vol->usable_leb_size - 1,
+ 			       vol->usable_leb_size);
+ 	vol->upd_bytes = bytes;
 -- 
 1.9.1
 
