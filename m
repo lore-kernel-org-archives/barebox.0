@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b6CTO-0004yb-5O
- for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:24 +0000
+ id 1b6CTS-0004yb-Pe
+ for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:30 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 9BCDEA00AD9
- for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:38 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 5D128A00B36
+ for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:40 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:44:07 +0200
-Message-Id: <1464335095-35180-15-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:44:26 +0200
+Message-Id: <1464335095-35180-34-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,46 +24,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 14/62] UBI: Fastmap: Care about the protection queue
+Subject: [PATCH v2 33/62] UBI: Fastmap: Set used_ebs only for static volumes
 To: barebox@lists.infradead.org
 
 From: Richard Weinberger <richard@nod.at>
 
-Fastmap can miss a PEB if it is in the protection queue
-and not jet in the used tree.
-Treat every protected PEB as used.
+If we set it for dynamic ones we might confuse various self checks.
 
 Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/fastmap.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/mtd/ubi/fastmap.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
-index 98f69a3..bd3a307 100644
+index a9efc9c..ae6c044 100644
 --- a/drivers/mtd/ubi/fastmap.c
 +++ b/drivers/mtd/ubi/fastmap.c
-@@ -1180,6 +1180,19 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
- 		fm_pos += sizeof(*fec);
- 		ubi_assert(fm_pos <= ubi->fm_size);
- 	}
-+
-+	for (i = 0; i < UBI_PROT_QUEUE_LEN; i++) {
-+		list_for_each_entry(wl_e, &ubi->pq[i], u.list) {
-+			fec = (struct ubi_fm_ec *)(fm_raw + fm_pos);
-+
-+			fec->pnum = cpu_to_be32(wl_e->pnum);
-+			fec->ec = cpu_to_be32(wl_e->ec);
-+
-+			used_peb_count++;
-+			fm_pos += sizeof(*fec);
-+			ubi_assert(fm_pos <= ubi->fm_size);
-+		}
-+	}
- 	fmh->used_peb_count = cpu_to_be32(used_peb_count);
+@@ -136,14 +136,15 @@ static struct ubi_ainf_volume *add_vol(struct ubi_attach_info *ai, int vol_id,
+ 	if (!av)
+ 		goto out;
  
- 	for (node = rb_first(&ubi->scrub); node; node = rb_next(node)) {
+-	av->highest_lnum = av->leb_count = 0;
++	av->highest_lnum = av->leb_count = av->used_ebs = 0;
+ 	av->vol_id = vol_id;
+-	av->used_ebs = used_ebs;
+ 	av->data_pad = data_pad;
+ 	av->last_data_size = last_eb_bytes;
+ 	av->compat = 0;
+ 	av->vol_type = vol_type;
+ 	av->root = RB_ROOT;
++	if (av->vol_type == UBI_STATIC_VOLUME)
++		av->used_ebs = used_ebs;
+ 
+ 	dbg_bld("found volume (ID %i)", vol_id);
+ 
 -- 
 1.9.1
 
