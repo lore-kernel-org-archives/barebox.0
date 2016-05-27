@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b6CTZ-0004y0-1P
- for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:36 +0000
+ id 1b6CTZ-0004yV-Cd
+ for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:37 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 8DC8FA00B51
+ by root.phytec.de (Postfix) with ESMTP id A4885A00B54
  for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:41 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:44:41 +0200
-Message-Id: <1464335095-35180-49-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:44:43 +0200
+Message-Id: <1464335095-35180-51-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,50 +24,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 48/62] UBI: Fastmap: Do not add vol if it already exists
+Subject: [PATCH v2 50/62] UBI: Remove unnecessary `\'
 To: barebox@lists.infradead.org
 
 From: shengyong <shengyong1@huawei.com>
-
-During fastmap attaching, check if a volume already exists when adding
-the volume to volume tree. NOTE that the issue cannot happen, only if
-the on-flash fastmap data is modified.
 
 Signed-off-by: Sheng Yong <shengyong1@huawei.com>
 Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/fastmap.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/mtd/ubi/fastmap.c | 2 +-
+ drivers/mtd/ubi/wl.c      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
-index 5483bb9..f33c2db 100644
+index f33c2db..1504911 100644
 --- a/drivers/mtd/ubi/fastmap.c
 +++ b/drivers/mtd/ubi/fastmap.c
-@@ -128,8 +128,10 @@ static struct ubi_ainf_volume *add_vol(struct ubi_attach_info *ai, int vol_id,
+@@ -251,7 +251,7 @@ static int update_vol(struct ubi_device *ubi, struct ubi_attach_info *ai,
+ 			list_add_tail(&victim->u.list, &ai->erase);
  
- 		if (vol_id > av->vol_id)
- 			p = &(*p)->rb_left;
--		else
-+		else if (vol_id < av->vol_id)
- 			p = &(*p)->rb_right;
-+		else
-+			return ERR_PTR(-EINVAL);
- 	}
+ 			if (av->highest_lnum == be32_to_cpu(new_vh->lnum))
+-				av->last_data_size = \
++				av->last_data_size =
+ 					be32_to_cpu(new_vh->data_size);
  
- 	av = kmalloc(sizeof(struct ubi_ainf_volume), GFP_KERNEL);
-@@ -687,6 +689,11 @@ static int ubi_attach_fastmap(struct ubi_device *ubi,
+ 			dbg_bld("vol %i: AEB %i's PEB %i is the newer",
+diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
+index 3c51feb..986a2dc 100644
+--- a/drivers/mtd/ubi/wl.c
++++ b/drivers/mtd/ubi/wl.c
+@@ -1418,7 +1418,7 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
+ 	dbg_wl("found %i PEBs", found_pebs);
  
- 		if (!av)
- 			goto fail_bad;
-+		if (PTR_ERR(av) == -EINVAL) {
-+			ubi_err(ubi, "volume (ID %i) already exists",
-+				fmvhdr->vol_id);
-+			goto fail_bad;
-+		}
+ 	if (ubi->fm) {
+-		ubi_assert(ubi->good_peb_count == \
++		ubi_assert(ubi->good_peb_count ==
+ 			   found_pebs + ubi->fm->used_blocks);
  
- 		ai->vols_found++;
- 		if (ai->highest_vol_id < be32_to_cpu(fmvhdr->vol_id))
+ 		for (i = 0; i < ubi->fm->used_blocks; i++) {
 -- 
 1.9.1
 
