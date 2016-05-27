@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b6CT2-0004if-OS
- for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:01 +0000
+ id 1b6CT2-0004ij-OT
+ for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:02 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 84297A00A48
+ by root.phytec.de (Postfix) with ESMTP id CCBF8A00A91
  for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:37 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:43:54 +0200
-Message-Id: <1464335095-35180-2-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:43:56 +0200
+Message-Id: <1464335095-35180-4-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,56 +24,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 01/62] UBI: add missing kmem_cache_free() in
- process_pool_aeb error path
+Subject: [PATCH v2 03/62] UBI: ubi_eba_read_leb: Remove in vain variable
+ assignment
 To: barebox@lists.infradead.org
 
-From: Richard Genoud <richard.genoud@gmail.com>
+From: Richard Weinberger <richard@nod.at>
 
-I ran into this error after a ubiupdatevol, because I forgot to backport
-e9110361a9a4 UBI: fix the volumes tree sorting criteria.
+There is no need to set err, it will be overwritten in any case
+later at:
+        if (scrub)
+                err = ubi_wl_scrub_peb(ubi, pnum);
 
-UBI error: process_pool_aeb: orphaned volume in fastmap pool
-UBI error: ubi_scan_fastmap: Attach by fastmap failed, doing a full scan!
-kmem_cache_destroy ubi_ainf_peb_slab: Slab cache still has objects
-CPU: 0 PID: 1 Comm: swapper Not tainted 3.14.18-00053-gf05cac8dbf85 #1
-[<c000d298>] (unwind_backtrace) from [<c000baa8>] (show_stack+0x10/0x14)
-[<c000baa8>] (show_stack) from [<c01b7a68>] (destroy_ai+0x230/0x244)
-[<c01b7a68>] (destroy_ai) from [<c01b8fd4>] (ubi_attach+0x98/0x1ec)
-[<c01b8fd4>] (ubi_attach) from [<c01ade90>] (ubi_attach_mtd_dev+0x2b8/0x868)
-[<c01ade90>] (ubi_attach_mtd_dev) from [<c038b510>] (ubi_init+0x1dc/0x2ac)
-[<c038b510>] (ubi_init) from [<c0008860>] (do_one_initcall+0x94/0x140)
-[<c0008860>] (do_one_initcall) from [<c037aadc>] (kernel_init_freeable+0xe8/0x1b0)
-[<c037aadc>] (kernel_init_freeable) from [<c02730ac>] (kernel_init+0x8/0xe4)
-[<c02730ac>] (kernel_init) from [<c00093f0>] (ret_from_fork+0x14/0x24)
-UBI: scanning is finished
-
-Freeing the cache in the error path fixes the Slab error.
-
-Tested on at91sam9g35 (3.14.18+fastmap backports)
-
-Signed-off-by: Richard Genoud <richard.genoud@gmail.com>
-Cc: stable <stable@vger.kernel.org> # 3.10+
-
-Use kfree instead of kmem_cache_free() for barebox.
-
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/fastmap.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/ubi/eba.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
-index 8f29430..a3e9069 100644
---- a/drivers/mtd/ubi/fastmap.c
-+++ b/drivers/mtd/ubi/fastmap.c
-@@ -329,6 +329,7 @@ static int process_pool_aeb(struct ubi_device *ubi, struct ubi_attach_info *ai,
- 		av = tmp_av;
- 	else {
- 		ubi_err("orphaned volume in fastmap pool!");
-+		kfree(new_aeb);
- 		return UBI_BAD_FASTMAP;
- 	}
+diff --git a/drivers/mtd/ubi/eba.c b/drivers/mtd/ubi/eba.c
+index 7eb76ce..bf96b14 100644
+--- a/drivers/mtd/ubi/eba.c
++++ b/drivers/mtd/ubi/eba.c
+@@ -416,10 +416,9 @@ retry:
  
+ 	err = ubi_io_read_data(ubi, buf, pnum, offset, len);
+ 	if (err) {
+-		if (err == UBI_IO_BITFLIPS) {
++		if (err == UBI_IO_BITFLIPS)
+ 			scrub = 1;
+-			err = 0;
+-		} else if (mtd_is_eccerr(err)) {
++		else if (mtd_is_eccerr(err)) {
+ 			if (vol->vol_type == UBI_DYNAMIC_VOLUME)
+ 				goto out_unlock;
+ 			scrub = 1;
 -- 
 1.9.1
 
