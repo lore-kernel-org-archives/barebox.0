@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b6CTV-0004yU-Ee
+ id 1b6CTV-0004yI-Qv
  for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:32 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id AD503A00B43
+ by root.phytec.de (Postfix) with ESMTP id C79C7A00B45
  for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:40 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:44:33 +0200
-Message-Id: <1464335095-35180-41-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:44:34 +0200
+Message-Id: <1464335095-35180-42-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,57 +24,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 40/62] UBI: Fastmap: Introduce ubi_fastmap_init()
+Subject: [PATCH v2 41/62] UBI: Fastmap: Introduce may_reserve_for_fm()
 To: barebox@lists.infradead.org
 
 From: Richard Weinberger <richard@nod.at>
 
-...and kill another #ifdef in wl.c. :-)
+...and kill another #ifdef.
 
 Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/wl.c | 5 +----
- drivers/mtd/ubi/wl.h | 6 ++++++
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/mtd/ubi/fastmap-wl.c | 19 +++++++++++++++++++
+ drivers/mtd/ubi/wl.c         |  7 +------
+ drivers/mtd/ubi/wl.h         |  8 ++++++++
+ 3 files changed, 28 insertions(+), 6 deletions(-)
 
+diff --git a/drivers/mtd/ubi/fastmap-wl.c b/drivers/mtd/ubi/fastmap-wl.c
+index 64c2a05..920fd54 100644
+--- a/drivers/mtd/ubi/fastmap-wl.c
++++ b/drivers/mtd/ubi/fastmap-wl.c
+@@ -312,3 +312,22 @@ static void ubi_fastmap_close(struct ubi_device *ubi)
+ 	}
+ 	kfree(ubi->fm);
+ }
++
++/**
++ * may_reserve_for_fm - tests whether a PEB shall be reserved for fastmap.
++ * See find_mean_wl_entry()
++ *
++ * @ubi: UBI device description object
++ * @e: physical eraseblock to return
++ * @root: RB tree to test against.
++ */
++static struct ubi_wl_entry *may_reserve_for_fm(struct ubi_device *ubi,
++					   struct ubi_wl_entry *e,
++					   struct rb_root *root) {
++	if (e && !ubi->fm_disabled && !ubi->fm &&
++	    e->pnum < UBI_FM_MAX_START)
++		e = rb_entry(rb_next(root->rb_node),
++			     struct ubi_wl_entry, u.rb);
++
++	return e;
++}
 diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-index aeb7f68..f9a1680 100644
+index f9a1680..ae9def6 100644
 --- a/drivers/mtd/ubi/wl.c
 +++ b/drivers/mtd/ubi/wl.c
-@@ -1440,10 +1440,7 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
- 		ubi_assert(ubi->good_peb_count == found_pebs);
+@@ -346,15 +346,10 @@ static struct ubi_wl_entry *find_mean_wl_entry(struct ubi_device *ubi,
+ 	if (last->ec - first->ec < WL_FREE_MAX_DIFF) {
+ 		e = rb_entry(root->rb_node, struct ubi_wl_entry, u.rb);
  
- 	reserved_pebs = WL_RESERVED_PEBS;
 -#ifdef CONFIG_MTD_UBI_FASTMAP
--	/* Reserve enough LEBs to store two fastmaps. */
--	reserved_pebs += (ubi->fm_size / ubi->leb_size) * 2;
+ 		/* If no fastmap has been written and this WL entry can be used
+ 		 * as anchor PEB, hold it back and return the second best
+ 		 * WL entry such that fastmap can use the anchor PEB later. */
+-		if (e && !ubi->fm_disabled && !ubi->fm &&
+-		    e->pnum < UBI_FM_MAX_START)
+-			e = rb_entry(rb_next(root->rb_node),
+-				     struct ubi_wl_entry, u.rb);
 -#endif
-+	ubi_fastmap_init(ubi, &reserved_pebs);
++		e = may_reserve_for_fm(ubi, e, root);
+ 	} else
+ 		e = find_wl_entry(ubi, root, WL_FREE_MAX_DIFF/2);
  
- 	if (ubi->avail_pebs < reserved_pebs) {
- 		ubi_err(ubi, "no enough physical eraseblocks (%d, need %d)",
 diff --git a/drivers/mtd/ubi/wl.h b/drivers/mtd/ubi/wl.h
-index 797d25b..0a832b0 100644
+index 0a832b0..0df78be 100644
 --- a/drivers/mtd/ubi/wl.h
 +++ b/drivers/mtd/ubi/wl.h
-@@ -6,6 +6,11 @@ static int anchor_pebs_avalible(struct rb_root *root);
- static struct ubi_wl_entry *find_anchor_wl_entry(struct rb_root *root);
- static struct ubi_wl_entry *get_peb_for_wl(struct ubi_device *ubi);
- static void ubi_fastmap_close(struct ubi_device *ubi);
-+static inline void ubi_fastmap_init(struct ubi_device *ubi, int *count)
-+{
-+	/* Reserve enough LEBs to store two fastmaps. */
-+	*count += (ubi->fm_size / ubi->leb_size) * 2;
-+}
+@@ -11,6 +11,9 @@ static inline void ubi_fastmap_init(struct ubi_device *ubi, int *count)
+ 	/* Reserve enough LEBs to store two fastmaps. */
+ 	*count += (ubi->fm_size / ubi->leb_size) * 2;
+ }
++static struct ubi_wl_entry *may_reserve_for_fm(struct ubi_device *ubi,
++					       struct ubi_wl_entry *e,
++					       struct rb_root *root);
  #else /* !CONFIG_MTD_UBI_FASTMAP */
  static struct ubi_wl_entry *get_peb_for_wl(struct ubi_device *ubi);
  static inline int is_fm_block(struct ubi_device *ubi, int pnum)
-@@ -13,5 +18,6 @@ static inline int is_fm_block(struct ubi_device *ubi, int pnum)
- 	return 0;
+@@ -19,5 +22,10 @@ static inline int is_fm_block(struct ubi_device *ubi, int pnum)
  }
  static inline void ubi_fastmap_close(struct ubi_device *ubi) { }
-+static inline void ubi_fastmap_init(struct ubi_device *ubi, int *count) { }
+ static inline void ubi_fastmap_init(struct ubi_device *ubi, int *count) { }
++static struct ubi_wl_entry *may_reserve_for_fm(struct ubi_device *ubi,
++					       struct ubi_wl_entry *e,
++					       struct rb_root *root) {
++	return e;
++}
  #endif /* CONFIG_MTD_UBI_FASTMAP */
  #endif /* UBI_WL_H */
 -- 
