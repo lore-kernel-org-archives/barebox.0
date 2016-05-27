@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
- by casper.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1b6CTo-0002mI-F1
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1b6CTr-0001E4-Vw
  for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:52 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id A9B0EA00B2A
- for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:39 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 55764A00B35
+ for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:40 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:44:19 +0200
-Message-Id: <1464335095-35180-27-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:44:25 +0200
+Message-Id: <1464335095-35180-33-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,59 +24,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 26/62] UBI: Fastmap: Fix fastmap usage in
- ubi_volume_notify()
+Subject: [PATCH v2 32/62] UBI: Fastmap: Fix leb_count unbalance
 To: barebox@lists.infradead.org
 
 From: Richard Weinberger <richard@nod.at>
 
-There is no need to switch to ro mode if ubi_update_fastmap() fails.
-Also get rid of the ifdef.
+If a LEB is unmapped we have to decrement leb_count as well.
 
 Signed-off-by: Richard Weinberger <richard@nod.at>
-Reviewed-by: Tanya Brokhman <tlinder@codeaurora.org>
 
 Conflicts:
-	drivers/mtd/ubi/build.c
+	drivers/mtd/ubi/fastmap.c
 
 Fixed minor conflict.
 
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/build.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/mtd/ubi/fastmap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
-index 2295c67..b505252 100644
---- a/drivers/mtd/ubi/build.c
-+++ b/drivers/mtd/ubi/build.c
-@@ -71,19 +71,21 @@ struct ubi_device *ubi_devices[UBI_MAX_DEVICES];
-  */
- int ubi_volume_notify(struct ubi_device *ubi, struct ubi_volume *vol, int ntype)
- {
-+	int ret = 0;
-+
- #ifdef CONFIG_MTD_UBI_FASTMAP
-+
- 	switch (ntype) {
- 	case UBI_VOLUME_ADDED:
- 	case UBI_VOLUME_REMOVED:
- 	case UBI_VOLUME_RESIZED:
- 	case UBI_VOLUME_RENAMED:
--		if (ubi_update_fastmap(ubi)) {
--			ubi_err(ubi, "Unable to update fastmap!");
--			ubi_ro_mode(ubi);
--		}
-+		ret = ubi_update_fastmap(ubi);
-+		if (ret)
-+			ubi_msg(ubi, "Unable to write a new fastmap: %i", ret);
- 	}
- #endif
--	return 0;
-+	return ret;
- }
- 
- /**
+diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
+index d94e1d9..a9efc9c 100644
+--- a/drivers/mtd/ubi/fastmap.c
++++ b/drivers/mtd/ubi/fastmap.c
+@@ -361,6 +361,7 @@ static void unmap_peb(struct ubi_attach_info *ai, int pnum)
+ 			aeb = rb_entry(node2, struct ubi_ainf_peb, u.rb);
+ 			if (aeb->pnum == pnum) {
+ 				rb_erase(&aeb->u.rb, &av->root);
++				av->leb_count--;
+ 				kfree(aeb);
+ 				return;
+ 			}
 -- 
 1.9.1
 
