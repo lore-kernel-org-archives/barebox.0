@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b6CTd-0004yV-RU
- for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:39 +0000
+ id 1b6CTe-0004xy-2U
+ for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:40 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 2E3F3A00B5E
+ by root.phytec.de (Postfix) with ESMTP id 35BB1A00B5F
  for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:43 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:44:52 +0200
-Message-Id: <1464335095-35180-60-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:44:53 +0200
+Message-Id: <1464335095-35180-61-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +20,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 59/62] mtd: ubi: don't leak e if schedule_erase() fails
+Subject: [PATCH v2 60/62] mtd: ubi: wl: avoid erasing a PEB which is empty
 To: barebox@lists.infradead.org
 
-From: Sebastian Siewior <bigeasy@linutronix.de>
-
-If __erase_worker() fails to erase the EB and schedule_erase() fails as
-well to do anything about it then we go RO. But that is not a reason to
-leak the e argument here. Therefore clean up e.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
----
- drivers/mtd/ubi/wl.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-index 1feef3f..e81f796 100644
---- a/drivers/mtd/ubi/wl.c
-+++ b/drivers/mtd/ubi/wl.c
-@@ -1015,6 +1015,7 @@ static int __erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk)
- 		/* Re-schedule the LEB for erasure */
- 		err1 = schedule_erase(ubi, e, vol_id, lnum, 0);
- 		if (err1) {
-+			wl_entry_destroy(ubi, e);
- 			err = err1;
- 			goto out_ro;
- 		}
--- 
-1.9.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogU2ViYXN0aWFuIFNpZXdpb3IgPGJpZ2Vhc3lAbGludXRyb25peC5kZT4KCndlYXJfbGV2
+ZWxpbmdfd29ya2VyKCkgY3VycmVudGx5IHVuY29uZGl0aW9uYWxseSBwdXRzIGEgUEVCIG9uIGVy
+YXNlIGluCnRoZSBlcnJvciBjYXNlIGV2ZW4gaXQganVzdCBiZWVuIHRha2VuIGZyb20gdGhlIGZy
+ZWVfbGlzdCBhbmQgbmV2ZXIKdXNlZC4KSW4gY2FzZSB0aGUgUEVCIHdhcyBuZXZlciB1c2VkIGl0
+IGNhbiBiZSBwdXQgYmFjayBvbiB0aGUgZnJlZSBsaXN0CnNhdmluZyBhIHByZWNpb3VzIGVyYXNl
+IGN5Y2xlLgoKdjHigKZ2MjoKCS0gdG9fbGViX2NsZWFuIC0+IGRzdF9sZWJfY2xlYW4KCS0gdXNl
+IHRoZSBuZXN0ZWQgb3B0aW9uIGZvciBlbnN1cmVfd2Vhcl9sZXZlbGluZygpCgktIGRvX3N5bmNf
+ZXJhc2UoKSBjYW4ndCBnbyAtRU5PTUVNIHNvIHdlIGNhbiBqdXN0IGdvIGludG8KCSAgUk8tbW9k
+ZSBub3cuCgpTaWduZWQtb2ZmLWJ5OiBTZWJhc3RpYW4gQW5kcnplaiBTaWV3aW9yIDxiaWdlYXN5
+QGxpbnV0cm9uaXguZGU+ClNpZ25lZC1vZmYtYnk6IFJpY2hhcmQgV2VpbmJlcmdlciA8cmljaGFy
+ZEBub2QuYXQ+ClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBSZW1tZXQgPHQucmVtbWV0QHBoeXRlYy5k
+ZT4KLS0tCiBkcml2ZXJzL210ZC91Ymkvd2wuYyB8IDIxICsrKysrKysrKysrKysrKysrKy0tLQog
+MSBmaWxlIGNoYW5nZWQsIDE4IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9tdGQvdWJpL3dsLmMgYi9kcml2ZXJzL210ZC91Ymkvd2wuYwppbmRleCBl
+ODFmNzk2Li40NTM1ZjJkIDEwMDY0NAotLS0gYS9kcml2ZXJzL210ZC91Ymkvd2wuYworKysgYi9k
+cml2ZXJzL210ZC91Ymkvd2wuYwpAQCAtNjAzLDYgKzYwMyw3IEBAIHN0YXRpYyBpbnQgZG9fc3lu
+Y19lcmFzZShzdHJ1Y3QgdWJpX2RldmljZSAqdWJpLCBzdHJ1Y3QgdWJpX3dsX2VudHJ5ICplLAog
+CXJldHVybiBfX2VyYXNlX3dvcmtlcih1YmksICZ3bF93cmspOwogfQogCitzdGF0aWMgaW50IGVu
+c3VyZV93ZWFyX2xldmVsaW5nKHN0cnVjdCB1YmlfZGV2aWNlICp1YmksIGludCBuZXN0ZWQpOwog
+LyoqCiAgKiB3ZWFyX2xldmVsaW5nX3dvcmtlciAtIHdlYXItbGV2ZWxpbmcgd29ya2VyIGZ1bmN0
+aW9uLgogICogQHViaTogVUJJIGRldmljZSBkZXNjcmlwdGlvbiBvYmplY3QKQEAgLTYyNCw2ICs2
+MjUsNyBAQCBzdGF0aWMgaW50IHdlYXJfbGV2ZWxpbmdfd29ya2VyKHN0cnVjdCB1YmlfZGV2aWNl
+ICp1YmksIHN0cnVjdCB1Ymlfd29yayAqd3JrLAogI2VuZGlmCiAJc3RydWN0IHViaV93bF9lbnRy
+eSAqZTEsICplMjsKIAlzdHJ1Y3QgdWJpX3ZpZF9oZHIgKnZpZF9oZHI7CisJaW50IGRzdF9sZWJf
+Y2xlYW4gPSAwOwogCiAJa2ZyZWUod3JrKTsKIAlpZiAoc2h1dGRvd24pCkBAIC03MjUsNiArNzI3
+LDcgQEAgc3RhdGljIGludCB3ZWFyX2xldmVsaW5nX3dvcmtlcihzdHJ1Y3QgdWJpX2RldmljZSAq
+dWJpLCBzdHJ1Y3QgdWJpX3dvcmsgKndyaywKIAogCWVyciA9IHViaV9pb19yZWFkX3ZpZF9oZHIo
+dWJpLCBlMS0+cG51bSwgdmlkX2hkciwgMCk7CiAJaWYgKGVyciAmJiBlcnIgIT0gVUJJX0lPX0JJ
+VEZMSVBTKSB7CisJCWRzdF9sZWJfY2xlYW4gPSAxOwogCQlpZiAoZXJyID09IFVCSV9JT19GRikg
+ewogCQkJLyoKIAkJCSAqIFdlIGFyZSB0cnlpbmcgdG8gbW92ZSBQRUIgd2l0aG91dCBhIFZJRCBo
+ZWFkZXIuIFVCSQpAQCAtNzcwLDEwICs3NzMsMTIgQEAgc3RhdGljIGludCB3ZWFyX2xldmVsaW5n
+X3dvcmtlcihzdHJ1Y3QgdWJpX2RldmljZSAqdWJpLCBzdHJ1Y3QgdWJpX3dvcmsgKndyaywKIAkJ
+CSAqIHByb3RlY3Rpb24gcXVldWUuCiAJCQkgKi8KIAkJCXByb3RlY3QgPSAxOworCQkJZHN0X2xl
+Yl9jbGVhbiA9IDE7CiAJCQlnb3RvIG91dF9ub3RfbW92ZWQ7CiAJCX0KIAkJaWYgKGVyciA9PSBN
+T1ZFX1JFVFJZKSB7CiAJCQlzY3J1YmJpbmcgPSAxOworCQkJZHN0X2xlYl9jbGVhbiA9IDE7CiAJ
+CQlnb3RvIG91dF9ub3RfbW92ZWQ7CiAJCX0KIAkJaWYgKGVyciA9PSBNT1ZFX1RBUkdFVF9CSVRG
+TElQUyB8fCBlcnIgPT0gTU9WRV9UQVJHRVRfV1JfRVJSIHx8CkBAIC03OTksNiArODA0LDcgQEAg
+c3RhdGljIGludCB3ZWFyX2xldmVsaW5nX3dvcmtlcihzdHJ1Y3QgdWJpX2RldmljZSAqdWJpLCBz
+dHJ1Y3QgdWJpX3dvcmsgKndyaywKIAkJCQkJdWJpLT5lcnJvbmVvdXNfcGViX2NvdW50KTsKIAkJ
+CQlnb3RvIG91dF9lcnJvcjsKIAkJCX0KKwkJCWRzdF9sZWJfY2xlYW4gPSAxOwogCQkJZXJyb25l
+b3VzID0gMTsKIAkJCWdvdG8gb3V0X25vdF9tb3ZlZDsKIAkJfQpAQCAtODY1LDE0ICs4NzEsMjMg
+QEAgb3V0X25vdF9tb3ZlZDoKIAkJd2xfdHJlZV9hZGQoZTEsICZ1YmktPnNjcnViKTsKIAllbHNl
+CiAJCXdsX3RyZWVfYWRkKGUxLCAmdWJpLT51c2VkKTsKKwlpZiAoZHN0X2xlYl9jbGVhbikgewor
+CQl3bF90cmVlX2FkZChlMiwgJnViaS0+ZnJlZSk7CisJCXViaS0+ZnJlZV9jb3VudCsrOworCX0K
+KwogCXViaV9hc3NlcnQoIXViaS0+bW92ZV90b19wdXQpOwogCXViaS0+bW92ZV9mcm9tID0gdWJp
+LT5tb3ZlX3RvID0gTlVMTDsKIAl1YmktPndsX3NjaGVkdWxlZCA9IDA7CiAKIAl1YmlfZnJlZV92
+aWRfaGRyKHViaSwgdmlkX2hkcik7Ci0JZXJyID0gZG9fc3luY19lcmFzZSh1YmksIGUyLCB2b2xf
+aWQsIGxudW0sIHRvcnR1cmUpOwotCWlmIChlcnIpCi0JCWdvdG8gb3V0X3JvOworCWlmIChkc3Rf
+bGViX2NsZWFuKSB7CisJCWVuc3VyZV93ZWFyX2xldmVsaW5nKHViaSwgMSk7CisJfSBlbHNlIHsK
+KwkJZXJyID0gZG9fc3luY19lcmFzZSh1YmksIGUyLCB2b2xfaWQsIGxudW0sIHRvcnR1cmUpOwor
+CQlpZiAoZXJyKQorCQkJZ290byBvdXRfcm87CisJfQogCiAJcmV0dXJuIDA7CiAKLS0gCjEuOS4x
+CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJv
+eCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5p
+bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
