@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b6CTj-0005Mk-Vr
+ id 1b6CTj-0005Mj-Vs
  for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:45 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 24560A00AEC
- for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:39 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id B11A1A00ADB
+ for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:38 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:44:11 +0200
-Message-Id: <1464335095-35180-19-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:44:08 +0200
+Message-Id: <1464335095-35180-16-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,42 +24,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 18/62] UBI: initialize LEB number variable
+Subject: [PATCH v2 15/62] UBI: fix missing brace control flow
 To: barebox@lists.infradead.org
 
 From: Brian Norris <computersforpeace@gmail.com>
 
-In some of the 'out_not_moved' error paths, lnum may be used
-uninitialized. Don't ignore the warning; let's fix it.
+commit 0e707ae79ba3 ("UBI: do propagate positive error codes up") seems
+to have produced an unintended change in the control flow here.
 
-This uninitialized variable doesn't have much visible effect in the end,
-since we just schedule the PEB for erasure, and its LEB number doesn't
-really matter (it just gets printed in debug messages). But let's get it
-straight anyway.
+Completely untested, but it looks obvious.
 
-Coverity CID #113449
+Caught by Coverity, which didn't like the indentation. CID 1271184.
 
-Cc: stable <stable@vger.kernel.org>
 Signed-off-by: Brian Norris <computersforpeace@gmail.com>
+Cc: Dan Carpenter <dan.carpenter@oracle.com>
 Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/wl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/ubi/eba.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-index aaa882e..adbb29b 100644
---- a/drivers/mtd/ubi/wl.c
-+++ b/drivers/mtd/ubi/wl.c
-@@ -951,7 +951,7 @@ static int wear_leveling_worker(struct ubi_device *ubi, struct ubi_work *wrk,
- 				int shutdown)
- {
- 	int err, scrubbing = 0, torture = 0, protect = 0, erroneous = 0;
--	int vol_id = -1, uninitialized_var(lnum);
-+	int vol_id = -1, lnum = -1;
- #ifdef CONFIG_MTD_UBI_FASTMAP
- 	int anchor = wrk->anchor;
- #endif
+diff --git a/drivers/mtd/ubi/eba.c b/drivers/mtd/ubi/eba.c
+index b8f5091..1dbf126 100644
+--- a/drivers/mtd/ubi/eba.c
++++ b/drivers/mtd/ubi/eba.c
+@@ -400,9 +400,10 @@ retry:
+ 					ubi_warn(ubi, "corrupted VID header at PEB %d, LEB %d:%d",
+ 						 pnum, vol_id, lnum);
+ 					err = -EBADMSG;
+-				} else
++				} else {
+ 					err = -EINVAL;
+ 					ubi_ro_mode(ubi);
++				}
+ 			}
+ 			goto out_free;
+ 		} else if (err == UBI_IO_BITFLIPS)
 -- 
 1.9.1
 
