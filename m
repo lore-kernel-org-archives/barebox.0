@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b6CTa-0004yb-Kp
- for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:38 +0000
+ id 1b6CTc-0004yU-4A
+ for barebox@lists.infradead.org; Fri, 27 May 2016 07:46:39 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id F1557A00B56
- for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:41 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 82699A00B58
+ for <barebox@lists.infradead.org>; Fri, 27 May 2016 09:46:42 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 27 May 2016 09:44:45 +0200
-Message-Id: <1464335095-35180-53-git-send-email-t.remmet@phytec.de>
+Date: Fri, 27 May 2016 09:44:47 +0200
+Message-Id: <1464335095-35180-55-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 References: <1464335095-35180-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,56 +24,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 52/62] UBI: return ENOSPC if no enough space available
+Subject: [PATCH v2 54/62] UBI: Fix typo in comment
 To: barebox@lists.infradead.org
 
-From: shengyong <shengyong1@huawei.com>
+From: Richard Weinberger <richard@nod.at>
 
-UBI: attaching mtd1 to ubi0
-UBI: scanning is finished
-UBI error: init_volumes: not enough PEBs, required 706, available 686
-UBI error: ubi_wl_init: no enough physical eraseblocks (-20, need 1)
-UBI error: ubi_attach_mtd_dev: failed to attach mtd1, error -12 <= NOT ENOMEM
-UBI error: ubi_init: cannot attach mtd1
+While we are here fix a s/beween/between typo.
 
-If available PEBs are not enough when initializing volumes, return -ENOSPC
-directly. If available PEBs are not enough when initializing WL, return
--ENOSPC instead of -ENOMEM.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Sheng Yong <shengyong1@huawei.com>
 Signed-off-by: Richard Weinberger <richard@nod.at>
-Reviewed-by: David Gstir <david@sigma-star.at>
+Acked-by: Brian Norris <computersforpeace@gmail.com>
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/vtbl.c | 1 +
- drivers/mtd/ubi/wl.c   | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/mtd/ubi/ubi-media.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/ubi/vtbl.c b/drivers/mtd/ubi/vtbl.c
-index 6bae84c..b5eb454 100644
---- a/drivers/mtd/ubi/vtbl.c
-+++ b/drivers/mtd/ubi/vtbl.c
-@@ -638,6 +638,7 @@ static int init_volumes(struct ubi_device *ubi,
- 		if (ubi->corr_peb_count)
- 			ubi_err(ubi, "%d PEBs are corrupted and not used",
- 				ubi->corr_peb_count);
-+		return -ENOSPC;
- 	}
- 	ubi->rsvd_pebs += reserved_pebs;
- 	ubi->avail_pebs -= reserved_pebs;
-diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-index 986a2dc..2d6c6ae 100644
---- a/drivers/mtd/ubi/wl.c
-+++ b/drivers/mtd/ubi/wl.c
-@@ -1438,6 +1438,7 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
- 		if (ubi->corr_peb_count)
- 			ubi_err(ubi, "%d PEBs are corrupted and not used",
- 				ubi->corr_peb_count);
-+		err = -ENOSPC;
- 		goto out_free;
- 	}
- 	ubi->avail_pebs -= reserved_pebs;
+diff --git a/drivers/mtd/ubi/ubi-media.h b/drivers/mtd/ubi/ubi-media.h
+index 34d6747..27c49be 100644
+--- a/drivers/mtd/ubi/ubi-media.h
++++ b/drivers/mtd/ubi/ubi-media.h
+@@ -496,7 +496,7 @@ struct ubi_fm_volhdr {
+ /* struct ubi_fm_volhdr is followed by one struct ubi_fm_eba records */
+ 
+ /**
+- * struct ubi_fm_eba - denotes an association beween a PEB and LEB
++ * struct ubi_fm_eba - denotes an association between a PEB and LEB
+  * @magic: EBA table magic number
+  * @reserved_pebs: number of table entries
+  * @pnum: PEB number of LEB (LEB is the index)
 -- 
 1.9.1
 
