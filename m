@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pa0-x241.google.com ([2607:f8b0:400e:c03::241])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b7fUu-0005C8-Qv
- for barebox@lists.infradead.org; Tue, 31 May 2016 08:58:01 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
- helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <l.stach@pengutronix.de>) id 1b7fUY-0008HQ-1A
- for barebox@lists.infradead.org; Tue, 31 May 2016 10:57:38 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 31 May 2016 10:57:37 +0200
-Message-Id: <1464685057-4267-1-git-send-email-l.stach@pengutronix.de>
+ id 1b7nBK-0003h8-Ej
+ for barebox@lists.infradead.org; Tue, 31 May 2016 17:10:19 +0000
+Received: by mail-pa0-x241.google.com with SMTP id x1so9074539pav.1
+ for <barebox@lists.infradead.org>; Tue, 31 May 2016 10:09:58 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 31 May 2016 10:09:25 -0700
+Message-Id: <1464714580-31488-7-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1464714580-31488-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1464714580-31488-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,47 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: mba53: include barebox TQMa53 overlay DT
+Subject: [PATCH 06/21] e1000: Do not read same register twice
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-The barebox specific properties have not been applied as
-the TQMa53 overlay DT has not been included. Fix this.
+EEPROM_INIT_CONTROL2_REG is already read once before entering this
+switch statement, so there's not much use in reading its value for the
+second time.
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/imx53-mba53.dts   | 2 ++
- arch/arm/dts/imx53-tqma53.dtsi | 3 ---
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/e1000/main.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/arch/arm/dts/imx53-mba53.dts b/arch/arm/dts/imx53-mba53.dts
-index 28f463c451f4..6998e4c0cb2d 100644
---- a/arch/arm/dts/imx53-mba53.dts
-+++ b/arch/arm/dts/imx53-mba53.dts
-@@ -11,6 +11,8 @@
-  */
- 
- #include <arm/imx53-mba53.dts>
-+#include "imx53-tqma53.dtsi"
-+#include "imx53.dtsi"
- 
- / {
- 	chosen {
-diff --git a/arch/arm/dts/imx53-tqma53.dtsi b/arch/arm/dts/imx53-tqma53.dtsi
-index 6880f2c27fb0..860fb64df2b9 100644
---- a/arch/arm/dts/imx53-tqma53.dtsi
-+++ b/arch/arm/dts/imx53-tqma53.dtsi
-@@ -10,9 +10,6 @@
-  * http://www.gnu.org/copyleft/gpl.html
-  */
- 
--#include "imx53.dtsi"
--#include <arm/imx53-tqma53.dtsi>
+diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
+index 6d92cde..11a0a2f 100644
+--- a/drivers/net/e1000/main.c
++++ b/drivers/net/e1000/main.c
+@@ -839,12 +839,6 @@ static int e1000_setup_link(struct e1000_hw *hw)
+ 		hw->fc = e1000_fc_full;
+ 		break;
+ 	default:
+-		ret_val = e1000_read_eeprom(hw, EEPROM_INIT_CONTROL2_REG, 1, &eeprom_data);
+-		if (ret_val) {
+-			dev_dbg(hw->dev, "EEPROM Read Error\n");
+-			return -E1000_ERR_EEPROM;
+-		}
 -
- / {
- 	chosen {
- 		environment-emmc {
+ 		if ((eeprom_data & EEPROM_WORD0F_PAUSE_MASK) == 0)
+ 			hw->fc = e1000_fc_none;
+ 		else if ((eeprom_data & EEPROM_WORD0F_PAUSE_MASK) == EEPROM_WORD0F_ASM_DIR)
 -- 
-2.8.1
+2.5.5
 
 
 _______________________________________________
