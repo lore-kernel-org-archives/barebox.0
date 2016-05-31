@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b7pmM-000078-O2
- for barebox@lists.infradead.org; Tue, 31 May 2016 19:56:43 +0000
+ id 1b7pos-0000o1-6n
+ for barebox@lists.infradead.org; Tue, 31 May 2016 19:59:18 +0000
 From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Tue, 31 May 2016 19:56:19 +0000
-Message-ID: <1464724586.15779.110.camel@rtred1test09.kymeta.local>
+Date: Tue, 31 May 2016 19:58:56 +0000
+Message-ID: <1464724743.15779.113.camel@rtred1test09.kymeta.local>
 References: <1464598872.269538356@f430.i.mail.ru>
  <20160531062649.GA31666@pengutronix.de>
  <1464678168.822037004@f410.i.mail.ru>
  <20160531072305.GE31666@pengutronix.de>
-In-Reply-To: <20160531072305.GE31666@pengutronix.de>
+ <1464724586.15779.110.camel@rtred1test09.kymeta.local>
+In-Reply-To: <1464724586.15779.110.camel@rtred1test09.kymeta.local>
 Content-Language: en-US
-Content-ID: <6682EAB16FF8124B8302049214024C75@kymetacorp.com>
+Content-ID: <61C63E0BD79BCF41913A94BDEB550DF3@kymetacorp.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,44 +23,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: MCI print revision
+Subject: [PATCH] mci: Fix version numbers again
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-T24gVHVlLCAyMDE2LTA1LTMxIGF0IDA5OjIzICswMjAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6DQo+
-IE9uIFR1ZSwgTWF5IDMxLCAyMDE2IGF0IDEwOjAyOjQ4QU0gKzAzMDAsIEFsZXhhbmRlciBTaGl5
-YW4gd3JvdGU6DQo+ID4gPiDQktGC0L7RgNC90LjQuiwgMzEg0LzQsNGPIDIwMTYsIDk6MjYgKzAz
-OjAwINC+0YIgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoNCj4gPiA+IA0K
-PiA+ID4gK0NjIFRyZW50DQo+ID4gPiANCj4gPiA+IE9uIE1vbiwgTWF5IDMwLCAyMDE2IGF0IDEy
-OjAxOjEyUE0gKzAzMDAsIEFsZXhhbmRlciBTaGl5YW4gd3JvdGU6DQo+ID4gPiA+IEhlbGxvLg0K
-PiA+ID4gPiANCj4gPiA+ID4gQ29tbWl0IGRiZDcxOTAyOTUyOThhY2ZiNDk5NmVjMWFiYTUxNjVh
-N2JlMjhmZGMgKG1jaTogUHJpbnQgdmVyc2lvbnMgd2l0aCBtaWNybyBsZXZlbHMgY29ycmVjdGx5
-KQ0KPiA+ID4gPiBzZWVtcyB0byBiZSBpbmNvcnJlY3QuDQo+ID4gPiA+IA0KPiA+ID4gPiBiYXJl
-Ym94QEluZm9ybWVyOi8gbW1jMC5wcm9iZT0xDQo+ID4gPiA+IG1tYzA6IGRldGVjdGVkIFNEIGNh
-cmQgdmVyc2lvbiAxLmENCj4gPiA+ID4gbW1jMDogcmVnaXN0ZXJlZCBtbWMwDQo+ID4gPiANCj4g
-PiA+IFNvIHdoYXQncyB0aGUgZXhwZWN0ZWQgcHJpbnRvdXQgYW5kIHdhcyBpdCBjb3JyZWN0IHdp
-dGhvdXQgdGhpcyBwYXRjaD8NCj4gPiANCj4gPiBIb3N0IGluZm9ybWF0aW9uOg0KPiA+ICAgY3Vy
-cmVudCBjbG9jazogMjUwMDAwMDANCj4gPiAgIGN1cnJlbnQgYnVzd2lkdGg6IDQNCj4gPiAgIGNh
-cGFiaWxpdGllczogNGJpdCBzZC1ocyBtbWMtaHMNCj4gPiBDYXJkIGluZm9ybWF0aW9uOg0KPiA+
-ICAgQXR0YWNoZWQgaXMgYW4gU0QgQ2FyZCAoVmVyc2lvbjogMS4xMCkNCj4gDQo+IFNvIHRoZSAl
-eCBmb3IgcHJpbnRpbmcgdGhlIG1pbm9yIHNob3VsZCByZWFsbHkgYmUgYSAldT8NCg0KTm8sIHRo
-YXQgd2lsbCBwcmludCBNTUMgdmVyc2lvbiA0LjQxIGluY29ycmVjdGx5IGFzIDQuNjUuDQoNCkkg
-dGhpbmsgdGhlIGlzc3VlIGlzIHRoZSB2YWx1ZSBvZiB0aGUgdmVyc2lvbiBjb2RlcyBhbmQgaG93
-IHRoZXkgc2hvdWxkDQpiZSBwcmludGVkLiBBRkFJQ1QsIHRoZSBjb2RlcyBvcmlnaW5hdGVkIGlu
-IHUtYm9vdCBidXQgd2VyZSBjaGFuZ2VkIGluDQpjb21taXQgIm1jaTogRml4IHZlcnNpb24gaGFu
-ZGxpbmciIGluIDIwMTQuICBUaGUgb3JpZ2luYWwgdS1ib290IGNvZGUNCndhcyBlYXNpZXIgdG8g
-cHJpbnQsIHVzaW5nICIweDQyOSIgZm9yIHZlcnNpb24gNC40MSBzbyBpdCB3b3VsZCBwcmludA0K
-Y29ycmVjdGx5IHdpdGggIiV1IiwgYnV0IHNpbmNlIDB4MjkgPiAweDA1IHRoaXMgcmVzdWx0ZWQg
-aW4gNC40MSBiZWluZw0Kc29ydGVkIGFmdGVyIDQuNS4gIEkgdGhpbmsgdGhlIGZ1bmRhbWVudGFs
-IHByb2JsZW0gaGVyZSBpcyBmYXVsdCBvZiB0aGUNCnBlb3BsZSB3aG8gY3JlYXRlZCB0aGUgU0Qg
-YW5kIGVNTUMgc3RhbmRhcmRzIGdpdmluZyB1cyB0aGlzOg0KMS4xMCA+IDEuMDENCjQuNDEgPCA0
-LjUNCg0KSXQncyBqdXN0IG5vdCBjb25zaXN0ZW50LiAgSW4gb25lIGNhc2UgdGhlIGxhc3QgdHdv
-IGRpZ2l0cyBhcmUgc2luZ2xlDQpudW1iZXIgYnV0IGluIHRoZSBvdGhlciB0aGV5IGFyZSBhIG1p
-bm9yLG1pY3JvIHZlcnNpb24gcGFpci4NCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+The SD and eMMC version numbers are a pain to print and sort, since
+they are inconsistent in if a two digit minor version shdoulde be
+treated as a single number or as minor and micro version numbers.
+
+This allows version 1.10 and 4.5 and 4.41, where 41 is less than 5.
+
+Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
+---
+ drivers/mci/mci-core.c | 14 +++++++++-----
+ include/mci.h          |  7 ++++++-
+ 2 files changed, 15 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 59f6675..42dde06 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -949,14 +949,18 @@ out:
+ 
+ static char *mci_version_string(struct mci *mci)
+ {
+-	static char version[sizeof("x.xx")];
+-	unsigned major, minor;
++	static char version[sizeof("xx.xxx")];
++	unsigned major, minor, micro;
++	int n;
+ 
+ 	major = (mci->version >> 8) & 0xf;
+-	minor = mci->version & 0xff;
++	minor = (mci->version >> 4) & 0xf;
++	micro = mci->version & 0xf;
+ 
+-	/* Shift off last digit of minor if it's 0 */
+-	sprintf(version, "%u.%x", major, minor & 0xf ? minor : minor >> 4);
++	n = sprintf(version, "%u.%u", major, minor);
++	/* Omit zero micro versions */
++	if (micro)
++		sprintf(version + n, "%u", micro);
+ 
+ 	return version;
+ }
+diff --git a/include/mci.h b/include/mci.h
+index 174d150..001c86c 100644
+--- a/include/mci.h
++++ b/include/mci.h
+@@ -30,11 +30,16 @@
+ #include <block.h>
+ #include <regulator.h>
+ 
++/* These codes should be sorted numerically in order of newness.  If the last
++ * nybble is a zero, it will not be printed.  So 0x120 -> "1.2" and 0x123 ->
++ * "1.23", 0x1a0 -> "1.10", 0x1b0 and 0x111 -> "1.11" but sort differently.
++ * It's not possible to create "1.20".  */
++
+ /* Firmware revisions for SD cards */
+ #define SD_VERSION_SD		0x20000
+-#define SD_VERSION_2		(SD_VERSION_SD | 0x200)
+ #define SD_VERSION_1_0		(SD_VERSION_SD | 0x100)
+ #define SD_VERSION_1_10		(SD_VERSION_SD | 0x1a0)
++#define SD_VERSION_2		(SD_VERSION_SD | 0x200)
+ 
+ /* Firmware revisions for MMC cards */
+ #define MMC_VERSION_MMC		0x10000
+-- 
+2.7.0.25.gfc10eb5.dirty
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
