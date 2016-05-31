@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b7nBV-0004xT-36
+ id 1b7nBU-0004nF-9d
  for barebox@lists.infradead.org; Tue, 31 May 2016 17:10:31 +0000
-Received: by mail-pf0-x243.google.com with SMTP id f144so19580965pfa.2
- for <barebox@lists.infradead.org>; Tue, 31 May 2016 10:10:12 -0700 (PDT)
+Received: by mail-pf0-x244.google.com with SMTP id f144so19580828pfa.2
+ for <barebox@lists.infradead.org>; Tue, 31 May 2016 10:10:09 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 31 May 2016 10:09:37 -0700
-Message-Id: <1464714580-31488-19-git-send-email-andrew.smirnov@gmail.com>
+Date: Tue, 31 May 2016 10:09:34 -0700
+Message-Id: <1464714580-31488-16-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1464714580-31488-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1464714580-31488-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,95 +23,104 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/21] e1000: Properly release SW_FW_SYNC semaphore bits
+Subject: [PATCH 15/21] e1000: Fix a bug in e1000_probe()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-As described in the datasheet Software/Firmware synchronisation bits
-are expected to be released by the software after it is done using
-it. Add a porper subroutine to do that instead of relying on the
-Firmware clearing those bits due to timeout.
+There are several reasons why that code in e1000_probe had to be
+changed:
+
+ - It reads from chip variant specific register (present only on
+   i210) in a chip variant agnostic codepath
+
+ - It makes no sense to check for FLUPD bit to make a decision weither
+   to validate EEPROM or not since its function per datasheet is:
+
+   " ... Flash Update.
+
+     Writing 1b to this bit causes the content of the internal 4 KB
+     shadow RAM to be written into one of the first two 4 KB sectors
+     of the Flash device (Sector 0 or Sector 1). The bit is
+     self-cleared immediately... "
+
+   and it is only through sheer serendipity the defined value for
+   bitmask for FLUPD is equivalent to bitmask for FLASH_DETECTED bit
+   which is the bit we actually care about and need to test against
+   (FLUPD for i210 has a different bitmask)
+
+Fix those problems by replacing the i210 specific check inside of
+e1000_validate_eeprom_checksum() with a chip agnostic one and using
+correct bitmask.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/e1000/e1000.h |  1 +
- drivers/net/e1000/main.c  | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+)
+ drivers/net/e1000/e1000.h  |  1 +
+ drivers/net/e1000/eeprom.c | 18 ++++++++++++++++--
+ drivers/net/e1000/main.c   |  3 +--
+ 3 files changed, 18 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
-index 6b7cf82..b47d538 100644
+index bb5f697..2eb20f1 100644
 --- a/drivers/net/e1000/e1000.h
 +++ b/drivers/net/e1000/e1000.h
-@@ -2137,6 +2137,7 @@ int32_t e1000_read_eeprom(struct e1000_hw *hw, uint16_t offset,
- 		uint16_t *data);
+@@ -789,6 +789,7 @@ struct e1000_eeprom_info {
+ #define E1000_EECD_SELSHAD   0x00020000 /* Select Shadow RAM */
+ #define E1000_EECD_INITSRAM  0x00040000 /* Initialize Shadow RAM */
+ #define E1000_EECD_FLUPD     0x00080000 /* Update FLASH */
++#define E1000_EECD_I210_FLASH_DETECTED	(1 << 19) /* FLASH detected */
+ #define E1000_EECD_AUPDEN    0x00100000 /* Enable Autonomous FLASH update */
+ #define E1000_EECD_SHADV     0x00200000 /* Shadow RAM Data Valid */
+ #define E1000_EECD_SEC1VAL   0x00400000 /* Sector One Valid */
+diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
+index 2e5d46e..a7059f6 100644
+--- a/drivers/net/e1000/eeprom.c
++++ b/drivers/net/e1000/eeprom.c
+@@ -358,8 +358,13 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
+ 		eeprom->use_eerd = true;
+ 		break;
+ 	case e1000_igb:
+-		/* i210 has 4k of iNVM mapped as EEPROM */
+-		eeprom->type = e1000_eeprom_invm;
++		if (eecd & E1000_EECD_I210_FLASH_DETECTED) {
++			eeprom->type = e1000_eeprom_flash;
++			eeprom->word_size = 2048;
++		} else {
++			eeprom->type = e1000_eeprom_invm;
++		}
++
+ 		eeprom->use_eerd = true;
+ 		break;
+ 	default:
+@@ -660,6 +665,15 @@ int e1000_validate_eeprom_checksum(struct e1000_hw *hw)
  
- int32_t e1000_swfw_sync_acquire(struct e1000_hw *hw, uint16_t mask);
-+int32_t e1000_swfw_sync_release(struct e1000_hw *hw, uint16_t mask);
+ 	DEBUGFUNC();
  
- 
- #endif	/* _E1000_HW_H_ */
++	/*
++	  Only the following three 'types' of EEPROM can be expected
++	  to have correct EEPROM checksum
++	*/
++	if (hw->eeprom.type != e1000_eeprom_spi &&
++	    hw->eeprom.type != e1000_eeprom_microwire &&
++	    hw->eeprom.type != e1000_eeprom_flash)
++		return 0;
++
+ 	/* Read the EEPROM */
+ 	if (e1000_read_eeprom(hw, 0, EEPROM_CHECKSUM_REG + 1, buf) < 0) {
+ 		dev_err(&hw->edev.dev, "Unable to read EEPROM!\n");
 diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
-index 7ee78c3..df9ae73 100644
+index 4a527a3..7ee78c3 100644
 --- a/drivers/net/e1000/main.c
 +++ b/drivers/net/e1000/main.c
-@@ -273,6 +273,21 @@ int32_t e1000_swfw_sync_acquire(struct e1000_hw *hw, uint16_t mask)
- 	return E1000_SUCCESS;
- }
+@@ -3558,8 +3558,7 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		return -EINVAL;
+ 	}
  
-+int32_t e1000_swfw_sync_release(struct e1000_hw *hw, uint16_t mask)
-+{
-+	uint32_t swfw_sync;
-+
-+	if (e1000_get_hw_eeprom_semaphore(hw))
-+		return -E1000_ERR_SWFW_SYNC;
-+
-+	swfw_sync = e1000_read_reg(hw, E1000_SW_FW_SYNC);
-+	swfw_sync &= ~mask;
-+	e1000_write_reg(hw, E1000_SW_FW_SYNC, swfw_sync);
-+
-+	e1000_put_hw_eeprom_semaphore(hw);
-+	return E1000_SUCCESS;
-+}
-+
- static bool e1000_is_second_port(struct e1000_hw *hw)
- {
- 	switch (hw->mac_type) {
-@@ -1347,6 +1362,11 @@ static int32_t e1000_write_kmrn_reg(struct e1000_hw *hw, uint32_t reg_addr, uint
- 	e1000_write_reg(hw, E1000_KUMCTRLSTA, reg_val);
- 	udelay(2);
+-	if ((e1000_read_reg(hw, E1000_EECD) & E1000_EECD_FLUPD) &&
+-	    e1000_validate_eeprom_checksum(hw))
++	if (e1000_validate_eeprom_checksum(hw))
+ 		return -EINVAL;
  
-+	if (e1000_swfw_sync_release(hw, swfw) < 0)
-+		dev_warn(hw->dev,
-+			 "Timeout while releasing SWFW_SYNC bits (0x%08x)\n",
-+			 swfw);
-+
- 	return E1000_SUCCESS;
- }
- 
-@@ -1374,6 +1394,11 @@ static int32_t e1000_read_kmrn_reg(struct e1000_hw *hw, uint32_t reg_addr, uint1
- 	reg_val = e1000_read_reg(hw, E1000_KUMCTRLSTA);
- 	*data = (uint16_t)reg_val;
- 
-+	if (e1000_swfw_sync_release(hw, swfw) < 0)
-+		dev_warn(hw->dev,
-+			 "Timeout while releasing SWFW_SYNC bits (0x%08x)\n",
-+			 swfw);
-+
- 	return E1000_SUCCESS;
- }
- 
-@@ -2803,6 +2828,11 @@ static int32_t e1000_phy_hw_reset(struct e1000_hw *hw)
- 
- 		if (hw->mac_type >= e1000_82571)
- 			mdelay(10);
-+
-+		if (e1000_swfw_sync_release(hw, swfw) < 0)
-+			dev_warn(hw->dev,
-+				 "Timeout while releasing SWFW_SYNC bits (0x%08x)\n",
-+				 swfw);
- 	} else {
- 		/* Read the Extended Device Control Register, assert the PHY_RESET_DIR
- 		 * bit to put the PHY into reset. Then, take it out of reset.
+ 	e1000_get_ethaddr(edev, edev->ethaddr);
 -- 
 2.5.5
 
