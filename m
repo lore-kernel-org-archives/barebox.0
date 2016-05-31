@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x242.google.com ([2607:f8b0:400e:c03::242])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b7nBU-0004i5-Co
- for barebox@lists.infradead.org; Tue, 31 May 2016 17:10:30 +0000
-Received: by mail-pa0-x242.google.com with SMTP id x1so9074953pav.1
- for <barebox@lists.infradead.org>; Tue, 31 May 2016 10:10:07 -0700 (PDT)
+ id 1b7nBV-0004xT-36
+ for barebox@lists.infradead.org; Tue, 31 May 2016 17:10:31 +0000
+Received: by mail-pf0-x243.google.com with SMTP id f144so19580965pfa.2
+ for <barebox@lists.infradead.org>; Tue, 31 May 2016 10:10:12 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 31 May 2016 10:09:33 -0700
-Message-Id: <1464714580-31488-15-git-send-email-andrew.smirnov@gmail.com>
+Date: Tue, 31 May 2016 10:09:37 -0700
+Message-Id: <1464714580-31488-19-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1464714580-31488-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1464714580-31488-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,101 +23,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/21] e1000: Consolidate Microwire EEPROM init code
+Subject: [PATCH 18/21] e1000: Properly release SW_FW_SYNC semaphore bits
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-All of the chips that bitbang Microwire to access EEPROM appear to be
-configured in the same way, so move common code into a separate
-function and make use of it.
+As described in the datasheet Software/Firmware synchronisation bits
+are expected to be released by the software after it is done using
+it. Add a porper subroutine to do that instead of relying on the
+Firmware clearing those bits due to timeout.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/e1000/eeprom.c | 52 +++++++++++++++++++---------------------------
- 1 file changed, 21 insertions(+), 31 deletions(-)
+ drivers/net/e1000/e1000.h |  1 +
+ drivers/net/e1000/main.c  | 30 ++++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
 
-diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-index 89514eb..2e5d46e 100644
---- a/drivers/net/e1000/eeprom.c
-+++ b/drivers/net/e1000/eeprom.c
-@@ -275,6 +275,22 @@ static void e1000_eeprom_uses_spi(struct e1000_eeprom_info *eeprom,
- 	eeprom->use_eerd = false;
+diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
+index 6b7cf82..b47d538 100644
+--- a/drivers/net/e1000/e1000.h
++++ b/drivers/net/e1000/e1000.h
+@@ -2137,6 +2137,7 @@ int32_t e1000_read_eeprom(struct e1000_hw *hw, uint16_t offset,
+ 		uint16_t *data);
+ 
+ int32_t e1000_swfw_sync_acquire(struct e1000_hw *hw, uint16_t mask);
++int32_t e1000_swfw_sync_release(struct e1000_hw *hw, uint16_t mask);
+ 
+ 
+ #endif	/* _E1000_HW_H_ */
+diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
+index 7ee78c3..df9ae73 100644
+--- a/drivers/net/e1000/main.c
++++ b/drivers/net/e1000/main.c
+@@ -273,6 +273,21 @@ int32_t e1000_swfw_sync_acquire(struct e1000_hw *hw, uint16_t mask)
+ 	return E1000_SUCCESS;
  }
  
-+static void e1000_eeprom_uses_microwire(struct e1000_eeprom_info *eeprom,
-+					uint32_t eecd)
++int32_t e1000_swfw_sync_release(struct e1000_hw *hw, uint16_t mask)
 +{
-+	eeprom->type = e1000_eeprom_microwire;
-+	eeprom->opcode_bits = 3;
-+	eeprom->delay_usec = 50;
-+	if (eecd & E1000_EECD_SIZE) {
-+		eeprom->word_size = 256;
-+		eeprom->address_bits = 8;
-+	} else {
-+		eeprom->word_size = 64;
-+		eeprom->address_bits = 6;
-+	}
-+	eeprom->use_eerd = false;
++	uint32_t swfw_sync;
++
++	if (e1000_get_hw_eeprom_semaphore(hw))
++		return -E1000_ERR_SWFW_SYNC;
++
++	swfw_sync = e1000_read_reg(hw, E1000_SW_FW_SYNC);
++	swfw_sync &= ~mask;
++	e1000_write_reg(hw, E1000_SW_FW_SYNC, swfw_sync);
++
++	e1000_put_hw_eeprom_semaphore(hw);
++	return E1000_SUCCESS;
 +}
 +
+ static bool e1000_is_second_port(struct e1000_hw *hw)
+ {
+ 	switch (hw->mac_type) {
+@@ -1347,6 +1362,11 @@ static int32_t e1000_write_kmrn_reg(struct e1000_hw *hw, uint32_t reg_addr, uint
+ 	e1000_write_reg(hw, E1000_KUMCTRLSTA, reg_val);
+ 	udelay(2);
  
- /******************************************************************************
-  * Sets up eeprom variables in the hw struct.  Must be called after mac_type
-@@ -299,49 +315,23 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
- 	case e1000_82542_rev2_1:
- 	case e1000_82543:
- 	case e1000_82544:
--		eeprom->type = e1000_eeprom_microwire;
--		eeprom->word_size = 64;
--		eeprom->opcode_bits = 3;
--		eeprom->address_bits = 6;
--		eeprom->delay_usec = 50;
--		eeprom->use_eerd = false;
-+		e1000_eeprom_uses_microwire(eeprom, 0);
- 	break;
- 	case e1000_82540:
- 	case e1000_82545:
- 	case e1000_82545_rev_3:
- 	case e1000_82546:
- 	case e1000_82546_rev_3:
--		eeprom->type = e1000_eeprom_microwire;
--		eeprom->opcode_bits = 3;
--		eeprom->delay_usec = 50;
--		if (eecd & E1000_EECD_SIZE) {
--			eeprom->word_size = 256;
--			eeprom->address_bits = 8;
--		} else {
--			eeprom->word_size = 64;
--			eeprom->address_bits = 6;
--		}
--		eeprom->use_eerd = false;
-+		e1000_eeprom_uses_microwire(eeprom, eecd);
- 		break;
- 	case e1000_82541:
- 	case e1000_82541_rev_2:
- 	case e1000_82547:
- 	case e1000_82547_rev_2:
--		if (eecd & E1000_EECD_TYPE) {
-+		if (eecd & E1000_EECD_TYPE)
- 			e1000_eeprom_uses_spi(eeprom, eecd);
--		} else {
--			eeprom->type = e1000_eeprom_microwire;
--			eeprom->opcode_bits = 3;
--			eeprom->delay_usec = 50;
--			if (eecd & E1000_EECD_ADDR_BITS) {
--				eeprom->word_size = 256;
--				eeprom->address_bits = 8;
--			} else {
--				eeprom->word_size = 64;
--				eeprom->address_bits = 6;
--			}
--		}
--		eeprom->use_eerd = false;
-+		else
-+			e1000_eeprom_uses_microwire(eeprom, eecd);
- 		break;
- 	case e1000_82571:
- 	case e1000_82572:
++	if (e1000_swfw_sync_release(hw, swfw) < 0)
++		dev_warn(hw->dev,
++			 "Timeout while releasing SWFW_SYNC bits (0x%08x)\n",
++			 swfw);
++
+ 	return E1000_SUCCESS;
+ }
+ 
+@@ -1374,6 +1394,11 @@ static int32_t e1000_read_kmrn_reg(struct e1000_hw *hw, uint32_t reg_addr, uint1
+ 	reg_val = e1000_read_reg(hw, E1000_KUMCTRLSTA);
+ 	*data = (uint16_t)reg_val;
+ 
++	if (e1000_swfw_sync_release(hw, swfw) < 0)
++		dev_warn(hw->dev,
++			 "Timeout while releasing SWFW_SYNC bits (0x%08x)\n",
++			 swfw);
++
+ 	return E1000_SUCCESS;
+ }
+ 
+@@ -2803,6 +2828,11 @@ static int32_t e1000_phy_hw_reset(struct e1000_hw *hw)
+ 
+ 		if (hw->mac_type >= e1000_82571)
+ 			mdelay(10);
++
++		if (e1000_swfw_sync_release(hw, swfw) < 0)
++			dev_warn(hw->dev,
++				 "Timeout while releasing SWFW_SYNC bits (0x%08x)\n",
++				 swfw);
+ 	} else {
+ 		/* Read the Extended Device Control Register, assert the PHY_RESET_DIR
+ 		 * bit to put the PHY into reset. Then, take it out of reset.
 -- 
 2.5.5
 
