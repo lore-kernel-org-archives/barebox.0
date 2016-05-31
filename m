@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f410.i.mail.ru ([185.5.136.81])
+Received: from mail-qk0-x242.google.com ([2607:f8b0:400d:c09::242])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b7dhq-0001za-S6
- for barebox@lists.infradead.org; Tue, 31 May 2016 07:03:16 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1b7dnC-0003be-4a
+ for barebox@lists.infradead.org; Tue, 31 May 2016 07:08:47 +0000
+Received: by mail-qk0-x242.google.com with SMTP id z126so5283995qkc.1
+ for <barebox@lists.infradead.org>; Tue, 31 May 2016 00:08:25 -0700 (PDT)
 MIME-Version: 1.0
-Date: Tue, 31 May 2016 10:02:48 +0300
-Message-ID: <1464678168.822037004@f410.i.mail.ru>
-In-Reply-To: <20160531062649.GA31666@pengutronix.de>
-References: <1464598872.269538356@f430.i.mail.ru>
- <20160531062649.GA31666@pengutronix.de>
+In-Reply-To: <20160531070124.GC31666@pengutronix.de>
+References: <1464356935-21500-1-git-send-email-yegorslists@googlemail.com>
+ <20160530053359.GV31666@pengutronix.de>
+ <CAGm1_kv9SNGG45Eb6GUvPAKZ0PAZtGiJPfXadd6ZLwY_VS94CQ@mail.gmail.com>
+ <20160531070124.GC31666@pengutronix.de>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Tue, 31 May 2016 09:08:05 +0200
+Message-ID: <CAGm1_ksO9+Nk3DF0oZ7XExG=LYN_1fr9QiNCyLtQo=u5to6JVA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,33 +22,161 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IE1DSSBwcmludCByZXZpc2lvbg==?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: =?UTF-8?B?YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn?= <barebox@lists.infradead.org>, =?UTF-8?B?VHJlbnQgUGllcGhv?= <tpiepho@kymetacorp.com>
+Subject: Re: [PATCH] Add support for Baltos systems
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>
 
-PiDQktGC0L7RgNC90LjQuiwgMzEg0LzQsNGPIDIwMTYsIDk6MjYgKzAzOjAwINC+0YIgU2FzY2hh
-IEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiAKPiArQ2MgVHJlbnQKPiAKPiBPbiBN
-b24sIE1heSAzMCwgMjAxNiBhdCAxMjowMToxMlBNICswMzAwLCBBbGV4YW5kZXIgU2hpeWFuIHdy
-b3RlOgo+ID4gSGVsbG8uCj4gPiAKPiA+IENvbW1pdCBkYmQ3MTkwMjk1Mjk4YWNmYjQ5OTZlYzFh
-YmE1MTY1YTdiZTI4ZmRjIChtY2k6IFByaW50IHZlcnNpb25zIHdpdGggbWljcm8gbGV2ZWxzIGNv
-cnJlY3RseSkKPiA+IHNlZW1zIHRvIGJlIGluY29ycmVjdC4KPiA+IAo+ID4gYmFyZWJveEBJbmZv
-cm1lcjovIG1tYzAucHJvYmU9MQo+ID4gbW1jMDogZGV0ZWN0ZWQgU0QgY2FyZCB2ZXJzaW9uIDEu
-YQo+ID4gbW1jMDogcmVnaXN0ZXJlZCBtbWMwCj4gCj4gU28gd2hhdCdzIHRoZSBleHBlY3RlZCBw
-cmludG91dCBhbmQgd2FzIGl0IGNvcnJlY3Qgd2l0aG91dCB0aGlzIHBhdGNoPwoKSG9zdCBpbmZv
-cm1hdGlvbjoKICBjdXJyZW50IGNsb2NrOiAyNTAwMDAwMAogIGN1cnJlbnQgYnVzd2lkdGg6IDQK
-ICBjYXBhYmlsaXRpZXM6IDRiaXQgc2QtaHMgbW1jLWhzCkNhcmQgaW5mb3JtYXRpb246CiAgQXR0
-YWNoZWQgaXMgYW4gU0QgQ2FyZCAoVmVyc2lvbjogMS4xMCkKICBDYXBhY2l0eTogMTk2MiBNaUIK
-ICAgQ0lEOiAxQzUzNTY1My00NDQzMjAyMC0xMDAwMDEzQy03RTAwNzIwMAogICBDU0Q6IDAwNUUw
-MDMyLTVGNUE4M0Q1LTJEQjdGRkJGLTk2ODAwMDAwCiAgTWF4LiB0cmFuc2ZlciBzcGVlZDogMjUw
-MDAwMDAgSHoKICBjYXBhYmlsaXRpZXM6IDRiaXQgc2QtaHMKICBNYW51ZmFjdHVyZXIgSUQ6IDFD
-CiAgT0VNL0FwcGxpY2F0aW9uIElEOiA1MzU2CiAgUHJvZHVjdCBuYW1lOiAnU0RDICAnCiAgUHJv
-ZHVjdCByZXZpc2lvbjogMS4wCiAgU2VyaWFsIG5vOiAzMDg2OTkxMjU0CiAgTWFudWZhY3R1cmlu
-ZyBkYXRlOiAyLjIwMDcKLi4uCgpTbywgZXhwZWN0ZWQgMS4xCgotLS0KCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Tue, May 31, 2016 at 9:01 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Mon, May 30, 2016 at 11:46:12AM +0200, Yegor Yefremov wrote:
+>> On Mon, May 30, 2016 at 7:33 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>> > On Fri, May 27, 2016 at 03:48:55PM +0200, yegorslists@googlemail.com wrote:
+>> >> From: Yegor Yefremov <yegorslists@googlemail.com>
+>> >>
+>> >> OnRISC Baltos devices are based on a am335x SoC and can be booted
+>> >> either from MMC or NAND.
+>> >>
+>> >> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+>> >> ---
+>> >
+>> >> +
+>> >> +typedef struct _BSP_VS_HWPARAM
+>> >> +{
+>> >> +        uint32_t Magic;
+>> >> +        uint32_t HwRev;
+>> >> +        uint32_t SerialNumber;
+>> >> +        char PrdDate[11];
+>> >> +        uint16_t SystemId;
+>> >> +        uint8_t MAC1[6];
+>> >> +        uint8_t MAC2[6];
+>> >> +        uint8_t MAC3[6];
+>> >> +} __attribute__ ((packed)) BSP_VS_HWPARAM;
+>> >> +
+>> >> +BSP_VS_HWPARAM hw_param;
+>> >
+>> > No typedef for struct types please.
+>>
+>> Will remove.
+>>
+>> >> +static void baltos_validate_eeprom(void)
+>> >> +{
+>> >> +     printf("Baltos: incorrect magic number (0x%x) in EEPROM\n",
+>> >> +                     hw_param.Magic);
+>> >> +
+>> >> +     /* fill default values */
+>> >> +     hw_param.SystemId = 210;
+>> >> +
+>> >> +     hw_param.MAC1[0] = 0x00;
+>> >> +     hw_param.MAC1[1] = 0x00;
+>> >> +     hw_param.MAC1[2] = 0x00;
+>> >> +     hw_param.MAC1[3] = 0x00;
+>> >> +     hw_param.MAC1[4] = 0x00;
+>> >> +     hw_param.MAC1[5] = 0x01;
+>> >> +
+>> >> +     hw_param.MAC2[0] = 0x00;
+>> >> +     hw_param.MAC2[1] = 0x00;
+>> >> +     hw_param.MAC2[2] = 0x00;
+>> >> +     hw_param.MAC2[3] = 0x00;
+>> >> +     hw_param.MAC2[4] = 0x00;
+>> >> +     hw_param.MAC2[5] = 0x02;
+>> >> +
+>> >> +     hw_param.MAC3[0] = 0x00;
+>> >> +     hw_param.MAC3[1] = 0x00;
+>> >> +     hw_param.MAC3[2] = 0x00;
+>> >> +     hw_param.MAC3[3] = 0x00;
+>> >> +     hw_param.MAC3[4] = 0x00;
+>> >> +     hw_param.MAC3[5] = 0x03;
+>> >> +}
+>> >> +
+>> >> +static int baltos_read_eeprom(void)
+>> >> +{
+>> >> +     size_t size;
+>> >> +     char *buf, var_buf[32];
+>> >> +     int rc;
+>> >> +     unsigned char mac_addr[6];
+>> >> +
+>> >> +     rc = read_file_2("/dev/eeprom0", &size, (void *)&buf, sizeof(hw_param));
+>> >> +     if (rc && rc != -EFBIG) {
+>> >> +             return rc;
+>> >> +     }
+>> >> +
+>> >> +     memcpy(&hw_param, buf, sizeof(hw_param));
+>> >> +
+>> >> +     free(buf);
+>> >> +
+>> >> +     if (hw_param.Magic != 0xDEADBEEF) {
+>> >
+>> > The magic for a valid EEPROM is 0xdeadbeef? What a poor choice, this
+>> > value is commonly used for *invalid* values.
+>>
+>> We use this scheme since years, so this cannot be changed now.
+>>
+>> >> +             baltos_validate_eeprom();
+>> >
+>> > When you can't find a valid MAC Address in the EEPROM then you should
+>> > just return here. barebox will then use a random MAC Address.
+>>
+>> Will do.
+>>
+>> >> +     }
+>> >> +
+>> >> +     sprintf(var_buf, "%d", hw_param.SystemId);
+>> >> +     globalvar_add_simple("board.id", var_buf);
+>> >> +
+>> >> +     /* setup MAC1 */
+>> >> +     mac_addr[0] = hw_param.MAC1[0];
+>> >> +     mac_addr[1] = hw_param.MAC1[1];
+>> >> +     mac_addr[2] = hw_param.MAC1[2];
+>> >> +     mac_addr[3] = hw_param.MAC1[3];
+>> >> +     mac_addr[4] = hw_param.MAC1[4];
+>> >> +     mac_addr[5] = hw_param.MAC1[5];
+>> >> +
+>> >> +     eth_register_ethaddr(0, mac_addr);
+>> >> +
+>> >> +     /* setup MAC2 */
+>> >> +     mac_addr[0] = hw_param.MAC2[0];
+>> >> +     mac_addr[1] = hw_param.MAC2[1];
+>> >> +     mac_addr[2] = hw_param.MAC2[2];
+>> >> +     mac_addr[3] = hw_param.MAC2[3];
+>> >> +     mac_addr[4] = hw_param.MAC2[4];
+>> >> +     mac_addr[5] = hw_param.MAC2[5];
+>> >> +
+>> >> +     eth_register_ethaddr(1, mac_addr);
+>> >> +
+>> >> +     return 0;
+>> >> +}
+>> >
+>> >> +
+>> >> +&i2c1 {
+>> >> +     pinctrl-names = "default";
+>> >> +     pinctrl-0 = <&i2c1_pins>;
+>> >> +
+>> >> +     status = "okay";
+>> >> +     clock-frequency = <1000>;
+>> >
+>> > 1kHz? This looks suspicous. Shouldn't this be 100000 or 400000?
+>>
+>> First we used 100KHz, but under some circumstances it turned out, that
+>> SoC <-> PMIC communication got stuck and as a result CPU was running
+>> with lower frequency. So after more testing it turned out, that 1KHz
+>> is the most "stable" frequency It is only important that these first
+>> communication steps occur at 1KHz, after this any supported speed is
+>> stable.
+>
+> Ok, so it's really 1000Hz. Note that if you start Linux with the barebox
+> device tree you will end up with 1000Hz under Linux aswell, so it might
+> be worth looking for another solution to this problem.
+
+We don't start Linux with barebox device tree. This is really only a
+minimal configuration, that is needed to configure barebox itself. We
+use a FIT image, that holds about 6 different full-featured DTBs.
+
+Yegor
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
