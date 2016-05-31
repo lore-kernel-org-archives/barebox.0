@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b8KjD-000230-F3
- for barebox@lists.infradead.org; Thu, 02 Jun 2016 05:01:01 +0000
-Received: by mail-pf0-x242.google.com with SMTP id b124so6535060pfb.0
- for <barebox@lists.infradead.org>; Wed, 01 Jun 2016 21:59:12 -0700 (PDT)
+ id 1b7nBI-0003gh-GI
+ for barebox@lists.infradead.org; Tue, 31 May 2016 17:12:17 +0000
+Received: by mail-pf0-x241.google.com with SMTP id f144so19580280pfa.2
+ for <barebox@lists.infradead.org>; Tue, 31 May 2016 10:09:56 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  1 Jun 2016 21:58:30 -0700
-Message-Id: <1464843531-1824-2-git-send-email-andrew.smirnov@gmail.com>
-In-Reply-To: <1464843531-1824-1-git-send-email-andrew.smirnov@gmail.com>
-References: <1464843531-1824-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Tue, 31 May 2016 10:09:20 -0700
+Message-Id: <1464714580-31488-2-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1464714580-31488-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1464714580-31488-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,7 +23,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 01/22] e1000: Split driver into multiple files
+Subject: [PATCH 01/21] e1000: Split driver into multiple files
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
