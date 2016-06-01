@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bHQQD-0004bf-7a
- for barebox@lists.infradead.org; Mon, 27 Jun 2016 06:53:29 +0000
-Date: Mon, 27 Jun 2016 08:53:07 +0200
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1b80Gn-0007ud-Rj
+ for barebox@lists.infradead.org; Wed, 01 Jun 2016 07:08:50 +0000
+Date: Wed, 1 Jun 2016 09:08:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160627065307.GV20657@pengutronix.de>
-References: <1466786695-17512-1-git-send-email-shc_work@mail.ru>
- <20160624194752.GA14204@pengutronix.de>
+Message-ID: <20160601070826.GJ31666@pengutronix.de>
+References: <1464619430-23873-1-git-send-email-yegorslists@googlemail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20160624194752.GA14204@pengutronix.de>
+In-Reply-To: <1464619430-23873-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,52 +18,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX: Remove unised procedure imx25_setup_weimcs
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH v2] Add support for Baltos systems
+To: yegorslists@googlemail.com
 Cc: barebox@lists.infradead.org
 
-On Fri, Jun 24, 2016 at 09:47:52PM +0200, Uwe Kleine-K=F6nig wrote:
-> Hello Alexander,
-> =
+On Mon, May 30, 2016 at 04:43:50PM +0200, yegorslists@googlemail.com wrote:
+> From: Yegor Yefremov <yegorslists@googlemail.com>
+> 
+> OnRISC Baltos devices are based on a am335x SoC and can be booted
+> either from MMC or NAND.
+> 
+> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+> ---
+> Changes:
+>         v2: - remove typedef
+>             - rework invalid EEPROM content handling
+>             - add mmc0 as boot device for MMC boot source
+> 
+> +static int baltos_mem_init(void)
+> +{
+> +	uint32_t sdram_size;
+> +
+> +	if (!of_machine_is_compatible("vscom,onrisc"))
+> +		return 0;
+> +
+> +	sdram_size = SZ_256M;
+> +
+> +	arm_add_mem_device("ram0", 0x80000000, sdram_size);
+> +
+> +	return 0;
+> +}
+> +mem_initcall(baltos_mem_init);
 
-> $Subject ~=3D s/unised/unused/
+This shouldn't be necessary. See arch/arm/mach-omap/am33xx_scrm.c, here
+the correct amount of memory should be registered.
 
-Fixed while applying.
+
+> +ENTRY_FUNCTION(start_am33xx_baltos_sdram, r0, r1, r2)
+> +{
+> +	uint32_t sdram_size;
+> +	void *fdt;
+> +
+> +	sdram_size = SZ_256M;
+> +	fdt = __dtb_am335x_baltos_minimal_start;
+> +
+> +	fdt -= get_runtime_offset();
+> +
+> +	barebox_arm_entry(0x80000000, sdram_size, fdt);
+
+am335x_barebox_entry() calculates the SDRAM size automatically for you.
+
+Doing this has the advantage that you can configure your SDRAM as you
+like without having to bother that all other locations where the SDRAM
+size is needed are correct.
 
 Sascha
 
-> =
-
-> other than that:
-> =
-
-> Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> =
-
-> Best regards
-> Uwe
-> =
-
-> -- =
-
-> Pengutronix e.K.                           | Uwe Kleine-K=F6nig          =
-  |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> =
-
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
