@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x244.google.com ([2607:f8b0:400e:c03::244])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b8KjI-00023B-AZ
- for barebox@lists.infradead.org; Thu, 02 Jun 2016 04:59:40 +0000
-Received: by mail-pa0-x244.google.com with SMTP id fg1so2236926pad.3
- for <barebox@lists.infradead.org>; Wed, 01 Jun 2016 21:59:15 -0700 (PDT)
+ id 1b8KjD-00022p-F0
+ for barebox@lists.infradead.org; Thu, 02 Jun 2016 04:59:31 +0000
+Received: by mail-pf0-x242.google.com with SMTP id f144so6541594pfa.2
+ for <barebox@lists.infradead.org>; Wed, 01 Jun 2016 21:59:10 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  1 Jun 2016 21:58:38 -0700
-Message-Id: <1464843531-1824-10-git-send-email-andrew.smirnov@gmail.com>
+Date: Wed,  1 Jun 2016 21:58:31 -0700
+Message-Id: <1464843531-1824-3-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1464843531-1824-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1464843531-1824-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,91 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 09/22] e1000: Remove 'use_eewr' parameter
+Subject: [PATCH v2 02/22] e1000: Include <net.h> in e1000.h
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Remove 'use_eewr' from 'struct e1000_eeprom_info' since it is not used
-anywhere in the code.
+That header(e1000.h) uses a number of definitions from net.h, so for it
+to be self-contained it needs to include that file. This change also
+allows remove includes of net.h from other files.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/e1000/e1000.h  | 1 -
- drivers/net/e1000/eeprom.c | 7 -------
- 2 files changed, 8 deletions(-)
+ drivers/net/e1000/e1000.h  | 1 +
+ drivers/net/e1000/eeprom.c | 1 -
+ drivers/net/e1000/main.c   | 1 -
+ 3 files changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
-index 1d0b3c6..585e3ff 100644
+index 82ff32e..19faf0b 100644
 --- a/drivers/net/e1000/e1000.h
 +++ b/drivers/net/e1000/e1000.h
-@@ -695,7 +695,6 @@ struct e1000_eeprom_info {
- 	uint16_t delay_usec;
- 	uint16_t page_size;
- 	bool use_eerd;
--	bool use_eewr;
- };
+@@ -17,6 +17,7 @@
+  */
  
- #define E1000_EEPROM_SWDPIN0   0x0001	/* SWDPIN 0 EEPROM Value */
+ #include <io.h>
++#include <net.h>
+ 
+ #ifndef _E1000_HW_H_
+ #define _E1000_HW_H_
 diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-index c2dfad5..b6414b2 100644
+index fb39a85..cc9199b 100644
 --- a/drivers/net/e1000/eeprom.c
 +++ b/drivers/net/e1000/eeprom.c
-@@ -289,7 +289,6 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
- 		eeprom->address_bits = 6;
- 		eeprom->delay_usec = 50;
- 		eeprom->use_eerd = false;
--		eeprom->use_eewr = false;
- 	break;
- 	case e1000_82540:
- 	case e1000_82545:
-@@ -307,7 +306,6 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
- 			eeprom->address_bits = 6;
- 		}
- 		eeprom->use_eerd = false;
--		eeprom->use_eewr = false;
- 		break;
- 	case e1000_82541:
- 	case e1000_82541_rev_2:
-@@ -337,7 +335,6 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
- 			}
- 		}
- 		eeprom->use_eerd = false;
--		eeprom->use_eewr = false;
- 		break;
- 	case e1000_82571:
- 	case e1000_82572:
-@@ -352,7 +349,6 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
- 			eeprom->address_bits = 8;
- 		}
- 		eeprom->use_eerd = false;
--		eeprom->use_eewr = false;
- 		break;
- 	case e1000_82573:
- 	case e1000_82574:
-@@ -368,7 +364,6 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
- 		}
- 		if (e1000_is_onboard_nvm_eeprom(hw) == false) {
- 			eeprom->use_eerd = true;
--			eeprom->use_eewr = true;
+@@ -1,6 +1,5 @@
+ #include <common.h>
+ #include <init.h>
+-#include <net.h>
+ #include <malloc.h>
  
- 			eeprom->type = e1000_eeprom_flash;
- 			eeprom->word_size = 2048;
-@@ -391,7 +386,6 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
- 			eeprom->address_bits = 8;
- 		}
- 		eeprom->use_eerd = true;
--		eeprom->use_eewr = false;
- 		break;
- 	case e1000_igb:
- 		/* i210 has 4k of iNVM mapped as EEPROM */
-@@ -401,7 +395,6 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
- 		eeprom->page_size = 32;
- 		eeprom->address_bits = 16;
- 		eeprom->use_eerd = true;
--		eeprom->use_eewr = false;
- 		break;
- 	default:
- 		break;
+ #include "e1000.h"
+diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
+index 552b0dc..f5eb086 100644
+--- a/drivers/net/e1000/main.c
++++ b/drivers/net/e1000/main.c
+@@ -31,7 +31,6 @@ tested on both gig copper and gig fiber boards
+ 
+ #include <common.h>
+ #include <init.h>
+-#include <net.h>
+ #include <malloc.h>
+ #include <linux/pci.h>
+ #include <dma.h>
 -- 
 2.5.5
 
