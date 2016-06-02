@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
+Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b8Nff-000475-4X
- for barebox@lists.infradead.org; Thu, 02 Jun 2016 08:08:04 +0000
-Received: by mail-wm0-x244.google.com with SMTP id e3so13453093wme.2
- for <barebox@lists.infradead.org>; Thu, 02 Jun 2016 01:07:43 -0700 (PDT)
+ id 1b8NfY-00045S-KQ
+ for barebox@lists.infradead.org; Thu, 02 Jun 2016 08:07:57 +0000
+Received: by mail-wm0-x242.google.com with SMTP id a136so13545518wme.0
+ for <barebox@lists.infradead.org>; Thu, 02 Jun 2016 01:07:35 -0700 (PDT)
+Received: from localhost.localdomain ([194.167.244.97])
+ by smtp.gmail.com with ESMTPSA id k127sm39172696wmf.21.2016.06.02.01.07.33
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+ Thu, 02 Jun 2016 01:07:33 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Thu,  2 Jun 2016 10:06:52 +0200
-Message-Id: <1464854818-28653-7-git-send-email-poggi.raph@gmail.com>
-In-Reply-To: <1464854818-28653-1-git-send-email-poggi.raph@gmail.com>
-References: <1464854818-28653-1-git-send-email-poggi.raph@gmail.com>
+Date: Thu,  2 Jun 2016 10:06:46 +0200
+Message-Id: <1464854818-28653-1-git-send-email-poggi.raph@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +22,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/12] arm: cpu: start: arm64 does not support relocation
+Subject: [PATCH 0/12] Add basic support for arm64
 To: barebox@lists.infradead.org
-Cc: Raphael Poggi <poggi.raph@gmail.com>
 
-For now, the relocation is not supported in arm64, so
-enclosed call to "setup_c" with #if directive
-
-Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
----
- arch/arm/cpu/start.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index d03d1ed..25ba5fc 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -151,7 +151,9 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
- 		relocate_to_adr(barebox_base);
- 	}
- 
-+#if __LINUX_ARM_ARCH__ <= 7
- 	setup_c();
-+#endif
- 
- 	barrier();
- 
--- 
-2.1.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sCgpUaGlzIHBhdGNoIHNlcmllcyBpbnRyb2R1Y2VzIGEgYmFzaWMgc3VwcG9ydCBmb3Ig
+YXJtNjQuCgpUaGUgYXJtNjQgY29kZSBpcyBtZXJnZWQgaW4gdGhlIGN1cnJlbnQgYXJjaC9hcm0g
+ZGlyZWN0b3J5LgpJIHRyeSB0byBiZSBpdGVyYXRpdmUgaW4gdGhlIG1lcmdlIHByb2Nlc3MsIGFu
+ZCBmaW5kIGNvcnJlY3Qgc29sdXRpb25zCnRvIGhhbmRsZSBib3RoIGFyY2hpdGVjdHVyZSBhdCBz
+b21lIHBsYWNlcy4KCkkgdGVzdCB0aGUgcGF0Y2ggc2VyaWVzIGJ5IGNvbXBpbGluZyBhcm02NCB2
+aXJ0IG1hY2hpbmUgYW5kIGFybTMyIHZleHByZXNzLWE5IGFuZCB0ZXN0IGl0CmluIHFlbXUsIGV2
+ZXJ5dGhpbmcgc2VlbXMgdG8gd29yay4KClRoYW5rcywKUmFwaGHDq2wKCiBhcmNoL2FybS9LY29u
+ZmlnICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMzIgKysKIGFyY2gvYXJtL01ha2VmaWxl
+ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAzMCArLQogYXJjaC9hcm0vYm9hcmRzL01ha2Vm
+aWxlICAgICAgICAgICAgICAgICAgIHwgICAxICsKIGFyY2gvYXJtL2JvYXJkcy92aXJ0L0tjb25m
+aWcgICAgICAgICAgICAgICB8ICAgOCArCiBhcmNoL2FybS9ib2FyZHMvdmlydC9NYWtlZmlsZSAg
+ICAgICAgICAgICAgfCAgIDEgKwogYXJjaC9hcm0vYm9hcmRzL3ZpcnQvZW52L2Jpbi9fdXBkYXRl
+ICAgICAgIHwgIDM2ICsrCiBhcmNoL2FybS9ib2FyZHMvdmlydC9lbnYvYmluL2Jvb3QgICAgICAg
+ICAgfCAgMzggKysKIGFyY2gvYXJtL2JvYXJkcy92aXJ0L2Vudi9iaW4vaW5pdCAgICAgICAgICB8
+ICAyMCArCiBhcmNoL2FybS9ib2FyZHMvdmlydC9lbnYvYmluL3VwZGF0ZV9rZXJuZWwgfCAgIDgg
+KwogYXJjaC9hcm0vYm9hcmRzL3ZpcnQvZW52L2Jpbi91cGRhdGVfcm9vdCAgIHwgICA4ICsKIGFy
+Y2gvYXJtL2JvYXJkcy92aXJ0L2Vudi9jb25maWcgICAgICAgICAgICB8ICAzOCArKwogYXJjaC9h
+cm0vYm9hcmRzL3ZpcnQvZW52L2luaXQvbXRkcGFydHMtbm9yIHwgIDExICsKIGFyY2gvYXJtL2Jv
+YXJkcy92aXJ0L2luaXQuYyAgICAgICAgICAgICAgICB8ICA2NyArKysrCiBhcmNoL2FybS9jb25m
+aWdzL3ZpcnRfZGVmY29uZmlnICAgICAgICAgICAgfCAgNTUgKysrCiBhcmNoL2FybS9jcHUvS2Nv
+bmZpZyAgICAgICAgICAgICAgICAgICAgICAgfCAgMjkgKy0KIGFyY2gvYXJtL2NwdS9NYWtlZmls
+ZSAgICAgICAgICAgICAgICAgICAgICB8ICAyMiArLQogYXJjaC9hcm0vY3B1L2NhY2hlLWFybXY4
+LlMgICAgICAgICAgICAgICAgIHwgMTY4ICsrKysrKysrKwogYXJjaC9hcm0vY3B1L2NhY2hlLmMg
+ICAgICAgICAgICAgICAgICAgICAgIHwgIDE5ICsKIGFyY2gvYXJtL2NwdS9jcHUuYyAgICAgICAg
+ICAgICAgICAgICAgICAgICB8ICAgNSArCiBhcmNoL2FybS9jcHUvY3B1aW5mby5jICAgICAgICAg
+ICAgICAgICAgICAgfCAgNTggKystCiBhcmNoL2FybS9jcHUvZXhjZXB0aW9uc182NC5TICAgICAg
+ICAgICAgICAgfCAxMjcgKysrKysrKwogYXJjaC9hcm0vY3B1L2ludGVycnVwdHMuYyAgICAgICAg
+ICAgICAgICAgIHwgIDQ3ICsrKwogYXJjaC9hcm0vY3B1L2xvd2xldmVsLlMgICAgICAgICAgICAg
+ICAgICAgIHwgIDM4ICsrCiBhcmNoL2FybS9jcHUvbW11LmggICAgICAgICAgICAgICAgICAgICAg
+ICAgfCAxNjAgKysrKysrKysKIGFyY2gvYXJtL2NwdS9tbXVfNjQuYyAgICAgICAgICAgICAgICAg
+ICAgICB8IDMzNSArKysrKysrKysrKysrKysrKwogYXJjaC9hcm0vY3B1L3N0YXJ0LmMgICAgICAg
+ICAgICAgICAgICAgICAgIHwgICAyICsKIGFyY2gvYXJtL2luY2x1ZGUvYXNtL2JpdG9wcy5oICAg
+ICAgICAgICAgICB8ICAgNSArCiBhcmNoL2FybS9pbmNsdWRlL2FzbS9jYWNoZS5oICAgICAgICAg
+ICAgICAgfCAgIDkgKwogYXJjaC9hcm0vaW5jbHVkZS9hc20vbW11LmggICAgICAgICAgICAgICAg
+IHwgICA0ICstCiBhcmNoL2FybS9pbmNsdWRlL2FzbS9wZ3RhYmxlLmggICAgICAgICAgICAgfCAg
+IDggKwogYXJjaC9hcm0vaW5jbHVkZS9hc20vc3lzdGVtLmggICAgICAgICAgICAgIHwgIDQ2ICsr
+LQogYXJjaC9hcm0vaW5jbHVkZS9hc20vc3lzdGVtX2luZm8uaCAgICAgICAgIHwgIDM4ICsrCiBh
+cmNoL2FybS9saWI2NC9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgfCAgMTYgKwogYXJjaC9h
+cm0vbGliNjQvYXJtbGludXguYyAgICAgICAgICAgICAgICAgIHwgMjc1ICsrKysrKysrKysrKysr
+CiBhcmNoL2FybS9saWI2NC9hc20tb2Zmc2V0cy5jICAgICAgICAgICAgICAgfCAgMTYgKwogYXJj
+aC9hcm0vbGliNjQvYmFyZWJveC5sZHMgICAgICAgICAgICAgICAgIHwgMTI1ICsrKysrKysKIGFy
+Y2gvYXJtL2xpYjY0L2JhcmVib3gubGRzLlMgICAgICAgICAgICAgICB8IDEyNSArKysrKysrCiBh
+cmNoL2FybS9saWI2NC9ib290bS5jICAgICAgICAgICAgICAgICAgICAgfCA1NzIgKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysKIGFyY2gvYXJtL2xpYjY0L2Jvb3R1LmMgICAgICAgICAgICAg
+ICAgICAgICB8ICA0NCArKysKIGFyY2gvYXJtL2xpYjY0L2Jvb3R6LmMgICAgICAgICAgICAgICAg
+ICAgICB8IDEzNiArKysrKysrCiBhcmNoL2FybS9saWI2NC9jb3B5X3RlbXBsYXRlLlMgICAgICAg
+ICAgICAgfCAxOTIgKysrKysrKysrKwogYXJjaC9hcm0vbGliNjQvZGl2MC5jICAgICAgICAgICAg
+ICAgICAgICAgIHwgIDI3ICsrCiBhcmNoL2FybS9saWI2NC9tZW1jcHkuUyAgICAgICAgICAgICAg
+ICAgICAgfCAgNzQgKysrKwogYXJjaC9hcm0vbGliNjQvbWVtc2V0LlMgICAgICAgICAgICAgICAg
+ICAgIHwgMjE1ICsrKysrKysrKysrCiBhcmNoL2FybS9saWI2NC9tb2R1bGUuYyAgICAgICAgICAg
+ICAgICAgICAgfCAgOTggKysrKysKIGFyY2gvYXJtL2xpYjY0L3BibC5sZHMuUyAgICAgICAgICAg
+ICAgICAgICB8ICA5NiArKysrKwogYXJjaC9hcm0vbGliNjQvcnVudGltZS1vZmZzZXQuUyAgICAg
+ICAgICAgIHwgIDUyICsrKwogYXJjaC9hcm0vbGliNjQvdW53aW5kLmMgICAgICAgICAgICAgICAg
+ICAgIHwgMzQ5ICsrKysrKysrKysrKysrKysrKwogYXJjaC9hcm0vbWFjaC12aXJ0L0tjb25maWcg
+ICAgICAgICAgICAgICAgIHwgIDE1ICsKIGFyY2gvYXJtL21hY2gtdmlydC9NYWtlZmlsZSAgICAg
+ICAgICAgICAgICB8ICAgMyArCiBhcmNoL2FybS9tYWNoLXZpcnQvZGV2aWNlcy5jICAgICAgICAg
+ICAgICAgfCAgMzAgKysKIGFyY2gvYXJtL21hY2gtdmlydC9pbmNsdWRlL21hY2gvZGVidWdfbGwu
+aCB8ICAyNCArKwogYXJjaC9hcm0vbWFjaC12aXJ0L2luY2x1ZGUvbWFjaC9kZXZpY2VzLmggIHwg
+IDEzICsKIGFyY2gvYXJtL21hY2gtdmlydC9sb3dsZXZlbC5jICAgICAgICAgICAgICB8ICAxOSAr
+CiBhcmNoL2FybS9tYWNoLXZpcnQvcmVzZXQuYyAgICAgICAgICAgICAgICAgfCAgMjQgKysKIDU1
+IGZpbGVzIGNoYW5nZWQsIDM5OTkgaW5zZXJ0aW9ucygrKSwgMTQgZGVsZXRpb25zKC0pCgoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
+aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
