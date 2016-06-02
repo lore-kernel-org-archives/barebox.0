@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b8Nfi-00048J-UD
- for barebox@lists.infradead.org; Thu, 02 Jun 2016 08:08:10 +0000
-Received: by mail-wm0-x243.google.com with SMTP id a136so13546759wme.0
- for <barebox@lists.infradead.org>; Thu, 02 Jun 2016 01:07:47 -0700 (PDT)
+ id 1b8Nfe-00047j-7a
+ for barebox@lists.infradead.org; Thu, 02 Jun 2016 08:08:02 +0000
+Received: by mail-wm0-x243.google.com with SMTP id a136so13546570wme.0
+ for <barebox@lists.infradead.org>; Thu, 02 Jun 2016 01:07:44 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Thu,  2 Jun 2016 10:06:55 +0200
-Message-Id: <1464854818-28653-10-git-send-email-poggi.raph@gmail.com>
+Date: Thu,  2 Jun 2016 10:06:53 +0200
+Message-Id: <1464854818-28653-8-git-send-email-poggi.raph@gmail.com>
 In-Reply-To: <1464854818-28653-1-git-send-email-poggi.raph@gmail.com>
 References: <1464854818-28653-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,139 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/12] arm: cpu: cpuinfo: add armv8 support
+Subject: [PATCH 07/12] arm: include: bitops: arm64 use generic __fls
 To: barebox@lists.infradead.org
 Cc: Raphael Poggi <poggi.raph@gmail.com>
 
 Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
 ---
- arch/arm/cpu/cpuinfo.c | 58 ++++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 54 insertions(+), 4 deletions(-)
+ arch/arm/include/asm/bitops.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm/cpu/cpuinfo.c b/arch/arm/cpu/cpuinfo.c
-index 8b22e9b..86e19d9 100644
---- a/arch/arm/cpu/cpuinfo.c
-+++ b/arch/arm/cpu/cpuinfo.c
-@@ -30,12 +30,15 @@
- #define CPU_ARCH_ARMv5TEJ	7
- #define CPU_ARCH_ARMv6		8
- #define CPU_ARCH_ARMv7		9
-+#define CPU_ARCH_ARMv8		10
- 
- #define ARM_CPU_PART_CORTEX_A5      0xC050
- #define ARM_CPU_PART_CORTEX_A7      0xC070
- #define ARM_CPU_PART_CORTEX_A8      0xC080
- #define ARM_CPU_PART_CORTEX_A9      0xC090
- #define ARM_CPU_PART_CORTEX_A15     0xC0F0
-+#define ARM_CPU_PART_CORTEX_A53	    0xD030
-+#define ARM_CPU_PART_CORTEX_A57	    0xD070
- 
- static void decode_cache(unsigned long size)
- {
-@@ -60,6 +63,25 @@ static int do_cpuinfo(int argc, char *argv[])
- 	int i;
- 	int cpu_arch;
- 
-+#ifdef CONFIG_CPU_64v8
-+	__asm__ __volatile__(
-+		"mrs	%0, midr_el1\n"
-+		: "=r" (mainid)
-+		:
-+		: "memory");
+diff --git a/arch/arm/include/asm/bitops.h b/arch/arm/include/asm/bitops.h
+index 138ebe2..b51225e 100644
+--- a/arch/arm/include/asm/bitops.h
++++ b/arch/arm/include/asm/bitops.h
+@@ -177,6 +177,11 @@ static inline unsigned long ffz(unsigned long word)
+ #include <asm-generic/bitops/ffs.h>
+ #include <asm-generic/bitops/fls.h>
+ #endif		/* __ARM__USE_GENERIC_FF */
 +
-+	__asm__ __volatile__(
-+		"mrs	%0, ctr_el0\n"
-+		: "=r" (cache)
-+		:
-+		: "memory");
-+
-+	__asm__ __volatile__(
-+		"mrs	%0, sctlr_el1\n"
-+		: "=r" (cr)
-+		:
-+		: "memory");
-+#else
- 	__asm__ __volatile__(
- 		"mrc    p15, 0, %0, c0, c0, 0   @ read control reg\n"
- 		: "=r" (mainid)
-@@ -74,9 +96,10 @@ static int do_cpuinfo(int argc, char *argv[])
- 
- 	__asm__ __volatile__(
- 		"mrc    p15, 0, %0, c1, c0, 0   @ read control reg\n"
--			: "=r" (cr)
--			:
--			: "memory");
-+		: "=r" (cr)
-+		:
-+		: "memory");
++#if __LINUX_ARM_ARCH__ == 8
++#include <asm-generic/bitops/__fls.h>
 +#endif
- 
- 	switch (mainid >> 24) {
- 	case 0x41:
-@@ -107,6 +130,23 @@ static int do_cpuinfo(int argc, char *argv[])
- 		if (cpu_arch)
- 			cpu_arch += CPU_ARCH_ARMv3;
- 	} else if ((mainid & 0x000f0000) == 0x000f0000) {
-+#ifdef CONFIG_CPU_64v8
-+		unsigned int isar2;
 +
-+		__asm__ __volatile__(
-+			"mrs	%0, id_isar2_el1\n"
-+			: "=r" (isar2)
-+			:
-+			: "memory");
-+
-+
-+		/* Check Load/Store acquire to check if ARMv8 or not */
-+
-+		if (isar2 & 0x2)
-+			cpu_arch = CPU_ARCH_ARMv8;
-+		else
-+			cpu_arch = CPU_ARCH_UNKNOWN;
-+#else
- 		unsigned int mmfr0;
+ #include <asm-generic/bitops/fls64.h>
  
- 		/* Revised CPUID format. Read the Memory Model Feature
-@@ -121,6 +161,7 @@ static int do_cpuinfo(int argc, char *argv[])
- 			cpu_arch = CPU_ARCH_ARMv6;
- 		else
- 			cpu_arch = CPU_ARCH_UNKNOWN;
-+#endif
- 	} else
- 		cpu_arch = CPU_ARCH_UNKNOWN;
- 
-@@ -152,6 +193,9 @@ static int do_cpuinfo(int argc, char *argv[])
- 	case CPU_ARCH_ARMv7:
- 		architecture = "v7";
- 		break;
-+	case CPU_ARCH_ARMv8:
-+		architecture = "v8";
-+		break;
- 	case CPU_ARCH_UNKNOWN:
- 	default:
- 		architecture = "Unknown";
-@@ -160,7 +204,7 @@ static int do_cpuinfo(int argc, char *argv[])
- 	printf("implementer: %s\narchitecture: %s\n",
- 			implementer, architecture);
- 
--	if (cpu_arch == CPU_ARCH_ARMv7) {
-+	if (cpu_arch >= CPU_ARCH_ARMv7) {
- 		unsigned int major, minor;
- 		char *part;
- 		major = (mainid >> 20) & 0xf;
-@@ -181,6 +225,12 @@ static int do_cpuinfo(int argc, char *argv[])
- 		case ARM_CPU_PART_CORTEX_A15:
- 			part = "Cortex-A15";
- 			break;
-+		case ARM_CPU_PART_CORTEX_A53:
-+			part = "Cortex-A53";
-+			break;
-+		case ARM_CPU_PART_CORTEX_A57:
-+			part = "Cortex-A57";
-+			break;
- 		default:
- 			part = "unknown";
- 		}
+ #include <asm-generic/bitops/hweight.h>
 -- 
 2.1.0
 
