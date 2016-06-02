@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x241.google.com ([2607:f8b0:400e:c03::241])
+Received: from mail-pa0-x244.google.com ([2607:f8b0:400e:c03::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b8KjH-000238-3I
- for barebox@lists.infradead.org; Thu, 02 Jun 2016 04:59:37 +0000
-Received: by mail-pa0-x241.google.com with SMTP id gp3so2238479pac.2
- for <barebox@lists.infradead.org>; Wed, 01 Jun 2016 21:59:14 -0700 (PDT)
+ id 1b8KjI-00023B-AZ
+ for barebox@lists.infradead.org; Thu, 02 Jun 2016 04:59:40 +0000
+Received: by mail-pa0-x244.google.com with SMTP id fg1so2236926pad.3
+ for <barebox@lists.infradead.org>; Wed, 01 Jun 2016 21:59:15 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  1 Jun 2016 21:58:36 -0700
-Message-Id: <1464843531-1824-8-git-send-email-andrew.smirnov@gmail.com>
+Date: Wed,  1 Jun 2016 21:58:38 -0700
+Message-Id: <1464843531-1824-10-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1464843531-1824-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1464843531-1824-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,114 +23,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 07/22] e1000: Remove unneeded i210 specific register code
+Subject: [PATCH v2 09/22] e1000: Remove 'use_eewr' parameter
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Despite having EEC(EECD) and EERD at "non-standard" offsets i210
-aliases those registers to be accesible via regular addresses so none
-of the code removed by this commit is really necessary.
+Remove 'use_eewr' from 'struct e1000_eeprom_info' since it is not used
+anywhere in the code.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/e1000/e1000.h  |  2 --
- drivers/net/e1000/eeprom.c | 25 +++++--------------------
- drivers/net/e1000/main.c   |  5 +++--
- 3 files changed, 8 insertions(+), 24 deletions(-)
+ drivers/net/e1000/e1000.h  | 1 -
+ drivers/net/e1000/eeprom.c | 7 -------
+ 2 files changed, 8 deletions(-)
 
 diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
-index 7c5c98b..d75c707 100644
+index 1d0b3c6..585e3ff 100644
 --- a/drivers/net/e1000/e1000.h
 +++ b/drivers/net/e1000/e1000.h
-@@ -404,9 +404,7 @@ struct e1000_tx_desc {
- #define E1000_CTRL     0x00000	/* Device Control - RW */
- #define E1000_STATUS   0x00008	/* Device Status - RO */
- #define E1000_EECD     0x00010	/* EEPROM/Flash Control - RW */
--#define E1000_I210_EECD     0x12010	/* EEPROM/Flash Control - RW */
- #define E1000_EERD     0x00014	/* EEPROM Read - RW */
--#define E1000_I210_EERD     0x12014	/* EEPROM Read - RW */
- #define E1000_CTRL_EXT 0x00018	/* Extended Device Control - RW */
- #define E1000_MDIC     0x00020	/* MDI Control - RW */
- #define E1000_FCAL     0x00028	/* Flow Control Address Low - RW */
+@@ -695,7 +695,6 @@ struct e1000_eeprom_info {
+ 	uint16_t delay_usec;
+ 	uint16_t page_size;
+ 	bool use_eerd;
+-	bool use_eewr;
+ };
+ 
+ #define E1000_EEPROM_SWDPIN0   0x0001	/* SWDPIN 0 EEPROM Value */
 diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-index c16f69a..497fb7b 100644
+index c2dfad5..b6414b2 100644
 --- a/drivers/net/e1000/eeprom.c
 +++ b/drivers/net/e1000/eeprom.c
-@@ -274,10 +274,7 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
- 	int32_t ret_val = E1000_SUCCESS;
- 	uint16_t eeprom_size;
+@@ -289,7 +289,6 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
+ 		eeprom->address_bits = 6;
+ 		eeprom->delay_usec = 50;
+ 		eeprom->use_eerd = false;
+-		eeprom->use_eewr = false;
+ 	break;
+ 	case e1000_82540:
+ 	case e1000_82545:
+@@ -307,7 +306,6 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
+ 			eeprom->address_bits = 6;
+ 		}
+ 		eeprom->use_eerd = false;
+-		eeprom->use_eewr = false;
+ 		break;
+ 	case e1000_82541:
+ 	case e1000_82541_rev_2:
+@@ -337,7 +335,6 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
+ 			}
+ 		}
+ 		eeprom->use_eerd = false;
+-		eeprom->use_eewr = false;
+ 		break;
+ 	case e1000_82571:
+ 	case e1000_82572:
+@@ -352,7 +349,6 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
+ 			eeprom->address_bits = 8;
+ 		}
+ 		eeprom->use_eerd = false;
+-		eeprom->use_eewr = false;
+ 		break;
+ 	case e1000_82573:
+ 	case e1000_82574:
+@@ -368,7 +364,6 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
+ 		}
+ 		if (e1000_is_onboard_nvm_eeprom(hw) == false) {
+ 			eeprom->use_eerd = true;
+-			eeprom->use_eewr = true;
  
--	if (hw->mac_type == e1000_igb)
--		eecd = e1000_read_reg(hw, E1000_I210_EECD);
--	else
--		eecd = e1000_read_reg(hw, E1000_EECD);
-+	eecd = e1000_read_reg(hw, E1000_EECD);
- 
- 	DEBUGFUNC();
- 
-@@ -455,10 +452,7 @@ static int32_t e1000_poll_eerd_eewr_done(struct e1000_hw *hw, int eerd)
- 
- 	for (i = 0; i < attempts; i++) {
- 		if (eerd == E1000_EEPROM_POLL_READ) {
--			if (hw->mac_type == e1000_igb)
--				reg = e1000_read_reg(hw, E1000_I210_EERD);
--			else
--				reg = e1000_read_reg(hw, E1000_EERD);
-+			reg = e1000_read_reg(hw, E1000_EERD);
- 		} else {
- 			if (hw->mac_type == e1000_igb)
- 				reg = e1000_read_reg(hw, E1000_I210_EEWR);
-@@ -496,24 +490,15 @@ static int32_t e1000_read_eeprom_eerd(struct e1000_hw *hw,
- 		eerd = ((offset+i) << E1000_EEPROM_RW_ADDR_SHIFT) +
- 			E1000_EEPROM_RW_REG_START;
- 
--		if (hw->mac_type == e1000_igb)
--			e1000_write_reg(hw, E1000_I210_EERD, eerd);
--		else
--			e1000_write_reg(hw, E1000_EERD, eerd);
-+		e1000_write_reg(hw, E1000_EERD, eerd);
- 
- 		error = e1000_poll_eerd_eewr_done(hw, E1000_EEPROM_POLL_READ);
- 
- 		if (error)
- 			break;
- 
--		if (hw->mac_type == e1000_igb) {
--			data[i] = (e1000_read_reg(hw, E1000_I210_EERD) >>
--				E1000_EEPROM_RW_REG_DATA);
--		} else {
--			data[i] = (e1000_read_reg(hw, E1000_EERD) >>
--				E1000_EEPROM_RW_REG_DATA);
--		}
--
-+		data[i] = (e1000_read_reg(hw, E1000_EERD) >>
-+			   E1000_EEPROM_RW_REG_DATA);
- 	}
- 
- 	return error;
-diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
-index 11a0a2f..f1055ea 100644
---- a/drivers/net/e1000/main.c
-+++ b/drivers/net/e1000/main.c
-@@ -549,7 +549,7 @@ static void e1000_reset_hw(struct e1000_hw *hw)
- 		reg = e1000_read_reg(hw, E1000_STATUS);
- 		if (reg & E1000_STATUS_PF_RST_DONE)
- 			dev_dbg(hw->dev, "PF OK\n");
--		reg = e1000_read_reg(hw, E1000_I210_EECD);
-+		reg = e1000_read_reg(hw, E1000_EECD);
- 		if (reg & E1000_EECD_AUTO_RD)
- 			dev_dbg(hw->dev, "EEC OK\n");
- 	} else if (hw->mac_type < e1000_82540) {
-@@ -3564,7 +3564,8 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		dev_err(&pdev->dev, "EEPROM is invalid!\n");
- 		return -EINVAL;
- 	}
--	if ((e1000_read_reg(hw, E1000_I210_EECD) & E1000_EECD_FLUPD) &&
-+
-+	if ((e1000_read_reg(hw, E1000_EECD) & E1000_EECD_FLUPD) &&
- 	    e1000_validate_eeprom_checksum(hw))
- 		return -EINVAL;
- 
+ 			eeprom->type = e1000_eeprom_flash;
+ 			eeprom->word_size = 2048;
+@@ -391,7 +386,6 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
+ 			eeprom->address_bits = 8;
+ 		}
+ 		eeprom->use_eerd = true;
+-		eeprom->use_eewr = false;
+ 		break;
+ 	case e1000_igb:
+ 		/* i210 has 4k of iNVM mapped as EEPROM */
+@@ -401,7 +395,6 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
+ 		eeprom->page_size = 32;
+ 		eeprom->address_bits = 16;
+ 		eeprom->use_eerd = true;
+-		eeprom->use_eewr = false;
+ 		break;
+ 	default:
+ 		break;
 -- 
 2.5.5
 
