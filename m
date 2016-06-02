@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x244.google.com ([2607:f8b0:400e:c03::244])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b8KjI-00023J-AW
- for barebox@lists.infradead.org; Thu, 02 Jun 2016 04:59:41 +0000
-Received: by mail-pa0-x244.google.com with SMTP id gp3so2238631pac.2
- for <barebox@lists.infradead.org>; Wed, 01 Jun 2016 21:59:18 -0700 (PDT)
+ id 1b8KjF-00023C-L3
+ for barebox@lists.infradead.org; Thu, 02 Jun 2016 04:59:36 +0000
+Received: by mail-pf0-x244.google.com with SMTP id b124so6535236pfb.0
+ for <barebox@lists.infradead.org>; Wed, 01 Jun 2016 21:59:16 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  1 Jun 2016 21:58:42 -0700
-Message-Id: <1464843531-1824-14-git-send-email-andrew.smirnov@gmail.com>
+Date: Wed,  1 Jun 2016 21:58:39 -0700
+Message-Id: <1464843531-1824-11-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1464843531-1824-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1464843531-1824-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,93 +23,110 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 13/22] e1000: Consolidate SPI EEPROM init code
+Subject: [PATCH v2 10/22] e1000: Remove 'page_size'
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-All of the chips that bitbang SPI to access EEPROM appear to be
-configured in the same way, so move common code into a separate
-function and make use of it.
+Remove 'page_size' from 'struct e1000_eeprom_info' since it is not
+used anywhere in the code.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/e1000/eeprom.c | 46 +++++++++++++++++++++-------------------------
- 1 file changed, 21 insertions(+), 25 deletions(-)
+ drivers/net/e1000/e1000.h  |  1 -
+ drivers/net/e1000/eeprom.c | 32 +++++++++++---------------------
+ 2 files changed, 11 insertions(+), 22 deletions(-)
 
+diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
+index 585e3ff..98954d9 100644
+--- a/drivers/net/e1000/e1000.h
++++ b/drivers/net/e1000/e1000.h
+@@ -693,7 +693,6 @@ struct e1000_eeprom_info {
+ 	uint16_t opcode_bits;
+ 	uint16_t address_bits;
+ 	uint16_t delay_usec;
+-	uint16_t page_size;
+ 	bool use_eerd;
+ };
+ 
 diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-index 55a8f96..89514eb 100644
+index b6414b2..e4ef5f9 100644
 --- a/drivers/net/e1000/eeprom.c
 +++ b/drivers/net/e1000/eeprom.c
-@@ -260,6 +260,22 @@ static int32_t e1000_acquire_eeprom(struct e1000_hw *hw)
- 	return E1000_SUCCESS;
- }
- 
-+static void e1000_eeprom_uses_spi(struct e1000_eeprom_info *eeprom,
-+				  uint32_t eecd)
-+{
-+	eeprom->type = e1000_eeprom_spi;
-+	eeprom->opcode_bits = 8;
-+	eeprom->delay_usec = 1;
-+	if (eecd & E1000_EECD_ADDR_BITS) {
-+		eeprom->address_bits = 16;
-+	} else {
-+		eeprom->address_bits = 8;
-+	}
-+
-+	eeprom->use_eerd = false;
-+}
-+
-+
- /******************************************************************************
-  * Sets up eeprom variables in the hw struct.  Must be called after mac_type
-  * is configured.  Additionally, if this is ICH8, the flash controller GbE
-@@ -312,13 +328,7 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
- 	case e1000_82547:
- 	case e1000_82547_rev_2:
- 		if (eecd & E1000_EECD_TYPE) {
--			eeprom->type = e1000_eeprom_spi;
--			eeprom->opcode_bits = 8;
--			eeprom->delay_usec = 1;
--			if (eecd & E1000_EECD_ADDR_BITS)
--				eeprom->address_bits = 16;
--			else
--				eeprom->address_bits = 8;
-+			e1000_eeprom_uses_spi(eeprom, eecd);
+@@ -315,13 +315,10 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
+ 			eeprom->type = e1000_eeprom_spi;
+ 			eeprom->opcode_bits = 8;
+ 			eeprom->delay_usec = 1;
+-			if (eecd & E1000_EECD_ADDR_BITS) {
+-				eeprom->page_size = 32;
++			if (eecd & E1000_EECD_ADDR_BITS)
+ 				eeprom->address_bits = 16;
+-			} else {
+-				eeprom->page_size = 8;
++			else
+ 				eeprom->address_bits = 8;
+-			}
  		} else {
  			eeprom->type = e1000_eeprom_microwire;
  			eeprom->opcode_bits = 3;
-@@ -335,27 +345,13 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
- 		break;
- 	case e1000_82571:
- 	case e1000_82572:
--		eeprom->type = e1000_eeprom_spi;
--		eeprom->opcode_bits = 8;
--		eeprom->delay_usec = 1;
--		if (eecd & E1000_EECD_ADDR_BITS)
--			eeprom->address_bits = 16;
--		else
--			eeprom->address_bits = 8;
--
--		eeprom->use_eerd = false;
-+		e1000_eeprom_uses_spi(eeprom, eecd);
+@@ -341,13 +338,11 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
+ 		eeprom->type = e1000_eeprom_spi;
+ 		eeprom->opcode_bits = 8;
+ 		eeprom->delay_usec = 1;
+-		if (eecd & E1000_EECD_ADDR_BITS) {
+-			eeprom->page_size = 32;
++		if (eecd & E1000_EECD_ADDR_BITS)
+ 			eeprom->address_bits = 16;
+-		} else {
+-			eeprom->page_size = 8;
++		else
+ 			eeprom->address_bits = 8;
+-		}
++
+ 		eeprom->use_eerd = false;
  		break;
  	case e1000_82573:
- 	case e1000_82574:
--		eeprom->type = e1000_eeprom_spi;
--		eeprom->opcode_bits = 8;
--		eeprom->delay_usec = 1;
--		if (eecd & E1000_EECD_ADDR_BITS)
--			eeprom->address_bits = 16;
--		else
--			eeprom->address_bits = 8;
--
--		if (e1000_is_onboard_nvm_eeprom(hw) == false) {
-+		if (e1000_is_onboard_nvm_eeprom(hw)) {
-+			e1000_eeprom_uses_spi(eeprom, eecd);
-+		} else {
+@@ -355,13 +350,11 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
+ 		eeprom->type = e1000_eeprom_spi;
+ 		eeprom->opcode_bits = 8;
+ 		eeprom->delay_usec = 1;
+-		if (eecd & E1000_EECD_ADDR_BITS) {
+-			eeprom->page_size = 32;
++		if (eecd & E1000_EECD_ADDR_BITS)
+ 			eeprom->address_bits = 16;
+-		} else {
+-			eeprom->page_size = 8;
++		else
+ 			eeprom->address_bits = 8;
+-		}
++
+ 		if (e1000_is_onboard_nvm_eeprom(hw) == false) {
  			eeprom->use_eerd = true;
  
- 			eeprom->type = e1000_eeprom_flash;
+@@ -378,13 +371,11 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
+ 		eeprom->type = e1000_eeprom_spi;
+ 		eeprom->opcode_bits = 8;
+ 		eeprom->delay_usec = 1;
+-		if (eecd & E1000_EECD_ADDR_BITS) {
+-			eeprom->page_size = 32;
++		if (eecd & E1000_EECD_ADDR_BITS)
+ 			eeprom->address_bits = 16;
+-		} else {
+-			eeprom->page_size = 8;
++		else
+ 			eeprom->address_bits = 8;
+-		}
++
+ 		eeprom->use_eerd = true;
+ 		break;
+ 	case e1000_igb:
+@@ -392,7 +383,6 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
+ 		eeprom->type = e1000_eeprom_invm;
+ 		eeprom->opcode_bits = 8;
+ 		eeprom->delay_usec = 1;
+-		eeprom->page_size = 32;
+ 		eeprom->address_bits = 16;
+ 		eeprom->use_eerd = true;
+ 		break;
 -- 
 2.5.5
 
