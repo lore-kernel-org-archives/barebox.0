@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-oi0-x244.google.com ([2607:f8b0:4003:c06::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1b8lDh-00085F-7p
- for barebox@lists.infradead.org; Fri, 03 Jun 2016 09:16:45 +0000
-Date: Fri, 3 Jun 2016 11:16:23 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160603091623.GY31666@pengutronix.de>
-References: <1464854818-28653-1-git-send-email-poggi.raph@gmail.com>
+ id 1b8lN7-0004dx-BH
+ for barebox@lists.infradead.org; Fri, 03 Jun 2016 09:26:29 +0000
+Received: by mail-oi0-x244.google.com with SMTP id x130so15955675oia.3
+ for <barebox@lists.infradead.org>; Fri, 03 Jun 2016 02:26:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1464854818-28653-1-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <20160603091623.GY31666@pengutronix.de>
+References: <1464854818-28653-1-git-send-email-poggi.raph@gmail.com>
+ <20160603091623.GY31666@pengutronix.de>
+From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <poggi.raph@gmail.com>
+Date: Fri, 3 Jun 2016 11:25:28 +0200
+Message-ID: <CACqcpZAxDFsgcQzsii4kkKiUy+GRec8Hk3xFa7=2=tV2Yv-WRg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,41 +20,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 0/12] Add basic support for arm64
-To: Raphael Poggi <poggi.raph@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jun 02, 2016 at 10:06:46AM +0200, Raphael Poggi wrote:
-> Hello,
-> 
-> This patch series introduces a basic support for arm64.
-> 
-> The arm64 code is merged in the current arch/arm directory.
-> I try to be iterative in the merge process, and find correct solutions
-> to handle both architecture at some places.
-> 
-> I test the patch series by compiling arm64 virt machine and arm32 vexpress-a9 and test it
-> in qemu, everything seems to work.
-
-Overall this looks quite good already and I think we can soon start
-merging the first steps. What's important for me is that arm32 is
-unaffected by the changes (seems to be the case for this series) and
-that we do not merge code that does not work and is only present because
-it's copied from arm32
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgoyMDE2LTA2LTAzIDExOjE2IEdNVCswMjowMCBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVu
+Z3V0cm9uaXguZGU+Ogo+IE9uIFRodSwgSnVuIDAyLCAyMDE2IGF0IDEwOjA2OjQ2QU0gKzAyMDAs
+IFJhcGhhZWwgUG9nZ2kgd3JvdGU6Cj4+IEhlbGxvLAo+Pgo+PiBUaGlzIHBhdGNoIHNlcmllcyBp
+bnRyb2R1Y2VzIGEgYmFzaWMgc3VwcG9ydCBmb3IgYXJtNjQuCj4+Cj4+IFRoZSBhcm02NCBjb2Rl
+IGlzIG1lcmdlZCBpbiB0aGUgY3VycmVudCBhcmNoL2FybSBkaXJlY3RvcnkuCj4+IEkgdHJ5IHRv
+IGJlIGl0ZXJhdGl2ZSBpbiB0aGUgbWVyZ2UgcHJvY2VzcywgYW5kIGZpbmQgY29ycmVjdCBzb2x1
+dGlvbnMKPj4gdG8gaGFuZGxlIGJvdGggYXJjaGl0ZWN0dXJlIGF0IHNvbWUgcGxhY2VzLgo+Pgo+
+PiBJIHRlc3QgdGhlIHBhdGNoIHNlcmllcyBieSBjb21waWxpbmcgYXJtNjQgdmlydCBtYWNoaW5l
+IGFuZCBhcm0zMiB2ZXhwcmVzcy1hOSBhbmQgdGVzdCBpdAo+PiBpbiBxZW11LCBldmVyeXRoaW5n
+IHNlZW1zIHRvIHdvcmsuCj4KPiBPdmVyYWxsIHRoaXMgbG9va3MgcXVpdGUgZ29vZCBhbHJlYWR5
+IGFuZCBJIHRoaW5rIHdlIGNhbiBzb29uIHN0YXJ0Cj4gbWVyZ2luZyB0aGUgZmlyc3Qgc3RlcHMu
+IFdoYXQncyBpbXBvcnRhbnQgZm9yIG1lIGlzIHRoYXQgYXJtMzIgaXMKPiB1bmFmZmVjdGVkIGJ5
+IHRoZSBjaGFuZ2VzIChzZWVtcyB0byBiZSB0aGUgY2FzZSBmb3IgdGhpcyBzZXJpZXMpIGFuZAo+
+IHRoYXQgd2UgZG8gbm90IG1lcmdlIGNvZGUgdGhhdCBkb2VzIG5vdCB3b3JrIGFuZCBpcyBvbmx5
+IHByZXNlbnQgYmVjYXVzZQo+IGl0J3MgY29waWVkIGZyb20gYXJtMzIKClRoYW5rcyBmb3IgdGhl
+IGNvZGUgcmV2aWV3LCBJIHdpbGwgZml4IGFuZCByZXdvcmsgYWxsIHRoZSBwb2ludHMgeW91CnJh
+aXNlZCBhbmQgc2VuZCBhIHYyLgoKSSB3aWxsIHRha2UgY2FyZSB0byBkb24ndCBhZGQgY29kZSB3
+aGljaCB3aWxsIGJlIHVudXNlZCAobGlrZSBJIGRpZCBpbgpsaWI2NCBkaXJlY3RvcnkuLi4pIGZv
+ciBhcm02NC4KClJhcGhhw6tsCgo+Cj4gU2FzY2hhCj4KPiAtLQo+IFBlbmd1dHJvbml4IGUuSy4g
+ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
+Cj4gSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3
+dy5wZW5ndXRyb25peC5kZS8gIHwKPiBQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0s
+IEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNnZXJpY2h0IEhp
+bGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1
+NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
+Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
