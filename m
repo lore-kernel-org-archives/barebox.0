@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+Received: from mail-oi0-x241.google.com ([2607:f8b0:4003:c06::241])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bAGao-00008Z-4k
- for barebox@lists.infradead.org; Tue, 07 Jun 2016 12:58:51 +0000
-Received: by mail-lf0-x243.google.com with SMTP id h68so16151363lfh.3
- for <barebox@lists.infradead.org>; Tue, 07 Jun 2016 05:58:29 -0700 (PDT)
-Date: Tue, 7 Jun 2016 15:59:51 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20160607155951.20226a685e377ba8ba7d78d4@gmail.com>
-In-Reply-To: <CACqcpZBraDOWWpbk4Qtpi6SKTzJVuDp-fLLn0vpn=a+yJeVHLQ@mail.gmail.com>
+ id 1bAGt6-0001zy-KN
+ for barebox@lists.infradead.org; Tue, 07 Jun 2016 13:17:45 +0000
+Received: by mail-oi0-x241.google.com with SMTP id k63so4239803oib.2
+ for <barebox@lists.infradead.org>; Tue, 07 Jun 2016 06:17:24 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20160607155951.20226a685e377ba8ba7d78d4@gmail.com>
 References: <1464854818-28653-1-git-send-email-poggi.raph@gmail.com>
  <1464854818-28653-13-git-send-email-poggi.raph@gmail.com>
  <20160607140006.a7739e6fe47c96873ad06534@gmail.com>
  <CACqcpZBraDOWWpbk4Qtpi6SKTzJVuDp-fLLn0vpn=a+yJeVHLQ@mail.gmail.com>
-Mime-Version: 1.0
+ <20160607155951.20226a685e377ba8ba7d78d4@gmail.com>
+From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <poggi.raph@gmail.com>
+Date: Tue, 7 Jun 2016 15:16:44 +0200
+Message-ID: <CACqcpZBf5mW+h-w9WxbOyuRNuC=gF_a3EY9o=Zmpyt=D7D9nrQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,85 +23,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 12/12] arm: boards: add virt board
-To: =?ISO-8859-1?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, 7 Jun 2016 13:53:49 +0200
-Rapha=EBl Poggi <poggi.raph@gmail.com> wrote:
-
-> 2016-06-07 13:00 GMT+02:00 Antony Pavlov <antonynpavlov@gmail.com>:
-> > On Thu,  2 Jun 2016 10:06:58 +0200
-> > Raphael Poggi <poggi.raph@gmail.com> wrote:
-> >
-> >> Add qemu virt board which emulates arm64 board.
-> >>
-> >> Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
-> >> ---
-> >>  arch/arm/Kconfig                           |  9 ++++
-> >>  arch/arm/boards/Makefile                   |  1 +
-> >>  arch/arm/boards/virt/Kconfig               |  8 ++++
-> >
-> > Can we use a more descriptive 'qemu-virt' name for this machine/board i=
-nstead of 'virt'?
-> =
-
-> Qemu virt machine support armv7 and armv8 cpu, maybe we can use the
-> name "mach-qemu" for the machine and "qemu-virt64" for the board.
-> =
-
-> With this approach we use a generic name for the machine (since qemu
-> virt machine support armv7/armv8, we do not need to distinguish
-> between arm/arm64),
-> and made the distinction arm/arm64 only in board name.
-> =
-
-> This also lets the possibility, for someone who wants to add support
-> for qemu virt arm32 board, to not create another machine folder.
-> =
-
-> What do you think about that ?
-
-So you are proposing to introduce these directories:
-
-  arch/arm/boards/qemu-virt64/
-  arch/arm/mach-qemu/
-
-I propose to use 'arch/arm/mach-qemu-virt' for machine dir,
-because qemu supports several arm-based machines, not only the virt machine.
-
-On the other hand the 'mach-qemu-virt' name is too long
-and 'mach-qemu' may be is a better solution.
-
-
-> >
-> >>  arch/arm/boards/virt/Makefile              |  1 +
-> >>  arch/arm/boards/virt/env/bin/_update       | 36 ++++++++++++++++
-> >>  arch/arm/boards/virt/env/bin/boot          | 38 +++++++++++++++++
-> >
-> > ... skipped ...
-> >
-> > --
-> > Best regards,
-> >   Antony Pavlov
-> >
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+MjAxNi0wNi0wNyAxNDo1OSBHTVQrMDI6MDAgQW50b255IFBhdmxvdiA8YW50b255bnBhdmxvdkBn
+bWFpbC5jb20+Ogo+IE9uIFR1ZSwgNyBKdW4gMjAxNiAxMzo1Mzo0OSArMDIwMAo+IFJhcGhhw6ts
+IFBvZ2dpIDxwb2dnaS5yYXBoQGdtYWlsLmNvbT4gd3JvdGU6Cj4KPj4gMjAxNi0wNi0wNyAxMzow
+MCBHTVQrMDI6MDAgQW50b255IFBhdmxvdiA8YW50b255bnBhdmxvdkBnbWFpbC5jb20+Ogo+PiA+
+IE9uIFRodSwgIDIgSnVuIDIwMTYgMTA6MDY6NTggKzAyMDAKPj4gPiBSYXBoYWVsIFBvZ2dpIDxw
+b2dnaS5yYXBoQGdtYWlsLmNvbT4gd3JvdGU6Cj4+ID4KPj4gPj4gQWRkIHFlbXUgdmlydCBib2Fy
+ZCB3aGljaCBlbXVsYXRlcyBhcm02NCBib2FyZC4KPj4gPj4KPj4gPj4gU2lnbmVkLW9mZi1ieTog
+UmFwaGFlbCBQb2dnaSA8cG9nZ2kucmFwaEBnbWFpbC5jb20+Cj4+ID4+IC0tLQo+PiA+PiAgYXJj
+aC9hcm0vS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDkgKysrKwo+PiA+PiAg
+YXJjaC9hcm0vYm9hcmRzL01ha2VmaWxlICAgICAgICAgICAgICAgICAgIHwgIDEgKwo+PiA+PiAg
+YXJjaC9hcm0vYm9hcmRzL3ZpcnQvS2NvbmZpZyAgICAgICAgICAgICAgIHwgIDggKysrKwo+PiA+
+Cj4+ID4gQ2FuIHdlIHVzZSBhIG1vcmUgZGVzY3JpcHRpdmUgJ3FlbXUtdmlydCcgbmFtZSBmb3Ig
+dGhpcyBtYWNoaW5lL2JvYXJkIGluc3RlYWQgb2YgJ3ZpcnQnPwo+Pgo+PiBRZW11IHZpcnQgbWFj
+aGluZSBzdXBwb3J0IGFybXY3IGFuZCBhcm12OCBjcHUsIG1heWJlIHdlIGNhbiB1c2UgdGhlCj4+
+IG5hbWUgIm1hY2gtcWVtdSIgZm9yIHRoZSBtYWNoaW5lIGFuZCAicWVtdS12aXJ0NjQiIGZvciB0
+aGUgYm9hcmQuCj4+Cj4+IFdpdGggdGhpcyBhcHByb2FjaCB3ZSB1c2UgYSBnZW5lcmljIG5hbWUg
+Zm9yIHRoZSBtYWNoaW5lIChzaW5jZSBxZW11Cj4+IHZpcnQgbWFjaGluZSBzdXBwb3J0IGFybXY3
+L2FybXY4LCB3ZSBkbyBub3QgbmVlZCB0byBkaXN0aW5ndWlzaAo+PiBiZXR3ZWVuIGFybS9hcm02
+NCksCj4+IGFuZCBtYWRlIHRoZSBkaXN0aW5jdGlvbiBhcm0vYXJtNjQgb25seSBpbiBib2FyZCBu
+YW1lLgo+Pgo+PiBUaGlzIGFsc28gbGV0cyB0aGUgcG9zc2liaWxpdHksIGZvciBzb21lb25lIHdo
+byB3YW50cyB0byBhZGQgc3VwcG9ydAo+PiBmb3IgcWVtdSB2aXJ0IGFybTMyIGJvYXJkLCB0byBu
+b3QgY3JlYXRlIGFub3RoZXIgbWFjaGluZSBmb2xkZXIuCj4+Cj4+IFdoYXQgZG8geW91IHRoaW5r
+IGFib3V0IHRoYXQgPwo+Cj4gU28geW91IGFyZSBwcm9wb3NpbmcgdG8gaW50cm9kdWNlIHRoZXNl
+IGRpcmVjdG9yaWVzOgo+Cj4gICBhcmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0NjQvCj4gICBhcmNo
+L2FybS9tYWNoLXFlbXUvCgpZZXMsIGV4YWN0bHkuCgo+Cj4gSSBwcm9wb3NlIHRvIHVzZSAnYXJj
+aC9hcm0vbWFjaC1xZW11LXZpcnQnIGZvciBtYWNoaW5lIGRpciwKPiBiZWNhdXNlIHFlbXUgc3Vw
+cG9ydHMgc2V2ZXJhbCBhcm0tYmFzZWQgbWFjaGluZXMsIG5vdCBvbmx5IHRoZSB2aXJ0IG1hY2hp
+bmUuCj4KPiBPbiB0aGUgb3RoZXIgaGFuZCB0aGUgJ21hY2gtcWVtdS12aXJ0JyBuYW1lIGlzIHRv
+byBsb25nCj4gYW5kICdtYWNoLXFlbXUnIG1heSBiZSBpcyBhIGJldHRlciBzb2x1dGlvbi4KCiJt
+YWNoLXFlbXUtdmlydCIgc2VlbXMgdG9vIGxvbmcuCgpBbm90aGVyIHByb3Bvc2l0aW9uOiAgd2Ug
+Y2FuIGNob29zZSAibWFjaC1xZW11IiwgYW5kIHRvIGRpc3Rpbmd1aXNoCnFlbXUgbWFjaGluZSB1
+c2UgdGhlIHNhbWUgd2F5IGFzIG1hY2gtYXQ5MSwgaWU6CgphcmNoL2FybS9tYWNoLXFlbXUvCiAg
+LS0+IHZpcnRfZGV2aWNlcy5jCiAgLS0+IHZpcnRfbG93bGV2ZWwuYwogIC0tPiBldGMuLi4KClRo
+aXMgYWxzbyBpbXBsaWVzIHRvIGFkZCBzb21lIEtjb25maWcgZW50cmllcyB0byBoYW5kbGUgdGhl
+IG11bHRpcGxlCnFlbXUgbWFjaGluZXMuCgo+Cj4KPj4gPgo+PiA+PiAgYXJjaC9hcm0vYm9hcmRz
+L3ZpcnQvTWFrZWZpbGUgICAgICAgICAgICAgIHwgIDEgKwo+PiA+PiAgYXJjaC9hcm0vYm9hcmRz
+L3ZpcnQvZW52L2Jpbi9fdXBkYXRlICAgICAgIHwgMzYgKysrKysrKysrKysrKysrKwo+PiA+PiAg
+YXJjaC9hcm0vYm9hcmRzL3ZpcnQvZW52L2Jpbi9ib290ICAgICAgICAgIHwgMzggKysrKysrKysr
+KysrKysrKysKPj4gPgo+PiA+IC4uLiBza2lwcGVkIC4uLgo+PiA+Cj4+ID4gLS0KPj4gPiBCZXN0
+IHJlZ2FyZHMsCj4+ID4gICBBbnRvbnkgUGF2bG92Cj4+ID4KPj4gPiBfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+PiA+IGJhcmVib3ggbWFpbGluZyBsaXN0
+Cj4+ID4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4+ID4gaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cj4KPgo+IC0tCj4gLS0KPiBCZXN0IHJl
+Z2FyZHMsCj4gICBBbnRvbnkgUGF2bG92Cj4KPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0
+cy5pbmZyYWRlYWQub3JnCj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9iYXJlYm94CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
