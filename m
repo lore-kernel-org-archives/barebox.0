@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x231.google.com ([2a00:1450:4010:c07::231])
+Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bBFQc-0007wn-9F
- for barebox@lists.infradead.org; Fri, 10 Jun 2016 05:56:23 +0000
-Received: by mail-lf0-x231.google.com with SMTP id u74so39418107lff.2
- for <barebox@lists.infradead.org>; Thu, 09 Jun 2016 22:56:01 -0700 (PDT)
-Date: Fri, 10 Jun 2016 08:57:25 +0300
+ id 1bBJpZ-0001T8-Gd
+ for barebox@lists.infradead.org; Fri, 10 Jun 2016 10:38:26 +0000
+Received: by mail-lf0-x241.google.com with SMTP id u74so5731934lff.0
+ for <barebox@lists.infradead.org>; Fri, 10 Jun 2016 03:38:05 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20160610085725.0c6ac436ef6f383649064072@gmail.com>
-Mime-Version: 1.0
+Date: Fri, 10 Jun 2016 13:37:57 +0300
+Message-Id: <1465555077-24572-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,57 +16,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox dts/ directory has no updates for several mouths
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] MIPS: dts: add generated files to clean rule
+To: barebox@lists.infradead.org
 
-Hi Sascha!
+This commit is based on Sascha's ARM commits:
 
-I have found that barebox dts/ directory has no updates for several mouths.
-I have examined the git://xenbits.xen.org/people/ianc/device-tree-rebasing.=
-git repo.
-The last commit in the master branch of the repo is
+    commit a9e7e68279de3aec38b038211a15a80cfc612c4e
+    Author: Sascha Hauer <s.hauer@pengutronix.de>
+    Date:   Fri Dec 11 08:02:02 2015 +0100
 
-  commit e3e9b78e0ed0b64d2b1d994275673b9bc03a2876
-  Merge: 7a07ba8 24952bf
-  Author: Ian Campbell <ian.campbell@citrix.com>
-  Date:   Tue Feb 23 09:54:50 2016 +0000
+        ARM: dts: Add *.dtb.lzo to clean files
 
-      Merge tag 'v4.5-rc5-dts-raw'
-    =
+    commit f5b552f1fe02a0a39ae859dbc7e7facefe022e3a
+    Author: Sascha Hauer <s.hauer@pengutronix.de>
+    Date:   Fri May 9 09:11:49 2014 +0200
 
-      Linux 4.5-rc5
+        ARM: dts: Add generated files to clean rule
 
-I suppose that Ian have stopped adding commits to this repo.
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/dts/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-There is another devicetree-rebasing repo:
+diff --git a/arch/mips/dts/Makefile b/arch/mips/dts/Makefile
+index 6d6c9a3..ddd9039 100644
+--- a/arch/mips/dts/Makefile
++++ b/arch/mips/dts/Makefile
+@@ -2,4 +2,4 @@
+ BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
+ obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
+ 
+-clean-files := *.dtb *.dtb.S
++clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.lzo
+-- 
+2.7.0
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/devicetree/devicetree-rebas=
-ing.git
-
-The last commit in the master branch of the kernel.org's devicetree-rebasin=
-g.git repo is
-
-  commit f4be797ea97710369835bb0f7deaad117a64b84a
-  Merge: 8eab989 9cf0f8e
-  Author: Ian Campbell <ijc@hellion.org.uk>
-  Date:   Mon Jun 6 06:54:58 2016 +0100
-
-      Merge tag 'v4.7-rc2-dts-raw'
-    =
-
-      Linux 4.7-rc2
-
-Can we switch to using of kernel.org's devicetree-rebasing.git repo for upd=
-ating barebox dts/ dir?
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
