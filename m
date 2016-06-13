@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bCKX6-0003WS-VQ
- for barebox@lists.infradead.org; Mon, 13 Jun 2016 05:35:34 +0000
-Date: Mon, 13 Jun 2016 07:35:08 +0200
+ id 1bCMAr-0003Yz-Pb
+ for barebox@lists.infradead.org; Mon, 13 Jun 2016 07:20:42 +0000
+Date: Mon, 13 Jun 2016 09:20:19 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160613053508.GE31666@pengutronix.de>
-References: <20160610085725.0c6ac436ef6f383649064072@gmail.com>
+Message-ID: <20160613072019.GH31666@pengutronix.de>
+References: <1465555077-24572-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20160610085725.0c6ac436ef6f383649064072@gmail.com>
+In-Reply-To: <1465555077-24572-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox dts/ directory has no updates for several mouths
+Subject: Re: [PATCH] MIPS: dts: add generated files to clean rule
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Antony,
+On Fri, Jun 10, 2016 at 01:37:57PM +0300, Antony Pavlov wrote:
+> This commit is based on Sascha's ARM commits:
+> 
+>     commit a9e7e68279de3aec38b038211a15a80cfc612c4e
+>     Author: Sascha Hauer <s.hauer@pengutronix.de>
+>     Date:   Fri Dec 11 08:02:02 2015 +0100
+> 
+>         ARM: dts: Add *.dtb.lzo to clean files
+> 
+>     commit f5b552f1fe02a0a39ae859dbc7e7facefe022e3a
+>     Author: Sascha Hauer <s.hauer@pengutronix.de>
+>     Date:   Fri May 9 09:11:49 2014 +0200
+> 
+>         ARM: dts: Add generated files to clean rule
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/mips/dts/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Fri, Jun 10, 2016 at 08:57:25AM +0300, Antony Pavlov wrote:
-> Hi Sascha!
-> 
-> I have found that barebox dts/ directory has no updates for several mouths.
-> I have examined the git://xenbits.xen.org/people/ianc/device-tree-rebasing.git repo.
-> The last commit in the master branch of the repo is
-> 
->   commit e3e9b78e0ed0b64d2b1d994275673b9bc03a2876
->   Merge: 7a07ba8 24952bf
->   Author: Ian Campbell <ian.campbell@citrix.com>
->   Date:   Tue Feb 23 09:54:50 2016 +0000
-> 
->       Merge tag 'v4.5-rc5-dts-raw'
->     
->       Linux 4.5-rc5
-> 
-> I suppose that Ian have stopped adding commits to this repo.
-> 
-> There is another devicetree-rebasing repo:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/devicetree/devicetree-rebasing.git
-
-I wasn't aware there is a new repository. I just updated my script for
-this. Find the new dts files in -next.
-Thanks for noting.
+Applied, thanks
 
 Sascha
 
