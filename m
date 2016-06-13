@@ -1,20 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qg0-x241.google.com ([2607:f8b0:400d:c04::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bCO5O-0000UZ-Rs
- for barebox@lists.infradead.org; Mon, 13 Jun 2016 09:23:12 +0000
-Received: by mail-qg0-x241.google.com with SMTP id t106so9668611qgt.2
- for <barebox@lists.infradead.org>; Mon, 13 Jun 2016 02:22:50 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <CAGm1_kui_zomKNCAO++cD7osQTtWA22V05bhRHh7YXsgBr-T1g@mail.gmail.com>
-References: <1464619430-23873-1-git-send-email-yegorslists@googlemail.com>
- <20160601070826.GJ31666@pengutronix.de>
- <CAGm1_ksTsK43q11j8Kw3SYQ_HNAtGDQbgUJE_T9hQsuavJBkuw@mail.gmail.com>
- <20160613085502.GJ31666@pengutronix.de>
- <CAGm1_kui_zomKNCAO++cD7osQTtWA22V05bhRHh7YXsgBr-T1g@mail.gmail.com>
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Mon, 13 Jun 2016 11:22:30 +0200
-Message-ID: <CAGm1_kvE6Eu5ZQrp7hLuWFEFtcoJqWGga-RzCbJex=gnFZyeRg@mail.gmail.com>
+ id 1bCPTp-0007mL-AL
+ for barebox@lists.infradead.org; Mon, 13 Jun 2016 10:52:30 +0000
+From: Alexander Aring <aar@pengutronix.de>
+Date: Mon, 13 Jun 2016 12:51:52 +0200
+Message-Id: <20160613105152.28770-1-aar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,100 +14,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] Add support for Baltos systems
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH RFC] common: env: handle var="" not as var=NULL
+To: barebox@lists.infradead.org
+Cc: Alexander Aring <aar@pengutronix.de>
 
-On Mon, Jun 13, 2016 at 10:56 AM, Yegor Yefremov
-<yegorslists@googlemail.com> wrote:
-> On Mon, Jun 13, 2016 at 10:55 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> On Mon, Jun 13, 2016 at 09:44:24AM +0200, Yegor Yefremov wrote:
->>> On Wed, Jun 1, 2016 at 9:08 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->>> > On Mon, May 30, 2016 at 04:43:50PM +0200, yegorslists@googlemail.com wrote:
->>> >> From: Yegor Yefremov <yegorslists@googlemail.com>
->>> >>
->>> >> OnRISC Baltos devices are based on a am335x SoC and can be booted
->>> >> either from MMC or NAND.
->>> >>
->>> >> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
->>> >> ---
->>> >> Changes:
->>> >>         v2: - remove typedef
->>> >>             - rework invalid EEPROM content handling
->>> >>             - add mmc0 as boot device for MMC boot source
->>> >>
->>> >> +static int baltos_mem_init(void)
->>> >> +{
->>> >> +     uint32_t sdram_size;
->>> >> +
->>> >> +     if (!of_machine_is_compatible("vscom,onrisc"))
->>> >> +             return 0;
->>> >> +
->>> >> +     sdram_size = SZ_256M;
->>> >> +
->>> >> +     arm_add_mem_device("ram0", 0x80000000, sdram_size);
->>> >> +
->>> >> +     return 0;
->>> >> +}
->>> >> +mem_initcall(baltos_mem_init);
->>> >
->>> > This shouldn't be necessary. See arch/arm/mach-omap/am33xx_scrm.c, here
->>> > the correct amount of memory should be registered.
->>>
->>> ACK
->>>
->>> >> +ENTRY_FUNCTION(start_am33xx_baltos_sdram, r0, r1, r2)
->>> >> +{
->>> >> +     uint32_t sdram_size;
->>> >> +     void *fdt;
->>> >> +
->>> >> +     sdram_size = SZ_256M;
->>> >> +     fdt = __dtb_am335x_baltos_minimal_start;
->>> >> +
->>> >> +     fdt -= get_runtime_offset();
->>> >> +
->>> >> +     barebox_arm_entry(0x80000000, sdram_size, fdt);
->>> >
->>> > am335x_barebox_entry() calculates the SDRAM size automatically for you.
->>> >
->>> > Doing this has the advantage that you can configure your SDRAM as you
->>> > like without having to bother that all other locations where the SDRAM
->>> > size is needed are correct.
->>>
->>> This is not working for me. As soon as barebox.bin starts I can see only
->>>
->>> barebox 2016.05.0 #3 Mon Jun 13 09:32:01 CEST 2016
->>>
->>> Board: OnRISC Baltos
->>>
->>> I don't know why, but am335x_sdram_size() always finds 0x20000000 i.e.
->>> 512MB on both 256MB modules and 512MB.
->>
->> Could it be that you use the 512MB settings for both variants and in the
->> 256MB case you simply only use half of it? In this case
->> am335x_sdram_size() cannot work properly. You either have to fix the
->> settings in the controller after you detected that you have 256MB or you
->> have to stick to the current static setup. There's also get_ram_size()
->> that tests the given address space for mirrors and returns the real ram
->> size.
->
-> OK. Then I'll remove mem_init from board.c and stick to the static setup.
->
-> Yegor
+This patch changes the behaviour which I think is used everywhere in
+barebox code. Currently var="" and var=NULL will end in the same
+behaviour.
 
-I've checked once more. I do need mem_initcall(baltos_mem_init),
-because without it, I'll get 512MB in Linux for both modules. So could
-you apply the patch as is? I'll submit a followup patch, when I sort
-the things out. Some customers are waiting for barebox support in
-order to work with i2c-gpio extender directly from bootloader.
+New behaviour is:
 
-Thanks.
+setenv(name, "")	-> sets name to ""
+\-> getenv(name)	-> ""
 
-Yegor
+setenv(name, NULL)	-> deletes env
+\-> getenv(name)	-> NULL
+
+It seems that barebox code already wants such behaviour, by run
+
+$ grep -r "\"\"" | grep setenv
+
+it finds most all related code sections which use "".
+
+I detected the issue while commenting #ip="foo" in my env. The code
+part:
+
+net/ifup.c:	setenv("ip", "");
+
+Sets at first "ip" to "" but will end in the old behaviour as "delete".
+The getenv("ip") in ifup.c will not check on the NULL value and has a
+general handling for unknown ip env.
+
+Note:
+Also check commit e7ed69d5 ("setenv: be robust against setenv(<var>,
+NULL") which says that hush will handle "" and NULL as the same.
+
+Another check would be:
+
+$ grep -r "NULL" | grep setenv
+
+which should show the behaviour in case of deleting env.
+
+Signed-off-by: Alexander Aring <aar@pengutronix.de>
+---
+I test the ip env stuff only that barebox will not crash anymore but I
+think it will break some other setenv/getenv behaviour.
+
+The question is "Shall we keep that "" and NULL ends in same behaviour"
+and fix the code which use it wrong, e.g. setenv("ip", ""); getenv("ip").
+
+ common/env.c | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/common/env.c b/common/env.c
+index 6f736d5..4d8d446 100644
+--- a/common/env.c
++++ b/common/env.c
+@@ -210,10 +210,6 @@ int setenv(const char *_name, const char *value)
+ 	int ret = 0;
+ 	struct list_head *list;
+ 
+-	if (value && !*value)
+-		value = NULL;
+-
+-
+ 	if ((par = strchr(name, '.'))) {
+ 		struct device_d *dev;
+ 
+-- 
+2.8.3
+
 
 _______________________________________________
 barebox mailing list
