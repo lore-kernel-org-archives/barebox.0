@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-qk0-x241.google.com ([2607:f8b0:400d:c09::241])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bCMAr-0003Yz-Pb
- for barebox@lists.infradead.org; Mon, 13 Jun 2016 07:20:42 +0000
-Date: Mon, 13 Jun 2016 09:20:19 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160613072019.GH31666@pengutronix.de>
-References: <1465555077-24572-1-git-send-email-antonynpavlov@gmail.com>
+ id 1bCMYT-0000BC-Rx
+ for barebox@lists.infradead.org; Mon, 13 Jun 2016 07:45:06 +0000
+Received: by mail-qk0-x241.google.com with SMTP id l81so1823915qke.3
+ for <barebox@lists.infradead.org>; Mon, 13 Jun 2016 00:44:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1465555077-24572-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <20160601070826.GJ31666@pengutronix.de>
+References: <1464619430-23873-1-git-send-email-yegorslists@googlemail.com>
+ <20160601070826.GJ31666@pengutronix.de>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Mon, 13 Jun 2016 09:44:24 +0200
+Message-ID: <CAGm1_ksTsK43q11j8Kw3SYQ_HNAtGDQbgUJE_T9hQsuavJBkuw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +24,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: dts: add generated files to clean rule
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] Add support for Baltos systems
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Fri, Jun 10, 2016 at 01:37:57PM +0300, Antony Pavlov wrote:
-> This commit is based on Sascha's ARM commits:
-> 
->     commit a9e7e68279de3aec38b038211a15a80cfc612c4e
->     Author: Sascha Hauer <s.hauer@pengutronix.de>
->     Date:   Fri Dec 11 08:02:02 2015 +0100
-> 
->         ARM: dts: Add *.dtb.lzo to clean files
-> 
->     commit f5b552f1fe02a0a39ae859dbc7e7facefe022e3a
->     Author: Sascha Hauer <s.hauer@pengutronix.de>
->     Date:   Fri May 9 09:11:49 2014 +0200
-> 
->         ARM: dts: Add generated files to clean rule
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  arch/mips/dts/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, Jun 1, 2016 at 9:08 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Mon, May 30, 2016 at 04:43:50PM +0200, yegorslists@googlemail.com wrote:
+>> From: Yegor Yefremov <yegorslists@googlemail.com>
+>>
+>> OnRISC Baltos devices are based on a am335x SoC and can be booted
+>> either from MMC or NAND.
+>>
+>> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+>> ---
+>> Changes:
+>>         v2: - remove typedef
+>>             - rework invalid EEPROM content handling
+>>             - add mmc0 as boot device for MMC boot source
+>>
+>> +static int baltos_mem_init(void)
+>> +{
+>> +     uint32_t sdram_size;
+>> +
+>> +     if (!of_machine_is_compatible("vscom,onrisc"))
+>> +             return 0;
+>> +
+>> +     sdram_size = SZ_256M;
+>> +
+>> +     arm_add_mem_device("ram0", 0x80000000, sdram_size);
+>> +
+>> +     return 0;
+>> +}
+>> +mem_initcall(baltos_mem_init);
+>
+> This shouldn't be necessary. See arch/arm/mach-omap/am33xx_scrm.c, here
+> the correct amount of memory should be registered.
 
-Applied, thanks
+ACK
 
-Sascha
+>> +ENTRY_FUNCTION(start_am33xx_baltos_sdram, r0, r1, r2)
+>> +{
+>> +     uint32_t sdram_size;
+>> +     void *fdt;
+>> +
+>> +     sdram_size = SZ_256M;
+>> +     fdt = __dtb_am335x_baltos_minimal_start;
+>> +
+>> +     fdt -= get_runtime_offset();
+>> +
+>> +     barebox_arm_entry(0x80000000, sdram_size, fdt);
+>
+> am335x_barebox_entry() calculates the SDRAM size automatically for you.
+>
+> Doing this has the advantage that you can configure your SDRAM as you
+> like without having to bother that all other locations where the SDRAM
+> size is needed are correct.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+This is not working for me. As soon as barebox.bin starts I can see only
+
+barebox 2016.05.0 #3 Mon Jun 13 09:32:01 CEST 2016
+
+Board: OnRISC Baltos
+
+I don't know why, but am335x_sdram_size() always finds 0x20000000 i.e.
+512MB on both 256MB modules and 512MB.
+
+I understand only main railway station :-)
+
+Yegor
 
 _______________________________________________
 barebox mailing list
