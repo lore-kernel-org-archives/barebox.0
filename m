@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x230.google.com ([2607:f8b0:4001:c0b::230])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bCaVS-0002Xn-TB
- for barebox@lists.infradead.org; Mon, 13 Jun 2016 22:38:55 +0000
-Received: by mail-it0-x230.google.com with SMTP id e5so54112323ith.0
- for <barebox@lists.infradead.org>; Mon, 13 Jun 2016 15:38:32 -0700 (PDT)
+ id 1bChn0-0004ev-3t
+ for barebox@lists.infradead.org; Tue, 14 Jun 2016 06:25:31 +0000
+Date: Tue, 14 Jun 2016 08:25:06 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160614062506.GO31666@pengutronix.de>
+References: <20160613105152.28770-1-aar@pengutronix.de>
 MIME-Version: 1.0
-Date: Mon, 13 Jun 2016 18:38:31 -0400
-Message-ID: <CAO6XYUuv_VTv6trEFhjzZ=ey+2addAGBRsdqKQwFgbobaHLi-w@mail.gmail.com>
-From: "Michael D. Burkey" <mdburkey@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20160613105152.28770-1-aar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,46 +22,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Boot iMX6 from IRAM on new Variscite SOM
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH RFC] common: env: handle var="" not as var=NULL
+To: Alexander Aring <aar@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-I have already spoken with Sascha about this a bit, but figured I'd
-throw it out here in case anyone had any suggestions.
+On Mon, Jun 13, 2016 at 12:51:52PM +0200, Alexander Aring wrote:
+> This patch changes the behaviour which I think is used everywhere in
+> barebox code. Currently var="" and var=NULL will end in the same
+> behaviour.
+> 
+> New behaviour is:
+> 
+> setenv(name, "")	-> sets name to ""
+> \-> getenv(name)	-> ""
+> 
+> setenv(name, NULL)	-> deletes env
+> \-> getenv(name)	-> NULL
+> 
+> It seems that barebox code already wants such behaviour, by run
+> 
+> $ grep -r "\"\"" | grep setenv
+> 
+> it finds most all related code sections which use "".
+> 
+> I detected the issue while commenting #ip="foo" in my env. The code
+> part:
+> 
+> net/ifup.c:	setenv("ip", "");
+> 
+> Sets at first "ip" to "" but will end in the old behaviour as "delete".
+> The getenv("ip") in ifup.c will not check on the NULL value and has a
+> general handling for unknown ip env.
+> 
+> Note:
+> Also check commit e7ed69d5 ("setenv: be robust against setenv(<var>,
+> NULL") which says that hush will handle "" and NULL as the same.
+> 
+> Another check would be:
+> 
+> $ grep -r "NULL" | grep setenv
+> 
+> which should show the behaviour in case of deleting env.
+> 
+> Signed-off-by: Alexander Aring <aar@pengutronix.de>
+> ---
+> I test the ip env stuff only that barebox will not crash anymore but I
+> think it will break some other setenv/getenv behaviour.
+> 
+> The question is "Shall we keep that "" and NULL ends in same behaviour"
+> and fix the code which use it wrong, e.g. setenv("ip", ""); getenv("ip").
 
-Specifically, I'm updating the support for the Variscite SOM to handle
-the newest version of their SOM -- which now includes an EEPROM that
-contains a "DCD-like" script for configuring the DDR3 timing
-parameters.
+I'm not sure at the moment if a var="" should delete a variable or just
+set it to an empty string. In any case we should fix net/ifup.c.
+getenv() can return NULL and the code should be prepared for that.
 
-Essentially this means that I have to follow a boot procedure similar
-to that used by the current Wandboard setup, which loads part of
-barebox into IRAM/OCRAM on the iMX6, read/configures the DDR3 timings,
-then reloads barebox into DDR3 and starts it.
+Sascha
 
-I think I have gotten things more or less setup at this point and have
-copied the setup from the Wandboard, but am having trouble getting
-things to actually start from the internal RAM on the board.
-
-For now, I have a correct DCD already built-in that preconfigures DDR3
-"just in case" and if I set the load address to be DDR3, then
-everything starts up as normal -- which in and of itself points to a
-problem.
-
-My suspicion is that the boot ROM is still trying to load the full
-image rather than just part of it -- which means that, when I point it
-to the IRAM/OCRAM, it is writing to the aliased memory regions of the
-built in RAM and overwriting itself in the process.
-
-What/where actually controls the length of the code that gets
-automatically loaded by the iMX6 internal boot ROM and what needs to
-be updated?
-
-Any additional suggestions/tips on how to get things working would be
-greatly appreciated. I feel like I'm close, but simply missing
-something somewhere.
-
-Thanks!
-Michael Burkey
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
