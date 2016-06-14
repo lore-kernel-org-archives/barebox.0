@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wm0-x241.google.com ([2a00:1450:400c:c09::241])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bCiRp-0001hI-C1
- for barebox@lists.infradead.org; Tue, 14 Jun 2016 07:07:42 +0000
-Received: by mail-wm0-x241.google.com with SMTP id r5so19961327wmr.0
- for <barebox@lists.infradead.org>; Tue, 14 Jun 2016 00:07:21 -0700 (PDT)
+ id 1bCiRp-0001hQ-Bv
+ for barebox@lists.infradead.org; Tue, 14 Jun 2016 07:07:43 +0000
+Received: by mail-wm0-x241.google.com with SMTP id k184so19925056wme.2
+ for <barebox@lists.infradead.org>; Tue, 14 Jun 2016 00:07:25 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Tue, 14 Jun 2016 09:06:39 +0200
-Message-Id: <1465888006-39463-6-git-send-email-poggi.raph@gmail.com>
+Date: Tue, 14 Jun 2016 09:06:43 +0200
+Message-Id: <1465888006-39463-10-git-send-email-poggi.raph@gmail.com>
 In-Reply-To: <1465888006-39463-1-git-send-email-poggi.raph@gmail.com>
 References: <1465888006-39463-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,98 +23,139 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 05/12] arm: include: system: add arm64 helper functions
+Subject: [PATCH v2 09/12] arm: cpu: cpuinfo: add armv8 support
 To: barebox@lists.infradead.org
 Cc: Raphael Poggi <poggi.raph@gmail.com>
 
 Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
 ---
- arch/arm/include/asm/system.h | 46 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 45 insertions(+), 1 deletion(-)
+ arch/arm/cpu/cpuinfo.c | 58 ++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 54 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/include/asm/system.h b/arch/arm/include/asm/system.h
-index b118a42..57c7618 100644
---- a/arch/arm/include/asm/system.h
-+++ b/arch/arm/include/asm/system.h
-@@ -3,7 +3,11 @@
+diff --git a/arch/arm/cpu/cpuinfo.c b/arch/arm/cpu/cpuinfo.c
+index 8b22e9b..86e19d9 100644
+--- a/arch/arm/cpu/cpuinfo.c
++++ b/arch/arm/cpu/cpuinfo.c
+@@ -30,12 +30,15 @@
+ #define CPU_ARCH_ARMv5TEJ	7
+ #define CPU_ARCH_ARMv6		8
+ #define CPU_ARCH_ARMv7		9
++#define CPU_ARCH_ARMv8		10
  
- #if __LINUX_ARM_ARCH__ >= 7
- #define isb() __asm__ __volatile__ ("isb" : : : "memory")
-+#ifdef CONFIG_CPU_64v8
-+#define dsb() __asm__ __volatile__ ("dsb sy" : : : "memory")
-+#else
- #define dsb() __asm__ __volatile__ ("dsb" : : : "memory")
-+#endif
- #define dmb() __asm__ __volatile__ ("dmb" : : : "memory")
- #elif defined(CONFIG_CPU_XSC3) || __LINUX_ARM_ARCH__ == 6
- #define isb() __asm__ __volatile__ ("mcr p15, 0, %0, c7, c5, 4" \
-@@ -57,17 +61,58 @@
- #define CR_TE   (1 << 30)	/* Thumb exception enable		*/
+ #define ARM_CPU_PART_CORTEX_A5      0xC050
+ #define ARM_CPU_PART_CORTEX_A7      0xC070
+ #define ARM_CPU_PART_CORTEX_A8      0xC080
+ #define ARM_CPU_PART_CORTEX_A9      0xC090
+ #define ARM_CPU_PART_CORTEX_A15     0xC0F0
++#define ARM_CPU_PART_CORTEX_A53	    0xD030
++#define ARM_CPU_PART_CORTEX_A57	    0xD070
  
- #ifndef __ASSEMBLY__
-+#if __LINUX_ARM_ARCH__ >= 7
-+static inline unsigned int current_el(void)
-+{
-+	unsigned int el;
-+	asm volatile("mrs %0, CurrentEL" : "=r" (el) : : "cc");
-+	return el >> 2;
-+}
-+
-+static inline unsigned long read_mpidr(void)
-+{
-+	unsigned long val;
-+
-+	asm volatile("mrs %0, mpidr_el1" : "=r" (val));
-+
-+	return val;
-+}
-+#endif
- static inline unsigned int get_cr(void)
+ static void decode_cache(unsigned long size)
  {
- 	unsigned int val;
-+
+@@ -60,6 +63,25 @@ static int do_cpuinfo(int argc, char *argv[])
+ 	int i;
+ 	int cpu_arch;
+ 
 +#ifdef CONFIG_CPU_64v8
-+	unsigned int el = current_el();
-+	if (el == 1)
-+		asm volatile("mrs %0, sctlr_el1" : "=r" (val) : : "cc");
-+	else if (el == 2)
-+		asm volatile("mrs %0, sctlr_el2" : "=r" (val) : : "cc");
-+	else
-+		asm volatile("mrs %0, sctlr_el3" : "=r" (val) : : "cc");
-+#else
- 	asm volatile ("mrc p15, 0, %0, c1, c0, 0  @ get CR" : "=r" (val) : : "cc");
-+#endif
++	__asm__ __volatile__(
++		"mrs	%0, midr_el1\n"
++		: "=r" (mainid)
++		:
++		: "memory");
 +
- 	return val;
- }
++	__asm__ __volatile__(
++		"mrs	%0, ctr_el0\n"
++		: "=r" (cache)
++		:
++		: "memory");
++
++	__asm__ __volatile__(
++		"mrs	%0, sctlr_el1\n"
++		: "=r" (cr)
++		:
++		: "memory");
++#else
+ 	__asm__ __volatile__(
+ 		"mrc    p15, 0, %0, c0, c0, 0   @ read control reg\n"
+ 		: "=r" (mainid)
+@@ -74,9 +96,10 @@ static int do_cpuinfo(int argc, char *argv[])
  
- static inline void set_cr(unsigned int val)
- {
+ 	__asm__ __volatile__(
+ 		"mrc    p15, 0, %0, c1, c0, 0   @ read control reg\n"
+-			: "=r" (cr)
+-			:
+-			: "memory");
++		: "=r" (cr)
++		:
++		: "memory");
++#endif
+ 
+ 	switch (mainid >> 24) {
+ 	case 0x41:
+@@ -107,6 +130,23 @@ static int do_cpuinfo(int argc, char *argv[])
+ 		if (cpu_arch)
+ 			cpu_arch += CPU_ARCH_ARMv3;
+ 	} else if ((mainid & 0x000f0000) == 0x000f0000) {
 +#ifdef CONFIG_CPU_64v8
-+	unsigned int el;
++		unsigned int isar2;
 +
-+	el = current_el();
-+	if (el == 1)
-+		asm volatile("msr sctlr_el1, %0" : : "r" (val) : "cc");
-+	else if (el == 2)
-+		asm volatile("msr sctlr_el2, %0" : : "r" (val) : "cc");
-+	else
-+		asm volatile("msr sctlr_el3, %0" : : "r" (val) : "cc");
++		__asm__ __volatile__(
++			"mrs	%0, id_isar2_el1\n"
++			: "=r" (isar2)
++			:
++			: "memory");
++
++
++		/* Check Load/Store acquire to check if ARMv8 or not */
++
++		if (isar2 & 0x2)
++			cpu_arch = CPU_ARCH_ARMv8;
++		else
++			cpu_arch = CPU_ARCH_UNKNOWN;
 +#else
- 	asm volatile("mcr p15, 0, %0, c1, c0, 0 @ set CR"
- 	  : : "r" (val) : "cc");
+ 		unsigned int mmfr0;
+ 
+ 		/* Revised CPUID format. Read the Memory Model Feature
+@@ -121,6 +161,7 @@ static int do_cpuinfo(int argc, char *argv[])
+ 			cpu_arch = CPU_ARCH_ARMv6;
+ 		else
+ 			cpu_arch = CPU_ARCH_UNKNOWN;
 +#endif
- 	isb();
- }
+ 	} else
+ 		cpu_arch = CPU_ARCH_UNKNOWN;
  
-@@ -90,7 +135,6 @@ static inline void set_vbar(unsigned int vbar)
- static inline unsigned int get_vbar(void) { return 0; }
- static inline void set_vbar(unsigned int vbar) {}
- #endif
--
- #endif
+@@ -152,6 +193,9 @@ static int do_cpuinfo(int argc, char *argv[])
+ 	case CPU_ARCH_ARMv7:
+ 		architecture = "v7";
+ 		break;
++	case CPU_ARCH_ARMv8:
++		architecture = "v8";
++		break;
+ 	case CPU_ARCH_UNKNOWN:
+ 	default:
+ 		architecture = "Unknown";
+@@ -160,7 +204,7 @@ static int do_cpuinfo(int argc, char *argv[])
+ 	printf("implementer: %s\narchitecture: %s\n",
+ 			implementer, architecture);
  
- #endif /* __ASM_ARM_SYSTEM_H */
+-	if (cpu_arch == CPU_ARCH_ARMv7) {
++	if (cpu_arch >= CPU_ARCH_ARMv7) {
+ 		unsigned int major, minor;
+ 		char *part;
+ 		major = (mainid >> 20) & 0xf;
+@@ -181,6 +225,12 @@ static int do_cpuinfo(int argc, char *argv[])
+ 		case ARM_CPU_PART_CORTEX_A15:
+ 			part = "Cortex-A15";
+ 			break;
++		case ARM_CPU_PART_CORTEX_A53:
++			part = "Cortex-A53";
++			break;
++		case ARM_CPU_PART_CORTEX_A57:
++			part = "Cortex-A57";
++			break;
+ 		default:
+ 			part = "unknown";
+ 		}
 -- 
 2.1.0
 
