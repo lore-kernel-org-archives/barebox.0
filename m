@@ -1,16 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bCiRx-0001hV-Up
- for barebox@lists.infradead.org; Tue, 14 Jun 2016 07:07:53 +0000
-Received: by mail-wm0-x244.google.com with SMTP id m124so19905938wme.3
- for <barebox@lists.infradead.org>; Tue, 14 Jun 2016 00:07:30 -0700 (PDT)
-From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Tue, 14 Jun 2016 09:06:46 +0200
-Message-Id: <1465888006-39463-13-git-send-email-poggi.raph@gmail.com>
-In-Reply-To: <1465888006-39463-1-git-send-email-poggi.raph@gmail.com>
-References: <1465888006-39463-1-git-send-email-poggi.raph@gmail.com>
+ id 1bCiWW-0005JJ-9k
+ for barebox@lists.infradead.org; Tue, 14 Jun 2016 07:12:33 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
+ ident=Debian-exim)
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1bCiWA-0005mV-PQ
+ for barebox@lists.infradead.org; Tue, 14 Jun 2016 09:12:10 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.84_2)
+ (envelope-from <sha@pengutronix.de>) id 1bCiWA-0000CQ-H5
+ for barebox@lists.infradead.org; Tue, 14 Jun 2016 09:12:10 +0200
+Date: Tue, 14 Jun 2016 09:12:10 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160614071210.GR31666@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,190 +24,195 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 12/12] arm: boards: add mach-qemu and virt64 board
-To: barebox@lists.infradead.org
-Cc: Raphael Poggi <poggi.raph@gmail.com>
+Subject: v2016.06.0
+To: Barebox List <barebox@lists.infradead.org>
 
-SW50cm9kdWNlIG1hY2gtcWVtdSBhbmQgYWRkIHFlbXUgdmlydDY0IGJvYXJkIHdoaWNoIGVtdWxh
-dGVzIGFybTY0IGJvYXJkLgoKU2lnbmVkLW9mZi1ieTogUmFwaGFlbCBQb2dnaSA8cG9nZ2kucmFw
-aEBnbWFpbC5jb20+Ci0tLQogYXJjaC9hcm0vS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIHwgIDUgKysrCiBhcmNoL2FybS9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICAgICAg
-fCAgMSArCiBhcmNoL2FybS9ib2FyZHMvTWFrZWZpbGUgICAgICAgICAgICAgICAgICAgfCAgMSAr
-CiBhcmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0NjQvS2NvbmZpZyAgICAgICAgfCAgOCArKysrCiBh
-cmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0NjQvTWFrZWZpbGUgICAgICAgfCAgMSArCiBhcmNoL2Fy
-bS9ib2FyZHMvcWVtdS12aXJ0NjQvaW5pdC5jICAgICAgICAgfCA2NyArKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysKIGFyY2gvYXJtL2NvbmZpZ3MvcWVtdV92aXJ0NjRfZGVmY29uZmlnICAg
-ICB8IDU1ICsrKysrKysrKysrKysrKysrKysrKysrKwogYXJjaC9hcm0vbWFjaC1xZW11L0tjb25m
-aWcgICAgICAgICAgICAgICAgIHwgMTggKysrKysrKysKIGFyY2gvYXJtL21hY2gtcWVtdS9NYWtl
-ZmlsZSAgICAgICAgICAgICAgICB8ICAyICsKIGFyY2gvYXJtL21hY2gtcWVtdS9pbmNsdWRlL21h
-Y2gvZGVidWdfbGwuaCB8IDI0ICsrKysrKysrKysrCiBhcmNoL2FybS9tYWNoLXFlbXUvaW5jbHVk
-ZS9tYWNoL2RldmljZXMuaCAgfCAxMyArKysrKysKIGFyY2gvYXJtL21hY2gtcWVtdS92aXJ0X2Rl
-dmljZXMuYyAgICAgICAgICB8IDMwICsrKysrKysrKysrKysKIGFyY2gvYXJtL21hY2gtcWVtdS92
-aXJ0X2xvd2xldmVsLmMgICAgICAgICB8IDE5ICsrKysrKysrKwogMTMgZmlsZXMgY2hhbmdlZCwg
-MjQ0IGluc2VydGlvbnMoKykKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvcWVt
-dS12aXJ0NjQvS2NvbmZpZwogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9xZW11
-LXZpcnQ2NC9NYWtlZmlsZQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9xZW11
-LXZpcnQ2NC9pbml0LmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9jb25maWdzL3FlbXVf
-dmlydDY0X2RlZmNvbmZpZwogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtcWVtdS9L
-Y29uZmlnCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1xZW11L01ha2VmaWxlCiBj
-cmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1xZW11L2luY2x1ZGUvbWFjaC9kZWJ1Z19s
-bC5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1xZW11L2luY2x1ZGUvbWFjaC9k
-ZXZpY2VzLmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9tYWNoLXFlbXUvdmlydF9kZXZp
-Y2VzLmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9tYWNoLXFlbXUvdmlydF9sb3dsZXZl
-bC5jCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vS2NvbmZpZyBiL2FyY2gvYXJtL0tjb25maWcKaW5k
-ZXggOTg2ZmRhYS4uZjkwNDU3OSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vS2NvbmZpZworKysgYi9h
-cmNoL2FybS9LY29uZmlnCkBAIC0yNTUsNiArMjU1LDEwIEBAIGNvbmZpZyBBUkNIX1pZTlEKIAli
-b29sICJYaWxpbnggWnlucS1iYXNlZCBib2FyZHMiCiAJc2VsZWN0IEhBU19ERUJVR19MTAogCitj
-b25maWcgQVJDSF9RRU1VCisJYm9vbCAiQVJNIFFFTVUgYm9hcmRzIgorCXNlbGVjdCBIQVNfREVC
-VUdfTEwKKwogZW5kY2hvaWNlCiAKIHNvdXJjZSBhcmNoL2FybS9jcHUvS2NvbmZpZwpAQCAtMjgw
-LDYgKzI4NCw3IEBAIHNvdXJjZSBhcmNoL2FybS9tYWNoLXZleHByZXNzL0tjb25maWcKIHNvdXJj
-ZSBhcmNoL2FybS9tYWNoLXRlZ3JhL0tjb25maWcKIHNvdXJjZSBhcmNoL2FybS9tYWNoLXVlbWQv
-S2NvbmZpZwogc291cmNlIGFyY2gvYXJtL21hY2gtenlucS9LY29uZmlnCitzb3VyY2UgYXJjaC9h
-cm0vbWFjaC1xZW11L0tjb25maWcKIAogY29uZmlnIEFSTV9BU01fVU5JRklFRAogCWJvb2wKZGlm
-ZiAtLWdpdCBhL2FyY2gvYXJtL01ha2VmaWxlIGIvYXJjaC9hcm0vTWFrZWZpbGUKaW5kZXggMjc0
-M2Q5Ni4uZmQzNDUzZCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vTWFrZWZpbGUKKysrIGIvYXJjaC9h
-cm0vTWFrZWZpbGUKQEAgLTk0LDYgKzk0LDcgQEAgbWFjaGluZS0kKENPTkZJR19BUkNIX1ZFWFBS
-RVNTKQkJOj0gdmV4cHJlc3MKIG1hY2hpbmUtJChDT05GSUdfQVJDSF9URUdSQSkJCTo9IHRlZ3Jh
-CiBtYWNoaW5lLSQoQ09ORklHX0FSQ0hfVUVNRCkJCTo9IHVlbWQKIG1hY2hpbmUtJChDT05GSUdf
-QVJDSF9aWU5RKQkJOj0genlucQorbWFjaGluZS0kKENPTkZJR19BUkNIX1FFTVUpCQk6PSBxZW11
-CiAKIAogIyBCb2FyZCBkaXJlY3RvcnkgbmFtZS4gIFRoaXMgbGlzdCBpcyBzb3J0ZWQgYWxwaGFu
-dW1lcmljYWxseQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL01ha2VmaWxlIGIvYXJjaC9h
-cm0vYm9hcmRzL01ha2VmaWxlCmluZGV4IDVhNzU1YzkuLmYxMmMwNzQgMTAwNjQ0Ci0tLSBhL2Fy
-Y2gvYXJtL2JvYXJkcy9NYWtlZmlsZQorKysgYi9hcmNoL2FybS9ib2FyZHMvTWFrZWZpbGUKQEAg
-LTEzNCwzICsxMzQsNCBAQCBvYmotJChDT05GSUdfTUFDSF9WSVJUMlJFQUwpCQkJKz0gdmlydDJy
-ZWFsLwogb2JqLSQoQ09ORklHX01BQ0hfWkVEQk9BUkQpCQkJKz0gYXZuZXQtemVkYm9hcmQvCiBv
-YmotJChDT05GSUdfTUFDSF9aWUxPTklURSkJCQkrPSB6eWxvbml0ZS8KIG9iai0kKENPTkZJR19N
-QUNIX1ZBUklTQ0lURV9NWDYpCQkrPSB2YXJpc2NpdGUtbXg2Lworb2JqLSQoQ09ORklHX01BQ0hf
-UUVNVV9WSVJUNjQpCQkJKz0gcWVtdS12aXJ0NjQvCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2Fy
-ZHMvcWVtdS12aXJ0NjQvS2NvbmZpZyBiL2FyY2gvYXJtL2JvYXJkcy9xZW11LXZpcnQ2NC9LY29u
-ZmlnCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAuLmI3YmVlM2EKLS0tIC9kZXYv
-bnVsbAorKysgYi9hcmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0NjQvS2NvbmZpZwpAQCAtMCwwICsx
-LDggQEAKKworaWYgTUFDSF9RRU1VCisKK2NvbmZpZyBBUkNIX1RFWFRfQkFTRQorCWhleAorCWRl
-ZmF1bHQgMHg0MDAwMDAwMAorCitlbmRpZgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3Fl
-bXUtdmlydDY0L01ha2VmaWxlIGIvYXJjaC9hcm0vYm9hcmRzL3FlbXUtdmlydDY0L01ha2VmaWxl
-Cm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAuLmViMDcyYzAKLS0tIC9kZXYvbnVs
-bAorKysgYi9hcmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0NjQvTWFrZWZpbGUKQEAgLTAsMCArMSBA
-QAorb2JqLXkgKz0gaW5pdC5vCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0
-NjQvaW5pdC5jIGIvYXJjaC9hcm0vYm9hcmRzL3FlbXUtdmlydDY0L2luaXQuYwpuZXcgZmlsZSBt
-b2RlIDEwMDY0NAppbmRleCAwMDAwMDAwLi4zMTJjYzdmCi0tLSAvZGV2L251bGwKKysrIGIvYXJj
-aC9hcm0vYm9hcmRzL3FlbXUtdmlydDY0L2luaXQuYwpAQCAtMCwwICsxLDY3IEBACisvKgorICog
-Q29weXJpZ2h0IChDKSAyMDE2IFJhcGhhw6tsIFBvZ2dpIDxwb2dnaS5yYXBoQGdtYWlsLmNvbT4K
-KyAqCisgKiBHUEx2MiBvbmx5CisgKi8KKworI2luY2x1ZGUgPGNvbW1vbi5oPgorI2luY2x1ZGUg
-PGluaXQuaD4KKyNpbmNsdWRlIDxhc20vYXJtbGludXguaD4KKyNpbmNsdWRlIDxhc20vc3lzdGVt
-X2luZm8uaD4KKyNpbmNsdWRlIDxtYWNoL2RldmljZXMuaD4KKyNpbmNsdWRlIDxlbnZpcm9ubWVu
-dC5oPgorI2luY2x1ZGUgPGxpbnV4L3NpemVzLmg+CisjaW5jbHVkZSA8aW8uaD4KKyNpbmNsdWRl
-IDxnbG9iYWx2YXIuaD4KKyNpbmNsdWRlIDxhc20vbW11Lmg+CisKK3N0YXRpYyBpbnQgdmlydF9t
-ZW1faW5pdCh2b2lkKQoreworCXZpcnRfYWRkX2RkcmFtKFNaXzUxMk0pOworCisJYWRkX2NmaV9m
-bGFzaF9kZXZpY2UoMCwgMHgwMDAwMDAwMCwgU1pfNE0sIDApOworCisJZGV2ZnNfYWRkX3BhcnRp
-dGlvbigibm9yMCIsIDB4MDAwMDAsIDB4NDAwMDAsIERFVkZTX1BBUlRJVElPTl9GSVhFRCwgInNl
-bGYwIik7CisJZGV2ZnNfYWRkX3BhcnRpdGlvbigibm9yMCIsIDB4NDAwMDAsIDB4MjAwMDAsIERF
-VkZTX1BBUlRJVElPTl9GSVhFRCwgImVudjAiKTsKKworCXJldHVybiAwOworfQorbWVtX2luaXRj
-YWxsKHZpcnRfbWVtX2luaXQpOworCitzdGF0aWMgaW50IHZpcnRfY29uc29sZV9pbml0KHZvaWQp
-Cit7CisJdmlydF9yZWdpc3Rlcl91YXJ0KDApOworCisJcmV0dXJuIDA7Cit9Citjb25zb2xlX2lu
-aXRjYWxsKHZpcnRfY29uc29sZV9pbml0KTsKKworc3RhdGljIGludCB2aXJ0X2NvcmVfaW5pdCh2
-b2lkKQoreworCWNoYXIgKmhvc3RuYW1lID0gInZpcnQiOworCisJaWYgKGNwdV9pc19jb3J0ZXhf
-YTUzKCkpCisJCWhvc3RuYW1lID0gInZpcnQtYTUzIjsKKwllbHNlIGlmIChjcHVfaXNfY29ydGV4
-X2E1NygpKQorCQlob3N0bmFtZSA9ICJ2aXJ0LWE1NyI7CisKKwliYXJlYm94X3NldF9tb2RlbCgi
-QVJNIFFFTVUgdmlydCIpOworCWJhcmVib3hfc2V0X2hvc3RuYW1lKGhvc3RuYW1lKTsKKworCXJl
-dHVybiAwOworfQorcG9zdGNvcmVfaW5pdGNhbGwodmlydF9jb3JlX2luaXQpOworCitzdGF0aWMg
-aW50IHZpcnRfbW11X2VuYWJsZSh2b2lkKQoreworCS8qIE1hcHBpbmcgYWxsIHBlcmlwaCByYW5n
-ZSAqLworCWFyY2hfcmVtYXBfcmFuZ2UoMHgwOTAwMDAwMCwgMHgwMTAwMDAwMCwgREVWX01FTSk7
-CisKKwkvKiBNYXBwaW5nIGFsbCBmbGFzaCByYW5nZSAqLworCWFyY2hfcmVtYXBfcmFuZ2UoMHgw
-MDAwMDAwMCwgMHgwODAwMDAwMCwgREVWX01FTSk7CisKKwltbXVfZW5hYmxlKCk7CisKKwlyZXR1
-cm4gMDsKK30KK3Bvc3RtbXVfaW5pdGNhbGwodmlydF9tbXVfZW5hYmxlKTsKZGlmZiAtLWdpdCBh
-L2FyY2gvYXJtL2NvbmZpZ3MvcWVtdV92aXJ0NjRfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmln
-cy9xZW11X3ZpcnQ2NF9kZWZjb25maWcKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAw
-MC4uY2RjZTI1MwotLS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL2NvbmZpZ3MvcWVtdV92aXJ0
-NjRfZGVmY29uZmlnCkBAIC0wLDAgKzEsNTUgQEAKK0NPTkZJR19BUkNIX1FFTVU9eQorQ09ORklH
-X0JBUkVCT1hfTUFYX0lNQUdFX1NJWkU9MHgwNTAwMDAwMAorQ09ORklHX0FFQUJJPXkKK0NPTkZJ
-R19BUk1fT1BUSU1aRURfU1RSSU5HX0ZVTkNUSU9OUz15CitDT05GSUdfTU1VPXkKKyMgQ09ORklH
-X01NVV9FQVJMWSBpcyBub3Qgc2V0CitDT05GSUdfQkFSRUJPWF9NQVhfQkFSRV9JTklUX1NJWkU9
-MHgwMTAwMDAwMAorQ09ORklHX01FTU9SWV9MQVlPVVRfRklYRUQ9eQorQ09ORklHX1NUQUNLX0JB
-U0U9MHg2MDAwMDAwMAorQ09ORklHX01BTExPQ19CQVNFPTB4NTAwMDAwMDAKK0NPTkZJR19QUk9N
-UFQ9InZpcnQ2NDogIgorQ09ORklHX0hVU0hfRkFOQ1lfUFJPTVBUPXkKK0NPTkZJR19DTURMSU5F
-X0VESVRJTkc9eQorQ09ORklHX0FVVE9fQ09NUExFVEU9eQorQ09ORklHX01FTlU9eQorQ09ORklH
-X1BBU1NXT1JEPXkKK0NPTkZJR19QQVJUSVRJT049eQorQ09ORklHX0RFRkFVTFRfRU5WSVJPTk1F
-TlRfR0VORVJJQ19ORVc9eQorQ09ORklHX0RFRkFVTFRfRU5WSVJPTk1FTlRfUEFUSD0iYXJjaC9h
-cm0vYm9hcmRzL3ZpcnQvZW52IgorQ09ORklHX0RFQlVHX0lORk89eQorQ09ORklHX0xPTkdIRUxQ
-PXkKKyMgQ09ORklHX0NNRF9CT09UTSBpcyBub3Qgc2V0CisjIENPTkZJR19DTURfQk9PVFUgaXMg
-bm90IHNldAorIyBDT05GSUdfQ01EX01PVU5UIGlzIG5vdCBzZXQKKyMgQ09ORklHX0NNRF9VTU9V
-TlQgaXMgbm90IHNldAorIyBDT05GSUdfQ01EX0NBVCBpcyBub3Qgc2V0CisjIENPTkZJR19DTURf
-Q0QgaXMgbm90IHNldAorIyBDT05GSUdfQ01EX0NQIGlzIG5vdCBzZXQKKyMgQ09ORklHX0NNRF9M
-UyBpcyBub3Qgc2V0CisjIENPTkZJR19DTURfTUtESVIgaXMgbm90IHNldAorIyBDT05GSUdfQ01E
-X1BXRCBpcyBub3Qgc2V0CisjIENPTkZJR19DTURfUk0gaXMgbm90IHNldAorIyBDT05GSUdfQ01E
-X1JNRElSIGlzIG5vdCBzZXQKKyMgQ09ORklHX0NNRF9GQUxTRSBpcyBub3Qgc2V0CisjIENPTkZJ
-R19DTURfVEVTVCBpcyBub3Qgc2V0CisjIENPTkZJR19DTURfVFJVRSBpcyBub3Qgc2V0CisjIENP
-TkZJR19DTURfQ0xFQVIgaXMgbm90IHNldAorIyBDT05GSUdfQ01EX0VDSE8gaXMgbm90IHNldAor
-Q09ORklHX0NNRF9DUkM9eQorQ09ORklHX0NNRF9DUkNfQ01QPXkKKyMgQ09ORklHX0NNRF9NRCBp
-cyBub3Qgc2V0CisjIENPTkZJR19DTURfTUVNQ01QIGlzIG5vdCBzZXQKKyMgQ09ORklHX0NNRF9N
-RU1DUFkgaXMgbm90IHNldAorIyBDT05GSUdfQ01EX01FTVNFVCBpcyBub3Qgc2V0CisjIENPTkZJ
-R19DTURfTVcgaXMgbm90IHNldAorQ09ORklHX1NFUklBTF9BTUJBX1BMMDExPXkKKyMgQ09ORklH
-X1NQSSBpcyBub3Qgc2V0CitDT05GSUdfTVREPXkKK0NPTkZJR19EUklWRVJfQ0ZJPXkKK0NPTkZJ
-R19EUklWRVJfQ0ZJX0JBTktfV0lEVEhfOD15CitDT05GSUdfQ0ZJX0JVRkZFUl9XUklURT15CitD
-T05GSUdfTkFORD15CisjIENPTkZJR19GU19SQU1GUyBpcyBub3Qgc2V0CitDT05GSUdfRElHRVNU
-X1NIQTFfR0VORVJJQz15CitDT05GSUdfRElHRVNUX1NIQTI1Nl9HRU5FUklDPXkKZGlmZiAtLWdp
-dCBhL2FyY2gvYXJtL21hY2gtcWVtdS9LY29uZmlnIGIvYXJjaC9hcm0vbWFjaC1xZW11L0tjb25m
-aWcKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uZDMwYmFlNAotLS0gL2Rldi9u
-dWxsCisrKyBiL2FyY2gvYXJtL21hY2gtcWVtdS9LY29uZmlnCkBAIC0wLDAgKzEsMTggQEAKK2lm
-IEFSQ0hfUUVNVQorCitjb25maWcgQVJDSF9URVhUX0JBU0UKKwloZXgKKwlkZWZhdWx0IDB4NDAw
-MDAwMDAKKworY2hvaWNlCisJcHJvbXB0ICJBUk0gQm9hcmQgdHlwZSIKKworY29uZmlnIE1BQ0hf
-UUVNVV9WSVJUNjQKKwlib29sICJRRU1VIGFybTY0IHZpcnQgbWFjaGluZSIKKwlzZWxlY3QgQ1BV
-X1Y4CisJc2VsZWN0IFNZU19TVVBQT1JUU182NEJJVF9LRVJORUwKKwlzZWxlY3QgQVJNX0FNQkEK
-KwlzZWxlY3QgSEFWRV9DT05GSUdVUkFCTEVfTUVNT1JZX0xBWU9VVAorCitlbmRjaG9pY2UKK2Vu
-ZGlmCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLXFlbXUvTWFrZWZpbGUgYi9hcmNoL2FybS9t
-YWNoLXFlbXUvTWFrZWZpbGUKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uMjll
-NWYzNQotLS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL21hY2gtcWVtdS9NYWtlZmlsZQpAQCAt
-MCwwICsxLDIgQEAKK29iai0kKENPTkZJR19NQUNIX1FFTVVfVklSVDY0KSArPSB2aXJ0X2Rldmlj
-ZXMubworbHdsLSQoQ09ORklHX01BQ0hfUUVNVV9WSVJUNjQpICs9IHZpcnRfbG93bGV2ZWwubwpk
-aWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1xZW11L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oIGIv
-YXJjaC9hcm0vbWFjaC1xZW11L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oCm5ldyBmaWxlIG1vZGUg
-MTAwNjQ0CmluZGV4IDAwMDAwMDAuLjg5YjA2OTIKLS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL2Fy
-bS9tYWNoLXFlbXUvaW5jbHVkZS9tYWNoL2RlYnVnX2xsLmgKQEAgLTAsMCArMSwyNCBAQAorLyoK
-KyAqIENvcHlyaWdodCAyMDEzIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIDxwbGFn
-bmlvbEBqY3Jvc29mdC5jb20+CisgKgorICogR1BMdjIgb25seQorICovCisKKyNpZm5kZWYgX19N
-QUNIX0RFQlVHX0xMX0hfXworI2RlZmluZSAgIF9fTUFDSF9ERUJVR19MTF9IX18KKworI2luY2x1
-ZGUgPGxpbnV4L2FtYmEvc2VyaWFsLmg+CisjaW5jbHVkZSA8aW8uaD4KKworI2RlZmluZSBERUJV
-R19MTF9QSFlTX0JBU0UJCTB4MTAwMDAwMDAKKyNkZWZpbmUgREVCVUdfTExfUEhZU19CQVNFX1JT
-MQkJMHgxYzAwMDAwMAorCisjaWZkZWYgTVAKKyNkZWZpbmUgREVCVUdfTExfVUFSVF9BRERSIERF
-QlVHX0xMX1BIWVNfQkFTRQorI2Vsc2UKKyNkZWZpbmUgREVCVUdfTExfVUFSVF9BRERSIERFQlVH
-X0xMX1BIWVNfQkFTRV9SUzEKKyNlbmRpZgorCisjaW5jbHVkZSA8YXNtL2RlYnVnX2xsX3BsMDEx
-Lmg+CisKKyNlbmRpZgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1xZW11L2luY2x1ZGUvbWFj
-aC9kZXZpY2VzLmggYi9hcmNoL2FybS9tYWNoLXFlbXUvaW5jbHVkZS9tYWNoL2RldmljZXMuaApu
-ZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwLi45ODcyYzYxCi0tLSAvZGV2L251bGwK
-KysrIGIvYXJjaC9hcm0vbWFjaC1xZW11L2luY2x1ZGUvbWFjaC9kZXZpY2VzLmgKQEAgLTAsMCAr
-MSwxMyBAQAorLyoKKyAqIENvcHlyaWdodCAoQykgMjAxNiBSYXBoYcOrbCBQb2dnaSA8cG9nZ2ku
-cmFwaEBnbWFpbC5jb20+CisgKgorICogR1BMdjIgb25seQorICovCisKKyNpZm5kZWYgX19BU01f
-QVJDSF9ERVZJQ0VTX0hfXworI2RlZmluZSBfX0FTTV9BUkNIX0RFVklDRVNfSF9fCisKK3ZvaWQg
-dmlydF9hZGRfZGRyYW0odTMyIHNpemUpOwordm9pZCB2aXJ0X3JlZ2lzdGVyX3VhcnQodW5zaWdu
-ZWQgaWQpOworCisjZW5kaWYgLyogX19BU01fQVJDSF9ERVZJQ0VTX0hfXyAqLwpkaWZmIC0tZ2l0
-IGEvYXJjaC9hcm0vbWFjaC1xZW11L3ZpcnRfZGV2aWNlcy5jIGIvYXJjaC9hcm0vbWFjaC1xZW11
-L3ZpcnRfZGV2aWNlcy5jCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAuLjk5OWY0
-NjMKLS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9tYWNoLXFlbXUvdmlydF9kZXZpY2VzLmMK
-QEAgLTAsMCArMSwzMCBAQAorLyoKKyAqIENvcHlyaWdodCAoQykgMjAxNiBSYXBoYcOrbCBQb2dn
-aSA8cG9nZ2kucmFwaEBnbWFpbC5jb20+CisgKgorICogR1BMdjIgb25seQorICovCisKKyNpbmNs
-dWRlIDxjb21tb24uaD4KKyNpbmNsdWRlIDxsaW51eC9hbWJhL2J1cy5oPgorI2luY2x1ZGUgPGFz
-bS9tZW1vcnkuaD4KKyNpbmNsdWRlIDxtYWNoL2RldmljZXMuaD4KKyNpbmNsdWRlIDxsaW51eC9p
-b3BvcnQuaD4KKwordm9pZCB2aXJ0X2FkZF9kZHJhbSh1MzIgc2l6ZSkKK3sKKwlhcm1fYWRkX21l
-bV9kZXZpY2UoInJhbTAiLCAweDQwMDAwMDAwLCBzaXplKTsKK30KKwordm9pZCB2aXJ0X3JlZ2lz
-dGVyX3VhcnQodW5zaWduZWQgaWQpCit7CisJcmVzb3VyY2Vfc2l6ZV90IHN0YXJ0OworCisJc3dp
-dGNoIChpZCkgeworCWNhc2UgMDoKKwkJc3RhcnQgPSAweDA5MDAwMDAwOworCQlicmVhazsKKwlk
-ZWZhdWx0OgorCQlyZXR1cm47CisJfQorCWFtYmFfYXBiX2RldmljZV9hZGQoTlVMTCwgInVhcnQt
-cGwwMTEiLCBpZCwgc3RhcnQsIDQwOTYsIE5VTEwsIDApOworfQpkaWZmIC0tZ2l0IGEvYXJjaC9h
-cm0vbWFjaC1xZW11L3ZpcnRfbG93bGV2ZWwuYyBiL2FyY2gvYXJtL21hY2gtcWVtdS92aXJ0X2xv
-d2xldmVsLmMKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uNmY2OTVhNQotLS0g
-L2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL21hY2gtcWVtdS92aXJ0X2xvd2xldmVsLmMKQEAgLTAs
-MCArMSwxOSBAQAorLyoKKyAqIENvcHlyaWdodCAoQykgMjAxMyBKZWFuLUNocmlzdG9waGUgUExB
-R05JT0wtVklMTEFSRCA8cGxhZ25pb0BqY3Jvc29mdC5jb20+CisgKgorICogR1BMdjIgb25seQor
-ICovCisKKyNpbmNsdWRlIDxjb21tb24uaD4KKyNpbmNsdWRlIDxsaW51eC9zaXplcy5oPgorI2lu
-Y2x1ZGUgPGFzbS9iYXJlYm94LWFybS1oZWFkLmg+CisjaW5jbHVkZSA8YXNtL2JhcmVib3gtYXJt
-Lmg+CisjaW5jbHVkZSA8YXNtL3N5c3RlbV9pbmZvLmg+CisKK3ZvaWQgYmFyZWJveF9hcm1fcmVz
-ZXRfdmVjdG9yKHZvaWQpCit7CisJYXJtX2NwdV9sb3dsZXZlbF9pbml0KCk7CisJYXJtX3NldHVw
-X3N0YWNrKFNUQUNLX0JBU0UpOworCisJYmFyZWJveF9hcm1fZW50cnkoMHg0MDAwMDAwMCwgU1pf
-NTEyTSwgTlVMTCk7Cit9Ci0tIAoyLjEuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
-cmVib3gK
+Hi All,
+
+barebox-2016.06.0 is out. Most stuff this time is in the category fixes
+and cleanups which is a good thing. There are some patches in this
+release that make functions that have the same name as in the standard
+C library have the same semantic. Most prominent example is asprintf
+which now behaves like libc asprintf. Since the previous behaviour of
+asprintf was very useful (returning the pointer to the allocated string
+is just so natural) we now have the same function in basprintf. This is
+done to make it easier to generate code that can be used under barebox
+and also in userspace.
+As usual see below for a complete list of patches for this release.
+
+Sascha
+
+----------------------------------------------------------------
+Alexander Shiyan (1):
+      ATA: platform_ide: Fix resource allocation
+
+Alexander Stein (1):
+      reset_source: export reset_source_set_priority
+
+Andrey Smirnov (10):
+      PCI: imx6: Simplify imx6_pcie_remove()
+      OF: Port of_match_device() and of_device_get_match_data()
+      PCI: imx6: Add proper i.MX6+ reset sequence
+      PCI: imx6: Rename imx6_pcie_start_link() to imx6_pcie_establish_link()
+      PCI: imx6: Move imx6_pcie_reset_phy() near other PHY handling functio=
+ns
+      commands: mmc_extcsd: Fix incorrect usage of sprintf
+      ATA: Implement a hook for 'devinfo'
+      PCI: imx6: Move PHY reset into imx6_pcie_establish_link()
+      PCI: imx6: Remove broken Gen2 workaround
+      PCI: imx6: Add DT bindings to configure PHY Tx driver settings
+
+Antony Pavlov (2):
+      imd: make it work on big-endian machines
+      MIPS: dts: add generated files to clean rule
+
+Boris Brezillon (1):
+      of: fix of_tree_for_each_node_from() macro
+
+Christian Hemp (1):
+      ARM: phytec-som-imx6: add phyCORE-i.MX6 Quad 2GiB RAM
+
+Du Huanpeng (4):
+      NULL: keep NULL definition in stddef.h only
+      wchar_t: wchar_t should go to stddef.h
+      menu: add vi like key support
+      whole tree: remove trailing whitespaces
+
+Fabio Estevam (1):
+      PCI: imx6: Simplify a trivial if-return sequence
+
+Jan Remmet (1):
+      imx6qdl-phytec-pfla02.dtsi: add i2c eeprom
+
+Juergen Borleis (4):
+      PPC: fix size optimisation
+      PPC: clean compiler warning
+      PPC/MPC5XXX/reginfo: fix a bunch of compiler warnings
+      PPC/MPC5200: enable a useful command by default
+
+Lucas Stach (4):
+      globalvar: add missing static inline stubs
+      nvvar: add missing static inline stubs
+      common: select dependencies for defaultenv-2
+      state: select CRC32
+
+Sascha Hauer (69):
+      ARM: i.MX: esdctl: Fix wrong driver name
+      include: Move ep93xx eth platform_data to include/platform_data
+      include: Move smc91111 eth platform_data to include/platform_data
+      include: Move designware eth platform_data to include/platform_data
+      include: Move davinci emac platform_data to include/platform_data
+      include: Move fec eth platform_data to include/platform_data
+      include: Move ns16550 serial platform_data to include/platform_data
+      include: Move dm9000 eth platform_data to include/platform_data
+      include: Move smc911x eth platform_data to include/platform_data
+      include: Move ide platform_data to include/platform_data
+      include: move run_command prototype to command.h
+      include/common.h: remove unused struct memarea_info
+      include: move shell prototypes to shell.h
+      include: move crc specific stuff to crc.h
+      libfile: move open_and_lseek() to libfile
+      show_progress: print spaces with %*s
+      string: Fix (v)asprintf prototypes
+      move make_directory declaration to libfile.h
+      move unlink_recursive declaration to libfile.h
+      fs: move libc function prototypes to their correct locations
+      stdio: rename getc to getchar
+      stdio: replace fprintf(stderr,...) with eprintf
+      stdio: Replace FILE functions with filedescriptor functions
+      stdio: Whitespace cleanup
+      ARM: bootm: Let get_kernel_addresses() determine SDRAM region itself
+      ARM: bootm: Move mem_free calculation into get_kernel_addresses()
+      of: preserve /memreserve/ entries
+      commands: ubiformat: Pass around context data
+      commands: ubiformat: create separate function for ubiformat
+      ARM: Bootm: FIT image handler depends on CONFIG_FITIMAGE
+      move FLEXIBLE_BOOTARGS from commands/ to common/
+      commands: ubiformat: move code to common/
+      usb: fastboot: Use C API for ubiformat
+      usb: fastboot: drop CONFIG_COMMAND_SUPPORT dependency
+      ubiformat: use default values for ubi_ver and image_seq
+      ARM: dts: Fix partition names
+      ARM: GuF Vincell: run code for LT variant aswell
+      ARM: i.MX: increase barebox partition sizes
+      scripts: imx: support set_bits/clear_bits
+      scripts: imx-usb-loader: make debug output more useful
+      scripts: imx-usb-loader: support set_bits/clear_bits
+      ARM: i.MX: karo-tx6: Add support for the 2GiB i.MX6q+ board variant
+      drivers/of: Always compile of_path.c with OF support
+      state: Fix Kconfig dependencies
+      scripts: Add big endian conversion macros to endian.h
+      Kconfig: Make GLOBALVAR visible
+      Kconfig: Make ENV_HANDLING visible
+      Kconfig: Create Kconfig symbol for NVVAR
+      globalvar: Allow to remove globalvars
+      string: Introduce strtobool
+      getenv_bool: use strtobool
+      parameter: Use strtobool
+      bootm: Optionally add a root=3D option to Kernel command line
+      blspec: push appendroot handling to bootm
+      net: phy: Add fixed link support
+      Merge branch 'for-next/arm'
+      Merge branch 'for-next/bootm'
+      Merge branch 'for-next/imx'
+      Merge branch 'for-next/imx6-phytec'
+      Merge branch 'for-next/include-cleanup'
+      Merge branch 'for-next/include-pdata'
+      Merge branch 'for-next/misc'
+      Merge branch 'for-next/mtd'
+      Merge branch 'for-next/pci'
+      Merge branch 'for-next/ubiformat'
+      usb: fastboot: Fix oem exec support
+      of: Add missing include
+      console: Fix initial value of baudrate parameter
+      Release v2016.06.0
+
+Stefan Christ (15):
+      ARM: imx_v7_defconfig: enable NANDTEST command
+      ARM: imx_v7_defconfig: add command mmc_extcsd
+      ARM: imx6q: add support for phyBOARD-SUBRA-i.MX6 Quad
+      ARM: dts: imx6: phyboards: reduce clock speed for usdhc3
+      ARM: dts: pfla02: use long enough reset for ethernet phy
+      ARM: phytec-som-imx6: add barebox partitions for MMC
+      ARM: phytec-som-imx6: fix bootsource for phyCORE-i.MX6
+      ARM: phytec-som-imx6: add phyCORE-i.MX6 DualLite
+      ARM: phytec-som-imx6: update RAM calibration for phycore-imx6dl
+      ARM: phytec-som-imx6: rename environment folder
+      ARM: phytec-som-imx6: adapt main update handler for eMMC
+      ARM: phytec-som-imx6: add NOR for phycore-imx6 emmc
+      ARM: phytec-som-imx6: add automount for first partition on eMMC
+      mci: imx-esdhc: implement reset quirks for i.MX6 DualLite/Solo
+      imx-bbu-nand-fcb: add missing newline character
+
+Teresa Remmet (3):
+      mtd: nand: omap_gpmc: Remove BCH4 support
+      mtd: nand: omap_gpmc: Fix bitflips in empty page
+      ARM: board: phytec-som-am335x: RAM timings for phycore-r2 1GB
+
+Ulrich =D6lmann (1):
+      images: Makefile.socfpga: fix typo
+
+Uwe Kleine-K=F6nig (3):
+      pinctrl: mxs: add raw value from device tree to debug output
+      mci: mxs: add support for dt aliases to name devices
+      serial_auart: make dt aware
+
+grodriguez (1):
+      Fix genphy_restart_aneg() for Micrel's ksz9031.
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
