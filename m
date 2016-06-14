@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bCi0j-0003mL-Em
- for barebox@lists.infradead.org; Tue, 14 Jun 2016 06:39:42 +0000
-Date: Tue, 14 Jun 2016 08:39:19 +0200
+ id 1bCi1Y-00054m-Lk
+ for barebox@lists.infradead.org; Tue, 14 Jun 2016 06:40:33 +0000
+Date: Tue, 14 Jun 2016 08:40:10 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160614063919.GP31666@pengutronix.de>
-References: <20160504074331.GM19714@pengutronix.de>
- <1465838955-24515-1-git-send-email-guille.rodriguez@gmail.com>
+Message-ID: <20160614064010.GQ31666@pengutronix.de>
+References: <1465856107-24133-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1465838955-24515-1-git-send-email-guille.rodriguez@gmail.com>
+In-Reply-To: <1465856107-24133-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,67 +22,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Fix genphy_restart_aneg() for Micrel's ksz9031.
-To: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
-Cc: barebox@lists.infradead.org, Philipp Zabel <pza@pengutronix.de>, Trent Piepho <tpiepho@kymetacorp.com>
+Subject: Re: [PATCH 0/6] MIPS: ath79: sync dts stuff with linux v4.7-rc2
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi Guillermo,
-
-On Mon, Jun 13, 2016 at 07:29:15PM +0200, Guillermo Rodriguez Garcia wrote:
-> From: grodriguez <guille.rodriguez@gmail.com>
+On Tue, Jun 14, 2016 at 01:15:01AM +0300, Antony Pavlov wrote:
+> At the moment linux v4.7-rc2 has AR9331 device tree support.
+> This patchseries syncs barebox AR9331 device tree stuff
+> with linux v4.7-rc2.
 > 
-> Commit da89ee8f2e04 ("Center FLP timing at 16ms") breaks
-> genphy_restart_aneg() for Micrel's ksz9031. According to the
-> datasheet, the ksz9031 requires a wait of 1ms after clearing
-> the PDOWN bit and before read/write access to any PHY registers.
-> ---
->  drivers/net/phy/phy.c |    9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
+> Antony Pavlov (6):
+>   clk: ar933x: fix copyright header
+>   MIPS: ath79: dts: sync clk stuff with linux v4.7-rc2
+>   MIPS: ath79: dts: sync uart stuff with linux v4.7-rc2
+>   MIPS: ath79: dts: sync spi stuff with linux v4.7-rc2
+>   MIPS: ath79: dts: tplink-mr3020.dts: sync with linux v4.7-rc2
+>   MIPS: ath79: dts: use ar9331.dtsi from linux v4.7-rc2
 
-I must say that I am not overly happy with this patch as it leaks in phy
-specific stuff into a somewhat generic function. Anyway, I see the need
-for this patch and so I applied it.
+Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-> index 73176fb..ed69d9b 100644
-> --- a/drivers/net/phy/phy.c
-> +++ b/drivers/net/phy/phy.c
-> @@ -561,7 +561,7 @@ int phy_wait_aneg_done(struct phy_device *phydev)
->   */
->  int genphy_restart_aneg(struct phy_device *phydev)
->  {
-> -	int ctl;
-> +	int ctl, pdown;
->  
->  	ctl = phy_read(phydev, MII_BMCR);
->  
-> @@ -574,6 +574,7 @@ int genphy_restart_aneg(struct phy_device *phydev)
->  	ctl &= ~(BMCR_ISOLATE);
->  
->  	/* Clear powerdown bit which eventually is set on some phys */
-> +	pdown = ctl & BMCR_PDOWN;
->  	ctl &= ~BMCR_PDOWN;
->  
->  	ctl = phy_write(phydev, MII_BMCR, ctl);
-> @@ -581,6 +582,12 @@ int genphy_restart_aneg(struct phy_device *phydev)
->  	if (ctl < 0)
->  		return ctl;
->  
-> +	/* Micrel's ksz9031 (and perhaps others?): Changing the PDOWN bit
-> +	 * from '1' to '0' generates an internal reset. Must wait a minimum
-> +	 * of 1ms before read/write access to the PHY registers. */
-> +	if (pdown)
-> +		mdelay(1);
-> +
->  	return 0;
->  }
->  
-> -- 
-> 1.7.9.5
+>  arch/mips/dts/ar9331.dtsi              | 44 ----------------------------------
+>  arch/mips/dts/black-swift.dts          | 22 ++++++++++-------
+>  arch/mips/dts/tplink-mr3020.dts        | 26 ++++++++++++--------
+>  drivers/clk/clk-ar933x.c               | 37 +++++++---------------------
+>  drivers/spi/ath79_spi.c                |  2 +-
+>  include/dt-bindings/clock/ar933x-clk.h | 22 -----------------
+>  6 files changed, 39 insertions(+), 114 deletions(-)
+>  delete mode 100644 arch/mips/dts/ar9331.dtsi
+>  delete mode 100644 include/dt-bindings/clock/ar933x-clk.h
 > 
+> Cc: Yegor Yefremov <yegorslists@googlemail.com>
+> 
+> -- 
+> 2.7.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
