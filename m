@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bChn0-0004ev-3t
- for barebox@lists.infradead.org; Tue, 14 Jun 2016 06:25:31 +0000
-Date: Tue, 14 Jun 2016 08:25:06 +0200
+ id 1bCi0j-0003mL-Em
+ for barebox@lists.infradead.org; Tue, 14 Jun 2016 06:39:42 +0000
+Date: Tue, 14 Jun 2016 08:39:19 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160614062506.GO31666@pengutronix.de>
-References: <20160613105152.28770-1-aar@pengutronix.de>
+Message-ID: <20160614063919.GP31666@pengutronix.de>
+References: <20160504074331.GM19714@pengutronix.de>
+ <1465838955-24515-1-git-send-email-guille.rodriguez@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20160613105152.28770-1-aar@pengutronix.de>
+In-Reply-To: <1465838955-24515-1-git-send-email-guille.rodriguez@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,61 +23,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH RFC] common: env: handle var="" not as var=NULL
-To: Alexander Aring <aar@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] Fix genphy_restart_aneg() for Micrel's ksz9031.
+To: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
+Cc: barebox@lists.infradead.org, Philipp Zabel <pza@pengutronix.de>, Trent Piepho <tpiepho@kymetacorp.com>
 
-On Mon, Jun 13, 2016 at 12:51:52PM +0200, Alexander Aring wrote:
-> This patch changes the behaviour which I think is used everywhere in
-> barebox code. Currently var="" and var=NULL will end in the same
-> behaviour.
+Hi Guillermo,
+
+On Mon, Jun 13, 2016 at 07:29:15PM +0200, Guillermo Rodriguez Garcia wrote:
+> From: grodriguez <guille.rodriguez@gmail.com>
 > 
-> New behaviour is:
-> 
-> setenv(name, "")	-> sets name to ""
-> \-> getenv(name)	-> ""
-> 
-> setenv(name, NULL)	-> deletes env
-> \-> getenv(name)	-> NULL
-> 
-> It seems that barebox code already wants such behaviour, by run
-> 
-> $ grep -r "\"\"" | grep setenv
-> 
-> it finds most all related code sections which use "".
-> 
-> I detected the issue while commenting #ip="foo" in my env. The code
-> part:
-> 
-> net/ifup.c:	setenv("ip", "");
-> 
-> Sets at first "ip" to "" but will end in the old behaviour as "delete".
-> The getenv("ip") in ifup.c will not check on the NULL value and has a
-> general handling for unknown ip env.
-> 
-> Note:
-> Also check commit e7ed69d5 ("setenv: be robust against setenv(<var>,
-> NULL") which says that hush will handle "" and NULL as the same.
-> 
-> Another check would be:
-> 
-> $ grep -r "NULL" | grep setenv
-> 
-> which should show the behaviour in case of deleting env.
-> 
-> Signed-off-by: Alexander Aring <aar@pengutronix.de>
+> Commit da89ee8f2e04 ("Center FLP timing at 16ms") breaks
+> genphy_restart_aneg() for Micrel's ksz9031. According to the
+> datasheet, the ksz9031 requires a wait of 1ms after clearing
+> the PDOWN bit and before read/write access to any PHY registers.
 > ---
-> I test the ip env stuff only that barebox will not crash anymore but I
-> think it will break some other setenv/getenv behaviour.
-> 
-> The question is "Shall we keep that "" and NULL ends in same behaviour"
-> and fix the code which use it wrong, e.g. setenv("ip", ""); getenv("ip").
+>  drivers/net/phy/phy.c |    9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
 
-I'm not sure at the moment if a var="" should delete a variable or just
-set it to an empty string. In any case we should fix net/ifup.c.
-getenv() can return NULL and the code should be prepared for that.
+I must say that I am not overly happy with this patch as it leaks in phy
+specific stuff into a somewhat generic function. Anyway, I see the need
+for this patch and so I applied it.
 
 Sascha
+
+> 
+> diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+> index 73176fb..ed69d9b 100644
+> --- a/drivers/net/phy/phy.c
+> +++ b/drivers/net/phy/phy.c
+> @@ -561,7 +561,7 @@ int phy_wait_aneg_done(struct phy_device *phydev)
+>   */
+>  int genphy_restart_aneg(struct phy_device *phydev)
+>  {
+> -	int ctl;
+> +	int ctl, pdown;
+>  
+>  	ctl = phy_read(phydev, MII_BMCR);
+>  
+> @@ -574,6 +574,7 @@ int genphy_restart_aneg(struct phy_device *phydev)
+>  	ctl &= ~(BMCR_ISOLATE);
+>  
+>  	/* Clear powerdown bit which eventually is set on some phys */
+> +	pdown = ctl & BMCR_PDOWN;
+>  	ctl &= ~BMCR_PDOWN;
+>  
+>  	ctl = phy_write(phydev, MII_BMCR, ctl);
+> @@ -581,6 +582,12 @@ int genphy_restart_aneg(struct phy_device *phydev)
+>  	if (ctl < 0)
+>  		return ctl;
+>  
+> +	/* Micrel's ksz9031 (and perhaps others?): Changing the PDOWN bit
+> +	 * from '1' to '0' generates an internal reset. Must wait a minimum
+> +	 * of 1ms before read/write access to the PHY registers. */
+> +	if (pdown)
+> +		mdelay(1);
+> +
+>  	return 0;
+>  }
+>  
+> -- 
+> 1.7.9.5
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
