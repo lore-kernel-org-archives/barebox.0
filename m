@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bCiGC-0003eM-E9
- for barebox@lists.infradead.org; Tue, 14 Jun 2016 06:55:40 +0000
-From: Alexander Aring <aar@pengutronix.de>
-Date: Tue, 14 Jun 2016 08:55:06 +0200
-Message-Id: <20160614065506.25821-2-aar@pengutronix.de>
-In-Reply-To: <20160614065506.25821-1-aar@pengutronix.de>
-References: <20160614065506.25821-1-aar@pengutronix.de>
+ id 1bCiRn-0001hL-Um
+ for barebox@lists.infradead.org; Tue, 14 Jun 2016 07:07:40 +0000
+Received: by mail-wm0-x244.google.com with SMTP id n184so19970068wmn.1
+ for <barebox@lists.infradead.org>; Tue, 14 Jun 2016 00:07:23 -0700 (PDT)
+From: Raphael Poggi <poggi.raph@gmail.com>
+Date: Tue, 14 Jun 2016 09:06:41 +0200
+Message-Id: <1465888006-39463-8-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <1465888006-39463-1-git-send-email-poggi.raph@gmail.com>
+References: <1465888006-39463-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ifup: fix handling when ip env is not given
+Subject: [PATCH v2 07/12] arm: include: bitops: arm64 use generic __fls
 To: barebox@lists.infradead.org
-Cc: Alexander Aring <aar@pengutronix.de>
+Cc: Raphael Poggi <poggi.raph@gmail.com>
 
-This patch handles the ip env to "" if no ip env is given. Otherwise
-we get a NULL pointer derefence.
-
-Signed-off-by: Alexander Aring <aar@pengutronix.de>
+Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
 ---
- net/ifup.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/include/asm/bitops.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/ifup.c b/net/ifup.c
-index 17e1b2f..59df069 100644
---- a/net/ifup.c
-+++ b/net/ifup.c
-@@ -94,6 +94,9 @@ int ifup(const char *name, unsigned flags)
- 		goto out;
- 
- 	ip = getenv("ip");
-+	if (!ip)
-+		ip = "";
+diff --git a/arch/arm/include/asm/bitops.h b/arch/arm/include/asm/bitops.h
+index 138ebe2..b51225e 100644
+--- a/arch/arm/include/asm/bitops.h
++++ b/arch/arm/include/asm/bitops.h
+@@ -177,6 +177,11 @@ static inline unsigned long ffz(unsigned long word)
+ #include <asm-generic/bitops/ffs.h>
+ #include <asm-generic/bitops/fls.h>
+ #endif		/* __ARM__USE_GENERIC_FF */
 +
- 	if (!strcmp(ip, "dhcp")) {
- 		ret = run_command("dhcp");
- 		if (ret)
++#if __LINUX_ARM_ARCH__ == 8
++#include <asm-generic/bitops/__fls.h>
++#endif
++
+ #include <asm-generic/bitops/fls64.h>
+ 
+ #include <asm-generic/bitops/hweight.h>
 -- 
-2.8.3
+2.1.0
 
 
 _______________________________________________
