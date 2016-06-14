@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
+Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bCiRj-0001gz-HY
- for barebox@lists.infradead.org; Tue, 14 Jun 2016 07:07:36 +0000
-Received: by mail-wm0-x244.google.com with SMTP id m124so19904518wme.3
- for <barebox@lists.infradead.org>; Tue, 14 Jun 2016 00:07:14 -0700 (PDT)
-Received: from localhost.localdomain ([194.167.244.97])
- by smtp.gmail.com with ESMTPSA id g195sm2466477wme.23.2016.06.14.00.07.12
- for <barebox@lists.infradead.org>
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Tue, 14 Jun 2016 00:07:12 -0700 (PDT)
+ id 1bCiRk-0001h5-Fw
+ for barebox@lists.infradead.org; Tue, 14 Jun 2016 07:07:37 +0000
+Received: by mail-wm0-x242.google.com with SMTP id m124so19904620wme.3
+ for <barebox@lists.infradead.org>; Tue, 14 Jun 2016 00:07:16 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Tue, 14 Jun 2016 09:06:34 +0200
-Message-Id: <1465888006-39463-1-git-send-email-poggi.raph@gmail.com>
-MIME-Version: 1.0
+Date: Tue, 14 Jun 2016 09:06:35 +0200
+Message-Id: <1465888006-39463-2-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <1465888006-39463-1-git-send-email-poggi.raph@gmail.com>
+References: <1465888006-39463-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,66 +18,127 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: 
+Subject: [PATCH v2 01/12] arm: add armv8 Kconfig entries
 To: barebox@lists.infradead.org
+Cc: Raphael Poggi <poggi.raph@gmail.com>
 
-Q2hhbmdlIHNpbmNlIHYxOgoJUEFUQ0ggMi8xMjoJcmVtb3ZlIGh1bmsgd2hpY2ggYmVsb25ncyB0
-byBwYXRjaCBhZGRpbmcgbWFjaC1xZW11CgoJUEFUQ0ggMy8xMjoJcmVtb3ZlIHVudXNlZCBmaWxl
-cwoKCVBBVENIIDQvMTI6CWNyZWF0ZSBsb3dsZXZlbDY0CgoJUEFUQ0ggMTEvMTI6CWNyZWF0ZSBw
-Z3RhYmxlczY0IChub3RoaW5nIGluIGNvbW1vbiB3aXRoIHRoZSBhcm0zMiB2ZXJzaW9uKQoKCVBB
-VENIIDEyLzEyOglyZW5hbWUgIm1hY2gtdmlydCIgPT4gIm1hY2gtcWVtdSIKCQkJcmVuYW1lIGJv
-YXJkICJxZW11X3ZpcnQ2NCIKCQkJcmVtb3ZlIGJvYXJkIGVudiBmaWxlcwoKCkhlbGxvLAoKVGhp
-cyBwYXRjaCBzZXJpZXMgaW50cm9kdWNlcyBhIGJhc2ljIHN1cHBvcnQgZm9yIGFybTY0LgoKVGhl
-IGFybTY0IGNvZGUgaXMgbWVyZ2VkIGluIHRoZSBjdXJyZW50IGFyY2gvYXJtIGRpcmVjdG9yeS4K
-SSB0cnkgdG8gYmUgaXRlcmF0aXZlIGluIHRoZSBtZXJnZSBwcm9jZXNzLCBhbmQgZmluZCBjb3Jy
-ZWN0IHNvbHV0aW9ucwp0byBoYW5kbGUgYm90aCBhcmNoaXRlY3R1cmUgYXQgc29tZSBwbGFjZXMu
-CgpJIHRlc3QgdGhlIHBhdGNoIHNlcmllcyBieSBjb21waWxpbmcgYXJtNjQgdmlydCBtYWNoaW5l
-IGFuZCBhcm0zMiB2ZXhwcmVzcy1hOSBhbmQgdGVzdCBpdAppbiBxZW11LCBldmVyeXRoaW5nIHNl
-ZW1zIHRvIHdvcmsuCgpUaGFua3MsClJhcGhhw6tsCgogYXJjaC9hcm0vS2NvbmZpZyAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwgIDI4ICsrCiBhcmNoL2FybS9NYWtlZmlsZSAgICAgICAgICAg
-ICAgICAgICAgICAgICAgfCAgMzAgKy0KIGFyY2gvYXJtL2JvYXJkcy9NYWtlZmlsZSAgICAgICAg
-ICAgICAgICAgICB8ICAgMSArCiBhcmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0NjQvS2NvbmZpZyAg
-ICAgICAgfCAgIDggKwogYXJjaC9hcm0vYm9hcmRzL3FlbXUtdmlydDY0L01ha2VmaWxlICAgICAg
-IHwgICAxICsKIGFyY2gvYXJtL2JvYXJkcy9xZW11LXZpcnQ2NC9pbml0LmMgICAgICAgICB8ICA2
-NyArKysrCiBhcmNoL2FybS9jb25maWdzL3FlbXVfdmlydDY0X2RlZmNvbmZpZyAgICAgfCAgNTUg
-KysrCiBhcmNoL2FybS9jcHUvS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgfCAgMjkgKy0K
-IGFyY2gvYXJtL2NwdS9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICB8ICAyNiArLQogYXJj
-aC9hcm0vY3B1L2NhY2hlLWFybXY4LlMgICAgICAgICAgICAgICAgIHwgMTY4ICsrKysrKysrKwog
-YXJjaC9hcm0vY3B1L2NhY2hlLmMgICAgICAgICAgICAgICAgICAgICAgIHwgIDE5ICsKIGFyY2gv
-YXJtL2NwdS9jcHUuYyAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgNSArCiBhcmNoL2FybS9j
-cHUvY3B1aW5mby5jICAgICAgICAgICAgICAgICAgICAgfCAgNTggKystCiBhcmNoL2FybS9jcHUv
-ZXhjZXB0aW9uc182NC5TICAgICAgICAgICAgICAgfCAxMjcgKysrKysrKwogYXJjaC9hcm0vY3B1
-L2ludGVycnVwdHMuYyAgICAgICAgICAgICAgICAgIHwgIDQ3ICsrKwogYXJjaC9hcm0vY3B1L2xv
-d2xldmVsXzY0LlMgICAgICAgICAgICAgICAgIHwgIDQwICsrCiBhcmNoL2FybS9jcHUvbW11Lmgg
-ICAgICAgICAgICAgICAgICAgICAgICAgfCAgNTQgKysrCiBhcmNoL2FybS9jcHUvbW11XzY0LmMg
-ICAgICAgICAgICAgICAgICAgICAgfCAzMzMgKysrKysrKysrKysrKysrKysKIGFyY2gvYXJtL2Nw
-dS9zdGFydC5jICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiArCiBhcmNoL2FybS9pbmNsdWRl
-L2FzbS9iaXRvcHMuaCAgICAgICAgICAgICAgfCAgIDUgKwogYXJjaC9hcm0vaW5jbHVkZS9hc20v
-Y2FjaGUuaCAgICAgICAgICAgICAgIHwgICA5ICsKIGFyY2gvYXJtL2luY2x1ZGUvYXNtL21tdS5o
-ICAgICAgICAgICAgICAgICB8ICAxNCArLQogYXJjaC9hcm0vaW5jbHVkZS9hc20vcGd0YWJsZTY0
-LmggICAgICAgICAgIHwgMTQwICsrKysrKysKIGFyY2gvYXJtL2luY2x1ZGUvYXNtL3N5c3RlbS5o
-ICAgICAgICAgICAgICB8ICA0NiArKy0KIGFyY2gvYXJtL2luY2x1ZGUvYXNtL3N5c3RlbV9pbmZv
-LmggICAgICAgICB8ICAzOCArKwogYXJjaC9hcm0vbGliNjQvTWFrZWZpbGUgICAgICAgICAgICAg
-ICAgICAgIHwgIDEwICsKIGFyY2gvYXJtL2xpYjY0L2FybWxpbnV4LmMgICAgICAgICAgICAgICAg
-ICB8IDI3NSArKysrKysrKysrKysrKwogYXJjaC9hcm0vbGliNjQvYXNtLW9mZnNldHMuYyAgICAg
-ICAgICAgICAgIHwgIDE2ICsKIGFyY2gvYXJtL2xpYjY0L2JhcmVib3gubGRzLlMgICAgICAgICAg
-ICAgICB8IDEyNSArKysrKysrCiBhcmNoL2FybS9saWI2NC9ib290bS5jICAgICAgICAgICAgICAg
-ICAgICAgfCA1NzIgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKIGFyY2gvYXJtL2xpYjY0
-L2NvcHlfdGVtcGxhdGUuUyAgICAgICAgICAgICB8IDE5MiArKysrKysrKysrCiBhcmNoL2FybS9s
-aWI2NC9kaXYwLmMgICAgICAgICAgICAgICAgICAgICAgfCAgMjcgKysKIGFyY2gvYXJtL2xpYjY0
-L21lbWNweS5TICAgICAgICAgICAgICAgICAgICB8ICA3NCArKysrCiBhcmNoL2FybS9saWI2NC9t
-ZW1zZXQuUyAgICAgICAgICAgICAgICAgICAgfCAyMTUgKysrKysrKysrKysKIGFyY2gvYXJtL2xp
-YjY0L21vZHVsZS5jICAgICAgICAgICAgICAgICAgICB8ICA5OCArKysrKwogYXJjaC9hcm0vbWFj
-aC1xZW11L0tjb25maWcgICAgICAgICAgICAgICAgIHwgIDE4ICsKIGFyY2gvYXJtL21hY2gtcWVt
-dS9NYWtlZmlsZSAgICAgICAgICAgICAgICB8ICAgMiArCiBhcmNoL2FybS9tYWNoLXFlbXUvaW5j
-bHVkZS9tYWNoL2RlYnVnX2xsLmggfCAgMjQgKysKIGFyY2gvYXJtL21hY2gtcWVtdS9pbmNsdWRl
-L21hY2gvZGV2aWNlcy5oICB8ICAxMyArCiBhcmNoL2FybS9tYWNoLXFlbXUvdmlydF9kZXZpY2Vz
-LmMgICAgICAgICAgfCAgMzAgKysKIGFyY2gvYXJtL21hY2gtcWVtdS92aXJ0X2xvd2xldmVsLmMg
-ICAgICAgICB8ICAxOSArCiA0MSBmaWxlcyBjaGFuZ2VkLCAzMDQ0IGluc2VydGlvbnMoKyksIDE2
-IGRlbGV0aW9ucygtKQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
+---
+ arch/arm/Kconfig     | 23 +++++++++++++++++++++++
+ arch/arm/cpu/Kconfig | 29 ++++++++++++++++++++++++++++-
+ 2 files changed, 51 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 1fc887b..986fdaa 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -315,6 +315,29 @@ config ARM_BOARD_APPEND_ATAG
+ 
+ endmenu
+ 
++choice
++	prompt "Barebox code model"
++	help
++	  You should only select this option if you have a workload that
++	  actually benefits from 64-bit processing or if your machine has
++	  large memory. You will only be presented a single option in this
++	  menu if your system does not support both 32-bit and 64-bit modes.
++
++config 32BIT
++	bool "32-bit barebox"
++	depends on CPU_SUPPORTS_32BIT_KERNEL && SYS_SUPPORTS_32BIT_KERNEL
++	help
++	  Select this option if you want to build a 32-bit barebox.
++
++config 64BIT
++	bool "64-bit barebox"
++	depends on CPU_SUPPORTS_64BIT_KERNEL && SYS_SUPPORTS_64BIT_KERNEL
++	select ARCH_DMA_ADDR_T_64BIT
++	help
++	  Select this option if you want to build a 64-bit barebox.
++
++endchoice
++
+ menu "ARM specific settings"
+ 
+ config ARM_OPTIMZED_STRING_FUNCTIONS
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index 4f5d9b6..fd327a8 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -2,7 +2,9 @@ comment "Processor Type"
+ 
+ config CPU_32
+ 	bool
+-	default y
++
++config CPU_64
++	bool
+ 
+ # Select CPU types depending on the architecture selected. This selects
+ # which CPUs we support in the kernel image, and the compiler instruction
+@@ -69,6 +71,12 @@ config CPU_V7
+ 	bool
+ 	select CPU_32v7
+ 
++# ARMv8
++config CPU_V8
++	bool
++	select CPU_64v8
++	select CPU_SUPPORTS_64BIT_KERNEL
++
+ config CPU_XSC3
+         bool
+         select CPU_32v4T
+@@ -84,15 +92,23 @@ config CPU_XSCALE
+ # This defines the compiler instruction set which depends on the machine type.
+ config CPU_32v4T
+ 	bool
++	select CPU_32
+ 
+ config CPU_32v5
+ 	bool
++	select CPU_32
+ 
+ config CPU_32v6
+ 	bool
++	select CPU_32
+ 
+ config CPU_32v7
+ 	bool
++	select CPU_32
++
++config CPU_64v8
++	bool
++	select CPU_64
+ 
+ comment "processor features"
+ 
+@@ -124,3 +140,14 @@ config CACHE_L2X0
+ 	bool "Enable L2x0 PrimeCell"
+ 	depends on MMU && ARCH_HAS_L2X0
+ 
++config SYS_SUPPORTS_32BIT_KERNEL
++	bool
++
++config SYS_SUPPORTS_64BIT_KERNEL
++	bool
++
++config CPU_SUPPORTS_32BIT_KERNEL
++	bool
++
++config CPU_SUPPORTS_64BIT_KERNEL
++	bool
+-- 
+2.1.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
