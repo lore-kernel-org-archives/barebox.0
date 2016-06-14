@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
+Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bCiRk-0001h8-Fu
- for barebox@lists.infradead.org; Tue, 14 Jun 2016 07:07:37 +0000
-Received: by mail-wm0-x242.google.com with SMTP id n184so19969399wmn.1
- for <barebox@lists.infradead.org>; Tue, 14 Jun 2016 00:07:17 -0700 (PDT)
+ id 1bCiRj-0001gz-HY
+ for barebox@lists.infradead.org; Tue, 14 Jun 2016 07:07:36 +0000
+Received: by mail-wm0-x244.google.com with SMTP id m124so19904518wme.3
+ for <barebox@lists.infradead.org>; Tue, 14 Jun 2016 00:07:14 -0700 (PDT)
+Received: from localhost.localdomain ([194.167.244.97])
+ by smtp.gmail.com with ESMTPSA id g195sm2466477wme.23.2016.06.14.00.07.12
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+ Tue, 14 Jun 2016 00:07:12 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Tue, 14 Jun 2016 09:06:36 +0200
-Message-Id: <1465888006-39463-3-git-send-email-poggi.raph@gmail.com>
-In-Reply-To: <1465888006-39463-1-git-send-email-poggi.raph@gmail.com>
-References: <1465888006-39463-1-git-send-email-poggi.raph@gmail.com>
+Date: Tue, 14 Jun 2016 09:06:34 +0200
+Message-Id: <1465888006-39463-1-git-send-email-poggi.raph@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,112 +22,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 02/12] arm: Makefile: rework makefile to handle armv8
+Subject: 
 To: barebox@lists.infradead.org
-Cc: Raphael Poggi <poggi.raph@gmail.com>
 
-Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
----
- arch/arm/Makefile | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 5ccdb83..2743d96 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -1,7 +1,11 @@
- 
- CPPFLAGS	+= -D__ARM__ -fno-strict-aliasing
- # Explicitly specifiy 32-bit ARM ISA since toolchain default can be -mthumb:
-+ifeq ($(CONFIG_CPU_V8),y)
-+CPPFLAGS	+=$(call cc-option,-maarch64,)
-+else
- CPPFLAGS	+=$(call cc-option,-marm,)
-+endif
- 
- ifeq ($(CONFIG_CPU_BIG_ENDIAN),y)
- CPPFLAGS	+= -mbig-endian
-@@ -17,13 +21,16 @@ endif
- # at least some of the code would be executed with MMU off, lets be
- # conservative and instruct the compiler not to generate any unaligned
- # accesses
-+ifeq ($(CONFIG_CPU_V8),n)
- CFLAGS += -mno-unaligned-access
-+endif
- 
- 
- # This selects which instruction set is used.
- # Note that GCC does not numerically define an architecture version
- # macro, but instead defines a whole series of macros which makes
- # testing for a specific architecture or later rather impossible.
-+arch-$(CONFIG_CPU_64v8)		:= -D__LINUX_ARM_ARCH__=8 $(call cc-option,-march=armv8-a)
- arch-$(CONFIG_CPU_32v7)		:=-D__LINUX_ARM_ARCH__=7 $(call cc-option,-march=armv7-a,-march=armv5t -Wa$(comma)-march=armv7-a)
- arch-$(CONFIG_CPU_32v6)            :=-D__LINUX_ARM_ARCH__=6 $(call cc-option,-march=armv6,-march=armv5t -Wa$(comma)-march=armv6)
- arch-$(CONFIG_CPU_32v5)		:=-D__LINUX_ARM_ARCH__=5 $(call cc-option,-march=armv5te,-march=armv4t)
-@@ -34,11 +41,15 @@ tune-$(CONFIG_CPU_ARM920T)	:=-mtune=arm9tdmi
- tune-$(CONFIG_CPU_ARM926T)	:=-mtune=arm9tdmi
- tune-$(CONFIG_CPU_XSCALE)	:=$(call cc-option,-mtune=xscale,-mtune=strongarm110) -Wa,-mcpu=xscale
- 
-+ifeq ($(CONFIG_CPU_V8), y)
-+CFLAGS_ABI	:=-mabi=lp64
-+else
- ifeq ($(CONFIG_AEABI),y)
- CFLAGS_ABI	:=-mabi=aapcs-linux -mno-thumb-interwork
- else
- CFLAGS_ABI	:=$(call cc-option,-mapcs-32,-mabi=apcs-gnu) $(call cc-option,-mno-thumb-interwork,)
- endif
-+endif
- 
- ifeq ($(CONFIG_ARM_UNWIND),y)
- CFLAGS_ABI	+=-funwind-tables
-@@ -51,8 +62,13 @@ CFLAGS_THUMB2	:=-mthumb $(AFLAGS_AUTOIT) $(AFLAGS_NOWARN)
- AFLAGS_THUMB2	:=$(CFLAGS_THUMB2) -Wa$(comma)-mthumb
- endif
- 
-+ifeq ($(CONFIG_CPU_V8), y)
-+CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y)
-+AFLAGS   += -include asm/unified.h
-+else
- CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y) -msoft-float $(CFLAGS_THUMB2)
- AFLAGS   += -include asm/unified.h -msoft-float $(AFLAGS_THUMB2)
-+endif
- 
- # Machine directory name.  This list is sorted alphanumerically
- # by CONFIG_* macro name.
-@@ -275,12 +291,21 @@ MACH :=
- endif
- 
- common-y += $(BOARD) arch/arm/boards/ $(MACH)
--common-y += arch/arm/lib/ arch/arm/cpu/
--common-y += arch/arm/crypto/
-+common-y += arch/arm/cpu/
-+
-+ifeq ($(CONFIG_CPU_V8), y)
-+common-y += arch/arm/lib64/
-+else
-+common-y += arch/arm/lib/ arch/arm/crypto/
-+endif
- 
- common-$(CONFIG_OFTREE) += arch/arm/dts/
- 
-+ifeq ($(CONFIG_CPU_V8), y)
-+lds-y	:= arch/arm/lib64/barebox.lds
-+else
- lds-y	:= arch/arm/lib/barebox.lds
-+endif
- 
- common- += $(patsubst %,arch/arm/boards/%/,$(board-))
- 
--- 
-2.1.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Q2hhbmdlIHNpbmNlIHYxOgoJUEFUQ0ggMi8xMjoJcmVtb3ZlIGh1bmsgd2hpY2ggYmVsb25ncyB0
+byBwYXRjaCBhZGRpbmcgbWFjaC1xZW11CgoJUEFUQ0ggMy8xMjoJcmVtb3ZlIHVudXNlZCBmaWxl
+cwoKCVBBVENIIDQvMTI6CWNyZWF0ZSBsb3dsZXZlbDY0CgoJUEFUQ0ggMTEvMTI6CWNyZWF0ZSBw
+Z3RhYmxlczY0IChub3RoaW5nIGluIGNvbW1vbiB3aXRoIHRoZSBhcm0zMiB2ZXJzaW9uKQoKCVBB
+VENIIDEyLzEyOglyZW5hbWUgIm1hY2gtdmlydCIgPT4gIm1hY2gtcWVtdSIKCQkJcmVuYW1lIGJv
+YXJkICJxZW11X3ZpcnQ2NCIKCQkJcmVtb3ZlIGJvYXJkIGVudiBmaWxlcwoKCkhlbGxvLAoKVGhp
+cyBwYXRjaCBzZXJpZXMgaW50cm9kdWNlcyBhIGJhc2ljIHN1cHBvcnQgZm9yIGFybTY0LgoKVGhl
+IGFybTY0IGNvZGUgaXMgbWVyZ2VkIGluIHRoZSBjdXJyZW50IGFyY2gvYXJtIGRpcmVjdG9yeS4K
+SSB0cnkgdG8gYmUgaXRlcmF0aXZlIGluIHRoZSBtZXJnZSBwcm9jZXNzLCBhbmQgZmluZCBjb3Jy
+ZWN0IHNvbHV0aW9ucwp0byBoYW5kbGUgYm90aCBhcmNoaXRlY3R1cmUgYXQgc29tZSBwbGFjZXMu
+CgpJIHRlc3QgdGhlIHBhdGNoIHNlcmllcyBieSBjb21waWxpbmcgYXJtNjQgdmlydCBtYWNoaW5l
+IGFuZCBhcm0zMiB2ZXhwcmVzcy1hOSBhbmQgdGVzdCBpdAppbiBxZW11LCBldmVyeXRoaW5nIHNl
+ZW1zIHRvIHdvcmsuCgpUaGFua3MsClJhcGhhw6tsCgogYXJjaC9hcm0vS2NvbmZpZyAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHwgIDI4ICsrCiBhcmNoL2FybS9NYWtlZmlsZSAgICAgICAgICAg
+ICAgICAgICAgICAgICAgfCAgMzAgKy0KIGFyY2gvYXJtL2JvYXJkcy9NYWtlZmlsZSAgICAgICAg
+ICAgICAgICAgICB8ICAgMSArCiBhcmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0NjQvS2NvbmZpZyAg
+ICAgICAgfCAgIDggKwogYXJjaC9hcm0vYm9hcmRzL3FlbXUtdmlydDY0L01ha2VmaWxlICAgICAg
+IHwgICAxICsKIGFyY2gvYXJtL2JvYXJkcy9xZW11LXZpcnQ2NC9pbml0LmMgICAgICAgICB8ICA2
+NyArKysrCiBhcmNoL2FybS9jb25maWdzL3FlbXVfdmlydDY0X2RlZmNvbmZpZyAgICAgfCAgNTUg
+KysrCiBhcmNoL2FybS9jcHUvS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgfCAgMjkgKy0K
+IGFyY2gvYXJtL2NwdS9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICB8ICAyNiArLQogYXJj
+aC9hcm0vY3B1L2NhY2hlLWFybXY4LlMgICAgICAgICAgICAgICAgIHwgMTY4ICsrKysrKysrKwog
+YXJjaC9hcm0vY3B1L2NhY2hlLmMgICAgICAgICAgICAgICAgICAgICAgIHwgIDE5ICsKIGFyY2gv
+YXJtL2NwdS9jcHUuYyAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgNSArCiBhcmNoL2FybS9j
+cHUvY3B1aW5mby5jICAgICAgICAgICAgICAgICAgICAgfCAgNTggKystCiBhcmNoL2FybS9jcHUv
+ZXhjZXB0aW9uc182NC5TICAgICAgICAgICAgICAgfCAxMjcgKysrKysrKwogYXJjaC9hcm0vY3B1
+L2ludGVycnVwdHMuYyAgICAgICAgICAgICAgICAgIHwgIDQ3ICsrKwogYXJjaC9hcm0vY3B1L2xv
+d2xldmVsXzY0LlMgICAgICAgICAgICAgICAgIHwgIDQwICsrCiBhcmNoL2FybS9jcHUvbW11Lmgg
+ICAgICAgICAgICAgICAgICAgICAgICAgfCAgNTQgKysrCiBhcmNoL2FybS9jcHUvbW11XzY0LmMg
+ICAgICAgICAgICAgICAgICAgICAgfCAzMzMgKysrKysrKysrKysrKysrKysKIGFyY2gvYXJtL2Nw
+dS9zdGFydC5jICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiArCiBhcmNoL2FybS9pbmNsdWRl
+L2FzbS9iaXRvcHMuaCAgICAgICAgICAgICAgfCAgIDUgKwogYXJjaC9hcm0vaW5jbHVkZS9hc20v
+Y2FjaGUuaCAgICAgICAgICAgICAgIHwgICA5ICsKIGFyY2gvYXJtL2luY2x1ZGUvYXNtL21tdS5o
+ICAgICAgICAgICAgICAgICB8ICAxNCArLQogYXJjaC9hcm0vaW5jbHVkZS9hc20vcGd0YWJsZTY0
+LmggICAgICAgICAgIHwgMTQwICsrKysrKysKIGFyY2gvYXJtL2luY2x1ZGUvYXNtL3N5c3RlbS5o
+ICAgICAgICAgICAgICB8ICA0NiArKy0KIGFyY2gvYXJtL2luY2x1ZGUvYXNtL3N5c3RlbV9pbmZv
+LmggICAgICAgICB8ICAzOCArKwogYXJjaC9hcm0vbGliNjQvTWFrZWZpbGUgICAgICAgICAgICAg
+ICAgICAgIHwgIDEwICsKIGFyY2gvYXJtL2xpYjY0L2FybWxpbnV4LmMgICAgICAgICAgICAgICAg
+ICB8IDI3NSArKysrKysrKysrKysrKwogYXJjaC9hcm0vbGliNjQvYXNtLW9mZnNldHMuYyAgICAg
+ICAgICAgICAgIHwgIDE2ICsKIGFyY2gvYXJtL2xpYjY0L2JhcmVib3gubGRzLlMgICAgICAgICAg
+ICAgICB8IDEyNSArKysrKysrCiBhcmNoL2FybS9saWI2NC9ib290bS5jICAgICAgICAgICAgICAg
+ICAgICAgfCA1NzIgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKIGFyY2gvYXJtL2xpYjY0
+L2NvcHlfdGVtcGxhdGUuUyAgICAgICAgICAgICB8IDE5MiArKysrKysrKysrCiBhcmNoL2FybS9s
+aWI2NC9kaXYwLmMgICAgICAgICAgICAgICAgICAgICAgfCAgMjcgKysKIGFyY2gvYXJtL2xpYjY0
+L21lbWNweS5TICAgICAgICAgICAgICAgICAgICB8ICA3NCArKysrCiBhcmNoL2FybS9saWI2NC9t
+ZW1zZXQuUyAgICAgICAgICAgICAgICAgICAgfCAyMTUgKysrKysrKysrKysKIGFyY2gvYXJtL2xp
+YjY0L21vZHVsZS5jICAgICAgICAgICAgICAgICAgICB8ICA5OCArKysrKwogYXJjaC9hcm0vbWFj
+aC1xZW11L0tjb25maWcgICAgICAgICAgICAgICAgIHwgIDE4ICsKIGFyY2gvYXJtL21hY2gtcWVt
+dS9NYWtlZmlsZSAgICAgICAgICAgICAgICB8ICAgMiArCiBhcmNoL2FybS9tYWNoLXFlbXUvaW5j
+bHVkZS9tYWNoL2RlYnVnX2xsLmggfCAgMjQgKysKIGFyY2gvYXJtL21hY2gtcWVtdS9pbmNsdWRl
+L21hY2gvZGV2aWNlcy5oICB8ICAxMyArCiBhcmNoL2FybS9tYWNoLXFlbXUvdmlydF9kZXZpY2Vz
+LmMgICAgICAgICAgfCAgMzAgKysKIGFyY2gvYXJtL21hY2gtcWVtdS92aXJ0X2xvd2xldmVsLmMg
+ICAgICAgICB8ICAxOSArCiA0MSBmaWxlcyBjaGFuZ2VkLCAzMDQ0IGluc2VydGlvbnMoKyksIDE2
+IGRlbGV0aW9ucygtKQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
+dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
