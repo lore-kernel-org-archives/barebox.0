@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bCi1Y-00054m-Lk
- for barebox@lists.infradead.org; Tue, 14 Jun 2016 06:40:33 +0000
-Date: Tue, 14 Jun 2016 08:40:10 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160614064010.GQ31666@pengutronix.de>
-References: <1465856107-24133-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1465856107-24133-1-git-send-email-antonynpavlov@gmail.com>
+ id 1bCiGC-0003eL-E7
+ for barebox@lists.infradead.org; Tue, 14 Jun 2016 06:55:40 +0000
+From: Alexander Aring <aar@pengutronix.de>
+Date: Tue, 14 Jun 2016 08:55:05 +0200
+Message-Id: <20160614065506.25821-1-aar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,59 +14,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/6] MIPS: ath79: sync dts stuff with linux v4.7-rc2
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] ifup: remove deletion of ip env
+To: barebox@lists.infradead.org
+Cc: Alexander Aring <aar@pengutronix.de>
 
-On Tue, Jun 14, 2016 at 01:15:01AM +0300, Antony Pavlov wrote:
-> At the moment linux v4.7-rc2 has AR9331 device tree support.
-> This patchseries syncs barebox AR9331 device tree stuff
-> with linux v4.7-rc2.
-> 
-> Antony Pavlov (6):
->   clk: ar933x: fix copyright header
->   MIPS: ath79: dts: sync clk stuff with linux v4.7-rc2
->   MIPS: ath79: dts: sync uart stuff with linux v4.7-rc2
->   MIPS: ath79: dts: sync spi stuff with linux v4.7-rc2
->   MIPS: ath79: dts: tplink-mr3020.dts: sync with linux v4.7-rc2
->   MIPS: ath79: dts: use ar9331.dtsi from linux v4.7-rc2
+This patch removes the deletion of ip env and changes to the behaviour
+that it use previous ip=$TYPE assignments if ip env is not part of network
+env which will be sourced.
 
-Applied, thanks
+Example:
+somewhere in shell: ip=dhcp
+\- in case of ip=$TYPE in network env: overwrites the ip env
+\- in case of NO ip=$TYPE in network env: use the ip="dhcp" from shell
 
-Sascha
+Signed-off-by: Alexander Aring <aar@pengutronix.de>
+---
+Don't know if this patch breaks to much handling with previous env handling,
+but I would except such handling.
 
-> 
->  arch/mips/dts/ar9331.dtsi              | 44 ----------------------------------
->  arch/mips/dts/black-swift.dts          | 22 ++++++++++-------
->  arch/mips/dts/tplink-mr3020.dts        | 26 ++++++++++++--------
->  drivers/clk/clk-ar933x.c               | 37 +++++++---------------------
->  drivers/spi/ath79_spi.c                |  2 +-
->  include/dt-bindings/clock/ar933x-clk.h | 22 -----------------
->  6 files changed, 39 insertions(+), 114 deletions(-)
->  delete mode 100644 arch/mips/dts/ar9331.dtsi
->  delete mode 100644 include/dt-bindings/clock/ar933x-clk.h
-> 
-> Cc: Yegor Yefremov <yegorslists@googlemail.com>
-> 
-> -- 
-> 2.7.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Also don't know if the example is correct or I mixed something with
+global/local envs.
 
+Maybe apply patch 2/2 only.
+
+ net/ifup.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/net/ifup.c b/net/ifup.c
+index f22afc9..17e1b2f 100644
+--- a/net/ifup.c
++++ b/net/ifup.c
+@@ -62,8 +62,6 @@ int ifup(const char *name, unsigned flags)
+ 
+ 	env_push_context();
+ 
+-	setenv("ip", "");
+-
+ 	for (i = 0; i < ARRAY_SIZE(vars); i++)
+ 		setenv(vars[i], "");
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.8.3
+
 
 _______________________________________________
 barebox mailing list
