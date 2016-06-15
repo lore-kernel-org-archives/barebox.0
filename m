@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bD3c3-0004hC-Lz
- for barebox@lists.infradead.org; Wed, 15 Jun 2016 05:43:40 +0000
-Date: Wed, 15 Jun 2016 07:43:17 +0200
+ id 1bD3hk-0006vw-Tp
+ for barebox@lists.infradead.org; Wed, 15 Jun 2016 05:49:33 +0000
+Date: Wed, 15 Jun 2016 07:49:10 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160615054317.GB9677@pengutronix.de>
-References: <20160614065506.25821-1-aar@pengutronix.de>
- <20160614065506.25821-2-aar@pengutronix.de>
+Message-ID: <20160615054910.GC9677@pengutronix.de>
+References: <20160504074331.GM19714@pengutronix.de>
+ <1465838955-24515-1-git-send-email-guille.rodriguez@gmail.com>
+ <20160614063919.GP31666@pengutronix.de>
+ <CABDcavasLdCoH5gxWMrysjyVnGd5K_F+2=gi6CS1Xmaegkib8g@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20160614065506.25821-2-aar@pengutronix.de>
+In-Reply-To: <CABDcavasLdCoH5gxWMrysjyVnGd5K_F+2=gi6CS1Xmaegkib8g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,47 +25,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] ifup: fix handling when ip env is not given
-To: Alexander Aring <aar@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] Fix genphy_restart_aneg() for Micrel's ksz9031.
+To: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
+Cc: barebox@lists.infradead.org, Philipp Zabel <pza@pengutronix.de>, Trent Piepho <tpiepho@kymetacorp.com>
 
-On Tue, Jun 14, 2016 at 08:55:06AM +0200, Alexander Aring wrote:
-> This patch handles the ip env to "" if no ip env is given. Otherwise
-> we get a NULL pointer derefence.
+On Tue, Jun 14, 2016 at 09:39:23AM +0200, Guillermo Rodriguez Garcia wrote:
+> Hi Sascha,
 > 
-> Signed-off-by: Alexander Aring <aar@pengutronix.de>
-> ---
->  net/ifup.c | 3 +++
->  1 file changed, 3 insertions(+)
+> 2016-06-14 8:39 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> > Hi Guillermo,
+> >
+> > On Mon, Jun 13, 2016 at 07:29:15PM +0200, Guillermo Rodriguez Garcia wrote:
+> >> From: grodriguez <guille.rodriguez@gmail.com>
+> >>
+> >> Commit da89ee8f2e04 ("Center FLP timing at 16ms") breaks
+> >> genphy_restart_aneg() for Micrel's ksz9031. According to the
+> >> datasheet, the ksz9031 requires a wait of 1ms after clearing
+> >> the PDOWN bit and before read/write access to any PHY registers.
+> >> ---
+> >>  drivers/net/phy/phy.c |    9 ++++++++-
+> >>  1 file changed, 8 insertions(+), 1 deletion(-)
+> >
+> > I must say that I am not overly happy with this patch as it leaks in phy
+> > specific stuff into a somewhat generic function. Anyway, I see the need
+> > for this patch and so I applied it.
+> 
+> Yes, I understand perfectly and I feel the same.
+> The alternative was to create a custom genphy_restart_aneg for micrel
+> PHYs only add the delay there, however I am not sure it is worth the
+> trouble just for a 1ms delay which will be virtually unnoticeable
+> anyway.
 
-Applied, thanks
+There's also the case when Micrel phy support is disabled. In this case
+a Micrel phy is then handled by the generic phy, so we still need the
+delay in the generic code, or we would have to remove the BMCR_PDOWN
+setting from the generic code also.
+
+> 
+> Also I am not completely sure that this only applies to Micrel. See
+> this for example in the SMSC911x driver from the Linux kernel:
+> http://lxr.free-electrons.com/source/drivers/net/ethernet/smsc/smsc911x.c#L1364
+> 
+> Anyway if you would prefer this to be moved to micrel.c I would be
+> happy to prepare a patch for that; just let me know.
+
+Your patch is fine for now. Let's see what unforseen problems it
+generates before changing it again ;)
 
 Sascha
-
-> 
-> diff --git a/net/ifup.c b/net/ifup.c
-> index 17e1b2f..59df069 100644
-> --- a/net/ifup.c
-> +++ b/net/ifup.c
-> @@ -94,6 +94,9 @@ int ifup(const char *name, unsigned flags)
->  		goto out;
->  
->  	ip = getenv("ip");
-> +	if (!ip)
-> +		ip = "";
-> +
->  	if (!strcmp(ip, "dhcp")) {
->  		ret = run_command("dhcp");
->  		if (ret)
-> -- 
-> 2.8.3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
