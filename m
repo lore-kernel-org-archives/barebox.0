@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-vk0-x244.google.com ([2607:f8b0:400c:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bD4Oe-0008OH-MT
- for barebox@lists.infradead.org; Wed, 15 Jun 2016 06:33:53 +0000
-Date: Wed, 15 Jun 2016 08:33:29 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160615063329.GE9677@pengutronix.de>
-References: <1465888006-39463-1-git-send-email-poggi.raph@gmail.com>
- <1465888006-39463-2-git-send-email-poggi.raph@gmail.com>
+ id 1bD5V5-0001z2-1j
+ for barebox@lists.infradead.org; Wed, 15 Jun 2016 07:44:36 +0000
+Received: by mail-vk0-x244.google.com with SMTP id k2so2057862vkb.0
+ for <barebox@lists.infradead.org>; Wed, 15 Jun 2016 00:44:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1465888006-39463-2-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <20160615054910.GC9677@pengutronix.de>
+References: <20160504074331.GM19714@pengutronix.de>
+ <1465838955-24515-1-git-send-email-guille.rodriguez@gmail.com>
+ <20160614063919.GP31666@pengutronix.de>
+ <CABDcavasLdCoH5gxWMrysjyVnGd5K_F+2=gi6CS1Xmaegkib8g@mail.gmail.com>
+ <20160615054910.GC9677@pengutronix.de>
+From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
+Date: Wed, 15 Jun 2016 09:44:13 +0200
+Message-ID: <CABDcavZJDGr7h7CQ2f7qZSiZDL-XYhipDSJUihm5VWv3YEoejA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,98 +27,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 01/12] arm: add armv8 Kconfig entries
-To: Raphael Poggi <poggi.raph@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] Fix genphy_restart_aneg() for Micrel's ksz9031.
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Philipp Zabel <pza@pengutronix.de>, Trent Piepho <tpiepho@kymetacorp.com>
 
-Hi Raphael,
+2016-06-15 7:49 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> On Tue, Jun 14, 2016 at 09:39:23AM +0200, Guillermo Rodriguez Garcia wrote:
+>> Hi Sascha,
+>>
+>> 2016-06-14 8:39 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+>> > Hi Guillermo,
+>> >
+>> > On Mon, Jun 13, 2016 at 07:29:15PM +0200, Guillermo Rodriguez Garcia wrote:
+>> >> From: grodriguez <guille.rodriguez@gmail.com>
+>> >>
+>> >> Commit da89ee8f2e04 ("Center FLP timing at 16ms") breaks
+>> >> genphy_restart_aneg() for Micrel's ksz9031. According to the
+>> >> datasheet, the ksz9031 requires a wait of 1ms after clearing
+>> >> the PDOWN bit and before read/write access to any PHY registers.
+>> >> ---
+>> >>  drivers/net/phy/phy.c |    9 ++++++++-
+>> >>  1 file changed, 8 insertions(+), 1 deletion(-)
+>> >
+>> > I must say that I am not overly happy with this patch as it leaks in phy
+>> > specific stuff into a somewhat generic function. Anyway, I see the need
+>> > for this patch and so I applied it.
+>>
+>> Yes, I understand perfectly and I feel the same.
+>> The alternative was to create a custom genphy_restart_aneg for micrel
+>> PHYs only add the delay there, however I am not sure it is worth the
+>> trouble just for a 1ms delay which will be virtually unnoticeable
+>> anyway.
+>
+> There's also the case when Micrel phy support is disabled. In this case
+> a Micrel phy is then handled by the generic phy, so we still need the
+> delay in the generic code, or we would have to remove the BMCR_PDOWN
+> setting from the generic code also.
 
-On Tue, Jun 14, 2016 at 09:06:35AM +0200, Raphael Poggi wrote:
-> Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
-> ---
->  arch/arm/Kconfig     | 23 +++++++++++++++++++++++
->  arch/arm/cpu/Kconfig | 29 ++++++++++++++++++++++++++++-
->  2 files changed, 51 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index 1fc887b..986fdaa 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -315,6 +315,29 @@ config ARM_BOARD_APPEND_ATAG
->  
->  endmenu
->  
-> +choice
-> +	prompt "Barebox code model"
-> +	help
-> +	  You should only select this option if you have a workload that
-> +	  actually benefits from 64-bit processing or if your machine has
-> +	  large memory. You will only be presented a single option in this
-> +	  menu if your system does not support both 32-bit and 64-bit modes.
-> +
-> +config 32BIT
-> +	bool "32-bit barebox"
-> +	depends on CPU_SUPPORTS_32BIT_KERNEL && SYS_SUPPORTS_32BIT_KERNEL
-> +	help
-> +	  Select this option if you want to build a 32-bit barebox.
-> +
-> +config 64BIT
-> +	bool "64-bit barebox"
-> +	depends on CPU_SUPPORTS_64BIT_KERNEL && SYS_SUPPORTS_64BIT_KERNEL
-> +	select ARCH_DMA_ADDR_T_64BIT
-> +	help
-> +	  Select this option if you want to build a 64-bit barebox.
-> +
-> +endchoice
-> +
->  menu "ARM specific settings"
->  
->  config ARM_OPTIMZED_STRING_FUNCTIONS
-> diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+Ah -- I didn't know this was possible.
 
-arm64 needs 64bit pointers. You could merge the following to this patch
-to make resource_size_t 64bit wide and to get rid of the "warning: cast
-from pointer to integer of different size [-Wpointer-to-int-cast]"
-warnings.
+>>
+>> Also I am not completely sure that this only applies to Micrel. See
+>> this for example in the SMSC911x driver from the Linux kernel:
+>> http://lxr.free-electrons.com/source/drivers/net/ethernet/smsc/smsc911x.c#L1364
+>>
+>> Anyway if you would prefer this to be moved to micrel.c I would be
+>> happy to prepare a patch for that; just let me know.
+>
+> Your patch is fine for now. Let's see what unforseen problems it
+> generates before changing it again ;)
 
-Sascha
+Sounds like a plan :)
 
-From 599547f4054ca715f66a83bf49dc9293e3cc0af0 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 15 Jun 2016 08:29:51 +0200
-Subject: [PATCH] arm64: select PHYS_ADDR_T_64BIT
+Best,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/cpu/Kconfig | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
-index fd327a8..c90501e 100644
---- a/arch/arm/cpu/Kconfig
-+++ b/arch/arm/cpu/Kconfig
-@@ -1,9 +1,13 @@
- comment "Processor Type"
- 
-+config PHYS_ADDR_T_64BIT
-+	bool
-+
- config CPU_32
- 	bool
- 
- config CPU_64
-+	select PHYS_ADDR_T_64BIT
- 	bool
- 
- # Select CPU types depending on the architecture selected. This selects
--- 
-2.8.1
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Guillermo Rodriguez Garcia
+guille.rodriguez@gmail.com
 
 _______________________________________________
 barebox mailing list
