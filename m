@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bDXCL-0001yB-Sn
- for barebox@lists.infradead.org; Thu, 16 Jun 2016 13:19:06 +0000
+ id 1bDXGA-00040v-Eo
+ for barebox@lists.infradead.org; Thu, 16 Jun 2016 13:23:03 +0000
+Date: Thu, 16 Jun 2016 15:22:40 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 16 Jun 2016 15:18:22 +0200
-Message-Id: <1466083102-6241-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1466083102-6241-1-git-send-email-s.hauer@pengutronix.de>
-References: <1466083102-6241-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20160616132240.GG9677@pengutronix.de>
+References: <57627B3E.5020100@systec-electronic.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <57627B3E.5020100@systec-electronic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,61 +18,96 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] ARM: start: drop unnecessary variable
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: ARM memory layout
+To: Daniel =?iso-8859-15?Q?Kr=FCger?= <daniel.krueger@systec-electronic.com>
+Cc: barebox@lists.infradead.org
 
-No need anymore to store arm_head_bottom globally as it's only used
-in barebox_non_pbl_start(). Also rename the variable to malloc_end
-which is more meaningful.
+Hi Daniel,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/cpu/start.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+On Thu, Jun 16, 2016 at 12:11:10PM +0200, Daniel Kr=FCger wrote:
+> Hello,
+> =
 
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 38f69d5..f25e592 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -34,7 +34,6 @@
- #include "mmu-early.h"
- 
- unsigned long arm_stack_top;
--static unsigned long arm_head_bottom;
- static unsigned long arm_barebox_size;
- static void *barebox_boarddata;
- static unsigned long barebox_boarddata_size;
-@@ -162,7 +161,7 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
- 
- 	arm_stack_top = endmem;
- 	arm_barebox_size = barebox_size;
--	arm_head_bottom = arm_mem_barebox_image(membase, endmem,
-+	malloc_end = arm_mem_barebox_image(membase, endmem,
- 						arm_barebox_size);
- 
- 	if (IS_ENABLED(CONFIG_MMU_EARLY)) {
-@@ -201,12 +200,10 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
- 			barebox_boarddata = memcpy((void *)mem, boarddata,
- 						   totalsize);
- 			barebox_boarddata_size = totalsize;
--			arm_head_bottom = mem;
-+			malloc_end = mem;
- 		}
- 	}
- 
--	malloc_end = arm_head_bottom;
--
- 	/*
- 	 * Maximum malloc space is the Kconfig value if given
- 	 * or 1GB.
--- 
-2.8.1
+> during the porting of barebox to a new i.MX35 board I stumbled over some
+> crazy things with the memory layout. The comments in file
+> arch/arm/cpu/entry.c seem to be wrong or at least misleading.
+> =
 
+> We configured barebox as non-relocatable image. So I think the configured
+> TEXT_BASE is very important.
+> =
+
+> I use the following configuration with 128 MB RAM:
+> CONFIG_TEXT_BASE=3D0x87000000
+> CONFIG_STACK_SIZE=3D0x100000
+> CONFIG_MALLOC_SIZE=3D0xd00000
+> =
+
+> The stack is configured very large in this project, because of other reas=
+on.
+> =
+
+> I get the following memory layout:
+>     0x87ffffff top of RAM
+>      |           free-space (see arm_mem_stack() in
+>      |                       arch/arm/include/asm/barebox-arm.h)
+>     0x87ff0000 start of 64 kB free-space (vector table)
+>     0x87feffff top of stack
+>      |
+>     0x87ef0000 start of 1 MB reserved stack space
+>     0x87eeffff
+>      |         16 kB early translation table
+>     0x87eec000 early TTB (translation table base)
+>     0x87eebfff malloc end
+>      |          13 MB malloc space
+>     0x871ec000 malloc start
+>      |         some small free space
+>      |         barebox binary
+>     0x87000000 TEXT_BASE
+> =
+
+> This does not comply to the comment in the above mentioned source file.
+> There the malloc space and the vector table are missing.
+> =
+
+> I would expect some check in the source code, when TEXT_BASE is too high =
+or
+> barebox binary is too large, so they collide with malloc space or stack. =
+By
+> reverse engineering the detailed memory layout above, I discovered that in
+> another project the TEXT_BASE falls within the malloc space.
+> =
+
+> How does is run on other ARM boards? Are they all running with
+> CONFIG_RELOCATABLE=3DY?
+
+Most of them do, yes.
+
+It seems !CONFIG_RELOCATABLE became broken with:
+
+| commit 65071bd0910ef109c86b9645c570a6ceed7de534
+| Author: Markus Pargmann <mpa@pengutronix.de>
+| Date:   Tue Dec 8 10:39:29 2015 +0100
+|
+|   arm: Clarify memory layout calculation
+
+I just sent out a series from which the first patch should fix your
+issue. The malloc space should be below the barebox image, not above it.
+BTW you shouldn't have to specify the malloc size, barebox can pick a
+sensible default for you if you specify it to 0.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
