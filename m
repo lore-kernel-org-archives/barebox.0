@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bDXfZ-0006wG-Tm
- for barebox@lists.infradead.org; Thu, 16 Jun 2016 13:49:18 +0000
-Date: Thu, 16 Jun 2016 15:48:56 +0200
+ id 1bDXlH-0002U0-4U
+ for barebox@lists.infradead.org; Thu, 16 Jun 2016 13:55:13 +0000
+Date: Thu, 16 Jun 2016 15:54:49 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160616134855.GH9677@pengutronix.de>
-References: <1465971901-24827-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20160616135449.GI9677@pengutronix.de>
+References: <CAO6XYUuv_VTv6trEFhjzZ=ey+2addAGBRsdqKQwFgbobaHLi-w@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1465971901-24827-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <CAO6XYUuv_VTv6trEFhjzZ=ey+2addAGBRsdqKQwFgbobaHLi-w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +18,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: phy: make locally used of_phy_register_fixed_link()
- static
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: Boot iMX6 from IRAM on new Variscite SOM
+To: "Michael D. Burkey" <mdburkey@gmail.com>
 Cc: barebox@lists.infradead.org
 
-T24gV2VkLCBKdW4gMTUsIDIwMTYgYXQgMDk6MjU6MDFBTSArMDMwMCwgQW50b255IFBhdmxvdiB3
-cm90ZToKPiBUaGUgcGF0Y2ggZml4ZXMgdGhpcyBjb21waWxlcidzIHdhcm5pbmc6Cj4gCj4gICAg
-IGRyaXZlcnMvbmV0L3BoeS9waHkuYzozMDM6MjA6IHdhcm5pbmc6IG5vIHByZXZpb3VzIHByb3Rv
-dHlwZSBmb3IKPiAgICAg4oCYb2ZfcGh5X3JlZ2lzdGVyX2ZpeGVkX2xpbmvigJkgWy1XbWlzc2lu
-Zy1wcm90b3R5cGVzXQo+IAo+IFNpZ25lZC1vZmYtYnk6IEFudG9ueSBQYXZsb3YgPGFudG9ueW5w
-YXZsb3ZAZ21haWwuY29tPgo+IC0tLQo+ICBkcml2ZXJzL25ldC9waHkvcGh5LmMgfCAzICsrLQo+
-ICAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCgpBcHBsaWVk
-LCB0aGFua3MKClNhc2NoYQoKPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvcGh5L3BoeS5j
-IGIvZHJpdmVycy9uZXQvcGh5L3BoeS5jCj4gaW5kZXggZWQ2OWQ5Yi4uMTNiODMyNCAxMDA2NDQK
-PiAtLS0gYS9kcml2ZXJzL25ldC9waHkvcGh5LmMKPiArKysgYi9kcml2ZXJzL25ldC9waHkvcGh5
-LmMKPiBAQCAtMzAwLDcgKzMwMCw4IEBAIHZvaWQgcGh5X3VucmVnaXN0ZXJfZGV2aWNlKHN0cnVj
-dCBwaHlfZGV2aWNlICpwaHlkZXYpCj4gIAlwaHlkZXYtPnJlZ2lzdGVyZWQgPSAwOwo+ICB9Cj4g
-IAo+IC1zdHJ1Y3QgcGh5X2RldmljZSAqb2ZfcGh5X3JlZ2lzdGVyX2ZpeGVkX2xpbmsoc3RydWN0
-IGRldmljZV9ub2RlICpucCwgc3RydWN0IGV0aF9kZXZpY2UgKmVkZXYpCj4gK3N0YXRpYyBzdHJ1
-Y3QgcGh5X2RldmljZSAqb2ZfcGh5X3JlZ2lzdGVyX2ZpeGVkX2xpbmsoc3RydWN0IGRldmljZV9u
-b2RlICpucCwKPiArCQkJCQkJc3RydWN0IGV0aF9kZXZpY2UgKmVkZXYpCj4gIHsKPiAgCXN0cnVj
-dCBwaHlfZGV2aWNlICpwaHlkZXY7Cj4gIAo+IC0tIAo+IDIuNy4wCj4gCj4gCgotLSAKUGVuZ3V0
-cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwg
-aHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxk
-ZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmlj
-aHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkx
-Ny01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi Michael,
+
+On Mon, Jun 13, 2016 at 06:38:31PM -0400, Michael D. Burkey wrote:
+> I have already spoken with Sascha about this a bit, but figured I'd
+> throw it out here in case anyone had any suggestions.
+> 
+> Specifically, I'm updating the support for the Variscite SOM to handle
+> the newest version of their SOM -- which now includes an EEPROM that
+> contains a "DCD-like" script for configuring the DDR3 timing
+> parameters.
+> 
+> Essentially this means that I have to follow a boot procedure similar
+> to that used by the current Wandboard setup, which loads part of
+> barebox into IRAM/OCRAM on the iMX6, read/configures the DDR3 timings,
+> then reloads barebox into DDR3 and starts it.
+> 
+> I think I have gotten things more or less setup at this point and have
+> copied the setup from the Wandboard, but am having trouble getting
+> things to actually start from the internal RAM on the board.
+> 
+> For now, I have a correct DCD already built-in that preconfigures DDR3
+> "just in case" and if I set the load address to be DDR3, then
+> everything starts up as normal -- which in and of itself points to a
+> problem.
+> 
+> My suspicion is that the boot ROM is still trying to load the full
+> image rather than just part of it -- which means that, when I point it
+> to the IRAM/OCRAM, it is writing to the aliased memory regions of the
+> built in RAM and overwriting itself in the process.
+> 
+> What/where actually controls the length of the code that gets
+> automatically loaded by the iMX6 internal boot ROM and what needs to
+> be updated?
+
+Your image name should end with .imx-sram-img, see images/Makefile.imx:
+
+FILE_barebox-imx6-wandboard.img = start_imx6_wandboard.imx-sram-img
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
