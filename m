@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from webbox1416.server-home.net ([77.236.96.61])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bDpMp-0005KN-Tz
- for barebox@lists.infradead.org; Fri, 17 Jun 2016 08:43:09 +0000
-References: <57627B3E.5020100@systec-electronic.com>
- <20160616132240.GG9677@pengutronix.de>
-From: =?UTF-8?Q?Daniel_Kr=c3=bcger?= <daniel.krueger@systec-electronic.com>
-Message-ID: <5763B801.9020504@systec-electronic.com>
-Date: Fri, 17 Jun 2016 10:42:41 +0200
-MIME-Version: 1.0
-In-Reply-To: <20160616132240.GG9677@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1bDpuC-0000YY-L8
+ for barebox@lists.infradead.org; Fri, 17 Jun 2016 09:17:37 +0000
+From: Markus Pargmann <mpa@pengutronix.de>
+Date: Fri, 17 Jun 2016 11:14:35 +0200
+Message-Id: <1466154875-3080-2-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <1466154875-3080-1-git-send-email-mpa@pengutronix.de>
+References: <1466154875-3080-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,110 +16,103 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-15"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: ARM memory layout
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] docs: Add/Update state documentation
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+---
+ .../devicetree/bindings/barebox/barebox,state.rst  |  4 +-
+ Documentation/user/state.rst                       | 46 ++++++++++++++++++++++
+ Documentation/user/user-manual.rst                 |  1 +
+ 3 files changed, 50 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/user/state.rst
 
-thanks for the help. The patches work for my non-relocatable barebox. =
-
-Malloc space is now below barebox.
-
-Best regards,
-   Daniel
-
-Am 16.06.2016 um 15:22 schrieb Sascha Hauer:
-> Hi Daniel,
->
-> On Thu, Jun 16, 2016 at 12:11:10PM +0200, Daniel Kr=FCger wrote:
->> Hello,
->>
->> during the porting of barebox to a new i.MX35 board I stumbled over some
->> crazy things with the memory layout. The comments in file
->> arch/arm/cpu/entry.c seem to be wrong or at least misleading.
->>
->> We configured barebox as non-relocatable image. So I think the configured
->> TEXT_BASE is very important.
->>
->> I use the following configuration with 128 MB RAM:
->> CONFIG_TEXT_BASE=3D0x87000000
->> CONFIG_STACK_SIZE=3D0x100000
->> CONFIG_MALLOC_SIZE=3D0xd00000
->>
->> The stack is configured very large in this project, because of other rea=
-son.
->>
->> I get the following memory layout:
->>      0x87ffffff top of RAM
->>       |           free-space (see arm_mem_stack() in
->>       |                       arch/arm/include/asm/barebox-arm.h)
->>      0x87ff0000 start of 64 kB free-space (vector table)
->>      0x87feffff top of stack
->>       |
->>      0x87ef0000 start of 1 MB reserved stack space
->>      0x87eeffff
->>       |         16 kB early translation table
->>      0x87eec000 early TTB (translation table base)
->>      0x87eebfff malloc end
->>       |          13 MB malloc space
->>      0x871ec000 malloc start
->>       |         some small free space
->>       |         barebox binary
->>      0x87000000 TEXT_BASE
->>
->> This does not comply to the comment in the above mentioned source file.
->> There the malloc space and the vector table are missing.
->>
->> I would expect some check in the source code, when TEXT_BASE is too high=
- or
->> barebox binary is too large, so they collide with malloc space or stack.=
- By
->> reverse engineering the detailed memory layout above, I discovered that =
-in
->> another project the TEXT_BASE falls within the malloc space.
->>
->> How does is run on other ARM boards? Are they all running with
->> CONFIG_RELOCATABLE=3DY?
->
-> Most of them do, yes.
->
-> It seems !CONFIG_RELOCATABLE became broken with:
->
-> | commit 65071bd0910ef109c86b9645c570a6ceed7de534
-> | Author: Markus Pargmann <mpa@pengutronix.de>
-> | Date:   Tue Dec 8 10:39:29 2015 +0100
-> |
-> |   arm: Clarify memory layout calculation
->
-> I just sent out a series from which the first patch should fix your
-> issue. The malloc space should be below the barebox image, not above it.
-> BTW you shouldn't have to specify the malloc size, barebox can pick a
-> sensible default for you if you specify it to 0.
->
-> Sascha
->
-
--- =
-
-
-SYS TEC electronic GmbH
-Am Windrad 2
-08468 Heinsdorfergrund
-
-Telefon : +49 (0) 3765 38600-0
-Fax     : +49 (0) 3765 38600-4100
-Email   : daniel.krueger@systec-electronic.com
-Website : http://www.systec-electronic.com
-
-Managing Directors  :
-   Dipl.-Phys. Siegmar Schmidt, Dipl. Ing. (FH) Armin von Collrepp
-Commercial registry : Amtsgericht Chemnitz, HRB 28082
-USt.-Id Nr.         : DE150534010
+diff --git a/Documentation/devicetree/bindings/barebox/barebox,state.rst b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+index d50765705348..bcc3b3be10cd 100644
+--- a/Documentation/devicetree/bindings/barebox/barebox,state.rst
++++ b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+@@ -36,7 +36,9 @@ Optional properties:
+ 
+ * ``algo``: A HMAC algorithm used to detect manipulation of the data
+   or header, sensible values follow this pattern ``hmac(<HASH>)``,
+-  e.g. ``hmac(sha256)``.
++  e.g. ``hmac(sha256)``. Only used for ``raw``.
++* ``backend-stride``: Maximum size per copy of the data. Only important for
++  non-MTD devices
+ 
+ Variable nodes
+ --------------
+diff --git a/Documentation/user/state.rst b/Documentation/user/state.rst
+new file mode 100644
+index 000000000000..c401f105bd64
+--- /dev/null
++++ b/Documentation/user/state.rst
+@@ -0,0 +1,46 @@
++Barebox State Framework
++=======================
++
++The state framework is build to exchange data between Barebox and Linux
++userspace using a non-volatile storage. There are several components involved.
++Barebox has a state driver to access the variables. For the Linux Userspace
++there is a userspace tool.
++
++Devicetree
++----------
++
++Currently the devicetree defines the layout of the variables and data.
++Variables are fixed size. Several types are supported, see the binding
++documentation for details.
++
++Data Formats
++------------
++
++The state data can be stored in different ways. Currently two formats are
++available, ``raw`` and ``dtb``. Both format the state data differently.
++Basically these are serializers. The raw serializer additionally supports a
++HMAC algorithm to detect manipulations.
++
++Storage Backends
++----------------
++
++The serialized data can be stored to different backends which are automatically
++selected depending on the defined backend in the devicetree. Currently two
++implementations exist, ``circular`` and ``direct``. ``circular`` writes the
++data sequentially on the backend storage device. Each save is appended until
++the storage area is full. It then erases the block and starts from offset 0.
++``circular`` is used for MTD devices with erase functionality. ``direct``
++writes the data directly to the file without erasing.
++
++For all backends multiple copies are written to handle read errors.
++
++Commands
++--------
++
++The ``state`` command can be used to store and manipulate the state. Using
++``state`` without argument lists you all available states with their name.
++``devinfo STATE_NAME`` shows you all variables and their values. ``state -s``
++stores the state.
++
++Starting Barebox will automatically load the last written state. If loading the
++state fails the defaults are used.
+diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
+index be44f0d64541..5841ea625c09 100644
+--- a/Documentation/user/user-manual.rst
++++ b/Documentation/user/user-manual.rst
+@@ -31,6 +31,7 @@ Contents:
+    system-setup
+    reset-reason
+    system-reset
++   state
+ 
+ * :ref:`search`
+ * :ref:`genindex`
+-- 
+2.8.1
 
 
 _______________________________________________
