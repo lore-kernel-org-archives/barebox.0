@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp14.mail.ru ([94.100.181.95])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1bEGJS-0000wG-Tw
+ id 1bEGJS-0000w5-Tv
  for barebox@lists.infradead.org; Sat, 18 Jun 2016 13:29:28 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 18 Jun 2016 16:28:58 +0300
-Message-Id: <1466256538-4067-4-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1466256538-4067-1-git-send-email-shc_work@mail.ru>
-References: <1466256538-4067-1-git-send-email-shc_work@mail.ru>
+Date: Sat, 18 Jun 2016 16:28:55 +0300
+Message-Id: <1466256538-4067-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,44 +19,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] mci: imx-esdhc: Remove excess function
+Subject: [PATCH 1/4] mci: imx: Use mci_register() return value for driver
+ probe.
 To: barebox@lists.infradead.org
-
-Function detect() is defined in the MCI core and mci_detect_card() is
-already called form mci_register(). Remove excess fuction.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/mci/imx-esdhc.c | 9 ---------
- 1 file changed, 9 deletions(-)
+ drivers/mci/imx.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index 2e189fe..2a34bec 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -550,13 +550,6 @@ static int esdhc_reset(struct fsl_esdhc_host *host)
- 	return 0;
+diff --git a/drivers/mci/imx.c b/drivers/mci/imx.c
+index 2788fb9..4f29ddf 100644
+--- a/drivers/mci/imx.c
++++ b/drivers/mci/imx.c
+@@ -519,9 +519,7 @@ static int mxcmci_probe(struct device_d *dev)
+ 	host->mci.f_min = rate >> 7;
+ 	host->mci.f_max = rate >> 1;
+ 
+-	mci_register(&host->mci);
+-
+-	return 0;
++	return mci_register(&host->mci);
  }
  
--static int fsl_esdhc_detect(struct device_d *dev)
--{
--	struct fsl_esdhc_host *host = dev->priv;
--
--	return mci_detect_card(&host->mci);
--}
--
- static int fsl_esdhc_probe(struct device_d *dev)
- {
- 	struct resource *iores;
-@@ -618,8 +611,6 @@ static int fsl_esdhc_probe(struct device_d *dev)
- 	host->mci.card_present = esdhc_card_present;
- 	host->mci.hw_dev = dev;
- 
--	dev->detect = fsl_esdhc_detect,
--
- 	rate = clk_get_rate(host->clk);
- 	host->mci.f_min = rate >> 12;
- 	if (host->mci.f_min < 200000)
+ static __maybe_unused struct of_device_id mxcmci_compatible[] = {
 -- 
 2.4.9
 
