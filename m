@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bFFEb-0005X7-AH
- for barebox@lists.infradead.org; Tue, 21 Jun 2016 06:32:30 +0000
-Date: Tue, 21 Jun 2016 08:32:05 +0200
+ id 1bFMo3-0000qv-73
+ for barebox@lists.infradead.org; Tue, 21 Jun 2016 14:37:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160621063205.GW9677@pengutronix.de>
-References: <CAO6XYUs7ytpWZyTnp04Fo-Ee_D2PYAJ36fg_tC8M20KHLc59TA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAO6XYUs7ytpWZyTnp04Fo-Ee_D2PYAJ36fg_tC8M20KHLc59TA@mail.gmail.com>
+Date: Tue, 21 Jun 2016 16:37:12 +0200
+Message-Id: <1466519832-16659-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,45 +14,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Early access I2C and/or clock for iMX6?
-To: "Michael D. Burkey" <mdburkey@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mtd: nand: gpmi: Fix ecc strength calculation
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Jun 20, 2016 at 03:34:06PM -0400, Michael D. Burkey wrote:
-> In a quest to support the new Variscite SOM's EEPROM based DDR
-> configuration, I am continuing to try to get all the pieces together.
-> 
-> Now that I have the SOM actually booting from IRAM, I am actually
-> trying to get the "real" DDR configuration values out of the EEPROM on
-> the SOM.
-> 
-> Which brings me to the next hurdle -- getting early I2C access up and running.
-> 
-> Thanks to some pointers from Sascha, I have been working with the
-> fsl_i2c.c code that had already been used for this task on the mpc85xx
-> PPC platform, and while the I2C controller is essentially the same,
-> the clock tree  setup, etc. for the iMX6 is quite different.
+BCH ECC correction works in chunks of 512 bytes, so a 2k page size nand
+is divided into 4 chunks. Hardware requires that each chunk has a full
+number of bytes, so when we need 9 bits per chunk we must round up to
+two bytes. The current code misses that and calculates a ECC strength
+of 18 for a 2048+128 byte page size NAND. ECC strength of 18 requires
+30 bytes per chunk, so a total of 4 * (512 + 30) + 10 = 2178 bytes when
+the device only has a page size of 2176 bytes.
 
-The fsl_i2c.c driver as currently in arch/ppc/ needs the input clock
-frequency and some timer for a timeout loop. The timeout could be
-dropped from the loop which is ok for a early bringup driver. For the
-input clock frequency you can pass in the reset default value,
-statically compiled into the binary; no need to calculate it during
-runtime. I still think fsl_i2c.c is the way to go, but you could also
-you whatever else "early" variant of the driver, I wouldn't start from a
-driver implementing the Linux I2C API though.
+Fix this by first calculating the number of bytes per chunk we have
+available for ECC which also makes it easier to follow the calculation.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/nand/nand_mxs.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+index a9c6e96..2862900 100644
+--- a/drivers/mtd/nand/nand_mxs.c
++++ b/drivers/mtd/nand/nand_mxs.c
+@@ -238,9 +238,15 @@ uint32_t mxs_nand_get_ecc_strength(uint32_t page_data_size,
+ 	int ecc_chunk_count = mxs_nand_ecc_chunk_cnt(page_data_size);
+ 	int ecc_strength = 0;
+ 	int gf_len = 13;  /* length of Galois Field for non-DDR nand */
++	int n;
+ 
+-	ecc_strength = ((page_oob_size - MXS_NAND_METADATA_SIZE) * 8)
+-		/ (gf_len * ecc_chunk_count);
++	/* number of ecc bytes we have per chunk */
++	n = (page_oob_size - MXS_NAND_METADATA_SIZE) / ecc_chunk_count;
++
++	/* in bits */
++	n <<= 3;
++
++	ecc_strength = n / gf_len;
+ 
+ 	/* We need the minor even number. */
+ 	return rounddown(ecc_strength, 2);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.8.1
+
 
 _______________________________________________
 barebox mailing list
