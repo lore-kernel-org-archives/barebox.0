@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x22c.google.com ([2607:f8b0:4001:c06::22c])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bF6La-00026d-JE
- for barebox@lists.infradead.org; Mon, 20 Jun 2016 21:03:07 +0000
-Received: by mail-io0-x22c.google.com with SMTP id n127so142524748iof.3
- for <barebox@lists.infradead.org>; Mon, 20 Jun 2016 14:02:45 -0700 (PDT)
+ id 1bFFEb-0005X7-AH
+ for barebox@lists.infradead.org; Tue, 21 Jun 2016 06:32:30 +0000
+Date: Tue, 21 Jun 2016 08:32:05 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160621063205.GW9677@pengutronix.de>
+References: <CAO6XYUs7ytpWZyTnp04Fo-Ee_D2PYAJ36fg_tC8M20KHLc59TA@mail.gmail.com>
 MIME-Version: 1.0
-Date: Mon, 20 Jun 2016 17:02:45 -0400
-Message-ID: <CAO6XYUvHA0na0jTY7HGLw_MQ5wUHK2mohFuLqDP-CPASbYF4-w@mail.gmail.com>
-From: "Michael D. Burkey" <mdburkey@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <CAO6XYUs7ytpWZyTnp04Fo-Ee_D2PYAJ36fg_tC8M20KHLc59TA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,37 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Early access I2C and/or clock for iMX6?
-To: barebox@lists.infradead.org
+Subject: Re: Early access I2C and/or clock for iMX6?
+To: "Michael D. Burkey" <mdburkey@gmail.com>
+Cc: barebox@lists.infradead.org
 
-The more I look into the I2C drivers, the less convinced I am that
-fsl_i2c is where I need to be looking.
+On Mon, Jun 20, 2016 at 03:34:06PM -0400, Michael D. Burkey wrote:
+> In a quest to support the new Variscite SOM's EEPROM based DDR
+> configuration, I am continuing to try to get all the pieces together.
+> 
+> Now that I have the SOM actually booting from IRAM, I am actually
+> trying to get the "real" DDR configuration values out of the EEPROM on
+> the SOM.
+> 
+> Which brings me to the next hurdle -- getting early I2C access up and running.
+> 
+> Thanks to some pointers from Sascha, I have been working with the
+> fsl_i2c.c code that had already been used for this task on the mpc85xx
+> PPC platform, and while the I2C controller is essentially the same,
+> the clock tree  setup, etc. for the iMX6 is quite different.
 
-Additionally, although Variscite had included the fsl_i2c.h header and
-had actually referenced fsl_i2c in some documentation and comments,
-the more I dig through their code, it is looking like the only I2C
-routines that are even getting compiled in their U-Boot implementation
-are those in mxc_i2c.c -- which actually look to be a fairly clean
-implementation for the i.MX series of parts that doesn't appear to
-require much additional support code along with it (other than, once
-again, some of the clock configuration routine). It appears to be much
-more simplistic and bare metal than the i2c-imx.c that is currently
-used in barebox.
+The fsl_i2c.c driver as currently in arch/ppc/ needs the input clock
+frequency and some timer for a timeout loop. The timeout could be
+dropped from the loop which is ok for a early bringup driver. For the
+input clock frequency you can pass in the reset default value,
+statically compiled into the binary; no need to calculate it during
+runtime. I still think fsl_i2c.c is the way to go, but you could also
+you whatever else "early" variant of the driver, I wouldn't start from a
+driver implementing the Linux I2C API though.
 
-Since the mxc_i2c.c driver in U-Boot was written also written by
-Sascha Hauer, I'm sort of throwing this one out as a question to
-Sascha or anyone else familiar with this code:
+Sascha
 
-For an early access I2C driver on the i.MX6, do you think it would
-make more sense to try starting from the fsl_i2c.c code under barebox
-or from the original U-Boot mxc_i2c.c code?
-
-I'm beginning to suspect the latter may actually be easier to start
-from (and it would already match the function calls that Variscite is
-using in the code I am transplanting from their U-Boot tree).
-
-Thanks again!
-Michael Burkey
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
