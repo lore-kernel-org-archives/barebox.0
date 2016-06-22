@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bFe5Z-0004y9-I4
- for barebox@lists.infradead.org; Wed, 22 Jun 2016 09:04:51 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 3AD52A0040C
- for <barebox@lists.infradead.org>; Wed, 22 Jun 2016 11:05:37 +0200 (CEST)
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 22 Jun 2016 11:02:41 +0200
-Message-Id: <1466586161-14532-4-git-send-email-t.remmet@phytec.de>
-In-Reply-To: <1466586161-14532-1-git-send-email-t.remmet@phytec.de>
-References: <1466586161-14532-1-git-send-email-t.remmet@phytec.de>
+Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bFfhH-0007g3-Dw
+ for barebox@lists.infradead.org; Wed, 22 Jun 2016 10:47:51 +0000
+Received: by mail-lf0-x241.google.com with SMTP id a2so13321970lfe.3
+ for <barebox@lists.infradead.org>; Wed, 22 Jun 2016 03:47:31 -0700 (PDT)
+Date: Wed, 22 Jun 2016 13:49:13 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20160622134913.7719306547ef43001d163c71@gmail.com>
+In-Reply-To: <1466570369-1950-3-git-send-email-andrew.smirnov@gmail.com>
+References: <1466570369-1950-1-git-send-email-andrew.smirnov@gmail.com>
+ <1466570369-1950-3-git-send-email-andrew.smirnov@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,65 +20,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] ARM: am335x_defconfig: Enable ubi fastmap and ubifs
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/3] GUI: Add fbtest command
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org, Andrey Gusakov <andrey.gusakov@cogentembedded.com>
 
-Enable support for ubifs and ubi fastmap.
+On Tue, 21 Jun 2016 21:39:29 -0700
+Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
 
-Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
----
- arch/arm/configs/am335x_defconfig | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+> Add 'fbtest' - a command to produce test patterns on a screen
+                                                    ^^^^^^^^^^^ "on A scree=
+n" here
 
-diff --git a/arch/arm/configs/am335x_defconfig b/arch/arm/configs/am335x_defconfig
-index 96c6699..382133b 100644
---- a/arch/arm/configs/am335x_defconfig
-+++ b/arch/arm/configs/am335x_defconfig
-@@ -22,6 +22,10 @@ CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- CONFIG_MENU=y
- # CONFIG_TIMESTAMP is not set
-+CONFIG_BOOTM_SHOW_TYPE=y
-+CONFIG_BOOTM_VERBOSE=y
-+CONFIG_BOOTM_INITRD=y
-+CONFIG_BOOTM_OFTREE=y
- CONFIG_BLSPEC=y
- CONFIG_CONSOLE_ACTIVATE_NONE=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-@@ -31,10 +35,6 @@ CONFIG_LONGHELP=y
- CONFIG_CMD_IOMEM=y
- CONFIG_CMD_MEMINFO=y
- CONFIG_CMD_ARM_MMUINFO=y
--CONFIG_BOOTM_SHOW_TYPE=y
--CONFIG_BOOTM_VERBOSE=y
--CONFIG_BOOTM_INITRD=y
--CONFIG_BOOTM_OFTREE=y
- # CONFIG_CMD_BOOTU is not set
- CONFIG_CMD_BOOTZ=y
- CONFIG_CMD_GO=y
-@@ -108,6 +108,7 @@ CONFIG_MTD_M25P80=y
- CONFIG_NAND=y
- CONFIG_NAND_OMAP_GPMC=y
- CONFIG_MTD_UBI=y
-+CONFIG_MTD_UBI_FASTMAP=y
- CONFIG_USB_HOST=y
- CONFIG_USB_STORAGE=y
- CONFIG_USB_GADGET=y
-@@ -137,3 +138,6 @@ CONFIG_FS_NFS=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_WRITE=y
- CONFIG_FS_FAT_LFN=y
-+CONFIG_FS_UBIFS=y
-+CONFIG_FS_UBIFS_COMPRESSION_LZO=y
-+CONFIG_FS_UBIFS_COMPRESSION_ZLIB=y
--- 
-1.9.1
 
+...
+
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -1417,6 +1417,15 @@ config CMD_SPLASH
+>  		  -b COLOR	background color in 0xttrrggbb
+>  		  -o		render offscreen
+>  =
+
+> +config CMD_FBTEST
+> +	bool
+> +	depends on VIDEO
+> +	select 2D_PRIMITIVES
+> +	prompt "FB test"
+> +	help
+> +	  Framebuffer test command that allows to produce a number of
+> +	  test patterns on the screen.
+                        ^^^^^^^^^^^^^ "on THE screen" here
+
+Can you fix this inconsistency, please?
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
