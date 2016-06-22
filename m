@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bFjLM-00059l-4y
- for barebox@lists.infradead.org; Wed, 22 Jun 2016 14:41:29 +0000
-Date: Wed, 22 Jun 2016 16:41:04 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160622144104.GB4750@pengutronix.de>
-References: <57695CC0.20403@gmail.com>
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bFjTU-0000SB-Ts
+ for barebox@lists.infradead.org; Wed, 22 Jun 2016 14:49:53 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 49BDBA004FD
+ for <barebox@lists.infradead.org>; Wed, 22 Jun 2016 16:50:11 +0200 (CEST)
+From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
+Date: Wed, 22 Jun 2016 16:49:03 +0200
+Message-Id: <1466606944-22735-1-git-send-email-s.mueller-klieser@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <57695CC0.20403@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,54 +18,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Support USB port SAMA5D3
-To: ner0 <avazquez.dev@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [RFC 0/1] am335x kernel not booting
+To: barebox@lists.infradead.org
 
-Hi,
-
-On Tue, Jun 21, 2016 at 05:26:56PM +0200, ner0 wrote:
-> Hi, All!
-> 
-> I know that it is possible detect usb (mass storage devices) and mount it
-> using Barebox.
-> 
-> I am trying detect a pen drive in a sama5d3 Xplained but it don't work.
-> I use the command detect -l  but it seems that USB is not detectable.
-> I've taken a look at the file "init.c" but there is no declaration of USB
-> ports.
-> I have been modifying the code and have added support for USB (basing on
-> at91sam9x5k) but can't get it to work.
-> The driver started correctly
-> atmel-ehci atmel-ehci: USB EHCI 1.00
-> when I run "usb" to detect the devices gives me the following message:
-> 
-> # usb
-> USB: scanning bus for devices...
-> atmel-ehci atmel-ehci: fail to reset
-> 0 USB Device(s) found
-> 
-> Am I correctly defining the USB port?
-> Did I miss something?
-
-I can't find anything obvious in the patch that could be wrong.
-Sometimes it helps to have a look at the U-Boot code if there's
-something that needs to be configured additionally. Generally the EHCI
-driver should work, I use it regularly on i.MX.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RGVhciBsaXN0LAoKdGhpcyBpcyBtb3JlIG9mIGEgcmVxdWVzdCBmb3IgaGVscCwgYXMgSSBhbSBu
+b3Qgc3VyZSBpZiBteSBjdXJyZW50CmFuYWx5c2lzIGlzIGNvcnJlY3QuIFRoZSBwcm9ibGVtIEkg
+YW0gaGF2aW5nIGlzIHRoYXQgdGhlIGtlcm5lbCBjdXJyZW50Cm1hc3RlciBkb2VzIG5vdCBib290
+IGFuZCBmYWlscyB3aXRoOgoKRXJyb3I6IHVucmVjb2duaXplZC91bnN1cHBvcnRlZCBtYWNoaW5l
+IElEIChyMSA9IDB4MDAwMDEwMzApLgoKTXkgc2V0dXAgaXM6CnBoeUJPQVJELVdFR0EtQU0zMzV4
+Cmtlcm5lbDogbWFzdGVyIHdpdGggbXVsdGl2Ny9vbWFwMnBsdXMgZGVmY29uZmlnCmJhcmVib3g6
+IG1hc3RlciB3aXRoIHBoeWNvcmUtYW0zMzV4IGltYWdlCgpHaXQgYmlzZWN0aW5nIGxlYWQgdG8g
+dGhlIERFQlVHX1JPREFUQSBjaGFuZ2UsIHdoaWNoIGlzIG5vdyB0dXJuZWQgb24KZm9yIGFybSBh
+bmQgYXJtNjQuIEdvb2dsZSBicm91Z2h0IHVwIHRoaXMgdGhyZWFkOgoKaHR0cDovL3d3dy5zcGlu
+aWNzLm5ldC9saXN0cy9hcm0ta2VybmVsL21zZzUxMTM1NS5odG1sCgpXaGljaCBicm91Z2h0IG1l
+IHRvIHRoZSBib290bS5jIGluIGJhcmVib3ggdG8gY2hlY2sgaWYgdGhlcmUgaXMgZW5vdWdoCnNw
+YWNlIGZvciBkZWNvbXByZXNzaW9uLiBJIGZvdW5kIHRoZSBhc3N1bXB0aW9uIG9mIGEgY29tcHJl
+c3Npb24gZmFjdG9yCm9mIDQgYWxzbyBpbiB0aGUgYmFyZWJveC4gV2hhdCBwdXp6bGVzIG1lIGlz
+IHRoYXQgdGhpcyBhc3N1bXB0aW9uIHN0aWxsCmhvbGRzIHRydWUgZXZlbiBmb3IgREVCVUdfUk9E
+QVRBLCBhdCBsZWFzdCBmb3IgbXkgY2FzZSwgdGhvdWdoLgpXaXRoIERFQlVHX1JPREFUQSB0dXJu
+ZWQgb24sIHRoZSBjb21wcmVzc2lvbiByYXRpbyB3ZW50IHVwIGZyb20gMi45IHRvCjMuNS4gU28g
+bXkgZ3Vlc3MgaXMgdGhhdCB0aGUga2VybmVsIGlzIHJlbG9jYXRpbmcgYW5kIGJhcmVib3ggZG9l
+cyBub3QKYWNjb3VudCBmb3IgdGhpcyBjYXNlLiBBZGRpdGlvbmFsbHkgSSBmb3VuZCBzb21lIHJl
+Y29tbWVuZGF0aW9ucyBpbgpnaXQva2VybmVsL0RvY3VtZW50YXRpb24vYXJtL0Jvb3Rpbmcgd2hp
+Y2ggSSB0aGluayBzaG91bGQgYmUgdGFrZW4KaW50byBjb25zaWRlcmF0aW9uIGZvciBiYXJlYm94
+LgpXaXRoIHRoZSBhdHRhY2hlZCBwYXRjaCwgZXZlcnl0aGluZyB3b3JrcyBmaW5lICh0ZXN0ZWQg
+b24gb25lIHNpbmdsZQpib2FyZCAyNTZNaUIgUkFNIG9ubHkpLgoKU28sIGlmIGFueW9uZSBoYXMg
+bW9yZSBpbmZvcm1hdGlvbiwgSSBhbSBoYXBweSB0byBsZWFybi4KCllvdXJzLCBTdGVmYW4KCgpT
+dGVmYW4gTcO8bGxlci1LbGllc2VyICgxKToKICBBUk06IGJvb3RtOiByZWNhbGN1bGF0ZSBkZWNv
+bXByZXNzaW9uIHNwYWNlCgogYXJjaC9hcm0vbGliL2Jvb3RtLmMgfCAyNCArKysrKysrKysrKysr
+KystLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAxNSBpbnNlcnRpb25zKCspLCA5IGRlbGV0aW9u
+cygtKQoKLS0gCjEuOS4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
