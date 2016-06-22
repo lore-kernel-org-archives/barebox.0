@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bFe5Z-0004y7-II
- for barebox@lists.infradead.org; Wed, 22 Jun 2016 09:04:52 +0000
+ id 1bFe5Z-0004y8-Hw
+ for barebox@lists.infradead.org; Wed, 22 Jun 2016 09:04:51 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 2304AA002EE
+ by root.phytec.de (Postfix) with ESMTP id 33524A002FD
  for <barebox@lists.infradead.org>; Wed, 22 Jun 2016 11:05:37 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 22 Jun 2016 11:02:39 +0200
-Message-Id: <1466586161-14532-2-git-send-email-t.remmet@phytec.de>
+Date: Wed, 22 Jun 2016 11:02:40 +0200
+Message-Id: <1466586161-14532-3-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1466586161-14532-1-git-send-email-t.remmet@phytec.de>
 References: <1466586161-14532-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,142 +24,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] mtd: UBI: Add support for updating static volumes
+Subject: [PATCH 3/4] commands: ubi: Add ubiupdatevol command
 To: barebox@lists.infradead.org
 
-Added support to update UBI static volumes in barebox.
-This is mainly realized with adding the ioctl UBI_IOCVOLUP.
+Add ubiupdatevol command. This is to update static
+and dynamic volumes.
 
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/barebox.c | 56 +++++++++++++++++++++++++++++++++++++++++++++--
- drivers/mtd/ubi/upd.c     | 12 ----------
- 2 files changed, 54 insertions(+), 14 deletions(-)
+ commands/ubi.c | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-diff --git a/drivers/mtd/ubi/barebox.c b/drivers/mtd/ubi/barebox.c
-index 085e4a7..fc60aae 100644
---- a/drivers/mtd/ubi/barebox.c
-+++ b/drivers/mtd/ubi/barebox.c
-@@ -65,7 +65,10 @@ static ssize_t ubi_volume_cdev_write(struct cdev* cdev, const void *buf,
- 	struct ubi_device *ubi = priv->ubi;
- 	int err;
+diff --git a/commands/ubi.c b/commands/ubi.c
+index f4ff5e7..e727776 100644
+--- a/commands/ubi.c
++++ b/commands/ubi.c
+@@ -5,12 +5,64 @@
+ #include <ioctl.h>
+ #include <errno.h>
+ #include <getopt.h>
++#include <libfile.h>
+ #include <linux/mtd/mtd.h>
+ #include <linux/kernel.h>
++#include <linux/stat.h>
+ #include <linux/mtd/mtd-abi.h>
+ #include <mtd/ubi-user.h>
+ #include <mtd/ubi-media.h>
  
--	if (!priv->written) {
-+	if (!priv->written && !vol->updating) {
-+		if (vol->vol_type == UBI_STATIC_VOLUME)
-+			return -EROFS;
-+
- 		err = ubi_start_update(ubi, vol, vol->used_bytes);
- 		if (err < 0) {
- 			ubi_err(ubi, "Cannot start volume update");
-@@ -104,7 +107,7 @@ static int ubi_volume_cdev_close(struct cdev *cdev)
- 		int remaining = vol->usable_leb_size -
- 				(priv->written % vol->usable_leb_size);
- 
--		if (remaining) {
-+		if (remaining && vol->vol_type == UBI_DYNAMIC_VOLUME) {
- 			void *buf = kmalloc(remaining, GFP_KERNEL);
- 
- 			if (!buf)
-@@ -122,6 +125,9 @@ static int ubi_volume_cdev_close(struct cdev *cdev)
- 			}
- 		}
- 
-+		if (vol->vol_type == UBI_STATIC_VOLUME)
-+			cdev->size = priv->written;
-+
- 		err = ubi_finish_update(ubi, vol);
- 		if (err)
- 			return err;
-@@ -156,12 +162,54 @@ static loff_t ubi_volume_cdev_lseek(struct cdev *cdev, loff_t ofs)
- 	return ofs;
- }
- 
-+static int ubi_volume_cdev_ioctl(struct cdev *cdev, int cmd, void *buf)
++static int do_ubiupdatevol(int argc, char *argv[])
 +{
-+	struct ubi_volume_cdev_priv *priv = cdev->priv;
-+	struct ubi_device *ubi = priv->ubi;
-+	struct ubi_volume *vol = priv->vol;
-+	int err = 0;
++	int fd_vol, ret;
++	uint64_t size = 0;
++	void *buf;
 +
-+	switch (cmd) {
-+	/* Volume update command */
-+	case UBI_IOCVOLUP:
-+	{
-+		int64_t bytes, rsvd_bytes;
++	if (argc - optind < 2)
++		return COMMAND_ERROR_USAGE;
 +
-+		err = copy_from_user(&bytes, buf, sizeof(int64_t));
-+		if (err) {
-+			err = -EFAULT;
-+			break;
-+		}
-+
-+		rsvd_bytes = (long long)vol->reserved_pebs *
-+				ubi->leb_size - vol->data_pad;
-+
-+		if (bytes < 0 || bytes > rsvd_bytes) {
-+			err = -EINVAL;
-+			break;
-+		}
-+
-+		err = ubi_start_update(ubi, vol, bytes);
-+		if (bytes == 0)
-+			ubi_volume_notify(ubi, vol, UBI_VOLUME_UPDATED);
-+
-+		break;
++	buf = read_file(argv[optind+1], (size_t *) &size);
++	if (!buf) {
++		perror("read");
++		return 1;
 +	}
 +
-+	default:
-+		err = -ENOTTY;
-+		break;
++	fd_vol = open(argv[optind], O_WRONLY);
++	if (fd_vol < 0) {
++		perror("open");
++		return 1;
 +	}
-+	return err;
++
++	ret = ioctl(fd_vol, UBI_IOCVOLUP, &size);
++	if (ret) {
++		printf("failed to start update: %s\n", strerror(-ret));
++		goto error;
++	}
++
++	ret = write(fd_vol, buf, size);
++	if (ret < 0)
++		perror("write");
++
++error:
++	close(fd_vol);
++	return ret ? 1 : 0;
 +}
 +
- static struct file_operations ubi_volume_fops = {
- 	.open	= ubi_volume_cdev_open,
- 	.close	= ubi_volume_cdev_close,
- 	.read   = ubi_volume_cdev_read,
- 	.write  = ubi_volume_cdev_write,
- 	.lseek	= ubi_volume_cdev_lseek,
-+	.ioctl  = ubi_volume_cdev_ioctl,
- };
- 
- int ubi_volume_cdev_add(struct ubi_device *ubi, struct ubi_volume *vol)
-@@ -179,6 +227,10 @@ int ubi_volume_cdev_add(struct ubi_device *ubi, struct ubi_volume *vol)
- 	cdev->name = basprintf("%s.%s", ubi->cdev.name, vol->name);
- 	cdev->priv = priv;
- 	cdev->size = vol->used_bytes;
 +
-+	if (vol->vol_type == UBI_STATIC_VOLUME)
-+		cdev->flags = DEVFS_IS_CHARACTER_DEV;
++BAREBOX_CMD_HELP_START(ubiupdatevol)
++BAREBOX_CMD_HELP_TEXT("Update UBI volume with an image.")
++BAREBOX_CMD_HELP_END
 +
- 	cdev->dev = &vol->dev;
- 	ubi_msg(ubi, "registering %s as /dev/%s", vol->name, cdev->name);
- 	ret = devfs_create(cdev);
-diff --git a/drivers/mtd/ubi/upd.c b/drivers/mtd/ubi/upd.c
-index 33d4dbf..e3deb3e 100644
---- a/drivers/mtd/ubi/upd.c
-+++ b/drivers/mtd/ubi/upd.c
-@@ -368,18 +368,6 @@ int ubi_more_update_data(struct ubi_device *ubi, struct ubi_volume *vol,
- 	}
- 
- 	ubi_assert(vol->upd_received <= vol->upd_bytes);
--	if (vol->upd_received == vol->upd_bytes) {
--		err = ubi_wl_flush(ubi, UBI_ALL, UBI_ALL);
--		if (err)
--			return err;
--		/* The update is finished, clear the update marker */
--		err = clear_update_marker(ubi, vol, vol->upd_bytes);
--		if (err)
--			return err;
--		vol->updating = 0;
--		err = to_write;
--		vfree(vol->upd_buf);
--	}
- 
- 	return err;
- }
++BAREBOX_CMD_START(ubiupdatevol)
++	.cmd		= do_ubiupdatevol,
++	BAREBOX_CMD_DESC("Update an UBI volume")
++	BAREBOX_CMD_OPTS("UBIVOL IMAGE")
++	BAREBOX_CMD_GROUP(CMD_GRP_PART)
++	BAREBOX_CMD_HELP(cmd_ubiupdatevol_help)
++BAREBOX_CMD_END
++
++
+ static int do_ubimkvol(int argc, char *argv[])
+ {
+ 	int opt;
 -- 
 1.9.1
 
