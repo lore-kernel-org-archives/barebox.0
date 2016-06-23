@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x243.google.com ([2607:f8b0:4003:c06::243])
+Received: from mail-oi0-x241.google.com ([2607:f8b0:4003:c06::241])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bG5rW-0007Lw-8l
- for barebox@lists.infradead.org; Thu, 23 Jun 2016 14:44:10 +0000
-Received: by mail-oi0-x243.google.com with SMTP id w141so12436656oia.0
- for <barebox@lists.infradead.org>; Thu, 23 Jun 2016 07:43:48 -0700 (PDT)
+ id 1bG5rv-0007c2-25
+ for barebox@lists.infradead.org; Thu, 23 Jun 2016 14:44:35 +0000
+Received: by mail-oi0-x241.google.com with SMTP id d132so12404950oig.2
+ for <barebox@lists.infradead.org>; Thu, 23 Jun 2016 07:44:14 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20160615061532.GD9677@pengutronix.de>
+In-Reply-To: <20160615063329.GE9677@pengutronix.de>
 References: <1465888006-39463-1-git-send-email-poggi.raph@gmail.com>
- <1465888006-39463-4-git-send-email-poggi.raph@gmail.com>
- <20160615061532.GD9677@pengutronix.de>
+ <1465888006-39463-2-git-send-email-poggi.raph@gmail.com>
+ <20160615063329.GE9677@pengutronix.de>
 From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <poggi.raph@gmail.com>
-Date: Thu, 23 Jun 2016 16:43:08 +0200
-Message-ID: <CACqcpZCBT9BHce9nDTuzAZL5W45asdeeaa91qv4yt4XRX3Wxtg@mail.gmail.com>
+Date: Thu, 23 Jun 2016 16:43:34 +0200
+Message-ID: <CACqcpZBDpPJMY1=VyEiO3GYg9LGcTcwvWdGkR8o5FETqW6vKnA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,118 +25,96 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 03/12] arm: introduce lib64 for arm64 related stuff
+Subject: Re: [PATCH v2 01/12] arm: add armv8 Kconfig entries
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi,
+2016-06-15 8:33 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> Hi Raphael,
+>
+> On Tue, Jun 14, 2016 at 09:06:35AM +0200, Raphael Poggi wrote:
+>> Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
+>> ---
+>>  arch/arm/Kconfig     | 23 +++++++++++++++++++++++
+>>  arch/arm/cpu/Kconfig | 29 ++++++++++++++++++++++++++++-
+>>  2 files changed, 51 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+>> index 1fc887b..986fdaa 100644
+>> --- a/arch/arm/Kconfig
+>> +++ b/arch/arm/Kconfig
+>> @@ -315,6 +315,29 @@ config ARM_BOARD_APPEND_ATAG
+>>
+>>  endmenu
+>>
+>> +choice
+>> +     prompt "Barebox code model"
+>> +     help
+>> +       You should only select this option if you have a workload that
+>> +       actually benefits from 64-bit processing or if your machine has
+>> +       large memory. You will only be presented a single option in this
+>> +       menu if your system does not support both 32-bit and 64-bit modes.
+>> +
+>> +config 32BIT
+>> +     bool "32-bit barebox"
+>> +     depends on CPU_SUPPORTS_32BIT_KERNEL && SYS_SUPPORTS_32BIT_KERNEL
+>> +     help
+>> +       Select this option if you want to build a 32-bit barebox.
+>> +
+>> +config 64BIT
+>> +     bool "64-bit barebox"
+>> +     depends on CPU_SUPPORTS_64BIT_KERNEL && SYS_SUPPORTS_64BIT_KERNEL
+>> +     select ARCH_DMA_ADDR_T_64BIT
+>> +     help
+>> +       Select this option if you want to build a 64-bit barebox.
+>> +
+>> +endchoice
+>> +
+>>  menu "ARM specific settings"
+>>
+>>  config ARM_OPTIMZED_STRING_FUNCTIONS
+>> diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+>
+> arm64 needs 64bit pointers. You could merge the following to this patch
+> to make resource_size_t 64bit wide and to get rid of the "warning: cast
+> from pointer to integer of different size [-Wpointer-to-int-cast]"
+> warnings.
 
-2016-06-15 8:15 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> On Tue, Jun 14, 2016 at 09:06:37AM +0200, Raphael Poggi wrote:
->> diff --git a/arch/arm/lib64/Makefile b/arch/arm/lib64/Makefile
->> new file mode 100644
->> index 0000000..a424293
->> --- /dev/null
->> +++ b/arch/arm/lib64/Makefile
->> @@ -0,0 +1,10 @@
->> +obj-$(CONFIG_ARM_LINUX)      += armlinux.o
->> +obj-$(CONFIG_BOOTM)  += bootm.o
->> +obj-y        += div0.o
->> +obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)  += memcpy.o
->> +obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)  += memset.o
->> +extra-y += barebox.lds
->> +
->> +pbl-y        += lib1funcs.o
->> +pbl-y        += ashldi3.o
->> +pbl-y        += div0.o
->> diff --git a/arch/arm/lib64/armlinux.c b/arch/arm/lib64/armlinux.c
->> new file mode 100644
->> index 0000000..21a2292
->> --- /dev/null
->> +++ b/arch/arm/lib64/armlinux.c
->> @@ -0,0 +1,275 @@
->
-> [...]
->
->> +static void setup_tags(unsigned long initrd_address,
->> +             unsigned long initrd_size, int swap)
->> +{
->> +     const char *commandline = linux_bootargs_get();
->> +
->> +     setup_start_tag();
->> +     setup_memory_tags();
->> +     setup_commandline_tag(commandline, swap);
->> +
->> +     if (initrd_size)
->> +             setup_initrd_tag(initrd_address, initrd_size);
->> +
->> +     setup_revision_tag();
->> +     setup_serial_tag();
->> +#ifdef CONFIG_ARM_BOARD_APPEND_ATAG
->> +     if (atag_appender != NULL)
->> +             params = atag_appender(params);
->> +#endif
->> +     setup_end_tag();
->> +
->> +     printf("commandline: %s\n"
->> +            "arch_number: %d\n", commandline, armlinux_get_architecture());
->> +
->> +}
->
-> All the code around ATAGs can be removed. ARM64 is device tree only and
-> won't ever need this.
-
-Ok, I have done some rework of this part and remove all *_tags functions.
-
->
->> +
->> +void start_linux(void *adr, int swap, unsigned long initrd_address,
->> +             unsigned long initrd_size, void *oftree)
->> +{
->> +     void (*kernel)(int zero, int arch, void *params) = adr;
->> +     void *params = NULL;
->> +     int architecture;
->> +
->> +     if (oftree) {
->> +             pr_debug("booting kernel with devicetree\n");
->> +             params = oftree;
->> +     } else {
->> +             setup_tags(initrd_address, initrd_size, swap);
->> +             params = armlinux_get_bootparams();
->> +     }
->> +     architecture = armlinux_get_architecture();
->> +
->> +     shutdown_barebox();
->> +
->> +     kernel(0, architecture, params);
->> +}
->
->> diff --git a/arch/arm/lib64/bootm.c b/arch/arm/lib64/bootm.c
->
-> This file is an exact copy of arch/arm/lib/bootm.c as of a324fb5a, so it
-> seems that either the 32bit version works for arm64 or this is untested.
->
-> Have you already booted a kernel? Does it work? Although starting a
-> kernel is admittedly a key feature for a bootloader, we could drop the
-> code from the initial arm64 porting effort if it doesn't work yet.
-
-I have made some rework for booting a kernel, and bootm remains the
-same as arch/arm/lib/bootm.c.
-However, I think it is better to conserve the two files, because in a
-near future it will be useful to add support of arm64 Image format in
-arch/arm/lib64/bootm.c.
-
->
->> diff --git a/arch/arm/lib64/module.c b/arch/arm/lib64/module.c
->
-> Please drop this file. I suppose it won't work on arm64 anyway, so
-> there's no need to carry a nonworking copy of arm32 module support in
-> the arm64 tree.
-
-Ok
+Ok, thanks
 
 >
 > Sascha
+>
+> From 599547f4054ca715f66a83bf49dc9293e3cc0af0 Mon Sep 17 00:00:00 2001
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> Date: Wed, 15 Jun 2016 08:29:51 +0200
+> Subject: [PATCH] arm64: select PHYS_ADDR_T_64BIT
+>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/cpu/Kconfig | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+> index fd327a8..c90501e 100644
+> --- a/arch/arm/cpu/Kconfig
+> +++ b/arch/arm/cpu/Kconfig
+> @@ -1,9 +1,13 @@
+>  comment "Processor Type"
+>
+> +config PHYS_ADDR_T_64BIT
+> +       bool
+> +
+>  config CPU_32
+>         bool
+>
+>  config CPU_64
+> +       select PHYS_ADDR_T_64BIT
+>         bool
+>
+>  # Select CPU types depending on the architecture selected. This selects
+> --
+> 2.8.1
 >
 > --
 > Pengutronix e.K.                           |                             |
