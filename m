@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bG34A-0003M3-OB
- for barebox@lists.infradead.org; Thu, 23 Jun 2016 11:45:03 +0000
-Date: Thu, 23 Jun 2016 13:44:40 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160623114440.GF20657@pengutronix.de>
-References: <1466606944-22735-1-git-send-email-s.mueller-klieser@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1466606944-22735-1-git-send-email-s.mueller-klieser@phytec.de>
+Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bG3UP-0006pZ-Dz
+ for barebox@lists.infradead.org; Thu, 23 Jun 2016 12:12:10 +0000
+Message-ID: <1466683903.4981.9.camel@lws-tremmet.phytec.de>
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Thu, 23 Jun 2016 14:11:43 +0200
+In-Reply-To: <20160623063627.GH4750@pengutronix.de>
+References: <1466586161-14532-1-git-send-email-t.remmet@phytec.de>
+ <1466586161-14532-2-git-send-email-t.remmet@phytec.de>
+ <20160623063627.GH4750@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,90 +19,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 0/1] am335x kernel not booting
-To: Stefan =?iso-8859-15?Q?M=FCller-Klieser?= <s.mueller-klieser@phytec.de>
+Subject: Re: [PATCH 2/4] mtd: UBI: Add support for updating static volumes
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jun 22, 2016 at 04:49:03PM +0200, Stefan M=FCller-Klieser wrote:
-> Dear list,
-> =
+Hello Sascha,
 
-> this is more of a request for help, as I am not sure if my current
-> analysis is correct. The problem I am having is that the kernel current
-> master does not boot and fails with:
-> =
+Am Donnerstag, den 23.06.2016, 08:36 +0200 schrieb Sascha Hauer:
+> Hi Teresa,
+> 
+> On Wed, Jun 22, 2016 at 11:02:39AM +0200, Teresa Remmet wrote:
+> > Added support to update UBI static volumes in barebox.
+> > This is mainly realized with adding the ioctl UBI_IOCVOLUP.
+> > 
+> > Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+> > ---
+> >  drivers/mtd/ubi/barebox.c | 56 +++++++++++++++++++++++++++++++++++++++++++++--
+> >  drivers/mtd/ubi/upd.c     | 12 ----------
+> >  2 files changed, 54 insertions(+), 14 deletions(-)
+> > 
+> 
+> >  
+> >  int ubi_volume_cdev_add(struct ubi_device *ubi, struct ubi_volume *vol)
+> > @@ -179,6 +227,10 @@ int ubi_volume_cdev_add(struct ubi_device *ubi, struct ubi_volume *vol)
+> >  	cdev->name = basprintf("%s.%s", ubi->cdev.name, vol->name);
+> >  	cdev->priv = priv;
+> >  	cdev->size = vol->used_bytes;
+> > +
+> > +	if (vol->vol_type == UBI_STATIC_VOLUME)
+> > +		cdev->flags = DEVFS_IS_CHARACTER_DEV;
+> > +
+> >  	cdev->dev = &vol->dev;
+> >  	ubi_msg(ubi, "registering %s as /dev/%s", vol->name, cdev->name);
+> >  	ret = devfs_create(cdev);
+> > diff --git a/drivers/mtd/ubi/upd.c b/drivers/mtd/ubi/upd.c
+> > index 33d4dbf..e3deb3e 100644
+> > --- a/drivers/mtd/ubi/upd.c
+> > +++ b/drivers/mtd/ubi/upd.c
+> > @@ -368,18 +368,6 @@ int ubi_more_update_data(struct ubi_device *ubi, struct ubi_volume *vol,
+> >  	}
+> >  
+> >  	ubi_assert(vol->upd_received <= vol->upd_bytes);
+> > -	if (vol->upd_received == vol->upd_bytes) {
+> > -		err = ubi_wl_flush(ubi, UBI_ALL, UBI_ALL);
+> > -		if (err)
+> > -			return err;
+> > -		/* The update is finished, clear the update marker */
+> > -		err = clear_update_marker(ubi, vol, vol->upd_bytes);
+> > -		if (err)
+> > -			return err;
+> > -		vol->updating = 0;
+> > -		err = to_write;
+> > -		vfree(vol->upd_buf);
+> > -	}
+> 
+> Why is this removed? Does it still work to just write to the UBI volume
+> without this?
 
-> Error: unrecognized/unsupported machine ID (r1 =3D 0x00001030).
-> =
+writing directly to a dynamic volume never seem to hits this condition.
+So this is not causing any problems. clearing updater marker and so on
+is done later in ubi_volume_cdev_close(struct cdev *cdev). 
+Keeping this causes a assertion for static volumes as the update marker
+is cleared twice.
 
-> My setup is:
-> phyBOARD-WEGA-AM335x
-> kernel: master with multiv7/omap2plus defconfig
-> barebox: master with phycore-am335x image
-> =
-
-> Git bisecting lead to the DEBUG_RODATA change, which is now turned on
-> for arm and arm64. Google brought up this thread:
-> =
-
-> http://www.spinics.net/lists/arm-kernel/msg511355.html
-> =
-
-> Which brought me to the bootm.c in barebox to check if there is enough
-> space for decompression. I found the assumption of a compression factor
-> of 4 also in the barebox. What puzzles me is that this assumption still
-> holds true even for DEBUG_RODATA, at least for my case, though.
-> With DEBUG_RODATA turned on, the compression ratio went up from 2.9 to
-> 3.5. So my guess is that the kernel is relocating and barebox does not
-> account for this case.
-
-No, the kernel does not relocate itself. The problem is that the kernel
-overwrites the device tree while zeroing the bss segment.
-
-We setup this:
-
-|--- space for uncompressed image ---||-- compressed image --||-- oftree --|
-
-After uncompressing the kernel clears bss and has this:
-
-| ----- uncompressed image ----------||--------- bss -------------|
-
-so bss overlaps the device tree.
-
-> Additionally I found some recommendations in
-> git/kernel/Documentation/arm/Booting which I think should be taken
-> into consideration for barebox.
-
-I have my problems with these recommendations. The recommendation is to
-put the image 32MiB into RAM. a multi_v7_defconfig already builds a 18MiB
-image, so it's forseeable that 32MiB won't last very long.
-
-Then the recommendation for placing the device tree and initrd is 128MiB
-into RAM which can become very tight when the initrd is big.
-
-These recommendations are written with multigigabyte memories in mind
-and completely ignore that there are still small systems with a total of
-32MiB of RAM.
+Teresa
 
 
-That said, I currently have no better idea than to follow these
-recommendations and wait until we hit the wall.
-Another way would be to supplement the kernel image with the information
-how big it will be after decompression. I have a draft patch for that,
-but it doesn't work properly yet.
+> 
+> Sascha
+> 
 
-Sascha
 
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
