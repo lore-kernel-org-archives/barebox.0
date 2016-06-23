@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bFy2V-0003NO-K4
- for barebox@lists.infradead.org; Thu, 23 Jun 2016 06:23:00 +0000
-Date: Thu, 23 Jun 2016 08:22:37 +0200
+ id 1bFyFt-0007ui-Id
+ for barebox@lists.infradead.org; Thu, 23 Jun 2016 06:36:50 +0000
+Date: Thu, 23 Jun 2016 08:36:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160623062237.GG4750@pengutronix.de>
-References: <1466570369-1950-1-git-send-email-andrew.smirnov@gmail.com>
- <1466570369-1950-3-git-send-email-andrew.smirnov@gmail.com>
+Message-ID: <20160623063627.GH4750@pengutronix.de>
+References: <1466586161-14532-1-git-send-email-t.remmet@phytec.de>
+ <1466586161-14532-2-git-send-email-t.remmet@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1466570369-1950-3-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1466586161-14532-2-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,70 +23,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] GUI: Add fbtest command
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org, Andrey Gusakov <andrey.gusakov@cogentembedded.com>
+Subject: Re: [PATCH 2/4] mtd: UBI: Add support for updating static volumes
+To: Teresa Remmet <t.remmet@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, Jun 21, 2016 at 09:39:29PM -0700, Andrey Smirnov wrote:
-> Add 'fbtest' - a command to produce test patterns on a screen
+Hi Teresa,
+
+On Wed, Jun 22, 2016 at 11:02:39AM +0200, Teresa Remmet wrote:
+> Added support to update UBI static volumes in barebox.
+> This is mainly realized with adding the ioctl UBI_IOCVOLUP.
 > 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> Signed-off-by: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 > ---
->  commands/Kconfig  |   9 +++
->  commands/Makefile |   1 +
->  commands/fbtest.c | 187 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 197 insertions(+)
->  create mode 100644 commands/fbtest.c
+>  drivers/mtd/ubi/barebox.c | 56 +++++++++++++++++++++++++++++++++++++++++++++--
+>  drivers/mtd/ubi/upd.c     | 12 ----------
+>  2 files changed, 54 insertions(+), 14 deletions(-)
 > 
-> diff --git a/commands/Kconfig b/commands/Kconfig
-> index 880cd45..107cc3e 100644
-> --- a/commands/Kconfig
-> +++ b/commands/Kconfig
-> @@ -1417,6 +1417,15 @@ config CMD_SPLASH
->  		  -b COLOR	background color in 0xttrrggbb
->  		  -o		render offscreen
+
 >  
+>  int ubi_volume_cdev_add(struct ubi_device *ubi, struct ubi_volume *vol)
+> @@ -179,6 +227,10 @@ int ubi_volume_cdev_add(struct ubi_device *ubi, struct ubi_volume *vol)
+>  	cdev->name = basprintf("%s.%s", ubi->cdev.name, vol->name);
+>  	cdev->priv = priv;
+>  	cdev->size = vol->used_bytes;
+> +
+> +	if (vol->vol_type == UBI_STATIC_VOLUME)
+> +		cdev->flags = DEVFS_IS_CHARACTER_DEV;
+> +
+>  	cdev->dev = &vol->dev;
+>  	ubi_msg(ubi, "registering %s as /dev/%s", vol->name, cdev->name);
+>  	ret = devfs_create(cdev);
+> diff --git a/drivers/mtd/ubi/upd.c b/drivers/mtd/ubi/upd.c
+> index 33d4dbf..e3deb3e 100644
+> --- a/drivers/mtd/ubi/upd.c
+> +++ b/drivers/mtd/ubi/upd.c
+> @@ -368,18 +368,6 @@ int ubi_more_update_data(struct ubi_device *ubi, struct ubi_volume *vol,
+>  	}
+>  
+>  	ubi_assert(vol->upd_received <= vol->upd_bytes);
+> -	if (vol->upd_received == vol->upd_bytes) {
+> -		err = ubi_wl_flush(ubi, UBI_ALL, UBI_ALL);
+> -		if (err)
+> -			return err;
+> -		/* The update is finished, clear the update marker */
+> -		err = clear_update_marker(ubi, vol, vol->upd_bytes);
+> -		if (err)
+> -			return err;
+> -		vol->updating = 0;
+> -		err = to_write;
+> -		vfree(vol->upd_buf);
+> -	}
 
-> +
-> +static int do_fbtest(int argc, char *argv[])
-> +{
-> +	struct screen *sc;
-> +	int opt, i;
-> +	const char *pattern_name = NULL;
-> +	char *fbdev = "/dev/fb0";
-> +	void (*pattern) (struct screen *sc, u32 color) = NULL;
-> +	u32 color = 0xffffff;
-> +
-> +	struct {
-> +		const char *name;
-> +		void (*func) (struct screen *sc, u32 color);
-> +	} patterns[] = {
-> +		{ "geometry", fbtest_pattern_geometry },
-> +		{ "bars",     fbtest_pattern_bars     }
-> +	};
-> +
-> +	while((opt = getopt(argc, argv, "d:p:c:")) > 0) {
-> +		switch(opt) {
-> +		case 'd':
-> +			fbdev = optarg;
-> +			break;
-> +		case 'p':
-> +			pattern_name = optarg;
-> +			break;
-> +		case 'c':
-> +			color = simple_strtoul(optarg, NULL, 16);
-> +			break;
-> +		}
-> +	}
-> +
-> +	if (!pattern_name) {
-> +		printf("No pattern name specified\n");
-> +		return -EINVAL;
-> +	}
-
-Maybe we can iterate over the patterns if no pattern is given like the
-Linux variant does?
+Why is this removed? Does it still work to just write to the UBI volume
+without this?
 
 Sascha
 
