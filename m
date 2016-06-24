@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp40.i.mail.ru ([94.100.177.100])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bGKXW-0002QP-7h
- for barebox@lists.infradead.org; Fri, 24 Jun 2016 06:24:31 +0000
-Date: Fri, 24 Jun 2016 08:24:07 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160624062407.GK20657@pengutronix.de>
-References: <1466690790-12107-1-git-send-email-l.stach@pengutronix.de>
+ id 1bGKut-0004HI-OF
+ for barebox@lists.infradead.org; Fri, 24 Jun 2016 06:48:41 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Fri, 24 Jun 2016 09:48:08 +0300
+Message-Id: <1466750888-4865-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1466690790-12107-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,56 +15,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] defaultenv-2: select BOOTM
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Add more files to .gitignore
+To: barebox@lists.infradead.org
 
-On Thu, Jun 23, 2016 at 04:06:29PM +0200, Lucas Stach wrote:
-> defualtenv-2 selects CMD_BOOT, which in turn needs BOOTM.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  common/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 679954e4db2e..e17e54b6fe5d 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -830,6 +830,7 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW
->  	bool
->  	depends on DEFAULT_ENVIRONMENT
->  	depends on SHELL_HUSH
-> +	select BOOTM
->  	select COMMAND_SUPPORT
->  	select CMD_GETOPT
->  	select GLOB
-> -- 
-> 2.8.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBwYXRjaCBhZGRzIG1vZGVyIGdlbmVyYXRlZCBmaWxlcyB0byBpZ25vcmUgbGlzdC4KLi4u
+CnNoY0BzaGMgL2hvbWUvZ2l0L2JhcmVib3gtZ2l0aHViICQgZ2l0IHN0YXR1cwrQndCwINCy0LXR
+gtC60LUgaW14NTEK0J3QtdC+0YLRgdC70LXQttC40LLQsNC10LzRi9C1INGE0LDQudC70Ys6CiAg
+KNC40YHQv9C+0LvRjNC30YPQudGC0LUgwqtnaXQgYWRkIDzRhNCw0LnQuz7igKbCuywg0YfRgtC+
+0LHRiyDQtNC+0LHQsNCy0LjRgtGMINCyINGC0L4sINGH0YLQviDQsdGD0LTQtdGCINCy0LrQu9GO
+0YfQtdC90L4g0LIg0LrQvtC80LzQuNGCKQoKICAgICAgICBjb21tb24vYmFyZWJveF9kZWZhdWx0
+X2VudgogICAgICAgIGNvbW1vbi9iYXJlYm94X2RlZmF1bHRfZW52LmgKICAgICAgICBpbmNsdWRl
+L2FzbQogICAgICAgIHNjcmlwdHMvYmFzaWMvZG9jcHJvYwoK0L3QuNGH0LXQs9C+INC90LUg0LTQ
+vtCx0LDQstC70LXQvdC+INCyINC60L7QvNC80LjRgiwg0L3QviDQtdGB0YLRjCDQvdC10L7RgtGB
+0LvQtdC20LjQstCw0LXQvNGL0LUg0YTQsNC50LvRiyAo0LjRgdC/0L7Qu9GM0LfRg9C50YLQtSAi
+Z2l0IGFkZCIsINGH0YLQvtCx0Ysg0L7RgtGB0LvQtdC20LjQstCw0YLRjCDQuNGFKQoKU2lnbmVk
+LW9mZi1ieTogQWxleGFuZGVyIFNoaXlhbiA8c2hjX3dvcmtAbWFpbC5ydT4KLS0tCiBjb21tb24v
+LmdpdGlnbm9yZSAgICAgICAgfCAxICsKIGluY2x1ZGUvLmdpdGlnbm9yZSAgICAgICB8IDEgKwog
+c2NyaXB0cy9iYXNpYy8uZ2l0aWdub3JlIHwgMSArCiAzIGZpbGVzIGNoYW5nZWQsIDMgaW5zZXJ0
+aW9ucygrKQoKZGlmZiAtLWdpdCBhL2NvbW1vbi8uZ2l0aWdub3JlIGIvY29tbW9uLy5naXRpZ25v
+cmUKaW5kZXggM2Q3MWI3ZS4uOGUwZDZjMSAxMDA2NDQKLS0tIGEvY29tbW9uLy5naXRpZ25vcmUK
+KysrIGIvY29tbW9uLy5naXRpZ25vcmUKQEAgLTEgKzEsMiBAQAogbW9kdWxlLmxkcworYmFyZWJv
+eF9kZWZhdWx0X2VudioKZGlmZiAtLWdpdCBhL2luY2x1ZGUvLmdpdGlnbm9yZSBiL2luY2x1ZGUv
+LmdpdGlnbm9yZQppbmRleCAxOGU1OGE3Li5mMjgzNzJhIDEwMDY0NAotLS0gYS9pbmNsdWRlLy5n
+aXRpZ25vcmUKKysrIGIvaW5jbHVkZS8uZ2l0aWdub3JlCkBAIC0xICsxLDIgQEAKK2FzbQogL2Nv
+bmZpZy5oCmRpZmYgLS1naXQgYS9zY3JpcHRzL2Jhc2ljLy5naXRpZ25vcmUgYi9zY3JpcHRzL2Jh
+c2ljLy5naXRpZ25vcmUKaW5kZXggYTc3NjM3MS4uZGMyNGY1ZiAxMDA2NDQKLS0tIGEvc2NyaXB0
+cy9iYXNpYy8uZ2l0aWdub3JlCisrKyBiL3NjcmlwdHMvYmFzaWMvLmdpdGlnbm9yZQpAQCAtMSAr
+MSwyIEBACitkb2Nwcm9jCiBmaXhkZXAKLS0gCjIuNC45CgoKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
+aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
+dGluZm8vYmFyZWJveAo=
