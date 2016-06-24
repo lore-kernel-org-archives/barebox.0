@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x243.google.com ([2607:f8b0:400e:c03::243])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bGJmu-00012t-Oa
+ id 1bGJmw-00012v-1z
  for barebox@lists.infradead.org; Fri, 24 Jun 2016 05:36:22 +0000
-Received: by mail-pa0-x243.google.com with SMTP id av7so2008230pac.3
- for <barebox@lists.infradead.org>; Thu, 23 Jun 2016 22:36:00 -0700 (PDT)
+Received: by mail-pf0-x243.google.com with SMTP id t190so8346848pfb.2
+ for <barebox@lists.infradead.org>; Thu, 23 Jun 2016 22:36:01 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 23 Jun 2016 22:35:33 -0700
-Message-Id: <1466746535-17382-3-git-send-email-andrew.smirnov@gmail.com>
+Date: Thu, 23 Jun 2016 22:35:35 -0700
+Message-Id: <1466746535-17382-5-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1466746535-17382-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1466746535-17382-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,272 +23,152 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/4] GUI: Add code to draw simple graphics
+Subject: [PATCH v2 4/4] video/edid: Move int_sqrt() out
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add code to draw simple graphics, namely lines(solid or dashed) and
-circles.
+Move int_sqrt() out of drivers/video/edid.c so that it is availible to
+other parts of Barebox.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- include/gui/2d-primitives.h |  15 ++++
- lib/gui/2d-primitives.c     | 199 ++++++++++++++++++++++++++++++++++++++++++++
- lib/gui/Kconfig             |   3 +
- lib/gui/Makefile            |   1 +
- 4 files changed, 218 insertions(+)
- create mode 100644 include/gui/2d-primitives.h
- create mode 100644 lib/gui/2d-primitives.c
+ drivers/video/edid.c | 29 -----------------------------
+ include/int_sqrt.h   | 22 ++++++++++++++++++++++
+ lib/Makefile         |  1 +
+ lib/int_sqrt.c       | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 69 insertions(+), 29 deletions(-)
+ create mode 100644 include/int_sqrt.h
+ create mode 100644 lib/int_sqrt.c
 
-diff --git a/include/gui/2d-primitives.h b/include/gui/2d-primitives.h
+diff --git a/drivers/video/edid.c b/drivers/video/edid.c
+index e5c32a0..92b59a5 100644
+--- a/drivers/video/edid.c
++++ b/drivers/video/edid.c
+@@ -321,35 +321,6 @@ static u32 fb_get_hblank_by_hfreq(u32 hfreq, u32 xres)
+ }
+ 
+ /**
+- * int_sqrt - rough approximation to sqrt
+- * @x: integer of which to calculate the sqrt
+- *
+- * A very rough approximation to the sqrt() function.
+- */
+-unsigned long int_sqrt(unsigned long x)
+-{
+-	unsigned long b, m, y = 0;
+-
+-	if (x <= 1)
+-		return x;
+-
+-	m = 1UL << (BITS_PER_LONG - 2);
+-	while (m != 0) {
+-		b = y + m;
+-		y >>= 1;
+-
+-		if (x >= b) {
+-			x -= b;
+-			y += m;
+-		}
+-		m >>= 2;
+-	}
+-
+-	return y;
+-}
+-EXPORT_SYMBOL(int_sqrt);
+-
+-/**
+  * fb_get_hfreq - estimate hsync
+  * @vfreq: vertical refresh rate
+  * @yres: vertical resolution
+diff --git a/include/int_sqrt.h b/include/int_sqrt.h
 new file mode 100644
-index 0000000..06216bb
+index 0000000..55fb4fb
 --- /dev/null
-+++ b/include/gui/2d-primitives.h
-@@ -0,0 +1,15 @@
-+#ifndef __2D_PRIMITIVES__
-+#define __2D_PRIMITIVES__
++++ b/include/int_sqrt.h
+@@ -0,0 +1,22 @@
++/*
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
 +
-+#include <fb.h>
++#ifndef __INT_SQRT__
++#define __INT_SQRT__
 +
-+void gu_draw_line(struct screen *sc,
-+		  int x1, int y1, int x2, int y2,
-+		  u8 r, u8 g, u8 b, u8 a,
-+		  unsigned int dash);
-+
-+void gu_draw_circle(struct screen *sc,
-+		    int x0, int y0, int radius,
-+		    u8 r, u8 g, u8 b, u8 a);
++unsigned long int_sqrt(unsigned long x);
 +
 +#endif
-diff --git a/lib/gui/2d-primitives.c b/lib/gui/2d-primitives.c
+diff --git a/lib/Makefile b/lib/Makefile
+index 399d896..92404fd 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -58,3 +58,4 @@ obj-$(CONFIG_BAREBOX_LOGO)     += logo/
+ obj-y			+= reed_solomon/
+ obj-$(CONFIG_RATP)	+= ratp.o
+ obj-y			+= list_sort.o
++obj-y			+= int_sqrt.o
+diff --git a/lib/int_sqrt.c b/lib/int_sqrt.c
 new file mode 100644
-index 0000000..f3814ee
+index 0000000..30ccafb
 --- /dev/null
-+++ b/lib/gui/2d-primitives.c
-@@ -0,0 +1,199 @@
++++ b/lib/int_sqrt.c
+@@ -0,0 +1,46 @@
++/*
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
 +#include <common.h>
-+#include <fb.h>
-+#include <gui/graphic_utils.h>
-+#include <linux/stat.h>
-+#include <fcntl.h>
-+#include <errno.h>
-+#include <fs.h>
-+#include <malloc.h>
-+
-+static void __illuminate(struct fb_info *info,
-+			 int x, int y,
-+			 u8 r, u8 g, u8 b, u8 a)
-+{
-+	void *pixel;
-+
-+	pixel  = fb_get_screen_base(info);
-+	pixel += y * info->line_length + x * (info->bits_per_pixel >> 3);
-+
-+	gu_set_rgba_pixel(info, pixel, r, g, b, a);
-+}
-+
-+static void illuminate(struct fb_info *info,
-+		       bool invert,
-+		       int x, int y,
-+		       u8 r, u8 g, u8 b, u8 a)
-+{
-+	if (invert)
-+		__illuminate(info, y, x,
-+			     r, g, b, a);
-+	else
-+		__illuminate(info, x, y,
-+			     r, g, b, a);
-+
-+}
-+
-+
-+static void draw_simple_line(struct screen *sc,
-+			     int x1, int y1,
-+			     int x2, int y2,
-+			     u8 r, u8 g, u8 b, u8 a,
-+			     unsigned int dash)
-+{
-+	int x;
-+	bool invert = false;
-+	unsigned int pixel = 0;
-+
-+	BUG_ON(x1 != x2 &&
-+	       y1 != y2);
-+
-+	if (x1 == x2) {
-+		swap(x1, y1);
-+		swap(x2, y2);
-+		invert = true;
-+	}
-+
-+	if (x1 > x2) {
-+		swap(x1, x2);
-+		swap(y1, y2);
-+	}
-+
-+	for (x = x1; x < x2 - 1; x++) {
-+		if (!dash ||
-+		    (++pixel % (2 * dash)) < dash)
-+			illuminate(sc->info,
-+				   invert,
-+				   x, y1,
-+				   r, g, b, a);
-+	}
-+}
 +
 +/**
-+ * gl_draw_line - draw a 2D dashed line between (x1, y1) and (x2,y2)
++ * int_sqrt - rough approximation to sqrt
++ * @x: integer of which to calculate the sqrt
 + *
-+ * @sc: screen to draw on
-+ * @x1, @y1: first point defining the line
-+ * @x2, @y2: second point defining the line
-+ * @r, @g, @b, @a: line's color
-+ * @dash: dash length (0 denotes solid line)
-+ *
-+ * gl_draw_line() implements integer version of Bresenham's algoritm
-+ * as can be found here:
-+ *
-+ * http://www.idav.ucdavis.edu/education/GraphicsNotes/Bresenhams-Algorithm.pdf
++ * A very rough approximation to the sqrt() function.
 + */
-+void gu_draw_line(struct screen *sc,
-+		  int x1, int y1,
-+		  int x2, int y2,
-+		  u8 r, u8 g, u8 b, u8 a,
-+		  unsigned int dash)
++unsigned long int_sqrt(unsigned long x)
 +{
-+	int dx;
-+	int dy;
-+	int i, j, eps;
-+	bool invert = false;
-+	unsigned int pixel = 0;
++	unsigned long b, m, y = 0;
 +
-+	BUG_ON(x1 < 0 || y1 < 0 ||
-+	       x2 < 0 || y2 < 0);
++	if (x <= 1)
++		return x;
 +
-+	if (x1 == x2 || y1 == y2) {
-+		draw_simple_line(sc,
-+				 x1, y1,
-+				 x2, y2,
-+				 r, g, b, a, dash);
-+		return;
-+	}
++	m = 1UL << (BITS_PER_LONG - 2);
++	while (m != 0) {
++		b = y + m;
++		y >>= 1;
 +
-+	dx = abs(x2 - x1);
-+	dy = abs(y2 - y1);
-+
-+	/*
-+	 * First thing we need to determine "Driving Axis", as can be
-+	 * seen below if Y-axis projection of the line is bigger than
-+	 * X-axis projection we swap axes and pretend the X is Y and
-+	 * vice versa
-+	 */
-+	if (dy > dx) {
-+		swap(x1, y1);
-+		swap(x2, y2);
-+		swap(dx, dy);
-+		invert = true;
-+	}
-+
-+	/*
-+	 * Second, we need to make sure that we will be traversing
-+	 * driving axis in the direction of increment so we swap point
-+	 * 1 with point 2 if x1 is greater than x2
-+	 */
-+	if (x1 > x2) {
-+		swap(x1, x2);
-+		swap(y1, y2);
-+	}
-+
-+	j   = y1;
-+	eps = dy - dx;
-+
-+	for (i = x1; i <= x2 - 1; i++) {
-+		if (!dash ||
-+		    (++pixel % (2 * dash)) > dash) {
-+			illuminate(sc->info,
-+				   invert,
-+				   j, i,
-+				   r, g, b, a);
-+		} else {
-+			printf("NOT illuminating pixel: %d\n", pixel);
++		if (x >= b) {
++			x -= b;
++			y += m;
 +		}
-+
-+		if (eps >= 0) {
-+			j += 1;
-+			eps -= dx;
-+		}
-+
-+		eps += dy;
++		m >>= 2;
 +	}
++
++	return y;
 +}
-+
-+/**
-+ * gl_draw_circle - draw a 2D circle with center at (x0, y0)
-+ *
-+ * @sc: screen to draw on
-+ * @x0, @y0: coordinates of circle's center
-+ * @radius: circle's radius
-+ * @r, @g, @b, @a: circle's color
-+
-+ *
-+ * gu_draw_circle() implements midpoint circle algorithm as can be
-+ * found here:
-+ *
-+ * https://en.wikipedia.org/wiki/Midpoint_circle_algorithm
-+ */
-+void gu_draw_circle(struct screen *sc,
-+		    int x0, int y0, int radius,
-+		    u8 r, u8 g, u8 b, u8 a)
-+{
-+	int x = radius;
-+	int y = 0;
-+	int e = 0;
-+
-+	BUG_ON(x0 < 0 || y0 < 0 || radius < 0);
-+
-+	while (x >= y) {
-+		 __illuminate(sc->info, x0 + x, y0 + y, r, g, b, a);
-+		 __illuminate(sc->info, x0 + y, y0 + x, r, g, b, a);
-+		 __illuminate(sc->info, x0 - y, y0 + x, r, g, b, a);
-+		 __illuminate(sc->info, x0 - x, y0 + y, r, g, b, a);
-+		 __illuminate(sc->info, x0 - x, y0 - y, r, g, b, a);
-+		 __illuminate(sc->info, x0 - y, y0 - x, r, g, b, a);
-+		 __illuminate(sc->info, x0 + y, y0 - x, r, g, b, a);
-+		 __illuminate(sc->info, x0 + x, y0 - y, r, g, b, a);
-+
-+		 y += 1;
-+		 e += 1 + 2 * y;
-+
-+		 if (2 * (e - x) + 1 > 0) {
-+			 x -= 1;
-+			 e += 1 - 2 * x;
-+		 }
-+	}
-+}
-diff --git a/lib/gui/Kconfig b/lib/gui/Kconfig
-index eac9597..2625d9f 100644
---- a/lib/gui/Kconfig
-+++ b/lib/gui/Kconfig
-@@ -6,6 +6,9 @@ config IMAGE_RENDERER
- 
- if IMAGE_RENDERER
- 
-+config 2D_PRIMITIVES
-+       bool
-+
- config BMP
- 	bool "bmp"
- 
-diff --git a/lib/gui/Makefile b/lib/gui/Makefile
-index d4b26c4..31e6622 100644
---- a/lib/gui/Makefile
-+++ b/lib/gui/Makefile
-@@ -3,3 +3,4 @@ obj-$(CONFIG_IMAGE_RENDERER)	+= image_renderer.o graphic_utils.o
- obj-$(CONFIG_PNG)	+= png.o
- obj-$(CONFIG_LODEPNG)	+= png_lode.o lodepng.o
- obj-$(CONFIG_PICOPNG)	+= png_pico.o picopng.o
-+obj-$(CONFIG_2D_PRIMITIVES) += 2d-primitives.o
++EXPORT_SYMBOL(int_sqrt);
 -- 
 2.5.5
 
