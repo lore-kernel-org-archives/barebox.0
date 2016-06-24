@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp21.mail.ru ([94.100.179.250])
+Received: from smtp12.mail.ru ([94.100.181.93])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bGSf5-0007Sp-QB
- for barebox@lists.infradead.org; Fri, 24 Jun 2016 15:04:53 +0000
+ id 1bGUEL-0002Co-CJ
+ for barebox@lists.infradead.org; Fri, 24 Jun 2016 16:45:22 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri, 24 Jun 2016 18:04:22 +0300
-Message-Id: <1466780662-15866-1-git-send-email-shc_work@mail.ru>
+Date: Fri, 24 Jun 2016 19:44:55 +0300
+Message-Id: <1466786695-17512-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,51 +19,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] spi: imx: Remove the use of property "fsl,
- spi-num-chipselects"
+Subject: [PATCH] ARM: i.MX: Remove unised procedure imx25_setup_weimcs
 To: barebox@lists.infradead.org
-
-The "fsl,spi-num-chipselects" property will be marked obsolete soon.
-This patch updates the driver to be ready to such changes.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/spi/imx_spi.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ arch/arm/mach-imx/imx25.c             | 8 --------
+ arch/arm/mach-imx/include/mach/weim.h | 3 ---
+ 2 files changed, 11 deletions(-)
 
-diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-index 99ec228..dc7a8c8 100644
---- a/drivers/spi/imx_spi.c
-+++ b/drivers/spi/imx_spi.c
-@@ -515,23 +515,16 @@ static __maybe_unused struct spi_imx_devtype_data spi_imx_devtype_data_2_3 = {
- static int imx_spi_dt_probe(struct imx_spi *imx)
- {
- 	struct device_node *node = imx->master.dev->device_node;
--	int ret, i;
--	u32 num_cs;
-+	int i;
+diff --git a/arch/arm/mach-imx/imx25.c b/arch/arm/mach-imx/imx25.c
+index 3cfeebb..2534d75 100644
+--- a/arch/arm/mach-imx/imx25.c
++++ b/arch/arm/mach-imx/imx25.c
+@@ -23,14 +23,6 @@
+ #define MX25_BOOTROM_HAB_MAGIC		0x3c95cac6
+ #define MX25_DRYICE_GPR			0x3c
  
- 	if (!node)
- 		return -ENODEV;
- 
--	ret = of_property_read_u32(node, "fsl,spi-num-chipselects", &num_cs);
--	if (ret)
--		return ret;
+-void imx25_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
+-		unsigned additional)
+-{
+-	writel(upper, MX25_WEIM_BASE_ADDR + (cs * 0x10) + 0x0);
+-	writel(lower, MX25_WEIM_BASE_ADDR + (cs * 0x10) + 0x4);
+-	writel(additional, MX25_WEIM_BASE_ADDR + (cs * 0x10) + 0x8);
+-}
 -
--	imx->master.num_chipselect = num_cs;
--	imx->cs_array = xzalloc(sizeof(u32) * num_cs);
-+	imx->master.num_chipselect = of_gpio_named_count(node, "cs-gpios");
-+	imx->cs_array = xzalloc(sizeof(u32) * imx->master.num_chipselect);
+ /* IIM fuse definitions */
+ #define IIM_BANK0_BASE	(MX25_IIM_BASE_ADDR + 0x800)
+ #define IIM_BANK1_BASE	(MX25_IIM_BASE_ADDR + 0xc00)
+diff --git a/arch/arm/mach-imx/include/mach/weim.h b/arch/arm/mach-imx/include/mach/weim.h
+index 3fbbb6b..22d9c76 100644
+--- a/arch/arm/mach-imx/include/mach/weim.h
++++ b/arch/arm/mach-imx/include/mach/weim.h
+@@ -12,9 +12,6 @@ void imx31_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
+ void imx35_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
+ 		unsigned additional);
  
--	for (i = 0; i < num_cs; i++) {
--		int cs_gpio = of_get_named_gpio(node, "cs-gpios", i);
--		imx->cs_array[i] = cs_gpio;
--	}
-+	for (i = 0; i < imx->master.num_chipselect; i++)
-+		imx->cs_array[i] = of_get_named_gpio(node, "cs-gpios", i);
+-void imx25_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
+-		unsigned additional);
+-
+ void imx1_setup_eimcs(size_t cs, unsigned upper, unsigned lower);
  
- 	return 0;
- }
+ void imx21_setup_eimcs(size_t cs, unsigned upper, unsigned lower);
 -- 
 2.4.9
 
