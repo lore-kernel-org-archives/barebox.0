@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bGO1J-0003Ja-W1
+ id 1bGO1J-0003Jb-WE
  for barebox@lists.infradead.org; Fri, 24 Jun 2016 10:07:32 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Fri, 24 Jun 2016 12:06:00 +0200
-Message-Id: <1466762762-15212-5-git-send-email-mpa@pengutronix.de>
+Date: Fri, 24 Jun 2016 12:06:01 +0200
+Message-Id: <1466762762-15212-6-git-send-email-mpa@pengutronix.de>
 In-Reply-To: <1466762762-15212-1-git-send-email-mpa@pengutronix.de>
 References: <1466762762-15212-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,7 +21,8 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/6] state: also append backend storage stridesize
+Subject: [PATCH v2 5/6] state: backend_storage_direct: also use cached data on
+ write
 To: barebox@lists.infradead.org
 Cc: mgr@pengutronix.de
 
@@ -30,53 +31,103 @@ From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- common/state/backend_storage.c | 1 +
- common/state/state.c           | 7 +++++++
- common/state/state.h           | 1 +
- 3 files changed, 9 insertions(+)
+ common/state/backend_bucket_direct.c | 55 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
-diff --git a/common/state/backend_storage.c b/common/state/backend_storage.c
-index 4620eda3eff6..0793afb43226 100644
---- a/common/state/backend_storage.c
-+++ b/common/state/backend_storage.c
-@@ -428,6 +428,7 @@ int state_storage_init(struct state_backend_storage *storage,
- 	INIT_LIST_HEAD(&storage->buckets);
- 	storage->dev = dev;
- 	storage->name = storagetype;
-+	storage->stridesize = stridesize;
+diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
+index 08892f001e25..772267f6dc1d 100644
+--- a/common/state/backend_bucket_direct.c
++++ b/common/state/backend_bucket_direct.c
+@@ -29,6 +29,10 @@ struct state_backend_storage_bucket_direct {
  
- 	ret = mtd_get_meminfo(path, &meminfo);
- 	if (!ret && !(meminfo.flags & MTD_NO_ERASE)) {
-diff --git a/common/state/state.c b/common/state/state.c
-index 2a689596c79a..609a8288e6a2 100644
---- a/common/state/state.c
-+++ b/common/state/state.c
-@@ -374,6 +374,13 @@ static int of_state_fixup(struct device_node *root, void *ctx)
- 		}
- 	}
+ 	int fd;
  
-+	if (state->backend.storage.stridesize) {
-+		ret = of_property_write_u32(new_node, "backend-stridesize",
-+				state->backend.storage.stridesize);
-+		if (ret)
-+			goto out;
-+	}
++	/* Cached data of the last read/write */
++	u8 *current_data;
++	ssize_t current_data_len;
 +
- 	/* address-cells + size-cells */
- 	ret = of_property_write_u32(new_node, "#address-cells", 1);
- 	if (ret)
-diff --git a/common/state/state.h b/common/state/state.h
-index 329fac2b82b6..b957c68be79c 100644
---- a/common/state/state.h
-+++ b/common/state/state.h
-@@ -70,6 +70,7 @@ struct state_backend_storage {
  	struct device_d *dev;
- 
- 	const char *name;
-+	uint32_t stridesize;
  };
  
- /**
+@@ -99,6 +103,29 @@ static int state_backend_bucket_direct_read(struct state_backend_storage_bucket
+ 	return 0;
+ }
+ 
++
++static int state_backend_bucket_direct_fill_cache(
++		struct state_backend_storage_bucket *bucket)
++{
++	struct state_backend_storage_bucket_direct *direct =
++	    get_bucket_direct(bucket);
++	ssize_t read_len;
++	uint8_t *buf;
++	int ret;
++
++	ret = state_backend_bucket_direct_read(bucket, &buf, &read_len);
++	if (ret < 0) {
++		dev_err(direct->dev, "Failed to read from file, %d\n", ret);
++		free(buf);
++		return ret;
++	}
++
++	direct->current_data = buf;
++	direct->current_data_len = read_len;
++
++	return 0;
++}
++
+ static int state_backend_bucket_direct_write(struct state_backend_storage_bucket
+ 					     *bucket, const uint8_t * buf,
+ 					     ssize_t len)
+@@ -111,6 +138,11 @@ static int state_backend_bucket_direct_write(struct state_backend_storage_bucket
+ 	if (direct->max_size && len > direct->max_size)
+ 		return -E2BIG;
+ 
++	/* Nothing in cache? Then read to see what is on the device currently */
++	if (!direct->current_data) {
++		state_backend_bucket_direct_fill_cache(bucket);
++	}
++
+ 	ret = lseek(direct->fd, direct->offset, SEEK_SET);
+ 	if (ret < 0) {
+ 		dev_err(direct->dev, "Failed to seek file, %d\n", ret);
+@@ -119,6 +151,26 @@ static int state_backend_bucket_direct_write(struct state_backend_storage_bucket
+ 
+ 	meta.magic = direct_magic;
+ 	meta.written_length = len;
++
++	/*
++	 * If we would write the same data that is currently on the device, we
++	 * can return successfully without writing.
++	 * Note that the cache may still be empty if the storage is empty or
++	 * errors occured.
++	 */
++	if (direct->current_data) {
++		dev_dbg(direct->dev, "Comparing cached data, writing %zd bytes, cached %zd bytes\n",
++			len, direct->current_data_len);
++		if (len == direct->current_data_len &&
++		    !memcmp(direct->current_data, buf, len)) {
++			dev_dbg(direct->dev, "Data already on device, not writing again\n");
++			return ret;
++		} else {
++			free(direct->current_data);
++			direct->current_data = NULL;
++		}
++	}
++
+ 	ret = write_full(direct->fd, &meta, sizeof(meta));
+ 	if (ret < 0) {
+ 		dev_err(direct->dev, "Failed to write metadata to file, %d\n", ret);
+@@ -147,6 +199,9 @@ static void state_backend_bucket_direct_free(struct
+ 	struct state_backend_storage_bucket_direct *direct =
+ 	    get_bucket_direct(bucket);
+ 
++	if (direct->current_data)
++		free(direct->current_data);
++
+ 	close(direct->fd);
+ 	free(direct);
+ }
 -- 
 2.8.1
 
