@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
+Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bGQAM-00016z-LT
- for barebox@lists.infradead.org; Fri, 24 Jun 2016 12:24:59 +0000
-Received: by mail-wm0-x244.google.com with SMTP id a66so4546957wme.2
- for <barebox@lists.infradead.org>; Fri, 24 Jun 2016 05:24:38 -0700 (PDT)
+ id 1bGQAL-00016u-Sl
+ for barebox@lists.infradead.org; Fri, 24 Jun 2016 12:24:58 +0000
+Received: by mail-wm0-x243.google.com with SMTP id r201so4569652wme.0
+ for <barebox@lists.infradead.org>; Fri, 24 Jun 2016 05:24:37 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Fri, 24 Jun 2016 14:23:49 +0200
-Message-Id: <1466771041-89803-3-git-send-email-poggi.raph@gmail.com>
+Date: Fri, 24 Jun 2016 14:23:48 +0200
+Message-Id: <1466771041-89803-2-git-send-email-poggi.raph@gmail.com>
 In-Reply-To: <1466771041-89803-1-git-send-email-poggi.raph@gmail.com>
 References: <1466771041-89803-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,102 +23,122 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 02/14] arm: Makefile: rework makefile to handle armv8
+Subject: [PATCH v3 01/14] arm: add armv8 Kconfig entries
 To: barebox@lists.infradead.org
 Cc: Raphael Poggi <poggi.raph@gmail.com>
 
 Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
 ---
- arch/arm/Makefile | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+ arch/arm/Kconfig     | 23 +++++++++++++++++++++++
+ arch/arm/cpu/Kconfig | 33 ++++++++++++++++++++++++++++++++-
+ 2 files changed, 55 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 5ccdb83..2743d96 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -1,7 +1,11 @@
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 1fc887b..986fdaa 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -315,6 +315,29 @@ config ARM_BOARD_APPEND_ATAG
  
- CPPFLAGS	+= -D__ARM__ -fno-strict-aliasing
- # Explicitly specifiy 32-bit ARM ISA since toolchain default can be -mthumb:
-+ifeq ($(CONFIG_CPU_V8),y)
-+CPPFLAGS	+=$(call cc-option,-maarch64,)
-+else
- CPPFLAGS	+=$(call cc-option,-marm,)
-+endif
+ endmenu
  
- ifeq ($(CONFIG_CPU_BIG_ENDIAN),y)
- CPPFLAGS	+= -mbig-endian
-@@ -17,13 +21,16 @@ endif
- # at least some of the code would be executed with MMU off, lets be
- # conservative and instruct the compiler not to generate any unaligned
- # accesses
-+ifeq ($(CONFIG_CPU_V8),n)
- CFLAGS += -mno-unaligned-access
-+endif
- 
- 
- # This selects which instruction set is used.
- # Note that GCC does not numerically define an architecture version
- # macro, but instead defines a whole series of macros which makes
- # testing for a specific architecture or later rather impossible.
-+arch-$(CONFIG_CPU_64v8)		:= -D__LINUX_ARM_ARCH__=8 $(call cc-option,-march=armv8-a)
- arch-$(CONFIG_CPU_32v7)		:=-D__LINUX_ARM_ARCH__=7 $(call cc-option,-march=armv7-a,-march=armv5t -Wa$(comma)-march=armv7-a)
- arch-$(CONFIG_CPU_32v6)            :=-D__LINUX_ARM_ARCH__=6 $(call cc-option,-march=armv6,-march=armv5t -Wa$(comma)-march=armv6)
- arch-$(CONFIG_CPU_32v5)		:=-D__LINUX_ARM_ARCH__=5 $(call cc-option,-march=armv5te,-march=armv4t)
-@@ -34,11 +41,15 @@ tune-$(CONFIG_CPU_ARM920T)	:=-mtune=arm9tdmi
- tune-$(CONFIG_CPU_ARM926T)	:=-mtune=arm9tdmi
- tune-$(CONFIG_CPU_XSCALE)	:=$(call cc-option,-mtune=xscale,-mtune=strongarm110) -Wa,-mcpu=xscale
- 
-+ifeq ($(CONFIG_CPU_V8), y)
-+CFLAGS_ABI	:=-mabi=lp64
-+else
- ifeq ($(CONFIG_AEABI),y)
- CFLAGS_ABI	:=-mabi=aapcs-linux -mno-thumb-interwork
- else
- CFLAGS_ABI	:=$(call cc-option,-mapcs-32,-mabi=apcs-gnu) $(call cc-option,-mno-thumb-interwork,)
- endif
-+endif
- 
- ifeq ($(CONFIG_ARM_UNWIND),y)
- CFLAGS_ABI	+=-funwind-tables
-@@ -51,8 +62,13 @@ CFLAGS_THUMB2	:=-mthumb $(AFLAGS_AUTOIT) $(AFLAGS_NOWARN)
- AFLAGS_THUMB2	:=$(CFLAGS_THUMB2) -Wa$(comma)-mthumb
- endif
- 
-+ifeq ($(CONFIG_CPU_V8), y)
-+CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y)
-+AFLAGS   += -include asm/unified.h
-+else
- CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y) -msoft-float $(CFLAGS_THUMB2)
- AFLAGS   += -include asm/unified.h -msoft-float $(AFLAGS_THUMB2)
-+endif
- 
- # Machine directory name.  This list is sorted alphanumerically
- # by CONFIG_* macro name.
-@@ -275,12 +291,21 @@ MACH :=
- endif
- 
- common-y += $(BOARD) arch/arm/boards/ $(MACH)
--common-y += arch/arm/lib/ arch/arm/cpu/
--common-y += arch/arm/crypto/
-+common-y += arch/arm/cpu/
++choice
++	prompt "Barebox code model"
++	help
++	  You should only select this option if you have a workload that
++	  actually benefits from 64-bit processing or if your machine has
++	  large memory. You will only be presented a single option in this
++	  menu if your system does not support both 32-bit and 64-bit modes.
 +
-+ifeq ($(CONFIG_CPU_V8), y)
-+common-y += arch/arm/lib64/
-+else
-+common-y += arch/arm/lib/ arch/arm/crypto/
-+endif
++config 32BIT
++	bool "32-bit barebox"
++	depends on CPU_SUPPORTS_32BIT_KERNEL && SYS_SUPPORTS_32BIT_KERNEL
++	help
++	  Select this option if you want to build a 32-bit barebox.
++
++config 64BIT
++	bool "64-bit barebox"
++	depends on CPU_SUPPORTS_64BIT_KERNEL && SYS_SUPPORTS_64BIT_KERNEL
++	select ARCH_DMA_ADDR_T_64BIT
++	help
++	  Select this option if you want to build a 64-bit barebox.
++
++endchoice
++
+ menu "ARM specific settings"
  
- common-$(CONFIG_OFTREE) += arch/arm/dts/
+ config ARM_OPTIMZED_STRING_FUNCTIONS
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index 4f5d9b6..450a6d5 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -1,8 +1,14 @@
+ comment "Processor Type"
  
-+ifeq ($(CONFIG_CPU_V8), y)
-+lds-y	:= arch/arm/lib64/barebox.lds
-+else
- lds-y	:= arch/arm/lib/barebox.lds
-+endif
++config PHYS_ADDR_T_64BIT
++	bool
++
+ config CPU_32
+ 	bool
+-	default y
++
++config CPU_64
++	bool
++	select PHYS_ADDR_T_64BIT
  
- common- += $(patsubst %,arch/arm/boards/%/,$(board-))
+ # Select CPU types depending on the architecture selected. This selects
+ # which CPUs we support in the kernel image, and the compiler instruction
+@@ -69,6 +75,12 @@ config CPU_V7
+ 	bool
+ 	select CPU_32v7
  
++# ARMv8
++config CPU_V8
++	bool
++	select CPU_64v8
++	select CPU_SUPPORTS_64BIT_KERNEL
++
+ config CPU_XSC3
+         bool
+         select CPU_32v4T
+@@ -84,15 +96,23 @@ config CPU_XSCALE
+ # This defines the compiler instruction set which depends on the machine type.
+ config CPU_32v4T
+ 	bool
++	select CPU_32
+ 
+ config CPU_32v5
+ 	bool
++	select CPU_32
+ 
+ config CPU_32v6
+ 	bool
++	select CPU_32
+ 
+ config CPU_32v7
+ 	bool
++	select CPU_32
++
++config CPU_64v8
++	bool
++	select CPU_64
+ 
+ comment "processor features"
+ 
+@@ -124,3 +144,14 @@ config CACHE_L2X0
+ 	bool "Enable L2x0 PrimeCell"
+ 	depends on MMU && ARCH_HAS_L2X0
+ 
++config SYS_SUPPORTS_32BIT_KERNEL
++	bool
++
++config SYS_SUPPORTS_64BIT_KERNEL
++	bool
++
++config CPU_SUPPORTS_32BIT_KERNEL
++	bool
++
++config CPU_SUPPORTS_64BIT_KERNEL
++	bool
 -- 
 2.1.0
 
