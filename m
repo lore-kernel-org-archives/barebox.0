@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bGO1J-0003Jb-WE
- for barebox@lists.infradead.org; Fri, 24 Jun 2016 10:07:32 +0000
+ id 1bGO1X-0003Rd-4C
+ for barebox@lists.infradead.org; Fri, 24 Jun 2016 10:07:44 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Fri, 24 Jun 2016 12:06:01 +0200
-Message-Id: <1466762762-15212-6-git-send-email-mpa@pengutronix.de>
+Date: Fri, 24 Jun 2016 12:06:02 +0200
+Message-Id: <1466762762-15212-7-git-send-email-mpa@pengutronix.de>
 In-Reply-To: <1466762762-15212-1-git-send-email-mpa@pengutronix.de>
 References: <1466762762-15212-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,8 +21,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/6] state: backend_storage_direct: also use cached data on
- write
+Subject: [PATCH v2 6/6] barebox-state: handle flush errno correctly
 To: barebox@lists.infradead.org
 Cc: mgr@pengutronix.de
 
@@ -31,103 +30,59 @@ From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- common/state/backend_bucket_direct.c | 55 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ common/state/backend_bucket_circular.c | 13 ++++++++++---
+ common/state/backend_bucket_direct.c   | 11 +++++++++--
+ 2 files changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
-index 08892f001e25..772267f6dc1d 100644
---- a/common/state/backend_bucket_direct.c
-+++ b/common/state/backend_bucket_direct.c
-@@ -29,6 +29,10 @@ struct state_backend_storage_bucket_direct {
+diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
+index 64e9be2e9979..3e48733ba269 100644
+--- a/common/state/backend_bucket_circular.c
++++ b/common/state/backend_bucket_circular.c
+@@ -216,10 +216,17 @@ static int state_mtd_peb_write(struct state_backend_storage_bucket_circular *cir
+ 	}
  
- 	int fd;
- 
-+	/* Cached data of the last read/write */
-+	u8 *current_data;
-+	ssize_t current_data_len;
-+
- 	struct device_d *dev;
- };
- 
-@@ -99,6 +103,29 @@ static int state_backend_bucket_direct_read(struct state_backend_storage_bucket
- 	return 0;
- }
- 
-+
-+static int state_backend_bucket_direct_fill_cache(
-+		struct state_backend_storage_bucket *bucket)
-+{
-+	struct state_backend_storage_bucket_direct *direct =
-+	    get_bucket_direct(bucket);
-+	ssize_t read_len;
-+	uint8_t *buf;
-+	int ret;
-+
-+	ret = state_backend_bucket_direct_read(bucket, &buf, &read_len);
+ 	/*
+-	 * We keep the fd open, so flush is necessary. We ignore the return
+-	 * value as flush is currently not supported for mtd under linux.
++	 * We keep the fd open, so flush is necessary. We ignore the
++	 * errno EINVAL as flush is currently not supported for
++	 * mtd under linux.
+ 	 */
+-	flush(circ->fd);
++	ret = flush(circ->fd);
 +	if (ret < 0) {
-+		dev_err(direct->dev, "Failed to read from file, %d\n", ret);
-+		free(buf);
-+		return ret;
-+	}
-+
-+	direct->current_data = buf;
-+	direct->current_data_len = read_len;
-+
-+	return 0;
-+}
-+
- static int state_backend_bucket_direct_write(struct state_backend_storage_bucket
- 					     *bucket, const uint8_t * buf,
- 					     ssize_t len)
-@@ -111,6 +138,11 @@ static int state_backend_bucket_direct_write(struct state_backend_storage_bucket
- 	if (direct->max_size && len > direct->max_size)
- 		return -E2BIG;
- 
-+	/* Nothing in cache? Then read to see what is on the device currently */
-+	if (!direct->current_data) {
-+		state_backend_bucket_direct_fill_cache(bucket);
-+	}
-+
- 	ret = lseek(direct->fd, direct->offset, SEEK_SET);
- 	if (ret < 0) {
- 		dev_err(direct->dev, "Failed to seek file, %d\n", ret);
-@@ -119,6 +151,26 @@ static int state_backend_bucket_direct_write(struct state_backend_storage_bucket
- 
- 	meta.magic = direct_magic;
- 	meta.written_length = len;
-+
-+	/*
-+	 * If we would write the same data that is currently on the device, we
-+	 * can return successfully without writing.
-+	 * Note that the cache may still be empty if the storage is empty or
-+	 * errors occured.
-+	 */
-+	if (direct->current_data) {
-+		dev_dbg(direct->dev, "Comparing cached data, writing %zd bytes, cached %zd bytes\n",
-+			len, direct->current_data_len);
-+		if (len == direct->current_data_len &&
-+		    !memcmp(direct->current_data, buf, len)) {
-+			dev_dbg(direct->dev, "Data already on device, not writing again\n");
++		if (errno != EINVAL) {
++			dev_err(direct->dev, "Failed to flush file, %d\n", -errno);
 +			return ret;
-+		} else {
-+			free(direct->current_data);
-+			direct->current_data = NULL;
 +		}
 +	}
-+
- 	ret = write_full(direct->fd, &meta, sizeof(meta));
- 	if (ret < 0) {
- 		dev_err(direct->dev, "Failed to write metadata to file, %d\n", ret);
-@@ -147,6 +199,9 @@ static void state_backend_bucket_direct_free(struct
- 	struct state_backend_storage_bucket_direct *direct =
- 	    get_bucket_direct(bucket);
  
-+	if (direct->current_data)
-+		free(direct->current_data);
-+
- 	close(direct->fd);
- 	free(direct);
- }
+ 	dev_dbg(circ->dev, "Written state to offset %ld length %zd data length %zd\n",
+ 		offset, len, len);
+diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
+index 772267f6dc1d..1f7fb1c8c2e4 100644
+--- a/common/state/backend_bucket_direct.c
++++ b/common/state/backend_bucket_direct.c
+@@ -183,10 +183,17 @@ static int state_backend_bucket_direct_write(struct state_backend_storage_bucket
+ 		return ret;
+ 	}
+ 
++	/*
++	 * We keep the fd open, so flush is necessary. We ignore the
++	 * errno EINVAL as flush is currently not supported for
++	 * mtd under linux.
++	 */
+ 	ret = flush(direct->fd);
+ 	if (ret < 0) {
+-		dev_err(direct->dev, "Failed to flush file, %d\n", ret);
+-		return ret;
++		if (errno != EINVAL) {
++			dev_err(direct->dev, "Failed to flush file, %d\n", -errno);
++			return ret;
++		}
+ 	}
+ 
+ 	return 0;
 -- 
 2.8.1
 
