@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bGO1X-0003Rd-4C
- for barebox@lists.infradead.org; Fri, 24 Jun 2016 10:07:44 +0000
+ id 1bGO1N-0003P6-3N
+ for barebox@lists.infradead.org; Fri, 24 Jun 2016 10:07:34 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Fri, 24 Jun 2016 12:06:02 +0200
-Message-Id: <1466762762-15212-7-git-send-email-mpa@pengutronix.de>
+Date: Fri, 24 Jun 2016 12:05:59 +0200
+Message-Id: <1466762762-15212-4-git-send-email-mpa@pengutronix.de>
 In-Reply-To: <1466762762-15212-1-git-send-email-mpa@pengutronix.de>
 References: <1466762762-15212-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,68 +21,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 6/6] barebox-state: handle flush errno correctly
+Subject: [PATCH v2 3/6] docs: Add/Update state documentation
 To: barebox@lists.infradead.org
 Cc: mgr@pengutronix.de
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- common/state/backend_bucket_circular.c | 13 ++++++++++---
- common/state/backend_bucket_direct.c   | 11 +++++++++--
- 2 files changed, 19 insertions(+), 5 deletions(-)
+ .../devicetree/bindings/barebox/barebox,state.rst  |  7 +++-
+ Documentation/user/state.rst                       | 46 ++++++++++++++++++++++
+ Documentation/user/user-manual.rst                 |  1 +
+ 3 files changed, 53 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/user/state.rst
 
-diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
-index 64e9be2e9979..3e48733ba269 100644
---- a/common/state/backend_bucket_circular.c
-+++ b/common/state/backend_bucket_circular.c
-@@ -216,10 +216,17 @@ static int state_mtd_peb_write(struct state_backend_storage_bucket_circular *cir
- 	}
+diff --git a/Documentation/devicetree/bindings/barebox/barebox,state.rst b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+index d50765705348..e39245f6c0bf 100644
+--- a/Documentation/devicetree/bindings/barebox/barebox,state.rst
++++ b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+@@ -36,7 +36,12 @@ Optional properties:
  
- 	/*
--	 * We keep the fd open, so flush is necessary. We ignore the return
--	 * value as flush is currently not supported for mtd under linux.
-+	 * We keep the fd open, so flush is necessary. We ignore the
-+	 * errno EINVAL as flush is currently not supported for
-+	 * mtd under linux.
- 	 */
--	flush(circ->fd);
-+	ret = flush(circ->fd);
-+	if (ret < 0) {
-+		if (errno != EINVAL) {
-+			dev_err(direct->dev, "Failed to flush file, %d\n", -errno);
-+			return ret;
-+		}
-+	}
+ * ``algo``: A HMAC algorithm used to detect manipulation of the data
+   or header, sensible values follow this pattern ``hmac(<HASH>)``,
+-  e.g. ``hmac(sha256)``.
++  e.g. ``hmac(sha256)``. Only used for ``raw``.
++* ``backend-stridesize``: Maximum size per copy of the data. Only important for
++  non-MTD devices
++* ``backend-storage-type``: Type of the storage. This has two options at the
++  moment. For MTD with erasing the correct type is ``circular``. For all other
++  devices and files, ``direct`` is the needed type.
  
- 	dev_dbg(circ->dev, "Written state to offset %ld length %zd data length %zd\n",
- 		offset, len, len);
-diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
-index 772267f6dc1d..1f7fb1c8c2e4 100644
---- a/common/state/backend_bucket_direct.c
-+++ b/common/state/backend_bucket_direct.c
-@@ -183,10 +183,17 @@ static int state_backend_bucket_direct_write(struct state_backend_storage_bucket
- 		return ret;
- 	}
+ Variable nodes
+ --------------
+diff --git a/Documentation/user/state.rst b/Documentation/user/state.rst
+new file mode 100644
+index 000000000000..c401f105bd64
+--- /dev/null
++++ b/Documentation/user/state.rst
+@@ -0,0 +1,46 @@
++Barebox State Framework
++=======================
++
++The state framework is build to exchange data between Barebox and Linux
++userspace using a non-volatile storage. There are several components involved.
++Barebox has a state driver to access the variables. For the Linux Userspace
++there is a userspace tool.
++
++Devicetree
++----------
++
++Currently the devicetree defines the layout of the variables and data.
++Variables are fixed size. Several types are supported, see the binding
++documentation for details.
++
++Data Formats
++------------
++
++The state data can be stored in different ways. Currently two formats are
++available, ``raw`` and ``dtb``. Both format the state data differently.
++Basically these are serializers. The raw serializer additionally supports a
++HMAC algorithm to detect manipulations.
++
++Storage Backends
++----------------
++
++The serialized data can be stored to different backends which are automatically
++selected depending on the defined backend in the devicetree. Currently two
++implementations exist, ``circular`` and ``direct``. ``circular`` writes the
++data sequentially on the backend storage device. Each save is appended until
++the storage area is full. It then erases the block and starts from offset 0.
++``circular`` is used for MTD devices with erase functionality. ``direct``
++writes the data directly to the file without erasing.
++
++For all backends multiple copies are written to handle read errors.
++
++Commands
++--------
++
++The ``state`` command can be used to store and manipulate the state. Using
++``state`` without argument lists you all available states with their name.
++``devinfo STATE_NAME`` shows you all variables and their values. ``state -s``
++stores the state.
++
++Starting Barebox will automatically load the last written state. If loading the
++state fails the defaults are used.
+diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
+index be44f0d64541..5841ea625c09 100644
+--- a/Documentation/user/user-manual.rst
++++ b/Documentation/user/user-manual.rst
+@@ -31,6 +31,7 @@ Contents:
+    system-setup
+    reset-reason
+    system-reset
++   state
  
-+	/*
-+	 * We keep the fd open, so flush is necessary. We ignore the
-+	 * errno EINVAL as flush is currently not supported for
-+	 * mtd under linux.
-+	 */
- 	ret = flush(direct->fd);
- 	if (ret < 0) {
--		dev_err(direct->dev, "Failed to flush file, %d\n", ret);
--		return ret;
-+		if (errno != EINVAL) {
-+			dev_err(direct->dev, "Failed to flush file, %d\n", -errno);
-+			return ret;
-+		}
- 	}
- 
- 	return 0;
+ * :ref:`search`
+ * :ref:`genindex`
 -- 
 2.8.1
 
