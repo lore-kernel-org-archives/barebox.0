@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
+Received: from mail-wm0-x235.google.com ([2a00:1450:400c:c09::235])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bGQAR-00018I-J7
- for barebox@lists.infradead.org; Fri, 24 Jun 2016 12:25:06 +0000
-Received: by mail-wm0-x244.google.com with SMTP id a66so4548001wme.2
- for <barebox@lists.infradead.org>; Fri, 24 Jun 2016 05:24:46 -0700 (PDT)
+ id 1bGQAL-00016v-SY
+ for barebox@lists.infradead.org; Fri, 24 Jun 2016 12:24:58 +0000
+Received: by mail-wm0-x235.google.com with SMTP id a66so23268028wme.0
+ for <barebox@lists.infradead.org>; Fri, 24 Jun 2016 05:24:37 -0700 (PDT)
+Received: from localhost.localdomain ([194.167.244.97])
+ by smtp.gmail.com with ESMTPSA id t1sm4950862wjy.3.2016.06.24.05.24.34
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+ Fri, 24 Jun 2016 05:24:34 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Fri, 24 Jun 2016 14:23:56 +0200
-Message-Id: <1466771041-89803-10-git-send-email-poggi.raph@gmail.com>
-In-Reply-To: <1466771041-89803-1-git-send-email-poggi.raph@gmail.com>
-References: <1466771041-89803-1-git-send-email-poggi.raph@gmail.com>
+Date: Fri, 24 Jun 2016 14:23:47 +0200
+Message-Id: <1466771041-89803-1-git-send-email-poggi.raph@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,149 +22,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 09/14] arm: cpu: cpuinfo: add armv8 support
+Subject: [PATCH v3 0/12] Add basic support for arm64
 To: barebox@lists.infradead.org
-Cc: Raphael Poggi <poggi.raph@gmail.com>
 
-Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
----
- arch/arm/cpu/cpuinfo.c | 58 ++++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 54 insertions(+), 4 deletions(-)
-
-diff --git a/arch/arm/cpu/cpuinfo.c b/arch/arm/cpu/cpuinfo.c
-index 8b22e9b..86e19d9 100644
---- a/arch/arm/cpu/cpuinfo.c
-+++ b/arch/arm/cpu/cpuinfo.c
-@@ -30,12 +30,15 @@
- #define CPU_ARCH_ARMv5TEJ	7
- #define CPU_ARCH_ARMv6		8
- #define CPU_ARCH_ARMv7		9
-+#define CPU_ARCH_ARMv8		10
- 
- #define ARM_CPU_PART_CORTEX_A5      0xC050
- #define ARM_CPU_PART_CORTEX_A7      0xC070
- #define ARM_CPU_PART_CORTEX_A8      0xC080
- #define ARM_CPU_PART_CORTEX_A9      0xC090
- #define ARM_CPU_PART_CORTEX_A15     0xC0F0
-+#define ARM_CPU_PART_CORTEX_A53	    0xD030
-+#define ARM_CPU_PART_CORTEX_A57	    0xD070
- 
- static void decode_cache(unsigned long size)
- {
-@@ -60,6 +63,25 @@ static int do_cpuinfo(int argc, char *argv[])
- 	int i;
- 	int cpu_arch;
- 
-+#ifdef CONFIG_CPU_64v8
-+	__asm__ __volatile__(
-+		"mrs	%0, midr_el1\n"
-+		: "=r" (mainid)
-+		:
-+		: "memory");
-+
-+	__asm__ __volatile__(
-+		"mrs	%0, ctr_el0\n"
-+		: "=r" (cache)
-+		:
-+		: "memory");
-+
-+	__asm__ __volatile__(
-+		"mrs	%0, sctlr_el1\n"
-+		: "=r" (cr)
-+		:
-+		: "memory");
-+#else
- 	__asm__ __volatile__(
- 		"mrc    p15, 0, %0, c0, c0, 0   @ read control reg\n"
- 		: "=r" (mainid)
-@@ -74,9 +96,10 @@ static int do_cpuinfo(int argc, char *argv[])
- 
- 	__asm__ __volatile__(
- 		"mrc    p15, 0, %0, c1, c0, 0   @ read control reg\n"
--			: "=r" (cr)
--			:
--			: "memory");
-+		: "=r" (cr)
-+		:
-+		: "memory");
-+#endif
- 
- 	switch (mainid >> 24) {
- 	case 0x41:
-@@ -107,6 +130,23 @@ static int do_cpuinfo(int argc, char *argv[])
- 		if (cpu_arch)
- 			cpu_arch += CPU_ARCH_ARMv3;
- 	} else if ((mainid & 0x000f0000) == 0x000f0000) {
-+#ifdef CONFIG_CPU_64v8
-+		unsigned int isar2;
-+
-+		__asm__ __volatile__(
-+			"mrs	%0, id_isar2_el1\n"
-+			: "=r" (isar2)
-+			:
-+			: "memory");
-+
-+
-+		/* Check Load/Store acquire to check if ARMv8 or not */
-+
-+		if (isar2 & 0x2)
-+			cpu_arch = CPU_ARCH_ARMv8;
-+		else
-+			cpu_arch = CPU_ARCH_UNKNOWN;
-+#else
- 		unsigned int mmfr0;
- 
- 		/* Revised CPUID format. Read the Memory Model Feature
-@@ -121,6 +161,7 @@ static int do_cpuinfo(int argc, char *argv[])
- 			cpu_arch = CPU_ARCH_ARMv6;
- 		else
- 			cpu_arch = CPU_ARCH_UNKNOWN;
-+#endif
- 	} else
- 		cpu_arch = CPU_ARCH_UNKNOWN;
- 
-@@ -152,6 +193,9 @@ static int do_cpuinfo(int argc, char *argv[])
- 	case CPU_ARCH_ARMv7:
- 		architecture = "v7";
- 		break;
-+	case CPU_ARCH_ARMv8:
-+		architecture = "v8";
-+		break;
- 	case CPU_ARCH_UNKNOWN:
- 	default:
- 		architecture = "Unknown";
-@@ -160,7 +204,7 @@ static int do_cpuinfo(int argc, char *argv[])
- 	printf("implementer: %s\narchitecture: %s\n",
- 			implementer, architecture);
- 
--	if (cpu_arch == CPU_ARCH_ARMv7) {
-+	if (cpu_arch >= CPU_ARCH_ARMv7) {
- 		unsigned int major, minor;
- 		char *part;
- 		major = (mainid >> 20) & 0xf;
-@@ -181,6 +225,12 @@ static int do_cpuinfo(int argc, char *argv[])
- 		case ARM_CPU_PART_CORTEX_A15:
- 			part = "Cortex-A15";
- 			break;
-+		case ARM_CPU_PART_CORTEX_A53:
-+			part = "Cortex-A53";
-+			break;
-+		case ARM_CPU_PART_CORTEX_A57:
-+			part = "Cortex-A57";
-+			break;
- 		default:
- 			part = "unknown";
- 		}
--- 
-2.1.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Q2hhbmdlIHNpbmNlIHYyOgoJUEFUQ0ggMS8xNAlhZGQgUEhZU19BRERSX1RfNjRCSVQgY29uZmln
+CgoJUEFUQ0ggMy8xNAlyZW1vdmUgbW9kdWxlcy5jIGFuZCBjbGVhbiBhdGFncyBmdW5jdGlvbnMg
+aW4gYXJtbGludXguYywKCQkJYW5kIGZpeCBhbHNvIHBhcmFtZXRlcnMgcGFzc2VkIHRvIGxpbnV4
+IGtlcm5lbC4KCglQQVRDSCAxMi8xNAltb3ZlIGxvd2xldmVsIGZpbGUgZnJvbSBtYWNoLXFlbXUv
+IHRvIGJvYXJkcy8gKGxpa2Ugb3RoZXJzIGJvYXJkcykKCQkJc3BsaXQgZHJhbSBhbmQgZmxhc2gg
+aW5pdAoJCQlpbmNyZWFzZSBkcmFtL2ZsYXNoIHNpemUKCglQQVRDSCAxMy8xNAluZXcgcGF0Y2gs
+IGluIGNhc2Ugb2YgYXJtdjgsIHN3YWIgbmVlZCB0byBiZSBkb25lIG9uIDMyLWJpdCB3aWRlIHJl
+Z2lzdGVyCgkJCW90aGVyd2lzZSBzd2FwcGluZyB0aGUgdmFsdWU6ICIweEFBQUFCQkJCIiB3aWxs
+IGJlY29tZSAiMHhBQUFBQkJCQjAwMDAwMDAwIgoJCQlhbmQgc2VlIGFzIGEgbnVsbCB2YWx1ZSBp
+biB1aW50MzJfdCB2YXJpYWJsZS4KCglQQVRDSCAxNC8xNAluZXcgcGF0Y2gsIGFkZCBkZWZpbmUg
+dG8gaGFuZGxlIGFybTY0IHVpbWFnZSBmb3JtYXQKCgpDaGFuZ2Ugc2luY2UgdjE6CglQQVRDSCAy
+LzEyOglyZW1vdmUgaHVuayB3aGljaCBiZWxvbmdzIHRvIHBhdGNoIGFkZGluZyBtYWNoLXFlbXUK
+CglQQVRDSCAzLzEyOglyZW1vdmUgdW51c2VkIGZpbGVzCgoJUEFUQ0ggNC8xMjoJY3JlYXRlIGxv
+d2xldmVsNjQKCglQQVRDSCAxMS8xMjoJY3JlYXRlIHBndGFibGVzNjQgKG5vdGhpbmcgaW4gY29t
+bW9uIHdpdGggdGhlIGFybTMyIHZlcnNpb24pCgoJUEFUQ0ggMTIvMTI6CXJlbmFtZSAibWFjaC12
+aXJ0IiA9PiAibWFjaC1xZW11IgoJCQlyZW5hbWUgYm9hcmQgInFlbXVfdmlydDY0IgoJCQlyZW1v
+dmUgYm9hcmQgZW52IGZpbGVzCgoKSGVsbG8sCgpUaGlzIHBhdGNoIHNlcmllcyBpbnRyb2R1Y2Vz
+IGEgYmFzaWMgc3VwcG9ydCBmb3IgYXJtNjQuCgpUaGUgYXJtNjQgY29kZSBpcyBtZXJnZWQgaW4g
+dGhlIGN1cnJlbnQgYXJjaC9hcm0gZGlyZWN0b3J5LgpJIHRyeSB0byBiZSBpdGVyYXRpdmUgaW4g
+dGhlIG1lcmdlIHByb2Nlc3MsIGFuZCBmaW5kIGNvcnJlY3Qgc29sdXRpb25zCnRvIGhhbmRsZSBi
+b3RoIGFyY2hpdGVjdHVyZSBhdCBzb21lIHBsYWNlcy4KCkkgdGVzdCB0aGUgcGF0Y2ggc2VyaWVz
+IGJ5IGNvbXBpbGluZyBhcm02NCB2aXJ0IG1hY2hpbmUgYW5kIGFybTMyIHZleHByZXNzLWE5IGFu
+ZCB0ZXN0IGl0CmluIHFlbXUsIGV2ZXJ5dGhpbmcgc2VlbXMgdG8gd29yay4KClRoYW5rcywKUmFw
+aGHDq2wKCiBhcmNoL2FybS9LY29uZmlnICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMjgg
+KysKIGFyY2gvYXJtL01ha2VmaWxlICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAzMCArLQog
+YXJjaC9hcm0vYm9hcmRzL01ha2VmaWxlICAgICAgICAgICAgICAgICAgIHwgICAxICsKIGFyY2gv
+YXJtL2JvYXJkcy9xZW11LXZpcnQ2NC9LY29uZmlnICAgICAgICB8ICAgOCArCiBhcmNoL2FybS9i
+b2FyZHMvcWVtdS12aXJ0NjQvTWFrZWZpbGUgICAgICAgfCAgIDIgKwogYXJjaC9hcm0vYm9hcmRz
+L3FlbXUtdmlydDY0L2Vudi9jb25maWcgICAgIHwgICA4ICsKIGFyY2gvYXJtL2JvYXJkcy9xZW11
+LXZpcnQ2NC9pbml0LmMgICAgICAgICB8ICA3MiArKysrCiBhcmNoL2FybS9ib2FyZHMvcWVtdS12
+aXJ0NjQvbG93bGV2ZWwuYyAgICAgfCAgMTkgKwogYXJjaC9hcm0vY29uZmlncy9xZW11X3ZpcnQ2
+NF9kZWZjb25maWcgICAgIHwgIDUyICsrKwogYXJjaC9hcm0vY3B1L0tjb25maWcgICAgICAgICAg
+ICAgICAgICAgICAgIHwgIDMzICstCiBhcmNoL2FybS9jcHUvTWFrZWZpbGUgICAgICAgICAgICAg
+ICAgICAgICAgfCAgMjYgKy0KIGFyY2gvYXJtL2NwdS9jYWNoZS1hcm12OC5TICAgICAgICAgICAg
+ICAgICB8IDE2OCArKysrKysrKysKIGFyY2gvYXJtL2NwdS9jYWNoZS5jICAgICAgICAgICAgICAg
+ICAgICAgICB8ICAxOSArCiBhcmNoL2FybS9jcHUvY3B1LmMgICAgICAgICAgICAgICAgICAgICAg
+ICAgfCAgIDcgKwogYXJjaC9hcm0vY3B1L2NwdWluZm8uYyAgICAgICAgICAgICAgICAgICAgIHwg
+IDU4ICsrLQogYXJjaC9hcm0vY3B1L2V4Y2VwdGlvbnNfNjQuUyAgICAgICAgICAgICAgIHwgMTI3
+ICsrKysrKysKIGFyY2gvYXJtL2NwdS9pbnRlcnJ1cHRzLmMgICAgICAgICAgICAgICAgICB8ICA0
+NyArKysKIGFyY2gvYXJtL2NwdS9sb3dsZXZlbF82NC5TICAgICAgICAgICAgICAgICB8ICA0MCAr
+KwogYXJjaC9hcm0vY3B1L21tdS5oICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDU0ICsrKwog
+YXJjaC9hcm0vY3B1L21tdV82NC5jICAgICAgICAgICAgICAgICAgICAgIHwgMzMzICsrKysrKysr
+KysrKysrKysrCiBhcmNoL2FybS9jcHUvc3RhcnQuYyAgICAgICAgICAgICAgICAgICAgICAgfCAg
+IDIgKwogYXJjaC9hcm0vaW5jbHVkZS9hc20vYml0b3BzLmggICAgICAgICAgICAgIHwgICA1ICsK
+IGFyY2gvYXJtL2luY2x1ZGUvYXNtL2NhY2hlLmggICAgICAgICAgICAgICB8ICAgOSArCiBhcmNo
+L2FybS9pbmNsdWRlL2FzbS9tbXUuaCAgICAgICAgICAgICAgICAgfCAgMTQgKy0KIGFyY2gvYXJt
+L2luY2x1ZGUvYXNtL3BndGFibGU2NC5oICAgICAgICAgICB8IDE0MCArKysrKysrCiBhcmNoL2Fy
+bS9pbmNsdWRlL2FzbS9zd2FiLmggICAgICAgICAgICAgICAgfCAgIDQgKwogYXJjaC9hcm0vaW5j
+bHVkZS9hc20vc3lzdGVtLmggICAgICAgICAgICAgIHwgIDQ2ICsrLQogYXJjaC9hcm0vaW5jbHVk
+ZS9hc20vc3lzdGVtX2luZm8uaCAgICAgICAgIHwgIDM4ICsrCiBhcmNoL2FybS9saWI2NC9NYWtl
+ZmlsZSAgICAgICAgICAgICAgICAgICAgfCAgMTAgKwogYXJjaC9hcm0vbGliNjQvYXJtbGludXgu
+YyAgICAgICAgICAgICAgICAgIHwgMTA0ICsrKysrKwogYXJjaC9hcm0vbGliNjQvYXNtLW9mZnNl
+dHMuYyAgICAgICAgICAgICAgIHwgIDE2ICsKIGFyY2gvYXJtL2xpYjY0L2JhcmVib3gubGRzLlMg
+ICAgICAgICAgICAgICB8IDEyNSArKysrKysrCiBhcmNoL2FybS9saWI2NC9ib290bS5jICAgICAg
+ICAgICAgICAgICAgICAgfCA1NzIgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKIGFyY2gv
+YXJtL2xpYjY0L2NvcHlfdGVtcGxhdGUuUyAgICAgICAgICAgICB8IDE5MiArKysrKysrKysrCiBh
+cmNoL2FybS9saWI2NC9kaXYwLmMgICAgICAgICAgICAgICAgICAgICAgfCAgMjcgKysKIGFyY2gv
+YXJtL2xpYjY0L21lbWNweS5TICAgICAgICAgICAgICAgICAgICB8ICA3NCArKysrCiBhcmNoL2Fy
+bS9saWI2NC9tZW1zZXQuUyAgICAgICAgICAgICAgICAgICAgfCAyMTUgKysrKysrKysrKysKIGFy
+Y2gvYXJtL21hY2gtcWVtdS9LY29uZmlnICAgICAgICAgICAgICAgICB8ICAxOCArCiBhcmNoL2Fy
+bS9tYWNoLXFlbXUvTWFrZWZpbGUgICAgICAgICAgICAgICAgfCAgIDEgKwogYXJjaC9hcm0vbWFj
+aC1xZW11L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oIHwgIDI0ICsrCiBhcmNoL2FybS9tYWNoLXFl
+bXUvaW5jbHVkZS9tYWNoL2RldmljZXMuaCAgfCAgMTMgKwogYXJjaC9hcm0vbWFjaC1xZW11L3Zp
+cnRfZGV2aWNlcy5jICAgICAgICAgIHwgIDMwICsrCiBjb21tb24vaW1hZ2UuYyAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgfCAgIDEgKwogaW5jbHVkZS9pbWFnZS5oICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIHwgICA1ICsKIDQ0IGZpbGVzIGNoYW5nZWQsIDI4MDEgaW5zZXJ0aW9ucygr
+KSwgMTYgZGVsZXRpb25zKC0pCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
+b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
