@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
+Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bGQAR-00017o-S1
- for barebox@lists.infradead.org; Fri, 24 Jun 2016 12:25:07 +0000
-Received: by mail-wm0-x242.google.com with SMTP id a66so4547585wme.2
- for <barebox@lists.infradead.org>; Fri, 24 Jun 2016 05:24:43 -0700 (PDT)
+ id 1bGQAQ-000184-E5
+ for barebox@lists.infradead.org; Fri, 24 Jun 2016 12:25:03 +0000
+Received: by mail-wm0-x243.google.com with SMTP id 187so4571451wmz.1
+ for <barebox@lists.infradead.org>; Fri, 24 Jun 2016 05:24:44 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Fri, 24 Jun 2016 14:23:53 +0200
-Message-Id: <1466771041-89803-7-git-send-email-poggi.raph@gmail.com>
+Date: Fri, 24 Jun 2016 14:23:54 +0200
+Message-Id: <1466771041-89803-8-git-send-email-poggi.raph@gmail.com>
 In-Reply-To: <1466771041-89803-1-git-send-email-poggi.raph@gmail.com>
 References: <1466771041-89803-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,32 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 06/14] arm: cpu: start: arm64 does not support relocation
+Subject: [PATCH v3 07/14] arm: include: bitops: arm64 use generic __fls
 To: barebox@lists.infradead.org
 Cc: Raphael Poggi <poggi.raph@gmail.com>
 
-For now, the relocation is not supported in arm64, so
-enclosed call to "setup_c" with #if directive
-
 Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
 ---
- arch/arm/cpu/start.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/include/asm/bitops.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index e037d91..5051115 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -151,7 +151,9 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
- 		relocate_to_adr(barebox_base);
- 	}
- 
-+#if __LINUX_ARM_ARCH__ <= 7
- 	setup_c();
+diff --git a/arch/arm/include/asm/bitops.h b/arch/arm/include/asm/bitops.h
+index 138ebe2..b51225e 100644
+--- a/arch/arm/include/asm/bitops.h
++++ b/arch/arm/include/asm/bitops.h
+@@ -177,6 +177,11 @@ static inline unsigned long ffz(unsigned long word)
+ #include <asm-generic/bitops/ffs.h>
+ #include <asm-generic/bitops/fls.h>
+ #endif		/* __ARM__USE_GENERIC_FF */
++
++#if __LINUX_ARM_ARCH__ == 8
++#include <asm-generic/bitops/__fls.h>
 +#endif
++
+ #include <asm-generic/bitops/fls64.h>
  
- 	barrier();
- 
+ #include <asm-generic/bitops/hweight.h>
 -- 
 2.1.0
 
