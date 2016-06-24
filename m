@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bGPAX-0005am-MA
- for barebox@lists.infradead.org; Fri, 24 Jun 2016 11:21:06 +0000
-Date: Fri, 24 Jun 2016 13:20:43 +0200
+ id 1bGPBO-0005h7-Hs
+ for barebox@lists.infradead.org; Fri, 24 Jun 2016 11:21:59 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160624112043.GA20656@pengutronix.de>
-References: <1466586117-14464-1-git-send-email-t.remmet@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1466586117-14464-1-git-send-email-t.remmet@phytec.de>
+Date: Fri, 24 Jun 2016 13:21:34 +0200
+Message-Id: <1466767295-25040-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,124 +14,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: ubi: Fix endless loop when moving PEB
-To: Teresa Remmet <t.remmet@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] mtd: nand: Set ONFI function hooks earlier
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Teresa,
-
-On Wed, Jun 22, 2016 at 11:01:57AM +0200, Teresa Remmet wrote:
-> When moving a PEB the leb_write_trylock() function is called.
-> As the function never returns 0 UBI will end up in an endless
-> loop.
-> 
-> Noticed the issue when fastmap has been enabled and data is beeing copied
-> several times to a UBI volume. When UBI tries to move the anchor PEB,
-> the issue comes up.
-> 
-> The leb_write_trylock() is now equal to the leb_write_lock().
-> But kept it for easier maintaince in future when syncing with
-> kernel.
-> 
-> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
-> ---
->  drivers/mtd/ubi/eba.c | 11 +----------
->  1 file changed, 1 insertion(+), 10 deletions(-)
-> 
-> diff --git a/drivers/mtd/ubi/eba.c b/drivers/mtd/ubi/eba.c
-> index a7af247..31dbcd2 100644
-> --- a/drivers/mtd/ubi/eba.c
-> +++ b/drivers/mtd/ubi/eba.c
-> @@ -257,16 +257,7 @@ static int leb_write_trylock(struct ubi_device *ubi, int vol_id, int lnum)
->  	le = ltree_add_entry(ubi, vol_id, lnum);
->  	if (IS_ERR(le))
->  		return PTR_ERR(le);
-> -
-> -	/* Contention, cancel */
-> -	le->users -= 1;
-> -	ubi_assert(le->users >= 0);
-> -	if (le->users == 0) {
-> -		rb_erase(&le->rb, &ubi->ltree);
-> -		kfree(le);
-> -	}
-> -
-> -	return 1;
-> +	return 0;
->  }
-
-This seems to be the missing link to make the following patch work. I
-have tried this several times but so far never found this bug. Could you
-give it a try? With this patch it should be now possible to ubiformat a
-device with an image and to generate a fastmap when the device is
-detached first.
-
-Sascha
-
-------------------------8<---------------------------------
-
-From 94cea61ade69f712383e282d6aa573d3a12f11d0 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 24 Jun 2016 11:38:24 +0200
-Subject: [PATCH] mtd: ubi: actually do work in wear leveling code
-
-The actual work in the wear leveling code is done in a separate thread.
-Since we do not have threading so far we did not do any of the queued
-work. Change this by calling the worker function synchronously.
-
-With this barebox now can write a fastmap on a freshly ubiformated
-device.
+Make the ONFI function hooks available after nand_scan_ident() but
+before nand_scan_tail(). Based on the kernel commit:
+4204ccc mtd: set ONFI nand's default hooks in nand_set_defaults()
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/ubi/wl.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/mtd/nand/nand_base.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-index 4535f2d..f24c219 100644
---- a/drivers/mtd/ubi/wl.c
-+++ b/drivers/mtd/ubi/wl.c
-@@ -183,7 +183,6 @@ static void wl_entry_destroy(struct ubi_device *ubi, struct ubi_wl_entry *e)
- 	kfree(e);
- }
+diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+index 670720a..d327a7b 100644
+--- a/drivers/mtd/nand/nand_base.c
++++ b/drivers/mtd/nand/nand_base.c
+@@ -2891,6 +2891,13 @@ static void nand_set_defaults(struct nand_chip *chip, int busw)
  
--#ifndef CONFIG_MTD_UBI_FASTMAP
- /**
-  * do_work - do one pending work.
-  * @ubi: UBI device description object
-@@ -221,7 +220,6 @@ static int do_work(struct ubi_device *ubi)
- 
- 	return err;
- }
--#endif
- 
- /**
-  * in_wl_tree - check if wear-leveling entry is present in a WL RB-tree.
-@@ -523,8 +521,9 @@ static void __schedule_ubi_work(struct ubi_device *ubi, struct ubi_work *wrk)
- 	list_add_tail(&wrk->list, &ubi->works);
- 	ubi_assert(ubi->works_count >= 0);
- 	ubi->works_count += 1;
--	if (ubi->thread_enabled && !ubi_dbg_is_bgt_disabled(ubi))
--		wake_up_process(ubi->bgt_thread);
+ 	if (!chip->select_chip)
+ 		chip->select_chip = nand_select_chip;
 +
-+	/* No threading in barebox, so do work synchronously */
-+	do_work(ubi);
- }
++	/* set for ONFI nand */
++	if (!chip->onfi_set_features)
++		chip->onfi_set_features = nand_onfi_set_features;
++	if (!chip->onfi_get_features)
++		chip->onfi_get_features = nand_onfi_get_features;
++
+ 	if (!chip->read_byte)
+ 		chip->read_byte = busw ? nand_read_byte16 : nand_read_byte;
+ 	if (!chip->read_word)
+@@ -3546,12 +3553,6 @@ int nand_scan_tail(struct mtd_info *mtd)
+ 	if (!chip->write_page)
+ 		chip->write_page = nand_write_page;
  
- /**
+-	/* set for ONFI nand */
+-	if (!chip->onfi_set_features)
+-		chip->onfi_set_features = nand_onfi_set_features;
+-	if (!chip->onfi_get_features)
+-		chip->onfi_get_features = nand_onfi_get_features;
+-
+ 	/*
+ 	 * Check ECC mode, default to software if 3byte/512byte hardware ECC is
+ 	 * selected and we have 256 byte pagesize fallback to software ECC
 -- 
 2.8.1
 
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
