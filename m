@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
+Received: from mail-pa0-x243.google.com ([2607:f8b0:400e:c03::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bGJmv-00012u-DS
+ id 1bGJmu-00012t-Oa
  for barebox@lists.infradead.org; Fri, 24 Jun 2016 05:36:22 +0000
-Received: by mail-pf0-x241.google.com with SMTP id t190so8346828pfb.2
+Received: by mail-pa0-x243.google.com with SMTP id av7so2008230pac.3
  for <barebox@lists.infradead.org>; Thu, 23 Jun 2016 22:36:00 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 23 Jun 2016 22:35:34 -0700
-Message-Id: <1466746535-17382-4-git-send-email-andrew.smirnov@gmail.com>
+Date: Thu, 23 Jun 2016 22:35:33 -0700
+Message-Id: <1466746535-17382-3-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1466746535-17382-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1466746535-17382-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,260 +23,272 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/4] GUI: Add fbtest command
+Subject: [PATCH v2 2/4] GUI: Add code to draw simple graphics
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Andrey Gusakov <andrey.gusakov@cogentembedded.com>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add 'fbtest' - a command to produce test patterns on a screen
+Add code to draw simple graphics, namely lines(solid or dashed) and
+circles.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-Signed-off-by: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
 ---
- commands/Kconfig  |   9 +++
- commands/Makefile |   1 +
- commands/fbtest.c | 201 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 211 insertions(+)
- create mode 100644 commands/fbtest.c
+ include/gui/2d-primitives.h |  15 ++++
+ lib/gui/2d-primitives.c     | 199 ++++++++++++++++++++++++++++++++++++++++++++
+ lib/gui/Kconfig             |   3 +
+ lib/gui/Makefile            |   1 +
+ 4 files changed, 218 insertions(+)
+ create mode 100644 include/gui/2d-primitives.h
+ create mode 100644 lib/gui/2d-primitives.c
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 880cd45..cf71289 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -1417,6 +1417,15 @@ config CMD_SPLASH
- 		  -b COLOR	background color in 0xttrrggbb
- 		  -o		render offscreen
- 
-+config CMD_FBTEST
-+	bool
-+	depends on VIDEO
-+	select 2D_PRIMITIVES
-+	prompt "FB test"
-+	help
-+	  Framebuffer test command that allows to produce a number of
-+	  test patterns on a screen.
-+
- config CMD_READLINE
- 	tristate
- 	prompt "readline"
-diff --git a/commands/Makefile b/commands/Makefile
-index b8c07f3..5a899ab 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -57,6 +57,7 @@ obj-$(CONFIG_CMD_HELP)		+= help.o
- obj-$(CONFIG_CMD_LSMOD)		+= lsmod.o
- obj-$(CONFIG_CMD_INSMOD)	+= insmod.o
- obj-$(CONFIG_CMD_SPLASH)	+= splash.o
-+obj-$(CONFIG_CMD_FBTEST)	+= fbtest.o
- obj-$(CONFIG_USB_GADGET_DFU)	+= dfu.o
- obj-$(CONFIG_USB_GADGET_SERIAL)	+= usbserial.o
- obj-$(CONFIG_CMD_GPIO)		+= gpio.o
-diff --git a/commands/fbtest.c b/commands/fbtest.c
+diff --git a/include/gui/2d-primitives.h b/include/gui/2d-primitives.h
 new file mode 100644
-index 0000000..f1569e9
+index 0000000..06216bb
 --- /dev/null
-+++ b/commands/fbtest.c
-@@ -0,0 +1,201 @@
++++ b/include/gui/2d-primitives.h
+@@ -0,0 +1,15 @@
++#ifndef __2D_PRIMITIVES__
++#define __2D_PRIMITIVES__
++
++#include <fb.h>
++
++void gu_draw_line(struct screen *sc,
++		  int x1, int y1, int x2, int y2,
++		  u8 r, u8 g, u8 b, u8 a,
++		  unsigned int dash);
++
++void gu_draw_circle(struct screen *sc,
++		    int x0, int y0, int radius,
++		    u8 r, u8 g, u8 b, u8 a);
++
++#endif
+diff --git a/lib/gui/2d-primitives.c b/lib/gui/2d-primitives.c
+new file mode 100644
+index 0000000..f3814ee
+--- /dev/null
++++ b/lib/gui/2d-primitives.c
+@@ -0,0 +1,199 @@
 +#include <common.h>
-+#include <command.h>
-+#include <errno.h>
-+#include <malloc.h>
-+#include <getopt.h>
 +#include <fb.h>
 +#include <gui/graphic_utils.h>
-+#include <gui/2d-primitives.h>
-+#include <linux/gcd.h>
-+#include <int_sqrt.h>
++#include <linux/stat.h>
++#include <fcntl.h>
++#include <errno.h>
++#include <fs.h>
++#include <malloc.h>
 +
-+static void fbtest_pattern_bars(struct screen *sc, u32 unused)
++static void __illuminate(struct fb_info *info,
++			 int x, int y,
++			 u8 r, u8 g, u8 b, u8 a)
 +{
-+	int i;
++	void *pixel;
 +
-+	const u32 xres = sc->info->xres;
-+	const u32 yres = sc->info->yres;
++	pixel  = fb_get_screen_base(info);
++	pixel += y * info->line_length + x * (info->bits_per_pixel >> 3);
 +
-+	const u32 colors[] =  {
-+		0xFFFFFF, 	/* white */
-+		0xFFFF00,	/* yellow */
-+		0x00FFFF,	/* cyan */
-+		0x00FF00,	/* green */
-+		0xFF00FF,	/* magenta */
-+		0xFF0000,	/* red */
-+		0x0000FF,	/* blue */
-+		0x000000,	/* black */
-+	};
++	gu_set_rgba_pixel(info, pixel, r, g, b, a);
++}
 +
-+	for (i = 0; i < ARRAY_SIZE(colors); i++) {
-+		const u8 r = (colors[i] >> 16) & 0xff;
-+		const u8 g = (colors[i] >>  8) & 0xff;
-+		const u8 b = (colors[i] >>  0) & 0xff;
-+		const int dx = xres / ARRAY_SIZE(colors);
++static void illuminate(struct fb_info *info,
++		       bool invert,
++		       int x, int y,
++		       u8 r, u8 g, u8 b, u8 a)
++{
++	if (invert)
++		__illuminate(info, y, x,
++			     r, g, b, a);
++	else
++		__illuminate(info, x, y,
++			     r, g, b, a);
 +
-+		gu_fill_rectangle(sc,
-+				  i * dx, 0, (i + 1) * dx - 1, yres - 1,
-+				  r, g, b, 0xff);
++}
++
++
++static void draw_simple_line(struct screen *sc,
++			     int x1, int y1,
++			     int x2, int y2,
++			     u8 r, u8 g, u8 b, u8 a,
++			     unsigned int dash)
++{
++	int x;
++	bool invert = false;
++	unsigned int pixel = 0;
++
++	BUG_ON(x1 != x2 &&
++	       y1 != y2);
++
++	if (x1 == x2) {
++		swap(x1, y1);
++		swap(x2, y2);
++		invert = true;
++	}
++
++	if (x1 > x2) {
++		swap(x1, x2);
++		swap(y1, y2);
++	}
++
++	for (x = x1; x < x2 - 1; x++) {
++		if (!dash ||
++		    (++pixel % (2 * dash)) < dash)
++			illuminate(sc->info,
++				   invert,
++				   x, y1,
++				   r, g, b, a);
 +	}
 +}
 +
-+static void fbtest_pattern_geometry(struct screen *sc, u32 color)
++/**
++ * gl_draw_line - draw a 2D dashed line between (x1, y1) and (x2,y2)
++ *
++ * @sc: screen to draw on
++ * @x1, @y1: first point defining the line
++ * @x2, @y2: second point defining the line
++ * @r, @g, @b, @a: line's color
++ * @dash: dash length (0 denotes solid line)
++ *
++ * gl_draw_line() implements integer version of Bresenham's algoritm
++ * as can be found here:
++ *
++ * http://www.idav.ucdavis.edu/education/GraphicsNotes/Bresenhams-Algorithm.pdf
++ */
++void gu_draw_line(struct screen *sc,
++		  int x1, int y1,
++		  int x2, int y2,
++		  u8 r, u8 g, u8 b, u8 a,
++		  unsigned int dash)
 +{
-+	int i;
++	int dx;
++	int dy;
++	int i, j, eps;
++	bool invert = false;
++	unsigned int pixel = 0;
 +
-+	const u8 r = (color >> 16) & 0xff;
-+	const u8 g = (color >>  8) & 0xff;
-+	const u8 b = (color >>  0) & 0xff;
++	BUG_ON(x1 < 0 || y1 < 0 ||
++	       x2 < 0 || y2 < 0);
 +
-+	const u32 xres = sc->info->xres;
-+	const u32 yres = sc->info->yres;
-+
-+	const u8 xcount = xres / gcd(xres, yres);
-+	const u8 ycount = yres / gcd(xres, yres);
-+
-+	const struct {
-+		int x1, y1, x2, y2;
-+	} borders[] = {
-+		{ 0,        0,        xres - 1, 0        },
-+		{ xres - 1, 0,        xres - 1, yres - 1 },
-+		{ 0,        yres - 1, xres - 1, yres - 1 },
-+		{ 0,        0,        0,        yres - 1 },
-+	};
-+
-+	const int R1 = min(xres, yres) / 2;
-+	const int h  = xres * xres + yres * yres;
-+	const int R2 = (int_sqrt(h) / 2 - R1) * 5 / 12;
-+
-+	const  struct {
-+		int x0, y0, radius;
-+	} circles[] = {
-+		{ xres / 2,  yres / 2,  R1 - 1 },
-+		{ R2,        R2,        R2 - 1 },
-+		{ xres - R2, R2,        R2 - 1 },
-+		{ xres - R2, yres - R2, R2 - 1 },
-+		{ R2,        yres - R2, R2 - 1 }
-+	};
-+
-+	void *buf = gui_screen_render_buffer(sc);
-+
-+	gu_memset_pixel(sc->info, buf, ~color,
-+			sc->s.width * sc->s.height);
-+
-+	for (i = 0; i < ARRAY_SIZE(borders); i++)
-+		gu_draw_line(sc,
-+			     borders[i].x1, borders[i].y1,
-+			     borders[i].x2, borders[i].y2,
-+			     r, g, b, 0xff, 10);
-+
-+	for (i = 0; i < ARRAY_SIZE(circles); i++)
-+		gu_draw_circle(sc,
-+			       circles[i].x0, circles[i].y0,
-+			       circles[i].radius,
-+			       r, g, b, 0xff);
-+
-+	for (i = 1; i < ycount; i++) {
-+		const int y = (yres - 1) * i / ycount;
-+		gu_draw_line(sc,
-+			     0, y, xres - 1, y,
-+			     r, g, b, 0xff, 0);
++	if (x1 == x2 || y1 == y2) {
++		draw_simple_line(sc,
++				 x1, y1,
++				 x2, y2,
++				 r, g, b, a, dash);
++		return;
 +	}
 +
++	dx = abs(x2 - x1);
++	dy = abs(y2 - y1);
 +
-+	for (i = 1; i < xcount; i++) {
-+		const int x = (xres - 1) * i / xcount;
-+		gu_draw_line(sc,
-+			     x, 0, x, yres - 1,
-+			     r, g, b, 0xff, 0);
++	/*
++	 * First thing we need to determine "Driving Axis", as can be
++	 * seen below if Y-axis projection of the line is bigger than
++	 * X-axis projection we swap axes and pretend the X is Y and
++	 * vice versa
++	 */
++	if (dy > dx) {
++		swap(x1, y1);
++		swap(x2, y2);
++		swap(dx, dy);
++		invert = true;
++	}
++
++	/*
++	 * Second, we need to make sure that we will be traversing
++	 * driving axis in the direction of increment so we swap point
++	 * 1 with point 2 if x1 is greater than x2
++	 */
++	if (x1 > x2) {
++		swap(x1, x2);
++		swap(y1, y2);
++	}
++
++	j   = y1;
++	eps = dy - dx;
++
++	for (i = x1; i <= x2 - 1; i++) {
++		if (!dash ||
++		    (++pixel % (2 * dash)) > dash) {
++			illuminate(sc->info,
++				   invert,
++				   j, i,
++				   r, g, b, a);
++		} else {
++			printf("NOT illuminating pixel: %d\n", pixel);
++		}
++
++		if (eps >= 0) {
++			j += 1;
++			eps -= dx;
++		}
++
++		eps += dy;
 +	}
 +}
 +
-+static int do_fbtest(int argc, char *argv[])
++/**
++ * gl_draw_circle - draw a 2D circle with center at (x0, y0)
++ *
++ * @sc: screen to draw on
++ * @x0, @y0: coordinates of circle's center
++ * @radius: circle's radius
++ * @r, @g, @b, @a: circle's color
++
++ *
++ * gu_draw_circle() implements midpoint circle algorithm as can be
++ * found here:
++ *
++ * https://en.wikipedia.org/wiki/Midpoint_circle_algorithm
++ */
++void gu_draw_circle(struct screen *sc,
++		    int x0, int y0, int radius,
++		    u8 r, u8 g, u8 b, u8 a)
 +{
-+	struct screen *sc;
-+	int opt;
-+	unsigned int i;
-+	const char *pattern_name = NULL;
-+	char *fbdev = "/dev/fb0";
-+	void (*pattern) (struct screen *sc, u32 color) = NULL;
-+	u32 color = 0xffffff;
++	int x = radius;
++	int y = 0;
++	int e = 0;
 +
-+	struct {
-+		const char *name;
-+		void (*func) (struct screen *sc, u32 color);
-+	} patterns[] = {
-+		{ "geometry", fbtest_pattern_geometry },
-+		{ "bars",     fbtest_pattern_bars     }
-+	};
++	BUG_ON(x0 < 0 || y0 < 0 || radius < 0);
 +
-+	while((opt = getopt(argc, argv, "d:p:c:")) > 0) {
-+		switch(opt) {
-+		case 'd':
-+			fbdev = optarg;
-+			break;
-+		case 'p':
-+			pattern_name = optarg;
-+			break;
-+		case 'c':
-+			color = simple_strtoul(optarg, NULL, 16);
-+			break;
-+		}
++	while (x >= y) {
++		 __illuminate(sc->info, x0 + x, y0 + y, r, g, b, a);
++		 __illuminate(sc->info, x0 + y, y0 + x, r, g, b, a);
++		 __illuminate(sc->info, x0 - y, y0 + x, r, g, b, a);
++		 __illuminate(sc->info, x0 - x, y0 + y, r, g, b, a);
++		 __illuminate(sc->info, x0 - x, y0 - y, r, g, b, a);
++		 __illuminate(sc->info, x0 - y, y0 - x, r, g, b, a);
++		 __illuminate(sc->info, x0 + y, y0 - x, r, g, b, a);
++		 __illuminate(sc->info, x0 + x, y0 - y, r, g, b, a);
++
++		 y += 1;
++		 e += 1 + 2 * y;
++
++		 if (2 * (e - x) + 1 > 0) {
++			 x -= 1;
++			 e += 1 - 2 * x;
++		 }
 +	}
-+
-+	if (pattern_name) {
-+		for (i = 0; i < ARRAY_SIZE(patterns); i++)
-+			if (!strcmp(pattern_name, patterns[i].name))
-+				pattern = patterns[i].func;
-+
-+		if (!pattern) {
-+			printf("Unknonw pattern: %s\n", pattern_name);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	sc = fb_open(fbdev);
-+	if (IS_ERR(sc)) {
-+		perror("fd_open");
-+		return PTR_ERR(sc);
-+	}
-+
-+	if (!pattern_name) {
-+		printf("No pattern selected. Cycling through all of them.\n");
-+		printf("Press Ctrl-C to stop\n");
-+
-+		i = 0;
-+		for (;;) {
-+			pattern = patterns[i++ % ARRAY_SIZE(patterns)].func;
-+			pattern(sc, color);
-+			gu_screen_blit(sc);
-+
-+			if (ctrlc())
-+				break;
-+
-+			mdelay(2000);
-+		}
-+	} else {
-+		pattern(sc, color);
-+		gu_screen_blit(sc);
-+	}
-+
-+	fb_close(sc);
-+
-+	return 0;
 +}
+diff --git a/lib/gui/Kconfig b/lib/gui/Kconfig
+index eac9597..2625d9f 100644
+--- a/lib/gui/Kconfig
++++ b/lib/gui/Kconfig
+@@ -6,6 +6,9 @@ config IMAGE_RENDERER
+ 
+ if IMAGE_RENDERER
+ 
++config 2D_PRIMITIVES
++       bool
 +
-+BAREBOX_CMD_HELP_START(fbtest)
-+BAREBOX_CMD_HELP_TEXT("This command displays a test pattern on a screen")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT ("-d <fbdev>\t",    "framebuffer device (default /dev/fb0)")
-+BAREBOX_CMD_HELP_OPT ("-c color\t", "color")
-+BAREBOX_CMD_HELP_OPT ("-p pattern\t", "pattern name (geometry, bars)")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(fbtest)
-+	.cmd		= do_fbtest,
-+	BAREBOX_CMD_DESC("display a test pattern")
-+	BAREBOX_CMD_OPTS("[-dcp]")
-+	BAREBOX_CMD_GROUP(CMD_GRP_CONSOLE)
-+	BAREBOX_CMD_HELP(cmd_fbtest_help)
-+BAREBOX_CMD_END
+ config BMP
+ 	bool "bmp"
+ 
+diff --git a/lib/gui/Makefile b/lib/gui/Makefile
+index d4b26c4..31e6622 100644
+--- a/lib/gui/Makefile
++++ b/lib/gui/Makefile
+@@ -3,3 +3,4 @@ obj-$(CONFIG_IMAGE_RENDERER)	+= image_renderer.o graphic_utils.o
+ obj-$(CONFIG_PNG)	+= png.o
+ obj-$(CONFIG_LODEPNG)	+= png_lode.o lodepng.o
+ obj-$(CONFIG_PICOPNG)	+= png_pico.o picopng.o
++obj-$(CONFIG_2D_PRIMITIVES) += 2d-primitives.o
 -- 
 2.5.5
 
