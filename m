@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-x22a.google.com ([2607:f8b0:4002:c05::22a])
+Received: from mail-yw0-x244.google.com ([2607:f8b0:4002:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bGHdv-00041M-Sk
- for barebox@lists.infradead.org; Fri, 24 Jun 2016 03:18:56 +0000
-Received: by mail-yw0-x22a.google.com with SMTP id v77so89452404ywg.0
- for <barebox@lists.infradead.org>; Thu, 23 Jun 2016 20:18:35 -0700 (PDT)
+ id 1bGHh1-0005YX-Bo
+ for barebox@lists.infradead.org; Fri, 24 Jun 2016 03:22:08 +0000
+Received: by mail-yw0-x244.google.com with SMTP id f75so13501401ywb.3
+ for <barebox@lists.infradead.org>; Thu, 23 Jun 2016 20:21:46 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20160622135735.67d30c13d9e86d8681162a22@gmail.com>
+In-Reply-To: <20160623062237.GG4750@pengutronix.de>
 References: <1466570369-1950-1-git-send-email-andrew.smirnov@gmail.com>
  <1466570369-1950-3-git-send-email-andrew.smirnov@gmail.com>
- <20160622135735.67d30c13d9e86d8681162a22@gmail.com>
+ <20160623062237.GG4750@pengutronix.de>
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 23 Jun 2016 20:18:34 -0700
-Message-ID: <CAHQ1cqED6uU83tqqSu3NFx2a50G7DNm2WVOUKfiMnDmATJ1AYQ@mail.gmail.com>
+Date: Thu, 23 Jun 2016 20:21:45 -0700
+Message-ID: <CAHQ1cqEt6EjZ6Y1ARfJt+jnjo1J_of+0VFqUYO60_752eyMAww@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,22 +26,76 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 3/3] GUI: Add fbtest command
-To: Antony Pavlov <antonynpavlov@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Andrey Gusakov <andrey.gusakov@cogentembedded.com>
 
+On Wed, Jun 22, 2016 at 11:22 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Tue, Jun 21, 2016 at 09:39:29PM -0700, Andrey Smirnov wrote:
+>> Add 'fbtest' - a command to produce test patterns on a screen
+>>
+>> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+>> Signed-off-by: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
+>> ---
+>>  commands/Kconfig  |   9 +++
+>>  commands/Makefile |   1 +
+>>  commands/fbtest.c | 187 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>>  3 files changed, 197 insertions(+)
+>>  create mode 100644 commands/fbtest.c
+>>
+>> diff --git a/commands/Kconfig b/commands/Kconfig
+>> index 880cd45..107cc3e 100644
+>> --- a/commands/Kconfig
+>> +++ b/commands/Kconfig
+>> @@ -1417,6 +1417,15 @@ config CMD_SPLASH
+>>                 -b COLOR      background color in 0xttrrggbb
+>>                 -o            render offscreen
+>>
 >
-> the int_sqrt() function is defined in the drivers/video/edid.c file.
-> To use it we have to keep CONFIG_DRIVER_VIDEO_EDID enabled.
-> But I have see no measures on enabling CONFIG_DRIVER_VIDEO_EDID in your patch.
-> Have I missed something?
-
-Nope, I missed this function and forgot to deal with it properly.
-
+>> +
+>> +static int do_fbtest(int argc, char *argv[])
+>> +{
+>> +     struct screen *sc;
+>> +     int opt, i;
+>> +     const char *pattern_name = NULL;
+>> +     char *fbdev = "/dev/fb0";
+>> +     void (*pattern) (struct screen *sc, u32 color) = NULL;
+>> +     u32 color = 0xffffff;
+>> +
+>> +     struct {
+>> +             const char *name;
+>> +             void (*func) (struct screen *sc, u32 color);
+>> +     } patterns[] = {
+>> +             { "geometry", fbtest_pattern_geometry },
+>> +             { "bars",     fbtest_pattern_bars     }
+>> +     };
+>> +
+>> +     while((opt = getopt(argc, argv, "d:p:c:")) > 0) {
+>> +             switch(opt) {
+>> +             case 'd':
+>> +                     fbdev = optarg;
+>> +                     break;
+>> +             case 'p':
+>> +                     pattern_name = optarg;
+>> +                     break;
+>> +             case 'c':
+>> +                     color = simple_strtoul(optarg, NULL, 16);
+>> +                     break;
+>> +             }
+>> +     }
+>> +
+>> +     if (!pattern_name) {
+>> +             printf("No pattern name specified\n");
+>> +             return -EINVAL;
+>> +     }
 >
-> Can we move int_sqrt() in a separate C library file,
-> so edid.c and fbtest.c can both use it?
+> Maybe we can iterate over the patterns if no pattern is given like the
+> Linux variant does?
+>
 
-Absolutely, will fix in v2
+I like this idea, I wasn't able to find the source code of a fbtest
+version that does that, so I am not sure if I'll match the behavior
+exactly. I'll make it loop over patterns and wait for Ctrl-C in v2 if
+no pattern is given.
 
 Thanks,
 Andrey
