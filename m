@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bGO1N-0003P6-3N
- for barebox@lists.infradead.org; Fri, 24 Jun 2016 10:07:34 +0000
+ id 1bGO1K-0003JY-0A
+ for barebox@lists.infradead.org; Fri, 24 Jun 2016 10:07:31 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Fri, 24 Jun 2016 12:05:59 +0200
-Message-Id: <1466762762-15212-4-git-send-email-mpa@pengutronix.de>
-In-Reply-To: <1466762762-15212-1-git-send-email-mpa@pengutronix.de>
-References: <1466762762-15212-1-git-send-email-mpa@pengutronix.de>
+Date: Fri, 24 Jun 2016 12:05:56 +0200
+Message-Id: <1466762762-15212-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,100 +19,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/6] docs: Add/Update state documentation
+Subject: [PATCH v2 0/6] state: Refactor backend
 To: barebox@lists.infradead.org
 Cc: mgr@pengutronix.de
 
-Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
----
- .../devicetree/bindings/barebox/barebox,state.rst  |  7 +++-
- Documentation/user/state.rst                       | 46 ++++++++++++++++++++++
- Documentation/user/user-manual.rst                 |  1 +
- 3 files changed, 53 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/user/state.rst
+Hi,
 
-diff --git a/Documentation/devicetree/bindings/barebox/barebox,state.rst b/Documentation/devicetree/bindings/barebox/barebox,state.rst
-index d50765705348..e39245f6c0bf 100644
---- a/Documentation/devicetree/bindings/barebox/barebox,state.rst
-+++ b/Documentation/devicetree/bindings/barebox/barebox,state.rst
-@@ -36,7 +36,12 @@ Optional properties:
- 
- * ``algo``: A HMAC algorithm used to detect manipulation of the data
-   or header, sensible values follow this pattern ``hmac(<HASH>)``,
--  e.g. ``hmac(sha256)``.
-+  e.g. ``hmac(sha256)``. Only used for ``raw``.
-+* ``backend-stridesize``: Maximum size per copy of the data. Only important for
-+  non-MTD devices
-+* ``backend-storage-type``: Type of the storage. This has two options at the
-+  moment. For MTD with erasing the correct type is ``circular``. For all other
-+  devices and files, ``direct`` is the needed type.
- 
- Variable nodes
- --------------
-diff --git a/Documentation/user/state.rst b/Documentation/user/state.rst
-new file mode 100644
-index 000000000000..c401f105bd64
---- /dev/null
-+++ b/Documentation/user/state.rst
-@@ -0,0 +1,46 @@
-+Barebox State Framework
-+=======================
-+
-+The state framework is build to exchange data between Barebox and Linux
-+userspace using a non-volatile storage. There are several components involved.
-+Barebox has a state driver to access the variables. For the Linux Userspace
-+there is a userspace tool.
-+
-+Devicetree
-+----------
-+
-+Currently the devicetree defines the layout of the variables and data.
-+Variables are fixed size. Several types are supported, see the binding
-+documentation for details.
-+
-+Data Formats
-+------------
-+
-+The state data can be stored in different ways. Currently two formats are
-+available, ``raw`` and ``dtb``. Both format the state data differently.
-+Basically these are serializers. The raw serializer additionally supports a
-+HMAC algorithm to detect manipulations.
-+
-+Storage Backends
-+----------------
-+
-+The serialized data can be stored to different backends which are automatically
-+selected depending on the defined backend in the devicetree. Currently two
-+implementations exist, ``circular`` and ``direct``. ``circular`` writes the
-+data sequentially on the backend storage device. Each save is appended until
-+the storage area is full. It then erases the block and starts from offset 0.
-+``circular`` is used for MTD devices with erase functionality. ``direct``
-+writes the data directly to the file without erasing.
-+
-+For all backends multiple copies are written to handle read errors.
-+
-+Commands
-+--------
-+
-+The ``state`` command can be used to store and manipulate the state. Using
-+``state`` without argument lists you all available states with their name.
-+``devinfo STATE_NAME`` shows you all variables and their values. ``state -s``
-+stores the state.
-+
-+Starting Barebox will automatically load the last written state. If loading the
-+state fails the defaults are used.
-diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
-index be44f0d64541..5841ea625c09 100644
---- a/Documentation/user/user-manual.rst
-+++ b/Documentation/user/user-manual.rst
-@@ -31,6 +31,7 @@ Contents:
-    system-setup
-    reset-reason
-    system-reset
-+   state
- 
- * :ref:`search`
- * :ref:`genindex`
+Version 2 has some additional bugfixes and previously missing patches.
+
+write_full should use a const pointer and is required by the state refactor
+patch as it uses const buffers to write.
+
+The refactor patch has some fixups.
+
+The new 3 patches from Michael fix some behaviour related to the direct bucket.
+
+Best Regards,
+
+Markus
+
+
+Markus Pargmann (3):
+  libfile: Change write_full to be have const buf
+  state: Refactor state framework
+  docs: Add/Update state documentation
+
+Michael Grzeschik (3):
+  state: also append backend storage stridesize
+  state: backend_storage_direct: also use cached data on write
+  barebox-state: handle flush errno correctly
+
+ .../devicetree/bindings/barebox/barebox,state.rst  |    7 +-
+ Documentation/user/state.rst                       |   46 +
+ Documentation/user/user-manual.rst                 |    1 +
+ common/Makefile                                    |    2 +-
+ common/state.c                                     | 1720 --------------------
+ common/state/Makefile                              |    8 +
+ common/state/backend.c                             |  209 +++
+ common/state/backend_bucket_circular.c             |  587 +++++++
+ common/state/backend_bucket_direct.c               |  242 +++
+ common/state/backend_format_dtb.c                  |  150 ++
+ common/state/backend_format_raw.c                  |  329 ++++
+ common/state/backend_storage.c                     |  471 ++++++
+ common/state/state.c                               |  572 +++++++
+ common/state/state.h                               |  267 +++
+ common/state/state_variables.c                     |  493 ++++++
+ drivers/misc/state.c                               |   64 +-
+ include/libfile.h                                  |    2 +-
+ include/state.h                                    |    4 +-
+ lib/libfile.c                                      |    2 +-
+ 19 files changed, 3388 insertions(+), 1788 deletions(-)
+ create mode 100644 Documentation/user/state.rst
+ delete mode 100644 common/state.c
+ create mode 100644 common/state/Makefile
+ create mode 100644 common/state/backend.c
+ create mode 100644 common/state/backend_bucket_circular.c
+ create mode 100644 common/state/backend_bucket_direct.c
+ create mode 100644 common/state/backend_format_dtb.c
+ create mode 100644 common/state/backend_format_raw.c
+ create mode 100644 common/state/backend_storage.c
+ create mode 100644 common/state/state.c
+ create mode 100644 common/state/state.h
+ create mode 100644 common/state/state_variables.c
+
 -- 
 2.8.1
 
