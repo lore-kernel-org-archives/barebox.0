@@ -1,11 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp12.mail.ru ([94.100.181.93])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bGUEL-0002Co-CJ
- for barebox@lists.infradead.org; Fri, 24 Jun 2016 16:45:22 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri, 24 Jun 2016 19:44:55 +0300
-Message-Id: <1466786695-17512-1-git-send-email-shc_work@mail.ru>
+Received: from m15-114.126.com ([220.181.15.114])
+ by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bGeOJ-0004ut-7v
+ for barebox@lists.infradead.org; Sat, 25 Jun 2016 03:36:20 +0000
+From: zzs213@126.com
+Date: Sat, 25 Jun 2016 11:35:59 +0800
+Message-Id: <1466825759-22867-1-git-send-email-zzs213@126.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,58 +15,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX: Remove unised procedure imx25_setup_weimcs
+Subject: [PATCH] Do not rm the path from pbl-y target
 To: barebox@lists.infradead.org
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/mach-imx/imx25.c             | 8 --------
- arch/arm/mach-imx/include/mach/weim.h | 3 ---
- 2 files changed, 11 deletions(-)
-
-diff --git a/arch/arm/mach-imx/imx25.c b/arch/arm/mach-imx/imx25.c
-index 3cfeebb..2534d75 100644
---- a/arch/arm/mach-imx/imx25.c
-+++ b/arch/arm/mach-imx/imx25.c
-@@ -23,14 +23,6 @@
- #define MX25_BOOTROM_HAB_MAGIC		0x3c95cac6
- #define MX25_DRYICE_GPR			0x3c
- 
--void imx25_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
--		unsigned additional)
--{
--	writel(upper, MX25_WEIM_BASE_ADDR + (cs * 0x10) + 0x0);
--	writel(lower, MX25_WEIM_BASE_ADDR + (cs * 0x10) + 0x4);
--	writel(additional, MX25_WEIM_BASE_ADDR + (cs * 0x10) + 0x8);
--}
--
- /* IIM fuse definitions */
- #define IIM_BANK0_BASE	(MX25_IIM_BASE_ADDR + 0x800)
- #define IIM_BANK1_BASE	(MX25_IIM_BASE_ADDR + 0xc00)
-diff --git a/arch/arm/mach-imx/include/mach/weim.h b/arch/arm/mach-imx/include/mach/weim.h
-index 3fbbb6b..22d9c76 100644
---- a/arch/arm/mach-imx/include/mach/weim.h
-+++ b/arch/arm/mach-imx/include/mach/weim.h
-@@ -12,9 +12,6 @@ void imx31_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
- void imx35_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
- 		unsigned additional);
- 
--void imx25_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
--		unsigned additional);
--
- void imx1_setup_eimcs(size_t cs, unsigned upper, unsigned lower);
- 
- void imx21_setup_eimcs(size_t cs, unsigned upper, unsigned lower);
--- 
-2.4.9
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTog5byg5b+g5bGxIDx6enMyMTNAMTI2LmNvbT4KCldoYW4gYWRkIHNvbWUgb2JqIGluIGEg
+c3ViZGlyIHRvIGx3bC15IG9yIHBibC15LCBsaWtlIHRoaXM6CgogICAgbHdsLXkgKz0gc3ViZGly
+L3Rlc3QubyBvdGhlci5vCgp0aGUgbWFrZSBwcm9jZXNzIGZhaWxlZDoKCiAgICBtYWtlWzJdOiAq
+KiogTm8gcnVsZSB0byBtYWtlIHRhcmdldCAnYXJjaC9hcm0vYm9hcmRzL2JvYXJkbmFtZS90ZXN0
+Lm8nLCBcCiAgICAgICAgbmVlZGVkIGJ5ICdhcmNoL2FybS9ib2FyZHMvYm9hcmRuYW1lL2J1aWx0
+LWluLXBibC5vJy4gIFN0b3AuCgpOb3RlLCB0aGVyZSBhcmUgbm90IHRoZSBwYXJ0ICJzdWJkaXIi
+IGluIHRoZSBwYXRoIG9mIHRoZSB0ZXN0Lm8uCgp0aGlzIHBhdGNoIGZpeCB0aGlzCgpTaWduZWQt
+b2ZmLWJ5OiDlvKDlv6DlsbEgPHp6czIxM0AxMjYuY29tPgotLS0KIHNjcmlwdHMvTWFrZWZpbGUu
+bGliIHwgNyArKystLS0tCiAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCA0IGRlbGV0
+aW9ucygtKQoKZGlmZiAtLWdpdCBhL3NjcmlwdHMvTWFrZWZpbGUubGliIGIvc2NyaXB0cy9NYWtl
+ZmlsZS5saWIKaW5kZXggMjczNjVkOC4uNzNiOWM1NyAxMDA2NDQKLS0tIGEvc2NyaXB0cy9NYWtl
+ZmlsZS5saWIKKysrIGIvc2NyaXB0cy9NYWtlZmlsZS5saWIKQEAgLTM5LDEwICszOSw5IEBAIGVu
+ZGlmCiBvYmoteQkJKz0gJChvYmotcGJsLXkpCiBwYmwteQkJKz0gJChvYmotcGJsLXkpCiAKLSMg
+Zm9yIG5vbiBkaXJzIGFkZCBwYmwtIHByZWZpeCB0byB0aGUgdGFyZ2V0Ci0jIHNvIHdlIHJlY29t
+cGlsZSB0aGUgc291cmNlIHdpdGggY3VzdG9tIGZsYWdzIGFuZCBjdXN0b20gcXVpZXQKLV9fcGJs
+LXkJCTo9ICQobm90ZGlyICQocGJsLXkpKQotcGJsLXkJCTo9ICQocGF0c3Vic3QgJS5vLHBibC0l
+Lm8sJChfX3BibC15KSkKKyMgYWRkIHBibC0gcHJlZml4IHRvIHRoZSB0YXJnZXQKK3BibC15CQk6
+PSAkKHNoZWxsIGVjaG8gJChwYmwteSkgfCBzZWQgLWUgJ3MlXChcKFteIFx0XVwrL1wpKlwpXChb
+XiBcdF0qLm9cKSVcMnBibC1cMyVnJykKKwogIyBhZGQgc3ViZGlyIGZyb20gJChvYmoteSkgdG9v
+IHNvIHdlIGRvIG5vdCBuZWVkIHRvIGhhdmUgdGhlIGRpciBkZWZpbmUgaW4KICMgYm90aCAkKG9i
+ai15KSBhbmQgJChwYmwteSkKIF9fcGJsLXkJCTo9ICQoZmlsdGVyLW91dCAkKHBibC15KSwgJChm
+aWx0ZXIgJS8sICQob2JqLXkpKSkKLS0gCjEuOS4xCgoKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2JhcmVib3gK
