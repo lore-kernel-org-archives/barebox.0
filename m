@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from m15-114.126.com ([220.181.15.114])
- by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bGeef-0001OG-Mh
- for barebox@lists.infradead.org; Sat, 25 Jun 2016 03:53:16 +0000
-From: zzs213@126.com
-Date: Sat, 25 Jun 2016 11:53:00 +0800
-Message-Id: <1466826780-23656-1-git-send-email-zzs213@126.com>
-MIME-Version: 1.0
+Received: from vs81.iboxed.net ([185.82.85.146])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bHAoW-0003Aq-QB
+ for barebox@lists.infradead.org; Sun, 26 Jun 2016 14:13:35 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Sun, 26 Jun 2016 16:11:16 +0200
+Message-Id: <1466950276-16649-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,37 +14,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fix IORESOURCE_MEM_xxx usage in dm9k driver
+Subject: [PATCH] ARM: imx_v7_defconfig: enable LED_GPIO_OF
 To: barebox@lists.infradead.org
+Cc: Alexander Kurz <akurz@blala.de>
 
-RnJvbTog5byg5b+g5bGxIDx6enMyMTNAMTI2LmNvbT4KCkJlY2F1c2UgdGhlIGNvbnN0IHVzZWQg
-aW4gZG05ayBkcml2ZXIgdW5tYXRjaCB0aGUgbmV3IElPUkVTT1VSQ0VfTUVNX3h4eAptYWNyby4g
-U28gd2hlbmV2ZXIgdGhlIGRyaXZlciBzdGFydCBwcm9iZSwgdGhlIGZsb3d3aW5nIGVycm9yIG1l
-c3NhZ2UKYXBwZWFyOgoKICAgICAgICBXcm9uZyBpbyByZXNvdXJjZSBzaXplCgpUaGlzIHBhdGNo
-IGZpeCB0aGlzLgoKU2lnbmVkLW9mZi1ieTog5byg5b+g5bGxIDx6enMyMTNAMTI2LmNvbT4KLS0t
-CiBkcml2ZXJzL25ldC9kbTlrLmMgfCAxNCArKysrKy0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQs
-IDUgaW5zZXJ0aW9ucygrKSwgOSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL25l
-dC9kbTlrLmMgYi9kcml2ZXJzL25ldC9kbTlrLmMKaW5kZXggYWQ0MDJlMy4uN2E0MTg2OCAxMDA2
-NDQKLS0tIGEvZHJpdmVycy9uZXQvZG05ay5jCisrKyBiL2RyaXZlcnMvbmV0L2RtOWsuYwpAQCAt
-NzMyLDE0ICs3MzIsMTAgQEAgc3RhdGljIGludCBkbTlrX2luaXRfZGV2KHN0cnVjdCBldGhfZGV2
-aWNlICplZGV2KQogc3RhdGljIGludCBkbTkwMDBfc2V0dXBfYnVzd2lkdGgoc3RydWN0IGRldmlj
-ZV9kICpkZXYsIHN0cnVjdCBkbTlrICpwcml2LCB1aW50MzJfdCB3aWR0aCkKIHsKIAlzd2l0Y2gg
-KHdpZHRoKSB7Ci0JY2FzZSAxOgotCQlwcml2LT5idXN3aWR0aCA9IElPUkVTT1VSQ0VfTUVNXzhC
-SVQ7Ci0JCWJyZWFrOwotCWNhc2UgMjoKLQkJcHJpdi0+YnVzd2lkdGggPSBJT1JFU09VUkNFX01F
-TV8xNkJJVDsKLQkJYnJlYWs7Ci0JY2FzZSA0OgotCQlwcml2LT5idXN3aWR0aCA9IElPUkVTT1VS
-Q0VfTUVNXzMyQklUOworCWNhc2UgSU9SRVNPVVJDRV9NRU1fOEJJVDoKKwljYXNlIElPUkVTT1VS
-Q0VfTUVNXzE2QklUOgorCWNhc2UgSU9SRVNPVVJDRV9NRU1fMzJCSVQ6CisJCXByaXYtPmJ1c3dp
-ZHRoID0gd2lkdGg7CiAJCWJyZWFrOwogCWRlZmF1bHQ6CiAJCWRldl9lcnIoZGV2LCAiV3Jvbmcg
-aW8gcmVzb3VyY2Ugc2l6ZVxuIik7CkBAIC03NjUsNyArNzYxLDcgQEAgc3RhdGljIGludCBkbTkw
-MDBfcGFyc2VfZHQoc3RydWN0IGRldmljZV9kICpkZXYsIHN0cnVjdCBkbTlrICpwcml2KQogCiAJ
-aWYgKG9mX3Byb3BlcnR5X3JlYWRfdTMyKG5wLCAicmVnLWlvLXdpZHRoIiwgJnByb3ApKSB7CiAJ
-CS8qIFVzZSA4LWJpdCByZWdpc3RlcnMgYnkgZGVmYXVsdCAqLwotCQlwcm9wID0gMTsKKwkJcHJv
-cCA9IElPUkVTT1VSQ0VfTUVNXzhCSVQ7CiAJfQogCiAJcmV0dXJuIGRtOTAwMF9zZXR1cF9idXN3
-aWR0aChkZXYsIHByaXYsIHByb3ApOwotLSAKMS45LjEKCgoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+GPIO leds are widely used in imx_v7 related dts files. Enable support
+to parse this data and enable blinking LED by defconfig on e.g. iMX35qsb.
+
+Signed-off-by: Alexander Kurz <akurz@blala.de>
+---
+ arch/arm/configs/imx_v7_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
+index 5ab3433..8594965 100644
+--- a/arch/arm/configs/imx_v7_defconfig
++++ b/arch/arm/configs/imx_v7_defconfig
+@@ -164,6 +164,7 @@ CONFIG_MFD_MC9SDZ60=y
+ CONFIG_MFD_STMPE=y
+ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
++CONFIG_LED_GPIO_OF=y
+ CONFIG_LED_TRIGGERS=y
+ CONFIG_EEPROM_AT25=y
+ CONFIG_EEPROM_AT24=y
+-- 
+2.1.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
