@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bHPaG-0000hG-4G
- for barebox@lists.infradead.org; Mon, 27 Jun 2016 05:59:50 +0000
-Date: Mon, 27 Jun 2016 07:59:26 +0200
+ id 1bHPs0-000722-GP
+ for barebox@lists.infradead.org; Mon, 27 Jun 2016 06:18:09 +0000
+Date: Mon, 27 Jun 2016 08:17:46 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160627055926.GS20657@pengutronix.de>
-References: <1466750888-4865-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20160627061746.GT20657@pengutronix.de>
+References: <1466777553-14483-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1466750888-4865-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1466777553-14483-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +18,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add more files to .gitignore
+Subject: Re: [PATCH] net: smc911x: Add parsing devicetree options
 To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-T24gRnJpLCBKdW4gMjQsIDIwMTYgYXQgMDk6NDg6MDhBTSArMDMwMCwgQWxleGFuZGVyIFNoaXlh
-biB3cm90ZToKPiBUaGlzIHBhdGNoIGFkZHMgbW9kZXIgZ2VuZXJhdGVkIGZpbGVzIHRvIGlnbm9y
-ZSBsaXN0Lgo+IC4uLgo+IHNoY0BzaGMgL2hvbWUvZ2l0L2JhcmVib3gtZ2l0aHViICQgZ2l0IHN0
-YXR1cwo+INCd0LAg0LLQtdGC0LrQtSBpbXg1MQo+INCd0LXQvtGC0YHQu9C10LbQuNCy0LDQtdC8
-0YvQtSDRhNCw0LnQu9GLOgo+ICAgKNC40YHQv9C+0LvRjNC30YPQudGC0LUgwqtnaXQgYWRkIDzR
-hNCw0LnQuz7igKbCuywg0YfRgtC+0LHRiyDQtNC+0LHQsNCy0LjRgtGMINCyINGC0L4sINGH0YLQ
-viDQsdGD0LTQtdGCINCy0LrQu9GO0YfQtdC90L4g0LIg0LrQvtC80LzQuNGCKQo+IAo+ICAgICAg
-ICAgY29tbW9uL2JhcmVib3hfZGVmYXVsdF9lbnYKPiAgICAgICAgIGNvbW1vbi9iYXJlYm94X2Rl
-ZmF1bHRfZW52LmgKPiAgICAgICAgIGluY2x1ZGUvYXNtCj4gICAgICAgICBzY3JpcHRzL2Jhc2lj
-L2RvY3Byb2MKPiAKPiDQvdC40YfQtdCz0L4g0L3QtSDQtNC+0LHQsNCy0LvQtdC90L4g0LIg0LrQ
-vtC80LzQuNGCLCDQvdC+INC10YHRgtGMINC90LXQvtGC0YHQu9C10LbQuNCy0LDQtdC80YvQtSDR
-hNCw0LnQu9GLICjQuNGB0L/QvtC70YzQt9GD0LnRgtC1ICJnaXQgYWRkIiwg0YfRgtC+0LHRiyDQ
-vtGC0YHQu9C10LbQuNCy0LDRgtGMINC40YUpCj4gCj4gU2lnbmVkLW9mZi1ieTogQWxleGFuZGVy
-IFNoaXlhbiA8c2hjX3dvcmtAbWFpbC5ydT4KCkFwcGxpZWQsIHRoYW5rcwoKU2FzY2hhCgo+IC0t
-LQo+ICBjb21tb24vLmdpdGlnbm9yZSAgICAgICAgfCAxICsKPiAgaW5jbHVkZS8uZ2l0aWdub3Jl
-ICAgICAgIHwgMSArCj4gIHNjcmlwdHMvYmFzaWMvLmdpdGlnbm9yZSB8IDEgKwo+ICAzIGZpbGVz
-IGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKQo+IAo+IGRpZmYgLS1naXQgYS9jb21tb24vLmdpdGln
-bm9yZSBiL2NvbW1vbi8uZ2l0aWdub3JlCj4gaW5kZXggM2Q3MWI3ZS4uOGUwZDZjMSAxMDA2NDQK
-PiAtLS0gYS9jb21tb24vLmdpdGlnbm9yZQo+ICsrKyBiL2NvbW1vbi8uZ2l0aWdub3JlCj4gQEAg
-LTEgKzEsMiBAQAo+ICBtb2R1bGUubGRzCj4gK2JhcmVib3hfZGVmYXVsdF9lbnYqCj4gZGlmZiAt
-LWdpdCBhL2luY2x1ZGUvLmdpdGlnbm9yZSBiL2luY2x1ZGUvLmdpdGlnbm9yZQo+IGluZGV4IDE4
-ZTU4YTcuLmYyODM3MmEgMTAwNjQ0Cj4gLS0tIGEvaW5jbHVkZS8uZ2l0aWdub3JlCj4gKysrIGIv
-aW5jbHVkZS8uZ2l0aWdub3JlCj4gQEAgLTEgKzEsMiBAQAo+ICthc20KPiAgL2NvbmZpZy5oCj4g
-ZGlmZiAtLWdpdCBhL3NjcmlwdHMvYmFzaWMvLmdpdGlnbm9yZSBiL3NjcmlwdHMvYmFzaWMvLmdp
-dGlnbm9yZQo+IGluZGV4IGE3NzYzNzEuLmRjMjRmNWYgMTAwNjQ0Cj4gLS0tIGEvc2NyaXB0cy9i
-YXNpYy8uZ2l0aWdub3JlCj4gKysrIGIvc2NyaXB0cy9iYXNpYy8uZ2l0aWdub3JlCj4gQEAgLTEg
-KzEsMiBAQAo+ICtkb2Nwcm9jCj4gIGZpeGRlcAo+IC0tIAo+IDIuNC45Cj4gCj4gCj4gX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxp
-bmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKLS0gClBlbmd1dHJvbml4IGUuSy4g
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
-CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cu
-cGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2Vy
-bWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
-aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Fri, Jun 24, 2016 at 05:12:33PM +0300, Alexander Shiyan wrote:
+> This patch adds parsing basic devicetree options for the smc911x driver:
+> reg-io-width, reg-shift and smsc,force-(in/ex)ternal-phy, which makes
+> driver usable for most DTS-based boards.
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  drivers/net/smc911x.c               | 54 ++++++++++++++++++++++---------------
+>  include/platform_data/eth-smc911x.h |  7 ++---
+>  2 files changed, 36 insertions(+), 25 deletions(-)
+> 
+> diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
+> index fe9d1df..5739ce7 100644
+> --- a/drivers/net/smc911x.c
+> +++ b/drivers/net/smc911x.c
+> @@ -34,16 +34,15 @@
+>  #include "smc911x.h"
+>  
+>  struct smc911x_priv {
+> -	struct eth_device edev;
+> -	struct mii_bus miibus;
+> -	void __iomem *base;
+> +	struct eth_device	edev;
+> +	struct mii_bus		miibus;
+> +	void __iomem		*base;
+>  
+> -	int shift;
+> -	int generation;
+> -	unsigned int flags;
+> -	unsigned int idrev;
+> -	unsigned int using_extphy;
+> -	unsigned int phy_mask;
+> +	u32			shift;
+> +	u32			flags;
+> +	u32			phy_mask;
+> +	u32			idrev;
+> +	unsigned int		using_extphy;
+
+Can we drop this alignment please? It generated unncessary patch hunks
+and makes a patch harder to read.
+
+>  
+>  	u32 (*reg_read)(struct smc911x_priv *priv, u32 reg);
+>  	void (*reg_write)(struct smc911x_priv *priv, u32 reg, u32 val);
+> @@ -497,16 +496,12 @@ static int smc911x_probe(struct device_d *dev)
+>  	struct resource *iores;
+>  	struct eth_device *edev;
+>  	struct smc911x_priv *priv;
+> -	uint32_t val;
+> -	int is_32bit, ret;
+> +	u32 val, generation;
+> +	int ret;
+>  	struct smc911x_plat *pdata = dev->platform_data;
+>  
+>  	priv = xzalloc(sizeof(*priv));
+> -	is_32bit = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
+> -	if (!is_32bit)
+> -		is_32bit = 1;
+> -	else
+> -		is_32bit = is_32bit == IORESOURCE_MEM_32BIT;
+
+Without this platform based devices can no longer select the 32bit
+accessors. This looks wrong.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
