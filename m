@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bHSRm-0008Rg-0M
- for barebox@lists.infradead.org; Mon, 27 Jun 2016 09:03:15 +0000
-Date: Mon, 27 Jun 2016 11:02:51 +0200
+ id 1bHSSg-0000dl-1g
+ for barebox@lists.infradead.org; Mon, 27 Jun 2016 09:04:12 +0000
+Date: Mon, 27 Jun 2016 11:03:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160627090251.GB20657@pengutronix.de>
-References: <1466950276-16649-1-git-send-email-akurz@blala.de>
- <alpine.DEB.2.00.1606271055550.26422@blala.de>
+Message-ID: <20160627090348.GC20657@pengutronix.de>
+References: <1466950637-16734-1-git-send-email-akurz@blala.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1606271055550.26422@blala.de>
+In-Reply-To: <1466950637-16734-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,45 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: imx_v7_defconfig: enable LED_GPIO_OF
+Subject: Re: [PATCH] Documentation: imx: external boot capable SOC list
+ complete
 To: Alexander Kurz <akurz@blala.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jun 27, 2016 at 10:57:07AM +0200, Alexander Kurz wrote:
-> Hi,
-> please note, there commit message contains a typo: s/iMX35qsb/iMX53qsb/
-> regards, Alexander
+On Sun, Jun 26, 2016 at 04:17:17PM +0200, Alexander Kurz wrote:
+> The iMX35 SOC supports both internal and external boot mode, and both modes
+> are supported by barebox.
+> The iMX35 is the latest SOC with support for this mode, none of the later
+> iMX series iMX50, 51, 53, 6SL, 6SDL, 6DQ, 7S or 7D does support it.
+> Let's complete the list.
+> 
+> Signed-off-by: Alexander Kurz <akurz@blala.de>
+> ---
+>  Documentation/boards/imx.rst | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
-Applied with the typo fixed, thanks
+Applied, thanks
 
 Sascha
 
 > 
-> On Sun, 26 Jun 2016, Alexander Kurz wrote:
+> diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
+> index 837bf5c..6912ed9 100644
+> --- a/Documentation/boards/imx.rst
+> +++ b/Documentation/boards/imx.rst
+> @@ -95,8 +95,7 @@ The External Boot Mode is supported by the older i.MX SoCs:
+>  * i.MX21
+>  * i.MX27
+>  * i.MX31
+> -
+> -(It may be supported on newer SoCs as well, but it is not widely used there.)
+> +* i.MX35
+>  
+>  The External Boot Mode supports booting only from NOR and NAND flash. On NOR
+>  flash, the binary is started directly on its physical address in memory. Booting
+> -- 
+> 2.1.4
 > 
-> > GPIO leds are widely used in imx_v7 related dts files. Enable support
-> > to parse this data and enable blinking LED by defconfig on e.g. iMX35qsb.
-> > 
-> > Signed-off-by: Alexander Kurz <akurz@blala.de>
-> > ---
-> >  arch/arm/configs/imx_v7_defconfig | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
-> > index 5ab3433..8594965 100644
-> > --- a/arch/arm/configs/imx_v7_defconfig
-> > +++ b/arch/arm/configs/imx_v7_defconfig
-> > @@ -164,6 +164,7 @@ CONFIG_MFD_MC9SDZ60=y
-> >  CONFIG_MFD_STMPE=y
-> >  CONFIG_LED=y
-> >  CONFIG_LED_GPIO=y
-> > +CONFIG_LED_GPIO_OF=y
-> >  CONFIG_LED_TRIGGERS=y
-> >  CONFIG_EEPROM_AT25=y
-> >  CONFIG_EEPROM_AT24=y
-> > -- 
-> > 2.1.4
-> > 
 > 
 > _______________________________________________
 > barebox mailing list
