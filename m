@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bHQKO-0002Mw-NB
- for barebox@lists.infradead.org; Mon, 27 Jun 2016 06:47:29 +0000
-Date: Mon, 27 Jun 2016 08:47:06 +0200
+ id 1bHQY1-0000Or-Be
+ for barebox@lists.infradead.org; Mon, 27 Jun 2016 07:01:33 +0000
+Date: Mon, 27 Jun 2016 09:01:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160627064706.GU20657@pengutronix.de>
-References: <1466780662-15866-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20160627070107.GW20657@pengutronix.de>
+References: <1466825759-22867-1-git-send-email-zzs213@126.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1466780662-15866-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1466825759-22867-1-git-send-email-zzs213@126.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,79 +18,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] spi: imx: Remove the use of property "fsl,
- spi-num-chipselects"
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] Do not rm the path from pbl-y target
+To: zzs213@126.com
 Cc: barebox@lists.infradead.org
 
-On Fri, Jun 24, 2016 at 06:04:22PM +0300, Alexander Shiyan wrote:
-> The "fsl,spi-num-chipselects" property will be marked obsolete soon.
-> This patch updates the driver to be ready to such changes.
-> 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ---
->  drivers/spi/imx_spi.c | 17 +++++------------
->  1 file changed, 5 insertions(+), 12 deletions(-)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-> index 99ec228..dc7a8c8 100644
-> --- a/drivers/spi/imx_spi.c
-> +++ b/drivers/spi/imx_spi.c
-> @@ -515,23 +515,16 @@ static __maybe_unused struct spi_imx_devtype_data spi_imx_devtype_data_2_3 = {
->  static int imx_spi_dt_probe(struct imx_spi *imx)
->  {
->  	struct device_node *node = imx->master.dev->device_node;
-> -	int ret, i;
-> -	u32 num_cs;
-> +	int i;
->  
->  	if (!node)
->  		return -ENODEV;
->  
-> -	ret = of_property_read_u32(node, "fsl,spi-num-chipselects", &num_cs);
-> -	if (ret)
-> -		return ret;
-> -
-> -	imx->master.num_chipselect = num_cs;
-> -	imx->cs_array = xzalloc(sizeof(u32) * num_cs);
-> +	imx->master.num_chipselect = of_gpio_named_count(node, "cs-gpios");
-> +	imx->cs_array = xzalloc(sizeof(u32) * imx->master.num_chipselect);
->  
-> -	for (i = 0; i < num_cs; i++) {
-> -		int cs_gpio = of_get_named_gpio(node, "cs-gpios", i);
-> -		imx->cs_array[i] = cs_gpio;
-> -	}
-> +	for (i = 0; i < imx->master.num_chipselect; i++)
-> +		imx->cs_array[i] = of_get_named_gpio(node, "cs-gpios", i);
->  
->  	return 0;
->  }
-> -- 
-> 2.4.9
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gU2F0LCBKdW4gMjUsIDIwMTYgYXQgMTE6MzU6NTlBTSArMDgwMCwgenpzMjEzQDEyNi5jb20g
+d3JvdGU6Cj4gRnJvbTog5byg5b+g5bGxIDx6enMyMTNAMTI2LmNvbT4KPiAKPiBXaGFuIGFkZCBz
+b21lIG9iaiBpbiBhIHN1YmRpciB0byBsd2wteSBvciBwYmwteSwgbGlrZSB0aGlzOgo+IAo+ICAg
+ICBsd2wteSArPSBzdWJkaXIvdGVzdC5vIG90aGVyLm8KPiAKPiB0aGUgbWFrZSBwcm9jZXNzIGZh
+aWxlZDoKPiAKPiAgICAgbWFrZVsyXTogKioqIE5vIHJ1bGUgdG8gbWFrZSB0YXJnZXQgJ2FyY2gv
+YXJtL2JvYXJkcy9ib2FyZG5hbWUvdGVzdC5vJywgXAo+ICAgICAgICAgbmVlZGVkIGJ5ICdhcmNo
+L2FybS9ib2FyZHMvYm9hcmRuYW1lL2J1aWx0LWluLXBibC5vJy4gIFN0b3AuCj4gCj4gTm90ZSwg
+dGhlcmUgYXJlIG5vdCB0aGUgcGFydCAic3ViZGlyIiBpbiB0aGUgcGF0aCBvZiB0aGUgdGVzdC5v
+Lgo+IAo+IHRoaXMgcGF0Y2ggZml4IHRoaXMKPiAKPiBTaWduZWQtb2ZmLWJ5OiDlvKDlv6DlsbEg
+PHp6czIxM0AxMjYuY29tPgo+IC0tLQo+ICBzY3JpcHRzL01ha2VmaWxlLmxpYiB8IDcgKysrLS0t
+LQo+ICAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQoKQXBw
+bGllZCwgdGhhbmtzCgpTYXNjaGEKCj4gCj4gZGlmZiAtLWdpdCBhL3NjcmlwdHMvTWFrZWZpbGUu
+bGliIGIvc2NyaXB0cy9NYWtlZmlsZS5saWIKPiBpbmRleCAyNzM2NWQ4Li43M2I5YzU3IDEwMDY0
+NAo+IC0tLSBhL3NjcmlwdHMvTWFrZWZpbGUubGliCj4gKysrIGIvc2NyaXB0cy9NYWtlZmlsZS5s
+aWIKPiBAQCAtMzksMTAgKzM5LDkgQEAgZW5kaWYKPiAgb2JqLXkJCSs9ICQob2JqLXBibC15KQo+
+ICBwYmwteQkJKz0gJChvYmotcGJsLXkpCj4gIAo+IC0jIGZvciBub24gZGlycyBhZGQgcGJsLSBw
+cmVmaXggdG8gdGhlIHRhcmdldAo+IC0jIHNvIHdlIHJlY29tcGlsZSB0aGUgc291cmNlIHdpdGgg
+Y3VzdG9tIGZsYWdzIGFuZCBjdXN0b20gcXVpZXQKPiAtX19wYmwteQkJOj0gJChub3RkaXIgJChw
+YmwteSkpCj4gLXBibC15CQk6PSAkKHBhdHN1YnN0ICUubyxwYmwtJS5vLCQoX19wYmwteSkpCj4g
+KyMgYWRkIHBibC0gcHJlZml4IHRvIHRoZSB0YXJnZXQKPiArcGJsLXkJCTo9ICQoc2hlbGwgZWNo
+byAkKHBibC15KSB8IHNlZCAtZSAncyVcKFwoW14gXHRdXCsvXCkqXClcKFteIFx0XSoub1wpJVwy
+cGJsLVwzJWcnKQo+ICsKPiAgIyBhZGQgc3ViZGlyIGZyb20gJChvYmoteSkgdG9vIHNvIHdlIGRv
+IG5vdCBuZWVkIHRvIGhhdmUgdGhlIGRpciBkZWZpbmUgaW4KPiAgIyBib3RoICQob2JqLXkpIGFu
+ZCAkKHBibC15KQo+ICBfX3BibC15CQk6PSAkKGZpbHRlci1vdXQgJChwYmwteSksICQoZmlsdGVy
+ICUvLCAkKG9iai15KSkpCj4gLS0gCj4gMS45LjEKPiAKPiAKPiAKPiBfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4g
+YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9iYXJlYm94CgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlh
+bCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25p
+eC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhv
+bmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2
+ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
+CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
