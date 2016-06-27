@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vs81.iboxed.net ([185.82.85.146])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bHG3X-0006Sv-S7
- for barebox@lists.infradead.org; Sun, 26 Jun 2016 19:49:25 +0000
-From: Alexander Kurz <akurz@blala.de>
-Date: Sun, 26 Jun 2016 21:47:13 +0200
-Message-Id: <1466970433-19810-1-git-send-email-akurz@blala.de>
+ id 1bHPBX-0006u3-HF
+ for barebox@lists.infradead.org; Mon, 27 Jun 2016 05:34:16 +0000
+Date: Mon, 27 Jun 2016 07:33:53 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160627053353.GQ20657@pengutronix.de>
+References: <1466746535-17382-1-git-send-email-andrew.smirnov@gmail.com>
+ <1466746535-17382-2-git-send-email-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1466746535-17382-2-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,87 +19,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: boot: add prepend option for board specific ATAGs
-To: barebox@lists.infradead.org
-Cc: Alexander Kurz <akurz@blala.de>
+Subject: Re: [PATCH v2 1/4] GUI: Add a function to draw vertical/horizontal
+ bars
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Board specific ATAGs might be passed to vendor provided kernels via the
-ARM_BOARD_APPEND_ATAG option. In this case, the board specific ATAGs will
-be appended to the end of the ATAG list.
-Anyway, some vendor provided kernels might crop the ATAG list at ATAG_MEM,
-also chopping off the board specific ATAGs, see linux squash_mem_tags() as
-reference. The Kindle-3 kernel is one example.
+On Thu, Jun 23, 2016 at 10:35:32PM -0700, Andrey Smirnov wrote:
+> Add a function to draw solid vertical or horizontal bars.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  include/gui/graphic_utils.h |  3 +++
+>  lib/gui/graphic_utils.c     | 26 ++++++++++++++++++++++++++
+>  2 files changed, 29 insertions(+)
+> 
+> diff --git a/include/gui/graphic_utils.h b/include/gui/graphic_utils.h
+> index 231b3a9..279fdf9 100644
+> --- a/include/gui/graphic_utils.h
+> +++ b/include/gui/graphic_utils.h
+> @@ -28,4 +28,7 @@ void gu_invert_area(struct fb_info *info, void *buf, int startx, int starty, int
+>  void gu_screen_blit_area(struct screen *sc, int startx, int starty, int width,
+>  		int height);
+>  
+> +void gu_fill_rectangle(struct screen *sc,
+> +		       int x1, int y1, int x2, int y2,
+> +		       u8 r, u8 g, u8 b, u8 a);
+>  #endif /* __GRAPHIC_UTILS_H__ */
+> diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
+> index 2fe9fa3..c6c4373 100644
+> --- a/lib/gui/graphic_utils.c
+> +++ b/lib/gui/graphic_utils.c
+> @@ -336,3 +336,29 @@ void gu_screen_blit(struct screen *sc)
+>  	if (info->screen_base_shadow)
+>  		memcpy(info->screen_base, info->screen_base_shadow, sc->fbsize);
+>  }
+> +
+> +void gu_fill_rectangle(struct screen *sc,
+> +		       int x1, int y1, int x2, int y2,
+> +		       u8 r, u8 g, u8 b, u8 a)
+> +{
+> +	int y;
+> +	void *buf = gui_screen_render_buffer(sc);
+> +
+> +	BUG_ON(x1 < 0 || y1 < 0 ||
+> +	       x2 < 0 || y2 < 0);
 
-This conflict might be solved by a) making ATAG_MEM optional which might break
-the existing behavour around squash_mem_tags() or b) by allowing the insertion
-of board specific ATAGs in front of ATAG_MEM which violates the requirement
-from Documentation/arm/Booting to order ATAGs by increasing address.
+Not sure if this should be a bug. How about cropping the rectangle to
+the screen boundaries instead? The same test should be donw for the
+lower right corner.
 
-Add option to insert board specific ATAGs in front of ATAG_MEM.
+Sascha
 
-Signed-off-by: Alexander Kurz <akurz@blala.de>
----
- arch/arm/Kconfig        | 10 ++++++++++
- arch/arm/lib/armlinux.c |  9 ++++++---
- 2 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 1fc887b..71374cc 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -313,6 +313,16 @@ config ARM_BOARD_APPEND_ATAG
- 	  This option is purely to start some vendor provided kernels.
- 	  ** DO NOT USE FOR YOUR OWN DESIGNS! **
- 
-+config ARM_BOARD_PREPEND_ATAG
-+	bool "Prepend the board specific ATAGs"
-+	depends on ARM_BOARD_APPEND_ATAG
-+	help
-+	  Choose this option if your kernel crops the passed ATAG list e.g. at
-+	  ATAG_MEM, also cropping off the board specific ATAGs. This option
-+	  will pass all board specific ATAGs in front of all other ATAGs.
-+	  This option is purely to start some vendor provided kernels.
-+	  ** DO NOT USE FOR YOUR OWN DESIGNS! **
-+
- endmenu
- 
- menu "ARM specific settings"
-diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
-index 47b9bd3..e1f8146 100644
---- a/arch/arm/lib/armlinux.c
-+++ b/arch/arm/lib/armlinux.c
-@@ -234,6 +234,9 @@ static void setup_tags(unsigned long initrd_address,
- 	const char *commandline = linux_bootargs_get();
- 
- 	setup_start_tag();
-+	if (IS_ENABLED(CONFIG_ARM_BOARD_PREPEND_ATAG) && atag_appender)
-+		params = atag_appender(params);
-+
- 	setup_memory_tags();
- 	setup_commandline_tag(commandline, swap);
- 
-@@ -242,10 +245,10 @@ static void setup_tags(unsigned long initrd_address,
- 
- 	setup_revision_tag();
- 	setup_serial_tag();
--#ifdef CONFIG_ARM_BOARD_APPEND_ATAG
--	if (atag_appender != NULL)
-+	if (IS_ENABLED(CONFIG_ARM_BOARD_APPEND_ATAG) && atag_appender &&
-+			!IS_ENABLED(CONFIG_ARM_BOARD_PREPEND_ATAG))
- 		params = atag_appender(params);
--#endif
-+
- 	setup_end_tag();
- 
- 	printf("commandline: %s\n"
+> +
+> +	if (x2 < x1)
+> +		swap(x1, x2);
+> +	if (y2 < y1)
+> +		swap(y1, y2);
+> +
+> +	for(y = y1; y <= y2; y++) {
+> +		int x;
+> +		unsigned char *pixel = buf + y * sc->info->line_length +
+> +			x1 * (sc->info->bits_per_pixel / 8);
+> +		for(x = x1; x <= x2; x++) {
+> +			gu_set_rgba_pixel(sc->info, pixel, r, g, b, a);
+> +			pixel += sc->info->bits_per_pixel / 8;
+> +		}
+> +	}
+> +}
+> -- 
+> 2.5.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.1.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
