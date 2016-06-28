@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bHlqj-0001Al-NJ
- for barebox@lists.infradead.org; Tue, 28 Jun 2016 05:46:18 +0000
-Date: Tue, 28 Jun 2016 07:45:56 +0200
+ id 1bHm1m-00063h-6N
+ for barebox@lists.infradead.org; Tue, 28 Jun 2016 05:57:42 +0000
+Date: Tue, 28 Jun 2016 07:57:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160628054556.GG20657@pengutronix.de>
-References: <1467027740-24201-1-git-send-email-t.remmet@phytec.de>
- <1467027740-24201-3-git-send-email-t.remmet@phytec.de>
+Message-ID: <20160628055717.GB20656@pengutronix.de>
+References: <1466825759-22867-1-git-send-email-zzs213@126.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1467027740-24201-3-git-send-email-t.remmet@phytec.de>
+In-Reply-To: <1466825759-22867-1-git-send-email-zzs213@126.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,70 +18,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 3/4] commands: ubi: Add ubiupdatevol command
-To: Teresa Remmet <t.remmet@phytec.de>
+Subject: Re: [PATCH] Do not rm the path from pbl-y target
+To: zzs213@126.com
 Cc: barebox@lists.infradead.org
 
-On Mon, Jun 27, 2016 at 01:42:19PM +0200, Teresa Remmet wrote:
-> Add ubiupdatevol command. This is to update static
-> and dynamic volumes.
-> 
-> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
-> ---
-> Changes in v2:
-> 	- instead of using read_file, used a smaller
-> 		buffer and read/write in a loop
-> 
->  commands/ubi.c | 81 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 81 insertions(+)
-> 
-> diff --git a/commands/ubi.c b/commands/ubi.c
-> index dc2b4b5..b8b3f38 100644
-> --- a/commands/ubi.c
-> +++ b/commands/ubi.c
-> @@ -7,10 +7,91 @@
->  #include <getopt.h>
->  #include <linux/mtd/mtd.h>
->  #include <linux/kernel.h>
-> +#include <linux/stat.h>
->  #include <linux/mtd/mtd-abi.h>
->  #include <mtd/ubi-user.h>
->  #include <mtd/ubi-media.h>
->  
-> +static int do_ubiupdatevol(int argc, char *argv[])
-> +{
-> +	int fd_img, fd_vol, ret = 0;
-> +	uint64_t size = 0;
-> +	struct stat st;
-> +	unsigned int count;
-> +	void *buf;
-> +
-> +	if (argc - optind < 2)
-> +		return COMMAND_ERROR_USAGE;
-> +
-> +	if (stat(argv[optind+1], &st)) {
-> +		perror("stat image");
-> +		return 1;
-> +	}
-> +
-> +	size = st.st_size;
-
-While applying I added a test that tests for FILESIZE_MAX here and bails
-out with an error.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gU2F0LCBKdW4gMjUsIDIwMTYgYXQgMTE6MzU6NTlBTSArMDgwMCwgenpzMjEzQDEyNi5jb20g
+d3JvdGU6Cj4gRnJvbTog5byg5b+g5bGxIDx6enMyMTNAMTI2LmNvbT4KPiAKPiBXaGFuIGFkZCBz
+b21lIG9iaiBpbiBhIHN1YmRpciB0byBsd2wteSBvciBwYmwteSwgbGlrZSB0aGlzOgo+IAo+ICAg
+ICBsd2wteSArPSBzdWJkaXIvdGVzdC5vIG90aGVyLm8KPiAKPiB0aGUgbWFrZSBwcm9jZXNzIGZh
+aWxlZDoKPiAKPiAgICAgbWFrZVsyXTogKioqIE5vIHJ1bGUgdG8gbWFrZSB0YXJnZXQgJ2FyY2gv
+YXJtL2JvYXJkcy9ib2FyZG5hbWUvdGVzdC5vJywgXAo+ICAgICAgICAgbmVlZGVkIGJ5ICdhcmNo
+L2FybS9ib2FyZHMvYm9hcmRuYW1lL2J1aWx0LWluLXBibC5vJy4gIFN0b3AuCj4gCj4gTm90ZSwg
+dGhlcmUgYXJlIG5vdCB0aGUgcGFydCAic3ViZGlyIiBpbiB0aGUgcGF0aCBvZiB0aGUgdGVzdC5v
+Lgo+IAo+IHRoaXMgcGF0Y2ggZml4IHRoaXMKPiAKPiBTaWduZWQtb2ZmLWJ5OiDlvKDlv6DlsbEg
+PHp6czIxM0AxMjYuY29tPgo+IC0tLQo+ICBzY3JpcHRzL01ha2VmaWxlLmxpYiB8IDcgKysrLS0t
+LQo+ICAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQo+IAo+
+IGRpZmYgLS1naXQgYS9zY3JpcHRzL01ha2VmaWxlLmxpYiBiL3NjcmlwdHMvTWFrZWZpbGUubGli
+Cj4gaW5kZXggMjczNjVkOC4uNzNiOWM1NyAxMDA2NDQKPiAtLS0gYS9zY3JpcHRzL01ha2VmaWxl
+LmxpYgo+ICsrKyBiL3NjcmlwdHMvTWFrZWZpbGUubGliCj4gQEAgLTM5LDEwICszOSw5IEBAIGVu
+ZGlmCj4gIG9iai15CQkrPSAkKG9iai1wYmwteSkKPiAgcGJsLXkJCSs9ICQob2JqLXBibC15KQo+
+ICAKPiAtIyBmb3Igbm9uIGRpcnMgYWRkIHBibC0gcHJlZml4IHRvIHRoZSB0YXJnZXQKPiAtIyBz
+byB3ZSByZWNvbXBpbGUgdGhlIHNvdXJjZSB3aXRoIGN1c3RvbSBmbGFncyBhbmQgY3VzdG9tIHF1
+aWV0Cj4gLV9fcGJsLXkJCTo9ICQobm90ZGlyICQocGJsLXkpKQo+IC1wYmwteQkJOj0gJChwYXRz
+dWJzdCAlLm8scGJsLSUubywkKF9fcGJsLXkpKQo+ICsjIGFkZCBwYmwtIHByZWZpeCB0byB0aGUg
+dGFyZ2V0Cj4gK3BibC15CQk6PSAkKHNoZWxsIGVjaG8gJChwYmwteSkgfCBzZWQgLWUgJ3MlXChc
+KFteIFx0XVwrL1wpKlwpXChbXiBcdF0qLm9cKSVcMnBibC1cMyVnJykKPiArCgpJIGhhZCB0byBy
+ZXZlcnQgdGhpcyBvbmUuIFRoZSByZWd1bGFyIGV4cHJlc3Npb24gc2VlbXMgdG8gYmUgd3Jvbmcu
+IEl0CmJyZWFrcyBvbWFwMzUzMF9iZWFnbGVfZGVmY29uZmlnIHdpdGg6CgptYWtlWzJdOiAqKiog
+Tm8gcnVsZSB0byBtYWtlIHRhcmdldCAnYXJjaC9hcm0vbWFjaC1vbWFwL29wYmwtbWFwM19jbG9j
+ay5vJywgbmVlZGVkIGJ5ICdhcmNoL2FybS9tYWNoLW9tYXAvYnVpbHQtaW4tcGJsLm8nLiAgU3Rv
+cC4KbWFrZVsyXTogKioqIFdhaXRpbmcgZm9yIHVuZmluaXNoZWQgam9icy4uLi4KCkluc3RlYWQg
+b2YgcGJsLW9tYXAzX2Nsb2NrLm8gaXQgdHJpZXMgdG8gZ2VuZXJhdGUgb3BibC1tYXAzX2Nsb2Nr
+Lm8uCgpTYXNjaGEKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0
+aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWlu
+ZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEt
+MjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAg
+fCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
+cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
+Zm8vYmFyZWJveAo=
