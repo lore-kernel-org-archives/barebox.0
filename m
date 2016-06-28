@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bHkeC-00035G-HY
- for barebox@lists.infradead.org; Tue, 28 Jun 2016 04:29:17 +0000
-Received: by mail-pf0-x241.google.com with SMTP id c74so624472pfb.0
- for <barebox@lists.infradead.org>; Mon, 27 Jun 2016 21:28:56 -0700 (PDT)
+ id 1bHkeD-00035V-OK
+ for barebox@lists.infradead.org; Tue, 28 Jun 2016 04:29:18 +0000
+Received: by mail-pf0-x243.google.com with SMTP id i123so609180pfg.3
+ for <barebox@lists.infradead.org>; Mon, 27 Jun 2016 21:28:57 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 27 Jun 2016 21:27:56 -0700
-Message-Id: <1467088079-476-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 27 Jun 2016 21:27:58 -0700
+Message-Id: <1467088079-476-3-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1467088079-476-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1467088079-476-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,73 +23,157 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 1/4] GUI: Add a function to draw vertical/horizontal bars
+Subject: [PATCH v3 3/4] video/edid: Move int_sqrt() out
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add a function to draw solid vertical or horizontal bars.
+Move int_sqrt() out of drivers/video/edid.c so that it is availible to
+other parts of Barebox.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
 
 Changes since v2:
 
-	- Negative coordinates now mean edge of the screen instead of
-          being a bug.
+	- Moved to before fbtest patch in the series
 
- include/gui/graphic_utils.h |  3 +++
- lib/gui/graphic_utils.c     | 29 +++++++++++++++++++++++++++++
- 2 files changed, 32 insertions(+)
+ drivers/video/edid.c | 29 -----------------------------
+ include/int_sqrt.h   | 22 ++++++++++++++++++++++
+ lib/Makefile         |  1 +
+ lib/int_sqrt.c       | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 69 insertions(+), 29 deletions(-)
+ create mode 100644 include/int_sqrt.h
+ create mode 100644 lib/int_sqrt.c
 
-diff --git a/include/gui/graphic_utils.h b/include/gui/graphic_utils.h
-index 231b3a9..279fdf9 100644
---- a/include/gui/graphic_utils.h
-+++ b/include/gui/graphic_utils.h
-@@ -28,4 +28,7 @@ void gu_invert_area(struct fb_info *info, void *buf, int startx, int starty, int
- void gu_screen_blit_area(struct screen *sc, int startx, int starty, int width,
- 		int height);
- 
-+void gu_fill_rectangle(struct screen *sc,
-+		       int x1, int y1, int x2, int y2,
-+		       u8 r, u8 g, u8 b, u8 a);
- #endif /* __GRAPHIC_UTILS_H__ */
-diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
-index 2fe9fa3..d3f5cce 100644
---- a/lib/gui/graphic_utils.c
-+++ b/lib/gui/graphic_utils.c
-@@ -336,3 +336,32 @@ void gu_screen_blit(struct screen *sc)
- 	if (info->screen_base_shadow)
- 		memcpy(info->screen_base, info->screen_base_shadow, sc->fbsize);
+diff --git a/drivers/video/edid.c b/drivers/video/edid.c
+index e5c32a0..92b59a5 100644
+--- a/drivers/video/edid.c
++++ b/drivers/video/edid.c
+@@ -321,35 +321,6 @@ static u32 fb_get_hblank_by_hfreq(u32 hfreq, u32 xres)
  }
+ 
+ /**
+- * int_sqrt - rough approximation to sqrt
+- * @x: integer of which to calculate the sqrt
+- *
+- * A very rough approximation to the sqrt() function.
+- */
+-unsigned long int_sqrt(unsigned long x)
+-{
+-	unsigned long b, m, y = 0;
+-
+-	if (x <= 1)
+-		return x;
+-
+-	m = 1UL << (BITS_PER_LONG - 2);
+-	while (m != 0) {
+-		b = y + m;
+-		y >>= 1;
+-
+-		if (x >= b) {
+-			x -= b;
+-			y += m;
+-		}
+-		m >>= 2;
+-	}
+-
+-	return y;
+-}
+-EXPORT_SYMBOL(int_sqrt);
+-
+-/**
+  * fb_get_hfreq - estimate hsync
+  * @vfreq: vertical refresh rate
+  * @yres: vertical resolution
+diff --git a/include/int_sqrt.h b/include/int_sqrt.h
+new file mode 100644
+index 0000000..55fb4fb
+--- /dev/null
++++ b/include/int_sqrt.h
+@@ -0,0 +1,22 @@
++/*
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
 +
-+void gu_fill_rectangle(struct screen *sc,
-+		       int x1, int y1, int x2, int y2,
-+		       u8 r, u8 g, u8 b, u8 a)
++#ifndef __INT_SQRT__
++#define __INT_SQRT__
++
++unsigned long int_sqrt(unsigned long x);
++
++#endif
+diff --git a/lib/Makefile b/lib/Makefile
+index 399d896..92404fd 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -58,3 +58,4 @@ obj-$(CONFIG_BAREBOX_LOGO)     += logo/
+ obj-y			+= reed_solomon/
+ obj-$(CONFIG_RATP)	+= ratp.o
+ obj-y			+= list_sort.o
++obj-y			+= int_sqrt.o
+diff --git a/lib/int_sqrt.c b/lib/int_sqrt.c
+new file mode 100644
+index 0000000..30ccafb
+--- /dev/null
++++ b/lib/int_sqrt.c
+@@ -0,0 +1,46 @@
++/*
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++
++/**
++ * int_sqrt - rough approximation to sqrt
++ * @x: integer of which to calculate the sqrt
++ *
++ * A very rough approximation to the sqrt() function.
++ */
++unsigned long int_sqrt(unsigned long x)
 +{
-+	int y;
-+	void *buf = gui_screen_render_buffer(sc);
++	unsigned long b, m, y = 0;
 +
-+	x1 = max(0, x1);
-+	y1 = max(0, y1);
++	if (x <= 1)
++		return x;
 +
-+	x2 = (x2 < 0) ? sc->info->xres - 1 : x2;
-+	y2 = (y2 < 0) ? sc->info->yres - 1 : y2;
++	m = 1UL << (BITS_PER_LONG - 2);
++	while (m != 0) {
++		b = y + m;
++		y >>= 1;
 +
-+	if (x2 < x1)
-+		swap(x1, x2);
-+	if (y2 < y1)
-+		swap(y1, y2);
-+
-+	for(y = y1; y <= y2; y++) {
-+		int x;
-+		unsigned char *pixel = buf + y * sc->info->line_length +
-+			x1 * (sc->info->bits_per_pixel / 8);
-+		for(x = x1; x <= x2; x++) {
-+			gu_set_rgba_pixel(sc->info, pixel, r, g, b, a);
-+			pixel += sc->info->bits_per_pixel / 8;
++		if (x >= b) {
++			x -= b;
++			y += m;
 +		}
++		m >>= 2;
 +	}
++
++	return y;
 +}
++EXPORT_SYMBOL(int_sqrt);
 -- 
 2.5.5
 
