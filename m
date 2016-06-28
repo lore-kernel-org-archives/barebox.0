@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x242.google.com ([2607:f8b0:4003:c06::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bHn2F-00063T-6B
- for barebox@lists.infradead.org; Tue, 28 Jun 2016 07:02:15 +0000
-Received: by mail-oi0-x242.google.com with SMTP id d132so1322932oig.2
- for <barebox@lists.infradead.org>; Tue, 28 Jun 2016 00:01:54 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20160628065021.GK20657@pengutronix.de>
+ id 1bHn35-0006mO-Ce
+ for barebox@lists.infradead.org; Tue, 28 Jun 2016 07:03:08 +0000
+Date: Tue, 28 Jun 2016 09:02:45 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160628070245.GM20657@pengutronix.de>
 References: <1466771041-89803-1-git-send-email-poggi.raph@gmail.com>
  <1466771041-89803-7-git-send-email-poggi.raph@gmail.com>
  <20160628065021.GK20657@pengutronix.de>
-From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <poggi.raph@gmail.com>
-Date: Tue, 28 Jun 2016 09:01:14 +0200
-Message-ID: <CACqcpZDH01ounyRH4UgJ4-f-BCpZ_YSRSwn2wwnnXHxc29-vsA@mail.gmail.com>
+ <CACqcpZDH01ounyRH4UgJ4-f-BCpZ_YSRSwn2wwnnXHxc29-vsA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CACqcpZDH01ounyRH4UgJ4-f-BCpZ_YSRSwn2wwnnXHxc29-vsA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,41 +21,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v3 06/14] arm: cpu: start: arm64 does not support
  relocation
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: =?iso-8859-15?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
 Cc: barebox@lists.infradead.org
 
-MjAxNi0wNi0yOCA4OjUwIEdNVCswMjowMCBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9u
-aXguZGU+Ogo+IE9uIEZyaSwgSnVuIDI0LCAyMDE2IGF0IDAyOjIzOjUzUE0gKzAyMDAsIFJhcGhh
-ZWwgUG9nZ2kgd3JvdGU6Cj4+IEZvciBub3csIHRoZSByZWxvY2F0aW9uIGlzIG5vdCBzdXBwb3J0
-ZWQgaW4gYXJtNjQsIHNvCj4+IGVuY2xvc2VkIGNhbGwgdG8gInNldHVwX2MiIHdpdGggI2lmIGRp
-cmVjdGl2ZQo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBSYXBoYWVsIFBvZ2dpIDxwb2dnaS5yYXBoQGdt
-YWlsLmNvbT4KPj4gLS0tCj4+ICBhcmNoL2FybS9jcHUvc3RhcnQuYyB8IDIgKysKPj4gIDEgZmls
-ZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKykKPj4KPj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Nw
-dS9zdGFydC5jIGIvYXJjaC9hcm0vY3B1L3N0YXJ0LmMKPj4gaW5kZXggZTAzN2Q5MS4uNTA1MTEx
-NSAxMDA2NDQKPj4gLS0tIGEvYXJjaC9hcm0vY3B1L3N0YXJ0LmMKPj4gKysrIGIvYXJjaC9hcm0v
-Y3B1L3N0YXJ0LmMKPj4gQEAgLTE1MSw3ICsxNTEsOSBAQCBfX25vcmV0dXJuIHZvaWQgYmFyZWJv
-eF9ub25fcGJsX3N0YXJ0KHVuc2lnbmVkIGxvbmcgbWVtYmFzZSwKPj4gICAgICAgICAgICAgICBy
-ZWxvY2F0ZV90b19hZHIoYmFyZWJveF9iYXNlKTsKPj4gICAgICAgfQo+Pgo+PiArI2lmIF9fTElO
-VVhfQVJNX0FSQ0hfXyA8PSA3Cj4+ICAgICAgIHNldHVwX2MoKTsKPj4gKyNlbmRpZgo+Cj4gc2V0
-dXBfYyBub3Qgb25seSByZWxvY2F0ZXMgdGhlIGJpbmFyeSwgaXQgYWxzbyBjbGVhcnMgdGhlIGJz
-cyBzZWdtZW50Lgo+IFdoZXJlIGlzIHRoaXMgZG9uZSBvbiBhcm02ND8KCkl0IGlzIG5vdCBkb25l
-Li4uSSBmb3Jnb3QgYWJvdXQgdGhhdC4KCkkgd2lsbCBjcmVhdGUgYSBzZXR1cGNfNjQuUywgaW4g
-dGhlIGZpcnN0IHRpbWUsIHRoaXMgd2lsbCBvbmx5IGNsZWFyCmJzcy4gTGF0ZXIsIHdlIGNvdWxk
-IGFsc28gYWRkIHJlbG9jYXRpb24gc3VwcG9ydC4KClJhcGhhw6tsCgo+Cj4gU2FzY2hhCj4KPiAt
-LQo+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICB8Cj4gSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAg
-ICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKPiBQZWluZXIgU3RyLiA2
-LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAg
-ICAgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDog
-ICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cj4KPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0
-cy5pbmZyYWRlYWQub3JnCj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9iYXJlYm94CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
-cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Tue, Jun 28, 2016 at 09:01:14AM +0200, Rapha=EBl Poggi wrote:
+> 2016-06-28 8:50 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> > On Fri, Jun 24, 2016 at 02:23:53PM +0200, Raphael Poggi wrote:
+> >> For now, the relocation is not supported in arm64, so
+> >> enclosed call to "setup_c" with #if directive
+> >>
+> >> Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
+> >> ---
+> >>  arch/arm/cpu/start.c | 2 ++
+> >>  1 file changed, 2 insertions(+)
+> >>
+> >> diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+> >> index e037d91..5051115 100644
+> >> --- a/arch/arm/cpu/start.c
+> >> +++ b/arch/arm/cpu/start.c
+> >> @@ -151,7 +151,9 @@ __noreturn void barebox_non_pbl_start(unsigned lon=
+g membase,
+> >>               relocate_to_adr(barebox_base);
+> >>       }
+> >>
+> >> +#if __LINUX_ARM_ARCH__ <=3D 7
+> >>       setup_c();
+> >> +#endif
+> >
+> > setup_c not only relocates the binary, it also clears the bss segment.
+> > Where is this done on arm64?
+> =
+
+> It is not done...I forgot about that.
+> =
+
+> I will create a setupc_64.S, in the first time, this will only clear
+> bss. Later, we could also add relocation support.
+
+Ok, that should do it for now.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
