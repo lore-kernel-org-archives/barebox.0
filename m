@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bHmcv-0007SG-LP
- for barebox@lists.infradead.org; Tue, 28 Jun 2016 06:36:06 +0000
-Date: Tue, 28 Jun 2016 08:35:43 +0200
+ id 1bHmo8-0003ey-36
+ for barebox@lists.infradead.org; Tue, 28 Jun 2016 06:47:41 +0000
+Date: Tue, 28 Jun 2016 08:47:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160628063543.GI20657@pengutronix.de>
-References: <1467023685-4820-1-git-send-email-yegorslists@googlemail.com>
+Message-ID: <20160628064717.GJ20657@pengutronix.de>
+References: <1466771041-89803-1-git-send-email-poggi.raph@gmail.com>
+ <1466771041-89803-4-git-send-email-poggi.raph@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1467023685-4820-1-git-send-email-yegorslists@googlemail.com>
+In-Reply-To: <1466771041-89803-4-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,140 +23,162 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] MIPS: ath79: pbl: add pbl_ar9331_wmac_enable macro
-To: yegorslists@googlemail.com
-Cc: barebox@lists.infradead.org, linux@rempel-privat.de
+Subject: Re: [PATCH v3 03/14] arm: introduce lib64 for arm64 related stuff
+To: Raphael Poggi <poggi.raph@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Mon, Jun 27, 2016 at 12:34:43PM +0200, yegorslists@googlemail.com wrote:
-> From: Yegor Yefremov <yegorslists@googlemail.com>
+On Fri, Jun 24, 2016 at 02:23:50PM +0200, Raphael Poggi wrote:
+> Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
+> ---
+>  arch/arm/lib64/Makefile        |  10 +
+>  arch/arm/lib64/armlinux.c      | 104 ++++++++
+>  arch/arm/lib64/asm-offsets.c   |  16 ++
+>  arch/arm/lib64/barebox.lds.S   | 125 +++++++++
+>  arch/arm/lib64/bootm.c         | 572 +++++++++++++++++++++++++++++++++++++++++
+>  arch/arm/lib64/copy_template.S | 192 ++++++++++++++
+>  arch/arm/lib64/div0.c          |  27 ++
+>  arch/arm/lib64/memcpy.S        |  74 ++++++
+>  arch/arm/lib64/memset.S        | 215 ++++++++++++++++
+>  9 files changed, 1335 insertions(+)
+>  create mode 100644 arch/arm/lib64/Makefile
+>  create mode 100644 arch/arm/lib64/armlinux.c
+>  create mode 100644 arch/arm/lib64/asm-offsets.c
+>  create mode 100644 arch/arm/lib64/barebox.lds.S
+>  create mode 100644 arch/arm/lib64/bootm.c
+>  create mode 100644 arch/arm/lib64/copy_template.S
+>  create mode 100644 arch/arm/lib64/div0.c
+>  create mode 100644 arch/arm/lib64/memcpy.S
+>  create mode 100644 arch/arm/lib64/memset.S
 > 
-> AR9331's WMAC module requires triple WMAC reset as also working RTC
-> subsystem.
-> 
-> The code is taken as is from upstream U-Boot repository.
-> 
-> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+> diff --git a/arch/arm/lib64/Makefile b/arch/arm/lib64/Makefile
+> new file mode 100644
+> index 0000000..a424293
+> --- /dev/null
+> +++ b/arch/arm/lib64/Makefile
+> @@ -0,0 +1,10 @@
+> +obj-$(CONFIG_ARM_LINUX)	+= armlinux.o
+> +obj-$(CONFIG_BOOTM)	+= bootm.o
+> +obj-y	+= div0.o
+> +obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memcpy.o
+> +obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memset.o
+> +extra-y += barebox.lds
+> +
+> +pbl-y	+= lib1funcs.o
+> +pbl-y	+= ashldi3.o
+> +pbl-y	+= div0.o
+> diff --git a/arch/arm/lib64/armlinux.c b/arch/arm/lib64/armlinux.c
+> new file mode 100644
+> index 0000000..c70e079
+> --- /dev/null
+> +++ b/arch/arm/lib64/armlinux.c
+> @@ -0,0 +1,104 @@
+> +/*
+> + * (C) Copyright 2002
+> + * Sysgo Real-Time Solutions, GmbH <www.elinos.com>
+> + * Marius Groeger <mgroeger@sysgo.de>
+> + *
+> + * Copyright (C) 2001  Erik Mouw (J.A.K.Mouw@its.tudelft.nl)
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; either version 2 of the License, or
+> + * (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+> + * GNU General Public License for more details.
+> + */
+> +
+> +#include <boot.h>
+> +#include <common.h>
+> +#include <command.h>
+> +#include <driver.h>
+> +#include <environment.h>
+> +#include <image.h>
+> +#include <init.h>
+> +#include <fs.h>
+> +#include <linux/list.h>
+> +#include <xfuncs.h>
+> +#include <malloc.h>
+> +#include <fcntl.h>
+> +#include <errno.h>
+> +#include <memory.h>
+> +#include <of.h>
+> +#include <magicvar.h>
+> +
+> +#include <asm/byteorder.h>
+> +#include <asm/setup.h>
+> +#include <asm/barebox-arm.h>
+> +#include <asm/armlinux.h>
+> +#include <asm/system.h>
+> +
+> +static void *armlinux_bootparams = NULL;
+> +
+> +static int armlinux_architecture;
+> +static u32 armlinux_system_rev;
+> +static u64 armlinux_system_serial;
+> +
+> +BAREBOX_MAGICVAR(armlinux_architecture, "ARM machine ID");
+> +BAREBOX_MAGICVAR(armlinux_system_rev, "ARM system revision");
+> +BAREBOX_MAGICVAR(armlinux_system_serial, "ARM system serial");
+> +
+> +void armlinux_set_architecture(int architecture)
+> +{
+> +	export_env_ull("armlinux_architecture", architecture);
+> +	armlinux_architecture = architecture;
+> +}
+> +
+> +int armlinux_get_architecture(void)
+> +{
+> +	getenv_uint("armlinux_architecture", &armlinux_architecture);
+> +
+> +	return armlinux_architecture;
+> +}
+> +
+> +void armlinux_set_revision(unsigned int rev)
+> +{
+> +	export_env_ull("armlinux_system_rev", rev);
+> +	armlinux_system_rev = rev;
+> +}
+> +
+> +unsigned int armlinux_get_revision(void)
+> +{
+> +	getenv_uint("armlinux_system_rev", &armlinux_system_rev);
+> +
+> +	return armlinux_system_rev;
+> +}
+> +
+> +void armlinux_set_serial(u64 serial)
+> +{
+> +	export_env_ull("armlinux_system_serial", serial);
+> +	armlinux_system_serial = serial;
+> +}
+> +
+> +u64 armlinux_get_serial(void)
+> +{
+> +	getenv_ull("armlinux_system_serial", &armlinux_system_serial);
+> +
+> +	return armlinux_system_serial;
+> +}
+> +
+> +void armlinux_set_bootparams(void *params)
+> +{
+> +	armlinux_bootparams = params;
+> +}
 
-Applied, thanks
+All of the above is not needed. Sorry, it seems I overlooked this last
+time.
+
+> diff --git a/arch/arm/lib64/bootm.c b/arch/arm/lib64/bootm.c
+
+I still think this file should not be here. You can always copy/modify
+it from the arm32 bootm.c once you need it, but at the moment this file
+is the reason this patch can't be applied. I'd really like to
+review/apply a "arm64: Add bootm code" patch once it's ready.
 
 Sascha
 
-> ---
->  arch/mips/mach-ath79/include/mach/ar71xx_regs.h | 14 ++++++
->  arch/mips/mach-ath79/include/mach/pbl_macros.h  | 63 +++++++++++++++++++++++++
->  2 files changed, 77 insertions(+)
-> 
-> diff --git a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-> index 4cbe94a..de96c56 100644
-> --- a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-> +++ b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-> @@ -31,11 +31,25 @@
->  #define AR71XX_PLL_SIZE		0x100
->  #define AR71XX_RESET_BASE	(AR71XX_APB_BASE + 0x00060000)
->  #define AR71XX_RESET_SIZE	0x100
-> +#define AR71XX_RTC_BASE		(AR71XX_APB_BASE + 0x00107000)
-> +#define AR71XX_RTC_SIZE		0x100
->  
->  #define AR933X_UART_BASE	(AR71XX_APB_BASE + 0x00020000)
->  #define AR933X_UART_SIZE	0x14
->  
->  /*
-> + * RTC block
-> + */
-> +#define AR933X_RTC_REG_RESET		0x40
-> +#define AR933X_RTC_REG_STATUS		0x44
-> +#define AR933X_RTC_REG_DERIVED		0x48
-> +#define AR933X_RTC_REG_FORCE_WAKE	0x4c
-> +#define AR933X_RTC_REG_INT_CAUSE	0x50
-> +#define AR933X_RTC_REG_CAUSE_CLR	0x50
-> +#define AR933X_RTC_REG_INT_ENABLE	0x54
-> +#define AR933X_RTC_REG_INT_MASKE	0x58
-> +
-> +/*
->   * DDR_CTRL block
->   */
->  #define AR933X_DDR_CONFIG		0x00
-> diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
-> index 8f4d09a..680fcbb 100644
-> --- a/arch/mips/mach-ath79/include/mach/pbl_macros.h
-> +++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
-> @@ -274,4 +274,67 @@ normal_path:
->  	.set	pop
->  .endm
->  
-> +.macro	pbl_ar9331_wmac_enable
-> +	.set push
-> +	.set noreorder
-> +
-> +	/* These three WLAN_RESET will avoid original issue */
-> +	li      t3, 0x03
-> +1:
-> +	li      t0, CKSEG1ADDR(AR71XX_RESET_BASE)
-> +	lw      t1, AR933X_RESET_REG_RESET_MODULE(t0)
-> +	ori     t1, t1, 0x0800
-> +	sw      t1, AR933X_RESET_REG_RESET_MODULE(t0)
-> +	nop
-> +	lw      t1, AR933X_RESET_REG_RESET_MODULE(t0)
-> +	li      t2, 0xfffff7ff
-> +	and     t1, t1, t2
-> +	sw      t1, AR933X_RESET_REG_RESET_MODULE(t0)
-> +	nop
-> +	addi    t3, t3, -1
-> +	bnez    t3, 1b
-> +	nop
-> +
-> +	li      t2, 0x20
-> +2:
-> +	beqz    t2, 1b
-> +	nop
-> +	addi    t2, t2, -1
-> +	lw      t5, AR933X_RESET_REG_BOOTSTRAP(t0)
-> +	andi    t1, t5, 0x10
-> +	bnez    t1, 2b
-> +	nop
-> +
-> +	li      t1, 0x02110E
-> +	sw      t1, AR933X_RESET_REG_BOOTSTRAP(t0)
-> +	nop
-> +
-> +	/* RTC Force Wake */
-> +	li      t0, CKSEG1ADDR(AR71XX_RTC_BASE)
-> +	li      t1, 0x03
-> +	sw      t1, AR933X_RTC_REG_FORCE_WAKE(t0)
-> +	nop
-> +	nop
-> +
-> +	/* RTC Reset */
-> +	li      t1, 0x00
-> +	sw      t1, AR933X_RTC_REG_RESET(t0)
-> +	nop
-> +	nop
-> +
-> +	li      t1, 0x01
-> +	sw      t1, AR933X_RTC_REG_RESET(t0)
-> +	nop
-> +	nop
-> +
-> +	/* Wait for RTC in on state */
-> +1:
-> +	lw      t1, AR933X_RTC_REG_STATUS(t0)
-> +	andi    t1, t1, 0x02
-> +	beqz    t1, 1b
-> +	nop
-> +
-> +	.set	pop
-> +.endm
-> +
->  #endif /* __ASM_MACH_ATH79_PBL_MACROS_H */
-> -- 
-> 2.1.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
