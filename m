@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bHmMX-0004Ah-So
- for barebox@lists.infradead.org; Tue, 28 Jun 2016 06:19:10 +0000
-Date: Tue, 28 Jun 2016 08:18:47 +0200
+ id 1bHmcv-0007SG-LP
+ for barebox@lists.infradead.org; Tue, 28 Jun 2016 06:36:06 +0000
+Date: Tue, 28 Jun 2016 08:35:43 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160628061847.GH20657@pengutronix.de>
-References: <1466762762-15212-1-git-send-email-mpa@pengutronix.de>
- <1466762762-15212-6-git-send-email-mpa@pengutronix.de>
+Message-ID: <20160628063543.GI20657@pengutronix.de>
+References: <1467023685-4820-1-git-send-email-yegorslists@googlemail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1466762762-15212-6-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <1467023685-4820-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,121 +22,133 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 5/6] state: backend_storage_direct: also use cached
- data on write
-To: Markus Pargmann <mpa@pengutronix.de>
-Cc: barebox@lists.infradead.org, mgr@pengutronix.de
+Subject: Re: [PATCH 1/3] MIPS: ath79: pbl: add pbl_ar9331_wmac_enable macro
+To: yegorslists@googlemail.com
+Cc: barebox@lists.infradead.org, linux@rempel-privat.de
 
-On Fri, Jun 24, 2016 at 12:06:01PM +0200, Markus Pargmann wrote:
-> From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+On Mon, Jun 27, 2016 at 12:34:43PM +0200, yegorslists@googlemail.com wrote:
+> From: Yegor Yefremov <yegorslists@googlemail.com>
 > 
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
-> ---
->  common/state/backend_bucket_direct.c | 55 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 55 insertions(+)
+> AR9331's WMAC module requires triple WMAC reset as also working RTC
+> subsystem.
+> 
+> The code is taken as is from upstream U-Boot repository.
+> 
+> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 
-What's the problem this patch tries to solve?
+Applied, thanks
 
 Sascha
 
+> ---
+>  arch/mips/mach-ath79/include/mach/ar71xx_regs.h | 14 ++++++
+>  arch/mips/mach-ath79/include/mach/pbl_macros.h  | 63 +++++++++++++++++++++++++
+>  2 files changed, 77 insertions(+)
 > 
-> diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
-> index 08892f001e25..772267f6dc1d 100644
-> --- a/common/state/backend_bucket_direct.c
-> +++ b/common/state/backend_bucket_direct.c
-> @@ -29,6 +29,10 @@ struct state_backend_storage_bucket_direct {
+> diff --git a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
+> index 4cbe94a..de96c56 100644
+> --- a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
+> +++ b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
+> @@ -31,11 +31,25 @@
+>  #define AR71XX_PLL_SIZE		0x100
+>  #define AR71XX_RESET_BASE	(AR71XX_APB_BASE + 0x00060000)
+>  #define AR71XX_RESET_SIZE	0x100
+> +#define AR71XX_RTC_BASE		(AR71XX_APB_BASE + 0x00107000)
+> +#define AR71XX_RTC_SIZE		0x100
 >  
->  	int fd;
+>  #define AR933X_UART_BASE	(AR71XX_APB_BASE + 0x00020000)
+>  #define AR933X_UART_SIZE	0x14
 >  
-> +	/* Cached data of the last read/write */
-> +	u8 *current_data;
-> +	ssize_t current_data_len;
+>  /*
+> + * RTC block
+> + */
+> +#define AR933X_RTC_REG_RESET		0x40
+> +#define AR933X_RTC_REG_STATUS		0x44
+> +#define AR933X_RTC_REG_DERIVED		0x48
+> +#define AR933X_RTC_REG_FORCE_WAKE	0x4c
+> +#define AR933X_RTC_REG_INT_CAUSE	0x50
+> +#define AR933X_RTC_REG_CAUSE_CLR	0x50
+> +#define AR933X_RTC_REG_INT_ENABLE	0x54
+> +#define AR933X_RTC_REG_INT_MASKE	0x58
 > +
->  	struct device_d *dev;
->  };
+> +/*
+>   * DDR_CTRL block
+>   */
+>  #define AR933X_DDR_CONFIG		0x00
+> diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+> index 8f4d09a..680fcbb 100644
+> --- a/arch/mips/mach-ath79/include/mach/pbl_macros.h
+> +++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+> @@ -274,4 +274,67 @@ normal_path:
+>  	.set	pop
+>  .endm
 >  
-> @@ -99,6 +103,29 @@ static int state_backend_bucket_direct_read(struct state_backend_storage_bucket
->  	return 0;
->  }
->  
+> +.macro	pbl_ar9331_wmac_enable
+> +	.set push
+> +	.set noreorder
 > +
-> +static int state_backend_bucket_direct_fill_cache(
-> +		struct state_backend_storage_bucket *bucket)
-> +{
-> +	struct state_backend_storage_bucket_direct *direct =
-> +	    get_bucket_direct(bucket);
-> +	ssize_t read_len;
-> +	uint8_t *buf;
-> +	int ret;
+> +	/* These three WLAN_RESET will avoid original issue */
+> +	li      t3, 0x03
+> +1:
+> +	li      t0, CKSEG1ADDR(AR71XX_RESET_BASE)
+> +	lw      t1, AR933X_RESET_REG_RESET_MODULE(t0)
+> +	ori     t1, t1, 0x0800
+> +	sw      t1, AR933X_RESET_REG_RESET_MODULE(t0)
+> +	nop
+> +	lw      t1, AR933X_RESET_REG_RESET_MODULE(t0)
+> +	li      t2, 0xfffff7ff
+> +	and     t1, t1, t2
+> +	sw      t1, AR933X_RESET_REG_RESET_MODULE(t0)
+> +	nop
+> +	addi    t3, t3, -1
+> +	bnez    t3, 1b
+> +	nop
 > +
-> +	ret = state_backend_bucket_direct_read(bucket, &buf, &read_len);
-> +	if (ret < 0) {
-> +		dev_err(direct->dev, "Failed to read from file, %d\n", ret);
-> +		free(buf);
-> +		return ret;
-> +	}
+> +	li      t2, 0x20
+> +2:
+> +	beqz    t2, 1b
+> +	nop
+> +	addi    t2, t2, -1
+> +	lw      t5, AR933X_RESET_REG_BOOTSTRAP(t0)
+> +	andi    t1, t5, 0x10
+> +	bnez    t1, 2b
+> +	nop
 > +
-> +	direct->current_data = buf;
-> +	direct->current_data_len = read_len;
+> +	li      t1, 0x02110E
+> +	sw      t1, AR933X_RESET_REG_BOOTSTRAP(t0)
+> +	nop
 > +
-> +	return 0;
-> +}
+> +	/* RTC Force Wake */
+> +	li      t0, CKSEG1ADDR(AR71XX_RTC_BASE)
+> +	li      t1, 0x03
+> +	sw      t1, AR933X_RTC_REG_FORCE_WAKE(t0)
+> +	nop
+> +	nop
 > +
->  static int state_backend_bucket_direct_write(struct state_backend_storage_bucket
->  					     *bucket, const uint8_t * buf,
->  					     ssize_t len)
-> @@ -111,6 +138,11 @@ static int state_backend_bucket_direct_write(struct state_backend_storage_bucket
->  	if (direct->max_size && len > direct->max_size)
->  		return -E2BIG;
->  
-> +	/* Nothing in cache? Then read to see what is on the device currently */
-> +	if (!direct->current_data) {
-> +		state_backend_bucket_direct_fill_cache(bucket);
-> +	}
+> +	/* RTC Reset */
+> +	li      t1, 0x00
+> +	sw      t1, AR933X_RTC_REG_RESET(t0)
+> +	nop
+> +	nop
 > +
->  	ret = lseek(direct->fd, direct->offset, SEEK_SET);
->  	if (ret < 0) {
->  		dev_err(direct->dev, "Failed to seek file, %d\n", ret);
-> @@ -119,6 +151,26 @@ static int state_backend_bucket_direct_write(struct state_backend_storage_bucket
->  
->  	meta.magic = direct_magic;
->  	meta.written_length = len;
+> +	li      t1, 0x01
+> +	sw      t1, AR933X_RTC_REG_RESET(t0)
+> +	nop
+> +	nop
 > +
-> +	/*
-> +	 * If we would write the same data that is currently on the device, we
-> +	 * can return successfully without writing.
-> +	 * Note that the cache may still be empty if the storage is empty or
-> +	 * errors occured.
-> +	 */
-> +	if (direct->current_data) {
-> +		dev_dbg(direct->dev, "Comparing cached data, writing %zd bytes, cached %zd bytes\n",
-> +			len, direct->current_data_len);
-> +		if (len == direct->current_data_len &&
-> +		    !memcmp(direct->current_data, buf, len)) {
-> +			dev_dbg(direct->dev, "Data already on device, not writing again\n");
-> +			return ret;
-> +		} else {
-> +			free(direct->current_data);
-> +			direct->current_data = NULL;
-> +		}
-> +	}
+> +	/* Wait for RTC in on state */
+> +1:
+> +	lw      t1, AR933X_RTC_REG_STATUS(t0)
+> +	andi    t1, t1, 0x02
+> +	beqz    t1, 1b
+> +	nop
 > +
->  	ret = write_full(direct->fd, &meta, sizeof(meta));
->  	if (ret < 0) {
->  		dev_err(direct->dev, "Failed to write metadata to file, %d\n", ret);
-> @@ -147,6 +199,9 @@ static void state_backend_bucket_direct_free(struct
->  	struct state_backend_storage_bucket_direct *direct =
->  	    get_bucket_direct(bucket);
->  
-> +	if (direct->current_data)
-> +		free(direct->current_data);
+> +	.set	pop
+> +.endm
 > +
->  	close(direct->fd);
->  	free(direct);
->  }
+>  #endif /* __ASM_MACH_ATH79_PBL_MACROS_H */
 > -- 
-> 2.8.1
+> 2.1.4
 > 
 > 
 > _______________________________________________
