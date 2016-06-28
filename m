@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from m15-114.126.com ([220.181.15.114])
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bHoNm-0004Rx-7h
- for barebox@lists.infradead.org; Tue, 28 Jun 2016 08:28:35 +0000
-References: <1466825759-22867-1-git-send-email-zzs213@126.com>
- <20160628055717.GB20656@pengutronix.de>
-From: =?UTF-8?B?5byg5b+g5bGx?= <zzs213@126.com>
-Message-ID: <5772350C.6060600@126.com>
-Date: Tue, 28 Jun 2016 16:27:56 +0800
-MIME-Version: 1.0
-In-Reply-To: <20160628055717.GB20656@pengutronix.de>
+ id 1bHr1j-0000rm-Tq
+ for barebox@lists.infradead.org; Tue, 28 Jun 2016 11:18:00 +0000
+Message-ID: <1467112654.4482.14.camel@lws-tremmet.phytec.de>
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Tue, 28 Jun 2016 13:17:34 +0200
+In-Reply-To: <20160628054556.GG20657@pengutronix.de>
+References: <1467027740-24201-1-git-send-email-t.remmet@phytec.de>
+ <1467027740-24201-3-git-send-email-t.remmet@phytec.de>
+ <20160628054556.GG20657@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,50 +19,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Do not rm the path from pbl-y target
+Subject: Re: [PATCH v2 3/4] commands: ubi: Add ubiupdatevol command
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Pgo+IEkgaGFkIHRvIHJldmVydCB0aGlzIG9uZS4gVGhlIHJlZ3VsYXIgZXhwcmVzc2lvbiBzZWVt
-cyB0byBiZSB3cm9uZy4gSXQKPiBicmVha3Mgb21hcDM1MzBfYmVhZ2xlX2RlZmNvbmZpZyB3aXRo
-Ogo+Cj4gbWFrZVsyXTogKioqIE5vIHJ1bGUgdG8gbWFrZSB0YXJnZXQgJ2FyY2gvYXJtL21hY2gt
-b21hcC9vcGJsLW1hcDNfY2xvY2subycsIG5lZWRlZCBieSAnYXJjaC9hcm0vbWFjaC1vbWFwL2J1
-aWx0LWluLXBibC5vJy4gIFN0b3AuCj4gbWFrZVsyXTogKioqIFdhaXRpbmcgZm9yIHVuZmluaXNo
-ZWQgam9icy4uLi4KPgo+IEluc3RlYWQgb2YgcGJsLW9tYXAzX2Nsb2NrLm8gaXQgdHJpZXMgdG8g
-Z2VuZXJhdGUgb3BibC1tYXAzX2Nsb2NrLm8uCj4KPiBTYXNjaGEKPgoKWWVzLCB0aGUgcmVndWxh
-ciBleHByZXNzaW9uIHdyb25nLCBUaGUgZmxvd3dpbmcgcGF0Y2ggc2hvdWxkIHdvcmsuCgoKLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS04PC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tCiBGcm9tIDNiMWZkNTc0YjBlODQ3Y2UzMzMzYjllMDk2MWVjNDU0Zjk3NWUxZWUgTW9u
-IFNlcCAxNyAwMDowMDowMCAyMDAxCkZyb206ID0/VVRGLTg/cT89RTU9QkM9QTA9RTU9QkY9QTA9
-RTU9QjE9QjE/PSA8enpzMjEzQDEyNi5jb20+CkRhdGU6IEZyaSwgMjQgSnVuIDIwMTYgMTk6MzM6
-NTYgKzA4MDAKU3ViamVjdDogW1BBVENIXSBEbyBub3Qgcm0gdGhlIHBhdGggZnJvbSBwYmwteSB0
-YXJnZXQKTUlNRS1WZXJzaW9uOiAxLjAKQ29udGVudC1UeXBlOiB0ZXh0L3BsYWluOyBjaGFyc2V0
-PVVURi04CkNvbnRlbnQtVHJhbnNmZXItRW5jb2Rpbmc6IDhiaXQKCldoYW4gYWRkIHNvbWUgb2Jq
-IGluIGEgc3ViZGlyIHRvIGx3bC15IG9yIHBibC15LCBsaWtlIHRoaXM6CgogICAgIGx3bC15ICs9
-IHN1YmRpci90ZXN0Lm8gb3RoZXIubwoKdGhlIG1ha2UgcHJvY2VzcyBmYWlsZWQ6CgogICAgIG1h
-a2VbMl06ICoqKiBObyBydWxlIHRvIG1ha2UgdGFyZ2V0IAonYXJjaC9hcm0vYm9hcmRzL2JvYXJk
-bmFtZS90ZXN0Lm8nLCBcCiAgICAgICAgIG5lZWRlZCBieSAnYXJjaC9hcm0vYm9hcmRzL2JvYXJk
-bmFtZS9idWlsdC1pbi1wYmwubycuICBTdG9wLgoKTm90ZSwgdGhlcmUgYXJlIG5vdCB0aGUgcGFy
-dCAic3ViZGlyIiBpbiB0aGUgcGF0aCBvZiB0aGUgdGVzdC5vLgoKdGhpcyBwYXRjaCBmaXggdGhp
-cwoKU2lnbmVkLW9mZi1ieTog5byg5b+g5bGxIDx6enMyMTNAMTI2LmNvbT4KLS0tCiAgc2NyaXB0
-cy9NYWtlZmlsZS5saWIgfCA3ICsrKy0tLS0KICAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25z
-KCspLCA0IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL3NjcmlwdHMvTWFrZWZpbGUubGliIGIv
-c2NyaXB0cy9NYWtlZmlsZS5saWIKaW5kZXggMjczNjVkOC4uZTU1YmMyNyAxMDA2NDQKLS0tIGEv
-c2NyaXB0cy9NYWtlZmlsZS5saWIKKysrIGIvc2NyaXB0cy9NYWtlZmlsZS5saWIKQEAgLTM5LDEw
-ICszOSw5IEBAIGVuZGlmCiAgb2JqLXkJCSs9ICQob2JqLXBibC15KQogIHBibC15CQkrPSAkKG9i
-ai1wYmwteSkKCi0jIGZvciBub24gZGlycyBhZGQgcGJsLSBwcmVmaXggdG8gdGhlIHRhcmdldAot
-IyBzbyB3ZSByZWNvbXBpbGUgdGhlIHNvdXJjZSB3aXRoIGN1c3RvbSBmbGFncyBhbmQgY3VzdG9t
-IHF1aWV0Ci1fX3BibC15CQk6PSAkKG5vdGRpciAkKHBibC15KSkKLXBibC15CQk6PSAkKHBhdHN1
-YnN0ICUubyxwYmwtJS5vLCQoX19wYmwteSkpCisjIGFkZCBwYmwtIHByZWZpeCB0byB0aGUgdGFy
-Z2V0CitwYmwteQkJOj0gJChzaGVsbCBlY2hvICQocGJsLXkpIHwgc2VkIC1lICdzJVwoXChbXiBc
-dF1cKy9cKSpcKVwoW14gClx0XSpcLm9cKSVcMnBibC1cMyVnJykKKwogICMgYWRkIHN1YmRpciBm
-cm9tICQob2JqLXkpIHRvbyBzbyB3ZSBkbyBub3QgbmVlZCB0byBoYXZlIHRoZSBkaXIgZGVmaW5l
-IGluCiAgIyBib3RoICQob2JqLXkpIGFuZCAkKHBibC15KQogIF9fcGJsLXkJCTo9ICQoZmlsdGVy
-LW91dCAkKHBibC15KSwgJChmaWx0ZXIgJS8sICQob2JqLXkpKSkKLS0gCjEuOS4xCgoKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
-ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hello Sascha,
+
+Am Dienstag, den 28.06.2016, 07:45 +0200 schrieb Sascha Hauer:
+> On Mon, Jun 27, 2016 at 01:42:19PM +0200, Teresa Remmet wrote:
+> > Add ubiupdatevol command. This is to update static
+> > and dynamic volumes.
+> > 
+> > Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+> > ---
+> > Changes in v2:
+> > 	- instead of using read_file, used a smaller
+> > 		buffer and read/write in a loop
+> > 
+> >  commands/ubi.c | 81 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 81 insertions(+)
+> > 
+> > diff --git a/commands/ubi.c b/commands/ubi.c
+> > index dc2b4b5..b8b3f38 100644
+> > --- a/commands/ubi.c
+> > +++ b/commands/ubi.c
+> > @@ -7,10 +7,91 @@
+> >  #include <getopt.h>
+> >  #include <linux/mtd/mtd.h>
+> >  #include <linux/kernel.h>
+> > +#include <linux/stat.h>
+> >  #include <linux/mtd/mtd-abi.h>
+> >  #include <mtd/ubi-user.h>
+> >  #include <mtd/ubi-media.h>
+> >  
+> > +static int do_ubiupdatevol(int argc, char *argv[])
+> > +{
+> > +	int fd_img, fd_vol, ret = 0;
+> > +	uint64_t size = 0;
+> > +	struct stat st;
+> > +	unsigned int count;
+> > +	void *buf;
+> > +
+> > +	if (argc - optind < 2)
+> > +		return COMMAND_ERROR_USAGE;
+> > +
+> > +	if (stat(argv[optind+1], &st)) {
+> > +		perror("stat image");
+> > +		return 1;
+> > +	}
+> > +
+> > +	size = st.st_size;
+> 
+> While applying I added a test that tests for FILESIZE_MAX here and bails
+> out with an error.
+
+I could add a check for FILESIZE_MAX and give a special error message in
+this case. But we need a correct file size for static volumes. So tftp
+server which do not pass the file size, will fail here.
+
+Teresa
+
+> 
+> Sascha
+> 
+
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
