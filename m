@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bICLJ-000558-Fj
+ id 1bICLJ-000556-Fi
  for barebox@lists.infradead.org; Wed, 29 Jun 2016 10:03:39 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id B482CA00266
+ by root.phytec.de (Postfix) with ESMTP id BCD67A00288
  for <barebox@lists.infradead.org>; Wed, 29 Jun 2016 12:04:23 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Jun 2016 12:01:07 +0200
-Message-Id: <1467194468-31049-3-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Jun 2016 12:01:08 +0200
+Message-Id: <1467194468-31049-4-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1467194468-31049-1-git-send-email-t.remmet@phytec.de>
 References: <1467194468-31049-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,163 +24,164 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] OMAP: am33xx_bbu_nand: Extent barebox update handler
+Subject: [PATCH 4/4] ARM: phytec-som-am335x: Add backup partition for barebox
 To: barebox@lists.infradead.org
 
-Make it possible to write barebox image to multiple partitions
-like xload partitions.
+Add a redundant barebox partition to improve nand safety at
+least a little bit.
 
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- arch/arm/boards/phytec-som-am335x/board.c |  7 ++++-
- arch/arm/mach-omap/am33xx_bbu_nand.c      | 50 +++++++++++++++++--------------
- arch/arm/mach-omap/include/mach/bbu.h     |  7 +++--
- 3 files changed, 39 insertions(+), 25 deletions(-)
+ arch/arm/boards/phytec-som-am335x/board.c   |  1 +
+ arch/arm/dts/am335x-phytec-phycard-som.dtsi | 23 ++++++++++++++++-------
+ arch/arm/dts/am335x-phytec-phycore-som.dtsi | 19 ++++++++++++-------
+ arch/arm/dts/am335x-phytec-phyflex-som.dtsi | 23 ++++++++++++++++-------
+ 4 files changed, 45 insertions(+), 21 deletions(-)
 
 diff --git a/arch/arm/boards/phytec-som-am335x/board.c b/arch/arm/boards/phytec-som-am335x/board.c
-index ca325b5..d5c27e2 100644
+index d5c27e2..7f62453 100644
 --- a/arch/arm/boards/phytec-som-am335x/board.c
 +++ b/arch/arm/boards/phytec-som-am335x/board.c
-@@ -60,6 +60,10 @@ static char *xloadslots[] = {
- 	"/dev/nand0.xload_backup3.bb"
+@@ -62,6 +62,7 @@ static char *xloadslots[] = {
+ 
+ static char *nandslots[] = {
+ 	"/dev/nand0.barebox.bb",
++	"/dev/nand0.barebox_backup.bb",
  };
  
-+static char *nandslots[] = {
-+	"/dev/nand0.barebox.bb",
-+};
-+
  static int physom_devices_init(void)
- {
- 	if (!of_machine_is_compatible("phytec,am335x-som"))
-@@ -105,7 +109,8 @@ static int physom_devices_init(void)
- 	am33xx_bbu_spi_nor_register_handler("spi", "/dev/m25p0.barebox");
- 	am33xx_bbu_nand_xloadslots_register_handler("MLO.nand",
- 		xloadslots, ARRAY_SIZE(xloadslots));
--	am33xx_bbu_nand_register_handler("nand", "/dev/nand0.barebox.bb");
-+	am33xx_bbu_nand_slots_register_handler("nand", nandslots,
-+				ARRAY_SIZE(nandslots));
+diff --git a/arch/arm/dts/am335x-phytec-phycard-som.dtsi b/arch/arm/dts/am335x-phytec-phycard-som.dtsi
+index f052f0c..3dd9cad 100644
+--- a/arch/arm/dts/am335x-phytec-phycard-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phycard-som.dtsi
+@@ -206,23 +206,32 @@
+ 		};
  
- 	if (IS_ENABLED(CONFIG_SHELL_NONE))
- 		return am33xx_of_register_bootdevice();
-diff --git a/arch/arm/mach-omap/am33xx_bbu_nand.c b/arch/arm/mach-omap/am33xx_bbu_nand.c
-index 25f0e79..7785d40 100644
---- a/arch/arm/mach-omap/am33xx_bbu_nand.c
-+++ b/arch/arm/mach-omap/am33xx_bbu_nand.c
-@@ -62,21 +62,15 @@ static int write_image(const char *devfile, const void *image, size_t size)
- }
- 
- /*
-- * This handler updates all given xload slots in nand with an image.
-+ * Upate given nand partitions with an image
-  */
--static int nand_xloadslots_update_handler(struct bbu_handler *handler,
--					struct bbu_data *data)
-+static int nand_slot_update_handler(struct bbu_handler *handler,
-+						struct bbu_data *data)
- {
--	int ret = 0;
-+	int ret, i;
-+	struct nand_bbu_handler *nh;
- 	const void *image = data->image;
- 	size_t size = data->len;
--	struct nand_bbu_handler *nh;
--	int i = 0;
--
--	if (file_detect_type(image, size) != filetype_ch_image) {
--		pr_err("%s is not a valid ch-image\n", data->imagefile);
--		return -EINVAL;
--	}
- 
- 	nh = container_of(handler, struct nand_bbu_handler, bbu_handler);
- 
-@@ -100,6 +94,23 @@ static int nand_xloadslots_update_handler(struct bbu_handler *handler,
- 	return 0;
- }
- 
-+/*
-+ * This handler updates all given xload slots in nand with an image.
-+ */
-+static int nand_xloadslots_update_handler(struct bbu_handler *handler,
-+					struct bbu_data *data)
-+{
-+	const void *image = data->image;
-+	size_t size = data->len;
+ 		partition@100000 {
++			label = "barebox_backup";
++			reg = <0x100000 0x80000>;
++		};
 +
-+	if (file_detect_type(image, size) != filetype_ch_image) {
-+		pr_err("%s is not a valid ch-image\n", data->imagefile);
-+		return -EINVAL;
-+	}
++		partition@180000 {
+ 			label = "bareboxenv";
+-			reg = <0x100000 0x40000>;
++			reg = <0x180000 0x40000>;
+ 		};
+ 
+-		partition@140000 {
++		partition@1C0000 {
+ 			label = "oftree";
+-			reg = <0x140000 0x40000>;
++			reg = <0x1C0000 0x40000>;
+ 		};
+ 
+-		partition@180000 {
++		partition@200000 {
+ 			label = "kernel";
+-			reg = <0x180000 0x800000>;
++			reg = <0x200000 0x800000>;
+ 		};
+ 
+-		partition@980000 {
++		partition@A00000 {
+ 			label = "root";
+-			reg = <0x980000 0x0>;
++			/*
++			 * Size 0x0 extends partition to
++			 * end of nand flash.
++			 */
++			reg = <0xA00000 0x0>;
+ 		};
+ 	};
+ };
+diff --git a/arch/arm/dts/am335x-phytec-phycore-som.dtsi b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+index e48d545..0fc3c96 100644
+--- a/arch/arm/dts/am335x-phytec-phycore-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+@@ -290,27 +290,32 @@
+ 		};
+ 
+ 		partition@100000 {
++			label = "barebox_backup";
++			reg = <0x100000 0x80000>;
++		};
 +
-+	return nand_slot_update_handler(handler, data);
-+}
++		partition@180000 {
+ 			label = "bareboxenv";
+-			reg = <0x100000 0x40000>;
++			reg = <0x180000 0x40000>;
+ 		};
+ 
+-		partition@140000 {
++		partition@1C0000 {
+ 			label = "oftree";
+-			reg = <0x140000 0x40000>;
++			reg = <0x1C0000 0x40000>;
+ 		};
+ 
+-		partition@180000 {
++		partition@200000 {
+ 			label = "kernel";
+-			reg = <0x180000 0x800000>;
++			reg = <0x200000 0x800000>;
+ 		};
+ 
+-		partition@980000 {
++		partition@A00000 {
+ 			label = "root";
+ 			/*
+ 			 * Size 0x0 extends partition to
+ 			 * end of nand flash.
+ 			 */
+-			reg = <0x980000 0x0>;
++			reg = <0xA00000 0x0>;
+ 		};
+ 	};
+ };
+diff --git a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+index 6561625..db78cb1 100644
+--- a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+@@ -304,23 +304,32 @@
+ 		};
+ 
+ 		partition@100000 {
++			label = "barebox_backup";
++			reg = <0x100000 0x80000>;
++		};
 +
- int am33xx_bbu_nand_xloadslots_register_handler(const char *name,
- 						char **devicefile,
- 						int num_devicefiles)
-@@ -124,32 +135,27 @@ int am33xx_bbu_nand_xloadslots_register_handler(const char *name,
- static int nand_update_handler(struct bbu_handler *handler,
- 		struct bbu_data *data)
- {
--	int ret = 0;
- 	const void *image = data->image;
- 	size_t size = data->len;
--	struct nand_bbu_handler *nh;
++		partition@180000 {
+ 			label = "bareboxenv";
+-			reg = <0x100000 0x40000>;
++			reg = <0x180000 0x40000>;
+ 		};
  
- 	if (file_detect_type(image, size) != filetype_arm_barebox) {
- 		pr_err("%s is not a valid barebox image\n", data->imagefile);
- 		return -EINVAL;
- 	}
+-		partition@140000 {
++		partition@1C0000 {
+ 			label = "oftree";
+-			reg = <0x140000 0x40000>;
++			reg = <0x1C0000 0x40000>;
+ 		};
  
--	nh = container_of(handler, struct nand_bbu_handler, bbu_handler);
--
--	ret = bbu_confirm(data);
--	if (ret != 0)
--		return ret;
--
--	return write_image(data->devicefile, image, size);
-+	return nand_slot_update_handler(handler, data);
- }
+-		partition@180000 {
++		partition@200000 {
+ 			label = "kernel";
+-			reg = <0x180000 0x800000>;
++			reg = <0x200000 0x800000>;
+ 		};
  
--int am33xx_bbu_nand_register_handler(const char *name, char *devicefile)
-+int am33xx_bbu_nand_slots_register_handler(const char *name, char **devicefile,
-+							int num_devicefiles)
- {
- 	struct nand_bbu_handler *handler;
- 	int ret;
- 
- 	handler = xzalloc(sizeof(*handler));
--	handler->bbu_handler.devicefile = devicefile;
-+	handler->devicefile = devicefile;
-+	handler->num_devicefiles = num_devicefiles;
-+	handler->bbu_handler.devicefile = devicefile[0];
- 	handler->bbu_handler.handler = nand_update_handler;
- 	handler->bbu_handler.name = name;
- 
-diff --git a/arch/arm/mach-omap/include/mach/bbu.h b/arch/arm/mach-omap/include/mach/bbu.h
-index 7c5dcbd..c8b0a55 100644
---- a/arch/arm/mach-omap/include/mach/bbu.h
-+++ b/arch/arm/mach-omap/include/mach/bbu.h
-@@ -21,7 +21,8 @@ static inline int am33xx_bbu_spi_nor_register_handler(const char *name, char *de
- int am33xx_bbu_nand_xloadslots_register_handler(const char *name,
- 						char **devicefile,
- 						int num_devicefiles);
--int am33xx_bbu_nand_register_handler(const char *name, char *devicefile);
-+int am33xx_bbu_nand_slots_register_handler(const char *name, char **devicefile,
-+						int num_devicefiles);
- #else
- static inline int am33xx_bbu_nand_xloadslots_register_handler(const char *name,
- 							char **devicefile,
-@@ -30,7 +31,9 @@ static inline int am33xx_bbu_nand_xloadslots_register_handler(const char *name,
- 	return 0;
- }
- 
--static inline int am33xx_bbu_nand_register_handler(const char *name, char *devicefile)
-+static inline int am33xx_bbu_nand_slots_register_handler(const char *name,
-+							 char **devicefile,
-+							int num_devicefiles)
- {
- 	return 0;
- }
+-		partition@980000 {
++		partition@A00000 {
+ 			label = "root";
+-			reg = <0x980000 0x0>;
++			/*
++			 * Size 0x0 extends partition to
++			 * end of nand flash.
++			 */
++			reg = <0xA00000 0x0>;
+ 		};
+ 	};
+ };
 -- 
 1.9.1
 
