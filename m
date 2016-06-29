@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x241.google.com ([2a00:1450:400c:c09::241])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bIAmE-0003U0-Cm
- for barebox@lists.infradead.org; Wed, 29 Jun 2016 08:23:21 +0000
-Received: by mail-wm0-x241.google.com with SMTP id 187so12391307wmz.1
- for <barebox@lists.infradead.org>; Wed, 29 Jun 2016 01:22:58 -0700 (PDT)
+Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
+ by casper.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bIAmJ-0001Gf-Q6
+ for barebox@lists.infradead.org; Wed, 29 Jun 2016 08:23:24 +0000
+Received: by mail-wm0-x242.google.com with SMTP id r201so12390515wme.0
+ for <barebox@lists.infradead.org>; Wed, 29 Jun 2016 01:23:06 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Wed, 29 Jun 2016 10:22:12 +0200
-Message-Id: <1467188540-76509-6-git-send-email-poggi.raph@gmail.com>
+Date: Wed, 29 Jun 2016 10:22:20 +0200
+Message-Id: <1467188540-76509-14-git-send-email-poggi.raph@gmail.com>
 In-Reply-To: <1467188540-76509-1-git-send-email-poggi.raph@gmail.com>
 References: <1467188540-76509-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,98 +23,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 05/13] arm: include: system: add arm64 helper functions
+Subject: [PATCH v4 13/13] uimage: add define for ARM64 architecture
 To: barebox@lists.infradead.org
 Cc: Raphael Poggi <poggi.raph@gmail.com>
 
 Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
 ---
- arch/arm/include/asm/system.h | 46 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 45 insertions(+), 1 deletion(-)
+ common/image.c  | 1 +
+ include/image.h | 5 +++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/arch/arm/include/asm/system.h b/arch/arm/include/asm/system.h
-index b118a42..57c7618 100644
---- a/arch/arm/include/asm/system.h
-+++ b/arch/arm/include/asm/system.h
-@@ -3,7 +3,11 @@
+diff --git a/common/image.c b/common/image.c
+index f3ec071..04cd86b 100644
+--- a/common/image.c
++++ b/common/image.c
+@@ -59,6 +59,7 @@ static table_entry_t arch_name[] = {
+ 	{ IH_ARCH_AVR32,	"avr32",	"AVR32",	},
+ 	{ IH_ARCH_NDS32,	"nds32",	"NDS32",	},
+ 	{ IH_ARCH_OPENRISC,	"or1k",		"OpenRISC 1000",},
++	{ IH_ARCH_ARM64,	"arm64",	"AArch64",	},
+ 	{ -1,			"",		"",		},
+ };
  
- #if __LINUX_ARM_ARCH__ >= 7
- #define isb() __asm__ __volatile__ ("isb" : : : "memory")
+diff --git a/include/image.h b/include/image.h
+index 07ab0f1..3e75d49 100644
+--- a/include/image.h
++++ b/include/image.h
+@@ -84,11 +84,16 @@
+ #define IH_ARCH_SANDBOX		19	/* Sandbox architecture (test only) */
+ #define IH_ARCH_NDS32		20	/* ANDES Technology - NDS32  */
+ #define IH_ARCH_OPENRISC	21	/* OpenRISC 1000  */
++#define IH_ARCH_ARM64		22	/* ARM64	*/
+ 
+ #if defined(__PPC__)
+ #define IH_ARCH IH_ARCH_PPC
+ #elif defined(__ARM__)
 +#ifdef CONFIG_CPU_64v8
-+#define dsb() __asm__ __volatile__ ("dsb sy" : : : "memory")
++#define IH_ARCH IH_ARCH_ARM64
 +#else
- #define dsb() __asm__ __volatile__ ("dsb" : : : "memory")
+ #define IH_ARCH IH_ARCH_ARM
 +#endif
- #define dmb() __asm__ __volatile__ ("dmb" : : : "memory")
- #elif defined(CONFIG_CPU_XSC3) || __LINUX_ARM_ARCH__ == 6
- #define isb() __asm__ __volatile__ ("mcr p15, 0, %0, c7, c5, 4" \
-@@ -57,17 +61,58 @@
- #define CR_TE   (1 << 30)	/* Thumb exception enable		*/
- 
- #ifndef __ASSEMBLY__
-+#if __LINUX_ARM_ARCH__ >= 7
-+static inline unsigned int current_el(void)
-+{
-+	unsigned int el;
-+	asm volatile("mrs %0, CurrentEL" : "=r" (el) : : "cc");
-+	return el >> 2;
-+}
-+
-+static inline unsigned long read_mpidr(void)
-+{
-+	unsigned long val;
-+
-+	asm volatile("mrs %0, mpidr_el1" : "=r" (val));
-+
-+	return val;
-+}
-+#endif
- static inline unsigned int get_cr(void)
- {
- 	unsigned int val;
-+
-+#ifdef CONFIG_CPU_64v8
-+	unsigned int el = current_el();
-+	if (el == 1)
-+		asm volatile("mrs %0, sctlr_el1" : "=r" (val) : : "cc");
-+	else if (el == 2)
-+		asm volatile("mrs %0, sctlr_el2" : "=r" (val) : : "cc");
-+	else
-+		asm volatile("mrs %0, sctlr_el3" : "=r" (val) : : "cc");
-+#else
- 	asm volatile ("mrc p15, 0, %0, c1, c0, 0  @ get CR" : "=r" (val) : : "cc");
-+#endif
-+
- 	return val;
- }
- 
- static inline void set_cr(unsigned int val)
- {
-+#ifdef CONFIG_CPU_64v8
-+	unsigned int el;
-+
-+	el = current_el();
-+	if (el == 1)
-+		asm volatile("msr sctlr_el1, %0" : : "r" (val) : "cc");
-+	else if (el == 2)
-+		asm volatile("msr sctlr_el2, %0" : : "r" (val) : "cc");
-+	else
-+		asm volatile("msr sctlr_el3, %0" : : "r" (val) : "cc");
-+#else
- 	asm volatile("mcr p15, 0, %0, c1, c0, 0 @ set CR"
- 	  : : "r" (val) : "cc");
-+#endif
- 	isb();
- }
- 
-@@ -90,7 +135,6 @@ static inline void set_vbar(unsigned int vbar)
- static inline unsigned int get_vbar(void) { return 0; }
- static inline void set_vbar(unsigned int vbar) {}
- #endif
--
- #endif
- 
- #endif /* __ASM_ARM_SYSTEM_H */
+ #elif defined(__I386__) || defined(__x86_64__) || defined(__i386__)
+ #define IH_ARCH IH_ARCH_I386
+ #elif defined(__mips__)
 -- 
 2.1.0
 
