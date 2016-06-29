@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wm0-x241.google.com ([2a00:1450:400c:c09::241])
- by casper.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bIAmK-0001Ge-D9
- for barebox@lists.infradead.org; Wed, 29 Jun 2016 08:23:25 +0000
-Received: by mail-wm0-x241.google.com with SMTP id 187so12392026wmz.1
- for <barebox@lists.infradead.org>; Wed, 29 Jun 2016 01:23:05 -0700 (PDT)
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bIAmE-0003U0-Cm
+ for barebox@lists.infradead.org; Wed, 29 Jun 2016 08:23:21 +0000
+Received: by mail-wm0-x241.google.com with SMTP id 187so12391307wmz.1
+ for <barebox@lists.infradead.org>; Wed, 29 Jun 2016 01:22:58 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Wed, 29 Jun 2016 10:22:19 +0200
-Message-Id: <1467188540-76509-13-git-send-email-poggi.raph@gmail.com>
+Date: Wed, 29 Jun 2016 10:22:12 +0200
+Message-Id: <1467188540-76509-6-git-send-email-poggi.raph@gmail.com>
 In-Reply-To: <1467188540-76509-1-git-send-email-poggi.raph@gmail.com>
 References: <1467188540-76509-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,31 +23,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 12/13] arm: include: swab: use rigth assembly for armv8
+Subject: [PATCH v4 05/13] arm: include: system: add arm64 helper functions
 To: barebox@lists.infradead.org
 Cc: Raphael Poggi <poggi.raph@gmail.com>
 
 Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
 ---
- arch/arm/include/asm/swab.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/include/asm/system.h | 46 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 45 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/swab.h b/arch/arm/include/asm/swab.h
-index 9997ad2..3795437 100644
---- a/arch/arm/include/asm/swab.h
-+++ b/arch/arm/include/asm/swab.h
-@@ -33,7 +33,11 @@ static inline __attribute_const__ __u16 __arch_swab16(__u16 x)
+diff --git a/arch/arm/include/asm/system.h b/arch/arm/include/asm/system.h
+index b118a42..57c7618 100644
+--- a/arch/arm/include/asm/system.h
++++ b/arch/arm/include/asm/system.h
+@@ -3,7 +3,11 @@
  
- static inline __attribute_const__ __u32 __arch_swab32(__u32 x)
- {
-+#if __LINUX_ARM_ARCH__ == 8
-+	__asm__ ("rev %w0, %w1" : "=r" (x) : "r" (x));
+ #if __LINUX_ARM_ARCH__ >= 7
+ #define isb() __asm__ __volatile__ ("isb" : : : "memory")
++#ifdef CONFIG_CPU_64v8
++#define dsb() __asm__ __volatile__ ("dsb sy" : : : "memory")
 +#else
- 	__asm__ ("rev %0, %1" : "=r" (x) : "r" (x));
+ #define dsb() __asm__ __volatile__ ("dsb" : : : "memory")
 +#endif
- 	return x;
+ #define dmb() __asm__ __volatile__ ("dmb" : : : "memory")
+ #elif defined(CONFIG_CPU_XSC3) || __LINUX_ARM_ARCH__ == 6
+ #define isb() __asm__ __volatile__ ("mcr p15, 0, %0, c7, c5, 4" \
+@@ -57,17 +61,58 @@
+ #define CR_TE   (1 << 30)	/* Thumb exception enable		*/
+ 
+ #ifndef __ASSEMBLY__
++#if __LINUX_ARM_ARCH__ >= 7
++static inline unsigned int current_el(void)
++{
++	unsigned int el;
++	asm volatile("mrs %0, CurrentEL" : "=r" (el) : : "cc");
++	return el >> 2;
++}
++
++static inline unsigned long read_mpidr(void)
++{
++	unsigned long val;
++
++	asm volatile("mrs %0, mpidr_el1" : "=r" (val));
++
++	return val;
++}
++#endif
+ static inline unsigned int get_cr(void)
+ {
+ 	unsigned int val;
++
++#ifdef CONFIG_CPU_64v8
++	unsigned int el = current_el();
++	if (el == 1)
++		asm volatile("mrs %0, sctlr_el1" : "=r" (val) : : "cc");
++	else if (el == 2)
++		asm volatile("mrs %0, sctlr_el2" : "=r" (val) : : "cc");
++	else
++		asm volatile("mrs %0, sctlr_el3" : "=r" (val) : : "cc");
++#else
+ 	asm volatile ("mrc p15, 0, %0, c1, c0, 0  @ get CR" : "=r" (val) : : "cc");
++#endif
++
+ 	return val;
  }
- #define __arch_swab32 __arch_swab32
+ 
+ static inline void set_cr(unsigned int val)
+ {
++#ifdef CONFIG_CPU_64v8
++	unsigned int el;
++
++	el = current_el();
++	if (el == 1)
++		asm volatile("msr sctlr_el1, %0" : : "r" (val) : "cc");
++	else if (el == 2)
++		asm volatile("msr sctlr_el2, %0" : : "r" (val) : "cc");
++	else
++		asm volatile("msr sctlr_el3, %0" : : "r" (val) : "cc");
++#else
+ 	asm volatile("mcr p15, 0, %0, c1, c0, 0 @ set CR"
+ 	  : : "r" (val) : "cc");
++#endif
+ 	isb();
+ }
+ 
+@@ -90,7 +135,6 @@ static inline void set_vbar(unsigned int vbar)
+ static inline unsigned int get_vbar(void) { return 0; }
+ static inline void set_vbar(unsigned int vbar) {}
+ #endif
+-
+ #endif
+ 
+ #endif /* __ASM_ARM_SYSTEM_H */
 -- 
 2.1.0
 
