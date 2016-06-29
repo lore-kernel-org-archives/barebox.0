@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-f66.google.com ([74.125.82.66])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bIAmI-0003VN-8M
- for barebox@lists.infradead.org; Wed, 29 Jun 2016 08:23:23 +0000
-Received: by mail-wm0-f66.google.com with SMTP id c82so12404644wme.3
- for <barebox@lists.infradead.org>; Wed, 29 Jun 2016 01:23:01 -0700 (PDT)
+Received: from mail-wm0-x241.google.com ([2a00:1450:400c:c09::241])
+ by casper.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bIAmK-0001Ge-D9
+ for barebox@lists.infradead.org; Wed, 29 Jun 2016 08:23:25 +0000
+Received: by mail-wm0-x241.google.com with SMTP id 187so12392026wmz.1
+ for <barebox@lists.infradead.org>; Wed, 29 Jun 2016 01:23:05 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Wed, 29 Jun 2016 10:22:16 +0200
-Message-Id: <1467188540-76509-10-git-send-email-poggi.raph@gmail.com>
+Date: Wed, 29 Jun 2016 10:22:19 +0200
+Message-Id: <1467188540-76509-13-git-send-email-poggi.raph@gmail.com>
 In-Reply-To: <1467188540-76509-1-git-send-email-poggi.raph@gmail.com>
 References: <1467188540-76509-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,55 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 09/13] arm: cpu: disable code portion in armv8 case
+Subject: [PATCH v4 12/13] arm: include: swab: use rigth assembly for armv8
 To: barebox@lists.infradead.org
 Cc: Raphael Poggi <poggi.raph@gmail.com>
 
-Enclosed by #if directive OMAP specific code
-and mmu_disable (ARMv8 code will implemented it somewhere else).
-
 Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
 ---
- arch/arm/cpu/cpu.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm/include/asm/swab.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
-index eb12166..cc54324 100644
---- a/arch/arm/cpu/cpu.c
-+++ b/arch/arm/cpu/cpu.c
-@@ -68,6 +68,7 @@ int icache_status(void)
- 	return (get_cr () & CR_I) != 0;
- }
+diff --git a/arch/arm/include/asm/swab.h b/arch/arm/include/asm/swab.h
+index 9997ad2..3795437 100644
+--- a/arch/arm/include/asm/swab.h
++++ b/arch/arm/include/asm/swab.h
+@@ -33,7 +33,11 @@ static inline __attribute_const__ __u16 __arch_swab16(__u16 x)
  
-+#if __LINUX_ARM_ARCH__ <= 7
- /*
-  * SoC like the ux500 have the l2x0 always enable
-  * with or without MMU enable
-@@ -86,6 +87,7 @@ void mmu_disable(void)
- 	}
- 	__mmu_cache_off();
- }
+ static inline __attribute_const__ __u32 __arch_swab32(__u32 x)
+ {
++#if __LINUX_ARM_ARCH__ == 8
++	__asm__ ("rev %w0, %w1" : "=r" (x) : "r" (x));
++#else
+ 	__asm__ ("rev %0, %1" : "=r" (x) : "r" (x));
 +#endif
- 
- /**
-  * Disable MMU and D-cache, flush caches
-@@ -100,6 +102,8 @@ static void arch_shutdown(void)
- 
- 	mmu_disable();
- 	flush_icache();
-+
-+#if __LINUX_ARM_ARCH__ <= 7
- 	/*
- 	 * barebox normally does not use interrupts, but some functionalities
- 	 * (eg. OMAP4_USBBOOT) require them enabled. So be sure interrupts are
-@@ -108,6 +112,7 @@ static void arch_shutdown(void)
- 	__asm__ __volatile__("mrs %0, cpsr" : "=r"(r));
- 	r |= PSR_I_BIT;
- 	__asm__ __volatile__("msr cpsr, %0" : : "r"(r));
-+#endif
+ 	return x;
  }
- archshutdown_exitcall(arch_shutdown);
- 
+ #define __arch_swab32 __arch_swab32
 -- 
 2.1.0
 
