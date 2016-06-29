@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
+Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bIAm9-0003Sn-9k
- for barebox@lists.infradead.org; Wed, 29 Jun 2016 08:23:14 +0000
-Received: by mail-wm0-x243.google.com with SMTP id 187so12390854wmz.1
- for <barebox@lists.infradead.org>; Wed, 29 Jun 2016 01:22:52 -0700 (PDT)
+ id 1bIAm8-0003SF-61
+ for barebox@lists.infradead.org; Wed, 29 Jun 2016 08:23:13 +0000
+Received: by mail-wm0-x244.google.com with SMTP id c82so12403715wme.3
+ for <barebox@lists.infradead.org>; Wed, 29 Jun 2016 01:22:51 -0700 (PDT)
+Received: from localhost.localdomain ([194.167.244.97])
+ by smtp.gmail.com with ESMTPSA id d4sm2375478wjb.47.2016.06.29.01.22.48
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+ Wed, 29 Jun 2016 01:22:48 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Wed, 29 Jun 2016 10:22:08 +0200
-Message-Id: <1467188540-76509-2-git-send-email-poggi.raph@gmail.com>
-In-Reply-To: <1467188540-76509-1-git-send-email-poggi.raph@gmail.com>
-References: <1467188540-76509-1-git-send-email-poggi.raph@gmail.com>
+Date: Wed, 29 Jun 2016 10:22:07 +0200
+Message-Id: <1467188540-76509-1-git-send-email-poggi.raph@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,132 +22,141 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 01/13] arm64: add armv8 Kconfig entries
+Subject: [PATCH v4 0/12] Add basic support for arm64
 To: barebox@lists.infradead.org
-Cc: Raphael Poggi <poggi.raph@gmail.com>
 
-Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
----
- arch/arm/Kconfig     | 23 +++++++++++++++++++++++
- arch/arm/cpu/Kconfig | 33 ++++++++++++++++++++++++++++++++-
- 2 files changed, 55 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 1fc887b..986fdaa 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -315,6 +315,29 @@ config ARM_BOARD_APPEND_ATAG
- 
- endmenu
- 
-+choice
-+	prompt "Barebox code model"
-+	help
-+	  You should only select this option if you have a workload that
-+	  actually benefits from 64-bit processing or if your machine has
-+	  large memory. You will only be presented a single option in this
-+	  menu if your system does not support both 32-bit and 64-bit modes.
-+
-+config 32BIT
-+	bool "32-bit barebox"
-+	depends on CPU_SUPPORTS_32BIT_KERNEL && SYS_SUPPORTS_32BIT_KERNEL
-+	help
-+	  Select this option if you want to build a 32-bit barebox.
-+
-+config 64BIT
-+	bool "64-bit barebox"
-+	depends on CPU_SUPPORTS_64BIT_KERNEL && SYS_SUPPORTS_64BIT_KERNEL
-+	select ARCH_DMA_ADDR_T_64BIT
-+	help
-+	  Select this option if you want to build a 64-bit barebox.
-+
-+endchoice
-+
- menu "ARM specific settings"
- 
- config ARM_OPTIMZED_STRING_FUNCTIONS
-diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
-index 4f5d9b6..450a6d5 100644
---- a/arch/arm/cpu/Kconfig
-+++ b/arch/arm/cpu/Kconfig
-@@ -1,8 +1,14 @@
- comment "Processor Type"
- 
-+config PHYS_ADDR_T_64BIT
-+	bool
-+
- config CPU_32
- 	bool
--	default y
-+
-+config CPU_64
-+	bool
-+	select PHYS_ADDR_T_64BIT
- 
- # Select CPU types depending on the architecture selected. This selects
- # which CPUs we support in the kernel image, and the compiler instruction
-@@ -69,6 +75,12 @@ config CPU_V7
- 	bool
- 	select CPU_32v7
- 
-+# ARMv8
-+config CPU_V8
-+	bool
-+	select CPU_64v8
-+	select CPU_SUPPORTS_64BIT_KERNEL
-+
- config CPU_XSC3
-         bool
-         select CPU_32v4T
-@@ -84,15 +96,23 @@ config CPU_XSCALE
- # This defines the compiler instruction set which depends on the machine type.
- config CPU_32v4T
- 	bool
-+	select CPU_32
- 
- config CPU_32v5
- 	bool
-+	select CPU_32
- 
- config CPU_32v6
- 	bool
-+	select CPU_32
- 
- config CPU_32v7
- 	bool
-+	select CPU_32
-+
-+config CPU_64v8
-+	bool
-+	select CPU_64
- 
- comment "processor features"
- 
-@@ -124,3 +144,14 @@ config CACHE_L2X0
- 	bool "Enable L2x0 PrimeCell"
- 	depends on MMU && ARCH_HAS_L2X0
- 
-+config SYS_SUPPORTS_32BIT_KERNEL
-+	bool
-+
-+config SYS_SUPPORTS_64BIT_KERNEL
-+	bool
-+
-+config CPU_SUPPORTS_32BIT_KERNEL
-+	bool
-+
-+config CPU_SUPPORTS_64BIT_KERNEL
-+	bool
--- 
-2.1.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Q2hhbmdlIHNpbmNlIHYzOgoJUEFUQ0ggMi8xNAlyZW1vdmUgaHVuayBiZWxvbmdpbmcgdG8gUEFU
+Q0ggMy8xNAoKCVBBVENIIDMvMTQJY3JlYXRlIGEgbGliLyBmb3IgY29tbW9uIGNvZGUgYW5kIGxp
+YjMyLyBsaWI2NC8KCglQQVRDSCA0LzE0CWFkZCBzZXR1cGNfNjQsIGZvciBub3cgc2V0dXBfYygp
+IG9ubHkgbWVtc2V0IGJzcwoKCVBBVENIIDEyLzE0CXVzZSBkZWZhdWx0IG1lbW9yeSBsYXlvdXQs
+IGNoYW5jZSBURVhUX0JBU0UgYWRkcmVzcyB0byBsZXQKCQkJbWFsbG9jIHNwYWNlIGJlbG93CgpD
+aGFuZ2Ugc2luY2UgdjI6CglQQVRDSCAxLzE0CWFkZCBQSFlTX0FERFJfVF82NEJJVCBjb25maWcK
+CglQQVRDSCAzLzE0CXJlbW92ZSBtb2R1bGVzLmMgYW5kIGNsZWFuIGF0YWdzIGZ1bmN0aW9ucyBp
+biBhcm1saW51eC5jLAoJCQlhbmQgZml4IGFsc28gcGFyYW1ldGVycyBwYXNzZWQgdG8gbGludXgg
+a2VybmVsLgoKCVBBVENIIDEyLzE0CW1vdmUgbG93bGV2ZWwgZmlsZSBmcm9tIG1hY2gtcWVtdS8g
+dG8gYm9hcmRzLyAobGlrZSBvdGhlcnMgYm9hcmRzKQoJCQlzcGxpdCBkcmFtIGFuZCBmbGFzaCBp
+bml0CgkJCWluY3JlYXNlIGRyYW0vZmxhc2ggc2l6ZQoKCVBBVENIIDEzLzE0CW5ldyBwYXRjaCwg
+aW4gY2FzZSBvZiBhcm12OCwgc3dhYiBuZWVkIHRvIGJlIGRvbmUgb24gMzItYml0IHdpZGUgcmVn
+aXN0ZXIKCQkJb3RoZXJ3aXNlIHN3YXBwaW5nIHRoZSB2YWx1ZTogIjB4QUFBQUJCQkIiIHdpbGwg
+YmVjb21lICIweEFBQUFCQkJCMDAwMDAwMDAiCgkJCWFuZCBzZWUgYXMgYSBudWxsIHZhbHVlIGlu
+IHVpbnQzMl90IHZhcmlhYmxlLgoKCVBBVENIIDE0LzE0CW5ldyBwYXRjaCwgYWRkIGRlZmluZSB0
+byBoYW5kbGUgYXJtNjQgdWltYWdlIGZvcm1hdAoKCkNoYW5nZSBzaW5jZSB2MToKCVBBVENIIDIv
+MTI6CXJlbW92ZSBodW5rIHdoaWNoIGJlbG9uZ3MgdG8gcGF0Y2ggYWRkaW5nIG1hY2gtcWVtdQoK
+CVBBVENIIDMvMTI6CXJlbW92ZSB1bnVzZWQgZmlsZXMKCglQQVRDSCA0LzEyOgljcmVhdGUgbG93
+bGV2ZWw2NAoKCVBBVENIIDExLzEyOgljcmVhdGUgcGd0YWJsZXM2NCAobm90aGluZyBpbiBjb21t
+b24gd2l0aCB0aGUgYXJtMzIgdmVyc2lvbikKCglQQVRDSCAxMi8xMjoJcmVuYW1lICJtYWNoLXZp
+cnQiID0+ICJtYWNoLXFlbXUiCgkJCXJlbmFtZSBib2FyZCAicWVtdV92aXJ0NjQiCgkJCXJlbW92
+ZSBib2FyZCBlbnYgZmlsZXMKCgpIZWxsbywKClRoaXMgcGF0Y2ggc2VyaWVzIGludHJvZHVjZXMg
+YSBiYXNpYyBzdXBwb3J0IGZvciBhcm02NC4KClRoZSBhcm02NCBjb2RlIGlzIG1lcmdlZCBpbiB0
+aGUgY3VycmVudCBhcmNoL2FybSBkaXJlY3RvcnkuCkkgdHJ5IHRvIGJlIGl0ZXJhdGl2ZSBpbiB0
+aGUgbWVyZ2UgcHJvY2VzcywgYW5kIGZpbmQgY29ycmVjdCBzb2x1dGlvbnMKdG8gaGFuZGxlIGJv
+dGggYXJjaGl0ZWN0dXJlIGF0IHNvbWUgcGxhY2VzLgoKSSB0ZXN0IHRoZSBwYXRjaCBzZXJpZXMg
+YnkgY29tcGlsaW5nIGFybTY0IHZpcnQgbWFjaGluZSBhbmQgYXJtMzIgdmV4cHJlc3MtYTkgYW5k
+IHRlc3QgaXQKaW4gcWVtdSwgZXZlcnl0aGluZyBzZWVtcyB0byB3b3JrLgoKVGhhbmtzLApSYXBo
+YcOrbAoKIGFyY2gvYXJtL0tjb25maWcgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAyOCAr
+KysKIGFyY2gvYXJtL01ha2VmaWxlICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA0MSArKyst
+CiBhcmNoL2FybS9ib2FyZHMvTWFrZWZpbGUgICAgICAgICAgICAgICAgICAgfCAgIDEgKwogYXJj
+aC9hcm0vYm9hcmRzL3FlbXUtdmlydDY0L0tjb25maWcgICAgICAgIHwgICA4ICsKIGFyY2gvYXJt
+L2JvYXJkcy9xZW11LXZpcnQ2NC9NYWtlZmlsZSAgICAgICB8ICAgMiArCiBhcmNoL2FybS9ib2Fy
+ZHMvcWVtdS12aXJ0NjQvZW52L2NvbmZpZyAgICAgfCAgIDggKwogYXJjaC9hcm0vYm9hcmRzL3Fl
+bXUtdmlydDY0L2luaXQuYyAgICAgICAgIHwgIDcyICsrKysrKwogYXJjaC9hcm0vYm9hcmRzL3Fl
+bXUtdmlydDY0L2xvd2xldmVsLmMgICAgIHwgIDE5ICsrCiBhcmNoL2FybS9jb25maWdzL3FlbXVf
+dmlydDY0X2RlZmNvbmZpZyAgICAgfCAgNDcgKysrKwogYXJjaC9hcm0vY3B1L0tjb25maWcgICAg
+ICAgICAgICAgICAgICAgICAgIHwgIDMzICsrLQogYXJjaC9hcm0vY3B1L01ha2VmaWxlICAgICAg
+ICAgICAgICAgICAgICAgIHwgIDI4ICsrLQogYXJjaC9hcm0vY3B1L2NhY2hlLWFybXY4LlMgICAg
+ICAgICAgICAgICAgIHwgMTY4ICsrKysrKysrKysrKysrCiBhcmNoL2FybS9jcHUvY2FjaGUuYyAg
+ICAgICAgICAgICAgICAgICAgICAgfCAgMTkgKysKIGFyY2gvYXJtL2NwdS9jcHUuYyAgICAgICAg
+ICAgICAgICAgICAgICAgICB8ICAgNyArCiBhcmNoL2FybS9jcHUvY3B1aW5mby5jICAgICAgICAg
+ICAgICAgICAgICAgfCAgNTggKysrKy0KIGFyY2gvYXJtL2NwdS9leGNlcHRpb25zXzY0LlMgICAg
+ICAgICAgICAgICB8IDEyNyArKysrKysrKysrKwogYXJjaC9hcm0vY3B1L2ludGVycnVwdHMuYyAg
+ICAgICAgICAgICAgICAgIHwgIDQ3ICsrKysKIGFyY2gvYXJtL2NwdS9sb3dsZXZlbF82NC5TICAg
+ICAgICAgICAgICAgICB8ICA0MCArKysrCiBhcmNoL2FybS9jcHUvbW11LmggICAgICAgICAgICAg
+ICAgICAgICAgICAgfCAgNTQgKysrKysKIGFyY2gvYXJtL2NwdS9tbXVfNjQuYyAgICAgICAgICAg
+ICAgICAgICAgICB8IDMzMSArKysrKysrKysrKysrKysrKysrKysrKysrKysKIGFyY2gvYXJtL2Nw
+dS9zZXR1cGNfNjQuUyAgICAgICAgICAgICAgICAgICB8ICAxOCArKwogYXJjaC9hcm0vaW5jbHVk
+ZS9hc20vYml0b3BzLmggICAgICAgICAgICAgIHwgICA1ICsKIGFyY2gvYXJtL2luY2x1ZGUvYXNt
+L2NhY2hlLmggICAgICAgICAgICAgICB8ICAgOSArCiBhcmNoL2FybS9pbmNsdWRlL2FzbS9tbXUu
+aCAgICAgICAgICAgICAgICAgfCAgMTQgKy0KIGFyY2gvYXJtL2luY2x1ZGUvYXNtL3BndGFibGU2
+NC5oICAgICAgICAgICB8IDE0MCArKysrKysrKysrKysKIGFyY2gvYXJtL2luY2x1ZGUvYXNtL3N3
+YWIuaCAgICAgICAgICAgICAgICB8ICAgNCArCiBhcmNoL2FybS9pbmNsdWRlL2FzbS9zeXN0ZW0u
+aCAgICAgICAgICAgICAgfCAgNDYgKysrLQogYXJjaC9hcm0vaW5jbHVkZS9hc20vc3lzdGVtX2lu
+Zm8uaCAgICAgICAgIHwgIDM4ICsrKysKIGFyY2gvYXJtL2xpYi8uZ2l0aWdub3JlICAgICAgICAg
+ICAgICAgICAgICB8ICAgMSAtCiBhcmNoL2FybS9saWIvTWFrZWZpbGUgICAgICAgICAgICAgICAg
+ICAgICAgfCAgMjcgLS0tCiBhcmNoL2FybS9saWIvYXJtbGludXguYyAgICAgICAgICAgICAgICAg
+ICAgfCAyODEgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGFyY2gvYXJtL2xpYi9hc2hsZGkzLlMg
+ICAgICAgICAgICAgICAgICAgICB8ICA1MCAtLS0tCiBhcmNoL2FybS9saWIvYXNocmRpMy5TICAg
+ICAgICAgICAgICAgICAgICAgfCAgNTAgLS0tLQogYXJjaC9hcm0vbGliL2JhcmVib3gubGRzLlMg
+ICAgICAgICAgICAgICAgIHwgMTI2IC0tLS0tLS0tLS0tCiBhcmNoL2FybS9saWIvYm9vdHouYyAg
+ICAgICAgICAgICAgICAgICAgICAgfCAxMzYgLS0tLS0tLS0tLS0KIGFyY2gvYXJtL2xpYi9jb3B5
+X3RlbXBsYXRlLlMgICAgICAgICAgICAgICB8IDI2OCAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBh
+cmNoL2FybS9saWIvZGl2MC5jICAgICAgICAgICAgICAgICAgICAgICAgfCAgMjcgLS0tCiBhcmNo
+L2FybS9saWIvZmluZGJpdC5TICAgICAgICAgICAgICAgICAgICAgfCAxOTcgLS0tLS0tLS0tLS0t
+LS0tLQogYXJjaC9hcm0vbGliL2lvLXJlYWRzYi5TICAgICAgICAgICAgICAgICAgIHwgMTI1IC0t
+LS0tLS0tLS0KIGFyY2gvYXJtL2xpYi9pby1yZWFkc2wuUyAgICAgICAgICAgICAgICAgICB8ICA4
+MSAtLS0tLS0tCiBhcmNoL2FybS9saWIvaW8tcmVhZHN3LWFybXY0LlMgICAgICAgICAgICAgfCAx
+MzMgLS0tLS0tLS0tLS0KIGFyY2gvYXJtL2xpYi9pby13cml0ZXNiLlMgICAgICAgICAgICAgICAg
+ICB8ICA5NiAtLS0tLS0tLQogYXJjaC9hcm0vbGliL2lvLXdyaXRlc2wuUyAgICAgICAgICAgICAg
+ICAgIHwgIDY5IC0tLS0tLQogYXJjaC9hcm0vbGliL2lvLXdyaXRlc3ctYXJtdjQuUyAgICAgICAg
+ICAgIHwgMTAyIC0tLS0tLS0tLQogYXJjaC9hcm0vbGliL2lvLmMgICAgICAgICAgICAgICAgICAg
+ICAgICAgIHwgIDUwIC0tLS0KIGFyY2gvYXJtL2xpYi9saWIxZnVuY3MuUyAgICAgICAgICAgICAg
+ICAgICB8IDM1MSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogYXJjaC9hcm0vbGliL2xz
+aHJkaTMuUyAgICAgICAgICAgICAgICAgICAgIHwgIDUwIC0tLS0KIGFyY2gvYXJtL2xpYi9tZW1j
+cHkuUyAgICAgICAgICAgICAgICAgICAgICB8ICA2NCAtLS0tLS0KIGFyY2gvYXJtL2xpYi9tZW1z
+ZXQuUyAgICAgICAgICAgICAgICAgICAgICB8IDEyNCAtLS0tLS0tLS0tCiBhcmNoL2FybS9saWIv
+bW9kdWxlLmMgICAgICAgICAgICAgICAgICAgICAgfCAgOTggLS0tLS0tLS0KIGFyY2gvYXJtL2xp
+Yi9wYmwubGRzLlMgICAgICAgICAgICAgICAgICAgICB8ICA5NiAtLS0tLS0tLQogYXJjaC9hcm0v
+bGliL3J1bnRpbWUtb2Zmc2V0LlMgICAgICAgICAgICAgIHwgIDUyIC0tLS0tCiBhcmNoL2FybS9s
+aWIvc2VtaWhvc3RpbmctdHJhcC5TICAgICAgICAgICAgfCAgMjggLS0tCiBhcmNoL2FybS9saWIv
+c2VtaWhvc3RpbmcuYyAgICAgICAgICAgICAgICAgfCAyMjcgLS0tLS0tLS0tLS0tLS0tLS0tLQog
+YXJjaC9hcm0vbGliL3Vud2luZC5jICAgICAgICAgICAgICAgICAgICAgIHwgMzQ5IC0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0KIGFyY2gvYXJtL2xpYjMyLy5naXRpZ25vcmUgICAgICAgICAg
+ICAgICAgICB8ICAgMSArCiBhcmNoL2FybS9saWIzMi9NYWtlZmlsZSAgICAgICAgICAgICAgICAg
+ICAgfCAgMjcgKysrCiBhcmNoL2FybS9saWIzMi9hcm1saW51eC5jICAgICAgICAgICAgICAgICAg
+fCAyODEgKysrKysrKysrKysrKysrKysrKysrKysKIGFyY2gvYXJtL2xpYjMyL2FzaGxkaTMuUyAg
+ICAgICAgICAgICAgICAgICB8ICA1MCArKysrCiBhcmNoL2FybS9saWIzMi9hc2hyZGkzLlMgICAg
+ICAgICAgICAgICAgICAgfCAgNTAgKysrKwogYXJjaC9hcm0vbGliMzIvYmFyZWJveC5sZHMuUyAg
+ICAgICAgICAgICAgIHwgMTI2ICsrKysrKysrKysrCiBhcmNoL2FybS9saWIzMi9ib290ei5jICAg
+ICAgICAgICAgICAgICAgICAgfCAxMzYgKysrKysrKysrKysKIGFyY2gvYXJtL2xpYjMyL2NvcHlf
+dGVtcGxhdGUuUyAgICAgICAgICAgICB8IDI2OCArKysrKysrKysrKysrKysrKysrKysrCiBhcmNo
+L2FybS9saWIzMi9kaXYwLmMgICAgICAgICAgICAgICAgICAgICAgfCAgMjcgKysrCiBhcmNoL2Fy
+bS9saWIzMi9maW5kYml0LlMgICAgICAgICAgICAgICAgICAgfCAxOTcgKysrKysrKysrKysrKysr
+KwogYXJjaC9hcm0vbGliMzIvaW8tcmVhZHNiLlMgICAgICAgICAgICAgICAgIHwgMTI1ICsrKysr
+KysrKysKIGFyY2gvYXJtL2xpYjMyL2lvLXJlYWRzbC5TICAgICAgICAgICAgICAgICB8ICA4MSAr
+KysrKysrCiBhcmNoL2FybS9saWIzMi9pby1yZWFkc3ctYXJtdjQuUyAgICAgICAgICAgfCAxMzMg
+KysrKysrKysrKysKIGFyY2gvYXJtL2xpYjMyL2lvLXdyaXRlc2IuUyAgICAgICAgICAgICAgICB8
+ICA5NiArKysrKysrKwogYXJjaC9hcm0vbGliMzIvaW8td3JpdGVzbC5TICAgICAgICAgICAgICAg
+IHwgIDY5ICsrKysrKwogYXJjaC9hcm0vbGliMzIvaW8td3JpdGVzdy1hcm12NC5TICAgICAgICAg
+IHwgMTAyICsrKysrKysrKwogYXJjaC9hcm0vbGliMzIvaW8uYyAgICAgICAgICAgICAgICAgICAg
+ICAgIHwgIDUwICsrKysKIGFyY2gvYXJtL2xpYjMyL2xpYjFmdW5jcy5TICAgICAgICAgICAgICAg
+ICB8IDM1MSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKwogYXJjaC9hcm0vbGliMzIvbHNo
+cmRpMy5TICAgICAgICAgICAgICAgICAgIHwgIDUwICsrKysKIGFyY2gvYXJtL2xpYjMyL21lbWNw
+eS5TICAgICAgICAgICAgICAgICAgICB8ICA2NCArKysrKysKIGFyY2gvYXJtL2xpYjMyL21lbXNl
+dC5TICAgICAgICAgICAgICAgICAgICB8IDEyNCArKysrKysrKysrCiBhcmNoL2FybS9saWIzMi9t
+b2R1bGUuYyAgICAgICAgICAgICAgICAgICAgfCAgOTggKysrKysrKysKIGFyY2gvYXJtL2xpYjMy
+L3BibC5sZHMuUyAgICAgICAgICAgICAgICAgICB8ICA5NiArKysrKysrKwogYXJjaC9hcm0vbGli
+MzIvcnVudGltZS1vZmZzZXQuUyAgICAgICAgICAgIHwgIDUyICsrKysrCiBhcmNoL2FybS9saWIz
+Mi9zZW1paG9zdGluZy10cmFwLlMgICAgICAgICAgfCAgMjggKysrCiBhcmNoL2FybS9saWIzMi9z
+ZW1paG9zdGluZy5jICAgICAgICAgICAgICAgfCAyMjcgKysrKysrKysrKysrKysrKysrKwogYXJj
+aC9hcm0vbGliMzIvdW53aW5kLmMgICAgICAgICAgICAgICAgICAgIHwgMzQ5ICsrKysrKysrKysr
+KysrKysrKysrKysrKysrKysKIGFyY2gvYXJtL2xpYjY0L01ha2VmaWxlICAgICAgICAgICAgICAg
+ICAgICB8ICAgOSArCiBhcmNoL2FybS9saWI2NC9hcm1saW51eC5jICAgICAgICAgICAgICAgICAg
+fCAgNTAgKysrKwogYXJjaC9hcm0vbGliNjQvYmFyZWJveC5sZHMuUyAgICAgICAgICAgICAgIHwg
+MTI1ICsrKysrKysrKysKIGFyY2gvYXJtL2xpYjY0L2NvcHlfdGVtcGxhdGUuUyAgICAgICAgICAg
+ICB8IDE5MiArKysrKysrKysrKysrKysrCiBhcmNoL2FybS9saWI2NC9kaXYwLmMgICAgICAgICAg
+ICAgICAgICAgICAgfCAgMjcgKysrCiBhcmNoL2FybS9saWI2NC9tZW1jcHkuUyAgICAgICAgICAg
+ICAgICAgICAgfCAgNzQgKysrKysrCiBhcmNoL2FybS9saWI2NC9tZW1zZXQuUyAgICAgICAgICAg
+ICAgICAgICAgfCAyMTUgKysrKysrKysrKysrKysrKysrCiBhcmNoL2FybS9tYWNoLXFlbXUvS2Nv
+bmZpZyAgICAgICAgICAgICAgICAgfCAgMTggKysKIGFyY2gvYXJtL21hY2gtcWVtdS9NYWtlZmls
+ZSAgICAgICAgICAgICAgICB8ICAgMSArCiBhcmNoL2FybS9tYWNoLXFlbXUvaW5jbHVkZS9tYWNo
+L2RlYnVnX2xsLmggfCAgMjQgKysKIGFyY2gvYXJtL21hY2gtcWVtdS9pbmNsdWRlL21hY2gvZGV2
+aWNlcy5oICB8ICAxMyArKwogYXJjaC9hcm0vbWFjaC1xZW11L3ZpcnRfZGV2aWNlcy5jICAgICAg
+ICAgIHwgIDMwICsrKwogY29tbW9uL2ltYWdlLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IHwgICAxICsKIGluY2x1ZGUvaW1hZ2UuaCAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAg
+NSArCiA5NiBmaWxlcyBjaGFuZ2VkLCA1NDM2IGluc2VydGlvbnMoKyksIDMyNzYgZGVsZXRpb25z
+KC0pCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
+ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
+cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
