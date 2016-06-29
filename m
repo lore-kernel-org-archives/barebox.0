@@ -1,20 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ob0-x242.google.com ([2607:f8b0:4003:c01::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bI97b-00057x-1U
- for barebox@lists.infradead.org; Wed, 29 Jun 2016 06:37:15 +0000
-Received: by mail-ob0-x242.google.com with SMTP id s7so1430015obo.1
- for <barebox@lists.infradead.org>; Tue, 28 Jun 2016 23:36:54 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20160629060006.GR20657@pengutronix.de>
-References: <1466771041-89803-1-git-send-email-poggi.raph@gmail.com>
- <1466771041-89803-4-git-send-email-poggi.raph@gmail.com>
- <20160628064717.GJ20657@pengutronix.de>
- <CACqcpZD4DhBT6NpkpfsunU129BEnEzxdzPoZ7kg_-utfAaXT9w@mail.gmail.com>
- <20160629060006.GR20657@pengutronix.de>
-From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <poggi.raph@gmail.com>
-Date: Wed, 29 Jun 2016 08:36:14 +0200
-Message-ID: <CACqcpZCbZHG3zT_GFa5KzV1WGJj9hLZjDgtTKL_TLCxBn4gyeQ@mail.gmail.com>
+ id 1bI9ew-0005w3-R9
+ for barebox@lists.infradead.org; Wed, 29 Jun 2016 07:11:43 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 29 Jun 2016 09:11:20 +0200
+Message-Id: <1467184280-27124-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,130 +14,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 03/14] arm: introduce lib64 for arm64 related stuff
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] boot command: Make verbose/dryrun options work again
+To: Barebox List <barebox@lists.infradead.org>
 
-MjAxNi0wNi0yOSA4OjAwIEdNVCswMjowMCBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9u
-aXguZGU+Ogo+IE9uIFR1ZSwgSnVuIDI4LCAyMDE2IGF0IDA5OjE1OjA2QU0gKzAyMDAsIFJhcGhh
-w6tsIFBvZ2dpIHdyb3RlOgo+PiAyMDE2LTA2LTI4IDg6NDcgR01UKzAyOjAwIFNhc2NoYSBIYXVl
-ciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT46Cj4+ID4gT24gRnJpLCBKdW4gMjQsIDIwMTYgYXQg
-MDI6MjM6NTBQTSArMDIwMCwgUmFwaGFlbCBQb2dnaSB3cm90ZToKPj4gPj4gU2lnbmVkLW9mZi1i
-eTogUmFwaGFlbCBQb2dnaSA8cG9nZ2kucmFwaEBnbWFpbC5jb20+Cj4+ID4+IC0tLQo+PiA+PiAg
-YXJjaC9hcm0vbGliNjQvTWFrZWZpbGUgICAgICAgIHwgIDEwICsKPj4gPj4gIGFyY2gvYXJtL2xp
-YjY0L2FybWxpbnV4LmMgICAgICB8IDEwNCArKysrKysrKwo+PiA+PiAgYXJjaC9hcm0vbGliNjQv
-YXNtLW9mZnNldHMuYyAgIHwgIDE2ICsrCj4+ID4+ICBhcmNoL2FybS9saWI2NC9iYXJlYm94Lmxk
-cy5TICAgfCAxMjUgKysrKysrKysrCj4+ID4+ICBhcmNoL2FybS9saWI2NC9ib290bS5jICAgICAg
-ICAgfCA1NzIgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKPj4gPj4g
-IGFyY2gvYXJtL2xpYjY0L2NvcHlfdGVtcGxhdGUuUyB8IDE5MiArKysrKysrKysrKysrKwo+PiA+
-PiAgYXJjaC9hcm0vbGliNjQvZGl2MC5jICAgICAgICAgIHwgIDI3ICsrCj4+ID4+ICBhcmNoL2Fy
-bS9saWI2NC9tZW1jcHkuUyAgICAgICAgfCAgNzQgKysrKysrCj4+ID4+ICBhcmNoL2FybS9saWI2
-NC9tZW1zZXQuUyAgICAgICAgfCAyMTUgKysrKysrKysrKysrKysrKwo+PiA+PiAgOSBmaWxlcyBj
-aGFuZ2VkLCAxMzM1IGluc2VydGlvbnMoKykKPj4gPj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNo
-L2FybS9saWI2NC9NYWtlZmlsZQo+PiA+PiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2xp
-YjY0L2FybWxpbnV4LmMKPj4gPj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9saWI2NC9h
-c20tb2Zmc2V0cy5jCj4+ID4+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbGliNjQvYmFy
-ZWJveC5sZHMuUwo+PiA+PiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2xpYjY0L2Jvb3Rt
-LmMKPj4gPj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9saWI2NC9jb3B5X3RlbXBsYXRl
-LlMKPj4gPj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9saWI2NC9kaXYwLmMKPj4gPj4g
-IGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9saWI2NC9tZW1jcHkuUwo+PiA+PiAgY3JlYXRl
-IG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2xpYjY0L21lbXNldC5TCj4+ID4+Cj4+ID4+IGRpZmYgLS1n
-aXQgYS9hcmNoL2FybS9saWI2NC9NYWtlZmlsZSBiL2FyY2gvYXJtL2xpYjY0L01ha2VmaWxlCj4+
-ID4+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4+ID4+IGluZGV4IDAwMDAwMDAuLmE0MjQyOTMKPj4g
-Pj4gLS0tIC9kZXYvbnVsbAo+PiA+PiArKysgYi9hcmNoL2FybS9saWI2NC9NYWtlZmlsZQo+PiA+
-PiBAQCAtMCwwICsxLDEwIEBACj4+ID4+ICtvYmotJChDT05GSUdfQVJNX0xJTlVYKSAgICAgICs9
-IGFybWxpbnV4Lm8KPj4gPj4gK29iai0kKENPTkZJR19CT09UTSkgICs9IGJvb3RtLm8KPj4gPj4g
-K29iai15ICAgICAgICArPSBkaXYwLm8KPj4gPj4gK29iai0kKENPTkZJR19BUk1fT1BUSU1aRURf
-U1RSSU5HX0ZVTkNUSU9OUykgICs9IG1lbWNweS5vCj4+ID4+ICtvYmotJChDT05GSUdfQVJNX09Q
-VElNWkVEX1NUUklOR19GVU5DVElPTlMpICArPSBtZW1zZXQubwo+PiA+PiArZXh0cmEteSArPSBi
-YXJlYm94Lmxkcwo+PiA+PiArCj4+ID4+ICtwYmwteSAgICAgICAgKz0gbGliMWZ1bmNzLm8KPj4g
-Pj4gK3BibC15ICAgICAgICArPSBhc2hsZGkzLm8KPj4gPj4gK3BibC15ICAgICAgICArPSBkaXYw
-Lm8KPj4gPj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2xpYjY0L2FybWxpbnV4LmMgYi9hcmNoL2Fy
-bS9saWI2NC9hcm1saW51eC5jCj4+ID4+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4+ID4+IGluZGV4
-IDAwMDAwMDAuLmM3MGUwNzkKPj4gPj4gLS0tIC9kZXYvbnVsbAo+PiA+PiArKysgYi9hcmNoL2Fy
-bS9saWI2NC9hcm1saW51eC5jCj4+ID4+IEBAIC0wLDAgKzEsMTA0IEBACj4+ID4+ICsvKgo+PiA+
-PiArICogKEMpIENvcHlyaWdodCAyMDAyCj4+ID4+ICsgKiBTeXNnbyBSZWFsLVRpbWUgU29sdXRp
-b25zLCBHbWJIIDx3d3cuZWxpbm9zLmNvbT4KPj4gPj4gKyAqIE1hcml1cyBHcm9lZ2VyIDxtZ3Jv
-ZWdlckBzeXNnby5kZT4KPj4gPj4gKyAqCj4+ID4+ICsgKiBDb3B5cmlnaHQgKEMpIDIwMDEgIEVy
-aWsgTW91dyAoSi5BLksuTW91d0BpdHMudHVkZWxmdC5ubCkKPj4gPj4gKyAqCj4+ID4+ICsgKiBU
-aGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5k
-L29yIG1vZGlmeQo+PiA+PiArICogaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJh
-bCBQdWJsaWMgTGljZW5zZSBhcyBwdWJsaXNoZWQgYnkKPj4gPj4gKyAqIHRoZSBGcmVlIFNvZnR3
-YXJlIEZvdW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIgb2YgdGhlIExpY2Vuc2UsIG9yCj4+ID4+
-ICsgKiAoYXQgeW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgo+PiA+PiArICoKPj4gPj4g
-KyAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwg
-YmUgdXNlZnVsLAo+PiA+PiArICogYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2
-ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YKPj4gPj4gKyAqIE1FUkNIQU5UQUJJTElUWSBvciBG
-SVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gICAgICAgU2VlIHRoZQo+PiA+PiArICog
-R05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KPj4gPj4gKyAqLwo+
-PiA+PiArCj4+ID4+ICsjaW5jbHVkZSA8Ym9vdC5oPgo+PiA+PiArI2luY2x1ZGUgPGNvbW1vbi5o
-Pgo+PiA+PiArI2luY2x1ZGUgPGNvbW1hbmQuaD4KPj4gPj4gKyNpbmNsdWRlIDxkcml2ZXIuaD4K
-Pj4gPj4gKyNpbmNsdWRlIDxlbnZpcm9ubWVudC5oPgo+PiA+PiArI2luY2x1ZGUgPGltYWdlLmg+
-Cj4+ID4+ICsjaW5jbHVkZSA8aW5pdC5oPgo+PiA+PiArI2luY2x1ZGUgPGZzLmg+Cj4+ID4+ICsj
-aW5jbHVkZSA8bGludXgvbGlzdC5oPgo+PiA+PiArI2luY2x1ZGUgPHhmdW5jcy5oPgo+PiA+PiAr
-I2luY2x1ZGUgPG1hbGxvYy5oPgo+PiA+PiArI2luY2x1ZGUgPGZjbnRsLmg+Cj4+ID4+ICsjaW5j
-bHVkZSA8ZXJybm8uaD4KPj4gPj4gKyNpbmNsdWRlIDxtZW1vcnkuaD4KPj4gPj4gKyNpbmNsdWRl
-IDxvZi5oPgo+PiA+PiArI2luY2x1ZGUgPG1hZ2ljdmFyLmg+Cj4+ID4+ICsKPj4gPj4gKyNpbmNs
-dWRlIDxhc20vYnl0ZW9yZGVyLmg+Cj4+ID4+ICsjaW5jbHVkZSA8YXNtL3NldHVwLmg+Cj4+ID4+
-ICsjaW5jbHVkZSA8YXNtL2JhcmVib3gtYXJtLmg+Cj4+ID4+ICsjaW5jbHVkZSA8YXNtL2FybWxp
-bnV4Lmg+Cj4+ID4+ICsjaW5jbHVkZSA8YXNtL3N5c3RlbS5oPgo+PiA+PiArCj4+ID4+ICtzdGF0
-aWMgdm9pZCAqYXJtbGludXhfYm9vdHBhcmFtcyA9IE5VTEw7Cj4+ID4+ICsKPj4gPj4gK3N0YXRp
-YyBpbnQgYXJtbGludXhfYXJjaGl0ZWN0dXJlOwo+PiA+PiArc3RhdGljIHUzMiBhcm1saW51eF9z
-eXN0ZW1fcmV2Owo+PiA+PiArc3RhdGljIHU2NCBhcm1saW51eF9zeXN0ZW1fc2VyaWFsOwo+PiA+
-PiArCj4+ID4+ICtCQVJFQk9YX01BR0lDVkFSKGFybWxpbnV4X2FyY2hpdGVjdHVyZSwgIkFSTSBt
-YWNoaW5lIElEIik7Cj4+ID4+ICtCQVJFQk9YX01BR0lDVkFSKGFybWxpbnV4X3N5c3RlbV9yZXYs
-ICJBUk0gc3lzdGVtIHJldmlzaW9uIik7Cj4+ID4+ICtCQVJFQk9YX01BR0lDVkFSKGFybWxpbnV4
-X3N5c3RlbV9zZXJpYWwsICJBUk0gc3lzdGVtIHNlcmlhbCIpOwo+PiA+PiArCj4+ID4+ICt2b2lk
-IGFybWxpbnV4X3NldF9hcmNoaXRlY3R1cmUoaW50IGFyY2hpdGVjdHVyZSkKPj4gPj4gK3sKPj4g
-Pj4gKyAgICAgZXhwb3J0X2Vudl91bGwoImFybWxpbnV4X2FyY2hpdGVjdHVyZSIsIGFyY2hpdGVj
-dHVyZSk7Cj4+ID4+ICsgICAgIGFybWxpbnV4X2FyY2hpdGVjdHVyZSA9IGFyY2hpdGVjdHVyZTsK
-Pj4gPj4gK30KPj4gPj4gKwo+PiA+PiAraW50IGFybWxpbnV4X2dldF9hcmNoaXRlY3R1cmUodm9p
-ZCkKPj4gPj4gK3sKPj4gPj4gKyAgICAgZ2V0ZW52X3VpbnQoImFybWxpbnV4X2FyY2hpdGVjdHVy
-ZSIsICZhcm1saW51eF9hcmNoaXRlY3R1cmUpOwo+PiA+PiArCj4+ID4+ICsgICAgIHJldHVybiBh
-cm1saW51eF9hcmNoaXRlY3R1cmU7Cj4+ID4+ICt9Cj4+ID4+ICsKPj4gPj4gK3ZvaWQgYXJtbGlu
-dXhfc2V0X3JldmlzaW9uKHVuc2lnbmVkIGludCByZXYpCj4+ID4+ICt7Cj4+ID4+ICsgICAgIGV4
-cG9ydF9lbnZfdWxsKCJhcm1saW51eF9zeXN0ZW1fcmV2IiwgcmV2KTsKPj4gPj4gKyAgICAgYXJt
-bGludXhfc3lzdGVtX3JldiA9IHJldjsKPj4gPj4gK30KPj4gPj4gKwo+PiA+PiArdW5zaWduZWQg
-aW50IGFybWxpbnV4X2dldF9yZXZpc2lvbih2b2lkKQo+PiA+PiArewo+PiA+PiArICAgICBnZXRl
-bnZfdWludCgiYXJtbGludXhfc3lzdGVtX3JldiIsICZhcm1saW51eF9zeXN0ZW1fcmV2KTsKPj4g
-Pj4gKwo+PiA+PiArICAgICByZXR1cm4gYXJtbGludXhfc3lzdGVtX3JldjsKPj4gPj4gK30KPj4g
-Pj4gKwo+PiA+PiArdm9pZCBhcm1saW51eF9zZXRfc2VyaWFsKHU2NCBzZXJpYWwpCj4+ID4+ICt7
-Cj4+ID4+ICsgICAgIGV4cG9ydF9lbnZfdWxsKCJhcm1saW51eF9zeXN0ZW1fc2VyaWFsIiwgc2Vy
-aWFsKTsKPj4gPj4gKyAgICAgYXJtbGludXhfc3lzdGVtX3NlcmlhbCA9IHNlcmlhbDsKPj4gPj4g
-K30KPj4gPj4gKwo+PiA+PiArdTY0IGFybWxpbnV4X2dldF9zZXJpYWwodm9pZCkKPj4gPj4gK3sK
-Pj4gPj4gKyAgICAgZ2V0ZW52X3VsbCgiYXJtbGludXhfc3lzdGVtX3NlcmlhbCIsICZhcm1saW51
-eF9zeXN0ZW1fc2VyaWFsKTsKPj4gPj4gKwo+PiA+PiArICAgICByZXR1cm4gYXJtbGludXhfc3lz
-dGVtX3NlcmlhbDsKPj4gPj4gK30KPj4gPj4gKwo+PiA+PiArdm9pZCBhcm1saW51eF9zZXRfYm9v
-dHBhcmFtcyh2b2lkICpwYXJhbXMpCj4+ID4+ICt7Cj4+ID4+ICsgICAgIGFybWxpbnV4X2Jvb3Rw
-YXJhbXMgPSBwYXJhbXM7Cj4+ID4+ICt9Cj4+ID4KPj4gPiBBbGwgb2YgdGhlIGFib3ZlIGlzIG5v
-dCBuZWVkZWQuIFNvcnJ5LCBpdCBzZWVtcyBJIG92ZXJsb29rZWQgdGhpcyBsYXN0Cj4+ID4gdGlt
-ZS4KPj4KPj4gT2sgZm9yIHRoYXQsIEkgd2lsbCBvbmx5IGxldCB0aGUgInN0YXJ0X2xpbnV4IiBm
-dW5jdGlvbi4KPj4KPj4gPgo+PiA+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbGliNjQvYm9vdG0u
-YyBiL2FyY2gvYXJtL2xpYjY0L2Jvb3RtLmMKPj4gPgo+PiA+IEkgc3RpbGwgdGhpbmsgdGhpcyBm
-aWxlIHNob3VsZCBub3QgYmUgaGVyZS4gWW91IGNhbiBhbHdheXMgY29weS9tb2RpZnkKPj4gPiBp
-dCBmcm9tIHRoZSBhcm0zMiBib290bS5jIG9uY2UgeW91IG5lZWQgaXQsIGJ1dCBhdCB0aGUgbW9t
-ZW50IHRoaXMgZmlsZQo+PiA+IGlzIHRoZSByZWFzb24gdGhpcyBwYXRjaCBjYW4ndCBiZSBhcHBs
-aWVkLiBJJ2QgcmVhbGx5IGxpa2UgdG8KPj4gPiByZXZpZXcvYXBwbHkgYSAiYXJtNjQ6IEFkZCBi
-b290bSBjb2RlIiBwYXRjaCBvbmNlIGl0J3MgcmVhZHkuCj4+Cj4+IEkgdW5kZXJzdGFuZCwgYnV0
-IHNpbmNlIGJvb3RtIGlzIG5lZWRlZCBmb3IgYm9vdGluZyAoZXNwZWNpYWxseSB2aWEKPj4gZG9f
-Ym9vdG1fbGludXgpCj4+IGFuZCBhbHNvIGxpYi9ib290bS5jIGlzIG5vdCBjb21waWxlZCBpbiBh
-cm02NCBjYXNlLCBob3cgY2FuIEkgdXNlCj4+IGxpYi9ib290bS5jIGluIGFybTY0IGNhc2Ugd2l0
-aG91dCBpbmNsdWRlIGl0IGluIGxpYjY0ID8KPj4KPj4gTWF5YmUgSSBtaXNzIHNvbWV0aGluZy4u
-Lgo+Cj4gV2UgY291bGQgbWFrZSBhIGxpYi8sIGxpYjMyLyBhbmQgbGliNjQvIGZvciBjb21tb24g
-Y29kZSwgMzJiaXQgY29kZSBhbmQKPiA2NGJpdCBjb2RlIHJlc3BlY3RpdmVseS4KCkluZGVlZCwg
-dGhhbmtzLgoKUmFwaGHDq2wKCj4KPiBTYXNjaGEKPgo+IC0tCj4gUGVuZ3V0cm9uaXggZS5LLiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwK
-PiBJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3
-LnBlbmd1dHJvbml4LmRlLyAgfAo+IFBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwg
-R2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8Cj4gQW10c2dlcmljaHQgSGls
-ZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1
-IHwKPgo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4g
-YmFyZWJveCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRw
-Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
-aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Fixes: bc94fb3 bootm: Initialize bootm_data defaults in single place
+
+bootm_data_init_defaults() must be called before filling in the values
+from the commandline options, otherwise the values will be overwritten
+in bootm_data_init_defaults().
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/boot.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/commands/boot.c b/commands/boot.c
+index bd1be4b..c091b2e 100644
+--- a/commands/boot.c
++++ b/commands/boot.c
+@@ -52,10 +52,13 @@ static int boot_script(char *path)
+ 		goto out;
+ 	}
+ 
+-	data.verbose = verbose;
+-	data.dryrun = dryrun;
+ 	bootm_data_init_defaults(&data);
+ 
++	if (verbose)
++		data.verbose = verbose;
++	if (dryrun)
++		data.dryrun = dryrun;
++
+ 	ret = bootm_boot(&data);
+ 	if (ret)
+ 		pr_err("Booting %s failed: %s\n", basename(path), strerror(-ret));
+-- 
+2.8.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
