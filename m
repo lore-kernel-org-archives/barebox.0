@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-f65.google.com ([74.125.82.65])
+Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bIAmG-0003Ur-33
- for barebox@lists.infradead.org; Wed, 29 Jun 2016 08:23:21 +0000
-Received: by mail-wm0-f65.google.com with SMTP id r201so12389880wme.0
- for <barebox@lists.infradead.org>; Wed, 29 Jun 2016 01:22:59 -0700 (PDT)
+ id 1bIAm9-0003Sn-9k
+ for barebox@lists.infradead.org; Wed, 29 Jun 2016 08:23:14 +0000
+Received: by mail-wm0-x243.google.com with SMTP id 187so12390854wmz.1
+ for <barebox@lists.infradead.org>; Wed, 29 Jun 2016 01:22:52 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Wed, 29 Jun 2016 10:22:14 +0200
-Message-Id: <1467188540-76509-8-git-send-email-poggi.raph@gmail.com>
+Date: Wed, 29 Jun 2016 10:22:08 +0200
+Message-Id: <1467188540-76509-2-git-send-email-poggi.raph@gmail.com>
 In-Reply-To: <1467188540-76509-1-git-send-email-poggi.raph@gmail.com>
 References: <1467188540-76509-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,92 +23,122 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 07/13] arm: include: system_info: add armv8 identification
+Subject: [PATCH v4 01/13] arm64: add armv8 Kconfig entries
 To: barebox@lists.infradead.org
 Cc: Raphael Poggi <poggi.raph@gmail.com>
 
 Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
 ---
- arch/arm/include/asm/system_info.h | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ arch/arm/Kconfig     | 23 +++++++++++++++++++++++
+ arch/arm/cpu/Kconfig | 33 ++++++++++++++++++++++++++++++++-
+ 2 files changed, 55 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/system_info.h b/arch/arm/include/asm/system_info.h
-index 0761848..25fffd2 100644
---- a/arch/arm/include/asm/system_info.h
-+++ b/arch/arm/include/asm/system_info.h
-@@ -13,6 +13,7 @@
- #define CPU_ARCH_ARMv5TEJ	7
- #define CPU_ARCH_ARMv6		8
- #define CPU_ARCH_ARMv7		9
-+#define CPU_ARCH_ARMv8		10
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 1fc887b..986fdaa 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -315,6 +315,29 @@ config ARM_BOARD_APPEND_ATAG
  
- #define CPU_IS_ARM720		0x41007200
- #define CPU_IS_ARM720_MASK	0xff00fff0
-@@ -41,6 +42,12 @@
- #define CPU_IS_CORTEX_A15	0x410fc0f0
- #define CPU_IS_CORTEX_A15_MASK	0xff0ffff0
+ endmenu
  
-+#define CPU_IS_CORTEX_A53	0x410fd034
-+#define CPU_IS_CORTEX_A53_MASK	0xff0ffff0
++choice
++	prompt "Barebox code model"
++	help
++	  You should only select this option if you have a workload that
++	  actually benefits from 64-bit processing or if your machine has
++	  large memory. You will only be presented a single option in this
++	  menu if your system does not support both 32-bit and 64-bit modes.
 +
-+#define CPU_IS_CORTEX_A57	0x411fd070
-+#define CPU_IS_CORTEX_A57_MASK	0xff0ffff0
++config 32BIT
++	bool "32-bit barebox"
++	depends on CPU_SUPPORTS_32BIT_KERNEL && SYS_SUPPORTS_32BIT_KERNEL
++	help
++	  Select this option if you want to build a 32-bit barebox.
 +
- #define CPU_IS_PXA250		0x69052100
- #define CPU_IS_PXA250_MASK	0xfffff7f0
++config 64BIT
++	bool "64-bit barebox"
++	depends on CPU_SUPPORTS_64BIT_KERNEL && SYS_SUPPORTS_64BIT_KERNEL
++	select ARCH_DMA_ADDR_T_64BIT
++	help
++	  Select this option if you want to build a 64-bit barebox.
++
++endchoice
++
+ menu "ARM specific settings"
  
-@@ -112,6 +119,19 @@
- #define cpu_is_cortex_a15() (0)
- #endif
+ config ARM_OPTIMZED_STRING_FUNCTIONS
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index 4f5d9b6..450a6d5 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -1,8 +1,14 @@
+ comment "Processor Type"
  
-+#ifdef CONFIG_CPU_64v8
-+#ifdef ARM_ARCH
-+#define ARM_MULTIARCH
-+#else
-+#define ARM_ARCH CPU_ARCH_ARMv8
-+#endif
-+#define cpu_is_cortex_a53() cpu_is_arm(CORTEX_A53)
-+#define cpu_is_cortex_a57() cpu_is_arm(CORTEX_A57)
-+#else
-+#define cpu_is_cortex_a53() (0)
-+#define cpu_is_cortex_a57() (0)
-+#endif
++config PHYS_ADDR_T_64BIT
++	bool
 +
- #ifndef __ASSEMBLY__
+ config CPU_32
+ 	bool
+-	default y
++
++config CPU_64
++	bool
++	select PHYS_ADDR_T_64BIT
  
- #ifdef ARM_MULTIARCH
-@@ -133,6 +153,23 @@ static inline int arm_early_get_cpu_architecture(void)
- 		if (cpu_arch)
- 			cpu_arch += CPU_ARCH_ARMv3;
- 	} else if ((read_cpuid_id() & 0x000f0000) == 0x000f0000) {
-+#ifdef CONFIG_CPU_64v8
-+		unsigned int isar2;
-+
-+		__asm__ __volatile__(
-+			"mrs	%0, id_isar2_el1\n"
-+			: "=r" (isar2)
-+			:
-+			: "memory");
-+
-+
-+		/* Check Load/Store acquire to check if ARMv8 or not */
-+
-+		if (isar2 & 0x2)
-+			cpu_arch = CPU_ARCH_ARMv8;
-+		else
-+			cpu_arch = CPU_ARCH_UNKNOWN;
-+#else
- 		unsigned int mmfr0;
+ # Select CPU types depending on the architecture selected. This selects
+ # which CPUs we support in the kernel image, and the compiler instruction
+@@ -69,6 +75,12 @@ config CPU_V7
+ 	bool
+ 	select CPU_32v7
  
- 		/* Revised CPUID format. Read the Memory Model Feature
-@@ -149,6 +186,7 @@ static inline int arm_early_get_cpu_architecture(void)
- 			cpu_arch = CPU_ARCH_UNKNOWN;
- 	} else
- 		cpu_arch = CPU_ARCH_UNKNOWN;
-+#endif
++# ARMv8
++config CPU_V8
++	bool
++	select CPU_64v8
++	select CPU_SUPPORTS_64BIT_KERNEL
++
+ config CPU_XSC3
+         bool
+         select CPU_32v4T
+@@ -84,15 +96,23 @@ config CPU_XSCALE
+ # This defines the compiler instruction set which depends on the machine type.
+ config CPU_32v4T
+ 	bool
++	select CPU_32
  
- 	return cpu_arch;
- }
+ config CPU_32v5
+ 	bool
++	select CPU_32
+ 
+ config CPU_32v6
+ 	bool
++	select CPU_32
+ 
+ config CPU_32v7
+ 	bool
++	select CPU_32
++
++config CPU_64v8
++	bool
++	select CPU_64
+ 
+ comment "processor features"
+ 
+@@ -124,3 +144,14 @@ config CACHE_L2X0
+ 	bool "Enable L2x0 PrimeCell"
+ 	depends on MMU && ARCH_HAS_L2X0
+ 
++config SYS_SUPPORTS_32BIT_KERNEL
++	bool
++
++config SYS_SUPPORTS_64BIT_KERNEL
++	bool
++
++config CPU_SUPPORTS_32BIT_KERNEL
++	bool
++
++config CPU_SUPPORTS_64BIT_KERNEL
++	bool
 -- 
 2.1.0
 
