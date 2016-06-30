@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vs81.iboxed.net ([185.82.85.146])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bIY1U-00083I-43
- for barebox@lists.infradead.org; Thu, 30 Jun 2016 09:12:37 +0000
-From: Alexander Kurz <akurz@blala.de>
-Date: Thu, 30 Jun 2016 11:10:20 +0200
-Message-Id: <1467277820-5558-2-git-send-email-akurz@blala.de>
-In-Reply-To: <1467277820-5558-1-git-send-email-akurz@blala.de>
-References: <1467277820-5558-1-git-send-email-akurz@blala.de>
+ id 1bIcHH-0002BV-7P
+ for barebox@lists.infradead.org; Thu, 30 Jun 2016 13:45:12 +0000
+Date: Thu, 30 Jun 2016 15:44:46 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160630134446.GZ20657@pengutronix.de>
+References: <57695CC0.20403@gmail.com> <20160622144104.GB4750@pengutronix.de>
+ <CAOTEMUR1kyNt0y6FigsqKiBP0Sjzzq+q4vxba4e73p3oxH7_Fw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAOTEMUR1kyNt0y6FigsqKiBP0Sjzzq+q4vxba4e73p3oxH7_Fw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,154 +19,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: i.MX: central SOC type definition
-To: barebox@lists.infradead.org
-Cc: Alexander Kurz <akurz@blala.de>
+Subject: Re: Support USB port SAMA5D3
+To: Alex Vazquez <avazquez.dev@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Move the definition of iMX CPU types to an individual file to allow
-on-purpose inclusion. Eliminate magic number CPU type encoding in the
-scripts/imx subdir using the new include file.
+On Thu, Jun 30, 2016 at 10:37:13AM +0200, Alex Vazquez wrote:
+>    Hi and Thanks Sascha.
+>    I've taken a look at the code and seems it's =A0right configuration.
+>    I tried to change the driver and I am using OHCI.
+>    Now I detect the usb hub but if I insert a pen drive give me the next
+>    error:
+>    barebox@Atmel sama5d3_xplained:/ =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0
+>    =A0 =A0 =A0
+>    # usb =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0
+>    =A0 =A0 =A0=A0
+>    USB: scanning bus for devices... =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0
+>    =A0 =A0 =A0
+>    =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0=A0
+>    Bus 000 Device 001: ID 0000:0000 OHCI Root Hub =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0
+>    =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0
+>    ERROR: OHCI Unrecoverable Error, controller usb-ohci disabled =A0 =A0 =
+=A0 =A0 =A0 =A0
+>    =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0
+>    =A0=A0
+>    =A0 =A0 =A0Couldn't reset port 2 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0
+>    =A0 =A0 =A0
+>    1 USB Device(s) found=A0
+>    Depending on which port I insert the pen drive detects the error port =
+2 or
+>    port 3.
+>    I have also checked that the registers and peripheral clocks are set w=
+ell.
+>    any more suggestions that may be happening?
+>    I think I'm close to finding the problem...
 
-Signed-off-by: Alexander Kurz <akurz@blala.de>
----
- arch/arm/mach-imx/include/mach/generic.h       | 11 +----------
- arch/arm/mach-imx/include/mach/imx_cpu_types.h | 14 ++++++++++++++
- scripts/imx/Makefile                           |  3 ++-
- scripts/imx/imx-image.c                        |  3 ++-
- scripts/imx/imx.c                              | 13 +++++++------
- 5 files changed, 26 insertions(+), 18 deletions(-)
- create mode 100644 arch/arm/mach-imx/include/mach/imx_cpu_types.h
+I have just found a sama5d3_xplained board here. The good thing is that
+I can reproduce this issue without problems: It's the same here.
+Unfortunately I have no idea what's going on.
 
-diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
-index 46fe388..0a4200b 100644
---- a/arch/arm/mach-imx/include/mach/generic.h
-+++ b/arch/arm/mach-imx/include/mach/generic.h
-@@ -4,6 +4,7 @@
- #include <linux/compiler.h>
- #include <linux/types.h>
- #include <bootsource.h>
-+#include <mach/imx_cpu_types.h>
- 
- u64 imx_uid(void);
- 
-@@ -42,16 +43,6 @@ void imx6_cpu_lowlevel_init(void);
- /* range e.g. GPIO_1_5 is gpio 5 under linux */
- #define IMX_GPIO_NR(bank, nr)		(((bank) - 1) * 32 + (nr))
- 
--#define IMX_CPU_IMX1	1
--#define IMX_CPU_IMX21	21
--#define IMX_CPU_IMX25	25
--#define IMX_CPU_IMX27	27
--#define IMX_CPU_IMX31	31
--#define IMX_CPU_IMX35	35
--#define IMX_CPU_IMX51	51
--#define IMX_CPU_IMX53	53
--#define IMX_CPU_IMX6	6
--
- extern unsigned int __imx_cpu_type;
- 
- #ifdef CONFIG_ARCH_IMX1
-diff --git a/arch/arm/mach-imx/include/mach/imx_cpu_types.h b/arch/arm/mach-imx/include/mach/imx_cpu_types.h
-new file mode 100644
-index 0000000..781ab9f
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/imx_cpu_types.h
-@@ -0,0 +1,14 @@
-+#ifndef __MACH_IMX_CPU_TYPES_H
-+#define __MACH_IMX_CPU_TYPES_H
-+
-+#define IMX_CPU_IMX1	1
-+#define IMX_CPU_IMX21	21
-+#define IMX_CPU_IMX25	25
-+#define IMX_CPU_IMX27	27
-+#define IMX_CPU_IMX31	31
-+#define IMX_CPU_IMX35	35
-+#define IMX_CPU_IMX51	51
-+#define IMX_CPU_IMX53	53
-+#define IMX_CPU_IMX6	6
-+
-+#endif /* __MACH_IMX_CPU_TYPES_H */
-diff --git a/scripts/imx/Makefile b/scripts/imx/Makefile
-index d9f0c51..335e3e6 100644
---- a/scripts/imx/Makefile
-+++ b/scripts/imx/Makefile
-@@ -6,7 +6,8 @@ always          := $(hostprogs-y)
- HOSTCFLAGS_imx-usb-loader.o = `pkg-config --cflags libusb-1.0`
- HOSTLOADLIBES_imx-usb-loader  = `pkg-config --libs libusb-1.0`
- 
--HOSTCFLAGS_imx-image.o = -I$(srctree)
-+HOSTCFLAGS_imx.o = -I$(srctree)/arch/arm/mach-imx/include
-+HOSTCFLAGS_imx-image.o = -I$(srctree) -I$(srctree)/arch/arm/mach-imx/include
- ifdef CONFIG_ARCH_IMX_IMXIMAGE_SSL_SUPPORT
- HOSTCFLAGS_imx-image.o += -DIMXIMAGE_SSL_SUPPORT
- HOSTLOADLIBES_imx-image  = `pkg-config --libs openssl`
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index 0d315a2..3f62228 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -29,6 +29,7 @@
- #include <endian.h>
- #include <linux/kernel.h>
- #include <sys/file.h>
-+#include <mach/imx_cpu_types.h>
- 
- #include "imx.h"
- 
-@@ -788,7 +789,7 @@ int main(int argc, char *argv[])
- 		exit(1);
- 	}
- 
--	if (data.cpu_type == 35) {
-+	if (data.cpu_type == IMX_CPU_IMX35) {
- 		ret = xwrite(outfd, buf, HEADER_LEN);
- 		if (ret < 0) {
- 			perror("write");
-diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-index f1accc4..4ec8c89 100644
---- a/scripts/imx/imx.c
-+++ b/scripts/imx/imx.c
-@@ -23,6 +23,7 @@
- #include <stdint.h>
- #include <errno.h>
- #include <linux/kernel.h>
-+#include <mach/imx_cpu_types.h>
- 
- #include "imx.h"
- 
-@@ -216,11 +217,11 @@ struct soc_type {
- };
- 
- static struct soc_type socs[] = {
--	{ .name = "imx25", .header_version = 1, .cpu_type = 25},
--	{ .name = "imx35", .header_version = 1, .cpu_type = 35 },
--	{ .name = "imx51", .header_version = 1, .cpu_type = 51 },
--	{ .name = "imx53", .header_version = 2, .cpu_type = 53 },
--	{ .name = "imx6", .header_version = 2, .cpu_type = 6 },
-+	{ .name = "imx25", .header_version = 1, .cpu_type = IMX_CPU_IMX25 },
-+	{ .name = "imx35", .header_version = 1, .cpu_type = IMX_CPU_IMX35 },
-+	{ .name = "imx51", .header_version = 1, .cpu_type = IMX_CPU_IMX51 },
-+	{ .name = "imx53", .header_version = 2, .cpu_type = IMX_CPU_IMX53 },
-+	{ .name = "imx6", .header_version = 2, .cpu_type = IMX_CPU_IMX6 },
- };
- 
- static int do_soc(struct config_data *data, int argc, char *argv[])
-@@ -238,7 +239,7 @@ static int do_soc(struct config_data *data, int argc, char *argv[])
- 			data->header_version = socs[i].header_version;
- 			data->cpu_type = socs[i].cpu_type;
- 
--			if (data->cpu_type == 35)
-+			if (data->cpu_type == IMX_CPU_IMX35)
- 				data->load_size += HEADER_LEN;
- 
- 			return 0;
--- 
-2.1.4
+Sascha
 
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
