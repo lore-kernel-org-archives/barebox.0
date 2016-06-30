@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bIVYY-00028x-Mr
- for barebox@lists.infradead.org; Thu, 30 Jun 2016 06:34:36 +0000
-Date: Thu, 30 Jun 2016 08:34:11 +0200
+ id 1bIVbq-0004vO-Dc
+ for barebox@lists.infradead.org; Thu, 30 Jun 2016 06:37:59 +0000
+Date: Thu, 30 Jun 2016 08:37:36 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160630063411.GV20657@pengutronix.de>
-References: <1467088079-476-1-git-send-email-andrew.smirnov@gmail.com>
+Message-ID: <20160630063736.GW20657@pengutronix.de>
+References: <1467194468-31049-1-git-send-email-t.remmet@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1467088079-476-1-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1467194468-31049-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,82 +22,174 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 1/4] GUI: Add a function to draw vertical/horizontal
- bars
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 1/4] OMAP: xload: Factor out reading image from mtd
+ partition
+To: Teresa Remmet <t.remmet@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jun 27, 2016 at 09:27:56PM -0700, Andrey Smirnov wrote:
-> Add a function to draw solid vertical or horizontal bars.
+On Wed, Jun 29, 2016 at 12:01:05PM +0200, Teresa Remmet wrote:
+> Remove code duplication of reading images out of mtd partitions.
 > 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 > ---
-> 
-> Changes since v2:
-> 
-> 	- Negative coordinates now mean edge of the screen instead of
->           being a bug.
+>  arch/arm/mach-omap/xload.c | 71 ++++++++++++++--------------------------------
+>  1 file changed, 22 insertions(+), 49 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
->  include/gui/graphic_utils.h |  3 +++
->  lib/gui/graphic_utils.c     | 29 +++++++++++++++++++++++++++++
->  2 files changed, 32 insertions(+)
-> 
-> diff --git a/include/gui/graphic_utils.h b/include/gui/graphic_utils.h
-> index 231b3a9..279fdf9 100644
-> --- a/include/gui/graphic_utils.h
-> +++ b/include/gui/graphic_utils.h
-> @@ -28,4 +28,7 @@ void gu_invert_area(struct fb_info *info, void *buf, int startx, int starty, int
->  void gu_screen_blit_area(struct screen *sc, int startx, int starty, int width,
->  		int height);
+> diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
+> index 7793819..91890b2 100644
+> --- a/arch/arm/mach-omap/xload.c
+> +++ b/arch/arm/mach-omap/xload.c
+> @@ -36,7 +36,7 @@ static void *read_image_head(const char *name)
 >  
-> +void gu_fill_rectangle(struct screen *sc,
-> +		       int x1, int y1, int x2, int y2,
-> +		       u8 r, u8 g, u8 b, u8 a);
->  #endif /* __GRAPHIC_UTILS_H__ */
-> diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
-> index 2fe9fa3..d3f5cce 100644
-> --- a/lib/gui/graphic_utils.c
-> +++ b/lib/gui/graphic_utils.c
-> @@ -336,3 +336,32 @@ void gu_screen_blit(struct screen *sc)
->  	if (info->screen_base_shadow)
->  		memcpy(info->screen_base, info->screen_base_shadow, sc->fbsize);
+>  	cdev = cdev_open(name, O_RDONLY);
+>  	if (!cdev) {
+> -		printf("failed to open partition\n");
+> +		printf("failed to open %s\n", name);
+>  		return NULL;
+>  	}
+>  
+> @@ -44,7 +44,7 @@ static void *read_image_head(const char *name)
+>  	cdev_close(cdev);
+>  
+>  	if (ret != ARM_HEAD_SIZE) {
+> -		printf("failed to read from partition\n");
+> +		printf("failed to read from %s\n", name);
+>  		return NULL;
+>  	}
+>  
+> @@ -63,18 +63,14 @@ static unsigned int get_image_size(void *head)
+>  	return ret;
 >  }
-> +
-> +void gu_fill_rectangle(struct screen *sc,
-> +		       int x1, int y1, int x2, int y2,
-> +		       u8 r, u8 g, u8 b, u8 a)
+>  
+> -static void *omap_xload_boot_nand(int offset, int part_size)
+> +static void *read_mtd_barebox(const char *partition)
+>  {
+>  	int ret;
+>  	int size;
+>  	void *to, *header;
+>  	struct cdev *cdev;
+>  
+> -	devfs_add_partition("nand0", offset, part_size,
+> -					DEVFS_PARTITION_FIXED, "x");
+> -	dev_add_bb_dev("x", "bbx");
+> -
+> -	header = read_image_head("bbx");
+> +	header = read_image_head(partition);
+>  	if (header == NULL)
+>  		return NULL;
+>  
+> @@ -86,21 +82,30 @@ static void *omap_xload_boot_nand(int offset, int part_size)
+>  
+>  	to = xmalloc(size);
+>  
+> -	cdev = cdev_open("bbx", O_RDONLY);
+> +	cdev = cdev_open(partition, O_RDONLY);
+>  	if (!cdev) {
+> -		printf("failed to open nand\n");
+> +		printf("failed to open partition\n");
+>  		return NULL;
+>  	}
+>  
+>  	ret = cdev_read(cdev, to, size, 0, 0);
+>  	if (ret != size) {
+> -		printf("failed to read from nand\n");
+> +		printf("failed to read from partition\n");
+>  		return NULL;
+>  	}
+>  
+>  	return to;
+>  }
+>  
+> +static void *omap_xload_boot_nand(struct omap_barebox_part *part)
 > +{
-> +	int y;
-> +	void *buf = gui_screen_render_buffer(sc);
+> +	devfs_add_partition("nand0", part->nand_offset, part->nand_size,
+> +					DEVFS_PARTITION_FIXED, "x");
+> +	dev_add_bb_dev("x", "bbx");
 > +
-> +	x1 = max(0, x1);
-> +	y1 = max(0, y1);
-> +
-> +	x2 = (x2 < 0) ? sc->info->xres - 1 : x2;
-> +	y2 = (y2 < 0) ? sc->info->yres - 1 : y2;
-> +
-> +	if (x2 < x1)
-> +		swap(x1, x2);
-> +	if (y2 < y1)
-> +		swap(y1, y2);
-> +
-> +	for(y = y1; y <= y2; y++) {
-> +		int x;
-> +		unsigned char *pixel = buf + y * sc->info->line_length +
-> +			x1 * (sc->info->bits_per_pixel / 8);
-> +		for(x = x1; x <= x2; x++) {
-> +			gu_set_rgba_pixel(sc->info, pixel, r, g, b, a);
-> +			pixel += sc->info->bits_per_pixel / 8;
-> +		}
-> +	}
+> +	return read_mtd_barebox("bbx");
 > +}
+> +
+>  static void *omap_xload_boot_mmc(void)
+>  {
+>  	int ret;
+> @@ -138,41 +143,12 @@ static void *omap_xload_boot_mmc(void)
+>  	return buf;
+>  }
+>  
+> -static void *omap_xload_boot_spi(int offset, int part_size)
+> +static void *omap_xload_boot_spi(struct omap_barebox_part *part)
+>  {
+> -	int ret;
+> -	int size;
+> -	void *to, *header;
+> -	struct cdev *cdev;
+> -
+> -	devfs_add_partition("m25p0", offset, part_size,
+> +	devfs_add_partition("m25p0", part->nor_offset, part->nor_size,
+>  					DEVFS_PARTITION_FIXED, "x");
+>  
+> -	header = read_image_head("x");
+> -	if (header == NULL)
+> -		return NULL;
+> -
+> -	size = get_image_size(header);
+> -	if (!size) {
+> -		printf("failed to get image size\n");
+> -		return NULL;
+> -	}
+> -
+> -	to = xmalloc(size);
+> -
+> -	cdev = cdev_open("x", O_RDONLY);
+> -	if (!cdev) {
+> -		printf("failed to open spi flash\n");
+> -		return NULL;
+> -	}
+> -
+> -	ret = cdev_read(cdev, to, size, 0, 0);
+> -	if (ret != size) {
+> -		printf("failed to read from spi flash\n");
+> -		return NULL;
+> -	}
+> -
+> -	return to;
+> +	return read_mtd_barebox("x");
+>  }
+>  
+>  static void *omap4_xload_boot_usb(void){
+> @@ -323,13 +299,11 @@ static __noreturn int omap_xload(void)
+>  		break;
+>  	case BOOTSOURCE_NAND:
+>  		printf("booting from NAND\n");
+> -		func = omap_xload_boot_nand(barebox_part->nand_offset,
+> -					barebox_part->nand_size);
+> +		func = omap_xload_boot_nand(barebox_part);
+>  		break;
+>  	case BOOTSOURCE_SPI:
+>  		printf("booting from SPI\n");
+> -		func = omap_xload_boot_spi(barebox_part->nor_offset,
+> -					barebox_part->nor_size);
+> +		func = omap_xload_boot_spi(barebox_part);
+>  		break;
+>  	case BOOTSOURCE_SERIAL:
+>  		if (IS_ENABLED(CONFIG_OMAP_SERIALBOOT)) {
+> @@ -347,8 +321,7 @@ static __noreturn int omap_xload(void)
+>  		}
+>  	default:
+>  		printf("unknown boot source. Fall back to nand\n");
+> -		func = omap_xload_boot_nand(barebox_part->nand_offset,
+> -					barebox_part->nand_size);
+> +		func = omap_xload_boot_nand(barebox_part);
+>  		break;
+>  	}
+>  
 > -- 
-> 2.5.5
+> 1.9.1
 > 
 > 
 > _______________________________________________
