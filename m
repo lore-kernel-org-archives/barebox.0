@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f68.i.mail.ru ([94.100.185.167])
+Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bIVzp-0007u4-L2
- for barebox@lists.infradead.org; Thu, 30 Jun 2016 07:02:47 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-MIME-Version: 1.0
-Date: Thu, 30 Jun 2016 10:02:20 +0300
-Message-ID: <1467270140.650896887@f68.i.mail.ru>
-In-Reply-To: <20160630064231.GX20657@pengutronix.de>
-References: <1467217562-16048-1-git-send-email-shc_work@mail.ru>
- <20160630064231.GX20657@pengutronix.de>
+ id 1bIY1U-00083H-42
+ for barebox@lists.infradead.org; Thu, 30 Jun 2016 09:12:37 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Thu, 30 Jun 2016 11:10:19 +0200
+Message-Id: <1467277820-5558-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,31 +14,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gbWZkOiBtYzEzeHh4OiBWR0VOMSBhbmQgVkdFTjIgdm9s?=
- =?UTF-8?B?dGFnZSBiaXRzIHBvc2l0aW9uZWQgaW4gIlJlZ3VsYXRvciBTZXR0aW5nIDAi?=
- =?UTF-8?B?IHJlZ2lzdGVy?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] scripts: imx-image: super_root_key command depends on
+ header_version 1
+To: barebox@lists.infradead.org
+Cc: Alexander Kurz <akurz@blala.de>
 
-PtCn0LXRgtCy0LXRgNCzLCAzMCDQuNGO0L3RjyAyMDE2LCA5OjQyICswMzowMCDQvtGCIFNhc2No
-YSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT46Cj4KPkhpIEFMZXhhbmRlciwKPgo+T24g
-V2VkLCBKdW4gMjksIDIwMTYgYXQgMDc6MjY6MDJQTSArMDMwMCwgQWxleGFuZGVyIFNoaXlhbiB3
-cm90ZToKPj4gVGhlIGJpdHMgVkdFTjEwLTExIGFuZCBWR0VOMjAtMjIgaXMgcG9zaXRpb25lZCBp
-biB0aGUgUmVndWxhdG9yIFNldHRpbmcgMAo+PiByZWdpc3Rlci4gVGhpcyBwYXRjaCBmaXhlcyB0
-aGVzZSBkZWZpbml0aW9ucyBhbmQgYm9hcmQgKEVmaWthIE1YKSwgd2hpY2gKPj4gdXNlcyB0aGlz
-IHZvbHRhZ2VzLgo+PiAKPj4gU2lnbmVkLW9mZi1ieTogQWxleGFuZGVyIFNoaXlhbiA8IHNoY193
-b3JrQG1haWwucnUgPgo+Cj5IYXZlIHlvdSB0ZXN0ZWQgdGhpcyBvbiByZWFsIGhhcmR3YXJlPyBU
-aGUgcmVnaXN0ZXIgZGVmaW5pdGlvbnMgbWF5IGJlCj53cm9uZywgYnV0IEknbSB1bnN1cmUgaWYg
-dGhlIGFjdHVhbCByZWdpc3RlciB3cml0ZXMgbWF5IGJlIHJpZ2h0LiBJdAo+Y291bGQgYmUgdGhh
-dCBJIGRlY29kZWQgYmluYXJ5IHJlZ2lzdGVyIHZhbHVlcyAoZnJvbSBVLUJvb3QgbWF5YmUpIHRv
-Cj50aGUgc3ltYm9scyB3ZSBhY3R1YWxseSBoYWQuCgpIZWxsby4KClllcywgdGhpcyBoYXMgYmVl
-biB0ZXN0ZWQgb24gaS5NWDUxIGJhc2VkIGJvYXJkIHdpdGggTUMxMzg5Mi4KVGhlIHNhbWUgZGVm
-aW5pdGlvbnMgaXMgdXNlZCBpbiBrZXJuZWwgKHJlZ3VsYXRvci9tYzEzODkyLXJlZ3VsYXRvci5j
-KS4KCi0tLQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+The Super Root Key pointer exclusively exists in flash header version 1
+which is used for i.MX25, i.MX35 and i.MX51 SOC as described in freescales
+AN4547 document. Simplify the code a little bit.
+
+Signed-off-by: Alexander Kurz <akurz@blala.de>
+---
+ scripts/imx/imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index 70936ba..f1accc4 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -327,7 +327,7 @@ static int do_super_root_key(struct config_data *data, int argc, char *argv[])
+ 		return -EINVAL;
+ 	}
+ 
+-	if (data->cpu_type != 35 && data->cpu_type != 25) {
++	if (data->header_version != 1) {
+ 		fprintf(stderr, "Warning: The super_root_key command is meaningless "
+ 			"on non HABv3 based SoCs\n");
+ 		return 0;
+-- 
+2.1.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
