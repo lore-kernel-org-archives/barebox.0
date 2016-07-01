@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bMU6U-0005oB-H2
- for barebox@lists.infradead.org; Mon, 11 Jul 2016 05:50:03 +0000
-Date: Mon, 11 Jul 2016 07:49:40 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160711054940.GU20657@pengutronix.de>
-References: <1467963348-15018-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bIzkn-00073m-FI
+ for barebox@lists.infradead.org; Fri, 01 Jul 2016 14:49:14 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 59BF4A0033E
+ for <barebox@lists.infradead.org>; Fri,  1 Jul 2016 16:49:56 +0200 (CEST)
+From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
+Date: Fri, 1 Jul 2016 16:48:39 +0200
+Message-Id: <1467384519-23059-1-git-send-email-s.mueller-klieser@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1467963348-15018-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,111 +18,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: imx_defconfig: enable NAND_IMX_BBM and
- NAND_ALLOW_ERASE_BAD
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: bootm: recalculate decompression space
+To: barebox@lists.infradead.org
 
-On Fri, Jul 08, 2016 at 09:35:48AM +0200, Uwe Kleine-K=F6nig wrote:
-> The first is important for imx systems with NAND. The second is a useful
-> debug aid that doesn't change behaviour without being explicitly enabled
-> at runtime. So both should be safe.
-> =
-
-> The other changes result from MFD_MC13XXX and SPI_IMX being selected by
-> MACH_PCM038 since 4bd07a103982 ("arm: imx: select MFD_MC13XXX for all
-> boards that need it") and a move of a few Kconfig definitions in
-> 7839011f61c0 ("bootm: Move bootm options to common/Kconfig").
-> =
-
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  arch/arm/configs/imx_defconfig | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-
-Applied, thanks
-
-Sascha
-
-> =
-
-> diff --git a/arch/arm/configs/imx_defconfig b/arch/arm/configs/imx_defcon=
-fig
-> index 886bcefd9b68..69ab021e25ae 100644
-> --- a/arch/arm/configs/imx_defconfig
-> +++ b/arch/arm/configs/imx_defconfig
-> @@ -19,6 +19,10 @@ CONFIG_HUSH_FANCY_PROMPT=3Dy
->  CONFIG_CMDLINE_EDITING=3Dy
->  CONFIG_AUTO_COMPLETE=3Dy
->  CONFIG_MENU=3Dy
-> +CONFIG_BOOTM_SHOW_TYPE=3Dy
-> +CONFIG_BOOTM_VERBOSE=3Dy
-> +CONFIG_BOOTM_INITRD=3Dy
-> +CONFIG_BOOTM_OFTREE=3Dy
->  CONFIG_BLSPEC=3Dy
->  CONFIG_CONSOLE_ACTIVATE_NONE=3Dy
->  CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=3Dy
-> @@ -26,10 +30,6 @@ CONFIG_RESET_SOURCE=3Dy
->  CONFIG_LONGHELP=3Dy
->  CONFIG_CMD_IOMEM=3Dy
->  CONFIG_CMD_MEMINFO=3Dy
-> -CONFIG_BOOTM_SHOW_TYPE=3Dy
-> -CONFIG_BOOTM_VERBOSE=3Dy
-> -CONFIG_BOOTM_INITRD=3Dy
-> -CONFIG_BOOTM_OFTREE=3Dy
->  # CONFIG_CMD_BOOTU is not set
->  CONFIG_CMD_GO=3Dy
->  CONFIG_CMD_RESET=3Dy
-> @@ -79,7 +79,6 @@ CONFIG_OF_BAREBOX_DRIVERS=3Dy
->  CONFIG_DRIVER_NET_FEC_IMX=3Dy
->  CONFIG_NET_USB=3Dy
->  CONFIG_NET_USB_ASIX=3Dy
-> -CONFIG_DRIVER_SPI_IMX=3Dy
->  CONFIG_I2C=3Dy
->  CONFIG_I2C_IMX=3Dy
->  CONFIG_MTD=3Dy
-> @@ -89,7 +88,9 @@ CONFIG_CFI_BUFFER_WRITE=3Dy
->  CONFIG_NAND=3Dy
->  # CONFIG_NAND_ECC_SOFT is not set
->  # CONFIG_NAND_ECC_HW_SYNDROME is not set
-> +CONFIG_NAND_ALLOW_ERASE_BAD=3Dy
->  CONFIG_NAND_IMX=3Dy
-> +CONFIG_NAND_IMX_BBM=3Dy
->  CONFIG_MTD_UBI=3Dy
->  CONFIG_MTD_UBI_FASTMAP=3Dy
->  CONFIG_USB_HOST=3Dy
-> @@ -97,7 +98,6 @@ CONFIG_USB_EHCI=3Dy
->  CONFIG_USB_ULPI=3Dy
->  CONFIG_MCI=3Dy
->  CONFIG_MCI_IMX=3Dy
-> -CONFIG_MFD_MC13XXX=3Dy
->  CONFIG_LED=3Dy
->  CONFIG_LED_GPIO=3Dy
->  CONFIG_LED_GPIO_OF=3Dy
-> -- =
-
-> 2.8.1
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QWNjb3JkaW5nIHRvIHRoZSBrZXJuZWwgZG9jdW1lbnRhdGlvbiBpdCBpcyByZWNvbW1lbmRlZCB0
+byBwbGFjZSB0aGUKY29tcHJlc3NlZCBpbWFnZSBiZXR3ZWVuIDMyIE1pQiBhbmQgMTI4IE1pQi4g
+VGhlIERUQiBhbmQgaW5pdHJkIHNob3VsZApiZSBwbGFjZWQgYWJvdmUgMTI4IE1pQi4gV2Ugd2ls
+bCBmb2xsb3cgdGhlIHJlY29tbWVuZGF0aW9uIGFzIGxvbmcgYXMgd2UKaGF2ZSBlbm91Z2ggUkFN
+LiBJZiB0aGlzIGlzIG5vdCB0aGUgY2FzZSwgd2UgZmFsbCBiYWNrIHRvIHRoZSBzY2hlbWUuClRo
+aXMgY2hhbmdlIGlzIHJlcXVpcmVkIGJlY2F1c2Ugb2YgdGhlIEFSTSBkZWZhdWx0IGtlcm5lbCBj
+b25maWcgY2hhbmdlcwpyZWdhcmRpbmcgUk9EQVRBIGxheW91dCwgd2hpY2ggbGVhZCB0byBhbiBp
+bmNyZWFzZWQgY29tcHJlc3Npb24gZmFjdG9yCm9mIHRoZSBrZXJuZWwgaW1hZ2UuClRoaXMgc2hv
+dWxkIGJlIHJlZ2FyZGVkIGFzIGFuIGludGVybWVkaWF0ZSBzb2x1dGlvbiB1bnRpbCB0aGVyZSBp
+cyBhCm1lY2hhbmlzbSBmb3IgdGhlIGtlcm5lbCBpbWFnZSB0byByZXBvcnQgdGhlIGRlY29tcHJl
+c3NlZCBsYXlvdXQKcmVxdWlyZW1lbnRzIHRvIHRoZSBib290bG9hZGVyLgoKU2lnbmVkLW9mZi1i
+eTogU3RlZmFuIE3DvGxsZXItS2xpZXNlciA8cy5tdWVsbGVyLWtsaWVzZXJAcGh5dGVjLmRlPgot
+LS0KIGFyY2gvYXJtL2xpYi9ib290bS5jIHwgMTggKysrKysrKysrKysrKysrLS0tCiAxIGZpbGUg
+Y2hhbmdlZCwgMTUgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9h
+cmNoL2FybS9saWIvYm9vdG0uYyBiL2FyY2gvYXJtL2xpYi9ib290bS5jCmluZGV4IDgwM2FhOTQu
+LmJlMTI1OWIgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2xpYi9ib290bS5jCisrKyBiL2FyY2gvYXJt
+L2xpYi9ib290bS5jCkBAIC04MSwxMCArODEsMTUgQEAgc3RhdGljIGludCBnZXRfa2VybmVsX2Fk
+ZHJlc3NlcyhzaXplX3QgaW1hZ2Vfc2l6ZSwKIAkJcmV0dXJuIHJldDsKIAogCS8qCi0JICogV2Ug
+ZG9uJ3Qga25vdyB0aGUgZXhhY3QgZGVjb21wcmVzc2VkIHNpemUgc28ganVzdCB1c2UgYSBjb25z
+ZXJ2YXRpdmUKLQkgKiBkZWZhdWx0IG9mIDQgdGltZXMgdGhlIHNpemUgb2YgdGhlIGNvbXByZXNz
+ZWQgaW1hZ2UuCisJICogVGhlIGtlcm5lbCBkb2N1bWVudGF0aW9uICJEb2N1bWVudGF0aW9uL2Fy
+bS9Cb290aW5nIiBhZHZpc2VzCisJICogdG8gcGxhY2UgdGhlIGNvbXByZXNzZWQgaW1hZ2Ugb3V0
+c2lkZSBvZiB0aGUgbG93ZXN0IDMyIE1pQiB0bworCSAqIGF2b2lkIHJlbG9jYXRpb24uIFdlIHNo
+b3VsZCBkbyB0aGlzIGlmIHdlIGhhdmUgYXQgbGVhc3QgNjQgTWlCCisJICogb2YgcmFtLiBJZiB3
+ZSBoYXZlIGxlc3Mgc3BhY2UsIHdlIGFzc3VtZSBhIG1heGltdW0KKwkgKiBjb21wcmVzc2lvbiBm
+YWN0b3Igb2YgNS4KIAkgKi8KLQlpbWFnZV9kZWNvbXBfc2l6ZSA9IFBBR0VfQUxJR04oaW1hZ2Vf
+c2l6ZSAqIDQpOworCWltYWdlX2RlY29tcF9zaXplID0gUEFHRV9BTElHTihpbWFnZV9zaXplICog
+NSk7CisJaWYgKG1lbV9zaXplID49IFNaXzY0TSkKKwkJaW1hZ2VfZGVjb21wX3NpemUgPSBtYXgo
+aW1hZ2VfZGVjb21wX3NpemUsIFNaXzMyTSk7CiAKIAkvKgogCSAqIEJ5IGRlZmF1bHQgcHV0IG9m
+dHJlZS9pbml0cmQgY2xvc2UgYmVoaW5kIGNvbXByZXNzZWQga2VybmVsIGltYWdlIHRvCkBAIC0x
+MTMsNiArMTE4LDEzIEBAIHN0YXRpYyBpbnQgZ2V0X2tlcm5lbF9hZGRyZXNzZXMoc2l6ZV90IGlt
+YWdlX3NpemUsCiAKIAkqbWVtX2ZyZWUgPSBQQUdFX0FMSUdOKCpsb2FkX2FkZHJlc3MgKyBpbWFn
+ZV9zaXplICsgc3BhY2luZyk7CiAKKwkvKgorCSAqIFBsYWNlIG9mdHJlZS9pbml0cmQgb3V0c2lk
+ZSBvZiB0aGUgZmlyc3QgMTI4IE1pQiwgaWYgd2UgaGF2ZSBzcGFjZQorCSAqIGZvciBpdC4gVGhp
+cyBhdm9pZHMgcG90ZW50aWFsIGNvbmZsaWN0cyB3aXRoIHRoZSBrZXJuZWwgZGVjb21wcmVzc29y
+LgorCSAqLworCWlmIChtZW1fc2l6ZSA+IFNaXzI1Nk0pCisJCSptZW1fZnJlZSA9IG1heCgqbWVt
+X2ZyZWUsIG1lbV9zdGFydCArIFNaXzEyOE0pOworCiAJcmV0dXJuIDA7CiB9CiAKLS0gCjEuOS4x
+CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJv
+eCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5p
+bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
