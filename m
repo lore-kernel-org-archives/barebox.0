@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bIzkn-00073m-FI
- for barebox@lists.infradead.org; Fri, 01 Jul 2016 14:49:14 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 59BF4A0033E
- for <barebox@lists.infradead.org>; Fri,  1 Jul 2016 16:49:56 +0200 (CEST)
-From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
-Date: Fri, 1 Jul 2016 16:48:39 +0200
-Message-Id: <1467384519-23059-1-git-send-email-s.mueller-klieser@phytec.de>
-MIME-Version: 1.0
+Received: from smtp33.i.mail.ru ([94.100.177.93])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bJD2O-0004x5-9r
+ for barebox@lists.infradead.org; Sat, 02 Jul 2016 05:00:18 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sat,  2 Jul 2016 07:59:47 +0300
+Message-Id: <1467435587-20533-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,50 +14,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: bootm: recalculate decompression space
+Subject: [PATCH v2] net: smc911x: Add parsing devicetree options
 To: barebox@lists.infradead.org
 
-QWNjb3JkaW5nIHRvIHRoZSBrZXJuZWwgZG9jdW1lbnRhdGlvbiBpdCBpcyByZWNvbW1lbmRlZCB0
-byBwbGFjZSB0aGUKY29tcHJlc3NlZCBpbWFnZSBiZXR3ZWVuIDMyIE1pQiBhbmQgMTI4IE1pQi4g
-VGhlIERUQiBhbmQgaW5pdHJkIHNob3VsZApiZSBwbGFjZWQgYWJvdmUgMTI4IE1pQi4gV2Ugd2ls
-bCBmb2xsb3cgdGhlIHJlY29tbWVuZGF0aW9uIGFzIGxvbmcgYXMgd2UKaGF2ZSBlbm91Z2ggUkFN
-LiBJZiB0aGlzIGlzIG5vdCB0aGUgY2FzZSwgd2UgZmFsbCBiYWNrIHRvIHRoZSBzY2hlbWUuClRo
-aXMgY2hhbmdlIGlzIHJlcXVpcmVkIGJlY2F1c2Ugb2YgdGhlIEFSTSBkZWZhdWx0IGtlcm5lbCBj
-b25maWcgY2hhbmdlcwpyZWdhcmRpbmcgUk9EQVRBIGxheW91dCwgd2hpY2ggbGVhZCB0byBhbiBp
-bmNyZWFzZWQgY29tcHJlc3Npb24gZmFjdG9yCm9mIHRoZSBrZXJuZWwgaW1hZ2UuClRoaXMgc2hv
-dWxkIGJlIHJlZ2FyZGVkIGFzIGFuIGludGVybWVkaWF0ZSBzb2x1dGlvbiB1bnRpbCB0aGVyZSBp
-cyBhCm1lY2hhbmlzbSBmb3IgdGhlIGtlcm5lbCBpbWFnZSB0byByZXBvcnQgdGhlIGRlY29tcHJl
-c3NlZCBsYXlvdXQKcmVxdWlyZW1lbnRzIHRvIHRoZSBib290bG9hZGVyLgoKU2lnbmVkLW9mZi1i
-eTogU3RlZmFuIE3DvGxsZXItS2xpZXNlciA8cy5tdWVsbGVyLWtsaWVzZXJAcGh5dGVjLmRlPgot
-LS0KIGFyY2gvYXJtL2xpYi9ib290bS5jIHwgMTggKysrKysrKysrKysrKysrLS0tCiAxIGZpbGUg
-Y2hhbmdlZCwgMTUgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9h
-cmNoL2FybS9saWIvYm9vdG0uYyBiL2FyY2gvYXJtL2xpYi9ib290bS5jCmluZGV4IDgwM2FhOTQu
-LmJlMTI1OWIgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2xpYi9ib290bS5jCisrKyBiL2FyY2gvYXJt
-L2xpYi9ib290bS5jCkBAIC04MSwxMCArODEsMTUgQEAgc3RhdGljIGludCBnZXRfa2VybmVsX2Fk
-ZHJlc3NlcyhzaXplX3QgaW1hZ2Vfc2l6ZSwKIAkJcmV0dXJuIHJldDsKIAogCS8qCi0JICogV2Ug
-ZG9uJ3Qga25vdyB0aGUgZXhhY3QgZGVjb21wcmVzc2VkIHNpemUgc28ganVzdCB1c2UgYSBjb25z
-ZXJ2YXRpdmUKLQkgKiBkZWZhdWx0IG9mIDQgdGltZXMgdGhlIHNpemUgb2YgdGhlIGNvbXByZXNz
-ZWQgaW1hZ2UuCisJICogVGhlIGtlcm5lbCBkb2N1bWVudGF0aW9uICJEb2N1bWVudGF0aW9uL2Fy
-bS9Cb290aW5nIiBhZHZpc2VzCisJICogdG8gcGxhY2UgdGhlIGNvbXByZXNzZWQgaW1hZ2Ugb3V0
-c2lkZSBvZiB0aGUgbG93ZXN0IDMyIE1pQiB0bworCSAqIGF2b2lkIHJlbG9jYXRpb24uIFdlIHNo
-b3VsZCBkbyB0aGlzIGlmIHdlIGhhdmUgYXQgbGVhc3QgNjQgTWlCCisJICogb2YgcmFtLiBJZiB3
-ZSBoYXZlIGxlc3Mgc3BhY2UsIHdlIGFzc3VtZSBhIG1heGltdW0KKwkgKiBjb21wcmVzc2lvbiBm
-YWN0b3Igb2YgNS4KIAkgKi8KLQlpbWFnZV9kZWNvbXBfc2l6ZSA9IFBBR0VfQUxJR04oaW1hZ2Vf
-c2l6ZSAqIDQpOworCWltYWdlX2RlY29tcF9zaXplID0gUEFHRV9BTElHTihpbWFnZV9zaXplICog
-NSk7CisJaWYgKG1lbV9zaXplID49IFNaXzY0TSkKKwkJaW1hZ2VfZGVjb21wX3NpemUgPSBtYXgo
-aW1hZ2VfZGVjb21wX3NpemUsIFNaXzMyTSk7CiAKIAkvKgogCSAqIEJ5IGRlZmF1bHQgcHV0IG9m
-dHJlZS9pbml0cmQgY2xvc2UgYmVoaW5kIGNvbXByZXNzZWQga2VybmVsIGltYWdlIHRvCkBAIC0x
-MTMsNiArMTE4LDEzIEBAIHN0YXRpYyBpbnQgZ2V0X2tlcm5lbF9hZGRyZXNzZXMoc2l6ZV90IGlt
-YWdlX3NpemUsCiAKIAkqbWVtX2ZyZWUgPSBQQUdFX0FMSUdOKCpsb2FkX2FkZHJlc3MgKyBpbWFn
-ZV9zaXplICsgc3BhY2luZyk7CiAKKwkvKgorCSAqIFBsYWNlIG9mdHJlZS9pbml0cmQgb3V0c2lk
-ZSBvZiB0aGUgZmlyc3QgMTI4IE1pQiwgaWYgd2UgaGF2ZSBzcGFjZQorCSAqIGZvciBpdC4gVGhp
-cyBhdm9pZHMgcG90ZW50aWFsIGNvbmZsaWN0cyB3aXRoIHRoZSBrZXJuZWwgZGVjb21wcmVzc29y
-LgorCSAqLworCWlmIChtZW1fc2l6ZSA+IFNaXzI1Nk0pCisJCSptZW1fZnJlZSA9IG1heCgqbWVt
-X2ZyZWUsIG1lbV9zdGFydCArIFNaXzEyOE0pOworCiAJcmV0dXJuIDA7CiB9CiAKLS0gCjEuOS4x
-CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJv
-eCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5p
-bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+This patch adds parsing basic devicetree options for the smc911x driver:
+reg-io-width, reg-shift and smsc,force-(in/ex)ternal-phy, which makes
+driver usable for most DTS-based boards.
+
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ drivers/net/smc911x.c               | 17 +++++++++++++++--
+ include/platform_data/eth-smc911x.h |  2 +-
+ 2 files changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
+index fe9d1df..45175bb 100644
+--- a/drivers/net/smc911x.c
++++ b/drivers/net/smc911x.c
+@@ -38,7 +38,7 @@ struct smc911x_priv {
+ 	struct mii_bus miibus;
+ 	void __iomem *base;
+ 
+-	int shift;
++	u32 shift;
+ 	int generation;
+ 	unsigned int flags;
+ 	unsigned int idrev;
+@@ -516,6 +516,19 @@ static int smc911x_probe(struct device_d *dev)
+ 		priv->shift = pdata->shift;
+ 		priv->flags = pdata->flags;
+ 		priv->phy_mask = pdata->phy_mask;
++	} else if (IS_ENABLED(CONFIG_OFDEVICE) && dev->device_node) {
++		ret = of_property_read_u32(dev->device_node, "reg-io-width", &val);
++		if (ret)
++			return ret;
++		is_32bit = (val == 4);
++
++		of_property_read_u32(dev->device_node, "reg-shift", &priv->shift);
++
++		if (of_property_read_bool(dev->device_node, "smsc,force-internal-phy"))
++			priv->flags |= SMC911X_FORCE_INTERNAL_PHY;
++
++		if (of_property_read_bool(dev->device_node, "smsc,force-external-phy"))
++			priv->flags |= SMC911X_FORCE_EXTERNAL_PHY;
+ 	}
+ 
+ 	if (is_32bit) {
+@@ -562,7 +575,7 @@ static int smc911x_probe(struct device_d *dev)
+ 	if (val != 0x87654321) {
+ 		dev_err(dev, "no smc911x found on 0x%p (byte_test=0x%08x)\n",
+ 			priv->base, val);
+-		if (((val >> 16) & 0xFFFF) == (val & 0xFFFF)) {
++		if ((((val >> 16) & 0xFFFF) == (val & 0xFFFF)) && is_32bit) {
+ 			/*
+ 			 * This may mean the chip is set
+ 			 * for 32 bit while the bus is reading 16 bit
+diff --git a/include/platform_data/eth-smc911x.h b/include/platform_data/eth-smc911x.h
+index 4a802ee..c97a296 100644
+--- a/include/platform_data/eth-smc911x.h
++++ b/include/platform_data/eth-smc911x.h
+@@ -12,7 +12,7 @@
+  * Pass pointer to this structure as part of device_d -> platform_data
+  */
+ struct smc911x_plat {
+-	int shift;
++	u32 shift;
+ 	unsigned int flags;
+ 	unsigned int phy_mask;	/* external PHY only: mask out PHYs,
+ 				   e.g. ~(1 << 5) to use PHY addr 5 */
+-- 
+2.4.9
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
