@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bK0Ah-00062I-2y
- for barebox@lists.infradead.org; Mon, 04 Jul 2016 09:28:09 +0000
+ id 1bK0Ah-00062H-32
+ for barebox@lists.infradead.org; Mon, 04 Jul 2016 09:28:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Jul 2016 11:27:38 +0200
-Message-Id: <1467624459-16448-12-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Jul 2016 11:27:35 +0200
+Message-Id: <1467624459-16448-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1467624459-16448-1-git-send-email-s.hauer@pengutronix.de>
 References: <1467624459-16448-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,33 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/12] ARM: imx_v7_defconfig: Enable Vincell support
+Subject: [PATCH 08/12] ARM: i.MX53 Vincell: Adjust bbu handler partition size
+ to real partition size
 To: Barebox List <barebox@lists.infradead.org>
 
-Now that we can start images bigger than internal SRAM size we can
-enable the Vincell support in the imx_v7_defconfig.
+The bootloader partition size was increased to 0xe0000, so adjust
+the barebox update handler partition size accordingly.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/configs/imx_v7_defconfig | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/boards/guf-vincell/board.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
-index 5ab3433..e005783 100644
---- a/arch/arm/configs/imx_v7_defconfig
-+++ b/arch/arm/configs/imx_v7_defconfig
-@@ -3,8 +3,10 @@ CONFIG_IMX_MULTI_BOARDS=y
- CONFIG_MACH_EFIKA_MX_SMARTBOOK=y
- CONFIG_MACH_EMBEDSKY_E9=y
- CONFIG_MACH_FREESCALE_MX51_PDK=y
--CONFIG_MACH_FREESCALE_MX53_LOCO=y
- CONFIG_MACH_CCMX53=y
-+CONFIG_MACH_FREESCALE_MX53_LOCO=y
-+CONFIG_MACH_GUF_VINCELL=y
-+CONFIG_MACH_GUF_VINCELL_XLOAD=y
- CONFIG_MACH_TQMA53=y
- CONFIG_MACH_FREESCALE_MX53_VMX53=y
- CONFIG_MACH_PHYTEC_SOM_IMX6=y
+diff --git a/arch/arm/boards/guf-vincell/board.c b/arch/arm/boards/guf-vincell/board.c
+index ee5be10..007b6dd 100644
+--- a/arch/arm/boards/guf-vincell/board.c
++++ b/arch/arm/boards/guf-vincell/board.c
+@@ -41,7 +41,7 @@ static int vincell_devices_init(void)
+ 	clk_set_rate(clk_lookup("nfc_podf"), 33333334);
+ 
+ 	imx53_bbu_internal_nand_register_handler("nand",
+-		BBU_HANDLER_FLAG_DEFAULT, SZ_512K);
++		BBU_HANDLER_FLAG_DEFAULT, 0xe0000);
+ 
+ 	return 0;
+ }
 -- 
 2.8.1
 
