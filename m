@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bK0Ac-00061D-FK
- for barebox@lists.infradead.org; Mon, 04 Jul 2016 09:28:03 +0000
+ id 1bK0Ah-00062F-35
+ for barebox@lists.infradead.org; Mon, 04 Jul 2016 09:28:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Jul 2016 11:27:36 +0200
-Message-Id: <1467624459-16448-10-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Jul 2016 11:27:30 +0200
+Message-Id: <1467624459-16448-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1467624459-16448-1-git-send-email-s.hauer@pengutronix.de>
 References: <1467624459-16448-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,36 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/12] ARM: i.MX53 Vincell: Add PBL console support
+Subject: [PATCH 03/12] ARM: i.MX53: Detect booting from USB
 To: Barebox List <barebox@lists.infradead.org>
+
+The USB download mode can be detected by reading the BMOD[0|1]
+bits. Add support for it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/guf-vincell/lowlevel.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ arch/arm/mach-imx/boot.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm/boards/guf-vincell/lowlevel.c b/arch/arm/boards/guf-vincell/lowlevel.c
-index a72eaf8..f4bd44e 100644
---- a/arch/arm/boards/guf-vincell/lowlevel.c
-+++ b/arch/arm/boards/guf-vincell/lowlevel.c
-@@ -137,12 +137,11 @@ static noinline void imx53_guf_vincell_init(void *fdt)
+diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+index c72ec61..b66c29d 100644
+--- a/arch/arm/mach-imx/boot.c
++++ b/arch/arm/mach-imx/boot.c
+@@ -217,6 +217,12 @@ void imx53_get_boot_source(enum bootsource *src, int *instance)
+ 	void __iomem *src_base = IOMEM(MX53_SRC_BASE_ADDR);
+ 	uint32_t cfg1 = readl(src_base + IMX53_SRC_SBMR);
  
- 	imx53_init_lowlevel_early(800);
- 
--	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
--		writel(0x3, MX53_IOMUXC_BASE_ADDR + 0x27c);
--		writel(0x3, MX53_IOMUXC_BASE_ADDR + 0x278);
--		imx53_uart_setup_ll();
--		putc_ll('>');
--	}
-+	writel(0x3, MX53_IOMUXC_BASE_ADDR + 0x27c);
-+	writel(0x3, MX53_IOMUXC_BASE_ADDR + 0x278);
-+	imx53_uart_setup(IOMEM(MX53_UART4_BASE_ADDR));
-+	putc_ll('>');
-+	pbl_set_putc(imx_uart_putc, (void *)MX53_UART4_BASE_ADDR);
- 
- 	/* Skip SDRAM initialization if we run from RAM */
- 	r = get_pc();
++	if (((cfg1 >> 24) & 0x3) == 0x3) {
++		*src = BOOTSOURCE_USB;
++		*instance = 0;
++		return;
++	}
++
+ 	switch ((cfg1 & 0xff) >> 4) {
+ 	case 2:
+ 		*src = BOOTSOURCE_HD;
 -- 
 2.8.1
 
