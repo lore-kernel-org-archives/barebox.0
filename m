@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
+Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bK4Cm-000250-Da
- for barebox@lists.infradead.org; Mon, 04 Jul 2016 13:46:34 +0000
-Received: by mail-lf0-x244.google.com with SMTP id a2so17188022lfe.3
- for <barebox@lists.infradead.org>; Mon, 04 Jul 2016 06:46:11 -0700 (PDT)
-Date: Mon, 4 Jul 2016 16:48:10 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20160704164810.ad22e9243d6bd0541a637888@gmail.com>
-In-Reply-To: <1466358813-31528-1-git-send-email-shc_work@mail.ru>
-References: <1466358813-31528-1-git-send-email-shc_work@mail.ru>
-Mime-Version: 1.0
+ id 1bKCZg-0001dN-0P
+ for barebox@lists.infradead.org; Mon, 04 Jul 2016 22:42:45 +0000
+Date: Tue, 5 Jul 2016 00:40:29 +0200 (CEST)
+From: Alexander Kurz <akurz@blala.de>
+In-Reply-To: <20160704093704.GJ20657@pengutronix.de>
+Message-ID: <alpine.DEB.2.00.1607042356330.21588@blala.de>
+References: <1467471002-9613-1-git-send-email-akurz@blala.de>
+ <20160704093704.GJ20657@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,81 +18,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] input: Compile keymap only if necessary
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] wdog: imx-wd: distinguish for WICR/WMCR support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sun, 19 Jun 2016 20:53:33 +0300
-Alexander Shiyan <shc_work@mail.ru> wrote:
-
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ---
->  drivers/input/Makefile   | 3 +--
->  include/input/keyboard.h | 4 ++++
->  2 files changed, 5 insertions(+), 2 deletions(-)
-> =
-
-> diff --git a/drivers/input/Makefile b/drivers/input/Makefile
-> index 7d2c194..e694a98 100644
-> --- a/drivers/input/Makefile
-> +++ b/drivers/input/Makefile
-> @@ -1,8 +1,7 @@
-> -obj-$(CONFIG_INPUT) +=3D input.o
-> +obj-$(CONFIG_INPUT) +=3D input.o keymap.o
->  obj-$(CONFIG_INPUT_MATRIXKMAP) +=3D matrix-keymap.o
->  obj-$(CONFIG_KEYBOARD_USB) +=3D usb_kbd.o
->  obj-$(CONFIG_KEYBOARD_GPIO) +=3D gpio_keys.o
->  obj-$(CONFIG_KEYBOARD_TWL6030) +=3D twl6030_pwrbtn.o
->  obj-$(CONFIG_KEYBOARD_IMX_KEYPAD) +=3D imx_keypad.o
->  obj-$(CONFIG_KEYBOARD_QT1070) +=3D qt1070.o
-> -obj-y +=3D keymap.o
-> diff --git a/include/input/keyboard.h b/include/input/keyboard.h
-> index d1f5bf5..e205a51 100644
-> --- a/include/input/keyboard.h
-> +++ b/include/input/keyboard.h
-> @@ -1,6 +1,8 @@
->  #ifndef __INPUT_KEYBOARD_H
->  #define __INPUT_KEYBOARD_H
->  =
-
-> +#ifdef CONFIG_INPUT
-> +
-
-Do we really need this?
-
->  #include <linux/types.h>
->  =
-
->  #define NR_KEYS	256
-> @@ -9,3 +11,5 @@ extern uint8_t keycode_bb_keys[NR_KEYS];
->  extern uint8_t keycode_bb_shift_keys[NR_KEYS];
->  =
-
->  #endif
-> +
-> +#endif
-> -- =
-
-> 2.4.9
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 
 
--- =
+On Mon, 4 Jul 2016, Sascha Hauer wrote:
 
---=A0
-Best regards,
-=A0 Antony Pavlov
+> On Sat, Jul 02, 2016 at 04:50:02PM +0200, Alexander Kurz wrote:
+> > The IMX watchdog driver currently distinguishes two variants: imx1-wdt
+> > using a 32-bit register interface and imx21-wdt with a 16-bit register
+> > interface.
+> > Further distinguishment is required: the i.MX21, i.MX27 and i.MX31 SOC
+> > do provide a three register interface (WCR, WSR, WRSR) while later SOC
+> > starting with i.MX25 provide two additional registers (WICR and WMCR).
+> > The five-register interface is also used on i.MX35, and Cortex-A based
+> > i.MX SOC.
+> > 
+> > With commit 4cc0a3d9c547 ("wdog: imx-wd: Disable watchdog powerdown counter")
+> > one of the extended registers (WMCR) got used first.
+> > 
+> > Make imx-wd distinguish between the three and five register Watchdog Timers
+> > and introduce the five register support as imx25-wdt.
+> > 
+> > Note on DTS: keep the i.MX related DTS in sync with linux and make the
+> > existing programming model fsl,imx21-wdt behave like fsl,imx25-wdt for
+> > the mean time until this is addressed upstream in linux.
+> > 
+> > fixes: 4cc0a3d9c547 ("wdog: imx-wd: Disable watchdog powerdown counter")
+> 
+> So beginning with 4cc0a3d9c547 i.MX21, i.MX27 and i.MX31 accidently use
+> the five-register interface. What are the practical consequences? Does
+> the driver still work properly on these SoCs?
+The access of this non-existing register triggers a crash of a barebox run 
+out of the factory shipped u-boot on an MX31 based Kindle-DX (u-boot gets 
+re-started, probably some abort handler) - I dont have any JTAG interface 
+running yet to see what's going on in detail.
+
+> 
+> I'm aksing because even with this patch...
+> 
+> >  		.compatible = "fsl,imx21-wdt",
+> > -		.data = &imx21_wd_ops,
+> > +		/* FIXME: backward compaibility for imported linux DTS
+> > +		   Most references to fsl,imx21-wdt from linux imported DTS
+> > +		   linux actually mean fsl,imx25-wdt. Make fsl,imx21-wdt
+> > +		   behave like fsl,imx25-wdt for the mean time until
+> > +		   this is fixed there */
+> > +		.data = &imx25_wd_ops,
+> > +	}, {
+> 
+> ...device tree based i.MX21/27/31 boards still use the five-register
+> interface. There are no i.MX21/31 based device tree boards, but there
+> are some i.MX27 boards with device tree support.
+Yes, this point is open.
+I did not want to break the sync between the linux und barebox IMX DTS 
+stock. My Idea was:
+1) do this first fix in barebox which will not cover DTS (do 
+ workaround "wdt21 behaves like wdt25") 
+2) fix it in linux, wait till next rc which contains the fix
+3) linux DTS gets imported into barebox, and the workarkound wdt21 behaves   
+ like wdt25" can be removed
+
+Regards, Alexander
 
 _______________________________________________
 barebox mailing list
