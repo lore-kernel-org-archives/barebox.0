@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bK0Ac-00060y-FM
+ id 1bK0Ac-000619-FT
  for barebox@lists.infradead.org; Mon, 04 Jul 2016 09:28:04 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_256_CBC_SHA1:256)
- (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1bK0AG-0001XU-HE
- for barebox@lists.infradead.org; Mon, 04 Jul 2016 11:27:40 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.87)
- (envelope-from <sha@pengutronix.de>) id 1bK0AG-0001Tv-6l
- for barebox@lists.infradead.org; Mon, 04 Jul 2016 11:27:40 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Jul 2016 11:27:27 +0200
-Message-Id: <1467624459-16448-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Jul 2016 11:27:37 +0200
+Message-Id: <1467624459-16448-11-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1467624459-16448-1-git-send-email-s.hauer@pengutronix.de>
+References: <1467624459-16448-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,58 +21,140 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: i.MX53 NAND xload support
+Subject: [PATCH 10/12] ARM: i.MX53 Vincell: Add NAND xload support
 To: Barebox List <barebox@lists.infradead.org>
 
-This series adds NAND xload support for i.MX53 and more specifically
-to the Garz+Fricke Vincell board. With this images bigger than the
-SoC internal SRAM can be supported and the Vincell can now be enabled
-in the imx_v7_defconfig. The existing vincell_defconfig unfortunately
-is not obsolete though, since we still need a small image for loading
-it with imx-usb-loader.
-Also included some misc patches I came up with during working with the
-Vincell board.
+The Vincell boards do the SDRAM setup from board init code, so the
+image size is limited to the internal SRAM size. To overcome this
+limitation use the NAND xload support.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/guf-vincell/lowlevel.c | 25 ++++++++++++++++++++++---
+ arch/arm/mach-imx/Kconfig              |  9 +++++++++
+ images/Makefile.imx                    | 14 ++++++++++----
+ 3 files changed, 41 insertions(+), 7 deletions(-)
 
-----------------------------------------------------------------
-Sascha Hauer (12):
-      ARM: i.MX53: do not pass base address to imx*_boot_save_loc
-      ARM: i.MX: Provide bootsource functions for early boot code
-      ARM: i.MX53: Detect booting from USB
-      mtd: imx-nand: Move v3 register definitions to include file
-      ARM: i.MX53: Implement NAND xload
-      ARM: i.MX53: Add uart5 clock support
-      ARM: i.MX53 Vincell: Reset phy consistently from device tree
-      ARM: i.MX53 Vincell: Adjust bbu handler partition size to real partition size
-      ARM: i.MX53 Vincell: Add PBL console support
-      ARM: i.MX53 Vincell: Add NAND xload support
-      ARM: imx_v7_defconfig: Enable Vincell support
-      ARM: vincell_defconfig: make smaller
+diff --git a/arch/arm/boards/guf-vincell/lowlevel.c b/arch/arm/boards/guf-vincell/lowlevel.c
+index f4bd44e..34c28f7 100644
+--- a/arch/arm/boards/guf-vincell/lowlevel.c
++++ b/arch/arm/boards/guf-vincell/lowlevel.c
+@@ -11,6 +11,7 @@
+ #include <mach/generic.h>
+ #include <asm/barebox-arm.h>
+ #include <asm/barebox-arm-head.h>
++#include <mach/xload.h>
+ 
+ #define IOMUX_PADCTL_DDRI_DDR (1 << 9)
+ 
+@@ -127,8 +128,9 @@ static noinline void imx53_guf_vincell_init(void *fdt)
+ {
+ 	void __iomem *ccm = (void *)MX53_CCM_BASE_ADDR;
+ 	u32 r;
++	enum bootsource src;
++	int instance;
+ 
+-	imx5_cpu_lowlevel_init();
+ 	arm_setup_stack(0xf8020000 - 8);
+ 
+ 	writel(0x0088494c, ccm + MX5_CCM_CBCDR);
+@@ -149,11 +151,28 @@ static noinline void imx53_guf_vincell_init(void *fdt)
+ 		disable_watchdog();
+ 		configure_dram_iomux();
+ 		imx_esdctlv4_init();
++
++		imx53_get_boot_source(&src, &instance);
++
++		if (src == BOOTSOURCE_NAND &&
++		    is_enabled(CONFIG_MACH_GUF_VINCELL_XLOAD))
++			imx53_nand_start_image();
+ 	}
+ 
+ 	imx53_barebox_entry(fdt);
+ }
+ 
++static noinline void __imx53_guf_vincell_init(void *fdt)
++{
++	imx5_cpu_lowlevel_init();
++
++	relocate_to_current_adr();
++	setup_c();
++	barrier();
++
++	imx53_guf_vincell_init(fdt);
++}
++
+ extern char __dtb_imx53_guf_vincell_lt_start[];
+ 
+ ENTRY_FUNCTION(start_imx53_guf_vincell_lt, r0, r1, r2)
+@@ -162,7 +181,7 @@ ENTRY_FUNCTION(start_imx53_guf_vincell_lt, r0, r1, r2)
+ 
+ 	fdt = __dtb_imx53_guf_vincell_lt_start - get_runtime_offset();
+ 
+-	imx53_guf_vincell_init(fdt);
++	__imx53_guf_vincell_init(fdt);
+ }
+ 
+ extern char __dtb_imx53_guf_vincell_start[];
+@@ -173,5 +192,5 @@ ENTRY_FUNCTION(start_imx53_guf_vincell, r0, r1, r2)
+ 
+ 	fdt = __dtb_imx53_guf_vincell_start - get_runtime_offset();
+ 
+-	imx53_guf_vincell_init(fdt);
++	__imx53_guf_vincell_init(fdt);
+ }
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 5b648ac..d61d545 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -217,6 +217,15 @@ config MACH_GUF_VINCELL
+ 	bool "Garz-Fricke Vincell"
+ 	select ARCH_IMX53
+ 
++config MACH_GUF_VINCELL_XLOAD
++	depends on MACH_GUF_VINCELL
++	bool "Garz-Fricke Vincell NAND xload support"
++	help
++	  The Vincell initializes SDRAM from board code. This normally limits
++	  the image size to the size of the SoC internal SRAM. Enable this
++	  option to be able to use bigger images when booting from NAND. Images
++	  built with this option are no longer bootable from USB though.
++
+ config MACH_TQMA53
+ 	bool "TQ i.MX53 TQMa53"
+ 	select ARCH_IMX53
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 0ff317b..98ddcb8 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -97,14 +97,20 @@ CFG_start_imx53_vmx53.pblx.imximg = $(board)/freescale-mx53-vmx53/flash-header-i
+ FILE_barebox-freescale-imx53-vmx53.img = start_imx53_vmx53.pblx.imximg
+ image-$(CONFIG_MACH_FREESCALE_MX53_VMX53) += barebox-freescale-imx53-vmx53.img
+ 
++ifdef CONFIG_MACH_GUF_VINCELL_XLOAD
++VINCELL_IMAGE := imx-sram-img
++else
++VINCELL_IMAGE := pblx.imximg
++endif
++
+ pblx-$(CONFIG_MACH_GUF_VINCELL) += start_imx53_guf_vincell
+-CFG_start_imx53_guf_vincell.pblx.imximg = $(board)/guf-vincell/flash-header.imxcfg
+-FILE_barebox-guf-vincell.img = start_imx53_guf_vincell.pblx.imximg
++CFG_start_imx53_guf_vincell.$(VINCELL_IMAGE) = $(board)/guf-vincell/flash-header.imxcfg
++FILE_barebox-guf-vincell.img = start_imx53_guf_vincell.$(VINCELL_IMAGE)
+ image-$(CONFIG_MACH_GUF_VINCELL) += barebox-guf-vincell.img
+ 
+ pblx-$(CONFIG_MACH_GUF_VINCELL) += start_imx53_guf_vincell_lt
+-CFG_start_imx53_guf_vincell_lt.pblx.imximg = $(board)/guf-vincell/flash-header.imxcfg
+-FILE_barebox-guf-vincell-lt.img = start_imx53_guf_vincell_lt.pblx.imximg
++CFG_start_imx53_guf_vincell_lt.$(VINCELL_IMAGE) = $(board)/guf-vincell/flash-header.imxcfg
++FILE_barebox-guf-vincell-lt.img = start_imx53_guf_vincell_lt.$(VINCELL_IMAGE)
+ image-$(CONFIG_MACH_GUF_VINCELL) += barebox-guf-vincell-lt.img
+ 
+ pblx-$(CONFIG_MACH_TQMA53) += start_imx53_mba53_512mib
+-- 
+2.8.1
 
- arch/arm/boards/guf-vincell/board.c       |  13 +-
- arch/arm/boards/guf-vincell/lowlevel.c    |  36 +++-
- arch/arm/configs/imx_v7_defconfig         |   4 +-
- arch/arm/configs/vincell_defconfig        |   4 +-
- arch/arm/dts/imx53-guf-vincell-lt.dts     |   1 +
- arch/arm/mach-imx/Kconfig                 |   9 +
- arch/arm/mach-imx/Makefile                |   2 +-
- arch/arm/mach-imx/boot.c                  | 106 +++++++---
- arch/arm/mach-imx/clk-imx5.c              |   1 +
- arch/arm/mach-imx/imx25.c                 |   2 +-
- arch/arm/mach-imx/imx27.c                 |   2 +-
- arch/arm/mach-imx/imx35.c                 |   2 +-
- arch/arm/mach-imx/imx51.c                 |   2 +-
- arch/arm/mach-imx/imx53.c                 |   2 +-
- arch/arm/mach-imx/imx6.c                  |   2 +-
- arch/arm/mach-imx/include/mach/generic.h  |  17 +-
- arch/arm/mach-imx/include/mach/imx-nand.h |  49 +++++
- arch/arm/mach-imx/include/mach/xload.h    |   1 +
- arch/arm/mach-imx/xload-imx-nand.c        | 308 ++++++++++++++++++++++++++++++
- drivers/mtd/nand/nand_imx.c               |  49 -----
- images/Makefile.imx                       |  14 +-
- 21 files changed, 511 insertions(+), 115 deletions(-)
- create mode 100644 arch/arm/mach-imx/xload-imx-nand.c
 
 _______________________________________________
 barebox mailing list
