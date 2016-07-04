@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
+Received: from mail-wm0-x241.google.com ([2a00:1450:400c:c09::241])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bK2Rq-0007t4-2I
- for barebox@lists.infradead.org; Mon, 04 Jul 2016 11:53:59 +0000
-Received: by mail-wm0-x242.google.com with SMTP id c82so21089201wme.3
- for <barebox@lists.infradead.org>; Mon, 04 Jul 2016 04:53:40 -0700 (PDT)
+ id 1bK2Rl-0007sa-VA
+ for barebox@lists.infradead.org; Mon, 04 Jul 2016 11:53:54 +0000
+Received: by mail-wm0-x241.google.com with SMTP id a66so21097106wme.2
+ for <barebox@lists.infradead.org>; Mon, 04 Jul 2016 04:53:33 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Mon,  4 Jul 2016 13:52:50 +0200
-Message-Id: <1467633177-22478-8-git-send-email-poggi.raph@gmail.com>
+Date: Mon,  4 Jul 2016 13:52:45 +0200
+Message-Id: <1467633177-22478-3-git-send-email-poggi.raph@gmail.com>
 In-Reply-To: <1467633177-22478-1-git-send-email-poggi.raph@gmail.com>
 References: <1467633177-22478-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,92 +23,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 07/14] arm: include: system_info: add armv8 identification
+Subject: [PATCH v5 02/14] arm: Makefile: rework makefile to handle armv8
 To: barebox@lists.infradead.org
 Cc: Raphael Poggi <poggi.raph@gmail.com>
 
 Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
 ---
- arch/arm/include/asm/system_info.h | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ arch/arm/Makefile | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/arm/include/asm/system_info.h b/arch/arm/include/asm/system_info.h
-index 0761848..25fffd2 100644
---- a/arch/arm/include/asm/system_info.h
-+++ b/arch/arm/include/asm/system_info.h
-@@ -13,6 +13,7 @@
- #define CPU_ARCH_ARMv5TEJ	7
- #define CPU_ARCH_ARMv6		8
- #define CPU_ARCH_ARMv7		9
-+#define CPU_ARCH_ARMv8		10
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 5ccdb83..2cf5feb 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -1,7 +1,11 @@
  
- #define CPU_IS_ARM720		0x41007200
- #define CPU_IS_ARM720_MASK	0xff00fff0
-@@ -41,6 +42,12 @@
- #define CPU_IS_CORTEX_A15	0x410fc0f0
- #define CPU_IS_CORTEX_A15_MASK	0xff0ffff0
+ CPPFLAGS	+= -D__ARM__ -fno-strict-aliasing
+ # Explicitly specifiy 32-bit ARM ISA since toolchain default can be -mthumb:
++ifeq ($(CONFIG_CPU_V8),y)
++CPPFLAGS	+=$(call cc-option,-maarch64,)
++else
+ CPPFLAGS	+=$(call cc-option,-marm,)
++endif
  
-+#define CPU_IS_CORTEX_A53	0x410fd034
-+#define CPU_IS_CORTEX_A53_MASK	0xff0ffff0
-+
-+#define CPU_IS_CORTEX_A57	0x411fd070
-+#define CPU_IS_CORTEX_A57_MASK	0xff0ffff0
-+
- #define CPU_IS_PXA250		0x69052100
- #define CPU_IS_PXA250_MASK	0xfffff7f0
+ ifeq ($(CONFIG_CPU_BIG_ENDIAN),y)
+ CPPFLAGS	+= -mbig-endian
+@@ -17,13 +21,16 @@ endif
+ # at least some of the code would be executed with MMU off, lets be
+ # conservative and instruct the compiler not to generate any unaligned
+ # accesses
++ifeq ($(CONFIG_CPU_V8),n)
+ CFLAGS += -mno-unaligned-access
++endif
  
-@@ -112,6 +119,19 @@
- #define cpu_is_cortex_a15() (0)
- #endif
  
-+#ifdef CONFIG_CPU_64v8
-+#ifdef ARM_ARCH
-+#define ARM_MULTIARCH
-+#else
-+#define ARM_ARCH CPU_ARCH_ARMv8
-+#endif
-+#define cpu_is_cortex_a53() cpu_is_arm(CORTEX_A53)
-+#define cpu_is_cortex_a57() cpu_is_arm(CORTEX_A57)
-+#else
-+#define cpu_is_cortex_a53() (0)
-+#define cpu_is_cortex_a57() (0)
-+#endif
-+
- #ifndef __ASSEMBLY__
+ # This selects which instruction set is used.
+ # Note that GCC does not numerically define an architecture version
+ # macro, but instead defines a whole series of macros which makes
+ # testing for a specific architecture or later rather impossible.
++arch-$(CONFIG_CPU_64v8)		:= -D__LINUX_ARM_ARCH__=8 $(call cc-option,-march=armv8-a)
+ arch-$(CONFIG_CPU_32v7)		:=-D__LINUX_ARM_ARCH__=7 $(call cc-option,-march=armv7-a,-march=armv5t -Wa$(comma)-march=armv7-a)
+ arch-$(CONFIG_CPU_32v6)            :=-D__LINUX_ARM_ARCH__=6 $(call cc-option,-march=armv6,-march=armv5t -Wa$(comma)-march=armv6)
+ arch-$(CONFIG_CPU_32v5)		:=-D__LINUX_ARM_ARCH__=5 $(call cc-option,-march=armv5te,-march=armv4t)
+@@ -34,11 +41,15 @@ tune-$(CONFIG_CPU_ARM920T)	:=-mtune=arm9tdmi
+ tune-$(CONFIG_CPU_ARM926T)	:=-mtune=arm9tdmi
+ tune-$(CONFIG_CPU_XSCALE)	:=$(call cc-option,-mtune=xscale,-mtune=strongarm110) -Wa,-mcpu=xscale
  
- #ifdef ARM_MULTIARCH
-@@ -133,6 +153,23 @@ static inline int arm_early_get_cpu_architecture(void)
- 		if (cpu_arch)
- 			cpu_arch += CPU_ARCH_ARMv3;
- 	} else if ((read_cpuid_id() & 0x000f0000) == 0x000f0000) {
-+#ifdef CONFIG_CPU_64v8
-+		unsigned int isar2;
-+
-+		__asm__ __volatile__(
-+			"mrs	%0, id_isar2_el1\n"
-+			: "=r" (isar2)
-+			:
-+			: "memory");
-+
-+
-+		/* Check Load/Store acquire to check if ARMv8 or not */
-+
-+		if (isar2 & 0x2)
-+			cpu_arch = CPU_ARCH_ARMv8;
-+		else
-+			cpu_arch = CPU_ARCH_UNKNOWN;
-+#else
- 		unsigned int mmfr0;
++ifeq ($(CONFIG_CPU_V8), y)
++CFLAGS_ABI	:=-mabi=lp64
++else
+ ifeq ($(CONFIG_AEABI),y)
+ CFLAGS_ABI	:=-mabi=aapcs-linux -mno-thumb-interwork
+ else
+ CFLAGS_ABI	:=$(call cc-option,-mapcs-32,-mabi=apcs-gnu) $(call cc-option,-mno-thumb-interwork,)
+ endif
++endif
  
- 		/* Revised CPUID format. Read the Memory Model Feature
-@@ -149,6 +186,7 @@ static inline int arm_early_get_cpu_architecture(void)
- 			cpu_arch = CPU_ARCH_UNKNOWN;
- 	} else
- 		cpu_arch = CPU_ARCH_UNKNOWN;
-+#endif
+ ifeq ($(CONFIG_ARM_UNWIND),y)
+ CFLAGS_ABI	+=-funwind-tables
+@@ -51,8 +62,13 @@ CFLAGS_THUMB2	:=-mthumb $(AFLAGS_AUTOIT) $(AFLAGS_NOWARN)
+ AFLAGS_THUMB2	:=$(CFLAGS_THUMB2) -Wa$(comma)-mthumb
+ endif
  
- 	return cpu_arch;
- }
++ifeq ($(CONFIG_CPU_V8), y)
++CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y)
++AFLAGS   += -include asm/unified.h
++else
+ CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y) -msoft-float $(CFLAGS_THUMB2)
+ AFLAGS   += -include asm/unified.h -msoft-float $(AFLAGS_THUMB2)
++endif
+ 
+ # Machine directory name.  This list is sorted alphanumerically
+ # by CONFIG_* macro name.
 -- 
 2.1.0
 
