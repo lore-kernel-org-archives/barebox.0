@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bK2Rp-0007sp-R7
- for barebox@lists.infradead.org; Mon, 04 Jul 2016 11:54:02 +0000
-Received: by mail-wm0-x243.google.com with SMTP id a66so21097389wme.2
- for <barebox@lists.infradead.org>; Mon, 04 Jul 2016 04:53:36 -0700 (PDT)
+ id 1bK2Rt-0007tL-Gj
+ for barebox@lists.infradead.org; Mon, 04 Jul 2016 11:54:06 +0000
+Received: by mail-wm0-x243.google.com with SMTP id a66so21098314wme.2
+ for <barebox@lists.infradead.org>; Mon, 04 Jul 2016 04:53:44 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Mon,  4 Jul 2016 13:52:47 +0200
-Message-Id: <1467633177-22478-5-git-send-email-poggi.raph@gmail.com>
+Date: Mon,  4 Jul 2016 13:52:54 +0200
+Message-Id: <1467633177-22478-12-git-send-email-poggi.raph@gmail.com>
 In-Reply-To: <1467633177-22478-1-git-send-email-poggi.raph@gmail.com>
 References: <1467633177-22478-1-git-send-email-poggi.raph@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,643 +19,192 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 04/14] arm: cpu: add arm64 specific code
+Subject: [PATCH v5 11/14] arm: boards: add mach-qemu and virt64 board
 To: barebox@lists.infradead.org
 Cc: Raphael Poggi <poggi.raph@gmail.com>
 
-This patch adds arm64 specific codes, which are:
-	- exception support
-	- cache support
-	- rework Makefile to support arm64
-
-Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
----
- arch/arm/cpu/Makefile        |  26 +++++--
- arch/arm/cpu/cache-armv8.S   | 168 +++++++++++++++++++++++++++++++++++++++++++
- arch/arm/cpu/cache.c         |  19 +++++
- arch/arm/cpu/exceptions_64.S | 127 ++++++++++++++++++++++++++++++++
- arch/arm/cpu/interrupts.c    |  47 ++++++++++++
- arch/arm/cpu/lowlevel_64.S   |  40 +++++++++++
- arch/arm/cpu/setupc_64.S     |  18 +++++
- arch/arm/include/asm/cache.h |   9 +++
- 8 files changed, 450 insertions(+), 4 deletions(-)
- create mode 100644 arch/arm/cpu/cache-armv8.S
- create mode 100644 arch/arm/cpu/exceptions_64.S
- create mode 100644 arch/arm/cpu/lowlevel_64.S
- create mode 100644 arch/arm/cpu/setupc_64.S
-
-diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-index 854df60e..7eb06fb 100644
---- a/arch/arm/cpu/Makefile
-+++ b/arch/arm/cpu/Makefile
-@@ -1,7 +1,24 @@
- obj-y += cpu.o
-+
-+ifeq ($(CONFIG_CPU_64v8), y)
-+obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions_64.o
-+obj-$(CONFIG_MMU) += mmu_64.o
-+lwl-y += lowlevel_64.o
-+else
- obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions.o
-+obj-$(CONFIG_MMU) += mmu.o mmu-early.o
-+pbl-$(CONFIG_MMU) += mmu-early.o
-+lwl-y += lowlevel.o
-+endif
-+
- obj-$(CONFIG_ARM_EXCEPTIONS) += interrupts.o
--obj-y += start.o setupc.o entry.o
-+obj-y += start.o entry.o
-+
-+ifeq ($(CONFIG_CPU_64v8), y)
-+obj-y += setupc_64.o
-+else
-+obj-y += setupc.o
-+endif
- 
- #
- # Any variants can be called as start-armxyz.S
-@@ -11,7 +28,6 @@ obj-$(CONFIG_CMD_ARM_MMUINFO) += mmuinfo.o
- obj-$(CONFIG_OFDEVICE) += dtb.o
- obj-$(CONFIG_MMU) += mmu.o cache.o mmu-early.o
- pbl-$(CONFIG_MMU) += mmu-early.o
--
- ifeq ($(CONFIG_MMU),)
- obj-y += no-mmu.o
- endif
-@@ -27,6 +43,10 @@ obj-$(CONFIG_CPU_32v7) += cache-armv7.o
- AFLAGS_pbl-cache-armv7.o       :=-Wa,-march=armv7-a
- pbl-$(CONFIG_CPU_32v7) += cache-armv7.o
- obj-$(CONFIG_CACHE_L2X0) += cache-l2x0.o
-+AFLAGS_cache-armv8.o       :=-Wa,-march=armv8-a
-+obj-$(CONFIG_CPU_64v8) += cache-armv8.o
-+AFLAGS_pbl-cache-armv8.o       :=-Wa,-march=armv8-a
-+pbl-$(CONFIG_CPU_64v8) += cache-armv8.o
- 
- pbl-y += setupc.o entry.o
- pbl-$(CONFIG_PBL_SINGLE_IMAGE) += start-pbl.o
-@@ -34,5 +54,3 @@ pbl-$(CONFIG_PBL_MULTI_IMAGES) += uncompress.o
- 
- obj-y += common.o cache.o
- pbl-y += common.o cache.o
--
--lwl-y += lowlevel.o
-diff --git a/arch/arm/cpu/cache-armv8.S b/arch/arm/cpu/cache-armv8.S
-new file mode 100644
-index 0000000..82b2f81
---- /dev/null
-+++ b/arch/arm/cpu/cache-armv8.S
-@@ -0,0 +1,168 @@
-+/*
-+ * (C) Copyright 2013
-+ * David Feng <fenghua@phytium.com.cn>
-+ *
-+ * This file is based on sample code from ARMv8 ARM.
-+ *
-+ * SPDX-License-Identifier:	GPL-2.0+
-+ */
-+
-+#include <config.h>
-+#include <linux/linkage.h>
-+#include <init.h>
-+
-+/*
-+ * void v8_flush_dcache_level(level)
-+ *
-+ * clean and invalidate one level cache.
-+ *
-+ * x0: cache level
-+ * x1: 0 flush & invalidate, 1 invalidate only
-+ * x2~x9: clobbered
-+ */
-+.section .text.v8_flush_dcache_level
-+ENTRY(v8_flush_dcache_level)
-+	lsl	x12, x0, #1
-+	msr	csselr_el1, x12		/* select cache level */
-+	isb				/* sync change of cssidr_el1 */
-+	mrs	x6, ccsidr_el1		/* read the new cssidr_el1 */
-+	and	x2, x6, #7		/* x2 <- log2(cache line size)-4 */
-+	add	x2, x2, #4		/* x2 <- log2(cache line size) */
-+	mov	x3, #0x3ff
-+	and	x3, x3, x6, lsr #3	/* x3 <- max number of #ways */
-+	clz	w5, w3			/* bit position of #ways */
-+	mov	x4, #0x7fff
-+	and	x4, x4, x6, lsr #13	/* x4 <- max number of #sets */
-+	/* x12 <- cache level << 1 */
-+	/* x2 <- line length offset */
-+	/* x3 <- number of cache ways - 1 */
-+	/* x4 <- number of cache sets - 1 */
-+	/* x5 <- bit position of #ways */
-+
-+loop_set:
-+	mov	x6, x3			/* x6 <- working copy of #ways */
-+loop_way:
-+	lsl	x7, x6, x5
-+	orr	x9, x12, x7		/* map way and level to cisw value */
-+	lsl	x7, x4, x2
-+	orr	x9, x9, x7		/* map set number to cisw value */
-+	tbz	w1, #0, 1f
-+	dc	isw, x9
-+	b	2f
-+1:	dc	cisw, x9		/* clean & invalidate by set/way */
-+2:	subs	x6, x6, #1		/* decrement the way */
-+	b.ge	loop_way
-+	subs	x4, x4, #1		/* decrement the set */
-+	b.ge	loop_set
-+
-+	ret
-+ENDPROC(v8_flush_dcache_level)
-+
-+/*
-+ * void v8_flush_dcache_all(int invalidate_only)
-+ *
-+ * x0: 0 flush & invalidate, 1 invalidate only
-+ *
-+ * clean and invalidate all data cache by SET/WAY.
-+ */
-+.section .text.v8_dcache_all
-+ENTRY(v8_dcache_all)
-+	mov	x1, x0
-+	dsb	sy
-+	mrs	x10, clidr_el1		/* read clidr_el1 */
-+	lsr	x11, x10, #24
-+	and	x11, x11, #0x7		/* x11 <- loc */
-+	cbz	x11, finished		/* if loc is 0, exit */
-+	mov	x15, x30
-+	mov	x0, #0			/* start flush at cache level 0 */
-+	/* x0  <- cache level */
-+	/* x10 <- clidr_el1 */
-+	/* x11 <- loc */
-+	/* x15 <- return address */
-+
-+loop_level:
-+	lsl	x12, x0, #1
-+	add	x12, x12, x0		/* x0 <- tripled cache level */
-+	lsr	x12, x10, x12
-+	and	x12, x12, #7		/* x12 <- cache type */
-+	cmp	x12, #2
-+	b.lt	skip			/* skip if no cache or icache */
-+	bl	v8_flush_dcache_level	/* x1 = 0 flush, 1 invalidate */
-+skip:
-+	add	x0, x0, #1		/* increment cache level */
-+	cmp	x11, x0
-+	b.gt	loop_level
-+
-+	mov	x0, #0
-+	msr	csselr_el1, x0		/* restore csselr_el1 */
-+	dsb	sy
-+	isb
-+	mov	x30, x15
-+
-+finished:
-+	ret
-+ENDPROC(v8_dcache_all)
-+
-+.section .text.v8_flush_dcache_all
-+ENTRY(v8_flush_dcache_all)
-+	mov	x16, x30
-+	mov	x0, #0
-+	bl	v8_dcache_all
-+	mov	x30, x16
-+	ret
-+ENDPROC(v8_flush_dcache_all)
-+
-+.section .text.v8_invalidate_dcache_all
-+ENTRY(v8_invalidate_dcache_all)
-+	mov	x16, x30
-+	mov	x0, #0x1
-+	bl	v8_dcache_all
-+	mov	x30, x16
-+	ret
-+ENDPROC(v8_invalidate_dcache_all)
-+
-+/*
-+ * void v8_flush_dcache_range(start, end)
-+ *
-+ * clean & invalidate data cache in the range
-+ *
-+ * x0: start address
-+ * x1: end address
-+ */
-+.section .text.v8_flush_dcache_range
-+ENTRY(v8_flush_dcache_range)
-+	mrs	x3, ctr_el0
-+	lsr	x3, x3, #16
-+	and	x3, x3, #0xf
-+	mov	x2, #4
-+	lsl	x2, x2, x3		/* cache line size */
-+
-+	/* x2 <- minimal cache line size in cache system */
-+	sub	x3, x2, #1
-+	bic	x0, x0, x3
-+1:	dc	civac, x0	/* clean & invalidate data or unified cache */
-+	add	x0, x0, x2
-+	cmp	x0, x1
-+	b.lo	1b
-+	dsb	sy
-+	ret
-+ENDPROC(v8_flush_dcache_range)
-+
-+/*
-+ * void v8_invalidate_icache_all(void)
-+ *
-+ * invalidate all tlb entries.
-+ */
-+.section .text.v8_invalidate_icache_all
-+ENTRY(v8_invalidate_icache_all)
-+	ic	ialluis
-+	isb	sy
-+	ret
-+ENDPROC(v8_invalidate_icache_all)
-+
-+.section .text.v8_flush_l3_cache
-+ENTRY(v8_flush_l3_cache)
-+	mov	x0, #0			/* return status as success */
-+	ret
-+ENDPROC(v8_flush_l3_cache)
-+	.weak	v8_flush_l3_cache
-diff --git a/arch/arm/cpu/cache.c b/arch/arm/cpu/cache.c
-index 27ead1c..929c385 100644
---- a/arch/arm/cpu/cache.c
-+++ b/arch/arm/cpu/cache.c
-@@ -36,6 +36,7 @@ DEFINE_CPU_FNS(v4)
- DEFINE_CPU_FNS(v5)
- DEFINE_CPU_FNS(v6)
- DEFINE_CPU_FNS(v7)
-+DEFINE_CPU_FNS(v8)
- 
- void __dma_clean_range(unsigned long start, unsigned long end)
- {
-@@ -101,6 +102,11 @@ int arm_set_cache_functions(void)
- 		cache_fns = &cache_fns_armv7;
- 		break;
- #endif
-+#ifdef CONFIG_CPU_64v8
-+	case CPU_ARCH_ARMv8:
-+		cache_fns = &cache_fns_armv8;
-+		break;
-+#endif
- 	default:
- 		while(1);
- 	}
-@@ -138,6 +144,11 @@ void arm_early_mmu_cache_flush(void)
- 		v7_mmu_cache_flush();
- 		return;
- #endif
-+#ifdef CONFIG_CPU_64v8
-+	case CPU_ARCH_ARMv8:
-+		v8_dcache_all();
-+		return;
-+#endif
- 	}
- }
- 
-@@ -146,6 +157,7 @@ void v7_mmu_cache_invalidate(void);
- void arm_early_mmu_cache_invalidate(void)
- {
- 	switch (arm_early_get_cpu_architecture()) {
-+#if __LINUX_ARM_ARCH__ <= 7
- 	case CPU_ARCH_ARMv4T:
- 	case CPU_ARCH_ARMv5:
- 	case CPU_ARCH_ARMv5T:
-@@ -159,5 +171,12 @@ void arm_early_mmu_cache_invalidate(void)
- 		v7_mmu_cache_invalidate();
- 		return;
- #endif
-+#else
-+#ifdef CONFIG_CPU_64v8
-+	case CPU_ARCH_ARMv8:
-+		v8_invalidate_icache_all();
-+		return;
-+#endif
-+#endif
- 	}
- }
-diff --git a/arch/arm/cpu/exceptions_64.S b/arch/arm/cpu/exceptions_64.S
-new file mode 100644
-index 0000000..5812025
---- /dev/null
-+++ b/arch/arm/cpu/exceptions_64.S
-@@ -0,0 +1,127 @@
-+/*
-+ * (C) Copyright 2013
-+ * David Feng <fenghua@phytium.com.cn>
-+ *
-+ * SPDX-License-Identifier:	GPL-2.0+
-+ */
-+
-+#include <config.h>
-+#include <asm/ptrace.h>
-+#include <linux/linkage.h>
-+
-+/*
-+ * Enter Exception.
-+ * This will save the processor state that is ELR/X0~X30
-+ * to the stack frame.
-+ */
-+.macro	exception_entry
-+	stp	x29, x30, [sp, #-16]!
-+	stp	x27, x28, [sp, #-16]!
-+	stp	x25, x26, [sp, #-16]!
-+	stp	x23, x24, [sp, #-16]!
-+	stp	x21, x22, [sp, #-16]!
-+	stp	x19, x20, [sp, #-16]!
-+	stp	x17, x18, [sp, #-16]!
-+	stp	x15, x16, [sp, #-16]!
-+	stp	x13, x14, [sp, #-16]!
-+	stp	x11, x12, [sp, #-16]!
-+	stp	x9, x10, [sp, #-16]!
-+	stp	x7, x8, [sp, #-16]!
-+	stp	x5, x6, [sp, #-16]!
-+	stp	x3, x4, [sp, #-16]!
-+	stp	x1, x2, [sp, #-16]!
-+
-+	/* Could be running at EL3/EL2/EL1 */
-+	mrs	x11, CurrentEL
-+	cmp	x11, #0xC		/* Check EL3 state */
-+	b.eq	1f
-+	cmp	x11, #0x8		/* Check EL2 state */
-+	b.eq	2f
-+	cmp	x11, #0x4		/* Check EL1 state */
-+	b.eq	3f
-+3:	mrs	x1, esr_el3
-+	mrs	x2, elr_el3
-+	b	0f
-+2:	mrs	x1, esr_el2
-+	mrs	x2, elr_el2
-+	b	0f
-+1:	mrs	x1, esr_el1
-+	mrs	x2, elr_el1
-+0:
-+	stp	x2, x0, [sp, #-16]!
-+	mov	x0, sp
-+.endm
-+
-+/*
-+ * Exception vectors.
-+ */
-+	.align	11
-+	.globl	vectors
-+vectors:
-+	.align	7
-+	b	_do_bad_sync	/* Current EL Synchronous Thread */
-+
-+	.align	7
-+	b	_do_bad_irq	/* Current EL IRQ Thread */
-+
-+	.align	7
-+	b	_do_bad_fiq	/* Current EL FIQ Thread */
-+
-+	.align	7
-+	b	_do_bad_error	/* Current EL Error Thread */
-+
-+	.align	7
-+	b	_do_sync	/* Current EL Synchronous Handler */
-+
-+	.align	7
-+	b	_do_irq		/* Current EL IRQ Handler */
-+
-+	.align	7
-+	b	_do_fiq		/* Current EL FIQ Handler */
-+
-+	.align	7
-+	b	_do_error	/* Current EL Error Handler */
-+
-+
-+_do_bad_sync:
-+	exception_entry
-+	bl	do_bad_sync
-+
-+_do_bad_irq:
-+	exception_entry
-+	bl	do_bad_irq
-+
-+_do_bad_fiq:
-+	exception_entry
-+	bl	do_bad_fiq
-+
-+_do_bad_error:
-+	exception_entry
-+	bl	do_bad_error
-+
-+_do_sync:
-+	exception_entry
-+	bl	do_sync
-+
-+_do_irq:
-+	exception_entry
-+	bl	do_irq
-+
-+_do_fiq:
-+	exception_entry
-+	bl	do_fiq
-+
-+_do_error:
-+	exception_entry
-+	bl	do_error
-+
-+.section .data
-+.align 4
-+.global arm_ignore_data_abort
-+arm_ignore_data_abort:
-+.word 0 /* When != 0 data aborts are ignored */
-+.global arm_data_abort_occurred
-+arm_data_abort_occurred:
-+.word 0 /* set != 0 by the data abort handler */
-+abort_stack:
-+.space 8
-diff --git a/arch/arm/cpu/interrupts.c b/arch/arm/cpu/interrupts.c
-index fb4bb78..c34108a 100644
---- a/arch/arm/cpu/interrupts.c
-+++ b/arch/arm/cpu/interrupts.c
-@@ -27,6 +27,8 @@
- #include <asm/ptrace.h>
- #include <asm/unwind.h>
- 
-+
-+#if __LINUX_ARM_ARCH__ <= 7
- /**
-  * Display current register set content
-  * @param[in] regs Guess what
-@@ -70,10 +72,13 @@ void show_regs (struct pt_regs *regs)
- 	unwind_backtrace(regs);
- #endif
- }
-+#endif
- 
- static void __noreturn do_exception(struct pt_regs *pt_regs)
- {
-+#if __LINUX_ARM_ARCH__ <= 7
- 	show_regs(pt_regs);
-+#endif
- 
- 	panic("");
- }
-@@ -121,6 +126,8 @@ void do_prefetch_abort (struct pt_regs *pt_regs)
-  */
- void do_data_abort (struct pt_regs *pt_regs)
- {
-+
-+#if __LINUX_ARM_ARCH__ <= 7
- 	u32 far;
- 
- 	asm volatile ("mrc     p15, 0, %0, c6, c0, 0" : "=r" (far) : : "cc");
-@@ -128,6 +135,7 @@ void do_data_abort (struct pt_regs *pt_regs)
- 	printf("unable to handle %s at address 0x%08x\n",
- 			far < PAGE_SIZE ? "NULL pointer dereference" :
- 			"paging request", far);
-+#endif
- 
- 	do_exception(pt_regs);
- }
-@@ -156,6 +164,45 @@ void do_irq (struct pt_regs *pt_regs)
- 	do_exception(pt_regs);
- }
- 
-+#ifdef CONFIG_CPU_64v8
-+void do_bad_sync(struct pt_regs *pt_regs)
-+{
-+	printf("bad sync\n");
-+	do_exception(pt_regs);
-+}
-+
-+void do_bad_irq(struct pt_regs *pt_regs)
-+{
-+	printf("bad irq\n");
-+	do_exception(pt_regs);
-+}
-+
-+void do_bad_fiq(struct pt_regs *pt_regs)
-+{
-+	printf("bad fiq\n");
-+	do_exception(pt_regs);
-+}
-+
-+void do_bad_error(struct pt_regs *pt_regs)
-+{
-+	printf("bad error\n");
-+	do_exception(pt_regs);
-+}
-+
-+void do_sync(struct pt_regs *pt_regs)
-+{
-+	printf("sync exception\n");
-+	do_exception(pt_regs);
-+}
-+
-+
-+void do_error(struct pt_regs *pt_regs)
-+{
-+	printf("error exception\n");
-+	do_exception(pt_regs);
-+}
-+#endif
-+
- extern volatile int arm_ignore_data_abort;
- extern volatile int arm_data_abort_occurred;
- 
-diff --git a/arch/arm/cpu/lowlevel_64.S b/arch/arm/cpu/lowlevel_64.S
-new file mode 100644
-index 0000000..4850895
---- /dev/null
-+++ b/arch/arm/cpu/lowlevel_64.S
-@@ -0,0 +1,40 @@
-+#include <linux/linkage.h>
-+#include <init.h>
-+#include <asm/system.h>
-+
-+.section ".text_bare_init_","ax"
-+ENTRY(arm_cpu_lowlevel_init)
-+	adr	x0, vectors
-+	mrs	x1, CurrentEL
-+	cmp	x1, #0xC		/* Check EL3 state */
-+	b.eq	1f
-+	cmp	x1, #0x8		/* Check EL2 state */
-+	b.eq	2f
-+	cmp	x1, #0x4		/* Check EL1 state */
-+	b.eq	3f
-+
-+1:
-+	msr	vbar_el3, x0
-+	mov	x0, #1			/* Non-Secure EL0/1 */
-+	orr	x0, x0, #(1 << 10)	/* 64-bit EL2 */
-+	msr	scr_el3, x0
-+	msr	cptr_el3, xzr
-+	b	done
-+
-+2:
-+	msr	vbar_el2, x0
-+	mov	x0, #0x33ff		/* Enable FP/SIMD */
-+	msr	cptr_el2, x0
-+	b	done
-+
-+
-+3:
-+	msr	vbar_el1, x0
-+	mov	x0, #(3 << 20)		/* Enable FP/SIMD */
-+	msr	cpacr_el1, x0
-+	b	done
-+
-+done:
-+	ret
-+
-+ENDPROC(arm_cpu_lowlevel_init)
-diff --git a/arch/arm/cpu/setupc_64.S b/arch/arm/cpu/setupc_64.S
-new file mode 100644
-index 0000000..3515854
---- /dev/null
-+++ b/arch/arm/cpu/setupc_64.S
-@@ -0,0 +1,18 @@
-+#include <linux/linkage.h>
-+#include <asm/sections.h>
-+
-+.section .text.setupc
-+
-+/*
-+ * setup_c: clear bss
-+ */
-+ENTRY(setup_c)
-+	mov	x15, x30
-+	ldr	x0, =__bss_start
-+	mov	x1, #0
-+	ldr	x2, =__bss_stop
-+	sub	x2, x2, x0
-+	bl	memset			/* clear bss */
-+	mov	x30, x15
-+	ret
-+ENDPROC(setup_c)
-diff --git a/arch/arm/include/asm/cache.h b/arch/arm/include/asm/cache.h
-index 2f6eab0..8fcdb64 100644
---- a/arch/arm/include/asm/cache.h
-+++ b/arch/arm/include/asm/cache.h
-@@ -1,9 +1,18 @@
- #ifndef __ASM_CACHE_H
- #define __ASM_CACHE_H
- 
-+#ifdef CONFIG_CPU_64v8
-+extern void v8_invalidate_icache_all(void);
-+extern void v8_dcache_all(void);
-+#endif
-+
- static inline void flush_icache(void)
- {
-+#if __LINUX_ARM_ARCH__ <= 7
- 	asm volatile("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
-+#else
-+	v8_invalidate_icache_all();
-+#endif
- }
- 
- int arm_set_cache_functions(void);
--- 
-2.1.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SW50cm9kdWNlIG1hY2gtcWVtdSBhbmQgYWRkIHFlbXUgdmlydDY0IGJvYXJkIHdoaWNoIGVtdWxh
+dGVzIGFybTY0IGJvYXJkLgoKU2lnbmVkLW9mZi1ieTogUmFwaGFlbCBQb2dnaSA8cG9nZ2kucmFw
+aEBnbWFpbC5jb20+Ci0tLQogYXJjaC9hcm0vS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIHwgIDUgKysrCiBhcmNoL2FybS9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICAgICAg
+fCAgMSArCiBhcmNoL2FybS9ib2FyZHMvTWFrZWZpbGUgICAgICAgICAgICAgICAgICAgfCAgMSAr
+CiBhcmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0NjQvS2NvbmZpZyAgICAgICAgfCAgOCArKysrCiBh
+cmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0NjQvTWFrZWZpbGUgICAgICAgfCAgMiArCiBhcmNoL2Fy
+bS9ib2FyZHMvcWVtdS12aXJ0NjQvZW52L2NvbmZpZyAgICAgfCAgOCArKysrCiBhcmNoL2FybS9i
+b2FyZHMvcWVtdS12aXJ0NjQvaW5pdC5jICAgICAgICAgfCA3MiArKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysKIGFyY2gvYXJtL2JvYXJkcy9xZW11LXZpcnQ2NC9sb3dsZXZlbC5jICAgICB8
+IDE5ICsrKysrKysrCiBhcmNoL2FybS9jb25maWdzL3FlbXVfdmlydDY0X2RlZmNvbmZpZyAgICAg
+fCA0NyArKysrKysrKysrKysrKysrKysrCiBhcmNoL2FybS9tYWNoLXFlbXUvS2NvbmZpZyAgICAg
+ICAgICAgICAgICAgfCAxOCArKysrKysrKwogYXJjaC9hcm0vbWFjaC1xZW11L01ha2VmaWxlICAg
+ICAgICAgICAgICAgIHwgIDEgKwogYXJjaC9hcm0vbWFjaC1xZW11L2luY2x1ZGUvbWFjaC9kZWJ1
+Z19sbC5oIHwgMjQgKysrKysrKysrKwogYXJjaC9hcm0vbWFjaC1xZW11L2luY2x1ZGUvbWFjaC9k
+ZXZpY2VzLmggIHwgMTMgKysrKysrCiBhcmNoL2FybS9tYWNoLXFlbXUvdmlydF9kZXZpY2VzLmMg
+ICAgICAgICAgfCAzMCArKysrKysrKysrKysrCiAxNCBmaWxlcyBjaGFuZ2VkLCAyNDkgaW5zZXJ0
+aW9ucygrKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9xZW11LXZpcnQ2NC9L
+Y29uZmlnCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL3FlbXUtdmlydDY0L01h
+a2VmaWxlCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL3FlbXUtdmlydDY0L2Vu
+di9jb25maWcKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0NjQv
+aW5pdC5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL3FlbXUtdmlydDY0L2xv
+d2xldmVsLmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9jb25maWdzL3FlbXVfdmlydDY0
+X2RlZmNvbmZpZwogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtcWVtdS9LY29uZmln
+CiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1xZW11L01ha2VmaWxlCiBjcmVhdGUg
+bW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1xZW11L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oCiBj
+cmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1xZW11L2luY2x1ZGUvbWFjaC9kZXZpY2Vz
+LmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9tYWNoLXFlbXUvdmlydF9kZXZpY2VzLmMK
+CmRpZmYgLS1naXQgYS9hcmNoL2FybS9LY29uZmlnIGIvYXJjaC9hcm0vS2NvbmZpZwppbmRleCA5
+ODZmZGFhLi5mOTA0NTc5IDEwMDY0NAotLS0gYS9hcmNoL2FybS9LY29uZmlnCisrKyBiL2FyY2gv
+YXJtL0tjb25maWcKQEAgLTI1NSw2ICsyNTUsMTAgQEAgY29uZmlnIEFSQ0hfWllOUQogCWJvb2wg
+IlhpbGlueCBaeW5xLWJhc2VkIGJvYXJkcyIKIAlzZWxlY3QgSEFTX0RFQlVHX0xMCiAKK2NvbmZp
+ZyBBUkNIX1FFTVUKKwlib29sICJBUk0gUUVNVSBib2FyZHMiCisJc2VsZWN0IEhBU19ERUJVR19M
+TAorCiBlbmRjaG9pY2UKIAogc291cmNlIGFyY2gvYXJtL2NwdS9LY29uZmlnCkBAIC0yODAsNiAr
+Mjg0LDcgQEAgc291cmNlIGFyY2gvYXJtL21hY2gtdmV4cHJlc3MvS2NvbmZpZwogc291cmNlIGFy
+Y2gvYXJtL21hY2gtdGVncmEvS2NvbmZpZwogc291cmNlIGFyY2gvYXJtL21hY2gtdWVtZC9LY29u
+ZmlnCiBzb3VyY2UgYXJjaC9hcm0vbWFjaC16eW5xL0tjb25maWcKK3NvdXJjZSBhcmNoL2FybS9t
+YWNoLXFlbXUvS2NvbmZpZwogCiBjb25maWcgQVJNX0FTTV9VTklGSUVECiAJYm9vbApkaWZmIC0t
+Z2l0IGEvYXJjaC9hcm0vTWFrZWZpbGUgYi9hcmNoL2FybS9NYWtlZmlsZQppbmRleCAyYjA1NmFm
+Li44NjVkZTA0IDEwMDY0NAotLS0gYS9hcmNoL2FybS9NYWtlZmlsZQorKysgYi9hcmNoL2FybS9N
+YWtlZmlsZQpAQCAtOTQsNiArOTQsNyBAQCBtYWNoaW5lLSQoQ09ORklHX0FSQ0hfVkVYUFJFU1Mp
+CQk6PSB2ZXhwcmVzcwogbWFjaGluZS0kKENPTkZJR19BUkNIX1RFR1JBKQkJOj0gdGVncmEKIG1h
+Y2hpbmUtJChDT05GSUdfQVJDSF9VRU1EKQkJOj0gdWVtZAogbWFjaGluZS0kKENPTkZJR19BUkNI
+X1pZTlEpCQk6PSB6eW5xCittYWNoaW5lLSQoQ09ORklHX0FSQ0hfUUVNVSkJCTo9IHFlbXUKIAog
+CiAjIEJvYXJkIGRpcmVjdG9yeSBuYW1lLiAgVGhpcyBsaXN0IGlzIHNvcnRlZCBhbHBoYW51bWVy
+aWNhbGx5CmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvTWFrZWZpbGUgYi9hcmNoL2FybS9i
+b2FyZHMvTWFrZWZpbGUKaW5kZXggOTI0MWI2Ni4uYzI3MWY1ZCAxMDA2NDQKLS0tIGEvYXJjaC9h
+cm0vYm9hcmRzL01ha2VmaWxlCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9NYWtlZmlsZQpAQCAtMTM1
+LDMgKzEzNSw0IEBAIG9iai0kKENPTkZJR19NQUNIX1ZJUlQyUkVBTCkJCQkrPSB2aXJ0MnJlYWwv
+CiBvYmotJChDT05GSUdfTUFDSF9aRURCT0FSRCkJCQkrPSBhdm5ldC16ZWRib2FyZC8KIG9iai0k
+KENPTkZJR19NQUNIX1pZTE9OSVRFKQkJCSs9IHp5bG9uaXRlLwogb2JqLSQoQ09ORklHX01BQ0hf
+VkFSSVNDSVRFX01YNikJCSs9IHZhcmlzY2l0ZS1teDYvCitvYmotJChDT05GSUdfTUFDSF9RRU1V
+X1ZJUlQ2NCkJCQkrPSBxZW11LXZpcnQ2NC8KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9x
+ZW11LXZpcnQ2NC9LY29uZmlnIGIvYXJjaC9hcm0vYm9hcmRzL3FlbXUtdmlydDY0L0tjb25maWcK
+bmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uYjdiZWUzYQotLS0gL2Rldi9udWxs
+CisrKyBiL2FyY2gvYXJtL2JvYXJkcy9xZW11LXZpcnQ2NC9LY29uZmlnCkBAIC0wLDAgKzEsOCBA
+QAorCitpZiBNQUNIX1FFTVUKKworY29uZmlnIEFSQ0hfVEVYVF9CQVNFCisJaGV4CisJZGVmYXVs
+dCAweDQwMDAwMDAwCisKK2VuZGlmCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcWVtdS12
+aXJ0NjQvTWFrZWZpbGUgYi9hcmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0NjQvTWFrZWZpbGUKbmV3
+IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uMmRhMDQ5NAotLS0gL2Rldi9udWxsCisr
+KyBiL2FyY2gvYXJtL2JvYXJkcy9xZW11LXZpcnQ2NC9NYWtlZmlsZQpAQCAtMCwwICsxLDIgQEAK
+K29iai15ICs9IGluaXQubworbHdsLXkgKz0gbG93bGV2ZWwubwpkaWZmIC0tZ2l0IGEvYXJjaC9h
+cm0vYm9hcmRzL3FlbXUtdmlydDY0L2Vudi9jb25maWcgYi9hcmNoL2FybS9ib2FyZHMvcWVtdS12
+aXJ0NjQvZW52L2NvbmZpZwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwLi43ODFk
+YmZlCi0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3FlbXUtdmlydDY0L2Vudi9j
+b25maWcKQEAgLTAsMCArMSw4IEBACisjIS9iaW4vc2gKKworYXV0b2Jvb3RfdGltZW91dD0zCisK
+K2Jvb3RhcmdzPSJjb25zb2xlPXR0eUFNQTAsMTE1MjAwIgorCisjIHNldCBhIGZhbmN5IHByb21w
+dCAoaWYgc3VwcG9ydCBpcyBjb21waWxlZCBpbikKK1BTMT0iXGVbMTszMW1bYmFyZWJveEBcaF06
+XHdcZVswbVxuIyAiCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0NjQvaW5p
+dC5jIGIvYXJjaC9hcm0vYm9hcmRzL3FlbXUtdmlydDY0L2luaXQuYwpuZXcgZmlsZSBtb2RlIDEw
+MDY0NAppbmRleCAwMDAwMDAwLi41OGRiYTBmCi0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0v
+Ym9hcmRzL3FlbXUtdmlydDY0L2luaXQuYwpAQCAtMCwwICsxLDcyIEBACisvKgorICogQ29weXJp
+Z2h0IChDKSAyMDE2IFJhcGhhw6tsIFBvZ2dpIDxwb2dnaS5yYXBoQGdtYWlsLmNvbT4KKyAqCisg
+KiBHUEx2MiBvbmx5CisgKi8KKworI2luY2x1ZGUgPGNvbW1vbi5oPgorI2luY2x1ZGUgPGluaXQu
+aD4KKyNpbmNsdWRlIDxhc20vYXJtbGludXguaD4KKyNpbmNsdWRlIDxhc20vc3lzdGVtX2luZm8u
+aD4KKyNpbmNsdWRlIDxtYWNoL2RldmljZXMuaD4KKyNpbmNsdWRlIDxlbnZpcm9ubWVudC5oPgor
+I2luY2x1ZGUgPGxpbnV4L3NpemVzLmg+CisjaW5jbHVkZSA8aW8uaD4KKyNpbmNsdWRlIDxnbG9i
+YWx2YXIuaD4KKyNpbmNsdWRlIDxhc20vbW11Lmg+CisKK3N0YXRpYyBpbnQgdmlydF9tZW1faW5p
+dCh2b2lkKQoreworCXZpcnRfYWRkX2RkcmFtKFNaXzJHKTsKKworCXJldHVybiAwOworfQorbWVt
+X2luaXRjYWxsKHZpcnRfbWVtX2luaXQpOworCitzdGF0aWMgaW50IHZpcnRfZW52X2luaXQodm9p
+ZCkKK3sKKwlhZGRfY2ZpX2ZsYXNoX2RldmljZSgwLCAweDAwMDAwMDAwLCBTWl8xMjhNLCAwKTsK
+KworCWRldmZzX2FkZF9wYXJ0aXRpb24oIm5vcjAiLCAweDAwMDAwLCAweDQwMDAwLCBERVZGU19Q
+QVJUSVRJT05fRklYRUQsICJzZWxmMCIpOworCWRldmZzX2FkZF9wYXJ0aXRpb24oIm5vcjAiLCAw
+eDQwMDAwLCAweDIwMDAwLCBERVZGU19QQVJUSVRJT05fRklYRUQsICJlbnYwIik7CisKKwlyZXR1
+cm4gMDsKK30KK2RldmljZV9pbml0Y2FsbCh2aXJ0X2Vudl9pbml0KTsKKworc3RhdGljIGludCB2
+aXJ0X2NvbnNvbGVfaW5pdCh2b2lkKQoreworCXZpcnRfcmVnaXN0ZXJfdWFydCgwKTsKKworCXJl
+dHVybiAwOworfQorY29uc29sZV9pbml0Y2FsbCh2aXJ0X2NvbnNvbGVfaW5pdCk7CisKK3N0YXRp
+YyBpbnQgdmlydF9jb3JlX2luaXQodm9pZCkKK3sKKwljaGFyICpob3N0bmFtZSA9ICJ2aXJ0NjQi
+OworCisJaWYgKGNwdV9pc19jb3J0ZXhfYTUzKCkpCisJCWhvc3RuYW1lID0gInZpcnQ2NC1hNTMi
+OworCWVsc2UgaWYgKGNwdV9pc19jb3J0ZXhfYTU3KCkpCisJCWhvc3RuYW1lID0gInZpcnQ2NC1h
+NTciOworCisJYmFyZWJveF9zZXRfbW9kZWwoIkFSTSBRRU1VIHZpcnQ2NCIpOworCWJhcmVib3hf
+c2V0X2hvc3RuYW1lKGhvc3RuYW1lKTsKKworCXJldHVybiAwOworfQorcG9zdGNvcmVfaW5pdGNh
+bGwodmlydF9jb3JlX2luaXQpOworCisjaWZkZWYgQ09ORklHX01NVQorc3RhdGljIGludCB2aXJ0
+X21tdV9lbmFibGUodm9pZCkKK3sKKwkvKiBNYXBwaW5nIGFsbCBwZXJpcGggYW5kIGZsYXNoIHJh
+bmdlICovCisJYXJjaF9yZW1hcF9yYW5nZSgodm9pZCAqKTB4MDAwMDAwMDAsIDB4NDAwMDAwMDAs
+IERFVl9NRU0pOworCisJbW11X2VuYWJsZSgpOworCisJcmV0dXJuIDA7Cit9Citwb3N0bW11X2lu
+aXRjYWxsKHZpcnRfbW11X2VuYWJsZSk7CisjZW5kaWYKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Jv
+YXJkcy9xZW11LXZpcnQ2NC9sb3dsZXZlbC5jIGIvYXJjaC9hcm0vYm9hcmRzL3FlbXUtdmlydDY0
+L2xvd2xldmVsLmMKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uYTYwYzRiMAot
+LS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9xZW11LXZpcnQ2NC9sb3dsZXZlbC5j
+CkBAIC0wLDAgKzEsMTkgQEAKKy8qCisgKiBDb3B5cmlnaHQgKEMpIDIwMTMgSmVhbi1DaHJpc3Rv
+cGhlIFBMQUdOSU9MLVZJTExBUkQgPHBsYWduaW9AamNyb3NvZnQuY29tPgorICoKKyAqIEdQTHYy
+IG9ubHkKKyAqLworCisjaW5jbHVkZSA8Y29tbW9uLmg+CisjaW5jbHVkZSA8bGludXgvc2l6ZXMu
+aD4KKyNpbmNsdWRlIDxhc20vYmFyZWJveC1hcm0taGVhZC5oPgorI2luY2x1ZGUgPGFzbS9iYXJl
+Ym94LWFybS5oPgorI2luY2x1ZGUgPGFzbS9zeXN0ZW1faW5mby5oPgorCit2b2lkIGJhcmVib3hf
+YXJtX3Jlc2V0X3ZlY3Rvcih2b2lkKQoreworCWFybV9jcHVfbG93bGV2ZWxfaW5pdCgpOworCWFy
+bV9zZXR1cF9zdGFjaygweDQwMDAwMDAwICsgU1pfMkcgLSBTWl8xNkspOworCisJYmFyZWJveF9h
+cm1fZW50cnkoMHg0MDAwMDAwMCwgU1pfMkcsIE5VTEwpOworfQpkaWZmIC0tZ2l0IGEvYXJjaC9h
+cm0vY29uZmlncy9xZW11X3ZpcnQ2NF9kZWZjb25maWcgYi9hcmNoL2FybS9jb25maWdzL3FlbXVf
+dmlydDY0X2RlZmNvbmZpZwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwLi5lZDVh
+YmVmCi0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vY29uZmlncy9xZW11X3ZpcnQ2NF9kZWZj
+b25maWcKQEAgLTAsMCArMSw0NyBAQAorQ09ORklHX0FSQ0hfUUVNVT15CitDT05GSUdfQkFSRUJP
+WF9NQVhfSU1BR0VfU0laRT0weDA1MDAwMDAwCitDT05GSUdfQUVBQkk9eQorQ09ORklHX0FSTV9P
+UFRJTVpFRF9TVFJJTkdfRlVOQ1RJT05TPXkKK0NPTkZJR19NTVU9eQorIyBDT05GSUdfTU1VX0VB
+UkxZIGlzIG5vdCBzZXQKK0NPTkZJR19URVhUX0JBU0U9MHg0MTAwMDAwMAorQ09ORklHX0JBUkVC
+T1hfTUFYX0JBUkVfSU5JVF9TSVpFPTB4MDEwMDAwMDAKK0NPTkZJR19QUk9NUFQ9InFlbXUtdmly
+dDY0OiAiCitDT05GSUdfR0xPQj15CitDT05GSUdfSFVTSF9GQU5DWV9QUk9NUFQ9eQorQ09ORklH
+X0NNRExJTkVfRURJVElORz15CitDT05GSUdfQVVUT19DT01QTEVURT15CitDT05GSUdfTUVOVT15
+CitDT05GSUdfUEFSVElUSU9OPXkKK0NPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dFTkVSSUM9
+eQorQ09ORklHX0RFRkFVTFRfRU5WSVJPTk1FTlRfUEFUSD0iYXJjaC9hcm0vYm9hcmRzL3FlbXUt
+dmlydDY0L2VudiIKK0NPTkZJR19ERUJVR19JTkZPPXkKK0NPTkZJR19MT05HSEVMUD15CitDT05G
+SUdfQ01EX01FTUlORk89eQorIyBDT05GSUdfQ01EX0JPT1RVIGlzIG5vdCBzZXQKK0NPTkZJR19D
+TURfR089eQorQ09ORklHX0NNRF9MT0FEQj15CitDT05GSUdfQ01EX1JFU0VUPXkKK0NPTkZJR19D
+TURfVUlNQUdFPXkKK0NPTkZJR19DTURfUEFSVElUSU9OPXkKK0NPTkZJR19DTURfRVhQT1JUPXkK
+K0NPTkZJR19DTURfUFJJTlRFTlY9eQorQ09ORklHX0NNRF9TQVZFRU5WPXkKK0NPTkZJR19DTURf
+VU5DT01QUkVTUz15CitDT05GSUdfQ01EX1NMRUVQPXkKK0NPTkZJR19DTURfRUNIT19FPXkKK0NP
+TkZJR19DTURfRURJVD15CitDT05GSUdfQ01EX0xPR0lOPXkKK0NPTkZJR19DTURfTUVOVT15CitD
+T05GSUdfQ01EX01FTlVfTUFOQUdFTUVOVD15CitDT05GSUdfQ01EX1BBU1NXRD15CitDT05GSUdf
+Q01EX1JFQURMSU5FPXkKK0NPTkZJR19DTURfVElNRU9VVD15CitDT05GSUdfQ01EX09GVFJFRT15
+CitDT05GSUdfU0VSSUFMX0FNQkFfUEwwMTE9eQorIyBDT05GSUdfU1BJIGlzIG5vdCBzZXQKK0NP
+TkZJR19NVEQ9eQorQ09ORklHX0RSSVZFUl9DRkk9eQorQ09ORklHX0NGSV9CVUZGRVJfV1JJVEU9
+eQorQ09ORklHX0RJR0VTVF9TSEExX0dFTkVSSUM9eQorQ09ORklHX0RJR0VTVF9TSEEyNTZfR0VO
+RVJJQz15CmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLXFlbXUvS2NvbmZpZyBiL2FyY2gvYXJt
+L21hY2gtcWVtdS9LY29uZmlnCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAuLmQz
+MGJhZTQKLS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9tYWNoLXFlbXUvS2NvbmZpZwpAQCAt
+MCwwICsxLDE4IEBACitpZiBBUkNIX1FFTVUKKworY29uZmlnIEFSQ0hfVEVYVF9CQVNFCisJaGV4
+CisJZGVmYXVsdCAweDQwMDAwMDAwCisKK2Nob2ljZQorCXByb21wdCAiQVJNIEJvYXJkIHR5cGUi
+CisKK2NvbmZpZyBNQUNIX1FFTVVfVklSVDY0CisJYm9vbCAiUUVNVSBhcm02NCB2aXJ0IG1hY2hp
+bmUiCisJc2VsZWN0IENQVV9WOAorCXNlbGVjdCBTWVNfU1VQUE9SVFNfNjRCSVRfS0VSTkVMCisJ
+c2VsZWN0IEFSTV9BTUJBCisJc2VsZWN0IEhBVkVfQ09ORklHVVJBQkxFX01FTU9SWV9MQVlPVVQK
+KworZW5kY2hvaWNlCitlbmRpZgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1xZW11L01ha2Vm
+aWxlIGIvYXJjaC9hcm0vbWFjaC1xZW11L01ha2VmaWxlCm5ldyBmaWxlIG1vZGUgMTAwNjQ0Cmlu
+ZGV4IDAwMDAwMDAuLmVjZTI3N2MKLS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9tYWNoLXFl
+bXUvTWFrZWZpbGUKQEAgLTAsMCArMSBAQAorb2JqLSQoQ09ORklHX01BQ0hfUUVNVV9WSVJUNjQp
+ICs9IHZpcnRfZGV2aWNlcy5vCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLXFlbXUvaW5jbHVk
+ZS9tYWNoL2RlYnVnX2xsLmggYi9hcmNoL2FybS9tYWNoLXFlbXUvaW5jbHVkZS9tYWNoL2RlYnVn
+X2xsLmgKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uODliMDY5MgotLS0gL2Rl
+di9udWxsCisrKyBiL2FyY2gvYXJtL21hY2gtcWVtdS9pbmNsdWRlL21hY2gvZGVidWdfbGwuaApA
+QCAtMCwwICsxLDI0IEBACisvKgorICogQ29weXJpZ2h0IDIwMTMgSmVhbi1DaHJpc3RvcGhlIFBM
+QUdOSU9MLVZJTExBUkQgPHBsYWduaW9sQGpjcm9zb2Z0LmNvbT4KKyAqCisgKiBHUEx2MiBvbmx5
+CisgKi8KKworI2lmbmRlZiBfX01BQ0hfREVCVUdfTExfSF9fCisjZGVmaW5lICAgX19NQUNIX0RF
+QlVHX0xMX0hfXworCisjaW5jbHVkZSA8bGludXgvYW1iYS9zZXJpYWwuaD4KKyNpbmNsdWRlIDxp
+by5oPgorCisjZGVmaW5lIERFQlVHX0xMX1BIWVNfQkFTRQkJMHgxMDAwMDAwMAorI2RlZmluZSBE
+RUJVR19MTF9QSFlTX0JBU0VfUlMxCQkweDFjMDAwMDAwCisKKyNpZmRlZiBNUAorI2RlZmluZSBE
+RUJVR19MTF9VQVJUX0FERFIgREVCVUdfTExfUEhZU19CQVNFCisjZWxzZQorI2RlZmluZSBERUJV
+R19MTF9VQVJUX0FERFIgREVCVUdfTExfUEhZU19CQVNFX1JTMQorI2VuZGlmCisKKyNpbmNsdWRl
+IDxhc20vZGVidWdfbGxfcGwwMTEuaD4KKworI2VuZGlmCmRpZmYgLS1naXQgYS9hcmNoL2FybS9t
+YWNoLXFlbXUvaW5jbHVkZS9tYWNoL2RldmljZXMuaCBiL2FyY2gvYXJtL21hY2gtcWVtdS9pbmNs
+dWRlL21hY2gvZGV2aWNlcy5oCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAuLjk4
+NzJjNjEKLS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9tYWNoLXFlbXUvaW5jbHVkZS9tYWNo
+L2RldmljZXMuaApAQCAtMCwwICsxLDEzIEBACisvKgorICogQ29weXJpZ2h0IChDKSAyMDE2IFJh
+cGhhw6tsIFBvZ2dpIDxwb2dnaS5yYXBoQGdtYWlsLmNvbT4KKyAqCisgKiBHUEx2MiBvbmx5Cisg
+Ki8KKworI2lmbmRlZiBfX0FTTV9BUkNIX0RFVklDRVNfSF9fCisjZGVmaW5lIF9fQVNNX0FSQ0hf
+REVWSUNFU19IX18KKwordm9pZCB2aXJ0X2FkZF9kZHJhbSh1MzIgc2l6ZSk7Cit2b2lkIHZpcnRf
+cmVnaXN0ZXJfdWFydCh1bnNpZ25lZCBpZCk7CisKKyNlbmRpZiAvKiBfX0FTTV9BUkNIX0RFVklD
+RVNfSF9fICovCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLXFlbXUvdmlydF9kZXZpY2VzLmMg
+Yi9hcmNoL2FybS9tYWNoLXFlbXUvdmlydF9kZXZpY2VzLmMKbmV3IGZpbGUgbW9kZSAxMDA2NDQK
+aW5kZXggMDAwMDAwMC4uOTk5ZjQ2MwotLS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL21hY2gt
+cWVtdS92aXJ0X2RldmljZXMuYwpAQCAtMCwwICsxLDMwIEBACisvKgorICogQ29weXJpZ2h0IChD
+KSAyMDE2IFJhcGhhw6tsIFBvZ2dpIDxwb2dnaS5yYXBoQGdtYWlsLmNvbT4KKyAqCisgKiBHUEx2
+MiBvbmx5CisgKi8KKworI2luY2x1ZGUgPGNvbW1vbi5oPgorI2luY2x1ZGUgPGxpbnV4L2FtYmEv
+YnVzLmg+CisjaW5jbHVkZSA8YXNtL21lbW9yeS5oPgorI2luY2x1ZGUgPG1hY2gvZGV2aWNlcy5o
+PgorI2luY2x1ZGUgPGxpbnV4L2lvcG9ydC5oPgorCit2b2lkIHZpcnRfYWRkX2RkcmFtKHUzMiBz
+aXplKQoreworCWFybV9hZGRfbWVtX2RldmljZSgicmFtMCIsIDB4NDAwMDAwMDAsIHNpemUpOwor
+fQorCit2b2lkIHZpcnRfcmVnaXN0ZXJfdWFydCh1bnNpZ25lZCBpZCkKK3sKKwlyZXNvdXJjZV9z
+aXplX3Qgc3RhcnQ7CisKKwlzd2l0Y2ggKGlkKSB7CisJY2FzZSAwOgorCQlzdGFydCA9IDB4MDkw
+MDAwMDA7CisJCWJyZWFrOworCWRlZmF1bHQ6CisJCXJldHVybjsKKwl9CisJYW1iYV9hcGJfZGV2
+aWNlX2FkZChOVUxMLCAidWFydC1wbDAxMSIsIGlkLCBzdGFydCwgNDA5NiwgTlVMTCwgMCk7Cit9
+Ci0tIAoyLjEuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
+Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
