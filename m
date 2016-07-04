@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx0.itk-engineering.de ([212.121.145.30])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bK32v-0000NY-C4
- for barebox@lists.infradead.org; Mon, 04 Jul 2016 12:32:18 +0000
-Received: from vwexchange001.itk.local (vwexchange001.itk.local [10.61.0.114])
- by mx0.itk-engineering.de (8.14.7/8.14.7) with ESMTP id
- u64CY0aL014760
- (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=FAIL)
- for <barebox@lists.infradead.org>; Mon, 4 Jul 2016 14:34:00 +0200
-From: Martin Hollingsworth <Martin.Hollingsworth@itk-engineering.de>
-Date: Mon, 4 Jul 2016 12:32:04 +0000
-Message-ID: <521b64bd91194e5e8e5bdb2bb2f2376f@itk-engineering.de>
-Content-Language: de-DE
+ id 1bK3Sk-0007Rg-D3
+ for barebox@lists.infradead.org; Mon, 04 Jul 2016 12:58:59 +0000
+Date: Mon, 4 Jul 2016 14:58:34 +0200
+From: Michael Grzeschik <mgr@pengutronix.de>
+Message-ID: <20160704125834.GA15608@pengutronix.de>
+References: <1467624459-16448-1-git-send-email-s.hauer@pengutronix.de>
+ <1467624459-16448-11-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1467624459-16448-11-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,87 +19,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: How to overwrite an ext partition on eMMC
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 10/12] ARM: i.MX53 Vincell: Add NAND xload support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Hello folks,
-I'm a little lost when trying to overwrite an ext partition on an eMMC memo=
-ry inside of barebox. Your help finding the mistake is appreciated.
+On Mon, Jul 04, 2016 at 11:27:37AM +0200, Sascha Hauer wrote:
+> The Vincell boards do the SDRAM setup from board init code, so the
+> image size is limited to the internal SRAM size. To overcome this
+> limitation use the NAND xload support.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/boards/guf-vincell/lowlevel.c | 25 ++++++++++++++++++++++---
+>  arch/arm/mach-imx/Kconfig              |  9 +++++++++
+>  images/Makefile.imx                    | 14 ++++++++++----
+>  3 files changed, 41 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/arm/boards/guf-vincell/lowlevel.c b/arch/arm/boards/guf-vincell/lowlevel.c
+> index f4bd44e..34c28f7 100644
+> --- a/arch/arm/boards/guf-vincell/lowlevel.c
+> +++ b/arch/arm/boards/guf-vincell/lowlevel.c
+> @@ -11,6 +11,7 @@
+>  #include <mach/generic.h>
+>  #include <asm/barebox-arm.h>
+>  #include <asm/barebox-arm-head.h>
+> +#include <mach/xload.h>
+>  
+>  #define IOMUX_PADCTL_DDRI_DDR (1 << 9)
+>  
+> @@ -127,8 +128,9 @@ static noinline void imx53_guf_vincell_init(void *fdt)
+>  {
+>  	void __iomem *ccm = (void *)MX53_CCM_BASE_ADDR;
+>  	u32 r;
+> +	enum bootsource src;
+> +	int instance;
+>  
+> -	imx5_cpu_lowlevel_init();
+>  	arm_setup_stack(0xf8020000 - 8);
+>  
+>  	writel(0x0088494c, ccm + MX5_CCM_CBCDR);
+> @@ -149,11 +151,28 @@ static noinline void imx53_guf_vincell_init(void *fdt)
+>  		disable_watchdog();
+>  		configure_dram_iomux();
+>  		imx_esdctlv4_init();
+> +
+> +		imx53_get_boot_source(&src, &instance);
+> +
+> +		if (src == BOOTSOURCE_NAND &&
+> +		    is_enabled(CONFIG_MACH_GUF_VINCELL_XLOAD))
+> +			imx53_nand_start_image();
 
-My Setup:
-- Custom board with iMX6, 4GB eMMC and SD card reader (similar to Freescale=
- SabreSD board)
-- Using PTXdist to build barebox 2016.05.0 and linux
-- The eMMC chip offers wear levelling, so I write a filesystem directly to =
-it (using ptxdist created hd.img file flashed directly)
-- The eMMC is partitioned as follows:
-0x0, Size 1k --> partition table
-0x400, Size 8M --> barebox and barebox_env (offset 0x400 forced by iMX6)
-0x800400, Size 1G --> ext filesystem with rootfs and kernel
+This should probably be s/is_enabled/IS_ENABLED/ .
 
-With this layout so far everything works fine. Now I would like to implemen=
-t an update mechanism, where barebox erases the complete ext partition and =
-replaces it. Under linux I would use something like dd and let it start at =
-0x800400. On barebox I have to use memcpy (thanks to Sascha for the hint ht=
-tp://lists.infradead.org/pipermail/barebox/2011-April/003308.html ) and thi=
-s is where I get stuck.
+mgr
 
-So I first add partitions so that the memory area is listed under /dev:
-devfs_add_partition("mmc3", 0x0, SZ_1K, DEVFS_PARTITION_FIXED, "mmc3.partab=
-le"); =
-
-devfs_add_partition("mmc3", SZ_1K, SZ_8M, DEVFS_PARTITION_FIXED, "mmc3.bare=
-box");
-devfs_add_partition("mmc3", ( SZ_1K + SZ_8M ), SZ_1G, DEVFS_PARTITION_FIXED=
-, "mmc3.rootfs");
-
-This works for clearing the partitions data using memset:
-memset -d /dev/mmc3.rootfs 0x0 0x0 1073741824 =
-
-
-However when I try to copy the root.ext2 filesystem onto this memory area, =
-I can't mount the partition afterwards:
-memcpy -s /mnt/sd/root.ext2 -d /dev/mmc3.rootfs 0 536870912
-mount /dev/mmc3.rootfs /mnt/mmc/
-mount: No such file or directory
-
-I am questioning my approach, as I am not sure if it is correct to write an=
- ext2 file directly to memory. Or am I making some other basic mistake here?
-
-Thanks for your help and cheers,
-Martin
-
---
-M.Eng. Martin Hollingsworth
-Medical Systems Engineering
- =
-
-ITK Engineering AG
-Im Speyerer Tal 6
-D-76761 R=FClzheim
-Tel.: +49 7272 7703-510
-Fax: +49 7272 7703-100
- =
-
-mailto:martin.hollingsworth@itk-engineering.de
-
-_____________________________________________________________
-ITK Engineering AG  Im Speyerer Tal 6  76761 R=FClzheim
-Tel.: +49 7272 7703-0 Fax: +49 7272 7703-100 mailto:info@itk-engineering.de=
- http://www.itk-engineering.de
-
-Vorsitzender des Aufsichtsrats/Chairman of the Supervisory Board: Josef W=
-=FCrth Vorstand/Executive Board: Michael Englert (Vorsitzender), Dr. Helmut=
-h Stahl Sitz der Gesellschaft/Registered Office: 76773 Kuhardt/Pfalz Regist=
-ergericht/Registered Court: Amtsgericht Landau, HRB 30139 USt.-ID-Nr./VAT-I=
-D-No. DE813165046
- _____________________________________________________________
-
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
