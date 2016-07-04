@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bJyIG-00073W-Mb
- for barebox@lists.infradead.org; Mon, 04 Jul 2016 07:27:49 +0000
-Date: Mon, 4 Jul 2016 09:27:25 +0200
+ id 1bJyMB-0001pJ-U2
+ for barebox@lists.infradead.org; Mon, 04 Jul 2016 07:31:52 +0000
+Date: Mon, 4 Jul 2016 09:31:30 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160704072724.GB20657@pengutronix.de>
-References: <1467188540-76509-1-git-send-email-poggi.raph@gmail.com>
+Message-ID: <20160704073130.GC20657@pengutronix.de>
+References: <1467277820-5558-1-git-send-email-akurz@blala.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1467188540-76509-1-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <1467277820-5558-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +22,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4 0/12] Add basic support for arm64
-To: Raphael Poggi <poggi.raph@gmail.com>
+Subject: Re: [PATCH 1/2] scripts: imx-image: super_root_key command depends
+ on header_version 1
+To: Alexander Kurz <akurz@blala.de>
 Cc: barebox@lists.infradead.org
 
-Hi Raphael,
-
-On Wed, Jun 29, 2016 at 10:22:07AM +0200, Raphael Poggi wrote:
-> This patch series introduces a basic support for arm64.
+On Thu, Jun 30, 2016 at 11:10:19AM +0200, Alexander Kurz wrote:
+> The Super Root Key pointer exclusively exists in flash header version 1
+> which is used for i.MX25, i.MX35 and i.MX51 SOC as described in freescales
+> AN4547 document. Simplify the code a little bit.
 > 
-> The arm64 code is merged in the current arch/arm directory.
-> I try to be iterative in the merge process, and find correct solutions
-> to handle both architecture at some places.
-> 
-> I test the patch series by compiling arm64 virt machine and arm32 vexpress-a9 and test it
-> in qemu, everything seems to work.
+> Signed-off-by: Alexander Kurz <akurz@blala.de>
+> ---
+>  scripts/imx/imx.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-I'm happy with te general structure now. There surely still is much work
-to do for full aarch64 support, but the current state does not disturb arm32 and
-I think the remaining issues can be fixed in tree. I can merge this
-series if you like, or I could delay merging in case you want to
-continue working on this series without having to create incremental
-patches.
-
-Finally could you provide a qemu  command line to start the image? A
-patch adding Documentation/boards/aarch64-qemu-virt.rst similar to
-Documentation/boards/digic.rst would be nice.
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+> index 70936ba..f1accc4 100644
+> --- a/scripts/imx/imx.c
+> +++ b/scripts/imx/imx.c
+> @@ -327,7 +327,7 @@ static int do_super_root_key(struct config_data *data, int argc, char *argv[])
+>  		return -EINVAL;
+>  	}
+>  
+> -	if (data->cpu_type != 35 && data->cpu_type != 25) {
+> +	if (data->header_version != 1) {
+>  		fprintf(stderr, "Warning: The super_root_key command is meaningless "
+>  			"on non HABv3 based SoCs\n");
+>  		return 0;
+> -- 
+> 2.1.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
