@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bK3Sk-0007Rg-D3
- for barebox@lists.infradead.org; Mon, 04 Jul 2016 12:58:59 +0000
-Date: Mon, 4 Jul 2016 14:58:34 +0200
-From: Michael Grzeschik <mgr@pengutronix.de>
-Message-ID: <20160704125834.GA15608@pengutronix.de>
-References: <1467624459-16448-1-git-send-email-s.hauer@pengutronix.de>
- <1467624459-16448-11-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1467624459-16448-11-git-send-email-s.hauer@pengutronix.de>
+ id 1bK4Cm-000250-Da
+ for barebox@lists.infradead.org; Mon, 04 Jul 2016 13:46:34 +0000
+Received: by mail-lf0-x244.google.com with SMTP id a2so17188022lfe.3
+ for <barebox@lists.infradead.org>; Mon, 04 Jul 2016 06:46:11 -0700 (PDT)
+Date: Mon, 4 Jul 2016 16:48:10 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20160704164810.ad22e9243d6bd0541a637888@gmail.com>
+In-Reply-To: <1466358813-31528-1-git-send-email-shc_work@mail.ru>
+References: <1466358813-31528-1-git-send-email-shc_work@mail.ru>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,69 +19,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 10/12] ARM: i.MX53 Vincell: Add NAND xload support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] input: Compile keymap only if necessary
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-On Mon, Jul 04, 2016 at 11:27:37AM +0200, Sascha Hauer wrote:
-> The Vincell boards do the SDRAM setup from board init code, so the
-> image size is limited to the internal SRAM size. To overcome this
-> limitation use the NAND xload support.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+On Sun, 19 Jun 2016 20:53:33 +0300
+Alexander Shiyan <shc_work@mail.ru> wrote:
+
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 > ---
->  arch/arm/boards/guf-vincell/lowlevel.c | 25 ++++++++++++++++++++++---
->  arch/arm/mach-imx/Kconfig              |  9 +++++++++
->  images/Makefile.imx                    | 14 ++++++++++----
->  3 files changed, 41 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/arm/boards/guf-vincell/lowlevel.c b/arch/arm/boards/guf-vincell/lowlevel.c
-> index f4bd44e..34c28f7 100644
-> --- a/arch/arm/boards/guf-vincell/lowlevel.c
-> +++ b/arch/arm/boards/guf-vincell/lowlevel.c
-> @@ -11,6 +11,7 @@
->  #include <mach/generic.h>
->  #include <asm/barebox-arm.h>
->  #include <asm/barebox-arm-head.h>
-> +#include <mach/xload.h>
->  
->  #define IOMUX_PADCTL_DDRI_DDR (1 << 9)
->  
-> @@ -127,8 +128,9 @@ static noinline void imx53_guf_vincell_init(void *fdt)
->  {
->  	void __iomem *ccm = (void *)MX53_CCM_BASE_ADDR;
->  	u32 r;
-> +	enum bootsource src;
-> +	int instance;
->  
-> -	imx5_cpu_lowlevel_init();
->  	arm_setup_stack(0xf8020000 - 8);
->  
->  	writel(0x0088494c, ccm + MX5_CCM_CBCDR);
-> @@ -149,11 +151,28 @@ static noinline void imx53_guf_vincell_init(void *fdt)
->  		disable_watchdog();
->  		configure_dram_iomux();
->  		imx_esdctlv4_init();
+>  drivers/input/Makefile   | 3 +--
+>  include/input/keyboard.h | 4 ++++
+>  2 files changed, 5 insertions(+), 2 deletions(-)
+> =
+
+> diff --git a/drivers/input/Makefile b/drivers/input/Makefile
+> index 7d2c194..e694a98 100644
+> --- a/drivers/input/Makefile
+> +++ b/drivers/input/Makefile
+> @@ -1,8 +1,7 @@
+> -obj-$(CONFIG_INPUT) +=3D input.o
+> +obj-$(CONFIG_INPUT) +=3D input.o keymap.o
+>  obj-$(CONFIG_INPUT_MATRIXKMAP) +=3D matrix-keymap.o
+>  obj-$(CONFIG_KEYBOARD_USB) +=3D usb_kbd.o
+>  obj-$(CONFIG_KEYBOARD_GPIO) +=3D gpio_keys.o
+>  obj-$(CONFIG_KEYBOARD_TWL6030) +=3D twl6030_pwrbtn.o
+>  obj-$(CONFIG_KEYBOARD_IMX_KEYPAD) +=3D imx_keypad.o
+>  obj-$(CONFIG_KEYBOARD_QT1070) +=3D qt1070.o
+> -obj-y +=3D keymap.o
+> diff --git a/include/input/keyboard.h b/include/input/keyboard.h
+> index d1f5bf5..e205a51 100644
+> --- a/include/input/keyboard.h
+> +++ b/include/input/keyboard.h
+> @@ -1,6 +1,8 @@
+>  #ifndef __INPUT_KEYBOARD_H
+>  #define __INPUT_KEYBOARD_H
+>  =
+
+> +#ifdef CONFIG_INPUT
 > +
-> +		imx53_get_boot_source(&src, &instance);
+
+Do we really need this?
+
+>  #include <linux/types.h>
+>  =
+
+>  #define NR_KEYS	256
+> @@ -9,3 +11,5 @@ extern uint8_t keycode_bb_keys[NR_KEYS];
+>  extern uint8_t keycode_bb_shift_keys[NR_KEYS];
+>  =
+
+>  #endif
 > +
-> +		if (src == BOOTSOURCE_NAND &&
-> +		    is_enabled(CONFIG_MACH_GUF_VINCELL_XLOAD))
-> +			imx53_nand_start_image();
+> +#endif
+> -- =
 
-This should probably be s/is_enabled/IS_ENABLED/ .
+> 2.4.9
+> =
 
-mgr
+> =
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
