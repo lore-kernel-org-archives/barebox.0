@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x241.google.com ([2a00:1450:400c:c09::241])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bK0Uy-0001jC-J3
- for barebox@lists.infradead.org; Mon, 04 Jul 2016 09:49:05 +0000
-Date: Mon, 4 Jul 2016 11:48:41 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160704094841.GC20656@pengutronix.de>
-References: <1467321854-15090-1-git-send-email-akurz@blala.de>
- <1467321854-15090-2-git-send-email-akurz@blala.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1467321854-15090-2-git-send-email-akurz@blala.de>
+ id 1bK2Rq-0007tD-SN
+ for barebox@lists.infradead.org; Mon, 04 Jul 2016 11:54:00 +0000
+Received: by mail-wm0-x241.google.com with SMTP id 187so21129860wmz.1
+ for <barebox@lists.infradead.org>; Mon, 04 Jul 2016 04:53:42 -0700 (PDT)
+From: Raphael Poggi <poggi.raph@gmail.com>
+Date: Mon,  4 Jul 2016 13:52:52 +0200
+Message-Id: <1467633177-22478-10-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <1467633177-22478-1-git-send-email-poggi.raph@gmail.com>
+References: <1467633177-22478-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,99 +18,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] imx35-regs: add and use common CGR element shifters
-To: Alexander Kurz <akurz@blala.de>
-Cc: barebox@lists.infradead.org, eric@eukrea.com
+Subject: [PATCH v5 09/14] arm: cpu: disable code portion in armv8 case
+To: barebox@lists.infradead.org
+Cc: Raphael Poggi <poggi.raph@gmail.com>
 
-On Thu, Jun 30, 2016 at 11:24:14PM +0200, Alexander Kurz wrote:
-> Add some missing Clock Gate Register element shifters which were implemented
-> as magic numbers in the arm/boards directory. Use the new shifters for
-> inproved code readability.
-> 
-> Signed-off-by: Alexander Kurz <akurz@blala.de>
-> ---
->  arch/arm/boards/eukrea_cpuimx35/lowlevel.c      |  9 +++++----
->  arch/arm/boards/guf-cupid/lowlevel.c            |  5 +++--
->  arch/arm/boards/phytec-phycore-imx35/lowlevel.c |  6 +++---
->  arch/arm/mach-imx/include/mach/imx35-regs.h     | 15 +++++++++++++++
->  4 files changed, 26 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/arm/boards/eukrea_cpuimx35/lowlevel.c b/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
-> index 83c25fe..5573657 100644
-> --- a/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
-> +++ b/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
-> @@ -92,17 +92,18 @@ void __bare_init __naked barebox_arm_reset_vector(void)
->  	writel(0x00001000, ccm_base + MX35_CCM_PDR0);
->  
->  	r = readl(ccm_base + MX35_CCM_CGR0);
-> -	r |= 0x00300000;
-> +	r |= 0x3 << MX35_CCM_CGR0_EPIT1_SHIFT;
->  	writel(r, ccm_base + MX35_CCM_CGR0);
->  
->  	r = readl(ccm_base + MX35_CCM_CGR1);
-> -	r |= 0x00030C00;
-> -	r |= 0x00000003;
-> +	r |= 0x3 << MX35_CCM_CGR1_FEC_SHIFT;
-> +	r |= 0x3 << MX35_CCM_CGR1_I2C1_SHIFT;
-> +	r |= 0x3 << MX35_CCM_CGR1_IOMUX_SHIFT;
->  	writel(r, ccm_base + MX35_CCM_CGR1);
->  
->  	/* enable watchdog asap */
->  	r = readl(ccm_base + MX35_CCM_CGR2);
-> -	r |= 0x03000000;
-> +	r |= 0x3 << MX35_CCM_CGR2_WDOG_SHIFT;
->  	writel(r, ccm_base + MX35_CCM_CGR2);
->  
->  	r = readl(MX35_L2CC_BASE_ADDR + L2X0_AUX_CTRL);
-> diff --git a/arch/arm/boards/guf-cupid/lowlevel.c b/arch/arm/boards/guf-cupid/lowlevel.c
-> index bcd2a24..31b7cdf 100644
-> --- a/arch/arm/boards/guf-cupid/lowlevel.c
-> +++ b/arch/arm/boards/guf-cupid/lowlevel.c
-> @@ -294,11 +294,12 @@ void __bare_init __naked barebox_arm_reset_vector(void)
->  
->  	/* configure clock-gates */
->  	r0 = readl(MX35_CCM_BASE_ADDR + MX35_CCM_CGR0);
-> -	r0 |= 0x00300000;
-> +	r0 |= 0x3 << MX35_CCM_CGR0_EPIT1_SHIFT;
->  	writel(r0, MX35_CCM_BASE_ADDR + MX35_CCM_CGR0);
->  
->  	r0 = readl(MX35_CCM_BASE_ADDR + MX35_CCM_CGR1);
-> -	r0 |= 0x00000c03;
-> +	r0 |= 0x3 << MX35_CCM_CGR1_FEC_SHIFT;
-> +	r0 |= 0x3 << MX35_CCM_CGR1_I2C1_SHIFT;
->  	writel(r0, MX35_CCM_BASE_ADDR + MX35_CCM_CGR1);
->  
->  	/* Configure SDRAM */
-> diff --git a/arch/arm/boards/phytec-phycore-imx35/lowlevel.c b/arch/arm/boards/phytec-phycore-imx35/lowlevel.c
-> index 1ad5439..577fcd9 100644
-> --- a/arch/arm/boards/phytec-phycore-imx35/lowlevel.c
-> +++ b/arch/arm/boards/phytec-phycore-imx35/lowlevel.c
-> @@ -104,12 +104,12 @@ void __bare_init __naked barebox_arm_reset_vector(void)
->  		writel(CCM_PDR0_399, ccm_base + MX35_CCM_PDR0);
->  
->  	r = readl(ccm_base + MX35_CCM_CGR0);
-> -	r |= 0x00300000;
-> +	r |= 0x3 << MX35_CCM_CGR0_EPIT1_SHIFT;
->  	writel(r, ccm_base + MX35_CCM_CGR0);
->  
->  	r = readl(ccm_base + MX35_CCM_CGR1);
-> -	r |= 0x00000C00;
-> -	r |= 0x00000003;
-> +	r |= 0x3 << X35_CCM_CGR1_FEC_SHIFT;
+Enclosed by #if directive OMAP specific code
+and mmu_disable (ARMv8 code will implemented it somewhere else).
 
-Added a missing 'M' here.
+Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
+---
+ arch/arm/cpu/cpu.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Sascha
-
+diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
+index eb12166..cc54324 100644
+--- a/arch/arm/cpu/cpu.c
++++ b/arch/arm/cpu/cpu.c
+@@ -68,6 +68,7 @@ int icache_status(void)
+ 	return (get_cr () & CR_I) != 0;
+ }
+ 
++#if __LINUX_ARM_ARCH__ <= 7
+ /*
+  * SoC like the ux500 have the l2x0 always enable
+  * with or without MMU enable
+@@ -86,6 +87,7 @@ void mmu_disable(void)
+ 	}
+ 	__mmu_cache_off();
+ }
++#endif
+ 
+ /**
+  * Disable MMU and D-cache, flush caches
+@@ -100,6 +102,8 @@ static void arch_shutdown(void)
+ 
+ 	mmu_disable();
+ 	flush_icache();
++
++#if __LINUX_ARM_ARCH__ <= 7
+ 	/*
+ 	 * barebox normally does not use interrupts, but some functionalities
+ 	 * (eg. OMAP4_USBBOOT) require them enabled. So be sure interrupts are
+@@ -108,6 +112,7 @@ static void arch_shutdown(void)
+ 	__asm__ __volatile__("mrs %0, cpsr" : "=r"(r));
+ 	r |= PSR_I_BIT;
+ 	__asm__ __volatile__("msr cpsr, %0" : : "r"(r));
++#endif
+ }
+ archshutdown_exitcall(arch_shutdown);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.0
+
 
 _______________________________________________
 barebox mailing list
