@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bK0Ah-00062F-35
- for barebox@lists.infradead.org; Mon, 04 Jul 2016 09:28:08 +0000
+ id 1bK0Ac-00061A-FO
+ for barebox@lists.infradead.org; Mon, 04 Jul 2016 09:28:03 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Jul 2016 11:27:30 +0200
-Message-Id: <1467624459-16448-4-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Jul 2016 11:27:39 +0200
+Message-Id: <1467624459-16448-13-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1467624459-16448-1-git-send-email-s.hauer@pengutronix.de>
 References: <1467624459-16448-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,34 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/12] ARM: i.MX53: Detect booting from USB
+Subject: [PATCH 12/12] ARM: vincell_defconfig: make smaller
 To: Barebox List <barebox@lists.infradead.org>
 
-The USB download mode can be detected by reading the BMOD[0|1]
-bits. Add support for it.
+The image built with vincell_defconfig has become too big to fit
+into the SoC internal SRAM. Make it smaller by disabling UBIFS
+support.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/boot.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm/configs/vincell_defconfig | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index c72ec61..b66c29d 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -217,6 +217,12 @@ void imx53_get_boot_source(enum bootsource *src, int *instance)
- 	void __iomem *src_base = IOMEM(MX53_SRC_BASE_ADDR);
- 	uint32_t cfg1 = readl(src_base + IMX53_SRC_SBMR);
- 
-+	if (((cfg1 >> 24) & 0x3) == 0x3) {
-+		*src = BOOTSOURCE_USB;
-+		*instance = 0;
-+		return;
-+	}
-+
- 	switch ((cfg1 & 0xff) >> 4) {
- 	case 2:
- 		*src = BOOTSOURCE_HD;
+diff --git a/arch/arm/configs/vincell_defconfig b/arch/arm/configs/vincell_defconfig
+index 83862de..81bfbed 100644
+--- a/arch/arm/configs/vincell_defconfig
++++ b/arch/arm/configs/vincell_defconfig
+@@ -104,7 +104,6 @@ CONFIG_USB_EHCI=y
+ CONFIG_USB_ULPI=y
+ CONFIG_USB_STORAGE=y
+ CONFIG_MCI=y
+-CONFIG_MCI_MMC_BOOT_PARTITIONS=y
+ CONFIG_MCI_IMX_ESDHC=y
+ CONFIG_STATE_DRV=y
+ CONFIG_EEPROM_AT25=y
+@@ -112,5 +111,4 @@ CONFIG_EEPROM_AT24=y
+ CONFIG_WATCHDOG=y
+ CONFIG_WATCHDOG_IMX=y
+ CONFIG_FS_TFTP=y
+-CONFIG_FS_UBIFS=y
+-CONFIG_FS_UBIFS_COMPRESSION_LZO=y
++CONFIG_LZO_DECOMPRESS=y
 -- 
 2.8.1
 
