@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
+Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bK2Rp-0007t9-R6
- for barebox@lists.infradead.org; Mon, 04 Jul 2016 11:53:58 +0000
-Received: by mail-wm0-x243.google.com with SMTP id c82so21089288wme.3
- for <barebox@lists.infradead.org>; Mon, 04 Jul 2016 04:53:41 -0700 (PDT)
+ id 1bK2Rk-0007sV-LK
+ for barebox@lists.infradead.org; Mon, 04 Jul 2016 11:53:53 +0000
+Received: by mail-wm0-x244.google.com with SMTP id c82so21088426wme.3
+ for <barebox@lists.infradead.org>; Mon, 04 Jul 2016 04:53:32 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Mon,  4 Jul 2016 13:52:51 +0200
-Message-Id: <1467633177-22478-9-git-send-email-poggi.raph@gmail.com>
+Date: Mon,  4 Jul 2016 13:52:44 +0200
+Message-Id: <1467633177-22478-2-git-send-email-poggi.raph@gmail.com>
 In-Reply-To: <1467633177-22478-1-git-send-email-poggi.raph@gmail.com>
 References: <1467633177-22478-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,139 +23,122 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 08/14] arm: cpu: cpuinfo: add armv8 support
+Subject: [PATCH v5 01/14] arm64: add armv8 Kconfig entries
 To: barebox@lists.infradead.org
 Cc: Raphael Poggi <poggi.raph@gmail.com>
 
 Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
 ---
- arch/arm/cpu/cpuinfo.c | 58 ++++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 54 insertions(+), 4 deletions(-)
+ arch/arm/Kconfig     | 23 +++++++++++++++++++++++
+ arch/arm/cpu/Kconfig | 33 ++++++++++++++++++++++++++++++++-
+ 2 files changed, 55 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/cpu/cpuinfo.c b/arch/arm/cpu/cpuinfo.c
-index 8b22e9b..86e19d9 100644
---- a/arch/arm/cpu/cpuinfo.c
-+++ b/arch/arm/cpu/cpuinfo.c
-@@ -30,12 +30,15 @@
- #define CPU_ARCH_ARMv5TEJ	7
- #define CPU_ARCH_ARMv6		8
- #define CPU_ARCH_ARMv7		9
-+#define CPU_ARCH_ARMv8		10
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 1fc887b..986fdaa 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -315,6 +315,29 @@ config ARM_BOARD_APPEND_ATAG
  
- #define ARM_CPU_PART_CORTEX_A5      0xC050
- #define ARM_CPU_PART_CORTEX_A7      0xC070
- #define ARM_CPU_PART_CORTEX_A8      0xC080
- #define ARM_CPU_PART_CORTEX_A9      0xC090
- #define ARM_CPU_PART_CORTEX_A15     0xC0F0
-+#define ARM_CPU_PART_CORTEX_A53	    0xD030
-+#define ARM_CPU_PART_CORTEX_A57	    0xD070
+ endmenu
  
- static void decode_cache(unsigned long size)
- {
-@@ -60,6 +63,25 @@ static int do_cpuinfo(int argc, char *argv[])
- 	int i;
- 	int cpu_arch;
- 
-+#ifdef CONFIG_CPU_64v8
-+	__asm__ __volatile__(
-+		"mrs	%0, midr_el1\n"
-+		: "=r" (mainid)
-+		:
-+		: "memory");
++choice
++	prompt "Barebox code model"
++	help
++	  You should only select this option if you have a workload that
++	  actually benefits from 64-bit processing or if your machine has
++	  large memory. You will only be presented a single option in this
++	  menu if your system does not support both 32-bit and 64-bit modes.
 +
-+	__asm__ __volatile__(
-+		"mrs	%0, ctr_el0\n"
-+		: "=r" (cache)
-+		:
-+		: "memory");
++config 32BIT
++	bool "32-bit barebox"
++	depends on CPU_SUPPORTS_32BIT_KERNEL && SYS_SUPPORTS_32BIT_KERNEL
++	help
++	  Select this option if you want to build a 32-bit barebox.
 +
-+	__asm__ __volatile__(
-+		"mrs	%0, sctlr_el1\n"
-+		: "=r" (cr)
-+		:
-+		: "memory");
-+#else
- 	__asm__ __volatile__(
- 		"mrc    p15, 0, %0, c0, c0, 0   @ read control reg\n"
- 		: "=r" (mainid)
-@@ -74,9 +96,10 @@ static int do_cpuinfo(int argc, char *argv[])
- 
- 	__asm__ __volatile__(
- 		"mrc    p15, 0, %0, c1, c0, 0   @ read control reg\n"
--			: "=r" (cr)
--			:
--			: "memory");
-+		: "=r" (cr)
-+		:
-+		: "memory");
-+#endif
- 
- 	switch (mainid >> 24) {
- 	case 0x41:
-@@ -107,6 +130,23 @@ static int do_cpuinfo(int argc, char *argv[])
- 		if (cpu_arch)
- 			cpu_arch += CPU_ARCH_ARMv3;
- 	} else if ((mainid & 0x000f0000) == 0x000f0000) {
-+#ifdef CONFIG_CPU_64v8
-+		unsigned int isar2;
++config 64BIT
++	bool "64-bit barebox"
++	depends on CPU_SUPPORTS_64BIT_KERNEL && SYS_SUPPORTS_64BIT_KERNEL
++	select ARCH_DMA_ADDR_T_64BIT
++	help
++	  Select this option if you want to build a 64-bit barebox.
 +
-+		__asm__ __volatile__(
-+			"mrs	%0, id_isar2_el1\n"
-+			: "=r" (isar2)
-+			:
-+			: "memory");
++endchoice
 +
+ menu "ARM specific settings"
+ 
+ config ARM_OPTIMZED_STRING_FUNCTIONS
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index 4f5d9b6..450a6d5 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -1,8 +1,14 @@
+ comment "Processor Type"
+ 
++config PHYS_ADDR_T_64BIT
++	bool
 +
-+		/* Check Load/Store acquire to check if ARMv8 or not */
+ config CPU_32
+ 	bool
+-	default y
 +
-+		if (isar2 & 0x2)
-+			cpu_arch = CPU_ARCH_ARMv8;
-+		else
-+			cpu_arch = CPU_ARCH_UNKNOWN;
-+#else
- 		unsigned int mmfr0;
++config CPU_64
++	bool
++	select PHYS_ADDR_T_64BIT
  
- 		/* Revised CPUID format. Read the Memory Model Feature
-@@ -121,6 +161,7 @@ static int do_cpuinfo(int argc, char *argv[])
- 			cpu_arch = CPU_ARCH_ARMv6;
- 		else
- 			cpu_arch = CPU_ARCH_UNKNOWN;
-+#endif
- 	} else
- 		cpu_arch = CPU_ARCH_UNKNOWN;
+ # Select CPU types depending on the architecture selected. This selects
+ # which CPUs we support in the kernel image, and the compiler instruction
+@@ -69,6 +75,12 @@ config CPU_V7
+ 	bool
+ 	select CPU_32v7
  
-@@ -152,6 +193,9 @@ static int do_cpuinfo(int argc, char *argv[])
- 	case CPU_ARCH_ARMv7:
- 		architecture = "v7";
- 		break;
-+	case CPU_ARCH_ARMv8:
-+		architecture = "v8";
-+		break;
- 	case CPU_ARCH_UNKNOWN:
- 	default:
- 		architecture = "Unknown";
-@@ -160,7 +204,7 @@ static int do_cpuinfo(int argc, char *argv[])
- 	printf("implementer: %s\narchitecture: %s\n",
- 			implementer, architecture);
++# ARMv8
++config CPU_V8
++	bool
++	select CPU_64v8
++	select CPU_SUPPORTS_64BIT_KERNEL
++
+ config CPU_XSC3
+         bool
+         select CPU_32v4T
+@@ -84,15 +96,23 @@ config CPU_XSCALE
+ # This defines the compiler instruction set which depends on the machine type.
+ config CPU_32v4T
+ 	bool
++	select CPU_32
  
--	if (cpu_arch == CPU_ARCH_ARMv7) {
-+	if (cpu_arch >= CPU_ARCH_ARMv7) {
- 		unsigned int major, minor;
- 		char *part;
- 		major = (mainid >> 20) & 0xf;
-@@ -181,6 +225,12 @@ static int do_cpuinfo(int argc, char *argv[])
- 		case ARM_CPU_PART_CORTEX_A15:
- 			part = "Cortex-A15";
- 			break;
-+		case ARM_CPU_PART_CORTEX_A53:
-+			part = "Cortex-A53";
-+			break;
-+		case ARM_CPU_PART_CORTEX_A57:
-+			part = "Cortex-A57";
-+			break;
- 		default:
- 			part = "unknown";
- 		}
+ config CPU_32v5
+ 	bool
++	select CPU_32
+ 
+ config CPU_32v6
+ 	bool
++	select CPU_32
+ 
+ config CPU_32v7
+ 	bool
++	select CPU_32
++
++config CPU_64v8
++	bool
++	select CPU_64
+ 
+ comment "processor features"
+ 
+@@ -124,3 +144,14 @@ config CACHE_L2X0
+ 	bool "Enable L2x0 PrimeCell"
+ 	depends on MMU && ARCH_HAS_L2X0
+ 
++config SYS_SUPPORTS_32BIT_KERNEL
++	bool
++
++config SYS_SUPPORTS_64BIT_KERNEL
++	bool
++
++config CPU_SUPPORTS_32BIT_KERNEL
++	bool
++
++config CPU_SUPPORTS_64BIT_KERNEL
++	bool
 -- 
 2.1.0
 
