@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x241.google.com ([2607:f8b0:4003:c06::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bJzPX-0004jv-AM
- for barebox@lists.infradead.org; Mon, 04 Jul 2016 08:39:23 +0000
-Received: by mail-oi0-x241.google.com with SMTP id d132so22181936oig.2
- for <barebox@lists.infradead.org>; Mon, 04 Jul 2016 01:39:02 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20160704072724.GB20657@pengutronix.de>
-References: <1467188540-76509-1-git-send-email-poggi.raph@gmail.com>
- <20160704072724.GB20657@pengutronix.de>
-From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <poggi.raph@gmail.com>
-Date: Mon, 4 Jul 2016 10:38:22 +0200
-Message-ID: <CACqcpZCaf1WHaFy8Kx-zKx2ytZxXuhzwduvyunyuuCBrDycLQQ@mail.gmail.com>
+ id 1bK0Ac-00061C-FQ
+ for barebox@lists.infradead.org; Mon, 04 Jul 2016 09:28:03 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon,  4 Jul 2016 11:27:34 +0200
+Message-Id: <1467624459-16448-8-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1467624459-16448-1-git-send-email-s.hauer@pengutronix.de>
+References: <1467624459-16448-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,44 +16,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4 0/12] Add basic support for arm64
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 07/12] ARM: i.MX53 Vincell: Reset phy consistently from device
+ tree
+To: Barebox List <barebox@lists.infradead.org>
 
-SGksCgoyMDE2LTA3LTA0IDk6MjcgR01UKzAyOjAwIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5n
-dXRyb25peC5kZT46Cj4gSGkgUmFwaGFlbCwKPgo+IE9uIFdlZCwgSnVuIDI5LCAyMDE2IGF0IDEw
-OjIyOjA3QU0gKzAyMDAsIFJhcGhhZWwgUG9nZ2kgd3JvdGU6Cj4+IFRoaXMgcGF0Y2ggc2VyaWVz
-IGludHJvZHVjZXMgYSBiYXNpYyBzdXBwb3J0IGZvciBhcm02NC4KPj4KPj4gVGhlIGFybTY0IGNv
-ZGUgaXMgbWVyZ2VkIGluIHRoZSBjdXJyZW50IGFyY2gvYXJtIGRpcmVjdG9yeS4KPj4gSSB0cnkg
-dG8gYmUgaXRlcmF0aXZlIGluIHRoZSBtZXJnZSBwcm9jZXNzLCBhbmQgZmluZCBjb3JyZWN0IHNv
-bHV0aW9ucwo+PiB0byBoYW5kbGUgYm90aCBhcmNoaXRlY3R1cmUgYXQgc29tZSBwbGFjZXMuCj4+
-Cj4+IEkgdGVzdCB0aGUgcGF0Y2ggc2VyaWVzIGJ5IGNvbXBpbGluZyBhcm02NCB2aXJ0IG1hY2hp
-bmUgYW5kIGFybTMyIHZleHByZXNzLWE5IGFuZCB0ZXN0IGl0Cj4+IGluIHFlbXUsIGV2ZXJ5dGhp
-bmcgc2VlbXMgdG8gd29yay4KPgo+Cj4gSSdtIGhhcHB5IHdpdGggdGUgZ2VuZXJhbCBzdHJ1Y3R1
-cmUgbm93LiBUaGVyZSBzdXJlbHkgc3RpbGwgaXMgbXVjaCB3b3JrCj4gdG8gZG8gZm9yIGZ1bGwg
-YWFyY2g2NCBzdXBwb3J0LCBidXQgdGhlIGN1cnJlbnQgc3RhdGUgZG9lcyBub3QgZGlzdHVyYiBh
-cm0zMiBhbmQKPiBJIHRoaW5rIHRoZSByZW1haW5pbmcgaXNzdWVzIGNhbiBiZSBmaXhlZCBpbiB0
-cmVlLiBJIGNhbiBtZXJnZSB0aGlzCj4gc2VyaWVzIGlmIHlvdSBsaWtlLCBvciBJIGNvdWxkIGRl
-bGF5IG1lcmdpbmcgaW4gY2FzZSB5b3Ugd2FudCB0bwo+IGNvbnRpbnVlIHdvcmtpbmcgb24gdGhp
-cyBzZXJpZXMgd2l0aG91dCBoYXZpbmcgdG8gY3JlYXRlIGluY3JlbWVudGFsCj4gcGF0Y2hlcy4K
-Pgo+IEZpbmFsbHkgY291bGQgeW91IHByb3ZpZGUgYSBxZW11ICBjb21tYW5kIGxpbmUgdG8gc3Rh
-cnQgdGhlIGltYWdlPyBBCj4gcGF0Y2ggYWRkaW5nIERvY3VtZW50YXRpb24vYm9hcmRzL2FhcmNo
-NjQtcWVtdS12aXJ0LnJzdCBzaW1pbGFyIHRvCj4gRG9jdW1lbnRhdGlvbi9ib2FyZHMvZGlnaWMu
-cnN0IHdvdWxkIGJlIG5pY2UuCgpObyBwcm9ibGVtLCBJIHdpbGwgc2VuZCBhIHY1IChhZGRpbmcg
-dGhpcyBwYXRjaCkgdG9kYXksIGFuZCB0aGVuIGl0CndvdWxkIGJlIGZpbmUgdG8gbWVyZ2UgdGhp
-cyBzZXJpZXMuCgpUaGFua3MsClJhcGhhw6tsCgo+Cj4gU2FzY2hhCj4KPiAtLQo+IFBlbmd1dHJv
-bml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICB8Cj4gSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwg
-aHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKPiBQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhp
-bGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNn
-ZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0y
-MDY5MTctNTU1NSB8Cj4KPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
-b3JnCj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
-CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
-IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
-ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+The phy reset for the Vincell board is done from device tree whereas
+the Vincell-LT resets the phy from board init code. Since both boards
+share the same code base the regular Vincell board ends up with a
+duplicated phy reset, with the second reset being done after the
+FEC has been initialized.
+Fix this by removing the phy reset from the board code and adding the
+phy reset to the Vincell-LT dts file.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/guf-vincell/board.c   | 11 -----------
+ arch/arm/dts/imx53-guf-vincell-lt.dts |  1 +
+ 2 files changed, 1 insertion(+), 11 deletions(-)
+
+diff --git a/arch/arm/boards/guf-vincell/board.c b/arch/arm/boards/guf-vincell/board.c
+index 43c1952..ee5be10 100644
+--- a/arch/arm/boards/guf-vincell/board.c
++++ b/arch/arm/boards/guf-vincell/board.c
+@@ -29,15 +29,6 @@
+ #include <mach/bbu.h>
+ #include <mach/imx5.h>
+ 
+-#define LOCO_FEC_PHY_RST		IMX_GPIO_NR(7, 6)
+-
+-static void vincell_fec_reset(void)
+-{
+-	gpio_direction_output(LOCO_FEC_PHY_RST, 0);
+-	mdelay(1);
+-	gpio_set_value(LOCO_FEC_PHY_RST, 1);
+-}
+-
+ static int vincell_devices_init(void)
+ {
+ 	if (!of_machine_is_compatible("guf,imx53-vincell") &&
+@@ -49,8 +40,6 @@ static int vincell_devices_init(void)
+ 	clk_set_rate(clk_lookup("emi_slow_podf"), 133333334);
+ 	clk_set_rate(clk_lookup("nfc_podf"), 33333334);
+ 
+-	vincell_fec_reset();
+-
+ 	imx53_bbu_internal_nand_register_handler("nand",
+ 		BBU_HANDLER_FLAG_DEFAULT, SZ_512K);
+ 
+diff --git a/arch/arm/dts/imx53-guf-vincell-lt.dts b/arch/arm/dts/imx53-guf-vincell-lt.dts
+index bcc378d..67a4133 100644
+--- a/arch/arm/dts/imx53-guf-vincell-lt.dts
++++ b/arch/arm/dts/imx53-guf-vincell-lt.dts
+@@ -136,6 +136,7 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_fec>;
+ 	phy-mode = "rmii";
++	phy-reset-gpios = <&gpio7 6 GPIO_ACTIVE_HIGH>;
+ 	status = "okay";
+ };
+ 
+-- 
+2.8.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
