@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bKrpP-0001Rv-Tm
- for barebox@lists.infradead.org; Wed, 06 Jul 2016 18:45:45 +0000
+ id 1bKrqG-0001er-Sf
+ for barebox@lists.infradead.org; Wed, 06 Jul 2016 18:46:37 +0000
 Received: from antimon.Speedport_W_504V_Typ_A (p5483101C.dip0.t-ipconnect.de
- [84.131.16.28]) by lynxeye.de (Postfix) with ESMTPA id 11BD826C2006
- for <barebox@lists.infradead.org>; Wed,  6 Jul 2016 20:44:49 +0200 (CEST)
+ [84.131.16.28]) by lynxeye.de (Postfix) with ESMTPA id 9D6B226C2005
+ for <barebox@lists.infradead.org>; Wed,  6 Jul 2016 20:44:48 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Wed,  6 Jul 2016 20:44:39 +0200
-Message-Id: <1467830680-5909-6-git-send-email-dev@lynxeye.de>
+Date: Wed,  6 Jul 2016 20:44:38 +0200
+Message-Id: <1467830680-5909-5-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1467830680-5909-1-git-send-email-dev@lynxeye.de>
 References: <1467830680-5909-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,29 +24,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] clk: fix misleading indenting
+Subject: [PATCH 5/7] imx-bbu-nand-fcb: avoid double free of dbbt_entries
 To: barebox@lists.infradead.org
+
+The error path properly frees them already.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/clk/clkdev.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ common/imx-bbu-nand-fcb.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
-index d9a1c21..1bc5c6d 100644
---- a/drivers/clk/clkdev.c
-+++ b/drivers/clk/clkdev.c
-@@ -181,8 +181,8 @@ struct clk *clk_get(struct device_d *dev, const char *con_id)
- 
- 	if (dev) {
- 		clk = of_clk_get_by_name(dev->device_node, con_id);
--			if (!IS_ERR(clk))
--				return clk;
-+		if (!IS_ERR(clk))
-+			return clk;
- 	}
- 
- 	return clk_get_sys(dev_id, con_id);
+diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
+index ce00ed4..1db4c5a 100644
+--- a/common/imx-bbu-nand-fcb.c
++++ b/common/imx-bbu-nand-fcb.c
+@@ -658,7 +658,6 @@ static int dbbt_check(struct mtd_info *mtd, int page)
+ 			needs_cleanup = 1;
+ 		} else if (ret < 0) {
+ 			pr_err("Cannot read page %d: %s\n", page, strerror(-ret));
+-			free(dbbt_entries);
+ 			goto out;
+ 		}
+ 	} else {
 -- 
 2.7.4
 
