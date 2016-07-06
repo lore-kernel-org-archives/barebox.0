@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bKrpP-0001Rw-TU
- for barebox@lists.infradead.org; Wed, 06 Jul 2016 18:45:45 +0000
+ id 1bKrpP-0001Rl-Sr
+ for barebox@lists.infradead.org; Wed, 06 Jul 2016 18:45:44 +0000
 Received: from antimon.Speedport_W_504V_Typ_A (p5483101C.dip0.t-ipconnect.de
- [84.131.16.28]) by lynxeye.de (Postfix) with ESMTPA id 8F69326C2007
- for <barebox@lists.infradead.org>; Wed,  6 Jul 2016 20:44:49 +0200 (CEST)
+ [84.131.16.28]) by lynxeye.de (Postfix) with ESMTPA id CFAC126C2001
+ for <barebox@lists.infradead.org>; Wed,  6 Jul 2016 20:44:46 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Wed,  6 Jul 2016 20:44:40 +0200
-Message-Id: <1467830680-5909-7-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1467830680-5909-1-git-send-email-dev@lynxeye.de>
-References: <1467830680-5909-1-git-send-email-dev@lynxeye.de>
+Date: Wed,  6 Jul 2016 20:44:34 +0200
+Message-Id: <1467830680-5909-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,27 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] blspec: use correct return type
+Subject: [PATCH 1/7] compiler: avoid redefining symbols when running with
+ checker
 To: barebox@lists.infradead.org
+
+Avoid redefining __user and __kernel if running with a checker
+enabled.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- common/blspec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/compiler.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/common/blspec.c b/common/blspec.c
-index bf98e6b..04b20fb 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -253,7 +253,7 @@ static bool entry_is_of_compatible(struct blspec_entry *entry)
- 	const char *abspath;
- 	size_t size;
- 	void *fdt = NULL;
--	int ret;
-+	bool ret;
- 	struct device_node *root = NULL, *barebox_root;
- 	const char *compat;
- 	char *filename;
+diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+index 020ad16..91331dd 100644
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -4,8 +4,8 @@
+ #ifndef __ASSEMBLY__
+ 
+ #ifdef __CHECKER__
+-# define __user		__attribute__((noderef, address_space(1)))
+-# define __kernel	__attribute__((address_space(0)))
++# define __user		/* no user address space in barebox */
++# define __kernel	/* default address space */
+ # define __safe		__attribute__((safe))
+ # define __force	__attribute__((force))
+ # define __nocast	__attribute__((nocast))
 -- 
 2.7.4
 
