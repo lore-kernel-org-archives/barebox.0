@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bKsaD-00046m-Ag
- for barebox@lists.infradead.org; Wed, 06 Jul 2016 19:34:05 +0000
-Received: from antimon.Speedport_W_504V_Typ_A (p5483101C.dip0.t-ipconnect.de
- [84.131.16.28]) by lynxeye.de (Postfix) with ESMTPA id 7748E26C2001
- for <barebox@lists.infradead.org>; Wed,  6 Jul 2016 21:32:59 +0200 (CEST)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Wed,  6 Jul 2016 21:32:52 +0200
-Message-Id: <1467833572-26162-5-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1467833572-26162-1-git-send-email-dev@lynxeye.de>
-References: <1467833572-26162-1-git-send-email-dev@lynxeye.de>
+Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bKsyZ-0007KL-0S
+ for barebox@lists.infradead.org; Wed, 06 Jul 2016 19:59:15 +0000
+Received: by mail-lf0-x242.google.com with SMTP id l188so23242600lfe.0
+ for <barebox@lists.infradead.org>; Wed, 06 Jul 2016 12:58:54 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed,  6 Jul 2016 22:58:44 +0300
+Message-Id: <1467835124-31201-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,59 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] ubifs: check return pointer properly
-To: barebox@lists.infradead.org
+Subject: [PATCH] fs: ext4: fix symlink read function
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Ronald Zachariah <rozachar@cisco.com>
 
-ubifs_iget() returns error codes encoded in the pointer,
-so the NULL check will never be true.
+From: Ronald Zachariah <rozachar@cisco.com>
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
+From U-Boot commit:
+
+| commit 37f23885e4905ff500a8524328aa3084ac11cdb4
+| Author: Ronald Zachariah <rozachar@cisco.com>
+| Date:   Thu Apr 28 07:08:34 2016 +0200
+|
+|     fs: ext4: fix symlink read function
+|
+|     The function ext4fs_read_symlink was unable to handle a symlink
+|     which had target name of exactly 60 characters.
+|
+|     Signed-off-by: Ronald Zachariah <rozachar@cisco.com>
+|     Signed-off-by: Stefan Roese <sr@denx.de>
+|     Reviewed-by: Stephen Warren <swarren@nvidia.com>
+|     Cc: Tom Rini <trini@konsulko.com>
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- fs/ubifs/ubifs.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ext4/ext4_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
-index bc1b521..47eef7c 100644
---- a/fs/ubifs/ubifs.c
-+++ b/fs/ubifs/ubifs.c
-@@ -533,7 +533,7 @@ static unsigned long ubifs_findfile(struct super_block *sb, const char *filename
- 			return 0;
- 		inode = ubifs_iget(sb, inum);
+diff --git a/fs/ext4/ext4_common.c b/fs/ext4/ext4_common.c
+index 1ecbb8d..6c4083e 100644
+--- a/fs/ext4/ext4_common.c
++++ b/fs/ext4/ext4_common.c
+@@ -377,7 +377,7 @@ char *ext4fs_read_symlink(struct ext2fs_node *node)
+ 	if (!symlink)
+ 		return 0;
  
--		if (!inode)
-+		if (IS_ERR(inode))
- 			return 0;
- 		ui = ubifs_inode(inode);
- 
-@@ -1001,7 +1001,7 @@ static int ubifs_open(struct device_d *dev, FILE *file, const char *filename)
- 		return -ENOENT;
- 
- 	inode = ubifs_iget(priv->sb, inum);
--	if (!inode)
-+	if (IS_ERR(inode))
- 		return -ENOENT;
- 
- 	uf = xzalloc(sizeof(*uf));
-@@ -1126,7 +1126,7 @@ static DIR *ubifs_opendir(struct device_d *dev, const char *pathname)
- 		return NULL;
- 
- 	inode = ubifs_iget(priv->sb, inum);
--	if (!inode)
-+	if (IS_ERR(inode))
- 		return NULL;
- 
- 	ubifs_iput(inode);
-@@ -1206,7 +1206,7 @@ static int ubifs_stat(struct device_d *dev, const char *filename, struct stat *s
- 		return -ENOENT;
- 
- 	inode = ubifs_iget(priv->sb, inum);
--	if (!inode)
-+	if (IS_ERR(inode))
- 		return -ENOENT;
- 
- 	s->st_size = inode->i_size;
+-	if (__le32_to_cpu(diro->inode.size) <= 60) {
++	if (__le32_to_cpu(diro->inode.size) < sizeof(diro->inode.b.symlink)) {
+ 		strncpy(symlink, diro->inode.b.symlink,
+ 			 __le32_to_cpu(diro->inode.size));
+ 	} else {
 -- 
-2.7.4
+2.8.1
 
 
 _______________________________________________
