@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bKi45-0002Pi-Op
- for barebox@lists.infradead.org; Wed, 06 Jul 2016 08:20:15 +0000
+ id 1bKi49-0002Pv-Lz
+ for barebox@lists.infradead.org; Wed, 06 Jul 2016 08:20:18 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Wed,  6 Jul 2016 10:19:42 +0200
-Message-Id: <1467793185-3709-2-git-send-email-mpa@pengutronix.de>
+Date: Wed,  6 Jul 2016 10:19:44 +0200
+Message-Id: <1467793185-3709-4-git-send-email-mpa@pengutronix.de>
 In-Reply-To: <1467793185-3709-1-git-send-email-mpa@pengutronix.de>
 References: <1467793185-3709-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,44 +21,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 1/4] libfile: Change write_full to be have const buf
+Subject: [PATCH v3 3/4] docs: Add/Update state documentation
 To: barebox@lists.infradead.org
 Cc: mgr@pengutronix.de
 
-write() uses a const pointer so write_full should do the same.
-
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- include/libfile.h | 2 +-
- lib/libfile.c     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ .../devicetree/bindings/barebox/barebox,state.rst  |  7 +++-
+ Documentation/user/state.rst                       | 46 ++++++++++++++++++++++
+ Documentation/user/user-manual.rst                 |  1 +
+ 3 files changed, 53 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/user/state.rst
 
-diff --git a/include/libfile.h b/include/libfile.h
-index de4f42dbd19c..dd0b00f98845 100644
---- a/include/libfile.h
-+++ b/include/libfile.h
-@@ -1,7 +1,7 @@
- #ifndef __LIBFILE_H
- #define __LIBFILE_H
+diff --git a/Documentation/devicetree/bindings/barebox/barebox,state.rst b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+index d50765705348..e39245f6c0bf 100644
+--- a/Documentation/devicetree/bindings/barebox/barebox,state.rst
++++ b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+@@ -36,7 +36,12 @@ Optional properties:
  
--int write_full(int fd, void *buf, size_t size);
-+int write_full(int fd, const void *buf, size_t size);
- int read_full(int fd, void *buf, size_t size);
+ * ``algo``: A HMAC algorithm used to detect manipulation of the data
+   or header, sensible values follow this pattern ``hmac(<HASH>)``,
+-  e.g. ``hmac(sha256)``.
++  e.g. ``hmac(sha256)``. Only used for ``raw``.
++* ``backend-stridesize``: Maximum size per copy of the data. Only important for
++  non-MTD devices
++* ``backend-storage-type``: Type of the storage. This has two options at the
++  moment. For MTD with erasing the correct type is ``circular``. For all other
++  devices and files, ``direct`` is the needed type.
  
- char *read_file_line(const char *fmt, ...);
-diff --git a/lib/libfile.c b/lib/libfile.c
-index 62e9b8ed2289..cba2f02a23a6 100644
---- a/lib/libfile.c
-+++ b/lib/libfile.c
-@@ -28,7 +28,7 @@
-  * Like write, but guarantees to write the full buffer out, else
-  * it returns with an error.
-  */
--int write_full(int fd, void *buf, size_t size)
-+int write_full(int fd, const void *buf, size_t size)
- {
- 	size_t insize = size;
- 	int now;
+ Variable nodes
+ --------------
+diff --git a/Documentation/user/state.rst b/Documentation/user/state.rst
+new file mode 100644
+index 000000000000..c401f105bd64
+--- /dev/null
++++ b/Documentation/user/state.rst
+@@ -0,0 +1,46 @@
++Barebox State Framework
++=======================
++
++The state framework is build to exchange data between Barebox and Linux
++userspace using a non-volatile storage. There are several components involved.
++Barebox has a state driver to access the variables. For the Linux Userspace
++there is a userspace tool.
++
++Devicetree
++----------
++
++Currently the devicetree defines the layout of the variables and data.
++Variables are fixed size. Several types are supported, see the binding
++documentation for details.
++
++Data Formats
++------------
++
++The state data can be stored in different ways. Currently two formats are
++available, ``raw`` and ``dtb``. Both format the state data differently.
++Basically these are serializers. The raw serializer additionally supports a
++HMAC algorithm to detect manipulations.
++
++Storage Backends
++----------------
++
++The serialized data can be stored to different backends which are automatically
++selected depending on the defined backend in the devicetree. Currently two
++implementations exist, ``circular`` and ``direct``. ``circular`` writes the
++data sequentially on the backend storage device. Each save is appended until
++the storage area is full. It then erases the block and starts from offset 0.
++``circular`` is used for MTD devices with erase functionality. ``direct``
++writes the data directly to the file without erasing.
++
++For all backends multiple copies are written to handle read errors.
++
++Commands
++--------
++
++The ``state`` command can be used to store and manipulate the state. Using
++``state`` without argument lists you all available states with their name.
++``devinfo STATE_NAME`` shows you all variables and their values. ``state -s``
++stores the state.
++
++Starting Barebox will automatically load the last written state. If loading the
++state fails the defaults are used.
+diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
+index be44f0d64541..5841ea625c09 100644
+--- a/Documentation/user/user-manual.rst
++++ b/Documentation/user/user-manual.rst
+@@ -31,6 +31,7 @@ Contents:
+    system-setup
+    reset-reason
+    system-reset
++   state
+ 
+ * :ref:`search`
+ * :ref:`genindex`
 -- 
 2.8.1
 
