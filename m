@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bKrpP-0001Rm-Sm
- for barebox@lists.infradead.org; Wed, 06 Jul 2016 18:45:44 +0000
+ id 1bKrpP-0001Rx-Tx
+ for barebox@lists.infradead.org; Wed, 06 Jul 2016 18:45:45 +0000
 Received: from antimon.Speedport_W_504V_Typ_A (p5483101C.dip0.t-ipconnect.de
- [84.131.16.28]) by lynxeye.de (Postfix) with ESMTPA id 4630726C2002
- for <barebox@lists.infradead.org>; Wed,  6 Jul 2016 20:44:47 +0200 (CEST)
+ [84.131.16.28]) by lynxeye.de (Postfix) with ESMTPA id 37BDC26C2004
+ for <barebox@lists.infradead.org>; Wed,  6 Jul 2016 20:44:48 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Wed,  6 Jul 2016 20:44:35 +0200
-Message-Id: <1467830680-5909-2-git-send-email-dev@lynxeye.de>
+Date: Wed,  6 Jul 2016 20:44:37 +0200
+Message-Id: <1467830680-5909-4-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1467830680-5909-1-git-send-email-dev@lynxeye.de>
 References: <1467830680-5909-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,39 +24,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] USB: gadget: composite: avoid possible NULL ptr
- dereference
+Subject: [PATCH 4/7] imx-bbu-nand-fcb: don't drop error return code
 To: barebox@lists.infradead.org
 
-Check if g is valid before trying to dereference it.
+bit_to_flip might be negative if any uncorrectable bitflips
+occured. Use int instead of unsigned type in order to properly
+propagate the error.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/usb/gadget/composite.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ common/imx-bbu-nand-fcb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
-index 9e38ac4..1cfc49d 100644
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -86,7 +86,7 @@ int config_ep_by_speed(struct usb_gadget *g,
- 			struct usb_function *f,
- 			struct usb_ep *_ep)
+diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
+index 72b7b0e..ce00ed4 100644
+--- a/common/imx-bbu-nand-fcb.c
++++ b/common/imx-bbu-nand-fcb.c
+@@ -259,8 +259,8 @@ static ssize_t raw_write_page(struct mtd_info *mtd, void *buf, loff_t offset)
+ static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
  {
--	struct usb_composite_dev	*cdev = get_gadget_data(g);
-+	struct usb_composite_dev *cdev;
- 	struct usb_endpoint_descriptor *chosen_desc = NULL;
- 	struct usb_descriptor_header **speed_desc = NULL;
- 
-@@ -98,6 +98,8 @@ int config_ep_by_speed(struct usb_gadget *g,
- 	if (!g || !f || !_ep)
- 		return -EIO;
- 
-+	cdev = get_gadget_data(g);
-+
- 	/* select desired speed */
- 	switch (g->speed) {
- 	case USB_SPEED_SUPER:
+ 	int i;
+-	int bitflips = 0;
+-	u8 parity, np, syndrome, bit_to_flip;
++	int bitflips = 0, bit_to_flip;
++	u8 parity, np, syndrome;
+ 	u8 *fcb, *ecc;
+ 	int ret;
+ 	void *rawpage;
 -- 
 2.7.4
 
