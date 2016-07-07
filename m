@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x22f.google.com ([2a00:1450:400c:c09::22f])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bL441-0005kq-O8
- for barebox@lists.infradead.org; Thu, 07 Jul 2016 07:49:38 +0000
-Date: Thu, 7 Jul 2016 09:49:15 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160707074915.GH20657@pengutronix.de>
-References: <1467217562-16048-1-git-send-email-shc_work@mail.ru>
+ id 1bL5lB-00064A-Rs
+ for barebox@lists.infradead.org; Thu, 07 Jul 2016 09:38:19 +0000
+Received: by mail-wm0-x22f.google.com with SMTP id a66so24483502wme.0
+ for <barebox@lists.infradead.org>; Thu, 07 Jul 2016 02:37:57 -0700 (PDT)
+Date: Thu, 7 Jul 2016 11:37:38 +0200
+From: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
+Message-ID: <20160707093738.GA24951@gmail.com>
+References: <20160706140245.GA21034@gmail.com>
+ <20160707065545.GX20657@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1467217562-16048-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <20160707065545.GX20657@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,112 +25,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mfd: mc13xxx: VGEN1 and VGEN2 voltage bits positioned in
- "Regulator Setting 0" register
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: Bug?
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Jun 29, 2016 at 07:26:02PM +0300, Alexander Shiyan wrote:
-> The bits VGEN10-11 and VGEN20-22 is positioned in the Regulator Setting 0
-> register. This patch fixes these definitions and board (Efika MX), which
-> uses this voltages.
+Hi Sascha,
+
+I can reproduce this on barebox 2016.06.0 for example with:
+cp /env/data/ansi-colors /env/data/
+But "memcpy -s /env/data/ansi-colors -d /env/data/ansi-colors 0 0" works without problem.
+
+I try this with next barebox version (2016.07.0). Maybe it's already fixed.
+
+On Thu, Jul 07, 2016 at 08:55:45AM +0200, Sascha Hauer wrote:
+> Hi Wjatscheslaw,
 > 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ---
->  arch/arm/boards/efika-mx-smartbook/board.c |  8 +++++---
->  include/mfd/mc13892.h                      | 28 ++++++++++++++--------------
->  2 files changed, 19 insertions(+), 17 deletions(-)
-
-Applied, thanks
-
-Sascha
-
+> On Wed, Jul 06, 2016 at 04:02:45PM +0200, Wjatscheslaw Stoljarski wrote:
+> > Hi,
+> > 
+> > overwriting a file in barebox, didn't work properly.
 > 
-> diff --git a/arch/arm/boards/efika-mx-smartbook/board.c b/arch/arm/boards/efika-mx-smartbook/board.c
-> index d1d020e..d7c11dc 100644
-> --- a/arch/arm/boards/efika-mx-smartbook/board.c
-> +++ b/arch/arm/boards/efika-mx-smartbook/board.c
-> @@ -122,9 +122,13 @@ static void efikamx_power_init(struct mc13xxx *mc)
->  	/* Set VDIG to 1.8V, VGEN3 to 1.8V, VCAM to 2.6V */
->  	mc13xxx_reg_read(mc, MC13892_REG_SETTING_0, &val);
->  	val &= ~(MC13892_SETTING_0_VCAM_MASK |
-> +		MC13892_SETTING_0_VGEN1_MASK |
-> +		MC13892_SETTING_0_VGEN2_MASK |
->  		MC13892_SETTING_0_VGEN3_MASK |
->  		MC13892_SETTING_0_VDIG_MASK);
->  	val |= MC13892_SETTING_0_VDIG_1_8 |
-> +		MC13892_SETTING_0_VGEN1_1_2 |
-> +		MC13892_SETTING_0_VGEN2_3_15 |
->  		MC13892_SETTING_0_VGEN3_1_8 |
->  		MC13892_SETTING_0_VCAM_2_6;
->  	mc13xxx_reg_write(mc, MC13892_REG_SETTING_0, val);
-> @@ -136,9 +140,7 @@ static void efikamx_power_init(struct mc13xxx *mc)
->  			MC13892_SETTING_1_VAUDIO_MASK);
->  	val |= MC13892_SETTING_1_VSD_3_15 |
->  		MC13892_SETTING_1_VAUDIO_3_0 |
-> -		MC13892_SETTING_1_VVIDEO_2_775 |
-> -		MC13892_SETTING_1_VGEN1_1_2 |
-> -		MC13892_SETTING_1_VGEN2_3_15;
-> +		MC13892_SETTING_1_VVIDEO_2_775;
->  	mc13xxx_reg_write(mc, MC13892_REG_SETTING_1, val);
->  
->  	/* Enable VGEN1, VGEN2, VDIG, VPLL */
-> diff --git a/include/mfd/mc13892.h b/include/mfd/mc13892.h
-> index 22df5f0..c92a462 100644
-> --- a/include/mfd/mc13892.h
-> +++ b/include/mfd/mc13892.h
-> @@ -95,22 +95,22 @@
->  #define MC13892_SETTING_1_VSD_3_0	(6 << 6)
->  #define MC13892_SETTING_1_VSD_3_15	(7 << 6)
->  #define MC13892_SETTING_1_VSD_MASK	(7 << 6)
-> -#define MC13892_SETTING_1_VGEN1_1_2	0
-> -#define MC13892_SETTING_1_VGEN1_1_5	1
-> -#define MC13892_SETTING_1_VGEN1_2_775	2
-> -#define MC13892_SETTING_1_VGEN1_3_15	3
-> -#define MC13892_SETTING_1_VGEN1_MASK	3
-> -#define MC13892_SETTING_1_VGEN2_1_2	(0 << 6)
-> -#define MC13892_SETTING_1_VGEN2_1_5	(1 << 6)
-> -#define MC13892_SETTING_1_VGEN2_1_6	(2 << 6)
-> -#define MC13892_SETTING_1_VGEN2_1_8	(3 << 6)
-> -#define MC13892_SETTING_1_VGEN2_2_7	(4 << 6)
-> -#define MC13892_SETTING_1_VGEN2_2_8	(5 << 6)
-> -#define MC13892_SETTING_1_VGEN2_3_0	(6 << 6)
-> -#define MC13892_SETTING_1_VGEN2_3_15	(7 << 6)
-> -#define MC13892_SETTING_1_VGEN2_MASK	(7 << 6)
->  
->  /* Fields in REG_SETTING_0 */
-> +#define MC13892_SETTING_0_VGEN1_1_2	(0 << 0)
-> +#define MC13892_SETTING_0_VGEN1_1_5	(1 << 0)
-> +#define MC13892_SETTING_0_VGEN1_2_775	(2 << 0)
-> +#define MC13892_SETTING_0_VGEN1_3_15	(3 << 0)
-> +#define MC13892_SETTING_0_VGEN1_MASK	(3 << 0)
-> +#define MC13892_SETTING_0_VGEN2_1_2	(0 << 6)
-> +#define MC13892_SETTING_0_VGEN2_1_5	(1 << 6)
-> +#define MC13892_SETTING_0_VGEN2_1_6	(2 << 6)
-> +#define MC13892_SETTING_0_VGEN2_1_8	(3 << 6)
-> +#define MC13892_SETTING_0_VGEN2_2_7	(4 << 6)
-> +#define MC13892_SETTING_0_VGEN2_2_8	(5 << 6)
-> +#define MC13892_SETTING_0_VGEN2_3_0	(6 << 6)
-> +#define MC13892_SETTING_0_VGEN2_3_15	(7 << 6)
-> +#define MC13892_SETTING_0_VGEN2_MASK	(7 << 6)
->  #define MC13892_SETTING_0_VGEN3_1_8	(0 << 14)
->  #define MC13892_SETTING_0_VGEN3_2_9	(1 << 14)
->  #define MC13892_SETTING_0_VGEN3_MASK	(1 << 14)
+> I have never seen this. Can you reproduce this any maybe even have a
+> command sequence that fails? A quick 'cp' from one file to another
+> existing file did not show this problem.
+> 
+> Sascha
+> 
+> 
+> > 
+> > ---------------------- 8< -------------------------
+> > unable to handle NULL pointer dereference at address 0x00000000
+> > pc : [<2ff20f86>]    lr : [<2ff20eff>]
+> > sp : 2ffef808  ip : 201383fc  fp : 00000000
+> > r10: 2003cc94  r9 : 20138665  r8 : 00000269
+> > r7 : 00000000  r6 : 1ff9a5d0  r5 : 00001fff  r4 : 00000269
+> > r3 : 00000000  r2 : 00001fff  r1 : 00000000  r0 : 201383fc
+> > Flags: Nzcv  IRQs off  FIQs off  Mode SVC_32
+> > [<2ff20f86>] (ramfs_read+0xba/0xc8) from [<2ff228d5>] (__read+0x41/0x58)
+> > [<2ff228d5>] (__read+0x41/0x58) from [<2ff22f6f>] (read+0x2b/0x48)
+> > [<2ff22f6f>] (read+0x2b/0x48) from [<2ff1ca31>] (copy_file+0x85/0x118)
+> > [<2ff1ca31>] (copy_file+0x85/0x118) from [<2ff14ead>] (do_cp+0x109/0x128)
+> > [<2ff14ead>] (do_cp+0x109/0x128) from [<2ff03209>] (execute_command+0x21/0x48)
+> > [<2ff03209>] (execute_command+0x21/0x48) from [<2ff07443>] (run_list_real+0x56b/0x638)
+> > [<2ff07443>] (run_list_real+0x56b/0x638) from [<2ff06da9>] (parse_stream_outer+0xd9/0x164)
+> > [<2ff06da9>] (parse_stream_outer+0xd9/0x164) from [<2ff076d1>] (run_shell+0x31/0x60)
+> > [<2ff076d1>] (run_shell+0x31/0x60) from [<2ff03209>] (execute_command+0x21/0x48)
+> > [<2ff03209>] (execute_command+0x21/0x48) from [<2ff07443>] (run_list_real+0x56b/0x638)
+> > [<2ff07443>] (run_list_real+0x56b/0x638) from [<2ff0715d>] (run_list_real+0x285/0x638)
+> > 
+> > [<2ff28519>] (unwind_backtrace+0x1/0x58) from [<2ff00cd1>] (panic+0x1d/0x2c)
+> > [<2ff00cd1>] (panic+0x1d/0x2c) from [<2ff289bd>] (do_exception+0xd/0x10)
+> > [<2ff289bd>] (do_exception+0xd/0x10) from [<2ff28a1d>] (do_data_abort+0x21/0x2c)
+> > [<2ff28a1d>] (do_data_abort+0x21/0x2c) from [<2ff28714>] (do_abort_6+0x48/0x54)
+> > ---------------------- 8< -------------------------
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> > 
+> 
 > -- 
-> 2.4.9
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
