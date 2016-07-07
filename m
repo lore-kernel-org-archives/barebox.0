@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bL41O-0003W2-9m
- for barebox@lists.infradead.org; Thu, 07 Jul 2016 07:46:55 +0000
-Date: Thu, 7 Jul 2016 09:46:32 +0200
+ id 1bL441-0005kq-O8
+ for barebox@lists.infradead.org; Thu, 07 Jul 2016 07:49:38 +0000
+Date: Thu, 7 Jul 2016 09:49:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160707074630.GF20657@pengutronix.de>
-References: <1467833572-26162-1-git-send-email-dev@lynxeye.de>
+Message-ID: <20160707074915.GH20657@pengutronix.de>
+References: <1467217562-16048-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1467833572-26162-1-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1467217562-16048-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +22,99 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] commands: menu: check return pointer properly
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [PATCH] mfd: mc13xxx: VGEN1 and VGEN2 voltage bits positioned in
+ "Regulator Setting 0" register
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-Hi Lucas,
+On Wed, Jun 29, 2016 at 07:26:02PM +0300, Alexander Shiyan wrote:
+> The bits VGEN10-11 and VGEN20-22 is positioned in the Regulator Setting 0
+> register. This patch fixes these definitions and board (Efika MX), which
+> uses this voltages.
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  arch/arm/boards/efika-mx-smartbook/board.c |  8 +++++---
+>  include/mfd/mc13892.h                      | 28 ++++++++++++++--------------
+>  2 files changed, 19 insertions(+), 17 deletions(-)
 
-I applied all patches from this and the other series I haven't commented
-on.
+Applied, thanks
 
 Sascha
 
-On Wed, Jul 06, 2016 at 09:32:48PM +0200, Lucas Stach wrote:
-> The called functions return error codes encoded in the pointer,
-> so the NULL check will never be true.
 > 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> ---
->  commands/menu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/commands/menu.c b/commands/menu.c
-> index 9ec2d57..e1079fd 100644
-> --- a/commands/menu.c
-> +++ b/commands/menu.c
-> @@ -83,7 +83,7 @@ static int do_menu_entry_add(struct cmd_menu *cm)
->  	else
->  		me = menu_add_command_entry(m, cm->description, cm->command,
->  					    cm->type);
-> -	if (!me)
-> +	if (IS_ERR(me))
->  		return PTR_ERR(me);
+> diff --git a/arch/arm/boards/efika-mx-smartbook/board.c b/arch/arm/boards/efika-mx-smartbook/board.c
+> index d1d020e..d7c11dc 100644
+> --- a/arch/arm/boards/efika-mx-smartbook/board.c
+> +++ b/arch/arm/boards/efika-mx-smartbook/board.c
+> @@ -122,9 +122,13 @@ static void efikamx_power_init(struct mc13xxx *mc)
+>  	/* Set VDIG to 1.8V, VGEN3 to 1.8V, VCAM to 2.6V */
+>  	mc13xxx_reg_read(mc, MC13892_REG_SETTING_0, &val);
+>  	val &= ~(MC13892_SETTING_0_VCAM_MASK |
+> +		MC13892_SETTING_0_VGEN1_MASK |
+> +		MC13892_SETTING_0_VGEN2_MASK |
+>  		MC13892_SETTING_0_VGEN3_MASK |
+>  		MC13892_SETTING_0_VDIG_MASK);
+>  	val |= MC13892_SETTING_0_VDIG_1_8 |
+> +		MC13892_SETTING_0_VGEN1_1_2 |
+> +		MC13892_SETTING_0_VGEN2_3_15 |
+>  		MC13892_SETTING_0_VGEN3_1_8 |
+>  		MC13892_SETTING_0_VCAM_2_6;
+>  	mc13xxx_reg_write(mc, MC13892_REG_SETTING_0, val);
+> @@ -136,9 +140,7 @@ static void efikamx_power_init(struct mc13xxx *mc)
+>  			MC13892_SETTING_1_VAUDIO_MASK);
+>  	val |= MC13892_SETTING_1_VSD_3_15 |
+>  		MC13892_SETTING_1_VAUDIO_3_0 |
+> -		MC13892_SETTING_1_VVIDEO_2_775 |
+> -		MC13892_SETTING_1_VGEN1_1_2 |
+> -		MC13892_SETTING_1_VGEN2_3_15;
+> +		MC13892_SETTING_1_VVIDEO_2_775;
+>  	mc13xxx_reg_write(mc, MC13892_REG_SETTING_1, val);
 >  
->  	me->box_state = cm->box_state > 0 ? 1 : 0;
+>  	/* Enable VGEN1, VGEN2, VDIG, VPLL */
+> diff --git a/include/mfd/mc13892.h b/include/mfd/mc13892.h
+> index 22df5f0..c92a462 100644
+> --- a/include/mfd/mc13892.h
+> +++ b/include/mfd/mc13892.h
+> @@ -95,22 +95,22 @@
+>  #define MC13892_SETTING_1_VSD_3_0	(6 << 6)
+>  #define MC13892_SETTING_1_VSD_3_15	(7 << 6)
+>  #define MC13892_SETTING_1_VSD_MASK	(7 << 6)
+> -#define MC13892_SETTING_1_VGEN1_1_2	0
+> -#define MC13892_SETTING_1_VGEN1_1_5	1
+> -#define MC13892_SETTING_1_VGEN1_2_775	2
+> -#define MC13892_SETTING_1_VGEN1_3_15	3
+> -#define MC13892_SETTING_1_VGEN1_MASK	3
+> -#define MC13892_SETTING_1_VGEN2_1_2	(0 << 6)
+> -#define MC13892_SETTING_1_VGEN2_1_5	(1 << 6)
+> -#define MC13892_SETTING_1_VGEN2_1_6	(2 << 6)
+> -#define MC13892_SETTING_1_VGEN2_1_8	(3 << 6)
+> -#define MC13892_SETTING_1_VGEN2_2_7	(4 << 6)
+> -#define MC13892_SETTING_1_VGEN2_2_8	(5 << 6)
+> -#define MC13892_SETTING_1_VGEN2_3_0	(6 << 6)
+> -#define MC13892_SETTING_1_VGEN2_3_15	(7 << 6)
+> -#define MC13892_SETTING_1_VGEN2_MASK	(7 << 6)
+>  
+>  /* Fields in REG_SETTING_0 */
+> +#define MC13892_SETTING_0_VGEN1_1_2	(0 << 0)
+> +#define MC13892_SETTING_0_VGEN1_1_5	(1 << 0)
+> +#define MC13892_SETTING_0_VGEN1_2_775	(2 << 0)
+> +#define MC13892_SETTING_0_VGEN1_3_15	(3 << 0)
+> +#define MC13892_SETTING_0_VGEN1_MASK	(3 << 0)
+> +#define MC13892_SETTING_0_VGEN2_1_2	(0 << 6)
+> +#define MC13892_SETTING_0_VGEN2_1_5	(1 << 6)
+> +#define MC13892_SETTING_0_VGEN2_1_6	(2 << 6)
+> +#define MC13892_SETTING_0_VGEN2_1_8	(3 << 6)
+> +#define MC13892_SETTING_0_VGEN2_2_7	(4 << 6)
+> +#define MC13892_SETTING_0_VGEN2_2_8	(5 << 6)
+> +#define MC13892_SETTING_0_VGEN2_3_0	(6 << 6)
+> +#define MC13892_SETTING_0_VGEN2_3_15	(7 << 6)
+> +#define MC13892_SETTING_0_VGEN2_MASK	(7 << 6)
+>  #define MC13892_SETTING_0_VGEN3_1_8	(0 << 14)
+>  #define MC13892_SETTING_0_VGEN3_2_9	(1 << 14)
+>  #define MC13892_SETTING_0_VGEN3_MASK	(1 << 14)
 > -- 
-> 2.7.4
+> 2.4.9
 > 
 > 
 > _______________________________________________
