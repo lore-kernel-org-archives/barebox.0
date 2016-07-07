@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bL3lf-0002DS-OK
- for barebox@lists.infradead.org; Thu, 07 Jul 2016 07:30:40 +0000
-Date: Thu, 7 Jul 2016 09:30:18 +0200
+ id 1bL3ye-00012B-9b
+ for barebox@lists.infradead.org; Thu, 07 Jul 2016 07:44:05 +0000
+Date: Thu, 7 Jul 2016 09:43:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160707073018.GD20657@pengutronix.de>
-References: <1467837506-32177-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20160707074333.GE20657@pengutronix.de>
+References: <1467830680-5909-1-git-send-email-dev@lynxeye.de>
+ <1467830680-5909-7-git-send-email-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1467837506-32177-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1467830680-5909-7-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,38 +23,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] MIPS: csrc-r4k: get counter rate from devicetree
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH 7/7] blspec: use correct return type
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jul 06, 2016 at 11:38:24PM +0300, Antony Pavlov wrote:
-> At the moment csrc-r4k rate is fixed to 100 MHz.
-> This is acceptable only for qemu-malta.
+On Wed, Jul 06, 2016 at 08:44:40PM +0200, Lucas Stach wrote:
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> ---
+>  common/blspec.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> This patch introduces a devicetree-based solution
-> for detecting csrc-r4k counter rate.
-> 
-> The most notable users of this patch are AR9331-based boards.
-> 
-> 
-> Antony Pavlov (2):
->   of: base: import of_get_cpu_node() from linux-v4.7-rc2
->   MIPS: csrc-r4k: get cp0 counter rate from devicetree
+> diff --git a/common/blspec.c b/common/blspec.c
+> index bf98e6b..04b20fb 100644
+> --- a/common/blspec.c
+> +++ b/common/blspec.c
+> @@ -253,7 +253,7 @@ static bool entry_is_of_compatible(struct blspec_entry *entry)
+>  	const char *abspath;
+>  	size_t size;
+>  	void *fdt = NULL;
+> -	int ret;
+> +	bool ret;
+>  	struct device_node *root = NULL, *barebox_root;
+>  	const char *compat;
+>  	char *filename;
 
-Applied, thanks
+I suspect this is not the only bug in this function. We also do a:
+
+	root = of_unflatten_dtb(fdt);
+	if (IS_ERR(root)) {
+		ret = PTR_ERR(root);
+		goto out;
+	}
+
+...
+
+out:
+	return ret;
+
+So we return 'true' when we failed unflattening the device tree, this surely
+is not intended. Should the function return int instead?
 
 Sascha
 
-> 
->  arch/mips/lib/csrc-r4k.c | 24 ++++++++++++--
->  drivers/of/base.c        | 86 ++++++++++++++++++++++++++++++++++++++++++++++++
->  include/of.h             | 10 ++++++
->  3 files changed, 118 insertions(+), 2 deletions(-)
-> 
-> -- 
-> 2.8.1
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
