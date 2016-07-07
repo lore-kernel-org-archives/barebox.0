@@ -1,12 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bL5vg-0005uB-60
- for barebox@lists.infradead.org; Thu, 07 Jul 2016 09:49:09 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu,  7 Jul 2016 11:48:43 +0200
-Message-Id: <1467884923-24060-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ id 1bL6Do-0003I0-DZ
+ for barebox@lists.infradead.org; Thu, 07 Jul 2016 10:07:53 +0000
+Date: Thu, 7 Jul 2016 12:07:30 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160707100730.GL20657@pengutronix.de>
+References: <20160706140245.GA21034@gmail.com>
+ <20160707065545.GX20657@pengutronix.de>
+ <20160707093738.GA24951@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20160707093738.GA24951@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,45 +20,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: nand: imx-bbm: use raw reading when checking for factory
- BBM
-To: barebox@lists.infradead.org
+Subject: Re: Bug?
+To: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-VGhpcyBpcyBuZWNlc3NhcnkgdG8gcHJldmVudCB0aGUgaW14X25hbmRfYmJtIGNvbW1hbmQgdG8g
-YmFpbCBvdXQKb24gRUNDIGVycm9ycyB3aGljaCBsZWF2ZXMgdGhlIGRldmljZSB3aXRob3V0IEJC
-VC4KCkFsc28gc2ltcGxpZnkgYnVmZmVyIG1hbmFnZW1lbnQ6IFVzZSBvbi1zdGFjayBidWZmZXIg
-aW5zdGVhZCBvZiBtYWxsb2MuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5r
-bGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGRyaXZlcnMvbXRkL25hbmQvbmFuZF9p
-bXhfYmJtLmMgfCAyOCArKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdl
-ZCwgMTQgaW5zZXJ0aW9ucygrKSwgMTQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9tdGQvbmFuZC9uYW5kX2lteF9iYm0uYyBiL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9pbXhfYmJt
-LmMKaW5kZXggMjUxZGZlNWQzZjEyLi5lYjMzMThjMDhhYTYgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMv
-bXRkL25hbmQvbmFuZF9pbXhfYmJtLmMKKysrIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX2lteF9i
-Ym0uYwpAQCAtNTIsMTIgKzUyLDIwIEBACiAgKiBvbiB0aGUgZmxhc2ggQkJULgogICoKICAqLwot
-c3RhdGljIGludCBjaGVja2JhZChzdHJ1Y3QgbXRkX2luZm8gKm10ZCwgbG9mZl90IG9mcywgdm9p
-ZCAqX19idWYpCitzdGF0aWMgaW50IGNoZWNrYmFkKHN0cnVjdCBtdGRfaW5mbyAqbXRkLCBsb2Zm
-X3Qgb2ZzKQogewogCWludCByZXQsIHJldGxlbjsKLQl1aW50OF90ICpidWYgPSBfX2J1ZjsKKwl1
-aW50OF90IGJ1ZlttdGQtPndyaXRlc2l6ZSArIG10ZC0+b29ic2l6ZV07CisJc3RydWN0IG10ZF9v
-b2Jfb3BzIG9wczsKIAotCXJldCA9IG10ZC0+cmVhZChtdGQsIG9mcywgbXRkLT53cml0ZXNpemUs
-ICZyZXRsZW4sIGJ1Zik7CisJb3BzLm1vZGUgPSBNVERfT1BTX1JBVzsKKwlvcHMub29ib2ZmcyA9
-IDA7CisJb3BzLmRhdGJ1ZiA9IGJ1ZjsKKwlvcHMubGVuID0gbXRkLT53cml0ZXNpemU7CisJb3Bz
-Lm9vYmJ1ZiA9IGJ1ZiArIG10ZC0+d3JpdGVzaXplOworCW9wcy5vb2JsZW4gPSBtdGQtPm9vYnNp
-emU7CisKKwlyZXQgPSBtdGRfcmVhZF9vb2IobXRkLCBvZnMsICZvcHMpOwogCWlmIChyZXQgPCAw
-KQogCQlyZXR1cm4gcmV0OwogCkBAIC04OCwxOCArOTYsMTIgQEAgc3RhdGljIHZvaWQgKmNyZWF0
-ZV9iYnQoc3RydWN0IG10ZF9pbmZvICptdGQpCiAJaWYgKCFiYnQpCiAJCXJldHVybiBFUlJfUFRS
-KC1FTk9NRU0pOwogCi0JYnVmID0gbWFsbG9jKG10ZC0+d3JpdGVzaXplKTsKLQlpZiAoIWJ1Zikg
-ewotCQlyZXQgPSAtRU5PTUVNOwotCQlnb3RvIG91dDI7Ci0JfQotCiAJbnVtYmxvY2tzID0gbXRk
-LT5zaXplID4+IChjaGlwLT5iYnRfZXJhc2Vfc2hpZnQgLSAxKTsKIAogCWZvciAoaSA9IDA7IGkg
-PCBudW1ibG9ja3M7KSB7Ci0JCXJldCA9IGNoZWNrYmFkKG10ZCwgZnJvbSwgYnVmKTsKKwkJcmV0
-ID0gY2hlY2tiYWQobXRkLCBmcm9tKTsKIAkJaWYgKHJldCA8IDApCi0JCQlnb3RvIG91dDE7CisJ
-CQlnb3RvIG91dDsKIAogCQlpZiAocmV0KSB7CiAJCQliYnRbaSA+PiAzXSB8PSAweDAzIDw8IChp
-ICYgMHg2KTsKQEAgLTExMyw5ICsxMTUsNyBAQCBzdGF0aWMgdm9pZCAqY3JlYXRlX2JidChzdHJ1
-Y3QgbXRkX2luZm8gKm10ZCkKIAogCXJldHVybiBiYnQ7CiAKLW91dDE6Ci0JZnJlZShidWYpOwot
-b3V0MjoKK291dDoKIAlmcmVlKGJidCk7CiAKIAlyZXR1cm4gRVJSX1BUUihyZXQpOwotLSAKMi44
-LjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
-Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Thu, Jul 07, 2016 at 11:37:38AM +0200, Wjatscheslaw Stoljarski wrote:
+> Hi Sascha,
+> 
+> I can reproduce this on barebox 2016.06.0 for example with:
+> cp /env/data/ansi-colors /env/data/
+> But "memcpy -s /env/data/ansi-colors -d /env/data/ansi-colors 0 0" works without problem.
+> 
+> I try this with next barebox version (2016.07.0). Maybe it's already fixed.
+
+Nope, it isn't.
+
+So the problem comes when you copy a file over itself. This indeed
+crashes here aswell. This points to a bug in the ramfs implementation
+which should be fixed. Also there's another bug in 'cp': copy_file
+should recognize when source and destination are the same file and
+report an error in this case.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
