@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bMU5k-0005Ov-Uc
- for barebox@lists.infradead.org; Mon, 11 Jul 2016 05:49:18 +0000
-Date: Mon, 11 Jul 2016 07:48:53 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160711054853.GT20657@pengutronix.de>
-References: <1467962743-15587-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ id 1bLQAq-0007We-Jx
+ for barebox@lists.infradead.org; Fri, 08 Jul 2016 07:26:09 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri,  8 Jul 2016 09:25:43 +0200
+Message-Id: <1467962743-15587-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1467962743-15587-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,140 +15,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] mtd: nand: imx-bbm: use raw reading when checking for
+Subject: [PATCH v2] mtd: nand: imx-bbm: use raw reading when checking for
  factory BBM
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
 
-On Fri, Jul 08, 2016 at 09:25:43AM +0200, Uwe Kleine-K=F6nig wrote:
-> This is necessary to prevent the imx_nand_bbm command to bail out
-> on ECC errors which leaves the device without BBT.
-> =
-
-> Also simplify buffer management: Use on-stack buffer instead of malloc.
-> =
-
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
-> Changes since (implicit) v1 sent with Message-Id: 1467884923-24060-1-git-=
-send-email-u.kleine-koenig@pengutronix.de:
-> =
-
->  - drop two now unused variables fixing two compiler warnings
-> =
-
->  drivers/mtd/nand/nand_imx_bbm.c | 33 ++++++++++++++++-----------------
->  1 file changed, 16 insertions(+), 17 deletions(-)
-
-Applied, thanks
-
-Sascha
-
-> =
-
-> diff --git a/drivers/mtd/nand/nand_imx_bbm.c b/drivers/mtd/nand/nand_imx_=
-bbm.c
-> index 251dfe5d3f12..23722a906473 100644
-> --- a/drivers/mtd/nand/nand_imx_bbm.c
-> +++ b/drivers/mtd/nand/nand_imx_bbm.c
-> @@ -52,12 +52,20 @@
->   * on the flash BBT.
->   *
->   */
-> -static int checkbad(struct mtd_info *mtd, loff_t ofs, void *__buf)
-> +static int checkbad(struct mtd_info *mtd, loff_t ofs)
->  {
-> -	int ret, retlen;
-> -	uint8_t *buf =3D __buf;
-> -
-> -	ret =3D mtd->read(mtd, ofs, mtd->writesize, &retlen, buf);
-> +	int ret;
-> +	uint8_t buf[mtd->writesize + mtd->oobsize];
-> +	struct mtd_oob_ops ops;
-> +
-> +	ops.mode =3D MTD_OPS_RAW;
-> +	ops.ooboffs =3D 0;
-> +	ops.datbuf =3D buf;
-> +	ops.len =3D mtd->writesize;
-> +	ops.oobbuf =3D buf + mtd->writesize;
-> +	ops.ooblen =3D mtd->oobsize;
-> +
-> +	ret =3D mtd_read_oob(mtd, ofs, &ops);
->  	if (ret < 0)
->  		return ret;
->  =
-
-> @@ -72,7 +80,6 @@ static void *create_bbt(struct mtd_info *mtd)
->  	struct nand_chip *chip =3D mtd->priv;
->  	int len, i, numblocks, ret;
->  	loff_t from =3D 0;
-> -	void *buf;
->  	uint8_t *bbt;
->  =
-
->  	if ((chip->bbt_td && chip->bbt_td->pages[0] !=3D -1) ||
-> @@ -88,18 +95,12 @@ static void *create_bbt(struct mtd_info *mtd)
->  	if (!bbt)
->  		return ERR_PTR(-ENOMEM);
->  =
-
-> -	buf =3D malloc(mtd->writesize);
-> -	if (!buf) {
-> -		ret =3D -ENOMEM;
-> -		goto out2;
-> -	}
-> -
->  	numblocks =3D mtd->size >> (chip->bbt_erase_shift - 1);
->  =
-
->  	for (i =3D 0; i < numblocks;) {
-> -		ret =3D checkbad(mtd, from, buf);
-> +		ret =3D checkbad(mtd, from);
->  		if (ret < 0)
-> -			goto out1;
-> +			goto out;
->  =
-
->  		if (ret) {
->  			bbt[i >> 3] |=3D 0x03 << (i & 0x6);
-> @@ -113,9 +114,7 @@ static void *create_bbt(struct mtd_info *mtd)
->  =
-
->  	return bbt;
->  =
-
-> -out1:
-> -	free(buf);
-> -out2:
-> +out:
->  	free(bbt);
->  =
-
->  	return ERR_PTR(ret);
-> -- =
-
-> 2.8.1
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBpcyBuZWNlc3NhcnkgdG8gcHJldmVudCB0aGUgaW14X25hbmRfYmJtIGNvbW1hbmQgdG8g
+YmFpbCBvdXQKb24gRUNDIGVycm9ycyB3aGljaCBsZWF2ZXMgdGhlIGRldmljZSB3aXRob3V0IEJC
+VC4KCkFsc28gc2ltcGxpZnkgYnVmZmVyIG1hbmFnZW1lbnQ6IFVzZSBvbi1zdGFjayBidWZmZXIg
+aW5zdGVhZCBvZiBtYWxsb2MuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5r
+bGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KQ2hhbmdlcyBzaW5jZSAoaW1wbGljaXQp
+IHYxIHNlbnQgd2l0aCBNZXNzYWdlLUlkOiAxNDY3ODg0OTIzLTI0MDYwLTEtZ2l0LXNlbmQtZW1h
+aWwtdS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlOgoKIC0gZHJvcCB0d28gbm93IHVudXNl
+ZCB2YXJpYWJsZXMgZml4aW5nIHR3byBjb21waWxlciB3YXJuaW5ncwoKIGRyaXZlcnMvbXRkL25h
+bmQvbmFuZF9pbXhfYmJtLmMgfCAzMyArKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0K
+IDEgZmlsZSBjaGFuZ2VkLCAxNiBpbnNlcnRpb25zKCspLCAxNyBkZWxldGlvbnMoLSkKCmRpZmYg
+LS1naXQgYS9kcml2ZXJzL210ZC9uYW5kL25hbmRfaW14X2JibS5jIGIvZHJpdmVycy9tdGQvbmFu
+ZC9uYW5kX2lteF9iYm0uYwppbmRleCAyNTFkZmU1ZDNmMTIuLjIzNzIyYTkwNjQ3MyAxMDA2NDQK
+LS0tIGEvZHJpdmVycy9tdGQvbmFuZC9uYW5kX2lteF9iYm0uYworKysgYi9kcml2ZXJzL210ZC9u
+YW5kL25hbmRfaW14X2JibS5jCkBAIC01MiwxMiArNTIsMjAgQEAKICAqIG9uIHRoZSBmbGFzaCBC
+QlQuCiAgKgogICovCi1zdGF0aWMgaW50IGNoZWNrYmFkKHN0cnVjdCBtdGRfaW5mbyAqbXRkLCBs
+b2ZmX3Qgb2ZzLCB2b2lkICpfX2J1ZikKK3N0YXRpYyBpbnQgY2hlY2tiYWQoc3RydWN0IG10ZF9p
+bmZvICptdGQsIGxvZmZfdCBvZnMpCiB7Ci0JaW50IHJldCwgcmV0bGVuOwotCXVpbnQ4X3QgKmJ1
+ZiA9IF9fYnVmOwotCi0JcmV0ID0gbXRkLT5yZWFkKG10ZCwgb2ZzLCBtdGQtPndyaXRlc2l6ZSwg
+JnJldGxlbiwgYnVmKTsKKwlpbnQgcmV0OworCXVpbnQ4X3QgYnVmW210ZC0+d3JpdGVzaXplICsg
+bXRkLT5vb2JzaXplXTsKKwlzdHJ1Y3QgbXRkX29vYl9vcHMgb3BzOworCisJb3BzLm1vZGUgPSBN
+VERfT1BTX1JBVzsKKwlvcHMub29ib2ZmcyA9IDA7CisJb3BzLmRhdGJ1ZiA9IGJ1ZjsKKwlvcHMu
+bGVuID0gbXRkLT53cml0ZXNpemU7CisJb3BzLm9vYmJ1ZiA9IGJ1ZiArIG10ZC0+d3JpdGVzaXpl
+OworCW9wcy5vb2JsZW4gPSBtdGQtPm9vYnNpemU7CisKKwlyZXQgPSBtdGRfcmVhZF9vb2IobXRk
+LCBvZnMsICZvcHMpOwogCWlmIChyZXQgPCAwKQogCQlyZXR1cm4gcmV0OwogCkBAIC03Miw3ICs4
+MCw2IEBAIHN0YXRpYyB2b2lkICpjcmVhdGVfYmJ0KHN0cnVjdCBtdGRfaW5mbyAqbXRkKQogCXN0
+cnVjdCBuYW5kX2NoaXAgKmNoaXAgPSBtdGQtPnByaXY7CiAJaW50IGxlbiwgaSwgbnVtYmxvY2tz
+LCByZXQ7CiAJbG9mZl90IGZyb20gPSAwOwotCXZvaWQgKmJ1ZjsKIAl1aW50OF90ICpiYnQ7CiAK
+IAlpZiAoKGNoaXAtPmJidF90ZCAmJiBjaGlwLT5iYnRfdGQtPnBhZ2VzWzBdICE9IC0xKSB8fApA
+QCAtODgsMTggKzk1LDEyIEBAIHN0YXRpYyB2b2lkICpjcmVhdGVfYmJ0KHN0cnVjdCBtdGRfaW5m
+byAqbXRkKQogCWlmICghYmJ0KQogCQlyZXR1cm4gRVJSX1BUUigtRU5PTUVNKTsKIAotCWJ1ZiA9
+IG1hbGxvYyhtdGQtPndyaXRlc2l6ZSk7Ci0JaWYgKCFidWYpIHsKLQkJcmV0ID0gLUVOT01FTTsK
+LQkJZ290byBvdXQyOwotCX0KLQogCW51bWJsb2NrcyA9IG10ZC0+c2l6ZSA+PiAoY2hpcC0+YmJ0
+X2VyYXNlX3NoaWZ0IC0gMSk7CiAKIAlmb3IgKGkgPSAwOyBpIDwgbnVtYmxvY2tzOykgewotCQly
+ZXQgPSBjaGVja2JhZChtdGQsIGZyb20sIGJ1Zik7CisJCXJldCA9IGNoZWNrYmFkKG10ZCwgZnJv
+bSk7CiAJCWlmIChyZXQgPCAwKQotCQkJZ290byBvdXQxOworCQkJZ290byBvdXQ7CiAKIAkJaWYg
+KHJldCkgewogCQkJYmJ0W2kgPj4gM10gfD0gMHgwMyA8PCAoaSAmIDB4Nik7CkBAIC0xMTMsOSAr
+MTE0LDcgQEAgc3RhdGljIHZvaWQgKmNyZWF0ZV9iYnQoc3RydWN0IG10ZF9pbmZvICptdGQpCiAK
+IAlyZXR1cm4gYmJ0OwogCi1vdXQxOgotCWZyZWUoYnVmKTsKLW91dDI6CitvdXQ6CiAJZnJlZShi
+YnQpOwogCiAJcmV0dXJuIEVSUl9QVFIocmV0KTsKLS0gCjIuOC4xCgoKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
+ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
+YW4vbGlzdGluZm8vYmFyZWJveAo=
