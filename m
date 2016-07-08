@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bLPp9-0005O9-B8
- for barebox@lists.infradead.org; Fri, 08 Jul 2016 07:03:44 +0000
-Date: Fri, 8 Jul 2016 09:03:19 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160708070319.GQ20657@pengutronix.de>
-References: <1467793185-3709-1-git-send-email-mpa@pengutronix.de>
+ id 1bLQKZ-0003RU-J1
+ for barebox@lists.infradead.org; Fri, 08 Jul 2016 07:36:12 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri,  8 Jul 2016 09:35:48 +0200
+Message-Id: <1467963348-15018-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1467793185-3709-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,92 +15,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 0/4] state: Refactor backend
-To: Markus Pargmann <mpa@pengutronix.de>
-Cc: barebox@lists.infradead.org, mgr@pengutronix.de
+Subject: [PATCH] ARM: imx_defconfig: enable NAND_IMX_BBM and
+ NAND_ALLOW_ERASE_BAD
+To: barebox@lists.infradead.org
 
-On Wed, Jul 06, 2016 at 10:19:41AM +0200, Markus Pargmann wrote:
-> Changes in v3:
-> - A central cache implementation bucket data. This is implemented as another
->   bucket (backend_bucket_cached) which can access other buckets. See the
->   updated diagram in the second patch.
-> - Fixup flush usage
-> - lazy initialization of buckets
-
-Applied, thanks
-
-Sascha
-
-> 
-> Best Regards,
-> 
-> Markus
-> 
-> 
-> Markus Pargmann (3):
->   libfile: Change write_full to be have const buf
->   state: Refactor state framework
->   docs: Add/Update state documentation
-> 
-> Michael Grzeschik (1):
->   state: also append backend storage stridesize
-> 
->  .../devicetree/bindings/barebox/barebox,state.rst  |    7 +-
->  Documentation/user/state.rst                       |   46 +
->  Documentation/user/user-manual.rst                 |    1 +
->  common/Makefile                                    |    2 +-
->  common/state.c                                     | 1720 --------------------
->  common/state/Makefile                              |    9 +
->  common/state/backend.c                             |  188 +++
->  common/state/backend_bucket_cached.c               |  155 ++
->  common/state/backend_bucket_circular.c             |  515 ++++++
->  common/state/backend_bucket_direct.c               |  180 ++
->  common/state/backend_format_dtb.c                  |  150 ++
->  common/state/backend_format_raw.c                  |  329 ++++
->  common/state/backend_storage.c                     |  525 ++++++
->  common/state/state.c                               |  573 +++++++
->  common/state/state.h                               |  277 ++++
->  common/state/state_variables.c                     |  493 ++++++
->  drivers/misc/state.c                               |   65 +-
->  include/libfile.h                                  |    2 +-
->  include/state.h                                    |    4 +-
->  lib/libfile.c                                      |    2 +-
->  20 files changed, 3455 insertions(+), 1788 deletions(-)
->  create mode 100644 Documentation/user/state.rst
->  delete mode 100644 common/state.c
->  create mode 100644 common/state/Makefile
->  create mode 100644 common/state/backend.c
->  create mode 100644 common/state/backend_bucket_cached.c
->  create mode 100644 common/state/backend_bucket_circular.c
->  create mode 100644 common/state/backend_bucket_direct.c
->  create mode 100644 common/state/backend_format_dtb.c
->  create mode 100644 common/state/backend_format_raw.c
->  create mode 100644 common/state/backend_storage.c
->  create mode 100644 common/state/state.c
->  create mode 100644 common/state/state.h
->  create mode 100644 common/state/state_variables.c
-> 
-> -- 
-> 2.8.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGZpcnN0IGlzIGltcG9ydGFudCBmb3IgaW14IHN5c3RlbXMgd2l0aCBOQU5ELiBUaGUgc2Vj
+b25kIGlzIGEgdXNlZnVsCmRlYnVnIGFpZCB0aGF0IGRvZXNuJ3QgY2hhbmdlIGJlaGF2aW91ciB3
+aXRob3V0IGJlaW5nIGV4cGxpY2l0bHkgZW5hYmxlZAphdCBydW50aW1lLiBTbyBib3RoIHNob3Vs
+ZCBiZSBzYWZlLgoKVGhlIG90aGVyIGNoYW5nZXMgcmVzdWx0IGZyb20gTUZEX01DMTNYWFggYW5k
+IFNQSV9JTVggYmVpbmcgc2VsZWN0ZWQgYnkKTUFDSF9QQ00wMzggc2luY2UgNGJkMDdhMTAzOTgy
+ICgiYXJtOiBpbXg6IHNlbGVjdCBNRkRfTUMxM1hYWCBmb3IgYWxsCmJvYXJkcyB0aGF0IG5lZWQg
+aXQiKSBhbmQgYSBtb3ZlIG9mIGEgZmV3IEtjb25maWcgZGVmaW5pdGlvbnMgaW4KNzgzOTAxMWY2
+MWMwICgiYm9vdG06IE1vdmUgYm9vdG0gb3B0aW9ucyB0byBjb21tb24vS2NvbmZpZyIpLgoKU2ln
+bmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25p
+eC5kZT4KLS0tCiBhcmNoL2FybS9jb25maWdzL2lteF9kZWZjb25maWcgfCAxMiArKysrKystLS0t
+LS0KIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pCgpkaWZm
+IC0tZ2l0IGEvYXJjaC9hcm0vY29uZmlncy9pbXhfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmln
+cy9pbXhfZGVmY29uZmlnCmluZGV4IDg4NmJjZWZkOWI2OC4uNjlhYjAyMWUyNWFlIDEwMDY0NAot
+LS0gYS9hcmNoL2FybS9jb25maWdzL2lteF9kZWZjb25maWcKKysrIGIvYXJjaC9hcm0vY29uZmln
+cy9pbXhfZGVmY29uZmlnCkBAIC0xOSw2ICsxOSwxMCBAQCBDT05GSUdfSFVTSF9GQU5DWV9QUk9N
+UFQ9eQogQ09ORklHX0NNRExJTkVfRURJVElORz15CiBDT05GSUdfQVVUT19DT01QTEVURT15CiBD
+T05GSUdfTUVOVT15CitDT05GSUdfQk9PVE1fU0hPV19UWVBFPXkKK0NPTkZJR19CT09UTV9WRVJC
+T1NFPXkKK0NPTkZJR19CT09UTV9JTklUUkQ9eQorQ09ORklHX0JPT1RNX09GVFJFRT15CiBDT05G
+SUdfQkxTUEVDPXkKIENPTkZJR19DT05TT0xFX0FDVElWQVRFX05PTkU9eQogQ09ORklHX0RFRkFV
+TFRfRU5WSVJPTk1FTlRfR0VORVJJQ19ORVc9eQpAQCAtMjYsMTAgKzMwLDYgQEAgQ09ORklHX1JF
+U0VUX1NPVVJDRT15CiBDT05GSUdfTE9OR0hFTFA9eQogQ09ORklHX0NNRF9JT01FTT15CiBDT05G
+SUdfQ01EX01FTUlORk89eQotQ09ORklHX0JPT1RNX1NIT1dfVFlQRT15Ci1DT05GSUdfQk9PVE1f
+VkVSQk9TRT15Ci1DT05GSUdfQk9PVE1fSU5JVFJEPXkKLUNPTkZJR19CT09UTV9PRlRSRUU9eQog
+IyBDT05GSUdfQ01EX0JPT1RVIGlzIG5vdCBzZXQKIENPTkZJR19DTURfR089eQogQ09ORklHX0NN
+RF9SRVNFVD15CkBAIC03OSw3ICs3OSw2IEBAIENPTkZJR19PRl9CQVJFQk9YX0RSSVZFUlM9eQog
+Q09ORklHX0RSSVZFUl9ORVRfRkVDX0lNWD15CiBDT05GSUdfTkVUX1VTQj15CiBDT05GSUdfTkVU
+X1VTQl9BU0lYPXkKLUNPTkZJR19EUklWRVJfU1BJX0lNWD15CiBDT05GSUdfSTJDPXkKIENPTkZJ
+R19JMkNfSU1YPXkKIENPTkZJR19NVEQ9eQpAQCAtODksNyArODgsOSBAQCBDT05GSUdfQ0ZJX0JV
+RkZFUl9XUklURT15CiBDT05GSUdfTkFORD15CiAjIENPTkZJR19OQU5EX0VDQ19TT0ZUIGlzIG5v
+dCBzZXQKICMgQ09ORklHX05BTkRfRUNDX0hXX1NZTkRST01FIGlzIG5vdCBzZXQKK0NPTkZJR19O
+QU5EX0FMTE9XX0VSQVNFX0JBRD15CiBDT05GSUdfTkFORF9JTVg9eQorQ09ORklHX05BTkRfSU1Y
+X0JCTT15CiBDT05GSUdfTVREX1VCST15CiBDT05GSUdfTVREX1VCSV9GQVNUTUFQPXkKIENPTkZJ
+R19VU0JfSE9TVD15CkBAIC05Nyw3ICs5OCw2IEBAIENPTkZJR19VU0JfRUhDST15CiBDT05GSUdf
+VVNCX1VMUEk9eQogQ09ORklHX01DST15CiBDT05GSUdfTUNJX0lNWD15Ci1DT05GSUdfTUZEX01D
+MTNYWFg9eQogQ09ORklHX0xFRD15CiBDT05GSUdfTEVEX0dQSU89eQogQ09ORklHX0xFRF9HUElP
+X09GPXkKLS0gCjIuOC4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
