@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vs81.iboxed.net ([185.82.85.146])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bIjTr-0000Lh-DI
- for barebox@lists.infradead.org; Thu, 30 Jun 2016 21:26:40 +0000
-From: Alexander Kurz <akurz@blala.de>
-Date: Thu, 30 Jun 2016 23:24:14 +0200
-Message-Id: <1467321854-15090-2-git-send-email-akurz@blala.de>
-In-Reply-To: <1467321854-15090-1-git-send-email-akurz@blala.de>
-References: <1467321854-15090-1-git-send-email-akurz@blala.de>
+ id 1bMU5k-0005Ov-Uc
+ for barebox@lists.infradead.org; Mon, 11 Jul 2016 05:49:18 +0000
+Date: Mon, 11 Jul 2016 07:48:53 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160711054853.GT20657@pengutronix.de>
+References: <1467962743-15587-1-git-send-email-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1467962743-15587-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,127 +18,138 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] imx35-regs: add and use common CGR element shifters
-To: barebox@lists.infradead.org, eric@eukrea.com
-Cc: Alexander Kurz <akurz@blala.de>
+Subject: Re: [PATCH v2] mtd: nand: imx-bbm: use raw reading when checking for
+ factory BBM
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Add some missing Clock Gate Register element shifters which were implemented
-as magic numbers in the arm/boards directory. Use the new shifters for
-inproved code readability.
+On Fri, Jul 08, 2016 at 09:25:43AM +0200, Uwe Kleine-K=F6nig wrote:
+> This is necessary to prevent the imx_nand_bbm command to bail out
+> on ECC errors which leaves the device without BBT.
+> =
 
-Signed-off-by: Alexander Kurz <akurz@blala.de>
----
- arch/arm/boards/eukrea_cpuimx35/lowlevel.c      |  9 +++++----
- arch/arm/boards/guf-cupid/lowlevel.c            |  5 +++--
- arch/arm/boards/phytec-phycore-imx35/lowlevel.c |  6 +++---
- arch/arm/mach-imx/include/mach/imx35-regs.h     | 15 +++++++++++++++
- 4 files changed, 26 insertions(+), 9 deletions(-)
+> Also simplify buffer management: Use on-stack buffer instead of malloc.
+> =
 
-diff --git a/arch/arm/boards/eukrea_cpuimx35/lowlevel.c b/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
-index 83c25fe..5573657 100644
---- a/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
-+++ b/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
-@@ -92,17 +92,18 @@ void __bare_init __naked barebox_arm_reset_vector(void)
- 	writel(0x00001000, ccm_base + MX35_CCM_PDR0);
- 
- 	r = readl(ccm_base + MX35_CCM_CGR0);
--	r |= 0x00300000;
-+	r |= 0x3 << MX35_CCM_CGR0_EPIT1_SHIFT;
- 	writel(r, ccm_base + MX35_CCM_CGR0);
- 
- 	r = readl(ccm_base + MX35_CCM_CGR1);
--	r |= 0x00030C00;
--	r |= 0x00000003;
-+	r |= 0x3 << MX35_CCM_CGR1_FEC_SHIFT;
-+	r |= 0x3 << MX35_CCM_CGR1_I2C1_SHIFT;
-+	r |= 0x3 << MX35_CCM_CGR1_IOMUX_SHIFT;
- 	writel(r, ccm_base + MX35_CCM_CGR1);
- 
- 	/* enable watchdog asap */
- 	r = readl(ccm_base + MX35_CCM_CGR2);
--	r |= 0x03000000;
-+	r |= 0x3 << MX35_CCM_CGR2_WDOG_SHIFT;
- 	writel(r, ccm_base + MX35_CCM_CGR2);
- 
- 	r = readl(MX35_L2CC_BASE_ADDR + L2X0_AUX_CTRL);
-diff --git a/arch/arm/boards/guf-cupid/lowlevel.c b/arch/arm/boards/guf-cupid/lowlevel.c
-index bcd2a24..31b7cdf 100644
---- a/arch/arm/boards/guf-cupid/lowlevel.c
-+++ b/arch/arm/boards/guf-cupid/lowlevel.c
-@@ -294,11 +294,12 @@ void __bare_init __naked barebox_arm_reset_vector(void)
- 
- 	/* configure clock-gates */
- 	r0 = readl(MX35_CCM_BASE_ADDR + MX35_CCM_CGR0);
--	r0 |= 0x00300000;
-+	r0 |= 0x3 << MX35_CCM_CGR0_EPIT1_SHIFT;
- 	writel(r0, MX35_CCM_BASE_ADDR + MX35_CCM_CGR0);
- 
- 	r0 = readl(MX35_CCM_BASE_ADDR + MX35_CCM_CGR1);
--	r0 |= 0x00000c03;
-+	r0 |= 0x3 << MX35_CCM_CGR1_FEC_SHIFT;
-+	r0 |= 0x3 << MX35_CCM_CGR1_I2C1_SHIFT;
- 	writel(r0, MX35_CCM_BASE_ADDR + MX35_CCM_CGR1);
- 
- 	/* Configure SDRAM */
-diff --git a/arch/arm/boards/phytec-phycore-imx35/lowlevel.c b/arch/arm/boards/phytec-phycore-imx35/lowlevel.c
-index 1ad5439..577fcd9 100644
---- a/arch/arm/boards/phytec-phycore-imx35/lowlevel.c
-+++ b/arch/arm/boards/phytec-phycore-imx35/lowlevel.c
-@@ -104,12 +104,12 @@ void __bare_init __naked barebox_arm_reset_vector(void)
- 		writel(CCM_PDR0_399, ccm_base + MX35_CCM_PDR0);
- 
- 	r = readl(ccm_base + MX35_CCM_CGR0);
--	r |= 0x00300000;
-+	r |= 0x3 << MX35_CCM_CGR0_EPIT1_SHIFT;
- 	writel(r, ccm_base + MX35_CCM_CGR0);
- 
- 	r = readl(ccm_base + MX35_CCM_CGR1);
--	r |= 0x00000C00;
--	r |= 0x00000003;
-+	r |= 0x3 << X35_CCM_CGR1_FEC_SHIFT;
-+	r |= 0x3 << MX35_CCM_CGR1_I2C1_SHIFT;
- 	writel(r, ccm_base + MX35_CCM_CGR1);
- 
- 	r = readl(MX35_L2CC_BASE_ADDR + L2X0_AUX_CTRL);
-diff --git a/arch/arm/mach-imx/include/mach/imx35-regs.h b/arch/arm/mach-imx/include/mach/imx35-regs.h
-index 6905400..48bf643 100644
---- a/arch/arm/mach-imx/include/mach/imx35-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx35-regs.h
-@@ -150,11 +150,26 @@
- #define MX35_CCM_CGR3	0x38
- 
- #define MX35_CCM_CGR0_CSPI1_SHIFT	10
-+#define MX35_CCM_CGR0_CSPI2_SHIFT	12
-+#define MX35_CCM_CGR0_EPIT1_SHIFT	20
-+#define MX35_CCM_CGR0_EPIT2_SHIFT	22
- #define MX35_CCM_CGR0_ESDHC1_SHIFT	26
-+#define MX35_CCM_CGR0_ESDHC2_SHIFT	28
-+#define MX35_CCM_CGR0_ESDHC3_SHIFT	30
- #define MX35_CCM_CGR1_FEC_SHIFT	0
-+#define MX35_CCM_CGR1_GPIO1_SHIFT	2
-+#define MX35_CCM_CGR1_GPIO2_SHIFT	4
-+#define MX35_CCM_CGR1_GPIO3_SHIFT	6
- #define MX35_CCM_CGR1_I2C1_SHIFT	10
-+#define MX35_CCM_CGR1_I2C2_SHIFT	12
-+#define MX35_CCM_CGR1_I2C3_SHIFT	14
-+#define MX35_CCM_CGR1_IOMUX_SHIFT	16
-+#define MX35_CCM_CGR1_KPP_SHIFT	20
-+#define MX35_CCM_CGR2_UART1_SHIFT	16
- #define MX35_CCM_CGR2_UART2_SHIFT	18
-+#define MX35_CCM_CGR2_UART3_SHIFT	20
- #define MX35_CCM_CGR2_USB_SHIFT	22
-+#define MX35_CCM_CGR2_WDOG_SHIFT	24
- 
- #define MX35_CCM_RCSR_MEM_CTRL_SHIFT		25
- #define MX35_CCM_RCSR_MEM_TYPE_SHIFT		23
--- 
-2.1.4
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+> Changes since (implicit) v1 sent with Message-Id: 1467884923-24060-1-git-=
+send-email-u.kleine-koenig@pengutronix.de:
+> =
 
+>  - drop two now unused variables fixing two compiler warnings
+> =
+
+>  drivers/mtd/nand/nand_imx_bbm.c | 33 ++++++++++++++++-----------------
+>  1 file changed, 16 insertions(+), 17 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+> =
+
+> diff --git a/drivers/mtd/nand/nand_imx_bbm.c b/drivers/mtd/nand/nand_imx_=
+bbm.c
+> index 251dfe5d3f12..23722a906473 100644
+> --- a/drivers/mtd/nand/nand_imx_bbm.c
+> +++ b/drivers/mtd/nand/nand_imx_bbm.c
+> @@ -52,12 +52,20 @@
+>   * on the flash BBT.
+>   *
+>   */
+> -static int checkbad(struct mtd_info *mtd, loff_t ofs, void *__buf)
+> +static int checkbad(struct mtd_info *mtd, loff_t ofs)
+>  {
+> -	int ret, retlen;
+> -	uint8_t *buf =3D __buf;
+> -
+> -	ret =3D mtd->read(mtd, ofs, mtd->writesize, &retlen, buf);
+> +	int ret;
+> +	uint8_t buf[mtd->writesize + mtd->oobsize];
+> +	struct mtd_oob_ops ops;
+> +
+> +	ops.mode =3D MTD_OPS_RAW;
+> +	ops.ooboffs =3D 0;
+> +	ops.datbuf =3D buf;
+> +	ops.len =3D mtd->writesize;
+> +	ops.oobbuf =3D buf + mtd->writesize;
+> +	ops.ooblen =3D mtd->oobsize;
+> +
+> +	ret =3D mtd_read_oob(mtd, ofs, &ops);
+>  	if (ret < 0)
+>  		return ret;
+>  =
+
+> @@ -72,7 +80,6 @@ static void *create_bbt(struct mtd_info *mtd)
+>  	struct nand_chip *chip =3D mtd->priv;
+>  	int len, i, numblocks, ret;
+>  	loff_t from =3D 0;
+> -	void *buf;
+>  	uint8_t *bbt;
+>  =
+
+>  	if ((chip->bbt_td && chip->bbt_td->pages[0] !=3D -1) ||
+> @@ -88,18 +95,12 @@ static void *create_bbt(struct mtd_info *mtd)
+>  	if (!bbt)
+>  		return ERR_PTR(-ENOMEM);
+>  =
+
+> -	buf =3D malloc(mtd->writesize);
+> -	if (!buf) {
+> -		ret =3D -ENOMEM;
+> -		goto out2;
+> -	}
+> -
+>  	numblocks =3D mtd->size >> (chip->bbt_erase_shift - 1);
+>  =
+
+>  	for (i =3D 0; i < numblocks;) {
+> -		ret =3D checkbad(mtd, from, buf);
+> +		ret =3D checkbad(mtd, from);
+>  		if (ret < 0)
+> -			goto out1;
+> +			goto out;
+>  =
+
+>  		if (ret) {
+>  			bbt[i >> 3] |=3D 0x03 << (i & 0x6);
+> @@ -113,9 +114,7 @@ static void *create_bbt(struct mtd_info *mtd)
+>  =
+
+>  	return bbt;
+>  =
+
+> -out1:
+> -	free(buf);
+> -out2:
+> +out:
+>  	free(bbt);
+>  =
+
+>  	return ERR_PTR(ret);
+> -- =
+
+> 2.8.1
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
