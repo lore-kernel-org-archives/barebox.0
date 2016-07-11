@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bLQAq-0007We-Jx
- for barebox@lists.infradead.org; Fri, 08 Jul 2016 07:26:09 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri,  8 Jul 2016 09:25:43 +0200
-Message-Id: <1467962743-15587-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ id 1bMU6U-0005oB-H2
+ for barebox@lists.infradead.org; Mon, 11 Jul 2016 05:50:03 +0000
+Date: Mon, 11 Jul 2016 07:49:40 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160711054940.GU20657@pengutronix.de>
+References: <1467963348-15018-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1467963348-15018-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,53 +18,111 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] mtd: nand: imx-bbm: use raw reading when checking for
- factory BBM
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: imx_defconfig: enable NAND_IMX_BBM and
+ NAND_ALLOW_ERASE_BAD
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-VGhpcyBpcyBuZWNlc3NhcnkgdG8gcHJldmVudCB0aGUgaW14X25hbmRfYmJtIGNvbW1hbmQgdG8g
-YmFpbCBvdXQKb24gRUNDIGVycm9ycyB3aGljaCBsZWF2ZXMgdGhlIGRldmljZSB3aXRob3V0IEJC
-VC4KCkFsc28gc2ltcGxpZnkgYnVmZmVyIG1hbmFnZW1lbnQ6IFVzZSBvbi1zdGFjayBidWZmZXIg
-aW5zdGVhZCBvZiBtYWxsb2MuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5r
-bGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KQ2hhbmdlcyBzaW5jZSAoaW1wbGljaXQp
-IHYxIHNlbnQgd2l0aCBNZXNzYWdlLUlkOiAxNDY3ODg0OTIzLTI0MDYwLTEtZ2l0LXNlbmQtZW1h
-aWwtdS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlOgoKIC0gZHJvcCB0d28gbm93IHVudXNl
-ZCB2YXJpYWJsZXMgZml4aW5nIHR3byBjb21waWxlciB3YXJuaW5ncwoKIGRyaXZlcnMvbXRkL25h
-bmQvbmFuZF9pbXhfYmJtLmMgfCAzMyArKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0K
-IDEgZmlsZSBjaGFuZ2VkLCAxNiBpbnNlcnRpb25zKCspLCAxNyBkZWxldGlvbnMoLSkKCmRpZmYg
-LS1naXQgYS9kcml2ZXJzL210ZC9uYW5kL25hbmRfaW14X2JibS5jIGIvZHJpdmVycy9tdGQvbmFu
-ZC9uYW5kX2lteF9iYm0uYwppbmRleCAyNTFkZmU1ZDNmMTIuLjIzNzIyYTkwNjQ3MyAxMDA2NDQK
-LS0tIGEvZHJpdmVycy9tdGQvbmFuZC9uYW5kX2lteF9iYm0uYworKysgYi9kcml2ZXJzL210ZC9u
-YW5kL25hbmRfaW14X2JibS5jCkBAIC01MiwxMiArNTIsMjAgQEAKICAqIG9uIHRoZSBmbGFzaCBC
-QlQuCiAgKgogICovCi1zdGF0aWMgaW50IGNoZWNrYmFkKHN0cnVjdCBtdGRfaW5mbyAqbXRkLCBs
-b2ZmX3Qgb2ZzLCB2b2lkICpfX2J1ZikKK3N0YXRpYyBpbnQgY2hlY2tiYWQoc3RydWN0IG10ZF9p
-bmZvICptdGQsIGxvZmZfdCBvZnMpCiB7Ci0JaW50IHJldCwgcmV0bGVuOwotCXVpbnQ4X3QgKmJ1
-ZiA9IF9fYnVmOwotCi0JcmV0ID0gbXRkLT5yZWFkKG10ZCwgb2ZzLCBtdGQtPndyaXRlc2l6ZSwg
-JnJldGxlbiwgYnVmKTsKKwlpbnQgcmV0OworCXVpbnQ4X3QgYnVmW210ZC0+d3JpdGVzaXplICsg
-bXRkLT5vb2JzaXplXTsKKwlzdHJ1Y3QgbXRkX29vYl9vcHMgb3BzOworCisJb3BzLm1vZGUgPSBN
-VERfT1BTX1JBVzsKKwlvcHMub29ib2ZmcyA9IDA7CisJb3BzLmRhdGJ1ZiA9IGJ1ZjsKKwlvcHMu
-bGVuID0gbXRkLT53cml0ZXNpemU7CisJb3BzLm9vYmJ1ZiA9IGJ1ZiArIG10ZC0+d3JpdGVzaXpl
-OworCW9wcy5vb2JsZW4gPSBtdGQtPm9vYnNpemU7CisKKwlyZXQgPSBtdGRfcmVhZF9vb2IobXRk
-LCBvZnMsICZvcHMpOwogCWlmIChyZXQgPCAwKQogCQlyZXR1cm4gcmV0OwogCkBAIC03Miw3ICs4
-MCw2IEBAIHN0YXRpYyB2b2lkICpjcmVhdGVfYmJ0KHN0cnVjdCBtdGRfaW5mbyAqbXRkKQogCXN0
-cnVjdCBuYW5kX2NoaXAgKmNoaXAgPSBtdGQtPnByaXY7CiAJaW50IGxlbiwgaSwgbnVtYmxvY2tz
-LCByZXQ7CiAJbG9mZl90IGZyb20gPSAwOwotCXZvaWQgKmJ1ZjsKIAl1aW50OF90ICpiYnQ7CiAK
-IAlpZiAoKGNoaXAtPmJidF90ZCAmJiBjaGlwLT5iYnRfdGQtPnBhZ2VzWzBdICE9IC0xKSB8fApA
-QCAtODgsMTggKzk1LDEyIEBAIHN0YXRpYyB2b2lkICpjcmVhdGVfYmJ0KHN0cnVjdCBtdGRfaW5m
-byAqbXRkKQogCWlmICghYmJ0KQogCQlyZXR1cm4gRVJSX1BUUigtRU5PTUVNKTsKIAotCWJ1ZiA9
-IG1hbGxvYyhtdGQtPndyaXRlc2l6ZSk7Ci0JaWYgKCFidWYpIHsKLQkJcmV0ID0gLUVOT01FTTsK
-LQkJZ290byBvdXQyOwotCX0KLQogCW51bWJsb2NrcyA9IG10ZC0+c2l6ZSA+PiAoY2hpcC0+YmJ0
-X2VyYXNlX3NoaWZ0IC0gMSk7CiAKIAlmb3IgKGkgPSAwOyBpIDwgbnVtYmxvY2tzOykgewotCQly
-ZXQgPSBjaGVja2JhZChtdGQsIGZyb20sIGJ1Zik7CisJCXJldCA9IGNoZWNrYmFkKG10ZCwgZnJv
-bSk7CiAJCWlmIChyZXQgPCAwKQotCQkJZ290byBvdXQxOworCQkJZ290byBvdXQ7CiAKIAkJaWYg
-KHJldCkgewogCQkJYmJ0W2kgPj4gM10gfD0gMHgwMyA8PCAoaSAmIDB4Nik7CkBAIC0xMTMsOSAr
-MTE0LDcgQEAgc3RhdGljIHZvaWQgKmNyZWF0ZV9iYnQoc3RydWN0IG10ZF9pbmZvICptdGQpCiAK
-IAlyZXR1cm4gYmJ0OwogCi1vdXQxOgotCWZyZWUoYnVmKTsKLW91dDI6CitvdXQ6CiAJZnJlZShi
-YnQpOwogCiAJcmV0dXJuIEVSUl9QVFIocmV0KTsKLS0gCjIuOC4xCgoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+On Fri, Jul 08, 2016 at 09:35:48AM +0200, Uwe Kleine-K=F6nig wrote:
+> The first is important for imx systems with NAND. The second is a useful
+> debug aid that doesn't change behaviour without being explicitly enabled
+> at runtime. So both should be safe.
+> =
+
+> The other changes result from MFD_MC13XXX and SPI_IMX being selected by
+> MACH_PCM038 since 4bd07a103982 ("arm: imx: select MFD_MC13XXX for all
+> boards that need it") and a move of a few Kconfig definitions in
+> 7839011f61c0 ("bootm: Move bootm options to common/Kconfig").
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  arch/arm/configs/imx_defconfig | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+> =
+
+> diff --git a/arch/arm/configs/imx_defconfig b/arch/arm/configs/imx_defcon=
+fig
+> index 886bcefd9b68..69ab021e25ae 100644
+> --- a/arch/arm/configs/imx_defconfig
+> +++ b/arch/arm/configs/imx_defconfig
+> @@ -19,6 +19,10 @@ CONFIG_HUSH_FANCY_PROMPT=3Dy
+>  CONFIG_CMDLINE_EDITING=3Dy
+>  CONFIG_AUTO_COMPLETE=3Dy
+>  CONFIG_MENU=3Dy
+> +CONFIG_BOOTM_SHOW_TYPE=3Dy
+> +CONFIG_BOOTM_VERBOSE=3Dy
+> +CONFIG_BOOTM_INITRD=3Dy
+> +CONFIG_BOOTM_OFTREE=3Dy
+>  CONFIG_BLSPEC=3Dy
+>  CONFIG_CONSOLE_ACTIVATE_NONE=3Dy
+>  CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=3Dy
+> @@ -26,10 +30,6 @@ CONFIG_RESET_SOURCE=3Dy
+>  CONFIG_LONGHELP=3Dy
+>  CONFIG_CMD_IOMEM=3Dy
+>  CONFIG_CMD_MEMINFO=3Dy
+> -CONFIG_BOOTM_SHOW_TYPE=3Dy
+> -CONFIG_BOOTM_VERBOSE=3Dy
+> -CONFIG_BOOTM_INITRD=3Dy
+> -CONFIG_BOOTM_OFTREE=3Dy
+>  # CONFIG_CMD_BOOTU is not set
+>  CONFIG_CMD_GO=3Dy
+>  CONFIG_CMD_RESET=3Dy
+> @@ -79,7 +79,6 @@ CONFIG_OF_BAREBOX_DRIVERS=3Dy
+>  CONFIG_DRIVER_NET_FEC_IMX=3Dy
+>  CONFIG_NET_USB=3Dy
+>  CONFIG_NET_USB_ASIX=3Dy
+> -CONFIG_DRIVER_SPI_IMX=3Dy
+>  CONFIG_I2C=3Dy
+>  CONFIG_I2C_IMX=3Dy
+>  CONFIG_MTD=3Dy
+> @@ -89,7 +88,9 @@ CONFIG_CFI_BUFFER_WRITE=3Dy
+>  CONFIG_NAND=3Dy
+>  # CONFIG_NAND_ECC_SOFT is not set
+>  # CONFIG_NAND_ECC_HW_SYNDROME is not set
+> +CONFIG_NAND_ALLOW_ERASE_BAD=3Dy
+>  CONFIG_NAND_IMX=3Dy
+> +CONFIG_NAND_IMX_BBM=3Dy
+>  CONFIG_MTD_UBI=3Dy
+>  CONFIG_MTD_UBI_FASTMAP=3Dy
+>  CONFIG_USB_HOST=3Dy
+> @@ -97,7 +98,6 @@ CONFIG_USB_EHCI=3Dy
+>  CONFIG_USB_ULPI=3Dy
+>  CONFIG_MCI=3Dy
+>  CONFIG_MCI_IMX=3Dy
+> -CONFIG_MFD_MC13XXX=3Dy
+>  CONFIG_LED=3Dy
+>  CONFIG_LED_GPIO=3Dy
+>  CONFIG_LED_GPIO_OF=3Dy
+> -- =
+
+> 2.8.1
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
