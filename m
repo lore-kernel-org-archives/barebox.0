@@ -1,16 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-in-09.arcor-online.net ([151.189.21.49])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bMUl5-0007MV-Iz
- for barebox@lists.infradead.org; Mon, 11 Jul 2016 06:32:00 +0000
-Date: Mon, 11 Jul 2016 08:31:36 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160711063136.GX20657@pengutronix.de>
-References: <1466358813-31528-1-git-send-email-shc_work@mail.ru>
- <20160704164810.ad22e9243d6bd0541a637888@gmail.com>
+ id 1bMaI3-0004nW-0P
+ for barebox@lists.infradead.org; Mon, 11 Jul 2016 12:26:23 +0000
+Received: from mail-in-19-z2.arcor-online.net (mail-in-19-z2.arcor-online.net
+ [151.189.8.36])
+ by mx.arcor.de (Postfix) with ESMTP id 3rp3Mg1Pd4zC1p7
+ for <barebox@lists.infradead.org>; Mon, 11 Jul 2016 13:51:11 +0200 (CEST)
+Received: from mail-in-15.arcor-online.net (mail-in-15.arcor-online.net
+ [151.189.21.55])
+ by mail-in-19-z2.arcor-online.net (Postfix) with ESMTP id 1E596366158
+ for <barebox@lists.infradead.org>; Mon, 11 Jul 2016 13:51:11 +0200 (CEST)
+Received: from webmail22.arcor-online.net (webmail22.arcor-online.net
+ [151.189.8.137])
+ by mail-in-15.arcor-online.net (Postfix) with ESMTP id 3rp3Mg0gyZz622n
+ for <barebox@lists.infradead.org>; Mon, 11 Jul 2016 13:51:11 +0200 (CEST)
+Date: Mon, 11 Jul 2016 13:51:11 +0200 (CEST)
+From: giorgio.nicole@arcor.de
+Message-ID: <1745635830.58889.1468237871081.JavaMail.ngmail@webmail22.arcor-online.net>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20160704164810.ad22e9243d6bd0541a637888@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,56 +31,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] input: Compile keymap only if necessary
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: problem configuring backlight brightness levels in device tree
+To: barebox@lists.infradead.org
 
-On Mon, Jul 04, 2016 at 04:48:10PM +0300, Antony Pavlov wrote:
-> On Sun, 19 Jun 2016 20:53:33 +0300
-> Alexander Shiyan <shc_work@mail.ru> wrote:
-> 
-> > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> > ---
-> >  drivers/input/Makefile   | 3 +--
-> >  include/input/keyboard.h | 4 ++++
-> >  2 files changed, 5 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/input/Makefile b/drivers/input/Makefile
-> > index 7d2c194..e694a98 100644
-> > --- a/drivers/input/Makefile
-> > +++ b/drivers/input/Makefile
-> > @@ -1,8 +1,7 @@
-> > -obj-$(CONFIG_INPUT) += input.o
-> > +obj-$(CONFIG_INPUT) += input.o keymap.o
-> >  obj-$(CONFIG_INPUT_MATRIXKMAP) += matrix-keymap.o
-> >  obj-$(CONFIG_KEYBOARD_USB) += usb_kbd.o
-> >  obj-$(CONFIG_KEYBOARD_GPIO) += gpio_keys.o
-> >  obj-$(CONFIG_KEYBOARD_TWL6030) += twl6030_pwrbtn.o
-> >  obj-$(CONFIG_KEYBOARD_IMX_KEYPAD) += imx_keypad.o
-> >  obj-$(CONFIG_KEYBOARD_QT1070) += qt1070.o
-> > -obj-y += keymap.o
-> > diff --git a/include/input/keyboard.h b/include/input/keyboard.h
-> > index d1f5bf5..e205a51 100644
-> > --- a/include/input/keyboard.h
-> > +++ b/include/input/keyboard.h
-> > @@ -1,6 +1,8 @@
-> >  #ifndef __INPUT_KEYBOARD_H
-> >  #define __INPUT_KEYBOARD_H
-> >  
-> > +#ifdef CONFIG_INPUT
-> > +
-> 
-> Do we really need this?
+Hi,
 
-Erm, no, we shouldn't need this. I removed this hunk from the patch.
+I was trying to configure a pwm backlight on an embedded arm board
+and I think I've found a minor problem.
 
-Sascha
+In the source file 'drivers/video/backlight-pwm.c', in the function pwm_backlight_parse_dt()
+you set the number of brightness values to:
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+pwm_backlight->backlight.brightness_max = length / sizeof(u32);
+
+and then loop through the array with:
+
+for (i = 0; i <=  pwm_backlight->backlight.brightness_max; i++)
+
+to find the max of the array.
+
+I think the '<=' should be a '<' otherwise you access an uninitialized value
+one past the end of the array; this actually does not directly crash barebox
+but the whole brightness values are scaled wrong.
+
+giorgio
 
 _______________________________________________
 barebox mailing list
