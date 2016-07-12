@@ -1,24 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-in-16.arcor-online.net ([151.189.21.56])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bMapI-0006LZ-J1
- for barebox@lists.infradead.org; Mon, 11 Jul 2016 13:00:45 +0000
-Received: from mail-in-03-z2.arcor-online.net (mail-in-03-z2.arcor-online.net
- [151.189.8.15])
- by mx.arcor.de (Postfix) with ESMTP id 3rp46V1hFWz6Bxl
- for <barebox@lists.infradead.org>; Mon, 11 Jul 2016 14:24:50 +0200 (CEST)
-Received: from mail-in-11.arcor-online.net (mail-in-11.arcor-online.net
- [151.189.21.51])
- by mail-in-03-z2.arcor-online.net (Postfix) with ESMTP id 357001F678B
- for <barebox@lists.infradead.org>; Mon, 11 Jul 2016 14:24:50 +0200 (CEST)
-Received: from webmail22.arcor-online.net (webmail22.arcor-online.net
- [151.189.8.137])
- by mail-in-11.arcor-online.net (Postfix) with ESMTP id 3rp46V1Hqfz40jH
- for <barebox@lists.infradead.org>; Mon, 11 Jul 2016 14:24:50 +0200 (CEST)
-Date: Mon, 11 Jul 2016 14:24:50 +0200 (CEST)
-From: iw3gtf@arcor.de
-Message-ID: <1481832949.59258.1468239890158.JavaMail.ngmail@webmail22.arcor-online.net>
-MIME-Version: 1.0
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bMtN6-0000lh-Qv
+ for barebox@lists.infradead.org; Tue, 12 Jul 2016 08:48:54 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 800AAA00389
+ for <barebox@lists.infradead.org>; Tue, 12 Jul 2016 10:49:33 +0200 (CEST)
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Tue, 12 Jul 2016 10:48:07 +0200
+Message-Id: <1468313287-40587-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,37 +17,128 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: problem configuring backlight brightness levels in device tree
+Subject: [PATCH] ARM: phytec-som-am335x: Remove kernel and oftree partiton in
+ NAND
 To: barebox@lists.infradead.org
 
-Hi,
+We store kernel and oftree in static UBI volumes now. No need
+for seperate partitions any more.
 
-I was trying to configure a pwm backlight on an embedded arm board
-and I think I've found a minor problem.
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ .../phytec-som-am335x/defaultenv-physom-am335x/boot/nand     |  6 ++++--
+ arch/arm/dts/am335x-phytec-phycard-som.dtsi                  | 12 +-----------
+ arch/arm/dts/am335x-phytec-phycore-som.dtsi                  | 12 +-----------
+ arch/arm/dts/am335x-phytec-phyflex-som.dtsi                  | 12 +-----------
+ 4 files changed, 7 insertions(+), 35 deletions(-)
 
-In the source file 'drivers/video/backlight-pwm.c', in the function pwm_backlight_parse_dt()
-you set the number of brightness values to:
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
+index b9b1bc6..ece44b7 100644
+--- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
+@@ -1,6 +1,8 @@
+ #!/bin/sh
+ 
+-global.bootm.image="/dev/nand0.kernel.bb"
+-global.bootm.oftree="/dev/nand0.oftree.bb"
++[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
++
++global.bootm.image="/dev/nand0.root.ubi.kernel"
++global.bootm.oftree="/dev/nand0.root.ubi.oftree"
+ 
+ global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rw rootfstype=ubifs"
+diff --git a/arch/arm/dts/am335x-phytec-phycard-som.dtsi b/arch/arm/dts/am335x-phytec-phycard-som.dtsi
+index 3dd9cad..d608f63 100644
+--- a/arch/arm/dts/am335x-phytec-phycard-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phycard-som.dtsi
+@@ -216,22 +216,12 @@
+ 		};
+ 
+ 		partition@1C0000 {
+-			label = "oftree";
+-			reg = <0x1C0000 0x40000>;
+-		};
+-
+-		partition@200000 {
+-			label = "kernel";
+-			reg = <0x200000 0x800000>;
+-		};
+-
+-		partition@A00000 {
+ 			label = "root";
+ 			/*
+ 			 * Size 0x0 extends partition to
+ 			 * end of nand flash.
+ 			 */
+-			reg = <0xA00000 0x0>;
++			reg = <0x1C0000 0x0>;
+ 		};
+ 	};
+ };
+diff --git a/arch/arm/dts/am335x-phytec-phycore-som.dtsi b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+index 0fc3c96..0b8c454 100644
+--- a/arch/arm/dts/am335x-phytec-phycore-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+@@ -300,22 +300,12 @@
+ 		};
+ 
+ 		partition@1C0000 {
+-			label = "oftree";
+-			reg = <0x1C0000 0x40000>;
+-		};
+-
+-		partition@200000 {
+-			label = "kernel";
+-			reg = <0x200000 0x800000>;
+-		};
+-
+-		partition@A00000 {
+ 			label = "root";
+ 			/*
+ 			 * Size 0x0 extends partition to
+ 			 * end of nand flash.
+ 			 */
+-			reg = <0xA00000 0x0>;
++			reg = <0x1C0000 0x0>;
+ 		};
+ 	};
+ };
+diff --git a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+index db78cb1..5b8bb5d 100644
+--- a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+@@ -314,22 +314,12 @@
+ 		};
+ 
+ 		partition@1C0000 {
+-			label = "oftree";
+-			reg = <0x1C0000 0x40000>;
+-		};
+-
+-		partition@200000 {
+-			label = "kernel";
+-			reg = <0x200000 0x800000>;
+-		};
+-
+-		partition@A00000 {
+ 			label = "root";
+ 			/*
+ 			 * Size 0x0 extends partition to
+ 			 * end of nand flash.
+ 			 */
+-			reg = <0xA00000 0x0>;
++			reg = <0x1C0000 0x0>;
+ 		};
+ 	};
+ };
+-- 
+1.9.1
 
-pwm_backlight->backlight.brightness_max = length / sizeof(u32);
-
-and then loop through the array with:
-
-for (i = 0; i <=  pwm_backlight->backlight.brightness_max; i++)
-
-to find the max of the array.
-
-I think the '<=' should be a '<' otherwise you access an uninitialized value
-one past the end of the array; this actually does not directly crash barebox
-but the whole brightness values are scaled wrong.
-
-giorgio
-
-
-Giorgio, iw3gtf@arcor.de
 
 _______________________________________________
 barebox mailing list
