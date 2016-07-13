@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-x230.google.com ([2607:f8b0:4002:c05::230])
+Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bNNir-0004Lx-Iy
- for barebox@lists.infradead.org; Wed, 13 Jul 2016 17:13:22 +0000
-Received: by mail-yw0-x230.google.com with SMTP id w127so49740377ywf.3
- for <barebox@lists.infradead.org>; Wed, 13 Jul 2016 10:13:00 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <1468426649.295446823@f320.i.mail.ru>
+ id 1bNOPg-0008Uk-Fu
+ for barebox@lists.infradead.org; Wed, 13 Jul 2016 17:57:42 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Wed, 13 Jul 2016 17:57:10 +0000
+Message-ID: <1468432716.30803.42.camel@rtred1test09.kymeta.local>
 References: <1468395431.547554214@f355.i.mail.ru>
  <20160713130448.GC20657@pengutronix.de>
  <CAHQ1cqFe+TDgH1XTfk85h5Tkw0UHu_tZX9Ut7i2ghX4H0iTpWA@mail.gmail.com>
- <1468426649.295446823@f320.i.mail.ru>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 13 Jul 2016 10:12:59 -0700
-Message-ID: <CAHQ1cqFgXEaZ53G0EVKN8EiUJMA59GpkXp54J=fJUvyiSr62nQ@mail.gmail.com>
+In-Reply-To: <CAHQ1cqFe+TDgH1XTfk85h5Tkw0UHu_tZX9Ut7i2ghX4H0iTpWA@mail.gmail.com>
+Content-Language: en-US
+Content-ID: <1E0B786352C2F149AAFFCB816B74A801@kymetacorp.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +21,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Patch "syscon: Decrease driver registration priority" breaks
  clps711x target
-To: Alexander Shiyan <shc_work@mail.ru>
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-T24gV2VkLCBKdWwgMTMsIDIwMTYgYXQgOToxNyBBTSwgQWxleGFuZGVyIFNoaXlhbiA8c2hjX3dv
-cmtAbWFpbC5ydT4gd3JvdGU6Cj4+0KHRgNC10LTQsCwgMTMg0LjRjtC70Y8gMjAxNiwgMTg6NTIg
-KzAzOjAwINC+0YIgQW5kcmV5IFNtaXJub3YgPGFuZHJldy5zbWlybm92QGdtYWlsLmNvbT46Cj4+
-Cj4+T24gV2VkLCBKdWwgMTMsIDIwMTYgYXQgNjowNCBBTSwgU2FzY2hhIEhhdWVyIDwgcy5oYXVl
-ckBwZW5ndXRyb25peC5kZSA+IHdyb3RlOgo+Pj4gT24gV2VkLCBKdWwgMTMsIDIwMTYgYXQgMTA6
-Mzc6MTFBTSArMDMwMCwgQWxleGFuZGVyIFNoaXlhbiB3cm90ZToKPj4+PiBIZWxsbyBBbGwuCj4+
-Pj4KPj4+PiBQYXRjaCAic3lzY29uOiBEZWNyZWFzZSBkcml2ZXIgcmVnaXN0cmF0aW9uIHByaW9y
-aXR5IiBicmVha3MgY2xwczcxMXggdGFyZ2V0Lgo+Pj4+IFByZXZpb3VzbHksIHRoZSBzeXNjb24g
-ZGV2aWNlIGluaXRpYWxpemVkIGF0ICJjb3JlX2luaXRjYWxsIiwgdGhhdCBkaWQgbm90IGNhdXNl
-IHByb2JsZW1zLgo+Pj4+IE5vdyB0aGUgZGV2aWNlIGlzIGluaXRpYWxpemVkIGF0ICJkZXZpY2Vf
-aW5pdGNhbGwiIGxldmVsLCBidXQgY2xwczcxMXggdXNlcyBzeXNjb24gZm9yCj4+Pj4gdGhlIHNl
-cmlhbCwgc28gc2VyaWFsIGRldmljZSBpbml0aWFsaXplZCBhdCAiY29uc29sZV9pbml0Y2FsbCIg
-bGV2ZWwuCj4+Pj4gQW55IGlkZWFzPwo+Pj4KPj4+IFdlIGNvdWxkIG1vdmUgc3lzY29uIGJhY2sg
-dG8gY29yZV9pbml0Y2FsbCBsZXZlbCBhbmQgaW4gdGhlIHN5c2Nvbgo+Pj4gZHJpdmVyIHVzZSBk
-ZXZfZ2V0X3Jlc291cmNlKCkgaW5zdGVhZCBvZiByZXF1ZXN0X2lvbWVtX3JlZ2lvbigpLgo+Pgo+
-PlJpZ2h0IG5vdyB0aGUgZHJpdmVyIHVzZXMgYm90aCwgc28gaWYgd2UganVzdCBkcm9wIHRoZSBj
-YWxsIHRvCj4+cmVxdWVzdF9pb21lbV9yZWdpb24gdGhhdCB3YXMgcHJvYmxlbWF0aWMgZm9yIG1l
-IG9uIGkuTVg2LCB0aGF0IHNob3VsZAo+PnJlc29sdmUgdGhlIGlzc3VlLiBJIHRoaW5rIHRoaXMg
-d291bGQgYWxzbyBicmluZyB0aGUgYmVoYXZpb3Igb2YKPj5zeXNjb24gZHJpdmVyIGNsb3NlciB0
-byB3aGF0IGl0IGRvZXMgaW4gTGludXgga2VybmVsIGxhbmQuIFRoZSBvbmx5Cj4+bmVnYXRpdmUg
-ZWZmZWN0IG9mIHRoYXQgY2hhbmdlIEkgdGhpbmsgd291bGQgYmUgdGhhdCBvbiB0aGUgcGxhdGZv
-cm1zCj4+d2hlcmUgc3lzY29uIGRyaXZlciBjb250cm9scyB0aGF0IHJlZ2lvbiBvZiBtZW1vcnks
-IGl0IG5vIGxvbmdlciB3b3VsZAo+PmJlIHJlcG9ydGVkIGFzIHN1Y2ggYnkgImlvbWVtIi4KPj4K
-Pj5BcG9sb2dpZXMgZm9yIGJyZWFraW5nIHlvdXIgdXNlLWNhc2UsIEFsZXhhbmRlci4KPgo+IEFu
-ZHJleT8gQ2FuIHlvdSByZXZlcnQgdGhpcyBhbmQgcmVzZW5kIGl0IGluIGFub3RoZXIgd2F5PwoK
-U3VyZSwgSSBjYW4uIENhbid0IHByb21pc2UgdG8gZG8gaXQgYmVmb3JlIHRoZSBlbmQgb2YgdGhl
-IHdlZWsgdGhvdWdoLgoKVGhhbmtzLApBbmRyZXkKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+On Wed, 2016-07-13 at 08:52 -0700, Andrey Smirnov wrote:
+> On Wed, Jul 13, 2016 at 6:04 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > On Wed, Jul 13, 2016 at 10:37:11AM +0300, Alexander Shiyan wrote:
+> >> Hello All.
+> >>
+> >> Patch "syscon: Decrease driver registration priority" breaks clps711x target.
+> >> Previously, the syscon device initialized at "core_initcall", that did not cause problems.
+> >> Now the device is initialized at "device_initcall" level, but clps711x uses syscon for
+> >> the serial, so serial device initialized at "console_initcall" level.
+> >> Any ideas?
+> >
+> > We could move syscon back to core_initcall level and in the syscon
+> > driver use dev_get_resource() instead of request_iomem_region().
+> 
+> Right now the driver uses both, so if we just drop the call to
+> request_iomem_region that was problematic for me on i.MX6, that should
+> resolve the issue. I think this would also bring the behavior of
+> syscon driver closer to what it does in Linux kernel land. The only
+> negative effect of that change I think would be that on the platforms
+> where syscon driver controls that region of memory, it no longer would
+> be reported as such by "iomem".
+> 
+
+Syscon driver is a little strange in Linux since commit bdb0066.  The
+driver no longer as an OF match and doesn't bind to syscon devices
+listed in the device tree.  When something wants to use a syscon it
+calls syscon_regmap_lookup_by_compatible(), which finds the OF node,
+maps the registers, and puts it in a driver global list.  Anything that
+maps the same syscon will get the same regmap that via the list.  But
+the regmap is never associated with the syscon device!
+
+So syscon doesn't use the driver/device model anymore.  It's more like a
+global table of regmaps that are indexed using a OF node.
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
