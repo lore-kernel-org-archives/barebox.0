@@ -1,28 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-in-09.arcor-online.net ([151.189.21.49])
+Received: from f129.mail.ru ([94.100.178.190] helo=f129.i.mail.ru)
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bNhSc-0001px-CZ
- for barebox@lists.infradead.org; Thu, 14 Jul 2016 14:17:56 +0000
-Received: from mail-in-05-z2.arcor-online.net (mail-in-05-z2.arcor-online.net
- [151.189.8.17])
- by mx.arcor.de (Postfix) with ESMTP id 3rqyT725MkzC2KJ
- for <barebox@lists.infradead.org>; Thu, 14 Jul 2016 16:17:31 +0200 (CEST)
-Received: from mail-in-16.arcor-online.net (mail-in-16.arcor-online.net
- [151.189.21.56])
- by mail-in-05-z2.arcor-online.net (Postfix) with ESMTP id 3EB3B116537
- for <barebox@lists.infradead.org>; Thu, 14 Jul 2016 16:17:31 +0200 (CEST)
-Received: from itng-giorgio.wgast.mobotix.net (wwl-pub.mobotixserver.de
- [213.183.84.172]) (Authenticated sender: giorgio.nicole@arcor.de)
- by mail-in-16.arcor-online.net (Postfix) with ESMTPA id 3rqyT62l2gz4q6n
- for <barebox@lists.infradead.org>; Thu, 14 Jul 2016 16:17:29 +0200 (CEST)
-From: iw3gtf@arcor.de
-Date: Thu, 14 Jul 2016 16:17:18 +0200
-Message-Id: <20160714141718.20121-5-iw3gtf@arcor.de>
-In-Reply-To: <20160714141718.20121-1-iw3gtf@arcor.de>
-References: <20160713051805.GZ20657@pengutronix.de>
- <20160714141718.20121-1-iw3gtf@arcor.de>
-In-Reply-To: <20160713051805.GZ20657@pengutronix.de>
-References: <20160713051805.GZ20657@pengutronix.de>
+ id 1bNo7H-0000iA-Mj
+ for barebox@lists.infradead.org; Thu, 14 Jul 2016 21:24:21 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+MIME-Version: 1.0
+Date: Fri, 15 Jul 2016 00:23:53 +0300
+Message-ID: <1468531433.426045112@f129.i.mail.ru>
+In-Reply-To: <1468499820-30171-1-git-send-email-s.hauer@pengutronix.de>
+References: <1468499820-30171-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,71 +17,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] video/backlight-pwm: properly handle the case of an empty
- 'brightness-levels' in the device tree.
-To: barebox@lists.infradead.org
+Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gUmV2ZXJ0ICJtY2k6IGlteC1lc2RoYzogUmVtb3ZlIGV4?=
+ =?UTF-8?B?Y2VzcyBmdW5jdGlvbiI=?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Cc: =?UTF-8?B?QmFyZWJveCBMaXN0?= <barebox@lists.infradead.org>
 
-In case of an empty 'brightness-levels' array in the device tree or
-a non empty one but containing only zeros the value of
-'pwm_backlight->scale' would remain 0 possibly causing a division by zero
-in the function compute_duty_cycle().
-
-To fix it we check the computed value in case we actually have a 'brightness-levels'
-array in the device tree otherwise we implicitly assume a simple array
-of the form { 0, 1, 2, ..., 100 } and set the scale to 100.
----
- drivers/video/backlight-pwm.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/video/backlight-pwm.c b/drivers/video/backlight-pwm.c
-index 5ff40a9..7f1715d 100644
---- a/drivers/video/backlight-pwm.c
-+++ b/drivers/video/backlight-pwm.c
-@@ -128,6 +128,13 @@ static int pwm_backlight_parse_dt(struct device_d *dev,
- 	if (!node)
- 		return -ENODEV;
- 
-+	ret = of_property_read_u32(node, "default-brightness-level",
-+					   &value);
-+	if (ret < 0)
-+		return ret;
-+
-+	pwm_backlight->backlight.brightness_default = value;
-+
- 	/* determine the number of brightness levels */
- 	prop = of_find_property(node, "brightness-levels", &length);
- 	if (!prop)
-@@ -153,14 +160,13 @@ static int pwm_backlight_parse_dt(struct device_d *dev,
- 			if (pwm_backlight->levels[i] > pwm_backlight->scale)
- 				pwm_backlight->scale = pwm_backlight->levels[i];
- 
--		ret = of_property_read_u32(node, "default-brightness-level",
--					   &value);
--		if (ret < 0)
--			return ret;
--
--		pwm_backlight->backlight.brightness_default = value;
--		pwm_backlight->backlight.brightness_max = pwm_backlight->scale;
-+		if (pwm_backlight->scale == 0)
-+			return -EINVAL;
-+	} else {
-+		/* We implicitly assume here a linear levels array { 0, 1, 2, ... 100 } */
-+		pwm_backlight->scale = 100;
- 	}
-+	pwm_backlight->backlight.brightness_max = pwm_backlight->scale;
- 
- 	pwm_backlight->enable_gpio = of_get_named_gpio_flags(node, "enable-gpios", 0, &flags);
- 
--- 
-2.9.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+PtCn0LXRgtCy0LXRgNCzLCAxNCDQuNGO0LvRjyAyMDE2LCAxNTozNyArMDM6MDAg0L7RgiBTYXNj
+aGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ogo+Cj5UaGlzIHJldmVydHMgY29tbWl0
+IDhhNjg5Njk3MWQwOTNiOWQ4ZDFjMzZlYjBkN2FmODkxYjZjYTUzNjkuCj4KPldpdGggdGhpcyBw
+YXRjaCBpdCdzIG5vIGxvbmdlciBwb3NzaWJsZSB0byBjYWxsIGRldGVjdCBvbiB0aGUKPnBoeXNp
+Y2FsIGRldmljZSB3aGljaCBpcyBuZWNlc3NhcnkgZm9yIGV4YW1wbGUgdG8gbWFrZSBlbnZpcm9u
+bWVudAo+b24gTU1DIHdvcmsuIFVubGlrZSB0aGUgY29tbWl0IG1lc3NhZ2UgZm9yIDhhNjg5Njk3
+MWQgY2xhaW1zCj5tY2lfZGV0ZWN0X2NhcmQoKSBpcyBub3QgY2FsbGVkIGZyb20gbWNpX3JlZ2lz
+dGVyKCkuCj4KPlNpZ25lZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8IHMuaGF1ZXJAcGVuZ3V0cm9u
+aXguZGUgPgo+LS0tCj7CoGRyaXZlcnMvbWNpL2lteC1lc2RoYy5jIHwgOSArKysrKysrKysKPsKg
+MSBmaWxlIGNoYW5nZWQsIDkgaW5zZXJ0aW9ucygrKQo+Cj5kaWZmIC0tZ2l0IGEvZHJpdmVycy9t
+Y2kvaW14LWVzZGhjLmMgYi9kcml2ZXJzL21jaS9pbXgtZXNkaGMuYwo+aW5kZXggNGM0NWU5Mi4u
+NjY3ODZmZiAxMDA2NDQKPi0tLSBhL2RyaXZlcnMvbWNpL2lteC1lc2RoYy5jCj4rKysgYi9kcml2
+ZXJzL21jaS9pbXgtZXNkaGMuYwo+QEAgLTU1MCw2ICs1NTAsMTMgQEAgc3RhdGljIGludCBlc2Ro
+Y19yZXNldChzdHJ1Y3QgZnNsX2VzZGhjX2hvc3QgKmhvc3QpCj7CoHJldHVybiAwOwo+wqB9Cj7C
+oAo+K3N0YXRpYyBpbnQgZnNsX2VzZGhjX2RldGVjdChzdHJ1Y3QgZGV2aWNlX2QgKmRldikKPit7
+Cj4rc3RydWN0IGZzbF9lc2RoY19ob3N0ICpob3N0ID0gZGV2LT5wcml2Owo+Kwo+K3JldHVybiBt
+Y2lfZGV0ZWN0X2NhcmQoJmhvc3QtPm1jaSk7Cj4rfQo+Kwo+wqBzdGF0aWMgaW50IGZzbF9lc2Ro
+Y19wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKPsKgewo+wqBzdHJ1Y3QgcmVzb3VyY2UgKmlv
+cmVzOwo+QEAgLTYwOCw2ICs2MTUsOCBAQCBzdGF0aWMgaW50IGZzbF9lc2RoY19wcm9iZShzdHJ1
+Y3QgZGV2aWNlX2QgKmRldikKPsKgaG9zdC0+bWNpLmNhcmRfcHJlc2VudCA9IGVzZGhjX2NhcmRf
+cHJlc2VudDsKPsKgaG9zdC0+bWNpLmh3X2RldiA9IGRldjsKPsKgCj4rZGV2LT5kZXRlY3QgPSBm
+c2xfZXNkaGNfZGV0ZWN0LAo+Kwo+wqByYXRlID0gY2xrX2dldF9yYXRlKGhvc3QtPmNsayk7Cj7C
+oGhvc3QtPm1jaS5mX21pbiA9IHJhdGUgPj4gMTI7Cj7CoGlmIChob3N0LT5tY2kuZl9taW4gPCAy
+MDAwMDApCi4uLgoKSSBjYW4gbm90IHVuZGVyc3RhbmQgd2h5IHRoaXMgaXMgaGFwcGVuaW5nIGlu
+IHlvdXIgY2FzZS4KVGhlIG1jaV9yZWdpc3RlcigpIGZ1bmN0aW9uIGNvbnRhaW5zIHRoZSBmb2xs
+b3dpbmcgbGluZToKbWNpLT5kZXYuZGV0ZWN0ID0gbWNpX2RldGVjdDsKSS5lLiBkZXRlY3QoKSBj
+YWxsIHdpbGwgYmUgYWx3YXlzIG92ZXJyaWRlZCBieSBtY2kgY29yZS4KCkFuZCBpdCBkZWZpbmVk
+IGFzOgpzdGF0aWMgaW50IG1jaV9kZXRlY3Qoc3RydWN0IGRldmljZV9kICpkZXYpCnsKc3RydWN0
+IG1jaSAqbWNpID0gY29udGFpbmVyX29mKGRldiwgc3RydWN0IG1jaSwgZGV2KTsKcmV0dXJuIG1j
+aV9kZXRlY3RfY2FyZChtY2ktPmhvc3QpOwp9CgpTbywgcmVzdWx0IHNob3VsZCBiZSBzYW1lLiBJ
+cydudCBpdD8KCi0tLQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
+dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
