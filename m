@@ -1,11 +1,28 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-in-16.arcor-online.net ([151.189.21.56])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bNftN-0006kM-E2
- for barebox@lists.infradead.org; Thu, 14 Jul 2016 12:37:26 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 14 Jul 2016 14:37:00 +0200
-Message-Id: <1468499820-30171-1-git-send-email-s.hauer@pengutronix.de>
+ id 1bNhSc-0001pw-C4
+ for barebox@lists.infradead.org; Thu, 14 Jul 2016 14:17:55 +0000
+Received: from mail-in-16-z2.arcor-online.net (mail-in-16-z2.arcor-online.net
+ [151.189.8.33])
+ by mx.arcor.de (Postfix) with ESMTP id 3rqyT61Kplz6BZF
+ for <barebox@lists.infradead.org>; Thu, 14 Jul 2016 16:17:30 +0200 (CEST)
+Received: from mail-in-16.arcor-online.net (mail-in-16.arcor-online.net
+ [151.189.21.56])
+ by mail-in-16-z2.arcor-online.net (Postfix) with ESMTP id F02B021E9F4
+ for <barebox@lists.infradead.org>; Thu, 14 Jul 2016 16:17:29 +0200 (CEST)
+Received: from itng-giorgio.wgast.mobotix.net (wwl-pub.mobotixserver.de
+ [213.183.84.172]) (Authenticated sender: giorgio.nicole@arcor.de)
+ by mail-in-16.arcor-online.net (Postfix) with ESMTPA id 3rqyT54XfDz4q6n
+ for <barebox@lists.infradead.org>; Thu, 14 Jul 2016 16:17:29 +0200 (CEST)
+From: iw3gtf@arcor.de
+Date: Thu, 14 Jul 2016 16:17:17 +0200
+Message-Id: <20160714141718.20121-4-iw3gtf@arcor.de>
+In-Reply-To: <20160714141718.20121-1-iw3gtf@arcor.de>
+References: <20160713051805.GZ20657@pengutronix.de>
+ <20160714141718.20121-1-iw3gtf@arcor.de>
+In-Reply-To: <20160713051805.GZ20657@pengutronix.de>
+References: <20160713051805.GZ20657@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +36,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Revert "mci: imx-esdhc: Remove excess function"
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 3/4] video/backlight-pwm: code readability improvement.
+To: barebox@lists.infradead.org
 
-This reverts commit 8a6896971d093b9d8d1c36eb0d7af891b6ca5369.
-
-With this patch it's no longer possible to call detect on the
-physical device which is necessary for example to make environment
-on MMC work. Unlike the commit message for 8a6896971d claims
-mci_detect_card() is not called from mci_register().
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+We use the local variable 'length' instead of the lengthy
+'pwm_backlight->backlight.brightness_max' within pwm_backlight_parse_dt().
 ---
- drivers/mci/imx-esdhc.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/video/backlight-pwm.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index 4c45e92..66786ff 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -550,6 +550,13 @@ static int esdhc_reset(struct fsl_esdhc_host *host)
- 	return 0;
- }
+diff --git a/drivers/video/backlight-pwm.c b/drivers/video/backlight-pwm.c
+index 53cf4e9..5ff40a9 100644
+--- a/drivers/video/backlight-pwm.c
++++ b/drivers/video/backlight-pwm.c
+@@ -133,12 +133,11 @@ static int pwm_backlight_parse_dt(struct device_d *dev,
+ 	if (!prop)
+ 		return -EINVAL;
  
-+static int fsl_esdhc_detect(struct device_d *dev)
-+{
-+	struct fsl_esdhc_host *host = dev->priv;
-+
-+	return mci_detect_card(&host->mci);
-+}
-+
- static int fsl_esdhc_probe(struct device_d *dev)
- {
- 	struct resource *iores;
-@@ -608,6 +615,8 @@ static int fsl_esdhc_probe(struct device_d *dev)
- 	host->mci.card_present = esdhc_card_present;
- 	host->mci.hw_dev = dev;
+-	pwm_backlight->backlight.brightness_max = length / sizeof(u32);
++	length /= sizeof(u32);
  
-+	dev->detect = fsl_esdhc_detect,
-+
- 	rate = clk_get_rate(host->clk);
- 	host->mci.f_min = rate >> 12;
- 	if (host->mci.f_min < 200000)
+ 	/* read brightness levels from DT property */
+-	if (pwm_backlight->backlight.brightness_max > 0) {
+-		size_t size = sizeof(*pwm_backlight->levels) *
+-			pwm_backlight->backlight.brightness_max;
++	if (length > 0) {
++		size_t size = sizeof(*pwm_backlight->levels) * length;
+ 
+ 		pwm_backlight->levels = xzalloc(size);
+ 		if (!pwm_backlight->levels)
+@@ -146,11 +145,11 @@ static int pwm_backlight_parse_dt(struct device_d *dev,
+ 
+ 		ret = of_property_read_u32_array(node, "brightness-levels",
+ 						 pwm_backlight->levels,
+-						 pwm_backlight->backlight.brightness_max);
++						 length);
+ 		if (ret < 0)
+ 			return ret;
+ 
+-		for (i = 0; i < pwm_backlight->backlight.brightness_max; i++)
++		for (i = 0; i < length; i++)
+ 			if (pwm_backlight->levels[i] > pwm_backlight->scale)
+ 				pwm_backlight->scale = pwm_backlight->levels[i];
+ 
 -- 
-2.8.1
+2.9.1
 
 
 _______________________________________________
