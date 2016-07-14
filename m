@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x243.google.com ([2607:f8b0:400e:c03::243])
+Received: from mail-pa0-x241.google.com ([2607:f8b0:400e:c03::241])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bNZsD-0006d9-Te
- for barebox@lists.infradead.org; Thu, 14 Jul 2016 06:11:51 +0000
-Received: by mail-pa0-x243.google.com with SMTP id ez1so708256pab.3
- for <barebox@lists.infradead.org>; Wed, 13 Jul 2016 23:11:29 -0700 (PDT)
+ id 1bNZsF-0006dN-6D
+ for barebox@lists.infradead.org; Thu, 14 Jul 2016 06:11:53 +0000
+Received: by mail-pa0-x241.google.com with SMTP id ez1so708314pab.3
+ for <barebox@lists.infradead.org>; Wed, 13 Jul 2016 23:11:32 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 13 Jul 2016 23:11:00 -0700
-Message-Id: <1468476665-26409-2-git-send-email-andrew.smirnov@gmail.com>
+Date: Wed, 13 Jul 2016 23:11:05 -0700
+Message-Id: <1468476665-26409-7-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1468476665-26409-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1468476665-26409-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,41 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] mfd: syscon: Don't call request_iomem_region()
+Subject: [PATCH 7/7] i.MX: ocotp: Register regmap against orignal device
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Trent Piepho <tpiepho@kymetacorp.com>
 
-On platforms that mix dedicated IP block register space with
-miscellaneous registers it is necessary to share register window between
-syscon and dedicated IP block driver. Calling request_iomem_region()
-implies exclusive ownership of the region, which, in the case above
-could not happen.
+Register regmap against orignal device passed to probe, this way further
+in the code/call-chain cdev's device_node will be correctly populated
+and it will be discoverable via cdev_by_device_node()
 
-This change also makes this driver's behaviour to that of its Linux
-kernel counterpart.
-
-Suggested-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mfd/syscon.c | 6 ------
- 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 9589a03..ac46122 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -76,12 +76,6 @@ static int syscon_probe(struct device_d *dev)
- 		return PTR_ERR(res);
- 	}
+Sascha, Trent, why do you guys keep hiding that OCOTP chardev from my
+imx_thermal driver? :-D
+
+ arch/arm/mach-imx/ocotp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
+index 1dc9108..17b944b 100644
+--- a/arch/arm/mach-imx/ocotp.c
++++ b/arch/arm/mach-imx/ocotp.c
+@@ -404,7 +404,7 @@ static int imx_ocotp_probe(struct device_d *dev)
+ 	priv->map_config.reg_stride = 4;
+ 	priv->map_config.max_register = data->num_regs - 1;
  
--	res = request_iomem_region(dev_name(dev), res->start, res->end);
--	if (IS_ERR(res)) {
--		free(syscon);
--		return PTR_ERR(res);
--	}
--
- 	syscon->base = (void __iomem *)res->start;
- 	dev->priv = syscon;
+-	priv->map = regmap_init(&priv->dev, &imx_ocotp_regmap_bus, priv, &priv->map_config);
++	priv->map = regmap_init(dev, &imx_ocotp_regmap_bus, priv, &priv->map_config);
+ 	if (IS_ERR(priv->map))
+ 		return PTR_ERR(priv->map);
  
 -- 
 2.5.5
