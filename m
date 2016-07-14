@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x241.google.com ([2607:f8b0:400e:c03::241])
+Received: from mail-pa0-x244.google.com ([2607:f8b0:400e:c03::244])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bNZsF-0006dI-6H
- for barebox@lists.infradead.org; Thu, 14 Jul 2016 06:11:53 +0000
-Received: by mail-pa0-x241.google.com with SMTP id dx3so4137985pab.2
- for <barebox@lists.infradead.org>; Wed, 13 Jul 2016 23:11:30 -0700 (PDT)
+ id 1bNZsD-0006d7-9j
+ for barebox@lists.infradead.org; Thu, 14 Jul 2016 06:11:50 +0000
+Received: by mail-pa0-x244.google.com with SMTP id q2so4119864pap.0
+ for <barebox@lists.infradead.org>; Wed, 13 Jul 2016 23:11:28 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 13 Jul 2016 23:11:02 -0700
-Message-Id: <1468476665-26409-4-git-send-email-andrew.smirnov@gmail.com>
-In-Reply-To: <1468476665-26409-1-git-send-email-andrew.smirnov@gmail.com>
-References: <1468476665-26409-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Wed, 13 Jul 2016 23:10:59 -0700
+Message-Id: <1468476665-26409-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,30 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] mfd: syscon: Don't check xzalloc return for NULL
+Subject: [PATCH 1/7] Revert "syscon: Decrease driver registration priority"
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Xzalloc never returns NULL, so this check does not bring any value.
+Fixing the i.MX6 specific issue this way breaks things on CLPS711x
+target. Better fix for the problem is to follow this patch.
 
+This reverts commit c203958f3bbf25fc3d612497057b962e96ad1c52.
+
+Reported-by: Alexander Shiyan <shc_work@mail.ru>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mfd/syscon.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/mfd/syscon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 5fd22dd..9b873fe 100644
+index ee62da0..9589a03 100644
 --- a/drivers/mfd/syscon.c
 +++ b/drivers/mfd/syscon.c
-@@ -116,8 +116,6 @@ static int syscon_probe(struct device_d *dev)
- 	struct resource *res;
+@@ -111,7 +111,7 @@ static int __init syscon_init(void)
+ {
+ 	return platform_driver_register(&syscon_driver);
+ }
+-device_initcall(syscon_init);
++core_initcall(syscon_init);
  
- 	syscon = xzalloc(sizeof(struct syscon));
--	if (!syscon)
--		return -ENOMEM;
- 
- 	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
- 	if (IS_ERR(res)) {
+ MODULE_AUTHOR("Dong Aisheng <dong.aisheng@linaro.org>");
+ MODULE_DESCRIPTION("System Control driver");
 -- 
 2.5.5
 
