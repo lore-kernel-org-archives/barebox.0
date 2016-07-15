@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bNwAY-0001g8-G7
- for barebox@lists.infradead.org; Fri, 15 Jul 2016 06:00:15 +0000
-Date: Fri, 15 Jul 2016 07:59:52 +0200
+ id 1bNwHw-0004aT-5a
+ for barebox@lists.infradead.org; Fri, 15 Jul 2016 06:07:54 +0000
+Date: Fri, 15 Jul 2016 08:07:30 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160715055952.GG20657@pengutronix.de>
-References: <1468476665-26409-1-git-send-email-andrew.smirnov@gmail.com>
- <1468476665-26409-3-git-send-email-andrew.smirnov@gmail.com>
+Message-ID: <20160715060730.GH20657@pengutronix.de>
+References: <20160713051805.GZ20657@pengutronix.de>
+ <20160714141718.20121-1-iw3gtf@arcor.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1468476665-26409-3-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <20160714141718.20121-1-iw3gtf@arcor.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,79 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/7] mfd: syscon: Decouple syscon interface from platform
- devices
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 0/4] fixes some problems found in the backligth-pwm
+ implementation.
+To: iw3gtf@arcor.de
 Cc: barebox@lists.infradead.org
 
-On Wed, Jul 13, 2016 at 11:11:01PM -0700, Andrey Smirnov wrote:
-> Follow Linux Kernel change introduced in
-> bdb0066df96e74a4002125467ebe459feff1ebef and avoid device/driver model
-> for DT-based platforms. See the original kernel commit for the rationale.
+On Thu, Jul 14, 2016 at 04:17:14PM +0200, iw3gtf@arcor.de wrote:
+> This serie fixes some problems found in the backligth-pwm implementation.
 > 
-> Also make syscon_base_lookup_by_pdevname() behave the same way as its
-> kernel counterpart in the case whern "property" argument is NULL.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  drivers/mfd/syscon.c | 79 ++++++++++++++++++++++++++++++++++++++++------------
->  1 file changed, 61 insertions(+), 18 deletions(-)
-> 
-> diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-> index ac46122..5fd22dd 100644
-> --- a/drivers/mfd/syscon.c
-> +++ b/drivers/mfd/syscon.c
-> @@ -17,15 +17,68 @@
->  #include <driver.h>
->  #include <malloc.h>
->  #include <xfuncs.h>
-> -
-> +#include <of_address.h>
->  #include <linux/err.h>
->  
->  #include <mfd/syscon.h>
->  
-> +static LIST_HEAD(syscon_list);
-> +
->  struct syscon {
-> +	struct device_node *np;
->  	void __iomem *base;
-> +	struct list_head list;
->  };
->  
-> +static struct syscon *of_syscon_register(struct device_node *np)
-> +{
-> +	int ret;
-> +	struct syscon *syscon;
-> +	struct resource res;
-> +
-> +	if (!of_device_is_compatible(np, "syscon"))
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	syscon = xzalloc(sizeof(*syscon));
-> +
-> +	if (of_address_to_resource(np, 0, &res)) {
-> +		ret = -ENOMEM;
-> +		goto err_map;
-> +	}
-> +
-> +	syscon->base = IOMEM(res.start);
-> +	syscon->np   = np;
-> +
-> +	list_add_tail(&syscon->list, &syscon_list);
-> +
-> +	return syscon;
-> +
-> +err_map:
-> +	kfree(syscon);
-> +	return ERR_PTR(ret);
-> +}
-> +
-> +void __iomem *syscon_node_to_base(struct device_node *np)
+> root (4):
+>   video/backlight-pwm: fixed a loop index going out of range.
+>   video/backlight-pwm: fix the value of 'brightness_max'.
+>   video/backlight-pwm: code readability improvement.
+>   video/backlight-pwm: properly handle the case of an empty
+>     'brightness-levels' in the device tree.
 
-This should either be static or the prototype added to include/
+Applied all, thanks
 
 Sascha
+
+> 
+>  drivers/video/backlight-pwm.c | 31 ++++++++++++++++++-------------
+>  1 file changed, 18 insertions(+), 13 deletions(-)
+> 
+> -- 
+> 2.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
