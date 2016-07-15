@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bNvyW-0004eW-GG
- for barebox@lists.infradead.org; Fri, 15 Jul 2016 05:47:49 +0000
-Date: Fri, 15 Jul 2016 07:47:24 +0200
+ id 1bNw4E-0006PS-5v
+ for barebox@lists.infradead.org; Fri, 15 Jul 2016 05:53:43 +0000
+Date: Fri, 15 Jul 2016 07:53:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160715054724.GE20657@pengutronix.de>
-References: <1468499820-30171-1-git-send-email-s.hauer@pengutronix.de>
- <1468531433.426045112@f129.i.mail.ru>
+Message-ID: <20160715055317.GF20657@pengutronix.de>
+References: <1468476665-26409-1-git-send-email-andrew.smirnov@gmail.com>
+ <1468476665-26409-2-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1468531433.426045112@f129.i.mail.ru>
+In-Reply-To: <1468476665-26409-2-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,54 +19,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Revert "mci: imx-esdhc: Remove excess function"
+Subject: Re: [PATCH 2/7] mfd: syscon: Don't call request_iomem_region()
 To: Alexander Shiyan <shc_work@mail.ru>
-Cc: Barebox List <barebox@lists.infradead.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
 
-T24gRnJpLCBKdWwgMTUsIDIwMTYgYXQgMTI6MjM6NTNBTSArMDMwMCwgQWxleGFuZGVyIFNoaXlh
-biB3cm90ZToKPiA+0KfQtdGC0LLQtdGA0LMsIDE0INC40Y7Qu9GPIDIwMTYsIDE1OjM3ICswMzow
-MCDQvtGCIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT46Cj4gPgo+ID5UaGlz
-IHJldmVydHMgY29tbWl0IDhhNjg5Njk3MWQwOTNiOWQ4ZDFjMzZlYjBkN2FmODkxYjZjYTUzNjku
-Cj4gPgo+ID5XaXRoIHRoaXMgcGF0Y2ggaXQncyBubyBsb25nZXIgcG9zc2libGUgdG8gY2FsbCBk
-ZXRlY3Qgb24gdGhlCj4gPnBoeXNpY2FsIGRldmljZSB3aGljaCBpcyBuZWNlc3NhcnkgZm9yIGV4
-YW1wbGUgdG8gbWFrZSBlbnZpcm9ubWVudAo+ID5vbiBNTUMgd29yay4gVW5saWtlIHRoZSBjb21t
-aXQgbWVzc2FnZSBmb3IgOGE2ODk2OTcxZCBjbGFpbXMKPiA+bWNpX2RldGVjdF9jYXJkKCkgaXMg
-bm90IGNhbGxlZCBmcm9tIG1jaV9yZWdpc3RlcigpLgo+ID4KPiA+U2lnbmVkLW9mZi1ieTogU2Fz
-Y2hhIEhhdWVyIDwgcy5oYXVlckBwZW5ndXRyb25peC5kZSA+Cj4gPi0tLQo+ID7CoGRyaXZlcnMv
-bWNpL2lteC1lc2RoYy5jIHwgOSArKysrKysrKysKPiA+wqAxIGZpbGUgY2hhbmdlZCwgOSBpbnNl
-cnRpb25zKCspCj4gPgo+ID5kaWZmIC0tZ2l0IGEvZHJpdmVycy9tY2kvaW14LWVzZGhjLmMgYi9k
-cml2ZXJzL21jaS9pbXgtZXNkaGMuYwo+ID5pbmRleCA0YzQ1ZTkyLi42Njc4NmZmIDEwMDY0NAo+
-ID4tLS0gYS9kcml2ZXJzL21jaS9pbXgtZXNkaGMuYwo+ID4rKysgYi9kcml2ZXJzL21jaS9pbXgt
-ZXNkaGMuYwo+ID5AQCAtNTUwLDYgKzU1MCwxMyBAQCBzdGF0aWMgaW50IGVzZGhjX3Jlc2V0KHN0
-cnVjdCBmc2xfZXNkaGNfaG9zdCAqaG9zdCkKPiA+wqByZXR1cm4gMDsKPiA+wqB9Cj4gPsKgCj4g
-PitzdGF0aWMgaW50IGZzbF9lc2RoY19kZXRlY3Qoc3RydWN0IGRldmljZV9kICpkZXYpCj4gPit7
-Cj4gPitzdHJ1Y3QgZnNsX2VzZGhjX2hvc3QgKmhvc3QgPSBkZXYtPnByaXY7Cj4gPisKPiA+K3Jl
-dHVybiBtY2lfZGV0ZWN0X2NhcmQoJmhvc3QtPm1jaSk7Cj4gPit9Cj4gPisKPiA+wqBzdGF0aWMg
-aW50IGZzbF9lc2RoY19wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKPiA+wqB7Cj4gPsKgc3Ry
-dWN0IHJlc291cmNlICppb3JlczsKPiA+QEAgLTYwOCw2ICs2MTUsOCBAQCBzdGF0aWMgaW50IGZz
-bF9lc2RoY19wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKPiA+wqBob3N0LT5tY2kuY2FyZF9w
-cmVzZW50ID0gZXNkaGNfY2FyZF9wcmVzZW50Owo+ID7CoGhvc3QtPm1jaS5od19kZXYgPSBkZXY7
-Cj4gPsKgCj4gPitkZXYtPmRldGVjdCA9IGZzbF9lc2RoY19kZXRlY3QsCj4gPisKPiA+wqByYXRl
-ID0gY2xrX2dldF9yYXRlKGhvc3QtPmNsayk7Cj4gPsKgaG9zdC0+bWNpLmZfbWluID0gcmF0ZSA+
-PiAxMjsKPiA+wqBpZiAoaG9zdC0+bWNpLmZfbWluIDwgMjAwMDAwKQo+IC4uLgo+IAo+IEkgY2Fu
-IG5vdCB1bmRlcnN0YW5kIHdoeSB0aGlzIGlzIGhhcHBlbmluZyBpbiB5b3VyIGNhc2UuCj4gVGhl
-IG1jaV9yZWdpc3RlcigpIGZ1bmN0aW9uIGNvbnRhaW5zIHRoZSBmb2xsb3dpbmcgbGluZToKPiBt
-Y2ktPmRldi5kZXRlY3QgPSBtY2lfZGV0ZWN0Owo+IEkuZS4gZGV0ZWN0KCkgY2FsbCB3aWxsIGJl
-IGFsd2F5cyBvdmVycmlkZWQgYnkgbWNpIGNvcmUuCgpObywgdGhlc2UgYXJlIHR3byBkaWZmZXJl
-bnQgZGV2aWNlcy4gVGhlIG9uZSBpbiB0aGUgY29udHJvbGxlciBkcml2ZXIgaXMKdGhlIGRldmlj
-ZSBpbnN0YW50aWF0ZWQgZnJvbSBkZXZpY2UgdHJlZSAvIGJvYXJkIGNvZGUsIHRoZSBvdGhlciBp
-cwplbWJlZGRlZCBpbiBzdHJ1Y3QgbWNpX2hvc3QuIFlvdSBjYW4gZG8gYm90aCAnZGV0ZWN0IG1j
-aTAnIGFuZCAnZGV0ZWN0CmVzZGhjMCcuIFRoZSBsYXR0ZXIgaXMgdXNlZCBpbiB0aGUgZW52aXJv
-bm1lbnQgY29kZS4KClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGlu
-dXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUv
-ICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiAr
-NDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAg
-ICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+Alexander,
+
+Applying 1/7 and this one should make clps711x work again, right?
+
+Sascha
+
+On Wed, Jul 13, 2016 at 11:11:00PM -0700, Andrey Smirnov wrote:
+> On platforms that mix dedicated IP block register space with
+> miscellaneous registers it is necessary to share register window between
+> syscon and dedicated IP block driver. Calling request_iomem_region()
+> implies exclusive ownership of the region, which, in the case above
+> could not happen.
+> 
+> This change also makes this driver's behaviour to that of its Linux
+> kernel counterpart.
+> 
+> Suggested-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  drivers/mfd/syscon.c | 6 ------
+>  1 file changed, 6 deletions(-)
+> 
+> diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+> index 9589a03..ac46122 100644
+> --- a/drivers/mfd/syscon.c
+> +++ b/drivers/mfd/syscon.c
+> @@ -76,12 +76,6 @@ static int syscon_probe(struct device_d *dev)
+>  		return PTR_ERR(res);
+>  	}
+>  
+> -	res = request_iomem_region(dev_name(dev), res->start, res->end);
+> -	if (IS_ERR(res)) {
+> -		free(syscon);
+> -		return PTR_ERR(res);
+> -	}
+> -
+>  	syscon->base = (void __iomem *)res->start;
+>  	dev->priv = syscon;
+>  
+> -- 
+> 2.5.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
