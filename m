@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [46.105.41.42] (helo=fransa.netmarlis.com)
+Received: from mail-yw0-x243.google.com ([2607:f8b0:4002:c05::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bO72F-0005sA-W3
- for barebox@lists.infradead.org; Fri, 15 Jul 2016 17:36:24 +0000
-Received: from rpgturki by fransa.netmarlis.com with local (Exim 4.87)
- (envelope-from <rpgturki@fransa.netmarlis.com>) id 1bO5nF-0001rY-Oq
- for barebox@lists.infradead.org; Fri, 15 Jul 2016 19:16:49 +0300
-Date: Fri, 15 Jul 2016 19:16:49 +0300
-From: "FedEx Standard Overnight" <adam.ramsey@rpgturkiye.com>
-Message-ID: <8bffca68fc42b4d5eb2e151374dfa590@rpgturkiye.com>
+ id 1bOB03-0006av-K8
+ for barebox@lists.infradead.org; Fri, 15 Jul 2016 21:50:41 +0000
+Received: by mail-yw0-x243.google.com with SMTP id l125so7547661ywb.1
+ for <barebox@lists.infradead.org>; Fri, 15 Jul 2016 14:50:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="b1_7e621d20fce43a79144e8ff7c8682682"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20160715055952.GG20657@pengutronix.de>
+References: <1468476665-26409-1-git-send-email-andrew.smirnov@gmail.com>
+ <1468476665-26409-3-git-send-email-andrew.smirnov@gmail.com>
+ <20160715055952.GG20657@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Fri, 15 Jul 2016 14:50:00 -0700
+Message-ID: <CAHQ1cqHqUm3Bg4gYfqh45MQFgMsvSjDMrJWheTMJoqT25UMw1A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,185 +21,90 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: FedEx Standard Overnight <adam.ramsey@rpgturkiye.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Delivery Notification, ID 00666073
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/7] mfd: syscon: Decouple syscon interface from platform
+ devices
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
---b1_7e621d20fce43a79144e8ff7c8682682
-Content-Type: text/plain; charset=us-ascii
+On Thu, Jul 14, 2016 at 10:59 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Wed, Jul 13, 2016 at 11:11:01PM -0700, Andrey Smirnov wrote:
+>> Follow Linux Kernel change introduced in
+>> bdb0066df96e74a4002125467ebe459feff1ebef and avoid device/driver model
+>> for DT-based platforms. See the original kernel commit for the rationale.
+>>
+>> Also make syscon_base_lookup_by_pdevname() behave the same way as its
+>> kernel counterpart in the case whern "property" argument is NULL.
+>>
+>> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+>> ---
+>>  drivers/mfd/syscon.c | 79 ++++++++++++++++++++++++++++++++++++++++------------
+>>  1 file changed, 61 insertions(+), 18 deletions(-)
+>>
+>> diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+>> index ac46122..5fd22dd 100644
+>> --- a/drivers/mfd/syscon.c
+>> +++ b/drivers/mfd/syscon.c
+>> @@ -17,15 +17,68 @@
+>>  #include <driver.h>
+>>  #include <malloc.h>
+>>  #include <xfuncs.h>
+>> -
+>> +#include <of_address.h>
+>>  #include <linux/err.h>
+>>
+>>  #include <mfd/syscon.h>
+>>
+>> +static LIST_HEAD(syscon_list);
+>> +
+>>  struct syscon {
+>> +     struct device_node *np;
+>>       void __iomem *base;
+>> +     struct list_head list;
+>>  };
+>>
+>> +static struct syscon *of_syscon_register(struct device_node *np)
+>> +{
+>> +     int ret;
+>> +     struct syscon *syscon;
+>> +     struct resource res;
+>> +
+>> +     if (!of_device_is_compatible(np, "syscon"))
+>> +             return ERR_PTR(-EINVAL);
+>> +
+>> +     syscon = xzalloc(sizeof(*syscon));
+>> +
+>> +     if (of_address_to_resource(np, 0, &res)) {
+>> +             ret = -ENOMEM;
+>> +             goto err_map;
+>> +     }
+>> +
+>> +     syscon->base = IOMEM(res.start);
+>> +     syscon->np   = np;
+>> +
+>> +     list_add_tail(&syscon->list, &syscon_list);
+>> +
+>> +     return syscon;
+>> +
+>> +err_map:
+>> +     kfree(syscon);
+>> +     return ERR_PTR(ret);
+>> +}
+>> +
+>> +void __iomem *syscon_node_to_base(struct device_node *np)
+>
+> This should either be static or the prototype added to include/
+>
 
-Dear Customer,
+Oops, missed this one. It should be static. Will fix in v2.
 
-This is to confirm that one or more of your parcels has been shipped.
-Delivery Label is attached to this email.
-
-Regards,
-Adam Ramsey,
-Sr. Operation Manager.
-
-
---b1_7e621d20fce43a79144e8ff7c8682682
-Content-Type: application/zip; name="FedEx_00666073.zip"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename=FedEx_00666073.zip
-
-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
-LmRvYy5qc1BLBQYAAAAAAQABAEMAAACbHwAAAAA=
-
-
---b1_7e621d20fce43a79144e8ff7c8682682
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Thanks,
+Andrey
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---b1_7e621d20fce43a79144e8ff7c8682682--
