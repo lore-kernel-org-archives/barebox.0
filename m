@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp33.i.mail.ru ([94.100.177.93])
+Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bOHBk-0003VW-Qo
- for barebox@lists.infradead.org; Sat, 16 Jul 2016 04:26:54 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 16 Jul 2016 07:26:19 +0300
-Message-Id: <1468643181-10784-1-git-send-email-shc_work@mail.ru>
+ id 1bOoPv-0004Tv-Gv
+ for barebox@lists.infradead.org; Sun, 17 Jul 2016 15:55:45 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Sun, 17 Jul 2016 17:53:14 +0200
+Message-Id: <1468770798-22102-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,34 +19,108 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] ARM: clps711x: clep7212: Increase the wait state for chip
- select 3
+Subject: [PATCH 1/5] scripts: imx-usb-loader: const function args
 To: barebox@lists.infradead.org
+Cc: Alexander Kurz <akurz@blala.de>
 
-CS3 is used for a variety of external bus devices.
-Increase the wait state for this chip select for the possibility
-of more widespread use.
-
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+Signed-off-by: Alexander Kurz <akurz@blala.de>
 ---
- arch/arm/boards/clep7212/clep7212.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/imx/imx-usb-loader.c | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm/boards/clep7212/clep7212.c b/arch/arm/boards/clep7212/clep7212.c
-index de125ea..dfdd0d3 100644
---- a/arch/arm/boards/clep7212/clep7212.c
-+++ b/arch/arm/boards/clep7212/clep7212.c
-@@ -30,7 +30,7 @@ static int clps711x_devices_init(void)
- 	clps711x_setup_memcfg(1, MEMCFG_WAITSTATE_6_1 | MEMCFG_BUS_WIDTH_8);
- 	clps711x_setup_memcfg(2, MEMCFG_WAITSTATE_8_3 | MEMCFG_BUS_WIDTH_16 |
- 			      MEMCFG_CLKENB);
--	clps711x_setup_memcfg(3, MEMCFG_WAITSTATE_6_1 | MEMCFG_BUS_WIDTH_32);
-+	clps711x_setup_memcfg(3, MEMCFG_WAITSTATE_7_1 | MEMCFG_BUS_WIDTH_32);
+diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+index cf9d610..9ead7b1 100644
+--- a/scripts/imx/imx-usb-loader.c
++++ b/scripts/imx/imx-usb-loader.c
+@@ -669,13 +669,14 @@ static int load_file(void *buf, unsigned len, unsigned dladdr, unsigned char typ
+ 	return transfer_size;
+ }
  
- 	cfi_io = map_io_sections(CS0_BASE, (void *)0x90000000, SZ_32M);
- 	add_cfi_flash_device(DEVICE_ID_DYNAMIC, (unsigned long)cfi_io, SZ_32M,
+-static int write_dcd_table_ivt(struct imx_flash_header_v2 *hdr, unsigned char *file_start, unsigned cnt)
++static int write_dcd_table_ivt(const struct imx_flash_header_v2 *hdr,
++			       const unsigned char *file_start, unsigned cnt)
+ {
+ 	unsigned char *dcd_end;
+ 	unsigned m_length;
+ #define cvt_dest_to_src		(((unsigned char *)hdr) - hdr->self)
+ 	unsigned char* dcd;
+-	unsigned char* file_end = file_start + cnt;
++	const unsigned char *file_end = file_start + cnt;
+ 	int err = 0;
+ 
+ 	if (!hdr->dcd_ptr) {
+@@ -747,8 +748,8 @@ static int write_dcd_table_ivt(struct imx_flash_header_v2 *hdr, unsigned char *f
+ 	return err;
+ }
+ 
+-static int get_dcd_range_old(struct imx_flash_header *hdr,
+-		unsigned char *file_start, unsigned cnt,
++static int get_dcd_range_old(const struct imx_flash_header *hdr,
++		const unsigned char *file_start, unsigned cnt,
+ 		unsigned char **pstart, unsigned char **pend)
+ {
+ 	unsigned char *dcd_end;
+@@ -756,7 +757,7 @@ static int get_dcd_range_old(struct imx_flash_header *hdr,
+ #define cvt_dest_to_src_old		(((unsigned char *)&hdr->dcd) - hdr->dcd_ptr_ptr)
+ 	unsigned char* dcd;
+ 	unsigned val;
+-	unsigned char* file_end = file_start + cnt;
++	const unsigned char *file_end = file_start + cnt;
+ 
+ 	if (!hdr->dcd) {
+ 		printf("No dcd table, barker=%x\n", hdr->app_code_barker);
+@@ -794,7 +795,8 @@ static int get_dcd_range_old(struct imx_flash_header *hdr,
+ 	return 0;
+ }
+ 
+-static int write_dcd_table_old(struct imx_flash_header *hdr, unsigned char *file_start, unsigned cnt)
++static int write_dcd_table_old(const struct imx_flash_header *hdr,
++			       const unsigned char *file_start, unsigned cnt)
+ {
+ 	unsigned val;
+ 	unsigned char *dcd_end;
+@@ -877,10 +879,12 @@ err:
+ 	return ret;
+ }
+ 
+-static int is_header(unsigned char *p)
++static int is_header(const unsigned char *p)
+ {
+-	struct imx_flash_header *ohdr = (struct imx_flash_header *)p;
+-	struct imx_flash_header_v2 *hdr = (struct imx_flash_header_v2 *)p;
++	const struct imx_flash_header *ohdr =
++		(const struct imx_flash_header *)p;
++	const struct imx_flash_header_v2 *hdr =
++		(const struct imx_flash_header_v2 *)p;
+ 
+ 	switch (usb_id->mach_id->header_type) {
+ 	case HDR_MX51:
+@@ -895,7 +899,8 @@ static int is_header(unsigned char *p)
+ 	return 0;
+ }
+ 
+-static int perform_dcd(unsigned char *p, unsigned char *file_start, unsigned cnt)
++static int perform_dcd(unsigned char *p, const unsigned char *file_start,
++		       unsigned cnt)
+ {
+ 	struct imx_flash_header *ohdr = (struct imx_flash_header *)p;
+ 	struct imx_flash_header_v2 *hdr = (struct imx_flash_header_v2 *)p;
+@@ -938,11 +943,11 @@ static int clear_dcd_ptr(unsigned char *p, unsigned char *file_start, unsigned c
+ 	return 0;
+ }
+ 
+-static int get_dl_start(unsigned char *p, unsigned char *file_start,
++static int get_dl_start(const unsigned char *p, const unsigned char *file_start,
+ 		unsigned cnt, unsigned *dladdr, unsigned *max_length, unsigned *plugin,
+ 		unsigned *header_addr)
+ {
+-	unsigned char* file_end = file_start + cnt;
++	const unsigned char *file_end = file_start + cnt;
+ 	switch (usb_id->mach_id->header_type) {
+ 	case HDR_MX51:
+ 	{
 -- 
-2.4.9
+2.1.4
 
 
 _______________________________________________
