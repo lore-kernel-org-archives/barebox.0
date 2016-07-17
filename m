@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vs81.iboxed.net ([185.82.85.146])
+Received: from f191.i.mail.ru ([94.100.185.43])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bOoPv-0004Ty-H3
- for barebox@lists.infradead.org; Sun, 17 Jul 2016 15:55:45 +0000
-From: Alexander Kurz <akurz@blala.de>
-Date: Sun, 17 Jul 2016 17:53:16 +0200
-Message-Id: <1468770798-22102-3-git-send-email-akurz@blala.de>
-In-Reply-To: <1468770798-22102-1-git-send-email-akurz@blala.de>
+ id 1bOon5-0004fV-6w
+ for barebox@lists.infradead.org; Sun, 17 Jul 2016 16:19:41 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+MIME-Version: 1.0
+Date: Sun, 17 Jul 2016 19:19:14 +0300
+Message-ID: <1468772354.967026288@f191.i.mail.ru>
+In-Reply-To: <1468770798-22102-5-git-send-email-akurz@blala.de>
 References: <1468770798-22102-1-git-send-email-akurz@blala.de>
+ <1468770798-22102-5-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,56 +18,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] scripts: imx-usb-loader: remove useless variable
-To: barebox@lists.infradead.org
-Cc: Alexander Kurz <akurz@blala.de>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCA1LzVdIHNjcmlwdHM6IGlteC11c2ItbG9hZGVyOiBzcGxp?=
+ =?UTF-8?B?dCBvZmYgdG9waWMtY29kZSBpbnRvIGZ1bmN0aW9ucw==?=
+To: =?UTF-8?B?QWxleGFuZGVyIEt1cno=?= <akurz@blala.de>
+Cc: barebox@lists.infradead.org
 
-Remove a variable raising complexity for no reason.
-
-Signed-off-by: Alexander Kurz <akurz@blala.de>
----
- scripts/imx/imx-usb-loader.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-index 17551e3..9607ce6 100644
---- a/scripts/imx/imx-usb-loader.c
-+++ b/scripts/imx/imx-usb-loader.c
-@@ -1029,7 +1029,6 @@ static int do_irom_download(struct usb_work *curr, int verify)
- 	unsigned char *buf = NULL;
- 	unsigned char *image;
- 	unsigned char *verify_buffer = NULL;
--	unsigned char *p;
- 	unsigned char tmp[64];
- 	unsigned dladdr = 0;
- 	unsigned max_length;
-@@ -1102,7 +1101,6 @@ static int do_irom_download(struct usb_work *curr, int verify)
- 
- 	image = buf + skip;
- 
--	p = image;
- 	cnt -= skip;
- 	fsize -= skip;
- 
-@@ -1120,7 +1118,7 @@ static int do_irom_download(struct usb_work *curr, int verify)
- 			goto cleanup;
- 		}
- 
--		memcpy(verify_buffer, p, 64);
-+		memcpy(verify_buffer, image, 64);
- 
- 		if ((type == FT_APP) && (usb_id->mach_id->mode != MODE_HID)) {
- 			type = FT_LOAD_ONLY;
--- 
-2.1.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+PtCS0L7RgdC60YDQtdGB0LXQvdGM0LUsIDE3INC40Y7Qu9GPIDIwMTYsIDE4OjUzICswMzowMCDQ
+vtGCIEFsZXhhbmRlciBLdXJ6IDxha3VyekBibGFsYS5kZT46Cj4KPkltcHJvdmUgY29kZSB1bmRl
+cnN0YW5kYWJpbGl0eTogZXh0cmFjdCB0aGUgImp1bXAgYXBwbGljYXRpb24iIFNlcmlhbAo+RG93
+bmxvYWQgUHJvdG9jb2wgYWNjZXNzIG1ldGhvZCBhbmQgZmlsZS10by1idWZmZXIgcmVhZGVyIGZ1
+bmN0aW9uYWxpdHkKPm91dCBvZiBkb19pcm9tX2Rvd25sb2FkKCkuCj4KPlNpZ25lZC1vZmYtYnk6
+IEFsZXhhbmRlciBLdXJ6IDwgYWt1cnpAYmxhbGEuZGUgPgo+LS0tCj7CoHNjcmlwdHMvaW14L2lt
+eC11c2ItbG9hZGVyLmMgfCAxNTkgKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0t
+LS0tLS0tLQo+wqAxIGZpbGUgY2hhbmdlZCwgOTIgaW5zZXJ0aW9ucygrKSwgNjcgZGVsZXRpb25z
+KC0pCj4KPmRpZmYgLS1naXQgYS9zY3JpcHRzL2lteC9pbXgtdXNiLWxvYWRlci5jIGIvc2NyaXB0
+cy9pbXgvaW14LXVzYi1sb2FkZXIuYwouLi4KPitGSUxFICp4ZmlsZTsKPit1bnNpZ25lZCBmc2l6
+ZTsKPitpbnQgY250Owo+K3Vuc2lnbmVkIGNoYXIgKmJ1ZjsKPit4ZmlsZSA9IGZvcGVuKG5hbWUs
+ICJyYiIpOwo+K2lmICgheGZpbGUpIHsKPitwcmludGYoImVycm9yLCBjYW4gbm90IG9wZW4gaW5w
+dXQgZmlsZTogJXNcbiIsIG5hbWUpOwo+K3JldHVybiAtNTsKLi4uCj4rZnNpemUgPSBnZXRfZmls
+ZV9zaXplKHhmaWxlKTsKPitpZiAoZnNpemUgPCAweDIwKSB7Cj4rcHJpbnRmKCJlcnJvciwgZmls
+ZTogJXMgaXMgdG9vIHNtYWxsXG4iLCBuYW1lKTsKPitmY2xvc2UoeGZpbGUpOwo+K3JldHVybiAt
+MjsKLTIgPyBNYXliZSAtRUlOVkFMIG9yIHNvIHdpbGwgYmUgbW9yZSBhcHByb3ByaWF0ZSBoZXJl
+PwoKLS0tCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
+YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
+c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
