@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bOoPv-0004U0-H8
- for barebox@lists.infradead.org; Sun, 17 Jul 2016 15:55:46 +0000
+ id 1bOoPv-0004Tz-GV
+ for barebox@lists.infradead.org; Sun, 17 Jul 2016 15:55:45 +0000
 From: Alexander Kurz <akurz@blala.de>
-Date: Sun, 17 Jul 2016 17:53:18 +0200
-Message-Id: <1468770798-22102-5-git-send-email-akurz@blala.de>
+Date: Sun, 17 Jul 2016 17:53:17 +0200
+Message-Id: <1468770798-22102-4-git-send-email-akurz@blala.de>
 In-Reply-To: <1468770798-22102-1-git-send-email-akurz@blala.de>
 References: <1468770798-22102-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,244 +21,235 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] scripts: imx-usb-loader: split off topic-code into
- functions
+Subject: [PATCH 4/5] scripts: imx-usb-loader: structured protocol access
 To: barebox@lists.infradead.org
 Cc: Alexander Kurz <akurz@blala.de>
 
-Improve code understandability: extract the "jump application" Serial
-Download Protocol access method and file-to-buffer reader functionality
-out of do_irom_download().
+Do some cleanup and access the elements of Serial Download Protocol
+messages in endianess-portable manner using proper typed struct members.
 
 Signed-off-by: Alexander Kurz <akurz@blala.de>
 ---
- scripts/imx/imx-usb-loader.c | 159 +++++++++++++++++++++++++------------------
- 1 file changed, 92 insertions(+), 67 deletions(-)
+ scripts/imx/imx-usb-loader.c | 132 +++++++++++++++++++++----------------------
+ 1 file changed, 65 insertions(+), 67 deletions(-)
 
 diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-index 70d3ec5..688cd53 100644
+index 9607ce6..70d3ec5 100644
 --- a/scripts/imx/imx-usb-loader.c
 +++ b/scripts/imx/imx-usb-loader.c
-@@ -274,6 +274,51 @@ static long get_file_size(FILE *xfile)
- 	return size;
- }
+@@ -32,6 +32,7 @@
+ #include <stdlib.h>
+ #include <libusb.h>
+ #include <getopt.h>
++#include <arpa/inet.h>
+ #include <linux/kernel.h>
  
-+static int read_file(const char *name, unsigned char **buffer, unsigned *size)
-+{
-+	FILE *xfile;
-+	unsigned fsize;
-+	int cnt;
-+	unsigned char *buf;
-+	xfile = fopen(name, "rb");
-+	if (!xfile) {
-+		printf("error, can not open input file: %s\n", name);
-+		return -5;
-+	}
-+
-+	fsize = get_file_size(xfile);
-+	if (fsize < 0x20) {
-+		printf("error, file: %s is too small\n", name);
-+		fclose(xfile);
-+		return -2;
-+	}
-+
-+	buf = malloc(fsize);
-+	if (!buf) {
-+		printf("error, out of memory\n");
-+		fclose(xfile);
-+		return -2;
-+	}
-+
-+	cnt = fread(buf, 1 , fsize, xfile);
-+	if (cnt < fsize) {
-+		printf("error, cannot read %s\n", name);
-+		fclose(xfile);
-+		free(buf);
-+		return -1;
-+	}
-+
-+	if (size)
-+		*size = fsize;
-+
-+	if (buffer)
-+		*buffer = buf;
-+	else
-+		free(buf);
-+
-+	return 0;
-+}
-+
- /*
-  * HID Class-Specific Requests values. See section 7.2 of the HID specifications
-  */
-@@ -422,8 +467,6 @@ int do_status(void)
- 	return err;
- }
+ #include "imx.h"
+@@ -148,6 +149,21 @@ struct mach_id imx_ids[] = {
+ 	},
+ };
  
--#define V(a) (((a) >> 24) & 0xff), (((a) >> 16) & 0xff), (((a) >> 8) & 0xff), ((a) & 0xff)
--
- static int read_memory(unsigned addr, void *dest, unsigned cnt)
++#define SDP_READ_REG		0x0101
++#define SDP_WRITE_REG		0x0202
++#define SDP_WRITE_FILE		0x0404
++#define SDP_ERROR_STATUS	0x0505
++#define SDP_JUMP_ADDRESS	0x0b0b
++
++struct sdp_command  {
++	uint16_t cmd;
++	uint32_t addr;
++	uint8_t format;
++	uint32_t cnt;
++	uint32_t data;
++	uint8_t rsvd;
++} __attribute__((packed));
++
+ static struct mach_id *imx_device(unsigned short vid, unsigned short pid)
  {
- 	static struct sdp_command read_reg_command = {
-@@ -661,6 +704,45 @@ static int load_file(void *buf, unsigned len, unsigned dladdr, unsigned char typ
- 	return transfer_size;
- }
- 
-+static int sdp_jump_address(unsigned addr)
-+{
-+	unsigned char tmp[64];
-+	static struct sdp_command jump_command = {
-+		.cmd = SDP_JUMP_ADDRESS,
+ 	int i;
+@@ -362,16 +378,18 @@ int do_status(void)
+ 	unsigned char tmp[64];
+ 	int retry = 0;
+ 	int err;
+-	const unsigned char status_command[] = {
+-		5, 5, 0, 0, 0, 0,
+-		0,
+-		0, 0, 0, 0,
+-		0, 0, 0, 0,
+-		0
++	static const struct sdp_command status_command = {
++		.cmd = SDP_ERROR_STATUS,
 +		.addr = 0,
 +		.format = 0,
 +		.cnt = 0,
 +		.data = 0,
 +		.rsvd = 0,
-+	};
-+	int last_trans, err;
-+	int retry = 0;
-+
-+	jump_command.addr = htonl(addr);
-+
-+	for (;;) {
-+		err = transfer(1, (unsigned char *) &jump_command, 16,
+ 	};
+ 
+ 	for (;;) {
+-		err = transfer(1, (unsigned char*)status_command, 16, &last_trans);
++		err = transfer(1, (unsigned char *) &status_command, 16,
 +			       &last_trans);
-+		if (!err)
-+			break;
-+
-+		printf("jump_command err=%i, last_trans=%i\n", err, last_trans);
-+
-+		if (retry > 5)
-+			return -4;
-+
-+		retry++;
-+	}
-+
-+	memset(tmp, 0, sizeof(tmp));
-+	err = transfer(3, tmp, sizeof(tmp), &last_trans);
-+
-+	if (err)
-+		printf("j3 in err=%i, last_trans=%i  %02x %02x %02x %02x\n",
-+			err, last_trans, tmp[0], tmp[1], tmp[2], tmp[3]);
-+	return 0;
-+}
-+
- static int write_dcd_table_ivt(const struct imx_flash_header_v2 *hdr,
- 			       const unsigned char *file_start, unsigned cnt)
+ 
+ 		if (verbose > 2)
+ 			printf("report 1, wrote %i bytes, err=%i\n", last_trans, err);
+@@ -408,14 +426,13 @@ int do_status(void)
+ 
+ static int read_memory(unsigned addr, void *dest, unsigned cnt)
  {
-@@ -1014,57 +1096,27 @@ static int process_header(struct usb_work *curr, unsigned char *buf, int cnt,
+-	static unsigned char read_reg_command[] = {
+-		1,
+-		1,
+-		V(0),		/* address */
+-		0x20,		/* format */
+-		V(0x00000004),	/* data count */
+-		V(0),		/* data */
+-		0x00,		/* type */
++	static struct sdp_command read_reg_command = {
++		.cmd = SDP_READ_REG,
++		.addr = 0,
++		.format = 0x20,
++		.cnt = 0,
++		.data = 0,
++		.rsvd = 0,
+ 	};
  
- static int do_irom_download(struct usb_work *curr, int verify)
- {
--	static unsigned char jump_command[] = {0x0b,0x0b, V(0),  0x00, V(0x00000000), V(0), 0x00};
+ 	int retry = 0;
+@@ -423,18 +440,12 @@ static int read_memory(unsigned addr, void *dest, unsigned cnt)
+ 	int err;
+ 	int rem;
+ 	unsigned char tmp[64];
+-	read_reg_command[2] = (unsigned char)(addr >> 24);
+-	read_reg_command[3] = (unsigned char)(addr >> 16);
+-	read_reg_command[4] = (unsigned char)(addr >> 8);
+-	read_reg_command[5] = (unsigned char)(addr);
 -
- 	int ret;
--	FILE* xfile;
- 	unsigned char type;
--	unsigned fsize;
-+	unsigned fsize = 0;
- 	unsigned header_offset;
--	int cnt;
- 	unsigned file_base;
--	int last_trans, err;
- 	unsigned char *buf = NULL;
- 	unsigned char *image;
- 	unsigned char *verify_buffer = NULL;
--	unsigned char tmp[64];
- 	unsigned dladdr = 0;
- 	unsigned max_length;
- 	unsigned plugin = 0;
- 	unsigned header_addr = 0;
--
- 	unsigned skip = 0;
--	int retry = 0;
--
--	xfile = fopen(curr->filename, "rb" );
--	if (!xfile) {
--		printf("error, can not open input file: %s\n", curr->filename);
--		return -5;
--	}
--
--	fsize = get_file_size(xfile);
--	if (fsize < 0x20) {
--		printf("error, file: %s is too small\n", curr->filename);
--		ret = -2;
--		goto cleanup;
--	}
+-	read_reg_command[7] = (unsigned char)(cnt >> 24);
+-	read_reg_command[8] = (unsigned char)(cnt >> 16);
+-	read_reg_command[9] = (unsigned char)(cnt >> 8);
+-	read_reg_command[10] = (unsigned char)(cnt);
++	read_reg_command.addr = htonl(addr);
++	read_reg_command.cnt = htonl(cnt);
  
--	buf = malloc(fsize);
--	if (!buf) {
--		printf("error, out of memory\n");
--		ret = -2;
--		goto cleanup;
--	}
--
--	cnt = fread(buf, 1 , fsize, xfile);
--	if (cnt < fsize) {
--		printf("error, cannot read %s\n", curr->filename);
--		return -1;
--	}
-+	ret = read_file(curr->filename, &buf, &fsize);
-+	if (ret < 0)
-+		return ret;
+ 	for (;;) {
+-		err = transfer(1, read_reg_command, 16, &last_trans);
++		err = transfer(1, (unsigned char *) &read_reg_command, 16,
++			       &last_trans);
+ 		if (!err)
+ 			break;
+ 		printf("read_reg_command err=%i, last_trans=%i\n", err, last_trans);
+@@ -485,47 +496,40 @@ static int write_memory(unsigned addr, unsigned val, int width)
+ 	int last_trans;
+ 	int err = 0;
+ 	unsigned char tmp[64];
+-	unsigned char ds;
+-	unsigned char write_reg_command[] = {
+-		2,
+-		2,
+-		V(0),		/* address */
+-		0x0,		/* format */
+-		V(0x00000004),	/* data count */
+-		V(0),		/* data */
+-		0x00,		/* type */
++	static struct sdp_command write_reg_command = {
++		.cmd = SDP_WRITE_REG,
++		.addr = 0,
++		.format = 0,
++		.cnt = 0,
++		.data = 0,
++		.rsvd = 0,
+ 	};
+-	write_reg_command[2] = (unsigned char)(addr >> 24);
+-	write_reg_command[3] = (unsigned char)(addr >> 16);
+-	write_reg_command[4] = (unsigned char)(addr >> 8);
+-	write_reg_command[5] = (unsigned char)(addr);
++
++	write_reg_command.addr = htonl(addr);
++	write_reg_command.cnt = htonl(4);
  
- 	max_length = fsize;
+ 	if (verbose > 1)
+ 		printf("write memory reg: 0x%08x val: 0x%08x width: %d\n", addr, val, width);
  
--	ret = process_header(curr, buf, cnt,
-+	ret = process_header(curr, buf, fsize,
- 			&dladdr, &max_length, &plugin, &header_addr);
- 	if (ret < 0)
- 		goto cleanup;
-@@ -1098,8 +1150,6 @@ static int do_irom_download(struct usb_work *curr, int verify)
- 	skip = dladdr - file_base;
- 
- 	image = buf + skip;
--
--	cnt -= skip;
- 	fsize -= skip;
- 
- 	if (fsize > max_length)
-@@ -1160,38 +1210,13 @@ static int do_irom_download(struct usb_work *curr, int verify)
- 	if (usb_id->mach_id->mode == MODE_HID && type == FT_APP) {
- 		printf("jumping to 0x%08x\n", header_addr);
- 
--		jump_command[2] = (unsigned char)(header_addr >> 24);
--		jump_command[3] = (unsigned char)(header_addr >> 16);
--		jump_command[4] = (unsigned char)(header_addr >> 8);
--		jump_command[5] = (unsigned char)(header_addr);
--
--		/* Any command will initiate jump for mx51, jump address is ignored by mx51 */
--		retry = 0;
--
--		for (;;) {
--			err = transfer(1, jump_command, 16, &last_trans);
--			if (!err)
--				break;
--
--			printf("jump_command err=%i, last_trans=%i\n", err, last_trans);
--
--			if (retry > 5)
--				return -4;
--
--			retry++;
--		}
--
--		memset(tmp, 0, sizeof(tmp));
--		err = transfer(3, tmp, sizeof(tmp), &last_trans);
--
--		if (err)
--			printf("j3 in err=%i, last_trans=%i  %02x %02x %02x %02x\n",
--					err, last_trans, tmp[0], tmp[1], tmp[2], tmp[3]);
-+		ret = sdp_jump_address(header_addr);
-+		if (ret < 0)
-+			return ret;
+ 	switch (width) {
+ 		case 1:
+-			ds = 0x8;
++			write_reg_command.format = 0x8;
+ 			break;
+ 		case 2:
+-			ds = 0x10;
++			write_reg_command.format = 0x10;
+ 			break;
+ 		case 4:
+-			ds = 0x20;
++			write_reg_command.format = 0x20;
+ 			break;
+ 		default:
+ 			return -1;
  	}
  
- 	ret = 0;
- cleanup:
--	fclose(xfile);
- 	free(verify_buffer);
- 	free(buf);
+-	write_reg_command[6] = ds;
+-
+-	write_reg_command[11] = (unsigned char)(val >> 24);
+-	write_reg_command[12] = (unsigned char)(val >> 16);
+-	write_reg_command[13] = (unsigned char)(val >> 8);
+-	write_reg_command[14] = (unsigned char)(val);
++	write_reg_command.data = htonl(val);
+ 
+ 	for (;;) {
+-		err = transfer(1, write_reg_command, 16, &last_trans);
++		err = transfer(1, (unsigned char *) &write_reg_command, 16,
++			       &last_trans);
+ 		if (!err)
+ 			break;
+ 		printf("write_reg_command err=%i, last_trans=%i\n", err, last_trans);
+@@ -580,15 +584,15 @@ static int modify_memory(unsigned addr, unsigned val, int width, int set_bits, i
+ 
+ static int load_file(void *buf, unsigned len, unsigned dladdr, unsigned char type)
+ {
+-	static unsigned char dl_command[] = {
+-		0x04,
+-		0x04,
+-		V(0),		/* address */
+-		0x00,		/* format */
+-		V(0x00000020),	/* data count */
+-		V(0),		/* data */
+-		0xaa,		/* type */
++	static struct sdp_command dl_command = {
++		.cmd = SDP_WRITE_FILE,
++		.addr = 0,
++		.format = 0,
++		.cnt = 0,
++		.data = 0,
++		.rsvd = 0,
+ 	};
++
+ 	int last_trans, err;
+ 	int retry = 0;
+ 	unsigned transfer_size = 0;
+@@ -596,19 +600,13 @@ static int load_file(void *buf, unsigned len, unsigned dladdr, unsigned char typ
+ 	void *p;
+ 	int cnt;
+ 
+-	dl_command[2] = (unsigned char)(dladdr >> 24);
+-	dl_command[3] = (unsigned char)(dladdr >> 16);
+-	dl_command[4] = (unsigned char)(dladdr >> 8);
+-	dl_command[5] = (unsigned char)(dladdr);
+-
+-	dl_command[7] = (unsigned char)(len >> 24);
+-	dl_command[8] = (unsigned char)(len >> 16);
+-	dl_command[9] = (unsigned char)(len >> 8);
+-	dl_command[10] = (unsigned char)(len);
+-	dl_command[15] =  type;
++	dl_command.addr = htonl(dladdr);
++	dl_command.cnt = htonl(len);
++	dl_command.rsvd = type;
+ 
+ 	for (;;) {
+-		err = transfer(1, dl_command, 16, &last_trans);
++		err = transfer(1, (unsigned char *) &dl_command, 16,
++			       &last_trans);
+ 		if (!err)
+ 			break;
  
 -- 
 2.1.4
