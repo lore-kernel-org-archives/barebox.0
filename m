@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bPAGf-0006qr-Ro
- for barebox@lists.infradead.org; Mon, 18 Jul 2016 15:15:39 +0000
-Received: by mail-pf0-x243.google.com with SMTP id i6so11666708pfe.0
- for <barebox@lists.infradead.org>; Mon, 18 Jul 2016 08:15:17 -0700 (PDT)
+ id 1bPAGe-0006qo-E8
+ for barebox@lists.infradead.org; Mon, 18 Jul 2016 15:15:37 +0000
+Received: by mail-pf0-x241.google.com with SMTP id i6so11666625pfe.0
+ for <barebox@lists.infradead.org>; Mon, 18 Jul 2016 08:15:16 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 18 Jul 2016 08:14:49 -0700
-Message-Id: <1468854889-6057-7-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 18 Jul 2016 08:14:47 -0700
+Message-Id: <1468854889-6057-5-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1468854889-6057-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1468854889-6057-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,32 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 7/7] i.MX: ocotp: Register regmap against orignal device
+Subject: [PATCH v2 5/7] mfd: syscon: Use IOMEM instead of explicit cast
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Register regmap against orignal device passed to probe, this way further
-in the code/call-chain cdev's device_node will be correctly populated
-and it will be discoverable via cdev_by_device_node()
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/ocotp.c | 2 +-
+ drivers/mfd/syscon.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
-index 1dc9108..17b944b 100644
---- a/arch/arm/mach-imx/ocotp.c
-+++ b/arch/arm/mach-imx/ocotp.c
-@@ -404,7 +404,7 @@ static int imx_ocotp_probe(struct device_d *dev)
- 	priv->map_config.reg_stride = 4;
- 	priv->map_config.max_register = data->num_regs - 1;
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index 487fa9e..295e210 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -123,7 +123,7 @@ static int syscon_probe(struct device_d *dev)
+ 		return PTR_ERR(res);
+ 	}
  
--	priv->map = regmap_init(&priv->dev, &imx_ocotp_regmap_bus, priv, &priv->map_config);
-+	priv->map = regmap_init(dev, &imx_ocotp_regmap_bus, priv, &priv->map_config);
- 	if (IS_ERR(priv->map))
- 		return PTR_ERR(priv->map);
+-	syscon->base = (void __iomem *)res->start;
++	syscon->base = IOMEM(res->start);
+ 	dev->priv = syscon;
  
+ 	dev_dbg(dev, "map 0x%x-0x%x registered\n", res->start, res->end);
 -- 
 2.5.5
 
