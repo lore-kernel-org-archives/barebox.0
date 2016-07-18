@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bPAGd-0006qO-0G
- for barebox@lists.infradead.org; Mon, 18 Jul 2016 15:15:35 +0000
-Received: by mail-pf0-x242.google.com with SMTP id i6so11666535pfe.0
- for <barebox@lists.infradead.org>; Mon, 18 Jul 2016 08:15:14 -0700 (PDT)
+ id 1bPAGf-0006qd-Rm
+ for barebox@lists.infradead.org; Mon, 18 Jul 2016 15:15:39 +0000
+Received: by mail-pf0-x243.google.com with SMTP id h186so3461254pfg.2
+ for <barebox@lists.infradead.org>; Mon, 18 Jul 2016 08:15:15 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 18 Jul 2016 08:14:44 -0700
-Message-Id: <1468854889-6057-2-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 18 Jul 2016 08:14:46 -0700
+Message-Id: <1468854889-6057-4-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1468854889-6057-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1468854889-6057-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,41 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/7] mfd: syscon: Don't call request_iomem_region()
+Subject: [PATCH v2 4/7] mfd: syscon: Don't check xzalloc return for NULL
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On platforms that mix dedicated IP block register space with
-miscellaneous registers it is necessary to share register window between
-syscon and dedicated IP block driver. Calling request_iomem_region()
-implies exclusive ownership of the region, which, in the case above
-could not happen.
-
-This change also makes this driver's behaviour to that of its Linux
-kernel counterpart.
+Xzalloc never returns NULL, so this check does not bring any value.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mfd/syscon.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/mfd/syscon.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 9589a03..ac46122 100644
+index cf1d2df..487fa9e 100644
 --- a/drivers/mfd/syscon.c
 +++ b/drivers/mfd/syscon.c
-@@ -76,12 +76,6 @@ static int syscon_probe(struct device_d *dev)
- 		return PTR_ERR(res);
- 	}
+@@ -116,8 +116,6 @@ static int syscon_probe(struct device_d *dev)
+ 	struct resource *res;
  
--	res = request_iomem_region(dev_name(dev), res->start, res->end);
--	if (IS_ERR(res)) {
--		free(syscon);
--		return PTR_ERR(res);
--	}
--
- 	syscon->base = (void __iomem *)res->start;
- 	dev->priv = syscon;
+ 	syscon = xzalloc(sizeof(struct syscon));
+-	if (!syscon)
+-		return -ENOMEM;
  
+ 	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
+ 	if (IS_ERR(res)) {
 -- 
 2.5.5
 
