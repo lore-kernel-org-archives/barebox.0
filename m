@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vs81.iboxed.net ([185.82.85.146])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bOslM-000307-0a
- for barebox@lists.infradead.org; Sun, 17 Jul 2016 20:34:10 +0000
-Date: Sun, 17 Jul 2016 22:31:47 +0200 (CEST)
-From: Alexander Kurz <akurz@blala.de>
-In-Reply-To: <1468772354.967026288@f191.i.mail.ru>
-Message-ID: <alpine.DEB.2.00.1607172224100.24666@blala.de>
-References: <1468770798-22102-1-git-send-email-akurz@blala.de>
- <1468770798-22102-5-git-send-email-akurz@blala.de>
- <1468772354.967026288@f191.i.mail.ru>
+ id 1bP1eh-0008Ps-3f
+ for barebox@lists.infradead.org; Mon, 18 Jul 2016 06:03:54 +0000
+Date: Mon, 18 Jul 2016 08:03:26 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160718060326.GJ20657@pengutronix.de>
+References: <1468603396-29108-1-git-send-email-akurz@blala.de>
 MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED;
- BOUNDARY="-598520180-1050432053-1468787507=:24666"
+Content-Disposition: inline
+In-Reply-To: <1468603396-29108-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,70 +18,111 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/5] scripts: imx-usb-loader: split off topic-code into
- functions
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] scripts: imx: const function arguments
+To: Alexander Kurz <akurz@blala.de>
 Cc: barebox@lists.infradead.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
----598520180-1050432053-1468787507=:24666
-Content-Type: TEXT/PLAIN; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-
-
-
-On Sun, 17 Jul 2016, Alexander Shiyan wrote:
-
-> >Воскресенье, 17 июля 2016, 18:53 +03:00 от Alexander Kurz <akurz@blala.de>:
-> >
-> >Improve code understandability: extract the "jump application" Serial
-> >Download Protocol access method and file-to-buffer reader functionality
-> >out of do_irom_download().
-> >
-> >Signed-off-by: Alexander Kurz < akurz@blala.de >
-> >---
-> > scripts/imx/imx-usb-loader.c | 159 +++++++++++++++++++++++++------------------
-> > 1 file changed, 92 insertions(+), 67 deletions(-)
-> >
-> >diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-> ...
-> >+FILE *xfile;
-> >+unsigned fsize;
-> >+int cnt;
-> >+unsigned char *buf;
-> >+xfile = fopen(name, "rb");
-> >+if (!xfile) {
-> >+printf("error, can not open input file: %s\n", name);
-> >+return -5;
-> ...
-> >+fsize = get_file_size(xfile);
-> >+if (fsize < 0x20) {
-> >+printf("error, file: %s is too small\n", name);
-> >+fclose(xfile);
-> >+return -2;
-> -2 ? Maybe -EINVAL or so will be more appropriate here?
-> 
+On Fri, Jul 15, 2016 at 07:23:16PM +0200, Alexander Kurz wrote:
+> Signed-off-by: Alexander Kurz <akurz@blala.de>
 > ---
-Yes, right,
-that's just the behviour from the existing implementation (don't touch too 
-many topics with one patch at one time)
-There are much more magic-number returns in imx-usb-loader.c, I propose to 
-do a specific cleanup on this.
-Cheers, Alexander
- 
----598520180-1050432053-1468787507=:24666
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+>  scripts/imx/imx-image.c      | 9 +++++----
+>  scripts/imx/imx-usb-loader.c | 4 ++--
+>  scripts/imx/imx.h            | 7 ++++---
+>  3 files changed, 11 insertions(+), 9 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+> index 3f62228..c0bf9c0 100644
+> --- a/scripts/imx/imx-image.c
+> +++ b/scripts/imx/imx-image.c
+> @@ -278,7 +278,7 @@ static int write_mem_v1(uint32_t addr, uint32_t val, int width, int set_bits, in
+>   * ============================================================================
+>   */
+>  
+> -static int add_header_v2(struct config_data *data, void *buf)
+> +static int add_header_v2(const struct config_data *data, void *buf)
+>  {
+>  	struct imx_flash_header_v2 *hdr;
+>  	int dcdsize = curdcd * sizeof(uint32_t);
+> @@ -447,7 +447,8 @@ static int write_dcd(const char *outfile)
+>  	return 0;
+>  }
+>  
+> -static int check(struct config_data *data, uint32_t cmd, uint32_t addr, uint32_t mask)
+> +static int check(const struct config_data *data, uint32_t cmd, uint32_t addr,
+> +		 uint32_t mask)
+>  {
+>  	if (curdcd > MAX_DCD - 3) {
+>  		fprintf(stderr, "At maximum %d dcd entried are allowed\n", MAX_DCD);
+> @@ -463,8 +464,8 @@ static int check(struct config_data *data, uint32_t cmd, uint32_t addr, uint32_t
+>  	return 0;
+>  }
+>  
+> -static int write_mem(struct config_data *data, uint32_t addr, uint32_t val, int width,
+> -		     int set_bits, int clear_bits)
+> +static int write_mem(const struct config_data *data, uint32_t addr,
+> +		     uint32_t val, int width, int set_bits, int clear_bits)
+>  {
+>  	switch (data->header_version) {
+>  	case 1:
+> diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+> index cf9d610..97ed044 100644
+> --- a/scripts/imx/imx-usb-loader.c
+> +++ b/scripts/imx/imx-usb-loader.c
+> @@ -1239,8 +1239,8 @@ cleanup:
+>  	return ret;
+>  }
+>  
+> -static int write_mem(struct config_data *data, uint32_t addr, uint32_t val, int width,
+> -		     int set_bits, int clear_bits)
+> +static int write_mem(const struct config_data *data, uint32_t addr,
+> +		     uint32_t val, int width, int set_bits, int clear_bits)
+>  {
+>  	return modify_memory(addr, val, width, set_bits, clear_bits);
+>  }
+> diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
+> index a136958..8db7e7b 100644
+> --- a/scripts/imx/imx.h
+> +++ b/scripts/imx/imx.h
+> @@ -65,9 +65,10 @@ struct config_data {
+>  	char *srkfile;
+>  	int header_version;
+>  	int cpu_type;
+> -	int (*check)(struct config_data *data, uint32_t cmd, uint32_t addr, uint32_t mask);
+> -	int (*write_mem)(struct config_data *data, uint32_t addr, uint32_t val, int width,
+> -			 int set_bits, int clear_bits);
+> +	int (*check)(const struct config_data *data, uint32_t cmd,
+> +		     uint32_t addr, uint32_t mask);
+> +	int (*write_mem)(const struct config_data *data, uint32_t addr,
+> +			 uint32_t val, int width, int set_bits, int clear_bits);
+>  	int csf_space;
+>  	char *csf;
+>  };
+> -- 
+> 2.1.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
----598520180-1050432053-1468787507=:24666--
