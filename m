@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bQ7Vm-0004Re-EN
- for barebox@lists.infradead.org; Thu, 21 Jul 2016 06:31:11 +0000
-Date: Thu, 21 Jul 2016 08:30:47 +0200
+ id 1bQ7t4-0005D5-5m
+ for barebox@lists.infradead.org; Thu, 21 Jul 2016 06:55:14 +0000
+Date: Thu, 21 Jul 2016 08:54:50 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160721063047.GS20657@pengutronix.de>
-References: <1458208829-25570-1-git-send-email-alexander.stein@systec-electronic.com>
- <1458208829-25570-14-git-send-email-alexander.stein@systec-electronic.com>
- <578E11FD.6050408@ge.com>
+Message-ID: <20160721065450.GT20657@pengutronix.de>
+References: <1469024265-20098-1-git-send-email-w.egorov@phytec.de>
+ <CAHQ1cqGDDaKNH3oSFJoL86i7EBAFOnBJMEpGsNW133o8QvS=og@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <578E11FD.6050408@ge.com>
+In-Reply-To: <CAHQ1cqGDDaKNH3oSFJoL86i7EBAFOnBJMEpGsNW133o8QvS=og@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,43 +23,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 13/13] ubifs: update implementation from u-boot v2016.03
-To: Renaud Barbier <renaud.barbier@ge.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/8] ARM: rockchip: Add basic RK3288 support
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Renaud,
+On Wed, Jul 20, 2016 at 10:52:52AM -0700, Andrey Smirnov wrote:
+> On Wed, Jul 20, 2016 at 7:17 AM, Wadim Egorov <w.egorov@phytec.de> wrote:
 
-On Tue, Jul 19, 2016 at 12:41:49PM +0100, Renaud Barbier wrote:
-> I just tested the v2016.07 version.
+> > +
+> > +struct rk3288_cru {
+> > +       struct rk3288_pll {
+> > +               u32 con0;
+> > +               u32 con1;
+> > +               u32 con2;
+> > +               u32 con3;
+> > +       } pll[5];
+> > +       u32 cru_mode_con;
+> > +       u32 reserved0[3];
+> > +       u32 cru_clksel_con[43];
+> > +       u32 reserved1[21];
+> > +       u32 cru_clkgate_con[19];
+> > +       u32 reserved2;
+> > +       u32 cru_glb_srst_fst_value;
+> > +       u32 cru_glb_srst_snd_value;
+> > +       u32 cru_softrst_con[12];
+> > +       u32 cru_misc_con;
+> > +       u32 cru_glb_cnt_th;
+> > +       u32 cru_glb_rst_con;
+> > +       u32 reserved3;
+> > +       u32 cru_glb_rst_st;
+> > +       u32 reserved4;
+> > +       u32 cru_sdmmc_con[2];
+> > +       u32 cru_sdio0_con[2];
+> > +       u32 cru_sdio1_con[2];
+> > +       u32 cru_emmc_con[2];
+> > +};
 > 
-> I noticed that the readlink function returns an empty variable and found
-> that symlink that used to appear as:
-> OWBOOT> / ls -l /mnt/
-> lrwxrwxrwx              7 active -> primary
-> drwxr-xr-x            472 primary
-> 
-> now appears as:
-> 
-> OWBOOT> / ls -l /mnt/
-> drwxr-xr-x            472 active
-> drwxr-xr-x            472 primary
-> 
-> It is due the ubifs_findfile function resolving the symlink as when the
-> code under "if ((inode->i_mode & S_IFMT) == S_IFLNK) {" is commented
-> out, the link is resolved by the ubifs_readlink entry point.
+> I, personally, am not a big fan of using structs to describe register
+> file layout since it makes it hard to figure out individual register's
+> offset just by reading the code, is compiler implementation/arch
+> specific (that probably wouldn't be a problem though) and goes against
+> the style in which majority of Linux kernel driver code(and by
+> extension Barebox) is written in.
 
-U-Boot does not have link support, so the UBIFS code from U-Boot
-resolves the links itself. It seems we should just remove the symlink
-handling code leaked in from U-Boot.
+I do not like structs over registers also, for said reasons. Also they
+become really messy when different register sizes and strides get
+involved, these are typically solved with ifdeffery which limits the
+resulting binary to a single board.
 
-> 
-> In another hand, it looks like ubifs_readlink does not deal with symlink
-> recursion.
-
-Hm not sure. Where should symlink recursion be handled? Shouldn't this
-be done in the barebox file layer rather than in each filesystem? Not
-that barebox has sylink recursion implemented, but if we do we should
-fo it in the right place.
+Anyway, for some reason structs over registers are policy in U-Boot
+and when sharing code like done in this clock driver it just makes it
+easier to a) share it in the first place and b) keep it in sync with
+U-Boot. So, I am fine with structs over registers in code copied from
+U-Boot, but I won't accept original code using it.
 
 Sascha
 
