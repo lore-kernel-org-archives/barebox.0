@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bQZp6-0002hw-8P
- for barebox@lists.infradead.org; Fri, 22 Jul 2016 12:45:01 +0000
+ id 1bQZp8-0002hy-5U
+ for barebox@lists.infradead.org; Fri, 22 Jul 2016 12:45:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Jul 2016 14:44:31 +0200
-Message-Id: <1469191472-14491-18-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Jul 2016 14:44:32 +0200
+Message-Id: <1469191472-14491-19-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1469191472-14491-1-git-send-email-s.hauer@pengutronix.de>
 References: <1469191472-14491-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,32 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/18] blspec: Turn message back to debug level
+Subject: [PATCH 18/18] boot: Print a message when a boot target string does
+ not lead to a boot target
 To: Barebox List <barebox@lists.infradead.org>
 
-Normally one should not be interested that the blspec code scans
-a directory. In case blspec is not actively used it might even be
-confusing, so lower priority of the message in blspec_scan_directory()
-to pr_debug.
+When doing a 'boot friesel net' one expects a message when 'friesel'
+does not give any bootable results and thus 'net' is booted. This patch
+adds this message.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/blspec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ commands/boot.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/common/blspec.c b/common/blspec.c
-index 6c963df..f02f5e9 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -438,7 +438,7 @@ int blspec_scan_directory(struct bootentries *bootentries, const char *root)
- 	if (!IS_ERR(nfspath))
- 		root = nfspath;
+diff --git a/commands/boot.c b/commands/boot.c
+index b774ddc..8b3b407 100644
+--- a/commands/boot.c
++++ b/commands/boot.c
+@@ -59,8 +59,11 @@ static int do_boot(int argc, char *argv[])
+ 	entries = bootentries_alloc();
  
--	pr_info("%s: %s %s\n", __func__, root, dirname);
-+	pr_debug("%s: %s %s\n", __func__, root, dirname);
+ 	if (optind < argc) {
+-		for (i = optind; i < argc; i++)
+-			bootentry_create_from_name(entries, argv[i]);
++		for (i = optind; i < argc; i++) {
++			ret = bootentry_create_from_name(entries, argv[i]);
++			if (ret <= 0)
++				printf("Nothing bootable found on '%s'\n", argv[i]);
++	       }
+ 	} else {
+ 		const char *def;
+ 		char *sep, *name;
+@@ -71,8 +74,11 @@ static int do_boot(int argc, char *argv[])
  
- 	abspath = basprintf("%s/%s", root, dirname);
+ 		sep = freep = xstrdup(def);
  
+-		while ((name = strsep(&sep, " ")) != NULL)
+-			bootentry_create_from_name(entries, name);
++		while ((name = strsep(&sep, " ")) != NULL) {
++			ret = bootentry_create_from_name(entries, name);
++			if (ret <= 0)
++				printf("Nothing bootable found on '%s'\n", name);
++		}
+ 
+ 		free(freep);
+ 	}
 -- 
 2.8.1
 
