@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bQZpN-0002hz-5K
- for barebox@lists.infradead.org; Fri, 22 Jul 2016 12:45:17 +0000
+ by casper.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bQZoz-0003fv-St
+ for barebox@lists.infradead.org; Fri, 22 Jul 2016 12:44:55 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Jul 2016 14:44:27 +0200
-Message-Id: <1469191472-14491-14-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Jul 2016 14:44:21 +0200
+Message-Id: <1469191472-14491-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1469191472-14491-1-git-send-email-s.hauer@pengutronix.de>
 References: <1469191472-14491-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,245 +21,253 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/18] boot: Use struct bootentries to pass around data
+Subject: [PATCH 07/18] blspec: factor out a struct bootentry
 To: Barebox List <barebox@lists.infradead.org>
-
-We have a struct bootentries type to collect different boot entries,
-so use this to pass around data between functions rather than using
-an array of strings. With this we also no longer have to convert a
-string to a boot entry multiple times.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/boot.c | 131 ++++++++++----------------------------------------------
- 1 file changed, 22 insertions(+), 109 deletions(-)
+ commands/boot.c  | 31 +++++++++++++++++--------------
+ common/blspec.c  | 11 +++++++----
+ include/blspec.h | 29 ++++++++++++++++++-----------
+ 3 files changed, 42 insertions(+), 29 deletions(-)
 
 diff --git a/commands/boot.c b/commands/boot.c
-index f193c93..58968a2 100644
+index 0dc0c86..edf9eab 100644
 --- a/commands/boot.c
 +++ b/commands/boot.c
-@@ -134,6 +134,8 @@ static int boot_entry(struct bootentry *be)
+@@ -78,9 +78,10 @@ late_initcall(init_boot_watchdog_timeout);
+ BAREBOX_MAGICVAR_NAMED(global_watchdog_timeout, global.boot.watchdog_timeout,
+ 		"Watchdog enable timeout in seconds before booting");
+ 
+-static int boot_entry(struct blspec_entry *be)
++static int boot_entry(struct bootentry *be)
  {
  	int ret;
++	struct blspec_entry *entry = container_of(be, struct blspec_entry, entry);
  
-+	printf("booting %s\n", be->title);
-+
  	if (IS_ENABLED(CONFIG_WATCHDOG) && boot_watchdog_timeout) {
  		ret = watchdog_set_timeout(boot_watchdog_timeout);
- 		if (ret)
-@@ -142,6 +144,9 @@ static int boot_entry(struct bootentry *be)
+@@ -88,8 +89,8 @@ static int boot_entry(struct blspec_entry *be)
+ 			pr_warn("Failed to enable watchdog: %s\n", strerror(-ret));
+ 	}
  
- 	ret = be->boot(be, verbose, dryrun);
+-	if (be->scriptpath) {
+-		ret = boot_script(be->scriptpath);
++	if (entry->scriptpath) {
++		ret = boot_script(entry->scriptpath);
+ 	} else {
+ 		if (IS_ENABLED(CONFIG_BLSPEC))
+ 			ret = blspec_boot(be, verbose, dryrun);
+@@ -102,7 +103,7 @@ static int boot_entry(struct blspec_entry *be)
  
-+	if (ret)
-+		printf("booting %s failed: %s\n", be->title, strerror(-ret));
-+
- 	return ret;
- }
- 
-@@ -287,33 +292,10 @@ static int bootentry_parse_one(struct bootentries *bootentries, const char *name
- }
- 
- /*
-- * bootentries_collect - collect bootentries from an array of names
-- */
--static struct bootentries *bootentries_collect(char *entries[], int num_entries)
--{
--	struct bootentries *bootentries;
--	int i;
--
--	bootentries = bootentries_alloc();
--
--	if (!num_entries)
--		bootscript_scan_path(bootentries, "/env/boot");
--
--	if (IS_ENABLED(CONFIG_BLSPEC) && !num_entries)
--		blspec_scan_devices(bootentries);
--
--	for (i = 0; i < num_entries; i++)
--		bootentry_parse_one(bootentries, entries[i]);
--
--	return bootentries;
--}
--
--/*
-  * bootsources_menu - show a menu from an array of names
-  */
--static void bootsources_menu(char *entries[], int num_entries)
-+static void bootsources_menu(struct bootentries *bootentries)
+ static void bootsource_action(struct menu *m, struct menu_entry *me)
  {
--	struct bootentries *bootentries = NULL;
- 	struct bootentry *entry;
+-	struct blspec_entry *be = container_of(me, struct blspec_entry, me);
++	struct bootentry *be = container_of(me, struct bootentry, me);
+ 	int ret;
+ 
+ 	ret = boot_entry(be);
+@@ -127,9 +128,9 @@ static int bootscript_create_entry(struct bootentries *bootentries, const char *
+ 		return -EINVAL;
+ 
+ 	be = blspec_entry_alloc(bootentries);
+-	be->me.type = MENU_ENTRY_NORMAL;
++	be->entry.me.type = MENU_ENTRY_NORMAL;
+ 	be->scriptpath = xstrdup(name);
+-	be->me.display = xstrdup(basename(be->scriptpath));
++	be->entry.me.display = xstrdup(basename(be->scriptpath));
+ 
+ 	return 0;
+ }
+@@ -259,7 +260,7 @@ static struct bootentries *bootentries_collect(char *entries[], int num_entries)
+ static void bootsources_menu(char *entries[], int num_entries)
+ {
+ 	struct bootentries *bootentries = NULL;
+-	struct blspec_entry *entry;
++	struct bootentry *entry;
  	struct menu_entry *back_entry;
  
-@@ -322,10 +304,6 @@ static void bootsources_menu(char *entries[], int num_entries)
+ 	if (!IS_ENABLED(CONFIG_MENU)) {
+@@ -271,7 +272,7 @@ static void bootsources_menu(char *entries[], int num_entries)
+ 	if (!bootentries)
  		return;
+ 
+-	blspec_for_each_entry(bootentries, entry) {
++	bootentries_for_each_entry(bootentries, entry) {
+ 		entry->me.action = bootsource_action;
+ 		menu_add_entry(bootentries->menu, &entry->me);
  	}
- 
--	bootentries = bootentries_collect(entries, num_entries);
--	if (!bootentries)
--		return;
--
- 	bootentries_for_each_entry(bootentries, entry) {
- 		if (!entry->me.display)
- 			entry->me.display = xstrdup(entry->title);
-@@ -345,77 +323,29 @@ static void bootsources_menu(char *entries[], int num_entries)
- 	menu_show(bootentries->menu);
- 
- 	free(back_entry);
--
--	bootentries_free(bootentries);
- }
- 
- /*
-  * bootsources_list - list boot entries from an array of names
-  */
--static void bootsources_list(char *entries[], int num_entries)
-+static void bootsources_list(struct bootentries *bootentries)
+@@ -298,7 +299,7 @@ static void bootsources_menu(char *entries[], int num_entries)
+ static void bootsources_list(char *entries[], int num_entries)
  {
--	struct bootentries *bootentries;
- 	struct bootentry *entry;
- 
--	bootentries = bootentries_collect(entries, num_entries);
--	if (!bootentries)
--		return;
--
- 	printf("%-20s\n", "title");
- 	printf("%-20s\n", "------");
- 
- 	bootentries_for_each_entry(bootentries, entry)
- 		printf("%-20s %s\n", entry->title, entry->description);
--
--	bootentries_free(bootentries);
--}
--
--/*
-- * boot a script or a bootspec entry. 'name' can be:
-- * - a filename under /env/boot/
-- * - a full path to a boot script
-- * - a device name
-- * - a partition name under /dev/
-- * - a full path to a directory which
-- *   - contains boot scripts, or
-- *   - contains a loader/entries/ directory containing bootspec entries
-- *
-- * Returns a negative error on failure, or 0 on a successful dryrun boot.
-- */
--static int boot(const char *name)
--{
--	struct bootentries *bootentries;
--	struct bootentry *entry;
--	int ret;
--
--	bootentries = bootentries_alloc();
--	ret = bootentry_parse_one(bootentries, name);
--	if (ret < 0)
--		return ret;
--
--	if (!ret) {
--		printf("Nothing bootable found on %s\n", name);
--		return -ENOENT;
--	}
--
--	bootentries_for_each_entry(bootentries, entry) {
--		printf("booting %s\n", entry->title);
--		ret = boot_entry(entry);
--		if (!ret)
--			break;
--		printf("booting %s failed: %s\n", entry->title, strerror(-ret));
--	}
--
--	return ret;
- }
- 
- static int do_boot(int argc, char *argv[])
- {
- 	char *freep = NULL;
- 	int opt, ret = 0, do_list = 0, do_menu = 0;
--	char **sources;
--	int num_sources;
- 	int i;
-+	struct bootentries *entries;
+ 	struct bootentries *bootentries;
+-	struct blspec_entry *entry;
 +	struct bootentry *entry;
  
- 	verbose = 0;
- 	dryrun = 0;
-@@ -444,12 +374,14 @@ static int do_boot(int argc, char *argv[])
- 		}
- 	}
+ 	bootentries = bootentries_collect(entries, num_entries);
+ 	if (!bootentries)
+@@ -307,9 +308,11 @@ static void bootsources_list(char *entries[], int num_entries)
+ 	printf("  %-20s %-20s  %s\n", "device", "hwdevice", "title");
+ 	printf("  %-20s %-20s  %s\n", "------", "--------", "-----");
  
-+	entries = bootentries_alloc();
+-	blspec_for_each_entry(bootentries, entry) {
+-		if (entry->scriptpath)
+-			printf("%-40s   %s\n", basename(entry->scriptpath), entry->me.display);
++	bootentries_for_each_entry(bootentries, entry) {
++		struct blspec_entry *ble = container_of(entry, struct blspec_entry, entry);
 +
- 	if (optind < argc) {
--		num_sources = argc - optind;
--		sources = xmemdup(&argv[optind], sizeof(char *) * num_sources);
-+		for (i = optind; i < argc; i++)
-+			bootentry_parse_one(entries, argv[i]);
- 	} else {
- 		const char *def;
--		char *sep;
-+		char *sep, *name;
++		if (ble->scriptpath)
++			printf("%-40s   %s\n", basename(ble->scriptpath), entry->me.display);
+ 		else
+ 			printf("%s\n", entry->me.display);
+ 	}
+@@ -332,7 +335,7 @@ static void bootsources_list(char *entries[], int num_entries)
+ static int boot(const char *name)
+ {
+ 	struct bootentries *bootentries;
+-	struct blspec_entry *entry;
++	struct bootentry *entry;
+ 	int ret;
  
- 		def = getenv("global.boot.default");
- 		if (!def)
-@@ -457,49 +389,30 @@ static int do_boot(int argc, char *argv[])
- 
- 		sep = freep = xstrdup(def);
- 
--		num_sources = 0;
--
--		while (1) {
--			num_sources++;
-+		while ((name = strsep(&sep, " ")) != NULL)
-+			bootentry_parse_one(entries, name);
- 
--			sep = strchr(sep, ' ');
--			if (!sep)
--				break;
--			sep++;
--		}
--
--		sources = xmalloc(sizeof(char *) * num_sources);
--
--		sep = freep;
--
--		for (i = 0; i < num_sources; i++) {
--			sources[i] = sep;
--			sep = strchr(sep, ' ');
--			if (sep)
--				*sep = 0;
--			sep++;
--		}
-+		free(freep);
+ 	bootentries = blspec_alloc();
+@@ -345,7 +348,7 @@ static int boot(const char *name)
+ 		return -ENOENT;
  	}
  
- 	if (do_list) {
--		bootsources_list(sources, num_sources);
-+		bootsources_list(entries);
- 		goto out;
- 	}
- 
- 	if (do_menu) {
--		bootsources_menu(sources, num_sources);
-+		bootsources_menu(entries);
- 		goto out;
- 	}
- 
--	for (i = 0; i < num_sources; i++) {
--		ret = boot(sources[i]);
-+	bootentries_for_each_entry(entries, entry) {
-+		ret = boot_entry(entry);
+-	blspec_for_each_entry(bootentries, entry) {
++	bootentries_for_each_entry(bootentries, entry) {
+ 		printf("booting %s\n", entry->me.display);
+ 		ret = boot_entry(entry);
  		if (!ret)
- 			break;
+diff --git a/common/blspec.c b/common/blspec.c
+index 81049a7..d1597f9 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -128,9 +128,11 @@ static struct blspec_entry *blspec_entry_open(struct bootentries *bootentries,
+  */
+ static int blspec_have_entry(struct bootentries *bootentries, const char *path)
+ {
++	struct bootentry *be;
+ 	struct blspec_entry *e;
+ 
+-	list_for_each_entry(e, &bootentries->entries, list) {
++	list_for_each_entry(be, &bootentries->entries, list) {
++		e = container_of(be, struct blspec_entry, entry);
+ 		if (e->configpath && !strcmp(e->configpath, path))
+ 			return 1;
+ 	}
+@@ -407,7 +409,7 @@ int blspec_scan_directory(struct bootentries *bootentries, const char *root)
+ 				hwdevname = xstrdup(dev_name(entry->cdev->dev->parent));
+ 		}
+ 
+-		entry->me.display = basprintf("%-20s %-20s  %s",
++		entry->entry.me.display = basprintf("%-20s %-20s  %s",
+ 						devname ? devname : "",
+ 						hwdevname ? hwdevname : "",
+ 						blspec_entry_var_get(entry, "title"));
+@@ -415,7 +417,7 @@ int blspec_scan_directory(struct bootentries *bootentries, const char *root)
+ 		free(devname);
+ 		free(hwdevname);
+ 
+-		entry->me.type = MENU_ENTRY_NORMAL;
++		entry->entry.me.type = MENU_ENTRY_NORMAL;
  	}
  
- out:
--	free(sources);
--	free(freep);
-+	bootentries_free(entries);
+ 	ret = found;
+@@ -634,8 +636,9 @@ int blspec_scan_devicename(struct bootentries *bootentries, const char *devname)
+  * In case of an error the error code is returned. This function may
+  * return 0 in case of a succesful dry run.
+  */
+-int blspec_boot(struct blspec_entry *entry, int verbose, int dryrun)
++int blspec_boot(struct bootentry *be, int verbose, int dryrun)
+ {
++	struct blspec_entry *entry = container_of(be, struct blspec_entry, entry);
+ 	int ret;
+ 	const char *abspath, *devicetree, *options, *initrd, *linuximage;
+ 	const char *appendroot;
+diff --git a/include/blspec.h b/include/blspec.h
+index cb4adc5..aced246 100644
+--- a/include/blspec.h
++++ b/include/blspec.h
+@@ -9,15 +9,19 @@ struct bootentries {
+ 	struct menu *menu;
+ };
  
- 	return ret;
+-struct blspec_entry {
++struct bootentry {
+ 	struct list_head list;
++	struct menu_entry me;
++};
++
++struct blspec_entry {
++	struct bootentry entry;
++
+ 	struct device_node *node;
+ 	struct cdev *cdev;
+ 	char *rootpath;
+ 	char *configpath;
+ 
+-	struct menu_entry me;
+-
+ 	char *scriptpath;
+ };
+ 
+@@ -25,7 +29,7 @@ int blspec_entry_var_set(struct blspec_entry *entry, const char *name,
+ 		const char *val);
+ const char *blspec_entry_var_get(struct blspec_entry *entry, const char *name);
+ 
+-int blspec_boot(struct blspec_entry *entry, int verbose, int dryrun);
++int blspec_boot(struct bootentry *entry, int verbose, int dryrun);
+ 
+ int blspec_scan_devices(struct bootentries *bootentries);
+ 
+@@ -33,8 +37,8 @@ int blspec_scan_device(struct bootentries *bootentries, struct device_d *dev);
+ int blspec_scan_devicename(struct bootentries *bootentries, const char *devname);
+ int blspec_scan_directory(struct bootentries *bootentries, const char *root);
+ 
+-#define blspec_for_each_entry(blspec, entry) \
+-	list_for_each_entry(entry, &blspec->entries, list)
++#define bootentries_for_each_entry(bootentries, entry) \
++	list_for_each_entry(entry, &bootentries->entries, list)
+ 
+ static inline struct blspec_entry *blspec_entry_alloc(struct bootentries *bootentries)
+ {
+@@ -44,16 +48,16 @@ static inline struct blspec_entry *blspec_entry_alloc(struct bootentries *booten
+ 
+ 	entry->node = of_new_node(NULL, NULL);
+ 
+-	list_add_tail(&entry->list, &bootentries->entries);
++	list_add_tail(&entry->entry.list, &bootentries->entries);
+ 
+ 	return entry;
  }
+ 
+ static inline void blspec_entry_free(struct blspec_entry *entry)
+ {
+-	list_del(&entry->list);
++	list_del(&entry->entry.list);
+ 	of_delete_node(entry->node);
+-	free(entry->me.display);
++	free(entry->entry.me.display);
+ 	free(entry->scriptpath);
+ 	free(entry->configpath);
+ 	free(entry->rootpath);
+@@ -75,10 +79,13 @@ static inline struct bootentries *blspec_alloc(void)
+ 
+ static inline void blspec_free(struct bootentries *bootentries)
+ {
+-	struct blspec_entry *entry, *tmp;
++	struct bootentry *be, *tmp;
++	struct blspec_entry *entry;
+ 
+-	list_for_each_entry_safe(entry, tmp, &bootentries->entries, list)
++	list_for_each_entry_safe(be, tmp, &bootentries->entries, list) {
++		entry = container_of(be, struct blspec_entry, entry);
+ 		blspec_entry_free(entry);
++	}
+ 	if (bootentries->menu)
+ 		free(bootentries->menu->display);
+ 	free(bootentries->menu);
 -- 
 2.8.1
 
