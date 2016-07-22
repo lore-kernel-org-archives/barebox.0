@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bQZov-0003fm-Lv
- for barebox@lists.infradead.org; Fri, 22 Jul 2016 12:44:50 +0000
+ id 1bQZov-0003fo-Lr
+ for barebox@lists.infradead.org; Fri, 22 Jul 2016 12:44:52 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Jul 2016 14:44:25 +0200
-Message-Id: <1469191472-14491-12-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Jul 2016 14:44:29 +0200
+Message-Id: <1469191472-14491-16-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1469191472-14491-1-git-send-email-s.hauer@pengutronix.de>
 References: <1469191472-14491-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,44 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/18] bootentries: Move menu display string allocation to
- bootentries_alloc()
+Subject: [PATCH 15/18] boot: add single quotes when printing boot target names
 To: Barebox List <barebox@lists.infradead.org>
 
-bootentries_alloc() is the place where the struct bootentries container
-is allocated, so allocate the menu entry there aswell.
+It's nicer to read when target names have quotes around them, it
+makes it clear that this is a string passed in somewhere.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/boot.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ common/boot.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/commands/boot.c b/commands/boot.c
-index 1ae2745..f193c93 100644
---- a/commands/boot.c
-+++ b/commands/boot.c
-@@ -50,8 +50,10 @@ static struct bootentries *bootentries_alloc(void)
- 	bootentries = xzalloc(sizeof(*bootentries));
- 	INIT_LIST_HEAD(&bootentries->entries);
+diff --git a/common/boot.c b/common/boot.c
+index 4d29349..e66bacb 100644
+--- a/common/boot.c
++++ b/common/boot.c
+@@ -104,7 +104,7 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
  
--	if (IS_ENABLED(CONFIG_MENU))
-+	if (IS_ENABLED(CONFIG_MENU)) {
- 		bootentries->menu = menu_alloc();
-+		bootentries->menu->display = basprintf("boot");
-+	}
- 
- 	return bootentries;
+ 	ret = bootm_boot(&data);
+ 	if (ret)
+-		pr_err("Booting %s failed: %s\n", basename(bs->scriptpath), strerror(-ret));
++		pr_err("Booting '%s' failed: %s\n", basename(bs->scriptpath), strerror(-ret));
+ out:
+ 	return ret;
  }
-@@ -294,9 +296,6 @@ static struct bootentries *bootentries_collect(char *entries[], int num_entries)
+@@ -130,7 +130,7 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
+ {
+ 	int ret;
  
- 	bootentries = bootentries_alloc();
+-	printf("booting %s\n", be->title);
++	printf("booting '%s'\n", be->title);
  
--	if (IS_ENABLED(CONFIG_MENU))
--		bootentries->menu->display = basprintf("boot");
--
- 	if (!num_entries)
- 		bootscript_scan_path(bootentries, "/env/boot");
+ 	if (IS_ENABLED(CONFIG_WATCHDOG) && boot_watchdog_timeout) {
+ 		ret = watchdog_set_timeout(boot_watchdog_timeout);
+@@ -141,7 +141,7 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
+ 	ret = be->boot(be, verbose, dryrun);
  
+ 	if (ret)
+-		printf("booting %s failed: %s\n", be->title, strerror(-ret));
++		printf("booting '%s' failed: %s\n", be->title, strerror(-ret));
+ 
+ 	return ret;
+ }
 -- 
 2.8.1
 
