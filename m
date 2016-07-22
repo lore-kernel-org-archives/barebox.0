@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bQZp0-0005HY-RW
- for barebox@lists.infradead.org; Fri, 22 Jul 2016 12:44:56 +0000
+ id 1bQZp0-0005HZ-RX
+ for barebox@lists.infradead.org; Fri, 22 Jul 2016 12:44:55 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Jul 2016 14:44:17 +0200
-Message-Id: <1469191472-14491-4-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Jul 2016 14:44:18 +0200
+Message-Id: <1469191472-14491-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1469191472-14491-1-git-send-email-s.hauer@pengutronix.de>
 References: <1469191472-14491-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,27 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/18] blspec: remove unused function prototype
+Subject: [PATCH 04/18] boot: Call blspec_scan_directory() only on strings
+ containing an absolute path
 To: Barebox List <barebox@lists.infradead.org>
+
+Avoids an unnecessary "Nothing bootable found on..." warning.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/blspec.h | 2 --
- 1 file changed, 2 deletions(-)
+ commands/boot.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/include/blspec.h b/include/blspec.h
-index 4b61ef8..a73dd72 100644
---- a/include/blspec.h
-+++ b/include/blspec.h
-@@ -25,8 +25,6 @@ int blspec_entry_var_set(struct blspec_entry *entry, const char *name,
- 		const char *val);
- const char *blspec_entry_var_get(struct blspec_entry *entry, const char *name);
+diff --git a/commands/boot.c b/commands/boot.c
+index 152615f..719ad95 100644
+--- a/commands/boot.c
++++ b/commands/boot.c
+@@ -202,9 +202,12 @@ static int bootentry_parse_one(struct blspec *blspec, const char *name)
+ 		ret = blspec_scan_devicename(blspec, name);
+ 		if (ret > 0)
+ 			found += ret;
+-		ret = blspec_scan_directory(blspec, name);
+-		if (ret > 0)
+-			found += ret;
++
++		if (*name == '/') {
++			ret = blspec_scan_directory(blspec, name);
++			if (ret > 0)
++				found += ret;
++		}
+ 	}
  
--int blspec_entry_save(struct blspec_entry *entry, const char *path);
--
- int blspec_boot(struct blspec_entry *entry, int verbose, int dryrun);
- 
- int blspec_scan_devices(struct blspec *blspec);
+ 	if (!found) {
 -- 
 2.8.1
 
