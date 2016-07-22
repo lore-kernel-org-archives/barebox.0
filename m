@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bQXG4-0000fF-HR
- for barebox@lists.infradead.org; Fri, 22 Jul 2016 10:00:42 +0000
+ id 1bQXIc-0001Bu-VK
+ for barebox@lists.infradead.org; Fri, 22 Jul 2016 10:03:20 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Jul 2016 12:00:11 +0200
-Message-Id: <1469181611-16622-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Jul 2016 12:02:56 +0200
+Message-Id: <1469181776-1818-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,54 +19,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fs: Check for correct open mode
+Subject: [PATCH] printk: Fix pr_cont
 To: Barebox List <barebox@lists.infradead.org>
 
-Check that readonly openen files is not written to and writeonly
-files is not read from.
+pr_cont is meant to continue a line, so do not printf the prefix given
+with pr_fmt() again.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/fs.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ include/printk.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index f63a2dd..b7e7c63 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -738,6 +738,11 @@ static ssize_t __read(FILE *f, void *buf, size_t count)
- 	struct fs_driver_d *fsdrv;
- 	int ret;
+diff --git a/include/printk.h b/include/printk.h
+index f62e57d..b4ae0b3 100644
+--- a/include/printk.h
++++ b/include/printk.h
+@@ -91,7 +91,7 @@ static inline int pr_print(int level, const char *format, ...)
+ #define pr_debug(fmt, arg...)	__pr_printk(7, pr_fmt(fmt), ##arg)
+ #define debug(fmt, arg...)	__pr_printk(7, pr_fmt(fmt), ##arg)
+ #define pr_vdebug(fmt, arg...)	__pr_printk(8, pr_fmt(fmt), ##arg)
+-#define pr_cont(fmt, arg...)	__pr_printk(0, pr_fmt(fmt), ##arg)
++#define pr_cont(fmt, arg...)	__pr_printk(0, fmt, ##arg)
  
-+	if ((f->flags & O_ACCMODE) == O_WRONLY) {
-+		ret = -EBADF;
-+		goto out;
-+	}
-+
- 	fsdrv = f->fsdev->driver;
- 
- 	if (f->size != FILE_SIZE_STREAM && f->pos + count > f->size)
-@@ -747,7 +752,7 @@ static ssize_t __read(FILE *f, void *buf, size_t count)
- 		return 0;
- 
- 	ret = fsdrv->read(&f->fsdev->dev, f, buf, count);
--
-+out:
- 	if (ret < 0)
- 		errno = -ret;
- 	return ret;
-@@ -796,6 +801,11 @@ static ssize_t __write(FILE *f, const void *buf, size_t count)
- 	struct fs_driver_d *fsdrv;
- 	int ret;
- 
-+	if (!(f->flags & O_ACCMODE)) {
-+		ret = -EBADF;
-+		goto out;
-+	}
-+
- 	fsdrv = f->fsdev->driver;
- 	if (f->size != FILE_SIZE_STREAM && f->pos + count > f->size) {
- 		ret = fsdrv->truncate(&f->fsdev->dev, f, f->pos + count);
+ #define printk_once(fmt, ...)					\
+ ({								\
 -- 
 2.8.1
 
