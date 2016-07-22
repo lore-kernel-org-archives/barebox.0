@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bQZov-0003fl-Lx
+ id 1bQZov-0003fn-Lu
  for barebox@lists.infradead.org; Fri, 22 Jul 2016 12:44:51 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Jul 2016 14:44:19 +0200
-Message-Id: <1469191472-14491-6-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Jul 2016 14:44:28 +0200
+Message-Id: <1469191472-14491-15-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1469191472-14491-1-git-send-email-s.hauer@pengutronix.de>
 References: <1469191472-14491-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,419 +21,820 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/18] include: Move bulk of boot.h to bootm.h
+Subject: [PATCH 14/18] boot: Move code to common/
 To: Barebox List <barebox@lists.infradead.org>
 
-The majority of the stuff currently in include/boot.h is about bootm
-code implemented common/bootm.c. To be more consistent move it to a
-new file include/bootm.h.
+Normally code in commands/ shall only do the option parsing whereas the
+functionality shall be in common/ to make the code usable from C aswell.
+Do this in the boot code aswell, move it to common/boot.c and add the
+function prototypes to include/boot.h
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/archosg9/archos_features.c |   1 -
- arch/arm/lib/bootm.c                       |   1 +
- commands/boot.c                            |   2 +-
- commands/bootm.c                           |   2 +-
- common/blspec.c                            |   2 +-
- common/bootm.c                             |   3 +-
- common/image-fit.c                         |   2 +-
- drivers/usb/gadget/f_fastboot.c            |   2 +-
- include/boot.h                             | 120 ---------------------------
- include/bootm.h                            | 125 +++++++++++++++++++++++++++++
- include/image-fit.h                        |   2 +-
- 11 files changed, 134 insertions(+), 128 deletions(-)
- create mode 100644 include/bootm.h
+ commands/Kconfig |   1 +
+ commands/boot.c  | 334 ++----------------------------------------------------
+ common/Kconfig   |   3 +
+ common/Makefile  |   1 +
+ common/boot.c    | 339 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/boot.h   |   9 ++
+ 6 files changed, 360 insertions(+), 327 deletions(-)
+ create mode 100644 common/boot.c
 
-diff --git a/arch/arm/boards/archosg9/archos_features.c b/arch/arm/boards/archosg9/archos_features.c
-index b396734..62ce7b4 100644
---- a/arch/arm/boards/archosg9/archos_features.c
-+++ b/arch/arm/boards/archosg9/archos_features.c
-@@ -10,7 +10,6 @@
-  * GNU General Public License for more details.
-  */
- 
--#include <boot.h>
- #include <asm/setup.h>
- #include "archos_features.h"
- #include "feature_list.h"
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index 252946c..404a6ae 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -1,3 +1,4 @@
-+#include <bootm.h>
- #include <boot.h>
- #include <common.h>
- #include <command.h>
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 3a0977b..0685664 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -294,6 +294,7 @@ config CMD_BOOT_ORDER
+ config CMD_BOOT
+ 	tristate
+ 	depends on BOOTM
++	select BOOT
+ 	prompt "boot"
+ 	help
+ 	  Select this for booting based on scripts. Unlike the bootm command which
 diff --git a/commands/boot.c b/commands/boot.c
-index 719ad95..baf2740 100644
+index 58968a2..e757011 100644
 --- a/commands/boot.c
 +++ b/commands/boot.c
-@@ -23,7 +23,7 @@
- #include <libgen.h>
- #include <malloc.h>
- #include <clock.h>
--#include <boot.h>
-+#include <bootm.h>
- #include <glob.h>
- #include <init.h>
- #include <menu.h>
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 6bedb00..61b9086 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -32,7 +32,7 @@
- #include <fcntl.h>
- #include <fs.h>
- #include <errno.h>
--#include <boot.h>
-+#include <bootm.h>
- #include <of.h>
- #include <rtc.h>
- #include <init.h>
-diff --git a/common/blspec.c b/common/blspec.c
-index b964155..de65038 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -24,7 +24,7 @@
- #include <libfile.h>
- #include <libbb.h>
- #include <init.h>
--#include <boot.h>
-+#include <bootm.h>
- #include <net.h>
- #include <fs.h>
- #include <of.h>
-diff --git a/common/bootm.c b/common/bootm.c
-index 27d20f2..78d04d5 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -12,7 +12,7 @@
+@@ -11,339 +11,21 @@
+  *
   */
  
- #include <common.h>
--#include <boot.h>
-+#include <bootm.h>
- #include <fs.h>
- #include <malloc.h>
- #include <memory.h>
-@@ -20,6 +20,7 @@
- #include <image-fit.h>
+-#include <environment.h>
  #include <globalvar.h>
- #include <init.h>
-+#include <environment.h>
- #include <linux/stat.h>
- #include <magicvar.h>
- 
-diff --git a/common/image-fit.c b/common/image-fit.c
-index 9b6c40f..6a01c61 100644
---- a/common/image-fit.c
-+++ b/common/image-fit.c
-@@ -20,7 +20,7 @@
- #define pr_fmt(fmt) "FIT: " fmt
+-#include <magicvar.h>
+-#include <watchdog.h>
+ #include <command.h>
+-#include <readkey.h>
  #include <common.h>
- #include <init.h>
--#include <boot.h>
-+#include <bootm.h>
- #include <libfile.h>
- #include <fdt.h>
- #include <digest.h>
-diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-index 6db7daf..a6192b9 100644
---- a/drivers/usb/gadget/f_fastboot.c
-+++ b/drivers/usb/gadget/f_fastboot.c
-@@ -25,7 +25,7 @@
- #include <ioctl.h>
- #include <libbb.h>
- #include <bbu.h>
--#include <boot.h>
-+#include <bootm.h>
- #include <dma.h>
- #include <fs.h>
- #include <libfile.h>
-diff --git a/include/boot.h b/include/boot.h
-index 8e7a9f1..da40ac2 100644
---- a/include/boot.h
-+++ b/include/boot.h
-@@ -1,115 +1,9 @@
- #ifndef __BOOT_H
- #define __BOOT_H
+ #include <getopt.h>
+-#include <blspec.h>
+-#include <libgen.h>
+ #include <malloc.h>
+-#include <clock.h>
+-#include <bootm.h>
+-#include <glob.h>
+-#include <init.h>
+-#include <menu.h>
+-#include <fs.h>
++#include <boot.h>
+ #include <complete.h>
  
--#include <image.h>
--#include <filetype.h>
- #include <of.h>
--#include <linux/list.h>
- #include <environment.h>
+ #include <linux/stat.h>
  
--enum bootm_verify {
--	BOOTM_VERIFY_NONE,
--	BOOTM_VERIFY_HASH,
--	BOOTM_VERIFY_SIGNATURE,
--	BOOTM_VERIFY_AVAILABLE,
--};
+-static int verbose;
+-static int dryrun;
+-static int timeout;
 -
--struct bootm_data {
--	const char *os_file;
--	const char *initrd_file;
--	const char *oftree_file;
--	int verbose;
--	enum bootm_verify verify;
--	bool force;
--	bool dryrun;
--	/*
--	 * appendroot - if true, try to add a suitable root= Kernel option to
--	 * mount the rootfs from the same device as the Kernel comes from.
--	 */
--	bool appendroot;
--	unsigned long initrd_address;
--	unsigned long os_address;
--	unsigned long os_entry;
--};
--
--int bootm_boot(struct bootm_data *data);
--
--struct image_data {
--	/* simplest case. barebox has already loaded the os here */
--	struct resource *os_res;
--
--	/* if os is an uImage this will be provided */
--	struct uimage_handle *os;
--
--	/* if os is a FIT image this will be provided */
--	struct fit_handle *os_fit;
--
--	char *os_part;
--
--	/* otherwise only the filename will be provided */
--	char *os_file;
--
--	/*
--	 * The address the user wants to load the os image to.
--	 * May be UIMAGE_INVALID_ADDRESS to indicate that the
--	 * user has not specified any address. In this case the
--	 * handler may choose a suitable address
--	 */
--	unsigned long os_address;
--
--	/* entry point to the os. relative to the start of the image */
--	unsigned long os_entry;
--
--	/* if initrd is already loaded this resource will be !NULL */
--	struct resource *initrd_res;
--
--	/* if initrd is an uImage this will be provided */
--	struct uimage_handle *initrd;
--	char *initrd_part;
--
--	/* otherwise only the filename will be provided */
--	char *initrd_file;
--
--	unsigned long initrd_address;
--
--	char *oftree_file;
--	char *oftree_part;
--
--	struct device_node *of_root_node;
--	struct fdt_header *oftree;
--	struct resource *oftree_res;
--
--	enum bootm_verify verify;
--	int verbose;
--	int force;
--	int dryrun;
--};
--
--struct image_handler {
--	const char *name;
--
--	struct list_head list;
--
--	int ih_os;
--
--	enum filetype filetype;
--	int (*bootm)(struct image_data *data);
--};
--
--int register_image_handler(struct image_handler *handle);
--
--#ifdef CONFIG_BOOTM_VERBOSE
--static inline int bootm_verbose(struct image_data *data)
+-int bootentries_add_entry(struct bootentries *entries, struct bootentry *entry)
 -{
--	return data->verbose;
--}
--#else
--static inline int bootm_verbose(struct image_data *data)
--{
+-	list_add_tail(&entry->list, &entries->entries);
+-
 -	return 0;
 -}
--#endif
 -
- #ifdef CONFIG_FLEXIBLE_BOOTARGS
- const char *linux_bootargs_get(void);
- int linux_bootargs_overwrite(const char *bootargs);
-@@ -125,18 +19,4 @@ static inline int linux_bootargs_overwrite(const char *bootargs)
- }
- #endif
+-static struct bootentries *bootentries_alloc(void)
+-{
+-	struct bootentries *bootentries;
+-
+-	bootentries = xzalloc(sizeof(*bootentries));
+-	INIT_LIST_HEAD(&bootentries->entries);
+-
+-	if (IS_ENABLED(CONFIG_MENU)) {
+-		bootentries->menu = menu_alloc();
+-		bootentries->menu->display = basprintf("boot");
+-	}
+-
+-	return bootentries;
+-}
+-
+-static void bootentries_free(struct bootentries *bootentries)
+-{
+-	struct bootentry *be, *tmp;
+-
+-	list_for_each_entry_safe(be, tmp, &bootentries->entries, list) {
+-		list_del(&be->list);
+-		free(be->title);
+-		free(be->description);
+-		free(be->me.display);
+-		be->release(be);
+-	}
+-
+-	if (bootentries->menu)
+-		free(bootentries->menu->display);
+-	free(bootentries->menu);
+-	free(bootentries);
+-}
+-
+-struct bootentry_script {
+-	struct bootentry entry;
+-	char *scriptpath;
+-};
+-
+-/*
+- * Start a single boot script. 'path' is a full path to a boot script.
+- */
+-static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
+-{
+-	struct bootentry_script *bs = container_of(entry, struct bootentry_script, entry);
+-	int ret;
+-
+-	struct bootm_data data = {};
+-
+-	if (dryrun) {
+-		printf("Would run %s\n", bs->scriptpath);
+-		return 0;
+-	}
+-
+-	globalvar_set_match("linux.bootargs.dyn.", "");
+-
+-	ret = run_command(bs->scriptpath);
+-	if (ret) {
+-		printf("Running %s failed\n", bs->scriptpath);
+-		goto out;
+-	}
+-
+-	bootm_data_init_defaults(&data);
+-
+-	if (verbose)
+-		data.verbose = verbose;
+-	if (dryrun)
+-		data.dryrun = dryrun;
+-
+-	ret = bootm_boot(&data);
+-	if (ret)
+-		pr_err("Booting %s failed: %s\n", basename(bs->scriptpath), strerror(-ret));
+-out:
+-	return ret;
+-}
+-
+-static unsigned int boot_watchdog_timeout;
+-
+-static int init_boot_watchdog_timeout(void)
+-{
+-	return globalvar_add_simple_int("boot.watchdog_timeout",
+-			&boot_watchdog_timeout, "%u");
+-}
+-late_initcall(init_boot_watchdog_timeout);
+-
+-BAREBOX_MAGICVAR_NAMED(global_watchdog_timeout, global.boot.watchdog_timeout,
+-		"Watchdog enable timeout in seconds before booting");
+-
+-static int boot_entry(struct bootentry *be)
+-{
+-	int ret;
+-
+-	printf("booting %s\n", be->title);
+-
+-	if (IS_ENABLED(CONFIG_WATCHDOG) && boot_watchdog_timeout) {
+-		ret = watchdog_set_timeout(boot_watchdog_timeout);
+-		if (ret)
+-			pr_warn("Failed to enable watchdog: %s\n", strerror(-ret));
+-	}
+-
+-	ret = be->boot(be, verbose, dryrun);
+-
+-	if (ret)
+-		printf("booting %s failed: %s\n", be->title, strerror(-ret));
+-
+-	return ret;
+-}
+-
+-static void bootsource_action(struct menu *m, struct menu_entry *me)
+-{
+-	struct bootentry *be = container_of(me, struct bootentry, me);
+-	int ret;
+-
+-	ret = boot_entry(be);
+-	if (ret)
+-		printf("Booting failed with: %s\n", strerror(-ret));
+-
+-	printf("Press any key to continue\n");
+-
+-	read_key();
+-}
+-
+-static void bootscript_entry_release(struct bootentry *entry)
+-{
+-	struct bootentry_script *bs = container_of(entry, struct bootentry_script, entry);
+-
+-	free(bs->scriptpath);
+-	free(bs->entry.me.display);
+-	free(bs);
+-}
+-
+-/*
+- * bootscript_create_entry - create a boot entry from a script name
+- */
+-static int bootscript_create_entry(struct bootentries *bootentries, const char *name)
+-{
+-	struct bootentry_script *bs;
+-	enum filetype type;
+-
+-	type = file_name_detect_type(name);
+-	if (type != filetype_sh)
+-		return -EINVAL;
+-
+-	bs = xzalloc(sizeof(*bs));
+-	bs->entry.me.type = MENU_ENTRY_NORMAL;
+-	bs->entry.release = bootscript_entry_release;
+-	bs->entry.boot = bootscript_boot;
+-	bs->scriptpath = xstrdup(name);
+-	bs->entry.title = xstrdup(basename(bs->scriptpath));
+-	bs->entry.description = basprintf("script: %s", name);
+-	bootentries_add_entry(bootentries, &bs->entry);
+-
+-	return 0;
+-}
+-
+-/*
+- * bootscript_scan_path - create boot entries from a path
+- *
+- * path can either be a full path to a bootscript or a full path to a diretory
+- * containing bootscripts.
+- */
+-static int bootscript_scan_path(struct bootentries *bootentries, const char *path)
+-{
+-	struct stat s;
+-	char *files;
+-	int ret, i;
+-	int found = 0;
+-	glob_t globb;
+-
+-	ret = stat(path, &s);
+-	if (ret)
+-		return ret;
+-
+-	if (!S_ISDIR(s.st_mode)) {
+-		ret = bootscript_create_entry(bootentries, path);
+-		if (ret)
+-			return ret;
+-		return 1;
+-	}
+-
+-	files = basprintf("%s/*", path);
+-
+-	glob(files, 0, NULL, &globb);
+-
+-	for (i = 0; i < globb.gl_pathc; i++) {
+-		char *bootscript_path = globb.gl_pathv[i];
+-
+-		if (*basename(bootscript_path) == '.')
+-			continue;
+-
+-		bootscript_create_entry(bootentries, bootscript_path);
+-		found++;
+-	}
+-
+-	globfree(&globb);
+-	free(files);
+-
+-	ret = found;
+-
+-	return ret;
+-}
+-
+-/*
+- * bootentry_parse_one - create boot entries from a name
+- *
+- * name can be:
+- * - a name of a boot script under /env/boot
+- * - a full path of a boot script
+- * - a device name
+- * - a cdev name
+- * - a full path of a directory containing bootloader spec entries
+- * - a full path of a directory containing bootscripts
+- *
+- * Returns the number of entries found or a negative error code.
+- */
+-static int bootentry_parse_one(struct bootentries *bootentries, const char *name)
+-{
+-	int found = 0, ret;
+-
+-	if (IS_ENABLED(CONFIG_BLSPEC)) {
+-		ret = blspec_scan_devicename(bootentries, name);
+-		if (ret > 0)
+-			found += ret;
+-
+-		if (*name == '/') {
+-			ret = blspec_scan_directory(bootentries, name);
+-			if (ret > 0)
+-				found += ret;
+-		}
+-	}
+-
+-	if (!found) {
+-		char *path;
+-
+-		if (*name != '/')
+-			path = basprintf("/env/boot/%s", name);
+-		else
+-			path = xstrdup(name);
+-
+-		ret = bootscript_scan_path(bootentries, path);
+-		if (ret > 0)
+-			found += ret;
+-
+-		free(path);
+-	}
+-
+-	return found;
+-}
+-
+-/*
+- * bootsources_menu - show a menu from an array of names
+- */
+-static void bootsources_menu(struct bootentries *bootentries)
+-{
+-	struct bootentry *entry;
+-	struct menu_entry *back_entry;
+-
+-	if (!IS_ENABLED(CONFIG_MENU)) {
+-		printf("no menu support available\n");
+-		return;
+-	}
+-
+-	bootentries_for_each_entry(bootentries, entry) {
+-		if (!entry->me.display)
+-			entry->me.display = xstrdup(entry->title);
+-		entry->me.action = bootsource_action;
+-		menu_add_entry(bootentries->menu, &entry->me);
+-	}
+-
+-	back_entry = xzalloc(sizeof(*back_entry));
+-	back_entry->display = "back";
+-	back_entry->type = MENU_ENTRY_NORMAL;
+-	back_entry->non_re_ent = 1;
+-	menu_add_entry(bootentries->menu, back_entry);
+-
+-	if (timeout >= 0)
+-		bootentries->menu->auto_select = timeout;
+-
+-	menu_show(bootentries->menu);
+-
+-	free(back_entry);
+-}
+-
+-/*
+- * bootsources_list - list boot entries from an array of names
+- */
+-static void bootsources_list(struct bootentries *bootentries)
+-{
+-	struct bootentry *entry;
+-
+-	printf("%-20s\n", "title");
+-	printf("%-20s\n", "------");
+-
+-	bootentries_for_each_entry(bootentries, entry)
+-		printf("%-20s %s\n", entry->title, entry->description);
+-}
+-
+ static int do_boot(int argc, char *argv[])
+ {
+ 	char *freep = NULL;
+ 	int opt, ret = 0, do_list = 0, do_menu = 0;
+-	int i;
++	int i, dryrun = 0, verbose = 0, timeout = -1;
+ 	struct bootentries *entries;
+ 	struct bootentry *entry;
  
--void bootm_data_init_defaults(struct bootm_data *data);
+@@ -369,7 +51,7 @@ static int do_boot(int argc, char *argv[])
+ 			timeout = simple_strtoul(optarg, NULL, 0);
+ 			break;
+ 		case 'w':
+-			boot_watchdog_timeout = simple_strtoul(optarg, NULL, 0);
++			boot_set_watchdog_timeout(simple_strtoul(optarg, NULL, 0));
+ 			break;
+ 		}
+ 	}
+@@ -378,7 +60,7 @@ static int do_boot(int argc, char *argv[])
+ 
+ 	if (optind < argc) {
+ 		for (i = optind; i < argc; i++)
+-			bootentry_parse_one(entries, argv[i]);
++			bootentry_create_from_name(entries, argv[i]);
+ 	} else {
+ 		const char *def;
+ 		char *sep, *name;
+@@ -390,7 +72,7 @@ static int do_boot(int argc, char *argv[])
+ 		sep = freep = xstrdup(def);
+ 
+ 		while ((name = strsep(&sep, " ")) != NULL)
+-			bootentry_parse_one(entries, name);
++			bootentry_create_from_name(entries, name);
+ 
+ 		free(freep);
+ 	}
+@@ -401,12 +83,12 @@ static int do_boot(int argc, char *argv[])
+ 	}
+ 
+ 	if (do_menu) {
+-		bootsources_menu(entries);
++		bootsources_menu(entries, timeout);
+ 		goto out;
+ 	}
+ 
+ 	bootentries_for_each_entry(entries, entry) {
+-		ret = boot_entry(entry);
++		ret = boot_entry(entry, verbose, dryrun);
+ 		if (!ret)
+ 			break;
+ 	}
+@@ -450,5 +132,3 @@ BAREBOX_CMD_START(boot)
+ 	BAREBOX_CMD_GROUP(CMD_GRP_BOOT)
+ 	BAREBOX_CMD_HELP(cmd_boot_help)
+ BAREBOX_CMD_END
 -
--int bootm_load_os(struct image_data *data, unsigned long load_address);
--
--bool bootm_has_initrd(struct image_data *data);
--int bootm_load_initrd(struct image_data *data, unsigned long load_address);
--
--int bootm_load_devicetree(struct image_data *data, unsigned long load_address);
--int bootm_get_os_size(struct image_data *data);
--
--enum bootm_verify bootm_get_verify_mode(void);
--
--#define UIMAGE_SOME_ADDRESS (UIMAGE_INVALID_ADDRESS - 1)
--
- #endif /* __BOOT_H */
-diff --git a/include/bootm.h b/include/bootm.h
+-BAREBOX_MAGICVAR_NAMED(global_boot_default, global.boot.default, "default boot order");
+diff --git a/common/Kconfig b/common/Kconfig
+index 6ce2a76..8326340 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -110,6 +110,9 @@ config UBIFORMAT
+ 	depends on MTD_UBI
+ 	default y
+ 
++config BOOT
++	bool
++
+ menu "General Settings"
+ 
+ config LOCALVERSION
+diff --git a/common/Makefile b/common/Makefile
+index 17fcb5f..00bc0e8 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -58,6 +58,7 @@ obj-$(CONFIG_FIRMWARE)		+= firmware.o
+ obj-$(CONFIG_UBIFORMAT)		+= ubiformat.o
+ obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
+ obj-$(CONFIG_CONSOLE_RATP)	+= ratp.o
++obj-$(CONFIG_BOOT)		+= boot.o
+ 
+ quiet_cmd_pwd_h = PWDH    $@
+ ifdef CONFIG_PASSWORD
+diff --git a/common/boot.c b/common/boot.c
 new file mode 100644
-index 0000000..6e9777a
+index 0000000..4d29349
 --- /dev/null
-+++ b/include/bootm.h
-@@ -0,0 +1,125 @@
-+#ifndef __BOOTM_H
-+#define __BOOTM_H
++++ b/common/boot.c
+@@ -0,0 +1,339 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; version 2.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License for more details.
++ */
 +
-+#include <image.h>
-+#include <filetype.h>
-+#include <linux/list.h>
++#include <environment.h>
++#include <globalvar.h>
++#include <magicvar.h>
++#include <watchdog.h>
++#include <command.h>
++#include <readkey.h>
++#include <common.h>
++#include <blspec.h>
++#include <libgen.h>
++#include <malloc.h>
++#include <bootm.h>
++#include <glob.h>
++#include <init.h>
++#include <menu.h>
++#include <fs.h>
 +
-+enum bootm_verify {
-+	BOOTM_VERIFY_NONE,
-+	BOOTM_VERIFY_HASH,
-+	BOOTM_VERIFY_SIGNATURE,
-+	BOOTM_VERIFY_AVAILABLE,
-+};
++#include <linux/stat.h>
 +
-+struct bootm_data {
-+	const char *os_file;
-+	const char *initrd_file;
-+	const char *oftree_file;
-+	int verbose;
-+	enum bootm_verify verify;
-+	bool force;
-+	bool dryrun;
-+	/*
-+	 * appendroot - if true, try to add a suitable root= Kernel option to
-+	 * mount the rootfs from the same device as the Kernel comes from.
-+	 */
-+	bool appendroot;
-+	unsigned long initrd_address;
-+	unsigned long os_address;
-+	unsigned long os_entry;
-+};
-+
-+int bootm_boot(struct bootm_data *data);
-+
-+struct image_data {
-+	/* simplest case. barebox has already loaded the os here */
-+	struct resource *os_res;
-+
-+	/* if os is an uImage this will be provided */
-+	struct uimage_handle *os;
-+
-+	/* if os is a FIT image this will be provided */
-+	struct fit_handle *os_fit;
-+
-+	char *os_part;
-+
-+	/* otherwise only the filename will be provided */
-+	char *os_file;
-+
-+	/*
-+	 * The address the user wants to load the os image to.
-+	 * May be UIMAGE_INVALID_ADDRESS to indicate that the
-+	 * user has not specified any address. In this case the
-+	 * handler may choose a suitable address
-+	 */
-+	unsigned long os_address;
-+
-+	/* entry point to the os. relative to the start of the image */
-+	unsigned long os_entry;
-+
-+	/* if initrd is already loaded this resource will be !NULL */
-+	struct resource *initrd_res;
-+
-+	/* if initrd is an uImage this will be provided */
-+	struct uimage_handle *initrd;
-+	char *initrd_part;
-+
-+	/* otherwise only the filename will be provided */
-+	char *initrd_file;
-+
-+	unsigned long initrd_address;
-+
-+	char *oftree_file;
-+	char *oftree_part;
-+
-+	struct device_node *of_root_node;
-+	struct fdt_header *oftree;
-+	struct resource *oftree_res;
-+
-+	enum bootm_verify verify;
-+	int verbose;
-+	int force;
-+	int dryrun;
-+};
-+
-+struct image_handler {
-+	const char *name;
-+
-+	struct list_head list;
-+
-+	int ih_os;
-+
-+	enum filetype filetype;
-+	int (*bootm)(struct image_data *data);
-+};
-+
-+int register_image_handler(struct image_handler *handle);
-+
-+#ifdef CONFIG_BOOTM_VERBOSE
-+static inline int bootm_verbose(struct image_data *data)
++int bootentries_add_entry(struct bootentries *entries, struct bootentry *entry)
 +{
-+	return data->verbose;
-+}
-+#else
-+static inline int bootm_verbose(struct image_data *data)
-+{
++	list_add_tail(&entry->list, &entries->entries);
++
 +	return 0;
 +}
-+#endif
 +
-+void bootm_data_init_defaults(struct bootm_data *data);
++struct bootentries *bootentries_alloc(void)
++{
++	struct bootentries *bootentries;
 +
-+int bootm_load_os(struct image_data *data, unsigned long load_address);
++	bootentries = xzalloc(sizeof(*bootentries));
++	INIT_LIST_HEAD(&bootentries->entries);
 +
-+bool bootm_has_initrd(struct image_data *data);
-+int bootm_load_initrd(struct image_data *data, unsigned long load_address);
++	if (IS_ENABLED(CONFIG_MENU)) {
++		bootentries->menu = menu_alloc();
++		bootentries->menu->display = basprintf("boot");
++	}
 +
-+int bootm_load_devicetree(struct image_data *data, unsigned long load_address);
-+int bootm_get_os_size(struct image_data *data);
++	return bootentries;
++}
 +
-+enum bootm_verify bootm_get_verify_mode(void);
++void bootentries_free(struct bootentries *bootentries)
++{
++	struct bootentry *be, *tmp;
 +
-+#define UIMAGE_SOME_ADDRESS (UIMAGE_INVALID_ADDRESS - 1)
++	list_for_each_entry_safe(be, tmp, &bootentries->entries, list) {
++		list_del(&be->list);
++		free(be->title);
++		free(be->description);
++		free(be->me.display);
++		be->release(be);
++	}
 +
-+#endif /* __BOOTM_H */
-diff --git a/include/image-fit.h b/include/image-fit.h
-index c9d6911..c49f958 100644
---- a/include/image-fit.h
-+++ b/include/image-fit.h
-@@ -19,7 +19,7 @@
- #define __IMAGE_FIT_H__
++	if (bootentries->menu)
++		free(bootentries->menu->display);
++	free(bootentries->menu);
++	free(bootentries);
++}
++
++struct bootentry_script {
++	struct bootentry entry;
++	char *scriptpath;
++};
++
++/*
++ * Start a single boot script. 'path' is a full path to a boot script.
++ */
++static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
++{
++	struct bootentry_script *bs = container_of(entry, struct bootentry_script, entry);
++	int ret;
++
++	struct bootm_data data = {};
++
++	if (dryrun) {
++		printf("Would run %s\n", bs->scriptpath);
++		return 0;
++	}
++
++	globalvar_set_match("linux.bootargs.dyn.", "");
++
++	ret = run_command(bs->scriptpath);
++	if (ret) {
++		printf("Running %s failed\n", bs->scriptpath);
++		goto out;
++	}
++
++	bootm_data_init_defaults(&data);
++
++	if (verbose)
++		data.verbose = verbose;
++	if (dryrun)
++		data.dryrun = dryrun;
++
++	ret = bootm_boot(&data);
++	if (ret)
++		pr_err("Booting %s failed: %s\n", basename(bs->scriptpath), strerror(-ret));
++out:
++	return ret;
++}
++
++static unsigned int boot_watchdog_timeout;
++
++void boot_set_watchdog_timeout(unsigned int timeout)
++{
++	boot_watchdog_timeout = timeout;
++}
++
++static int init_boot_watchdog_timeout(void)
++{
++	return globalvar_add_simple_int("boot.watchdog_timeout",
++			&boot_watchdog_timeout, "%u");
++}
++late_initcall(init_boot_watchdog_timeout);
++
++BAREBOX_MAGICVAR_NAMED(global_watchdog_timeout, global.boot.watchdog_timeout,
++		"Watchdog enable timeout in seconds before booting");
++
++int boot_entry(struct bootentry *be, int verbose, int dryrun)
++{
++	int ret;
++
++	printf("booting %s\n", be->title);
++
++	if (IS_ENABLED(CONFIG_WATCHDOG) && boot_watchdog_timeout) {
++		ret = watchdog_set_timeout(boot_watchdog_timeout);
++		if (ret)
++			pr_warn("Failed to enable watchdog: %s\n", strerror(-ret));
++	}
++
++	ret = be->boot(be, verbose, dryrun);
++
++	if (ret)
++		printf("booting %s failed: %s\n", be->title, strerror(-ret));
++
++	return ret;
++}
++
++static void bootsource_action(struct menu *m, struct menu_entry *me)
++{
++	struct bootentry *be = container_of(me, struct bootentry, me);
++	int ret;
++
++	ret = boot_entry(be, 0, 0);
++	if (ret)
++		printf("Booting failed with: %s\n", strerror(-ret));
++
++	printf("Press any key to continue\n");
++
++	read_key();
++}
++
++static void bootscript_entry_release(struct bootentry *entry)
++{
++	struct bootentry_script *bs = container_of(entry, struct bootentry_script, entry);
++
++	free(bs->scriptpath);
++	free(bs->entry.me.display);
++	free(bs);
++}
++
++/*
++ * bootscript_create_entry - create a boot entry from a script name
++ */
++static int bootscript_create_entry(struct bootentries *bootentries, const char *name)
++{
++	struct bootentry_script *bs;
++	enum filetype type;
++
++	type = file_name_detect_type(name);
++	if (type != filetype_sh)
++		return -EINVAL;
++
++	bs = xzalloc(sizeof(*bs));
++	bs->entry.me.type = MENU_ENTRY_NORMAL;
++	bs->entry.release = bootscript_entry_release;
++	bs->entry.boot = bootscript_boot;
++	bs->scriptpath = xstrdup(name);
++	bs->entry.title = xstrdup(basename(bs->scriptpath));
++	bs->entry.description = basprintf("script: %s", name);
++	bootentries_add_entry(bootentries, &bs->entry);
++
++	return 0;
++}
++
++/*
++ * bootscript_scan_path - create boot entries from a path
++ *
++ * path can either be a full path to a bootscript or a full path to a diretory
++ * containing bootscripts.
++ */
++static int bootscript_scan_path(struct bootentries *bootentries, const char *path)
++{
++	struct stat s;
++	char *files;
++	int ret, i;
++	int found = 0;
++	glob_t globb;
++
++	ret = stat(path, &s);
++	if (ret)
++		return ret;
++
++	if (!S_ISDIR(s.st_mode)) {
++		ret = bootscript_create_entry(bootentries, path);
++		if (ret)
++			return ret;
++		return 1;
++	}
++
++	files = basprintf("%s/*", path);
++
++	glob(files, 0, NULL, &globb);
++
++	for (i = 0; i < globb.gl_pathc; i++) {
++		char *bootscript_path = globb.gl_pathv[i];
++
++		if (*basename(bootscript_path) == '.')
++			continue;
++
++		bootscript_create_entry(bootentries, bootscript_path);
++		found++;
++	}
++
++	globfree(&globb);
++	free(files);
++
++	ret = found;
++
++	return ret;
++}
++
++/*
++ * bootentry_create_from_name - create boot entries from a name
++ *
++ * name can be:
++ * - a name of a boot script under /env/boot
++ * - a full path of a boot script
++ * - a device name
++ * - a cdev name
++ * - a full path of a directory containing bootloader spec entries
++ * - a full path of a directory containing bootscripts
++ *
++ * Returns the number of entries found or a negative error code.
++ */
++int bootentry_create_from_name(struct bootentries *bootentries,
++				      const char *name)
++{
++	int found = 0, ret;
++
++	if (IS_ENABLED(CONFIG_BLSPEC)) {
++		ret = blspec_scan_devicename(bootentries, name);
++		if (ret > 0)
++			found += ret;
++
++		if (*name == '/') {
++			ret = blspec_scan_directory(bootentries, name);
++			if (ret > 0)
++				found += ret;
++		}
++	}
++
++	if (!found) {
++		char *path;
++
++		if (*name != '/')
++			path = basprintf("/env/boot/%s", name);
++		else
++			path = xstrdup(name);
++
++		ret = bootscript_scan_path(bootentries, path);
++		if (ret > 0)
++			found += ret;
++
++		free(path);
++	}
++
++	return found;
++}
++
++/*
++ * bootsources_menu - show a menu from an array of names
++ */
++void bootsources_menu(struct bootentries *bootentries, int timeout)
++{
++	struct bootentry *entry;
++	struct menu_entry *back_entry;
++
++	if (!IS_ENABLED(CONFIG_MENU)) {
++		printf("no menu support available\n");
++		return;
++	}
++
++	bootentries_for_each_entry(bootentries, entry) {
++		if (!entry->me.display)
++			entry->me.display = xstrdup(entry->title);
++		entry->me.action = bootsource_action;
++		menu_add_entry(bootentries->menu, &entry->me);
++	}
++
++	back_entry = xzalloc(sizeof(*back_entry));
++	back_entry->display = "back";
++	back_entry->type = MENU_ENTRY_NORMAL;
++	back_entry->non_re_ent = 1;
++	menu_add_entry(bootentries->menu, back_entry);
++
++	if (timeout >= 0)
++		bootentries->menu->auto_select = timeout;
++
++	menu_show(bootentries->menu);
++
++	free(back_entry);
++}
++
++/*
++ * bootsources_list - list boot entries from an array of names
++ */
++void bootsources_list(struct bootentries *bootentries)
++{
++	struct bootentry *entry;
++
++	printf("%-20s\n", "title");
++	printf("%-20s\n", "------");
++
++	bootentries_for_each_entry(bootentries, entry)
++		printf("%-20s %s\n", entry->title, entry->description);
++}
++
++BAREBOX_MAGICVAR_NAMED(global_boot_default, global.boot.default, "default boot order");
+diff --git a/include/boot.h b/include/boot.h
+index e0a61c5..a855cbe 100644
+--- a/include/boot.h
++++ b/include/boot.h
+@@ -39,4 +39,13 @@ int bootentries_add_entry(struct bootentries *entries, struct bootentry *entry);
+ #define bootentries_for_each_entry(bootentries, entry) \
+ 	list_for_each_entry(entry, &bootentries->entries, list)
  
- #include <linux/types.h>
--#include <boot.h>
-+#include <bootm.h>
- 
- struct fit_handle {
- 	void *fit;
++void boot_set_watchdog_timeout(unsigned int timeout);
++struct bootentries *bootentries_alloc(void);
++void bootentries_free(struct bootentries *bootentries);
++int bootentry_create_from_name(struct bootentries *bootentries,
++				      const char *name);
++void bootsources_menu(struct bootentries *bootentries, int timeout);
++void bootsources_list(struct bootentries *bootentries);
++int boot_entry(struct bootentry *be, int verbose, int dryrun);
++
+ #endif /* __BOOT_H */
 -- 
 2.8.1
 
