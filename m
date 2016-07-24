@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp46.i.mail.ru ([94.100.177.106])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bQa4J-0005Bu-FU
- for barebox@lists.infradead.org; Fri, 22 Jul 2016 13:00:45 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
- helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <l.stach@pengutronix.de>) id 1bQa3x-0001fI-Ek
- for barebox@lists.infradead.org; Fri, 22 Jul 2016 15:00:21 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 22 Jul 2016 15:00:19 +0200
-Message-Id: <1469192421-15748-1-git-send-email-l.stach@pengutronix.de>
+ id 1bRCRL-0007ex-Bg
+ for barebox@lists.infradead.org; Sun, 24 Jul 2016 05:59:04 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sun, 24 Jul 2016 08:58:29 +0300
+Message-Id: <1469339909-3667-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,55 +19,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] state: only build circular backend if MTD is enabled
+Subject: [PATCH] defaultenv: Unblank cursor at startup
 To: barebox@lists.infradead.org
 
-The circular backend depends on MTD symbols and is only useful
-if MTD is present. Exclude it from the build if MTD is not enabled.
+In some cases, the user program can disable the cursor,
+for example, Qt4 library do this, so the cursor remains invisible
+after the restart.
+The patch adds a command to activate the cursor,
+by sending DECTECM command to the terminal.
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- common/state/Makefile          | 2 +-
- common/state/backend_storage.c | 6 ++++--
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ defaultenv/defaultenv-1/bin/init      | 2 +-
+ defaultenv/defaultenv-2-base/bin/init | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/common/state/Makefile b/common/state/Makefile
-index 23f72862b995..3e0e2c6e5516 100644
---- a/common/state/Makefile
-+++ b/common/state/Makefile
-@@ -5,5 +5,5 @@ obj-y += backend_format_dtb.o
- obj-y += backend_format_raw.o
- obj-y += backend_storage.o
- obj-y += backend_bucket_direct.o
--obj-y += backend_bucket_circular.o
-+obj-$(CONFIG_MTD) += backend_bucket_circular.o
- obj-y += backend_bucket_cached.o
-diff --git a/common/state/backend_storage.c b/common/state/backend_storage.c
-index c4508a8aba67..5dc8c5026733 100644
---- a/common/state/backend_storage.c
-+++ b/common/state/backend_storage.c
-@@ -471,7 +471,7 @@ int state_storage_init(struct state_backend_storage *storage,
- 		       off_t offset, size_t max_size, uint32_t stridesize,
- 		       const char *storagetype)
- {
--	int ret;
-+	int ret = -ENODEV;
- 	struct mtd_info_user meminfo;
+diff --git a/defaultenv/defaultenv-1/bin/init b/defaultenv/defaultenv-1/bin/init
+index 4781b5a..a55d293 100644
+--- a/defaultenv/defaultenv-1/bin/init
++++ b/defaultenv/defaultenv-1/bin/init
+@@ -22,10 +22,10 @@ if [ -f /env/bin/init_board ]; then
+ 	. /env/bin/init_board
+ fi
  
- 	INIT_LIST_HEAD(&storage->buckets);
-@@ -479,7 +479,9 @@ int state_storage_init(struct state_backend_storage *storage,
- 	storage->name = storagetype;
- 	storage->stridesize = stridesize;
++echo -e "\e[?25h"
+ if [ -f /env/bin/boot_board ]; then
+ 	. /env/bin/boot_board
+ elif [ -n $autoboot_timeout ]; then
+-	echo
+ 	echo -n "Hit any key to stop autoboot: "
+ 	timeout -a $autoboot_timeout
+ 	if [ $? != 0 ]; then
+diff --git a/defaultenv/defaultenv-2-base/bin/init b/defaultenv/defaultenv-2-base/bin/init
+index 37ee365..7af3c7d 100644
+--- a/defaultenv/defaultenv-2-base/bin/init
++++ b/defaultenv/defaultenv-2-base/bin/init
+@@ -32,6 +32,7 @@ magicvar -a global.allow_color "Allow color on the console (boolean)"
+ timeout -s -a -v key 0
+ autoboot="$?"
  
--	ret = mtd_get_meminfo(path, &meminfo);
-+	if (IS_ENABLED(CONFIG_MTD))
-+		ret = mtd_get_meminfo(path, &meminfo);
-+
- 	if (!ret && !(meminfo.flags & MTD_NO_ERASE)) {
- 		bool non_circular = false;
- 		if (!storagetype) {
++echo -e -n "\e[?25h"
+ if [ "${key}" = "q" ]; then
+ 	exit
+ fi
 -- 
-2.8.1
+2.7.3
 
 
 _______________________________________________
