@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bRbK6-0002Sc-NH
- for barebox@lists.infradead.org; Mon, 25 Jul 2016 08:33:15 +0000
+ id 1bRbOF-0003zK-En
+ for barebox@lists.infradead.org; Mon, 25 Jul 2016 08:37:32 +0000
+Date: Mon, 25 Jul 2016 10:37:09 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 Jul 2016 10:32:51 +0200
-Message-Id: <1469435571-31279-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20160725083709.GE20656@pengutronix.de>
+References: <20160713051805.GZ20657@pengutronix.de>
+ <20160714141718.20121-1-iw3gtf@arcor.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20160714141718.20121-1-iw3gtf@arcor.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,42 +19,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] getopt: Add support for '--' to stop option parsing
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 0/4] fixes some problems found in the backligth-pwm
+ implementation.
+To: iw3gtf@arcor.de
+Cc: barebox@lists.infradead.org
 
-In some cases when commands have optional arguments it is necessary
-to explicitly stop option parsing after the last nonpositonal option.
-Add support for '--' to accomplish this as done in getopt(3) aswell.
+Hi Giorgio,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- lib/getopt.c | 5 +++++
- 1 file changed, 5 insertions(+)
+On Thu, Jul 14, 2016 at 04:17:14PM +0200, iw3gtf@arcor.de wrote:
+> This serie fixes some problems found in the backligth-pwm implementation.
+> 
+> root (4):
+>   video/backlight-pwm: fixed a loop index going out of range.
+>   video/backlight-pwm: fix the value of 'brightness_max'.
+>   video/backlight-pwm: code readability improvement.
+>   video/backlight-pwm: properly handle the case of an empty
+>     'brightness-levels' in the device tree.
 
-diff --git a/lib/getopt.c b/lib/getopt.c
-index fd12a88..847830c 100644
---- a/lib/getopt.c
-+++ b/lib/getopt.c
-@@ -64,6 +64,11 @@ int getopt(int argc, char *argv[], const char *optstring)
- 	while(1) {
- 		debug("optindex: %d nonopts: %d optind: %d\n", optindex, nonopts, optind);
- 
-+		if (optindex == 1 && argv[optind] && !strcmp(argv[optind], "--")) {
-+			optind++;
-+			return -1;
-+		}
-+
- 		/* first put nonopts to the end */
- 		while (optind + nonopts < argc && *argv[optind] != '-') {
- 			int i;
+Your patches lack a proper Signed-off-by. Could you add this line and
+resend the patches? Otherwise I can't apply them
+
+Sascha
+
+
 -- 
-2.8.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
