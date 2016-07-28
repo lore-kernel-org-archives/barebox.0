@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bSjyU-0004og-Az
- for barebox@lists.infradead.org; Thu, 28 Jul 2016 11:59:39 +0000
-References: <1469024265-20098-1-git-send-email-w.egorov@phytec.de>
- <CAHQ1cqGDDaKNH3oSFJoL86i7EBAFOnBJMEpGsNW133o8QvS=og@mail.gmail.com>
- <20160721065450.GT20657@pengutronix.de>
-From: Wadim Egorov <w.egorov@phytec.de>
-Message-ID: <5799F394.4050703@phytec.de>
-Date: Thu, 28 Jul 2016 13:59:16 +0200
+Received: from mail-yw0-x244.google.com ([2607:f8b0:4002:c05::244])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bSqTh-00076K-92
+ for barebox@lists.infradead.org; Thu, 28 Jul 2016 18:56:18 +0000
+Received: by mail-yw0-x244.google.com with SMTP id j12so6715825ywb.1
+ for <barebox@lists.infradead.org>; Thu, 28 Jul 2016 11:55:56 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20160721065450.GT20657@pengutronix.de>
+In-Reply-To: <5799F20D.6050904@phytec.de>
+References: <1469024265-20098-1-git-send-email-w.egorov@phytec.de>
+ <1469024265-20098-3-git-send-email-w.egorov@phytec.de>
+ <CAHQ1cqGeTRhNWXZ2-DpaN=N-=5ri7uFTkfrMBvD0yE4XLtknjw@mail.gmail.com>
+ <5799F20D.6050904@phytec.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu, 28 Jul 2016 11:55:54 -0700
+Message-ID: <CAHQ1cqGeD9NG9oWDbUqNNGv9=i-H9Z5ehHU7+a-My7wqzAT+oA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,64 +26,152 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/8] ARM: rockchip: Add basic RK3288 support
-To: Sascha Hauer <s.hauer@pengutronix.de>, Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 3/8] ARM: rockchip: Add early debug support for RK3288
+To: Wadim Egorov <w.egorov@phytec.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-
-
-On 21.07.2016 08:54, Sascha Hauer wrote:
-> On Wed, Jul 20, 2016 at 10:52:52AM -0700, Andrey Smirnov wrote:
+On Thu, Jul 28, 2016 at 4:52 AM, Wadim Egorov <w.egorov@phytec.de> wrote:
+> Hi Andrey,
+>
+> On 20.07.2016 17:03, Andrey Smirnov wrote:
 >> On Wed, Jul 20, 2016 at 7:17 AM, Wadim Egorov <w.egorov@phytec.de> wrote:
+>>> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+>>> ---
+>>>  arch/arm/mach-rockchip/include/mach/debug_ll.h | 72 +++++++++++++++-----------
+>>>  common/Kconfig                                 |  6 +--
+>>>  2 files changed, 45 insertions(+), 33 deletions(-)
+>>>
+>>> diff --git a/arch/arm/mach-rockchip/include/mach/debug_ll.h b/arch/arm/mach-rockchip/include/mach/debug_ll.h
+>>> index c666b99..144cada 100644
+>>> --- a/arch/arm/mach-rockchip/include/mach/debug_ll.h
+>>> +++ b/arch/arm/mach-rockchip/include/mach/debug_ll.h
+>>> @@ -1,25 +1,31 @@
+>>>  #ifndef __MACH_DEBUG_LL_H__
+>>>  #define __MACH_DEBUG_LL_H__
+>>>
+>>> +#include <common.h>
+>>>  #include <io.h>
+>>> +#include <mach/rk3188-regs.h>
+>>> +#include <mach/rk3288-regs.h>
 >>> +
->>> +struct rk3288_cru {
->>> +       struct rk3288_pll {
->>> +               u32 con0;
->>> +               u32 con1;
->>> +               u32 con2;
->>> +               u32 con3;
->>> +       } pll[5];
->>> +       u32 cru_mode_con;
->>> +       u32 reserved0[3];
->>> +       u32 cru_clksel_con[43];
->>> +       u32 reserved1[21];
->>> +       u32 cru_clkgate_con[19];
->>> +       u32 reserved2;
->>> +       u32 cru_glb_srst_fst_value;
->>> +       u32 cru_glb_srst_snd_value;
->>> +       u32 cru_softrst_con[12];
->>> +       u32 cru_misc_con;
->>> +       u32 cru_glb_cnt_th;
->>> +       u32 cru_glb_rst_con;
->>> +       u32 reserved3;
->>> +       u32 cru_glb_rst_st;
->>> +       u32 reserved4;
->>> +       u32 cru_sdmmc_con[2];
->>> +       u32 cru_sdio0_con[2];
->>> +       u32 cru_sdio1_con[2];
->>> +       u32 cru_emmc_con[2];
->>> +};
->> I, personally, am not a big fan of using structs to describe register
->> file layout since it makes it hard to figure out individual register's
->> offset just by reading the code, is compiler implementation/arch
->> specific (that probably wouldn't be a problem though) and goes against
->> the style in which majority of Linux kernel driver code(and by
->> extension Barebox) is written in.
-> I do not like structs over registers also, for said reasons. Also they
-> become really messy when different register sizes and strides get
-> involved, these are typically solved with ifdeffery which limits the
-> resulting binary to a single board.
->
-> Anyway, for some reason structs over registers are policy in U-Boot
-> and when sharing code like done in this clock driver it just makes it
-> easier to a) share it in the first place and b) keep it in sync with
-> U-Boot. So, I am fine with structs over registers in code copied from
-> U-Boot, but I won't accept original code using it.
->
-> Sascha
->
-OK, for now I just keep the code I copied from the u-boot.
+>>> +#ifdef CONFIG_ARCH_RK3188
+>>> +
+>>> +#define UART_CLOCK             100000000
+>>> +#define RK_DEBUG_SOC           RK3188
+>>> +#define serial_out(a, v)       writeb(v, a)
+>>> +#define serial_in(a)           readb(a)
+>>> +
+>>> +#elif defined CONFIG_ARCH_RK3288
+>>> +
+>>> +#define UART_CLOCK             24000000
+>>> +#define RK_DEBUG_SOC           RK3288
+>>> +#define serial_out(a, v)       writel(v, a)
+>>> +#define serial_in(a)           readl(a)
+>> These "serial_in/out" macros seem a bit redundant to me. What's the
+>> story behind them, why were they added?
 
+Oh! I didn't notice the difference between the two definitions. Makes
+sense. Maybe implement it as a inline function and use if
+(IS_ENABLED(CONFIG_ARCH_RK3188)) to dispatch appropriate writes, so as
+to avoid macros and have the code be more self documenting?
+
+>
+> writeb() does not work with RK3288. So I added serial_in/out macros to
+> split the different types of memory access to the uart registers.
+>
+>>
+>>> -#if CONFIG_DEBUG_ROCKCHIP_UART_PORT == 0
+>>> -#define UART_BASE      0x10124000
+>>> -#endif
+>>> -#if CONFIG_DEBUG_ROCKCHIP_UART_PORT == 1
+>>> -#define UART_BASE      0x10126000
+>>> -#endif
+>>> -#if CONFIG_DEBUG_ROCKCHIP_UART_PORT == 2
+>>> -#define UART_BASE      0x20064000
+>>> -#endif
+>>> -#if CONFIG_DEBUG_ROCKCHIP_UART_PORT == 3
+>>> -#define UART_BASE      0x20068000
+>>>  #endif
+>>>
+>>> -#define LSR_THRE       0x20    /* Xmit holding register empty */
+>>> -#define LSR            (5 << 2)
+>>> -#define THR            (0 << 2)
+>>> +#define __RK_UART_BASE(soc, num) soc##_UART##num##_BASE
+>>> +#define RK_UART_BASE(soc, num) __RK_UART_BASE(soc, num)
+>>>
+>>> +#define LSR_THRE       0x20    /* Xmit holding register empty */
+>>>  #define LCR_BKSE       0x80    /* Bank select enable */
+>>>  #define LSR            (5 << 2)
+>>>  #define THR            (0 << 2)
+>>> @@ -33,28 +39,34 @@
+>>>
+>>>  static inline void INIT_LL(void)
+>>>  {
+>>> -       unsigned int clk = 100000000;
+>>> -       unsigned int divisor = clk / 16 / 115200;
+>>> -
+>>> -       writeb(0x00, UART_BASE + LCR);
+>>> -       writeb(0x00, UART_BASE + IER);
+>>> -       writeb(0x07, UART_BASE + MDR);
+>>> -       writeb(LCR_BKSE, UART_BASE + LCR);
+>>> -       writeb(divisor & 0xff, UART_BASE + DLL);
+>>> -       writeb(divisor >> 8, UART_BASE + DLM);
+>>> -       writeb(0x03, UART_BASE + LCR);
+>>> -       writeb(0x03, UART_BASE + MCR);
+>>> -       writeb(0x07, UART_BASE + FCR);
+>>> -       writeb(0x00, UART_BASE + MDR);
+>>> +       void __iomem *base = (void *)RK_UART_BASE(RK_DEBUG_SOC,
+>>> +               CONFIG_DEBUG_ROCKCHIP_UART_PORT);
+>> There's a IOMEM macro that you could use to avoid explicit casting.
+>
+> ok
+>
+>>
+>>> +       unsigned int divisor = DIV_ROUND_CLOSEST(UART_CLOCK, 16 * 115200);
+>> I'd suggest CONFIG_BAUDRATE instead of hard-coded value.
+>
+> ok
+>
+>>
+>>> +
+>>> +       serial_out(base + LCR, 0x00);
+>>> +       serial_out(base + IER, 0x00);
+>>> +       serial_out(base + MDR, 0x07);
+>>> +       serial_out(base + LCR, LCR_BKSE);
+>>> +       serial_out(base + DLL, divisor & 0xff);
+>>> +       serial_out(base + DLM, divisor >> 8);
+>>> +       serial_out(base + LCR, 0x03);
+>>> +       serial_out(base + MCR, 0x03);
+>>> +       serial_out(base + FCR, 0x07);
+>>> +       serial_out(base + MDR, 0x00);
+>>>  }
+>>>
+>>>  static inline void PUTC_LL(char c)
+>>>  {
+>>> +       void __iomem *base = (void *)RK_UART_BASE(RK_DEBUG_SOC,
+>>> +               CONFIG_DEBUG_ROCKCHIP_UART_PORT);
+>> IOMEM here as well.
+>
+> ok
+>
+>>
+>>> +
+>>>         /* Wait until there is space in the FIFO */
+>>> -       while ((readb(UART_BASE + LSR) & LSR_THRE) == 0);
+>>> +       while ((serial_in(base + LSR) & LSR_THRE) == 0)
+>>> +               ;
+>> You could probably separate this busy loop into a small inline
+>> function and re-use it below and in the code of the full-fledged
+>> driver.
+>
+> I don't really see the point here.
+>
+
+This code snippet was used at least twice in your code and I assumed
+you'd use same idiom in the full UART driver for that part, so the
+same point as with any other code coalescing -- avoiding repetition
+and separating behavior from implementation details. Anyway, just a
+suggestion.
 
 _______________________________________________
 barebox mailing list
