@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bSjuy-0004GX-Po
- for barebox@lists.infradead.org; Thu, 28 Jul 2016 11:56:03 +0000
+ id 1bSjyU-0004og-Az
+ for barebox@lists.infradead.org; Thu, 28 Jul 2016 11:59:39 +0000
 References: <1469024265-20098-1-git-send-email-w.egorov@phytec.de>
- <1469024265-20098-2-git-send-email-w.egorov@phytec.de>
- <CAHQ1cqF9vATXHQRTo=kX+2W3EEb0mzSJXRp=LOHWFaNZfi1zOg@mail.gmail.com>
+ <CAHQ1cqGDDaKNH3oSFJoL86i7EBAFOnBJMEpGsNW133o8QvS=og@mail.gmail.com>
+ <20160721065450.GT20657@pengutronix.de>
 From: Wadim Egorov <w.egorov@phytec.de>
-Message-ID: <5799F2BB.2020205@phytec.de>
-Date: Thu, 28 Jul 2016 13:55:39 +0200
+Message-ID: <5799F394.4050703@phytec.de>
+Date: Thu, 28 Jul 2016 13:59:16 +0200
 MIME-Version: 1.0
-In-Reply-To: <CAHQ1cqF9vATXHQRTo=kX+2W3EEb0mzSJXRp=LOHWFaNZfi1zOg@mail.gmail.com>
+In-Reply-To: <20160721065450.GT20657@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,144 +23,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/8] ARM: rockchip: Add timer driver
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 1/8] ARM: rockchip: Add basic RK3288 support
+To: Sascha Hauer <s.hauer@pengutronix.de>, Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
 
 
-On 20.07.2016 19:35, Andrey Smirnov wrote:
-> On Wed, Jul 20, 2016 at 7:17 AM, Wadim Egorov <w.egorov@phytec.de> wrote:
->> This driver comes from the u-boot (v2016.01).
-> I'd suggest this to be moved to "drivers/clocksource" and converted to
-> a proper driver that binds against DT node and doesn't use a CONFIG_*
-> symbol to determine its base address.
-
-I want to use this driver in the SPL part later. The SRAM we can use is
-very limited on the RK3288. So I don't want to add more DT code here.
-
+On 21.07.2016 08:54, Sascha Hauer wrote:
+> On Wed, Jul 20, 2016 at 10:52:52AM -0700, Andrey Smirnov wrote:
+>> On Wed, Jul 20, 2016 at 7:17 AM, Wadim Egorov <w.egorov@phytec.de> wrote:
+>>> +
+>>> +struct rk3288_cru {
+>>> +       struct rk3288_pll {
+>>> +               u32 con0;
+>>> +               u32 con1;
+>>> +               u32 con2;
+>>> +               u32 con3;
+>>> +       } pll[5];
+>>> +       u32 cru_mode_con;
+>>> +       u32 reserved0[3];
+>>> +       u32 cru_clksel_con[43];
+>>> +       u32 reserved1[21];
+>>> +       u32 cru_clkgate_con[19];
+>>> +       u32 reserved2;
+>>> +       u32 cru_glb_srst_fst_value;
+>>> +       u32 cru_glb_srst_snd_value;
+>>> +       u32 cru_softrst_con[12];
+>>> +       u32 cru_misc_con;
+>>> +       u32 cru_glb_cnt_th;
+>>> +       u32 cru_glb_rst_con;
+>>> +       u32 reserved3;
+>>> +       u32 cru_glb_rst_st;
+>>> +       u32 reserved4;
+>>> +       u32 cru_sdmmc_con[2];
+>>> +       u32 cru_sdio0_con[2];
+>>> +       u32 cru_sdio1_con[2];
+>>> +       u32 cru_emmc_con[2];
+>>> +};
+>> I, personally, am not a big fan of using structs to describe register
+>> file layout since it makes it hard to figure out individual register's
+>> offset just by reading the code, is compiler implementation/arch
+>> specific (that probably wouldn't be a problem though) and goes against
+>> the style in which majority of Linux kernel driver code(and by
+>> extension Barebox) is written in.
+> I do not like structs over registers also, for said reasons. Also they
+> become really messy when different register sizes and strides get
+> involved, these are typically solved with ifdeffery which limits the
+> resulting binary to a single board.
 >
->> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
->> ---
->>  arch/arm/mach-rockchip/Kconfig              |  5 +++
->>  arch/arm/mach-rockchip/Makefile             |  1 +
->>  arch/arm/mach-rockchip/include/mach/timer.h | 19 ++++++++++++
->>  arch/arm/mach-rockchip/rk_timer.c           | 48 +++++++++++++++++++++++++++++
->>  4 files changed, 73 insertions(+)
->>  create mode 100644 arch/arm/mach-rockchip/include/mach/timer.h
->>  create mode 100644 arch/arm/mach-rockchip/rk_timer.c
->>
->> diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
->> index e027fae..fa0e8fc 100644
->> --- a/arch/arm/mach-rockchip/Kconfig
->> +++ b/arch/arm/mach-rockchip/Kconfig
->> @@ -7,6 +7,11 @@ config ARCH_TEXT_BASE
->>         default 0x68000000 if ARCH_RK3188
->>         default 0x0 if ARCH_RK3288
->>
->> +config TIMER_BASE
->> +       hex
->> +       default 0x2000E020 if ARCH_RK3188
->> +       default 0xff810020 if ARCH_RK3288
->> +
->>  choice
->>         prompt "Select Rockchip SoC"
->>
->> diff --git a/arch/arm/mach-rockchip/Makefile b/arch/arm/mach-rockchip/Makefile
->> index 4ca7f17..1211208 100644
->> --- a/arch/arm/mach-rockchip/Makefile
->> +++ b/arch/arm/mach-rockchip/Makefile
->> @@ -1,2 +1,3 @@
->>  obj-$(CONFIG_ARCH_RK3188) += rk3188.o
->>  obj-$(CONFIG_ARCH_RK3288) += rk3288.o
->> +obj-y += rk_timer.o
->> diff --git a/arch/arm/mach-rockchip/include/mach/timer.h b/arch/arm/mach-rockchip/include/mach/timer.h
->> new file mode 100644
->> index 0000000..e6ed0e4
->> --- /dev/null
->> +++ b/arch/arm/mach-rockchip/include/mach/timer.h
->> @@ -0,0 +1,19 @@
->> +/*
->> + * (C) Copyright 2015 Rockchip Electronics Co., Ltd
->> + *
->> + * SPDX-License-Identifier:     GPL-2.0+
->> + */
->> +
->> +#ifndef _ASM_ARCH_TIMER_H
->> +#define _ASM_ARCH_TIMER_H
->> +
->> +struct rk_timer {
->> +       unsigned int timer_load_count0;
->> +       unsigned int timer_load_count1;
->> +       unsigned int timer_curr_value0;
->> +       unsigned int timer_curr_value1;
->> +       unsigned int timer_ctrl_reg;
->> +       unsigned int timer_int_status;
->> +};
->> +
->> +#endif
->> diff --git a/arch/arm/mach-rockchip/rk_timer.c b/arch/arm/mach-rockchip/rk_timer.c
->> new file mode 100644
->> index 0000000..2bb6a0b
->> --- /dev/null
->> +++ b/arch/arm/mach-rockchip/rk_timer.c
->> @@ -0,0 +1,48 @@
->> +/*
->> + * (C) Copyright 2015 Rockchip Electronics Co., Ltd
->> + *
->> + * (C) Copyright 2016 PHYTEC Messtechnik GmbH
->> + * Author: Wadim Egorov <w.egorov@phytec.de>
->> +
->> + * SPDX-License-Identifier:     GPL-2.0+
->> + */
->> +
->> +#include <clock.h>
->> +#include <init.h>
->> +#include <io.h>
->> +#include <mach/timer.h>
->> +#include <stdio.h>
->> +#include <mach/hardware.h>
->> +#include <mach/cru_rk3288.h>
->> +#include <common.h>
->> +
->> +struct rk_timer * const timer_ptr = (void *)CONFIG_TIMER_BASE;
->> +
->> +static uint64_t rockchip_get_ticks(void)
->> +{
->> +       uint64_t timebase_h, timebase_l;
->> +
->> +       timebase_l = readl(&timer_ptr->timer_curr_value0);
->> +       timebase_h = readl(&timer_ptr->timer_curr_value1);
->> +
->> +       return timebase_h << 32 | timebase_l;
->> +}
->> +
->> +static struct clocksource rkcs = {
->> +       .read   = rockchip_get_ticks,
->> +       .mask   = CLOCKSOURCE_MASK(32),
->> +       .shift  = 10,
->> +};
->> +
->> +static int rockchip_timer_init(void)
->> +{
->> +       rkcs.mult = clocksource_hz2mult(OSC_HZ, rkcs.shift);
->> +
->> +       writel(0xffffffff, &timer_ptr->timer_load_count0);
->> +       writel(0xffffffff, &timer_ptr->timer_load_count1);
->> +       writel(1, &timer_ptr->timer_ctrl_reg);
->> +
->> +       return init_clock(&rkcs);
->> +}
->> +
->> +core_initcall(rockchip_timer_init);
->> --
->> 1.9.1
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
+> Anyway, for some reason structs over registers are policy in U-Boot
+> and when sharing code like done in this clock driver it just makes it
+> easier to a) share it in the first place and b) keep it in sync with
+> U-Boot. So, I am fine with structs over registers in code copied from
+> U-Boot, but I won't accept original code using it.
+>
+> Sascha
+>
+OK, for now I just keep the code I copied from the u-boot.
 
 
 _______________________________________________
