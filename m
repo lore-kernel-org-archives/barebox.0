@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vs81.iboxed.net ([185.82.85.146])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bSizR-0006M6-CO
- for barebox@lists.infradead.org; Thu, 28 Jul 2016 10:56:34 +0000
-Date: Thu, 28 Jul 2016 12:54:05 +0200 (CEST)
-From: Alexander Kurz <akurz@blala.de>
-In-Reply-To: <20160721061819.GQ20657@pengutronix.de>
-Message-ID: <alpine.DEB.2.00.1607281236250.327@blala.de>
-References: <1468958994-10875-1-git-send-email-akurz@blala.de>
- <20160721061819.GQ20657@pengutronix.de>
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bSjsM-0002pr-1m
+ for barebox@lists.infradead.org; Thu, 28 Jul 2016 11:53:19 +0000
+References: <1469024265-20098-1-git-send-email-w.egorov@phytec.de>
+ <1469024265-20098-3-git-send-email-w.egorov@phytec.de>
+ <CAHQ1cqGeTRhNWXZ2-DpaN=N-=5ri7uFTkfrMBvD0yE4XLtknjw@mail.gmail.com>
+From: Wadim Egorov <w.egorov@phytec.de>
+Message-ID: <5799F20D.6050904@phytec.de>
+Date: Thu, 28 Jul 2016 13:52:45 +0200
 MIME-Version: 1.0
+In-Reply-To: <CAHQ1cqGeTRhNWXZ2-DpaN=N-=5ri7uFTkfrMBvD0yE4XLtknjw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,84 +23,141 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mfd mc13xxx: add MC13892_REVISION_3_6
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/8] ARM: rockchip: Add early debug support for RK3288
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
-thanks for applying this quickly, unfortunately this patch is not 
-correct.
+Hi Andrey,
 
-The observed MC13892 is attached to a MC508 in two different variants of 
-e-book readers. When .max_speed_hz is set faster than 16MHz (default is
-20MHz since patch 6e18b3a48ee4), the device is identified as
-> Found MC13892 ID: 0x0067fe [Rev: 3.6]
+On 20.07.2016 17:03, Andrey Smirnov wrote:
+> On Wed, Jul 20, 2016 at 7:17 AM, Wadim Egorov <w.egorov@phytec.de> wrote:
+>> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+>> ---
+>>  arch/arm/mach-rockchip/include/mach/debug_ll.h | 72 +++++++++++++++-----------
+>>  common/Kconfig                                 |  6 +--
+>>  2 files changed, 45 insertions(+), 33 deletions(-)
+>>
+>> diff --git a/arch/arm/mach-rockchip/include/mach/debug_ll.h b/arch/arm/mach-rockchip/include/mach/debug_ll.h
+>> index c666b99..144cada 100644
+>> --- a/arch/arm/mach-rockchip/include/mach/debug_ll.h
+>> +++ b/arch/arm/mach-rockchip/include/mach/debug_ll.h
+>> @@ -1,25 +1,31 @@
+>>  #ifndef __MACH_DEBUG_LL_H__
+>>  #define __MACH_DEBUG_LL_H__
+>>
+>> +#include <common.h>
+>>  #include <io.h>
+>> +#include <mach/rk3188-regs.h>
+>> +#include <mach/rk3288-regs.h>
+>> +
+>> +#ifdef CONFIG_ARCH_RK3188
+>> +
+>> +#define UART_CLOCK             100000000
+>> +#define RK_DEBUG_SOC           RK3188
+>> +#define serial_out(a, v)       writeb(v, a)
+>> +#define serial_in(a)           readb(a)
+>> +
+>> +#elif defined CONFIG_ARCH_RK3288
+>> +
+>> +#define UART_CLOCK             24000000
+>> +#define RK_DEBUG_SOC           RK3288
+>> +#define serial_out(a, v)       writel(v, a)
+>> +#define serial_in(a)           readl(a)
+> These "serial_in/out" macros seem a bit redundant to me. What's the
+> story behind them, why were they added?
 
-while indeed this device is a
-> Found MC13892 ID: 0x0045d4 [Rev: 2.4]
+writeb() does not work with RK3288. So I added serial_in/out macros to
+split the different types of memory access to the uart registers.
 
-Is it possible to drop this patch or should I post a revert patch on it?
+>
+>> -#if CONFIG_DEBUG_ROCKCHIP_UART_PORT == 0
+>> -#define UART_BASE      0x10124000
+>> -#endif
+>> -#if CONFIG_DEBUG_ROCKCHIP_UART_PORT == 1
+>> -#define UART_BASE      0x10126000
+>> -#endif
+>> -#if CONFIG_DEBUG_ROCKCHIP_UART_PORT == 2
+>> -#define UART_BASE      0x20064000
+>> -#endif
+>> -#if CONFIG_DEBUG_ROCKCHIP_UART_PORT == 3
+>> -#define UART_BASE      0x20068000
+>>  #endif
+>>
+>> -#define LSR_THRE       0x20    /* Xmit holding register empty */
+>> -#define LSR            (5 << 2)
+>> -#define THR            (0 << 2)
+>> +#define __RK_UART_BASE(soc, num) soc##_UART##num##_BASE
+>> +#define RK_UART_BASE(soc, num) __RK_UART_BASE(soc, num)
+>>
+>> +#define LSR_THRE       0x20    /* Xmit holding register empty */
+>>  #define LCR_BKSE       0x80    /* Bank select enable */
+>>  #define LSR            (5 << 2)
+>>  #define THR            (0 << 2)
+>> @@ -33,28 +39,34 @@
+>>
+>>  static inline void INIT_LL(void)
+>>  {
+>> -       unsigned int clk = 100000000;
+>> -       unsigned int divisor = clk / 16 / 115200;
+>> -
+>> -       writeb(0x00, UART_BASE + LCR);
+>> -       writeb(0x00, UART_BASE + IER);
+>> -       writeb(0x07, UART_BASE + MDR);
+>> -       writeb(LCR_BKSE, UART_BASE + LCR);
+>> -       writeb(divisor & 0xff, UART_BASE + DLL);
+>> -       writeb(divisor >> 8, UART_BASE + DLM);
+>> -       writeb(0x03, UART_BASE + LCR);
+>> -       writeb(0x03, UART_BASE + MCR);
+>> -       writeb(0x07, UART_BASE + FCR);
+>> -       writeb(0x00, UART_BASE + MDR);
+>> +       void __iomem *base = (void *)RK_UART_BASE(RK_DEBUG_SOC,
+>> +               CONFIG_DEBUG_ROCKCHIP_UART_PORT);
+> There's a IOMEM macro that you could use to avoid explicit casting.
 
-Thanks, Alexander
+ok
 
+>
+>> +       unsigned int divisor = DIV_ROUND_CLOSEST(UART_CLOCK, 16 * 115200);
+> I'd suggest CONFIG_BAUDRATE instead of hard-coded value.
 
-On Thu, 21 Jul 2016, Sascha Hauer wrote:
+ok
 
-> On Tue, Jul 19, 2016 at 10:09:54PM +0200, Alexander Kurz wrote:
-> > An MC13892CJ having REV[4:0]=0x1e can be found in the kindle-d01100.
-> > Add the revision to the list to support this device.
-> > 
-> > Signed-off-by: Alexander Kurz <akurz@blala.de>
-> 
-> Applied, thanks
-> 
-> Sascha
-> 
-> > ---
-> >  drivers/mfd/mc13xxx.c | 1 +
-> >  include/mfd/mc13xxx.h | 1 +
-> >  2 files changed, 2 insertions(+)
-> > 
-> > diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
-> > index 68d70c5..075ec49 100644
-> > --- a/drivers/mfd/mc13xxx.c
-> > +++ b/drivers/mfd/mc13xxx.c
-> > @@ -225,6 +225,7 @@ static struct __init {
-> >  	{ 0x02, MC13892_REVISION_3_2a, "3.2a" },
-> >  	{ 0x1b, MC13892_REVISION_3_3, "3.3" },
-> >  	{ 0x1d, MC13892_REVISION_3_5, "3.5" },
-> > +	{ 0x1e, MC13892_REVISION_3_6, "3.6" },
-> >  };
-> >  
-> >  static int __init mc13892_revision(struct mc13xxx *mc13xxx)
-> > diff --git a/include/mfd/mc13xxx.h b/include/mfd/mc13xxx.h
-> > index 96a32e4..8799463 100644
-> > --- a/include/mfd/mc13xxx.h
-> > +++ b/include/mfd/mc13xxx.h
-> > @@ -133,6 +133,7 @@
-> >  #define MC13892_REVISION_3_2a		9
-> >  #define MC13892_REVISION_3_3		10
-> >  #define MC13892_REVISION_3_5		11
-> > +#define MC13892_REVISION_3_6		12
-> >  
-> >  #define MC13783_SWX_VOLTAGE(x)		((x) & 0x3f)
-> >  #define MC13783_SWX_VOLTAGE_DVS(x)	(((x) & 0x3f) << 6)
-> > -- 
-> > 2.1.4
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> > 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
+>
+>> +
+>> +       serial_out(base + LCR, 0x00);
+>> +       serial_out(base + IER, 0x00);
+>> +       serial_out(base + MDR, 0x07);
+>> +       serial_out(base + LCR, LCR_BKSE);
+>> +       serial_out(base + DLL, divisor & 0xff);
+>> +       serial_out(base + DLM, divisor >> 8);
+>> +       serial_out(base + LCR, 0x03);
+>> +       serial_out(base + MCR, 0x03);
+>> +       serial_out(base + FCR, 0x07);
+>> +       serial_out(base + MDR, 0x00);
+>>  }
+>>
+>>  static inline void PUTC_LL(char c)
+>>  {
+>> +       void __iomem *base = (void *)RK_UART_BASE(RK_DEBUG_SOC,
+>> +               CONFIG_DEBUG_ROCKCHIP_UART_PORT);
+> IOMEM here as well.
+
+ok
+
+>
+>> +
+>>         /* Wait until there is space in the FIFO */
+>> -       while ((readb(UART_BASE + LSR) & LSR_THRE) == 0);
+>> +       while ((serial_in(base + LSR) & LSR_THRE) == 0)
+>> +               ;
+> You could probably separate this busy loop into a small inline
+> function and re-use it below and in the code of the full-fledged
+> driver.
+
+I don't really see the point here.
+
+Regards,
+Wadim
 
 _______________________________________________
 barebox mailing list
