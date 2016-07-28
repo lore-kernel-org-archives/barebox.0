@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bSQQK-0001Vm-H9
- for barebox@lists.infradead.org; Wed, 27 Jul 2016 15:07:07 +0000
+ id 1bSizR-0006M6-CO
+ for barebox@lists.infradead.org; Thu, 28 Jul 2016 10:56:34 +0000
+Date: Thu, 28 Jul 2016 12:54:05 +0200 (CEST)
 From: Alexander Kurz <akurz@blala.de>
-Date: Wed, 27 Jul 2016 17:04:39 +0200
-Message-Id: <1469631879-27461-1-git-send-email-akurz@blala.de>
+In-Reply-To: <20160721061819.GQ20657@pengutronix.de>
+Message-ID: <alpine.DEB.2.00.1607281236250.327@blala.de>
+References: <1468958994-10875-1-git-send-email-akurz@blala.de>
+ <20160721061819.GQ20657@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,48 +18,88 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: spi-nor: add new variants
-To: barebox@lists.infradead.org
-Cc: Alexander Kurz <akurz@blala.de>
+Subject: Re: [PATCH] mfd mc13xxx: add MC13892_REVISION_3_6
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Read access tested on W25Q20BW and MX25U4035.
+Hi,
+thanks for applying this quickly, unfortunately this patch is not 
+correct.
 
-Signed-off-by: Alexander Kurz <akurz@blala.de>
----
- drivers/mtd/spi-nor/spi-nor.c | 5 +++++
- 1 file changed, 5 insertions(+)
+The observed MC13892 is attached to a MC508 in two different variants of 
+e-book readers. When .max_speed_hz is set faster than 16MHz (default is
+20MHz since patch 6e18b3a48ee4), the device is identified as
+> Found MC13892 ID: 0x0067fe [Rev: 3.6]
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 4b55b0c..748b328 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -526,6 +526,8 @@ static const struct spi_device_id spi_nor_ids[] = {
- 	{ "mx25l3205d",  INFO(0xc22016, 0, 64 * 1024,  64, 0) },
- 	{ "mx25l3255e",  INFO(0xc29e16, 0, 64 * 1024,  64, SECT_4K) },
- 	{ "mx25l6405d",  INFO(0xc22017, 0, 64 * 1024, 128, 0) },
-+	{ "mx25u4035",   INFO(0xc22533, 0, 64 * 1024,   8, SECT_4K) },
-+	{ "mx25u8035",   INFO(0xc22534, 0, 64 * 1024,  16, SECT_4K) },
- 	{ "mx25u6435f",  INFO(0xc22537, 0, 64 * 1024, 128, SECT_4K) },
- 	{ "mx25l12805d", INFO(0xc22018, 0, 64 * 1024, 256, 0) },
- 	{ "mx25l12855e", INFO(0xc22618, 0, 64 * 1024, 256, 0) },
-@@ -631,6 +633,9 @@ static const struct spi_device_id spi_nor_ids[] = {
- 	{ "w25x80", INFO(0xef3014, 0, 64 * 1024,  16, SECT_4K) },
- 	{ "w25x16", INFO(0xef3015, 0, 64 * 1024,  32, SECT_4K) },
- 	{ "w25x32", INFO(0xef3016, 0, 64 * 1024,  64, SECT_4K) },
-+	{ "w25q20cl", INFO(0xef4012, 0, 64 * 1024,  4, SECT_4K) },
-+	{ "w25q20bw", INFO(0xef5012, 0, 64 * 1024,  4, SECT_4K) },
-+	{ "w25q20ew", INFO(0xef6012, 0, 64 * 1024,  4, SECT_4K) },
- 	{ "w25q32", INFO(0xef4016, 0, 64 * 1024,  64, SECT_4K) },
- 	{ "w25q32dw", INFO(0xef6016, 0, 64 * 1024,  64, SECT_4K) },
- 	{ "w25x64", INFO(0xef3017, 0, 64 * 1024, 128, SECT_4K) },
--- 
-2.1.4
+while indeed this device is a
+> Found MC13892 ID: 0x0045d4 [Rev: 2.4]
 
+Is it possible to drop this patch or should I post a revert patch on it?
+
+Thanks, Alexander
+
+
+On Thu, 21 Jul 2016, Sascha Hauer wrote:
+
+> On Tue, Jul 19, 2016 at 10:09:54PM +0200, Alexander Kurz wrote:
+> > An MC13892CJ having REV[4:0]=0x1e can be found in the kindle-d01100.
+> > Add the revision to the list to support this device.
+> > 
+> > Signed-off-by: Alexander Kurz <akurz@blala.de>
+> 
+> Applied, thanks
+> 
+> Sascha
+> 
+> > ---
+> >  drivers/mfd/mc13xxx.c | 1 +
+> >  include/mfd/mc13xxx.h | 1 +
+> >  2 files changed, 2 insertions(+)
+> > 
+> > diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
+> > index 68d70c5..075ec49 100644
+> > --- a/drivers/mfd/mc13xxx.c
+> > +++ b/drivers/mfd/mc13xxx.c
+> > @@ -225,6 +225,7 @@ static struct __init {
+> >  	{ 0x02, MC13892_REVISION_3_2a, "3.2a" },
+> >  	{ 0x1b, MC13892_REVISION_3_3, "3.3" },
+> >  	{ 0x1d, MC13892_REVISION_3_5, "3.5" },
+> > +	{ 0x1e, MC13892_REVISION_3_6, "3.6" },
+> >  };
+> >  
+> >  static int __init mc13892_revision(struct mc13xxx *mc13xxx)
+> > diff --git a/include/mfd/mc13xxx.h b/include/mfd/mc13xxx.h
+> > index 96a32e4..8799463 100644
+> > --- a/include/mfd/mc13xxx.h
+> > +++ b/include/mfd/mc13xxx.h
+> > @@ -133,6 +133,7 @@
+> >  #define MC13892_REVISION_3_2a		9
+> >  #define MC13892_REVISION_3_3		10
+> >  #define MC13892_REVISION_3_5		11
+> > +#define MC13892_REVISION_3_6		12
+> >  
+> >  #define MC13783_SWX_VOLTAGE(x)		((x) & 0x3f)
+> >  #define MC13783_SWX_VOLTAGE_DVS(x)	(((x) & 0x3f) << 6)
+> > -- 
+> > 2.1.4
+> > 
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> > 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
 
 _______________________________________________
 barebox mailing list
