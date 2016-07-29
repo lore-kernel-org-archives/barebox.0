@@ -1,19 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-x242.google.com ([2607:f8b0:4002:c05::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bSqjv-0004XU-NP
- for barebox@lists.infradead.org; Thu, 28 Jul 2016 19:13:04 +0000
-Received: by mail-yw0-x242.google.com with SMTP id j12so6747718ywb.1
- for <barebox@lists.infradead.org>; Thu, 28 Jul 2016 12:12:42 -0700 (PDT)
+ id 1bTCMX-0002Hs-CJ
+ for barebox@lists.infradead.org; Fri, 29 Jul 2016 18:18:22 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri, 29 Jul 2016 20:17:56 +0200
+Message-Id: <1469816276-27908-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <5799F2BB.2020205@phytec.de>
-References: <1469024265-20098-1-git-send-email-w.egorov@phytec.de>
- <1469024265-20098-2-git-send-email-w.egorov@phytec.de>
- <CAHQ1cqF9vATXHQRTo=kX+2W3EEb0mzSJXRp=LOHWFaNZfi1zOg@mail.gmail.com>
- <5799F2BB.2020205@phytec.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 28 Jul 2016 12:12:41 -0700
-Message-ID: <CAHQ1cqHY2qBXDrH5Ai3H5S0Hu8J+L4PqxYH3iDG1noZHFsk8Gw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +15,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/8] ARM: rockchip: Add timer driver
-To: Wadim Egorov <w.egorov@phytec.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: i.MX: pcm043: add a flash-header.imxcfg
+To: barebox@lists.infradead.org
 
-On Thu, Jul 28, 2016 at 4:55 AM, Wadim Egorov <w.egorov@phytec.de> wrote:
->
->
-> On 20.07.2016 19:35, Andrey Smirnov wrote:
->> On Wed, Jul 20, 2016 at 7:17 AM, Wadim Egorov <w.egorov@phytec.de> wrote:
->>> This driver comes from the u-boot (v2016.01).
->> I'd suggest this to be moved to "drivers/clocksource" and converted to
->> a proper driver that binds against DT node and doesn't use a CONFIG_*
->> symbol to determine its base address.
->
-> I want to use this driver in the SPL part later. The SRAM we can use is
-> very limited on the RK3288. So I don't want to add more DT code here.
-
-You can do add_generic_device() in SPL and compiler would probably
-throw away the majority, if not all, of DT specific code if
-CONFIG_OFTREE is not enabled.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBjcmVhdGVzIGFuIGltYWdlIHRoYXQgY2FuIGJlIGJvb3RlZCB2aWEgVVNCLgoKU2lnbmVk
+LW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5k
+ZT4KLS0tCiBhcmNoL2FybS9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICB8ICAxICsKIC4uLi9waHl0ZWMtcGh5Y29yZS1pbXgzNS9mbGFzaC1oZWFkZXIuaW14Y2ZnICAg
+ICAgIHwgMzcgKysrKysrKysrKysrKysrKysrKysrKwogMiBmaWxlcyBjaGFuZ2VkLCAzOCBpbnNl
+cnRpb25zKCspCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHlj
+b3JlLWlteDM1L2ZsYXNoLWhlYWRlci5pbXhjZmcKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9NYWtl
+ZmlsZSBiL2FyY2gvYXJtL01ha2VmaWxlCmluZGV4IDlmYzNjZDNkZWJhYS4uNzY4YzUwMzc5ZmZk
+IDEwMDY0NAotLS0gYS9hcmNoL2FybS9NYWtlZmlsZQorKysgYi9hcmNoL2FybS9NYWtlZmlsZQpA
+QCAtMjUyLDYgKzI1Miw3IEBAIGlteGNmZy0kKENPTkZJR19NQUNIX0ZSRUVTQ0FMRV9NWDM1XzNT
+VEFDSykgKz0gJChib2FyZGRpcikvZnJlZXNjYWxlLW14MzUtM2RzL2ZsCiBpbXhjZmctJChDT05G
+SUdfTUFDSF9UUU1BNTMpICs9ICQoYm9hcmRkaXIpL3RxbWE1My9mbGFzaC1oZWFkZXIuaW14Y2Zn
+CiBpbXhjZmctJChDT05GSUdfTUFDSF9FVUtSRUFfQ1BVSU1YMjUpICs9ICQoYm9hcmRkaXIpL2V1
+a3JlYV9jcHVpbXgyNS9mbGFzaC1oZWFkZXIuaW14Y2ZnCiBpbXhjZmctJChDT05GSUdfTUFDSF9F
+VUtSRUFfQ1BVSU1YMzUpICs9ICQoYm9hcmRkaXIpL2V1a3JlYV9jcHVpbXgzNS9mbGFzaC1oZWFk
+ZXIuaW14Y2ZnCitpbXhjZmctJChDT05GSUdfTUFDSF9QQ00wNDMpICs9ICQoYm9hcmRkaXIpL3Bo
+eXRlYy1waHljb3JlLWlteDM1L2ZsYXNoLWhlYWRlci5pbXhjZmcKIGlteGNmZy0kKENPTkZJR19N
+QUNIX0tJTkRMRTMpICs9ICQoYm9hcmRkaXIpL2tpbmRsZTMvZmxhc2gtaGVhZGVyLmlteGNmZwog
+aW14Y2ZnLSQoQ09ORklHX1RYNTNfUkVWXzEwMTEpICs9ICQoYm9hcmRkaXIpL2thcm8tdHg1My9m
+bGFzaC1oZWFkZXItdHg1My1yZXYxMDExLmlteGNmZwogaW14Y2ZnLSQoQ09ORklHX1RYNTNfUkVW
+X1hYMzApICs9ICQoYm9hcmRkaXIpL2thcm8tdHg1My9mbGFzaC1oZWFkZXItdHg1My1yZXZ4eDMw
+LmlteGNmZwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljb3JlLWlteDM1
+L2ZsYXNoLWhlYWRlci5pbXhjZmcgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNvcmUtaW14
+MzUvZmxhc2gtaGVhZGVyLmlteGNmZwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAw
+MDAwMDAuLjM2YjY4Y2Q3ZWUyZAotLS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9w
+aHl0ZWMtcGh5Y29yZS1pbXgzNS9mbGFzaC1oZWFkZXIuaW14Y2ZnCkBAIC0wLDAgKzEsMzcgQEAK
+K3NvYyBpbXgzNQorZGNkb2ZzIDB4NDAwCitsb2FkYWRkciAweDgwMDAwMDAwCit3bSAzMiAweDUz
+ZjgwMDA0IDB4MDA4MjEwMDAKK3dtIDMyIDB4NTNmODAwMDQgMHgwMDgyMTAwMAorCit3bSAzMiAw
+eDQzZmFjNzk0IDB4MDAwMDA4MDAKK3dtIDMyIDB4NDNmYWM3OTggMHgwMDAwMDgwMAord20gMzIg
+MHg0M2ZhYzc5YyAweDAwMDAwODAwCit3bSAzMiAweDQzZmFjN2EwIDB4MDAwMDA4MDAKK3dtIDMy
+IDB4NDNmYWM3YTQgMHgwMDAwMDgwMAorCit3bSAzMiAweGI4MDAxMDEwIDB4MDAwMDAzMDQKK3dt
+IDMyIDB4YjgwMDEwMDQgMHgwMDI1NTQxZgord20gMzIgMHhiODAwMTAwMCAweDkyMjIwMDAwCit3
+bSAzMiAweDgwMDAwNDAwIDB4MTIzNDU2NzgKKword20gMzIgMHhiODAwMTAwMCAweGI4MDAxMDAw
+Cit3bSA4ICAweDg0MDAwMDAwIDB4ZGEKK3dtIDggIDB4ODYwMDAwMDAgMHhkYQord20gOCAgMHg4
+MjAwMDQwMCAweGRhCit3bSA4ICAweDgwMDAwMzMzIDB4ZGEKKword20gMzIgMHhiODAwMTAwMCAw
+eDkyMjIwMDAwCit3bSAzMiAweDgwMDAwNDAwIDB4MTIzNDU2NzgKKword20gMzIgMHhiODAwMTAw
+MCAweGEyMjIwMDAwCit3bSAzMiAweDgwMDAwMDAwIDB4MTIzNDQzMjEKK3dtIDMyIDB4ODAwMDAw
+MDAgMHgxMjM0NDMyMQord20gMzIgMHhiODAwMTAwMCAweGIyMjIwMDAwCit3bSA4ICAweDgwMDAw
+MjMzIDB4ZGEKK3dtIDggIDB4ODIwMDA3ODAgMHhkYQord20gOCAgMHg4MjAwMDQwMCAweGRhCit3
+bSAzMiAweGI4MDAxMDAwIDB4ODIyMjAwODAKK3dtIDMyIDB4YjgwMDEwMDAgMHg4MjIyODA4MAor
+d20gMzIgMHhiODAwMTAwOCAweDAwMDAyMDAwCisKLS0gCjIuOC4xCgoKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
+ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
+YW4vbGlzdGluZm8vYmFyZWJveAo=
