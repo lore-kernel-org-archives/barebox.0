@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bUoo0-0004AC-Fj
- for barebox@lists.infradead.org; Wed, 03 Aug 2016 05:33:25 +0000
-Date: Wed, 3 Aug 2016 07:33:02 +0200
+ id 1bUoik-0001xG-70
+ for barebox@lists.infradead.org; Wed, 03 Aug 2016 05:28:00 +0000
+Date: Wed, 3 Aug 2016 07:27:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160803053302.GG20657@pengutronix.de>
-References: <1469816276-27908-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Message-ID: <20160803052731.GC20657@pengutronix.de>
+References: <1469630524-27224-1-git-send-email-akurz@blala.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1469816276-27908-1-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1469630524-27224-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,110 +18,147 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX: pcm043: add a flash-header.imxcfg
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] ARM i.MX31: add SPI support
+To: Alexander Kurz <akurz@blala.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jul 29, 2016 at 08:17:56PM +0200, Uwe Kleine-K=F6nig wrote:
-> This creates an image that can be booted via USB.
-> =
-
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  arch/arm/Makefile                                  |  1 +
->  .../phytec-phycore-imx35/flash-header.imxcfg       | 37 ++++++++++++++++=
-++++++
->  2 files changed, 38 insertions(+)
->  create mode 100644 arch/arm/boards/phytec-phycore-imx35/flash-header.imx=
-cfg
+On Wed, Jul 27, 2016 at 04:42:04PM +0200, Alexander Kurz wrote:
+> The i.MX31 SPI interface was refered by freescale as spi_ver_0_4 in one
+> of their older vendor extended linux releases. spi_ver_0_4 differs only
+> in minor aspects to spi_ver_0_7 (i.MX35) which is already supported by
+> barebox.
+> Regarding barebox, the differences boil down to the location and length
+> of the CHIP SELECT and BIT COUNT/BURST LENGTH elements of CONREG. The
+> spi_ver_0_4 variant is limited to single word bursts with a maximum of
+> 32 bits_per_word.
+> 
+> Add support for the i.MX31 SPI interface to the barebox spi_ver_0_7
+> implementation.
+> 
+> Signed-off-by: Alexander Kurz <akurz@blala.de>
 
 Applied, thanks
 
 Sascha
 
-> =
-
-> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> index 9fc3cd3debaa..768c50379ffd 100644
-> --- a/arch/arm/Makefile
-> +++ b/arch/arm/Makefile
-> @@ -252,6 +252,7 @@ imxcfg-$(CONFIG_MACH_FREESCALE_MX35_3STACK) +=3D $(bo=
-arddir)/freescale-mx35-3ds/fl
->  imxcfg-$(CONFIG_MACH_TQMA53) +=3D $(boarddir)/tqma53/flash-header.imxcfg
->  imxcfg-$(CONFIG_MACH_EUKREA_CPUIMX25) +=3D $(boarddir)/eukrea_cpuimx25/f=
-lash-header.imxcfg
->  imxcfg-$(CONFIG_MACH_EUKREA_CPUIMX35) +=3D $(boarddir)/eukrea_cpuimx35/f=
-lash-header.imxcfg
-> +imxcfg-$(CONFIG_MACH_PCM043) +=3D $(boarddir)/phytec-phycore-imx35/flash=
--header.imxcfg
->  imxcfg-$(CONFIG_MACH_KINDLE3) +=3D $(boarddir)/kindle3/flash-header.imxc=
-fg
->  imxcfg-$(CONFIG_TX53_REV_1011) +=3D $(boarddir)/karo-tx53/flash-header-t=
-x53-rev1011.imxcfg
->  imxcfg-$(CONFIG_TX53_REV_XX30) +=3D $(boarddir)/karo-tx53/flash-header-t=
-x53-revxx30.imxcfg
-> diff --git a/arch/arm/boards/phytec-phycore-imx35/flash-header.imxcfg b/a=
-rch/arm/boards/phytec-phycore-imx35/flash-header.imxcfg
-> new file mode 100644
-> index 000000000000..36b68cd7ee2d
-> --- /dev/null
-> +++ b/arch/arm/boards/phytec-phycore-imx35/flash-header.imxcfg
-> @@ -0,0 +1,37 @@
-> +soc imx35
-> +dcdofs 0x400
-> +loadaddr 0x80000000
-> +wm 32 0x53f80004 0x00821000
-> +wm 32 0x53f80004 0x00821000
+> ---
+>  arch/arm/mach-imx/include/mach/devices-imx31.h |  6 +++---
+>  drivers/spi/Kconfig                            |  2 +-
+>  drivers/spi/imx_spi.c                          | 15 ++++++++++++---
+>  include/spi/imx-spi.h                          |  7 +++++++
+>  4 files changed, 23 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/include/mach/devices-imx31.h b/arch/arm/mach-imx/include/mach/devices-imx31.h
+> index 63319fe..7c70e40 100644
+> --- a/arch/arm/mach-imx/include/mach/devices-imx31.h
+> +++ b/arch/arm/mach-imx/include/mach/devices-imx31.h
+> @@ -4,17 +4,17 @@
+>  
+>  static inline struct device_d *imx31_add_spi0(struct spi_imx_master *pdata)
+>  {
+> -	return imx_add_spi_imx27((void *)MX31_CSPI1_BASE_ADDR, 0, pdata);
+> +	return imx_add_spi_imx35((void *)MX31_CSPI1_BASE_ADDR, 0, pdata);
+>  }
+>  
+>  static inline struct device_d *imx31_add_spi1(struct spi_imx_master *pdata)
+>  {
+> -	return imx_add_spi_imx27((void *)MX31_CSPI2_BASE_ADDR, 1, pdata);
+> +	return imx_add_spi_imx35((void *)MX31_CSPI2_BASE_ADDR, 1, pdata);
+>  }
+>  
+>  static inline struct device_d *imx31_add_spi2(struct spi_imx_master *pdata)
+>  {
+> -	return imx_add_spi_imx27((void *)MX31_CSPI3_BASE_ADDR, 2, pdata);
+> +	return imx_add_spi_imx35((void *)MX31_CSPI3_BASE_ADDR, 2, pdata);
+>  }
+>  
+>  static inline struct device_d *imx31_add_uart0(void)
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index 738b88e..9a71b3b 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -33,7 +33,7 @@ config DRIVER_SPI_IMX_0_0
+>  
+>  config DRIVER_SPI_IMX_0_7
+>  	bool
+> -	depends on ARCH_IMX25 || ARCH_IMX35 || ARCH_IMX53
+> +	depends on ARCH_IMX25 || ARCH_IMX31 || ARCH_IMX35 || ARCH_IMX53
+>  	default y
+>  
+>  config DRIVER_SPI_IMX_2_3
+> diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+> index 99ec228..67968e0 100644
+> --- a/drivers/spi/imx_spi.c
+> +++ b/drivers/spi/imx_spi.c
+> @@ -206,7 +206,12 @@ static void cspi_0_7_chipselect(struct spi_device *spi, int is_active)
+>  	reg |= spi_imx_clkdiv_2(clk_get_rate(imx->clk), spi->max_speed_hz) <<
+>  		CSPI_0_7_CTRL_DR_SHIFT;
+>  
+> -	reg |= (spi->bits_per_word - 1) << CSPI_0_7_CTRL_BL_SHIFT;
+> +	if (cpu_is_mx31())
+> +		reg |= ((spi->bits_per_word - 1) & CSPI_0_4_CTRL_BL_MASK)
+> +			<< CSPI_0_4_CTRL_BL_SHIFT;
+> +	else
+> +		reg |= (spi->bits_per_word - 1) << CSPI_0_7_CTRL_BL_SHIFT;
 > +
-> +wm 32 0x43fac794 0x00000800
-> +wm 32 0x43fac798 0x00000800
-> +wm 32 0x43fac79c 0x00000800
-> +wm 32 0x43fac7a0 0x00000800
-> +wm 32 0x43fac7a4 0x00000800
+>  	reg |= CSPI_0_7_CTRL_SSCTL;
+>  
+>  	if (spi->mode & SPI_CPHA)
+> @@ -215,8 +220,12 @@ static void cspi_0_7_chipselect(struct spi_device *spi, int is_active)
+>  		reg |= CSPI_0_7_CTRL_POL;
+>  	if (spi->mode & SPI_CS_HIGH)
+>  		reg |= CSPI_0_7_CTRL_SSPOL;
+> -	if (gpio < 0)
+> -		reg |= (gpio + 32) << CSPI_0_7_CTRL_CS_SHIFT;
+> +	if (gpio < 0) {
+> +		if (cpu_is_mx31())
+> +			reg |= (gpio + 32) << CSPI_0_4_CTRL_CS_SHIFT;
+> +		else
+> +			reg |= (gpio + 32) << CSPI_0_7_CTRL_CS_SHIFT;
+> +	}
+>  
+>  	writel(reg, base + CSPI_0_7_CTRL);
+>  
+> diff --git a/include/spi/imx-spi.h b/include/spi/imx-spi.h
+> index 221c665..a592573 100644
+> --- a/include/spi/imx-spi.h
+> +++ b/include/spi/imx-spi.h
+> @@ -40,6 +40,12 @@
+>  
+>  #define CSPI_0_0_RESET_START		(1 << 0)
+>  
+> +#define CSPI_0_4_CTRL			0x08
+> +#define CSPI_0_4_CTRL_BL_SHIFT		8
+> +#define CSPI_0_4_CTRL_BL_MASK		0x1f
+> +#define CSPI_0_4_CTRL_DRCTL_SHIFT	20
+> +#define CSPI_0_4_CTRL_CS_SHIFT		24
 > +
-> +wm 32 0xb8001010 0x00000304
-> +wm 32 0xb8001004 0x0025541f
-> +wm 32 0xb8001000 0x92220000
-> +wm 32 0x80000400 0x12345678
-> +
-> +wm 32 0xb8001000 0xb8001000
-> +wm 8  0x84000000 0xda
-> +wm 8  0x86000000 0xda
-> +wm 8  0x82000400 0xda
-> +wm 8  0x80000333 0xda
-> +
-> +wm 32 0xb8001000 0x92220000
-> +wm 32 0x80000400 0x12345678
-> +
-> +wm 32 0xb8001000 0xa2220000
-> +wm 32 0x80000000 0x12344321
-> +wm 32 0x80000000 0x12344321
-> +wm 32 0xb8001000 0xb2220000
-> +wm 8  0x80000233 0xda
-> +wm 8  0x82000780 0xda
-> +wm 8  0x82000400 0xda
-> +wm 32 0xb8001000 0x82220080
-> +wm 32 0xb8001000 0x82228080
-> +wm 32 0xb8001008 0x00002000
-> +
-> -- =
-
-> 2.8.1
-> =
-
-> =
-
+>  #define CSPI_0_7_RXDATA			0x00
+>  #define CSPI_0_7_TXDATA			0x04
+>  #define CSPI_0_7_CTRL			0x08
+> @@ -50,6 +56,7 @@
+>  #define CSPI_0_7_CTRL_PHA		(1 << 5)
+>  #define CSPI_0_7_CTRL_SSCTL		(1 << 6)
+>  #define CSPI_0_7_CTRL_SSPOL		(1 << 7)
+> +#define CSPI_0_7_CTRL_DRCTL_SHIFT	8
+>  #define CSPI_0_7_CTRL_CS_SHIFT		12
+>  #define CSPI_0_7_CTRL_DR_SHIFT		16
+>  #define CSPI_0_7_CTRL_BL_SHIFT		20
+> -- 
+> 2.1.4
+> 
+> 
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
