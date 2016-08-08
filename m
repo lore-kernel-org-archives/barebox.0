@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-yw0-x244.google.com ([2607:f8b0:4002:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bWlL6-0004Rm-DI
- for barebox@lists.infradead.org; Mon, 08 Aug 2016 14:15:37 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
- helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <l.stach@pengutronix.de>) id 1bWlKk-0006YD-A3
- for barebox@lists.infradead.org; Mon, 08 Aug 2016 16:15:14 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon,  8 Aug 2016 16:15:14 +0200
-Message-Id: <1470665714-29139-1-git-send-email-l.stach@pengutronix.de>
+ id 1bWmCt-0003hE-Sf
+ for barebox@lists.infradead.org; Mon, 08 Aug 2016 15:11:12 +0000
+Received: by mail-yw0-x244.google.com with SMTP id z8so24858561ywa.0
+ for <barebox@lists.infradead.org>; Mon, 08 Aug 2016 08:10:51 -0700 (PDT)
+MIME-Version: 1.0
+From: =?UTF-8?Q?Vicen=C3=A7?= <vicencb@gmail.com>
+Date: Mon, 8 Aug 2016 17:10:49 +0200
+Message-ID: <CAAMcf8DgyE7AkOJ-JnZuYsMSL84qp2Srbgr=Kv5RkqEOTjqB-Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +17,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] net: phy: fixed-link: read link parameters from devicetree
+Subject: Issue with MMU-less OMAP4
 To: barebox@lists.infradead.org
 
-Implement the missing reading of the fixed link parameters from
-the devicetree properties.
+Hello,
+I've updated the barebox version running on an archosG9 board since a
+long time ago and it broke.
+After searching for the problem found the commit causing the issue:
+http://git.pengutronix.de/?p=barebox.git;a=commitdiff;h=dba6b4919e5b678b3b78b828b54504913577d337
+When booting from USB is desired in an OMAP4 system, the MMU needs to
+be disabled because the ROM code that deals with the USB
+communications does not get on well with it.
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
-v2: fix coding style
----
- drivers/net/phy/phy.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+The issue is that it "hangs" when calling:
+set_vbar((unsigned int)vectors);
+I have no idea on how to fix the issue other than reverting the commit.
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 13b832470926..4f228829e510 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -309,11 +309,14 @@ static struct phy_device *of_phy_register_fixed_link(struct device_node *np,
- 
- 	phydev->dev.parent = &edev->dev;
- 	phydev->registered = 1;
--	phydev->speed = 1000;
--	phydev->duplex = 1;
--	phydev->pause = phydev->asym_pause = 0;
- 	phydev->link = 1;
- 
-+	if (of_property_read_u32(np, "speed", &phydev->speed))
-+		return NULL;
-+	phydev->duplex = of_property_read_bool(np, "full-duplex");
-+	phydev->pause = of_property_read_bool(np, "pause");
-+	phydev->asym_pause = of_property_read_bool(np, "asym-pause");
-+
- 	return phydev;
- }
- 
--- 
-2.8.1
+Does that happen on other OMAP4 boards when the MMU is disabled?
+Does that happen on other OMAPs?
+Does that happen on other ARMs?
 
+If a fix if found, I would be glad to test.
+
+Thanks,
+  Vicente Bergas.
 
 _______________________________________________
 barebox mailing list
