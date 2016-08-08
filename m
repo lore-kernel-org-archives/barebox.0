@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-x244.google.com ([2607:f8b0:4002:c05::244])
+Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bWmCt-0003hE-Sf
- for barebox@lists.infradead.org; Mon, 08 Aug 2016 15:11:12 +0000
-Received: by mail-yw0-x244.google.com with SMTP id z8so24858561ywa.0
- for <barebox@lists.infradead.org>; Mon, 08 Aug 2016 08:10:51 -0700 (PDT)
-MIME-Version: 1.0
-From: =?UTF-8?Q?Vicen=C3=A7?= <vicencb@gmail.com>
-Date: Mon, 8 Aug 2016 17:10:49 +0200
-Message-ID: <CAAMcf8DgyE7AkOJ-JnZuYsMSL84qp2Srbgr=Kv5RkqEOTjqB-Q@mail.gmail.com>
+ id 1bWnKE-0003XF-SF
+ for barebox@lists.infradead.org; Mon, 08 Aug 2016 16:22:51 +0000
+Received: by mail-wm0-x242.google.com with SMTP id o80so16468546wme.0
+ for <barebox@lists.infradead.org>; Mon, 08 Aug 2016 09:22:30 -0700 (PDT)
+Date: Mon, 8 Aug 2016 19:25:18 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20160808192518.8ced7511ddd80ceb9a208f92@gmail.com>
+In-Reply-To: <1470665714-29139-1-git-send-email-l.stach@pengutronix.de>
+References: <1470665714-29139-1-git-send-email-l.stach@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,34 +19,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Issue with MMU-less OMAP4
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] net: phy: fixed-link: read link parameters from
+ devicetree
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hello,
-I've updated the barebox version running on an archosG9 board since a
-long time ago and it broke.
-After searching for the problem found the commit causing the issue:
-http://git.pengutronix.de/?p=barebox.git;a=commitdiff;h=dba6b4919e5b678b3b78b828b54504913577d337
-When booting from USB is desired in an OMAP4 system, the MMU needs to
-be disabled because the ROM code that deals with the USB
-communications does not get on well with it.
+On Mon,  8 Aug 2016 16:15:14 +0200
+Lucas Stach <l.stach@pengutronix.de> wrote:
 
-The issue is that it "hangs" when calling:
-set_vbar((unsigned int)vectors);
-I have no idea on how to fix the issue other than reverting the commit.
+> Implement the missing reading of the fixed link parameters from
+> the devicetree properties.
+> =
 
-Does that happen on other OMAP4 boards when the MMU is disabled?
-Does that happen on other OMAPs?
-Does that happen on other ARMs?
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+> v2: fix coding style
+> ---
+>  drivers/net/phy/phy.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> =
 
-If a fix if found, I would be glad to test.
+> diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+> index 13b832470926..4f228829e510 100644
+> --- a/drivers/net/phy/phy.c
+> +++ b/drivers/net/phy/phy.c
+> @@ -309,11 +309,14 @@ static struct phy_device *of_phy_register_fixed_lin=
+k(struct device_node *np,
+>  =
 
-Thanks,
-  Vicente Bergas.
+>  	phydev->dev.parent =3D &edev->dev;
+>  	phydev->registered =3D 1;
+> -	phydev->speed =3D 1000;
+> -	phydev->duplex =3D 1;
+> -	phydev->pause =3D phydev->asym_pause =3D 0;
+>  	phydev->link =3D 1;
+>  =
+
+> +	if (of_property_read_u32(np, "speed", &phydev->speed))
+> +		return NULL;
+
+        phy_device_create() allocated memory for the phydev structure
+        via xzalloc(). with this 'return NULL' we have a memory leak here.
+
+> +	phydev->duplex =3D of_property_read_bool(np, "full-duplex");
+> +	phydev->pause =3D of_property_read_bool(np, "pause");
+> +	phydev->asym_pause =3D of_property_read_bool(np, "asym-pause");
+> +
+>  	return phydev;
+>  }
+>  =
+
+> -- =
+
+> 2.8.1
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
