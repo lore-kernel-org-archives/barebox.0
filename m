@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bWinH-0006JH-SG
- for barebox@lists.infradead.org; Mon, 08 Aug 2016 11:32:32 +0000
-Received: by mail-wm0-x242.google.com with SMTP id i5so14855845wmg.2
- for <barebox@lists.infradead.org>; Mon, 08 Aug 2016 04:32:11 -0700 (PDT)
-From: Vicente Bergas <vicencb@gmail.com>
-Date: Mon,  8 Aug 2016 13:31:43 +0200
-Message-Id: <20160808113143.8048-1-vicencb@gmail.com>
+ id 1bWlL6-0004Rm-DI
+ for barebox@lists.infradead.org; Mon, 08 Aug 2016 14:15:37 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.80)
+ (envelope-from <l.stach@pengutronix.de>) id 1bWlKk-0006YD-A3
+ for barebox@lists.infradead.org; Mon, 08 Aug 2016 16:15:14 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon,  8 Aug 2016 16:15:14 +0200
+Message-Id: <1470665714-29139-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +24,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] [PATCH] fix ARMv8 interference with ARMv7
+Subject: [PATCH v2] net: phy: fixed-link: read link parameters from devicetree
 To: barebox@lists.infradead.org
-Cc: Vicente Bergas <vicencb@gmail.com>
 
-CONFIG_CPU_V8 is checked against 'y' and 'n', but the case when the
-variable is unset is not considered.
-This patch only checks the variable against a single value 'y' so the
-logic is always coherent even when the variable is unset.
+Implement the missing reading of the fixed link parameters from
+the devicetree properties.
 
-Signed-off-by: Vicente Bergas <vicencb@gmail.com>
-Tested-by: Vicente Bergas <vicencb@gmail.com>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v2: fix coding style
+---
+ drivers/net/phy/phy.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 9fc3cd3..1ab35b9 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -21,7 +21,7 @@ endif
- # at least some of the code would be executed with MMU off, lets be
- # conservative and instruct the compiler not to generate any unaligned
- # accesses
--ifeq ($(CONFIG_CPU_V8),n)
-+ifneq ($(CONFIG_CPU_V8),y)
- CFLAGS += -mno-unaligned-access
- endif
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index 13b832470926..4f228829e510 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -309,11 +309,14 @@ static struct phy_device *of_phy_register_fixed_link(struct device_node *np,
+ 
+ 	phydev->dev.parent = &edev->dev;
+ 	phydev->registered = 1;
+-	phydev->speed = 1000;
+-	phydev->duplex = 1;
+-	phydev->pause = phydev->asym_pause = 0;
+ 	phydev->link = 1;
+ 
++	if (of_property_read_u32(np, "speed", &phydev->speed))
++		return NULL;
++	phydev->duplex = of_property_read_bool(np, "full-duplex");
++	phydev->pause = of_property_read_bool(np, "pause");
++	phydev->asym_pause = of_property_read_bool(np, "asym-pause");
++
+ 	return phydev;
+ }
  
 -- 
-2.9.2
+2.8.1
 
 
 _______________________________________________
