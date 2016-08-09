@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yb0-x232.google.com ([2607:f8b0:4002:c09::232])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bX0GJ-0002Lc-5q
- for barebox@lists.infradead.org; Tue, 09 Aug 2016 06:11:41 +0000
-Received: by mail-yb0-x232.google.com with SMTP id g133so980540ybf.2
- for <barebox@lists.infradead.org>; Mon, 08 Aug 2016 23:11:18 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <CAAMcf8DgyE7AkOJ-JnZuYsMSL84qp2Srbgr=Kv5RkqEOTjqB-Q@mail.gmail.com>
-References: <CAAMcf8DgyE7AkOJ-JnZuYsMSL84qp2Srbgr=Kv5RkqEOTjqB-Q@mail.gmail.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 8 Aug 2016 23:11:17 -0700
-Message-ID: <CAHQ1cqGwJRt+h=R9xp1vQY7cDZ7npdqQtuB8NuaHw30H1fkAkg@mail.gmail.com>
+ id 1bX129-0007lX-1s
+ for barebox@lists.infradead.org; Tue, 09 Aug 2016 07:01:09 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Tue,  9 Aug 2016 09:00:28 +0200
+Message-Id: <1470726028-32152-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,60 +14,101 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Issue with MMU-less OMAP4
-To: =?UTF-8?Q?Vicen=C3=A7?= <vicencb@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] clk: socfpga: add divider registers to the main pll outputs
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, Enrico Jorns <ejo@pengutronix.de>
 
-T24gTW9uLCBBdWcgOCwgMjAxNiBhdCA4OjEwIEFNLCBWaWNlbsOnIDx2aWNlbmNiQGdtYWlsLmNv
-bT4gd3JvdGU6Cj4gSGVsbG8sCj4gSSd2ZSB1cGRhdGVkIHRoZSBiYXJlYm94IHZlcnNpb24gcnVu
-bmluZyBvbiBhbiBhcmNob3NHOSBib2FyZCBzaW5jZSBhCj4gbG9uZyB0aW1lIGFnbyBhbmQgaXQg
-YnJva2UuCj4gQWZ0ZXIgc2VhcmNoaW5nIGZvciB0aGUgcHJvYmxlbSBmb3VuZCB0aGUgY29tbWl0
-IGNhdXNpbmcgdGhlIGlzc3VlOgo+IGh0dHA6Ly9naXQucGVuZ3V0cm9uaXguZGUvP3A9YmFyZWJv
-eC5naXQ7YT1jb21taXRkaWZmO2g9ZGJhNmI0OTE5ZTViNjc4YjNiNzhiODI4YjU0NTA0OTEzNTc3
-ZDMzNwo+IFdoZW4gYm9vdGluZyBmcm9tIFVTQiBpcyBkZXNpcmVkIGluIGFuIE9NQVA0IHN5c3Rl
-bSwgdGhlIE1NVSBuZWVkcyB0bwo+IGJlIGRpc2FibGVkIGJlY2F1c2UgdGhlIFJPTSBjb2RlIHRo
-YXQgZGVhbHMgd2l0aCB0aGUgVVNCCj4gY29tbXVuaWNhdGlvbnMgZG9lcyBub3QgZ2V0IG9uIHdl
-bGwgd2l0aCBpdC4KPgo+IFRoZSBpc3N1ZSBpcyB0aGF0IGl0ICJoYW5ncyIgd2hlbiBjYWxsaW5n
-Ogo+IHNldF92YmFyKCh1bnNpZ25lZCBpbnQpdmVjdG9ycyk7Cj4gSSBoYXZlIG5vIGlkZWEgb24g
-aG93IHRvIGZpeCB0aGUgaXNzdWUgb3RoZXIgdGhhbiByZXZlcnRpbmcgdGhlIGNvbW1pdC4KPgoK
-SSBkb24ndCBoYXZlIGV4dGVuc2l2ZSBrbm93bGVkZ2Ugb2YgT01BUDQgc2luY2UgSSBuZXZlciB3
-b3JrZWQgd2l0aAp0aGF0IFNvQy4gSG93ZXZlciBmcm9tIHRpZGJpdHMgb2YgaW5mb3JtYXRpb24g
-dGhhdCBJIGFtIGdsZWFuaW5nIGZyb20KY29tbWVudHMgaW4gQmFyZWJveCBpdCBzZWVtcyB0aGF0
-IHBhcnRpY3VsYXIgdmVyc2lvbiBvZiBmdW5jdGlvbmFsaXR5Cm1ha2VzIHVzZSBvZiBpbnRlcnJ1
-cHRzLiBUaGlzIGdpdmVzIG1lIGEgc3Ryb25nIHN1c3BpY2lvbiB0aGF0IHdoYXQKaGFwcGVucyBp
-cyB0aGF0IGFzIHNvb24gYXMgc2V0X3ZiYXIoKSBjYWxsIGlzIGRvbmUgKHdoaWNoIHdpbGwKcmUt
-cG9pbnQgQ1BVIHRvIGEgZGlmZmVyZW50IGludGVycnVwdCB2ZWN0b3IgdGFibGUpIG9uZSBvZiB0
-aGUKaW50ZXJydXB0cyBhcnJpdmVzIGFuZCBzZW5kcyB0aGUgcHJvY2Vzc29yIGludG8gbGEtbGEg
-bGFuZCwgc2luY2UKQmFyZWJveCBleGNlcHRpb24gdGFibGUgZG9lc24ndCBoYXZlIGFueXRoaW5n
-IGJ1dCBiYXNpYyBlbnRyaWVzLgoKU28sIGlmIG15IGd1ZXNzIGlzIGNvcnJlY3QsIHdoYXQgd2Fz
-IGhhcHBlbmluZyBwcmlvciB0byB0aGF0IGNvbW1pdAp3YXMgdGhhdCBvbiBhbnkgaGFyZHdhcmUs
-IGluIE1NVS1sZXNzIG1vZGUsIEJhcmVib3ggd291bGQgbm90IHJlLXBvaW50CnRoZSBDUFUgdG8g
-aXQncyBvd24gZXhjZXB0aW9uIGhhbmRsZXMgYW5kIGFzIHN1Y2ggd291bGQgbm90IGhhbmRsZQp0
-aGVtIGF0IGFsbChpbmNvcnJlY3QgYmVoYXZpb3IpLCBob3dldmVyIHRoYXQgd2FzIGEgZGVzaXJl
-ZCBiZWhhdmlvcgpvbiBPTUFQNCBzaW5jZSB0aGlzIHdvdWxkIHJlc3VsdCBpbiBST00gY29kZSBk
-b2luZyBhbGwgb2YgdGhlCmV4Y2VwdGlvbi9pbnRlcnJ1cHQgaGFuZGxpbmcgd29yay4gQW5kIGlm
-IHRoYXQgaXMgdGhlIGNhc2UgZml4aW5nIHRoZQpwcm9ibGVtIGZvciB0aGUgcmVzdCBvZiB0aGUg
-U29DcywgYnJva2UgaXQgZm9yIE9NQVA0IHdoaWNoIHdhcyByZWx5aW5nCm9uIGNvbnRyb2wgYmVp
-bmcgcGFzc2VkIHRvIFJPTSBmb3IgaW50ZXJydXB0IGhhbmRsaW5nLgoKSSBndWVzcyB0aGUgc2lt
-cGxlc3QgZml4IGZvciB0aGlzIHByb2JsZW0gd291bGQgYmUganVzdCB0byBkbzoKCiAgIGlmIChJ
-U19FTkFCTEVEKENPTkZJR19PTUE0X1VTQkJPT1QpKQogICAgICAgIHJldHVybiAwOwoKYXMgYSBm
-aXJzdCB0aGluZyBpbiBub21tdV92N192ZWN0b3JzX2luaXQuIEFzIHdlbGwgYXMgbWF5YmUgbWFr
-aW5nCkFSTV9FWENFUFRJT04gZGVwZW5kZW50IG9uIE1NVSB8fCAhT01BUDRfVVNCQk9PVC4KClNh
-c2NoYSwgYW55IHByZWZlcmVuY2VzL3N1Z2dlc3Rpb25zPwoKCkFzc3VtaW5nIHRoYXQgSSBhbSBy
-aWdodCBpbiBteSBoeXBvdGhlc2lzLCBoZXJlJ3MgaG93IEknZCBhbnN3ZXIgeW91ciBxdWVzdGlv
-bnM6Cgo+IERvZXMgdGhhdCBoYXBwZW4gb24gb3RoZXIgT01BUDQgYm9hcmRzIHdoZW4gdGhlIE1N
-VSBpcyBkaXNhYmxlZD8KCkkgd291bGQgZXhwZWN0IGl0IHRvIGJlIHRoZSBjYXNlLCBhcyBsb25n
-IGFzIHlvdSBhcmUgdXNpbmcgT01BUDQgYW5kClVTQkJPT1QgdGhlIGlzc3VlIHNob3VsZCBtYW5p
-ZmVzdCBpdHNlbGYuCgo+IERvZXMgdGhhdCBoYXBwZW4gb24gb3RoZXIgT01BUHM/CgpJIGhhdmUg
-bm8gZXhwZXJpZW5jZSB3b3JraW5nIHdpdGggT01BUHMsIHNvIEkgZG9uJ3Qga25vdyBmb3Igc3Vy
-ZSwgYnV0Cml0IHNob3VsZCBhZmZlY3QgYW55IHNpbWlsYXIgdXNlLWNhc2UKCj4gRG9lcyB0aGF0
-IGhhcHBlbiBvbiBvdGhlciBBUk1zPwoKQ2FuJ3Qgc2F5IGZvciBhbGwgb2YgdGhlbSwgYnV0IG9u
-IGkuTVg2LCB3aGljaCBJIHdhcyB1c2luZyB3aGVuCmNyZWF0aW5nIHRoYXQgcGF0Y2gsIHRoaXMg
-d2FzIG5vdCB0aGUgY2FzZS4KCkhvcGUgdGhpcyBoZWxwcy4KClRoYW5rcywKQW5kcmV5CgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
-bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
-ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+From: Enrico Jorns <ejo@pengutronix.de>
+
+This patch is based on kernel patch 0691bb1b5a1865b3bbc9b7ce6e26eff546abb1cf
+by Dinh Nguyen <dinguyen@altera.com>.
+
+The C0(mpu_clk), C1(main_clk), and C2(dbg_base_clk) outputs from the main
+PLL go through a pre-divider before coming into the system. These registers
+were hidden for the CycloneV platform, but are now used for the ArriaV
+platform.
+
+This patch updates the clock driver to read the div-reg property for the
+socfpga-periph-clk clocks.
+
+Note: The registers used for the div-reg property are not documented but
+set by the preloader.
+
+Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ drivers/clk/socfpga.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/clk/socfpga.c b/drivers/clk/socfpga.c
+index 37ed038be84c..6af0632cafc2 100644
+--- a/drivers/clk/socfpga.c
++++ b/drivers/clk/socfpga.c
+@@ -116,18 +116,27 @@ struct clk_periph {
+ 	const char *parent;
+ 	unsigned regofs;
+ 	unsigned int fixed_div;
++	void __iomem *div_reg;
++	unsigned int width;
++	unsigned int shift;
+ };
+ 
+ static unsigned long clk_periph_recalc_rate(struct clk *clk,
+ 		unsigned long parent_rate)
+ {
+ 	struct clk_periph *periph = container_of(clk, struct clk_periph, clk);
+-	u32 div;
++	u32 div, val;
+ 
+-	if (periph->fixed_div)
++	if (periph->fixed_div) {
+ 		div = periph->fixed_div;
+-	else
++	} else {
++		if (periph->div_reg) {
++			val = readl(periph->div_reg) >> periph->shift;
++			val &= div_mask(periph->width);
++			parent_rate /= (val + 1);
++		}
+ 		div = ((readl(clk_mgr_base_addr + periph->regofs) & 0x1ff) + 1);
++	}
+ 
+ 	return parent_rate / div;
+ }
+@@ -140,6 +149,7 @@ static struct clk *socfpga_periph_clk(struct device_node *node)
+ {
+ 	struct clk_periph *periph;
+ 	int ret;
++	u32 div_reg[3];
+ 
+ 	periph = xzalloc(sizeof(*periph));
+ 
+@@ -152,6 +162,15 @@ static struct clk *socfpga_periph_clk(struct device_node *node)
+ 	periph->clk.name = xstrdup(node->name);
+ 	periph->clk.ops = &clk_periph_ops;
+ 
++	ret = of_property_read_u32_array(node, "div-reg", div_reg, 3);
++	if (!ret) {
++		periph->div_reg = clk_mgr_base_addr + div_reg[0];
++		periph->shift = div_reg[1];
++		periph->width = div_reg[2];
++	} else {
++		periph->div_reg = 0;
++	}
++
+ 	of_property_read_u32(node, "reg", &periph->regofs);
+ 	of_property_read_u32(node, "fixed-divider", &periph->fixed_div);
+ 
+-- 
+2.8.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
