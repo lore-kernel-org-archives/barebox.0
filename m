@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bX6IE-00078p-QD
- for barebox@lists.infradead.org; Tue, 09 Aug 2016 12:38:06 +0000
+ id 1bX6IE-00078m-QZ
+ for barebox@lists.infradead.org; Tue, 09 Aug 2016 12:38:07 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue,  9 Aug 2016 14:37:29 +0200
-Message-Id: <1470746252-3146-4-git-send-email-s.trumtrar@pengutronix.de>
-In-Reply-To: <1470746252-3146-1-git-send-email-s.trumtrar@pengutronix.de>
-References: <1470746252-3146-1-git-send-email-s.trumtrar@pengutronix.de>
+Date: Tue,  9 Aug 2016 14:37:26 +0200
+Message-Id: <1470746252-3146-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,63 +19,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] socfpga: remove dt entries that are upstream
+Subject: [PATCH 1/7] filetype: add new filetype for SoCFPGA xload image
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/dts/socfpga_cyclone5_socrates.dts | 34 ------------------------------
- 1 file changed, 34 deletions(-)
+ common/filetype.c  | 4 ++++
+ include/filetype.h | 1 +
+ 2 files changed, 5 insertions(+)
 
-diff --git a/arch/arm/dts/socfpga_cyclone5_socrates.dts b/arch/arm/dts/socfpga_cyclone5_socrates.dts
-index 95cdf5d3d5bd..12b3fa5dae40 100644
---- a/arch/arm/dts/socfpga_cyclone5_socrates.dts
-+++ b/arch/arm/dts/socfpga_cyclone5_socrates.dts
-@@ -19,43 +19,9 @@
- #include "socfpga.dtsi"
- 
- / {
--	model = "EBV SoCrates";
--	compatible = "ebv,socrates", "altr,socfpga";
--
- 	chosen {
- 		stdout-path = &uart0;
- 	};
--
--	leds: gpio-leds {
--	};
--};
--
--&gpio0 {
--	status = "okay";
--};
--
--&gpio1 {
--	status = "okay";
--};
--
--&leds {
--	compatible = "gpio-leds";
--
--	led@0 {
--		label = "0";
--		gpios = <&porta 28 1>;
--		linux,default-trigger = "heartbeat";
--	};
--
--	led@1 {
--		label = "1";
--		gpios = <&portb 19 1>;
--	};
--
--	led@2 {
--		label = "2";
--		gpios = <&portb 25 1>;
--	};
+diff --git a/common/filetype.c b/common/filetype.c
+index a8666a1439df..4728f877c975 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -61,6 +61,7 @@ static const struct filetype_str filetype_str[] = {
+ 	[filetype_xz_compressed] = { "XZ compressed", "xz" },
+ 	[filetype_exe] = { "MS-DOS executable", "exe" },
+ 	[filetype_mxs_bootstream] = { "Freescale MXS bootstream", "mxsbs" },
++	[filetype_socfpga_xload] = { "SoCFPGA prebootloader image", "socfpga-xload" },
  };
  
- &qspi {
+ const char *file_type_to_string(enum filetype f)
+@@ -294,6 +295,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+ 	if (le32_to_cpu(buf[5]) == 0x504d5453)
+ 		return filetype_mxs_bootstream;
+ 
++	if (buf[16] == 0x31305341)
++		return filetype_socfpga_xload;
++
+ 	if (is_barebox_arm_head(_buf))
+ 		return filetype_arm_barebox;
+ 	if (buf[9] == 0x016f2818 || buf[9] == 0x18286f01)
+diff --git a/include/filetype.h b/include/filetype.h
+index e87ca174a89d..cde73c1170c6 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -36,6 +36,7 @@ enum filetype {
+ 	filetype_exe,
+ 	filetype_xz_compressed,
+ 	filetype_mxs_bootstream,
++	filetype_socfpga_xload,
+ 	filetype_max,
+ };
+ 
 -- 
 2.8.1
 
