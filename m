@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bX6IE-00078q-QV
- for barebox@lists.infradead.org; Tue, 09 Aug 2016 12:38:08 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue,  9 Aug 2016 14:37:28 +0200
-Message-Id: <1470746252-3146-3-git-send-email-s.trumtrar@pengutronix.de>
-In-Reply-To: <1470746252-3146-1-git-send-email-s.trumtrar@pengutronix.de>
+ id 1bXB8n-00056z-3N
+ for barebox@lists.infradead.org; Tue, 09 Aug 2016 17:48:38 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Tue, 9 Aug 2016 17:48:13 +0000
+Message-ID: <1470764894.30803.196.camel@rtred1test09.kymeta.local>
 References: <1470746252-3146-1-git-send-email-s.trumtrar@pengutronix.de>
+ <1470746252-3146-2-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1470746252-3146-2-git-send-email-s.trumtrar@pengutronix.de>
+Content-Language: en-US
+Content-ID: <594B913FED934A489690B6658E1EE0E3@kymetacorp.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,59 +20,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/7] ARM: socfpga: xload: support more qspi partitions
-To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH 2/7] ARM: socfpga: defconfig: add bootstrap_devfs
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-RnJvbTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4KClNpZ25lZC1v
-ZmYtYnk6IFVscmljaCDDlmxtYW5uIDx1Lm9lbG1hbm5AcGVuZ3V0cm9uaXguZGU+ClNpZ25lZC1v
-ZmYtYnk6IFN0ZWZmZW4gVHJ1bXRyYXIgPHMudHJ1bXRyYXJAcGVuZ3V0cm9uaXguZGU+Ci0tLQog
-YXJjaC9hcm0vbWFjaC1zb2NmcGdhL3hsb2FkLmMgfCA1NiArKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgNDEgaW5zZXJ0aW9ucygrKSwg
-MTUgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1zb2NmcGdhL3hsb2Fk
-LmMgYi9hcmNoL2FybS9tYWNoLXNvY2ZwZ2EveGxvYWQuYwppbmRleCA3ZjhmMDMyMGNhMGUuLjk5
-MzYyNjk2NmUxNyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1zb2NmcGdhL3hsb2FkLmMKKysr
-IGIvYXJjaC9hcm0vbWFjaC1zb2NmcGdhL3hsb2FkLmMKQEAgLTIwLDEzICsyMCwxNSBAQAogI2lu
-Y2x1ZGUgPG1hY2gvc3lzdGVtLW1hbmFnZXIuaD4KICNpbmNsdWRlIDxtYWNoL3NvY2ZwZ2EtcmVn
-cy5oPgogCi0KLXN0YXRpYyBzdHJ1Y3Qgc29jZnBnYV9iYXJlYm94X3BhcnQgZGVmYXVsdF9wYXJ0
-ID0gewotCS5ub3Jfb2Zmc2V0ID0gU1pfMjU2SywKLQkubm9yX3NpemUgPSBTWl8xTSwKLQkubW1j
-X2Rpc2sgPSAiZGlzazAuMSIsCitzdGF0aWMgc3RydWN0IHNvY2ZwZ2FfYmFyZWJveF9wYXJ0IGRl
-ZmF1bHRfcGFydHNbXSA9IHsKKwl7CisJCS5ub3Jfb2Zmc2V0ID0gU1pfMjU2SywKKwkJLm5vcl9z
-aXplID0gU1pfMU0sCisJCS5tbWNfZGlzayA9ICJkaXNrMC4xIiwKKwl9LAorCXsgLyogc2VudGlu
-ZWwgKi8gfQogfTsKLWNvbnN0IHN0cnVjdCBzb2NmcGdhX2JhcmVib3hfcGFydCAqYmFyZWJveF9w
-YXJ0ID0gJmRlZmF1bHRfcGFydDsKK2NvbnN0IHN0cnVjdCBzb2NmcGdhX2JhcmVib3hfcGFydCAq
-YmFyZWJveF9wYXJ0cyA9ICZkZWZhdWx0X3BhcnRzOwogCiBlbnVtIHNvY2ZwZ2FfY2xrcyB7CiAJ
-dGltZXIsIG1tYywgcXNwaV9jbGssIHVhcnQsIGNsa19tYXgKQEAgLTEwOSwyOCArMTExLDUyIEBA
-IHN0YXRpYyB2b2lkIHNvY2ZwZ2FfdGltZXJfaW5pdCh2b2lkKQogc3RhdGljIF9fbm9yZXR1cm4g
-aW50IHNvY2ZwZ2FfeGxvYWQodm9pZCkKIHsKIAllbnVtIGJvb3Rzb3VyY2UgYm9vdHNvdXJjZSA9
-IGJvb3Rzb3VyY2VfZ2V0KCk7Ci0Jdm9pZCAqYnVmOworCXN0cnVjdCBzb2NmcGdhX2JhcmVib3hf
-cGFydCAqcGFydDsKKwl2b2lkICpidWYgPSBOVUxMOwogCiAJc3dpdGNoIChib290c291cmNlKSB7
-CiAJY2FzZSBCT09UU09VUkNFX01NQzoKIAkJc29jZnBnYV9tbWNfaW5pdCgpOwotCQlidWYgPSBi
-b290c3RyYXBfcmVhZF9kaXNrKGJhcmVib3hfcGFydC0+bW1jX2Rpc2ssICJmYXQiKTsKKworCQlm
-b3IgKHBhcnQgPSBiYXJlYm94X3BhcnRzOyBwYXJ0LT5tbWNfZGlzazsgcGFydCsrKSB7CisJCQli
-dWYgPSBib290c3RyYXBfcmVhZF9kaXNrKGJhcmVib3hfcGFydHMtPm1tY19kaXNrLCAiZmF0Iik7
-CisJCQlpZiAoIWJ1ZikgeworCQkJCXByX2luZm8oImZhaWxlZCB0byBsb2FkIGJhcmVib3ggZnJv
-bSBNTUMgJXNcbiIsCisJCQkJCXBhcnQtPm1tY19kaXNrKTsKKwkJCQljb250aW51ZTsKKwkJCX0K
-KwkJfQorCQlpZiAoIWJ1ZikgeworCQkJcHJfZXJyKCJmYWlsZWQgdG8gbG9hZCBiYXJlYm94LmJp
-biBmcm9tIE1NQ1xuIik7CisJCQloYW5nKCk7CisJCX0KIAkJYnJlYWs7CiAJY2FzZSBCT09UU09V
-UkNFX1NQSToKIAkJc29jZnBnYV9xc3BpX2luaXQoKTsKLQkJYnVmID0gYm9vdHN0cmFwX3JlYWRf
-ZGV2ZnMoIm10ZDAiLCBmYWxzZSwgYmFyZWJveF9wYXJ0LT5ub3Jfb2Zmc2V0LAotCQkJCQliYXJl
-Ym94X3BhcnQtPm5vcl9zaXplLCBTWl8xTSk7CisKKwkJZm9yIChwYXJ0ID0gYmFyZWJveF9wYXJ0
-czsgcGFydC0+bm9yX3NpemU7IHBhcnQrKykgeworCQkJYnVmID0gYm9vdHN0cmFwX3JlYWRfZGV2
-ZnMoIm10ZDAiLCBmYWxzZSwKKwkJCQkJcGFydC0+bm9yX29mZnNldCwgcGFydC0+bm9yX3NpemUs
-IFNaXzFNKTsKKwkJCWlmICghYnVmKSB7CisJCQkJcHJfaW5mbygiZmFpbGVkIHRvIGxvYWQgYmFy
-ZWJveCBmcm9tIFFTUEkgTk9SIGZsYXNoIGF0IG9mZnNldCAlI3hcbiIsCisJCQkJCXBhcnQtPm5v
-cl9vZmZzZXQpOworCQkJCWNvbnRpbnVlOworCQkJfQorCisJCQlicmVhazsKKwkJfQorCisJCWlm
-ICghYnVmKSB7CisJCQlwcl9lcnIoImZhaWxlZCB0byBsb2FkIGJhcmVib3ggZnJvbSBRU1BJIE5P
-UiBmbGFzaFxuIik7CisJCQloYW5nKCk7CisJCX0KKwogCQlicmVhazsKIAlkZWZhdWx0OgogCQlw
-cl9lcnIoInVua25vd24gYm9vdHNvdXJjZSAlZFxuIiwgYm9vdHNvdXJjZSk7CiAJCWhhbmcoKTsK
-IAl9CiAKLQlpZiAoIWJ1ZikgewotCQlwcl9lcnIoImZhaWxlZCB0byBsb2FkIGJhcmVib3guYmlu
-XG4iKTsKLQkJaGFuZygpOwotCX0KLQogCXByX2luZm8oInN0YXJ0aW5nIGJvb3Rsb2FkZXIuLi5c
-biIpOwogCiAJYm9vdHN0cmFwX2Jvb3QoYnVmLCAwKTsKLS0gCjIuOC4xCgoKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
-YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Tue, 2016-08-09 at 14:37 +0200, Steffen Trumtrar wrote:
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  arch/arm/configs/socfpga-xload_defconfig | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/arm/configs/socfpga-xload_defconfig b/arch/arm/configs/socfpga-xload_defconfig
+> index 521f3f1c1f43..e7b84dacaeaa 100644
+> --- a/arch/arm/configs/socfpga-xload_defconfig
+> +++ b/arch/arm/configs/socfpga-xload_defconfig
+> @@ -25,4 +25,5 @@ CONFIG_EEPROM_AT25=y
+>  # CONFIG_FS_DEVFS is not set
+>  CONFIG_FS_FAT=y
+>  CONFIG_BOOTSTRAP=y
+> +CONFIG_BOOTSTRAP_DEVFS=y
+>  CONFIG_BOOTSTRAP_DISK=y
+
+What's this used for?  I'm not using devfs in my socfpga based device's
+xload config.  Does the xload still fit in 64kB with these extra
+features?
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
