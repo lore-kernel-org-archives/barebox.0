@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bX129-0007lX-1s
- for barebox@lists.infradead.org; Tue, 09 Aug 2016 07:01:09 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue,  9 Aug 2016 09:00:28 +0200
-Message-Id: <1470726028-32152-1-git-send-email-s.trumtrar@pengutronix.de>
+ id 1bX2XR-0002c1-Kt
+ for barebox@lists.infradead.org; Tue, 09 Aug 2016 08:37:30 +0000
+Message-ID: <1470731825.2243.9.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue, 09 Aug 2016 10:37:05 +0200
+In-Reply-To: <CAHQ1cqGwJRt+h=R9xp1vQY7cDZ7npdqQtuB8NuaHw30H1fkAkg@mail.gmail.com>
+References: <CAAMcf8DgyE7AkOJ-JnZuYsMSL84qp2Srbgr=Kv5RkqEOTjqB-Q@mail.gmail.com>
+ <CAHQ1cqGwJRt+h=R9xp1vQY7cDZ7npdqQtuB8NuaHw30H1fkAkg@mail.gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,101 +18,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clk: socfpga: add divider registers to the main pll outputs
-To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, Enrico Jorns <ejo@pengutronix.de>
+Subject: Re: Issue with MMU-less OMAP4
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, =?ISO-8859-1?Q?Vicen=E7?= <vicencb@gmail.com>
 
-From: Enrico Jorns <ejo@pengutronix.de>
-
-This patch is based on kernel patch 0691bb1b5a1865b3bbc9b7ce6e26eff546abb1cf
-by Dinh Nguyen <dinguyen@altera.com>.
-
-The C0(mpu_clk), C1(main_clk), and C2(dbg_base_clk) outputs from the main
-PLL go through a pre-divider before coming into the system. These registers
-were hidden for the CycloneV platform, but are now used for the ArriaV
-platform.
-
-This patch updates the clock driver to read the div-reg property for the
-socfpga-periph-clk clocks.
-
-Note: The registers used for the div-reg property are not documented but
-set by the preloader.
-
-Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- drivers/clk/socfpga.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/clk/socfpga.c b/drivers/clk/socfpga.c
-index 37ed038be84c..6af0632cafc2 100644
---- a/drivers/clk/socfpga.c
-+++ b/drivers/clk/socfpga.c
-@@ -116,18 +116,27 @@ struct clk_periph {
- 	const char *parent;
- 	unsigned regofs;
- 	unsigned int fixed_div;
-+	void __iomem *div_reg;
-+	unsigned int width;
-+	unsigned int shift;
- };
- 
- static unsigned long clk_periph_recalc_rate(struct clk *clk,
- 		unsigned long parent_rate)
- {
- 	struct clk_periph *periph = container_of(clk, struct clk_periph, clk);
--	u32 div;
-+	u32 div, val;
- 
--	if (periph->fixed_div)
-+	if (periph->fixed_div) {
- 		div = periph->fixed_div;
--	else
-+	} else {
-+		if (periph->div_reg) {
-+			val = readl(periph->div_reg) >> periph->shift;
-+			val &= div_mask(periph->width);
-+			parent_rate /= (val + 1);
-+		}
- 		div = ((readl(clk_mgr_base_addr + periph->regofs) & 0x1ff) + 1);
-+	}
- 
- 	return parent_rate / div;
- }
-@@ -140,6 +149,7 @@ static struct clk *socfpga_periph_clk(struct device_node *node)
- {
- 	struct clk_periph *periph;
- 	int ret;
-+	u32 div_reg[3];
- 
- 	periph = xzalloc(sizeof(*periph));
- 
-@@ -152,6 +162,15 @@ static struct clk *socfpga_periph_clk(struct device_node *node)
- 	periph->clk.name = xstrdup(node->name);
- 	periph->clk.ops = &clk_periph_ops;
- 
-+	ret = of_property_read_u32_array(node, "div-reg", div_reg, 3);
-+	if (!ret) {
-+		periph->div_reg = clk_mgr_base_addr + div_reg[0];
-+		periph->shift = div_reg[1];
-+		periph->width = div_reg[2];
-+	} else {
-+		periph->div_reg = 0;
-+	}
-+
- 	of_property_read_u32(node, "reg", &periph->regofs);
- 	of_property_read_u32(node, "fixed-divider", &periph->fixed_div);
- 
--- 
-2.8.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gTW9udGFnLCBkZW4gMDguMDguMjAxNiwgMjM6MTEgLTA3MDAgc2NocmllYiBBbmRyZXkgU21p
+cm5vdjoKPiBPbiBNb24sIEF1ZyA4LCAyMDE2IGF0IDg6MTAgQU0sIFZpY2Vuw6cgPHZpY2VuY2JA
+Z21haWwuY29tPiB3cm90ZToKPiA+IEhlbGxvLAo+ID4gSSd2ZSB1cGRhdGVkIHRoZSBiYXJlYm94
+IHZlcnNpb24gcnVubmluZyBvbiBhbiBhcmNob3NHOSBib2FyZCBzaW5jZSBhCj4gPiBsb25nIHRp
+bWUgYWdvIGFuZCBpdCBicm9rZS4KPiA+IEFmdGVyIHNlYXJjaGluZyBmb3IgdGhlIHByb2JsZW0g
+Zm91bmQgdGhlIGNvbW1pdCBjYXVzaW5nIHRoZSBpc3N1ZToKPiA+IGh0dHA6Ly9naXQucGVuZ3V0
+cm9uaXguZGUvP3A9YmFyZWJveC5naXQ7YT1jb21taXRkaWZmO2g9ZGJhNmI0OTE5ZTViNjc4YjNi
+NzhiODI4YjU0NTA0OTEzNTc3ZDMzNwo+ID4gV2hlbiBib290aW5nIGZyb20gVVNCIGlzIGRlc2ly
+ZWQgaW4gYW4gT01BUDQgc3lzdGVtLCB0aGUgTU1VIG5lZWRzIHRvCj4gPiBiZSBkaXNhYmxlZCBi
+ZWNhdXNlIHRoZSBST00gY29kZSB0aGF0IGRlYWxzIHdpdGggdGhlIFVTQgo+ID4gY29tbXVuaWNh
+dGlvbnMgZG9lcyBub3QgZ2V0IG9uIHdlbGwgd2l0aCBpdC4KPiA+Cj4gPiBUaGUgaXNzdWUgaXMg
+dGhhdCBpdCAiaGFuZ3MiIHdoZW4gY2FsbGluZzoKPiA+IHNldF92YmFyKCh1bnNpZ25lZCBpbnQp
+dmVjdG9ycyk7Cj4gPiBJIGhhdmUgbm8gaWRlYSBvbiBob3cgdG8gZml4IHRoZSBpc3N1ZSBvdGhl
+ciB0aGFuIHJldmVydGluZyB0aGUgY29tbWl0Lgo+ID4KPiAKPiBJIGRvbid0IGhhdmUgZXh0ZW5z
+aXZlIGtub3dsZWRnZSBvZiBPTUFQNCBzaW5jZSBJIG5ldmVyIHdvcmtlZCB3aXRoCj4gdGhhdCBT
+b0MuIEhvd2V2ZXIgZnJvbSB0aWRiaXRzIG9mIGluZm9ybWF0aW9uIHRoYXQgSSBhbSBnbGVhbmlu
+ZyBmcm9tCj4gY29tbWVudHMgaW4gQmFyZWJveCBpdCBzZWVtcyB0aGF0IHBhcnRpY3VsYXIgdmVy
+c2lvbiBvZiBmdW5jdGlvbmFsaXR5Cj4gbWFrZXMgdXNlIG9mIGludGVycnVwdHMuIFRoaXMgZ2l2
+ZXMgbWUgYSBzdHJvbmcgc3VzcGljaW9uIHRoYXQgd2hhdAo+IGhhcHBlbnMgaXMgdGhhdCBhcyBz
+b29uIGFzIHNldF92YmFyKCkgY2FsbCBpcyBkb25lICh3aGljaCB3aWxsCj4gcmUtcG9pbnQgQ1BV
+IHRvIGEgZGlmZmVyZW50IGludGVycnVwdCB2ZWN0b3IgdGFibGUpIG9uZSBvZiB0aGUKPiBpbnRl
+cnJ1cHRzIGFycml2ZXMgYW5kIHNlbmRzIHRoZSBwcm9jZXNzb3IgaW50byBsYS1sYSBsYW5kLCBz
+aW5jZQo+IEJhcmVib3ggZXhjZXB0aW9uIHRhYmxlIGRvZXNuJ3QgaGF2ZSBhbnl0aGluZyBidXQg
+YmFzaWMgZW50cmllcy4KPiAKPiBTbywgaWYgbXkgZ3Vlc3MgaXMgY29ycmVjdCwgd2hhdCB3YXMg
+aGFwcGVuaW5nIHByaW9yIHRvIHRoYXQgY29tbWl0Cj4gd2FzIHRoYXQgb24gYW55IGhhcmR3YXJl
+LCBpbiBNTVUtbGVzcyBtb2RlLCBCYXJlYm94IHdvdWxkIG5vdCByZS1wb2ludAo+IHRoZSBDUFUg
+dG8gaXQncyBvd24gZXhjZXB0aW9uIGhhbmRsZXMgYW5kIGFzIHN1Y2ggd291bGQgbm90IGhhbmRs
+ZQo+IHRoZW0gYXQgYWxsKGluY29ycmVjdCBiZWhhdmlvciksIGhvd2V2ZXIgdGhhdCB3YXMgYSBk
+ZXNpcmVkIGJlaGF2aW9yCj4gb24gT01BUDQgc2luY2UgdGhpcyB3b3VsZCByZXN1bHQgaW4gUk9N
+IGNvZGUgZG9pbmcgYWxsIG9mIHRoZQo+IGV4Y2VwdGlvbi9pbnRlcnJ1cHQgaGFuZGxpbmcgd29y
+ay4gQW5kIGlmIHRoYXQgaXMgdGhlIGNhc2UgZml4aW5nIHRoZQo+IHByb2JsZW0gZm9yIHRoZSBy
+ZXN0IG9mIHRoZSBTb0NzLCBicm9rZSBpdCBmb3IgT01BUDQgd2hpY2ggd2FzIHJlbHlpbmcKPiBv
+biBjb250cm9sIGJlaW5nIHBhc3NlZCB0byBST00gZm9yIGludGVycnVwdCBoYW5kbGluZy4KPiAK
+PiBJIGd1ZXNzIHRoZSBzaW1wbGVzdCBmaXggZm9yIHRoaXMgcHJvYmxlbSB3b3VsZCBiZSBqdXN0
+IHRvIGRvOgo+IAo+ICAgIGlmIChJU19FTkFCTEVEKENPTkZJR19PTUE0X1VTQkJPT1QpKQo+ICAg
+ICAgICAgcmV0dXJuIDA7Cj4gCj4gYXMgYSBmaXJzdCB0aGluZyBpbiBub21tdV92N192ZWN0b3Jz
+X2luaXQuIEFzIHdlbGwgYXMgbWF5YmUgbWFraW5nCj4gQVJNX0VYQ0VQVElPTiBkZXBlbmRlbnQg
+b24gTU1VIHx8ICFPTUFQNF9VU0JCT09ULgo+IAo+IFNhc2NoYSwgYW55IHByZWZlcmVuY2VzL3N1
+Z2dlc3Rpb25zPwoKSSB0aGluayB5b3UgYXJlIG9uIHRoZSB3cm9uZyB0cmFjayBoZXJlLiBUaGUg
+bGlrZWx5IGlzc3VlIGlzIHRoYXQgb24KT01BUCBvbmx5IHRoZSBST00gY29kZSBydW5zIGluIHRo
+ZSBzZWN1cmUgd29ybGQsIHRoZSBib290bG9hZGVyIGlzCmFscmVhZHkgc3RhcnRlZCBhcyBub24t
+c2VjdXJlLgoKVGhlIHJlZ2lzdGVyIHRvIHNldCB0aGUgVkJBUiBpcyBhIHNlY3VyZSBvbmx5IHJl
+Z2lzdGVyIGFuZCB3aWxsIHRyYXAKd2l0aCBhbiB1bmRlZmluZWQgaW5zdHJ1Y3Rpb24gZXhjZXB0
+aW9uIGlmIHlvdSB0cnkgdG8gc2V0IGl0IGZyb20gdGhlCm5vbi1zZWN1cmUgd29ybGQuCgpTbyB0
+aGUgY29ycmVjdCBmaXggd291bGQgYmUgdG8gY2hlY2sgaWYgd2UgYXJlIHJ1bm5pbmcgbm9uLXNl
+Y3VyZSBhbmQKc2tpcHBpbmcgYW55IHNldHVwIGNvZGUgdGhhdCBkZXBlbmRzIG9uIGJhcmVib3gg
+cnVubmluZyBpbiBzZWN1cmUgbW9kZS4KVGhpcyBpc24ndCByZWFsbHkgdHJpdmlhbCwgYXMgdGhl
+IHJlZ2lzdGVyIHRvIGNoZWNrIGZvciB0aGUgY3VycmVudCBtb2RlCmlzIG9ubHkgaW1wbGVtZW50
+ZWQgaWYgdGhlIHByb2Nlc3NvciBzdXBwb3J0cyB0aGUgVjcgc2VjdXJpdHkgZXh0ZW5zaW9uCmFu
+ZCB3aWxsIHRyYXAgb3RoZXJ3aXNlLiBUaGlzIGlzIGFsbCBmcm9tIHRoZSB0b3Agb2YgbXkgaGVh
+ZCwgc28gcGxlYXNlCmNoZWNrIGZvciB5b3Vyc2VsZi4KClJlZ2FyZHMsCkx1Y2FzCgoKCgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
+bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
+ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
