@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-x235.google.com ([2607:f8b0:4002:c05::235])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bX4FP-0004Tp-30
- for barebox@lists.infradead.org; Tue, 09 Aug 2016 10:27:00 +0000
-Received: by mail-yw0-x235.google.com with SMTP id r9so4398534ywg.0
- for <barebox@lists.infradead.org>; Tue, 09 Aug 2016 03:26:38 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <1470731825.2243.9.camel@pengutronix.de>
-References: <CAAMcf8DgyE7AkOJ-JnZuYsMSL84qp2Srbgr=Kv5RkqEOTjqB-Q@mail.gmail.com>
- <CAHQ1cqGwJRt+h=R9xp1vQY7cDZ7npdqQtuB8NuaHw30H1fkAkg@mail.gmail.com>
- <1470731825.2243.9.camel@pengutronix.de>
-From: =?UTF-8?Q?Vicen=C3=A7?= <vicencb@gmail.com>
-Date: Tue, 9 Aug 2016 12:26:37 +0200
-Message-ID: <CAAMcf8A5v2=i9qWY_TkXoDd6yoBsmexHb2qBe3R50wJv8+Q_qQ@mail.gmail.com>
+ id 1bX6IE-00078n-Qy
+ for barebox@lists.infradead.org; Tue, 09 Aug 2016 12:38:04 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Tue,  9 Aug 2016 14:37:27 +0200
+Message-Id: <1470746252-3146-2-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1470746252-3146-1-git-send-email-s.trumtrar@pengutronix.de>
+References: <1470746252-3146-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,75 +16,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Issue with MMU-less OMAP4
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 2/7] ARM: socfpga: defconfig: add bootstrap_devfs
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-T24gVHVlLCBBdWcgOSwgMjAxNiBhdCAxMDozNyBBTSwgTHVjYXMgU3RhY2ggPGwuc3RhY2hAcGVu
-Z3V0cm9uaXguZGU+IHdyb3RlOgo+IEFtIE1vbnRhZywgZGVuIDA4LjA4LjIwMTYsIDIzOjExIC0w
-NzAwIHNjaHJpZWIgQW5kcmV5IFNtaXJub3Y6Cj4+IE9uIE1vbiwgQXVnIDgsIDIwMTYgYXQgODox
-MCBBTSwgVmljZW7DpyA8dmljZW5jYkBnbWFpbC5jb20+IHdyb3RlOgo+PiA+IEhlbGxvLAo+PiA+
-IEkndmUgdXBkYXRlZCB0aGUgYmFyZWJveCB2ZXJzaW9uIHJ1bm5pbmcgb24gYW4gYXJjaG9zRzkg
-Ym9hcmQgc2luY2UgYQo+PiA+IGxvbmcgdGltZSBhZ28gYW5kIGl0IGJyb2tlLgo+PiA+IEFmdGVy
-IHNlYXJjaGluZyBmb3IgdGhlIHByb2JsZW0gZm91bmQgdGhlIGNvbW1pdCBjYXVzaW5nIHRoZSBp
-c3N1ZToKPj4gPiBodHRwOi8vZ2l0LnBlbmd1dHJvbml4LmRlLz9wPWJhcmVib3guZ2l0O2E9Y29t
-bWl0ZGlmZjtoPWRiYTZiNDkxOWU1YjY3OGIzYjc4YjgyOGI1NDUwNDkxMzU3N2QzMzcKPj4gPiBX
-aGVuIGJvb3RpbmcgZnJvbSBVU0IgaXMgZGVzaXJlZCBpbiBhbiBPTUFQNCBzeXN0ZW0sIHRoZSBN
-TVUgbmVlZHMgdG8KPj4gPiBiZSBkaXNhYmxlZCBiZWNhdXNlIHRoZSBST00gY29kZSB0aGF0IGRl
-YWxzIHdpdGggdGhlIFVTQgo+PiA+IGNvbW11bmljYXRpb25zIGRvZXMgbm90IGdldCBvbiB3ZWxs
-IHdpdGggaXQuCj4+ID4KPj4gPiBUaGUgaXNzdWUgaXMgdGhhdCBpdCAiaGFuZ3MiIHdoZW4gY2Fs
-bGluZzoKPj4gPiBzZXRfdmJhcigodW5zaWduZWQgaW50KXZlY3RvcnMpOwo+PiA+IEkgaGF2ZSBu
-byBpZGVhIG9uIGhvdyB0byBmaXggdGhlIGlzc3VlIG90aGVyIHRoYW4gcmV2ZXJ0aW5nIHRoZSBj
-b21taXQuCj4+ID4KPj4KPj4gSSBkb24ndCBoYXZlIGV4dGVuc2l2ZSBrbm93bGVkZ2Ugb2YgT01B
-UDQgc2luY2UgSSBuZXZlciB3b3JrZWQgd2l0aAo+PiB0aGF0IFNvQy4gSG93ZXZlciBmcm9tIHRp
-ZGJpdHMgb2YgaW5mb3JtYXRpb24gdGhhdCBJIGFtIGdsZWFuaW5nIGZyb20KPj4gY29tbWVudHMg
-aW4gQmFyZWJveCBpdCBzZWVtcyB0aGF0IHBhcnRpY3VsYXIgdmVyc2lvbiBvZiBmdW5jdGlvbmFs
-aXR5Cj4+IG1ha2VzIHVzZSBvZiBpbnRlcnJ1cHRzLiBUaGlzIGdpdmVzIG1lIGEgc3Ryb25nIHN1
-c3BpY2lvbiB0aGF0IHdoYXQKPj4gaGFwcGVucyBpcyB0aGF0IGFzIHNvb24gYXMgc2V0X3ZiYXIo
-KSBjYWxsIGlzIGRvbmUgKHdoaWNoIHdpbGwKPj4gcmUtcG9pbnQgQ1BVIHRvIGEgZGlmZmVyZW50
-IGludGVycnVwdCB2ZWN0b3IgdGFibGUpIG9uZSBvZiB0aGUKPj4gaW50ZXJydXB0cyBhcnJpdmVz
-IGFuZCBzZW5kcyB0aGUgcHJvY2Vzc29yIGludG8gbGEtbGEgbGFuZCwgc2luY2UKPj4gQmFyZWJv
-eCBleGNlcHRpb24gdGFibGUgZG9lc24ndCBoYXZlIGFueXRoaW5nIGJ1dCBiYXNpYyBlbnRyaWVz
-Lgo+Pgo+PiBTbywgaWYgbXkgZ3Vlc3MgaXMgY29ycmVjdCwgd2hhdCB3YXMgaGFwcGVuaW5nIHBy
-aW9yIHRvIHRoYXQgY29tbWl0Cj4+IHdhcyB0aGF0IG9uIGFueSBoYXJkd2FyZSwgaW4gTU1VLWxl
-c3MgbW9kZSwgQmFyZWJveCB3b3VsZCBub3QgcmUtcG9pbnQKPj4gdGhlIENQVSB0byBpdCdzIG93
-biBleGNlcHRpb24gaGFuZGxlcyBhbmQgYXMgc3VjaCB3b3VsZCBub3QgaGFuZGxlCj4+IHRoZW0g
-YXQgYWxsKGluY29ycmVjdCBiZWhhdmlvciksIGhvd2V2ZXIgdGhhdCB3YXMgYSBkZXNpcmVkIGJl
-aGF2aW9yCj4+IG9uIE9NQVA0IHNpbmNlIHRoaXMgd291bGQgcmVzdWx0IGluIFJPTSBjb2RlIGRv
-aW5nIGFsbCBvZiB0aGUKPj4gZXhjZXB0aW9uL2ludGVycnVwdCBoYW5kbGluZyB3b3JrLiBBbmQg
-aWYgdGhhdCBpcyB0aGUgY2FzZSBmaXhpbmcgdGhlCj4+IHByb2JsZW0gZm9yIHRoZSByZXN0IG9m
-IHRoZSBTb0NzLCBicm9rZSBpdCBmb3IgT01BUDQgd2hpY2ggd2FzIHJlbHlpbmcKPj4gb24gY29u
-dHJvbCBiZWluZyBwYXNzZWQgdG8gUk9NIGZvciBpbnRlcnJ1cHQgaGFuZGxpbmcuCj4+Cj4+IEkg
-Z3Vlc3MgdGhlIHNpbXBsZXN0IGZpeCBmb3IgdGhpcyBwcm9ibGVtIHdvdWxkIGJlIGp1c3QgdG8g
-ZG86Cj4+Cj4+ICAgIGlmIChJU19FTkFCTEVEKENPTkZJR19PTUE0X1VTQkJPT1QpKQo+PiAgICAg
-ICAgIHJldHVybiAwOwo+Pgo+PiBhcyBhIGZpcnN0IHRoaW5nIGluIG5vbW11X3Y3X3ZlY3RvcnNf
-aW5pdC4gQXMgd2VsbCBhcyBtYXliZSBtYWtpbmcKPj4gQVJNX0VYQ0VQVElPTiBkZXBlbmRlbnQg
-b24gTU1VIHx8ICFPTUFQNF9VU0JCT09ULgo+Pgo+PiBTYXNjaGEsIGFueSBwcmVmZXJlbmNlcy9z
-dWdnZXN0aW9ucz8KPgo+IEkgdGhpbmsgeW91IGFyZSBvbiB0aGUgd3JvbmcgdHJhY2sgaGVyZS4g
-VGhlIGxpa2VseSBpc3N1ZSBpcyB0aGF0IG9uCj4gT01BUCBvbmx5IHRoZSBST00gY29kZSBydW5z
-IGluIHRoZSBzZWN1cmUgd29ybGQsIHRoZSBib290bG9hZGVyIGlzCj4gYWxyZWFkeSBzdGFydGVk
-IGFzIG5vbi1zZWN1cmUuCj4KPiBUaGUgcmVnaXN0ZXIgdG8gc2V0IHRoZSBWQkFSIGlzIGEgc2Vj
-dXJlIG9ubHkgcmVnaXN0ZXIgYW5kIHdpbGwgdHJhcAo+IHdpdGggYW4gdW5kZWZpbmVkIGluc3Ry
-dWN0aW9uIGV4Y2VwdGlvbiBpZiB5b3UgdHJ5IHRvIHNldCBpdCBmcm9tIHRoZQo+IG5vbi1zZWN1
-cmUgd29ybGQuCj4KPiBTbyB0aGUgY29ycmVjdCBmaXggd291bGQgYmUgdG8gY2hlY2sgaWYgd2Ug
-YXJlIHJ1bm5pbmcgbm9uLXNlY3VyZSBhbmQKPiBza2lwcGluZyBhbnkgc2V0dXAgY29kZSB0aGF0
-IGRlcGVuZHMgb24gYmFyZWJveCBydW5uaW5nIGluIHNlY3VyZSBtb2RlLgo+IFRoaXMgaXNuJ3Qg
-cmVhbGx5IHRyaXZpYWwsIGFzIHRoZSByZWdpc3RlciB0byBjaGVjayBmb3IgdGhlIGN1cnJlbnQg
-bW9kZQo+IGlzIG9ubHkgaW1wbGVtZW50ZWQgaWYgdGhlIHByb2Nlc3NvciBzdXBwb3J0cyB0aGUg
-Vjcgc2VjdXJpdHkgZXh0ZW5zaW9uCj4gYW5kIHdpbGwgdHJhcCBvdGhlcndpc2UuIFRoaXMgaXMg
-YWxsIGZyb20gdGhlIHRvcCBvZiBteSBoZWFkLCBzbyBwbGVhc2UKPiBjaGVjayBmb3IgeW91cnNl
-bGYuCj4KPiBSZWdhcmRzLAo+IEx1Y2FzCj4KVGhlIHRlc3RpbmcgSSBoYXZlIGRvbmUgY29uc2lz
-dGVkIG9uIGFkZGluZyAicHV0Y19sbCIgdG8gcHJpbnQKc29tZXRoaW5nIHRocm91Z2ggdGhlIHNl
-cmlhbCBwb3J0IGJldHdlZW4gbGluZXMuCnB1dGNfbGwgb25seSB1c2VzIGRlIHNlcmlhbCBwb3J0
-LCBub3QgdGhlIFVTQiBjb21tdW5pY2F0aW9ucy4KSnVzdCBiZWZvcmUgInNldF92YmFyIiwgInB1
-dGNfbGwiIHdvcmtlZCBmaW5lLCBhZnRlciAic2V0X3ZiYXIiIGl0IGRpZApub3QuIEluIGJldHdl
-ZW4gdGhlc2UgdHdvICJwdXRjX2xsIiBubyBST00gY29kZSBoYXMgYmVlbiBleGVjdXRlZC4KU28s
-IEkgdGhpbmcgdGhpcyB3b3VsZCBzdHJlbmd0aGVuIEx1Y2FzIHZlcnNpb24gb24gd2hhdCBpcyBn
-b2luZyBvbi4KClJlZ2FyZHMsCiAgVmljZW50ZS4KCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ arch/arm/configs/socfpga-xload_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/configs/socfpga-xload_defconfig b/arch/arm/configs/socfpga-xload_defconfig
+index 521f3f1c1f43..e7b84dacaeaa 100644
+--- a/arch/arm/configs/socfpga-xload_defconfig
++++ b/arch/arm/configs/socfpga-xload_defconfig
+@@ -25,4 +25,5 @@ CONFIG_EEPROM_AT25=y
+ # CONFIG_FS_DEVFS is not set
+ CONFIG_FS_FAT=y
+ CONFIG_BOOTSTRAP=y
++CONFIG_BOOTSTRAP_DEVFS=y
+ CONFIG_BOOTSTRAP_DISK=y
+-- 
+2.8.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
