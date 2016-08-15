@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bZD4K-0006PO-If
- for barebox@lists.infradead.org; Mon, 15 Aug 2016 08:16:25 +0000
-Date: Mon, 15 Aug 2016 10:16:00 +0200
+ id 1bZD6g-0006eN-FC
+ for barebox@lists.infradead.org; Mon, 15 Aug 2016 08:18:51 +0000
+Date: Mon, 15 Aug 2016 10:18:28 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160815081600.GS20657@pengutronix.de>
-References: <1470218005-20457-1-git-send-email-renaud.barbier@ge.com>
+Message-ID: <20160815081828.GT20657@pengutronix.de>
+References: <1470653469-24896-1-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1470218005-20457-1-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1470653469-24896-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] bbu: parameters are inverted in error message
-To: Renaud Barbier <renaud.barbier@ge.com>
+Subject: Re: [PATCH] scripts: socfpga_get_sequencer: convert potential CRLF
+ to LF
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Aug 03, 2016 at 10:53:25AM +0100, Renaud Barbier wrote:
-> The error message warning the user that the image is too big for
-> the device has its parameters in the wrong order. Swap the two
-> parameters so that the output makes sense.
+On Mon, Aug 08, 2016 at 12:51:09PM +0200, Steffen Trumtrar wrote:
+> If u-boot was generated under a DOS system, the sequencer files will have CRLF
+> linebreaks. The indent-tool has problems with this and as a result the code
+> will not compile anymore.
+> Fix up any CRLFs prior with the dos2unix tool.
 > 
-> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > ---
->  common/bbu.c |    4 ++--
->  1 files changed, 2 insertions(+), 2 deletions(-)
+>  scripts/socfpga_get_sequencer | 2 ++
+>  1 file changed, 2 insertions(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/common/bbu.c b/common/bbu.c
-> index 1b22139..c5dda8c 100644
-> --- a/common/bbu.c
-> +++ b/common/bbu.c
-> @@ -307,8 +307,8 @@ static int bbu_std_file_handler(struct bbu_handler *handler,
->  		oflags |= O_CREAT;
->  	} else {
->  		if (!S_ISREG(s.st_mode) && s.st_size < data->len) {
-> -			printf("Image (%lld) is too big for device (%zd)\n",
-> -					s.st_size, data->len);
-> +			printf("Image (%zd) is too big for device (%lld)\n",
-> +					data->len, s.st_size);
->  		}
->  	}
+> diff --git a/scripts/socfpga_get_sequencer b/scripts/socfpga_get_sequencer
+> index fb0ea6628b2a..e0f2e6de2abd 100755
+> --- a/scripts/socfpga_get_sequencer
+> +++ b/scripts/socfpga_get_sequencer
+> @@ -24,6 +24,8 @@ copy_source() {
 >  
+>  	unifdef -f ${sequencer_defines} $tgt -o $tgt
+>  
+> +	dos2unix $tgt
+> +
+>  	echo "	Fixing extern/static keywords..."
+>  	# Statify all global variables with missing static keyword
+>  	sed -i 's/^\(extern \|static \|\)\([^*#\/ 	][^(]* [^( ]*\((.*).*$\|=.*;.*$\)\)/static \2/g' $tgt
 > -- 
-> 1.7.1
+> 2.8.1
 > 
 > 
 > _______________________________________________
