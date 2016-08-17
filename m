@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward8h.cmail.yandex.net ([87.250.230.219])
+Received: from forward9j.cmail.yandex.net ([2a02:6b8:0:1630::184])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bZvkc-0003UF-DK
- for barebox@lists.infradead.org; Wed, 17 Aug 2016 07:59:04 +0000
+ id 1bZvkb-0003U5-8D
+ for barebox@lists.infradead.org; Wed, 17 Aug 2016 07:59:02 +0000
 Received: from smtp2m.mail.yandex.net (smtp2m.mail.yandex.net
  [IPv6:2a02:6b8:0:2519::122])
- by forward8h.cmail.yandex.net (Yandex) with ESMTP id 6293E21801
- for <barebox@lists.infradead.org>; Wed, 17 Aug 2016 10:58:39 +0300 (MSK)
+ by forward9j.cmail.yandex.net (Yandex) with ESMTP id 0B54221022
+ for <barebox@lists.infradead.org>; Wed, 17 Aug 2016 10:58:37 +0300 (MSK)
 From: Aleksey Kuleshov <rndfax@yandex.ru>
-Date: Wed, 17 Aug 2016 10:58:07 +0300
-Message-Id: <1471420687-14367-3-git-send-email-rndfax@yandex.ru>
+Date: Wed, 17 Aug 2016 10:58:06 +0300
+Message-Id: <1471420687-14367-2-git-send-email-rndfax@yandex.ru>
 In-Reply-To: <1471420687-14367-1-git-send-email-rndfax@yandex.ru>
 References: <1471420687-14367-1-git-send-email-rndfax@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -25,277 +25,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] rework menu so that it can support multiline titles
+Subject: [PATCH 1/2] hush: do not do anything if string is zero length
 To: barebox@lists.infradead.org
 Cc: Aleksey Kuleshov <rndfax@yandex.ru>
 
 Signed-off-by: Aleksey Kuleshov <rndfax@yandex.ru>
 ---
- commands/menu.c   | 14 +++++++---
- common/boot.c     |  8 ++++--
- common/menu.c     | 78 +++++++++++++++++++++++++++++++++++++++++++++++++------
- common/menutree.c | 13 ++++++++--
- include/menu.h    |  8 +++++-
- 5 files changed, 104 insertions(+), 17 deletions(-)
+ common/hush.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/commands/menu.c b/commands/menu.c
-index e1079fd..d413020 100644
---- a/commands/menu.c
-+++ b/commands/menu.c
-@@ -146,9 +146,7 @@ static int do_menu_add(struct cmd_menu *cm)
- 	if (!m->name)
- 		goto free;
+diff --git a/common/hush.c b/common/hush.c
+index d3f7bf3..d8fd64b 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -1655,6 +1655,9 @@ char *shell_expand(char *str)
+ 	o_string o = {};
+ 	char *res, *parsed;
  
--	m->display = strdup(cm->description);
--	if (!m->display)
--		goto free;
-+	menu_add_title(m, cm->description, NULL);
- 
- 	ret = menu_add(m);
- 
-@@ -271,7 +269,15 @@ static int do_menu_list(struct cmd_menu *cm)
- 	}
- 
- 	list_for_each_entry(m, &menus->list, list) {
--		printf("%s: %s\n", m->name, m->display? m->display : m->name);
-+		printf("%s: ", m->name);
-+		if (m->display_lines) {
-+			int i;
-+			printf("\n");
-+			for (i = 0; i < m->display_lines; i++)
-+				printf("\t%s\n", m->display[i]);
-+		} else {
-+			printf("%s\n", m->name);
-+		}
- 		if (is_entry(cm))
- 			print_entries(m);
- 	}
-diff --git a/common/boot.c b/common/boot.c
-index e66bacb..a2f5a81 100644
---- a/common/boot.c
-+++ b/common/boot.c
-@@ -43,7 +43,7 @@ struct bootentries *bootentries_alloc(void)
- 
- 	if (IS_ENABLED(CONFIG_MENU)) {
- 		bootentries->menu = menu_alloc();
--		bootentries->menu->display = basprintf("boot");
-+		menu_add_title(bootentries->menu, "boot", NULL);
- 	}
- 
- 	return bootentries;
-@@ -61,8 +61,12 @@ void bootentries_free(struct bootentries *bootentries)
- 		be->release(be);
- 	}
- 
--	if (bootentries->menu)
-+	if (bootentries->menu) {
-+		int i;
-+		for (i = 0; i < bootentries->menu->display_lines; i++)
-+			free(bootentries->menu->display[i]);
- 		free(bootentries->menu->display);
-+	}
- 	free(bootentries->menu);
- 	free(bootentries);
- }
-diff --git a/common/menu.c b/common/menu.c
-index 9819569..1f23e45 100644
---- a/common/menu.c
-+++ b/common/menu.c
-@@ -43,10 +43,13 @@ EXPORT_SYMBOL(menu_get_menus);
- void menu_free(struct menu *m)
- {
- 	struct menu_entry *me, *tmp;
-+	int i;
- 
- 	if (!m)
- 		return;
- 	free(m->name);
-+	for (i = 0; i < m->display_lines; i++)
-+		free(m->display[i]);
- 	free(m->display);
- 	free(m->auto_display);
- 
-@@ -164,7 +167,7 @@ static void __print_entry(const char *str)
- static void print_menu_entry(struct menu *m, struct menu_entry *me,
- 			     int selected)
- {
--	gotoXY(3, me->num + 1);
-+	gotoXY(3, me->num + m->display_lines + m->skip_lines);
- 
- 	if (me->type == MENU_ENTRY_BOX) {
- 		if (me->box_state)
-@@ -234,12 +237,19 @@ static void print_menu(struct menu *m)
- 	struct menu_entry *me;
- 
- 	clear();
--	gotoXY(2, 1);
--	if(m->display) {
--		__print_entry(m->display);
-+	if (m->display) {
-+		int i;
-+		for (i = 0; i < m->display_lines; i++) {
-+			gotoXY(2, 1 + i);
-+			__print_entry(m->display[i]);
-+		}
-+		m->skip_lines = 0;
- 	} else {
-+		gotoXY(2, 1);
- 		puts("Menu : ");
--		puts(m->name);
-+		if (m->name)
-+			puts(m->name);
-+		m->skip_lines = 1;
- 	}
- 
- 	list_for_each_entry(me, &m->entries, list) {
-@@ -269,7 +279,7 @@ int menu_show(struct menu *m)
- 
- 	countdown = m->auto_select;
- 	if (m->auto_select >= 0) {
--		gotoXY(3, m->nb_entries + 2);
-+		gotoXY(3, m->nb_entries + m->display_lines + m->skip_lines + 1);
- 		if (!m->auto_display) {
- 			printf("Auto Select in");
- 		} else {
-@@ -293,10 +303,10 @@ int menu_show(struct menu *m)
- 		}
- 	}
- 
--	gotoXY(3, m->nb_entries + 2);
-+	gotoXY(3, m->nb_entries + m->display_lines + m->skip_lines + 1);
- 	printf("%*c", auto_display_len + 4, ' ');
- 
--	gotoXY(3, m->selected->num + 1);
-+	gotoXY(3, m->selected->num + m->display_lines + m->skip_lines);
- 
- 	do {
- 		struct menu_entry *old_selected = m->selected;
-@@ -517,3 +527,55 @@ err_free:
- 	return ERR_PTR(ret);
- }
- EXPORT_SYMBOL(menu_add_command_entry);
++	if (strlen(str) == 0)
++		return xstrdup("");
 +
-+/*
-+ * Add multiline title to menu applying (if not NULL) parser to each line.
-+ * Symbols "\\n" and '\n' ARE newline indicators.
-+ */
-+void menu_add_title(struct menu *m, const char *display, char *(*parser)(char *str))
-+{
-+	char *tmp, *src, *dst;
-+	int lines = 1;
-+	int i;
-+
-+	if (!strlen(display))
-+		return;
-+
-+	src = dst = tmp = xstrdup(display);
-+	/* Count lines and separate single string into multiple strings */
-+	while (*src) {
-+		if (*src == '\\') {
-+			if (*(src + 1) == 'n') {
-+				*dst = 0;
-+				src += 2;
-+				dst++;
-+				lines++;
-+				continue;
-+			}
-+		}
-+		if (*src == '\n') {
-+			*dst = 0;
-+			src++;
-+			dst++;
-+			lines++;
-+			continue;
-+		}
-+		*dst++ = *src++;
-+	}
-+	*dst = 0;
-+
-+	m->display = xzalloc(sizeof(*m->display) * lines);
-+	m->display_lines = lines;
-+
-+	for (src = tmp, i = 0; i < lines; i++) {
-+		if (parser)
-+			m->display[i] = parser(src);
-+		else
-+			m->display[i] = xstrdup(src);
-+		/* Go to the next line */
-+		src += strlen(src) + 1;
-+	}
-+
-+	free(tmp);
-+}
-+EXPORT_SYMBOL(menu_add_title);
-diff --git a/common/menutree.c b/common/menutree.c
-index eb14da0..e2d364d 100644
---- a/common/menutree.c
-+++ b/common/menutree.c
-@@ -19,6 +19,7 @@
- #include <shell.h>
- #include <libfile.h>
+ 	remove_quotes_in_str(str);
  
-+#include <linux/ctype.h>
- #include <linux/stat.h>
- 
- struct menutree {
-@@ -95,6 +96,7 @@ int menutree(const char *path, int toplevel)
- 	glob_t g;
- 	int i;
- 	char *globpath, *display;
-+	size_t size;
- 
- 	menu = menu_alloc();
- 
-@@ -106,14 +108,21 @@ int menutree(const char *path, int toplevel)
- 		goto out;
- 	}
- 
--	display = read_file_line("%s/title", path);
-+	globpath = basprintf("%s/title", path);
-+	display = read_file(globpath, &size);
-+	/* Remove trailing whitespaces */
-+	while (size > 0 && isspace(display[size - 1]))
-+		size--;
-+	display[size] = '\0';
-+	free(globpath);
- 	if (!display) {
- 		eprintf("no title found in %s/title\n", path);
- 		ret = -EINVAL;
- 		goto out;
- 	}
- 
--	menu->display = shell_expand(display);
-+	menu_add_title(menu, display, shell_expand);
-+
- 	free(display);
- 
- 	for (i = 0; i < g.gl_pathc; i++) {
-diff --git a/include/menu.h b/include/menu.h
-index 8b0ffb1..cc3ac5f 100644
---- a/include/menu.h
-+++ b/include/menu.h
-@@ -47,7 +47,12 @@ struct menu_entry {
- 
- struct menu {
- 	char *name;
--	char *display;
-+	/* Multiline title */
-+	char **display;
-+	/* Number of lines */
-+	int display_lines;
-+	/* Private state for proper rendering when display_lines == 0 */
-+	int skip_lines;
- 
- 	int auto_select;
- 	char *auto_display;
-@@ -88,6 +93,7 @@ int menu_set_selected_entry(struct menu *m, struct menu_entry* me);
- int menu_set_selected(struct menu *m, int num);
- int menu_set_auto_select(struct menu *m, int delay);
- struct menu* menu_get_menus(void);
-+void menu_add_title(struct menu *m, const char *display, char *(*parser)(char *str));
- 
- /*
-  * menu entry functions
+ 	o.quote = 1;
 -- 
 2.8.0.rc3
 
