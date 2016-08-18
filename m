@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ua0-x243.google.com ([2607:f8b0:400c:c08::243])
+Received: from forward9h.cmail.yandex.net ([87.250.230.220])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1baIIA-00072C-O9
- for barebox@lists.infradead.org; Thu, 18 Aug 2016 08:03:11 +0000
-Received: by mail-ua0-x243.google.com with SMTP id u13so2314536uau.0
- for <barebox@lists.infradead.org>; Thu, 18 Aug 2016 01:02:49 -0700 (PDT)
+ id 1baJ3q-000251-7c
+ for barebox@lists.infradead.org; Thu, 18 Aug 2016 08:52:27 +0000
+From: Aleksey Kuleshov <rndfax@yandex.ru>
+In-Reply-To: <20160818063524.GF20657@pengutronix.de>
+References: <1471420687-14367-1-git-send-email-rndfax@yandex.ru>
+ <1471420687-14367-2-git-send-email-rndfax@yandex.ru>
+ <20160818063524.GF20657@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20160818063059.GD20657@pengutronix.de>
-References: <CABDcavbrkt2q3cQ5Tzi3d0pU+Pm3v4S3OGzFo_aG_SNgmEgOnA@mail.gmail.com>
- <CABDcavYP7m5BvVk1Ki=uZe7GdSp8RGwMu_kCV-SQO2+0kb5_NQ@mail.gmail.com>
- <20160818063059.GD20657@pengutronix.de>
-From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
-Date: Thu, 18 Aug 2016 10:02:48 +0200
-Message-ID: <CABDcavYO3AtqLPuaDwtOfpm4Vs-qazrD8xzC4wu0wrJ8uL5mvw@mail.gmail.com>
+Message-Id: <105091471510320@web2g.yandex.ru>
+Date: Thu, 18 Aug 2016 11:52:00 +0300
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,68 +19,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Fwd: Shouldn't boot_board be called from boot instead of init?
+Subject: Re: [PATCH 1/2] hush: do not do anything if string is zero length
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hello,
-
-2016-08-18 8:31 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> Hi,
->
-> On Tue, Aug 16, 2016 at 10:42:32AM +0200, Guillermo Rodriguez Garcia wrote:
->> Hello all,
->>
->> Currently, for defaultenv v1, the /env/bin/boot_board script is called
->> from /env/bin/init.
->>
->> However this means boot_board will not be run if booting manually (by
->> running 'boot' from the barebox console).
->>
->> Shouldn't this script be called from /env/bin/boot instead? If a board
->> needs any specific stuff to be done when booting, this probably
->> applies both when autobooting and when booting manually (otherwise,
->> anything that only applies only when autobooting could also be done
->> from init_board instead of boot_board).
->
-> The only boot_board script we have is
-> arch/arm/boards/at91sam9m10g45ek/env/bin/boot_board. Here a menu is
-> built which I think makes sense at that stage and not at init_board.
-
-The thing is, if boot_board is called from init, then it will not be
-called if autoboot is interrupted and you later boot manually with the
-boot command.
-
-We actually use boot_board to do some board-specific processing that
-should be done both when autobooting and when booting "manually". The
-way it is right now, this is not possible.
-
-With the change I am proposing, boards such as at91sam9m10g45ek could
-still do what they are doing now (just move the code to init_board
-instead). Or, with some tweaking, perhaps it could even be left in
-boot_board (with boot_board being called from boot).
-
-Is this specific board the only objection to the change I am
-proposing? If so I could try to come up with a patch which accomodates
-this specific case. Or are there other, more general objections?
-
->
-> However, I would be glad to get rid of defaultenv-1 rather sooner than
-> later.
-
-Uhm. I actually like defaultenv-1 better than defaultenv-2. Why not
-keep both? Everyone can then make their choice :)
-
-Regards,
-
-Guillermo Rodriguez Garcia
-guille.rodriguez@gmail.com
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Pj4gwqBkaWZmIC0tZ2l0IGEvY29tbW9uL2h1c2guYyBiL2NvbW1vbi9odXNoLmMKPj4gwqBpbmRl
+eCBkM2Y3YmYzLi5kOGZkNjRiIDEwMDY0NAo+PiDCoC0tLSBhL2NvbW1vbi9odXNoLmMKPj4gwqAr
+KysgYi9jb21tb24vaHVzaC5jCj4+IMKgQEAgLTE2NTUsNiArMTY1NSw5IEBAIGNoYXIgKnNoZWxs
+X2V4cGFuZChjaGFyICpzdHIpCj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgb19zdHJpbmcgbyA9IHt9
+Owo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoGNoYXIgKnJlcywgKnBhcnNlZDsKPj4KPj4gwqArIGlm
+IChzdHJsZW4oc3RyKSA9PSAwKQo+PiDCoCsgcmV0dXJuIHhzdHJkdXAoIiIpOwo+PiDCoCsKPgo+
+IENhbiB5b3UgZXhwbGFpbiB3aHkgdGhpcyBpcyBuZWNlc3Nhcnk/IFdoYXQgaGFwcGVucyB3aXRo
+IGFuIGVtcHR5IHN0cmluZwo+IHdpdGhvdXQgdGhpcyBwYXRjaD8KCi8qCiAqIHNoZWxsX2V4cGFu
+ZCAtIEV4cGFuZCBzaGVsbCB2YXJpYWJsZXMgaW4gYSBzdHJpbmcuCiAqIEBzdHI6ICAgICAgICBU
+aGUgaW5wdXQgc3RyaW5nIGNvbnRhaW5pbmcgc2hlbGwgdmFyaWFibGVzIGxpa2UKICogICAgICAg
+ICAgICAgICR2YXIgb3IgJHt2YXJ9CiAqIFJldHVybjogICAgICBUaGUgZXhwYW5kZWQgc3RyaW5n
+LiBNdXN0IGJlIGZyZWVkIHdpdGggZnJlZSgpLgogKi8KCklmIHNoZWxsX2V4cGFuZCBzaG91bGQg
+YmUgY2FsbGVkIF9vbmx5XyB3aXRoIHN0cmluZyBjb250YWluaW5nIF9hdCBsZWFzdCBvbmVfICR2
+YXIgb3IgJHt2YXJ9IHRoZW4gdGhpcyBwYXRjaCBpcyB3cm9uZy4KQW5kIHNpbmNlIHNoZWxsX2V4
+cGFuZCBpcyBjYWxsZWQgb25seSBmcm9tIG1lbnV0cmVlLmMgdGhlbiBpdCdzIG1lbnV0cmVlLmMn
+cyByZXNwb25zaWJpbGl0eSB0byB2ZXJpZnkgdGhlIHN0cmluZy4KCk90aGVyd2lzZToKSWYgeW91
+IHBhc3MgemVybyBsZW5ndGggc3RyaW5nIChpLmUuIHNoZWxsX2V4cGFuZCgiIikpIHlvdSB3aWxs
+IGVuZCB1cCB3aXRoICJTZWdtZW50YXRpb24gRmF1bHQiCmJlY2F1c2UgdGhpcyBsaW5lOgoKICAg
+ICAgICBwYXJzZV9zdHJpbmcoJm8sICZjdHgsIHN0cik7Cgp3aWxsIGdpdmUgeW91IG8uZGF0YSA9
+IE5VTEwKYW5kIHRoZW4gY29tZXMgdGhpcyBsaW5lOgoKICAgICAgICBwYXJzZWQgPSB4bWVtZHVw
+KG8uZGF0YSwgby5sZW5ndGggKyAxKTsKClBTLiBBbmQgaWYgeW91IHdpbGwgbm90IGZpbGwgJ3Rp
+dGxlJyBmaWxlIGZvciBtZW51IHdpdGggc29tZSBkYXRhIHlvdSB3aWxsIGdldCAiU2VnbWVudGF0
+aW9uIEZhdWx0Ii4KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
+Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
