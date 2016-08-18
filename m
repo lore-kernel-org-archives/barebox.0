@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1baHWA-0008Nj-Q2
- for barebox@lists.infradead.org; Thu, 18 Aug 2016 07:14:02 +0000
-Date: Thu, 18 Aug 2016 09:13:12 +0200
+ by casper.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1baHX2-00061Q-8B
+ for barebox@lists.infradead.org; Thu, 18 Aug 2016 07:14:28 +0000
+Date: Thu, 18 Aug 2016 09:13:40 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160818071312.GH20657@pengutronix.de>
-References: <1471423924-8745-1-git-send-email-rndfax@yandex.ru>
+Message-ID: <20160818071340.GI20657@pengutronix.de>
+References: <1471424671-13315-1-git-send-email-rndfax@yandex.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1471423924-8745-1-git-send-email-rndfax@yandex.ru>
+In-Reply-To: <1471424671-13315-1-git-send-email-rndfax@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,18 +22,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fix double free
+Subject: Re: [PATCH] properly remove menu entry
 To: Aleksey Kuleshov <rndfax@yandex.ru>
 Cc: barebox@lists.infradead.org
 
-On Wed, Aug 17, 2016 at 11:52:04AM +0300, Aleksey Kuleshov wrote:
-> it already gets free in bootentries_free
-> no need to do this in ->release method
-> 
+On Wed, Aug 17, 2016 at 12:04:31PM +0300, Aleksey Kuleshov wrote:
 > Signed-off-by: Aleksey Kuleshov <rndfax@yandex.ru>
 > ---
->  common/boot.c | 1 -
->  1 file changed, 1 deletion(-)
+>  common/boot.c | 1 +
+>  1 file changed, 1 insertion(+)
 
 Applied, thanks
 
@@ -41,15 +38,15 @@ Sascha
 
 > 
 > diff --git a/common/boot.c b/common/boot.c
-> index a2f5a81..52e181d 100644
+> index 52e181d..5f2e5cf 100644
 > --- a/common/boot.c
 > +++ b/common/boot.c
-> @@ -169,7 +169,6 @@ static void bootscript_entry_release(struct bootentry *entry)
->  	struct bootentry_script *bs = container_of(entry, struct bootentry_script, entry);
+> @@ -322,6 +322,7 @@ void bootsources_menu(struct bootentries *bootentries, int timeout)
 >  
->  	free(bs->scriptpath);
-> -	free(bs->entry.me.display);
->  	free(bs);
+>  	menu_show(bootentries->menu);
+>  
+> +	menu_remove_entry(bootentries->menu, back_entry);
+>  	free(back_entry);
 >  }
 >  
 > -- 
