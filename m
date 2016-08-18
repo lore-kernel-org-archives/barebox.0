@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward1m.cmail.yandex.net ([2a02:6b8:b030::18])
+Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1baJks-00089i-4G
- for barebox@lists.infradead.org; Thu, 18 Aug 2016 09:36:55 +0000
-From: Aleksey Kuleshov <rndfax@yandex.ru>
-In-Reply-To: <20160818071159.GG20657@pengutronix.de>
-References: <1471420687-14367-1-git-send-email-rndfax@yandex.ru>
- <1471420687-14367-3-git-send-email-rndfax@yandex.ru>
- <20160818071159.GG20657@pengutronix.de>
-MIME-Version: 1.0
-Message-Id: <208911471512989@web9j.yandex.ru>
-Date: Thu, 18 Aug 2016 12:36:29 +0300
+ id 1baJog-000169-GZ
+ for barebox@lists.infradead.org; Thu, 18 Aug 2016 09:40:51 +0000
+Received: by mail-lf0-x243.google.com with SMTP id k135so1399345lfb.1
+ for <barebox@lists.infradead.org>; Thu, 18 Aug 2016 02:40:29 -0700 (PDT)
+Date: Thu, 18 Aug 2016 12:43:28 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20160818124328.7ee24cea9598434c86c0cf8d@gmail.com>
+In-Reply-To: <20160818063227.GE20657@pengutronix.de>
+References: <1471383369-23015-1-git-send-email-antonynpavlov@gmail.com>
+ <20160818063227.GE20657@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,97 +20,159 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] rework menu so that it can support multiline titles
+Subject: Re: [PATCH] MIPS: dts: reuse TP-LINK MR3020 dts file from linux
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
 
-Pj4gwqBAQCAtMjM0LDEyICsyMzcsMTkgQEAgc3RhdGljIHZvaWQgcHJpbnRfbWVudShzdHJ1Y3Qg
-bWVudSAqbSkKPj4gwqDCoMKgwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgbWVudV9lbnRyeSAqbWU7Cj4+
-Cj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgY2xlYXIoKTsKPj4gwqAtIGdvdG9YWSgyLCAxKTsKPj4g
-wqAtIGlmKG0tPmRpc3BsYXkpIHsKPj4gwqAtIF9fcHJpbnRfZW50cnkobS0+ZGlzcGxheSk7Cj4+
-IMKgKyBpZiAobS0+ZGlzcGxheSkgewo+PiDCoCsgaW50IGk7Cj4+IMKgKyBmb3IgKGkgPSAwOyBp
-IDwgbS0+ZGlzcGxheV9saW5lczsgaSsrKSB7Cj4+IMKgKyBnb3RvWFkoMiwgMSArIGkpOwo+PiDC
-oCsgX19wcmludF9lbnRyeShtLT5kaXNwbGF5W2ldKTsKPj4gwqArIH0KPj4gwqArIG0tPnNraXBf
-bGluZXMgPSAwOwo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoH0gZWxzZSB7Cj4+IMKgKyBnb3RvWFko
-MiwgMSk7Cj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHB1dHMoIk1lbnUg
-OiAiKTsKPj4gwqAtIHB1dHMobS0+bmFtZSk7Cj4+IMKgKyBpZiAobS0+bmFtZSkKPj4gwqArIHB1
-dHMobS0+bmFtZSk7Cj4+IMKgKyBtLT5za2lwX2xpbmVzID0gMTsKPj4gwqDCoMKgwqDCoMKgwqDC
-oMKgwqB9Cj4KPiBXZSBjb3VsZCBhZGQgdGhpcyB0byBtZW51X2FkZCgpOgo+Cj4gwqDCoMKgwqDC
-oMKgwqBpZiAoIW0tPmRpc3BsYXkpCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgbS0+
-ZGlzcGxheSA9IHhhc3ByaW50ZigiTWVudSA6ICVzIiwgbS0+bmFtZSk7Cj4KPiBUaGVuIHdlIHdv
-dWxkbid0IG5lZWQgdGhlIGlmKG0tPmRpc3BsYXkpIGhlcmUuIFdvdWxkIHRoYXQgc2ltcGxpZnkg
-dGhlCj4gY29kZT8KClllcy4gQnV0IGFsbCB0aXRsZSB0aGluZ3MgYXJlIGdvIGludG8gbWVudV9h
-ZGRfdGl0aWxlLCBzbyBob3cgYWJvdXQgdGhpczoKCmRpZmYgLS1naXQgYS9jb21tb24vbWVudS5j
-IGIvY29tbW9uL21lbnUuYwppbmRleCAxZjIzZTQ1Li42MzZjMmI4IDEwMDY0NAotLS0gYS9jb21t
-b24vbWVudS5jCisrKyBiL2NvbW1vbi9tZW51LmMKQEAgLTIzNSwyMSArMjM1LDEyIEBAIEVYUE9S
-VF9TWU1CT0wobWVudV9zZXRfYXV0b19zZWxlY3QpOwogc3RhdGljIHZvaWQgcHJpbnRfbWVudShz
-dHJ1Y3QgbWVudSAqbSkKIHsKICAgICAgICBzdHJ1Y3QgbWVudV9lbnRyeSAqbWU7CisgICAgICAg
-aW50IGk7CgogICAgICAgIGNsZWFyKCk7Ci0gICAgICAgaWYgKG0tPmRpc3BsYXkpIHsKLSAgICAg
-ICAgICAgICAgIGludCBpOwotICAgICAgICAgICAgICAgZm9yIChpID0gMDsgaSA8IG0tPmRpc3Bs
-YXlfbGluZXM7IGkrKykgewotICAgICAgICAgICAgICAgICAgICAgICBnb3RvWFkoMiwgMSArIGkp
-OwotICAgICAgICAgICAgICAgICAgICAgICBfX3ByaW50X2VudHJ5KG0tPmRpc3BsYXlbaV0pOwot
-ICAgICAgICAgICAgICAgfQotICAgICAgICAgICAgICAgbS0+c2tpcF9saW5lcyA9IDA7Ci0gICAg
-ICAgfSBlbHNlIHsKLSAgICAgICAgICAgICAgIGdvdG9YWSgyLCAxKTsKLSAgICAgICAgICAgICAg
-IHB1dHMoIk1lbnUgOiAiKTsKLSAgICAgICAgICAgICAgIGlmIChtLT5uYW1lKQotICAgICAgICAg
-ICAgICAgICAgICAgICBwdXRzKG0tPm5hbWUpOwotICAgICAgICAgICAgICAgbS0+c2tpcF9saW5l
-cyA9IDE7CisgICAgICAgZm9yIChpID0gMDsgaSA8IG0tPmRpc3BsYXlfbGluZXM7IGkrKykgewor
-ICAgICAgICAgICAgICAgZ290b1hZKDIsIDEgKyBpKTsKKyAgICAgICAgICAgICAgIF9fcHJpbnRf
-ZW50cnkobS0+ZGlzcGxheVtpXSk7CiAgICAgICAgfQoKICAgICAgICBsaXN0X2Zvcl9lYWNoX2Vu
-dHJ5KG1lLCAmbS0+ZW50cmllcywgbGlzdCkgewpAQCAtNTM4LDggKzUyOSwxMiBAQCB2b2lkIG1l
-bnVfYWRkX3RpdGxlKHN0cnVjdCBtZW51ICptLCBjb25zdCBjaGFyICpkaXNwbGF5LCBjaGFyICoo
-KnBhcnNlcikoY2hhciAqcwogICAgICAgIGludCBsaW5lcyA9IDE7CiAgICAgICAgaW50IGk7Cgot
-ICAgICAgIGlmICghc3RybGVuKGRpc3BsYXkpKQorICAgICAgIGlmICghc3RybGVuKGRpc3BsYXkp
-KSB7CisgICAgICAgICAgICAgICBtLT5kaXNwbGF5X2xpbmVzID0gMTsKKyAgICAgICAgICAgICAg
-IG0tPmRpc3BsYXkgPSB4emFsbG9jKHNpemVvZigqbS0+ZGlzcGxheSkpOworICAgICAgICAgICAg
-ICAgbS0+ZGlzcGxheVswXSA9IHhhc3ByaW50ZigiTWVudSA6ICVzIiwgbS0+bmFtZSA/IG0tPm5h
-bWUgOiAiIik7CiAgICAgICAgICAgICAgICByZXR1cm47CisgICAgICAgfQoKICAgICAgICBzcmMg
-PSBkc3QgPSB0bXAgPSB4c3RyZHVwKGRpc3BsYXkpOwogICAgICAgIC8qIENvdW50IGxpbmVzIGFu
-ZCBzZXBhcmF0ZSBzaW5nbGUgc3RyaW5nIGludG8gbXVsdGlwbGUgc3RyaW5ncyAqLwoKKyByZW1v
-dmUgc2tpcF9saW5lcyBldmVyeXdoZXJlLgoKPiBJIGhhdmVuJ3QgcmVhbGx5IHVuZGVyc3Rvb2Qg
-d2h5IHRoZSBtLT5za2lwX2xpbmVzIGlzIG5lY2Vzc2FyeSwgYnV0IEkKPiB0aGluayBpdCBzaG91
-bGQgYmUgcmVtb3ZlZCBieSBtYWtpbmcgdGhlIGlmL2Vsc2UgYWJvdmUgdW5uZWNlc3NhcnkuCgpG
-b3IgcHJvcGVyIHNwYWNpbmcuIEJ1dCB5ZXMsIGl0IGNhbiBiZSByZW1vdmVkIHdpdGggcGF0Y2gg
-YWJvdmUuCgo+PiDCoCsgZm9yIChzcmMgPSB0bXAsIGkgPSAwOyBpIDwgbGluZXM7IGkrKykgewo+
-PiDCoCsgaWYgKHBhcnNlcikKPj4gwqArIG0tPmRpc3BsYXlbaV0gPSBwYXJzZXIoc3JjKTsKPj4g
-wqArIGVsc2UKPj4gwqArIG0tPmRpc3BsYXlbaV0gPSB4c3RyZHVwKHNyYyk7Cj4KPiBXaGF0J3Mg
-dGhlIHJlYXNvbiBmb3IgcnVubmluZyBwYXJzZXIoKSBvdmVyIHRoZSBzZXBhcmF0ZWQgc3RyaW5n
-cz8gQ2FuJ3QKPiB5b3UgcnVuIHBhcnNlcigpIG92ZXIgdGhlIG9yaWdpbmFsIG11bHRpbGluZSBz
-dHJpbmcgaW5zdGVhZD8KCkkgd2FudGVkIHRvIGNvbnN1bWUgbW9yZSBDUFUgY3ljbGVzIHNvIHRo
-YXQgdGhlIEVhcnRoIHdpbGwgc3VmZmVyIGZyb20gcG93ZXIgc3RhcnZhdGlvbi4gQnV0IHlvdSBy
-dWluZWQgbXkgZXZpbCBwbGFuLCBjbGFwLWNsYXAtY2xhcC4KCj4gV2hhdCBpZiBvbmUgb2YgdGhl
-IHZhcmlhYmxlcyBleHBhbmRlZCBpbiBzaGVsbF9leHBhbmQoKSBjb250YWlucyBhIG5ld2xpbmUK
-PiBjaGFyYWN0ZXI/CgpJdCB3aWxsIGJlIGluY29ycmVjdCByZW5kZXJpbmcuIEMgdSBpbiBwYXRj
-aCB2MiBzZXJpZXMuCgo+Cj4+IMKgKyAvKiBHbyB0byB0aGUgbmV4dCBsaW5lICovCj4+IMKgKyBz
-cmMgKz0gc3RybGVuKHNyYykgKyAxOwo+PiDCoCsgfQo+PiDCoCsKPj4gwqArIGZyZWUodG1wKTsK
-Pj4gwqArfQo+PiDCoCtFWFBPUlRfU1lNQk9MKG1lbnVfYWRkX3RpdGxlKTsKPj4gwqBkaWZmIC0t
-Z2l0IGEvY29tbW9uL21lbnV0cmVlLmMgYi9jb21tb24vbWVudXRyZWUuYwo+PiDCoGluZGV4IGVi
-MTRkYTAuLmUyZDM2NGQgMTAwNjQ0Cj4+IMKgLS0tIGEvY29tbW9uL21lbnV0cmVlLmMKPj4gwqAr
-KysgYi9jb21tb24vbWVudXRyZWUuYwo+PiDCoEBAIC0xOSw2ICsxOSw3IEBACj4+IMKgwqAjaW5j
-bHVkZSA8c2hlbGwuaD4KPj4gwqDCoCNpbmNsdWRlIDxsaWJmaWxlLmg+Cj4+Cj4+IMKgKyNpbmNs
-dWRlIDxsaW51eC9jdHlwZS5oPgo+PiDCoMKgI2luY2x1ZGUgPGxpbnV4L3N0YXQuaD4KPj4KPj4g
-wqDCoHN0cnVjdCBtZW51dHJlZSB7Cj4+IMKgQEAgLTk1LDYgKzk2LDcgQEAgaW50IG1lbnV0cmVl
-KGNvbnN0IGNoYXIgKnBhdGgsIGludCB0b3BsZXZlbCkKPj4gwqDCoMKgwqDCoMKgwqDCoMKgwqBn
-bG9iX3QgZzsKPj4gwqDCoMKgwqDCoMKgwqDCoMKgwqBpbnQgaTsKPj4gwqDCoMKgwqDCoMKgwqDC
-oMKgwqBjaGFyICpnbG9icGF0aCwgKmRpc3BsYXk7Cj4+IMKgKyBzaXplX3Qgc2l6ZTsKPj4KPj4g
-wqDCoMKgwqDCoMKgwqDCoMKgwqBtZW51ID0gbWVudV9hbGxvYygpOwo+Pgo+PiDCoEBAIC0xMDYs
-MTQgKzEwOCwyMSBAQCBpbnQgbWVudXRyZWUoY29uc3QgY2hhciAqcGF0aCwgaW50IHRvcGxldmVs
-KQo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBnb3RvIG91dDsKPj4gwqDC
-oMKgwqDCoMKgwqDCoMKgwqB9Cj4+Cj4+IMKgLSBkaXNwbGF5ID0gcmVhZF9maWxlX2xpbmUoIiVz
-L3RpdGxlIiwgcGF0aCk7Cj4+IMKgKyBnbG9icGF0aCA9IGJhc3ByaW50ZigiJXMvdGl0bGUiLCBw
-YXRoKTsKPj4gwqArIGRpc3BsYXkgPSByZWFkX2ZpbGUoZ2xvYnBhdGgsICZzaXplKTsKPj4gwqAr
-IC8qIFJlbW92ZSB0cmFpbGluZyB3aGl0ZXNwYWNlcyAqLwo+PiDCoCsgd2hpbGUgKHNpemUgPiAw
-ICYmIGlzc3BhY2UoZGlzcGxheVtzaXplIC0gMV0pKQo+PiDCoCsgc2l6ZS0tOwo+Cj4gV2UgaGF2
-ZSB0aGUgc3RyaW0oKSBmdW5jdGlvbiBmb3IgdGhpcyBwdXJwb3NlLgoKICogc3RyaW0gLSBSZW1v
-dmVzIGxlYWRpbmcgYW5kIHRyYWlsaW5nIHdoaXRlc3BhY2UgZnJvbSBAcy4KCkFuZCBtaW5lIGRv
-ZXMgb25seToKPj4gICsgLyogUmVtb3ZlIHRyYWlsaW5nIHdoaXRlc3BhY2VzICovCgpCZWNhdXNl
-IGl0J3MgbmVjZXNzYXJ5IHRvIHByZXNlcnZlIGlkZW50YXRpb24gaW4gbXVsdGlsaW5lIHRpdGxl
-IHNvIHRoYXQgYmFyZWJveCB3aWxsIGJlIGFibGUgdG8gZGlzcGxheSBzdWNoIHRleHQ6CkJhcmVi
-b3ggYm9vdCBsb2FkZXIKQm9hcmQ6IFNvbWVTdXBlckJvYXJkCiAgICBDUFU6IEFSTXY4IEA4MDBN
-SHoKICAgIE1lbTogNTEyTUIKCk1lbnU6CiAgICAuLi4uCgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
-c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9iYXJlYm94Cg==
+On Thu, 18 Aug 2016 08:32:27 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
+
+> On Wed, Aug 17, 2016 at 12:36:09AM +0300, Antony Pavlov wrote:
+> > At the moment barebox tplink-mr3020.dts file has almost
+> > the same content as linux ar9331_tl_mr3020.dts file
+> > so we can reuse linux dts-file and drop duplicated lines
+> > from barebox dts-file.
+> > =
+
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > ---
+> >  arch/mips/dts/tplink-mr3020.dts | 68 +--------------------------------=
+--------
+> >  1 file changed, 1 insertion(+), 67 deletions(-)
+> =
+
+> Applied, thanks
+> =
+
+> There is no difference between the two patches you sent, right?
+
+Yes, there is no difference. My bad --- I have used wrong maillist address =
+in the first patch
+(barebox@lists.infradead.orgc instead of barebox@lists.infradead.org).
+ =
+
+> Sascha
+> =
+
+> =
+
+> > =
+
+> > diff --git a/arch/mips/dts/tplink-mr3020.dts b/arch/mips/dts/tplink-mr3=
+020.dts
+> > index 831fab8..1e843ee 100644
+> > --- a/arch/mips/dts/tplink-mr3020.dts
+> > +++ b/arch/mips/dts/tplink-mr3020.dts
+> > @@ -1,73 +1,7 @@
+> > -/dts-v1/;
+> > -
+> > -#include <dt-bindings/gpio/gpio.h>
+> > -
+> > -#include <mips/qca/ar9331.dtsi>
+> > +#include <mips/qca/ar9331_tl_mr3020.dts>
+> >  =
+
+> >  / {
+> > -	model =3D "TP-Link TL-MR3020";
+> > -	compatible =3D "tplink,tl-mr3020";
+> > -
+> >  	aliases {
+> >  		spiflash =3D &spiflash;
+> >  	};
+> > -
+> > -	memory@0 {
+> > -		device_type =3D "memory";
+> > -		reg =3D <0x00000000 0x2000000>;
+> > -	};
+> > -
+> > -	leds {
+> > -		compatible =3D "gpio-leds";
+> > -
+> > -		wlan {
+> > -			label =3D "tp-link:green:wlan";
+> > -			gpios =3D <&gpio 0 GPIO_ACTIVE_HIGH>;
+> > -			default-state =3D "off";
+> > -		};
+> > -
+> > -		lan {
+> > -			label =3D "tp-link:green:lan";
+> > -			gpios =3D <&gpio 17 GPIO_ACTIVE_LOW>;
+> > -			default-state =3D "off";
+> > -		};
+> > -
+> > -		wps {
+> > -			label =3D "tp-link:green:wps";
+> > -			gpios =3D <&gpio 26 GPIO_ACTIVE_LOW>;
+> > -			default-state =3D "off";
+> > -		};
+> > -
+> > -		led3g {
+> > -			label =3D "tp-link:green:3g";
+> > -			gpios =3D <&gpio 27 GPIO_ACTIVE_LOW>;
+> > -			default-state =3D "off";
+> > -		};
+> > -	};
+> > -};
+> > -
+> > -&ref {
+> > -	clock-frequency =3D <25000000>;
+> > -};
+> > -
+> > -&uart {
+> > -	status =3D "okay";
+> > -};
+> > -
+> > -&gpio {
+> > -	status =3D "okay";
+> > -};
+> > -
+> > -&spi {
+> > -	num-chipselects =3D <1>;
+> > -	status =3D "okay";
+> > -
+> > -	/* Spansion S25FL032PIF SPI flash */
+> > -	spiflash: s25sl032p@0 {
+> > -		#address-cells =3D <1>;
+> > -		#size-cells =3D <1>;
+> > -		compatible =3D "spansion,s25sl032p", "jedec,spi-nor";
+> > -		spi-max-frequency =3D <104000000>;
+> > -		reg =3D <0>;
+> > -	};
+> >  };
+> > -- =
+
+> > 2.8.1
+> > =
+
+> > =
+
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> > =
+
+> =
+
+> -- =
+
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
