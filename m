@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1baHYa-000656-Uw
- for barebox@lists.infradead.org; Thu, 18 Aug 2016 07:16:06 +0000
-Date: Thu, 18 Aug 2016 09:15:42 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160818071542.GJ20657@pengutronix.de>
-References: <1471439539-3443-1-git-send-email-akurz@blala.de>
+Received: from f170.i.mail.ru ([94.100.178.89])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1baHd7-0005yl-QU
+ for barebox@lists.infradead.org; Thu, 18 Aug 2016 07:20:47 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1471439539-3443-1-git-send-email-akurz@blala.de>
+Date: Thu, 18 Aug 2016 10:20:20 +0300
+Message-ID: <1471504820.129571485@f170.i.mail.ru>
+In-Reply-To: <20160818071542.GJ20657@pengutronix.de>
+References: <1471439539-3443-1-git-send-email-akurz@blala.de>
+ <20160818071542.GJ20657@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,82 +18,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mfd mc13xxx: add MC13892_REVISION_2_4
-To: Alexander Kurz <akurz@blala.de>
-Cc: barebox@lists.infradead.org
+Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSF0gbWZkIG1jMTN4eHg6IGFkZCBNQzEzODkyX1JFVklT?=
+ =?UTF-8?B?SU9OXzJfNA==?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, =?UTF-8?B?QWxleGFuZGVyIEt1cno=?= <akurz@blala.de>
 
-On Wed, Aug 17, 2016 at 03:12:19PM +0200, Alexander Kurz wrote:
-> An MC13892CJ having REV[4:0]=0x14 can be found in the kindle-d01100.
-> Add the revision to the list to support this device.
-> 
-> Signed-off-by: Alexander Kurz <akurz@blala.de>
-> ---
->  drivers/mfd/mc13xxx.c |  1 +
->  include/mfd/mc13xxx.h | 13 +++++++------
->  2 files changed, 8 insertions(+), 6 deletions(-)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
-> index b2fcd95..f6aa922 100644
-> --- a/drivers/mfd/mc13xxx.c
-> +++ b/drivers/mfd/mc13xxx.c
-> @@ -219,6 +219,7 @@ static struct __init {
->  	{ 0x0a, MC13892_REVISION_1_2, "1.2" },
->  	{ 0x10, MC13892_REVISION_2_0, "2.0" },
->  	{ 0x11, MC13892_REVISION_2_1, "2.1" },
-> +	{ 0x14, MC13892_REVISION_2_4, "2.4" },
->  	{ 0x18, MC13892_REVISION_3_0, "3.0" },
->  	{ 0x19, MC13892_REVISION_3_1, "3.1" },
->  	{ 0x1a, MC13892_REVISION_3_2, "3.2" },
-> diff --git a/include/mfd/mc13xxx.h b/include/mfd/mc13xxx.h
-> index 96a32e4..d351c47 100644
-> --- a/include/mfd/mc13xxx.h
-> +++ b/include/mfd/mc13xxx.h
-> @@ -127,12 +127,13 @@
->  #define MC13892_REVISION_2_0		3
->  #define MC13892_REVISION_2_0a		4
->  #define MC13892_REVISION_2_1		5
-> -#define MC13892_REVISION_3_0		6
-> -#define MC13892_REVISION_3_1		7
-> -#define MC13892_REVISION_3_2		8
-> -#define MC13892_REVISION_3_2a		9
-> -#define MC13892_REVISION_3_3		10
-> -#define MC13892_REVISION_3_5		11
-> +#define MC13892_REVISION_2_4		6
-> +#define MC13892_REVISION_3_0		7
-> +#define MC13892_REVISION_3_1		8
-> +#define MC13892_REVISION_3_2		9
-> +#define MC13892_REVISION_3_2a		10
-> +#define MC13892_REVISION_3_3		11
-> +#define MC13892_REVISION_3_5		12
->  
->  #define MC13783_SWX_VOLTAGE(x)		((x) & 0x3f)
->  #define MC13783_SWX_VOLTAGE_DVS(x)	(((x) & 0x3f) << 6)
-> -- 
-> 2.1.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+PtCn0LXRgtCy0LXRgNCzLCAxOCDQsNCy0LPRg9GB0YLQsCAyMDE2LCAxMDoxNSArMDM6MDAg0L7R
+giBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ogo+Cj5PbiBXZWQsIEF1ZyAx
+NywgMjAxNiBhdCAwMzoxMjoxOVBNICswMjAwLCBBbGV4YW5kZXIgS3VyeiB3cm90ZToKPj4gQW4g
+TUMxMzg5MkNKIGhhdmluZyBSRVZbNDowXT0weDE0IGNhbiBiZSBmb3VuZCBpbiB0aGUga2luZGxl
+LWQwMTEwMC4KPj4gQWRkIHRoZSByZXZpc2lvbiB0byB0aGUgbGlzdCB0byBzdXBwb3J0IHRoaXMg
+ZGV2aWNlLgo+PiAKPj4gU2lnbmVkLW9mZi1ieTogQWxleGFuZGVyIEt1cnogPCBha3VyekBibGFs
+YS5kZSA+Cj4+IC0tLQo+PiAgZHJpdmVycy9tZmQvbWMxM3h4eC5jIHwgIDEgKwo+PiAgaW5jbHVk
+ZS9tZmQvbWMxM3h4eC5oIHwgMTMgKysrKysrKy0tLS0tLQo+PiAgMiBmaWxlcyBjaGFuZ2VkLCA4
+IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pCi4uLgo+PiAgI2RlZmluZSBNQzEzODkyX1JF
+VklTSU9OXzJfMDMKPj4gICNkZWZpbmUgTUMxMzg5Ml9SRVZJU0lPTl8yXzBhNAo+PiAgI2RlZmlu
+ZSBNQzEzODkyX1JFVklTSU9OXzJfMTUKPj4gLSNkZWZpbmUgTUMxMzg5Ml9SRVZJU0lPTl8zXzA2
+Cj4+IC0jZGVmaW5lIE1DMTM4OTJfUkVWSVNJT05fM18xNwo+PiAtI2RlZmluZSBNQzEzODkyX1JF
+VklTSU9OXzNfMjgKPj4gLSNkZWZpbmUgTUMxMzg5Ml9SRVZJU0lPTl8zXzJhOQo+PiAtI2RlZmlu
+ZSBNQzEzODkyX1JFVklTSU9OXzNfMzEwCj4+IC0jZGVmaW5lIE1DMTM4OTJfUkVWSVNJT05fM181
+MTEKPj4gKyNkZWZpbmUgTUMxMzg5Ml9SRVZJU0lPTl8yXzQ2Cj4+ICsjZGVmaW5lIE1DMTM4OTJf
+UkVWSVNJT05fM18wNwo+PiArI2RlZmluZSBNQzEzODkyX1JFVklTSU9OXzNfMTgKPj4gKyNkZWZp
+bmUgTUMxMzg5Ml9SRVZJU0lPTl8zXzI5Cj4+ICsjZGVmaW5lIE1DMTM4OTJfUkVWSVNJT05fM18y
+YTEwCj4+ICsjZGVmaW5lIE1DMTM4OTJfUkVWSVNJT05fM18zMTEKPj4gKyNkZWZpbmUgTUMxMzg5
+Ml9SRVZJU0lPTl8zXzUxMgoKQ291bGQgdGhpcyBiZSBjb252ZXJ0ZWQgdG8gZW51bT8KCi0tLQoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
