@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1baHlJ-0006Tr-DD
- for barebox@lists.infradead.org; Thu, 18 Aug 2016 07:29:14 +0000
-Date: Thu, 18 Aug 2016 09:28:52 +0200
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1baHug-0007Dc-7H
+ for barebox@lists.infradead.org; Thu, 18 Aug 2016 07:38:55 +0000
+Date: Thu, 18 Aug 2016 09:38:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160818072852.GK20657@pengutronix.de>
-References: <20160808193203.13ab931dc3ea505a3cdb2b09@gmail.com>
+Message-ID: <20160818073831.GL20657@pengutronix.de>
+References: <7f89efef-2805-34d8-db7d-f3bc53d8e21a@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20160808193203.13ab931dc3ea505a3cdb2b09@gmail.com>
+In-Reply-To: <7f89efef-2805-34d8-db7d-f3bc53d8e21a@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,63 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: net: phy: fixed link
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: AT91RM9200 hang in atmel_serial_putc
+To: Peter Kardos <kardos.peter.sk@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Aug 08, 2016 at 07:32:03PM +0300, Antony Pavlov wrote:
-> Hi Sascha!
-> 
-> I have just took a look on Lukas' 
-> 'net: phy: fixed-link: read link parameters from devicetree' patch.
-> I see two problems with current 'of_phy_register_fixed_link()' implementation
-> unrelated to Lukas' changes.
-> 
-> Please see current of_phy_register_fixed_link() implementation:
-> 
->         static struct phy_device *of_phy_register_fixed_link(struct device_node *np,
->                                                 struct eth_device *edev)
->         {
->                 struct phy_device *phydev;
-> 
->                 phydev = phy_device_create(NULL, 0, 0);
-> 
->                 phydev->dev.parent = &edev->dev;
->                 phydev->registered = 1;
->                 phydev->speed = 1000;
->                 phydev->duplex = 1;
->                 phydev->pause = phydev->asym_pause = 0;
->                 phydev->link = 1;
-> 
->                 return phydev;
->         }
-> 
-> 1. (a trivial think) the line
-> 
->         phydev->link = 1;
-> 
-> is redundant because phy_device_create() has already set it.
+Hi Peter,
 
-Yes, this is redundant and can be removed.
-
+On Thu, Aug 18, 2016 at 03:08:36AM +0200, Peter Kardos wrote:
+> Greetings,
 > 
-> 2. (not so trivial think) the line
+> I'm looking for a AT91 specialist that could help me debug barebox v2016.08.
 > 
->        phydev->registered = 1;
+> I have a custom board running AT91RM9200 that came with a really old custom
+> u-boot (v1.1.4, no ubifs support)...
 > 
-> Why we want to set phydev->registered here? Can we use phy_register_device() instead?
+> The first bootloader I've ported (barebox v2015.07, using AT91RM9200ek as
+> template) almost works; I'm having trouble getting networking (ping, dhcp)
+> working with Micrel KSZ8721 phy. But it boots, works with the Flash, etc...
+> With hopes, that this (networking issue) is resolved with the latest barebox
+> release (using the same patchset and config) I've found (??) a another
+> issue.
+> 
+> At first it seemed the board just does not boot, after having a look with a
+> j-link it seems the board "hangs" in atmel_serial_putc().
+> I've tried to look at the AT91RM9200 init (lowlevel, peripherals, driver)
+> and could not find any significant change (rewrite, define changes, etc)...
 
-If we use phy_register_device() here then I think the genphy driver is
-attached to the fixed link which probably can't handle this fake device.
-You can give it a try, but I assume you will see NULL pointer exceptions
-in several places.
+So you have a jtag debugger attached, does it support showing registers?
+What is the value of uart->base? Is it correct?
+Also you could compare the UART registers with the ones from a working
+U-Boot/barebox. Does atmel_serial_init_port() do everything correctly?
+Finally it may be that the clock is disabled for some reason, then the
+values written to the UART would never be shifted out.
+Which instance of the UART are you using? It seems we have:
 
-phydev->registered = 1 is necessary because without this
-phy_register_device() is called in phy_device_attach() which is called
-from phy_device_connect() called from the network device driver.
+static struct clk_lookup usart_clocks_lookups[] = {
+	CLKDEV_CON_DEV_ID("usart", "atmel_usart0", &mck),
+	CLKDEV_CON_DEV_ID("usart", "atmel_usart1", &usart0_clk),
+	CLKDEV_CON_DEV_ID("usart", "atmel_usart2", &usart1_clk),
+	CLKDEV_CON_DEV_ID("usart", "atmel_usart3", &usart2_clk),
+	CLKDEV_CON_DEV_ID("usart", "atmel_usart4", &usart3_clk),
+};
 
-There may be ways to properly register a fixed link as a phy device, but
-this would mean some serious rework of the phy layer.
+The first clock seems to be always-on, but the others could be turned off.
 
 Sascha
 
