@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x229.google.com ([2a00:1450:400c:c09::229])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1baBpQ-0000Wt-Uk
- for barebox@lists.infradead.org; Thu, 18 Aug 2016 01:09:05 +0000
-Received: by mail-wm0-x229.google.com with SMTP id i5so11092869wmg.0
- for <barebox@lists.infradead.org>; Wed, 17 Aug 2016 18:08:44 -0700 (PDT)
-Received: from [10.10.10.11] (77.119.129.209.wireless.dyn.drei.com.
- [77.119.129.209])
- by smtp.gmail.com with ESMTPSA id d64sm22755wmc.22.2016.08.17.18.08.41
- for <barebox@lists.infradead.org>
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 17 Aug 2016 18:08:42 -0700 (PDT)
-From: Peter Kardos <kardos.peter.sk@gmail.com>
-Message-ID: <7f89efef-2805-34d8-db7d-f3bc53d8e21a@gmail.com>
-Date: Thu, 18 Aug 2016 03:08:36 +0200
+ id 1baGjP-0006XP-RP
+ for barebox@lists.infradead.org; Thu, 18 Aug 2016 06:23:13 +0000
+Date: Thu, 18 Aug 2016 08:22:47 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160818062247.GA20657@pengutronix.de>
+References: <1470726028-32152-1-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1470726028-32152-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,38 +18,117 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: AT91RM9200 hang in atmel_serial_putc
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] clk: socfpga: add divider registers to the main pll
+ outputs
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org, Enrico Jorns <ejo@pengutronix.de>
 
-Greetings,
+On Tue, Aug 09, 2016 at 09:00:28AM +0200, Steffen Trumtrar wrote:
+> From: Enrico Jorns <ejo@pengutronix.de>
+> 
+> This patch is based on kernel patch 0691bb1b5a1865b3bbc9b7ce6e26eff546abb1cf
+> by Dinh Nguyen <dinguyen@altera.com>.
+> 
+> The C0(mpu_clk), C1(main_clk), and C2(dbg_base_clk) outputs from the main
+> PLL go through a pre-divider before coming into the system. These registers
+> were hidden for the CycloneV platform, but are now used for the ArriaV
+> platform.
+> 
+> This patch updates the clock driver to read the div-reg property for the
+> socfpga-periph-clk clocks.
+> 
+> Note: The registers used for the div-reg property are not documented but
+> set by the preloader.
+> 
+> Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
 
-I'm looking for a AT91 specialist that could help me debug barebox v2016.08.
+Applied, thanks
 
-I have a custom board running AT91RM9200 that came with a really old 
-custom u-boot (v1.1.4, no ubifs support)...
+Sascha
 
-The first bootloader I've ported (barebox v2015.07, using AT91RM9200ek 
-as template) almost works; I'm having trouble getting networking (ping, 
-dhcp) working with Micrel KSZ8721 phy. But it boots, works with the 
-Flash, etc...
-With hopes, that this (networking issue) is resolved with the latest 
-barebox release (using the same patchset and config) I've found (??) a 
-another issue.
+>  drivers/clk/socfpga.c | 25 ++++++++++++++++++++++---
+>  1 file changed, 22 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/clk/socfpga.c b/drivers/clk/socfpga.c
+> index 37ed038be84c..6af0632cafc2 100644
+> --- a/drivers/clk/socfpga.c
+> +++ b/drivers/clk/socfpga.c
+> @@ -116,18 +116,27 @@ struct clk_periph {
+>  	const char *parent;
+>  	unsigned regofs;
+>  	unsigned int fixed_div;
+> +	void __iomem *div_reg;
+> +	unsigned int width;
+> +	unsigned int shift;
+>  };
+>  
+>  static unsigned long clk_periph_recalc_rate(struct clk *clk,
+>  		unsigned long parent_rate)
+>  {
+>  	struct clk_periph *periph = container_of(clk, struct clk_periph, clk);
+> -	u32 div;
+> +	u32 div, val;
+>  
+> -	if (periph->fixed_div)
+> +	if (periph->fixed_div) {
+>  		div = periph->fixed_div;
+> -	else
+> +	} else {
+> +		if (periph->div_reg) {
+> +			val = readl(periph->div_reg) >> periph->shift;
+> +			val &= div_mask(periph->width);
+> +			parent_rate /= (val + 1);
+> +		}
+>  		div = ((readl(clk_mgr_base_addr + periph->regofs) & 0x1ff) + 1);
+> +	}
+>  
+>  	return parent_rate / div;
+>  }
+> @@ -140,6 +149,7 @@ static struct clk *socfpga_periph_clk(struct device_node *node)
+>  {
+>  	struct clk_periph *periph;
+>  	int ret;
+> +	u32 div_reg[3];
+>  
+>  	periph = xzalloc(sizeof(*periph));
+>  
+> @@ -152,6 +162,15 @@ static struct clk *socfpga_periph_clk(struct device_node *node)
+>  	periph->clk.name = xstrdup(node->name);
+>  	periph->clk.ops = &clk_periph_ops;
+>  
+> +	ret = of_property_read_u32_array(node, "div-reg", div_reg, 3);
+> +	if (!ret) {
+> +		periph->div_reg = clk_mgr_base_addr + div_reg[0];
+> +		periph->shift = div_reg[1];
+> +		periph->width = div_reg[2];
+> +	} else {
+> +		periph->div_reg = 0;
+> +	}
+> +
+>  	of_property_read_u32(node, "reg", &periph->regofs);
+>  	of_property_read_u32(node, "fixed-divider", &periph->fixed_div);
+>  
+> -- 
+> 2.8.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-At first it seemed the board just does not boot, after having a look 
-with a j-link it seems the board "hangs" in atmel_serial_putc().
-I've tried to look at the AT91RM9200 init (lowlevel, peripherals, 
-driver) and could not find any significant change (rewrite, define 
-changes, etc)...
-
-Any help, ideas, even flame is welcome.
-
-Thanks in advance.
-Cheers, Peter
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
