@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1baJog-000169-GZ
- for barebox@lists.infradead.org; Thu, 18 Aug 2016 09:40:51 +0000
-Received: by mail-lf0-x243.google.com with SMTP id k135so1399345lfb.1
- for <barebox@lists.infradead.org>; Thu, 18 Aug 2016 02:40:29 -0700 (PDT)
-Date: Thu, 18 Aug 2016 12:43:28 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20160818124328.7ee24cea9598434c86c0cf8d@gmail.com>
-In-Reply-To: <20160818063227.GE20657@pengutronix.de>
-References: <1471383369-23015-1-git-send-email-antonynpavlov@gmail.com>
- <20160818063227.GE20657@pengutronix.de>
-Mime-Version: 1.0
+ id 1baKXf-0004if-AO
+ for barebox@lists.infradead.org; Thu, 18 Aug 2016 10:27:22 +0000
+Date: Thu, 18 Aug 2016 12:26:56 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160818102656.GP20657@pengutronix.de>
+References: <1471420687-14367-1-git-send-email-rndfax@yandex.ru>
+ <1471420687-14367-3-git-send-email-rndfax@yandex.ru>
+ <20160818071159.GG20657@pengutronix.de>
+ <208911471512989@web9j.yandex.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <208911471512989@web9j.yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,157 +21,142 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: dts: reuse TP-LINK MR3020 dts file from linux
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2] rework menu so that it can support multiline titles
+To: Aleksey Kuleshov <rndfax@yandex.ru>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Thu, 18 Aug 2016 08:32:27 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
-
-> On Wed, Aug 17, 2016 at 12:36:09AM +0300, Antony Pavlov wrote:
-> > At the moment barebox tplink-mr3020.dts file has almost
-> > the same content as linux ar9331_tl_mr3020.dts file
-> > so we can reuse linux dts-file and drop duplicated lines
-> > from barebox dts-file.
-> > =
-
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > ---
-> >  arch/mips/dts/tplink-mr3020.dts | 68 +--------------------------------=
---------
-> >  1 file changed, 1 insertion(+), 67 deletions(-)
+On Thu, Aug 18, 2016 at 12:36:29PM +0300, Aleksey Kuleshov wrote:
+> >> =A0@@ -234,12 +237,19 @@ static void print_menu(struct menu *m)
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0struct menu_entry *me;
+> >>
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0clear();
+> >> =A0- gotoXY(2, 1);
+> >> =A0- if(m->display) {
+> >> =A0- __print_entry(m->display);
+> >> =A0+ if (m->display) {
+> >> =A0+ int i;
+> >> =A0+ for (i =3D 0; i < m->display_lines; i++) {
+> >> =A0+ gotoXY(2, 1 + i);
+> >> =A0+ __print_entry(m->display[i]);
+> >> =A0+ }
+> >> =A0+ m->skip_lines =3D 0;
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0} else {
+> >> =A0+ gotoXY(2, 1);
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0puts("Menu : ");
+> >> =A0- puts(m->name);
+> >> =A0+ if (m->name)
+> >> =A0+ puts(m->name);
+> >> =A0+ m->skip_lines =3D 1;
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0}
+> >
+> > We could add this to menu_add():
+> >
+> > =A0=A0=A0=A0=A0=A0=A0if (!m->display)
+> > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0m->display =3D xasprintf("=
+Menu : %s", m->name);
+> >
+> > Then we wouldn't need the if(m->display) here. Would that simplify the
+> > code?
 > =
 
-> Applied, thanks
+> Yes. But all title things are go into menu_add_titile, so how about this:
 > =
 
-> There is no difference between the two patches you sent, right?
-
-Yes, there is no difference. My bad --- I have used wrong maillist address =
-in the first patch
-(barebox@lists.infradead.orgc instead of barebox@lists.infradead.org).
- =
-
-> Sascha
+> diff --git a/common/menu.c b/common/menu.c
+> index 1f23e45..636c2b8 100644
+> --- a/common/menu.c
+> +++ b/common/menu.c
+> @@ -235,21 +235,12 @@ EXPORT_SYMBOL(menu_set_auto_select);
+>  static void print_menu(struct menu *m)
+>  {
+>         struct menu_entry *me;
+> +       int i;
 > =
 
+>         clear();
+> -       if (m->display) {
+> -               int i;
+> -               for (i =3D 0; i < m->display_lines; i++) {
+> -                       gotoXY(2, 1 + i);
+> -                       __print_entry(m->display[i]);
+> -               }
+> -               m->skip_lines =3D 0;
+> -       } else {
+> -               gotoXY(2, 1);
+> -               puts("Menu : ");
+> -               if (m->name)
+> -                       puts(m->name);
+> -               m->skip_lines =3D 1;
+> +       for (i =3D 0; i < m->display_lines; i++) {
+> +               gotoXY(2, 1 + i);
+> +               __print_entry(m->display[i]);
+>         }
 > =
 
-> > =
-
-> > diff --git a/arch/mips/dts/tplink-mr3020.dts b/arch/mips/dts/tplink-mr3=
-020.dts
-> > index 831fab8..1e843ee 100644
-> > --- a/arch/mips/dts/tplink-mr3020.dts
-> > +++ b/arch/mips/dts/tplink-mr3020.dts
-> > @@ -1,73 +1,7 @@
-> > -/dts-v1/;
-> > -
-> > -#include <dt-bindings/gpio/gpio.h>
-> > -
-> > -#include <mips/qca/ar9331.dtsi>
-> > +#include <mips/qca/ar9331_tl_mr3020.dts>
-> >  =
-
-> >  / {
-> > -	model =3D "TP-Link TL-MR3020";
-> > -	compatible =3D "tplink,tl-mr3020";
-> > -
-> >  	aliases {
-> >  		spiflash =3D &spiflash;
-> >  	};
-> > -
-> > -	memory@0 {
-> > -		device_type =3D "memory";
-> > -		reg =3D <0x00000000 0x2000000>;
-> > -	};
-> > -
-> > -	leds {
-> > -		compatible =3D "gpio-leds";
-> > -
-> > -		wlan {
-> > -			label =3D "tp-link:green:wlan";
-> > -			gpios =3D <&gpio 0 GPIO_ACTIVE_HIGH>;
-> > -			default-state =3D "off";
-> > -		};
-> > -
-> > -		lan {
-> > -			label =3D "tp-link:green:lan";
-> > -			gpios =3D <&gpio 17 GPIO_ACTIVE_LOW>;
-> > -			default-state =3D "off";
-> > -		};
-> > -
-> > -		wps {
-> > -			label =3D "tp-link:green:wps";
-> > -			gpios =3D <&gpio 26 GPIO_ACTIVE_LOW>;
-> > -			default-state =3D "off";
-> > -		};
-> > -
-> > -		led3g {
-> > -			label =3D "tp-link:green:3g";
-> > -			gpios =3D <&gpio 27 GPIO_ACTIVE_LOW>;
-> > -			default-state =3D "off";
-> > -		};
-> > -	};
-> > -};
-> > -
-> > -&ref {
-> > -	clock-frequency =3D <25000000>;
-> > -};
-> > -
-> > -&uart {
-> > -	status =3D "okay";
-> > -};
-> > -
-> > -&gpio {
-> > -	status =3D "okay";
-> > -};
-> > -
-> > -&spi {
-> > -	num-chipselects =3D <1>;
-> > -	status =3D "okay";
-> > -
-> > -	/* Spansion S25FL032PIF SPI flash */
-> > -	spiflash: s25sl032p@0 {
-> > -		#address-cells =3D <1>;
-> > -		#size-cells =3D <1>;
-> > -		compatible =3D "spansion,s25sl032p", "jedec,spi-nor";
-> > -		spi-max-frequency =3D <104000000>;
-> > -		reg =3D <0>;
-> > -	};
-> >  };
-> > -- =
-
-> > 2.8.1
-> > =
-
-> > =
-
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> > =
-
+>         list_for_each_entry(me, &m->entries, list) {
+> @@ -538,8 +529,12 @@ void menu_add_title(struct menu *m, const char *disp=
+lay, char *(*parser)(char *s
+>         int lines =3D 1;
+>         int i;
 > =
 
-> -- =
+> -       if (!strlen(display))
+> +       if (!strlen(display)) {
+> +               m->display_lines =3D 1;
+> +               m->display =3D xzalloc(sizeof(*m->display));
+> +               m->display[0] =3D xasprintf("Menu : %s", m->name ? m->nam=
+e : "");
+>                 return;
+> +       }
 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Ok, looks good.
+
+> > What's the reason for running parser() over the separated strings? Can't
+> > you run parser() over the original multiline string instead?
+> =
+
+> I wanted to consume more CPU cycles so that the Earth will suffer from po=
+wer starvation. But you ruined my evil plan, clap-clap-clap.
+
+Yes, strike! ;)
+
+> >>
+> >> =A0- display =3D read_file_line("%s/title", path);
+> >> =A0+ globpath =3D basprintf("%s/title", path);
+> >> =A0+ display =3D read_file(globpath, &size);
+> >> =A0+ /* Remove trailing whitespaces */
+> >> =A0+ while (size > 0 && isspace(display[size - 1]))
+> >> =A0+ size--;
+> >
+> > We have the strim() function for this purpose.
+> =
+
+>  * strim - Removes leading and trailing whitespace from @s.
+> =
+
+> And mine does only:
+> >>  + /* Remove trailing whitespaces */
+
+You can use strim for both cases:
+
+	str =3D strim(str);
+
+removes both leading and trailing whitespaces, but without reassigning
+str to the return value of strim() you only remove trailing whitespaces.
+
+Sascha
 
 
 -- =
 
---=A0
-Best regards,
-=A0 Antony Pavlov
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
