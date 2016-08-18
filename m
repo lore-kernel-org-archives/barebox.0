@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f170.i.mail.ru ([94.100.178.89])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1baHd7-0005yl-QU
- for barebox@lists.infradead.org; Thu, 18 Aug 2016 07:20:47 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1baHlJ-0006Tr-DD
+ for barebox@lists.infradead.org; Thu, 18 Aug 2016 07:29:14 +0000
+Date: Thu, 18 Aug 2016 09:28:52 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160818072852.GK20657@pengutronix.de>
+References: <20160808193203.13ab931dc3ea505a3cdb2b09@gmail.com>
 MIME-Version: 1.0
-Date: Thu, 18 Aug 2016 10:20:20 +0300
-Message-ID: <1471504820.129571485@f170.i.mail.ru>
-In-Reply-To: <20160818071542.GJ20657@pengutronix.de>
-References: <1471439539-3443-1-git-send-email-akurz@blala.de>
- <20160818071542.GJ20657@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <20160808193203.13ab931dc3ea505a3cdb2b09@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,35 +18,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSF0gbWZkIG1jMTN4eHg6IGFkZCBNQzEzODkyX1JFVklT?=
- =?UTF-8?B?SU9OXzJfNA==?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, =?UTF-8?B?QWxleGFuZGVyIEt1cno=?= <akurz@blala.de>
+Subject: Re: net: phy: fixed link
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-PtCn0LXRgtCy0LXRgNCzLCAxOCDQsNCy0LPRg9GB0YLQsCAyMDE2LCAxMDoxNSArMDM6MDAg0L7R
-giBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ogo+Cj5PbiBXZWQsIEF1ZyAx
-NywgMjAxNiBhdCAwMzoxMjoxOVBNICswMjAwLCBBbGV4YW5kZXIgS3VyeiB3cm90ZToKPj4gQW4g
-TUMxMzg5MkNKIGhhdmluZyBSRVZbNDowXT0weDE0IGNhbiBiZSBmb3VuZCBpbiB0aGUga2luZGxl
-LWQwMTEwMC4KPj4gQWRkIHRoZSByZXZpc2lvbiB0byB0aGUgbGlzdCB0byBzdXBwb3J0IHRoaXMg
-ZGV2aWNlLgo+PiAKPj4gU2lnbmVkLW9mZi1ieTogQWxleGFuZGVyIEt1cnogPCBha3VyekBibGFs
-YS5kZSA+Cj4+IC0tLQo+PiAgZHJpdmVycy9tZmQvbWMxM3h4eC5jIHwgIDEgKwo+PiAgaW5jbHVk
-ZS9tZmQvbWMxM3h4eC5oIHwgMTMgKysrKysrKy0tLS0tLQo+PiAgMiBmaWxlcyBjaGFuZ2VkLCA4
-IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pCi4uLgo+PiAgI2RlZmluZSBNQzEzODkyX1JF
-VklTSU9OXzJfMDMKPj4gICNkZWZpbmUgTUMxMzg5Ml9SRVZJU0lPTl8yXzBhNAo+PiAgI2RlZmlu
-ZSBNQzEzODkyX1JFVklTSU9OXzJfMTUKPj4gLSNkZWZpbmUgTUMxMzg5Ml9SRVZJU0lPTl8zXzA2
-Cj4+IC0jZGVmaW5lIE1DMTM4OTJfUkVWSVNJT05fM18xNwo+PiAtI2RlZmluZSBNQzEzODkyX1JF
-VklTSU9OXzNfMjgKPj4gLSNkZWZpbmUgTUMxMzg5Ml9SRVZJU0lPTl8zXzJhOQo+PiAtI2RlZmlu
-ZSBNQzEzODkyX1JFVklTSU9OXzNfMzEwCj4+IC0jZGVmaW5lIE1DMTM4OTJfUkVWSVNJT05fM181
-MTEKPj4gKyNkZWZpbmUgTUMxMzg5Ml9SRVZJU0lPTl8yXzQ2Cj4+ICsjZGVmaW5lIE1DMTM4OTJf
-UkVWSVNJT05fM18wNwo+PiArI2RlZmluZSBNQzEzODkyX1JFVklTSU9OXzNfMTgKPj4gKyNkZWZp
-bmUgTUMxMzg5Ml9SRVZJU0lPTl8zXzI5Cj4+ICsjZGVmaW5lIE1DMTM4OTJfUkVWSVNJT05fM18y
-YTEwCj4+ICsjZGVmaW5lIE1DMTM4OTJfUkVWSVNJT05fM18zMTEKPj4gKyNkZWZpbmUgTUMxMzg5
-Ml9SRVZJU0lPTl8zXzUxMgoKQ291bGQgdGhpcyBiZSBjb252ZXJ0ZWQgdG8gZW51bT8KCi0tLQoK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
-YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Mon, Aug 08, 2016 at 07:32:03PM +0300, Antony Pavlov wrote:
+> Hi Sascha!
+> 
+> I have just took a look on Lukas' 
+> 'net: phy: fixed-link: read link parameters from devicetree' patch.
+> I see two problems with current 'of_phy_register_fixed_link()' implementation
+> unrelated to Lukas' changes.
+> 
+> Please see current of_phy_register_fixed_link() implementation:
+> 
+>         static struct phy_device *of_phy_register_fixed_link(struct device_node *np,
+>                                                 struct eth_device *edev)
+>         {
+>                 struct phy_device *phydev;
+> 
+>                 phydev = phy_device_create(NULL, 0, 0);
+> 
+>                 phydev->dev.parent = &edev->dev;
+>                 phydev->registered = 1;
+>                 phydev->speed = 1000;
+>                 phydev->duplex = 1;
+>                 phydev->pause = phydev->asym_pause = 0;
+>                 phydev->link = 1;
+> 
+>                 return phydev;
+>         }
+> 
+> 1. (a trivial think) the line
+> 
+>         phydev->link = 1;
+> 
+> is redundant because phy_device_create() has already set it.
+
+Yes, this is redundant and can be removed.
+
+> 
+> 2. (not so trivial think) the line
+> 
+>        phydev->registered = 1;
+> 
+> Why we want to set phydev->registered here? Can we use phy_register_device() instead?
+
+If we use phy_register_device() here then I think the genphy driver is
+attached to the fixed link which probably can't handle this fake device.
+You can give it a try, but I assume you will see NULL pointer exceptions
+in several places.
+
+phydev->registered = 1 is necessary because without this
+phy_register_device() is called in phy_device_attach() which is called
+from phy_device_connect() called from the network device driver.
+
+There may be ways to properly register a fixed link as a phy device, but
+this would mean some serious rework of the phy layer.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
