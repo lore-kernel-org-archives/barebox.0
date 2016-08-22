@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vs81.iboxed.net ([185.82.85.146])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bbZFm-0007NA-Bg
- for barebox@lists.infradead.org; Sun, 21 Aug 2016 20:21:59 +0000
-From: Alexander Kurz <akurz@blala.de>
-Date: Sun, 21 Aug 2016 22:18:37 +0200
-Message-Id: <1471810717-1371-2-git-send-email-akurz@blala.de>
-In-Reply-To: <1471810717-1371-1-git-send-email-akurz@blala.de>
-References: <1471810717-1371-1-git-send-email-akurz@blala.de>
+ id 1bbhlC-0003u3-Du
+ for barebox@lists.infradead.org; Mon, 22 Aug 2016 05:27:00 +0000
+Date: Mon, 22 Aug 2016 07:26:26 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160822052626.GS20657@pengutronix.de>
+References: <1471439539-3443-1-git-send-email-akurz@blala.de>
+ <20160818071542.GJ20657@pengutronix.de>
+ <1471504820.129571485@f170.i.mail.ru>
+ <alpine.DEB.2.00.1608182142360.12656@blala.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1608182142360.12656@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,99 +21,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] scripts: imx-usb-loader: structured DCD v1 element access
-To: barebox@lists.infradead.org
-Cc: Alexander Kurz <akurz@blala.de>
+Subject: Re: [PATCH] mfd mc13xxx: add MC13892_REVISION_2_4
+To: Alexander Kurz <akurz@blala.de>
+Cc: barebox@lists.infradead.org
 
-DCD v1 elements are encoded little endian.
-
-Signed-off-by: Alexander Kurz <akurz@blala.de>
----
- scripts/imx/imx-usb-loader.c | 19 +++++++++++--------
- scripts/imx/imx.h            |  6 ++++++
- 2 files changed, 17 insertions(+), 8 deletions(-)
-
-diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-index 9f25ca6..db74910 100644
---- a/scripts/imx/imx-usb-loader.c
-+++ b/scripts/imx/imx-usb-loader.c
-@@ -32,6 +32,7 @@
- #include <stdlib.h>
- #include <libusb.h>
- #include <getopt.h>
-+#include <endian.h>
- #include <arpa/inet.h>
- #include <linux/kernel.h>
- 
-@@ -872,7 +873,6 @@ static int get_dcd_range_old(const struct imx_flash_header *hdr,
- static int write_dcd_table_old(const struct imx_flash_header *hdr,
- 			       const unsigned char *file_start, unsigned cnt)
- {
--	unsigned val;
- 	unsigned char *dcd_end;
- 	unsigned char* dcd;
- 	int err = get_dcd_range_old(hdr, file_start, cnt, &dcd, &dcd_end);
-@@ -882,23 +882,26 @@ static int write_dcd_table_old(const struct imx_flash_header *hdr,
- 	printf("writing DCD table...\n");
- 
- 	while (dcd < dcd_end) {
--		unsigned type = (dcd[0] << 0) | (dcd[1] << 8) | (dcd[2] << 16) | (dcd[3] << 24);
--		unsigned addr = (dcd[4] << 0) | (dcd[5] << 8) | (dcd[6] << 16) | (dcd[7] << 24);
--		val = (dcd[8] << 0) | (dcd[9] << 8) | (dcd[10] << 16) | (dcd[11] << 24);
--		dcd += 12;
-+		struct imx_dcd_rec_v1 *rec = (struct imx_dcd_rec_v1 *) dcd;
-+		unsigned type = le32toh(rec->type);
-+		dcd += sizeof *rec;
- 
- 		switch (type) {
- 		case 1:
- 		case 2:
- 		case 4:
- 			if (verbose > 1)
--				printf("type=%08x *0x%08x = 0x%08x\n", type, addr, val);
--			err = write_memory(addr, val, type);
-+				printf("type=%08x *0x%08x = 0x%08x\n", type,
-+					le32toh(rec->addr),
-+					le32toh(rec->val));
-+			err = write_memory(le32toh(rec->addr),
-+					   le32toh(rec->val), type);
- 			if (err < 0)
- 				return err;
- 			break;
- 		default:
--			printf("!!!unknown type=%08x *0x%08x = 0x%08x\n", type, addr, val);
-+			printf("WARNING: unknown DCD type=%08x ignored\n",
-+			       type);
- 		}
- 	}
- 
-diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
-index 8db7e7b..64ebdce 100644
---- a/scripts/imx/imx.h
-+++ b/scripts/imx/imx.h
-@@ -26,6 +26,12 @@ struct imx_boot_data {
- 	uint32_t plugin;
- } __attribute__((packed));
- 
-+struct imx_dcd_rec_v1 {
-+	uint32_t type;
-+	uint32_t addr;
-+	uint32_t val;
-+} __attribute__((packed));
-+
- #define TAG_IVT_HEADER	0xd1
- #define IVT_VERSION	0x40
- #define TAG_DCD_HEADER	0xd2
--- 
-2.1.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVGh1LCBBdWcgMTgsIDIwMTYgYXQgMDk6NDg6MjFQTSArMDIwMCwgQWxleGFuZGVyIEt1cnog
+d3JvdGU6Cj4gCj4gCj4gT24gVGh1LCAxOCBBdWcgMjAxNiwgQWxleGFuZGVyIFNoaXlhbiB3cm90
+ZToKPiAKPiA+ID7Qp9C10YLQstC10YDQsywgMTgg0LDQstCz0YPRgdGC0LAgMjAxNiwgMTA6MTUg
+KzAzOjAwINC+0YIgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiA+ID4K
+PiA+ID5PbiBXZWQsIEF1ZyAxNywgMjAxNiBhdCAwMzoxMjoxOVBNICswMjAwLCBBbGV4YW5kZXIg
+S3VyeiB3cm90ZToKPiA+ID4+IEFuIE1DMTM4OTJDSiBoYXZpbmcgUkVWWzQ6MF09MHgxNCBjYW4g
+YmUgZm91bmQgaW4gdGhlIGtpbmRsZS1kMDExMDAuCj4gPiA+PiBBZGQgdGhlIHJldmlzaW9uIHRv
+IHRoZSBsaXN0IHRvIHN1cHBvcnQgdGhpcyBkZXZpY2UuCj4gPiA+PiAKPiA+ID4+IFNpZ25lZC1v
+ZmYtYnk6IEFsZXhhbmRlciBLdXJ6IDwgYWt1cnpAYmxhbGEuZGUgPgo+ID4gPj4gLS0tCj4gPiA+
+PiAgZHJpdmVycy9tZmQvbWMxM3h4eC5jIHwgIDEgKwo+ID4gPj4gIGluY2x1ZGUvbWZkL21jMTN4
+eHguaCB8IDEzICsrKysrKystLS0tLS0KPiA+ID4+ICAyIGZpbGVzIGNoYW5nZWQsIDggaW5zZXJ0
+aW9ucygrKSwgNiBkZWxldGlvbnMoLSkKPiA+IC4uLgo+ID4gPj4gICNkZWZpbmUgTUMxMzg5Ml9S
+RVZJU0lPTl8yXzAzCj4gPiA+PiAgI2RlZmluZSBNQzEzODkyX1JFVklTSU9OXzJfMGE0Cj4gPiA+
+PiAgI2RlZmluZSBNQzEzODkyX1JFVklTSU9OXzJfMTUKPiA+ID4+IC0jZGVmaW5lIE1DMTM4OTJf
+UkVWSVNJT05fM18wNgo+ID4gPj4gLSNkZWZpbmUgTUMxMzg5Ml9SRVZJU0lPTl8zXzE3Cj4gPiA+
+PiAtI2RlZmluZSBNQzEzODkyX1JFVklTSU9OXzNfMjgKPiA+ID4+IC0jZGVmaW5lIE1DMTM4OTJf
+UkVWSVNJT05fM18yYTkKPiA+ID4+IC0jZGVmaW5lIE1DMTM4OTJfUkVWSVNJT05fM18zMTAKPiA+
+ID4+IC0jZGVmaW5lIE1DMTM4OTJfUkVWSVNJT05fM181MTEKPiA+ID4+ICsjZGVmaW5lIE1DMTM4
+OTJfUkVWSVNJT05fMl80Ngo+ID4gPj4gKyNkZWZpbmUgTUMxMzg5Ml9SRVZJU0lPTl8zXzA3Cj4g
+PiA+PiArI2RlZmluZSBNQzEzODkyX1JFVklTSU9OXzNfMTgKPiA+ID4+ICsjZGVmaW5lIE1DMTM4
+OTJfUkVWSVNJT05fM18yOQo+ID4gPj4gKyNkZWZpbmUgTUMxMzg5Ml9SRVZJU0lPTl8zXzJhMTAK
+PiA+ID4+ICsjZGVmaW5lIE1DMTM4OTJfUkVWSVNJT05fM18zMTEKPiA+ID4+ICsjZGVmaW5lIE1D
+MTM4OTJfUkVWSVNJT05fM181MTIKPiA+IAo+ID4gQ291bGQgdGhpcyBiZSBjb252ZXJ0ZWQgdG8g
+ZW51bT8KPiBQZXJzb25hbGx5IEkgYWxzbyBwcmVmZXIgdGhlIGVudW0gc2luY2UgaXQgZW5hYmxl
+cyBlLmcuIGdkYiAKPiBhd2FyZW5lc3Mgb24gdGhlIGVudW0gZWxlbWVudHMsIGRlcGVuZGluZyBv
+biBjb21waWxlciBhbmQgdXNlY2FzZQo+IGl0IG1heSBvZmZlciB0eXBlIGFuZCB2YWx1ZSByYW5n
+ZSBzYWZldHkgYW5kIGluIHRoaXMgY2FzZSwgdGhlIGRpZmYKPiB3b3VsZCBiZSBzbWFsbGVyLgo+
+IAo+IElzIHRoZXJlIGEgY29kaW5nIHBvbGljeSBmb3IgYmFyZWJveCByZWdhcmRpbmcgbWFjcm9z
+IHZzLiBlbnVtcz8KCk5vLCBub3QgcmVhbGx5LCBidXQgaGVyZSBhbiBlbnVtIHJlYWxseSBsb29r
+cyBsaWtlIGEgYmV0dGVyIG1hdGNoLgoKU2FzY2hhCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5k
+dXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5n
+dXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55
+IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwg
+SFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
+ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
