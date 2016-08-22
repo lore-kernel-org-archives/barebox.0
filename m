@@ -1,15 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
+Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bbpYk-0007kV-FW
- for barebox@lists.infradead.org; Mon, 22 Aug 2016 13:46:45 +0000
-Received: by mail-wm0-x243.google.com with SMTP id q128so13573284wma.1
- for <barebox@lists.infradead.org>; Mon, 22 Aug 2016 06:46:17 -0700 (PDT)
-From: Guillermo Rodriguez <guille.rodriguez@gmail.com>
-Date: Mon, 22 Aug 2016 15:45:34 +0200
-Message-Id: <1471873534-17014-1-git-send-email-guille.rodriguez@gmail.com>
-In-Reply-To: <20160822054521.GU20657@pengutronix.de>
-References: <20160822054521.GU20657@pengutronix.de>
+ id 1bbw0c-0007at-QS
+ for barebox@lists.infradead.org; Mon, 22 Aug 2016 20:39:51 +0000
+Received: by mail-wm0-x242.google.com with SMTP id o80so15170199wme.0
+ for <barebox@lists.infradead.org>; Mon, 22 Aug 2016 13:39:29 -0700 (PDT)
+References: <7f89efef-2805-34d8-db7d-f3bc53d8e21a@gmail.com>
+ <20160818073831.GL20657@pengutronix.de>
+ <2b1f58b6-7d4b-5b85-240e-aa41c2e23c2e@gmail.com>
+ <8b40b96f-0414-4566-1215-e1d6bb7abab1@gmail.com>
+ <20160822061049.GC20657@pengutronix.de>
+ <63af30cc-9fd5-3283-a9f2-9e98e507d581@gmail.com>
+From: Peter Kardos <kardos.peter.sk@gmail.com>
+Message-ID: <cacf597f-e684-44e0-84c5-9366481dbed2@gmail.com>
+Date: Mon, 22 Aug 2016 22:39:24 +0200
+MIME-Version: 1.0
+In-Reply-To: <63af30cc-9fd5-3283-a9f2-9e98e507d581@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,60 +24,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Call boot_board from boot, not from init.
-To: barebox@lists.infradead.org
-Cc: grodriguez <guille.rodriguez@gmail.com>
+Subject: Re: AT91RM9200 hang in atmel_serial_putc
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-From: grodriguez <guille.rodriguez@gmail.com>
+Hi Sascha,
 
-This ensures that any board-specific code that must be run at
-boot time will be run both when autobooting and when manually
-running the 'boot' command from the console.
+I've tested your workaround and it seems to work; the board starts and 
+attempts
+to boot.
 
-Signed-off-by: Guillermo Rodriguez <guille.rodriguez@gmail.com>
----
- defaultenv/defaultenv-1/bin/boot |    4 ++++
- defaultenv/defaultenv-1/bin/init |    5 ++---
- 2 files changed, 6 insertions(+), 3 deletions(-)
+Peter
 
-diff --git a/defaultenv/defaultenv-1/bin/boot b/defaultenv/defaultenv-1/bin/boot
-index c17ccdb..a5d6596 100644
---- a/defaultenv/defaultenv-1/bin/boot
-+++ b/defaultenv/defaultenv-1/bin/boot
-@@ -2,6 +2,10 @@
- 
- . /env/config
- 
-+if [ -f /env/bin/boot_board ]; then
-+	. /env/bin/boot_board
-+fi
-+
- if [ x$kernel_loc = xnet ]; then
- 	kernel_loc=tftp
- fi
-diff --git a/defaultenv/defaultenv-1/bin/init b/defaultenv/defaultenv-1/bin/init
-index a55d293..2dcddbe 100644
---- a/defaultenv/defaultenv-1/bin/init
-+++ b/defaultenv/defaultenv-1/bin/init
-@@ -23,9 +23,8 @@ if [ -f /env/bin/init_board ]; then
- fi
- 
- echo -e "\e[?25h"
--if [ -f /env/bin/boot_board ]; then
--	. /env/bin/boot_board
--elif [ -n $autoboot_timeout ]; then
-+
-+if [ -n $autoboot_timeout ]; then
- 	echo -n "Hit any key to stop autoboot: "
- 	timeout -a $autoboot_timeout
- 	if [ $? != 0 ]; then
--- 
-1.7.9.5
+On 8/22/2016 11:00 AM, Peter Kardos wrote:
+> During the weekend I've played with this some more...
+> It seems that the "breakage" was introduced with v2016.05. This version
+> introduced the "exception vector remapping to 0xFFFF*".
+> Unfortunately AT91RM9200 has peripherals in this region.
+>
+> I'll test the patch tonight when i get home.
+>
+> Peter
+>
+> On 2016-08-22 08:10, Sascha Hauer wrote:
+>> On Thu, Aug 18, 2016 at 11:15:33PM +0200, Peter Kardos wrote:
+>>> Hi Sascha,
+>>>
+>>> I may have something. It seems the memory (MMU?) gets "messed" up;
+>>>
+>>> Reading the debug uart registers (v2015.07) gives reasonable 
+>>> results, like
+>>>      (gdb) x/32w 0xfffff200
+>>>      0xfffff200:    0x00000000    0x00000800    0x00000000 0x00000000
+>>>      0xfffff210:    0x00000000    0x40001a1a    0x00000000 0x00000000
+>>>      0xfffff220:    0x00000021    0x00000000    0x00000000 0x00000000
+>>>      0xfffff230:    0x00000000    0x00000000    0x00000000 0x00000000
+>>>      0xfffff240:    0x09290781    0x00000000    0x00000000 0x00000000
+>>>
+>>> However the content from v2016.08 gives
+>>>
+>>> 0xFFFFF200    D78D7E1F    F1139ADE    413E0FE5    BBFB6DF2
+>>> 0xFFFFF210    7D78666E    79CBDEA6    8FB2CB03    BEF6C2B7
+>>> 0xFFFFF220    C9071D17    FA1EFA2D    C4BCD95E    27D73C7C
+>>> 0xFFFFF230    727C3437    DFBDEBED    69C45C2A    7F5958F6
+>>> 0xFFFFF240    834B237E    F8B8A211    1AC74D66    FAE06274
+>> Uh, this indeed seems to be messed up by the MMU, more specifically
+>> during setup of the vector table. Could you try the attached patch?
+>> It's not a solution, but is a clear indication that the bug is in this
+>> area.
+>>
+>> Sascha
+>>
+>> ---------------------------8<--------------------------------
+>>
+>>  From eb66f09db694a0bc1fc88cde8d86e47faf6debf9 Mon Sep 17 00:00:00 2001
+>> From: Sascha Hauer <s.hauer@pengutronix.de>
+>> Date: Mon, 22 Aug 2016 08:05:38 +0200
+>> Subject: [PATCH] ARM: Disable vector table (tmp)
+>>
+>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+>> ---
+>>   arch/arm/cpu/mmu.c | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+>> index a31bce4..fc26077 100644
+>> --- a/arch/arm/cpu/mmu.c
+>> +++ b/arch/arm/cpu/mmu.c
+>> @@ -289,6 +289,8 @@ static void create_vector_table(unsigned long adr)
+>>       u32 *exc;
+>>       int idx;
+>>   +    return;
+>> +
+>>       vectors_sdram = request_sdram_region("vector table", adr, SZ_4K);
+>>       if (vectors_sdram) {
+>>           /*
+>
 
 
 _______________________________________________
