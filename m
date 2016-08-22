@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bbhlC-0003u3-Du
- for barebox@lists.infradead.org; Mon, 22 Aug 2016 05:27:00 +0000
-Date: Mon, 22 Aug 2016 07:26:26 +0200
+ id 1bbhmg-00043M-MB
+ for barebox@lists.infradead.org; Mon, 22 Aug 2016 05:28:31 +0000
+Date: Mon, 22 Aug 2016 07:28:08 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160822052626.GS20657@pengutronix.de>
-References: <1471439539-3443-1-git-send-email-akurz@blala.de>
- <20160818071542.GJ20657@pengutronix.de>
- <1471504820.129571485@f170.i.mail.ru>
- <alpine.DEB.2.00.1608182142360.12656@blala.de>
+Message-ID: <20160822052808.GT20657@pengutronix.de>
+References: <CAGm1_ktWEo6Ow0nre5d0tetTdu3aRLO+mRKboiFtfLi2wjRxDA@mail.gmail.com>
+ <CAGm1_kt102hu_ZYJLTYnnW2hUs9WS3T8e_Y8C=D1mKk3cf+M2A@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1608182142360.12656@blala.de>
+In-Reply-To: <CAGm1_kt102hu_ZYJLTYnnW2hUs9WS3T8e_Y8C=D1mKk3cf+M2A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,49 +19,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mfd mc13xxx: add MC13892_REVISION_2_4
-To: Alexander Kurz <akurz@blala.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: barebox remote control
+To: Yegor Yefremov <yegorslists@googlemail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-T24gVGh1LCBBdWcgMTgsIDIwMTYgYXQgMDk6NDg6MjFQTSArMDIwMCwgQWxleGFuZGVyIEt1cnog
-d3JvdGU6Cj4gCj4gCj4gT24gVGh1LCAxOCBBdWcgMjAxNiwgQWxleGFuZGVyIFNoaXlhbiB3cm90
-ZToKPiAKPiA+ID7Qp9C10YLQstC10YDQsywgMTgg0LDQstCz0YPRgdGC0LAgMjAxNiwgMTA6MTUg
-KzAzOjAwINC+0YIgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiA+ID4K
-PiA+ID5PbiBXZWQsIEF1ZyAxNywgMjAxNiBhdCAwMzoxMjoxOVBNICswMjAwLCBBbGV4YW5kZXIg
-S3VyeiB3cm90ZToKPiA+ID4+IEFuIE1DMTM4OTJDSiBoYXZpbmcgUkVWWzQ6MF09MHgxNCBjYW4g
-YmUgZm91bmQgaW4gdGhlIGtpbmRsZS1kMDExMDAuCj4gPiA+PiBBZGQgdGhlIHJldmlzaW9uIHRv
-IHRoZSBsaXN0IHRvIHN1cHBvcnQgdGhpcyBkZXZpY2UuCj4gPiA+PiAKPiA+ID4+IFNpZ25lZC1v
-ZmYtYnk6IEFsZXhhbmRlciBLdXJ6IDwgYWt1cnpAYmxhbGEuZGUgPgo+ID4gPj4gLS0tCj4gPiA+
-PiAgZHJpdmVycy9tZmQvbWMxM3h4eC5jIHwgIDEgKwo+ID4gPj4gIGluY2x1ZGUvbWZkL21jMTN4
-eHguaCB8IDEzICsrKysrKystLS0tLS0KPiA+ID4+ICAyIGZpbGVzIGNoYW5nZWQsIDggaW5zZXJ0
-aW9ucygrKSwgNiBkZWxldGlvbnMoLSkKPiA+IC4uLgo+ID4gPj4gICNkZWZpbmUgTUMxMzg5Ml9S
-RVZJU0lPTl8yXzAzCj4gPiA+PiAgI2RlZmluZSBNQzEzODkyX1JFVklTSU9OXzJfMGE0Cj4gPiA+
-PiAgI2RlZmluZSBNQzEzODkyX1JFVklTSU9OXzJfMTUKPiA+ID4+IC0jZGVmaW5lIE1DMTM4OTJf
-UkVWSVNJT05fM18wNgo+ID4gPj4gLSNkZWZpbmUgTUMxMzg5Ml9SRVZJU0lPTl8zXzE3Cj4gPiA+
-PiAtI2RlZmluZSBNQzEzODkyX1JFVklTSU9OXzNfMjgKPiA+ID4+IC0jZGVmaW5lIE1DMTM4OTJf
-UkVWSVNJT05fM18yYTkKPiA+ID4+IC0jZGVmaW5lIE1DMTM4OTJfUkVWSVNJT05fM18zMTAKPiA+
-ID4+IC0jZGVmaW5lIE1DMTM4OTJfUkVWSVNJT05fM181MTEKPiA+ID4+ICsjZGVmaW5lIE1DMTM4
-OTJfUkVWSVNJT05fMl80Ngo+ID4gPj4gKyNkZWZpbmUgTUMxMzg5Ml9SRVZJU0lPTl8zXzA3Cj4g
-PiA+PiArI2RlZmluZSBNQzEzODkyX1JFVklTSU9OXzNfMTgKPiA+ID4+ICsjZGVmaW5lIE1DMTM4
-OTJfUkVWSVNJT05fM18yOQo+ID4gPj4gKyNkZWZpbmUgTUMxMzg5Ml9SRVZJU0lPTl8zXzJhMTAK
-PiA+ID4+ICsjZGVmaW5lIE1DMTM4OTJfUkVWSVNJT05fM18zMTEKPiA+ID4+ICsjZGVmaW5lIE1D
-MTM4OTJfUkVWSVNJT05fM181MTIKPiA+IAo+ID4gQ291bGQgdGhpcyBiZSBjb252ZXJ0ZWQgdG8g
-ZW51bT8KPiBQZXJzb25hbGx5IEkgYWxzbyBwcmVmZXIgdGhlIGVudW0gc2luY2UgaXQgZW5hYmxl
-cyBlLmcuIGdkYiAKPiBhd2FyZW5lc3Mgb24gdGhlIGVudW0gZWxlbWVudHMsIGRlcGVuZGluZyBv
-biBjb21waWxlciBhbmQgdXNlY2FzZQo+IGl0IG1heSBvZmZlciB0eXBlIGFuZCB2YWx1ZSByYW5n
-ZSBzYWZldHkgYW5kIGluIHRoaXMgY2FzZSwgdGhlIGRpZmYKPiB3b3VsZCBiZSBzbWFsbGVyLgo+
-IAo+IElzIHRoZXJlIGEgY29kaW5nIHBvbGljeSBmb3IgYmFyZWJveCByZWdhcmRpbmcgbWFjcm9z
-IHZzLiBlbnVtcz8KCk5vLCBub3QgcmVhbGx5LCBidXQgaGVyZSBhbiBlbnVtIHJlYWxseSBsb29r
-cyBsaWtlIGEgYmV0dGVyIG1hdGNoLgoKU2FzY2hhCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5k
-dXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5n
-dXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55
-IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwg
-SFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
-ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi Yegor,
+
+On Fri, Aug 19, 2016 at 03:45:22PM +0200, Yegor Yefremov wrote:
+> Hi Sascha,
+> 
+> On Thu, Aug 18, 2016 at 9:48 AM, Yegor Yefremov
+> <yegorslists@googlemail.com> wrote:
+> > Are you planning to create a standalone PyPI package for bbremote? It
+> > would be very handy.
+> 
+> I'll try to create such a package on my GitHub account and then we
+> will see how to proceed. Porting to Python 3 is really funny :-) str
+> vs. bytearrays ....
+> 
+> > Have you already contacted pyserial maintainers, so that they could
+> > provide a configurable option for RFC2217 related timeout
+> > (https://github.com/pyserial/pyserial)?
+> 
+> I'll drop own pyserial and rely on upstream.
+
+Thanks. We haven't done anything in that direction yet.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
