@@ -1,21 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
+Received: from mail-ua0-x22a.google.com ([2607:f8b0:400c:c08::22a])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bblp7-0002lu-Dz
- for barebox@lists.infradead.org; Mon, 22 Aug 2016 09:47:18 +0000
-Received: by mail-wm0-x243.google.com with SMTP id i5so12604818wmg.2
- for <barebox@lists.infradead.org>; Mon, 22 Aug 2016 02:46:56 -0700 (PDT)
-From: Holger Schurig <holgerschurig@gmail.com>
-In-Reply-To: <CABDcavb3DN9Hc-Gr-vYG6aPHBgMYhM__4BzxVAjEqp5MdhB6qA@mail.gmail.com>
-References: <CABDcavbrkt2q3cQ5Tzi3d0pU+Pm3v4S3OGzFo_aG_SNgmEgOnA@mail.gmail.com>
- <CABDcavYP7m5BvVk1Ki=uZe7GdSp8RGwMu_kCV-SQO2+0kb5_NQ@mail.gmail.com>
- <20160818063059.GD20657@pengutronix.de>
- <CABDcavYO3AtqLPuaDwtOfpm4Vs-qazrD8xzC4wu0wrJ8uL5mvw@mail.gmail.com>
- <20160822054521.GU20657@pengutronix.de>
- <CABDcavb3DN9Hc-Gr-vYG6aPHBgMYhM__4BzxVAjEqp5MdhB6qA@mail.gmail.com>
-Date: Mon, 22 Aug 2016 11:46:53 +0200
-Message-ID: <87mvk5nnjm.fsf@gmail.com>
+ id 1bbp0B-0004gZ-O7
+ for barebox@lists.infradead.org; Mon, 22 Aug 2016 13:10:56 +0000
+Received: by mail-ua0-x22a.google.com with SMTP id 97so186988521uav.3
+ for <barebox@lists.infradead.org>; Mon, 22 Aug 2016 06:10:35 -0700 (PDT)
 MIME-Version: 1.0
+In-Reply-To: <CAGm1_ks9wTMiP2EBoO9BKGkckuTRqkinaazxWXTkNrJKSc7b=w@mail.gmail.com>
+References: <CAGm1_ktWEo6Ow0nre5d0tetTdu3aRLO+mRKboiFtfLi2wjRxDA@mail.gmail.com>
+ <CAGm1_kt102hu_ZYJLTYnnW2hUs9WS3T8e_Y8C=D1mKk3cf+M2A@mail.gmail.com>
+ <20160822052808.GT20657@pengutronix.de>
+ <CAGm1_ks9wTMiP2EBoO9BKGkckuTRqkinaazxWXTkNrJKSc7b=w@mail.gmail.com>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Mon, 22 Aug 2016 15:10:14 +0200
+Message-ID: <CAGm1_kuH3Z=Tev7Ra129C9QFMCM9ryhhTy_KS5Sji2ykabYXiw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,31 +26,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Fwd: Shouldn't boot_board be called from boot instead of init?
-To: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: barebox remote control
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>
 
-Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com> writes:
+Hi Sascha,
 
-> With defaultenv-2 the "board configuration" is scattered through a
-> number of tiny files, some of which contain just a single value (see
-> for example nv/autoboot_timeout or nv/user). I find this more
-> difficult to manage -- you need to edit a lot of tiny files instead of
-> just one. Also I feel that the flow of control is less obvious for the
-> same reason.
+On Mon, Aug 22, 2016 at 11:05 AM, Yegor Yefremov
+<yegorslists@googlemail.com> wrote:
+> On Mon, Aug 22, 2016 at 7:28 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>> Hi Yegor,
+>>
+>> On Fri, Aug 19, 2016 at 03:45:22PM +0200, Yegor Yefremov wrote:
+>>> Hi Sascha,
+>>>
+>>> On Thu, Aug 18, 2016 at 9:48 AM, Yegor Yefremov
+>>> <yegorslists@googlemail.com> wrote:
+>>> > Are you planning to create a standalone PyPI package for bbremote? It
+>>> > would be very handy.
+>>>
+>>> I'll try to create such a package on my GitHub account and then we
+>>> will see how to proceed. Porting to Python 3 is really funny :-) str
+>>> vs. bytearrays ....
+>>>
+>>> > Have you already contacted pyserial maintainers, so that they could
+>>> > provide a configurable option for RFC2217 related timeout
+>>> > (https://github.com/pyserial/pyserial)?
+>>>
+>>> I'll drop own pyserial and rely on upstream.
+>>
+>> Thanks. We haven't done anything in that direction yet.
+>
+> Take a look at this repo: https://github.com/yegorich/bbremote
+>
+> Following commands are already working in both Py2/3:
+>
+> bbremote ping
+> bbremote run "devinfo"
+> bbremote getenv "global.version"
+>
+> So far there was only one place, where I explicitly make distinction
+> between Py2 and 3. Everything else seems to work well with bytearray
+> (http://www.devdungeon.com/content/working-binary-data-python).
+>
+> TODO:
+>
+> 1. bbremote console works only in Py3, in Py2 it seems to freeze
+> 2. add proper dependencies for setup.py (enum, enum34 for Py2 and
+> crcmod and pyserial for all versions). What minial Py3 version should
+> be supported? Perhaps choose 3.4 as is available on current Debian 8
+> 3. licence: should we keep Barebox licence or move to MIT?
+> 4. more tests
 
-Hi,
+What is "bbremote listen" for?
 
-on my device I use defaultenv-1 for the same reason. Basically I just
-have one env/bin/init and one env/config file and that's it. And the
-env/config one is even so small that I could fold it into env/bin/init.
-
-This even more so as my device is "set in stone", e.g. there is no SPI
-EEPROM or other means (partition) to store an environment. What comes
-with the compiled barebox is the environment.
-
-Having things in one place and not scattered around makes things visible
-at a glance.
+Yegor
 
 _______________________________________________
 barebox mailing list
