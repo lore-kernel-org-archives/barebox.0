@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-ua0-x22a.google.com ([2607:f8b0:400c:c08::22a])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bc6q7-00031Q-5K
- for barebox@lists.infradead.org; Tue, 23 Aug 2016 08:13:44 +0000
-Date: Tue, 23 Aug 2016 10:13:19 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160823081319.GD20657@pengutronix.de>
-References: <CABDcavbrkt2q3cQ5Tzi3d0pU+Pm3v4S3OGzFo_aG_SNgmEgOnA@mail.gmail.com>
- <CABDcavYP7m5BvVk1Ki=uZe7GdSp8RGwMu_kCV-SQO2+0kb5_NQ@mail.gmail.com>
- <20160818063059.GD20657@pengutronix.de>
- <CABDcavYO3AtqLPuaDwtOfpm4Vs-qazrD8xzC4wu0wrJ8uL5mvw@mail.gmail.com>
- <20160822054521.GU20657@pengutronix.de>
- <CABDcavb3DN9Hc-Gr-vYG6aPHBgMYhM__4BzxVAjEqp5MdhB6qA@mail.gmail.com>
+ id 1bc7bV-000441-4W
+ for barebox@lists.infradead.org; Tue, 23 Aug 2016 09:02:43 +0000
+Received: by mail-ua0-x22a.google.com with SMTP id n59so233675315uan.2
+ for <barebox@lists.infradead.org>; Tue, 23 Aug 2016 02:02:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CABDcavb3DN9Hc-Gr-vYG6aPHBgMYhM__4BzxVAjEqp5MdhB6qA@mail.gmail.com>
+In-Reply-To: <CAGm1_kuH3Z=Tev7Ra129C9QFMCM9ryhhTy_KS5Sji2ykabYXiw@mail.gmail.com>
+References: <CAGm1_ktWEo6Ow0nre5d0tetTdu3aRLO+mRKboiFtfLi2wjRxDA@mail.gmail.com>
+ <CAGm1_kt102hu_ZYJLTYnnW2hUs9WS3T8e_Y8C=D1mKk3cf+M2A@mail.gmail.com>
+ <20160822052808.GT20657@pengutronix.de>
+ <CAGm1_ks9wTMiP2EBoO9BKGkckuTRqkinaazxWXTkNrJKSc7b=w@mail.gmail.com>
+ <CAGm1_kuH3Z=Tev7Ra129C9QFMCM9ryhhTy_KS5Sji2ykabYXiw@mail.gmail.com>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Tue, 23 Aug 2016 11:01:59 +0200
+Message-ID: <CAGm1_ku3M=ghKmVDiEfjUYvVn729cvzqOB4CftPHHDeVSEwVbw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,75 +27,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Fwd: Shouldn't boot_board be called from boot instead of init?
-To: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: barebox remote control
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Mon, Aug 22, 2016 at 11:12:55AM +0200, Guillermo Rodriguez Garcia wrote:
-> >> > However, I would be glad to get rid of defaultenv-1 rather sooner than
-> >> > later.
-> >>
-> >> Uhm. I actually like defaultenv-1 better than defaultenv-2. Why not
-> >> keep both? Everyone can then make their choice :)
-> >
-> > That's interesting. What do you like better about defaultenv-1? This
-> > information could help me to improve defaultenv-2.
-> 
-> I guess it is just a matter of personal preference but I find
-> defaultenv-1 easier to understand and easier to manage. With
-> defaultenv-1 we basically have just one configuration file to edit
-> (/env/config) and optionally init_board and/or boot_board (which are
-> not needed in a majority of the cases). So everything you need to
-> know/edit/tweak is in /env/config.
-> 
-> With defaultenv-2 the "board configuration" is scattered through a
-> number of tiny files, some of which contain just a single value (see
-> for example nv/autoboot_timeout or nv/user). I find this more
-> difficult to manage -- you need to edit a lot of tiny files instead of
-> just one. Also I feel that the flow of control is less obvious for the
-> same reason.
-> 
-> I'd say defaultenv-1 feels more "imperative" and defaultenv-2 feels
-> more "declarative", and I prefer the former. But I am fully aware that
-> this is just a matter of personal preference :)
+On Mon, Aug 22, 2016 at 3:10 PM, Yegor Yefremov
+<yegorslists@googlemail.com> wrote:
+> Hi Sascha,
+>
+> On Mon, Aug 22, 2016 at 11:05 AM, Yegor Yefremov
+> <yegorslists@googlemail.com> wrote:
+>> On Mon, Aug 22, 2016 at 7:28 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>>> Hi Yegor,
+>>>
+>>> On Fri, Aug 19, 2016 at 03:45:22PM +0200, Yegor Yefremov wrote:
+>>>> Hi Sascha,
+>>>>
+>>>> On Thu, Aug 18, 2016 at 9:48 AM, Yegor Yefremov
+>>>> <yegorslists@googlemail.com> wrote:
+>>>> > Are you planning to create a standalone PyPI package for bbremote? It
+>>>> > would be very handy.
+>>>>
+>>>> I'll try to create such a package on my GitHub account and then we
+>>>> will see how to proceed. Porting to Python 3 is really funny :-) str
+>>>> vs. bytearrays ....
+>>>>
+>>>> > Have you already contacted pyserial maintainers, so that they could
+>>>> > provide a configurable option for RFC2217 related timeout
+>>>> > (https://github.com/pyserial/pyserial)?
+>>>>
+>>>> I'll drop own pyserial and rely on upstream.
+>>>
+>>> Thanks. We haven't done anything in that direction yet.
+>>
+>> Take a look at this repo: https://github.com/yegorich/bbremote
+>>
+>> Following commands are already working in both Py2/3:
+>>
+>> bbremote ping
+>> bbremote run "devinfo"
+>> bbremote getenv "global.version"
+>>
+>> So far there was only one place, where I explicitly make distinction
+>> between Py2 and 3. Everything else seems to work well with bytearray
+>> (http://www.devdungeon.com/content/working-binary-data-python).
+>>
+>> TODO:
+>>
+>> 1. bbremote console works only in Py3, in Py2 it seems to freeze
+>> 2. add proper dependencies for setup.py (enum, enum34 for Py2 and
+>> crcmod and pyserial for all versions). What minial Py3 version should
+>> be supported? Perhaps choose 3.4 as is available on current Debian 8
+>> 3. licence: should we keep Barebox licence or move to MIT?
+>> 4. more tests
+>
+> What is "bbremote listen" for?
 
-I understand your concerns but do not share them all. Maybe we can find
-a way to either make defaultenv-2 more acceptable for you or to make
-defaultenv-1 more appealing to me?
+I've started to import remote and use it from a Python file. It would
+be good to add a "silent" option, so that only return value says
+something about execution state.
 
-About the number of small files that only contain a single value:
-defaultenv-1 was the opposite and that was a problem. Whenever a board
-wanted to adjust a single value, say the autoboot timeout, it had to
-duplicate a big file and very soon we had many nearly identical copies
-of that file and nobody knew what the actual change was. With NV
-variables this has become better. I never felt the need though to dig
-through the individual /env/nv files, here the 'nv' and 'global'
-commands or the 'magicvar' command to much better jobs. Normally you
-only have to hand edit /env/nv files when you want to change the default
-of a variable for a given board.
+What about renaming bbremote "binary" to bbrcli and renaming remote
+package to bbremote? "remote" seems to be too common name.
 
-Another thing that made another approach than with defaultenv-1
-necessary was the variables that contain "net", "disk", "nor", "nand".
-This did not scale and was not extensible because you could not pass
-some arbitrary file and use it as kernel.
-
-I wonder if defaultenv-1 is not customizable enough and on the other
-hand your board does only boot from very special locations, do you need
-a generic default environment at all or are you better off using your
-own special environment?
-
-Finally, could this be a documentation issue? Could you have another
-look at defaultenv-2 and see what is not clear or what needs further
-convenience to be better usable?
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Yegor
 
 _______________________________________________
 barebox mailing list
