@@ -1,21 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bbw0c-0007at-QS
- for barebox@lists.infradead.org; Mon, 22 Aug 2016 20:39:51 +0000
-Received: by mail-wm0-x242.google.com with SMTP id o80so15170199wme.0
- for <barebox@lists.infradead.org>; Mon, 22 Aug 2016 13:39:29 -0700 (PDT)
-References: <7f89efef-2805-34d8-db7d-f3bc53d8e21a@gmail.com>
- <20160818073831.GL20657@pengutronix.de>
- <2b1f58b6-7d4b-5b85-240e-aa41c2e23c2e@gmail.com>
- <8b40b96f-0414-4566-1215-e1d6bb7abab1@gmail.com>
- <20160822061049.GC20657@pengutronix.de>
- <63af30cc-9fd5-3283-a9f2-9e98e507d581@gmail.com>
-From: Peter Kardos <kardos.peter.sk@gmail.com>
-Message-ID: <cacf597f-e684-44e0-84c5-9366481dbed2@gmail.com>
-Date: Mon, 22 Aug 2016 22:39:24 +0200
+ id 1bc6q7-00031Q-5K
+ for barebox@lists.infradead.org; Tue, 23 Aug 2016 08:13:44 +0000
+Date: Tue, 23 Aug 2016 10:13:19 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160823081319.GD20657@pengutronix.de>
+References: <CABDcavbrkt2q3cQ5Tzi3d0pU+Pm3v4S3OGzFo_aG_SNgmEgOnA@mail.gmail.com>
+ <CABDcavYP7m5BvVk1Ki=uZe7GdSp8RGwMu_kCV-SQO2+0kb5_NQ@mail.gmail.com>
+ <20160818063059.GD20657@pengutronix.de>
+ <CABDcavYO3AtqLPuaDwtOfpm4Vs-qazrD8xzC4wu0wrJ8uL5mvw@mail.gmail.com>
+ <20160822054521.GU20657@pengutronix.de>
+ <CABDcavb3DN9Hc-Gr-vYG6aPHBgMYhM__4BzxVAjEqp5MdhB6qA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <63af30cc-9fd5-3283-a9f2-9e98e507d581@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <CABDcavb3DN9Hc-Gr-vYG6aPHBgMYhM__4BzxVAjEqp5MdhB6qA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,87 +23,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: AT91RM9200 hang in atmel_serial_putc
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: Fwd: Shouldn't boot_board be called from boot instead of init?
+To: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
+On Mon, Aug 22, 2016 at 11:12:55AM +0200, Guillermo Rodriguez Garcia wrote:
+> >> > However, I would be glad to get rid of defaultenv-1 rather sooner than
+> >> > later.
+> >>
+> >> Uhm. I actually like defaultenv-1 better than defaultenv-2. Why not
+> >> keep both? Everyone can then make their choice :)
+> >
+> > That's interesting. What do you like better about defaultenv-1? This
+> > information could help me to improve defaultenv-2.
+> 
+> I guess it is just a matter of personal preference but I find
+> defaultenv-1 easier to understand and easier to manage. With
+> defaultenv-1 we basically have just one configuration file to edit
+> (/env/config) and optionally init_board and/or boot_board (which are
+> not needed in a majority of the cases). So everything you need to
+> know/edit/tweak is in /env/config.
+> 
+> With defaultenv-2 the "board configuration" is scattered through a
+> number of tiny files, some of which contain just a single value (see
+> for example nv/autoboot_timeout or nv/user). I find this more
+> difficult to manage -- you need to edit a lot of tiny files instead of
+> just one. Also I feel that the flow of control is less obvious for the
+> same reason.
+> 
+> I'd say defaultenv-1 feels more "imperative" and defaultenv-2 feels
+> more "declarative", and I prefer the former. But I am fully aware that
+> this is just a matter of personal preference :)
 
-I've tested your workaround and it seems to work; the board starts and 
-attempts
-to boot.
+I understand your concerns but do not share them all. Maybe we can find
+a way to either make defaultenv-2 more acceptable for you or to make
+defaultenv-1 more appealing to me?
 
-Peter
+About the number of small files that only contain a single value:
+defaultenv-1 was the opposite and that was a problem. Whenever a board
+wanted to adjust a single value, say the autoboot timeout, it had to
+duplicate a big file and very soon we had many nearly identical copies
+of that file and nobody knew what the actual change was. With NV
+variables this has become better. I never felt the need though to dig
+through the individual /env/nv files, here the 'nv' and 'global'
+commands or the 'magicvar' command to much better jobs. Normally you
+only have to hand edit /env/nv files when you want to change the default
+of a variable for a given board.
 
-On 8/22/2016 11:00 AM, Peter Kardos wrote:
-> During the weekend I've played with this some more...
-> It seems that the "breakage" was introduced with v2016.05. This version
-> introduced the "exception vector remapping to 0xFFFF*".
-> Unfortunately AT91RM9200 has peripherals in this region.
->
-> I'll test the patch tonight when i get home.
->
-> Peter
->
-> On 2016-08-22 08:10, Sascha Hauer wrote:
->> On Thu, Aug 18, 2016 at 11:15:33PM +0200, Peter Kardos wrote:
->>> Hi Sascha,
->>>
->>> I may have something. It seems the memory (MMU?) gets "messed" up;
->>>
->>> Reading the debug uart registers (v2015.07) gives reasonable 
->>> results, like
->>>      (gdb) x/32w 0xfffff200
->>>      0xfffff200:    0x00000000    0x00000800    0x00000000 0x00000000
->>>      0xfffff210:    0x00000000    0x40001a1a    0x00000000 0x00000000
->>>      0xfffff220:    0x00000021    0x00000000    0x00000000 0x00000000
->>>      0xfffff230:    0x00000000    0x00000000    0x00000000 0x00000000
->>>      0xfffff240:    0x09290781    0x00000000    0x00000000 0x00000000
->>>
->>> However the content from v2016.08 gives
->>>
->>> 0xFFFFF200    D78D7E1F    F1139ADE    413E0FE5    BBFB6DF2
->>> 0xFFFFF210    7D78666E    79CBDEA6    8FB2CB03    BEF6C2B7
->>> 0xFFFFF220    C9071D17    FA1EFA2D    C4BCD95E    27D73C7C
->>> 0xFFFFF230    727C3437    DFBDEBED    69C45C2A    7F5958F6
->>> 0xFFFFF240    834B237E    F8B8A211    1AC74D66    FAE06274
->> Uh, this indeed seems to be messed up by the MMU, more specifically
->> during setup of the vector table. Could you try the attached patch?
->> It's not a solution, but is a clear indication that the bug is in this
->> area.
->>
->> Sascha
->>
->> ---------------------------8<--------------------------------
->>
->>  From eb66f09db694a0bc1fc88cde8d86e47faf6debf9 Mon Sep 17 00:00:00 2001
->> From: Sascha Hauer <s.hauer@pengutronix.de>
->> Date: Mon, 22 Aug 2016 08:05:38 +0200
->> Subject: [PATCH] ARM: Disable vector table (tmp)
->>
->> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
->> ---
->>   arch/arm/cpu/mmu.c | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
->> index a31bce4..fc26077 100644
->> --- a/arch/arm/cpu/mmu.c
->> +++ b/arch/arm/cpu/mmu.c
->> @@ -289,6 +289,8 @@ static void create_vector_table(unsigned long adr)
->>       u32 *exc;
->>       int idx;
->>   +    return;
->> +
->>       vectors_sdram = request_sdram_region("vector table", adr, SZ_4K);
->>       if (vectors_sdram) {
->>           /*
->
+Another thing that made another approach than with defaultenv-1
+necessary was the variables that contain "net", "disk", "nor", "nand".
+This did not scale and was not extensible because you could not pass
+some arbitrary file and use it as kernel.
 
+I wonder if defaultenv-1 is not customizable enough and on the other
+hand your board does only boot from very special locations, do you need
+a generic default environment at all or are you better off using your
+own special environment?
+
+Finally, could this be a documentation issue? Could you have another
+look at defaultenv-2 and see what is not clear or what needs further
+convenience to be better usable?
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
