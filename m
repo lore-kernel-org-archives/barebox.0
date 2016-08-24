@@ -1,16 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bcXfD-0005Lw-Fs
- for barebox@lists.infradead.org; Wed, 24 Aug 2016 12:52:21 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id AAFC5A00424
- for <barebox@lists.infradead.org>; Wed, 24 Aug 2016 14:51:37 +0200 (CEST)
-From: Wadim Egorov <w.egorov@phytec.de>
-Date: Wed, 24 Aug 2016 14:49:28 +0200
-Message-Id: <1472042970-35151-6-git-send-email-w.egorov@phytec.de>
-In-Reply-To: <1472042970-35151-1-git-send-email-w.egorov@phytec.de>
-References: <1472042970-35151-1-git-send-email-w.egorov@phytec.de>
+Received: from mail-ua0-x230.google.com ([2607:f8b0:400c:c08::230])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bcZOS-0002sY-TF
+ for barebox@lists.infradead.org; Wed, 24 Aug 2016 14:43:09 +0000
+Received: by mail-ua0-x230.google.com with SMTP id k90so31802897uak.1
+ for <barebox@lists.infradead.org>; Wed, 24 Aug 2016 07:42:43 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20160823081319.GD20657@pengutronix.de>
+References: <CABDcavbrkt2q3cQ5Tzi3d0pU+Pm3v4S3OGzFo_aG_SNgmEgOnA@mail.gmail.com>
+ <CABDcavYP7m5BvVk1Ki=uZe7GdSp8RGwMu_kCV-SQO2+0kb5_NQ@mail.gmail.com>
+ <20160818063059.GD20657@pengutronix.de>
+ <CABDcavYO3AtqLPuaDwtOfpm4Vs-qazrD8xzC4wu0wrJ8uL5mvw@mail.gmail.com>
+ <20160822054521.GU20657@pengutronix.de>
+ <CABDcavb3DN9Hc-Gr-vYG6aPHBgMYhM__4BzxVAjEqp5MdhB6qA@mail.gmail.com>
+ <20160823081319.GD20657@pengutronix.de>
+From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
+Date: Wed, 24 Aug 2016 16:42:42 +0200
+Message-ID: <CABDcavaN3ZV6bYVkBs_i4emasduzxVWX3b4k=MwMafeCYU8KaA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,398 +25,113 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 6/8] ARM: Add phyCORE-RK3288 SOM support
-To: barebox@lists.infradead.org
+Subject: Re: Fwd: Shouldn't boot_board be called from boot instead of init?
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The phyCORE-RK3288 aka PCM-059 is a SoM (System on Module)
-containing a RK3288 SoC. The module can be connected to different
-carrier boards.
+Hi Sascha,
 
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
----
- arch/arm/boards/Makefile                           |   1 +
- arch/arm/boards/phytec-som-rk3288/Makefile         |   3 +
- arch/arm/boards/phytec-som-rk3288/board.c          |  31 +++++
- .../defaultenv-physom-rk3288/boot/emmc             |   6 +
- .../defaultenv-physom-rk3288/boot/mmc              |   6 +
- .../defaultenv-physom-rk3288/init/automount        |  12 ++
- .../defaultenv-physom-rk3288/init/bootsource       |   3 +
- arch/arm/boards/phytec-som-rk3288/lowlevel.c       |  44 ++++++
- arch/arm/dts/Makefile                              |   1 +
- arch/arm/dts/rk3288-phycore-som.dts                | 148 +++++++++++++++++++++
- arch/arm/mach-rockchip/Kconfig                     |   7 +
- images/Makefile.rockchip                           |   4 +
- 12 files changed, 266 insertions(+)
- create mode 100644 arch/arm/boards/phytec-som-rk3288/Makefile
- create mode 100644 arch/arm/boards/phytec-som-rk3288/board.c
- create mode 100644 arch/arm/boards/phytec-som-rk3288/defaultenv-physom-rk3288/boot/emmc
- create mode 100644 arch/arm/boards/phytec-som-rk3288/defaultenv-physom-rk3288/boot/mmc
- create mode 100644 arch/arm/boards/phytec-som-rk3288/defaultenv-physom-rk3288/init/automount
- create mode 100644 arch/arm/boards/phytec-som-rk3288/defaultenv-physom-rk3288/init/bootsource
- create mode 100644 arch/arm/boards/phytec-som-rk3288/lowlevel.c
- create mode 100644 arch/arm/dts/rk3288-phycore-som.dts
+2016-08-23 10:13 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> On Mon, Aug 22, 2016 at 11:12:55AM +0200, Guillermo Rodriguez Garcia wrote:
+>> >> > However, I would be glad to get rid of defaultenv-1 rather sooner than
+>> >> > later.
+>> >>
+>> >> Uhm. I actually like defaultenv-1 better than defaultenv-2. Why not
+>> >> keep both? Everyone can then make their choice :)
+>> >
+>> > That's interesting. What do you like better about defaultenv-1? This
+>> > information could help me to improve defaultenv-2.
+>>
+>> I guess it is just a matter of personal preference but I find
+>> defaultenv-1 easier to understand and easier to manage. With
+>> defaultenv-1 we basically have just one configuration file to edit
+>> (/env/config) and optionally init_board and/or boot_board (which are
+>> not needed in a majority of the cases). So everything you need to
+>> know/edit/tweak is in /env/config.
+>>
+>> With defaultenv-2 the "board configuration" is scattered through a
+>> number of tiny files, some of which contain just a single value (see
+>> for example nv/autoboot_timeout or nv/user). I find this more
+>> difficult to manage -- you need to edit a lot of tiny files instead of
+>> just one. Also I feel that the flow of control is less obvious for the
+>> same reason.
+>>
+>> I'd say defaultenv-1 feels more "imperative" and defaultenv-2 feels
+>> more "declarative", and I prefer the former. But I am fully aware that
+>> this is just a matter of personal preference :)
+>
+> I understand your concerns but do not share them all. Maybe we can find
+> a way to either make defaultenv-2 more acceptable for you or to make
+> defaultenv-1 more appealing to me?
+>
+> About the number of small files that only contain a single value:
+> defaultenv-1 was the opposite and that was a problem. Whenever a board
+> wanted to adjust a single value, say the autoboot timeout, it had to
+> duplicate a big file and very soon we had many nearly identical copies
+> of that file and nobody knew what the actual change was.
 
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 9241b66..24ce130 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -95,6 +95,7 @@ obj-$(CONFIG_MACH_PM9G45)			+= pm9g45/
- obj-$(CONFIG_MACH_QIL_A9260)			+= qil-a926x/
- obj-$(CONFIG_MACH_QIL_A9G20)			+= qil-a926x/
- obj-$(CONFIG_MACH_RADXA_ROCK)			+= radxa-rock/
-+obj-$(CONFIG_MACH_PHYTEC_SOM_RK3288)		+= phytec-som-rk3288/
- obj-$(CONFIG_MACH_REALQ7)			+= datamodul-edm-qmx6/
- obj-$(CONFIG_MACH_RPI_COMMON)			+= raspberry-pi/
- obj-$(CONFIG_MACH_SABRELITE)			+= freescale-mx6-sabrelite/
-diff --git a/arch/arm/boards/phytec-som-rk3288/Makefile b/arch/arm/boards/phytec-som-rk3288/Makefile
-new file mode 100644
-index 0000000..6f34c9a
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-rk3288/Makefile
-@@ -0,0 +1,3 @@
-+obj-y += board.o
-+lwl-y += lowlevel.o
-+bbenv-y += defaultenv-physom-rk3288
-diff --git a/arch/arm/boards/phytec-som-rk3288/board.c b/arch/arm/boards/phytec-som-rk3288/board.c
-new file mode 100644
-index 0000000..8ea6c6c
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-rk3288/board.c
-@@ -0,0 +1,31 @@
-+/*
-+ * Copyright (C) 2016 PHYTEC Messtechnik GmbH,
-+ * Author: Wadim Egorov <w.egorov@phytec.de>
-+ *
-+ * Device initialization for the phyCORE-RK3288 SoM
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * version 2 as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <envfs.h>
-+
-+static int physom_devices_init(void)
-+{
-+	if (!of_machine_is_compatible("phytec,rk3288-phycore-som"))
-+		return 0;
-+
-+	barebox_set_hostname("pcm059");
-+	defaultenv_append_directory(defaultenv_physom_rk3288);
-+
-+	return 0;
-+}
-+device_initcall(physom_devices_init);
-diff --git a/arch/arm/boards/phytec-som-rk3288/defaultenv-physom-rk3288/boot/emmc b/arch/arm/boards/phytec-som-rk3288/defaultenv-physom-rk3288/boot/emmc
-new file mode 100644
-index 0000000..731b07f
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-rk3288/defaultenv-physom-rk3288/boot/emmc
-@@ -0,0 +1,6 @@
-+#!/bin/sh
-+
-+global.bootm.image=/mnt/emmc/linuximage
-+global.bootm.oftree=/mnt/emmc/oftree
-+
-+global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rw rootwait"
-diff --git a/arch/arm/boards/phytec-som-rk3288/defaultenv-physom-rk3288/boot/mmc b/arch/arm/boards/phytec-som-rk3288/defaultenv-physom-rk3288/boot/mmc
-new file mode 100644
-index 0000000..5b19dba
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-rk3288/defaultenv-physom-rk3288/boot/mmc
-@@ -0,0 +1,6 @@
-+#!/bin/sh
-+
-+global.bootm.image=/mnt/sdmmc/linuximage
-+global.bootm.oftree=/mnt/sdmmc/oftree
-+
-+global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rw rootwait"
-diff --git a/arch/arm/boards/phytec-som-rk3288/defaultenv-physom-rk3288/init/automount b/arch/arm/boards/phytec-som-rk3288/defaultenv-physom-rk3288/init/automount
-new file mode 100644
-index 0000000..2f9d78a
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-rk3288/defaultenv-physom-rk3288/init/automount
-@@ -0,0 +1,12 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	init-menu-add-entry "$0" "Automountpoints"
-+	exit
-+fi
-+
-+mkdir -p /mnt/emmc
-+automount -d /mnt/emmc 'mshc0.probe=1 && [ -e /dev/mshc0.0 ] && mount /dev/mshc0.0 /mnt/emmc'
-+
-+mkdir -p /mnt/sdmmc
-+automount -d /mnt/sdmmc 'mshc1.probe=1 && [ -e /dev/mshc1.0 ] && mount /dev/mshc1.0 /mnt/sdmmc'
-diff --git a/arch/arm/boards/phytec-som-rk3288/defaultenv-physom-rk3288/init/bootsource b/arch/arm/boards/phytec-som-rk3288/defaultenv-physom-rk3288/init/bootsource
-new file mode 100644
-index 0000000..36d34e3
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-rk3288/defaultenv-physom-rk3288/init/bootsource
-@@ -0,0 +1,3 @@
-+#!/bin/sh
-+
-+global.boot.default="emmc mmc"
-diff --git a/arch/arm/boards/phytec-som-rk3288/lowlevel.c b/arch/arm/boards/phytec-som-rk3288/lowlevel.c
-new file mode 100644
-index 0000000..7804a55
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-rk3288/lowlevel.c
-@@ -0,0 +1,44 @@
-+/*
-+ * Copyright (C) 2016 PHYTEC Messtechnik GmbH,
-+ * Author: Wadim Egorov <w.egorov@phytec.de>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * version 2 as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <common.h>
-+#include <linux/sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/rk3288-regs.h>
-+#include <mach/grf_rk3288.h>
-+#include <mach/hardware.h>
-+#include <debug_ll.h>
-+
-+extern char __dtb_rk3288_phycore_som_start[];
-+
-+ENTRY_FUNCTION(start_rk3288_phycore_som, r0, r1, r2)
-+{
-+	void *fdt;
-+	arm_cpu_lowlevel_init();
-+
-+	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
-+		struct rk3288_grf * const grf = (void *)RK3288_GRF_BASE;
-+		rk_clrsetreg(&grf->gpio4c_iomux,
-+			GPIO4C1_MASK << GPIO4C1_SHIFT |
-+			GPIO4C0_MASK << GPIO4C0_SHIFT,
-+			GPIO4C1_UART0BT_SOUT << GPIO4C1_SHIFT |
-+			GPIO4C0_UART0BT_SIN << GPIO4C0_SHIFT);
-+		INIT_LL();
-+	}
-+
-+	fdt = __dtb_rk3288_phycore_som_start - get_runtime_offset();
-+
-+	barebox_arm_entry(0x0, SZ_1G, fdt);
-+}
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 813e098..77c9ff3 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -54,6 +54,7 @@ pbl-dtb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += imx6q-phytec-pbaa03.dtb.o \
- pbl-dtb-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += armada-xp-openblocks-ax3-4-bb.dtb.o
- pbl-dtb-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6) += kirkwood-openblocks_a6-bb.dtb.o
- pbl-dtb-$(CONFIG_MACH_RADXA_ROCK) += rk3188-radxarock.dtb.o
-+pbl-dtb-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += rk3288-phycore-som.dtb.o
- pbl-dtb-$(CONFIG_MACH_REALQ7) += imx6q-dmo-edmqmx6.dtb.o
- pbl-dtb-$(CONFIG_MACH_SABRELITE) += imx6q-sabrelite.dtb.o imx6dl-sabrelite.dtb.o
- pbl-dtb-$(CONFIG_MACH_SABRESD) += imx6q-sabresd.dtb.o
-diff --git a/arch/arm/dts/rk3288-phycore-som.dts b/arch/arm/dts/rk3288-phycore-som.dts
-new file mode 100644
-index 0000000..05ddd9c
---- /dev/null
-+++ b/arch/arm/dts/rk3288-phycore-som.dts
-@@ -0,0 +1,148 @@
-+/*
-+ * Copyright (C) 2016 PHYTEC Messtechnik GmbH,
-+ * Author: Wadim Egorov <w.egorov@phytec.de>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * version 2 as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+/dts-v1/;
-+
-+#include <arm/rk3288.dtsi>
-+
-+/ {
-+	model = "phycore-rk3288";
-+	compatible = "phytec,rk3288-phycore-som", "rockchip,rk3288";
-+
-+	memory {
-+		reg = <0 0x40000000>;
-+	};
-+
-+	vcc33: fixedregulator@0 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc33";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		startup-delay-us = <100000>;
-+		regulator-boot-on;
-+		regulator-always-on;
-+	};
-+
-+	vcc18: fixedregulator@1 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc18";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+		regulator-boot-on;
-+		regulator-always-on;
-+	};
-+
-+	chosen {
-+		stdout-path = &uart0;
-+
-+		environment-emmc {
-+			compatible = "barebox,environment";
-+			device-path = &emmc, "partname:barebox-environment";
-+			status = "disabled";
-+		};
-+
-+		environment-sdmmc {
-+			compatible = "barebox,environment";
-+			device-path = &sdmmc, "partname:barebox-environment";
-+			status = "disabled";
-+		};
-+	};
-+};
-+
-+&pinctrl {
-+	sdmmc {
-+		sdmmc_pwr: sdmmc-pwr {
-+			rockchip,pins = <7 11 RK_FUNC_GPIO &pcfg_pull_none>;
-+		};
-+	};
-+};
-+
-+&i2c0 {
-+	clock-frequency = <400000>;
-+	status = "okay";
-+};
-+
-+&emmc {
-+	broken-cd;
-+	bus-width = <8>;
-+	cap-mmc-highspeed;
-+	disable-wp;
-+	non-removable;
-+	num-slots = <1>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&emmc_clk>, <&emmc_cmd>, <&emmc_pwr>, <&emmc_bus8>;
-+	vmmc-supply = <&vcc33>;
-+	vqmmc-supply = <&vcc18>;
-+	status = "okay";
-+
-+	#size-cells = <1>;
-+	#address-cells = <1>;
-+
-+	partition@8000 {
-+		label = "spl";
-+		reg = <0x8000 0x8000>;
-+	};
-+
-+	partition@20000 {
-+		label = "barebox";
-+		reg = <0x20000 0xe0000>;
-+	};
-+
-+	partition@e0000 {
-+		label = "barebox-environment";
-+		reg = <0xe0000 0x20000>;
-+	};
-+};
-+
-+&sdmmc {
-+	bus-width = <4>;
-+	cap-mmc-highspeed;
-+	cap-sd-highspeed;
-+	card-detect-delay = <200>;
-+	disable-wp;
-+	num-slots = <1>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&sdmmc_clk>, <&sdmmc_cmd>, <&sdmmc_cd>, <&sdmmc_bus4>;
-+	vmmc-supply = <&vcc33>;
-+	status = "okay";
-+
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	partition@8000 {
-+		label = "spl";
-+		reg = <0x8000 0x8000>;
-+	};
-+
-+	partition@20000 {
-+		label = "barebox";
-+		reg = <0x20000 0xe0000>;
-+	};
-+
-+	partition@e0000 {
-+		label = "barebox-environment";
-+		reg = <0xe0000 0x20000>;
-+	};
-+};
-+
-+&uart0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart0_xfer>, <&uart0_cts>, <&uart0_rts>;
-+	reg-shift = <2>;
-+	status = "okay";
-+};
-+
-+&uart2 {
-+	status = "okay";
-+};
-diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index 71fcbe7..f2fa3c6 100644
---- a/arch/arm/mach-rockchip/Kconfig
-+++ b/arch/arm/mach-rockchip/Kconfig
-@@ -30,4 +30,11 @@ config MACH_RADXA_ROCK
- 	select MFD_ACT8846
- 	bool "Radxa rock board"
- 
-+config MACH_PHYTEC_SOM_RK3288
-+	depends on ARCH_RK3288
-+	select I2C
-+	bool "RK3288 phyCORE SOM"
-+	help
-+	  Say Y here if you are using a RK3288 based Phytecs SOM
-+
- endmenu
-diff --git a/images/Makefile.rockchip b/images/Makefile.rockchip
-index 9715b92..3f1ee57 100644
---- a/images/Makefile.rockchip
-+++ b/images/Makefile.rockchip
-@@ -5,3 +5,7 @@
- pblx-$(CONFIG_MACH_RADXA_ROCK) += start_radxa_rock
- FILE_barebox-radxa-rock.img = start_radxa_rock.pblx
- image-$(CONFIG_MACH_RADXA_ROCK) += barebox-radxa-rock.img
-+
-+pblx-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += start_rk3288_phycore_som
-+FILE_barebox-rk3288-phycore-som.img = start_rk3288_phycore_som.pblx
-+image-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += barebox-rk3288-phycore-som.img
--- 
-1.9.1
+Not sure what you mean with duplicating a big file. With defaultenv-1 most
+of the time the only single file you need to edit is /env/config, which is quite
+small, and most of it should be board specific anyway. I find this (the fact
+that all I need to edit/tweak is in that single file) quite convenient.
 
+> With NV
+> variables this has become better. I never felt the need though to dig
+> through the individual /env/nv files, here the 'nv' and 'global'
+> commands or the 'magicvar' command to much better jobs. Normally you
+> only have to hand edit /env/nv files when you want to change the default
+> of a variable for a given board.
+>
+> Another thing that made another approach than with defaultenv-1
+> necessary was the variables that contain "net", "disk", "nor", "nand".
+> This did not scale and was not extensible because you could not pass
+> some arbitrary file and use it as kernel.
+
+I can understand that one. But on the other hand not every target needs
+that flexibility. That's why I said that I don't see the need to drop
+defaultenv-1.
+Isn't it better to leave both defaultenv-1 and defaultenv-2 alive and
+let everyone
+decide which one suits them best?
+
+My impression when I look at defaultenv-2 is as described above: OK,
+more flexibility (which I currently don't need), but also more complexity,
+configuration scattered over more files, more management overhead.
+Plus, I'm happy with defaultenv-1, so why change?
+
+>
+> I wonder if defaultenv-1 is not customizable enough and on the other
+> hand your board does only boot from very special locations, do you need
+> a generic default environment at all or are you better off using your
+> own special environment?
+
+In my case, I am currently using barebox on 3 boards. All of them support
+multiple boot sources (NAND, NOR, MMC) plus NFS. For all of them I only
+needed to edit /env/config; the other files in the default environment
+(init, update, boot) all work fine. So (for me) defaultenv-1 was customizable
+enough, and I did indeed benefit from having a generic default environment
+instead of a custom one written from scratch.
+
+>
+> Finally, could this be a documentation issue? Could you have another
+> look at defaultenv-2 and see what is not clear or what needs further
+> convenience to be better usable?
+
+I think the documentation is fine as a reference. Perhaps a tutorial showing
+how to migrate from defaultenv-1 to defaultenv-2 could help "convert" people
+to defaultenv-2 by holding their hand and taking them from what they know
+(defaultenv-1) to the "new stuff".
+
+But even then I still wonder -- why not let both approaches coexist?
+
+Best,
+
+Guillermo Rodriguez Garcia
+guille.rodriguez@gmail.com
 
 _______________________________________________
 barebox mailing list
