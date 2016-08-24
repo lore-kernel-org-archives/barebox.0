@@ -1,21 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bcXEt-0007tV-2b
- for barebox@lists.infradead.org; Wed, 24 Aug 2016 12:25:03 +0000
-Date: Wed, 24 Aug 2016 14:24:41 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160824122441.GH20657@pengutronix.de>
-References: <7f89efef-2805-34d8-db7d-f3bc53d8e21a@gmail.com>
- <20160818073831.GL20657@pengutronix.de>
- <2b1f58b6-7d4b-5b85-240e-aa41c2e23c2e@gmail.com>
- <8b40b96f-0414-4566-1215-e1d6bb7abab1@gmail.com>
- <20160822061049.GC20657@pengutronix.de>
- <63af30cc-9fd5-3283-a9f2-9e98e507d581@gmail.com>
- <cacf597f-e684-44e0-84c5-9366481dbed2@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <cacf597f-e684-44e0-84c5-9366481dbed2@gmail.com>
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bcXer-0005Ej-HM
+ for barebox@lists.infradead.org; Wed, 24 Aug 2016 12:51:54 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id A4E5AA00420
+ for <barebox@lists.infradead.org>; Wed, 24 Aug 2016 14:51:37 +0200 (CEST)
+From: Wadim Egorov <w.egorov@phytec.de>
+Date: Wed, 24 Aug 2016 14:49:27 +0200
+Message-Id: <1472042970-35151-5-git-send-email-w.egorov@phytec.de>
+In-Reply-To: <1472042970-35151-1-git-send-email-w.egorov@phytec.de>
+References: <1472042970-35151-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,34 +19,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: AT91RM9200 hang in atmel_serial_putc
-To: Peter Kardos <kardos.peter.sk@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 5/8] mci: dw_mmc: Add RK3288 compatible string
+To: barebox@lists.infradead.org
 
-Hi Peter,
+The SDHC used in the RK2928 and RK3288 are compatible with each other.
+Add a compatible string for RK3288's SDHC.
 
-On Mon, Aug 22, 2016 at 10:39:24PM +0200, Peter Kardos wrote:
-> Hi Sascha,
-> 
-> I've tested your workaround and it seems to work; the board starts and
-> attempts
-> to boot.
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
+ drivers/mci/dw_mmc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-I just sent a proper solution for that problem, you're on Cc. I'm
-confident that this solves your problem. Could you give this a test
-please?
-
-Sascha
-
+diff --git a/drivers/mci/dw_mmc.c b/drivers/mci/dw_mmc.c
+index 0e004ab..27c36a6 100644
+--- a/drivers/mci/dw_mmc.c
++++ b/drivers/mci/dw_mmc.c
+@@ -753,6 +753,8 @@ static __maybe_unused struct of_device_id dw_mmc_compatible[] = {
+ 	}, {
+ 		.compatible = "rockchip,rk2928-dw-mshc",
+ 	}, {
++		.compatible = "rockchip,rk3288-dw-mshc",
++	}, {
+ 		/* sentinel */
+ 	}
+ };
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
