@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bcVby-0004W5-A4
- for barebox@lists.infradead.org; Wed, 24 Aug 2016 10:40:52 +0000
+ id 1bcVby-0004W3-AF
+ for barebox@lists.infradead.org; Wed, 24 Aug 2016 10:40:51 +0000
 From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Wed, 24 Aug 2016 12:40:19 +0200
-Message-Id: <1472035219-23917-3-git-send-email-p.zabel@pengutronix.de>
-In-Reply-To: <1472035219-23917-1-git-send-email-p.zabel@pengutronix.de>
-References: <1472035219-23917-1-git-send-email-p.zabel@pengutronix.de>
+Date: Wed, 24 Aug 2016 12:40:17 +0200
+Message-Id: <1472035219-23917-1-git-send-email-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,1374 +19,547 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] video: tc358767: add eDP video encoder driver
+Subject: [PATCH 1/3] video: switch to media bus formats
 To: barebox@lists.infradead.org
-Cc: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
 
-From: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
+V4L2 pixel formats are supposed to describe video frames in memory. To
+describe the pixel format on the hardware bus between display interface
+and encoders, use media bus formats, which are more expressive.
 
-This patch adds support for the Toshiba TC358767 eDP bridge,
-connected via DPI.
+This allows to get rid of the custom GBR24 and LVDS666 fourccs.
 
-Signed-off-by: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
 Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
- drivers/video/Kconfig    |    8 +
- drivers/video/Makefile   |    1 +
- drivers/video/tc358767.c | 1313 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 1322 insertions(+)
- create mode 100644 drivers/video/tc358767.c
+ drivers/video/imx-ipu-v3/imx-hdmi.c   |   3 +-
+ drivers/video/imx-ipu-v3/imx-ipu-v3.h |   4 +-
+ drivers/video/imx-ipu-v3/imx-ldb.c    |   7 +-
+ drivers/video/imx-ipu-v3/ipu-dc.c     |  19 +++--
+ drivers/video/imx-ipu-v3/ipu-prv.h    |   2 -
+ drivers/video/imx-ipu-v3/ipufb.c      |  21 +++--
+ include/video/fourcc.h                | 151 ----------------------------------
+ include/video/media-bus-format.h      | 137 ++++++++++++++++++++++++++++++
+ 8 files changed, 165 insertions(+), 179 deletions(-)
+ create mode 100644 include/video/media-bus-format.h
 
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index 7ff67e5..2457bb9 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -127,6 +127,14 @@ config DRIVER_VIDEO_MTL017
- 	  The MTL017 is a parallel to lvds video encoder chip found on the
- 	  Efika MX Smartbook.
+diff --git a/drivers/video/imx-ipu-v3/imx-hdmi.c b/drivers/video/imx-ipu-v3/imx-hdmi.c
+index 8b251a5..17b6e4c 100644
+--- a/drivers/video/imx-ipu-v3/imx-hdmi.c
++++ b/drivers/video/imx-ipu-v3/imx-hdmi.c
+@@ -22,6 +22,7 @@
+ #include <asm-generic/div64.h>
+ #include <linux/clk.h>
+ #include <i2c/i2c.h>
++#include <video/media-bus-format.h>
+ #include <video/vpl.h>
+ #include <mach/imx6-regs.h>
+ #include <mach/imx53-regs.h>
+@@ -1261,7 +1262,7 @@ static int dw_hdmi_ioctl(struct vpl *vpl, unsigned int port,
+ 		mode = data;
  
-+config DRIVER_VIDEO_TC358767
-+	bool "TC358767A Display Port encoder"
-+	select VIDEO_VPL
-+	depends on I2C
-+	depends on OFTREE
-+	help
-+	  The TC358767A is a DSI/DPI to eDP video encoder chip
-+
- config DRIVER_VIDEO_SIMPLE_PANEL
- 	bool "Simple panel support"
- 	select VIDEO_VPL
-diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index a64fc5f..1bf2e1f 100644
---- a/drivers/video/Makefile
-+++ b/drivers/video/Makefile
-@@ -6,6 +6,7 @@ obj-$(CONFIG_DRIVER_VIDEO_BACKLIGHT_PWM) += backlight-pwm.o
- obj-$(CONFIG_FRAMEBUFFER_CONSOLE) += fbconsole.o
- obj-$(CONFIG_VIDEO_VPL) += vpl.o
- obj-$(CONFIG_DRIVER_VIDEO_MTL017) += mtl017.o
-+obj-$(CONFIG_DRIVER_VIDEO_TC358767) += tc358767.o
- obj-$(CONFIG_DRIVER_VIDEO_SIMPLE_PANEL) += simple-panel.o
+ 		mode->di_clkflags = IPU_DI_CLKMODE_EXT | IPU_DI_CLKMODE_SYNC;
+-		mode->interface_pix_fmt = V4L2_PIX_FMT_RGB24;
++		mode->bus_format = MEDIA_BUS_FMT_RGB888_1X24;
  
- obj-$(CONFIG_DRIVER_VIDEO_ATMEL) += atmel_lcdfb.o atmel_lcdfb_core.o
-diff --git a/drivers/video/tc358767.c b/drivers/video/tc358767.c
+ 		return 0;
+ 	}
+diff --git a/drivers/video/imx-ipu-v3/imx-ipu-v3.h b/drivers/video/imx-ipu-v3/imx-ipu-v3.h
+index fbfec22..cdfff69 100644
+--- a/drivers/video/imx-ipu-v3/imx-ipu-v3.h
++++ b/drivers/video/imx-ipu-v3/imx-ipu-v3.h
+@@ -116,7 +116,7 @@ struct ipu_di;
+ struct ipu_dc *ipu_dc_get(struct ipu_soc *ipu, int channel);
+ void ipu_dc_put(struct ipu_dc *dc);
+ int ipu_dc_init_sync(struct ipu_dc *dc, struct ipu_di *di, bool interlaced,
+-		u32 pixel_fmt, u32 width);
++		u32 bus_format, u32 width);
+ void ipu_dc_enable_channel(struct ipu_dc *dc);
+ void ipu_dc_disable_channel(struct ipu_dc *dc);
+ 
+@@ -323,7 +323,7 @@ struct ipu_client_platformdata {
+ 
+ struct ipu_di_mode {
+ 	u32 di_clkflags;
+-	u32 interface_pix_fmt;
++	u32 bus_format;
+ };
+ 
+ #define IMX_IPU_VPL_DI_MODE	0x12660001
+diff --git a/drivers/video/imx-ipu-v3/imx-ldb.c b/drivers/video/imx-ipu-v3/imx-ldb.c
+index 17ae894..14a86a4 100644
+--- a/drivers/video/imx-ipu-v3/imx-ldb.c
++++ b/drivers/video/imx-ipu-v3/imx-ldb.c
+@@ -26,6 +26,7 @@
+ #include <malloc.h>
+ #include <errno.h>
+ #include <init.h>
++#include <video/media-bus-format.h>
+ #include <video/vpl.h>
+ #include <mfd/imx6q-iomuxc-gpr.h>
+ #include <linux/clk.h>
+@@ -75,7 +76,7 @@ struct imx_ldb_data {
+ 
+ struct imx_ldb {
+ 	struct device_d *dev;
+-	u32 interface_pix_fmt;
++	u32 bus_format;
+ 	int mode_valid;
+ 	struct imx_ldb_channel channel[2];
+ 	u32 ldb_ctrl;
+@@ -273,8 +274,8 @@ static int imx_ldb_ioctl(struct vpl *vpl, unsigned int port,
+ 		mode = data;
+ 
+ 		mode->di_clkflags = IPU_DI_CLKMODE_EXT | IPU_DI_CLKMODE_SYNC;
+-		mode->interface_pix_fmt = (imx_ldb_ch->datawidth == 24) ?
+-			V4L2_PIX_FMT_RGB24 : V4L2_PIX_FMT_BGR666;
++		mode->bus_format = (imx_ldb_ch->datawidth == 24) ?
++			MEDIA_BUS_FMT_RGB888_1X24 : MEDIA_BUS_FMT_RGB666_1X18;
+ 
+ 		return 0;
+ 	case VPL_GET_VIDEOMODES:
+diff --git a/drivers/video/imx-ipu-v3/ipu-dc.c b/drivers/video/imx-ipu-v3/ipu-dc.c
+index 2deb2ae..7b343e8 100644
+--- a/drivers/video/imx-ipu-v3/ipu-dc.c
++++ b/drivers/video/imx-ipu-v3/ipu-dc.c
+@@ -17,6 +17,7 @@
+ #include <linux/err.h>
+ #include <linux/clk.h>
+ #include <malloc.h>
++#include <video/media-bus-format.h>
+ 
+ #include "imx-ipu-v3.h"
+ #include "ipu-prv.h"
+@@ -138,18 +139,18 @@ static void dc_write_tmpl(struct ipu_dc *dc, int word, u32 opcode, u32 operand,
+ 	ipuwritel("dc", reg2, priv->dc_tmpl_reg + word * 8 + 4);
+ }
+ 
+-static int ipu_pixfmt_to_map(u32 fmt)
++static int ipu_bus_format_to_map(u32 bus_format)
+ {
+-	switch (fmt) {
+-	case V4L2_PIX_FMT_RGB24:
++	switch (bus_format) {
++	case MEDIA_BUS_FMT_RGB888_1X24:
+ 		return IPU_DC_MAP_RGB24;
+-	case V4L2_PIX_FMT_RGB565:
++	case MEDIA_BUS_FMT_RGB565_1X16:
+ 		return IPU_DC_MAP_RGB565;
+-	case IPU_PIX_FMT_GBR24:
++	case MEDIA_BUS_FMT_GBR888_1X24:
+ 		return IPU_DC_MAP_GBR24;
+-	case V4L2_PIX_FMT_BGR666:
++	case MEDIA_BUS_FMT_RGB666_1X18:
+ 		return IPU_DC_MAP_BGR666;
+-	case V4L2_PIX_FMT_BGR24:
++	case MEDIA_BUS_FMT_BGR888_1X24:
+ 		return IPU_DC_MAP_BGR24;
+ 	default:
+ 		return -EINVAL;
+@@ -157,7 +158,7 @@ static int ipu_pixfmt_to_map(u32 fmt)
+ }
+ 
+ int ipu_dc_init_sync(struct ipu_dc *dc, struct ipu_di *di, bool interlaced,
+-		u32 pixel_fmt, u32 width)
++		u32 bus_format, u32 width)
+ {
+ 	struct ipu_dc_priv *priv = dc->priv;
+ 	u32 reg = 0;
+@@ -165,7 +166,7 @@ int ipu_dc_init_sync(struct ipu_dc *dc, struct ipu_di *di, bool interlaced,
+ 
+ 	dc->di = ipu_di_get_num(di);
+ 
+-	map = ipu_pixfmt_to_map(pixel_fmt);
++	map = ipu_bus_format_to_map(bus_format);
+ 	if (map < 0) {
+ 		dev_dbg(priv->dev, "IPU_DISP: No MAP\n");
+ 		return map;
+diff --git a/drivers/video/imx-ipu-v3/ipu-prv.h b/drivers/video/imx-ipu-v3/ipu-prv.h
+index 44d7802..4d1c069 100644
+--- a/drivers/video/imx-ipu-v3/ipu-prv.h
++++ b/drivers/video/imx-ipu-v3/ipu-prv.h
+@@ -19,8 +19,6 @@ struct ipu_soc;
+ 
+ #include "imx-ipu-v3.h"
+ 
+-#define IPU_PIX_FMT_GBR24	v4l2_fourcc('G', 'B', 'R', '3')
+-
+ #define IPUV3_CHANNEL_CSI0			 0
+ #define IPUV3_CHANNEL_CSI1			 1
+ #define IPUV3_CHANNEL_CSI2			 2
+diff --git a/drivers/video/imx-ipu-v3/ipufb.c b/drivers/video/imx-ipu-v3/ipufb.c
+index 67fec11..cfafa22 100644
+--- a/drivers/video/imx-ipu-v3/ipufb.c
++++ b/drivers/video/imx-ipu-v3/ipufb.c
+@@ -23,6 +23,7 @@
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <asm-generic/div64.h>
++#include <video/media-bus-format.h>
+ 
+ #include "imx-ipu-v3.h"
+ #include "ipuv3-plane.h"
+@@ -56,7 +57,7 @@ struct ipufb_info {
+ 	void			(*enable)(int enable);
+ 
+ 	unsigned int		di_clkflags;
+-	u32			interface_pix_fmt;
++	u32			bus_format;
+ 	struct ipu_dc		*dc;
+ 	struct ipu_di		*di;
+ 
+@@ -108,7 +109,7 @@ int ipu_crtc_mode_set(struct ipufb_info *fbi,
+ 	int ret;
+ 	struct ipu_di_signal_cfg sig_cfg = {};
+ 	struct ipu_di_mode di_mode = {};
+-	u32 interface_pix_fmt;
++	u32 bus_format;
+ 
+ 	dev_info(fbi->dev, "%s: mode->xres: %d\n", __func__,
+ 			mode->xres);
+@@ -116,8 +117,7 @@ int ipu_crtc_mode_set(struct ipufb_info *fbi,
+ 			mode->yres);
+ 
+ 	vpl_ioctl(&fbi->vpl, 2 + fbi->dino, IMX_IPU_VPL_DI_MODE, &di_mode);
+-	interface_pix_fmt = di_mode.interface_pix_fmt ?
+-		di_mode.interface_pix_fmt : fbi->interface_pix_fmt;
++	bus_format = di_mode.bus_format ?: fbi->bus_format;
+ 
+ 	if (mode->sync & FB_SYNC_HOR_HIGH_ACT)
+ 		sig_cfg.Hsync_pol = 1;
+@@ -148,8 +148,8 @@ int ipu_crtc_mode_set(struct ipufb_info *fbi,
+ 	sig_cfg.hsync_pin = 2;
+ 	sig_cfg.vsync_pin = 3;
+ 
+-	ret = ipu_dc_init_sync(fbi->dc, fbi->di, sig_cfg.interlaced,
+-			interface_pix_fmt, mode->xres);
++	ret = ipu_dc_init_sync(fbi->dc, fbi->di, sig_cfg.interlaced, bus_format,
++			mode->xres);
+ 	if (ret) {
+ 		dev_err(fbi->dev,
+ 				"initializing display controller failed with %d\n",
+@@ -318,14 +318,13 @@ static int ipufb_probe(struct device_d *dev)
+ 		ret = of_property_read_string(node, "interface-pix-fmt", &fmt);
+ 		if (!ret) {
+ 			if (!strcmp(fmt, "rgb24"))
+-				fbi->interface_pix_fmt = V4L2_PIX_FMT_RGB24;
++				fbi->bus_format = MEDIA_BUS_FMT_RGB888_1X24;
+ 			else if (!strcmp(fmt, "rgb565"))
+-				fbi->interface_pix_fmt = V4L2_PIX_FMT_RGB565;
++				fbi->bus_format = MEDIA_BUS_FMT_RGB565_1X16;
+ 			else if (!strcmp(fmt, "bgr666"))
+-				fbi->interface_pix_fmt = V4L2_PIX_FMT_BGR666;
++				fbi->bus_format = MEDIA_BUS_FMT_RGB666_1X18;
+ 			else if (!strcmp(fmt, "lvds666"))
+-				fbi->interface_pix_fmt =
+-					v4l2_fourcc('L', 'V', 'D', '6');
++				fbi->bus_format = MEDIA_BUS_FMT_RGB666_1X24_CPADHI;
+ 		}
+ 
+ 		ret = vpl_ioctl(&fbi->vpl, 2 + fbi->dino, VPL_GET_VIDEOMODES, &info->modes);
+diff --git a/include/video/fourcc.h b/include/video/fourcc.h
+index 322142c..211aabb 100644
+--- a/include/video/fourcc.h
++++ b/include/video/fourcc.h
+@@ -1,157 +1,6 @@
+ #ifndef __VIDEO_FOURCC_H
+ #define __VIDEO_FOURCC_H
+ 
+-/*  Four-character-code (FOURCC) */
+-#define v4l2_fourcc(a, b, c, d)\
+-	((__u32)(a) | ((__u32)(b) << 8) | ((__u32)(c) << 16) | ((__u32)(d) << 24))
+-
+-/*      Pixel format         FOURCC                          depth  Description  */
+-
+-/* RGB formats */
+-#define V4L2_PIX_FMT_RGB332  v4l2_fourcc('R', 'G', 'B', '1') /*  8  RGB-3-3-2     */
+-#define V4L2_PIX_FMT_RGB444  v4l2_fourcc('R', '4', '4', '4') /* 16  xxxxrrrr ggggbbbb */
+-#define V4L2_PIX_FMT_RGB555  v4l2_fourcc('R', 'G', 'B', 'O') /* 16  RGB-5-5-5     */
+-#define V4L2_PIX_FMT_RGB565  v4l2_fourcc('R', 'G', 'B', 'P') /* 16  RGB-5-6-5     */
+-#define V4L2_PIX_FMT_RGB555X v4l2_fourcc('R', 'G', 'B', 'Q') /* 16  RGB-5-5-5 BE  */
+-#define V4L2_PIX_FMT_RGB565X v4l2_fourcc('R', 'G', 'B', 'R') /* 16  RGB-5-6-5 BE  */
+-#define V4L2_PIX_FMT_BGR666  v4l2_fourcc('B', 'G', 'R', 'H') /* 18  BGR-6-6-6	  */
+-#define V4L2_PIX_FMT_BGR24   v4l2_fourcc('B', 'G', 'R', '3') /* 24  BGR-8-8-8     */
+-#define V4L2_PIX_FMT_RGB24   v4l2_fourcc('R', 'G', 'B', '3') /* 24  RGB-8-8-8     */
+-#define V4L2_PIX_FMT_BGR32   v4l2_fourcc('B', 'G', 'R', '4') /* 32  BGR-8-8-8-8   */
+-#define V4L2_PIX_FMT_RGB32   v4l2_fourcc('R', 'G', 'B', '4') /* 32  RGB-8-8-8-8   */
+-
+-/* Grey formats */
+-#define V4L2_PIX_FMT_GREY    v4l2_fourcc('G', 'R', 'E', 'Y') /*  8  Greyscale     */
+-#define V4L2_PIX_FMT_Y4      v4l2_fourcc('Y', '0', '4', ' ') /*  4  Greyscale     */
+-#define V4L2_PIX_FMT_Y6      v4l2_fourcc('Y', '0', '6', ' ') /*  6  Greyscale     */
+-#define V4L2_PIX_FMT_Y10     v4l2_fourcc('Y', '1', '0', ' ') /* 10  Greyscale     */
+-#define V4L2_PIX_FMT_Y12     v4l2_fourcc('Y', '1', '2', ' ') /* 12  Greyscale     */
+-#define V4L2_PIX_FMT_Y16     v4l2_fourcc('Y', '1', '6', ' ') /* 16  Greyscale     */
+-
+-/* Grey bit-packed formats */
+-#define V4L2_PIX_FMT_Y10BPACK    v4l2_fourcc('Y', '1', '0', 'B') /* 10  Greyscale bit-packed */
+-
+-/* Palette formats */
+-#define V4L2_PIX_FMT_PAL8    v4l2_fourcc('P', 'A', 'L', '8') /*  8  8-bit palette */
+-
+-/* Chrominance formats */
+-#define V4L2_PIX_FMT_UV8     v4l2_fourcc('U', 'V', '8', ' ') /*  8  UV 4:4 */
+-
+-/* Luminance+Chrominance formats */
+-#define V4L2_PIX_FMT_YVU410  v4l2_fourcc('Y', 'V', 'U', '9') /*  9  YVU 4:1:0     */
+-#define V4L2_PIX_FMT_YVU420  v4l2_fourcc('Y', 'V', '1', '2') /* 12  YVU 4:2:0     */
+-#define V4L2_PIX_FMT_YUYV    v4l2_fourcc('Y', 'U', 'Y', 'V') /* 16  YUV 4:2:2     */
+-#define V4L2_PIX_FMT_YYUV    v4l2_fourcc('Y', 'Y', 'U', 'V') /* 16  YUV 4:2:2     */
+-#define V4L2_PIX_FMT_YVYU    v4l2_fourcc('Y', 'V', 'Y', 'U') /* 16 YVU 4:2:2 */
+-#define V4L2_PIX_FMT_UYVY    v4l2_fourcc('U', 'Y', 'V', 'Y') /* 16  YUV 4:2:2     */
+-#define V4L2_PIX_FMT_VYUY    v4l2_fourcc('V', 'Y', 'U', 'Y') /* 16  YUV 4:2:2     */
+-#define V4L2_PIX_FMT_YUV422P v4l2_fourcc('4', '2', '2', 'P') /* 16  YVU422 planar */
+-#define V4L2_PIX_FMT_YUV411P v4l2_fourcc('4', '1', '1', 'P') /* 16  YVU411 planar */
+-#define V4L2_PIX_FMT_Y41P    v4l2_fourcc('Y', '4', '1', 'P') /* 12  YUV 4:1:1     */
+-#define V4L2_PIX_FMT_YUV444  v4l2_fourcc('Y', '4', '4', '4') /* 16  xxxxyyyy uuuuvvvv */
+-#define V4L2_PIX_FMT_YUV555  v4l2_fourcc('Y', 'U', 'V', 'O') /* 16  YUV-5-5-5     */
+-#define V4L2_PIX_FMT_YUV565  v4l2_fourcc('Y', 'U', 'V', 'P') /* 16  YUV-5-6-5     */
+-#define V4L2_PIX_FMT_YUV32   v4l2_fourcc('Y', 'U', 'V', '4') /* 32  YUV-8-8-8-8   */
+-#define V4L2_PIX_FMT_YUV410  v4l2_fourcc('Y', 'U', 'V', '9') /*  9  YUV 4:1:0     */
+-#define V4L2_PIX_FMT_YUV420  v4l2_fourcc('Y', 'U', '1', '2') /* 12  YUV 4:2:0     */
+-#define V4L2_PIX_FMT_HI240   v4l2_fourcc('H', 'I', '2', '4') /*  8  8-bit color   */
+-#define V4L2_PIX_FMT_HM12    v4l2_fourcc('H', 'M', '1', '2') /*  8  YUV 4:2:0 16x16 macroblocks */
+-#define V4L2_PIX_FMT_M420    v4l2_fourcc('M', '4', '2', '0') /* 12  YUV 4:2:0 2 lines y, 1 line uv interleaved */
+-
+-/* two planes -- one Y, one Cr + Cb interleaved  */
+-#define V4L2_PIX_FMT_NV12    v4l2_fourcc('N', 'V', '1', '2') /* 12  Y/CbCr 4:2:0  */
+-#define V4L2_PIX_FMT_NV21    v4l2_fourcc('N', 'V', '2', '1') /* 12  Y/CrCb 4:2:0  */
+-#define V4L2_PIX_FMT_NV16    v4l2_fourcc('N', 'V', '1', '6') /* 16  Y/CbCr 4:2:2  */
+-#define V4L2_PIX_FMT_NV61    v4l2_fourcc('N', 'V', '6', '1') /* 16  Y/CrCb 4:2:2  */
+-#define V4L2_PIX_FMT_NV24    v4l2_fourcc('N', 'V', '2', '4') /* 24  Y/CbCr 4:4:4  */
+-#define V4L2_PIX_FMT_NV42    v4l2_fourcc('N', 'V', '4', '2') /* 24  Y/CrCb 4:4:4  */
+-
+-/* two non contiguous planes - one Y, one Cr + Cb interleaved  */
+-#define V4L2_PIX_FMT_NV12M   v4l2_fourcc('N', 'M', '1', '2') /* 12  Y/CbCr 4:2:0  */
+-#define V4L2_PIX_FMT_NV21M   v4l2_fourcc('N', 'M', '2', '1') /* 21  Y/CrCb 4:2:0  */
+-#define V4L2_PIX_FMT_NV16M   v4l2_fourcc('N', 'M', '1', '6') /* 16  Y/CbCr 4:2:2  */
+-#define V4L2_PIX_FMT_NV61M   v4l2_fourcc('N', 'M', '6', '1') /* 16  Y/CrCb 4:2:2  */
+-#define V4L2_PIX_FMT_NV12MT  v4l2_fourcc('T', 'M', '1', '2') /* 12  Y/CbCr 4:2:0 64x32 macroblocks */
+-#define V4L2_PIX_FMT_NV12MT_16X16 v4l2_fourcc('V', 'M', '1', '2') /* 12  Y/CbCr 4:2:0 16x16 macroblocks */
+-
+-/* three non contiguous planes - Y, Cb, Cr */
+-#define V4L2_PIX_FMT_YUV420M v4l2_fourcc('Y', 'M', '1', '2') /* 12  YUV420 planar */
+-#define V4L2_PIX_FMT_YVU420M v4l2_fourcc('Y', 'M', '2', '1') /* 12  YVU420 planar */
+-
+-/* Bayer formats - see http://www.siliconimaging.com/RGB%20Bayer.htm */
+-#define V4L2_PIX_FMT_SBGGR8  v4l2_fourcc('B', 'A', '8', '1') /*  8  BGBG.. GRGR.. */
+-#define V4L2_PIX_FMT_SGBRG8  v4l2_fourcc('G', 'B', 'R', 'G') /*  8  GBGB.. RGRG.. */
+-#define V4L2_PIX_FMT_SGRBG8  v4l2_fourcc('G', 'R', 'B', 'G') /*  8  GRGR.. BGBG.. */
+-#define V4L2_PIX_FMT_SRGGB8  v4l2_fourcc('R', 'G', 'G', 'B') /*  8  RGRG.. GBGB.. */
+-#define V4L2_PIX_FMT_SBGGR10 v4l2_fourcc('B', 'G', '1', '0') /* 10  BGBG.. GRGR.. */
+-#define V4L2_PIX_FMT_SGBRG10 v4l2_fourcc('G', 'B', '1', '0') /* 10  GBGB.. RGRG.. */
+-#define V4L2_PIX_FMT_SGRBG10 v4l2_fourcc('B', 'A', '1', '0') /* 10  GRGR.. BGBG.. */
+-#define V4L2_PIX_FMT_SRGGB10 v4l2_fourcc('R', 'G', '1', '0') /* 10  RGRG.. GBGB.. */
+-#define V4L2_PIX_FMT_SBGGR12 v4l2_fourcc('B', 'G', '1', '2') /* 12  BGBG.. GRGR.. */
+-#define V4L2_PIX_FMT_SGBRG12 v4l2_fourcc('G', 'B', '1', '2') /* 12  GBGB.. RGRG.. */
+-#define V4L2_PIX_FMT_SGRBG12 v4l2_fourcc('B', 'A', '1', '2') /* 12  GRGR.. BGBG.. */
+-#define V4L2_PIX_FMT_SRGGB12 v4l2_fourcc('R', 'G', '1', '2') /* 12  RGRG.. GBGB.. */
+-	/* 10bit raw bayer a-law compressed to 8 bits */
+-#define V4L2_PIX_FMT_SBGGR10ALAW8 v4l2_fourcc('a', 'B', 'A', '8')
+-#define V4L2_PIX_FMT_SGBRG10ALAW8 v4l2_fourcc('a', 'G', 'A', '8')
+-#define V4L2_PIX_FMT_SGRBG10ALAW8 v4l2_fourcc('a', 'g', 'A', '8')
+-#define V4L2_PIX_FMT_SRGGB10ALAW8 v4l2_fourcc('a', 'R', 'A', '8')
+-	/* 10bit raw bayer DPCM compressed to 8 bits */
+-#define V4L2_PIX_FMT_SBGGR10DPCM8 v4l2_fourcc('b', 'B', 'A', '8')
+-#define V4L2_PIX_FMT_SGBRG10DPCM8 v4l2_fourcc('b', 'G', 'A', '8')
+-#define V4L2_PIX_FMT_SGRBG10DPCM8 v4l2_fourcc('B', 'D', '1', '0')
+-#define V4L2_PIX_FMT_SRGGB10DPCM8 v4l2_fourcc('b', 'R', 'A', '8')
+-	/*
+-	 * 10bit raw bayer, expanded to 16 bits
+-	 * xxxxrrrrrrrrrrxxxxgggggggggg xxxxggggggggggxxxxbbbbbbbbbb...
+-	 */
+-#define V4L2_PIX_FMT_SBGGR16 v4l2_fourcc('B', 'Y', 'R', '2') /* 16  BGBG.. GRGR.. */
+-
+-/* compressed formats */
+-#define V4L2_PIX_FMT_MJPEG    v4l2_fourcc('M', 'J', 'P', 'G') /* Motion-JPEG   */
+-#define V4L2_PIX_FMT_JPEG     v4l2_fourcc('J', 'P', 'E', 'G') /* JFIF JPEG     */
+-#define V4L2_PIX_FMT_DV       v4l2_fourcc('d', 'v', 's', 'd') /* 1394          */
+-#define V4L2_PIX_FMT_MPEG     v4l2_fourcc('M', 'P', 'E', 'G') /* MPEG-1/2/4 Multiplexed */
+-#define V4L2_PIX_FMT_H264     v4l2_fourcc('H', '2', '6', '4') /* H264 with start codes */
+-#define V4L2_PIX_FMT_H264_NO_SC v4l2_fourcc('A', 'V', 'C', '1') /* H264 without start codes */
+-#define V4L2_PIX_FMT_H264_MVC v4l2_fourcc('M', '2', '6', '4') /* H264 MVC */
+-#define V4L2_PIX_FMT_H263     v4l2_fourcc('H', '2', '6', '3') /* H263          */
+-#define V4L2_PIX_FMT_MPEG1    v4l2_fourcc('M', 'P', 'G', '1') /* MPEG-1 ES     */
+-#define V4L2_PIX_FMT_MPEG2    v4l2_fourcc('M', 'P', 'G', '2') /* MPEG-2 ES     */
+-#define V4L2_PIX_FMT_MPEG4    v4l2_fourcc('M', 'P', 'G', '4') /* MPEG-4 part 2 ES */
+-#define V4L2_PIX_FMT_XVID     v4l2_fourcc('X', 'V', 'I', 'D') /* Xvid           */
+-#define V4L2_PIX_FMT_VC1_ANNEX_G v4l2_fourcc('V', 'C', '1', 'G') /* SMPTE 421M Annex G compliant stream */
+-#define V4L2_PIX_FMT_VC1_ANNEX_L v4l2_fourcc('V', 'C', '1', 'L') /* SMPTE 421M Annex L compliant stream */
+-#define V4L2_PIX_FMT_VP8      v4l2_fourcc('V', 'P', '8', '0') /* VP8 */
+-
+-/*  Vendor-specific formats   */
+-#define V4L2_PIX_FMT_CPIA1    v4l2_fourcc('C', 'P', 'I', 'A') /* cpia1 YUV */
+-#define V4L2_PIX_FMT_WNVA     v4l2_fourcc('W', 'N', 'V', 'A') /* Winnov hw compress */
+-#define V4L2_PIX_FMT_SN9C10X  v4l2_fourcc('S', '9', '1', '0') /* SN9C10x compression */
+-#define V4L2_PIX_FMT_SN9C20X_I420 v4l2_fourcc('S', '9', '2', '0') /* SN9C20x YUV 4:2:0 */
+-#define V4L2_PIX_FMT_PWC1     v4l2_fourcc('P', 'W', 'C', '1') /* pwc older webcam */
+-#define V4L2_PIX_FMT_PWC2     v4l2_fourcc('P', 'W', 'C', '2') /* pwc newer webcam */
+-#define V4L2_PIX_FMT_ET61X251 v4l2_fourcc('E', '6', '2', '5') /* ET61X251 compression */
+-#define V4L2_PIX_FMT_SPCA501  v4l2_fourcc('S', '5', '0', '1') /* YUYV per line */
+-#define V4L2_PIX_FMT_SPCA505  v4l2_fourcc('S', '5', '0', '5') /* YYUV per line */
+-#define V4L2_PIX_FMT_SPCA508  v4l2_fourcc('S', '5', '0', '8') /* YUVY per line */
+-#define V4L2_PIX_FMT_SPCA561  v4l2_fourcc('S', '5', '6', '1') /* compressed GBRG bayer */
+-#define V4L2_PIX_FMT_PAC207   v4l2_fourcc('P', '2', '0', '7') /* compressed BGGR bayer */
+-#define V4L2_PIX_FMT_MR97310A v4l2_fourcc('M', '3', '1', '0') /* compressed BGGR bayer */
+-#define V4L2_PIX_FMT_JL2005BCD v4l2_fourcc('J', 'L', '2', '0') /* compressed RGGB bayer */
+-#define V4L2_PIX_FMT_SN9C2028 v4l2_fourcc('S', 'O', 'N', 'X') /* compressed GBRG bayer */
+-#define V4L2_PIX_FMT_SQ905C   v4l2_fourcc('9', '0', '5', 'C') /* compressed RGGB bayer */
+-#define V4L2_PIX_FMT_PJPG     v4l2_fourcc('P', 'J', 'P', 'G') /* Pixart 73xx JPEG */
+-#define V4L2_PIX_FMT_OV511    v4l2_fourcc('O', '5', '1', '1') /* ov511 JPEG */
+-#define V4L2_PIX_FMT_OV518    v4l2_fourcc('O', '5', '1', '8') /* ov518 JPEG */
+-#define V4L2_PIX_FMT_STV0680  v4l2_fourcc('S', '6', '8', '0') /* stv0680 bayer */
+-#define V4L2_PIX_FMT_TM6000   v4l2_fourcc('T', 'M', '6', '0') /* tm5600/tm60x0 */
+-#define V4L2_PIX_FMT_CIT_YYVYUY v4l2_fourcc('C', 'I', 'T', 'V') /* one line of Y then 1 line of VYUY */
+-#define V4L2_PIX_FMT_KONICA420  v4l2_fourcc('K', 'O', 'N', 'I') /* YUV420 planar in blocks of 256 pixels */
+-#define V4L2_PIX_FMT_JPGL	v4l2_fourcc('J', 'P', 'G', 'L') /* JPEG-Lite */
+-#define V4L2_PIX_FMT_SE401      v4l2_fourcc('S', '4', '0', '1') /* se401 janggu compressed rgb */
+-#define V4L2_PIX_FMT_S5C_UYVY_JPG v4l2_fourcc('S', '5', 'C', 'I') /* S5C73M3 interleaved UYVY/JPEG */
+-
+ #define fourcc_code(a, b, c, d) ((__u32)(a) | ((__u32)(b) << 8) | \
+ 				 ((__u32)(c) << 16) | ((__u32)(d) << 24))
+ 
+diff --git a/include/video/media-bus-format.h b/include/video/media-bus-format.h
 new file mode 100644
-index 0000000..f2ea198
+index 0000000..190d491
 --- /dev/null
-+++ b/drivers/video/tc358767.c
-@@ -0,0 +1,1313 @@
++++ b/include/video/media-bus-format.h
+@@ -0,0 +1,137 @@
 +/*
-+ * tc358767 eDP encoder driver
++ * Media Bus API header
 + *
-+ * Copyright (C) 2016 CogentEmbedded Inc
-+ * Author: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
-+ *
-+ * Copyright (C) 2016 Pengutronix, Philipp Zabel <p.zabel@pengutronix.de>
++ * Copyright (C) 2009, Guennadi Liakhovetski <g.liakhovetski@gmx.de>
 + *
 + * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
 + */
 +
-+#include <common.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <malloc.h>
-+#include <errno.h>
-+#include <i2c/i2c.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <linux/kernel.h>
-+#include <gpio.h>
-+#include <of_gpio.h>
-+#include <video/media-bus-format.h>
-+#include <video/vpl.h>
-+#include <asm-generic/div64.h>
-+
-+#define DP_LINK_BW_SET			0x100
-+#define DP_TRAINING_PATTERN_SET		0x102
-+
-+#define DP_DOWNSPREAD_CTRL		0x107
-+#define DP_SPREAD_AMP_0_5		(1 << 4)
-+
-+#define DP_MAIN_LINK_CHANNEL_CODING_SET	0x108
-+#define DP_SET_ANSI_8B10B		(1 << 0)
-+
-+#define DP_LANE0_1_STATUS		0x202
-+#define DP_LANE2_3_STATUS		0x202
-+#define DP_LANE_CR_DONE			(1 << 0)
-+#define DP_LANE_CHANNEL_EQ_DONE		(1 << 1)
-+#define DP_LANE_SYMBOL_LOCKED		(1 << 2)
-+#define DP_CHANNEL_EQ_BITS (DP_LANE_CR_DONE |           \
-+			    DP_LANE_CHANNEL_EQ_DONE |   \
-+			    DP_LANE_SYMBOL_LOCKED)
-+
-+#define DP_LAINE_ALIGN_STATUS_UPDATED	0x204
-+#define DP_INTERLANE_ALIGN_DONE		(1 << 0)
-+
-+#define DP_LINK_SCRAMBLING_DISABLE      0x20
-+#define DP_TRAINING_PATTERN_1		1
-+#define DP_TRAINING_PATTERN_2		2
-+
-+#define DP_EDP_CONFIGURATION_SET		0x10a
-+#define DP_ALTERNATE_SCRAMBLER_RESET_ENABLE     (1 << 0)
-+
-+/* Registers */
-+
-+/* Display Parallel Interface */
-+#define DPIPXLFMT		0x0440
-+#define VS_POL_ACTIVE_LOW		(1 << 10)
-+#define HS_POL_ACTIVE_LOW		(1 << 9)
-+#define DE_POL_ACTIVE_HIGH		(0 << 8)
-+#define SUB_CFG_TYPE_CONFIG1		(0 << 2) /* LSB aligned */
-+#define SUB_CFG_TYPE_CONFIG2		(1 << 2) /* Loosely Packed */
-+#define SUB_CFG_TYPE_CONFIG3		(2 << 2) /* LSB aligned 8-bit */
-+#define DPI_BPP_RGB888			(0 << 0)
-+#define DPI_BPP_RGB666			(1 << 0)
-+#define DPI_BPP_RGB565			(2 << 0)
-+
-+/* Video Path */
-+#define VPCTRL0			0x0450
-+#define OPXLFMT_RGB666			(0 << 8)
-+#define OPXLFMT_RGB888			(1 << 8)
-+#define FRMSYNC_DISABLED		(0 << 4) /* Video Timing Gen Disabled */
-+#define FRMSYNC_ENABLED			(1 << 4) /* Video Timing Gen Enabled */
-+#define MSF_DISABLED			(0 << 0) /* Magic Square FRC disabled */
-+#define MSF_ENABLED			(1 << 0) /* Magic Square FRC enabled */
-+#define HTIM01			0x0454
-+#define HTIM02			0x0458
-+#define VTIM01			0x045c
-+#define VTIM02			0x0460
-+#define VFUEN0			0x0464
-+#define VFUEN				BIT(0)   /* Video Frame Timing Upload */
-+
-+/* System */
-+#define TC_IDREG		0x0500
-+#define SYSCTRL			0x0510
-+#define DP0_AUDSRC_NO_INPUT		(0 << 3)
-+#define DP0_AUDSRC_I2S_RX		(1 << 3)
-+#define DP0_VIDSRC_NO_INPUT		(0 << 0)
-+#define DP0_VIDSRC_DSI_RX		(1 << 0)
-+#define DP0_VIDSRC_DPI_RX		(2 << 0)
-+#define DP0_VIDSRC_COLOR_BAR		(3 << 0)
-+
-+/* Control */
-+#define DP0CTL			0x0600
-+#define VID_MN_GEN			BIT(6)   /* Auto-generate M/N values */
-+#define EF_EN				BIT(5)   /* Enable Enhanced Framing */
-+#define VID_EN				BIT(1)   /* Video transmission enable */
-+#define DP_EN				BIT(0)   /* Enable DPTX function */
-+
-+/* Clocks */
-+#define DP0_VIDMNGEN0		0x0610
-+#define DP0_VIDMNGEN1		0x0614
-+#define DP0_VMNGENSTATUS	0x0618
-+
-+/* Main Channel */
-+#define DP0_SECSAMPLE		0x0640
-+#define DP0_VIDSYNCDELAY	0x0644
-+#define DP0_TOTALVAL		0x0648
-+#define DP0_STARTVAL		0x064c
-+#define DP0_ACTIVEVAL		0x0650
-+#define DP0_SYNCVAL		0x0654
-+#define DP0_MISC		0x0658
-+#define TU_SIZE_RECOMMENDED		(0x3f << 16) /* LSCLK cycles per TU */
-+#define BPC_6				(0 << 5)
-+#define BPC_8				(1 << 5)
-+
-+/* AUX channel */
-+#define DP0_AUXCFG0		0x0660
-+#define DP0_AUXCFG1		0x0664
-+#define AUX_RX_FILTER_EN		BIT(16)
-+
-+#define DP0_AUXADDR		0x0668
-+#define DP0_AUXWDATA(i)		(0x066c + (i) * 4)
-+#define DP0_AUXRDATA(i)		(0x067c + (i) * 4)
-+#define DP0_AUXSTATUS		0x068c
-+#define AUX_STATUS_MASK			0xf0
-+#define AUX_STATUS_SHIFT		4
-+#define AUX_TIMEOUT			BIT(1)
-+#define AUX_BUSY			BIT(0)
-+#define DP0_AUXI2CADR		0x0698
-+
-+/* Link Training */
-+#define DP0_SRCCTRL		0x06a0
-+#define DP0_SRCCTRL_SCRMBLDIS		BIT(13)
-+#define DP0_SRCCTRL_EN810B		BIT(12)
-+#define DP0_SRCCTRL_NOTP		(0 << 8)
-+#define DP0_SRCCTRL_TP1			(1 << 8)
-+#define DP0_SRCCTRL_TP2			(2 << 8)
-+#define DP0_SRCCTRL_LANESKEW		BIT(7)
-+#define DP0_SRCCTRL_SSCG		BIT(3)
-+#define DP0_SRCCTRL_LANES_1		(0 << 2)
-+#define DP0_SRCCTRL_LANES_2		(1 << 2)
-+#define DP0_SRCCTRL_BW27		(1 << 1)
-+#define DP0_SRCCTRL_BW162		(0 << 1)
-+#define DP0_SRCCTRL_AUTOCORRECT		BIT(0)
-+#define DP0_LTSTAT		0x06d0
-+#define LT_LOOPDONE			BIT(13)
-+#define LT_STATUS_MASK			(0x1f << 8)
-+#define LT_CHANNEL1_EQ_BITS		(DP_CHANNEL_EQ_BITS << 4)
-+#define LT_INTERLANE_ALIGN_DONE		BIT(3)
-+#define LT_CHANNEL0_EQ_BITS		(DP_CHANNEL_EQ_BITS)
-+#define DP0_SNKLTCHGREQ		0x06d4
-+#define DP0_LTLOOPCTRL		0x06d8
-+#define DP0_SNKLTCTRL		0x06e4
-+
-+/* PHY */
-+#define DP_PHY_CTRL		0x0800
-+#define DP_PHY_RST			BIT(28)  /* DP PHY Global Soft Reset */
-+#define BGREN				BIT(25)  /* AUX PHY BGR Enable */
-+#define PWR_SW_EN			BIT(24)  /* PHY Power Switch Enable */
-+#define PHY_M1_RST			BIT(12)  /* Reset PHY1 Main Channel */
-+#define PHY_RDY				BIT(16)  /* PHY Main Channels Ready */
-+#define PHY_M0_RST			BIT(8)   /* Reset PHY0 Main Channel */
-+#define PHY_A0_EN			BIT(1)   /* PHY Aux Channel0 Enable */
-+#define PHY_M0_EN			BIT(0)   /* PHY Main Channel0 Enable */
-+
-+/* PLL */
-+#define DP0_PLLCTRL		0x0900
-+#define DP1_PLLCTRL		0x0904	/* not defined in DS */
-+#define PXL_PLLCTRL		0x0908
-+#define PLLUPDATE			BIT(2)
-+#define PLLBYP				BIT(1)
-+#define PLLEN				BIT(0)
-+#define PXL_PLLPARAM		0x0914
-+#define IN_SEL_REFCLK			(0 << 14)
-+#define SYS_PLLPARAM		0x0918
-+#define REF_FREQ_38M4			(0 << 8) /* 38.4 MHz */
-+#define REF_FREQ_19M2			(1 << 8) /* 19.2 MHz */
-+#define REF_FREQ_26M			(2 << 8) /* 26 MHz */
-+#define REF_FREQ_13M			(3 << 8) /* 13 MHz */
-+#define SYSCLK_SEL_LSCLK		(0 << 4)
-+#define LSCLK_DIV_1			(0 << 0)
-+#define LSCLK_DIV_2			(1 << 0)
-+
-+/* Test & Debug */
-+#define TSTCTL			0x0a00
-+#define PLL_DBG			0x0a04
-+
-+struct tc_edp_link {
-+	u8			rate;
-+	u8			rev;
-+	u8			lanes;
-+	u8			enhanced;
-+	u8			assr;
-+	int			scrambler_dis;
-+	int			spread;
-+	int			coding8b10b;
-+	u8			swing;
-+	u8			preemp;
-+};
-+
-+struct tc_data {
-+	struct i2c_client	*client;
-+	struct device_d		*dev;
-+	/* DP AUX channel */
-+	struct i2c_adapter	adapter;
-+	struct vpl		vpl;
-+
-+	/* link settings */
-+	struct tc_edp_link	link;
-+
-+	/* mode */
-+	struct fb_videomode	*mode;
-+
-+	u32			rev;
-+	u8			assr;
-+
-+	char			*edid;
-+
-+	int			sd_gpio;
-+	int			sd_active_high;
-+	int			reset_gpio;
-+	int			reset_active_high;
-+	struct clk		*refclk;
-+};
-+#define to_tc_i2c_struct(a)	container_of(a, struct tc_data, adapter)
-+
-+static int tc_write_reg(struct tc_data *data, u16 reg, u32 value)
-+{
-+	int ret;
-+	u8 buf[4];
-+
-+	buf[0] = value & 0xff;
-+	buf[1] = (value >> 8) & 0xff;
-+	buf[2] = (value >> 16) & 0xff;
-+	buf[3] = (value >> 24) & 0xff;
-+
-+	ret = i2c_write_reg(data->client, reg | I2C_ADDR_16_BIT, buf, 4);
-+	if (ret != 4) {
-+		dev_err(data->dev, "error writing reg 0x%04x: %d\n",
-+			reg, ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+
-+static int tc_read_reg(struct tc_data *data, u16 reg, u32 *value)
-+{
-+	int ret;
-+	u8 buf[4];
-+
-+	ret = i2c_read_reg(data->client, reg | I2C_ADDR_16_BIT, buf, 4);
-+	if (ret != 4) {
-+		dev_err(data->dev, "error reading reg 0x%04x: %d\n",
-+			reg, ret);
-+		return ret;
-+	}
-+
-+	*value = buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
-+
-+	return 0;
-+}
-+
-+/* simple macros to avoid error checks */
-+#define tc_write(reg, var)	do {		\
-+	ret = tc_write_reg(tc, reg, var);	\
-+	if (ret)				\
-+		goto err;			\
-+	} while (0)
-+#define tc_read(reg, var)	do {		\
-+	ret = tc_read_reg(tc, reg, var);	\
-+	if (ret)				\
-+		goto err;			\
-+	} while (0)
-+
-+static int tc_aux_get_status(struct tc_data *tc)
-+{
-+	int ret;
-+	u32 value;
-+
-+	tc_read(DP0_AUXSTATUS, &value);
-+	if ((value & 0x01) == 0x00) {
-+		switch (value & 0xf0) {
-+		case 0x00:
-+			/* Ack */
-+			return 0;
-+		case 0x40:
-+			/* Nack */
-+			return -EIO;
-+		case 0x80:
-+			dev_err(tc->dev, "i2c defer\n");
-+			return -EAGAIN;
-+		}
-+		return 0;
-+	}
-+
-+	if (value & 0x02) {
-+		dev_err(tc->dev, "i2c access timeout!\n");
-+		return -ETIME;
-+	}
-+	return -EBUSY;
-+err:
-+	return ret;
-+}
-+
-+static int tc_aux_wait_busy(struct tc_data *tc, unsigned int timeout_ms)
-+{
-+	int ret;
-+	u32 value;
-+
-+	do {
-+		tc_read(DP0_AUXSTATUS, &value);
-+		if ((value & AUX_BUSY) == 0x00)
-+			return 0;
-+		mdelay(1);
-+	} while (timeout_ms--);
-+
-+	return -EBUSY;
-+err:
-+	return ret;
-+}
-+
-+static int tc_aux_read(struct tc_data *tc, int reg, char *data, int size)
-+{
-+	int i = 0;
-+	int ret;
-+	u32 tmp;
-+
-+	ret = tc_aux_wait_busy(tc, 100);
-+	if (ret)
-+		goto err;
-+
-+	/* store address */
-+	tc_write(DP0_AUXADDR, reg);
-+	/* start transfer */
-+	tc_write(DP0_AUXCFG0, ((size - 1) << 8) | 0x09);
-+
-+	ret = tc_aux_wait_busy(tc, 100);
-+	if (ret)
-+		goto err;
-+
-+	ret = tc_aux_get_status(tc);
-+	if (ret)
-+		goto err;
-+
-+	/* read data */
-+	while (i < size) {
-+		if ((i % 4) == 0)
-+			tc_read(DP0_AUXRDATA(i >> 2), &tmp);
-+		data[i] = tmp & 0xFF;
-+		tmp = tmp >> 8;
-+		i++;
-+	}
-+
-+	return 0;
-+err:
-+	dev_err(tc->dev, "tc_aux_read error: %d\n", ret);
-+	return ret;
-+}
-+
-+static int tc_aux_write(struct tc_data *tc, int reg, char *data, int size)
-+{
-+	int i = 0;
-+	int ret;
-+	u32 tmp = 0;
-+
-+	ret = tc_aux_wait_busy(tc, 100);
-+	if (ret)
-+		goto err;
-+
-+	i = 0;
-+	/* store data */
-+	while (i < size) {
-+		tmp = tmp | (data[i] << (8 * (i & 0x03)));
-+		i++;
-+		if (((i % 4) == 0) ||
-+		    (i == size)) {
-+			tc_write(DP0_AUXWDATA(i >> 2), tmp);
-+			tmp = 0;
-+		}
-+	}
-+	/* store address */
-+	tc_write(DP0_AUXADDR, reg);
-+	/* start transfer */
-+	tc_write(DP0_AUXCFG0, ((size - 1) << 8) | 0x08);
-+
-+	ret = tc_aux_wait_busy(tc, 100);
-+	if (ret)
-+		goto err;
-+
-+	ret = tc_aux_get_status(tc);
-+	if (ret)
-+		goto err;
-+
-+	return 0;
-+err:
-+	dev_err(tc->dev, "tc_aux_write error: %d\n", ret);
-+	return ret;
-+}
-+
-+static int tc_aux_i2c_read(struct tc_data *tc, struct i2c_msg *msg)
-+{
-+	int i = 0;
-+	int ret;
-+	u32 tmp;
-+
-+	if (msg->flags & I2C_M_DATA_ONLY)
-+		return -EINVAL;
-+
-+	ret = tc_aux_wait_busy(tc, 100);
-+	if (ret)
-+		goto err;
-+
-+	/* store address */
-+	tc_write(DP0_AUXADDR, msg->addr);
-+
-+	/* start transfer */
-+	tc_write(DP0_AUXCFG0, ((msg->len - 1) << 8) | 0x01);
-+
-+	ret = tc_aux_wait_busy(tc, 100);
-+	if (ret)
-+		goto err;
-+
-+	ret = tc_aux_get_status(tc);
-+	if (ret)
-+		goto err;
-+
-+	/* read data */
-+	while (i < msg->len) {
-+		if ((i % 4) == 0)
-+			tc_read(DP0_AUXRDATA(i >> 2), &tmp);
-+		msg->buf[i] = tmp & 0xFF;
-+		tmp = tmp >> 8;
-+		i++;
-+	}
-+
-+	return 0;
-+err:
-+	return ret;
-+}
-+
-+static int tc_aux_i2c_write(struct tc_data *tc, struct i2c_msg *msg)
-+{
-+	int i = 0;
-+	int ret;
-+	u32 tmp = 0;
-+
-+	if (msg->flags & I2C_M_DATA_ONLY)
-+		return -EINVAL;
-+
-+	if (msg->len > 16) {
-+		dev_err(tc->dev, "this bus support max 16 bytes per transfer\n");
-+		return -EINVAL;
-+	}
-+
-+	ret = tc_aux_wait_busy(tc, 100);
-+	if (ret)
-+		goto err;
-+
-+	/* store data */
-+	while (i < msg->len) {
-+		tmp = (tmp << 8) | msg->buf[i];
-+		i++;
-+		if (((i % 4) == 0) ||
-+		    (i == msg->len)) {
-+			tc_write(DP0_AUXWDATA(i >> 2), tmp);
-+			tmp = 0;
-+		}
-+	}
-+	/* store address */
-+	tc_write(DP0_AUXADDR, msg->addr);
-+	/* start transfer */
-+	tc_write(DP0_AUXCFG0, ((msg->len - 1) << 8) | 0x00);
-+
-+	ret = tc_aux_wait_busy(tc, 100);
-+	if (ret)
-+		goto err;
-+
-+	ret = tc_aux_get_status(tc);
-+	if (ret)
-+		goto err;
-+
-+	return 0;
-+err:
-+	return ret;
-+}
-+
-+static int tc_aux_i2c_xfer(struct i2c_adapter *adapter,
-+			struct i2c_msg *msgs, int num)
-+{
-+	struct tc_data *tc = to_tc_i2c_struct(adapter);
-+	unsigned int i;
-+	int ret;
-+
-+	/* check */
-+	for (i = 0; i < num; i++) {
-+		if (msgs[i].len > 16) {
-+			dev_err(tc->dev, "this bus support max 16 bytes per transfer\n");
-+			return -EINVAL;
-+		}
-+	}
-+
-+	/* read/write data */
-+	for (i = 0; i < num; i++) {
-+		/* write/read data */
-+		if (msgs[i].flags & I2C_M_RD)
-+			ret = tc_aux_i2c_read(tc, &msgs[i]);
-+		else
-+			ret = tc_aux_i2c_write(tc, &msgs[i]);
-+		if (ret)
-+			goto err;
-+	}
-+
-+err:
-+	return (ret < 0) ? ret : num;
-+}
-+
-+static const char * const training_pattern1_errors[] = {
-+	"No errors",
-+	"Aux write error",
-+	"Aux read error",
-+	"Max voltage reached error",
-+	"Loop counter expired error",
-+	"res", "res", "res"
-+};
-+
-+static const char * const training_pattern2_errors[] = {
-+	"No errors",
-+	"Aux write error",
-+	"Aux read error",
-+	"Clock recovery failed error",
-+	"Loop counter expired error",
-+	"res", "res", "res"
-+};
-+
-+static u32 tc_srcctrl(struct tc_data *tc)
-+{
-+	/*
-+	 * No training pattern, skew lane 1 data by two LSCLK cycles with
-+	 * respect to lane 0 data, AutoCorrect Mode = 0
-+	 */
-+	u32 reg = DP0_SRCCTRL_NOTP | DP0_SRCCTRL_LANESKEW;
-+
-+	if (tc->link.scrambler_dis)
-+		reg |= DP0_SRCCTRL_SCRMBLDIS;	/* Scrambler Disabled */
-+	if (tc->link.coding8b10b)
-+		/* Enable 8/10B Encoder (TxData[19:16] not used) */
-+		reg |= DP0_SRCCTRL_EN810B;
-+	if (tc->link.spread)
-+		reg |= DP0_SRCCTRL_SSCG;	/* Spread Spectrum Enable */
-+	if (tc->link.lanes == 2)
-+		reg |= DP0_SRCCTRL_LANES_2;	/* Two Main Channel Lanes */
-+	if (tc->link.rate != 0x06)
-+		reg |= DP0_SRCCTRL_BW27;	/* 2.7 Gbps link */
-+	return reg;
-+}
-+
-+static void tc_wait_pll_lock(struct tc_data *tc)
-+{
-+	/* Wait for PLL to lock: up to 2.09 ms, depending on refclk */
-+	mdelay(100);
-+}
-+
-+static int tc_stream_clock_calc(struct tc_data *tc)
-+{
-+	int ret;
-+	/*
-+	 * If the Stream clock and Link Symbol clock are
-+	 * asynchronous with each other, the value of M changes over
-+	 * time. This way of generating link clock and stream
-+	 * clock is called Asynchronous Clock mode. The value M
-+	 * must change while the value N stays constant. The
-+	 * value of N in this Asynchronous Clock mode must be set
-+	 * to 2^15 or 32,768.
-+	 *
-+	 * LSCLK = 1/10 of high speed link clock
-+	 *
-+	 * f_STRMCLK = M/N * f_LSCLK
-+	 * M/N = f_STRMCLK / f_LSCLK
-+	 *
-+	 */
-+	tc_write(DP0_VIDMNGEN1, 32768);
-+
-+	return 0;
-+err:
-+	return ret;
-+}
-+
-+static int tc_aux_link_setup(struct tc_data *tc)
-+{
-+	unsigned long rate;
-+	u32 value;
-+	int ret;
-+	int timeout;
-+
-+	rate = clk_get_rate(tc->refclk);
-+	switch (rate) {
-+	case 38400000:
-+		value = REF_FREQ_38M4;
-+		break;
-+	case 26000000:
-+		value = REF_FREQ_26M;
-+		break;
-+	case 19200000:
-+		value = REF_FREQ_19M2;
-+		break;
-+	case 13000000:
-+		value = REF_FREQ_13M;
-+		break;
-+	default:
-+		dev_err(tc->dev, "Invalid refclk rate: %lu Hz\n", rate);
-+		return -EINVAL;
-+	}
-+
-+	/* Setup DP-PHY / PLL */
-+	value |= SYSCLK_SEL_LSCLK | LSCLK_DIV_2;
-+	tc_write(SYS_PLLPARAM, value);
-+
-+	tc_write(DP_PHY_CTRL, BGREN | PWR_SW_EN | BIT(2) | PHY_A0_EN);
-+
-+	/*
-+	 * Initially PLLs are in bypass. Force PLL parameter update,
-+	 * disable PLL bypass, enable PLL
-+	 */
-+	tc_write(DP0_PLLCTRL, PLLUPDATE | PLLEN);
-+	tc_wait_pll_lock(tc);
-+
-+	tc_write(DP1_PLLCTRL, PLLUPDATE | PLLEN);
-+	tc_wait_pll_lock(tc);
-+
-+	timeout = 1000;
-+	do {
-+		tc_read(DP_PHY_CTRL, &value);
-+		udelay(1);
-+	} while ((!(value & (1 << 16))) && (--timeout));
-+
-+	if (timeout == 0) {
-+		dev_err(tc->dev, "Timeout waiting for PHY to become ready");
-+		return -ETIMEDOUT;
-+	}
-+
-+	/* Setup AUX link */
-+	tc_write(DP0_AUXCFG1, AUX_RX_FILTER_EN |
-+		 (0x06 << 8) |	/* Aux Bit Period Calculator Threshold */
-+		 (0x3f << 0));	/* Aux Response Timeout Timer */
-+
-+	return 0;
-+err:
-+	dev_err(tc->dev, "tc_aux_link_setup failed: %d\n", ret);
-+	return ret;
-+}
-+
-+static int tc_get_display_props(struct tc_data *tc)
-+{
-+	int ret;
-+	/* temp buffer */
-+	u8 tmp[8];
-+
-+	/* Read DP Rx Link Capability */
-+	ret = tc_aux_read(tc, 0x000, tmp, 8);
-+	if (ret)
-+		goto err_dpcd_read;
-+	/* check rev 1.0 or 1.1 */
-+	if ((tmp[1] != 0x06) && (tmp[1] != 0x0a))
-+		goto err_dpcd_inval;
-+
-+	tc->assr = !(tc->rev & 0x02);
-+	tc->link.rev = tmp[0];
-+	tc->link.rate = tmp[1];
-+	tc->link.lanes = tmp[2] & 0x0f;
-+	tc->link.enhanced = !!(tmp[2] & 0x80);
-+	tc->link.spread = tmp[3] & 0x01;
-+	tc->link.coding8b10b = tmp[6] & 0x01;
-+	tc->link.scrambler_dis = 0;
-+	/* read assr */
-+	ret = tc_aux_read(tc, DP_EDP_CONFIGURATION_SET, tmp, 1);
-+	if (ret)
-+		goto err_dpcd_read;
-+	tc->link.assr = tmp[0] & DP_ALTERNATE_SCRAMBLER_RESET_ENABLE;
-+
-+	dev_dbg(tc->dev, "DPCD rev: %d.%d, rate: %s, lanes: %d, framing: %s\n",
-+		tc->link.rev >> 4,
-+		tc->link.rev & 0x0f,
-+		(tc->link.rate == 0x06) ? "1.62Gbps" : "2.7Gbps",
-+		tc->link.lanes,
-+		tc->link.enhanced ? "enhanced" : "non-enhanced");
-+	dev_dbg(tc->dev, "ANSI 8B/10B: %d\n", tc->link.coding8b10b);
-+	dev_dbg(tc->dev, "Display ASSR: %d, TC358767 ASSR: %d\n",
-+		tc->link.assr, tc->assr);
-+
-+	return 0;
-+
-+err_dpcd_read:
-+	dev_err(tc->dev, "failed to read DPCD: %d\n", ret);
-+	return ret;
-+err_dpcd_inval:
-+	dev_err(tc->dev, "invalid DPCD\n");
-+	return -EINVAL;
-+}
-+
-+static int tc_set_video_mode(struct tc_data *tc, struct fb_videomode *mode)
-+{
-+	int ret;
-+	int htotal;
-+	int vtotal;
-+	int vid_sync_dly;
-+	int max_tu_symbol;
-+
-+	htotal = mode->hsync_len + mode->left_margin + mode->xres +
-+		mode->right_margin;
-+	vtotal = mode->vsync_len + mode->upper_margin + mode->yres +
-+		mode->lower_margin;
-+
-+	dev_dbg(tc->dev, "set mode %dx%d\n", mode->xres, mode->yres);
-+	dev_dbg(tc->dev, "H margin %d,%d sync %d\n",
-+		mode->left_margin, mode->right_margin, mode->hsync_len);
-+	dev_dbg(tc->dev, "V margin %d,%d sync %d\n",
-+		mode->upper_margin, mode->lower_margin, mode->vsync_len);
-+	dev_dbg(tc->dev, "total: %dx%d\n", htotal, vtotal);
-+
-+
-+	/* LCD Ctl Frame Size */
-+	tc_write(VPCTRL0, (0x40 << 20) /* VSDELAY */ |
-+		 OPXLFMT_RGB888 | FRMSYNC_DISABLED | MSF_DISABLED);
-+	tc_write(HTIM01, (mode->left_margin << 16) |		/* H back porch */
-+			 (mode->hsync_len << 0));		/* Hsync */
-+	tc_write(HTIM02, (mode->right_margin << 16) |		/* H front porch */
-+			 (mode->xres << 0));			/* width */
-+	tc_write(VTIM01, (mode->upper_margin << 16) |		/* V back porch */
-+			 (mode->vsync_len << 0));		/* Vsync */
-+	tc_write(VTIM02, (mode->lower_margin << 16) |		/* V front porch */
-+			 (mode->yres << 0));			/* height */
-+	tc_write(VFUEN0, VFUEN);		/* update settings */
-+
-+	/* Test pattern settings */
-+	tc_write(TSTCTL,
-+		 (120 << 24) |	/* Red Color component value */
-+		 (20 << 16) |	/* Green Color component value */
-+		 (99 << 8) |	/* Blue Color component value */
-+		 (1 << 4) |	/* Enable I2C Filter */
-+		 (2 << 0) |	/* Color bar Mode */
-+		 0);
-+
-+	/* DP Main Stream Attributes */
-+	vid_sync_dly = mode->hsync_len + mode->left_margin + mode->xres;
-+	tc_write(DP0_VIDSYNCDELAY,
-+		 (0x003e << 16) |	/* thresh_dly */
-+		 (vid_sync_dly << 0));
-+
-+	tc_write(DP0_TOTALVAL, (vtotal << 16) | (htotal));
-+
-+	tc_write(DP0_STARTVAL,
-+		 ((mode->upper_margin + mode->vsync_len) << 16) |
-+		 ((mode->left_margin + mode->hsync_len) << 0));
-+
-+	tc_write(DP0_ACTIVEVAL, (mode->yres << 16) | (mode->xres));
-+
-+	tc_write(DP0_SYNCVAL, (mode->vsync_len << 16) | (mode->hsync_len << 0));
-+
-+	tc_write(DPIPXLFMT, VS_POL_ACTIVE_LOW | HS_POL_ACTIVE_LOW |
-+		 DE_POL_ACTIVE_HIGH | SUB_CFG_TYPE_CONFIG1 | DPI_BPP_RGB888);
-+
-+	/*
-+	 * Recommended maximum number of symbols transferred in a transfer unit:
-+	 * DIV_ROUND_UP((input active video bandwidth in bytes) * tu_size,
-+	 *              (output active video bandwidth in bytes))
-+	 * Must be less than tu_size.
-+	 */
-+	max_tu_symbol = TU_SIZE_RECOMMENDED - 1;
-+	tc_write(DP0_MISC, (max_tu_symbol << 23) | TU_SIZE_RECOMMENDED | BPC_8);
-+
-+	return 0;
-+err:
-+	return ret;
-+}
-+
-+static int tc_link_training(struct tc_data *tc, int pattern)
-+{
-+	const char * const *errors;
-+	u32 srcctrl = tc_srcctrl(tc) | DP0_SRCCTRL_SCRMBLDIS |
-+		      DP0_SRCCTRL_AUTOCORRECT;
-+	int timeout;
-+	int retry;
-+	u32 value;
-+	int ret;
-+
-+	if (pattern == DP_TRAINING_PATTERN_1) {
-+		srcctrl |= DP0_SRCCTRL_TP1;
-+		errors = training_pattern1_errors;
-+	} else {
-+		srcctrl |= DP0_SRCCTRL_TP2;
-+		errors = training_pattern2_errors;
-+	}
-+
-+	/* Set DPCD 0x102 for Training Part 1 or 2 */
-+	tc_write(DP0_SNKLTCTRL, DP_LINK_SCRAMBLING_DISABLE | pattern);
-+
-+	tc_write(DP0_LTLOOPCTRL,
-+		 (0x0f << 28) |	/* Defer Iteration Count */
-+		 (0x0f << 24) |	/* Loop Iteration Count */
-+		 (0x0d << 0));	/* Loop Timer Delay */
-+
-+	retry = 5;
-+	do {
-+		/* Set DP0 Training Pattern */
-+		tc_write(DP0_SRCCTRL, srcctrl);
-+
-+		/* Enable DP0 to start Link Training */
-+		tc_write(DP0CTL, DP_EN);
-+
-+		/* wait */
-+		timeout = 1000;
-+		do {
-+			tc_read(DP0_LTSTAT, &value);
-+			udelay(1);
-+		} while ((!(value & LT_LOOPDONE)) && (--timeout));
-+		if (timeout == 0) {
-+			dev_err(tc->dev, "Link training timeout!\n");
-+		} else {
-+			int pattern = (value >> 11) & 0x3;
-+			int error = (value >> 8) & 0x7;
-+
-+			dev_dbg(tc->dev,
-+				"Link training phase %d done after %d uS: %s\n",
-+				pattern, 1000 - timeout, errors[error]);
-+			if (pattern == DP_TRAINING_PATTERN_1 && error == 0)
-+				break;
-+			if (pattern == DP_TRAINING_PATTERN_2) {
-+				value &= LT_CHANNEL1_EQ_BITS |
-+					 LT_INTERLANE_ALIGN_DONE |
-+					 LT_CHANNEL0_EQ_BITS;
-+				/* in case of two lanes */
-+				if ((tc->link.lanes == 2) &&
-+				    (value == (LT_CHANNEL1_EQ_BITS |
-+					       LT_INTERLANE_ALIGN_DONE |
-+					       LT_CHANNEL0_EQ_BITS)))
-+					break;
-+				/* in case of one line */
-+				if ((tc->link.lanes == 1) &&
-+				    (value == (LT_INTERLANE_ALIGN_DONE |
-+					       LT_CHANNEL0_EQ_BITS)))
-+					break;
-+			}
-+		}
-+		/* restart */
-+		tc_write(DP0CTL, 0);
-+		udelay(10);
-+	} while (--retry);
-+	if (retry == 0) {
-+		dev_err(tc->dev, "Failed to finish training phase %d\n",
-+			pattern);
-+	}
-+
-+	return 0;
-+err:
-+	return ret;
-+}
-+
-+static int tc_main_link_setup(struct tc_data *tc)
-+{
-+	struct device_d *dev = tc->dev;
-+	unsigned int rate;
-+	u32 dp_phy_ctrl;
-+	int timeout;
-+	bool aligned;
-+	bool ready;
-+	u32 value;
-+	int ret;
-+	u8 tmp[8];
-+
-+	/* display mode should be set at this point */
-+	if (!tc->mode)
-+		return -EINVAL;
-+
-+	/* from excel file - DP0_SrcCtrl */
-+	tc_write(DP0_SRCCTRL, DP0_SRCCTRL_SCRMBLDIS | DP0_SRCCTRL_EN810B |
-+		 DP0_SRCCTRL_LANESKEW | DP0_SRCCTRL_LANES_2 |
-+		 DP0_SRCCTRL_BW27 | DP0_SRCCTRL_AUTOCORRECT);
-+	/* from excel file - DP1_SrcCtrl */
-+	tc_write(0x07a0, 0x00003083);
-+
-+	rate = clk_get_rate(tc->refclk);
-+	switch (rate) {
-+	case 38400000:
-+		value = REF_FREQ_38M4;
-+		break;
-+	case 26000000:
-+		value = REF_FREQ_26M;
-+		break;
-+	case 19200000:
-+		value = REF_FREQ_19M2;
-+		break;
-+	case 13000000:
-+		value = REF_FREQ_13M;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	value |= SYSCLK_SEL_LSCLK | LSCLK_DIV_2;
-+	tc_write(SYS_PLLPARAM, value);
-+	/* Setup Main Link */
-+	dp_phy_ctrl = BGREN | PWR_SW_EN | BIT(2) | PHY_A0_EN |  PHY_M0_EN;
-+	tc_write(DP_PHY_CTRL, dp_phy_ctrl);
-+	mdelay(100);
-+
-+	/* PLL setup */
-+	tc_write(DP0_PLLCTRL, PLLUPDATE | PLLEN);
-+	tc_wait_pll_lock(tc);
-+
-+	tc_write(DP1_PLLCTRL, PLLUPDATE | PLLEN);
-+	tc_wait_pll_lock(tc);
-+
-+	/* Reset/Enable Main Links */
-+	dp_phy_ctrl |= DP_PHY_RST | PHY_M1_RST | PHY_M0_RST;
-+	tc_write(DP_PHY_CTRL, dp_phy_ctrl);
-+	udelay(100);
-+	dp_phy_ctrl &= ~(DP_PHY_RST | PHY_M1_RST | PHY_M0_RST);
-+	tc_write(DP_PHY_CTRL, dp_phy_ctrl);
-+
-+	timeout = 1000;
-+	do {
-+		tc_read(DP_PHY_CTRL, &value);
-+		udelay(1);
-+	} while ((!(value & PHY_RDY)) && (--timeout));
-+
-+	if (timeout == 0) {
-+		dev_err(dev, "timeout waiting for phy become ready");
-+		return -ETIMEDOUT;
-+	}
-+
-+	/* Set misc: 8 bits per color */
-+	tc_read(DP0_MISC, &value);
-+	value |= BPC_8;
-+	tc_write(DP0_MISC, value);
-+
-+	/*
-+	 * ASSR mode
-+	 * on TC358767 side ASSR configured through strap pin
-+	 * seems there is no way to change this setting from SW
-+	 *
-+	 * check is tc configured for same mode
-+	 */
-+	if (tc->assr != tc->link.assr) {
-+		dev_dbg(dev, "Trying to set display to ASSR: %d\n",
-+			tc->assr);
-+		/* try to set ASSR on display side */
-+		tmp[0] = tc->assr;
-+		ret = tc_aux_write(tc, DP_EDP_CONFIGURATION_SET, tmp, 1);
-+		if (ret)
-+			goto err_dpcd_read;
-+		/* read back */
-+		ret = tc_aux_read(tc, DP_EDP_CONFIGURATION_SET, tmp, 1);
-+		if (ret)
-+			goto err_dpcd_read;
-+
-+		if (tmp[0] != tc->assr) {
-+			dev_warn(dev, "Failed to switch display ASSR to %d, falling back to unscrambled mode\n",
-+				 tc->assr);
-+			/* trying with disabled scrambler */
-+			tc->link.scrambler_dis = 1;
-+		}
-+	}
-+
-+	/* Setup Link & DPRx Config for Training */
-+	/* LINK_BW_SET */
-+	tmp[0] = tc->link.rate;
-+	/* LANE_COUNT_SET */
-+	tmp[1] = tc->link.lanes;
-+	if (tc->link.enhanced)
-+		tmp[1] |= (1 << 7);
-+	ret = tc_aux_write(tc, DP_LINK_BW_SET, tmp, 2);
-+	if (ret)
-+		goto err_dpcd_write;
-+
-+	/* DOWNSPREAD_CTRL */
-+	tmp[0] = tc->link.spread ? DP_SPREAD_AMP_0_5 : 0x00;
-+	/* MAIN_LINK_CHANNEL_CODING_SET */
-+	tmp[1] = tc->link.coding8b10b ? DP_SET_ANSI_8B10B : 0x00;
-+	ret = tc_aux_write(tc, DP_DOWNSPREAD_CTRL, tmp, 2);
-+	if (ret)
-+		goto err_dpcd_write;
-+
-+	ret = tc_link_training(tc, DP_TRAINING_PATTERN_1);
-+	if (ret)
-+		goto err;
-+
-+	ret = tc_link_training(tc, DP_TRAINING_PATTERN_2);
-+	if (ret)
-+		goto err;
-+
-+	/* Clear DPCD 0x102 */
-+	/* Note: Can Not use DP0_SNKLTCTRL (0x06E4) short cut */
-+	tmp[0] = tc->link.scrambler_dis ? DP_LINK_SCRAMBLING_DISABLE : 0x00;
-+	ret = tc_aux_write(tc, DP_TRAINING_PATTERN_SET, tmp, 1);
-+	if (ret)
-+		goto err_dpcd_write;
-+
-+	/* Clear Training Pattern, set AutoCorrect Mode = 1 */
-+	tc_write(DP0_SRCCTRL, tc_srcctrl(tc) | DP0_SRCCTRL_AUTOCORRECT);
-+
-+	/* Wait */
-+	timeout = 100;
-+	do {
-+		udelay(1);
-+		/* Read DPCD 0x200-0x206 */
-+		ret = tc_aux_read(tc, 0x200, tmp, 7);
-+		if (ret)
-+			goto err_dpcd_read;
-+		ready = (tmp[2] == ((DP_CHANNEL_EQ_BITS << 4) | /* Lane1 */
-+				     DP_CHANNEL_EQ_BITS));      /* Lane0 */
-+		aligned = tmp[4] & DP_INTERLANE_ALIGN_DONE;
-+	} while ((--timeout) && !(ready && aligned));
-+
-+	if (timeout == 0) {
-+		dev_info(dev, "0x0200 SINK_COUNT: 0x%02x\n", tmp[0]);
-+		dev_info(dev, "0x0201 DEVICE_SERVICE_IRQ_VECTOR: 0x%02x\n",
-+			 tmp[1]);
-+		dev_info(dev, "0x0202 LANE0_1_STATUS: 0x%02x\n", tmp[2]);
-+		dev_info(dev, "0x0204 LANE_ALIGN_STATUS_UPDATED: 0x%02x\n",
-+			 tmp[4]);
-+		dev_info(dev, "0x0205 SINK_STATUS: 0x%02x\n", tmp[5]);
-+		dev_info(dev, "0x0206 ADJUST_REQUEST_LANE0_1: 0x%02x\n",
-+			 tmp[6]);
-+
-+		if (!ready)
-+			dev_err(dev, "Lane0/1 not ready\n");
-+		if (!aligned)
-+			dev_err(dev, "Lane0/1 not aligned\n");
-+		return -EAGAIN;
-+	}
-+
-+	ret = tc_set_video_mode(tc, tc->mode);
-+	if (ret)
-+		goto err;
-+
-+	/* Set M/N */
-+	ret = tc_stream_clock_calc(tc);
-+	if (ret)
-+		goto err;
-+
-+	return 0;
-+err_dpcd_read:
-+	dev_err(tc->dev, "Failed to read DPCD: %d\n", ret);
-+	return ret;
-+err_dpcd_write:
-+	dev_err(tc->dev, "Failed to write DPCD: %d\n", ret);
-+err:
-+	return ret;
-+}
-+
-+static int tc_main_link_stream(struct tc_data *tc, int state)
-+{
-+	int ret;
-+	u32 value;
-+
-+	dev_dbg(tc->dev, "stream: %d\n", state);
-+
-+	if (state) {
-+		value = VID_MN_GEN | DP_EN;
-+		if (tc->link.enhanced)
-+			value |= EF_EN;
-+		tc_write(DP0CTL, value);
-+		/*
-+		 * VID_EN assertion should be delayed by at least N * LSCLK
-+		 * cycles from the time VID_MN_GEN is enabled in order to
-+		 * generate stable values for VID_M. LSCLK is 270 MHz or
-+		 * 162 MHz, VID_N is set to 32768 in  tc_stream_clock_calc(),
-+		 * so a delay of at least 203 us should suffice.
-+		 */
-+		mdelay(1);
-+		value |= VID_EN;
-+		tc_write(DP0CTL, value);
-+		/* Set input interface, currently DPI only */
-+		value = DP0_AUDSRC_NO_INPUT | DP0_VIDSRC_DPI_RX;
-+		tc_write(SYSCTRL, value);
-+	} else {
-+		tc_write(DP0CTL, 0);
-+	}
-+
-+	return 0;
-+err:
-+	return ret;
-+}
-+
-+#define DDC_BLOCK_READ		5
-+#define DDC_SEGMENT_ADDR	0x30
-+#define DDC_ADDR		0x50
-+#define EDID_LENGTH		0x80
-+
-+static int tc_read_edid(struct tc_data *tc)
-+{
-+	int i = 0;
-+	int ret;
-+	int block;
-+	unsigned char start = 0;
-+	unsigned char segment = 0;
-+
-+	struct i2c_msg msgs[] = {
-+		{
-+			.addr	= DDC_SEGMENT_ADDR,
-+			.flags	= 0,
-+			.len	= 1,
-+			.buf	= &segment,
-+		}, {
-+			.addr	= DDC_ADDR,
-+			.flags	= 0,
-+			.len	= 1,
-+			.buf	= &start,
-+		}, {
-+			.addr	= DDC_ADDR,
-+			.flags	= I2C_M_RD,
-+		}
-+	};
-+	tc->edid = xmalloc(EDID_LENGTH);
-+
-+	do {
-+		block = min(DDC_BLOCK_READ, EDID_LENGTH - i);
-+
-+		msgs[2].buf = tc->edid + i;
-+		msgs[2].len = block;
-+
-+		ret = i2c_transfer(&tc->adapter, msgs, 3);
-+		if (ret < 0)
-+			goto err;
-+
-+		i += DDC_BLOCK_READ;
-+		start = i;
-+	} while (i < EDID_LENGTH);
-+
-+#ifdef DEBUG
-+	printk(KERN_DEBUG "eDP display EDID:\n");
-+	print_hex_dump(KERN_DEBUG, "", DUMP_PREFIX_OFFSET, 16, 1, tc->edid,
-+		       EDID_LENGTH, true);
-+#endif
-+
-+	return 0;
-+err:
-+	free(tc->edid);
-+	tc->edid = NULL;
-+	dev_err(tc->dev, "tc_read_edid failed: %d\n", ret);
-+	return ret;
-+}
-+
-+static int tc_get_videomodes(struct tc_data *tc, struct display_timings *timings)
-+{
-+	int ret;
-+
-+	/* edid_read_i2c does not work due to limitation of eDP i2c */
-+	if (!tc->edid) {
-+		ret = tc_read_edid(tc);
-+		if (ret) {
-+			dev_err(tc->dev, "EDID read error: %d\n", ret);
-+			return ret;
-+		}
-+	}
-+
-+	ret = edid_to_display_timings(timings, tc->edid);
-+	if (ret < 0) {
-+		dev_err(tc->dev, "Failed to parse EDID: %d\n", ret);
-+		return ret;
-+	}
-+
-+	/* hsync, vsync active low */
-+	timings->modes->sync &= ~(FB_SYNC_HOR_HIGH_ACT |
-+				  FB_SYNC_VERT_HIGH_ACT);
-+
-+	return ret;
-+}
-+
-+static int tc_ioctl(struct vpl *vpl, unsigned int port,
-+			unsigned int cmd, void *ptr)
-+{
-+	struct tc_data *tc = container_of(vpl, struct tc_data, vpl);
-+	u32 *bus_format;
-+	int ret = 0;
-+
-+	switch (cmd) {
-+	case VPL_PREPARE:
-+		tc->mode = ptr;
-+		break;
-+	case VPL_ENABLE:
-+		ret = tc_main_link_setup(tc);
-+		if (ret < 0)
-+			break;
-+
-+		ret = tc_main_link_stream(tc, 1);
-+		break;
-+	case VPL_DISABLE:
-+		ret = tc_main_link_stream(tc, 0);
-+		break;
-+	case VPL_GET_VIDEOMODES:
-+		ret = tc_get_videomodes(tc, ptr);
-+		break;
-+	case VPL_GET_BUS_FORMAT:
-+		bus_format = ptr;
-+		*bus_format = MEDIA_BUS_FMT_RGB888_1X24;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static int tc_probe(struct device_d *dev)
-+{
-+	struct i2c_client *client = to_i2c_client(dev);
-+	struct tc_data *tc;
-+	enum of_gpio_flags flags;
-+	int ret;
-+
-+	tc = xzalloc(sizeof(struct tc_data));
-+	if (!tc)
-+		return -ENOMEM;
-+
-+	tc->client = client;
-+	tc->dev = dev;
-+
-+	/* Shut down GPIO is optional */
-+	tc->sd_gpio = of_get_named_gpio_flags(dev->device_node,
-+			"shutdown-gpios", 0, &flags);
-+	if (gpio_is_valid(tc->sd_gpio)) {
-+		if (!(flags & OF_GPIO_ACTIVE_LOW))
-+			tc->sd_active_high = 1;
-+	}
-+
-+	/* Reset GPIO is optional */
-+	tc->reset_gpio = of_get_named_gpio_flags(dev->device_node,
-+			"reset-gpios", 0, &flags);
-+	if (gpio_is_valid(tc->reset_gpio)) {
-+		if (!(flags & OF_GPIO_ACTIVE_LOW))
-+			tc->reset_active_high = 1;
-+	}
-+
-+	if (gpio_is_valid(tc->sd_gpio)) {
-+		ret = gpio_request(tc->sd_gpio, "tc358767");
-+		if (ret) {
-+			dev_err(tc->dev, "SD (%d) can not be requested\n", tc->sd_gpio);
-+			return ret;
-+		}
-+		gpio_direction_output(tc->sd_gpio, 0);
-+	}
-+
-+	tc->refclk = of_clk_get_by_name(dev->device_node, "ref");
-+	if (IS_ERR(tc->refclk)) {
-+		ret = PTR_ERR(tc->refclk);
-+		dev_err(dev, "Failed to get refclk: %d\n", ret);
-+		goto err;
-+	}
-+
-+	ret = tc_read_reg(tc, TC_IDREG, &tc->rev);
-+	if (ret) {
-+		dev_err(tc->dev, "can not read device ID\n");
-+		goto err;
-+	}
-+
-+	if ((tc->rev != 0x6601) && (tc->rev != 0x6603)) {
-+		dev_err(tc->dev, "invalid device ID: 0x%08x\n", tc->rev);
-+		ret = -EINVAL;
-+		goto err;
-+	}
-+
-+	ret = tc_aux_link_setup(tc);
-+	if (ret)
-+		goto err;
-+
-+	/* Register DP AUX channel */
-+	tc->adapter.master_xfer = tc_aux_i2c_xfer;
-+	tc->adapter.nr = -1; /* any free */
-+	tc->adapter.dev.parent = dev;
-+	tc->adapter.dev.device_node = dev->device_node;
-+	/* Add I2C adapter */
-+	ret = i2c_add_numbered_adapter(&tc->adapter);
-+	if (ret < 0) {
-+		dev_err(tc->dev, "registration failed\n");
-+		goto err;
-+	}
-+
-+	ret = tc_get_display_props(tc);
-+	if (ret)
-+		goto err;
-+
-+	/* add vlp */
-+	tc->vpl.node = dev->device_node;
-+	tc->vpl.ioctl = tc_ioctl;
-+	return vpl_register(&tc->vpl);
-+
-+err:
-+	free(tc);
-+	return ret;
-+}
-+
-+static struct driver_d tc_driver = {
-+	.name		= "tc358767",
-+	.probe		= tc_probe,
-+};
-+
-+static int tc_init(void)
-+{
-+	return i2c_driver_register(&tc_driver);
-+}
-+device_initcall(tc_init);
++#ifndef __LINUX_MEDIA_BUS_FORMAT_H
++#define __LINUX_MEDIA_BUS_FORMAT_H
++
++/*
++ * These bus formats uniquely identify data formats on the data bus. Format 0
++ * is reserved, MEDIA_BUS_FMT_FIXED shall be used by host-client pairs, where
++ * the data format is fixed. Additionally, "2X8" means that one pixel is
++ * transferred in two 8-bit samples, "BE" or "LE" specify in which order those
++ * samples are transferred over the bus: "LE" means that the least significant
++ * bits are transferred first, "BE" means that the most significant bits are
++ * transferred first, and "PADHI" and "PADLO" define which bits - low or high,
++ * in the incomplete high byte, are filled with padding bits.
++ *
++ * The bus formats are grouped by type, bus_width, bits per component, samples
++ * per pixel and order of subsamples. Numerical values are sorted using generic
++ * numerical sort order (8 thus comes before 10).
++ *
++ * As their value can't change when a new bus format is inserted in the
++ * enumeration, the bus formats are explicitly given a numerical value. The next
++ * free values for each category are listed below, update them when inserting
++ * new pixel codes.
++ */
++
++#define MEDIA_BUS_FMT_FIXED			0x0001
++
++/* RGB - next is	0x1018 */
++#define MEDIA_BUS_FMT_RGB444_1X12		0x1016
++#define MEDIA_BUS_FMT_RGB444_2X8_PADHI_BE	0x1001
++#define MEDIA_BUS_FMT_RGB444_2X8_PADHI_LE	0x1002
++#define MEDIA_BUS_FMT_RGB555_2X8_PADHI_BE	0x1003
++#define MEDIA_BUS_FMT_RGB555_2X8_PADHI_LE	0x1004
++#define MEDIA_BUS_FMT_RGB565_1X16		0x1017
++#define MEDIA_BUS_FMT_BGR565_2X8_BE		0x1005
++#define MEDIA_BUS_FMT_BGR565_2X8_LE		0x1006
++#define MEDIA_BUS_FMT_RGB565_2X8_BE		0x1007
++#define MEDIA_BUS_FMT_RGB565_2X8_LE		0x1008
++#define MEDIA_BUS_FMT_RGB666_1X18		0x1009
++#define MEDIA_BUS_FMT_RBG888_1X24		0x100e
++#define MEDIA_BUS_FMT_RGB666_1X24_CPADHI	0x1015
++#define MEDIA_BUS_FMT_RGB666_1X7X3_SPWG		0x1010
++#define MEDIA_BUS_FMT_BGR888_1X24		0x1013
++#define MEDIA_BUS_FMT_GBR888_1X24		0x1014
++#define MEDIA_BUS_FMT_RGB888_1X24		0x100a
++#define MEDIA_BUS_FMT_RGB888_2X12_BE		0x100b
++#define MEDIA_BUS_FMT_RGB888_2X12_LE		0x100c
++#define MEDIA_BUS_FMT_RGB888_1X7X4_SPWG		0x1011
++#define MEDIA_BUS_FMT_RGB888_1X7X4_JEIDA	0x1012
++#define MEDIA_BUS_FMT_ARGB8888_1X32		0x100d
++#define MEDIA_BUS_FMT_RGB888_1X32_PADHI		0x100f
++
++/* YUV (including grey) - next is	0x2026 */
++#define MEDIA_BUS_FMT_Y8_1X8			0x2001
++#define MEDIA_BUS_FMT_UV8_1X8			0x2015
++#define MEDIA_BUS_FMT_UYVY8_1_5X8		0x2002
++#define MEDIA_BUS_FMT_VYUY8_1_5X8		0x2003
++#define MEDIA_BUS_FMT_YUYV8_1_5X8		0x2004
++#define MEDIA_BUS_FMT_YVYU8_1_5X8		0x2005
++#define MEDIA_BUS_FMT_UYVY8_2X8			0x2006
++#define MEDIA_BUS_FMT_VYUY8_2X8			0x2007
++#define MEDIA_BUS_FMT_YUYV8_2X8			0x2008
++#define MEDIA_BUS_FMT_YVYU8_2X8			0x2009
++#define MEDIA_BUS_FMT_Y10_1X10			0x200a
++#define MEDIA_BUS_FMT_UYVY10_2X10		0x2018
++#define MEDIA_BUS_FMT_VYUY10_2X10		0x2019
++#define MEDIA_BUS_FMT_YUYV10_2X10		0x200b
++#define MEDIA_BUS_FMT_YVYU10_2X10		0x200c
++#define MEDIA_BUS_FMT_Y12_1X12			0x2013
++#define MEDIA_BUS_FMT_UYVY12_2X12		0x201c
++#define MEDIA_BUS_FMT_VYUY12_2X12		0x201d
++#define MEDIA_BUS_FMT_YUYV12_2X12		0x201e
++#define MEDIA_BUS_FMT_YVYU12_2X12		0x201f
++#define MEDIA_BUS_FMT_UYVY8_1X16		0x200f
++#define MEDIA_BUS_FMT_VYUY8_1X16		0x2010
++#define MEDIA_BUS_FMT_YUYV8_1X16		0x2011
++#define MEDIA_BUS_FMT_YVYU8_1X16		0x2012
++#define MEDIA_BUS_FMT_YDYUYDYV8_1X16		0x2014
++#define MEDIA_BUS_FMT_UYVY10_1X20		0x201a
++#define MEDIA_BUS_FMT_VYUY10_1X20		0x201b
++#define MEDIA_BUS_FMT_YUYV10_1X20		0x200d
++#define MEDIA_BUS_FMT_YVYU10_1X20		0x200e
++#define MEDIA_BUS_FMT_VUY8_1X24			0x2024
++#define MEDIA_BUS_FMT_YUV8_1X24			0x2025
++#define MEDIA_BUS_FMT_UYVY12_1X24		0x2020
++#define MEDIA_BUS_FMT_VYUY12_1X24		0x2021
++#define MEDIA_BUS_FMT_YUYV12_1X24		0x2022
++#define MEDIA_BUS_FMT_YVYU12_1X24		0x2023
++#define MEDIA_BUS_FMT_YUV10_1X30		0x2016
++#define MEDIA_BUS_FMT_AYUV8_1X32		0x2017
++
++/* Bayer - next is	0x3019 */
++#define MEDIA_BUS_FMT_SBGGR8_1X8		0x3001
++#define MEDIA_BUS_FMT_SGBRG8_1X8		0x3013
++#define MEDIA_BUS_FMT_SGRBG8_1X8		0x3002
++#define MEDIA_BUS_FMT_SRGGB8_1X8		0x3014
++#define MEDIA_BUS_FMT_SBGGR10_ALAW8_1X8		0x3015
++#define MEDIA_BUS_FMT_SGBRG10_ALAW8_1X8		0x3016
++#define MEDIA_BUS_FMT_SGRBG10_ALAW8_1X8		0x3017
++#define MEDIA_BUS_FMT_SRGGB10_ALAW8_1X8		0x3018
++#define MEDIA_BUS_FMT_SBGGR10_DPCM8_1X8		0x300b
++#define MEDIA_BUS_FMT_SGBRG10_DPCM8_1X8		0x300c
++#define MEDIA_BUS_FMT_SGRBG10_DPCM8_1X8		0x3009
++#define MEDIA_BUS_FMT_SRGGB10_DPCM8_1X8		0x300d
++#define MEDIA_BUS_FMT_SBGGR10_2X8_PADHI_BE	0x3003
++#define MEDIA_BUS_FMT_SBGGR10_2X8_PADHI_LE	0x3004
++#define MEDIA_BUS_FMT_SBGGR10_2X8_PADLO_BE	0x3005
++#define MEDIA_BUS_FMT_SBGGR10_2X8_PADLO_LE	0x3006
++#define MEDIA_BUS_FMT_SBGGR10_1X10		0x3007
++#define MEDIA_BUS_FMT_SGBRG10_1X10		0x300e
++#define MEDIA_BUS_FMT_SGRBG10_1X10		0x300a
++#define MEDIA_BUS_FMT_SRGGB10_1X10		0x300f
++#define MEDIA_BUS_FMT_SBGGR12_1X12		0x3008
++#define MEDIA_BUS_FMT_SGBRG12_1X12		0x3010
++#define MEDIA_BUS_FMT_SGRBG12_1X12		0x3011
++#define MEDIA_BUS_FMT_SRGGB12_1X12		0x3012
++
++/* JPEG compressed formats - next is	0x4002 */
++#define MEDIA_BUS_FMT_JPEG_1X8			0x4001
++
++/* Vendor specific formats - next is	0x5002 */
++
++/* S5C73M3 sensor specific interleaved UYVY and JPEG */
++#define MEDIA_BUS_FMT_S5C_UYVY_JPEG_1X8		0x5001
++
++/* HSV - next is	0x6002 */
++#define MEDIA_BUS_FMT_AHSV8888_1X32		0x6001
++
++#endif /* __LINUX_MEDIA_BUS_FORMAT_H */
 -- 
 2.8.1
 
