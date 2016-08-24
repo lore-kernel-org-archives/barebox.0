@@ -1,11 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bcXDS-0007dj-L9
- for barebox@lists.infradead.org; Wed, 24 Aug 2016 12:23:35 +0000
+ id 1bcXEt-0007tV-2b
+ for barebox@lists.infradead.org; Wed, 24 Aug 2016 12:25:03 +0000
+Date: Wed, 24 Aug 2016 14:24:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 24 Aug 2016 14:23:10 +0200
-Message-Id: <1472041390-19259-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20160824122441.GH20657@pengutronix.de>
+References: <7f89efef-2805-34d8-db7d-f3bc53d8e21a@gmail.com>
+ <20160818073831.GL20657@pengutronix.de>
+ <2b1f58b6-7d4b-5b85-240e-aa41c2e23c2e@gmail.com>
+ <8b40b96f-0414-4566-1215-e1d6bb7abab1@gmail.com>
+ <20160822061049.GC20657@pengutronix.de>
+ <63af30cc-9fd5-3283-a9f2-9e98e507d581@gmail.com>
+ <cacf597f-e684-44e0-84c5-9366481dbed2@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <cacf597f-e684-44e0-84c5-9366481dbed2@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,47 +24,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: vector_table: Fix creation of second level page table
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Peter Kardos <kardos.peter.sk@gmail.com>
+Subject: Re: AT91RM9200 hang in atmel_serial_putc
+To: Peter Kardos <kardos.peter.sk@gmail.com>
+Cc: barebox@lists.infradead.org
 
-The second level page tables can only start at a 1MiB section boundary,
-so instead of calling arm_create_pte() with the high vector address
-(which is 0xffff0000, not 1MiB aligned) we have to call it with
-0xfff00000 to correctly create a second level page table. The vectors
-themselves worked as expected with the old value, but the memory around
-it did not do a 1:1 mapping anymore. This breaks SoCs which have
-peripherals in that area, for example Atmel SoCs like the AT91RM9200.
+Hi Peter,
 
-Fixes: f6b77fe9: ARM: Rework vector table setup
+On Mon, Aug 22, 2016 at 10:39:24PM +0200, Peter Kardos wrote:
+> Hi Sascha,
+> 
+> I've tested your workaround and it seems to work; the board starts and
+> attempts
+> to boot.
 
-Reported-by: Peter Kardos <kardos.peter.sk@gmail.com>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/cpu/mmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I just sent a proper solution for that problem, you're on Cc. I'm
+confident that this solves your problem. Could you give this a test
+please?
 
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index a31bce4..2b70866 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -307,7 +307,7 @@ static void create_vector_table(unsigned long adr)
- 		vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
- 		pr_debug("Creating vector table, virt = 0x%p, phys = 0x%08lx\n",
- 			 vectors, adr);
--		exc = arm_create_pte(adr);
-+		exc = arm_create_pte(adr & ~(SZ_1M - 1));
- 		idx = (adr & (SZ_1M - 1)) >> PAGE_SHIFT;
- 		exc[idx] = (u32)vectors | PTE_TYPE_SMALL | pte_flags_cached;
- 	}
+Sascha
+
 -- 
-2.8.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
