@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bcWtR-0000Uc-CR
- for barebox@lists.infradead.org; Wed, 24 Aug 2016 12:02:54 +0000
-Date: Wed, 24 Aug 2016 14:02:31 +0200
+ id 1bcXDS-0007dj-L9
+ for barebox@lists.infradead.org; Wed, 24 Aug 2016 12:23:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160824120231.GG20657@pengutronix.de>
-References: <1472003222-9478-1-git-send-email-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1472003222-9478-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Wed, 24 Aug 2016 14:23:10 +0200
+Message-Id: <1472041390-19259-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,59 +14,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: Add both .lds files to CLEAN_FILES unconditionally
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: vector_table: Fix creation of second level page table
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Peter Kardos <kardos.peter.sk@gmail.com>
 
-On Tue, Aug 23, 2016 at 06:47:02PM -0700, Andrey Smirnov wrote:
-> 'clean' target is listed on 'no-dot-config-targets' list in main
-> Makefile so that conditional statement would yeild the same result
-> every time. Given how CLEAN_FILES are rm'ed with -f there should be no
-> harm in specifying them both unconditionally.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  arch/arm/Makefile | 4 ----
->  1 file changed, 4 deletions(-)
+The second level page tables can only start at a 1MiB section boundary,
+so instead of calling arm_create_pte() with the high vector address
+(which is 0xffff0000, not 1MiB aligned) we have to call it with
+0xfff00000 to correctly create a second level page table. The vectors
+themselves worked as expected with the old value, but the memory around
+it did not do a 1:1 mapping anymore. This breaks SoCs which have
+peripherals in that area, for example Atmel SoCs like the AT91RM9200.
 
-Applied, thanks
+Fixes: f6b77fe9: ARM: Rework vector table setup
 
-Sascha
+Reported-by: Peter Kardos <kardos.peter.sk@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/cpu/mmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
-> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> index 55f7248..96ec588 100644
-> --- a/arch/arm/Makefile
-> +++ b/arch/arm/Makefile
-> @@ -314,9 +314,5 @@ endif
->  common- += $(patsubst %,arch/arm/boards/%/,$(board-))
->  
->  CLEAN_FILES += include/generated/mach-types.h barebox-flash-image
-> -
-> -ifeq ($(CONFIG_CPU_V8), y)
->  CLEAN_FILES += arch/arm/lib64/barebox.lds
-> -else
->  CLEAN_FILES += arch/arm/lib32/barebox.lds
-> -endif
-> -- 
-> 2.5.5
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index a31bce4..2b70866 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -307,7 +307,7 @@ static void create_vector_table(unsigned long adr)
+ 		vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
+ 		pr_debug("Creating vector table, virt = 0x%p, phys = 0x%08lx\n",
+ 			 vectors, adr);
+-		exc = arm_create_pte(adr);
++		exc = arm_create_pte(adr & ~(SZ_1M - 1));
+ 		idx = (adr & (SZ_1M - 1)) >> PAGE_SHIFT;
+ 		exc[idx] = (u32)vectors | PTE_TYPE_SMALL | pte_flags_cached;
+ 	}
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.8.1
+
 
 _______________________________________________
 barebox mailing list
