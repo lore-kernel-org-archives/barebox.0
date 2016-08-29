@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1beOdU-0002OI-QT
- for barebox@lists.infradead.org; Mon, 29 Aug 2016 15:38:09 +0000
+ id 1beOe3-0002mr-4n
+ for barebox@lists.infradead.org; Mon, 29 Aug 2016 15:38:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 29 Aug 2016 17:37:46 +0200
-Message-Id: <1472485066-27702-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 29 Aug 2016 17:38:17 +0200
+Message-Id: <1472485099-10551-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,55 +19,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usb: chipidea i.MX: Do not return unnecessary error
+Subject: [PATCH 1/3] ARM: i.MX6 Santaro: Add enable-delay for the display
 To: Barebox List <barebox@lists.infradead.org>
 
-We only allow to setup the host/peripheral role once, when it's already
-set then we return -EBUSY.
-Return 0 instead when we set the same role again and only return -EBUSY
-when we actually try to change the role.
+The display needs a time to settle, set an enable-delay
+of 200ms to avoid flickering.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/imx/chipidea-imx.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ arch/arm/dts/imx6q-guf-santaro.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
-index a799abe..fb451f3 100644
---- a/drivers/usb/imx/chipidea-imx.c
-+++ b/drivers/usb/imx/chipidea-imx.c
-@@ -150,7 +150,7 @@ static int imx_chipidea_probe_dt(struct imx_chipidea *ci)
+diff --git a/arch/arm/dts/imx6q-guf-santaro.dts b/arch/arm/dts/imx6q-guf-santaro.dts
+index 2bd1a26..e8a2b96 100644
+--- a/arch/arm/dts/imx6q-guf-santaro.dts
++++ b/arch/arm/dts/imx6q-guf-santaro.dts
+@@ -63,6 +63,7 @@
+ 		compatible = "simple-panel";
+ 		backlight = <&backlight>;
+ 		enable-gpios = <&gpio5 21 GPIO_ACTIVE_HIGH>;
++		enable-delay = <200>;
  
- static int ci_register_role(struct imx_chipidea *ci)
- {
--	if (ci->role_registered)
-+	if (ci->role_registered != IMX_USB_MODE_OTG)
- 		return -EBUSY;
- 
- 	if (ci->mode == IMX_USB_MODE_HOST) {
-@@ -180,8 +180,12 @@ static int ci_set_mode(struct param_d *param, void *priv)
- {
- 	struct imx_chipidea *ci = priv;
- 
--	if (ci->role_registered)
--		return -EBUSY;
-+	if (ci->role_registered != IMX_USB_MODE_OTG) {
-+		if (ci->role_registered == ci->mode)
-+			return 0;
-+		else
-+			return -EBUSY;
-+	}
- 
- 	return ci_register_role(ci);
- }
-@@ -225,6 +229,7 @@ static int imx_chipidea_probe(struct device_d *dev)
- 
- 	ci = xzalloc(sizeof(*ci));
- 	ci->dev = dev;
-+	ci->role_registered = IMX_USB_MODE_OTG;
- 
- 	if (IS_ENABLED(CONFIG_OFDEVICE) && dev->device_node) {
- 		ret = imx_chipidea_probe_dt(ci);
+ 		port {
+ 			panel_in: endpoint {
 -- 
 2.8.1
 
