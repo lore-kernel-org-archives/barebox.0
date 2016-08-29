@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1beOe3-0002mr-4n
- for barebox@lists.infradead.org; Mon, 29 Aug 2016 15:38:43 +0000
+ id 1beOe8-0002q5-5w
+ for barebox@lists.infradead.org; Mon, 29 Aug 2016 15:38:49 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 29 Aug 2016 17:38:17 +0200
-Message-Id: <1472485099-10551-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 29 Aug 2016 17:38:18 +0200
+Message-Id: <1472485099-10551-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1472485099-10551-1-git-send-email-s.hauer@pengutronix.de>
+References: <1472485099-10551-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] ARM: i.MX6 Santaro: Add enable-delay for the display
+Subject: [PATCH 2/3] ARM: i.MX6 Santaro: Add USB support
 To: Barebox List <barebox@lists.infradead.org>
 
-The display needs a time to settle, set an enable-delay
-of 200ms to avoid flickering.
+Enable usbotg and usbh1 devices to gain USB support.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/imx6q-guf-santaro.dts | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/dts/imx6q-guf-santaro.dts | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/arch/arm/dts/imx6q-guf-santaro.dts b/arch/arm/dts/imx6q-guf-santaro.dts
-index 2bd1a26..e8a2b96 100644
+index e8a2b96..3217a5b 100644
 --- a/arch/arm/dts/imx6q-guf-santaro.dts
 +++ b/arch/arm/dts/imx6q-guf-santaro.dts
-@@ -63,6 +63,7 @@
- 		compatible = "simple-panel";
- 		backlight = <&backlight>;
- 		enable-gpios = <&gpio5 21 GPIO_ACTIVE_HIGH>;
-+		enable-delay = <200>;
+@@ -577,6 +577,16 @@
+ 	status = "okay";
+ };
  
- 		port {
- 			panel_in: endpoint {
++&usbh1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usbh1>;
++	status = "okay";
++};
++
++&usbotg {
++	status = "okay";
++};
++
+ &usdhc2 {
+ 	/* SD card socket */
+ 	pinctrl-names = "default";
 -- 
 2.8.1
 
