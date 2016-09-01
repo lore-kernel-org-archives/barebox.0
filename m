@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from andre.telenet-ops.be ([2a02:1800:120:4::f00:15])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bfOJ5-0003eD-Qp
- for barebox@lists.infradead.org; Thu, 01 Sep 2016 09:29:14 +0000
-From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Thu,  1 Sep 2016 11:28:39 +0200
-Message-Id: <1472722119-22874-1-git-send-email-p.zabel@pengutronix.de>
+ id 1bfYAH-00077k-75
+ for barebox@lists.infradead.org; Thu, 01 Sep 2016 20:00:46 +0000
+From: Sam Van Den Berge <sam.van.den.berge@telenet.be>
+Date: Thu,  1 Sep 2016 22:00:03 +0200
+Message-Id: <1472760003-5357-1-git-send-email-sam.van.den.berge@telenet.be>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,34 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] video/edid: Fix edid_to_display_timings error path
+Subject: [PATCH] Fix small typo in common/Kconfig
 To: barebox@lists.infradead.org
+Cc: Sam Van Den Berge <sam.van.den.berge@telenet.be>
 
-edid_to_display_timings is called in drivers/video/imx-ipu-v3/imx-hdmi.c,
-drivers/video/simple-panel.c, and drivers/video/edid.c with the struct
-display_timings *timings parameter pointing to an embedded struct
-display_timings inside a struct fb_info. The timings pointer is not to
-be freed in the error path.
+Fix small typo frendly -> friendly
 
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Sam Van Den Berge <sam.van.den.berge@telenet.be>
 ---
- drivers/video/edid.c | 1 -
- 1 file changed, 1 deletion(-)
+ common/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/edid.c b/drivers/video/edid.c
-index 92b59a5..2585264 100644
---- a/drivers/video/edid.c
-+++ b/drivers/video/edid.c
-@@ -792,7 +792,6 @@ int edid_to_display_timings(struct display_timings *timings, unsigned char *edid
+diff --git a/common/Kconfig b/common/Kconfig
+index 38225eb..636a55a 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -471,7 +471,7 @@ config MENU
+ 	select PROCESS_ESCAPE_SEQUENCE
+ 	help
+ 	  a menu framework that allow us to create list menu to simplify
+-	  barebox and make it more user-frendly
++	  barebox and make it more user-friendly
  
- 	return 0;
- out:
--	free(timings);
- 	free(mode);
- 	return ret;
- }
+ config PASSWORD
+ 	bool
 -- 
-2.8.1
+1.9.1
 
 
 _______________________________________________
