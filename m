@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bfYmt-0006S6-5j
- for barebox@lists.infradead.org; Thu, 01 Sep 2016 20:40:40 +0000
-Received: by mail-pf0-x242.google.com with SMTP id i6so4821368pfe.0
- for <barebox@lists.infradead.org>; Thu, 01 Sep 2016 13:40:18 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  1 Sep 2016 13:39:58 -0700
-Message-Id: <1472762398-16172-1-git-send-email-andrew.smirnov@gmail.com>
+ id 1bfkBl-0004LJ-UZ
+ for barebox@lists.infradead.org; Fri, 02 Sep 2016 08:51:07 +0000
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Date: Fri,  2 Sep 2016 10:50:37 +0200
+Message-Id: <20160902085037.11653-1-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,114 +19,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] of_unflatten_dtb(): Check return value with IS_ERR
+Subject: [PATCH] mci: mmci: Fix read FIFO handling
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Michael Olbrich <m.olbrich@pengutronix.de>
 
-Of_unflatten_dtb returns a ERR_PTR value so checking it against NULL is
-incorrect. Fix it in all of the places where this was happening.
+According to the Linux kernel and the qemu code, the MMCIFIFOCNT contains
+the remaining number of words to read, excluding those that are already in
+the FIFO. So the current number of bytes in the FIFO is
+host_remain - (readl(base + MMCIFIFOCNT) << 2).
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Also writing to MMCIDATACTRL will reset the read counter. As a result,
+MCI_DATABLOCKEND is never set and read_bytes() waits forever.
+
+With this change, SD-Card support on qemu vexpress works correctly.
+
+Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 ---
- arch/arm/boards/highbank/init.c | 2 +-
- arch/arm/cpu/dtb.c              | 2 +-
- arch/arm/lib/bootm.c            | 2 +-
- arch/mips/boot/dtb.c            | 2 +-
- arch/openrisc/lib/dtb.c         | 2 +-
- common/bootm.c                  | 6 +++++-
- 6 files changed, 10 insertions(+), 6 deletions(-)
+ drivers/mci/mmci.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/highbank/init.c b/arch/arm/boards/highbank/init.c
-index 1cb02e6..295d475 100644
---- a/arch/arm/boards/highbank/init.c
-+++ b/arch/arm/boards/highbank/init.c
-@@ -77,7 +77,7 @@ static int highbank_mem_init(void)
- 	fdt = IOMEM(FIRMWARE_DTB_BASE);
+diff --git a/drivers/mci/mmci.c b/drivers/mci/mmci.c
+index 9d1e858917de..7489ee03a13c 100644
+--- a/drivers/mci/mmci.c
++++ b/drivers/mci/mmci.c
+@@ -212,7 +212,7 @@ static u64 mmci_pio_read(struct mmci_host *host, char *buffer, unsigned int host
+ 	struct variant_data *variant = host->variant;
+ 
+ 	do {
+-		int count = readl(base + MMCIFIFOCNT) << 2;
++		int count = host_remain - (readl(base + MMCIFIFOCNT) << 2);
+ 
+ 		if (count > host_remain)
+ 			count = host_remain;
+@@ -264,7 +264,6 @@ static int read_bytes(struct mci_host *mci, char *dest, unsigned int blkcount, u
+ 	dev_dbg(host->hw_dev, "read_bytes: blkcount=%u blksize=%u\n", blkcount, blksize);
+ 
+ 	do {
+-		mmci_writel(host, MMCIDATACTRL, mmci_readl(host, MMCIDATACTRL));
+ 		len = mmci_pio_read(host, dest, xfercount);
+ 		xfercount -= len;
+ 		dest += len;
+-- 
+2.9.3
 
- 	root = of_unflatten_dtb(fdt);
--	if (!root) {
-+	if (IS_ERR(root)) {
- 		pr_warn("no dtb found at 0x1000 use default configuration\n");
- 		fdt = NULL;
- 		goto not_found;
-diff --git a/arch/arm/cpu/dtb.c b/arch/arm/cpu/dtb.c
-index ae4ff2a..b9390b4 100644
---- a/arch/arm/cpu/dtb.c
-+++ b/arch/arm/cpu/dtb.c
-@@ -48,7 +48,7 @@ static int of_arm_init(void)
- 	}
-
- 	root = of_unflatten_dtb(fdt);
--	if (root) {
-+	if (!IS_ERR(root)) {
- 		of_set_root_node(root);
- 		of_fix_tree(root);
- 		if (IS_ENABLED(CONFIG_OFDEVICE))
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index 0e81a66..7bddacd 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -225,7 +225,7 @@ static int do_bootz_linux_fdt(int fd, struct image_data *data)
-
- 	if (IS_BUILTIN(CONFIG_OFTREE)) {
- 		data->of_root_node = of_unflatten_dtb(oftree);
--		if (!data->of_root_node) {
-+		if (IS_ERR(data->of_root_node)) {
- 			pr_err("unable to unflatten devicetree\n");
- 			ret = -EINVAL;
- 			goto err_free;
-diff --git a/arch/mips/boot/dtb.c b/arch/mips/boot/dtb.c
-index 977c837..e7633a5 100644
---- a/arch/mips/boot/dtb.c
-+++ b/arch/mips/boot/dtb.c
-@@ -51,7 +51,7 @@ static int of_mips_init(void)
- 		return 0;
-
- 	root = of_unflatten_dtb(__dtb_start);
--	if (root) {
-+	if (!IS_ERR(root)) {
- 		pr_debug("using internal DTB\n");
- 		of_set_root_node(root);
- 		if (IS_ENABLED(CONFIG_OFDEVICE))
-diff --git a/arch/openrisc/lib/dtb.c b/arch/openrisc/lib/dtb.c
-index 4f63a77..04bb6d2 100644
---- a/arch/openrisc/lib/dtb.c
-+++ b/arch/openrisc/lib/dtb.c
-@@ -32,7 +32,7 @@ static int of_openrisc_init(void)
- 		return 0;
-
- 	root = of_unflatten_dtb(__dtb_start);
--	if (root) {
-+	if (!IS_ERR(root)) {
- 		pr_debug("using internal DTB\n");
- 		of_set_root_node(root);
- 		if (IS_ENABLED(CONFIG_OFDEVICE))
-diff --git a/common/bootm.c b/common/bootm.c
-index 78d04d5..5984319 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -336,6 +336,9 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
-
- 	if (data->os_fit && data->os_fit->oftree) {
- 		data->of_root_node = of_unflatten_dtb(data->os_fit->oftree);
-+
-+		if (IS_ERR(data->of_root_node))
-+			data->of_root_node = NULL;
- 	} else if (data->oftree_file) {
- 		size_t size;
-
-@@ -367,7 +370,8 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
-
- 		free(oftree);
-
--		if (!data->of_root_node) {
-+		if (IS_ERR(data->of_root_node)) {
-+			data->of_root_node = NULL;
- 			pr_err("unable to unflatten devicetree\n");
- 			return -EINVAL;
- 		}
---
-2.5.5
 
 _______________________________________________
 barebox mailing list
