@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x242.google.com ([2607:f8b0:400e:c03::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bgh1q-0007ZW-BT
- for barebox@lists.infradead.org; Sun, 04 Sep 2016 23:40:47 +0000
-Received: by mail-pa0-x242.google.com with SMTP id vy10so8400565pac.0
- for <barebox@lists.infradead.org>; Sun, 04 Sep 2016 16:40:25 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun,  4 Sep 2016 16:40:02 -0700
-Message-Id: <1473032402-23789-1-git-send-email-andrew.smirnov@gmail.com>
+ id 1bgnKu-0005Fw-1U
+ for barebox@lists.infradead.org; Mon, 05 Sep 2016 06:24:53 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon,  5 Sep 2016 08:24:27 +0200
+Message-Id: <1473056667-2043-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +19,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i.MX: scripts: Fix a bug in imx-image
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: [PATCH] usb: i.MX chipidea: Enable VBUS regulator when needed
+To: Barebox List <barebox@lists.infradead.org>
 
-In order to clear a bitmask, "Set" bit has to be '0' and "Mask" bit
-'1'. Since "Set" is bit 4 and "Mask" is bit 3 this leaves us with a
-overal or-mask of 1 << 3. Orginal code was doing the inverse and setting
-bit #4 to '1' bit #3 to '0'.
+We should enable VBUS only in host mode, not unconditionally
+during probe(). Fix that.
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/imx/imx-image.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/imx/chipidea-imx.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index 3f62228..10aa4c1 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -380,7 +380,7 @@ static int write_mem_v2(uint32_t addr, uint32_t val, int width, int set_bits, in
- 	if (set_bits)
- 		cmd |= 3 << 3;
- 	if (clear_bits)
--		cmd |= 2 << 3;
-+		cmd |= 1 << 3;
+diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
+index a799abe..9857fe5 100644
+--- a/drivers/usb/imx/chipidea-imx.c
++++ b/drivers/usb/imx/chipidea-imx.c
+@@ -150,13 +150,23 @@ static int imx_chipidea_probe_dt(struct imx_chipidea *ci)
  
- 	if (curdcd > MAX_DCD - 3) {
- 		fprintf(stderr, "At maximum %d dcd entried are allowed\n", MAX_DCD);
+ static int ci_register_role(struct imx_chipidea *ci)
+ {
++	int ret;
++
+ 	if (ci->role_registered)
+ 		return -EBUSY;
+ 
+ 	if (ci->mode == IMX_USB_MODE_HOST) {
+ 		if (IS_ENABLED(CONFIG_USB_EHCI)) {
+ 			ci->role_registered = 1;
+-			return ehci_register(ci->dev, &ci->data);
++			ret = regulator_enable(ci->vbus);
++			if (ret)
++				return ret;
++
++			ret = ehci_register(ci->dev, &ci->data);
++			if (!ret)
++				return 0;
++
++			regulator_disable(ci->vbus);
+ 		} else {
+ 			dev_err(ci->dev, "Host support not available\n");
+ 			return -ENODEV;
+@@ -242,9 +252,8 @@ static int imx_chipidea_probe(struct device_d *dev)
+ 	}
+ 
+ 	ci->vbus = regulator_get(dev, "vbus");
+-
+-	if (!IS_ERR(ci->vbus))
+-		regulator_enable(ci->vbus);
++	if (IS_ERR(ci->vbus))
++		ci->vbus = NULL;
+ 
+ 	iores = dev_request_mem_resource(dev, 0);
+ 	if (IS_ERR(iores))
 -- 
-2.5.5
+2.8.1
 
 
 _______________________________________________
