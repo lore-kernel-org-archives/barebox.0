@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bgzhC-0008Ny-2t
- for barebox@lists.infradead.org; Mon, 05 Sep 2016 19:36:43 +0000
+ id 1bgzhC-0008Nx-26
+ for barebox@lists.infradead.org; Mon, 05 Sep 2016 19:36:44 +0000
 From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
-Date: Mon,  5 Sep 2016 21:36:18 +0200
-Message-Id: <1473104178-20389-2-git-send-email-u.oelmann@pengutronix.de>
-In-Reply-To: <1473104178-20389-1-git-send-email-u.oelmann@pengutronix.de>
-References: <1473104178-20389-1-git-send-email-u.oelmann@pengutronix.de>
+Date: Mon,  5 Sep 2016 21:36:17 +0200
+Message-Id: <1473104178-20389-1-git-send-email-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,22 +19,19 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] commands: ubiupdatevol: confirm success with return value
- 0
+Subject: [PATCH 1/2] commands: ubiupdatevol: store return value of read() in a
+ signed int
 To: Barebox List <barebox@lists.infradead.org>
 
-VHJlYXQgdGhlIHdyaXRlKCkgY2FzZSBhbmFsb2dvdXNseSB0byB0aGUgcmVhZCgpIGNhc2UgYW5k
-IGRvIG5vdCByZXR1cm4gdGhlCm51bWJlciBvZiBtb3N0IHJlY2VudGx5IHdyaXR0ZW4gYnl0ZXMg
-YXMgdGhlIHN0YXR1cyBvZiBzdWNlc3NmdWwgY29tbWFuZApleGVjdXRpb24uCgpTaWduZWQtb2Zm
-LWJ5OiBVbHJpY2ggw5ZsbWFubiA8dS5vZWxtYW5uQHBlbmd1dHJvbml4LmRlPgotLS0KIGNvbW1h
-bmRzL3ViaS5jIHwgNSArKystLQogMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMiBk
-ZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9jb21tYW5kcy91YmkuYyBiL2NvbW1hbmRzL3ViaS5j
-CmluZGV4IGRkOTgxZjk1ZWE1ZC4uMjZiNTIxZjM3NDhlIDEwMDY0NAotLS0gYS9jb21tYW5kcy91
-YmkuYworKysgYi9jb21tYW5kcy91YmkuYwpAQCAtNjUsOSArNjUsMTAgQEAgc3RhdGljIGludCBk
-b191Yml1cGRhdGV2b2woaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKIAkJCWJyZWFrOwogCQl9CiAK
-LQkJcmV0ID0gd3JpdGUoZmRfdm9sLCBidWYsIGNvdW50KTsKLQkJaWYgKHJldCA8IDApIHsKKwkJ
-Y291bnQgPSB3cml0ZShmZF92b2wsIGJ1ZiwgY291bnQpOworCQlpZiAoY291bnQgPCAwKSB7CiAJ
-CQlwZXJyb3IoIndyaXRlIik7CisJCQlyZXQgPSAxOwogCQkJYnJlYWs7CiAJCX0KIAotLSAKMi44
-LjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
-Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+U2lnbmVkLW9mZi1ieTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4K
+LS0tCiBjb21tYW5kcy91YmkuYyB8IDMgKy0tCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24o
+KyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvY29tbWFuZHMvdWJpLmMgYi9jb21tYW5k
+cy91YmkuYwppbmRleCA2NWQyZDI1NmE4MzAuLmRkOTgxZjk1ZWE1ZCAxMDA2NDQKLS0tIGEvY29t
+bWFuZHMvdWJpLmMKKysrIGIvY29tbWFuZHMvdWJpLmMKQEAgLTE0LDEwICsxNCw5IEBACiAKIHN0
+YXRpYyBpbnQgZG9fdWJpdXBkYXRldm9sKGludCBhcmdjLCBjaGFyICphcmd2W10pCiB7Ci0JaW50
+IGZkX2ltZywgZmRfdm9sLCByZXQgPSAwOworCWludCBjb3VudCwgZmRfaW1nLCBmZF92b2wsIHJl
+dCA9IDA7CiAJdWludDY0X3Qgc2l6ZSA9IDA7CiAJc3RydWN0IHN0YXQgc3Q7Ci0JdW5zaWduZWQg
+aW50IGNvdW50OwogCXZvaWQgKmJ1ZjsKIAogCWlmIChhcmdjIC0gb3B0aW5kIDwgMikKLS0gCjIu
+OC4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
+ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
+cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
