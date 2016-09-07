@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bhjDF-0006w6-TI
- for barebox@lists.infradead.org; Wed, 07 Sep 2016 20:12:53 +0000
-Received: by mail-lf0-x243.google.com with SMTP id s29so250909lfg.3
- for <barebox@lists.infradead.org>; Wed, 07 Sep 2016 13:12:29 -0700 (PDT)
+ id 1bhjDT-00075m-JO
+ for barebox@lists.infradead.org; Wed, 07 Sep 2016 20:13:04 +0000
+Received: by mail-lf0-x242.google.com with SMTP id l131so316365lfl.0
+ for <barebox@lists.infradead.org>; Wed, 07 Sep 2016 13:12:43 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  7 Sep 2016 23:12:20 +0300
-Message-Id: <20160907201220.26764-1-antonynpavlov@gmail.com>
+Date: Wed,  7 Sep 2016 23:12:36 +0300
+Message-Id: <20160907201236.26820-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: usb: fix sphinx warning
+Subject: [PATCH] Documentation: aarch64-qemu-virt: fix sphinx issues
 To: barebox@lists.infradead.org
-Cc: "Robert P . J . Day" <rpjday@crashcourse.ca>
+Cc: Raphael Poggi <poggi.raph@gmail.com>
 
-The patch fixes this sphinx warnings:
+The patch fixes these sphinx issues:
 
-    barebox/Documentation/user/usb.rst:61: WARNING: Could not lex literal_block as "c". Highlighting skipped.
+    barebox/Documentation/boards/aarch64-qemu-virt.rst:7: WARNING: Title underline too short.
+
+    Running barebox on QEMU aarch64 virt machine
+    ^^^^^^^^^^^^^^^^^^^^^^^
+    barebox/Documentation/boards/aarch64-qemu-virt.rst:1: ERROR: Document or section may not begin with a transition.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Robert P. J. Day <rpjday@crashcourse.ca>
+Cc: Raphael Poggi <poggi.raph@gmail.com>
 ---
- Documentation/user/usb.rst | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ Documentation/boards/aarch64-qemu-virt.rst | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
-index 8602a8f..bbcb045 100644
---- a/Documentation/user/usb.rst
-+++ b/Documentation/user/usb.rst
-@@ -56,7 +56,9 @@ shall be provided to the host. For the possible ``flags`` see
+diff --git a/Documentation/boards/aarch64-qemu-virt.rst b/Documentation/boards/aarch64-qemu-virt.rst
+index b6b446e..e21791a 100644
+--- a/Documentation/boards/aarch64-qemu-virt.rst
++++ b/Documentation/boards/aarch64-qemu-virt.rst
+@@ -1,10 +1,11 @@
+-===========
++Aarch64
++=======
  
- On the host side, the tool `dfu-util <http://dfu-util.gnumonks.org/>`_ can be used
- to update the partitions. It is available for most distributions and typically
--supports the following options::
-+supports the following options:
-+
-+.. code-block:: none
+ Aarch64 Qemu virt
+-------------------------
++-----------------
  
-   dfu-util -h
-   Usage: dfu-util [options] ...
+ Running barebox on QEMU aarch64 virt machine
+-^^^^^^^^^^^^^^^^^^^^^^^
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 
+ Usage::
+ 	$ qemu-system-aarch64 -m 2048M \
 -- 
 2.9.3
 
