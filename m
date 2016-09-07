@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bhHGM-0004kA-VS
- for barebox@lists.infradead.org; Tue, 06 Sep 2016 14:22:12 +0000
-Date: Tue, 6 Sep 2016 16:21:49 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160906142149.xmg753u63hs3stes@pengutronix.de>
-References: <1473104178-20389-1-git-send-email-u.oelmann@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1473104178-20389-1-git-send-email-u.oelmann@pengutronix.de>
+ id 1bhjDF-0006w6-TI
+ for barebox@lists.infradead.org; Wed, 07 Sep 2016 20:12:53 +0000
+Received: by mail-lf0-x243.google.com with SMTP id s29so250909lfg.3
+ for <barebox@lists.infradead.org>; Wed, 07 Sep 2016 13:12:29 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed,  7 Sep 2016 23:12:20 +0300
+Message-Id: <20160907201220.26764-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,70 +16,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] commands: ubiupdatevol: store return value of read()
- in a signed int
-To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] Documentation: usb: fix sphinx warning
+To: barebox@lists.infradead.org
+Cc: "Robert P . J . Day" <rpjday@crashcourse.ca>
 
-Hi Ulrich,
+The patch fixes this sphinx warnings:
 
-please add to the commit log *why* you did this change. *What* you did
-is already clear from the change itself.
+    barebox/Documentation/user/usb.rst:61: WARNING: Could not lex literal_block as "c". Highlighting skipped.
 
-Added this while applying:
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Robert P. J. Day <rpjday@crashcourse.ca>
+---
+ Documentation/user/usb.rst | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-With an unsigned int test for errors from read() can never become true.
+diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
+index 8602a8f..bbcb045 100644
+--- a/Documentation/user/usb.rst
++++ b/Documentation/user/usb.rst
+@@ -56,7 +56,9 @@ shall be provided to the host. For the possible ``flags`` see
+ 
+ On the host side, the tool `dfu-util <http://dfu-util.gnumonks.org/>`_ can be used
+ to update the partitions. It is available for most distributions and typically
+-supports the following options::
++supports the following options:
++
++.. code-block:: none
+ 
+   dfu-util -h
+   Usage: dfu-util [options] ...
+-- 
+2.9.3
 
-Sascha
-
-
-On Mon, Sep 05, 2016 at 09:36:17PM +0200, Ulrich =D6lmann wrote:
-> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
-> ---
->  commands/ubi.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> =
-
-> diff --git a/commands/ubi.c b/commands/ubi.c
-> index 65d2d256a830..dd981f95ea5d 100644
-> --- a/commands/ubi.c
-> +++ b/commands/ubi.c
-> @@ -14,10 +14,9 @@
->  =
-
->  static int do_ubiupdatevol(int argc, char *argv[])
->  {
-> -	int fd_img, fd_vol, ret =3D 0;
-> +	int count, fd_img, fd_vol, ret =3D 0;
->  	uint64_t size =3D 0;
->  	struct stat st;
-> -	unsigned int count;
->  	void *buf;
->  =
-
->  	if (argc - optind < 2)
-> -- =
-
-> 2.8.1
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
