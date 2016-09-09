@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1biFAi-0003q9-5l
- for barebox@lists.infradead.org; Fri, 09 Sep 2016 06:20:20 +0000
-Date: Fri, 9 Sep 2016 08:20:01 +0200
+ id 1biFAd-0003m3-Nw
+ for barebox@lists.infradead.org; Fri, 09 Sep 2016 06:20:16 +0000
+Date: Fri, 9 Sep 2016 08:19:50 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160909062001.zsdw34lnzs3kdo4x@pengutronix.de>
-References: <20160907201236.26820-1-antonynpavlov@gmail.com>
+Message-ID: <20160909061950.kg5mqytwbocb6jz4@pengutronix.de>
+References: <20160907201220.26764-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20160907201236.26820-1-antonynpavlov@gmail.com>
+In-Reply-To: <20160907201220.26764-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,49 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: aarch64-qemu-virt: fix sphinx issues
+Subject: Re: [PATCH] Documentation: usb: fix sphinx warning
 To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Raphael Poggi <poggi.raph@gmail.com>
+Cc: barebox@lists.infradead.org, "Robert P . J . Day" <rpjday@crashcourse.ca>
 
-On Wed, Sep 07, 2016 at 11:12:36PM +0300, Antony Pavlov wrote:
-> The patch fixes these sphinx issues:
+On Wed, Sep 07, 2016 at 11:12:20PM +0300, Antony Pavlov wrote:
+> The patch fixes this sphinx warnings:
 > 
->     barebox/Documentation/boards/aarch64-qemu-virt.rst:7: WARNING: Title underline too short.
-> 
->     Running barebox on QEMU aarch64 virt machine
->     ^^^^^^^^^^^^^^^^^^^^^^^
->     barebox/Documentation/boards/aarch64-qemu-virt.rst:1: ERROR: Document or section may not begin with a transition.
+>     barebox/Documentation/user/usb.rst:61: WARNING: Could not lex literal_block as "c". Highlighting skipped.
 > 
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> Cc: Raphael Poggi <poggi.raph@gmail.com>
+> Cc: Robert P. J. Day <rpjday@crashcourse.ca>
 > ---
->  Documentation/boards/aarch64-qemu-virt.rst | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
 
 Applied, thanks
 
 Sascha
 
+>  Documentation/user/usb.rst | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/Documentation/boards/aarch64-qemu-virt.rst b/Documentation/boards/aarch64-qemu-virt.rst
-> index b6b446e..e21791a 100644
-> --- a/Documentation/boards/aarch64-qemu-virt.rst
-> +++ b/Documentation/boards/aarch64-qemu-virt.rst
-> @@ -1,10 +1,11 @@
-> -===========
-> +Aarch64
-> +=======
+> diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
+> index 8602a8f..bbcb045 100644
+> --- a/Documentation/user/usb.rst
+> +++ b/Documentation/user/usb.rst
+> @@ -56,7 +56,9 @@ shall be provided to the host. For the possible ``flags`` see
 >  
->  Aarch64 Qemu virt
-> -------------------------
-> +-----------------
+>  On the host side, the tool `dfu-util <http://dfu-util.gnumonks.org/>`_ can be used
+>  to update the partitions. It is available for most distributions and typically
+> -supports the following options::
+> +supports the following options:
+> +
+> +.. code-block:: none
 >  
->  Running barebox on QEMU aarch64 virt machine
-> -^^^^^^^^^^^^^^^^^^^^^^^
-> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->  
->  Usage::
->  	$ qemu-system-aarch64 -m 2048M \
+>    dfu-util -h
+>    Usage: dfu-util [options] ...
 > -- 
 > 2.9.3
 > 
