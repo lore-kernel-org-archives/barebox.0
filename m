@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bi4ze-0000cz-Gc
- for barebox@lists.infradead.org; Thu, 08 Sep 2016 19:28:15 +0000
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
- by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
- (Exim 4.80) (envelope-from <ukl@pengutronix.de>) id 1bi4zI-0000dk-CL
- for barebox@lists.infradead.org; Thu, 08 Sep 2016 21:27:52 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.84_2)
- (envelope-from <ukl@pengutronix.de>) id 1bi4zI-00045v-5w
- for barebox@lists.infradead.org; Thu, 08 Sep 2016 21:27:52 +0200
-Date: Thu, 8 Sep 2016 21:27:52 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20160908192752.dshheqp2qntzmon6@pengutronix.de>
+ id 1bjKXa-0001Ve-Vm
+ for barebox@lists.infradead.org; Mon, 12 Sep 2016 06:16:28 +0000
+Date: Mon, 12 Sep 2016 08:16:02 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160912061602.pbmdgl27zw3x5grg@pengutronix.de>
+References: <20160909062541.s4pgmxefhgq7rlge@pengutronix.de>
+ <1473403042-20535-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <1473403042-20535-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,49 +19,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox crashes with CONFIG_CMD_MAGICVAR=y and
- CONFIG_CMD_MAGICVAR_HELP unset
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] xstrdup: don't panic on xstrdup(NULL)
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hello,
+On Fri, Sep 09, 2016 at 08:37:22AM +0200, Uwe Kleine-K=F6nig wrote:
+> Instead return just NULL. This matches the behaviour of kstrdup in the
+> kernel and xstrdup in busybox.
+> =
 
-with
+> This fixes a panic with CONFIG_CMD_MAGICVAR=3Dy and
+> CONFIG_CMD_MAGICVAR_HELP unset in magicvar_add() where description is
+> always NULL.
+> =
 
-	CONFIG_CMD_MAGICVAR=3Dy
-	# CONFIG_CMD_MAGICVAR_HELP is not set
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
 
-calling magicvar results in
+Applied, thanks
 
-	md->description =3D xstrdup(description)
+Sascha
 
-in line 64 of commands/magicvar.c. As CONFIG_CMD_MAGICVAR_HELP is not
-set, description is NULL which makes xstrdup fail.
+>  lib/xfuncs.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> =
 
-I fixed it here doing
+> diff --git a/lib/xfuncs.c b/lib/xfuncs.c
+> index aaf078854429..1dc2ea92d84f 100644
+> --- a/lib/xfuncs.c
+> +++ b/lib/xfuncs.c
+> @@ -56,10 +56,15 @@ EXPORT_SYMBOL(xzalloc);
+>  =
 
--       md->description =3D xstrdup(description);
-+       md->description =3D description ? xstrdup(description) : NULL;
+>  char *xstrdup(const char *s)
+>  {
+> -	char *p =3D strdup(s);
+> +	char *p;
+> +
+> +	if (!s)
+> +		return NULL;
+>  =
 
-but I can imagine other variants:
+> +	p =3D strdup(s);
+>  	if (!p)
+>  		panic("ERROR: out of memory\n");
+> +
+>  	return p;
+>  }
+>  EXPORT_SYMBOL(xstrdup);
+> -- =
 
-	if (IS_ENABLED(CONFIG_CMD_MAGICVAR_HELP))
-		md->description =3D xstrdup(description);
+> 2.8.1
+> =
 
-or fixing xstrdup to not choke on NULL.
+> =
 
-What do you prefer?
-
-Best regards
-Uwe
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 -- =
 
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
