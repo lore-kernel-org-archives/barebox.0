@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bk6Fj-0006rG-Li
+ id 1bk6Fj-0006rI-Lj
  for barebox@lists.infradead.org; Wed, 14 Sep 2016 09:13:14 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 14 Sep 2016 11:12:41 +0200
-Message-Id: <1473844368-13030-5-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 14 Sep 2016 11:12:46 +0200
+Message-Id: <1473844368-13030-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1473844368-13030-1-git-send-email-s.hauer@pengutronix.de>
 References: <1473844368-13030-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,206 +21,103 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/12] ARM: i.MX53: do not pass base address to
- imx*_boot_save_loc
+Subject: [PATCH 10/12] ARM: i.MX53 Vincell: Add NAND xload support
 To: Barebox List <barebox@lists.infradead.org>
 
-The functions can determine the necessary base addresses
-themselves since they are SoC specific anyway.
+The Vincell boards do the SDRAM setup from board init code, so the
+image size is limited to the internal SRAM size. To overcome this
+limitation use the NAND xload support.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/boot.c                 | 20 ++++++++++++++------
- arch/arm/mach-imx/imx25.c                |  2 +-
- arch/arm/mach-imx/imx27.c                |  2 +-
- arch/arm/mach-imx/imx35.c                |  2 +-
- arch/arm/mach-imx/imx51.c                |  2 +-
- arch/arm/mach-imx/imx53.c                |  2 +-
- arch/arm/mach-imx/imx6.c                 |  2 +-
- arch/arm/mach-imx/include/mach/generic.h | 13 ++++++-------
- 8 files changed, 26 insertions(+), 19 deletions(-)
+ arch/arm/boards/guf-vincell/lowlevel.c |  9 +++++++++
+ arch/arm/mach-imx/Kconfig              |  9 +++++++++
+ images/Makefile.imx                    | 14 ++++++++++----
+ 3 files changed, 28 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 376e370..f6c546d 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -20,7 +20,10 @@
- #include <io.h>
- #include <mach/generic.h>
- #include <mach/imx25-regs.h>
-+#include <mach/imx27-regs.h>
- #include <mach/imx35-regs.h>
-+#include <mach/imx51-regs.h>
-+#include <mach/imx53-regs.h>
- #include <mach/imx6-regs.h>
+diff --git a/arch/arm/boards/guf-vincell/lowlevel.c b/arch/arm/boards/guf-vincell/lowlevel.c
+index 3985dd7..a346a4d 100644
+--- a/arch/arm/boards/guf-vincell/lowlevel.c
++++ b/arch/arm/boards/guf-vincell/lowlevel.c
+@@ -12,6 +12,7 @@
+ #include <asm/barebox-arm.h>
+ #include <asm/barebox-arm-head.h>
+ #include <asm/cache.h>
++#include <mach/xload.h>
  
- /* [CTRL][TYPE] */
-@@ -75,8 +78,9 @@ static void imx25_35_boot_save_loc(unsigned int ctrl, unsigned int type)
- 	bootsource_set(src);
- }
+ #define IOMUX_PADCTL_DDRI_DDR (1 << 9)
  
--void imx25_boot_save_loc(void __iomem *ccm_base)
-+void imx25_boot_save_loc(void)
- {
-+	void __iomem *ccm_base = IOMEM(MX25_CCM_BASE_ADDR);
- 	uint32_t val;
+@@ -133,6 +134,8 @@ static noinline void imx53_guf_vincell_init(int is_lt)
+ 	void __iomem *uart = IOMEM(MX53_UART4_BASE_ADDR);
+ 	void *fdt;
+ 	u32 r;
++	enum bootsource src;
++	int instance;
  
- 	val = readl(ccm_base + MX25_CCM_RCSR);
-@@ -84,8 +88,9 @@ void imx25_boot_save_loc(void __iomem *ccm_base)
- 			       (val >> MX25_CCM_RCSR_MEM_TYPE_SHIFT) & 0x3);
- }
+ 	arm_setup_stack(MX53_IRAM_BASE_ADDR + MX53_IRAM_SIZE - 8);
  
--void imx35_boot_save_loc(void __iomem *ccm_base)
-+void imx35_boot_save_loc(void)
- {
-+	void __iomem *ccm_base = IOMEM(MX35_CCM_BASE_ADDR);
- 	uint32_t val;
+@@ -154,6 +157,12 @@ static noinline void imx53_guf_vincell_init(int is_lt)
+ 		disable_watchdog();
+ 		configure_dram_iomux();
+ 		imx_esdctlv4_init();
++
++		imx53_get_boot_source(&src, &instance);
++
++		if (src == BOOTSOURCE_NAND &&
++		    IS_ENABLED(CONFIG_MACH_GUF_VINCELL_XLOAD))
++			imx53_nand_start_image();
+ 	}
  
- 	val = readl(ccm_base + MX35_CCM_RCSR);
-@@ -104,8 +109,9 @@ void imx35_boot_save_loc(void __iomem *ccm_base)
- #define IMX27_GPCR_BOOT_32BIT_CS0		6
- #define IMX27_GPCR_BOOT_8BIT_NAND_512		7
+ 	if (is_lt)
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index a80bc6b..81f78e0 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -224,6 +224,15 @@ config MACH_GUF_VINCELL
+ 	bool "Garz-Fricke Vincell"
+ 	select ARCH_IMX53
  
--void imx27_boot_save_loc(void __iomem *sysctrl_base)
-+void imx27_boot_save_loc(void)
- {
-+	void __iomem *sysctrl_base = IOMEM(MX27_SYSCTRL_BASE_ADDR);
- 	enum bootsource src;
- 	uint32_t val;
++config MACH_GUF_VINCELL_XLOAD
++	depends on MACH_GUF_VINCELL
++	bool "Garz-Fricke Vincell NAND xload support"
++	help
++	  The Vincell initializes SDRAM from board code. This normally limits
++	  the image size to the size of the SoC internal SRAM. Enable this
++	  option to be able to use bigger images when booting from NAND. Images
++	  built with this option are no longer bootable from USB though.
++
+ config MACH_TQMA53
+ 	bool "TQ i.MX53 TQMa53"
+ 	select ARCH_IMX53
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index b02fdff..1904e8b 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -97,14 +97,20 @@ CFG_start_imx53_vmx53.pblx.imximg = $(board)/freescale-mx53-vmx53/flash-header-i
+ FILE_barebox-freescale-imx53-vmx53.img = start_imx53_vmx53.pblx.imximg
+ image-$(CONFIG_MACH_FREESCALE_MX53_VMX53) += barebox-freescale-imx53-vmx53.img
  
-@@ -136,8 +142,9 @@ void imx27_boot_save_loc(void __iomem *sysctrl_base)
- #define IMX51_SBMR_BT_MEM_CTL_SHIFT	0
- #define IMX51_SBMR_BMOD_SHIFT		14
++ifdef CONFIG_MACH_GUF_VINCELL_XLOAD
++VINCELL_IMAGE := imx-sram-img
++else
++VINCELL_IMAGE := pblx.imximg
++endif
++
+ pblx-$(CONFIG_MACH_GUF_VINCELL) += start_imx53_guf_vincell
+-CFG_start_imx53_guf_vincell.pblx.imximg = $(board)/guf-vincell/flash-header.imxcfg
+-FILE_barebox-guf-vincell.img = start_imx53_guf_vincell.pblx.imximg
++CFG_start_imx53_guf_vincell.$(VINCELL_IMAGE) = $(board)/guf-vincell/flash-header.imxcfg
++FILE_barebox-guf-vincell.img = start_imx53_guf_vincell.$(VINCELL_IMAGE)
+ image-$(CONFIG_MACH_GUF_VINCELL) += barebox-guf-vincell.img
  
--void imx51_boot_save_loc(void __iomem *src_base)
-+void imx51_boot_save_loc(void)
- {
-+	void __iomem *src_base = IOMEM(MX51_SRC_BASE_ADDR);
- 	enum bootsource src = BOOTSOURCE_UNKNOWN;
- 	uint32_t reg;
- 	unsigned int ctrl, type;
-@@ -167,8 +174,9 @@ void imx51_boot_save_loc(void __iomem *src_base)
- }
+ pblx-$(CONFIG_MACH_GUF_VINCELL) += start_imx53_guf_vincell_lt
+-CFG_start_imx53_guf_vincell_lt.pblx.imximg = $(board)/guf-vincell/flash-header.imxcfg
+-FILE_barebox-guf-vincell-lt.img = start_imx53_guf_vincell_lt.pblx.imximg
++CFG_start_imx53_guf_vincell_lt.$(VINCELL_IMAGE) = $(board)/guf-vincell/flash-header.imxcfg
++FILE_barebox-guf-vincell-lt.img = start_imx53_guf_vincell_lt.$(VINCELL_IMAGE)
+ image-$(CONFIG_MACH_GUF_VINCELL) += barebox-guf-vincell-lt.img
  
- #define IMX53_SRC_SBMR	0x4
--void imx53_boot_save_loc(void __iomem *src_base)
-+void imx53_boot_save_loc(void)
- {
-+	void __iomem *src_base = IOMEM(MX53_SRC_BASE_ADDR);
- 	enum bootsource src = BOOTSOURCE_UNKNOWN;
- 	int instance;
- 	uint32_t cfg1 = readl(src_base + IMX53_SRC_SBMR);
-@@ -278,7 +286,7 @@ internal_boot:
- 	return;
- }
- 
--void imx6_boot_save_loc(void __iomem *src_base)
-+void imx6_boot_save_loc(void)
- {
- 	enum bootsource src = BOOTSOURCE_UNKNOWN;
- 	int instance = BOOTSOURCE_INSTANCE_UNKNOWN;
-diff --git a/arch/arm/mach-imx/imx25.c b/arch/arm/mach-imx/imx25.c
-index 2534d75..a4e27dd 100644
---- a/arch/arm/mach-imx/imx25.c
-+++ b/arch/arm/mach-imx/imx25.c
-@@ -52,7 +52,7 @@ int imx25_init(void)
- {
- 	int val;
- 
--	imx25_boot_save_loc((void *)MX25_CCM_BASE_ADDR);
-+	imx25_boot_save_loc();
- 	add_generic_device("imx25-esdctl", 0, NULL, MX25_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 
- 	/*
-diff --git a/arch/arm/mach-imx/imx27.c b/arch/arm/mach-imx/imx27.c
-index b99a4ea..81b9f53 100644
---- a/arch/arm/mach-imx/imx27.c
-+++ b/arch/arm/mach-imx/imx27.c
-@@ -100,7 +100,7 @@ static void imx27_init_max(void)
- int imx27_init(void)
- {
- 	imx27_silicon_revision();
--	imx27_boot_save_loc((void *)MX27_SYSCTRL_BASE_ADDR);
-+	imx27_boot_save_loc();
- 	add_generic_device("imx27-esdctl", DEVICE_ID_SINGLE, NULL,
- 			   MX27_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 
-diff --git a/arch/arm/mach-imx/imx35.c b/arch/arm/mach-imx/imx35.c
-index 3e1aa97..d37bdfd 100644
---- a/arch/arm/mach-imx/imx35.c
-+++ b/arch/arm/mach-imx/imx35.c
-@@ -55,7 +55,7 @@ int imx35_init(void)
- 
- 	imx35_silicon_revision();
- 
--	imx35_boot_save_loc((void *)MX35_CCM_BASE_ADDR);
-+	imx35_boot_save_loc();
- 	add_generic_device("imx35-esdctl", 0, NULL, MX35_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 
- 	return 0;
-diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
-index a6784d0..ffe6a7c 100644
---- a/arch/arm/mach-imx/imx51.c
-+++ b/arch/arm/mach-imx/imx51.c
-@@ -58,7 +58,7 @@ static void imx51_ipu_mipi_setup(void)
- int imx51_init(void)
- {
- 	imx_set_silicon_revision("i.MX51", imx51_silicon_revision());
--	imx51_boot_save_loc((void *)MX51_SRC_BASE_ADDR);
-+	imx51_boot_save_loc();
- 	add_generic_device("imx51-esdctl", 0, NULL, MX51_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	imx51_ipu_mipi_setup();
- 
-diff --git a/arch/arm/mach-imx/imx53.c b/arch/arm/mach-imx/imx53.c
-index 872d293..2758f1b 100644
---- a/arch/arm/mach-imx/imx53.c
-+++ b/arch/arm/mach-imx/imx53.c
-@@ -53,7 +53,7 @@ static int imx53_silicon_revision(void)
- int imx53_init(void)
- {
- 	imx53_silicon_revision();
--	imx53_boot_save_loc((void *)MX53_SRC_BASE_ADDR);
-+	imx53_boot_save_loc();
- 	add_generic_device("imx53-esdctl", 0, NULL, MX53_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 
- 	return 0;
-diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-index ba8fb89..c23cc54 100644
---- a/arch/arm/mach-imx/imx6.c
-+++ b/arch/arm/mach-imx/imx6.c
-@@ -120,7 +120,7 @@ int imx6_init(void)
- 
- 	imx6_init_lowlevel();
- 
--	imx6_boot_save_loc((void *)MX6_SRC_BASE_ADDR);
-+	imx6_boot_save_loc();
- 
- 	rev = readl(MX6_ANATOP_BASE_ADDR + SI_REV);
- 
-diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
-index cadc501..9279bef 100644
---- a/arch/arm/mach-imx/include/mach/generic.h
-+++ b/arch/arm/mach-imx/include/mach/generic.h
-@@ -8,13 +8,12 @@
- 
- u64 imx_uid(void);
- 
--void imx25_boot_save_loc(void __iomem *ccm_base);
--void imx35_boot_save_loc(void __iomem *ccm_base);
--void imx27_boot_save_loc(void __iomem *sysctrl_base);
--void imx50_boot_save_loc(void __iomem *src_base);
--void imx51_boot_save_loc(void __iomem *src_base);
--void imx53_boot_save_loc(void __iomem *src_base);
--void imx6_boot_save_loc(void __iomem *src_base);
-+void imx25_boot_save_loc(void);
-+void imx35_boot_save_loc(void);
-+void imx27_boot_save_loc(void);
-+void imx51_boot_save_loc(void);
-+void imx53_boot_save_loc(void);
-+void imx6_boot_save_loc(void);
- void imx6_get_boot_source(enum bootsource *src, int *instance);
- 
- int imx1_init(void);
+ pblx-$(CONFIG_MACH_TQMA53) += start_imx53_mba53_512mib
 -- 
 2.8.1
 
