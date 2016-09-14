@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bk5Xq-0004uQ-4i
- for barebox@lists.infradead.org; Wed, 14 Sep 2016 08:27:50 +0000
+ by casper.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bk5bi-0005Od-U5
+ for barebox@lists.infradead.org; Wed, 14 Sep 2016 08:31:52 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 14 Sep 2016 10:27:22 +0200
-Message-Id: <1473841642-16373-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 14 Sep 2016 10:31:29 +0200
+Message-Id: <1473841889-22421-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,53 +19,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] defenv-1: remove unused variable kernelimage_type
+Subject: [PATCH] ARM: karo-tx6: Include correct device tree
 To: Barebox List <barebox@lists.infradead.org>
 
-kernelimage_type is used nowwhere, remove it.
+As a i.MX6dl board dts imx6dl-tx6u.dts should include imx6dl.dtsi, not
+the i.MX6q variant. This fixes various pinctrl problems.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/friendlyarm-mini6410/env/config | 4 ----
- arch/arm/boards/friendlyarm-tiny6410/env/config | 4 ----
- 2 files changed, 8 deletions(-)
+ arch/arm/dts/imx6dl-tx6u.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/friendlyarm-mini6410/env/config b/arch/arm/boards/friendlyarm-mini6410/env/config
-index 74beeff..924d7b8 100644
---- a/arch/arm/boards/friendlyarm-mini6410/env/config
-+++ b/arch/arm/boards/friendlyarm-mini6410/env/config
-@@ -24,13 +24,9 @@ rootfs_type=ubifs
- rootfsimage=root-${machine}.${rootfs_type}
+diff --git a/arch/arm/dts/imx6dl-tx6u.dts b/arch/arm/dts/imx6dl-tx6u.dts
+index 77fda62..6c26feb 100644
+--- a/arch/arm/dts/imx6dl-tx6u.dts
++++ b/arch/arm/dts/imx6dl-tx6u.dts
+@@ -1,6 +1,6 @@
+ /dts-v1/;
  
- # The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
--kernelimage_type=zimage
- kernelimage=zImage-${machine}
--#kernelimage_type=uimage
- #kernelimage=uImage-$machine
--#kernelimage_type=raw
- #kernelimage=Image-$machine
--#kernelimage_type=raw_lzo
- #kernelimage=Image-$machine.lzo
- 
- if [ -n $user ]; then
-diff --git a/arch/arm/boards/friendlyarm-tiny6410/env/config b/arch/arm/boards/friendlyarm-tiny6410/env/config
-index 6422e9f..f38535b 100644
---- a/arch/arm/boards/friendlyarm-tiny6410/env/config
-+++ b/arch/arm/boards/friendlyarm-tiny6410/env/config
-@@ -24,13 +24,9 @@ rootfs_type=ubifs
- rootfsimage=root-${machine}.${rootfs_type}
- 
- # The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
--kernelimage_type=zimage
- kernelimage=zImage-${machine}
--#kernelimage_type=uimage
- #kernelimage=uImage-$machine
--#kernelimage_type=raw
- #kernelimage=Image-$machine
--#kernelimage_type=raw_lzo
- #kernelimage=Image-$machine.lzo
- 
- if [ -n $user ]; then
+-#include <arm/imx6q.dtsi>
++#include <arm/imx6dl.dtsi>
+ #include <arm/imx6qdl-tx6.dtsi>
+ #include "imx6qdl.dtsi"
+ #include "imx6qdl-tx6x.dtsi"
 -- 
 2.8.1
 
