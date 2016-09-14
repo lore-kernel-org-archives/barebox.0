@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bk5SK-0002Ha-FW
+ id 1bk5SK-0002HZ-FS
  for barebox@lists.infradead.org; Wed, 14 Sep 2016 08:22:12 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 14 Sep 2016 10:21:29 +0200
-Message-Id: <1473841290-3935-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 14 Sep 2016 10:21:30 +0200
+Message-Id: <1473841290-3935-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1473841290-3935-1-git-send-email-s.hauer@pengutronix.de>
+References: <1473841290-3935-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +21,99 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] pbl: console: Make it work with multiple setup_c()
+Subject: [PATCH 2/2] ARM: i.MX6: Sabrelite: Add PBL console support
 To: Barebox List <barebox@lists.infradead.org>
 
-setup_c() may be called multiple times. When we store the pointer
-to the console in bss, then it's zeroed during setup_c() and the
-pointer to the console is lost. Initialize the pointer explicitly
-to a non zero value to force storing it in the data section.
+Add PBL console support to allow for better debugging.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- pbl/console.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/arm/boards/freescale-mx6-sabrelite/lowlevel.c | 57 +++++++++++++++++++---
+ 1 file changed, 49 insertions(+), 8 deletions(-)
 
-diff --git a/pbl/console.c b/pbl/console.c
-index 4cefe748..0607a31 100644
---- a/pbl/console.c
-+++ b/pbl/console.c
-@@ -1,8 +1,10 @@
- #include <common.h>
- #include <debug_ll.h>
+diff --git a/arch/arm/boards/freescale-mx6-sabrelite/lowlevel.c b/arch/arm/boards/freescale-mx6-sabrelite/lowlevel.c
+index abfb77a..3b51e01 100644
+--- a/arch/arm/boards/freescale-mx6-sabrelite/lowlevel.c
++++ b/arch/arm/boards/freescale-mx6-sabrelite/lowlevel.c
+@@ -3,29 +3,70 @@
+ #include <mach/generic.h>
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
++#include <mach/imx6-regs.h>
++#include <io.h>
++#include <mach/debug_ll.h>
++#include <mach/esdctl.h>
++#include <asm/cache.h>
  
--static void (*__putc)(void *ctx, int c);
--static void *putc_ctx;
-+#define INVALID_PTR ((void *)-1)
-+
-+static void (*__putc)(void *ctx, int c) = INVALID_PTR;
-+static void *putc_ctx = INVALID_PTR;
+ extern char __dtb_imx6q_sabrelite_start[];
  
- /**
-  * pbl_set_putc() - setup UART used for PBL console
-@@ -20,10 +22,10 @@ void pbl_set_putc(void (*putcf)(void *ctx, int c), void *ctx)
- 
- void console_putc(unsigned int ch, char c)
+-ENTRY_FUNCTION(start_imx6q_sabrelite, r0, r1, r2)
++static noinline void imx6q_sabrelite_start(void)
  {
--	if (!__putc)
--		putc_ll(c);
--	else
-+	if (__putc != INVALID_PTR)
- 		__putc(putc_ctx, c);
-+	else
-+		putc_ll(c);
+-	void *fdt;
++	void __iomem *iomuxbase = IOMEM(MX6_IOMUXC_BASE_ADDR);
++	void __iomem *uart = IOMEM(MX6_UART2_BASE_ADDR);
++
++	writel(0x4, iomuxbase + 0x0bc);
++
++	imx6_ungate_all_peripherals();
++	imx6_uart_setup(uart);
++	pbl_set_putc(imx_uart_putc, uart);
+ 
++	pr_debug("Freescale i.MX6q SabreLite\n");
++
++	imx6q_barebox_entry(__dtb_imx6q_sabrelite_start);
++}
++
++ENTRY_FUNCTION(start_imx6q_sabrelite, r0, r1, r2)
++{
+ 	imx6_cpu_lowlevel_init();
+ 
+-	fdt = __dtb_imx6q_sabrelite_start - get_runtime_offset();
++	arm_early_mmu_cache_invalidate();
++
++	relocate_to_current_adr();
++	setup_c();
++	barrier();
+ 
+-	barebox_arm_entry(0x10000000, SZ_1G, fdt);
++	imx6q_sabrelite_start();
  }
  
- int console_puts(unsigned int ch, const char *str)
+ extern char __dtb_imx6dl_sabrelite_start[];
+ 
+-ENTRY_FUNCTION(start_imx6dl_sabrelite, r0, r1, r2)
++static noinline void imx6dl_sabrelite_start(void)
+ {
+-	void *fdt;
++	void __iomem *iomuxbase = IOMEM(MX6_IOMUXC_BASE_ADDR);
++	void __iomem *uart = IOMEM(MX6_UART2_BASE_ADDR);
++
++	writel(0x4, iomuxbase + 0x16c);
++
++	imx6_ungate_all_peripherals();
++	imx6_uart_setup(uart);
++	pbl_set_putc(imx_uart_putc, uart);
+ 
++	pr_debug("Freescale i.MX6q SabreLite\n");
++
++	imx6q_barebox_entry(__dtb_imx6q_sabrelite_start);
++}
++
++ENTRY_FUNCTION(start_imx6dl_sabrelite, r0, r1, r2)
++{
+ 	imx6_cpu_lowlevel_init();
+ 
+-	fdt = __dtb_imx6dl_sabrelite_start - get_runtime_offset();
++	arm_early_mmu_cache_invalidate();
++
++	relocate_to_current_adr();
++	setup_c();
++	barrier();
+ 
+-	barebox_arm_entry(0x10000000, SZ_1G, fdt);
++	imx6dl_sabrelite_start();
+ }
 -- 
 2.8.1
 
