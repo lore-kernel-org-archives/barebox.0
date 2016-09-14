@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bk54J-0000dQ-K8
- for barebox@lists.infradead.org; Wed, 14 Sep 2016 07:57:20 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Wed, 14 Sep 2016 09:56:53 +0200
-Message-Id: <1473839813-11206-1-git-send-email-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1bk5SK-0002Ha-FW
+ for barebox@lists.infradead.org; Wed, 14 Sep 2016 08:22:12 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 14 Sep 2016 10:21:29 +0200
+Message-Id: <1473841290-3935-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,41 +14,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: imx6: reset PLL2's PFD2 on i.MX6D
-To: barebox@lists.infradead.org
+Subject: [PATCH 1/2] pbl: console: Make it work with multiple setup_c()
+To: Barebox List <barebox@lists.infradead.org>
 
-VGhlIGNoZWNrIGZvciBpc19pbXg2cSB3YXMgaW50cm9kdWNlZCBpbml0aWFsbHkgaW4KCglmMWY2
-ZDc2MzcwYjMgKCJBUk06IGkuTVg2OiBjb3JyZWN0IHdvcmsgZmxvdyBvZiBQRkRzIGZyb20gdWJv
-b3Qtc291cmNlcyIpCgp0byBkaWZmZXJlbnRpYXRlIGJldHdlZW4gaS5NWDZETCtpLk1YNlNMIGFu
-ZCBpLk1YNlEuIFRoZSBpLk1YNkQgbXVzdCBiZQpoYW5kbGVkIGxpa2UgdGhlIGxhdHRlciwgc28g
-ZHJvcCB0aGUgY2hlY2suIGkuTVg2REwraS5NWDZTTCBjYW4gYmUKaWdub3JlZCBoZXJlIHNpbmNl
-IHNpbmNlCgoJYTY2NTk2MjgyNDEzICgiaW14NjogbG93bGV2ZWxfaW5pdDogRml4IHdvcmthcm91
-bmQgZm9yIG5ldyBpLk1YNnMgY2hpcHMiKQoKdGhlIFBGRCBoYW5kbGluZyBpcyBvbmx5IGRvbmUg
-Zm9yIGkuTVg2RFEuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUt
-a29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGFyY2gvYXJtL21hY2gtaW14L2lteDYuYyB8IDQg
-KystLQogMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRp
-ZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbXg2LmMgYi9hcmNoL2FybS9tYWNoLWlteC9p
-bXg2LmMKaW5kZXggYmE4ZmI4OTY0YWM4Li40MzkxODM5YTBiN2UgMTAwNjQ0Ci0tLSBhL2FyY2gv
-YXJtL21hY2gtaW14L2lteDYuYworKysgYi9hcmNoL2FybS9tYWNoLWlteC9pbXg2LmMKQEAgLTc3
-LDcgKzc3LDcgQEAgdm9pZCBpbXg2X2luaXRfbG93bGV2ZWwodm9pZCkKIAkJICAgICAgIEJNX0FO
-QURJR19QRkRfNDgwX1BGRDBfQ0xLR0FURSwKIAkJICAgICAgIE1YNl9BTkFUT1BfQkFTRV9BRERS
-ICsgSFdfQU5BRElHX1BGRF80ODBfU0VUKTsKIAkJd3JpdGVsKEJNX0FOQURJR19QRkRfNTI4X1BG
-RDNfQ0xLR0FURSB8Ci0JCSAgICAgICAoaXNfaW14NnEgPyBCTV9BTkFESUdfUEZEXzUyOF9QRkQy
-X0NMS0dBVEUgOiAwKSB8CisJCSAgICAgICBCTV9BTkFESUdfUEZEXzUyOF9QRkQyX0NMS0dBVEUg
-fAogCQkgICAgICAgQk1fQU5BRElHX1BGRF81MjhfUEZEMV9DTEtHQVRFIHwKIAkJICAgICAgIEJN
-X0FOQURJR19QRkRfNTI4X1BGRDBfQ0xLR0FURSwKIAkJICAgICAgIE1YNl9BTkFUT1BfQkFTRV9B
-RERSICsgSFdfQU5BRElHX1BGRF81MjhfU0VUKTsKQEAgLTg4LDcgKzg4LDcgQEAgdm9pZCBpbXg2
-X2luaXRfbG93bGV2ZWwodm9pZCkKIAkJICAgICAgIEJNX0FOQURJR19QRkRfNDgwX1BGRDBfQ0xL
-R0FURSwKIAkJICAgICAgIE1YNl9BTkFUT1BfQkFTRV9BRERSICsgSFdfQU5BRElHX1BGRF80ODBf
-Q0xSKTsKIAkJd3JpdGVsKEJNX0FOQURJR19QRkRfNTI4X1BGRDNfQ0xLR0FURSB8Ci0JCSAgICAg
-ICAoaXNfaW14NnEgPyBCTV9BTkFESUdfUEZEXzUyOF9QRkQyX0NMS0dBVEUgOiAwKSB8CisJCSAg
-ICAgICBCTV9BTkFESUdfUEZEXzUyOF9QRkQyX0NMS0dBVEUgfAogCQkgICAgICAgQk1fQU5BRElH
-X1BGRF81MjhfUEZEMV9DTEtHQVRFIHwKIAkJICAgICAgIEJNX0FOQURJR19QRkRfNTI4X1BGRDBf
-Q0xLR0FURSwKIAkJICAgICAgIE1YNl9BTkFUT1BfQkFTRV9BRERSICsgSFdfQU5BRElHX1BGRF81
-MjhfQ0xSKTsKLS0gCjIuOC4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
-b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+setup_c() may be called multiple times. When we store the pointer
+to the console in bss, then it's zeroed during setup_c() and the
+pointer to the console is lost. Initialize the pointer explicitly
+to a non zero value to force storing it in the data section.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ pbl/console.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/pbl/console.c b/pbl/console.c
+index 4cefe748..0607a31 100644
+--- a/pbl/console.c
++++ b/pbl/console.c
+@@ -1,8 +1,10 @@
+ #include <common.h>
+ #include <debug_ll.h>
+ 
+-static void (*__putc)(void *ctx, int c);
+-static void *putc_ctx;
++#define INVALID_PTR ((void *)-1)
++
++static void (*__putc)(void *ctx, int c) = INVALID_PTR;
++static void *putc_ctx = INVALID_PTR;
+ 
+ /**
+  * pbl_set_putc() - setup UART used for PBL console
+@@ -20,10 +22,10 @@ void pbl_set_putc(void (*putcf)(void *ctx, int c), void *ctx)
+ 
+ void console_putc(unsigned int ch, char c)
+ {
+-	if (!__putc)
+-		putc_ll(c);
+-	else
++	if (__putc != INVALID_PTR)
+ 		__putc(putc_ctx, c);
++	else
++		putc_ll(c);
+ }
+ 
+ int console_puts(unsigned int ch, const char *str)
+-- 
+2.8.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
