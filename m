@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1biFGE-0007il-T8
- for barebox@lists.infradead.org; Fri, 09 Sep 2016 06:26:03 +0000
-Date: Fri, 9 Sep 2016 08:25:41 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160909062541.s4pgmxefhgq7rlge@pengutronix.de>
-References: <20160908192752.dshheqp2qntzmon6@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20160908192752.dshheqp2qntzmon6@pengutronix.de>
+ id 1bk6qt-0007Lv-Ho
+ for barebox@lists.infradead.org; Wed, 14 Sep 2016 09:51:37 +0000
+Message-ID: <1473846672.2243.39.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 14 Sep 2016 11:51:12 +0200
+In-Reply-To: <1473839813-11206-1-git-send-email-u.kleine-koenig@pengutronix.de>
+References: <1473839813-11206-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,69 +17,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox crashes with CONFIG_CMD_MAGICVAR=y and
- CONFIG_CMD_MAGICVAR_HELP unset
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] ARM: imx6: reset PLL2's PFD2 on i.MX6D
+To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Sep 08, 2016 at 09:27:52PM +0200, Uwe Kleine-K=F6nig wrote:
-> Hello,
-> =
-
-> with
-> =
-
-> 	CONFIG_CMD_MAGICVAR=3Dy
-> 	# CONFIG_CMD_MAGICVAR_HELP is not set
-> =
-
-> calling magicvar results in
-> =
-
-> 	md->description =3D xstrdup(description)
-> =
-
-> in line 64 of commands/magicvar.c. As CONFIG_CMD_MAGICVAR_HELP is not
-> set, description is NULL which makes xstrdup fail.
-> =
-
-> I fixed it here doing
-> =
-
-> -       md->description =3D xstrdup(description);
-> +       md->description =3D description ? xstrdup(description) : NULL;
-> =
-
-> but I can imagine other variants:
-> =
-
-> 	if (IS_ENABLED(CONFIG_CMD_MAGICVAR_HELP))
-> 		md->description =3D xstrdup(description);
-> =
-
-> or fixing xstrdup to not choke on NULL.
-> =
-
-> What do you prefer?
-
-kstrdup in the kernel tests for NULL and xstrdup in busybox does also.
-Let's just add the test.
-
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gTWl0dHdvY2gsIGRlbiAxNC4wOS4yMDE2LCAwOTo1NiArMDIwMCBzY2hyaWViIFV3ZSBLbGVp
+bmUtS8O2bmlnOgo+IFRoZSBjaGVjayBmb3IgaXNfaW14NnEgd2FzIGludHJvZHVjZWQgaW5pdGlh
+bGx5IGluCj4gCj4gCWYxZjZkNzYzNzBiMyAoIkFSTTogaS5NWDY6IGNvcnJlY3Qgd29yayBmbG93
+IG9mIFBGRHMgZnJvbSB1Ym9vdC1zb3VyY2VzIikKPiAKPiB0byBkaWZmZXJlbnRpYXRlIGJldHdl
+ZW4gaS5NWDZETCtpLk1YNlNMIGFuZCBpLk1YNlEuIFRoZSBpLk1YNkQgbXVzdCBiZQo+IGhhbmRs
+ZWQgbGlrZSB0aGUgbGF0dGVyLCBzbyBkcm9wIHRoZSBjaGVjay4gaS5NWDZETCtpLk1YNlNMIGNh
+biBiZQo+IGlnbm9yZWQgaGVyZSBzaW5jZSBzaW5jZQo+IAo+IAlhNjY1OTYyODI0MTMgKCJpbXg2
+OiBsb3dsZXZlbF9pbml0OiBGaXggd29ya2Fyb3VuZCBmb3IgbmV3IGkuTVg2cyBjaGlwcyIpCj4g
+Cj4gdGhlIFBGRCBoYW5kbGluZyBpcyBvbmx5IGRvbmUgZm9yIGkuTVg2RFEuCj4gCj4gU2lnbmVk
+LW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5k
+ZT4KPiAtLS0KPiAgYXJjaC9hcm0vbWFjaC1pbXgvaW14Ni5jIHwgNCArKy0tCj4gIDEgZmlsZSBj
+aGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBh
+L2FyY2gvYXJtL21hY2gtaW14L2lteDYuYyBiL2FyY2gvYXJtL21hY2gtaW14L2lteDYuYwo+IGlu
+ZGV4IGJhOGZiODk2NGFjOC4uNDM5MTgzOWEwYjdlIDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL21h
+Y2gtaW14L2lteDYuYwo+ICsrKyBiL2FyY2gvYXJtL21hY2gtaW14L2lteDYuYwo+IEBAIC03Nyw3
+ICs3Nyw3IEBAIHZvaWQgaW14Nl9pbml0X2xvd2xldmVsKHZvaWQpCgpUaGUgY29tbWVudCByaWdo
+dCBhYm92ZSB0aGlzIGNvZGUgYmxvY2sgaXNuJ3QgcmVmbGVjdGluZyByZWFsaXR5IGFueW1vcmUK
+YWZ0ZXIgdGhpcyBjaGFuZ2UuIFBsZWFzZSBmaXggaXQgdXAuCgpSZWdhcmRzLApMdWNhcwoKPiAg
+CQkgICAgICAgQk1fQU5BRElHX1BGRF80ODBfUEZEMF9DTEtHQVRFLAo+ICAJCSAgICAgICBNWDZf
+QU5BVE9QX0JBU0VfQUREUiArIEhXX0FOQURJR19QRkRfNDgwX1NFVCk7Cj4gIAkJd3JpdGVsKEJN
+X0FOQURJR19QRkRfNTI4X1BGRDNfQ0xLR0FURSB8Cj4gLQkJICAgICAgIChpc19pbXg2cSA/IEJN
+X0FOQURJR19QRkRfNTI4X1BGRDJfQ0xLR0FURSA6IDApIHwKPiArCQkgICAgICAgQk1fQU5BRElH
+X1BGRF81MjhfUEZEMl9DTEtHQVRFIHwKPiAgCQkgICAgICAgQk1fQU5BRElHX1BGRF81MjhfUEZE
+MV9DTEtHQVRFIHwKPiAgCQkgICAgICAgQk1fQU5BRElHX1BGRF81MjhfUEZEMF9DTEtHQVRFLAo+
+ICAJCSAgICAgICBNWDZfQU5BVE9QX0JBU0VfQUREUiArIEhXX0FOQURJR19QRkRfNTI4X1NFVCk7
+Cj4gQEAgLTg4LDcgKzg4LDcgQEAgdm9pZCBpbXg2X2luaXRfbG93bGV2ZWwodm9pZCkKPiAgCQkg
+ICAgICAgQk1fQU5BRElHX1BGRF80ODBfUEZEMF9DTEtHQVRFLAo+ICAJCSAgICAgICBNWDZfQU5B
+VE9QX0JBU0VfQUREUiArIEhXX0FOQURJR19QRkRfNDgwX0NMUik7Cj4gIAkJd3JpdGVsKEJNX0FO
+QURJR19QRkRfNTI4X1BGRDNfQ0xLR0FURSB8Cj4gLQkJICAgICAgIChpc19pbXg2cSA/IEJNX0FO
+QURJR19QRkRfNTI4X1BGRDJfQ0xLR0FURSA6IDApIHwKPiArCQkgICAgICAgQk1fQU5BRElHX1BG
+RF81MjhfUEZEMl9DTEtHQVRFIHwKPiAgCQkgICAgICAgQk1fQU5BRElHX1BGRF81MjhfUEZEMV9D
+TEtHQVRFIHwKPiAgCQkgICAgICAgQk1fQU5BRElHX1BGRF81MjhfUEZEMF9DTEtHQVRFLAo+ICAJ
+CSAgICAgICBNWDZfQU5BVE9QX0JBU0VfQUREUiArIEhXX0FOQURJR19QRkRfNTI4X0NMUik7CgoK
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
+bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
+cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
