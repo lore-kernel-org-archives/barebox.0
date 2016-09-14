@@ -1,19 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bk9un-00053N-QT
- for barebox@lists.infradead.org; Wed, 14 Sep 2016 13:07:53 +0000
-Date: Wed, 14 Sep 2016 15:07:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160914130724.o6nvbb76ostyzoos@pengutronix.de>
-References: <1473435824-7830-1-git-send-email-akurz@blala.de>
- <20160912062643.6ulohzrsmt44uwvi@pengutronix.de>
- <alpine.DEB.2.00.1609120925590.3356@blala.de>
- <20160913070604.qehrkh6gxrux5icg@pengutronix.de>
- <20160913130405.GK12916@io.lakedaemon.net>
+Received: from mail-in-06.arcor-online.net ([151.189.21.46])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bkD2H-0006eY-9m
+ for barebox@lists.infradead.org; Wed, 14 Sep 2016 16:27:47 +0000
+Received: from mail-in-17-z2.arcor-online.net (mail-in-17-z2.arcor-online.net
+ [151.189.8.34]) by mx.arcor.de (Postfix) with ESMTP id 3sZ5f81KHqzvpS
+ for <barebox@lists.infradead.org>; Wed, 14 Sep 2016 17:52:32 +0200 (CEST)
+Received: from mail-in-08.arcor-online.net (mail-in-08.arcor-online.net
+ [151.189.21.48])
+ by mail-in-17-z2.arcor-online.net (Postfix) with ESMTP id 24EF61189AB
+ for <barebox@lists.infradead.org>; Wed, 14 Sep 2016 17:52:32 +0200 (CEST)
+Received: from webmail09.arcor-online.net (webmail09.arcor-online.net
+ [151.189.8.45])
+ by mail-in-08.arcor-online.net (Postfix) with ESMTP id 3sZ5f80bMFzvbHm
+ for <barebox@lists.infradead.org>; Wed, 14 Sep 2016 17:52:32 +0200 (CEST)
+Date: Wed, 14 Sep 2016 17:52:32 +0200 (CEST)
+From: iw3gtf@arcor.de
+Message-ID: <1875844407.837557.1473868352073.JavaMail.ngmail@webmail09.arcor-online.net>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20160913130405.GK12916@io.lakedaemon.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,89 +30,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] ARM: add common definitions for i.MX50 SOC
-To: Jason Cooper <jason@lakedaemon.net>
-Cc: barebox@lists.infradead.org, Alexander Kurz <akurz@blala.de>
+Subject: errors copying UBI volumes
+To: barebox@lists.infradead.org
 
-On Tue, Sep 13, 2016 at 01:04:05PM +0000, Jason Cooper wrote:
-> Hi Sascha, Alexander,
-> 
-> On Tue, Sep 13, 2016 at 09:06:04AM +0200, Sascha Hauer wrote:
-> > On Mon, Sep 12, 2016 at 10:17:18AM +0200, Alexander Kurz wrote:
-> > > On Mon, 12 Sep 2016, Sascha Hauer wrote:
-> > > > On Fri, Sep 09, 2016 at 05:43:39PM +0200, Alexander Kurz wrote:
-> > > > > Signed-off-by: Alexander Kurz <akurz@blala.de>
-> > > > > ---
-> > > > >  Documentation/boards/imx.rst                   |  1 +
-> > > > >  arch/arm/mach-imx/include/mach/generic.h       | 13 +++++++++++++
-> > > > >  arch/arm/mach-imx/include/mach/imx_cpu_types.h |  1 +
-> > > > >  3 files changed, 15 insertions(+)
-> > > > 
-> > > > Seems to be straight forward to add i.MX50 support. I have nothing to
-> > > > add, except: Applied, thanks
-> > > > 
-> > > > Out of curiosity: What device do you use with i.MX50? Is it some E-Book
-> > > > reader again?
-> > > The imx50 has a build-in e-ink driver, so it is more or less a SOC 
-> > > tailored on e-books. It is used in some already outdated e-books like the
-> > > 4th and 5th generation Kindles, some Kobos and Tolinos.
-> > > The successor for the imx50 became the e-ink driver equiped variants 
-> > > of the imx6sl, which is used in most current generation e-book readers.
-> > > 
-> > > While the current patchsets will enable barebox to run on different
-> > > e-books e.g. when beeing booted via an installed bootloader, there is 
-> > > still an open issue: RAM initialization.
-> > > Freescale used a "DRAMMC" which seems to be very unique to this SOC.
-> > > Documentation on it is available in the Reference Manual, but it covers
-> > > some details quite briefly.
-> > > Related on barebox:
-> > > it is not clear, whether DRAMMC initialization via imximg-DCD is possible
-> > > at all. All existing bootloaders I have seen so far used some 
-> > > imximg-plugin code (which is currently not supported by barebox).
-> > > A two-stage bootloader implementation via xload may be an alternative.
-> > 
-> > Yes, that could work. How I understand it the plugin image is
-> > responsible for initializing SDRAM and for loading the final image.
-> > Then the job of the ROM is done anyway, so normally I do not see a
-> > reason for plugin images. The only usecase seems to be HAB when the
-> > final image is checked by the HAB code when returning to ROM.
-> 
-> So, I found my Sandisk Connect WMD (Wireless Media Drive) and I also
-> re-located the open source dump by Sandisk [1].
-> 
-> The first problem I need to solve is the DDR training code.  The device
-> shipped with U-boot, and the training code seems to be in flash_header.S
-> [2].  There's a large number of lines preceded by comments of the form
-> 
->   /* setmem /32 0x140000f8 = 0x00010101 */
-> 
-> which lends itself to a conversion into .imxcfg format.  However,
-> there's quite a bit of code that doesn't appear to be doing simple
-> writes.  Additionally, there's a lowlevel_init.S in the same directory.
-> 
-> There is a linker script putting flash_header.o at the beginning of the
-> binary image.  Is it easier to just do that, bypassing imx-image?  Or,
-> is there a conversion utility my google fu isn't pulling up?
+Hi,
 
-The code looks like they tried to initialize the SDRAM using the DCD
-table but at some point realized that they can't do the necessary
-calibration, so it was converted to Assembly code.
-I would probably convert this to C and put it into the board specific
-lowlevel.c without doing the plugin stuff.
-I think you can forget the code in lowvel_init.S, this looks like the
-standard i.MX5 setup code that barebox has in imx5.c. There may be
-some i.MX50 specifics, but you'll need that only when the SDRAM is
-already configured.
+I'm working on an embedded board with an iMX25 arm CPU and a nand flash.
 
-Sascha
+The board runs a linux kernel/userland.
+
+When the user updates the firmware, the running userland/kernel creates some
+new ubi volumes on the nand, let's say 'kernel_next' and 'userland_next'.
+On the next system reboot barebox looks if it finds, lets say, the 'kernel_next' volume
+and, in this case, it removes the old one ('kernel'), creates a new, empty one ('kernel'),
+copies 'kernel_next' to the just created 'kernel' and finally removes the 'kernel_next'
+to complete the update.
+
+Here the relevant part of the init script:
+
+...
+	if [ -e $kernel_next ]; then
+		echo "Update the kernel... "
+		ubirmvol $ubi_root kernel
+		ubimkvol $ubi_root kernel 8M
+		cp $kernel_next $kernel
+		if [ $? != 0 ]; then
+			echo "***Errors copying $kernel_next to $kernel"
+			sleep 2
+		else
+			echo "Update OK."
+			ubirmvol $ubi_root kernel_next
+		fi
+	fi
+...
+
+Now, after updating the barebox version to the current one, v2016.09.0, the 'cp' command
+produces an almost endless sequence of failed assertions and stask backtraces:
+
+...
+UBI assert failed in ubi_eba_read_leb at 359
+Function entered at [<87053010>] from [<87018ce0>]
+Function entered at [<87018ce0>] from [<87017fb4>]
+Function entered at [<87017fb4>] from [<8703f100>]
+Function entered at [<8703f100>] from [<8703f2cc>]
+Function entered at [<8703f2cc>] from [<8703faf8>]
+Function entered at [<8703faf8>] from [<87039e78>]
+Function entered at [<87039e78>] from [<87029178>]
+Function entered at [<87029178>] from [<87003614>]
+Function entered at [<87003614>] from [<87008e0c>]
+Function entered at [<87008e0c>] from [<870083a0>]
+Function entered at [<870083a0>] from [<8700908c>]
+Function entered at [<8700908c>] from [<870011cc>]
+Function entered at [<870011cc>] from [<870515d4>]
+Function entered at [<870515d4>] from [<80052648>]
+UBI assert failed in ubi_eba_read_leb at 359
+Function entered at [<87053010>] from [<87018ce0>]
+Function entered at [<87018ce0>] from [<87017fb4>]
+Function entered at [<87017fb4>] from [<8703f100>]
+Function entered at [<8703f100>] from [<8703f2cc>]
+Function entered at [<8703f2cc>] from [<8703faf8>]
+Function entered at [<8703faf8>] from [<87039e78>]
+...
 
 
+After trying different things I realized that 'cp' has problems
+only with UBI volumes that were created by the kernel/userland
+during the firmware update process; if I create a volume within
+barebox it just work as expected.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Here is the source code snippet with the failing assertion:
+(file <barebox_root>/drivers/mtd/ubi/eba.c)
+
+int ubi_eba_read_leb(struct ubi_device *ubi, struct ubi_volume *vol, int lnum,
+		     void *buf, int offset, int len, int check)
+{
+...
+	pnum = vol->eba_tbl[lnum];
+	if (pnum < 0) {
+		/*
+		 * The logical eraseblock is not mapped, fill the whole buffer
+		 * with 0xFF bytes. The exception is static volumes for which
+		 * it is an error to read unmapped logical eraseblocks.
+		 */
+		dbg_eba("read %d bytes from offset %d of LEB %d:%d (unmapped)",
+			len, offset, vol_id, lnum);
+		leb_read_unlock(ubi, vol_id, lnum);
+		ubi_assert(vol->vol_type != UBI_STATIC_VOLUME);
+		memset(buf, 0xFF, len);
+		return 0;
+	}
+...
+
+Strange enough if I try to directly boot the system with:
+
+# bootm -o /dev/nand0.ubi_volumes.ubi.dtb_next /dev/nand0.ubi_volumes.ubi.kernel_next
+
+Loading ARM Linux zImage '/dev/nand0.ubi_volumes.ubi.kernel_next'
+Loading devicetree from '/dev/nand0.ubi_volumes.ubi.dtb_next'
+commandline: <NULL>
+Booting Linux on physical CPU 0x0
+...
+
+
+then it works and the system boots correctly.
+
+giorgio
+
+
+Giorgio, iw3gtf@arcor.de
 
 _______________________________________________
 barebox mailing list
