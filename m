@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bk5Sd-00054A-Ak
- for barebox@lists.infradead.org; Wed, 14 Sep 2016 08:22:28 +0000
+ by merlin.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bk5Xq-0004uQ-4i
+ for barebox@lists.infradead.org; Wed, 14 Sep 2016 08:27:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 14 Sep 2016 10:21:52 +0200
-Message-Id: <1473841313-4204-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 14 Sep 2016 10:27:22 +0200
+Message-Id: <1473841642-16373-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,68 +19,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] Add comp_copy function for use with
- CONFIG_IMAGE_COMPRESSION_NONE
+Subject: [PATCH] defenv-1: remove unused variable kernelimage_type
 To: Barebox List <barebox@lists.infradead.org>
 
-The Makefile compression commands all append the size of the
-uncompressed image. With CONFIG_IMAGE_COMPRESSION_NONE simply
-'shipped' is used which does not append the size. Add and use
-a special comp_copy function which adds the size. This helps
-us to get the uncompressed image size in the startup code later.
+kernelimage_type is used nowwhere, remove it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/pbl/Makefile | 2 +-
- images/Makefile       | 2 +-
- scripts/Makefile.lib  | 8 ++++++++
- 3 files changed, 10 insertions(+), 2 deletions(-)
+ arch/arm/boards/friendlyarm-mini6410/env/config | 4 ----
+ arch/arm/boards/friendlyarm-tiny6410/env/config | 4 ----
+ 2 files changed, 8 deletions(-)
 
-diff --git a/arch/arm/pbl/Makefile b/arch/arm/pbl/Makefile
-index 1ff39db..c455112 100644
---- a/arch/arm/pbl/Makefile
-+++ b/arch/arm/pbl/Makefile
-@@ -3,7 +3,7 @@ suffix_$(CONFIG_IMAGE_COMPRESSION_GZIP) = gzip
- suffix_$(CONFIG_IMAGE_COMPRESSION_LZO)	= lzo
- suffix_$(CONFIG_IMAGE_COMPRESSION_LZ4)	= lz4
- suffix_$(CONFIG_IMAGE_COMPRESSION_XZKERN)	= xzkern
--suffix_$(CONFIG_IMAGE_COMPRESSION_NONE)	= shipped
-+suffix_$(CONFIG_IMAGE_COMPRESSION_NONE)	= comp_copy
+diff --git a/arch/arm/boards/friendlyarm-mini6410/env/config b/arch/arm/boards/friendlyarm-mini6410/env/config
+index 74beeff..924d7b8 100644
+--- a/arch/arm/boards/friendlyarm-mini6410/env/config
++++ b/arch/arm/boards/friendlyarm-mini6410/env/config
+@@ -24,13 +24,9 @@ rootfs_type=ubifs
+ rootfsimage=root-${machine}.${rootfs_type}
  
- OBJCOPYFLAGS_zbarebox.bin = -O binary
- piggy_o := piggy.$(suffix_y).o
-diff --git a/images/Makefile b/images/Makefile
-index da9cc8d..0537af1 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -85,7 +85,7 @@ suffix_$(CONFIG_IMAGE_COMPRESSION_GZIP) = gzip
- suffix_$(CONFIG_IMAGE_COMPRESSION_LZO)  = lzo
- suffix_$(CONFIG_IMAGE_COMPRESSION_LZ4)	= lz4
- suffix_$(CONFIG_IMAGE_COMPRESSION_XZKERN) = xzkern
--suffix_$(CONFIG_IMAGE_COMPRESSION_NONE) = shipped
-+suffix_$(CONFIG_IMAGE_COMPRESSION_NONE) = comp_copy
+ # The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-${machine}
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
  
- # barebox.z - compressed barebox binary
- # ----------------------------------------------------------------
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index e55bc27..e79998c 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -380,6 +380,14 @@ cmd_lz4 = (cat $(filter-out FORCE,$^) | \
- %.lz4: %
- 	$(call if_changed,lz4)
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/friendlyarm-tiny6410/env/config b/arch/arm/boards/friendlyarm-tiny6410/env/config
+index 6422e9f..f38535b 100644
+--- a/arch/arm/boards/friendlyarm-tiny6410/env/config
++++ b/arch/arm/boards/friendlyarm-tiny6410/env/config
+@@ -24,13 +24,9 @@ rootfs_type=ubifs
+ rootfsimage=root-${machine}.${rootfs_type}
  
-+# comp_copy
-+# ---------------------------------------------------------------------------
-+# Wrapper which only copies a file, but compatible to the compression
-+# functions above. Appends the size to the result file
-+quiet_cmd_comp_copy ?= SHIPPED_S $@
-+cmd_comp_copy ?= cat $(filter-out FORCE,$^) > $@; \
-+                 $(call size_append, $(filter-out FORCE,$^)) >> $@
-+
- quiet_cmd_disasm = DISASM  $@
- cmd_disasm = $(OBJDUMP) -d $< > $@
+ # The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-${machine}
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
  
+ if [ -n $user ]; then
 -- 
 2.8.1
 
