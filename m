@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bolbg-00078X-2l
- for barebox@lists.infradead.org; Tue, 27 Sep 2016 06:11:08 +0000
-Date: Tue, 27 Sep 2016 08:10:44 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160927061044.nfib2knp6ibqiney@pengutronix.de>
-References: <20160926091137.24719-1-u.kleine-koenig@pengutronix.de>
- <20160926093729.txxe5hjd2i6a7fiv@pengutronix.de>
+ id 1bk7Fy-0006DR-Cx
+ for barebox@lists.infradead.org; Wed, 14 Sep 2016 10:17:31 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Wed, 14 Sep 2016 12:17:05 +0200
+Message-Id: <1473848225-19039-1-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1473846672.2243.39.camel@pengutronix.de>
+References: <1473846672.2243.39.camel@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20160926093729.txxe5hjd2i6a7fiv@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,52 +17,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] firmware: altera-serial: Make the driver match the
- dt binding documentation
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] ARM: imx6: reset PLL2's PFD2 on i.MX6D
+To: barebox@lists.infradead.org
 
-On Mon, Sep 26, 2016 at 11:37:29AM +0200, Uwe Kleine-K=F6nig wrote:
-> Hello Sascha
-> =
-
-> I just noticed there is an additional change needed:
-> =
-
-> diff --git a/drivers/firmware/altera_serial.c b/drivers/firmware/altera_s=
-erial.c
-> index ddee991ed073..b119778d720d 100644
-> --- a/drivers/firmware/altera_serial.c
-> +++ b/drivers/firmware/altera_serial.c
-> @@ -328,7 +328,7 @@ out:
->  =
-
->  static struct of_device_id altera_spi_id_table[] =3D {
->  	{
-> -		.compatible =3D "altr,passive-serial",
-> +		.compatible =3D "altr,fpga-passive-serial",
->  	},
->  };
->  =
-
-> Should I resend, or can you fixup yourself?
-
-Fixed while applying
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGNoZWNrIGZvciBpc19pbXg2cSB3YXMgaW50cm9kdWNlZCBpbml0aWFsbHkgaW4KCglmMWY2
+ZDc2MzcwYjMgKCJBUk06IGkuTVg2OiBjb3JyZWN0IHdvcmsgZmxvdyBvZiBQRkRzIGZyb20gdWJv
+b3Qtc291cmNlcyIpCgp0byBkaWZmZXJlbnRpYXRlIGJldHdlZW4gaS5NWDZETCtpLk1YNlNMIGFu
+ZCBpLk1YNlEuIFRoZSBpLk1YNkQgbXVzdCBiZQpoYW5kbGVkIGxpa2UgdGhlIGxhdHRlciwgc28g
+ZHJvcCB0aGUgY2hlY2suIGkuTVg2REwraS5NWDZTTCBjYW4gYmUKaWdub3JlZCBoZXJlIHNpbmNl
+IHNpbmNlCgoJYTY2NTk2MjgyNDEzICgiaW14NjogbG93bGV2ZWxfaW5pdDogRml4IHdvcmthcm91
+bmQgZm9yIG5ldyBpLk1YNnMgY2hpcHMiKQoKdGhlIFBGRCBoYW5kbGluZyBpcyBvbmx5IGRvbmUg
+Zm9yIGkuTVg2RFEuCgpVcGRhdGUgdGhlIGNvbW1lbnQgdG8gYmUgbm90IG9ubHkgbG9naWNhbGx5
+IGNvcnJlY3QgYnV0IGFsc28gaGVscGZ1bC4KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2
+bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogYXJjaC9hcm0vbWFjaC1p
+bXgvaW14Ni5jIHwgMTIgKysrKysrLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25z
+KCspLCA2IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtaW14L2lteDYu
+YyBiL2FyY2gvYXJtL21hY2gtaW14L2lteDYuYwppbmRleCBiYThmYjg5NjRhYzguLjE4NTA5YTdi
+NTFkYiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW14Ni5jCisrKyBiL2FyY2gvYXJt
+L21hY2gtaW14L2lteDYuYwpAQCAtNjUsMTAgKzY1LDEwIEBAIHZvaWQgaW14Nl9pbml0X2xvd2xl
+dmVsKHZvaWQpCiAJd3JpdGVsKDB4ZmZmZmZmZmYsIDB4MDIwYzQwN2MpOwogCXdyaXRlbCgweGZm
+ZmZmZmZmLCAweDAyMGM0MDgwKTsKIAotCS8qIER1ZSB0byBoYXJkd2FyZSBsaW1pdGF0aW9uLCBv
+biBNWDZRIHdlIG5lZWQgdG8gZ2F0ZS91bmdhdGUgYWxsIFBGRHMKLQkgKiB0byBtYWtlIHN1cmUg
+UEZEIGlzIHdvcmtpbmcgcmlnaHQsIG90aGVyd2lzZSwgUEZEcyBtYXkKLQkgKiBub3Qgb3V0cHV0
+IGNsb2NrIGFmdGVyIHJlc2V0LCBNWDZETCBhbmQgTVg2U0wgaGF2ZSBhZGRlZCAzOTZNIHBmZAot
+CSAqIHdvcmthcm91bmQgaW4gUk9NIGNvZGUsIGFzIGJ1cyBjbG9jayBuZWVkIGl0CisJLyoKKwkg
+KiBEdWUgdG8gYSBoYXJkd2FyZSBidWcgKHJlbGF0ZWQgdG8gZXJyYXRhIEVSUjAwNjI4Mikgb24g
+aS5NWDZEUSB3ZQorCSAqIG5lZWQgdG8gZ2F0ZS91bmdhdGUgYWxsIFBGRHMgdG8gbWFrZSBzdXJl
+IFBGRCBpcyB3b3JraW5nIHJpZ2h0LAorCSAqIG90aGVyd2lzZSBQRkRzIG1heSBub3Qgb3V0cHV0
+IGNsb2NrIGFmdGVyIHJlc2V0LgogCSAqLwogCWlmIChpc19pbXg2cSB8fCBpc19pbXg2ZCkgewog
+CQl3cml0ZWwoQk1fQU5BRElHX1BGRF80ODBfUEZEM19DTEtHQVRFIHwKQEAgLTc3LDcgKzc3LDcg
+QEAgdm9pZCBpbXg2X2luaXRfbG93bGV2ZWwodm9pZCkKIAkJICAgICAgIEJNX0FOQURJR19QRkRf
+NDgwX1BGRDBfQ0xLR0FURSwKIAkJICAgICAgIE1YNl9BTkFUT1BfQkFTRV9BRERSICsgSFdfQU5B
+RElHX1BGRF80ODBfU0VUKTsKIAkJd3JpdGVsKEJNX0FOQURJR19QRkRfNTI4X1BGRDNfQ0xLR0FU
+RSB8Ci0JCSAgICAgICAoaXNfaW14NnEgPyBCTV9BTkFESUdfUEZEXzUyOF9QRkQyX0NMS0dBVEUg
+OiAwKSB8CisJCSAgICAgICBCTV9BTkFESUdfUEZEXzUyOF9QRkQyX0NMS0dBVEUgfAogCQkgICAg
+ICAgQk1fQU5BRElHX1BGRF81MjhfUEZEMV9DTEtHQVRFIHwKIAkJICAgICAgIEJNX0FOQURJR19Q
+RkRfNTI4X1BGRDBfQ0xLR0FURSwKIAkJICAgICAgIE1YNl9BTkFUT1BfQkFTRV9BRERSICsgSFdf
+QU5BRElHX1BGRF81MjhfU0VUKTsKQEAgLTg4LDcgKzg4LDcgQEAgdm9pZCBpbXg2X2luaXRfbG93
+bGV2ZWwodm9pZCkKIAkJICAgICAgIEJNX0FOQURJR19QRkRfNDgwX1BGRDBfQ0xLR0FURSwKIAkJ
+ICAgICAgIE1YNl9BTkFUT1BfQkFTRV9BRERSICsgSFdfQU5BRElHX1BGRF80ODBfQ0xSKTsKIAkJ
+d3JpdGVsKEJNX0FOQURJR19QRkRfNTI4X1BGRDNfQ0xLR0FURSB8Ci0JCSAgICAgICAoaXNfaW14
+NnEgPyBCTV9BTkFESUdfUEZEXzUyOF9QRkQyX0NMS0dBVEUgOiAwKSB8CisJCSAgICAgICBCTV9B
+TkFESUdfUEZEXzUyOF9QRkQyX0NMS0dBVEUgfAogCQkgICAgICAgQk1fQU5BRElHX1BGRF81Mjhf
+UEZEMV9DTEtHQVRFIHwKIAkJICAgICAgIEJNX0FOQURJR19QRkRfNTI4X1BGRDBfQ0xLR0FURSwK
+IAkJICAgICAgIE1YNl9BTkFUT1BfQkFTRV9BRERSICsgSFdfQU5BRElHX1BGRF81MjhfQ0xSKTsK
+LS0gCjIuOC4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
