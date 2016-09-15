@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bkPsd-0000aV-7H
- for barebox@lists.infradead.org; Thu, 15 Sep 2016 06:10:40 +0000
-From: Michael Olbrich <m.olbrich@pengutronix.de>
-Date: Thu, 15 Sep 2016 08:10:13 +0200
-Message-Id: <20160915061014.16943-1-m.olbrich@pengutronix.de>
+ id 1bkQoZ-00080j-Ek
+ for barebox@lists.infradead.org; Thu, 15 Sep 2016 07:10:35 +0000
+Date: Thu, 15 Sep 2016 09:10:08 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160915071008.tbpw5d222h2chd5w@pengutronix.de>
+References: <1473841313-4204-1-git-send-email-s.hauer@pengutronix.de>
+ <1473841313-4204-2-git-send-email-s.hauer@pengutronix.de>
+ <1473877833.4359.15.camel@rtred1test09.kymeta.local>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1473877833.4359.15.camel@rtred1test09.kymeta.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,141 +20,214 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] state: don't keep pointers to any device tree data
-To: barebox@lists.infradead.org
-Cc: Michael Olbrich <m.olbrich@pengutronix.de>
+Subject: Re: [PATCH 2/2] ARM: Fix calling of arm_mem_barebox_image()
+To: Trent Piepho <tpiepho@kymetacorp.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Caching pointers to device tree nodes or names is not save. The barebox
-internal device tree may be changed by loading a new device tree or through
-fixup handlers.
-Use local copies of the full path instead and resolve the node as needed.
+On Wed, Sep 14, 2016 at 06:27:04PM +0000, Trent Piepho wrote:
+> On Wed, 2016-09-14 at 10:21 +0200, Sascha Hauer wrote:
+> > arm_mem_barebox_image() is used to pick a suitable place where to
+> > put the final image to. This is called from both the PBL uncompression
+> > code and also from the final image. To make it work properly it is
+> > crucial that it's called with the same arguments both times. Currently
+> 
+> This code has changed since I was working with it, but wouldn't
+> arm_mem_barebox_image() returning a different value from when the PBL
+> code calls it versus barebox_non_pbl_start() just result in an
+> unnecessary relocation of the uncompressed barebox from the PBL's choice
+> to the main barebox choice?
 
-Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+That may work when both regions do not overlap.
+
+> 
+> 
+> > it is called with the wrong image size from the PBL uncompression code.
+> > The size passed to arm_mem_barebox_image() has to be the size of the
+> > whole uncompressed image including the BSS segment size. The PBL code
+> > calls it with the compressed image size instead and without the BSS
+> > segment. This patch fixes this by reading the uncompressed image size
+> > from the compressed binary (the uncompressed size is appended to the
+> > end of the compressed binary by our compression wrappers). The size
+> > of the BSS segment is unknown though by the PBL uncompression code,
+> > so we introduce a maximum BSS size which is used instead.
+> 
+> Could the size including BSS be appended?  Seems like putting:
+> size -A barebox | awk '$1==".bss"{print $2}'
+> in the size_append function would do that pretty simply.
+
+I already tried. Somehow I didn't like the result that much, see the
+patch below. The patch also still misses the single pbl handling.
+
+Sascha
+
+--------------------8<--------------------
+
+From ea6cf2609ee1285cf415f28ded2317f31ddec7b2 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 12 Jul 2016 12:45:42 +0200
+Subject: [PATCH] wip
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/state/backend.c |  3 ++-
- common/state/state.c   | 19 ++++++++++++-------
- common/state/state.h   |  4 ++--
- 3 files changed, 16 insertions(+), 10 deletions(-)
+ arch/arm/cpu/start.c         | 19 +++++++++----------
+ arch/arm/cpu/uncompress.c    | 11 +++++++++--
+ arch/arm/lib32/barebox.lds.S |  1 +
+ images/Makefile              | 13 +++++++++++++
+ 4 files changed, 32 insertions(+), 12 deletions(-)
 
-diff --git a/common/state/backend.c b/common/state/backend.c
-index 2f2e6dfd32d1..5235bb0283dd 100644
---- a/common/state/backend.c
-+++ b/common/state/backend.c
-@@ -164,7 +164,7 @@ int state_backend_init(struct state_backend *backend, struct device_d *dev,
- 	if (ret)
- 		goto out_free_format;
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index f25e592..1ee669b 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -34,6 +34,7 @@
+ #include "mmu-early.h"
  
--	backend->of_path = of_path;
-+	backend->of_path = xstrdup(of_path);
- 
- 	return 0;
- 
-@@ -185,4 +185,5 @@ void state_backend_free(struct state_backend *backend)
- 	state_storage_free(&backend->storage);
- 	if (backend->format)
- 		state_format_free(backend->format);
-+	free(backend->of_path);
- }
-diff --git a/common/state/state.c b/common/state/state.c
-index 9b1d4edef132..0c329cd67548 100644
---- a/common/state/state.c
-+++ b/common/state/state.c
-@@ -202,15 +202,19 @@ struct device_node *state_to_node(struct state *state,
- 				  enum state_convert conv)
+ unsigned long arm_stack_top;
++static unsigned long arm_barebox_base;
+ static unsigned long arm_barebox_size;
+ static void *barebox_boarddata;
+ static unsigned long barebox_boarddata_size;
+@@ -116,7 +117,7 @@ static inline unsigned long arm_mem_boarddata(unsigned long membase,
  {
- 	struct device_node *child;
--	struct device_node *root;
-+	struct device_node *root, *state_root;
- 	int ret;
+ 	unsigned long mem;
  
--	root = of_new_node(parent, state->root->name);
-+	state_root = of_find_node_by_path(state->of_path);
-+	if (!state_root)
-+		return ERR_PTR(-ENODEV);
+-	mem = arm_mem_barebox_image(membase, endmem, barebox_image_size);
++	mem = arm_barebox_base;
+ 	mem -= ALIGN(size, 64);
+ 
+ 	return mem;
+@@ -143,15 +144,13 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
+ {
+ 	unsigned long endmem = membase + memsize;
+ 	unsigned long malloc_start, malloc_end;
+-	unsigned long barebox_size = barebox_image_size +
+-		((unsigned long)&__bss_stop - (unsigned long)&__bss_start);
++	unsigned long barebox_size = ld_var(__bss_stop) - ld_var(_text);
++	unsigned long barebox_base;
+ 
+-	if (IS_ENABLED(CONFIG_RELOCATABLE)) {
+-		unsigned long barebox_base = arm_mem_barebox_image(membase,
+-								   endmem,
+-								   barebox_size);
++	barebox_base = arm_mem_barebox_image(membase, endmem, barebox_size);
 +
-+	root = of_new_node(parent, state_root->name);
- 	ret = of_property_write_u32(root, "magic", state->magic);
- 	if (ret)
- 		goto out;
++	if (IS_ENABLED(CONFIG_RELOCATABLE))
+ 		relocate_to_adr(barebox_base);
+-	}
  
--	for_each_child_of_node(state->root, child) {
-+	for_each_child_of_node(state_root, child) {
- 		ret = state_convert_node_variable(state, child, root, "", conv);
- 		if (ret)
- 			goto out;
-@@ -234,7 +238,7 @@ int state_from_node(struct state *state, struct device_node *node, bool create)
+ 	setup_c();
  
- 	if (create) {
- 		conv = STATE_CONVERT_FROM_NODE_CREATE;
--		state->root = node;
-+		state->of_path = xstrdup(node->full_name);
- 		state->magic = magic;
- 	} else {
- 		conv = STATE_CONVERT_FROM_NODE;
-@@ -291,7 +295,7 @@ static int of_state_fixup(struct device_node *root, void *ctx)
- 	int ret;
- 	phandle phandle;
+@@ -161,8 +160,8 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
  
--	node = of_find_node_by_path_from(root, state->root->full_name);
-+	node = of_find_node_by_path_from(root, state->of_path);
- 	if (node) {
- 		/* replace existing node - it will be deleted later */
- 		parent = node->parent;
-@@ -299,7 +303,7 @@ static int of_state_fixup(struct device_node *root, void *ctx)
- 		char *of_path, *c;
+ 	arm_stack_top = endmem;
+ 	arm_barebox_size = barebox_size;
+-	malloc_end = arm_mem_barebox_image(membase, endmem,
+-						arm_barebox_size);
++	arm_barebox_base = barebox_base;
++	malloc_end = barebox_base;
  
- 		/* look for parent, remove last '/' from path */
--		of_path = xstrdup(state->root->full_name);
-+		of_path = xstrdup(state->of_path);
- 		c = strrchr(of_path, '/');
- 		if (!c)
- 			return -ENODEV;
-@@ -406,6 +410,7 @@ void state_release(struct state *state)
- 	list_del(&state->list);
- 	unregister_device(&state->dev);
- 	state_backend_free(&state->backend);
-+	free(state->of_path);
- 	free(state);
+ 	if (IS_ENABLED(CONFIG_MMU_EARLY)) {
+ 		unsigned long ttb = arm_mem_ttb(membase, endmem);
+diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
+index b8e2e9f..0c54bc5 100644
+--- a/arch/arm/cpu/uncompress.c
++++ b/arch/arm/cpu/uncompress.c
+@@ -29,6 +29,7 @@
+ #include <asm/sections.h>
+ #include <asm/pgtable.h>
+ #include <asm/cache.h>
++#include <asm/unaligned.h>
+ 
+ #include <debug_ll.h>
+ 
+@@ -49,6 +50,7 @@ void __noreturn barebox_multi_pbl_start(unsigned long membase,
+ 	uint32_t endmem = membase + memsize;
+ 	unsigned long barebox_base;
+ 	uint32_t *image_end;
++	uint32_t full_size;
+ 	void *pg_start;
+ 	unsigned long pc = get_pc();
+ 
+@@ -69,19 +71,24 @@ void __noreturn barebox_multi_pbl_start(unsigned long membase,
+ 	/*
+ 	 * image_end is the first location after the executable. It contains
+ 	 * the size of the appended compressed binary followed by the binary.
++	 * The last 32bit word of the compressed binary contains the full size
++	 * of the uncompressed barebox image including bss.
+ 	 */
+ 	pg_start = image_end + 1;
+-	pg_len = *(image_end);
++	pg_len = *(image_end) - sizeof(uint32_t);
++	full_size = get_unaligned_le32((void *)(pg_start + pg_len));
+ 
+ 	if (IS_ENABLED(CONFIG_RELOCATABLE))
+ 		barebox_base = arm_mem_barebox_image(membase, endmem,
+-						     pg_len);
++						     full_size);
+ 	else
+ 		barebox_base = TEXT_BASE;
+ 
+ 	setup_c();
+ 
+ 	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
++	pr_debug("barebox image has full size 0x%08x, putting image to 0x%08lx\n",
++		 full_size, barebox_base);
+ 
+ 	if (IS_ENABLED(CONFIG_MMU_EARLY)) {
+ 		unsigned long ttb = arm_mem_ttb(membase, endmem);
+diff --git a/arch/arm/lib32/barebox.lds.S b/arch/arm/lib32/barebox.lds.S
+index 6dc8bd2..170b3b1 100644
+--- a/arch/arm/lib32/barebox.lds.S
++++ b/arch/arm/lib32/barebox.lds.S
+@@ -123,4 +123,5 @@ SECTIONS
+ 	__bss_stop = .;
+ 	_end = .;
+ 	_barebox_image_size = __bss_start - TEXT_BASE;
++	_barebox_full_size = __bss_stop - TEXT_BASE;
  }
+diff --git a/images/Makefile b/images/Makefile
+index da9cc8d..98812ed 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -67,6 +67,18 @@ $(obj)/%.pbl: $(pbl-lds) $(barebox-pbl-common) FORCE
+ $(obj)/%.pblb: $(obj)/%.pbl FORCE
+ 	$(call if_changed,objcopy_bin,$(*F))
  
-@@ -545,7 +550,7 @@ struct state *state_by_node(const struct device_node *node)
- 	struct state *state;
++barebox_full_size = printf $(shell							\
++		    hex_size=$$($(NM) $1 | awk '$$3 == "_barebox_full_size" { print $$1 }');	\
++											\
++echo $$hex_size |									\
++	sed 's/\(..\)/\1 /g' | {							\
++		read ch0 ch1 ch2 ch3;							\
++		for ch in $$ch3 $$ch2 $$ch1 $$ch0; do					\
++			printf '%s%03o' '\\' $$((0x$$ch)); 				\
++		done;									\
++	}										\
++)
++
+ quiet_cmd_pblx ?= PBLX    $@
+       cmd_pblx ?= cat $(obj)/$(patsubst %.pblx,%.pblb,$(2)) > $@; \
+ 		  $(call size_append, $(obj)/barebox.z) >> $@; \
+@@ -91,6 +103,7 @@ suffix_$(CONFIG_IMAGE_COMPRESSION_NONE) = shipped
+ # ----------------------------------------------------------------
+ $(obj)/barebox.z: $(obj)/../barebox.bin FORCE
+ 	$(call if_changed,$(suffix_y))
++	$(call barebox_full_size, $(obj)/../barebox) >> $@
  
- 	list_for_each_entry(state, &state_list, list) {
--		if (state->root == node)
-+		if (!strcmp(state->of_path, node->full_name))
- 			return state;
- 	}
- 
-diff --git a/common/state/state.h b/common/state/state.h
-index 32146ca1bbc7..7b3e49512e37 100644
---- a/common/state/state.h
-+++ b/common/state/state.h
-@@ -87,14 +87,14 @@ struct state_backend_storage {
- struct state_backend {
- 	struct state_backend_format *format;
- 	struct state_backend_storage storage;
--	const char *of_path;
-+	char *of_path;
- };
- 
- struct state {
- 	struct list_head list; /* Entry to enqueue on list of states */
- 
- 	struct device_d dev;
--	struct device_node *root;
-+	char *of_path;
- 	const char *name;
- 	uint32_t magic;
- 
+ # %.img - create a copy from another file
+ # ----------------------------------------------------------------
 -- 
-2.9.3
+2.8.1
 
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
