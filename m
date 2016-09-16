@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bknsF-0001xL-Ux
- for barebox@lists.infradead.org; Fri, 16 Sep 2016 07:47:53 +0000
-Date: Fri, 16 Sep 2016 09:47:30 +0200
+ id 1bko7w-0002Nu-Um
+ for barebox@lists.infradead.org; Fri, 16 Sep 2016 08:04:06 +0000
+Date: Fri, 16 Sep 2016 10:03:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160916074730.46zufu6nqcilziey@pengutronix.de>
-References: <1474008220-7601-1-git-send-email-m.olbrich@pengutronix.de>
+Message-ID: <20160916080341.nfrgznzmi4hudotr@pengutronix.de>
+References: <1473919406-19038-1-git-send-email-m.olbrich@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1474008220-7601-1-git-send-email-m.olbrich@pengutronix.de>
+In-Reply-To: <1473919406-19038-1-git-send-email-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,71 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] state: copy backend of_path string
+Subject: Re: [PATCH] mtd: make sure address-cells/size-cells are set when
+ adding partition nodes
 To: Michael Olbrich <m.olbrich@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Sep 16, 2016 at 08:43:38AM +0200, Michael Olbrich wrote:
-> Caching pointers to device tree nodes or names is not save. The barebox
-> internal device tree may be changed by loading a new device tree or through
-> fixup handlers. As a result, the string may be deleted.
-> Use local copies of the full path instead.
+On Thu, Sep 15, 2016 at 08:03:26AM +0200, Michael Olbrich wrote:
+> address-cells/size-cells can either be set to 1 or 2 for 32 or 63 bit
+> addresses respectively. Barebox currently writes 32 bit addresses.
+> This makes sure that address-cells/size-cells are both set and have the
+> correct value.
 > 
 > Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 > ---
-> Changes since v1:
-> - First patch split into two patches
+> 
+> Hi,
+> 
+> this is just a minor fix. What is really needed it support for 64 bit
+> addressing.
 
-Applied, thanks
+Looking at the code this is already implemented. It already creates the
+reg property using of_write_number() and honouring of_n_addr_cells() /
+of_n_size_cells(). This of course only works when the target device tree
+already has the #address-cells and #size-cells properties with the
+correct values. So instead of just setting them to hardcoded '1' you
+should set them to the desired value, the loop below should do the rest
+correctly.
+
+> Also, the bindings documentation says that all partitions
+> should be in a 'partitions' sub node. The main question here is probably
+> which kernel version introduced these features and what should be supported
+> by barebox.
+
+The partitions subnode was introduced with 4.4, so we better do not rely
+on the kernel being able to handle it.
+
+What we can and probably should do is to look into the target device tree
+if it already has a partitions subnode with compatible = "fixed-partitions"
+and if does, use it.
 
 Sascha
-
-> 
->  common/state/backend.c | 3 ++-
->  common/state/state.h   | 2 +-
->  2 files changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/common/state/backend.c b/common/state/backend.c
-> index 2f2e6dfd32d1..5235bb0283dd 100644
-> --- a/common/state/backend.c
-> +++ b/common/state/backend.c
-> @@ -164,7 +164,7 @@ int state_backend_init(struct state_backend *backend, struct device_d *dev,
->  	if (ret)
->  		goto out_free_format;
->  
-> -	backend->of_path = of_path;
-> +	backend->of_path = xstrdup(of_path);
->  
->  	return 0;
->  
-> @@ -185,4 +185,5 @@ void state_backend_free(struct state_backend *backend)
->  	state_storage_free(&backend->storage);
->  	if (backend->format)
->  		state_format_free(backend->format);
-> +	free(backend->of_path);
->  }
-> diff --git a/common/state/state.h b/common/state/state.h
-> index 32146ca1bbc7..f930d06195b2 100644
-> --- a/common/state/state.h
-> +++ b/common/state/state.h
-> @@ -87,7 +87,7 @@ struct state_backend_storage {
->  struct state_backend {
->  	struct state_backend_format *format;
->  	struct state_backend_storage storage;
-> -	const char *of_path;
-> +	char *of_path;
->  };
->  
->  struct state {
-> -- 
-> 2.8.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
