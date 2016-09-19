@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1biFAd-0003m3-Nw
- for barebox@lists.infradead.org; Fri, 09 Sep 2016 06:20:16 +0000
-Date: Fri, 9 Sep 2016 08:19:50 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160909061950.kg5mqytwbocb6jz4@pengutronix.de>
-References: <20160907201220.26764-1-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20160907201220.26764-1-antonynpavlov@gmail.com>
+ id 1bm13a-0001Ss-LH
+ for barebox@lists.infradead.org; Mon, 19 Sep 2016 16:04:35 +0000
+From: Enrico Jorns <ejo@pengutronix.de>
+Date: Mon, 19 Sep 2016 18:03:47 +0200
+Message-Id: <1474301029-22877-1-git-send-email-ejo@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,55 +14,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: usb: fix sphinx warning
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, "Robert P . J . Day" <rpjday@crashcourse.ca>
+Subject: [PATCH 0/2] Auto-append ip= option for NFS boot with appendrot
+To: barebox@lists.infradead.org
+Cc: Michael Olbrich <m.olbrich@pengutronix.de>, Gavin Schenk <g.schenk@eckelmann.de>, Enrico Jorns <ejo@pengutronix.de>, u.kleine-koenig@pengutronix.de
 
-On Wed, Sep 07, 2016 at 11:12:20PM +0300, Antony Pavlov wrote:
-> The patch fixes this sphinx warnings:
-> 
->     barebox/Documentation/user/usb.rst:61: WARNING: Could not lex literal_block as "c". Highlighting skipped.
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> Cc: Robert P. J. Day <rpjday@crashcourse.ca>
-> ---
+This patches allow booting from nfs without the need to additionally provide an
+extra ip= option, such as ip=dhcp to the kernel commandline.
 
-Applied, thanks
+This is solved by adding a bootargs property to the network device of the
+connection used for the NFS boot and appending this to the nfs bootarg string.
 
-Sascha
+Note that these patches are based on the 'vsprintf: Add support for printing
+ipv4 addresses with %pI4' series posted by Sascha.
 
->  Documentation/user/usb.rst | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
-> index 8602a8f..bbcb045 100644
-> --- a/Documentation/user/usb.rst
-> +++ b/Documentation/user/usb.rst
-> @@ -56,7 +56,9 @@ shall be provided to the host. For the possible ``flags`` see
->  
->  On the host side, the tool `dfu-util <http://dfu-util.gnumonks.org/>`_ can be used
->  to update the partitions. It is available for most distributions and typically
-> -supports the following options::
-> +supports the following options:
-> +
-> +.. code-block:: none
->  
->    dfu-util -h
->    Usage: dfu-util [options] ...
-> -- 
-> 2.9.3
-> 
-> 
+Enrico Jorns (2):
+  net: add linux.bootarg parameter from ifup call
+  fs: nfs: pick up network interface bootargs parameter
+
+ fs/nfs.c      |  8 ++++++++
+ include/net.h |  1 +
+ net/eth.c     |  1 +
+ net/ifup.c    | 10 ++++++++++
+ 4 files changed, 20 insertions(+)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.8.1
+
 
 _______________________________________________
 barebox mailing list
