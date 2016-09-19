@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bq48f-000410-PH
- for barebox@lists.infradead.org; Fri, 30 Sep 2016 20:10:34 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri, 30 Sep 2016 22:10:08 +0200
-Message-Id: <20160930201008.4136-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1bm13a-0001T4-L2
+ for barebox@lists.infradead.org; Mon, 19 Sep 2016 16:04:36 +0000
+From: Enrico Jorns <ejo@pengutronix.de>
+Date: Mon, 19 Sep 2016 18:03:49 +0200
+Message-Id: <1474301029-22877-3-git-send-email-ejo@pengutronix.de>
+In-Reply-To: <1474301029-22877-1-git-send-email-ejo@pengutronix.de>
+References: <1474301029-22877-1-git-send-email-ejo@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,25 +16,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net/phy: marvell: fix error handling
+Subject: [PATCH 2/2] fs: nfs: pick up network interface bootargs parameter
 To: barebox@lists.infradead.org
+Cc: Michael Olbrich <m.olbrich@pengutronix.de>, Gavin Schenk <g.schenk@eckelmann.de>, Enrico Jorns <ejo@pengutronix.de>, u.kleine-koenig@pengutronix.de
 
-V2l0aG91dCBmaXJzdCBhc3NpZ25pbmcgdG8gcmV0IGl0IGRvZXNuJ3QgbWFrZSBzZW5zZSB0byBj
-aGVjayBpdC4KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2Vu
-aWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogZHJpdmVycy9uZXQvcGh5L21hcnZlbGwuYyB8IDMgKyst
-CiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9uZXQvcGh5L21hcnZlbGwuYyBiL2RyaXZlcnMvbmV0L3BoeS9tYXJ2ZWxs
-LmMKaW5kZXggNjQwOWYxNGFlMmUyLi45YTk2M2Y2ZDVlNjEgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMv
-bmV0L3BoeS9tYXJ2ZWxsLmMKKysrIGIvZHJpdmVycy9uZXQvcGh5L21hcnZlbGwuYwpAQCAtMTk4
-LDcgKzE5OCw4IEBAIHN0YXRpYyBpbnQgbTg4ZTExMjFfY29uZmlnX2luaXQoc3RydWN0IHBoeV9k
-ZXZpY2UgKnBoeWRldikKIAlpZiAocmV0IDwgMCkKIAkJcmV0dXJuIHJldDsKIAotCXBoeV93cml0
-ZShwaHlkZXYsIE1JSV9NQVJWRUxMX1BIWV9QQUdFLCBNSUlfTUFSVkVMTF9QSFlfREVGQVVMVF9Q
-QUdFKTsKKwlyZXQgPSBwaHlfd3JpdGUocGh5ZGV2LCBNSUlfTUFSVkVMTF9QSFlfUEFHRSwKKwkJ
-CU1JSV9NQVJWRUxMX1BIWV9ERUZBVUxUX1BBR0UpOwogCWlmIChyZXQgPCAwKQogCQlyZXR1cm4g
-cmV0OwogCi0tIAoyLjkuMwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
-ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+This adds the linux.bootarg device parameter from the network device of
+the current nfs connection and adds it to the nfs bootargs line.
+
+This allows booting from nfs without manually setting a ip=dhcp or
+ip=<ipaddr> option.
+
+Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
+---
+ fs/nfs.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/fs/nfs.c b/fs/nfs.c
+index a0a9dfc..97f01cf 100644
+--- a/fs/nfs.c
++++ b/fs/nfs.c
+@@ -1314,6 +1314,7 @@ static char *rootnfsopts;
+ static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device_d *fsdev)
+ {
+ 	char *str, *tmp;
++	const char *bootargs;
+ 
+ 	str = basprintf("root=/dev/nfs nfsroot=%pI4:%s%s%s", &npriv->server, npriv->path,
+ 			  rootnfsopts[0] ? "," : "", rootnfsopts);
+@@ -1331,6 +1332,13 @@ static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device_d *fsdev)
+ 		str = tmp;
+ 	}
+ 
++	bootargs = dev_get_param(&npriv->con->edev->dev, "linux.bootargs");
++	if (bootargs) {
++		tmp = basprintf("%s %s", str, bootargs);
++		free(str);
++		str = tmp;
++	}
++
+ 	fsdev_set_linux_rootarg(fsdev, str);
+ 
+ 	free(str);
+-- 
+2.8.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
