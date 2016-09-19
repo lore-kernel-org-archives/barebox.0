@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bm13a-0001Sw-LZ
- for barebox@lists.infradead.org; Mon, 19 Sep 2016 16:04:36 +0000
-From: Enrico Jorns <ejo@pengutronix.de>
-Date: Mon, 19 Sep 2016 18:03:48 +0200
-Message-Id: <1474301029-22877-2-git-send-email-ejo@pengutronix.de>
-In-Reply-To: <1474301029-22877-1-git-send-email-ejo@pengutronix.de>
+ id 1bm1Hy-00034B-Rm
+ for barebox@lists.infradead.org; Mon, 19 Sep 2016 16:19:27 +0000
+Date: Mon, 19 Sep 2016 18:19:04 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20160919161904.c7rkwj5eejd64vha@pengutronix.de>
 References: <1474301029-22877-1-git-send-email-ejo@pengutronix.de>
+ <1474301029-22877-3-git-send-email-ejo@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1474301029-22877-3-git-send-email-ejo@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,83 +19,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] net: add linux.bootarg parameter from ifup call
-To: barebox@lists.infradead.org
-Cc: Michael Olbrich <m.olbrich@pengutronix.de>, Gavin Schenk <g.schenk@eckelmann.de>, Enrico Jorns <ejo@pengutronix.de>, u.kleine-koenig@pengutronix.de
+Subject: Re: [PATCH 2/2] fs: nfs: pick up network interface bootargs parameter
+To: Enrico Jorns <ejo@pengutronix.de>
+Cc: barebox@lists.infradead.org, Michael Olbrich <m.olbrich@pengutronix.de>, Gavin Schenk <g.schenk@eckelmann.de>
 
-This sets a `ip=dhcp` or
-`ip=<clientip>:<serverip>:<gatewayip>:<netmaskip>::<iface>:` bootarg for
-the network device upon execution of 'ifup'. This is the only point
-where we can distinguish between a static ip and a dhcp-based network
-setup and thus set a valid bootarg options as it will be required for
-nfs boot, for example.
+On Mon, Sep 19, 2016 at 06:03:49PM +0200, Enrico Jorns wrote:
+> This adds the linux.bootarg device parameter from the network device of
+s/bootarg/bootargs/
 
-Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
----
- include/net.h |  1 +
- net/eth.c     |  1 +
- net/ifup.c    | 10 ++++++++++
- 3 files changed, 12 insertions(+)
+> the current nfs connection and adds it to the nfs bootargs line.
 
-diff --git a/include/net.h b/include/net.h
-index fd1c412..632b6d5 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -62,6 +62,7 @@ struct eth_device {
- 	IPaddr_t netmask;
- 	IPaddr_t gateway;
- 	char ethaddr[6];
-+	char *bootarg;
- };
- 
- #define dev_to_edev(d) container_of(d, struct eth_device, dev)
-diff --git a/net/eth.c b/net/eth.c
-index 6f8e78d..e056826 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -384,6 +384,7 @@ int eth_register(struct eth_device *edev)
- 	dev_add_param_ip(dev, "netmask", NULL, NULL, &edev->netmask, edev);
- 	dev_add_param_mac(dev, "ethaddr", eth_param_set_ethaddr, NULL,
- 			edev->ethaddr, edev);
-+	dev_add_param_string(dev, "linux.bootargs", NULL, NULL, &edev->bootarg, NULL);
- 
- 	if (edev->init)
- 		edev->init(edev);
-diff --git a/net/ifup.c b/net/ifup.c
-index 30ac3f5..618eb8a 100644
---- a/net/ifup.c
-+++ b/net/ifup.c
-@@ -106,12 +106,22 @@ int ifup(const char *name, unsigned flags)
- 		ret = eth_set_param(dev, "serverip");
- 		if (ret)
- 			goto out;
-+		dev_set_param(dev, "linux.bootargs", "ip=dhcp");
- 	} else if (!strcmp(ip, "static")) {
-+		char *bootarg;
- 		for (i = 0; i < ARRAY_SIZE(vars); i++) {
- 			ret = eth_set_param(dev, vars[i]);
- 			if (ret)
- 				goto out;
- 		}
-+		bootarg = basprintf("ip=%pI4:%pI4:%pI4:%pI4::%s:",
-+				&edev->ipaddr,
-+				&edev->serverip,
-+				&edev->gateway,
-+				&edev->netmask,
-+				edev->devname);
-+		dev_set_param(dev, "linux.bootargs", bootarg);
-+		free(bootarg);
- 	} else {
- 		pr_err("unknown ip type: %s\n", ip);
- 		ret = -EINVAL;
--- 
-2.8.1
+s/and adds it//
 
+> This allows booting from nfs without manually setting a ip=3Ddhcp or
+> ip=3D<ipaddr> option.
+
+Otherwise: \o/
+(i.e.: Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de> for
+both patches)
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
