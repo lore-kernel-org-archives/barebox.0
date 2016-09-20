@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bmGSS-0000Zq-Eg
- for barebox@lists.infradead.org; Tue, 20 Sep 2016 08:31:17 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 20 Sep 2016 10:30:41 +0200
-Message-Id: <1474360242-3512-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1474360242-3512-1-git-send-email-s.hauer@pengutronix.de>
-References: <1474360242-3512-1-git-send-email-s.hauer@pengutronix.de>
+ id 1bmLnj-00048B-Td
+ for barebox@lists.infradead.org; Tue, 20 Sep 2016 14:13:40 +0000
+Received: by mail-lf0-x243.google.com with SMTP id l131so1009241lfl.0
+ for <barebox@lists.infradead.org>; Tue, 20 Sep 2016 07:13:14 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue, 20 Sep 2016 17:13:01 +0300
+Message-Id: <20160920141301.10187-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,44 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] state: make locally used function static
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] Documentation: imd: fix sphinx warning
+To: barebox@lists.infradead.org
 
-state_set_dirty() is only used in one file, make it static.
+The patch fixes this sphinx warnings:
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+    barebox/Documentation/user/imd.rst:27: WARNING: Could not lex literal_block as "c". Highlighting skipped.
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/state/state.h           | 1 -
- common/state/state_variables.c | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ Documentation/user/imd.rst | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/common/state/state.h b/common/state/state.h
-index 855ba9d..bc6917d 100644
---- a/common/state/state.h
-+++ b/common/state/state.h
-@@ -190,7 +190,6 @@ struct state_string {
- 	char raw[];
- };
+diff --git a/Documentation/user/imd.rst b/Documentation/user/imd.rst
+index e0251d6..ce1b90c 100644
+--- a/Documentation/user/imd.rst
++++ b/Documentation/user/imd.rst
+@@ -22,7 +22,9 @@ The informations can be extracted with the ``bareboximd`` tool which lives under
+ ``scripts/`` in the barebox sourcecode. If enabled it is compiled for the compile
+ host and also for the target architecture. barebox itself has the :ref:`command_imd`
+ command to extract the informations. Here is an example output of the tool called
+-without additional options::
++without additional options:
++
++.. code-block:: none
  
--int state_set_dirty(struct param_d *p, void *priv);
- int state_from_node(struct state *state, struct device_node *node, bool create);
- struct device_node *state_to_node(struct state *state,
- 				  struct device_node *parent,
-diff --git a/common/state/state_variables.c b/common/state/state_variables.c
-index 4f82462..6f2b1ae 100644
---- a/common/state/state_variables.c
-+++ b/common/state/state_variables.c
-@@ -34,7 +34,7 @@
-  * @param priv
-  * @return
-  */
--int state_set_dirty(struct param_d *p, void *priv)
-+static int state_set_dirty(struct param_d *p, void *priv)
- {
- 	struct state *state = priv;
+   # imd barebox-phytec-pbab01dl-1gib.img
+   build: #890 Wed Jul 30 16:15:24 CEST 2014
+@@ -31,7 +33,9 @@ without additional options::
+   of_compatible: phytec,imx6x-pbab01 phytec,imx6dl-pfla02 fsl,imx6dl
+   model: Phytec phyFLEX-i.MX6 Duallite Carrier-Board
  
+-Single informations can be extracted with the ``-t <type>`` option::
++Single informations can be extracted with the ``-t <type>`` option:
++
++.. code-block:: none
+ 
+   # imd barebox-phytec-pbab01dl-1gib.img -t release
+   2014.07.0-00167-ge6632a9-dirty
 -- 
-2.8.1
+2.9.3
 
 
 _______________________________________________
