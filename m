@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bmcbC-0002sK-LA
- for barebox@lists.infradead.org; Wed, 21 Sep 2016 08:09:48 +0000
-Date: Wed, 21 Sep 2016 10:09:24 +0200
+ id 1bmcdm-0004et-TG
+ for barebox@lists.infradead.org; Wed, 21 Sep 2016 08:12:30 +0000
+Date: Wed, 21 Sep 2016 10:12:05 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160921080923.fdmn4k2ey2czh7l6@pengutronix.de>
-References: <20160917170731.GA30325@ravnborg.org>
+Message-ID: <20160921081205.djoln2ovpm7fr4ob@pengutronix.de>
+References: <1474359462-32142-1-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20160917170731.GA30325@ravnborg.org>
+In-Reply-To: <1474359462-32142-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,48 +22,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] strings: new command
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/3] ARM: i.MX6: remove duplicate clock initialization
+To: Jan Luebbe <jlu@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Sat, Sep 17, 2016 at 07:07:31PM +0200, Sam Ravnborg wrote:
-> From 724382cf9aa173b6ced9fd213bbb369d9a5e3739 Mon Sep 17 00:00:00 2001
-> From: Sam Ravnborg <sam@ravnborg.org>
-> Date: Sat, 17 Sep 2016 19:01:15 +0200
-> Subject: [PATCH 1/1] strings: new command
+On Tue, Sep 20, 2016 at 10:17:40AM +0200, Jan Luebbe wrote:
+> These registers are already set by imx6_ccm_probe (in clk-imx6.c) during
+> core_initcall, while imx6_init_lowlevel is only called during
+> postcore_initcall via imx_init in imx.c.
 > 
-> Implement a simple version of strings that will print
-> printable strings from one or more files.
-> Strings shall be at least 4 chars before thay are printed
-> 
-> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 > ---
-> 
-> I was in a situation where I missed "strings".
-> So here it is....
-> I started out with cat.c - but ended up re-writing everything.
-> 
-> It has seen light testing on my x86 box.
-> Ran it through checkpatch for good measure - fixed a few things.
-> 
-> The location in Makefile seems random, so I just put it next to cat.
-> 
-> Before applying please consider if strings is really
-> general useful in barebox.
+>  arch/arm/mach-imx/imx6.c | 9 ---------
+>  1 file changed, 9 deletions(-)
 
-The first thing I tried is "strings /dev/ram0" Which gave me quite a
-long list, especially when Linux was bootet before ;)
-
-I first thought this command might be useful for debugging, but probably
-it isn't because usually one wants to pipe the result through grep to
-limit the output. Also the next interesting thing to know is the
-position of a string which this command does not tell us.
-
-I won't apply it, but it's on the list for reference if someone wants to
-use it. Maybe he/she can then tell us a good reason why this command should
-be merged.
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+> index ba8fb8964ac8..dfd9a70200ec 100644
+> --- a/arch/arm/mach-imx/imx6.c
+> +++ b/arch/arm/mach-imx/imx6.c
+> @@ -56,15 +56,6 @@ void imx6_init_lowlevel(void)
+>  	writel(0, aips2 + 0x4c);
+>  	writel(0, aips2 + 0x50);
+>  
+> -	/* enable all clocks */
+> -	writel(0xffffffff, 0x020c4068);
+> -	writel(0xffffffff, 0x020c406c);
+> -	writel(0xffffffff, 0x020c4070);
+> -	writel(0xffffffff, 0x020c4074);
+> -	writel(0xffffffff, 0x020c4078);
+> -	writel(0xffffffff, 0x020c407c);
+> -	writel(0xffffffff, 0x020c4080);
+> -
+>  	/* Due to hardware limitation, on MX6Q we need to gate/ungate all PFDs
+>  	 * to make sure PFD is working right, otherwise, PFDs may
+>  	 * not output clock after reset, MX6DL and MX6SL have added 396M pfd
+> -- 
+> 2.1.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
