@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-in-11.arcor-online.net ([151.189.21.51])
+Received: from mail-in-05.arcor-online.net ([151.189.21.45])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bmcXY-0000bG-9S
- for barebox@lists.infradead.org; Wed, 21 Sep 2016 08:06:02 +0000
+ id 1bmcXo-0000do-HO
+ for barebox@lists.infradead.org; Wed, 21 Sep 2016 08:06:20 +0000
 From: Giorgio Dal Molin <iw3gtf@arcor.de>
-Date: Wed, 21 Sep 2016 10:04:42 +0200
-Message-Id: <20160921080443.21522-2-iw3gtf@arcor.de>
+Date: Wed, 21 Sep 2016 10:04:43 +0200
+Message-Id: <20160921080443.21522-3-iw3gtf@arcor.de>
 In-Reply-To: <20160921080443.21522-1-iw3gtf@arcor.de>
 References: <20160921080443.21522-1-iw3gtf@arcor.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,247 +21,125 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] mtd: UBI: add support (ioctl) for renaming ubi volumes.
+Subject: [PATCH 2/2] commands: ubi: added the new command 'ubirename' to
+ rename ubi volumes.
 To: barebox@lists.infradead.org
 Cc: Giorgio Dal Molin <giorgio.dal.molin@mobotix.com>, Giorgio Dal Molin <iw3gtf@arcor.de>
 
 From: Giorgio Dal Molin <giorgio.dal.molin@mobotix.com>
 
-The actual implementation was taken from the current linux kernel v4.7.4.
+The syntax was taken from the corresponding command of the 'mts-utils'
+userland package:
+
+# ubirename UBIDEV OLD_NAME NEW_NAME [OLD_NAME NEW_NAME ...]
 
 Signed-off-by: Giorgio Dal Molin <iw3gtf@arcor.de>
 ---
- drivers/mtd/ubi/barebox.c | 182 ++++++++++++++++++++++++++++++++++++++++++++--
- drivers/mtd/ubi/vmt.c     |   3 +
- 2 files changed, 180 insertions(+), 5 deletions(-)
+ commands/ubi.c | 87 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 87 insertions(+)
 
-diff --git a/drivers/mtd/ubi/barebox.c b/drivers/mtd/ubi/barebox.c
-index fc60aae..6d3bdaf 100644
---- a/drivers/mtd/ubi/barebox.c
-+++ b/drivers/mtd/ubi/barebox.c
-@@ -203,6 +203,168 @@ static int ubi_volume_cdev_ioctl(struct cdev *cdev, int cmd, void *buf)
- 	return err;
- }
- 
-+/**
-+ * rename_volumes - rename UBI volumes.
-+ * @ubi: UBI device description object
-+ * @req: volumes re-name request
-+ *
-+ * This is a helper function for the volume re-name IOCTL which validates the
-+ * the request, opens the volume and calls corresponding volumes management
-+ * function. Returns zero in case of success and a negative error code in case
-+ * of failure.
-+ */
-+static int rename_volumes(struct ubi_device *ubi,
-+			  struct ubi_rnvol_req *req)
+diff --git a/commands/ubi.c b/commands/ubi.c
+index 26b521f..3479340 100644
+--- a/commands/ubi.c
++++ b/commands/ubi.c
+@@ -6,6 +6,8 @@
+ #include <errno.h>
+ #include <getopt.h>
+ #include <linux/mtd/mtd.h>
++#include <linux/mtd/ubi.h>
++#include <libgen.h>
+ #include <linux/kernel.h>
+ #include <linux/stat.h>
+ #include <linux/mtd/mtd-abi.h>
+@@ -306,3 +308,88 @@ BAREBOX_CMD_START(ubirmvol)
+ 	BAREBOX_CMD_GROUP(CMD_GRP_PART)
+ 	BAREBOX_CMD_HELP(cmd_ubirmvol_help)
+ BAREBOX_CMD_END
++
++
++static int get_vol_id(const char *vol_name)
 +{
-+	int i, n, err;
-+	struct list_head rename_list;
-+	struct ubi_rename_entry *re, *re1;
++	struct ubi_volume_desc *desc;
++	struct cdev *vol_cdev;
++	struct ubi_volume_info vi;
 +
-+	if (req->count < 0 || req->count > UBI_MAX_RNVOL)
-+		return -EINVAL;
++	vol_cdev = cdev_by_name(vol_name);
++	if(!vol_cdev) {
++		perror("cdev_by_name");
++		return -1;
++	}
++	desc = ubi_open_volume_cdev(vol_cdev, UBI_READONLY);
++	if(IS_ERR(desc)) {
++		perror("ubi_open_volume_cdev");
++		return -1;
++	}
++	ubi_get_volume_info(desc, &vi);
++	ubi_close_volume(desc);
 +
-+	if (req->count == 0)
-+		return 0;
++	return vi.vol_id;
++};
 +
-+	/* Validate volume IDs and names in the request */
-+	for (i = 0; i < req->count; i++) {
-+		if (req->ents[i].vol_id < 0 ||
-+		    req->ents[i].vol_id >= ubi->vtbl_slots)
-+			return -EINVAL;
-+		if (req->ents[i].name_len < 0)
-+			return -EINVAL;
-+		if (req->ents[i].name_len > UBI_VOL_NAME_MAX)
-+			return -ENAMETOOLONG;
-+		req->ents[i].name[req->ents[i].name_len] = '\0';
-+		n = strlen(req->ents[i].name);
-+		if (n != req->ents[i].name_len)
-+			return -EINVAL;
++static int do_ubirename(int argc, char *argv[])
++{
++	struct ubi_rnvol_req req;
++	struct cdev *ubi_cd;
++	int i, j, fd, ret;
++
++	if ((argc < 4) || (argc % 2))
++		return COMMAND_ERROR_USAGE;
++
++	req.count = (argc / 2) - 1;
++	if (req.count > UBI_MAX_RNVOL) {
++		printf("too many volume renames. (max: %u)\n", UBI_MAX_RNVOL);
++		return COMMAND_ERROR_USAGE;
 +	}
 +
-+	/* Make sure volume IDs and names are unique */
-+	for (i = 0; i < req->count - 1; i++) {
-+		for (n = i + 1; n < req->count; n++) {
-+			if (req->ents[i].vol_id == req->ents[n].vol_id) {
-+				ubi_err(ubi, "duplicated volume id %d",
-+					req->ents[i].vol_id);
-+				return -EINVAL;
-+			}
-+			if (!strcmp(req->ents[i].name, req->ents[n].name)) {
-+				ubi_err(ubi, "duplicated volume name \"%s\"",
-+					req->ents[i].name);
-+				return -EINVAL;
-+			}
-+		}
++	ubi_cd = cdev_by_name(basename(argv[1]));
++	if(!ubi_cd || !ubi_cd->name || (strlen(ubi_cd->name)>127)) {
++		printf("arg 1 (%s) is not an ubi device.\n", argv[1]);
++		return COMMAND_ERROR_USAGE;
 +	}
 +
-+	/* Create the re-name list */
-+	INIT_LIST_HEAD(&rename_list);
-+	for (i = 0; i < req->count; i++) {
-+		int vol_id = req->ents[i].vol_id;
-+		int name_len = req->ents[i].name_len;
-+		const char *name = req->ents[i].name;
++	for(i=2, j=0; i<argc; ++j, i+=2) {
++		char vol_name[128 + UBI_MAX_VOLUME_NAME];
 +
-+		re = kzalloc(sizeof(struct ubi_rename_entry), GFP_KERNEL);
-+		if (!re) {
-+			err = -ENOMEM;
-+			goto out_free;
++		snprintf(vol_name, sizeof(vol_name), "%s.%s", ubi_cd->name, argv[i]);
++		req.ents[j].vol_id = get_vol_id(vol_name);
++		if(req.ents[j].vol_id < 0) {
++			printf("'%s' is not a volume name.\n", vol_name);
++			return COMMAND_ERROR_USAGE;
 +		}
-+
-+		re->desc = ubi_open_volume(ubi->ubi_num, vol_id, UBI_READONLY);
-+		if (IS_ERR(re->desc)) {
-+			err = PTR_ERR(re->desc);
-+			ubi_err(ubi, "cannot open volume %d, error %d",
-+				vol_id, err);
-+			kfree(re);
-+			goto out_free;
-+		}
-+
-+		/* Skip this re-naming if the name does not really change */
-+		if (re->desc->vol->name_len == name_len &&
-+		    !memcmp(re->desc->vol->name, name, name_len)) {
-+			ubi_close_volume(re->desc);
-+			kfree(re);
-+			continue;
-+		}
-+
-+		re->new_name_len = name_len;
-+		memcpy(re->new_name, name, name_len);
-+		list_add_tail(&re->list, &rename_list);
-+		dbg_gen("will rename volume %d from \"%s\" to \"%s\"",
-+			vol_id, re->desc->vol->name, name);
++		strncpy(req.ents[j].name, argv[i+1], UBI_MAX_VOLUME_NAME);
++		req.ents[j].name_len = strlen(req.ents[j].name);
 +	}
 +
-+	if (list_empty(&rename_list))
-+		return 0;
-+
-+	/* Find out the volumes which have to be removed */
-+	list_for_each_entry(re, &rename_list, list) {
-+		struct ubi_volume_desc *desc;
-+		int no_remove_needed = 0;
-+
-+		/*
-+		 * Volume @re->vol_id is going to be re-named to
-+		 * @re->new_name, while its current name is @name. If a volume
-+		 * with name @re->new_name currently exists, it has to be
-+		 * removed, unless it is also re-named in the request (@req).
-+		 */
-+		list_for_each_entry(re1, &rename_list, list) {
-+			if (re->new_name_len == re1->desc->vol->name_len &&
-+			    !memcmp(re->new_name, re1->desc->vol->name,
-+				    re1->desc->vol->name_len)) {
-+				no_remove_needed = 1;
-+				break;
-+			}
-+		}
-+
-+		if (no_remove_needed)
-+			continue;
-+
-+		/*
-+		 * It seems we need to remove volume with name @re->new_name,
-+		 * if it exists.
-+		 */
-+		desc = ubi_open_volume_nm(ubi->ubi_num, re->new_name,
-+					  UBI_EXCLUSIVE);
-+		if (IS_ERR(desc)) {
-+			err = PTR_ERR(desc);
-+			if (err == -ENODEV)
-+				/* Re-naming into a non-existing volume name */
-+				continue;
-+
-+			/* The volume exists but busy, or an error occurred */
-+			ubi_err(ubi, "cannot open volume \"%s\", error %d",
-+				re->new_name, err);
-+			goto out_free;
-+		}
-+
-+		re1 = kzalloc(sizeof(struct ubi_rename_entry), GFP_KERNEL);
-+		if (!re1) {
-+			err = -ENOMEM;
-+			ubi_close_volume(desc);
-+			goto out_free;
-+		}
-+
-+		re1->remove = 1;
-+		re1->desc = desc;
-+		list_add(&re1->list, &rename_list);
-+		dbg_gen("will remove volume %d, name \"%s\"",
-+			re1->desc->vol->vol_id, re1->desc->vol->name);
++	fd = open(argv[1], O_WRONLY);
++	if (fd < 0) {
++		perror("open");
++		return 1;
 +	}
 +
-+	mutex_lock(&ubi->device_mutex);
-+	err = ubi_rename_volumes(ubi, &rename_list);
-+	mutex_unlock(&ubi->device_mutex);
++	ret = ioctl(fd, UBI_IOCRNVOL, &req);
++	if (ret)
++		printf("failed to rename: %s\n", strerror(-ret));
 +
-+out_free:
-+	list_for_each_entry_safe(re, re1, &rename_list, list) {
-+		ubi_close_volume(re->desc);
-+		list_del(&re->list);
-+		kfree(re);
-+	}
-+	return err;
++	close(fd);
++
++	return ret ? 1 : 0;
++
 +}
 +
- static struct file_operations ubi_volume_fops = {
- 	.open	= ubi_volume_cdev_open,
- 	.close	= ubi_volume_cdev_close,
-@@ -261,10 +423,11 @@ static int ubi_cdev_ioctl(struct cdev *cdev, int cmd, void *buf)
- {
- 	struct ubi_volume_desc *desc;
- 	struct ubi_device *ubi = cdev->priv;
--	struct ubi_mkvol_req *req = buf;
- 
- 	switch (cmd) {
--	case UBI_IOCRMVOL:
-+	case UBI_IOCRMVOL: {
-+		struct ubi_mkvol_req *req = buf;
++BAREBOX_CMD_HELP_START(ubirename)
++BAREBOX_CMD_HELP_TEXT("Rename UBI volume(s) from UBIDEV")
++BAREBOX_CMD_HELP_END
 +
- 		desc = ubi_open_volume_nm(ubi->ubi_num, req->name,
-                                            UBI_EXCLUSIVE);
- 		if (IS_ERR(desc))
-@@ -272,13 +435,22 @@ static int ubi_cdev_ioctl(struct cdev *cdev, int cmd, void *buf)
- 		ubi_remove_volume(desc, 0);
- 		ubi_close_volume(desc);
- 		break;
--	case UBI_IOCMKVOL:
-+	}
-+	case UBI_IOCMKVOL: {
-+		struct ubi_mkvol_req *req = buf;
-+
- 		if (!req->bytes)
- 			req->bytes = (__s64)ubi->avail_pebs * ubi->leb_size;
- 		return ubi_create_volume(ubi, req);
--	};
-+	}
-+	case UBI_IOCRNVOL: {
-+		struct ubi_rnvol_req *req = buf;
- 
--	return 0;
-+		return rename_volumes(ubi, req);
-+	}
-+	default:
-+		return -ENOTTY;
-+	};
- }
- 
- static struct file_operations ubi_fops = {
-diff --git a/drivers/mtd/ubi/vmt.c b/drivers/mtd/ubi/vmt.c
-index 41b814c..ed04364 100644
---- a/drivers/mtd/ubi/vmt.c
-+++ b/drivers/mtd/ubi/vmt.c
-@@ -411,6 +411,9 @@ int ubi_rename_volumes(struct ubi_device *ubi, struct list_head *rename_list)
- 
- 			vol->name_len = re->new_name_len;
- 			memcpy(vol->name, re->new_name, re->new_name_len + 1);
-+			free(vol->cdev.name);
-+			vol->cdev.name = basprintf("%s.%s", ubi->cdev.name, vol->name);
-+			vol->cdev.size = vol->used_bytes;
- 			ubi_volume_notify(ubi, vol, UBI_VOLUME_RENAMED);
- 		}
- 	}
++BAREBOX_CMD_START(ubirename)
++	.cmd		= do_ubirename,
++	BAREBOX_CMD_DESC("rename UBI volume(s)")
++	BAREBOX_CMD_OPTS("UBIDEV OLD_NAME NEW_NAME [OLD_NAME NEW_NAME ...]")
++	BAREBOX_CMD_GROUP(CMD_GRP_PART)
++	BAREBOX_CMD_HELP(cmd_ubirename_help)
++BAREBOX_CMD_END
 -- 
 2.10.0
 
