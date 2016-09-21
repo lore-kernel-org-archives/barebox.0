@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-in-11.arcor-online.net ([151.189.21.51])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bmcKk-0008JS-Nn
- for barebox@lists.infradead.org; Wed, 21 Sep 2016 07:52:50 +0000
-Date: Wed, 21 Sep 2016 09:52:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160921075224.xuzb3gmvrre2unlo@pengutronix.de>
-References: <1474008220-7601-1-git-send-email-m.olbrich@pengutronix.de>
- <20160916111243.1dc2a3f16421fb33831817a0@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20160916111243.1dc2a3f16421fb33831817a0@gmail.com>
+ id 1bmcXQ-0000Js-9L
+ for barebox@lists.infradead.org; Wed, 21 Sep 2016 08:05:53 +0000
+Received: from mail-in-03-z2.arcor-online.net (mail-in-03-z2.arcor-online.net
+ [151.189.8.15])
+ by mx.arcor.de (Postfix) with ESMTP id 3sfBxz3Fncz34Lk
+ for <barebox@lists.infradead.org>; Wed, 21 Sep 2016 10:05:27 +0200 (CEST)
+From: Giorgio Dal Molin <iw3gtf@arcor.de>
+Date: Wed, 21 Sep 2016 10:04:41 +0200
+Message-Id: <20160921080443.21522-1-iw3gtf@arcor.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,53 +18,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] state: copy backend of_path string
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Michael Olbrich <m.olbrich@pengutronix.de>
+Subject: [PATCH 0/2] added support for renaming UBI volumes.
+To: barebox@lists.infradead.org
+Cc: Giorgio Dal Molin <iw3gtf@arcor.de>
 
-On Fri, Sep 16, 2016 at 11:12:43AM +0300, Antony Pavlov wrote:
-> On Fri, 16 Sep 2016 08:43:38 +0200
-> Michael Olbrich <m.olbrich@pengutronix.de> wrote:
-> =
+These two patches implement the ioctl UBI_IOCRNVOL for UBI devices and a new
+command, 'ubirename' that calls the ioctl from the shell to rename UBI volumes.
 
-> > Caching pointers to device tree nodes or names is not save. The barebox
->                                                         ^^^^ safe?
+The ioctl implementation was ported from the linux kernel v4.7.4, with minimal
+changes; a further change was needed for the function 'ubi_rename_volumes()' in
+drivers/mtd/ubi/vmt.c to also change the name(s) of the file(s) corresponding to
+the renamed UBI volumes under /dev/...
 
-Fixed, thanks
+Expecially this last change needs to be reviewed and validated by a barebox
+developer more experienced than me.
 
-Sascha
+	
+Giorgio Dal Molin (2):
+  mtd: UBI: add support (ioctl) for renaming ubi volumes.
+  commands: ubi: added the new command 'ubirename' to rename ubi
+    volumes.
 
-> > internal device tree may be changed by loading a new device tree or thr=
-ough
-> > fixup handlers. As a result, the string may be deleted.
-> > Use local copies of the full path instead.
-> > =
+ commands/ubi.c            |  87 ++++++++++++++++++++++
+ drivers/mtd/ubi/barebox.c | 182 ++++++++++++++++++++++++++++++++++++++++++++--
+ drivers/mtd/ubi/vmt.c     |   3 +
+ 3 files changed, 267 insertions(+), 5 deletions(-)
 
-> > Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
-> =
+-- 
+2.10.0
 
-> --=A0
-> Best regards,
-> =A0 Antony Pavlov
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> =
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
