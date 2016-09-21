@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp1-g21.free.fr ([212.27.42.1])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bmceO-0004zd-T2
- for barebox@lists.infradead.org; Wed, 21 Sep 2016 08:13:07 +0000
-Date: Wed, 21 Sep 2016 10:12:42 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160921081242.j7rtr4yu6ofjnjgf@pengutronix.de>
-References: <20160920141301.10187-1-antonynpavlov@gmail.com>
+ id 1bmd5Y-0007Nl-05
+ for barebox@lists.infradead.org; Wed, 21 Sep 2016 08:41:09 +0000
+Received: from zimbra32-e6.priv.proxad.net (unknown [172.20.243.182])
+ by smtp1-g21.free.fr (Postfix) with ESMTP id 096FDB00576
+ for <barebox@lists.infradead.org>; Wed, 21 Sep 2016 10:40:43 +0200 (CEST)
+Date: Wed, 21 Sep 2016 10:40:43 +0200 (CEST)
+From: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+Message-ID: <220039379.350137727.1474447243380.JavaMail.root@zimbra32-e6.priv.proxad.net>
+In-Reply-To: <122759075.350079920.1474446203319.JavaMail.root@zimbra32-e6.priv.proxad.net>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20160920141301.10187-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,62 +23,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: imd: fix sphinx warning
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: How to port brcmnand Linux driver?
+To: barebox@lists.infradead.org
 
-On Tue, Sep 20, 2016 at 05:13:01PM +0300, Antony Pavlov wrote:
-> The patch fixes this sphinx warnings:
-> 
->     barebox/Documentation/user/imd.rst:27: WARNING: Could not lex literal_block as "c". Highlighting skipped.
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  Documentation/user/imd.rst | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+Hi!
 
-Applied, thanks
+I'm trying to port the brcmnand driver for Broadcom NAND controller from Linux.
+This driver requires an update of the MTD headers in barebox, as they lack 
+definitions for functions such as mtd_set_ooblayout().
 
-Sascha
+What is the recommended strategy for this? Should I update the whole set of
+headers and report the barebox specific changes (use of device_d, etc) or only
+add the missing functions?
 
-> 
-> diff --git a/Documentation/user/imd.rst b/Documentation/user/imd.rst
-> index e0251d6..ce1b90c 100644
-> --- a/Documentation/user/imd.rst
-> +++ b/Documentation/user/imd.rst
-> @@ -22,7 +22,9 @@ The informations can be extracted with the ``bareboximd`` tool which lives under
->  ``scripts/`` in the barebox sourcecode. If enabled it is compiled for the compile
->  host and also for the target architecture. barebox itself has the :ref:`command_imd`
->  command to extract the informations. Here is an example output of the tool called
-> -without additional options::
-> +without additional options:
-> +
-> +.. code-block:: none
->  
->    # imd barebox-phytec-pbab01dl-1gib.img
->    build: #890 Wed Jul 30 16:15:24 CEST 2014
-> @@ -31,7 +33,9 @@ without additional options::
->    of_compatible: phytec,imx6x-pbab01 phytec,imx6dl-pfla02 fsl,imx6dl
->    model: Phytec phyFLEX-i.MX6 Duallite Carrier-Board
->  
-> -Single informations can be extracted with the ``-t <type>`` option::
-> +Single informations can be extracted with the ``-t <type>`` option:
-> +
-> +.. code-block:: none
->  
->    # imd barebox-phytec-pbab01dl-1gib.img -t release
->    2014.07.0-00167-ge6632a9-dirty
-> -- 
-> 2.9.3
-> 
-> 
+In general, when adding such driver, should the functions unsupported by barebox
+(irq handling, memory barriers, etc) be stubbed or removed?
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best regards,
+
+--
+ELB
 
 _______________________________________________
 barebox mailing list
