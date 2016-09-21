@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-in-05.arcor-online.net ([151.189.21.45])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bmcXo-0000do-HO
- for barebox@lists.infradead.org; Wed, 21 Sep 2016 08:06:20 +0000
-From: Giorgio Dal Molin <iw3gtf@arcor.de>
-Date: Wed, 21 Sep 2016 10:04:43 +0200
-Message-Id: <20160921080443.21522-3-iw3gtf@arcor.de>
-In-Reply-To: <20160921080443.21522-1-iw3gtf@arcor.de>
-References: <20160921080443.21522-1-iw3gtf@arcor.de>
+ id 1bmcbC-0002sK-LA
+ for barebox@lists.infradead.org; Wed, 21 Sep 2016 08:09:48 +0000
+Date: Wed, 21 Sep 2016 10:09:24 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160921080923.fdmn4k2ey2czh7l6@pengutronix.de>
+References: <20160917170731.GA30325@ravnborg.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20160917170731.GA30325@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,133 +18,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] commands: ubi: added the new command 'ubirename' to
- rename ubi volumes.
-To: barebox@lists.infradead.org
-Cc: Giorgio Dal Molin <giorgio.dal.molin@mobotix.com>, Giorgio Dal Molin <iw3gtf@arcor.de>
+Subject: Re: [PATCH] strings: new command
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-From: Giorgio Dal Molin <giorgio.dal.molin@mobotix.com>
+On Sat, Sep 17, 2016 at 07:07:31PM +0200, Sam Ravnborg wrote:
+> From 724382cf9aa173b6ced9fd213bbb369d9a5e3739 Mon Sep 17 00:00:00 2001
+> From: Sam Ravnborg <sam@ravnborg.org>
+> Date: Sat, 17 Sep 2016 19:01:15 +0200
+> Subject: [PATCH 1/1] strings: new command
+> 
+> Implement a simple version of strings that will print
+> printable strings from one or more files.
+> Strings shall be at least 4 chars before thay are printed
+> 
+> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> ---
+> 
+> I was in a situation where I missed "strings".
+> So here it is....
+> I started out with cat.c - but ended up re-writing everything.
+> 
+> It has seen light testing on my x86 box.
+> Ran it through checkpatch for good measure - fixed a few things.
+> 
+> The location in Makefile seems random, so I just put it next to cat.
+> 
+> Before applying please consider if strings is really
+> general useful in barebox.
 
-The syntax was taken from the corresponding command of the 'mts-utils'
-userland package:
+The first thing I tried is "strings /dev/ram0" Which gave me quite a
+long list, especially when Linux was bootet before ;)
 
-# ubirename UBIDEV OLD_NAME NEW_NAME [OLD_NAME NEW_NAME ...]
+I first thought this command might be useful for debugging, but probably
+it isn't because usually one wants to pipe the result through grep to
+limit the output. Also the next interesting thing to know is the
+position of a string which this command does not tell us.
 
-Signed-off-by: Giorgio Dal Molin <iw3gtf@arcor.de>
----
- commands/ubi.c | 87 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 87 insertions(+)
+I won't apply it, but it's on the list for reference if someone wants to
+use it. Maybe he/she can then tell us a good reason why this command should
+be merged.
 
-diff --git a/commands/ubi.c b/commands/ubi.c
-index 26b521f..3479340 100644
---- a/commands/ubi.c
-+++ b/commands/ubi.c
-@@ -6,6 +6,8 @@
- #include <errno.h>
- #include <getopt.h>
- #include <linux/mtd/mtd.h>
-+#include <linux/mtd/ubi.h>
-+#include <libgen.h>
- #include <linux/kernel.h>
- #include <linux/stat.h>
- #include <linux/mtd/mtd-abi.h>
-@@ -306,3 +308,88 @@ BAREBOX_CMD_START(ubirmvol)
- 	BAREBOX_CMD_GROUP(CMD_GRP_PART)
- 	BAREBOX_CMD_HELP(cmd_ubirmvol_help)
- BAREBOX_CMD_END
-+
-+
-+static int get_vol_id(const char *vol_name)
-+{
-+	struct ubi_volume_desc *desc;
-+	struct cdev *vol_cdev;
-+	struct ubi_volume_info vi;
-+
-+	vol_cdev = cdev_by_name(vol_name);
-+	if(!vol_cdev) {
-+		perror("cdev_by_name");
-+		return -1;
-+	}
-+	desc = ubi_open_volume_cdev(vol_cdev, UBI_READONLY);
-+	if(IS_ERR(desc)) {
-+		perror("ubi_open_volume_cdev");
-+		return -1;
-+	}
-+	ubi_get_volume_info(desc, &vi);
-+	ubi_close_volume(desc);
-+
-+	return vi.vol_id;
-+};
-+
-+static int do_ubirename(int argc, char *argv[])
-+{
-+	struct ubi_rnvol_req req;
-+	struct cdev *ubi_cd;
-+	int i, j, fd, ret;
-+
-+	if ((argc < 4) || (argc % 2))
-+		return COMMAND_ERROR_USAGE;
-+
-+	req.count = (argc / 2) - 1;
-+	if (req.count > UBI_MAX_RNVOL) {
-+		printf("too many volume renames. (max: %u)\n", UBI_MAX_RNVOL);
-+		return COMMAND_ERROR_USAGE;
-+	}
-+
-+	ubi_cd = cdev_by_name(basename(argv[1]));
-+	if(!ubi_cd || !ubi_cd->name || (strlen(ubi_cd->name)>127)) {
-+		printf("arg 1 (%s) is not an ubi device.\n", argv[1]);
-+		return COMMAND_ERROR_USAGE;
-+	}
-+
-+	for(i=2, j=0; i<argc; ++j, i+=2) {
-+		char vol_name[128 + UBI_MAX_VOLUME_NAME];
-+
-+		snprintf(vol_name, sizeof(vol_name), "%s.%s", ubi_cd->name, argv[i]);
-+		req.ents[j].vol_id = get_vol_id(vol_name);
-+		if(req.ents[j].vol_id < 0) {
-+			printf("'%s' is not a volume name.\n", vol_name);
-+			return COMMAND_ERROR_USAGE;
-+		}
-+		strncpy(req.ents[j].name, argv[i+1], UBI_MAX_VOLUME_NAME);
-+		req.ents[j].name_len = strlen(req.ents[j].name);
-+	}
-+
-+	fd = open(argv[1], O_WRONLY);
-+	if (fd < 0) {
-+		perror("open");
-+		return 1;
-+	}
-+
-+	ret = ioctl(fd, UBI_IOCRNVOL, &req);
-+	if (ret)
-+		printf("failed to rename: %s\n", strerror(-ret));
-+
-+	close(fd);
-+
-+	return ret ? 1 : 0;
-+
-+}
-+
-+BAREBOX_CMD_HELP_START(ubirename)
-+BAREBOX_CMD_HELP_TEXT("Rename UBI volume(s) from UBIDEV")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(ubirename)
-+	.cmd		= do_ubirename,
-+	BAREBOX_CMD_DESC("rename UBI volume(s)")
-+	BAREBOX_CMD_OPTS("UBIDEV OLD_NAME NEW_NAME [OLD_NAME NEW_NAME ...]")
-+	BAREBOX_CMD_GROUP(CMD_GRP_PART)
-+	BAREBOX_CMD_HELP(cmd_ubirename_help)
-+BAREBOX_CMD_END
+Sascha
+
 -- 
-2.10.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
