@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bmw8D-0007iV-Cr
- for barebox@lists.infradead.org; Thu, 22 Sep 2016 05:01:10 +0000
-Received: from ravnborg.org (unknown [188.228.89.252])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by asavdk3.altibox.net (Postfix) with ESMTPS id 409712001E
- for <barebox@lists.infradead.org>; Thu, 22 Sep 2016 07:00:42 +0200 (CEST)
-Date: Thu, 22 Sep 2016 07:00:41 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20160922050041.GA12923@ravnborg.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+ id 1bmylg-0006Sx-Nt
+ for barebox@lists.infradead.org; Thu, 22 Sep 2016 07:50:06 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 22 Sep 2016 09:49:26 +0200
+Message-Id: <1474530566-23625-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1474530566-23625-1-git-send-email-s.hauer@pengutronix.de>
+References: <1474530566-23625-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,55 +16,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] environment: "wrong magic" give the impression of an error
+Subject: [PATCH 4/4] mtd: ubi: remove now unused ioctls
 To: Barebox List <barebox@lists.infradead.org>
 
-From 144e3252f9604e44c48f90735489611f636e3e36 Mon Sep 17 00:00:00 2001
-From: Sam Ravnborg <srn@skov.dk>
-Date: Thu, 22 Sep 2016 06:54:42 +0200
-Subject: [PATCH 1/1] environment: "wrong magic" give the impression of an
- error
+The only ioctl needed is the one to get the ubi_num from a file
+descriptor. The remaining ioctls are now implemented as regular
+function calls.
 
-Introduce a more soft wording when the magic of
-the superblock does not match.
-Include a hint to the typical reason "(envfs never written?)"
-
-This prevents a "what is wrong?" moment when looking at
-the boot log.
-
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/environment.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/ubi/barebox.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/common/environment.c b/common/environment.c
-index db127d7..e0dfc12 100644
---- a/common/environment.c
-+++ b/common/environment.c
-@@ -382,7 +382,7 @@ EXPORT_SYMBOL(envfs_save);
- static int envfs_check_super(struct envfs_super *super, size_t *size)
+diff --git a/drivers/mtd/ubi/barebox.c b/drivers/mtd/ubi/barebox.c
+index cb9223e..23c4bfd 100644
+--- a/drivers/mtd/ubi/barebox.c
++++ b/drivers/mtd/ubi/barebox.c
+@@ -282,23 +282,14 @@ int ubi_api_remove_volume(struct ubi_volume_desc *desc, int no_vtbl)
+ 
+ static int ubi_cdev_ioctl(struct cdev *cdev, int cmd, void *buf)
  {
- 	if (ENVFS_32(super->magic) != ENVFS_MAGIC) {
--		printf("envfs: wrong magic\n");
-+		printf("envfs: no envfs (magic mismatch) - envfs newer written?\n");
- 		return -EIO;
- 	}
+-	struct ubi_volume_desc *desc;
+ 	struct ubi_device *ubi = cdev->priv;
+-	struct ubi_mkvol_req *req = buf;
  
-@@ -436,7 +436,7 @@ static int envfs_load_data(struct envfs_super *super, void *buf, size_t size,
- 		buf += sizeof(struct envfs_inode);
- 
- 		if (ENVFS_32(inode->magic) != ENVFS_INODE_MAGIC) {
--			printf("envfs: wrong magic\n");
-+			printf("envfs: no envfs (magic mismatch) - envfs newer written?\n");
- 			ret = -EIO;
- 			goto out;
- 		}
+ 	switch (cmd) {
+-	case UBI_IOCRMVOL:
+-		desc = ubi_open_volume_nm(ubi->ubi_num, req->name,
+-                                           UBI_EXCLUSIVE);
+-		if (IS_ERR(desc))
+-			return PTR_ERR(desc);
+-		ubi_remove_volume(desc, 0);
+-		ubi_close_volume(desc);
+-		break;
+-	case UBI_IOCMKVOL:
+-		if (!req->bytes)
+-			req->bytes = (__s64)ubi->avail_pebs * ubi->leb_size;
+-		return ubi_create_volume(ubi, req);
++	/*
++	 * Only supported ioctl is a barebox specific one to get the ubi_num
++	 * from the file descriptor. The rest is implemented as function calls
++	 * directly.
++	 */
+ 	case UBI_IOCGETUBINUM:
+ 		*(u32 *)buf = ubi->ubi_num;
+ 		break;
 -- 
-1.8.3.1
+2.8.1
 
 
 _______________________________________________
