@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bmyzf-0004g1-Rk
- for barebox@lists.infradead.org; Thu, 22 Sep 2016 08:04:35 +0000
-Date: Thu, 22 Sep 2016 10:04:08 +0200
+ id 1bmz41-0007kh-Ik
+ for barebox@lists.infradead.org; Thu, 22 Sep 2016 08:09:02 +0000
+Date: Thu, 22 Sep 2016 10:08:39 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160922080408.rpqeithibjfga2rm@pengutronix.de>
-References: <20160921080443.21522-1-iw3gtf@arcor.de>
- <20160921080443.21522-3-iw3gtf@arcor.de>
+Message-ID: <20160922080839.ypjpltpcdsyjmle5@pengutronix.de>
+References: <20160922050041.GA12923@ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20160921080443.21522-3-iw3gtf@arcor.de>
+In-Reply-To: <20160922050041.GA12923@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,77 +22,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] commands: ubi: added the new command 'ubirename' to
- rename ubi volumes.
-To: Giorgio Dal Molin <iw3gtf@arcor.de>
-Cc: barebox@lists.infradead.org, Giorgio Dal Molin <giorgio.dal.molin@mobotix.com>
+Subject: Re: [PATCH] environment: "wrong magic" give the impression of an error
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Sep 21, 2016 at 10:04:43AM +0200, Giorgio Dal Molin wrote:
-> From: Giorgio Dal Molin <giorgio.dal.molin@mobotix.com>
+Hi Sam,
+
+On Thu, Sep 22, 2016 at 07:00:41AM +0200, Sam Ravnborg wrote:
+> From 144e3252f9604e44c48f90735489611f636e3e36 Mon Sep 17 00:00:00 2001
+> From: Sam Ravnborg <srn@skov.dk>
+> Date: Thu, 22 Sep 2016 06:54:42 +0200
+> Subject: [PATCH 1/1] environment: "wrong magic" give the impression of an
+>  error
 > 
-> The syntax was taken from the corresponding command of the 'mts-utils'
-> userland package:
+> Introduce a more soft wording when the magic of
+> the superblock does not match.
+> Include a hint to the typical reason "(envfs never written?)"
 > 
-> # ubirename UBIDEV OLD_NAME NEW_NAME [OLD_NAME NEW_NAME ...]
+> This prevents a "what is wrong?" moment when looking at
+> the boot log.
 > 
-> Signed-off-by: Giorgio Dal Molin <iw3gtf@arcor.de>
+> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 > ---
->  commands/ubi.c | 87 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 87 insertions(+)
+>  common/environment.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/commands/ubi.c b/commands/ubi.c
-> index 26b521f..3479340 100644
-> --- a/commands/ubi.c
-> +++ b/commands/ubi.c
-> @@ -6,6 +6,8 @@
->  #include <errno.h>
->  #include <getopt.h>
->  #include <linux/mtd/mtd.h>
-> +#include <linux/mtd/ubi.h>
-> +#include <libgen.h>
->  #include <linux/kernel.h>
->  #include <linux/stat.h>
->  #include <linux/mtd/mtd-abi.h>
-> @@ -306,3 +308,88 @@ BAREBOX_CMD_START(ubirmvol)
->  	BAREBOX_CMD_GROUP(CMD_GRP_PART)
->  	BAREBOX_CMD_HELP(cmd_ubirmvol_help)
->  BAREBOX_CMD_END
-> +
-> +
-> +static int get_vol_id(const char *vol_name)
-> +{
-> +	struct ubi_volume_desc *desc;
-> +	struct cdev *vol_cdev;
-> +	struct ubi_volume_info vi;
-> +
-> +	vol_cdev = cdev_by_name(vol_name);
-> +	if(!vol_cdev) {
-> +		perror("cdev_by_name");
-> +		return -1;
-> +	}
-> +	desc = ubi_open_volume_cdev(vol_cdev, UBI_READONLY);
-> +	if(IS_ERR(desc)) {
-> +		perror("ubi_open_volume_cdev");
-> +		return -1;
-> +	}
-> +	ubi_get_volume_info(desc, &vi);
-> +	ubi_close_volume(desc);
-> +
-> +	return vi.vol_id;
-> +};
+> diff --git a/common/environment.c b/common/environment.c
+> index db127d7..e0dfc12 100644
+> --- a/common/environment.c
+> +++ b/common/environment.c
+> @@ -382,7 +382,7 @@ EXPORT_SYMBOL(envfs_save);
+>  static int envfs_check_super(struct envfs_super *super, size_t *size)
+>  {
+>  	if (ENVFS_32(super->magic) != ENVFS_MAGIC) {
+> -		printf("envfs: wrong magic\n");
+> +		printf("envfs: no envfs (magic mismatch) - envfs newer written?\n");
 
-This get_vol_id() is not particularly nice. Also I do not like having
-the rename operation inside the ioctl parser as this means we cannot
-make the ubirename code optional for users that do not need renaming.
+When the super block cannot be found it could indeed be that an envfs
+was never written,...
 
-I just sent out a series which should help you in this regard. Can you
-base your code ontop of this?
+>  		return -EIO;
+>  	}
+>  
+> @@ -436,7 +436,7 @@ static int envfs_load_data(struct envfs_super *super, void *buf, size_t size,
+>  		buf += sizeof(struct envfs_inode);
+>  
+>  		if (ENVFS_32(inode->magic) != ENVFS_INODE_MAGIC) {
+> -			printf("envfs: wrong magic\n");
+> +			printf("envfs: no envfs (magic mismatch) - envfs newer written?\n");
 
-You should be able to get the vol_id with ubi_open_volume_nm() followed
-by ubi_get_volume_info().
-
-The rename_volumes() from patch #1 should become a
-ubi_api_rename_volumes() directly called from the command code.
+... but when the super block is fine then a failure to read the data is
+really that - a failure, no?
 
 Sascha
 
