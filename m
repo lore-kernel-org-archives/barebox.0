@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bn5HF-0004VX-Nq
- for barebox@lists.infradead.org; Thu, 22 Sep 2016 14:47:08 +0000
+ id 1bn5HF-0004VW-Nt
+ for barebox@lists.infradead.org; Thu, 22 Sep 2016 14:47:07 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Thu, 22 Sep 2016 16:46:38 +0200
-Message-Id: <20160922144639.28305-2-s.trumtrar@pengutronix.de>
+Date: Thu, 22 Sep 2016 16:46:39 +0200
+Message-Id: <20160922144639.28305-3-s.trumtrar@pengutronix.de>
 In-Reply-To: <20160922144639.28305-1-s.trumtrar@pengutronix.de>
 References: <20160922144639.28305-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,80 +21,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] nand: denali: use is_timeout in while loop
+Subject: [PATCH 3/3] nand: denali: get rid of compile-time debug information
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Instead of using udelay and a countdown, use the is_timeout function.
-Also, move the code closer to the kernel version, i.e. check for the
-correct bank and clean the interrupt status.
+Remove dev_dbgs containing __FILE__ and __LINE__ and no other
+interesting debug informations.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/mtd/nand/nand_denali.c | 39 +++++++++++++++++++++++----------------
- 1 file changed, 23 insertions(+), 16 deletions(-)
+ drivers/mtd/nand/nand_denali.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
 diff --git a/drivers/mtd/nand/nand_denali.c b/drivers/mtd/nand/nand_denali.c
-index ceb5a8b87e42..6a6c0e462514 100644
+index 6a6c0e462514..8b09b3722fd9 100644
 --- a/drivers/mtd/nand/nand_denali.c
 +++ b/drivers/mtd/nand/nand_denali.c
-@@ -25,6 +25,7 @@
- #include <linux/mtd/mtd.h>
- #include <linux/mtd/nand.h>
- #include <io.h>
-+#include <clock.h>
- #include <of_mtd.h>
- #include <errno.h>
- #include <asm/io.h>
-@@ -633,26 +634,32 @@ static uint32_t read_interrupt_status(struct denali_nand_info *denali)
- 
- static uint32_t wait_for_irq(struct denali_nand_info *denali, uint32_t irq_mask)
+@@ -174,9 +174,6 @@ static uint16_t denali_nand_reset(struct denali_nand_info *denali)
  {
--	unsigned long comp_res = 1000;
- 	uint32_t intr_status = 0;
-+	uint64_t start;
+ 	int i;
  
--	do {
-+	if (!is_flash_bank_valid(denali->flash_bank)) {
-+		dev_dbg(denali->dev, "No valid chip selected (%d)\n",
-+			denali->flash_bank);
-+		return 0;
-+	}
-+
-+	start = get_time_ns();
-+
-+	while (!is_timeout(start, 1000 * MSECOND)) {
- 		intr_status = read_interrupt_status(denali);
--		if (intr_status & irq_mask) {
--			/* our interrupt was detected */
--			break;
--		}
--		udelay(1);
--		comp_res--;
--	} while (comp_res != 0);
+-	dev_dbg(denali->dev, "%s, Line %d, Function: %s\n",
+-		__FILE__, __LINE__, __func__);
 -
--	if (comp_res == 0) {
--		/* timeout */
--		intr_status = 0;
--		dev_dbg(denali->dev, "timeout occurred, status = 0x%x, mask = 0x%x\n",
--				intr_status, irq_mask);
-+
-+		if (intr_status != 0)
-+			clear_interrupt(denali, intr_status);
-+
-+		if (intr_status & irq_mask)
-+			return intr_status;
- 	}
--	return intr_status;
-+
-+	/* timeout */
-+	dev_dbg(denali->dev, "timeout occurred, status = 0x%x, mask = 0x%x\n",
-+		intr_status, irq_mask);
-+
-+	return 0;
- }
+ 	for (i = 0; i < denali->max_banks; i++)
+ 		iowrite32(INTR_STATUS__RST_COMP | INTR_STATUS__TIME_OUT,
+ 		denali->flash_reg + INTR_STATUS(i));
+@@ -227,9 +224,6 @@ static void nand_onfi_timing_set(struct denali_nand_info *denali,
+ 	uint16_t acc_clks;
+ 	uint16_t addr_2_data, re_2_we, re_2_re, we_2_re, cs_cnt;
  
- /*
+-	dev_dbg(denali->dev, "%s, Line %d, Function: %s\n",
+-		__FILE__, __LINE__, __func__);
+-
+ 	en_lo = CEIL_DIV(Trp[mode], CLK_X);
+ 	en_hi = CEIL_DIV(Treh[mode], CLK_X);
+ #if ONFI_BLOOM_TIME
+@@ -492,9 +486,6 @@ static uint16_t denali_nand_timing_set(struct denali_nand_info *denali)
+ 	uint8_t maf_id, device_id;
+ 	int i;
+ 
+-	dev_dbg(denali->dev, "%s, Line %d, Function: %s\n",
+-			__FILE__, __LINE__, __func__);
+-
+ 	/*
+ 	 * Use read id method to get device ID and other params.
+ 	 * For some NAND chips, controller can't report the correct
+@@ -551,9 +542,6 @@ static uint16_t denali_nand_timing_set(struct denali_nand_info *denali)
+ static void denali_set_intr_modes(struct denali_nand_info *denali,
+ 					uint16_t INT_ENABLE)
+ {
+-	dev_dbg(denali->dev, "%s, Line %d, Function: %s\n",
+-		__FILE__, __LINE__, __func__);
+-
+ 	if (INT_ENABLE)
+ 		iowrite32(1, denali->flash_reg + GLOBAL_INT_ENABLE);
+ 	else
 -- 
 2.9.3
 
