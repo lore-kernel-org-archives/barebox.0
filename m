@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bmz6U-00011q-Ra
- for barebox@lists.infradead.org; Thu, 22 Sep 2016 08:11:35 +0000
+ id 1bmz6U-00011p-Rb
+ for barebox@lists.infradead.org; Thu, 22 Sep 2016 08:11:38 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 22 Sep 2016 10:11:12 +0200
-Message-Id: <1474531872-15000-4-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 22 Sep 2016 10:11:10 +0200
+Message-Id: <1474531872-15000-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1474531872-15000-1-git-send-email-s.hauer@pengutronix.de>
 References: <1474531872-15000-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,156 +21,107 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] globalvar: Also create globalvars from for nonvolatile
- device vars
+Subject: [PATCH 2/4] global: Make 'global' command behaviour consistent to 'nv'
 To: Barebox List <barebox@lists.infradead.org>
 
-nv variables beginning with "nv.dev.<devname>.<varname>" are directly
-mirrored to <devname>.<varname> and there is no globalvar for it. To
-make it a bit more consistent and to increase the visibility of the
-nonvolatile device variables create globalvars for them aswell.
-
-With this the propagation flow has changed from:
-
-nv.dev.<devname>.<varname>
-  -> <devname>.<varname>
-
-to:
-
-nv.dev.<devname>.<varname>
-  -> global.dev.<devname>.<varname>
-    -> <devname>.<varname>
+The 'nv' command can add/remove multiple variables. Implement that
+for the 'global' command aswell. Also with the 'nv' command the -r
+option is for removal of variables, not for "set match". Looking at
+the users of "global -r" the only user uses the command for removal
+of variables and not for "Setting multiple variables to the same value"
+as stated in the command help text. Let "global -r" remove variables
+aswell.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/globalvar.c | 75 ++++++++++++++++++++++--------------------------------
- 1 file changed, 30 insertions(+), 45 deletions(-)
+ arch/arm/boards/at91sam9m10ihd/env/boot/android |  2 +-
+ commands/global.c                               | 35 ++++++++++++-------------
+ 2 files changed, 18 insertions(+), 19 deletions(-)
 
-diff --git a/common/globalvar.c b/common/globalvar.c
-index 8f37c99..a2555cf 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -179,34 +179,14 @@ static int nvvar_device_dispatch(const char *name, struct device_d **dev,
- static int nv_set(struct device_d *dev, struct param_d *p, const char *val)
+diff --git a/arch/arm/boards/at91sam9m10ihd/env/boot/android b/arch/arm/boards/at91sam9m10ihd/env/boot/android
+index 8492e41..ce5aa32 100644
+--- a/arch/arm/boards/at91sam9m10ihd/env/boot/android
++++ b/arch/arm/boards/at91sam9m10ihd/env/boot/android
+@@ -3,4 +3,4 @@
+ global.bootm.image="/dev/nand0.kernel.bb"
+ global.linux.bootargs.dyn.root="root=/dev/mtdblock1 rootfstype=jffs2 rw init=/init rootdelay=1"
+ # clean the mtdparts otherwise android does not boot
+-global -r linux.mtdparts.
++global -r "linux.mtdparts.*"
+diff --git a/commands/global.c b/commands/global.c
+index 581913d..d21b829 100644
+--- a/commands/global.c
++++ b/commands/global.c
+@@ -25,14 +25,14 @@
+ 
+ static int do_global(int argc, char *argv[])
  {
- 	int ret;
--	int devspace;
--	struct device_d *rdev;
--	const char *pname;
+-	int opt;
+-	int do_set_match = 0;
++	int opt, i;
++	int do_remove = 0;
+ 	char *value;
  
- 	if (!val)
- 		val = "";
+ 	while ((opt = getopt(argc, argv, "r")) > 0) {
+ 		switch (opt) {
+ 		case 'r':
+-			do_set_match = 1;
++			do_remove = 1;
+ 			break;
+ 		}
+ 	}
+@@ -45,37 +45,36 @@ static int do_global(int argc, char *argv[])
+ 	argc -= optind;
+ 	argv += optind;
  
--	ret = nvvar_device_dispatch(p->name, &rdev, &pname);
--	if (ret < 0)
-+	ret = dev_set_param(&global_device, p->name, val);
-+	if (ret)
- 		return ret;
+-	if (argc != 1)
++	if (argc < 1)
+ 		return COMMAND_ERROR_USAGE;
  
--	devspace = ret;
--
--	if (devspace) {
--		if (rdev) {
--			ret = dev_set_param(rdev, pname, val);
--			if (ret) {
--				pr_err("Cannot init param from nv: %s.%s=%s: %s\n",
--					dev_name(rdev), pname, val, strerror(-ret));
--				return ret;
--			}
--		}
--	} else {
--		ret = dev_set_param(&global_device, p->name, val);
--		if (ret)
--			return ret;
+-	value = strchr(argv[0], '=');
+-	if (value) {
+-		*value = 0;
+-		value++;
 -	}
 -
- 	free(p->value);
- 	p->value = xstrdup(val);
+-	if (do_set_match) {
+-		if (!value)
+-			value = "";
++	for (i = 0; i < argc; i++) {
++		value = strchr(argv[i], '=');
++		if (value) {
++			*value = 0;
++			value++;
++		}
  
-@@ -233,19 +213,10 @@ static int __nvvar_add(const char *name, const char *value)
- {
- 	struct param_d *p;
- 	int ret;
--	int devspace;
--	struct device_d *dev;
--	const char *pname;
- 
- 	if (!IS_ENABLED(CONFIG_NVVAR))
- 		return -ENOSYS;
- 
--	ret = nvvar_device_dispatch(name, &dev, &pname);
--	if (ret < 0)
--		return ret;
--
--	devspace = ret;
--
- 	/* Get param. If it doesn't exist yet, create it */
- 	p = get_param_by_name(&nv_device, name);
- 	if (!p) {
-@@ -254,20 +225,13 @@ static int __nvvar_add(const char *name, const char *value)
- 			return PTR_ERR(p);
+-		globalvar_set_match(argv[0], value);
+-		return 0;
++		if (do_remove)
++			globalvar_remove(argv[i]);
++		else
++			globalvar_add_simple(argv[i], value);
  	}
  
--	if (!devspace) {
--		ret = globalvar_add_simple(name, value);
--		if (ret && ret != -EEXIST)
--			return ret;
--	}
-+	/* Create corresponding globalvar if it doesn't exist yet */
-+	ret = globalvar_add_simple(name, value);
-+	if (ret && ret != -EEXIST)
-+		return ret;
- 
--	if (!value) {
--		if (devspace) {
--			if (dev)
--				value = dev_get_param(dev, pname);
--		} else {
--			value = dev_get_param(&global_device, name);
--		}
--	}
-+	if (!value)
-+		value = dev_get_param(&global_device, name);
- 
- 	return nv_set(&nv_device, p, value);
- }
-@@ -409,6 +373,27 @@ void globalvar_set_match(const char *match, const char *val)
- 	}
+-	return globalvar_add_simple(argv[0], value);
++	return 0;
  }
  
-+int globalvar_simple_set(struct device_d *dev, struct param_d *p, const char *val)
-+{
-+	struct device_d *rdev;
-+	const char *pname;
-+	int ret;
-+
-+	ret = nvvar_device_dispatch(p->name, &rdev, &pname);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (ret && rdev) {
-+		ret = dev_set_param(rdev, pname, val);
-+		if (ret)
-+			pr_err("Cannot init param from global: %s.%s=%s: %s\n",
-+				dev_name(rdev), pname, val, strerror(-ret));
-+	}
-+
-+	/* Pass to the generic function we have overwritten */
-+	return dev_param_set_generic(dev, p, val);
-+}
-+
- /*
-  * globalvar_add_simple
-  *
-@@ -418,7 +403,7 @@ int globalvar_add_simple(const char *name, const char *value)
- {
- 	struct param_d *param;
+ BAREBOX_CMD_HELP_START(global)
+ BAREBOX_CMD_HELP_TEXT("Add a new global variable named VAR, optionally set to VALUE.")
+ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("Options:")
+-BAREBOX_CMD_HELP_OPT("-r", "set value of all global variables beginning with 'match'")
++BAREBOX_CMD_HELP_OPT("-r", "Remove globalvars")
+ BAREBOX_CMD_HELP_END
  
--	param = dev_add_param(&global_device, name, NULL, NULL,
-+	param = dev_add_param(&global_device, name, globalvar_simple_set, NULL,
- 			      PARAM_GLOBALVAR_UNQUALIFIED);
- 	if (IS_ERR(param)) {
- 		if (PTR_ERR(param) != -EEXIST)
+ BAREBOX_CMD_START(global)
+ 	.cmd		= do_global,
+ 	BAREBOX_CMD_DESC("create or set global variables")
+-	BAREBOX_CMD_OPTS("[-r] VAR[=VALUE]")
++	BAREBOX_CMD_OPTS("[-r] VAR[=VALUE] ...")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_ENV)
+ 	BAREBOX_CMD_HELP(cmd_global_help)
+ BAREBOX_CMD_END
 -- 
 2.8.1
 
