@@ -1,11 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-in-15.arcor-online.net ([151.189.21.55])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bnKIl-0007Mo-6y
- for barebox@lists.infradead.org; Fri, 23 Sep 2016 06:49:40 +0000
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Thu, 22 Sep 2016 19:23:17 +0200
-Message-Id: <1474564997-8781-1-git-send-email-r.schwebel@pengutronix.de>
+ id 1bnMSv-000716-1w
+ for barebox@lists.infradead.org; Fri, 23 Sep 2016 09:08:18 +0000
+Received: from mail-in-15-z2.arcor-online.net (mail-in-15-z2.arcor-online.net
+ [151.189.8.32])
+ by mx.arcor.de (Postfix) with ESMTP id 3sgSF62f2XzC18d
+ for <barebox@lists.infradead.org>; Fri, 23 Sep 2016 11:07:54 +0200 (CEST)
+From: Giorgio Dal Molin <iw3gtf@arcor.de>
+Date: Fri, 23 Sep 2016 11:07:39 +0200
+Message-Id: <20160923090739.25517-3-iw3gtf@arcor.de>
+In-Reply-To: <20160923090739.25517-1-iw3gtf@arcor.de>
+References: <20160923090739.25517-1-iw3gtf@arcor.de>
+In-Reply-To: <20160922080408.rpqeithibjfga2rm@pengutronix.de>
+References: <20160922080408.rpqeithibjfga2rm@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +27,96 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: clarify "ioe" for netconsole
+Subject: [PATCH 2/2] mtd: ubi: commands: added the new command 'ubirename'.
 To: barebox@lists.infradead.org
+Cc: Giorgio Dal Molin <iw3gtf@arcor.de>
 
-ioe means "input", "output", "error", which are bits that can be set
-individually.
-
-Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
+Signed-off-by: Giorgio Dal Molin <iw3gtf@arcor.de>
 ---
- Documentation/user/networking.rst | 1 +
- 1 file changed, 1 insertion(+)
+ commands/ubi.c | 71 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 71 insertions(+)
 
-diff --git a/Documentation/user/networking.rst b/Documentation/user/networking.rst
-index 8afb433..772a7dc 100644
---- a/Documentation/user/networking.rst
-+++ b/Documentation/user/networking.rst
-@@ -74,6 +74,7 @@ risks. It can be enabled using:
-   netconsole.active=ioe
- 
- This will send UDP packets to a PC with IP address 192.168.23.2 and port 6666.
-+"ioe" means "input", "output", "error", and those bits can be set individually.
- 
- The ``netconsole.active`` parameter consists of the fields "input" (i),
- "output" (o) and "error" (e); if the fields are set, the respective channel is
+diff --git a/commands/ubi.c b/commands/ubi.c
+index 7c55195..3c5729e 100644
+--- a/commands/ubi.c
++++ b/commands/ubi.c
+@@ -328,3 +328,74 @@ BAREBOX_CMD_START(ubirmvol)
+ 	BAREBOX_CMD_GROUP(CMD_GRP_PART)
+ 	BAREBOX_CMD_HELP(cmd_ubirmvol_help)
+ BAREBOX_CMD_END
++
++static int get_vol_id(u32 ubi_num, const char *name)
++{
++	struct ubi_volume_desc *desc;
++	struct ubi_volume_info vi;
++
++	desc = ubi_open_volume_nm(ubi_num, name, UBI_READONLY);
++	if(IS_ERR(desc))
++		return PTR_ERR(desc);
++
++	ubi_get_volume_info(desc, &vi);
++
++	return vi.vol_id;
++};
++
++static int do_ubirename(int argc, char *argv[])
++{
++	struct ubi_rnvol_req req;
++	u32 ubi_num;
++	int i, j, fd, ret;
++
++	if ((argc < 4) || (argc % 2))
++		return COMMAND_ERROR_USAGE;
++
++	req.count = (argc / 2) - 1;
++	if (req.count > UBI_MAX_RNVOL) {
++		printf("too many volume renames. (max: %u)\n", UBI_MAX_RNVOL);
++		return COMMAND_ERROR_USAGE;
++	}
++
++	fd = open(argv[1], O_WRONLY);
++	if (fd < 0) {
++		perror("open ubi dev");
++		return 1;
++	}
++
++	ret = ioctl(fd, UBI_IOCGETUBINUM, &ubi_num);
++	if (ret) {
++		perror("failed to get the ubi num");
++		return COMMAND_ERROR_USAGE;
++	}
++	close(fd);
++
++	for(i=2, j=0; i<argc; ++j, i+=2) {
++		req.ents[j].vol_id = get_vol_id(ubi_num, argv[i]);
++		if(req.ents[j].vol_id < 0) {
++			printf("'%s' is not a volume name.\n", argv[i]);
++			return COMMAND_ERROR_USAGE;
++		}
++		strncpy(req.ents[j].name, argv[i+1], UBI_MAX_VOLUME_NAME);
++		req.ents[j].name_len = strlen(req.ents[j].name);
++	}
++
++	ret = ubi_api_rename_volumes(ubi_num, &req);
++	if (ret)
++		perror("failed to rename.");
++
++	return ret ? 1 : 0;
++};
++
++BAREBOX_CMD_HELP_START(ubirename)
++BAREBOX_CMD_HELP_TEXT("Rename UBI volume(s) from UBIDEV")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(ubirename)
++	.cmd		= do_ubirename,
++	BAREBOX_CMD_DESC("rename UBI volume(s)")
++	BAREBOX_CMD_OPTS("UBIDEV OLD_NAME NEW_NAME [OLD_NAME NEW_NAME ...]")
++	BAREBOX_CMD_GROUP(CMD_GRP_PART)
++	BAREBOX_CMD_HELP(cmd_ubirename_help)
++BAREBOX_CMD_END
 -- 
-2.8.1
+2.10.0
 
 
 _______________________________________________
