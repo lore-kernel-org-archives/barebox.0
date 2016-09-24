@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-in-09.arcor-online.net ([151.189.21.49])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bnNSs-000656-OG
- for barebox@lists.infradead.org; Fri, 23 Sep 2016 10:12:20 +0000
-Date: Fri, 23 Sep 2016 12:11:56 +0200 (CEST)
-From: iw3gtf@arcor.de
-Message-ID: <405969938.1037814.1474625516057.JavaMail.ngmail@webmail12.arcor-online.net>
-In-Reply-To: <20160922080408.rpqeithibjfga2rm@pengutronix.de>
-References: <20160922080408.rpqeithibjfga2rm@pengutronix.de>
- <20160921080443.21522-1-iw3gtf@arcor.de>
- <20160921080443.21522-3-iw3gtf@arcor.de>
-MIME-Version: 1.0
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bnsOz-0007ic-IW
+ for barebox@lists.infradead.org; Sat, 24 Sep 2016 19:14:22 +0000
+Message-ID: <1474743680.11093.1.camel@lynxeye.de>
+From: Lucas Stach <dev@lynxeye.de>
+Date: Sat, 24 Sep 2016 22:01:20 +0300
+In-Reply-To: <1474564997-8781-1-git-send-email-r.schwebel@pengutronix.de>
+References: <1474564997-8781-1-git-send-email-r.schwebel@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,129 +17,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Aw: Re: [PATCH 2/2] commands: ubi: added the new command
- 'ubirename' to rename ubi volumes.
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] Documentation: clarify "ioe" for netconsole
+To: Robert Schwebel <r.schwebel@pengutronix.de>, barebox@lists.infradead.org
 
-Hi,
-
-
------ Original Nachricht ----
-Von:     Sascha Hauer <s.hauer@pengutronix.de>
-An:      Giorgio Dal Molin <iw3gtf@arcor.de>
-Datum:   22.09.2016 10:04
-Betreff: Re: [PATCH 2/2] commands: ubi: added the new command 'ubirename' to
- rename ubi volumes.
-
-> On Wed, Sep 21, 2016 at 10:04:43AM +0200, Giorgio Dal Molin wrote:
-> > From: Giorgio Dal Molin <giorgio.dal.molin@mobotix.com>
-> > 
-> > The syntax was taken from the corresponding command of the 'mts-utils'
-> > userland package:
-> > 
-> > # ubirename UBIDEV OLD_NAME NEW_NAME [OLD_NAME NEW_NAME ...]
-> > 
-> > Signed-off-by: Giorgio Dal Molin <iw3gtf@arcor.de>
-> > ---
-> >  commands/ubi.c | 87
-> ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 87 insertions(+)
-> > 
-> > diff --git a/commands/ubi.c b/commands/ubi.c
-> > index 26b521f..3479340 100644
-> > --- a/commands/ubi.c
-> > +++ b/commands/ubi.c
-> > @@ -6,6 +6,8 @@
-> >  #include <errno.h>
-> >  #include <getopt.h>
-> >  #include <linux/mtd/mtd.h>
-> > +#include <linux/mtd/ubi.h>
-> > +#include <libgen.h>
-> >  #include <linux/kernel.h>
-> >  #include <linux/stat.h>
-> >  #include <linux/mtd/mtd-abi.h>
-> > @@ -306,3 +308,88 @@ BAREBOX_CMD_START(ubirmvol)
-> >  	BAREBOX_CMD_GROUP(CMD_GRP_PART)
-> >  	BAREBOX_CMD_HELP(cmd_ubirmvol_help)
-> >  BAREBOX_CMD_END
-> > +
-> > +
-> > +static int get_vol_id(const char *vol_name)
-> > +{
-> > +	struct ubi_volume_desc *desc;
-> > +	struct cdev *vol_cdev;
-> > +	struct ubi_volume_info vi;
-> > +
-> > +	vol_cdev = cdev_by_name(vol_name);
-> > +	if(!vol_cdev) {
-> > +		perror("cdev_by_name");
-> > +		return -1;
-> > +	}
-> > +	desc = ubi_open_volume_cdev(vol_cdev, UBI_READONLY);
-> > +	if(IS_ERR(desc)) {
-> > +		perror("ubi_open_volume_cdev");
-> > +		return -1;
-> > +	}
-> > +	ubi_get_volume_info(desc, &vi);
-> > +	ubi_close_volume(desc);
-> > +
-> > +	return vi.vol_id;
-> > +};
-> 
-> This get_vol_id() is not particularly nice. Also I do not like having
-> the rename operation inside the ioctl parser as this means we cannot
-> make the ubirename code optional for users that do not need renaming.
-> 
-> I just sent out a series which should help you in this regard. Can you
-> base your code ontop of this?
-
-I've noticed a problem in the 3rd patch ([PATCH 3/4] mtd: ubi: commands: use function API to access ubi volumes)
-of your last UBI serie: in the resulting code in 'commands/ubi.c', function 'do_ubirmvol()':
-
-...
-	desc = ubi_open_volume_nm(ubinum, argv[2], UBI_EXCLUSIVE);
-	if (IS_ERR(desc)) {
-		ret = PTR_ERR(desc);
-		printf("failed to open volume %s: %s\n", argv[2], strerror(-ret));
-		goto err1;
-	}
-
-	ret = ubi_api_remove_volume(desc, 0);
-	if (ret)
-		printf("failed to remove volume %s: %s\n", argv[2], strerror(-ret));
-
-err1:
-	ubi_close_volume(desc);
-err:
-	close(fd);
-
-	return ret ? 1 : 0;
-}
-
-You have a wrong 'goto err1': in that case the 'desc' pointer is not a memory address, it
-represent a negative error code and you cannot use it in ubi_close_volume(desc) (it segfaults).
-
-> 
-> You should be able to get the vol_id with ubi_open_volume_nm() followed
-> by ubi_get_volume_info().
-> 
-> The rename_volumes() from patch #1 should become a
-> ubi_api_rename_volumes() directly called from the command code.
-> 
-> Sascha
-> 
-
-giorgio
-
-
-Giorgio, iw3gtf@arcor.de
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gRG9ubmVyc3RhZywgZGVuIDIyLjA5LjIwMTYsIDE5OjIzICswMjAwIHNjaHJpZWIgUm9iZXJ0
+IFNjaHdlYmVsOgo+IGlvZSBtZWFucyAiaW5wdXQiLCAib3V0cHV0IiwgImVycm9yIiwgd2hpY2gg
+YXJlIGJpdHMgdGhhdCBjYW4gYmUgc2V0Cj4gaW5kaXZpZHVhbGx5Lgo+IAo+IFNpZ25lZC1vZmYt
+Ynk6IFJvYmVydCBTY2h3ZWJlbCA8ci5zY2h3ZWJlbEBwZW5ndXRyb25peC5kZT4KPiAtLS0KPiDC
+oERvY3VtZW50YXRpb24vdXNlci9uZXR3b3JraW5nLnJzdCB8IDEgKwo+IMKgMSBmaWxlIGNoYW5n
+ZWQsIDEgaW5zZXJ0aW9uKCspCj4gCj4gZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vdXNlci9u
+ZXR3b3JraW5nLnJzdAo+IGIvRG9jdW1lbnRhdGlvbi91c2VyL25ldHdvcmtpbmcucnN0Cj4gaW5k
+ZXggOGFmYjQzMy4uNzcyYTdkYyAxMDA2NDQKPiAtLS0gYS9Eb2N1bWVudGF0aW9uL3VzZXIvbmV0
+d29ya2luZy5yc3QKPiArKysgYi9Eb2N1bWVudGF0aW9uL3VzZXIvbmV0d29ya2luZy5yc3QKPiBA
+QCAtNzQsNiArNzQsNyBAQCByaXNrcy4gSXQgY2FuIGJlIGVuYWJsZWQgdXNpbmc6Cj4gwqDCoMKg
+bmV0Y29uc29sZS5hY3RpdmU9aW9lCj4gwqAKPiDCoFRoaXMgd2lsbCBzZW5kIFVEUCBwYWNrZXRz
+IHRvIGEgUEMgd2l0aCBJUCBhZGRyZXNzIDE5Mi4xNjguMjMuMiBhbmQKPiBwb3J0IDY2NjYuCj4g
+KyJpb2UiIG1lYW5zICJpbnB1dCIsICJvdXRwdXQiLCAiZXJyb3IiLCBhbmQgdGhvc2UgYml0cyBj
+YW4gYmUgc2V0Cj4gaW5kaXZpZHVhbGx5LgoKVGhpcyBpc24ndCBzcGVjaWZpYyB0byBuZXRjb25z
+b2xlLCBhcyBpdCB3b3JrcyBmb3IgZnJhbWVidWZmZXIgY29uc29sZXMKaW4gdGhlIHNhbWUgd2F5
+LiBTbyBzaG91bGQgcHJvYmFibHkgYmUgbW92ZWQgdG8gc29tZSBjb21tb24gbG9jYXRpb24uCgpS
+ZWdhcmRzLApMdWNhcwoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
+dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
