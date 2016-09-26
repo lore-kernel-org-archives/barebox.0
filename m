@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1boPGI-0000Wc-6U
- for barebox@lists.infradead.org; Mon, 26 Sep 2016 06:19:34 +0000
-Date: Mon, 26 Sep 2016 08:19:12 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160926061912.elzmjbs4mdv5ztrb@pengutronix.de>
-References: <20160922080408.rpqeithibjfga2rm@pengutronix.de>
- <20160923090739.25517-3-iw3gtf@arcor.de>
+ id 1boR57-0004u3-4x
+ for barebox@lists.infradead.org; Mon, 26 Sep 2016 08:16:10 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Mon, 26 Sep 2016 10:15:43 +0200
+Message-Id: <20160926081543.16088-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20160923090739.25517-3-iw3gtf@arcor.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,78 +15,90 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] mtd: ubi: commands: added the new command 'ubirename'.
-To: Giorgio Dal Molin <iw3gtf@arcor.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH/RFT] scripts: kwboot: improve reliability on Armada XP
+To: barebox@lists.infradead.org
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Kevin Smith <kevin.smith@elecsyscorp.com>, Stefan Roese <sr@denx.de>
 
-Hi Giorgio,
-
-
-Looks good mostly. Patch 1/2 is fine, some small remarks for this one.
-
-On Fri, Sep 23, 2016 at 11:07:39AM +0200, Giorgio Dal Molin wrote:
-> Signed-off-by: Giorgio Dal Molin <iw3gtf@arcor.de>
-> ---
->  commands/ubi.c | 71 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 71 insertions(+)
-> 
-> diff --git a/commands/ubi.c b/commands/ubi.c
-> index 7c55195..3c5729e 100644
-> --- a/commands/ubi.c
-> +++ b/commands/ubi.c
-> @@ -328,3 +328,74 @@ BAREBOX_CMD_START(ubirmvol)
->  	BAREBOX_CMD_GROUP(CMD_GRP_PART)
->  	BAREBOX_CMD_HELP(cmd_ubirmvol_help)
->  BAREBOX_CMD_END
-> +
-> +	ret = ioctl(fd, UBI_IOCGETUBINUM, &ubi_num);
-> +	if (ret) {
-> +		perror("failed to get the ubi num");
-> +		return COMMAND_ERROR_USAGE;
-> +	}
-> +	close(fd);
-> +
-> +	for(i=2, j=0; i<argc; ++j, i+=2) {
-
-Please add a space pn both sides of binary operators.
-
-> +		req.ents[j].vol_id = get_vol_id(ubi_num, argv[i]);
-> +		if(req.ents[j].vol_id < 0) {
-> +			printf("'%s' is not a volume name.\n", argv[i]);
-
-It is a volume name, but not a valid one. Better something like
-
-			printf("Volume '%s' does not exist on %s\n", argv[i], argv[1]);
-
-?
-
-> +			return COMMAND_ERROR_USAGE;
-> +		}
-> +		strncpy(req.ents[j].name, argv[i+1], UBI_MAX_VOLUME_NAME);
-> +		req.ents[j].name_len = strlen(req.ents[j].name);
-> +	}
-> +
-> +	ret = ubi_api_rename_volumes(ubi_num, &req);
-> +	if (ret)
-> +		perror("failed to rename.");
-
-perror("failed to rename: %s", strerror(-ret));
-
-It's always nice to print the error reason if we can.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBpbnRyb2R1Y2VzIHNldmVyYWwgY2hhbmdlcyB0aGF0IGltcHJvdmUgcHVzaGluZyBhIGJv
+b3QgaW1hZ2UgdmlhClVBUlQgdG8gYW4gQXJtYWRhIFhQIGJhc2VkIG1hY2hpbmUgKE5ldGdlYXIg
+Uk4gMjEyMCB3aXRoIEJvb3RST00gMS4yMCkuClRoZXkgd2VyZSBmb3VuZCBieSBpbnNwZWN0aW5n
+IHRoZSBzb3VyY2UsIHRoZSBhY3R1YWwgY29tbXVuaWNhdGlvbiBhbmQKZGlzYXNzZW1ibGluZyB0
+aGUgYm9vdCBST00uCgpUaGUgY2hhbmdlcyBhcmU6CiAtIERvbid0IHVzZSBub24tYmxvY2tpbmcg
+b3Blbi4gVGhpcyBwcmV2ZW50cyB0cnlpbmcgdG8gcmVhZCB0aGUgYW5zd2VyCiAgIGZyb20gdGhl
+IFNvQyBiZWZvcmUgdGhlIG1hZ2ljIHNlcXVlbmNlIHdhcyBzZW50LgogLSBEb24ndCBmbHVzaCB0
+aGUgaW5wdXQgYWZ0ZXIgZWFjaCBzZW5kaW5nIG9mIHRoZSBib290IHNlcXVlbmNlIGFzIHRoaXMK
+ICAgbWlnaHQgZGlzY2FyZCB0aGUgU29DJ3MgcmVwbHkuCiAtIEEgbGlrZWx5IHJlYXNvbiBmb3Ig
+YSBOQUsgaXMgdGhhdCBzZW5kZXIgYW5kIHJlY2VpdmVyIGFyZSBub3Qgc3luY2VkCiAgIG9uIHht
+b2RlbSBwYWNrZXQgYm91bmRhcnkuIFRoaXMgaGFwcGVucyBlYXNpbHkgd2hlbiB0aGUgaG9zdCBz
+ZW5kcyB0bwogICBtYW55IGJvb3Qgc2VxdWVuY2VzLiBTbyBvbiBhIE5BSyBzZW5kIDB4ZmYgdG8g
+cmVzeW5jLgoKVW5mb3J0dW5hdGVseSB0aGlzIGRvZXNuJ3QgbWFrZSBzZW5kaW5nIHJlbGlhYmxl
+IHlldC4gSSBjYW4gZW50ZXIgVUFSVApib290IG1vZGUsIGJ1dCBpdCBpcyBhYm9ydGVkIGFmdGVy
+IHNldmVyYWwgcGFja2V0cywgd2hpY2ggSSBmYWlsZWQgdG8KZGVidWcgdXAgdG8gbm93LgoKU2ln
+bmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25p
+eC5kZT4KLS0tCgpIZWxsbywKCkkgaGF2ZSBhbiBBcm1hZGEgMzcwIGJhc2VkIG1hY2hpbmUgaGVy
+ZSwgYnV0IGRpZG4ndCBtYW5hZ2UgdG8gdGVzdCBhCnJlc3luYyBhbmQgYWxzbyBkaWRuJ3QgZmlu
+ZCB0aGUgYm9vdHJvbSB5ZXQgdG8gdmVyaWZ5IGl0IHN1cHBvcnRzIHRoYXQKMHhmZiByZXN5bmMu
+CgpTbyB0ZXN0aW5nIGFuZCBib290cm9tIGltYWdlcyB3ZWxjb21lIDotKQoKQmVzdCByZWdhcmRz
+ClV3ZQoKIHNjcmlwdHMva3dib290LmMgICAgICAgICAgICAgICAgIHwgNzIgKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKy0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDYyIGluc2VydGlv
+bnMoKyksIDEwIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL3NjcmlwdHMva3dib290LmMgYi9z
+Y3JpcHRzL2t3Ym9vdC5jCmluZGV4IDliMGQxZDA2MDJhMC4uMWRiNGFiMGZhYmExIDEwMDY0NAot
+LS0gYS9zY3JpcHRzL2t3Ym9vdC5jCisrKyBiL3NjcmlwdHMva3dib290LmMKQEAgLTM1LDcgKzM1
+LDcgQEAgc3RhdGljIHVuc2lnbmVkIGNoYXIga3dib290X21zZ19kZWJ1Z1tdID0gewogfTsKIAog
+I2RlZmluZSBLV0JPT1RfTVNHX1JFUV9ERUxBWQkxMDAwIC8qIG1zICovCi0jZGVmaW5lIEtXQk9P
+VF9NU0dfUlNQX1RJTUVPCTEwMDAgLyogbXMgKi8KKyNkZWZpbmUgS1dCT09UX01TR19SU1BfVElN
+RU8JMSAvKiBtcyAqLwogCiAvKgogICogWG1vZGVtIFRyYW5zZmVycwpAQCAtMjMzLDcgKzIzMyw3
+IEBAIGt3Ym9vdF9vcGVuX3R0eShjb25zdCBjaGFyICpwYXRoLCBzcGVlZF90IHNwZWVkKQogCiAJ
+cmMgPSAtMTsKIAotCWZkID0gb3BlbihwYXRoLCBPX1JEV1J8T19OT0NUVFl8T19OREVMQVkpOwor
+CWZkID0gb3BlbihwYXRoLCBPX1JEV1IgfCBPX05PQ1RUWSk7CiAJaWYgKGZkIDwgMCkKIAkJZ290
+byBvdXQ7CiAKQEAgLTI3MywxMSArMjczLDExIEBAIGt3Ym9vdF9ib290bXNnKGludCB0dHksIHZv
+aWQgKm1zZykKIAllbHNlCiAJCWt3Ym9vdF9wcmludHYoIlNlbmRpbmcgYm9vdCBtZXNzYWdlLiBQ
+bGVhc2UgcmVib290IHRoZSB0YXJnZXQuLi4iKTsKIAotCWRvIHsKLQkJcmMgPSB0Y2ZsdXNoKHR0
+eSwgVENJT0ZMVVNIKTsKLQkJaWYgKHJjKQotCQkJYnJlYWs7CisJcmMgPSB0Y2ZsdXNoKHR0eSwg
+VENJT0ZMVVNIKTsKKwlpZiAocmMpCisJCXJldHVybiByYzsKIAorCWRvIHsKIAkJcmMgPSBrd2Jv
+b3RfdHR5X3NlbmQodHR5LCBtc2csIDgpOwogCQlpZiAocmMpIHsKIAkJCXVzbGVlcChLV0JPT1Rf
+TVNHX1JFUV9ERUxBWSAqIDEwMDApOwpAQCAtMjg1LDEyICsyODUsMjAgQEAga3dib290X2Jvb3Rt
+c2coaW50IHR0eSwgdm9pZCAqbXNnKQogCQl9CiAKIAkJcmMgPSBrd2Jvb3RfdHR5X3JlY3YodHR5
+LCAmYywgMSwgS1dCT09UX01TR19SU1BfVElNRU8pOwotCi0JCWt3Ym9vdF9zcGlubmVyKCk7CisJ
+CXdoaWxlICghcmMgJiYgYyAhPSBOQUspIHsKKwkJCWlmIChjID09ICdcXCcpCisJCQkJa3dib290
+X3ByaW50digiXFxcXCIsIGMpOworCQkJZWxzZSBpZiAoaXNwcmludChjKSkKKwkJCQlrd2Jvb3Rf
+cHJpbnR2KCIlYyIsIGMpOworCQkJZWxzZQorCQkJCWt3Ym9vdF9wcmludHYoIlxceCUwMmhoeCIs
+IGMpOworCisJCQlyYyA9IGt3Ym9vdF90dHlfcmVjdih0dHksICZjLCAxLCBLV0JPT1RfTVNHX1JT
+UF9USU1FTyk7CisJCX0KIAogCX0gd2hpbGUgKHJjIHx8IGMgIT0gTkFLKTsKIAotCWt3Ym9vdF9w
+cmludHYoIlxuIik7CisJa3dib290X3ByaW50digiXG5Hb3QgZXhwZWN0ZWQgTkFLXG4iKTsKIAog
+CXJldHVybiByYzsKIH0KQEAgLTM0OSw2ICszNTcsNDggQEAga3dib290X3htX21ha2VibG9jayhz
+dHJ1Y3Qga3dib290X2Jsb2NrICpibG9jaywgY29uc3Qgdm9pZCAqZGF0YSwKIAlyZXR1cm4gbjsK
+IH0KIAorI2RlZmluZSBtaW4oYSwgYikgKChhKSA8IChiKSA/IChhKSA6IChiKSkKKworc3RhdGlj
+IGludAora3dib290X3htX3Jlc3luYyhpbnQgZmQpCit7CisJLyoKKwkgKiBXaGVuIHRoZSBTb0Mg
+aGFzIGEgZGlmZmVyZW50IHBlcmNlcHRpb24gb2Ygd2hlcmUgdGhlIHBhY2thZ2UgYm91bmRhcnkK
+KwkgKiBpcywganVzdCByZXNlbmRpbmcgdGhlIHBhY2tldCBkb2Vzbid0IGhlbHAuIFRvIHJlc3lu
+YyBzZW5kIDB4ZmYgdW50aWwKKwkgKiB3ZSBnZXQgYW5vdGhlciBOQUsuCisJICogVGhlIEJvb3RS
+T00gY29kZSAob2YgdGhlIEFybWFkYSBYUCBhdCBsZWFzdCkgZG9lc24ndCBpbnRlcnByZXQgMHhm
+ZgorCSAqIGFzIGEgc3RhcnQgb2YgYSBwYWNrYWdlIGFuZCBzZW5kcyBhIE5BSyBmb3IgZWFjaCAw
+eGZmIHdoZW4gd2FpdGluZworCSAqIGZvciBTT0gsIHNvIGl0J3MgcG9zc2libGUgdG8gc2VuZCA+
+MSBieXRlIHdpdGhvdXQgdGhlIFNvQyBzdGFydGluZyBhCisJICogbmV3IGZyYW1lLgorCSAqIFdo
+ZW4gdGhlcmUgaXMgbm8gcmVzcG9uc2UgYWZ0ZXIgc2l6ZW9mKHN0cnVjdCBrd2Jvb3RfYmxvY2sp
+IGJ5dGVzLAorCSAqIHRoZXJlIGlzIGFub3RoZXIgcHJvYmxlbS4KKwkgKi8KKwlpbnQgcmM7CisJ
+Y2hhciBidWZbc2l6ZW9mKHN0cnVjdCBrd2Jvb3RfYmxvY2spXTsKKwl1bnNpZ25lZCBpbnRlcnZh
+bCA9IDE7CisJdW5zaWduZWQgbGVuOworCWNoYXIgKnAgPSBidWY7CisKKwltZW1zZXQoYnVmLCAw
+eGZmLCBzaXplb2YoYnVmKSk7CisKKwl3aGlsZSAoaW50ZXJ2YWwgPD0gc2l6ZW9mKGJ1ZikpIHsK
+KwkJbGVuID0gbWluKGludGVydmFsLCBidWYgKyBzaXplb2YoYnVmKSAtIHApOworCQlyYyA9IGt3
+Ym9vdF90dHlfc2VuZChmZCwgcCwgbGVuKTsKKwkJaWYgKHJjKQorCQkJcmV0dXJuIHJjOworCisJ
+CWt3Ym9vdF90dHlfcmVjdihmZCwgcCwgbGVuLCBLV0JPT1RfQkxLX1JTUF9USU1FTyk7CisJCWlm
+ICgqcCAhPSAweGZmKQorCQkJLyogZ290IGF0IGxlYXN0IG9uZSBjaGFyLCBpZiBpdCdzIGEgTkFL
+IHdlJ3JlIHN5bmNlZC4gKi8KKwkJCXJldHVybiAoKnAgPT0gTkFLKTsKKworCQlwICs9IGxlbjsK
+KwkJaW50ZXJ2YWwgKj0gMjsKKwl9CisKKwlyZXR1cm4gMDsKK30KKwogc3RhdGljIGludAoga3di
+b290X3htX3NlbmRibG9jayhpbnQgZmQsIHN0cnVjdCBrd2Jvb3RfYmxvY2sgKmJsb2NrKQogewpA
+QCAtMzcxLDcgKzQyMSw5IEBAIGt3Ym9vdF94bV9zZW5kYmxvY2soaW50IGZkLCBzdHJ1Y3Qga3di
+b290X2Jsb2NrICpibG9jaykKIAogCQl9IHdoaWxlIChjICE9IEFDSyAmJiBjICE9IE5BSyAmJiBj
+ICE9IENBTik7CiAKLQkJaWYgKGMgIT0gQUNLKQorCQlpZiAoYyA9PSBOQUsgJiYga3dib290X3ht
+X3Jlc3luYyhmZCkpCisJCQlrd2Jvb3RfcHJvZ3Jlc3MoLTEsICdTJyk7CisJCWVsc2UgaWYgKGMg
+IT0gQUNLKQogCQkJa3dib290X3Byb2dyZXNzKC0xLCAnKycpOwogCiAJfSB3aGlsZSAoYyA9PSBO
+QUsgJiYgcmV0cmllcy0tID4gMCk7Ci0tIAoyLjkuMwoKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2JhcmVib3gK
