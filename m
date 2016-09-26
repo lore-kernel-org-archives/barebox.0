@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-in-10.arcor-online.net ([151.189.21.50])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1boTX6-0006zq-JW
- for barebox@lists.infradead.org; Mon, 26 Sep 2016 10:53:16 +0000
-Received: from mail-in-18-z2.arcor-online.net (mail-in-18-z2.arcor-online.net
- [151.189.8.35])
- by mx.arcor.de (Postfix) with ESMTP id 3sjLQl69cmz2f3R
- for <barebox@lists.infradead.org>; Mon, 26 Sep 2016 12:52:47 +0200 (CEST)
-From: Giorgio Dal Molin <iw3gtf@arcor.de>
-Date: Mon, 26 Sep 2016 12:52:32 +0200
-Message-Id: <20160926105233.26387-2-iw3gtf@arcor.de>
-In-Reply-To: <20160926105233.26387-1-iw3gtf@arcor.de>
-References: <20160926105233.26387-1-iw3gtf@arcor.de>
-In-Reply-To: <20160926061912.elzmjbs4mdv5ztrb@pengutronix.de>
-References: <20160926061912.elzmjbs4mdv5ztrb@pengutronix.de>
+ id 1boTq4-0005rh-KP
+ for barebox@lists.infradead.org; Mon, 26 Sep 2016 11:12:49 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Mon, 26 Sep 2016 13:12:22 +0200
+Message-Id: <20160926111222.15087-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20160926081543.16088-1-u.kleine-koenig@pengutronix.de>
+References: <20160926081543.16088-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,220 +17,96 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] mtd: ubi: add API call to rename volumes.
+Subject: [PATCH v2] scripts: kwboot: improve reliability on Armada XP
 To: barebox@lists.infradead.org
-Cc: Giorgio Dal Molin <iw3gtf@arcor.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Kevin Smith <kevin.smith@elecsyscorp.com>, Stefan Roese <sr@denx.de>
 
-Signed-off-by: Giorgio Dal Molin <iw3gtf@arcor.de>
----
- drivers/mtd/ubi/barebox.c | 156 ++++++++++++++++++++++++++++++++++++++++++++++
- drivers/mtd/ubi/vmt.c     |   3 +
- include/linux/mtd/ubi.h   |   1 +
- 3 files changed, 160 insertions(+)
-
-diff --git a/drivers/mtd/ubi/barebox.c b/drivers/mtd/ubi/barebox.c
-index 23c4bfd..329cf45 100644
---- a/drivers/mtd/ubi/barebox.c
-+++ b/drivers/mtd/ubi/barebox.c
-@@ -280,6 +280,162 @@ int ubi_api_remove_volume(struct ubi_volume_desc *desc, int no_vtbl)
- 	return ubi_remove_volume(desc, no_vtbl);
- }
- 
-+int ubi_api_rename_volumes(int ubi_num, struct ubi_rnvol_req *req)
-+{
-+	int i, n, err;
-+	struct list_head rename_list;
-+	struct ubi_rename_entry *re, *re1;
-+	struct ubi_device *ubi;
-+
-+	if (req->count < 0 || req->count > UBI_MAX_RNVOL)
-+		return -EINVAL;
-+
-+	if (req->count == 0)
-+		return 0;
-+
-+	ubi = ubi_get_device(ubi_num);
-+	if (!ubi)
-+		return -ENODEV;
-+
-+	/* Validate volume IDs and names in the request */
-+	for (i = 0; i < req->count; i++) {
-+		if (req->ents[i].vol_id < 0 ||
-+		    req->ents[i].vol_id >= ubi->vtbl_slots)
-+			return -EINVAL;
-+		if (req->ents[i].name_len < 0)
-+			return -EINVAL;
-+		if (req->ents[i].name_len > UBI_VOL_NAME_MAX)
-+			return -ENAMETOOLONG;
-+		req->ents[i].name[req->ents[i].name_len] = '\0';
-+		n = strlen(req->ents[i].name);
-+		if (n != req->ents[i].name_len)
-+			return -EINVAL;
-+	}
-+
-+	/* Make sure volume IDs and names are unique */
-+	for (i = 0; i < req->count - 1; i++) {
-+		for (n = i + 1; n < req->count; n++) {
-+			if (req->ents[i].vol_id == req->ents[n].vol_id) {
-+				ubi_err(ubi, "duplicated volume id %d",
-+					req->ents[i].vol_id);
-+				return -EINVAL;
-+			}
-+			if (!strcmp(req->ents[i].name, req->ents[n].name)) {
-+				ubi_err(ubi, "duplicated volume name \"%s\"",
-+					req->ents[i].name);
-+				return -EINVAL;
-+			}
-+		}
-+	}
-+
-+	/* Create the re-name list */
-+	INIT_LIST_HEAD(&rename_list);
-+	for (i = 0; i < req->count; i++) {
-+		int vol_id = req->ents[i].vol_id;
-+		int name_len = req->ents[i].name_len;
-+		const char *name = req->ents[i].name;
-+
-+		re = kzalloc(sizeof(struct ubi_rename_entry), GFP_KERNEL);
-+		if (!re) {
-+			err = -ENOMEM;
-+			goto out_free;
-+		}
-+
-+		re->desc = ubi_open_volume(ubi->ubi_num, vol_id, UBI_READONLY);
-+		if (IS_ERR(re->desc)) {
-+			err = PTR_ERR(re->desc);
-+			ubi_err(ubi, "cannot open volume %d, error %d",
-+				vol_id, err);
-+			kfree(re);
-+			goto out_free;
-+		}
-+
-+		/* Skip this re-naming if the name does not really change */
-+		if (re->desc->vol->name_len == name_len &&
-+		    !memcmp(re->desc->vol->name, name, name_len)) {
-+			ubi_close_volume(re->desc);
-+			kfree(re);
-+			continue;
-+		}
-+
-+		re->new_name_len = name_len;
-+		memcpy(re->new_name, name, name_len);
-+		list_add_tail(&re->list, &rename_list);
-+		dbg_gen("will rename volume %d from \"%s\" to \"%s\"",
-+			vol_id, re->desc->vol->name, name);
-+	}
-+
-+	if (list_empty(&rename_list))
-+		return 0;
-+
-+	/* Find out the volumes which have to be removed */
-+	list_for_each_entry(re, &rename_list, list) {
-+		struct ubi_volume_desc *desc;
-+		int no_remove_needed = 0;
-+
-+		/*
-+		 * Volume @re->vol_id is going to be re-named to
-+		 * @re->new_name, while its current name is @name. If a volume
-+		 * with name @re->new_name currently exists, it has to be
-+		 * removed, unless it is also re-named in the request (@req).
-+		 */
-+		list_for_each_entry(re1, &rename_list, list) {
-+			if (re->new_name_len == re1->desc->vol->name_len &&
-+			    !memcmp(re->new_name, re1->desc->vol->name,
-+				    re1->desc->vol->name_len)) {
-+				no_remove_needed = 1;
-+				break;
-+			}
-+		}
-+
-+		if (no_remove_needed)
-+			continue;
-+
-+		/*
-+		 * It seems we need to remove volume with name @re->new_name,
-+		 * if it exists.
-+		 */
-+		desc = ubi_open_volume_nm(ubi->ubi_num, re->new_name,
-+					  UBI_EXCLUSIVE);
-+		if (IS_ERR(desc)) {
-+			err = PTR_ERR(desc);
-+			if (err == -ENODEV)
-+				/* Re-naming into a non-existing volume name */
-+				continue;
-+
-+			/* The volume exists but busy, or an error occurred */
-+			ubi_err(ubi, "cannot open volume \"%s\", error %d",
-+				re->new_name, err);
-+			goto out_free;
-+		}
-+
-+		re1 = kzalloc(sizeof(struct ubi_rename_entry), GFP_KERNEL);
-+		if (!re1) {
-+			err = -ENOMEM;
-+			ubi_close_volume(desc);
-+			goto out_free;
-+		}
-+
-+		re1->remove = 1;
-+		re1->desc = desc;
-+		list_add(&re1->list, &rename_list);
-+		dbg_gen("will remove volume %d, name \"%s\"",
-+			re1->desc->vol->vol_id, re1->desc->vol->name);
-+	}
-+
-+	mutex_lock(&ubi->device_mutex);
-+	err = ubi_rename_volumes(ubi, &rename_list);
-+	mutex_unlock(&ubi->device_mutex);
-+
-+out_free:
-+	list_for_each_entry_safe(re, re1, &rename_list, list) {
-+		ubi_close_volume(re->desc);
-+		list_del(&re->list);
-+		kfree(re);
-+	}
-+	return err;
-+}
-+
- static int ubi_cdev_ioctl(struct cdev *cdev, int cmd, void *buf)
- {
- 	struct ubi_device *ubi = cdev->priv;
-diff --git a/drivers/mtd/ubi/vmt.c b/drivers/mtd/ubi/vmt.c
-index 41b814c..ed04364 100644
---- a/drivers/mtd/ubi/vmt.c
-+++ b/drivers/mtd/ubi/vmt.c
-@@ -411,6 +411,9 @@ int ubi_rename_volumes(struct ubi_device *ubi, struct list_head *rename_list)
- 
- 			vol->name_len = re->new_name_len;
- 			memcpy(vol->name, re->new_name, re->new_name_len + 1);
-+			free(vol->cdev.name);
-+			vol->cdev.name = basprintf("%s.%s", ubi->cdev.name, vol->name);
-+			vol->cdev.size = vol->used_bytes;
- 			ubi_volume_notify(ubi, vol, UBI_VOLUME_RENAMED);
- 		}
- 	}
-diff --git a/include/linux/mtd/ubi.h b/include/linux/mtd/ubi.h
-index c72f95b..c215ff2 100644
---- a/include/linux/mtd/ubi.h
-+++ b/include/linux/mtd/ubi.h
-@@ -220,6 +220,7 @@ int ubi_flush(int ubi_num, int vol_id, int lnum);
- 
- int ubi_api_create_volume(int ubi_num, struct ubi_mkvol_req *req);
- int ubi_api_remove_volume(struct ubi_volume_desc *desc, int no_vtbl);
-+int ubi_api_rename_volumes(int ubi_num, struct ubi_rnvol_req *req);
- 
- /*
-  * This function is the same as the 'ubi_leb_read()' function, but it does not
--- 
-2.10.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBpbnRyb2R1Y2VzIHNldmVyYWwgY2hhbmdlcyB0aGF0IGltcHJvdmUgcHVzaGluZyBhIGJv
+b3QgaW1hZ2UgdmlhClVBUlQgdG8gYW4gQXJtYWRhIFhQIGJhc2VkIG1hY2hpbmUgKE5ldGdlYXIg
+Uk4gMjEyMCB3aXRoIEJvb3RST00gMS4yMCkuClRoZXkgd2VyZSBmb3VuZCBieSBpbnNwZWN0aW5n
+IHRoZSBzb3VyY2UsIHRoZSBhY3R1YWwgY29tbXVuaWNhdGlvbiBhbmQKZGlzYXNzZW1ibGluZyB0
+aGUgYm9vdCBST00uCgpUaGUgY2hhbmdlcyBhcmU6CiAtIERvbid0IHVzZSBub24tYmxvY2tpbmcg
+b3Blbi4gVGhpcyBwcmV2ZW50cyB0cnlpbmcgdG8gcmVhZCB0aGUgYW5zd2VyCiAgIGZyb20gdGhl
+IFNvQyBiZWZvcmUgdGhlIG1hZ2ljIHNlcXVlbmNlIHdhcyBzZW50LgogLSBEb24ndCBmbHVzaCB0
+aGUgaW5wdXQgYWZ0ZXIgZWFjaCBzZW5kaW5nIG9mIHRoZSBib290IHNlcXVlbmNlIGFzIHRoaXMK
+ICAgbWlnaHQgZGlzY2FyZCB0aGUgU29DJ3MgcmVwbHkuCiAtIEEgbGlrZWx5IHJlYXNvbiBmb3Ig
+YSBOQUsgaXMgdGhhdCBzZW5kZXIgYW5kIHJlY2VpdmVyIGFyZSBub3Qgc3luY2VkCiAgIG9uIHht
+b2RlbSBwYWNrZXQgYm91bmRhcnkuIFRoaXMgaGFwcGVucyBlYXNpbHkgd2hlbiB0aGUgaG9zdCBz
+ZW5kcyB0bwogICBtYW55IGJvb3Qgc2VxdWVuY2VzLiBTbyBvbiBhIE5BSyBzZW5kIDB4ZmYgdG8g
+cmVzeW5jLgogLSBTaG9ydGVuIHRoZSB0aW1lIGJldHdlZW4gdHdvIHRyaWVzIHRvIHNlbmQgdGhl
+IG1hZ2ljIHN0cmluZy4KICAgVGhpcyBncmVhdGx5IGltcHJvdmVzIHRoZSBwcm9iYWJpbHR5IHRo
+ZSBzdHJpbmcgaXMgc2VudCB3aGlsZSB0aGUgU29DCiAgIGxpc3RlbnMgZm9yIGl0LiBUaGlzIG9u
+bHkgd29ya3MgYmVjYXVzZSBvZiB0aGUgcHJldmlvdXMgY2hhbmdlcy4KClVuZm9ydHVuYXRlbHkg
+dGhpcyBkb2Vzbid0IG1ha2Ugc2VuZGluZyByZWxpYWJsZSB5ZXQuIEkgY2FuIGVudGVyIFVBUlQK
+Ym9vdCBtb2RlLCBidXQgaXQgaXMgYWJvcnRlZCBhZnRlciBzZXZlcmFsIHBhY2tldHMsIHdoaWNo
+IEkgZmFpbGVkIHRvCmRlYnVnIHVwIHRvIG5vdy4KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUt
+S8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQpDaGFuZ2VzIHNpbmNl
+IChpbXBsaWN0KSB2MSBzZW50IHdpdGgKTWVzc2FnZS1JZDogMjAxNjA5MjYwODE1NDMuMTYwODgt
+MS11LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGUKCiAtIG1lbnRpb24gdGhhdCBLV0JPT1Rf
+TVNHX1JTUF9USU1FTyB3YXMgbWFkZSBzbWFsbGVyCiAtIGZpeCBidWlsZCB3YXJuaW5nIGFib3V0
+IGlzcHJpbnQoKQoKVGVzdGluZyBpcyBzdGlsbCB3ZWxjb21lIG9mIGNvdXJzZS4KCiBzY3JpcHRz
+L2t3Ym9vdC5jIHwgNzMgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA2MyBpbnNlcnRpb25zKCspLCAxMCBkZWxl
+dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9zY3JpcHRzL2t3Ym9vdC5jIGIvc2NyaXB0cy9rd2Jvb3Qu
+YwppbmRleCA5YjBkMWQwNjAyYTAuLjk0M2U4MDBmZDkyOCAxMDA2NDQKLS0tIGEvc2NyaXB0cy9r
+d2Jvb3QuYworKysgYi9zY3JpcHRzL2t3Ym9vdC5jCkBAIC05LDYgKzksNyBAQAogICogICAyMDA4
+LiBDaGFwdGVyIDI0LjIgIkJvb3RST00gRmlybXdhcmUiLgogICovCiAKKyNpbmNsdWRlIDxjdHlw
+ZS5oPgogI2luY2x1ZGUgPHN0ZGxpYi5oPgogI2luY2x1ZGUgPHN0ZGlvLmg+CiAjaW5jbHVkZSA8
+c3RyaW5nLmg+CkBAIC0zNSw3ICszNiw3IEBAIHN0YXRpYyB1bnNpZ25lZCBjaGFyIGt3Ym9vdF9t
+c2dfZGVidWdbXSA9IHsKIH07CiAKICNkZWZpbmUgS1dCT09UX01TR19SRVFfREVMQVkJMTAwMCAv
+KiBtcyAqLwotI2RlZmluZSBLV0JPT1RfTVNHX1JTUF9USU1FTwkxMDAwIC8qIG1zICovCisjZGVm
+aW5lIEtXQk9PVF9NU0dfUlNQX1RJTUVPCTEgLyogbXMgKi8KIAogLyoKICAqIFhtb2RlbSBUcmFu
+c2ZlcnMKQEAgLTIzMyw3ICsyMzQsNyBAQCBrd2Jvb3Rfb3Blbl90dHkoY29uc3QgY2hhciAqcGF0
+aCwgc3BlZWRfdCBzcGVlZCkKIAogCXJjID0gLTE7CiAKLQlmZCA9IG9wZW4ocGF0aCwgT19SRFdS
+fE9fTk9DVFRZfE9fTkRFTEFZKTsKKwlmZCA9IG9wZW4ocGF0aCwgT19SRFdSIHwgT19OT0NUVFkp
+OwogCWlmIChmZCA8IDApCiAJCWdvdG8gb3V0OwogCkBAIC0yNzMsMTEgKzI3NCwxMSBAQCBrd2Jv
+b3RfYm9vdG1zZyhpbnQgdHR5LCB2b2lkICptc2cpCiAJZWxzZQogCQlrd2Jvb3RfcHJpbnR2KCJT
+ZW5kaW5nIGJvb3QgbWVzc2FnZS4gUGxlYXNlIHJlYm9vdCB0aGUgdGFyZ2V0Li4uIik7CiAKLQlk
+byB7Ci0JCXJjID0gdGNmbHVzaCh0dHksIFRDSU9GTFVTSCk7Ci0JCWlmIChyYykKLQkJCWJyZWFr
+OworCXJjID0gdGNmbHVzaCh0dHksIFRDSU9GTFVTSCk7CisJaWYgKHJjKQorCQlyZXR1cm4gcmM7
+CiAKKwlkbyB7CiAJCXJjID0ga3dib290X3R0eV9zZW5kKHR0eSwgbXNnLCA4KTsKIAkJaWYgKHJj
+KSB7CiAJCQl1c2xlZXAoS1dCT09UX01TR19SRVFfREVMQVkgKiAxMDAwKTsKQEAgLTI4NSwxMiAr
+Mjg2LDIwIEBAIGt3Ym9vdF9ib290bXNnKGludCB0dHksIHZvaWQgKm1zZykKIAkJfQogCiAJCXJj
+ID0ga3dib290X3R0eV9yZWN2KHR0eSwgJmMsIDEsIEtXQk9PVF9NU0dfUlNQX1RJTUVPKTsKLQot
+CQlrd2Jvb3Rfc3Bpbm5lcigpOworCQl3aGlsZSAoIXJjICYmIGMgIT0gTkFLKSB7CisJCQlpZiAo
+YyA9PSAnXFwnKQorCQkJCWt3Ym9vdF9wcmludHYoIlxcXFwiLCBjKTsKKwkJCWVsc2UgaWYgKGlz
+cHJpbnQoYykpCisJCQkJa3dib290X3ByaW50digiJWMiLCBjKTsKKwkJCWVsc2UKKwkJCQlrd2Jv
+b3RfcHJpbnR2KCJcXHglMDJoaHgiLCBjKTsKKworCQkJcmMgPSBrd2Jvb3RfdHR5X3JlY3YodHR5
+LCAmYywgMSwgS1dCT09UX01TR19SU1BfVElNRU8pOworCQl9CiAKIAl9IHdoaWxlIChyYyB8fCBj
+ICE9IE5BSyk7CiAKLQlrd2Jvb3RfcHJpbnR2KCJcbiIpOworCWt3Ym9vdF9wcmludHYoIlxuR290
+IGV4cGVjdGVkIE5BS1xuIik7CiAKIAlyZXR1cm4gcmM7CiB9CkBAIC0zNDksNiArMzU4LDQ4IEBA
+IGt3Ym9vdF94bV9tYWtlYmxvY2soc3RydWN0IGt3Ym9vdF9ibG9jayAqYmxvY2ssIGNvbnN0IHZv
+aWQgKmRhdGEsCiAJcmV0dXJuIG47CiB9CiAKKyNkZWZpbmUgbWluKGEsIGIpICgoYSkgPCAoYikg
+PyAoYSkgOiAoYikpCisKK3N0YXRpYyBpbnQKK2t3Ym9vdF94bV9yZXN5bmMoaW50IGZkKQorewor
+CS8qCisJICogV2hlbiB0aGUgU29DIGhhcyBhIGRpZmZlcmVudCBwZXJjZXB0aW9uIG9mIHdoZXJl
+IHRoZSBwYWNrYWdlIGJvdW5kYXJ5CisJICogaXMsIGp1c3QgcmVzZW5kaW5nIHRoZSBwYWNrZXQg
+ZG9lc24ndCBoZWxwLiBUbyByZXN5bmMgc2VuZCAweGZmIHVudGlsCisJICogd2UgZ2V0IGFub3Ro
+ZXIgTkFLLgorCSAqIFRoZSBCb290Uk9NIGNvZGUgKG9mIHRoZSBBcm1hZGEgWFAgYXQgbGVhc3Qp
+IGRvZXNuJ3QgaW50ZXJwcmV0IDB4ZmYKKwkgKiBhcyBhIHN0YXJ0IG9mIGEgcGFja2FnZSBhbmQg
+c2VuZHMgYSBOQUsgZm9yIGVhY2ggMHhmZiB3aGVuIHdhaXRpbmcKKwkgKiBmb3IgU09ILCBzbyBp
+dCdzIHBvc3NpYmxlIHRvIHNlbmQgPjEgYnl0ZSB3aXRob3V0IHRoZSBTb0Mgc3RhcnRpbmcgYQor
+CSAqIG5ldyBmcmFtZS4KKwkgKiBXaGVuIHRoZXJlIGlzIG5vIHJlc3BvbnNlIGFmdGVyIHNpemVv
+ZihzdHJ1Y3Qga3dib290X2Jsb2NrKSBieXRlcywKKwkgKiB0aGVyZSBpcyBhbm90aGVyIHByb2Js
+ZW0uCisJICovCisJaW50IHJjOworCWNoYXIgYnVmW3NpemVvZihzdHJ1Y3Qga3dib290X2Jsb2Nr
+KV07CisJdW5zaWduZWQgaW50ZXJ2YWwgPSAxOworCXVuc2lnbmVkIGxlbjsKKwljaGFyICpwID0g
+YnVmOworCisJbWVtc2V0KGJ1ZiwgMHhmZiwgc2l6ZW9mKGJ1ZikpOworCisJd2hpbGUgKGludGVy
+dmFsIDw9IHNpemVvZihidWYpKSB7CisJCWxlbiA9IG1pbihpbnRlcnZhbCwgYnVmICsgc2l6ZW9m
+KGJ1ZikgLSBwKTsKKwkJcmMgPSBrd2Jvb3RfdHR5X3NlbmQoZmQsIHAsIGxlbik7CisJCWlmIChy
+YykKKwkJCXJldHVybiByYzsKKworCQlrd2Jvb3RfdHR5X3JlY3YoZmQsIHAsIGxlbiwgS1dCT09U
+X0JMS19SU1BfVElNRU8pOworCQlpZiAoKnAgIT0gMHhmZikKKwkJCS8qIGdvdCBhdCBsZWFzdCBv
+bmUgY2hhciwgaWYgaXQncyBhIE5BSyB3ZSdyZSBzeW5jZWQuICovCisJCQlyZXR1cm4gKCpwID09
+IE5BSyk7CisKKwkJcCArPSBsZW47CisJCWludGVydmFsICo9IDI7CisJfQorCisJcmV0dXJuIDA7
+Cit9CisKIHN0YXRpYyBpbnQKIGt3Ym9vdF94bV9zZW5kYmxvY2soaW50IGZkLCBzdHJ1Y3Qga3di
+b290X2Jsb2NrICpibG9jaykKIHsKQEAgLTM3MSw3ICs0MjIsOSBAQCBrd2Jvb3RfeG1fc2VuZGJs
+b2NrKGludCBmZCwgc3RydWN0IGt3Ym9vdF9ibG9jayAqYmxvY2spCiAKIAkJfSB3aGlsZSAoYyAh
+PSBBQ0sgJiYgYyAhPSBOQUsgJiYgYyAhPSBDQU4pOwogCi0JCWlmIChjICE9IEFDSykKKwkJaWYg
+KGMgPT0gTkFLICYmIGt3Ym9vdF94bV9yZXN5bmMoZmQpKQorCQkJa3dib290X3Byb2dyZXNzKC0x
+LCAnUycpOworCQllbHNlIGlmIChjICE9IEFDSykKIAkJCWt3Ym9vdF9wcm9ncmVzcygtMSwgJysn
+KTsKIAogCX0gd2hpbGUgKGMgPT0gTkFLICYmIHJldHJpZXMtLSA+IDApOwotLSAKMi45LjMKCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
