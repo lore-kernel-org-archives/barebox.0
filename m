@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1boOzO-0003BC-B0
- for barebox@lists.infradead.org; Mon, 26 Sep 2016 06:02:07 +0000
-Date: Mon, 26 Sep 2016 08:01:44 +0200
+ id 1boP1M-0003e0-0j
+ for barebox@lists.infradead.org; Mon, 26 Sep 2016 06:04:08 +0000
+Date: Mon, 26 Sep 2016 08:03:46 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160926060144.5otktcflay6wkeaz@pengutronix.de>
-References: <1474547628-16751-1-git-send-email-s.trumtrar@pengutronix.de>
- <1474547628-16751-2-git-send-email-s.trumtrar@pengutronix.de>
+Message-ID: <20160926060346.qyvberbkwmovl3fn@pengutronix.de>
+References: <20160922144639.28305-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1474547628-16751-2-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <20160922144639.28305-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,57 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] watchdog: add designware driver
+Subject: Re: [PATCH 1/3] nand: denali: use correct interrupts in read_page
 To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Sep 22, 2016 at 02:33:47PM +0200, Steffen Trumtrar wrote:
-> Port the linux v4.8-rc1 Synopsys DesignWare watchdog driver to barebox.
+On Thu, Sep 22, 2016 at 04:46:37PM +0200, Steffen Trumtrar wrote:
+> The interrupt mask is incorrect in case of HW error correction.
+> The driver will time out waiting for the wrong interrupts.
 > 
 > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > ---
->  drivers/watchdog/Kconfig  |   6 ++
->  drivers/watchdog/Makefile |   1 +
->  drivers/watchdog/dw_wdt.c | 194 ++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 201 insertions(+)
->  create mode 100644 drivers/watchdog/dw_wdt.c
-> 
-> +	struct dw_wdt *dw_wdt = to_dw_wdt(wdd);
-> +
-> +	writel(WDOG_CONTROL_REG_WDT_EN_MASK,
-> +	       dw_wdt->regs + WDOG_CONTROL_REG_OFFSET);
-> +
-> +	return 0;
-> +}
-> +
-> +static int dw_wdt_stop(struct watchdog *wdd)
-> +{
-> +	struct dw_wdt *dw_wdt = to_dw_wdt(wdd);
-> +
-> +	if (IS_ERR(dw_wdt->rst)) {
-> +		pr_warn("No reset line. Will not stop.\n");
+>  drivers/mtd/nand/nand_denali.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 
-dev_warn
-
-> +		return PTR_ERR(dw_wdt->rst);
-> +	}
-> +
-> +	reset_control_assert(dw_wdt->rst);
-> +	reset_control_deassert(dw_wdt->rst);
-> +
-> +	return 0;
-> +}
-
-...
-
-> +
-> +	ret = restart_handler_register(&dw_wdt->restart);
-> +	if (ret)
-> +		pr_warn("cannot register restart handler\n");
-
-ditto
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/drivers/mtd/nand/nand_denali.c b/drivers/mtd/nand/nand_denali.c
+> index bf9a05d85264..ceb5a8b87e42 100644
+> --- a/drivers/mtd/nand/nand_denali.c
+> +++ b/drivers/mtd/nand/nand_denali.c
+> @@ -1102,8 +1102,9 @@ static int denali_read_page(struct mtd_info *mtd, struct nand_chip *chip,
+>  	size_t size = denali->mtd.writesize + denali->mtd.oobsize;
+>  
+>  	uint32_t irq_status;
+> -	uint32_t irq_mask = INTR_STATUS__ECC_TRANSACTION_DONE |
+> -			    INTR_STATUS__ECC_ERR;
+> +	uint32_t irq_mask = denali->have_hw_ecc_fixup ?
+> +		(INTR_STATUS__DMA_CMD_COMP) :
+> +		(INTR_STATUS__ECC_TRANSACTION_DONE | INTR_STATUS__ECC_ERR);
+>  	bool check_erased_page = false;
+>  
+>  	if (page != denali->page) {
+> -- 
+> 2.9.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
