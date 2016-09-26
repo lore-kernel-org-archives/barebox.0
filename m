@@ -1,22 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-in-06.arcor-online.net ([151.189.21.46])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1boSMB-0005NA-SO
- for barebox@lists.infradead.org; Mon, 26 Sep 2016 09:37:52 +0000
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
- by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
- (Exim 4.80) (envelope-from <ukl@pengutronix.de>) id 1boSLq-0001NI-2d
- for barebox@lists.infradead.org; Mon, 26 Sep 2016 11:37:30 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.84_2)
- (envelope-from <ukl@pengutronix.de>) id 1boSLp-00087R-Re
- for barebox@lists.infradead.org; Mon, 26 Sep 2016 11:37:29 +0200
-Date: Mon, 26 Sep 2016 11:37:29 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20160926093729.txxe5hjd2i6a7fiv@pengutronix.de>
-References: <20160926091137.24719-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20160926091137.24719-1-u.kleine-koenig@pengutronix.de>
+ id 1boTX6-0006zr-Jm
+ for barebox@lists.infradead.org; Mon, 26 Sep 2016 10:53:14 +0000
+Received: from mail-in-17-z2.arcor-online.net (mail-in-17-z2.arcor-online.net
+ [151.189.8.34]) by mx.arcor.de (Postfix) with ESMTP id 3sjLQl38tRzvmJ
+ for <barebox@lists.infradead.org>; Mon, 26 Sep 2016 12:52:47 +0200 (CEST)
+From: Giorgio Dal Molin <iw3gtf@arcor.de>
+Date: Mon, 26 Sep 2016 12:52:31 +0200
+Message-Id: <20160926105233.26387-1-iw3gtf@arcor.de>
+In-Reply-To: <20160926061912.elzmjbs4mdv5ztrb@pengutronix.de>
+References: <20160926061912.elzmjbs4mdv5ztrb@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,43 +19,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] firmware: altera-serial: Make the driver match the
- dt binding documentation
+Subject: [PATCH 0/2 (try 2)] mtd: ubi: implement the new command 'ubirename'
 To: barebox@lists.infradead.org
+Cc: Giorgio Dal Molin <iw3gtf@arcor.de>
 
-Hello Sascha
+Here a new set of patches implementing the command 'ubirename'.
 
-I just noticed there is an additional change needed:
+They are based on a patch serie from Sascha that restructures a bit
+the barebox UBI APIs. In particular it is now easier to find the ubi
+volume ids from the command code. Moreover the command code uses now
+api functions to do the rename.
 
-diff --git a/drivers/firmware/altera_serial.c b/drivers/firmware/altera_ser=
-ial.c
-index ddee991ed073..b119778d720d 100644
---- a/drivers/firmware/altera_serial.c
-+++ b/drivers/firmware/altera_serial.c
-@@ -328,7 +328,7 @@ out:
- =
+This new set also fixes some minor cosmetic details noted by Sascha and
+a real problem found in the function 'get_vol_id()': it was missing
+a call to 'ubi_close_volume(desc)' hence leaving ubi volumes busy.
+A simple test that showed the problem was:
 
- static struct of_device_id altera_spi_id_table[] =3D {
- 	{
--		.compatible =3D "altr,passive-serial",
-+		.compatible =3D "altr,fpga-passive-serial",
- 	},
- };
- =
+bb> ubimkvol /dev/nand0.ubi_volumes.ubi vol_A 10MiB
+bb> ubirename /dev/nand0.ubi_volumes.ubi vol_A vol_B
+bb> ubirmvol /dev/nand0.ubi_volumes.ubi vol_B
 
-Should I resend, or can you fixup yourself?
+The last command, ubirmvol, failed because 'vol_B' appeared to be still
+busy after the rename (vol->readers==1).
+	
+Giorgio Dal Molin (2):
+  mtd: ubi: add API call to rename volumes.
+  mtd: ubi: commands: added the new command 'ubirename'.
 
-Best regards
-Uwe
+ commands/ubi.c            |  72 +++++++++++++++++++++
+ drivers/mtd/ubi/barebox.c | 156 ++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/mtd/ubi/vmt.c     |   3 +
+ include/linux/mtd/ubi.h   |   1 +
+ 4 files changed, 232 insertions(+)
 
--- =
+-- 
+2.10.0
 
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
