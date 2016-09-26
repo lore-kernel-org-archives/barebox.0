@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1boP2o-0004Ob-8t
- for barebox@lists.infradead.org; Mon, 26 Sep 2016 06:05:39 +0000
-Date: Mon, 26 Sep 2016 08:05:15 +0200
+ id 1boP4H-0005Bt-Nv
+ for barebox@lists.infradead.org; Mon, 26 Sep 2016 06:07:10 +0000
+Date: Mon, 26 Sep 2016 08:06:47 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160926060515.fvyfquh74okw6rsq@pengutronix.de>
-References: <20160922050041.GA12923@ravnborg.org>
- <20160922080839.ypjpltpcdsyjmle5@pengutronix.de>
- <20160922191634.GA23455@ravnborg.org>
+Message-ID: <20160926060647.5dhgvzg6fgmrhwmr@pengutronix.de>
+References: <1474564462-8419-1-git-send-email-r.schwebel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20160922191634.GA23455@ravnborg.org>
+In-Reply-To: <1474564462-8419-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,60 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] environment: "wrong magic" gives the impression of an
- error
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] Documentation: clarify that patches should target the
+ master branch.
+To: Robert Schwebel <r.schwebel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Thu, Sep 22, 2016 at 09:16:34PM +0200, Sam Ravnborg wrote:
-> From 15e7ff689cfda27eab10aacda5c26a1ba47979ec Mon Sep 17 00:00:00 2001
-> From: Sam Ravnborg <srn@skov.dk>
-> Date: Thu, 22 Sep 2016 06:54:42 +0200
-> Subject: [PATCH 1/1] environment: "wrong magic" give the impression of an
->  error
+On Thu, Sep 22, 2016 at 07:14:22PM +0200, Robert Schwebel wrote:
+> I asked Sascha if he still prefers patches against 'next', and it turned
+> out that this is not true any more and patches should be sent against
+> master.
 > 
-> Introduce a more soft wording when the magic of
-> the superblock does not match.
-> Include a hint to the typical reason "(envfs never written?)"
-> 
-> This prevents a "what is wrong?" moment when looking at
-> the boot log.
-> 
-> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 > ---
+>  Documentation/user/barebox.rst | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> v2:
-> Dropped change in envfs_load_data(). envfs_load_data() is used
-> to traverse the inodes and if we reach this far we
-> have encountered a real error which should be reported.
-> Thanks to Sascha for spottign this mistake!
-> 
-> 	Sam
-> 
->  common/environment.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/common/environment.c b/common/environment.c
-> index db127d7..c9cef63 100644
-> --- a/common/environment.c
-> +++ b/common/environment.c
-> @@ -382,7 +382,7 @@ EXPORT_SYMBOL(envfs_save);
->  static int envfs_check_super(struct envfs_super *super, size_t *size)
->  {
->  	if (ENVFS_32(super->magic) != ENVFS_MAGIC) {
-> -		printf("envfs: wrong magic\n");
-> +		printf("envfs: no envfs (magic mismatch) - envfs newer written?\n");
->  		return -EIO;
->  	}
+> diff --git a/Documentation/user/barebox.rst b/Documentation/user/barebox.rst
+> index 32cec3d..1203c10 100644
+> --- a/Documentation/user/barebox.rst
+> +++ b/Documentation/user/barebox.rst
+> @@ -28,9 +28,11 @@ can be checked out as follows:
+>    Checking connectivity... done.
+>    Checking out files: 100% (5651/5651), done.
+>  
+> -After this, make sure to check out the appropriate branch. If you want to
+> -develop for barebox, it's best to check out the ``next`` branch rather than
+> -the ``master`` branch:
+> +By default, the master branch is checked out. If you want to develop for
+> +barebox, this is the right branch to send patches against.
+> +
+> +If you want to see which patches are already selected for the next release,
+> +you can look at the ``next`` branch:
+>  
+>  .. code-block:: sh
 >  
 > -- 
-> 1.8.3.1
+> 2.8.1
 > 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
