@@ -1,12 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1boRxG-0001PW-AZ
- for barebox@lists.infradead.org; Mon, 26 Sep 2016 09:12:07 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Mon, 26 Sep 2016 11:11:36 +0200
-Message-Id: <20160926091137.24719-1-u.kleine-koenig@pengutronix.de>
+ id 1boSMB-0005NA-SO
+ for barebox@lists.infradead.org; Mon, 26 Sep 2016 09:37:52 +0000
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <ukl@pengutronix.de>) id 1boSLq-0001NI-2d
+ for barebox@lists.infradead.org; Mon, 26 Sep 2016 11:37:30 +0200
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.84_2)
+ (envelope-from <ukl@pengutronix.de>) id 1boSLp-00087R-Re
+ for barebox@lists.infradead.org; Mon, 26 Sep 2016 11:37:29 +0200
+Date: Mon, 26 Sep 2016 11:37:29 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20160926093729.txxe5hjd2i6a7fiv@pengutronix.de>
+References: <20160926091137.24719-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20160926091137.24719-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,40 +25,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] firmware: altera-serial: Make the driver match the dt
- binding documentation
+Subject: Re: [PATCH 1/2] firmware: altera-serial: Make the driver match the
+ dt binding documentation
 To: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBkcml2ZXJzL2Zpcm13YXJlL2FsdGVyYV9zZXJpYWwuYyB8IDEyICsrKysr
-Ky0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMoLSkK
-CmRpZmYgLS1naXQgYS9kcml2ZXJzL2Zpcm13YXJlL2FsdGVyYV9zZXJpYWwuYyBiL2RyaXZlcnMv
-ZmlybXdhcmUvYWx0ZXJhX3NlcmlhbC5jCmluZGV4IDQ1MjdkMjdjNWM5OC4uNTQ4NmQ5ZWM2M2U5
-IDEwMDY0NAotLS0gYS9kcml2ZXJzL2Zpcm13YXJlL2FsdGVyYV9zZXJpYWwuYworKysgYi9kcml2
-ZXJzL2Zpcm13YXJlL2FsdGVyYV9zZXJpYWwuYwpAQCAtMzUsOSArMzUsOSBAQAogICoKICAqCWZw
-Z2FAMCB7CiAgKgkJY29tcGF0aWJsZSA9ICJhbHRyLGZwZ2EtcGFzc2l2ZS1zZXJpYWwiOwotICoJ
-CW5zdGF0LWdwaW8gPSA8JmdwaW80IDE4IDA+OwotICoJCWNvbmZkLWdwaW8gPSA8JmdwaW80IDE5
-IDA+OwotICoJCW5jb25maWctZ3BpbyA9IDwmZ3BpbzQgMjAgMD47CisgKgkJbnN0YXQtZ3Bpb3Mg
-PSA8JmdwaW80IDE4IDA+OworICoJCWNvbmZkLWdwaW9zID0gPCZncGlvNCAxOSAwPjsKKyAqCQlu
-Y29uZmlnLWdwaW9zID0gPCZncGlvNCAyMCAwPjsKICAqCQlzcGktbWF4LWZyZXF1ZW5jeSA9IDwx
-MDAwMDAwMD47CiAgKgkJcmVnID0gPDA+OwogICoJfTsKQEAgLTIyMCw3ICsyMjAsNyBAQCBzdGF0
-aWMgaW50IGFsdGVyYV9zcGlfb2Yoc3RydWN0IGRldmljZV9kICpkZXYsIHN0cnVjdCBmcGdhX3Nw
-aSAqdGhpcykKIAljb25zdCBjaGFyICpuYW1lOwogCWludCByZXQ7CiAKLQluYW1lID0gIm5zdGF0
-LWdwaW8iOworCW5hbWUgPSAibnN0YXQtZ3Bpb3MiOwogCWlmICghb2ZfZ2V0X3Byb3BlcnR5KG4s
-IG5hbWUsIE5VTEwpKSB7CiAJCWRldl9pbmZvKGRldiwgIm5zdGF0LWdwaW8gaXMgbm90IHNwZWNp
-ZmllZCwgYXNzdW1pbmcgaXQgaXMgbm90IGNvbm5lY3RlZFxuIik7CiAJCXRoaXMtPm5zdGF0X2dw
-aW8gPSAtMTsKQEAgLTIzMiwxNCArMjMyLDE0IEBAIHN0YXRpYyBpbnQgYWx0ZXJhX3NwaV9vZihz
-dHJ1Y3QgZGV2aWNlX2QgKmRldiwgc3RydWN0IGZwZ2Ffc3BpICp0aGlzKQogCQl9CiAJfQogCi0J
-bmFtZSA9ICJjb25mZC1ncGlvIjsKKwluYW1lID0gImNvbmZkLWdwaW9zIjsKIAl0aGlzLT5jb25m
-ZF9ncGlvID0gb2ZfZ2V0X25hbWVkX2dwaW8obiwgbmFtZSwgMCk7CiAJaWYgKHRoaXMtPmNvbmZk
-X2dwaW8gPCAwKSB7CiAJCXJldCA9IHRoaXMtPmNvbmZkX2dwaW87CiAJCWdvdG8gb3V0OwogCX0K
-IAotCW5hbWUgPSAibmNvbmZpZy1ncGlvIjsKKwluYW1lID0gIm5jb25maWctZ3Bpb3MiOwogCXRo
-aXMtPm5jb25maWdfZ3BpbyA9IG9mX2dldF9uYW1lZF9ncGlvKG4sIG5hbWUsIDApOwogCWlmICh0
-aGlzLT5uY29uZmlnX2dwaW8gPCAwKSB7CiAJCXJldCA9IHRoaXMtPm5jb25maWdfZ3BpbzsKLS0g
-CjIuOS4zCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Hello Sascha
+
+I just noticed there is an additional change needed:
+
+diff --git a/drivers/firmware/altera_serial.c b/drivers/firmware/altera_ser=
+ial.c
+index ddee991ed073..b119778d720d 100644
+--- a/drivers/firmware/altera_serial.c
++++ b/drivers/firmware/altera_serial.c
+@@ -328,7 +328,7 @@ out:
+ =
+
+ static struct of_device_id altera_spi_id_table[] =3D {
+ 	{
+-		.compatible =3D "altr,passive-serial",
++		.compatible =3D "altr,fpga-passive-serial",
+ 	},
+ };
+ =
+
+Should I resend, or can you fixup yourself?
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
