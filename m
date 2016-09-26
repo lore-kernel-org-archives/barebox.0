@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1boP4H-0005Bt-Nv
- for barebox@lists.infradead.org; Mon, 26 Sep 2016 06:07:10 +0000
-Date: Mon, 26 Sep 2016 08:06:47 +0200
+ id 1boPGI-0000Wc-6U
+ for barebox@lists.infradead.org; Mon, 26 Sep 2016 06:19:34 +0000
+Date: Mon, 26 Sep 2016 08:19:12 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160926060647.5dhgvzg6fgmrhwmr@pengutronix.de>
-References: <1474564462-8419-1-git-send-email-r.schwebel@pengutronix.de>
+Message-ID: <20160926061912.elzmjbs4mdv5ztrb@pengutronix.de>
+References: <20160922080408.rpqeithibjfga2rm@pengutronix.de>
+ <20160923090739.25517-3-iw3gtf@arcor.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1474564462-8419-1-git-send-email-r.schwebel@pengutronix.de>
+In-Reply-To: <20160923090739.25517-3-iw3gtf@arcor.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,54 +23,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: clarify that patches should target the
- master branch.
-To: Robert Schwebel <r.schwebel@pengutronix.de>
+Subject: Re: [PATCH 2/2] mtd: ubi: commands: added the new command 'ubirename'.
+To: Giorgio Dal Molin <iw3gtf@arcor.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Sep 22, 2016 at 07:14:22PM +0200, Robert Schwebel wrote:
-> I asked Sascha if he still prefers patches against 'next', and it turned
-> out that this is not true any more and patches should be sent against
-> master.
-> 
-> Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
-> ---
->  Documentation/user/barebox.rst | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+Hi Giorgio,
 
-Applied, thanks
+
+Looks good mostly. Patch 1/2 is fine, some small remarks for this one.
+
+On Fri, Sep 23, 2016 at 11:07:39AM +0200, Giorgio Dal Molin wrote:
+> Signed-off-by: Giorgio Dal Molin <iw3gtf@arcor.de>
+> ---
+>  commands/ubi.c | 71 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 71 insertions(+)
+> 
+> diff --git a/commands/ubi.c b/commands/ubi.c
+> index 7c55195..3c5729e 100644
+> --- a/commands/ubi.c
+> +++ b/commands/ubi.c
+> @@ -328,3 +328,74 @@ BAREBOX_CMD_START(ubirmvol)
+>  	BAREBOX_CMD_GROUP(CMD_GRP_PART)
+>  	BAREBOX_CMD_HELP(cmd_ubirmvol_help)
+>  BAREBOX_CMD_END
+> +
+> +	ret = ioctl(fd, UBI_IOCGETUBINUM, &ubi_num);
+> +	if (ret) {
+> +		perror("failed to get the ubi num");
+> +		return COMMAND_ERROR_USAGE;
+> +	}
+> +	close(fd);
+> +
+> +	for(i=2, j=0; i<argc; ++j, i+=2) {
+
+Please add a space pn both sides of binary operators.
+
+> +		req.ents[j].vol_id = get_vol_id(ubi_num, argv[i]);
+> +		if(req.ents[j].vol_id < 0) {
+> +			printf("'%s' is not a volume name.\n", argv[i]);
+
+It is a volume name, but not a valid one. Better something like
+
+			printf("Volume '%s' does not exist on %s\n", argv[i], argv[1]);
+
+?
+
+> +			return COMMAND_ERROR_USAGE;
+> +		}
+> +		strncpy(req.ents[j].name, argv[i+1], UBI_MAX_VOLUME_NAME);
+> +		req.ents[j].name_len = strlen(req.ents[j].name);
+> +	}
+> +
+> +	ret = ubi_api_rename_volumes(ubi_num, &req);
+> +	if (ret)
+> +		perror("failed to rename.");
+
+perror("failed to rename: %s", strerror(-ret));
+
+It's always nice to print the error reason if we can.
 
 Sascha
-
-> 
-> diff --git a/Documentation/user/barebox.rst b/Documentation/user/barebox.rst
-> index 32cec3d..1203c10 100644
-> --- a/Documentation/user/barebox.rst
-> +++ b/Documentation/user/barebox.rst
-> @@ -28,9 +28,11 @@ can be checked out as follows:
->    Checking connectivity... done.
->    Checking out files: 100% (5651/5651), done.
->  
-> -After this, make sure to check out the appropriate branch. If you want to
-> -develop for barebox, it's best to check out the ``next`` branch rather than
-> -the ``master`` branch:
-> +By default, the master branch is checked out. If you want to develop for
-> +barebox, this is the right branch to send patches against.
-> +
-> +If you want to see which patches are already selected for the next release,
-> +you can look at the ``next`` branch:
->  
->  .. code-block:: sh
->  
-> -- 
-> 2.8.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
