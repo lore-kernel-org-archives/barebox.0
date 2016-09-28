@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from arcturus.kleine-koenig.org ([78.47.169.190])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bpJwu-0004XY-Uv
- for barebox@lists.infradead.org; Wed, 28 Sep 2016 18:51:22 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Wed, 28 Sep 2016 20:50:10 +0200
-Message-Id: <20160928185017.25002-1-u.kleine-koenig@pengutronix.de>
+ id 1bpKt5-00015k-8T
+ for barebox@lists.infradead.org; Wed, 28 Sep 2016 19:51:28 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
+Date: Wed, 28 Sep 2016 21:51:00 +0200
+Message-Id: <1475092260-12749-1-git-send-email-uwe@kleine-koenig.org>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,22 +19,21 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/7] scripts: kwboot: various improvements
-To: barebox@lists.infradead.org
+Subject: [PATCH] pinctrl: mvebu: add newline to error message
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, barebox@lists.infradead.org
 
-SGVsbG8sCgp0aGlzIHNlcmllcyBpcyB0aGUgcmVzdWx0IG9mIG15IGVmZm9ydHMgdG8gbWFrZSBV
-QVJUIGJvb3Rpbmcgb24gYW4KTmV0Z2VhciBSZWFkeU5BUyAyMTIwIHdvcmsuCgpCZXN0IHJlZ2Fy
-ZHMKVXdlCgpVd2UgS2xlaW5lLUvDtm5pZyAoNyk6CiAgc2NyaXB0czoga3dib290OiB0cnkgdG8g
-cmVzeW5jIG9uIHBhY2tldCBib3VuZGFyeSBhZnRlciByZWNlaXZpbmcgYQogICAgTkFLCiAgc2Ny
-aXB0czoga3dib290OiBmbHVzaCBpbnB1dCBhbmQgb3V0cHV0IG9ubHkgb25jZQogIHNjcmlwdHM6
-IGt3Ym9vdDogaW1wcm92ZSBkaWFnbm9zdGljIG91dHB1dAogIHNjcmlwdHM6IGt3Ym9vdDogc2hv
-cnRlbiBkZWxheSBiZXR3ZWVuIHR3byBib290IG1lc3NhZ2VzCiAgc2NyaXB0czoga3dib290OiBz
-aW1wbGlmeSBrd2Jvb3RfbW1hcF9pbWFnZQogIHNjcmlwdHM6IGt3Ym9vdDogc2V0IGJvb3Qgc291
-cmNlIHRvIFVBUlQgYmVmb3JlIHNlbmRpbmcKICBpbWFnZXM6IG12ZWJ1OiBkb24ndCBnZW5lcmF0
-ZSB1YXJ0IGltYWdlcwoKIGltYWdlcy9NYWtlZmlsZS5tdmVidSB8ICAyOSAtLS0tLS0tLS0tLS0t
-LS0KIHNjcmlwdHMva3dib290LmMgICAgICB8IDEwMSArKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKystLS0tLS0tLS0tLQogMiBmaWxlcyBjaGFuZ2VkLCA4MCBpbnNlcnRpb25z
-KCspLCA1MCBkZWxldGlvbnMoLSkKCi0tIAoyLjkuMwoKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHV3ZUBrbGVpbmUta29lbmlnLm9yZz4K
+LS0tCiBkcml2ZXJzL3BpbmN0cmwvbXZlYnUvY29tbW9uLmMgfCAzICsrLQogMSBmaWxlIGNoYW5n
+ZWQsIDIgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMv
+cGluY3RybC9tdmVidS9jb21tb24uYyBiL2RyaXZlcnMvcGluY3RybC9tdmVidS9jb21tb24uYwpp
+bmRleCA1MzI3MDUyODY3OTUuLmFlMTZiMzkyNjhkNyAxMDA2NDQKLS0tIGEvZHJpdmVycy9waW5j
+dHJsL212ZWJ1L2NvbW1vbi5jCisrKyBiL2RyaXZlcnMvcGluY3RybC9tdmVidS9jb21tb24uYwpA
+QCAtNzgsNyArNzgsOCBAQCBzdGF0aWMgaW50IG12ZWJ1X3BpbmN0cmxfc2V0X3N0YXRlKHN0cnVj
+dCBwaW5jdHJsX2RldmljZSAqcGRldiwKIAogCQlzZXQgPSBtdmVidV9waW5jdHJsX2ZpbmRfc2V0
+dGluZ19ieV9uYW1lKHBjdGwsIG1vZGUsIGZ1bmN0aW9uKTsKIAkJaWYgKCFzZXQpIHsKLQkJCWRl
+dl9lcnIocGRldi0+ZGV2LCAidW5zdXBwb3J0ZWQgZnVuY3Rpb24gJXMgb24gcGluICVzIiwKKwkJ
+CWRldl9lcnIocGRldi0+ZGV2LAorCQkJCSJ1bnN1cHBvcnRlZCBmdW5jdGlvbiAlcyBvbiBwaW4g
+JXNcbiIsCiAJCQkJZnVuY3Rpb24sIGdyb3VwKTsKIAkJCWNvbnRpbnVlOwogCQl9Ci0tIAoyLjgu
+MQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
+b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
+aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
