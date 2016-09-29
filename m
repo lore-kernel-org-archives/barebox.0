@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pa0-x241.google.com ([2607:f8b0:400e:c03::241])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bpacb-00034s-3p
- for barebox@lists.infradead.org; Thu, 29 Sep 2016 12:39:30 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 29 Sep 2016 14:38:54 +0200
-Message-Id: <20160929123900.24853-3-s.hauer@pengutronix.de>
-In-Reply-To: <20160929123900.24853-1-s.hauer@pengutronix.de>
-References: <20160929123900.24853-1-s.hauer@pengutronix.de>
+ id 1bpjig-0008EC-K8
+ for barebox@lists.infradead.org; Thu, 29 Sep 2016 22:22:24 +0000
+Received: by mail-pa0-x241.google.com with SMTP id t6so338452pae.2
+ for <barebox@lists.infradead.org>; Thu, 29 Sep 2016 15:22:01 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu, 29 Sep 2016 15:21:42 -0700
+Message-Id: <1475187703-5748-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,44 +21,149 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/9] usb: ehci: forward phy given in registration data to host
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] i.MX: Introduce imx6_cpu_revision()
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Allow to pass a phy in the registration data and forward it to
-the usb_host structure.
+Factor out CPU revision identification code from imx6_init() into a
+standalone inline function (similar to imx6_cpu_type()), so that it
+would be possible to use that functionality in PBL code.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/host/ehci-hcd.c | 1 +
- include/usb/ehci.h          | 1 +
- 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 35cf6aa..f6e9099 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -1297,6 +1297,7 @@ int ehci_register(struct device_d *dev, struct ehci_data *data)
+Sascha:
+
+I have an almost ready to send, board support patch that uses this in
+PBL. Unfortunately at the last minute a regression in functionality
+was discovered in that code, so I can't post it until that is
+resolved, meanwhile I am hoping I can get this code in while I am
+debugging.
+
+Let me know if you'd rathe I send everything together.
+
+ arch/arm/mach-imx/imx6.c              | 38 +----------------------------------
+ arch/arm/mach-imx/include/mach/imx6.h | 36 +++++++++++++++++++++++++++++++++
+ 2 files changed, 37 insertions(+), 37 deletions(-)
+
+diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+index ba8fb89..101a2f6 100644
+--- a/arch/arm/mach-imx/imx6.c
++++ b/arch/arm/mach-imx/imx6.c
+@@ -25,8 +25,6 @@
+ #include <asm/mmu.h>
+ #include <asm/cache-l2x0.h>
  
- 	host->hw_dev = dev;
- 	host->init = ehci_init;
-+	host->usbphy = data->usbphy;
- 	host->submit_int_msg = submit_int_msg;
- 	host->submit_control_msg = submit_control_msg;
- 	host->submit_bulk_msg = submit_bulk_msg;
-diff --git a/include/usb/ehci.h b/include/usb/ehci.h
-index 93f980d..1008e92 100644
---- a/include/usb/ehci.h
-+++ b/include/usb/ehci.h
-@@ -11,6 +11,7 @@ struct ehci_data {
- 	void __iomem *hccr;
- 	void __iomem *hcor;
- 	unsigned long flags;
-+	struct usb_phy *usbphy;
+-#define SI_REV 0x260
+-
+ void imx6_init_lowlevel(void)
+ {
+ 	void __iomem *aips1 = (void *)MX6_AIPS1_ON_BASE_ADDR;
+@@ -115,47 +113,13 @@ void imx6_init_lowlevel(void)
+ int imx6_init(void)
+ {
+ 	const char *cputypestr;
+-	u32 rev;
+ 	u32 mx6_silicon_revision;
  
- 	/* platform specific init functions */
- 	int (*init)(void *drvdata);
+ 	imx6_init_lowlevel();
+ 
+ 	imx6_boot_save_loc((void *)MX6_SRC_BASE_ADDR);
+ 
+-	rev = readl(MX6_ANATOP_BASE_ADDR + SI_REV);
+-
+-	switch (rev & 0xfff) {
+-	case 0x00:
+-		mx6_silicon_revision = IMX_CHIP_REV_1_0;
+-		break;
+-
+-	case 0x01:
+-		mx6_silicon_revision = IMX_CHIP_REV_1_1;
+-		break;
+-
+-	case 0x02:
+-		mx6_silicon_revision = IMX_CHIP_REV_1_2;
+-		break;
+-
+-	case 0x03:
+-		mx6_silicon_revision = IMX_CHIP_REV_1_3;
+-		break;
+-
+-	case 0x04:
+-		mx6_silicon_revision = IMX_CHIP_REV_1_4;
+-		break;
+-
+-	case 0x05:
+-		mx6_silicon_revision = IMX_CHIP_REV_1_5;
+-		break;
+-
+-	case 0x100:
+-		mx6_silicon_revision = IMX_CHIP_REV_2_0;
+-		break;
+-
+-	default:
+-		mx6_silicon_revision = IMX_CHIP_REV_UNKNOWN;
+-	}
++	mx6_silicon_revision = imx6_cpu_revision();
+ 
+ 	switch (imx6_cpu_type()) {
+ 	case IMX6_CPUTYPE_IMX6Q:
+diff --git a/arch/arm/mach-imx/include/mach/imx6.h b/arch/arm/mach-imx/include/mach/imx6.h
+index e8ffa47..fb5eaf1 100644
+--- a/arch/arm/mach-imx/include/mach/imx6.h
++++ b/arch/arm/mach-imx/include/mach/imx6.h
+@@ -4,6 +4,7 @@
+ #include <io.h>
+ #include <mach/generic.h>
+ #include <mach/imx6-regs.h>
++#include <mach/revision.h>
+ 
+ void imx6_init_lowlevel(void);
+ 
+@@ -48,6 +49,41 @@ static inline int imx6_cpu_type(void)
+ 	return __imx6_cpu_type();
+ }
+ 
++static inline int __imx6_cpu_revision(void)
++{
++
++	uint32_t rev;
++
++	rev = readl(MX6_ANATOP_BASE_ADDR + IMX6_ANATOP_SI_REV);
++
++	switch (rev & 0xfff) {
++	case 0x00:
++		return IMX_CHIP_REV_1_0;
++	case 0x01:
++		return IMX_CHIP_REV_1_1;
++	case 0x02:
++		return IMX_CHIP_REV_1_2;
++	case 0x03:
++		return IMX_CHIP_REV_1_3;
++	case 0x04:
++		return IMX_CHIP_REV_1_4;
++	case 0x05:
++		return IMX_CHIP_REV_1_5;
++	case 0x100:
++		return IMX_CHIP_REV_2_0;
++	}
++
++	return IMX_CHIP_REV_UNKNOWN;
++}
++
++static inline int imx6_cpu_revision(void)
++{
++	if (!cpu_is_mx6())
++		return 0;
++
++	return __imx6_cpu_revision();
++}
++
+ #define DEFINE_MX6_CPU_TYPE(str, type)					\
+ 	static inline int cpu_mx6_is_##str(void)			\
+ 	{								\
 -- 
-2.9.3
+2.5.5
 
 
 _______________________________________________
