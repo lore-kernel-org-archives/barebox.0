@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from arcturus.kleine-koenig.org ([78.47.169.190])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bpKt5-00015k-8T
- for barebox@lists.infradead.org; Wed, 28 Sep 2016 19:51:28 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
-Date: Wed, 28 Sep 2016 21:51:00 +0200
-Message-Id: <1475092260-12749-1-git-send-email-uwe@kleine-koenig.org>
-MIME-Version: 1.0
+ id 1bpacY-00034M-8V
+ for barebox@lists.infradead.org; Thu, 29 Sep 2016 12:39:29 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 29 Sep 2016 14:38:55 +0200
+Message-Id: <20160929123900.24853-4-s.hauer@pengutronix.de>
+In-Reply-To: <20160929123900.24853-1-s.hauer@pengutronix.de>
+References: <20160929123900.24853-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,25 +16,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] pinctrl: mvebu: add newline to error message
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, barebox@lists.infradead.org
+Subject: [PATCH 4/9] usb: imx-usb-phy: Drop unnecessary read/modify/write
+To: Barebox List <barebox@lists.infradead.org>
 
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHV3ZUBrbGVpbmUta29lbmlnLm9yZz4K
-LS0tCiBkcml2ZXJzL3BpbmN0cmwvbXZlYnUvY29tbW9uLmMgfCAzICsrLQogMSBmaWxlIGNoYW5n
-ZWQsIDIgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMv
-cGluY3RybC9tdmVidS9jb21tb24uYyBiL2RyaXZlcnMvcGluY3RybC9tdmVidS9jb21tb24uYwpp
-bmRleCA1MzI3MDUyODY3OTUuLmFlMTZiMzkyNjhkNyAxMDA2NDQKLS0tIGEvZHJpdmVycy9waW5j
-dHJsL212ZWJ1L2NvbW1vbi5jCisrKyBiL2RyaXZlcnMvcGluY3RybC9tdmVidS9jb21tb24uYwpA
-QCAtNzgsNyArNzgsOCBAQCBzdGF0aWMgaW50IG12ZWJ1X3BpbmN0cmxfc2V0X3N0YXRlKHN0cnVj
-dCBwaW5jdHJsX2RldmljZSAqcGRldiwKIAogCQlzZXQgPSBtdmVidV9waW5jdHJsX2ZpbmRfc2V0
-dGluZ19ieV9uYW1lKHBjdGwsIG1vZGUsIGZ1bmN0aW9uKTsKIAkJaWYgKCFzZXQpIHsKLQkJCWRl
-dl9lcnIocGRldi0+ZGV2LCAidW5zdXBwb3J0ZWQgZnVuY3Rpb24gJXMgb24gcGluICVzIiwKKwkJ
-CWRldl9lcnIocGRldi0+ZGV2LAorCQkJCSJ1bnN1cHBvcnRlZCBmdW5jdGlvbiAlcyBvbiBwaW4g
-JXNcbiIsCiAJCQkJZnVuY3Rpb24sIGdyb3VwKTsKIAkJCWNvbnRpbnVlOwogCQl9Ci0tIAoyLjgu
-MQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+When writing to the USBPHY_CTRL register read/modify/write is unncessary
+since we are writing to the associated bit set register anyway.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/imx/imx-usb-phy.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/usb/imx/imx-usb-phy.c b/drivers/usb/imx/imx-usb-phy.c
+index 1aa12be..eec195d 100644
+--- a/drivers/usb/imx/imx-usb-phy.c
++++ b/drivers/usb/imx/imx-usb-phy.c
+@@ -39,8 +39,6 @@ struct imx_usbphy {
+ 
+ static int imx_usbphy_enable(struct imx_usbphy *imxphy)
+ {
+-	u32 val;
+-
+ 	clk_enable(imxphy->clk);
+ 
+ 	/* reset usbphy */
+@@ -56,9 +54,8 @@ static int imx_usbphy_enable(struct imx_usbphy *imxphy)
+ 	writel(0xffffffff, imxphy->base + CLR);
+ 
+ 	/* set utmilvl2/3 */
+-	val = readl(imxphy->base + USBPHY_CTRL);
+-	val |= USBPHY_CTRL_ENUTMILEVEL3 | USBPHY_CTRL_ENUTMILEVEL2;
+-	writel(val, imxphy->base + USBPHY_CTRL + SET);
++	writel(USBPHY_CTRL_ENUTMILEVEL3 | USBPHY_CTRL_ENUTMILEVEL2,
++	       imxphy->base + USBPHY_CTRL + SET);
+ 
+ 	return 0;
+ }
+-- 
+2.9.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
