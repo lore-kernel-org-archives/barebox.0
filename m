@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bpacb-00034r-3W
- for barebox@lists.infradead.org; Thu, 29 Sep 2016 12:39:30 +0000
+ id 1bpacY-00034O-8R
+ for barebox@lists.infradead.org; Thu, 29 Sep 2016 12:39:28 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 29 Sep 2016 14:39:00 +0200
-Message-Id: <20160929123900.24853-9-s.hauer@pengutronix.de>
+Date: Thu, 29 Sep 2016 14:38:57 +0200
+Message-Id: <20160929123900.24853-6-s.hauer@pengutronix.de>
 In-Reply-To: <20160929123900.24853-1-s.hauer@pengutronix.de>
 References: <20160929123900.24853-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,73 +21,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] usb: imx-us-phy: implement notify_(dis)concect
+Subject: [PATCH 6/9] phy: Introduce to_usbphy conversion function
 To: Barebox List <barebox@lists.infradead.org>
 
-The i.MX6 USB phy does not recognize disconnects of high speed
-devices when the USBPHY_CTRL_ENHOSTDISCONDETECT is not set. The
-phy does not work properly though when this bit is always set, so
-implement the notify_(dis)concect() callbacks to set this bit
-whenever a high speed device is connected and to clear it again
-when the device is disconnected.
+The generic phy support layer has the necessary list handling
+and phy retrieval functions, so we should reuse them for usb
+phys. This adds a phy_to_usbphy() conversion function which
+drivers can implement which attach to the generic phy layer
+and are really usb phys.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/imx/imx-usb-phy.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ drivers/phy/phy-core.c  | 12 ++++++++++++
+ include/linux/phy/phy.h |  8 ++++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/drivers/usb/imx/imx-usb-phy.c b/drivers/usb/imx/imx-usb-phy.c
-index 2829ffc..9f46f8d 100644
---- a/drivers/usb/imx/imx-usb-phy.c
-+++ b/drivers/usb/imx/imx-usb-phy.c
-@@ -33,6 +33,7 @@
- #define USBPHY_CTRL_CLKGATE		(1 << 30)
- #define USBPHY_CTRL_ENUTMILEVEL3	(1 << 15)
- #define USBPHY_CTRL_ENUTMILEVEL2	(1 << 14)
-+#define USBPHY_CTRL_ENHOSTDISCONDETECT	(1 << 1)
+diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
+index 7c1f3d4..1b6a9f7 100644
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -15,6 +15,7 @@
+ #include <common.h>
+ #include <malloc.h>
+ #include <linux/phy/phy.h>
++#include <usb/phy.h>
  
- struct imx_usbphy {
- 	struct usb_phy usb_phy;
-@@ -67,6 +68,30 @@ static int imx_usbphy_phy_init(struct phy *phy)
+ static LIST_HEAD(phy_provider_list);
+ static int phy_ida;
+@@ -201,6 +202,17 @@ int phy_power_off(struct phy *phy)
  	return 0;
  }
  
-+static int imx_usbphy_notify_connect(struct usb_phy *phy,
-+				     enum usb_device_speed speed)
++struct usb_phy *phy_to_usbphy(struct phy *phy)
 +{
-+	struct imx_usbphy *imxphy = container_of(phy, struct imx_usbphy, usb_phy);
++	if (!phy)
++		return NULL;
 +
-+	if (speed == USB_SPEED_HIGH) {
-+		writel(USBPHY_CTRL_ENHOSTDISCONDETECT,
-+		       imxphy->base + USBPHY_CTRL + SET);
-+	}
++	if (!phy->ops->to_usbphy)
++		return ERR_PTR(-EINVAL);
 +
-+	return 0;
++	return phy->ops->to_usbphy(phy);
 +}
 +
-+static int imx_usbphy_notify_disconnect(struct usb_phy *phy,
-+					enum usb_device_speed speed)
-+{
-+	struct imx_usbphy *imxphy = container_of(phy, struct imx_usbphy, usb_phy);
-+
-+	writel(USBPHY_CTRL_ENHOSTDISCONDETECT,
-+	       imxphy->base + USBPHY_CTRL + CLR);
-+
-+	return 0;
-+}
-+
- static struct phy *imx_usbphy_xlate(struct device_d *dev,
- 				    struct of_phandle_args *args)
+ static struct phy_provider *of_phy_provider_lookup(struct device_node *node)
  {
-@@ -112,6 +137,8 @@ static int imx_usbphy_probe(struct device_d *dev)
- 	dev->priv = imxphy;
+ 	struct phy_provider *phy_provider;
+diff --git a/include/linux/phy/phy.h b/include/linux/phy/phy.h
+index 0d78923..5d96e02 100644
+--- a/include/linux/phy/phy.h
++++ b/include/linux/phy/phy.h
+@@ -33,6 +33,7 @@ struct phy_ops {
+ 	int	(*exit)(struct phy *phy);
+ 	int	(*power_on)(struct phy *phy);
+ 	int	(*power_off)(struct phy *phy);
++	struct usb_phy *(*to_usbphy)(struct phy *phy);
+ };
  
- 	imxphy->usb_phy.dev = dev;
-+	imxphy->usb_phy.notify_connect = imx_usbphy_notify_connect;
-+	imxphy->usb_phy.notify_disconnect = imx_usbphy_notify_disconnect;
- 	imxphy->phy = phy_create(dev, NULL, &imx_phy_ops, NULL);
- 	if (IS_ERR(imxphy->phy)) {
- 		ret = PTR_ERR(imxphy->phy);
+ /**
+@@ -150,6 +151,7 @@ struct phy_provider *__of_phy_provider_register(struct device_d *dev,
+ 	struct phy * (*of_xlate)(struct device_d *dev,
+ 	struct of_phandle_args *args));
+ void of_phy_provider_unregister(struct phy_provider *phy_provider);
++struct usb_phy *phy_to_usbphy(struct phy *phy);
+ #else
+ static inline int phy_init(struct phy *phy)
+ {
+@@ -243,6 +245,12 @@ static inline struct phy_provider *__of_phy_provider_register(
+ static inline void of_phy_provider_unregister(struct phy_provider *phy_provider)
+ {
+ }
++
++static inline struct usb_phy *phy_to_usbphy(struct phy *phy)
++{
++	return NULL;
++}
++
+ #endif
+ 
+ #endif /* __DRIVERS_PHY_H */
 -- 
 2.9.3
 
