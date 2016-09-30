@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bpvBA-0002DK-3k
- for barebox@lists.infradead.org; Fri, 30 Sep 2016 10:36:34 +0000
+ id 1bpvBA-0002DI-3t
+ for barebox@lists.infradead.org; Fri, 30 Sep 2016 10:36:35 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <l.stach@pengutronix.de>) id 1bpvAm-0004az-IX
+ (envelope-from <l.stach@pengutronix.de>) id 1bpvAm-0004az-Ea
  for barebox@lists.infradead.org; Fri, 30 Sep 2016 12:36:08 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 30 Sep 2016 12:36:05 +0200
-Message-Id: <20160930103607.15791-8-l.stach@pengutronix.de>
+Date: Fri, 30 Sep 2016 12:36:03 +0200
+Message-Id: <20160930103607.15791-6-l.stach@pengutronix.de>
 In-Reply-To: <20160930103607.15791-1-l.stach@pengutronix.de>
 References: <20160930103607.15791-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -26,38 +26,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/10] arm64: include correct setupc file in ARM64 PBL
+Subject: [PATCH 06/10] arm(64): don't advertise stack_dumping capabilities for
+ ARM64
 To: barebox@lists.infradead.org
+
+The unwind code to support this feature is not there yet.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/cpu/Makefile | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/include/asm/barebox.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-index 331c1cd8bc8d..d8cb1871a60f 100644
---- a/arch/arm/cpu/Makefile
-+++ b/arch/arm/cpu/Makefile
-@@ -16,8 +16,10 @@ obj-y += start.o entry.o
+diff --git a/arch/arm/include/asm/barebox.h b/arch/arm/include/asm/barebox.h
+index 31a8e1563050..5a6622235b82 100644
+--- a/arch/arm/include/asm/barebox.h
++++ b/arch/arm/include/asm/barebox.h
+@@ -2,8 +2,10 @@
+ #define _BAREBOX_H_	1
  
- ifeq ($(CONFIG_CPU_64v8), y)
- obj-y += setupc_64.o
-+pbl-y += setupc_64.o
- else
- obj-y += setupc.o
-+pbl-y += setupc.o
- endif
+ #ifdef CONFIG_ARM_UNWIND
++#ifndef CONFIG_CPU_V8
+ #define ARCH_HAS_STACK_DUMP
+ #endif
++#endif
  
- #
-@@ -48,7 +50,7 @@ obj-$(CONFIG_CPU_64v8) += cache-armv8.o
- AFLAGS_pbl-cache-armv8.o       :=-Wa,-march=armv8-a
- pbl-$(CONFIG_CPU_64v8) += cache-armv8.o
- 
--pbl-y += setupc.o entry.o
-+pbl-y += entry.o
- pbl-$(CONFIG_PBL_SINGLE_IMAGE) += start-pbl.o
- pbl-$(CONFIG_PBL_MULTI_IMAGES) += uncompress.o
- 
+ #ifdef CONFIG_ARM_EXCEPTIONS
+ #define ARCH_HAS_DATA_ABORT_MASK
 -- 
 2.9.3
 
