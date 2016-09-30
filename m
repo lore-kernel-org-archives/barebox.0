@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bpjig-0008ED-MZ
- for barebox@lists.infradead.org; Thu, 29 Sep 2016 22:22:24 +0000
-Received: by mail-pf0-x242.google.com with SMTP id q2so4080211pfj.0
- for <barebox@lists.infradead.org>; Thu, 29 Sep 2016 15:22:02 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 29 Sep 2016 15:21:43 -0700
-Message-Id: <1475187703-5748-2-git-send-email-andrew.smirnov@gmail.com>
-In-Reply-To: <1475187703-5748-1-git-send-email-andrew.smirnov@gmail.com>
-References: <1475187703-5748-1-git-send-email-andrew.smirnov@gmail.com>
+ id 1bpvBA-0002DD-3z
+ for barebox@lists.infradead.org; Fri, 30 Sep 2016 10:36:33 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.80)
+ (envelope-from <l.stach@pengutronix.de>) id 1bpvAm-0004az-3D
+ for barebox@lists.infradead.org; Fri, 30 Sep 2016 12:36:08 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Fri, 30 Sep 2016 12:35:58 +0200
+Message-Id: <20160930103607.15791-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,33 +24,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] i.MX: Register imx6_fixup_cpus() for MX6Q+ as well
+Subject: [PATCH 01/10] serial: arm_dcc: depend on !CPU_V8
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Register imx6_fixup_cpus() for MX6Q+ as well as for MX6Q and MX6DL.
+The DCC console uses coprocessor registers registers accesses, the
+implementation of those for ARMv8 is currently missing.
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/mach-imx/imx6.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/serial/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-index 101a2f6..809584e 100644
---- a/arch/arm/mach-imx/imx6.c
-+++ b/arch/arm/mach-imx/imx6.c
-@@ -255,7 +255,8 @@ static int imx6_fixup_cpus(struct device_node *root, void *context)
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index 146bf1ec3c30..b112d7ee044a 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -2,7 +2,7 @@ menu "serial drivers"
+ 	depends on !CONSOLE_NONE
  
- static int imx6_fixup_cpus_register(void)
- {
--	if (!of_machine_is_compatible("fsl,imx6q") &&
-+	if (!of_machine_is_compatible("fsl,imx6qp") &&
-+	    !of_machine_is_compatible("fsl,imx6q")  &&
- 	    !of_machine_is_compatible("fsl,imx6dl"))
- 		return 0;
+ config DRIVER_SERIAL_ARM_DCC
+-	depends on ARM
++	depends on ARM && !CPU_V8
+ 	bool "ARM Debug Communications Channel (DCC) serial driver"
  
+ config SERIAL_AMBA_PL011
 -- 
-2.5.5
+2.9.3
 
 
 _______________________________________________
