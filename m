@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bpvBA-0002DI-3t
- for barebox@lists.infradead.org; Fri, 30 Sep 2016 10:36:35 +0000
+ id 1bpvBA-0002DE-3g
+ for barebox@lists.infradead.org; Fri, 30 Sep 2016 10:36:34 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <l.stach@pengutronix.de>) id 1bpvAm-0004az-Ea
+ (envelope-from <l.stach@pengutronix.de>) id 1bpvAm-0004az-5k
  for barebox@lists.infradead.org; Fri, 30 Sep 2016 12:36:08 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 30 Sep 2016 12:36:03 +0200
-Message-Id: <20160930103607.15791-6-l.stach@pengutronix.de>
+Date: Fri, 30 Sep 2016 12:35:59 +0200
+Message-Id: <20160930103607.15791-2-l.stach@pengutronix.de>
 In-Reply-To: <20160930103607.15791-1-l.stach@pengutronix.de>
 References: <20160930103607.15791-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -26,32 +26,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/10] arm(64): don't advertise stack_dumping capabilities for
- ARM64
+Subject: [PATCH 02/10] mfd: syscon: drop EXPORT_SYMBOL for static function
 To: barebox@lists.infradead.org
-
-The unwind code to support this feature is not there yet.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/include/asm/barebox.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mfd/syscon.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm/include/asm/barebox.h b/arch/arm/include/asm/barebox.h
-index 31a8e1563050..5a6622235b82 100644
---- a/arch/arm/include/asm/barebox.h
-+++ b/arch/arm/include/asm/barebox.h
-@@ -2,8 +2,10 @@
- #define _BAREBOX_H_	1
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index 295e210f6e2d..6ef30ce1959e 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -76,8 +76,6 @@ static void __iomem *syscon_node_to_base(struct device_node *np)
  
- #ifdef CONFIG_ARM_UNWIND
-+#ifndef CONFIG_CPU_V8
- #define ARCH_HAS_STACK_DUMP
- #endif
-+#endif
+ 	return syscon->base;
+ }
+-EXPORT_SYMBOL_GPL(syscon_node_to_regmap);
+-
  
- #ifdef CONFIG_ARM_EXCEPTIONS
- #define ARCH_HAS_DATA_ABORT_MASK
+ void __iomem *syscon_base_lookup_by_pdevname(const char *s)
+ {
 -- 
 2.9.3
 
