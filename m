@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x244.google.com ([2607:f8b0:400e:c03::244])
+Received: from mail-pa0-x243.google.com ([2607:f8b0:400e:c03::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1br4Qu-0008Gf-6P
+ id 1br4Qv-0008Gl-GX
  for barebox@lists.infradead.org; Mon, 03 Oct 2016 14:41:40 +0000
-Received: by mail-pa0-x244.google.com with SMTP id t6so5024252pae.2
- for <barebox@lists.infradead.org>; Mon, 03 Oct 2016 07:41:16 -0700 (PDT)
+Received: by mail-pa0-x243.google.com with SMTP id r9so7947348paz.1
+ for <barebox@lists.infradead.org>; Mon, 03 Oct 2016 07:41:17 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  3 Oct 2016 07:40:50 -0700
-Message-Id: <1475505657-898-14-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon,  3 Oct 2016 07:40:52 -0700
+Message-Id: <1475505657-898-16-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1475505657-898-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1475505657-898-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,325 +23,215 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/20] i.MX: Add 'lpuart' serial driver
+Subject: [PATCH 15/20] i.MX: esdhc: Do not rely on CPU type for quirks
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add 'lpuart' serial driver, based on analogous driver from U-Boot
+CPU type is not a reliable indicator of the underlying type of IP core
+used, since there's no 1:1 mapping between the two. As example of one
+such violation consider Vybrid SoC which contains IP block from i.MX53.
+
+Instead port feature flags from corresponding Linux kernel driver and
+use the ones that are relevant.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/serial/Kconfig         |   4 +
- drivers/serial/Makefile        |   1 +
- drivers/serial/serial_lpuart.c | 217 +++++++++++++++++++++++++++++++++++++++++
- include/serial/lpuart.h        |  28 ++++--
- 4 files changed, 244 insertions(+), 6 deletions(-)
- create mode 100644 drivers/serial/serial_lpuart.c
+ drivers/mci/imx-esdhc.c | 121 +++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 100 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index 146bf1e..02e869a 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -137,4 +137,8 @@ config DRIVER_SERIAL_DIGIC
- 	bool "Canon DIGIC serial driver"
- 	depends on ARCH_DIGIC
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 262a904..764a106 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -35,28 +35,81 @@
+ #include <mach/generic.h>
+ #include <mach/esdhc.h>
+ #include <gpio.h>
++#include <of_device.h>
  
-+config DRIVER_SERIAL_LPUART
-+	depends on ARCH_IMX
-+	bool "LPUART serial driver"
-+
- endmenu
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index 189e777..7d1bae1 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -20,3 +20,4 @@ obj-$(CONFIG_DRIVER_SERIAL_AUART)		+= serial_auart.o
- obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
- obj-$(CONFIG_DRIVER_SERIAL_EFI_STDIO)		+= efi-stdio.o
- obj-$(CONFIG_DRIVER_SERIAL_DIGIC)		+= serial_digic.o
-+obj-$(CONFIG_DRIVER_SERIAL_LPUART)		+= serial_lpuart.o
-diff --git a/drivers/serial/serial_lpuart.c b/drivers/serial/serial_lpuart.c
-new file mode 100644
-index 0000000..52fb6d3
---- /dev/null
-+++ b/drivers/serial/serial_lpuart.c
-@@ -0,0 +1,217 @@
+ #include "sdhci.h"
+ #include "imx-esdhc.h"
+ 
 +/*
-+ * Copyright (c) 2016 Zodiac Inflight Innovation
-+ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-+ *
-+ * Based on analogous driver from U-Boot
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
++ * The CMDTYPE of the CMD register (offset 0xE) should be set to
++ * "11" when the STOP CMD12 is issued on imx53 to abort one
++ * open ended multi-blk IO. Otherwise the TC INT wouldn't
++ * be generated.
++ * In exact block transfer, the controller doesn't complete the
++ * operations automatically as required at the end of the
++ * transfer and remains on hold if the abort command is not sent.
++ * As a result, the TC flag is not asserted and SW  received timeout
++ * exeception. Bit1 of Vendor Spec registor is used to fix it.
 + */
++#define ESDHC_FLAG_MULTIBLK_NO_INT	BIT(1)
++/*
++ * The flag enables the workaround for ESDHC errata ENGcm07207 which
++ * affects i.MX25 and i.MX35.
++ */
++#define ESDHC_FLAG_ENGCM07207		BIT(2)
++/*
++ * The flag tells that the ESDHC controller is an USDHC block that is
++ * integrated on the i.MX6 series.
++ */
++#define ESDHC_FLAG_USDHC		BIT(3)
++/* The IP supports manual tuning process */
++#define ESDHC_FLAG_MAN_TUNING		BIT(4)
++/* The IP supports standard tuning process */
++#define ESDHC_FLAG_STD_TUNING		BIT(5)
++/* The IP has SDHCI_CAPABILITIES_1 register */
++#define ESDHC_FLAG_HAVE_CAP1		BIT(6)
++/*
++ * The IP has errata ERR004536
++ * uSDHC: ADMA Length Mismatch Error occurs if the AHB read access is slow,
++ * when reading data from the card
++ */
++#define ESDHC_FLAG_ERR004536		BIT(7)
++/* The IP supports HS200 mode */
++#define ESDHC_FLAG_HS200		BIT(8)
++/* The IP supports HS400 mode */
++#define ESDHC_FLAG_HS400		BIT(9)
 +
-+#include <common.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include <notifier.h>
-+#include <io.h>
-+#include <of.h>
-+#include <linux/err.h>
-+#include <linux/clk.h>
-+#include <serial/lpuart.h>
 +
-+struct lpuart {
-+	struct console_device cdev;
-+	int baudrate;
-+	int dte_mode;
-+	struct notifier_block notify;
-+	struct resource *io;
-+	void __iomem *base;
-+	struct clk *clk;
-+};
-+
-+static struct lpuart *cdev_to_lpuart(struct console_device *cdev)
-+{
-+	return container_of(cdev, struct lpuart, cdev);
-+}
-+
-+static struct lpuart *nb_to_lpuart(struct notifier_block *nb)
-+{
-+	return container_of(nb, struct lpuart, notify);
-+}
-+
-+static void lpuart_enable(struct lpuart *lpuart, bool on)
-+{
-+	u8 ctrl;
-+
-+	ctrl = readb(lpuart->base + UARTCR2);
-+	if (on)
-+		ctrl |= UARTCR2_TE | UARTCR2_RE;
-+	else
-+		ctrl &= ~(UARTCR2_TE | UARTCR2_RE);
-+	writeb(ctrl, lpuart->base + UARTCR2);
-+}
-+
-+static int lpuart_serial_setbaudrate(struct console_device *cdev,
-+				     int baudrate)
-+{
-+	struct lpuart *lpuart = cdev_to_lpuart(cdev);
-+
-+	lpuart_enable(lpuart, false);
-+
-+	lpuart_setbrg(lpuart->base,
-+		      clk_get_rate(lpuart->clk),
-+		      baudrate);
-+
-+	lpuart_enable(lpuart, true);
-+
-+	lpuart->baudrate = baudrate;
-+
-+	return 0;
-+}
-+
-+static int lpuart_serial_getc(struct console_device *cdev)
-+{
-+	bool ready;
-+	struct lpuart *lpuart = cdev_to_lpuart(cdev);
-+
-+	do {
-+		const u8 sr1 = readb(lpuart->base + UARTSR1);
-+		ready = !!(sr1 & (UARTSR1_OR | UARTSR1_RDRF));
-+	} while (!ready);
-+
-+	return readb(lpuart->base + UARTDR);
-+}
-+
-+static void lpuart_serial_putc(struct console_device *cdev, char c)
-+{
-+	lpuart_putc(cdev_to_lpuart(cdev)->base, c);
-+}
-+
-+/* Test whether a character is in the RX buffer */
-+static int lpuart_serial_tstc(struct console_device *cdev)
-+{
-+	return !!readb(cdev_to_lpuart(cdev)->base + UARTRCFIFO);
-+}
-+
-+static void lpuart_serial_flush(struct console_device *cdev)
-+{
-+	bool tx_empty;
-+	struct lpuart *lpuart = cdev_to_lpuart(cdev);
-+
-+	do {
-+		const u8 sr1 = readb(lpuart->base + UARTSR1);
-+		tx_empty = !!(sr1 & UARTSR1_TDRE);
-+	} while (!tx_empty);
-+}
-+
-+static int lpuart_clocksource_clock_change(struct notifier_block *nb,
-+					   unsigned long event, void *data)
-+{
-+	struct lpuart *lpuart = nb_to_lpuart(nb);
-+
-+	return lpuart_serial_setbaudrate(&lpuart->cdev, lpuart->baudrate);
-+}
-+
-+static int lpuart_serial_probe(struct device_d *dev)
-+{
-+	int ret;
-+	struct console_device *cdev;
-+	struct lpuart *lpuart;
-+	const char *devname;
-+
-+	lpuart    = xzalloc(sizeof(*lpuart));
-+	cdev      = &lpuart->cdev;
-+	dev->priv = lpuart;
-+
-+	lpuart->io = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(lpuart->io)) {
-+		ret = PTR_ERR(lpuart->io);
-+		goto err_free;
-+	}
-+	lpuart->base = IOMEM(lpuart->io->start);
-+
-+	lpuart->clk = clk_get(dev, NULL);
-+	if (IS_ERR(lpuart->clk)) {
-+		ret = PTR_ERR(lpuart->clk);
-+		dev_err(dev, "Failed to get UART clock %d\n", ret);
-+		goto io_release;
-+	}
-+
-+	ret = clk_enable(lpuart->clk);
-+	if (ret) {
-+		dev_err(dev, "Failed to enable UART clock %d\n", ret);
-+		goto io_release;
-+	}
-+
-+	cdev->dev    = dev;
-+	cdev->tstc   = lpuart_serial_tstc;
-+	cdev->putc   = lpuart_serial_putc;
-+	cdev->getc   = lpuart_serial_getc;
-+	cdev->flush  = lpuart_serial_flush;
-+	cdev->setbrg = lpuart_serial_setbaudrate;
-+
-+	if (dev->device_node) {
-+		devname = of_alias_get(dev->device_node);
-+		if (devname) {
-+			cdev->devname = xstrdup(devname);
-+			cdev->devid   = DEVICE_ID_SINGLE;
-+		}
-+	}
-+
-+	cdev->linux_console_name = "ttyLP";
-+
-+	lpuart_setup_with_fifo(lpuart->base,
-+			       clk_get_rate(lpuart->clk),
-+			       15);
-+
-+	ret = console_register(cdev);
-+	if (!ret) {
-+		lpuart->notify.notifier_call = lpuart_clocksource_clock_change;
-+		clock_register_client(&lpuart->notify);
-+
-+		return 0;
-+	}
-+
-+	clk_put(lpuart->clk);
-+io_release:
-+	release_region(lpuart->io);
-+err_free:
-+	free(lpuart);
-+
-+	return ret;
-+}
-+
-+static void lpuart_serial_remove(struct device_d *dev)
-+{
-+	struct lpuart *lpuart = dev->priv;
-+
-+	lpuart_serial_flush(&lpuart->cdev);
-+	console_unregister(&lpuart->cdev);
-+	release_region(lpuart->io);
-+	clk_put(lpuart->clk);
-+
-+	free(lpuart);
-+}
-+
-+static struct of_device_id lpuart_serial_dt_ids[] = {
-+	{ .compatible = "fsl,vf610-lpuart" },
-+	{}
-+};
-+
-+static struct driver_d lpuart_serial_driver = {
-+	.name   = "lpuart-serial",
-+	.probe  = lpuart_serial_probe,
-+	.remove = lpuart_serial_remove,
-+	.of_compatible = DRV_OF_COMPAT(lpuart_serial_dt_ids),
-+};
-+console_platform_driver(lpuart_serial_driver);
-diff --git a/include/serial/lpuart.h b/include/serial/lpuart.h
-index 13077f9..632e976 100644
---- a/include/serial/lpuart.h
-+++ b/include/serial/lpuart.h
-@@ -225,25 +225,35 @@ static inline void lpuart_setbrg(void __iomem *base,
- 				 unsigned int refclock,
- 				 unsigned int baudrate)
- {
-+	unsigned int bfra;
- 	u16 sbr;
-+
- 	sbr = (u16) (refclock / (16 * baudrate));
+ #define IMX_SDHCI_WML		0x44
+ #define IMX_SDHCI_MIXCTRL	0x48
+ #define IMX_SDHCI_DLL_CTRL	0x60
+ #define IMX_SDHCI_MIX_CTRL_FBCLK_SEL	(BIT(25))
  
- 	writeb(sbr >> 8,   base + UARTBDH);
- 	writeb(sbr & 0xff, base + UARTBDL);
++struct esdhc_soc_data {
++	u32 flags;
++};
 +
-+	bfra  = DIV_ROUND_UP(2 * refclock, baudrate) - 32 * sbr;
-+	bfra &= UARTCR4_BRFA_MASK;
-+	writeb(bfra, base + UARTCR4);
+ struct fsl_esdhc_host {
+ 	struct mci_host		mci;
+ 	void __iomem		*regs;
+ 	struct device_d		*dev;
+ 	struct clk		*clk;
++	const struct esdhc_soc_data *socdata;
+ };
+ 
+ #define to_fsl_esdhc(mci)	container_of(mci, struct fsl_esdhc_host, mci)
+ 
+ #define  SDHCI_CMD_ABORTCMD (0xC0 << 16)
+ 
++static inline int esdhc_is_usdhc(struct fsl_esdhc_host *data)
++{
++	return !!(data->socdata->flags & ESDHC_FLAG_USDHC);
++}
++
++
+ /* Return the XFERTYP flags for a given command and data packet */
+-static u32 esdhc_xfertyp(struct mci_cmd *cmd, struct mci_data *data)
++static u32 esdhc_xfertyp(struct fsl_esdhc_host *host,
++			 struct mci_cmd *cmd, struct mci_data *data)
+ {
+ 	u32 xfertyp = 0;
+ 
+@@ -85,8 +138,8 @@ static u32 esdhc_xfertyp(struct mci_cmd *cmd, struct mci_data *data)
+ 		xfertyp |= COMMAND_RSPTYP_48_BUSY;
+ 	else if (cmd->resp_type & MMC_RSP_PRESENT)
+ 		xfertyp |= COMMAND_RSPTYP_48;
+-	if ((cpu_is_mx50() || cpu_is_mx51() || cpu_is_mx53()) &&
+-			cmd->cmdidx == MMC_CMD_STOP_TRANSMISSION)
++	if ((host->socdata->flags & ESDHC_FLAG_MULTIBLK_NO_INT) &&
++	    (cmd->cmdidx == MMC_CMD_STOP_TRANSMISSION))
+ 		xfertyp |= SDHCI_CMD_ABORTCMD;
+ 
+ 	return COMMAND_CMD(cmd->cmdidx) | xfertyp;
+@@ -273,12 +326,12 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+ 	}
+ 
+ 	/* Figure out the transfer arguments */
+-	xfertyp = esdhc_xfertyp(cmd, data);
++	xfertyp = esdhc_xfertyp(host, cmd, data);
+ 
+ 	/* Send the command */
+ 	esdhc_write32(regs + SDHCI_ARGUMENT, cmd->cmdarg);
+ 
+-	if (cpu_is_mx6()) {
++	if (esdhc_is_usdhc(host)) {
+ 		/* write lower-half of xfertyp to mixctrl */
+ 		mixctrl = xfertyp & 0xFFFF;
+ 		/* Keep the bits 22-25 of the register as is */
+@@ -525,7 +578,7 @@ static int esdhc_reset(struct fsl_esdhc_host *host)
+ 			SYSCTL_RSTA);
+ 
+ 	/* extra register reset for i.MX6 Solo/DualLite */
+-	if (cpu_is_mx6()) {
++	if (esdhc_is_usdhc(host)) {
+ 		/* reset bit FBCLK_SEL */
+ 		val = esdhc_read32(regs + IMX_SDHCI_MIXCTRL);
+ 		val &= ~IMX_SDHCI_MIX_CTRL_FBCLK_SEL;
+@@ -570,6 +623,10 @@ static int fsl_esdhc_probe(struct device_d *dev)
+ 	host = xzalloc(sizeof(*host));
+ 	mci = &host->mci;
+ 
++	host->socdata = of_device_get_match_data(dev);
++	if (!host->socdata)
++		return -EINVAL;
++
+ 	host->clk = clk_get(dev, NULL);
+ 	if (IS_ERR(host->clk))
+ 		return PTR_ERR(host->clk);
+@@ -634,22 +691,44 @@ static int fsl_esdhc_probe(struct device_d *dev)
+ 	return mci_register(&host->mci);
  }
  
--static inline void lpuart_setup(void __iomem *base,
--				unsigned int refclock)
-+static inline void lpuart_setup_with_fifo(void __iomem *base,
-+					  unsigned int refclock,
-+					  unsigned int twfifo)
- {
--
- 	/* Disable UART */
- 	writeb(0, base + UARTCR2);
- 	writeb(0, base + UARTMODEM);
- 	writeb(0, base + UARTCR1);
- 
--	/* Disable FIFOs */
--	writeb(0, base + UARTPFIFO);
--	writeb(0, base + UARTTWFIFO);
-+	if (twfifo) {
-+		writeb(UARTPFIFO_TXFE | UARTPFIFO_RXFE, base + UARTPFIFO);
-+		writeb((u8)twfifo, base + UARTTWFIFO);
-+	} else {
-+		writeb(0, base + UARTPFIFO);
-+		writeb(0, base + UARTTWFIFO);
-+	}
- 	writeb(1, base + UARTRWFIFO);
- 	writeb(UARTCFIFO_RXFLUSH | UARTCFIFO_TXFLUSH, base + UARTCFIFO);
- 
-@@ -252,6 +262,12 @@ static inline void lpuart_setup(void __iomem *base,
- 	writeb(UARTCR2_TE | UARTCR2_RE, base + UARTCR2);
- }
- 
-+static inline void lpuart_setup(void __iomem *base,
-+				unsigned int refclock)
-+{
-+	lpuart_setup_with_fifo(base, refclock, 0x00);
-+}
++static struct esdhc_soc_data esdhc_imx25_data = {
++	.flags = ESDHC_FLAG_ENGCM07207,
++};
 +
- static inline void lpuart_putc(void __iomem *base, int c)
- {
- 	if (!(readb(base + UARTCR2) & UARTCR2_TE))
++static struct esdhc_soc_data esdhc_imx50_data = {
++	.flags = ESDHC_FLAG_MULTIBLK_NO_INT,
++	/* .flags = 0, */
++};
++
++static struct esdhc_soc_data esdhc_imx51_data = {
++	.flags = ESDHC_FLAG_MULTIBLK_NO_INT,
++	/* .flags = 0, */
++};
++
++static struct esdhc_soc_data esdhc_imx53_data = {
++	.flags = ESDHC_FLAG_MULTIBLK_NO_INT,
++};
++
++static struct esdhc_soc_data usdhc_imx6q_data = {
++	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING,
++};
++
++static struct esdhc_soc_data usdhc_imx6sl_data = {
++	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
++	       | ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_ERR004536
++	       | ESDHC_FLAG_HS200,
++};
++
++
+ static __maybe_unused struct of_device_id fsl_esdhc_compatible[] = {
+-	{
+-		.compatible = "fsl,imx25-esdhc",
+-	}, {
+-		.compatible = "fsl,imx50-esdhc",
+-	}, {
+-		.compatible = "fsl,imx51-esdhc",
+-	}, {
+-		.compatible = "fsl,imx53-esdhc",
+-	}, {
+-		.compatible = "fsl,imx6q-usdhc",
+-	}, {
+-		.compatible = "fsl,imx6sl-usdhc",
+-	}, {
+-		/* sentinel */
+-	}
++
++	{ .compatible = "fsl,imx25-esdhc",  .data = &esdhc_imx25_data  },
++	{ .compatible = "fsl,imx50-esdhc",  .data = &esdhc_imx50_data  },
++	{ .compatible = "fsl,imx51-esdhc",  .data = &esdhc_imx51_data  },
++	{ .compatible = "fsl,imx53-esdhc",  .data = &esdhc_imx53_data  },
++	{ .compatible = "fsl,imx6q-usdhc",  .data = &usdhc_imx6q_data  },
++	{ .compatible = "fsl,imx6sl-usdhc", .data = &usdhc_imx6sl_data },
++	{ /* sentinel */ }
+ };
+ 
+ static struct driver_d fsl_esdhc_driver = {
 -- 
 2.5.5
 
