@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
+Received: from mail-pa0-x242.google.com ([2607:f8b0:400e:c03::242])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1br4Qp-0008GN-M4
- for barebox@lists.infradead.org; Mon, 03 Oct 2016 14:41:28 +0000
-Received: by mail-pf0-x244.google.com with SMTP id i85so2311042pfa.0
- for <barebox@lists.infradead.org>; Mon, 03 Oct 2016 07:41:06 -0700 (PDT)
+ id 1br4Qr-0008GX-Sk
+ for barebox@lists.infradead.org; Mon, 03 Oct 2016 14:41:33 +0000
+Received: by mail-pa0-x242.google.com with SMTP id hh10so1403594pac.0
+ for <barebox@lists.infradead.org>; Mon, 03 Oct 2016 07:41:12 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  3 Oct 2016 07:40:38 -0700
-Message-Id: <1475505657-898-2-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon,  3 Oct 2016 07:40:47 -0700
+Message-Id: <1475505657-898-11-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1475505657-898-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1475505657-898-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,119 +23,107 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/20] i.MX: Add primitive functions for VF610 family
+Subject: [PATCH 10/20] i.MX: clk: Port imx_check_clocks() and
+ imx_obtain_fixed_clock()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add very basic functions to support VF610 family.
+Port imx_check_clocks() and imx_obtain_fixed_clock() from Linux kernel.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/Kconfig                      | 10 ++++++++++
- arch/arm/mach-imx/cpu_init.c                   |  5 +++++
- arch/arm/mach-imx/imx.c                        |  4 ++++
- arch/arm/mach-imx/include/mach/generic.h       | 13 +++++++++++++
- arch/arm/mach-imx/include/mach/imx_cpu_types.h |  1 +
- 5 files changed, 33 insertions(+)
+ arch/arm/mach-imx/clk.h  |  4 ++++
+ drivers/clk/Makefile     |  1 +
+ drivers/clk/imx/Makefile |  1 +
+ drivers/clk/imx/clk.c    | 49 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 55 insertions(+)
+ create mode 100644 drivers/clk/imx/Makefile
+ create mode 100644 drivers/clk/imx/clk.c
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index a80bc6b..71862ef 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -149,6 +149,16 @@ config ARCH_IMX6SX
- 	select OFTREE
- 	select COMMON_CLK_OF_PROVIDER
+diff --git a/arch/arm/mach-imx/clk.h b/arch/arm/mach-imx/clk.h
+index 35e480f..f96e5d2 100644
+--- a/arch/arm/mach-imx/clk.h
++++ b/arch/arm/mach-imx/clk.h
+@@ -109,4 +109,8 @@ static inline struct clk *imx_clk_busy_mux(const char *name, void __iomem *reg,
+ struct clk *imx_clk_gate_exclusive(const char *name, const char *parent,
+ 		void __iomem *reg, u8 shift, u32 exclusive_mask);
  
-+config ARCH_VF610
-+	bool
-+	select ARCH_HAS_L2X0
-+	select ARCH_HAS_FEC_IMX
-+	select CPU_V7
-+	select PINCTRL
-+	select OFTREE
-+	select COMMON_CLK
-+	select COMMON_CLK_OF_PROVIDER
++void imx_check_clocks(struct clk *clks[], unsigned int count);
++struct clk * __init imx_obtain_fixed_clock(const char *name, unsigned long rate);
 +
- config IMX_MULTI_BOARDS
- 	bool "Allow multiple boards to be selected"
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
-diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
-index 7603883..6971d89 100644
---- a/arch/arm/mach-imx/cpu_init.c
-+++ b/arch/arm/mach-imx/cpu_init.c
-@@ -33,3 +33,8 @@ void imx6_cpu_lowlevel_init(void)
- 	enable_arm_errata_794072_war();
- 	enable_arm_errata_845369_war();
- }
 +
-+void vf610_cpu_lowlevel_init(void)
+ #endif /* __IMX_CLK_H */
+diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
+index 0fe8f1e..6dc82ea 100644
+--- a/drivers/clk/Makefile
++++ b/drivers/clk/Makefile
+@@ -9,3 +9,4 @@ obj-$(CONFIG_ARCH_ROCKCHIP)	+= rockchip/
+ obj-$(CONFIG_ARCH_TEGRA)	+= tegra/
+ obj-$(CONFIG_CLK_SOCFPGA)	+= socfpga.o
+ obj-$(CONFIG_MACH_MIPS_ATH79)	+= clk-ar933x.o
++obj-$(CONFIG_COMMON_CLK)	+= imx/
+diff --git a/drivers/clk/imx/Makefile b/drivers/clk/imx/Makefile
+new file mode 100644
+index 0000000..0303c0b
+--- /dev/null
++++ b/drivers/clk/imx/Makefile
+@@ -0,0 +1 @@
++obj-y += clk.o
+diff --git a/drivers/clk/imx/clk.c b/drivers/clk/imx/clk.c
+new file mode 100644
+index 0000000..0357048
+--- /dev/null
++++ b/drivers/clk/imx/clk.c
+@@ -0,0 +1,49 @@
++#include <common.h>
++#include <init.h>
++#include <driver.h>
++#include <linux/clk.h>
++#include <io.h>
++#include <of.h>
++#include <linux/clkdev.h>
++#include <linux/err.h>
++
++#include "../../../arch/arm/mach-imx/clk.h"
++
++void __init imx_check_clocks(struct clk *clks[], unsigned int count)
 +{
-+	arm_cpu_lowlevel_init();
-+}
-diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
-index 5ab6afc..eb2adcd 100644
---- a/arch/arm/mach-imx/imx.c
-+++ b/arch/arm/mach-imx/imx.c
-@@ -63,6 +63,8 @@ static int imx_soc_from_dt(void)
- 		return IMX_CPU_IMX6;
- 	if (of_machine_is_compatible("fsl,imx6qp"))
- 		return IMX_CPU_IMX6;
-+	if (of_machine_is_compatible("fsl,vf610"))
-+		return IMX_CPU_VF610;
- 
- 	return 0;
- }
-@@ -99,6 +101,8 @@ static int imx_init(void)
- 		ret = imx53_init();
- 	else if (cpu_is_mx6())
- 		ret = imx6_init();
-+	else if (cpu_is_vf610())
-+		ret = 0;
- 	else
- 		return -EINVAL;
- 
-diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
-index cadc501..ec35edc 100644
---- a/arch/arm/mach-imx/include/mach/generic.h
-+++ b/arch/arm/mach-imx/include/mach/generic.h
-@@ -41,6 +41,7 @@ int imx6_devices_init(void);
- 
- void imx5_cpu_lowlevel_init(void);
- void imx6_cpu_lowlevel_init(void);
-+void vf610_cpu_lowlevel_init(void);
- 
- /* There's a off-by-one betweem the gpio bank number and the gpiochip */
- /* range e.g. GPIO_1_5 is gpio 5 under linux */
-@@ -169,6 +170,18 @@ extern unsigned int __imx_cpu_type;
- # define cpu_is_mx6()		(0)
- #endif
- 
-+#ifdef CONFIG_ARCH_VF610
-+# ifdef imx_cpu_type
-+#  undef imx_cpu_type
-+#  define imx_cpu_type __imx_cpu_type
-+# else
-+#  define imx_cpu_type IMX_CPU_VF610
-+# endif
-+# define cpu_is_vf610()		(imx_cpu_type == IMX_CPU_VF610)
-+#else
-+# define cpu_is_vf610()		(0)
-+#endif
++	unsigned i;
 +
- #define cpu_is_mx23()	(0)
- #define cpu_is_mx28()	(0)
- 
-diff --git a/arch/arm/mach-imx/include/mach/imx_cpu_types.h b/arch/arm/mach-imx/include/mach/imx_cpu_types.h
-index 8472488..50be0b6 100644
---- a/arch/arm/mach-imx/include/mach/imx_cpu_types.h
-+++ b/arch/arm/mach-imx/include/mach/imx_cpu_types.h
-@@ -11,5 +11,6 @@
- #define IMX_CPU_IMX51	51
- #define IMX_CPU_IMX53	53
- #define IMX_CPU_IMX6	6
-+#define IMX_CPU_VF610	610
- 
- #endif /* __MACH_IMX_CPU_TYPES_H */
++	for (i = 0; i < count; i++)
++		if (IS_ERR(clks[i]))
++			pr_err("i.MX clk %u: register failed with %ld\n",
++			       i, PTR_ERR(clks[i]));
++}
++
++static struct clk * __init imx_obtain_fixed_clock_from_dt(const char *name)
++{
++	struct of_phandle_args phandle;
++	struct clk *clk = ERR_PTR(-ENODEV);
++	char *path;
++
++	path = basprintf("/clocks/%s", name);
++	if (!path)
++		return ERR_PTR(-ENOMEM);
++
++	phandle.np = of_find_node_by_path(path);
++	kfree(path);
++
++	if (phandle.np)
++		clk = of_clk_get_from_provider(&phandle);
++
++	return clk;
++}
++
++struct clk * __init imx_obtain_fixed_clock(const char *name, unsigned long rate)
++{
++	struct clk *clk;
++
++	clk = imx_obtain_fixed_clock_from_dt(name);
++	if (IS_ERR(clk))
++		clk = clk_fixed(name, rate);
++	return clk;
++}
 -- 
 2.5.5
 
