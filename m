@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x242.google.com ([2607:f8b0:400e:c03::242])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1br4Qr-0008GS-Sj
- for barebox@lists.infradead.org; Mon, 03 Oct 2016 14:41:36 +0000
-Received: by mail-pa0-x242.google.com with SMTP id t6so5023982pae.2
- for <barebox@lists.infradead.org>; Mon, 03 Oct 2016 07:41:09 -0700 (PDT)
+ id 1br4Qt-0008GT-9b
+ for barebox@lists.infradead.org; Mon, 03 Oct 2016 14:41:39 +0000
+Received: by mail-pf0-x243.google.com with SMTP id n24so8921090pfb.3
+ for <barebox@lists.infradead.org>; Mon, 03 Oct 2016 07:41:10 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  3 Oct 2016 07:40:43 -0700
-Message-Id: <1475505657-898-7-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon,  3 Oct 2016 07:40:44 -0700
+Message-Id: <1475505657-898-8-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1475505657-898-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1475505657-898-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,143 +23,233 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/20] clk: Port clock dependency resolution code
+Subject: [PATCH 07/20] clk: Port of_clk_set_defautls()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port the clock dependency resolution algorithm utilized by Linux
-kernel's version of of_clk_init(), to allow for SoCs whose DT clock
-configuration reqires such behaviour for correct initialization (Vybrid
-is one such example).
+Port of_clk_set_defautls() from Linux kernel in order to support DT
+configurations that require it (e. g. Vybrid).
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/clk/clk.c | 89 ++++++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 82 insertions(+), 7 deletions(-)
+ drivers/clk/Makefile         |   2 +-
+ drivers/clk/clk-conf.c       | 144 +++++++++++++++++++++++++++++++++++++++++++
+ drivers/clk/clk.c            |   2 +
+ include/linux/clk/clk-conf.h |  22 +++++++
+ 4 files changed, 169 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/clk/clk-conf.c
+ create mode 100644 include/linux/clk/clk-conf.h
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 630a84d..a38f339 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -404,7 +404,7 @@ EXPORT_SYMBOL_GPL(of_clk_del_provider);
- struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec)
- {
- 	struct of_clk_provider *provider;
--	struct clk *clk = ERR_PTR(-ENOENT);
-+	struct clk *clk = ERR_PTR(-EPROBE_DEFER);
+diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
+index 47ed7b1..0fe8f1e 100644
+--- a/drivers/clk/Makefile
++++ b/drivers/clk/Makefile
+@@ -1,6 +1,6 @@
+ obj-$(CONFIG_COMMON_CLK)	+= clk.o clk-fixed.o clk-divider.o clk-fixed-factor.o \
+ 				clk-mux.o clk-gate.o clk-composite.o \
+-				clk-fractional-divider.o
++				clk-fractional-divider.o clk-conf.o
+ obj-$(CONFIG_CLKDEV_LOOKUP)	+= clkdev.o
  
- 	/* Check if we have such a provider in our array */
- 	list_for_each_entry(provider, &of_clk_providers, link) {
-@@ -437,6 +437,47 @@ char *of_clk_get_parent_name(struct device_node *np, unsigned int index)
- }
- EXPORT_SYMBOL_GPL(of_clk_get_parent_name);
- 
-+struct clock_provider {
-+	of_clk_init_cb_t clk_init_cb;
-+	struct device_node *np;
-+	struct list_head node;
-+};
-+
+ obj-$(CONFIG_ARCH_MVEBU)	+= mvebu/
+diff --git a/drivers/clk/clk-conf.c b/drivers/clk/clk-conf.c
+new file mode 100644
+index 0000000..961fad8
+--- /dev/null
++++ b/drivers/clk/clk-conf.c
+@@ -0,0 +1,144 @@
 +/*
-+ * This function looks for a parent clock. If there is one, then it
-+ * checks that the provider for this parent clock was initialized, in
-+ * this case the parent clock will be ready.
++ * Copyright (C) 2014 Samsung Electronics Co., Ltd.
++ * Sylwester Nawrocki <s.nawrocki@samsung.com>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
 + */
-+static int parent_ready(struct device_node *np)
++
++#include <common.h>
++#include <io.h>
++#include <malloc.h>
++#include <linux/clk.h>
++#include <linux/err.h>
++#include <linux/clk/clk-conf.h>
++
++static int __set_clk_parents(struct device_node *node, bool clk_supplier)
 +{
-+	int i = 0;
++	struct of_phandle_args clkspec;
++	int index, rc, num_parents;
++	struct clk *clk, *pclk;
 +
-+	while (true) {
-+		struct clk *clk = of_clk_get(np, i);
++	num_parents = of_count_phandle_with_args(node, "assigned-clock-parents",
++						 "#clock-cells");
++	if (num_parents == -EINVAL)
++		pr_err("clk: invalid value of clock-parents property at %s\n",
++		       node->full_name);
 +
-+		/* this parent is ready we can check the next one */
-+		if (!IS_ERR(clk)) {
-+			clk_put(clk);
-+			i++;
-+			continue;
++	for (index = 0; index < num_parents; index++) {
++		rc = of_parse_phandle_with_args(node, "assigned-clock-parents",
++					"#clock-cells",	index, &clkspec);
++		if (rc < 0) {
++			/* skip empty (null) phandles */
++			if (rc == -ENOENT)
++				continue;
++			else
++				return rc;
++		}
++		if (clkspec.np == node && !clk_supplier)
++			return 0;
++		pclk = of_clk_get_from_provider(&clkspec);
++		if (IS_ERR(pclk)) {
++			pr_warn("clk: couldn't get parent clock %d for %s\n",
++				index, node->full_name);
++			return PTR_ERR(pclk);
 +		}
 +
-+		/* at least one parent is not ready, we exit now */
-+		if (PTR_ERR(clk) == -EPROBE_DEFER)
-+			return 0;
++		rc = of_parse_phandle_with_args(node, "assigned-clocks",
++					"#clock-cells", index, &clkspec);
++		if (rc < 0)
++			goto err;
++		if (clkspec.np == node && !clk_supplier) {
++			rc = 0;
++			goto err;
++		}
++		clk = of_clk_get_from_provider(&clkspec);
++		if (IS_ERR(clk)) {
++			pr_warn("clk: couldn't get parent clock %d for %s\n",
++				index, node->full_name);
++			rc = PTR_ERR(clk);
++			goto err;
++		}
 +
-+		/*
-+		 * Here we make assumption that the device tree is
-+		 * written correctly. So an error means that there is
-+		 * no more parent. As we didn't exit yet, then the
-+		 * previous parent are ready. If there is no clock
-+		 * parent, no need to wait for them, then we can
-+		 * consider their absence as being ready
-+		 */
-+		return 1;
++		rc = clk_set_parent(clk, pclk);
++		if (rc < 0)
++			pr_err("clk: failed to reparent %s to %s: %d\n",
++			       __clk_get_name(clk), __clk_get_name(pclk), rc);
++		clk_put(clk);
++		clk_put(pclk);
 +	}
++	return 0;
++err:
++	clk_put(pclk);
++	return rc;
 +}
 +
- /**
-  * of_clk_init() - Scan and init clock providers from the DT
-  * @root: parent of the first level to probe or NULL for the root of the tree
-@@ -449,8 +490,11 @@ EXPORT_SYMBOL_GPL(of_clk_get_parent_name);
-  */
- int of_clk_init(struct device_node *root, const struct of_device_id *matches)
- {
-+	struct clock_provider *clk_provider, *next;
-+	bool is_init_done;
-+	bool force = false;
-+	LIST_HEAD(clk_provider_list);
- 	const struct of_device_id *match;
--	int rc;
- 
- 	if (!root)
- 		root = of_find_node_by_path("/");
-@@ -459,12 +503,43 @@ int of_clk_init(struct device_node *root, const struct of_device_id *matches)
- 	if (!matches)
- 		matches = __clk_of_table_start;
- 
-+	/* First prepare the list of the clocks providers */
- 	for_each_matching_node_and_match(root, matches, &match) {
--		of_clk_init_cb_t clk_init_cb = (of_clk_init_cb_t)match->data;
--		rc = clk_init_cb(root);
--		if (rc)
--			pr_err("%s: failed to init clock for %s: %d\n",
--			       __func__, root->full_name, rc);
-+		struct clock_provider *parent;
++static int __set_clk_rates(struct device_node *node, bool clk_supplier)
++{
++	struct of_phandle_args clkspec;
++	struct property	*prop;
++	const __be32 *cur;
++	int rc, index = 0;
++	struct clk *clk;
++	u32 rate;
 +
-+		if (!of_device_is_available(root))
-+			continue;
-+
-+		parent = xzalloc(sizeof(*parent));
-+
-+		parent->clk_init_cb = match->data;
-+		parent->np = root;
-+		list_add_tail(&parent->node, &clk_provider_list);
-+	}
-+
-+	while (!list_empty(&clk_provider_list)) {
-+		is_init_done = false;
-+		list_for_each_entry_safe(clk_provider, next,
-+					 &clk_provider_list, node) {
-+
-+			if (force || parent_ready(clk_provider->np)) {
-+
-+				clk_provider->clk_init_cb(clk_provider->np);
-+
-+				list_del(&clk_provider->node);
-+				free(clk_provider);
-+				is_init_done = true;
++	of_property_for_each_u32(node, "assigned-clock-rates", prop, cur, rate) {
++		if (rate) {
++			rc = of_parse_phandle_with_args(node, "assigned-clocks",
++					"#clock-cells",	index, &clkspec);
++			if (rc < 0) {
++				/* skip empty (null) phandles */
++				if (rc == -ENOENT)
++					continue;
++				else
++					return rc;
 +			}
-+		}
++			if (clkspec.np == node && !clk_supplier)
++				return 0;
 +
-+		/*
-+		 * We didn't manage to initialize any of the
-+		 * remaining providers during the last loop, so now we
-+		 * initialize all the remaining ones unconditionally
-+		 * in case the clock parent was not mandatory
-+		 */
-+		if (!is_init_done)
-+			force = true;
- 	}
++			clk = of_clk_get_from_provider(&clkspec);
++			if (IS_ERR(clk)) {
++				pr_warn("clk: couldn't get clock %d for %s\n",
++					index, node->full_name);
++				return PTR_ERR(clk);
++			}
++
++			rc = clk_set_rate(clk, rate);
++			if (rc < 0)
++				pr_err("clk: couldn't set %s clk rate to %d (%d), current rate: %ld\n",
++				       __clk_get_name(clk), rate, rc,
++				       clk_get_rate(clk));
++			clk_put(clk);
++		}
++		index++;
++	}
++	return 0;
++}
++
++/**
++ * of_clk_set_defaults() - parse and set assigned clocks configuration
++ * @node: device node to apply clock settings for
++ * @clk_supplier: true if clocks supplied by @node should also be considered
++ *
++ * This function parses 'assigned-{clocks/clock-parents/clock-rates}' properties
++ * and sets any specified clock parents and rates. The @clk_supplier argument
++ * should be set to true if @node may be also a clock supplier of any clock
++ * listed in its 'assigned-clocks' or 'assigned-clock-parents' properties.
++ * If @clk_supplier is false the function exits returning 0 as soon as it
++ * determines the @node is also a supplier of any of the clocks.
++ */
++int of_clk_set_defaults(struct device_node *node, bool clk_supplier)
++{
++	int rc;
++
++	if (!node)
++		return 0;
++
++	rc = __set_clk_parents(node, clk_supplier);
++	if (rc < 0)
++		return rc;
++
++	return __set_clk_rates(node, clk_supplier);
++}
++EXPORT_SYMBOL_GPL(of_clk_set_defaults);
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index a38f339..28a1be5 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -19,6 +19,7 @@
+ #include <malloc.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
++#include <linux/clk/clk-conf.h>
  
- 	return 0;
+ static LIST_HEAD(clks);
+ 
+@@ -525,6 +526,7 @@ int of_clk_init(struct device_node *root, const struct of_device_id *matches)
+ 			if (force || parent_ready(clk_provider->np)) {
+ 
+ 				clk_provider->clk_init_cb(clk_provider->np);
++				of_clk_set_defaults(clk_provider->np, true);
+ 
+ 				list_del(&clk_provider->node);
+ 				free(clk_provider);
+diff --git a/include/linux/clk/clk-conf.h b/include/linux/clk/clk-conf.h
+new file mode 100644
+index 0000000..2c0a39e
+--- /dev/null
++++ b/include/linux/clk/clk-conf.h
+@@ -0,0 +1,22 @@
++/*
++ * Copyright (C) 2014 Samsung Electronics Co., Ltd.
++ * Sylwester Nawrocki <s.nawrocki@samsung.com>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#include <linux/types.h>
++
++struct device_node;
++
++#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK)
++int of_clk_set_defaults(struct device_node *node, bool clk_supplier);
++#else
++static inline int of_clk_set_defaults(struct device_node *node,
++				      bool clk_supplier)
++{
++	return 0;
++}
++#endif
 -- 
 2.5.5
 
