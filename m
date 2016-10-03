@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x243.google.com ([2607:f8b0:400e:c03::243])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1br4Qv-0008GZ-Gd
- for barebox@lists.infradead.org; Mon, 03 Oct 2016 14:41:55 +0000
-Received: by mail-pa0-x243.google.com with SMTP id r9so7947225paz.1
- for <barebox@lists.infradead.org>; Mon, 03 Oct 2016 07:41:13 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  3 Oct 2016 07:40:48 -0700
-Message-Id: <1475505657-898-12-git-send-email-andrew.smirnov@gmail.com>
-In-Reply-To: <1475505657-898-1-git-send-email-andrew.smirnov@gmail.com>
-References: <1475505657-898-1-git-send-email-andrew.smirnov@gmail.com>
+Received: from p3nlsmtpcp01-01.prod.phx3.secureserver.net ([184.168.200.138])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat
+ Linux)) id 1brCM9-0007Ll-4i
+ for barebox@lists.infradead.org; Mon, 03 Oct 2016 23:09:09 +0000
+Received: from haitipageants by p3plcpnl0224.prod.phx3.secureserver.net with
+ local (Exim 4.87)
+ (envelope-from <haitipageants@p3plcpnl0224.prod.phx3.secureserver.net>)
+ id 1brCJp-0005CC-GT
+ for barebox@lists.infradead.org; Mon, 03 Oct 2016 16:06:45 -0700
+Date: Mon, 3 Oct 2016 23:06:45 +0000
+From: "FedEx Standard Overnight"
+ <ivan.skinner@tennesseeinternationalpageants.com>
+Message-ID: <a4bd4d4fe014e256fe93b86917765a67@tennesseeinternationalpageants.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="b1_eecefd3c825a528a8a764ceed117e6fe"
+Content-Transfer-Encoding: 8bit
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,1266 +23,172 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: FedEx Standard Overnight
+ <ivan.skinner@tennesseeinternationalpageants.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/20] i.MX: Add VF610 clock tree initialization code
+Subject: Problems with item delivery, n.00809120
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Based on analogous code from Linux kernel
+--b1_eecefd3c825a528a8a764ceed117e6fe
+Content-Type: text/plain; charset=us-ascii
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- drivers/clk/imx/Makefile    |    1 +
- drivers/clk/imx/clk-vf610.c | 1224 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 1225 insertions(+)
- create mode 100644 drivers/clk/imx/clk-vf610.c
+Dear Customer,
 
-diff --git a/drivers/clk/imx/Makefile b/drivers/clk/imx/Makefile
-index 0303c0b..2665f49 100644
---- a/drivers/clk/imx/Makefile
-+++ b/drivers/clk/imx/Makefile
-@@ -1 +1,2 @@
- obj-y += clk.o
-+obj-$(CONFIG_ARCH_VF610) += clk-vf610.o
-diff --git a/drivers/clk/imx/clk-vf610.c b/drivers/clk/imx/clk-vf610.c
-new file mode 100644
-index 0000000..2fbdbb3
---- /dev/null
-+++ b/drivers/clk/imx/clk-vf610.c
-@@ -0,0 +1,1224 @@
-+/*
-+ * Copyright (c) 2016 Zodiac Inflight Innovations
-+ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-+ *
-+ * Based on analogous code from Linux kernel
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <linux/clk.h>
-+#include <io.h>
-+#include <of.h>
-+#include <of_address.h>
-+#include <linux/clkdev.h>
-+#include <linux/err.h>
-+#include <mfd/syscon.h>
-+#include <dt-bindings/clock/vf610-clock.h>
-+
-+#include "../../../arch/arm/mach-imx/clk.h"
-+
-+enum {
-+	CCM_CCR		= 0x00,
-+	CCM_CSR		= 0x04,
-+	CCM_CCSR	= 0x08,
-+	CCM_CACRR	= 0x0c,
-+	CCM_CSCMR1	= 0x10,
-+	CCM_CSCDR1	= 0x14,
-+	CCM_CSCDR2	= 0x18,
-+	CCM_CSCDR3	= 0x1c,
-+	CCM_CSCMR2	= 0x20,
-+	CCM_CSCDR4	= 0x24,
-+	CCM_CLPCR	= 0x2c,
-+	CCM_CISR	= 0x30,
-+	CCM_CIMR	= 0x34,
-+	CCM_CGPR	= 0x3c,
-+	CCM_CCGR0	= 0x40,
-+	CCM_CCGR1	= 0x44,
-+	CCM_CCGR2	= 0x48,
-+	CCM_CCGR3	= 0x4c,
-+	CCM_CCGR4	= 0x50,
-+	CCM_CCGR5	= 0x54,
-+	CCM_CCGR6	= 0x58,
-+	CCM_CCGR7	= 0x5c,
-+	CCM_CCGR8	= 0x60,
-+	CCM_CCGR9	= 0x64,
-+	CCM_CCGR10	= 0x68,
-+	CCM_CCGR11	= 0x6c,
-+
-+	CCM_CMEOR0	= 0x70,
-+	CCM_CMEOR1	= 0x74,
-+	CCM_CMEOR2	= 0x78,
-+	CCM_CMEOR3	= 0x7c,
-+	CCM_CMEOR4	= 0x80,
-+	CCM_CMEOR5	= 0x84,
-+	CCM_CPPDSR	= 0x88,
-+	CCM_CCOWR	= 0x8c,
-+	CCM_CCPGR0	= 0x90,
-+	CCM_CCPGR1	= 0x94,
-+	CCM_CCPGR2	= 0x98,
-+	CCM_CCPGR3	= 0x9c,
-+};
-+
-+/* CCM_CCGRx(x)		(CCM_CCGR0 + (x) * 4) */
-+
-+static int vf610_ccm_ccgrx_cgn(int n) {
-+	return n * 2;
-+}
-+
-+
-+enum {
-+	PFD_PLL1_BASE	= 0x2b0,
-+	PFD_PLL2_BASE	= 0x100,
-+	PFD_PLL3_BASE	= 0x0f0,
-+	ANA_MISC1	= 0x160,
-+};
-+
-+static const unsigned int PLL_CTRL[7] = {
-+	0x270,
-+	0x030,
-+	0x010,
-+	0x070,
-+	0x0e0,
-+	0x0a0,
-+	0x020,
-+};
-+
-+
-+static struct clk *clk[VF610_CLK_END];
-+struct clk_onecell_data clk_data;
-+
-+static struct clk * __init vf610_get_fixed_clock(struct device_node *np,
-+						 const char *name)
-+{
-+	struct clk *clk = of_clk_get_by_name(np, name);
-+
-+	/* Backward compatibility if device tree is missing clks assignments */
-+	if (IS_ERR(clk))
-+		clk = imx_obtain_fixed_clock(name, 0);
-+
-+	return clk;
-+};
-+
-+static void vf610_ccm_setup_fixed(struct device_node *np,
-+				  void __iomem *anatop,
-+				  void __iomem *ccm)
-+{
-+	clk[VF610_CLK_DUMMY]	 = clk_fixed("dummy", 0);
-+	clk[VF610_CLK_SIRC_128K] = clk_fixed("sirc_128k", 128000);
-+	clk[VF610_CLK_SIRC_32K]  = clk_fixed("sirc_32k", 32000);
-+	clk[VF610_CLK_FIRC]	 = clk_fixed("firc", 24000000);
-+}
-+
-+static void vf610_ccm_setup_from_dt(struct device_node *np,
-+				    void __iomem *anatop,
-+				    void __iomem *ccm)
-+{
-+	clk[VF610_CLK_SXOSC]     = vf610_get_fixed_clock(np, "sxosc");
-+	clk[VF610_CLK_FXOSC]     = vf610_get_fixed_clock(np, "fxosc");
-+	clk[VF610_CLK_AUDIO_EXT] = vf610_get_fixed_clock(np, "audio_ext");
-+	clk[VF610_CLK_ENET_EXT]  = vf610_get_fixed_clock(np, "enet_ext");
-+
-+	/* Clock source from external clock via LVDs PAD */
-+	clk[VF610_CLK_ANACLK1] = vf610_get_fixed_clock(np, "anaclk1");
-+
-+	clk[VF610_CLK_FXOSC_HALF] = imx_clk_fixed_factor("fxosc_half",
-+							 "fxosc", 1, 2);
-+}
-+
-+static void vf610_ccm_setup_slow_clk(struct device_node *np,
-+				     void __iomem *anatop,
-+				     void __iomem *ccm)
-+{
-+	static const char *sources[] = {
-+		"sirc_32k",
-+		"sxosc",
-+	};
-+
-+	clk[VF610_CLK_SLOW_CLK_SEL] = imx_clk_mux("slow_clk_sel",
-+						  ccm + CCM_CCSR,
-+						  4, 1,
-+						  sources,
-+						  ARRAY_SIZE(sources));
-+}
-+
-+static void vf610_ccm_setup_fast_clk(struct device_node *np,
-+				     void __iomem *anatop,
-+				     void __iomem *ccm)
-+{
-+	static const char *sources[] = {
-+		"firc",
-+		"fxosc",
-+	};
-+
-+	clk[VF610_CLK_FASK_CLK_SEL] = imx_clk_mux("fast_clk_sel",
-+						  ccm + CCM_CCSR,
-+						  5, 1,
-+						  sources,
-+						  ARRAY_SIZE(sources));
-+}
-+
-+static void vf610_ccm_setup_pll_bypass_srcs(struct device_node *np,
-+					    void __iomem *anatop,
-+					    void __iomem *ccm)
-+{
-+	size_t i;
-+
-+	static const char *parents[] = {
-+		"fast_clk_sel",
-+		"lvds1_in",
-+	};
-+
-+#define VF610_CLK_PLL_BYPASS_SRC(n)			\
-+	{ VF610_CLK_PLL##n##_BYPASS_SRC, "pll" #n "_bypass_src" }
-+
-+	static const struct {
-+		int id;
-+		const char *name;
-+	} clocks[] = {
-+		VF610_CLK_PLL_BYPASS_SRC(1),
-+		VF610_CLK_PLL_BYPASS_SRC(2),
-+		VF610_CLK_PLL_BYPASS_SRC(3),
-+		VF610_CLK_PLL_BYPASS_SRC(4),
-+		VF610_CLK_PLL_BYPASS_SRC(5),
-+		VF610_CLK_PLL_BYPASS_SRC(6),
-+		VF610_CLK_PLL_BYPASS_SRC(7),
-+	};
-+
-+#undef VF610_CLK_PLL_BYPASS_SRC
-+
-+	for (i = 0; i < ARRAY_SIZE(clocks); i++) {
-+		const char *name = clocks[i].name;
-+		const int id = clocks[i].id;
-+
-+		clk[id] = imx_clk_mux(name, anatop + PLL_CTRL[i],
-+				      14, 1,
-+				      parents, ARRAY_SIZE(parents));
-+	}
-+}
-+
-+static void vf610_ccm_setup_plls(struct device_node *np,
-+				 void __iomem *anatop,
-+				 void __iomem *ccm)
-+{
-+	size_t i;
-+
-+#define VF610_CLK_PLL(n, type, mask)				   \
-+	{ VF610_CLK_PLL##n, type, "pll" #n, "pll" #n "_bypass_src", mask }
-+
-+	static const struct {
-+		int id;
-+		int type;
-+		const char *name;
-+		const char *parent;
-+		u32 mask;
-+	} clocks[] = {
-+		VF610_CLK_PLL(1, IMX_PLLV3_GENERIC,   0x01),
-+		VF610_CLK_PLL(2, IMX_PLLV3_GENERIC,   0x01),
-+		VF610_CLK_PLL(3, IMX_PLLV3_USB_VF610, 0x02),
-+		VF610_CLK_PLL(4, IMX_PLLV3_AV,        0x7f),
-+		VF610_CLK_PLL(5, IMX_PLLV3_ENET,      0x03),
-+		VF610_CLK_PLL(6, IMX_PLLV3_AV,        0x7f),
-+		VF610_CLK_PLL(7, IMX_PLLV3_USB_VF610, 0x02),
-+	};
-+
-+#undef VF610_CLK_PLL
-+
-+	for (i = 0; i < ARRAY_SIZE(clocks); i++) {
-+		const char *name = clocks[i].name;
-+		const int id = clocks[i].id;
-+
-+		clk[id] = imx_clk_pllv3(clocks[i].type,
-+					name,
-+					clocks[i].parent,
-+					anatop + PLL_CTRL[i],
-+					clocks[i].mask);
-+	}
-+}
-+
-+static void vf610_ccm_setup_pll_bypass(struct device_node *np,
-+				       void __iomem *anatop,
-+				       void __iomem *ccm)
-+{
-+	size_t i;
-+	static const char *pll_bypass_parents[][2] = {
-+		{ "pll1", "pll1_bypass_src" },
-+		{ "pll2", "pll2_bypass_src" },
-+		{ "pll3", "pll3_bypass_src" },
-+		{ "pll4", "pll4_bypass_src" },
-+		{ "pll5", "pll5_bypass_src" },
-+		{ "pll6", "pll6_bypass_src" },
-+		{ "pll7", "pll7_bypass_src" },
-+	};
-+
-+#define VF610_PLL_BYPASS(n)				\
-+	{ VF610_PLL##n##_BYPASS, "pll" #n "_bypass" }
-+
-+	static const struct {
-+		int id;
-+		const char *name;
-+	} clocks[] = {
-+		VF610_PLL_BYPASS(1),
-+		VF610_PLL_BYPASS(2),
-+		VF610_PLL_BYPASS(3),
-+		VF610_PLL_BYPASS(4),
-+		VF610_PLL_BYPASS(5),
-+		VF610_PLL_BYPASS(6),
-+		VF610_PLL_BYPASS(7),
-+	};
-+
-+#undef VF610_PLL_BYPASS
-+
-+	for (i = 0; i < ARRAY_SIZE(clocks); i++) {
-+		const char *name = clocks[i].name;
-+		const int id = clocks[i].id;
-+
-+		clk[id] = imx_clk_mux_p(name,
-+					anatop + PLL_CTRL[i],
-+					16, 1,
-+					pll_bypass_parents[i],
-+					ARRAY_SIZE(pll_bypass_parents[i]));
-+	}
-+}
-+
-+static void vf610_ccm_setup_group1(struct device_node *np,
-+				   void __iomem *anatop,
-+				   void __iomem *ccm)
-+{
-+	size_t i;
-+
-+	static const struct {
-+		int id;
-+		const char *name;
-+		const char *parent;
-+		unsigned int reg;
-+	} clocks[] = {
-+		{ VF610_CLK_PLL1_SYS,      "pll1_sys",      "pll1_bypass" },
-+		{ VF610_CLK_PLL2_BUS,      "pll2_bus",      "pll2_bypass" },
-+		{ VF610_CLK_PLL3_USB_OTG,  "pll3_usb_otg",  "pll3_bypass" },
-+		{ VF610_CLK_PLL4_AUDIO,    "pll4_audio",    "pll4_bypass" },
-+		{ VF610_CLK_PLL5_ENET,     "pll5_enet",     "pll5_bypass" },
-+		{ VF610_CLK_PLL6_VIDEO,    "pll6_video",    "pll6_bypass" },
-+		{ VF610_CLK_PLL7_USB_HOST, "pll7_usb_host", "pll7_bypass" },
-+	};
-+
-+	for (i = 0; i < ARRAY_SIZE(clocks); i++) {
-+		const char *name = clocks[i].name;
-+		const int id = clocks[i].id;
-+
-+		clk[id] = imx_clk_gate(name, clocks[i].parent,
-+				       anatop + PLL_CTRL[i], 13);
-+	}
-+}
-+
-+static void vf610_ccm_setup_pfds(struct device_node *np,
-+				 void __iomem *anatop,
-+				 void __iomem *ccm)
-+{
-+	size_t i;
-+
-+#define VF610_CLK_PLL_PFD(n, m)						\
-+	{ VF610_CLK_PLL##n##_PFD##m, "pll" #n "_pfd" #m,		\
-+	  "pll" #n "_sys", PFD_PLL##n##_BASE, m - 1 }
-+
-+	const static struct {
-+		int id;
-+		const char *name;
-+		const char *parent;
-+		unsigned int reg;
-+		u8 idx;
-+	} clocks[] = {
-+		VF610_CLK_PLL_PFD(1, 1),
-+		VF610_CLK_PLL_PFD(1, 2),
-+		VF610_CLK_PLL_PFD(1, 3),
-+		VF610_CLK_PLL_PFD(1, 4),
-+
-+		VF610_CLK_PLL_PFD(2, 1),
-+		VF610_CLK_PLL_PFD(2, 2),
-+		VF610_CLK_PLL_PFD(2, 3),
-+		VF610_CLK_PLL_PFD(2, 4),
-+
-+		VF610_CLK_PLL_PFD(3, 1),
-+		VF610_CLK_PLL_PFD(3, 2),
-+		VF610_CLK_PLL_PFD(3, 3),
-+		VF610_CLK_PLL_PFD(3, 4),
-+	};
-+
-+#undef VF610_CLK_PLL_PFD
-+
-+	for (i = 0; i < ARRAY_SIZE(clocks); i++) {
-+		const char *name = clocks[i].name;
-+		const int id = clocks[i].id;
-+
-+		clk[id] = imx_clk_pfd(name,
-+				      clocks[i].parent,
-+				      anatop + clocks[i].reg,
-+				      clocks[i].idx);
-+	}
-+}
-+
-+static void vf610_ccm_setup_pll1_pfd_out(struct device_node *np,
-+					 void __iomem *anatop,
-+					 void __iomem *ccm)
-+{
-+	static const char *sources[] = {
-+		"pll1_sys",
-+		"pll1_pfd1",
-+		"pll1_pfd2",
-+		"pll1_pfd3",
-+		"pll1_pfd4",
-+	};
-+
-+	clk[VF610_CLK_PLL1_PFD_SEL] = imx_clk_mux("pll1_pfd_sel",
-+						  ccm + CCM_CCSR,
-+						  16, 3,
-+						  sources, ARRAY_SIZE(sources));
-+}
-+
-+static void vf610_ccm_setup_pll2_pfd_out(struct device_node *np,
-+					 void __iomem *anatop,
-+					 void __iomem *ccm)
-+{
-+	static const char *sources[] = {
-+		"pll2_bus",
-+		"pll2_pfd1",
-+		"pll2_pfd2",
-+		"pll2_pfd3",
-+		"pll2_pfd4",
-+	};
-+
-+	clk[VF610_CLK_PLL2_PFD_SEL] = imx_clk_mux("pll2_pfd_sel",
-+						  ccm + CCM_CCSR,
-+						  19, 3,
-+						  sources, ARRAY_SIZE(sources));
-+}
-+
-+static void vf610_ccm_setup_sys_out(struct device_node *np,
-+				   void __iomem *anatop,
-+				   void __iomem *ccm)
-+{
-+	static const char *sources[] = {
-+		"fast_clk_sel",
-+		"slow_clk_sel",
-+		"pll2_pfd_sel",
-+		"pll2_bus",
-+		"pll1_pfd_sel",
-+		"pll3_usb_otg",
-+	};
-+
-+	clk[VF610_CLK_SYS_SEL] = imx_clk_mux("sys_sel",
-+					     ccm + CCM_CCSR,
-+					     0, 3,
-+					     sources, ARRAY_SIZE(sources));
-+}
-+
-+static void vf610_ccm_setup_ddr_out(struct device_node *np,
-+				    void __iomem *anatop,
-+				    void __iomem *ccm)
-+{
-+	static const char *sources[] = {
-+		"pll2_pfd2",
-+		"sys_sel",
-+	};
-+
-+	clk[VF610_CLK_DDR_SEL] = imx_clk_mux("ddr_sel",
-+					     ccm + CCM_CCSR,
-+					     6, 1,
-+					     sources, ARRAY_SIZE(sources));
-+}
-+
-+static void vf610_ccm_setup_dividers(struct device_node *np,
-+				     void __iomem *anatop,
-+				     void __iomem *ccm)
-+{
-+	size_t i;
-+
-+	static const struct {
-+		int id;
-+		const char *name;
-+		const char *parent;
-+		u8 shift;
-+		u8 width;
-+	} clocks[] = {
-+		{
-+			.id	= VF610_CLK_SYS_BUS,
-+			.name	= "sys_bus",
-+			.parent = "sys_sel",
-+			.shift	= 0,
-+			.width	= 3,
-+		},
-+		{
-+			.id	= VF610_CLK_PLATFORM_BUS,
-+			.name	= "platform_bus",
-+			.parent = "sys_bus",
-+			.shift	= 3,
-+			.width	= 3,
-+		},
-+		{
-+			.id	= VF610_CLK_IPG_BUS,
-+			.name	= "ipg_bus",
-+			.parent = "platform_bus",
-+			.shift	= 11,
-+			.width	= 2,
-+		},
-+		{
-+			.id	= VF610_CLK_PLL3_MAIN_DIV,
-+			.name	= "pll3_usb_otg_div",
-+			.parent = "pll3_usb_otg",
-+			.shift	= 20,
-+			.width	= 1,
-+		},
-+		{
-+			.id	= VF610_CLK_PLL6_MAIN_DIV,
-+			.name	= "pll6_video_div",
-+			.parent = "pll6_video",
-+			.shift	= 21,
-+			.width	= 1,
-+		},
-+	};
-+
-+	for (i = 0; i < ARRAY_SIZE(clocks); i++)
-+		clk[clocks[i].id] = imx_clk_divider(clocks[i].name,
-+						    clocks[i].parent,
-+						    ccm + CCM_CACRR,
-+						    clocks[i].shift,
-+						    clocks[i].width);
-+}
-+
-+static void vf610_ccm_setup_pll4_main_div(struct device_node *np,
-+					  void __iomem *anatop,
-+					  void __iomem *ccm)
-+{
-+	static const struct clk_div_table div_table[] = {
-+		{ .val = 0, .div = 1  },
-+		{ .val = 1, .div = 2  },
-+		{ .val = 2, .div = 6  },
-+		{ .val = 3, .div = 8  },
-+		{ .val = 4, .div = 10 },
-+		{ .val = 5, .div = 12 },
-+		{ .val = 6, .div = 14 },
-+		{ .val = 7, .div = 16 },
-+		{ }
-+	};
-+
-+	clk[VF610_CLK_PLL4_MAIN_DIV] = clk_divider_table("pll4_audio_div",
-+							 "pll4_audio",
-+							 ccm +  CCM_CACRR, 6, 3,
-+							 div_table, 0);
-+}
-+
-+static void vf610_ccm_setup_ddrmc(struct device_node *np,
-+				  void __iomem *anatop,
-+				  void __iomem *ccm)
-+{
-+	clk[VF610_CLK_DDRMC] = imx_clk_gate2_cgr("ddrmc",
-+						 "ddr_sel",
-+						 ccm + CCM_CCGR6,
-+						 vf610_ccm_ccgrx_cgn(14),
-+						 0x2);
-+}
-+
-+static void vf610_ccm_setup_wkpu(struct device_node *np,
-+				 void __iomem *anatop,
-+				 void __iomem *ccm)
-+{
-+	clk[VF610_CLK_WKPU] = imx_clk_gate2_cgr("wkpu",
-+						"ipg_bus",
-+						ccm + CCM_CCGR4,
-+						vf610_ccm_ccgrx_cgn(10),
-+						0x2);
-+}
-+
-+static void vf610_ccm_setup_usbphys(struct device_node *np,
-+				    void __iomem *anatop,
-+				    void __iomem *ccm)
-+{
-+	clk[VF610_CLK_USBPHY0] = imx_clk_gate("usbphy0", "pll3_usb_otg",
-+					      anatop + PLL_CTRL[2], 6);
-+	clk[VF610_CLK_USBPHY1] = imx_clk_gate("usbphy1", "pll7_usb_host",
-+					      anatop + PLL_CTRL[6], 6);
-+}
-+
-+static void vf610_ccm_setup_usbcs(struct device_node *np,
-+				  void __iomem *anatop,
-+				  void __iomem *ccm)
-+
-+{
-+
-+	clk[VF610_CLK_USBC0] = imx_clk_gate2("usbc0", "ipg_bus",
-+					     ccm + CCM_CCGR1,
-+					     vf610_ccm_ccgrx_cgn(4));
-+	clk[VF610_CLK_USBC1] = imx_clk_gate2("usbc1", "ipg_bus",
-+					     ccm + CCM_CCGR7,
-+					     vf610_ccm_ccgrx_cgn(4));
-+
-+}
-+
-+static void vf610_ccm_setup_qspis(struct device_node *np,
-+				  void __iomem *anatop,
-+				  void __iomem *ccm)
-+{
-+	static const char *sources[] = {
-+		"pll3_usb_otg",
-+		"pll3_pfd4",
-+		"pll2_pfd4",
-+		"pll1_pfd4",
-+	};
-+
-+	clk[VF610_CLK_QSPI0_SEL] = imx_clk_mux("qspi0_sel",
-+					       ccm + CCM_CSCMR1,
-+					       22, 2,
-+					       sources, ARRAY_SIZE(sources));
-+	clk[VF610_CLK_QSPI0_EN] = imx_clk_gate("qspi0_en", "qspi0_sel",
-+					       ccm + CCM_CSCDR3, 4);
-+	clk[VF610_CLK_QSPI0_X4_DIV] = imx_clk_divider("qspi0_x4", "qspi0_en",
-+						      ccm + CCM_CSCDR3, 0, 2);
-+	clk[VF610_CLK_QSPI0_X2_DIV] = imx_clk_divider("qspi0_x2", "qspi0_x4",
-+						      ccm + CCM_CSCDR3, 2, 1);
-+	clk[VF610_CLK_QSPI0_X1_DIV] = imx_clk_divider("qspi0_x1", "qspi0_x2",
-+						      ccm + CCM_CSCDR3, 3, 1);
-+	clk[VF610_CLK_QSPI0] = imx_clk_gate2("qspi0", "qspi0_x1",
-+					     ccm + CCM_CCGR2,
-+					     vf610_ccm_ccgrx_cgn(4));
-+
-+	clk[VF610_CLK_QSPI1_SEL] = imx_clk_mux("qspi1_sel",
-+					       ccm + CCM_CSCMR1,
-+					       24, 2,
-+					       sources, ARRAY_SIZE(sources));
-+	clk[VF610_CLK_QSPI1_EN] = imx_clk_gate("qspi1_en", "qspi1_sel",
-+					       ccm + CCM_CSCDR3, 12);
-+	clk[VF610_CLK_QSPI1_X4_DIV] = imx_clk_divider("qspi1_x4", "qspi1_en",
-+						      ccm + CCM_CSCDR3, 8, 2);
-+	clk[VF610_CLK_QSPI1_X2_DIV] = imx_clk_divider("qspi1_x2", "qspi1_x4",
-+						      ccm + CCM_CSCDR3, 10, 1);
-+	clk[VF610_CLK_QSPI1_X1_DIV] = imx_clk_divider("qspi1_x1", "qspi1_x2",
-+						      ccm + CCM_CSCDR3, 11, 1);
-+	clk[VF610_CLK_QSPI1] = imx_clk_gate2("qspi1", "qspi1_x1",
-+					     ccm + CCM_CCGR8,
-+					     vf610_ccm_ccgrx_cgn(4));
-+}
-+
-+static void vf610_ccm_setup_enets(struct device_node *np,
-+				  void __iomem *anatop,
-+				  void __iomem *ccm)
-+{
-+	static const char *enet_sels[] = {
-+		"enet_ext",
-+		"audio_ext",
-+		"enet_50m",
-+		"enet_25m",
-+	};
-+
-+	static const char *enet_ts_sels[] = {
-+		"enet_ext",
-+		"fxosc",
-+		"audio_ext",
-+		"usb",
-+		"enet_ts",
-+		"enet_25m",
-+		"enet_50m",
-+	};
-+
-+	clk[VF610_CLK_ENET_50M] = imx_clk_fixed_factor("enet_50m",
-+						       "pll5_enet", 1, 10);
-+	clk[VF610_CLK_ENET_25M] = imx_clk_fixed_factor("enet_25m",
-+						       "pll5_enet", 1, 20);
-+	clk[VF610_CLK_ENET_SEL] = imx_clk_mux("enet_sel",
-+					      ccm + CCM_CSCMR2, 4, 2,
-+					      enet_sels,
-+					      ARRAY_SIZE(enet_sels));
-+	clk[VF610_CLK_ENET_TS_SEL] = imx_clk_mux("enet_ts_sel",
-+						 ccm + CCM_CSCMR2, 0, 3,
-+						 enet_ts_sels,
-+						 ARRAY_SIZE(enet_ts_sels));
-+	clk[VF610_CLK_ENET] = imx_clk_gate("enet", "enet_sel",
-+					   ccm + CCM_CSCDR1, 24);
-+	clk[VF610_CLK_ENET_TS] = imx_clk_gate("enet_ts", "enet_ts_sel",
-+					      ccm + CCM_CSCDR1, 23);
-+	clk[VF610_CLK_ENET0] = imx_clk_gate2("enet0", "ipg_bus",
-+					     ccm + CCM_CCGR9,
-+					     vf610_ccm_ccgrx_cgn(0));
-+	clk[VF610_CLK_ENET1] = imx_clk_gate2("enet1", "ipg_bus",
-+					     ccm + CCM_CCGR9,
-+					     vf610_ccm_ccgrx_cgn(1));
-+}
-+
-+static void vf610_ccm_setup_pit(struct device_node *np,
-+				  void __iomem *anatop,
-+				  void __iomem *ccm)
-+{
-+	clk[VF610_CLK_PIT] = imx_clk_gate2("pit", "ipg_bus",
-+					   ccm + CCM_CCGR1,
-+					   vf610_ccm_ccgrx_cgn(7));
-+}
-+
-+static void vf610_ccm_setup_uarts(struct device_node *np,
-+				  void __iomem *anatop,
-+				  void __iomem *ccm)
-+{
-+	clk[VF610_CLK_UART0] = imx_clk_gate2("uart0", "ipg_bus",
-+					     ccm + CCM_CCGR0,
-+					     vf610_ccm_ccgrx_cgn(7));
-+	clk[VF610_CLK_UART1] = imx_clk_gate2("uart1", "ipg_bus",
-+					     ccm + CCM_CCGR0,
-+					     vf610_ccm_ccgrx_cgn(8));
-+	clk[VF610_CLK_UART2] = imx_clk_gate2("uart2", "ipg_bus",
-+					     ccm + CCM_CCGR0,
-+					     vf610_ccm_ccgrx_cgn(9));
-+	clk[VF610_CLK_UART3] = imx_clk_gate2("uart3", "ipg_bus",
-+					     ccm + CCM_CCGR0,
-+					     vf610_ccm_ccgrx_cgn(10));
-+	clk[VF610_CLK_UART4] = imx_clk_gate2("uart4", "ipg_bus",
-+					     ccm + CCM_CCGR6,
-+					     vf610_ccm_ccgrx_cgn(9));
-+	clk[VF610_CLK_UART5] = imx_clk_gate2("uart5", "ipg_bus",
-+					     ccm + CCM_CCGR6,
-+					     vf610_ccm_ccgrx_cgn(10));
-+}
-+
-+static void vf610_ccm_setup_i2cs(struct device_node *np,
-+				 void __iomem *anatop,
-+				 void __iomem *ccm)
-+
-+{
-+	clk[VF610_CLK_I2C0] = imx_clk_gate2("i2c0", "ipg_bus",
-+					    ccm + CCM_CCGR4,
-+					    vf610_ccm_ccgrx_cgn(6));
-+	clk[VF610_CLK_I2C1] = imx_clk_gate2("i2c1", "ipg_bus",
-+					    ccm + CCM_CCGR4,
-+					    vf610_ccm_ccgrx_cgn(7));
-+	clk[VF610_CLK_I2C2] = imx_clk_gate2("i2c2", "ipg_bus",
-+					    ccm + CCM_CCGR10,
-+					    vf610_ccm_ccgrx_cgn(6));
-+	clk[VF610_CLK_I2C3] = imx_clk_gate2("i2c3", "ipg_bus",
-+					    ccm + CCM_CCGR10,
-+					    vf610_ccm_ccgrx_cgn(7));
-+}
-+
-+static void vf610_ccm_setup_dspis(struct device_node *np,
-+				  void __iomem *anatop,
-+				  void __iomem *ccm)
-+{
-+	clk[VF610_CLK_DSPI0] = imx_clk_gate2("dspi0", "ipg_bus",
-+					     ccm + CCM_CCGR0,
-+					     vf610_ccm_ccgrx_cgn(12));
-+	clk[VF610_CLK_DSPI1] = imx_clk_gate2("dspi1", "ipg_bus",
-+					     ccm + CCM_CCGR0,
-+					     vf610_ccm_ccgrx_cgn(13));
-+	clk[VF610_CLK_DSPI2] = imx_clk_gate2("dspi2", "ipg_bus",
-+					     ccm + CCM_CCGR6,
-+					     vf610_ccm_ccgrx_cgn(12));
-+	clk[VF610_CLK_DSPI3] = imx_clk_gate2("dspi3", "ipg_bus",
-+					     ccm + CCM_CCGR6,
-+					     vf610_ccm_ccgrx_cgn(13));
-+}
-+
-+static void vf610_ccm_setup_wdt(struct device_node *np,
-+				void __iomem *anatop,
-+				void __iomem *ccm)
-+{
-+	clk[VF610_CLK_WDT] = imx_clk_gate2("wdt", "ipg_bus",
-+					   ccm + CCM_CCGR1,
-+					   vf610_ccm_ccgrx_cgn(14));
-+}
-+
-+static void vf610_ccm_setup_esdhcs(struct device_node *np,
-+				   void __iomem *anatop,
-+				   void __iomem *ccm)
-+{
-+	static const char *sources[] = {
-+		"pll3_usb_otg",
-+		"pll3_pfd3",
-+		"pll1_pfd3",
-+		"platform_bus",
-+	};
-+
-+	clk[VF610_CLK_ESDHC0_SEL] = imx_clk_mux("esdhc0_sel",
-+						ccm + CCM_CSCMR1, 16, 2,
-+						sources, ARRAY_SIZE(sources));
-+	clk[VF610_CLK_ESDHC0_EN] = imx_clk_gate("esdhc0_en", "esdhc0_sel",
-+						ccm + CCM_CSCDR2, 28);
-+	clk[VF610_CLK_ESDHC0_DIV] = imx_clk_divider("esdhc0_div", "esdhc0_en",
-+						    ccm +CCM_CSCDR2, 16, 4);
-+	clk[VF610_CLK_ESDHC0] = imx_clk_gate2("eshc0", "esdhc0_div",
-+					      ccm + CCM_CCGR7,
-+					      vf610_ccm_ccgrx_cgn(1));
-+
-+	clk[VF610_CLK_ESDHC1_SEL] = imx_clk_mux("esdhc1_sel",
-+						ccm + CCM_CSCMR1, 18, 2,
-+						sources, ARRAY_SIZE(sources));
-+	clk[VF610_CLK_ESDHC1_EN] = imx_clk_gate("esdhc1_en", "esdhc1_sel",
-+						ccm + CCM_CSCDR2, 29);
-+	clk[VF610_CLK_ESDHC1_DIV] = imx_clk_divider("esdhc1_div", "esdhc1_en",
-+						    ccm + CCM_CSCDR2, 20, 4);
-+	clk[VF610_CLK_ESDHC1] = imx_clk_gate2("eshc1", "esdhc1_div",
-+					      ccm + CCM_CCGR7,
-+					      vf610_ccm_ccgrx_cgn(2));
-+}
-+
-+static void vf610_ccm_setup_ftms(struct device_node *np,
-+				 void __iomem *anatop,
-+				 void __iomem *ccm)
-+{
-+	/* FTM counter clock source, not module clock */
-+	static const char *ftm_ext_sels[] = {
-+		"sirc_128k",
-+		"sxosc",
-+		"fxosc_half",
-+		"audio_ext",
-+	};
-+
-+	static const char *ftm_fix_sels[] = {
-+		"sxosc",
-+		"ipg_bus",
-+	};
-+
-+	/*
-+	 * ftm_ext_clk and ftm_fix_clk are FTM timer counter's
-+	 * selectable clock sources, both use a common enable bit
-+	 * in CCM_CSCDR1, selecting "dummy" clock as parent of
-+	 * "ftm0_ext_fix" make it serve only for enable/disable.
-+	 */
-+	clk[VF610_CLK_FTM0_EXT_SEL] = imx_clk_mux("ftm0_ext_sel",
-+						  ccm + CCM_CSCMR2, 6, 2,
-+						  ftm_ext_sels,
-+						  ARRAY_SIZE(ftm_ext_sels));
-+	clk[VF610_CLK_FTM0_FIX_SEL] = imx_clk_mux("ftm0_fix_sel",
-+						  ccm + CCM_CSCMR2, 14, 1,
-+						  ftm_fix_sels,
-+						  ARRAY_SIZE(ftm_fix_sels));
-+	clk[VF610_CLK_FTM0_EXT_FIX_EN] = imx_clk_gate("ftm0_ext_fix_en",
-+						      "dummy",
-+						      ccm + CCM_CSCDR1, 25);
-+	clk[VF610_CLK_FTM1_EXT_SEL] = imx_clk_mux("ftm1_ext_sel",
-+						  ccm + CCM_CSCMR2, 8, 2,
-+						  ftm_ext_sels,
-+						  ARRAY_SIZE(ftm_ext_sels));
-+	clk[VF610_CLK_FTM1_FIX_SEL] = imx_clk_mux("ftm1_fix_sel",
-+						  ccm + CCM_CSCMR2, 15, 1,
-+						  ftm_fix_sels,
-+						  ARRAY_SIZE(ftm_fix_sels));
-+	clk[VF610_CLK_FTM1_EXT_FIX_EN] = imx_clk_gate("ftm1_ext_fix_en",
-+						      "dummy",
-+						      ccm + CCM_CSCDR1, 26);
-+	clk[VF610_CLK_FTM2_EXT_SEL] = imx_clk_mux("ftm2_ext_sel",
-+						  ccm + CCM_CSCMR2, 10, 2,
-+						  ftm_ext_sels,
-+						  ARRAY_SIZE(ftm_ext_sels));
-+	clk[VF610_CLK_FTM2_FIX_SEL] = imx_clk_mux("ftm2_fix_sel",
-+						  ccm + CCM_CSCMR2, 16, 1,
-+						  ftm_fix_sels,
-+						  ARRAY_SIZE(ftm_fix_sels));
-+	clk[VF610_CLK_FTM2_EXT_FIX_EN] = imx_clk_gate("ftm2_ext_fix_en",
-+						      "dummy",
-+						      ccm + CCM_CSCDR1, 27);
-+	clk[VF610_CLK_FTM3_EXT_SEL] = imx_clk_mux("ftm3_ext_sel",
-+						  ccm + CCM_CSCMR2, 12, 2,
-+						  ftm_ext_sels,
-+						  ARRAY_SIZE(ftm_ext_sels));
-+	clk[VF610_CLK_FTM3_FIX_SEL] = imx_clk_mux("ftm3_fix_sel",
-+						  ccm + CCM_CSCMR2, 17, 1,
-+						  ftm_fix_sels,
-+						  ARRAY_SIZE(ftm_fix_sels));
-+	clk[VF610_CLK_FTM3_EXT_FIX_EN] = imx_clk_gate("ftm3_ext_fix_en",
-+						      "dummy",
-+						      ccm + CCM_CSCDR1, 28);
-+
-+	/* ftm(n)_clk are FTM module operation clock */
-+	clk[VF610_CLK_FTM0] = imx_clk_gate2("ftm0", "ipg_bus",
-+					    ccm + CCM_CCGR1,
-+					    vf610_ccm_ccgrx_cgn(8));
-+	clk[VF610_CLK_FTM1] = imx_clk_gate2("ftm1", "ipg_bus",
-+					    ccm + CCM_CCGR1,
-+					    vf610_ccm_ccgrx_cgn(9));
-+	clk[VF610_CLK_FTM2] = imx_clk_gate2("ftm2", "ipg_bus",
-+					    ccm + CCM_CCGR7,
-+					    vf610_ccm_ccgrx_cgn(8));
-+	clk[VF610_CLK_FTM3] = imx_clk_gate2("ftm3", "ipg_bus",
-+					    ccm + CCM_CCGR7,
-+					    vf610_ccm_ccgrx_cgn(9));
-+}
-+
-+static void vf610_ccm_setup_dcus(struct device_node *np,
-+				 void __iomem *anatop,
-+				 void __iomem *ccm)
-+{
-+	static const char *sources[] = {
-+		"pll1_pfd2",
-+		"pll3_usb_otg",
-+	};
-+
-+	clk[VF610_CLK_DCU0_SEL] = imx_clk_mux("dcu0_sel",
-+					      ccm + CCM_CSCMR1, 28, 1,
-+					      sources, ARRAY_SIZE(sources));
-+	clk[VF610_CLK_DCU0_EN] = imx_clk_gate("dcu0_en", "dcu0_sel",
-+					      ccm + CCM_CSCDR3, 19);
-+	clk[VF610_CLK_DCU0_DIV] = imx_clk_divider("dcu0_div", "dcu0_en",
-+						  ccm + CCM_CSCDR3, 16, 3);
-+	clk[VF610_CLK_DCU0] = imx_clk_gate2("dcu0", "ipg_bus",
-+					    ccm + CCM_CCGR3,
-+					    vf610_ccm_ccgrx_cgn(8));
-+	clk[VF610_CLK_DCU1_SEL] = imx_clk_mux("dcu1_sel",
-+					      ccm + CCM_CSCMR1, 29, 1,
-+					      sources, ARRAY_SIZE(sources));
-+	clk[VF610_CLK_DCU1_EN] = imx_clk_gate("dcu1_en", "dcu1_sel",
-+					      ccm + CCM_CSCDR3, 23);
-+	clk[VF610_CLK_DCU1_DIV] = imx_clk_divider("dcu1_div", "dcu1_en",
-+						  ccm + CCM_CSCDR3, 20, 3);
-+	clk[VF610_CLK_DCU1] = imx_clk_gate2("dcu1", "ipg_bus",
-+					    ccm + CCM_CCGR9,
-+					    vf610_ccm_ccgrx_cgn(8));
-+}
-+
-+static void vf610_ccm_setup_tcons(struct device_node *np,
-+				 void __iomem *anatop,
-+				 void __iomem *ccm)
-+{
-+	clk[VF610_CLK_TCON0] = imx_clk_gate2("tcon0", "platform_bus",
-+					     ccm + CCM_CCGR1,
-+					     vf610_ccm_ccgrx_cgn(13));
-+	clk[VF610_CLK_TCON1] = imx_clk_gate2("tcon1", "platform_bus",
-+					     ccm + CCM_CCGR7,
-+					     vf610_ccm_ccgrx_cgn(13));
-+}
-+
-+
-+static void vf610_ccm_setup_esai(struct device_node *np,
-+				 void __iomem *anatop,
-+				 void __iomem *ccm)
-+{
-+	static const char *sources[] = {
-+		"audio_ext",
-+		"mlb",
-+		"spdif_rx",
-+		"pll4_audio_div",
-+	};
-+
-+	clk[VF610_CLK_ESAI_SEL] = imx_clk_mux("esai_sel",
-+					      ccm + CCM_CSCMR1, 20, 2,
-+					      sources, ARRAY_SIZE(sources));
-+	clk[VF610_CLK_ESAI_EN] = imx_clk_gate("esai_en", "esai_sel",
-+					      ccm + CCM_CSCDR2, 30);
-+	clk[VF610_CLK_ESAI_DIV] = imx_clk_divider("esai_div", "esai_en",
-+						  ccm + CCM_CSCDR2, 24, 4);
-+	clk[VF610_CLK_ESAI] = imx_clk_gate2("esai", "esai_div",
-+					    ccm + CCM_CCGR4,
-+					    vf610_ccm_ccgrx_cgn(2));
-+}
-+
-+static void vf610_ccm_setup_sais(struct device_node *np,
-+				 void __iomem *anatop,
-+				 void __iomem *ccm)
-+{
-+	static const char *sources[] = {
-+		"audio_ext",
-+		"mlb",
-+		"spdif_rx",
-+		"pll4_audio_div",
-+	};
-+
-+	clk[VF610_CLK_SAI0_SEL] = imx_clk_mux("sai0_sel",
-+					      ccm + CCM_CSCMR1, 0, 2,
-+					      sources, ARRAY_SIZE(sources));
-+	clk[VF610_CLK_SAI0_EN] = imx_clk_gate("sai0_en", "sai0_sel",
-+					      ccm + CCM_CSCDR1, 16);
-+	clk[VF610_CLK_SAI0_DIV] = imx_clk_divider("sai0_div", "sai0_en",
-+						  ccm + CCM_CSCDR1, 0, 4);
-+	clk[VF610_CLK_SAI0] = imx_clk_gate2("sai0", "ipg_bus",
-+					    ccm + CCM_CCGR0,
-+					    vf610_ccm_ccgrx_cgn(15));
-+
-+	clk[VF610_CLK_SAI1_SEL] = imx_clk_mux("sai1_sel",
-+					      ccm + CCM_CSCMR1, 2, 2,
-+					      sources, ARRAY_SIZE(sources));
-+	clk[VF610_CLK_SAI1_EN] = imx_clk_gate("sai1_en", "sai1_sel",
-+					      ccm + CCM_CSCDR1, 17);
-+	clk[VF610_CLK_SAI1_DIV] = imx_clk_divider("sai1_div", "sai1_en",
-+						  ccm + CCM_CSCDR1, 4, 4);
-+	clk[VF610_CLK_SAI1] = imx_clk_gate2("sai1", "ipg_bus",
-+					    ccm + CCM_CCGR1,
-+					    vf610_ccm_ccgrx_cgn(0));
-+
-+	clk[VF610_CLK_SAI2_SEL] = imx_clk_mux("sai2_sel",
-+					      ccm + CCM_CSCMR1, 4, 2,
-+					      sources, ARRAY_SIZE(sources));
-+	clk[VF610_CLK_SAI2_EN] = imx_clk_gate("sai2_en", "sai2_sel",
-+					      ccm + CCM_CSCDR1, 18);
-+	clk[VF610_CLK_SAI2_DIV] = imx_clk_divider("sai2_div", "sai2_en",
-+						  ccm + CCM_CSCDR1, 8, 4);
-+	clk[VF610_CLK_SAI2] = imx_clk_gate2("sai2", "ipg_bus",
-+					    ccm + CCM_CCGR1,
-+					    vf610_ccm_ccgrx_cgn(1));
-+
-+	clk[VF610_CLK_SAI3_SEL] = imx_clk_mux("sai3_sel",
-+					      ccm + CCM_CSCMR1, 6, 2,
-+					      sources, ARRAY_SIZE(sources));
-+	clk[VF610_CLK_SAI3_EN] = imx_clk_gate("sai3_en", "sai3_sel",
-+					      ccm + CCM_CSCDR1, 19);
-+	clk[VF610_CLK_SAI3_DIV] = imx_clk_divider("sai3_div", "sai3_en",
-+						  ccm + CCM_CSCDR1, 12, 4);
-+	clk[VF610_CLK_SAI3] = imx_clk_gate2("sai3", "ipg_bus",
-+					    ccm + CCM_CCGR1,
-+					    vf610_ccm_ccgrx_cgn(2));
-+}
-+
-+static void vf610_ccm_setup_nfc(struct device_node *np,
-+				 void __iomem *anatop,
-+				 void __iomem *ccm)
-+{
-+	static const char *sources[] = {
-+		"platform_bus",
-+		"pll1_pfd1",
-+		"pll3_pfd1",
-+		"pll3_pfd3",
-+	};
-+
-+	clk[VF610_CLK_NFC_SEL] = imx_clk_mux("nfc_sel",
-+					     ccm + CCM_CSCMR1, 12, 2,
-+					     sources, ARRAY_SIZE(sources));
-+	clk[VF610_CLK_NFC_EN] = imx_clk_gate("nfc_en", "nfc_sel",
-+					     ccm + CCM_CSCDR2, 9);
-+	clk[VF610_CLK_NFC_PRE_DIV] = imx_clk_divider("nfc_pre_div", "nfc_en",
-+						     ccm + CCM_CSCDR3, 13, 3);
-+	clk[VF610_CLK_NFC_FRAC_DIV] = imx_clk_divider("nfc_frac_div",
-+						      "nfc_pre_div",
-+						      ccm + CCM_CSCDR2, 4, 4);
-+	clk[VF610_CLK_NFC] = imx_clk_gate2("nfc", "nfc_frac_div",
-+					   ccm + CCM_CCGR10,
-+					   vf610_ccm_ccgrx_cgn(0));
-+}
-+
-+static void vf610_ccm_setup_gpu(struct device_node *np,
-+				 void __iomem *anatop,
-+				 void __iomem *ccm)
-+{
-+	static const char *sources[] = {
-+		"pll2_pfd2",
-+		"pll3_pfd2",
-+	};
-+
-+	clk[VF610_CLK_GPU_SEL] = imx_clk_mux("gpu_sel",
-+					     ccm + CCM_CSCMR1, 14, 1,
-+					     sources, ARRAY_SIZE(sources));
-+	clk[VF610_CLK_GPU_EN] = imx_clk_gate("gpu_en", "gpu_sel",
-+					     ccm + CCM_CSCDR2, 10);
-+	clk[VF610_CLK_GPU2D] = imx_clk_gate2("gpu", "gpu_en",
-+					     ccm + CCM_CCGR8,
-+					     vf610_ccm_ccgrx_cgn(15));
-+}
-+
-+static void vf610_ccm_setup_vadc(struct device_node *np,
-+				 void __iomem *anatop,
-+				 void __iomem *ccm)
-+{
-+	static const char *sources[] = {
-+		"pll6_video_div",
-+		"pll3_usb_otg_div",
-+		"pll3_usb_otg",
-+	};
-+
-+	clk[VF610_CLK_VADC_SEL] = imx_clk_mux("vadc_sel",
-+					      ccm + CCM_CSCMR1, 8, 2,
-+					      sources, ARRAY_SIZE(sources));
-+	clk[VF610_CLK_VADC_EN] = imx_clk_gate("vadc_en", "vadc_sel",
-+					      ccm + CCM_CSCDR1, 22);
-+	clk[VF610_CLK_VADC_DIV] = imx_clk_divider("vadc_div", "vadc_en",
-+						  ccm + CCM_CSCDR1, 20, 2);
-+	clk[VF610_CLK_VADC_DIV_HALF] = imx_clk_fixed_factor("vadc_div_half",
-+							    "vadc_div",
-+							    1, 2);
-+	clk[VF610_CLK_VADC] = imx_clk_gate2("vadc", "vadc_div",
-+					    ccm + CCM_CCGR8,
-+					    vf610_ccm_ccgrx_cgn(7));
-+}
-+
-+
-+static void vf610_ccm_setup_adcs(struct device_node *np,
-+				 void __iomem *anatop,
-+				 void __iomem *ccm)
-+{
-+	clk[VF610_CLK_ADC0] = imx_clk_gate2("adc0", "ipg_bus",
-+					    ccm + CCM_CCGR1,
-+					    vf610_ccm_ccgrx_cgn(11));
-+	clk[VF610_CLK_ADC1] = imx_clk_gate2("adc1", "ipg_bus",
-+					    ccm + CCM_CCGR7,
-+					    vf610_ccm_ccgrx_cgn(11));
-+	clk[VF610_CLK_DAC0] = imx_clk_gate2("dac0", "ipg_bus",
-+					    ccm + CCM_CCGR8,
-+					    vf610_ccm_ccgrx_cgn(12));
-+	clk[VF610_CLK_DAC1] = imx_clk_gate2("dac1", "ipg_bus",
-+					    ccm + CCM_CCGR8,
-+					    vf610_ccm_ccgrx_cgn(13));
-+}
-+
-+static void vf610_ccm_setup_flexcans(struct device_node *np,
-+				     void __iomem *anatop,
-+				     void __iomem *ccm)
-+{
-+	clk[VF610_CLK_FLEXCAN0_EN] = imx_clk_gate("flexcan0_en", "ipg_bus",
-+						  ccm + CCM_CSCDR2, 11);
-+	clk[VF610_CLK_FLEXCAN0] = imx_clk_gate2("flexcan0", "flexcan0_en",
-+						ccm + CCM_CCGR0,
-+						vf610_ccm_ccgrx_cgn(0));
-+	clk[VF610_CLK_FLEXCAN1_EN] = imx_clk_gate("flexcan1_en", "ipg_bus",
-+						  ccm + CCM_CSCDR2, 12);
-+	clk[VF610_CLK_FLEXCAN1] = imx_clk_gate2("flexcan1", "flexcan1_en",
-+						ccm + CCM_CCGR9,
-+						vf610_ccm_ccgrx_cgn(4));
-+}
-+
-+static void vf610_ccm_setup_dmas(struct device_node *np,
-+				 void __iomem *anatop,
-+				 void __iomem *ccm)
-+{
-+	clk[VF610_CLK_DMAMUX0] = imx_clk_gate2("dmamux0", "platform_bus",
-+					       ccm + CCM_CCGR0,
-+					       vf610_ccm_ccgrx_cgn(4));
-+	clk[VF610_CLK_DMAMUX1] = imx_clk_gate2("dmamux1", "platform_bus",
-+					       ccm + CCM_CCGR0,
-+					       vf610_ccm_ccgrx_cgn(5));
-+	clk[VF610_CLK_DMAMUX2] = imx_clk_gate2("dmamux2", "platform_bus",
-+					       ccm + CCM_CCGR6,
-+					       vf610_ccm_ccgrx_cgn(1));
-+	clk[VF610_CLK_DMAMUX3] = imx_clk_gate2("dmamux3", "platform_bus",
-+					       ccm + CCM_CCGR6,
-+					       vf610_ccm_ccgrx_cgn(2));
-+}
-+
-+static void vf610_ccm_setup_misc(struct device_node *np,
-+				 void __iomem *anatop,
-+				 void __iomem *ccm)
-+{
-+	clk[VF610_CLK_ASRC] = imx_clk_gate2("asrc", "ipg_bus",
-+					    ccm + CCM_CCGR4,
-+					    vf610_ccm_ccgrx_cgn(1));
-+	clk[VF610_CLK_SNVS] = imx_clk_gate2("snvs-rtc", "ipg_bus",
-+					    ccm + CCM_CCGR6,
-+					    vf610_ccm_ccgrx_cgn(7));
-+	clk[VF610_CLK_DAP] = imx_clk_gate("dap", "platform_bus",
-+					  ccm + CCM_CCSR, 24);
-+	clk[VF610_CLK_OCOTP] = imx_clk_gate("ocotp", "ipg_bus",
-+					    ccm + CCM_CCGR6,
-+					    vf610_ccm_ccgrx_cgn(5));
-+
-+	clk[VF610_CLK_LVDS1_IN] = imx_clk_gate_exclusive("lvds1_in",
-+							 "anaclk1",
-+							 anatop + ANA_MISC1,
-+							 12, BIT(10));
-+}
-+
-+typedef void (*vf610_ccm_group_setup_func) (struct device_node *np,
-+					    void __iomem *anatop,
-+					    void __iomem *ccm);
-+
-+static void __init vf610_clocks_init(struct device_node *np)
-+{
-+	size_t i;
-+	struct device_node *node;
-+	void __iomem *anatop;
-+	void __iomem *ccm;
-+
-+	static const vf610_ccm_group_setup_func group_setup_funcs[] = {
-+		vf610_ccm_setup_fixed,
-+		vf610_ccm_setup_from_dt,
-+		vf610_ccm_setup_slow_clk,
-+		vf610_ccm_setup_fast_clk,
-+		vf610_ccm_setup_pll_bypass_srcs,
-+		vf610_ccm_setup_plls,
-+		vf610_ccm_setup_pll_bypass,
-+		vf610_ccm_setup_group1,
-+		vf610_ccm_setup_pfds,
-+		vf610_ccm_setup_pll1_pfd_out,
-+		vf610_ccm_setup_pll2_pfd_out,
-+		vf610_ccm_setup_sys_out,
-+		vf610_ccm_setup_ddr_out,
-+		vf610_ccm_setup_dividers,
-+		vf610_ccm_setup_pll4_main_div,
-+		vf610_ccm_setup_ddrmc,
-+		vf610_ccm_setup_wkpu,
-+		vf610_ccm_setup_usbphys,
-+		vf610_ccm_setup_usbcs,
-+		vf610_ccm_setup_qspis,
-+		vf610_ccm_setup_enets,
-+		vf610_ccm_setup_pit,
-+		vf610_ccm_setup_uarts,
-+		vf610_ccm_setup_i2cs,
-+		vf610_ccm_setup_dspis,
-+		vf610_ccm_setup_wdt,
-+		vf610_ccm_setup_esdhcs,
-+		vf610_ccm_setup_ftms,
-+		vf610_ccm_setup_dcus,
-+		vf610_ccm_setup_tcons,
-+		vf610_ccm_setup_esai,
-+		vf610_ccm_setup_sais,
-+		vf610_ccm_setup_nfc,
-+		vf610_ccm_setup_gpu,
-+		vf610_ccm_setup_vadc,
-+		vf610_ccm_setup_adcs,
-+		vf610_ccm_setup_flexcans,
-+		vf610_ccm_setup_dmas,
-+		vf610_ccm_setup_misc,
-+	};
-+
-+	ccm = of_iomap(np, 0);
-+	BUG_ON(!ccm);
-+
-+	node = of_find_compatible_node(NULL, NULL, "fsl,vf610-anatop");
-+	anatop = of_iomap(node, 0);
-+	/* anatop = syscon_base_lookup_by_phandle(np, "fsl,anatop"); */
-+	BUG_ON(IS_ERR(anatop));
-+
-+	for (i = 0; i < ARRAY_SIZE(group_setup_funcs); i++)
-+		group_setup_funcs[i](np, anatop, ccm);
-+
-+	imx_check_clocks(clk, VF610_CLK_END);
-+
-+	/* Do not bypass PLLs initially */
-+
-+	clk_set_parent(clk[VF610_PLL1_BYPASS], clk[VF610_CLK_PLL1]);
-+	clk_set_parent(clk[VF610_PLL2_BYPASS], clk[VF610_CLK_PLL2]);
-+	clk_set_parent(clk[VF610_PLL3_BYPASS], clk[VF610_CLK_PLL3]);
-+	clk_set_parent(clk[VF610_PLL4_BYPASS], clk[VF610_CLK_PLL4]);
-+	clk_set_parent(clk[VF610_PLL5_BYPASS], clk[VF610_CLK_PLL5]);
-+	clk_set_parent(clk[VF610_PLL6_BYPASS], clk[VF610_CLK_PLL6]);
-+	clk_set_parent(clk[VF610_PLL7_BYPASS], clk[VF610_CLK_PLL7]);
-+
-+	clk_set_parent(clk[VF610_CLK_QSPI0_SEL], clk[VF610_CLK_PLL1_PFD4]);
-+	clk_set_rate(clk[VF610_CLK_QSPI0_X4_DIV],
-+		     clk_get_rate(clk[VF610_CLK_QSPI0_SEL]) / 2);
-+	clk_set_rate(clk[VF610_CLK_QSPI0_X2_DIV],
-+		     clk_get_rate(clk[VF610_CLK_QSPI0_X4_DIV]) / 2);
-+	clk_set_rate(clk[VF610_CLK_QSPI0_X1_DIV],
-+		     clk_get_rate(clk[VF610_CLK_QSPI0_X2_DIV]) / 2);
-+
-+	clk_set_parent(clk[VF610_CLK_QSPI1_SEL], clk[VF610_CLK_PLL1_PFD4]);
-+	clk_set_rate(clk[VF610_CLK_QSPI1_X4_DIV],
-+		     clk_get_rate(clk[VF610_CLK_QSPI1_SEL]) / 2);
-+	clk_set_rate(clk[VF610_CLK_QSPI1_X2_DIV],
-+		     clk_get_rate(clk[VF610_CLK_QSPI1_X4_DIV]) / 2);
-+	clk_set_rate(clk[VF610_CLK_QSPI1_X1_DIV],
-+		     clk_get_rate(clk[VF610_CLK_QSPI1_X2_DIV]) / 2);
-+
-+	clk_set_parent(clk[VF610_CLK_SAI0_SEL], clk[VF610_CLK_AUDIO_EXT]);
-+	clk_set_parent(clk[VF610_CLK_SAI1_SEL], clk[VF610_CLK_AUDIO_EXT]);
-+	clk_set_parent(clk[VF610_CLK_SAI2_SEL], clk[VF610_CLK_AUDIO_EXT]);
-+	clk_set_parent(clk[VF610_CLK_SAI3_SEL], clk[VF610_CLK_AUDIO_EXT]);
-+
-+	clk_enable(clk[VF610_CLK_SYS_BUS]);
-+	clk_enable(clk[VF610_CLK_DDR_SEL]);
-+	clk_enable(clk[VF610_CLK_DAP]);
-+	clk_enable(clk[VF610_CLK_DDRMC]);
-+	clk_enable(clk[VF610_CLK_WKPU]);
-+
-+	clk_data.clks = clk;
-+	clk_data.clk_num = ARRAY_SIZE(clk);
-+	of_clk_add_provider(np, of_clk_src_onecell_get, &clk_data);
-+}
-+CLK_OF_DECLARE(vf610, "fsl,vf610-ccm", vf610_clocks_init);
--- 
-2.5.5
+Courier was unable to deliver the parcel to you.
+Please, download Delivery Label attached to this email.
 
+Thanks and best regards,
+Ivan Skinner,
+FedEx Station Manager.
+
+
+--b1_eecefd3c825a528a8a764ceed117e6fe
+Content-Type: application/zip; name="FedEx_00809120.zip"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename=FedEx_00809120.zip
+
+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
+
+
+--b1_eecefd3c825a528a8a764ceed117e6fe
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--b1_eecefd3c825a528a8a764ceed117e6fe--
