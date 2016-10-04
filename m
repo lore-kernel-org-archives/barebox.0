@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-x241.google.com ([2607:f8b0:4002:c05::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1brQEY-0006ZN-BJ
- for barebox@lists.infradead.org; Tue, 04 Oct 2016 13:58:15 +0000
-Received: by mail-yw0-x241.google.com with SMTP id u124so2362918ywg.1
- for <barebox@lists.infradead.org>; Tue, 04 Oct 2016 06:57:54 -0700 (PDT)
+ id 1brV9f-0001Ia-DD
+ for barebox@lists.infradead.org; Tue, 04 Oct 2016 19:13:32 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue,  4 Oct 2016 21:13:06 +0200
+Message-Id: <20161004191306.1838-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20161004191306.1838-1-u.kleine-koenig@pengutronix.de>
+References: <20161004191306.1838-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20161004072041.mfou7hpp3uoihqys@pengutronix.de>
-References: <1475505657-898-1-git-send-email-andrew.smirnov@gmail.com>
- <1475505657-898-15-git-send-email-andrew.smirnov@gmail.com>
- <20161004072041.mfou7hpp3uoihqys@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 4 Oct 2016 06:57:53 -0700
-Message-ID: <CAHQ1cqGBqBHzF+MCWURs6qN-Qj50gH8q1tNs7LyVyy9r4a-HcA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,53 +17,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 14/20] i.MX: i2c-imx: Add Vybrid support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 2/2] ARM: mvebu: document some general mvebu stuff and the
+ rn2120 board
+To: barebox@lists.infradead.org
 
-On Tue, Oct 4, 2016 at 12:20 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Mon, Oct 03, 2016 at 07:40:51AM -0700, Andrey Smirnov wrote:
->> Vybrid flavour of the I2C controller requires some additional quirks on
->> part of the driver. This commit ports those quirks code from analogous
->> Linux kernel driver.
->>
->> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
->> ---
->>  drivers/i2c/busses/i2c-imx.c | 215 ++++++++++++++++++++++++++++++++-----------
->>  1 file changed, 160 insertions(+), 55 deletions(-)
->>
->> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
->> index e407896..dbc76c2 100644
->> --- a/drivers/i2c/busses/i2c-imx.c
->> +++ b/drivers/i2c/busses/i2c-imx.c
->> @@ -43,6 +43,7 @@
->> +static inline void fsl_i2c_write_reg(unsigned int val,
->> +                                  struct fsl_i2c_struct *i2c_fsl,
->> +                                  unsigned int reg)
->> +{
->> +     writeb(val, i2c_fsl->base + (reg << i2c_fsl->hwdata->regshift));
->> +}
->> +
->> +static inline unsigned char fsl_i2c_read_reg(struct fsl_i2c_struct *i2c_fsl,
->> +                                          unsigned int reg)
->> +{
->> +     return readb(i2c_fsl->base + (reg << i2c_fsl->hwdata->regshift));
->> +}
->
-> Can we have the introduction of the read/write accessor functions as a
-> separate patch (with regshift hardcoded to 0)? This would make reviewing
-> the rest easier.
-
-OK, will do in v2.
-
-Thanks,
-Andrey
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
+b25peC5kZT4KLS0tCiBEb2N1bWVudGF0aW9uL2JvYXJkcy9tdmVidS5yc3QgICAgICAgICAgICAg
+ICAgICAgICB8IDUwICsrKysrKysrKysrKysrKysrKysrKysKIC4uLi9ib2FyZHMvbXZlYnUvTmV0
+Z2Vhci1SZWFkeU5BUy0yMTIwLnJzdCAgICAgICAgIHwgMTkgKysrKysrKysKIDIgZmlsZXMgY2hh
+bmdlZCwgNjkgaW5zZXJ0aW9ucygrKQogY3JlYXRlIG1vZGUgMTAwNjQ0IERvY3VtZW50YXRpb24v
+Ym9hcmRzL212ZWJ1LnJzdAogY3JlYXRlIG1vZGUgMTAwNjQ0IERvY3VtZW50YXRpb24vYm9hcmRz
+L212ZWJ1L05ldGdlYXItUmVhZHlOQVMtMjEyMC5yc3QKCmRpZmYgLS1naXQgYS9Eb2N1bWVudGF0
+aW9uL2JvYXJkcy9tdmVidS5yc3QgYi9Eb2N1bWVudGF0aW9uL2JvYXJkcy9tdmVidS5yc3QKbmV3
+IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAwMDAwLi5iNGY4ZTYwNDNkYWMKLS0tIC9k
+ZXYvbnVsbAorKysgYi9Eb2N1bWVudGF0aW9uL2JvYXJkcy9tdmVidS5yc3QKQEAgLTAsMCArMSw1
+MCBAQAorTWFydmVsbCBFbWJlZGRlZCBCdXNpbmVzcyBVbml0IChtdmVidSkKKz09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09CisKK01vdmUgb2YgdGhlIFJlZ2lzdGVyIFdpbmRv
+dworLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCisKK1doZW4gYW4gbXZlYnUgU29DIGNvbWVz
+IHVwIHRoZSBpbnRlcm5hbCByZWdpc3RlcnMgYXJlIG1hcHBlZCBhdCAweGQwMDAwMDAwIGluCit0
+aGUgYWRkcmVzcyBzcGFjZS4gVG8gbWFrZSBpdCBwb3NzaWJsZSB0byBoYXZlIG1vcmUgdGhhbiAz
+LjI1IEdpQiBvZiBjb250aW51b3VzCitSQU0gaW4gTGludXggdGhpcyB3aW5kb3cgaXMgbW92ZWQg
+dG8gMHhmMTAwMDAwMC4KK1VuZm9ydHVuYXRlbHkgdGhlIHJlZ2lzdGVyIHRvIGNvbmZpZ3VyZSB0
+aGUgbG9jYXRpb24gb2YgdGhlIHJlZ2lzdGVycyBpcyBsb2NhdGVkCitpbiB0aGlzIHdpbmRvdywg
+c28gdGhlcmUgaXMgbm8gd2F5IHRvIGRldGVybWluZSB0aGUgbG9jYXRpb24gYWZ0ZXJ3YXJkcy4K
+KworUkFNIGluaXRpYWxpc2F0aW9uCistLS0tLS0tLS0tLS0tLS0tLS0KKworVHJhZGl0aW9uYWxs
+eSB0aGUgUkFNIGluaXRpYWxpc2F0aW9uIGhhcHBlbnMgd2l0aCBhIGJpbmFyeSBibG9iIHRoYXQg
+aGF2ZSB0byBiZQorZXh0cmFjdGVkIGZyb20gdGhlIHZlbmRvciBVLUJvb3Q6OgorCisgIHNjcmlw
+dHMva3diaW1hZ2UgLXggLWkgL2Rldi9tdGRibG9jazAgLW8gLgorCitUaGlzIGNyZWF0ZXMgYW1v
+bmcgb3RoZXJzIGEgZmlsZSAiYmluYXJ5LjAiIHRoYXQgaGFzIHRvIGJlIHB1dCBpbnRvIHRoZSBi
+b2FyZAorZGlyZWN0b3J5LiBGb3IgbGljZW5zZSByZWFzb25zIHRoaXMgaXMgdXN1YWxseSBub3Qg
+aW5jbHVkZWQgaW4gdGhlIGJhcmVib3gKK3JlcG9zaXRvcnkuCisKK05vdGUgdGhhdCBpbiB0aGUg
+bWVhbnRpbWUgVS1Cb290IGhhcyBvcGVuIHNvdXJjZSBjb2RlIHRvIGRvIHRoZSBSQU0KK2luaXRp
+YWxpc2F0aW9uIHRoYXQgY291bGQgYmUgdGFrZW4uCisKK0Jvb3Rpbmcgc2Vjb25kIHN0YWdlCist
+LS0tLS0tLS0tLS0tLS0tLS0tLQorCitUaGlzIGlzIGN1cnJlbnRseSBub3QgcG9zc2libGUgYmVj
+YXVzZSBiYXJlYm94IGFzc3VtZXMgdGhlIHJlZ2lzdGVycyBhcmUgbWFwcGVkCithdCAweGQwMDAw
+MDAwIGFzIGlzIHRoZSBjYXNlIHdoZW4gdGhlIGJvb3QgUk9NIGdpdmVzIGNvbnRyb2wgdG8gdGhl
+IGJvb3Rsb2FkZXIuCisKK0Jvb3RpbmcgZnJvbSBVQVJUCistLS0tLS0tLS0tLS0tLS0tLQorCitU
+aGUgbXZlYnUgU29DcyBzdXBwb3J0IGJvb3RpbmcgZnJvbSBVQVJULiBGb3IgdGhpcyB0aGVyZSBp
+cyBhIHRvb2wgYXZhaWxhYmxlIGluCitiYXJlYm94IGNhbGxlZCBrd2Jvb3QuCisKK212ZWJ1IGJv
+YXJkcworLS0tLS0tLS0tLS0tCisKK05vdCBhbGwgc3VwcG9ydGVkIGJvYXJkcyBoYXZlIGEgZGVz
+Y3JpcHRpb24gaGVyZS4KKworLi4gdG9jdHJlZTo6CisgIDpnbG9iOgorICA6bnVtYmVyZWQ6Cisg
+IDptYXhkZXB0aDogMQorCisgIG12ZWJ1LyoKZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vYm9h
+cmRzL212ZWJ1L05ldGdlYXItUmVhZHlOQVMtMjEyMC5yc3QgYi9Eb2N1bWVudGF0aW9uL2JvYXJk
+cy9tdmVidS9OZXRnZWFyLVJlYWR5TkFTLTIxMjAucnN0Cm5ldyBmaWxlIG1vZGUgMTAwNjQ0Cmlu
+ZGV4IDAwMDAwMDAwMDAwMC4uNWJlZTAzYWY5ZDM4Ci0tLSAvZGV2L251bGwKKysrIGIvRG9jdW1l
+bnRhdGlvbi9ib2FyZHMvbXZlYnUvTmV0Z2Vhci1SZWFkeU5BUy0yMTIwLnJzdApAQCAtMCwwICsx
+LDE5IEBACitOZXRnZWFyIFJlYWR5TkFTIDIxMjAKKz09PT09PT09PT09PT09PT09PT09PQorCitU
+aGlzIGlzIGEgcmFjayBtb3VudGFibGUgNCBiYXkgTkFTIHVzaW5nIGFuIEFybWFkYSBYUCBkdWFs
+LWNvcmUgcHJvY2Vzc29yLgorCitVQVJUIGJvb3RpbmcKKy0tLS0tLS0tLS0tLQorCitUaGUgZmly
+c3QgVUFSVCBoaWRlcyBiZWhpbmQgYSBzdGlja2VyIG9uIDQgcGlucy4KKworVGhlIG1hY2hpbmUg
+c2VlbXMgdG8gZG8gdHdvIHJlc2V0cyBhdCBwb3dlciBvbiB3aGljaCBtYWtlcyBVQVJUIGJvb3Rp
+bmcgaGFyZC4gQQordHJpY2sgdG8gd29yayBhcm91bmQgdGhpcyBpczo6CisKKyAgc2NyaXB0cy9r
+d2Jvb3QgLWQgL2Rldi90dHlVU0IwOyBrd2Jvb3QgLWIgaW1hZ2VzL2JhcmVib3gtbmV0Z2Vhci1y
+bjIxMjAuaW1nIC10IC9kZXYvdHR5VVNCMAorCitUaGlzIHdheSB0aGUgZmlyc3Qgd2luZG93IGlu
+IHdoaWNoIHRoZSBDUFUgYWNjZXB0cyB0aGUgbWFnaWMgc3RyaW5nIGlzIHRha2VuIGJ5Cit0aGUg
+Zmlyc3QgaW52b2thdGlvbiB3aGljaCBibG9ja3MgdW50aWwgdGhlIHNlY29uZCByZXNldCBoYXBw
+ZW5zLiBUaGUgc2Vjb25kCit3aW5kb3cgaXMgdGhlbiBoaXQgd2l0aCB0aGUgaW1hZ2UgdG8gYm9v
+dC4gVGhpcyBpcyBub3QgMTAwJSByZWxpYWJsZSBidXQgd29ya3MKK21vc3Qgb2YgdGhlIHRpbWUu
+Ci0tIAoyLjkuMwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
+Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
