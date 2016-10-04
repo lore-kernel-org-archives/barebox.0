@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1brVLU-0006Sr-2i
- for barebox@lists.infradead.org; Tue, 04 Oct 2016 19:25:45 +0000
-Date: Tue, 4 Oct 2016 21:25:21 +0200
+ id 1brVOY-0007bP-8Z
+ for barebox@lists.infradead.org; Tue, 04 Oct 2016 19:28:55 +0000
+Date: Tue, 4 Oct 2016 21:28:32 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161004192521.w6wujh2x2265lyjc@pengutronix.de>
+Message-ID: <20161004192832.uwvcko2lxbqorp33@pengutronix.de>
 References: <1475505657-898-1-git-send-email-andrew.smirnov@gmail.com>
- <1475505657-898-14-git-send-email-andrew.smirnov@gmail.com>
- <20161004071314.e7ptvxiqo33pdt6a@pengutronix.de>
- <CAHQ1cqGe9qXX-a9kDDfeG7j92gB5LNce0DYY4_Vh+4L-ssTkPA@mail.gmail.com>
+ <1475505657-898-11-git-send-email-andrew.smirnov@gmail.com>
+ <20161004064923.txvdncnm57xwor5h@pengutronix.de>
+ <CAHQ1cqE3UduSbJ5u_y4Rpi4qUcFD3EYzqCDxv5iQckw3cAv9qQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAHQ1cqGe9qXX-a9kDDfeG7j92gB5LNce0DYY4_Vh+4L-ssTkPA@mail.gmail.com>
+In-Reply-To: <CAHQ1cqE3UduSbJ5u_y4Rpi4qUcFD3EYzqCDxv5iQckw3cAv9qQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,199 +25,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 13/20] i.MX: Add 'lpuart' serial driver
+Subject: Re: [PATCH 10/20] i.MX: clk: Port imx_check_clocks() and
+ imx_obtain_fixed_clock()
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Tue, Oct 04, 2016 at 06:56:58AM -0700, Andrey Smirnov wrote:
-> On Tue, Oct 4, 2016 at 12:13 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > On Mon, Oct 03, 2016 at 07:40:50AM -0700, Andrey Smirnov wrote:
-> >> Add 'lpuart' serial driver, based on analogous driver from U-Boot
-> >>
-> >> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> >> ---
-> >>  drivers/serial/Kconfig         |   4 +
-> >>  drivers/serial/Makefile        |   1 +
-> >>  drivers/serial/serial_lpuart.c | 217 +++++++++++++++++++++++++++++++++++++++++
-> >>  include/serial/lpuart.h        |  28 ++++--
-> >>  4 files changed, 244 insertions(+), 6 deletions(-)
-> >>  create mode 100644 drivers/serial/serial_lpuart.c
-> >>
-> >> diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-> >> index 146bf1e..02e869a 100644
-> >> --- a/drivers/serial/Kconfig
-> >> +++ b/drivers/serial/Kconfig
-> >> @@ -137,4 +137,8 @@ config DRIVER_SERIAL_DIGIC
-> >>       bool "Canon DIGIC serial driver"
-> >>       depends on ARCH_DIGIC
-> >>
-> >> +config DRIVER_SERIAL_LPUART
-> >> +     depends on ARCH_IMX
-> >> +     bool "LPUART serial driver"
-> >> +
-> >>  endmenu
-> >> diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-> >> index 189e777..7d1bae1 100644
-> >> --- a/drivers/serial/Makefile
-> >> +++ b/drivers/serial/Makefile
-> >> @@ -20,3 +20,4 @@ obj-$(CONFIG_DRIVER_SERIAL_AUART)           += serial_auart.o
-> >>  obj-$(CONFIG_DRIVER_SERIAL_CADENCE)          += serial_cadence.o
-> >>  obj-$(CONFIG_DRIVER_SERIAL_EFI_STDIO)                += efi-stdio.o
-> >>  obj-$(CONFIG_DRIVER_SERIAL_DIGIC)            += serial_digic.o
-> >> +obj-$(CONFIG_DRIVER_SERIAL_LPUART)           += serial_lpuart.o
-> >> diff --git a/drivers/serial/serial_lpuart.c b/drivers/serial/serial_lpuart.c
+On Tue, Oct 04, 2016 at 06:43:01AM -0700, Andrey Smirnov wrote:
+> >> diff --git a/drivers/clk/imx/clk.c b/drivers/clk/imx/clk.c
 > >> new file mode 100644
-> >> index 0000000..52fb6d3
+> >> index 0000000..0357048
 > >> --- /dev/null
-> >> +++ b/drivers/serial/serial_lpuart.c
-> >> @@ -0,0 +1,217 @@
-> >> +/*
-> >> + * Copyright (c) 2016 Zodiac Inflight Innovation
-> >> + * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-> >> + *
-> >> + * Based on analogous driver from U-Boot
-> >> + *
-> >> + * See file CREDITS for list of people who contributed to this
-> >> + * project.
-> >> + *
-> >> + * This program is free software; you can redistribute it and/or modify
-> >> + * it under the terms of the GNU General Public License version 2
-> >> + * as published by the Free Software Foundation.
-> >> + *
-> >> + * This program is distributed in the hope that it will be useful,
-> >> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> >> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> >> + * GNU General Public License for more details.
-> >> + *
-> >> + */
-> >> +
-> >> +#include <common.h>
-> >> +#include <driver.h>
-> >> +#include <init.h>
-> >> +#include <malloc.h>
-> >> +#include <notifier.h>
-> >> +#include <io.h>
-> >> +#include <of.h>
-> >> +#include <linux/err.h>
-> >> +#include <linux/clk.h>
-> >> +#include <serial/lpuart.h>
-> >> +
-> >> +struct lpuart {
-> >> +     struct console_device cdev;
-> >> +     int baudrate;
-> >> +     int dte_mode;
-> >> +     struct notifier_block notify;
-> >> +     struct resource *io;
-> >> +     void __iomem *base;
-> >> +     struct clk *clk;
-> >> +};
-> >> +
-> >> +static struct lpuart *cdev_to_lpuart(struct console_device *cdev)
-> >> +{
-> >> +     return container_of(cdev, struct lpuart, cdev);
-> >> +}
-> >> +
-> >> +static struct lpuart *nb_to_lpuart(struct notifier_block *nb)
-> >> +{
-> >> +     return container_of(nb, struct lpuart, notify);
-> >> +}
-> >> +
-> >> +static void lpuart_enable(struct lpuart *lpuart, bool on)
-> >> +{
-> >> +     u8 ctrl;
-> >> +
-> >> +     ctrl = readb(lpuart->base + UARTCR2);
-> >> +     if (on)
-> >> +             ctrl |= UARTCR2_TE | UARTCR2_RE;
-> >> +     else
-> >> +             ctrl &= ~(UARTCR2_TE | UARTCR2_RE);
-> >> +     writeb(ctrl, lpuart->base + UARTCR2);
-> >> +}
-> >> +
-> >> +static int lpuart_serial_setbaudrate(struct console_device *cdev,
-> >> +                                  int baudrate)
-> >> +{
-> >> +     struct lpuart *lpuart = cdev_to_lpuart(cdev);
-> >> +
-> >> +     lpuart_enable(lpuart, false);
-> >> +
-> >> +     lpuart_setbrg(lpuart->base,
-> >> +                   clk_get_rate(lpuart->clk),
-> >> +                   baudrate);
-> >> +
-> >> +     lpuart_enable(lpuart, true);
-> >> +
-> >> +     lpuart->baudrate = baudrate;
-> >> +
-> >> +     return 0;
-> >> +}
-> >> +
-> >> +static int lpuart_serial_getc(struct console_device *cdev)
-> >> +{
-> >> +     bool ready;
-> >> +     struct lpuart *lpuart = cdev_to_lpuart(cdev);
-> >> +
-> >> +     do {
-> >> +             const u8 sr1 = readb(lpuart->base + UARTSR1);
-> >> +             ready = !!(sr1 & (UARTSR1_OR | UARTSR1_RDRF));
-> >> +     } while (!ready);
-> >> +
-> >> +     return readb(lpuart->base + UARTDR);
-> >> +}
-> >> +
-> >> +static void lpuart_serial_putc(struct console_device *cdev, char c)
-> >> +{
-> >> +     lpuart_putc(cdev_to_lpuart(cdev)->base, c);
-> >> +}
-> >> +
-> >> +/* Test whether a character is in the RX buffer */
-> >> +static int lpuart_serial_tstc(struct console_device *cdev)
-> >> +{
-> >> +     return !!readb(cdev_to_lpuart(cdev)->base + UARTRCFIFO);
-> >> +}
-> >> +
-> >> +static void lpuart_serial_flush(struct console_device *cdev)
-> >> +{
-> >> +     bool tx_empty;
-> >> +     struct lpuart *lpuart = cdev_to_lpuart(cdev);
-> >> +
-> >> +     do {
-> >> +             const u8 sr1 = readb(lpuart->base + UARTSR1);
-> >> +             tx_empty = !!(sr1 & UARTSR1_TDRE);
-> >> +     } while (!tx_empty);
-> >> +}
-> >> +
-> >> +static int lpuart_clocksource_clock_change(struct notifier_block *nb,
-> >> +                                        unsigned long event, void *data)
-> >> +{
-> >> +     struct lpuart *lpuart = nb_to_lpuart(nb);
-> >> +
-> >> +     return lpuart_serial_setbaudrate(&lpuart->cdev, lpuart->baudrate);
-> >> +}
+> >> +++ b/drivers/clk/imx/clk.c
 > >
-> > This doesn't make sense in this form. I introduced this code in the i.MX
-> > uart driver since I had the need to change PLL rates while the uart is
-> > active. When this happens I had to adjust the dividers for the new uart
-> > base clock. The code above doesn't react to base clock changes though,
-> > it takes the old rate stored in lpuart->baudrate.
-> >
-> > If you don't have to adjust PLL rates while the uart is active then I
-> > suggest that you just remove this code.
+> > We currently have the i.MX clock support in arch/arm/mach-imx/. This may
+> > or may not be changed, but until it is, other i.MX clock support code
+> > should go to arch/arm/mach-imx/ aswell.
 > 
-> I am not sure I understand what you mean. I modeled this part of the
-> code after i.MX driver (serial_imx.c) and unless I missed something
-> (which I am not seeing) it should work exactly the same way.
-> 
-> That is: parent clock changes, this notifier gets called, it sets
-> configured baud rate again via lpuart_serial_setbaudrate, which in
-> turn sets dividers based off of value it gets from
-> clk_get_rate(lpuart->clk).
+> My preference would be to try to move the rest of i.MX clock code to
+> drivers/clk, to reconcile with how it is done in Linux kernel. Is that
+> OK with you or would you rather I move everything to
+> arch/arm/mach-imx?
 
-Ah, I see. I misread the code and thought you pass the clock rate to
-lpuart_serial_setbaudrate(), but of course you pass the desired
-baudrate. You're right, the code looks fine.
+I sometimes thought the clk code should be moved to drivers/clk/, but I
+never had enough motivation to actually create a patch. If you create
+one I'll happily apply it.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
