@@ -1,12 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1brV9j-0001Iw-2Q
- for barebox@lists.infradead.org; Tue, 04 Oct 2016 19:13:37 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue,  4 Oct 2016 21:13:05 +0200
-Message-Id: <20161004191306.1838-1-u.kleine-koenig@pengutronix.de>
+ id 1brVLU-0006Sr-2i
+ for barebox@lists.infradead.org; Tue, 04 Oct 2016 19:25:45 +0000
+Date: Tue, 4 Oct 2016 21:25:21 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20161004192521.w6wujh2x2265lyjc@pengutronix.de>
+References: <1475505657-898-1-git-send-email-andrew.smirnov@gmail.com>
+ <1475505657-898-14-git-send-email-andrew.smirnov@gmail.com>
+ <20161004071314.e7ptvxiqo33pdt6a@pengutronix.de>
+ <CAHQ1cqGe9qXX-a9kDDfeG7j92gB5LNce0DYY4_Vh+4L-ssTkPA@mail.gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAHQ1cqGe9qXX-a9kDDfeG7j92gB5LNce0DYY4_Vh+4L-ssTkPA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,164 +21,211 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: mvebu: add support for Netgear RN2120
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 13/20] i.MX: Add 'lpuart' serial driver
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvTWFrZWZpbGUgICAgICAgICAgICAgICAgICAg
-IHwgIDEgKwogYXJjaC9hcm0vYm9hcmRzL25ldGdlYXItcm4yMTIwL01ha2VmaWxlICAgICB8ICAy
-ICsKIGFyY2gvYXJtL2JvYXJkcy9uZXRnZWFyLXJuMjEyMC9ib2FyZC5jICAgICAgfCA4OCArKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKwogYXJjaC9hcm0vYm9hcmRzL25ldGdlYXItcm4yMTIw
-L2t3YmltYWdlLmNmZyB8ICA3ICsrKwogYXJjaC9hcm0vYm9hcmRzL25ldGdlYXItcm4yMTIwL2xv
-d2xldmVsLmMgICB8IDQxICsrKysrKysrKysrKysrCiBhcmNoL2FybS9kdHMvTWFrZWZpbGUgICAg
-ICAgICAgICAgICAgICAgICAgIHwgIDEgKwogYXJjaC9hcm0vZHRzL2FybWFkYS14cC1ybjIxMjAt
-YmIuZHRzICAgICAgICB8IDExICsrKysKIGFyY2gvYXJtL21hY2gtbXZlYnUvS2NvbmZpZyAgICAg
-ICAgICAgICAgICAgfCAgNCArKwogaW1hZ2VzL01ha2VmaWxlLm12ZWJ1ICAgICAgICAgICAgICAg
-ICAgICAgICB8ICA4ICsrKwogOSBmaWxlcyBjaGFuZ2VkLCAxNjMgaW5zZXJ0aW9ucygrKQogY3Jl
-YXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9uZXRnZWFyLXJuMjEyMC9NYWtlZmlsZQog
-Y3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9uZXRnZWFyLXJuMjEyMC9ib2FyZC5j
-CiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL25ldGdlYXItcm4yMTIwL2t3Ymlt
-YWdlLmNmZwogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9uZXRnZWFyLXJuMjEy
-MC9sb3dsZXZlbC5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vZHRzL2FybWFkYS14cC1y
-bjIxMjAtYmIuZHRzCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL01ha2VmaWxlIGIvYXJj
-aC9hcm0vYm9hcmRzL01ha2VmaWxlCmluZGV4IDM1YjYzNmYwY2ZiYi4uOGYyNGZkMTNhYTdiIDEw
-MDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvTWFrZWZpbGUKKysrIGIvYXJjaC9hcm0vYm9hcmRz
-L01ha2VmaWxlCkBAIC03Miw2ICs3Miw3IEBAIG9iai0kKENPTkZJR19NQUNIX01YMjhFVkspCQkJ
-Kz0gZnJlZXNjYWxlLW14MjgtZXZrLwogb2JqLSQoQ09ORklHX01BQ0hfTVgzMU1PQk9BUkQpCQkJ
-Kz0gbXgzMW1vYm9hcmQvCiBvYmotJChDT05GSUdfTUFDSF9ORVNPKQkJCQkrPSBndWYtbmVzby8K
-IG9iai0kKENPTkZJR19NQUNIX05FVEdFQVJfUk4xMDQpCQkrPSBuZXRnZWFyLXJuMTA0Lworb2Jq
-LSQoQ09ORklHX01BQ0hfTkVUR0VBUl9STjIxMjApCQkrPSBuZXRnZWFyLXJuMjEyMC8KIG9iai0k
-KENPTkZJR19NQUNIX05PTUFESUtfODgxNU5ISykJCSs9IG5oazg4MTUvCiBvYmotJChDT05GSUdf
-TUFDSF9OVklESUFfQkVBVkVSKQkJKz0gbnZpZGlhLWJlYXZlci8KIG9iai0kKENPTkZJR19NQUNI
-X05WSURJQV9KRVRTT04pCQkrPSBudmlkaWEtamV0c29uLXRrMS8KZGlmZiAtLWdpdCBhL2FyY2gv
-YXJtL2JvYXJkcy9uZXRnZWFyLXJuMjEyMC9NYWtlZmlsZSBiL2FyY2gvYXJtL2JvYXJkcy9uZXRn
-ZWFyLXJuMjEyMC9NYWtlZmlsZQpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAw
-MDAuLjAxYzdhMjU5ZTlhNQotLS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9uZXRn
-ZWFyLXJuMjEyMC9NYWtlZmlsZQpAQCAtMCwwICsxLDIgQEAKK29iai15ICs9IGJvYXJkLm8KK2x3
-bC15ICs9IGxvd2xldmVsLm8KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9uZXRnZWFyLXJu
-MjEyMC9ib2FyZC5jIGIvYXJjaC9hcm0vYm9hcmRzL25ldGdlYXItcm4yMTIwL2JvYXJkLmMKbmV3
-IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAwMDAwLi5jYWYxMDZhZjUwZDYKLS0tIC9k
-ZXYvbnVsbAorKysgYi9hcmNoL2FybS9ib2FyZHMvbmV0Z2Vhci1ybjIxMjAvYm9hcmQuYwpAQCAt
-MCwwICsxLDg4IEBACisjaW5jbHVkZSA8Y2xvY2suaD4KKyNpbmNsdWRlIDxpbml0Lmg+CisjaW5j
-bHVkZSA8b2YuaD4KKyNpbmNsdWRlIDxncGlvLmg+CisjaW5jbHVkZSA8cHJpbnRrLmg+CisjaW5j
-bHVkZSA8bGludXgva2VybmVsLmg+CisjaW5jbHVkZSA8YXNtL2FybWxpbnV4Lmg+CisjaW5jbHVk
-ZSA8Z2VuZXJhdGVkL21hY2gtdHlwZXMuaD4KKworc3RhdGljIGludCBybjIxMjBfaW5pdCh2b2lk
-KQoreworCS8qCisJICogVGhpcyBpcyB0aGUgbWFjaGluZSB0eXBlIHRoYXQgdGhlIGtlcm5lbCBz
-aGlwcGVkIGJ5IE5ldGdlYXIgaXMgdXNpbmcuCisJICogSXQncyB3cm9uZyBidXQgYSBnaXZlbiBm
-YWN0LgorCSAqLworCWFybWxpbnV4X3NldF9hcmNoaXRlY3R1cmUoTUFDSF9UWVBFX0FSTUFEQV9Y
-UF9EQik7CisKKwlyZXR1cm4gMDsKK30KK2RldmljZV9pbml0Y2FsbChybjIxMjBfaW5pdCk7CisK
-K3N0cnVjdCBoZHBvd2VyIHsKKwl1bnNpZ25lZCBncGlvX2RldGVjdDsKKwl1bnNpZ25lZCBncGlv
-X3Bvd2VyOworCXVuc2lnbmVkIGdwaW9fbGVkOworfTsKKworLyoKKyAqIEl0IHdvdWxkIGJlIG5p
-Y2UgdG8gaGF2ZSB0aGlzIGFic3RyYWN0ZWQgaW4gdGhlIGRldmljZSB0cmVlLCBidXQgY3VycmVu
-dGx5CisgKiB0aGlzIGlzbid0IHRoZSBjYXNlLgorICovCitzdGF0aWMgc3RydWN0IGhkcG93ZXIg
-cm4yMTIwX2hkcG93ZXJbXSA9IHsKKwl7CisJCS8qIHNhdGEgMSAqLworCQkuZ3Bpb19kZXRlY3Qg
-PSAzMiwKKwkJLmdwaW9fcG93ZXIgPSAyNCwKKwkJLmdwaW9fbGVkID0gMzEsCisJfSwgeworCQkv
-KiBzYXRhIDIgKi8KKwkJLmdwaW9fZGV0ZWN0ID0gMzMsCisJCS5ncGlvX3Bvd2VyID0gMjUsCisJ
-CS5ncGlvX2xlZCA9IDQwLAorCX0sIHsKKwkJLyogc2F0YSAzICovCisJCS5ncGlvX2RldGVjdCA9
-IDM0LAorCQkuZ3Bpb19wb3dlciA9IDI2LAorCQkuZ3Bpb19sZWQgPSA0NCwKKwl9LCB7CisJCS8q
-IHNhdGEgNCAqLworCQkuZ3Bpb19kZXRlY3QgPSAzNSwKKwkJLmdwaW9fcG93ZXIgPSAyOCwKKwkJ
-LmdwaW9fbGVkID0gNDcsCisJfSwKK307CisKK3N0YXRpYyBpbnQgcm4yMTIwX2hkZGV0ZWN0KHZv
-aWQpCit7CisJaW50IGk7CisKKwlpZiAoIW9mX21hY2hpbmVfaXNfY29tcGF0aWJsZSgibmV0Z2Vh
-cixyZWFkeW5hcy0yMTIwIikpCisJCXJldHVybiAwOworCisJZm9yIChpID0gMDsgaSA8IEFSUkFZ
-X1NJWkUocm4yMTIwX2hkcG93ZXIpOyArK2kpIHsKKwkJaW50IHJldDsKKwkJcmV0ID0gZ3Bpb19k
-aXJlY3Rpb25faW5wdXQocm4yMTIwX2hkcG93ZXJbaV0uZ3Bpb19kZXRlY3QpOworCQlpZiAocmV0
-KSB7CisJCQlwcl9lcnIoIkZhaWx1cmUgdG8gZGV0ZWN0IGhkJWQgKCVkKVxuIiwgaSwgcmV0KTsK
-KwkJCWNvbnRpbnVlOworCQl9CisKKwkJcmV0ID0gZ3Bpb19nZXRfdmFsdWUocm4yMTIwX2hkcG93
-ZXJbaV0uZ3Bpb19kZXRlY3QpOworCQlpZiAocmV0KSB7CisJCQkvKiBubyBkaXNrIHByZXNlbnQg
-Ki8KKwkJCWdwaW9fZGlyZWN0aW9uX291dHB1dChybjIxMjBfaGRwb3dlcltpXS5ncGlvX3Bvd2Vy
-LCAwKTsKKwkJfSBlbHNlIHsKKwkJCXByX2luZm8oIkRldGVjdGVkIHByZXNlbmNlIG9mIGRpc2sg
-IyVkXG4iLCBpICsgMSk7CisJCQkvKiBtYWtlIGEgcGF1c2UgYWZ0ZXIgcG93ZXJpbmcgdXAgMiBk
-aXNrcyAqLworCQkJaWYgKGkgJiYgIShpICYgMSkpIHsKKwkJCQlwcl9pbmZvKCJEZWxheSBwb3dl
-ciB1cFxuIik7CisJCQkJbWRlbGF5KDcwMDApOworCQkJfQorCisJCQlncGlvX2RpcmVjdGlvbl9v
-dXRwdXQocm4yMTIwX2hkcG93ZXJbaV0uZ3Bpb19wb3dlciwgMSk7CisJCX0KKwl9CisJcmV0dXJu
-IDA7Cit9CitkZXZpY2VfaW5pdGNhbGwocm4yMTIwX2hkZGV0ZWN0KTsKZGlmZiAtLWdpdCBhL2Fy
-Y2gvYXJtL2JvYXJkcy9uZXRnZWFyLXJuMjEyMC9rd2JpbWFnZS5jZmcgYi9hcmNoL2FybS9ib2Fy
-ZHMvbmV0Z2Vhci1ybjIxMjAva3diaW1hZ2UuY2ZnCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4
-IDAwMDAwMDAwMDAwMC4uYTZmMGFhNmQzZGMzCi0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0v
-Ym9hcmRzL25ldGdlYXItcm4yMTIwL2t3YmltYWdlLmNmZwpAQCAtMCwwICsxLDcgQEAKK1ZFUlNJ
-T04gMQorQk9PVF9GUk9NIG5hbmQKK0RFU1RBRERSIDAwMDAwMDAwCitFWEVDQUREUiAwMDAwMDAw
-MAorTkFORF9CTEtTWiAwMDAyMDAwMAorTkFORF9CQURCTEtfTE9DQVRJT04gMDEKK0JJTkFSWSBi
-aW5hcnkuMCAwMDAwMDA1YiAwMDAwMDA2OApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL25l
-dGdlYXItcm4yMTIwL2xvd2xldmVsLmMgYi9hcmNoL2FybS9ib2FyZHMvbmV0Z2Vhci1ybjIxMjAv
-bG93bGV2ZWwuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAuLjI5Yzhi
-NDNjNDQ2NwotLS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9uZXRnZWFyLXJuMjEy
-MC9sb3dsZXZlbC5jCkBAIC0wLDAgKzEsNDEgQEAKKy8qCisgKiBDb3B5cmlnaHQgKEMpIDIwMTUg
-UGVuZ3V0cm9uaXgsIFV3ZSBLbGVpbmUtS8O2bmlnIDxrZXJuZWxAcGVuZ3V0cm9uaXguZGU+Cisg
-KgorICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRl
-IGl0IGFuZC9vcgorICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVy
-YWwgUHVibGljIExpY2Vuc2UKKyAqIHZlcnNpb24gMiwgYXMgcHVibGlzaGVkIGJ5IHRoZSBGcmVl
-IFNvZnR3YXJlIEZvdW5kYXRpb24uCisgKgorICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVk
-IGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCisgKiBidXQgV0lUSE9VVCBBTlkg
-V0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgorICogTUVSQ0hB
-TlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQor
-ICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KKyAqLworCisj
-aW5jbHVkZSA8Y29tbW9uLmg+CisjaW5jbHVkZSA8YXNtL2JhcmVib3gtYXJtLmg+CisjaW5jbHVk
-ZSA8YXNtL2JhcmVib3gtYXJtLWhlYWQuaD4KKyNpbmNsdWRlIDxhc20vaW8uaD4KKyNpbmNsdWRl
-IDxtYWNoL2xvd2xldmVsLmg+CisKK2V4dGVybiBjaGFyIF9fZHRiX2FybWFkYV94cF9ybjIxMjBf
-YmJfc3RhcnRbXTsKKworRU5UUllfRlVOQ1RJT04oc3RhcnRfbmV0Z2Vhcl9ybjIxMjAsIHIwLCBy
-MSwgcjIpCit7CisJdm9pZCAqZmR0OworCisJYXJtX2NwdV9sb3dsZXZlbF9pbml0KCk7CisKKwkv
-KgorCSAqIFRoaXMgaXMgbmVjZXNzYXJ5IHRvIGFsbG93IHRoZSBtYWNoaW5lIHRvIGRyYXcgbW9y
-ZSBwb3dlci4gUHJvYmFibHkKKwkgKiBjb25uZWN0ZWQgdG8gYSBUSSBUUFM2NTI1MS4gV2l0aG91
-dCB0aGlzIHJlc2V0dGluZyBhIHBoeSBtYWtlcyB0aGUKKwkgKiBTb0MgcmVzZXQuCisJICogVGhp
-cyBpcyBlZmZlY3RpdmVseSBncGlvX2RpcmVjdGlvbl9vdXRwdXQoNDIsIDEpOworCSAqLworCXdy
-aXRlbCgoMSA8PCAxMCkgfCByZWFkbCgodm9pZCAqKTB4ZDAwMTgxNDApLCAodm9pZCAqKTB4ZDAw
-MTgxNDApOworCXdyaXRlbCh+KDEgPDwgMTApICYgcmVhZGwoKHZvaWQgKikweGQwMDE4MTQ0KSwg
-KHZvaWQgKikweGQwMDE4MTQ0KTsKKworCWZkdCA9IF9fZHRiX2FybWFkYV94cF9ybjIxMjBfYmJf
-c3RhcnQgLQorCQlnZXRfcnVudGltZV9vZmZzZXQoKTsKKworCW12ZWJ1X2JhcmVib3hfZW50cnko
-ZmR0KTsKK30KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0cy9NYWtlZmlsZSBiL2FyY2gvYXJtL2R0
-cy9NYWtlZmlsZQppbmRleCAwOWJmNjhlYTJiZTcuLjBiYzVjOTU0MmQzZiAxMDA2NDQKLS0tIGEv
-YXJjaC9hcm0vZHRzL01ha2VmaWxlCisrKyBiL2FyY2gvYXJtL2R0cy9NYWtlZmlsZQpAQCAtMjks
-NiArMjksNyBAQCBwYmwtZHRiLSQoQ09ORklHX01BQ0hfR1dfVkVOVEFOQSkgKz0gaW14NnEtZ3c1
-NHh4LmR0Yi5vCiBwYmwtZHRiLSQoQ09ORklHX01BQ0hfTEVOT1ZPX0lYNF8zMDBEKSArPSBhcm1h
-ZGEteHAtbGVub3ZvLWl4NC0zMDBkLWJiLmR0Yi5vCiBwYmwtZHRiLSQoQ09ORklHX01BQ0hfTUFS
-VkVMTF9BUk1BREFfWFBfR1ApICs9IGFybWFkYS14cC1ncC1iYi5kdGIubwogcGJsLWR0Yi0kKENP
-TkZJR19NQUNIX05FVEdFQVJfUk4xMDQpICs9IGFybWFkYS0zNzAtcm4xMDQtYmIuZHRiLm8KK3Bi
-bC1kdGItJChDT05GSUdfTUFDSF9ORVRHRUFSX1JOMjEyMCkgKz0gYXJtYWRhLXhwLXJuMjEyMC1i
-Yi5kdGIubwogcGJsLWR0Yi0kKENPTkZJR19NQUNIX05JVFJPR0VONikgKz0gaW14NnEtbml0cm9n
-ZW42eC5kdGIubyBpbXg2ZGwtbml0cm9nZW42eC5kdGIubyBpbXg2cXAtbml0cm9nZW42X21heC5k
-dGIubwogcGJsLWR0Yi0kKENPTkZJR19NQUNIX05WSURJQV9CRUFWRVIpICs9IHRlZ3JhMzAtYmVh
-dmVyLmR0Yi5vCiBwYmwtZHRiLSQoQ09ORklHX01BQ0hfTlZJRElBX0pFVFNPTikgKz0gdGVncmEx
-MjQtamV0c29uLXRrMS5kdGIubwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL2FybWFkYS14cC1y
-bjIxMjAtYmIuZHRzIGIvYXJjaC9hcm0vZHRzL2FybWFkYS14cC1ybjIxMjAtYmIuZHRzCm5ldyBm
-aWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAwMDAwMC4uOTY5MTM2YjMzNmZjCi0tLSAvZGV2
-L251bGwKKysrIGIvYXJjaC9hcm0vZHRzL2FybWFkYS14cC1ybjIxMjAtYmIuZHRzCkBAIC0wLDAg
-KzEsMTEgQEAKKy8qCisgKiBCYXJlYm94IHNwZWNpZmljIERUIG92ZXJsYXkgZm9yIE5ldGdlYXIg
-UmVhZHlOQVMgMjEyMAorICovCisKKyNpbmNsdWRlICJhcm0vYXJtYWRhLXhwLW5ldGdlYXItcm4y
-MTIwLmR0cyIKKworLyB7CisJY2hvc2VuIHsKKwkJc3Rkb3V0LXBhdGggPSAiL3NvYy9pbnRlcm5h
-bC1yZWdzL3NlcmlhbEAxMjAwMCI7CisJfTsKK307CmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNo
-LW12ZWJ1L0tjb25maWcgYi9hcmNoL2FybS9tYWNoLW12ZWJ1L0tjb25maWcKaW5kZXggNzlmY2M4
-ZDNhYzM2Li4xNDhiNGY2ZDRjYjMgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtbXZlYnUvS2Nv
-bmZpZworKysgYi9hcmNoL2FybS9tYWNoLW12ZWJ1L0tjb25maWcKQEAgLTU1LDYgKzU1LDEwIEBA
-IGNvbmZpZyBNQUNIX01BUlZFTExfQVJNQURBX1hQX0dQCiAJYm9vbCAiTWFydmVsbCBBcm1hZGEg
-WFAgR1AiCiAJc2VsZWN0IEFSQ0hfQVJNQURBX1hQCiAKK2NvbmZpZyBNQUNIX05FVEdFQVJfUk4y
-MTIwCisJYm9vbCAiTmV0Z2VhciBSZWFkeU5BUyAyMTIwIgorCXNlbGVjdCBBUkNIX0FSTUFEQV9Y
-UAorCiBjb25maWcgTUFDSF9QTEFUSE9NRV9PUEVOQkxPQ0tTX0FYMwogCWJvb2wgIlBsYXRIb21l
-IE9wZW5CbG9ja3MgQVgzIgogCXNlbGVjdCBBUkNIX0FSTUFEQV9YUApkaWZmIC0tZ2l0IGEvaW1h
-Z2VzL01ha2VmaWxlLm12ZWJ1IGIvaW1hZ2VzL01ha2VmaWxlLm12ZWJ1CmluZGV4IDE5NWY0OGQ0
-NzA3My4uNjI4NmM5M2UzZDhlIDEwMDY0NAotLS0gYS9pbWFnZXMvTWFrZWZpbGUubXZlYnUKKysr
-IGIvaW1hZ2VzL01ha2VmaWxlLm12ZWJ1CkBAIC01Nyw2ICs1NywxNCBAQCBpbWFnZS0kKENPTkZJ
-R19NQUNIX01BUlZFTExfQVJNQURBX1hQX0dQKSArPSBiYXJlYm94LW1hcnZlbGwtYXJtYWRhLXhw
-LWdwLmltZwogaW1hZ2UtJChDT05GSUdfTUFDSF9NQVJWRUxMX0FSTUFEQV9YUF9HUCkgKz0gYmFy
-ZWJveC1tYXJ2ZWxsLWFybWFkYS14cC1ncC11YXJ0LmltZwogaW1hZ2UtJChDT05GSUdfTUFDSF9N
-QVJWRUxMX0FSTUFEQV9YUF9HUCkgKz0gYmFyZWJveC1tYXJ2ZWxsLWFybWFkYS14cC1ncC0ybmQu
-aW1nCiAKK05FVEdFQVJfUk4yMTIwX0tXQk9QVFMgPSAke0tXQk9QVFN9IC1pICQoYm9hcmQpL25l
-dGdlYXItcm4yMTIwL2t3YmltYWdlLmNmZworT1BUU19zdGFydF9uZXRnZWFyX3JuMjEyMC5wYmx4
-Lmt3YmltZyA9ICQoTkVUR0VBUl9STjIxMjBfS1dCT1BUUykKK0ZJTEVfYmFyZWJveC1uZXRnZWFy
-LXJuMjEyMC5pbWcJPSBzdGFydF9uZXRnZWFyX3JuMjEyMC5wYmx4Lmt3YmltZworRklMRV9iYXJl
-Ym94LW5ldGdlYXItcm4yMTIwLTJuZC5pbWcgPSBzdGFydF9uZXRnZWFyX3JuMjEyMC5wYmx4Citw
-Ymx4LSQoQ09ORklHX01BQ0hfTkVUR0VBUl9STjIxMjApICs9IHN0YXJ0X25ldGdlYXJfcm4yMTIw
-CitpbWFnZS0kKENPTkZJR19NQUNIX05FVEdFQVJfUk4yMTIwKSArPSBiYXJlYm94LW5ldGdlYXIt
-cm4yMTIwLmltZworaW1hZ2UtJChDT05GSUdfTUFDSF9ORVRHRUFSX1JOMjEyMCkgKz0gYmFyZWJv
-eC1uZXRnZWFyLXJuMjEyMC0ybmQuaW1nCisKIFBMQVRIT01FX09QRU5CTE9DS1NfQVgzX0tXQk9Q
-VFMgPSAke0tXQk9QVFN9IC1pICQoYm9hcmQpL3BsYXRob21lLW9wZW5ibG9ja3MtYXgzL2t3Ymlt
-YWdlLmNmZwogT1BUU19zdGFydF9wbGF0aG9tZV9vcGVuYmxvY2tzX2F4My5wYmx4Lmt3YmltZyA9
-ICQoUExBVEhPTUVfT1BFTkJMT0NLU19BWDNfS1dCT1BUUykKIE9QVFNfc3RhcnRfcGxhdGhvbWVf
-b3BlbmJsb2Nrc19heDMucGJseC5rd2J1YXJ0aW1nID0gLW0gdWFydCAkKFBMQVRIT01FX09QRU5C
-TE9DS1NfQVgzX0tXQk9QVFMpCi0tIAoyLjkuMwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+On Tue, Oct 04, 2016 at 06:56:58AM -0700, Andrey Smirnov wrote:
+> On Tue, Oct 4, 2016 at 12:13 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > On Mon, Oct 03, 2016 at 07:40:50AM -0700, Andrey Smirnov wrote:
+> >> Add 'lpuart' serial driver, based on analogous driver from U-Boot
+> >>
+> >> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> >> ---
+> >>  drivers/serial/Kconfig         |   4 +
+> >>  drivers/serial/Makefile        |   1 +
+> >>  drivers/serial/serial_lpuart.c | 217 +++++++++++++++++++++++++++++++++++++++++
+> >>  include/serial/lpuart.h        |  28 ++++--
+> >>  4 files changed, 244 insertions(+), 6 deletions(-)
+> >>  create mode 100644 drivers/serial/serial_lpuart.c
+> >>
+> >> diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+> >> index 146bf1e..02e869a 100644
+> >> --- a/drivers/serial/Kconfig
+> >> +++ b/drivers/serial/Kconfig
+> >> @@ -137,4 +137,8 @@ config DRIVER_SERIAL_DIGIC
+> >>       bool "Canon DIGIC serial driver"
+> >>       depends on ARCH_DIGIC
+> >>
+> >> +config DRIVER_SERIAL_LPUART
+> >> +     depends on ARCH_IMX
+> >> +     bool "LPUART serial driver"
+> >> +
+> >>  endmenu
+> >> diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+> >> index 189e777..7d1bae1 100644
+> >> --- a/drivers/serial/Makefile
+> >> +++ b/drivers/serial/Makefile
+> >> @@ -20,3 +20,4 @@ obj-$(CONFIG_DRIVER_SERIAL_AUART)           += serial_auart.o
+> >>  obj-$(CONFIG_DRIVER_SERIAL_CADENCE)          += serial_cadence.o
+> >>  obj-$(CONFIG_DRIVER_SERIAL_EFI_STDIO)                += efi-stdio.o
+> >>  obj-$(CONFIG_DRIVER_SERIAL_DIGIC)            += serial_digic.o
+> >> +obj-$(CONFIG_DRIVER_SERIAL_LPUART)           += serial_lpuart.o
+> >> diff --git a/drivers/serial/serial_lpuart.c b/drivers/serial/serial_lpuart.c
+> >> new file mode 100644
+> >> index 0000000..52fb6d3
+> >> --- /dev/null
+> >> +++ b/drivers/serial/serial_lpuart.c
+> >> @@ -0,0 +1,217 @@
+> >> +/*
+> >> + * Copyright (c) 2016 Zodiac Inflight Innovation
+> >> + * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
+> >> + *
+> >> + * Based on analogous driver from U-Boot
+> >> + *
+> >> + * See file CREDITS for list of people who contributed to this
+> >> + * project.
+> >> + *
+> >> + * This program is free software; you can redistribute it and/or modify
+> >> + * it under the terms of the GNU General Public License version 2
+> >> + * as published by the Free Software Foundation.
+> >> + *
+> >> + * This program is distributed in the hope that it will be useful,
+> >> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> >> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> >> + * GNU General Public License for more details.
+> >> + *
+> >> + */
+> >> +
+> >> +#include <common.h>
+> >> +#include <driver.h>
+> >> +#include <init.h>
+> >> +#include <malloc.h>
+> >> +#include <notifier.h>
+> >> +#include <io.h>
+> >> +#include <of.h>
+> >> +#include <linux/err.h>
+> >> +#include <linux/clk.h>
+> >> +#include <serial/lpuart.h>
+> >> +
+> >> +struct lpuart {
+> >> +     struct console_device cdev;
+> >> +     int baudrate;
+> >> +     int dte_mode;
+> >> +     struct notifier_block notify;
+> >> +     struct resource *io;
+> >> +     void __iomem *base;
+> >> +     struct clk *clk;
+> >> +};
+> >> +
+> >> +static struct lpuart *cdev_to_lpuart(struct console_device *cdev)
+> >> +{
+> >> +     return container_of(cdev, struct lpuart, cdev);
+> >> +}
+> >> +
+> >> +static struct lpuart *nb_to_lpuart(struct notifier_block *nb)
+> >> +{
+> >> +     return container_of(nb, struct lpuart, notify);
+> >> +}
+> >> +
+> >> +static void lpuart_enable(struct lpuart *lpuart, bool on)
+> >> +{
+> >> +     u8 ctrl;
+> >> +
+> >> +     ctrl = readb(lpuart->base + UARTCR2);
+> >> +     if (on)
+> >> +             ctrl |= UARTCR2_TE | UARTCR2_RE;
+> >> +     else
+> >> +             ctrl &= ~(UARTCR2_TE | UARTCR2_RE);
+> >> +     writeb(ctrl, lpuart->base + UARTCR2);
+> >> +}
+> >> +
+> >> +static int lpuart_serial_setbaudrate(struct console_device *cdev,
+> >> +                                  int baudrate)
+> >> +{
+> >> +     struct lpuart *lpuart = cdev_to_lpuart(cdev);
+> >> +
+> >> +     lpuart_enable(lpuart, false);
+> >> +
+> >> +     lpuart_setbrg(lpuart->base,
+> >> +                   clk_get_rate(lpuart->clk),
+> >> +                   baudrate);
+> >> +
+> >> +     lpuart_enable(lpuart, true);
+> >> +
+> >> +     lpuart->baudrate = baudrate;
+> >> +
+> >> +     return 0;
+> >> +}
+> >> +
+> >> +static int lpuart_serial_getc(struct console_device *cdev)
+> >> +{
+> >> +     bool ready;
+> >> +     struct lpuart *lpuart = cdev_to_lpuart(cdev);
+> >> +
+> >> +     do {
+> >> +             const u8 sr1 = readb(lpuart->base + UARTSR1);
+> >> +             ready = !!(sr1 & (UARTSR1_OR | UARTSR1_RDRF));
+> >> +     } while (!ready);
+> >> +
+> >> +     return readb(lpuart->base + UARTDR);
+> >> +}
+> >> +
+> >> +static void lpuart_serial_putc(struct console_device *cdev, char c)
+> >> +{
+> >> +     lpuart_putc(cdev_to_lpuart(cdev)->base, c);
+> >> +}
+> >> +
+> >> +/* Test whether a character is in the RX buffer */
+> >> +static int lpuart_serial_tstc(struct console_device *cdev)
+> >> +{
+> >> +     return !!readb(cdev_to_lpuart(cdev)->base + UARTRCFIFO);
+> >> +}
+> >> +
+> >> +static void lpuart_serial_flush(struct console_device *cdev)
+> >> +{
+> >> +     bool tx_empty;
+> >> +     struct lpuart *lpuart = cdev_to_lpuart(cdev);
+> >> +
+> >> +     do {
+> >> +             const u8 sr1 = readb(lpuart->base + UARTSR1);
+> >> +             tx_empty = !!(sr1 & UARTSR1_TDRE);
+> >> +     } while (!tx_empty);
+> >> +}
+> >> +
+> >> +static int lpuart_clocksource_clock_change(struct notifier_block *nb,
+> >> +                                        unsigned long event, void *data)
+> >> +{
+> >> +     struct lpuart *lpuart = nb_to_lpuart(nb);
+> >> +
+> >> +     return lpuart_serial_setbaudrate(&lpuart->cdev, lpuart->baudrate);
+> >> +}
+> >
+> > This doesn't make sense in this form. I introduced this code in the i.MX
+> > uart driver since I had the need to change PLL rates while the uart is
+> > active. When this happens I had to adjust the dividers for the new uart
+> > base clock. The code above doesn't react to base clock changes though,
+> > it takes the old rate stored in lpuart->baudrate.
+> >
+> > If you don't have to adjust PLL rates while the uart is active then I
+> > suggest that you just remove this code.
+> 
+> I am not sure I understand what you mean. I modeled this part of the
+> code after i.MX driver (serial_imx.c) and unless I missed something
+> (which I am not seeing) it should work exactly the same way.
+> 
+> That is: parent clock changes, this notifier gets called, it sets
+> configured baud rate again via lpuart_serial_setbaudrate, which in
+> turn sets dividers based off of value it gets from
+> clk_get_rate(lpuart->clk).
+
+Ah, I see. I misread the code and thought you pass the clock rate to
+lpuart_serial_setbaudrate(), but of course you pass the desired
+baudrate. You're right, the code looks fine.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
