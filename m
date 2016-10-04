@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bm13a-0001T4-L2
- for barebox@lists.infradead.org; Mon, 19 Sep 2016 16:04:36 +0000
-From: Enrico Jorns <ejo@pengutronix.de>
-Date: Mon, 19 Sep 2016 18:03:49 +0200
-Message-Id: <1474301029-22877-3-git-send-email-ejo@pengutronix.de>
-In-Reply-To: <1474301029-22877-1-git-send-email-ejo@pengutronix.de>
-References: <1474301029-22877-1-git-send-email-ejo@pengutronix.de>
+ id 1brJ0t-0008OT-PQ
+ for barebox@lists.infradead.org; Tue, 04 Oct 2016 06:15:40 +0000
+Date: Tue, 4 Oct 2016 08:15:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20161004061517.ychrfdgask52qcvf@pengutronix.de>
+References: <20160930201008.4136-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20160930201008.4136-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,55 +18,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] fs: nfs: pick up network interface bootargs parameter
-To: barebox@lists.infradead.org
-Cc: Michael Olbrich <m.olbrich@pengutronix.de>, Gavin Schenk <g.schenk@eckelmann.de>, Enrico Jorns <ejo@pengutronix.de>, u.kleine-koenig@pengutronix.de
+Subject: Re: [PATCH] net/phy: marvell: fix error handling
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This adds the linux.bootarg device parameter from the network device of
-the current nfs connection and adds it to the nfs bootargs line.
+On Fri, Sep 30, 2016 at 10:10:08PM +0200, Uwe Kleine-K=F6nig wrote:
+> Without first assigning to ret it doesn't make sense to check it.
+> =
 
-This allows booting from nfs without manually setting a ip=dhcp or
-ip=<ipaddr> option.
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  drivers/net/phy/marvell.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
----
- fs/nfs.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Applied, thanks
 
-diff --git a/fs/nfs.c b/fs/nfs.c
-index a0a9dfc..97f01cf 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -1314,6 +1314,7 @@ static char *rootnfsopts;
- static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device_d *fsdev)
- {
- 	char *str, *tmp;
-+	const char *bootargs;
- 
- 	str = basprintf("root=/dev/nfs nfsroot=%pI4:%s%s%s", &npriv->server, npriv->path,
- 			  rootnfsopts[0] ? "," : "", rootnfsopts);
-@@ -1331,6 +1332,13 @@ static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device_d *fsdev)
- 		str = tmp;
- 	}
- 
-+	bootargs = dev_get_param(&npriv->con->edev->dev, "linux.bootargs");
-+	if (bootargs) {
-+		tmp = basprintf("%s %s", str, bootargs);
-+		free(str);
-+		str = tmp;
-+	}
-+
- 	fsdev_set_linux_rootarg(fsdev, str);
- 
- 	free(str);
--- 
-2.8.1
+Sascha
 
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
