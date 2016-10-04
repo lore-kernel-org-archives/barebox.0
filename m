@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1brIrm-00059m-Bc
- for barebox@lists.infradead.org; Tue, 04 Oct 2016 06:06:15 +0000
-Date: Tue, 4 Oct 2016 08:05:51 +0200
+ id 1brIwe-0007CU-CK
+ for barebox@lists.infradead.org; Tue, 04 Oct 2016 06:11:17 +0000
+Date: Tue, 4 Oct 2016 08:10:54 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161004060551.ikj2gy3pvkltidzm@pengutronix.de>
-References: <1475092260-12749-1-git-send-email-uwe@kleine-koenig.org>
+Message-ID: <20161004061054.pfqdjdl5hdwwhe5g@pengutronix.de>
+References: <1475187703-5748-1-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1475092260-12749-1-git-send-email-uwe@kleine-koenig.org>
+In-Reply-To: <1475187703-5748-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,57 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] pinctrl: mvebu: add newline to error message
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>
+Subject: Re: [PATCH 1/2] i.MX: Introduce imx6_cpu_revision()
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 28, 2016 at 09:51:00PM +0200, Uwe Kleine-K=F6nig wrote:
-> Signed-off-by: Uwe Kleine-K=F6nig <uwe@kleine-koenig.org>
+On Thu, Sep 29, 2016 at 03:21:42PM -0700, Andrey Smirnov wrote:
+> Factor out CPU revision identification code from imx6_init() into a
+> standalone inline function (similar to imx6_cpu_type()), so that it
+> would be possible to use that functionality in PBL code.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  drivers/pinctrl/mvebu/common.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> Sascha:
+> 
+> I have an almost ready to send, board support patch that uses this in
+> PBL. Unfortunately at the last minute a regression in functionality
+> was discovered in that code, so I can't post it until that is
+> resolved, meanwhile I am hoping I can get this code in while I am
+> debugging.
+> 
+> Let me know if you'd rathe I send everything together.
 
-Applied, thanks
+Looks good as is. Just send your board support when the remaining issues
+are resolved. Thanks, applied.
 
 Sascha
 
-> =
-
-> diff --git a/drivers/pinctrl/mvebu/common.c b/drivers/pinctrl/mvebu/commo=
-n.c
-> index 532705286795..ae16b39268d7 100644
-> --- a/drivers/pinctrl/mvebu/common.c
-> +++ b/drivers/pinctrl/mvebu/common.c
-> @@ -78,7 +78,8 @@ static int mvebu_pinctrl_set_state(struct pinctrl_devic=
-e *pdev,
->  =
-
->  		set =3D mvebu_pinctrl_find_setting_by_name(pctl, mode, function);
->  		if (!set) {
-> -			dev_err(pdev->dev, "unsupported function %s on pin %s",
-> +			dev_err(pdev->dev,
-> +				"unsupported function %s on pin %s\n",
->  				function, group);
->  			continue;
->  		}
-> -- =
-
-> 2.8.1
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
