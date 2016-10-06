@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ua0-x22c.google.com ([2607:f8b0:400c:c08::22c])
+Received: from mail-vk0-x242.google.com ([2607:f8b0:400c:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bs94k-0004sP-4T
- for barebox@lists.infradead.org; Thu, 06 Oct 2016 13:51:10 +0000
-Received: by mail-ua0-x22c.google.com with SMTP id p25so17991979uaa.1
- for <barebox@lists.infradead.org>; Thu, 06 Oct 2016 06:50:45 -0700 (PDT)
+ id 1bs99I-0006mp-0z
+ for barebox@lists.infradead.org; Thu, 06 Oct 2016 13:55:48 +0000
+Received: by mail-vk0-x242.google.com with SMTP id 2so773230vkb.1
+ for <barebox@lists.infradead.org>; Thu, 06 Oct 2016 06:55:27 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <57f65594.d4491c0a.37103.324dSMTPIN_ADDED_BROKEN@mx.google.com>
-References: <CAGm1_ku0Vh=SC0omVMUZof3DBJhvFRPsgxg1BDEn4GGTpez9_g@mail.gmail.com>
- <57f65594.d4491c0a.37103.324dSMTPIN_ADDED_BROKEN@mx.google.com>
+In-Reply-To: <20161004101048.12970-5-ejo@pengutronix.de>
+References: <20161004101048.12970-1-ejo@pengutronix.de>
+ <20161004101048.12970-5-ejo@pengutronix.de>
 From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Thu, 6 Oct 2016 15:50:24 +0200
-Message-ID: <CAGm1_ktk+pAF1+XLTdDa40TJesuxZk+518NCKeMhG72w1P6R7g@mail.gmail.com>
+Date: Thu, 6 Oct 2016 15:55:06 +0200
+Message-ID: <CAGm1_kvFujU0QcCdmREtbRfU7J_vQgMnJvs9k=dpR3PQ=9+_6g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,64 +24,111 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: am335x: memory configuration
-To: Jan Remmet <J.Remmet@phytec.de>
+Subject: Re: [PATCH 4/5] Add filetype and detection for squashfs images
+To: Enrico Jorns <ejo@pengutronix.de>
 Cc: barebox <barebox@lists.infradead.org>
 
-Hi Jan,
+Hi Enrico,
 
-On Thu, Oct 6, 2016 at 3:45 PM, Jan Remmet <J.Remmet@phytec.de> wrote:
-> On Thu, Oct 06, 2016 at 11:08:07AM +0200, Yegor Yefremov wrote:
->> I've submitted a patch [1] to support our Baltos systems back in the
->> May. There was an issue with dynamically detecting RAM size as the
->> systems can have either 256MB or 512MB modules.
->>
->> So far u-boot was able to detect the RAM size dynamically. In order to
->> do so it uses following code in arch/arm/cpu/armv7/am33xx/emif4.c:
->>
->> int dram_init(void)
->> {
->>
->> #ifndef CONFIG_SKIP_LOWLEVEL_INIT
->>         sdram_init();
->> #endif
->>
->>         /* dram_init must store complete ramsize in gd->ram_size */
->>         gd->ram_size = get_ram_size(
->>                         (void *)CONFIG_SYS_SDRAM_BASE,
->>                         CONFIG_MAX_RAM_BANK_SIZE);
->>         return 0;
->> }
->>
->> void dram_init_banksize(void)
->> {
->>         gd->bd->bi_dram[0].start = CONFIG_SYS_SDRAM_BASE;
->>         gd->bd->bi_dram[0].size = gd->ram_size;
->> }
->>
->> This peace of code will be excuted in u-boot.img (not in MLO).
->>
->> In Barebox we have get_ram_size(), that provides real RAM size and
->> am335x_sdram_size(), that returns RAM controller settings. So far DDR
->> controler will be configured for 512MB regardless of the module. Hence
->> the return value from am335x_sdram_size() cannot be used for crating
->> ram0 node.
-> On our am335x boards we use MLOs with individual RAM timings and EMIF config
-> values. So am335x_sdram_size works fine in barebox.bin.
-> Maybe get_ram_size works if the timing settings are equal?
+On Tue, Oct 4, 2016 at 12:10 PM, Enrico Jorns <ejo@pengutronix.de> wrote:
+> This adds `filetype_squashfs` to the list of known filetypes and adds a
+> detection for squashfs files to file_detect_type(). This currently
+> matches on the `hsqs` start sequence of an image file.
+>
+> Additionally, the newly introduced filetype is registered as the type of
+> the squashfs_driver which allows, for example, to mount squashfs without
+> the need to specify a type parameter.
+>
+> This changes enable booting a squashfs with the simple `boot` command
+> pointing to the location (device) that holds the squashfs.
+>
+> Note that booting with blspec is limited as the current squashfs driver
+> is not capable of handling symbolic links.
 
-I've solved the problem the way Sascha proposed earlier (see the third
-version of my patch sent today).
+Glad to see SquashFS will be used not only by myself :-)
 
-In MLO I setup memory controller to 512MB, then I check the real
-amount via  get_ram_size() and if I have 256MB I just reinitialize the
-memory controller with values for 256Mb i.e. rows 14 instead of 15.
-With this done one can use am335x_sdram_size() in other parts of
-berebox.
+Could you explain how one can write a rootfs.sqaushfs to a ubiblock
+from Linux and then what steps are needed in barebox?
 
-Thanks for the feedback.
+So far I've only found this info about ubiblock:
+http://www.linux-mtd.infradead.org/doc/ubi.html#L_ubiblock, but it
+doesn't say much.
+
+My actions were:
+
+ubiattach -p /dev/mtd5
+ubiblock --create /dev/ubi0_0
+ubiupdatevol /dev/ubi0_0 rootfs.squashfs
+
+Can I mount /dev/ubi0_0 via mount? If yes, what parameters I should use?
+
+How can I mount this volume in barebox step-by-step?
+
+Thanks.
 
 Yegor
+
+> Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
+> ---
+>  common/filetype.c      | 4 ++++
+>  fs/squashfs/squashfs.c | 1 +
+>  include/filetype.h     | 1 +
+>  3 files changed, 6 insertions(+)
+>
+> diff --git a/common/filetype.c b/common/filetype.c
+> index 4728f87..8d72933 100644
+> --- a/common/filetype.c
+> +++ b/common/filetype.c
+> @@ -40,6 +40,7 @@ static const struct filetype_str filetype_str[] = {
+>         [filetype_uimage] = { "U-Boot uImage", "u-boot" },
+>         [filetype_ubi] = { "UBI image", "ubi" },
+>         [filetype_jffs2] = { "JFFS2 image", "jffs2" },
+> +       [filetype_squashfs] = { "Squashfs image", "squashfs" },
+>         [filetype_gzip] = { "GZIP compressed", "gzip" },
+>         [filetype_bzip2] = { "BZIP2 compressed", "bzip2" },
+>         [filetype_oftree] = { "open firmware Device Tree flattened Binary", "dtb" },
+> @@ -278,6 +279,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+>         if (buf8[0] == 0xfd && buf8[1] == 0x37 && buf8[2] == 0x7a &&
+>                         buf8[3] == 0x58 && buf8[4] == 0x5a && buf8[5] == 0x00)
+>                 return filetype_xz_compressed;
+> +       if (buf8[0] == 'h' && buf8[1] == 's' && buf8[2] == 'q' &&
+> +                       buf8[3] == 's')
+> +               return filetype_squashfs;
+>         if (buf[0] == be32_to_cpu(0xd00dfeed))
+>                 return filetype_oftree;
+>         if (strncmp(buf8, "ANDROID!", 8) == 0)
+> diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
+> index d00dee6..6d04681 100644
+> --- a/fs/squashfs/squashfs.c
+> +++ b/fs/squashfs/squashfs.c
+> @@ -353,6 +353,7 @@ static struct fs_driver_d squashfs_driver = {
+>         .readdir        = squashfs_readdir,
+>         .closedir       = squashfs_closedir,
+>         .stat           = squashfs_stat,
+> +       .type           = filetype_squashfs,
+>         .drv = {
+>                 .probe = squashfs_probe,
+>                 .remove = squashfs_remove,
+> diff --git a/include/filetype.h b/include/filetype.h
+> index cde73c1..65bd6ef 100644
+> --- a/include/filetype.h
+> +++ b/include/filetype.h
+> @@ -16,6 +16,7 @@ enum filetype {
+>         filetype_uimage,
+>         filetype_ubi,
+>         filetype_jffs2,
+> +       filetype_squashfs,
+>         filetype_gzip,
+>         filetype_bzip2,
+>         filetype_oftree,
+> --
+> 2.9.3
+>
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
