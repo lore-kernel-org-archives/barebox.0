@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bs3sM-00005E-OT
- for barebox@lists.infradead.org; Thu, 06 Oct 2016 08:18:00 +0000
-Message-ID: <1475741847.3468.20.camel@lws-tremmet.phytec.de>
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Thu, 06 Oct 2016 10:17:27 +0200
-In-Reply-To: <1382352141.1327180.1475673795806.JavaMail.ngmail@webmail09.arcor-online.net>
-References: <1382352141.1327180.1475673795806.JavaMail.ngmail@webmail09.arcor-online.net>
-Mime-Version: 1.0
+Received: from mail-ua0-x241.google.com ([2607:f8b0:400c:c08::241])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bs4fZ-0006K3-Bk
+ for barebox@lists.infradead.org; Thu, 06 Oct 2016 09:08:50 +0000
+Received: by mail-ua0-x241.google.com with SMTP id 10so496331ual.1
+ for <barebox@lists.infradead.org>; Thu, 06 Oct 2016 02:08:28 -0700 (PDT)
+MIME-Version: 1.0
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Thu, 6 Oct 2016 11:08:07 +0200
+Message-ID: <CAGm1_ku0Vh=SC0omVMUZof3DBJhvFRPsgxg1BDEn4GGTpez9_g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,65 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: why UBI static volumes are flagged as DEVFS_IS_CHARACTER_DEV
-To: iw3gtf@arcor.de
-Cc: barebox@lists.infradead.org
+Subject: am335x: memory configuration
+To: barebox <barebox@lists.infradead.org>
 
-Hello Giorgio,
+I've submitted a patch [1] to support our Baltos systems back in the
+May. There was an issue with dynamically detecting RAM size as the
+systems can have either 256MB or 512MB modules.
 
-Am Mittwoch, den 05.10.2016, 15:23 +0200 schrieb iw3gtf@arcor.de:
-> Hi,
-> 
-> I noticed that the commit id c087e0804f0290e9886899e8a3cccb07c4ce088b flagged static
-> UBI volumes as DEVFS_IS_CHARACTER_DEV.
-> 
-> A consequence of this flag is that commands like:
-> 
-> # cp /dev/nand0.ubi_volumes.ubi.my_static_vol file
-> 
-> will not work because the cp command will see a src file (the static UBI volume) with a size
-> of -1 (FILE_SIZE_STREAM) and keep on reading from the volume until a flood of
-> "UBI assert failed in ubi_eba_read_leb at 359" asserts comes out of the console.
-> 
-> I tried to comment out the flag assignment, just to see what happen:
-> 
-> int ubi_volume_cdev_add(struct ubi_device *ubi, struct ubi_volume *vol)
-> {
-> ...
-> 	cdev->size = vol->used_bytes;
-> 
-> //	if (vol->vol_type == UBI_STATIC_VOLUME)
-> //		cdev->flags = DEVFS_IS_CHARACTER_DEV;
-> 
-> 	cdev->dev = &vol->dev;
-> ...
-> 
-> and then the cp command worked than as expected.
-> 
-> Could someone shortly confirm that the DEVFS_IS_CHARACTER_DEV flag for static UBI volumes
-> is really needed (to avoid some other problems that my superficial test does not triggers) ?
+So far u-boot was able to detect the RAM size dynamically. In order to
+do so it uses following code in arch/arm/cpu/armv7/am33xx/emif4.c:
 
-the size of a static ubi volume device is equal to the image size you
-flashed. When you create a new static ubi volume the size is 0, as it is
-empty.
-We need the chardev flag to be able to update the static ubi volume or
-barebox will complain that there is not enough space.
+int dram_init(void)
+{
 
-Regards,
-Teresa
+#ifndef CONFIG_SKIP_LOWLEVEL_INIT
+        sdram_init();
+#endif
 
-> 
-> giorgio
-> 
-> 
-> Giorgio, iw3gtf@arcor.de
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+        /* dram_init must store complete ramsize in gd->ram_size */
+        gd->ram_size = get_ram_size(
+                        (void *)CONFIG_SYS_SDRAM_BASE,
+                        CONFIG_MAX_RAM_BANK_SIZE);
+        return 0;
+}
 
+void dram_init_banksize(void)
+{
+        gd->bd->bi_dram[0].start = CONFIG_SYS_SDRAM_BASE;
+        gd->bd->bi_dram[0].size = gd->ram_size;
+}
 
+This peace of code will be excuted in u-boot.img (not in MLO).
+
+In Barebox we have get_ram_size(), that provides real RAM size and
+am335x_sdram_size(), that returns RAM controller settings. So far DDR
+controler will be configured for 512MB regardless of the module. Hence
+the return value from am335x_sdram_size() cannot be used for crating
+ram0 node.
+
+What were the best way to provide get_ram_size() from lowlevel.c to
+board.c, where I would invoke:
+arm_add_mem_device("ram0", 0x80000000, sdram_size);
+
+[1] http://lists.infradead.org/pipermail/barebox/2016-May/027224.html
+
+Yegor
 
 _______________________________________________
 barebox mailing list
