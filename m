@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vk0-x242.google.com ([2607:f8b0:400c:c05::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bs99I-0006mp-0z
- for barebox@lists.infradead.org; Thu, 06 Oct 2016 13:55:48 +0000
-Received: by mail-vk0-x242.google.com with SMTP id 2so773230vkb.1
- for <barebox@lists.infradead.org>; Thu, 06 Oct 2016 06:55:27 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20161004101048.12970-5-ejo@pengutronix.de>
+ id 1bs9O2-0003xf-JF
+ for barebox@lists.infradead.org; Thu, 06 Oct 2016 14:11:04 +0000
 References: <20161004101048.12970-1-ejo@pengutronix.de>
  <20161004101048.12970-5-ejo@pengutronix.de>
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Thu, 6 Oct 2016 15:55:06 +0200
-Message-ID: <CAGm1_kvFujU0QcCdmREtbRfU7J_vQgMnJvs9k=dpR3PQ=9+_6g@mail.gmail.com>
+ <CAGm1_kvFujU0QcCdmREtbRfU7J_vQgMnJvs9k=dpR3PQ=9+_6g@mail.gmail.com>
+From: Enrico Joerns <ejo@pengutronix.de>
+Message-ID: <7945e859-d844-9c44-f776-87e35ffc27e3@pengutronix.de>
+Date: Thu, 6 Oct 2016 16:10:36 +0200
+MIME-Version: 1.0
+In-Reply-To: <CAGm1_kvFujU0QcCdmREtbRfU7J_vQgMnJvs9k=dpR3PQ=9+_6g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,117 +19,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 4/5] Add filetype and detection for squashfs images
-To: Enrico Jorns <ejo@pengutronix.de>
+To: Yegor Yefremov <yegorslists@googlemail.com>
 Cc: barebox <barebox@lists.infradead.org>
 
-Hi Enrico,
-
-On Tue, Oct 4, 2016 at 12:10 PM, Enrico Jorns <ejo@pengutronix.de> wrote:
-> This adds `filetype_squashfs` to the list of known filetypes and adds a
-> detection for squashfs files to file_detect_type(). This currently
-> matches on the `hsqs` start sequence of an image file.
->
-> Additionally, the newly introduced filetype is registered as the type of
-> the squashfs_driver which allows, for example, to mount squashfs without
-> the need to specify a type parameter.
->
-> This changes enable booting a squashfs with the simple `boot` command
-> pointing to the location (device) that holds the squashfs.
->
-> Note that booting with blspec is limited as the current squashfs driver
-> is not capable of handling symbolic links.
-
-Glad to see SquashFS will be used not only by myself :-)
-
-Could you explain how one can write a rootfs.sqaushfs to a ubiblock
-from Linux and then what steps are needed in barebox?
-
-So far I've only found this info about ubiblock:
-http://www.linux-mtd.infradead.org/doc/ubi.html#L_ubiblock, but it
-doesn't say much.
-
-My actions were:
-
-ubiattach -p /dev/mtd5
-ubiblock --create /dev/ubi0_0
-ubiupdatevol /dev/ubi0_0 rootfs.squashfs
-
-Can I mount /dev/ubi0_0 via mount? If yes, what parameters I should use?
-
-How can I mount this volume in barebox step-by-step?
-
-Thanks.
-
-Yegor
-
-> Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
-> ---
->  common/filetype.c      | 4 ++++
->  fs/squashfs/squashfs.c | 1 +
->  include/filetype.h     | 1 +
->  3 files changed, 6 insertions(+)
->
-> diff --git a/common/filetype.c b/common/filetype.c
-> index 4728f87..8d72933 100644
-> --- a/common/filetype.c
-> +++ b/common/filetype.c
-> @@ -40,6 +40,7 @@ static const struct filetype_str filetype_str[] = {
->         [filetype_uimage] = { "U-Boot uImage", "u-boot" },
->         [filetype_ubi] = { "UBI image", "ubi" },
->         [filetype_jffs2] = { "JFFS2 image", "jffs2" },
-> +       [filetype_squashfs] = { "Squashfs image", "squashfs" },
->         [filetype_gzip] = { "GZIP compressed", "gzip" },
->         [filetype_bzip2] = { "BZIP2 compressed", "bzip2" },
->         [filetype_oftree] = { "open firmware Device Tree flattened Binary", "dtb" },
-> @@ -278,6 +279,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
->         if (buf8[0] == 0xfd && buf8[1] == 0x37 && buf8[2] == 0x7a &&
->                         buf8[3] == 0x58 && buf8[4] == 0x5a && buf8[5] == 0x00)
->                 return filetype_xz_compressed;
-> +       if (buf8[0] == 'h' && buf8[1] == 's' && buf8[2] == 'q' &&
-> +                       buf8[3] == 's')
-> +               return filetype_squashfs;
->         if (buf[0] == be32_to_cpu(0xd00dfeed))
->                 return filetype_oftree;
->         if (strncmp(buf8, "ANDROID!", 8) == 0)
-> diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
-> index d00dee6..6d04681 100644
-> --- a/fs/squashfs/squashfs.c
-> +++ b/fs/squashfs/squashfs.c
-> @@ -353,6 +353,7 @@ static struct fs_driver_d squashfs_driver = {
->         .readdir        = squashfs_readdir,
->         .closedir       = squashfs_closedir,
->         .stat           = squashfs_stat,
-> +       .type           = filetype_squashfs,
->         .drv = {
->                 .probe = squashfs_probe,
->                 .remove = squashfs_remove,
-> diff --git a/include/filetype.h b/include/filetype.h
-> index cde73c1..65bd6ef 100644
-> --- a/include/filetype.h
-> +++ b/include/filetype.h
-> @@ -16,6 +16,7 @@ enum filetype {
->         filetype_uimage,
->         filetype_ubi,
->         filetype_jffs2,
-> +       filetype_squashfs,
->         filetype_gzip,
->         filetype_bzip2,
->         filetype_oftree,
-> --
-> 2.9.3
->
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgWWVnb3IsCgpPbiAxMC8wNi8yMDE2IDAzOjU1IFBNLCBZZWdvciBZZWZyZW1vdiB3cm90ZToK
+PiBPbiBUdWUsIE9jdCA0LCAyMDE2IGF0IDEyOjEwIFBNLCBFbnJpY28gSm9ybnMgPGVqb0BwZW5n
+dXRyb25peC5kZT4gd3JvdGU6Cj4+IFRoaXMgYWRkcyBgZmlsZXR5cGVfc3F1YXNoZnNgIHRvIHRo
+ZSBsaXN0IG9mIGtub3duIGZpbGV0eXBlcyBhbmQgYWRkcyBhCj4+IGRldGVjdGlvbiBmb3Igc3F1
+YXNoZnMgZmlsZXMgdG8gZmlsZV9kZXRlY3RfdHlwZSgpLiBUaGlzIGN1cnJlbnRseQo+PiBtYXRj
+aGVzIG9uIHRoZSBgaHNxc2Agc3RhcnQgc2VxdWVuY2Ugb2YgYW4gaW1hZ2UgZmlsZS4KPj4KPj4g
+QWRkaXRpb25hbGx5LCB0aGUgbmV3bHkgaW50cm9kdWNlZCBmaWxldHlwZSBpcyByZWdpc3RlcmVk
+IGFzIHRoZSB0eXBlIG9mCj4+IHRoZSBzcXVhc2hmc19kcml2ZXIgd2hpY2ggYWxsb3dzLCBmb3Ig
+ZXhhbXBsZSwgdG8gbW91bnQgc3F1YXNoZnMgd2l0aG91dAo+PiB0aGUgbmVlZCB0byBzcGVjaWZ5
+IGEgdHlwZSBwYXJhbWV0ZXIuCj4+Cj4+IFRoaXMgY2hhbmdlcyBlbmFibGUgYm9vdGluZyBhIHNx
+dWFzaGZzIHdpdGggdGhlIHNpbXBsZSBgYm9vdGAgY29tbWFuZAo+PiBwb2ludGluZyB0byB0aGUg
+bG9jYXRpb24gKGRldmljZSkgdGhhdCBob2xkcyB0aGUgc3F1YXNoZnMuCj4+Cj4+IE5vdGUgdGhh
+dCBib290aW5nIHdpdGggYmxzcGVjIGlzIGxpbWl0ZWQgYXMgdGhlIGN1cnJlbnQgc3F1YXNoZnMg
+ZHJpdmVyCj4+IGlzIG5vdCBjYXBhYmxlIG9mIGhhbmRsaW5nIHN5bWJvbGljIGxpbmtzLgo+Cj4g
+R2xhZCB0byBzZWUgU3F1YXNoRlMgd2lsbCBiZSB1c2VkIG5vdCBvbmx5IGJ5IG15c2VsZiA6LSkK
+CmdsYWQgdG8gc2VlIHRoYXQsIHRvbyA7KQoKPiBDb3VsZCB5b3UgZXhwbGFpbiBob3cgb25lIGNh
+biB3cml0ZSBhIHJvb3Rmcy5zcWF1c2hmcyB0byBhIHViaWJsb2NrCj4gZnJvbSBMaW51eCBhbmQg
+dGhlbiB3aGF0IHN0ZXBzIGFyZSBuZWVkZWQgaW4gYmFyZWJveD8KPgo+IFNvIGZhciBJJ3ZlIG9u
+bHkgZm91bmQgdGhpcyBpbmZvIGFib3V0IHViaWJsb2NrOgo+IGh0dHA6Ly93d3cubGludXgtbXRk
+LmluZnJhZGVhZC5vcmcvZG9jL3ViaS5odG1sI0xfdWJpYmxvY2ssIGJ1dCBpdAo+IGRvZXNuJ3Qg
+c2F5IG11Y2guCgpZZXMsIHRoZSBpbmZvcm1hdGlvbnMgcHJvdmlkZWQgYXJlIGEgYml0IHNwYXJz
+ZS4uCgo+IE15IGFjdGlvbnMgd2VyZToKPgo+IHViaWF0dGFjaCAtcCAvZGV2L210ZDUKPiB1Ymli
+bG9jayAtLWNyZWF0ZSAvZGV2L3ViaTBfMAo+IHViaXVwZGF0ZXZvbCAvZGV2L3ViaTBfMCByb290
+ZnMuc3F1YXNoZnMKPgo+IENhbiBJIG1vdW50IC9kZXYvdWJpMF8wIHZpYSBtb3VudD8gSWYgeWVz
+LCB3aGF0IHBhcmFtZXRlcnMgSSBzaG91bGQgdXNlPwoKVGhlIGFib3ZlIGNvbW1hbmRzIGxvb2sg
+cHJldHR5IHNpbWlsYXIgdG8gd2hhdCBJIGRpZC4gTW91bnRpbmcgdGhlIAp1YmlibG9jayBkZXZp
+Y2UgZG9lcyB3b3JrIHRvbywgd2l0aCBhIGxpdHRsZSBwaXRmYWxsLCBtb3VudCB3aWxsIGJlIApj
+b25mdXNlZCBieSBoYXZpbmcgYSByZWFkLW9ubHkgZmlsZSBzeXN0ZW0gYnV0IG5vYm9keSB0b2xk
+IGl0IGJlZm9yZS4KU28geW91IG11c3QgZG8KCiAgIG1vdW50IC1vIHJvIC9kZXYvdWJpYmxvY2sw
+XzAgL21udC90ZXN0Cgo+IEhvdyBjYW4gSSBtb3VudCB0aGlzIHZvbHVtZSBpbiBiYXJlYm94IHN0
+ZXAtYnktc3RlcD8KClVzaW5nIGl0IGluIGJhcmVib3ggaXMgcHJldHR5IGVhc3ksIGFzIHRoZSB1
+YmlibG9jayBsYXllciBpcyBub3QgCnJlcXVpcmVkIHRoZXJlOgoKICAgdWJpYXR0YWNoIC9kZXYv
+bmFuZDAucm9vdAogICB1Yml1cGRhdGV2b2wgL2Rldi9uYW5kMC5yb290LnViaS51Yml2b2xuYW1l
+IHJvb3Rmcy5zcXVhc2hmcwogICBta2RpciAvbW50L3Rlc3QKICAgbW91bnQgL2Rldi9uYW5kMC5y
+b290LnViaS51Yml2b2xuYW1lIC9tbnQvdGVzdAoKClRvIGJvb3QgdmlhIGJvb3RzcGVjIGZvcm0g
+YSB1YmkgY29udGFpbmluZyBhIHNxdWFzaGZzLCB5b3Ugc2ltcGx5IG5lZWQgdG8KCiAgIGJvb3Qg
+L2Rldi9uYW5kMC5yb290LnViaS51Yml2b2xuYW1lCgoKSG9wZSB0aGF0IGhlbHBzLgoKCkJlc3Qg
+cmVnYXJkcywgRW5yaWNvCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIHwgRW5yaWNvIErDtnJucyAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXgg
+U29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8
+ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDkt
+NTEyMS0yMDY5MTctNTA4MCB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAg
+ICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
+eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
+bGlzdGluZm8vYmFyZWJveAo=
