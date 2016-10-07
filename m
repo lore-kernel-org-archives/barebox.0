@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bs9O2-0003xf-JF
- for barebox@lists.infradead.org; Thu, 06 Oct 2016 14:11:04 +0000
-References: <20161004101048.12970-1-ejo@pengutronix.de>
- <20161004101048.12970-5-ejo@pengutronix.de>
- <CAGm1_kvFujU0QcCdmREtbRfU7J_vQgMnJvs9k=dpR3PQ=9+_6g@mail.gmail.com>
-From: Enrico Joerns <ejo@pengutronix.de>
-Message-ID: <7945e859-d844-9c44-f776-87e35ffc27e3@pengutronix.de>
-Date: Thu, 6 Oct 2016 16:10:36 +0200
-MIME-Version: 1.0
-In-Reply-To: <CAGm1_kvFujU0QcCdmREtbRfU7J_vQgMnJvs9k=dpR3PQ=9+_6g@mail.gmail.com>
+ id 1bsPHk-0000ob-IE
+ for barebox@lists.infradead.org; Fri, 07 Oct 2016 07:09:37 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri,  7 Oct 2016 09:09:07 +0200
+Message-Id: <20161007070908.14855-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,57 +14,95 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] Add filetype and detection for squashfs images
-To: Yegor Yefremov <yegorslists@googlemail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] Allow device parameters for devices with dots in name
+To: Barebox List <barebox@lists.infradead.org>
 
-SGkgWWVnb3IsCgpPbiAxMC8wNi8yMDE2IDAzOjU1IFBNLCBZZWdvciBZZWZyZW1vdiB3cm90ZToK
-PiBPbiBUdWUsIE9jdCA0LCAyMDE2IGF0IDEyOjEwIFBNLCBFbnJpY28gSm9ybnMgPGVqb0BwZW5n
-dXRyb25peC5kZT4gd3JvdGU6Cj4+IFRoaXMgYWRkcyBgZmlsZXR5cGVfc3F1YXNoZnNgIHRvIHRo
-ZSBsaXN0IG9mIGtub3duIGZpbGV0eXBlcyBhbmQgYWRkcyBhCj4+IGRldGVjdGlvbiBmb3Igc3F1
-YXNoZnMgZmlsZXMgdG8gZmlsZV9kZXRlY3RfdHlwZSgpLiBUaGlzIGN1cnJlbnRseQo+PiBtYXRj
-aGVzIG9uIHRoZSBgaHNxc2Agc3RhcnQgc2VxdWVuY2Ugb2YgYW4gaW1hZ2UgZmlsZS4KPj4KPj4g
-QWRkaXRpb25hbGx5LCB0aGUgbmV3bHkgaW50cm9kdWNlZCBmaWxldHlwZSBpcyByZWdpc3RlcmVk
-IGFzIHRoZSB0eXBlIG9mCj4+IHRoZSBzcXVhc2hmc19kcml2ZXIgd2hpY2ggYWxsb3dzLCBmb3Ig
-ZXhhbXBsZSwgdG8gbW91bnQgc3F1YXNoZnMgd2l0aG91dAo+PiB0aGUgbmVlZCB0byBzcGVjaWZ5
-IGEgdHlwZSBwYXJhbWV0ZXIuCj4+Cj4+IFRoaXMgY2hhbmdlcyBlbmFibGUgYm9vdGluZyBhIHNx
-dWFzaGZzIHdpdGggdGhlIHNpbXBsZSBgYm9vdGAgY29tbWFuZAo+PiBwb2ludGluZyB0byB0aGUg
-bG9jYXRpb24gKGRldmljZSkgdGhhdCBob2xkcyB0aGUgc3F1YXNoZnMuCj4+Cj4+IE5vdGUgdGhh
-dCBib290aW5nIHdpdGggYmxzcGVjIGlzIGxpbWl0ZWQgYXMgdGhlIGN1cnJlbnQgc3F1YXNoZnMg
-ZHJpdmVyCj4+IGlzIG5vdCBjYXBhYmxlIG9mIGhhbmRsaW5nIHN5bWJvbGljIGxpbmtzLgo+Cj4g
-R2xhZCB0byBzZWUgU3F1YXNoRlMgd2lsbCBiZSB1c2VkIG5vdCBvbmx5IGJ5IG15c2VsZiA6LSkK
-CmdsYWQgdG8gc2VlIHRoYXQsIHRvbyA7KQoKPiBDb3VsZCB5b3UgZXhwbGFpbiBob3cgb25lIGNh
-biB3cml0ZSBhIHJvb3Rmcy5zcWF1c2hmcyB0byBhIHViaWJsb2NrCj4gZnJvbSBMaW51eCBhbmQg
-dGhlbiB3aGF0IHN0ZXBzIGFyZSBuZWVkZWQgaW4gYmFyZWJveD8KPgo+IFNvIGZhciBJJ3ZlIG9u
-bHkgZm91bmQgdGhpcyBpbmZvIGFib3V0IHViaWJsb2NrOgo+IGh0dHA6Ly93d3cubGludXgtbXRk
-LmluZnJhZGVhZC5vcmcvZG9jL3ViaS5odG1sI0xfdWJpYmxvY2ssIGJ1dCBpdAo+IGRvZXNuJ3Qg
-c2F5IG11Y2guCgpZZXMsIHRoZSBpbmZvcm1hdGlvbnMgcHJvdmlkZWQgYXJlIGEgYml0IHNwYXJz
-ZS4uCgo+IE15IGFjdGlvbnMgd2VyZToKPgo+IHViaWF0dGFjaCAtcCAvZGV2L210ZDUKPiB1Ymli
-bG9jayAtLWNyZWF0ZSAvZGV2L3ViaTBfMAo+IHViaXVwZGF0ZXZvbCAvZGV2L3ViaTBfMCByb290
-ZnMuc3F1YXNoZnMKPgo+IENhbiBJIG1vdW50IC9kZXYvdWJpMF8wIHZpYSBtb3VudD8gSWYgeWVz
-LCB3aGF0IHBhcmFtZXRlcnMgSSBzaG91bGQgdXNlPwoKVGhlIGFib3ZlIGNvbW1hbmRzIGxvb2sg
-cHJldHR5IHNpbWlsYXIgdG8gd2hhdCBJIGRpZC4gTW91bnRpbmcgdGhlIAp1YmlibG9jayBkZXZp
-Y2UgZG9lcyB3b3JrIHRvbywgd2l0aCBhIGxpdHRsZSBwaXRmYWxsLCBtb3VudCB3aWxsIGJlIApj
-b25mdXNlZCBieSBoYXZpbmcgYSByZWFkLW9ubHkgZmlsZSBzeXN0ZW0gYnV0IG5vYm9keSB0b2xk
-IGl0IGJlZm9yZS4KU28geW91IG11c3QgZG8KCiAgIG1vdW50IC1vIHJvIC9kZXYvdWJpYmxvY2sw
-XzAgL21udC90ZXN0Cgo+IEhvdyBjYW4gSSBtb3VudCB0aGlzIHZvbHVtZSBpbiBiYXJlYm94IHN0
-ZXAtYnktc3RlcD8KClVzaW5nIGl0IGluIGJhcmVib3ggaXMgcHJldHR5IGVhc3ksIGFzIHRoZSB1
-YmlibG9jayBsYXllciBpcyBub3QgCnJlcXVpcmVkIHRoZXJlOgoKICAgdWJpYXR0YWNoIC9kZXYv
-bmFuZDAucm9vdAogICB1Yml1cGRhdGV2b2wgL2Rldi9uYW5kMC5yb290LnViaS51Yml2b2xuYW1l
-IHJvb3Rmcy5zcXVhc2hmcwogICBta2RpciAvbW50L3Rlc3QKICAgbW91bnQgL2Rldi9uYW5kMC5y
-b290LnViaS51Yml2b2xuYW1lIC9tbnQvdGVzdAoKClRvIGJvb3QgdmlhIGJvb3RzcGVjIGZvcm0g
-YSB1YmkgY29udGFpbmluZyBhIHNxdWFzaGZzLCB5b3Ugc2ltcGx5IG5lZWQgdG8KCiAgIGJvb3Qg
-L2Rldi9uYW5kMC5yb290LnViaS51Yml2b2xuYW1lCgoKSG9wZSB0aGF0IGhlbHBzLgoKCkJlc3Qg
-cmVnYXJkcywgRW5yaWNvCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHwgRW5yaWNvIErDtnJucyAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXgg
-U29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8
-ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDkt
-NTEyMS0yMDY5MTctNTA4MCB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAg
-ICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgoKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
-eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
-bGlzdGluZm8vYmFyZWJveAo=
+Devices can have a dot in the name, so we can't expect to find the
+full device name before the first dot. Currently parameters of devices
+with a dot in the name are inaccessible from the shell.
+Fix this by iterating over the possible device name / parameter name
+combinations to find a existing combination.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/env.c | 48 ++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 34 insertions(+), 14 deletions(-)
+
+diff --git a/common/env.c b/common/env.c
+index 6f736d5..df8a4df 100644
+--- a/common/env.c
++++ b/common/env.c
+@@ -135,26 +135,46 @@ static const char *getenv_raw(struct list_head *l, const char *name)
+ 	return NULL;
+ }
+ 
+-const char *getenv (const char *name)
++static const char *dev_getenv(const char *name)
+ {
+-	struct env_context *c;
+-	const char *val;
++	const char *pos, *val, *dot, *varname;
++	char *devname;
++	struct device_d *dev;
++
++	pos = name;
++
++	while (1) {
++		dot = strchr(pos, '.');
++		if (!dot)
++			break;
++
++		devname = xstrndup(name, dot - name);
++		varname = dot + 1;
++
++		dev = get_device_by_name(devname);
++
++		free(devname);
+ 
+-	if (strchr(name, '.')) {
+-		const char *ret = NULL;
+-		char *devstr = strdup(name);
+-		char *par = strchr(devstr, '.');
+-		struct device_d *dev;
+-		*par = 0;
+-		dev = get_device_by_name(devstr);
+ 		if (dev) {
+-				par++;
+-				ret = dev_get_param(dev, par);
++			val = dev_get_param(dev, varname);
++			if (val)
++				return val;
+ 		}
+-		free(devstr);
+-		return ret;
++
++		pos = dot + 1;
+ 	}
+ 
++	return NULL;
++}
++
++const char *getenv(const char *name)
++{
++	struct env_context *c;
++	const char *val;
++
++	if (strchr(name, '.'))
++		return dev_getenv(name);
++
+ 	c = context;
+ 
+ 	val = getenv_raw(&c->local, name);
+-- 
+2.9.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
