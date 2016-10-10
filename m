@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vk0-x242.google.com ([2607:f8b0:400c:c05::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bsTxt-0003jW-EU
- for barebox@lists.infradead.org; Fri, 07 Oct 2016 12:09:26 +0000
-Received: by mail-vk0-x242.google.com with SMTP id 192so1839547vkl.2
- for <barebox@lists.infradead.org>; Fri, 07 Oct 2016 05:09:03 -0700 (PDT)
+ id 1btUMR-0003Y3-Uq
+ for barebox@lists.infradead.org; Mon, 10 Oct 2016 06:46:57 +0000
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1btUM3-0002o3-Sn
+ for barebox@lists.infradead.org; Mon, 10 Oct 2016 08:46:31 +0200
+Received: from sha by pty.hi.pengutronix.de with local (Exim 4.84_2)
+ (envelope-from <sha@pengutronix.de>) id 1btUM3-0001yk-L4
+ for barebox@lists.infradead.org; Mon, 10 Oct 2016 08:46:31 +0200
+Date: Mon, 10 Oct 2016 08:46:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20161010064631.5cjvj443ak552f2p@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <7945e859-d844-9c44-f776-87e35ffc27e3@pengutronix.de>
-References: <20161004101048.12970-1-ejo@pengutronix.de>
- <20161004101048.12970-5-ejo@pengutronix.de>
- <CAGm1_kvFujU0QcCdmREtbRfU7J_vQgMnJvs9k=dpR3PQ=9+_6g@mail.gmail.com>
- <7945e859-d844-9c44-f776-87e35ffc27e3@pengutronix.de>
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Fri, 7 Oct 2016 14:08:42 +0200
-Message-ID: <CAGm1_kt_-rdCHpigKYBFJNMRoOB-mZENKFiqUwA2Fs7XGf1oMw@mail.gmail.com>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,99 +23,153 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] Add filetype and detection for squashfs images
-To: Enrico Joerns <ejo@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: v2016.10.0
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Enrico,
+Hi All,
 
-On Thu, Oct 6, 2016 at 4:10 PM, Enrico Joerns <ejo@pengutronix.de> wrote:
-> Hi Yegor,
->
-> On 10/06/2016 03:55 PM, Yegor Yefremov wrote:
->>
->> On Tue, Oct 4, 2016 at 12:10 PM, Enrico Jorns <ejo@pengutronix.de> wrote:
->>>
->>> This adds `filetype_squashfs` to the list of known filetypes and adds a
->>> detection for squashfs files to file_detect_type(). This currently
->>> matches on the `hsqs` start sequence of an image file.
->>>
->>> Additionally, the newly introduced filetype is registered as the type of
->>> the squashfs_driver which allows, for example, to mount squashfs without
->>> the need to specify a type parameter.
->>>
->>> This changes enable booting a squashfs with the simple `boot` command
->>> pointing to the location (device) that holds the squashfs.
->>>
->>> Note that booting with blspec is limited as the current squashfs driver
->>> is not capable of handling symbolic links.
->>
->>
->> Glad to see SquashFS will be used not only by myself :-)
->
->
-> glad to see that, too ;)
->
->> Could you explain how one can write a rootfs.sqaushfs to a ubiblock
->> from Linux and then what steps are needed in barebox?
->>
->> So far I've only found this info about ubiblock:
->> http://www.linux-mtd.infradead.org/doc/ubi.html#L_ubiblock, but it
->> doesn't say much.
->
->
-> Yes, the informations provided are a bit sparse..
->
->> My actions were:
->>
->> ubiattach -p /dev/mtd5
->> ubiblock --create /dev/ubi0_0
->> ubiupdatevol /dev/ubi0_0 rootfs.squashfs
->>
->> Can I mount /dev/ubi0_0 via mount? If yes, what parameters I should use?
->
->
-> The above commands look pretty similar to what I did. Mounting the ubiblock
-> device does work too, with a little pitfall, mount will be confused by
-> having a read-only file system but nobody told it before.
-> So you must do
->
->   mount -o ro /dev/ubiblock0_0 /mnt/test
->
->> How can I mount this volume in barebox step-by-step?
->
->
-> Using it in barebox is pretty easy, as the ubiblock layer is not required
-> there:
->
->   ubiattach /dev/nand0.root
->   ubiupdatevol /dev/nand0.root.ubi.ubivolname rootfs.squashfs
->   mkdir /mnt/test
->   mount /dev/nand0.root.ubi.ubivolname /mnt/test
->
->
-> To boot via bootspec form a ubi containing a squashfs, you simply need to
->
->   boot /dev/nand0.root.ubi.ubivolname
->
->
-> Hope that helps.
+We have an October release. This time we have Rockchip RK3288 support
+and improved i.MX50 support. Lucas brought us several ARM64 compile
+fixes to make his autobuilder green again, thanks Lucas ;)
 
-Everything is working like a charm. I just had a problem with my
-ccache and hence both my kernel and barebox got compiled without
-squashfs support :-)
+Sascha
 
-So here is my:
 
-Tested-by: Yegor Yefremov <yegorslists@googlemail.com>
+----------------------------------------------------------------
+Aleksey Kuleshov (4):
+      fix double free
+      properly remove menu entry
+      clarify strim function description
+      rework menu so that it can support multiline titles
 
-Thanks.
+Alexander Kurz (13):
+      mfd mc13xxx: add MC13892_REVISION_2_4
+      Kconfig: defaultenv-2 select CMD_TEST
+      scripts: imx-usb-loader: do DCD only once, cleanup
+      scripts: imx-image: DCD check command for v2 only
+      scripts: imx-usb-loader: enable DCD 16-bit write for hdr v1
+      scripts: imx-usb-loader: structured DCD v1 element access
+      scripts: imx-usb-loader: cleanup DCD v2 processing
+      ARM: add common definitions for i.MX50 SOC
+      scripts: imx: add support for i.MX50
+      ARM: i.MX clock: cleanup imx50 incompatibilities
+      ARM: i.MX drivers: enable i.MX50 where already supported
+      Add i.MX50 support
+      ARM i.MX50: Add iomux definitions for non-DT board implementations
 
-Yegor
+Andrey Gusakov (1):
+      video: tc358767: add eDP video encoder driver
+
+Andrey Smirnov (1):
+      arm: Add both .lds files to CLEAN_FILES unconditionally
+
+Antony Pavlov (3):
+      MIPS: dts: reuse TP-LINK MR3020 dts file from linux
+      net: phy: of_phy_register_fixed_link(): drop redundant initialization
+      Documentation: imd: fix sphinx warning
+
+Christian Hemp (1):
+      commands/Kconfig: fix typo in CMD_OF_FIXUP_STATUS help
+
+Enrico Jorns (3):
+      clk: socfpga: add divider registers to the main pll outputs
+      commands: saveenv: exit on invalid option
+      commands: exit on invalid option
+
+Lucas Stach (10):
+      serial: arm_dcc: depend on !CPU_V8
+      mfd: syscon: drop EXPORT_SYMBOL for static function
+      video: tc358767: depend on EDID helpers
+      arm64: select ARM_EXCEPTIONS
+      arm(64): move HAS_DMA and HAS_MODULES to CPU_32
+      arm(64): don't advertise stack_dumping capabilities for ARM64
+      arm: semihosting support is not implemented for ARM64
+      arm64: include correct setupc file in ARM64 PBL
+      arm64: drop unneeded files from Makefile
+      arm64: don't allow to build relocatable image
+
+Michael Olbrich (1):
+      mci: mmci: Fix read FIFO handling
+
+Philipp Zabel (3):
+      video: switch to media bus formats
+      video: add VPL ioctl to get bus format
+      video/edid: Fix edid_to_display_timings error path
+
+Sam Van Den Berge (1):
+      Fix small typo in common/Kconfig
+
+Sascha Hauer (27):
+      mtd: nand: define struct nand_timings
+      mtd: nand: add ONFI timing mode to nand_timings converter
+      mtd: nand-imx: split preset_v1_v2 into two functions
+      ARM: i.MX25: Provide a clock for the nand controller
+      mtd: nand-imx: Optimize timing for i.MX25
+      defaultenv-2: remove ps1 duplicates
+      defaultenv-2: remove unused *-menu-add-entry calls
+      usb: chipidea i.MX: Do not return unnecessary error
+      ARM: i.MX6 Santaro: Add enable-delay for the display
+      ARM: i.MX6 Santaro: Add USB support
+      ARM: i.MX6 Santaro: Add PBL console support
+      usb: i.MX chipidea: Enable VBUS regulator when needed
+      Merge branch 'for-next/defenv-2'
+      Merge branch 'for-next/imx'
+      Merge branch 'for-next/menu'
+      Merge branch 'for-next/mips'
+      Merge branch 'for-next/misc'
+      Merge branch 'for-next/rockchip'
+      Merge branch 'for-next/socfpga'
+      Merge branch 'for-next/video'
+      dts: update to v4.7-rc6
+      dts: update to v4.7
+      Merge branch 'for-next/dts'
+      ARM: karo-tx6: Include correct device tree
+      ARM: i.MX6: Enable parent propagation for clk_gate2
+      nv: Fix variable removal in nvvar_save()
+      Release v2016.10.0
+
+Steffen Trumtrar (5):
+      filetype: add new filetype for SoCFPGA xload image
+      socfpga: remove dt entries that are upstream
+      ARM: socfpga: socrates: set alias for ethernet0
+      ARM: socfpga: socrates: add qspi partitions
+      ARM: socfpga: socrates: register bbu handlers
+
+Trent Piepho (1):
+      socfpga: Add support for V1 images to socfpga_mkimage
+
+Ulrich =D6lmann (3):
+      ARM: socfpga: xload: support more qspi partitions
+      blspec: fix erroneus free in entry_is_of_compatible()
+      blspec: fix return value of entry_is_of_compatible()
+
+Uwe Kleine-K=F6nig (2):
+      ARM: imx6: reset PLL2's PFD2 on i.MX6D
+      net/phy: marvell: fix error handling
+
+Wadim Egorov (8):
+      ARM: rockchip: Add basic RK3288 support
+      clocksource: Add rk3288 timer driver
+      ARM: rockchip: Add early debug support for RK3288
+      clk: Add RK3288 clock driver
+      mci: dw_mmc: Add RK3288 compatible string
+      ARM: Add phyCORE-RK3288 SOM support
+      configs: Add RK3288 defconfig
+      doc: Add RK3288 Documentation
+
+grodriguez (1):
+      Call boot_board from boot, not from init.
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
