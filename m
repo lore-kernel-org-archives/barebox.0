@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
+Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1btt1C-0005q5-GD
- for barebox@lists.infradead.org; Tue, 11 Oct 2016 09:06:42 +0000
-Received: by mail-lf0-x241.google.com with SMTP id l131so2549178lfl.0
- for <barebox@lists.infradead.org>; Tue, 11 Oct 2016 02:06:17 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 11 Oct 2016 12:06:11 +0300
-Message-Id: <20161011090611.29865-1-antonynpavlov@gmail.com>
-MIME-Version: 1.0
+ id 1buCTH-00063r-PZ
+ for barebox@lists.infradead.org; Wed, 12 Oct 2016 05:52:56 +0000
+Received: by mail-wm0-x243.google.com with SMTP id o81so707148wma.0
+ for <barebox@lists.infradead.org>; Tue, 11 Oct 2016 22:52:34 -0700 (PDT)
+From: yegorslists@googlemail.com
+Date: Wed, 12 Oct 2016 07:52:22 +0200
+Message-Id: <1476251542-5228-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,64 +16,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] sandbox: drop unused header files
+Subject: [PATCH] ubi: fix spelling
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 ---
- arch/sandbox/include/asm/processor.h | 25 -------------------------
- arch/sandbox/include/asm/ptrace.h    |  1 -
- 2 files changed, 26 deletions(-)
- delete mode 100644 arch/sandbox/include/asm/processor.h
- delete mode 100644 arch/sandbox/include/asm/ptrace.h
+ drivers/mtd/ubi/build.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/sandbox/include/asm/processor.h b/arch/sandbox/include/as=
-m/processor.h
-deleted file mode 100644
-index 075ec74..0000000
---- a/arch/sandbox/include/asm/processor.h
-+++ /dev/null
-@@ -1,25 +0,0 @@
--/*
-- * (C) Copyright 2002
-- * Daniel Engstr=F6m, Omicron Ceti AB, daniel@omicron.se
-- *
-- * See file CREDITS for list of people who contributed to this
-- * project.
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- */
--
--#ifndef __ASM_PROCESSOR_H_
--#define __ASM_PROCESSOR_H_ 1
--/* Currently this header is unused in the i386 port
-- * but some generic files #include <asm/processor.h>
-- * so this file is a placeholder. */
--#endif
-diff --git a/arch/sandbox/include/asm/ptrace.h b/arch/sandbox/include/asm/p=
-trace.h
-deleted file mode 100644
-index 2997587..0000000
---- a/arch/sandbox/include/asm/ptrace.h
-+++ /dev/null
-@@ -1 +0,0 @@
--/* dummy */
--- =
-
-2.9.3
+diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
+index 5953e36..a7a679a 100644
+--- a/drivers/mtd/ubi/build.c
++++ b/drivers/mtd/ubi/build.c
+@@ -492,13 +492,13 @@ static int autoresize(struct ubi_device *ubi, int vol_id)
+  * @vid_hdr_offset: VID header offset
+  * @max_beb_per1024: maximum expected number of bad PEB per 1024 PEBs
+  *
+- * This function attaches MTD device @mtd_dev to UBI and assign @ubi_num number
++ * This function attaches MTD device @mtd_dev to UBI and assigns @ubi_num number
+  * to the newly created UBI device, unless @ubi_num is %UBI_DEV_NUM_AUTO, in
+  * which case this function finds a vacant device number and assigns it
+  * automatically. Returns the new UBI device number in case of success and a
+  * negative error code in case of failure.
+  *
+- * Note, the invocations of this function has to be serialized by the
++ * Note, the invocation of this function has to be serialized by the
+  * @ubi_devices_mutex.
+  */
+ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
+@@ -695,7 +695,7 @@ out_free:
+  * UBI device is busy and cannot be destroyed, and %-EINVAL if it does not
+  * exist.
+  *
+- * Note, the invocations of this function has to be serialized by the
++ * Note, the invocation of this function has to be serialized by the
+  * @ubi_devices_mutex.
+  */
+ int ubi_detach_mtd_dev(int ubi_num, int anyway)
+-- 
+2.1.4
 
 
 _______________________________________________
