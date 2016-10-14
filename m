@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.haslerrail.com ([212.103.73.117])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bugDu-0001gz-Hv
- for barebox@lists.infradead.org; Thu, 13 Oct 2016 13:39:03 +0000
-From: Trostel Alain <Alain.Trostel@haslerrail.com>
-Date: Thu, 13 Oct 2016 13:38:36 +0000
-Message-ID: <F6D4D53A3E6A8043A8517794EE9C52320CE989@HRSRV03.haslerrail.net>
-Content-Language: en-US
-MIME-Version: 1.0
+ id 1buymM-0004zg-1o
+ for barebox@lists.infradead.org; Fri, 14 Oct 2016 09:27:51 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Fri, 14 Oct 2016 11:27:15 +0200
+Message-Id: <20161014092715.4257-3-s.trumtrar@pengutronix.de>
+In-Reply-To: <20161014092715.4257-1-s.trumtrar@pengutronix.de>
+References: <20161014092715.4257-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,28 +16,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: How to configure and enable the barebox state?
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH v2 3/3] ARM: socfpga: dtsi: add dw-wdt reset lines
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Hi,
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ arch/arm/dts/socfpga.dtsi | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-I would like to configure and enable the barebox state. My assumption is
-that I need to change the following device tree for my Phytec AM335x
-SOM:
+diff --git a/arch/arm/dts/socfpga.dtsi b/arch/arm/dts/socfpga.dtsi
+index d16758fdab46..66d7f21dc6a3 100644
+--- a/arch/arm/dts/socfpga.dtsi
++++ b/arch/arm/dts/socfpga.dtsi
+@@ -49,3 +49,13 @@
+ &f2s_sdram_ref_clk {
+ 	clock-frequency = <0>;
+ };
++
++&watchdog0 {
++	resets = <&rst L4WD0_RESET>;
++	reset-names = "dw-wdt";
++};
++
++&watchdog1 {
++	resets = <&rst L4WD1_RESET>;
++	reset-names = "dw-wdt";
++};
+-- 
+2.9.3
 
-arch/arm/dts/am335x-phytec-phycore-som.dts
 
-But from the documentation
-(http://www.barebox.org/doc/latest/devicetree/bindings/barebox/barebox,state.html) it is not clear to me where exactly I need to add the variable node example. Furthermore, I have check that the 'CONFIG_OFDEVICE' is enabled.
-So, where is the correct place to add the variable node configuration
-and what needs to be enabled in barebox?
-
-Best regards,
-Alain
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
