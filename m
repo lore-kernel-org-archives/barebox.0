@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bw7zK-00011d-G2
+ id 1bw7zK-00011Z-Fn
  for barebox@lists.infradead.org; Mon, 17 Oct 2016 13:30:01 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_256_CBC_SHA1:256)
- (Exim 4.80) (envelope-from <mgr@pengutronix.de>) id 1bw7yx-00048q-Ae
+ (Exim 4.80) (envelope-from <mgr@pengutronix.de>) id 1bw7yx-00048m-8T
  for barebox@lists.infradead.org; Mon, 17 Oct 2016 15:29:35 +0200
 Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.87)
- (envelope-from <mgr@pengutronix.de>) id 1bw7yx-0001Vu-3H
+ (envelope-from <mgr@pengutronix.de>) id 1bw7yx-0001VT-1Q
  for barebox@lists.infradead.org; Mon, 17 Oct 2016 15:29:35 +0200
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Mon, 17 Oct 2016 15:29:23 +0200
-Message-Id: <20161017132923.31834-5-m.grzeschik@pengutronix.de>
-In-Reply-To: <20161017132923.31834-1-m.grzeschik@pengutronix.de>
-References: <20161017132923.31834-1-m.grzeschik@pengutronix.de>
+Date: Mon, 17 Oct 2016 15:29:19 +0200
+Message-Id: <20161017132923.31834-1-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,169 +26,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] mci: add MBR write and read function to block devices
+Subject: [PATCH 0/4] Add support to modify mbr partition layout
 To: barebox@lists.infradead.org
 
-With this patch it is possible to write an mbr partition table to the
-mci block device. By setting the device property "dos_partitions" of the
-mmc device node, it is possible to write back the new partition layout
-in the common cmdlinepart notation. The property can also be read back.
+This patchset adds the param dos_partitions to the mci device
+node. By setting this param with the standard cmdlinepart notation,
+it is possible to rewrite the MBR partition layout on runtime.
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
----
- drivers/mci/mci-core.c | 122 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 122 insertions(+)
+Michael Grzeschik (4):
+  partitions: add DEVFS_PARTITION_IN_PT flag
+  cmdlinepart: add option to set DEVFS_PARTITION_IN_PT flag
+  partitions/dos: add function to write partition table
+  mci: add MBR write and read function to block devices
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 4e176f7..c0013a1 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -33,9 +33,11 @@
- #include <asm-generic/div64.h>
- #include <asm/byteorder.h>
- #include <block.h>
-+#include <fcntl.h>
- #include <disks.h>
- #include <of.h>
- #include <linux/err.h>
-+#include <cmdlinepart.h>
- 
- #define MAX_BUFFER_NUMBER 0xffffffff
- 
-@@ -1527,6 +1529,122 @@ static void mci_info(struct device_d *dev)
- 		extract_mtd_year(mci));
- }
- 
-+static char *print_size(uint64_t s)
-+{
-+	if (!(s & ((1 << 20) - 1)))
-+		return basprintf("%lldM", s >> 20);
-+	if (!(s & ((1 << 10) - 1)))
-+		return basprintf("%lldk", s >> 10);
-+	return basprintf("0x%lld", s);
-+}
-+
-+static int print_part(char *buf, int bufsize, struct cdev *cdev, int is_last)
-+{
-+	char *size = print_size(cdev->size);
-+	int ret;
-+
-+	if (!size) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	ret = snprintf(buf, bufsize, "%s(%s)%s", size,
-+			cdev->partname,
-+			is_last ? "" : ",");
-+out:
-+	free(size);
-+
-+	return ret;
-+}
-+
-+static int print_parts(char *buf, int bufsize, struct mci *mci)
-+{
-+	struct cdev *cdev, *ct;
-+	int ret = 0;
-+
-+	list_for_each_entry_safe(cdev, ct, &mci->dev.cdevs, devices_list) {
-+		if ((cdev->flags & DEVFS_IS_PARTITION) &&
-+			(cdev->flags & DEVFS_PARTITION_IN_PT)) {
-+			int now;
-+			int is_last = 0;
-+			struct list_head *nh = (cdev)->devices_list.next;
-+			struct cdev *next = container_of(nh, typeof(*(cdev)), devices_list);
-+
-+			if (list_is_last(&cdev->devices_list, &mci->dev.cdevs) ||
-+				!(next->flags & DEVFS_PARTITION_IN_PT))
-+				is_last = 1;
-+
-+			now = print_part(buf, bufsize, cdev, is_last);
-+			if (now < 0)
-+				return now;
-+
-+			if (buf && bufsize) {
-+				buf += now;
-+				bufsize -= now;
-+			}
-+			ret += now;
-+		}
-+	}
-+
-+	return ret;
-+}
-+
-+static const char *mci_partition_get(struct device_d *dev, struct param_d *p)
-+{
-+	struct mci *mci = container_of(dev, struct mci, dev);
-+	int len = 0;
-+
-+	free(p->value);
-+
-+	len = print_parts(NULL, 0, mci);
-+	p->value = xzalloc(len + 1);
-+	print_parts(p->value, len + 1, mci);
-+
-+	return p->value;
-+}
-+
-+#ifdef CONFIG_BLOCK_WRITE
-+static int mci_partition_set(struct device_d *dev, struct param_d *p, const char *val)
-+{
-+	struct mci *mci = container_of(dev, struct mci, dev);
-+	struct cdev *cdev, *ct;
-+	int ret;
-+
-+	if (!val)
-+		return -EINVAL;
-+
-+	/* remove all partition cdevs with DEVFS_IS_PARTITION set */
-+	list_for_each_entry_safe(cdev, ct, &mci->dev.cdevs, devices_list) {
-+		if ((cdev->flags & DEVFS_IS_PARTITION) &&
-+			(cdev->flags & DEVFS_PARTITION_IN_PT))
-+			ret = devfs_del_partition(cdev->name);
-+			if (ret)
-+				return ret;
-+	}
-+
-+	/* read back the prepared partition layot from dos_partitions param */
-+	ret = cmdlinepart_do_parse(mci->cdevname, val, mci->capacity,
-+			CMDLINEPART_ADD_DEVNAME | CMDLINEPART_ADD_TO_PT);
-+	if (ret)
-+		return ret;
-+
-+	/* write the MBR partition layout based on cdevs with DEVFS_IS_PARTITION set  */
-+	for (int i = 0; i < mci->nr_parts; i++) {
-+		struct mci_part *part = &mci->part[i];
-+		if (part->area_type == MMC_BLK_DATA_AREA_MAIN) {
-+			ret = write_dos_partition_table(&part->blk,
-+							&mci->dev.cdevs);
-+			if (ret != 0) {
-+				dev_warn(&mci->dev, "Could not write partition table\n");
-+				return ret;
-+			}
-+		}
-+	}
-+
-+	return ret;
-+}
-+#endif
-+
- /**
-  * Check if the MCI card is already probed
-  * @param mci MCI device instance
-@@ -1786,6 +1904,10 @@ int mci_register(struct mci_host *host)
- 	mci->param_probe = dev_add_param_bool(&mci->dev, "probe",
- 			mci_set_probe, NULL, &mci->probe, mci);
- 
-+#ifdef CONFIG_BLOCK_WRITE
-+	dev_add_param(&mci->dev, "dos_partitions", mci_partition_set, mci_partition_get, 0);
-+#endif
-+
- 	if (IS_ERR(mci->param_probe) && PTR_ERR(mci->param_probe) != -ENOSYS) {
- 		ret = PTR_ERR(mci->param_probe);
- 		dev_dbg(&mci->dev, "Failed to add 'probe' parameter to the MCI device\n");
+ common/partitions.c     |   2 +-
+ common/partitions/dos.c |  71 ++++++++++++++++++++++++++++
+ drivers/mci/mci-core.c  | 122 ++++++++++++++++++++++++++++++++++++++++++++++++
+ include/cmdlinepart.h   |   1 +
+ include/disks.h         |   1 +
+ include/driver.h        |   1 +
+ lib/cmdlinepart.c       |   3 ++
+ 7 files changed, 200 insertions(+), 1 deletion(-)
+
 -- 
 2.9.3
 
