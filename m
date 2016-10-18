@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bwNoO-0003If-Ax
- for barebox@lists.infradead.org; Tue, 18 Oct 2016 06:23:45 +0000
-Date: Tue, 18 Oct 2016 08:23:22 +0200
+ id 1bwPAK-0006dY-N5
+ for barebox@lists.infradead.org; Tue, 18 Oct 2016 07:50:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161018062322.wje6gucvkt42v7oa@pengutronix.de>
-References: <20161017132923.31834-1-m.grzeschik@pengutronix.de>
- <20161017132923.31834-5-m.grzeschik@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20161017132923.31834-5-m.grzeschik@pengutronix.de>
+Date: Tue, 18 Oct 2016 09:50:05 +0200
+Message-Id: <20161018075005.4536-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,201 +14,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] mci: add MBR write and read function to block devices
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: bootm: Fix free_mem calculation when initrd is given
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Oct 17, 2016 at 03:29:23PM +0200, Michael Grzeschik wrote:
-> With this patch it is possible to write an mbr partition table to the
-> mci block device. By setting the device property "dos_partitions" of the
-> mmc device node, it is possible to write back the new partition layout
-> in the common cmdlinepart notation. The property can also be read back.
-> 
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> ---
->  drivers/mci/mci-core.c | 122 +++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 122 insertions(+)
-> 
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index 4e176f7..c0013a1 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -33,9 +33,11 @@
->  #include <asm-generic/div64.h>
->  #include <asm/byteorder.h>
->  #include <block.h>
-> +#include <fcntl.h>
->  #include <disks.h>
->  #include <of.h>
->  #include <linux/err.h>
-> +#include <cmdlinepart.h>
->  
->  #define MAX_BUFFER_NUMBER 0xffffffff
->  
-> @@ -1527,6 +1529,122 @@ static void mci_info(struct device_d *dev)
->  		extract_mtd_year(mci));
->  }
->  
-> +static char *print_size(uint64_t s)
-> +{
-> +	if (!(s & ((1 << 20) - 1)))
-> +		return basprintf("%lldM", s >> 20);
-> +	if (!(s & ((1 << 10) - 1)))
-> +		return basprintf("%lldk", s >> 10);
-> +	return basprintf("0x%lld", s);
+When a initrd is given we calculate the next free memory position
+as:
+free_mem = PAGE_ALIGN(initrd_end);
+This is wrong when initrd_end exactly falls on a page boundary.
+In this case PAGE_ALIGN() does nothing and free_mem becomes
+initrd_end and the following bootm_load_devicetree() and thus
+booting fails with -ENOMEM.
 
-s/lld/llx/
+Fix this by correctly advancing to the next free memory position.
 
-> +}
-> +
-> +static int print_part(char *buf, int bufsize, struct cdev *cdev, int is_last)
-> +{
-> +	char *size = print_size(cdev->size);
-> +	int ret;
-> +
-> +	if (!size) {
-> +		ret = -ENOMEM;
-> +		goto out;
-> +	}
-> +
-> +	ret = snprintf(buf, bufsize, "%s(%s)%s", size,
-> +			cdev->partname,
-> +			is_last ? "" : ",");
-> +out:
-> +	free(size);
-> +
-> +	return ret;
-> +}
-> +
-> +static int print_parts(char *buf, int bufsize, struct mci *mci)
-> +{
-> +	struct cdev *cdev, *ct;
-> +	int ret = 0;
-> +
-> +	list_for_each_entry_safe(cdev, ct, &mci->dev.cdevs, devices_list) {
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/lib/bootm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-safe_?
-
-> +		if ((cdev->flags & DEVFS_IS_PARTITION) &&
-> +			(cdev->flags & DEVFS_PARTITION_IN_PT)) {
-> +			int now;
-> +			int is_last = 0;
-> +			struct list_head *nh = (cdev)->devices_list.next;
-> +			struct cdev *next = container_of(nh, typeof(*(cdev)), devices_list);
-> +
-> +			if (list_is_last(&cdev->devices_list, &mci->dev.cdevs) ||
-> +				!(next->flags & DEVFS_PARTITION_IN_PT))
-> +				is_last = 1;
-
-Is this test safe? What if the next partition does not have the
-DEVFS_PARTITION_IN_PT flag set, but the one after that has? Maybe you
-have to count the number of partitions in a first pass.
-
-> +
-> +			now = print_part(buf, bufsize, cdev, is_last);
-> +			if (now < 0)
-> +				return now;
-> +
-> +			if (buf && bufsize) {
-> +				buf += now;
-> +				bufsize -= now;
-> +			}
-> +			ret += now;
-> +		}
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static const char *mci_partition_get(struct device_d *dev, struct param_d *p)
-> +{
-> +	struct mci *mci = container_of(dev, struct mci, dev);
-> +	int len = 0;
-> +
-> +	free(p->value);
-> +
-> +	len = print_parts(NULL, 0, mci);
-> +	p->value = xzalloc(len + 1);
-> +	print_parts(p->value, len + 1, mci);
-> +
-> +	return p->value;
-> +}
-> +
-> +#ifdef CONFIG_BLOCK_WRITE
-> +static int mci_partition_set(struct device_d *dev, struct param_d *p, const char *val)
-> +{
-> +	struct mci *mci = container_of(dev, struct mci, dev);
-> +	struct cdev *cdev, *ct;
-> +	int ret;
-> +
-> +	if (!val)
-> +		return -EINVAL;
-> +
-> +	/* remove all partition cdevs with DEVFS_IS_PARTITION set */
-> +	list_for_each_entry_safe(cdev, ct, &mci->dev.cdevs, devices_list) {
-> +		if ((cdev->flags & DEVFS_IS_PARTITION) &&
-> +			(cdev->flags & DEVFS_PARTITION_IN_PT))
-> +			ret = devfs_del_partition(cdev->name);
-> +			if (ret)
-> +				return ret;
-> +	}
-> +
-> +	/* read back the prepared partition layot from dos_partitions param */
-
-s/layot/layout/
-
-> +	ret = cmdlinepart_do_parse(mci->cdevname, val, mci->capacity,
-> +			CMDLINEPART_ADD_DEVNAME | CMDLINEPART_ADD_TO_PT);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* write the MBR partition layout based on cdevs with DEVFS_IS_PARTITION set  */
-> +	for (int i = 0; i < mci->nr_parts; i++) {
-> +		struct mci_part *part = &mci->part[i];
-> +		if (part->area_type == MMC_BLK_DATA_AREA_MAIN) {
-> +			ret = write_dos_partition_table(&part->blk,
-> +							&mci->dev.cdevs);
-> +			if (ret != 0) {
-> +				dev_warn(&mci->dev, "Could not write partition table\n");
-> +				return ret;
-> +			}
-> +		}
-> +	}
-> +
-> +	return ret;
-> +}
-> +#endif
-> +
->  /**
->   * Check if the MCI card is already probed
->   * @param mci MCI device instance
-> @@ -1786,6 +1904,10 @@ int mci_register(struct mci_host *host)
->  	mci->param_probe = dev_add_param_bool(&mci->dev, "probe",
->  			mci_set_probe, NULL, &mci->probe, mci);
->  
-> +#ifdef CONFIG_BLOCK_WRITE
-> +	dev_add_param(&mci->dev, "dos_partitions", mci_partition_set, mci_partition_get, 0);
-> +#endif
-
-Use IS_ENABLED()
-
-Other than that this code should be attached to parse_partition_table()
-rather than making this mci specific.
-We probably can safely write a dos partition table to an unpartitioned
-device, but should refuse to create/manipulate a dos partition table
-when a EFI partition table exists.
-
-Sascha
-
+diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+index 56663fe..9f3d950 100644
+--- a/arch/arm/lib/bootm.c
++++ b/arch/arm/lib/bootm.c
+@@ -158,7 +158,7 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem, int
+ 		initrd_start = data->initrd_res->start;
+ 		initrd_end = data->initrd_res->end;
+ 		initrd_size = resource_size(data->initrd_res);
+-		free_mem = PAGE_ALIGN(initrd_end);
++		free_mem = PAGE_ALIGN(initrd_end + 1);
+ 	}
+ 
+ 	ret = bootm_load_devicetree(data, free_mem);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.9.3
+
 
 _______________________________________________
 barebox mailing list
