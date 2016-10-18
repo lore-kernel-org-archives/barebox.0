@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x232.google.com ([2a00:1450:4010:c07::232])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bwPZR-0004YY-TS
- for barebox@lists.infradead.org; Tue, 18 Oct 2016 08:16:27 +0000
-From: Juergen Borleis <jbe@pengutronix.de>
-Date: Tue, 18 Oct 2016 10:17:27 +0200
-References: <CABvwO2ARpHSzYE6Y3JrfFAQ2jEzw3EXfP36goL6kPogcBbNLKQ@mail.gmail.com>
-In-Reply-To: <CABvwO2ARpHSzYE6Y3JrfFAQ2jEzw3EXfP36goL6kPogcBbNLKQ@mail.gmail.com>
+ id 1bwPhp-0007Fi-6o
+ for barebox@lists.infradead.org; Tue, 18 Oct 2016 08:25:06 +0000
+Received: by mail-lf0-x232.google.com with SMTP id l131so15001871lfl.2
+ for <barebox@lists.infradead.org>; Tue, 18 Oct 2016 01:24:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201610181017.27843.jbe@pengutronix.de>
+In-Reply-To: <201610181017.27843.jbe@pengutronix.de>
+References: <CABvwO2ARpHSzYE6Y3JrfFAQ2jEzw3EXfP36goL6kPogcBbNLKQ@mail.gmail.com>
+ <201610181017.27843.jbe@pengutronix.de>
+From: Javier Fileiv <javier.fileiv@gmail.com>
+Date: Tue, 18 Oct 2016 10:24:37 +0200
+Message-ID: <CABvwO2AvfKwc==BhRfw14CzeX4ALwAFp5Zxn1t0MEj2bsn50zQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,30 +20,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Loading kernel issues
-To: Javier Fileiv <javier.fileiv@gmail.com>
+To: Juergen Borleis <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-SGkgSmF2aWVyLAoKT24gU3VuZGF5IDE2IE9jdG9iZXIgMjAxNiAyMzowNjoxNSBKYXZpZXIgRmls
-ZWl2IHdyb3RlOgo+IEkndmUganVzdCBmbGFzaGVkIGJhcmVib3ggb24gbXkgTWluaTI0NDAuIEkg
-aGF2ZSAyIHF1ZXN0aW9ucy9pc3N1ZXMgbm93Cj4KPiAxKSBXaGVuIHRyeWluZyB0byBsb2FkIHRo
-ZSBrZXJuZWwgZnJvbSBURlRQLCBldmVyeXRoaW5nIGlzIG9rIGJ1dCB3aGVuCj4gaXQncyB0cnlp
-bmcgdG8gbW91bnQgdGhlIHJvb3RmcyBzb21ldGhpbmcgaXMgbm90IHdvcmtpbmcsIGV2ZW4gdGhv
-dWdoCj4gSSBzZXQgdGhlIHJvb3RkZWxheSBwYXJhbSB0byA1IHNlY3MuCj4KPiAyKSBJIHRyaWVk
-IGFsc28gdGhlIGJvb3QgZnJvbSBuYW5kIGFuZCBpcyB3b3JraW5nIGp1c3QgZmluZSwgYnV0IHRo
-ZXJlCj4gbm8gaXMgYXV0byBib290IHdoZW4gcmVzZXRpbmcgdGhlIGJvYXJkLi4uIGl0IGp1c3Qg
-Z2l2ZSBtZSB0aGUgYmFyZWJveAo+IHByb21wdCBlYWNoIHRpbWUsIGFuZCBpZiBpIHJ1biBmcm9t
-IHRoZXJlIGJvb3QgbmFuZCBpdCB3b3JrcyBPSywgYnV0Cj4gbm8gYXV0b21hR2ljYWxseS4gOikK
-CkRpZCB5b3UgbW9kaWZ5IHRoZSAiL2Vudi9jb25maWciWzFdIGZpbGUgdG8gZGVmaW5lIHRoZSBk
-ZWZhdWx0IGJvb3Qgc291cmNlPwoKQ2hlZXJzLApKdWVyZ2VuCgpbMV0gImtlcm5lbF9sb2MiIGFu
-ZCAicm9vdGZzX2xvYyIKCi0tIApQZW5ndXRyb25peCBlLksuIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgfCBKdWVyZ2VuIEJvcmxlaXMgwqAgwqAgwqAgwqAgwqAg
-wqAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gwqB8CgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cg==
+Yes I did it and the values are ok. When I get home I'll send my config file!
+
+Thanks
+
+2016-10-18 10:17 GMT+02:00 Juergen Borleis <jbe@pengutronix.de>:
+> Hi Javier,
+>
+> On Sunday 16 October 2016 23:06:15 Javier Fileiv wrote:
+>> I've just flashed barebox on my Mini2440. I have 2 questions/issues now
+>>
+>> 1) When trying to load the kernel from TFTP, everything is ok but when
+>> it's trying to mount the rootfs something is not working, even though
+>> I set the rootdelay param to 5 secs.
+>>
+>> 2) I tried also the boot from nand and is working just fine, but there
+>> no is auto boot when reseting the board... it just give me the barebox
+>> prompt each time, and if i run from there boot nand it works OK, but
+>> no automaGically. :)
+>
+> Did you modify the "/env/config"[1] file to define the default boot source?
+>
+> Cheers,
+> Juergen
+>
+> [1] "kernel_loc" and "rootfs_loc"
+>
+> --
+> Pengutronix e.K.                              | Juergen Borleis             |
+> Industrial Linux Solutions                    | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
