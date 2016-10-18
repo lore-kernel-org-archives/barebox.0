@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bwN8V-0008OB-Uz
- for barebox@lists.infradead.org; Tue, 18 Oct 2016 05:40:28 +0000
-Date: Tue, 18 Oct 2016 07:40:05 +0200
+ id 1bwNYk-0005DI-US
+ for barebox@lists.infradead.org; Tue, 18 Oct 2016 06:07:35 +0000
+Date: Tue, 18 Oct 2016 08:07:12 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161018054005.5acthynviob6kdj2@pengutronix.de>
-References: <20161017115758.7778-1-antonynpavlov@gmail.com>
+Message-ID: <20161018060712.kqtkwxx73to6m434@pengutronix.de>
+References: <20161017132923.31834-1-m.grzeschik@pengutronix.de>
+ <20161017132923.31834-4-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20161017115758.7778-1-antonynpavlov@gmail.com>
+In-Reply-To: <20161017132923.31834-4-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,18 +23,123 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] of: fix typos
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH 3/4] partitions/dos: add function to write partition table
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Oct 17, 2016 at 02:57:58PM +0300, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  drivers/of/base.c | 2 +-
->  drivers/of/fdt.c  | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+Hi Michael,
 
-Applied, thanks
+On Mon, Oct 17, 2016 at 03:29:22PM +0200, Michael Grzeschik wrote:
+> The function can be used to write an partition layout to the block device
+> based on its cdev layout. Only cdevs with flag DEVFS_PARTITION_IN_PT set
+> get written. The function also adds an static offset of 0x200000 to
+> ensure the mbr and bootloader will not be overwritten.
+> 
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+> ---
+>  common/partitions/dos.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  include/disks.h         |  1 +
+>  2 files changed, 72 insertions(+)
+> 
+> diff --git a/common/partitions/dos.c b/common/partitions/dos.c
+> index 5f08e25..d7fa538 100644
+> --- a/common/partitions/dos.c
+> +++ b/common/partitions/dos.c
+> @@ -256,6 +256,77 @@ static void dos_partition(void *buf, struct block_device *blk,
+>  			&dsp->signature, "%08x", dsp);
+>  }
+>  
+> +static inline void hdimage_setup_chs(unsigned int lba, unsigned char *chs)
+> +{
+> +	const unsigned int hpc = 255;
+> +	const unsigned int spt = 63;
+> +	unsigned int s, c;
+> +
+> +	chs[0] = (lba/spt)%hpc;
+
+Please run checkpatch over this. There are some stylistic flaws like
+missing whitespaces left and right of operators.
+
+> +	c = (lba/(spt * hpc));
+> +	s = (lba > 0) ?(lba%spt + 1) : 0;
+> +	chs[1] = ((c & 0x300) >> 2) | (s & 0xff);
+> +	chs[2] = (c & 0xff);
+> +}
+> +
+> +int write_dos_partition_table(struct block_device *blk, struct list_head *cdevs)
+> +{
+> +	char part_table[6+4*sizeof(struct partition_entry)+2];
+> +	struct cdev *cdev, *ct;
+> +	void *buf;
+> +	int ret;
+> +	int n = 0;
+> +	char *ptr;
+> +
+> +	/* prepare partition table entry */
+> +	ptr = part_table;
+> +	memset(ptr, 0, sizeof(part_table));
+> +
+> +	/* skip disk signature */
+> +	ptr += 6;
+
+It's even more important to skip this in the output buffer. This code
+should not change the disk signature.
+
+> +	list_for_each_entry_safe(cdev, ct, cdevs, devices_list) {
+
+Why _safe? You do not remove entries, do you?
+
+> +		if ((cdev->flags & DEVFS_IS_PARTITION) &&
+> +			(cdev->flags & DEVFS_PARTITION_IN_PT)) {
+
+In a multiline if clause the second line should either start directly
+under the opening brace or indented with at least two more tabs than the
+opening if(), but using the same indention level as the conditional code
+makes it hard to read.
+
+> +			struct partition_entry *entry;
+
+Instead of the silent test below, do a:
+
+			if (n == 4) {
+				pr_warn("Only 4 partitions written to MBR\n");
+				break;
+			}
+
+> +			entry = (struct partition_entry *)
+> +				(ptr + n * sizeof(struct partition_entry));
+> +
+> +			/* add static offset to skip the mbr and bootloader */
+> +			cdev->offset += 4096 * SECTOR_SIZE;
+> +
+> +			entry->type = 0x83;
+> +			entry->partition_start = cdev->offset / SECTOR_SIZE;
+> +			entry->partition_size = cdev->size / SECTOR_SIZE;
+
+We should have a test if offset and/or size exceed the 32bit limit.
+
+> +
+> +			hdimage_setup_chs(entry->partition_start,
+> +						entry->chs_begin);
+> +			hdimage_setup_chs(entry->partition_start +
+> +						entry->partition_size - 1,
+> +						entry->chs_end);
+> +			n++;
+> +		}
+> +		if (n == 4)
+> +			break;
+> +	}
+> +
+> +	ptr += 4 * sizeof(struct partition_entry);
+> +	ptr[0] = 0x55;
+> +	ptr[1] = 0xaa;
+> +
+> +	buf = read_mbr(blk);
+> +	if (!buf)
+> +		return -EIO;
+
+You could move this to the top of the function and directly manipulate
+the input buffer.
 
 Sascha
 
