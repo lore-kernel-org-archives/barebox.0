@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bwPAK-0006dY-N5
- for barebox@lists.infradead.org; Tue, 18 Oct 2016 07:50:30 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 18 Oct 2016 09:50:05 +0200
-Message-Id: <20161018075005.4536-1-s.hauer@pengutronix.de>
+ id 1bwPZR-0004YY-TS
+ for barebox@lists.infradead.org; Tue, 18 Oct 2016 08:16:27 +0000
+From: Juergen Borleis <jbe@pengutronix.de>
+Date: Tue, 18 Oct 2016 10:17:27 +0200
+References: <CABvwO2ARpHSzYE6Y3JrfFAQ2jEzw3EXfP36goL6kPogcBbNLKQ@mail.gmail.com>
+In-Reply-To: <CABvwO2ARpHSzYE6Y3JrfFAQ2jEzw3EXfP36goL6kPogcBbNLKQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201610181017.27843.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,47 +18,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: bootm: Fix free_mem calculation when initrd is given
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: Loading kernel issues
+To: Javier Fileiv <javier.fileiv@gmail.com>
+Cc: barebox@lists.infradead.org
 
-When a initrd is given we calculate the next free memory position
-as:
-free_mem = PAGE_ALIGN(initrd_end);
-This is wrong when initrd_end exactly falls on a page boundary.
-In this case PAGE_ALIGN() does nothing and free_mem becomes
-initrd_end and the following bootm_load_devicetree() and thus
-booting fails with -ENOMEM.
-
-Fix this by correctly advancing to the next free memory position.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/lib/bootm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index 56663fe..9f3d950 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -158,7 +158,7 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem, int
- 		initrd_start = data->initrd_res->start;
- 		initrd_end = data->initrd_res->end;
- 		initrd_size = resource_size(data->initrd_res);
--		free_mem = PAGE_ALIGN(initrd_end);
-+		free_mem = PAGE_ALIGN(initrd_end + 1);
- 	}
- 
- 	ret = bootm_load_devicetree(data, free_mem);
--- 
-2.9.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgSmF2aWVyLAoKT24gU3VuZGF5IDE2IE9jdG9iZXIgMjAxNiAyMzowNjoxNSBKYXZpZXIgRmls
+ZWl2IHdyb3RlOgo+IEkndmUganVzdCBmbGFzaGVkIGJhcmVib3ggb24gbXkgTWluaTI0NDAuIEkg
+aGF2ZSAyIHF1ZXN0aW9ucy9pc3N1ZXMgbm93Cj4KPiAxKSBXaGVuIHRyeWluZyB0byBsb2FkIHRo
+ZSBrZXJuZWwgZnJvbSBURlRQLCBldmVyeXRoaW5nIGlzIG9rIGJ1dCB3aGVuCj4gaXQncyB0cnlp
+bmcgdG8gbW91bnQgdGhlIHJvb3RmcyBzb21ldGhpbmcgaXMgbm90IHdvcmtpbmcsIGV2ZW4gdGhv
+dWdoCj4gSSBzZXQgdGhlIHJvb3RkZWxheSBwYXJhbSB0byA1IHNlY3MuCj4KPiAyKSBJIHRyaWVk
+IGFsc28gdGhlIGJvb3QgZnJvbSBuYW5kIGFuZCBpcyB3b3JraW5nIGp1c3QgZmluZSwgYnV0IHRo
+ZXJlCj4gbm8gaXMgYXV0byBib290IHdoZW4gcmVzZXRpbmcgdGhlIGJvYXJkLi4uIGl0IGp1c3Qg
+Z2l2ZSBtZSB0aGUgYmFyZWJveAo+IHByb21wdCBlYWNoIHRpbWUsIGFuZCBpZiBpIHJ1biBmcm9t
+IHRoZXJlIGJvb3QgbmFuZCBpdCB3b3JrcyBPSywgYnV0Cj4gbm8gYXV0b21hR2ljYWxseS4gOikK
+CkRpZCB5b3UgbW9kaWZ5IHRoZSAiL2Vudi9jb25maWciWzFdIGZpbGUgdG8gZGVmaW5lIHRoZSBk
+ZWZhdWx0IGJvb3Qgc291cmNlPwoKQ2hlZXJzLApKdWVyZ2VuCgpbMV0gImtlcm5lbF9sb2MiIGFu
+ZCAicm9vdGZzX2xvYyIKCi0tIApQZW5ndXRyb25peCBlLksuIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgfCBKdWVyZ2VuIEJvcmxlaXMgwqAgwqAgwqAgwqAgwqAg
+wqAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gwqB8CgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
+QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9iYXJlYm94Cg==
