@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from p3nlsmtpcp01-01.prod.phx3.secureserver.net ([184.168.200.138])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat
- Linux)) id 1brCM9-0007Ll-4i
- for barebox@lists.infradead.org; Mon, 03 Oct 2016 23:09:09 +0000
-Received: from haitipageants by p3plcpnl0224.prod.phx3.secureserver.net with
- local (Exim 4.87)
- (envelope-from <haitipageants@p3plcpnl0224.prod.phx3.secureserver.net>)
- id 1brCJp-0005CC-GT
- for barebox@lists.infradead.org; Mon, 03 Oct 2016 16:06:45 -0700
-Date: Mon, 3 Oct 2016 23:06:45 +0000
-From: "FedEx Standard Overnight"
- <ivan.skinner@tennesseeinternationalpageants.com>
-Message-ID: <a4bd4d4fe014e256fe93b86917765a67@tennesseeinternationalpageants.com>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1bwrKa-0007gY-Fm
+ for barebox@lists.infradead.org; Wed, 19 Oct 2016 13:54:57 +0000
+Date: Wed, 19 Oct 2016 15:54:34 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20161019135434.wmyenu5irgymn3ho@pengutronix.de>
+References: <20161019102123.vibu2i6p3rlu7ye4@pengutronix.de>
+ <20161019123229.11583-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="b1_eecefd3c825a528a8a764ceed117e6fe"
-Content-Transfer-Encoding: 8bit
+Content-Disposition: inline
+In-Reply-To: <20161019123229.11583-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,172 +19,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: FedEx Standard Overnight
- <ivan.skinner@tennesseeinternationalpageants.com>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Problems with item delivery, n.00809120
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] pinctrl: mvebu: sync mpp names to Linux 4.9-rc1
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
---b1_eecefd3c825a528a8a764ceed117e6fe
-Content-Type: text/plain; charset=us-ascii
+On Wed, Oct 19, 2016 at 02:32:29PM +0200, Uwe Kleine-K=F6nig wrote:
+> Linux changed several mpp names in commits:
+> =
 
-Dear Customer,
+> 	438881dfddb9 (pinctrl: mvebu: armada-370: fix spi0 pin description)
+> 	bc99357f3690 (pinctrl: mvebu: armada-xp: remove non-existing NAND pins)
+> 	80b3d04feab5 (pinctrl: mvebu: armada-xp: remove non-existing VDD cpu_pd =
+functions)
+> 	100dc5d84095 (pinctrl: mvebu: armada-{38x,39x,xp}: normalize naming of D=
+RAM functions)
+> 	7bd6a26db6f9 (pinctrl: mvebu: armada-{370,375,38x,39x}: normalize dev pi=
+ns)
+> 	dae5597f253a (pinctrl: mvebu: armada-{370,375,38x,39x,xp}: normalize TDM=
+ pins)
+> 	d4974c16ed22 (pinctrl: mvebu: armada-{370,375}: normalize PCIe pins)
+> 	f32f01e1ba6b (pinctrl: mvebu: armada-{370,375}: normalize audio pins)
+> 	a361cbc575d6 (pinctrl: mvebu: armada-{370,xp}: normalize ethernet txclko=
+ut pins)
+> 	bfacb5669474 (pinctrl: mvebu: armada-370: align VDD cpu-pd pin naming wi=
+th datasheet)
+> 	9e05db29e2ac (pinctrl: mvebu: armada-370: align spi1 clock pin naming)
+> 	50a7d13d2410 (pinctrl: mvebu: armada-xp: rename spi to spi0)
+> 	88b355f1e4e5 (pinctrl: mvebu: armada-xp: add spi1 function)
+> 	fb53b61d7768 (pinctrl: mvebu: armada-xp: add nand rb function)
+> 	b19bf3797679 (pinctrl: mvebu: armada-xp: add dram functions)
+> =
 
-Courier was unable to deliver the parcel to you.
-Please, download Delivery Label attached to this email.
+> Adapt the barebox mvebu drivers accordingly.
+> =
 
-Thanks and best regards,
-Ivan Skinner,
-FedEx Station Manager.
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+> Changes since (implict) v1:
+>  - rebase to master
 
+Applied, thanks
 
---b1_eecefd3c825a528a8a764ceed117e6fe
-Content-Type: application/zip; name="FedEx_00809120.zip"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename=FedEx_00809120.zip
+Sascha
 
-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
+-- =
 
-
---b1_eecefd3c825a528a8a764ceed117e6fe
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---b1_eecefd3c825a528a8a764ceed117e6fe--
