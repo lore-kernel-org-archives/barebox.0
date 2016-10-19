@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bwmUk-0003rP-1T
- for barebox@lists.infradead.org; Wed, 19 Oct 2016 08:45:07 +0000
-Received: by mail-lf0-x244.google.com with SMTP id x23so1042457lfi.1
- for <barebox@lists.infradead.org>; Wed, 19 Oct 2016 01:44:45 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 19 Oct 2016 11:44:37 +0300
-Message-Id: <20161019084437.7533-1-antonynpavlov@gmail.com>
+ id 1bwnnK-00059X-3S
+ for barebox@lists.infradead.org; Wed, 19 Oct 2016 10:08:23 +0000
+Date: Wed, 19 Oct 2016 12:07:58 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20161019100758.gkn3lijfpuxqpdes@pengutronix.de>
+References: <1476793443-27586-1-git-send-email-yegorslists@googlemail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1476793443-27586-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,60 +18,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] sandbox: eliminate sdl_init()
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] arm: Baltos: setup MPU PLL to run at 600MHz
+To: yegorslists@googlemail.com
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/sandbox/mach-sandbox/include/mach/linux.h | 1 -
- arch/sandbox/os/sdl.c                          | 7 +------
- 2 files changed, 1 insertion(+), 7 deletions(-)
+On Tue, Oct 18, 2016 at 02:24:03PM +0200, yegorslists@googlemail.com wrote:
+> From: Yegor Yefremov <yegorslists@googlemail.com>
+> 
+> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+> ---
+>  arch/arm/boards/vscom-baltos/lowlevel.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sandbox/mach-sandbox/include/mach/linux.h b/arch/sandbox/mach-sandbox/include/mach/linux.h
-index 1e53f69..1f11ed4 100644
---- a/arch/sandbox/mach-sandbox/include/mach/linux.h
-+++ b/arch/sandbox/mach-sandbox/include/mach/linux.h
-@@ -30,7 +30,6 @@ struct linux_console_data {
- 
- extern int sdl_xres;
- extern int sdl_yres;
--int sdl_init(void);
- void sdl_close(void);
- int sdl_open(int xres, int yres, int bpp, void* buf);
- void sdl_stop_timer(void);
-diff --git a/arch/sandbox/os/sdl.c b/arch/sandbox/os/sdl.c
-index ec538e9..9a35279 100644
---- a/arch/sandbox/os/sdl.c
-+++ b/arch/sandbox/os/sdl.c
-@@ -23,11 +23,6 @@ static SDL_Surface *real_screen;
- static void *buffer = NULL;
- pthread_t th;
- 
--int sdl_init(void)
--{
--	return SDL_Init(SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE);
--}
--
- static void sdl_copy_buffer(SDL_Surface *screen)
- {
- 	if (SDL_MUSTLOCK(screen)) {
-@@ -84,7 +79,7 @@ int sdl_open(int xres, int yres, int bpp, void* buf)
- {
- 	int flags = SDL_HWSURFACE | SDL_ASYNCBLIT | SDL_HWACCEL;
- 
--	if (sdl_init() < 0) {
-+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE) < 0) {
- 		printf("Could not initialize SDL: %s.\n", SDL_GetError());
- 		return -1;
- 	}
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/arch/arm/boards/vscom-baltos/lowlevel.c b/arch/arm/boards/vscom-baltos/lowlevel.c
+> index 8bce91a..87f2a74 100644
+> --- a/arch/arm/boards/vscom-baltos/lowlevel.c
+> +++ b/arch/arm/boards/vscom-baltos/lowlevel.c
+> @@ -93,7 +93,7 @@ static noinline int baltos_sram_init(void)
+>  	while (__raw_readl(AM33XX_WDT_REG(WWPS)) != 0x0);
+>  
+>  	/* Setup the PLLs and the clocks for the peripherals */
+> -	am33xx_pll_init(MPUPLL_M_500, DDRPLL_M_400);
+> +	am33xx_pll_init(MPUPLL_M_600, DDRPLL_M_400);
+>  	am335x_sdram_init(0x18B, &ddr3_cmd_ctrl, &ddr3_regs, &ddr3_data);
+>  	sdram_size = get_ram_size((void *)0x80000000, (1024 << 20));
+>  	if (sdram_size == SZ_256M)
+> -- 
+> 2.1.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.9.3
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
