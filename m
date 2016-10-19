@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bwkmL-0006WX-6w
- for barebox@lists.infradead.org; Wed, 19 Oct 2016 06:55:10 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 19 Oct 2016 08:54:46 +0200
-Message-Id: <20161019065446.3580-1-s.hauer@pengutronix.de>
+ id 1bwlfy-0002Lp-UO
+ for barebox@lists.infradead.org; Wed, 19 Oct 2016 07:52:39 +0000
+From: Juergen Borleis <jbe@pengutronix.de>
+Date: Wed, 19 Oct 2016 09:53:40 +0200
+References: <CABvwO2ARpHSzYE6Y3JrfFAQ2jEzw3EXfP36goL6kPogcBbNLKQ@mail.gmail.com>
+ <CABvwO2AvfKwc==BhRfw14CzeX4ALwAFp5Zxn1t0MEj2bsn50zQ@mail.gmail.com>
+ <CABvwO2A6jNWz7_MOcxxAdJh_fAoV06uA9qk28dKZ5icfV07kQg@mail.gmail.com>
+In-Reply-To: <CABvwO2A6jNWz7_MOcxxAdJh_fAoV06uA9qk28dKZ5icfV07kQg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201610190953.41081.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,94 +20,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: Make UBI detection more robust
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: Loading kernel issues
+To: Javier Fileiv <javier.fileiv@gmail.com>
+Cc: barebox@lists.infradead.org
 
-When we want to detect if a mtd device contains an UBI image then
-testing the first block is not enough since it can always happen that
-UBI has just erased the block before the power failed during last boot.
-Since UBI only ever erases one block at a time and directly writes the
-ec header to it afterwards, it shouldn't be necessary to scan the whole
-device for UBI data. Scan the first 64 blocks. The first non-empty block
-then must contain UBI data, if instead we find foreign data we assume
-that no UBI is on that mtd device.
+Hi Javier,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mtd/core.c | 35 ++++++++++++++++++++++++-----------
- 1 file changed, 24 insertions(+), 11 deletions(-)
+On Tuesday 18 October 2016 18:56:03 Javier Fileiv wrote:
+> Trying to autoboot from nand, I set my /env/config file like that (and
+> after that a "saveenv"). Although it doesn't work automaGically! :)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 6d04b88..90b800c 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -18,6 +18,7 @@
- #include <common.h>
- #include <linux/mtd/nand.h>
- #include <linux/mtd/mtd.h>
-+#include <mtd/mtd-peb.h>
- #include <mtd/ubi-user.h>
- #include <cmdlinepart.h>
- #include <filetype.h>
-@@ -622,9 +623,11 @@ static int mtd_detect(struct device_d *dev)
- 	struct mtd_info *mtd = container_of(dev, struct mtd_info, class_dev);
- 	int bufsize = 512;
- 	void *buf;
--	int ret;
-+	int ret = 0, i;
- 	enum filetype filetype;
--	size_t retlen;
-+	int npebs = mtd_div_by_eb(mtd->size, mtd);
-+
-+	npebs = max(npebs, 64);
- 
- 	/*
- 	 * Do not try to attach an UBI device if this device has partitions
-@@ -636,17 +639,27 @@ static int mtd_detect(struct device_d *dev)
- 
- 	buf = xmalloc(bufsize);
- 
--	ret = mtd_read(mtd, 0, bufsize, &retlen, buf);
--	if (ret)
--		goto out;
-+	for (i = 0; i < npebs; i++) {
-+		if (mtd_peb_is_bad(mtd, i))
-+			continue;
- 
--	filetype = file_detect_type(buf, bufsize);
--	if (filetype == filetype_ubi) {
--		ret = ubi_attach_mtd_dev(mtd, UBI_DEV_NUM_AUTO, 0, 20);
--		if (ret == -EEXIST)
--			ret = 0;
-+		ret = mtd_peb_read(mtd, buf, i, 0, 512);
-+		if (ret)
-+			continue;
-+
-+		if (mtd_buf_all_ff(buf, 512))
-+			continue;
-+
-+		filetype = file_detect_type(buf, bufsize);
-+		if (filetype == filetype_ubi) {
-+			ret = ubi_attach_mtd_dev(mtd, UBI_DEV_NUM_AUTO, 0, 20);
-+			if (ret == -EEXIST)
-+				ret = 0;
-+		}
-+
-+		break;
- 	}
--out:
-+
- 	free(buf);
- 
- 	return ret;
--- 
-2.9.3
+Can you also send the output of barebox from power on up to the point it fa=
+lls =
 
+into the prompt?
+
+Cheers,
+Juergen
+
+-- =
+
+Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0| Juergen Borleis =A0 =A0 =A0 =A0 =A0 =A0 |
+Industrial Linux Solutions =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| http://=
+www.pengutronix.de/ =A0|
 
 _______________________________________________
 barebox mailing list
