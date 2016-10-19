@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bwnnK-00059X-3S
- for barebox@lists.infradead.org; Wed, 19 Oct 2016 10:08:23 +0000
-Date: Wed, 19 Oct 2016 12:07:58 +0200
+ id 1bwntF-0001VZ-FD
+ for barebox@lists.infradead.org; Wed, 19 Oct 2016 10:14:49 +0000
+Date: Wed, 19 Oct 2016 12:14:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161019100758.gkn3lijfpuxqpdes@pengutronix.de>
-References: <1476793443-27586-1-git-send-email-yegorslists@googlemail.com>
+Message-ID: <20161019101407.kvibmtez5vnlqoar@pengutronix.de>
+References: <20161019073045.15747-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1476793443-27586-1-git-send-email-yegorslists@googlemail.com>
+In-Reply-To: <20161019073045.15747-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,51 +18,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: Baltos: setup MPU PLL to run at 600MHz
-To: yegorslists@googlemail.com
+Subject: Re: [PATCH] spi: mvebu: make more than one device on a bus work
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 18, 2016 at 02:24:03PM +0200, yegorslists@googlemail.com wrote:
-> From: Yegor Yefremov <yegorslists@googlemail.com>
-> 
-> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+On Wed, Oct 19, 2016 at 09:30:45AM +0200, Uwe Kleine-K=F6nig wrote:
+> The mvebu socs support up to 8 chip selects. Make use of them.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > ---
->  arch/arm/boards/vscom-baltos/lowlevel.c | 2 +-
+>  drivers/spi/mvebu_spi.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
-> 
-> diff --git a/arch/arm/boards/vscom-baltos/lowlevel.c b/arch/arm/boards/vscom-baltos/lowlevel.c
-> index 8bce91a..87f2a74 100644
-> --- a/arch/arm/boards/vscom-baltos/lowlevel.c
-> +++ b/arch/arm/boards/vscom-baltos/lowlevel.c
-> @@ -93,7 +93,7 @@ static noinline int baltos_sram_init(void)
->  	while (__raw_readl(AM33XX_WDT_REG(WWPS)) != 0x0);
->  
->  	/* Setup the PLLs and the clocks for the peripherals */
-> -	am33xx_pll_init(MPUPLL_M_500, DDRPLL_M_400);
-> +	am33xx_pll_init(MPUPLL_M_600, DDRPLL_M_400);
->  	am335x_sdram_init(0x18B, &ddr3_cmd_ctrl, &ddr3_regs, &ddr3_data);
->  	sdram_size = get_ram_size((void *)0x80000000, (1024 << 20));
->  	if (sdram_size == SZ_256M)
-> -- 
-> 2.1.4
-> 
-> 
+> =
+
+> diff --git a/drivers/spi/mvebu_spi.c b/drivers/spi/mvebu_spi.c
+> index c679e64c4248..335774d4c609 100644
+> --- a/drivers/spi/mvebu_spi.c
+> +++ b/drivers/spi/mvebu_spi.c
+> @@ -361,7 +361,7 @@ static int mvebu_spi_probe(struct device_d *dev)
+>  	master->bus_num =3D dev->id;
+>  	master->setup =3D mvebu_spi_setup;
+>  	master->transfer =3D mvebu_spi_transfer;
+> -	master->num_chipselect =3D 1;
+> +	master->num_chipselect =3D 8;
+>  =
+
+>  	ret =3D spi_register_master(master);
+>  	if (!ret)
+> -- =
+
+> 2.9.3
+> =
+
+> =
+
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
--- 
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
