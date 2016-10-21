@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bxTgG-0007WK-AM
- for barebox@lists.infradead.org; Fri, 21 Oct 2016 06:51:53 +0000
+ id 1bxTgD-0007S3-9h
+ for barebox@lists.infradead.org; Fri, 21 Oct 2016 06:51:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 21 Oct 2016 08:51:23 +0200
-Message-Id: <20161021065124.7328-5-s.hauer@pengutronix.de>
+Date: Fri, 21 Oct 2016 08:51:22 +0200
+Message-Id: <20161021065124.7328-4-s.hauer@pengutronix.de>
 In-Reply-To: <20161021065124.7328-1-s.hauer@pengutronix.de>
 References: <20161021065124.7328-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,85 +21,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/6] fs: squashfs: append linux rootarg for ubi volume
+Subject: [PATCH 4/6] Add filetype and detection for squashfs images
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Enrico Jorns <ejo@pengutronix.de>
 
 From: Enrico Jorns <ejo@pengutronix.de>
 
-If squashfs runs from an ubi volume, append appropriate root kernel
-options.
+This adds `filetype_squashfs` to the list of known filetypes and adds a
+detection for squashfs files to file_detect_type(). This currently
+matches on the `hsqs` start sequence of an image file.
 
-Note that ubiblock support is required in the kernel for that.
+Additionally, the newly introduced filetype is registered as the type of
+the squashfs_driver which allows, for example, to mount squashfs without
+the need to specify a type parameter.
+
+This changes enable booting a squashfs with the simple `boot` command
+pointing to the location (device) that holds the squashfs.
+
+Note that booting with blspec is limited as the current squashfs driver
+is not capable of handling symbolic links.
 
 Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/squashfs/squashfs.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ common/filetype.c      | 4 ++++
+ fs/squashfs/squashfs.c | 1 +
+ include/filetype.h     | 1 +
+ 3 files changed, 6 insertions(+)
 
+diff --git a/common/filetype.c b/common/filetype.c
+index 4728f87..8d72933 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -40,6 +40,7 @@ static const struct filetype_str filetype_str[] = {
+ 	[filetype_uimage] = { "U-Boot uImage", "u-boot" },
+ 	[filetype_ubi] = { "UBI image", "ubi" },
+ 	[filetype_jffs2] = { "JFFS2 image", "jffs2" },
++	[filetype_squashfs] = { "Squashfs image", "squashfs" },
+ 	[filetype_gzip] = { "GZIP compressed", "gzip" },
+ 	[filetype_bzip2] = { "BZIP2 compressed", "bzip2" },
+ 	[filetype_oftree] = { "open firmware Device Tree flattened Binary", "dtb" },
+@@ -278,6 +279,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+ 	if (buf8[0] == 0xfd && buf8[1] == 0x37 && buf8[2] == 0x7a &&
+ 			buf8[3] == 0x58 && buf8[4] == 0x5a && buf8[5] == 0x00)
+ 		return filetype_xz_compressed;
++	if (buf8[0] == 'h' && buf8[1] == 's' && buf8[2] == 'q' &&
++			buf8[3] == 's')
++		return filetype_squashfs;
+ 	if (buf[0] == be32_to_cpu(0xd00dfeed))
+ 		return filetype_oftree;
+ 	if (strncmp(buf8, "ANDROID!", 8) == 0)
 diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
-index 6d04681..c4d0bac 100644
+index d00dee6..6d04681 100644
 --- a/fs/squashfs/squashfs.c
 +++ b/fs/squashfs/squashfs.c
-@@ -9,12 +9,16 @@
- #include <linux/fs.h>
- #include <linux/stat.h>
- #include <linux/pagemap.h>
-+#include <linux/mtd/ubi.h>
-+#include <linux/mtd/mtd.h>
- 
- #include "squashfs_fs.h"
- #include "squashfs_fs_sb.h"
- #include "squashfs_fs_i.h"
- #include "squashfs.h"
- 
-+struct ubi_volume_desc;
-+
- char *squashfs_devread(struct squashfs_sb_info *fs, int byte_offset,
- 		int byte_len)
- {
-@@ -108,6 +112,31 @@ static struct inode *squashfs_findfile(struct super_block *sb,
- 	return NULL;
- }
- 
-+void squashfs_set_rootarg(struct squashfs_priv *priv, struct fs_device_d *fsdev)
-+{
-+	struct ubi_volume_desc *ubi_vol;
-+	struct ubi_volume_info vi = {};
-+	struct ubi_device_info di = {};
-+	struct mtd_info *mtd;
-+	char *str;
-+
-+	ubi_vol = ubi_open_volume_cdev(fsdev->cdev, UBI_READONLY);
-+
-+	if (IS_ERR(ubi_vol))
-+		return;
-+
-+	ubi_get_volume_info(ubi_vol, &vi);
-+	ubi_get_device_info(vi.ubi_num, &di);
-+	mtd = di.mtd;
-+
-+	str = basprintf("root=/dev/ubiblock%d_%d ubi.mtd=%s ubi.block=%d,%d rootfstype=squashfs",
-+			vi.ubi_num, vi.vol_id, mtd->cdev.partname, vi.ubi_num, vi.vol_id);
-+
-+	fsdev_set_linux_rootarg(fsdev, str);
-+
-+	free(str);
-+}
-+
- static int squashfs_probe(struct device_d *dev)
- {
- 	struct fs_device_d *fsdev;
-@@ -130,6 +159,8 @@ static int squashfs_probe(struct device_d *dev)
- 		goto err_out;
- 	}
- 
-+	squashfs_set_rootarg(priv, fsdev);
-+
- 	return 0;
- 
- err_out:
+@@ -353,6 +353,7 @@ static struct fs_driver_d squashfs_driver = {
+ 	.readdir	= squashfs_readdir,
+ 	.closedir	= squashfs_closedir,
+ 	.stat		= squashfs_stat,
++	.type		= filetype_squashfs,
+ 	.drv = {
+ 		.probe = squashfs_probe,
+ 		.remove = squashfs_remove,
+diff --git a/include/filetype.h b/include/filetype.h
+index cde73c1..65bd6ef 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -16,6 +16,7 @@ enum filetype {
+ 	filetype_uimage,
+ 	filetype_ubi,
+ 	filetype_jffs2,
++	filetype_squashfs,
+ 	filetype_gzip,
+ 	filetype_bzip2,
+ 	filetype_oftree,
 -- 
 2.9.3
 
