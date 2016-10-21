@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from webbox1416.server-home.net ([77.236.96.61])
  by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bxV0x-00083p-NH
- for barebox@lists.infradead.org; Fri, 21 Oct 2016 08:17:20 +0000
-References: <03214122-b05b-fc45-1e32-ad2832ca36d3@systec-electronic.com>
- <20161014095219.6qsyhajp2bffsc64@pengutronix.de>
+ id 1bxV7i-00053h-RI
+ for barebox@lists.infradead.org; Fri, 21 Oct 2016 08:24:19 +0000
+References: <20161021065124.7328-1-s.hauer@pengutronix.de>
+ <20161021065124.7328-6-s.hauer@pengutronix.de>
 From: =?UTF-8?Q?Daniel_Kr=c3=bcger?= <daniel.krueger@systec-electronic.com>
-Message-ID: <d6c5169f-788e-ff34-1953-fb9014822a72@systec-electronic.com>
-Date: Fri, 21 Oct 2016 10:16:53 +0200
+Message-ID: <fa561303-8330-208b-3588-bf9f4807d8cd@systec-electronic.com>
+Date: Fri, 21 Oct 2016 10:23:55 +0200
 MIME-Version: 1.0
-In-Reply-To: <20161014095219.6qsyhajp2bffsc64@pengutronix.de>
+In-Reply-To: <20161021065124.7328-6-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +22,57 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Compressed DTB - builtin DTB
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 6/6] fs: squashfs: Do not default on xz
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
 
 Hi Sascha,
 
-Am 14.10.2016 um 11:52 schrieb Sascha Hauer:
->
-> No, indeed that's not intended. Could you test the appended patch? It
-> should solve this.
+I tried this patch series, because I need Squashfs zlib support.
 
-Thanks. The patch works for me.
+I get the following output during configuration/build:
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+scripts/kconfig/conf --silentoldconfig Kconfig
+lib/lzo/Kconfig:1:error: recursive dependency detected!
+lib/lzo/Kconfig:1:	symbol LZO_DECOMPRESS is selected by SQUASHFS_LZO
+fs/squashfs/Kconfig:49:	symbol SQUASHFS_LZO depends on LZO_DECOMPRESS
+lib/Kconfig:21:error: recursive dependency detected!
+lib/Kconfig:21:	symbol XZ_DECOMPRESS is selected by SQUASHFS_XZ
+fs/squashfs/Kconfig:63:	symbol SQUASHFS_XZ depends on XZ_DECOMPRESS
+lib/Kconfig:9:error: recursive dependency detected!
+lib/Kconfig:9:	symbol ZLIB is selected by SQUASHFS_ZLIB
+fs/squashfs/Kconfig:24:	symbol SQUASHFS_ZLIB depends on ZLIB
+lib/Kconfig:17:error: recursive dependency detected!
+lib/Kconfig:17:	symbol LZ4_DECOMPRESS is selected by SQUASHFS_LZ4
+fs/squashfs/Kconfig:35:	symbol SQUASHFS_LZ4 depends on LZ4_DECOMPRESS
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-
->> Just using the compressed DTB would be really good. Because it makes the
->> image much smaller. However, how should that be done? The extract code might
->> be simple. But I don't have an idea how to let the linker select the right
->> version.
->
-> If you are using uncompressed binary you should switch to PBL support to
-> get a compressed binary. Then, if you are using PBL the dtb is
-> compressed already as part of the whole binary.
-
-I will try that.
-
-Best regards,
+cu,
    Daniel
+
+Am 21.10.2016 um 08:51 schrieb Sascha Hauer:
+> The default compression algorithm for squashfs is zlib, so only
+> do a 'default y' there. For xz change to 'default y if the algorithm
+> is enabled anyway' likke the other compression algorithms do.
+>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  fs/squashfs/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/fs/squashfs/Kconfig b/fs/squashfs/Kconfig
+> index 2e28e90..b84ef75 100644
+> --- a/fs/squashfs/Kconfig
+> +++ b/fs/squashfs/Kconfig
+> @@ -60,7 +60,7 @@ config SQUASHFS_LZO
+>
+>  config SQUASHFS_XZ
+>  	bool "Include support for XZ compressed file systems"
+> -	default y
+> +	default y if XZ_DECOMPRESS
+>  	depends on FS_SQUASHFS
+>  	select XZ_DECOMPRESS
+>  	help
+>
 
 -- 
 
