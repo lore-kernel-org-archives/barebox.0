@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from webbox1416.server-home.net ([77.236.96.61])
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bxV7i-00053h-RI
- for barebox@lists.infradead.org; Fri, 21 Oct 2016 08:24:19 +0000
-References: <20161021065124.7328-1-s.hauer@pengutronix.de>
- <20161021065124.7328-6-s.hauer@pengutronix.de>
-From: =?UTF-8?Q?Daniel_Kr=c3=bcger?= <daniel.krueger@systec-electronic.com>
-Message-ID: <fa561303-8330-208b-3588-bf9f4807d8cd@systec-electronic.com>
-Date: Fri, 21 Oct 2016 10:23:55 +0200
-MIME-Version: 1.0
-In-Reply-To: <20161021065124.7328-6-s.hauer@pengutronix.de>
+ id 1bxWOr-0001uy-AN
+ for barebox@lists.infradead.org; Fri, 21 Oct 2016 09:46:07 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 46737A002C5
+ for <barebox@lists.infradead.org>; Fri, 21 Oct 2016 11:46:11 +0200 (CEST)
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Fri, 21 Oct 2016 11:45:40 +0200
+Message-Id: <1477043141-27884-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,77 +17,121 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/6] fs: squashfs: Do not default on xz
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] ARM: dts: am33xx: Make am33xx-strip.dtsi independent
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+am33xx-strip.dtsi was used to remove unused nodes in the MLO device tree.
+It always required the am33xx.dtsi include. But if we add aliases to the
+am33xx.dtsi, where the nodes are beeing deleted in the am33xx-strip.dtsi
+we get compile errors. So made am33xx-strip.dtsi independent from am33xx.dtsi
+and renamed it to am33xx-mlo.dtsi.
 
-I tried this patch series, because I need Squashfs zlib support.
+Also added spi0 alias to am33xx-mlo.dtsi.
 
-I get the following output during configuration/build:
- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-scripts/kconfig/conf --silentoldconfig Kconfig
-lib/lzo/Kconfig:1:error: recursive dependency detected!
-lib/lzo/Kconfig:1:	symbol LZO_DECOMPRESS is selected by SQUASHFS_LZO
-fs/squashfs/Kconfig:49:	symbol SQUASHFS_LZO depends on LZO_DECOMPRESS
-lib/Kconfig:21:error: recursive dependency detected!
-lib/Kconfig:21:	symbol XZ_DECOMPRESS is selected by SQUASHFS_XZ
-fs/squashfs/Kconfig:63:	symbol SQUASHFS_XZ depends on XZ_DECOMPRESS
-lib/Kconfig:9:error: recursive dependency detected!
-lib/Kconfig:9:	symbol ZLIB is selected by SQUASHFS_ZLIB
-fs/squashfs/Kconfig:24:	symbol SQUASHFS_ZLIB depends on ZLIB
-lib/Kconfig:17:error: recursive dependency detected!
-lib/Kconfig:17:	symbol LZ4_DECOMPRESS is selected by SQUASHFS_LZ4
-fs/squashfs/Kconfig:35:	symbol SQUASHFS_LZ4 depends on LZ4_DECOMPRESS
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ arch/arm/dts/am335x-bone-common.dts                 | 3 +--
+ arch/arm/dts/am335x-phytec-phycard-som-mlo.dts      | 3 +--
+ arch/arm/dts/am335x-phytec-phycore-som-mlo.dts      | 3 +--
+ arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts      | 3 +--
+ arch/arm/dts/{am33xx-strip.dtsi => am33xx-mlo.dtsi} | 9 ++++++++-
+ 5 files changed, 12 insertions(+), 9 deletions(-)
+ rename arch/arm/dts/{am33xx-strip.dtsi => am33xx-mlo.dtsi} (87%)
 
-cu,
-   Daniel
-
-Am 21.10.2016 um 08:51 schrieb Sascha Hauer:
-> The default compression algorithm for squashfs is zlib, so only
-> do a 'default y' there. For xz change to 'default y if the algorithm
-> is enabled anyway' likke the other compression algorithms do.
->
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  fs/squashfs/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/fs/squashfs/Kconfig b/fs/squashfs/Kconfig
-> index 2e28e90..b84ef75 100644
-> --- a/fs/squashfs/Kconfig
-> +++ b/fs/squashfs/Kconfig
-> @@ -60,7 +60,7 @@ config SQUASHFS_LZO
->
->  config SQUASHFS_XZ
->  	bool "Include support for XZ compressed file systems"
-> -	default y
-> +	default y if XZ_DECOMPRESS
->  	depends on FS_SQUASHFS
->  	select XZ_DECOMPRESS
->  	help
->
-
+diff --git a/arch/arm/dts/am335x-bone-common.dts b/arch/arm/dts/am335x-bone-common.dts
+index 0488cbe..63962df 100644
+--- a/arch/arm/dts/am335x-bone-common.dts
++++ b/arch/arm/dts/am335x-bone-common.dts
+@@ -7,8 +7,7 @@
+  * all we need for the MLO
+  */
+ 
+-#include "am33xx.dtsi"
+-#include "am33xx-strip.dtsi"
++#include "am33xx-mlo.dtsi"
+ #include "am33xx-clocks-strip.dtsi"
+ #include "am335x-bone-common.dtsi"
+ 
+diff --git a/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts b/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts
+index a1755fd..817093b 100644
+--- a/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts
++++ b/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts
+@@ -7,9 +7,8 @@
+  */
+ /dts-v1/;
+ 
+-#include "am33xx.dtsi"
++#include "am33xx-mlo.dtsi"
+ #include "am335x-phytec-phycard-som.dtsi"
+-#include "am33xx-strip.dtsi"
+ #include "am33xx-clocks-strip.dtsi"
+ 
+ / {
+diff --git a/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts b/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts
+index f7bc462..817b672 100644
+--- a/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts
++++ b/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts
+@@ -7,9 +7,8 @@
+  */
+ /dts-v1/;
+ 
+-#include "am33xx.dtsi"
++#include "am33xx-mlo.dtsi"
+ #include "am335x-phytec-phycore-som.dtsi"
+-#include "am33xx-strip.dtsi"
+ #include "am33xx-clocks-strip.dtsi"
+ 
+ / {
+diff --git a/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts b/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts
+index e848a29..cf36c4c 100644
+--- a/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts
++++ b/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts
+@@ -7,9 +7,8 @@
+  */
+ /dts-v1/;
+ 
+-#include "am33xx.dtsi"
++#include "am33xx-mlo.dtsi"
+ #include "am335x-phytec-phyflex-som.dtsi"
+-#include "am33xx-strip.dtsi"
+ #include "am33xx-clocks-strip.dtsi"
+ 
+ / {
+diff --git a/arch/arm/dts/am33xx-strip.dtsi b/arch/arm/dts/am33xx-mlo.dtsi
+similarity index 87%
+rename from arch/arm/dts/am33xx-strip.dtsi
+rename to arch/arm/dts/am33xx-mlo.dtsi
+index 2943fd1..36f137b 100644
+--- a/arch/arm/dts/am33xx-strip.dtsi
++++ b/arch/arm/dts/am33xx-mlo.dtsi
+@@ -6,12 +6,19 @@
+  * it under the terms of the GNU General Public License version 2 as
+  * published by the Free Software Foundation.
+  */
++#include <arm/am33xx.dtsi>
+ 
+ / {
+ 	aliases {
++		gpio0 = &gpio0;
++		gpio1 = &gpio1;
++		gpio2 = &gpio2;
++		gpio3 = &gpio3;
++		mmc0 = &mmc1;
++		mmc1 = &mmc2;
++		spi0 = &spi0;
+ 		/delete-property/ i2c1;
+ 		/delete-property/ i2c2;
+-		/delete-property/ mmc2;
+ 		/delete-property/ d_can0;
+ 		/delete-property/ d_can1;
+ 	};
 -- 
-
-SYS TEC electronic GmbH
-Am Windrad 2
-08468 Heinsdorfergrund
-
-Telefon : +49 (0) 3765 38600-0
-Fax     : +49 (0) 3765 38600-4100
-Email   : daniel.krueger@systec-electronic.com
-Website : http://www.systec-electronic.com
-
-Managing Directors  :
-   Dipl.-Phys. Siegmar Schmidt, Dipl. Ing. (FH) Armin von Collrepp
-Commercial registry : Amtsgericht Chemnitz, HRB 28082
-USt.-Id Nr.         : DE150534010
+1.9.1
 
 
 _______________________________________________
