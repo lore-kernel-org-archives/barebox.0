@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bxTgf-0007cU-Az
- for barebox@lists.infradead.org; Fri, 21 Oct 2016 06:52:19 +0000
+ id 1bxTgk-0007ez-Ae
+ for barebox@lists.infradead.org; Fri, 21 Oct 2016 06:52:23 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 21 Oct 2016 08:51:21 +0200
-Message-Id: <20161021065124.7328-3-s.hauer@pengutronix.de>
+Date: Fri, 21 Oct 2016 08:51:24 +0200
+Message-Id: <20161021065124.7328-6-s.hauer@pengutronix.de>
 In-Reply-To: <20161021065124.7328-1-s.hauer@pengutronix.de>
 References: <20161021065124.7328-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,195 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] fs: squashfs: port zlib compression support from kernel
+Subject: [PATCH 6/6] fs: squashfs: Do not default on xz
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Enrico Jorns <ejo@pengutronix.de>
 
-From: Enrico Jorns <ejo@pengutronix.de>
+The default compression algorithm for squashfs is zlib, so only
+do a 'default y' there. For xz change to 'default y if the algorithm
+is enabled anyway' likke the other compression algorithms do.
 
-As this is the default compression method for squashfs, make this the
-default in kconfig selection, too
-
-Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/squashfs/Kconfig        |  13 +++++
- fs/squashfs/Makefile       |   1 +
- fs/squashfs/zlib_wrapper.c | 132 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 146 insertions(+)
- create mode 100644 fs/squashfs/zlib_wrapper.c
+ fs/squashfs/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/fs/squashfs/Kconfig b/fs/squashfs/Kconfig
-index 9af34c0..2e28e90 100644
+index 2e28e90..b84ef75 100644
 --- a/fs/squashfs/Kconfig
 +++ b/fs/squashfs/Kconfig
-@@ -17,6 +17,19 @@ menuconfig FS_SQUASHFS
- 	  embedded systems where low overhead is needed.  Further information
- 	  and tools are available from http://squashfs.sourceforge.net.
+@@ -60,7 +60,7 @@ config SQUASHFS_LZO
  
-+config SQUASHFS_ZLIB
-+	bool "Include support for ZLIB compressed file systems"
-+	depends on FS_SQUASHFS
-+	select ZLIB
-+	default y if ZLIB
-+	help
-+	  ZLIB compression is the standard compression used by Squashfs
-+	  file systems.  It offers a good trade-off between compression
-+	  achieved and the amount of CPU time and memory necessary to
-+	  compress and decompress.
-+
-+	  If unsure, say Y.
-+
- config SQUASHFS_LZ4
- 	bool "Include support for LZ4 compressed file systems"
- 	default y if LZ4_DECOMPRESS
-diff --git a/fs/squashfs/Makefile b/fs/squashfs/Makefile
-index 8590b09..7976e3f 100644
---- a/fs/squashfs/Makefile
-+++ b/fs/squashfs/Makefile
-@@ -13,3 +13,4 @@ obj-y	+= super.o
- obj-$(CONFIG_SQUASHFS_XZ) += xz_wrapper.o
- obj-$(CONFIG_SQUASHFS_LZO) += lzo_wrapper.o
- obj-$(CONFIG_SQUASHFS_LZ4) += lz4_wrapper.o
-+obj-$(CONFIG_SQUASHFS_ZLIB) += zlib_wrapper.o
-diff --git a/fs/squashfs/zlib_wrapper.c b/fs/squashfs/zlib_wrapper.c
-new file mode 100644
-index 0000000..f422515
---- /dev/null
-+++ b/fs/squashfs/zlib_wrapper.c
-@@ -0,0 +1,132 @@
-+/*
-+ * Squashfs - a compressed read only filesystem for Linux
-+ *
-+ * Copyright (c) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
-+ * Phillip Lougher <phillip@squashfs.org.uk>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * as published by the Free Software Foundation; either version 2,
-+ * or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-+ *
-+ * zlib_wrapper.c
-+ */
-+
-+
-+#include <linux/mutex.h>
-+#include <linux/zlib.h>
-+
-+#include "squashfs_fs.h"
-+#include "squashfs_fs_sb.h"
-+#include "squashfs.h"
-+#include "decompressor.h"
-+#include "page_actor.h"
-+
-+static void *zlib_init(struct squashfs_sb_info *dummy, void *buff)
-+{
-+	z_stream *stream = kmalloc(sizeof(z_stream), GFP_KERNEL);
-+	if (stream == NULL)
-+		goto failed;
-+	stream->workspace = vmalloc(zlib_inflate_workspacesize());
-+	if (stream->workspace == NULL)
-+		goto failed;
-+
-+	return stream;
-+
-+failed:
-+	ERROR("Failed to allocate zlib workspace\n");
-+	kfree(stream);
-+	return ERR_PTR(-ENOMEM);
-+}
-+
-+
-+static void zlib_free(void *strm)
-+{
-+	z_stream *stream = strm;
-+
-+	if (stream)
-+		vfree(stream->workspace);
-+	kfree(stream);
-+}
-+
-+
-+static int zlib_uncompress(struct squashfs_sb_info *msblk, void *strm,
-+	char **bh, int b, int offset, int length,
-+	struct squashfs_page_actor *output)
-+{
-+	int zlib_err, zlib_init = 0, k = 0;
-+	z_stream *stream = strm;
-+
-+	stream->avail_out = PAGE_CACHE_SIZE;
-+	stream->next_out = squashfs_first_page(output);
-+	stream->avail_in = 0;
-+
-+	do {
-+		if (stream->avail_in == 0 && k < b) {
-+			int avail = min(length, msblk->devblksize - offset);
-+			length -= avail;
-+			stream->next_in = bh[k] + offset;
-+			stream->avail_in = avail;
-+			offset = 0;
-+		}
-+
-+		if (stream->avail_out == 0) {
-+			stream->next_out = squashfs_next_page(output);
-+			if (stream->next_out != NULL)
-+				stream->avail_out = PAGE_CACHE_SIZE;
-+		}
-+
-+		if (!zlib_init) {
-+			zlib_err = zlib_inflateInit(stream);
-+			if (zlib_err != Z_OK) {
-+				squashfs_finish_page(output);
-+				goto out;
-+			}
-+			zlib_init = 1;
-+		}
-+
-+		zlib_err = zlib_inflate(stream, Z_SYNC_FLUSH);
-+
-+		if (stream->avail_in == 0 && k < b)
-+			kfree(bh[k++]);
-+	} while (zlib_err == Z_OK);
-+
-+	squashfs_finish_page(output);
-+
-+	if (zlib_err != Z_STREAM_END)
-+		goto out;
-+
-+	zlib_err = zlib_inflateEnd(stream);
-+	if (zlib_err != Z_OK)
-+		goto out;
-+
-+	if (k < b)
-+		goto out;
-+
-+	return stream->total_out;
-+
-+out:
-+	for (; k < b; k++)
-+		kfree(bh[k]);
-+
-+	return -EIO;
-+}
-+
-+const struct squashfs_decompressor squashfs_zlib_comp_ops = {
-+	.init = zlib_init,
-+	.free = zlib_free,
-+	.decompress = zlib_uncompress,
-+	.id = ZLIB_COMPRESSION,
-+	.name = "zlib",
-+	.supported = 1
-+};
-+
+ config SQUASHFS_XZ
+ 	bool "Include support for XZ compressed file systems"
+-	default y
++	default y if XZ_DECOMPRESS
+ 	depends on FS_SQUASHFS
+ 	select XZ_DECOMPRESS
+ 	help
 -- 
 2.9.3
 
