@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bxTgV-0007a1-AN
- for barebox@lists.infradead.org; Fri, 21 Oct 2016 06:52:09 +0000
+ id 1bxTgf-0007cU-Az
+ for barebox@lists.infradead.org; Fri, 21 Oct 2016 06:52:19 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 21 Oct 2016 08:51:19 +0200
-Message-Id: <20161021065124.7328-1-s.hauer@pengutronix.de>
+Date: Fri, 21 Oct 2016 08:51:21 +0200
+Message-Id: <20161021065124.7328-3-s.hauer@pengutronix.de>
+In-Reply-To: <20161021065124.7328-1-s.hauer@pengutronix.de>
+References: <20161021065124.7328-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,70 +21,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] fs: squashfs: port lzo compression support from kernel
+Subject: [PATCH 3/6] fs: squashfs: port zlib compression support from kernel
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Enrico Jorns <ejo@pengutronix.de>
 
 From: Enrico Jorns <ejo@pengutronix.de>
 
-This ports lzo_wrapper from kernel code and adds some minimal adaptions
-to make squashfs lzo compression work in barebox.
+As this is the default compression method for squashfs, make this the
+default in kconfig selection, too
 
 Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
-Tested-by: Yegor Yefremov <yegorslists@googlemail.com>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/squashfs/Kconfig       |  14 +++++
- fs/squashfs/Makefile      |   1 +
- fs/squashfs/lzo_wrapper.c | 129 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 144 insertions(+)
- create mode 100644 fs/squashfs/lzo_wrapper.c
+ fs/squashfs/Kconfig        |  13 +++++
+ fs/squashfs/Makefile       |   1 +
+ fs/squashfs/zlib_wrapper.c | 132 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 146 insertions(+)
+ create mode 100644 fs/squashfs/zlib_wrapper.c
 
 diff --git a/fs/squashfs/Kconfig b/fs/squashfs/Kconfig
-index dc25d93..7a6e5a2 100644
+index 9af34c0..2e28e90 100644
 --- a/fs/squashfs/Kconfig
 +++ b/fs/squashfs/Kconfig
-@@ -17,6 +17,20 @@ menuconfig FS_SQUASHFS
+@@ -17,6 +17,19 @@ menuconfig FS_SQUASHFS
  	  embedded systems where low overhead is needed.  Further information
  	  and tools are available from http://squashfs.sourceforge.net.
  
-+config SQUASHFS_LZO
-+	bool "Include support for LZO compressed file systems"
-+	default y if LZO_DECOMPRESS
++config SQUASHFS_ZLIB
++	bool "Include support for ZLIB compressed file systems"
 +	depends on FS_SQUASHFS
-+	select LZO_DECOMPRESS
++	select ZLIB
++	default y if ZLIB
 +	help
-+	  Saying Y here includes support for reading Squashfs file systems
-+	  compressed with LZO compression.  LZO compression is mainly
-+	  aimed at embedded systems with slower CPUs where the overheads
-+	  of zlib are too high.
++	  ZLIB compression is the standard compression used by Squashfs
++	  file systems.  It offers a good trade-off between compression
++	  achieved and the amount of CPU time and memory necessary to
++	  compress and decompress.
 +
-+	  LZO is not the standard compression used in Squashfs and so most
-+	  file systems will be readable without selecting this option.
++	  If unsure, say Y.
 +
- config SQUASHFS_XZ
- 	bool "Include support for XZ compressed file systems"
- 	default y
+ config SQUASHFS_LZ4
+ 	bool "Include support for LZ4 compressed file systems"
+ 	default y if LZ4_DECOMPRESS
 diff --git a/fs/squashfs/Makefile b/fs/squashfs/Makefile
-index c0d024c..447e15e 100644
+index 8590b09..7976e3f 100644
 --- a/fs/squashfs/Makefile
 +++ b/fs/squashfs/Makefile
-@@ -11,3 +11,4 @@ obj-y	+= inode.o
- obj-y	+= namei.o
- obj-y	+= super.o
+@@ -13,3 +13,4 @@ obj-y	+= super.o
  obj-$(CONFIG_SQUASHFS_XZ) += xz_wrapper.o
-+obj-$(CONFIG_SQUASHFS_LZO) += lzo_wrapper.o
-diff --git a/fs/squashfs/lzo_wrapper.c b/fs/squashfs/lzo_wrapper.c
+ obj-$(CONFIG_SQUASHFS_LZO) += lzo_wrapper.o
+ obj-$(CONFIG_SQUASHFS_LZ4) += lz4_wrapper.o
++obj-$(CONFIG_SQUASHFS_ZLIB) += zlib_wrapper.o
+diff --git a/fs/squashfs/zlib_wrapper.c b/fs/squashfs/zlib_wrapper.c
 new file mode 100644
-index 0000000..834ee29
+index 0000000..f422515
 --- /dev/null
-+++ b/fs/squashfs/lzo_wrapper.c
-@@ -0,0 +1,129 @@
++++ b/fs/squashfs/zlib_wrapper.c
+@@ -0,0 +1,132 @@
 +/*
 + * Squashfs - a compressed read only filesystem for Linux
 + *
-+ * Copyright (c) 2010 LG Electronics
-+ * Chan Jeong <chan.jeong@lge.com>
++ * Copyright (c) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
++ * Phillip Lougher <phillip@squashfs.org.uk>
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License
@@ -98,13 +98,12 @@ index 0000000..834ee29
 + * along with this program; if not, write to the Free Software
 + * Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 + *
-+ * lzo_wrapper.c
++ * zlib_wrapper.c
 + */
 +
-+#include <common.h>
++
 +#include <linux/mutex.h>
-+#include <lzo.h>
-+#include <types.h>
++#include <linux/zlib.h>
 +
 +#include "squashfs_fs.h"
 +#include "squashfs_fs_sb.h"
@@ -112,101 +111,105 @@ index 0000000..834ee29
 +#include "decompressor.h"
 +#include "page_actor.h"
 +
-+struct squashfs_lzo {
-+	void	*input;
-+	void	*output;
-+};
-+
-+static void *lzo_init(struct squashfs_sb_info *msblk, void *buff)
++static void *zlib_init(struct squashfs_sb_info *dummy, void *buff)
 +{
-+	int block_size = max_t(int, msblk->block_size, SQUASHFS_METADATA_SIZE);
-+
-+	struct squashfs_lzo *stream = kzalloc(sizeof(*stream), GFP_KERNEL);
++	z_stream *stream = kmalloc(sizeof(z_stream), GFP_KERNEL);
 +	if (stream == NULL)
 +		goto failed;
-+	stream->input = vmalloc(block_size);
-+	if (stream->input == NULL)
++	stream->workspace = vmalloc(zlib_inflate_workspacesize());
++	if (stream->workspace == NULL)
 +		goto failed;
-+	stream->output = vmalloc(block_size);
-+	if (stream->output == NULL)
-+		goto failed2;
 +
 +	return stream;
 +
-+failed2:
-+	vfree(stream->input);
 +failed:
-+	ERROR("Failed to allocate lzo workspace\n");
++	ERROR("Failed to allocate zlib workspace\n");
 +	kfree(stream);
 +	return ERR_PTR(-ENOMEM);
 +}
 +
 +
-+static void lzo_free(void *strm)
++static void zlib_free(void *strm)
 +{
-+	struct squashfs_lzo *stream = strm;
++	z_stream *stream = strm;
 +
-+	if (stream) {
-+		vfree(stream->input);
-+		vfree(stream->output);
-+	}
++	if (stream)
++		vfree(stream->workspace);
 +	kfree(stream);
 +}
 +
 +
-+static int lzo_uncompress(struct squashfs_sb_info *msblk, void *strm,
++static int zlib_uncompress(struct squashfs_sb_info *msblk, void *strm,
 +	char **bh, int b, int offset, int length,
 +	struct squashfs_page_actor *output)
 +{
-+	struct squashfs_lzo *stream = strm;
-+	void *buff = stream->input, *data;
-+	int avail, i, bytes = length, res;
-+	size_t out_len = output->length;
++	int zlib_err, zlib_init = 0, k = 0;
++	z_stream *stream = strm;
 +
-+	for (i = 0; i < b; i++) {
-+		avail = min(bytes, msblk->devblksize - offset);
-+		memcpy(buff, bh[i] + offset, avail);
-+		buff += avail;
-+		bytes -= avail;
-+		offset = 0;
-+		kfree(bh[i]);
-+	}
++	stream->avail_out = PAGE_CACHE_SIZE;
++	stream->next_out = squashfs_first_page(output);
++	stream->avail_in = 0;
 +
-+	res = lzo1x_decompress_safe(stream->input, (size_t)length,
-+					stream->output, &out_len);
-+	if (res != LZO_E_OK)
-+		goto failed;
-+
-+	res = bytes = (int)out_len;
-+	data = squashfs_first_page(output);
-+	buff = stream->output;
-+	while (data) {
-+		if (bytes <= PAGE_CACHE_SIZE) {
-+			memcpy(data, buff, bytes);
-+			break;
-+		} else {
-+			memcpy(data, buff, PAGE_CACHE_SIZE);
-+			buff += PAGE_CACHE_SIZE;
-+			bytes -= PAGE_CACHE_SIZE;
-+			data = squashfs_next_page(output);
++	do {
++		if (stream->avail_in == 0 && k < b) {
++			int avail = min(length, msblk->devblksize - offset);
++			length -= avail;
++			stream->next_in = bh[k] + offset;
++			stream->avail_in = avail;
++			offset = 0;
 +		}
-+	}
++
++		if (stream->avail_out == 0) {
++			stream->next_out = squashfs_next_page(output);
++			if (stream->next_out != NULL)
++				stream->avail_out = PAGE_CACHE_SIZE;
++		}
++
++		if (!zlib_init) {
++			zlib_err = zlib_inflateInit(stream);
++			if (zlib_err != Z_OK) {
++				squashfs_finish_page(output);
++				goto out;
++			}
++			zlib_init = 1;
++		}
++
++		zlib_err = zlib_inflate(stream, Z_SYNC_FLUSH);
++
++		if (stream->avail_in == 0 && k < b)
++			kfree(bh[k++]);
++	} while (zlib_err == Z_OK);
++
 +	squashfs_finish_page(output);
 +
-+	return res;
++	if (zlib_err != Z_STREAM_END)
++		goto out;
 +
-+failed:
++	zlib_err = zlib_inflateEnd(stream);
++	if (zlib_err != Z_OK)
++		goto out;
++
++	if (k < b)
++		goto out;
++
++	return stream->total_out;
++
++out:
++	for (; k < b; k++)
++		kfree(bh[k]);
++
 +	return -EIO;
 +}
 +
-+const struct squashfs_decompressor squashfs_lzo_comp_ops = {
-+	.init = lzo_init,
-+	.free = lzo_free,
-+	.decompress = lzo_uncompress,
-+	.id = LZO_COMPRESSION,
-+	.name = "lzo",
++const struct squashfs_decompressor squashfs_zlib_comp_ops = {
++	.init = zlib_init,
++	.free = zlib_free,
++	.decompress = zlib_uncompress,
++	.id = ZLIB_COMPRESSION,
++	.name = "zlib",
 +	.supported = 1
 +};
++
 -- 
 2.9.3
 
