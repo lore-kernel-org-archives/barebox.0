@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22d.google.com ([2a00:1450:4010:c07::22d])
+Received: from mail-vk0-x244.google.com ([2607:f8b0:400c:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bxHdZ-0005hl-TR
- for barebox@lists.infradead.org; Thu, 20 Oct 2016 18:00:19 +0000
-Received: by mail-lf0-x22d.google.com with SMTP id x79so101464383lff.0
- for <barebox@lists.infradead.org>; Thu, 20 Oct 2016 10:59:56 -0700 (PDT)
+ id 1bxSxD-0003ue-90
+ for barebox@lists.infradead.org; Fri, 21 Oct 2016 06:05:20 +0000
+Received: by mail-vk0-x244.google.com with SMTP id b186so4278437vkb.3
+ for <barebox@lists.infradead.org>; Thu, 20 Oct 2016 23:04:57 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CABvwO2DgadsiAhdVaSb+teN8MPJMwpLNF0RXWyvOf98=hOSo9Q@mail.gmail.com>
-References: <CABvwO2ARpHSzYE6Y3JrfFAQ2jEzw3EXfP36goL6kPogcBbNLKQ@mail.gmail.com>
- <CABvwO2BoCQs-XoSNsYG8Uo8+odKcZ6o5dWoFzk_nQjTJGerYLw@mail.gmail.com>
- <CABvwO2BZoNwdZJsWmygcjsAUXsmexDPU5cTpEoVd-sW9y5T_Rw@mail.gmail.com>
- <201610201113.08285.jbe@pengutronix.de>
- <CABvwO2DgadsiAhdVaSb+teN8MPJMwpLNF0RXWyvOf98=hOSo9Q@mail.gmail.com>
-From: Javier Fileiv <javier.fileiv@gmail.com>
-Date: Thu, 20 Oct 2016 19:59:54 +0200
-Message-ID: <CABvwO2ByvooXXYw+KKZSKvX0CPf43XABHn1-CUNd+qguCkRTeA@mail.gmail.com>
+In-Reply-To: <20161004194020.vmmm35546csmbvnv@pengutronix.de>
+References: <20161004101048.12970-1-ejo@pengutronix.de>
+ <20161004101048.12970-4-ejo@pengutronix.de>
+ <20161004194020.vmmm35546csmbvnv@pengutronix.de>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Fri, 21 Oct 2016 08:04:35 +0200
+Message-ID: <CAGm1_ksWRAVPV3JSzxZvap_B=O7oUFw7CV93druAFF8ZGir4Og@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,43 +25,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Loading kernel issues
-To: Juergen Borleis <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/5] fs: squashfs: port zlib compression support from
+ kernel
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>, Enrico Jorns <ejo@pengutronix.de>
 
-ups... I think Ive broken everything... I just put at the end of the
-env/config file "boot nand" and now is looping and at some point it
-says "ERROR: out of memory".
-Another thing... I changed vivibootloader in NOR for the barebox, and
-even if I change to NOR it's looping again and again... What do I do?
-HELP!
+Hi Enrico,
 
-2016-10-20 11:17 GMT+02:00 Javier Fileiv <javier.fileiv@gmail.com>:
-> Thank you very much.... maybe I just to put on /env/config a "boot nand" line...
+On Tue, Oct 4, 2016 at 9:40 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Tue, Oct 04, 2016 at 12:10:46PM +0200, Enrico Jorns wrote:
+>> As this is the default compression method for squashfs, make this the
+>> default in kconfig selection, too
+>>
+>> Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
+>> ---
+>>  fs/squashfs/Kconfig        |  20 ++++++-
+>>  fs/squashfs/Makefile       |   1 +
+>>  fs/squashfs/zlib_wrapper.c | 132 +++++++++++++++++++++++++++++++++++++++++++++
+>>  3 files changed, 152 insertions(+), 1 deletion(-)
+>>  create mode 100644 fs/squashfs/zlib_wrapper.c
+>>
+>> diff --git a/fs/squashfs/Kconfig b/fs/squashfs/Kconfig
+>> index d2de168..1cb1ac5 100644
+>> --- a/fs/squashfs/Kconfig
+>> +++ b/fs/squashfs/Kconfig
+>> @@ -17,6 +17,19 @@ menuconfig FS_SQUASHFS
+>>         embedded systems where low overhead is needed.  Further information
+>>         and tools are available from http://squashfs.sourceforge.net.
+>>
+>> +config SQUASHFS_ZLIB
+>> +     bool "Include support for ZLIB compressed file systems"
+>> +     depends on FS_SQUASHFS
+>> +     select ZLIB
+>> +     default y
+>> +     help
+>> +       ZLIB compression is the standard compression used by Squashfs
+>> +       file systems.  It offers a good trade-off between compression
+>> +       achieved and the amount of CPU time and memory necessary to
+>> +       compress and decompress.
+>> +
+>> +       If unsure, say Y.
+>> +
+>>  config SQUASHFS_LZ4
+>>       bool "Include support for LZ4 compressed file systems"
+>>       depends on FS_SQUASHFS
+>> @@ -30,9 +43,10 @@ config SQUASHFS_LZ4
+>>         LZ4 is not the standard compression used in Squashfs and so most
+>>         file systems will be readable without selecting this option.
+>>
+>> +       If unsure, say N.
+>> +
+>>  config SQUASHFS_LZO
+>>       bool "Include support for LZO compressed file systems"
+>> -     default y
+>>       depends on FS_SQUASHFS
+>>       select LZO_DECOMPRESS
+>>       help
+>> @@ -44,6 +58,8 @@ config SQUASHFS_LZO
+>>         LZO is not the standard compression used in Squashfs and so most
+>>         file systems will be readable without selecting this option.
+>>
+>> +       If unsure, say N.
+>> +
+>>  config SQUASHFS_XZ
+>>       bool "Include support for XZ compressed file systems"
+>>       default y
+>> @@ -57,3 +73,5 @@ config SQUASHFS_XZ
+>>
+>>         XZ is not the standard compression used in Squashfs and so most
+>>         file systems will be readable without selecting this option.
+>> +
+>> +       If unsure, say N.
 >
-> I'll try it.
->
-> Regards
->
-> 2016-10-20 11:13 GMT+02:00 Juergen Borleis <jbe@pengutronix.de>:
->> Hi Javier,
->>
->> On Wednesday 19 October 2016 20:18:38 Javier Fileiv wrote:
->>> just in case...my /env/config as well
->>> [...]
->>
->> Sorry, no idea. I do not even have the hardware anymore, so I cannot test it.
->>
->> Keep a look into the "env/bin/boot" script, what it tries to do with the
->> configuration from your "env/config". Maybe it could help you to make it work
->> again.
->>
->> Cheers,
->> Juergen
->>
->> --
->> Pengutronix e.K.                              | Juergen Borleis             |
->> Industrial Linux Solutions                    | http://www.pengutronix.de/  |
+> Here unrelated Kconfig entries are changed. Also in the end we get
+> "default y" for SQUASHFS_XZ along with the help "If unsure, say N."
+> which seems inconsistent.
+
+Care to send v2?
+
+@Sascha what is the plan as to the default compression selection?
+Leave XZ or set it to ZLIB? I'm open for both options.
+
+Thanks.
+
+Yegor
 
 _______________________________________________
 barebox mailing list
