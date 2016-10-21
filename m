@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vk0-x244.google.com ([2607:f8b0:400c:c05::244])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bxSxD-0003ue-90
- for barebox@lists.infradead.org; Fri, 21 Oct 2016 06:05:20 +0000
-Received: by mail-vk0-x244.google.com with SMTP id b186so4278437vkb.3
- for <barebox@lists.infradead.org>; Thu, 20 Oct 2016 23:04:57 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20161004194020.vmmm35546csmbvnv@pengutronix.de>
-References: <20161004101048.12970-1-ejo@pengutronix.de>
- <20161004101048.12970-4-ejo@pengutronix.de>
- <20161004194020.vmmm35546csmbvnv@pengutronix.de>
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Fri, 21 Oct 2016 08:04:35 +0200
-Message-ID: <CAGm1_ksWRAVPV3JSzxZvap_B=O7oUFw7CV93druAFF8ZGir4Og@mail.gmail.com>
+ id 1bxTgG-0007WK-AM
+ for barebox@lists.infradead.org; Fri, 21 Oct 2016 06:51:53 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 21 Oct 2016 08:51:23 +0200
+Message-Id: <20161021065124.7328-5-s.hauer@pengutronix.de>
+In-Reply-To: <20161021065124.7328-1-s.hauer@pengutronix.de>
+References: <20161021065124.7328-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,94 +16,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] fs: squashfs: port zlib compression support from
- kernel
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>, Enrico Jorns <ejo@pengutronix.de>
+Subject: [PATCH 5/6] fs: squashfs: append linux rootarg for ubi volume
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Enrico Jorns <ejo@pengutronix.de>
 
-Hi Enrico,
+From: Enrico Jorns <ejo@pengutronix.de>
 
-On Tue, Oct 4, 2016 at 9:40 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Tue, Oct 04, 2016 at 12:10:46PM +0200, Enrico Jorns wrote:
->> As this is the default compression method for squashfs, make this the
->> default in kconfig selection, too
->>
->> Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
->> ---
->>  fs/squashfs/Kconfig        |  20 ++++++-
->>  fs/squashfs/Makefile       |   1 +
->>  fs/squashfs/zlib_wrapper.c | 132 +++++++++++++++++++++++++++++++++++++++++++++
->>  3 files changed, 152 insertions(+), 1 deletion(-)
->>  create mode 100644 fs/squashfs/zlib_wrapper.c
->>
->> diff --git a/fs/squashfs/Kconfig b/fs/squashfs/Kconfig
->> index d2de168..1cb1ac5 100644
->> --- a/fs/squashfs/Kconfig
->> +++ b/fs/squashfs/Kconfig
->> @@ -17,6 +17,19 @@ menuconfig FS_SQUASHFS
->>         embedded systems where low overhead is needed.  Further information
->>         and tools are available from http://squashfs.sourceforge.net.
->>
->> +config SQUASHFS_ZLIB
->> +     bool "Include support for ZLIB compressed file systems"
->> +     depends on FS_SQUASHFS
->> +     select ZLIB
->> +     default y
->> +     help
->> +       ZLIB compression is the standard compression used by Squashfs
->> +       file systems.  It offers a good trade-off between compression
->> +       achieved and the amount of CPU time and memory necessary to
->> +       compress and decompress.
->> +
->> +       If unsure, say Y.
->> +
->>  config SQUASHFS_LZ4
->>       bool "Include support for LZ4 compressed file systems"
->>       depends on FS_SQUASHFS
->> @@ -30,9 +43,10 @@ config SQUASHFS_LZ4
->>         LZ4 is not the standard compression used in Squashfs and so most
->>         file systems will be readable without selecting this option.
->>
->> +       If unsure, say N.
->> +
->>  config SQUASHFS_LZO
->>       bool "Include support for LZO compressed file systems"
->> -     default y
->>       depends on FS_SQUASHFS
->>       select LZO_DECOMPRESS
->>       help
->> @@ -44,6 +58,8 @@ config SQUASHFS_LZO
->>         LZO is not the standard compression used in Squashfs and so most
->>         file systems will be readable without selecting this option.
->>
->> +       If unsure, say N.
->> +
->>  config SQUASHFS_XZ
->>       bool "Include support for XZ compressed file systems"
->>       default y
->> @@ -57,3 +73,5 @@ config SQUASHFS_XZ
->>
->>         XZ is not the standard compression used in Squashfs and so most
->>         file systems will be readable without selecting this option.
->> +
->> +       If unsure, say N.
->
-> Here unrelated Kconfig entries are changed. Also in the end we get
-> "default y" for SQUASHFS_XZ along with the help "If unsure, say N."
-> which seems inconsistent.
+If squashfs runs from an ubi volume, append appropriate root kernel
+options.
 
-Care to send v2?
+Note that ubiblock support is required in the kernel for that.
 
-@Sascha what is the plan as to the default compression selection?
-Leave XZ or set it to ZLIB? I'm open for both options.
+Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/squashfs/squashfs.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-Thanks.
+diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
+index 6d04681..c4d0bac 100644
+--- a/fs/squashfs/squashfs.c
++++ b/fs/squashfs/squashfs.c
+@@ -9,12 +9,16 @@
+ #include <linux/fs.h>
+ #include <linux/stat.h>
+ #include <linux/pagemap.h>
++#include <linux/mtd/ubi.h>
++#include <linux/mtd/mtd.h>
+ 
+ #include "squashfs_fs.h"
+ #include "squashfs_fs_sb.h"
+ #include "squashfs_fs_i.h"
+ #include "squashfs.h"
+ 
++struct ubi_volume_desc;
++
+ char *squashfs_devread(struct squashfs_sb_info *fs, int byte_offset,
+ 		int byte_len)
+ {
+@@ -108,6 +112,31 @@ static struct inode *squashfs_findfile(struct super_block *sb,
+ 	return NULL;
+ }
+ 
++void squashfs_set_rootarg(struct squashfs_priv *priv, struct fs_device_d *fsdev)
++{
++	struct ubi_volume_desc *ubi_vol;
++	struct ubi_volume_info vi = {};
++	struct ubi_device_info di = {};
++	struct mtd_info *mtd;
++	char *str;
++
++	ubi_vol = ubi_open_volume_cdev(fsdev->cdev, UBI_READONLY);
++
++	if (IS_ERR(ubi_vol))
++		return;
++
++	ubi_get_volume_info(ubi_vol, &vi);
++	ubi_get_device_info(vi.ubi_num, &di);
++	mtd = di.mtd;
++
++	str = basprintf("root=/dev/ubiblock%d_%d ubi.mtd=%s ubi.block=%d,%d rootfstype=squashfs",
++			vi.ubi_num, vi.vol_id, mtd->cdev.partname, vi.ubi_num, vi.vol_id);
++
++	fsdev_set_linux_rootarg(fsdev, str);
++
++	free(str);
++}
++
+ static int squashfs_probe(struct device_d *dev)
+ {
+ 	struct fs_device_d *fsdev;
+@@ -130,6 +159,8 @@ static int squashfs_probe(struct device_d *dev)
+ 		goto err_out;
+ 	}
+ 
++	squashfs_set_rootarg(priv, fsdev);
++
+ 	return 0;
+ 
+ err_out:
+-- 
+2.9.3
 
-Yegor
 
 _______________________________________________
 barebox mailing list
