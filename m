@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1byYB4-0000LV-FD
- for barebox@lists.infradead.org; Mon, 24 Oct 2016 05:52:08 +0000
-Date: Mon, 24 Oct 2016 07:51:42 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161024055142.fg43lakiw3jawnfc@pengutronix.de>
-References: <03214122-b05b-fc45-1e32-ad2832ca36d3@systec-electronic.com>
- <20161014095219.6qsyhajp2bffsc64@pengutronix.de>
- <d6c5169f-788e-ff34-1953-fb9014822a72@systec-electronic.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <d6c5169f-788e-ff34-1953-fb9014822a72@systec-electronic.com>
+Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1byYQn-0008Bl-Rf
+ for barebox@lists.infradead.org; Mon, 24 Oct 2016 06:08:24 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 79F65A00244
+ for <barebox@lists.infradead.org>; Mon, 24 Oct 2016 08:08:24 +0200 (CEST)
+Message-ID: <1477289273.3313.1.camel@lws-tremmet.phytec.de>
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Mon, 24 Oct 2016 08:07:53 +0200
+In-Reply-To: <1477043141-27884-1-git-send-email-t.remmet@phytec.de>
+References: <1477043141-27884-1-git-send-email-t.remmet@phytec.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,37 +20,126 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Compressed DTB - builtin DTB
-To: Daniel =?iso-8859-15?Q?Kr=FCger?= <daniel.krueger@systec-electronic.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] ARM: dts: am33xx: Make am33xx-strip.dtsi independent
+To: barebox@lists.infradead.org
 
-On Fri, Oct 21, 2016 at 10:16:53AM +0200, Daniel Kr=FCger wrote:
-> Hi Sascha,
-> =
+Please forget about this one. There is a far more easier way to go.
+I will send a new patch.
 
-> Am 14.10.2016 um 11:52 schrieb Sascha Hauer:
-> > =
+Teresa
 
-> > No, indeed that's not intended. Could you test the appended patch? It
-> > should solve this.
-> =
+Am Freitag, den 21.10.2016, 11:45 +0200 schrieb Teresa Remmet:
+> am33xx-strip.dtsi was used to remove unused nodes in the MLO device tree.
+> It always required the am33xx.dtsi include. But if we add aliases to the
+> am33xx.dtsi, where the nodes are beeing deleted in the am33xx-strip.dtsi
+> we get compile errors. So made am33xx-strip.dtsi independent from am33xx.dtsi
+> and renamed it to am33xx-mlo.dtsi.
+> 
+> Also added spi0 alias to am33xx-mlo.dtsi.
+> 
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+> ---
+>  arch/arm/dts/am335x-bone-common.dts                 | 3 +--
+>  arch/arm/dts/am335x-phytec-phycard-som-mlo.dts      | 3 +--
+>  arch/arm/dts/am335x-phytec-phycore-som-mlo.dts      | 3 +--
+>  arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts      | 3 +--
+>  arch/arm/dts/{am33xx-strip.dtsi => am33xx-mlo.dtsi} | 9 ++++++++-
+>  5 files changed, 12 insertions(+), 9 deletions(-)
+>  rename arch/arm/dts/{am33xx-strip.dtsi => am33xx-mlo.dtsi} (87%)
+> 
+> diff --git a/arch/arm/dts/am335x-bone-common.dts b/arch/arm/dts/am335x-bone-common.dts
+> index 0488cbe..63962df 100644
+> --- a/arch/arm/dts/am335x-bone-common.dts
+> +++ b/arch/arm/dts/am335x-bone-common.dts
+> @@ -7,8 +7,7 @@
+>   * all we need for the MLO
+>   */
+>  
+> -#include "am33xx.dtsi"
+> -#include "am33xx-strip.dtsi"
+> +#include "am33xx-mlo.dtsi"
+>  #include "am33xx-clocks-strip.dtsi"
+>  #include "am335x-bone-common.dtsi"
+>  
+> diff --git a/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts b/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts
+> index a1755fd..817093b 100644
+> --- a/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts
+> +++ b/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts
+> @@ -7,9 +7,8 @@
+>   */
+>  /dts-v1/;
+>  
+> -#include "am33xx.dtsi"
+> +#include "am33xx-mlo.dtsi"
+>  #include "am335x-phytec-phycard-som.dtsi"
+> -#include "am33xx-strip.dtsi"
+>  #include "am33xx-clocks-strip.dtsi"
+>  
+>  / {
+> diff --git a/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts b/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts
+> index f7bc462..817b672 100644
+> --- a/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts
+> +++ b/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts
+> @@ -7,9 +7,8 @@
+>   */
+>  /dts-v1/;
+>  
+> -#include "am33xx.dtsi"
+> +#include "am33xx-mlo.dtsi"
+>  #include "am335x-phytec-phycore-som.dtsi"
+> -#include "am33xx-strip.dtsi"
+>  #include "am33xx-clocks-strip.dtsi"
+>  
+>  / {
+> diff --git a/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts b/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts
+> index e848a29..cf36c4c 100644
+> --- a/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts
+> +++ b/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts
+> @@ -7,9 +7,8 @@
+>   */
+>  /dts-v1/;
+>  
+> -#include "am33xx.dtsi"
+> +#include "am33xx-mlo.dtsi"
+>  #include "am335x-phytec-phyflex-som.dtsi"
+> -#include "am33xx-strip.dtsi"
+>  #include "am33xx-clocks-strip.dtsi"
+>  
+>  / {
+> diff --git a/arch/arm/dts/am33xx-strip.dtsi b/arch/arm/dts/am33xx-mlo.dtsi
+> similarity index 87%
+> rename from arch/arm/dts/am33xx-strip.dtsi
+> rename to arch/arm/dts/am33xx-mlo.dtsi
+> index 2943fd1..36f137b 100644
+> --- a/arch/arm/dts/am33xx-strip.dtsi
+> +++ b/arch/arm/dts/am33xx-mlo.dtsi
+> @@ -6,12 +6,19 @@
+>   * it under the terms of the GNU General Public License version 2 as
+>   * published by the Free Software Foundation.
+>   */
+> +#include <arm/am33xx.dtsi>
+>  
+>  / {
+>  	aliases {
+> +		gpio0 = &gpio0;
+> +		gpio1 = &gpio1;
+> +		gpio2 = &gpio2;
+> +		gpio3 = &gpio3;
+> +		mmc0 = &mmc1;
+> +		mmc1 = &mmc2;
+> +		spi0 = &spi0;
+>  		/delete-property/ i2c1;
+>  		/delete-property/ i2c2;
+> -		/delete-property/ mmc2;
+>  		/delete-property/ d_can0;
+>  		/delete-property/ d_can1;
+>  	};
 
-> Thanks. The patch works for me.
 
-Ok, applied that with your tested-by.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
