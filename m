@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1byYky-0007Lz-6E
- for barebox@lists.infradead.org; Mon, 24 Oct 2016 06:29:13 +0000
+ id 1byYky-0007M0-6B
+ for barebox@lists.infradead.org; Mon, 24 Oct 2016 06:29:14 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 24 Oct 2016 08:28:41 +0200
-Message-Id: <20161024062843.2796-5-s.hauer@pengutronix.de>
+Date: Mon, 24 Oct 2016 08:28:38 +0200
+Message-Id: <20161024062843.2796-2-s.hauer@pengutronix.de>
 In-Reply-To: <20161024062843.2796-1-s.hauer@pengutronix.de>
 References: <20161024062843.2796-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,80 +21,190 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] Add filetype and detection for squashfs images
+Subject: [PATCH 1/6] fs: squashfs: port lzo compression support from kernel
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Enrico Jorns <ejo@pengutronix.de>
 
 From: Enrico Jorns <ejo@pengutronix.de>
 
-This adds `filetype_squashfs` to the list of known filetypes and adds a
-detection for squashfs files to file_detect_type(). This currently
-matches on the `hsqs` start sequence of an image file.
-
-Additionally, the newly introduced filetype is registered as the type of
-the squashfs_driver which allows, for example, to mount squashfs without
-the need to specify a type parameter.
-
-This changes enable booting a squashfs with the simple `boot` command
-pointing to the location (device) that holds the squashfs.
-
-Note that booting with blspec is limited as the current squashfs driver
-is not capable of handling symbolic links.
+This ports lzo_wrapper from kernel code and adds some minimal adaptions
+to make squashfs lzo compression work in barebox.
 
 Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
+Tested-by: Yegor Yefremov <yegorslists@googlemail.com>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/filetype.c      | 4 ++++
- fs/squashfs/squashfs.c | 1 +
- include/filetype.h     | 1 +
- 3 files changed, 6 insertions(+)
+ fs/squashfs/Kconfig       |  10 ++++
+ fs/squashfs/Makefile      |   1 +
+ fs/squashfs/lzo_wrapper.c | 129 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 140 insertions(+)
+ create mode 100644 fs/squashfs/lzo_wrapper.c
 
-diff --git a/common/filetype.c b/common/filetype.c
-index 4728f87..8d72933 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -40,6 +40,7 @@ static const struct filetype_str filetype_str[] = {
- 	[filetype_uimage] = { "U-Boot uImage", "u-boot" },
- 	[filetype_ubi] = { "UBI image", "ubi" },
- 	[filetype_jffs2] = { "JFFS2 image", "jffs2" },
-+	[filetype_squashfs] = { "Squashfs image", "squashfs" },
- 	[filetype_gzip] = { "GZIP compressed", "gzip" },
- 	[filetype_bzip2] = { "BZIP2 compressed", "bzip2" },
- 	[filetype_oftree] = { "open firmware Device Tree flattened Binary", "dtb" },
-@@ -278,6 +279,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 	if (buf8[0] == 0xfd && buf8[1] == 0x37 && buf8[2] == 0x7a &&
- 			buf8[3] == 0x58 && buf8[4] == 0x5a && buf8[5] == 0x00)
- 		return filetype_xz_compressed;
-+	if (buf8[0] == 'h' && buf8[1] == 's' && buf8[2] == 'q' &&
-+			buf8[3] == 's')
-+		return filetype_squashfs;
- 	if (buf[0] == be32_to_cpu(0xd00dfeed))
- 		return filetype_oftree;
- 	if (strncmp(buf8, "ANDROID!", 8) == 0)
-diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
-index d00dee6..6d04681 100644
---- a/fs/squashfs/squashfs.c
-+++ b/fs/squashfs/squashfs.c
-@@ -353,6 +353,7 @@ static struct fs_driver_d squashfs_driver = {
- 	.readdir	= squashfs_readdir,
- 	.closedir	= squashfs_closedir,
- 	.stat		= squashfs_stat,
-+	.type		= filetype_squashfs,
- 	.drv = {
- 		.probe = squashfs_probe,
- 		.remove = squashfs_remove,
-diff --git a/include/filetype.h b/include/filetype.h
-index cde73c1..65bd6ef 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -16,6 +16,7 @@ enum filetype {
- 	filetype_uimage,
- 	filetype_ubi,
- 	filetype_jffs2,
-+	filetype_squashfs,
- 	filetype_gzip,
- 	filetype_bzip2,
- 	filetype_oftree,
+diff --git a/fs/squashfs/Kconfig b/fs/squashfs/Kconfig
+index dc25d93..239682d 100644
+--- a/fs/squashfs/Kconfig
++++ b/fs/squashfs/Kconfig
+@@ -17,6 +17,16 @@ menuconfig FS_SQUASHFS
+ 	  embedded systems where low overhead is needed.  Further information
+ 	  and tools are available from http://squashfs.sourceforge.net.
+ 
++config SQUASHFS_LZO
++	bool
++	depends on FS_SQUASHFS
++	depends on LZO_DECOMPRESS
++	default y
++
++if !SQUASHFS_LZO
++	comment "LZO support disabled"
++endif
++
+ config SQUASHFS_XZ
+ 	bool "Include support for XZ compressed file systems"
+ 	default y
+diff --git a/fs/squashfs/Makefile b/fs/squashfs/Makefile
+index c0d024c..447e15e 100644
+--- a/fs/squashfs/Makefile
++++ b/fs/squashfs/Makefile
+@@ -11,3 +11,4 @@ obj-y	+= inode.o
+ obj-y	+= namei.o
+ obj-y	+= super.o
+ obj-$(CONFIG_SQUASHFS_XZ) += xz_wrapper.o
++obj-$(CONFIG_SQUASHFS_LZO) += lzo_wrapper.o
+diff --git a/fs/squashfs/lzo_wrapper.c b/fs/squashfs/lzo_wrapper.c
+new file mode 100644
+index 0000000..834ee29
+--- /dev/null
++++ b/fs/squashfs/lzo_wrapper.c
+@@ -0,0 +1,129 @@
++/*
++ * Squashfs - a compressed read only filesystem for Linux
++ *
++ * Copyright (c) 2010 LG Electronics
++ * Chan Jeong <chan.jeong@lge.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2,
++ * or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
++ *
++ * lzo_wrapper.c
++ */
++
++#include <common.h>
++#include <linux/mutex.h>
++#include <lzo.h>
++#include <types.h>
++
++#include "squashfs_fs.h"
++#include "squashfs_fs_sb.h"
++#include "squashfs.h"
++#include "decompressor.h"
++#include "page_actor.h"
++
++struct squashfs_lzo {
++	void	*input;
++	void	*output;
++};
++
++static void *lzo_init(struct squashfs_sb_info *msblk, void *buff)
++{
++	int block_size = max_t(int, msblk->block_size, SQUASHFS_METADATA_SIZE);
++
++	struct squashfs_lzo *stream = kzalloc(sizeof(*stream), GFP_KERNEL);
++	if (stream == NULL)
++		goto failed;
++	stream->input = vmalloc(block_size);
++	if (stream->input == NULL)
++		goto failed;
++	stream->output = vmalloc(block_size);
++	if (stream->output == NULL)
++		goto failed2;
++
++	return stream;
++
++failed2:
++	vfree(stream->input);
++failed:
++	ERROR("Failed to allocate lzo workspace\n");
++	kfree(stream);
++	return ERR_PTR(-ENOMEM);
++}
++
++
++static void lzo_free(void *strm)
++{
++	struct squashfs_lzo *stream = strm;
++
++	if (stream) {
++		vfree(stream->input);
++		vfree(stream->output);
++	}
++	kfree(stream);
++}
++
++
++static int lzo_uncompress(struct squashfs_sb_info *msblk, void *strm,
++	char **bh, int b, int offset, int length,
++	struct squashfs_page_actor *output)
++{
++	struct squashfs_lzo *stream = strm;
++	void *buff = stream->input, *data;
++	int avail, i, bytes = length, res;
++	size_t out_len = output->length;
++
++	for (i = 0; i < b; i++) {
++		avail = min(bytes, msblk->devblksize - offset);
++		memcpy(buff, bh[i] + offset, avail);
++		buff += avail;
++		bytes -= avail;
++		offset = 0;
++		kfree(bh[i]);
++	}
++
++	res = lzo1x_decompress_safe(stream->input, (size_t)length,
++					stream->output, &out_len);
++	if (res != LZO_E_OK)
++		goto failed;
++
++	res = bytes = (int)out_len;
++	data = squashfs_first_page(output);
++	buff = stream->output;
++	while (data) {
++		if (bytes <= PAGE_CACHE_SIZE) {
++			memcpy(data, buff, bytes);
++			break;
++		} else {
++			memcpy(data, buff, PAGE_CACHE_SIZE);
++			buff += PAGE_CACHE_SIZE;
++			bytes -= PAGE_CACHE_SIZE;
++			data = squashfs_next_page(output);
++		}
++	}
++	squashfs_finish_page(output);
++
++	return res;
++
++failed:
++	return -EIO;
++}
++
++const struct squashfs_decompressor squashfs_lzo_comp_ops = {
++	.init = lzo_init,
++	.free = lzo_free,
++	.decompress = lzo_uncompress,
++	.id = LZO_COMPRESSION,
++	.name = "lzo",
++	.supported = 1
++};
 -- 
 2.9.3
 
