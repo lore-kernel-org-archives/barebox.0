@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1byYQn-0008Bl-Rf
- for barebox@lists.infradead.org; Mon, 24 Oct 2016 06:08:24 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 79F65A00244
- for <barebox@lists.infradead.org>; Mon, 24 Oct 2016 08:08:24 +0200 (CEST)
-Message-ID: <1477289273.3313.1.camel@lws-tremmet.phytec.de>
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 24 Oct 2016 08:07:53 +0200
-In-Reply-To: <1477043141-27884-1-git-send-email-t.remmet@phytec.de>
-References: <1477043141-27884-1-git-send-email-t.remmet@phytec.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1byYkt-0007LP-9F
+ for barebox@lists.infradead.org; Mon, 24 Oct 2016 06:29:08 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1byYkX-0003Ub-Fu
+ for barebox@lists.infradead.org; Mon, 24 Oct 2016 08:28:45 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.87)
+ (envelope-from <sha@pengutronix.de>) id 1byYkX-0002MN-2o
+ for barebox@lists.infradead.org; Mon, 24 Oct 2016 08:28:45 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 24 Oct 2016 08:28:37 +0200
+Message-Id: <20161024062843.2796-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,126 +21,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: dts: am33xx: Make am33xx-strip.dtsi independent
-To: barebox@lists.infradead.org
+Subject: [PATCH v2] squashfs additional decompressors
+To: Barebox List <barebox@lists.infradead.org>
 
-Please forget about this one. There is a far more easier way to go.
-I will send a new patch.
+This series enables additional decompressors for squashfs.
 
-Teresa
+Changes since v1:
+- Enable the squashfs decompression wrapper for a decompression method
+  always when the corresponding decompression library is enabled. The
+  rationale is that the wrapper is cheap compared to the decompression
+  library, so when the library is enabled we can also enable the wrapper.
 
-Am Freitag, den 21.10.2016, 11:45 +0200 schrieb Teresa Remmet:
-> am33xx-strip.dtsi was used to remove unused nodes in the MLO device tree.
-> It always required the am33xx.dtsi include. But if we add aliases to the
-> am33xx.dtsi, where the nodes are beeing deleted in the am33xx-strip.dtsi
-> we get compile errors. So made am33xx-strip.dtsi independent from am33xx.dtsi
-> and renamed it to am33xx-mlo.dtsi.
-> 
-> Also added spi0 alias to am33xx-mlo.dtsi.
-> 
-> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
-> ---
->  arch/arm/dts/am335x-bone-common.dts                 | 3 +--
->  arch/arm/dts/am335x-phytec-phycard-som-mlo.dts      | 3 +--
->  arch/arm/dts/am335x-phytec-phycore-som-mlo.dts      | 3 +--
->  arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts      | 3 +--
->  arch/arm/dts/{am33xx-strip.dtsi => am33xx-mlo.dtsi} | 9 ++++++++-
->  5 files changed, 12 insertions(+), 9 deletions(-)
->  rename arch/arm/dts/{am33xx-strip.dtsi => am33xx-mlo.dtsi} (87%)
-> 
-> diff --git a/arch/arm/dts/am335x-bone-common.dts b/arch/arm/dts/am335x-bone-common.dts
-> index 0488cbe..63962df 100644
-> --- a/arch/arm/dts/am335x-bone-common.dts
-> +++ b/arch/arm/dts/am335x-bone-common.dts
-> @@ -7,8 +7,7 @@
->   * all we need for the MLO
->   */
->  
-> -#include "am33xx.dtsi"
-> -#include "am33xx-strip.dtsi"
-> +#include "am33xx-mlo.dtsi"
->  #include "am33xx-clocks-strip.dtsi"
->  #include "am335x-bone-common.dtsi"
->  
-> diff --git a/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts b/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts
-> index a1755fd..817093b 100644
-> --- a/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts
-> +++ b/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts
-> @@ -7,9 +7,8 @@
->   */
->  /dts-v1/;
->  
-> -#include "am33xx.dtsi"
-> +#include "am33xx-mlo.dtsi"
->  #include "am335x-phytec-phycard-som.dtsi"
-> -#include "am33xx-strip.dtsi"
->  #include "am33xx-clocks-strip.dtsi"
->  
->  / {
-> diff --git a/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts b/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts
-> index f7bc462..817b672 100644
-> --- a/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts
-> +++ b/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts
-> @@ -7,9 +7,8 @@
->   */
->  /dts-v1/;
->  
-> -#include "am33xx.dtsi"
-> +#include "am33xx-mlo.dtsi"
->  #include "am335x-phytec-phycore-som.dtsi"
-> -#include "am33xx-strip.dtsi"
->  #include "am33xx-clocks-strip.dtsi"
->  
->  / {
-> diff --git a/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts b/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts
-> index e848a29..cf36c4c 100644
-> --- a/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts
-> +++ b/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts
-> @@ -7,9 +7,8 @@
->   */
->  /dts-v1/;
->  
-> -#include "am33xx.dtsi"
-> +#include "am33xx-mlo.dtsi"
->  #include "am335x-phytec-phyflex-som.dtsi"
-> -#include "am33xx-strip.dtsi"
->  #include "am33xx-clocks-strip.dtsi"
->  
->  / {
-> diff --git a/arch/arm/dts/am33xx-strip.dtsi b/arch/arm/dts/am33xx-mlo.dtsi
-> similarity index 87%
-> rename from arch/arm/dts/am33xx-strip.dtsi
-> rename to arch/arm/dts/am33xx-mlo.dtsi
-> index 2943fd1..36f137b 100644
-> --- a/arch/arm/dts/am33xx-strip.dtsi
-> +++ b/arch/arm/dts/am33xx-mlo.dtsi
-> @@ -6,12 +6,19 @@
->   * it under the terms of the GNU General Public License version 2 as
->   * published by the Free Software Foundation.
->   */
-> +#include <arm/am33xx.dtsi>
->  
->  / {
->  	aliases {
-> +		gpio0 = &gpio0;
-> +		gpio1 = &gpio1;
-> +		gpio2 = &gpio2;
-> +		gpio3 = &gpio3;
-> +		mmc0 = &mmc1;
-> +		mmc1 = &mmc2;
-> +		spi0 = &spi0;
->  		/delete-property/ i2c1;
->  		/delete-property/ i2c2;
-> -		/delete-property/ mmc2;
->  		/delete-property/ d_can0;
->  		/delete-property/ d_can1;
->  	};
+----------------------------------------------------------------
+Enrico Jorns (5):
+      fs: squashfs: port lzo compression support from kernel
+      fs: squashfs: port lz4 compression support from kernel
+      fs: squashfs: port zlib compression support from kernel
+      Add filetype and detection for squashfs images
+      fs: squashfs: append linux rootarg for ubi volume
 
+Sascha Hauer (1):
+      fs: squashfs: Enable squashfs XZ support when XZ is enabled
 
+ common/filetype.c          |   4 ++
+ fs/squashfs/Kconfig        |  47 +++++++++++----
+ fs/squashfs/Makefile       |   3 +
+ fs/squashfs/lz4_wrapper.c  | 140 +++++++++++++++++++++++++++++++++++++++++++++
+ fs/squashfs/lzo_wrapper.c  | 129 +++++++++++++++++++++++++++++++++++++++++
+ fs/squashfs/squashfs.c     |  32 +++++++++++
+ fs/squashfs/zlib_wrapper.c | 132 ++++++++++++++++++++++++++++++++++++++++++
+ include/filetype.h         |   1 +
+ 8 files changed, 478 insertions(+), 10 deletions(-)
+ create mode 100644 fs/squashfs/lz4_wrapper.c
+ create mode 100644 fs/squashfs/lzo_wrapper.c
+ create mode 100644 fs/squashfs/zlib_wrapper.c
 
 _______________________________________________
 barebox mailing list
