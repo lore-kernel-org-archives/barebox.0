@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1byYlN-0007PV-6R
- for barebox@lists.infradead.org; Mon, 24 Oct 2016 06:29:39 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 24 Oct 2016 08:28:39 +0200
-Message-Id: <20161024062843.2796-3-s.hauer@pengutronix.de>
-In-Reply-To: <20161024062843.2796-1-s.hauer@pengutronix.de>
-References: <20161024062843.2796-1-s.hauer@pengutronix.de>
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1byakS-0001xK-00
+ for barebox@lists.infradead.org; Mon, 24 Oct 2016 08:36:50 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 57A2DA003F7
+ for <barebox@lists.infradead.org>; Mon, 24 Oct 2016 10:36:55 +0200 (CEST)
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Mon, 24 Oct 2016 10:36:24 +0200
+Message-Id: <1477298184-32928-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,199 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] fs: squashfs: port lz4 compression support from kernel
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Enrico Jorns <ejo@pengutronix.de>
+Subject: [PATCH v2] ARM: dts: am33xx.dtsi: Add spi aliases
+To: barebox@lists.infradead.org
 
-From: Enrico Jorns <ejo@pengutronix.de>
+We need to add the spi aliases to set the bus number correct in
+the driver.
 
-Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Delete the spi1 alias again in the am33xx-strip.dtsi for MLO as
+the node is deleted there also.
+
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- fs/squashfs/Kconfig       |  10 ++++
- fs/squashfs/Makefile      |   1 +
- fs/squashfs/lz4_wrapper.c | 140 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 151 insertions(+)
- create mode 100644 fs/squashfs/lz4_wrapper.c
+Changes in v2:
+- Removed the first patch completly
+- Delete now spi1 alias in strip file
+- Updated commit message
 
-diff --git a/fs/squashfs/Kconfig b/fs/squashfs/Kconfig
-index 239682d..928e3bb 100644
---- a/fs/squashfs/Kconfig
-+++ b/fs/squashfs/Kconfig
-@@ -17,6 +17,16 @@ menuconfig FS_SQUASHFS
- 	  embedded systems where low overhead is needed.  Further information
- 	  and tools are available from http://squashfs.sourceforge.net.
+ arch/arm/dts/am33xx-strip.dtsi | 1 +
+ arch/arm/dts/am33xx.dtsi       | 2 ++
+ 2 files changed, 3 insertions(+)
+
+diff --git a/arch/arm/dts/am33xx-strip.dtsi b/arch/arm/dts/am33xx-strip.dtsi
+index 2943fd1..83d23a8 100644
+--- a/arch/arm/dts/am33xx-strip.dtsi
++++ b/arch/arm/dts/am33xx-strip.dtsi
+@@ -14,6 +14,7 @@
+ 		/delete-property/ mmc2;
+ 		/delete-property/ d_can0;
+ 		/delete-property/ d_can1;
++		/delete-property/ spi1;
+ 	};
+ };
  
-+config SQUASHFS_LZ4
-+	bool
-+	depends on FS_SQUASHFS
-+	depends on LZ4_DECOMPRESS
-+	default y
-+
-+if !SQUASHFS_LZ4
-+	comment "LZ4 support disabled"
-+endif
-+
- config SQUASHFS_LZO
- 	bool
- 	depends on FS_SQUASHFS
-diff --git a/fs/squashfs/Makefile b/fs/squashfs/Makefile
-index 447e15e..8590b09 100644
---- a/fs/squashfs/Makefile
-+++ b/fs/squashfs/Makefile
-@@ -12,3 +12,4 @@ obj-y	+= namei.o
- obj-y	+= super.o
- obj-$(CONFIG_SQUASHFS_XZ) += xz_wrapper.o
- obj-$(CONFIG_SQUASHFS_LZO) += lzo_wrapper.o
-+obj-$(CONFIG_SQUASHFS_LZ4) += lz4_wrapper.o
-diff --git a/fs/squashfs/lz4_wrapper.c b/fs/squashfs/lz4_wrapper.c
-new file mode 100644
-index 0000000..6ca6a32
---- /dev/null
-+++ b/fs/squashfs/lz4_wrapper.c
-@@ -0,0 +1,140 @@
-+/*
-+ * Copyright (c) 2013, 2014
-+ * Phillip Lougher <phillip@squashfs.org.uk>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2. See
-+ * the COPYING file in the top-level directory.
-+ */
-+
-+#include <types.h>
-+#include <linux/mutex.h>
-+#include <linux/lz4.h>
-+
-+#include "squashfs_fs.h"
-+#include "squashfs_fs_sb.h"
-+#include "squashfs.h"
-+#include "decompressor.h"
-+#include "page_actor.h"
-+
-+#define LZ4_LEGACY	1
-+
-+struct lz4_comp_opts {
-+	__le32 version;
-+	__le32 flags;
-+};
-+
-+struct squashfs_lz4 {
-+	void *input;
-+	void *output;
-+};
-+
-+
-+static void *lz4_comp_opts(struct squashfs_sb_info *msblk,
-+	void *buff, int len)
-+{
-+	struct lz4_comp_opts *comp_opts = buff;
-+
-+	/* LZ4 compressed filesystems always have compression options */
-+	if (comp_opts == NULL || len < sizeof(*comp_opts))
-+		return ERR_PTR(-EIO);
-+
-+	if (le32_to_cpu(comp_opts->version) != LZ4_LEGACY) {
-+		/* LZ4 format currently used by the kernel is the 'legacy'
-+		 * format */
-+		ERROR("Unknown LZ4 version\n");
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	return NULL;
-+}
-+
-+
-+static void *lz4_init(struct squashfs_sb_info *msblk, void *buff)
-+{
-+	int block_size = max_t(int, msblk->block_size, SQUASHFS_METADATA_SIZE);
-+	struct squashfs_lz4 *stream;
-+
-+	stream = kzalloc(sizeof(*stream), GFP_KERNEL);
-+	if (stream == NULL)
-+		goto failed;
-+	stream->input = vmalloc(block_size);
-+	if (stream->input == NULL)
-+		goto failed2;
-+	stream->output = vmalloc(block_size);
-+	if (stream->output == NULL)
-+		goto failed3;
-+
-+	return stream;
-+
-+failed3:
-+	vfree(stream->input);
-+failed2:
-+	kfree(stream);
-+failed:
-+	ERROR("Failed to initialise LZ4 decompressor\n");
-+	return ERR_PTR(-ENOMEM);
-+}
-+
-+
-+static void lz4_free(void *strm)
-+{
-+	struct squashfs_lz4 *stream = strm;
-+
-+	if (stream) {
-+		vfree(stream->input);
-+		vfree(stream->output);
-+	}
-+	kfree(stream);
-+}
-+
-+
-+static int lz4_uncompress(struct squashfs_sb_info *msblk, void *strm,
-+	char **bh, int b, int offset, int length,
-+	struct squashfs_page_actor *output)
-+{
-+	struct squashfs_lz4 *stream = strm;
-+	void *buff = stream->input, *data;
-+	int avail, i, bytes = length, res;
-+	size_t dest_len = output->length;
-+
-+	for (i = 0; i < b; i++) {
-+		avail = min(bytes, msblk->devblksize - offset);
-+		memcpy(buff, bh[i] + offset, avail);
-+		buff += avail;
-+		bytes -= avail;
-+		offset = 0;
-+		kfree(bh[i]);
-+	}
-+
-+	res = lz4_decompress_unknownoutputsize(stream->input, length,
-+					stream->output, &dest_len);
-+	if (res)
-+		return -EIO;
-+
-+	bytes = dest_len;
-+	data = squashfs_first_page(output);
-+	buff = stream->output;
-+	while (data) {
-+		if (bytes <= PAGE_CACHE_SIZE) {
-+			memcpy(data, buff, bytes);
-+			break;
-+		}
-+		memcpy(data, buff, PAGE_CACHE_SIZE);
-+		buff += PAGE_CACHE_SIZE;
-+		bytes -= PAGE_CACHE_SIZE;
-+		data = squashfs_next_page(output);
-+	}
-+	squashfs_finish_page(output);
-+
-+	return dest_len;
-+}
-+
-+const struct squashfs_decompressor squashfs_lz4_comp_ops = {
-+	.init = lz4_init,
-+	.comp_opts = lz4_comp_opts,
-+	.free = lz4_free,
-+	.decompress = lz4_uncompress,
-+	.id = LZ4_COMPRESSION,
-+	.name = "lz4",
-+	.supported = 1
-+};
+diff --git a/arch/arm/dts/am33xx.dtsi b/arch/arm/dts/am33xx.dtsi
+index 7ba0a0b..f1ee7b3 100644
+--- a/arch/arm/dts/am33xx.dtsi
++++ b/arch/arm/dts/am33xx.dtsi
+@@ -18,5 +18,7 @@
+ 		mmc0 = &mmc1;
+ 		mmc1 = &mmc2;
+ 		mmc2 = &mmc3;
++		spi0 = &spi0;
++		spi1 = &spi1;
+ 	};
+ };
 -- 
-2.9.3
+1.9.1
 
 
 _______________________________________________
