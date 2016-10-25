@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bybQi-0002al-A3
- for barebox@lists.infradead.org; Mon, 24 Oct 2016 09:20:30 +0000
-Date: Mon, 24 Oct 2016 11:20:07 +0200
-From: Stefan Lengfeld <s.lengfeld@phytec.de>
-Message-ID: <20161024092007.GB3862@lws-christ>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1byv7B-00060f-G5
+ for barebox@lists.infradead.org; Tue, 25 Oct 2016 06:21:38 +0000
+Date: Tue, 25 Oct 2016 08:21:15 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20161025062115.lj7cacy2nfobltcu@pengutronix.de>
 References: <1476970807-43811-1-git-send-email-c.hemp@phytec.de>
- <20161021071147.iacxwcdqz7sx7gs2@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20161021071147.iacxwcdqz7sx7gs2@pengutronix.de>
 Content-Disposition: inline
+In-Reply-To: <1476970807-43811-1-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,82 +18,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] nand: imx6: Changed default NAND clock
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Christian Hemp <c.hemp@phytec.de>
 Cc: barebox@lists.infradead.org, Daniel Schultz <d.schultz@phytec.de>
 
-SGkgU2FzY2hhLAoKT24gRnJpLCBPY3QgMjEsIDIwMTYgYXQgMDk6MTE6NDdBTSArMDIwMCwgU2Fz
-Y2hhIEhhdWVyIHdyb3RlOgo+IE9uIFRodSwgT2N0IDIwLCAyMDE2IGF0IDAzOjQwOjA2UE0gKzAy
-MDAsIENocmlzdGlhbiBIZW1wIHdyb3RlOgo+ID4gRnJvbTogRGFuaWVsIFNjaHVsdHogPGQuc2No
-dWx0ekBwaHl0ZWMuZGU+Cj4gPiAKPiA+IFRoZSBCYXJlYm94IHJlY29nbml6ZWQgZmFsc2UgYmFk
-IGVyYXNlIGJsb2NrcyB3aGlsZSBib290aW5nIGZyb20gYQo+ID4gU3BhbnNpb24gTkFORCAoMSku
-IFRoaXMgZXJyb3Igb2NjdXJyZWQgZHVlIGEgdG8gaGlnaCBjbG9jay4gVGhlCj4gPiBLZXJuZWwg
-c2V0cyB0aGUgZGVmYXVsdCBOQU5EIGNsb2NrIHRvIDIyTWh6LiBTbywgdG8gZml4IHRoaXMgZXJy
-b3IgYW5kCj4gPiB0byBiZSBtb3JlIGlkZW50aWNhbCB3aXRoIHRoZSBLZXJuZWwsIHRoZSBCYXJl
-Ym94IHNob3VsZCBiZSB0b28uCj4gCj4gVGhlIHRpbWluZyBpcyBjaGFuZ2VkIGFmdGVyd2FyZHMg
-dG8gYSBmYXN0ZXIgbW9kZSBhbmQgdGhlIGNsb2NrIGlzCj4gY2hhbmdlZCBhZ2Fpbi4gRG9lcyB0
-aGF0IHdvcmsgZm9yIHlvdSBwcm9wZXJseT8KPiAKPiBTYXNjaGEKClllcywgaWYgdGhlIE5BTkQg
-Y2hpcCBzdXBwb3J0cyBFRE8gbW9kZSwgdGhlIGNsb2NrIGlzIGNoYW5nZWQgdG8gODAvMTAwTWh6
-CmNvcnJlY3RseS4gSGVyZSBpcyB0aGUgZHJpdmVyIG91dHB1dCB3aXRoIGFkZGl0aW9uYWwgZGVi
-dWcgbWVzc2FnZXM6CgogICAgbmFuZDogTkFORCBkZXZpY2U6IE1hbnVmYWN0dXJlciBJRDogMHgy
-YywgQ2hpcCBJRDogMHhkYyAoTWljcm9uIE1UMjlGNEcwOEFCQURBV1ApLCA1MTJNaUIsIHBhZ2Ug
-c2l6ZTogMjA0OCwgT09CIHNpemU6IDY0CiAgICBteHNfbmFuZF9zZXR1cF90aW1pbmc6IG1vZGUg
-NQogICAgbXhzX25hbmRfc2V0dXBfdGltaW5nOiBteHNfbmFuZF9jb21wdXRlX2Vkb190aW1pbmcK
-ICAgIG14c19uYW5kX3NldHVwX3RpbWluZzogY2xvY2sgaXMgOTYwMDAwMDAKClRoZSBwYXRjaCBm
-aXhlcyB0aGUgY2FzZSwgd2hlbiB0aGUgTkFORCBjaGlwIGRvZXMgbm90IHN1cHBvcnQgRURPIG1v
-ZGUuCkluc3RlYWQgb2YgZnVuY3Rpb24gJ214c19uYW5kX2NvbXB1dGVfZWRvX3RpbWluZycgdGhl
-IGZ1bmN0aW9uCidteHNfbmFuZF9jb21wdXRlX2hhcmR3YXJlX3RpbWluZycgaXMgY2FsbGVkIGhl
-cmUuCgogICAgICAgIG1vZGUgPSBteHNfbmFuZF9lbmFibGVfZWRvX21vZGUoaW5mbyk7CiAgICAg
-ICAgaWYgKG1vZGUgPj0gMCkKICAgICAgICAgICAgICAgIG14c19uYW5kX2NvbXB1dGVfZWRvX3Rp
-bWluZyhpbmZvLCAmaHcsIG1vZGUpOwogICAgICAgIGVsc2UKICAgICAgICAgICAgICAgIG14c19u
-YW5kX2NvbXB1dGVfaGFyZHdhcmVfdGltaW5nKGluZm8sICZodyk7CgpTaW5jZSAnbXhzX25hbmRf
-Y29tcHV0ZV9oYXJkd2FyZV90aW1pbmcnIGRvZXMgbm90IGNoYW5nZSB0aGUgY2xvY2ssIHRoZSBj
-bG9jawppcyB0b28gZmFzdCBmb3IgdGhlIE5BTkQgY2hpcC4KCkhlcmUgaXMgdGhlIG91dHB1dCBv
-ZiB0d28gZGlmZmVyZW50IE5BTkQgY2hpcHMgd2l0aG91dCBFRE8gbW9kZS4gVGhlIHBhdGNoIHRv
-CnNldCB0aGUgY2xvY2sgdG8gMjJNaHogd2FzIGFscmVhZHkgYXBwbGllZDoKCiAgICBuYW5kOiBO
-QU5EIGRldmljZTogTWFudWZhY3R1cmVyIElEOiAweDAxLCBDaGlwIElEOiAweGQzIChBTUQvU3Bh
-bnNpb24gUzM0TUwwOEcyKSwgMTAyNE1pQiwgcGFnZSBzaXplOiAyMDQ4LCBPT0Igc2l6ZTogMTI4
-CiAgICBteHNfbmFuZF9zZXR1cF90aW1pbmc6IG1vZGUgLTIyCiAgICBteHNfbmFuZF9zZXR1cF90
-aW1pbmc6IG14c19uYW5kX2NvbXB1dGVfaGFyZHdhcmVfdGltaW5nCiAgICBteHNfbmFuZF9zZXR1
-cF90aW1pbmc6IGNsb2NrIGlzIDIxODE4MTgxCiAgICAKICAgIG5hbmQ6IE5BTkQgZGV2aWNlOiBN
-YW51ZmFjdHVyZXIgSUQ6IDB4ZWMsIENoaXAgSUQ6IDB4ZDMgKFNhbXN1bmcgTkFORCAxR2lCIDMs
-M1YgOC1iaXQpLCAxMDI0TWlCLCBwYWdlIHNpemU6IDIwNDgsIE9PQiBzaXplOiA2NAogICAgbXhz
-X25hbmRfc2V0dXBfdGltaW5nOiBtb2RlIC0yCiAgICBteHNfbmFuZF9zZXR1cF90aW1pbmc6IG14
-c19uYW5kX2NvbXB1dGVfaGFyZHdhcmVfdGltaW5nCiAgICBteHNfbmFuZF9zZXR1cF90aW1pbmc6
-IGNsb2NrIGlzIDIxODE4MTgxCgpNaXQgZnJldW5kbGljaGVuIEdyw7zDn2VuIC8gS2luZCByZWdh
-cmRzLAoJU3RlZmFuIExlbmdmZWxkCgo+IAo+ID4gCj4gPiAxOiBuYW5kOiBOQU5EIGRldmljZTog
-TWFudWZhY3R1cmVyIElEOiAweDAxLCBDaGlwIElEOiAweGQzIChBTUQvU3BhbnNpb24KPiA+IFMz
-NE1MMDhHMiksIDEwMjRNaUIsIHBhZ2Ugc2l6ZTogMjA0OCwgT09CIHNpemU6IDEyOAo+ID4gCj4g
-PiBTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgU2NodWx0eiA8ZC5zY2h1bHR6QHBoeXRlYy5kZT4KPiA+
-IFRlc3RlZC1ieTogU3RlZmFuIExlbmdmZWxkIDxzLmxlbmdmZWxkQHBoeXRlYy5kZT4KPiA+IFNp
-Z25lZC1vZmYtYnk6IENocmlzdGlhbiBIZW1wIDxjLmhlbXBAcGh5dGVjLmRlPgo+ID4gLS0tCj4g
-PiAgZHJpdmVycy9tdGQvbmFuZC9uYW5kX214cy5jIHwgMiArLQo+ID4gIDEgZmlsZSBjaGFuZ2Vk
-LCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvZHJp
-dmVycy9tdGQvbmFuZC9uYW5kX214cy5jIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX214cy5jCj4g
-PiBpbmRleCAwMWFhMDYzLi5mZTk1NWU4IDEwMDY0NAo+ID4gLS0tIGEvZHJpdmVycy9tdGQvbmFu
-ZC9uYW5kX214cy5jCj4gPiArKysgYi9kcml2ZXJzL210ZC9uYW5kL25hbmRfbXhzLmMKPiA+IEBA
-IC0yMTQ1LDcgKzIxNDUsNyBAQCBzdGF0aWMgaW50IG14c19uYW5kX3Byb2JlKHN0cnVjdCBkZXZp
-Y2VfZCAqZGV2KQo+ID4gIAo+ID4gIAlpZiAobXhzX25hbmRfaXNfaW14NihuYW5kX2luZm8pKSB7
-Cj4gPiAgCQljbGtfZGlzYWJsZShuYW5kX2luZm8tPmNsayk7Cj4gPiAtCQljbGtfc2V0X3JhdGUo
-bmFuZF9pbmZvLT5jbGssIDk2MDAwMDAwKTsKPiA+ICsJCWNsa19zZXRfcmF0ZShuYW5kX2luZm8t
-PmNsaywgMjIwMDAwMDApOwo+ID4gIAkJY2xrX2VuYWJsZShuYW5kX2luZm8tPmNsayk7Cj4gPiAg
-CQluYW5kX2luZm8tPmRtYV9jaGFubmVsX2Jhc2UgPSAwOwo+ID4gIAl9IGVsc2Ugewo+ID4gLS0g
-Cj4gPiAxLjkuMQo+ID4gCj4gPiAKPiA+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCj4gPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+ID4gYmFyZWJveEBsaXN0
-cy5pbmZyYWRlYWQub3JnCj4gPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2JhcmVib3gKPiA+IAo+IAo+IC0tIAo+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8Cj4gSW5kdXN0
-cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRy
-b25peC5kZS8gIHwKPiBQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkg
-fCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0s
-IEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cj4gCj4g
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94
-IG1haWxpbmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0
-cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+On Thu, Oct 20, 2016 at 03:40:06PM +0200, Christian Hemp wrote:
+> From: Daniel Schultz <d.schultz@phytec.de>
+> 
+> The Barebox recognized false bad erase blocks while booting from a
+> Spansion NAND (1). This error occurred due a to high clock. The
+> Kernel sets the default NAND clock to 22Mhz. So, to fix this error and
+> to be more identical with the Kernel, the Barebox should be too.
+> 
+> 1: nand: NAND device: Manufacturer ID: 0x01, Chip ID: 0xd3 (AMD/Spansion
+> S34ML08G2), 1024MiB, page size: 2048, OOB size: 128
+
+Applied both, thanks
+
+Sascha
+
+> 
+> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+> Tested-by: Stefan Lengfeld <s.lengfeld@phytec.de>
+> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+> ---
+>  drivers/mtd/nand/nand_mxs.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+> index 01aa063..fe955e8 100644
+> --- a/drivers/mtd/nand/nand_mxs.c
+> +++ b/drivers/mtd/nand/nand_mxs.c
+> @@ -2145,7 +2145,7 @@ static int mxs_nand_probe(struct device_d *dev)
+>  
+>  	if (mxs_nand_is_imx6(nand_info)) {
+>  		clk_disable(nand_info->clk);
+> -		clk_set_rate(nand_info->clk, 96000000);
+> +		clk_set_rate(nand_info->clk, 22000000);
+>  		clk_enable(nand_info->clk);
+>  		nand_info->dma_channel_base = 0;
+>  	} else {
+> -- 
+> 1.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
