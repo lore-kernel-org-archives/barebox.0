@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22f.google.com ([2a00:1450:400c:c09::22f])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bzfD2-0004yy-6Z
- for barebox@lists.infradead.org; Thu, 27 Oct 2016 07:34:45 +0000
-Received: by mail-wm0-x22f.google.com with SMTP id n67so15192783wme.1
- for <barebox@lists.infradead.org>; Thu, 27 Oct 2016 00:34:22 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20161027073157.u6jmv6ux3xs4x46i@pengutronix.de>
+ id 1bzfII-0000Xx-JR
+ for barebox@lists.infradead.org; Thu, 27 Oct 2016 07:40:14 +0000
+Date: Thu, 27 Oct 2016 09:39:48 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20161027073948.26b4slsy6na5bi2i@pengutronix.de>
 References: <CABDcavZ08eW8scP2zi_5hUp7J8ex-xj17-n7SRx_5YNC3q-8eQ@mail.gmail.com>
  <20161027073157.u6jmv6ux3xs4x46i@pengutronix.de>
-From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
-Date: Thu, 27 Oct 2016 09:34:20 +0200
-Message-ID: <CABDcava4zzJBLtku87=bmp5PdYy0TMejDgTpsoP8Z2zB5vQV-Q@mail.gmail.com>
+ <CABDcava4zzJBLtku87=bmp5PdYy0TMejDgTpsoP8Z2zB5vQV-Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CABDcava4zzJBLtku87=bmp5PdYy0TMejDgTpsoP8Z2zB5vQV-Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,29 +25,44 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Read kernel from static UBI volume
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
 Cc: barebox@lists.infradead.org
 
-2016-10-27 9:31 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> On Thu, Oct 27, 2016 at 09:10:02AM +0200, Guillermo Rodriguez Garcia wrote:
->> Hello all,
->>
->> I know Barebox can load files from UBIFS. However, is there support
->> from booting a kernel directly from a static UBI volume?.
->
-> bootm /dev/nand0.ubi.whatever should do.
+On Thu, Oct 27, 2016 at 09:34:20AM +0200, Guillermo Rodriguez Garcia wrote:
+> 2016-10-27 9:31 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> > On Thu, Oct 27, 2016 at 09:10:02AM +0200, Guillermo Rodriguez Garcia wrote:
+> >> Hello all,
+> >>
+> >> I know Barebox can load files from UBIFS. However, is there support
+> >> from booting a kernel directly from a static UBI volume?.
+> >
+> > bootm /dev/nand0.ubi.whatever should do.
+> 
+> That easy?
+> 
+> This is one of the reasons why I like barebox so much better than u-boot..
+> 
+> I assume this will just read the whole volume (as opposed to checking
+> the zImage size and so on). Correct?
 
-That easy?
+The bootm code only reads the actual image size.
 
-This is one of the reasons why I like barebox so much better than u-boot..
+> 
+> Also will this do the UBI static volume CRC check?
 
-I assume this will just read the whole volume (as opposed to checking
-the zImage size and so on). Correct?
+You read a UBI volume using the UBI code which is more or less identical
+to the Kernel, so I'd assume the code does whatever is necessary,
+including the crc check.
+I'm speaking a bit nebulous because I never used static UBI volumes
+myself.
 
-Also will this do the UBI static volume CRC check?
+Sascha
 
-Guillermo Rodriguez Garcia
-guille.rodriguez@gmail.com
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
