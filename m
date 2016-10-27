@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1brK2B-00045m-CY
- for barebox@lists.infradead.org; Tue, 04 Oct 2016 07:21:04 +0000
-Date: Tue, 4 Oct 2016 09:20:41 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161004072041.mfou7hpp3uoihqys@pengutronix.de>
-References: <1475505657-898-1-git-send-email-andrew.smirnov@gmail.com>
- <1475505657-898-15-git-send-email-andrew.smirnov@gmail.com>
+ id 1bzexN-00061A-Bf
+ for barebox@lists.infradead.org; Thu, 27 Oct 2016 07:18:37 +0000
+Date: Thu, 27 Oct 2016 09:18:10 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20161027071810.g7web5cjygjqnus5@pengutronix.de>
+References: <CABDcavZ08eW8scP2zi_5hUp7J8ex-xj17-n7SRx_5YNC3q-8eQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1475505657-898-15-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <CABDcavZ08eW8scP2zi_5hUp7J8ex-xj17-n7SRx_5YNC3q-8eQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,53 +18,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 14/20] i.MX: i2c-imx: Add Vybrid support
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: Read kernel from static UBI volume
+To: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Oct 03, 2016 at 07:40:51AM -0700, Andrey Smirnov wrote:
-> Vybrid flavour of the I2C controller requires some additional quirks on
-> part of the driver. This commit ports those quirks code from analogous
-> Linux kernel driver.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  drivers/i2c/busses/i2c-imx.c | 215 ++++++++++++++++++++++++++++++++-----------
->  1 file changed, 160 insertions(+), 55 deletions(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-> index e407896..dbc76c2 100644
-> --- a/drivers/i2c/busses/i2c-imx.c
-> +++ b/drivers/i2c/busses/i2c-imx.c
-> @@ -43,6 +43,7 @@
-> +static inline void fsl_i2c_write_reg(unsigned int val,
-> +				     struct fsl_i2c_struct *i2c_fsl,
-> +				     unsigned int reg)
-> +{
-> +	writeb(val, i2c_fsl->base + (reg << i2c_fsl->hwdata->regshift));
-> +}
-> +
-> +static inline unsigned char fsl_i2c_read_reg(struct fsl_i2c_struct *i2c_fsl,
-> +					     unsigned int reg)
-> +{
-> +	return readb(i2c_fsl->base + (reg << i2c_fsl->hwdata->regshift));
-> +}
+On Thu, Oct 27, 2016 at 09:10:02AM +0200, Guillermo Rodriguez Garcia wrote:
+> I know Barebox can load files from UBIFS. However, is there support
+> from booting a kernel directly from a static UBI volume?.
 
-Can we have the introduction of the read/write accessor functions as a
-separate patch (with regshift hardcoded to 0)? This would make reviewing
-the rest easier.
+Are you using ptxdist? If so, enable BLSPEC which results in the kernel
+being installed (together with a dtb if configured) in the rootfs and
+barebox can boot this easily.
 
-Sascha
+Best regards
+Uwe
 
--- 
-Pengutronix e.K.                           |                             |
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
