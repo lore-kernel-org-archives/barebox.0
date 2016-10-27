@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x230.google.com ([2a00:1450:400c:c09::230])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bzeel-0003mH-F9
- for barebox@lists.infradead.org; Thu, 27 Oct 2016 06:59:20 +0000
-Date: Thu, 27 Oct 2016 08:58:56 +0200
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20161027065856.tn4tdwtev5aexxyg@pengutronix.de>
-References: <20161017075052.30802-1-s.trumtrar@pengutronix.de>
- <20161017075052.30802-3-s.trumtrar@pengutronix.de>
- <1477512729.14501.14.camel@rtred1test09.kymeta.local>
+ id 1bzepV-0001Qk-W1
+ for barebox@lists.infradead.org; Thu, 27 Oct 2016 07:10:26 +0000
+Received: by mail-wm0-x230.google.com with SMTP id b80so14154477wme.1
+ for <barebox@lists.infradead.org>; Thu, 27 Oct 2016 00:10:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1477512729.14501.14.camel@rtred1test09.kymeta.local>
+From: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
+Date: Thu, 27 Oct 2016 09:10:02 +0200
+Message-ID: <CABDcavZ08eW8scP2zi_5hUp7J8ex-xj17-n7SRx_5YNC3q-8eQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,50 +21,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 3/3] ARM: socfpga: dtsi: add dw-wdt reset lines
-To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Read kernel from static UBI volume
+To: barebox@lists.infradead.org
 
-On Wed, Oct 26, 2016 at 08:12:07PM +0000, Trent Piepho wrote:
-> On Mon, 2016-10-17 at 09:50 +0200, Steffen Trumtrar wrote:
-> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > ---
-> >  arch/arm/dts/socfpga.dtsi | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> > 
-> > diff --git a/arch/arm/dts/socfpga.dtsi b/arch/arm/dts/socfpga.dtsi
-> > index d16758fdab46..66d7f21dc6a3 100644
-> > --- a/arch/arm/dts/socfpga.dtsi
-> > +++ b/arch/arm/dts/socfpga.dtsi
-> > @@ -49,3 +49,13 @@
-> >  &f2s_sdram_ref_clk {
-> >  	clock-frequency = <0>;
-> >  };
-> > +
-> > +&watchdog0 {
-> > +	resets = <&rst L4WD0_RESET>;
-> > +	reset-names = "dw-wdt";
-> 
-> This is the official binding?  The reset-names property is supposed to
-> be the name of the reset from the perspective of the device being
-> described, e.g. the watchdog.  Not the name from the perspective of the
-> reset controller.  Rather than "dw-wdt", the name should something like
-> "reset", which clearly doesn't add much information, which is why the
-> reset-names property is supposed to be optional.
-> 
+Hello all,
 
-There is no "official" binding. I wasn't really sure about this property
-and just tried to derive from other bindings. I don't care for this one,
-so I'm okay with removing it.
+I know Barebox can load files from UBIFS. However, is there support
+from booting a kernel directly from a static UBI volume?.
 
 Thanks,
-Steffen
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Guillermo Rodriguez Garcia
+guille.rodriguez@gmail.com
 
 _______________________________________________
 barebox mailing list
