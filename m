@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c012a-0007j8-3J
- for barebox@lists.infradead.org; Fri, 28 Oct 2016 06:53:25 +0000
-Date: Fri, 28 Oct 2016 08:53:00 +0200
+ id 1c01T5-0000Wy-OR
+ for barebox@lists.infradead.org; Fri, 28 Oct 2016 07:20:48 +0000
+Date: Fri, 28 Oct 2016 09:20:25 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161028065259.nn2trhf73yae2ble@pengutronix.de>
-References: <1477298184-32928-1-git-send-email-t.remmet@phytec.de>
+Message-ID: <20161028072025.aqd4lfooikwwq62o@pengutronix.de>
+References: <20161017075052.30802-1-s.trumtrar@pengutronix.de>
+ <20161017075052.30802-3-s.trumtrar@pengutronix.de>
+ <1477512729.14501.14.camel@rtred1test09.kymeta.local>
+ <20161027065856.tn4tdwtev5aexxyg@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1477298184-32928-1-git-send-email-t.remmet@phytec.de>
+In-Reply-To: <20161027065856.tn4tdwtev5aexxyg@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,66 +25,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] ARM: dts: am33xx.dtsi: Add spi aliases
-To: Teresa Remmet <t.remmet@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v3 3/3] ARM: socfpga: dtsi: add dw-wdt reset lines
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Trent Piepho <tpiepho@kymetacorp.com>
 
-On Mon, Oct 24, 2016 at 10:36:24AM +0200, Teresa Remmet wrote:
-> We need to add the spi aliases to set the bus number correct in
-> the driver.
+On Thu, Oct 27, 2016 at 08:58:56AM +0200, Steffen Trumtrar wrote:
+> On Wed, Oct 26, 2016 at 08:12:07PM +0000, Trent Piepho wrote:
+> > On Mon, 2016-10-17 at 09:50 +0200, Steffen Trumtrar wrote:
+> > > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> > > ---
+> > >  arch/arm/dts/socfpga.dtsi | 10 ++++++++++
+> > >  1 file changed, 10 insertions(+)
+> > > 
+> > > diff --git a/arch/arm/dts/socfpga.dtsi b/arch/arm/dts/socfpga.dtsi
+> > > index d16758fdab46..66d7f21dc6a3 100644
+> > > --- a/arch/arm/dts/socfpga.dtsi
+> > > +++ b/arch/arm/dts/socfpga.dtsi
+> > > @@ -49,3 +49,13 @@
+> > >  &f2s_sdram_ref_clk {
+> > >  	clock-frequency = <0>;
+> > >  };
+> > > +
+> > > +&watchdog0 {
+> > > +	resets = <&rst L4WD0_RESET>;
+> > > +	reset-names = "dw-wdt";
+> > 
+> > This is the official binding?  The reset-names property is supposed to
+> > be the name of the reset from the perspective of the device being
+> > described, e.g. the watchdog.  Not the name from the perspective of the
+> > reset controller.  Rather than "dw-wdt", the name should something like
+> > "reset", which clearly doesn't add much information, which is why the
+> > reset-names property is supposed to be optional.
+> > 
 > 
-> Delete the spi1 alias again in the am33xx-strip.dtsi for MLO as
-> the node is deleted there also.
-> 
-> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+> There is no "official" binding. I wasn't really sure about this property
+> and just tried to derive from other bindings. I don't care for this one,
+> so I'm okay with removing it.
 
-Applied, thanks
+Could you send a fixup patch for this?
 
 Sascha
-
-> ---
-> Changes in v2:
-> - Removed the first patch completly
-> - Delete now spi1 alias in strip file
-> - Updated commit message
-> 
->  arch/arm/dts/am33xx-strip.dtsi | 1 +
->  arch/arm/dts/am33xx.dtsi       | 2 ++
->  2 files changed, 3 insertions(+)
-> 
-> diff --git a/arch/arm/dts/am33xx-strip.dtsi b/arch/arm/dts/am33xx-strip.dtsi
-> index 2943fd1..83d23a8 100644
-> --- a/arch/arm/dts/am33xx-strip.dtsi
-> +++ b/arch/arm/dts/am33xx-strip.dtsi
-> @@ -14,6 +14,7 @@
->  		/delete-property/ mmc2;
->  		/delete-property/ d_can0;
->  		/delete-property/ d_can1;
-> +		/delete-property/ spi1;
->  	};
->  };
->  
-> diff --git a/arch/arm/dts/am33xx.dtsi b/arch/arm/dts/am33xx.dtsi
-> index 7ba0a0b..f1ee7b3 100644
-> --- a/arch/arm/dts/am33xx.dtsi
-> +++ b/arch/arm/dts/am33xx.dtsi
-> @@ -18,5 +18,7 @@
->  		mmc0 = &mmc1;
->  		mmc1 = &mmc2;
->  		mmc2 = &mmc3;
-> +		spi0 = &spi0;
-> +		spi1 = &spi1;
->  	};
->  };
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
