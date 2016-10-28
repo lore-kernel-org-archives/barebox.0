@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1bzfII-0000Xx-JR
- for barebox@lists.infradead.org; Thu, 27 Oct 2016 07:40:14 +0000
-Date: Thu, 27 Oct 2016 09:39:48 +0200
+ id 1c012a-0007j8-3J
+ for barebox@lists.infradead.org; Fri, 28 Oct 2016 06:53:25 +0000
+Date: Fri, 28 Oct 2016 08:53:00 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161027073948.26b4slsy6na5bi2i@pengutronix.de>
-References: <CABDcavZ08eW8scP2zi_5hUp7J8ex-xj17-n7SRx_5YNC3q-8eQ@mail.gmail.com>
- <20161027073157.u6jmv6ux3xs4x46i@pengutronix.de>
- <CABDcava4zzJBLtku87=bmp5PdYy0TMejDgTpsoP8Z2zB5vQV-Q@mail.gmail.com>
+Message-ID: <20161028065259.nn2trhf73yae2ble@pengutronix.de>
+References: <1477298184-32928-1-git-send-email-t.remmet@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CABDcava4zzJBLtku87=bmp5PdYy0TMejDgTpsoP8Z2zB5vQV-Q@mail.gmail.com>
+In-Reply-To: <1477298184-32928-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,39 +22,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Read kernel from static UBI volume
-To: Guillermo Rodriguez Garcia <guille.rodriguez@gmail.com>
+Subject: Re: [PATCH v2] ARM: dts: am33xx.dtsi: Add spi aliases
+To: Teresa Remmet <t.remmet@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Oct 27, 2016 at 09:34:20AM +0200, Guillermo Rodriguez Garcia wrote:
-> 2016-10-27 9:31 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> > On Thu, Oct 27, 2016 at 09:10:02AM +0200, Guillermo Rodriguez Garcia wrote:
-> >> Hello all,
-> >>
-> >> I know Barebox can load files from UBIFS. However, is there support
-> >> from booting a kernel directly from a static UBI volume?.
-> >
-> > bootm /dev/nand0.ubi.whatever should do.
+On Mon, Oct 24, 2016 at 10:36:24AM +0200, Teresa Remmet wrote:
+> We need to add the spi aliases to set the bus number correct in
+> the driver.
 > 
-> That easy?
+> Delete the spi1 alias again in the am33xx-strip.dtsi for MLO as
+> the node is deleted there also.
 > 
-> This is one of the reasons why I like barebox so much better than u-boot..
-> 
-> I assume this will just read the whole volume (as opposed to checking
-> the zImage size and so on). Correct?
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 
-The bootm code only reads the actual image size.
-
-> 
-> Also will this do the UBI static volume CRC check?
-
-You read a UBI volume using the UBI code which is more or less identical
-to the Kernel, so I'd assume the code does whatever is necessary,
-including the crc check.
-I'm speaking a bit nebulous because I never used static UBI volumes
-myself.
+Applied, thanks
 
 Sascha
+
+> ---
+> Changes in v2:
+> - Removed the first patch completly
+> - Delete now spi1 alias in strip file
+> - Updated commit message
+> 
+>  arch/arm/dts/am33xx-strip.dtsi | 1 +
+>  arch/arm/dts/am33xx.dtsi       | 2 ++
+>  2 files changed, 3 insertions(+)
+> 
+> diff --git a/arch/arm/dts/am33xx-strip.dtsi b/arch/arm/dts/am33xx-strip.dtsi
+> index 2943fd1..83d23a8 100644
+> --- a/arch/arm/dts/am33xx-strip.dtsi
+> +++ b/arch/arm/dts/am33xx-strip.dtsi
+> @@ -14,6 +14,7 @@
+>  		/delete-property/ mmc2;
+>  		/delete-property/ d_can0;
+>  		/delete-property/ d_can1;
+> +		/delete-property/ spi1;
+>  	};
+>  };
+>  
+> diff --git a/arch/arm/dts/am33xx.dtsi b/arch/arm/dts/am33xx.dtsi
+> index 7ba0a0b..f1ee7b3 100644
+> --- a/arch/arm/dts/am33xx.dtsi
+> +++ b/arch/arm/dts/am33xx.dtsi
+> @@ -18,5 +18,7 @@
+>  		mmc0 = &mmc1;
+>  		mmc1 = &mmc2;
+>  		mmc2 = &mmc3;
+> +		spi0 = &spi0;
+> +		spi1 = &spi1;
+>  	};
+>  };
+> -- 
+> 1.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
