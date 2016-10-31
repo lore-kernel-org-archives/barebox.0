@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c01T5-0000Wy-OR
- for barebox@lists.infradead.org; Fri, 28 Oct 2016 07:20:48 +0000
-Date: Fri, 28 Oct 2016 09:20:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161028072025.aqd4lfooikwwq62o@pengutronix.de>
-References: <20161017075052.30802-1-s.trumtrar@pengutronix.de>
- <20161017075052.30802-3-s.trumtrar@pengutronix.de>
- <1477512729.14501.14.camel@rtred1test09.kymeta.local>
- <20161027065856.tn4tdwtev5aexxyg@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20161027065856.tn4tdwtev5aexxyg@pengutronix.de>
+ id 1c1FsY-0001fz-H3
+ for barebox@lists.infradead.org; Mon, 31 Oct 2016 16:56:11 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.80)
+ (envelope-from <l.stach@pengutronix.de>) id 1c1Fs9-00089D-Hp
+ for barebox@lists.infradead.org; Mon, 31 Oct 2016 17:55:45 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 31 Oct 2016 17:55:45 +0100
+Message-Id: <20161031165545.5834-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,56 +19,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 3/3] ARM: socfpga: dtsi: add dw-wdt reset lines
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Trent Piepho <tpiepho@kymetacorp.com>
+Subject: [PATCH] net: e1000: fix i210 register remapping
+To: barebox@lists.infradead.org
 
-On Thu, Oct 27, 2016 at 08:58:56AM +0200, Steffen Trumtrar wrote:
-> On Wed, Oct 26, 2016 at 08:12:07PM +0000, Trent Piepho wrote:
-> > On Mon, 2016-10-17 at 09:50 +0200, Steffen Trumtrar wrote:
-> > > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > > ---
-> > >  arch/arm/dts/socfpga.dtsi | 10 ++++++++++
-> > >  1 file changed, 10 insertions(+)
-> > > 
-> > > diff --git a/arch/arm/dts/socfpga.dtsi b/arch/arm/dts/socfpga.dtsi
-> > > index d16758fdab46..66d7f21dc6a3 100644
-> > > --- a/arch/arm/dts/socfpga.dtsi
-> > > +++ b/arch/arm/dts/socfpga.dtsi
-> > > @@ -49,3 +49,13 @@
-> > >  &f2s_sdram_ref_clk {
-> > >  	clock-frequency = <0>;
-> > >  };
-> > > +
-> > > +&watchdog0 {
-> > > +	resets = <&rst L4WD0_RESET>;
-> > > +	reset-names = "dw-wdt";
-> > 
-> > This is the official binding?  The reset-names property is supposed to
-> > be the name of the reset from the perspective of the device being
-> > described, e.g. the watchdog.  Not the name from the perspective of the
-> > reset controller.  Rather than "dw-wdt", the name should something like
-> > "reset", which clearly doesn't add much information, which is why the
-> > reset-names property is supposed to be optional.
-> > 
-> 
-> There is no "official" binding. I wasn't really sure about this property
-> and just tried to derive from other bindings. I don't care for this one,
-> so I'm okay with removing it.
+Don't mask out the remapping flag before checking the register offset,
+otherwise none of the switch statements will ever match.
 
-Could you send a fixup patch for this?
+Fixes: ff6a64d42ffc (e1000: Consolidate register offset fixups)
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ drivers/net/e1000/regio.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Sascha
-
+diff --git a/drivers/net/e1000/regio.c b/drivers/net/e1000/regio.c
+index b2e9d7b6a7df..17d08da3b8a2 100644
+--- a/drivers/net/e1000/regio.c
++++ b/drivers/net/e1000/regio.c
+@@ -5,8 +5,6 @@
+ static uint32_t e1000_true_offset(struct e1000_hw *hw, uint32_t reg)
+ {
+ 	if (reg & E1000_MIGHT_BE_REMAPPED) {
+-		reg &= ~E1000_MIGHT_BE_REMAPPED;
+-
+ 		if (hw->mac_type == e1000_igb) {
+ 			switch (reg) {
+ 			case E1000_EEWR:
+@@ -19,7 +17,9 @@ static uint32_t e1000_true_offset(struct e1000_hw *hw, uint32_t reg)
+ 				reg = E1000_I210_EEMNGCTL;
+ 				break;
+ 			}
+-		};
++		} else {
++			reg &= ~E1000_MIGHT_BE_REMAPPED;
++		}
+ 	}
+ 
+ 	return reg;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.10.1
+
 
 _______________________________________________
 barebox mailing list
