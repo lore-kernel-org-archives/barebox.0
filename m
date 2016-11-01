@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c1Uua-0003O5-Un
- for barebox@lists.infradead.org; Tue, 01 Nov 2016 08:59:18 +0000
+ id 1c1Uua-0003O7-Um
+ for barebox@lists.infradead.org; Tue, 01 Nov 2016 08:59:19 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <l.stach@pengutronix.de>) id 1c1UuF-0004c4-GN
+ (envelope-from <l.stach@pengutronix.de>) id 1c1UuF-0004c4-IU
  for barebox@lists.infradead.org; Tue, 01 Nov 2016 09:58:55 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue,  1 Nov 2016 09:58:53 +0100
-Message-Id: <20161101085855.953-3-l.stach@pengutronix.de>
+Date: Tue,  1 Nov 2016 09:58:55 +0100
+Message-Id: <20161101085855.953-5-l.stach@pengutronix.de>
 In-Reply-To: <20161101085855.953-1-l.stach@pengutronix.de>
 References: <20161101085855.953-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -26,45 +26,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] PCI: align address range before scanning bridge
+Subject: [PATCH 5/5] PCI: split PCI hierarchy enumeration and config from
+ device registration
 To: barebox@lists.infradead.org
 
-Otherwise we may end up with a too low base address and push
-requests for the upstream bus onto the downstream side.
+This gets rid of some of the special cases in the bus scanning function
+by splitting hierarchy enumeration and configuration and the actual
+device registration into 2 passes.
+
+This ensures that the PCI hierarchy below a root port is completely
+set up before any device driver is probed.
+
+This simplifies the code and makes it less error prone, while moving
+the PCI address space layout closer to the one used by Linux.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- drivers/pci/pci.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pci/pci.c | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index eb3ce0f3211a..19cda1f145bc 100644
+index 12aafccde578..b2570eb15181 100644
 --- a/drivers/pci/pci.c
 +++ b/drivers/pci/pci.c
-@@ -252,6 +252,7 @@ static void prescan_setup_bridge(struct pci_dev *dev)
+@@ -28,6 +28,20 @@ static struct pci_bus *pci_alloc_bus(void)
+ 	return b;
+ }
  
- 	if (last_mem) {
- 		/* Set up memory and I/O filter limits, assume 32-bit I/O space */
-+		last_mem = ALIGN(last_mem, SZ_1M);
- 		pci_write_config_word(dev, PCI_MEMORY_BASE,
- 				      (last_mem & 0xfff00000) >> 16);
- 		cmdstat |= PCI_COMMAND_MEMORY;
-@@ -259,6 +260,7 @@ static void prescan_setup_bridge(struct pci_dev *dev)
++static void pci_bus_register_devices(struct pci_bus *bus)
++{
++	struct pci_dev *dev;
++	struct pci_bus *child_bus;
++
++	/* activate all devices on this bus */
++	list_for_each_entry(dev, &bus->devices, bus_list)
++		pci_register_device(dev);
++
++	/* walk down the hierarchy */
++	list_for_each_entry(child_bus, &bus->children, node)
++		pci_bus_register_devices(child_bus);
++}
++
+ void register_pci_controller(struct pci_controller *hose)
+ {
+ 	struct pci_bus *bus;
+@@ -64,6 +78,7 @@ void register_pci_controller(struct pci_controller *hose)
+ 		last_io = 0;
  
- 	if (last_mem_pref) {
- 		/* Set up memory and I/O filter limits, assume 32-bit I/O space */
-+		last_mem_pref = ALIGN(last_mem_pref, SZ_1M);
- 		pci_write_config_word(dev, PCI_PREF_MEMORY_BASE,
- 				      (last_mem_pref & 0xfff00000) >> 16);
- 		cmdstat |= PCI_COMMAND_MEMORY;
-@@ -270,6 +272,7 @@ static void prescan_setup_bridge(struct pci_dev *dev)
- 	}
+ 	pci_scan_bus(bus);
++	pci_bus_register_devices(bus);
  
- 	if (last_io) {
-+		last_io = ALIGN(last_io, SZ_4K);
- 		pci_write_config_byte(dev, PCI_IO_BASE,
- 				      (last_io & 0x0000f000) >> 8);
- 		pci_write_config_word(dev, PCI_IO_BASE_UPPER16,
+ 	list_add_tail(&bus->node, &pci_root_buses);
+ 
+@@ -384,16 +399,8 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
+ 			dev->rom_address = (l == 0xffffffff) ? 0 : l;
+ 
+ 			setup_device(dev, 6);
+-			/*
+-			 * If this device is on the root bus, there is no bridge
+-			 * to configure, so we can activate it right away.
+-			 */
+-			if (!bus->parent_bus)
+-				pci_register_device(dev);
+ 			break;
+ 		case PCI_HEADER_TYPE_BRIDGE:
+-			setup_device(dev, 2);
+-
+ 			child_bus = pci_alloc_bus();
+ 			/* inherit parent properties */
+ 			child_bus->host = bus->host;
+@@ -412,18 +419,12 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
+ 			list_add_tail(&child_bus->node, &bus->children);
+ 			dev->subordinate = child_bus;
+ 
+-			/* activate bridge device */
+-			pci_register_device(dev);
+-
+ 			/* scan pci hierarchy behind bridge */
+ 			prescan_setup_bridge(dev);
+ 			pci_scan_bus(child_bus);
+ 			postscan_setup_bridge(dev);
+ 
+-			/* finally active all devices behind the bridge */
+-			list_for_each_entry(dev, &child_bus->devices, bus_list)
+-				if (!dev->subordinate)
+-					pci_register_device(dev);
++			setup_device(dev, 2);
+ 			break;
+ 		default:
+ 		bad:
 -- 
 2.10.1
 
