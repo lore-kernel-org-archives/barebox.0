@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cA17T-0005bG-Fo
- for barebox@lists.infradead.org; Thu, 24 Nov 2016 20:59:48 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu, 24 Nov 2016 21:59:18 +0100
-Message-Id: <20161124205918.20093-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1c1UtQ-0003Jm-Et
+ for barebox@lists.infradead.org; Tue, 01 Nov 2016 08:58:08 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.80)
+ (envelope-from <l.stach@pengutronix.de>) id 1c1Ut4-0004bL-7w
+ for barebox@lists.infradead.org; Tue, 01 Nov 2016 09:57:42 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue,  1 Nov 2016 09:57:42 +0100
+Message-Id: <20161101085742.20390-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,38 +19,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: m25p80: add support for Everspin MR25H40
+Subject: [PATCH] net: e1000: set edev parent pointer
 To: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBkcml2ZXJzL210ZC9kZXZpY2VzL20yNXA4MC5jICB8IDIgKy0KIGRyaXZl
-cnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5jIHwgMSArCiAyIGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0
-aW9ucygrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL2RldmljZXMv
-bTI1cDgwLmMgYi9kcml2ZXJzL210ZC9kZXZpY2VzL20yNXA4MC5jCmluZGV4IDY1NmE3ZjVlZjA0
-NS4uOGE2Nzc5MjEyNWUzIDEwMDY0NAotLS0gYS9kcml2ZXJzL210ZC9kZXZpY2VzL20yNXA4MC5j
-CisrKyBiL2RyaXZlcnMvbXRkL2RldmljZXMvbTI1cDgwLmMKQEAgLTE3OSw3ICsxNzksNyBAQCBz
-dGF0aWMgY29uc3Qgc3RydWN0IHBsYXRmb3JtX2RldmljZV9pZCBtMjVwX2lkc1tdID0gewogCXsi
-ZW4yNWYzMiJ9LCAgICB7ImVuMjVwMzIifSwgICAgeyJlbjI1cTMyYiJ9LCAgIHsiZW4yNXA2NCJ9
-LAogCXsiZW4yNXE2NCJ9LCAgICB7ImVuMjVxaDEyOCJ9LCAgeyJlbjI1cWgyNTYifSwKIAl7ImYy
-NWwzMnBhIn0sCi0JeyJtcjI1aDI1NiJ9LCAgIHsibXIyNWgxMCJ9LAorCXsibXIyNWgyNTYifSwg
-ICB7Im1yMjVoMTAifSwgICAgeyJtcjI1aDQwIn0sCiAJeyJnZDI1cTMyIn0sICAgIHsiZ2QyNXE2
-NCJ9LAogCXsiMTYwczMzYiJ9LCAgICB7IjMyMHMzM2IifSwgICAgeyI2NDBzMzNiIn0sCiAJeyJt
-eDI1bDIwMDVhIn0sIHsibXgyNWw0MDA1YSJ9LCB7Im14MjVsODAwNSJ9LCAgeyJteDI1bDE2MDZl
-In0sCmRpZmYgLS1naXQgYS9kcml2ZXJzL210ZC9zcGktbm9yL3NwaS1ub3IuYyBiL2RyaXZlcnMv
-bXRkL3NwaS1ub3Ivc3BpLW5vci5jCmluZGV4IDQ1YmU1ODYyMzgzOS4uZmFlYWZlMWJmYjZhIDEw
-MDY0NAotLS0gYS9kcml2ZXJzL210ZC9zcGktbm9yL3NwaS1ub3IuYworKysgYi9kcml2ZXJzL210
-ZC9zcGktbm9yL3NwaS1ub3IuYwpAQCAtNTA0LDYgKzUwNCw3IEBAIHN0YXRpYyBjb25zdCBzdHJ1
-Y3Qgc3BpX2RldmljZV9pZCBzcGlfbm9yX2lkc1tdID0gewogCS8qIEV2ZXJzcGluICovCiAJeyAi
-bXIyNWgyNTYiLCBDQVQyNV9JTkZPKCAzMiAqIDEwMjQsIDEsIDI1NiwgMiwgU1BJX05PUl9OT19F
-UkFTRSB8IFNQSV9OT1JfTk9fRlIpIH0sCiAJeyAibXIyNWgxMCIsICBDQVQyNV9JTkZPKDEyOCAq
-IDEwMjQsIDEsIDI1NiwgMywgU1BJX05PUl9OT19FUkFTRSB8IFNQSV9OT1JfTk9fRlIpIH0sCisJ
-eyAibXIyNWg0MCIsICBDQVQyNV9JTkZPKDUxMiAqIDEwMjQsIDEsIDI1NiwgMywgU1BJX05PUl9O
-T19FUkFTRSB8IFNQSV9OT1JfTk9fRlIpIH0sCiAKIAkvKiBGdWppdHN1ICovCiAJeyAibWI4NXJz
-MW10IiwgSU5GTygweDA0N2YyNywgMCwgMTI4ICogMTAyNCwgMSwgU1BJX05PUl9OT19FUkFTRSkg
-fSwKLS0gCjIuMTAuMgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+This way the ethernet device will show up at the correct point
+in the device hierarchy.
+
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ drivers/net/e1000/main.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
+index 77bcd179a824..6f9dddaf232a 100644
+--- a/drivers/net/e1000/main.c
++++ b/drivers/net/e1000/main.c
+@@ -3600,6 +3600,7 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	e1000_get_ethaddr(edev, edev->ethaddr);
+ 
+ 	/* Set up the function pointers and register the device */
++	edev->parent = &pdev->dev;
+ 	edev->init = e1000_init;
+ 	edev->recv = e1000_poll;
+ 	edev->send = e1000_transmit;
+-- 
+2.10.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
