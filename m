@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c1qNv-00012x-1c
+ id 1c1qNu-00012l-9k
  for barebox@lists.infradead.org; Wed, 02 Nov 2016 07:55:00 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id F2C04A0041A
+ by root.phytec.de (Postfix) with ESMTP id 6D839A0039E
  for <barebox@lists.infradead.org>; Wed,  2 Nov 2016 08:55:04 +0100 (CET)
 From: Stefan Lengfeld <s.lengfeld@phytec.de>
-Date: Wed, 2 Nov 2016 08:54:29 +0100
-Message-Id: <1478073270-3527-3-git-send-email-s.lengfeld@phytec.de>
-In-Reply-To: <1478073270-3527-1-git-send-email-s.lengfeld@phytec.de>
-References: <1478073270-3527-1-git-send-email-s.lengfeld@phytec.de>
+Date: Wed, 2 Nov 2016 08:54:27 +0100
+Message-Id: <1478073270-3527-1-git-send-email-s.lengfeld@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,30 +22,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH upstream 3/4] state: fix state is not saved when string
- variable is changed
+Subject: [PATCH upstream 1/4] state: use packet attribute for on storage
+ structs
 To: barebox@lists.infradead.org
 
-The dirty flag was not set properly.
+These structs are used for on-storage data layouts. They should be not
+affected by different integer precisions and alignment optimizations of
+32bit or 64bit machines. Using the architecture independent integer data
+types, like uint32_t, achieves the former, using the packet attribute
+the later.
 
 Signed-off-by: Stefan Lengfeld <s.lengfeld@phytec.de>
 ---
- common/state/state_variables.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/state/backend_bucket_circular.c | 2 +-
+ common/state/backend_bucket_direct.c   | 2 +-
+ common/state/backend_format_raw.c      | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/common/state/state_variables.c b/common/state/state_variables.c
-index 1e37856..fd072a0 100644
---- a/common/state/state_variables.c
-+++ b/common/state/state_variables.c
-@@ -383,7 +383,7 @@ static int state_string_set(struct param_d *p, void *priv)
- 	if (ret)
- 		return ret;
+diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
+index 72e165e..d8504e0 100644
+--- a/common/state/backend_bucket_circular.c
++++ b/common/state/backend_bucket_circular.c
+@@ -47,7 +47,7 @@ struct state_backend_storage_bucket_circular {
+ 	struct device_d *dev;
+ };
  
--	return state_set_dirty(p, sv->state);
-+	return state_set_dirty(p, sv);
- }
+-struct state_backend_storage_bucket_circular_meta {
++struct __attribute__((__packed__)) state_backend_storage_bucket_circular_meta {
+ 	uint32_t magic;
+ 	uint32_t written_length;
+ };
+diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
+index 08892f0..5225433 100644
+--- a/common/state/backend_bucket_direct.c
++++ b/common/state/backend_bucket_direct.c
+@@ -32,7 +32,7 @@ struct state_backend_storage_bucket_direct {
+ 	struct device_d *dev;
+ };
  
- static int state_string_get(struct param_d *p, void *priv)
+-struct state_backend_storage_bucket_direct_meta {
++struct __attribute__((__packed__)) state_backend_storage_bucket_direct_meta {
+ 	uint32_t magic;
+ 	uint32_t written_length;
+ };
+diff --git a/common/state/backend_format_raw.c b/common/state/backend_format_raw.c
+index 4209424..e028ea6 100644
+--- a/common/state/backend_format_raw.c
++++ b/common/state/backend_format_raw.c
+@@ -37,7 +37,7 @@ struct state_backend_format_raw {
+ 	struct device_d *dev;
+ };
+ 
+-struct backend_raw_header {
++struct __attribute__((__packed__)) backend_raw_header {
+ 	uint32_t magic;
+ 	uint16_t reserved;
+ 	uint16_t data_len;
 -- 
 1.9.1
 
