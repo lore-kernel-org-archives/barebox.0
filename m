@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-x242.google.com ([2607:f8b0:4002:c05::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c1wM9-0005ty-QI
- for barebox@lists.infradead.org; Wed, 02 Nov 2016 14:17:34 +0000
-Received: by mail-yw0-x242.google.com with SMTP id l124so571967ywb.1
- for <barebox@lists.infradead.org>; Wed, 02 Nov 2016 07:17:12 -0700 (PDT)
+ id 1c2BDi-0002rn-Pg
+ for barebox@lists.infradead.org; Thu, 03 Nov 2016 06:09:52 +0000
+Date: Thu, 3 Nov 2016 07:09:24 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20161103060924.anrtnqelum2v5dgd@pengutronix.de>
+References: <20161031165812.9958-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <1478073270-3527-1-git-send-email-s.lengfeld@phytec.de>
-References: <1478073270-3527-1-git-send-email-s.lengfeld@phytec.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 2 Nov 2016 07:17:11 -0700
-Message-ID: <CAHQ1cqFg11OsnMTX2bPsXq-SN6TkjVcCdYYzfeRDAw5RfTKoHQ@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20161031165812.9958-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,79 +22,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH upstream 1/4] state: use packet attribute for on storage
- structs
-To: Stefan Lengfeld <s.lengfeld@phytec.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2] net: e1000: fix i210 register remapping
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Wed, Nov 2, 2016 at 12:54 AM, Stefan Lengfeld <s.lengfeld@phytec.de> wrote:
-> These structs are used for on-storage data layouts. They should be not
-> affected by different integer precisions and alignment optimizations of
-> 32bit or 64bit machines. Using the architecture independent integer data
-> types, like uint32_t, achieves the former, using the packet attribute
-
- "packed" instead of "packet"?
-
-> the later.
->
-> Signed-off-by: Stefan Lengfeld <s.lengfeld@phytec.de>
+On Mon, Oct 31, 2016 at 05:58:12PM +0100, Lucas Stach wrote:
+> Don't mask out the remapping flag before checking the register offset,
+> otherwise none of the switch statements will ever match.
+> 
+> Fixes: ff6a64d42ffc (e1000: Consolidate register offset fixups)
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 > ---
->  common/state/backend_bucket_circular.c | 2 +-
->  common/state/backend_bucket_direct.c   | 2 +-
->  common/state/backend_format_raw.c      | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
-> index 72e165e..d8504e0 100644
-> --- a/common/state/backend_bucket_circular.c
-> +++ b/common/state/backend_bucket_circular.c
-> @@ -47,7 +47,7 @@ struct state_backend_storage_bucket_circular {
->         struct device_d *dev;
->  };
->
-> -struct state_backend_storage_bucket_circular_meta {
-> +struct __attribute__((__packed__)) state_backend_storage_bucket_circular_meta {
+> v2: don't break it the other way around
+> ---
 
-#include <linux/compiler.h> defines "__packed" macro which might make
-things less verbose. Ditto for the rest of the changes in this patch.
+Applied, thanks
 
->         uint32_t magic;
->         uint32_t written_length;
->  };
-> diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
-> index 08892f0..5225433 100644
-> --- a/common/state/backend_bucket_direct.c
-> +++ b/common/state/backend_bucket_direct.c
-> @@ -32,7 +32,7 @@ struct state_backend_storage_bucket_direct {
->         struct device_d *dev;
->  };
->
-> -struct state_backend_storage_bucket_direct_meta {
-> +struct __attribute__((__packed__)) state_backend_storage_bucket_direct_meta {
->         uint32_t magic;
->         uint32_t written_length;
->  };
-> diff --git a/common/state/backend_format_raw.c b/common/state/backend_format_raw.c
-> index 4209424..e028ea6 100644
-> --- a/common/state/backend_format_raw.c
-> +++ b/common/state/backend_format_raw.c
-> @@ -37,7 +37,7 @@ struct state_backend_format_raw {
->         struct device_d *dev;
->  };
->
-> -struct backend_raw_header {
-> +struct __attribute__((__packed__)) backend_raw_header {
->         uint32_t magic;
->         uint16_t reserved;
->         uint16_t data_len;
-> --
-> 1.9.1
->
->
+Sascha
+
+>  drivers/net/e1000/regio.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/e1000/regio.c b/drivers/net/e1000/regio.c
+> index b2e9d7b6a7df..1610d5851f05 100644
+> --- a/drivers/net/e1000/regio.c
+> +++ b/drivers/net/e1000/regio.c
+> @@ -5,8 +5,6 @@
+>  static uint32_t e1000_true_offset(struct e1000_hw *hw, uint32_t reg)
+>  {
+>  	if (reg & E1000_MIGHT_BE_REMAPPED) {
+> -		reg &= ~E1000_MIGHT_BE_REMAPPED;
+> -
+>  		if (hw->mac_type == e1000_igb) {
+>  			switch (reg) {
+>  			case E1000_EEWR:
+> @@ -19,7 +17,8 @@ static uint32_t e1000_true_offset(struct e1000_hw *hw, uint32_t reg)
+>  				reg = E1000_I210_EEMNGCTL;
+>  				break;
+>  			}
+> -		};
+> +		}
+> +		reg &= ~E1000_MIGHT_BE_REMAPPED;
+>  	}
+>  
+>  	return reg;
+> -- 
+> 2.10.1
+> 
+> 
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
