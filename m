@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c2Yly-0000SU-PR
- for barebox@lists.infradead.org; Fri, 04 Nov 2016 07:18:47 +0000
-Date: Fri, 4 Nov 2016 08:18:21 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161104071821.jqrhtfmgz3432527@pengutronix.de>
-References: <CAKZffXFSfTJJiwj2ZOB7nT-DWZ7_AqyysZkavNM++c4LSp6tZg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAKZffXFSfTJJiwj2ZOB7nT-DWZ7_AqyysZkavNM++c4LSp6tZg@mail.gmail.com>
+ id 1c2ahg-0002TL-BV
+ for barebox@lists.infradead.org; Fri, 04 Nov 2016 09:22:32 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Fri,  4 Nov 2016 10:19:06 +0100
+Message-Id: <1478251146-32717-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,73 +14,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Configure RAM size on iMX53 board
-To: Jose Luis Zabalza <jlz.3008@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mfd: mc13892: more descriptive charger register defines
+To: barebox@lists.infradead.org
+Cc: Alexander Kurz <akurz@blala.de>
 
-Hi,
+Make access to the mc13892 charger parameter voltage, current and max power
+dissipation readable in terms of millivolts, milliamps and milliwatts.
 
-On Thu, Nov 03, 2016 at 09:30:03PM +0100, Jose Luis Zabalza wrote:
-> Hello everybody
-> 
-> I have two iMX53 custom boards. They are the same board but 512MB vs
-> 1GB RAM version.  Both boards are working with the same Uboot binary
-> but I would like use Barebox.
-> 
-> I have to be able to run Barebox on 1GB version but the same Barebox
-> binary don't work on 512MB version.
-> 
-> I use imx-usb-loader to put Barebox on the board. On 1GB version
-> Barebox are working OK and load Linux kernel successfully. On 512MB
-> Barebox are loaded successfully but don't work. lsusb tell me the
-> board is working on Serial Download mode yet. No message is printed on
-> the console.
-> 
-> Do I have to set Barebox for work with different RAM size?
+Signed-off-by: Alexander Kurz <akurz@blala.de>
+---
+ arch/arm/boards/efika-mx-smartbook/board.c |  4 +--
+ include/mfd/mc13892.h                      | 40 +++++++++++++++++++++++-------
+ 2 files changed, 32 insertions(+), 12 deletions(-)
 
-Just like Andrey already said, barebox detects the RAM size by reading
-back the values from the SDRAM controller to determine its memory
-layout, so the configured values must be correct. In your case they can
-only be correct for the 1GB version.
-
-What you can do in this case is:
-
-- in your boards lowlevel.c detect your actual RAM size by testing for
-  mirrors in the SDRAM Address space.
-- Instead of imx53_barebox_entry() call barebox_arm_entry() with the
-  actual RAM size.
-
-This should already bring you through the lowlevel setup succesfully.
-
-Then in your board file add this:
-
-#include <mach/esdctl.h>
-
-static int myboard_init(void)
-{
-	imx_esdctl_disable();
-
-	arm_add_mem_device("ram0", MX53_CSD0_BASE_ADDR, size);
-
-	return 0;
-}
-core_initcall(myboard_init);
-
-Note you can't use a variable to safe the calculated SDRAM size from
-lowlevel.c to your board file. It's probably best to do the same test
-again.
-
-Sascha
-
+diff --git a/arch/arm/boards/efika-mx-smartbook/board.c b/arch/arm/boards/efika-mx-smartbook/board.c
+index d7c11dc..d7c5681 100644
+--- a/arch/arm/boards/efika-mx-smartbook/board.c
++++ b/arch/arm/boards/efika-mx-smartbook/board.c
+@@ -74,9 +74,7 @@ static void efikamx_power_init(struct mc13xxx *mc)
+ 
+ 	/* Externally powered */
+ 	mc13xxx_reg_read(mc, MC13892_REG_CHARGE, &val);
+-	val |= MC13782_CHARGE_ICHRG0 | MC13782_CHARGE_ICHRG1 |
+-		MC13782_CHARGE_ICHRG2 | MC13782_CHARGE_ICHRG3 |
+-		MC13782_CHARGE_CHGAUTOB;
++	val |= MC13782_CHARGE_ICHRG_FULL | MC13782_CHARGE_CHGAUTOB;
+ 	mc13xxx_reg_write(mc, MC13892_REG_CHARGE, val);
+ 
+ 	/* power up the system first */
+diff --git a/include/mfd/mc13892.h b/include/mfd/mc13892.h
+index c92a462..8b52239 100644
+--- a/include/mfd/mc13892.h
++++ b/include/mfd/mc13892.h
+@@ -29,21 +29,43 @@
+ 
+ /* REG_CHARGE */
+ 
+-#define MC13782_CHARGE_VCHRG0		(1 << 0)
+-#define MC13782_CHARGE_VCHRG1		(1 << 1)
+-#define MC13782_CHARGE_VCHRG2		(1 << 2)
+-#define MC13782_CHARGE_ICHRG0		(1 << 3)
+-#define MC13782_CHARGE_ICHRG1		(1 << 4)
+-#define MC13782_CHARGE_ICHRG2		(1 << 5)
+-#define MC13782_CHARGE_ICHRG3		(1 << 6)
++#define MC13782_CHARGE_VCHRG_3800	(0 << 0)
++#define MC13782_CHARGE_VCHRG_4100	(1 << 0)
++#define MC13782_CHARGE_VCHRG_4150	(2 << 0)
++#define MC13782_CHARGE_VCHRG_4200	(3 << 0)
++#define MC13782_CHARGE_VCHRG_4250	(4 << 0)
++#define MC13782_CHARGE_VCHRG_4300	(5 << 0)
++#define MC13782_CHARGE_VCHRG_4375	(6 << 0)
++#define MC13782_CHARGE_VCHRG_4450	(7 << 0)
++#define MC13782_CHARGE_VCHRG_MASK	(7 << 0)
++#define MC13782_CHARGE_ICHRG_0		(0 << 3)
++#define MC13782_CHARGE_ICHRG_80		(1 << 3)
++#define MC13782_CHARGE_ICHRG_240	(2 << 3)
++#define MC13782_CHARGE_ICHRG_320	(3 << 3)
++#define MC13782_CHARGE_ICHRG_400	(4 << 3)
++#define MC13782_CHARGE_ICHRG_480	(5 << 3)
++#define MC13782_CHARGE_ICHRG_560	(6 << 3)
++#define MC13782_CHARGE_ICHRG_640	(7 << 3)
++#define MC13782_CHARGE_ICHRG_720	(8 << 3)
++#define MC13782_CHARGE_ICHRG_800	(9 << 3)
++#define MC13782_CHARGE_ICHRG_880	(10 << 3)
++#define MC13782_CHARGE_ICHRG_960	(11 << 3)
++#define MC13782_CHARGE_ICHRG_1040	(12 << 3)
++#define MC13782_CHARGE_ICHRG_1200	(13 << 3)
++#define MC13782_CHARGE_ICHRG_1600	(14 << 3)
++#define MC13782_CHARGE_ICHRG_FULL	(15 << 3)
++#define MC13782_CHARGE_ICHRG_MASK	(15 << 3)
+ #define MC13782_CHARGE_TREN		(1 << 7)
+ #define MC13782_CHARGE_ACKLPB		(1 << 8)
+ #define MC13782_CHARGE_THCHKB		(1 << 9)
+ #define MC13782_CHARGE_FETOVRD		(1 << 10)
+ #define MC13782_CHARGE_FETCTRL		(1 << 11)
+ #define MC13782_CHARGE_RVRSMODE		(1 << 13)
+-#define MC13782_CHARGE_PLIM0		(1 << 15)
+-#define MC13782_CHARGE_PLIM1		(1 << 16)
++#define MC13782_CHARGE_PLIM_600		(0 << 15)
++#define MC13782_CHARGE_PLIM_800		(1 << 15)
++#define MC13782_CHARGE_PLIM_1000	(2 << 15)
++#define MC13782_CHARGE_PLIM_1200	(3 << 15)
++#define MC13782_CHARGE_PLIM_MASK	(3 << 15)
+ #define MC13782_CHARGE_PLIMDIS		(1 << 17)
+ #define MC13782_CHARGE_CHRGLEDEN	(1 << 18)
+ #define MC13782_CHARGE_CHGTMRRST	(1 << 19)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
