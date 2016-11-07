@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-it0-x244.google.com ([2607:f8b0:4001:c0b::244])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c3epP-0005Bt-3p
- for barebox@lists.infradead.org; Mon, 07 Nov 2016 07:58:52 +0000
-Date: Mon, 7 Nov 2016 08:58:29 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161107075829.cfwegfzioig2iqlc@pengutronix.de>
-References: <1478197480-27488-1-git-send-email-akurz@blala.de>
+ id 1c3fFi-0002qq-OF
+ for barebox@lists.infradead.org; Mon, 07 Nov 2016 08:26:03 +0000
+Received: by mail-it0-x244.google.com with SMTP id b123so2760679itb.2
+ for <barebox@lists.infradead.org>; Mon, 07 Nov 2016 00:25:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1478197480-27488-1-git-send-email-akurz@blala.de>
+In-Reply-To: <20161107074924.blkryleb2eb5bkhy@pengutronix.de>
+References: <CAOTEMUR=FtB_Ox++XPvomyHXsk5Jcm7CG7aEM6WmN++t0211Aw@mail.gmail.com>
+ <CAOTEMUQt95XDorid8sj9FHkpCpUJYnqNeRbBU+33aLYz2oM+gw@mail.gmail.com>
+ <20161107074924.blkryleb2eb5bkhy@pengutronix.de>
+From: Alex Vazquez <avazquez.dev@gmail.com>
+Date: Mon, 7 Nov 2016 09:25:41 +0100
+Message-ID: <CAOTEMUR=cw8C7K6SwUtUs1PjJB2f8OCBMsmPd1Pe_gwGWJpGfA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +25,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: spi-nor: add MX25U2033E
-To: Alexander Kurz <akurz@blala.de>
+Subject: Re: Fwd: boot kernel with append device tree
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Nov 03, 2016 at 07:24:40PM +0100, Alexander Kurz wrote:
-> This chip can be found in 4th generation Kindle devices
-> 
-> Signed-off-by: Alexander Kurz <akurz@blala.de>
-> ---
->  drivers/mtd/spi-nor/spi-nor.c | 1 +
->  1 file changed, 1 insertion(+)
+Hi Sasha!
 
-Applied, thanks
+> Which version are you using. Is it something older?
 
-Sascha
+I am using barebox-2016.03.0
 
-> 
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-> index 748b328..45be586 100644
-> --- a/drivers/mtd/spi-nor/spi-nor.c
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -526,6 +526,7 @@ static const struct spi_device_id spi_nor_ids[] = {
->  	{ "mx25l3205d",  INFO(0xc22016, 0, 64 * 1024,  64, 0) },
->  	{ "mx25l3255e",  INFO(0xc29e16, 0, 64 * 1024,  64, SECT_4K) },
->  	{ "mx25l6405d",  INFO(0xc22017, 0, 64 * 1024, 128, 0) },
-> +	{ "mx25u2033e",  INFO(0xc22532, 0, 64 * 1024,   4, SECT_4K) },
->  	{ "mx25u4035",   INFO(0xc22533, 0, 64 * 1024,   8, SECT_4K) },
->  	{ "mx25u8035",   INFO(0xc22534, 0, 64 * 1024,  16, SECT_4K) },
->  	{ "mx25u6435f",  INFO(0xc22537, 0, 64 * 1024, 128, SECT_4K) },
-> -- 
-> 2.1.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards!
+
+2016-11-07 8:49 GMT+01:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> Hi Alex,
+>
+> Added the list to Cc
+>
+> Please configure your mailer to send plain text, then the server won't
+> reject your mails.
+>
+> On Fri, Nov 04, 2016 at 01:10:30PM +0100, Alex Vazquez wrote:
+>>    Hi, all!
+>>    I have create a zImage with the device tree appended.
+>>    I have removed oftree_loc in the configuration file.
+>>    My problem is when I try to launch the kernel, it indicates that it has
+>>    the device tree added but fails to boot.
+>>
+>>      barebox:/# boot
+>>      booting kernel from /dev/[1]nand0.kernel.bb
+>>      Loading ARM Linux zImage '/dev/[2]nand0.kernel.bb'
+>>      zImage: concatenated oftree detected
+>>      commandline: console=ttyS0,115200 rw ip=none ...
+>>      arch_number: 0
+>>
+>>    If I don't removed oftree_loc in the configuration file. Load oftree
+>>    (nand) and boot fine.
+>>
+>>      barebox:/# boot
+>>      booting kernel from /dev/[3]nand0.kernel.bb
+>>      Loading ARM Linux zImage '/dev/[4]nand0.kernel.bb'
+>>      zImage: concatenated oftree detected
+>>      Loading devicetree from '/dev/[5]nand0.oftree.bb'
+>>      commandline: console=ttyS0,115200 rw ip=none ...
+>>      Booting Linux on physical CPU 0x0
+>>
+>>    Do I have to configure something more in Barebox?
+>
+> Which version are you using. Is it something older?
+>
+>>    Thanks!
+>>    Regards!
+>>    P.D
+>>    I have enabled CONFIG_ARM_APPENDED_DTB and I create the new zimage with
+>>    (cat zImage <filename>.dtb > zImage_w_dtb )
+>>    P.D.2.
+>>    I have a little problem and i can't send email to list.
+>>
+>>       Delivery to the following recipient failed permanently:
+>>           [6]barebox@lists.infradead.org
+>>      Technical details of permanent failure:
+>>      Google tried to deliver your message, but it was rejected by the server
+>>      for the recipient domain [7]lists.infradead.org by
+>>      [8]bombadil.infradead.org. [2001:1868:205::9].
+>>      The error that the other server returned was:
+>>      550-Mailing lists do not accept HTML mail. See
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>
+> Sascha
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
