@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c3en6-0004Yq-Hi
- for barebox@lists.infradead.org; Mon, 07 Nov 2016 07:56:29 +0000
-Date: Mon, 7 Nov 2016 08:56:06 +0100
+ id 1c3epP-0005Bt-3p
+ for barebox@lists.infradead.org; Mon, 07 Nov 2016 07:58:52 +0000
+Date: Mon, 7 Nov 2016 08:58:29 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161107075606.cststkjp7ocvkesx@pengutronix.de>
-References: <1478197957-27579-1-git-send-email-akurz@blala.de>
+Message-ID: <20161107075829.cfwegfzioig2iqlc@pengutronix.de>
+References: <1478197480-27488-1-git-send-email-akurz@blala.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1478197957-27579-1-git-send-email-akurz@blala.de>
+In-Reply-To: <1478197480-27488-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts imx-image: add DCD NOP command support
+Subject: Re: [PATCH] mtd: spi-nor: add MX25U2033E
 To: Alexander Kurz <akurz@blala.de>
 Cc: barebox@lists.infradead.org
 
-Hi Alexander,
-
-On Thu, Nov 03, 2016 at 07:32:37PM +0100, Alexander Kurz wrote:
-> The DCD NOP command is available for all flash header v2 devices (i.MX28,
-> 50, 53, 6 and 7).
+On Thu, Nov 03, 2016 at 07:24:40PM +0100, Alexander Kurz wrote:
+> This chip can be found in 4th generation Kindle devices
 > 
 > Signed-off-by: Alexander Kurz <akurz@blala.de>
 > ---
->  scripts/imx/README      |  1 +
->  scripts/imx/imx-image.c | 28 ++++++++++++++++++++++++++++
->  scripts/imx/imx.c       | 11 +++++++++++
->  scripts/imx/imx.h       |  1 +
->  4 files changed, 41 insertions(+)
+>  drivers/mtd/spi-nor/spi-nor.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-Applied, but ... out of curiosity, what do we need this for?
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+> index 748b328..45be586 100644
+> --- a/drivers/mtd/spi-nor/spi-nor.c
+> +++ b/drivers/mtd/spi-nor/spi-nor.c
+> @@ -526,6 +526,7 @@ static const struct spi_device_id spi_nor_ids[] = {
+>  	{ "mx25l3205d",  INFO(0xc22016, 0, 64 * 1024,  64, 0) },
+>  	{ "mx25l3255e",  INFO(0xc29e16, 0, 64 * 1024,  64, SECT_4K) },
+>  	{ "mx25l6405d",  INFO(0xc22017, 0, 64 * 1024, 128, 0) },
+> +	{ "mx25u2033e",  INFO(0xc22532, 0, 64 * 1024,   4, SECT_4K) },
+>  	{ "mx25u4035",   INFO(0xc22533, 0, 64 * 1024,   8, SECT_4K) },
+>  	{ "mx25u8035",   INFO(0xc22534, 0, 64 * 1024,  16, SECT_4K) },
+>  	{ "mx25u6435f",  INFO(0xc22537, 0, 64 * 1024, 128, SECT_4K) },
+> -- 
+> 2.1.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
