@@ -2,11 +2,13 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from smtp63.iad3a.emailsrvr.com ([173.203.187.63]
  helo=smtp101.iad3a.emailsrvr.com)
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c3oTd-0007K8-Tx
- for barebox@lists.infradead.org; Mon, 07 Nov 2016 18:17:03 +0000
+ id 1c3oU0-0007RK-FM
+ for barebox@lists.infradead.org; Mon, 07 Nov 2016 18:17:25 +0000
 From: Ian Abbott <abbotti@mev.co.uk>
-Date: Mon,  7 Nov 2016 18:16:20 +0000
-Message-Id: <20161107181624.4262-1-abbotti@mev.co.uk>
+Date: Mon,  7 Nov 2016 18:16:22 +0000
+Message-Id: <20161107181624.4262-3-abbotti@mev.co.uk>
+In-Reply-To: <20161107181624.4262-1-abbotti@mev.co.uk>
+References: <20161107181624.4262-1-abbotti@mev.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,19 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4] net/designware: A few patches from U-Boot
+Subject: [PATCH 2/4] net/designware: Do not select MIIPORT for RGMII interface
 To: barebox@lists.infradead.org
+Cc: Ian Abbott <abbotti@mev.co.uk>
 
-Here are a few old-ish patches for the Synopsys Designware Ethernet
-driver, ported over from U-Boot.
+Do not select MIIPORT for RGMII interface
 
-1) net/designware: Consecutive writes to the same register to be avoided
-2) net/designware: Do not select MIIPORT for RGMII interface
-3) net: designware: Respect "bus mode" register contents on SW reset
-4) net/designware: add explicit reset of {tx|rx}_currdescnum
+[Original U-Boot patch by Vipin Kumar <vipin.kumar@st.com>]
 
- drivers/net/designware.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+---
+ drivers/net/designware.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/designware.c b/drivers/net/designware.c
+index 21fb44e..85e4c58 100644
+--- a/drivers/net/designware.c
++++ b/drivers/net/designware.c
+@@ -129,7 +129,9 @@ static int mac_reset(struct eth_device *dev)
+ 	u64 start;
+ 
+ 	writel(DMAMAC_SRST, &dma_p->busmode);
+-	writel(MII_PORTSELECT, &mac_p->conf);
++
++	if (priv->interface != PHY_INTERFACE_MODE_RGMII)
++		writel(MII_PORTSELECT, &mac_p->conf);
+ 
+ 	start = get_time_ns();
+ 	while (readl(&dma_p->busmode) & DMAMAC_SRST) {
+-- 
+2.10.1
+
 
 _______________________________________________
 barebox mailing list
