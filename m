@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c4A3W-00062K-Oq
- for barebox@lists.infradead.org; Tue, 08 Nov 2016 17:19:32 +0000
+ id 1c4A3l-000643-KA
+ for barebox@lists.infradead.org; Tue, 08 Nov 2016 17:19:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  8 Nov 2016 18:19:06 +0100
-Message-Id: <20161108171907.20726-7-s.hauer@pengutronix.de>
+Date: Tue,  8 Nov 2016 18:19:04 +0100
+Message-Id: <20161108171907.20726-5-s.hauer@pengutronix.de>
 In-Reply-To: <20161108171907.20726-1-s.hauer@pengutronix.de>
 References: <20161108171907.20726-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,24 +21,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] ARM: i.MX: ocotp: Add i.MX6ul support
+Subject: [PATCH 4/7] pinmux: imx-iomux-v3: Add i.MX6ul support
 To: Barebox List <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/ocotp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pinctrl/imx-iomux-v3.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
-index 3acec7f..e1d0c25 100644
---- a/arch/arm/mach-imx/ocotp.c
-+++ b/arch/arm/mach-imx/ocotp.c
-@@ -510,6 +510,9 @@ static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
- 		.compatible = "fsl,imx6sl-ocotp",
- 		.data = &imx6sl_ocotp_data,
+diff --git a/drivers/pinctrl/imx-iomux-v3.c b/drivers/pinctrl/imx-iomux-v3.c
+index 92fac18..4b3f033 100644
+--- a/drivers/pinctrl/imx-iomux-v3.c
++++ b/drivers/pinctrl/imx-iomux-v3.c
+@@ -207,6 +207,8 @@ static __maybe_unused struct of_device_id imx_iomux_v3_dt_ids[] = {
  	}, {
-+		.compatible = "fsl,imx6ul-ocotp",
-+		.data = &imx6q_ocotp_data,
+ 		.compatible = "fsl,imx6sx-iomuxc",
+ 	}, {
++		.compatible = "fsl,imx6ul-iomuxc",
 +	}, {
  		/* sentinel */
  	}
