@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c40r1-00077g-AO
- for barebox@lists.infradead.org; Tue, 08 Nov 2016 07:30:00 +0000
-Date: Tue, 8 Nov 2016 08:29:36 +0100
+ id 1c41Dx-0004IB-5G
+ for barebox@lists.infradead.org; Tue, 08 Nov 2016 07:53:42 +0000
+Date: Tue, 8 Nov 2016 08:53:17 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161108072936.beuncvhpwxuhumkg@pengutronix.de>
-References: <CAOTEMUR=FtB_Ox++XPvomyHXsk5Jcm7CG7aEM6WmN++t0211Aw@mail.gmail.com>
- <CAOTEMUQt95XDorid8sj9FHkpCpUJYnqNeRbBU+33aLYz2oM+gw@mail.gmail.com>
- <20161107074924.blkryleb2eb5bkhy@pengutronix.de>
- <CAOTEMUR=cw8C7K6SwUtUs1PjJB2f8OCBMsmPd1Pe_gwGWJpGfA@mail.gmail.com>
- <20161107094802.bhy2wowbri7q3sra@pengutronix.de>
- <CAOTEMURrS==8jFv=K4s_puQKxK+27fJ3PyMV05j5XWoyJPucPg@mail.gmail.com>
+Message-ID: <20161108075317.j4xkf7zpkdfyt5y3@pengutronix.de>
+References: <CAKZffXFSfTJJiwj2ZOB7nT-DWZ7_AqyysZkavNM++c4LSp6tZg@mail.gmail.com>
+ <20161104071821.jqrhtfmgz3432527@pengutronix.de>
+ <CAKZffXHVZ9tvhcgVz=fWciYQr98wrZjZbxiL4QQJEP8DzGuz7Q@mail.gmail.com>
+ <20161107074346.pb4uivigwa5gbj6z@pengutronix.de>
+ <CAKZffXG6vuJjaQqB9QYSMeSocWZY33vFLSrWfCFf=0ATMM1fkQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAOTEMURrS==8jFv=K4s_puQKxK+27fJ3PyMV05j5XWoyJPucPg@mail.gmail.com>
+In-Reply-To: <CAKZffXG6vuJjaQqB9QYSMeSocWZY33vFLSrWfCFf=0ATMM1fkQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,67 +26,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Fwd: boot kernel with append device tree
-To: Alex Vazquez <avazquez.dev@gmail.com>
+Subject: Re: Configure RAM size on iMX53 board
+To: Jose Luis Zabalza <jlz.3008@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Nov 07, 2016 at 12:01:25PM +0100, Alex Vazquez wrote:
-> > Is CONFIG_OFTREE enabled in your build?
-> Yes.
+On Tue, Nov 08, 2016 at 06:09:52AM +0100, Jose Luis Zabalza wrote:
+> Thanks Sascha
+> 
+> RAM memory reference is MT41K128M16JT-125 XIT
+> https://www.micron.com/parts/dram/ddr3-sdram/mt41k128m16jt-125-xit
+> 
+> ================<cut>=========================
+> barebox 2016.09.0-00071-ga38b701-dirty #11 Tue Nov 8 05:56:31 CET 2016
+> 
+> 
+> Board: MyBoard i.MX53
+> detected i.MX53 revision 2.1
+> CS0: 0x20000000
+> CS1: 0x20000000
+> ...
+> 
+> ================<cut>=========================
 
-Ok, could you please try the following patch? Another possibility would
-be to disable CONFIG_OFTREE, but it would be good if you could test the
-patch anyway since the same bug is still present in current master.
+So you have 512MiB on each chip select, so I assume that on the 512MiB
+board variants CS1 is not equipped. In that case you can in lowlevel.c
+test if you find SDRAM on CS1 and if not, disable the chip select
+completely in the SDRAM controller.
+I am not sure how you can detect if there's SDRAM on CS1. I've seen
+situations in which the board just hangs if you access non existent RAM
+areas.
 
 Sascha
 
-----------------------------------8<--------------------------------
-
-From 500e5f87f9943958fa4662e29261a0abb4df24d9 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 8 Nov 2016 08:23:17 +0100
-Subject: [PATCH] ARM: Fix appended device tree when CONFIG_OFTREE is enabled
-
-When CONFIG_OFTREE is enabled the appended device tree is unflattened
-and put into data->of_root_node, but there it is never used again.
-To actually use the appended device tree put it into data->oftree
-instead.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/lib/bootm.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index 28b4f4a..8977d08 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -244,12 +244,21 @@ static int do_bootz_linux_fdt(int fd, struct image_data *data)
- 	}
- 
- 	if (IS_BUILTIN(CONFIG_OFTREE)) {
--		data->of_root_node = of_unflatten_dtb(oftree);
--		if (!data->of_root_node) {
-+		struct device_node *root;
-+
-+		root = of_unflatten_dtb(oftree);
-+		if (!root) {
- 			pr_err("unable to unflatten devicetree\n");
- 			ret = -EINVAL;
- 			goto err_free;
- 		}
-+		data->oftree = of_get_fixed_tree(root);
-+		if (!data->oftree) {
-+			pr_err("Unable to get fixed tree\n");
-+			ret = -EINVAL;
-+			goto err_free;
-+		}
-+
- 		free(oftree);
- 	} else {
- 		data->oftree = oftree;
--- 
-2.10.1
 
 -- 
 Pengutronix e.K.                           |                             |
