@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c4VWo-0005FY-Rq
- for barebox@lists.infradead.org; Wed, 09 Nov 2016 16:15:14 +0000
-Received: by mail-pf0-x243.google.com with SMTP id n85so783017pfi.3
- for <barebox@lists.infradead.org>; Wed, 09 Nov 2016 08:14:52 -0800 (PST)
+ id 1c4VWo-0005Ff-Ro
+ for barebox@lists.infradead.org; Wed, 09 Nov 2016 16:15:13 +0000
+Received: by mail-pf0-x243.google.com with SMTP id y68so786485pfb.1
+ for <barebox@lists.infradead.org>; Wed, 09 Nov 2016 08:14:54 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  9 Nov 2016 08:13:59 -0800
-Message-Id: <1478708056-7875-12-git-send-email-andrew.smirnov@gmail.com>
+Date: Wed,  9 Nov 2016 08:14:02 -0800
+Message-Id: <1478708056-7875-15-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1478708056-7875-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1478708056-7875-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,110 +23,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 11/28] i.MX: clk: Port imx_clk_gate2_cgr()
+Subject: [PATCH v2 14/28] i.MX: clk: Port imx_clk_mux_flags from Linux
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Update clk-gate2 code to be able to accept arbitrary 'cgr' value and
-introduce imx_clk_gate2_cgr() (Used by Vybrid clock tree)
+Port imx_clk_mux_flags from Linux, to simplify clock code porting.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/clk/imx/clk-gate2.c | 12 +++++++-----
- drivers/clk/imx/clk.h       | 11 +++++++++--
- 2 files changed, 16 insertions(+), 7 deletions(-)
+ drivers/clk/imx/clk.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-gate2.c b/drivers/clk/imx/clk-gate2.c
-index faed631..f952f3e 100644
---- a/drivers/clk/imx/clk-gate2.c
-+++ b/drivers/clk/imx/clk-gate2.c
-@@ -26,6 +26,7 @@ struct clk_gate2 {
- 	struct clk clk;
- 	void __iomem *reg;
- 	int shift;
-+	u8 cgr_val;
- 	const char *parent;
- #define CLK_GATE_INVERTED	(1 << 0)
- 	unsigned flags;
-@@ -43,7 +44,7 @@ static int clk_gate2_enable(struct clk *clk)
- 	if (g->flags & CLK_GATE_INVERTED)
- 		val &= ~(3 << g->shift);
- 	else
--		val |= 3 << g->shift;
-+		val |= g->cgr_val << g->shift;
- 
- 	writel(val, g->reg);
- 
-@@ -87,12 +88,13 @@ static struct clk_ops clk_gate2_ops = {
- };
- 
- struct clk *clk_gate2_alloc(const char *name, const char *parent,
--		void __iomem *reg, u8 shift)
-+			    void __iomem *reg, u8 shift, u8 cgr_val)
- {
- 	struct clk_gate2 *g = xzalloc(sizeof(*g));
- 
- 	g->parent = parent;
- 	g->reg = reg;
-+	g->cgr_val = cgr_val;
- 	g->shift = shift;
- 	g->clk.ops = &clk_gate2_ops;
- 	g->clk.name = name;
-@@ -111,12 +113,12 @@ void clk_gate2_free(struct clk *clk)
- }
- 
- struct clk *clk_gate2(const char *name, const char *parent, void __iomem *reg,
--		u8 shift)
-+		      u8 shift, u8 cgr_val)
- {
- 	struct clk *g;
- 	int ret;
- 
--	g = clk_gate2_alloc(name , parent, reg, shift);
-+	g = clk_gate2_alloc(name , parent, reg, shift, cgr_val);
- 
- 	ret = clk_register(g);
- 	if (ret) {
-@@ -133,7 +135,7 @@ struct clk *clk_gate2_inverted(const char *name, const char *parent,
- 	struct clk *clk;
- 	struct clk_gate2 *g;
- 
--	clk = clk_gate2(name, parent, reg, shift);
-+	clk = clk_gate2(name, parent, reg, shift, 0x3);
- 	if (IS_ERR(clk))
- 		return clk;
- 
 diff --git a/drivers/clk/imx/clk.h b/drivers/clk/imx/clk.h
-index c5913e1..2aeb356 100644
+index fd43fc2..970f65c 100644
 --- a/drivers/clk/imx/clk.h
 +++ b/drivers/clk/imx/clk.h
-@@ -2,7 +2,7 @@
- #define __IMX_CLK_H
- 
- struct clk *clk_gate2(const char *name, const char *parent, void __iomem *reg,
--		u8 shift);
-+		      u8 shift, u8 cgr_val);
- 
- static inline struct clk *imx_clk_divider(const char *name, const char *parent,
- 		void __iomem *reg, u8 shift, u8 width)
-@@ -51,9 +51,16 @@ static inline struct clk *imx_clk_gate(const char *name, const char *parent,
- static inline struct clk *imx_clk_gate2(const char *name, const char *parent,
- 		void __iomem *reg, u8 shift)
- {
--	return clk_gate2(name, parent, reg, shift);
-+	return clk_gate2(name, parent, reg, shift, 0x3);
+@@ -30,6 +30,14 @@ static inline struct clk *imx_clk_fixed_factor(const char *name,
+ 	return clk_fixed_factor(name, parent, mult, div, CLK_SET_RATE_PARENT);
  }
  
-+static inline struct clk *imx_clk_gate2_cgr(const char *name, const char *parent,
-+					    void __iomem *reg, u8 shift, u8 cgr_val)
++static inline struct clk *imx_clk_mux_flags(const char *name, void __iomem *reg,
++					    u8 shift, u8 width,
++					    const char **parents, u8 num_parents,
++					    unsigned long flags)
 +{
-+	return clk_gate2(name, parent, reg, shift, cgr_val);
++	return clk_mux(name, reg, shift, width, parents, num_parents, flags);
 +}
 +
-+
- struct clk *imx_clk_pllv1(const char *name, const char *parent,
- 		void __iomem *base);
- 
+ static inline struct clk *imx_clk_mux(const char *name, void __iomem *reg,
+ 		u8 shift, u8 width, const char **parents, u8 num_parents)
+ {
 -- 
 2.5.5
 
