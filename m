@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c4VWg-0005EF-Lp
- for barebox@lists.infradead.org; Wed, 09 Nov 2016 16:15:08 +0000
-Received: by mail-pf0-x242.google.com with SMTP id y68so785967pfb.1
- for <barebox@lists.infradead.org>; Wed, 09 Nov 2016 08:14:42 -0800 (PST)
+ id 1c4VWg-0005EV-FO
+ for barebox@lists.infradead.org; Wed, 09 Nov 2016 16:15:10 +0000
+Received: by mail-pf0-x241.google.com with SMTP id y68so786037pfb.1
+ for <barebox@lists.infradead.org>; Wed, 09 Nov 2016 08:14:44 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  9 Nov 2016 08:13:51 -0800
-Message-Id: <1478708056-7875-4-git-send-email-andrew.smirnov@gmail.com>
+Date: Wed,  9 Nov 2016 08:13:53 -0800
+Message-Id: <1478708056-7875-6-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1478708056-7875-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1478708056-7875-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,408 +23,441 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 03/28] i.MX: Add DEBUG_LL hooks for VF610
+Subject: [PATCH v2 05/28] i.MX: Add support for VF610 Tower board
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add code to support DEBUG_LL functionality on VF610/Vybrid platform.
+Add support for VF610 Tower board.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/debug_ll.h |  27 ++-
- common/Kconfig                            |  10 +-
- include/serial/lpuart.h                   | 281 ++++++++++++++++++++++++++++++
- 3 files changed, 316 insertions(+), 2 deletions(-)
- create mode 100644 include/serial/lpuart.h
+ arch/arm/boards/Makefile                           |   1 +
+ arch/arm/boards/freescale-vf610-twr/Makefile       |   3 +
+ .../flash-header-vf610-twr.imxcfg                  | 278 +++++++++++++++++++++
+ arch/arm/boards/freescale-vf610-twr/lowlevel.c     |  45 ++++
+ arch/arm/dts/Makefile                              |   1 +
+ arch/arm/dts/vf610-twr.dts                         |  14 ++
+ arch/arm/mach-imx/Kconfig                          |   4 +
+ images/Makefile.imx                                |   5 +
+ 8 files changed, 351 insertions(+)
+ create mode 100644 arch/arm/boards/freescale-vf610-twr/Makefile
+ create mode 100644 arch/arm/boards/freescale-vf610-twr/flash-header-vf610-twr.imxcfg
+ create mode 100644 arch/arm/boards/freescale-vf610-twr/lowlevel.c
+ create mode 100644 arch/arm/dts/vf610-twr.dts
 
-diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
-index 5c2db6c..a132f3c 100644
---- a/arch/arm/mach-imx/include/mach/debug_ll.h
-+++ b/arch/arm/mach-imx/include/mach/debug_ll.h
-@@ -14,8 +14,10 @@
- #include <mach/imx51-regs.h>
- #include <mach/imx53-regs.h>
- #include <mach/imx6-regs.h>
-+#include <mach/vf610-regs.h>
- 
- #include <serial/imx-uart.h>
-+#include <serial/lpuart.h>
- 
- #ifdef CONFIG_DEBUG_LL
- 
-@@ -42,6 +44,8 @@
- #define IMX_DEBUG_SOC MX53
- #elif defined CONFIG_DEBUG_IMX6Q_UART
- #define IMX_DEBUG_SOC MX6
-+#elif defined CONFIG_DEBUG_VF610_UART
-+#define IMX_DEBUG_SOC VF610
- #else
- #error "unknown i.MX debug uart soc type"
- #endif
-@@ -74,6 +78,13 @@ static inline void imx6_uart_setup_ll(void)
- 	imx6_uart_setup(base);
- }
- 
-+static inline void vf610_uart_setup_ll(void)
-+{
-+	void *base = IOMEM(IMX_UART_BASE(IMX_DEBUG_SOC, CONFIG_DEBUG_IMX_UART_PORT));
-+
-+	lpuart_setup(base, 66000000);
-+}
-+
- static inline void PUTC_LL(int c)
- {
- 	void __iomem *base = IOMEM(IMX_UART_BASE(IMX_DEBUG_SOC,
-@@ -82,14 +93,19 @@ static inline void PUTC_LL(int c)
- 	if (!base)
- 		return;
- 
--	imx_uart_putc(base, c);
-+	if (IS_ENABLED(CONFIG_DEBUG_VF610_UART))
-+		lpuart_putc(base, c);
-+	else
-+		imx_uart_putc(base, c);
- }
-+
- #else
- 
- static inline void imx50_uart_setup_ll(void) {}
- static inline void imx51_uart_setup_ll(void) {}
- static inline void imx53_uart_setup_ll(void) {}
- static inline void imx6_uart_setup_ll(void)  {}
-+static inline void vf610_uart_setup_ll(void) {}
- 
- #endif /* CONFIG_DEBUG_LL */
- 
-@@ -115,4 +131,13 @@ static inline void imx53_ungate_all_peripherals(void)
- 	imx_ungate_all_peripherals(IOMEM(MX53_CCM_BASE_ADDR));
- }
- 
-+static inline void vf610_ungate_all_peripherals(void)
-+{
-+	void __iomem *ccmbase = IOMEM(VF610_CCM_BASE_ADDR);
-+	int i;
-+
-+	for (i = 0x40; i <= 0x6c; i += 4)
-+		writel(0xffffffff, ccmbase + i);
-+}
-+
- #endif /* __MACH_DEBUG_LL_H__ */
-diff --git a/common/Kconfig b/common/Kconfig
-index efd1949..ed472a0 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1071,6 +1071,13 @@ config DEBUG_IMX6Q_UART
- 	  Say Y here if you want kernel low-level debugging support
- 	  on i.MX6Q.
- 
-+config DEBUG_VF610_UART
-+	bool "VF610 Debug UART"
-+	depends on ARCH_VF610
-+	help
-+	  Say Y here if you want kernel low-level debugging support
-+	  on VF610.
-+
- config DEBUG_OMAP3_UART
- 	bool "OMAP3 Debug UART"
- 	depends on ARCH_OMAP3
-@@ -1111,7 +1118,8 @@ config DEBUG_IMX_UART_PORT
- 						DEBUG_IMX51_UART || \
- 						DEBUG_IMX53_UART || \
- 						DEBUG_IMX6Q_UART || \
--						DEBUG_IMX6SL_UART
-+						DEBUG_IMX6SL_UART || \
-+						DEBUG_VF610_UART
- 	default 1
- 	depends on ARCH_IMX
- 	help
-diff --git a/include/serial/lpuart.h b/include/serial/lpuart.h
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 1a0f63f..ff0a86f 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -140,3 +140,4 @@ obj-$(CONFIG_MACH_ZYLONITE)			+= zylonite/
+ obj-$(CONFIG_MACH_VARISCITE_MX6)		+= variscite-mx6/
+ obj-$(CONFIG_MACH_VSCOM_BALTOS)			+= vscom-baltos/
+ obj-$(CONFIG_MACH_QEMU_VIRT64)			+= qemu-virt64/
++obj-$(CONFIG_MACH_VF610_TWR)			+= freescale-vf610-twr/
+diff --git a/arch/arm/boards/freescale-vf610-twr/Makefile b/arch/arm/boards/freescale-vf610-twr/Makefile
 new file mode 100644
-index 0000000..917f644
+index 0000000..6b029ce
 --- /dev/null
-+++ b/include/serial/lpuart.h
-@@ -0,0 +1,281 @@
++++ b/arch/arm/boards/freescale-vf610-twr/Makefile
+@@ -0,0 +1,3 @@
++obj-y += flash-header-vf610-twr.dcd.o
++extra-y += flash-header-vf610-twr.dcd.S flash-header-vf610-twr.dcd
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/freescale-vf610-twr/flash-header-vf610-twr.imxcfg b/arch/arm/boards/freescale-vf610-twr/flash-header-vf610-twr.imxcfg
+new file mode 100644
+index 0000000..01ffc69
+--- /dev/null
++++ b/arch/arm/boards/freescale-vf610-twr/flash-header-vf610-twr.imxcfg
+@@ -0,0 +1,278 @@
++soc vf610
++loadaddr 0x80000000
++dcdofs 0x400
++
++#define VF610_DDR_PAD_CTRL	0x00000180 /* 25 Ohm drive strength */
++#define VF610_DDR_PAD_CTRL_1	0x00010180 /* 25 Ohm drive strength + differential input */
++
++#define DDRMC_PHY_DQ_TIMING	0x00002613
++#define DDRMC_PHY_DQS_TIMING	0x00002615
++#define DDRMC_PHY_CTRL		0x00210000
++#define DDRMC_PHY_MASTER_CTRL	0x0001012a
++#define DDRMC_PHY_SLAVE_CTRL	0x00002000
++#define DDRMC_PHY_OFF		0x00000000
++#define DDRMC_PHY_PROC_PAD_ODT	0x00010101
++
++#ifdef DEBUG
++#define CHECKPOINT(n) wm 32 0x3f040000 n
++#else
++#define CHECKPOINT(n)
++#endif
++
++CHECKPOINT(1)
++
++/* ======================= Clock initialization =======================*/
++
 +/*
-+ * Copyright (c) 2016 Zodiac Inflight Innovation
-+ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
++ * Ungate all IP block clocks
++ */
++wm 32 0x4006b040 0xffffffff
++wm 32 0x4006b044 0xffffffff
++wm 32 0x4006b048 0xffffffff
++wm 32 0x4006b04c 0xffffffff
++wm 32 0x4006b050 0xffffffff
++wm 32 0x4006b058 0xffffffff
++wm 32 0x4006b05c 0xffffffff
++wm 32 0x4006b060 0xffffffff
++wm 32 0x4006b064 0xffffffff
++wm 32 0x4006b068 0xffffffff
++wm 32 0x4006b06c 0xffffffff
++
++
++/*
++ * We have to options to clock DDR controller:
 + *
-+ * Based on code found in Linux kernel and U-Boot.
++ *  - Use Core-A5 clock
++ *  - Use PLL2 PFD2 clock
 + *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
++
++ * Using first option without changing PLL settings doesn't seem to be
++ * possible given that DDRMC requires minimum of 300Mhz and MaskROM
++ * configures it to be clocked at 264Mhz. Changing PLL1 settings
++ * proved to be challenging becuase MaskROM code executing this DCD
++ * will also be fetching the rest of the bootloader via some
++ * peripheral interface whose clock is derived from Cortex-A5 clock.
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
++ * As a result this DCD configuration code uses the second option of
++ * clocking DDR wiht PLL2 PFD2 clock output
 + *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
++ * Turn PLL2 on
++ */
++wm 32 0x40050030 0x00002001 /* Fout = Fin * 22 */
++
++CHECKPOINT(2)
++
++/*
++ * Wait for PLLs to lock
++ */
++check 32 while_any_bit_clear 0x40050030 0x80000000
++
++
++CHECKPOINT(3)
++
++/*
++ * Switch DDRMC to be clocked with PLL2 PFD2 and enable PFD2 output
++ */
++clear_bits 32 0x4006b008 0x00000040
++set_bits   32 0x4006b008 0x00002000
++
++
++
++/* ======================= DDR IOMUX ======================= */
++
++CHECKPOINT(4)
++
++wm 32 0x40048220 VF610_DDR_PAD_CTRL
++wm 32 0x40048224 VF610_DDR_PAD_CTRL
++wm 32 0x40048228 VF610_DDR_PAD_CTRL
++wm 32 0x4004822c VF610_DDR_PAD_CTRL
++wm 32 0x40048230 VF610_DDR_PAD_CTRL
++wm 32 0x40048234 VF610_DDR_PAD_CTRL
++wm 32 0x40048238 VF610_DDR_PAD_CTRL
++wm 32 0x4004823c VF610_DDR_PAD_CTRL
++wm 32 0x40048240 VF610_DDR_PAD_CTRL
++wm 32 0x40048244 VF610_DDR_PAD_CTRL
++wm 32 0x40048248 VF610_DDR_PAD_CTRL
++wm 32 0x4004824c VF610_DDR_PAD_CTRL
++wm 32 0x40048250 VF610_DDR_PAD_CTRL
++wm 32 0x40048254 VF610_DDR_PAD_CTRL
++wm 32 0x40048258 VF610_DDR_PAD_CTRL
++wm 32 0x4004825c VF610_DDR_PAD_CTRL
++wm 32 0x40048260 VF610_DDR_PAD_CTRL
++wm 32 0x40048264 VF610_DDR_PAD_CTRL
++wm 32 0x40048268 VF610_DDR_PAD_CTRL
++wm 32 0x4004826c VF610_DDR_PAD_CTRL
++wm 32 0x40048270 VF610_DDR_PAD_CTRL
++wm 32 0x40048274 VF610_DDR_PAD_CTRL
++wm 32 0x40048278 VF610_DDR_PAD_CTRL
++wm 32 0x4004827c VF610_DDR_PAD_CTRL_1
++wm 32 0x40048280 VF610_DDR_PAD_CTRL_1
++wm 32 0x40048284 VF610_DDR_PAD_CTRL_1
++wm 32 0x40048288 VF610_DDR_PAD_CTRL_1
++wm 32 0x4004828c VF610_DDR_PAD_CTRL_1
++wm 32 0x40048290 VF610_DDR_PAD_CTRL_1
++wm 32 0x40048294 VF610_DDR_PAD_CTRL_1
++wm 32 0x40048298 VF610_DDR_PAD_CTRL_1
++wm 32 0x4004829c VF610_DDR_PAD_CTRL_1
++wm 32 0x400482a0 VF610_DDR_PAD_CTRL_1
++wm 32 0x400482a4 VF610_DDR_PAD_CTRL_1
++wm 32 0x400482a8 VF610_DDR_PAD_CTRL_1
++wm 32 0x400482ac VF610_DDR_PAD_CTRL_1
++wm 32 0x400482b0 VF610_DDR_PAD_CTRL_1
++wm 32 0x400482b4 VF610_DDR_PAD_CTRL_1
++wm 32 0x400482b8 VF610_DDR_PAD_CTRL_1
++wm 32 0x400482bc VF610_DDR_PAD_CTRL_1
++wm 32 0x400482c0 VF610_DDR_PAD_CTRL_1
++wm 32 0x400482c4 VF610_DDR_PAD_CTRL_1
++wm 32 0x400482c8 VF610_DDR_PAD_CTRL_1
++wm 32 0x400482cc VF610_DDR_PAD_CTRL
++wm 32 0x400482d0 VF610_DDR_PAD_CTRL
++wm 32 0x400482d4 VF610_DDR_PAD_CTRL
++wm 32 0x400482d8 VF610_DDR_PAD_CTRL
++wm 32 0x4004821c VF610_DDR_PAD_CTRL
++
++/* ======================= DDR Controller =======================*/
++
++CHECKPOINT(5)
++
++wm 32 0x400ae000 0x00000600
++wm 32 0x400ae008 0x00000020
++wm 32 0x400ae028 0x00013880
++wm 32 0x400ae02c 0x00030d40
++wm 32 0x400ae030 0x0000050c
++wm 32 0x400ae034 0x15040400
++wm 32 0x400ae038 0x1406040f
++wm 32 0x400ae040 0x04040000
++wm 32 0x400ae044 0x006db00c
++wm 32 0x400ae048 0x00000403
++wm 32 0x400ae050 0x01000000
++wm 32 0x400ae054 0x00060001
++wm 32 0x400ae058 0x000c0000
++wm 32 0x400ae05c 0x03000200
++wm 32 0x400ae060 0x00000006
++wm 32 0x400ae064 0x00010000
++wm 32 0x400ae068 0x0c30002c
++wm 32 0x400ae070 0x00000000
++wm 32 0x400ae074 0x00000003
++wm 32 0x400ae078 0x0000000a
++wm 32 0x400ae07c 0x003001d4
++wm 32 0x400ae084 0x00010000
++wm 32 0x400ae088 0x00050500
++wm 32 0x400ae098 0x00000000
++wm 32 0x400ae09c 0x04001002
++wm 32 0x400ae0a4 0x00000001
++wm 32 0x400ae0c0 0x00460420
++wm 32 0x400ae108 0x01000200
++wm 32 0x400ae10c 0x00000040
++wm 32 0x400ae114 0x00000200
++wm 32 0x400ae118 0x00000040
++wm 32 0x400ae120 0x00000000
++wm 32 0x400ae124 0x0a010300
++wm 32 0x400ae128 0x01014040
++wm 32 0x400ae12c 0x01010101
++wm 32 0x400ae130 0x03030100
++wm 32 0x400ae134 0x01000101
++wm 32 0x400ae138 0x0700000c
++wm 32 0x400ae13c 0x00000000
++wm 32 0x400ae148 0x10000000
++wm 32 0x400ae15c 0x01000000
++wm 32 0x400ae160 0x00040000
++wm 32 0x400ae164 0x00000002
++wm 32 0x400ae16c 0x00020000
++wm 32 0x400ae180 0x00002819
++wm 32 0x400ae184 0x01000000
++wm 32 0x400ae188 0x00000000
++wm 32 0x400ae18c 0x00000000
++wm 32 0x400ae198 0x00010100
++wm 32 0x400ae1a4 0x00000000
++wm 32 0x400ae1a8 0x00000004
++wm 32 0x400ae1b8 0x00040000
++wm 32 0x400ae1c8 0x00000000
++wm 32 0x400ae1cc 0x00000000
++wm 32 0x400ae1d4 0x00000000
++wm 32 0x400ae1d8 0x01010000
++wm 32 0x400ae1e0 0x02020000
++wm 32 0x400ae1e4 0x00000202
++wm 32 0x400ae1e8 0x01010064
++wm 32 0x400ae1ec 0x00010101
++wm 32 0x400ae1f0 0x00000064
++wm 32 0x400ae1f8 0x00000800
++wm 32 0x400ae210 0x00000506
++wm 32 0x400ae224 0x00020000
++wm 32 0x400ae228 0x01000000
++wm 32 0x400ae22c 0x04070303
++wm 32 0x400ae230 0x00000040
++wm 32 0x400ae23c 0x06000080
++wm 32 0x400ae240 0x04070303
++wm 32 0x400ae244 0x00000040
++wm 32 0x400ae248 0x00000040
++wm 32 0x400ae24c 0x000f0000
++wm 32 0x400ae250 0x000f0000
++wm 32 0x400ae25c 0x00000101
++wm 32 0x400ae268 0x682c4000
++wm 32 0x400ae26c 0x00000012
++wm 32 0x400ae278 0x00000006
++wm 32 0x400ae284 0x00010202
++
++/* ======================= DDR PHY =======================*/
++
++CHECKPOINT(6)
++
++wm 32 0x400ae400 DDRMC_PHY_DQ_TIMING
++wm 32 0x400ae440 DDRMC_PHY_DQ_TIMING
++wm 32 0x400ae480 DDRMC_PHY_DQ_TIMING
++wm 32 0x400ae404 DDRMC_PHY_DQS_TIMING
++wm 32 0x400ae444 DDRMC_PHY_DQS_TIMING
++wm 32 0x400ae408 DDRMC_PHY_CTRL
++wm 32 0x400ae448 DDRMC_PHY_CTRL
++wm 32 0x400ae488 DDRMC_PHY_CTRL
++wm 32 0x400ae40c DDRMC_PHY_MASTER_CTRL
++wm 32 0x400ae44c DDRMC_PHY_MASTER_CTRL
++wm 32 0x400ae48c DDRMC_PHY_MASTER_CTRL
++wm 32 0x400ae410 DDRMC_PHY_SLAVE_CTRL
++wm 32 0x400ae450 DDRMC_PHY_SLAVE_CTRL
++wm 32 0x400ae490 DDRMC_PHY_SLAVE_CTRL
++wm 32 0x400ae4c4 DDRMC_PHY_OFF
++wm 32 0x400ae4c8 0x00001100
++wm 32 0x400ae4d0 DDRMC_PHY_PROC_PAD_ODT
++
++wm 32 0x400ae000 0x00000601
++
++CHECKPOINT(7)
++
++check 32 while_any_bit_clear 0x400ae140 0x100
++
++CHECKPOINT(8)
++
++/*
++ * Cargo cult DDR controller initialization here we come!
 + *
++ * Experemintation with VF610 Tower Board shows that without the
++ * following code the board would not boot off of SD card when
++ * power-cycled. It will however happily boot when reset via SW3/Reset
++ * button. For whatever reason the following actions appear to be
++ * necessary:
++ *
++ *          - Initialize DDRMC as usual
++ *	    - Issue a read to location in DDR address space
++ *	    - Disable DDRMC
++ *	    - Enable DDRMC and wait for it to finish initializing
++ *
++ * I am sure this is all going to be extrememly embarrassing to read
++ * if/when the real problem and real solution is found.
 + */
 +
-+#ifndef __LPUART_H__
-+#define __LPUART_H__
++/*
++ * Because there's no standalone read command what we do here instead
++ * is write a pattern to memory and then checking that memory address
++ * against that pattern
++ */
++wm 32 0x80000000 0xa5a5a5a5
++check 32 while_any_bit_clear 0x80000000 0xa5a5a5a5
 +
++wm 32 0x400ae000 0x00000600
++wm 32 0x400ae000 0x00000601
 +
-+/* All registers are 8-bit width */
-+#define UARTBDH			0x00
-+#define UARTBDL			0x01
-+#define UARTCR1			0x02
-+#define UARTCR2			0x03
-+#define UARTSR1			0x04
-+#define UARTCR3			0x06
-+#define UARTDR			0x07
-+#define UARTCR4			0x0a
-+#define UARTCR5			0x0b
-+#define UARTMODEM		0x0d
-+#define UARTPFIFO		0x10
-+#define UARTCFIFO		0x11
-+#define UARTSFIFO		0x12
-+#define UARTTWFIFO		0x13
-+#define UARTTCFIFO		0x14
-+#define UARTRWFIFO		0x15
-+#define UARTRCFIFO		0x16
++check 32 while_any_bit_clear 0x400ae140 0x100
 +
-+#define UARTBDH_LBKDIE		0x80
-+#define UARTBDH_RXEDGIE		0x40
-+#define UARTBDH_SBR_MASK	0x1f
++CHECKPOINT(9)
+\ No newline at end of file
+diff --git a/arch/arm/boards/freescale-vf610-twr/lowlevel.c b/arch/arm/boards/freescale-vf610-twr/lowlevel.c
+new file mode 100644
+index 0000000..6504273
+--- /dev/null
++++ b/arch/arm/boards/freescale-vf610-twr/lowlevel.c
+@@ -0,0 +1,45 @@
++#include <common.h>
++#include <linux/sizes.h>
++#include <mach/generic.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/vf610-regs.h>
++#include <mach/clock-vf610.h>
++#include <mach/iomux-vf610.h>
++#include <debug_ll.h>
 +
-+#define UARTCR1_LOOPS		0x80
-+#define UARTCR1_RSRC		0x20
-+#define UARTCR1_M		0x10
-+#define UARTCR1_WAKE		0x08
-+#define UARTCR1_ILT		0x04
-+#define UARTCR1_PE		0x02
-+#define UARTCR1_PT		0x01
-+
-+#define UARTCR2_TIE		0x80
-+#define UARTCR2_TCIE		0x40
-+#define UARTCR2_RIE		0x20
-+#define UARTCR2_ILIE		0x10
-+#define UARTCR2_TE		0x08
-+#define UARTCR2_RE		0x04
-+#define UARTCR2_RWU		0x02
-+#define UARTCR2_SBK		0x01
-+
-+#define UARTSR1_TDRE		0x80
-+#define UARTSR1_TC		0x40
-+#define UARTSR1_RDRF		0x20
-+#define UARTSR1_IDLE		0x10
-+#define UARTSR1_OR		0x08
-+#define UARTSR1_NF		0x04
-+#define UARTSR1_FE		0x02
-+#define UARTSR1_PE		0x01
-+
-+#define UARTCR3_R8		0x80
-+#define UARTCR3_T8		0x40
-+#define UARTCR3_TXDIR		0x20
-+#define UARTCR3_TXINV		0x10
-+#define UARTCR3_ORIE		0x08
-+#define UARTCR3_NEIE		0x04
-+#define UARTCR3_FEIE		0x02
-+#define UARTCR3_PEIE		0x01
-+
-+#define UARTCR4_MAEN1		0x80
-+#define UARTCR4_MAEN2		0x40
-+#define UARTCR4_M10		0x20
-+#define UARTCR4_BRFA_MASK	0x1f
-+#define UARTCR4_BRFA_OFF	0
-+
-+#define UARTCR5_TDMAS		0x80
-+#define UARTCR5_RDMAS		0x20
-+
-+#define UARTMODEM_RXRTSE	0x08
-+#define UARTMODEM_TXRTSPOL	0x04
-+#define UARTMODEM_TXRTSE	0x02
-+#define UARTMODEM_TXCTSE	0x01
-+
-+#define UARTPFIFO_TXFE		0x80
-+#define UARTPFIFO_FIFOSIZE_MASK	0x7
-+#define UARTPFIFO_TXSIZE_OFF	4
-+#define UARTPFIFO_RXFE		0x08
-+#define UARTPFIFO_RXSIZE_OFF	0
-+
-+#define UARTCFIFO_TXFLUSH	0x80
-+#define UARTCFIFO_RXFLUSH	0x40
-+#define UARTCFIFO_RXOFE		0x04
-+#define UARTCFIFO_TXOFE		0x02
-+#define UARTCFIFO_RXUFE		0x01
-+
-+#define UARTSFIFO_TXEMPT	0x80
-+#define UARTSFIFO_RXEMPT	0x40
-+#define UARTSFIFO_RXOF		0x04
-+#define UARTSFIFO_TXOF		0x02
-+#define UARTSFIFO_RXUF		0x01
-+
-+/* 32-bit register defination */
-+#define UARTBAUD		0x00
-+#define UARTSTAT		0x04
-+#define UARTCTRL		0x08
-+#define UARTDATA		0x0C
-+#define UARTMATCH		0x10
-+#define UARTMODIR		0x14
-+#define UARTFIFO		0x18
-+#define UARTWATER		0x1c
-+
-+#define UARTBAUD_MAEN1		0x80000000
-+#define UARTBAUD_MAEN2		0x40000000
-+#define UARTBAUD_M10		0x20000000
-+#define UARTBAUD_TDMAE		0x00800000
-+#define UARTBAUD_RDMAE		0x00200000
-+#define UARTBAUD_MATCFG		0x00400000
-+#define UARTBAUD_BOTHEDGE	0x00020000
-+#define UARTBAUD_RESYNCDIS	0x00010000
-+#define UARTBAUD_LBKDIE		0x00008000
-+#define UARTBAUD_RXEDGIE	0x00004000
-+#define UARTBAUD_SBNS		0x00002000
-+#define UARTBAUD_SBR		0x00000000
-+#define UARTBAUD_SBR_MASK	0x1fff
-+
-+#define UARTSTAT_LBKDIF		0x80000000
-+#define UARTSTAT_RXEDGIF	0x40000000
-+#define UARTSTAT_MSBF		0x20000000
-+#define UARTSTAT_RXINV		0x10000000
-+#define UARTSTAT_RWUID		0x08000000
-+#define UARTSTAT_BRK13		0x04000000
-+#define UARTSTAT_LBKDE		0x02000000
-+#define UARTSTAT_RAF		0x01000000
-+#define UARTSTAT_TDRE		0x00800000
-+#define UARTSTAT_TC		0x00400000
-+#define UARTSTAT_RDRF		0x00200000
-+#define UARTSTAT_IDLE		0x00100000
-+#define UARTSTAT_OR		0x00080000
-+#define UARTSTAT_NF		0x00040000
-+#define UARTSTAT_FE		0x00020000
-+#define UARTSTAT_PE		0x00010000
-+#define UARTSTAT_MA1F		0x00008000
-+#define UARTSTAT_M21F		0x00004000
-+
-+#define UARTCTRL_R8T9		0x80000000
-+#define UARTCTRL_R9T8		0x40000000
-+#define UARTCTRL_TXDIR		0x20000000
-+#define UARTCTRL_TXINV		0x10000000
-+#define UARTCTRL_ORIE		0x08000000
-+#define UARTCTRL_NEIE		0x04000000
-+#define UARTCTRL_FEIE		0x02000000
-+#define UARTCTRL_PEIE		0x01000000
-+#define UARTCTRL_TIE		0x00800000
-+#define UARTCTRL_TCIE		0x00400000
-+#define UARTCTRL_RIE		0x00200000
-+#define UARTCTRL_ILIE		0x00100000
-+#define UARTCTRL_TE		0x00080000
-+#define UARTCTRL_RE		0x00040000
-+#define UARTCTRL_RWU		0x00020000
-+#define UARTCTRL_SBK		0x00010000
-+#define UARTCTRL_MA1IE		0x00008000
-+#define UARTCTRL_MA2IE		0x00004000
-+#define UARTCTRL_IDLECFG	0x00000100
-+#define UARTCTRL_LOOPS		0x00000080
-+#define UARTCTRL_DOZEEN		0x00000040
-+#define UARTCTRL_RSRC		0x00000020
-+#define UARTCTRL_M		0x00000010
-+#define UARTCTRL_WAKE		0x00000008
-+#define UARTCTRL_ILT		0x00000004
-+#define UARTCTRL_PE		0x00000002
-+#define UARTCTRL_PT		0x00000001
-+
-+#define UARTDATA_NOISY		0x00008000
-+#define UARTDATA_PARITYE	0x00004000
-+#define UARTDATA_FRETSC		0x00002000
-+#define UARTDATA_RXEMPT		0x00001000
-+#define UARTDATA_IDLINE		0x00000800
-+#define UARTDATA_MASK		0x3ff
-+
-+#define UARTMODIR_IREN		0x00020000
-+#define UARTMODIR_TXCTSSRC	0x00000020
-+#define UARTMODIR_TXCTSC	0x00000010
-+#define UARTMODIR_RXRTSE	0x00000008
-+#define UARTMODIR_TXRTSPOL	0x00000004
-+#define UARTMODIR_TXRTSE	0x00000002
-+#define UARTMODIR_TXCTSE	0x00000001
-+
-+#define UARTFIFO_TXEMPT		0x00800000
-+#define UARTFIFO_RXEMPT		0x00400000
-+#define UARTFIFO_TXOF		0x00020000
-+#define UARTFIFO_RXUF		0x00010000
-+#define UARTFIFO_TXFLUSH	0x00008000
-+#define UARTFIFO_RXFLUSH	0x00004000
-+#define UARTFIFO_TXOFE		0x00000200
-+#define UARTFIFO_RXUFE		0x00000100
-+#define UARTFIFO_TXFE		0x00000080
-+#define UARTFIFO_FIFOSIZE_MASK	0x7
-+#define UARTFIFO_TXSIZE_OFF	4
-+#define UARTFIFO_RXFE		0x00000008
-+#define UARTFIFO_RXSIZE_OFF	0
-+
-+#define UARTWATER_COUNT_MASK	0xff
-+#define UARTWATER_TXCNT_OFF	8
-+#define UARTWATER_RXCNT_OFF	24
-+#define UARTWATER_WATER_MASK	0xff
-+#define UARTWATER_TXWATER_OFF	0
-+#define UARTWATER_RXWATER_OFF	16
-+
-+#define FSL_UART_RX_DMA_BUFFER_SIZE	64
-+
-+static inline void lpuart_setbrg(void __iomem *base,
-+				 unsigned int refclock,
-+				 unsigned int baudrate)
++static inline void setup_uart(void)
 +{
-+	unsigned int bfra;
-+	u16 sbr;
++	void __iomem *iomuxbase = IOMEM(VF610_IOMUXC_BASE_ADDR);
 +
-+	sbr = (u16) (refclock / (16 * baudrate));
++	vf610_ungate_all_peripherals();
 +
-+	writeb(sbr >> 8,   base + UARTBDH);
-+	writeb(sbr & 0xff, base + UARTBDL);
++	/*
++	 * VF610_PAD_PTB4__UART1_TX
++	 */
++	writel(VF610_UART_PAD_CTRL | (2 << 20), iomuxbase + 0x0068);
++	writel(0, iomuxbase + 0x0380);
 +
-+	bfra  = DIV_ROUND_UP(2 * refclock, baudrate) - 32 * sbr;
-+	bfra &= UARTCR4_BRFA_MASK;
-+	writeb(bfra, base + UARTCR4);
++	vf610_uart_setup_ll();
 +}
 +
-+static inline void lpuart_setup_with_fifo(void __iomem *base,
-+					  unsigned int refclock,
-+					  unsigned int twfifo)
++extern char __dtb_vf610_twr_start[];
++
++ENTRY_FUNCTION(start_vf610_twr, r0, r1, r2)
 +{
-+	/* Disable UART */
-+	writeb(0, base + UARTCR2);
-+	writeb(0, base + UARTMODEM);
-+	writeb(0, base + UARTCR1);
++	int i;
++	void *fdt;
++	void __iomem *mscm = IOMEM(VF610_MSCM_BASE_ADDR);
 +
-+	if (twfifo) {
-+		writeb(UARTPFIFO_TXFE | UARTPFIFO_RXFE, base + UARTPFIFO);
-+		writeb((u8)twfifo, base + UARTTWFIFO);
-+	} else {
-+		writeb(0, base + UARTPFIFO);
-+		writeb(0, base + UARTTWFIFO);
-+	}
-+	writeb(1, base + UARTRWFIFO);
-+	writeb(UARTCFIFO_RXFLUSH | UARTCFIFO_TXFLUSH, base + UARTCFIFO);
++	vf610_cpu_lowlevel_init();
 +
-+	lpuart_setbrg(base, refclock, CONFIG_BAUDRATE);
++	for (i = 0; i < VF610_MSCM_IRSPRC_NUM; i++)
++		writew(VF610_MSCM_IRSPRC_CP0_EN,
++		       mscm + VF610_MSCM_IRSPRC(i));
 +
-+	writeb(UARTCR2_TE | UARTCR2_RE, base + UARTCR2);
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart();
++
++	fdt = __dtb_vf610_twr_start - get_runtime_offset();
++	barebox_arm_entry(0x80000000, SZ_128M, fdt);
 +}
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 8d8d1fb..607c620 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -78,5 +78,6 @@ pbl-dtb-$(CONFIG_MACH_UDOO) += imx6q-udoo.dtb.o
+ pbl-dtb-$(CONFIG_MACH_USI_TOPKICK) += kirkwood-topkick-bb.dtb.o
+ pbl-dtb-$(CONFIG_MACH_VARISCITE_MX6) += imx6q-var-custom.dtb.o
+ pbl-dtb-$(CONFIG_MACH_VSCOM_BALTOS) += am335x-baltos-minimal.dtb.o
++pbl-dtb-$(CONFIG_MACH_VF610_TWR) += vf610-twr.dtb.o
+ 
+ clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.lzo
+diff --git a/arch/arm/dts/vf610-twr.dts b/arch/arm/dts/vf610-twr.dts
+new file mode 100644
+index 0000000..54b4435
+--- /dev/null
++++ b/arch/arm/dts/vf610-twr.dts
+@@ -0,0 +1,14 @@
++/*
++ * Copyright 2013 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
 +
-+static inline void lpuart_setup(void __iomem *base,
-+				unsigned int refclock)
-+{
-+	lpuart_setup_with_fifo(base, refclock, 0x00);
-+}
++#include <arm/vf610-twr.dts>
 +
-+static inline void lpuart_putc(void __iomem *base, int c)
-+{
-+	if (!(readb(base + UARTCR2) & UARTCR2_TE))
-+		return;
++&usbdev0 {
++	status = "disabled";
++};
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index cfbaaa2..5f4fdc6 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -337,6 +337,10 @@ config MACH_CM_FX6
+ 	bool "CM FX6"
+ 	select ARCH_IMX6
+ 
++config MACH_VF610_TWR
++	bool "Freescale VF610 Tower Board"
++	select ARCH_VF610
 +
-+	while (!(readb(base + UARTSR1) & UARTSR1_TDRE));
+ endif
+ 
+ # ----------------------------------------------------------
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 8db9c75..983d896 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -403,3 +403,8 @@ pblx-$(CONFIG_MACH_ELTEC_HIPERCAM) += start_imx6dl_eltec_hipercam
+ CFG_start_imx6dl_eltec_hipercam.pblx.imximg = $(board)/eltec-hipercam/flash-header-eltec-hipercam.imxcfg
+ FILE_barebox-eltec-hipercam.img = start_imx6dl_eltec_hipercam.pblx.imximg
+ image-$(CONFIG_MACH_ELTEC_HIPERCAM) += barebox-eltec-hipercam.img
 +
-+	writeb(c, base + UARTDR);
-+}
-+
-+#endif
++pblx-$(CONFIG_MACH_VF610_TWR) += start_vf610_twr
++CFG_start_vf610_twr.pblx.imximg = $(board)/freescale-vf610-twr/flash-header-vf610-twr.imxcfg
++FILE_barebox-vf610-twr.img = start_vf610_twr.pblx.imximg
++image-$(CONFIG_MACH_VF610_TWR) += barebox-vf610-twr.img
 -- 
 2.5.5
 
