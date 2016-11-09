@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c4VWq-0005Fc-1X
- for barebox@lists.infradead.org; Wed, 09 Nov 2016 16:15:15 +0000
-Received: by mail-pf0-x241.google.com with SMTP id i88so781364pfk.2
- for <barebox@lists.infradead.org>; Wed, 09 Nov 2016 08:14:52 -0800 (PST)
+ id 1c4VWq-0005Fd-HF
+ for barebox@lists.infradead.org; Wed, 09 Nov 2016 16:15:16 +0000
+Received: by mail-pf0-x242.google.com with SMTP id n85so783066pfi.3
+ for <barebox@lists.infradead.org>; Wed, 09 Nov 2016 08:14:53 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  9 Nov 2016 08:14:00 -0800
-Message-Id: <1478708056-7875-13-git-send-email-andrew.smirnov@gmail.com>
+Date: Wed,  9 Nov 2016 08:14:01 -0800
+Message-Id: <1478708056-7875-14-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1478708056-7875-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1478708056-7875-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,71 +23,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 12/28] i.MX: clk: Add IMX_PLLV3_USB_VF610 support
+Subject: [PATCH v2 13/28] i.MX: clk: Port imx_check_clocks()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add IMX_PLLV3_USB_VF610 PLLv3 types support clk-pllv3.c
+Port imx_check_clocks() from Linux kernel.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/clk/imx/clk-pllv3.c | 9 ++++++---
- drivers/clk/imx/clk.h       | 1 +
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/clk/imx/Makefile |  3 ++-
+ drivers/clk/imx/clk.c    | 21 +++++++++++++++++++++
+ drivers/clk/imx/clk.h    |  3 +++
+ 3 files changed, 26 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/clk/imx/clk.c
 
-diff --git a/drivers/clk/imx/clk-pllv3.c b/drivers/clk/imx/clk-pllv3.c
-index e38dcdf..29c0f1c 100644
---- a/drivers/clk/imx/clk-pllv3.c
-+++ b/drivers/clk/imx/clk-pllv3.c
-@@ -36,6 +36,7 @@ struct clk_pllv3 {
- 	void __iomem	*base;
- 	bool		powerup_set;
- 	u32		div_mask;
-+	u32		div_shift;
- 	const char	*parent;
- };
+diff --git a/drivers/clk/imx/Makefile b/drivers/clk/imx/Makefile
+index 893a1a5..06af530 100644
+--- a/drivers/clk/imx/Makefile
++++ b/drivers/clk/imx/Makefile
+@@ -4,7 +4,8 @@ obj-$(CONFIG_COMMON_CLK) +=	\
+ 	clk-pllv3.o		\
+ 	clk-pfd.o		\
+ 	clk-gate2.o		\
+-	clk-gate-exclusive.o
++	clk-gate-exclusive.o	\
++	clk.o
  
-@@ -92,7 +93,7 @@ static unsigned long clk_pllv3_recalc_rate(struct clk *clk,
- 					   unsigned long parent_rate)
- {
- 	struct clk_pllv3 *pll = to_clk_pllv3(clk);
--	u32 div = readl(pll->base)  & pll->div_mask;
-+	u32 div = (readl(pll->base) >> pll->div_shift) & pll->div_mask;
- 
- 	return (div == 1) ? parent_rate * 22 : parent_rate * 20;
- }
-@@ -120,8 +121,8 @@ static int clk_pllv3_set_rate(struct clk *clk, unsigned long rate,
- 		return -EINVAL;
- 
- 	val = readl(pll->base);
--	val &= ~pll->div_mask;
--	val |= div;
-+	val &= ~(pll->div_mask << pll->div_shift);
-+	val |= div << pll->div_shift;
- 	writel(val, pll->base);
- 
- 	return 0;
-@@ -292,6 +293,8 @@ struct clk *imx_clk_pllv3(enum imx_pllv3_type type, const char *name,
- 	case IMX_PLLV3_SYS:
- 		ops = &clk_pllv3_sys_ops;
- 		break;
-+	case IMX_PLLV3_USB_VF610:
-+		pll->div_shift = 1;
- 	case IMX_PLLV3_USB:
- 		ops = &clk_pllv3_ops;
- 		pll->powerup_set = true;
+ obj-$(CONFIG_ARCH_IMX1)   += clk-imx1.o
+ obj-$(CONFIG_ARCH_IMX25)  += clk-imx25.o
+diff --git a/drivers/clk/imx/clk.c b/drivers/clk/imx/clk.c
+new file mode 100644
+index 0000000..7488dfc
+--- /dev/null
++++ b/drivers/clk/imx/clk.c
+@@ -0,0 +1,21 @@
++#include <common.h>
++#include <init.h>
++#include <driver.h>
++#include <linux/clk.h>
++#include <io.h>
++#include <of.h>
++#include <linux/clkdev.h>
++#include <linux/err.h>
++
++#include "clk.h"
++
++void __init imx_check_clocks(struct clk *clks[], unsigned int count)
++{
++	unsigned i;
++
++	for (i = 0; i < count; i++)
++		if (IS_ERR(clks[i]))
++			pr_err("i.MX clk %u: register failed with %ld\n",
++			       i, PTR_ERR(clks[i]));
++}
++
 diff --git a/drivers/clk/imx/clk.h b/drivers/clk/imx/clk.h
-index 2aeb356..35e480f 100644
+index 35e480f..fd43fc2 100644
 --- a/drivers/clk/imx/clk.h
 +++ b/drivers/clk/imx/clk.h
-@@ -71,6 +71,7 @@ enum imx_pllv3_type {
- 	IMX_PLLV3_GENERIC,
- 	IMX_PLLV3_SYS,
- 	IMX_PLLV3_USB,
-+	IMX_PLLV3_USB_VF610,
- 	IMX_PLLV3_AV,
- 	IMX_PLLV3_ENET,
- 	IMX_PLLV3_MLB,
+@@ -109,4 +109,7 @@ static inline struct clk *imx_clk_busy_mux(const char *name, void __iomem *reg,
+ struct clk *imx_clk_gate_exclusive(const char *name, const char *parent,
+ 		void __iomem *reg, u8 shift, u32 exclusive_mask);
+ 
++void imx_check_clocks(struct clk *clks[], unsigned int count);
++
++
+ #endif /* __IMX_CLK_H */
 -- 
 2.5.5
 
