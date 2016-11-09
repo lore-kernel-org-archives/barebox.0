@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c4VWg-0005EN-FQ
- for barebox@lists.infradead.org; Wed, 09 Nov 2016 16:15:04 +0000
-Received: by mail-pf0-x241.google.com with SMTP id i88so780921pfk.2
- for <barebox@lists.infradead.org>; Wed, 09 Nov 2016 08:14:42 -0800 (PST)
+ id 1c4VWg-0005Em-Lq
+ for barebox@lists.infradead.org; Wed, 09 Nov 2016 16:15:06 +0000
+Received: by mail-pf0-x242.google.com with SMTP id y68so786172pfb.1
+ for <barebox@lists.infradead.org>; Wed, 09 Nov 2016 08:14:47 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  9 Nov 2016 08:13:52 -0800
-Message-Id: <1478708056-7875-5-git-send-email-andrew.smirnov@gmail.com>
+Date: Wed,  9 Nov 2016 08:13:56 -0800
+Message-Id: <1478708056-7875-9-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1478708056-7875-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1478708056-7875-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,29 +23,143 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 04/28] i.MX: scripts: Add "vf610" soc to imx-image
+Subject: [PATCH v2 08/28] clk: Port clock dependency resolution code
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Needed in order to support Vybrid SoCs.
+Port the clock dependency resolution algorithm utilized by Linux
+kernel's version of of_clk_init(), to allow for SoCs whose DT clock
+configuration reqires such behaviour for correct initialization (Vybrid
+is one such example).
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- scripts/imx/imx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/clk.c | 89 ++++++++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 82 insertions(+), 7 deletions(-)
 
-diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-index c8ee309..bd48321 100644
---- a/scripts/imx/imx.c
-+++ b/scripts/imx/imx.c
-@@ -223,6 +223,7 @@ static struct soc_type socs[] = {
- 	{ .name = "imx51", .header_version = 1, .cpu_type = IMX_CPU_IMX51 },
- 	{ .name = "imx53", .header_version = 2, .cpu_type = IMX_CPU_IMX53 },
- 	{ .name = "imx6", .header_version = 2, .cpu_type = IMX_CPU_IMX6 },
-+	{ .name = "vf610", .header_version = 2, .cpu_type = IMX_CPU_VF610 },
- };
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 630a84d..a38f339 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -404,7 +404,7 @@ EXPORT_SYMBOL_GPL(of_clk_del_provider);
+ struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec)
+ {
+ 	struct of_clk_provider *provider;
+-	struct clk *clk = ERR_PTR(-ENOENT);
++	struct clk *clk = ERR_PTR(-EPROBE_DEFER);
  
- static int do_soc(struct config_data *data, int argc, char *argv[])
+ 	/* Check if we have such a provider in our array */
+ 	list_for_each_entry(provider, &of_clk_providers, link) {
+@@ -437,6 +437,47 @@ char *of_clk_get_parent_name(struct device_node *np, unsigned int index)
+ }
+ EXPORT_SYMBOL_GPL(of_clk_get_parent_name);
+ 
++struct clock_provider {
++	of_clk_init_cb_t clk_init_cb;
++	struct device_node *np;
++	struct list_head node;
++};
++
++/*
++ * This function looks for a parent clock. If there is one, then it
++ * checks that the provider for this parent clock was initialized, in
++ * this case the parent clock will be ready.
++ */
++static int parent_ready(struct device_node *np)
++{
++	int i = 0;
++
++	while (true) {
++		struct clk *clk = of_clk_get(np, i);
++
++		/* this parent is ready we can check the next one */
++		if (!IS_ERR(clk)) {
++			clk_put(clk);
++			i++;
++			continue;
++		}
++
++		/* at least one parent is not ready, we exit now */
++		if (PTR_ERR(clk) == -EPROBE_DEFER)
++			return 0;
++
++		/*
++		 * Here we make assumption that the device tree is
++		 * written correctly. So an error means that there is
++		 * no more parent. As we didn't exit yet, then the
++		 * previous parent are ready. If there is no clock
++		 * parent, no need to wait for them, then we can
++		 * consider their absence as being ready
++		 */
++		return 1;
++	}
++}
++
+ /**
+  * of_clk_init() - Scan and init clock providers from the DT
+  * @root: parent of the first level to probe or NULL for the root of the tree
+@@ -449,8 +490,11 @@ EXPORT_SYMBOL_GPL(of_clk_get_parent_name);
+  */
+ int of_clk_init(struct device_node *root, const struct of_device_id *matches)
+ {
++	struct clock_provider *clk_provider, *next;
++	bool is_init_done;
++	bool force = false;
++	LIST_HEAD(clk_provider_list);
+ 	const struct of_device_id *match;
+-	int rc;
+ 
+ 	if (!root)
+ 		root = of_find_node_by_path("/");
+@@ -459,12 +503,43 @@ int of_clk_init(struct device_node *root, const struct of_device_id *matches)
+ 	if (!matches)
+ 		matches = __clk_of_table_start;
+ 
++	/* First prepare the list of the clocks providers */
+ 	for_each_matching_node_and_match(root, matches, &match) {
+-		of_clk_init_cb_t clk_init_cb = (of_clk_init_cb_t)match->data;
+-		rc = clk_init_cb(root);
+-		if (rc)
+-			pr_err("%s: failed to init clock for %s: %d\n",
+-			       __func__, root->full_name, rc);
++		struct clock_provider *parent;
++
++		if (!of_device_is_available(root))
++			continue;
++
++		parent = xzalloc(sizeof(*parent));
++
++		parent->clk_init_cb = match->data;
++		parent->np = root;
++		list_add_tail(&parent->node, &clk_provider_list);
++	}
++
++	while (!list_empty(&clk_provider_list)) {
++		is_init_done = false;
++		list_for_each_entry_safe(clk_provider, next,
++					 &clk_provider_list, node) {
++
++			if (force || parent_ready(clk_provider->np)) {
++
++				clk_provider->clk_init_cb(clk_provider->np);
++
++				list_del(&clk_provider->node);
++				free(clk_provider);
++				is_init_done = true;
++			}
++		}
++
++		/*
++		 * We didn't manage to initialize any of the
++		 * remaining providers during the last loop, so now we
++		 * initialize all the remaining ones unconditionally
++		 * in case the clock parent was not mandatory
++		 */
++		if (!is_init_done)
++			force = true;
+ 	}
+ 
+ 	return 0;
 -- 
 2.5.5
 
