@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c4py7-0006tl-UY
- for barebox@lists.infradead.org; Thu, 10 Nov 2016 14:04:45 +0000
-Date: Thu, 10 Nov 2016 15:04:21 +0100
+ id 1c5767-0007Ek-8I
+ for barebox@lists.infradead.org; Fri, 11 Nov 2016 08:22:08 +0000
+Date: Fri, 11 Nov 2016 09:21:42 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161110140421.walwsmbhejyoolj6@pengutronix.de>
-References: <20161107181624.4262-1-abbotti@mev.co.uk>
+Message-ID: <20161111082142.kaagvvkly7alx4cc@pengutronix.de>
+References: <1478708056-7875-1-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20161107181624.4262-1-abbotti@mev.co.uk>
+In-Reply-To: <1478708056-7875-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/4] net/designware: A few patches from U-Boot
-To: Ian Abbott <abbotti@mev.co.uk>
+Subject: Re: [PATCH v2 00/28] Vybrid support in Barebox
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Nov 07, 2016 at 06:16:20PM +0000, Ian Abbott wrote:
-> Here are a few old-ish patches for the Synopsys Designware Ethernet
-> driver, ported over from U-Boot.
-> 
-> 1) net/designware: Consecutive writes to the same register to be avoided
-> 2) net/designware: Do not select MIIPORT for RGMII interface
-> 3) net: designware: Respect "bus mode" register contents on SW reset
-> 4) net/designware: add explicit reset of {tx|rx}_currdescnum
-> 
->  drivers/net/designware.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
+Hi Andrey,
 
-Applied, thanks
+On Wed, Nov 09, 2016 at 08:13:48AM -0800, Andrey Smirnov wrote:
+> Hi everyone,
+> 
+> It took me a bit more than a month, but I finally put together a
+> second version (for v1 see [1]) of the Vybrid support patchset.
+> 
+> Some highlights of this version:
+> 
+>      - Various code/commit arrangement feedback for v1 is addressed
+>      - Added commit to move all of the i.MX clock code to drivers/clk
+>        (Sascha, we'd probably have to coordinate with your i.MX6ul
+>        patches on this one)
+>      - I2C commit split in two
+>      - clock tree is reconciled with Linux code, since having a custom
+>        version of it proved to be difficult to compare agains Linux's
+>        implementation
+>      - GPIO driver (tested on a custom Vybrid board)
+>      - FEC support (tested on a custom Vybrid board)
+> 
+> Any feedback is, as always, very much appreciated.
+
+The series looks mostly good, but I won't find the time for a deeper
+review anytime soon, so I decided to just give it a try in -next.
 
 Sascha
 
