@@ -1,21 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c62fj-0000Av-AN
- for barebox@lists.infradead.org; Sun, 13 Nov 2016 21:50:55 +0000
-Received: by mail-lf0-x243.google.com with SMTP id p100so5450488lfg.2
- for <barebox@lists.infradead.org>; Sun, 13 Nov 2016 13:50:22 -0800 (PST)
+ id 1c62fi-00005V-9g
+ for barebox@lists.infradead.org; Sun, 13 Nov 2016 21:50:50 +0000
+Received: by mail-lf0-x242.google.com with SMTP id o20so5450474lfg.3
+ for <barebox@lists.infradead.org>; Sun, 13 Nov 2016 13:50:21 -0800 (PST)
 Received: from localhost.localdomain (ppp109-252-108-239.pppoe.spdop.ru.
  [109.252.108.239])
- by smtp.gmail.com with ESMTPSA id c2sm3977454ljb.8.2016.11.13.13.50.19
+ by smtp.gmail.com with ESMTPSA id c2sm3977454ljb.8.2016.11.13.13.50.18
  for <barebox@lists.infradead.org>
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 13 Nov 2016 13:50:19 -0800 (PST)
+ Sun, 13 Nov 2016 13:50:18 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 14 Nov 2016 00:50:14 +0300
-Message-Id: <20161113215015.9399-2-antonynpavlov@gmail.com>
-In-Reply-To: <20161113215015.9399-1-antonynpavlov@gmail.com>
-References: <20161113215015.9399-1-antonynpavlov@gmail.com>
+Date: Mon, 14 Nov 2016 00:50:13 +0300
+Message-Id: <20161113215015.9399-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,159 +27,110 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFCv2 1/2] serial: add driver for SiFive UART
+Subject: [RFCv2 0/2] add initial RISC-V architecture support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
+This patchseries adds initial RISC-V architecture support for barebox.
 
-TODO:
+See Documentation/boards/riscv.rst for instructions.
 
-  * add speed setup support.
+You can obtain this patch from github:
 
- drivers/serial/Kconfig         |   3 ++
- drivers/serial/Makefile        |   1 +
- drivers/serial/serial_sifive.c | 109 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 113 insertions(+)
+  $ git clone -b 20161113.riscv https://github.com/frantony/barebox
 
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index b112d7e..70509b9 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -117,6 +117,9 @@ config DRIVER_SERIAL_S3C_AUTOSYNC
- 	  Say Y here if you want to use the auto flow feature of this
- 	  UART. RTS and CTS will be handled by the hardware when enabled.
- 
-+config DRIVER_SERIAL_SIFIVE
-+	bool "SiFive serial driver"
-+
- config DRIVER_SERIAL_PXA
- 	bool "PXA serial driver"
- 	depends on ARCH_PXA
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index 189e777..368e992 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -20,3 +20,4 @@ obj-$(CONFIG_DRIVER_SERIAL_AUART)		+= serial_auart.o
- obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
- obj-$(CONFIG_DRIVER_SERIAL_EFI_STDIO)		+= efi-stdio.o
- obj-$(CONFIG_DRIVER_SERIAL_DIGIC)		+= serial_digic.o
-+obj-$(CONFIG_DRIVER_SERIAL_SIFIVE)		+= serial_sifive.o
-diff --git a/drivers/serial/serial_sifive.c b/drivers/serial/serial_sifive.c
-new file mode 100644
-index 0000000..06e3521
---- /dev/null
-+++ b/drivers/serial/serial_sifive.c
-@@ -0,0 +1,109 @@
-+/*
-+ * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include <io.h>
-+
-+#define UART_RX_OFFSET 0
-+#define UART_TX_OFFSET 0
-+#define UART_TX_COUNT_OFFSET 0x4
-+#define UART_RX_COUNT_OFFSET 0x8
-+#define UART_DIVIDER_OFFSET  0xC
-+
-+static inline uint32_t sifive_serial_readl(struct console_device *cdev,
-+						uint32_t offset)
-+{
-+	void __iomem *base = cdev->dev->priv;
-+
-+	return readl(base + offset);
-+}
-+
-+static inline void sifive_serial_writel(struct console_device *cdev,
-+					uint32_t value, uint32_t offset)
-+{
-+	void __iomem *base = cdev->dev->priv;
-+
-+	writel(value, base + offset);
-+}
-+
-+static int sifive_serial_setbaudrate(struct console_device *cdev, int baudrate)
-+{
-+	/* FIXME: no baudrate setup at the momement :( */
-+
-+	return 0;
-+}
-+
-+static void sifive_serial_putc(struct console_device *cdev, char c)
-+{
-+	sifive_serial_writel(cdev, c, UART_TX_OFFSET);
-+}
-+
-+static int sifive_serial_getc(struct console_device *cdev)
-+{
-+	uint32_t rxcnt;
-+
-+	do {
-+		rxcnt = sifive_serial_readl(cdev, UART_RX_COUNT_OFFSET);
-+	} while (!rxcnt);
-+
-+	return sifive_serial_readl(cdev, UART_RX_OFFSET);
-+}
-+
-+static int sifive_serial_tstc(struct console_device *cdev)
-+{
-+	uint32_t rxcnt = sifive_serial_readl(cdev, UART_RX_COUNT_OFFSET);
-+
-+	return (rxcnt != 0);
-+}
-+
-+static int sifive_serial_probe(struct device_d *dev)
-+{
-+	struct resource *iores;
-+	struct console_device *cdev;
-+
-+	cdev = xzalloc(sizeof(struct console_device));
-+	iores = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(iores))
-+		return PTR_ERR(iores);
-+	dev->priv = IOMEM(iores->start);
-+	cdev->dev = dev;
-+	cdev->tstc = &sifive_serial_tstc;
-+	cdev->putc = &sifive_serial_putc;
-+	cdev->getc = &sifive_serial_getc;
-+	cdev->setbrg = &sifive_serial_setbaudrate;
-+
-+	console_register(cdev);
-+
-+	return 0;
-+}
-+
-+static __maybe_unused struct of_device_id sifive_serial_dt_ids[] = {
-+	{
-+		.compatible = "sifive,uart",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
-+static struct driver_d sifive_serial_driver = {
-+	.name  = "sifive-uart",
-+	.probe = sifive_serial_probe,
-+	.of_compatible = DRV_OF_COMPAT(sifive_serial_dt_ids),
-+};
-+console_platform_driver(sifive_serial_driver);
+Changes since 20161013:
+
+  * drop spike pk support;
+  * add qemu-sifive board support;
+  * add Documentation/boards/riscv.rst;
+  * fix guard macro names.
+
+TODOs:
+
+  * split patch;
+  * use sifive timer IP-block.
+
+Antony Pavlov (2):
+  serial: add driver for SiFive UART
+  Add initial RISC-V architecture support
+
+ Documentation/boards/riscv.rst                 |  63 ++++++++++++++
+ arch/riscv/Kconfig                             |  42 ++++++++++
+ arch/riscv/Makefile                            |  51 ++++++++++++
+ arch/riscv/boards/qemu-sifive/.gitignore       |   1 +
+ arch/riscv/boards/qemu-sifive/Makefile         |   1 +
+ arch/riscv/boards/qemu-sifive/board.c          |  28 +++++++
+ arch/riscv/boot/Makefile                       |   2 +
+ arch/riscv/boot/main_entry.c                   |  40 +++++++++
+ arch/riscv/boot/start.S                        |  44 ++++++++++
+ arch/riscv/configs/qemu-sifive_defconfig       |  75 +++++++++++++++++
+ arch/riscv/dts/.gitignore                      |   1 +
+ arch/riscv/dts/Makefile                        |   9 ++
+ arch/riscv/dts/qemu-sifive.dts                 |  19 +++++
+ arch/riscv/dts/skeleton.dtsi                   |  13 +++
+ arch/riscv/include/asm/barebox.h               |   1 +
+ arch/riscv/include/asm/bitops.h                |  35 ++++++++
+ arch/riscv/include/asm/bitsperlong.h           |  10 +++
+ arch/riscv/include/asm/byteorder.h             |  12 +++
+ arch/riscv/include/asm/common.h                |   6 ++
+ arch/riscv/include/asm/elf.h                   |  11 +++
+ arch/riscv/include/asm/io.h                    |   8 ++
+ arch/riscv/include/asm/posix_types.h           |   1 +
+ arch/riscv/include/asm/sections.h              |   1 +
+ arch/riscv/include/asm/string.h                |   1 +
+ arch/riscv/include/asm/swab.h                  |   6 ++
+ arch/riscv/include/asm/types.h                 |  60 ++++++++++++++
+ arch/riscv/include/asm/unaligned.h             |  19 +++++
+ arch/riscv/lib/.gitignore                      |   1 +
+ arch/riscv/lib/Makefile                        |   3 +
+ arch/riscv/lib/asm-offsets.c                   |  12 +++
+ arch/riscv/lib/barebox.lds.S                   |  87 ++++++++++++++++++++
+ arch/riscv/lib/dtb.c                           |  41 ++++++++++
+ arch/riscv/mach-sifive/Kconfig                 |  16 ++++
+ arch/riscv/mach-sifive/Makefile                |   3 +
+ arch/riscv/mach-sifive/include/mach/debug_ll.h |  38 +++++++++
+ drivers/of/Kconfig                             |   2 +-
+ drivers/serial/Kconfig                         |   3 +
+ drivers/serial/Makefile                        |   1 +
+ drivers/serial/serial_sifive.c                 | 109 +++++++++++++++++++++++++
+ 39 files changed, 875 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/boards/riscv.rst
+ create mode 100644 arch/riscv/Kconfig
+ create mode 100644 arch/riscv/Makefile
+ create mode 100644 arch/riscv/boards/qemu-sifive/.gitignore
+ create mode 100644 arch/riscv/boards/qemu-sifive/Makefile
+ create mode 100644 arch/riscv/boards/qemu-sifive/board.c
+ create mode 100644 arch/riscv/boot/Makefile
+ create mode 100644 arch/riscv/boot/main_entry.c
+ create mode 100644 arch/riscv/boot/start.S
+ create mode 100644 arch/riscv/configs/qemu-sifive_defconfig
+ create mode 100644 arch/riscv/dts/.gitignore
+ create mode 100644 arch/riscv/dts/Makefile
+ create mode 100644 arch/riscv/dts/qemu-sifive.dts
+ create mode 100644 arch/riscv/dts/skeleton.dtsi
+ create mode 100644 arch/riscv/include/asm/barebox.h
+ create mode 100644 arch/riscv/include/asm/bitops.h
+ create mode 100644 arch/riscv/include/asm/bitsperlong.h
+ create mode 100644 arch/riscv/include/asm/byteorder.h
+ create mode 100644 arch/riscv/include/asm/common.h
+ create mode 100644 arch/riscv/include/asm/elf.h
+ create mode 100644 arch/riscv/include/asm/io.h
+ create mode 100644 arch/riscv/include/asm/posix_types.h
+ create mode 100644 arch/riscv/include/asm/sections.h
+ create mode 100644 arch/riscv/include/asm/string.h
+ create mode 100644 arch/riscv/include/asm/swab.h
+ create mode 100644 arch/riscv/include/asm/types.h
+ create mode 100644 arch/riscv/include/asm/unaligned.h
+ create mode 100644 arch/riscv/lib/.gitignore
+ create mode 100644 arch/riscv/lib/Makefile
+ create mode 100644 arch/riscv/lib/asm-offsets.c
+ create mode 100644 arch/riscv/lib/barebox.lds.S
+ create mode 100644 arch/riscv/lib/dtb.c
+ create mode 100644 arch/riscv/mach-sifive/Kconfig
+ create mode 100644 arch/riscv/mach-sifive/Makefile
+ create mode 100644 arch/riscv/mach-sifive/include/mach/debug_ll.h
+ create mode 100644 drivers/serial/serial_sifive.c
+
 -- 
 2.10.2
 
