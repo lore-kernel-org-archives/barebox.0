@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c6YkE-00007D-Vi
- for barebox@lists.infradead.org; Tue, 15 Nov 2016 08:05:32 +0000
-Date: Tue, 15 Nov 2016 09:05:08 +0100
+ id 1c6YyE-000642-5O
+ for barebox@lists.infradead.org; Tue, 15 Nov 2016 08:19:59 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161115080508.kperau6sb5el4uh7@pengutronix.de>
-References: <1479116835-15439-1-git-send-email-m.otto@phytec.de>
+Date: Tue, 15 Nov 2016 09:19:34 +0100
+Message-Id: <20161115081934.21737-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1479116835-15439-1-git-send-email-m.otto@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,105 +15,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] pcm049: Add 1 GByte RAM with DUAL DIE Single Rank
-To: Maik Otto <m.otto@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] state: Documentation updates
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Trostel Alain <Alain.Trostel@haslerrail.com>
 
-On Mon, Nov 14, 2016 at 10:47:15AM +0100, Maik Otto wrote:
-> tested with Micron MT42L128M64D2LL-25WT and MT42L128M64D2LL-25WT
-> 
-> Signed-off-by: Maik Otto <m.otto@phytec.de>
-> ---
->  arch/arm/boards/phytec-phycore-omap4460/lowlevel.c |   32 +++++++++++++++++++-
->  1 files changed, 31 insertions(+), 1 deletions(-)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/arch/arm/boards/phytec-phycore-omap4460/lowlevel.c b/arch/arm/boards/phytec-phycore-omap4460/lowlevel.c
-> index c082594..71ab793 100644
-> --- a/arch/arm/boards/phytec-phycore-omap4460/lowlevel.c
-> +++ b/arch/arm/boards/phytec-phycore-omap4460/lowlevel.c
-> @@ -30,6 +30,13 @@
->  #include <asm/barebox-arm-head.h>
->  
->  #define TPS62361_VSEL0_GPIO    182
-> +#define LPDDR2_2G              0x5
-> +#define LPDDR2_4G              0x6
-> +#define LPDDR2_DENSITY_MASK		0x3C
-> +#define LPDDR2_DENSITY_SHIFT		2
-> +#define EMIF_SDRAM_CONFIG		0x0008
-> +#define EMIF_LPDDR2_MODE_REG_CONFIG	0x0050
-> +#define EMIF_LPDDR2_MODE_REG_DATA	0x0040
->  
->  void set_muxconf_regs(void);
->  
-> @@ -61,8 +68,23 @@ static const struct ddr_regs ddr_regs_mt42L128M64_25_400_mhz = {
->  	.mr2		= 0x4
->  };
->  
-> +static const struct ddr_regs ddr_regs_mt42L128M64D2LL_25_400_mhz = {
-> +	.tim1           = 0x10EB0662,
-> +	.tim2           = 0x205715D2,
-> +	.tim3           = 0x00B1C53F,
-> +	.phy_ctrl_1     = 0x849FF409,
-> +	.ref_ctrl       = 0x00000618,
-> +	.config_init    = 0x80001AB2,
-> +	.config_final   = 0x80001AB2,
-> +	.zq_config      = 0x500B3214,
-> +	.mr1            = 0x83,
-> +	.mr2            = 0x4
-> +};
-> +
->  static void noinline pcm049_init_lowlevel(void)
->  {
-> +	unsigned int density;
-> +
->  	struct dpll_param core = OMAP4_CORE_DPLL_PARAM_19M2_DDR400;
->  	struct dpll_param mpu44xx = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
->  	struct dpll_param mpu4460 = OMAP4_MPU_DPLL_PARAM_19M2_MPU920;
-> @@ -75,9 +97,17 @@ static void noinline pcm049_init_lowlevel(void)
->  	set_muxconf_regs();
->  
->  #ifdef CONFIG_1024MB_DDR2RAM
-> +	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
-> +	writel(EMIF_SDRAM_CONFIG, OMAP44XX_EMIF1_BASE +
-> +			EMIF_LPDDR2_MODE_REG_CONFIG);
-> +	density = (readl(OMAP44XX_EMIF1_BASE + EMIF_LPDDR2_MODE_REG_DATA) &
-> +			LPDDR2_DENSITY_MASK) >> LPDDR2_DENSITY_SHIFT;
-> +	if (density == LPDDR2_2G)
->  		omap4_ddr_init(&ddr_regs_mt42L128M64_25_400_mhz, &core);
-> +	else if (density == LPDDR2_4G)
-> +		omap4_ddr_init(&ddr_regs_mt42L128M64D2LL_25_400_mhz, &core);
->  #else
-> -		omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
-> +	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
->  #endif
->  
->  	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
-> -- 
-> 1.7.0.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogVHJvc3RlbCBBbGFpbiA8QWxhaW4uVHJvc3RlbEBoYXNsZXJyYWlsLmNvbT4KClNvbWUg
+aW1wcm92ZW1lbnRzIGZvciB0aGUgc3RhdGUgYmluZGluZyBkb2N1bWVudGF0aW9uLiBUaGVzZSBj
+b21lCmZyb20gdGhlIGNvbnZlcnNhdGlvbiB3aXRoIFRyb3N0ZWwgQWxhaW4gd2hvIHRyaWVkIHRv
+IHVzZSB0aGUKc3RhdGUgZnJhbWV3b3JrIGFuZCBzdHVtYmxlZCB1cG9uIHRoZXNlIHRoaW5ncyBt
+aXNzaW5nLiBQYXRjaApvcmlnaW5hbGx5IGJ5IEFsYWluLCB0aGFua3MuCgpTaWduZWQtb2ZmLWJ5
+OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ci0tLQogLi4uL2RldmljZXRy
+ZWUvYmluZGluZ3MvYmFyZWJveC9iYXJlYm94LHN0YXRlLnJzdCAgfCAzOSArKysrKysrKysrKysr
+KysrKysrLS0tCiAxIGZpbGUgY2hhbmdlZCwgMzUgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMo
+LSkKCmRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvYmFyZWJv
+eC9iYXJlYm94LHN0YXRlLnJzdCBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9i
+YXJlYm94L2JhcmVib3gsc3RhdGUucnN0CmluZGV4IDQzOGNjNDMuLjdiOWQxYmIgMTAwNjQ0Ci0t
+LSBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9iYXJlYm94L2JhcmVib3gsc3Rh
+dGUucnN0CisrKyBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9iYXJlYm94L2Jh
+cmVib3gsc3RhdGUucnN0CkBAIC00Myw2ICs0MywxNiBAQCBPcHRpb25hbCBwcm9wZXJ0aWVzOgog
+ICBtb21lbnQuIEZvciBNVEQgd2l0aCBlcmFzaW5nIHRoZSBjb3JyZWN0IHR5cGUgaXMgYGBjaXJj
+dWxhcmBgLiBGb3IgYWxsIG90aGVyCiAgIGRldmljZXMgYW5kIGZpbGVzLCBgYGRpcmVjdGBgIGlz
+IHRoZSBuZWVkZWQgdHlwZS4KIAorQ29uZmlndXJhdGlvbgorLS0tLS0tLS0tLS0tLQorCitUaGUg
+Zm9sbG93aW5nIGNvbmZpZyBvcHRpb25zIG11c3QgYmUgZW5hYmxlZCB3aGVuIGJ1aWxkaW5nIHRo
+ZSBiYXJlYm94IGltYWdlCit0byBoYXZlIGZ1bGwgc3VwcG9ydCBvZiB0aGUgYmFyZWJveCBzdGF0
+ZSBmcmFtZXdvcms6CisKKyogQ09ORklHX1NUQVRFCisqIENPTkZJR19TVEFURV9EUlYKKyogQ09O
+RklHX0NNRF9TVEFURQorCiBWYXJpYWJsZSBub2RlcwogLS0tLS0tLS0tLS0tLS0KIApAQCAtNzEs
+MTMgKzgxLDE4IEBAIE9wdGlvbmFsIHByb3BlcnRpZXM6CiAgIHN0b3JhZ2UuIEZvciBgYGVudW0z
+MmBgIHZhbHVlcyBpdCBpcyBhbiBpbnRlZ2VyIHJlcHJlc2VudGluZyBhbgogICBvZmZzZXQgaW50
+byB0aGUgbmFtZXMgYXJyYXkuCiAKLUV4YW1wbGU6OgorVGhlIGZvbGxvd2luZyBleGFtcGxlcyBo
+YXZlIHRvIGJlIGNvbmZpZ3VyZWQgaW4gdGhlIGJvYXJkLXNwZWNpZmljIGRldmljZQordHJlZSBm
+aWxlcyAoXCouZHRzKSB3aXRoaW4gYmFyZWJveC4KIAotICBzdGF0ZTogc3RhdGVAMCB7CitTdGF0
+ZSBleGFtcGxlOjoKKworICBzdGF0ZTogc3RhdGUgewogICAJbWFnaWMgPSA8MHgyNzAzMTk3Nz47
+CiAgIAljb21wYXRpYmxlID0gImJhcmVib3gsc3RhdGUiOwogICAJYmFja2VuZC10eXBlID0gInJh
+dyI7Ci0gIAliYWNrZW5kID0gJmVlcHJvbSwgInBhcnRuYW1lOnN0YXRlIjsKKyAgCWJhY2tlbmQg
+PSAmcGFydF9zdGF0ZTsKKyAgCSNhZGRyZXNzLWNlbGxzID0gPDE+OworICAJI3NpemUtY2VsbHMg
+PSA8MT47CiAKICAgCWZvbyB7CiAJCXJlZyA9IDwweDAwIDB4ND47CkBAIC05Myw2ICsxMDgsMTMg
+QEAgRXhhbXBsZTo6CiAgIAl9OwogICB9OwogCitQYXJ0aXRpb24gZXhhbXBsZTo6CisKKyAgcGFy
+dF9zdGF0ZTogcGFydGl0aW9uQDFDMDAwMCB7CisgIAlsYWJlbCA9ICJzdGF0ZSI7CisgIAlyZWcg
+PSA8MHgxQzAwMDAgMHg2MDAwMD47CisgIH07CisKIFZhcmlhYmxlIFR5cGVzCiAtLS0tLS0tLS0t
+LS0tLQogCkBAIC0xMzksNCArMTYxLDEzIEBAIGJlIGFjY2Vzc2VkIGxpa2Ugbm9ybWFsIHNoZWxs
+IHZhcmlhYmxlcy4gVGhlIGBgc3RhdGVgYCBjb21tYW5kIGlzIHVzZWQKIHRvIHNhdmUvcmVzdG9y
+ZSBhIHN0YXRlIHRvIHRoZSBiYWNrZW5kIGRldmljZS4KIAogQWZ0ZXIgaW5pdGlhbGl6aW5nIHRo
+ZSB2YXJpYWJsZSBjYW4gYmUgYWNjZXNzZWQgd2l0aCBgYCRzdGF0ZS5mb29gYC4KLWBgc3RhdGUg
+LXNgYCBzdG9yZXMgdGhlIHN0YXRlIHRvIGVlcHJvbS4KK2Bgc3RhdGUgLXNgYCBzdG9yZXMgdGhl
+IHN0YXRlIHBlcnNpc3RlbnRseS4KKworRnJvbSBMaW51eAorLS0tLS0tLS0tLQorCitJdCBleGlz
+dHMgYSB0b29sIGNhbGxlZCDCq2JhcmVib3gtc3RhdGXCuyB0byBhY2Nlc3MgdGhlc2Ugc3RhdGUg
+dmFyaWFibGVzCitmcm9tIHRoZSBMaW51eCB1c2VyLXNwYWNlLiBUaGUgbWVudGlvbmVkIHRvb2wg
+aXMgYXZhaWxhYmxlIGFzIEdJVCBwcm9qZWN0Cit1bmRlciB0aGUgZm9sbG93aW5nIGxvY2F0aW9u
+OjoKKworICBnaXQ6Ly9naXQucGVuZ3V0cm9uaXguZGUvZ2l0L3Rvb2xzL2R0LXV0aWxzLmdpdAot
+LSAKMi4xMC4yCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
