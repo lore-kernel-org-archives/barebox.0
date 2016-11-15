@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c6YZH-0004Dn-NS
- for barebox@lists.infradead.org; Tue, 15 Nov 2016 07:54:12 +0000
-Date: Tue, 15 Nov 2016 08:53:48 +0100
+ id 1c6YkE-00007D-Vi
+ for barebox@lists.infradead.org; Tue, 15 Nov 2016 08:05:32 +0000
+Date: Tue, 15 Nov 2016 09:05:08 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161115075348.xhdgp6ddilmlve7r@pengutronix.de>
-References: <1478708056-7875-1-git-send-email-andrew.smirnov@gmail.com>
- <1478708056-7875-10-git-send-email-andrew.smirnov@gmail.com>
+Message-ID: <20161115080508.kperau6sb5el4uh7@pengutronix.de>
+References: <1479116835-15439-1-git-send-email-m.otto@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1478708056-7875-10-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1479116835-15439-1-git-send-email-m.otto@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,33 +22,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 09/28] clk: Port of_clk_set_defaults()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH] pcm049: Add 1 GByte RAM with DUAL DIE Single Rank
+To: Maik Otto <m.otto@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Nov 09, 2016 at 08:13:57AM -0800, Andrey Smirnov wrote:
-> Port of_clk_set_defautls() from Linux kernel in order to support DT
-> configurations that require it (e. g. Vybrid).
+On Mon, Nov 14, 2016 at 10:47:15AM +0100, Maik Otto wrote:
+> tested with Micron MT42L128M64D2LL-25WT and MT42L128M64D2LL-25WT
 > 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> Signed-off-by: Maik Otto <m.otto@phytec.de>
 > ---
->  drivers/clk/Makefile         |   2 +-
->  drivers/clk/clk-conf.c       | 144 +++++++++++++++++++++++++++++++++++++++++++
->  drivers/clk/clk.c            |   2 +
->  include/linux/clk/clk-conf.h |  14 +++++
->  4 files changed, 161 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/clk/clk-conf.c
->  create mode 100644 include/linux/clk/clk-conf.h
+>  arch/arm/boards/phytec-phycore-omap4460/lowlevel.c |   32 +++++++++++++++++++-
+>  1 files changed, 31 insertions(+), 1 deletions(-)
 
-This patch breaks compilation on platforms using common clk but no
-device tree, for example cupid_defconfig:
-
-drivers/clk/clk-conf.c: In function '__set_clk_parents':
-drivers/clk/clk-conf.c:41:3: error: implicit declaration of function 'of_clk_get_from_provider' [-Werror=implicit-function-declaration]
-
-As this is not trivial to fix I dropped the rest of this series for now.
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/arch/arm/boards/phytec-phycore-omap4460/lowlevel.c b/arch/arm/boards/phytec-phycore-omap4460/lowlevel.c
+> index c082594..71ab793 100644
+> --- a/arch/arm/boards/phytec-phycore-omap4460/lowlevel.c
+> +++ b/arch/arm/boards/phytec-phycore-omap4460/lowlevel.c
+> @@ -30,6 +30,13 @@
+>  #include <asm/barebox-arm-head.h>
+>  
+>  #define TPS62361_VSEL0_GPIO    182
+> +#define LPDDR2_2G              0x5
+> +#define LPDDR2_4G              0x6
+> +#define LPDDR2_DENSITY_MASK		0x3C
+> +#define LPDDR2_DENSITY_SHIFT		2
+> +#define EMIF_SDRAM_CONFIG		0x0008
+> +#define EMIF_LPDDR2_MODE_REG_CONFIG	0x0050
+> +#define EMIF_LPDDR2_MODE_REG_DATA	0x0040
+>  
+>  void set_muxconf_regs(void);
+>  
+> @@ -61,8 +68,23 @@ static const struct ddr_regs ddr_regs_mt42L128M64_25_400_mhz = {
+>  	.mr2		= 0x4
+>  };
+>  
+> +static const struct ddr_regs ddr_regs_mt42L128M64D2LL_25_400_mhz = {
+> +	.tim1           = 0x10EB0662,
+> +	.tim2           = 0x205715D2,
+> +	.tim3           = 0x00B1C53F,
+> +	.phy_ctrl_1     = 0x849FF409,
+> +	.ref_ctrl       = 0x00000618,
+> +	.config_init    = 0x80001AB2,
+> +	.config_final   = 0x80001AB2,
+> +	.zq_config      = 0x500B3214,
+> +	.mr1            = 0x83,
+> +	.mr2            = 0x4
+> +};
+> +
+>  static void noinline pcm049_init_lowlevel(void)
+>  {
+> +	unsigned int density;
+> +
+>  	struct dpll_param core = OMAP4_CORE_DPLL_PARAM_19M2_DDR400;
+>  	struct dpll_param mpu44xx = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
+>  	struct dpll_param mpu4460 = OMAP4_MPU_DPLL_PARAM_19M2_MPU920;
+> @@ -75,9 +97,17 @@ static void noinline pcm049_init_lowlevel(void)
+>  	set_muxconf_regs();
+>  
+>  #ifdef CONFIG_1024MB_DDR2RAM
+> +	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
+> +	writel(EMIF_SDRAM_CONFIG, OMAP44XX_EMIF1_BASE +
+> +			EMIF_LPDDR2_MODE_REG_CONFIG);
+> +	density = (readl(OMAP44XX_EMIF1_BASE + EMIF_LPDDR2_MODE_REG_DATA) &
+> +			LPDDR2_DENSITY_MASK) >> LPDDR2_DENSITY_SHIFT;
+> +	if (density == LPDDR2_2G)
+>  		omap4_ddr_init(&ddr_regs_mt42L128M64_25_400_mhz, &core);
+> +	else if (density == LPDDR2_4G)
+> +		omap4_ddr_init(&ddr_regs_mt42L128M64D2LL_25_400_mhz, &core);
+>  #else
+> -		omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
+> +	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
+>  #endif
+>  
+>  	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+> -- 
+> 1.7.0.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
