@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c6wGG-0006wZ-IG
- for barebox@lists.infradead.org; Wed, 16 Nov 2016 09:12:10 +0000
+ id 1c6wGG-0006wa-IY
+ for barebox@lists.infradead.org; Wed, 16 Nov 2016 09:12:09 +0000
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Wed, 16 Nov 2016 10:11:37 +0100
-Message-Id: <20161116091139.15674-1-u.kleine-koenig@pengutronix.de>
+Date: Wed, 16 Nov 2016 10:11:39 +0100
+Message-Id: <20161116091139.15674-3-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20161116091139.15674-1-u.kleine-koenig@pengutronix.de>
+References: <20161116091139.15674-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,36 +17,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] scripts/kwbimage: fix typo
+Subject: [PATCH 3/3] scripts/kwbimage: fix handling of binary header
 To: barebox@lists.infradead.org
 
----
- scripts/kwbimage.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/scripts/kwbimage.c b/scripts/kwbimage.c
-index eabd09f45d42..15726e066a01 100644
---- a/scripts/kwbimage.c
-+++ b/scripts/kwbimage.c
-@@ -524,7 +524,7 @@ static int image_extract_v1(void *fdimap, const char *output, FILE *focfg)
- 	int opthdrid;
- 
- 	/*
--	 * Verify the checkum. We have to substract the checksum
-+	 * Verify the checksum. We have to subtract the checksum
- 	 * itself, because when the checksum is calculated, the
- 	 * checksum field is 0.
- 	 */
--- 
-2.10.2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QSBiaW5hcnkgaGVhZGVyIGlzIDEyIGJ5dGVzICsgKDQgYnl0ZXMgKiBOdW1iZXIgb2YgQXJndW1l
+bnRzKSBiaWdnZXIKdGhhbiB0aGUgYWN0dWFsIGJpbmFyeS4gQmVmb3JlIHRoaXMgY29tbWl0IGlt
+YWdlIGV4dHJhY3Rpb24gd2FzIHdyb25nIGFuCm1hZGUgYmluYXJ5LjAgdG9vIGJpZyBieSBmb3Vy
+IGJ5dGVzIGF0IHRoZSBlbmQgKHdoaWNoIHdlcmUgMCBpbiBhbGwgdXN1YWwKY2FzZXMpLiBJbWFn
+ZSBjcmVhdGlvbiBoYWQgdGhlIHNhbWUgcHJvYmxlbSB3aGljaCByZXN1bHRlZCBpbiBicm9rZW4K
+aW1hZ2VzIHdoZW4gdGhlIGJpbmFyeSBkb2Vzbid0IGVuZCBpbiA0IGJ5dGVzIGNvbnRhaW5pbmcg
+MC4KCkZ1cnRoZXIgaGFuZGxlIGJpbmFyaWVzIHdpdGggYSBsZW5ndGggdGhhdCBpcyBub3QgYWxp
+Z25lZCB0byA0IGJ5dGVzLgoKTm90ZSB0aGlzIGlzIGFuIGluY29tcGF0aWJsZSBjaGFuZ2UgaW4g
+dGhlIHNlbnNlIHRoYXQgYSBiaW5hcnkuMCB0aGF0IGlzCmV4dHJhY3RlZCB3aXRoIHRoZSBuZXcg
+Y29kZSBjYW5ub3QgYmUgdXNlZCBieSB0aGUgb2xkIGNvZGUuIFRoZSBvdGhlcgp3YXkgYXJvdW5k
+IHdvcmtzIGhvd2V2ZXIgdW5sZXNzIHRoZSBpbWFnZSBkb2VzIHZlcnkgc3RyYW5nZSB0aGluZ3Mu
+CgpJZiB5b3UgZmluZCB0aGlzIGNvbW1pdCBkdXJpbmcgYmlzZWN0aW9uLCB0cnkgYXBwZW5kaW5n
+IDQgemVybyBieXRlcyB0bwp5b3VyIGJpbmFyeS4wLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWlu
+ZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBzY3JpcHRzL2t3
+YmltYWdlLmMgfCAxMiArKysrKystLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlvbnMo
+KyksIDYgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvc2NyaXB0cy9rd2JpbWFnZS5jIGIvc2Ny
+aXB0cy9rd2JpbWFnZS5jCmluZGV4IDU3ZjU2M2VjZTY1MS4uNWI4NGRiM2Y3YTIzIDEwMDY0NAot
+LS0gYS9zY3JpcHRzL2t3YmltYWdlLmMKKysrIGIvc2NyaXB0cy9rd2JpbWFnZS5jCkBAIC00OTEs
+NyArNDkxLDcgQEAgc3RhdGljIGludCBpbWFnZV9leHRyYWN0X2JpbmFyeV9oZHJfdjEoY29uc3Qg
+dm9pZCAqYmluYXJ5LCBjb25zdCBjaGFyICpvdXRwdXQsCiAJfQogCiAJcmV0ID0gZndyaXRlKGJp
+bmFyeSArIChuYXJncyArIDEpICogc2l6ZW9mKHVuc2lnbmVkIGludCksCi0JCSAgICAgYmluc3og
+LSAobmFyZ3MgKyAxKSAqIHNpemVvZih1bnNpZ25lZCBpbnQpLCAxLAorCQkgICAgIGJpbnN6IC0g
+KG5hcmdzICsgMikgKiBzaXplb2YodW5zaWduZWQgaW50KSwgMSwKIAkJICAgICBiaW5hcnlvdXQp
+OwogCWlmIChyZXQgIT0gMSkgewogCQlmcHJpbnRmKHN0ZGVyciwgIkNvdWxkIG5vdCB3cml0ZSB0
+byBvdXRwdXQgZmlsZSAlc1xuIiwKQEAgLTg3MCw4ICs4NzAsOCBAQCBzdGF0aWMgdm9pZCAqaW1h
+Z2VfY3JlYXRlX3YxKHN0cnVjdCBpbWFnZV9jZmdfZWxlbWVudCAqaW1hZ2VfY2ZnLAogCQkJcmV0
+dXJuIE5VTEw7CiAJCX0KIAotCQloZWFkZXJzeiArPSBzLnN0X3NpemUgKwotCQkJYmluYXJ5ZS0+
+YmluYXJ5Lm5hcmdzICogc2l6ZW9mKHVuc2lnbmVkIGludCk7CisJCWhlYWRlcnN6ICs9IEFMSUdO
+X1NVUChzLnN0X3NpemUsIDQpICsKKwkJCTEyICsgYmluYXJ5ZS0+YmluYXJ5Lm5hcmdzICogc2l6
+ZW9mKHVuc2lnbmVkIGludCk7CiAJCWhhc2V4dCA9IDE7CiAJfQogCkBAIC05NTIsOCArOTUyLDgg
+QEAgc3RhdGljIHZvaWQgKmltYWdlX2NyZWF0ZV92MShzdHJ1Y3QgaW1hZ2VfY2ZnX2VsZW1lbnQg
+KmltYWdlX2NmZywKIAkJZnN0YXQoZmlsZW5vKGJpbiksICZzKTsKIAogCQliaW5oZHJzeiA9IHNp
+emVvZihzdHJ1Y3Qgb3B0X2hkcl92MSkgKwotCQkJKGJpbmFyeWUtPmJpbmFyeS5uYXJncyArIDEp
+ICogc2l6ZW9mKHVuc2lnbmVkIGludCkgKwotCQkJcy5zdF9zaXplOworCQkJKGJpbmFyeWUtPmJp
+bmFyeS5uYXJncyArIDIpICogc2l6ZW9mKHVuc2lnbmVkIGludCkgKworCQkJQUxJR05fU1VQKHMu
+c3Rfc2l6ZSwgNCk7CiAJCWhkci0+aGVhZGVyc3pfbHNiID0gYmluaGRyc3ogJiAweEZGRkY7CiAJ
+CWhkci0+aGVhZGVyc3pfbXNiID0gKGJpbmhkcnN6ICYgMHhGRkZGMDAwMCkgPj4gMTY7CiAKQEAg
+LTk3Nyw3ICs5NzcsNyBAQCBzdGF0aWMgdm9pZCAqaW1hZ2VfY3JlYXRlX3YxKHN0cnVjdCBpbWFn
+ZV9jZmdfZWxlbWVudCAqaW1hZ2VfY2ZnLAogCiAJCWZjbG9zZShiaW4pOwogCi0JCWN1ciArPSBz
+LnN0X3NpemU7CisJCWN1ciArPSBBTElHTl9TVVAocy5zdF9zaXplLCA0KTsKIAogCQkvKgogCQkg
+KiBGb3Igbm93LCB3ZSBkb24ndCBzdXBwb3J0IG1vcmUgdGhhbiBvbmUgYmluYXJ5Ci0tIAoyLjEw
+LjIKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
+Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
