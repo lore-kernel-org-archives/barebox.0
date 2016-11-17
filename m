@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c7GfQ-0007N0-4Q
- for barebox@lists.infradead.org; Thu, 17 Nov 2016 06:59:29 +0000
-Date: Thu, 17 Nov 2016 07:59:06 +0100
+ id 1c7Gjh-0000tm-Td
+ for barebox@lists.infradead.org; Thu, 17 Nov 2016 07:03:54 +0000
+Date: Thu, 17 Nov 2016 08:03:31 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161117065906.kgxiwv7zccrpvwvz@pengutronix.de>
-References: <20161116121851.12399-1-u.kleine-koenig@pengutronix.de>
+Message-ID: <20161117070331.g53g4rwntchvwgn5@pengutronix.de>
+References: <20161115090821.18106-1-s.hauer@pengutronix.de>
+ <CAOpc7mHgZNN4gz1VhbTqYW2atcVJCW4H1_RJdjhEQeJKSdF2wQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20161116121851.12399-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <CAOpc7mHgZNN4gz1VhbTqYW2atcVJCW4H1_RJdjhEQeJKSdF2wQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,81 +23,25 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] i2c: gpio: fix handling of return code of of_get_gpio
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: i.MX: Add src fixup
+To: Holger Schurig <holgerschurig@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Nov 16, 2016 at 01:18:49PM +0100, Uwe Kleine-K=F6nig wrote:
-> Instead of using gpio_is_valid just check the return code of of_get_gpio
-> for being < 0. This fixes -EPROBE_DEFER handling as now this error code
-> is handed to the caller instead of -ENODEV. If the gpio returned by
-> of_get_gpio is an invalid number this isn't noticed by
-> of_i2c_gpio_probe, but then gpio_request later fails which is good
-> enough.
+On Wed, Nov 16, 2016 at 03:32:36PM +0100, Holger Schurig wrote:
+>    > +config RESET_IMX_SRC
+>    > + =A0 =A0 =A0 bool "i.MX SRC support"
+>    > + =A0 =A0 =A0 default y if ARCH_IMX6 || ARCH_IMX50 || ARCH_IMX51 || =
+ARCH_IMX53
+>    > +
+>    > =A0comment "Freescale i.MX System-on-Chip"
 > =
 
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+>    I hate new visible config entries without a help text :-/
 
-Applied, thanks
+You're right. I took the easy way out and made this invisible. Also I
+removed the duplicate Kconfig entry in drivers/reset/Kconfig.
 
 Sascha
-
-> ---
->  drivers/i2c/busses/i2c-gpio.c | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
-> =
-
-> diff --git a/drivers/i2c/busses/i2c-gpio.c b/drivers/i2c/busses/i2c-gpio.c
-> index 9362ed181fe3..850db7b2f652 100644
-> --- a/drivers/i2c/busses/i2c-gpio.c
-> +++ b/drivers/i2c/busses/i2c-gpio.c
-> @@ -89,6 +89,7 @@ static int of_i2c_gpio_probe(struct device_node *np,
->  			     struct i2c_gpio_platform_data *pdata)
->  {
->  	u32 reg;
-> +	int ret;
->  =
-
->  	if (!IS_ENABLED(CONFIG_OFDEVICE))
->  		return -ENODEV;
-> @@ -96,14 +97,15 @@ static int of_i2c_gpio_probe(struct device_node *np,
->  	if (of_gpio_count(np) < 2)
->  		return -ENODEV;
->  =
-
-> -	pdata->sda_pin =3D of_get_gpio(np, 0);
-> -	pdata->scl_pin =3D of_get_gpio(np, 1);
-> +	ret =3D of_get_gpio(np, 0);
-> +	if (ret < 0)
-> +		return ret;
-> +	pdata->sda_pin =3D ret;
->  =
-
-> -	if (!gpio_is_valid(pdata->sda_pin) || !gpio_is_valid(pdata->scl_pin)) {
-> -		pr_err("%s: invalid GPIO pins, sda=3D%d/scl=3D%d\n",
-> -		       np->full_name, pdata->sda_pin, pdata->scl_pin);
-> -		return -ENODEV;
-> -	}
-> +	ret =3D of_get_gpio(np, 1);
-> +	if (ret < 0)
-> +		return ret;
-> +	pdata->scl_pin =3D ret;
->  =
-
->  	of_property_read_u32(np, "i2c-gpio,delay-us", &pdata->udelay);
->  =
-
-> -- =
-
-> 2.10.2
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 
 -- =
 
