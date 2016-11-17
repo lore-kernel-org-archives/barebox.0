@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c7Gjh-0000tm-Td
- for barebox@lists.infradead.org; Thu, 17 Nov 2016 07:03:54 +0000
-Date: Thu, 17 Nov 2016 08:03:31 +0100
+ id 1c7GnA-0003qr-MM
+ for barebox@lists.infradead.org; Thu, 17 Nov 2016 07:07:30 +0000
+Date: Thu, 17 Nov 2016 08:07:06 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161117070331.g53g4rwntchvwgn5@pengutronix.de>
-References: <20161115090821.18106-1-s.hauer@pengutronix.de>
- <CAOpc7mHgZNN4gz1VhbTqYW2atcVJCW4H1_RJdjhEQeJKSdF2wQ@mail.gmail.com>
+Message-ID: <20161117070706.2expz3uxnl6aoawt@pengutronix.de>
+References: <20161113215015.9399-1-antonynpavlov@gmail.com>
+ <20161113215015.9399-2-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAOpc7mHgZNN4gz1VhbTqYW2atcVJCW4H1_RJdjhEQeJKSdF2wQ@mail.gmail.com>
+In-Reply-To: <20161113215015.9399-2-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,32 +19,117 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX: Add src fixup
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [RFCv2 1/2] serial: add driver for SiFive UART
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Wed, Nov 16, 2016 at 03:32:36PM +0100, Holger Schurig wrote:
->    > +config RESET_IMX_SRC
->    > + =A0 =A0 =A0 bool "i.MX SRC support"
->    > + =A0 =A0 =A0 default y if ARCH_IMX6 || ARCH_IMX50 || ARCH_IMX51 || =
-ARCH_IMX53
->    > +
->    > =A0comment "Freescale i.MX System-on-Chip"
-> =
+On Mon, Nov 14, 2016 at 12:50:14AM +0300, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+> 
+> TODO:
+> 
+>   * add speed setup support.
+> 
+>  drivers/serial/Kconfig         |   3 ++
+>  drivers/serial/Makefile        |   1 +
+>  drivers/serial/serial_sifive.c | 109 +++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 113 insertions(+)
+> 
+> diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+> index b112d7e..70509b9 100644
+> --- a/drivers/serial/Kconfig
+> +++ b/drivers/serial/Kconfig
+> @@ -117,6 +117,9 @@ config DRIVER_SERIAL_S3C_AUTOSYNC
+>  	  Say Y here if you want to use the auto flow feature of this
+>  	  UART. RTS and CTS will be handled by the hardware when enabled.
+>  
+> +config DRIVER_SERIAL_SIFIVE
+> +	bool "SiFive serial driver"
+> +
+>  config DRIVER_SERIAL_PXA
+>  	bool "PXA serial driver"
+>  	depends on ARCH_PXA
+> diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+> index 189e777..368e992 100644
+> --- a/drivers/serial/Makefile
+> +++ b/drivers/serial/Makefile
+> @@ -20,3 +20,4 @@ obj-$(CONFIG_DRIVER_SERIAL_AUART)		+= serial_auart.o
+>  obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
+>  obj-$(CONFIG_DRIVER_SERIAL_EFI_STDIO)		+= efi-stdio.o
+>  obj-$(CONFIG_DRIVER_SERIAL_DIGIC)		+= serial_digic.o
+> +obj-$(CONFIG_DRIVER_SERIAL_SIFIVE)		+= serial_sifive.o
+> diff --git a/drivers/serial/serial_sifive.c b/drivers/serial/serial_sifive.c
+> new file mode 100644
+> index 0000000..06e3521
+> --- /dev/null
+> +++ b/drivers/serial/serial_sifive.c
+> @@ -0,0 +1,109 @@
+> +/*
+> + * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
+> + *
+> + * This file is part of barebox.
+> + * See file CREDITS for list of people who contributed to this project.
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2
+> + * as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+> + * GNU General Public License for more details.
+> + *
+> + */
+> +
+> +#include <common.h>
+> +#include <init.h>
+> +#include <malloc.h>
+> +#include <io.h>
+> +
+> +#define UART_RX_OFFSET 0
+> +#define UART_TX_OFFSET 0
+> +#define UART_TX_COUNT_OFFSET 0x4
+> +#define UART_RX_COUNT_OFFSET 0x8
+> +#define UART_DIVIDER_OFFSET  0xC
+> +
+> +static inline uint32_t sifive_serial_readl(struct console_device *cdev,
+> +						uint32_t offset)
+> +{
+> +	void __iomem *base = cdev->dev->priv;
+> +
+> +	return readl(base + offset);
+> +}
+> +
+> +static inline void sifive_serial_writel(struct console_device *cdev,
+> +					uint32_t value, uint32_t offset)
+> +{
+> +	void __iomem *base = cdev->dev->priv;
+> +
+> +	writel(value, base + offset);
+> +}
+> +
+> +static int sifive_serial_setbaudrate(struct console_device *cdev, int baudrate)
+> +{
+> +	/* FIXME: no baudrate setup at the momement :( */
+> +
+> +	return 0;
+> +}
+> +
+> +static void sifive_serial_putc(struct console_device *cdev, char c)
+> +{
+> +	sifive_serial_writel(cdev, c, UART_TX_OFFSET);
+> +}
 
->    I hate new visible config entries without a help text :-/
-
-You're right. I took the easy way out and made this invisible. Also I
-removed the duplicate Kconfig entry in drivers/reset/Kconfig.
+This doesn't test if there is space in the FIFO. This is necessary, no?
 
 Sascha
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
