@@ -1,11 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c99c8-0000tb-09
- for barebox@lists.infradead.org; Tue, 22 Nov 2016 11:51:52 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 22 Nov 2016 12:51:29 +0100
-Message-Id: <20161122115129.30021-1-s.hauer@pengutronix.de>
+ id 1c9CtO-0006yC-La
+ for barebox@lists.infradead.org; Tue, 22 Nov 2016 15:21:55 +0000
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Date: Tue, 22 Nov 2016 16:21:21 +0100
+Message-Id: <20161122152121.25568-1-u.oelmann@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,59 +15,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] spi: i.MX: reset controller on init
+Subject: [PATCH] ubi: Only read necessary size when reading the VID header
 To: Barebox List <barebox@lists.infradead.org>
-Cc: uol@pengutronix.de
 
-In rare cases the controller is does not work right after probe. When
-this happens the registers show that the TXFIFO contains words, but
-the transfer is never started. We observed that on some boards which
-boot from SPI NOR. The xload SPI code leaves the controller enabled,
-so the SPI controller is enabled during probe(). Disabling it before
-usage (and thus resetting it) helps. We haven't found out why exactly
-this happens.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/spi/imx_spi.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-index 806ca67..876699a 100644
---- a/drivers/spi/imx_spi.c
-+++ b/drivers/spi/imx_spi.c
-@@ -348,6 +348,13 @@ static u32 imx_xchg_single(struct spi_device *spi, u32 tx_val)
- 	return imx_spi_maybe_reverse_bits(spi, rx_val);
- }
- 
-+static void cspi_2_3_init(struct imx_spi *imx)
-+{
-+	void __iomem *base = imx->regs;
-+
-+	writel(0, base + CSPI_2_3_CTRL);
-+}
-+
- static void imx_spi_do_transfer(struct spi_device *spi)
- {
- 	struct imx_spi *imx = container_of(spi->master, struct imx_spi, master);
-@@ -519,6 +526,7 @@ static __maybe_unused struct spi_imx_devtype_data spi_imx_devtype_data_2_3 = {
- 	.chipselect = cspi_2_3_chipselect,
- 	.do_transfer = cspi_2_3_do_transfer,
- 	.xchg_single = cspi_2_3_xchg_single,
-+	.init = cspi_2_3_init,
- };
- 
- static int imx_spi_dt_probe(struct imx_spi *imx)
--- 
-2.10.2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QmFzZWQgb24ga2VybmVsIGNvbW1pdCA4YThlOGQyZmRiYWIgKCJ1Ymk6IE9ubHkgcmVhZCBuZWNl
+c3Nhcnkgc2l6ZSB3aGVuIHJlYWRpbmcKdGhlIFZJRCBoZWFkZXIiKSBieSBTYXNjaGEgSGF1ZXIg
+PHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+OgoKICAgIFdoZW4gcmVhZGluZyB0aGUgdmlkIGhkciBm
+cm9tIHRoZSBkZXZpY2UgVUJJIGFsd2F5cyByZWFkcyBhIHdob2xlCiAgICBwYWdlLiBJbnN0ZWFk
+LCByZWFkIG9ubHkgdGhlIGRhdGEgd2UgYWN0dWFsbHkgbmVlZCBhbmQgc3BlZWQgdXAKICAgIGF0
+dGFjaG1lbnQgb2YgVUJJIGRldmljZXMgYnkgcG90ZW50aWFsbHkgbWFraW5nIHVzZSBvZiByZWFk
+aW5nCiAgICBzdWJwYWdlcyBpZiB0aGUgTkFORCBkcml2ZXIgc3VwcG9ydHMgaXQuCgogICAgU2lu
+Y2UgdGhlIFZJRCBoZWFkZXIgbWF5IGJlIGF0IG9mZnNldCB2aWRfaGRyX3NoaWZ0IGluIHRoZSBw
+YWdlIGFuZAogICAgd2UgY2FuIG9ubHkgcmVhZCBmcm9tIHRoZSBiZWdpbm5pbmcgb2YgYSBwYWdl
+IHdlIGhhdmUgdG8gYWRkIHRoYXQKICAgIG9mZnNldCB0byB0aGUgcmVhZCBzaXplLgoKU2lnbmVk
+LW9mZi1ieTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4KLS0tCiBk
+cml2ZXJzL210ZC91YmkvaW8uYyB8IDIgKy0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigr
+KSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL3ViaS9pby5jIGIvZHJp
+dmVycy9tdGQvdWJpL2lvLmMKaW5kZXggNDNhZjRhNTJkZmY5Li42ZDA4ZjkyZWE2NDcgMTAwNjQ0
+Ci0tLSBhL2RyaXZlcnMvbXRkL3ViaS9pby5jCisrKyBiL2RyaXZlcnMvbXRkL3ViaS9pby5jCkBA
+IC03MTEsNyArNzExLDcgQEAgaW50IHViaV9pb19yZWFkX3ZpZF9oZHIoc3RydWN0IHViaV9kZXZp
+Y2UgKnViaSwgaW50IHBudW0sCiAKIAlwID0gKGNoYXIgKil2aWRfaGRyIC0gdWJpLT52aWRfaGRy
+X3NoaWZ0OwogCXJlYWRfZXJyID0gdWJpX2lvX3JlYWQodWJpLCBwLCBwbnVtLCB1YmktPnZpZF9o
+ZHJfYWxvZmZzZXQsCi0JCQkgIHViaS0+dmlkX2hkcl9hbHNpemUpOworCQkJICB1YmktPnZpZF9o
+ZHJfc2hpZnQgKyBVQklfVklEX0hEUl9TSVpFKTsKIAlpZiAocmVhZF9lcnIgJiYgcmVhZF9lcnIg
+IT0gVUJJX0lPX0JJVEZMSVBTICYmICFtdGRfaXNfZWNjZXJyKHJlYWRfZXJyKSkKIAkJcmV0dXJu
+IHJlYWRfZXJyOwogCi0tIAoyLjEwLjIKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
+ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
+Ym94Cg==
