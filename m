@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c9U2A-0008Mj-Er
- for barebox@lists.infradead.org; Wed, 23 Nov 2016 09:40:08 +0000
+ id 1c9U27-0008Kh-Rm
+ for barebox@lists.infradead.org; Wed, 23 Nov 2016 09:40:07 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 23 Nov 2016 10:39:32 +0100
-Message-Id: <20161123093937.15711-5-s.hauer@pengutronix.de>
+Date: Wed, 23 Nov 2016 10:39:36 +0100
+Message-Id: <20161123093937.15711-9-s.hauer@pengutronix.de>
 In-Reply-To: <20161123093937.15711-1-s.hauer@pengutronix.de>
 References: <20161123093937.15711-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,40 +21,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/10] mtd: peb: fix usage of uninitialized variable
+Subject: [PATCH 09/10] menu: sanitize menu_add_title
 To: Barebox List <barebox@lists.infradead.org>
 
-'read' is used in an error message but never assigned a value to. Remove
-the variable.
+passing a string to menu_add_title() which then gets free by this
+function is just plain ugly. Pass it a const char * which gets
+duplicated in menu_add_title() when necessary.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/peb.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ commands/menu.c |  2 +-
+ common/boot.c   |  2 +-
+ common/menu.c   | 12 +++++-------
+ include/menu.h  |  2 +-
+ 4 files changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/mtd/peb.c b/drivers/mtd/peb.c
-index 639dc0e..73f90bb 100644
---- a/drivers/mtd/peb.c
-+++ b/drivers/mtd/peb.c
-@@ -252,7 +252,6 @@ retry:
- int mtd_peb_check_all_ff(struct mtd_info *mtd, int pnum, int offset, int len,
- 			 int warn)
- {
--	size_t read;
- 	int err;
- 	void *buf;
+diff --git a/commands/menu.c b/commands/menu.c
+index 72db26e..ddc9c3a 100644
+--- a/commands/menu.c
++++ b/commands/menu.c
+@@ -147,7 +147,7 @@ static int do_menu_add(struct cmd_menu *cm)
+ 	if (!m->name)
+ 		goto free;
  
-@@ -263,8 +262,8 @@ int mtd_peb_check_all_ff(struct mtd_info *mtd, int pnum, int offset, int len,
- 	err = mtd_peb_read(mtd, buf, pnum, offset, len);
- 	if (err && !mtd_is_bitflip(err)) {
- 		dev_err(&mtd->class_dev,
--			"error %d while reading %d bytes from PEB %d:%d, read %zd bytes\n",
--			err, len, pnum, offset, read);
-+			"error %d while reading %d bytes from PEB %d:%d\n",
-+			err, len, pnum, offset);
- 		goto out;
+-	menu_add_title(m, strdup(cm->description));
++	menu_add_title(m, cm->description);
+ 
+ 	ret = menu_add(m);
+ 
+diff --git a/common/boot.c b/common/boot.c
+index 123b874..4306319 100644
+--- a/common/boot.c
++++ b/common/boot.c
+@@ -44,7 +44,7 @@ struct bootentries *bootentries_alloc(void)
+ 
+ 	if (IS_ENABLED(CONFIG_MENU)) {
+ 		bootentries->menu = menu_alloc();
+-		menu_add_title(bootentries->menu, basprintf("boot"));
++		menu_add_title(bootentries->menu, "boot");
  	}
  
+ 	return bootentries;
+diff --git a/common/menu.c b/common/menu.c
+index 64df458..e757216 100644
+--- a/common/menu.c
++++ b/common/menu.c
+@@ -526,18 +526,17 @@ EXPORT_SYMBOL(menu_add_command_entry);
+  * @display: NULL or pointer to the string which will be freed in this function.
+  *	If NULL or zero length string is provided, default title will be added.
+  */
+-void menu_add_title(struct menu *m, char *display)
++void menu_add_title(struct menu *m, const char *display)
+ {
+ 	char *tmp, *src, *dst;
+ 	int lines = 1;
+ 	int i;
+ 
+-	if (!display || !strlen(display)) {
+-		free(display);
+-		display = xasprintf("Menu : %s", m->name ? m->name : "");
+-	}
++	if (!display || !strlen(display))
++		src = dst = tmp = xasprintf("Menu : %s", m->name ? m->name : "");
++	else
++		src = dst = tmp = xstrdup(display);
+ 
+-	src = dst = tmp = xstrdup(display);
+ 	/* Count lines and separate single string into multiple strings */
+ 	while (*src) {
+ 		if (*src == '\\') {
+@@ -575,6 +574,5 @@ void menu_add_title(struct menu *m, char *display)
+ 	}
+ 
+ 	free(tmp);
+-	free(display);
+ }
+ EXPORT_SYMBOL(menu_add_title);
+diff --git a/include/menu.h b/include/menu.h
+index 3e704a8..2fef064 100644
+--- a/include/menu.h
++++ b/include/menu.h
+@@ -91,7 +91,7 @@ int menu_set_selected_entry(struct menu *m, struct menu_entry* me);
+ int menu_set_selected(struct menu *m, int num);
+ int menu_set_auto_select(struct menu *m, int delay);
+ struct menu* menu_get_menus(void);
+-void menu_add_title(struct menu *m, char *display);
++void menu_add_title(struct menu *m, const char *display);
+ 
+ /*
+  * menu entry functions
 -- 
 2.10.2
 
