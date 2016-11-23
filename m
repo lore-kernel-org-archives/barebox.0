@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c9SKZ-0007i7-A1
+ id 1c9SKZ-0007hK-A4
  for barebox@lists.infradead.org; Wed, 23 Nov 2016 07:51:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 23 Nov 2016 08:50:33 +0100
-Message-Id: <20161123075034.21606-2-s.hauer@pengutronix.de>
-In-Reply-To: <20161123075034.21606-1-s.hauer@pengutronix.de>
-References: <20161123075034.21606-1-s.hauer@pengutronix.de>
+Date: Wed, 23 Nov 2016 08:50:32 +0100
+Message-Id: <20161123075034.21606-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +19,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] globalvar: Make locally used function static
+Subject: [PATCH 1/3] input: Fix compiler warning
 To: Barebox List <barebox@lists.infradead.org>
 
 Fixes:
 
-common/globalvar.c:382:5: warning: no previous prototype for 'globalvar_simple_set' [-Wmissing-prototypes]
+drivers/input/input.c:46:17: warning: passing argument 2 of '__set_bit' from incompatible pointer type [-Wincompatible-pointer-types]
+
+idev->keys is an array, so we don't need to take the address of it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/globalvar.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/input.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/common/globalvar.c b/common/globalvar.c
-index e75cac9..85d0795 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -379,7 +379,7 @@ void globalvar_set_match(const char *match, const char *val)
- 	}
- }
+diff --git a/drivers/input/input.c b/drivers/input/input.c
+index 31a9c22..14e44d1 100644
+--- a/drivers/input/input.c
++++ b/drivers/input/input.c
+@@ -43,9 +43,9 @@ void input_report_key_event(struct input_device *idev, unsigned int code, int va
+ 		return;
  
--int globalvar_simple_set(struct device_d *dev, struct param_d *p, const char *val)
-+static int globalvar_simple_set(struct device_d *dev, struct param_d *p, const char *val)
- {
- 	struct device_d *rdev;
- 	const char *pname;
+ 	if (value)
+-		set_bit(code, &idev->keys);
++		set_bit(code, idev->keys);
+ 	else
+-		clear_bit(code, &idev->keys);
++		clear_bit(code, idev->keys);
+ 
+ 	event.code = code;
+ 	event.value = value;
 -- 
 2.10.2
 
