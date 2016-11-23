@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c9SSa-0003ls-L2
- for barebox@lists.infradead.org; Wed, 23 Nov 2016 07:59:17 +0000
-From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
-Date: Wed, 23 Nov 2016 08:58:52 +0100
-Message-Id: <20161123075852.20882-1-u.oelmann@pengutronix.de>
-MIME-Version: 1.0
+ id 1c9U27-0008Kg-Rz
+ for barebox@lists.infradead.org; Wed, 23 Nov 2016 09:40:07 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 23 Nov 2016 10:39:35 +0100
+Message-Id: <20161123093937.15711-8-s.hauer@pengutronix.de>
+In-Reply-To: <20161123093937.15711-1-s.hauer@pengutronix.de>
+References: <20161123093937.15711-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,24 +16,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] environment: fix typo
+Subject: [PATCH 08/10] of: Use %pa to print resource_size_t type
 To: Barebox List <barebox@lists.infradead.org>
 
-U2lnbmVkLW9mZi1ieTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4K
-LS0tCiBjb21tb24vZW52aXJvbm1lbnQuYyB8IDIgKy0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2Vy
-dGlvbigrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2NvbW1vbi9lbnZpcm9ubWVudC5j
-IGIvY29tbW9uL2Vudmlyb25tZW50LmMKaW5kZXggYzljZWY2MzIyYTA2Li4wZWRmMzRiNjYxZDkg
-MTAwNjQ0Ci0tLSBhL2NvbW1vbi9lbnZpcm9ubWVudC5jCisrKyBiL2NvbW1vbi9lbnZpcm9ubWVu
-dC5jCkBAIC0zODIsNyArMzgyLDcgQEAgRVhQT1JUX1NZTUJPTChlbnZmc19zYXZlKTsKIHN0YXRp
-YyBpbnQgZW52ZnNfY2hlY2tfc3VwZXIoc3RydWN0IGVudmZzX3N1cGVyICpzdXBlciwgc2l6ZV90
-ICpzaXplKQogewogCWlmIChFTlZGU18zMihzdXBlci0+bWFnaWMpICE9IEVOVkZTX01BR0lDKSB7
-Ci0JCXByaW50ZigiZW52ZnM6IG5vIGVudmZzIChtYWdpYyBtaXNtYXRjaCkgLSBlbnZmcyBuZXdl
-ciB3cml0dGVuP1xuIik7CisJCXByaW50ZigiZW52ZnM6IG5vIGVudmZzIChtYWdpYyBtaXNtYXRj
-aCkgLSBlbnZmcyBuZXZlciB3cml0dGVuP1xuIik7CiAJCXJldHVybiAtRUlPOwogCX0KIAotLSAK
-Mi4xMC4yCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/of/platform.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index 3f848a4..c9157cd 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -271,7 +271,7 @@ static struct device_d *of_amba_device_create(struct device_node *np)
+ 	/* Allow the HW Peripheral ID to be overridden */
+ 	of_property_read_u32(np, "arm,primecell-periphid", &dev->periphid);
+ 
+-	debug("register device 0x%08x\n", dev->dev.resource[0].start);
++	debug("register device %pa\n", &dev->dev.resource[0].start);
+ 
+ 	ret = amba_device_add(dev);
+ 	if (ret)
+-- 
+2.10.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
