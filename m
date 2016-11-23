@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1c9SKZ-0007im-A2
+ id 1c9SKZ-0007i7-A1
  for barebox@lists.infradead.org; Wed, 23 Nov 2016 07:51:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 23 Nov 2016 08:50:34 +0100
-Message-Id: <20161123075034.21606-3-s.hauer@pengutronix.de>
+Date: Wed, 23 Nov 2016 08:50:33 +0100
+Message-Id: <20161123075034.21606-2-s.hauer@pengutronix.de>
 In-Reply-To: <20161123075034.21606-1-s.hauer@pengutronix.de>
 References: <20161123075034.21606-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,32 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] lib/int_sqrt.c: Fix compiler warning
+Subject: [PATCH 2/3] globalvar: Make locally used function static
 To: Barebox List <barebox@lists.infradead.org>
 
-include int_sqrt.h to have the prototype for the function defined in
-this file.
-
 Fixes:
-lib/int_sqrt.c:25:15: warning: no previous prototype for 'int_sqrt' [-Wmissing-prototypes]
+
+common/globalvar.c:382:5: warning: no previous prototype for 'globalvar_simple_set' [-Wmissing-prototypes]
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- lib/int_sqrt.c | 1 +
- 1 file changed, 1 insertion(+)
+ common/globalvar.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/int_sqrt.c b/lib/int_sqrt.c
-index 30ccafb..bf8b18f 100644
---- a/lib/int_sqrt.c
-+++ b/lib/int_sqrt.c
-@@ -15,6 +15,7 @@
-  */
+diff --git a/common/globalvar.c b/common/globalvar.c
+index e75cac9..85d0795 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -379,7 +379,7 @@ void globalvar_set_match(const char *match, const char *val)
+ 	}
+ }
  
- #include <common.h>
-+#include <int_sqrt.h>
- 
- /**
-  * int_sqrt - rough approximation to sqrt
+-int globalvar_simple_set(struct device_d *dev, struct param_d *p, const char *val)
++static int globalvar_simple_set(struct device_d *dev, struct param_d *p, const char *val)
+ {
+ 	struct device_d *rdev;
+ 	const char *pname;
 -- 
 2.10.2
 
