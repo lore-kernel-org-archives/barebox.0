@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cABWk-0004Mj-3Z
- for barebox@lists.infradead.org; Fri, 25 Nov 2016 08:06:38 +0000
+ id 1cABX9-0004eN-8I
+ for barebox@lists.infradead.org; Fri, 25 Nov 2016 08:07:03 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 90602A003C0
- for <barebox@lists.infradead.org>; Fri, 25 Nov 2016 09:06:50 +0100 (CET)
+ by root.phytec.de (Postfix) with ESMTP id 686EBA00447
+ for <barebox@lists.infradead.org>; Fri, 25 Nov 2016 09:06:51 +0100 (CET)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 25 Nov 2016 09:06:02 +0100
-Message-Id: <1480061167-21590-2-git-send-email-t.remmet@phytec.de>
+Date: Fri, 25 Nov 2016 09:06:07 +0100
+Message-Id: <1480061167-21590-7-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1480061167-21590-1-git-send-email-t.remmet@phytec.de>
 References: <1480061167-21590-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,73 +24,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] libfile: copy_file: Only open regular files with O_TRUNC
+Subject: [PATCH 6/6] ubi: barebox: Remove character device flag from static
+ volumes
 To: barebox@lists.infradead.org
 
-Device files can not truncate in the most cases. Check if the
-destination is a regular file and open only those with O_TRUNC.
+Character device flag was set for ubi static volumes to vary the device
+file size. This is now done with the truncate option. So no need for
+the character device flag. This makes it also possible to dump a image from
+the static volume.
 
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- lib/libfile.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/mtd/ubi/barebox.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/lib/libfile.c b/lib/libfile.c
-index cba2f02..049ec32 100644
---- a/lib/libfile.c
-+++ b/lib/libfile.c
-@@ -263,9 +263,10 @@ int copy_file(const char *src, const char *dst, int verbose)
- 	int srcfd = 0, dstfd = 0;
- 	int r, w;
- 	int ret = 1, err1 = 0;
-+	int mode;
- 	void *buf;
- 	int total = 0;
--	struct stat statbuf;
-+	struct stat srcstat, dststat;
+diff --git a/drivers/mtd/ubi/barebox.c b/drivers/mtd/ubi/barebox.c
+index 2ad731a..d67e566 100644
+--- a/drivers/mtd/ubi/barebox.c
++++ b/drivers/mtd/ubi/barebox.c
+@@ -244,9 +244,6 @@ int ubi_volume_cdev_add(struct ubi_device *ubi, struct ubi_volume *vol)
+ 	cdev->priv = priv;
+ 	cdev->size = vol->used_bytes;
  
- 	rw_buf = xmalloc(RW_BUF_SIZE);
- 
-@@ -275,17 +276,26 @@ int copy_file(const char *src, const char *dst, int verbose)
- 		goto out;
- 	}
- 
--	dstfd = open(dst, O_WRONLY | O_CREAT | O_TRUNC);
-+	ret = stat(dst, &dststat);
-+	if (ret)
-+		goto out;
-+
-+	mode = O_WRONLY | O_CREAT;
-+
-+	if (S_ISREG(dststat.st_mode))
-+		mode |= O_TRUNC;
-+
-+	dstfd = open(dst, mode);
- 	if (dstfd < 0) {
- 		printf("could not open %s: %s\n", dst, errno_str());
- 		goto out;
- 	}
- 
- 	if (verbose) {
--		if (stat(src, &statbuf) < 0)
--			statbuf.st_size = 0;
-+		if (stat(src, &srcstat) < 0)
-+			srcstat.st_size = 0;
- 
--		init_progression_bar(statbuf.st_size);
-+		init_progression_bar(srcstat.st_size);
- 	}
- 
- 	while (1) {
-@@ -310,7 +320,7 @@ int copy_file(const char *src, const char *dst, int verbose)
- 		}
- 
- 		if (verbose) {
--			if (statbuf.st_size && statbuf.st_size != FILESIZE_MAX)
-+			if (srcstat.st_size && srcstat.st_size != FILESIZE_MAX)
- 				show_progress(total);
- 			else
- 				show_progress(total / 16384);
+-	if (vol->vol_type == UBI_STATIC_VOLUME)
+-		cdev->flags = DEVFS_IS_CHARACTER_DEV;
+-
+ 	cdev->dev = &vol->dev;
+ 	ubi_msg(ubi, "registering %s as /dev/%s", vol->name, cdev->name);
+ 	ret = devfs_create(cdev);
 -- 
 1.9.1
 
