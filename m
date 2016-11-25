@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cABWk-0004Mo-32
- for barebox@lists.infradead.org; Fri, 25 Nov 2016 08:06:38 +0000
+ id 1cABX9-0004eM-8J
+ for barebox@lists.infradead.org; Fri, 25 Nov 2016 08:07:03 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 0089EA0043F
+ by root.phytec.de (Postfix) with ESMTP id 334EEA00443
  for <barebox@lists.infradead.org>; Fri, 25 Nov 2016 09:06:51 +0100 (CET)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 25 Nov 2016 09:06:05 +0100
-Message-Id: <1480061167-21590-5-git-send-email-t.remmet@phytec.de>
+Date: Fri, 25 Nov 2016 09:06:06 +0100
+Message-Id: <1480061167-21590-6-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1480061167-21590-1-git-send-email-t.remmet@phytec.de>
 References: <1480061167-21590-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,30 +24,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] fs: Remove O_TRUNC check for devices when open files
+Subject: [PATCH 5/6] commands: ubi: ubiupdatevol: Open device with O_TRUNC
 To: barebox@lists.infradead.org
 
-Don't check for the file type here. Devices may have truncate
-callbacks. Otherwise the caller should check if O_TRUNC is possible.
+Static ubi volumes should be opend with O_TRUNC as the device file
+size equals the content.
 
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- fs/fs.c | 2 +-
+ commands/ubi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index b7e7c63..2b4659c 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -682,7 +682,7 @@ int open(const char *pathname, int flags, ...)
- 	if (ret)
- 		goto out;
+diff --git a/commands/ubi.c b/commands/ubi.c
+index 4c445d2..5e27584 100644
+--- a/commands/ubi.c
++++ b/commands/ubi.c
+@@ -42,7 +42,7 @@ static int do_ubiupdatevol(int argc, char *argv[])
+ 		return 1;
+ 	}
  
--	if (!(s.st_mode & S_IFCHR) && (flags & O_TRUNC)) {
-+	if (flags & O_TRUNC) {
- 		ret = fsdrv->truncate(&fsdev->dev, f, 0);
- 		f->size = 0;
- 		if (ret)
+-	fd_vol = open(argv[optind], O_WRONLY);
++	fd_vol = open(argv[optind], O_WRONLY | O_TRUNC);
+ 	if (fd_vol < 0) {
+ 		perror("open volume");
+ 		ret = 1;
 -- 
 1.9.1
 
