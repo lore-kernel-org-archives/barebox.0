@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cABX9-0004eN-8I
- for barebox@lists.infradead.org; Fri, 25 Nov 2016 08:07:03 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 686EBA00447
- for <barebox@lists.infradead.org>; Fri, 25 Nov 2016 09:06:51 +0100 (CET)
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 25 Nov 2016 09:06:07 +0100
-Message-Id: <1480061167-21590-7-git-send-email-t.remmet@phytec.de>
-In-Reply-To: <1480061167-21590-1-git-send-email-t.remmet@phytec.de>
-References: <1480061167-21590-1-git-send-email-t.remmet@phytec.de>
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1cANiu-00006D-4I
+ for barebox@lists.infradead.org; Fri, 25 Nov 2016 21:07:57 +0000
+Received: by mail-pg0-x241.google.com with SMTP id p66so6347483pga.2
+ for <barebox@lists.infradead.org>; Fri, 25 Nov 2016 13:07:35 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Fri, 25 Nov 2016 13:07:11 -0800
+Message-Id: <1480108031-17889-2-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1480108031-17889-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1480108031-17889-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,36 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] ubi: barebox: Remove character device flag from static
- volumes
+Subject: [PATCH 2/2] fixup! i.MX: Add VF610 clock tree initialization code
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Character device flag was set for ubi static volumes to vary the device
-file size. This is now done with the truncate option. So no need for
-the character device flag. This makes it also possible to dump a image from
-the static volume.
-
-Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/barebox.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/clk/imx/clk-vf610.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/mtd/ubi/barebox.c b/drivers/mtd/ubi/barebox.c
-index 2ad731a..d67e566 100644
---- a/drivers/mtd/ubi/barebox.c
-+++ b/drivers/mtd/ubi/barebox.c
-@@ -244,9 +244,6 @@ int ubi_volume_cdev_add(struct ubi_device *ubi, struct ubi_volume *vol)
- 	cdev->priv = priv;
- 	cdev->size = vol->used_bytes;
+diff --git a/drivers/clk/imx/clk-vf610.c b/drivers/clk/imx/clk-vf610.c
+index 1cf2b65..34400b9 100644
+--- a/drivers/clk/imx/clk-vf610.c
++++ b/drivers/clk/imx/clk-vf610.c
+@@ -431,6 +431,9 @@ static void __init vf610_clocks_init(struct device_node *ccm_node)
+ 	clk_set_parent(clk[VF610_CLK_ESDHC1_SEL], clk[VF610_CLK_PLL1_PFD3]);
+ 	clk_set_rate(clk[VF610_CLK_ESDHC1_DIV], clk_get_rate(clk[VF610_CLK_PLL1_PFD3]) / 9);
  
--	if (vol->vol_type == UBI_STATIC_VOLUME)
--		cdev->flags = DEVFS_IS_CHARACTER_DEV;
--
- 	cdev->dev = &vol->dev;
- 	ubi_msg(ubi, "registering %s as /dev/%s", vol->name, cdev->name);
- 	ret = devfs_create(cdev);
++	clk_set_parent(clk[VF610_CLK_ESDHC0_SEL], clk[VF610_CLK_PLL1_PFD3]);
++	clk_set_rate(clk[VF610_CLK_ESDHC0_DIV], clk_get_rate(clk[VF610_CLK_PLL1_PFD3]) / 9);
++
+ 	clk_set_parent(clk[VF610_CLK_SAI0_SEL], clk[VF610_CLK_AUDIO_EXT]);
+ 	clk_set_parent(clk[VF610_CLK_SAI1_SEL], clk[VF610_CLK_AUDIO_EXT]);
+ 	clk_set_parent(clk[VF610_CLK_SAI2_SEL], clk[VF610_CLK_AUDIO_EXT]);
 -- 
-1.9.1
+2.5.5
 
 
 _______________________________________________
