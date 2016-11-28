@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cBHYy-0005ZN-UN
+ id 1cBHYy-0005ZR-Vl
  for barebox@lists.infradead.org; Mon, 28 Nov 2016 08:45:26 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id AFD18A00263
- for <barebox@lists.infradead.org>; Mon, 28 Nov 2016 09:45:43 +0100 (CET)
+ by root.phytec.de (Postfix) with ESMTP id 3EFFDA00432
+ for <barebox@lists.infradead.org>; Mon, 28 Nov 2016 09:45:44 +0100 (CET)
 From: Stefan Lengfeld <s.lengfeld@phytec.de>
-Date: Mon, 28 Nov 2016 09:44:58 +0100
-Message-Id: <1480322700-3529-1-git-send-email-s.lengfeld@phytec.de>
+Date: Mon, 28 Nov 2016 09:45:00 +0100
+Message-Id: <1480322700-3529-3-git-send-email-s.lengfeld@phytec.de>
+In-Reply-To: <1480322700-3529-1-git-send-email-s.lengfeld@phytec.de>
+References: <1480322700-3529-1-git-send-email-s.lengfeld@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,174 +24,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] ARM: dts: phycore-imx6: refactor fec nodes
+Subject: [PATCH 3/3] ARM: dts: phycore-imx6: remove unnecessary include
 To: barebox@lists.infradead.org
 
-Refactor the common settings for device tree node 'fec' into the generic
-phycore i.MX6 device tree file. This avoid redundant settings and makes
-common fixes easier. Our kernel device tree files have the same layout.
+The file 'imx6qdl.dtsi' is already included by DualLite/Solo and
+Dual/Quad specific files 'imx6dl.dtsi' and 'imx6q.dtsi'. So the include
+is not needed here.
 
 Signed-off-by: Stefan Lengfeld <s.lengfeld@phytec.de>
 ---
- arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts | 17 ++++-------------
- arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts | 17 ++++-------------
- arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts  | 17 ++++-------------
- arch/arm/dts/imx6q-phytec-phycore-som-nand.dts  | 17 ++++-------------
- arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi    | 13 +++++++++++++
- 5 files changed, 29 insertions(+), 52 deletions(-)
+ arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
-index fc153a6..bffee5f 100644
---- a/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
-+++ b/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
-@@ -29,21 +29,12 @@
- 	status = "okay";
- };
- 
-+&ethphy {
-+	max-speed = <100>;
-+};
-+
- &fec {
- 	status = "okay";
--	phy-handle = <&ethphy>;
--	phy-mode = "rgmii";
--	phy-reset-gpios = <&gpio1 14 1>;
--
--	mdio {
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		ethphy: ethernet-phy@3 {
--			reg = <3>;
--			max-speed = <100>;
--		};
--	};
- };
- 
- &flash {
-diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
-index 3f2f1c7..1b66fda 100644
---- a/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
-+++ b/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
-@@ -24,21 +24,12 @@
- 	status = "okay";
- };
- 
-+&ethphy {
-+	max-speed = <100>;
-+};
-+
- &fec {
- 	status = "okay";
--	phy-handle = <&ethphy>;
--	phy-mode = "rgmii";
--	phy-reset-gpios = <&gpio1 14 1>;
--
--	mdio {
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		ethphy: ethernet-phy@3 {
--			reg = <3>;
--			max-speed = <100>;
--		};
--	};
- };
- 
- &gpmi {
-diff --git a/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
-index 74bc09b..ecc5aa3 100644
---- a/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
-+++ b/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
-@@ -28,21 +28,12 @@
- 	status = "okay";
- };
- 
-+&ethphy {
-+	max-speed = <1000>;
-+};
-+
- &fec {
- 	status = "okay";
--	phy-handle = <&ethphy>;
--	phy-mode = "rgmii";
--	phy-reset-gpios = <&gpio1 14 1>;
--
--	mdio {
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		ethphy: ethernet-phy@3 {
--			reg = <3>;
--			max-speed = <1000>;
--		};
--	};
- };
- 
- &flash {
-diff --git a/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts b/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts
-index aa2c94a..9ad7eda 100644
---- a/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts
-+++ b/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts
-@@ -29,21 +29,12 @@
- 	status = "okay";
- };
- 
-+&ethphy {
-+	max-speed = <1000>;
-+};
-+
- &fec {
- 	status = "okay";
--	phy-handle = <&ethphy>;
--	phy-mode = "rgmii";
--	phy-reset-gpios = <&gpio1 14 1>;
--
--	mdio {
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		ethphy: ethernet-phy@3 {
--			reg = <3>;
--			max-speed = <1000>;
--		};
--	};
- };
- 
- &flash {
 diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-index d446a5e..9649817 100644
+index 76777e8..1e04ce1 100644
 --- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
 +++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-@@ -10,6 +10,7 @@
+@@ -9,7 +9,6 @@
+  * http://www.gnu.org/copyleft/gpl.html
   */
  
- #include "imx6qdl.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
+-#include "imx6qdl.dtsi"
+ #include <dt-bindings/gpio/gpio.h>
  
  / {
- 	chosen {
-@@ -76,7 +77,19 @@
- &fec {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_enet>;
-+	phy-handle = <&ethphy>;
-+	phy-mode = "rgmii";
-+	phy-reset-gpios = <&gpio1 14 GPIO_ACTIVE_LOW>;
- 	status = "disabled";
-+
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		ethphy: ethernet-phy@3 {
-+			reg = <3>;
-+		};
-+	};
- };
- 
- &gpmi {
 -- 
 1.9.1
 
