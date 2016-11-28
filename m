@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cBHYy-0005ZM-Ue
- for barebox@lists.infradead.org; Mon, 28 Nov 2016 08:45:26 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id DFF3EA00322
- for <barebox@lists.infradead.org>; Mon, 28 Nov 2016 09:45:43 +0100 (CET)
-From: Stefan Lengfeld <s.lengfeld@phytec.de>
-Date: Mon, 28 Nov 2016 09:44:59 +0100
-Message-Id: <1480322700-3529-2-git-send-email-s.lengfeld@phytec.de>
-In-Reply-To: <1480322700-3529-1-git-send-email-s.lengfeld@phytec.de>
-References: <1480322700-3529-1-git-send-email-s.lengfeld@phytec.de>
+Received: from vs81.iboxed.net ([185.82.85.146])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1cBIHJ-0007RK-MQ
+ for barebox@lists.infradead.org; Mon, 28 Nov 2016 09:31:17 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Mon, 28 Nov 2016 10:27:32 +0100
+Message-Id: <1480325255-17750-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,35 +19,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: dts: phycore-imx6: fix missing ?xc-skew-ps settings
- for ethphy
+Subject: [PATCH 1/4] ARM i.MX: move cpu_type macros in front of cpu_revision
+ code
 To: barebox@lists.infradead.org
+Cc: Alexander Kurz <akurz@blala.de>
 
-Add the missing txc-skew-ps and rxc-skew-ps settings for the Micrel PHY.
-I have seen problems with 1GBit ethernet on a phyCORE-i.MX6 Solo. Oddly
-enough the missing skew values are no problems for all our other
-modules.
+Preparational commit to enable the use of cpu_type macros in imx6_cpu_revision()
 
-Signed-off-by: Stefan Lengfeld <s.lengfeld@phytec.de>
+Signed-off-by: Alexander Kurz <akurz@blala.de>
 ---
- arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/mach-imx/include/mach/imx6.h | 40 +++++++++++++++++------------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-index 9649817..76777e8 100644
---- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-@@ -88,6 +88,8 @@
+diff --git a/arch/arm/mach-imx/include/mach/imx6.h b/arch/arm/mach-imx/include/mach/imx6.h
+index 8c169f1..e201721 100644
+--- a/arch/arm/mach-imx/include/mach/imx6.h
++++ b/arch/arm/mach-imx/include/mach/imx6.h
+@@ -50,6 +50,26 @@ static inline int imx6_cpu_type(void)
+ 	return __imx6_cpu_type();
+ }
  
- 		ethphy: ethernet-phy@3 {
- 			reg = <3>;
-+			txc-skew-ps = <1680>;
-+			rxc-skew-ps = <1860>;
- 		};
- 	};
- };
++#define DEFINE_MX6_CPU_TYPE(str, type)					\
++	static inline int cpu_mx6_is_##str(void)			\
++	{								\
++		return __imx6_cpu_type() == type;			\
++	}								\
++									\
++	static inline int cpu_is_##str(void)				\
++	{								\
++		if (!cpu_is_mx6())					\
++			return 0;					\
++		return cpu_mx6_is_##str();				\
++	}
++
++DEFINE_MX6_CPU_TYPE(mx6s, IMX6_CPUTYPE_IMX6S);
++DEFINE_MX6_CPU_TYPE(mx6dl, IMX6_CPUTYPE_IMX6DL);
++DEFINE_MX6_CPU_TYPE(mx6q, IMX6_CPUTYPE_IMX6Q);
++DEFINE_MX6_CPU_TYPE(mx6d, IMX6_CPUTYPE_IMX6D);
++DEFINE_MX6_CPU_TYPE(mx6sx, IMX6_CPUTYPE_IMX6SX);
++DEFINE_MX6_CPU_TYPE(mx6ul, IMX6_CPUTYPE_IMX6UL);
++
+ static inline int __imx6_cpu_revision(void)
+ {
+ 
+@@ -85,24 +105,4 @@ static inline int imx6_cpu_revision(void)
+ 	return __imx6_cpu_revision();
+ }
+ 
+-#define DEFINE_MX6_CPU_TYPE(str, type)					\
+-	static inline int cpu_mx6_is_##str(void)			\
+-	{								\
+-		return __imx6_cpu_type() == type;			\
+-	}								\
+-									\
+-	static inline int cpu_is_##str(void)				\
+-	{								\
+-		if (!cpu_is_mx6())					\
+-			return 0;					\
+-		return cpu_mx6_is_##str();				\
+-	}
+-
+-DEFINE_MX6_CPU_TYPE(mx6s, IMX6_CPUTYPE_IMX6S);
+-DEFINE_MX6_CPU_TYPE(mx6dl, IMX6_CPUTYPE_IMX6DL);
+-DEFINE_MX6_CPU_TYPE(mx6q, IMX6_CPUTYPE_IMX6Q);
+-DEFINE_MX6_CPU_TYPE(mx6d, IMX6_CPUTYPE_IMX6D);
+-DEFINE_MX6_CPU_TYPE(mx6sx, IMX6_CPUTYPE_IMX6SX);
+-DEFINE_MX6_CPU_TYPE(mx6ul, IMX6_CPUTYPE_IMX6UL);
+-
+ #endif /* __MACH_IMX6_H */
 -- 
-1.9.1
+2.1.4
 
 
 _______________________________________________
