@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cC2n5-0000ug-Qj
- for barebox@lists.infradead.org; Wed, 30 Nov 2016 11:11:08 +0000
+ id 1cC2n5-0000uj-Qm
+ for barebox@lists.infradead.org; Wed, 30 Nov 2016 11:11:09 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 41093A0034E
+ by root.phytec.de (Postfix) with ESMTP id 49B8CA00438
  for <barebox@lists.infradead.org>; Wed, 30 Nov 2016 12:11:30 +0100 (CET)
 From: Daniel Schultz <d.schultz@phytec.de>
-Date: Wed, 30 Nov 2016 12:10:44 +0100
-Message-Id: <1480504245-1822-2-git-send-email-d.schultz@phytec.de>
+Date: Wed, 30 Nov 2016 12:10:45 +0100
+Message-Id: <1480504245-1822-3-git-send-email-d.schultz@phytec.de>
 In-Reply-To: <1480504245-1822-1-git-send-email-d.schultz@phytec.de>
 References: <1480504245-1822-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,34 +24,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] arm: imx6: ocotp: Added write check
+Subject: [PATCH 3/3] arm: dts: Added ocotp support for i.MX6UL
 To: barebox@lists.infradead.org
 
-Since it's forbidden to use a multicast address as ethernet address,
-the driver should check the addresses before they got written.
+Ocotp is available for the iMX6(q|sx|sl) SoCs. This patch will extend the
+iMX6ul DT from the mainline kernel to support the ocotp driver on the
+iMX6ul SoC.
 
 Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 ---
- arch/arm/mach-imx/ocotp.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm/dts/imx6ul-phytec-phycore-som.dts |  1 +
+ arch/arm/dts/imx6ul.dtsi                   | 20 ++++++++++++++++++++
+ 2 files changed, 21 insertions(+)
+ create mode 100644 arch/arm/dts/imx6ul.dtsi
 
-diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
-index 9efa46a..f8978c0 100644
---- a/arch/arm/mach-imx/ocotp.c
-+++ b/arch/arm/mach-imx/ocotp.c
-@@ -452,6 +452,12 @@ static int imx_ocotp_set_mac(unsigned int mac_no, struct param_d *param,
- 	for (i = 0; i < 6; i++)
- 		buf[5 - i + offset] = ocotp_priv->ethaddr[mac_no][i];
+diff --git a/arch/arm/dts/imx6ul-phytec-phycore-som.dts b/arch/arm/dts/imx6ul-phytec-phycore-som.dts
+index be4556a..285ea62 100644
+--- a/arch/arm/dts/imx6ul-phytec-phycore-som.dts
++++ b/arch/arm/dts/imx6ul-phytec-phycore-som.dts
+@@ -13,6 +13,7 @@
+ /dts-v1/;
  
-+	if (0x01 & buf[5 + offset]) {
-+		dev_err(&ocotp_priv->dev,
-+			"this MAC address is a broadcast/multicast\n");
-+		return -EINVAL;
-+	}
+ #include <arm/imx6ul.dtsi>
++#include "imx6ul.dtsi"
+ 
+ / {
+ 	model = "Phytec phyCORE-i.MX6 Ultra Lite SOM";
+diff --git a/arch/arm/dts/imx6ul.dtsi b/arch/arm/dts/imx6ul.dtsi
+new file mode 100644
+index 0000000..2e02d27
+--- /dev/null
++++ b/arch/arm/dts/imx6ul.dtsi
+@@ -0,0 +1,20 @@
++/*
++ * Copyright (C) 2016 PHYTEC Messtechnik GmbH
++ * Author: Daniel Schultz <d.schultz@phytec.de>
++ *
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
 +
- 	ret = regmap_bulk_write(ocotp_priv->map,
- 				(mac_no == 0) ? MAC0_OFFSET : MAC1_OFFSET, buf,
- 				MAC_BYTES);
++&aips2 {
++	ocotp: ocotp-ctrl@21bc000 {
++		compatible = "fsl,imx6ul-ocotp";
++		reg = <0x021bc000 0x4000>;
++		clocks = <&clks IMX6UL_CLK_OCOTP>;
++		barebox,provide-mac-address = <&fec1 0x620 &fec2 0x632>;
++	};
++};
 -- 
 1.9.1
 
