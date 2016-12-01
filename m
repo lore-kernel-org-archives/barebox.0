@@ -1,23 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cCMAR-0007sG-FI
- for barebox@lists.infradead.org; Thu, 01 Dec 2016 07:52:32 +0000
-Received: from apfel.hi.pengutronix.de ([2001:67c:670:100:feaa:14ff:fe22:341f]
- helo=apfel) by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.84_2)
- (envelope-from <uol@pengutronix.de>) id 1cCMA1-0002qo-KA
- for barebox@lists.infradead.org; Thu, 01 Dec 2016 08:52:05 +0100
-Received: from uol by apfel with local (Exim 4.84_2)
- (envelope-from <uol@pengutronix.de>) id 1cCMA1-00039r-1G
- for barebox@lists.infradead.org; Thu, 01 Dec 2016 08:52:05 +0100
-Date: Thu, 1 Dec 2016 08:52:05 +0100
-From: Ulrich =?iso-8859-1?Q?=D6lmann?= <u.oelmann@pengutronix.de>
-Message-ID: <20161201075204.xvlxdph5xhio5dxd@pengutronix.de>
-References: <f05936c6-970d-70fa-c481-db0f70b4e8b6@gmail.com>
+ id 1cCNXT-0003qT-LT
+ for barebox@lists.infradead.org; Thu, 01 Dec 2016 09:20:26 +0000
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Date: Thu,  1 Dec 2016 10:19:54 +0100
+Message-Id: <1480583994-27062-1-git-send-email-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <f05936c6-970d-70fa-c481-db0f70b4e8b6@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,17 +19,18 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: help-UBOOT2 JMP
-To: barebox@lists.infradead.org
+Subject: [PATCH] x86: update boot message "UBOOT2" to "BAREBOX"
+To: Barebox List <barebox@lists.infradead.org>
 
-SGksCgpPbiBXZWQsIE5vdiAzMCwgMjAxNiBhdCAwNjoxNjoyMlBNICswMzMwLCBpcmxpbnV4Ym94
-IHdyb3RlOgo+IGJhcmVib3ggaXMgZGlzcGxheXMg4oCcVUJPT1QyIEpNUCDigJ0gZHVyaW5nIGJv
-b3R1cCBvbiB4ODYKPiAKPiBleHBvcnQgQVJDSD14ODYKPiBtYWtlIGdlbmVyaWNfZGVmY29uZmln
-Cj4gbWFrZQo+IAo+IC4vc2NyaXB0cy9zZXR1cG1ici9zZXR1cG1iciDigJNzIDMyIOKAk20gLi9i
-YXJlYm94LmJpbiDigJNkIC9kZXYvc2RiCgpkb2luZyBhIHF1aWNrIGdyZXAgZm9yICJVQk9PVDIi
-IHBvaW50cyB0byBhcmNoL3g4Ni9ib290L2Jvb3RfaGRpc2suUyBhbmQgcm91Z2hseQpza2ltbWlu
-ZyB0aGUgY29kZSBzaG93cyB0aGF0IHRoaXMgaXMgbm9ybWFsIGJlaGF2aW91ciBub3RpZnlpbmcg
-dGhlIHVzZXIgb2YKZGlmZmVyZW50IHN0ZXBzIGluIHRoZSBib290IHByb2Nlc3MuCgpSZWdhcmRz
-ClVscmljaAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+U2lnbmVkLW9mZi1ieTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4K
+LS0tCiBhcmNoL3g4Ni9ib290L2Jvb3RfaGRpc2suUyB8IDIgKy0KIDEgZmlsZSBjaGFuZ2VkLCAx
+IGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2FyY2gveDg2L2Jvb3Qv
+Ym9vdF9oZGlzay5TIGIvYXJjaC94ODYvYm9vdC9ib290X2hkaXNrLlMKaW5kZXggMTQzMzM2ZDNi
+NDNlLi42Zjk4MTk3NTEyYTAgMTAwNjQ0Ci0tLSBhL2FyY2gveDg2L2Jvb3QvYm9vdF9oZGlzay5T
+CisrKyBiL2FyY2gveDg2L2Jvb3QvYm9vdF9oZGlzay5TCkBAIC0xNjQsNyArMTY0LDcgQEAgb3V0
+cHV0X21lc3NhZ2U6CiAKIAkuc2VjdGlvbiAuYm9vdF9kYXRhCiAKLW5vdGlmaWNhdGlvbl9zdHJp
+bmc6CS5hc2NpeiAiVUJPT1QyICIKK25vdGlmaWNhdGlvbl9zdHJpbmc6CS5hc2NpeiAiQkFSRUJP
+WCAiCiBjaHNfc3RyaW5nOgkuYXNjaXogIkNIUyAiCiBqbXBfc3RyaW5nOgkuYXNjaXogIkpNUCAi
+CiAKLS0gCjIuMS40CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
+dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
