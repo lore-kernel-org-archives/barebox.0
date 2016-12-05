@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qk0-x243.google.com ([2607:f8b0:400d:c09::243])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cC7u4-0001Ce-0G
- for barebox@lists.infradead.org; Wed, 30 Nov 2016 16:38:41 +0000
-Received: by mail-qk0-x243.google.com with SMTP id n204so22551606qke.2
- for <barebox@lists.infradead.org>; Wed, 30 Nov 2016 08:38:19 -0800 (PST)
+ id 1cDoed-0001Ql-CY
+ for barebox@lists.infradead.org; Mon, 05 Dec 2016 08:29:44 +0000
+Date: Mon, 5 Dec 2016 09:29:19 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20161205082919.vbqtltxd43jw4qvj@pengutronix.de>
+References: <1480618503-11376-1-git-send-email-akurz@blala.de>
+ <1480671998.17003.37.camel@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <1480504245-1822-3-git-send-email-d.schultz@phytec.de>
-References: <1480504245-1822-1-git-send-email-d.schultz@phytec.de>
- <1480504245-1822-3-git-send-email-d.schultz@phytec.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 30 Nov 2016 08:38:17 -0800
-Message-ID: <CAHQ1cqFWQo4E=NsxMxeFTvYWbimHx8+5UF5z=gZjP5SAHk=0dg@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1480671998.17003.37.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,71 +19,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] arm: dts: Added ocotp support for i.MX6UL
-To: Daniel Schultz <d.schultz@phytec.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] bootm: dont use internal oftree fallback by default
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org, Alexander Kurz <akurz@blala.de>
 
-On Wed, Nov 30, 2016 at 3:10 AM, Daniel Schultz <d.schultz@phytec.de> wrote:
-> Ocotp is available for the iMX6(q|sx|sl) SoCs. This patch will extend the
-> iMX6ul DT from the mainline kernel to support the ocotp driver on the
-> iMX6ul SoC.
->
-> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
-> ---
->  arch/arm/dts/imx6ul-phytec-phycore-som.dts |  1 +
->  arch/arm/dts/imx6ul.dtsi                   | 20 ++++++++++++++++++++
->  2 files changed, 21 insertions(+)
->  create mode 100644 arch/arm/dts/imx6ul.dtsi
->
-> diff --git a/arch/arm/dts/imx6ul-phytec-phycore-som.dts b/arch/arm/dts/imx6ul-phytec-phycore-som.dts
-> index be4556a..285ea62 100644
-> --- a/arch/arm/dts/imx6ul-phytec-phycore-som.dts
-> +++ b/arch/arm/dts/imx6ul-phytec-phycore-som.dts
-> @@ -13,6 +13,7 @@
->  /dts-v1/;
->
->  #include <arm/imx6ul.dtsi>
-> +#include "imx6ul.dtsi"
->
->  / {
->         model = "Phytec phyCORE-i.MX6 Ultra Lite SOM";
-> diff --git a/arch/arm/dts/imx6ul.dtsi b/arch/arm/dts/imx6ul.dtsi
-> new file mode 100644
-> index 0000000..2e02d27
-> --- /dev/null
-> +++ b/arch/arm/dts/imx6ul.dtsi
-> @@ -0,0 +1,20 @@
-> +/*
-> + * Copyright (C) 2016 PHYTEC Messtechnik GmbH
-> + * Author: Daniel Schultz <d.schultz@phytec.de>
-> + *
-> + * The code contained herein is licensed under the GNU General Public
-> + * License. You may obtain a copy of the GNU General Public License
-> + * Version 2 or later at the following locations:
-> + *
-> + * http://www.opensource.org/licenses/gpl-license.html
-> + * http://www.gnu.org/copyleft/gpl.html
-> + */
-> +
-> +&aips2 {
-> +       ocotp: ocotp-ctrl@21bc000 {
-> +               compatible = "fsl,imx6ul-ocotp";
-> +               reg = <0x021bc000 0x4000>;
-> +               clocks = <&clks IMX6UL_CLK_OCOTP>;
+On Fri, Dec 02, 2016 at 10:46:38AM +0100, Lucas Stach wrote:
+> Am Donnerstag, den 01.12.2016, 19:55 +0100 schrieb Alexander Kurz:
+> > Booting via bootm offers several methods to load oftree data. When no
+> > dedicated oftree image is provided, barebox checks for the presence of
+> > its own internal oftree, assuming it as a good choice for boot.
+> > =
 
-Just as my two cents, I'd say that all of the above (that is
-instantiation of OCOT on AIPS2) should go via Linux kernel and trickle
-down via syncing with its .dts tree (<arm/imx6ul.dtsi> in particular).
-At least that's what I had to do for OCOTP in Vybrid. Although your
-case might be more complicated since there are no bindings for
-"fsl,imx6ul-ocotp" upstream, so take this with a grain of salt
+> > This fallback method breaks the usecase when a modern OF-based barebox
+> > is used to boot a legacy ATAG dependent non OF based vendor provided ke=
+rnel
+> > (e.g. ATAGs will be switched off).
+> > Unfortunately those kernels are being still actively shipped today.
+> > =
 
-Cheers,
-Andrey
+> > Change barebox according to the principle of least surprise: when no
+> > oftree data is proactively configured, then perform a non-oftree boot.
+> > Make the fallback-use of the barebox internal oftree an opt-in feature.
+> > =
+
+> > Note: this will break boards where the boot process relied on this feat=
+ure,
+> > e.g.: oftree based barebox plus oftree based kernel without an explicit
+> > given dts. For those boards global.bootm.internal_oftree_fallback=3D1 s=
+hould
+> > be set.
+> > =
+
+> The least surprise on a modern oftree based kernel is that the firmware
+> (Barebox) provides the DT, if there isn't an explicit override.
+> =
+
+> So NACK on the patch in it's current form. If you have a board where you
+> know that the kernel doesn't play along, you may reverse this patch so
+> that you can set global.bootm.no_internal_oftree=3D1 in your board code.
+
+Ack for the NAck. And AFAIK you can already today just do
+
+	oftree -f
+
+before calling bootm to discard the internal dtb which should make
+barebox fall back to ATAG.
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
