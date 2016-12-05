@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cDug0-0005TM-GN
- for barebox@lists.infradead.org; Mon, 05 Dec 2016 14:55:35 +0000
-Received: by mail-pg0-x244.google.com with SMTP id 3so16684737pgd.0
- for <barebox@lists.infradead.org>; Mon, 05 Dec 2016 06:55:12 -0800 (PST)
+ id 1cDufx-0005Vm-0F
+ for barebox@lists.infradead.org; Mon, 05 Dec 2016 14:55:31 +0000
+Received: by mail-pg0-x241.google.com with SMTP id 3so16684773pgd.0
+ for <barebox@lists.infradead.org>; Mon, 05 Dec 2016 06:55:13 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  5 Dec 2016 06:54:33 -0800
-Message-Id: <1480949684-18520-6-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon,  5 Dec 2016 06:54:34 -0800
+Message-Id: <1480949684-18520-7-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1480949684-18520-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1480949684-18520-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,188 +23,261 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/16] i.MX: clk: Add IMX_PLLV3_SYS_VF610 subtype
+Subject: [PATCH 06/16] i.MX: vf610: Ramp CPU clock to maximum frequency
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add IMX_PLLV3_SYS_VF610 subtype to pllv3 code to be able to control and
-re-clock PLL1 and PLL2 on Vybrid SoC. This commit also introduces
-imx_clk_pllv3_locked which allows the user to create PLLv3 and specify
-how it should be polled for "locked" status (used in .set_rate callback)
+Mask ROM leaves the CPU running at 264Mhz, so configure the clock tree
+to such that CPU runs at maximum supported frequency, based on speed
+grading burned into OCOTP fusebox.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/clk/imx/clk-pllv3.c | 108 ++++++++++++++++++++++++++++++++++++++++++++
- drivers/clk/imx/clk.h       |   5 ++
- 2 files changed, 113 insertions(+)
+ arch/arm/mach-imx/Kconfig   |  13 +++
+ drivers/clk/imx/clk-vf610.c | 187 +++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 198 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-pllv3.c b/drivers/clk/imx/clk-pllv3.c
-index 29c0f1c..dd924a4 100644
---- a/drivers/clk/imx/clk-pllv3.c
-+++ b/drivers/clk/imx/clk-pllv3.c
-@@ -26,6 +26,8 @@
- #define PLL_NUM_OFFSET		0x10
- #define PLL_DENOM_OFFSET	0x20
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index af533ea..1752335 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -750,6 +750,19 @@ config HABV3_IMG_CRT_DER
  
-+#define SYS_VF610_PLL_OFFSET	0x10
-+
- #define BM_PLL_POWER		(0x1 << 12)
- #define BM_PLL_ENABLE		(0x1 << 13)
- #define BM_PLL_BYPASS		(0x1 << 16)
-@@ -38,6 +40,8 @@ struct clk_pllv3 {
- 	u32		div_mask;
- 	u32		div_shift;
- 	const char	*parent;
-+	void __iomem	*lock_reg;
-+	u32		lock_mask;
- };
+ endif
  
- #define to_clk_pllv3(_clk) container_of(_clk, struct clk_pllv3, clk)
-@@ -279,6 +283,88 @@ static const struct clk_ops clk_pllv3_mlb_ops = {
- 	.disable	= clk_pllv3_disable,
- };
++config ADJUST_CPU_CLOCK
++       bool "Adjust CPU clock based on its speed grading"
++       select IMX_OCOTP
++       depends on ARCH_VF610
++       default y
++       help
++	  Some i.MX SoCs (e. g. Vybrid) are manufactured to have
++	  several variants of the same chip different only in maxumum
++	  CPU frequency supported. MaskROM on such chips plays it safe
++	  and uses the lowest possible frequency. This option
++	  configures Barebox to read chip's speed grade information
++	  and increase CPU clock to it's highest possible value.
++
+ endmenu
  
-+static unsigned long clk_pllv3_sys_vf610_recalc_rate(struct clk *clk,
-+						     unsigned long parent_rate)
+ endif
+diff --git a/drivers/clk/imx/clk-vf610.c b/drivers/clk/imx/clk-vf610.c
+index 04cb02f..1cf2b65 100644
+--- a/drivers/clk/imx/clk-vf610.c
++++ b/drivers/clk/imx/clk-vf610.c
+@@ -16,7 +16,9 @@
+ #include <of_address.h>
+ #include <linux/clkdev.h>
+ #include <linux/clk.h>
++#include <notifier.h>
+ #include <dt-bindings/clock/vf610-clock.h>
++#include <mach/vf610-regs.h>
+ 
+ #include "clk.h"
+ 
+@@ -76,6 +78,7 @@
+ #define PLL6_CTRL		(anatop_base + 0xa0)
+ #define PLL7_CTRL		(anatop_base + 0x20)
+ #define ANA_MISC1		(anatop_base + 0x160)
++#define PLL_LOCK		(anatop_base + 0x2c0)
+ 
+ static void __iomem *anatop_base;
+ static void __iomem *ccm_base;
+@@ -188,8 +191,9 @@ static void __init vf610_clocks_init(struct device_node *ccm_node)
+ 	clk[VF610_CLK_PLL6_BYPASS_SRC] = imx_clk_mux("pll6_bypass_src", PLL6_CTRL, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
+ 	clk[VF610_CLK_PLL7_BYPASS_SRC] = imx_clk_mux("pll7_bypass_src", PLL7_CTRL, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
+ 
+-	clk[VF610_CLK_PLL1] = imx_clk_pllv3(IMX_PLLV3_GENERIC, "pll1", "pll1_bypass_src", PLL1_CTRL, 0x1);
+-	clk[VF610_CLK_PLL2] = imx_clk_pllv3(IMX_PLLV3_GENERIC, "pll2", "pll2_bypass_src", PLL2_CTRL, 0x1);
++	clk[VF610_CLK_PLL1] = imx_clk_pllv3_locked(IMX_PLLV3_SYS_VF610, "pll1", "pll1_bypass_src", PLL1_CTRL, 0x1, PLL_LOCK, BIT(6));
++	clk[VF610_CLK_PLL2] = imx_clk_pllv3_locked(IMX_PLLV3_SYS_VF610, "pll2", "pll2_bypass_src", PLL2_CTRL, 0x1, PLL_LOCK, BIT(5));
++
+ 	clk[VF610_CLK_PLL3] = imx_clk_pllv3(IMX_PLLV3_USB_VF610,     "pll3", "pll3_bypass_src", PLL3_CTRL, 0x2);
+ 	clk[VF610_CLK_PLL4] = imx_clk_pllv3(IMX_PLLV3_AV,      "pll4", "pll4_bypass_src", PLL4_CTRL, 0x7f);
+ 	clk[VF610_CLK_PLL5] = imx_clk_pllv3(IMX_PLLV3_ENET,    "pll5", "pll5_bypass_src", PLL5_CTRL, 0x3);
+@@ -441,3 +445,182 @@ static void __init vf610_clocks_init(struct device_node *ccm_node)
+ 	of_clk_add_provider(np, of_clk_src_onecell_get, &clk_data);
+ }
+ CLK_OF_DECLARE(vf610, "fsl,vf610-ccm", vf610_clocks_init);
++
++#ifdef CONFIG_ADJUST_CPU_CLOCK
++
++enum {
++	OCOTP_SPEED_GRADING_OFFSET = (0x4 * sizeof(uint32_t)),
++	OCOTP_SPEED_GRADING_SHIFT  = 18,
++	OCOTP_SPEED_GRADING_MASK   = 0b1111,
++
++	VF610_SPEED_500 = 0b1110,
++	VF610_SPEED_400 = 0b1001,
++	VF610_SPEED_266 = 0b0001,
++
++	DDRMC_CR117 = 0x01d4,
++	DDRMC_CR117_AXI0_FITYPEREG_SYNC = 0b01 << 16,
++};
++
++static int vf610_switch_cpu_clock_to_500mhz(void)
 +{
-+	struct clk_pllv3 *pll = to_clk_pllv3(clk);
++	int ret;
 +
-+	u32 mfn = readl(pll->base + SYS_VF610_PLL_OFFSET + PLL_NUM_OFFSET);
-+	u32 mfd = readl(pll->base + SYS_VF610_PLL_OFFSET + PLL_DENOM_OFFSET);
-+	u32 div = (readl(pll->base) & pll->div_mask) ? 22 : 20;
++	/*
++	 * When switching A5 CPU to 500Mhz we expect DDRC to be
++	 * clocked by PLL2_PFD2 and the system to be configured in
++	 * asynchronous mode.
++	 *
++	 * We also can't just use default PFD1 output of PLL1 due to
++	 * Errata e6235, so we have to re-clock the PLL itself and use
++	 * its output to clock the CPU directly.
++	 */
 +
-+	return (parent_rate * div) + ((parent_rate / mfd) * mfn);
-+}
-+
-+static long clk_pllv3_sys_vf610_round_rate(struct clk *clk, unsigned long rate,
-+					   unsigned long *prate)
-+{
-+	unsigned long parent_rate = *prate;
-+	unsigned long min_rate = parent_rate * 20;
-+	unsigned long max_rate = 528000000;
-+	u32 mfn, mfd = 1000000;
-+	u64 temp64;
-+
-+	if (rate >= max_rate)
-+		return max_rate;
-+	else if (rate < min_rate)
-+		rate = min_rate;
-+
-+	temp64 = (u64) (rate - 20 * parent_rate);
-+	temp64 *= mfd;
-+	do_div(temp64, parent_rate);
-+	mfn = temp64;
-+
-+	return parent_rate * 20 + parent_rate / mfd * mfn;
-+}
-+
-+static int clk_pllv3_sys_vf610_set_rate(struct clk *clk, unsigned long rate,
-+					unsigned long parent_rate)
-+{
-+	struct clk_pllv3 *pll = to_clk_pllv3(clk);
-+	unsigned long min_rate = parent_rate * 20;
-+	unsigned long max_rate = 528000000;
-+	u32 val;
-+	u32 mfn, mfd = 1000000;
-+	u64 temp64;
-+
-+	if (rate < min_rate || rate > max_rate)
++	if (clk_get_parent(clk[VF610_CLK_DDR_SEL]) != clk[VF610_CLK_PLL2_PFD2]) {
++		pr_warn("DDRC is clocked by PLL1, can't switch CPU clock");
 +		return -EINVAL;
-+
-+	val = readl(pll->base);
-+
-+	if (rate == max_rate) {
-+		writel(0, pll->base + SYS_VF610_PLL_OFFSET + PLL_NUM_OFFSET);
-+		val |= pll->div_mask;
-+		writel(val, pll->base);
-+
-+		return 0;
-+	} else {
-+		val &= ~pll->div_mask;
 +	}
 +
-+	temp64 = (u64) (rate - 20 * parent_rate);
-+	temp64 *= mfd;
-+	do_div(temp64, parent_rate);
-+	mfn = temp64;
++	ret = clk_set_parent(clk[VF610_CLK_SYS_SEL], clk[VF610_CLK_PLL2_BUS]);
++	if (ret < 0) {
++		pr_crit("Unable to re-parent '%s'\n",
++			clk[VF610_CLK_SYS_SEL]->name);
++		return ret;
++	}
 +
-+	writel(val, pll->base);
-+	writel(mfn, pll->base + SYS_VF610_PLL_OFFSET + PLL_NUM_OFFSET);
-+	writel(mfd, pll->base + SYS_VF610_PLL_OFFSET + PLL_DENOM_OFFSET);
++	ret = clk_set_rate(clk[VF610_CLK_PLL1], 500000000);
++	if (ret < 0) {
++		pr_crit("Unable to set %s to 500Mhz %d\n",
++			clk[VF610_CLK_PLL1]->name, ret);
++		return ret;
++	}
 +
-+	while (!(readl(pll->lock_reg) & pll->lock_mask))
-+		;
++	ret = clk_set_parent(clk[VF610_CLK_PLL1_PFD_SEL], clk[VF610_CLK_PLL1_SYS]);
++	if (ret < 0) {
++		pr_crit("Unable to re-parent '%s'\n",
++			clk[VF610_CLK_PLL1_PFD_SEL]->name);
++		return ret;
++	}
++
++	ret = clk_set_parent(clk[VF610_CLK_SYS_SEL], clk[VF610_CLK_PLL1_PFD_SEL]);
++	if (ret < 0) {
++		pr_crit("Unable to re-parent '%s'\n",
++			clk[VF610_CLK_SYS_SEL]->name);
++		return ret;
++	}
++
++	/*
++	 * imx_clk_divider has no error path in its set_rate hook
++	 */
++	clk_set_rate(clk[VF610_CLK_SYS_BUS], clk_get_rate(clk[VF610_CLK_SYS_SEL]));
++	clk_set_rate(clk[VF610_CLK_PLATFORM_BUS], clk_get_rate(clk[VF610_CLK_SYS_BUS]) / 3);
++
++	return ret;
++}
++
++static int vf610_switch_cpu_clock_to_400mhz(void)
++{
++	int ret;
++	uint32_t cr117;
++	void * __iomem ddrmc = IOMEM(VF610_DDR_BASE_ADDR);
++
++	if (clk_get_parent(clk[VF610_CLK_DDR_SEL]) != clk[VF610_CLK_PLL2_PFD2]) {
++		pr_warn("DDRC is clocked by PLL1, can't switch CPU clock");
++		return -EINVAL;
++	}
++
++	ret = clk_set_parent(clk[VF610_CLK_PLL2_PFD_SEL], clk[VF610_CLK_PLL2_PFD2]);
++	if (ret < 0) {
++		pr_crit("Unable to re-parent '%s'\n",
++			clk[VF610_CLK_PLL2_PFD_SEL]->name);
++		return ret;
++	}
++
++	ret = clk_set_parent(clk[VF610_CLK_SYS_SEL], clk[VF610_CLK_PLL2_PFD_SEL]);
++	if (ret < 0) {
++		pr_crit("Unable to re-parent '%s'\n",
++			clk[VF610_CLK_SYS_SEL]->name);
++		return ret;
++	}
++
++	/*
++	 * imx_clk_divider has no error path in its set_rate hook
++	 */
++	clk_set_rate(clk[VF610_CLK_SYS_BUS], clk_get_rate(clk[VF610_CLK_SYS_SEL]));
++	clk_set_rate(clk[VF610_CLK_PLATFORM_BUS], clk_get_rate(clk[VF610_CLK_SYS_BUS]) / 3);
++
++	/*
++	 * Now that we are running off of the same clock as DDRMC we
++	 * shouldn't need to use clock domain corssing FIFO and
++	 * asynchronous mode and instead can swithch to sychronous
++	 * mode for AXI0 accesses
++	 */
++	cr117 =  readl(ddrmc + DDRMC_CR117);
++	cr117 |= DDRMC_CR117_AXI0_FITYPEREG_SYNC;
++	writel(cr117, ddrmc + DDRMC_CR117);
 +
 +	return 0;
 +}
 +
-+static const struct clk_ops clk_pllv3_sys_vf610_ops = {
-+	.enable		= clk_pllv3_enable,
-+	.disable	= clk_pllv3_disable,
-+	.recalc_rate	= clk_pllv3_sys_vf610_recalc_rate,
-+	.round_rate	= clk_pllv3_sys_vf610_round_rate,
-+	.set_rate	= clk_pllv3_sys_vf610_set_rate,
-+};
-+
- struct clk *imx_clk_pllv3(enum imx_pllv3_type type, const char *name,
- 			  const char *parent, void __iomem *base,
- 			  u32 div_mask)
-@@ -290,6 +376,9 @@ struct clk *imx_clk_pllv3(enum imx_pllv3_type type, const char *name,
- 	pll = xzalloc(sizeof(*pll));
- 
- 	switch (type) {
-+	case IMX_PLLV3_SYS_VF610:
-+		ops = &clk_pllv3_sys_vf610_ops;
-+		break;
- 	case IMX_PLLV3_SYS:
- 		ops = &clk_pllv3_sys_ops;
- 		break;
-@@ -327,3 +416,22 @@ struct clk *imx_clk_pllv3(enum imx_pllv3_type type, const char *name,
- 
- 	return &pll->clk;
- }
-+
-+struct clk *imx_clk_pllv3_locked(enum imx_pllv3_type type, const char *name,
-+				 const char *parent, void __iomem *base,
-+				 u32 div_mask, void __iomem *lock_reg, u32 lock_mask)
++static int vf610_switch_cpu_clock(void)
 +{
-+	struct clk *clk;
-+	struct clk_pllv3 *pll;
++	int ret;
++	struct device_node *ocotp_node;
++	struct cdev *ocotp;
++	uint32_t speed_grading;
 +
-+	clk = imx_clk_pllv3(type, name, parent, base, div_mask);
-+	if (IS_ERR(clk))
-+		return clk;
++	if (!of_machine_is_compatible("fsl,vf610"))
++		return 0;
 +
-+	pll = to_clk_pllv3(clk);
++	ocotp_node = of_find_compatible_node(NULL, NULL, "fsl,vf610-ocotp");
++	if (!ocotp_node) {
++		pr_err("Unable to find OCOTP DT node\n");
++		return -ENODEV;
++	}
 +
-+	pll->lock_reg  = lock_reg;
-+	pll->lock_mask = lock_mask;
++	ocotp = cdev_by_device_node(ocotp_node);
++	if (!ocotp) {
++		pr_err("No OCOTP character device\n");
++		return -ENODEV;
++	}
 +
-+	return clk;
++	ret = cdev_read(ocotp, &speed_grading, sizeof(speed_grading),
++		       OCOTP_SPEED_GRADING_OFFSET, 0);
++	if (ret != sizeof(speed_grading)) {
++		pr_err("Failed to read speed grading data\n");
++		return ret < 0 ? ret : -EIO;
++	}
++
++	speed_grading >>= OCOTP_SPEED_GRADING_SHIFT;
++	speed_grading &=  OCOTP_SPEED_GRADING_MASK;
++
++	switch (speed_grading) {
++	default:
++		pr_err("Unknown CPU speed grading %x\n", speed_grading);
++		return -EINVAL;
++
++	case VF610_SPEED_266:
++		return 0;
++
++	case VF610_SPEED_500:
++		ret = vf610_switch_cpu_clock_to_500mhz();
++		break;
++
++	case VF610_SPEED_400:
++		ret = vf610_switch_cpu_clock_to_400mhz();
++		break;
++	}
++
++	clock_notifier_call_chain();
++	return ret;
 +}
-diff --git a/drivers/clk/imx/clk.h b/drivers/clk/imx/clk.h
-index 970f65c..0b28fb2 100644
---- a/drivers/clk/imx/clk.h
-+++ b/drivers/clk/imx/clk.h
-@@ -78,6 +78,7 @@ struct clk *imx_clk_pllv2(const char *name, const char *parent,
- enum imx_pllv3_type {
- 	IMX_PLLV3_GENERIC,
- 	IMX_PLLV3_SYS,
-+	IMX_PLLV3_SYS_VF610,
- 	IMX_PLLV3_USB,
- 	IMX_PLLV3_USB_VF610,
- 	IMX_PLLV3_AV,
-@@ -89,6 +90,10 @@ struct clk *imx_clk_pllv3(enum imx_pllv3_type type, const char *name,
- 			  const char *parent, void __iomem *base,
- 			  u32 div_mask);
- 
-+struct clk *imx_clk_pllv3_locked(enum imx_pllv3_type type, const char *name,
-+				 const char *parent, void __iomem *base,
-+				 u32 div_mask, void __iomem *lock_reg, u32 lock_mask);
++/*
++ * We can probably gain a bit of a boot speed if we switch CPU clock
++ * earlier, but if we do this we'd need to figure out a way how to
++ * re-adjust the baud rate settings of the UART for DEBUG_LL
++ * functionality, or, accept the fact that it will be unavailbe after
++ * this hook is executed. Both are far from ideal, so a bit slower
++ * boot it is.
++ */
++postconsole_initcall(vf610_switch_cpu_clock);
 +
- struct clk *imx_clk_pfd(const char *name, const char *parent,
- 			void __iomem *reg, u8 idx);
- 
++#endif
 -- 
 2.5.5
 
