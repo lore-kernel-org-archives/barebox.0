@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
+Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cDufx-0005Vm-0F
- for barebox@lists.infradead.org; Mon, 05 Dec 2016 14:55:31 +0000
-Received: by mail-pg0-x241.google.com with SMTP id 3so16684773pgd.0
- for <barebox@lists.infradead.org>; Mon, 05 Dec 2016 06:55:13 -0800 (PST)
+ id 1cDug2-0005bf-Ge
+ for barebox@lists.infradead.org; Mon, 05 Dec 2016 14:55:36 +0000
+Received: by mail-pg0-x243.google.com with SMTP id p66so16675386pga.2
+ for <barebox@lists.infradead.org>; Mon, 05 Dec 2016 06:55:15 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  5 Dec 2016 06:54:34 -0800
-Message-Id: <1480949684-18520-7-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon,  5 Dec 2016 06:54:37 -0800
+Message-Id: <1480949684-18520-10-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1480949684-18520-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1480949684-18520-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,261 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/16] i.MX: vf610: Ramp CPU clock to maximum frequency
+Subject: [PATCH 09/16] i.MX: iomuxv3: Add low-level pad configuration routine
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Mask ROM leaves the CPU running at 264Mhz, so configure the clock tree
-to such that CPU runs at maximum supported frequency, based on speed
-grading burned into OCOTP fusebox.
+Add low-level pad configuration routine that can be used by early boot
+code as well as leveraged by pinmux driver.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/Kconfig   |  13 +++
- drivers/clk/imx/clk-vf610.c | 187 +++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 198 insertions(+), 2 deletions(-)
+ arch/arm/mach-imx/include/mach/iomux-v3.h | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index af533ea..1752335 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -750,6 +750,19 @@ config HABV3_IMG_CRT_DER
- 
- endif
- 
-+config ADJUST_CPU_CLOCK
-+       bool "Adjust CPU clock based on its speed grading"
-+       select IMX_OCOTP
-+       depends on ARCH_VF610
-+       default y
-+       help
-+	  Some i.MX SoCs (e. g. Vybrid) are manufactured to have
-+	  several variants of the same chip different only in maxumum
-+	  CPU frequency supported. MaskROM on such chips plays it safe
-+	  and uses the lowest possible frequency. This option
-+	  configures Barebox to read chip's speed grade information
-+	  and increase CPU clock to it's highest possible value.
-+
- endmenu
- 
- endif
-diff --git a/drivers/clk/imx/clk-vf610.c b/drivers/clk/imx/clk-vf610.c
-index 04cb02f..1cf2b65 100644
---- a/drivers/clk/imx/clk-vf610.c
-+++ b/drivers/clk/imx/clk-vf610.c
-@@ -16,7 +16,9 @@
- #include <of_address.h>
- #include <linux/clkdev.h>
- #include <linux/clk.h>
-+#include <notifier.h>
- #include <dt-bindings/clock/vf610-clock.h>
-+#include <mach/vf610-regs.h>
- 
- #include "clk.h"
- 
-@@ -76,6 +78,7 @@
- #define PLL6_CTRL		(anatop_base + 0xa0)
- #define PLL7_CTRL		(anatop_base + 0x20)
- #define ANA_MISC1		(anatop_base + 0x160)
-+#define PLL_LOCK		(anatop_base + 0x2c0)
- 
- static void __iomem *anatop_base;
- static void __iomem *ccm_base;
-@@ -188,8 +191,9 @@ static void __init vf610_clocks_init(struct device_node *ccm_node)
- 	clk[VF610_CLK_PLL6_BYPASS_SRC] = imx_clk_mux("pll6_bypass_src", PLL6_CTRL, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
- 	clk[VF610_CLK_PLL7_BYPASS_SRC] = imx_clk_mux("pll7_bypass_src", PLL7_CTRL, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
- 
--	clk[VF610_CLK_PLL1] = imx_clk_pllv3(IMX_PLLV3_GENERIC, "pll1", "pll1_bypass_src", PLL1_CTRL, 0x1);
--	clk[VF610_CLK_PLL2] = imx_clk_pllv3(IMX_PLLV3_GENERIC, "pll2", "pll2_bypass_src", PLL2_CTRL, 0x1);
-+	clk[VF610_CLK_PLL1] = imx_clk_pllv3_locked(IMX_PLLV3_SYS_VF610, "pll1", "pll1_bypass_src", PLL1_CTRL, 0x1, PLL_LOCK, BIT(6));
-+	clk[VF610_CLK_PLL2] = imx_clk_pllv3_locked(IMX_PLLV3_SYS_VF610, "pll2", "pll2_bypass_src", PLL2_CTRL, 0x1, PLL_LOCK, BIT(5));
-+
- 	clk[VF610_CLK_PLL3] = imx_clk_pllv3(IMX_PLLV3_USB_VF610,     "pll3", "pll3_bypass_src", PLL3_CTRL, 0x2);
- 	clk[VF610_CLK_PLL4] = imx_clk_pllv3(IMX_PLLV3_AV,      "pll4", "pll4_bypass_src", PLL4_CTRL, 0x7f);
- 	clk[VF610_CLK_PLL5] = imx_clk_pllv3(IMX_PLLV3_ENET,    "pll5", "pll5_bypass_src", PLL5_CTRL, 0x3);
-@@ -441,3 +445,182 @@ static void __init vf610_clocks_init(struct device_node *ccm_node)
- 	of_clk_add_provider(np, of_clk_src_onecell_get, &clk_data);
+diff --git a/arch/arm/mach-imx/include/mach/iomux-v3.h b/arch/arm/mach-imx/include/mach/iomux-v3.h
+index 470f774..0205ec7 100644
+--- a/arch/arm/mach-imx/include/mach/iomux-v3.h
++++ b/arch/arm/mach-imx/include/mach/iomux-v3.h
+@@ -147,6 +147,23 @@ static inline void iomux_v3_setup_pad(void __iomem *iomux, unsigned int flags,
+ 		writel(input_val, iomux + input_reg);
  }
- CLK_OF_DECLARE(vf610, "fsl,vf610-ccm", vf610_clocks_init);
-+
-+#ifdef CONFIG_ADJUST_CPU_CLOCK
-+
-+enum {
-+	OCOTP_SPEED_GRADING_OFFSET = (0x4 * sizeof(uint32_t)),
-+	OCOTP_SPEED_GRADING_SHIFT  = 18,
-+	OCOTP_SPEED_GRADING_MASK   = 0b1111,
-+
-+	VF610_SPEED_500 = 0b1110,
-+	VF610_SPEED_400 = 0b1001,
-+	VF610_SPEED_266 = 0b0001,
-+
-+	DDRMC_CR117 = 0x01d4,
-+	DDRMC_CR117_AXI0_FITYPEREG_SYNC = 0b01 << 16,
-+};
-+
-+static int vf610_switch_cpu_clock_to_500mhz(void)
+ 
++static inline void imx_setup_pad(void __iomem *iomux, iomux_v3_cfg_t __pad)
 +{
-+	int ret;
++	union iomux_v3_pad pad = { .raw = __pad };
++	uint32_t pad_ctrl;
 +
-+	/*
-+	 * When switching A5 CPU to 500Mhz we expect DDRC to be
-+	 * clocked by PLL2_PFD2 and the system to be configured in
-+	 * asynchronous mode.
-+	 *
-+	 * We also can't just use default PFD1 output of PLL1 due to
-+	 * Errata e6235, so we have to re-clock the PLL itself and use
-+	 * its output to clock the CPU directly.
-+	 */
++	pad_ctrl = (pad.cfg.pad_ctrl & NO_PAD_CTRL) ? 0 : pad.cfg.pad_ctrl,
 +
-+	if (clk_get_parent(clk[VF610_CLK_DDR_SEL]) != clk[VF610_CLK_PLL2_PFD2]) {
-+		pr_warn("DDRC is clocked by PLL1, can't switch CPU clock");
-+		return -EINVAL;
-+	}
-+
-+	ret = clk_set_parent(clk[VF610_CLK_SYS_SEL], clk[VF610_CLK_PLL2_BUS]);
-+	if (ret < 0) {
-+		pr_crit("Unable to re-parent '%s'\n",
-+			clk[VF610_CLK_SYS_SEL]->name);
-+		return ret;
-+	}
-+
-+	ret = clk_set_rate(clk[VF610_CLK_PLL1], 500000000);
-+	if (ret < 0) {
-+		pr_crit("Unable to set %s to 500Mhz %d\n",
-+			clk[VF610_CLK_PLL1]->name, ret);
-+		return ret;
-+	}
-+
-+	ret = clk_set_parent(clk[VF610_CLK_PLL1_PFD_SEL], clk[VF610_CLK_PLL1_SYS]);
-+	if (ret < 0) {
-+		pr_crit("Unable to re-parent '%s'\n",
-+			clk[VF610_CLK_PLL1_PFD_SEL]->name);
-+		return ret;
-+	}
-+
-+	ret = clk_set_parent(clk[VF610_CLK_SYS_SEL], clk[VF610_CLK_PLL1_PFD_SEL]);
-+	if (ret < 0) {
-+		pr_crit("Unable to re-parent '%s'\n",
-+			clk[VF610_CLK_SYS_SEL]->name);
-+		return ret;
-+	}
-+
-+	/*
-+	 * imx_clk_divider has no error path in its set_rate hook
-+	 */
-+	clk_set_rate(clk[VF610_CLK_SYS_BUS], clk_get_rate(clk[VF610_CLK_SYS_SEL]));
-+	clk_set_rate(clk[VF610_CLK_PLATFORM_BUS], clk_get_rate(clk[VF610_CLK_SYS_BUS]) / 3);
-+
-+	return ret;
++	iomux_v3_setup_pad(iomux, 0,
++			   pad.cfg.mux_ctrl_ofs,
++			   pad.cfg.pad_ctrl_ofs,
++			   pad.cfg.sel_input_ofs,
++			   pad.cfg.mux_mode,
++			   pad_ctrl,
++			   pad.cfg.sel_inp);
 +}
 +
-+static int vf610_switch_cpu_clock_to_400mhz(void)
-+{
-+	int ret;
-+	uint32_t cr117;
-+	void * __iomem ddrmc = IOMEM(VF610_DDR_BASE_ADDR);
 +
-+	if (clk_get_parent(clk[VF610_CLK_DDR_SEL]) != clk[VF610_CLK_PLL2_PFD2]) {
-+		pr_warn("DDRC is clocked by PLL1, can't switch CPU clock");
-+		return -EINVAL;
-+	}
-+
-+	ret = clk_set_parent(clk[VF610_CLK_PLL2_PFD_SEL], clk[VF610_CLK_PLL2_PFD2]);
-+	if (ret < 0) {
-+		pr_crit("Unable to re-parent '%s'\n",
-+			clk[VF610_CLK_PLL2_PFD_SEL]->name);
-+		return ret;
-+	}
-+
-+	ret = clk_set_parent(clk[VF610_CLK_SYS_SEL], clk[VF610_CLK_PLL2_PFD_SEL]);
-+	if (ret < 0) {
-+		pr_crit("Unable to re-parent '%s'\n",
-+			clk[VF610_CLK_SYS_SEL]->name);
-+		return ret;
-+	}
-+
-+	/*
-+	 * imx_clk_divider has no error path in its set_rate hook
-+	 */
-+	clk_set_rate(clk[VF610_CLK_SYS_BUS], clk_get_rate(clk[VF610_CLK_SYS_SEL]));
-+	clk_set_rate(clk[VF610_CLK_PLATFORM_BUS], clk_get_rate(clk[VF610_CLK_SYS_BUS]) / 3);
-+
-+	/*
-+	 * Now that we are running off of the same clock as DDRMC we
-+	 * shouldn't need to use clock domain corssing FIFO and
-+	 * asynchronous mode and instead can swithch to sychronous
-+	 * mode for AXI0 accesses
-+	 */
-+	cr117 =  readl(ddrmc + DDRMC_CR117);
-+	cr117 |= DDRMC_CR117_AXI0_FITYPEREG_SYNC;
-+	writel(cr117, ddrmc + DDRMC_CR117);
-+
-+	return 0;
-+}
-+
-+static int vf610_switch_cpu_clock(void)
-+{
-+	int ret;
-+	struct device_node *ocotp_node;
-+	struct cdev *ocotp;
-+	uint32_t speed_grading;
-+
-+	if (!of_machine_is_compatible("fsl,vf610"))
-+		return 0;
-+
-+	ocotp_node = of_find_compatible_node(NULL, NULL, "fsl,vf610-ocotp");
-+	if (!ocotp_node) {
-+		pr_err("Unable to find OCOTP DT node\n");
-+		return -ENODEV;
-+	}
-+
-+	ocotp = cdev_by_device_node(ocotp_node);
-+	if (!ocotp) {
-+		pr_err("No OCOTP character device\n");
-+		return -ENODEV;
-+	}
-+
-+	ret = cdev_read(ocotp, &speed_grading, sizeof(speed_grading),
-+		       OCOTP_SPEED_GRADING_OFFSET, 0);
-+	if (ret != sizeof(speed_grading)) {
-+		pr_err("Failed to read speed grading data\n");
-+		return ret < 0 ? ret : -EIO;
-+	}
-+
-+	speed_grading >>= OCOTP_SPEED_GRADING_SHIFT;
-+	speed_grading &=  OCOTP_SPEED_GRADING_MASK;
-+
-+	switch (speed_grading) {
-+	default:
-+		pr_err("Unknown CPU speed grading %x\n", speed_grading);
-+		return -EINVAL;
-+
-+	case VF610_SPEED_266:
-+		return 0;
-+
-+	case VF610_SPEED_500:
-+		ret = vf610_switch_cpu_clock_to_500mhz();
-+		break;
-+
-+	case VF610_SPEED_400:
-+		ret = vf610_switch_cpu_clock_to_400mhz();
-+		break;
-+	}
-+
-+	clock_notifier_call_chain();
-+	return ret;
-+}
-+/*
-+ * We can probably gain a bit of a boot speed if we switch CPU clock
-+ * earlier, but if we do this we'd need to figure out a way how to
-+ * re-adjust the baud rate settings of the UART for DEBUG_LL
-+ * functionality, or, accept the fact that it will be unavailbe after
-+ * this hook is executed. Both are far from ideal, so a bit slower
-+ * boot it is.
-+ */
-+postconsole_initcall(vf610_switch_cpu_clock);
-+
-+#endif
+ 
+ /*
+  * setups a single pad in the iomuxer
 -- 
 2.5.5
 
