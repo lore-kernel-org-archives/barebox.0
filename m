@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wj0-x242.google.com ([2a00:1450:400c:c01::242])
+Received: from mail-wj0-x244.google.com ([2a00:1450:400c:c01::244])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cDplp-00026q-Oo
- for barebox@lists.infradead.org; Mon, 05 Dec 2016 09:41:17 +0000
-Received: by mail-wj0-x242.google.com with SMTP id kp2so38280515wjc.0
- for <barebox@lists.infradead.org>; Mon, 05 Dec 2016 01:40:54 -0800 (PST)
+ id 1cDplt-00029n-Ui
+ for barebox@lists.infradead.org; Mon, 05 Dec 2016 09:41:26 +0000
+Received: by mail-wj0-x244.google.com with SMTP id j10so10882793wjb.3
+ for <barebox@lists.infradead.org>; Mon, 05 Dec 2016 01:40:57 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  5 Dec 2016 12:40:27 +0300
-Message-Id: <20161205094033.31569-3-antonynpavlov@gmail.com>
+Date: Mon,  5 Dec 2016 12:40:30 +0300
+Message-Id: <20161205094033.31569-6-antonynpavlov@gmail.com>
 In-Reply-To: <20161205094033.31569-1-antonynpavlov@gmail.com>
 References: <20161205094033.31569-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,92 +23,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v2 2/8] MIPS: c-r4k: add support for secondary cache
+Subject: [RFC v2 5/8] filetype: add ELF type
 To: barebox@lists.infradead.org
-Cc: Peter Mamonov <pmamonov@gmail.com>
 
-From: Peter Mamonov <pmamonov@gmail.com>
-
-Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/include/asm/cacheops.h | 10 ++++++++++
- arch/mips/lib/c-r4k.c            | 19 +++++++++++++------
- 2 files changed, 23 insertions(+), 6 deletions(-)
+ common/filetype.c  | 5 +++++
+ include/filetype.h | 1 +
+ 2 files changed, 6 insertions(+)
 
-diff --git a/arch/mips/include/asm/cacheops.h b/arch/mips/include/asm/cacheops.h
-index 3bc5852..104e9d0 100644
---- a/arch/mips/include/asm/cacheops.h
-+++ b/arch/mips/include/asm/cacheops.h
-@@ -33,4 +33,14 @@
- #define Hit_Invalidate_D		(Cache_D | Hit_Invalidate)
- #define Hit_Writeback_Inv_D		(Cache_D | Hit_Writeback_Inv)
+diff --git a/common/filetype.c b/common/filetype.c
+index 8d72933..f204638 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -25,6 +25,7 @@
+ #include <errno.h>
+ #include <envfs.h>
+ #include <disks.h>
++#include <elf.h>
  
-+/*
-+ * R4000SC and R4400SC-specific cacheops
-+ */
-+#define Cache_SD			0x03
+ struct filetype_str {
+ 	const char *name;	/* human readable filetype */
+@@ -63,6 +64,7 @@ static const struct filetype_str filetype_str[] = {
+ 	[filetype_exe] = { "MS-DOS executable", "exe" },
+ 	[filetype_mxs_bootstream] = { "Freescale MXS bootstream", "mxsbs" },
+ 	[filetype_socfpga_xload] = { "SoCFPGA prebootloader image", "socfpga-xload" },
++	[filetype_elf] = { "ELF", "elf" },
+ };
+ 
+ const char *file_type_to_string(enum filetype f)
+@@ -327,6 +329,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+ 		buf[7] == 0x47530000)
+ 		return filetype_ch_image_be;
+ 
++	if (strncmp(buf8, ELFMAG, 4) == 0)
++		return filetype_elf;
 +
-+#define Index_Writeback_Inv_SD		(Cache_SD | Index_Writeback_Inv)
-+#define Index_Store_Tag_SD		(Cache_SD | Index_Store_Tag)
-+#define Hit_Invalidate_SD		(Cache_SD | Hit_Invalidate)
-+#define Hit_Writeback_Inv_SD		(Cache_SD | Hit_Writeback_Inv)
-+
- #endif	/* __ASM_CACHEOPS_H */
-diff --git a/arch/mips/lib/c-r4k.c b/arch/mips/lib/c-r4k.c
-index 1502058..c70a665 100644
---- a/arch/mips/lib/c-r4k.c
-+++ b/arch/mips/lib/c-r4k.c
-@@ -46,7 +46,9 @@ static inline void blast_##pfx##cache##_range(unsigned long start,	\
+ 	return filetype_unknown;
  }
  
- __BUILD_BLAST_CACHE_RANGE(d, dcache, Hit_Writeback_Inv_D)
-+__BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD)
- __BUILD_BLAST_CACHE_RANGE(inv_d, dcache, Hit_Invalidate_D)
-+__BUILD_BLAST_CACHE_RANGE(inv_s, scache, Hit_Invalidate_SD)
+diff --git a/include/filetype.h b/include/filetype.h
+index 65bd6ef..6fd2721 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -38,6 +38,7 @@ enum filetype {
+ 	filetype_xz_compressed,
+ 	filetype_mxs_bootstream,
+ 	filetype_socfpga_xload,
++	filetype_elf,
+ 	filetype_max,
+ };
  
- void flush_cache_all(void)
- {
-@@ -54,7 +56,7 @@ void flush_cache_all(void)
- 	unsigned long lsize;
- 	unsigned long addr;
- 	unsigned long aend;
--	unsigned int icache_size, dcache_size;
-+	unsigned int icache_size, dcache_size, scache_size;
- 
- 	dcache_size = c->dcache.waysize * c->dcache.ways;
- 	lsize = c->dcache.linesz;
-@@ -68,21 +70,26 @@ void flush_cache_all(void)
- 	for (addr = KSEG0; addr <= aend; addr += lsize)
- 		cache_op(Index_Invalidate_I, addr);
- 
--	/* secondatory cache skipped */
-+	if (c->scache.flags & MIPS_CACHE_NOT_PRESENT)
-+		return;
-+
-+	scache_size = c->scache.waysize * c->scache.ways;
-+	lsize = c->scache.linesz;
-+	aend = (KSEG0 + scache_size - 1) & ~(lsize - 1);
-+	for (addr = KSEG0; addr <= aend; addr += lsize)
-+		cache_op(Index_Writeback_Inv_SD, addr);
- }
- 
- void dma_flush_range(unsigned long start, unsigned long end)
- {
- 	blast_dcache_range(start, end);
--
--	/* secondatory cache skipped */
-+	blast_scache_range(start, end);
- }
- 
- void dma_inv_range(unsigned long start, unsigned long end)
- {
- 	blast_inv_dcache_range(start, end);
--
--	/* secondatory cache skipped */
-+	blast_inv_scache_range(start, end);
- }
- 
- void r4k_cache_init(void);
 -- 
 2.10.2
 
