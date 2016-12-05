@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cDufy-0005N0-Ky
- for barebox@lists.infradead.org; Mon, 05 Dec 2016 14:55:31 +0000
-Received: by mail-pg0-x243.google.com with SMTP id p66so16675176pga.2
- for <barebox@lists.infradead.org>; Mon, 05 Dec 2016 06:55:09 -0800 (PST)
+ id 1cDug0-0005Ww-GP
+ for barebox@lists.infradead.org; Mon, 05 Dec 2016 14:55:34 +0000
+Received: by mail-pg0-x244.google.com with SMTP id x23so16673219pgx.3
+ for <barebox@lists.infradead.org>; Mon, 05 Dec 2016 06:55:13 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  5 Dec 2016 06:54:29 -0800
-Message-Id: <1480949684-18520-2-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon,  5 Dec 2016 06:54:35 -0800
+Message-Id: <1480949684-18520-8-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1480949684-18520-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1480949684-18520-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,33 +23,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/16] i.MX: esdhc: Enable host->clk during initialization
+Subject: [PATCH 07/16] i.MX: iomuxv3: Add low-level pad code to headers
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Add a basic low-level pad configuration function that can be used to
+implement early boot pin configuration code as well as shared with
+various iomuxv3 and vf610 drivers.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mci/imx-esdhc.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm/mach-imx/include/mach/iomux-v3.h | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index d72e3f8..40a086b 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -631,6 +631,13 @@ static int fsl_esdhc_probe(struct device_d *dev)
- 	if (IS_ERR(host->clk))
- 		return PTR_ERR(host->clk);
+diff --git a/arch/arm/mach-imx/include/mach/iomux-v3.h b/arch/arm/mach-imx/include/mach/iomux-v3.h
+index b8cc9af..3bf457f 100644
+--- a/arch/arm/mach-imx/include/mach/iomux-v3.h
++++ b/arch/arm/mach-imx/include/mach/iomux-v3.h
+@@ -16,6 +16,8 @@
+ #ifndef __MACH_IOMUX_V3_H__
+ #define __MACH_IOMUX_V3_H__
  
-+	ret = clk_enable(host->clk);
-+	if (ret) {
-+		dev_err(dev, "Failed to enable clock: %s\n",
-+			strerror(ret));
-+		return ret;
++#include <io.h>
++
+ /*
+  *	build IOMUX_PAD structure
+  *
+@@ -104,6 +106,32 @@ typedef u64 iomux_v3_cfg_t;
+ 
+ #define IOMUX_CONFIG_SION		(0x1 << 4)
+ 
++#define SHARE_MUX_CONF_REG		0x1
++#define ZERO_OFFSET_VALID		0x2
++
++static inline void iomux_v3_setup_pad(void __iomem *iomux, unsigned int flags,
++				      u32 mux_reg, u32 conf_reg, u32 input_reg,
++				      u32 mux_val, u32 conf_val, u32 input_val)
++{
++	const bool mux_ok   = !!mux_reg || (flags & ZERO_OFFSET_VALID);
++	const bool conf_ok  = !!conf_reg;
++	const bool input_ok = !!input_reg;
++
++	if (flags & SHARE_MUX_CONF_REG) {
++		mux_val |= conf_val;
++	} else {
++		if (conf_ok)
++			writel(conf_val, iomux + conf_reg);
 +	}
 +
- 	host->dev = dev;
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores))
++	if (mux_ok)
++		writel(mux_val, iomux + mux_reg);
++
++	if (input_ok)
++		writel(input_val, iomux + input_reg);
++}
++
++
+ /*
+  * setups a single pad in the iomuxer
+  */
 -- 
 2.5.5
 
