@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cEvpB-0001le-Fv
- for barebox@lists.infradead.org; Thu, 08 Dec 2016 10:21:14 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu,  8 Dec 2016 11:20:50 +0100
-Message-Id: <20161208102050.7617-1-u.kleine-koenig@pengutronix.de>
+ id 1cDqhB-0007UT-Nw
+ for barebox@lists.infradead.org; Mon, 05 Dec 2016 10:40:31 +0000
+Date: Mon, 5 Dec 2016 11:36:50 +0100 (CET)
+From: Alexander Kurz <akurz@blala.de>
+In-Reply-To: <1480671998.17003.37.camel@pengutronix.de>
+Message-ID: <alpine.DEB.2.00.1612051034540.13323@blala.de>
+References: <1480618503-11376-1-git-send-email-akurz@blala.de>
+ <1480671998.17003.37.camel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,47 +18,136 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] spi: mvebu: use wait_on_timeout instead of a loop with udelay.
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] bootm: dont use internal oftree fallback by default
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-VGhpcyBsb29rcyBuaWNlciBhbmQgcmVkdWNlcyB0aGUgdGltZSB0byB0cmFuc2ZlciA0MCBNQiBh
-dCA1MCBNSHogZnJvbQoyMDMgc2Vjb25kcyB0byA4NyBzZWNvbmRzLgoKU2lnbmVkLW9mZi1ieTog
-VXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tClNp
-ZGUgbm90ZToKCldoZW4gdXNpbmcKCgl3aGlsZSghKHJlYWRsKHAtPmJhc2UgKyBTUElfSUZfQ1RS
-TCkgJiBJRl9SRUFEX1JFQURZKSkKCQk7CglyZXR1cm4gMDsKCmluc3RlYWQsIHRoZSB0aW1lIGdv
-ZXMgZG93biB0byAyNCBzZWNvbmRzLgoKSSB0aGluayB0aGUgY3VscHJpdCBpcyB0aGF0IGdldF90
-aW1lX25zICh3aGljaCBpcyB1c2VkIGluCndhaXRfb25fdGltZW91dCkgaGFuZGxlcyBjb252ZXJz
-aW9uIGZyb20gdGltZXIgdmFsdWVzIHRvIG5zLgoKSSBkaWRuJ3QgbG9vayBpbnRvIHRoYXQgKHll
-dCkgYnV0IEkgdGhpbmsgdGhpcyBjb3VsZCBiZSBpbXByb3ZlZCBieQpjaGFuZ2luZyBmcm9tOgoK
-CWludCBfX3JldCA9IDA7Cgl1aW50NjRfdCBfX3RvX3N0YXJ0ID0gZ2V0X3RpbWVfbnMoKTsKCgl3
-aGlsZSAoIShjb25kaXRpb24pKSB7CgkJaWYgKGlzX3RpbWVvdXQoX190b19zdGFydCwgKHRpbWVv
-dXQpKSkgewoJCQlfX3JldCA9IC1FVElNRU9VVDsKCQkJYnJlYWs7CgkJfQoJfQoJcmV0dXJuIF9f
-cmV0OwoKdG8gc29tZXRoaW5nIGxpa2U6CgoJaW50IF9fcmV0ID0gMDsKCXVpbnQ2NF90IF9fdG9f
-c3RhcnRfY3ljID0gZ2V0X3RpbWVfY3ljKCk7Cgl1aW50NjRfdCBfX3RpbWVvdXRfY3ljID0gbnMy
-Y3ljKHRpbWVvdXQpOwoKCXdoaWxlICghKGNvbmRpdGlvbikpIHsKCQlpZiAoaXNfdGltZW91dF9j
-eWMoX190b19zdGFydF9jeWMsIF9fdGltZW91dF9jeWMpKSB7CgkJCV9fcmV0ID0gLUVUSU1FT1VU
-OwoJCQlicmVhazsKCQl9Cgl9CglyZXR1cm4gX19yZXQ7CgpIZXJlIG9ubHkgYSBzaW5nbGUgY29u
-dmVyc2lvbiBiZXR3ZWVuIGN5YyBhbmQgbnMgaXMgZG9uZSBhbmQKaXNfdGltZW91dF9jeWMgaXMg
-Y2hlYXAgYXMgaXQgZG9lc24ndCBuZWVkIHRvIGNvbnZlcnQuCgpUaGUgb2J2aW91cyBkb3duc2lk
-ZSBpcyB0aGF0IHRpbWVfbnMgaXNuJ3QgdXBkYXRlZCB0aGF0IG9mdGVuLiBCdXQgaXQKY291bGQg
-c3RpbGwgYmUgd29ydGggdGhlIGVmZm9ydC4KCkJlc3QgcmVnYXJkcwpVd2UKCiBkcml2ZXJzL3Nw
-aS9tdmVidV9zcGkuYyB8IDEyICsrKysrLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0
-aW9ucygrKSwgNyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9tdmVidV9z
-cGkuYyBiL2RyaXZlcnMvc3BpL212ZWJ1X3NwaS5jCmluZGV4IDY4ODM4YzBjZTE4NC4uZjI0NTA4
-YTdiYzVkIDEwMDY0NAotLS0gYS9kcml2ZXJzL3NwaS9tdmVidV9zcGkuYworKysgYi9kcml2ZXJz
-L3NwaS9tdmVidV9zcGkuYwpAQCAtMjQ5LDEzICsyNDksMTEgQEAgc3RhdGljIGludCBtdmVidV9z
-cGlfc2V0dXAoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSkKIAogc3RhdGljIGlubGluZSBpbnQgbXZl
-YnVfc3BpX3dhaXRfZm9yX3JlYWRfcmVhZHkoc3RydWN0IG12ZWJ1X3NwaSAqcCkKIHsKLQlpbnQg
-dGltZW91dCA9IDEwMDsKLQl3aGlsZSAoKHJlYWRsKHAtPmJhc2UgKyBTUElfSUZfQ1RSTCkgJiBJ
-Rl9SRUFEX1JFQURZKSA9PSAwICYmCi0JCXRpbWVvdXQtLSkKLQkJdWRlbGF5KDEpOwotCWlmICh0
-aW1lb3V0IDwgMCkKLQkJcmV0dXJuIC1FSU87Ci0JcmV0dXJuIDA7CisJaW50IHJldDsKKworCXJl
-dCA9IHdhaXRfb25fdGltZW91dCgxMDAgKiBVU0VDT05ELAorCQkJICAgICAgcmVhZGwocC0+YmFz
-ZSArIFNQSV9JRl9DVFJMKSAmIElGX1JFQURfUkVBRFkpOworCXJldHVybiByZXQ7CiB9CiAKIHN0
-YXRpYyBpbnQgbXZlYnVfc3BpX2RvX3RyYW5zZmVyKHN0cnVjdCBzcGlfZGV2aWNlICpzcGksCi0t
-IAoyLjEwLjIKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+
+
+On Fri, 2 Dec 2016, Lucas Stach wrote:
+
+> Am Donnerstag, den 01.12.2016, 19:55 +0100 schrieb Alexander Kurz:
+> > Booting via bootm offers several methods to load oftree data. When no
+> > dedicated oftree image is provided, barebox checks for the presence of
+> > its own internal oftree, assuming it as a good choice for boot.
+> > 
+> > This fallback method breaks the usecase when a modern OF-based barebox
+> > is used to boot a legacy ATAG dependent non OF based vendor provided kernel
+> > (e.g. ATAGs will be switched off).
+> > Unfortunately those kernels are being still actively shipped today.
+> > 
+> > Change barebox according to the principle of least surprise: when no
+> > oftree data is proactively configured, then perform a non-oftree boot.
+> > Make the fallback-use of the barebox internal oftree an opt-in feature.
+> > 
+> > Note: this will break boards where the boot process relied on this feature,
+> > e.g.: oftree based barebox plus oftree based kernel without an explicit
+> > given dts. For those boards global.bootm.internal_oftree_fallback=1 should
+> > be set.
+> > 
+> The least surprise on a modern oftree based kernel is that the firmware
+> (Barebox) provides the DT, if there isn't an explicit override.
+I'm just wondering about the consequences in terms of possible backward
+and forward DT compatibility issues. DT can get quite complicated and
+often contain parts from the SoC and SoM manufacturer and probably also 
+the device manufacturer. I am not sure if everyone holds the dicipline 
+maintaining DT stable like the kernel team does.
+Explicitly shipping the kernel-DT with the kernel will prevent unwanted
+surprises at this point.
+
+> So NACK on the patch in it's current form. If you have a board where you
+> know that the kernel doesn't play along, you may reverse this patch so
+> that you can set global.bootm.no_internal_oftree=1 in your board code.
+I have already considered it as a proposal-for-discussion.
+I'll post the patch with inverted logic later on and let the decision to 
+you.
+
+Regards, Alexander
+
+> 
+> Regards,
+> Lucas
+> 
+> > Signed-off-by: Alexander Kurz <akurz@blala.de>
+> > ---
+> >  common/bootm.c  | 8 ++++++--
+> >  include/bootm.h | 2 ++
+> >  2 files changed, 8 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/common/bootm.c b/common/bootm.c
+> > index 5984319..f5303fa 100644
+> > --- a/common/bootm.c
+> > +++ b/common/bootm.c
+> > @@ -58,6 +58,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
+> >  	data->initrd_address = UIMAGE_INVALID_ADDRESS;
+> >  	data->os_address = UIMAGE_SOME_ADDRESS;
+> >  	data->oftree_file = getenv_nonempty("global.bootm.oftree");
+> > +	data->internal_oftree_fallback = getenv_nonempty("global.bootm.internal_oftree_fallback");
+> >  	data->os_file = getenv_nonempty("global.bootm.image");
+> >  	getenv_ul("global.bootm.image.loadaddr", &data->os_address);
+> >  	getenv_ul("global.bootm.initrd.loadaddr", &data->initrd_address);
+> > @@ -375,14 +376,15 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
+> >  			pr_err("unable to unflatten devicetree\n");
+> >  			return -EINVAL;
+> >  		}
+> > -
+> > -	} else {
+> > +	} else if (data->internal_oftree_fallback) {
+> >  		data->of_root_node = of_get_root_node();
+> >  		if (!data->of_root_node)
+> >  			return 0;
+> >  
+> >  		if (bootm_verbose(data) > 1 && data->of_root_node)
+> >  			printf("using internal devicetree\n");
+> > +	} else {
+> > +		return 0;
+> >  	}
+> >  
+> >  	if (data->initrd_res) {
+> > @@ -530,6 +532,7 @@ int bootm_boot(struct bootm_data *bootm_data)
+> >  	data->verify = bootm_data->verify;
+> >  	data->force = bootm_data->force;
+> >  	data->dryrun = bootm_data->dryrun;
+> > +	data->internal_oftree_fallback = bootm_data->internal_oftree_fallback;
+> >  	data->initrd_address = bootm_data->initrd_address;
+> >  	data->os_address = bootm_data->os_address;
+> >  	data->os_entry = bootm_data->os_entry;
+> > @@ -683,6 +686,7 @@ BAREBOX_MAGICVAR_NAMED(global_bootm_image_loadaddr, global.bootm.image.loadaddr,
+> >  BAREBOX_MAGICVAR_NAMED(global_bootm_initrd, global.bootm.initrd, "bootm default initrd");
+> >  BAREBOX_MAGICVAR_NAMED(global_bootm_initrd_loadaddr, global.bootm.initrd.loadaddr, "bootm default initrd loadaddr");
+> >  BAREBOX_MAGICVAR_NAMED(global_bootm_oftree, global.bootm.oftree, "bootm default oftree");
+> > +BAREBOX_MAGICVAR_NAMED(global_bootm_internal_oftree_fallback, global.bootm.internal_oftree_fallback, "use barebox oftree as fallback");
+> >  BAREBOX_MAGICVAR_NAMED(global_bootm_verify, global.bootm.verify, "bootm default verify level");
+> >  BAREBOX_MAGICVAR_NAMED(global_bootm_verbose, global.bootm.verify, "bootm default verbosity level (0=quiet)");
+> >  BAREBOX_MAGICVAR_NAMED(global_bootm_appendroot, global.bootm.appendroot, "Add root= option to Kernel to mount rootfs from the device the Kernel comes from");
+> > diff --git a/include/bootm.h b/include/bootm.h
+> > index 6e9777a..c945c99 100644
+> > --- a/include/bootm.h
+> > +++ b/include/bootm.h
+> > @@ -20,6 +20,7 @@ struct bootm_data {
+> >  	enum bootm_verify verify;
+> >  	bool force;
+> >  	bool dryrun;
+> > +	bool internal_oftree_fallback;
+> >  	/*
+> >  	 * appendroot - if true, try to add a suitable root= Kernel option to
+> >  	 * mount the rootfs from the same device as the Kernel comes from.
+> > @@ -81,6 +82,7 @@ struct image_data {
+> >  	int verbose;
+> >  	int force;
+> >  	int dryrun;
+> > +	int internal_oftree_fallback;
+> >  };
+> >  
+> >  struct image_handler {
+> 
+> 
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
