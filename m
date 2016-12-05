@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp85.iad3a.emailsrvr.com ([173.203.187.85])
+Received: from mail-wj0-x244.google.com ([2a00:1450:400c:c01::244])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cCrLQ-0005XN-4N
- for barebox@lists.infradead.org; Fri, 02 Dec 2016 17:09:59 +0000
-Received: from smtp19.relay.iad3a.emailsrvr.com (localhost [127.0.0.1])
- by smtp19.relay.iad3a.emailsrvr.com (SMTP Server) with ESMTP id D730552E8
- for <barebox@lists.infradead.org>; Fri,  2 Dec 2016 12:09:32 -0500 (EST)
-Received: by smtp19.relay.iad3a.emailsrvr.com (Authenticated sender:
- abbotti-AT-mev.co.uk) with ESMTPSA id 9DF9054F5
- for <barebox@lists.infradead.org>; Fri,  2 Dec 2016 12:09:32 -0500 (EST)
-From: Ian Abbott <abbotti@mev.co.uk>
-Message-ID: <378a4a5b-43e1-c693-b271-8647a951c41b@mev.co.uk>
-Date: Fri, 2 Dec 2016 17:09:31 +0000
-MIME-Version: 1.0
+ id 1cDody-0001L5-CU
+ for barebox@lists.infradead.org; Mon, 05 Dec 2016 08:29:03 +0000
+Received: by mail-wj0-x244.google.com with SMTP id j10so10566848wjb.3
+ for <barebox@lists.infradead.org>; Mon, 05 Dec 2016 00:28:41 -0800 (PST)
+Received: from localhost.localdomain (ppp109-252-108-40.pppoe.spdop.ru.
+ [109.252.108.40])
+ by smtp.gmail.com with ESMTPSA id v17sm2738910lja.43.2016.12.05.00.28.38
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 05 Dec 2016 00:28:39 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon,  5 Dec 2016 11:28:29 +0300
+Message-Id: <20161205082829.22468-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,57 +22,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Cadence QSPI xload boot timing issue
+Subject: [PATCH] MIPS: qemu-malta_defconfig: set MAX_IMAGE_SIZE = 4 MiB
 To: barebox@lists.infradead.org
 
-Hi everyone,
+If barebox binary image size exceeds the 4 MiB then
+qemu exits with the 'Could not load MIPS bios' message.
 
-I'm using BareBox and xload 2016.11.0 with custom BSP patches for my 
-Altera Cyclone V SoCFPGA based custom board, which boots from QSPI.
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/configs/qemu-malta_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-The board boots fine, but I ran into a weird boot timing issue when 
-playing around with the LOGLEVEL configuration options in xload.  Before 
-playing around with them, my initial LOGLEVEL options were as follows:
-
-CONFIG_COMPILE_LOGLEVEL=6
-CONFIG_DEFAULT_LOGLEVEL=7
-
-I ran into the boot timing issue when setting them as follows:
-
-CONFIG_COMPILE_LOGLEVEL=6
-CONFIG_DEFAULT_LOGLEVEL=5
-
-The symptoms were that xload reported the following errors:
-
-mtd0: failed to get image size
-mtd0: failed to detect barebox and it's image size so use 1048576
-
-It then went on to load and boot the barebox image successfully.
-
-To debug the problem, I hex-dumped the barebox image header to the 
-terminal after it had been read by read_image_head() in 
-"lib/bootstrap/devfs.c" and found it to contain only '\xFF' bytes. 
-However, if I insert a small delay by calling mdelay(1) before reading 
-the barebox image header, it is read correctly and I don't get the error 
-messages.
-
-It seems like a small delay is required after the Cadence QSPI driver 
-("drivers/mtd/spi-nor/cadence_quadspi.c") has set up the flash chip 
-before it is in a useable state.  Adding a call mdelay(1) just before 
-cqspi_probe() returns fixes the problem for me, but I'm not sure if 
-that's the best way to fix it!
-
-For reference, my flash chip is a Spansion s25fl256s1 (32768 Kbytes) and 
-the Cadence QSPI controller built in to the SoCFPGA is being clocked at 
-400 MHz.
-
+diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
+index 004adac..9671e93 100644
+--- a/arch/mips/configs/qemu-malta_defconfig
++++ b/arch/mips/configs/qemu-malta_defconfig
+@@ -1,6 +1,7 @@
+ CONFIG_BUILTIN_DTB=y
+ CONFIG_BUILTIN_DTB_NAME="qemu-malta"
+ CONFIG_PBL_IMAGE=y
++CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x400000
+ CONFIG_STACK_SIZE=0x7000
+ CONFIG_EXPERIMENTAL=y
+ CONFIG_BAUDRATE=38400
 -- 
--=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=-
--=(                          Web: http://www.mev.co.uk/  )=-
+2.10.2
+
 
 _______________________________________________
 barebox mailing list
