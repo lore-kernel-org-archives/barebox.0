@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cDufx-0005K3-0E
- for barebox@lists.infradead.org; Mon, 05 Dec 2016 14:55:30 +0000
-Received: by mail-pg0-x241.google.com with SMTP id x23so16673032pgx.3
- for <barebox@lists.infradead.org>; Mon, 05 Dec 2016 06:55:08 -0800 (PST)
+ id 1cDug0-0005TM-GN
+ for barebox@lists.infradead.org; Mon, 05 Dec 2016 14:55:35 +0000
+Received: by mail-pg0-x244.google.com with SMTP id 3so16684737pgd.0
+ for <barebox@lists.infradead.org>; Mon, 05 Dec 2016 06:55:12 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  5 Dec 2016 06:54:28 -0800
-Message-Id: <1480949684-18520-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon,  5 Dec 2016 06:54:33 -0800
+Message-Id: <1480949684-18520-6-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1480949684-18520-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1480949684-18520-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,59 +23,188 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/16] Vybrid related patches
+Subject: [PATCH 05/16] i.MX: clk: Add IMX_PLLV3_SYS_VF610 subtype
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hi everyone,
+Add IMX_PLLV3_SYS_VF610 subtype to pllv3 code to be able to control and
+re-clock PLL1 and PLL2 on Vybrid SoC. This commit also introduces
+imx_clk_pllv3_locked which allows the user to create PLLv3 and specify
+how it should be polled for "locked" status (used in .set_rate callback)
 
-Here's a second wave of Vybrid related patches that I developed
-working with custom Vybrid board.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/clk/imx/clk-pllv3.c | 108 ++++++++++++++++++++++++++++++++++++++++++++
+ drivers/clk/imx/clk.h       |   5 ++
+ 2 files changed, 113 insertions(+)
 
-Most notable features of this patchset are:
-
-     - CPU re-clocking for Vybrid
-     - USB support on Vybrid
-     - Early pinmux configuration routines for i.MX and Vybrid. An
-       example of their utility is shown in the patch for i.MX6
-       SabreSD board (I also have custom code using Vybrid version of
-       those to read various "bootstraping" pins on my custom design)
-     
-
-Andrey Smirnov (16):
-  i.MX: esdhc: Enable host->clk during initialization
-  i.MX: ocotp: Add provisions for storing multiple MAC addresses
-  i.MX: ocotp: Initialize OCOTP as early as possible
-  i.MX: ocotp: Initialize 'sense_enable' to true on Vybrid
-  i.MX: clk: Add IMX_PLLV3_SYS_VF610 subtype
-  i.MX: vf610: Ramp CPU clock to maximum frequency
-  i.MX: iomuxv3: Add low-level pad code to headers
-  i.MX: iomuxv3: Add helper type to deconstruct iomux_v3_cfg_t values
-  i.MX: iomuxv3: Add low-level pad configuration routine
-  i.MX6: sabresd: Remove magic numbers in setup_uart
-  i.MX: iomuxv3: Use helper functions in iomux-v3.h
-  i.MX: vf610: Add low-level pin configuration helper
-  i.MX: iomux-vf610: Add missing pad definitions
-  i.MX: imx-usb-phy: Add VF610 OF compatiblity string
-  i.MX: Default CONFI_USB_IMX_PHY to 'y' on Vybrid
-  i.MX: imx-usb-misc: Add Vybrid support
-
- arch/arm/boards/freescale-mx6-sabresd/lowlevel.c |   9 +-
- arch/arm/mach-imx/Kconfig                        |  13 ++
- arch/arm/mach-imx/include/mach/iomux-v3.h        |  61 ++++++++
- arch/arm/mach-imx/include/mach/iomux-vf610.h     |  20 +++
- arch/arm/mach-imx/ocotp.c                        |  58 ++++++-
- drivers/clk/imx/clk-pllv3.c                      | 108 +++++++++++++
- drivers/clk/imx/clk-vf610.c                      | 187 ++++++++++++++++++++++-
- drivers/clk/imx/clk.h                            |   5 +
- drivers/mci/imx-esdhc.c                          |   7 +
- drivers/pinctrl/imx-iomux-v3.c                   |  38 +----
- drivers/pinctrl/pinctrl-vf610.c                  |  11 +-
- drivers/usb/imx/Kconfig                          |   2 +-
- drivers/usb/imx/imx-usb-misc.c                   |  28 ++++
- drivers/usb/imx/imx-usb-phy.c                    |   2 +
- 14 files changed, 496 insertions(+), 53 deletions(-)
-
+diff --git a/drivers/clk/imx/clk-pllv3.c b/drivers/clk/imx/clk-pllv3.c
+index 29c0f1c..dd924a4 100644
+--- a/drivers/clk/imx/clk-pllv3.c
++++ b/drivers/clk/imx/clk-pllv3.c
+@@ -26,6 +26,8 @@
+ #define PLL_NUM_OFFSET		0x10
+ #define PLL_DENOM_OFFSET	0x20
+ 
++#define SYS_VF610_PLL_OFFSET	0x10
++
+ #define BM_PLL_POWER		(0x1 << 12)
+ #define BM_PLL_ENABLE		(0x1 << 13)
+ #define BM_PLL_BYPASS		(0x1 << 16)
+@@ -38,6 +40,8 @@ struct clk_pllv3 {
+ 	u32		div_mask;
+ 	u32		div_shift;
+ 	const char	*parent;
++	void __iomem	*lock_reg;
++	u32		lock_mask;
+ };
+ 
+ #define to_clk_pllv3(_clk) container_of(_clk, struct clk_pllv3, clk)
+@@ -279,6 +283,88 @@ static const struct clk_ops clk_pllv3_mlb_ops = {
+ 	.disable	= clk_pllv3_disable,
+ };
+ 
++static unsigned long clk_pllv3_sys_vf610_recalc_rate(struct clk *clk,
++						     unsigned long parent_rate)
++{
++	struct clk_pllv3 *pll = to_clk_pllv3(clk);
++
++	u32 mfn = readl(pll->base + SYS_VF610_PLL_OFFSET + PLL_NUM_OFFSET);
++	u32 mfd = readl(pll->base + SYS_VF610_PLL_OFFSET + PLL_DENOM_OFFSET);
++	u32 div = (readl(pll->base) & pll->div_mask) ? 22 : 20;
++
++	return (parent_rate * div) + ((parent_rate / mfd) * mfn);
++}
++
++static long clk_pllv3_sys_vf610_round_rate(struct clk *clk, unsigned long rate,
++					   unsigned long *prate)
++{
++	unsigned long parent_rate = *prate;
++	unsigned long min_rate = parent_rate * 20;
++	unsigned long max_rate = 528000000;
++	u32 mfn, mfd = 1000000;
++	u64 temp64;
++
++	if (rate >= max_rate)
++		return max_rate;
++	else if (rate < min_rate)
++		rate = min_rate;
++
++	temp64 = (u64) (rate - 20 * parent_rate);
++	temp64 *= mfd;
++	do_div(temp64, parent_rate);
++	mfn = temp64;
++
++	return parent_rate * 20 + parent_rate / mfd * mfn;
++}
++
++static int clk_pllv3_sys_vf610_set_rate(struct clk *clk, unsigned long rate,
++					unsigned long parent_rate)
++{
++	struct clk_pllv3 *pll = to_clk_pllv3(clk);
++	unsigned long min_rate = parent_rate * 20;
++	unsigned long max_rate = 528000000;
++	u32 val;
++	u32 mfn, mfd = 1000000;
++	u64 temp64;
++
++	if (rate < min_rate || rate > max_rate)
++		return -EINVAL;
++
++	val = readl(pll->base);
++
++	if (rate == max_rate) {
++		writel(0, pll->base + SYS_VF610_PLL_OFFSET + PLL_NUM_OFFSET);
++		val |= pll->div_mask;
++		writel(val, pll->base);
++
++		return 0;
++	} else {
++		val &= ~pll->div_mask;
++	}
++
++	temp64 = (u64) (rate - 20 * parent_rate);
++	temp64 *= mfd;
++	do_div(temp64, parent_rate);
++	mfn = temp64;
++
++	writel(val, pll->base);
++	writel(mfn, pll->base + SYS_VF610_PLL_OFFSET + PLL_NUM_OFFSET);
++	writel(mfd, pll->base + SYS_VF610_PLL_OFFSET + PLL_DENOM_OFFSET);
++
++	while (!(readl(pll->lock_reg) & pll->lock_mask))
++		;
++
++	return 0;
++}
++
++static const struct clk_ops clk_pllv3_sys_vf610_ops = {
++	.enable		= clk_pllv3_enable,
++	.disable	= clk_pllv3_disable,
++	.recalc_rate	= clk_pllv3_sys_vf610_recalc_rate,
++	.round_rate	= clk_pllv3_sys_vf610_round_rate,
++	.set_rate	= clk_pllv3_sys_vf610_set_rate,
++};
++
+ struct clk *imx_clk_pllv3(enum imx_pllv3_type type, const char *name,
+ 			  const char *parent, void __iomem *base,
+ 			  u32 div_mask)
+@@ -290,6 +376,9 @@ struct clk *imx_clk_pllv3(enum imx_pllv3_type type, const char *name,
+ 	pll = xzalloc(sizeof(*pll));
+ 
+ 	switch (type) {
++	case IMX_PLLV3_SYS_VF610:
++		ops = &clk_pllv3_sys_vf610_ops;
++		break;
+ 	case IMX_PLLV3_SYS:
+ 		ops = &clk_pllv3_sys_ops;
+ 		break;
+@@ -327,3 +416,22 @@ struct clk *imx_clk_pllv3(enum imx_pllv3_type type, const char *name,
+ 
+ 	return &pll->clk;
+ }
++
++struct clk *imx_clk_pllv3_locked(enum imx_pllv3_type type, const char *name,
++				 const char *parent, void __iomem *base,
++				 u32 div_mask, void __iomem *lock_reg, u32 lock_mask)
++{
++	struct clk *clk;
++	struct clk_pllv3 *pll;
++
++	clk = imx_clk_pllv3(type, name, parent, base, div_mask);
++	if (IS_ERR(clk))
++		return clk;
++
++	pll = to_clk_pllv3(clk);
++
++	pll->lock_reg  = lock_reg;
++	pll->lock_mask = lock_mask;
++
++	return clk;
++}
+diff --git a/drivers/clk/imx/clk.h b/drivers/clk/imx/clk.h
+index 970f65c..0b28fb2 100644
+--- a/drivers/clk/imx/clk.h
++++ b/drivers/clk/imx/clk.h
+@@ -78,6 +78,7 @@ struct clk *imx_clk_pllv2(const char *name, const char *parent,
+ enum imx_pllv3_type {
+ 	IMX_PLLV3_GENERIC,
+ 	IMX_PLLV3_SYS,
++	IMX_PLLV3_SYS_VF610,
+ 	IMX_PLLV3_USB,
+ 	IMX_PLLV3_USB_VF610,
+ 	IMX_PLLV3_AV,
+@@ -89,6 +90,10 @@ struct clk *imx_clk_pllv3(enum imx_pllv3_type type, const char *name,
+ 			  const char *parent, void __iomem *base,
+ 			  u32 div_mask);
+ 
++struct clk *imx_clk_pllv3_locked(enum imx_pllv3_type type, const char *name,
++				 const char *parent, void __iomem *base,
++				 u32 div_mask, void __iomem *lock_reg, u32 lock_mask);
++
+ struct clk *imx_clk_pfd(const char *name, const char *parent,
+ 			void __iomem *reg, u8 idx);
+ 
 -- 
 2.5.5
 
