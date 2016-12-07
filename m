@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cEiCP-0008Ts-B1
- for barebox@lists.infradead.org; Wed, 07 Dec 2016 19:48:18 +0000
-Date: Wed, 7 Dec 2016 20:47:55 +0100
+ id 1cEiNC-0004tT-JP
+ for barebox@lists.infradead.org; Wed, 07 Dec 2016 19:59:27 +0000
+Date: Wed, 7 Dec 2016 20:59:04 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161207194755.54yayeuzdf3s2576@pengutronix.de>
+Message-ID: <20161207195904.xajaxegfpqawmwcm@pengutronix.de>
 References: <20161205094033.31569-1-antonynpavlov@gmail.com>
- <20161205094033.31569-5-antonynpavlov@gmail.com>
+ <20161205094033.31569-7-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20161205094033.31569-5-antonynpavlov@gmail.com>
+In-Reply-To: <20161205094033.31569-7-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,94 +23,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC v2 4/8] import initial kexec stuff
+Subject: Re: [RFC v2 6/8] bootm: add kexec ELF support
 To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Mon, Dec 05, 2016 at 12:40:29PM +0300, Antony Pavlov wrote:
+On Mon, Dec 05, 2016 at 12:40:31PM +0300, Antony Pavlov wrote:
+> Also introduce reboot() for starting already loaded
+> via kexec ELF segments.
+> 
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-
-The commit message could be a bit more verbose and at least mention
-where this code is derived from and from which version.
-
+> ---
+>  include/linux/reboot.h      | 14 ++++++++++++++
+>  lib/kexec/Makefile          |  1 +
+>  lib/kexec/kexec-bootm-elf.c | 37 +++++++++++++++++++++++++++++++++++++
+>  3 files changed, 52 insertions(+)
+> 
+> diff --git a/include/linux/reboot.h b/include/linux/reboot.h
+> new file mode 100644
+> index 0000000..454ed33
+> --- /dev/null
+> +++ b/include/linux/reboot.h
+> @@ -0,0 +1,14 @@
+> +#ifndef _LINUX_REBOOT_H
+> +#define _LINUX_REBOOT_H
 > +
-> +static int build_mem_ehdr(const char *buf, off_t len, struct mem_ehdr *ehdr)
+> +/*
+> + * Commands accepted by the _reboot() system call.
+> + *
+> + * KEXEC       Restart system using a previously loaded Linux kernel
+> + */
+> +
+> +#define	LINUX_REBOOT_CMD_KEXEC		0x45584543
+> +
+> +extern int reboot(int cmd);
+> +
+> +#endif /* _LINUX_REBOOT_H */
+> diff --git a/lib/kexec/Makefile b/lib/kexec/Makefile
+> index 8febef1..2f3dc1d 100644
+> --- a/lib/kexec/Makefile
+> +++ b/lib/kexec/Makefile
+> @@ -1,3 +1,4 @@
+>  obj-y	+= kexec.o
+>  obj-y	+= kexec-elf.o
+>  obj-y	+= kexec-elf-exec.o
+> +obj-y	+= kexec-bootm-elf.o
+> diff --git a/lib/kexec/kexec-bootm-elf.c b/lib/kexec/kexec-bootm-elf.c
+> new file mode 100644
+> index 0000000..ceef6c7
+> --- /dev/null
+> +++ b/lib/kexec/kexec-bootm-elf.c
+> @@ -0,0 +1,37 @@
+> +#include <bootm.h>
+> +#include <init.h>
+> +#include <binfmt.h>
+> +#include <errno.h>
+> +#include <linux/reboot.h>
+> +#include <environment.h>
+> +
+> +#include "kexec.h"
+> +
+> +static int do_bootm_elf(struct image_data *data)
 > +{
-> +	unsigned char e_ident[EI_NIDENT];
-> +	int result;
+> +	kexec_load_file(data->os_file, 0);
+> +	setenv("global.bootm.image", data->os_file);
+> +	reboot(LINUX_REBOOT_CMD_KEXEC);
 > +
-> +	memset(ehdr, 0, sizeof(*ehdr));
+> +	return -ERESTARTSYS;
+> +}
 > +
-> +	if ((size_t)len < sizeof(e_ident)) {
-> +		printf("Buffer is too small to hold ELF e_ident\n");
+> +static struct image_handler elf_handler = {
+> +	.name = "ELF",
+> +	.bootm = do_bootm_elf,
+> +	.filetype = filetype_elf,
+> +};
 > +
-> +		return -1;
-> +	}
+> +static struct binfmt_hook binfmt_elf_hook = {
+> +	.type = filetype_elf,
+> +	.exec = "bootm",
+> +};
 > +
-> +	memcpy(e_ident, buf, sizeof(e_ident));
-> +
-> +	ehdr->ei_class   = e_ident[EI_CLASS];
-> +	ehdr->ei_data    = e_ident[EI_DATA];
-> +	if (	(ehdr->ei_class != ELFCLASS32) &&
-> +		(ehdr->ei_class != ELFCLASS64))
-> +	{
-> +		printf("Not a supported ELF class\n");
-> +		return -1;
-> +	}
-> +
-> +	if (	(ehdr->ei_data != ELFDATA2LSB) &&
-> +		(ehdr->ei_data != ELFDATA2MSB))
-> +	{
-> +		printf("Not a supported ELF data format\n");
-> +		return -1;
-> +	}
-> +
-> +	result = -1;
-> +	if (ehdr->ei_class == ELFCLASS32) {
-> +		result = build_mem_elf32_ehdr(buf, len, ehdr);
-> +	}
-
-The opening braces are sometimes on the same line and sometimees on a
-new line. Is this from the original code?
-
-> +
-> +	/* Now walk and normalize the notes */
-> +	ehdr->e_note = xmalloc(sizeof(*ehdr->e_note) * ehdr->e_notenum);
-> +	for (i = 0, note = note_start; note < note_end;
-> +			note += note_size, i++) {
-> +		const unsigned char *name, *desc;
-> +		ElfNN_Nhdr hdr;
-> +		read_nhdr(ehdr, &hdr, note);
-> +		note_size  = sizeof(hdr);
-> +		name       = note + note_size;
-> +		note_size += (hdr.n_namesz + 3) & ~3;
-> +		desc       = note + note_size;
-> +		note_size += (hdr.n_descsz + 3) & ~3;
-> +
-> +		if ((hdr.n_namesz != 0) && (name[hdr.n_namesz -1] != '\0')) {
-> +			/* If note name string is not null terminated, just
-> +			 * warn user about it and continue processing. This
-> +			 * allows us to parse /proc/kcore on older kernels
-> +			 * where /proc/kcore elf notes were not null
-> +			 * terminated. It has been fixed in 2.6.19.
-> +			 */
-> +			printf("Warning: Elf Note name is not null "
-> +					"terminated\n");
-> +		}
-
-Is this relevant for barebox? We do not parse /proc/kcore.
-
-> +		ehdr->e_note[i].n_type = hdr.n_type;
-> +		ehdr->e_note[i].n_name = (char *)name;
-> +		ehdr->e_note[i].n_desc = desc;
-> +		ehdr->e_note[i].n_descsz = hdr.n_descsz;
-> +
-> +	}
+> +static int elf_register_image_handler(void)
+> +{
+> +	register_image_handler(&elf_handler);
+> +	binfmt_register(&binfmt_elf_hook);
 > +
 > +	return 0;
 > +}
-> +
+> +late_initcall(elf_register_image_handler);
+
+The code needed to actually start a kexec kernel is architecture
+specific, so the registration of the ELF handler should be done by this
+architecture specific code. Then you also don't need this awkward reboot()
+stuff. I'm thinking of a
+
+int bootm_register_kexec_handler(int (*do_bootm)(struct image_data *data));
+
+to be called by MIPS or malta specific code.
 
 Sascha
 
