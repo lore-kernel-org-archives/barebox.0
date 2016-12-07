@@ -1,16 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cEjDl-0005CN-Go
- for barebox@lists.infradead.org; Wed, 07 Dec 2016 20:53:46 +0000
-Date: Wed, 7 Dec 2016 21:53:23 +0100
+ id 1cEjHN-0007u0-NP
+ for barebox@lists.infradead.org; Wed, 07 Dec 2016 20:57:31 +0000
+Date: Wed, 7 Dec 2016 21:57:07 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161207205323.ymjfjjmsevdjuawg@pengutronix.de>
-References: <1480325255-17750-1-git-send-email-akurz@blala.de>
- <1480325255-17750-2-git-send-email-akurz@blala.de>
+Message-ID: <20161207205707.74pqilf5wj26czbk@pengutronix.de>
+References: <1480949684-18520-1-git-send-email-andrew.smirnov@gmail.com>
+ <1480949684-18520-3-git-send-email-andrew.smirnov@gmail.com>
+ <20161205151431.GC14158@lws-christ>
+ <CAHQ1cqErON12d4KTdYg614U5i9j8X=_-kD8+g9JtfFgak9MXBA@mail.gmail.com>
+ <20161207085105.GC2371@lws-christ>
+ <20161207191343.v2y3dmzo4m67ws3c@pengutronix.de>
+ <CAHQ1cqEMgyfvqrujYDQZp_6TzLGxpQ937RjOQZrkas+8BmutHg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1480325255-17750-2-git-send-email-akurz@blala.de>
+In-Reply-To: <CAHQ1cqEMgyfvqrujYDQZp_6TzLGxpQ937RjOQZrkas+8BmutHg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,34 +28,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] ARM i.MX: add SoC type detection for i.MX6SL
-To: Alexander Kurz <akurz@blala.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 02/16] i.MX: ocotp: Add provisions for storing multiple
+ MAC addresses
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Stefan Lengfeld <s.lengfeld@phytec.de>
 
-Hi Alexander,
-
-On Mon, Nov 28, 2016 at 10:27:33AM +0100, Alexander Kurz wrote:
-> The i.MX6 series SoC type is determined by barebox by examining the
-> USB_ANALOG_DIGPROG aka IMX6_ANATOP_SI_REV register. This register is located
-> at a common offset for all mx6 SoC - except for i.MX6SL where a different
-> offset is used. This creates a dilemma while distinguishing the mx6sl from
-> non-mx6sl SOC since the SoC type identification register location is type
-> specific itself.
+On Wed, Dec 07, 2016 at 11:36:21AM -0800, Andrey Smirnov wrote:
+> On Wed, Dec 7, 2016 at 11:13 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > On Wed, Dec 07, 2016 at 09:51:05AM +0100, Stefan Lengfeld wrote:
+> >> Hi Andrey,
+> >>
+> >> > I did see that patch go through, however since the title of it is
+> >> > "arm: imx6: ocotp: Added support for the i.MX6UL" I didn't look into
+> >> > it any further.
+> >>
+> >> In the light of the Vybrid also supports two MAC addresses your patch title
+> >>
+> >>     i.MX: ocotp: Add provisions for storing multiple MAC addresses
+> >>
+> >> is better, since it is more generic.
+> >>
+> >> > > Your approach uses an extra device attribute  'mac_idx' to select the meaning
+> >> > > of the device attribute 'mac_addr': Whether it points to the MAC0 or MAC1.
+> >> > >
+> >> > > I find it less error prone and confusing to use two seperate device attributes
+> >> > > 'mac_addr' and 'mac_addr1' for MAC0 and MAC1. So you don't have to check the
+> >> > > value of 'mac_idx before reading or writing the MAC addresses.
+> >> >
+> >> > Can't say that I necessarily agree with you assessment. There's no
+> >> > need to check 'mac_idx' if it is written every time as a part of MAC
+> >> > address assignment operation. The reason I chose the approach that I
+> >> > did was mainly because it allowed to both have backwards compatibility
+> >> > with the old naming scheme and avoid having variable naming
+> >> > inconsistency (as you see in your example where one variable has a
+> >> > numerical suffix and the other doesn't) which I was concerned would be
+> >> > make scripting it more clunky than necessary.
+> >>
+> >> hmm, I find it more convenient use
+> >>
+> >>     bootloader$ ocotp0.mac_addr=22:33:44:55:66:77
+> >>     bootloader$ ocotp0.mac_addr1=22:33:44:AA:AA:AA
+> >>
+> >> than
+> >>
+> >>     bootloader$ ocotp0.mac_idx=0
+> >>     bootloader$ ocotp0.mac_addr=22:33:44:55:66:77
+> >>     bootloader$ ocotp0.mac_idx=1
+> >>     bootloader$ ocotp0.mac_addr=22:33:44:AA:AA:AA
+> >>
+> >> The same goes for reading the MAC addresses. The first one is more obvious,
+> >> because the meaning of the variable "mac_addr" does not depend on another
+> >> variable "mac_idx".
+> >
+> > I agree here.
+> >
+> >>
+> >> Maybe we can settle on a different approach to avoid the inconsistent variable
+> >> names "mac_addr" and "mac_addr1":
+> >
+> > How about always registering mac_addr0 with mac_addr as alias? Then we
+> > have consistent variable naming and still the backward compatible
+> > standard mac address.
 > 
-> Access to undocumented and probably invalid or unpredictable registers should
-> be avoided as possible. For the mx6sl detection an access to the general
-> USB_ANALOG_DIGPROG @0x260 cannot be avoided when running on mx6sl. This
-> register contained the value 0x00014009 for different mx6sl Rev. 1.2 based
-> e-book readers using MCIMX6L7DVN10AB and MCIMX6L8DVN10AB SoC. This
-> implementation assumes the value of MAJOR_UPPER (here 0x01) to be smaller
-> than the smallest non-6sl MAJOR_UPPER (0x61 for mx6s).
+> That'd definetly would be even better way to go if we want to preserve
+> backwards compatibility. It might be a bit confusing UI wise to have
+> "ocotp0.mac_addr0", "ocotp0.mac_addr1" and "ocotp0.mac_addr" at the
+> same time, though.
 
-The i.MX6SL code would be quite straight forward and easy to merge
-without this handicap. I'll probably need a few more days to swallow
-this pill. I assume you already searched for better ways to detect a
-i.MX6SL, right?
+Yes, indeed, this might be confusing, but the fact that mac_addr and
+mac_addr0 always have the same value should make that clear.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
