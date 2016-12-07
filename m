@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cEueZ-0000g9-Af
- for barebox@lists.infradead.org; Thu, 08 Dec 2016 09:06:13 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu,  8 Dec 2016 10:05:42 +0100
-Message-Id: <20161208090544.10267-1-u.kleine-koenig@pengutronix.de>
+ id 1cEiVG-0002Ue-LZ
+ for barebox@lists.infradead.org; Wed, 07 Dec 2016 20:07:47 +0000
+Date: Wed, 7 Dec 2016 21:07:24 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20161207200724.k5ydoefn63gleuju@pengutronix.de>
+References: <20161124205918.20093-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20161124205918.20093-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,29 +18,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] spi: mvebu: fix register macros for Armada 370/XP clock
- divider
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] mtd: m25p80: add support for Everspin MR25H40
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBkcml2ZXJzL3NwaS9tdmVidV9zcGkuYyB8IDQgKystLQogMSBmaWxlIGNo
-YW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2
-ZXJzL3NwaS9tdmVidV9zcGkuYyBiL2RyaXZlcnMvc3BpL212ZWJ1X3NwaS5jCmluZGV4IDg4N2E2
-YTcyMTM0Yy4uZDYxYTU0NWYwMmQ4IDEwMDY0NAotLS0gYS9kcml2ZXJzL3NwaS9tdmVidV9zcGku
-YworKysgYi9kcml2ZXJzL3NwaS9tdmVidV9zcGkuYwpAQCAtNTAsOCArNTAsOCBAQAogI2RlZmlu
-ZSAgSUZfVFJBTlNGRVJfMkJZVEUJQklUKDUpCiAjZGVmaW5lICBJRl9DTEtfUFJFU0NBTEVfUE9X
-MglCSVQoNCkKICNkZWZpbmUgIElGX0NMS19QUkVTQ0FMRSh4KQkoKHgpICYgMHgwZikKLSNkZWZp
-bmUgIElGX0NMS19QUkVfUFJFU0NBTEUoeCkJKCgoKCh4KSAmIDB4YykgPDwgMSkgfCAoKHgpICYg
-MHgxKSkgPDwgNCkKLSNkZWZpbmUgIElGX0NMS19QUkVTQ0FMRV9NQVNLCShJRl9DTEtfUFJFU0NB
-TEUoNykgfCBJRl9DTEtfUFJFX1BSRVNDQUxFKDcpKQorI2RlZmluZSAgSUZfQ0xLX1BSRV9QUkVT
-Q0FMRSh4KQkoKCgoKHgpICYgMHg2KSA8PCA2KSB8ICgoeCkgJiAweDEpKSA8PCA0KQorI2RlZmlu
-ZSAgSUZfQ0xLX1BSRVNDQUxFX01BU0sJKElGX0NMS19QUkVTQ0FMRSgweGYpIHwgSUZfQ0xLX1BS
-RV9QUkVTQ0FMRSg3KSkKICNkZWZpbmUgU1BJX0RBVEFfT1VUCQkweDA4CiAjZGVmaW5lIFNQSV9E
-QVRBX0lOCQkweDBjCiAjZGVmaW5lIFNQSV9JTlRfQ0FVU0UJCTB4MTAKLS0gCjIuMTAuMgoKCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
-bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Thu, Nov 24, 2016 at 09:59:18PM +0100, Uwe Kleine-K=F6nig wrote:
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  drivers/mtd/devices/m25p80.c  | 2 +-
+>  drivers/mtd/spi-nor/spi-nor.c | 1 +
+>  2 files changed, 2 insertions(+), 1 deletion(-)
+
+Applied, thanks
+
+Sascha
+
+> =
+
+> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+> index 656a7f5ef045..8a67792125e3 100644
+> --- a/drivers/mtd/devices/m25p80.c
+> +++ b/drivers/mtd/devices/m25p80.c
+> @@ -179,7 +179,7 @@ static const struct platform_device_id m25p_ids[] =3D=
+ {
+>  	{"en25f32"},    {"en25p32"},    {"en25q32b"},   {"en25p64"},
+>  	{"en25q64"},    {"en25qh128"},  {"en25qh256"},
+>  	{"f25l32pa"},
+> -	{"mr25h256"},   {"mr25h10"},
+> +	{"mr25h256"},   {"mr25h10"},    {"mr25h40"},
+>  	{"gd25q32"},    {"gd25q64"},
+>  	{"160s33b"},    {"320s33b"},    {"640s33b"},
+>  	{"mx25l2005a"}, {"mx25l4005a"}, {"mx25l8005"},  {"mx25l1606e"},
+> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+> index 45be58623839..faeafe1bfb6a 100644
+> --- a/drivers/mtd/spi-nor/spi-nor.c
+> +++ b/drivers/mtd/spi-nor/spi-nor.c
+> @@ -504,6 +504,7 @@ static const struct spi_device_id spi_nor_ids[] =3D {
+>  	/* Everspin */
+>  	{ "mr25h256", CAT25_INFO( 32 * 1024, 1, 256, 2, SPI_NOR_NO_ERASE | SPI_=
+NOR_NO_FR) },
+>  	{ "mr25h10",  CAT25_INFO(128 * 1024, 1, 256, 3, SPI_NOR_NO_ERASE | SPI_=
+NOR_NO_FR) },
+> +	{ "mr25h40",  CAT25_INFO(512 * 1024, 1, 256, 3, SPI_NOR_NO_ERASE | SPI_=
+NOR_NO_FR) },
+>  =
+
+>  	/* Fujitsu */
+>  	{ "mb85rs1mt", INFO(0x047f27, 0, 128 * 1024, 1, SPI_NOR_NO_ERASE) },
+> -- =
+
+> 2.10.2
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
