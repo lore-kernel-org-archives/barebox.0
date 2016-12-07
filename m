@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vs81.iboxed.net ([185.82.85.146])
+Received: from out4-smtp.messagingengine.com ([66.111.4.28])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cEk0B-0007GW-MI
- for barebox@lists.infradead.org; Wed, 07 Dec 2016 21:43:50 +0000
-Date: Wed, 7 Dec 2016 22:40:06 +0100 (CET)
-From: Alexander Kurz <akurz@blala.de>
-In-Reply-To: <20161207205323.ymjfjjmsevdjuawg@pengutronix.de>
-Message-ID: <alpine.DEB.2.00.1612072151470.30368@blala.de>
-References: <1480325255-17750-1-git-send-email-akurz@blala.de>
- <1480325255-17750-2-git-send-email-akurz@blala.de>
- <20161207205323.ymjfjjmsevdjuawg@pengutronix.de>
+ id 1cElDY-0000J3-6l
+ for barebox@lists.infradead.org; Wed, 07 Dec 2016 23:01:41 +0000
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailout.nyi.internal (Postfix) with ESMTP id 18694206CD
+ for <barebox@lists.infradead.org>; Wed,  7 Dec 2016 18:01:16 -0500 (EST)
+Received: from JonThinkpad (c-67-165-223-215.hsd1.co.comcast.net
+ [67.165.223.215])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 91B572478C
+ for <barebox@lists.infradead.org>; Wed,  7 Dec 2016 18:01:15 -0500 (EST)
+From: "Jonathan Stackhouse" <jon@beiwy.com>
+Date: Wed, 7 Dec 2016 16:01:14 -0700
+Message-ID: <005301d250dd$d02054e0$7060fea0$@beiwy.com>
 MIME-Version: 1.0
+Content-Language: en-us
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,57 +27,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] ARM i.MX: add SoC type detection for i.MX6SL
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: AM335x Porting Questions
+To: barebox@lists.infradead.org
 
+Hello Barebox Community!
 
+I'm attempting to port the Beaglebone board files
+(arch/arm/boards/beaglebone) to another similar board, but am having a bit
+of a hard time understanding what all I need to do.
 
-On Wed, 7 Dec 2016, Sascha Hauer wrote:
+Is there a specific procedure that I should follow when porting barebox or
+is it merely making changes/additions to the files in
+arch/{ARCH}/boards/some-similar-board? I've read though the README in the
+barebox root directory as well as several of the docs in the Documentation
+folder and the online user manual but have not found the information I am
+looking for.
 
-> Hi Alexander,
-> 
-> On Mon, Nov 28, 2016 at 10:27:33AM +0100, Alexander Kurz wrote:
-> > The i.MX6 series SoC type is determined by barebox by examining the
-> > USB_ANALOG_DIGPROG aka IMX6_ANATOP_SI_REV register. This register is located
-> > at a common offset for all mx6 SoC - except for i.MX6SL where a different
-> > offset is used. This creates a dilemma while distinguishing the mx6sl from
-> > non-mx6sl SOC since the SoC type identification register location is type
-> > specific itself.
-> > 
-> > Access to undocumented and probably invalid or unpredictable registers should
-> > be avoided as possible. For the mx6sl detection an access to the general
-> > USB_ANALOG_DIGPROG @0x260 cannot be avoided when running on mx6sl. This
-> > register contained the value 0x00014009 for different mx6sl Rev. 1.2 based
-> > e-book readers using MCIMX6L7DVN10AB and MCIMX6L8DVN10AB SoC. This
-> > implementation assumes the value of MAJOR_UPPER (here 0x01) to be smaller
-> > than the smallest non-6sl MAJOR_UPPER (0x61 for mx6s).
-> 
-> The i.MX6SL code would be quite straight forward and easy to merge
-> without this handicap. I'll probably need a few more days to swallow
-> this pill. I assume you already searched for better ways to detect a
-> i.MX6SL, right?
->
-The uboot-implementation (get_cpu_rev() in arch/arm/cpu/armv7/mx6/soc.c)
-first checks the 6SL-digprog register and then proceeds with the non-6SL 
-detection. This results in access to non-documented registers for all 
-non-6SL SoC. My implementation limits potential trouble to 6SL and any
-SoC not detected yet.
+Do the SPL/MLO and barebox.bin write any data to log files for debugging
+purposes? If so, how do I configure the builds for these logs and how do I
+access them? I'm asking because I noticed under Debugging in menuconfig that
+I can set the "default loglevel" but I don't know where the log gets stored,
+and I wanted to view it to see whether my MLO is working or not.
 
-I did not find any good hint in the reference manuals, but anyway, if
-it would exist, I would assume it to be used in the freescale u-boot 
-branch (which is similar to mainline u-boot).
+Additionally, I've attempted to get the MLO to initialize UART0 and UART2
+for debugging purposes, but can't seem to get the "MLO>" prompt to appear in
+PuTTY (settings are 115200, 8N1, no flow control). I have console support
+set to "full", Console activation strategy set to "activate first console on
+startup", low level debug messages enabled, and the OMAP Debug UART Port
+Selection set to 2. I also used the same UART initialization code that is in
+the beaglebone lowlevel.c file, with the exception that I set it up for
+UART2 instead of UART0. What else I need to do?
 
-Regards, Alexander
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
+I apologize for this rather broad and long email, but I've been battling
+this for quite some time and have finally decided to reach out for help.
+
+Thank you,
+Jon S.
+
 
 _______________________________________________
 barebox mailing list
