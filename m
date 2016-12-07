@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cGIyU-0001Ch-3V
- for barebox@lists.infradead.org; Mon, 12 Dec 2016 05:16:30 +0000
-Date: Mon, 12 Dec 2016 06:16:08 +0100
+ id 1cEhfK-0007wj-AH
+ for barebox@lists.infradead.org; Wed, 07 Dec 2016 19:14:09 +0000
+Date: Wed, 7 Dec 2016 20:13:43 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161212051608.a4jdtxrfntczftca@pengutronix.de>
-References: <20161208093922.23194-1-u.kleine-koenig@pengutronix.de>
- <20161208094955.4k66mbkpqvdaxqpn@pengutronix.de>
+Message-ID: <20161207191343.v2y3dmzo4m67ws3c@pengutronix.de>
+References: <1480949684-18520-1-git-send-email-andrew.smirnov@gmail.com>
+ <1480949684-18520-3-git-send-email-andrew.smirnov@gmail.com>
+ <20161205151431.GC14158@lws-christ>
+ <CAHQ1cqErON12d4KTdYg614U5i9j8X=_-kD8+g9JtfFgak9MXBA@mail.gmail.com>
+ <20161207085105.GC2371@lws-christ>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20161208094955.4k66mbkpqvdaxqpn@pengutronix.de>
+In-Reply-To: <20161207085105.GC2371@lws-christ>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,46 +22,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] spi: mvebu: only read from bus when data is needed
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 02/16] i.MX: ocotp: Add provisions for storing multiple
+ MAC addresses
+To: Stefan Lengfeld <s.lengfeld@phytec.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Thu, Dec 08, 2016 at 10:49:55AM +0100, Uwe Kleine-K=F6nig wrote:
-> On Thu, Dec 08, 2016 at 10:39:22AM +0100, Uwe Kleine-K=F6nig wrote:
-> > This optimization reduced the time to transfer 40 MB at 50 Hz from
-> This should be MHz ------------------------------------------^^
+On Wed, Dec 07, 2016 at 09:51:05AM +0100, Stefan Lengfeld wrote:
+> Hi Andrey,
+> 
+> > I did see that patch go through, however since the title of it is
+> > "arm: imx6: ocotp: Added support for the i.MX6UL" I didn't look into
+> > it any further.
+> 
+> In the light of the Vybrid also supports two MAC addresses your patch title
+> 
+>     i.MX: ocotp: Add provisions for storing multiple MAC addresses
+> 
+> is better, since it is more generic.
+> 
+> > > Your approach uses an extra device attribute  'mac_idx' to select the meaning
+> > > of the device attribute 'mac_addr': Whether it points to the MAC0 or MAC1.
+> > >
+> > > I find it less error prone and confusing to use two seperate device attributes
+> > > 'mac_addr' and 'mac_addr1' for MAC0 and MAC1. So you don't have to check the
+> > > value of 'mac_idx before reading or writing the MAC addresses.
+> > 
+> > Can't say that I necessarily agree with you assessment. There's no
+> > need to check 'mac_idx' if it is written every time as a part of MAC
+> > address assignment operation. The reason I chose the approach that I
+> > did was mainly because it allowed to both have backwards compatibility
+> > with the old naming scheme and avoid having variable naming
+> > inconsistency (as you see in your example where one variable has a
+> > numerical suffix and the other doesn't) which I was concerned would be
+> > make scripting it more clunky than necessary.
+> 
+> hmm, I find it more convenient use
+> 
+>     bootloader$ ocotp0.mac_addr=22:33:44:55:66:77
+>     bootloader$ ocotp0.mac_addr1=22:33:44:AA:AA:AA
+> 
+> than 
+> 
+>     bootloader$ ocotp0.mac_idx=0
+>     bootloader$ ocotp0.mac_addr=22:33:44:55:66:77
+>     bootloader$ ocotp0.mac_idx=1
+>     bootloader$ ocotp0.mac_addr=22:33:44:AA:AA:AA
+> 
+> The same goes for reading the MAC addresses. The first one is more obvious,
+> because the meaning of the variable "mac_addr" does not depend on another
+> variable "mac_idx".
 
-Fixed while applying
+I agree here.
+
+> 
+> Maybe we can settle on a different approach to avoid the inconsistent variable
+> names "mac_addr" and "mac_addr1":
+
+How about always registering mac_addr0 with mac_addr as alias? Then we
+have consistent variable naming and still the backward compatible
+standard mac address.
 
 Sascha
 
-> =
-
-> Best regards
-> Uwe
-> > 214 seconds to 203 seconds.
-> =
-
-> -- =
-
-> Pengutronix e.K.                           | Uwe Kleine-K=F6nig          =
-  |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> =
-
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
