@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cEhfK-0007wj-AH
- for barebox@lists.infradead.org; Wed, 07 Dec 2016 19:14:09 +0000
-Date: Wed, 7 Dec 2016 20:13:43 +0100
+ id 1cEhsh-0000ia-IJ
+ for barebox@lists.infradead.org; Wed, 07 Dec 2016 19:27:57 +0000
+Date: Wed, 7 Dec 2016 20:27:33 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161207191343.v2y3dmzo4m67ws3c@pengutronix.de>
+Message-ID: <20161207192733.l3w4nc2s5cz47d22@pengutronix.de>
 References: <1480949684-18520-1-git-send-email-andrew.smirnov@gmail.com>
- <1480949684-18520-3-git-send-email-andrew.smirnov@gmail.com>
- <20161205151431.GC14158@lws-christ>
- <CAHQ1cqErON12d4KTdYg614U5i9j8X=_-kD8+g9JtfFgak9MXBA@mail.gmail.com>
- <20161207085105.GC2371@lws-christ>
+ <1480949684-18520-7-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20161207085105.GC2371@lws-christ>
+In-Reply-To: <1480949684-18520-7-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,65 +23,271 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 02/16] i.MX: ocotp: Add provisions for storing multiple
- MAC addresses
-To: Stefan Lengfeld <s.lengfeld@phytec.de>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 06/16] i.MX: vf610: Ramp CPU clock to maximum frequency
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Wed, Dec 07, 2016 at 09:51:05AM +0100, Stefan Lengfeld wrote:
-> Hi Andrey,
+On Mon, Dec 05, 2016 at 06:54:34AM -0800, Andrey Smirnov wrote:
+> Mask ROM leaves the CPU running at 264Mhz, so configure the clock tree
+> to such that CPU runs at maximum supported frequency, based on speed
+> grading burned into OCOTP fusebox.
 > 
-> > I did see that patch go through, however since the title of it is
-> > "arm: imx6: ocotp: Added support for the i.MX6UL" I didn't look into
-> > it any further.
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  arch/arm/mach-imx/Kconfig   |  13 +++
+>  drivers/clk/imx/clk-vf610.c | 187 +++++++++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 198 insertions(+), 2 deletions(-)
 > 
-> In the light of the Vybrid also supports two MAC addresses your patch title
-> 
->     i.MX: ocotp: Add provisions for storing multiple MAC addresses
-> 
-> is better, since it is more generic.
-> 
-> > > Your approach uses an extra device attribute  'mac_idx' to select the meaning
-> > > of the device attribute 'mac_addr': Whether it points to the MAC0 or MAC1.
-> > >
-> > > I find it less error prone and confusing to use two seperate device attributes
-> > > 'mac_addr' and 'mac_addr1' for MAC0 and MAC1. So you don't have to check the
-> > > value of 'mac_idx before reading or writing the MAC addresses.
-> > 
-> > Can't say that I necessarily agree with you assessment. There's no
-> > need to check 'mac_idx' if it is written every time as a part of MAC
-> > address assignment operation. The reason I chose the approach that I
-> > did was mainly because it allowed to both have backwards compatibility
-> > with the old naming scheme and avoid having variable naming
-> > inconsistency (as you see in your example where one variable has a
-> > numerical suffix and the other doesn't) which I was concerned would be
-> > make scripting it more clunky than necessary.
-> 
-> hmm, I find it more convenient use
-> 
->     bootloader$ ocotp0.mac_addr=22:33:44:55:66:77
->     bootloader$ ocotp0.mac_addr1=22:33:44:AA:AA:AA
-> 
-> than 
-> 
->     bootloader$ ocotp0.mac_idx=0
->     bootloader$ ocotp0.mac_addr=22:33:44:55:66:77
->     bootloader$ ocotp0.mac_idx=1
->     bootloader$ ocotp0.mac_addr=22:33:44:AA:AA:AA
-> 
-> The same goes for reading the MAC addresses. The first one is more obvious,
-> because the meaning of the variable "mac_addr" does not depend on another
-> variable "mac_idx".
+> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> index af533ea..1752335 100644
+> --- a/arch/arm/mach-imx/Kconfig
+> +++ b/arch/arm/mach-imx/Kconfig
+> @@ -750,6 +750,19 @@ config HABV3_IMG_CRT_DER
+>  
+>  endif
+>  
+> +config ADJUST_CPU_CLOCK
+> +       bool "Adjust CPU clock based on its speed grading"
+> +       select IMX_OCOTP
+> +       depends on ARCH_VF610
+> +       default y
+> +       help
+> +	  Some i.MX SoCs (e. g. Vybrid) are manufactured to have
+> +	  several variants of the same chip different only in maxumum
 
-I agree here.
+s/maxumum/maximum/
 
-> 
-> Maybe we can settle on a different approach to avoid the inconsistent variable
-> names "mac_addr" and "mac_addr1":
+> +	  CPU frequency supported. MaskROM on such chips plays it safe
+> +	  and uses the lowest possible frequency. This option
+> +	  configures Barebox to read chip's speed grade information
+> +	  and increase CPU clock to it's highest possible value.
 
-How about always registering mac_addr0 with mac_addr as alias? Then we
-have consistent variable naming and still the backward compatible
-standard mac address.
+Why do we need this configurable?
+
+> +
+>  endmenu
+>  
+>  endif
+> diff --git a/drivers/clk/imx/clk-vf610.c b/drivers/clk/imx/clk-vf610.c
+> index 04cb02f..1cf2b65 100644
+> --- a/drivers/clk/imx/clk-vf610.c
+> +++ b/drivers/clk/imx/clk-vf610.c
+> @@ -16,7 +16,9 @@
+>  #include <of_address.h>
+>  #include <linux/clkdev.h>
+>  #include <linux/clk.h>
+> +#include <notifier.h>
+>  #include <dt-bindings/clock/vf610-clock.h>
+> +#include <mach/vf610-regs.h>
+>  
+>  #include "clk.h"
+>  
+> @@ -76,6 +78,7 @@
+>  #define PLL6_CTRL		(anatop_base + 0xa0)
+>  #define PLL7_CTRL		(anatop_base + 0x20)
+>  #define ANA_MISC1		(anatop_base + 0x160)
+> +#define PLL_LOCK		(anatop_base + 0x2c0)
+>  
+>  static void __iomem *anatop_base;
+>  static void __iomem *ccm_base;
+> @@ -188,8 +191,9 @@ static void __init vf610_clocks_init(struct device_node *ccm_node)
+>  	clk[VF610_CLK_PLL6_BYPASS_SRC] = imx_clk_mux("pll6_bypass_src", PLL6_CTRL, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
+>  	clk[VF610_CLK_PLL7_BYPASS_SRC] = imx_clk_mux("pll7_bypass_src", PLL7_CTRL, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
+>  
+> -	clk[VF610_CLK_PLL1] = imx_clk_pllv3(IMX_PLLV3_GENERIC, "pll1", "pll1_bypass_src", PLL1_CTRL, 0x1);
+> -	clk[VF610_CLK_PLL2] = imx_clk_pllv3(IMX_PLLV3_GENERIC, "pll2", "pll2_bypass_src", PLL2_CTRL, 0x1);
+> +	clk[VF610_CLK_PLL1] = imx_clk_pllv3_locked(IMX_PLLV3_SYS_VF610, "pll1", "pll1_bypass_src", PLL1_CTRL, 0x1, PLL_LOCK, BIT(6));
+> +	clk[VF610_CLK_PLL2] = imx_clk_pllv3_locked(IMX_PLLV3_SYS_VF610, "pll2", "pll2_bypass_src", PLL2_CTRL, 0x1, PLL_LOCK, BIT(5));
+> +
+>  	clk[VF610_CLK_PLL3] = imx_clk_pllv3(IMX_PLLV3_USB_VF610,     "pll3", "pll3_bypass_src", PLL3_CTRL, 0x2);
+>  	clk[VF610_CLK_PLL4] = imx_clk_pllv3(IMX_PLLV3_AV,      "pll4", "pll4_bypass_src", PLL4_CTRL, 0x7f);
+>  	clk[VF610_CLK_PLL5] = imx_clk_pllv3(IMX_PLLV3_ENET,    "pll5", "pll5_bypass_src", PLL5_CTRL, 0x3);
+> @@ -441,3 +445,182 @@ static void __init vf610_clocks_init(struct device_node *ccm_node)
+>  	of_clk_add_provider(np, of_clk_src_onecell_get, &clk_data);
+>  }
+>  CLK_OF_DECLARE(vf610, "fsl,vf610-ccm", vf610_clocks_init);
+> +
+> +#ifdef CONFIG_ADJUST_CPU_CLOCK
+> +
+> +enum {
+> +	OCOTP_SPEED_GRADING_OFFSET = (0x4 * sizeof(uint32_t)),
+> +	OCOTP_SPEED_GRADING_SHIFT  = 18,
+> +	OCOTP_SPEED_GRADING_MASK   = 0b1111,
+> +
+> +	VF610_SPEED_500 = 0b1110,
+> +	VF610_SPEED_400 = 0b1001,
+> +	VF610_SPEED_266 = 0b0001,
+> +
+> +	DDRMC_CR117 = 0x01d4,
+> +	DDRMC_CR117_AXI0_FITYPEREG_SYNC = 0b01 << 16,
+> +};
+> +
+> +static int vf610_switch_cpu_clock_to_500mhz(void)
+> +{
+> +	int ret;
+> +
+> +	/*
+> +	 * When switching A5 CPU to 500Mhz we expect DDRC to be
+> +	 * clocked by PLL2_PFD2 and the system to be configured in
+> +	 * asynchronous mode.
+> +	 *
+> +	 * We also can't just use default PFD1 output of PLL1 due to
+> +	 * Errata e6235, so we have to re-clock the PLL itself and use
+> +	 * its output to clock the CPU directly.
+> +	 */
+> +
+> +	if (clk_get_parent(clk[VF610_CLK_DDR_SEL]) != clk[VF610_CLK_PLL2_PFD2]) {
+> +		pr_warn("DDRC is clocked by PLL1, can't switch CPU clock");
+> +		return -EINVAL;
+> +	}
+> +
+> +	ret = clk_set_parent(clk[VF610_CLK_SYS_SEL], clk[VF610_CLK_PLL2_BUS]);
+> +	if (ret < 0) {
+> +		pr_crit("Unable to re-parent '%s'\n",
+> +			clk[VF610_CLK_SYS_SEL]->name);
+> +		return ret;
+> +	}
+> +
+> +	ret = clk_set_rate(clk[VF610_CLK_PLL1], 500000000);
+> +	if (ret < 0) {
+> +		pr_crit("Unable to set %s to 500Mhz %d\n",
+> +			clk[VF610_CLK_PLL1]->name, ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = clk_set_parent(clk[VF610_CLK_PLL1_PFD_SEL], clk[VF610_CLK_PLL1_SYS]);
+> +	if (ret < 0) {
+> +		pr_crit("Unable to re-parent '%s'\n",
+> +			clk[VF610_CLK_PLL1_PFD_SEL]->name);
+> +		return ret;
+> +	}
+> +
+> +	ret = clk_set_parent(clk[VF610_CLK_SYS_SEL], clk[VF610_CLK_PLL1_PFD_SEL]);
+> +	if (ret < 0) {
+> +		pr_crit("Unable to re-parent '%s'\n",
+> +			clk[VF610_CLK_SYS_SEL]->name);
+> +		return ret;
+> +	}
+> +
+> +	/*
+> +	 * imx_clk_divider has no error path in its set_rate hook
+> +	 */
+> +	clk_set_rate(clk[VF610_CLK_SYS_BUS], clk_get_rate(clk[VF610_CLK_SYS_SEL]));
+> +	clk_set_rate(clk[VF610_CLK_PLATFORM_BUS], clk_get_rate(clk[VF610_CLK_SYS_BUS]) / 3);
+> +
+> +	return ret;
+> +}
+> +
+> +static int vf610_switch_cpu_clock_to_400mhz(void)
+> +{
+> +	int ret;
+> +	uint32_t cr117;
+> +	void * __iomem ddrmc = IOMEM(VF610_DDR_BASE_ADDR);
+> +
+> +	if (clk_get_parent(clk[VF610_CLK_DDR_SEL]) != clk[VF610_CLK_PLL2_PFD2]) {
+> +		pr_warn("DDRC is clocked by PLL1, can't switch CPU clock");
+> +		return -EINVAL;
+> +	}
+> +
+> +	ret = clk_set_parent(clk[VF610_CLK_PLL2_PFD_SEL], clk[VF610_CLK_PLL2_PFD2]);
+> +	if (ret < 0) {
+> +		pr_crit("Unable to re-parent '%s'\n",
+> +			clk[VF610_CLK_PLL2_PFD_SEL]->name);
+> +		return ret;
+> +	}
+> +
+> +	ret = clk_set_parent(clk[VF610_CLK_SYS_SEL], clk[VF610_CLK_PLL2_PFD_SEL]);
+> +	if (ret < 0) {
+> +		pr_crit("Unable to re-parent '%s'\n",
+> +			clk[VF610_CLK_SYS_SEL]->name);
+> +		return ret;
+> +	}
+> +
+> +	/*
+> +	 * imx_clk_divider has no error path in its set_rate hook
+> +	 */
+> +	clk_set_rate(clk[VF610_CLK_SYS_BUS], clk_get_rate(clk[VF610_CLK_SYS_SEL]));
+> +	clk_set_rate(clk[VF610_CLK_PLATFORM_BUS], clk_get_rate(clk[VF610_CLK_SYS_BUS]) / 3);
+> +
+> +	/*
+> +	 * Now that we are running off of the same clock as DDRMC we
+> +	 * shouldn't need to use clock domain corssing FIFO and
+
+s/corssing/crossing/?
+
+> +	 * asynchronous mode and instead can swithch to sychronous
+> +	 * mode for AXI0 accesses
+> +	 */
+> +	cr117 =  readl(ddrmc + DDRMC_CR117);
+> +	cr117 |= DDRMC_CR117_AXI0_FITYPEREG_SYNC;
+> +	writel(cr117, ddrmc + DDRMC_CR117);
+> +
+> +	return 0;
+> +}
+> +
+> +static int vf610_switch_cpu_clock(void)
+> +{
+> +	int ret;
+> +	struct device_node *ocotp_node;
+> +	struct cdev *ocotp;
+> +	uint32_t speed_grading;
+> +
+> +	if (!of_machine_is_compatible("fsl,vf610"))
+> +		return 0;
+> +
+> +	ocotp_node = of_find_compatible_node(NULL, NULL, "fsl,vf610-ocotp");
+> +	if (!ocotp_node) {
+> +		pr_err("Unable to find OCOTP DT node\n");
+> +		return -ENODEV;
+> +	}
+> +
+> +	ocotp = cdev_by_device_node(ocotp_node);
+> +	if (!ocotp) {
+> +		pr_err("No OCOTP character device\n");
+> +		return -ENODEV;
+> +	}
+> +
+> +	ret = cdev_read(ocotp, &speed_grading, sizeof(speed_grading),
+> +		       OCOTP_SPEED_GRADING_OFFSET, 0);
+> +	if (ret != sizeof(speed_grading)) {
+> +		pr_err("Failed to read speed grading data\n");
+> +		return ret < 0 ? ret : -EIO;
+> +	}
+
+There's a better way to access ocotp registers. see
+imx_ocotp_read_field().
+
+> +
+> +	speed_grading >>= OCOTP_SPEED_GRADING_SHIFT;
+> +	speed_grading &=  OCOTP_SPEED_GRADING_MASK;
+> +
+> +	switch (speed_grading) {
+> +	default:
+> +		pr_err("Unknown CPU speed grading %x\n", speed_grading);
+> +		return -EINVAL;
+> +
+> +	case VF610_SPEED_266:
+> +		return 0;
+> +
+> +	case VF610_SPEED_500:
+> +		ret = vf610_switch_cpu_clock_to_500mhz();
+> +		break;
+> +
+> +	case VF610_SPEED_400:
+> +		ret = vf610_switch_cpu_clock_to_400mhz();
+> +		break;
+> +	}
+> +
+> +	clock_notifier_call_chain();
+> +	return ret;
+> +}
+> +/*
+> + * We can probably gain a bit of a boot speed if we switch CPU clock
+> + * earlier, but if we do this we'd need to figure out a way how to
+> + * re-adjust the baud rate settings of the UART for DEBUG_LL
+> + * functionality, or, accept the fact that it will be unavailbe after
+
+s/unavailbe/unavailable/
 
 Sascha
 
