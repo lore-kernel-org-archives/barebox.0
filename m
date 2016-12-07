@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cJ4it-0000BX-Ss
- for barebox@lists.infradead.org; Mon, 19 Dec 2016 20:39:52 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Mon, 19 Dec 2016 21:39:28 +0100
-Message-Id: <20161219203928.29518-1-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20161217204644.4419-1-u.kleine-koenig@pengutronix.de>
-References: <20161217204644.4419-1-u.kleine-koenig@pengutronix.de>
+ id 1cEiWx-0003Na-H4
+ for barebox@lists.infradead.org; Wed, 07 Dec 2016 20:09:32 +0000
+Date: Wed, 7 Dec 2016 21:09:09 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20161207200909.juuwrnkqxwpq5yx6@pengutronix.de>
+References: <1480108031-17889-1-git-send-email-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1480108031-17889-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,33 +18,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! ata/ahci: simplify ahci_read_id
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] fixup! gpio: Add GPIO driver for Vybrid
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
----
- drivers/ata/ahci.c | 1 -
- 1 file changed, 1 deletion(-)
+On Fri, Nov 25, 2016 at 01:07:10PM -0800, Andrey Smirnov wrote:
+> ---
+> 
+> Sascha,
+> 
+> It looks like the two affected patches haven't hit 'master' yet, so I
+> am hoping these two fixups could be incorporated into 'next'.
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index cea031af5a84..b4161059707d 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -207,7 +207,6 @@ static int ahci_read_id(struct ata_port *ata, void *buf)
- {
- 	struct ahci_port *ahci = container_of(ata, struct ahci_port, ata);
- 	u8 fis[20];
--	int ret;
- 
- 	memset(fis, 0, sizeof(fis));
- 
+Yes, just did that.
+
+Sascha
+
+
 -- 
-2.11.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
