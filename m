@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cEiWx-0003Na-H4
- for barebox@lists.infradead.org; Wed, 07 Dec 2016 20:09:32 +0000
-Date: Wed, 7 Dec 2016 21:09:09 +0100
+ id 1cEib3-0006Mh-1U
+ for barebox@lists.infradead.org; Wed, 07 Dec 2016 20:13:45 +0000
+Date: Wed, 7 Dec 2016 21:13:23 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161207200909.juuwrnkqxwpq5yx6@pengutronix.de>
-References: <1480108031-17889-1-git-send-email-andrew.smirnov@gmail.com>
+Message-ID: <20161207201323.i272fd2el3vseclb@pengutronix.de>
+References: <1480061167-21590-1-git-send-email-t.remmet@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1480108031-17889-1-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1480061167-21590-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,22 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] fixup! gpio: Add GPIO driver for Vybrid
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 0/6] ubi: remove character device flag from static volumes
+To: Teresa Remmet <t.remmet@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Nov 25, 2016 at 01:07:10PM -0800, Andrey Smirnov wrote:
-> ---
+On Fri, Nov 25, 2016 at 09:06:01AM +0100, Teresa Remmet wrote:
+> Instead of marking static volume device files as character devices 
+> introduced a truncate callback for device files.
+> This makes it possible to dump static ubi volumes from flash.
 > 
-> Sascha,
-> 
-> It looks like the two affected patches haven't hit 'master' yet, so I
-> am hoping these two fixups could be incorporated into 'next'.
+> Teresa Remmet (6):
+>   libfile: copy_file: Only open regular files with O_TRUNC
+>   devfs: Add optional truncate callback for device files
+>   ubi: Add truncate callback
+>   fs: Remove O_TRUNC check for devices when open files
+>   commands: ubi: ubiupdatevol: Open device with O_TRUNC
+>   ubi: barebox: Remove character device flag from static volumes
 
-Yes, just did that.
+Applied, thanks
 
 Sascha
 
+> 
+>  commands/ubi.c            |  2 +-
+>  drivers/mtd/ubi/barebox.c | 19 ++++++++++++++++---
+>  fs/devfs.c                |  5 +++++
+>  fs/fs.c                   |  2 +-
+>  include/driver.h          |  1 +
+>  lib/libfile.c             | 22 ++++++++++++++++------
+>  6 files changed, 40 insertions(+), 11 deletions(-)
+> 
+> -- 
+> 1.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
