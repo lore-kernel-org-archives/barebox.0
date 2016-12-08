@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cF286-0002mR-QN
- for barebox@lists.infradead.org; Thu, 08 Dec 2016 17:05:13 +0000
+ id 1cF286-0002mX-QO
+ for barebox@lists.infradead.org; Thu, 08 Dec 2016 17:05:12 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Thu,  8 Dec 2016 18:04:39 +0100
-Message-Id: <1481216681-24393-1-git-send-email-jlu@pengutronix.de>
+Date: Thu,  8 Dec 2016 18:04:41 +0100
+Message-Id: <1481216681-24393-3-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1481216681-24393-1-git-send-email-jlu@pengutronix.de>
+References: <1481216681-24393-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,175 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] i.MX: IPUv3: Add parallel display support
+Subject: [PATCH 3/3] PWM: update enable status when using the internal API
 To: barebox@lists.infradead.org
-Cc: Philippe Leduc <ledphilippe@gmail.com>
 
-From: Philippe Leduc <ledphilippe@gmail.com>
+Without these, 'devinfo pwmX' will show enabled=0 even though the PWM
+was enabled (for example by a pwm-backlight).
 
-Add a driver compatible with "fsl,imx-parallel-display" in order
-to enable parallel display with the i.MX IPUv3.
-
-Signed-off-by: Philippe Leduc <ledphilippe@gmail.com>
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
+ drivers/pwm/core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-I've updated Philippe's patch to the current barebox (we now use bus_format
-with defines like MEDIA_BUS_FMT_RGB888_1X24). Also, Sascha's comments on the
-previous version have applied.
-
- drivers/video/imx-ipu-v3/Kconfig  |   4 ++
- drivers/video/imx-ipu-v3/Makefile |   1 +
- drivers/video/imx-ipu-v3/imx-pd.c | 118 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 123 insertions(+)
- create mode 100644 drivers/video/imx-ipu-v3/imx-pd.c
-
-diff --git a/drivers/video/imx-ipu-v3/Kconfig b/drivers/video/imx-ipu-v3/Kconfig
-index b5ee4efb1566..d04123731434 100644
---- a/drivers/video/imx-ipu-v3/Kconfig
-+++ b/drivers/video/imx-ipu-v3/Kconfig
-@@ -16,4 +16,8 @@ config DRIVER_VIDEO_IMX_IPUV3_HDMI
- 	depends on DRIVER_VIDEO_EDID
- 	select OFDEVICE
+diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+index 360520195a05..ee65619c4ea5 100644
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -281,6 +281,8 @@ unsigned int pwm_get_duty_cycle(struct pwm_device *pwm)
+  */
+ int pwm_enable(struct pwm_device *pwm)
+ {
++	pwm->p_enable = 1;
++
+ 	if (!test_and_set_bit(FLAG_ENABLED, &pwm->flags))
+ 		return pwm->chip->ops->enable(pwm->chip);
  
-+config DRIVER_VIDEO_IMX_IPUV3_PARALLEL
-+	bool "IPUv3 parallel display support"
-+	select OFDEVICE
+@@ -293,6 +295,8 @@ EXPORT_SYMBOL_GPL(pwm_enable);
+  */
+ void pwm_disable(struct pwm_device *pwm)
+ {
++	pwm->p_enable = 0;
 +
- endif
-diff --git a/drivers/video/imx-ipu-v3/Makefile b/drivers/video/imx-ipu-v3/Makefile
-index 2bc0aec5aeee..1f6812021e90 100644
---- a/drivers/video/imx-ipu-v3/Makefile
-+++ b/drivers/video/imx-ipu-v3/Makefile
-@@ -3,3 +3,4 @@ obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3) += ipu-dp.o ipuv3-plane.o ipufb.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3) += ipu-dc.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3_LVDS) += imx-ldb.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3_HDMI) += imx-hdmi.o
-+obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3_PARALLEL) += imx-pd.o
-diff --git a/drivers/video/imx-ipu-v3/imx-pd.c b/drivers/video/imx-ipu-v3/imx-pd.c
-new file mode 100644
-index 000000000000..09d8a3ae2a84
---- /dev/null
-+++ b/drivers/video/imx-ipu-v3/imx-pd.c
-@@ -0,0 +1,118 @@
-+/*
-+ * i.MX drm driver - parallel display implementation
-+ *
-+ * Copyright (C) 2016 Philippe Leduc
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * as published by the Free Software Foundation; either version 2
-+ * of the License, or (at your option) any later version.
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <common.h>
-+#include <fb.h>
-+#include <io.h>
-+#include <of_graph.h>
-+#include <driver.h>
-+#include <malloc.h>
-+#include <errno.h>
-+#include <init.h>
-+#include <video/vpl.h>
-+#include <video/media-bus-format.h>
-+#include <linux/err.h>
-+
-+#include "imx-ipu-v3.h"
-+
-+struct imx_pd {
-+	struct device_d *dev;
-+	struct display_timings *timings;
-+	u32 bus_format;
-+	struct vpl vpl;
-+};
-+
-+static int imx_pd_ioctl(struct vpl *vpl, unsigned int port,
-+		unsigned int cmd, void *data)
-+{
-+	struct imx_pd *imx_pd = container_of(vpl, struct imx_pd, vpl);
-+	struct ipu_di_mode *mode;
-+	struct display_timings *timings;
-+
-+	switch (cmd) {
-+	case IMX_IPU_VPL_DI_MODE:
-+		mode = data;
-+
-+		mode->di_clkflags = IPU_DI_CLKMODE_SYNC;
-+		mode->bus_format = imx_pd->bus_format;
-+		return 0;
-+
-+	case VPL_GET_VIDEOMODES:
-+		timings = data;
-+
-+		timings->num_modes   = imx_pd->timings->num_modes;
-+		timings->native_mode = imx_pd->timings->native_mode;
-+		timings->modes       = imx_pd->timings->modes;
-+		timings->edid        = NULL;
-+		return 0;
-+	}
-+
-+	return 0;
-+}
-+
-+static int imx_pd_probe(struct device_d *dev)
-+{
-+	struct device_node *node = dev->device_node;
-+	struct imx_pd *imx_pd;
-+	const char *fmt;
-+	int ret;
-+
-+	imx_pd = xzalloc(sizeof(*imx_pd));
-+	imx_pd->dev = dev;
-+
-+	ret = of_property_read_string(node, "interface-pix-fmt", &fmt);
-+	if (!ret) {
-+		if (!strcmp(fmt, "rgb24"))
-+			imx_pd->bus_format = MEDIA_BUS_FMT_RGB888_1X24;
-+		else if (!strcmp(fmt, "rgb565"))
-+			imx_pd->bus_format = MEDIA_BUS_FMT_RGB565_1X16;
-+		else if (!strcmp(fmt, "bgr666"))
-+			imx_pd->bus_format = MEDIA_BUS_FMT_RGB666_1X18;
-+		else {
-+			dev_err(dev, "invalid interface-pix-fmt\n");
-+			return -EINVAL;
-+		}
-+	}
-+
-+	imx_pd->timings = of_get_display_timings(node);
-+	if (!imx_pd->timings) {
-+		dev_err(dev, "No display timings panel found\n");
-+		return -EINVAL;
-+	}
-+
-+	imx_pd->vpl.node = node;
-+	imx_pd->vpl.ioctl = &imx_pd_ioctl;
-+	ret = vpl_register(&imx_pd->vpl);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static struct of_device_id imx_pd_dt_ids[] = {
-+	{ .compatible = "fsl,imx-parallel-display", },
-+	{ /* sentinel */ }
-+};
-+
-+static struct driver_d imx_pd_driver = {
-+	.probe			  = imx_pd_probe,
-+	.of_compatible	= imx_pd_dt_ids,
-+	.name				= "imx-parallel-display",
-+};
-+device_platform_driver(imx_pd_driver);
-+
-+MODULE_DESCRIPTION("i.MX Parallel display driver");
-+MODULE_AUTHOR("Philippe Leduc");
-+MODULE_LICENSE("GPL");
+ 	if (test_and_clear_bit(FLAG_ENABLED, &pwm->flags))
+ 		pwm->chip->ops->disable(pwm->chip);
+ }
 -- 
 2.1.4
 
