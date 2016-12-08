@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx0a-00176a03.pphosted.com ([67.231.149.52])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cEzTP-0001jv-H0
- for barebox@lists.infradead.org; Thu, 08 Dec 2016 14:15:00 +0000
-Received: from pps.filterd (m0047963.ppops.net [127.0.0.1])
- by m0047963.ppops.net-00176a03. (8.16.0.17/8.16.0.17) with SMTP id
- uB8E2qjH012858
- for <barebox@lists.infradead.org>; Thu, 8 Dec 2016 09:14:36 -0500
-From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Thu,  8 Dec 2016 14:14:28 +0000
-Message-Id: <1481206468-3959-1-git-send-email-renaud.barbier@ge.com>
+ id 1cF286-0002mU-PZ
+ for barebox@lists.infradead.org; Thu, 08 Dec 2016 17:05:12 +0000
+From: Jan Luebbe <jlu@pengutronix.de>
+Date: Thu,  8 Dec 2016 18:04:40 +0100
+Message-Id: <1481216681-24393-2-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1481216681-24393-1-git-send-email-jlu@pengutronix.de>
+References: <1481216681-24393-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,73 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ubifs: restore symlink support
+Subject: [PATCH 2/3] video: IPU framebuffer: honor clock and enable polarities
 To: barebox@lists.infradead.org
-Cc: Renaud Barbier <renaud.barbier@ge.com>, Renaud Barbier <renaud.barbier@abaco.com>
 
-In commit a63059d7 of the latest u-boot port, the function that
-returns the inode number also resolves symlink. This prevents the
-readlink entry point from doing its job and breaks the user command
-readlink and the display of symlink with the ls command.
-Remove the code following the link to restore original functionality.
+These flags are already parsed from DT, so we can just use them to
+configure the timings correctly.
 
-Signed-off-by: Renaud Barbier <renaud.barbier@abaco.com>
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- fs/ubifs/ubifs.c |   29 -----------------------------
- 1 files changed, 0 insertions(+), 29 deletions(-)
+ drivers/video/imx-ipu-v3/ipufb.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
-index 7935688..0bb1c26 100644
---- a/fs/ubifs/ubifs.c
-+++ b/fs/ubifs/ubifs.c
-@@ -496,12 +496,9 @@ static unsigned long ubifs_findfile(struct super_block *sb, const char *filename
- 	int ret;
- 	char *next;
- 	char fpath[128];
--	char symlinkpath[128];
- 	char *name = fpath;
- 	unsigned long root_inum = 1;
- 	unsigned long inum;
--	int symlink_count = 0; /* Don't allow symlink recursion */
--	char link_name[64];
+diff --git a/drivers/video/imx-ipu-v3/ipufb.c b/drivers/video/imx-ipu-v3/ipufb.c
+index 63024b546d69..343f9e557868 100644
+--- a/drivers/video/imx-ipu-v3/ipufb.c
++++ b/drivers/video/imx-ipu-v3/ipufb.c
+@@ -128,8 +128,9 @@ int ipu_crtc_mode_set(struct ipufb_info *fbi,
+ 	if (mode->sync & FB_SYNC_VERT_HIGH_ACT)
+ 		sig_cfg.Vsync_pol = 1;
  
- 	strcpy(fpath, filename);
- 
-@@ -537,32 +534,6 @@ static unsigned long ubifs_findfile(struct super_block *sb, const char *filename
- 			return 0;
- 		ui = ubifs_inode(inode);
- 
--		if ((inode->i_mode & S_IFMT) == S_IFLNK) {
--			char buf[128];
--
--			/* We have some sort of symlink recursion, bail out */
--			if (symlink_count++ > 8) {
--				printf("Symlink recursion, aborting\n");
--				return 0;
--			}
--			memcpy(link_name, ui->data, ui->data_len);
--			link_name[ui->data_len] = '\0';
--
--			if (link_name[0] == '/') {
--				/* Absolute path, redo everything without
--				 * the leading slash */
--				next = name = link_name + 1;
--				root_inum = 1;
--				continue;
--			}
--			/* Relative to cur dir */
--			sprintf(buf, "%s/%s",
--					link_name, next == NULL ? "" : next);
--			memcpy(symlinkpath, buf, sizeof(buf));
--			next = name = symlinkpath;
--			continue;
--		}
--
- 		/*
- 		 * Check if directory with this name exists
- 		 */
+-	sig_cfg.enable_pol = 1;
+-	sig_cfg.clk_pol = 0;
++	sig_cfg.enable_pol = !(mode->display_flags & DISPLAY_FLAGS_DE_LOW);
++	/* Default to driving pixel data on negative clock edges */
++	sig_cfg.clk_pol = !!(mode->display_flags & DISPLAY_FLAGS_PIXDATA_POSEDGE);
+ 	sig_cfg.width = mode->xres;
+ 	sig_cfg.height = mode->yres;
+ 	sig_cfg.h_start_width = mode->left_margin;
 -- 
-1.7.1
+2.1.4
 
 
 _______________________________________________
