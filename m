@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cEt42-00037V-8q
- for barebox@lists.infradead.org; Thu, 08 Dec 2016 07:24:23 +0000
-Received: by mail-wm0-x243.google.com with SMTP id a20so1618815wme.2
- for <barebox@lists.infradead.org>; Wed, 07 Dec 2016 23:24:01 -0800 (PST)
-Date: Thu, 8 Dec 2016 10:29:32 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20161208102932.a862c037d3aa21699a0d4123@gmail.com>
-In-Reply-To: <20161207195904.xajaxegfpqawmwcm@pengutronix.de>
-References: <20161205094033.31569-1-antonynpavlov@gmail.com>
- <20161205094033.31569-7-antonynpavlov@gmail.com>
- <20161207195904.xajaxegfpqawmwcm@pengutronix.de>
-Mime-Version: 1.0
+ id 1cEueZ-0000gE-Ao
+ for barebox@lists.infradead.org; Thu, 08 Dec 2016 09:06:13 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu,  8 Dec 2016 10:05:44 +0100
+Message-Id: <20161208090544.10267-3-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20161208090544.10267-1-u.kleine-koenig@pengutronix.de>
+References: <20161208090544.10267-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,132 +17,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC v2 6/8] bootm: add kexec ELF support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/3] spi: mvebu: various non-critical improvements to
+ armada_370_xp_spi_set_baudrate
+To: barebox@lists.infradead.org
 
-On Wed, 7 Dec 2016 20:59:04 +0100
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
-
-> On Mon, Dec 05, 2016 at 12:40:31PM +0300, Antony Pavlov wrote:
-> > Also introduce reboot() for starting already loaded
-> > via kexec ELF segments.
-> > =
-
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > ---
-> >  include/linux/reboot.h      | 14 ++++++++++++++
-> >  lib/kexec/Makefile          |  1 +
-> >  lib/kexec/kexec-bootm-elf.c | 37 +++++++++++++++++++++++++++++++++++++
-> >  3 files changed, 52 insertions(+)
-> > =
-
-> > diff --git a/include/linux/reboot.h b/include/linux/reboot.h
-> > new file mode 100644
-> > index 0000000..454ed33
-> > --- /dev/null
-> > +++ b/include/linux/reboot.h
-> > @@ -0,0 +1,14 @@
-> > +#ifndef _LINUX_REBOOT_H
-> > +#define _LINUX_REBOOT_H
-> > +
-> > +/*
-> > + * Commands accepted by the _reboot() system call.
-> > + *
-> > + * KEXEC       Restart system using a previously loaded Linux kernel
-> > + */
-> > +
-> > +#define	LINUX_REBOOT_CMD_KEXEC		0x45584543
-> > +
-> > +extern int reboot(int cmd);
-> > +
-> > +#endif /* _LINUX_REBOOT_H */
-> > diff --git a/lib/kexec/Makefile b/lib/kexec/Makefile
-> > index 8febef1..2f3dc1d 100644
-> > --- a/lib/kexec/Makefile
-> > +++ b/lib/kexec/Makefile
-> > @@ -1,3 +1,4 @@
-> >  obj-y	+=3D kexec.o
-> >  obj-y	+=3D kexec-elf.o
-> >  obj-y	+=3D kexec-elf-exec.o
-> > +obj-y	+=3D kexec-bootm-elf.o
-> > diff --git a/lib/kexec/kexec-bootm-elf.c b/lib/kexec/kexec-bootm-elf.c
-> > new file mode 100644
-> > index 0000000..ceef6c7
-> > --- /dev/null
-> > +++ b/lib/kexec/kexec-bootm-elf.c
-> > @@ -0,0 +1,37 @@
-> > +#include <bootm.h>
-> > +#include <init.h>
-> > +#include <binfmt.h>
-> > +#include <errno.h>
-> > +#include <linux/reboot.h>
-> > +#include <environment.h>
-> > +
-> > +#include "kexec.h"
-> > +
-> > +static int do_bootm_elf(struct image_data *data)
-> > +{
-> > +	kexec_load_file(data->os_file, 0);
-> > +	setenv("global.bootm.image", data->os_file);
-> > +	reboot(LINUX_REBOOT_CMD_KEXEC);
-> > +
-> > +	return -ERESTARTSYS;
-> > +}
-> > +
-> > +static struct image_handler elf_handler =3D {
-> > +	.name =3D "ELF",
-> > +	.bootm =3D do_bootm_elf,
-> > +	.filetype =3D filetype_elf,
-> > +};
-> > +
-> > +static struct binfmt_hook binfmt_elf_hook =3D {
-> > +	.type =3D filetype_elf,
-> > +	.exec =3D "bootm",
-> > +};
-> > +
-> > +static int elf_register_image_handler(void)
-> > +{
-> > +	register_image_handler(&elf_handler);
-> > +	binfmt_register(&binfmt_elf_hook);
-> > +
-> > +	return 0;
-> > +}
-> > +late_initcall(elf_register_image_handler);
-> =
-
-> The code needed to actually start a kexec kernel is architecture
-> specific, so the registration of the ELF handler should be done by this
-> architecture specific code. Then you also don't need this awkward reboot()
-> stuff. I'm thinking of a
-> =
-
-> int bootm_register_kexec_handler(int (*do_bootm)(struct image_data *data)=
-);
-> =
-
-> to be called by MIPS or malta specific code.
-> =
-
-
-Moreover current RFC v2 kexec patchseries contains too many redundant code
-(e.g. kexec uses it's own filetype-like infrastructure).
-
-I agree. Current barebox kexec infrastructure is used only for MIPS so I ca=
-n move
-some code from lib/ to arch/mips. =
-
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+IC0gSW5pdGlhbGl6ZSBwZGl2IGluIGRlY2xhcmF0aW9uCiAtIGZpeCBmb3JtYXQgc3BlY2lmaWVy
+cwogLSBzaW1wbGlmeSByYW5nZSBjaGVjaywgcGRpdiBjYW4gbmV2ZXIgYmUgPiA3CgpTaWduZWQt
+b2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRl
+PgotLS0KIGRyaXZlcnMvc3BpL212ZWJ1X3NwaS5jIHwgNyArKystLS0tCiAxIGZpbGUgY2hhbmdl
+ZCwgMyBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMv
+c3BpL212ZWJ1X3NwaS5jIGIvZHJpdmVycy9zcGkvbXZlYnVfc3BpLmMKaW5kZXggMzE5ZDIxMzg3
+MmUwLi41OGFjNjA1N2FmZTMgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc3BpL212ZWJ1X3NwaS5jCisr
+KyBiL2RyaXZlcnMvc3BpL212ZWJ1X3NwaS5jCkBAIC0xMzUsMjIgKzEzNSwyMSBAQCBzdGF0aWMg
+aW50IG12ZWJ1X3NwaV9zZXRfYmF1ZHJhdGUoc3RydWN0IG12ZWJ1X3NwaSAqcCwgdTMyIHNwZWVk
+KQogI2lmIGRlZmluZWQoQ09ORklHX0FSQ0hfQVJNQURBXzM3MCkgfHwgZGVmaW5lZChDT05GSUdf
+QVJDSF9BUk1BREFfWFApCiBzdGF0aWMgaW50IGFybWFkYV8zNzBfeHBfc3BpX3NldF9iYXVkcmF0
+ZShzdHJ1Y3QgbXZlYnVfc3BpICpwLCB1MzIgc3BlZWQpCiB7Ci0JdTMyIHBzY2wsIHBkaXYsIHZh
+bDsKKwl1MzIgcHNjbCwgcGRpdiA9IDAsIHZhbDsKIAogCS8qIHByZXNjYWxlciB2YWx1ZXM6IDEs
+MiwzLC4uLiwxNSAqLwogCXBzY2wgPSBESVZfUk9VTkRfVVAoY2xrX2dldF9yYXRlKHAtPmNsayks
+IHNwZWVkKTsKIAogCS8qIGFkZGl0aW9uYWwgcHJlc2NhbGVyIGRpdmlkZXI6IDEsIDIsIDQsIDgs
+IDE2LCAzMiwgNjQsIDEyOCAqLwotCXBkaXYgPSAwOwogCXdoaWxlIChwc2NsID4gMTUgJiYgcGRp
+diA8PSA3KSB7CiAJCXBzY2wgPSBESVZfUk9VTkRfVVAocHNjbCwgMik7CiAJCXBkaXYrKzsKIAl9
+CiAKLQlkZXZfZGJnKHAtPm1hc3Rlci5kZXYsICIlczogY2xrID0gJWx1LCBzcGVlZCA9ICV1LCBw
+c2NsID0gJWQsIHBkaXYgPSAlZFxuIiwKKwlkZXZfZGJnKHAtPm1hc3Rlci5kZXYsICIlczogY2xr
+ID0gJWx1LCBzcGVlZCA9ICV1LCBwc2NsID0gJXUsIHBkaXYgPSAldVxuIiwKIAkJX19mdW5jX18s
+IGNsa19nZXRfcmF0ZShwLT5jbGspLCBzcGVlZCwgcHNjbCwgcGRpdik7CiAKLQlpZiAocHNjbCA+
+IDE1IHx8IHBkaXYgPiA3KQorCWlmIChwc2NsID4gMTUpCiAJCXJldHVybiAtRUlOVkFMOwogCiAJ
+dmFsID0gcmVhZGwocC0+YmFzZSArIFNQSV9JRl9DT05GSUcpICYgfihJRl9DTEtfUFJFU0NBTEVf
+TUFTSyk7Ci0tIAoyLjEwLjIKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
+cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
