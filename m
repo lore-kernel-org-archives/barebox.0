@@ -1,12 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp117.ord1c.emailsrvr.com ([108.166.43.117])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cEwJp-0004V0-Re
- for barebox@lists.infradead.org; Thu, 08 Dec 2016 10:52:55 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu,  8 Dec 2016 11:52:25 +0100
-Message-Id: <20161208105226.27858-1-u.kleine-koenig@pengutronix.de>
+ id 1cExXs-0007QC-52
+ for barebox@lists.infradead.org; Thu, 08 Dec 2016 12:11:30 +0000
+References: <005301d250dd$d02054e0$7060fea0$@beiwy.com>
+From: Ian Abbott <abbotti@mev.co.uk>
+Message-ID: <33edc937-c508-8b14-1505-f703a428c766@mev.co.uk>
+Date: Thu, 8 Dec 2016 12:11:03 +0000
 MIME-Version: 1.0
+In-Reply-To: <005301d250dd$d02054e0$7060fea0$@beiwy.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,49 +17,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] spi: mvebu: add LSB support
-To: barebox@lists.infradead.org
+Subject: Re: AM335x Porting Questions
+To: Jonathan Stackhouse <jon@beiwy.com>, barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBkcml2ZXJzL3NwaS9tdmVidV9zcGkuYyB8IDI4ICsrKysrKysrKysrKysr
-KysrKysrKysrKy0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAyNCBpbnNlcnRpb25zKCspLCA0IGRlbGV0
-aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL212ZWJ1X3NwaS5jIGIvZHJpdmVycy9z
-cGkvbXZlYnVfc3BpLmMKaW5kZXggNjkyMWNiOGNkN2RiLi5jNWQ4NzMyZTRmODQgMTAwNjQ0Ci0t
-LSBhL2RyaXZlcnMvc3BpL212ZWJ1X3NwaS5jCisrKyBiL2RyaXZlcnMvc3BpL212ZWJ1X3NwaS5j
-CkBAIC0zMSw4ICszMSwxMyBAQAogI2RlZmluZSAgSUZfUkVBRF9SRUFEWQkJQklUKDEpCiAjZGVm
-aW5lICBJRl9DU19FTkFCTEUJCUJJVCgwKQogI2RlZmluZSBTUElfSUZfQ09ORklHCQkweDA0CisK
-KyNkZWZpbmUgIElGX1JYTFNCRgkJQklUKDE0KQorI2RlZmluZSAgSUZfVFhMU0JGCQlCSVQoMTMp
-CisKICNkZWZpbmUgIElGX0NMS19ESVYoeCkJCSgoeCkgPDwgMTEpCiAjZGVmaW5lICBJRl9DTEtf
-RElWX01BU0sJKDB4NyA8PCAxMSkKKwogI2RlZmluZSAgSUZfRkFTVF9SRUFECQlCSVQoMTApCiAj
-ZGVmaW5lICBJRl9BRERSRVNTX0xFTl80QllURQkoMyA8PCA4KQogI2RlZmluZSAgSUZfQUREUkVT
-U19MRU5fM0JZVEUJKDIgPDwgOCkKQEAgLTE5Miw2ICsxOTcsOCBAQCBzdGF0aWMgaW50IGRvdmVf
-c3BpX3NldF9iYXVkcmF0ZShzdHJ1Y3QgbXZlYnVfc3BpICpwLCB1MzIgc3BlZWQpCiAKIHN0YXRp
-YyBpbnQgbXZlYnVfc3BpX3NldF9tb2RlKHN0cnVjdCBtdmVidV9zcGkgKnAsIHU4IG1vZGUpCiB7
-CisJdTMyIHZhbDsKKwogCS8qCiAJICogRnJvbSBwdWJsaWMgZGF0YXNoZWV0cyBvZiBPcmlvbiBT
-b0NzLCBpdCBpcyB1bmNsZWFyCiAJICogaWYgdGhlIFNQSSBjb250cm9sbGVyIHN1cHBvcnRzIHNl
-dHRpbmcgQ1BPTC9DUEhBLgpAQCAtMjAyLDEyICsyMDksMTkgQEAgc3RhdGljIGludCBtdmVidV9z
-cGlfc2V0X21vZGUoc3RydWN0IG12ZWJ1X3NwaSAqcCwgdTggbW9kZSkKIAkgKiBvdGhlciBtb2Rl
-IHRoYW4gU1BJX01PREUwLgogCSAqLwogCi0JaWYgKChtb2RlICYgKFNQSV9DUE9MfFNQSV9DUEhB
-KSkgPT0gU1BJX01PREVfMCkKLQkJcmV0dXJuIDA7CisJaWYgKChtb2RlICYgKFNQSV9DUE9MfFNQ
-SV9DUEhBKSkgIT0gU1BJX01PREVfMCkgeworCQlwcl9lcnIoIiVzOiB1bnN1cHBvcnRlZCBTUEkg
-bW9kZSAlMDJ4XG4iLCBfX2Z1bmNfXywgbW9kZSk7CisJCXJldHVybiAtRUlOVkFMOworCX0KIAot
-CXByX2VycigiJXM6IHVuc3VwcG9ydGVkIFNQSSBtb2RlICUwMnhcbiIsIF9fZnVuY19fLCBtb2Rl
-KTsKKwl2YWwgPSByZWFkbChwLT5iYXNlICsgU1BJX0lGX0NPTkZJRyk7CisJaWYgKG1vZGUgJiBT
-UElfTFNCX0ZJUlNUKQorCQl2YWwgfD0gSUZfUlhMU0JGIHwgSUZfVFhMU0JGOworCWVsc2UKKwkJ
-dmFsICY9IH4oSUZfUlhMU0JGIHwgSUZfVFhMU0JGKTsKKwl3cml0ZWwodmFsLCBwLT5iYXNlICsg
-U1BJX0lGX0NPTkZJRyk7CiAKLQlyZXR1cm4gLUVJTlZBTDsKKwlyZXR1cm4gMDsKIH0KIAogc3Rh
-dGljIGludCBtdmVidV9zcGlfc2V0dXAoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSkKQEAgLTI5Myw2
-ICszMDcsMTIgQEAgc3RhdGljIGludCBtdmVidV9zcGlfdHJhbnNmZXIoc3RydWN0IHNwaV9kZXZp
-Y2UgKnNwaSwgc3RydWN0IHNwaV9tZXNzYWdlICptc2cpCiAJaW50IHJldDsKIAlzdHJ1Y3QgbXZl
-YnVfc3BpICpwcml2ID0gcHJpdl9mcm9tX3NwaV9kZXZpY2Uoc3BpKTsKIAorCXJldCA9IG12ZWJ1
-X3NwaV9zZXRfbW9kZShwcml2LCBzcGktPm1vZGUpOworCWlmIChyZXQpIHsKKwkJZGV2X2Vycigm
-c3BpLT5kZXYsICJGYWlsZWQgdG8gc2V0IG1vZGUgKDB4JXgpXG4iLCAodW5zaWduZWQpc3BpLT5t
-b2RlKTsKKwkJcmV0dXJuIHJldDsKKwl9CisKIAlyZXQgPSBtdmVidV9zcGlfc2V0X2NzKHByaXYs
-IHNwaS0+Y2hpcF9zZWxlY3QsIHNwaS0+bW9kZSwgdHJ1ZSk7CiAJaWYgKHJldCkKIAkJcmV0dXJu
-IHJldDsKLS0gCjIuMTAuMgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
-ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On 07/12/16 23:01, Jonathan Stackhouse wrote:
+> Hello Barebox Community!
+>
+> I'm attempting to port the Beaglebone board files
+> (arch/arm/boards/beaglebone) to another similar board, but am having a bit
+> of a hard time understanding what all I need to do.
+>
+> Is there a specific procedure that I should follow when porting barebox or
+> is it merely making changes/additions to the files in
+> arch/{ARCH}/boards/some-similar-board? I've read though the README in the
+> barebox root directory as well as several of the docs in the Documentation
+> folder and the online user manual but have not found the information I am
+> looking for.
+
+Having done something similar recently (but on socfpga, not am335x), the 
+directories/files in question are:
+
+  arch/${ARCH}/boards/Makefile
+  arch/${ARCH}/boards/YOUR-BOARD/* (most of your source code here)
+  arch/${ARCH}/mach-SOMETHING/Kconfig (or arch/${ARCH}/Kconfig for some 
+${ARCH}s)
+  arch/${ARCH}/configs/YOUR-BOARD_defconfig (optional)
+  arch/${ARCH}/configs/YOUR-BOARD-xload_defconfig (optional)
+  arch/${ARCH}/dts/Makefile (if ${ARCH} uses device-tree)
+  arch/${ARCH}/dts/DTS-FOR-YOUR-BOARD.dts (if $(ARCH} uses device-tree)
+  arch/${ARCH}/dts/OTHER-COMMON-DTS-STUFF.dtsi (optional, as required)
+  images/Makefile.PICK-OR-CREATE-ONE
+  images/Makefile (if you created a new images/Makefile.*)
+
+You don't need the defconfig files if you only manage the configuration 
+outside of barebox, unless the board is to be merged back into barebox 
+upstream.
+
+> Do the SPL/MLO and barebox.bin write any data to log files for debugging
+> purposes? If so, how do I configure the builds for these logs and how do I
+> access them? I'm asking because I noticed under Debugging in menuconfig that
+> I can set the "default loglevel" but I don't know where the log gets stored,
+> and I wanted to view it to see whether my MLO is working or not.
+
+Logs go to the console, which is usually a serial port or a frame buffer.
+
+> Additionally, I've attempted to get the MLO to initialize UART0 and UART2
+> for debugging purposes, but can't seem to get the "MLO>" prompt to appear in
+> PuTTY (settings are 115200, 8N1, no flow control). I have console support
+> set to "full", Console activation strategy set to "activate first console on
+> startup", low level debug messages enabled, and the OMAP Debug UART Port
+> Selection set to 2. I also used the same UART initialization code that is in
+> the beaglebone lowlevel.c file, with the exception that I set it up for
+> UART2 instead of UART0. What else I need to do?
+
+You might need to set the default baudrate to 115200 under "General 
+Settings --> Default baudrate" in the barebox configurations for MLO and 
+final-stage bootloader.
+
+You may also need to do some work on your .dts files to mark &uart2 
+status as "okay" and set up the pin muxing for uart2.
+
+> I apologize for this rather broad and long email, but I've been battling
+> this for quite some time and have finally decided to reach out for help.
+
+Good luck!  I've never actually used barebox on any AM335x based boards 
+(though I tinkered with u-boot a couple of years ago), and am a bit of a 
+noob with barebox myself.
+
+-- 
+-=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=-
+-=(                          Web: http://www.mev.co.uk/  )=-
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
