@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ua0-x22c.google.com ([2607:f8b0:400c:c08::22c])
+Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cFIc2-0004lP-TT
- for barebox@lists.infradead.org; Fri, 09 Dec 2016 10:41:16 +0000
-Received: by mail-ua0-x22c.google.com with SMTP id 12so13521349uas.2
- for <barebox@lists.infradead.org>; Fri, 09 Dec 2016 02:40:50 -0800 (PST)
-MIME-Version: 1.0
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Fri, 9 Dec 2016 11:40:28 +0100
-Message-ID: <CAGm1_ku-HbKbBH0Oj_aw-DvJqBpmwthVqBeQ3QiupUAyhtO8Cg@mail.gmail.com>
+ id 1cFLzh-0001BE-8E
+ for barebox@lists.infradead.org; Fri, 09 Dec 2016 14:17:51 +0000
+Received: by mail-wm0-x243.google.com with SMTP id a20so4303915wme.2
+ for <barebox@lists.infradead.org>; Fri, 09 Dec 2016 06:17:28 -0800 (PST)
+From: yegorslists@googlemail.com
+Date: Fri,  9 Dec 2016 15:17:15 +0100
+Message-Id: <1481293035-28916-2-git-send-email-yegorslists@googlemail.com>
+In-Reply-To: <1481293035-28916-1-git-send-email-yegorslists@googlemail.com>
+References: <1481293035-28916-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,24 +18,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: am335x: assert sysreset (NRESET_INOUT)
-To: barebox <barebox@lists.infradead.org>
-Cc: t.remmet@phytec.de, d.schultz@phytec.de
+Subject: [PATCH 2/2] arm: baltos: prolong global reset
+To: barebox@lists.infradead.org
 
-How to get am335x to assert sysreset signal for peripherals? U-Boot is
-asserting this signal, when executing reset command.
+From: Yegor Yefremov <yegorslists@googlemail.com>
 
-If I boot my 3.18.x kernel with u-boot and perform warm reset I can
-see sysreset signal, if I boot via barebox I don't see it during
-reboot.
+Prolong global reset to the max. value of 0xff. Such a long reset
+is required for some peripherals found on Baltos devices.
 
-Any idea?
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ arch/arm/boards/vscom-baltos/lowlevel.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Yegor
+diff --git a/arch/arm/boards/vscom-baltos/lowlevel.c b/arch/arm/boards/vscom-baltos/lowlevel.c
+index 87f2a74..9f829b9 100644
+--- a/arch/arm/boards/vscom-baltos/lowlevel.c
++++ b/arch/arm/boards/vscom-baltos/lowlevel.c
+@@ -126,6 +126,12 @@ ENTRY_FUNCTION(start_am33xx_baltos_sdram, r0, r1, r2)
+ {
+ 	void *fdt;
+ 
++	/*
++	 * Prolong global reset duration to the max. value (0xff)
++	 * and leave power domain reset to its default value (0x10).
++	 */
++	__raw_writel(0x000010ff, AM33XX_PRM_RSTTIME);
++
+ 	fdt = __dtb_am335x_baltos_minimal_start;
+ 
+ 	fdt -= get_runtime_offset();
+-- 
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
