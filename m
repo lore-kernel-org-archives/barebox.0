@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cGUx7-0005Fu-Sn
- for barebox@lists.infradead.org; Mon, 12 Dec 2016 18:03:55 +0000
-Received: by mail-pg0-x242.google.com with SMTP id p66so1666344pga.2
- for <barebox@lists.infradead.org>; Mon, 12 Dec 2016 10:03:37 -0800 (PST)
+ id 1cGUx2-0005F4-RS
+ for barebox@lists.infradead.org; Mon, 12 Dec 2016 18:03:49 +0000
+Received: by mail-pg0-x243.google.com with SMTP id p66so1665978pga.2
+ for <barebox@lists.infradead.org>; Mon, 12 Dec 2016 10:03:27 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 12 Dec 2016 10:02:54 -0800
-Message-Id: <1481565788-9115-8-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 12 Dec 2016 10:02:49 -0800
+Message-Id: <1481565788-9115-3-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,48 +23,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 07/21] i.MX: ocotp: Add imx_ocotp_sense_enable()
+Subject: [PATCH v2 02/21] i.MX: ocotp: Move memory reversing into a subroutine
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add imx_ocotp_sense_enable() function to allow changing that aspect of
-OCOTP driver behaviour before calling imx_ocotp_read_field()
+Move memory reversing, found in imx_ocotp_get_mac and
+imx_ocotp_set_mac, into a subroutine to avoid code duplication.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/ocotp.h | 1 +
- arch/arm/mach-imx/ocotp.c              | 7 +++++++
- 2 files changed, 8 insertions(+)
+ arch/arm/mach-imx/ocotp.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/ocotp.h b/arch/arm/mach-imx/include/mach/ocotp.h
-index 430bc75..5474c27 100644
---- a/arch/arm/mach-imx/include/mach/ocotp.h
-+++ b/arch/arm/mach-imx/include/mach/ocotp.h
-@@ -16,5 +16,6 @@
- int imx_ocotp_read_field(uint32_t field, unsigned *value);
- int imx_ocotp_write_field(uint32_t field, unsigned value);
- int imx_ocotp_permanent_write(int enable);
-+bool imx_ocotp_sense_enable(bool enable);
- 
- #endif /* __MACH_IMX_OCOTP_H */
 diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
-index 2c89f5e..fe12363 100644
+index 68ff0ce..7f625d8 100644
 --- a/arch/arm/mach-imx/ocotp.c
 +++ b/arch/arm/mach-imx/ocotp.c
-@@ -359,6 +359,13 @@ int imx_ocotp_permanent_write(int enable)
+@@ -397,19 +397,26 @@ static void imx_ocotp_init_dt(struct device_d *dev, void __iomem *base)
+ 	}
+ }
+ 
++static void memreverse(void *dest, const void *src, size_t n)
++{
++	char *destp = dest;
++	const char *srcp = src + n - 1;
++
++	while(n--)
++		*destp++ = *srcp--;
++}
++
+ static int imx_ocotp_get_mac(struct param_d *param, void *priv)
+ {
+ 	struct ocotp_priv *ocotp_priv = priv;
+ 	char buf[8];
+-	int i, ret;
++	int ret;
+ 
+ 	ret = regmap_bulk_read(ocotp_priv->map, MAC_OFFSET, buf, MAC_BYTES);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	for (i = 0; i < 6; i++)
+-		ocotp_priv->ethaddr[i] = buf[5 - i];
+-
++	memreverse(ocotp_priv->ethaddr, buf, 6);
  	return 0;
  }
  
-+bool imx_ocotp_sense_enable(bool enable)
-+{
-+	const bool old_value = imx_ocotp->sense_enable;
-+	imx_ocotp->sense_enable = enable;
-+	return old_value;
-+}
-+
- static uint32_t inc_offset(uint32_t offset)
+@@ -417,10 +424,9 @@ static int imx_ocotp_set_mac(struct param_d *param, void *priv)
  {
- 	if ((offset & 0x3) == 0x3)
+ 	struct ocotp_priv *ocotp_priv = priv;
+ 	char buf[8];
+-	int i, ret;
++	int ret;
+ 
+-	for (i = 0; i < 6; i++)
+-		buf[5 - i] = ocotp_priv->ethaddr[i];
++	memreverse(buf, ocotp_priv->ethaddr, 6);
+ 	buf[6] = 0; buf[7] = 0;
+ 
+ 	ret = regmap_bulk_write(ocotp_priv->map, MAC_OFFSET, buf, MAC_BYTES);
 -- 
 2.5.5
 
