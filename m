@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cGUxW-0005Ly-U5
+ id 1cGUxX-0005MP-8t
  for barebox@lists.infradead.org; Mon, 12 Dec 2016 18:04:21 +0000
-Received: by mail-pg0-x242.google.com with SMTP id p66so1667357pga.2
- for <barebox@lists.infradead.org>; Mon, 12 Dec 2016 10:04:00 -0800 (PST)
+Received: by mail-pg0-x244.google.com with SMTP id 3so1670773pgd.0
+ for <barebox@lists.infradead.org>; Mon, 12 Dec 2016 10:04:02 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 12 Dec 2016 10:03:06 -0800
-Message-Id: <1481565788-9115-20-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 12 Dec 2016 10:03:07 -0800
+Message-Id: <1481565788-9115-21-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,25 +23,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 19/21] i.MX: Default CONFI_USB_IMX_PHY to 'y' on Vybrid
+Subject: [PATCH v2 20/21] i.MX: imx-usb-misc: Add Vybrid support
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Add code to do usbmisc initialization on VF610 family of SoCs. Based on
+analogous code from Linux kernel.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/imx/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/imx/imx-usb-misc.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/usb/imx/Kconfig b/drivers/usb/imx/Kconfig
-index b0c6a41..8e6f315 100644
---- a/drivers/usb/imx/Kconfig
-+++ b/drivers/usb/imx/Kconfig
-@@ -16,4 +16,4 @@ config USB_IMX_CHIPIDEA
+diff --git a/drivers/usb/imx/imx-usb-misc.c b/drivers/usb/imx/imx-usb-misc.c
+index 7c18ca2..9cae440 100644
+--- a/drivers/usb/imx/imx-usb-misc.c
++++ b/drivers/usb/imx/imx-usb-misc.c
+@@ -422,6 +422,28 @@ static __maybe_unused struct imx_usb_misc_data mx6_data = {
+ 	.post_init = mx6_post_init,
+ };
  
- config USB_IMX_PHY
- 	bool
--	default y if ARCH_IMX6 && GENERIC_PHY
-+	default y if (ARCH_IMX6 || ARCH_VF610) && GENERIC_PHY
++#define VF610_OVER_CUR_DIS		BIT(7)
++
++static __maybe_unused int vf610_initialize_usb_hw(void __iomem *base, int port,
++		unsigned int flags)
++{
++	u32 reg;
++
++	if (port >= 1)
++		return -EINVAL;
++
++	if (flags & MXC_EHCI_DISABLE_OVERCURRENT) {
++		reg = readl(base);
++		writel(reg | VF610_OVER_CUR_DIS, base);
++	}
++
++	return 0;
++}
++
++static __maybe_unused struct imx_usb_misc_data vf610_data = {
++	.init = vf610_initialize_usb_hw,
++};
++
+ static struct platform_device_id imx_usbmisc_ids[] = {
+ #ifdef CONFIG_ARCH_IMX25
+ 	{
+@@ -519,6 +541,12 @@ static __maybe_unused struct of_device_id imx_usbmisc_dt_ids[] = {
+ 		.data = &mx6_data,
+ 	},
+ #endif
++#ifdef CONFIG_ARCH_VF610
++	{
++		.compatible = "fsl,vf610-usbmisc",
++		.data = &vf610_data,
++	},
++#endif
+ 	{
+ 		/* sentinel */
+ 	},
 -- 
 2.5.5
 
