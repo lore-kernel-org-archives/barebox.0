@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cGUxX-0005MP-8t
- for barebox@lists.infradead.org; Mon, 12 Dec 2016 18:04:21 +0000
-Received: by mail-pg0-x244.google.com with SMTP id 3so1670773pgd.0
- for <barebox@lists.infradead.org>; Mon, 12 Dec 2016 10:04:02 -0800 (PST)
+ id 1cGUxb-0005NU-UB
+ for barebox@lists.infradead.org; Mon, 12 Dec 2016 18:04:26 +0000
+Received: by mail-pg0-x242.google.com with SMTP id x23so1670681pgx.3
+ for <barebox@lists.infradead.org>; Mon, 12 Dec 2016 10:04:03 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 12 Dec 2016 10:03:07 -0800
-Message-Id: <1481565788-9115-21-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 12 Dec 2016 10:03:08 -0800
+Message-Id: <1481565788-9115-22-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,64 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 20/21] i.MX: imx-usb-misc: Add Vybrid support
+Subject: [PATCH v2 21/21] i.MX: vf610-twr: Remove MSCM setup code
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add code to do usbmisc initialization on VF610 family of SoCs. Based on
-analogous code from Linux kernel.
+Recent kernel versions should have appropriate driver code that sets up
+interrupt rounting correctly, so there's no need for that to be done in
+the bootloader.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/imx/imx-usb-misc.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ arch/arm/boards/freescale-vf610-twr/lowlevel.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/usb/imx/imx-usb-misc.c b/drivers/usb/imx/imx-usb-misc.c
-index 7c18ca2..9cae440 100644
---- a/drivers/usb/imx/imx-usb-misc.c
-+++ b/drivers/usb/imx/imx-usb-misc.c
-@@ -422,6 +422,28 @@ static __maybe_unused struct imx_usb_misc_data mx6_data = {
- 	.post_init = mx6_post_init,
- };
+diff --git a/arch/arm/boards/freescale-vf610-twr/lowlevel.c b/arch/arm/boards/freescale-vf610-twr/lowlevel.c
+index 6504273..109d44e 100644
+--- a/arch/arm/boards/freescale-vf610-twr/lowlevel.c
++++ b/arch/arm/boards/freescale-vf610-twr/lowlevel.c
+@@ -29,14 +29,9 @@ ENTRY_FUNCTION(start_vf610_twr, r0, r1, r2)
+ {
+ 	int i;
+ 	void *fdt;
+-	void __iomem *mscm = IOMEM(VF610_MSCM_BASE_ADDR);
  
-+#define VF610_OVER_CUR_DIS		BIT(7)
-+
-+static __maybe_unused int vf610_initialize_usb_hw(void __iomem *base, int port,
-+		unsigned int flags)
-+{
-+	u32 reg;
-+
-+	if (port >= 1)
-+		return -EINVAL;
-+
-+	if (flags & MXC_EHCI_DISABLE_OVERCURRENT) {
-+		reg = readl(base);
-+		writel(reg | VF610_OVER_CUR_DIS, base);
-+	}
-+
-+	return 0;
-+}
-+
-+static __maybe_unused struct imx_usb_misc_data vf610_data = {
-+	.init = vf610_initialize_usb_hw,
-+};
-+
- static struct platform_device_id imx_usbmisc_ids[] = {
- #ifdef CONFIG_ARCH_IMX25
- 	{
-@@ -519,6 +541,12 @@ static __maybe_unused struct of_device_id imx_usbmisc_dt_ids[] = {
- 		.data = &mx6_data,
- 	},
- #endif
-+#ifdef CONFIG_ARCH_VF610
-+	{
-+		.compatible = "fsl,vf610-usbmisc",
-+		.data = &vf610_data,
-+	},
-+#endif
- 	{
- 		/* sentinel */
- 	},
+ 	vf610_cpu_lowlevel_init();
+ 
+-	for (i = 0; i < VF610_MSCM_IRSPRC_NUM; i++)
+-		writew(VF610_MSCM_IRSPRC_CP0_EN,
+-		       mscm + VF610_MSCM_IRSPRC(i));
+-
+ 	if (IS_ENABLED(CONFIG_DEBUG_LL))
+ 		setup_uart();
+ 
 -- 
 2.5.5
 
