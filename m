@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cGUxB-0005Fw-Jo
- for barebox@lists.infradead.org; Mon, 12 Dec 2016 18:03:58 +0000
-Received: by mail-pg0-x243.google.com with SMTP id 3so1669801pgd.0
- for <barebox@lists.infradead.org>; Mon, 12 Dec 2016 10:03:38 -0800 (PST)
+ id 1cGUxD-0005G7-70
+ for barebox@lists.infradead.org; Mon, 12 Dec 2016 18:04:01 +0000
+Received: by mail-pg0-x244.google.com with SMTP id x23so1669718pgx.3
+ for <barebox@lists.infradead.org>; Mon, 12 Dec 2016 10:03:40 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 12 Dec 2016 10:02:55 -0800
-Message-Id: <1481565788-9115-9-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 12 Dec 2016 10:02:56 -0800
+Message-Id: <1481565788-9115-10-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,31 +23,166 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 08/21] i.MX: imx6-fusemap: Fix SJC_RESP_LOCK width
+Subject: [PATCH v2 09/21] i.MX: Add fusemap for VF610
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-According to the datasheet SJC_RESP_LOCK is on bit wide, adjust the
-definition correspondingly.
+Add fusemap header for VF610 and move out fuse definitions, that are
+shared with i.MX6 familiy into a sperate file (ocotp-fusemap.h).
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/imx6-fusemap.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-imx/include/mach/imx6-fusemap.h  | 42 +---------------------
+ arch/arm/mach-imx/include/mach/ocotp-fusemap.h | 49 ++++++++++++++++++++++++++
+ arch/arm/mach-imx/include/mach/vf610-fusemap.h | 15 ++++++++
+ 3 files changed, 65 insertions(+), 41 deletions(-)
+ create mode 100644 arch/arm/mach-imx/include/mach/ocotp-fusemap.h
+ create mode 100644 arch/arm/mach-imx/include/mach/vf610-fusemap.h
 
 diff --git a/arch/arm/mach-imx/include/mach/imx6-fusemap.h b/arch/arm/mach-imx/include/mach/imx6-fusemap.h
-index 5fdd904..efa16fd 100644
+index efa16fd..e14044e 100644
 --- a/arch/arm/mach-imx/include/mach/imx6-fusemap.h
 +++ b/arch/arm/mach-imx/include/mach/imx6-fusemap.h
-@@ -6,7 +6,7 @@
- #define IMX6_OCOTP_TESTER_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(0) | OCOTP_WIDTH(2))
- #define IMX6_OCOTP_BOOT_CFG_LOCK	(OCOTP_WORD(0x400) | OCOTP_BIT(2) | OCOTP_WIDTH(2))
- #define IMX6_OCOTP_MEM_TRIM_LOCK	(OCOTP_WORD(0x400) | OCOTP_BIT(4) | OCOTP_WIDTH(2))
--#define IMX6_OCOTP_SJC_RESP_LOCK	(OCOTP_WORD(0x400) | OCOTP_BIT(6) | OCOTP_WIDTH(2))
-+#define IMX6_OCOTP_SJC_RESP_LOCK	(OCOTP_WORD(0x400) | OCOTP_BIT(6) | OCOTP_WIDTH(1))
- #define IMX6_OCOTP_MAC_ADDR_LOCK	(OCOTP_WORD(0x400) | OCOTP_BIT(8) | OCOTP_WIDTH(2))
- #define IMX6_OCOTP_GP1_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(10) | OCOTP_WIDTH(2))
- #define IMX6_OCOTP_GP2_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(12) | OCOTP_WIDTH(2))
+@@ -1,62 +1,22 @@
+ #ifndef __MACH_IMX_IMX6_OCOTP_H
+ #define __MACH_IMX_IMX6_OCOTP_H
+ 
+-#include <mach/ocotp.h>
++#include <mach/ocotp-fusemap.h>
+ 
+-#define IMX6_OCOTP_TESTER_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(0) | OCOTP_WIDTH(2))
+-#define IMX6_OCOTP_BOOT_CFG_LOCK	(OCOTP_WORD(0x400) | OCOTP_BIT(2) | OCOTP_WIDTH(2))
+-#define IMX6_OCOTP_MEM_TRIM_LOCK	(OCOTP_WORD(0x400) | OCOTP_BIT(4) | OCOTP_WIDTH(2))
+-#define IMX6_OCOTP_SJC_RESP_LOCK	(OCOTP_WORD(0x400) | OCOTP_BIT(6) | OCOTP_WIDTH(1))
+-#define IMX6_OCOTP_MAC_ADDR_LOCK	(OCOTP_WORD(0x400) | OCOTP_BIT(8) | OCOTP_WIDTH(2))
+-#define IMX6_OCOTP_GP1_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(10) | OCOTP_WIDTH(2))
+-#define IMX6_OCOTP_GP2_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(12) | OCOTP_WIDTH(2))
+-#define IMX6_OCOTP_SRK_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(14) | OCOTP_WIDTH(1))
+-#define IMX6_OCOTP_ANALOG_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(18) | OCOTP_WIDTH(2))
+-#define IMX6_OCOTP_MISC_CONF_LOCK	(OCOTP_WORD(0x400) | OCOTP_BIT(22) | OCOTP_WIDTH(1))
+-
+-/* 0 <= n <= 1 */
+-#define IMX6_OCOTP_UNIQUE_ID(n)		(OCOTP_WORD(0x410 + 0x10 * (n)) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
+ #define IMX6_OCOTP_SI_REV		(OCOTP_WORD(0x430) | OCOTP_BIT(16) | OCOTP_WIDTH(4))
+-#define IMX6_OCOTP_NUM_CORES		(OCOTP_WORD(0x430) | OCOTP_BIT(20) | OCOTP_WIDTH(2))
+ #define IMX6_OCOTP_SATA_RST_SRC		(OCOTP_WORD(0x430) | OCOTP_BIT(24) | OCOTP_WIDTH(1))
+-#define IMX6_OCOTP_MLB_DISABLE		(OCOTP_WORD(0x430) | OCOTP_BIT(26) | OCOTP_WIDTH(1))
+ #define IMX6_OCOTP_VPU_DISABLE		(OCOTP_WORD(0x440) | OCOTP_BIT(15) | OCOTP_WIDTH(1))
+ #define IMX6_OCOTP_SPEED_GRADING	(OCOTP_WORD(0x440) | OCOTP_BIT(16) | OCOTP_WIDTH(2))
+-#define IMX6_OCOTP_BOOT_CFG1		(OCOTP_WORD(0x450) | OCOTP_BIT(0) | OCOTP_WIDTH(8))
+-#define IMX6_OCOTP_BOOT_CFG2		(OCOTP_WORD(0x450) | OCOTP_BIT(8) | OCOTP_WIDTH(8))
+-#define IMX6_OCOTP_BOOT_CFG3		(OCOTP_WORD(0x450) | OCOTP_BIT(16) | OCOTP_WIDTH(8))
+-#define IMX6_OCOTP_BOOT_CFG4		(OCOTP_WORD(0x450) | OCOTP_BIT(24) | OCOTP_WIDTH(8))
+-#define IMX6_OCOTP_SEC_CONFIG		(OCOTP_WORD(0x460) | OCOTP_BIT(1) | OCOTP_WIDTH(1))
+-#define IMX6_OCOTP_DIR_BT_DIS		(OCOTP_WORD(0x460) | OCOTP_BIT(3) | OCOTP_WIDTH(1))
+-#define IMX6_OCOTP_BT_FUSE_SEL		(OCOTP_WORD(0x460) | OCOTP_BIT(4) | OCOTP_WIDTH(1))
+ #define IMX6_OCOTP_DDR3_CONFIG		(OCOTP_WORD(0x460) | OCOTP_BIT(8) | OCOTP_WIDTH(8))
+ #define IMX6_OCOTP_HDCP			(OCOTP_WORD(0x460) | OCOTP_BIT(16) | OCOTP_WIDTH(1))
+-#define IMX6_OCOTP_SJC_DISABLE		(OCOTP_WORD(0x460) | OCOTP_BIT(20) | OCOTP_WIDTH(1))
+-#define IMX6_OCOTP_WDOG_ENABLE		(OCOTP_WORD(0x460) | OCOTP_BIT(21) | OCOTP_WIDTH(1))
+-#define IMX6_OCOTP_JTAG_SMODE		(OCOTP_WORD(0x460) | OCOTP_BIT(22) | OCOTP_WIDTH(2))
+-#define IMX6_OCOTP_KTE			(OCOTP_WORD(0x460) | OCOTP_BIT(26) | OCOTP_WIDTH(1))
+-#define IMX6_OCOTP_JTAG_HEO		(OCOTP_WORD(0x460) | OCOTP_BIT(27) | OCOTP_WIDTH(1))
+ #define IMX6_OCOTP_TZASC_ENABLE		(OCOTP_WORD(0x460) | OCOTP_BIT(28) | OCOTP_WIDTH(1))
+ #define IMX6_OCOTP_SDMMC_HYS_EN		(OCOTP_WORD(0x460) | OCOTP_BIT(29) | OCOTP_WIDTH(1))
+ #define IMX6_OCOTP_eMMC_RESET_EN	(OCOTP_WORD(0x460) | OCOTP_BIT(30) | OCOTP_WIDTH(1))
+-#define IMX6_OCOTP_NAND_READ_CMD_CODE1	(OCOTP_WORD(0x470) | OCOTP_BIT(0) | OCOTP_WIDTH(8))
+-#define IMX6_OCOTP_NAND_READ_CMD_CODE2	(OCOTP_WORD(0x470) | OCOTP_BIT(8) | OCOTP_WIDTH(8))
+ #define IMX6_OCOTP_BT_LPB_POLARITY	(OCOTP_WORD(0x470) | OCOTP_BIT(20) | OCOTP_WIDTH(1))
+ #define IMX6_OCOTP_LPB_BOOT		(OCOTP_WORD(0x470) | OCOTP_BIT(21) | OCOTP_WIDTH(2))
+ #define IMX6_OCOTP_MMC_DLL_DLY		(OCOTP_WORD(0x470) | OCOTP_BIT(24) | OCOTP_WIDTH(7))
+ #define IMX6_OCOTP_TEMPERATURE_GRADE	(OCOTP_WORD(0x480) | OCOTP_BIT(6) | OCOTP_WIDTH(2))
+ #define IMX6_OCOTP_POWER_GATE_CORES	(OCOTP_WORD(0x4d0) | OCOTP_BIT(31) | OCOTP_WIDTH(1))
+-#define IMX6_OCOTP_USB_VID		(OCOTP_WORD(0x4f0) | OCOTP_BIT(0) | OCOTP_WIDTH(16))
+-#define IMX6_OCOTP_USB_PID		(OCOTP_WORD(0x4f0) | OCOTP_BIT(16) | OCOTP_WIDTH(16))
+-/* 0 <= n <= 7 */
+-#define IMX6_OCOTP_SRK_HASH(n)		(OCOTP_WORD(0x580 + 0x10 * (n)) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
+-#define IMX6_OCOTP_SJC_RESP_31_0	(OCOTP_WORD(0x600) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
+-#define IMX6_OCOTP_SJC_RESP_55_32	(OCOTP_WORD(0x610) | OCOTP_BIT(0) | OCOTP_WIDTH(24))
+-#define IMX6_OCOTP_MAC_ADDR_31_0	(OCOTP_WORD(0x620) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
+-#define IMX6_OCOTP_MAC_ADDR_47_32	(OCOTP_WORD(0x630) | OCOTP_BIT(0) | OCOTP_WIDTH(16))
+-#define IMX6_OCOTP_GP1			(OCOTP_WORD(0x660) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
+-#define IMX6_OCOTP_GP2			(OCOTP_WORD(0x670) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
+-#define IMX6_OCOTP_PAD_SETTINGS		(OCOTP_WORD(0x6d0) | OCOTP_BIT(0) | OCOTP_WIDTH(6))
+ #define IMX6DQ_OCOTP_TEST_PORT_DISABLE	(OCOTP_WORD(0x6e0) | OCOTP_BIT(1) | OCOTP_WIDTH(1))
+ #define IMX6SDL_OCOTP_FIELD_RETURN	(OCOTP_WORD(0x6e0) | OCOTP_BIT(0) | OCOTP_WIDTH(1))
+ 
+diff --git a/arch/arm/mach-imx/include/mach/ocotp-fusemap.h b/arch/arm/mach-imx/include/mach/ocotp-fusemap.h
+new file mode 100644
+index 0000000..44b58ca
+--- /dev/null
++++ b/arch/arm/mach-imx/include/mach/ocotp-fusemap.h
+@@ -0,0 +1,49 @@
++#ifndef __MACH_IMX_OCOTP_FUSEMAP_H
++#define __MACH_IMX_OCOTP_FUSEMAP_H
++
++#include <mach/ocotp.h>
++
++#define OCOTP_TESTER_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(0) | OCOTP_WIDTH(2))
++#define OCOTP_BOOT_CFG_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(2) | OCOTP_WIDTH(2))
++#define OCOTP_MEM_TRIM_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(4) | OCOTP_WIDTH(2))
++#define OCOTP_SJC_RESP_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(6) | OCOTP_WIDTH(1))
++#define OCOTP_MAC_ADDR_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(8) | OCOTP_WIDTH(2))
++#define OCOTP_GP1_LOCK			(OCOTP_WORD(0x400) | OCOTP_BIT(10) | OCOTP_WIDTH(2))
++#define OCOTP_GP2_LOCK			(OCOTP_WORD(0x400) | OCOTP_BIT(12) | OCOTP_WIDTH(2))
++#define OCOTP_SRK_LOCK			(OCOTP_WORD(0x400) | OCOTP_BIT(14) | OCOTP_WIDTH(1))
++#define OCOTP_ANALOG_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(18) | OCOTP_WIDTH(2))
++#define OCOTP_MISC_CONF_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(22) | OCOTP_WIDTH(1))
++
++/* 0 <= n <= 1 */
++#define OCOTP_UNIQUE_ID(n)		(OCOTP_WORD(0x410 + 0x10 * (n)) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
++#define OCOTP_NUM_CORES			(OCOTP_WORD(0x430) | OCOTP_BIT(20) | OCOTP_WIDTH(2))
++#define OCOTP_MLB_DISABLE		(OCOTP_WORD(0x430) | OCOTP_BIT(26) | OCOTP_WIDTH(1))
++
++#define OCOTP_BOOT_CFG1			(OCOTP_WORD(0x450) | OCOTP_BIT(0) | OCOTP_WIDTH(8))
++#define OCOTP_BOOT_CFG2			(OCOTP_WORD(0x450) | OCOTP_BIT(8) | OCOTP_WIDTH(8))
++#define OCOTP_BOOT_CFG3			(OCOTP_WORD(0x450) | OCOTP_BIT(16) | OCOTP_WIDTH(8))
++#define OCOTP_BOOT_CFG4			(OCOTP_WORD(0x450) | OCOTP_BIT(24) | OCOTP_WIDTH(8))
++#define OCOTP_SEC_CONFIG_1		(OCOTP_WORD(0x460) | OCOTP_BIT(1) | OCOTP_WIDTH(1))
++#define OCOTP_DIR_BT_DIS		(OCOTP_WORD(0x460) | OCOTP_BIT(3) | OCOTP_WIDTH(1))
++#define OCOTP_BT_FUSE_SEL		(OCOTP_WORD(0x460) | OCOTP_BIT(4) | OCOTP_WIDTH(1))
++#define OCOTP_SJC_DISABLE		(OCOTP_WORD(0x460) | OCOTP_BIT(20) | OCOTP_WIDTH(1))
++#define OCOTP_WDOG_ENABLE		(OCOTP_WORD(0x460) | OCOTP_BIT(21) | OCOTP_WIDTH(1))
++#define OCOTP_JTAG_SMODE		(OCOTP_WORD(0x460) | OCOTP_BIT(22) | OCOTP_WIDTH(2))
++#define OCOTP_KTE			(OCOTP_WORD(0x460) | OCOTP_BIT(26) | OCOTP_WIDTH(1))
++#define OCOTP_JTAG_HEO			(OCOTP_WORD(0x460) | OCOTP_BIT(27) | OCOTP_WIDTH(1))
++#define OCOTP_NAND_READ_CMD_CODE1	(OCOTP_WORD(0x470) | OCOTP_BIT(0) | OCOTP_WIDTH(8))
++#define OCOTP_NAND_READ_CMD_CODE2	(OCOTP_WORD(0x470) | OCOTP_BIT(8) | OCOTP_WIDTH(8))
++#define OCOTP_TEMP_SENSE		(OCOTP_WORD(0x4e0) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
++#define OCOTP_USB_VID			(OCOTP_WORD(0x4f0) | OCOTP_BIT(0) | OCOTP_WIDTH(16))
++#define OCOTP_USB_PID			(OCOTP_WORD(0x4f0) | OCOTP_BIT(16) | OCOTP_WIDTH(16))
++/* 0 <= n <= 7 */
++#define OCOTP_SRK_HASH(n)		(OCOTP_WORD(0x580 + 0x10 * (n)) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
++#define OCOTP_SJC_RESP_31_0		(OCOTP_WORD(0x600) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
++#define OCOTP_SJC_RESP_55_32		(OCOTP_WORD(0x610) | OCOTP_BIT(0) | OCOTP_WIDTH(24))
++#define OCOTP_MAC_ADDR_31_0		(OCOTP_WORD(0x620) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
++#define OCOTP_MAC_ADDR_47_32		(OCOTP_WORD(0x630) | OCOTP_BIT(0) | OCOTP_WIDTH(16))
++#define OCOTP_GP1			(OCOTP_WORD(0x660) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
++#define OCOTP_GP2			(OCOTP_WORD(0x670) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
++#define OCOTP_PAD_SETTINGS		(OCOTP_WORD(0x6d0) | OCOTP_BIT(0) | OCOTP_WIDTH(6))
++
++#endif /* __MACH_IMX_OCOTP_FUSEMAP_H */
+diff --git a/arch/arm/mach-imx/include/mach/vf610-fusemap.h b/arch/arm/mach-imx/include/mach/vf610-fusemap.h
+new file mode 100644
+index 0000000..a56faf1
+--- /dev/null
++++ b/arch/arm/mach-imx/include/mach/vf610-fusemap.h
+@@ -0,0 +1,15 @@
++#ifndef __MACH_VF610_OCOTP_H
++#define __MACH_VF610_OCOTP_H
++
++#include <mach/ocotp-fusemap.h>
++
++#define VF610_OCOTP_CPU_BUS_FRQ		OCOTP_WORD(0x430) | OCOTP_BIT(22) | OCOTP_WIDTH(1)
++#define VF610_OCOTP_OVG_DISABLE		OCOTP_WORD(0x430) | OCOTP_BIT(30) | OCOTP_WIDTH(1)
++#define	VF610_OCOTP_SEC_CONFIG_0	OCOTP_WORD(0x440) | OCOTP_BIT(1) | OCOTP_WIDTH(1)
++#define	VF610_OCOTP_SPEED_GRADING	OCOTP_WORD(0x440) | OCOTP_BIT(18) | OCOTP_WIDTH(4)
++#define VF610_OCOTP_MAC_ADDR0_31_0	OCOTP_MAC_ADDR_31_0
++#define VF610_OCOTP_MAC_ADDR0_47_32	OCOTP_MAC_ADDR_47_32
++#define VF610_OCOTP_MAC_ADDR1_31_0	(OCOTP_WORD(0x640) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
++#define VF610_OCOTP_MAC_ADDR1_47_32	(OCOTP_WORD(0x650) | OCOTP_BIT(0) | OCOTP_WIDTH(16))
++
++#endif
 -- 
 2.5.5
 
