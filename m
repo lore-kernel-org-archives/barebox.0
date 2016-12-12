@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cEecu-0007d3-PW
- for barebox@lists.infradead.org; Wed, 07 Dec 2016 15:59:25 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Wed,  7 Dec 2016 16:59:00 +0100
-Message-Id: <20161207155900.29320-1-u.kleine-koenig@pengutronix.de>
+ id 1cGIyU-0001Ch-3V
+ for barebox@lists.infradead.org; Mon, 12 Dec 2016 05:16:30 +0000
+Date: Mon, 12 Dec 2016 06:16:08 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20161212051608.a4jdtxrfntczftca@pengutronix.de>
+References: <20161208093922.23194-1-u.kleine-koenig@pengutronix.de>
+ <20161208094955.4k66mbkpqvdaxqpn@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20161208094955.4k66mbkpqvdaxqpn@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,41 +19,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] spi: mvebu: fix baudrate selection for Armada 370/XP
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] spi: mvebu: only read from bus when data is needed
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-VGhlcmUgYXJlIHR3byBwcm9ibGVtcyB0aGF0IG1hZGUgdGhlIGRyaXZlciBjaG9vc2UgdGhlIHdy
-b25nIGJhdWRyYXRlCmNhbGN1bGF0aW9uIGFsZ29yaXRobToKCmEpIFRoZSBjb21wYXRpYmxlIHVz
-ZWQgb24gMzcwL1hQIGlzbid0IG1hcnZlbGwsYXJtYWRhLTM3MC14cC1zcGkgYnV0CiAgIG1hcnZl
-bGwsYXJtYWRhLTM3MC1zcGkgb3IgbWFydmVsbCxhcm1hZGEteHAtc3BpIHJlc3BlY3RpdmVseS4K
-YikgVGhlIHByb2JlIGZ1bmN0aW9uIHVzZXMKICAgCW1hdGNoID0gb2ZfbWF0Y2hfbm9kZShtdmVi
-dV9zcGlfZHRfaWRzLCBkZXYtPmRldmljZV9ub2RlKTsKICAgdG8gZGV0ZXJtaW5lIHRoZSByaWdo
-dCBhbGdvcml0aG0uIEFzIHRoZSBkZXZpY2VzIGFyZSBhbHNvIGNvbXBhdGlibGUKICAgdG8gbWFy
-dmVsbCxvcmlvbi1zcGkgYW5kIHRoaXMgY29tZXMgZmlyc3QgaW4gbXZlYnVfc3BpX2R0X2lkc1td
-CiAgIGl0J3MgYWx3YXlzIHRoZSBvbGRlciBPcmlvbiBhbGdvcml0aG0gdGhhdCBpcyB1c2VkLgoK
-VGhpcyBwYXRjaCBmaXhlcyBib3RoIHByb2JsZW1zLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWlu
-ZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBkcml2ZXJzL3Nw
-aS9tdmVidV9zcGkuYyB8IDggKysrKystLS0KIDEgZmlsZSBjaGFuZ2VkLCA1IGluc2VydGlvbnMo
-KyksIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvbXZlYnVfc3BpLmMg
-Yi9kcml2ZXJzL3NwaS9tdmVidV9zcGkuYwppbmRleCBlZTdiMjEyOTYyZjcuLmUzNDA2ODZiZDY3
-NiAxMDA2NDQKLS0tIGEvZHJpdmVycy9zcGkvbXZlYnVfc3BpLmMKKysrIGIvZHJpdmVycy9zcGkv
-bXZlYnVfc3BpLmMKQEAgLTMxNywxNiArMzE3LDE4IEBAIGVycl90cmFuc2ZlcjoKIH0KIAogc3Rh
-dGljIHN0cnVjdCBvZl9kZXZpY2VfaWQgbXZlYnVfc3BpX2R0X2lkc1tdID0gewotCXsgLmNvbXBh
-dGlibGUgPSAibWFydmVsbCxvcmlvbi1zcGkiLAotCSAgLmRhdGEgPSAmbXZlYnVfc3BpX3NldF9i
-YXVkcmF0ZSB9LAogI2lmIGRlZmluZWQoQ09ORklHX0FSQ0hfQVJNQURBXzM3MCkgfHwgZGVmaW5l
-ZChDT05GSUdfQVJDSF9BUk1BREFfWFApCi0JeyAuY29tcGF0aWJsZSA9ICJtYXJ2ZWxsLGFybWFk
-YS0zNzAteHAtc3BpIiwKKwl7IC5jb21wYXRpYmxlID0gIm1hcnZlbGwsYXJtYWRhLTM3MC1zcGki
-LAorCSAgLmRhdGEgPSAmYXJtYWRhXzM3MF94cF9zcGlfc2V0X2JhdWRyYXRlIH0sCisJeyAuY29t
-cGF0aWJsZSA9ICJtYXJ2ZWxsLGFybWFkYS14cC1zcGkiLAogCSAgLmRhdGEgPSAmYXJtYWRhXzM3
-MF94cF9zcGlfc2V0X2JhdWRyYXRlIH0sCiAjZW5kaWYKICNpZiBkZWZpbmVkKENPTkZJR19BUkNI
-X0RPVkUpCiAJeyAuY29tcGF0aWJsZSA9ICJtYXJ2ZWxsLGRvdmUtc3BpIiwKIAkgIC5kYXRhID0g
-JmRvdmVfc3BpX3NldF9iYXVkcmF0ZSB9LAogI2VuZGlmCisJeyAuY29tcGF0aWJsZSA9ICJtYXJ2
-ZWxsLG9yaW9uLXNwaSIsCisJICAuZGF0YSA9ICZtdmVidV9zcGlfc2V0X2JhdWRyYXRlIH0sCiAJ
-eyB9CiB9OwogCi0tIAoyLjEwLjIKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
-ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
-Cg==
+On Thu, Dec 08, 2016 at 10:49:55AM +0100, Uwe Kleine-K=F6nig wrote:
+> On Thu, Dec 08, 2016 at 10:39:22AM +0100, Uwe Kleine-K=F6nig wrote:
+> > This optimization reduced the time to transfer 40 MB at 50 Hz from
+> This should be MHz ------------------------------------------^^
+
+Fixed while applying
+
+Sascha
+
+> =
+
+> Best regards
+> Uwe
+> > 214 seconds to 203 seconds.
+> =
+
+> -- =
+
+> Pengutronix e.K.                           | Uwe Kleine-K=F6nig          =
+  |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> =
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
