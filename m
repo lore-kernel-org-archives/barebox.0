@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cGF0S-00072b-Iv
- for barebox@lists.infradead.org; Mon, 12 Dec 2016 01:02:17 +0000
-Received: by mail-wm0-x242.google.com with SMTP id g23so7944554wme.1
- for <barebox@lists.infradead.org>; Sun, 11 Dec 2016 17:01:56 -0800 (PST)
-Received: from localhost.localdomain (ppp109-252-108-40.pppoe.spdop.ru.
- [109.252.108.40])
- by smtp.gmail.com with ESMTPSA id l137sm2795913lfb.7.2016.12.11.17.01.52
- for <barebox@lists.infradead.org>
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 11 Dec 2016 17:01:53 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 12 Dec 2016 04:01:45 +0300
-Message-Id: <20161212010146.18667-2-antonynpavlov@gmail.com>
-In-Reply-To: <20161212010146.18667-1-antonynpavlov@gmail.com>
-References: <20161212010146.18667-1-antonynpavlov@gmail.com>
+ id 1cGIt8-0007a4-HA
+ for barebox@lists.infradead.org; Mon, 12 Dec 2016 05:10:59 +0000
+Date: Mon, 12 Dec 2016 06:10:33 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20161212051033.wijp6boime3xh6ll@pengutronix.de>
+References: <1481206468-3959-1-git-send-email-renaud.barbier@ge.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1481206468-3959-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,167 +18,96 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v3 1/2] serial: add driver for SiFive UART
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ubifs: restore symlink support
+To: Renaud Barbier <renaud.barbier@ge.com>
+Cc: barebox@lists.infradead.org, Renaud Barbier <renaud.barbier@abaco.com>
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
---
-TODO:
+On Thu, Dec 08, 2016 at 02:14:28PM +0000, Renaud Barbier wrote:
+> In commit a63059d7 of the latest u-boot port, the function that
+> returns the inode number also resolves symlink. This prevents the
+> readlink entry point from doing its job and breaks the user command
+> readlink and the display of symlink with the ls command.
+> Remove the code following the link to restore original functionality.
+> 
+> Signed-off-by: Renaud Barbier <renaud.barbier@abaco.com>
+> ---
+>  fs/ubifs/ubifs.c |   29 -----------------------------
+>  1 files changed, 0 insertions(+), 29 deletions(-)
 
-  * add speed setup support;
-  * add Tx FIFO check.
----
- drivers/serial/Kconfig         |   3 ++
- drivers/serial/Makefile        |   1 +
- drivers/serial/serial_sifive.c | 109 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 113 insertions(+)
+Applied, thanks
 
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index b112d7e..70509b9 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -117,6 +117,9 @@ config DRIVER_SERIAL_S3C_AUTOSYNC
- 	  Say Y here if you want to use the auto flow feature of this
- 	  UART. RTS and CTS will be handled by the hardware when enabled.
- 
-+config DRIVER_SERIAL_SIFIVE
-+	bool "SiFive serial driver"
-+
- config DRIVER_SERIAL_PXA
- 	bool "PXA serial driver"
- 	depends on ARCH_PXA
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index 189e777..368e992 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -20,3 +20,4 @@ obj-$(CONFIG_DRIVER_SERIAL_AUART)		+= serial_auart.o
- obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
- obj-$(CONFIG_DRIVER_SERIAL_EFI_STDIO)		+= efi-stdio.o
- obj-$(CONFIG_DRIVER_SERIAL_DIGIC)		+= serial_digic.o
-+obj-$(CONFIG_DRIVER_SERIAL_SIFIVE)		+= serial_sifive.o
-diff --git a/drivers/serial/serial_sifive.c b/drivers/serial/serial_sifive.c
-new file mode 100644
-index 0000000..06e3521
---- /dev/null
-+++ b/drivers/serial/serial_sifive.c
-@@ -0,0 +1,109 @@
-+/*
-+ * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include <io.h>
-+
-+#define UART_RX_OFFSET 0
-+#define UART_TX_OFFSET 0
-+#define UART_TX_COUNT_OFFSET 0x4
-+#define UART_RX_COUNT_OFFSET 0x8
-+#define UART_DIVIDER_OFFSET  0xC
-+
-+static inline uint32_t sifive_serial_readl(struct console_device *cdev,
-+						uint32_t offset)
-+{
-+	void __iomem *base = cdev->dev->priv;
-+
-+	return readl(base + offset);
-+}
-+
-+static inline void sifive_serial_writel(struct console_device *cdev,
-+					uint32_t value, uint32_t offset)
-+{
-+	void __iomem *base = cdev->dev->priv;
-+
-+	writel(value, base + offset);
-+}
-+
-+static int sifive_serial_setbaudrate(struct console_device *cdev, int baudrate)
-+{
-+	/* FIXME: no baudrate setup at the momement :( */
-+
-+	return 0;
-+}
-+
-+static void sifive_serial_putc(struct console_device *cdev, char c)
-+{
-+	sifive_serial_writel(cdev, c, UART_TX_OFFSET);
-+}
-+
-+static int sifive_serial_getc(struct console_device *cdev)
-+{
-+	uint32_t rxcnt;
-+
-+	do {
-+		rxcnt = sifive_serial_readl(cdev, UART_RX_COUNT_OFFSET);
-+	} while (!rxcnt);
-+
-+	return sifive_serial_readl(cdev, UART_RX_OFFSET);
-+}
-+
-+static int sifive_serial_tstc(struct console_device *cdev)
-+{
-+	uint32_t rxcnt = sifive_serial_readl(cdev, UART_RX_COUNT_OFFSET);
-+
-+	return (rxcnt != 0);
-+}
-+
-+static int sifive_serial_probe(struct device_d *dev)
-+{
-+	struct resource *iores;
-+	struct console_device *cdev;
-+
-+	cdev = xzalloc(sizeof(struct console_device));
-+	iores = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(iores))
-+		return PTR_ERR(iores);
-+	dev->priv = IOMEM(iores->start);
-+	cdev->dev = dev;
-+	cdev->tstc = &sifive_serial_tstc;
-+	cdev->putc = &sifive_serial_putc;
-+	cdev->getc = &sifive_serial_getc;
-+	cdev->setbrg = &sifive_serial_setbaudrate;
-+
-+	console_register(cdev);
-+
-+	return 0;
-+}
-+
-+static __maybe_unused struct of_device_id sifive_serial_dt_ids[] = {
-+	{
-+		.compatible = "sifive,uart",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
-+static struct driver_d sifive_serial_driver = {
-+	.name  = "sifive-uart",
-+	.probe = sifive_serial_probe,
-+	.of_compatible = DRV_OF_COMPAT(sifive_serial_dt_ids),
-+};
-+console_platform_driver(sifive_serial_driver);
+Sascha
+
+> 
+> diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
+> index 7935688..0bb1c26 100644
+> --- a/fs/ubifs/ubifs.c
+> +++ b/fs/ubifs/ubifs.c
+> @@ -496,12 +496,9 @@ static unsigned long ubifs_findfile(struct super_block *sb, const char *filename
+>  	int ret;
+>  	char *next;
+>  	char fpath[128];
+> -	char symlinkpath[128];
+>  	char *name = fpath;
+>  	unsigned long root_inum = 1;
+>  	unsigned long inum;
+> -	int symlink_count = 0; /* Don't allow symlink recursion */
+> -	char link_name[64];
+>  
+>  	strcpy(fpath, filename);
+>  
+> @@ -537,32 +534,6 @@ static unsigned long ubifs_findfile(struct super_block *sb, const char *filename
+>  			return 0;
+>  		ui = ubifs_inode(inode);
+>  
+> -		if ((inode->i_mode & S_IFMT) == S_IFLNK) {
+> -			char buf[128];
+> -
+> -			/* We have some sort of symlink recursion, bail out */
+> -			if (symlink_count++ > 8) {
+> -				printf("Symlink recursion, aborting\n");
+> -				return 0;
+> -			}
+> -			memcpy(link_name, ui->data, ui->data_len);
+> -			link_name[ui->data_len] = '\0';
+> -
+> -			if (link_name[0] == '/') {
+> -				/* Absolute path, redo everything without
+> -				 * the leading slash */
+> -				next = name = link_name + 1;
+> -				root_inum = 1;
+> -				continue;
+> -			}
+> -			/* Relative to cur dir */
+> -			sprintf(buf, "%s/%s",
+> -					link_name, next == NULL ? "" : next);
+> -			memcpy(symlinkpath, buf, sizeof(buf));
+> -			next = name = symlinkpath;
+> -			continue;
+> -		}
+> -
+>  		/*
+>  		 * Check if directory with this name exists
+>  		 */
+> -- 
+> 1.7.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.10.2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
