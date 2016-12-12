@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cGUx2-0005F4-RS
- for barebox@lists.infradead.org; Mon, 12 Dec 2016 18:03:49 +0000
-Received: by mail-pg0-x243.google.com with SMTP id p66so1665978pga.2
- for <barebox@lists.infradead.org>; Mon, 12 Dec 2016 10:03:27 -0800 (PST)
+ id 1cGUx7-0005FA-Nf
+ for barebox@lists.infradead.org; Mon, 12 Dec 2016 18:03:54 +0000
+Received: by mail-pf0-x242.google.com with SMTP id 144so4711846pfv.0
+ for <barebox@lists.infradead.org>; Mon, 12 Dec 2016 10:03:33 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 12 Dec 2016 10:02:49 -0800
-Message-Id: <1481565788-9115-3-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 12 Dec 2016 10:02:52 -0800
+Message-Id: <1481565788-9115-6-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,66 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 02/21] i.MX: ocotp: Move memory reversing into a subroutine
+Subject: [PATCH 05/21] i.MX: ocotp: Initialize OCOTP as early as possible
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Move memory reversing, found in imx_ocotp_get_mac and
-imx_ocotp_set_mac, into a subroutine to avoid code duplication.
+On Vybrid SoC OCOTP module contains speed grading information that is
+needed to correctly adjust CPU clock to its maxumum rate, so we need to
+have this information handy as early as possible.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/ocotp.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ arch/arm/mach-imx/ocotp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
-index 68ff0ce..7f625d8 100644
+index 55bbbb7..2c89f5e 100644
 --- a/arch/arm/mach-imx/ocotp.c
 +++ b/arch/arm/mach-imx/ocotp.c
-@@ -397,19 +397,26 @@ static void imx_ocotp_init_dt(struct device_d *dev, void __iomem *base)
- 	}
- }
+@@ -610,4 +610,4 @@ static int imx_ocotp_init(void)
  
-+static void memreverse(void *dest, const void *src, size_t n)
-+{
-+	char *destp = dest;
-+	const char *srcp = src + n - 1;
-+
-+	while(n--)
-+		*destp++ = *srcp--;
-+}
-+
- static int imx_ocotp_get_mac(struct param_d *param, void *priv)
- {
- 	struct ocotp_priv *ocotp_priv = priv;
- 	char buf[8];
--	int i, ret;
-+	int ret;
- 
- 	ret = regmap_bulk_read(ocotp_priv->map, MAC_OFFSET, buf, MAC_BYTES);
- 	if (ret < 0)
- 		return ret;
- 
--	for (i = 0; i < 6; i++)
--		ocotp_priv->ethaddr[i] = buf[5 - i];
--
-+	memreverse(ocotp_priv->ethaddr, buf, 6);
  	return 0;
  }
- 
-@@ -417,10 +424,9 @@ static int imx_ocotp_set_mac(struct param_d *param, void *priv)
- {
- 	struct ocotp_priv *ocotp_priv = priv;
- 	char buf[8];
--	int i, ret;
-+	int ret;
- 
--	for (i = 0; i < 6; i++)
--		buf[5 - i] = ocotp_priv->ethaddr[i];
-+	memreverse(buf, ocotp_priv->ethaddr, 6);
- 	buf[6] = 0; buf[7] = 0;
- 
- 	ret = regmap_bulk_write(ocotp_priv->map, MAC_OFFSET, buf, MAC_BYTES);
+-coredevice_initcall(imx_ocotp_init);
++postcore_initcall(imx_ocotp_init);
 -- 
 2.5.5
 
