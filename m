@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cGUxS-0005LI-86
- for barebox@lists.infradead.org; Mon, 12 Dec 2016 18:04:15 +0000
-Received: by mail-pg0-x244.google.com with SMTP id p66so1667262pga.2
- for <barebox@lists.infradead.org>; Mon, 12 Dec 2016 10:03:58 -0800 (PST)
+ id 1cGUxU-0005KZ-Gh
+ for barebox@lists.infradead.org; Mon, 12 Dec 2016 18:04:18 +0000
+Received: by mail-pf0-x241.google.com with SMTP id y68so4710452pfb.1
+ for <barebox@lists.infradead.org>; Mon, 12 Dec 2016 10:03:56 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 12 Dec 2016 10:03:05 -0800
-Message-Id: <1481565788-9115-19-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 12 Dec 2016 10:03:04 -0800
+Message-Id: <1481565788-9115-18-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,33 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 18/21] i.MX: imx-usb-phy: Add VF610 OF compatiblity string
+Subject: [PATCH v2 17/21] i.MX: iomux-vf610: Add missing pad definitions
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From looking at analogous Linux driver code it seems that all of the
-differences between code "imx23-usbphy" and "vf610-usbphy" pertain to
-suspend/resume functionality, which shouldn't affetct Barebox. As a
-result this commit just adds a compatiblity string and no other code.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/imx/imx-usb-phy.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/mach-imx/include/mach/iomux-vf610.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/usb/imx/imx-usb-phy.c b/drivers/usb/imx/imx-usb-phy.c
-index 9f46f8d..274153b 100644
---- a/drivers/usb/imx/imx-usb-phy.c
-+++ b/drivers/usb/imx/imx-usb-phy.c
-@@ -168,6 +168,8 @@ static __maybe_unused struct of_device_id imx_usbphy_dt_ids[] = {
- 	{
- 		.compatible = "fsl,imx23-usbphy",
- 	}, {
-+		.compatible = "fsl,vf610-usbphy",
-+	}, {
- 		/* sentinel */
- 	},
- };
+diff --git a/arch/arm/mach-imx/include/mach/iomux-vf610.h b/arch/arm/mach-imx/include/mach/iomux-vf610.h
+index 087d6f2..b5c7f7f 100644
+--- a/arch/arm/mach-imx/include/mach/iomux-vf610.h
++++ b/arch/arm/mach-imx/include/mach/iomux-vf610.h
+@@ -163,9 +163,13 @@ enum {
+ 	VF610_PAD_PTD22__NF_IO6		= IOMUX_PAD(0x0120, 0x0120, 2, __NA_, 0, VF610_NFC_IO_PAD_CTRL),
+ 	VF610_PAD_PTD21__NF_IO5		= IOMUX_PAD(0x0124, 0x0124, 2, __NA_, 0, VF610_NFC_IO_PAD_CTRL),
+ 	VF610_PAD_PTD20__NF_IO4		= IOMUX_PAD(0x0128, 0x0128, 2, __NA_, 0, VF610_NFC_IO_PAD_CTRL),
++	VF610_PAD_PTD19__GPIO_75	= IOMUX_PAD(0x012C, 0x012C, 0, __NA_, 0, VF610_GPIO_PAD_CTRL),
+ 	VF610_PAD_PTD19__NF_IO3		= IOMUX_PAD(0x012c, 0x012c, 2, __NA_, 0, VF610_NFC_IO_PAD_CTRL),
++	VF610_PAD_PTD18__GPIO_76	= IOMUX_PAD(0x0120, 0x0130, 0, __NA_, 0, VF610_GPIO_PAD_CTRL),
+ 	VF610_PAD_PTD18__NF_IO2		= IOMUX_PAD(0x0130, 0x0130, 2, __NA_, 0, VF610_NFC_IO_PAD_CTRL),
++	VF610_PAD_PTD17__GPIO_77	= IOMUX_PAD(0x0134, 0x0134, 0, __NA_, 0, VF610_GPIO_PAD_CTRL),
+ 	VF610_PAD_PTD17__NF_IO1		= IOMUX_PAD(0x0134, 0x0134, 2, __NA_, 0, VF610_NFC_IO_PAD_CTRL),
++	VF610_PAD_PTD16__GPIO_78	= IOMUX_PAD(0x0138, 0x0138, 0, __NA_, 0, VF610_GPIO_PAD_CTRL),
+ 	VF610_PAD_PTD16__NF_IO0		= IOMUX_PAD(0x0138, 0x0138, 2, __NA_, 0, VF610_NFC_IO_PAD_CTRL),
+ 	VF610_PAD_PTB24__NF_WE_B	= IOMUX_PAD(0x0178, 0x0178, 5, __NA_, 0, VF610_NFC_CN_PAD_CTRL),
+ 	VF610_PAD_PTB25__NF_CE0_B	= IOMUX_PAD(0x017c, 0x017c, 5, __NA_, 0, VF610_NFC_CN_PAD_CTRL),
 -- 
 2.5.5
 
