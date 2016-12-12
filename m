@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cGUxN-0005J4-7P
- for barebox@lists.infradead.org; Mon, 12 Dec 2016 18:04:10 +0000
-Received: by mail-pg0-x244.google.com with SMTP id p66so1667034pga.2
- for <barebox@lists.infradead.org>; Mon, 12 Dec 2016 10:03:52 -0800 (PST)
+ id 1cGUxO-0005Jp-8Z
+ for barebox@lists.infradead.org; Mon, 12 Dec 2016 18:04:12 +0000
+Received: by mail-pg0-x241.google.com with SMTP id x23so1670279pgx.3
+ for <barebox@lists.infradead.org>; Mon, 12 Dec 2016 10:03:54 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 12 Dec 2016 10:03:02 -0800
-Message-Id: <1481565788-9115-16-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 12 Dec 2016 10:03:03 -0800
+Message-Id: <1481565788-9115-17-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,90 +23,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 15/21] i.MX: iomuxv3: Use helper functions in iomux-v3.h
+Subject: [PATCH v2 16/21] i.MX: vf610: Add low-level pin configuration helper
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Avoid code duplication by using helper functions from iomux-v3.h
+Add low-level pin configuration helper for early boot code, and convert
+pinctrl driver to use that code as well.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pinctrl/imx-iomux-v3.c | 38 ++++----------------------------------
- 1 file changed, 4 insertions(+), 34 deletions(-)
+ arch/arm/mach-imx/include/mach/iomux-vf610.h | 16 ++++++++++++++++
+ drivers/pinctrl/pinctrl-vf610.c              | 11 ++++++-----
+ 2 files changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pinctrl/imx-iomux-v3.c b/drivers/pinctrl/imx-iomux-v3.c
-index 4b3f033..bc93140 100644
---- a/drivers/pinctrl/imx-iomux-v3.c
-+++ b/drivers/pinctrl/imx-iomux-v3.c
-@@ -31,46 +31,17 @@ struct imx_iomux_v3 {
+diff --git a/arch/arm/mach-imx/include/mach/iomux-vf610.h b/arch/arm/mach-imx/include/mach/iomux-vf610.h
+index 1535628..087d6f2 100644
+--- a/arch/arm/mach-imx/include/mach/iomux-vf610.h
++++ b/arch/arm/mach-imx/include/mach/iomux-vf610.h
+@@ -223,4 +223,20 @@ enum {
+ 	VF610_PAD_DDR_ODT0__DDR_ODT_1	= IOMUX_PAD(0x02d8, 0x02d8, 0, __NA_, 0, VF610_DDR_PAD_CTRL),
  };
  
- static void __iomem *iomuxv3_base;
--static struct device_d *iomuxv3_dev;
++#define PINCTRL_VF610_MUX_SHIFT 20
++
++
++static inline void vf610_setup_pad(void __iomem *iomux, iomux_v3_cfg_t __pad)
++{
++	union iomux_v3_pad pad = { .raw = __pad };
++
++	iomux_v3_setup_pad(iomux, SHARE_MUX_CONF_REG | ZERO_OFFSET_VALID,
++			   pad.cfg.mux_ctrl_ofs,
++			   pad.cfg.pad_ctrl_ofs,
++			   pad.cfg.sel_input_ofs,
++			   pad.cfg.mux_mode << PINCTRL_VF610_MUX_SHIFT,
++			   pad.cfg.pad_ctrl, pad.cfg.sel_inp);
++}
++
++
+ #endif	/* __IOMUX_VF610_H__ */
+diff --git a/drivers/pinctrl/pinctrl-vf610.c b/drivers/pinctrl/pinctrl-vf610.c
+index b479bf2..4234263 100644
+--- a/drivers/pinctrl/pinctrl-vf610.c
++++ b/drivers/pinctrl/pinctrl-vf610.c
+@@ -24,9 +24,10 @@
+ #include <malloc.h>
+ #include <gpio.h>
  
--static void imx_iomuxv3_setup_single(void __iomem *base, struct device_d *dev,
--		u32 mux_reg, u32 conf_reg, u32 input_reg,
--		u32 mux_val, u32 conf_val, u32 input_val)
--{
--	dev_dbg(dev,
--		"mux: 0x%08x -> 0x%04x, conf: 0x%08x -> 0x%04x input: 0x%08x -> 0x%04x\n",
--		mux_val, mux_reg, conf_val, conf_reg, input_val, input_reg);
--
--	if (mux_reg)
--		writel(mux_val, base + mux_reg);
--	if (conf_reg)
--		writel(conf_val, base + conf_reg);
--	if (input_reg)
--		writel(input_val, base + input_reg);
--}
++#include <mach/iomux-vf610.h>
++
+ enum {
+ 	PINCTRL_VF610_MUX_LINE_SIZE = 20,
+-	PINCTRL_VF610_MUX_SHIFT = 20,
  
- /*
-  * configures a single pad in the iomuxer
-  */
- int mxc_iomux_v3_setup_pad(iomux_v3_cfg_t pad)
- {
--	u32 mux_reg = (pad & MUX_CTRL_OFS_MASK) >> MUX_CTRL_OFS_SHIFT;
--	u32 mux_val = (pad & MUX_MODE_MASK) >> MUX_MODE_SHIFT;
--	u32 input_reg = (pad & MUX_SEL_INPUT_OFS_MASK) >> MUX_SEL_INPUT_OFS_SHIFT;
--	u32 input_val = (pad & MUX_SEL_INPUT_MASK) >> MUX_SEL_INPUT_SHIFT;
--	u32 conf_reg = (pad & MUX_PAD_CTRL_OFS_MASK) >> MUX_PAD_CTRL_OFS_SHIFT;
--	u32 conf_val = (pad & MUX_PAD_CTRL_MASK) >> MUX_PAD_CTRL_SHIFT;
--
- 	if (!iomuxv3_base)
- 		return -EINVAL;
+ 	PINCTRL_VF610_IBE = 1 << 0,
+ 	PINCTRL_VF610_OBE = 1 << 1,
+@@ -60,17 +61,17 @@ static int pinctrl_vf610_set_state(struct pinctrl_device *pdev,
+ 	npins = size / PINCTRL_VF610_MUX_LINE_SIZE;
  
--	if (conf_val & NO_PAD_CTRL)
--		conf_reg = 0;
--
--	imx_iomuxv3_setup_single(iomuxv3_base, iomuxv3_dev,
--			mux_reg, conf_reg, input_reg,
--			mux_val, conf_val, input_val);
--
-+	imx_setup_pad(iomuxv3_base, pad);
- 	return 0;
- }
- EXPORT_SYMBOL(mxc_iomux_v3_setup_pad);
-@@ -140,9 +111,9 @@ static int imx_iomux_v3_set_state(struct pinctrl_device *pdev, struct device_nod
- 		if (conf_val & IMX_DT_NO_PAD_CTL)
- 			conf_reg = 0;
+ 	for (i = 0; i < npins; i++) {
++		iomux_v3_cfg_t pad;
+ 		u32 mux_reg   = be32_to_cpu(*list++);
+ 		u32 input_reg = be32_to_cpu(*list++);
+ 		u32 mux_val   = be32_to_cpu(*list++);
+ 		u32 input_val = be32_to_cpu(*list++);
+ 		u32 conf_val  = be32_to_cpu(*list++);
  
--		imx_iomuxv3_setup_single(iomux->base, iomux->pinctrl.dev,
--				mux_reg, conf_reg, input_reg,
--				mux_val, conf_val, input_val);
-+		iomux_v3_setup_pad(iomux->base, 0,
-+				   mux_reg, conf_reg, input_reg,
-+				   mux_val, conf_val, input_val);
+-		writel(mux_val << PINCTRL_VF610_MUX_SHIFT | conf_val,
+-		       iomux->base + mux_reg);
++		pad = IOMUX_PAD(mux_reg, mux_reg, mux_val,
++				input_reg, input_val, conf_val);
+ 
+-		if (input_reg)
+-			writel(input_val, iomux->base + input_reg);
++		vf610_setup_pad(iomux->base, pad);
  	}
  
  	return 0;
-@@ -183,7 +154,6 @@ static int imx_iomux_v3_probe(struct device_d *dev)
- 	if (IS_ERR(iores))
- 		return PTR_ERR(iores);
- 	iomuxv3_base = IOMEM(iores->start);
--	iomuxv3_dev = dev;
- 
- 	if (IS_ENABLED(CONFIG_PINCTRL) && dev->device_node)
- 		ret = imx_pinctrl_dt(dev, iomuxv3_base);
 -- 
 2.5.5
 
