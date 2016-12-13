@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cGjpO-0003Yw-3U
- for barebox@lists.infradead.org; Tue, 13 Dec 2016 09:56:55 +0000
-Date: Tue, 13 Dec 2016 10:56:21 +0100
-From: Stefan Lengfeld <s.lengfeld@phytec.de>
-Message-ID: <20161213095621.GC3694@lws-christ>
-References: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
- <1481565788-9115-5-git-send-email-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-In-Reply-To: <1481565788-9115-5-git-send-email-andrew.smirnov@gmail.com>
-Content-Disposition: inline
+ id 1cGo7k-0001GX-On
+ for barebox@lists.infradead.org; Tue, 13 Dec 2016 14:32:12 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 9DC21A002F4
+ for <barebox@lists.infradead.org>; Tue, 13 Dec 2016 15:32:33 +0100 (CET)
+From: Christian Hemp <c.hemp@phytec.de>
+Date: Tue, 13 Dec 2016 15:31:43 +0100
+Message-Id: <1481639504-4034-1-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,99 +17,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 04/21] i.MX: ocotp: Add provisions for storing
- multiple MAC addresses
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] mci: imx: Add imx6sx compatible
+To: barebox@lists.infradead.org
 
-SGkgQW5kcmV5LAoKT24gTW9uLCBEZWMgMTIsIDIwMTYgYXQgMTA6MDI6NTFBTSAtMDgwMCwgQW5k
-cmV5IFNtaXJub3Ygd3JvdGU6Cj4gaS5NWCBTb0MgdmFyaWFudHMgbGlrZSBWeWJyaWQgaGF2ZSBt
-b3JlIHRoYW4gb25lIGJ1aWx0LWluIEV0aGVybmV0Cj4gaW50ZXJmYWNlIGFuZCBhcyBhIGNvbnNl
-cXVlbmNlIHN1cHBvcnQgc3RvcmluZyBtb3JlIHRoYW4gb25lIE1BQyBhZGRyZXNzCj4gaW4gT0NP
-VFAgbW9kdWxlLiBBZGQgY29kZSB0byBjcmVhdGUgbXVsdGlwbGUgJ21hY19hZGRyPG4+JyBwYXJh
-bWV0ZXJzIGFzCj4gd2VsbCBhcyAnbWFjX2FkZHInIGFzIGFuICJhbGlhcyIgdG8gJ21hY19hZGRy
-MCcgZm9yIGJhY2t3YXJkcwo+IGNvbXBhdGliaWxpdHkuCj4gCj4gU2lnbmVkLW9mZi1ieTogQW5k
-cmV5IFNtaXJub3YgPGFuZHJldy5zbWlybm92QGdtYWlsLmNvbT4KPiAtLS0KPiAgYXJjaC9hcm0v
-bWFjaC1pbXgvb2NvdHAuYyB8IDY1ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-LS0tLS0tLS0tLS0tCj4gIDEgZmlsZSBjaGFuZ2VkLCA0OSBpbnNlcnRpb25zKCspLCAxNiBkZWxl
-dGlvbnMoLSkKCkFja2VkLWJ5OiBTdGVmYW4gTGVuZ2ZlbGQgPHMubGVuZ2ZlbGRAcGh5dGVjLmRl
-PgoKTWl0IGZyZXVuZGxpY2hlbiBHcsO8w59lbiAvIEtpbmQgcmVnYXJkcywKCVN0ZWZhbiBMZW5n
-ZmVsZAoKPiAKPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvb2NvdHAuYyBiL2FyY2gv
-YXJtL21hY2gtaW14L29jb3RwLmMKPiBpbmRleCBmNTQ5Yzk0Li41NWJiYmI3IDEwMDY0NAo+IC0t
-LSBhL2FyY2gvYXJtL21hY2gtaW14L29jb3RwLmMKPiArKysgYi9hcmNoL2FybS9tYWNoLWlteC9v
-Y290cC5jCj4gQEAgLTY5LDEyICs2OSwyMiBAQAo+ICAvKiBPdGhlciBkZWZpbml0aW9ucyAqLwo+
-ICAjZGVmaW5lIElNWDZfT1RQX0RBVEFfRVJST1JfVkFMCQkweEJBREFCQURBCj4gICNkZWZpbmUg
-REVGX1JFTEFYCQkJMjAKPiAtI2RlZmluZSBNQUNfT0ZGU0VUCQkJKDB4MjIgKiA0KQo+ICsjZGVm
-aW5lIE1BQ19PRkZTRVRfMAkJCSgweDIyICogNCkKPiArI2RlZmluZSBNQUNfT0ZGU0VUXzEJCQko
-MHgyNCAqIDQpCj4gKyNkZWZpbmUgTUFYX01BQ19PRkZTRVRTCQkJMgo+ICAjZGVmaW5lIE1BQ19C
-WVRFUwkJCTgKPiAgCj4gIHN0cnVjdCBpbXhfb2NvdHBfZGF0YSB7Cj4gIAlpbnQgbnVtX3JlZ3M7
-Cj4gIAl1MzIgKCphZGRyX3RvX29mZnNldCkodTMyIGFkZHIpOwo+ICsJdTggIG1hY19vZmZzZXRz
-W01BWF9NQUNfT0ZGU0VUU107Cj4gKwl1OCAgbWFjX29mZnNldHNfbnVtOwo+ICt9Owo+ICsKPiAr
-c3RydWN0IG9jb3RwX3ByaXZfZXRoYWRkciB7Cj4gKwljaGFyIHZhbHVlW01BQ19CWVRFU107Cj4g
-KwlzdHJ1Y3QgcmVnbWFwICptYXA7Cj4gKwl1OCBvZmZzZXQ7Cj4gIH07Cj4gIAo+ICBzdHJ1Y3Qg
-b2NvdHBfcHJpdiB7Cj4gQEAgLTg0LDkgKzk0LDEwIEBAIHN0cnVjdCBvY290cF9wcml2IHsKPiAg
-CXN0cnVjdCBkZXZpY2VfZCBkZXY7Cj4gIAlpbnQgcGVybWFuZW50X3dyaXRlX2VuYWJsZTsKPiAg
-CWludCBzZW5zZV9lbmFibGU7Cj4gLQljaGFyIGV0aGFkZHJbTUFDX0JZVEVTXTsKPiArCXN0cnVj
-dCBvY290cF9wcml2X2V0aGFkZHIgZXRoYWRkcltNQVhfTUFDX09GRlNFVFNdOwo+ICAJc3RydWN0
-IHJlZ21hcF9jb25maWcgbWFwX2NvbmZpZzsKPiAgCWNvbnN0IHN0cnVjdCBpbXhfb2NvdHBfZGF0
-YSAqZGF0YTsKPiArCWludCAgbWFjX29mZnNldF9pZHg7Cj4gIH07Cj4gIAo+ICBzdGF0aWMgc3Ry
-dWN0IG9jb3RwX3ByaXYgKmlteF9vY290cDsKPiBAQCAtNDA4LDMxICs0MTksMjggQEAgc3RhdGlj
-IHZvaWQgbWVtcmV2ZXJzZSh2b2lkICpkZXN0LCBjb25zdCB2b2lkICpzcmMsIHNpemVfdCBuKQo+
-ICAKPiAgc3RhdGljIGludCBpbXhfb2NvdHBfZ2V0X21hYyhzdHJ1Y3QgcGFyYW1fZCAqcGFyYW0s
-IHZvaWQgKnByaXYpCj4gIHsKPiAtCXN0cnVjdCBvY290cF9wcml2ICpvY290cF9wcml2ID0gcHJp
-djsKPiAgCWNoYXIgYnVmW01BQ19CWVRFU107Cj4gIAlpbnQgcmV0Owo+ICsJc3RydWN0IG9jb3Rw
-X3ByaXZfZXRoYWRkciAqZXRoYWRkciA9IHByaXY7Cj4gIAo+IC0JcmV0ID0gcmVnbWFwX2J1bGtf
-cmVhZChvY290cF9wcml2LT5tYXAsIE1BQ19PRkZTRVQsIGJ1ZiwgTUFDX0JZVEVTKTsKPiArCXJl
-dCA9IHJlZ21hcF9idWxrX3JlYWQoZXRoYWRkci0+bWFwLCBldGhhZGRyLT5vZmZzZXQsCj4gKwkJ
-CSAgICAgICBidWYsIE1BQ19CWVRFUyk7Cj4gIAlpZiAocmV0IDwgMCkKPiAgCQlyZXR1cm4gcmV0
-Owo+ICAKPiAtCW1lbXJldmVyc2Uob2NvdHBfcHJpdi0+ZXRoYWRkciwgYnVmLCBNQUNfQllURVMp
-Owo+ICsJbWVtcmV2ZXJzZShldGhhZGRyLT52YWx1ZSwgYnVmLCBNQUNfQllURVMpOwo+ICAJcmV0
-dXJuIDA7Cj4gIH0KPiAgCj4gIHN0YXRpYyBpbnQgaW14X29jb3RwX3NldF9tYWMoc3RydWN0IHBh
-cmFtX2QgKnBhcmFtLCB2b2lkICpwcml2KQo+ICB7Cj4gLQlzdHJ1Y3Qgb2NvdHBfcHJpdiAqb2Nv
-dHBfcHJpdiA9IHByaXY7Cj4gIAljaGFyIGJ1ZltNQUNfQllURVNdOwo+IC0JaW50IHJldDsKPiAr
-CXN0cnVjdCBvY290cF9wcml2X2V0aGFkZHIgKmV0aGFkZHIgPSBwcml2Owo+ICAKPiAtCW1lbXJl
-dmVyc2UoYnVmLCBvY290cF9wcml2LT5ldGhhZGRyLCBNQUNfQllURVMpOwo+IC0KPiAtCXJldCA9
-IHJlZ21hcF9idWxrX3dyaXRlKG9jb3RwX3ByaXYtPm1hcCwgTUFDX09GRlNFVCwgYnVmLCBNQUNf
-QllURVMpOwo+IC0JaWYgKHJldCA8IDApCj4gLQkJcmV0dXJuIHJldDsKPiArCW1lbXJldmVyc2Uo
-YnVmLCBldGhhZGRyLT52YWx1ZSwgTUFDX0JZVEVTKTsKPiAgCj4gLQlyZXR1cm4gMDsKPiArCXJl
-dHVybiByZWdtYXBfYnVsa193cml0ZShldGhhZGRyLT5tYXAsIGV0aGFkZHItPm9mZnNldCwKPiAr
-CQkJCSBidWYsIE1BQ19CWVRFUyk7Cj4gIH0KPiAgCj4gIHN0YXRpYyBzdHJ1Y3QgcmVnbWFwX2J1
-cyBpbXhfb2NvdHBfcmVnbWFwX2J1cyA9IHsKPiBAQCAtNDkxLDkgKzQ5OSwyOCBAQCBzdGF0aWMg
-aW50IGlteF9vY290cF9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKPiAgCQkJCU5VTEwsIE5V
-TEwsICZwcml2LT5wZXJtYW5lbnRfd3JpdGVfZW5hYmxlLCBOVUxMKTsKPiAgCX0KPiAgCj4gLQlp
-ZiAoSVNfRU5BQkxFRChDT05GSUdfTkVUKSkKPiAtCQlkZXZfYWRkX3BhcmFtX21hYygmKHByaXYt
-PmRldiksICJtYWNfYWRkciIsIGlteF9vY290cF9zZXRfbWFjLAo+IC0JCQkJaW14X29jb3RwX2dl
-dF9tYWMsIHByaXYtPmV0aGFkZHIsIHByaXYpOwo+ICsJaWYgKElTX0VOQUJMRUQoQ09ORklHX05F
-VCkpIHsKPiArCQlpbnQgaTsKPiArCQlzdHJ1Y3Qgb2NvdHBfcHJpdl9ldGhhZGRyICpldGhhZGRy
-Owo+ICsKPiArCQlmb3IgKGkgPSAwOyBpIDwgcHJpdi0+ZGF0YS0+bWFjX29mZnNldHNfbnVtOyBp
-KyspIHsKPiArCQkJZXRoYWRkciA9ICZwcml2LT5ldGhhZGRyW2ldOwo+ICsJCQlldGhhZGRyLT5t
-YXAgPSBwcml2LT5tYXA7Cj4gKwkJCWV0aGFkZHItPm9mZnNldCA9IHByaXYtPmRhdGEtPm1hY19v
-ZmZzZXRzW2ldOwo+ICsKPiArCQkJZGV2X2FkZF9wYXJhbV9tYWMoJnByaXYtPmRldiwgeGFzcHJp
-bnRmKCJtYWNfYWRkciVkIiwgaSksCj4gKwkJCQkJICBpbXhfb2NvdHBfc2V0X21hYywgaW14X29j
-b3RwX2dldF9tYWMsCj4gKwkJCQkJICBldGhhZGRyLT52YWx1ZSwgZXRoYWRkcik7Cj4gKwkJfQo+
-ICsKPiArCQkvKgo+ICsJCSAqIEFsaWFzIHRvIG1hY19hZGRyMCBmb3IgYmFja3dhcmRzIGNvbXBh
-dGliaWxpdHkKPiArCQkgKi8KPiArCQlldGhhZGRyID0gJnByaXYtPmV0aGFkZHJbMF07Cj4gKwkJ
-ZGV2X2FkZF9wYXJhbV9tYWMoJnByaXYtPmRldiwgIm1hY19hZGRyIiwKPiArCQkJCSAgaW14X29j
-b3RwX3NldF9tYWMsIGlteF9vY290cF9nZXRfbWFjLAo+ICsJCQkJICBldGhhZGRyLT52YWx1ZSwg
-ZXRoYWRkcik7Cj4gKwl9Cj4gIAo+ICAJZGV2X2FkZF9wYXJhbV9ib29sKCYocHJpdi0+ZGV2KSwg
-InNlbnNlX2VuYWJsZSIsIE5VTEwsIE5VTEwsICZwcml2LT5zZW5zZV9lbmFibGUsIHByaXYpOwo+
-ICAKPiBAQCAtNTMyLDE2ICs1NTksMjIgQEAgc3RhdGljIHUzMiB2ZjYxMF9hZGRyX3RvX29mZnNl
-dCh1MzIgYWRkcikKPiAgc3RhdGljIHN0cnVjdCBpbXhfb2NvdHBfZGF0YSBpbXg2cV9vY290cF9k
-YXRhID0gewo+ICAJLm51bV9yZWdzID0gNTEyLAo+ICAJLmFkZHJfdG9fb2Zmc2V0ID0gaW14NnFf
-YWRkcl90b19vZmZzZXQsCj4gKwkubWFjX29mZnNldHNfbnVtID0gMSwKPiArCS5tYWNfb2Zmc2V0
-cyA9IHsgTUFDX09GRlNFVF8wIH0sCj4gIH07Cj4gIAo+ICBzdGF0aWMgc3RydWN0IGlteF9vY290
-cF9kYXRhIGlteDZzbF9vY290cF9kYXRhID0gewo+ICAJLm51bV9yZWdzID0gMjU2LAo+ICAJLmFk
-ZHJfdG9fb2Zmc2V0ID0gaW14NnNsX2FkZHJfdG9fb2Zmc2V0LAo+ICsJLm1hY19vZmZzZXRzX251
-bSA9IDEsCj4gKwkubWFjX29mZnNldHMgPSB7IE1BQ19PRkZTRVRfMCB9LAo+ICB9Owo+ICAKPiAg
-c3RhdGljIHN0cnVjdCBpbXhfb2NvdHBfZGF0YSB2ZjYxMF9vY290cF9kYXRhID0gewo+ICAJLm51
-bV9yZWdzID0gNTEyLAo+ICAJLmFkZHJfdG9fb2Zmc2V0ID0gdmY2MTBfYWRkcl90b19vZmZzZXQs
-Cj4gKwkubWFjX29mZnNldHNfbnVtID0gMiwKPiArCS5tYWNfb2Zmc2V0cyA9IHsgTUFDX09GRlNF
-VF8wLCBNQUNfT0ZGU0VUXzEgfSwKPiAgfTsKPiAgCj4gIHN0YXRpYyBfX21heWJlX3VudXNlZCBz
-dHJ1Y3Qgb2ZfZGV2aWNlX2lkIGlteF9vY290cF9kdF9pZHNbXSA9IHsKPiAtLSAKPiAyLjUuNQo+
-IAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJv
-eCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5p
-bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+To let the driver probe on i.MX6SX and i.MX6UL.
+
+Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+---
+ drivers/mci/imx-esdhc.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 262a904..41f0562 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -648,6 +648,8 @@ static __maybe_unused struct of_device_id fsl_esdhc_compatible[] = {
+ 	}, {
+ 		.compatible = "fsl,imx6sl-usdhc",
+ 	}, {
++		.compatible = "fsl,imx6sx-usdhc",
++	}, {
+ 		/* sentinel */
+ 	}
+ };
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
