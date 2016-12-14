@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cH4TT-0000is-1Y
+ id 1cH4TT-0000ir-10
  for barebox@lists.infradead.org; Wed, 14 Dec 2016 07:59:41 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id BF9E4A00419
+ by root.phytec.de (Postfix) with ESMTP id B8732A002CE
  for <barebox@lists.infradead.org>; Wed, 14 Dec 2016 09:00:03 +0100 (CET)
 From: Jan Remmet <j.remmet@phytec.de>
-Date: Wed, 14 Dec 2016 08:59:08 +0100
-Message-Id: <1481702348-8687-2-git-send-email-j.remmet@phytec.de>
-In-Reply-To: <1481702348-8687-1-git-send-email-j.remmet@phytec.de>
-References: <1481702348-8687-1-git-send-email-j.remmet@phytec.de>
+Date: Wed, 14 Dec 2016 08:59:07 +0100
+Message-Id: <1481702348-8687-1-git-send-email-j.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,214 +22,127 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] imx-bbu-nand-fcb: add support for imx6ul
+Subject: [PATCH 1/2] imx-bbu-nand-fcb: split up read_fcb
 To: barebox@lists.infradead.org
 
-imx6ul secure the fcb with bch 40. The imx-kobs tool use a own modified
-bch lib. They reverse the bit order of the data and the ecc.
-To use the bch lib in barebox the bytes in the data buffers must be
-reversed.
-The data layout on nand is bit aligned. But with 40 bits this is not an
-issue for imx6ul now.
+There are other ecc modes for the fcb out there.
 
 Signed-off-by: Jan Remmet <j.remmet@phytec.de>
 ---
- common/Kconfig            |   1 +
- common/imx-bbu-nand-fcb.c | 145 +++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 143 insertions(+), 3 deletions(-)
+ common/imx-bbu-nand-fcb.c | 83 +++++++++++++++++++++++++++--------------------
+ 1 file changed, 47 insertions(+), 36 deletions(-)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index ed472a0..a10caf6 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -101,6 +101,7 @@ config BAREBOX_UPDATE_IMX_NAND_FCB
- 	depends on BAREBOX_UPDATE
- 	depends on MTD_WRITE
- 	depends on NAND_MXS
-+	select BCH if ARCH_IMX6
- 	default y
- 
- config UBIFORMAT
 diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
-index 34a5f83..5d3d3f7 100644
+index 1db4c5a..34a5f83 100644
 --- a/common/imx-bbu-nand-fcb.c
 +++ b/common/imx-bbu-nand-fcb.c
-@@ -33,9 +33,12 @@
- #include <linux/mtd/mtd.h>
- #include <linux/mtd/nand.h>
- #include <linux/stat.h>
-+#include <linux/bch.h>
-+#include <linux/bitops.h>
- #include <io.h>
- #include <crc.h>
- #include <mach/generic.h>
-+#include <mach/imx6.h>
- #include <mtd/mtd-peb.h>
- 
- struct dbbt_block {
-@@ -129,6 +132,132 @@ static uint8_t calculate_parity_13_8(uint8_t d)
- 	return p;
+@@ -167,6 +167,46 @@ static uint32_t calc_chksum(void *buf, size_t size)
+ 	return ~chksum;
  }
  
-+static uint8_t reverse_bit(uint8_t b)
++struct fcb_block *read_fcb_hamming_13_8(void *rawpage)
 +{
-+	b = (b & 0xf0) >> 4 | (b & 0x0f) << 4;
-+	b = (b & 0xcc) >> 2 | (b & 0x33) << 2;
-+	b = (b & 0xaa) >> 1 | (b & 0x55) << 1;
++	int i;
++	int bitflips = 0, bit_to_flip;
++	u8 parity, np, syndrome;
++	u8 *fcb, *ecc;
 +
-+	return b;
-+}
++	fcb = rawpage + 12;
++	ecc = rawpage + 512 + 12;
 +
-+static void encode_bch_ecc(void *buf, struct fcb_block *fcb, int eccbits)
-+{
-+	int i, j, m = 13;
-+	int blocksize = 128;
-+	int numblocks = 8;
-+	int ecc_buf_size = (m * eccbits + 7) / 8;
-+	struct bch_control *bch = init_bch(m, eccbits, 0);
-+	uint8_t *ecc_buf = xmalloc(ecc_buf_size);
-+	uint8_t *tmp_buf = xzalloc(blocksize * numblocks);
-+	uint8_t *psrc, *pdst;
++	for (i = 0; i < 512; i++) {
++		parity = ecc[i];
++		np = calculate_parity_13_8(fcb[i]);
 +
-+	/*
-+	 * The blocks here are bit aligned. If eccbits is a multiple of 8,
-+	 * we just can copy bytes. Otherwiese we must move the blocks to
-+	 * the next free bit position.
-+	 */
-+	BUG_ON(eccbits % 8);
++		syndrome = np ^ parity;
++		if (syndrome == 0)
++			continue;
 +
-+	memcpy(tmp_buf, fcb, sizeof(*fcb));
++		if (!(hweight8(syndrome) & 1)) {
++			pr_err("Uncorrectable error at offset %d\n", i);
++			return ERR_PTR(-EIO);
++		}
 +
-+	for (i = 0; i < numblocks; i++) {
-+		memset(ecc_buf, 0, ecc_buf_size);
-+		psrc = tmp_buf + i * blocksize;
-+		pdst = buf + i * (blocksize + ecc_buf_size);
++		bit_to_flip = lookup_single_error_13_8(syndrome);
++		if (bit_to_flip < 0) {
++			pr_err("Uncorrectable error at offset %d\n", i);
++			return ERR_PTR(-EIO);
++		}
 +
-+		/* copy data byte aligned to destination buf */
-+		memcpy(pdst, psrc, blocksize);
++		bitflips++;
 +
-+		/*
-+		 * imx-kobs use a modified encode_bch which reverse the
-+		 * bit order of the data before calculating bch.
-+		 * Do this in the buffer and use the bch lib here.
-+		 */
-+		for (j = 0; j < blocksize; j++)
-+			psrc[j] = reverse_bit(psrc[j]);
-+
-+		encode_bch(bch, psrc, blocksize, ecc_buf);
-+
-+		/* reverse ecc bit */
-+		for (j = 0; j < ecc_buf_size; j++)
-+			ecc_buf[j] = reverse_bit(ecc_buf[j]);
-+
-+		/* Here eccbuf is byte aligned and we can just copy it */
-+		memcpy(pdst + blocksize, ecc_buf, ecc_buf_size);
++		if (bit_to_flip > 7)
++			ecc[i] ^= 1 << (bit_to_flip - 8);
++		else
++			fcb[i] ^= 1 << bit_to_flip;
 +	}
 +
-+	free(ecc_buf);
-+	free(tmp_buf);
-+	free_bch(bch);
++	return xmemdup(rawpage + 12, 512);
 +}
 +
-+struct fcb_block *read_fcb_bch(void *rawpage, int eccbits)
-+{
-+	int i, j, ret, errbit, m = 13;
-+	int blocksize = 128;
-+	int numblocks = 8;
-+	int ecc_buf_size = (m * eccbits + 7) / 8;
-+	struct bch_control *bch = init_bch(m, eccbits, 0);
-+	uint8_t *fcb = xmalloc(numblocks * blocksize);
-+	uint8_t *ecc_buf = xmalloc(ecc_buf_size);
-+	uint8_t *data_buf = xmalloc(blocksize);
-+	unsigned int *errloc = xmalloc(eccbits * sizeof(*errloc));
-+	uint8_t *psrc, *pdst;
-+
-+	/* see encode_bch_ecc */
-+	BUG_ON(eccbits % 8);
-+
-+	for (i = 0; i < numblocks; i++) {
-+		psrc = rawpage + 32 + i * (blocksize + ecc_buf_size);
-+		pdst = fcb + i * blocksize;
-+
-+		/* reverse data bit */
-+		for (j = 0; j < blocksize; j++)
-+			data_buf[j] = reverse_bit(psrc[j]);
-+
-+		/* reverse ecc bit */
-+		for (j = 0; j < ecc_buf_size; j++)
-+			ecc_buf[j] = reverse_bit(psrc[j + blocksize]);
-+
-+		ret = decode_bch(bch, data_buf, blocksize, ecc_buf,
-+				 NULL, NULL, errloc);
-+
-+		if (ret < 0) {
-+			pr_err("Uncorrectable error at block %d\n", i);
-+			free(fcb);
-+			fcb = ERR_PTR(ret);
-+			goto out;
-+		}
-+		if (ret > 0)
-+			pr_info("Found %d correctable errors in block %d\n",
-+				ret, i);
-+
-+		for (j = 0; j < ret; j++) {
-+			/*
-+			 * calculate the reverse position
-+			 * pos - (pos % 8) -> byte offset
-+			 * 7 - (pos % 8) -> reverse bit position
-+			 */
-+			errbit = errloc[j] - 2 * (errloc[j] % 8) + 7;
-+			pr_debug("Found error: bit %d in block %d\n",
-+				 errbit, i);
-+			if (errbit < blocksize * 8)
-+				change_bit(errbit, psrc);
-+			/* else error in ecc, ignore it */
-+		}
-+		memcpy(pdst, psrc, blocksize);
-+	}
-+
-+out:
-+	free(data_buf);
-+	free(ecc_buf);
-+	free(errloc);
-+	free_bch(bch);
-+
-+	return (struct fcb_block *)fcb;
-+}
-+
- static void encode_hamming_13_8(void *_src, void *_ecc, size_t size)
+ static __maybe_unused void dump_fcb(void *buf)
  {
- 	int i;
-@@ -312,7 +441,11 @@ static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
+ 	struct fcb_block *fcb = buf;
+@@ -258,11 +298,8 @@ static ssize_t raw_write_page(struct mtd_info *mtd, void *buf, loff_t offset)
+ 
+ static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
+ {
+-	int i;
+-	int bitflips = 0, bit_to_flip;
+-	u8 parity, np, syndrome;
+-	u8 *fcb, *ecc;
+ 	int ret;
++	struct fcb_block *fcb;
+ 	void *rawpage;
+ 
+ 	*retfcb = NULL;
+@@ -275,40 +312,14 @@ static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
  		goto err;
  	}
  
--	fcb = read_fcb_hamming_13_8(rawpage);
-+	if (cpu_is_mx6ul())
-+		fcb = read_fcb_bch(rawpage, 40);
-+	else
-+		fcb = read_fcb_hamming_13_8(rawpage);
-+
- 	if (IS_ERR(fcb)) {
- 		pr_err("Cannot read fcb\n");
- 		ret = PTR_ERR(fcb);
-@@ -766,8 +899,14 @@ static int imx_bbu_write_fcbs_dbbts(struct mtd_info *mtd, struct fcb_block *fcb)
+-	fcb = rawpage + 12;
+-	ecc = rawpage + 512 + 12;
+-
+-	for (i = 0; i < 512; i++) {
+-		parity = ecc[i];
+-		np = calculate_parity_13_8(fcb[i]);
+-
+-		syndrome = np ^ parity;
+-		if (syndrome == 0)
+-			continue;
+-
+-		if (!(hweight8(syndrome) & 1)) {
+-			pr_err("Uncorrectable error at offset %d\n", i);
+-			ret = -EIO;
+-			goto err;
+-		}
+-
+-		bit_to_flip = lookup_single_error_13_8(syndrome);
+-		if (bit_to_flip < 0) {
+-			pr_err("Uncorrectable error at offset %d\n", i);
+-			ret = -EIO;
+-			goto err;
+-		}
+-
+-		bitflips++;
+-
+-		if (bit_to_flip > 7)
+-			ecc[i] ^= 1 << (bit_to_flip - 8);
+-		else
+-			fcb[i] ^= 1 << bit_to_flip;
++	fcb = read_fcb_hamming_13_8(rawpage);
++	if (IS_ERR(fcb)) {
++		pr_err("Cannot read fcb\n");
++		ret = PTR_ERR(fcb);
++		goto err;
+ 	}
  
- 	fcb_raw_page = xzalloc(mtd->writesize + mtd->oobsize);
- 
--	memcpy(fcb_raw_page + 12, fcb, sizeof(struct fcb_block));
--	encode_hamming_13_8(fcb_raw_page + 12, fcb_raw_page + 12 + 512, 512);
-+	if (cpu_is_mx6ul()) {
-+		/* 40 bit BCH, for i.MX6UL */
-+		encode_bch_ecc(fcb_raw_page + 32, fcb, 40);
-+	} else {
-+		memcpy(fcb_raw_page + 12, fcb, sizeof(struct fcb_block));
-+		encode_hamming_13_8(fcb_raw_page + 12,
-+				    fcb_raw_page + 12 + 512, 512);
-+	}
- 
- 	dbbt = dbbt_data_create(mtd);
- 
+-	*retfcb = xmemdup(rawpage + 12, 512);
+-
++	*retfcb = fcb;
+ 	ret = 0;
+ err:
+ 	free(rawpage);
 -- 
 2.7.4
 
