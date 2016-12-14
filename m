@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cH4ZL-0004yb-18
- for barebox@lists.infradead.org; Wed, 14 Dec 2016 08:05:44 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id D9F27A002CE
- for <barebox@lists.infradead.org>; Wed, 14 Dec 2016 09:06:07 +0100 (CET)
-Date: Wed, 14 Dec 2016 09:05:18 +0100
-From: Jan Remmet <J.Remmet@phytec.de>
-Message-ID: <20161214080518.GA2843@lws-weitzel2@phytec.de>
-References: <1481702404-8748-1-git-send-email-j.remmet@phytec.de>
-MIME-Version: 1.0
-In-Reply-To: <1481702404-8748-1-git-send-email-j.remmet@phytec.de>
-Content-Disposition: inline
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1cH93X-0004Le-7z
+ for barebox@lists.infradead.org; Wed, 14 Dec 2016 12:53:12 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
+ (envelope-from <mgr@pengutronix.de>) id 1cH93G-0008Fc-1G
+ for barebox@lists.infradead.org; Wed, 14 Dec 2016 13:52:54 +0100
+Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.88)
+ (envelope-from <mgr@pengutronix.de>) id 1cH93F-0000YX-QC
+ for barebox@lists.infradead.org; Wed, 14 Dec 2016 13:52:53 +0100
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Wed, 14 Dec 2016 13:52:52 +0100
+Message-Id: <20161214125252.2039-1-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,144 +22,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: Jan Remmet <J.Remmet@phytec.de>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] imx-bbu-nand-fcb: split up read_fcb
+Subject: [PATCH] da9053: reset FAULTLOG after read
 To: barebox@lists.infradead.org
 
-On Wed, Dec 14, 2016 at 09:00:03AM +0100, Jan Remmet wrote:
-> There are other ecc modes for the fcb out there.
+The driver has to reset the FAULTLOG register after every read by
+writing the value back. In the current case the FALUTLOG register keep
+its value over every software reset and will only reset on power-off.
+This drives the reset-source value unreliable.
 
-sorry double post :(
-Jan
-> 
-> Signed-off-by: Jan Remmet <j.remmet@phytec.de>
-> ---
->  common/imx-bbu-nand-fcb.c | 83 +++++++++++++++++++++++++++--------------------
->  1 file changed, 47 insertions(+), 36 deletions(-)
-> 
-> diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
-> index 1db4c5a..34a5f83 100644
-> --- a/common/imx-bbu-nand-fcb.c
-> +++ b/common/imx-bbu-nand-fcb.c
-> @@ -167,6 +167,46 @@ static uint32_t calc_chksum(void *buf, size_t size)
->  	return ~chksum;
->  }
->  
-> +struct fcb_block *read_fcb_hamming_13_8(void *rawpage)
-> +{
-> +	int i;
-> +	int bitflips = 0, bit_to_flip;
-> +	u8 parity, np, syndrome;
-> +	u8 *fcb, *ecc;
-> +
-> +	fcb = rawpage + 12;
-> +	ecc = rawpage + 512 + 12;
-> +
-> +	for (i = 0; i < 512; i++) {
-> +		parity = ecc[i];
-> +		np = calculate_parity_13_8(fcb[i]);
-> +
-> +		syndrome = np ^ parity;
-> +		if (syndrome == 0)
-> +			continue;
-> +
-> +		if (!(hweight8(syndrome) & 1)) {
-> +			pr_err("Uncorrectable error at offset %d\n", i);
-> +			return ERR_PTR(-EIO);
-> +		}
-> +
-> +		bit_to_flip = lookup_single_error_13_8(syndrome);
-> +		if (bit_to_flip < 0) {
-> +			pr_err("Uncorrectable error at offset %d\n", i);
-> +			return ERR_PTR(-EIO);
-> +		}
-> +
-> +		bitflips++;
-> +
-> +		if (bit_to_flip > 7)
-> +			ecc[i] ^= 1 << (bit_to_flip - 8);
-> +		else
-> +			fcb[i] ^= 1 << bit_to_flip;
-> +	}
-> +
-> +	return xmemdup(rawpage + 12, 512);
-> +}
-> +
->  static __maybe_unused void dump_fcb(void *buf)
->  {
->  	struct fcb_block *fcb = buf;
-> @@ -258,11 +298,8 @@ static ssize_t raw_write_page(struct mtd_info *mtd, void *buf, loff_t offset)
->  
->  static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
->  {
-> -	int i;
-> -	int bitflips = 0, bit_to_flip;
-> -	u8 parity, np, syndrome;
-> -	u8 *fcb, *ecc;
->  	int ret;
-> +	struct fcb_block *fcb;
->  	void *rawpage;
->  
->  	*retfcb = NULL;
-> @@ -275,40 +312,14 @@ static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
->  		goto err;
->  	}
->  
-> -	fcb = rawpage + 12;
-> -	ecc = rawpage + 512 + 12;
-> -
-> -	for (i = 0; i < 512; i++) {
-> -		parity = ecc[i];
-> -		np = calculate_parity_13_8(fcb[i]);
-> -
-> -		syndrome = np ^ parity;
-> -		if (syndrome == 0)
-> -			continue;
-> -
-> -		if (!(hweight8(syndrome) & 1)) {
-> -			pr_err("Uncorrectable error at offset %d\n", i);
-> -			ret = -EIO;
-> -			goto err;
-> -		}
-> -
-> -		bit_to_flip = lookup_single_error_13_8(syndrome);
-> -		if (bit_to_flip < 0) {
-> -			pr_err("Uncorrectable error at offset %d\n", i);
-> -			ret = -EIO;
-> -			goto err;
-> -		}
-> -
-> -		bitflips++;
-> -
-> -		if (bit_to_flip > 7)
-> -			ecc[i] ^= 1 << (bit_to_flip - 8);
-> -		else
-> -			fcb[i] ^= 1 << bit_to_flip;
-> +	fcb = read_fcb_hamming_13_8(rawpage);
-> +	if (IS_ERR(fcb)) {
-> +		pr_err("Cannot read fcb\n");
-> +		ret = PTR_ERR(fcb);
-> +		goto err;
->  	}
->  
-> -	*retfcb = xmemdup(rawpage + 12, 512);
-> -
-> +	*retfcb = fcb;
->  	ret = 0;
->  err:
->  	free(rawpage);
-> -- 
-> 2.7.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+---
+ drivers/mfd/da9053.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/mfd/da9053.c b/drivers/mfd/da9053.c
+index 0de8c66..9adab8c 100644
+--- a/drivers/mfd/da9053.c
++++ b/drivers/mfd/da9053.c
+@@ -240,6 +240,10 @@ static void da9053_detect_reset_source(struct da9053_priv *da9053)
+ 	priority = of_get_reset_source_priority(da9053->dev->device_node);
+ 
+ 	reset_source_set_priority(type, priority);
++
++	ret = da9053_reg_write(da9053, DA9053_FAULTLOG_REG, val);
++	if (ret < 0)
++		return;
+ }
+ 
+ static void __noreturn da9053_force_system_reset(struct restart_handler *rst)
+-- 
+2.10.2
+
 
 _______________________________________________
 barebox mailing list
