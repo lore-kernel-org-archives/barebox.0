@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cGtvB-0000hS-6q
- for barebox@lists.infradead.org; Tue, 13 Dec 2016 20:43:34 +0000
-Received: by mail-lf0-x241.google.com with SMTP id p100so4826479lfg.2
- for <barebox@lists.infradead.org>; Tue, 13 Dec 2016 12:43:11 -0800 (PST)
-Date: Tue, 13 Dec 2016 23:48:49 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20161213234849.0204a5537c12767ea2b1de41@gmail.com>
-In-Reply-To: <CABYiri8yCVdtXtg7SN3OOW3h2X-bdtgJsr3VircCo-4fLTGg6Q@mail.gmail.com>
-References: <20161212010146.18667-1-antonynpavlov@gmail.com>
- <20161212010146.18667-3-antonynpavlov@gmail.com>
- <CABYiri8yCVdtXtg7SN3OOW3h2X-bdtgJsr3VircCo-4fLTGg6Q@mail.gmail.com>
-Mime-Version: 1.0
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1cH4TT-0000is-1Y
+ for barebox@lists.infradead.org; Wed, 14 Dec 2016 07:59:41 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id BF9E4A00419
+ for <barebox@lists.infradead.org>; Wed, 14 Dec 2016 09:00:03 +0100 (CET)
+From: Jan Remmet <j.remmet@phytec.de>
+Date: Wed, 14 Dec 2016 08:59:08 +0100
+Message-Id: <1481702348-8687-2-git-send-email-j.remmet@phytec.de>
+In-Reply-To: <1481702348-8687-1-git-send-email-j.remmet@phytec.de>
+References: <1481702348-8687-1-git-send-email-j.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,57 +19,222 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC v3 2/2] Add initial RISC-V architecture support
-To: Andrey Korolyov <andrey@xdel.ru>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] imx-bbu-nand-fcb: add support for imx6ul
+To: barebox@lists.infradead.org
 
-On Tue, 13 Dec 2016 20:02:41 +0300
-Andrey Korolyov <andrey@xdel.ru> wrote:
+imx6ul secure the fcb with bch 40. The imx-kobs tool use a own modified
+bch lib. They reverse the bit order of the data and the ecc.
+To use the bch lib in barebox the bytes in the data buffers must be
+reversed.
+The data layout on nand is bit aligned. But with 40 bits this is not an
+issue for imx6ul now.
 
-> > +CONFIG_TEXT_BASE=3D0x80000000
-> > +CONFIG_MEMORY_LAYOUT_FIXED=3Dy
-> > +CONFIG_STACK_BASE=3D0x807f0000
-> > +CONFIG_STACK_SIZE=3D0x10000
-> > +CONFIG_MALLOC_BASE=3D0x80800000
-> =
+Signed-off-by: Jan Remmet <j.remmet@phytec.de>
+---
+ common/Kconfig            |   1 +
+ common/imx-bbu-nand-fcb.c | 145 +++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 143 insertions(+), 3 deletions(-)
 
-> Due to changed offsets in e300/u500 configurations (as compared to v2-
-> qemu config) linkage fails with binutils-2.25.1 and gcc-5.3.0:
-> =
+diff --git a/common/Kconfig b/common/Kconfig
+index ed472a0..a10caf6 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -101,6 +101,7 @@ config BAREBOX_UPDATE_IMX_NAND_FCB
+ 	depends on BAREBOX_UPDATE
+ 	depends on MTD_WRITE
+ 	depends on NAND_MXS
++	select BCH if ARCH_IMX6
+ 	default y
+ 
+ config UBIFORMAT
+diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
+index 34a5f83..5d3d3f7 100644
+--- a/common/imx-bbu-nand-fcb.c
++++ b/common/imx-bbu-nand-fcb.c
+@@ -33,9 +33,12 @@
+ #include <linux/mtd/mtd.h>
+ #include <linux/mtd/nand.h>
+ #include <linux/stat.h>
++#include <linux/bch.h>
++#include <linux/bitops.h>
+ #include <io.h>
+ #include <crc.h>
+ #include <mach/generic.h>
++#include <mach/imx6.h>
+ #include <mtd/mtd-peb.h>
+ 
+ struct dbbt_block {
+@@ -129,6 +132,132 @@ static uint8_t calculate_parity_13_8(uint8_t d)
+ 	return p;
+ }
+ 
++static uint8_t reverse_bit(uint8_t b)
++{
++	b = (b & 0xf0) >> 4 | (b & 0x0f) << 4;
++	b = (b & 0xcc) >> 2 | (b & 0x33) << 2;
++	b = (b & 0xaa) >> 1 | (b & 0x55) << 1;
++
++	return b;
++}
++
++static void encode_bch_ecc(void *buf, struct fcb_block *fcb, int eccbits)
++{
++	int i, j, m = 13;
++	int blocksize = 128;
++	int numblocks = 8;
++	int ecc_buf_size = (m * eccbits + 7) / 8;
++	struct bch_control *bch = init_bch(m, eccbits, 0);
++	uint8_t *ecc_buf = xmalloc(ecc_buf_size);
++	uint8_t *tmp_buf = xzalloc(blocksize * numblocks);
++	uint8_t *psrc, *pdst;
++
++	/*
++	 * The blocks here are bit aligned. If eccbits is a multiple of 8,
++	 * we just can copy bytes. Otherwiese we must move the blocks to
++	 * the next free bit position.
++	 */
++	BUG_ON(eccbits % 8);
++
++	memcpy(tmp_buf, fcb, sizeof(*fcb));
++
++	for (i = 0; i < numblocks; i++) {
++		memset(ecc_buf, 0, ecc_buf_size);
++		psrc = tmp_buf + i * blocksize;
++		pdst = buf + i * (blocksize + ecc_buf_size);
++
++		/* copy data byte aligned to destination buf */
++		memcpy(pdst, psrc, blocksize);
++
++		/*
++		 * imx-kobs use a modified encode_bch which reverse the
++		 * bit order of the data before calculating bch.
++		 * Do this in the buffer and use the bch lib here.
++		 */
++		for (j = 0; j < blocksize; j++)
++			psrc[j] = reverse_bit(psrc[j]);
++
++		encode_bch(bch, psrc, blocksize, ecc_buf);
++
++		/* reverse ecc bit */
++		for (j = 0; j < ecc_buf_size; j++)
++			ecc_buf[j] = reverse_bit(ecc_buf[j]);
++
++		/* Here eccbuf is byte aligned and we can just copy it */
++		memcpy(pdst + blocksize, ecc_buf, ecc_buf_size);
++	}
++
++	free(ecc_buf);
++	free(tmp_buf);
++	free_bch(bch);
++}
++
++struct fcb_block *read_fcb_bch(void *rawpage, int eccbits)
++{
++	int i, j, ret, errbit, m = 13;
++	int blocksize = 128;
++	int numblocks = 8;
++	int ecc_buf_size = (m * eccbits + 7) / 8;
++	struct bch_control *bch = init_bch(m, eccbits, 0);
++	uint8_t *fcb = xmalloc(numblocks * blocksize);
++	uint8_t *ecc_buf = xmalloc(ecc_buf_size);
++	uint8_t *data_buf = xmalloc(blocksize);
++	unsigned int *errloc = xmalloc(eccbits * sizeof(*errloc));
++	uint8_t *psrc, *pdst;
++
++	/* see encode_bch_ecc */
++	BUG_ON(eccbits % 8);
++
++	for (i = 0; i < numblocks; i++) {
++		psrc = rawpage + 32 + i * (blocksize + ecc_buf_size);
++		pdst = fcb + i * blocksize;
++
++		/* reverse data bit */
++		for (j = 0; j < blocksize; j++)
++			data_buf[j] = reverse_bit(psrc[j]);
++
++		/* reverse ecc bit */
++		for (j = 0; j < ecc_buf_size; j++)
++			ecc_buf[j] = reverse_bit(psrc[j + blocksize]);
++
++		ret = decode_bch(bch, data_buf, blocksize, ecc_buf,
++				 NULL, NULL, errloc);
++
++		if (ret < 0) {
++			pr_err("Uncorrectable error at block %d\n", i);
++			free(fcb);
++			fcb = ERR_PTR(ret);
++			goto out;
++		}
++		if (ret > 0)
++			pr_info("Found %d correctable errors in block %d\n",
++				ret, i);
++
++		for (j = 0; j < ret; j++) {
++			/*
++			 * calculate the reverse position
++			 * pos - (pos % 8) -> byte offset
++			 * 7 - (pos % 8) -> reverse bit position
++			 */
++			errbit = errloc[j] - 2 * (errloc[j] % 8) + 7;
++			pr_debug("Found error: bit %d in block %d\n",
++				 errbit, i);
++			if (errbit < blocksize * 8)
++				change_bit(errbit, psrc);
++			/* else error in ecc, ignore it */
++		}
++		memcpy(pdst, psrc, blocksize);
++	}
++
++out:
++	free(data_buf);
++	free(ecc_buf);
++	free(errloc);
++	free_bch(bch);
++
++	return (struct fcb_block *)fcb;
++}
++
+ static void encode_hamming_13_8(void *_src, void *_ecc, size_t size)
+ {
+ 	int i;
+@@ -312,7 +441,11 @@ static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
+ 		goto err;
+ 	}
+ 
+-	fcb = read_fcb_hamming_13_8(rawpage);
++	if (cpu_is_mx6ul())
++		fcb = read_fcb_bch(rawpage, 40);
++	else
++		fcb = read_fcb_hamming_13_8(rawpage);
++
+ 	if (IS_ERR(fcb)) {
+ 		pr_err("Cannot read fcb\n");
+ 		ret = PTR_ERR(fcb);
+@@ -766,8 +899,14 @@ static int imx_bbu_write_fcbs_dbbts(struct mtd_info *mtd, struct fcb_block *fcb)
+ 
+ 	fcb_raw_page = xzalloc(mtd->writesize + mtd->oobsize);
+ 
+-	memcpy(fcb_raw_page + 12, fcb, sizeof(struct fcb_block));
+-	encode_hamming_13_8(fcb_raw_page + 12, fcb_raw_page + 12 + 512, 512);
++	if (cpu_is_mx6ul()) {
++		/* 40 bit BCH, for i.MX6UL */
++		encode_bch_ecc(fcb_raw_page + 32, fcb, 40);
++	} else {
++		memcpy(fcb_raw_page + 12, fcb, sizeof(struct fcb_block));
++		encode_hamming_13_8(fcb_raw_page + 12,
++				    fcb_raw_page + 12 + 512, 512);
++	}
+ 
+ 	dbbt = dbbt_data_create(mtd);
+ 
+-- 
+2.7.4
 
-> arch/riscv/boot/built-in.o: In function `main_entry':
-> /build/barebox/arch/riscv/boot/main_entry.c:34:(.text+0x0): relocation
-> truncated to fit: R_RISCV_HI20 against symbol `__bss_start' defined in
-> .bss section in barebox
-> Makefile:756: recipe for target 'barebox' failed
-
-You can fix the problem by explicitly selecting the 'Medium/Anywhere' gcc c=
-ode model,
-e.g.
-
---- a/arch/riscv/Makefile
-+++ b/arch/riscv/Makefile
-@@ -2,7 +2,7 @@ CPPFLAGS +=3D -fno-strict-aliasing
- =
-
- cflags-y +=3D -fno-pic -pipe
- cflags-y +=3D -Wall -Wmissing-prototypes -Wstrict-prototypes \
--	-Wno-uninitialized -Wno-format -Wno-main
-+	-Wno-uninitialized -Wno-format -Wno-main -mcmodel=3Dmedany
- =
-
- LDFLAGS +=3D $(ldflags-y)
- LDFLAGS_barebox +=3D -nostdlib
-
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
