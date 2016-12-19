@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cEiU4-0001it-T5
- for barebox@lists.infradead.org; Wed, 07 Dec 2016 20:06:34 +0000
-Date: Wed, 7 Dec 2016 21:06:11 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20161207200611.dksij5xlimnkynjp@pengutronix.de>
-References: <1480501660-4540-1-git-send-email-s.lengfeld@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1480501660-4540-1-git-send-email-s.lengfeld@phytec.de>
+ id 1cJ4it-0000BX-Ss
+ for barebox@lists.infradead.org; Mon, 19 Dec 2016 20:39:52 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Mon, 19 Dec 2016 21:39:28 +0100
+Message-Id: <20161219203928.29518-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20161217204644.4419-1-u.kleine-koenig@pengutronix.de>
+References: <20161217204644.4419-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,61 +16,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] imx6qdl-phytec-phycore-som.dtsi: rename eeprom
-To: Stefan Lengfeld <s.lengfeld@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fixup! ata/ahci: simplify ahci_read_id
+To: barebox@lists.infradead.org
 
-On Wed, Nov 30, 2016 at 11:27:39AM +0100, Stefan Lengfeld wrote:
-> From: Jan Remmet <j.remmet@phytec.de>
-> 
-> Chose name according to kernel. This is needed for bootstate.
-> 
-> Signed-off-by: Jan Remmet <j.remmet@phytec.de>
-> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+---
+ drivers/ata/ahci.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Applied, thanks
-
-Sascha
-
-> ---
->  arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-> index d446a5e..37ad878 100644
-> --- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-> +++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-> @@ -119,9 +119,9 @@
->  	clock-frequency = <400000>;
->  	status = "okay";
->  
-> -	eeprom: 24c32@50 {
-> +	eeprom: eeprom@50 {
->  		status = "disabled";
-> -		compatible = "st,24c32";
-> +		compatible = "24c32";
->  		reg = <0x50>;
->  	};
->  };
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index cea031af5a84..b4161059707d 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -207,7 +207,6 @@ static int ahci_read_id(struct ata_port *ata, void *buf)
+ {
+ 	struct ahci_port *ahci = container_of(ata, struct ahci_port, ata);
+ 	u8 fis[20];
+-	int ret;
+ 
+ 	memset(fis, 0, sizeof(fis));
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
