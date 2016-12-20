@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cJ3Sm-00057j-Rn
- for barebox@lists.infradead.org; Mon, 19 Dec 2016 19:19:10 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Mon, 19 Dec 2016 20:18:45 +0100
-Message-Id: <20161219191845.17226-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1cJGoA-00027z-5n
+ for barebox@lists.infradead.org; Tue, 20 Dec 2016 09:34:07 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
+ (envelope-from <l.stach@pengutronix.de>) id 1cJGnk-00039l-Ov
+ for barebox@lists.infradead.org; Tue, 20 Dec 2016 10:33:40 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue, 20 Dec 2016 10:33:32 +0100
+Message-Id: <20161220093340.14404-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,27 +19,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ata: ide-sff: don't call free for ide_port in error path
+Subject: [PATCH 1/9] fs: squashfs: don't reference UBI symbols if UBI isn't
+ compiled in
 To: barebox@lists.infradead.org
 
-VGhlIGlkZV9wb3J0IGlzIHByb3ZpZGVkIGJ5IHRoZSBjYWxsZXIgc28gaXQncyBub3QgaW4gdGhl
-IHJlc3BvbnNpYmlsaXR5Cm9mIHRoaXMgZnVuY3Rpb24gdG8gZnJlZSB0aGlzIG1lbW9yeSBpbiBj
-YXNlIG9mIGVycm9yLgpBY3R1YWxseSBhbGwgY2FsbGVycyBkbyB0aGUgZnJlZSB0aGVtc2VsdmVz
-LCB0b28uCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmln
-QHBlbmd1dHJvbml4LmRlPgotLS0KIGRyaXZlcnMvYXRhL2lkZS1zZmYuYyB8IDkgKysrKy0tLS0t
-CiAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQoKZGlmZiAt
-LWdpdCBhL2RyaXZlcnMvYXRhL2lkZS1zZmYuYyBiL2RyaXZlcnMvYXRhL2lkZS1zZmYuYwppbmRl
-eCBlMzJjYzNmYzI0ZjguLjZkYzg5ZDc5YTU0MyAxMDA2NDQKLS0tIGEvZHJpdmVycy9hdGEvaWRl
-LXNmZi5jCisrKyBiL2RyaXZlcnMvYXRhL2lkZS1zZmYuYwpAQCAtMzg5LDExICszODksMTAgQEAg
-aW50IGlkZV9wb3J0X3JlZ2lzdGVyKHN0cnVjdCBpZGVfcG9ydCAqaWRlKQogCWlkZS0+cG9ydC5v
-cHMgPSAmaWRlX29wczsKIAogCXJldCA9IGF0YV9wb3J0X3JlZ2lzdGVyKCZpZGUtPnBvcnQpOwot
-CWlmICghcmV0KQotCQlhdGFfcG9ydF9kZXRlY3QoJmlkZS0+cG9ydCk7Ci0KIAlpZiAocmV0KQot
-CQlmcmVlKGlkZSk7CisJCXJldHVybiByZXQ7CisKKwlhdGFfcG9ydF9kZXRlY3QoJmlkZS0+cG9y
-dCk7CiAKLQlyZXR1cm4gcmV0OworCXJldHVybiAwOwogfQotLSAKMi4xMS4wCgoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
-c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+There is no point in trying to append a UBI root option, if there is
+no UBI support in barebox.
+
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ fs/squashfs/squashfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
+index c4d0bac97443..4f4a307dafdd 100644
+--- a/fs/squashfs/squashfs.c
++++ b/fs/squashfs/squashfs.c
+@@ -120,6 +120,9 @@ void squashfs_set_rootarg(struct squashfs_priv *priv, struct fs_device_d *fsdev)
+ 	struct mtd_info *mtd;
+ 	char *str;
+ 
++	if (!IS_ENABLED(CONFIG_MTD_UBI))
++		return;
++
+ 	ubi_vol = ubi_open_volume_cdev(fsdev->cdev, UBI_READONLY);
+ 
+ 	if (IS_ERR(ubi_vol))
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
