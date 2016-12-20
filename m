@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cJGoA-00028d-5w
- for barebox@lists.infradead.org; Tue, 20 Dec 2016 09:34:11 +0000
+ id 1cJGoA-00028U-6B
+ for barebox@lists.infradead.org; Tue, 20 Dec 2016 09:34:09 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
- (envelope-from <l.stach@pengutronix.de>) id 1cJGnl-00039l-6T
+ (envelope-from <l.stach@pengutronix.de>) id 1cJGnl-00039l-2t
  for barebox@lists.infradead.org; Tue, 20 Dec 2016 10:33:41 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 20 Dec 2016 10:33:40 +0100
-Message-Id: <20161220093340.14404-9-l.stach@pengutronix.de>
+Date: Tue, 20 Dec 2016 10:33:38 +0100
+Message-Id: <20161220093340.14404-7-l.stach@pengutronix.de>
 In-Reply-To: <20161220093340.14404-1-l.stach@pengutronix.de>
 References: <20161220093340.14404-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -26,29 +26,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] arm: ARM64 doesn't provide the armlinux_* functions
+Subject: [PATCH 7/9] arm: pbl: rename linker script for uncompressed image data
 To: barebox@lists.infradead.org
 
-Those set parameters specific to the older ARM Linux implementation.
+This has been missed in commit 5e61dd3fb550
+(Add comp_copy function for use with CONFIG_IMAGE_COMPRESSION_NONE).
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/include/asm/armlinux.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/pbl/piggy.comp_copy.S | 6 ++++++
+ arch/arm/pbl/piggy.shipped.S   | 6 ------
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+ create mode 100644 arch/arm/pbl/piggy.comp_copy.S
+ delete mode 100644 arch/arm/pbl/piggy.shipped.S
 
-diff --git a/arch/arm/include/asm/armlinux.h b/arch/arm/include/asm/armlinux.h
-index 07479fb15c4f..b9ab4f9bf2ce 100644
---- a/arch/arm/include/asm/armlinux.h
-+++ b/arch/arm/include/asm/armlinux.h
-@@ -4,7 +4,7 @@
- #include <asm/memory.h>
- #include <asm/setup.h>
- 
--#if defined CONFIG_ARM_LINUX
-+#if defined CONFIG_ARM_LINUX && defined CONFIG_CPU_32
- void armlinux_set_bootparams(void *params);
- void armlinux_set_architecture(int architecture);
- void armlinux_set_revision(unsigned int);
+diff --git a/arch/arm/pbl/piggy.comp_copy.S b/arch/arm/pbl/piggy.comp_copy.S
+new file mode 100644
+index 000000000000..2b5a812ded9c
+--- /dev/null
++++ b/arch/arm/pbl/piggy.comp_copy.S
+@@ -0,0 +1,6 @@
++	.section .piggydata,#alloc
++	.globl	input_data
++input_data:
++	.incbin	"arch/arm/pbl/piggy.comp_copy"
++	.globl	input_data_end
++input_data_end:
+diff --git a/arch/arm/pbl/piggy.shipped.S b/arch/arm/pbl/piggy.shipped.S
+deleted file mode 100644
+index dbc2569de5c5..000000000000
+--- a/arch/arm/pbl/piggy.shipped.S
++++ /dev/null
+@@ -1,6 +0,0 @@
+-	.section .piggydata,#alloc
+-	.globl  input_data
+-input_data:
+-	.incbin "arch/arm/pbl/piggy.shipped"
+-	.globl  input_data_end
+-input_data_end:
 -- 
 2.11.0
 
