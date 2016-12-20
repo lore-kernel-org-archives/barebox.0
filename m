@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cJGoA-00027z-5n
- for barebox@lists.infradead.org; Tue, 20 Dec 2016 09:34:07 +0000
+ id 1cJGoA-000282-60
+ for barebox@lists.infradead.org; Tue, 20 Dec 2016 09:34:11 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
- (envelope-from <l.stach@pengutronix.de>) id 1cJGnk-00039l-Ov
+ (envelope-from <l.stach@pengutronix.de>) id 1cJGnk-00039l-Qj
  for barebox@lists.infradead.org; Tue, 20 Dec 2016 10:33:40 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 20 Dec 2016 10:33:32 +0100
-Message-Id: <20161220093340.14404-1-l.stach@pengutronix.de>
+Date: Tue, 20 Dec 2016 10:33:33 +0100
+Message-Id: <20161220093340.14404-2-l.stach@pengutronix.de>
+In-Reply-To: <20161220093340.14404-1-l.stach@pengutronix.de>
+References: <20161220093340.14404-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,32 +26,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] fs: squashfs: don't reference UBI symbols if UBI isn't
- compiled in
+Subject: [PATCH 2/9] arm64: disable PBL support
 To: barebox@lists.infradead.org
 
-There is no point in trying to append a UBI root option, if there is
-no UBI support in barebox.
+PBL is another feature, which needs some love to work on ARM64.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- fs/squashfs/squashfs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/Kconfig     | 1 -
+ arch/arm/cpu/Kconfig | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
-index c4d0bac97443..4f4a307dafdd 100644
---- a/fs/squashfs/squashfs.c
-+++ b/fs/squashfs/squashfs.c
-@@ -120,6 +120,9 @@ void squashfs_set_rootarg(struct squashfs_priv *priv, struct fs_device_d *fsdev)
- 	struct mtd_info *mtd;
- 	char *str;
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 39f5f0165e01..3e8ccf7661c4 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -3,7 +3,6 @@ config ARM
+ 	select HAS_KALLSYMS
+ 	select HAS_CACHE
+ 	select HAVE_CONFIGURABLE_TEXT_BASE
+-	select HAVE_PBL_IMAGE
+ 	select HAVE_IMAGE_COMPRESSION
+ 	default y
  
-+	if (!IS_ENABLED(CONFIG_MTD_UBI))
-+		return;
-+
- 	ubi_vol = ubi_open_volume_cdev(fsdev->cdev, UBI_READONLY);
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index e45e05bdb19d..d889e9afb1bb 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -7,6 +7,7 @@ config CPU_32
+ 	bool
+ 	select HAS_MODULES
+ 	select HAS_DMA
++	select HAVE_PBL_IMAGE
  
- 	if (IS_ERR(ubi_vol))
+ config CPU_64
+ 	bool
 -- 
 2.11.0
 
