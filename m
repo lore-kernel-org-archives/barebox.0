@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cK7af-0005Pk-6A
- for barebox@lists.infradead.org; Thu, 22 Dec 2016 17:55:42 +0000
-Date: Thu, 22 Dec 2016 18:55:14 +0100
+ id 1cKNGo-0004Fv-J0
+ for barebox@lists.infradead.org; Fri, 23 Dec 2016 10:40:15 +0000
+Date: Fri, 23 Dec 2016 11:39:47 +0100
 From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20161222175514.GA17658@ravnborg.org>
+Message-ID: <20161223103947.GA11937@ravnborg.org>
 References: <1482356321-19996-1-git-send-email-c.hemp@phytec.de>
- <20161221222923.GB24177@ravnborg.org>
- <8e786abe-cd51-63a4-9dd6-b83360b3f928@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <8e786abe-cd51-63a4-9dd6-b83360b3f928@phytec.de>
+In-Reply-To: <1482356321-19996-1-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,32 +26,30 @@ Subject: Re: [PATCH] mtd: nand_mxs: fix NAND error when change clk rate
 To: Christian Hemp <c.hemp@phytec.de>
 Cc: barebox@lists.infradead.org
 
-Hi Christian,
-
-thanks for the quick reply.
-
-> >Can you give any hints that makes it simpler to verify your fix or anything?
-> To reproduce the issue and test the fix I reseted the board in a loop.
-> For this I added 'reset' to /env/bin/init. With 'reset" in /env/bin/init I
-> saw the issue after 1 - 2 Minutes.
-> Also I have done 1000 power cuts and resets without any error in our
-> test rack.
+On Wed, Dec 21, 2016 at 10:38:41PM +0100, Christian Hemp wrote:
+> The function "nand_enable_edo_mode" changed the NAND clk rate, without turning
+> it off. In this case it is posible to get the following errors:
+>     MXS NAND: Error sending command
+>     MXS NAND: Error sending command
+>     MXS NAND: DMA read error
 > 
-> power cut:
-> 1. start barebox to prompt
-> 2. power cut
+> This can be fixed if the NAND clk is disabled before we change the clk
+> rate.
 > 
-> soft reset:
-> 1. start barebox to prompt
-> 2. reset
+> Tested with:
+> nand: NAND device: Manufacturer ID: 0x2c, Chip ID: 0xdc (Micron
+> MT29F4G08ABADAWP), 512MiB, page size: 2048, OOB size: 64
+> 
+> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+Tested-by: Sam Ravnborg <sam@ravnborg.org>
 
-We have deployed an updated barebox in our test setup that do
-all our ON/OFF testing.
-A quick grep from the serial logs shows that we have seen this
-error message much more often than I originally anticipated.
-So I expect to have feedback already tomorrow.
+We had it running over night - not a single DMA error.
+Tested with 16 different targets in an ON/OFF test.
+I do not have numbers for the ON/OFF cycles but it is more than 10 each.
+Previously we had a high frequency of these.
+And tonight there was none.
 
-From your information I am quite positive.
+Christian - if we ever meet in person I owe you a beer!
 
 	Sam
 
