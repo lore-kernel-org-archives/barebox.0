@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cJz5c-0005jZ-E4
- for barebox@lists.infradead.org; Thu, 22 Dec 2016 08:51:05 +0000
-References: <1482356321-19996-1-git-send-email-c.hemp@phytec.de>
- <20161221222923.GB24177@ravnborg.org>
-From: Christian Hemp <c.hemp@phytec.de>
-Message-ID: <8e786abe-cd51-63a4-9dd6-b83360b3f928@phytec.de>
-Date: Thu, 22 Dec 2016 09:50:40 +0100
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
+ id 1cKMQa-0005l3-4R
+ for barebox@lists.infradead.org; Fri, 23 Dec 2016 09:46:16 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri, 23 Dec 2016 10:45:49 +0100
+Message-Id: <20161223094549.3311-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20161221222923.GB24177@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,60 +15,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: nand_mxs: fix NAND error when change clk rate
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ata: pata-imx: simplify assignment of device name
+To: barebox@lists.infradead.org
 
-Hello Sam,
-
-
-On 21.12.2016 23:29, Sam Ravnborg wrote:
-> Hi Christian.
->
-> On Wed, Dec 21, 2016 at 10:38:41PM +0100, Christian Hemp wrote:
->> The function "nand_enable_edo_mode" changed the NAND clk rate, without turning
->> it off. In this case it is posible to get the following errors:
->>      MXS NAND: Error sending command
->>      MXS NAND: Error sending command
->>      MXS NAND: DMA read error
->>
->> This can be fixed if the NAND clk is disabled before we change the clk
->> rate.
-> Very interesting.
-> I have ~50 targets and a few of these are used for power cycle tests.
-> On one of these targets I have seen this exact same pattern - once...
->
-> Can you give any hints that makes it simpler to verify your fix or anything?
-To reproduce the issue and test the fix I reseted the board in a loop.
-For this I added 'reset' to /env/bin/init. With 'reset" in /env/bin/init I
-saw the issue after 1 - 2 Minutes.
-Also I have done 1000 power cuts and resets without any error in our 
-test rack.
-
-power cut:
-1. start barebox to prompt
-2. power cut
-
-soft reset:
-1. start barebox to prompt
-2. reset
-
-     Christian
-
->
->
-> This is a board with i.MX6 SoloCore - where we have 2 GiB FLASH + 512 MB RAM.
->
-> Anyway - it saved my day to see this landing on the mailing list!
->
-> 	Sam
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SWYgT0ZfREVWSUNFIGlzbid0IGVuYWJsZWQsIG9mX2FsaWFzX2dldCByZXR1cm5zIE5VTEwuIEFs
+c28geHN0cmR1cApyZXR1cm5zIE5VTEwgd2hlbiBOVUxMIGlzIHBhc3NlZCBhcyBhcmd1bWVudC4g
+VGhpcyBhbGxvd3MgdG8gc2ltcGxpZnkKYWNjb3JkaW5nbHkuCgpTaWduZWQtb2ZmLWJ5OiBVd2Ug
+S2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGRyaXZl
+cnMvYXRhL3BhdGEtaW14LmMgfCA4ICstLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRp
+b24oKyksIDcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9hdGEvcGF0YS1pbXgu
+YyBiL2RyaXZlcnMvYXRhL3BhdGEtaW14LmMKaW5kZXggYzgwOThhNTM3ZmU1Li40Zjc1MDQ4YzEy
+Y2UgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvYXRhL3BhdGEtaW14LmMKKysrIGIvZHJpdmVycy9hdGEv
+cGF0YS1pbXguYwpAQCAtMTU4LDcgKzE1OCw2IEBAIHN0YXRpYyBpbnQgaW14X3BhdGFfcHJvYmUo
+c3RydWN0IGRldmljZV9kICpkZXYpCiAJc3RydWN0IGNsayAqY2xrOwogCXZvaWQgX19pb21lbSAq
+YmFzZTsKIAlpbnQgcmV0OwotCWNvbnN0IGNoYXIgKmRldm5hbWUgPSBOVUxMOwogCiAJaWRlID0g
+eHphbGxvYyhzaXplb2YoKmlkZSkpOwogCWlvcmVzID0gZGV2X3JlcXVlc3RfbWVtX3Jlc291cmNl
+KGRldiwgMCk7CkBAIC0xODIsMTQgKzE4MSw5IEBAIHN0YXRpYyBpbnQgaW14X3BhdGFfcHJvYmUo
+c3RydWN0IGRldmljZV9kICpkZXYpCiAKIAlwYXRhX2lteF9zZXRfYnVzX3RpbWluZyhiYXNlLCBj
+bGtfZ2V0X3JhdGUoY2xrKSwgNCk7CiAKLQlpZiAoSVNfRU5BQkxFRChDT05GSUdfT0ZERVZJQ0Up
+KSB7Ci0JCWRldm5hbWUgPSBvZl9hbGlhc19nZXQoZGV2LT5kZXZpY2Vfbm9kZSk7Ci0JCWlmIChk
+ZXZuYW1lKQotCQkJZGV2bmFtZSA9IHhzdHJkdXAoZGV2bmFtZSk7Ci0JfQogCiAJaWRlLT5wb3J0
+LmRldiA9IGRldjsKLQlpZGUtPnBvcnQuZGV2bmFtZSA9IGRldm5hbWU7CisJaWRlLT5wb3J0LmRl
+dm5hbWUgPSB4c3RyZHVwKG9mX2FsaWFzX2dldChkZXYtPmRldmljZV9ub2RlKSk7CiAKIAlkZXYt
+PnByaXYgPSBpZGU7CiAJZGV2LT5kZXRlY3QgPSBwYXRhX2lteF9kZXRlY3Q7Ci0tIAoyLjExLjAK
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
+IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
