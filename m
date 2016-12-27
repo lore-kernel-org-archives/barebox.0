@@ -1,23 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-oi0-x244.google.com ([2607:f8b0:4003:c06::244])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cKMVH-0007U4-PP
- for barebox@lists.infradead.org; Fri, 23 Dec 2016 09:51:08 +0000
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.84_2)
- (envelope-from <ukl@pengutronix.de>) id 1cKMUw-0008Bn-9h
- for barebox@lists.infradead.org; Fri, 23 Dec 2016 10:50:46 +0100
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.84_2)
- (envelope-from <ukl@pengutronix.de>) id 1cKMUw-0006Y6-3f
- for barebox@lists.infradead.org; Fri, 23 Dec 2016 10:50:46 +0100
-Date: Fri, 23 Dec 2016 10:50:46 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20161223095046.xnvd2taafojhrjgd@pengutronix.de>
-References: <20161223094549.3311-1-u.kleine-koenig@pengutronix.de>
+ id 1cLvEJ-0000wd-8h
+ for barebox@lists.infradead.org; Tue, 27 Dec 2016 17:08:06 +0000
+Received: by mail-oi0-x244.google.com with SMTP id u15so48513900oie.3
+ for <barebox@lists.infradead.org>; Tue, 27 Dec 2016 09:07:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20161223094549.3311-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1482356321-19996-1-git-send-email-c.hemp@phytec.de>
+References: <1482356321-19996-1-git-send-email-c.hemp@phytec.de>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Tue, 27 Dec 2016 15:07:41 -0200
+Message-ID: <CAOMZO5BoQ_2CFjWnJWsudE=B5dBsiYsf1i2OBrNerLaA_YBxug@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,35 +19,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ata: pata-imx: simplify assignment of device name
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] mtd: nand_mxs: fix NAND error when change clk rate
+To: Christian Hemp <c.hemp@phytec.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hello,
+Hi Christian,
 
-On Fri, Dec 23, 2016 at 10:45:49AM +0100, Uwe Kleine-K=F6nig wrote:
->  	dev->detect =3D pata_imx_detect;
+On Wed, Dec 21, 2016 at 7:38 PM, Christian Hemp <c.hemp@phytec.de> wrote:
+> The function "nand_enable_edo_mode" changed the NAND clk rate, without turning
+> it off. In this case it is posible to get the following errors:
+>     MXS NAND: Error sending command
+>     MXS NAND: Error sending command
+>     MXS NAND: DMA read error
+>
+> This can be fixed if the NAND clk is disabled before we change the clk
+> rate.
+>
+> Tested with:
+> nand: NAND device: Manufacturer ID: 0x2c, Chip ID: 0xdc (Micron
+> MT29F4G08ABADAWP), 512MiB, page size: 2048, OOB size: 64
+>
+> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+> ---
+>  drivers/mtd/nand/nand_mxs.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+> index cba0bee..ce79bca 100644
+> --- a/drivers/mtd/nand/nand_mxs.c
+> +++ b/drivers/mtd/nand/nand_mxs.c
+> @@ -2047,7 +2047,9 @@ static int mxs_nand_enable_edo_mode(struct mxs_nand_info *info)
+>         nand->select_chip(mtd, -1);
+>
+>         /* [3] set the main IO clock, 100MHz for mode 5, 80MHz for mode 4. */
+> +       clk_disable(info->clk);
+>         clk_set_rate(info->clk, (mode == 5) ? 100000000 : 80000000);
+> +       clk_enable(info->clk);
 
-BTW, another thing I noticed while reading through this driver is:
+Yes, this is needed to fix erratum ERR007117.
+(http://cache.nxp.com/assets/documents/data/en/errata/IMX6DQCE.pdf)
 
-pata_imx_detect is a wrapper around ata_port_detect. Later in
-imx_pata_probe the function ide_port_register is called which also calls
-ata_port_detect.
-
-I don't have a machine handy where I could test, but I guess
-pata_imx_detect could be dropped. (Or alternatively ide_port_register
-could be reworked and all callers fixed to setup a detect call.)
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+I will prepare the same fix for the kernel, thanks.
 
 _______________________________________________
 barebox mailing list
