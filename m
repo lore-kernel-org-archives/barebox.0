@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp53.i.mail.ru ([94.100.177.113])
  by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cMUn7-0004QR-Ru
+ id 1cMUn8-0004Qb-6W
  for barebox@lists.infradead.org; Thu, 29 Dec 2016 07:06:23 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Thu, 29 Dec 2016 10:05:45 +0300
-Message-Id: <1482995146-19535-1-git-send-email-shc_work@mail.ru>
+Date: Thu, 29 Dec 2016 10:05:46 +0300
+Message-Id: <1482995146-19535-2-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1482995146-19535-1-git-send-email-shc_work@mail.ru>
+References: <1482995146-19535-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RESEND] gpio: gpio-74164: Add 74lvc594 ID
+Subject: [PATCH] mci: omap: Add devicetree options parsing by MCI core.
 To: barebox@lists.infradead.org
 
-The latest kernel gpio-74x164 driver supports 74LVC594 IC ID.
-Patch adds such ID to barebox driver.
+This patch adds a callback to parsing devicetree options for MMC:
+bus-width, etc..
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/gpio/gpio-74164.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mci/omap_hsmmc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpio/gpio-74164.c b/drivers/gpio/gpio-74164.c
-index 926207a..e4d413b 100644
---- a/drivers/gpio/gpio-74164.c
-+++ b/drivers/gpio/gpio-74164.c
-@@ -92,6 +92,7 @@ static struct gpio_ops gpio_74164_ops = {
+diff --git a/drivers/mci/omap_hsmmc.c b/drivers/mci/omap_hsmmc.c
+index 180afb1..cbc69e4 100644
+--- a/drivers/mci/omap_hsmmc.c
++++ b/drivers/mci/omap_hsmmc.c
+@@ -631,6 +631,8 @@ static int omap_mmc_probe(struct device_d *dev)
+ 			hsmmc->mci.devname = xstrdup(alias);
+ 	}
  
- static struct platform_device_id gpio_74164_ids[] = {
- 	{ "74hc164" },
-+	{ "74lvc594" },
- 	{ "74hc595" },
- 	{ }
- };
++	mci_of_parse(&hsmmc->mci);
++
+ 	dev->priv = hsmmc;
+ 	dev->detect = omap_mmc_detect,
+ 
 -- 
 2.4.9
 
