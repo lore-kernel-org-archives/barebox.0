@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cQVDs-00051r-R4
- for barebox@lists.infradead.org; Mon, 09 Jan 2017 08:22:34 +0000
-Date: Mon, 9 Jan 2017 09:22:11 +0100
+ id 1cQVGi-0007N4-2G
+ for barebox@lists.infradead.org; Mon, 09 Jan 2017 08:25:29 +0000
+Date: Mon, 9 Jan 2017 09:25:06 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170109082211.jfiocffgectfcug5@pengutronix.de>
-References: <20170106084443.21426-1-s.trumtrar@pengutronix.de>
+Message-ID: <20170109082506.crcamszk2j2aeqez@pengutronix.de>
+References: <1482995146-19535-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170106084443.21426-1-s.trumtrar@pengutronix.de>
+In-Reply-To: <1482995146-19535-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,48 +22,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: socfpga: dtsi: remove fpgamgr+sysmgr entry
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH RESEND] gpio: gpio-74164: Add 74lvc594 ID
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jan 06, 2017 at 09:44:43AM +0100, Steffen Trumtrar wrote:
-> The fpgamgr and sysmgr bindings are now in the upstream dtsi.
-> Remove them.
+On Thu, Dec 29, 2016 at 10:05:45AM +0300, Alexander Shiyan wrote:
+> The latest kernel gpio-74x164 driver supports 74LVC594 IC ID.
+> Patch adds such ID to barebox driver.
 > 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 > ---
->  arch/arm/dts/socfpga.dtsi | 11 -----------
->  1 file changed, 11 deletions(-)
 
 Applied, thanks
 
 Sascha
 
+>  drivers/gpio/gpio-74164.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/arch/arm/dts/socfpga.dtsi b/arch/arm/dts/socfpga.dtsi
-> index 5b141c23914c..274c491804e0 100644
-> --- a/arch/arm/dts/socfpga.dtsi
-> +++ b/arch/arm/dts/socfpga.dtsi
-> @@ -25,17 +25,6 @@
->  			clock-names = "qspi_clk";
->  			status = "disabled";
->  		};
-> -
-> -		fpgamgr@ff706000 {
-> -			compatible = "altr,socfpga-fpga-mgr";
-> -			reg = <0xff706000 0x1000>,
-> -			      <0xffb90000 0x1000>;
-> -		};
-> -
-> -		system_mgr: sysmgr@ffd08000 {
-> -			compatible = "altr,sys-mgr", "syscon";
-> -			reg = <0xffd08000 0x4000>;
-> -		};
->         };
+> diff --git a/drivers/gpio/gpio-74164.c b/drivers/gpio/gpio-74164.c
+> index 926207a..e4d413b 100644
+> --- a/drivers/gpio/gpio-74164.c
+> +++ b/drivers/gpio/gpio-74164.c
+> @@ -92,6 +92,7 @@ static struct gpio_ops gpio_74164_ops = {
+>  
+>  static struct platform_device_id gpio_74164_ids[] = {
+>  	{ "74hc164" },
+> +	{ "74lvc594" },
+>  	{ "74hc595" },
+>  	{ }
 >  };
->  &osc2 {
 > -- 
-> 2.11.0
+> 2.4.9
 > 
 > 
 > _______________________________________________
