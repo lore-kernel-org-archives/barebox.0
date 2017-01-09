@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cQY87-0006zb-Qq
- for barebox@lists.infradead.org; Mon, 09 Jan 2017 11:28:49 +0000
-Date: Mon, 9 Jan 2017 12:28:25 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170109112825.qa2yvfshsevot6ut@pengutronix.de>
-References: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
- <1481565788-9115-4-git-send-email-andrew.smirnov@gmail.com>
- <20170109111830.7eqrjbrm3av6hjsg@pengutronix.de>
+Received: from qmail.e-mind.com ([188.94.192.40])
+ by bombadil.infradead.org with smtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1cQYLU-0007ml-1Z
+ for barebox@lists.infradead.org; Mon, 09 Jan 2017 11:42:39 +0000
+References: <20161229091301.co6svsymwlyuw555@pengutronix.de>
+ <d4d04d25-108d-e100-f548-f85cd0fb58da@eurekelettronica.it>
+ <20170109083228.5l4cwpqcl5bha5u5@pengutronix.de>
+From: gianluca <gianlucarenzi@eurekelettronica.it>
+Message-ID: <1514f1a8-926c-fa1b-bd18-b5fb8d06883f@eurekelettronica.it>
+Date: Mon, 9 Jan 2017 12:35:16 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170109111830.7eqrjbrm3av6hjsg@pengutronix.de>
+In-Reply-To: <20170109083228.5l4cwpqcl5bha5u5@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,80 +19,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 03/21] i.MX: ocotp: Simplify MAC address storing logic
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: No release for December
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jan 09, 2017 at 12:18:30PM +0100, Sascha Hauer wrote:
-> On Mon, Dec 12, 2016 at 10:02:50AM -0800, Andrey Smirnov wrote:
-> > Store MAC addresses as 8 byte buffer to avoid the need to have extra
-> > code to deal with "6 into 8" conversions and the need to have various
-> > magic numbers.
-> > 
-> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > ---
-> >  arch/arm/mach-imx/ocotp.c | 11 +++++------
-> >  1 file changed, 5 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
-> > index 7f625d8..f549c94 100644
-> > --- a/arch/arm/mach-imx/ocotp.c
-> > +++ b/arch/arm/mach-imx/ocotp.c
-> > @@ -84,7 +84,7 @@ struct ocotp_priv {
-> >  	struct device_d dev;
-> >  	int permanent_write_enable;
-> >  	int sense_enable;
-> > -	char ethaddr[6];
-> > +	char ethaddr[MAC_BYTES];
-> >  	struct regmap_config map_config;
-> >  	const struct imx_ocotp_data *data;
-> >  };
-> > @@ -409,25 +409,24 @@ static void memreverse(void *dest, const void *src, size_t n)
-> >  static int imx_ocotp_get_mac(struct param_d *param, void *priv)
-> >  {
-> >  	struct ocotp_priv *ocotp_priv = priv;
-> > -	char buf[8];
-> > +	char buf[MAC_BYTES];
-> >  	int ret;
-> >  
-> >  	ret = regmap_bulk_read(ocotp_priv->map, MAC_OFFSET, buf, MAC_BYTES);
-> >  	if (ret < 0)
-> >  		return ret;
-> >  
-> > -	memreverse(ocotp_priv->ethaddr, buf, 6);
-> > +	memreverse(ocotp_priv->ethaddr, buf, MAC_BYTES);
-> >  	return 0;
-> >  }
-> >  
-> >  static int imx_ocotp_set_mac(struct param_d *param, void *priv)
-> >  {
-> >  	struct ocotp_priv *ocotp_priv = priv;
-> > -	char buf[8];
-> > +	char buf[MAC_BYTES];
-> >  	int ret;
-> >  
-> > -	memreverse(buf, ocotp_priv->ethaddr, 6);
-> > -	buf[6] = 0; buf[7] = 0;
-> > +	memreverse(buf, ocotp_priv->ethaddr, MAC_BYTES);
-> 
-> Unless I have knots in my mind this does not work. dev_add_param_mac()
-> expects the MAC address in the given buffer. We pass priv->ethaddr, but
-> now with this change the MAC address is in priv->ethaddr + 2. Anything I
-> don't see here?
+On 01/09/2017 09:32 AM, Sascha Hauer wrote:
+> On Fri, Dec 30, 2016 at 09:30:15AM +0100, gianluca wrote:
+>> On 12/29/2016 10:13 AM, Sascha Hauer wrote:
+>>> Hi All,
+>>>
+>>> As you probably already have noticed I was very quiet the last month.
+>>> The reason was that I was on parental leave for december. Apart from
+>>> babysitting we planned to finish the now three years lasting renovation
+>>> of our houses ground floor. The good news is that we finally finished
+>>> this task and could move from the first level down to the ground floor.
+>>> Finally \o/.
+>>> I totally underestimated how busy I would be and how demanding new born
+>>> childs can be. I originally wanted to continue reviewing patches and
+>>> make a release just as usual, but as it seems this didn't work out.
+>>> I decided to skip the december release as december is almost over
+>>> already now. I'll continue with reviewing patches in January and do a
+>>> release then. Your patches are not lost. Until then I wish you a good
+>>> start to the new year.
+>>>
+>>
+>> Welcome in parental's world!!!
+>>
+>> P.S.: I can give you a hint: if you are planning to have another kid,
+>> remember that two is not the double of one. Taliking about kids, two is the
+>> 2 powered at 2 or if you prefer in binary form it 10 times 01. O__o
+>
+> I was told that the change from 0 to 1 kid is much harder than the
+> change from 1 to 2 kids. I tend to believe this, but I'll for sure
+> remember this mail if I was wrong ;)
+>
 
-And indeed I see the wrong MAC address in "devinfo ocotp0"
+;-)
 
-Sascha
+ From my POV my two daughters are 22 months between them. I was changing 
+nappies from 2010 up to 2014 for both. O__o
 
+No mention when they start talking or walking... When you will have two 
+of them it will the hardest thing of your life.
+
+Anyway good luck and have an happy and joyful year 2017!!!
+
+>>
+>> Happy new year 2017 and enjoy those _VERY_QUICK_ growing seasons.
+>
+> Indeed it's amazing how fast they grow. I am very much enjoying it.
+>
+
+Agree with that.
+
+Regards,
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Eurek s.r.l.                          |
+Electronic Engineering                | http://www.eurek.it
+via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
+p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
 
 _______________________________________________
 barebox mailing list
