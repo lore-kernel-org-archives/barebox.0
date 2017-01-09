@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cQVU4-0003FD-SW
- for barebox@lists.infradead.org; Mon, 09 Jan 2017 08:39:18 +0000
-Date: Mon, 9 Jan 2017 09:38:55 +0100
+ id 1cQVYf-00073e-Qz
+ for barebox@lists.infradead.org; Mon, 09 Jan 2017 08:44:05 +0000
+Date: Mon, 9 Jan 2017 09:43:39 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170109083855.f2vxmkmtlczdv62t@pengutronix.de>
-References: <1482938984.1946.1.camel@googlemail.com>
+Message-ID: <20170109084339.ayyjysadnmu4vspu@pengutronix.de>
+References: <20161223094549.3311-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1482938984.1946.1.camel@googlemail.com>
+In-Reply-To: <20161223094549.3311-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,56 +18,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] USB: host: hub: increase delay after device removal
-To: Christoph Fritz <chf.fritz@googlemail.com>
+Subject: Re: [PATCH] ata: pata-imx: simplify assignment of device name
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Christoph,
+On Fri, Dec 23, 2016 at 10:45:49AM +0100, Uwe Kleine-K=F6nig wrote:
+> If OF_DEVICE isn't enabled, of_alias_get returns NULL. Also xstrdup
+> returns NULL when NULL is passed as argument. This allows to simplify
+> accordingly.
+> =
 
-On Wed, Dec 28, 2016 at 04:29:44PM +0100, Christoph Fritz wrote:
-> This patch increases delay time for slow hubs after device removal.
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
 
-Could you spent a few words what happens without this patch, i.e. how
-the symptons look and which hardware you observed that? Without this
-information it will be very hard to ever change this line again.
+Applied, thanks
 
 Sascha
 
-> 
-> Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
-> ---
->  drivers/usb/core/hub.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-> index f44aea5..0854e3a 100644
-> --- a/drivers/usb/core/hub.c
-> +++ b/drivers/usb/core/hub.c
-> @@ -201,7 +201,7 @@ static void usb_hub_port_connect_change(struct usb_device *dev, int port)
->  	if (dev->children[port] && !(portstatus & USB_PORT_STAT_ENABLE))
->  		usb_remove_device(dev->children[port]);
->  
-> -	mdelay(200);
-> +	mdelay(500);
->  
->  	/* Reset the port */
->  	if (hub_port_reset(dev, port, &portstatus) < 0) {
-> -- 
-> 2.1.4
-> 
-> 
-> 
+>  drivers/ata/pata-imx.c | 8 +-------
+>  1 file changed, 1 insertion(+), 7 deletions(-)
+> =
+
+> diff --git a/drivers/ata/pata-imx.c b/drivers/ata/pata-imx.c
+> index c8098a537fe5..4f75048c12ce 100644
+> --- a/drivers/ata/pata-imx.c
+> +++ b/drivers/ata/pata-imx.c
+> @@ -158,7 +158,6 @@ static int imx_pata_probe(struct device_d *dev)
+>  	struct clk *clk;
+>  	void __iomem *base;
+>  	int ret;
+> -	const char *devname =3D NULL;
+>  =
+
+>  	ide =3D xzalloc(sizeof(*ide));
+>  	iores =3D dev_request_mem_resource(dev, 0);
+> @@ -182,14 +181,9 @@ static int imx_pata_probe(struct device_d *dev)
+>  =
+
+>  	pata_imx_set_bus_timing(base, clk_get_rate(clk), 4);
+>  =
+
+> -	if (IS_ENABLED(CONFIG_OFDEVICE)) {
+> -		devname =3D of_alias_get(dev->device_node);
+> -		if (devname)
+> -			devname =3D xstrdup(devname);
+> -	}
+>  =
+
+>  	ide->port.dev =3D dev;
+> -	ide->port.devname =3D devname;
+> +	ide->port.devname =3D xstrdup(of_alias_get(dev->device_node));
+>  =
+
+>  	dev->priv =3D ide;
+>  	dev->detect =3D pata_imx_detect;
+> -- =
+
+> 2.11.0
+> =
+
+> =
+
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
--- 
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
