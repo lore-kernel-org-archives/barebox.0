@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.85_2 #1 (Red Hat Linux))
- id 1cKMQa-0005l3-4R
- for barebox@lists.infradead.org; Fri, 23 Dec 2016 09:46:16 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri, 23 Dec 2016 10:45:49 +0100
-Message-Id: <20161223094549.3311-1-u.kleine-koenig@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cQXFU-0001vT-88
+ for barebox@lists.infradead.org; Mon, 09 Jan 2017 10:32:22 +0000
+Date: Mon, 9 Jan 2017 11:31:58 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170109103158.aoo5pdwadl3ky7lm@pengutronix.de>
+References: <20161217204644.4419-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20161217204644.4419-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,33 +18,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ata: pata-imx: simplify assignment of device name
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ata/ahci: simplify ahci_read_id
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-SWYgT0ZfREVWSUNFIGlzbid0IGVuYWJsZWQsIG9mX2FsaWFzX2dldCByZXR1cm5zIE5VTEwuIEFs
-c28geHN0cmR1cApyZXR1cm5zIE5VTEwgd2hlbiBOVUxMIGlzIHBhc3NlZCBhcyBhcmd1bWVudC4g
-VGhpcyBhbGxvd3MgdG8gc2ltcGxpZnkKYWNjb3JkaW5nbHkuCgpTaWduZWQtb2ZmLWJ5OiBVd2Ug
-S2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGRyaXZl
-cnMvYXRhL3BhdGEtaW14LmMgfCA4ICstLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRp
-b24oKyksIDcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9hdGEvcGF0YS1pbXgu
-YyBiL2RyaXZlcnMvYXRhL3BhdGEtaW14LmMKaW5kZXggYzgwOThhNTM3ZmU1Li40Zjc1MDQ4YzEy
-Y2UgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvYXRhL3BhdGEtaW14LmMKKysrIGIvZHJpdmVycy9hdGEv
-cGF0YS1pbXguYwpAQCAtMTU4LDcgKzE1OCw2IEBAIHN0YXRpYyBpbnQgaW14X3BhdGFfcHJvYmUo
-c3RydWN0IGRldmljZV9kICpkZXYpCiAJc3RydWN0IGNsayAqY2xrOwogCXZvaWQgX19pb21lbSAq
-YmFzZTsKIAlpbnQgcmV0OwotCWNvbnN0IGNoYXIgKmRldm5hbWUgPSBOVUxMOwogCiAJaWRlID0g
-eHphbGxvYyhzaXplb2YoKmlkZSkpOwogCWlvcmVzID0gZGV2X3JlcXVlc3RfbWVtX3Jlc291cmNl
-KGRldiwgMCk7CkBAIC0xODIsMTQgKzE4MSw5IEBAIHN0YXRpYyBpbnQgaW14X3BhdGFfcHJvYmUo
-c3RydWN0IGRldmljZV9kICpkZXYpCiAKIAlwYXRhX2lteF9zZXRfYnVzX3RpbWluZyhiYXNlLCBj
-bGtfZ2V0X3JhdGUoY2xrKSwgNCk7CiAKLQlpZiAoSVNfRU5BQkxFRChDT05GSUdfT0ZERVZJQ0Up
-KSB7Ci0JCWRldm5hbWUgPSBvZl9hbGlhc19nZXQoZGV2LT5kZXZpY2Vfbm9kZSk7Ci0JCWlmIChk
-ZXZuYW1lKQotCQkJZGV2bmFtZSA9IHhzdHJkdXAoZGV2bmFtZSk7Ci0JfQogCiAJaWRlLT5wb3J0
-LmRldiA9IGRldjsKLQlpZGUtPnBvcnQuZGV2bmFtZSA9IGRldm5hbWU7CisJaWRlLT5wb3J0LmRl
-dm5hbWUgPSB4c3RyZHVwKG9mX2FsaWFzX2dldChkZXYtPmRldmljZV9ub2RlKSk7CiAKIAlkZXYt
-PnByaXYgPSBpZGU7CiAJZGV2LT5kZXRlY3QgPSBwYXRhX2lteF9kZXRlY3Q7Ci0tIAoyLjExLjAK
-CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
-IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
-ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Sat, Dec 17, 2016 at 09:46:44PM +0100, Uwe Kleine-K=F6nig wrote:
+> This is a dummy commit log body because I consider the change to trivial
+> to write something sensible.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+
+Applied, thanks
+
+Sascha
+
+>  drivers/ata/ahci.c | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
+> =
+
+> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+> index c31b337ba231..cea031af5a84 100644
+> --- a/drivers/ata/ahci.c
+> +++ b/drivers/ata/ahci.c
+> @@ -216,11 +216,7 @@ static int ahci_read_id(struct ata_port *ata, void *=
+buf)
+>  	fis[1] =3D 1 << 7;		/* Command FIS. */
+>  	fis[2] =3D ATA_CMD_ID_ATA;	/* Command byte. */
+>  =
+
+> -	ret =3D ahci_io(ahci, fis, sizeof(fis), buf, NULL, SECTOR_SIZE);
+> -	if (ret)
+> -		return ret;
+> -
+> -	return ret;
+> +	return ahci_io(ahci, fis, sizeof(fis), buf, NULL, SECTOR_SIZE);
+>  }
+>  =
+
+>  static int ahci_rw(struct ata_port *ata, void *rbuf, const void *wbuf,
+> -- =
+
+> 2.10.2
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
