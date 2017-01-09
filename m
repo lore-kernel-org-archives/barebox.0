@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cWqTq-0004bB-Uv
- for barebox@lists.infradead.org; Thu, 26 Jan 2017 20:17:17 +0000
-Date: Thu, 26 Jan 2017 21:14:39 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20170126201439.jmep3cybbl33s342@pengutronix.de>
-References: <CACmkAZGnw=pCsaRQ9RRa2kBoUEDbEHzV6QJpii6Q+e25VrW02Q@mail.gmail.com>
+ id 1cQXJd-0005uD-NQ
+ for barebox@lists.infradead.org; Mon, 09 Jan 2017 10:36:39 +0000
+Date: Mon, 9 Jan 2017 11:36:16 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170109103616.fqqijrpguyfq2sr5@pengutronix.de>
+References: <20161214125316.2350-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CACmkAZGnw=pCsaRQ9RRa2kBoUEDbEHzV6QJpii6Q+e25VrW02Q@mail.gmail.com>
+In-Reply-To: <20161214125316.2350-1-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,46 +18,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: How to renew eth0 settings without doing a reset
-To: Haris Papadopoulos <haris@amberbox.com>
+Subject: Re: [PATCH] ARM: i.MX53 Vincell: change dialog compatible to proper
+ vendor prefix
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jan 25, 2017 at 02:53:54PM +0000, Haris Papadopoulos wrote:
-> Hi,
-> =
+On Wed, Dec 14, 2016 at 01:53:16PM +0100, Michael Grzeschik wrote:
+> The compatible vendor prefix for dialog pmic is dlg. We fix it in
+> the devicetrees using the wrong one.
+> 
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+> ---
 
-> I am trying to configure a static ip address for my barebox.
-> =
+Applied, thanks
 
-> I edit the file /env/network/eth0 and then I do saveenv.
-> =
+Sascha
 
-> Then I do ifup eth0. There is no ifdown command in barebox.
-> =
+>  arch/arm/dts/imx53-guf-vincell-lt.dts | 2 +-
+>  arch/arm/dts/imx53-guf-vincell.dts    | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/dts/imx53-guf-vincell-lt.dts b/arch/arm/dts/imx53-guf-vincell-lt.dts
+> index 67a4133..2b1b54a 100644
+> --- a/arch/arm/dts/imx53-guf-vincell-lt.dts
+> +++ b/arch/arm/dts/imx53-guf-vincell-lt.dts
+> @@ -152,7 +152,7 @@
+>  	};
+>  
+>  	pmic: dialog@48 { /* DA9053-3HHA1 PMIC */
+> -		compatible = "dialog,da9053-aa", "dialog,da9052";
+> +		compatible = "dlg,da9053-aa", "dlg,da9052";
+>  		reg = <0x48>;
+>  		interrupt-parent = <&gpio7>;
+>  		interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
+> diff --git a/arch/arm/dts/imx53-guf-vincell.dts b/arch/arm/dts/imx53-guf-vincell.dts
+> index 2f0153e..f743f17 100644
+> --- a/arch/arm/dts/imx53-guf-vincell.dts
+> +++ b/arch/arm/dts/imx53-guf-vincell.dts
+> @@ -102,7 +102,7 @@
+>  	status = "okay";
+>  
+>  	pmic: dialog@48 { /* DA9053-3HHA1 PMIC */
+> -		compatible = "dialog,da9053-aa", "dialog,da9052";
+> +		compatible = "dlg,da9053-aa", "dlg,da9052";
+>  		reg = <0x48>;
+>  		interrupt-parent = <&gpio7>;
+>  		interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
+> -- 
+> 2.10.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-> I noticed that the only way to make the new ip address effective is to
-> reset the board. However, I will be doing this process with a script
-> or maybe remotely.
-> =
-
-> Therefore, I would like to make the new address effective without a
-> reset. How is that possible?
-
-eth0.ipaddress=3D1.2.3.4
-
-should work
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+-- 
+Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
