@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cQXXX-0000uG-0P
- for barebox@lists.infradead.org; Mon, 09 Jan 2017 10:51:00 +0000
-Date: Mon, 9 Jan 2017 11:50:37 +0100
+ id 1cQXyX-0007jg-3S
+ for barebox@lists.infradead.org; Mon, 09 Jan 2017 11:18:54 +0000
+Date: Mon, 9 Jan 2017 12:18:30 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170109105037.atfxmgb2vq2u74k6@pengutronix.de>
-References: <1481639504-4034-1-git-send-email-c.hemp@phytec.de>
+Message-ID: <20170109111830.7eqrjbrm3av6hjsg@pengutronix.de>
+References: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
+ <1481565788-9115-4-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1481639504-4034-1-git-send-email-c.hemp@phytec.de>
+In-Reply-To: <1481565788-9115-4-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +23,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] mci: imx: Add imx6sx compatible
-To: Christian Hemp <c.hemp@phytec.de>
+Subject: Re: [PATCH v2 03/21] i.MX: ocotp: Simplify MAC address storing logic
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Dec 13, 2016 at 03:31:43PM +0100, Christian Hemp wrote:
-> To let the driver probe on i.MX6SX and i.MX6UL.
+On Mon, Dec 12, 2016 at 10:02:50AM -0800, Andrey Smirnov wrote:
+> Store MAC addresses as 8 byte buffer to avoid the need to have extra
+> code to deal with "6 into 8" conversions and the need to have various
+> magic numbers.
 > 
-> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  drivers/mci/imx-esdhc.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  arch/arm/mach-imx/ocotp.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
+> index 7f625d8..f549c94 100644
+> --- a/arch/arm/mach-imx/ocotp.c
+> +++ b/arch/arm/mach-imx/ocotp.c
+> @@ -84,7 +84,7 @@ struct ocotp_priv {
+>  	struct device_d dev;
+>  	int permanent_write_enable;
+>  	int sense_enable;
+> -	char ethaddr[6];
+> +	char ethaddr[MAC_BYTES];
+>  	struct regmap_config map_config;
+>  	const struct imx_ocotp_data *data;
+>  };
+> @@ -409,25 +409,24 @@ static void memreverse(void *dest, const void *src, size_t n)
+>  static int imx_ocotp_get_mac(struct param_d *param, void *priv)
+>  {
+>  	struct ocotp_priv *ocotp_priv = priv;
+> -	char buf[8];
+> +	char buf[MAC_BYTES];
+>  	int ret;
+>  
+>  	ret = regmap_bulk_read(ocotp_priv->map, MAC_OFFSET, buf, MAC_BYTES);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	memreverse(ocotp_priv->ethaddr, buf, 6);
+> +	memreverse(ocotp_priv->ethaddr, buf, MAC_BYTES);
+>  	return 0;
+>  }
+>  
+>  static int imx_ocotp_set_mac(struct param_d *param, void *priv)
+>  {
+>  	struct ocotp_priv *ocotp_priv = priv;
+> -	char buf[8];
+> +	char buf[MAC_BYTES];
+>  	int ret;
+>  
+> -	memreverse(buf, ocotp_priv->ethaddr, 6);
+> -	buf[6] = 0; buf[7] = 0;
+> +	memreverse(buf, ocotp_priv->ethaddr, MAC_BYTES);
 
-Applied, thanks
+Unless I have knots in my mind this does not work. dev_add_param_mac()
+expects the MAC address in the given buffer. We pass priv->ethaddr, but
+now with this change the MAC address is in priv->ethaddr + 2. Anything I
+don't see here?
 
 Sascha
-
-> 
-> diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-> index 262a904..41f0562 100644
-> --- a/drivers/mci/imx-esdhc.c
-> +++ b/drivers/mci/imx-esdhc.c
-> @@ -648,6 +648,8 @@ static __maybe_unused struct of_device_id fsl_esdhc_compatible[] = {
->  	}, {
->  		.compatible = "fsl,imx6sl-usdhc",
->  	}, {
-> +		.compatible = "fsl,imx6sx-usdhc",
-> +	}, {
->  		/* sentinel */
->  	}
->  };
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
