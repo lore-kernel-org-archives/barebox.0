@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cQX8v-0005w6-Vi
- for barebox@lists.infradead.org; Mon, 09 Jan 2017 10:25:35 +0000
-Date: Mon, 9 Jan 2017 11:25:12 +0100
+ id 1cQXAn-0006pi-Ai
+ for barebox@lists.infradead.org; Mon, 09 Jan 2017 10:27:31 +0000
+Date: Mon, 9 Jan 2017 11:27:07 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170109102512.zlxa6i3hrtuhxb66@pengutronix.de>
-References: <20161220093340.14404-1-l.stach@pengutronix.de>
+Message-ID: <20170109102707.lqixm7yoiigl767o@pengutronix.de>
+References: <20161219191845.17226-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20161220093340.14404-1-l.stach@pengutronix.de>
+In-Reply-To: <20161219191845.17226-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,54 +18,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/9] fs: squashfs: don't reference UBI symbols if UBI
- isn't compiled in
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH] ata: ide-sff: don't call free for ide_port in error path
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Dec 20, 2016 at 10:33:32AM +0100, Lucas Stach wrote:
-> There is no point in trying to append a UBI root option, if there is
-> no UBI support in barebox.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+On Mon, Dec 19, 2016 at 08:18:45PM +0100, Uwe Kleine-K=F6nig wrote:
+> The ide_port is provided by the caller so it's not in the responsibility
+> of this function to free this memory in case of error.
+> Actually all callers do the free themselves, too.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > ---
 
 Applied, thanks
 
 Sascha
 
->  fs/squashfs/squashfs.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
-> index c4d0bac97443..4f4a307dafdd 100644
-> --- a/fs/squashfs/squashfs.c
-> +++ b/fs/squashfs/squashfs.c
-> @@ -120,6 +120,9 @@ void squashfs_set_rootarg(struct squashfs_priv *priv, struct fs_device_d *fsdev)
->  	struct mtd_info *mtd;
->  	char *str;
->  
-> +	if (!IS_ENABLED(CONFIG_MTD_UBI))
-> +		return;
+>  drivers/ata/ide-sff.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
+> =
+
+> diff --git a/drivers/ata/ide-sff.c b/drivers/ata/ide-sff.c
+> index e32cc3fc24f8..6dc89d79a543 100644
+> --- a/drivers/ata/ide-sff.c
+> +++ b/drivers/ata/ide-sff.c
+> @@ -389,11 +389,10 @@ int ide_port_register(struct ide_port *ide)
+>  	ide->port.ops =3D &ide_ops;
+>  =
+
+>  	ret =3D ata_port_register(&ide->port);
+> -	if (!ret)
+> -		ata_port_detect(&ide->port);
+> -
+>  	if (ret)
+> -		free(ide);
+> +		return ret;
 > +
->  	ubi_vol = ubi_open_volume_cdev(fsdev->cdev, UBI_READONLY);
->  
->  	if (IS_ERR(ubi_vol))
-> -- 
+> +	ata_port_detect(&ide->port);
+>  =
+
+> -	return ret;
+> +	return 0;
+>  }
+> -- =
+
 > 2.11.0
-> 
-> 
+> =
+
+> =
+
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
--- 
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
