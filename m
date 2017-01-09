@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cQXST-0004xl-W6
- for barebox@lists.infradead.org; Mon, 09 Jan 2017 10:45:48 +0000
-Date: Mon, 9 Jan 2017 11:45:24 +0100
+ id 1cQXXX-0000uG-0P
+ for barebox@lists.infradead.org; Mon, 09 Jan 2017 10:51:00 +0000
+Date: Mon, 9 Jan 2017 11:50:37 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170109104524.qeyn6bqieojrmhdb@pengutronix.de>
-References: <1481702404-8748-1-git-send-email-j.remmet@phytec.de>
+Message-ID: <20170109105037.atfxmgb2vq2u74k6@pengutronix.de>
+References: <1481639504-4034-1-git-send-email-c.hemp@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1481702404-8748-1-git-send-email-j.remmet@phytec.de>
+In-Reply-To: <1481639504-4034-1-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,136 +22,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] imx-bbu-nand-fcb: split up read_fcb
-To: Jan Remmet <j.remmet@phytec.de>
+Subject: Re: [PATCH 1/2] mci: imx: Add imx6sx compatible
+To: Christian Hemp <c.hemp@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Dec 14, 2016 at 09:00:03AM +0100, Jan Remmet wrote:
-> There are other ecc modes for the fcb out there.
+On Tue, Dec 13, 2016 at 03:31:43PM +0100, Christian Hemp wrote:
+> To let the driver probe on i.MX6SX and i.MX6UL.
 > 
-> Signed-off-by: Jan Remmet <j.remmet@phytec.de>
+> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
 > ---
->  common/imx-bbu-nand-fcb.c | 83 +++++++++++++++++++++++++++--------------------
->  1 file changed, 47 insertions(+), 36 deletions(-)
+>  drivers/mci/imx-esdhc.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
-> index 1db4c5a..34a5f83 100644
-> --- a/common/imx-bbu-nand-fcb.c
-> +++ b/common/imx-bbu-nand-fcb.c
-> @@ -167,6 +167,46 @@ static uint32_t calc_chksum(void *buf, size_t size)
->  	return ~chksum;
->  }
->  
-> +struct fcb_block *read_fcb_hamming_13_8(void *rawpage)
-> +{
-> +	int i;
-> +	int bitflips = 0, bit_to_flip;
-> +	u8 parity, np, syndrome;
-> +	u8 *fcb, *ecc;
-> +
-> +	fcb = rawpage + 12;
-> +	ecc = rawpage + 512 + 12;
-> +
-> +	for (i = 0; i < 512; i++) {
-> +		parity = ecc[i];
-> +		np = calculate_parity_13_8(fcb[i]);
-> +
-> +		syndrome = np ^ parity;
-> +		if (syndrome == 0)
-> +			continue;
-> +
-> +		if (!(hweight8(syndrome) & 1)) {
-> +			pr_err("Uncorrectable error at offset %d\n", i);
-> +			return ERR_PTR(-EIO);
-> +		}
-> +
-> +		bit_to_flip = lookup_single_error_13_8(syndrome);
-> +		if (bit_to_flip < 0) {
-> +			pr_err("Uncorrectable error at offset %d\n", i);
-> +			return ERR_PTR(-EIO);
-> +		}
-> +
-> +		bitflips++;
-> +
-> +		if (bit_to_flip > 7)
-> +			ecc[i] ^= 1 << (bit_to_flip - 8);
-> +		else
-> +			fcb[i] ^= 1 << bit_to_flip;
-> +	}
-> +
-> +	return xmemdup(rawpage + 12, 512);
-> +}
-> +
->  static __maybe_unused void dump_fcb(void *buf)
->  {
->  	struct fcb_block *fcb = buf;
-> @@ -258,11 +298,8 @@ static ssize_t raw_write_page(struct mtd_info *mtd, void *buf, loff_t offset)
->  
->  static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
->  {
-> -	int i;
-> -	int bitflips = 0, bit_to_flip;
-> -	u8 parity, np, syndrome;
-> -	u8 *fcb, *ecc;
->  	int ret;
-> +	struct fcb_block *fcb;
->  	void *rawpage;
->  
->  	*retfcb = NULL;
-> @@ -275,40 +312,14 @@ static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
->  		goto err;
+> diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+> index 262a904..41f0562 100644
+> --- a/drivers/mci/imx-esdhc.c
+> +++ b/drivers/mci/imx-esdhc.c
+> @@ -648,6 +648,8 @@ static __maybe_unused struct of_device_id fsl_esdhc_compatible[] = {
+>  	}, {
+>  		.compatible = "fsl,imx6sl-usdhc",
+>  	}, {
+> +		.compatible = "fsl,imx6sx-usdhc",
+> +	}, {
+>  		/* sentinel */
 >  	}
->  
-> -	fcb = rawpage + 12;
-> -	ecc = rawpage + 512 + 12;
-> -
-> -	for (i = 0; i < 512; i++) {
-> -		parity = ecc[i];
-> -		np = calculate_parity_13_8(fcb[i]);
-> -
-> -		syndrome = np ^ parity;
-> -		if (syndrome == 0)
-> -			continue;
-> -
-> -		if (!(hweight8(syndrome) & 1)) {
-> -			pr_err("Uncorrectable error at offset %d\n", i);
-> -			ret = -EIO;
-> -			goto err;
-> -		}
-> -
-> -		bit_to_flip = lookup_single_error_13_8(syndrome);
-> -		if (bit_to_flip < 0) {
-> -			pr_err("Uncorrectable error at offset %d\n", i);
-> -			ret = -EIO;
-> -			goto err;
-> -		}
-> -
-> -		bitflips++;
-> -
-> -		if (bit_to_flip > 7)
-> -			ecc[i] ^= 1 << (bit_to_flip - 8);
-> -		else
-> -			fcb[i] ^= 1 << bit_to_flip;
-> +	fcb = read_fcb_hamming_13_8(rawpage);
-> +	if (IS_ERR(fcb)) {
-> +		pr_err("Cannot read fcb\n");
-> +		ret = PTR_ERR(fcb);
-> +		goto err;
->  	}
->  
-> -	*retfcb = xmemdup(rawpage + 12, 512);
-> -
-> +	*retfcb = fcb;
->  	ret = 0;
->  err:
->  	free(rawpage);
+>  };
 > -- 
-> 2.7.4
+> 1.9.1
 > 
 > 
 > _______________________________________________
