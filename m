@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cQXLV-00072O-Ob
- for barebox@lists.infradead.org; Mon, 09 Jan 2017 10:38:36 +0000
-Date: Mon, 9 Jan 2017 11:38:12 +0100
+ id 1cQXST-0004xl-W6
+ for barebox@lists.infradead.org; Mon, 09 Jan 2017 10:45:48 +0000
+Date: Mon, 9 Jan 2017 11:45:24 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170109103812.wqh7uaai4dbqzrnd@pengutronix.de>
-References: <20161214125227.30923-1-m.grzeschik@pengutronix.de>
+Message-ID: <20170109104524.qeyn6bqieojrmhdb@pengutronix.de>
+References: <1481702404-8748-1-git-send-email-j.remmet@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20161214125227.30923-1-m.grzeschik@pengutronix.de>
+In-Reply-To: <1481702404-8748-1-git-send-email-j.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,49 +22,136 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] da9053: add dt_ids to be probed by devicetree
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Subject: Re: [PATCH 1/2] imx-bbu-nand-fcb: split up read_fcb
+To: Jan Remmet <j.remmet@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Dec 14, 2016 at 01:52:27PM +0100, Michael Grzeschik wrote:
-> We add the da9052 compatible to get this driver probed by devicetree
-> users.
+On Wed, Dec 14, 2016 at 09:00:03AM +0100, Jan Remmet wrote:
+> There are other ecc modes for the fcb out there.
 > 
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+> Signed-off-by: Jan Remmet <j.remmet@phytec.de>
 > ---
->  drivers/mfd/da9053.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
+>  common/imx-bbu-nand-fcb.c | 83 +++++++++++++++++++++++++++--------------------
+>  1 file changed, 47 insertions(+), 36 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/mfd/da9053.c b/drivers/mfd/da9053.c
-> index 250c055..0de8c66 100644
-> --- a/drivers/mfd/da9053.c
-> +++ b/drivers/mfd/da9053.c
-> @@ -293,9 +293,18 @@ static int da9053_probe(struct device_d *dev)
->  	return 0;
+> diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
+> index 1db4c5a..34a5f83 100644
+> --- a/common/imx-bbu-nand-fcb.c
+> +++ b/common/imx-bbu-nand-fcb.c
+> @@ -167,6 +167,46 @@ static uint32_t calc_chksum(void *buf, size_t size)
+>  	return ~chksum;
 >  }
 >  
-> +static __maybe_unused struct of_device_id da9053_dt_ids[] = {
-> +	{
-> +		.compatible = "dlg,da9052",
-> +	}, {
-> +		/* sentinel */
-> +	}
-> +};
+> +struct fcb_block *read_fcb_hamming_13_8(void *rawpage)
+> +{
+> +	int i;
+> +	int bitflips = 0, bit_to_flip;
+> +	u8 parity, np, syndrome;
+> +	u8 *fcb, *ecc;
 > +
->  static struct driver_d da9053_driver = {
->  	.name  = DRIVERNAME,
->  	.probe = da9053_probe,
-> +	.of_compatible = DRV_OF_COMPAT(da9053_dt_ids),
->  };
+> +	fcb = rawpage + 12;
+> +	ecc = rawpage + 512 + 12;
+> +
+> +	for (i = 0; i < 512; i++) {
+> +		parity = ecc[i];
+> +		np = calculate_parity_13_8(fcb[i]);
+> +
+> +		syndrome = np ^ parity;
+> +		if (syndrome == 0)
+> +			continue;
+> +
+> +		if (!(hweight8(syndrome) & 1)) {
+> +			pr_err("Uncorrectable error at offset %d\n", i);
+> +			return ERR_PTR(-EIO);
+> +		}
+> +
+> +		bit_to_flip = lookup_single_error_13_8(syndrome);
+> +		if (bit_to_flip < 0) {
+> +			pr_err("Uncorrectable error at offset %d\n", i);
+> +			return ERR_PTR(-EIO);
+> +		}
+> +
+> +		bitflips++;
+> +
+> +		if (bit_to_flip > 7)
+> +			ecc[i] ^= 1 << (bit_to_flip - 8);
+> +		else
+> +			fcb[i] ^= 1 << bit_to_flip;
+> +	}
+> +
+> +	return xmemdup(rawpage + 12, 512);
+> +}
+> +
+>  static __maybe_unused void dump_fcb(void *buf)
+>  {
+>  	struct fcb_block *fcb = buf;
+> @@ -258,11 +298,8 @@ static ssize_t raw_write_page(struct mtd_info *mtd, void *buf, loff_t offset)
 >  
->  static int da9053_init(void)
+>  static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
+>  {
+> -	int i;
+> -	int bitflips = 0, bit_to_flip;
+> -	u8 parity, np, syndrome;
+> -	u8 *fcb, *ecc;
+>  	int ret;
+> +	struct fcb_block *fcb;
+>  	void *rawpage;
+>  
+>  	*retfcb = NULL;
+> @@ -275,40 +312,14 @@ static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
+>  		goto err;
+>  	}
+>  
+> -	fcb = rawpage + 12;
+> -	ecc = rawpage + 512 + 12;
+> -
+> -	for (i = 0; i < 512; i++) {
+> -		parity = ecc[i];
+> -		np = calculate_parity_13_8(fcb[i]);
+> -
+> -		syndrome = np ^ parity;
+> -		if (syndrome == 0)
+> -			continue;
+> -
+> -		if (!(hweight8(syndrome) & 1)) {
+> -			pr_err("Uncorrectable error at offset %d\n", i);
+> -			ret = -EIO;
+> -			goto err;
+> -		}
+> -
+> -		bit_to_flip = lookup_single_error_13_8(syndrome);
+> -		if (bit_to_flip < 0) {
+> -			pr_err("Uncorrectable error at offset %d\n", i);
+> -			ret = -EIO;
+> -			goto err;
+> -		}
+> -
+> -		bitflips++;
+> -
+> -		if (bit_to_flip > 7)
+> -			ecc[i] ^= 1 << (bit_to_flip - 8);
+> -		else
+> -			fcb[i] ^= 1 << bit_to_flip;
+> +	fcb = read_fcb_hamming_13_8(rawpage);
+> +	if (IS_ERR(fcb)) {
+> +		pr_err("Cannot read fcb\n");
+> +		ret = PTR_ERR(fcb);
+> +		goto err;
+>  	}
+>  
+> -	*retfcb = xmemdup(rawpage + 12, 512);
+> -
+> +	*retfcb = fcb;
+>  	ret = 0;
+>  err:
+>  	free(rawpage);
 > -- 
-> 2.10.2
+> 2.7.4
 > 
 > 
 > _______________________________________________
