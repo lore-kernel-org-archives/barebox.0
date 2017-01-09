@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cQVCE-0004CC-5j
- for barebox@lists.infradead.org; Mon, 09 Jan 2017 08:20:52 +0000
-Date: Mon, 9 Jan 2017 09:20:26 +0100
+ id 1cQVDI-0004jB-CN
+ for barebox@lists.infradead.org; Mon, 09 Jan 2017 08:21:58 +0000
+Date: Mon, 9 Jan 2017 09:21:34 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170109082025.xijkeym5rqdgfv37@pengutronix.de>
-References: <1483800326-14277-1-git-send-email-opentkernel@163.com>
+Message-ID: <20170109082134.wh2xnlrx46rfjcb6@pengutronix.de>
+References: <20170106100642.31002-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1483800326-14277-1-git-send-email-opentkernel@163.com>
+In-Reply-To: <20170106100642.31002-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: decalare div0 as weak function
-To: DU HUANPENG <opentkernel@163.com>
-Cc: barebox@lists.infradead.org, Du Huanpeng <u74147@gmail.com>
+Subject: Re: [PATCH] ARM: socfpga: remove unused entry from Makefile
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi,
-
-On Sat, Jan 07, 2017 at 10:45:26PM +0800, DU HUANPENG wrote:
-> From: Du Huanpeng <u74147@gmail.com>
+On Fri, Jan 06, 2017 at 11:06:42AM +0100, Steffen Trumtrar wrote:
+> There is no fpga.c file.
+> Remove the entry.
 > 
-> Signed-off-by: Du Huanpeng <u74147@gmail.com>
-> ---
->  arch/arm/lib/div0.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/lib/div0.c b/arch/arm/lib/div0.c
-> index 852cb72..d4f3b6c 100644
-> --- a/arch/arm/lib/div0.c
-> +++ b/arch/arm/lib/div0.c
-> @@ -17,11 +17,11 @@
->   *
->   */
->  #include <common.h>
-> +#include <linux/compiler.h>
->  
->  extern void __div0(void);
->  
-> -/* Replacement (=dummy) for GNU/Linux division-by zero handler */
-> -void __div0 (void)
-> +__weak void __div0 (void)
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Could you explain why and in which situations you need this?
+Applied, thanks
 
 Sascha
 
->  {
->  	panic("division by zero\n");
->  }
-> -- 
-> 2.7.4
+> ---
+>  arch/arm/mach-socfpga/Makefile | 1 -
+>  1 file changed, 1 deletion(-)
 > 
+> diff --git a/arch/arm/mach-socfpga/Makefile b/arch/arm/mach-socfpga/Makefile
+> index b81d57da26fd..dea0e075d145 100644
+> --- a/arch/arm/mach-socfpga/Makefile
+> +++ b/arch/arm/mach-socfpga/Makefile
+> @@ -2,4 +2,3 @@ obj-y += generic.o nic301.o bootsource.o reset-manager.o
+>  pbl-y += init.o freeze-controller.o scan-manager.o system-manager.o
+>  pbl-y += clock-manager.o
+>  obj-$(CONFIG_ARCH_SOCFPGA_XLOAD) += xload.o
+> -obj-$(CONFIG_ARCH_SOCFPGA_FPGA) += fpga.o
+> -- 
+> 2.11.0
 > 
 > 
 > _______________________________________________
