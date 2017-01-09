@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cQYd8-0002dQ-Vj
- for barebox@lists.infradead.org; Mon, 09 Jan 2017 12:00:54 +0000
-Date: Mon, 9 Jan 2017 13:00:28 +0100
+ id 1cQYfq-00063i-E6
+ for barebox@lists.infradead.org; Mon, 09 Jan 2017 12:03:45 +0000
+Date: Mon, 9 Jan 2017 13:03:16 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170109120028.rmlau62fksph6aeq@pengutronix.de>
+Message-ID: <20170109120316.agzguqvlak2ramud@pengutronix.de>
 References: <1481565788-9115-1-git-send-email-andrew.smirnov@gmail.com>
- <1481565788-9115-13-git-send-email-andrew.smirnov@gmail.com>
+ <1481565788-9115-20-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1481565788-9115-13-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1481565788-9115-20-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,47 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 12/21] i.MX: iomuxv3: Add helper type to deconstruct
- iomux_v3_cfg_t values
+Subject: Re: [PATCH v2 19/21] i.MX: Default CONFI_USB_IMX_PHY to 'y' on Vybrid
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Dec 12, 2016 at 10:02:59AM -0800, Andrey Smirnov wrote:
+In the subject:
+
+s/CONFI_USB_IMX_PHY/CONFIG_USB_IMX_PHY/
+
+On Mon, Dec 12, 2016 at 10:03:06AM -0800, Andrey Smirnov wrote:
 > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  arch/arm/mach-imx/include/mach/iomux-v3.h | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
+>  drivers/usb/imx/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/arm/mach-imx/include/mach/iomux-v3.h b/arch/arm/mach-imx/include/mach/iomux-v3.h
-> index 3bf457f..470f774 100644
-> --- a/arch/arm/mach-imx/include/mach/iomux-v3.h
-> +++ b/arch/arm/mach-imx/include/mach/iomux-v3.h
-> @@ -78,6 +78,22 @@ typedef u64 iomux_v3_cfg_t;
->  		((iomux_v3_cfg_t)(_sel_input_ofs) << MUX_SEL_INPUT_OFS_SHIFT) | \
->  		((iomux_v3_cfg_t)(_sel_input) << MUX_SEL_INPUT_SHIFT))
+> diff --git a/drivers/usb/imx/Kconfig b/drivers/usb/imx/Kconfig
+> index b0c6a41..8e6f315 100644
+> --- a/drivers/usb/imx/Kconfig
+> +++ b/drivers/usb/imx/Kconfig
+> @@ -16,4 +16,4 @@ config USB_IMX_CHIPIDEA
 >  
-> +
-> +struct iomux_v3_pad_configuration {
-> +	u64 mux_ctrl_ofs  : 12;
-> +	u64 pad_ctrl_ofs  : 12;
-> +	u64 sel_input_ofs : 12;
-> +	u64 mux_mode      : 5;
-> +	u64 pad_ctrl      : 18;
-> +	u64 sel_inp       : 4;
-> +	u64 reserved      : 1;
-> +} __packed;
-> +
-> +union iomux_v3_pad {
-> +	iomux_v3_cfg_t raw;
-> +	struct iomux_v3_pad_configuration cfg;
-> +};
-
-No, please. The order of bitfields is implementation defined. We
-shouldn't use this in barebox. Use plain masking/shifting, the defines
-are almost there.
-
-Sascha
-
+>  config USB_IMX_PHY
+>  	bool
+> -	default y if ARCH_IMX6 && GENERIC_PHY
+> +	default y if (ARCH_IMX6 || ARCH_VF610) && GENERIC_PHY
+> -- 
+> 2.5.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
