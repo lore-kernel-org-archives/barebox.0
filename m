@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cQXJd-0005uD-NQ
- for barebox@lists.infradead.org; Mon, 09 Jan 2017 10:36:39 +0000
-Date: Mon, 9 Jan 2017 11:36:16 +0100
+ id 1cQXKw-0006gT-3Z
+ for barebox@lists.infradead.org; Mon, 09 Jan 2017 10:38:00 +0000
+Date: Mon, 9 Jan 2017 11:37:36 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170109103616.fqqijrpguyfq2sr5@pengutronix.de>
-References: <20161214125316.2350-1-m.grzeschik@pengutronix.de>
+Message-ID: <20170109103736.njoclp2snlxh3wch@pengutronix.de>
+References: <20161214125252.2039-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20161214125316.2350-1-m.grzeschik@pengutronix.de>
+In-Reply-To: <20161214125252.2039-1-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,52 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX53 Vincell: change dialog compatible to proper
- vendor prefix
+Subject: Re: [PATCH] da9053: reset FAULTLOG after read
 To: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Dec 14, 2016 at 01:53:16PM +0100, Michael Grzeschik wrote:
-> The compatible vendor prefix for dialog pmic is dlg. We fix it in
-> the devicetrees using the wrong one.
+On Wed, Dec 14, 2016 at 01:52:52PM +0100, Michael Grzeschik wrote:
+> The driver has to reset the FAULTLOG register after every read by
+> writing the value back. In the current case the FALUTLOG register keep
+> its value over every software reset and will only reset on power-off.
+> This drives the reset-source value unreliable.
 > 
 > Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 > ---
+>  drivers/mfd/da9053.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 
 Applied, thanks
 
 Sascha
 
->  arch/arm/dts/imx53-guf-vincell-lt.dts | 2 +-
->  arch/arm/dts/imx53-guf-vincell.dts    | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/arm/dts/imx53-guf-vincell-lt.dts b/arch/arm/dts/imx53-guf-vincell-lt.dts
-> index 67a4133..2b1b54a 100644
-> --- a/arch/arm/dts/imx53-guf-vincell-lt.dts
-> +++ b/arch/arm/dts/imx53-guf-vincell-lt.dts
-> @@ -152,7 +152,7 @@
->  	};
+> diff --git a/drivers/mfd/da9053.c b/drivers/mfd/da9053.c
+> index 0de8c66..9adab8c 100644
+> --- a/drivers/mfd/da9053.c
+> +++ b/drivers/mfd/da9053.c
+> @@ -240,6 +240,10 @@ static void da9053_detect_reset_source(struct da9053_priv *da9053)
+>  	priority = of_get_reset_source_priority(da9053->dev->device_node);
 >  
->  	pmic: dialog@48 { /* DA9053-3HHA1 PMIC */
-> -		compatible = "dialog,da9053-aa", "dialog,da9052";
-> +		compatible = "dlg,da9053-aa", "dlg,da9052";
->  		reg = <0x48>;
->  		interrupt-parent = <&gpio7>;
->  		interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
-> diff --git a/arch/arm/dts/imx53-guf-vincell.dts b/arch/arm/dts/imx53-guf-vincell.dts
-> index 2f0153e..f743f17 100644
-> --- a/arch/arm/dts/imx53-guf-vincell.dts
-> +++ b/arch/arm/dts/imx53-guf-vincell.dts
-> @@ -102,7 +102,7 @@
->  	status = "okay";
+>  	reset_source_set_priority(type, priority);
+> +
+> +	ret = da9053_reg_write(da9053, DA9053_FAULTLOG_REG, val);
+> +	if (ret < 0)
+> +		return;
+>  }
 >  
->  	pmic: dialog@48 { /* DA9053-3HHA1 PMIC */
-> -		compatible = "dialog,da9053-aa", "dialog,da9052";
-> +		compatible = "dlg,da9053-aa", "dlg,da9052";
->  		reg = <0x48>;
->  		interrupt-parent = <&gpio7>;
->  		interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
+>  static void __noreturn da9053_force_system_reset(struct restart_handler *rst)
 > -- 
 > 2.10.2
 > 
