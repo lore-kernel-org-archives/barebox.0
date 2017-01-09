@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cT1qt-0002u2-Cs
- for barebox@lists.infradead.org; Mon, 16 Jan 2017 07:37:17 +0000
-Date: Mon, 16 Jan 2017 08:36:52 +0100
+ id 1cQX5Q-0002s1-8o
+ for barebox@lists.infradead.org; Mon, 09 Jan 2017 10:21:58 +0000
+Date: Mon, 9 Jan 2017 11:21:33 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170116073652.b7vrnj2k6u3jejmt@pengutronix.de>
-References: <CAAMcf8CA-eTzHhQFXct7-udO1sYifL3zGULsoxiW9U1hcvKMvw@mail.gmail.com>
- <20170111200757.x33vfb4sdrsu4kmk@pengutronix.de>
- <d8c10ecb-f349-eae5-2fe9-ccf407e1d31c@mev.co.uk>
- <CAAMcf8D+fzttYtBFAZ6EBeZ3+9RAGpTqLtJ0skzCQL81PsDd9w@mail.gmail.com>
+Message-ID: <20170109102133.2hwmwjqeikbbh5ck@pengutronix.de>
+References: <1482356321-19996-1-git-send-email-c.hemp@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAAMcf8D+fzttYtBFAZ6EBeZ3+9RAGpTqLtJ0skzCQL81PsDd9w@mail.gmail.com>
+In-Reply-To: <1482356321-19996-1-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,46 +18,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: scripts/checkpatch.pl is deprecated
-To: Vicente Bergas <vicencb@gmail.com>
-Cc: barebox@lists.infradead.org, Ian Abbott <abbotti@mev.co.uk>, Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] mtd: nand_mxs: fix NAND error when change clk rate
+To: Christian Hemp <c.hemp@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On Sun, Jan 15, 2017 at 08:42:42PM +0100, Vicente Bergas wrote:
-> On Thu, Jan 12, 2017 at 11:27 AM, Ian Abbott <abbotti@mev.co.uk> wrote:
-> > On 11/01/17 20:07, Uwe Kleine-K=F6nig wrote:
-> >>
-> >> On Wed, Jan 11, 2017 at 08:35:11PM +0100, Vicente Bergas wrote:
-> >>>
-> >>> Hello,
-> >>> when using scripts/checkpatch.pl it may report:
-> >>>   Unescaped left brace in regex is deprecated,
-> >>>   passed through in regex at scripts/checkpatch.pl line 2267.
-> >>
-> >>
-> >> I bet this scripts originates from the kernel. So I'd recommend to test
-> >> if their version is affected to. If yes, report to them, if not, update
-> >> barebox to latest Linux version.
-> >
-> >
-> > In the Linux kernel, this was fixed in commit
-> > 6b8c69e4384b0bcf1936c2137804840212daaf69 ("checkpatch: fix another left
-> > brace warning"), which made it into the the 4.6 kernel.
-> =
+On Wed, Dec 21, 2016 at 10:38:41PM +0100, Christian Hemp wrote:
+> The function "nand_enable_edo_mode" changed the NAND clk rate, without turning
+> it off. In this case it is posible to get the following errors:
+>     MXS NAND: Error sending command
+>     MXS NAND: Error sending command
+>     MXS NAND: DMA read error
+> 
+> This can be fixed if the NAND clk is disabled before we change the clk
+> rate.
+> 
+> Tested with:
+> nand: NAND device: Manufacturer ID: 0x2c, Chip ID: 0xdc (Micron
+> MT29F4G08ABADAWP), 512MiB, page size: 2048, OOB size: 64
+> 
+> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+> ---
+>  drivers/mtd/nand/nand_mxs.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+> index cba0bee..ce79bca 100644
+> --- a/drivers/mtd/nand/nand_mxs.c
+> +++ b/drivers/mtd/nand/nand_mxs.c
+> @@ -2047,7 +2047,9 @@ static int mxs_nand_enable_edo_mode(struct mxs_nand_info *info)
+>  	nand->select_chip(mtd, -1);
+>  
+>  	/* [3] set the main IO clock, 100MHz for mode 5, 80MHz for mode 4. */
+> +	clk_disable(info->clk);
+>  	clk_set_rate(info->clk, (mode == 5) ? 100000000 : 80000000);
+> +	clk_enable(info->clk);
 
-> This commit applies as is in barebox, so, can it be applied?
-> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/patch/?id=
-=3D6b8c69e4384b0bcf1936c2137804840212daaf69
-
-Yes. Can you send this as patch to the list?
+Calling clk_disable doesn't guarantee that the clock is actually
+disabled. If there's another user of the same clock then clk_disable
+will only decrease the usage counter.
+I think if possible we should fix this in the clock driver instead.
 
 Sascha
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
