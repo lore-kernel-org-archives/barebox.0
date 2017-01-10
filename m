@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cQy3n-0001Hk-KD
+ id 1cQy3o-0001I6-ER
  for barebox@lists.infradead.org; Tue, 10 Jan 2017 15:10:08 +0000
-Received: by mail-pf0-x242.google.com with SMTP id f144so10456422pfa.2
+Received: by mail-pf0-x244.google.com with SMTP id y143so8292558pfb.1
  for <barebox@lists.infradead.org>; Tue, 10 Jan 2017 07:09:46 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 10 Jan 2017 07:09:03 -0800
-Message-Id: <20170110150913.31416-11-andrew.smirnov@gmail.com>
+Date: Tue, 10 Jan 2017 07:09:04 -0800
+Message-Id: <20170110150913.31416-12-andrew.smirnov@gmail.com>
 In-Reply-To: <20170110150913.31416-1-andrew.smirnov@gmail.com>
 References: <20170110150913.31416-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,65 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 10/20] i.MX: iomuxv3: Add low-level pad code to headers
+Subject: [PATCH v3 11/20] i.MX: iomuxv3: Add helper macros to deconstruct
+ iomux_v3_cfg_t values
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add a basic low-level pad configuration function that can be used to
-implement early boot pin configuration code as well as shared with
-various iomuxv3 and vf610 drivers.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/iomux-v3.h | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ arch/arm/mach-imx/include/mach/iomux-v3.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/arch/arm/mach-imx/include/mach/iomux-v3.h b/arch/arm/mach-imx/include/mach/iomux-v3.h
-index b8cc9af..3bf457f 100644
+index 3bf457f..1ecd11b 100644
 --- a/arch/arm/mach-imx/include/mach/iomux-v3.h
 +++ b/arch/arm/mach-imx/include/mach/iomux-v3.h
-@@ -16,6 +16,8 @@
- #ifndef __MACH_IOMUX_V3_H__
- #define __MACH_IOMUX_V3_H__
+@@ -78,6 +78,14 @@ typedef u64 iomux_v3_cfg_t;
+ 		((iomux_v3_cfg_t)(_sel_input_ofs) << MUX_SEL_INPUT_OFS_SHIFT) | \
+ 		((iomux_v3_cfg_t)(_sel_input) << MUX_SEL_INPUT_SHIFT))
  
-+#include <io.h>
++#define IOMUX_PAD_FIELD(name, pad) 	(((pad) & name##_MASK) >> name##_SHIFT)
++#define IOMUX_CTRL_OFS(pad)		IOMUX_PAD_FIELD(MUX_CTRL_OFS, pad)
++#define IOMUX_MODE(pad)			IOMUX_PAD_FIELD(MUX_MODE, pad)
++#define IOMUX_SEL_INPUT_OFS(pad)	IOMUX_PAD_FIELD(MUX_SEL_INPUT_OFS, pad)
++#define IOMUX_SEL_INPUT(pad)		IOMUX_PAD_FIELD(MUX_SEL_INPUT, pad)
++#define IOMUX_PAD_CTRL_OFS(pad)		IOMUX_PAD_FIELD(MUX_PAD_CTRL_OFS, pad)
++#define IOMUX_PAD_CTRL(pad)		IOMUX_PAD_FIELD(MUX_PAD_CTRL, pad)
 +
+ #define NEW_PAD_CTRL(cfg, pad)	(((cfg) & ~MUX_PAD_CTRL_MASK) | MUX_PAD_CTRL(pad))
  /*
-  *	build IOMUX_PAD structure
-  *
-@@ -104,6 +106,32 @@ typedef u64 iomux_v3_cfg_t;
- 
- #define IOMUX_CONFIG_SION		(0x1 << 4)
- 
-+#define SHARE_MUX_CONF_REG		0x1
-+#define ZERO_OFFSET_VALID		0x2
-+
-+static inline void iomux_v3_setup_pad(void __iomem *iomux, unsigned int flags,
-+				      u32 mux_reg, u32 conf_reg, u32 input_reg,
-+				      u32 mux_val, u32 conf_val, u32 input_val)
-+{
-+	const bool mux_ok   = !!mux_reg || (flags & ZERO_OFFSET_VALID);
-+	const bool conf_ok  = !!conf_reg;
-+	const bool input_ok = !!input_reg;
-+
-+	if (flags & SHARE_MUX_CONF_REG) {
-+		mux_val |= conf_val;
-+	} else {
-+		if (conf_ok)
-+			writel(conf_val, iomux + conf_reg);
-+	}
-+
-+	if (mux_ok)
-+		writel(mux_val, iomux + mux_reg);
-+
-+	if (input_ok)
-+		writel(input_val, iomux + input_reg);
-+}
-+
-+
- /*
-  * setups a single pad in the iomuxer
-  */
+  * Use to set PAD control
 -- 
 2.9.3
 
