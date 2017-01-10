@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cQcRq-0000RI-IB
- for barebox@lists.infradead.org; Mon, 09 Jan 2017 16:05:28 +0000
-Date: Mon, 9 Jan 2017 17:05:04 +0100
+ id 1cQqmO-0006UW-TX
+ for barebox@lists.infradead.org; Tue, 10 Jan 2017 07:23:40 +0000
+Date: Tue, 10 Jan 2017 08:23:09 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170109160504.ezlrokuckx256sk6@pengutronix.de>
-References: <20161220093340.14404-1-l.stach@pengutronix.de>
- <20161220093340.14404-8-l.stach@pengutronix.de>
+Message-ID: <20170110072309.6byvxlzyvajoqdos@pengutronix.de>
+References: <20170109132808.24043-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20161220093340.14404-8-l.stach@pengutronix.de>
+In-Reply-To: <20170109132808.24043-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,42 +22,162 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 8/9] lib: add generic find_bit implementation from Linux
- and use in ARMv8
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH] MIPS: drop redundant debug_ll_outhexw macro defines
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Dec 20, 2016 at 10:33:39AM +0100, Lucas Stach wrote:
-> ARMv8 doesn't have an optimized version of the find_bit operations,
-> pull in the generic ones from the Linux kernel.
+On Mon, Jan 09, 2017 at 04:28:08PM +0300, Antony Pavlov wrote:
+> The debug_ll_outhexw macro has no dependency on UART model
+> so we can remove it from UART-dependent header files (debug_ll_ns16550.h
+> and mach-ath79/.../debug_ll.h).
 > 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  arch/arm/include/asm/bitops.h |   6 +-
->  lib/Makefile                  |   1 +
->  lib/find_bit.c                | 185 ++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 191 insertions(+), 1 deletion(-)
->  create mode 100644 lib/find_bit.c
+> On the other hand the only debug_ll_outhexw user is MIPS nmon monitor
+> so we can move the debug_ll_outhexw macro to pbl_nmon.h.
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
-I dropped the rest of this series beginning with this patch. It breaks
-ppc with:
-
-lib/find_bit.o: In function `find_last_bit':
-/home/sha/dude/barebox/barebox-test/lib/find_bit.c:62: multiple
-definition of `find_next_bit'
-lib/find_next_bit.o:/home/sha/dude/barebox/barebox-test/lib/find_next_bit.c:28:
-first defined here
-lib/find_bit.o: In function `find_next_zero_bit':
-/home/sha/dude/barebox/barebox-test/lib/find_bit.c:70: multiple
-definition of `find_next_zero_bit'
-lib/find_next_bit.o:/home/sha/dude/barebox/barebox-test/lib/find_next_bit.c:72:
-first defined here
-scripts/Makefile.build:321: recipe for target 'lib/built-in.o' failed
-make[1]: *** [lib/built-in.o] Error 1
-Makefile:775: recipe for target 'lib' failed
-make: *** [lib] Error 2
+Applied, thanks
 
 Sascha
+
+> ---
+>  arch/mips/include/asm/debug_ll_ns16550.h     | 32 ----------------------------
+>  arch/mips/include/asm/pbl_nmon.h             | 31 +++++++++++++++++++++++++++
+>  arch/mips/mach-ath79/include/mach/debug_ll.h | 32 ----------------------------
+>  3 files changed, 31 insertions(+), 64 deletions(-)
+> 
+> diff --git a/arch/mips/include/asm/debug_ll_ns16550.h b/arch/mips/include/asm/debug_ll_ns16550.h
+> index 4a6562f7c..058814ecf 100644
+> --- a/arch/mips/include/asm/debug_ll_ns16550.h
+> +++ b/arch/mips/include/asm/debug_ll_ns16550.h
+> @@ -128,38 +128,6 @@ static inline void PUTC_LL(char ch)
+>  .endm
+>  
+>  /*
+> - * output a 32-bit value in hex
+> - */
+> -.macro debug_ll_outhexw
+> -#ifdef CONFIG_DEBUG_LL
+> -	.set	push
+> -	.set	reorder
+> -
+> -	move	t6, a0
+> -	li		t5, 32
+> -
+> -202:
+> -	addi	t5, t5, -4
+> -	srlv	a0, t6, t5
+> -
+> -	/* output one hex digit */
+> -	andi	a0, a0, 15
+> -	blt	a0, 10, 203f
+> -
+> -	addi	a0, a0, ('a' - '9' - 1)
+> -
+> -203:
+> -	addi	a0, a0, '0'
+> -
+> -	debug_ll_outc_a0
+> -
+> -	bgtz	t5, 202b
+> -
+> -	.set	pop
+> -#endif /* CONFIG_DEBUG_LL */
+> -.endm
+> -
+> -/*
+>   * check character in input buffer
+>   * return value:
+>   *  v0 = 0   no character in input buffer
+> diff --git a/arch/mips/include/asm/pbl_nmon.h b/arch/mips/include/asm/pbl_nmon.h
+> index 90e2da8ef..e0326bd7c 100644
+> --- a/arch/mips/include/asm/pbl_nmon.h
+> +++ b/arch/mips/include/asm/pbl_nmon.h
+> @@ -43,6 +43,37 @@
+>  	.set	pop
+>  	.endm
+>  
+> +/*
+> + * output a 32-bit value in hex
+> + */
+> +.macro debug_ll_outhexw
+> +#ifdef CONFIG_DEBUG_LL
+> +	.set	push
+> +	.set	reorder
+> +
+> +	move	t6, a0
+> +	li	t5, 32
+> +
+> +202:
+> +	addi	t5, t5, -4
+> +	srlv	a0, t6, t5
+> +
+> +	/* output one hex digit */
+> +	andi	a0, a0, 15
+> +	blt	a0, 10, 203f
+> +
+> +	addi	a0, a0, ('a' - '9' - 1)
+> +
+> +203:
+> +	addi	a0, a0, '0'
+> +
+> +	debug_ll_outc_a0
+> +
+> +	bgtz	t5, 202b
+> +
+> +	.set	pop
+> +#endif /* CONFIG_DEBUG_LL */
+> +.endm
+>  
+>  	.macro	mips_nmon
+>  	.set	push
+> diff --git a/arch/mips/mach-ath79/include/mach/debug_ll.h b/arch/mips/mach-ath79/include/mach/debug_ll.h
+> index e0c3f797b..04bd3ea72 100644
+> --- a/arch/mips/mach-ath79/include/mach/debug_ll.h
+> +++ b/arch/mips/mach-ath79/include/mach/debug_ll.h
+> @@ -123,38 +123,6 @@ static inline void PUTC_LL(int ch)
+>  .endm
+>  
+>  /*
+> - * output a 32-bit value in hex
+> - */
+> -.macro debug_ll_outhexw
+> -#ifdef CONFIG_DEBUG_LL
+> -	.set	push
+> -	.set	reorder
+> -
+> -	move	t6, a0
+> -	li		t5, 32
+> -
+> -202:
+> -	addi	t5, t5, -4
+> -	srlv	a0, t6, t5
+> -
+> -	/* output one hex digit */
+> -	andi	a0, a0, 15
+> -	blt	a0, 10, 203f
+> -
+> -	addi	a0, a0, ('a' - '9' - 1)
+> -
+> -203:
+> -	addi	a0, a0, '0'
+> -
+> -	debug_ll_outc_a0
+> -
+> -	bgtz	t5, 202b
+> -
+> -	.set	pop
+> -#endif /* CONFIG_DEBUG_LL */
+> -.endm
+> -
+> -/*
+>   * check character in input buffer
+>   * return value:
+>   *  v0 = 0   no character in input buffer
+> -- 
+> 2.11.0
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
