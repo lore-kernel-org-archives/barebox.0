@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cQy3o-0001J7-Sc
- for barebox@lists.infradead.org; Tue, 10 Jan 2017 15:10:12 +0000
-Received: by mail-pf0-x243.google.com with SMTP id 127so29397133pfg.0
- for <barebox@lists.infradead.org>; Tue, 10 Jan 2017 07:09:47 -0800 (PST)
+ id 1cQy3s-0001Jk-Jq
+ for barebox@lists.infradead.org; Tue, 10 Jan 2017 15:10:13 +0000
+Received: by mail-pf0-x241.google.com with SMTP id f144so10456542pfa.2
+ for <barebox@lists.infradead.org>; Tue, 10 Jan 2017 07:09:48 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 10 Jan 2017 07:09:05 -0800
-Message-Id: <20170110150913.31416-13-andrew.smirnov@gmail.com>
+Date: Tue, 10 Jan 2017 07:09:06 -0800
+Message-Id: <20170110150913.31416-14-andrew.smirnov@gmail.com>
 In-Reply-To: <20170110150913.31416-1-andrew.smirnov@gmail.com>
 References: <20170110150913.31416-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,47 +23,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 12/20] i.MX: iomuxv3: Add low-level pad configuration
- routine
+Subject: [PATCH v3 13/20] i.MX6: sabresd: Remove magic numbers in setup_uart
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add low-level pad configuration routine that can be used by early boot
-code as well as leveraged by pinmux driver.
+Remove magic numbers in setup_uart and replace them with calls to
+iomuxv3 helper functions.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/iomux-v3.h | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/arm/boards/freescale-mx6-sabresd/lowlevel.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/iomux-v3.h b/arch/arm/mach-imx/include/mach/iomux-v3.h
-index 1ecd11b..f877aad 100644
---- a/arch/arm/mach-imx/include/mach/iomux-v3.h
-+++ b/arch/arm/mach-imx/include/mach/iomux-v3.h
-@@ -139,6 +139,23 @@ static inline void iomux_v3_setup_pad(void __iomem *iomux, unsigned int flags,
- 		writel(input_val, iomux + input_reg);
- }
+diff --git a/arch/arm/boards/freescale-mx6-sabresd/lowlevel.c b/arch/arm/boards/freescale-mx6-sabresd/lowlevel.c
+index b329f46..5743dbc 100644
+--- a/arch/arm/boards/freescale-mx6-sabresd/lowlevel.c
++++ b/arch/arm/boards/freescale-mx6-sabresd/lowlevel.c
+@@ -2,6 +2,7 @@
+ #include <common.h>
+ #include <linux/sizes.h>
+ #include <mach/generic.h>
++#include <mach/iomux-mx6.h>
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
  
-+static inline void imx_setup_pad(void __iomem *iomux, iomux_v3_cfg_t pad)
-+{
-+	uint32_t pad_ctrl;
-+
-+	pad_ctrl = IOMUX_PAD_CTRL(pad);
-+	pad_ctrl = (pad_ctrl & NO_PAD_CTRL) ? 0 : pad_ctrl,
-+
-+	iomux_v3_setup_pad(iomux, 0,
-+			   IOMUX_CTRL_OFS(pad),
-+			   IOMUX_PAD_CTRL_OFS(pad),
-+			   IOMUX_SEL_INPUT_OFS(pad),
-+			   IOMUX_MODE(pad),
-+			   pad_ctrl,
-+			   IOMUX_SEL_INPUT(pad));
-+}
-+
-+
+@@ -11,12 +12,8 @@ static inline void setup_uart(void)
  
- /*
-  * setups a single pad in the iomuxer
+ 	imx6_ungate_all_peripherals();
+ 
+-	writel(0x1b0b1, iomuxbase + 0x0650);
+-	writel(3, iomuxbase + 0x0280);
+-
+-	writel(0x1b0b1, iomuxbase + 0x0654);
+-	writel(3, iomuxbase + 0x0284);
+-	writel(1, iomuxbase + 0x0920);
++	imx_setup_pad(iomuxbase, MX6Q_PAD_CSI0_DAT10__UART1_TXD);
++	imx_setup_pad(iomuxbase, MX6Q_PAD_CSI0_DAT11__UART1_RXD);
+ 
+ 	imx6_uart_setup_ll();
+ 
 -- 
 2.9.3
 
