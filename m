@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cQy3j-0001Dn-1O
- for barebox@lists.infradead.org; Tue, 10 Jan 2017 15:10:04 +0000
-Received: by mail-pf0-x242.google.com with SMTP id b22so13008745pfd.3
- for <barebox@lists.infradead.org>; Tue, 10 Jan 2017 07:09:41 -0800 (PST)
+ id 1cQy3j-0001E4-1S
+ for barebox@lists.infradead.org; Tue, 10 Jan 2017 15:10:08 +0000
+Received: by mail-pf0-x242.google.com with SMTP id b22so13008796pfd.3
+ for <barebox@lists.infradead.org>; Tue, 10 Jan 2017 07:09:42 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 10 Jan 2017 07:08:58 -0800
-Message-Id: <20170110150913.31416-6-andrew.smirnov@gmail.com>
+Date: Tue, 10 Jan 2017 07:08:59 -0800
+Message-Id: <20170110150913.31416-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20170110150913.31416-1-andrew.smirnov@gmail.com>
 References: <20170110150913.31416-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,188 +23,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 05/20] i.MX: clk: Add IMX_PLLV3_SYS_VF610 subtype
+Subject: [PATCH v3 06/20] i.MX: ocotp: Add imx_ocotp_sense_enable()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add IMX_PLLV3_SYS_VF610 subtype to pllv3 code to be able to control and
-re-clock PLL1 and PLL2 on Vybrid SoC. This commit also introduces
-imx_clk_pllv3_locked which allows the user to create PLLv3 and specify
-how it should be polled for "locked" status (used in .set_rate callback)
+Add imx_ocotp_sense_enable() function to allow changing that aspect of
+OCOTP driver behaviour before calling imx_ocotp_read_field()
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/clk/imx/clk-pllv3.c | 108 ++++++++++++++++++++++++++++++++++++++++++++
- drivers/clk/imx/clk.h       |   5 ++
- 2 files changed, 113 insertions(+)
+ arch/arm/mach-imx/include/mach/ocotp.h | 1 +
+ arch/arm/mach-imx/ocotp.c              | 7 +++++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-pllv3.c b/drivers/clk/imx/clk-pllv3.c
-index 29c0f1c..dd924a4 100644
---- a/drivers/clk/imx/clk-pllv3.c
-+++ b/drivers/clk/imx/clk-pllv3.c
-@@ -26,6 +26,8 @@
- #define PLL_NUM_OFFSET		0x10
- #define PLL_DENOM_OFFSET	0x20
+diff --git a/arch/arm/mach-imx/include/mach/ocotp.h b/arch/arm/mach-imx/include/mach/ocotp.h
+index 430bc75..5474c27 100644
+--- a/arch/arm/mach-imx/include/mach/ocotp.h
++++ b/arch/arm/mach-imx/include/mach/ocotp.h
+@@ -16,5 +16,6 @@
+ int imx_ocotp_read_field(uint32_t field, unsigned *value);
+ int imx_ocotp_write_field(uint32_t field, unsigned value);
+ int imx_ocotp_permanent_write(int enable);
++bool imx_ocotp_sense_enable(bool enable);
  
-+#define SYS_VF610_PLL_OFFSET	0x10
-+
- #define BM_PLL_POWER		(0x1 << 12)
- #define BM_PLL_ENABLE		(0x1 << 13)
- #define BM_PLL_BYPASS		(0x1 << 16)
-@@ -38,6 +40,8 @@ struct clk_pllv3 {
- 	u32		div_mask;
- 	u32		div_shift;
- 	const char	*parent;
-+	void __iomem	*lock_reg;
-+	u32		lock_mask;
- };
- 
- #define to_clk_pllv3(_clk) container_of(_clk, struct clk_pllv3, clk)
-@@ -279,6 +283,88 @@ static const struct clk_ops clk_pllv3_mlb_ops = {
- 	.disable	= clk_pllv3_disable,
- };
- 
-+static unsigned long clk_pllv3_sys_vf610_recalc_rate(struct clk *clk,
-+						     unsigned long parent_rate)
-+{
-+	struct clk_pllv3 *pll = to_clk_pllv3(clk);
-+
-+	u32 mfn = readl(pll->base + SYS_VF610_PLL_OFFSET + PLL_NUM_OFFSET);
-+	u32 mfd = readl(pll->base + SYS_VF610_PLL_OFFSET + PLL_DENOM_OFFSET);
-+	u32 div = (readl(pll->base) & pll->div_mask) ? 22 : 20;
-+
-+	return (parent_rate * div) + ((parent_rate / mfd) * mfn);
-+}
-+
-+static long clk_pllv3_sys_vf610_round_rate(struct clk *clk, unsigned long rate,
-+					   unsigned long *prate)
-+{
-+	unsigned long parent_rate = *prate;
-+	unsigned long min_rate = parent_rate * 20;
-+	unsigned long max_rate = 528000000;
-+	u32 mfn, mfd = 1000000;
-+	u64 temp64;
-+
-+	if (rate >= max_rate)
-+		return max_rate;
-+	else if (rate < min_rate)
-+		rate = min_rate;
-+
-+	temp64 = (u64) (rate - 20 * parent_rate);
-+	temp64 *= mfd;
-+	do_div(temp64, parent_rate);
-+	mfn = temp64;
-+
-+	return parent_rate * 20 + parent_rate / mfd * mfn;
-+}
-+
-+static int clk_pllv3_sys_vf610_set_rate(struct clk *clk, unsigned long rate,
-+					unsigned long parent_rate)
-+{
-+	struct clk_pllv3 *pll = to_clk_pllv3(clk);
-+	unsigned long min_rate = parent_rate * 20;
-+	unsigned long max_rate = 528000000;
-+	u32 val;
-+	u32 mfn, mfd = 1000000;
-+	u64 temp64;
-+
-+	if (rate < min_rate || rate > max_rate)
-+		return -EINVAL;
-+
-+	val = readl(pll->base);
-+
-+	if (rate == max_rate) {
-+		writel(0, pll->base + SYS_VF610_PLL_OFFSET + PLL_NUM_OFFSET);
-+		val |= pll->div_mask;
-+		writel(val, pll->base);
-+
-+		return 0;
-+	} else {
-+		val &= ~pll->div_mask;
-+	}
-+
-+	temp64 = (u64) (rate - 20 * parent_rate);
-+	temp64 *= mfd;
-+	do_div(temp64, parent_rate);
-+	mfn = temp64;
-+
-+	writel(val, pll->base);
-+	writel(mfn, pll->base + SYS_VF610_PLL_OFFSET + PLL_NUM_OFFSET);
-+	writel(mfd, pll->base + SYS_VF610_PLL_OFFSET + PLL_DENOM_OFFSET);
-+
-+	while (!(readl(pll->lock_reg) & pll->lock_mask))
-+		;
-+
-+	return 0;
-+}
-+
-+static const struct clk_ops clk_pllv3_sys_vf610_ops = {
-+	.enable		= clk_pllv3_enable,
-+	.disable	= clk_pllv3_disable,
-+	.recalc_rate	= clk_pllv3_sys_vf610_recalc_rate,
-+	.round_rate	= clk_pllv3_sys_vf610_round_rate,
-+	.set_rate	= clk_pllv3_sys_vf610_set_rate,
-+};
-+
- struct clk *imx_clk_pllv3(enum imx_pllv3_type type, const char *name,
- 			  const char *parent, void __iomem *base,
- 			  u32 div_mask)
-@@ -290,6 +376,9 @@ struct clk *imx_clk_pllv3(enum imx_pllv3_type type, const char *name,
- 	pll = xzalloc(sizeof(*pll));
- 
- 	switch (type) {
-+	case IMX_PLLV3_SYS_VF610:
-+		ops = &clk_pllv3_sys_vf610_ops;
-+		break;
- 	case IMX_PLLV3_SYS:
- 		ops = &clk_pllv3_sys_ops;
- 		break;
-@@ -327,3 +416,22 @@ struct clk *imx_clk_pllv3(enum imx_pllv3_type type, const char *name,
- 
- 	return &pll->clk;
+ #endif /* __MACH_IMX_OCOTP_H */
+diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
+index c67e37a..99b365a 100644
+--- a/arch/arm/mach-imx/ocotp.c
++++ b/arch/arm/mach-imx/ocotp.c
+@@ -359,6 +359,13 @@ int imx_ocotp_permanent_write(int enable)
+ 	return 0;
  }
-+
-+struct clk *imx_clk_pllv3_locked(enum imx_pllv3_type type, const char *name,
-+				 const char *parent, void __iomem *base,
-+				 u32 div_mask, void __iomem *lock_reg, u32 lock_mask)
+ 
++bool imx_ocotp_sense_enable(bool enable)
 +{
-+	struct clk *clk;
-+	struct clk_pllv3 *pll;
-+
-+	clk = imx_clk_pllv3(type, name, parent, base, div_mask);
-+	if (IS_ERR(clk))
-+		return clk;
-+
-+	pll = to_clk_pllv3(clk);
-+
-+	pll->lock_reg  = lock_reg;
-+	pll->lock_mask = lock_mask;
-+
-+	return clk;
++	const bool old_value = imx_ocotp->sense_enable;
++	imx_ocotp->sense_enable = enable;
++	return old_value;
 +}
-diff --git a/drivers/clk/imx/clk.h b/drivers/clk/imx/clk.h
-index 970f65c..0b28fb2 100644
---- a/drivers/clk/imx/clk.h
-+++ b/drivers/clk/imx/clk.h
-@@ -78,6 +78,7 @@ struct clk *imx_clk_pllv2(const char *name, const char *parent,
- enum imx_pllv3_type {
- 	IMX_PLLV3_GENERIC,
- 	IMX_PLLV3_SYS,
-+	IMX_PLLV3_SYS_VF610,
- 	IMX_PLLV3_USB,
- 	IMX_PLLV3_USB_VF610,
- 	IMX_PLLV3_AV,
-@@ -89,6 +90,10 @@ struct clk *imx_clk_pllv3(enum imx_pllv3_type type, const char *name,
- 			  const char *parent, void __iomem *base,
- 			  u32 div_mask);
- 
-+struct clk *imx_clk_pllv3_locked(enum imx_pllv3_type type, const char *name,
-+				 const char *parent, void __iomem *base,
-+				 u32 div_mask, void __iomem *lock_reg, u32 lock_mask);
 +
- struct clk *imx_clk_pfd(const char *name, const char *parent,
- 			void __iomem *reg, u8 idx);
- 
+ static uint32_t inc_offset(uint32_t offset)
+ {
+ 	if ((offset & 0x3) == 0x3)
 -- 
 2.9.3
 
