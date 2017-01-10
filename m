@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
- by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cQy40-0002m9-GL
- for barebox@lists.infradead.org; Tue, 10 Jan 2017 15:10:18 +0000
-Received: by mail-pf0-x241.google.com with SMTP id 127so29397487pfg.0
- for <barebox@lists.infradead.org>; Tue, 10 Jan 2017 07:09:55 -0800 (PST)
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cQy3t-0001Lk-EP
+ for barebox@lists.infradead.org; Tue, 10 Jan 2017 15:10:17 +0000
+Received: by mail-pf0-x244.google.com with SMTP id y143so8292776pfb.1
+ for <barebox@lists.infradead.org>; Tue, 10 Jan 2017 07:09:51 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 10 Jan 2017 07:09:13 -0800
-Message-Id: <20170110150913.31416-21-andrew.smirnov@gmail.com>
+Date: Tue, 10 Jan 2017 07:09:09 -0800
+Message-Id: <20170110150913.31416-17-andrew.smirnov@gmail.com>
 In-Reply-To: <20170110150913.31416-1-andrew.smirnov@gmail.com>
 References: <20170110150913.31416-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,38 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 20/20] i.MX: vf610-twr: Remove MSCM setup code
+Subject: [PATCH v3 16/20] i.MX: iomux-vf610: Add missing pad definitions
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Recent kernel versions should have appropriate driver code that sets up
-interrupt rounting correctly, so there's no need for that to be done in
-the bootloader.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/freescale-vf610-twr/lowlevel.c | 5 -----
- 1 file changed, 5 deletions(-)
+ arch/arm/mach-imx/include/mach/iomux-vf610.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/boards/freescale-vf610-twr/lowlevel.c b/arch/arm/boards/freescale-vf610-twr/lowlevel.c
-index 6504273..109d44e 100644
---- a/arch/arm/boards/freescale-vf610-twr/lowlevel.c
-+++ b/arch/arm/boards/freescale-vf610-twr/lowlevel.c
-@@ -29,14 +29,9 @@ ENTRY_FUNCTION(start_vf610_twr, r0, r1, r2)
- {
- 	int i;
- 	void *fdt;
--	void __iomem *mscm = IOMEM(VF610_MSCM_BASE_ADDR);
- 
- 	vf610_cpu_lowlevel_init();
- 
--	for (i = 0; i < VF610_MSCM_IRSPRC_NUM; i++)
--		writew(VF610_MSCM_IRSPRC_CP0_EN,
--		       mscm + VF610_MSCM_IRSPRC(i));
--
- 	if (IS_ENABLED(CONFIG_DEBUG_LL))
- 		setup_uart();
- 
+diff --git a/arch/arm/mach-imx/include/mach/iomux-vf610.h b/arch/arm/mach-imx/include/mach/iomux-vf610.h
+index 84a1eb5..b9e509b 100644
+--- a/arch/arm/mach-imx/include/mach/iomux-vf610.h
++++ b/arch/arm/mach-imx/include/mach/iomux-vf610.h
+@@ -163,9 +163,13 @@ enum {
+ 	VF610_PAD_PTD22__NF_IO6		= IOMUX_PAD(0x0120, 0x0120, 2, __NA_, 0, VF610_NFC_IO_PAD_CTRL),
+ 	VF610_PAD_PTD21__NF_IO5		= IOMUX_PAD(0x0124, 0x0124, 2, __NA_, 0, VF610_NFC_IO_PAD_CTRL),
+ 	VF610_PAD_PTD20__NF_IO4		= IOMUX_PAD(0x0128, 0x0128, 2, __NA_, 0, VF610_NFC_IO_PAD_CTRL),
++	VF610_PAD_PTD19__GPIO_75	= IOMUX_PAD(0x012C, 0x012C, 0, __NA_, 0, VF610_GPIO_PAD_CTRL),
+ 	VF610_PAD_PTD19__NF_IO3		= IOMUX_PAD(0x012c, 0x012c, 2, __NA_, 0, VF610_NFC_IO_PAD_CTRL),
++	VF610_PAD_PTD18__GPIO_76	= IOMUX_PAD(0x0120, 0x0130, 0, __NA_, 0, VF610_GPIO_PAD_CTRL),
+ 	VF610_PAD_PTD18__NF_IO2		= IOMUX_PAD(0x0130, 0x0130, 2, __NA_, 0, VF610_NFC_IO_PAD_CTRL),
++	VF610_PAD_PTD17__GPIO_77	= IOMUX_PAD(0x0134, 0x0134, 0, __NA_, 0, VF610_GPIO_PAD_CTRL),
+ 	VF610_PAD_PTD17__NF_IO1		= IOMUX_PAD(0x0134, 0x0134, 2, __NA_, 0, VF610_NFC_IO_PAD_CTRL),
++	VF610_PAD_PTD16__GPIO_78	= IOMUX_PAD(0x0138, 0x0138, 0, __NA_, 0, VF610_GPIO_PAD_CTRL),
+ 	VF610_PAD_PTD16__NF_IO0		= IOMUX_PAD(0x0138, 0x0138, 2, __NA_, 0, VF610_NFC_IO_PAD_CTRL),
+ 	VF610_PAD_PTB24__NF_WE_B	= IOMUX_PAD(0x0178, 0x0178, 5, __NA_, 0, VF610_NFC_CN_PAD_CTRL),
+ 	VF610_PAD_PTB25__NF_CE0_B	= IOMUX_PAD(0x017c, 0x017c, 5, __NA_, 0, VF610_NFC_CN_PAD_CTRL),
 -- 
 2.9.3
 
