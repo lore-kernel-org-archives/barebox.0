@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cQXHB-0003PQ-2P
- for barebox@lists.infradead.org; Mon, 09 Jan 2017 10:34:07 +0000
-Date: Mon, 9 Jan 2017 11:33:42 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170109103342.4433bletaovkoclj@pengutronix.de>
-References: <20161216090249.24877-1-u.kleine-koenig@pengutronix.de>
+ id 1cRLQk-0001EJ-5G
+ for barebox@lists.infradead.org; Wed, 11 Jan 2017 16:07:19 +0000
+Date: Wed, 11 Jan 2017 17:06:56 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20170111160656.hx3k6a4frs32gm76@pengutronix.de>
+References: <20161223094549.3311-1-u.kleine-koenig@pengutronix.de>
+ <20161223095046.xnvd2taafojhrjgd@pengutronix.de>
+ <20170109085336.x47typrhxwajq3fg@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20161216090249.24877-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170109085336.x47typrhxwajq3fg@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,61 +20,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: mvebu: enable MMU in defconfig
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] ata: pata-imx: simplify assignment of device name
+To: Sascha Hauer <s.hauer@pengutronix.de>, Michel Stam <m.stam@fugro.nl>
 Cc: barebox@lists.infradead.org
 
-On Fri, Dec 16, 2016 at 10:02:49AM +0100, Uwe Kleine-K=F6nig wrote:
-> Enabling the MMU (and so the caches) gives a nice performance boost, so
-> opt in for mvebu_defconfig.
-> =
+On Mon, Jan 09, 2017 at 09:53:36AM +0100, Sascha Hauer wrote:
+> On Fri, Dec 23, 2016 at 10:50:46AM +0100, Uwe Kleine-K=F6nig wrote:
+> > Hello,
+> > =
 
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
+> > On Fri, Dec 23, 2016 at 10:45:49AM +0100, Uwe Kleine-K=F6nig wrote:
+> > >  	dev->detect =3D pata_imx_detect;
+> > =
 
-Applied, thanks
+> > BTW, another thing I noticed while reading through this driver is:
+> > =
 
-Sascha
+> > pata_imx_detect is a wrapper around ata_port_detect. Later in
+> > imx_pata_probe the function ide_port_register is called which also calls
+> > ata_port_detect.
+> > =
 
->  arch/arm/configs/mvebu_defconfig | 1 +
->  1 file changed, 1 insertion(+)
-> =
-
-> diff --git a/arch/arm/configs/mvebu_defconfig b/arch/arm/configs/mvebu_de=
-fconfig
-> index 39e7ef1798f5..dab3d7a45e4c 100644
-> --- a/arch/arm/configs/mvebu_defconfig
-> +++ b/arch/arm/configs/mvebu_defconfig
-> @@ -10,6 +10,7 @@ CONFIG_MACH_PLATHOME_OPENBLOCKS_A6=3Dy
->  CONFIG_MACH_USI_TOPKICK=3Dy
->  CONFIG_AEABI=3Dy
->  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=3Dy
-> +CONFIG_MMU=3Dy
->  CONFIG_TEXT_BASE=3D0x0
->  CONFIG_MALLOC_SIZE=3D0x0
->  CONFIG_MALLOC_TLSF=3Dy
-> -- =
-
-> 2.10.2
+> > I don't have a machine handy where I could test, but I guess
+> > pata_imx_detect could be dropped. (Or alternatively ide_port_register
+> > could be reworked and all callers fixed to setup a detect call.)
 > =
 
 > =
 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> ide_port_register() has:
+> =
+
+> 	ret =3D ata_port_register(&ide->port);
+> 	if (!ret)
+> 		ata_port_detect(&ide->port);
+> =
+
+> The call to ata_port_detect() goes back to:
+> =
+
+> commit 9c8f73ba86884026f4bbfc6f593d73741cfebcdc
+> Author: Michel Stam <m.stam@fugro.nl>
+> Date:   Mon Apr 7 12:01:21 2014 +0200
+> =
+
+> The hunk adding ata_port_detect() is wrong as it shortcircuits the
+> optional detection mechanism.
+
+Who fixes this? /me looks at Michel who was added to Cc: :-)
+
+Best regards
+Uwe
 
 -- =
 
-Pengutronix e.K.                           |                             |
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
