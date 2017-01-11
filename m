@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtprelay0220.hostedemail.com ([216.40.44.220]
- helo=smtprelay.hostedemail.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cRIYL-00047D-7q
- for barebox@lists.infradead.org; Wed, 11 Jan 2017 13:02:59 +0000
-References: <12b302f6-75ae-bf83-370b-abaf0aef9d29@mev.co.uk>
- <20170111083254.hndsbxkeh7c5x3gt@pengutronix.de>
-From: Ian Abbott <abbotti@mev.co.uk>
-Message-ID: <a2afd0be-1022-3f07-34c2-5328a1251242@mev.co.uk>
-Date: Wed, 11 Jan 2017 13:02:30 +0000
+ id 1cRLJS-0004ce-2j
+ for barebox@lists.infradead.org; Wed, 11 Jan 2017 15:59:48 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Wed, 11 Jan 2017 16:59:18 +0100
+Message-Id: <20170111155920.13179-6-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170111155920.13179-1-u.kleine-koenig@pengutronix.de>
+References: <20170111155920.13179-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20170111083254.hndsbxkeh7c5x3gt@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,91 +17,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Problem loading environment from spi-nor flash partition since
- barebox 2017.01.0
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v1 5/7] net/phy: marvell: align definition of
+ MII_88E1121_PHY_MSCR to Linux driver
+To: barebox@lists.infradead.org
 
-On 11/01/17 08:32, Sascha Hauer wrote:
-> On Tue, Jan 10, 2017 at 04:01:40PM +0000, Ian Abbott wrote:
->> Hi!
->>
->> I thought I'd try updating my custom SoCFPGA-based board from barebox
->> 2016.11.0 to 2017.01.0, and have only run into one problem, which is that it
->> is no longer loading the barebox environment during boot:
->>
->> &qspi {
->> 	status = "okay";
->>
->> 	flash: flash@0 {
->> 		#address-cells = <1>;
->> 		#size-cells = <1>;
->> 		compatible = "n25q00";
->> 		reg = <0>;
->> 		spi-max-frequency = <100000000>;
->> 		m25p,fast-read;
->> 		cdns,page-size = <256>;
->> 		cdns,block-size = <16>;
->> 		cdns,read-delay = <4>;
->> 		cdns,tshsl-ns = <50>;
->> 		cdns,tsd2d-ns = <50>;
->> 		cdns,tchsh-ns = <4>;
->> 		cdns,tslch-ns = <4>;
->
-> The problem is that your environment path points to the flash node which
-> does not have a driver as the corresponding device is not registered
-> properly.
->
-> With (real) SPI this is a little different and works as expected: If the
-> qspi node would be handled by the SPI layer then the SPI core would
-> register the child nodes as devices on a SPI bus. The normal probe
-> mechanism would then bind the device and the driver together.
->
-> With the cadence-quadspi driver a device is registered in
-> cqspi_setup_flash(), but there is never a driver attached to it, thus
-> the dev->driver test fails.
->
-> The proper way if probably to register the n25q00 device on a qspi bus
-> and to provide a qspi-nor-flash driver which gets probed then.
-> The not-so-proper, faster way could be to just create a dummy driver
-> struct and attach it to the device allocated in cqspi_setup_flash().
-
-The 'compatible' string in the flash device node is not used by the 
-current cadence-quadspi driver.  "n25q00" is not the most appropriate 
-value for the 'compatible' string in this device node (I merely copied 
-it from other socfpga-based boards!).  The most appropriate value would 
-be "jedec,spi-nor", as registered by the m25p80 driver, but "n25q00" 
-could also be registered by the new device driver for backwards 
-compatibility.  I guess it's okay for more than one driver to register 
-the same compatible id as long as the drivers are registered to 
-different bus types.
-
-I just had another thought about the '!dev->driver' test in 
-__of_find_path().  Would modifying the test to also check 'dev->bus' as 
-follows solve the problem?:
-
-	if (dev->bus && !dev->driver)
-		return -ENODEV;
-
-(Or possibly 'return -EPROBE_DEFER' would be better, as suggested by 
-Trent Piepho's reply, but that would be a separate patch.)
-
-The devices created by the cadence-quadspi driver do not set 'dev->bus', 
-but devices created by proper bus drivers should do so.  I just tried 
-it, and it seems to work around my problem.
-
-Best regards,
-Ian.
-
--- 
--=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=-
--=(                          Web: http://www.mev.co.uk/  )=-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
+b25peC5kZT4KLS0tCiBkcml2ZXJzL25ldC9waHkvbWFydmVsbC5jIHwgNiArKystLS0KIDEgZmls
+ZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9uZXQvcGh5L21hcnZlbGwuYyBiL2RyaXZlcnMvbmV0L3BoeS9tYXJ2ZWxsLmMKaW5k
+ZXggZTAxNTM4MDY3NjIyLi5kNTA0Y2Y4NWExZGEgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbmV0L3Bo
+eS9tYXJ2ZWxsLmMKKysrIGIvZHJpdmVycy9uZXQvcGh5L21hcnZlbGwuYwpAQCAtMzIsNyArMzIs
+NyBAQAogI2RlZmluZSBNSUlfTTEwMTFfUEhZX1NUQVRVU19MSU5LCUJJVCgxMCkKIAogI2RlZmlu
+ZSBNSUlfODhFMTEyMV9QSFlfTVNDUl9QQUdFCTIKLSNkZWZpbmUgTUlJXzg4RTExMjFfUEhZX01T
+Q1IJCTB4MTUKKyNkZWZpbmUgTUlJXzg4RTExMjFfUEhZX01TQ1JfUkVHCTIxCiAjZGVmaW5lIE1J
+SV84OEUxMTIxX1BIWV9NU0NSX1RYX0RFTEFZCUJJVCg0KQogI2RlZmluZSBNSUlfODhFMTEyMV9Q
+SFlfTVNDUl9SWF9ERUxBWQlCSVQoNSkKICNkZWZpbmUgTUlJXzg4RTExMjFfUEhZX01TQ1JfREVM
+QVlfTUFTSwlcCkBAIC0xODYsNyArMTg2LDcgQEAgc3RhdGljIGludCBtODhlMTEyMV9jb25maWdf
+aW5pdChzdHJ1Y3QgcGh5X2RldmljZSAqcGh5ZGV2KQogCQlyZXR1cm4gcmV0OwogCiAJLyogU2V0
+dXAgUkdNSUkgVFgvUlggZGVsYXkgKi8KLQlyZWcgPSBwaHlfcmVhZChwaHlkZXYsIE1JSV84OEUx
+MTIxX1BIWV9NU0NSKSAmCisJcmVnID0gcGh5X3JlYWQocGh5ZGV2LCBNSUlfODhFMTEyMV9QSFlf
+TVNDUl9SRUcpICYKIAkJfk1JSV84OEUxMTIxX1BIWV9NU0NSX0RFTEFZX01BU0s7CiAJaWYgKHBo
+eWRldi0+aW50ZXJmYWNlID09IFBIWV9JTlRFUkZBQ0VfTU9ERV9SR01JSV9JRCB8fAogCSAgICBw
+aHlkZXYtPmludGVyZmFjZSA9PSBQSFlfSU5URVJGQUNFX01PREVfUkdNSUlfUlhJRCkKQEAgLTE5
+NCw3ICsxOTQsNyBAQCBzdGF0aWMgaW50IG04OGUxMTIxX2NvbmZpZ19pbml0KHN0cnVjdCBwaHlf
+ZGV2aWNlICpwaHlkZXYpCiAJaWYgKHBoeWRldi0+aW50ZXJmYWNlID09IFBIWV9JTlRFUkZBQ0Vf
+TU9ERV9SR01JSV9JRCB8fAogCSAgICBwaHlkZXYtPmludGVyZmFjZSA9PSBQSFlfSU5URVJGQUNF
+X01PREVfUkdNSUlfVFhJRCkKIAkJcmVnIHw9IE1JSV84OEUxMTIxX1BIWV9NU0NSX1RYX0RFTEFZ
+OwotCXJldCA9IHBoeV93cml0ZShwaHlkZXYsIE1JSV84OEUxMTIxX1BIWV9NU0NSLCByZWcpOwor
+CXJldCA9IHBoeV93cml0ZShwaHlkZXYsIE1JSV84OEUxMTIxX1BIWV9NU0NSX1JFRywgcmVnKTsK
+IAlpZiAocmV0IDwgMCkKIAkJcmV0dXJuIHJldDsKIAotLSAKMi4xMS4wCgoKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
+YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
