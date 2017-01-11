@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtprelay0191.hostedemail.com ([216.40.44.191]
+Received: from smtprelay0220.hostedemail.com ([216.40.44.220]
  helo=smtprelay.hostedemail.com)
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cRHDp-0000xA-Mu
- for barebox@lists.infradead.org; Wed, 11 Jan 2017 11:37:45 +0000
+ id 1cRIYL-00047D-7q
+ for barebox@lists.infradead.org; Wed, 11 Jan 2017 13:02:59 +0000
 References: <12b302f6-75ae-bf83-370b-abaf0aef9d29@mev.co.uk>
- <1484077438.30810.14.camel@kymetacorp.com>
+ <20170111083254.hndsbxkeh7c5x3gt@pengutronix.de>
 From: Ian Abbott <abbotti@mev.co.uk>
-Message-ID: <8a4205a4-58b9-533d-43c4-b9d464c46f00@mev.co.uk>
-Date: Wed, 11 Jan 2017 11:37:13 +0000
+Message-ID: <a2afd0be-1022-3f07-34c2-5328a1251242@mev.co.uk>
+Date: Wed, 11 Jan 2017 13:02:30 +0000
 MIME-Version: 1.0
-In-Reply-To: <1484077438.30810.14.camel@kymetacorp.com>
+In-Reply-To: <20170111083254.hndsbxkeh7c5x3gt@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,83 +25,79 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Problem loading environment from spi-nor flash partition since
  barebox 2017.01.0
-To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On 10/01/17 19:42, Trent Piepho wrote:
-> On Tue, 2017-01-10 at 16:01 +0000, Ian Abbott wrote:
+On 11/01/17 08:32, Sascha Hauer wrote:
+> On Tue, Jan 10, 2017 at 04:01:40PM +0000, Ian Abbott wrote:
 >> Hi!
 >>
 >> I thought I'd try updating my custom SoCFPGA-based board from barebox
->> 2016.11.0 to 2017.01.0, and have only run into one problem, which is
->> that it is no longer loading the barebox environment during boot:
+>> 2016.11.0 to 2017.01.0, and have only run into one problem, which is that it
+>> is no longer loading the barebox environment during boot:
 >>
->> barebox-environment environment.5: probe failed: No such device
->> environment load /dev/env0: No such file or directory
->
->> After a bit of poking around, I discovered that it is failing in
->> __of_find_path() at these lines:
->>
->> 	if (!dev->driver)
->> 		return -ENODEV;
->>
->> Those lines were added by commit
->> 82eb3dff10ae0c0436e0fcd5ff0c9cd2a2caab3c ("of_path: handle no driver for
->> device").
->
-> I assume the call to __of_find_path() is traced back to
-> environment_probe()?
-
-Yes.
-
-> It looks to me like the environment driver needs to be updated to
-> support PROBE_DEFER.  It should detect ENODEV from of_find_path() as a
-> possible device not probed yet error and return PROBE_DEFER.
->
-> I wonder if of_find_path should return EPROBE_DEFER itself?  It seems
-> like it might be easier to catch this in of_find_path() once instead of
-> in all callers of of_find_path().
-
-Probably.  The only other (indirect) user of __of_find_path() I can find 
-seems to be the "barebox,state" driver ("drivers/misc/state.c" and 
-common/state/state.c).  If __of_find_path() could return -EPROBE_DEFER 
-itself, on first glance it looks like state_probe() in 
-"drivers/misc/state.c" wouldn't need to bother converting -ENODEV to 
--EPROBE_DEFER.
-
->
->> I'm not sure which bit of code is responsible for setting dev->driver
->> (or whether it is appropriate in this case), but if I remove that test,
->> the environment loads OK.
->
-> This makes me wonder if probe defer, which I think is still problem, is
-> not your problem.
->
->> 		environment@0 {
->> 			compatible = "barebox,environment";
->> 			device-path = &flash, "partname:barebox-environment";
->
 >> &qspi {
+>> 	status = "okay";
+>>
 >> 	flash: flash@0 {
->> 		partition@c0000 {
->> 			label = "barebox-environment";
->> 			reg = <0xc0000 0x20000>;
->> 		};
+>> 		#address-cells = <1>;
+>> 		#size-cells = <1>;
+>> 		compatible = "n25q00";
+>> 		reg = <0>;
+>> 		spi-max-frequency = <100000000>;
+>> 		m25p,fast-read;
+>> 		cdns,page-size = <256>;
+>> 		cdns,block-size = <16>;
+>> 		cdns,read-delay = <4>;
+>> 		cdns,tshsl-ns = <50>;
+>> 		cdns,tsd2d-ns = <50>;
+>> 		cdns,tchsh-ns = <4>;
+>> 		cdns,tslch-ns = <4>;
 >
-> In this case, the env points to the flash node for the specific chip
-> select, which is a child of the node for the qspi device.  qspi has a
-> driver.  But the child for the chip select isn't really a device in its
-> own right, it just part of the qspi device.  I don't believe there is a
-> driver for it.  I wonder if dev->driver will always be NULL for that
-> device?
+> The problem is that your environment path points to the flash node which
+> does not have a driver as the corresponding device is not registered
+> properly.
 >
-> Maybe the bug here is that a device node for a flash chip select or a
-> partition doesn't have a driver itself.  So either the !dev->driver test
-> is wrong, or the device should have ->driver point to the driver of its
-> parent device.
+> With (real) SPI this is a little different and works as expected: If the
+> qspi node would be handled by the SPI layer then the SPI core would
+> register the child nodes as devices on a SPI bus. The normal probe
+> mechanism would then bind the device and the driver together.
+>
+> With the cadence-quadspi driver a device is registered in
+> cqspi_setup_flash(), but there is never a driver attached to it, thus
+> the dev->driver test fails.
+>
+> The proper way if probably to register the n25q00 device on a qspi bus
+> and to provide a qspi-nor-flash driver which gets probed then.
+> The not-so-proper, faster way could be to just create a dummy driver
+> struct and attach it to the device allocated in cqspi_setup_flash().
 
-Yes, the problem seems to be that the cadence-qspi driver doesn't behave 
-as a proper bus driver (in the barebox/Linux driver model sense).
+The 'compatible' string in the flash device node is not used by the 
+current cadence-quadspi driver.  "n25q00" is not the most appropriate 
+value for the 'compatible' string in this device node (I merely copied 
+it from other socfpga-based boards!).  The most appropriate value would 
+be "jedec,spi-nor", as registered by the m25p80 driver, but "n25q00" 
+could also be registered by the new device driver for backwards 
+compatibility.  I guess it's okay for more than one driver to register 
+the same compatible id as long as the drivers are registered to 
+different bus types.
+
+I just had another thought about the '!dev->driver' test in 
+__of_find_path().  Would modifying the test to also check 'dev->bus' as 
+follows solve the problem?:
+
+	if (dev->bus && !dev->driver)
+		return -ENODEV;
+
+(Or possibly 'return -EPROBE_DEFER' would be better, as suggested by 
+Trent Piepho's reply, but that would be a separate patch.)
+
+The devices created by the cadence-quadspi driver do not set 'dev->bus', 
+but devices created by proper bus drivers should do so.  I just tried 
+it, and it seems to work around my problem.
+
+Best regards,
+Ian.
 
 -- 
 -=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=-
