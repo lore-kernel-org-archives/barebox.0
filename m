@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cRLJg-0004kD-UI
- for barebox@lists.infradead.org; Wed, 11 Jan 2017 16:00:06 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Wed, 11 Jan 2017 16:59:15 +0100
-Message-Id: <20170111155920.13179-3-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20170111155920.13179-1-u.kleine-koenig@pengutronix.de>
-References: <20170111155920.13179-1-u.kleine-koenig@pengutronix.de>
+ id 1cRLqT-00051D-15
+ for barebox@lists.infradead.org; Wed, 11 Jan 2017 16:33:59 +0000
+Date: Wed, 11 Jan 2017 17:33:31 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20170111163331.ywejwzr3lv3a54yy@pengutronix.de>
+References: <20161208090544.10267-1-u.kleine-koenig@pengutronix.de>
+ <20161212051514.tn6ufcxvmabrbln6@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20161212051514.tn6ufcxvmabrbln6@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,41 +19,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 2/7] net/phy: marvell: 88E1540 LED registers already exist
- on 88E1121
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/3] spi: mvebu: fix register macros for Armada 370/XP
+ clock divider
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-U28gcmVuYW1lIGFjY29yZGluZ2x5IHRvIG1hdGNoIHRoZSBkZWZpbml0aW9uIHVzZWQgYnkgTGlu
-dXgKClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVu
-Z3V0cm9uaXguZGU+Ci0tLQogZHJpdmVycy9uZXQvcGh5L21hcnZlbGwuYyB8IDEwICsrKysrLS0t
-LS0KIDEgZmlsZSBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pCgpkaWZm
-IC0tZ2l0IGEvZHJpdmVycy9uZXQvcGh5L21hcnZlbGwuYyBiL2RyaXZlcnMvbmV0L3BoeS9tYXJ2
-ZWxsLmMKaW5kZXggNGJmOGJhZTU5YTk1Li5jNGQ5YzdmZTQ5M2EgMTAwNjQ0Ci0tLSBhL2RyaXZl
-cnMvbmV0L3BoeS9tYXJ2ZWxsLmMKKysrIGIvZHJpdmVycy9uZXQvcGh5L21hcnZlbGwuYwpAQCAt
-MTksNiArMTksOSBAQAogI2RlZmluZSBNSUlfTTEwMTFfUEhZX1NDUgkJMHgxMAogI2RlZmluZSBN
-SUlfTTEwMTFfUEhZX1NDUl9BVVRPX0NST1NTCTB4MDA2MAogCisjZGVmaW5lIE1JSV84OEUxMTIx
-X1BIWV9MRURfQ1RSTAkxNgorI2RlZmluZSBNSUlfODhFMTEyMV9QSFlfTEVEX1BBR0UJMworCiAj
-ZGVmaW5lIE1JSV9NMTAxMV9QSFlfU1RBVFVTCQkweDExCiAjZGVmaW5lIE1JSV9NMTAxMV9QSFlf
-U1RBVFVTXzEwMDAJQklUKDE1KQogI2RlZmluZSBNSUlfTTEwMTFfUEhZX1NUQVRVU18xMDAJQklU
-KDE0KQpAQCAtMzgsOSArNDEsNiBAQAogI2RlZmluZSBNSUlfODhFMTMxOFNfUEhZX01TQ1IxX1JF
-RwkxNgogI2RlZmluZSBNSUlfODhFMTMxOFNfUEhZX01TQ1IxX1BBRF9PREQJQklUKDYpCiAKLSNk
-ZWZpbmUgTUlJXzg4RTE1NDBfTEVEX1BBR0UJCTB4MwotI2RlZmluZSBNSUlfODhFMTU0MF9MRURf
-Q09OVFJPTAkJMHgxMAotCiAjZGVmaW5lIE1JSV84OEUxNTQwX1FTR01JSV9QQUdFCQkweDQKICNk
-ZWZpbmUgTUlJXzg4RTE1NDBfUVNHTUlJX0NPTlRST0wJMHgwCiAjZGVmaW5lIE1JSV84OEUxNTQw
-X1FTR01JSV9BVVRPTkVHX0VOCUJJVCgxMikKQEAgLTE1Nyw4ICsxNTcsOCBAQCBzdGF0aWMgaW50
-IG04OGUxNTQwX2NvbmZpZ19pbml0KHN0cnVjdCBwaHlfZGV2aWNlICpwaHlkZXYpCiAJICogTGlu
-azogICAgIE9uCiAJICogTm8gTGluazogIE9mZgogCSAqLwotCXBoeV93cml0ZShwaHlkZXYsIE1J
-SV9NQVJWRUxMX1BIWV9QQUdFLCBNSUlfODhFMTU0MF9MRURfUEFHRSk7Ci0JcGh5X3dyaXRlKHBo
-eWRldiwgTUlJXzg4RTE1NDBfTEVEX0NPTlRST0wsIDB4MTExMSk7CisJcGh5X3dyaXRlKHBoeWRl
-diwgTUlJX01BUlZFTExfUEhZX1BBR0UsIE1JSV84OEUxMTIxX1BIWV9MRURfUEFHRSk7CisJcGh5
-X3dyaXRlKHBoeWRldiwgTUlJXzg4RTExMjFfUEhZX0xFRF9DVFJMLCAweDExMTEpOwogCiAJLyog
-UG93ZXItdXAgdGhlIFBIWS4gV2hlbiBnb2luZyBmcm9tIHBvd2VyIGRvd24gdG8gbm9ybWFsIG9w
-ZXJhdGlvbiwKIAkgKiBzb2Z0d2FyZSByZXNldCBhbmQgYXV0by1uZWdvdGlhdGlvbiByZXN0YXJ0
-IGFyZSBhbHNvIHBlcmZvcm1lZC4KLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+On Mon, Dec 12, 2016 at 06:15:14AM +0100, Sascha Hauer wrote:
+> On Thu, Dec 08, 2016 at 10:05:42AM +0100, Uwe Kleine-K=F6nig wrote:
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > ---
+> >  drivers/spi/mvebu_spi.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> =
+
+> Applied, thanks
+
+I cannot find this patch neither in the barebox repo's next branch nor
+in its master branch.
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
