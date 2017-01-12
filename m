@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cRZ7u-00071W-0L
- for barebox@lists.infradead.org; Thu, 12 Jan 2017 06:44:48 +0000
-Date: Thu, 12 Jan 2017 07:44:24 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170112064424.b3gmgi5yy5sqdogp@pengutronix.de>
-References: <20161208090544.10267-1-u.kleine-koenig@pengutronix.de>
- <20161212051514.tn6ufcxvmabrbln6@pengutronix.de>
- <20170111163331.ywejwzr3lv3a54yy@pengutronix.de>
+Received: from smtprelay0107.hostedemail.com ([216.40.44.107]
+ helo=smtprelay.hostedemail.com)
+ by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cRccB-00009i-A5
+ for barebox@lists.infradead.org; Thu, 12 Jan 2017 10:28:17 +0000
+References: <CAAMcf8CA-eTzHhQFXct7-udO1sYifL3zGULsoxiW9U1hcvKMvw@mail.gmail.com>
+ <20170111200757.x33vfb4sdrsu4kmk@pengutronix.de>
+From: Ian Abbott <abbotti@mev.co.uk>
+Message-ID: <d8c10ecb-f349-eae5-2fe9-ccf407e1d31c@mev.co.uk>
+Date: Thu, 12 Jan 2017 10:27:48 +0000
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170111163331.ywejwzr3lv3a54yy@pengutronix.de>
+In-Reply-To: <20170111200757.x33vfb4sdrsu4kmk@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,41 +19,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="windows-1252"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] spi: mvebu: fix register macros for Armada 370/XP
- clock divider
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: scripts/checkpatch.pl is deprecated
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>, Vicente Bergas <vicencb@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jan 11, 2017 at 05:33:31PM +0100, Uwe Kleine-K=F6nig wrote:
-> On Mon, Dec 12, 2016 at 06:15:14AM +0100, Sascha Hauer wrote:
-> > On Thu, Dec 08, 2016 at 10:05:42AM +0100, Uwe Kleine-K=F6nig wrote:
-> > > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > > ---
-> > >  drivers/spi/mvebu_spi.c | 4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > =
+On 11/01/17 20:07, Uwe Kleine-K=F6nig wrote:
+> On Wed, Jan 11, 2017 at 08:35:11PM +0100, Vicente Bergas wrote:
+>> Hello,
+>> when using scripts/checkpatch.pl it may report:
+>>   Unescaped left brace in regex is deprecated,
+>>   passed through in regex at scripts/checkpatch.pl line 2267.
+>
+> I bet this scripts originates from the kernel. So I'd recommend to test
+> if their version is affected to. If yes, report to them, if not, update
+> barebox to latest Linux version.
 
-> > Applied, thanks
-> =
+In the Linux kernel, this was fixed in commit =
 
-> I cannot find this patch neither in the barebox repo's next branch nor
-> in its master branch.
+6b8c69e4384b0bcf1936c2137804840212daaf69 ("checkpatch: fix another left =
 
-Look again ;)
-
-Sascha
-
+brace warning"), which made it into the the 4.6 kernel.
 
 -- =
 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-=3D( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=3D-
+-=3D(                          Web: http://www.mev.co.uk/  )=3D-
 
 _______________________________________________
 barebox mailing list
