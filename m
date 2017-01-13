@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1cRxyI-0005ff-RB
- for barebox@lists.infradead.org; Fri, 13 Jan 2017 09:16:33 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 1ED1DA002A5
- for <barebox@lists.infradead.org>; Fri, 13 Jan 2017 10:16:06 +0100 (CET)
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Fri, 13 Jan 2017 10:15:59 +0100
-Message-Id: <1484298959-25635-1-git-send-email-t.remmet@phytec.de>
+Received: from smtprelay0088.hostedemail.com ([216.40.44.88]
+ helo=smtprelay.hostedemail.com)
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cRznz-0003L1-09
+ for barebox@lists.infradead.org; Fri, 13 Jan 2017 11:14:01 +0000
+References: <20170112122005.805-1-abbotti@mev.co.uk>
+ <20170113073700.j3djezdqqkncucyh@pengutronix.de>
+From: Ian Abbott <abbotti@mev.co.uk>
+Message-ID: <3814a039-6263-cb8d-2311-65e2addcb67d@mev.co.uk>
+Date: Fri, 13 Jan 2017 11:13:34 +0000
+MIME-Version: 1.0
+In-Reply-To: <20170113073700.j3djezdqqkncucyh@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,53 +19,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] lib: libfile: Fix copying files to a non existing destination
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] of_path: only handle no driver for device if it is on a
+ bus
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-If the destination file does not exist the stat call to check the file
-type fails. Extend the check of the stat return value.
-To allow to copy files to a new destination.
+On 13/01/17 07:37, Sascha Hauer wrote:
+> On Thu, Jan 12, 2017 at 12:20:05PM +0000, Ian Abbott wrote:
+>> This fixes a regression in __of_find_path() for flash devices created by
+>> the cadence-quadspi driver, which do not have 'dev->driver' set.  Such
+>> devices do not have 'dev->bus' set either, so we can use that to qualify
+>> the existing test.
+>>
+>> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+>> ---
+>>  drivers/of/of_path.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
+>> index 946b9c7aa..e0b2dc124 100644
+>> --- a/drivers/of/of_path.c
+>> +++ b/drivers/of/of_path.c
+>> @@ -66,7 +66,7 @@ static int __of_find_path(struct device_node *node, const char *part, char **out
+>>  			return -ENODEV;
+>>  	}
+>>
+>> -	if (!dev->driver)
+>> +	if (dev->bus && !dev->driver)
+>>  		return -ENODEV;
+>
+> I am not entirely happy with this patch. Let's hope it won't fall on our
+> feet later. Applied for now, let's see.
 
-Fixes commit 0ec6bd3e1be8 ("libfile: copy_file: Only open
-regular files with O_TRUNC")
+Thanks!  A slightly more robust test, that would still allow drivers to 
+control their own bus-less child devices, would be to find the device or 
+its nearest ancestor that exists and has ->bus set or ->driver set, and 
+that check it has->driver set.  That's awkward to explain in English (or 
+German!), so:
 
-Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
----
- lib/libfile.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+	struct device_d *bdev;
 
-diff --git a/lib/libfile.c b/lib/libfile.c
-index 049ec32..3742314 100644
---- a/lib/libfile.c
-+++ b/lib/libfile.c
-@@ -276,14 +276,14 @@ int copy_file(const char *src, const char *dst, int verbose)
- 		goto out;
- 	}
- 
--	ret = stat(dst, &dststat);
--	if (ret)
--		goto out;
--
- 	mode = O_WRONLY | O_CREAT;
- 
--	if (S_ISREG(dststat.st_mode))
-+	ret = stat(dst, &dststat);
-+	/* Set O_TRUNC only if file does not exist or is a regular file */
-+	if (ret == -ENOENT || (!ret && S_ISREG(dststat.st_mode)))
- 		mode |= O_TRUNC;
-+	else if (ret)
-+		goto out;
- 
- 	dstfd = open(dst, mode);
- 	if (dstfd < 0) {
+	/* ... assuming dev exists ... */
+
+	for (bdev = dev; bdev->parent && !bdev->bus && !bdev->driver;
+	     bdev = bdev->parent)
+		;
+	if (!bdev->driver)
+		return -ENODEV;	/* or perhaps -EPROBE_DEFER */
+
+Perhaps that's overkill!
+
 -- 
-1.9.1
-
+-=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=-
+-=(                          Web: http://www.mev.co.uk/  )=-
 
 _______________________________________________
 barebox mailing list
