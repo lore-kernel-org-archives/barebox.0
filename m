@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtprelay0088.hostedemail.com ([216.40.44.88]
- helo=smtprelay.hostedemail.com)
+Received: from mail.kymetacorp.com ([208.187.125.9])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cRznz-0003L1-09
- for barebox@lists.infradead.org; Fri, 13 Jan 2017 11:14:01 +0000
-References: <20170112122005.805-1-abbotti@mev.co.uk>
- <20170113073700.j3djezdqqkncucyh@pengutronix.de>
-From: Ian Abbott <abbotti@mev.co.uk>
-Message-ID: <3814a039-6263-cb8d-2311-65e2addcb67d@mev.co.uk>
-Date: Fri, 13 Jan 2017 11:13:34 +0000
+ id 1cS5wO-00032u-I4
+ for barebox@lists.infradead.org; Fri, 13 Jan 2017 17:47:10 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Fri, 13 Jan 2017 17:46:41 +0000
+Message-ID: <1484329660.30810.68.camel@kymetacorp.com>
+References: <12b302f6-75ae-bf83-370b-abaf0aef9d29@mev.co.uk>
+ <20170111083254.hndsbxkeh7c5x3gt@pengutronix.de>
+In-Reply-To: <20170111083254.hndsbxkeh7c5x3gt@pengutronix.de>
+Content-Language: en-US
+Content-ID: <53F29A8C24E9E541999AED5F99AD162C@kymetacorp.com>
 MIME-Version: 1.0
-In-Reply-To: <20170113073700.j3djezdqqkncucyh@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,64 +20,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] of_path: only handle no driver for device if it is on a
- bus
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: Problem loading environment from spi-nor flash partition since
+ barebox 2017.01.0
+To: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, "abbotti@mev.co.uk" <abbotti@mev.co.uk>
 
-On 13/01/17 07:37, Sascha Hauer wrote:
-> On Thu, Jan 12, 2017 at 12:20:05PM +0000, Ian Abbott wrote:
->> This fixes a regression in __of_find_path() for flash devices created by
->> the cadence-quadspi driver, which do not have 'dev->driver' set.  Such
->> devices do not have 'dev->bus' set either, so we can use that to qualify
->> the existing test.
->>
->> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
->> ---
->>  drivers/of/of_path.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
->> index 946b9c7aa..e0b2dc124 100644
->> --- a/drivers/of/of_path.c
->> +++ b/drivers/of/of_path.c
->> @@ -66,7 +66,7 @@ static int __of_find_path(struct device_node *node, const char *part, char **out
->>  			return -ENODEV;
->>  	}
->>
->> -	if (!dev->driver)
->> +	if (dev->bus && !dev->driver)
->>  		return -ENODEV;
->
-> I am not entirely happy with this patch. Let's hope it won't fall on our
-> feet later. Applied for now, let's see.
+On Wed, 2017-01-11 at 09:32 +0100, Sascha Hauer wrote:
+> With (real) SPI this is a little different and works as expected: If the
+> qspi node would be handled by the SPI layer then the SPI core would
+> register the child nodes as devices on a SPI bus. The normal probe
+> mechanism would then bind the device and the driver together.
+> 
+> With the cadence-quadspi driver a device is registered in
+> cqspi_setup_flash(), but there is never a driver attached to it, thus
+> the dev->driver test fails.
+> 
+> The proper way if probably to register the n25q00 device on a qspi bus
+> and to provide a qspi-nor-flash driver which gets probed then.
+> The not-so-proper, faster way could be to just create a dummy driver
+> struct and attach it to the device allocated in cqspi_setup_flash().
 
-Thanks!  A slightly more robust test, that would still allow drivers to 
-control their own bus-less child devices, would be to find the device or 
-its nearest ancestor that exists and has ->bus set or ->driver set, and 
-that check it has->driver set.  That's awkward to explain in English (or 
-German!), so:
+The qspi device is more like an MTD device than a SPI master.  It just
+supports memory devices, not arbitrary SPI slaves that have their own
+drivers.
 
-	struct device_d *bdev;
+But that said, there is sort of a driver for the SPI NOR chips attached
+to the qspi in spi-nor.c, but it is not a real 'struct driver_d' driver.
+Maybe it could be?
 
-	/* ... assuming dev exists ... */
+qspi could create a "qspi" or "spi-flash" bus (I don't think it will fit
+well as a generic SPI bus) with the flash devices on it, and then
+spi-nor could bind to them like a normal driver.
 
-	for (bdev = dev; bdev->parent && !bdev->bus && !bdev->driver;
-	     bdev = bdev->parent)
-		;
-	if (!bdev->driver)
-		return -ENODEV;	/* or perhaps -EPROBE_DEFER */
+Or spi-nor could have a driver_d that's not registered and make
+nor->dev->driver point to it in spi_nor_scan().
 
-Perhaps that's overkill!
-
--- 
--=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=-
--=(                          Web: http://www.mev.co.uk/  )=-
-
+Or spi_nor_scan() could just set nor->dev->driver =
+nor->dev->parent->driver.
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
