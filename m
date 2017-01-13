@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cRwQQ-0004xH-8N
- for barebox@lists.infradead.org; Fri, 13 Jan 2017 07:37:27 +0000
-Date: Fri, 13 Jan 2017 08:37:00 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170113073700.j3djezdqqkncucyh@pengutronix.de>
-References: <20170112122005.805-1-abbotti@mev.co.uk>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170112122005.805-1-abbotti@mev.co.uk>
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cRxj3-0003Uq-AV
+ for barebox@lists.infradead.org; Fri, 13 Jan 2017 09:00:47 +0000
+From: Enrico Jorns <ejo@pengutronix.de>
+Date: Fri, 13 Jan 2017 09:59:44 +0100
+Message-Id: <1484297984-20992-1-git-send-email-ejo@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +14,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] of_path: only handle no driver for device if it is on a
- bus
-To: Ian Abbott <abbotti@mev.co.uk>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] bootm: fix magicvar name for global_bootm_verbose
+To: barebox@lists.infradead.org
+Cc: Enrico Jorns <ejo@pengutronix.de>
 
-On Thu, Jan 12, 2017 at 12:20:05PM +0000, Ian Abbott wrote:
-> This fixes a regression in __of_find_path() for flash devices created by
-> the cadence-quadspi driver, which do not have 'dev->driver' set.  Such
-> devices do not have 'dev->bus' set either, so we can use that to qualify
-> the existing test.
-> 
-> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-> ---
->  drivers/of/of_path.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
-> index 946b9c7aa..e0b2dc124 100644
-> --- a/drivers/of/of_path.c
-> +++ b/drivers/of/of_path.c
-> @@ -66,7 +66,7 @@ static int __of_find_path(struct device_node *node, const char *part, char **out
->  			return -ENODEV;
->  	}
->  
-> -	if (!dev->driver)
-> +	if (dev->bus && !dev->driver)
->  		return -ENODEV;
+Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
+---
+ common/bootm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I am not entirely happy with this patch. Let's hope it won't fall on our
-feet later. Applied for now, let's see.
-
-Sascha
-
-
+diff --git a/common/bootm.c b/common/bootm.c
+index 5984319..81625d9 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -684,5 +684,5 @@ BAREBOX_MAGICVAR_NAMED(global_bootm_initrd, global.bootm.initrd, "bootm default
+ BAREBOX_MAGICVAR_NAMED(global_bootm_initrd_loadaddr, global.bootm.initrd.loadaddr, "bootm default initrd loadaddr");
+ BAREBOX_MAGICVAR_NAMED(global_bootm_oftree, global.bootm.oftree, "bootm default oftree");
+ BAREBOX_MAGICVAR_NAMED(global_bootm_verify, global.bootm.verify, "bootm default verify level");
+-BAREBOX_MAGICVAR_NAMED(global_bootm_verbose, global.bootm.verify, "bootm default verbosity level (0=quiet)");
++BAREBOX_MAGICVAR_NAMED(global_bootm_verbose, global.bootm.verbose, "bootm default verbosity level (0=quiet)");
+ BAREBOX_MAGICVAR_NAMED(global_bootm_appendroot, global.bootm.appendroot, "Add root= option to Kernel to mount rootfs from the device the Kernel comes from");
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
