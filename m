@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cRxj3-0003Uq-AV
- for barebox@lists.infradead.org; Fri, 13 Jan 2017 09:00:47 +0000
-From: Enrico Jorns <ejo@pengutronix.de>
-Date: Fri, 13 Jan 2017 09:59:44 +0100
-Message-Id: <1484297984-20992-1-git-send-email-ejo@pengutronix.de>
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1cRxyI-0005ff-RB
+ for barebox@lists.infradead.org; Fri, 13 Jan 2017 09:16:33 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 1ED1DA002A5
+ for <barebox@lists.infradead.org>; Fri, 13 Jan 2017 10:16:06 +0100 (CET)
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Fri, 13 Jan 2017 10:15:59 +0100
+Message-Id: <1484298959-25635-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,28 +22,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] bootm: fix magicvar name for global_bootm_verbose
+Subject: [PATCH] lib: libfile: Fix copying files to a non existing destination
 To: barebox@lists.infradead.org
-Cc: Enrico Jorns <ejo@pengutronix.de>
 
-Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
+If the destination file does not exist the stat call to check the file
+type fails. Extend the check of the stat return value.
+To allow to copy files to a new destination.
+
+Fixes commit 0ec6bd3e1be8 ("libfile: copy_file: Only open
+regular files with O_TRUNC")
+
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- common/bootm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/libfile.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 5984319..81625d9 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -684,5 +684,5 @@ BAREBOX_MAGICVAR_NAMED(global_bootm_initrd, global.bootm.initrd, "bootm default
- BAREBOX_MAGICVAR_NAMED(global_bootm_initrd_loadaddr, global.bootm.initrd.loadaddr, "bootm default initrd loadaddr");
- BAREBOX_MAGICVAR_NAMED(global_bootm_oftree, global.bootm.oftree, "bootm default oftree");
- BAREBOX_MAGICVAR_NAMED(global_bootm_verify, global.bootm.verify, "bootm default verify level");
--BAREBOX_MAGICVAR_NAMED(global_bootm_verbose, global.bootm.verify, "bootm default verbosity level (0=quiet)");
-+BAREBOX_MAGICVAR_NAMED(global_bootm_verbose, global.bootm.verbose, "bootm default verbosity level (0=quiet)");
- BAREBOX_MAGICVAR_NAMED(global_bootm_appendroot, global.bootm.appendroot, "Add root= option to Kernel to mount rootfs from the device the Kernel comes from");
+diff --git a/lib/libfile.c b/lib/libfile.c
+index 049ec32..3742314 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -276,14 +276,14 @@ int copy_file(const char *src, const char *dst, int verbose)
+ 		goto out;
+ 	}
+ 
+-	ret = stat(dst, &dststat);
+-	if (ret)
+-		goto out;
+-
+ 	mode = O_WRONLY | O_CREAT;
+ 
+-	if (S_ISREG(dststat.st_mode))
++	ret = stat(dst, &dststat);
++	/* Set O_TRUNC only if file does not exist or is a regular file */
++	if (ret == -ENOENT || (!ret && S_ISREG(dststat.st_mode)))
+ 		mode |= O_TRUNC;
++	else if (ret)
++		goto out;
+ 
+ 	dstfd = open(dst, mode);
+ 	if (dstfd < 0) {
 -- 
-2.1.4
+1.9.1
 
 
 _______________________________________________
