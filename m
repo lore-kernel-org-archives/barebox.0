@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([208.187.125.9])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cS5wO-00032u-I4
- for barebox@lists.infradead.org; Fri, 13 Jan 2017 17:47:10 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Fri, 13 Jan 2017 17:46:41 +0000
-Message-ID: <1484329660.30810.68.camel@kymetacorp.com>
-References: <12b302f6-75ae-bf83-370b-abaf0aef9d29@mev.co.uk>
- <20170111083254.hndsbxkeh7c5x3gt@pengutronix.de>
-In-Reply-To: <20170111083254.hndsbxkeh7c5x3gt@pengutronix.de>
-Content-Language: en-US
-Content-ID: <53F29A8C24E9E541999AED5F99AD162C@kymetacorp.com>
+ id 1cT2Ei-0003pP-On
+ for barebox@lists.infradead.org; Mon, 16 Jan 2017 08:01:54 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Mon, 16 Jan 2017 09:01:26 +0100
+Message-Id: <20170116080126.392-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170116080126.392-1-u.kleine-koenig@pengutronix.de>
+References: <20170116080126.392-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -20,48 +17,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Problem loading environment from spi-nor flash partition since
- barebox 2017.01.0
-To: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, "abbotti@mev.co.uk" <abbotti@mev.co.uk>
+Subject: [PATCH 2/2] bus: mvebu-mbus: fixup correct device tree
+To: barebox@lists.infradead.org
 
-On Wed, 2017-01-11 at 09:32 +0100, Sascha Hauer wrote:
-> With (real) SPI this is a little different and works as expected: If the
-> qspi node would be handled by the SPI layer then the SPI core would
-> register the child nodes as devices on a SPI bus. The normal probe
-> mechanism would then bind the device and the driver together.
-> 
-> With the cadence-quadspi driver a device is registered in
-> cqspi_setup_flash(), but there is never a driver attached to it, thus
-> the dev->driver test fails.
-> 
-> The proper way if probably to register the n25q00 device on a qspi bus
-> and to provide a qspi-nor-flash driver which gets probed then.
-> The not-so-proper, faster way could be to just create a dummy driver
-> struct and attach it to the device allocated in cqspi_setup_flash().
-
-The qspi device is more like an MTD device than a SPI master.  It just
-supports memory devices, not arbitrary SPI slaves that have their own
-drivers.
-
-But that said, there is sort of a driver for the SPI NOR chips attached
-to the qspi in spi-nor.c, but it is not a real 'struct driver_d' driver.
-Maybe it could be?
-
-qspi could create a "qspi" or "spi-flash" bus (I don't think it will fit
-well as a generic SPI bus) with the flash devices on it, and then
-spi-nor could bind to them like a normal driver.
-
-Or spi-nor could have a driver_d that's not registered and make
-nor->dev->driver point to it in spi_nor_scan().
-
-Or spi_nor_scan() could just set nor->dev->driver =
-nor->dev->parent->driver.
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+V2hlbiBib290aW5nIHdpdGggYW4gZXh0ZXJuYWwgZGV2aWNlIHRyZWUgdGhpcyBleHRlcm5hbCB0
+cmVlIG11c3QKYmUgYWRhcHRlZCwgbm90IHRoZSBpbnRlcm5hbCB0cmVlIGFnYWluLgoKU2lnbmVk
+LW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5k
+ZT4KLS0tCiBkcml2ZXJzL2J1cy9tdmVidS1tYnVzLmMgfCAyICstCiAxIGZpbGUgY2hhbmdlZCwg
+MSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2J1cy9t
+dmVidS1tYnVzLmMgYi9kcml2ZXJzL2J1cy9tdmVidS1tYnVzLmMKaW5kZXggNzM1ZmEzMjNjNDU4
+Li5kZjVmN2EzMmQzNDYgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvYnVzL212ZWJ1LW1idXMuYworKysg
+Yi9kcml2ZXJzL2J1cy9tdmVidS1tYnVzLmMKQEAgLTc1NCw3ICs3NTQsNyBAQCBzdGF0aWMgaW50
+IG12ZWJ1X21idXNfb2ZfZml4dXAoc3RydWN0IGRldmljZV9ub2RlICpyb290LCB2b2lkICpjb250
+ZXh0KQogewogCXN0cnVjdCBkZXZpY2Vfbm9kZSAqbnA7CiAKLQlmb3JfZWFjaF9tYXRjaGluZ19u
+b2RlKG5wLCBtdmVidV9tYnVzX2R0X2lkcykgeworCWZvcl9lYWNoX21hdGNoaW5nX25vZGVfZnJv
+bShucCwgcm9vdCwgbXZlYnVfbWJ1c19kdF9pZHMpIHsKIAkJc3RydWN0IHByb3BlcnR5ICpwOwog
+CQlpbnQgbiwgcGEsIG5hLCBucywgbGVucCwgc2l6ZTsKIAkJdTMyICpyYW5nZXM7Ci0tIAoyLjEx
+LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
+Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
