@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cT1Va-0008J7-Tc
- for barebox@lists.infradead.org; Mon, 16 Jan 2017 07:15:16 +0000
-Date: Mon, 16 Jan 2017 08:14:53 +0100
+ id 1cT1mt-00016E-2o
+ for barebox@lists.infradead.org; Mon, 16 Jan 2017 07:33:08 +0000
+Date: Mon, 16 Jan 2017 08:32:45 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170116071453.ikzg4pm3tzcpzufe@pengutronix.de>
-References: <1484297984-20992-1-git-send-email-ejo@pengutronix.de>
+Message-ID: <20170116073245.nnqeuqvtgpyw7q6i@pengutronix.de>
+References: <1484298959-25635-1-git-send-email-t.remmet@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1484297984-20992-1-git-send-email-ejo@pengutronix.de>
+In-Reply-To: <1484298959-25635-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +22,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] bootm: fix magicvar name for global_bootm_verbose
-To: Enrico Jorns <ejo@pengutronix.de>
+Subject: Re: [PATCH] lib: libfile: Fix copying files to a non existing
+ destination
+To: Teresa Remmet <t.remmet@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jan 13, 2017 at 09:59:44AM +0100, Enrico Jorns wrote:
-> Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
-> ---
->  common/bootm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On Fri, Jan 13, 2017 at 10:15:59AM +0100, Teresa Remmet wrote:
+> If the destination file does not exist the stat call to check the file
+> type fails. Extend the check of the stat return value.
+> To allow to copy files to a new destination.
 
-Applied, thanks
+Uh, I am glad this is not in a release yet.
+
+> 
+> Fixes commit 0ec6bd3e1be8 ("libfile: copy_file: Only open
+> regular files with O_TRUNC")
+> 
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+> ---
+>  lib/libfile.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/lib/libfile.c b/lib/libfile.c
+> index 049ec32..3742314 100644
+> --- a/lib/libfile.c
+> +++ b/lib/libfile.c
+> @@ -276,14 +276,14 @@ int copy_file(const char *src, const char *dst, int verbose)
+>  		goto out;
+>  	}
+>  
+> -	ret = stat(dst, &dststat);
+> -	if (ret)
+> -		goto out;
+> -
+>  	mode = O_WRONLY | O_CREAT;
+>  
+> -	if (S_ISREG(dststat.st_mode))
+> +	ret = stat(dst, &dststat);
+> +	/* Set O_TRUNC only if file does not exist or is a regular file */
+> +	if (ret == -ENOENT || (!ret && S_ISREG(dststat.st_mode)))
+>  		mode |= O_TRUNC;
+> +	else if (ret)
+> +		goto out;
+
+This is a bit hard to follow. When the destination file does not exist
+then we do not need the O_TRUNC flag. How about:
+
+	if (ret && ret != -ENOENT)
+		goto out;
+	if (!ret && S_ISREG(dststat.st_mode))
+		mode |= O_TRUNC;
 
 Sascha
-
-> 
-> diff --git a/common/bootm.c b/common/bootm.c
-> index 5984319..81625d9 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -684,5 +684,5 @@ BAREBOX_MAGICVAR_NAMED(global_bootm_initrd, global.bootm.initrd, "bootm default
->  BAREBOX_MAGICVAR_NAMED(global_bootm_initrd_loadaddr, global.bootm.initrd.loadaddr, "bootm default initrd loadaddr");
->  BAREBOX_MAGICVAR_NAMED(global_bootm_oftree, global.bootm.oftree, "bootm default oftree");
->  BAREBOX_MAGICVAR_NAMED(global_bootm_verify, global.bootm.verify, "bootm default verify level");
-> -BAREBOX_MAGICVAR_NAMED(global_bootm_verbose, global.bootm.verify, "bootm default verbosity level (0=quiet)");
-> +BAREBOX_MAGICVAR_NAMED(global_bootm_verbose, global.bootm.verbose, "bootm default verbosity level (0=quiet)");
->  BAREBOX_MAGICVAR_NAMED(global_bootm_appendroot, global.bootm.appendroot, "Add root= option to Kernel to mount rootfs from the device the Kernel comes from");
-> -- 
-> 2.1.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
