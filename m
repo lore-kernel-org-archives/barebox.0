@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x231.google.com ([2607:f8b0:4001:c0b::231])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cSqhj-0003Iv-8l
- for barebox@lists.infradead.org; Sun, 15 Jan 2017 19:43:04 +0000
-Received: by mail-it0-x231.google.com with SMTP id c7so63236672itd.1
- for <barebox@lists.infradead.org>; Sun, 15 Jan 2017 11:42:42 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <d8c10ecb-f349-eae5-2fe9-ccf407e1d31c@mev.co.uk>
+ id 1cT1qt-0002u2-Cs
+ for barebox@lists.infradead.org; Mon, 16 Jan 2017 07:37:17 +0000
+Date: Mon, 16 Jan 2017 08:36:52 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170116073652.b7vrnj2k6u3jejmt@pengutronix.de>
 References: <CAAMcf8CA-eTzHhQFXct7-udO1sYifL3zGULsoxiW9U1hcvKMvw@mail.gmail.com>
  <20170111200757.x33vfb4sdrsu4kmk@pengutronix.de>
  <d8c10ecb-f349-eae5-2fe9-ccf407e1d31c@mev.co.uk>
-From: Vicente Bergas <vicencb@gmail.com>
-Date: Sun, 15 Jan 2017 20:42:42 +0100
-Message-ID: <CAAMcf8D+fzttYtBFAZ6EBeZ3+9RAGpTqLtJ0skzCQL81PsDd9w@mail.gmail.com>
+ <CAAMcf8D+fzttYtBFAZ6EBeZ3+9RAGpTqLtJ0skzCQL81PsDd9w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAAMcf8D+fzttYtBFAZ6EBeZ3+9RAGpTqLtJ0skzCQL81PsDd9w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,33 +21,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: scripts/checkpatch.pl is deprecated
-To: Ian Abbott <abbotti@mev.co.uk>
-Cc: barebox@lists.infradead.org, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Vicente Bergas <vicencb@gmail.com>
+Cc: barebox@lists.infradead.org, Ian Abbott <abbotti@mev.co.uk>, Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 
-T24gVGh1LCBKYW4gMTIsIDIwMTcgYXQgMTE6MjcgQU0sIElhbiBBYmJvdHQgPGFiYm90dGlAbWV2
-LmNvLnVrPiB3cm90ZToKPiBPbiAxMS8wMS8xNyAyMDowNywgVXdlIEtsZWluZS1Lw7ZuaWcgd3Jv
-dGU6Cj4+Cj4+IE9uIFdlZCwgSmFuIDExLCAyMDE3IGF0IDA4OjM1OjExUE0gKzAxMDAsIFZpY2Vu
-dGUgQmVyZ2FzIHdyb3RlOgo+Pj4KPj4+IEhlbGxvLAo+Pj4gd2hlbiB1c2luZyBzY3JpcHRzL2No
-ZWNrcGF0Y2gucGwgaXQgbWF5IHJlcG9ydDoKPj4+ICAgVW5lc2NhcGVkIGxlZnQgYnJhY2UgaW4g
-cmVnZXggaXMgZGVwcmVjYXRlZCwKPj4+ICAgcGFzc2VkIHRocm91Z2ggaW4gcmVnZXggYXQgc2Ny
-aXB0cy9jaGVja3BhdGNoLnBsIGxpbmUgMjI2Ny4KPj4KPj4KPj4gSSBiZXQgdGhpcyBzY3JpcHRz
-IG9yaWdpbmF0ZXMgZnJvbSB0aGUga2VybmVsLiBTbyBJJ2QgcmVjb21tZW5kIHRvIHRlc3QKPj4g
-aWYgdGhlaXIgdmVyc2lvbiBpcyBhZmZlY3RlZCB0by4gSWYgeWVzLCByZXBvcnQgdG8gdGhlbSwg
-aWYgbm90LCB1cGRhdGUKPj4gYmFyZWJveCB0byBsYXRlc3QgTGludXggdmVyc2lvbi4KPgo+Cj4g
-SW4gdGhlIExpbnV4IGtlcm5lbCwgdGhpcyB3YXMgZml4ZWQgaW4gY29tbWl0Cj4gNmI4YzY5ZTQz
-ODRiMGJjZjE5MzZjMjEzNzgwNDg0MDIxMmRhYWY2OSAoImNoZWNrcGF0Y2g6IGZpeCBhbm90aGVy
-IGxlZnQKPiBicmFjZSB3YXJuaW5nIiksIHdoaWNoIG1hZGUgaXQgaW50byB0aGUgdGhlIDQuNiBr
-ZXJuZWwuCgpUaGlzIGNvbW1pdCBhcHBsaWVzIGFzIGlzIGluIGJhcmVib3gsIHNvLCBjYW4gaXQg
-YmUgYXBwbGllZD8KaHR0cHM6Ly9naXQua2VybmVsLm9yZy9jZ2l0L2xpbnV4L2tlcm5lbC9naXQv
-dG9ydmFsZHMvbGludXguZ2l0L3BhdGNoLz9pZD02YjhjNjllNDM4NGIwYmNmMTkzNmMyMTM3ODA0
-ODQwMjEyZGFhZjY5Cgo+Cj4gLS0KPiAtPSggSWFuIEFiYm90dCBAIE1FViBMdGQuICAgIEUtbWFp
-bDogPGFiYm90dGlAbWV2LmNvLnVrPiApPS0KPiAtPSggICAgICAgICAgICAgICAgICAgICAgICAg
-IFdlYjogaHR0cDovL3d3dy5tZXYuY28udWsvICApPS0KCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+On Sun, Jan 15, 2017 at 08:42:42PM +0100, Vicente Bergas wrote:
+> On Thu, Jan 12, 2017 at 11:27 AM, Ian Abbott <abbotti@mev.co.uk> wrote:
+> > On 11/01/17 20:07, Uwe Kleine-K=F6nig wrote:
+> >>
+> >> On Wed, Jan 11, 2017 at 08:35:11PM +0100, Vicente Bergas wrote:
+> >>>
+> >>> Hello,
+> >>> when using scripts/checkpatch.pl it may report:
+> >>>   Unescaped left brace in regex is deprecated,
+> >>>   passed through in regex at scripts/checkpatch.pl line 2267.
+> >>
+> >>
+> >> I bet this scripts originates from the kernel. So I'd recommend to test
+> >> if their version is affected to. If yes, report to them, if not, update
+> >> barebox to latest Linux version.
+> >
+> >
+> > In the Linux kernel, this was fixed in commit
+> > 6b8c69e4384b0bcf1936c2137804840212daaf69 ("checkpatch: fix another left
+> > brace warning"), which made it into the the 4.6 kernel.
+> =
+
+> This commit applies as is in barebox, so, can it be applied?
+> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/patch/?id=
+=3D6b8c69e4384b0bcf1936c2137804840212daaf69
+
+Yes. Can you send this as patch to the list?
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
