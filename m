@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cT4su-0002kL-0S
- for barebox@lists.infradead.org; Mon, 16 Jan 2017 10:51:37 +0000
+ id 1cT4su-0002k8-0Q
+ for barebox@lists.infradead.org; Mon, 16 Jan 2017 10:51:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 16 Jan 2017 11:50:57 +0100
-Message-Id: <20170116105108.13617-13-s.hauer@pengutronix.de>
+Date: Mon, 16 Jan 2017 11:50:48 +0100
+Message-Id: <20170116105108.13617-4-s.hauer@pengutronix.de>
 In-Reply-To: <20170116105108.13617-1-s.hauer@pengutronix.de>
 References: <20170116105108.13617-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,46 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/23] of: partitions: force "partitions" subnode
+Subject: [PATCH 03/23] imx-usb-loader: add i.MX7S support
 To: Barebox List <barebox@lists.infradead.org>
+Cc: Juergen Borleis <jbe@pengutronix.de>
 
-The binding states that a subnode containing partition subnodes
-should have the name "partitions". Enforce this so that we do not
-parse nodes with other names which may have partition descriptions
-for other disks.
+From: Juergen Borleis <jbe@pengutronix.de>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 ---
- drivers/of/partition.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ scripts/imx/imx-usb-loader.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/of/partition.c b/drivers/of/partition.c
-index bdf594562..8c2aef232 100644
---- a/drivers/of/partition.c
-+++ b/drivers/of/partition.c
-@@ -74,16 +74,16 @@ struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node)
+diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+index ebffeddae..9de7bb3a8 100644
+--- a/scripts/imx/imx-usb-loader.c
++++ b/scripts/imx/imx-usb-loader.c
+@@ -156,6 +156,13 @@ static const struct mach_id imx_ids[] = {
+ 		.header_type = HDR_MX53,
+ 		.mode = MODE_HID,
+ 		.max_transfer = 1024,
++	}, {
++		.vid = 0x15a2,
++		.pid = 0x0076,
++		.name = "i.MX7S",
++		.header_type = HDR_MX53,
++		.mode = MODE_HID,
++		.max_transfer = 1024,
+ 	},
+ };
  
- int of_parse_partitions(struct cdev *cdev, struct device_node *node)
- {
--	struct device_node *n;
-+	struct device_node *n, *subnode;
- 
- 	if (!node)
- 		return -EINVAL;
- 
--	for_each_child_of_node(node, n) {
--		if (of_device_is_compatible(n, "fixed-partitions")) {
--			node = n;
--			break;
--		}
-+	subnode = of_get_child_by_name(node, "partitions");
-+	if (subnode) {
-+		if (!of_device_is_compatible(subnode, "fixed-partitions"))
-+			return -EINVAL;
-+		node = subnode;
- 	}
- 
- 	for_each_child_of_node(node, n) {
 -- 
 2.11.0
 
