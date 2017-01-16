@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-x232.google.com ([2607:f8b0:4002:c05::232])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cT5pF-0001oa-Rp
- for barebox@lists.infradead.org; Mon, 16 Jan 2017 11:51:51 +0000
-Received: by mail-yw0-x232.google.com with SMTP id l19so66890097ywc.2
- for <barebox@lists.infradead.org>; Mon, 16 Jan 2017 03:51:28 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20170116113857.m6xdak4ir53pzo42@pengutronix.de>
+ id 1cT6rx-0000h0-UH
+ for barebox@lists.infradead.org; Mon, 16 Jan 2017 12:58:43 +0000
+Date: Mon, 16 Jan 2017 13:58:20 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170116125820.dx7cxtwhnz5rwrw5@pengutronix.de>
 References: <20170116105108.13617-1-s.hauer@pengutronix.de>
- <CAAfyv35FkKMn_7LKbcd3gXsTdMqR1F9WKr_WRVb+TF0AB+5LWg@mail.gmail.com>
- <20170116113857.m6xdak4ir53pzo42@pengutronix.de>
-From: Belisko Marek <marek.belisko@gmail.com>
-Date: Mon, 16 Jan 2017 12:51:27 +0100
-Message-ID: <CAAfyv35e+YBreAMio-KU9J1LJ4iGpSVzPa6bup-QurRCOjHxug@mail.gmail.com>
+ <CAOMZO5Du=RGWT2HWRZde15oMAU5hTvwXXdphVDTB3rQ7OubacQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAOMZO5Du=RGWT2HWRZde15oMAU5hTvwXXdphVDTB3rQ7OubacQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,45 +24,36 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: i.MX7 support
-To: Robert Schwebel <r.schwebel@pengutronix.de>
+To: Fabio Estevam <festevam@gmail.com>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Jan 16, 2017 at 12:38 PM, Robert Schwebel
-<r.schwebel@pengutronix.de> wrote:
-> On Mon, Jan 16, 2017 at 12:02:47PM +0100, Belisko Marek wrote:
->> > One issue remaining is that I am currently unable to reset the board
->> > using the watchdog or the barebox reset command. Out of ideas, will
->> > fix later.
->>
->> imx7 has know problem that cannot be reset by softreset only by
->> external signal as Fabio suggested.
->
-> Do you have a reference what exactly is broken? I didn't find anything
-> reset- or watchdog related in the errata sheet.
-Sorry no reference. We have developed board on imx7 and hit the same issue.
->
-> rsc
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Hi Fabio,
 
-BR,
+On Mon, Jan 16, 2017 at 08:58:01AM -0200, Fabio Estevam wrote:
+> Hi Sascha,
+> 
+> On Mon, Jan 16, 2017 at 8:50 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> > One issue remaining is that I am currently unable to reset the board
+> > using the watchdog or the barebox reset command. Out of ideas, will
+> > fix later.
+> 
+> Nice work!
+> 
+> Have you tried using MX7D_PAD_GPIO1_IO00__WDOD1_WDOG_B pin to reset the board?
 
-marek
+Yes, I did. I configured MX7D_PAD_GPIO1_IO00 as WDOD1_WDOG_B, still my
+board only hangs. I also tried configuring it as GPIO. When toggling the
+gpio the board only hangs. I also tried different variations of the
+watchdog SRS/WDA bits. I think there is some other piece I am missing.
+
+Sascha
 
 -- 
-as simple and primitive as possible
--------------------------------------------------
-Marek Belisko - OPEN-NANDRA
-Freelance Developer
-
-Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
-Tel: +421 915 052 184
-skype: marekwhite
-twitter: #opennandra
-web: http://open-nandra.com
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
