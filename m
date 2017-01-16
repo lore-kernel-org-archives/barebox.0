@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cT1mt-00016E-2o
- for barebox@lists.infradead.org; Mon, 16 Jan 2017 07:33:08 +0000
-Date: Mon, 16 Jan 2017 08:32:45 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170116073245.nnqeuqvtgpyw7q6i@pengutronix.de>
-References: <1484298959-25635-1-git-send-email-t.remmet@phytec.de>
+ id 1cT2I4-00049Q-R4
+ for barebox@lists.infradead.org; Mon, 16 Jan 2017 08:05:26 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Mon, 16 Jan 2017 09:04:57 +0100
+Message-Id: <20170116080457.2416-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170116080126.392-1-u.kleine-koenig@pengutronix.de>
+References: <20170116080126.392-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1484298959-25635-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,70 +17,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] lib: libfile: Fix copying files to a non existing
- destination
-To: Teresa Remmet <t.remmet@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 1/2] of: provide for_each_matching_node_from
+To: barebox@lists.infradead.org
 
-On Fri, Jan 13, 2017 at 10:15:59AM +0100, Teresa Remmet wrote:
-> If the destination file does not exist the stat call to check the file
-> type fails. Extend the check of the stat return value.
-> To allow to copy files to a new destination.
-
-Uh, I am glad this is not in a release yet.
-
-> 
-> Fixes commit 0ec6bd3e1be8 ("libfile: copy_file: Only open
-> regular files with O_TRUNC")
-> 
-> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
-> ---
->  lib/libfile.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/lib/libfile.c b/lib/libfile.c
-> index 049ec32..3742314 100644
-> --- a/lib/libfile.c
-> +++ b/lib/libfile.c
-> @@ -276,14 +276,14 @@ int copy_file(const char *src, const char *dst, int verbose)
->  		goto out;
->  	}
->  
-> -	ret = stat(dst, &dststat);
-> -	if (ret)
-> -		goto out;
-> -
->  	mode = O_WRONLY | O_CREAT;
->  
-> -	if (S_ISREG(dststat.st_mode))
-> +	ret = stat(dst, &dststat);
-> +	/* Set O_TRUNC only if file does not exist or is a regular file */
-> +	if (ret == -ENOENT || (!ret && S_ISREG(dststat.st_mode)))
->  		mode |= O_TRUNC;
-> +	else if (ret)
-> +		goto out;
-
-This is a bit hard to follow. When the destination file does not exist
-then we do not need the O_TRUNC flag. How about:
-
-	if (ret && ret != -ENOENT)
-		goto out;
-	if (!ret && S_ISREG(dststat.st_mode))
-		mode |= O_TRUNC;
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBpcyBmb3JfZWFjaF9tYXRjaGluZ19ub2RlIGZvciBhIGdpdmVuIHJvb3Qgc2ltaWxhciB0
+byB0aGUgb3RoZXIKLi4uX2Zyb20gZnVuY3Rpb25zLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWlu
+ZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCkNoYW5nZXMgc2lu
+Y2UgdjE6CiAtIGZpeCB0eXBvIGluIFN1YmplY3QKCiBpbmNsdWRlL29mLmggfCA2ICsrKystLQog
+MSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1n
+aXQgYS9pbmNsdWRlL29mLmggYi9pbmNsdWRlL29mLmgKaW5kZXggZWQ2ZTg3MDQ3MzUwLi5lM2Ji
+NDUyYjg2ZmEgMTAwNjQ0Ci0tLSBhL2luY2x1ZGUvb2YuaAorKysgYi9pbmNsdWRlL29mLmgKQEAg
+LTY2NSw5ICs2NjUsMTEgQEAgc3RhdGljIGlubGluZSBzdHJ1Y3QgZGV2aWNlX25vZGUgKm9mX2Zp
+bmRfbWF0Y2hpbmdfbm9kZSgKIHsKIAlyZXR1cm4gb2ZfZmluZF9tYXRjaGluZ19ub2RlX2FuZF9t
+YXRjaChmcm9tLCBtYXRjaGVzLCBOVUxMKTsKIH0KLSNkZWZpbmUgZm9yX2VhY2hfbWF0Y2hpbmdf
+bm9kZShkbiwgbWF0Y2hlcykgXAotCWZvciAoZG4gPSBvZl9maW5kX21hdGNoaW5nX25vZGUoTlVM
+TCwgbWF0Y2hlcyk7IGRuOyBcCisjZGVmaW5lIGZvcl9lYWNoX21hdGNoaW5nX25vZGVfZnJvbShk
+biwgcm9vdCwgbWF0Y2hlcykgXAorCWZvciAoZG4gPSBvZl9maW5kX21hdGNoaW5nX25vZGUocm9v
+dCwgbWF0Y2hlcyk7IGRuOyBcCiAJICAgICBkbiA9IG9mX2ZpbmRfbWF0Y2hpbmdfbm9kZShkbiwg
+bWF0Y2hlcykpCisjZGVmaW5lIGZvcl9lYWNoX21hdGNoaW5nX25vZGUoZG4sIG1hdGNoZXMpIFwK
+Kwlmb3JfZWFjaF9tYXRjaGluZ19ub2RlX2Zyb20oZG4sIE5VTEwsIG1hdGNoZXMpCiAjZGVmaW5l
+IGZvcl9lYWNoX21hdGNoaW5nX25vZGVfYW5kX21hdGNoKGRuLCBtYXRjaGVzLCBtYXRjaCkgXAog
+CWZvciAoZG4gPSBvZl9maW5kX21hdGNoaW5nX25vZGVfYW5kX21hdGNoKE5VTEwsIG1hdGNoZXMs
+IG1hdGNoKTsgXAogCSAgICAgZG47IGRuID0gb2ZfZmluZF9tYXRjaGluZ19ub2RlX2FuZF9tYXRj
+aChkbiwgbWF0Y2hlcywgbWF0Y2gpKQotLSAKMi4xMS4wCgoKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
+aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
+dGluZm8vYmFyZWJveAo=
