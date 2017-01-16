@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cT3me-0004en-KX
- for barebox@lists.infradead.org; Mon, 16 Jan 2017 09:41:02 +0000
-Date: Mon, 16 Jan 2017 10:40:37 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170116094037.t73xh5z3p2j6uvmr@pengutronix.de>
-References: <9bb241fd-643b-f0fc-e377-a86c79c552e1@allegion.com>
- <20170116083349.hvw6iapklok73ll7@pengutronix.de>
- <3ad4db8b-5686-5b9e-084d-b85b2bacbd57@allegion.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <3ad4db8b-5686-5b9e-084d-b85b2bacbd57@allegion.com>
+ id 1cT4nh-0008Ok-MN
+ for barebox@lists.infradead.org; Mon, 16 Jan 2017 10:46:11 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
+ (envelope-from <l.stach@pengutronix.de>) id 1cT4nK-0005ol-GQ
+ for barebox@lists.infradead.org; Mon, 16 Jan 2017 11:45:46 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 16 Jan 2017 11:45:45 +0100
+Message-Id: <20170116104546.21842-2-l.stach@pengutronix.de>
+In-Reply-To: <20170116104546.21842-1-l.stach@pengutronix.de>
+References: <20170116104546.21842-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,58 +21,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Secure trusted boot mechanism
-To: "Dold, Wolfram" <Wolfram.Dold@allegion.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 2/3] usb: gadget: disable AT91 driver on SAMA5D4
+To: barebox@lists.infradead.org
 
-On Mon, Jan 16, 2017 at 09:22:57AM +0000, Dold, Wolfram wrote:
-> Hi Sascha,
-> thanks for your fast reply.
-> 
-> On 16.01.2017 09:33, Sascha Hauer wrote:
-> > Hi Wolfram,
-> > 
-> > On Mon, Jan 16, 2017 at 08:26:44AM +0000, Dold, Wolfram wrote:
-> >> Hi all,
-> >> I wanted to ask if barebox supports any kind of secure boot mechanism like FIT-Image or
-> >> any other type of verified secure trusted boot?
-> > 
-> > Yes, barebox does support FIT images.
-> > It also supports HAB on i.MX machines, although this is only for
-> > starting trusted bootloaders from the ROM, not for starting trusted
-> > kernels.
-> We have an TI AM335x Machine. As I understood the only way in such an environment to boot a trusted kernel is FIT?
+This architecture is missing the right defines for the system
+peripherals, that are needed for this driver to build successfully.
 
-Yes.
+Disable it for now until someone with a clue about this architecture
+can fill in the gap.
 
-Of course you have to make sure that the Boot ROM only boots trusted
-bootloaders. I don't know what the AM335x offers here to do that.
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ drivers/usb/gadget/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-> What we wnat to do is to prevent the device from being hijacked.
-> Do you know another way than FIT to do that?
-
-No, at least not with barebox (or U-Boot).
-
-> Is there any documentation available regarding barebox and FIT?
-
-Not really, no. Support is similar to U-Boot though. You have to use
-mkimage on a device tree blob describing a FIT image. Additionally
-you have to put a public key into the device tree to give barebox
-something to verify against. If you decide to give it a try I can guide
-you through and in the end we can generate documention from this for the
-next one.
-
-Sascha
-
+diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
+index 81c372320008..eb279ae8df4f 100644
+--- a/drivers/usb/gadget/Kconfig
++++ b/drivers/usb/gadget/Kconfig
+@@ -19,6 +19,7 @@ config USB_GADGET_DRIVER_AT91
+ 	bool
+ 	prompt "at91 gadget driver"
+ 	depends on ARCH_AT91
++	depends on !ARCH_SAMA5D4
+ 	default y
+ 	select USB_GADGET_DUALSPEED
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
