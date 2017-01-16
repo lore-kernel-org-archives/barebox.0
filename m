@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cT2jz-0006Sy-P5
- for barebox@lists.infradead.org; Mon, 16 Jan 2017 08:34:15 +0000
-Date: Mon, 16 Jan 2017 09:33:49 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170116083349.hvw6iapklok73ll7@pengutronix.de>
-References: <9bb241fd-643b-f0fc-e377-a86c79c552e1@allegion.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <9bb241fd-643b-f0fc-e377-a86c79c552e1@allegion.com>
+Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1cT3Gr-0004mX-Sj
+ for barebox@lists.infradead.org; Mon, 16 Jan 2017 09:08:11 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 74C05A00233
+ for <barebox@lists.infradead.org>; Mon, 16 Jan 2017 10:07:47 +0100 (CET)
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Mon, 16 Jan 2017 10:07:39 +0100
+Message-Id: <1484557659-5056-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,33 +17,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Secure trusted boot mechanism
-To: "Dold, Wolfram" <Wolfram.Dold@allegion.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH v2] lib: libfile: Fix copying files to a non existing
+ destination
+To: barebox@lists.infradead.org
 
-Hi Wolfram,
+If the destination file does not exist the stat call to check the file
+type fails. Extend the check of the stat return value.
+To allow to copy files to a new destination.
 
-On Mon, Jan 16, 2017 at 08:26:44AM +0000, Dold, Wolfram wrote:
-> Hi all,
-> I wanted to ask if barebox supports any kind of secure boot mechanism like FIT-Image or
-> any other type of verified secure trusted boot?
+Fixes commit 0ec6bd3e1be8 ("libfile: copy_file: Only open
+regular files with O_TRUNC")
 
-Yes, barebox does support FIT images.
-It also supports HAB on i.MX machines, although this is only for
-starting trusted bootloaders from the ROM, not for starting trusted
-kernels.
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ lib/libfile.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-Sascha
-
+diff --git a/lib/libfile.c b/lib/libfile.c
+index 049ec32..6b70306 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -276,13 +276,14 @@ int copy_file(const char *src, const char *dst, int verbose)
+ 		goto out;
+ 	}
+ 
++	mode = O_WRONLY | O_CREAT;
++
+ 	ret = stat(dst, &dststat);
+-	if (ret)
++	if (ret && ret != -ENOENT)
+ 		goto out;
+ 
+-	mode = O_WRONLY | O_CREAT;
+-
+-	if (S_ISREG(dststat.st_mode))
++	/* Set O_TRUNC only if file exist and is a regular file */
++	if (!ret && S_ISREG(dststat.st_mode))
+ 		mode |= O_TRUNC;
+ 
+ 	dstfd = open(dst, mode);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
