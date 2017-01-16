@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cT4su-0002kM-0f
- for barebox@lists.infradead.org; Mon, 16 Jan 2017 10:51:40 +0000
+ id 1cT4su-0002k9-0a
+ for barebox@lists.infradead.org; Mon, 16 Jan 2017 10:51:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 16 Jan 2017 11:50:59 +0100
-Message-Id: <20170116105108.13617-15-s.hauer@pengutronix.de>
+Date: Mon, 16 Jan 2017 11:50:49 +0100
+Message-Id: <20170116105108.13617-5-s.hauer@pengutronix.de>
 In-Reply-To: <20170116105108.13617-1-s.hauer@pengutronix.de>
 References: <20170116105108.13617-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,62 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/23] mci: imx-esdhci: remove wrong write protection test
+Subject: [PATCH 04/23] ARM: Makefile: format fix
 To: Barebox List <barebox@lists.infradead.org>
+Cc: Juergen Borleis <jbe@pengutronix.de>
 
-Testing for the write protection bit to determine if a card is write
-protected or not is wrong. The bit may have the wrong value for
-permanently plugged cards (eMMC) or for boards using a GPIO for
-write protection detection.
-Since the core will test for write protection before actually
-calling into the driver this test can just be removed.
+From: Juergen Borleis <jbe@pengutronix.de>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 ---
- drivers/mci/imx-esdhc.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ arch/arm/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index c845187a5..f4d57348e 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -218,13 +218,10 @@ static int esdhc_setup_data(struct mci_host *mci, struct mci_data *data)
- 	u32 wml_value;
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 96ec588da..620a3ccb0 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -32,7 +32,7 @@ endif
+ # testing for a specific architecture or later rather impossible.
+ arch-$(CONFIG_CPU_64v8)		:= -D__LINUX_ARM_ARCH__=8 $(call cc-option,-march=armv8-a)
+ arch-$(CONFIG_CPU_32v7)		:=-D__LINUX_ARM_ARCH__=7 $(call cc-option,-march=armv7-a,-march=armv5t -Wa$(comma)-march=armv7-a)
+-arch-$(CONFIG_CPU_32v6)            :=-D__LINUX_ARM_ARCH__=6 $(call cc-option,-march=armv6,-march=armv5t -Wa$(comma)-march=armv6)
++arch-$(CONFIG_CPU_32v6)		:=-D__LINUX_ARM_ARCH__=6 $(call cc-option,-march=armv6,-march=armv5t -Wa$(comma)-march=armv6)
+ arch-$(CONFIG_CPU_32v5)		:=-D__LINUX_ARM_ARCH__=5 $(call cc-option,-march=armv5te,-march=armv4t)
+ arch-$(CONFIG_CPU_32v4T)	:=-D__LINUX_ARM_ARCH__=4 -march=armv4t
  
- 	if (IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO)) {
--		if (!(data->flags & MMC_DATA_READ)) {
--			if ((esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_WPSPL) == 0)
--				goto err_locked;
-+		if (!(data->flags & MMC_DATA_READ))
- 			esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->src);
--		} else {
-+		else
- 			esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->dest);
--		}
- 	} else {
- 		wml_value = data->blocksize/4;
- 
-@@ -237,8 +234,6 @@ static int esdhc_setup_data(struct mci_host *mci, struct mci_data *data)
- 		} else {
- 			if (wml_value > 0x80)
- 				wml_value = 0x80;
--			if ((esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_WPSPL) == 0)
--				goto err_locked;
- 
- 			esdhc_clrsetbits32(regs + IMX_SDHCI_WML, WML_WR_WML_MASK,
- 						wml_value << 16);
-@@ -249,11 +244,6 @@ static int esdhc_setup_data(struct mci_host *mci, struct mci_data *data)
- 	esdhc_write32(regs + SDHCI_BLOCK_SIZE__BLOCK_COUNT, data->blocks << 16 | data->blocksize);
- 
- 	return 0;
--
--err_locked:
--	dev_err(host->dev, "Can not write to locked card.\n\n");
--
--	return -ETIMEDOUT;
- }
- 
- static int esdhc_do_data(struct mci_host *mci, struct mci_data *data)
 -- 
 2.11.0
 
