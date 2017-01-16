@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cT4su-0002k8-0Q
+ id 1cT4su-0002kB-0U
  for barebox@lists.infradead.org; Mon, 16 Jan 2017 10:51:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 16 Jan 2017 11:50:48 +0100
-Message-Id: <20170116105108.13617-4-s.hauer@pengutronix.de>
+Date: Mon, 16 Jan 2017 11:50:51 +0100
+Message-Id: <20170116105108.13617-7-s.hauer@pengutronix.de>
 In-Reply-To: <20170116105108.13617-1-s.hauer@pengutronix.de>
 References: <20170116105108.13617-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,35 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/23] imx-usb-loader: add i.MX7S support
+Subject: [PATCH 06/23] mci: imx-esdhc: Enable clock
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Juergen Borleis <jbe@pengutronix.de>
 
-From: Juergen Borleis <jbe@pengutronix.de>
+For architectures which do not enable all clocks during initialization.
 
-Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/imx/imx-usb-loader.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/mci/imx-esdhc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-index ebffeddae..9de7bb3a8 100644
---- a/scripts/imx/imx-usb-loader.c
-+++ b/scripts/imx/imx-usb-loader.c
-@@ -156,6 +156,13 @@ static const struct mach_id imx_ids[] = {
- 		.header_type = HDR_MX53,
- 		.mode = MODE_HID,
- 		.max_transfer = 1024,
-+	}, {
-+		.vid = 0x15a2,
-+		.pid = 0x0076,
-+		.name = "i.MX7S",
-+		.header_type = HDR_MX53,
-+		.mode = MODE_HID,
-+		.max_transfer = 1024,
- 	},
- };
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 951ac4501..c845187a5 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -630,6 +630,7 @@ static int fsl_esdhc_probe(struct device_d *dev)
+ 	host->clk = clk_get(dev, "per");
+ 	if (IS_ERR(host->clk))
+ 		return PTR_ERR(host->clk);
++	clk_enable(host->clk);
  
+ 	host->dev = dev;
+ 	iores = dev_request_mem_resource(dev, 0);
 -- 
 2.11.0
 
