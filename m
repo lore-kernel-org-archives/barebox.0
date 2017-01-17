@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x244.google.com ([2607:f8b0:4001:c06::244])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cTBB3-0001DK-2X
- for barebox@lists.infradead.org; Mon, 16 Jan 2017 17:34:42 +0000
-Received: by mail-io0-x244.google.com with SMTP id m98so13236540iod.2
- for <barebox@lists.infradead.org>; Mon, 16 Jan 2017 09:34:20 -0800 (PST)
+ id 1cTNiJ-0004sg-9s
+ for barebox@lists.infradead.org; Tue, 17 Jan 2017 06:57:53 +0000
+Date: Tue, 17 Jan 2017 07:57:29 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170117065729.lnrogq2eifoi5amd@pengutronix.de>
+References: <1484557659-5056-1-git-send-email-t.remmet@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <20170116073652.b7vrnj2k6u3jejmt@pengutronix.de>
-References: <CAAMcf8CA-eTzHhQFXct7-udO1sYifL3zGULsoxiW9U1hcvKMvw@mail.gmail.com>
- <20170111200757.x33vfb4sdrsu4kmk@pengutronix.de>
- <d8c10ecb-f349-eae5-2fe9-ccf407e1d31c@mev.co.uk>
- <CAAMcf8D+fzttYtBFAZ6EBeZ3+9RAGpTqLtJ0skzCQL81PsDd9w@mail.gmail.com>
- <20170116073652.b7vrnj2k6u3jejmt@pengutronix.de>
-From: Vicente Bergas <vicencb@gmail.com>
-Date: Mon, 16 Jan 2017 18:34:19 +0100
-Message-ID: <CAAMcf8DQJHGHXvozzU9WNb67t1PmB8o2aejk8HYaFpFPWZTsbA@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1484557659-5056-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,42 +18,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: scripts/checkpatch.pl is deprecated
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ian Abbott <abbotti@mev.co.uk>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH v2] lib: libfile: Fix copying files to a non existing
+ destination
+To: Teresa Remmet <t.remmet@phytec.de>
+Cc: barebox@lists.infradead.org
 
-T24gTW9uLCBKYW4gMTYsIDIwMTcgYXQgODozNiBBTSwgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBl
-bmd1dHJvbml4LmRlPiB3cm90ZToKPiBPbiBTdW4sIEphbiAxNSwgMjAxNyBhdCAwODo0Mjo0MlBN
-ICswMTAwLCBWaWNlbnRlIEJlcmdhcyB3cm90ZToKPj4gT24gVGh1LCBKYW4gMTIsIDIwMTcgYXQg
-MTE6MjcgQU0sIElhbiBBYmJvdHQgPGFiYm90dGlAbWV2LmNvLnVrPiB3cm90ZToKPj4gPiBPbiAx
-MS8wMS8xNyAyMDowNywgVXdlIEtsZWluZS1Lw7ZuaWcgd3JvdGU6Cj4+ID4+Cj4+ID4+IE9uIFdl
-ZCwgSmFuIDExLCAyMDE3IGF0IDA4OjM1OjExUE0gKzAxMDAsIFZpY2VudGUgQmVyZ2FzIHdyb3Rl
-Ogo+PiA+Pj4KPj4gPj4+IEhlbGxvLAo+PiA+Pj4gd2hlbiB1c2luZyBzY3JpcHRzL2NoZWNrcGF0
-Y2gucGwgaXQgbWF5IHJlcG9ydDoKPj4gPj4+ICAgVW5lc2NhcGVkIGxlZnQgYnJhY2UgaW4gcmVn
-ZXggaXMgZGVwcmVjYXRlZCwKPj4gPj4+ICAgcGFzc2VkIHRocm91Z2ggaW4gcmVnZXggYXQgc2Ny
-aXB0cy9jaGVja3BhdGNoLnBsIGxpbmUgMjI2Ny4KPj4gPj4KPj4gPj4KPj4gPj4gSSBiZXQgdGhp
-cyBzY3JpcHRzIG9yaWdpbmF0ZXMgZnJvbSB0aGUga2VybmVsLiBTbyBJJ2QgcmVjb21tZW5kIHRv
-IHRlc3QKPj4gPj4gaWYgdGhlaXIgdmVyc2lvbiBpcyBhZmZlY3RlZCB0by4gSWYgeWVzLCByZXBv
-cnQgdG8gdGhlbSwgaWYgbm90LCB1cGRhdGUKPj4gPj4gYmFyZWJveCB0byBsYXRlc3QgTGludXgg
-dmVyc2lvbi4KPj4gPgo+PiA+Cj4+ID4gSW4gdGhlIExpbnV4IGtlcm5lbCwgdGhpcyB3YXMgZml4
-ZWQgaW4gY29tbWl0Cj4+ID4gNmI4YzY5ZTQzODRiMGJjZjE5MzZjMjEzNzgwNDg0MDIxMmRhYWY2
-OSAoImNoZWNrcGF0Y2g6IGZpeCBhbm90aGVyIGxlZnQKPj4gPiBicmFjZSB3YXJuaW5nIiksIHdo
-aWNoIG1hZGUgaXQgaW50byB0aGUgdGhlIDQuNiBrZXJuZWwuCj4+Cj4+IFRoaXMgY29tbWl0IGFw
-cGxpZXMgYXMgaXMgaW4gYmFyZWJveCwgc28sIGNhbiBpdCBiZSBhcHBsaWVkPwo+PiBodHRwczov
-L2dpdC5rZXJuZWwub3JnL2NnaXQvbGludXgva2VybmVsL2dpdC90b3J2YWxkcy9saW51eC5naXQv
-cGF0Y2gvP2lkPTZiOGM2OWU0Mzg0YjBiY2YxOTM2YzIxMzc4MDQ4NDAyMTJkYWFmNjkKPgo+IFll
-cy4gQ2FuIHlvdSBzZW5kIHRoaXMgYXMgcGF0Y2ggdG8gdGhlIGxpc3Q/CgpXaHkgZG9lcyBpdCBu
-ZWVkIHRvIGJlIGluIHRoZSBsaXN0PyBjYW4gbm90IGl0IGJlIGFwcGxpZWQgZGlyZWN0bHk/Cgo+
-Cj4gU2FzY2hhCj4KPiAtLQo+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAg
-ICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8Cj4gSW5kdXN0cmlhbCBMaW51eCBT
-b2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwK
-PiBQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5
-LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAg
-ICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+On Mon, Jan 16, 2017 at 10:07:39AM +0100, Teresa Remmet wrote:
+> If the destination file does not exist the stat call to check the file
+> type fails. Extend the check of the stat return value.
+> To allow to copy files to a new destination.
+> 
+> Fixes commit 0ec6bd3e1be8 ("libfile: copy_file: Only open
+> regular files with O_TRUNC")
+> 
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+> ---
+>  lib/libfile.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+
+Applied (to master), thanks
+
+Sascha
+
+> 
+> diff --git a/lib/libfile.c b/lib/libfile.c
+> index 049ec32..6b70306 100644
+> --- a/lib/libfile.c
+> +++ b/lib/libfile.c
+> @@ -276,13 +276,14 @@ int copy_file(const char *src, const char *dst, int verbose)
+>  		goto out;
+>  	}
+>  
+> +	mode = O_WRONLY | O_CREAT;
+> +
+>  	ret = stat(dst, &dststat);
+> -	if (ret)
+> +	if (ret && ret != -ENOENT)
+>  		goto out;
+>  
+> -	mode = O_WRONLY | O_CREAT;
+> -
+> -	if (S_ISREG(dststat.st_mode))
+> +	/* Set O_TRUNC only if file exist and is a regular file */
+> +	if (!ret && S_ISREG(dststat.st_mode))
+>  		mode |= O_TRUNC;
+>  
+>  	dstfd = open(dst, mode);
+> -- 
+> 1.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
