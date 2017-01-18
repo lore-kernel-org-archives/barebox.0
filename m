@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x235.google.com ([2607:f8b0:4003:c06::235])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cTmgA-0007XZ-Uy
- for barebox@lists.infradead.org; Wed, 18 Jan 2017 09:37:20 +0000
-Received: by mail-oi0-x235.google.com with SMTP id w204so3986478oiw.0
- for <barebox@lists.infradead.org>; Wed, 18 Jan 2017 01:36:58 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20170118070738.g5a7rdahunjes4jl@pengutronix.de>
-References: <20170116105108.13617-1-s.hauer@pengutronix.de>
- <CAOMZO5Du=RGWT2HWRZde15oMAU5hTvwXXdphVDTB3rQ7OubacQ@mail.gmail.com>
- <20170116125820.dx7cxtwhnz5rwrw5@pengutronix.de>
- <CAOMZO5AF3Zo6pJsF41=-maoVAd1w4TeqcS71atROn7gh0eYTzg@mail.gmail.com>
- <20170118070738.g5a7rdahunjes4jl@pengutronix.de>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 18 Jan 2017 07:36:57 -0200
-Message-ID: <CAOMZO5CrofMwr24332mudXfi+hgKM4-WFwrrw0NXoFeNBRc62g@mail.gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cTmuS-0007Nh-6b
+ for barebox@lists.infradead.org; Wed, 18 Jan 2017 09:52:05 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
+ (envelope-from <l.stach@pengutronix.de>) id 1cTmu5-0005xJ-IJ
+ for barebox@lists.infradead.org; Wed, 18 Jan 2017 10:51:41 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 18 Jan 2017 10:51:41 +0100
+Message-Id: <20170118095141.5571-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,19 +19,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: i.MX7 support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] arm: omap: OMAP_SERIALBOOT needs console support
+To: barebox@lists.infradead.org
 
-On Wed, Jan 18, 2017 at 5:07 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+It is quite useless without a console and breaks the build.
 
-> I have a rev 2.0 board here.
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/mach-omap/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Does the 'reboot' command in Linux work?
+diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+index ff37731f70ff..95013acebeec 100644
+--- a/arch/arm/mach-omap/Kconfig
++++ b/arch/arm/mach-omap/Kconfig
+@@ -156,6 +156,7 @@ config OMAP_SERIALBOOT
+ 	select XYMODEM
+ 	select FS_RAMFS
+ 	depends on ARCH_AM33XX && SHELL_NONE
++	depends on !CONSOLE_NONE
+ 	help
+ 	  Say Y here if you want to load the 2nd stage barebox.bin with
+ 	  xmodem after booting from serial line.
+-- 
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
