@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cUEZe-0004Bi-2a
+ id 1cUEZe-0004Bj-2a
  for barebox@lists.infradead.org; Thu, 19 Jan 2017 15:24:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 19 Jan 2017 16:23:51 +0100
-Message-Id: <20170119152355.2280-2-s.hauer@pengutronix.de>
+Date: Thu, 19 Jan 2017 16:23:53 +0100
+Message-Id: <20170119152355.2280-4-s.hauer@pengutronix.de>
 In-Reply-To: <20170119152355.2280-1-s.hauer@pengutronix.de>
 References: <20170119152355.2280-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,7 +21,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] ARM: i.MX: Add i.MX7 base architecture support
+Subject: [PATCH 3/5] ARM: i.MX: Add WaRP7 board support
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Juergen Borleis <jbe@pengutronix.de>
 
@@ -30,197 +30,112 @@ From: Juergen Borleis <jbe@pengutronix.de>
 Signed-off-by Juergen Borleis <jbe@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/boards/imx.rst                   |  1 +
- arch/arm/mach-imx/Kconfig                      |  4 ++
- arch/arm/mach-imx/Makefile                     |  1 +
- arch/arm/mach-imx/boot.c                       | 70 ++++++++++++++++++++++++
- arch/arm/mach-imx/cpu_init.c                   |  5 ++
- arch/arm/mach-imx/imx.c                        |  6 +++
- arch/arm/mach-imx/imx7.c                       | 75 ++++++++++++++++++++++++++
- arch/arm/mach-imx/include/mach/debug_ll.h      |  3 ++
- arch/arm/mach-imx/include/mach/generic.h       | 16 ++++++
- arch/arm/mach-imx/include/mach/imx7-regs.h     | 24 +++++++++
- arch/arm/mach-imx/include/mach/imx7.h          | 59 ++++++++++++++++++++
- arch/arm/mach-imx/include/mach/imx_cpu_types.h |  1 +
- common/Kconfig                                 |  8 +++
- include/serial/imx-uart.h                      |  5 ++
- scripts/imx/imx.c                              |  1 +
- 15 files changed, 279 insertions(+)
- create mode 100644 arch/arm/mach-imx/imx7.c
- create mode 100644 arch/arm/mach-imx/include/mach/imx7-regs.h
- create mode 100644 arch/arm/mach-imx/include/mach/imx7.h
+ Documentation/boards/imx/Element14-WaRP7.rst       | 54 +++++++++++++++
+ arch/arm/boards/Makefile                           |  1 +
+ arch/arm/boards/element14-warp7/Makefile           |  2 +
+ arch/arm/boards/element14-warp7/board.c            | 35 ++++++++++
+ .../element14-warp7/flash-header-mx7-warp.imxcfg   | 81 ++++++++++++++++++++++
+ arch/arm/boards/element14-warp7/lowlevel.c         | 48 +++++++++++++
+ arch/arm/dts/Makefile                              |  1 +
+ arch/arm/dts/imx7s-warp.dts                        | 62 +++++++++++++++++
+ arch/arm/mach-imx/Kconfig                          |  5 ++
+ images/Makefile.imx                                |  5 ++
+ 10 files changed, 294 insertions(+)
+ create mode 100644 Documentation/boards/imx/Element14-WaRP7.rst
+ create mode 100644 arch/arm/boards/element14-warp7/Makefile
+ create mode 100644 arch/arm/boards/element14-warp7/board.c
+ create mode 100644 arch/arm/boards/element14-warp7/flash-header-mx7-warp.imxcfg
+ create mode 100644 arch/arm/boards/element14-warp7/lowlevel.c
+ create mode 100644 arch/arm/dts/imx7s-warp.dts
 
-diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
-index 60cdcf072..b6e65060c 100644
---- a/Documentation/boards/imx.rst
-+++ b/Documentation/boards/imx.rst
-@@ -20,6 +20,7 @@ The Internal Boot Mode is supported on:
- * i.MX51
- * i.MX53
- * i.MX6
-+* i.MX7
- 
- With the Internal Boot Mode, the images contain a header which describes
- where the binary shall be loaded and started. These headers also contain
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 62e6494c2..ba5a9c445 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -157,6 +157,10 @@ config ARCH_IMX6UL
- 	bool
- 	select ARCH_IMX6
- 
-+config ARCH_IMX7
-+	bool
-+	select CPU_V7
-+
- config ARCH_VF610
- 	bool
- 	select ARCH_HAS_L2X0
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index d0fe7abc0..fc5305f05 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -13,6 +13,7 @@ obj-$(CONFIG_ARCH_IMX53) += imx53.o imx5.o esdctl-v4.o
- pbl-$(CONFIG_ARCH_IMX53) += imx53.o imx5.o esdctl-v4.o
- obj-$(CONFIG_ARCH_IMX6) += imx6.o usb-imx6.o
- lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
-+obj-$(CONFIG_ARCH_IMX7) += imx7.o
- obj-$(CONFIG_ARCH_IMX_XLOAD) += xload.o
- obj-$(CONFIG_IMX_IIM)	+= iim.o
- obj-$(CONFIG_IMX_OCOTP)	+= ocotp.o
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 489306072..72597f5e2 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -25,6 +25,7 @@
- #include <mach/imx51-regs.h>
- #include <mach/imx53-regs.h>
- #include <mach/imx6-regs.h>
-+#include <mach/imx7-regs.h>
- 
- /* [CTRL][TYPE] */
- static const enum bootsource locations[4][4] = {
-@@ -346,3 +347,72 @@ void imx6_boot_save_loc(void)
- 	bootsource_set(src);
- 	bootsource_set_instance(instance);
- }
-+
-+#define IMX7_SRC_SBMR1	0x58
-+#define IMX7_SRC_SBMR2	0x70
-+
-+void imx7_get_boot_source(enum bootsource *src, int *instance)
-+{
-+	void __iomem *src_base = IOMEM(MX7_SRC_BASE_ADDR);
-+	uint32_t sbmr1 = readl(src_base + IMX7_SRC_SBMR1);
-+	uint32_t sbmr2 = readl(src_base + IMX7_SRC_SBMR2);
-+	int boot_mode;
-+
-+	/* BMOD[1:0] */
-+	boot_mode = (sbmr2 >> 24) & 0x3;
-+
-+	switch (boot_mode) {
-+	case 0: /* Fuses, fall through */
-+	case 2: /* internal boot */
-+		goto internal_boot;
-+	case 1: /* Serial Downloader */
-+		*src = BOOTSOURCE_SERIAL;
-+		break;
-+	case 3: /* reserved */
-+		break;
-+	};
-+
-+	return;
-+
-+internal_boot:
-+
-+	switch ((sbmr1 >> 12) & 0xf) {
-+	case 1:
-+	case 2:
-+		*src = BOOTSOURCE_MMC;
-+		*instance = (sbmr1 >> 10 & 0x3);
-+		break;
-+	case 3:
-+		*src = BOOTSOURCE_NAND;
-+		break;
-+	case 4:
-+		*src = BOOTSOURCE_SPI_NOR,
-+		*instance = (sbmr1 >> 9 & 0x7);
-+		break;
-+	case 6:
-+		*src = BOOTSOURCE_SPI; /* Really: qspi */
-+		break;
-+	case 5:
-+		*src = BOOTSOURCE_NOR;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	/* BOOT_CFG1[7:0] */
-+	if (sbmr1 & (1 << 7))
-+		*src = BOOTSOURCE_NAND;
-+
-+	return;
-+}
-+
-+void imx7_boot_save_loc(void)
-+{
-+	enum bootsource src = BOOTSOURCE_UNKNOWN;
-+	int instance = BOOTSOURCE_INSTANCE_UNKNOWN;
-+
-+	imx7_get_boot_source(&src, &instance);
-+
-+	bootsource_set(src);
-+	bootsource_set_instance(instance);
-+}
-diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
-index 6971d89d9..2b388cad8 100644
---- a/arch/arm/mach-imx/cpu_init.c
-+++ b/arch/arm/mach-imx/cpu_init.c
-@@ -34,6 +34,11 @@ void imx6_cpu_lowlevel_init(void)
- 	enable_arm_errata_845369_war();
- }
- 
-+void imx7_cpu_lowlevel_init(void)
-+{
-+	arm_cpu_lowlevel_init();
-+}
-+
- void vf610_cpu_lowlevel_init(void)
- {
- 	arm_cpu_lowlevel_init();
-diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
-index 952db007d..907340fc5 100644
---- a/arch/arm/mach-imx/imx.c
-+++ b/arch/arm/mach-imx/imx.c
-@@ -65,6 +65,10 @@ static int imx_soc_from_dt(void)
- 		return IMX_CPU_IMX6;
- 	if (of_machine_is_compatible("fsl,imx6ul"))
- 		return IMX_CPU_IMX6;
-+	if (of_machine_is_compatible("fsl,imx7s"))
-+		return IMX_CPU_IMX7;
-+	if (of_machine_is_compatible("fsl,imx7d"))
-+		return IMX_CPU_IMX7;
- 	if (of_machine_is_compatible("fsl,vf610"))
- 		return IMX_CPU_VF610;
- 
-@@ -103,6 +107,8 @@ static int imx_init(void)
- 		ret = imx53_init();
- 	else if (cpu_is_mx6())
- 		ret = imx6_init();
-+	else if (cpu_is_mx7())
-+		ret = imx7_init();
- 	else if (cpu_is_vf610())
- 		ret = 0;
- 	else
-diff --git a/arch/arm/mach-imx/imx7.c b/arch/arm/mach-imx/imx7.c
+diff --git a/Documentation/boards/imx/Element14-WaRP7.rst b/Documentation/boards/imx/Element14-WaRP7.rst
 new file mode 100644
-index 000000000..fde66d838
+index 000000000..d4e5e7991
 --- /dev/null
-+++ b/arch/arm/mach-imx/imx7.c
-@@ -0,0 +1,75 @@
++++ b/Documentation/boards/imx/Element14-WaRP7.rst
+@@ -0,0 +1,54 @@
++element14 WaRP7
++===============
++
++This CPU card is based on an NXP i.MX7S SoC.
++
++Supported hardware
++==================
++
++- NXP PMIC PFUZE3000
++- Kingston 08EMCP04-EL3AV100 eMCP (eMMC and LPDDR3 memory in one package)
++  - 8 GiB eMMC Triple-Level cell NAND flash, eMMC standard 5.0 (HS400)
++  - 512 MiB LPDDR3 SDRAM starting at address 0x80000000
++
++Bootstrapping barebox
++=====================
++
++The device boots in internal boot mode from eMMC and is shipped with a
++vendor modified u-boot imximage.
++
++Barebox can be used as a drop-in replacement for the shipped bootloader.
++
++The WaRP7 IO Board has a double DIP switch where switch number two defines the
++boot source of the i.MX7 SoC:
++
++  +-----+
++  |     |
++  | | O | <--- on = high level
++  | | | |
++  | O | | <--- off = low level
++  |     |
++  | 1 2 |
++  +-----+
++
++Bootsource is the internal eMMC:
++
++  +-----+
++  |     |
++  | O | |
++  | | | |
++  | | O | <---- eMMC
++  |     |
++  | 1 2 |
++  +-----+
++
++Bootsource is the USB:
++
++  +-----+
++  |     |
++  | O O | <---- USB
++  | | | |
++  | | | |
++  |     |
++  | 1 2 |
++  +-----+
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index fe5c20932..2f1a79f01 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -140,5 +140,6 @@ obj-$(CONFIG_MACH_ZYLONITE)			+= zylonite/
+ obj-$(CONFIG_MACH_VARISCITE_MX6)		+= variscite-mx6/
+ obj-$(CONFIG_MACH_VSCOM_BALTOS)			+= vscom-baltos/
+ obj-$(CONFIG_MACH_QEMU_VIRT64)			+= qemu-virt64/
++obj-$(CONFIG_MACH_WARP7)			+= element14-warp7/
+ obj-$(CONFIG_MACH_VF610_TWR)			+= freescale-vf610-twr/
+ obj-$(CONFIG_MACH_ZII_RDU2)			+= zii-imx6q-rdu2/
+diff --git a/arch/arm/boards/element14-warp7/Makefile b/arch/arm/boards/element14-warp7/Makefile
+new file mode 100644
+index 000000000..01c7a259e
+--- /dev/null
++++ b/arch/arm/boards/element14-warp7/Makefile
+@@ -0,0 +1,2 @@
++obj-y += board.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/element14-warp7/board.c b/arch/arm/boards/element14-warp7/board.c
+new file mode 100644
+index 000000000..84fc885da
+--- /dev/null
++++ b/arch/arm/boards/element14-warp7/board.c
+@@ -0,0 +1,35 @@
 +/*
++ * Copyright (C) 2017 Sascha Hauer, Pengutronix
++ *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
 + * published by the Free Software Foundation; either version 2 of
@@ -230,308 +145,290 @@ index 000000000..fde66d838
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
-+ *
 + */
 +
-+#include <init.h>
 +#include <common.h>
-+#include <io.h>
-+#include <linux/sizes.h>
-+#include <mach/imx7.h>
++#include <init.h>
++#include <environment.h>
++#include <mach/bbu.h>
++#include <asm/armlinux.h>
++#include <generated/mach-types.h>
++#include <partition.h>
 +#include <mach/generic.h>
-+#include <mach/revision.h>
-+#include <mach/imx7-regs.h>
++#include <linux/sizes.h>
 +
-+void imx7_init_lowlevel(void)
++static int warp7_devices_init(void)
 +{
-+	void __iomem *aips1 = IOMEM(MX7_AIPS1_CONFIG_BASE_ADDR);
-+	void __iomem *aips2 = IOMEM(MX7_AIPS2_CONFIG_BASE_ADDR);
++	if (!of_machine_is_compatible("warp,imx7s-warp"))
++		return 0;
 +
-+	/*
-+	 * Set all MPROTx to be non-bufferable, trusted for R/W,
-+	 * not forced to user-mode.
-+	 */
-+	writel(0x77777777, aips1);
-+	writel(0x77777777, aips1 + 0x4);
-+	writel(0, aips1 + 0x40);
-+	writel(0, aips1 + 0x44);
-+	writel(0, aips1 + 0x48);
-+	writel(0, aips1 + 0x4c);
-+	writel(0, aips1 + 0x50);
-+
-+	writel(0x77777777, aips2);
-+	writel(0x77777777, aips2 + 0x4);
-+	writel(0, aips2 + 0x40);
-+	writel(0, aips2 + 0x44);
-+	writel(0, aips2 + 0x48);
-+	writel(0, aips2 + 0x4c);
-+	writel(0, aips2 + 0x50);
-+}
-+
-+int imx7_init(void)
-+{
-+	const char *cputypestr;
-+	u32 imx7_silicon_revision;
-+
-+	imx7_init_lowlevel();
-+
-+	imx7_boot_save_loc();
-+
-+	imx7_silicon_revision = imx7_cpu_revision();
-+
-+	switch (imx7_cpu_type()) {
-+	case IMX7_CPUTYPE_IMX7D:
-+		cputypestr = "i.MX7d";
-+		break;
-+	case IMX7_CPUTYPE_IMX7S:
-+		cputypestr = "i.MX7s";
-+		break;
-+	default:
-+		cputypestr = "unknown i.MX7";
-+		break;
-+	}
-+
-+	imx_set_silicon_revision(cputypestr, imx7_silicon_revision);
++	imx6_bbu_internal_mmc_register_handler("mmc", "/dev/mmc2.boot0.barebox",
++					       BBU_HANDLER_FLAG_DEFAULT);
 +
 +	return 0;
 +}
-diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
-index a132f3c16..39d710f7d 100644
---- a/arch/arm/mach-imx/include/mach/debug_ll.h
-+++ b/arch/arm/mach-imx/include/mach/debug_ll.h
-@@ -14,6 +14,7 @@
- #include <mach/imx51-regs.h>
- #include <mach/imx53-regs.h>
- #include <mach/imx6-regs.h>
-+#include <mach/imx7-regs.h>
- #include <mach/vf610-regs.h>
- 
- #include <serial/imx-uart.h>
-@@ -44,6 +45,8 @@
- #define IMX_DEBUG_SOC MX53
- #elif defined CONFIG_DEBUG_IMX6Q_UART
- #define IMX_DEBUG_SOC MX6
-+#elif defined CONFIG_DEBUG_IMX7D_UART
-+#define IMX_DEBUG_SOC MX7
- #elif defined CONFIG_DEBUG_VF610_UART
- #define IMX_DEBUG_SOC VF610
- #else
-diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
-index 34194509e..73be9ceb5 100644
---- a/arch/arm/mach-imx/include/mach/generic.h
-+++ b/arch/arm/mach-imx/include/mach/generic.h
-@@ -14,12 +14,14 @@ void imx27_boot_save_loc(void);
- void imx51_boot_save_loc(void);
- void imx53_boot_save_loc(void);
- void imx6_boot_save_loc(void);
-+void imx7_boot_save_loc(void);
- 
- void imx25_get_boot_source(enum bootsource *src, int *instance);
- void imx35_get_boot_source(enum bootsource *src, int *instance);
- void imx51_get_boot_source(enum bootsource *src, int *instance);
- void imx53_get_boot_source(enum bootsource *src, int *instance);
- void imx6_get_boot_source(enum bootsource *src, int *instance);
-+void imx7_get_boot_source(enum bootsource *src, int *instance);
- 
- int imx1_init(void);
- int imx21_init(void);
-@@ -31,6 +33,7 @@ int imx50_init(void);
- int imx51_init(void);
- int imx53_init(void);
- int imx6_init(void);
-+int imx7_init(void);
- 
- int imx1_devices_init(void);
- int imx21_devices_init(void);
-@@ -45,6 +48,7 @@ int imx6_devices_init(void);
- 
- void imx5_cpu_lowlevel_init(void);
- void imx6_cpu_lowlevel_init(void);
-+void imx7_cpu_lowlevel_init(void);
- void vf610_cpu_lowlevel_init(void);
- 
- /* There's a off-by-one betweem the gpio bank number and the gpiochip */
-@@ -174,6 +178,18 @@ extern unsigned int __imx_cpu_type;
- # define cpu_is_mx6()		(0)
- #endif
- 
-+#ifdef CONFIG_ARCH_IMX7
-+# ifdef imx_cpu_type
-+#  undef imx_cpu_type
-+#  define imx_cpu_type __imx_cpu_type
-+# else
-+#  define imx_cpu_type IMX_CPU_IMX7
-+# endif
-+# define cpu_is_mx7()		(imx_cpu_type == IMX_CPU_IMX7)
-+#else
-+# define cpu_is_mx7()		(0)
-+#endif
-+
- #ifdef CONFIG_ARCH_VF610
- # ifdef imx_cpu_type
- #  undef imx_cpu_type
-diff --git a/arch/arm/mach-imx/include/mach/imx7-regs.h b/arch/arm/mach-imx/include/mach/imx7-regs.h
++device_initcall(warp7_devices_init);
+diff --git a/arch/arm/boards/element14-warp7/flash-header-mx7-warp.imxcfg b/arch/arm/boards/element14-warp7/flash-header-mx7-warp.imxcfg
 new file mode 100644
-index 000000000..a96341d6d
+index 000000000..a3389218d
 --- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/imx7-regs.h
-@@ -0,0 +1,24 @@
-+#ifndef __MACH_IMX7_REGS_H
-+#define __MACH_IMX7_REGS_H
++++ b/arch/arm/boards/element14-warp7/flash-header-mx7-warp.imxcfg
+@@ -0,0 +1,81 @@
++/*
++ * Copyright (C) 2016 NXP Semiconductors
++ *
++ * SPDX-License-Identifier:	GPL-2.0
++ *
++ * Refer docs/README.imxmage for more details about how-to configure
++ * and create imximage boot image
++ *
++ * The syntax is taken as close as possible with the kwbimage
++ */
 +
-+#define MX7_AIPS1_BASE_ADDR		0x30000000
-+#define MX7_AIPS2_BASE_ADDR		0x30400000
-+#define MX7_AIPS3_BASE_ADDR		0x30800000
++soc imx7
++loadaddr 0x80000000
++dcdofs 0x400
 +
-+#define MX7_AIPS1_CONFIG_BASE_ADDR	0x301f0000
-+#define MX7_IOMUX_BASE_ADDR		0x30330000
-+#define MX7_OCOTP_BASE_ADDR		0x30350000
-+#define MX7_ANATOP_BASE_ADDR		0x30360000
-+#define MX7_CCM_BASE_ADDR               0x30380000
-+#define MX7_SRC_BASE_ADDR		0x30390000
-+#define MX7_SCTR_BASE_ADDR		0x306c0000
-+#define MX7_UART1_BASE_ADDR		0x30860000
-+#define MX7_UART2_BASE_ADDR		0x30870000
-+#define MX7_UART3_BASE_ADDR		0x30880000
-+#define MX7_UART4_BASE_ADDR		0x30a60000
-+#define MX7_UART5_BASE_ADDR		0x30a70000
-+#define MX7_UART6_BASE_ADDR		0x30a80000
-+#define MX7_UART7_BASE_ADDR		0x30a90000
-+#define MX7_AIPS2_CONFIG_BASE_ADDR	0x305f0000
++wm 32 0x30340004 0x4F400005
 +
-+#endif /* __MACH_IMX7_REGS_H */
-diff --git a/arch/arm/mach-imx/include/mach/imx7.h b/arch/arm/mach-imx/include/mach/imx7.h
++wm 32 0x30391000 0x00000002
++wm 32 0x307a0000 0x03040008
++wm 32 0x307a0064 0x00200038
++wm 32 0x307a0490 0x00000001
++wm 32 0x307a00d0 0x00350001
++wm 32 0x307a00dc 0x00c3000a
++wm 32 0x307a00e0 0x00010000
++wm 32 0x307a00e4 0x00110006
++wm 32 0x307a00f4 0x0000033f
++wm 32 0x307a0100 0x0a0e110b
++wm 32 0x307a0104 0x00020211
++wm 32 0x307a0108 0x03060708
++wm 32 0x307a010c 0x00a0500c
++wm 32 0x307a0110 0x05020307
++wm 32 0x307a0114 0x02020404
++wm 32 0x307a0118 0x02020003
++wm 32 0x307a011c 0x00000202
++wm 32 0x307a0120 0x00000202
++
++wm 32 0x307a0180 0x00600018
++wm 32 0x307a0184 0x00e00100
++wm 32 0x307a0190 0x02098205
++wm 32 0x307a0194 0x00060303
++wm 32 0x307a01a0 0x80400003
++wm 32 0x307a01a4 0x00100020
++wm 32 0x307a01a8 0x80100004
++
++wm 32 0x307a0200 0x00000015
++wm 32 0x307a0204 0x00161616
++wm 32 0x307a0210 0x00000f0f
++wm 32 0x307a0214 0x04040404
++wm 32 0x307a0218 0x0f0f0404
++
++wm 32 0x307a0240 0x06000600
++wm 32 0x307a0244 0x00000000
++wm 32 0x30391000 0x00000000
++wm 32 0x30790000 0x17421e40
++wm 32 0x30790004 0x10210100
++wm 32 0x30790008 0x00010000
++wm 32 0x30790010 0x0007080c
++wm 32 0x307900b0 0x1010007e
++
++wm 32 0x3079001C 0x01010000
++wm 32 0x3079009c 0x00000d6e
++
++wm 32 0x30790030 0x06060606
++wm 32 0x30790020 0x0a0a0a0a
++wm 32 0x30790050 0x01000008
++wm 32 0x30790050 0x00000008
++wm 32 0x30790018 0x0000000f
++wm 32 0x307900c0 0x0e487304
++wm 32 0x307900c0 0x0e4c7304
++wm 32 0x307900c0 0x0e4c7306
++wm 32 0x307900c0 0x0e4c7304
++
++check 32 while_any_bit_clear 0x307900c4 0x1
++
++wm 32 0x307900c0 0x0e487304
++
++wm 32 0x30384130 0x00000000
++wm 32 0x30340020 0x00000178
++wm 32 0x30384130 0x00000002
++
++check 32 while_any_bit_clear 0x307a0004 0x1
+diff --git a/arch/arm/boards/element14-warp7/lowlevel.c b/arch/arm/boards/element14-warp7/lowlevel.c
 new file mode 100644
-index 000000000..851893546
+index 000000000..98d8b6436
 --- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/imx7.h
-@@ -0,0 +1,59 @@
-+#ifndef __MACH_IMX7_H
-+#define __MACH_IMX7_H
-+
++++ b/arch/arm/boards/element14-warp7/lowlevel.c
+@@ -0,0 +1,48 @@
++#define DEBUG
 +#include <io.h>
++#include <common.h>
++#include <linux/sizes.h>
 +#include <mach/generic.h>
-+#include <mach/imx7-regs.h>
-+#include <mach/revision.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/debug_ll.h>
++#include <asm/cache.h>
 +
-+void imx7_init_lowlevel(void);
++extern char __dtb_imx7s_warp_start[];
 +
-+#define ANADIG_DIGPROG_IMX7	0x800
-+
-+#define IMX7_CPUTYPE_IMX7S	0x71
-+#define IMX7_CPUTYPE_IMX7D	0x72
-+
-+static inline int __imx7_cpu_type(void)
++static noinline void warp7_start(void)
 +{
-+	void __iomem *ocotp = IOMEM(MX7_OCOTP_BASE_ADDR);
++	void __iomem *iomuxbase = IOMEM(MX7_IOMUX_BASE_ADDR);
++	void __iomem *uart = IOMEM(MX7_UART1_BASE_ADDR);
++	void __iomem *ccmbase = IOMEM(MX7_CCM_BASE_ADDR);
++	void *fdt;
 +
-+	if (readl(ocotp + 0x450) & 1)
-+		return IMX7_CPUTYPE_IMX7S;
-+	else
-+		return IMX7_CPUTYPE_IMX7D;
++	writel(0x3, ccmbase + 0x4000 + 16 * 148 + 0x8);
++	writel(0x10000000, ccmbase + 0x8000 + 128 * 95);
++	writel(0x3, ccmbase + 0x4000 + 16 * 148 + 0x4);
++	writel(0x0, iomuxbase + 0x128);
++	writel(0x0, iomuxbase + 0x12c);
++
++	imx7_uart_setup(uart);
++
++	pbl_set_putc(imx_uart_putc, uart);
++
++	pr_debug("Element14 i.MX7 Warp\n");
++
++	fdt = __dtb_imx7s_warp_start - get_runtime_offset();
++
++	barebox_arm_entry(0x80000000, SZ_512M, fdt);
 +}
 +
-+static inline int imx7_cpu_type(void)
++ENTRY_FUNCTION(start_imx7s_element14_warp7, r0, r1, r2)
 +{
-+	if (!cpu_is_mx7())
-+		return 0;
++	imx7_cpu_lowlevel_init();
 +
-+	return __imx7_cpu_type();
++	arm_early_mmu_cache_invalidate();
++
++	relocate_to_current_adr();
++	setup_c();
++	barrier();
++
++	warp7_start();
 +}
-+
-+static inline int imx7_cpu_revision(void)
-+{
-+	if (!cpu_is_mx7())
-+		return IMX_CHIP_REV_UNKNOWN;
-+
-+	/* register value has the format of the IMX_CHIP_REV_* macros */
-+	return readl(MX7_ANATOP_BASE_ADDR + ANADIG_DIGPROG_IMX7) & 0xff;
-+}
-+
-+#define DEFINE_MX7_CPU_TYPE(str, type)					\
-+	static inline int cpu_mx7_is_##str(void)			\
-+	{								\
-+		return __imx7_cpu_type() == type;			\
-+	}								\
-+									\
-+	static inline int cpu_is_##str(void)				\
-+	{								\
-+		if (!cpu_is_mx7())					\
-+			return 0;					\
-+		return cpu_mx7_is_##str();				\
-+	}
-+
-+DEFINE_MX7_CPU_TYPE(mx7s, IMX7_CPUTYPE_IMX7S);
-+DEFINE_MX7_CPU_TYPE(mx7d, IMX7_CPUTYPE_IMX7D);
-+
-+#endif /* __MACH_IMX7_H */
 \ No newline at end of file
-diff --git a/arch/arm/mach-imx/include/mach/imx_cpu_types.h b/arch/arm/mach-imx/include/mach/imx_cpu_types.h
-index 50be0b6b5..f95ef6f13 100644
---- a/arch/arm/mach-imx/include/mach/imx_cpu_types.h
-+++ b/arch/arm/mach-imx/include/mach/imx_cpu_types.h
-@@ -11,6 +11,7 @@
- #define IMX_CPU_IMX51	51
- #define IMX_CPU_IMX53	53
- #define IMX_CPU_IMX6	6
-+#define IMX_CPU_IMX7	7
- #define IMX_CPU_VF610	610
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index f5fb0cdbb..d77a7b612 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -79,6 +79,7 @@ pbl-dtb-$(CONFIG_MACH_UDOO) += imx6q-udoo.dtb.o
+ pbl-dtb-$(CONFIG_MACH_USI_TOPKICK) += kirkwood-topkick-bb.dtb.o
+ pbl-dtb-$(CONFIG_MACH_VARISCITE_MX6) += imx6q-var-custom.dtb.o
+ pbl-dtb-$(CONFIG_MACH_VSCOM_BALTOS) += am335x-baltos-minimal.dtb.o
++pbl-dtb-$(CONFIG_MACH_WARP7) += imx7s-warp.dtb.o
+ pbl-dtb-$(CONFIG_MACH_VF610_TWR) += vf610-twr.dtb.o
+ pbl-dtb-$(CONFIG_MACH_ZII_RDU2) += imx6q-zii-rdu2.dtb.o imx6qp-zii-rdu2.dtb.o
  
- #endif /* __MACH_IMX_CPU_TYPES_H */
-diff --git a/common/Kconfig b/common/Kconfig
-index 462c104fd..350e3d49d 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1072,6 +1072,13 @@ config DEBUG_IMX6Q_UART
- 	  Say Y here if you want kernel low-level debugging support
- 	  on i.MX6Q.
- 
-+config DEBUG_IMX7D_UART
-+	bool "i.MX7D Debug UART"
-+	depends on ARCH_IMX7
-+	help
-+	  Say Y here if you want barebox low-level debugging support
-+	  on i.MX7D.
+diff --git a/arch/arm/dts/imx7s-warp.dts b/arch/arm/dts/imx7s-warp.dts
+new file mode 100644
+index 000000000..a59823da0
+--- /dev/null
++++ b/arch/arm/dts/imx7s-warp.dts
+@@ -0,0 +1,62 @@
++/*
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
 +
- config DEBUG_VF610_UART
- 	bool "VF610 Debug UART"
- 	depends on ARCH_VF610
-@@ -1120,6 +1127,7 @@ config DEBUG_IMX_UART_PORT
- 						DEBUG_IMX53_UART || \
- 						DEBUG_IMX6Q_UART || \
- 						DEBUG_IMX6SL_UART || \
-+						DEBUG_IMX7D_UART || \
- 						DEBUG_VF610_UART
- 	default 1
- 	depends on ARCH_IMX
-diff --git a/include/serial/imx-uart.h b/include/serial/imx-uart.h
-index b40044ea4..9cab32f35 100644
---- a/include/serial/imx-uart.h
-+++ b/include/serial/imx-uart.h
-@@ -175,6 +175,11 @@ static inline void imx6_uart_setup(void __iomem *uartbase)
- 	imx_uart_setup(uartbase, 80000000);
- }
- 
-+static inline void imx7_uart_setup(void __iomem *uartbase)
-+{
-+	imx_uart_setup(uartbase, 24000000);
-+}
++#include <arm/imx7s-warp.dts>
++#include "imx7s.dtsi"
 +
- static inline void imx_uart_putc(void *base, int c)
- {
- 	if (!(readl(base + UCR1) & UCR1_UARTEN))
-diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-index bf3a42fb2..809d8a7f7 100644
---- a/scripts/imx/imx.c
-+++ b/scripts/imx/imx.c
-@@ -231,6 +231,7 @@ static struct soc_type socs[] = {
- 	{ .name = "imx51", .header_version = 1, .cpu_type = IMX_CPU_IMX51 },
- 	{ .name = "imx53", .header_version = 2, .cpu_type = IMX_CPU_IMX53 },
- 	{ .name = "imx6", .header_version = 2, .cpu_type = IMX_CPU_IMX6 },
-+	{ .name = "imx7", .header_version = 2, .cpu_type = IMX_CPU_IMX7 },
- 	{ .name = "vf610", .header_version = 2, .cpu_type = IMX_CPU_VF610 },
- };
++/ {
++	chosen {
++		stdout-path = &uart1;
++
++		environment@0 {
++			compatible = "barebox,environment";
++			device-path = &bareboxenv;
++		};
++	};
++
++	memory {
++		device_type = "memory";
++		reg = <0x80000000 0x20000000>;
++	};
++};
++
++&usdhc3 {
++	boot0-partitions {
++		compatible = "fixed-partitions";
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		barebox@0 {
++			label = "barebox";
++			reg = <0x0 0x300000>;
++		};
++
++		bareboxenv: bareboxenv@300000 {
++			label = "bareboxenv";
++			reg = <0x300000 0x0>;
++		};
++	};
++};
++
++/*
++/* The watchdog pinctrl is attached to the wrong iomux controller in
++ * the upstream dts file. This can be removed once we pull in the
++ * corresponding fix from the upstream dts files.
++ */
++&wdog1 {
++	pinctrl-0 = <&pinctrl_wdog_lpsr>;
++};
++
++&iomuxc_lpsr {
++	pinctrl_wdog_lpsr: wdoggrp {
++		fsl,pins = <
++			MX7D_PAD_GPIO1_IO00__WDOD1_WDOG_B       0x74
++		>;
++	};
++};
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index ba5a9c445..0e3c7de3d 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -39,6 +39,7 @@ config ARCH_TEXT_BASE
+ 	default 0x4fc00000 if MACH_UDOO
+ 	default 0x4fc00000 if MACH_VARISCITE_MX6
+ 	default 0x4fc00000 if MACH_PHYTEC_SOM_IMX6
++	default 0x9fc00000 if MACH_WARP7
  
+ config ARCH_IMX_IMXIMAGE
+ 	bool
+@@ -351,6 +352,10 @@ config MACH_CM_FX6
+ 	bool "CM FX6"
+ 	select ARCH_IMX6
+ 
++config MACH_WARP7
++	bool "NXP i.MX7: element 14 WaRP7 Board"
++	select ARCH_IMX7
++
+ config MACH_VF610_TWR
+ 	bool "Freescale VF610 Tower Board"
+ 	select ARCH_VF610
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index eba6048c6..84f6652ad 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -409,6 +409,11 @@ CFG_start_imx6dl_eltec_hipercam.pblx.imximg = $(board)/eltec-hipercam/flash-head
+ FILE_barebox-eltec-hipercam.img = start_imx6dl_eltec_hipercam.pblx.imximg
+ image-$(CONFIG_MACH_ELTEC_HIPERCAM) += barebox-eltec-hipercam.img
+ 
++pblx-$(CONFIG_MACH_WARP7) += start_imx7s_element14_warp7
++CFG_start_imx7s_element14_warp7.pblx.imximg = $(board)/element14-warp7/flash-header-mx7-warp.imxcfg
++FILE_barebox-element14-imx7s-warp7.img = start_imx7s_element14_warp7.pblx.imximg
++image-$(CONFIG_MACH_WARP7) += barebox-element14-imx7s-warp7.img
++
+ pblx-$(CONFIG_MACH_VF610_TWR) += start_vf610_twr
+ CFG_start_vf610_twr.pblx.imximg = $(board)/freescale-vf610-twr/flash-header-vf610-twr.imxcfg
+ FILE_barebox-vf610-twr.img = start_vf610_twr.pblx.imximg
 -- 
 2.11.0
 
