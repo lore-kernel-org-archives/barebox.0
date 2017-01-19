@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cUEb1-0003Al-Fw
- for barebox@lists.infradead.org; Thu, 19 Jan 2017 15:25:52 +0000
+ id 1cUEcs-0003Bq-Gp
+ for barebox@lists.infradead.org; Thu, 19 Jan 2017 15:27:47 +0000
+Date: Thu, 19 Jan 2017 16:27:24 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 19 Jan 2017 16:25:29 +0100
-Message-Id: <20170119152529.9727-1-s.hauer@pengutronix.de>
+Message-ID: <20170119152724.s3tifgq2ecolqqwd@pengutronix.de>
+References: <1484669371-6373-1-git-send-email-andrey.gusakov@cogentembedded.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1484669371-6373-1-git-send-email-andrey.gusakov@cogentembedded.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,34 +18,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: vf610-twr: remove unused variable
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] video: tc358767: add copyright lines
+To: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/freescale-vf610-twr/lowlevel.c | 1 -
- 1 file changed, 1 deletion(-)
+On Tue, Jan 17, 2017 at 07:09:31PM +0300, Andrey Gusakov wrote:
+> Add copyright lines for Zodiac who paid for driver development.
+> 
+> Signed-off-by: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
+> ---
+>  drivers/video/tc358767.c |    2 ++
+>  1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boards/freescale-vf610-twr/lowlevel.c b/arch/arm/boards/freescale-vf610-twr/lowlevel.c
-index 109d44e87..53c7b3af6 100644
---- a/arch/arm/boards/freescale-vf610-twr/lowlevel.c
-+++ b/arch/arm/boards/freescale-vf610-twr/lowlevel.c
-@@ -27,7 +27,6 @@ extern char __dtb_vf610_twr_start[];
- 
- ENTRY_FUNCTION(start_vf610_twr, r0, r1, r2)
- {
--	int i;
- 	void *fdt;
- 
- 	vf610_cpu_lowlevel_init();
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/drivers/video/tc358767.c b/drivers/video/tc358767.c
+> index 72f55f4..ab2e86e 100644
+> --- a/drivers/video/tc358767.c
+> +++ b/drivers/video/tc358767.c
+> @@ -6,6 +6,8 @@
+>   *
+>   * Copyright (C) 2016 Pengutronix, Philipp Zabel <p.zabel@pengutronix.de>
+>   *
+> + * Copyright (C) 2016 Zodiac Inflight Innovations
+> + *
+>   * This program is free software; you can redistribute it and/or modify
+>   * it under the terms of the GNU General Public License as published by
+>   * the Free Software Foundation; either version 2 of the License, or
+> -- 
+> 1.7.10.4
+> 
+> 
+
 -- 
-2.11.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
