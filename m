@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cUEcs-0003Bq-Gp
- for barebox@lists.infradead.org; Thu, 19 Jan 2017 15:27:47 +0000
-Date: Thu, 19 Jan 2017 16:27:24 +0100
+ id 1cUEdW-0003CQ-S4
+ for barebox@lists.infradead.org; Thu, 19 Jan 2017 15:28:27 +0000
+Date: Thu, 19 Jan 2017 16:28:05 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170119152724.s3tifgq2ecolqqwd@pengutronix.de>
-References: <1484669371-6373-1-git-send-email-andrey.gusakov@cogentembedded.com>
+Message-ID: <20170119152805.qifhimrsnbqgzkfa@pengutronix.de>
+References: <20170118095141.5571-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1484669371-6373-1-git-send-email-andrey.gusakov@cogentembedded.com>
+In-Reply-To: <20170118095141.5571-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +22,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] video: tc358767: add copyright lines
-To: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
+Subject: Re: [PATCH] arm: omap: OMAP_SERIALBOOT needs console support
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jan 17, 2017 at 07:09:31PM +0300, Andrey Gusakov wrote:
-> Add copyright lines for Zodiac who paid for driver development.
+On Wed, Jan 18, 2017 at 10:51:41AM +0100, Lucas Stach wrote:
+> It is quite useless without a console and breaks the build.
 > 
-> Signed-off-by: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 > ---
->  drivers/video/tc358767.c |    2 ++
->  1 file changed, 2 insertions(+)
+>  arch/arm/mach-omap/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/video/tc358767.c b/drivers/video/tc358767.c
-> index 72f55f4..ab2e86e 100644
-> --- a/drivers/video/tc358767.c
-> +++ b/drivers/video/tc358767.c
-> @@ -6,6 +6,8 @@
->   *
->   * Copyright (C) 2016 Pengutronix, Philipp Zabel <p.zabel@pengutronix.de>
->   *
-> + * Copyright (C) 2016 Zodiac Inflight Innovations
-> + *
->   * This program is free software; you can redistribute it and/or modify
->   * it under the terms of the GNU General Public License as published by
->   * the Free Software Foundation; either version 2 of the License, or
+> diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+> index ff37731f70ff..95013acebeec 100644
+> --- a/arch/arm/mach-omap/Kconfig
+> +++ b/arch/arm/mach-omap/Kconfig
+> @@ -156,6 +156,7 @@ config OMAP_SERIALBOOT
+>  	select XYMODEM
+>  	select FS_RAMFS
+>  	depends on ARCH_AM33XX && SHELL_NONE
+> +	depends on !CONSOLE_NONE
+>  	help
+>  	  Say Y here if you want to load the 2nd stage barebox.bin with
+>  	  xmodem after booting from serial line.
 > -- 
-> 1.7.10.4
+> 2.11.0
 > 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
