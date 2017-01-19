@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cUEZV-00038c-P5
+ id 1cUEZV-00038a-P6
  for barebox@lists.infradead.org; Thu, 19 Jan 2017 15:24:18 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
+ (envelope-from <sha@pengutronix.de>) id 1cUEZA-0000pa-6M
+ for barebox@lists.infradead.org; Thu, 19 Jan 2017 16:23:56 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.88)
+ (envelope-from <sha@pengutronix.de>) id 1cUEZ9-00024p-R9
+ for barebox@lists.infradead.org; Thu, 19 Jan 2017 16:23:55 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 19 Jan 2017 16:23:52 +0100
-Message-Id: <20170119152355.2280-3-s.hauer@pengutronix.de>
-In-Reply-To: <20170119152355.2280-1-s.hauer@pengutronix.de>
-References: <20170119152355.2280-1-s.hauer@pengutronix.de>
+Date: Thu, 19 Jan 2017 16:23:50 +0100
+Message-Id: <20170119152355.2280-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,133 +27,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] pinmmux: i.MX: add pin mux support for i.MX7
+Subject: [patch v2] i.MX7 support
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Juergen Borleis <jbe@pengutronix.de>
 
-From: Juergen Borleis <jbe@pengutronix.de>
+This is the second round of i.MX7 patches. I send here only
+the patches that have changed.
 
-Signed-off-by Juergen Borleis <jbe@pengutronix.de>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/pinctrl/imx-iomux-v3.c | 40 ++++++++++++++++++++++++++++++++--------
- 1 file changed, 32 insertions(+), 8 deletions(-)
+Changes since last round:
 
-diff --git a/drivers/pinctrl/imx-iomux-v3.c b/drivers/pinctrl/imx-iomux-v3.c
-index bc9314083..b5fa23560 100644
---- a/drivers/pinctrl/imx-iomux-v3.c
-+++ b/drivers/pinctrl/imx-iomux-v3.c
-@@ -24,14 +24,19 @@
- #include <pinctrl.h>
- #include <malloc.h>
- #include <mach/iomux-v3.h>
-+#include <mach/generic.h>
- 
- struct imx_iomux_v3 {
- 	void __iomem *base;
- 	struct pinctrl_device pinctrl;
-+	unsigned int flags;
- };
- 
--static void __iomem *iomuxv3_base;
-+struct imx_iomux_v3_data {
-+	unsigned int flags;
-+};
- 
-+static void __iomem *iomuxv3_base;
- 
- /*
-  * configures a single pad in the iomuxer
-@@ -111,7 +116,7 @@ static int imx_iomux_v3_set_state(struct pinctrl_device *pdev, struct device_nod
- 		if (conf_val & IMX_DT_NO_PAD_CTL)
- 			conf_reg = 0;
- 
--		iomux_v3_setup_pad(iomux->base, 0,
-+		iomux_v3_setup_pad(iomux->base, iomux->flags,
- 				   mux_reg, conf_reg, input_reg,
- 				   mux_val, conf_val, input_val);
- 	}
-@@ -126,14 +131,18 @@ static struct pinctrl_ops imx_iomux_v3_ops = {
- static int imx_pinctrl_dt(struct device_d *dev, void __iomem *base)
- {
- 	struct imx_iomux_v3 *iomux;
-+	struct imx_iomux_v3_data *drvdata = NULL;
- 	int ret;
- 
-+	dev_get_drvdata(dev, (const void **)&drvdata);
- 	iomux = xzalloc(sizeof(*iomux));
- 
- 	iomux->base = base;
- 
- 	iomux->pinctrl.dev = dev;
- 	iomux->pinctrl.ops = &imx_iomux_v3_ops;
-+	if (drvdata)
-+		iomux->flags = drvdata->flags;
- 
- 	ret = pinctrl_register(&iomux->pinctrl);
- 	if (ret)
-@@ -144,23 +153,33 @@ static int imx_pinctrl_dt(struct device_d *dev, void __iomem *base)
- 
- static int imx_iomux_v3_probe(struct device_d *dev)
- {
-+	void __iomem *base;
- 	struct resource *iores;
- 	int ret = 0;
- 
--	if (iomuxv3_base)
--		return -EBUSY;
--
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores))
- 		return PTR_ERR(iores);
--	iomuxv3_base = IOMEM(iores->start);
-+	base = IOMEM(iores->start);
-+
-+	if (!iomuxv3_base)
-+		/*
-+		 * Uh, this works only for the older controllers, not for
-+		 * i.MX7 which has two iomux controllers. i.MX7 based boards
-+		 * should not use mxc_iomux_v3_setup_pad anyway.
-+		 */
-+		iomuxv3_base = base;
- 
- 	if (IS_ENABLED(CONFIG_PINCTRL) && dev->device_node)
--		ret = imx_pinctrl_dt(dev, iomuxv3_base);
-+		ret = imx_pinctrl_dt(dev, base);
- 
- 	return ret;
- }
- 
-+static struct imx_iomux_v3_data imx_iomux_imx7_lpsr_data = {
-+	.flags = ZERO_OFFSET_VALID,
-+};
-+
- static __maybe_unused struct of_device_id imx_iomux_v3_dt_ids[] = {
- 	{
- 		.compatible = "fsl,imx25-iomuxc",
-@@ -172,13 +191,18 @@ static __maybe_unused struct of_device_id imx_iomux_v3_dt_ids[] = {
- 		.compatible = "fsl,imx53-iomuxc",
- 	}, {
- 		.compatible = "fsl,imx6q-iomuxc",
--	},  {
-+	}, {
- 		.compatible = "fsl,imx6dl-iomuxc",
- 	}, {
- 		.compatible = "fsl,imx6sx-iomuxc",
- 	}, {
- 		.compatible = "fsl,imx6ul-iomuxc",
- 	}, {
-+		.compatible = "fsl,imx7d-iomuxc",
-+	}, {
-+		.compatible = "fsl,imx7d-iomuxc-lpsr",
-+		.data = &imx_iomux_imx7_lpsr_data,
-+	}, {
- 		/* sentinel */
- 	}
- };
--- 
-2.11.0
+- Add pfuze driver
+- Add support for 2nd iomux controller
+- initialize architected timer so that it works under Linux
 
+Sascha
+
+----------------------------------------------------------------
+Juergen Borleis (3):
+      ARM: i.MX: Add i.MX7 base architecture support
+      pinmmux: i.MX: add pin mux support for i.MX7
+      ARM: i.MX: Add WaRP7 board support
+
+Sascha Hauer (2):
+      ARM: i.MX7: initialize architected timer
+      regulator: Add pfuze driver
+
+ Documentation/boards/imx.rst                       |   1 +
+ Documentation/boards/imx/Element14-WaRP7.rst       |  54 +++++++
+ arch/arm/boards/Makefile                           |   1 +
+ arch/arm/boards/element14-warp7/Makefile           |   2 +
+ arch/arm/boards/element14-warp7/board.c            |  35 +++++
+ .../element14-warp7/flash-header-mx7-warp.imxcfg   |  81 ++++++++++
+ arch/arm/boards/element14-warp7/lowlevel.c         |  48 ++++++
+ arch/arm/dts/Makefile                              |   1 +
+ arch/arm/dts/imx7s-warp.dts                        |  62 ++++++++
+ arch/arm/mach-imx/Kconfig                          |   9 ++
+ arch/arm/mach-imx/Makefile                         |   1 +
+ arch/arm/mach-imx/boot.c                           |  70 +++++++++
+ arch/arm/mach-imx/cpu_init.c                       |   5 +
+ arch/arm/mach-imx/imx.c                            |   6 +
+ arch/arm/mach-imx/imx7.c                           | 110 ++++++++++++++
+ arch/arm/mach-imx/include/mach/debug_ll.h          |   3 +
+ arch/arm/mach-imx/include/mach/generic.h           |  16 ++
+ arch/arm/mach-imx/include/mach/imx7-regs.h         |  24 +++
+ arch/arm/mach-imx/include/mach/imx7.h              |  59 +++++++
+ arch/arm/mach-imx/include/mach/imx_cpu_types.h     |   1 +
+ common/Kconfig                                     |   8 +
+ drivers/pinctrl/imx-iomux-v3.c                     |  40 ++++-
+ drivers/regulator/Kconfig                          |   4 +
+ drivers/regulator/Makefile                         |   1 +
+ drivers/regulator/pfuze.c                          | 169 +++++++++++++++++++++
+ images/Makefile.imx                                |   5 +
+ include/mfd/pfuze.h                                |   6 +
+ include/serial/imx-uart.h                          |   5 +
+ scripts/imx/imx.c                                  |   1 +
+ 29 files changed, 820 insertions(+), 8 deletions(-)
+ create mode 100644 Documentation/boards/imx/Element14-WaRP7.rst
+ create mode 100644 arch/arm/boards/element14-warp7/Makefile
+ create mode 100644 arch/arm/boards/element14-warp7/board.c
+ create mode 100644 arch/arm/boards/element14-warp7/flash-header-mx7-warp.imxcfg
+ create mode 100644 arch/arm/boards/element14-warp7/lowlevel.c
+ create mode 100644 arch/arm/dts/imx7s-warp.dts
+ create mode 100644 arch/arm/mach-imx/imx7.c
+ create mode 100644 arch/arm/mach-imx/include/mach/imx7-regs.h
+ create mode 100644 arch/arm/mach-imx/include/mach/imx7.h
+ create mode 100644 drivers/regulator/pfuze.c
+ create mode 100644 include/mfd/pfuze.h
 
 _______________________________________________
 barebox mailing list
