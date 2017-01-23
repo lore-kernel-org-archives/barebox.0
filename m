@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cVi1K-0002jw-TX
- for barebox@lists.infradead.org; Mon, 23 Jan 2017 17:03:08 +0000
+ id 1cVi1K-0002jx-TV
+ for barebox@lists.infradead.org; Mon, 23 Jan 2017 17:03:10 +0000
 From: Michael Olbrich <m.olbrich@pengutronix.de>
-Subject: [PATCH 1/5] readkey: keys are unsigned char
-Date: Mon, 23 Jan 2017 18:02:14 +0100
-Message-Id: <20170123170218.25139-2-m.olbrich@pengutronix.de>
+Subject: [PATCH 5/5] efi: don't unload drivers
+Date: Mon, 23 Jan 2017 18:02:18 +0100
+Message-Id: <20170123170218.25139-6-m.olbrich@pengutronix.de>
 In-Reply-To: <20170123170218.25139-1-m.olbrich@pengutronix.de>
 References: <20170123170218.25139-1-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,28 +25,46 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: barebox@lists.infradead.org
 Cc: Michael Olbrich <m.olbrich@pengutronix.de>
 
-Otherwise values > 127 will become negative and are dropped.
+EFI applications should be unloaded to avoid leaking memory. However, boot
+or runtime services continue in the background. So they must not be
+unloaded.
 
 Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 ---
- lib/readkey.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/efi/efi/efi-image.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/lib/readkey.c b/lib/readkey.c
-index 2870a5a9fee5..e72da0066bdc 100644
---- a/lib/readkey.c
-+++ b/lib/readkey.c
-@@ -51,8 +51,8 @@ static const struct esc_cmds esccmds[] = {
+diff --git a/arch/efi/efi/efi-image.c b/arch/efi/efi/efi-image.c
+index c780cad6d447..27f3c1b39c22 100644
+--- a/arch/efi/efi/efi-image.c
++++ b/arch/efi/efi/efi-image.c
+@@ -130,12 +130,16 @@ static int efi_execute_image(const char *file)
+ 	efi_status_t efiret;
+ 	struct linux_kernel_header *image_header;
+ 	const char *options;
++	bool is_driver;
+ 	int ret;
  
- int read_key(void)
- {
--	char c;
--	char esc[5];
-+	unsigned char c;
-+	unsigned char esc[5];
- 	c = getchar();
+ 	ret = efi_load_image(file, &loaded_image, &handle);
+ 	if (ret)
+ 		return ret;
  
- 	if (c == 27) {
++	is_driver = (loaded_image->image_code_type == EFI_BOOT_SERVICES_CODE) ||
++		(loaded_image->image_code_type == EFI_RUNTIME_SERVICES_CODE);
++
+ 	image_header = (struct linux_kernel_header *)loaded_image->image_base;
+ 	if (image_header->boot_flag == 0xAA55 &&
+ 	    image_header->header == 0x53726448) {
+@@ -152,7 +156,8 @@ static int efi_execute_image(const char *file)
+ 	if (EFI_ERROR(efiret))
+ 		pr_err("failed to StartImage: %s\n", efi_strerror(efiret));
+ 
+-	BS->unload_image(handle);
++	if (!is_driver)
++		BS->unload_image(handle);
+ 
+ 	efi_connect_all();
+ 	efi_register_devices();
 -- 
 2.11.0
 
