@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cVi1K-0002js-UF
+ id 1cVi1K-0002jv-Tk
  for barebox@lists.infradead.org; Mon, 23 Jan 2017 17:03:10 +0000
 From: Michael Olbrich <m.olbrich@pengutronix.de>
-Subject: [PATCH 2/5] serial: efi: improve input handling
-Date: Mon, 23 Jan 2017 18:02:15 +0100
-Message-Id: <20170123170218.25139-3-m.olbrich@pengutronix.de>
+Subject: [PATCH 3/5] output: use '[0m' to reset colors
+Date: Mon, 23 Jan 2017 18:02:16 +0100
+Message-Id: <20170123170218.25139-4-m.olbrich@pengutronix.de>
 In-Reply-To: <20170123170218.25139-1-m.olbrich@pengutronix.de>
 References: <20170123170218.25139-1-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,31 +25,58 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: barebox@lists.infradead.org
 Cc: Michael Olbrich <m.olbrich@pengutronix.de>
 
-0x08 is the scan-code for 'backspace' not 'delete'.
-0x17 indicates the start of an escape sequence, such as "[3~" for
-'delete'.
+'[m' is supposed to have the same effect as '[0m'. However, some EFI
+implementations seem to ignore '[m', so use '[0m' everywhere to avoid
+rendering issues.
 
 Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 ---
- drivers/serial/efi-stdio.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ commands/2048.c   | 2 +-
+ common/menu.c     | 2 +-
+ include/readkey.h | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/serial/efi-stdio.c b/drivers/serial/efi-stdio.c
-index bf14c5e24aa5..5ab917386e60 100644
---- a/drivers/serial/efi-stdio.c
-+++ b/drivers/serial/efi-stdio.c
-@@ -99,9 +99,10 @@ static struct efi_ctrlkey ctrlkeys[] = {
- 	{ 0x05, BB_KEY_HOME },
- 	{ 0x06, BB_KEY_END },
- 	{ 0x07, BB_KEY_INSERT },
--	{ 0x08, BB_KEY_DEL },
-+	{ 0x08, BB_KEY_DEL7 },
- 	{ 0x09, BB_KEY_PAGEUP },
- 	{ 0x0a, BB_KEY_PAGEDOWN },
-+	{ 0x17, 27 /* escape key */ },
- };
+diff --git a/commands/2048.c b/commands/2048.c
+index 5ceb5cfb7d12..865803a5a616 100644
+--- a/commands/2048.c
++++ b/commands/2048.c
+@@ -53,7 +53,7 @@ static void getColor(uint16_t value, char *color, size_t length)
+ static void drawBoard(uint16_t board[SIZE][SIZE])
+ {
+ 	int8_t x,y;
+-	char color[40], reset[] = "\033[m";
++	char color[40], reset[] = "\033[0m";
+ 	printf("\033[H");
  
- static int efi_read_key(struct efi_console_priv *priv, bool wait)
+ 	printf("2048.c %17d pts\n\n",score);
+diff --git a/common/menu.c b/common/menu.c
+index e757216c5adf..31e5c90a0f27 100644
+--- a/common/menu.c
++++ b/common/menu.c
+@@ -185,7 +185,7 @@ static void print_menu_entry(struct menu *m, struct menu_entry *me,
+ 	__print_entry(me->display);
+ 
+ 	if (selected)
+-		puts("\e[m");
++		puts("\e[0m");
+ }
+ 
+ int menu_set_selected_entry(struct menu *m, struct menu_entry* me)
+diff --git a/include/readkey.h b/include/readkey.h
+index 8398ec2e516e..ed1cd1542d6f 100644
+--- a/include/readkey.h
++++ b/include/readkey.h
+@@ -26,8 +26,8 @@
+ 
+ #define ANSI_CLEAR_SCREEN "\e[2J\e[;H"
+ 
+-#define printf_reverse(fmt,args...)	printf("\e[7m" fmt "\e[m",##args)
+-#define puts_reverse(fmt)		puts("\e[7m" fmt "\e[m")
++#define printf_reverse(fmt,args...)	printf("\e[7m" fmt "\e[0m",##args)
++#define puts_reverse(fmt)		puts("\e[7m" fmt "\e[0m")
+ #define gotoXY(row, col)		printf("\e[%d;%dH", col, row)
+ #define clear()				puts("\e[2J")
+ 
 -- 
 2.11.0
 
