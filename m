@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cVi1K-0002jx-TV
+ id 1cVi1K-0002js-UF
  for barebox@lists.infradead.org; Mon, 23 Jan 2017 17:03:10 +0000
 From: Michael Olbrich <m.olbrich@pengutronix.de>
-Subject: [PATCH 5/5] efi: don't unload drivers
-Date: Mon, 23 Jan 2017 18:02:18 +0100
-Message-Id: <20170123170218.25139-6-m.olbrich@pengutronix.de>
+Subject: [PATCH 2/5] serial: efi: improve input handling
+Date: Mon, 23 Jan 2017 18:02:15 +0100
+Message-Id: <20170123170218.25139-3-m.olbrich@pengutronix.de>
 In-Reply-To: <20170123170218.25139-1-m.olbrich@pengutronix.de>
 References: <20170123170218.25139-1-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,46 +25,31 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: barebox@lists.infradead.org
 Cc: Michael Olbrich <m.olbrich@pengutronix.de>
 
-EFI applications should be unloaded to avoid leaking memory. However, boot
-or runtime services continue in the background. So they must not be
-unloaded.
+0x08 is the scan-code for 'backspace' not 'delete'.
+0x17 indicates the start of an escape sequence, such as "[3~" for
+'delete'.
 
 Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 ---
- arch/efi/efi/efi-image.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/serial/efi-stdio.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/efi/efi/efi-image.c b/arch/efi/efi/efi-image.c
-index c780cad6d447..27f3c1b39c22 100644
---- a/arch/efi/efi/efi-image.c
-+++ b/arch/efi/efi/efi-image.c
-@@ -130,12 +130,16 @@ static int efi_execute_image(const char *file)
- 	efi_status_t efiret;
- 	struct linux_kernel_header *image_header;
- 	const char *options;
-+	bool is_driver;
- 	int ret;
+diff --git a/drivers/serial/efi-stdio.c b/drivers/serial/efi-stdio.c
+index bf14c5e24aa5..5ab917386e60 100644
+--- a/drivers/serial/efi-stdio.c
++++ b/drivers/serial/efi-stdio.c
+@@ -99,9 +99,10 @@ static struct efi_ctrlkey ctrlkeys[] = {
+ 	{ 0x05, BB_KEY_HOME },
+ 	{ 0x06, BB_KEY_END },
+ 	{ 0x07, BB_KEY_INSERT },
+-	{ 0x08, BB_KEY_DEL },
++	{ 0x08, BB_KEY_DEL7 },
+ 	{ 0x09, BB_KEY_PAGEUP },
+ 	{ 0x0a, BB_KEY_PAGEDOWN },
++	{ 0x17, 27 /* escape key */ },
+ };
  
- 	ret = efi_load_image(file, &loaded_image, &handle);
- 	if (ret)
- 		return ret;
- 
-+	is_driver = (loaded_image->image_code_type == EFI_BOOT_SERVICES_CODE) ||
-+		(loaded_image->image_code_type == EFI_RUNTIME_SERVICES_CODE);
-+
- 	image_header = (struct linux_kernel_header *)loaded_image->image_base;
- 	if (image_header->boot_flag == 0xAA55 &&
- 	    image_header->header == 0x53726448) {
-@@ -152,7 +156,8 @@ static int efi_execute_image(const char *file)
- 	if (EFI_ERROR(efiret))
- 		pr_err("failed to StartImage: %s\n", efi_strerror(efiret));
- 
--	BS->unload_image(handle);
-+	if (!is_driver)
-+		BS->unload_image(handle);
- 
- 	efi_connect_all();
- 	efi_register_devices();
+ static int efi_read_key(struct efi_console_priv *priv, bool wait)
 -- 
 2.11.0
 
