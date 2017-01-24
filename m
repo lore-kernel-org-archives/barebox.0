@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cVwDD-0004tU-2X
- for barebox@lists.infradead.org; Tue, 24 Jan 2017 08:12:21 +0000
-Date: Tue, 24 Jan 2017 09:09:43 +0100
+ id 1cVwRC-00057d-KR
+ for barebox@lists.infradead.org; Tue, 24 Jan 2017 08:26:48 +0000
+Date: Tue, 24 Jan 2017 09:26:24 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170124080943.mkjwtzpsoghg57ns@pengutronix.de>
+Message-ID: <20170124082624.6vodposrif7ehjar@pengutronix.de>
 References: <20170123055735.1277-1-andrew.smirnov@gmail.com>
+ <20170123055735.1277-2-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170123055735.1277-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20170123055735.1277-2-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,100 +23,325 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i.MX: vf610: Add support for ZII VF610 Dev Family
+Subject: Re: [PATCH] spi: i.MX: Add driver for DSPI
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Andrey,
-
-On Sun, Jan 22, 2017 at 09:57:34PM -0800, Andrey Smirnov wrote:
-> Add support for ZII VF610 Dev based designs such as:
-> 
->     - VF610 Dev, revision B
->     - VF610 Dev, revision C
->     - CFU1, revision A
->     - SPU3, revision A
->     - SCU4 AIB, revision C
+On Sun, Jan 22, 2017 at 09:57:35PM -0800, Andrey Smirnov wrote:
+> Add driver for DSPI - SPI IP core found on various Freescale/NXP
+> products (including Vybrid/VF610).
 > 
 > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
+>  drivers/spi/Kconfig    |   8 +
+>  drivers/spi/Makefile   |   1 +
+>  drivers/spi/dspi_spi.c | 413 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 422 insertions(+)
+>  create mode 100644 drivers/spi/dspi_spi.c
 > 
-> Sascha, this patch is rebased on 'next' instead of 'master' so that
-> you won't have to resolve conflicts with RDU2 patches in 'next'. Let
-> me know if you'd rather have it rebased on 'master'.
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index 43ba8f4..dd1b214 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -54,6 +54,14 @@ config DRIVER_SPI_OMAP3
+>  	bool "OMAP3 McSPI Master driver"
+>  	depends on ARCH_OMAP3 || ARCH_AM33XX
+>  
+> +config DRIVER_SPI_DSPI
+> +	tristate "Freescale DSPI SPI Master driver"
+> +	depends on ARCH_VF610
+> +	default y
 
-It's fine to base on next in this case.
+Please no default y for optional features.
 
-> +struct named_signal {
-> +	unsigned int gpio;
-> +	const char *name;
-> +	int value;
-> +};
+> +	help
+> +	  This enables support for the Freescale DSPI controller in master
+> +	  mode. VF610 platform uses the controller.
 > +
-> +static int expose_signals(const struct named_signal *signals,
-> +			      size_t signal_num)
+>  endif
+>  
+>  endmenu
+
+> +static void hz_to_spi_baud(char *pbr, char *br, int speed_hz,
+> +			   unsigned long clkrate)
 > +{
-> +	int ret, i;
+> +	/* Valid baud rate pre-scaler values */
+> +	int pbr_tbl[4] = {2, 3, 5, 7};
+> +	int brs[16] = {	2,	4,	6,	8,
+> +		16,	32,	64,	128,
+> +		256,	512,	1024,	2048,
+> +		4096,	8192,	16384,	32768 };
+> +	int scale_needed, scale, minscale = INT_MAX;
+> +	int i, j;
 > +
-> +	for (i = 0; i < signal_num; i++) {
-> +		const struct named_signal *signal = &signals[i];
+> +	scale_needed = clkrate / speed_hz;
+> +	if (clkrate % speed_hz)
+> +		scale_needed++;
 > +
-> +		if (signal->value < 0)
-> +			ret = gpio_direction_input(signal->gpio);
-> +		else
-> +			ret = gpio_direction_output(signal->gpio, signal->value);
-> +
-> +		if (ret) {
-> +			pr_err("Failed to configure \"%s\"\n", signal->name);
-> +			return ret;
+> +	for (i = 0; i < ARRAY_SIZE(brs); i++)
+> +		for (j = 0; j < ARRAY_SIZE(pbr_tbl); j++) {
+> +			scale = brs[i] * pbr_tbl[j];
+> +			if (scale >= scale_needed) {
+> +				if (scale < minscale) {
+> +					minscale = scale;
+> +					*br = i;
+> +					*pbr = j;
+> +				}
+> +				break;
+> +			}
 > +		}
-
-This looks like gpio_request_array(). Could you use this instead?
-
-> index 0000000..4465632
-> --- /dev/null
-> +++ b/arch/arm/boards/zii-vf610-dev/lowlevel.c
-> @@ -0,0 +1,132 @@
-> +#include <common.h>
-> +#include <linux/sizes.h>
-> +#include <mach/generic.h>
-> +#include <asm/barebox-arm-head.h>
-> +#include <asm/barebox-arm.h>
-> +#include <mach/vf610-regs.h>
-> +#include <mach/clock-vf610.h>
-> +#include <mach/iomux-vf610.h>
-> +#include <debug_ll.h>
 > +
-> +#if defined(CONFIG_DEBUG_LL)
-> +#	if !defined(CONFIG_DEBUG_VF610_UART)
-> +#		warning "CONFIG_DEBUG_LL is enabled but CONFIG_DEBUG_VF610_UART is not"
-> +#	else
-> +#		if CONFIG_DEBUG_IMX_UART_PORT != 1
-> +#			warning "CONFIG_DEBUG_LL output is not drirected to port 1"
-> +#		endif
-> +#	endif
-> +#endif
+> +	if (minscale == INT_MAX) {
+> +		pr_warn("Can not find valid baud rate,speed_hz is %d,"
+> +			"clkrate is %ld, we use the max prescaler value.\n",
+> +			speed_hz, clkrate);
 
-Just because this board is enabled doesn't mean the user is actually
-currently interested in this board. He might want to enable
-CONFIG_DEBUG_LL for another board, still he is warned about an invalid
-config here. This is not good.
+Use dev_* for drivers please.
 
-You could drop the DEBUG_LL support and instead go to PBL console
-support. See arch/arm/boards/freescale-mx6-sabrelite/lowlevel.c
-for a good example. Basically it means you call this right after entry:
+> +		*pbr = ARRAY_SIZE(pbr_tbl) - 1;
+> +		*br =  ARRAY_SIZE(brs) - 1;
+> +	}
+> +}
+> +
+> +static void ns_delay_scale(char *psc, char *sc, int delay_ns,
+> +		unsigned long clkrate)
+> +{
+> +	int pscale_tbl[4] = {1, 3, 5, 7};
+> +	int scale_needed, scale, minscale = INT_MAX;
+> +	int i, j;
+> +	u32 remainder;
+> +
+> +	scale_needed = div_u64_rem((u64)delay_ns * clkrate, NSEC_PER_SEC,
+> +			&remainder);
+> +	if (remainder)
+> +		scale_needed++;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(pscale_tbl); i++)
+> +		for (j = 0; j <= SPI_CTAR_SCALE_BITS; j++) {
+> +			scale = pscale_tbl[i] * (2 << j);
+> +			if (scale >= scale_needed) {
+> +				if (scale < minscale) {
+> +					minscale = scale;
+> +					*psc = i;
+> +					*sc = j;
+> +				}
+> +				break;
+> +			}
+> +		}
+> +
+> +	if (minscale == INT_MAX) {
+> +		pr_warn("Cannot find correct scale values for %dns "
+> +			"delay at clkrate %ld, using max prescaler value",
+> +			delay_ns, clkrate);
+> +		*psc = ARRAY_SIZE(pscale_tbl) - 1;
+> +		*sc = SPI_CTAR_SCALE_BITS;
+> +	}
+> +}
+> +
+> +static u32 dspi_xchg_single(struct fsl_dspi *dspi, u32 in)
+> +{
+> +	const uint32_t sr_ready = (SPI_SR_EOQF | SPI_SR_RFDF);
+> +
+> +	writel(in, dspi->base + SPI_PUSHR);
+> +
+> +	while ((readl(dspi->base + SPI_SR) & sr_ready) != sr_ready)
+> +		;
+> +
+> +	writel(sr_ready, dspi->base + SPI_SR);
+> +
+> +	return readl(dspi->base + SPI_POPR);
+> +}
+> +
+> +static const void *dspi_load_and_advance(const void *buffer,
+> +					 size_t word_size, uint32_t *word)
+> +{
+> +	if (!buffer) {
+> +		*word = 0;
+> +		return NULL;
+> +	}
+> +
+> +	switch (word_size) {
+> +	case 2:
+> +		*word = *(const uint16_t *)buffer;
+> +		break;
+> +	case 1:
+> +		*word = *(const uint8_t *)buffer;
+> +		break;
+> +	}
+> +
+> +	return buffer + word_size;
+> +}
+> +
+> +static void *dspi_store_and_advance(void *buffer,
+> +				    size_t word_size, uint32_t word)
+> +{
+> +	if (!buffer)
+> +		return NULL;
+> +
+> +	switch (word_size) {
+> +	case 2:
+> +		*(uint16_t *)buffer = word;
+> +		break;
+> +	case 1:
+> +		*(uint8_t *)buffer  = word;
+> +		break;
+> +	}
+> +
+> +	return buffer + word_size;
+> +}
+> +
+> +
+> +static void dspi_do_transfer(struct spi_device *spi,
+> +			     struct spi_transfer *transfer,
+> +			     bool last)
+> +{
+> +	size_t i;
+> +	void *rx;
+> +	const void *tx;
+> +	unsigned int flags;
+> +	struct fsl_dspi *dspi = to_dspi(spi->master);
+> +	const size_t word_size = spi->bits_per_word <= 8 ? 1 : 2;
+> +	const size_t count = transfer->len / word_size;
+> +
+> +	flags = SPI_PUSHR_PCS(spi->chip_select)
+> +		| SPI_PUSHR_CTAS(spi->chip_select)
+> +		| SPI_PUSHR_EOQ
+> +		| SPI_PUSHR_CONT;
+> +
+> +	tx = transfer->tx_buf;
+> +	rx = transfer->rx_buf;
+> +
+> +	for (i = 0; i < count; i++) {
+> +		uint32_t in, out;
+> +
+> +		if (i == count - 1 &&
+> +		    (last || transfer->cs_change))
+> +			flags &= ~SPI_PUSHR_CONT;
+> +
+> +		tx = dspi_load_and_advance(tx, word_size, &out);
+> +		in = dspi_xchg_single(dspi, flags | out);
+> +		rx = dspi_store_and_advance(rx, word_size, in);
+> +	}
+> +}
+> +
+> +static int dspi_transfer(struct spi_device *spi,
+> +			 struct spi_message *message)
+> +{
+> +	struct spi_transfer *transfer;
+> +
+> +	message->actual_length = 0;
+> +
+> +	list_for_each_entry(transfer, &message->transfers, transfer_list) {
+> +
+> +		if (spi->bits_per_word > 8 &&
+> +		    transfer->len % 2)
+> +			dev_err(spi->master->dev,
+> +				"Transfer doesn't contain exact number of SPI "
+> +				"words. Last partial word will be truncated");
+> +
+> +		dspi_do_transfer(spi, transfer,
+> +				 list_is_last(&transfer->transfer_list,
+> +					      &message->transfers));
+> +		message->actual_length += transfer->len;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int dspi_setup(struct spi_device *spi)
+> +{
+> +	struct fsl_dspi *dspi = to_dspi(spi->master);
+> +	unsigned char br = 0, pbr = 0, pcssck = 0, cssck = 0;
+> +	unsigned char pasc = 0, asc = 0, fmsz = 0;
+> +	unsigned long clkrate;
+> +
+> +	if (4 <= spi->bits_per_word && spi->bits_per_word <= 16)
+> +		fmsz = spi->bits_per_word - 1;
+> +	else
+> +		return -ENODEV;
+> +
+> +	clkrate = clk_get_rate(dspi->clk);
+> +	hz_to_spi_baud(&pbr, &br, spi->max_speed_hz, clkrate);
+> +
+> +	/* Set PCS to SCK delay scale values */
+> +	ns_delay_scale(&pcssck, &cssck, dspi->cs_sck_delay, clkrate);
+> +
+> +	/* Set After SCK delay scale values */
+> +	ns_delay_scale(&pasc, &asc, dspi->sck_cs_delay, clkrate);
+> +
+> +	writel(SPI_CTAR_FMSZ(fmsz)
+> +	       | SPI_CTAR_CPOL(spi->mode & SPI_CPOL ? 1 : 0)
+> +	       | SPI_CTAR_CPHA(spi->mode & SPI_CPHA ? 1 : 0)
+> +	       | SPI_CTAR_LSBFE(spi->mode & SPI_LSB_FIRST ? 1 : 0)
+> +	       | SPI_CTAR_PCSSCK(pcssck)
+> +	       | SPI_CTAR_CSSCK(cssck)
+> +	       | SPI_CTAR_PASC(pasc)
+> +	       | SPI_CTAR_ASC(asc)
+> +	       | SPI_CTAR_PBR(pbr)
+> +	       | SPI_CTAR_BR(br),
+> +	       dspi->base + SPI_CTAR(spi->chip_select));
+> +
+> +	return 0;
+> +}
+> +
+> +static int dspi_probe(struct device_d *dev)
+> +{
+> +	struct resource *io;
+> +	struct fsl_dspi *dspi;
+> +	struct spi_master *master;
+> +	struct device_node *np = dev->device_node;
+> +
+> +	int ret = 0;
+> +	uint32_t bus_num = 0;
+> +	uint32_t cs_num;
+> +
+> +	dspi = xzalloc(sizeof(*dspi));
+> +
+> +	dspi->devtype_data = of_device_get_match_data(dev);
+> +	if (!dspi->devtype_data) {
+> +		dev_err(dev, "can't get devtype_data\n");
+> +		ret = -EFAULT;
+> +		goto free_memory;
+> +	}
+> +
+> +	master = &dspi->master;
+> +	master->dev = dev;
+> +	master->bus_num = dev->id;
+> +	master->setup = dspi_setup;
+> +	master->transfer = dspi_transfer;
+> +
+> +	ret = of_property_read_u32(np, "spi-num-chipselects", &cs_num);
+> +	if (ret < 0) {
+> +		dev_err(dev, "can't get spi-num-chipselects\n");
+> +		goto free_memory;
+> +	}
+> +	master->num_chipselect = cs_num;
+> +
+> +	ret = of_property_read_u32(np, "bus-num", &bus_num);
+> +	if (ret < 0) {
+> +		dev_err(dev, "can't get bus-num\n");
+> +		goto free_memory;
+> +	}
+> +	master->bus_num = bus_num;
 
-	arm_early_mmu_cache_invalidate();
-        relocate_to_current_adr();
-        setup_c();
-        barrier();
+I don't think the presence of a bus-num property should be enforced. It
+seems nobody has reviewed the binding since normally such a property
+shouldn't even exist. You can honor it if it's present, but shouldn't
+enforce it.
 
-From here on you have a valid C environment (And thus don't need to work
-around switch/case with wrong LUTs) and can also call:
+> +
+> +	of_property_read_u32(dev->device_node, "fsl,spi-cs-sck-delay",
+> +			     &dspi->cs_sck_delay);
+> +	of_property_read_u32(dev->device_node, "fsl,spi-sck-cs-delay",
+> +			     &dspi->sck_cs_delay);
+> +
+> +	io = dev_request_mem_resource(dev, 0);
+> +	if (IS_ERR(io))
+> +		return PTR_ERR(io);
 
-	pbl_set_putc(xxx_uart_putc, uart);
-
-after that you can use printf like functions to print messages.
+I don't care much about cleaning up properly in the probe error pathes
+in barebox, but now that you started with "goto free_memory" in the
+driver, you can use it here aswell ;)
 
 Sascha
 
