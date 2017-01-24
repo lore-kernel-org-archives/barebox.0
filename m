@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cVi1K-0002jv-Tk
- for barebox@lists.infradead.org; Mon, 23 Jan 2017 17:03:10 +0000
-From: Michael Olbrich <m.olbrich@pengutronix.de>
-Subject: [PATCH 3/5] output: use '[0m' to reset colors
-Date: Mon, 23 Jan 2017 18:02:16 +0100
-Message-Id: <20170123170218.25139-4-m.olbrich@pengutronix.de>
-In-Reply-To: <20170123170218.25139-1-m.olbrich@pengutronix.de>
-References: <20170123170218.25139-1-m.olbrich@pengutronix.de>
+ id 1cVwDD-0004tU-2X
+ for barebox@lists.infradead.org; Tue, 24 Jan 2017 08:12:21 +0000
+Date: Tue, 24 Jan 2017 09:09:43 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170124080943.mkjwtzpsoghg57ns@pengutronix.de>
+References: <20170123055735.1277-1-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170123055735.1277-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,69 +18,113 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-To: barebox@lists.infradead.org
-Cc: Michael Olbrich <m.olbrich@pengutronix.de>
+Subject: Re: [PATCH] i.MX: vf610: Add support for ZII VF610 Dev Family
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-'[m' is supposed to have the same effect as '[0m'. However, some EFI
-implementations seem to ignore '[m', so use '[0m' everywhere to avoid
-rendering issues.
+Hi Andrey,
 
-Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
----
- commands/2048.c   | 2 +-
- common/menu.c     | 2 +-
- include/readkey.h | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+On Sun, Jan 22, 2017 at 09:57:34PM -0800, Andrey Smirnov wrote:
+> Add support for ZII VF610 Dev based designs such as:
+> 
+>     - VF610 Dev, revision B
+>     - VF610 Dev, revision C
+>     - CFU1, revision A
+>     - SPU3, revision A
+>     - SCU4 AIB, revision C
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+> 
+> Sascha, this patch is rebased on 'next' instead of 'master' so that
+> you won't have to resolve conflicts with RDU2 patches in 'next'. Let
+> me know if you'd rather have it rebased on 'master'.
 
-diff --git a/commands/2048.c b/commands/2048.c
-index 5ceb5cfb7d12..865803a5a616 100644
---- a/commands/2048.c
-+++ b/commands/2048.c
-@@ -53,7 +53,7 @@ static void getColor(uint16_t value, char *color, size_t length)
- static void drawBoard(uint16_t board[SIZE][SIZE])
- {
- 	int8_t x,y;
--	char color[40], reset[] = "\033[m";
-+	char color[40], reset[] = "\033[0m";
- 	printf("\033[H");
- 
- 	printf("2048.c %17d pts\n\n",score);
-diff --git a/common/menu.c b/common/menu.c
-index e757216c5adf..31e5c90a0f27 100644
---- a/common/menu.c
-+++ b/common/menu.c
-@@ -185,7 +185,7 @@ static void print_menu_entry(struct menu *m, struct menu_entry *me,
- 	__print_entry(me->display);
- 
- 	if (selected)
--		puts("\e[m");
-+		puts("\e[0m");
- }
- 
- int menu_set_selected_entry(struct menu *m, struct menu_entry* me)
-diff --git a/include/readkey.h b/include/readkey.h
-index 8398ec2e516e..ed1cd1542d6f 100644
---- a/include/readkey.h
-+++ b/include/readkey.h
-@@ -26,8 +26,8 @@
- 
- #define ANSI_CLEAR_SCREEN "\e[2J\e[;H"
- 
--#define printf_reverse(fmt,args...)	printf("\e[7m" fmt "\e[m",##args)
--#define puts_reverse(fmt)		puts("\e[7m" fmt "\e[m")
-+#define printf_reverse(fmt,args...)	printf("\e[7m" fmt "\e[0m",##args)
-+#define puts_reverse(fmt)		puts("\e[7m" fmt "\e[0m")
- #define gotoXY(row, col)		printf("\e[%d;%dH", col, row)
- #define clear()				puts("\e[2J")
- 
+It's fine to base on next in this case.
+
+> +struct named_signal {
+> +	unsigned int gpio;
+> +	const char *name;
+> +	int value;
+> +};
+> +
+> +static int expose_signals(const struct named_signal *signals,
+> +			      size_t signal_num)
+> +{
+> +	int ret, i;
+> +
+> +	for (i = 0; i < signal_num; i++) {
+> +		const struct named_signal *signal = &signals[i];
+> +
+> +		if (signal->value < 0)
+> +			ret = gpio_direction_input(signal->gpio);
+> +		else
+> +			ret = gpio_direction_output(signal->gpio, signal->value);
+> +
+> +		if (ret) {
+> +			pr_err("Failed to configure \"%s\"\n", signal->name);
+> +			return ret;
+> +		}
+
+This looks like gpio_request_array(). Could you use this instead?
+
+> index 0000000..4465632
+> --- /dev/null
+> +++ b/arch/arm/boards/zii-vf610-dev/lowlevel.c
+> @@ -0,0 +1,132 @@
+> +#include <common.h>
+> +#include <linux/sizes.h>
+> +#include <mach/generic.h>
+> +#include <asm/barebox-arm-head.h>
+> +#include <asm/barebox-arm.h>
+> +#include <mach/vf610-regs.h>
+> +#include <mach/clock-vf610.h>
+> +#include <mach/iomux-vf610.h>
+> +#include <debug_ll.h>
+> +
+> +#if defined(CONFIG_DEBUG_LL)
+> +#	if !defined(CONFIG_DEBUG_VF610_UART)
+> +#		warning "CONFIG_DEBUG_LL is enabled but CONFIG_DEBUG_VF610_UART is not"
+> +#	else
+> +#		if CONFIG_DEBUG_IMX_UART_PORT != 1
+> +#			warning "CONFIG_DEBUG_LL output is not drirected to port 1"
+> +#		endif
+> +#	endif
+> +#endif
+
+Just because this board is enabled doesn't mean the user is actually
+currently interested in this board. He might want to enable
+CONFIG_DEBUG_LL for another board, still he is warned about an invalid
+config here. This is not good.
+
+You could drop the DEBUG_LL support and instead go to PBL console
+support. See arch/arm/boards/freescale-mx6-sabrelite/lowlevel.c
+for a good example. Basically it means you call this right after entry:
+
+	arm_early_mmu_cache_invalidate();
+        relocate_to_current_adr();
+        setup_c();
+        barrier();
+
+From here on you have a valid C environment (And thus don't need to work
+around switch/case with wrong LUTs) and can also call:
+
+	pbl_set_putc(xxx_uart_putc, uart);
+
+after that you can use printf like functions to print messages.
+
+Sascha
+
+
 -- 
-2.11.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
