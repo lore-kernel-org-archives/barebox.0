@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qt0-f178.google.com ([209.85.216.178])
+Received: from mail-yb0-f177.google.com ([209.85.213.177])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cWTAS-0004L3-7o
- for barebox@lists.infradead.org; Wed, 25 Jan 2017 19:23:41 +0000
-Received: by mail-qt0-f178.google.com with SMTP id v23so33984103qtb.0
- for <barebox@lists.infradead.org>; Wed, 25 Jan 2017 11:23:16 -0800 (PST)
+ id 1cWTF1-0005uN-93
+ for barebox@lists.infradead.org; Wed, 25 Jan 2017 19:28:24 +0000
+Received: by mail-yb0-f177.google.com with SMTP id j82so21104998ybg.1
+ for <barebox@lists.infradead.org>; Wed, 25 Jan 2017 11:28:02 -0800 (PST)
 MIME-Version: 1.0
-From: Frank Hunleth <fhunleth@troodon-software.com>
-Date: Wed, 25 Jan 2017 14:21:55 -0500
-Message-ID: <CA+-urNQJbuE44V93+BERHf9r5kEKzn5mBJ5e=t9932TtR7+0Yw@mail.gmail.com>
+From: Haris Papadopoulos <haris@amberbox.com>
+Date: Wed, 25 Jan 2017 19:27:01 +0000
+Message-ID: <CACmkAZEckFyAA1zgS=j53RTMzqtxmwpiaNcHZ4=2jhA5uSKXJA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,19 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Accessing non-volatile variables from Linux
+Subject: How to configure Imx6ul watchdog from barebox
 To: barebox@lists.infradead.org
 
 Hi,
 
-I'm wondering if it's possible to read and modify Barebox environment
-variables from Linux in a way similar to U-Boot's fw_printenv and
-fw_setenv. If that's not possible, is there another way for communicating
-between Linux and Barebox? Apologies if I totally missed a section in the
-docs that describes this.
+I am using barebox on a board from phytec phyBOARD-Segin that uses an
+imx6ul processor  (phyCORE-i.MX 6UL).
 
-Thanks,
-Frank
+Any idea how to configure the watchdog to automatically start in the
+bootloader and then be kicked from linux? In which file do I have to
+do the following configs?
+
+CONFIG_WATCHDOG=y
+CONFIG_WATCHDOG_IMX=y
+
+Where can I setup the relevant flags?
+
+Also, does barebox have the bootcount feature?
+
+Thanks
+Haris
 
 _______________________________________________
 barebox mailing list
