@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cWeIy-0005AY-Si
- for barebox@lists.infradead.org; Thu, 26 Jan 2017 07:17:15 +0000
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.84_2)
- (envelope-from <sha@pengutronix.de>) id 1cWeId-0002k5-8L
- for barebox@lists.infradead.org; Thu, 26 Jan 2017 08:16:51 +0100
-Date: Thu, 26 Jan 2017 08:16:40 +0100
+ id 1cWeVm-0001I6-0f
+ for barebox@lists.infradead.org; Thu, 26 Jan 2017 07:30:27 +0000
+Date: Thu, 26 Jan 2017 08:30:03 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170126071640.owiwqt5eyr3wtzr7@pengutronix.de>
-References: <1485343915-24850-1-git-send-email-akurz@blala.de>
+Message-ID: <20170126073003.rpufxl2us6mc5i4b@pengutronix.de>
+References: <CA+-urNQJbuE44V93+BERHf9r5kEKzn5mBJ5e=t9932TtR7+0Yw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1485343915-24850-1-git-send-email-akurz@blala.de>
+In-Reply-To: <CA+-urNQJbuE44V93+BERHf9r5kEKzn5mBJ5e=t9932TtR7+0Yw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,34 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX7: add AIPS base address defines
-To: Alexander Kurz <akurz@blala.de>
+Subject: Re: Accessing non-volatile variables from Linux
+To: Frank Hunleth <fhunleth@troodon-software.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jan 25, 2017 at 12:31:55PM +0100, Alexander Kurz wrote:
-> Import the ARM IP bus base addresses from IMX7DRM 05/2016 AIPS Memory Map
+Hi Frank,
 
-In my reference manual the addresses are given directly as numbers. I
-often wondered for the other i.MX SoCs what the advantage of such such
-multi-stage defines is:
+On Wed, Jan 25, 2017 at 02:21:55PM -0500, Frank Hunleth wrote:
+> Hi,
+> 
+> I'm wondering if it's possible to read and modify Barebox environment
+> variables from Linux in a way similar to U-Boot's fw_printenv and
+> fw_setenv. If that's not possible, is there another way for communicating
+> between Linux and Barebox? Apologies if I totally missed a section in the
+> docs that describes this.
 
-#define MX7_AIPS1_ARB_BASE_ADDR     0x30000000
-#define MX7_ATZ1_BASE_ADDR          MX7_AIPS1_ARB_BASE_ADDR
-#define MX7_AIPS1_OFF_BASE_ADDR     (MX7_ATZ1_BASE_ADDR + 0x200000)
-#define MX7_GPIO1_BASE_ADDR         (MX7_AIPS1_OFF_BASE_ADDR)
-
-I often enough ended up calculating the values by hand to get the
-address to type into barebox md/mw commands or to see which address
-is meant to look it up in the reference manual (for some defines which
-do not have a clear name)
-
-Are there any real advantages of these multi stage defines? Otherwise
-I would suggest to use the absolute addresses directly.
-
-Thanks for completing the list anyway, having to add them one by one
-as needed can be annoying also.
+There is scripts/bareboxenv.c which gets compiled for the target when
+CONFIG_BAREBOXENV_TARGET is enabled. This allows you to unpack the
+barebox environment device (mtd/partition) to a directory and back to
+the device after modifying. There is no direct getenv/setenv
+functionality, you would have to do a manual echo/cat to the variable
+files.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
