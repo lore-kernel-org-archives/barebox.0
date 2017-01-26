@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-f68.google.com ([209.85.215.68])
+Received: from mail-qt0-f196.google.com ([209.85.216.196])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cWl5d-00084Y-4e
- for barebox@lists.infradead.org; Thu, 26 Jan 2017 14:31:55 +0000
-Received: by mail-lf0-f68.google.com with SMTP id q89so23831970lfi.1
- for <barebox@lists.infradead.org>; Thu, 26 Jan 2017 06:31:32 -0800 (PST)
-Date: Thu, 26 Jan 2017 17:30:27 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20170126143027.GB21086@berta>
-References: <20170126100159.6036-1-u.kleine-koenig@pengutronix.de>
+ id 1cWsUZ-0003Fy-Kf
+ for barebox@lists.infradead.org; Thu, 26 Jan 2017 22:26:09 +0000
+Received: by mail-qt0-f196.google.com with SMTP id n13so41764531qtc.0
+ for <barebox@lists.infradead.org>; Thu, 26 Jan 2017 14:25:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170126100159.6036-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170124082624.6vodposrif7ehjar@pengutronix.de>
+References: <20170123055735.1277-1-andrew.smirnov@gmail.com>
+ <20170123055735.1277-2-andrew.smirnov@gmail.com>
+ <20170124082624.6vodposrif7ehjar@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu, 26 Jan 2017 14:24:44 -0800
+Message-ID: <CAHQ1cqHe9YFtZ7Xh1ZRF6ARRyWKq+2hxZnm-H=1F3a00DyA9Eg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,217 +21,344 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ata: new driver to support the internal sata controller
- on Armada-XP
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] spi: i.MX: Add driver for DSPI
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Uwe,
+On Tue, Jan 24, 2017 at 12:26 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Sun, Jan 22, 2017 at 09:57:35PM -0800, Andrey Smirnov wrote:
+>> Add driver for DSPI - SPI IP core found on various Freescale/NXP
+>> products (including Vybrid/VF610).
+>>
+>> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+>> ---
+>>  drivers/spi/Kconfig    |   8 +
+>>  drivers/spi/Makefile   |   1 +
+>>  drivers/spi/dspi_spi.c | 413 +++++++++++++++++++++++++++++++++++++++++++++++++
+>>  3 files changed, 422 insertions(+)
+>>  create mode 100644 drivers/spi/dspi_spi.c
+>>
+>> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+>> index 43ba8f4..dd1b214 100644
+>> --- a/drivers/spi/Kconfig
+>> +++ b/drivers/spi/Kconfig
+>> @@ -54,6 +54,14 @@ config DRIVER_SPI_OMAP3
+>>       bool "OMAP3 McSPI Master driver"
+>>       depends on ARCH_OMAP3 || ARCH_AM33XX
+>>
+>> +config DRIVER_SPI_DSPI
+>> +     tristate "Freescale DSPI SPI Master driver"
+>> +     depends on ARCH_VF610
+>> +     default y
+>
+> Please no default y for optional features.
 
-Our approach for the same problem was to put SATA PHY initialization into t=
-he =
+OK, will fix in v2.
 
-board specific code (I guess in your case it is =
+>
+>> +     help
+>> +       This enables support for the Freescale DSPI controller in master
+>> +       mode. VF610 platform uses the controller.
+>> +
+>>  endif
+>>
+>>  endmenu
+>
+>> +static void hz_to_spi_baud(char *pbr, char *br, int speed_hz,
+>> +                        unsigned long clkrate)
+>> +{
+>> +     /* Valid baud rate pre-scaler values */
+>> +     int pbr_tbl[4] = {2, 3, 5, 7};
+>> +     int brs[16] = { 2,      4,      6,      8,
+>> +             16,     32,     64,     128,
+>> +             256,    512,    1024,   2048,
+>> +             4096,   8192,   16384,  32768 };
+>> +     int scale_needed, scale, minscale = INT_MAX;
+>> +     int i, j;
+>> +
+>> +     scale_needed = clkrate / speed_hz;
+>> +     if (clkrate % speed_hz)
+>> +             scale_needed++;
+>> +
+>> +     for (i = 0; i < ARRAY_SIZE(brs); i++)
+>> +             for (j = 0; j < ARRAY_SIZE(pbr_tbl); j++) {
+>> +                     scale = brs[i] * pbr_tbl[j];
+>> +                     if (scale >= scale_needed) {
+>> +                             if (scale < minscale) {
+>> +                                     minscale = scale;
+>> +                                     *br = i;
+>> +                                     *pbr = j;
+>> +                             }
+>> +                             break;
+>> +                     }
+>> +             }
+>> +
+>> +     if (minscale == INT_MAX) {
+>> +             pr_warn("Can not find valid baud rate,speed_hz is %d,"
+>> +                     "clkrate is %ld, we use the max prescaler value.\n",
+>> +                     speed_hz, clkrate);
+>
+> Use dev_* for drivers please.
 
-arch/arm/boards/marvell-armada-xp-gp/board.c) and bind the generic ATA driv=
-er =
+WIll do in v2.
 
-(drivers/ata/intf_platform_ide.c) via the device tree.
+>
+>> +             *pbr = ARRAY_SIZE(pbr_tbl) - 1;
+>> +             *br =  ARRAY_SIZE(brs) - 1;
+>> +     }
+>> +}
+>> +
+>> +static void ns_delay_scale(char *psc, char *sc, int delay_ns,
+>> +             unsigned long clkrate)
+>> +{
+>> +     int pscale_tbl[4] = {1, 3, 5, 7};
+>> +     int scale_needed, scale, minscale = INT_MAX;
+>> +     int i, j;
+>> +     u32 remainder;
+>> +
+>> +     scale_needed = div_u64_rem((u64)delay_ns * clkrate, NSEC_PER_SEC,
+>> +                     &remainder);
+>> +     if (remainder)
+>> +             scale_needed++;
+>> +
+>> +     for (i = 0; i < ARRAY_SIZE(pscale_tbl); i++)
+>> +             for (j = 0; j <= SPI_CTAR_SCALE_BITS; j++) {
+>> +                     scale = pscale_tbl[i] * (2 << j);
+>> +                     if (scale >= scale_needed) {
+>> +                             if (scale < minscale) {
+>> +                                     minscale = scale;
+>> +                                     *psc = i;
+>> +                                     *sc = j;
+>> +                             }
+>> +                             break;
+>> +                     }
+>> +             }
+>> +
+>> +     if (minscale == INT_MAX) {
+>> +             pr_warn("Cannot find correct scale values for %dns "
+>> +                     "delay at clkrate %ld, using max prescaler value",
+>> +                     delay_ns, clkrate);
+>> +             *psc = ARRAY_SIZE(pscale_tbl) - 1;
+>> +             *sc = SPI_CTAR_SCALE_BITS;
+>> +     }
+>> +}
+>> +
+>> +static u32 dspi_xchg_single(struct fsl_dspi *dspi, u32 in)
+>> +{
+>> +     const uint32_t sr_ready = (SPI_SR_EOQF | SPI_SR_RFDF);
+>> +
+>> +     writel(in, dspi->base + SPI_PUSHR);
+>> +
+>> +     while ((readl(dspi->base + SPI_SR) & sr_ready) != sr_ready)
+>> +             ;
+>> +
+>> +     writel(sr_ready, dspi->base + SPI_SR);
+>> +
+>> +     return readl(dspi->base + SPI_POPR);
+>> +}
+>> +
+>> +static const void *dspi_load_and_advance(const void *buffer,
+>> +                                      size_t word_size, uint32_t *word)
+>> +{
+>> +     if (!buffer) {
+>> +             *word = 0;
+>> +             return NULL;
+>> +     }
+>> +
+>> +     switch (word_size) {
+>> +     case 2:
+>> +             *word = *(const uint16_t *)buffer;
+>> +             break;
+>> +     case 1:
+>> +             *word = *(const uint8_t *)buffer;
+>> +             break;
+>> +     }
+>> +
+>> +     return buffer + word_size;
+>> +}
+>> +
+>> +static void *dspi_store_and_advance(void *buffer,
+>> +                                 size_t word_size, uint32_t word)
+>> +{
+>> +     if (!buffer)
+>> +             return NULL;
+>> +
+>> +     switch (word_size) {
+>> +     case 2:
+>> +             *(uint16_t *)buffer = word;
+>> +             break;
+>> +     case 1:
+>> +             *(uint8_t *)buffer  = word;
+>> +             break;
+>> +     }
+>> +
+>> +     return buffer + word_size;
+>> +}
+>> +
+>> +
+>> +static void dspi_do_transfer(struct spi_device *spi,
+>> +                          struct spi_transfer *transfer,
+>> +                          bool last)
+>> +{
+>> +     size_t i;
+>> +     void *rx;
+>> +     const void *tx;
+>> +     unsigned int flags;
+>> +     struct fsl_dspi *dspi = to_dspi(spi->master);
+>> +     const size_t word_size = spi->bits_per_word <= 8 ? 1 : 2;
+>> +     const size_t count = transfer->len / word_size;
+>> +
+>> +     flags = SPI_PUSHR_PCS(spi->chip_select)
+>> +             | SPI_PUSHR_CTAS(spi->chip_select)
+>> +             | SPI_PUSHR_EOQ
+>> +             | SPI_PUSHR_CONT;
+>> +
+>> +     tx = transfer->tx_buf;
+>> +     rx = transfer->rx_buf;
+>> +
+>> +     for (i = 0; i < count; i++) {
+>> +             uint32_t in, out;
+>> +
+>> +             if (i == count - 1 &&
+>> +                 (last || transfer->cs_change))
+>> +                     flags &= ~SPI_PUSHR_CONT;
+>> +
+>> +             tx = dspi_load_and_advance(tx, word_size, &out);
+>> +             in = dspi_xchg_single(dspi, flags | out);
+>> +             rx = dspi_store_and_advance(rx, word_size, in);
+>> +     }
+>> +}
+>> +
+>> +static int dspi_transfer(struct spi_device *spi,
+>> +                      struct spi_message *message)
+>> +{
+>> +     struct spi_transfer *transfer;
+>> +
+>> +     message->actual_length = 0;
+>> +
+>> +     list_for_each_entry(transfer, &message->transfers, transfer_list) {
+>> +
+>> +             if (spi->bits_per_word > 8 &&
+>> +                 transfer->len % 2)
+>> +                     dev_err(spi->master->dev,
+>> +                             "Transfer doesn't contain exact number of SPI "
+>> +                             "words. Last partial word will be truncated");
+>> +
+>> +             dspi_do_transfer(spi, transfer,
+>> +                              list_is_last(&transfer->transfer_list,
+>> +                                           &message->transfers));
+>> +             message->actual_length += transfer->len;
+>> +     }
+>> +
+>> +     return 0;
+>> +}
+>> +
+>> +static int dspi_setup(struct spi_device *spi)
+>> +{
+>> +     struct fsl_dspi *dspi = to_dspi(spi->master);
+>> +     unsigned char br = 0, pbr = 0, pcssck = 0, cssck = 0;
+>> +     unsigned char pasc = 0, asc = 0, fmsz = 0;
+>> +     unsigned long clkrate;
+>> +
+>> +     if (4 <= spi->bits_per_word && spi->bits_per_word <= 16)
+>> +             fmsz = spi->bits_per_word - 1;
+>> +     else
+>> +             return -ENODEV;
+>> +
+>> +     clkrate = clk_get_rate(dspi->clk);
+>> +     hz_to_spi_baud(&pbr, &br, spi->max_speed_hz, clkrate);
+>> +
+>> +     /* Set PCS to SCK delay scale values */
+>> +     ns_delay_scale(&pcssck, &cssck, dspi->cs_sck_delay, clkrate);
+>> +
+>> +     /* Set After SCK delay scale values */
+>> +     ns_delay_scale(&pasc, &asc, dspi->sck_cs_delay, clkrate);
+>> +
+>> +     writel(SPI_CTAR_FMSZ(fmsz)
+>> +            | SPI_CTAR_CPOL(spi->mode & SPI_CPOL ? 1 : 0)
+>> +            | SPI_CTAR_CPHA(spi->mode & SPI_CPHA ? 1 : 0)
+>> +            | SPI_CTAR_LSBFE(spi->mode & SPI_LSB_FIRST ? 1 : 0)
+>> +            | SPI_CTAR_PCSSCK(pcssck)
+>> +            | SPI_CTAR_CSSCK(cssck)
+>> +            | SPI_CTAR_PASC(pasc)
+>> +            | SPI_CTAR_ASC(asc)
+>> +            | SPI_CTAR_PBR(pbr)
+>> +            | SPI_CTAR_BR(br),
+>> +            dspi->base + SPI_CTAR(spi->chip_select));
+>> +
+>> +     return 0;
+>> +}
+>> +
+>> +static int dspi_probe(struct device_d *dev)
+>> +{
+>> +     struct resource *io;
+>> +     struct fsl_dspi *dspi;
+>> +     struct spi_master *master;
+>> +     struct device_node *np = dev->device_node;
+>> +
+>> +     int ret = 0;
+>> +     uint32_t bus_num = 0;
+>> +     uint32_t cs_num;
+>> +
+>> +     dspi = xzalloc(sizeof(*dspi));
+>> +
+>> +     dspi->devtype_data = of_device_get_match_data(dev);
+>> +     if (!dspi->devtype_data) {
+>> +             dev_err(dev, "can't get devtype_data\n");
+>> +             ret = -EFAULT;
+>> +             goto free_memory;
+>> +     }
+>> +
+>> +     master = &dspi->master;
+>> +     master->dev = dev;
+>> +     master->bus_num = dev->id;
+>> +     master->setup = dspi_setup;
+>> +     master->transfer = dspi_transfer;
+>> +
+>> +     ret = of_property_read_u32(np, "spi-num-chipselects", &cs_num);
+>> +     if (ret < 0) {
+>> +             dev_err(dev, "can't get spi-num-chipselects\n");
+>> +             goto free_memory;
+>> +     }
+>> +     master->num_chipselect = cs_num;
+>> +
+>> +     ret = of_property_read_u32(np, "bus-num", &bus_num);
+>> +     if (ret < 0) {
+>> +             dev_err(dev, "can't get bus-num\n");
+>> +             goto free_memory;
+>> +     }
+>> +     master->bus_num = bus_num;
+>
+> I don't think the presence of a bus-num property should be enforced. It
+> seems nobody has reviewed the binding since normally such a property
+> shouldn't even exist. You can honor it if it's present, but shouldn't
+> enforce it.
 
-Regards,
-Peter
+Good point. Will fix in v2.
 
-On Thu, Jan 26, 2017 at 11:01:59AM +0100, Uwe Kleine-K=F6nig wrote:
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  drivers/ata/Kconfig   |   5 ++
->  drivers/ata/Makefile  |   1 +
->  drivers/ata/sata_mv.c | 126 ++++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  3 files changed, 132 insertions(+)
->  create mode 100644 drivers/ata/sata_mv.c
-> =
+>
+>> +
+>> +     of_property_read_u32(dev->device_node, "fsl,spi-cs-sck-delay",
+>> +                          &dspi->cs_sck_delay);
+>> +     of_property_read_u32(dev->device_node, "fsl,spi-sck-cs-delay",
+>> +                          &dspi->sck_cs_delay);
+>> +
+>> +     io = dev_request_mem_resource(dev, 0);
+>> +     if (IS_ERR(io))
+>> +             return PTR_ERR(io);
+>
+> I don't care much about cleaning up properly in the probe error pathes
+> in barebox, but now that you started with "goto free_memory" in the
+> driver, you can use it here aswell ;)
 
-> diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-> index 7850e4a9c967..0234c66c8ec8 100644
-> --- a/drivers/ata/Kconfig
-> +++ b/drivers/ata/Kconfig
-> @@ -42,6 +42,11 @@ config DISK_AHCI_IMX
->  	depends on DISK_AHCI
->  	bool "i.MX AHCI support"
->  =
+True :-) Will fix in v2.
 
-> +config DISK_SATA_MV
-> +	depends on ARCH_MVEBU
-> +	select DISK_IDE_SFF
-> +	bool "Marvell SATA support"
-> +
->  comment "interface types"
->  =
-
->  config DISK_INTF_PLATFORM_IDE
-> diff --git a/drivers/ata/Makefile b/drivers/ata/Makefile
-> index c444c4d1962e..6b83ae2ef542 100644
-> --- a/drivers/ata/Makefile
-> +++ b/drivers/ata/Makefile
-> @@ -5,6 +5,7 @@ obj-$(CONFIG_DISK_IDE_SFF) +=3D ide-sff.o
->  obj-$(CONFIG_DISK_ATA) +=3D disk_ata_drive.o
->  obj-$(CONFIG_DISK_AHCI) +=3D ahci.o
->  obj-$(CONFIG_DISK_AHCI_IMX) +=3D sata-imx.o
-> +obj-$(CONFIG_DISK_SATA_MV) +=3D sata_mv.o
->  =
-
->  # interface types
->  =
-
-> diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
-> new file mode 100644
-> index 000000000000..22b29d08a579
-> --- /dev/null
-> +++ b/drivers/ata/sata_mv.c
-> @@ -0,0 +1,126 @@
-> +#include <common.h>
-> +#include <clock.h>
-> +#include <driver.h>
-> +#include <init.h>
-> +#include <ata_drive.h>
-> +
-> +#include <asm/io.h>
-> +
-> +/* This can/should be moved to a more generic place */
-> +static void ata_ioports_init(struct ata_ioports *io,
-> +			     void *base_data, void *base_reg, void *base_alt,
-> +			     unsigned stride)
-> +{
-> +	/* io->cmd_addr is unused */;
-> +	io->data_addr =3D base_data;
-> +	io->error_addr =3D base_reg + 1 * stride;
-> +	/* io->feature_addr is unused */
-> +	io->nsect_addr =3D base_reg + 2 * stride;
-> +	io->lbal_addr =3D base_reg + 3 * stride;
-> +	io->lbam_addr =3D base_reg + 4 * stride;
-> +	io->lbah_addr =3D base_reg + 5 * stride;
-> +	io->device_addr =3D base_reg + 6 * stride;
-> +	io->status_addr =3D base_reg + 7 * stride;
-> +	io->command_addr =3D base_reg + 7 * stride;
-> +	/* io->altstatus_addr is unused */
-> +
-> +	if (base_alt)
-> +		io->ctl_addr =3D base_alt;
-> +	else
-> +		io->ctl_addr =3D io->status_addr;
-> +
-> +	/* io->alt_dev_addr is unused */
-> +}
-> +
-> +#define REG_WINDOW_CONTROL(n)	((n) * 0x10 + 0x30)
-> +#define REG_WINDOW_BASE(n)	((n) * 0x10 + 0x34)
-> +
-> +#define REG_EDMA_COMMAND(n)	((n) * 0x2000 + 0x2028)
-> +#define REG_EDMA_COMMAND__EATARST	0x00000004
-> +
-> +#define REG_ATA_BASE		0x2100
-> +#define REG_SSTATUS(n)		((n) * 0x2000 + 0x2300)
-> +#define REG_SCONTROL(n)		((n) * 0x2000 + 0x2308)
-> +#define REG_SCONTROL__DET		0x0000000f
-> +#define REG_SCONTROL__DET__INIT		0x00000001
-> +#define REG_SCONTROL__DET__PHYOK	0x00000002
-> +#define REG_SCONTROL__IPM		0x00000f00
-> +#define REG_SCONTROL__IPM__PARTIAL	0x00000100
-> +#define REG_SCONTROL__IPM__SLUMBER	0x00000200
-> +
-> +static int mv_sata_probe(struct device_d *dev)
-> +{
-> +	struct resource *iores;
-> +	void __iomem *base;
-> +	struct ide_port *ide;
-> +	u32 scontrol;
-> +	int ret, i;
-> +
-> +	iores =3D dev_request_mem_resource(dev, 0);
-> +	if (IS_ERR(iores)) {
-> +		dev_err(dev, "Failed to request mem resources\n");
-> +		return PTR_ERR(iores);
-> +	}
-> +	base =3D IOMEM(iores->start);
-> +
-> +	/* disable MBus windows */
-> +	for (i =3D 0; i < 4; ++i) {
-> +		writel(0, base + REG_WINDOW_CONTROL(i));
-> +		writel(0, base + REG_WINDOW_BASE(i));
-> +	}
-> +
-> +	/* enable first window */
-> +	writel(0x7fff0e01, base + REG_WINDOW_CONTROL(0));
-> +	writel(0, base + REG_WINDOW_BASE(0));
-> +
-> +	writel(REG_EDMA_COMMAND__EATARST, base + REG_EDMA_COMMAND(0));
-> +	udelay(25);
-> +	writel(0x0, base + REG_EDMA_COMMAND(0));
-> +
-> +	scontrol =3D readl(base + REG_SCONTROL(0));
-> +	scontrol &=3D ~(REG_SCONTROL__DET | REG_SCONTROL__IPM);
-> +	/* disable power management */
-> +	scontrol |=3D REG_SCONTROL__IPM__PARTIAL | REG_SCONTROL__IPM__SLUMBER;
-> +
-> +	/* perform interface communication initialization */
-> +	writel(scontrol | REG_SCONTROL__DET__INIT, base + REG_SCONTROL(0));
-> +	writel(scontrol, base + REG_SCONTROL(0));
-> +
-> +	ret =3D wait_on_timeout(10 * MSECOND,
-> +			      (readl(base + REG_SSTATUS(0)) & REG_SCONTROL__DET) =3D=3D (REG_=
-SCONTROL__DET__INIT | REG_SCONTROL__DET__PHYOK));
-> +	if (ret) {
-> +		dev_err(dev, "Failed to wait for phy (sstatus=3D0x%08x)\n",
-> +			readl(base + REG_SSTATUS(0)));
-> +		return ret;
-> +	}
-> +
-> +	ide =3D xzalloc(sizeof(*ide));
-> +
-> +	ide->port.dev =3D dev;
-> +
-> +	ata_ioports_init(&ide->io, base + REG_ATA_BASE, base + REG_ATA_BASE,
-> +			 NULL, 4);
-> +
-> +	dev->priv =3D ide;
-> +
-> +	ret =3D ide_port_register(ide);
-> +	if (ret)
-> +		free(ide);
-> +
-> +	return ret;
-> +}
-> +
-> +static const struct of_device_id mv_sata_dt_ids[] =3D {
-> +	{
-> +		.compatible =3D "marvell,armada-370-sata",
-> +	}, {
-> +		/* sentinel */
-> +	}
-> +};
-> +
-> +static struct driver_d mv_sata_driver =3D {
-> +	.name =3D "mv_sata",
-> +	.probe =3D mv_sata_probe,
-> +	.of_compatible =3D mv_sata_dt_ids,
-> +};
-> +device_platform_driver(mv_sata_driver);
-> -- =
-
-> 2.11.0
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
