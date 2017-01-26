@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cWeVm-0001I6-0f
- for barebox@lists.infradead.org; Thu, 26 Jan 2017 07:30:27 +0000
-Date: Thu, 26 Jan 2017 08:30:03 +0100
+ id 1cWeex-0003qi-Ch
+ for barebox@lists.infradead.org; Thu, 26 Jan 2017 07:39:57 +0000
+Date: Thu, 26 Jan 2017 08:39:33 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170126073003.rpufxl2us6mc5i4b@pengutronix.de>
-References: <CA+-urNQJbuE44V93+BERHf9r5kEKzn5mBJ5e=t9932TtR7+0Yw@mail.gmail.com>
+Message-ID: <20170126073933.sl5da36773g3misf@pengutronix.de>
+References: <CACmkAZEckFyAA1zgS=j53RTMzqtxmwpiaNcHZ4=2jhA5uSKXJA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CA+-urNQJbuE44V93+BERHf9r5kEKzn5mBJ5e=t9932TtR7+0Yw@mail.gmail.com>
+In-Reply-To: <CACmkAZEckFyAA1zgS=j53RTMzqtxmwpiaNcHZ4=2jhA5uSKXJA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Accessing non-volatile variables from Linux
-To: Frank Hunleth <fhunleth@troodon-software.com>
+Subject: Re: How to configure Imx6ul watchdog from barebox
+To: Haris Papadopoulos <haris@amberbox.com>
 Cc: barebox@lists.infradead.org
 
-Hi Frank,
-
-On Wed, Jan 25, 2017 at 02:21:55PM -0500, Frank Hunleth wrote:
+On Wed, Jan 25, 2017 at 07:27:01PM +0000, Haris Papadopoulos wrote:
 > Hi,
 > 
-> I'm wondering if it's possible to read and modify Barebox environment
-> variables from Linux in a way similar to U-Boot's fw_printenv and
-> fw_setenv. If that's not possible, is there another way for communicating
-> between Linux and Barebox? Apologies if I totally missed a section in the
-> docs that describes this.
+> I am using barebox on a board from phytec phyBOARD-Segin that uses an
+> imx6ul processor  (phyCORE-i.MX 6UL).
+> 
+> Any idea how to configure the watchdog to automatically start in the
+> bootloader and then be kicked from linux? In which file do I have to
+> do the following configs?
 
-There is scripts/bareboxenv.c which gets compiled for the target when
-CONFIG_BAREBOXENV_TARGET is enabled. This allows you to unpack the
-barebox environment device (mtd/partition) to a directory and back to
-the device after modifying. There is no direct getenv/setenv
-functionality, you would have to do a manual echo/cat to the variable
-files.
+You can pass the -w option to the boot command, or, create a
+nv.boot.watchdog_timeout variable (using nv boot.watchdog_timeout=10 for
+example). This would enable the watchdog each time just before booting.
+To enable/test the watchdog once you can use the 'wd' command. Use
+'wd 3' to enable the watchdog with a timeout of three seconds and do
+a 'wd 3' again before it runs out.
+
+> 
+> CONFIG_WATCHDOG=y
+> CONFIG_WATCHDOG_IMX=y
+> 
+> Where can I setup the relevant flags?
+> 
+> Also, does barebox have the bootcount feature?
+
+I'm Not exactly sure where you aiming at. There is the bootchooser
+framework which allows you to create different redundant boot scenarios
+in which you can boot different systems based on successful/failed
+booting combined with configurable watchdog timeouts. See
+http://barebox.org/doc/latest/user/bootchooser.html
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
