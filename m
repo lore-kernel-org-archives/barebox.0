@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qt0-f178.google.com ([209.85.216.178])
+Received: from mail-lf0-f68.google.com ([209.85.215.68])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cWk9Q-0005LG-FX
- for barebox@lists.infradead.org; Thu, 26 Jan 2017 13:31:46 +0000
-Received: by mail-qt0-f178.google.com with SMTP id w20so16762158qtb.1
- for <barebox@lists.infradead.org>; Thu, 26 Jan 2017 05:31:24 -0800 (PST)
+ id 1cWl5d-00084Y-4e
+ for barebox@lists.infradead.org; Thu, 26 Jan 2017 14:31:55 +0000
+Received: by mail-lf0-f68.google.com with SMTP id q89so23831970lfi.1
+ for <barebox@lists.infradead.org>; Thu, 26 Jan 2017 06:31:32 -0800 (PST)
+Date: Thu, 26 Jan 2017 17:30:27 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20170126143027.GB21086@berta>
+References: <20170126100159.6036-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20170126073003.rpufxl2us6mc5i4b@pengutronix.de>
-References: <CA+-urNQJbuE44V93+BERHf9r5kEKzn5mBJ5e=t9932TtR7+0Yw@mail.gmail.com>
- <20170126073003.rpufxl2us6mc5i4b@pengutronix.de>
-From: Frank Hunleth <fhunleth@troodon-software.com>
-Date: Thu, 26 Jan 2017 08:30:01 -0500
-Message-ID: <CA+-urNSDMkgwn7zCAV2RAQCwaSov_uGRiMzUtrLqPkZGK+9Rrw@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20170126100159.6036-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,40 +20,217 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Accessing non-volatile variables from Linux
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] ata: new driver to support the internal sata controller
+ on Armada-XP
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sasch,
+Hi Uwe,
 
-On Thu, Jan 26, 2017 at 2:30 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> Hi Frank,
->
-> On Wed, Jan 25, 2017 at 02:21:55PM -0500, Frank Hunleth wrote:
->> Hi,
->>
->> I'm wondering if it's possible to read and modify Barebox environment
->> variables from Linux in a way similar to U-Boot's fw_printenv and
->> fw_setenv. If that's not possible, is there another way for communicating
->> between Linux and Barebox? Apologies if I totally missed a section in the
->> docs that describes this.
->
-> There is scripts/bareboxenv.c which gets compiled for the target when
-> CONFIG_BAREBOXENV_TARGET is enabled. This allows you to unpack the
-> barebox environment device (mtd/partition) to a directory and back to
-> the device after modifying. There is no direct getenv/setenv
-> functionality, you would have to do a manual echo/cat to the variable
-> files.
+Our approach for the same problem was to put SATA PHY initialization into t=
+he =
 
-Thanks - That sounds like what I'm looking for. I'll check it out.
+board specific code (I guess in your case it is =
 
-Also, Trent, thanks for the alternative idea.
+arch/arm/boards/marvell-armada-xp-gp/board.c) and bind the generic ATA driv=
+er =
 
-Frank
+(drivers/ata/intf_platform_ide.c) via the device tree.
+
+Regards,
+Peter
+
+On Thu, Jan 26, 2017 at 11:01:59AM +0100, Uwe Kleine-K=F6nig wrote:
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  drivers/ata/Kconfig   |   5 ++
+>  drivers/ata/Makefile  |   1 +
+>  drivers/ata/sata_mv.c | 126 ++++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  3 files changed, 132 insertions(+)
+>  create mode 100644 drivers/ata/sata_mv.c
+> =
+
+> diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
+> index 7850e4a9c967..0234c66c8ec8 100644
+> --- a/drivers/ata/Kconfig
+> +++ b/drivers/ata/Kconfig
+> @@ -42,6 +42,11 @@ config DISK_AHCI_IMX
+>  	depends on DISK_AHCI
+>  	bool "i.MX AHCI support"
+>  =
+
+> +config DISK_SATA_MV
+> +	depends on ARCH_MVEBU
+> +	select DISK_IDE_SFF
+> +	bool "Marvell SATA support"
+> +
+>  comment "interface types"
+>  =
+
+>  config DISK_INTF_PLATFORM_IDE
+> diff --git a/drivers/ata/Makefile b/drivers/ata/Makefile
+> index c444c4d1962e..6b83ae2ef542 100644
+> --- a/drivers/ata/Makefile
+> +++ b/drivers/ata/Makefile
+> @@ -5,6 +5,7 @@ obj-$(CONFIG_DISK_IDE_SFF) +=3D ide-sff.o
+>  obj-$(CONFIG_DISK_ATA) +=3D disk_ata_drive.o
+>  obj-$(CONFIG_DISK_AHCI) +=3D ahci.o
+>  obj-$(CONFIG_DISK_AHCI_IMX) +=3D sata-imx.o
+> +obj-$(CONFIG_DISK_SATA_MV) +=3D sata_mv.o
+>  =
+
+>  # interface types
+>  =
+
+> diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
+> new file mode 100644
+> index 000000000000..22b29d08a579
+> --- /dev/null
+> +++ b/drivers/ata/sata_mv.c
+> @@ -0,0 +1,126 @@
+> +#include <common.h>
+> +#include <clock.h>
+> +#include <driver.h>
+> +#include <init.h>
+> +#include <ata_drive.h>
+> +
+> +#include <asm/io.h>
+> +
+> +/* This can/should be moved to a more generic place */
+> +static void ata_ioports_init(struct ata_ioports *io,
+> +			     void *base_data, void *base_reg, void *base_alt,
+> +			     unsigned stride)
+> +{
+> +	/* io->cmd_addr is unused */;
+> +	io->data_addr =3D base_data;
+> +	io->error_addr =3D base_reg + 1 * stride;
+> +	/* io->feature_addr is unused */
+> +	io->nsect_addr =3D base_reg + 2 * stride;
+> +	io->lbal_addr =3D base_reg + 3 * stride;
+> +	io->lbam_addr =3D base_reg + 4 * stride;
+> +	io->lbah_addr =3D base_reg + 5 * stride;
+> +	io->device_addr =3D base_reg + 6 * stride;
+> +	io->status_addr =3D base_reg + 7 * stride;
+> +	io->command_addr =3D base_reg + 7 * stride;
+> +	/* io->altstatus_addr is unused */
+> +
+> +	if (base_alt)
+> +		io->ctl_addr =3D base_alt;
+> +	else
+> +		io->ctl_addr =3D io->status_addr;
+> +
+> +	/* io->alt_dev_addr is unused */
+> +}
+> +
+> +#define REG_WINDOW_CONTROL(n)	((n) * 0x10 + 0x30)
+> +#define REG_WINDOW_BASE(n)	((n) * 0x10 + 0x34)
+> +
+> +#define REG_EDMA_COMMAND(n)	((n) * 0x2000 + 0x2028)
+> +#define REG_EDMA_COMMAND__EATARST	0x00000004
+> +
+> +#define REG_ATA_BASE		0x2100
+> +#define REG_SSTATUS(n)		((n) * 0x2000 + 0x2300)
+> +#define REG_SCONTROL(n)		((n) * 0x2000 + 0x2308)
+> +#define REG_SCONTROL__DET		0x0000000f
+> +#define REG_SCONTROL__DET__INIT		0x00000001
+> +#define REG_SCONTROL__DET__PHYOK	0x00000002
+> +#define REG_SCONTROL__IPM		0x00000f00
+> +#define REG_SCONTROL__IPM__PARTIAL	0x00000100
+> +#define REG_SCONTROL__IPM__SLUMBER	0x00000200
+> +
+> +static int mv_sata_probe(struct device_d *dev)
+> +{
+> +	struct resource *iores;
+> +	void __iomem *base;
+> +	struct ide_port *ide;
+> +	u32 scontrol;
+> +	int ret, i;
+> +
+> +	iores =3D dev_request_mem_resource(dev, 0);
+> +	if (IS_ERR(iores)) {
+> +		dev_err(dev, "Failed to request mem resources\n");
+> +		return PTR_ERR(iores);
+> +	}
+> +	base =3D IOMEM(iores->start);
+> +
+> +	/* disable MBus windows */
+> +	for (i =3D 0; i < 4; ++i) {
+> +		writel(0, base + REG_WINDOW_CONTROL(i));
+> +		writel(0, base + REG_WINDOW_BASE(i));
+> +	}
+> +
+> +	/* enable first window */
+> +	writel(0x7fff0e01, base + REG_WINDOW_CONTROL(0));
+> +	writel(0, base + REG_WINDOW_BASE(0));
+> +
+> +	writel(REG_EDMA_COMMAND__EATARST, base + REG_EDMA_COMMAND(0));
+> +	udelay(25);
+> +	writel(0x0, base + REG_EDMA_COMMAND(0));
+> +
+> +	scontrol =3D readl(base + REG_SCONTROL(0));
+> +	scontrol &=3D ~(REG_SCONTROL__DET | REG_SCONTROL__IPM);
+> +	/* disable power management */
+> +	scontrol |=3D REG_SCONTROL__IPM__PARTIAL | REG_SCONTROL__IPM__SLUMBER;
+> +
+> +	/* perform interface communication initialization */
+> +	writel(scontrol | REG_SCONTROL__DET__INIT, base + REG_SCONTROL(0));
+> +	writel(scontrol, base + REG_SCONTROL(0));
+> +
+> +	ret =3D wait_on_timeout(10 * MSECOND,
+> +			      (readl(base + REG_SSTATUS(0)) & REG_SCONTROL__DET) =3D=3D (REG_=
+SCONTROL__DET__INIT | REG_SCONTROL__DET__PHYOK));
+> +	if (ret) {
+> +		dev_err(dev, "Failed to wait for phy (sstatus=3D0x%08x)\n",
+> +			readl(base + REG_SSTATUS(0)));
+> +		return ret;
+> +	}
+> +
+> +	ide =3D xzalloc(sizeof(*ide));
+> +
+> +	ide->port.dev =3D dev;
+> +
+> +	ata_ioports_init(&ide->io, base + REG_ATA_BASE, base + REG_ATA_BASE,
+> +			 NULL, 4);
+> +
+> +	dev->priv =3D ide;
+> +
+> +	ret =3D ide_port_register(ide);
+> +	if (ret)
+> +		free(ide);
+> +
+> +	return ret;
+> +}
+> +
+> +static const struct of_device_id mv_sata_dt_ids[] =3D {
+> +	{
+> +		.compatible =3D "marvell,armada-370-sata",
+> +	}, {
+> +		/* sentinel */
+> +	}
+> +};
+> +
+> +static struct driver_d mv_sata_driver =3D {
+> +	.name =3D "mv_sata",
+> +	.probe =3D mv_sata_probe,
+> +	.of_compatible =3D mv_sata_dt_ids,
+> +};
+> +device_platform_driver(mv_sata_driver);
+> -- =
+
+> 2.11.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
