@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cYKnZ-0002Fw-3k
+ id 1cYKnZ-0002Fe-3g
  for barebox@lists.infradead.org; Mon, 30 Jan 2017 22:51:51 +0000
 From: Alexander Kurz <akurz@blala.de>
-Date: Mon, 30 Jan 2017 23:50:59 +0100
-Message-Id: <1485816659-26091-5-git-send-email-akurz@blala.de>
+Date: Mon, 30 Jan 2017 23:50:57 +0100
+Message-Id: <1485816659-26091-3-git-send-email-akurz@blala.de>
 In-Reply-To: <1485816659-26091-1-git-send-email-akurz@blala.de>
 References: <1485816659-26091-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,830 +21,360 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] ARM i.MX6SL: Add support for the Tolino Vision,
- Vision2 and Vision3HD
+Subject: [PATCH 3/5] ARM: i.MX6SL: import clock infrastructure from linux
 To: barebox@lists.infradead.org
 Cc: Alexander Kurz <akurz@blala.de>
 
-The Tolino Vision E-Book readers are based on a i.MX6SL SoC. The devices
-boot in internal boot mode from a build-in eMMC, alternatively the devices
-may be set into USB-downloader mode when TP23 is pulled to ground on
-startup using a 1k resistor.
+Import i.MX6SL clock infrastructure from linux clk-imx6sl.c
 
-Add support for this devices and make barebox a drop-in replacement for
-the factory shipped u-boot image.
-
-Notable features:
-- support for eMMC, USB, UART, I2C, Keys, LED
-- model detection of Vision, Vision2 and Vision3HD based on OCOTP serial
-  number range and generation of model specific android kernel command
-  line arguments
-- usbserial barebox console access by pressing backlight button at startup
-
-Todo:
-- PMIC
-- EPD, EPD-PMIC, Splashscreen
-- Vision4HD
+To save space, clocks beeing unlikely usefull for bootloader purposes
+(SSI, SPDIF, EXTERN_AUDIO) were not imported.
+Further, the fixup code from linux mainline commits
+a49e6c4b8204 ("ARM: imx: add common clock support for fixup mux")
+cbe7fc8aaeef ("ARM: imx: add common clock support for fixup div")
+was ignored for this commit.
 
 Signed-off-by: Alexander Kurz <akurz@blala.de>
 ---
- Documentation/boards/imx/tolino-vision.rst         |  26 +++
- arch/arm/boards/Makefile                           |   1 +
- arch/arm/boards/tolino-vision/Makefile             |   3 +
- arch/arm/boards/tolino-vision/board.c              |  77 +++++++
- arch/arm/boards/tolino-vision/env/boot/mmc_android |  51 +++++
- arch/arm/boards/tolino-vision/env/init/partitions  |   4 +
- arch/arm/boards/tolino-vision/env/init/serials     |  11 +
- arch/arm/boards/tolino-vision/env/init/usbconsole  |   8 +
- .../boards/tolino-vision/env/nv/autoboot_timeout   |   1 +
- arch/arm/boards/tolino-vision/env/nv/boot.default  |   1 +
- .../tolino-vision/env/nv/linux.bootargs.console    |   1 +
- .../flash-header-tolino-vision.imxcfg              |  86 ++++++++
- arch/arm/boards/tolino-vision/lowlevel.c           |  27 +++
- arch/arm/configs/tolino-vision_defconfig           |  96 +++++++++
- arch/arm/dts/Makefile                              |   1 +
- arch/arm/dts/imx6sl-tolino-vision.dts              | 225 +++++++++++++++++++++
- arch/arm/mach-imx/Kconfig                          |  11 +
- images/Makefile.imx                                |   5 +
- 18 files changed, 635 insertions(+)
- create mode 100644 Documentation/boards/imx/tolino-vision.rst
- create mode 100644 arch/arm/boards/tolino-vision/Makefile
- create mode 100644 arch/arm/boards/tolino-vision/board.c
- create mode 100644 arch/arm/boards/tolino-vision/env/boot/mmc_android
- create mode 100644 arch/arm/boards/tolino-vision/env/init/partitions
- create mode 100644 arch/arm/boards/tolino-vision/env/init/serials
- create mode 100644 arch/arm/boards/tolino-vision/env/init/usbconsole
- create mode 100644 arch/arm/boards/tolino-vision/env/nv/autoboot_timeout
- create mode 100644 arch/arm/boards/tolino-vision/env/nv/boot.default
- create mode 100644 arch/arm/boards/tolino-vision/env/nv/linux.bootargs.console
- create mode 100644 arch/arm/boards/tolino-vision/flash-header-tolino-vision.imxcfg
- create mode 100644 arch/arm/boards/tolino-vision/lowlevel.c
- create mode 100644 arch/arm/configs/tolino-vision_defconfig
- create mode 100644 arch/arm/dts/imx6sl-tolino-vision.dts
+ drivers/clk/imx/clk-imx6sl.c | 329 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 329 insertions(+)
+ create mode 100644 drivers/clk/imx/clk-imx6sl.c
 
-diff --git a/Documentation/boards/imx/tolino-vision.rst b/Documentation/boards/imx/tolino-vision.rst
+diff --git a/drivers/clk/imx/clk-imx6sl.c b/drivers/clk/imx/clk-imx6sl.c
 new file mode 100644
-index 0000000..848076c
+index 0000000..89ede76
 --- /dev/null
-+++ b/Documentation/boards/imx/tolino-vision.rst
-@@ -0,0 +1,26 @@
-+Tolino Vision e-book readers
-+============================
-+
-+The tolino vision series of e-book readers is based on Freescale i.MX6SL SOC.
-+The devices are equiped with:
-+
-+* 512MiB LPDDR2
-+* 4GiB eMMC 4.5
-+
-+Barebox support covers the models Vision (60Q32) and Vision2/3HD (60Q52).
-+
-+The device boots in internal boot mode from the eMMC main partition and
-+is shipped with a vendor modified u-boot imximage.
-+
-+To upload and run a new bootloader the device can be put into USB-downloader
-+mode by the SOC microcode when TP23 is pulled to ground using a 330R resistor
-+during a reset. A new USB device "SE Blank MEGREZ" should appear, barebox may
-+be uploaded using
-+$ scripts/imx/imx-usb-loader -v images/barebox-tolino-vision.img
-+
-+Note: a USB serial ACM console will be launched by a barebox init script
-+when the front light key is pressed during startup (e.g. before running
-+imx-usb-loader)
-+
-+barebox may be installed on the device by uploading the image and running
-+memcpy -s barebox-tolino-vision.img -d /dev/disk0.imximg 0x400 0 523248
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 2f1a79f..ef43e2e 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -118,6 +118,7 @@ obj-$(CONFIG_MACH_TECHNEXION_WANDBOARD)		+= technexion-wandboard/
- obj-$(CONFIG_MACH_TNY_A9260)			+= tny-a926x/
- obj-$(CONFIG_MACH_TNY_A9263)			+= tny-a926x/
- obj-$(CONFIG_MACH_TNY_A9G20)			+= tny-a926x/
-+obj-$(CONFIG_MACH_TOLINO_VISION)		+= tolino-vision/
- obj-$(CONFIG_MACH_TORADEX_COLIBRI_T20)		+= toradex-colibri-t20/
- obj-$(CONFIG_MACH_TOSHIBA_AC100)		+= toshiba-ac100/
- obj-$(CONFIG_MACH_TQMA53)			+= tqma53/
-diff --git a/arch/arm/boards/tolino-vision/Makefile b/arch/arm/boards/tolino-vision/Makefile
-new file mode 100644
-index 0000000..9698015
---- /dev/null
-+++ b/arch/arm/boards/tolino-vision/Makefile
-@@ -0,0 +1,3 @@
-+obj-y += board.o flash-header-tolino-vision.dcd.o
-+extra-y += flash-header-tolino-vision.dcd.S flash-header-tolino-vision.dcd
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/tolino-vision/board.c b/arch/arm/boards/tolino-vision/board.c
-new file mode 100644
-index 0000000..beeaac9
---- /dev/null
-+++ b/arch/arm/boards/tolino-vision/board.c
-@@ -0,0 +1,77 @@
++++ b/drivers/clk/imx/clk-imx6sl.c
+@@ -0,0 +1,329 @@
 +/*
-+ * Copyright (C) 2016 Alexander Kurz <akurz@blala.de>
++ * Copyright (C) 2014 Freescale Semiconductor, Inc.
 + *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
 + *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
 + */
 +
-+#include <asm/armlinux.h>
-+#include <asm/io.h>
++#include <dt-bindings/clock/imx6sl-clock.h>
 +#include <common.h>
-+#include <environment.h>
-+#include <globalvar.h>
 +#include <init.h>
-+#include <linux/sizes.h>
-+#include <mach/generic.h>
++#include <driver.h>
++#include <linux/clk.h>
++#include <io.h>
++#include <of.h>
++#include <linux/clkdev.h>
++#include <linux/err.h>
++#include <linux/clk.h>
 +#include <mach/imx6-regs.h>
++#include <mach/revision.h>
 +#include <mach/imx6.h>
-+#include <mach/imx6-fusemap.h>
 +
-+static int vision_device_init(void)
++#include "clk.h"
++#include "common.h"
++
++static const char *step_sels[]		= { "osc", "pll2_pfd2", };
++static const char *pll1_sw_sels[]	= { "pll1_sys", "step", };
++static const char *ocram_alt_sels[]	= { "pll2_pfd2", "pll3_pfd1", };
++static const char *ocram_sels[]		= { "periph", "ocram_alt_sels", };
++static const char *pre_periph_sels[]	= { "pll2_bus", "pll2_pfd2", "pll2_pfd0", "pll2_198m", };
++static const char *periph_clk2_sels[]	= { "pll3_usb_otg", "osc", "osc", "dummy", };
++static const char *periph2_clk2_sels[]	= { "pll3_usb_otg", "pll2_bus", };
++static const char *periph_sels[]	= { "pre_periph_sel", "periph_clk2_podf", };
++static const char *periph2_sels[]	= { "pre_periph2_sel", "periph2_clk2_podf", };
++static const char *csi_sels[]		= { "osc", "pll2_pfd2", "pll3_120m", "pll3_pfd1", };
++static const char *lcdif_axi_sels[]	= { "pll2_bus", "pll2_pfd2", "pll3_usb_otg", "pll3_pfd1", };
++static const char *usdhc_sels[]		= { "pll2_pfd2", "pll2_pfd0", };
++static const char *perclk_sels[]	= { "ipg", "osc", };
++static const char *pxp_axi_sels[]	= { "pll2_bus", "pll3_usb_otg", "pll5_video_div", "pll2_pfd0", "pll2_pfd2", "pll3_pfd3", };
++static const char *epdc_axi_sels[]	= { "pll2_bus", "pll3_usb_otg", "pll5_video_div", "pll2_pfd0", "pll2_pfd2", "pll3_pfd2", };
++static const char *gpu2d_ovg_sels[]	= { "pll3_pfd1", "pll3_usb_otg", "pll2_bus", "pll2_pfd2", };
++static const char *gpu2d_sels[]		= { "pll2_pfd2", "pll3_usb_otg", "pll3_pfd1", "pll2_bus", };
++static const char *lcdif_pix_sels[]	= { "pll2_bus", "pll3_usb_otg", "pll5_video_div", "pll2_pfd0", "pll3_pfd0", "pll3_pfd1", };
++static const char *epdc_pix_sels[]	= { "pll2_bus", "pll3_usb_otg", "pll5_video_div", "pll2_pfd0", "pll2_pfd1", "pll3_pfd1", };
++static const char *ecspi_sels[]		= { "pll3_60m", "osc", };
++static const char *uart_sels[]		= { "pll3_80m", "osc", };
++static const char *lvds_sels[]		= {
++	"pll1_sys", "pll2_bus", "pll2_pfd0", "pll2_pfd1", "pll2_pfd2", "dummy", "pll4_audio", "pll5_video",
++	"dummy", "enet_ref", "dummy", "dummy", "pll3_usb_otg", "pll7_usb_host", "pll3_pfd0", "pll3_pfd1",
++	"pll3_pfd2", "pll3_pfd3", "osc", "dummy", "dummy", "dummy", "dummy", "dummy",
++	 "dummy", "dummy", "dummy", "dummy", "dummy", "dummy", "dummy", "dummy",
++};
++static const char *pll_bypass_src_sels[] = { "osc", "lvds1_in", };
++static const char *pll1_bypass_sels[] = { "pll1", "pll1_bypass_src", };
++static const char *pll2_bypass_sels[] = { "pll2", "pll2_bypass_src", };
++static const char *pll3_bypass_sels[] = { "pll3", "pll3_bypass_src", };
++static const char *pll4_bypass_sels[] = { "pll4", "pll4_bypass_src", };
++static const char *pll5_bypass_sels[] = { "pll5", "pll5_bypass_src", };
++static const char *pll6_bypass_sels[] = { "pll6", "pll6_bypass_src", };
++static const char *pll7_bypass_sels[] = { "pll7", "pll7_bypass_src", };
++
++static struct clk *clks[IMX6SL_CLK_END];
++static struct clk_onecell_data clk_data;
++
++static struct clk_div_table clk_enet_ref_table[] = {
++	{ .val = 0, .div = 20, },
++	{ .val = 1, .div = 10, },
++	{ .val = 2, .div = 5, },
++	{ .val = 3, .div = 4, },
++	{ }
++};
++
++static struct clk_div_table post_div_table[] = {
++	{ .val = 2, .div = 1, },
++	{ .val = 1, .div = 2, },
++	{ .val = 0, .div = 4, },
++	{ }
++};
++
++static struct clk_div_table video_div_table[] = {
++	{ .val = 0, .div = 1, },
++	{ .val = 1, .div = 2, },
++	{ .val = 2, .div = 1, },
++	{ .val = 3, .div = 4, },
++	{ }
++};
++
++static int imx6sl_ccm_probe(struct device_d *dev)
 +{
-+	if (!(of_machine_is_compatible("tolino,imx6sl-vision") ||
-+	      of_machine_is_compatible("tolino,imx6sl-vision2")))
++	struct resource *iores;
++	void __iomem *base, *anatop_base, *ccm_base;
++	struct device_node *ccm_node = dev->device_node;
++
++	clks[IMX6SL_CLK_DUMMY] = clk_fixed("dummy", 0);
++
++	anatop_base = (void *)MX6_ANATOP_BASE_ADDR;
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++	ccm_base = IOMEM(iores->start);
++
++	base = anatop_base;
++
++	clks[IMX6SL_PLL1_BYPASS_SRC] = imx_clk_mux("pll1_bypass_src", base + 0x00, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
++	clks[IMX6SL_PLL2_BYPASS_SRC] = imx_clk_mux("pll2_bypass_src", base + 0x30, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
++	clks[IMX6SL_PLL3_BYPASS_SRC] = imx_clk_mux("pll3_bypass_src", base + 0x10, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
++	clks[IMX6SL_PLL4_BYPASS_SRC] = imx_clk_mux("pll4_bypass_src", base + 0x70, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
++	clks[IMX6SL_PLL5_BYPASS_SRC] = imx_clk_mux("pll5_bypass_src", base + 0xa0, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
++	clks[IMX6SL_PLL6_BYPASS_SRC] = imx_clk_mux("pll6_bypass_src", base + 0xe0, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
++	clks[IMX6SL_PLL7_BYPASS_SRC] = imx_clk_mux("pll7_bypass_src", base + 0x20, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
++
++	/*                                    type               name    parent_name   base  div_mask */
++	clks[IMX6SL_CLK_PLL1] = imx_clk_pllv3(IMX_PLLV3_SYS,     "pll1", "osc", base + 0x00, 0x7f);
++	clks[IMX6SL_CLK_PLL2] = imx_clk_pllv3(IMX_PLLV3_GENERIC, "pll2", "osc", base + 0x30, 0x1);
++	clks[IMX6SL_CLK_PLL3] = imx_clk_pllv3(IMX_PLLV3_USB,     "pll3", "osc", base + 0x10, 0x3);
++	clks[IMX6SL_CLK_PLL4] = imx_clk_pllv3(IMX_PLLV3_AV,      "pll4", "osc", base + 0x70, 0x7f);
++	clks[IMX6SL_CLK_PLL5] = imx_clk_pllv3(IMX_PLLV3_AV,      "pll5", "osc", base + 0xa0, 0x7f);
++	clks[IMX6SL_CLK_PLL6] = imx_clk_pllv3(IMX_PLLV3_ENET,    "pll6", "osc", base + 0xe0, 0x3);
++	clks[IMX6SL_CLK_PLL7] = imx_clk_pllv3(IMX_PLLV3_USB,     "pll7", "osc", base + 0x20, 0x3);
++
++	clks[IMX6SL_PLL1_BYPASS] = imx_clk_mux_p("pll1_bypass", base + 0x00, 16, 1, pll1_bypass_sels, ARRAY_SIZE(pll1_bypass_sels));
++	clks[IMX6SL_PLL2_BYPASS] = imx_clk_mux_p("pll2_bypass", base + 0x30, 16, 1, pll2_bypass_sels, ARRAY_SIZE(pll2_bypass_sels));
++	clks[IMX6SL_PLL3_BYPASS] = imx_clk_mux_p("pll3_bypass", base + 0x10, 16, 1, pll3_bypass_sels, ARRAY_SIZE(pll3_bypass_sels));
++	clks[IMX6SL_PLL4_BYPASS] = imx_clk_mux_p("pll4_bypass", base + 0x70, 16, 1, pll4_bypass_sels, ARRAY_SIZE(pll4_bypass_sels));
++	clks[IMX6SL_PLL5_BYPASS] = imx_clk_mux_p("pll5_bypass", base + 0xa0, 16, 1, pll5_bypass_sels, ARRAY_SIZE(pll5_bypass_sels));
++	clks[IMX6SL_PLL6_BYPASS] = imx_clk_mux_p("pll6_bypass", base + 0xe0, 16, 1, pll6_bypass_sels, ARRAY_SIZE(pll6_bypass_sels));
++	clks[IMX6SL_PLL7_BYPASS] = imx_clk_mux_p("pll7_bypass", base + 0x20, 16, 1, pll7_bypass_sels, ARRAY_SIZE(pll7_bypass_sels));
++
++	/* Do not bypass PLLs initially */
++	clk_set_parent(clks[IMX6SL_PLL1_BYPASS], clks[IMX6SL_CLK_PLL1]);
++	clk_set_parent(clks[IMX6SL_PLL2_BYPASS], clks[IMX6SL_CLK_PLL2]);
++	clk_set_parent(clks[IMX6SL_PLL3_BYPASS], clks[IMX6SL_CLK_PLL3]);
++	clk_set_parent(clks[IMX6SL_PLL4_BYPASS], clks[IMX6SL_CLK_PLL4]);
++	clk_set_parent(clks[IMX6SL_PLL5_BYPASS], clks[IMX6SL_CLK_PLL5]);
++	clk_set_parent(clks[IMX6SL_PLL6_BYPASS], clks[IMX6SL_CLK_PLL6]);
++	clk_set_parent(clks[IMX6SL_PLL7_BYPASS], clks[IMX6SL_CLK_PLL7]);
++
++	clks[IMX6SL_CLK_PLL1_SYS]      = imx_clk_gate("pll1_sys",      "pll1_bypass", base + 0x00, 13);
++	clks[IMX6SL_CLK_PLL2_BUS]      = imx_clk_gate("pll2_bus",      "pll2_bypass", base + 0x30, 13);
++	clks[IMX6SL_CLK_PLL3_USB_OTG]  = imx_clk_gate("pll3_usb_otg",  "pll3_bypass", base + 0x10, 13);
++	clks[IMX6SL_CLK_PLL4_AUDIO]    = imx_clk_gate("pll4_audio",    "pll4_bypass", base + 0x70, 13);
++	clks[IMX6SL_CLK_PLL5_VIDEO]    = imx_clk_gate("pll5_video",    "pll5_bypass", base + 0xa0, 13);
++	clks[IMX6SL_CLK_PLL6_ENET]     = imx_clk_gate("pll6_enet",     "pll6_bypass", base + 0xe0, 13);
++	clks[IMX6SL_CLK_PLL7_USB_HOST] = imx_clk_gate("pll7_usb_host", "pll7_bypass", base + 0x20, 13);
++
++	clks[IMX6SL_CLK_LVDS1_SEL] = imx_clk_mux("lvds1_sel", base + 0x160, 0, 5, lvds_sels, ARRAY_SIZE(lvds_sels));
++	clks[IMX6SL_CLK_LVDS1_OUT] = imx_clk_gate_exclusive("lvds1_out", "lvds1_sel", base + 0x160, 10, BIT(12));
++	clks[IMX6SL_CLK_LVDS1_IN] = imx_clk_gate_exclusive("lvds1_in", "anaclk1", base + 0x160, 12, BIT(10));
++
++	/*
++	 * usbphy1 and usbphy2 are implemented as dummy gates using reserve
++	 * bit 20.  They are used by phy driver to keep the refcount of
++	 * parent PLL correct. usbphy1_gate and usbphy2_gate only needs to be
++	 * turned on during boot, and software will not need to control it
++	 * anymore after that.
++	 */
++	clks[IMX6SL_CLK_USBPHY1]      = imx_clk_gate("usbphy1",      "pll3_usb_otg",  base + 0x10, 20);
++	clks[IMX6SL_CLK_USBPHY2]      = imx_clk_gate("usbphy2",      "pll7_usb_host", base + 0x20, 20);
++	clks[IMX6SL_CLK_USBPHY1_GATE] = imx_clk_gate("usbphy1_gate", "dummy",         base + 0x10, 6);
++	clks[IMX6SL_CLK_USBPHY2_GATE] = imx_clk_gate("usbphy2_gate", "dummy",         base + 0x20, 6);
++
++	/*                                                           dev   name              parent_name      flags                reg        shift width div: flags, div_table lock */
++	clks[IMX6SL_CLK_PLL4_POST_DIV]  = imx_clk_divider_table("pll4_post_div", "pll4_audio",
++				base + 0x70,  19, 2, post_div_table);
++	clks[IMX6SL_CLK_PLL4_AUDIO_DIV] = imx_clk_divider("pll4_audio_div", "pll4_post_div",
++				base + 0x170, 15, 1);
++	clks[IMX6SL_CLK_PLL5_POST_DIV]  = imx_clk_divider_table("pll5_post_div", "pll5_video",
++				base + 0xa0,  19, 2, post_div_table);
++	clks[IMX6SL_CLK_PLL5_VIDEO_DIV] = imx_clk_divider_table("pll5_video_div", "pll5_post_div",
++				base + 0x170, 30, 2, video_div_table);
++	clks[IMX6SL_CLK_ENET_REF]       = imx_clk_divider_table("enet_ref", "pll6_enet",
++				base + 0xe0,  0,  2, clk_enet_ref_table);
++
++	/*                                       name         parent_name     reg           idx */
++	clks[IMX6SL_CLK_PLL2_PFD0] = imx_clk_pfd("pll2_pfd0", "pll2_bus",     base + 0x100, 0);
++	clks[IMX6SL_CLK_PLL2_PFD1] = imx_clk_pfd("pll2_pfd1", "pll2_bus",     base + 0x100, 1);
++	clks[IMX6SL_CLK_PLL2_PFD2] = imx_clk_pfd("pll2_pfd2", "pll2_bus",     base + 0x100, 2);
++	clks[IMX6SL_CLK_PLL3_PFD0] = imx_clk_pfd("pll3_pfd0", "pll3_usb_otg", base + 0xf0,  0);
++	clks[IMX6SL_CLK_PLL3_PFD1] = imx_clk_pfd("pll3_pfd1", "pll3_usb_otg", base + 0xf0,  1);
++	clks[IMX6SL_CLK_PLL3_PFD2] = imx_clk_pfd("pll3_pfd2", "pll3_usb_otg", base + 0xf0,  2);
++	clks[IMX6SL_CLK_PLL3_PFD3] = imx_clk_pfd("pll3_pfd3", "pll3_usb_otg", base + 0xf0,  3);
++
++	/*                                                name         parent_name     mult div */
++	clks[IMX6SL_CLK_PLL2_198M] = imx_clk_fixed_factor("pll2_198m", "pll2_pfd2",      1, 2);
++	clks[IMX6SL_CLK_PLL3_120M] = imx_clk_fixed_factor("pll3_120m", "pll3_usb_otg",   1, 4);
++	clks[IMX6SL_CLK_PLL3_80M]  = imx_clk_fixed_factor("pll3_80m",  "pll3_usb_otg",   1, 6);
++	clks[IMX6SL_CLK_PLL3_60M]  = imx_clk_fixed_factor("pll3_60m",  "pll3_usb_otg",   1, 8);
++
++	base = ccm_base;
++
++	/*                                              name                reg       shift width parent_names     num_parents */
++	clks[IMX6SL_CLK_STEP]             = imx_clk_mux("step",             base + 0xc,  8,  1, step_sels,         ARRAY_SIZE(step_sels));
++	clks[IMX6SL_CLK_PLL1_SW]          = imx_clk_mux("pll1_sw",          base + 0xc,  2,  1, pll1_sw_sels,      ARRAY_SIZE(pll1_sw_sels));
++	clks[IMX6SL_CLK_OCRAM_ALT_SEL]    = imx_clk_mux("ocram_alt_sel",    base + 0x14, 7,  1, ocram_alt_sels,    ARRAY_SIZE(ocram_alt_sels));
++	clks[IMX6SL_CLK_OCRAM_SEL]        = imx_clk_mux("ocram_sel",        base + 0x14, 6,  1, ocram_sels,        ARRAY_SIZE(ocram_sels));
++	clks[IMX6SL_CLK_PRE_PERIPH2_SEL]  = imx_clk_mux("pre_periph2_sel",  base + 0x18, 21, 2, pre_periph_sels,   ARRAY_SIZE(pre_periph_sels));
++	clks[IMX6SL_CLK_PRE_PERIPH_SEL]   = imx_clk_mux("pre_periph_sel",   base + 0x18, 18, 2, pre_periph_sels,   ARRAY_SIZE(pre_periph_sels));
++	clks[IMX6SL_CLK_PERIPH2_CLK2_SEL] = imx_clk_mux("periph2_clk2_sel", base + 0x18, 20, 1, periph2_clk2_sels, ARRAY_SIZE(periph2_clk2_sels));
++	clks[IMX6SL_CLK_PERIPH_CLK2_SEL]  = imx_clk_mux("periph_clk2_sel",  base + 0x18, 12, 2, periph_clk2_sels,  ARRAY_SIZE(periph_clk2_sels));
++	clks[IMX6SL_CLK_CSI_SEL]          = imx_clk_mux("csi_sel",          base + 0x3c, 9,  2, csi_sels,          ARRAY_SIZE(csi_sels));
++	clks[IMX6SL_CLK_LCDIF_AXI_SEL]    = imx_clk_mux("lcdif_axi_sel",    base + 0x3c, 14, 2, lcdif_axi_sels,    ARRAY_SIZE(lcdif_axi_sels));
++	clks[IMX6SL_CLK_USDHC1_SEL]       = imx_clk_mux("usdhc1_sel",       base + 0x1c, 16, 1, usdhc_sels,        ARRAY_SIZE(usdhc_sels));
++	clks[IMX6SL_CLK_USDHC2_SEL]       = imx_clk_mux("usdhc2_sel",       base + 0x1c, 17, 1, usdhc_sels,        ARRAY_SIZE(usdhc_sels));
++	clks[IMX6SL_CLK_USDHC3_SEL]       = imx_clk_mux("usdhc3_sel",       base + 0x1c, 18, 1, usdhc_sels,        ARRAY_SIZE(usdhc_sels));
++	clks[IMX6SL_CLK_USDHC4_SEL]       = imx_clk_mux("usdhc4_sel",       base + 0x1c, 19, 1, usdhc_sels,        ARRAY_SIZE(usdhc_sels));
++	clks[IMX6SL_CLK_PERCLK_SEL]       = imx_clk_mux("perclk_sel",       base + 0x1c, 6,  1, perclk_sels,       ARRAY_SIZE(perclk_sels));
++	clks[IMX6SL_CLK_PXP_AXI_SEL]      = imx_clk_mux("pxp_axi_sel",      base + 0x34, 6,  3, pxp_axi_sels,      ARRAY_SIZE(pxp_axi_sels));
++	clks[IMX6SL_CLK_EPDC_AXI_SEL]     = imx_clk_mux("epdc_axi_sel",     base + 0x34, 15, 3, epdc_axi_sels,     ARRAY_SIZE(epdc_axi_sels));
++	clks[IMX6SL_CLK_GPU2D_OVG_SEL]    = imx_clk_mux("gpu2d_ovg_sel",    base + 0x18, 4,  2, gpu2d_ovg_sels,    ARRAY_SIZE(gpu2d_ovg_sels));
++	clks[IMX6SL_CLK_GPU2D_SEL]        = imx_clk_mux("gpu2d_sel",        base + 0x18, 8,  2, gpu2d_sels,        ARRAY_SIZE(gpu2d_sels));
++	clks[IMX6SL_CLK_LCDIF_PIX_SEL]    = imx_clk_mux("lcdif_pix_sel",    base + 0x38, 6,  3, lcdif_pix_sels,    ARRAY_SIZE(lcdif_pix_sels));
++	clks[IMX6SL_CLK_EPDC_PIX_SEL]     = imx_clk_mux("epdc_pix_sel",     base + 0x38, 15, 3, epdc_pix_sels,     ARRAY_SIZE(epdc_pix_sels));
++	clks[IMX6SL_CLK_ECSPI_SEL]        = imx_clk_mux("ecspi_sel",        base + 0x38, 18, 1, ecspi_sels,        ARRAY_SIZE(ecspi_sels));
++	clks[IMX6SL_CLK_UART_SEL]         = imx_clk_mux("uart_sel",         base + 0x24, 6,  1, uart_sels,         ARRAY_SIZE(uart_sels));
++
++	/*                                          name       reg        shift width busy: reg, shift parent_names  num_parents */
++	clks[IMX6SL_CLK_PERIPH]  = imx_clk_busy_mux("periph",  base + 0x14, 25,  1,   base + 0x48, 5,  periph_sels,  ARRAY_SIZE(periph_sels));
++	clks[IMX6SL_CLK_PERIPH2] = imx_clk_busy_mux("periph2", base + 0x14, 26,  1,   base + 0x48, 3,  periph2_sels, ARRAY_SIZE(periph2_sels));
++
++	/*                                                   name                 parent_name          reg       shift width */
++	clks[IMX6SL_CLK_OCRAM_PODF]        = imx_clk_divider("ocram_podf",        "ocram_sel",         base + 0x14, 16, 3);
++	clks[IMX6SL_CLK_PERIPH_CLK2_PODF]  = imx_clk_divider("periph_clk2_podf",  "periph_clk2_sel",   base + 0x14, 27, 3);
++	clks[IMX6SL_CLK_PERIPH2_CLK2_PODF] = imx_clk_divider("periph2_clk2_podf", "periph2_clk2_sel",  base + 0x14, 0,  3);
++	clks[IMX6SL_CLK_IPG]               = imx_clk_divider("ipg",               "ahb",               base + 0x14, 8,  2);
++	clks[IMX6SL_CLK_CSI_PODF]          = imx_clk_divider("csi_podf",          "csi_sel",           base + 0x3c, 11, 3);
++	clks[IMX6SL_CLK_LCDIF_AXI_PODF]    = imx_clk_divider("lcdif_axi_podf",    "lcdif_axi_sel",     base + 0x3c, 16, 3);
++	clks[IMX6SL_CLK_USDHC1_PODF]       = imx_clk_divider("usdhc1_podf",       "usdhc1_sel",        base + 0x24, 11, 3);
++	clks[IMX6SL_CLK_USDHC2_PODF]       = imx_clk_divider("usdhc2_podf",       "usdhc2_sel",        base + 0x24, 16, 3);
++	clks[IMX6SL_CLK_USDHC3_PODF]       = imx_clk_divider("usdhc3_podf",       "usdhc3_sel",        base + 0x24, 19, 3);
++	clks[IMX6SL_CLK_USDHC4_PODF]       = imx_clk_divider("usdhc4_podf",       "usdhc4_sel",        base + 0x24, 22, 3);
++	clks[IMX6SL_CLK_PERCLK]            = imx_clk_divider("perclk",            "perclk_sel",        base + 0x1c, 0,  6);
++	clks[IMX6SL_CLK_PXP_AXI_PODF]      = imx_clk_divider("pxp_axi_podf",      "pxp_axi_sel",       base + 0x34, 3,  3);
++	clks[IMX6SL_CLK_EPDC_AXI_PODF]     = imx_clk_divider("epdc_axi_podf",     "epdc_axi_sel",      base + 0x34, 12, 3);
++	clks[IMX6SL_CLK_GPU2D_OVG_PODF]    = imx_clk_divider("gpu2d_ovg_podf",    "gpu2d_ovg_sel",     base + 0x18, 26, 3);
++	clks[IMX6SL_CLK_GPU2D_PODF]        = imx_clk_divider("gpu2d_podf",        "gpu2d_sel",         base + 0x18, 29, 3);
++	clks[IMX6SL_CLK_LCDIF_PIX_PRED]    = imx_clk_divider("lcdif_pix_pred",    "lcdif_pix_sel",     base + 0x38, 3,  3);
++	clks[IMX6SL_CLK_EPDC_PIX_PRED]     = imx_clk_divider("epdc_pix_pred",     "epdc_pix_sel",      base + 0x38, 12, 3);
++	clks[IMX6SL_CLK_LCDIF_PIX_PODF]    = imx_clk_divider("lcdif_pix_podf",    "lcdif_pix_pred",    base + 0x1c, 20, 3);
++	clks[IMX6SL_CLK_EPDC_PIX_PODF]     = imx_clk_divider("epdc_pix_podf",     "epdc_pix_pred",     base + 0x18, 23, 3);
++	clks[IMX6SL_CLK_ECSPI_ROOT]        = imx_clk_divider("ecspi_root",        "ecspi_sel",         base + 0x38, 19, 6);
++	clks[IMX6SL_CLK_UART_ROOT]         = imx_clk_divider("uart_root",         "uart_sel",          base + 0x24, 0,  6);
++
++	/*                                                name         parent_name reg       shift width busy: reg, shift */
++	clks[IMX6SL_CLK_AHB]       = imx_clk_busy_divider("ahb",       "periph",  base + 0x14, 10, 3,    base + 0x48, 1);
++	clks[IMX6SL_CLK_MMDC_ROOT] = imx_clk_busy_divider("mmdc",      "periph2", base + 0x14, 3,  3,    base + 0x48, 2);
++	clks[IMX6SL_CLK_ARM]       = imx_clk_busy_divider("arm",       "pll1_sw", base + 0x10, 0,  3,    base + 0x48, 16);
++
++	/*                                            name            parent_name          reg         shift */
++	clks[IMX6SL_CLK_ECSPI1]       = imx_clk_gate2("ecspi1",       "ecspi_root",        base + 0x6c, 0);
++	clks[IMX6SL_CLK_ECSPI2]       = imx_clk_gate2("ecspi2",       "ecspi_root",        base + 0x6c, 2);
++	clks[IMX6SL_CLK_ECSPI3]       = imx_clk_gate2("ecspi3",       "ecspi_root",        base + 0x6c, 4);
++	clks[IMX6SL_CLK_ECSPI4]       = imx_clk_gate2("ecspi4",       "ecspi_root",        base + 0x6c, 6);
++	clks[IMX6SL_CLK_ENET]         = imx_clk_gate2("enet",         "ipg",               base + 0x6c, 10);
++	clks[IMX6SL_CLK_EPIT1]        = imx_clk_gate2("epit1",        "perclk",            base + 0x6c, 12);
++	clks[IMX6SL_CLK_EPIT2]        = imx_clk_gate2("epit2",        "perclk",            base + 0x6c, 14);
++	clks[IMX6SL_CLK_GPT]          = imx_clk_gate2("gpt",          "perclk",            base + 0x6c, 20);
++	clks[IMX6SL_CLK_GPT_SERIAL]   = imx_clk_gate2("gpt_serial",   "perclk",            base + 0x6c, 22);
++	clks[IMX6SL_CLK_GPU2D_OVG]    = imx_clk_gate2("gpu2d_ovg",    "gpu2d_ovg_podf",    base + 0x6c, 26);
++	clks[IMX6SL_CLK_I2C1]         = imx_clk_gate2("i2c1",         "perclk",            base + 0x70, 6);
++	clks[IMX6SL_CLK_I2C2]         = imx_clk_gate2("i2c2",         "perclk",            base + 0x70, 8);
++	clks[IMX6SL_CLK_I2C3]         = imx_clk_gate2("i2c3",         "perclk",            base + 0x70, 10);
++	clks[IMX6SL_CLK_OCOTP]        = imx_clk_gate2("ocotp",        "ipg",               base + 0x70, 12);
++	clks[IMX6SL_CLK_CSI]          = imx_clk_gate2("csi",          "csi_podf",          base + 0x74, 0);
++	clks[IMX6SL_CLK_PXP_AXI]      = imx_clk_gate2("pxp_axi",      "pxp_axi_podf",      base + 0x74, 2);
++	clks[IMX6SL_CLK_EPDC_AXI]     = imx_clk_gate2("epdc_axi",     "epdc_axi_podf",     base + 0x74, 4);
++	clks[IMX6SL_CLK_LCDIF_AXI]    = imx_clk_gate2("lcdif_axi",    "lcdif_axi_podf",    base + 0x74, 6);
++	clks[IMX6SL_CLK_LCDIF_PIX]    = imx_clk_gate2("lcdif_pix",    "lcdif_pix_podf",    base + 0x74, 8);
++	clks[IMX6SL_CLK_EPDC_PIX]     = imx_clk_gate2("epdc_pix",     "epdc_pix_podf",     base + 0x74, 10);
++	clks[IMX6SL_CLK_OCRAM]        = imx_clk_gate2("ocram",        "ocram_podf",        base + 0x74, 28);
++	clks[IMX6SL_CLK_PWM1]         = imx_clk_gate2("pwm1",         "perclk",            base + 0x78, 16);
++	clks[IMX6SL_CLK_PWM2]         = imx_clk_gate2("pwm2",         "perclk",            base + 0x78, 18);
++	clks[IMX6SL_CLK_PWM3]         = imx_clk_gate2("pwm3",         "perclk",            base + 0x78, 20);
++	clks[IMX6SL_CLK_PWM4]         = imx_clk_gate2("pwm4",         "perclk",            base + 0x78, 22);
++	clks[IMX6SL_CLK_SDMA]         = imx_clk_gate2("sdma",         "ipg",               base + 0x7c, 6);
++	clks[IMX6SL_CLK_SPBA]         = imx_clk_gate2("spba",         "ipg",               base + 0x7c, 12);
++	clks[IMX6SL_CLK_UART]         = imx_clk_gate2("uart",         "ipg",               base + 0x7c, 24);
++	clks[IMX6SL_CLK_UART_SERIAL]  = imx_clk_gate2("uart_serial",  "uart_root",         base + 0x7c, 26);
++	clks[IMX6SL_CLK_USBOH3]       = imx_clk_gate2("usboh3",       "ipg",               base + 0x80, 0);
++	clks[IMX6SL_CLK_USDHC1]       = imx_clk_gate2("usdhc1",       "usdhc1_podf",       base + 0x80, 2);
++	clks[IMX6SL_CLK_USDHC2]       = imx_clk_gate2("usdhc2",       "usdhc2_podf",       base + 0x80, 4);
++	clks[IMX6SL_CLK_USDHC3]       = imx_clk_gate2("usdhc3",       "usdhc3_podf",       base + 0x80, 6);
++	clks[IMX6SL_CLK_USDHC4]       = imx_clk_gate2("usdhc4",       "usdhc4_podf",       base + 0x80, 8);
++
++	clk_data.clks = clks;
++	clk_data.clk_num = ARRAY_SIZE(clks);
++	of_clk_add_provider(ccm_node, of_clk_src_onecell_get, &clk_data);
++
++	if (IS_ENABLED(CONFIG_USB_IMX_PHY)) {
++		clk_enable(clks[IMX6SL_CLK_USBPHY1_GATE]);
++		clk_enable(clks[IMX6SL_CLK_USBPHY2_GATE]);
++	}
++
++	return 0;
++};
++
++static int imx6sl_clocks_init(void)
++{
++	if (!of_machine_is_compatible("fsl,imx6sl"))
 +		return 0;
 +
-+	barebox_set_hostname("vision");
++	/* Ensure the AHB clk is at 132MHz. */
++	clk_set_rate(clks[IMX6SL_CLK_AHB], 132000000);
 +
 +	return 0;
 +}
-+device_initcall(vision_device_init);
++coredevice_initcall(imx6sl_clocks_init);
 +
-+static int vision_late_init(void)
++static __maybe_unused struct of_device_id imx6sl_ccm_dt_ids[] = {
++	{
++		.compatible = "fsl,imx6sl-ccm",
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct driver_d imx6sl_ccm_driver = {
++	.probe	= imx6sl_ccm_probe,
++	.name	= "imx6-ccm",
++	.of_compatible = DRV_OF_COMPAT(imx6sl_ccm_dt_ids),
++};
++
++static int imx6sl_ccm_init(void)
 +{
-+	char serial[19];
-+	const char *model;
-+	uint32_t ocotp_ser_l, ocotp_ser_h;
-+	int ret = 0;
-+
-+	ret |= imx_ocotp_read_field(OCOTP_UNIQUE_ID(0), &ocotp_ser_l);
-+	ret |= imx_ocotp_read_field(OCOTP_UNIQUE_ID(1), &ocotp_ser_h);
-+	if (ret) {
-+		pr_err("could not determine OCOTP_UNIQUE_ID\n");
-+		return ret;
-+	}
-+
-+	snprintf(serial, sizeof serial, "0x%8.8x%8.8x",
-+		 ocotp_ser_h, ocotp_ser_l);
-+	globalvar_add_simple("board.ocotp_serial", serial);
-+
-+	switch ((ocotp_ser_l & 0xff000000) >> 24) {
-+	case 0xdb:
-+		model = "vision";
-+		break;
-+	case 0xdf:
-+		model = "vision2";
-+		break;
-+	case 0xe3:
-+		model = "vision3hd";
-+		break;
-+	default:
-+		model = "unknown";
-+		break;
-+	}
-+
-+	globalvar_add_simple("board.model", model);
-+
-+	return 0;
++	return platform_driver_register(&imx6sl_ccm_driver);
 +}
-+
-+late_initcall(vision_late_init);
-diff --git a/arch/arm/boards/tolino-vision/env/boot/mmc_android b/arch/arm/boards/tolino-vision/env/boot/mmc_android
-new file mode 100644
-index 0000000..d5d77c0
---- /dev/null
-+++ b/arch/arm/boards/tolino-vision/env/boot/mmc_android
-@@ -0,0 +1,51 @@
-+#!/bin/sh
-+# Boot the factory-shipped Android kernel image
-+
-+aimage_noverwrite_tags=1
-+aimage_noverwrite_bootargs=1
-+oftree -f
-+armlinux_architecture=4308
-+armlinux_system_serial="$global.board.ocotp_serial"
-+armlinux_system_rev="0x60200"
-+global linux.bootargs.dyn.root="rootfstype=ext4 root=/dev/mmcblk0p1 ro"
-+global linux.bootargs.android="androidboot.console=ttymxc0"
-+
-+global linux.bootargs.video="fbmem=6M video=mxcepdcfb:E060SCM,bpp=16 no_console_suspend"
-+global linux.bootargs.serial="androidboot.serialno=$global.board.serial"
-+global linux.bootargs.misc="init=/init max17135:pass=2, mem=498M boot_port=3"
-+
-+sz_hwconfig=110
-+addr_hwconfig=0x9ffffe00
-+
-+if [ X$global.board.model = "Xvision" ]; then
-+	sz_logo=388096
-+	addr_logo=0x9f928200
-+	sz_waveforms=6786528
-+	addr_waveforms=0x9f987000
-+fi
-+
-+if [ X$global.board.model = "Xvision2" ]; then
-+	sz_logo=388096
-+	addr_logo=0x9ffa1000
-+	sz_waveforms=6776288
-+	addr_waveforms=0x9f92aa00
-+fi
-+
-+if [ X$global.board.model = "Xvision3hd" ]; then
-+	sz_logo=776128
-+	addr_logo=0x9ff42600
-+	sz_waveforms=6572512
-+	addr_waveforms=0x9f8fdc00
-+fi
-+
-+global linux.bootargs.hwconfig="hwcfg_p=$addr_hwconfig hwcfg_sz=$sz_hwconfig"
-+memcpy -s /dev/disk0.hwconfig 0 $addr_hwconfig $sz_hwconfig
-+global linux.bootargs.logo="logo_p=$addr_logo logo_sz=$sz_logo"
-+memcpy -s /dev/disk0.logo 0 $addr_logo $sz_logo
-+global linux.bootargs.waveforms="waveform_p=$addr_waveforms waveform_sz=$sz_waveforms"
-+memcpy -s /dev/disk0.waveforms 0 $addr_waveforms $sz_waveforms
-+
-+gpio_direction_output 46 1
-+gpio_direction_output 39 1
-+
-+bootm -L 0x81000000 -a 0x80800000 -v /dev/disk0.kernel
-diff --git a/arch/arm/boards/tolino-vision/env/init/partitions b/arch/arm/boards/tolino-vision/env/init/partitions
-new file mode 100644
-index 0000000..0a313b1
---- /dev/null
-+++ b/arch/arm/boards/tolino-vision/env/init/partitions
-@@ -0,0 +1,4 @@
-+#!/bin/sh
-+# probe mci1 first (eMMC at SD4)
-+mci1.probe=1
-+addpart /dev/disk0 0x200@0x200(serial),0x7fbf0@0x400(imximg),0x800@0x80000(hwconfig),0x3fc00@0xc0000(bootenv),0x400000@0x100000(kernel),0x400000@0x600000(initrd),0xa00000@0x700000(waveforms),0x200000@0x1100000(logo)
-diff --git a/arch/arm/boards/tolino-vision/env/init/serials b/arch/arm/boards/tolino-vision/env/init/serials
-new file mode 100644
-index 0000000..675da6d
---- /dev/null
-+++ b/arch/arm/boards/tolino-vision/env/init/serials
-@@ -0,0 +1,11 @@
-+#!/bin/sh
-+
-+global board.serial
-+
-+# alphanumeric containing the serial number
-+if test -b /dev/disk0.serial; then
-+	if memcpy -s /dev/disk0.serial -d tmp_serial -b 3 0 41; then
-+		readf tmp_serial global.board.serial
-+	fi
-+fi
-+[ -f tmp_serial ] && rm tmp_serial
-diff --git a/arch/arm/boards/tolino-vision/env/init/usbconsole b/arch/arm/boards/tolino-vision/env/init/usbconsole
-new file mode 100644
-index 0000000..46986d9
---- /dev/null
-+++ b/arch/arm/boards/tolino-vision/env/init/usbconsole
-@@ -0,0 +1,8 @@
-+#!/bin/sh
-+
-+# Frontlight key activates usbserial access for 60s
-+echo
-+if gpio_get_value 90; then
-+	usbserial
-+	global.autoboot_timeout=60
-+fi
-diff --git a/arch/arm/boards/tolino-vision/env/nv/autoboot_timeout b/arch/arm/boards/tolino-vision/env/nv/autoboot_timeout
-new file mode 100644
-index 0000000..00750ed
---- /dev/null
-+++ b/arch/arm/boards/tolino-vision/env/nv/autoboot_timeout
-@@ -0,0 +1 @@
-+3
-diff --git a/arch/arm/boards/tolino-vision/env/nv/boot.default b/arch/arm/boards/tolino-vision/env/nv/boot.default
-new file mode 100644
-index 0000000..3f8953f
---- /dev/null
-+++ b/arch/arm/boards/tolino-vision/env/nv/boot.default
-@@ -0,0 +1 @@
-+mmc_android
-diff --git a/arch/arm/boards/tolino-vision/env/nv/linux.bootargs.console b/arch/arm/boards/tolino-vision/env/nv/linux.bootargs.console
-new file mode 100644
-index 0000000..d775310
---- /dev/null
-+++ b/arch/arm/boards/tolino-vision/env/nv/linux.bootargs.console
-@@ -0,0 +1 @@
-+console=ttymxc0,115200
-diff --git a/arch/arm/boards/tolino-vision/flash-header-tolino-vision.imxcfg b/arch/arm/boards/tolino-vision/flash-header-tolino-vision.imxcfg
-new file mode 100644
-index 0000000..a7b9330
---- /dev/null
-+++ b/arch/arm/boards/tolino-vision/flash-header-tolino-vision.imxcfg
-@@ -0,0 +1,86 @@
-+loadaddr 0x88000000
-+soc imx6
-+dcdofs 0x400
-+# CCM
-+wm 32 0x020c4018 0x00260324
-+
-+# CCM CGR
-+wm 32 0x020c4068 0xffffffff
-+wm 32 0x020c406c 0xffffffff
-+wm 32 0x020c4070 0xffffffff
-+wm 32 0x020c4074 0xffffffff
-+wm 32 0x020c4078 0xffffffff
-+wm 32 0x020c407c 0xffffffff
-+wm 32 0x020c4080 0xffffffff
-+wm 32 0x020c4084 0xffffffff
-+
-+# IOMUX
-+wm 32 0x020e0344 0x00003028
-+wm 32 0x020e0348 0x00003028
-+wm 32 0x020e034c 0x00003028
-+wm 32 0x020e0350 0x00003028
-+wm 32 0x020e030c 0x00000028
-+wm 32 0x020e0310 0x00000028
-+wm 32 0x020e0314 0x00000028
-+wm 32 0x020e0318 0x00000028
-+wm 32 0x020e0300 0x00000030
-+wm 32 0x020e031c 0x00000030
-+wm 32 0x020e0338 0x00000030
-+wm 32 0x020e0320 0x00000030
-+wm 32 0x020e032c 0x00000000
-+wm 32 0x020e05c4 0x00000028
-+wm 32 0x020e05cc 0x00000028
-+wm 32 0x020e05d4 0x00000028
-+wm 32 0x020e05d8 0x00000028
-+wm 32 0x020e05ac 0x00000030
-+wm 32 0x020e05c8 0x00000030
-+wm 32 0x020e05b0 0x00020000
-+wm 32 0x020e05b4 0x00000000
-+wm 32 0x020e05c0 0x00020000
-+wm 32 0x020e05d0 0x00080000
-+wm 32 0x020e05bc 0x00001000
-+
-+# MMDC
-+wm 32 0x021b001c 0x00008000
-+wm 32 0x021b085c 0x1b4700c7
-+wm 32 0x021b0800 0xa1390003
-+wm 32 0x021b0890 0x00480000
-+wm 32 0x021b08b8 0x00000800
-+wm 32 0x021b081c 0x33333333
-+wm 32 0x021b0820 0x33333333
-+wm 32 0x021b0824 0x33333333
-+wm 32 0x021b0828 0x33333333
-+wm 32 0x021b082c 0xf3333333
-+wm 32 0x021b0830 0xf3333333
-+wm 32 0x021b0834 0xf3333333
-+wm 32 0x021b0838 0xf3333333
-+wm 32 0x021b0848 0x44404646
-+wm 32 0x021b0850 0x38343830
-+wm 32 0x021b083c 0x20000000
-+wm 32 0x021b0840 0x00000000
-+wm 32 0x021b08c0 0x24911492
-+wm 32 0x021b08b8 0x00000800
-+wm 32 0x021b000c 0x33374135
-+wm 32 0x021b0004 0x00020024
-+wm 32 0x021b0010 0x00100A83
-+wm 32 0x021b0014 0x00000093
-+wm 32 0x021b0018 0x00001688
-+wm 32 0x021b002c 0x0F9F26D2
-+wm 32 0x021b0030 0x0000020E
-+wm 32 0x021b0038 0x00190778
-+wm 32 0x021b0008 0x00000000
-+wm 32 0x021b0040 0x0000004F
-+# MMDC_MDCTL: CS0 only, 14 rows, 10 cols, 32 bit
-+wm 32 0x021b0000 0x83110000
-+wm 32 0x021b001c 0x003f8030
-+wm 32 0x021b001c 0xff0a8030
-+wm 32 0x021b001c 0x82018030
-+wm 32 0x021b001c 0x06028030
-+wm 32 0x021b001c 0x03038030
-+wm 32 0x021b0800 0xa1310003
-+wm 32 0x021b0020 0x00001800
-+wm 32 0x021b0818 0x00000000
-+wm 32 0x021b08b8 0x00000800
-+wm 32 0x021b0004 0x00025564
-+wm 32 0x021b0404 0x00011006
-+wm 32 0x021b001c 0x00000000
-diff --git a/arch/arm/boards/tolino-vision/lowlevel.c b/arch/arm/boards/tolino-vision/lowlevel.c
-new file mode 100644
-index 0000000..08a48f8
---- /dev/null
-+++ b/arch/arm/boards/tolino-vision/lowlevel.c
-@@ -0,0 +1,27 @@
-+#include <debug_ll.h>
-+#include <common.h>
-+#include <linux/sizes.h>
-+#include <io.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/sections.h>
-+#include <asm/cache.h>
-+#include <asm/mmu.h>
-+#include <mach/imx6.h>
-+
-+extern char __dtb_imx6sl_tolino_vision_start[];
-+
-+ENTRY_FUNCTION(start_imx6sl_tolino_vision, r0, r1, r2)
-+{
-+	void *fdt;
-+
-+	imx6_cpu_lowlevel_init();
-+
-+	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
-+		writel(0x4, 0x020e016c);
-+		imx6_uart_setup_ll();
-+	}
-+
-+	fdt = __dtb_imx6sl_tolino_vision_start - get_runtime_offset();
-+	barebox_arm_entry(0x80000000, SZ_512M - 14 * SZ_1M, fdt);
-+}
-diff --git a/arch/arm/configs/tolino-vision_defconfig b/arch/arm/configs/tolino-vision_defconfig
-new file mode 100644
-index 0000000..e92476a
---- /dev/null
-+++ b/arch/arm/configs/tolino-vision_defconfig
-@@ -0,0 +1,96 @@
-+CONFIG_ARCH_IMX=y
-+CONFIG_IMX_MULTI_BOARDS=y
-+CONFIG_MACH_TOLINO_VISION=y
-+CONFIG_ARCH_IMX_USBLOADER=y
-+CONFIG_IMX_IIM=y
-+CONFIG_IMX_IIM_FUSE_BLOW=y
-+CONFIG_THUMB2_BAREBOX=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_ARM_UNWIND=y
-+CONFIG_MMU=y
-+CONFIG_TEXT_BASE=0x0
-+CONFIG_MALLOC_SIZE=0x0
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_KALLSYMS=y
-+CONFIG_RELOCATABLE=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
-+CONFIG_BOOTM_SHOW_TYPE=y
-+CONFIG_BOOTM_VERBOSE=y
-+CONFIG_BOOTM_INITRD=y
-+CONFIG_BOOTM_OFTREE=y
-+CONFIG_BOOTM_OFTREE_UIMAGE=y
-+CONFIG_BOOTM_AIMAGE=y
-+CONFIG_BLSPEC=y
-+CONFIG_CONSOLE_ACTIVATE_NONE=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/tolino-vision/env/"
-+CONFIG_RESET_SOURCE=y
-+CONFIG_CMD_DMESG=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_IMD=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_ARM_MMUINFO=y
-+CONFIG_CMD_MMC_EXTCSD=y
-+# CONFIG_CMD_BOOTU is not set
-+CONFIG_CMD_BOOTZ=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_LOADY=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_FILETYPE=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_LET=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_READF=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
-+CONFIG_CMD_MEMTEST=y
-+CONFIG_CMD_MM=y
-+CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_I2C=y
-+CONFIG_CMD_LED=y
-+CONFIG_CMD_LED_TRIGGER=y
-+CONFIG_CMD_USBGADGET=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_TIME=y
-+CONFIG_OFDEVICE=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
-+# CONFIG_SPI is not set
-+CONFIG_USB_HOST=y
-+CONFIG_USB_IMX_CHIPIDEA=y
-+CONFIG_USB_GADGET=y
-+CONFIG_USB_GADGET_SERIAL=y
-+CONFIG_MCI=y
-+CONFIG_MCI_MMC_BOOT_PARTITIONS=y
-+CONFIG_MCI_IMX_ESDHC=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_LED_GPIO_OF=y
-+CONFIG_LED_TRIGGERS=y
-+CONFIG_MXS_APBH_DMA=y
-+CONFIG_GENERIC_PHY=y
-+CONFIG_FS_EXT4=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index d77a7b6..a6cda6e 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -68,6 +68,7 @@ pbl-dtb-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += socfpga_cyclone5_sockit.dtb.o
- pbl-dtb-$(CONFIG_MACH_SOLIDRUN_CUBOX) += dove-cubox-bb.dtb.o
- pbl-dtb-$(CONFIG_MACH_SOLIDRUN_MICROSOM) += imx6dl-hummingboard.dtb.o imx6q-hummingboard.dtb.o imx6q-h100.dtb.o
- pbl-dtb-$(CONFIG_MACH_TECHNEXION_WANDBOARD) += imx6q-wandboard.dtb.o imx6dl-wandboard.dtb.o
-+pbl-dtb-$(CONFIG_MACH_TOLINO_VISION) += imx6sl-tolino-vision.dtb.o
- pbl-dtb-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += tegra20-colibri-iris.dtb.o
- pbl-dtb-$(CONFIG_MACH_TOSHIBA_AC100) += tegra20-paz00.dtb.o
- pbl-dtb-$(CONFIG_MACH_TQMA53) += imx53-mba53.dtb.o
-diff --git a/arch/arm/dts/imx6sl-tolino-vision.dts b/arch/arm/dts/imx6sl-tolino-vision.dts
-new file mode 100644
-index 0000000..9c8c0fe
---- /dev/null
-+++ b/arch/arm/dts/imx6sl-tolino-vision.dts
-@@ -0,0 +1,225 @@
-+/*
-+ * Copyright (C) 2013 Freescale Semiconductor, Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+
-+/dts-v1/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
-+#include <arm/imx6sl.dtsi>
-+
-+/ {
-+	model = "Tolino Vision";
-+	compatible = "tolino,imx6sl-vision", "fsl,imx6sl";
-+
-+	chosen {
-+		linux,stdout-path = &uart1;
-+	};
-+
-+	memory {
-+		reg = <0x80000000 0x20000000>;
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_led>;
-+
-+		user {
-+			label = "power";
-+			gpios = <&gpio5 7 GPIO_ACTIVE_LOW>;
-+			linux,default-trigger = "heartbeat";
-+		};
-+	};
-+};
-+
-+&iomuxc {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_hog>;
-+
-+	imx6sl-evk {
-+		pinctrl_hog: hoggrp {
-+			fsl,pins = <
-+				/* EPD-PMIC */
-+				MX6SL_PAD_EPDC_VCOM0__GPIO2_IO03	0x17059
-+				MX6SL_PAD_EPDC_PWRWAKEUP__GPIO2_IO14	0x17059
-+				MX6SL_PAD_EPDC_PWRCTRL0__GPIO2_IO07	0x17059
-+				MX6SL_PAD_EPDC_PWRSTAT__GPIO2_IO13	0x17059
-+				/* Power key */
-+				MX6SL_PAD_SD1_DAT1__GPIO5_IO08		0x17059
-+				/* 60Q32 SD CD */
-+				MX6SL_PAD_SD2_DAT4__GPIO5_IO02		0x17059
-+			>;
-+		};
-+
-+		pinctrl_uart1: uart1grp {
-+			fsl,pins = <
-+				MX6SL_PAD_UART1_RXD__UART1_RX_DATA	0x1b0b1
-+				MX6SL_PAD_UART1_TXD__UART1_TX_DATA	0x1b0b1
-+			>;
-+		};
-+
-+		pinctrl_usdhc2: usdhc2grp {
-+			fsl,pins = <
-+				MX6SL_PAD_SD2_CMD__SD2_CMD		0x17059
-+				MX6SL_PAD_SD2_CLK__SD2_CLK		0x10059
-+				MX6SL_PAD_SD2_DAT0__SD2_DATA0		0x17059
-+				MX6SL_PAD_SD2_DAT1__SD2_DATA1		0x17059
-+				MX6SL_PAD_SD2_DAT2__SD2_DATA2		0x17059
-+				MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x17059
-+			>;
-+		};
-+
-+		pinctrl_usdhc2_100mhz: usdhc2grp100mhz {
-+			fsl,pins = <
-+				MX6SL_PAD_SD2_CMD__SD2_CMD		0x170b9
-+				MX6SL_PAD_SD2_CLK__SD2_CLK		0x100b9
-+				MX6SL_PAD_SD2_DAT0__SD2_DATA0		0x170b9
-+				MX6SL_PAD_SD2_DAT1__SD2_DATA1		0x170b9
-+				MX6SL_PAD_SD2_DAT2__SD2_DATA2		0x170b9
-+				MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x170b9
-+			>;
-+		};
-+
-+		pinctrl_usdhc2_200mhz: usdhc2grp200mhz {
-+			fsl,pins = <
-+				MX6SL_PAD_SD2_CMD__SD2_CMD		0x170f9
-+				MX6SL_PAD_SD2_CLK__SD2_CLK		0x100f9
-+				MX6SL_PAD_SD2_DAT0__SD2_DATA0		0x170f9
-+				MX6SL_PAD_SD2_DAT1__SD2_DATA1		0x170f9
-+				MX6SL_PAD_SD2_DAT2__SD2_DATA2		0x170f9
-+				MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x170f9
-+			>;
-+		};
-+
-+		pinctrl_usdhc4: usdhc4grp {
-+			fsl,pins = <
-+				MX6SL_PAD_FEC_TX_CLK__SD4_CMD		0x17059
-+				MX6SL_PAD_FEC_MDIO__SD4_CLK		0x10059
-+				MX6SL_PAD_FEC_RX_ER__SD4_DATA0		0x17059
-+				MX6SL_PAD_FEC_CRS_DV__SD4_DATA1		0x17059
-+				MX6SL_PAD_FEC_RXD1__SD4_DATA2		0x17059
-+				MX6SL_PAD_FEC_TXD0__SD4_DATA3		0x17059
-+				MX6SL_PAD_FEC_MDC__SD4_DATA4		0x17059
-+				MX6SL_PAD_FEC_RXD0__SD4_DATA5		0x17059
-+				MX6SL_PAD_FEC_TX_EN__SD4_DATA6		0x17059
-+				MX6SL_PAD_FEC_TXD1__SD4_DATA7		0x17059
-+				MX6SL_PAD_FEC_REF_CLK__SD4_RESET	0x17059
-+			>;
-+		};
-+
-+		pinctrl_usdhc4_100mhz: usdhc4grp100mhz {
-+			fsl,pins = <
-+				MX6SL_PAD_FEC_TX_CLK__SD4_CMD		0x170b9
-+				MX6SL_PAD_FEC_MDIO__SD4_CLK		0x100b9
-+				MX6SL_PAD_FEC_RX_ER__SD4_DATA0		0x170b9
-+				MX6SL_PAD_FEC_CRS_DV__SD4_DATA1		0x170b9
-+				MX6SL_PAD_FEC_RXD1__SD4_DATA2		0x170b9
-+				MX6SL_PAD_FEC_TXD0__SD4_DATA3		0x170b9
-+				MX6SL_PAD_FEC_MDC__SD4_DATA4		0x170b9
-+				MX6SL_PAD_FEC_RXD0__SD4_DATA5		0x170b9
-+				MX6SL_PAD_FEC_TX_EN__SD4_DATA6		0x170b9
-+				MX6SL_PAD_FEC_TXD1__SD4_DATA7		0x170b9
-+				MX6SL_PAD_FEC_REF_CLK__SD4_RESET	0x170b9
-+			>;
-+		};
-+
-+		pinctrl_usdhc4_200mhz: usdhc4grp200mhz {
-+			fsl,pins = <
-+				MX6SL_PAD_FEC_TX_CLK__SD4_CMD		0x170f9
-+				MX6SL_PAD_FEC_MDIO__SD4_CLK		0x100f9
-+				MX6SL_PAD_FEC_RX_ER__SD4_DATA0		0x170f9
-+				MX6SL_PAD_FEC_CRS_DV__SD4_DATA1		0x170f9
-+				MX6SL_PAD_FEC_RXD1__SD4_DATA2		0x170f9
-+				MX6SL_PAD_FEC_TXD0__SD4_DATA3		0x170f9
-+				MX6SL_PAD_FEC_MDC__SD4_DATA4		0x170f9
-+				MX6SL_PAD_FEC_RXD0__SD4_DATA5		0x170f9
-+				MX6SL_PAD_FEC_TX_EN__SD4_DATA6		0x170f9
-+				MX6SL_PAD_FEC_TXD1__SD4_DATA7		0x170f9
-+				MX6SL_PAD_FEC_REF_CLK__SD4_RESET	0x170f9
-+			>;
-+		};
-+
-+		pinctrl_led: ledgrp {
-+			fsl,pins = <
-+				MX6SL_PAD_SD1_DAT6__GPIO5_IO07		0x1b0b1
-+			>;
-+		};
-+
-+		pinctrl_i2c1: i2c1grp {
-+			fsl,pins = <
-+				MX6SL_PAD_I2C1_SCL__I2C1_SCL	0x4001b8b1
-+				MX6SL_PAD_I2C1_SDA__I2C1_SDA	0x4001b8b1
-+			>;
-+		};
-+
-+		pinctrl_i2c2: i2c2grp {
-+			fsl,pins = <
-+				MX6SL_PAD_I2C2_SCL__I2C2_SCL	0x4001b8b1
-+				MX6SL_PAD_I2C2_SDA__I2C2_SDA	0x4001b8b1
-+			>;
-+		};
-+
-+		pinctrl_i2c3: i2c3grp {
-+			fsl,pins = <
-+				MX6SL_PAD_REF_CLK_24M__I2C3_SCL	0x4001b8b1
-+				MX6SL_PAD_REF_CLK_32K__I2C3_SDA	0x4001b8b1
-+			>;
-+		};
-+	};
-+};
-+
-+&uart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart1>;
-+	status = "okay";
-+};
-+
-+&usdhc2 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc2>;
-+	pinctrl-1 = <&pinctrl_usdhc2_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc2_200mhz>;
-+	cd-gpios = <&gpio5 2 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+};
-+
-+&usdhc4 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc4>;
-+	pinctrl-1 = <&pinctrl_usdhc4_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc4_200mhz>;
-+	bus-width = <8>;
-+	status = "okay";
-+};
-+
-+&i2c1 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c1>;
-+	status = "okay";
-+};
-+
-+&i2c2 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c2>;
-+	status = "okay";
-+};
-+
-+&i2c3 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c3>;
-+	status = "okay";
-+};
-+
-+&usbotg1 {
-+	dr_mode = "peripheral";
-+	disable-over-current;
-+	status = "okay";
-+};
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index c1ed5b2..a8ca3c5 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -321,6 +321,17 @@ config MACH_FREESCALE_IMX6SX_SABRESDB
- 	select I2C
- 	select I2C_IMX
- 
-+config MACH_TOLINO_VISION
-+	bool "Tolino Vision e-book readers"
-+	select ARCH_IMX6SL
-+	select I2C
-+	select I2C_IMX
-+	select IMX_OCOTP
-+	help
-+	  Say Y here if you are using an i.MX6SL based Tolino Vision
-+	  e-book reader, current support covers the models Vision, Vision2
-+	  and Vision3HD.
-+
- config MACH_NITROGEN6
- 	bool "BoundaryDevices Nitrogen6 boards"
- 	select ARCH_IMX6
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index 84f6652..33c3284 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -304,6 +304,11 @@ CFG_start_imx6qp_nitrogen6_max.pblx.imximg = $(board)/boundarydevices-nitrogen6/
- FILE_barebox-boundarydevices-imx6qp-nitrogen6_max.img = start_imx6qp_nitrogen6_max.pblx.imximg
- image-$(CONFIG_MACH_NITROGEN6) += barebox-boundarydevices-imx6qp-nitrogen6_max.img
- 
-+pblx-$(CONFIG_MACH_TOLINO_VISION) += start_imx6sl_tolino_vision
-+CFG_start_imx6sl_tolino_vision.pblx.imximg = $(board)/tolino-vision/flash-header-tolino-vision.imxcfg
-+FILE_barebox-tolino-vision.img = start_imx6sl_tolino_vision.pblx.imximg
-+image-$(CONFIG_MACH_TOLINO_VISION) += barebox-tolino-vision.img
-+
- pblx-$(CONFIG_MACH_TX6X) += start_imx6dl_tx6x_512m
- CFG_start_imx6dl_tx6x_512m.pblx.imximg = $(board)/karo-tx6x/flash-header-tx6dl-512m.imxcfg
- FILE_barebox-karo-imx6dl-tx6x-512m.img = start_imx6dl_tx6x_512m.pblx.imximg
++core_initcall(imx6sl_ccm_init);
 -- 
 2.1.4
 
