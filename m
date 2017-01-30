@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
+Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cY66V-0004nK-Ly
- for barebox@lists.infradead.org; Mon, 30 Jan 2017 07:10:22 +0000
-Date: Mon, 30 Jan 2017 08:09:58 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170130070958.atopzmvke2bz4pe6@pengutronix.de>
-References: <20170126232654.17448-1-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170126232654.17448-1-andrew.smirnov@gmail.com>
+ id 1cYKnZ-0002FV-3j
+ for barebox@lists.infradead.org; Mon, 30 Jan 2017 22:51:47 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Mon, 30 Jan 2017 23:50:55 +0100
+Message-Id: <1485816659-26091-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,502 +14,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] spi: i.MX: Add driver for DSPI
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/5] ARM i.MX: move cpu_type macros in front of cpu_revision
+ code
+To: barebox@lists.infradead.org
+Cc: Alexander Kurz <akurz@blala.de>
 
-On Thu, Jan 26, 2017 at 03:26:54PM -0800, Andrey Smirnov wrote:
-> Add driver for DSPI - SPI IP core found on various Freescale/NXP
-> products (including Vybrid/VF610).
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
+Preparational commit to enable the use of cpu_type macros in imx6_cpu_revision()
 
-Applied, thanks
+Signed-off-by: Alexander Kurz <akurz@blala.de>
+---
+ arch/arm/mach-imx/include/mach/imx6.h | 40 +++++++++++++++++------------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-Sascha
-
-> 
-> Changes since v1:
-> 
-> 	- Default to disabled in Kconfig
-> 	- Only dev_* used for logging
-> 	- 'bus-num' property made optional
-> 	- A bit better error cleanup
-> 
->  drivers/spi/Kconfig    |   8 +
->  drivers/spi/Makefile   |   1 +
->  drivers/spi/dspi_spi.c | 414 +++++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 423 insertions(+)
->  create mode 100644 drivers/spi/dspi_spi.c
-> 
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 43ba8f4..dd1b214 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -54,6 +54,14 @@ config DRIVER_SPI_OMAP3
->  	bool "OMAP3 McSPI Master driver"
->  	depends on ARCH_OMAP3 || ARCH_AM33XX
->  
-> +config DRIVER_SPI_DSPI
-> +	tristate "Freescale DSPI SPI Master driver"
-> +	depends on ARCH_VF610
-> +	default y
-> +	help
-> +	  This enables support for the Freescale DSPI controller in master
-> +	  mode. VF610 platform uses the controller.
-> +
->  endif
->  
->  endmenu
-> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-> index 7481966..2329cbf 100644
-> --- a/drivers/spi/Makefile
-> +++ b/drivers/spi/Makefile
-> @@ -7,3 +7,4 @@ obj-$(CONFIG_DRIVER_SPI_MXS) += mxs_spi.o
->  obj-$(CONFIG_DRIVER_SPI_ALTERA) += altera_spi.o
->  obj-$(CONFIG_DRIVER_SPI_ATMEL) += atmel_spi.o
->  obj-$(CONFIG_DRIVER_SPI_OMAP3) += omap3_spi.o
-> +obj-$(CONFIG_DRIVER_SPI_DSPI) += dspi_spi.o
-> diff --git a/drivers/spi/dspi_spi.c b/drivers/spi/dspi_spi.c
-> new file mode 100644
-> index 0000000..07b2f2c
-> --- /dev/null
-> +++ b/drivers/spi/dspi_spi.c
-> @@ -0,0 +1,414 @@
-> +/*
-> + * Copyright (c) 2016 Zodiac Inflight Innovation
-> + * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-> + *
-> + * Based on drivers/spi/spi-fsl-dspi.c from Linux kernel
-> + *
-> + * Copyright 2013 Freescale Semiconductor, Inc.
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License as published by
-> + * the Free Software Foundation; either version 2 of the License, or
-> + * (at your option) any later version.
-> + *
-> + */
-> +
-> +#include <common.h>
-> +#include <init.h>
-> +#include <driver.h>
-> +#include <spi/spi.h>
-> +#include <linux/math64.h>
-> +#include <xfuncs.h>
-> +#include <io.h>
-> +#include <of.h>
-> +#include <errno.h>
-> +#include <malloc.h>
-> +#include <gpio.h>
-> +#include <of_gpio.h>
-> +#include <of_device.h>
-> +#include <mach/spi.h>
-> +#include <mach/generic.h>
-> +#include <linux/clk.h>
-> +#include <linux/err.h>
-> +#include <clock.h>
-> +
-> +#define SPI_MCR		0x00
-> +#define SPI_MCR_MASTER		(1 << 31)
-> +#define SPI_MCR_PCSIS		(0x3F << 16)
-> +#define SPI_MCR_CLR_TXF	(1 << 11)
-> +#define SPI_MCR_CLR_RXF	(1 << 10)
-> +#define SPI_MCR_DIS_TXF		BIT(13)
-> +#define SPI_MCR_DIS_RXF		BIT(12)
-> +
-> +#define SPI_CTAR(x)		(0x0c + (((x) & 0x3) * 4))
-> +#define SPI_CTAR_FMSZ(x)	(((x) & 0x0000000f) << 27)
-> +#define SPI_CTAR_CPOL(x)	((x) << 26)
-> +#define SPI_CTAR_CPHA(x)	((x) << 25)
-> +#define SPI_CTAR_LSBFE(x)	((x) << 24)
-> +#define SPI_CTAR_PCSSCK(x)	(((x) & 0x00000003) << 22)
-> +#define SPI_CTAR_PASC(x)	(((x) & 0x00000003) << 20)
-> +#define SPI_CTAR_PDT(x)	(((x) & 0x00000003) << 18)
-> +#define SPI_CTAR_PBR(x)	(((x) & 0x00000003) << 16)
-> +#define SPI_CTAR_CSSCK(x)	(((x) & 0x0000000f) << 12)
-> +#define SPI_CTAR_ASC(x)	(((x) & 0x0000000f) << 8)
-> +#define SPI_CTAR_DT(x)		(((x) & 0x0000000f) << 4)
-> +#define SPI_CTAR_BR(x)		((x) & 0x0000000f)
-> +#define SPI_CTAR_SCALE_BITS	0xf
-> +
-> +#define SPI_SR			0x2c
-> +#define SPI_SR_EOQF		0x10000000
-> +#define SPI_SR_TCFQF		0x80000000
-> +#define SPI_SR_RFDF		BIT(17)
-> +
-> +#define SPI_PUSHR		0x34
-> +#define SPI_PUSHR_CONT		(1 << 31)
-> +#define SPI_PUSHR_CTAS(x)	(((x) & 0x00000003) << 28)
-> +#define SPI_PUSHR_EOQ		(1 << 27)
-> +#define SPI_PUSHR_CTCNT	(1 << 26)
-> +#define SPI_PUSHR_PCS(x)	(((1 << x) & 0x0000003f) << 16)
-> +#define SPI_PUSHR_TXDATA(x)	((x) & 0x0000ffff)
-> +
-> +#define SPI_POPR		0x38
-> +#define SPI_POPR_RXDATA(x)	((x) & 0x0000ffff)
-> +
-> +
-> +enum dspi_trans_mode {
-> +	DSPI_EOQ_MODE = 0,
-> +	DSPI_TCFQ_MODE,
-> +};
-> +
-> +struct fsl_dspi {
-> +	struct spi_master	master;
-> +	int			*cs_array;
-> +	void __iomem		*base;
-> +	struct clk		*clk;
-> +	u32 			cs_sck_delay;
-> +	u32			sck_cs_delay;
-> +
-> +	const struct fsl_dspi_devtype_data *devtype_data;
-> +};
-> +
-> +struct fsl_dspi_devtype_data {
-> +	enum dspi_trans_mode trans_mode;
-> +	u8 max_clock_factor;
-> +};
-> +
-> +static struct fsl_dspi *to_dspi(struct spi_master *master)
-> +{
-> +	return container_of(master, struct fsl_dspi, master);
-> +}
-> +
-> +static void hz_to_spi_baud(struct device_d *dev,
-> +			   char *pbr, char *br, int speed_hz,
-> +			   unsigned long clkrate)
-> +{
-> +	/* Valid baud rate pre-scaler values */
-> +	int pbr_tbl[4] = {2, 3, 5, 7};
-> +	int brs[16] = {	2,	4,	6,	8,
-> +		16,	32,	64,	128,
-> +		256,	512,	1024,	2048,
-> +		4096,	8192,	16384,	32768 };
-> +	int scale_needed, scale, minscale = INT_MAX;
-> +	int i, j;
-> +
-> +	scale_needed = clkrate / speed_hz;
-> +	if (clkrate % speed_hz)
-> +		scale_needed++;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(brs); i++)
-> +		for (j = 0; j < ARRAY_SIZE(pbr_tbl); j++) {
-> +			scale = brs[i] * pbr_tbl[j];
-> +			if (scale >= scale_needed) {
-> +				if (scale < minscale) {
-> +					minscale = scale;
-> +					*br = i;
-> +					*pbr = j;
-> +				}
-> +				break;
-> +			}
-> +		}
-> +
-> +	if (minscale == INT_MAX) {
-> +		dev_warn(dev, "Can not find valid baud rate,speed_hz is %d,"
-> +			 "clkrate is %ld, we use the max prescaler value.\n",
-> +			speed_hz, clkrate);
-> +		*pbr = ARRAY_SIZE(pbr_tbl) - 1;
-> +		*br =  ARRAY_SIZE(brs) - 1;
-> +	}
-> +}
-> +
-> +static void ns_delay_scale(struct device_d *dev,
-> +			   char *psc, char *sc, int delay_ns,
-> +			   unsigned long clkrate)
-> +{
-> +	int pscale_tbl[4] = {1, 3, 5, 7};
-> +	int scale_needed, scale, minscale = INT_MAX;
-> +	int i, j;
-> +	u32 remainder;
-> +
-> +	scale_needed = div_u64_rem((u64)delay_ns * clkrate, NSEC_PER_SEC,
-> +			&remainder);
-> +	if (remainder)
-> +		scale_needed++;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(pscale_tbl); i++)
-> +		for (j = 0; j <= SPI_CTAR_SCALE_BITS; j++) {
-> +			scale = pscale_tbl[i] * (2 << j);
-> +			if (scale >= scale_needed) {
-> +				if (scale < minscale) {
-> +					minscale = scale;
-> +					*psc = i;
-> +					*sc = j;
-> +				}
-> +				break;
-> +			}
-> +		}
-> +
-> +	if (minscale == INT_MAX) {
-> +		dev_warn(dev, "Cannot find correct scale values for %dns "
-> +			 "delay at clkrate %ld, using max prescaler value",
-> +			 delay_ns, clkrate);
-> +		*psc = ARRAY_SIZE(pscale_tbl) - 1;
-> +		*sc = SPI_CTAR_SCALE_BITS;
-> +	}
-> +}
-> +
-> +static u32 dspi_xchg_single(struct fsl_dspi *dspi, u32 in)
-> +{
-> +	const uint32_t sr_ready = (SPI_SR_EOQF | SPI_SR_RFDF);
-> +
-> +	writel(in, dspi->base + SPI_PUSHR);
-> +
-> +	while ((readl(dspi->base + SPI_SR) & sr_ready) != sr_ready)
-> +		;
-> +
-> +	writel(sr_ready, dspi->base + SPI_SR);
-> +
-> +	return readl(dspi->base + SPI_POPR);
-> +}
-> +
-> +static const void *dspi_load_and_advance(const void *buffer,
-> +					 size_t word_size, uint32_t *word)
-> +{
-> +	if (!buffer) {
-> +		*word = 0;
-> +		return NULL;
-> +	}
-> +
-> +	switch (word_size) {
-> +	case 2:
-> +		*word = *(const uint16_t *)buffer;
-> +		break;
-> +	case 1:
-> +		*word = *(const uint8_t *)buffer;
-> +		break;
-> +	}
-> +
-> +	return buffer + word_size;
-> +}
-> +
-> +static void *dspi_store_and_advance(void *buffer,
-> +				    size_t word_size, uint32_t word)
-> +{
-> +	if (!buffer)
-> +		return NULL;
-> +
-> +	switch (word_size) {
-> +	case 2:
-> +		*(uint16_t *)buffer = word;
-> +		break;
-> +	case 1:
-> +		*(uint8_t *)buffer  = word;
-> +		break;
-> +	}
-> +
-> +	return buffer + word_size;
-> +}
-> +
-> +
-> +static void dspi_do_transfer(struct spi_device *spi,
-> +			     struct spi_transfer *transfer,
-> +			     bool last)
-> +{
-> +	size_t i;
-> +	void *rx;
-> +	const void *tx;
-> +	unsigned int flags;
-> +	struct fsl_dspi *dspi = to_dspi(spi->master);
-> +	const size_t word_size = spi->bits_per_word <= 8 ? 1 : 2;
-> +	const size_t count = transfer->len / word_size;
-> +
-> +	flags = SPI_PUSHR_PCS(spi->chip_select)
-> +		| SPI_PUSHR_CTAS(spi->chip_select)
-> +		| SPI_PUSHR_EOQ
-> +		| SPI_PUSHR_CONT;
-> +
-> +	tx = transfer->tx_buf;
-> +	rx = transfer->rx_buf;
-> +
-> +	for (i = 0; i < count; i++) {
-> +		uint32_t in, out;
-> +
-> +		if (i == count - 1 &&
-> +		    (last || transfer->cs_change))
-> +			flags &= ~SPI_PUSHR_CONT;
-> +
-> +		tx = dspi_load_and_advance(tx, word_size, &out);
-> +		in = dspi_xchg_single(dspi, flags | out);
-> +		rx = dspi_store_and_advance(rx, word_size, in);
-> +	}
-> +}
-> +
-> +static int dspi_transfer(struct spi_device *spi,
-> +			 struct spi_message *message)
-> +{
-> +	struct spi_transfer *transfer;
-> +
-> +	message->actual_length = 0;
-> +
-> +	list_for_each_entry(transfer, &message->transfers, transfer_list) {
-> +
-> +		if (spi->bits_per_word > 8 &&
-> +		    transfer->len % 2)
-> +			dev_err(spi->master->dev,
-> +				"Transfer doesn't contain exact number of SPI "
-> +				"words. Last partial word will be truncated");
-> +
-> +		dspi_do_transfer(spi, transfer,
-> +				 list_is_last(&transfer->transfer_list,
-> +					      &message->transfers));
-> +		message->actual_length += transfer->len;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int dspi_setup(struct spi_device *spi)
-> +{
-> +	struct fsl_dspi *dspi = to_dspi(spi->master);
-> +	unsigned char br = 0, pbr = 0, pcssck = 0, cssck = 0;
-> +	unsigned char pasc = 0, asc = 0, fmsz = 0;
-> +	unsigned long clkrate;
-> +
-> +	if (4 <= spi->bits_per_word && spi->bits_per_word <= 16)
-> +		fmsz = spi->bits_per_word - 1;
-> +	else
-> +		return -ENODEV;
-> +
-> +	clkrate = clk_get_rate(dspi->clk);
-> +	hz_to_spi_baud(spi->master->dev, &pbr, &br, spi->max_speed_hz, clkrate);
-> +
-> +	/* Set PCS to SCK delay scale values */
-> +	ns_delay_scale(spi->master->dev, &pcssck, &cssck, dspi->cs_sck_delay, clkrate);
-> +
-> +	/* Set After SCK delay scale values */
-> +	ns_delay_scale(spi->master->dev, &pasc, &asc, dspi->sck_cs_delay, clkrate);
-> +
-> +	writel(SPI_CTAR_FMSZ(fmsz)
-> +	       | SPI_CTAR_CPOL(spi->mode & SPI_CPOL ? 1 : 0)
-> +	       | SPI_CTAR_CPHA(spi->mode & SPI_CPHA ? 1 : 0)
-> +	       | SPI_CTAR_LSBFE(spi->mode & SPI_LSB_FIRST ? 1 : 0)
-> +	       | SPI_CTAR_PCSSCK(pcssck)
-> +	       | SPI_CTAR_CSSCK(cssck)
-> +	       | SPI_CTAR_PASC(pasc)
-> +	       | SPI_CTAR_ASC(asc)
-> +	       | SPI_CTAR_PBR(pbr)
-> +	       | SPI_CTAR_BR(br),
-> +	       dspi->base + SPI_CTAR(spi->chip_select));
-> +
-> +	return 0;
-> +}
-> +
-> +static int dspi_probe(struct device_d *dev)
-> +{
-> +	struct resource *io;
-> +	struct fsl_dspi *dspi;
-> +	struct spi_master *master;
-> +	struct device_node *np = dev->device_node;
-> +
-> +	int ret = 0;
-> +	uint32_t bus_num = 0;
-> +	uint32_t cs_num;
-> +
-> +	dspi = xzalloc(sizeof(*dspi));
-> +
-> +	dspi->devtype_data = of_device_get_match_data(dev);
-> +	if (!dspi->devtype_data) {
-> +		dev_err(dev, "can't get devtype_data\n");
-> +		ret = -EFAULT;
-> +		goto free_memory;
-> +	}
-> +
-> +	master = &dspi->master;
-> +	master->dev = dev;
-> +	master->setup = dspi_setup;
-> +	master->transfer = dspi_transfer;
-> +
-> +	ret = of_property_read_u32(np, "spi-num-chipselects", &cs_num);
-> +	if (ret < 0) {
-> +		dev_err(dev, "can't get spi-num-chipselects\n");
-> +		goto free_memory;
-> +	}
-> +	master->num_chipselect = cs_num;
-> +
-> +	if (!of_property_read_u32(np, "bus-num", &bus_num))
-> +		master->bus_num = bus_num;
-> +	else
-> +		master->bus_num = dev->id;
-> +
-> +	of_property_read_u32(dev->device_node, "fsl,spi-cs-sck-delay",
-> +			     &dspi->cs_sck_delay);
-> +	of_property_read_u32(dev->device_node, "fsl,spi-sck-cs-delay",
-> +			     &dspi->sck_cs_delay);
-> +
-> +	io = dev_request_mem_resource(dev, 0);
-> +	if (IS_ERR(io)) {
-> +		ret = PTR_ERR(io);
-> +		goto free_memory;
-> +	}
-> +	dspi->base = IOMEM(io->start);
-> +
-> +	dspi->clk = clk_get(dev, "dspi");
-> +	if (IS_ERR(dspi->clk)) {
-> +		ret = PTR_ERR(dspi->clk);
-> +		goto free_memory;
-> +	}
-> +
-> +	ret = clk_enable(dspi->clk);
-> +	if (ret)
-> +		goto free_memory;
-> +
-> +	writel(SPI_MCR_MASTER  |
-> +	       SPI_MCR_PCSIS   |
-> +	       SPI_MCR_CLR_TXF |
-> +	       SPI_MCR_CLR_RXF |
-> +	       SPI_MCR_DIS_TXF |
-> +	       SPI_MCR_DIS_RXF, dspi->base + SPI_MCR);
-> +
-> +	ret = spi_register_master(master);
-> +	if (!ret)
-> +		return 0;
-> +
-> +	dev_err(dev, "Problem registering DSPI master\n");
-> +	clk_disable(dspi->clk);
-> +free_memory:
-> +	free(dspi);
-> +	return ret;
-> +}
-> +
-> +static const struct fsl_dspi_devtype_data vf610_data = {
-> +	.trans_mode = DSPI_EOQ_MODE,
-> +	.max_clock_factor = 2,
-> +};
-> +
-> +static const struct of_device_id dspi_dt_ids[] = {
-> +	{ .compatible = "fsl,vf610-dspi", .data = (void *)&vf610_data, },
-> +	{ /* sentinel */ }
-> +};
-> +
-> +static struct driver_d dspi_spi_driver = {
-> +	.name  = "fsl-dspi",
-> +	.probe = dspi_probe,
-> +	.of_compatible = DRV_OF_COMPAT(dspi_dt_ids),
-> +};
-> +device_platform_driver(dspi_spi_driver);
-> -- 
-> 2.9.3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/arm/mach-imx/include/mach/imx6.h b/arch/arm/mach-imx/include/mach/imx6.h
+index 8c169f1..e201721 100644
+--- a/arch/arm/mach-imx/include/mach/imx6.h
++++ b/arch/arm/mach-imx/include/mach/imx6.h
+@@ -50,6 +50,26 @@ static inline int imx6_cpu_type(void)
+ 	return __imx6_cpu_type();
+ }
+ 
++#define DEFINE_MX6_CPU_TYPE(str, type)					\
++	static inline int cpu_mx6_is_##str(void)			\
++	{								\
++		return __imx6_cpu_type() == type;			\
++	}								\
++									\
++	static inline int cpu_is_##str(void)				\
++	{								\
++		if (!cpu_is_mx6())					\
++			return 0;					\
++		return cpu_mx6_is_##str();				\
++	}
++
++DEFINE_MX6_CPU_TYPE(mx6s, IMX6_CPUTYPE_IMX6S);
++DEFINE_MX6_CPU_TYPE(mx6dl, IMX6_CPUTYPE_IMX6DL);
++DEFINE_MX6_CPU_TYPE(mx6q, IMX6_CPUTYPE_IMX6Q);
++DEFINE_MX6_CPU_TYPE(mx6d, IMX6_CPUTYPE_IMX6D);
++DEFINE_MX6_CPU_TYPE(mx6sx, IMX6_CPUTYPE_IMX6SX);
++DEFINE_MX6_CPU_TYPE(mx6ul, IMX6_CPUTYPE_IMX6UL);
++
+ static inline int __imx6_cpu_revision(void)
+ {
+ 
+@@ -85,24 +105,4 @@ static inline int imx6_cpu_revision(void)
+ 	return __imx6_cpu_revision();
+ }
+ 
+-#define DEFINE_MX6_CPU_TYPE(str, type)					\
+-	static inline int cpu_mx6_is_##str(void)			\
+-	{								\
+-		return __imx6_cpu_type() == type;			\
+-	}								\
+-									\
+-	static inline int cpu_is_##str(void)				\
+-	{								\
+-		if (!cpu_is_mx6())					\
+-			return 0;					\
+-		return cpu_mx6_is_##str();				\
+-	}
+-
+-DEFINE_MX6_CPU_TYPE(mx6s, IMX6_CPUTYPE_IMX6S);
+-DEFINE_MX6_CPU_TYPE(mx6dl, IMX6_CPUTYPE_IMX6DL);
+-DEFINE_MX6_CPU_TYPE(mx6q, IMX6_CPUTYPE_IMX6Q);
+-DEFINE_MX6_CPU_TYPE(mx6d, IMX6_CPUTYPE_IMX6D);
+-DEFINE_MX6_CPU_TYPE(mx6sx, IMX6_CPUTYPE_IMX6SX);
+-DEFINE_MX6_CPU_TYPE(mx6ul, IMX6_CPUTYPE_IMX6UL);
+-
+ #endif /* __MACH_IMX6_H */
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
