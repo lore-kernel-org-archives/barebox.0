@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cYKnZ-0002Fs-3t
- for barebox@lists.infradead.org; Mon, 30 Jan 2017 22:51:47 +0000
+ id 1cYKnZ-0002FW-3h
+ for barebox@lists.infradead.org; Mon, 30 Jan 2017 22:51:49 +0000
 From: Alexander Kurz <akurz@blala.de>
-Date: Mon, 30 Jan 2017 23:50:58 +0100
-Message-Id: <1485816659-26091-4-git-send-email-akurz@blala.de>
+Date: Mon, 30 Jan 2017 23:50:56 +0100
+Message-Id: <1485816659-26091-2-git-send-email-akurz@blala.de>
 In-Reply-To: <1485816659-26091-1-git-send-email-akurz@blala.de>
 References: <1485816659-26091-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,78 +21,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] ARM i.MX: Add i.MX6SL support
+Subject: [PATCH 2/5] ARM i.MX: add SoC type detection for i.MX6SL
 To: barebox@lists.infradead.org
 Cc: Alexander Kurz <akurz@blala.de>
 
-Most i.MX6SL infrastructure is already covered in barebox by general i.MX6
-support. Missing infrastructure provided in separate commits are
-* SoC type detection
-* Clock infrastructure
+The i.MX6 series SoC type is determined by barebox by examining the
+USB_ANALOG_DIGPROG aka IMX6_ANATOP_SI_REV register. This register is located
+at a common offset for all mx6 SoC - except for i.MX6SL where a different
+offset is used. This creates a dilemma while distinguishing the mx6sl from
+non-mx6sl SOC since the SoC type identification register location is type
+specific itself.
 
-Add the missing fsl,imx6sl-mmdc, so it will not be catched by fsl,imx6q-mmdc
-and the remaining bits and pieces to provide barebox i.MX6SL SoC support.
+Access to undocumented and probably invalid or unpredictable registers should
+be avoided as possible. For the mx6sl detection an access to the general
+USB_ANALOG_DIGPROG @0x260 cannot be avoided when running on mx6sl. This
+register contained the value 0x00014009 for different mx6sl Rev. 1.2 based
+e-book readers using MCIMX6L7DVN10AB and MCIMX6L8DVN10AB SoC. This
+implementation assumes the value of MAJOR_UPPER (here 0x01) to be smaller
+than the smallest non-6sl MAJOR_UPPER (0x61 for mx6s).
 
 Signed-off-by: Alexander Kurz <akurz@blala.de>
 ---
- arch/arm/mach-imx/esdctl.c     | 3 +++
- arch/arm/mach-imx/imx.c        | 2 ++
- drivers/clk/imx/Makefile       | 1 +
- drivers/pinctrl/imx-iomux-v3.c | 2 ++
- 4 files changed, 8 insertions(+)
+ arch/arm/mach-imx/Kconfig             |  4 ++++
+ arch/arm/mach-imx/imx6.c              |  3 +++
+ arch/arm/mach-imx/include/mach/imx6.h | 19 ++++++++++++++++++-
+ 3 files changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
-index ffe708f..1eebc77 100644
---- a/arch/arm/mach-imx/esdctl.c
-+++ b/arch/arm/mach-imx/esdctl.c
-@@ -432,6 +432,9 @@ static struct platform_device_id imx_esdctl_ids[] = {
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 4dc1098..c1ed5b2 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -148,6 +148,10 @@ config ARCH_IMX6
+ 	select COMMON_CLK_OF_PROVIDER
+ 	select HW_HAS_PCI
  
- static __maybe_unused struct of_device_id imx_esdctl_dt_ids[] = {
- 	{
-+		.compatible = "fsl,imx6sl-mmdc",
-+		.data = &imx6ul_data
-+	}, {
- 		.compatible = "fsl,imx6ul-mmdc",
- 		.data = &imx6ul_data
- 	}, {
-diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
-index 907340f..1990739 100644
---- a/arch/arm/mach-imx/imx.c
-+++ b/arch/arm/mach-imx/imx.c
-@@ -61,6 +61,8 @@ static int imx_soc_from_dt(void)
- 		return IMX_CPU_IMX6;
- 	if (of_machine_is_compatible("fsl,imx6sx"))
- 		return IMX_CPU_IMX6;
-+	if (of_machine_is_compatible("fsl,imx6sl"))
-+		return IMX_CPU_IMX6;
- 	if (of_machine_is_compatible("fsl,imx6qp"))
- 		return IMX_CPU_IMX6;
- 	if (of_machine_is_compatible("fsl,imx6ul"))
-diff --git a/drivers/clk/imx/Makefile b/drivers/clk/imx/Makefile
-index 32d5038..b864b4f 100644
---- a/drivers/clk/imx/Makefile
-+++ b/drivers/clk/imx/Makefile
-@@ -19,6 +19,7 @@ obj-$(CONFIG_ARCH_IMX51)  += clk-imx5.o
- obj-$(CONFIG_ARCH_IMX53)  += clk-imx5.o
- obj-$(CONFIG_ARCH_IMX6)   += clk-imx6.o
- obj-$(CONFIG_ARCH_IMX6SX) += clk-imx6sx.o
-+obj-$(CONFIG_ARCH_IMX6SL) += clk-imx6sl.o
- obj-$(CONFIG_ARCH_IMX6UL) += clk-imx6ul.o
- obj-$(CONFIG_ARCH_IMX7) += clk-imx7.o
- obj-$(CONFIG_ARCH_VF610)  += clk-vf610.o
-diff --git a/drivers/pinctrl/imx-iomux-v3.c b/drivers/pinctrl/imx-iomux-v3.c
-index b5fa235..dea4324 100644
---- a/drivers/pinctrl/imx-iomux-v3.c
-+++ b/drivers/pinctrl/imx-iomux-v3.c
-@@ -198,6 +198,8 @@ static __maybe_unused struct of_device_id imx_iomux_v3_dt_ids[] = {
- 	}, {
- 		.compatible = "fsl,imx6ul-iomuxc",
- 	}, {
-+		.compatible = "fsl,imx6sl-iomuxc",
-+	}, {
- 		.compatible = "fsl,imx7d-iomuxc",
- 	}, {
- 		.compatible = "fsl,imx7d-iomuxc-lpsr",
++config ARCH_IMX6SL
++	bool
++	select ARCH_IMX6
++
+ config ARCH_IMX6SX
+ 	bool
+ 	select ARCH_IMX6
+diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+index b2979b0..44a8dbe 100644
+--- a/arch/arm/mach-imx/imx6.c
++++ b/arch/arm/mach-imx/imx6.c
+@@ -151,6 +151,9 @@ int imx6_init(void)
+ 	case IMX6_CPUTYPE_IMX6S:
+ 		cputypestr = "i.MX6 Solo";
+ 		break;
++	case IMX6_CPUTYPE_IMX6SL:
++		cputypestr = "i.MX6 SoloLite";
++		break;
+ 	case IMX6_CPUTYPE_IMX6SX:
+ 		cputypestr = "i.MX6 SoloX";
+ 		break;
+diff --git a/arch/arm/mach-imx/include/mach/imx6.h b/arch/arm/mach-imx/include/mach/imx6.h
+index e201721..327676b 100644
+--- a/arch/arm/mach-imx/include/mach/imx6.h
++++ b/arch/arm/mach-imx/include/mach/imx6.h
+@@ -9,7 +9,9 @@
+ void imx6_init_lowlevel(void);
+ 
+ #define IMX6_ANATOP_SI_REV 0x260
++#define IMX6SL_ANATOP_SI_REV 0x280
+ 
++#define IMX6_CPUTYPE_IMX6SL	0x160
+ #define IMX6_CPUTYPE_IMX6S	0x161
+ #define IMX6_CPUTYPE_IMX6DL	0x261
+ #define IMX6_CPUTYPE_IMX6SX	0x462
+@@ -36,6 +38,16 @@ static inline int __imx6_cpu_type(void)
+ 
+ 	val = readl(MX6_ANATOP_BASE_ADDR + IMX6_ANATOP_SI_REV);
+ 	val = (val >> 16) & 0xff;
++	/* non-MX6-standard SI_REV reg offset for MX6SL */
++	if (IS_ENABLED(CONFIG_ARCH_IMX6SL) &&
++	    val < (IMX6_CPUTYPE_IMX6S & 0xff)) {
++		uint32_t tmp;
++		tmp = readl(MX6_ANATOP_BASE_ADDR + IMX6SL_ANATOP_SI_REV);
++		tmp = (tmp >> 16) & 0xff;
++		if ((IMX6_CPUTYPE_IMX6SL & 0xff) == tmp)
++			/* intentionally skip scu_get_core_count() for MX6SL */
++			return IMX6_CPUTYPE_IMX6SL;
++	}
+ 
+ 	val |= scu_get_core_count() << 8;
+ 
+@@ -68,14 +80,19 @@ DEFINE_MX6_CPU_TYPE(mx6dl, IMX6_CPUTYPE_IMX6DL);
+ DEFINE_MX6_CPU_TYPE(mx6q, IMX6_CPUTYPE_IMX6Q);
+ DEFINE_MX6_CPU_TYPE(mx6d, IMX6_CPUTYPE_IMX6D);
+ DEFINE_MX6_CPU_TYPE(mx6sx, IMX6_CPUTYPE_IMX6SX);
++DEFINE_MX6_CPU_TYPE(mx6sl, IMX6_CPUTYPE_IMX6SL);
+ DEFINE_MX6_CPU_TYPE(mx6ul, IMX6_CPUTYPE_IMX6UL);
+ 
+ static inline int __imx6_cpu_revision(void)
+ {
+ 
+ 	uint32_t rev;
++	uint32_t si_rev_offset = IMX6_ANATOP_SI_REV;
++
++	if (IS_ENABLED(CONFIG_ARCH_IMX6SL) && cpu_mx6_is_mx6sl())
++		si_rev_offset = IMX6SL_ANATOP_SI_REV;
+ 
+-	rev = readl(MX6_ANATOP_BASE_ADDR + IMX6_ANATOP_SI_REV);
++	rev = readl(MX6_ANATOP_BASE_ADDR + si_rev_offset);
+ 
+ 	switch (rev & 0xfff) {
+ 	case 0x00:
 -- 
 2.1.4
 
