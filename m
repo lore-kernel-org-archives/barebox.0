@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cdxbV-0001Qp-2v
- for barebox@lists.infradead.org; Wed, 15 Feb 2017 11:18:35 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Wed, 15 Feb 2017 12:18:05 +0100
-Message-Id: <20170215111805.31261-1-u.kleine-koenig@pengutronix.de>
+ id 1cYpBb-0005X1-O1
+ for barebox@lists.infradead.org; Wed, 01 Feb 2017 07:18:37 +0000
+Date: Wed, 1 Feb 2017 08:18:12 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170201071812.5nifdxmvkbcafjkv@pengutronix.de>
+References: <1485516784-25401-1-git-send-email-akurz@blala.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1485516784-25401-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,39 +18,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mvebu: rn2120: Make available all RAM
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] ARM: i.MX7: add AIPS base address defines
+To: Alexander Kurz <akurz@blala.de>
+Cc: barebox@lists.infradead.org
 
-YmluYXJ5LjAgc2V0cyB1cCBhbGwgUkFNIGJ1dCB0aGUgYWRkcmVzcyBkZWNvZGluZyBpc250JyBh
-ZGFwdGVkIGFjY29yZGluZ2x5CndoaWNoIG1ha2VzIGJhcmVib3ggYXNzdW1lIHRoYXQgdGhlcmUg
-YXJlIG9ubHkgNTEyIE1pQiBvZiBSQU0gb24gYSBzaW5nbGUKYmFuayBpbnN0ZWFkIG9mIHR3byBi
-YW5rcyB3aXRoIDEgR2lCIGVhY2guCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8
-dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGFyY2gvYXJtL2JvYXJkcy9uZXRn
-ZWFyLXJuMjEyMC9sb3dsZXZlbC5jIHwgMTUgKysrKysrKysrKysrKysrCiAxIGZpbGUgY2hhbmdl
-ZCwgMTUgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9uZXRnZWFy
-LXJuMjEyMC9sb3dsZXZlbC5jIGIvYXJjaC9hcm0vYm9hcmRzL25ldGdlYXItcm4yMTIwL2xvd2xl
-dmVsLmMKaW5kZXggNjAyNjE2NmUzMjAxLi41Y2RlMmI2NTdiZDUgMTAwNjQ0Ci0tLSBhL2FyY2gv
-YXJtL2JvYXJkcy9uZXRnZWFyLXJuMjEyMC9sb3dsZXZlbC5jCisrKyBiL2FyY2gvYXJtL2JvYXJk
-cy9uZXRnZWFyLXJuMjEyMC9sb3dsZXZlbC5jCkBAIC0zNCw2ICszNCwyMSBAQCBFTlRSWV9GVU5D
-VElPTihzdGFydF9uZXRnZWFyX3JuMjEyMCwgcjAsIHIxLCByMikKIAl3cml0ZWwoKDEgPDwgMTAp
-IHwgcmVhZGwoKHZvaWQgKikweGQwMDE4MTQwKSwgKHZvaWQgKikweGQwMDE4MTQwKTsKIAl3cml0
-ZWwofigxIDw8IDEwKSAmIHJlYWRsKCh2b2lkICopMHhkMDAxODE0NCksICh2b2lkICopMHhkMDAx
-ODE0NCk7CiAKKwkvKgorCSAqIFRoZSB2ZW5kb3IgYmluYXJ5IHRoYXQgaW5pdGlhbGl6ZXMgUkFN
-IGRvZXNuJ3QgcHJvZ3JhbSB0aGUgU0RSQU0KKwkgKiBBZGRyZXNzIERlY29kaW5nIHJlZ2lzdGVy
-cyB0byBtYXRjaCB0aGUgYWN0dWFsIGF2YWlsYWJsZSBSQU0uIEJ1dCBhcworCSAqIGJhcmVib3gg
-bGF0ZXIgZGV0ZXJtaW5lcyB0aGUgUkFNIHNpemUgZnJvbSB0aGVzZSwgZml4IHRoZW0gdXAgaGVy
-ZS4KKwkgKi8KKworCS8qIFdpbiAxIEJhc2UgQWRkcmVzcyBSZWdpc3RlcjogYmFzZT0weDQwMDAw
-MDAwICovCisJd3JpdGVsKDB4NDAwMDAwMDAsICh2b2lkICopMHhkMDAyMDE4OCk7CisJLyogV2lu
-IDEgQ29udHJvbCBSZWdpc3Rlcjogc2l6ZT0weDQwMDAwMDAsIHdpbmNzPTEsIGVuPTEqLworCXdy
-aXRlbCgweDNmZmZmZmU1LCAodm9pZCAqKTB4ZDAwMjAxOGMpOworCisJLyogV2luIDAgQmFzZSBB
-ZGRyZXNzIFJlZ2lzdGVyIGlzIGFscmVhZHkgMCwgYmFzZT0weDAwMDAwMDAwICovCisJLyogV2lu
-IDAgQ29udHJvbCBSZWdpc3Rlcjogc2l6ZT0weDQwMDAwMDAsIHdpbmNzPTAsIGVuPTEgKi8KKwl3
-cml0ZWwoMHgzZmZmZmZlMSwgKHZvaWQgKikweGQwMDIwMTg0KTsKKwogCWZkdCA9IF9fZHRiX2Fy
-bWFkYV94cF9ybjIxMjBfYmJfc3RhcnQgLQogCQlnZXRfcnVudGltZV9vZmZzZXQoKTsKIAotLSAK
-Mi4xMS4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Fri, Jan 27, 2017 at 12:33:04PM +0100, Alexander Kurz wrote:
+> Import the ARM IP bus base addresses from IMX7DRM 05/2016 AIPS Memory Map
+> 
+> Signed-off-by: Alexander Kurz <akurz@blala.de>
+> ---
+>  arch/arm/boards/element14-warp7/lowlevel.c |   2 +-
+>  arch/arm/mach-imx/imx7.c                   |   2 +-
+>  arch/arm/mach-imx/include/mach/imx7-regs.h | 125 +++++++++++++++++++++++++----
+>  3 files changed, 112 insertions(+), 17 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
