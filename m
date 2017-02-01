@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cYpuG-0004wA-Au
- for barebox@lists.infradead.org; Wed, 01 Feb 2017 08:04:46 +0000
-Date: Wed, 1 Feb 2017 09:04:22 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170201080422.jon2ewtezc66axbi@pengutronix.de>
-References: <1485816659-26091-1-git-send-email-akurz@blala.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1485816659-26091-1-git-send-email-akurz@blala.de>
+Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1cYuuT-0002wi-Lb
+ for barebox@lists.infradead.org; Wed, 01 Feb 2017 13:25:20 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 2F2BAA0041C
+ for <barebox@lists.infradead.org>; Wed,  1 Feb 2017 14:25:00 +0100 (CET)
+From: Daniel Schultz <d.schultz@phytec.de>
+Date: Wed, 1 Feb 2017 14:24:46 +0100
+Message-Id: <1485955486-31573-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,99 +17,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] ARM i.MX: move cpu_type macros in front of
- cpu_revision code
-To: Alexander Kurz <akurz@blala.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] arm: boards: phytec-som-am335x: Remove 1GB RAM type
+To: barebox@lists.infradead.org
 
-On Mon, Jan 30, 2017 at 11:50:55PM +0100, Alexander Kurz wrote:
-> Preparational commit to enable the use of cpu_type macros in imx6_cpu_revision()
-> 
-> Signed-off-by: Alexander Kurz <akurz@blala.de>
+This machine was a prototype and was never shipped to customers.
 
-Applied patches 1-4 for now.
+Since it has no dependencies to any image, it can be removed.
 
-Sascha
+Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+---
+ arch/arm/boards/phytec-som-am335x/lowlevel.c    |  1 -
+ arch/arm/boards/phytec-som-am335x/ram-timings.h | 21 ---------------------
+ 2 files changed, 22 deletions(-)
 
-> ---
->  arch/arm/mach-imx/include/mach/imx6.h | 40 +++++++++++++++++------------------
->  1 file changed, 20 insertions(+), 20 deletions(-)
-> 
-> diff --git a/arch/arm/mach-imx/include/mach/imx6.h b/arch/arm/mach-imx/include/mach/imx6.h
-> index 8c169f1..e201721 100644
-> --- a/arch/arm/mach-imx/include/mach/imx6.h
-> +++ b/arch/arm/mach-imx/include/mach/imx6.h
-> @@ -50,6 +50,26 @@ static inline int imx6_cpu_type(void)
->  	return __imx6_cpu_type();
->  }
->  
-> +#define DEFINE_MX6_CPU_TYPE(str, type)					\
-> +	static inline int cpu_mx6_is_##str(void)			\
-> +	{								\
-> +		return __imx6_cpu_type() == type;			\
-> +	}								\
-> +									\
-> +	static inline int cpu_is_##str(void)				\
-> +	{								\
-> +		if (!cpu_is_mx6())					\
-> +			return 0;					\
-> +		return cpu_mx6_is_##str();				\
-> +	}
-> +
-> +DEFINE_MX6_CPU_TYPE(mx6s, IMX6_CPUTYPE_IMX6S);
-> +DEFINE_MX6_CPU_TYPE(mx6dl, IMX6_CPUTYPE_IMX6DL);
-> +DEFINE_MX6_CPU_TYPE(mx6q, IMX6_CPUTYPE_IMX6Q);
-> +DEFINE_MX6_CPU_TYPE(mx6d, IMX6_CPUTYPE_IMX6D);
-> +DEFINE_MX6_CPU_TYPE(mx6sx, IMX6_CPUTYPE_IMX6SX);
-> +DEFINE_MX6_CPU_TYPE(mx6ul, IMX6_CPUTYPE_IMX6UL);
-> +
->  static inline int __imx6_cpu_revision(void)
->  {
->  
-> @@ -85,24 +105,4 @@ static inline int imx6_cpu_revision(void)
->  	return __imx6_cpu_revision();
->  }
->  
-> -#define DEFINE_MX6_CPU_TYPE(str, type)					\
-> -	static inline int cpu_mx6_is_##str(void)			\
-> -	{								\
-> -		return __imx6_cpu_type() == type;			\
-> -	}								\
-> -									\
-> -	static inline int cpu_is_##str(void)				\
-> -	{								\
-> -		if (!cpu_is_mx6())					\
-> -			return 0;					\
-> -		return cpu_mx6_is_##str();				\
-> -	}
-> -
-> -DEFINE_MX6_CPU_TYPE(mx6s, IMX6_CPUTYPE_IMX6S);
-> -DEFINE_MX6_CPU_TYPE(mx6dl, IMX6_CPUTYPE_IMX6DL);
-> -DEFINE_MX6_CPU_TYPE(mx6q, IMX6_CPUTYPE_IMX6Q);
-> -DEFINE_MX6_CPU_TYPE(mx6d, IMX6_CPUTYPE_IMX6D);
-> -DEFINE_MX6_CPU_TYPE(mx6sx, IMX6_CPUTYPE_IMX6SX);
-> -DEFINE_MX6_CPU_TYPE(mx6ul, IMX6_CPUTYPE_IMX6UL);
-> -
->  #endif /* __MACH_IMX6_H */
-> -- 
-> 2.1.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/arm/boards/phytec-som-am335x/lowlevel.c b/arch/arm/boards/phytec-som-am335x/lowlevel.c
+index 33e83c5..03c7e98 100644
+--- a/arch/arm/boards/phytec-som-am335x/lowlevel.c
++++ b/arch/arm/boards/phytec-som-am335x/lowlevel.c
+@@ -122,7 +122,6 @@ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_128mb, am335x_phytec_phycore_s
+ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_256mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J128M16125IT_256MB);
+ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_512mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J256M16HA15EIT_512MB);
+ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_2x512mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J512M8125IT_2x512MB);
+-PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_1024mb, am335x_phytec_phycore_som_mlo, PHYCORE_IM8G16D3FBBG15EI_1024MB);
+ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_512mb, am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K256M16TW107IT_512MB);
+ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_256mb, am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K128M16JT_256MB);
+ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_1024mb,  am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K512M16HA125IT_1024MB);
+diff --git a/arch/arm/boards/phytec-som-am335x/ram-timings.h b/arch/arm/boards/phytec-som-am335x/ram-timings.h
+index 4ea654d..d1947b5 100644
+--- a/arch/arm/boards/phytec-som-am335x/ram-timings.h
++++ b/arch/arm/boards/phytec-som-am335x/ram-timings.h
+@@ -29,7 +29,6 @@ enum {
+ 	PHYCORE_MT41J64M1615IT_128MB,
+ 	PHYCORE_MT41J256M16HA15EIT_512MB,
+ 	PHYCORE_MT41J512M8125IT_2x512MB,
+-	PHYCORE_IM8G16D3FBBG15EI_1024MB,
+ 	PHYCORE_R2_MT41K256M16TW107IT_512MB,
+ 	PHYCORE_R2_MT41K128M16JT_256MB,
+ 	PHYCORE_R2_MT41K512M16HA125IT_1024MB,
+@@ -162,26 +161,6 @@ struct am335x_sdram_timings physom_timings[] = {
+ 		},
+ 	},
+ 
+-	/* 1024MB */
+-	[PHYCORE_IM8G16D3FBBG15EI_1024MB] = {
+-		.regs = {
+-			.emif_read_latency	= 0x7,
+-			.emif_tim1		= 0x0AAAE4DB,
+-			.emif_tim2		= 0x268F7FDA,
+-			.emif_tim3		= 0x501F88BF,
+-			.ocp_config		= 0x003d3d3d,
+-			.sdram_config		= 0x61C053B2,
+-			.zq_config		= 0x50074BE4,
+-			.sdram_ref_ctrl		= 0x00000C30
+-		},
+-		.data = {
+-			.rd_slave_ratio0	= 0x33,
+-			.wr_dqs_slave_ratio0	= 0x4a,
+-			.fifo_we_slave_ratio0	= 0xa4,
+-			.wr_slave_ratio0	= 0x85,
+-		},
+-	},
+-
+ 	/* 256MB */
+ 	[PHYCARD_NT5CB128M16BP_256MB] = {
+ 		.regs = {
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
