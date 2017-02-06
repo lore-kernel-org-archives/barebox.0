@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cadBA-0004gq-4A
- for barebox@lists.infradead.org; Mon, 06 Feb 2017 06:53:42 +0000
+ id 1cadBK-0004h2-3u
+ for barebox@lists.infradead.org; Mon, 06 Feb 2017 06:53:49 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  6 Feb 2017 07:50:54 +0100
-Message-Id: <20170206065057.19483-7-s.hauer@pengutronix.de>
+Date: Mon,  6 Feb 2017 07:50:51 +0100
+Message-Id: <20170206065057.19483-4-s.hauer@pengutronix.de>
 In-Reply-To: <20170206065057.19483-1-s.hauer@pengutronix.de>
 References: <20170206065057.19483-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,180 +21,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/9] clk: Add support for shared gates
+Subject: [PATCH 3/9] clk: i.MX: clk-gate2: Allow to pass flags
 To: Barebox List <barebox@lists.infradead.org>
-
-Sometimes a single software control knob controls multiple gates
-in hardware. This patch adds support for shared gates which help
-coping this situation. The first gate is registered with the hardware
-gate as usual, the others are registered as shared gates which does
-not have hardware control itself, but only switches the real hardware
-gate.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/Makefile          |   3 +-
- drivers/clk/clk-gate-shared.c | 123 ++++++++++++++++++++++++++++++++++++++++++
- include/linux/clk.h           |   3 ++
- 3 files changed, 128 insertions(+), 1 deletion(-)
- create mode 100644 drivers/clk/clk-gate-shared.c
+ drivers/clk/imx/clk-gate2.c | 11 ++++++-----
+ drivers/clk/imx/clk.h       |  8 ++++----
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index a4e4ed024..5811d28b8 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -1,6 +1,7 @@
- obj-$(CONFIG_COMMON_CLK)	+= clk.o clk-fixed.o clk-divider.o clk-fixed-factor.o \
- 				clk-mux.o clk-gate.o clk-composite.o \
--				clk-fractional-divider.o clk-conf.o
-+				clk-fractional-divider.o clk-conf.o \
-+				clk-gate-shared.o
- obj-$(CONFIG_CLKDEV_LOOKUP)	+= clkdev.o
+diff --git a/drivers/clk/imx/clk-gate2.c b/drivers/clk/imx/clk-gate2.c
+index f952f3e3f..e7dcd87a7 100644
+--- a/drivers/clk/imx/clk-gate2.c
++++ b/drivers/clk/imx/clk-gate2.c
+@@ -88,7 +88,8 @@ static struct clk_ops clk_gate2_ops = {
+ };
  
- obj-$(CONFIG_ARCH_MVEBU)	+= mvebu/
-diff --git a/drivers/clk/clk-gate-shared.c b/drivers/clk/clk-gate-shared.c
-new file mode 100644
-index 000000000..a95f940dd
---- /dev/null
-+++ b/drivers/clk/clk-gate-shared.c
-@@ -0,0 +1,123 @@
-+/*
-+ * clk-gate-shared.c - generic barebox clock support. Based on Linux clk support
-+ *
-+ * Copyright (c) 2017 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+#include <common.h>
-+#include <io.h>
-+#include <malloc.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+
-+struct clk_gate_shared {
-+	struct clk clk;
-+	const char *parent;
-+	const char *companion_gate;
-+	struct clk *companion_clk;
-+};
-+
-+#define to_clk_gate_shared(_clk) container_of(_clk, struct clk_gate_shared, clk)
-+
-+static struct clk *lookup_companion(struct clk_gate_shared *g)
-+{
-+	if (IS_ERR(g->companion_clk))
-+		g->companion_clk = clk_lookup(g->companion_gate);
-+
-+	if (IS_ERR(g->companion_clk))
-+		return NULL;
-+
-+	return g->companion_clk;
-+}
-+
-+static int clk_gate_shared_enable(struct clk *clk)
-+{
-+	struct clk_gate_shared *g = to_clk_gate_shared(clk);
-+
-+	return clk_enable(lookup_companion(g));
-+}
-+
-+static void clk_gate_shared_disable(struct clk *clk)
-+{
-+	struct clk_gate_shared *g = to_clk_gate_shared(clk);
-+
-+	clk_disable(lookup_companion(g));
-+}
-+
-+static int clk_gate_shared_is_enabled(struct clk *clk)
-+{
-+	struct clk_gate_shared *g = to_clk_gate_shared(clk);
-+
-+	return clk_is_enabled(lookup_companion(g));
-+}
-+
-+static struct clk_ops clk_gate_shared_ops = {
-+	.set_rate = clk_parent_set_rate,
-+	.round_rate = clk_parent_round_rate,
-+	.enable = clk_gate_shared_enable,
-+	.disable = clk_gate_shared_disable,
-+	.is_enabled = clk_gate_shared_is_enabled,
-+};
-+
-+struct clk *clk_gate_shared_alloc(const char *name, const char *parent, const char *companion,
-+			   unsigned flags)
-+{
-+	struct clk_gate_shared *g = xzalloc(sizeof(*g));
-+
-+	g->parent = parent;
-+	g->companion_gate = companion;
-+	g->companion_clk = ERR_PTR(-EINVAL);
-+	g->clk.ops = &clk_gate_shared_ops;
-+	g->clk.name = name;
-+	g->clk.flags = flags;
-+	g->clk.parent_names = &g->parent;
-+	g->clk.num_parents = 1;
-+
-+	return &g->clk;
-+}
-+
-+void clk_gate_shared_free(struct clk *clk)
-+{
-+	struct clk_gate_shared *g = to_clk_gate_shared(clk);
-+
-+	free(g);
-+}
-+
-+/*
-+ * clk_gate_shared - register a gate controlled by another gate
-+ * @name: The name of the new clock gate
-+ * @parent: The parent name of the new clock
-+ * companion: The hardware gate this clock is controlled by
-+ * @flags: common CLK_* flags
-+ *
-+ * This gate clock is used when a single software control knob controls multiple
-+ * gates in hardware. The first gate is then registered as the real hardware gate,
-+ * the others are registered with this function. This gate has no hardware control
-+ * itself, but only enables/disabled its companion hardware gate.
-+ */
-+struct clk *clk_gate_shared(const char *name, const char *parent, const char *companion,
-+			    unsigned flags)
-+{
-+	struct clk *clk;
-+	int ret;
-+
-+	clk = clk_gate_shared_alloc(name , parent, companion, flags);
-+
-+	ret = clk_register(clk);
-+	if (ret) {
-+		clk_gate_shared_free(clk);
-+		return ERR_PTR(ret);
-+	}
-+
-+	return clk;
-+}
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 697ab4ff4..7dd52388c 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -296,6 +296,9 @@ struct clk *clk_gate(const char *name, const char *parent, void __iomem *reg,
- 		u8 shift, unsigned flags, u8 clk_gate_flags);
- struct clk *clk_gate_inverted(const char *name, const char *parent, void __iomem *reg,
- 		u8 shift, unsigned flags);
-+struct clk *clk_gate_shared(const char *name, const char *parent, const char *shared,
-+			    unsigned flags);
-+
- int clk_is_enabled(struct clk *clk);
+ struct clk *clk_gate2_alloc(const char *name, const char *parent,
+-			    void __iomem *reg, u8 shift, u8 cgr_val)
++			    void __iomem *reg, u8 shift, u8 cgr_val,
++			    unsigned long flags)
+ {
+ 	struct clk_gate2 *g = xzalloc(sizeof(*g));
  
- int clk_is_enabled_always(struct clk *clk);
+@@ -100,7 +101,7 @@ struct clk *clk_gate2_alloc(const char *name, const char *parent,
+ 	g->clk.name = name;
+ 	g->clk.parent_names = &g->parent;
+ 	g->clk.num_parents = 1;
+-	g->clk.flags = CLK_SET_RATE_PARENT;
++	g->clk.flags = CLK_SET_RATE_PARENT | flags;
+ 
+ 	return &g->clk;
+ }
+@@ -113,12 +114,12 @@ void clk_gate2_free(struct clk *clk)
+ }
+ 
+ struct clk *clk_gate2(const char *name, const char *parent, void __iomem *reg,
+-		      u8 shift, u8 cgr_val)
++		      u8 shift, u8 cgr_val, unsigned long flags)
+ {
+ 	struct clk *g;
+ 	int ret;
+ 
+-	g = clk_gate2_alloc(name , parent, reg, shift, cgr_val);
++	g = clk_gate2_alloc(name , parent, reg, shift, cgr_val, flags);
+ 
+ 	ret = clk_register(g);
+ 	if (ret) {
+@@ -135,7 +136,7 @@ struct clk *clk_gate2_inverted(const char *name, const char *parent,
+ 	struct clk *clk;
+ 	struct clk_gate2 *g;
+ 
+-	clk = clk_gate2(name, parent, reg, shift, 0x3);
++	clk = clk_gate2(name, parent, reg, shift, 0x3, 0);
+ 	if (IS_ERR(clk))
+ 		return clk;
+ 
+diff --git a/drivers/clk/imx/clk.h b/drivers/clk/imx/clk.h
+index 1610c48ec..4f80a3262 100644
+--- a/drivers/clk/imx/clk.h
++++ b/drivers/clk/imx/clk.h
+@@ -2,7 +2,7 @@
+ #define __IMX_CLK_H
+ 
+ struct clk *clk_gate2(const char *name, const char *parent, void __iomem *reg,
+-		      u8 shift, u8 cgr_val);
++		      u8 shift, u8 cgr_val, unsigned long flags);
+ 
+ static inline struct clk *imx_clk_divider(const char *name, const char *parent,
+ 		void __iomem *reg, u8 shift, u8 width)
+@@ -77,13 +77,13 @@ static inline struct clk *imx_clk_gate_dis(const char *name, const char *parent,
+ static inline struct clk *imx_clk_gate2(const char *name, const char *parent,
+ 		void __iomem *reg, u8 shift)
+ {
+-	return clk_gate2(name, parent, reg, shift, 0x3);
++	return clk_gate2(name, parent, reg, shift, 0x3, 0);
+ }
+ 
+ static inline struct clk *imx_clk_gate2_cgr(const char *name, const char *parent,
+ 					    void __iomem *reg, u8 shift, u8 cgr_val)
+ {
+-	return clk_gate2(name, parent, reg, shift, cgr_val);
++	return clk_gate2(name, parent, reg, shift, cgr_val, 0);
+ }
+ 
+ static inline struct clk *imx_clk_gate3(const char *name, const char *parent,
+@@ -95,7 +95,7 @@ static inline struct clk *imx_clk_gate3(const char *name, const char *parent,
+ static inline struct clk *imx_clk_gate4(const char *name, const char *parent,
+ 		void __iomem *reg, u8 shift)
+ {
+-	return clk_gate2(name, parent, reg, shift, 0x3);
++	return clk_gate2(name, parent, reg, shift, 0x3, 0);
+ }
+ 
+ struct clk *imx_clk_pllv1(const char *name, const char *parent,
 -- 
 2.11.0
 
