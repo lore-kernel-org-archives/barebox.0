@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cadBZ-0004kr-3z
- for barebox@lists.infradead.org; Mon, 06 Feb 2017 06:54:03 +0000
+ id 1cagtg-0002oF-JU
+ for barebox@lists.infradead.org; Mon, 06 Feb 2017 10:51:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  6 Feb 2017 07:50:52 +0100
-Message-Id: <20170206065057.19483-5-s.hauer@pengutronix.de>
-In-Reply-To: <20170206065057.19483-1-s.hauer@pengutronix.de>
-References: <20170206065057.19483-1-s.hauer@pengutronix.de>
+Date: Mon,  6 Feb 2017 11:51:24 +0100
+Message-Id: <20170206105124.29475-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,54 +19,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/9] clk: i.MX: Pass CLK_OPS_PARENT_ENABLE where necessary
+Subject: [PATCH] pinctrl: i.MX7: Fix LPSR sel_imput setting
 To: Barebox List <barebox@lists.infradead.org>
 
-CLK_OPS_PARENT_ENABLE was missing on some i.MX7 specific clocks.
+The i.MX7 has two pinmux controllers, the regular and the LPSR
+controller. The LPSR pinmux controller doesn't have any sel_input
+registers, instead they can be found in the regular pinmux controller.
+This means whenever we want to apply the the sel_input setting for
+the LPSR controller, we have to apply them to the regular controller
+instead.
+In barebox take the easy way out and just add the difference of the
+two base addresses to the register offset. The same issue is present
+in the Kernel aswell, but when the bootloader already configured
+the pins correctly nobody notices when the Kernel sel_input setup
+effectively is a no-op.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/imx/clk.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/mach-imx/include/mach/iomux-v3.h | 8 ++++++++
+ drivers/pinctrl/imx-iomux-v3.c            | 2 +-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk.h b/drivers/clk/imx/clk.h
-index 4f80a3262..019114848 100644
---- a/drivers/clk/imx/clk.h
-+++ b/drivers/clk/imx/clk.h
-@@ -19,7 +19,7 @@ static inline struct clk *imx_clk_divider_np(const char *name, const char *paren
- static inline struct clk *imx_clk_divider2(const char *name, const char *parent,
- 		void __iomem *reg, u8 shift, u8 width)
- {
--	return clk_divider(name, parent, reg, shift, width, 0);
-+	return clk_divider(name, parent, reg, shift, width, CLK_OPS_PARENT_ENABLE);
+diff --git a/arch/arm/mach-imx/include/mach/iomux-v3.h b/arch/arm/mach-imx/include/mach/iomux-v3.h
+index f877aad89..271fe94a0 100644
+--- a/arch/arm/mach-imx/include/mach/iomux-v3.h
++++ b/arch/arm/mach-imx/include/mach/iomux-v3.h
+@@ -116,6 +116,7 @@ typedef u64 iomux_v3_cfg_t;
+ 
+ #define SHARE_MUX_CONF_REG		0x1
+ #define ZERO_OFFSET_VALID		0x2
++#define IMX7_PINMUX_LPSR		0x4
+ 
+ static inline void iomux_v3_setup_pad(void __iomem *iomux, unsigned int flags,
+ 				      u32 mux_reg, u32 conf_reg, u32 input_reg,
+@@ -125,6 +126,13 @@ static inline void iomux_v3_setup_pad(void __iomem *iomux, unsigned int flags,
+ 	const bool conf_ok  = !!conf_reg;
+ 	const bool input_ok = !!input_reg;
+ 
++	/*
++	 * The sel_input registers for the LPSR controller pins are in the regular pinmux
++	 * controller, so bend the register offset over to the other controller.
++	 */
++	if (flags & IMX7_PINMUX_LPSR)
++		input_reg += 0x70000;
++
+ 	if (flags & SHARE_MUX_CONF_REG) {
+ 		mux_val |= conf_val;
+ 	} else {
+diff --git a/drivers/pinctrl/imx-iomux-v3.c b/drivers/pinctrl/imx-iomux-v3.c
+index dea432464..50d717736 100644
+--- a/drivers/pinctrl/imx-iomux-v3.c
++++ b/drivers/pinctrl/imx-iomux-v3.c
+@@ -177,7 +177,7 @@ static int imx_iomux_v3_probe(struct device_d *dev)
  }
  
- static inline struct clk *imx_clk_divider_table(const char *name,
-@@ -53,7 +53,7 @@ static inline struct clk *imx_clk_mux(const char *name, void __iomem *reg,
- static inline struct clk *imx_clk_mux2(const char *name, void __iomem *reg,
- 		u8 shift, u8 width, const char **parents, u8 num_parents)
- {
--	return clk_mux(name, reg, shift, width, parents, num_parents, 0);
-+	return clk_mux(name, reg, shift, width, parents, num_parents, CLK_OPS_PARENT_ENABLE);
- }
+ static struct imx_iomux_v3_data imx_iomux_imx7_lpsr_data = {
+-	.flags = ZERO_OFFSET_VALID,
++	.flags = ZERO_OFFSET_VALID | IMX7_PINMUX_LPSR,
+ };
  
- static inline struct clk *imx_clk_mux_p(const char *name, void __iomem *reg,
-@@ -89,13 +89,13 @@ static inline struct clk *imx_clk_gate2_cgr(const char *name, const char *parent
- static inline struct clk *imx_clk_gate3(const char *name, const char *parent,
- 		void __iomem *reg, u8 shift)
- {
--	return clk_gate(name, parent, reg, shift, CLK_SET_RATE_PARENT, 0);
-+	return clk_gate(name, parent, reg, shift, CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE, 0);
- }
- 
- static inline struct clk *imx_clk_gate4(const char *name, const char *parent,
- 		void __iomem *reg, u8 shift)
- {
--	return clk_gate2(name, parent, reg, shift, 0x3, 0);
-+	return clk_gate2(name, parent, reg, shift, 0x3, CLK_OPS_PARENT_ENABLE);
- }
- 
- struct clk *imx_clk_pllv1(const char *name, const char *parent,
+ static __maybe_unused struct of_device_id imx_iomux_v3_dt_ids[] = {
 -- 
 2.11.0
 
