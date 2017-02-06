@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cadB9-0004gF-Tc
- for barebox@lists.infradead.org; Mon, 06 Feb 2017 06:53:38 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
- (envelope-from <sha@pengutronix.de>) id 1cad8d-0003zX-9z
- for barebox@lists.infradead.org; Mon, 06 Feb 2017 07:50:59 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.88)
- (envelope-from <sha@pengutronix.de>) id 1cad8c-0005Wb-IZ
- for barebox@lists.infradead.org; Mon, 06 Feb 2017 07:50:58 +0100
+ id 1cadBA-0004gh-3y
+ for barebox@lists.infradead.org; Mon, 06 Feb 2017 06:53:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  6 Feb 2017 07:50:48 +0100
-Message-Id: <20170206065057.19483-1-s.hauer@pengutronix.de>
+Date: Mon,  6 Feb 2017 07:50:57 +0100
+Message-Id: <20170206065057.19483-10-s.hauer@pengutronix.de>
+In-Reply-To: <20170206065057.19483-1-s.hauer@pengutronix.de>
+References: <20170206065057.19483-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,39 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: i.MX7 Ethernet clock fixes
+Subject: [PATCH 9/9] clk: i.MX7: setup ethernet clocks
 To: Barebox List <barebox@lists.infradead.org>
 
-The following patches are encessary to make fec ethernet work on i.MX7.
-There are some inaccuracies in the barebox clock support have to be fixed
-first, but the real problem was that our clock code derived from the
-Kernel controls non existing clock gates whereas the real gates are not
-touched at all. It seems this was never noticed in the kernel since U-Boot
-has configured the clocks correctly beforehand.
+Reparent ethernet clocks so that they can be used by the
+fec driver. The values are the same as U-Boot uses.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/clk/imx/clk-imx7.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-----------------------------------------------------------------
-Sascha Hauer (9):
-      clk: Keep enable count consistent over reparent
-      clk: implement CLK_OPS_PARENT_ENABLE
-      clk: i.MX: clk-gate2: Allow to pass flags
-      clk: i.MX: Pass CLK_OPS_PARENT_ENABLE where necessary
-      clk: i.MX7: do clock reparenting when all clocks are initialized
-      clk: Add support for shared gates
-      clk: i.MX7: Fix ethernet clocks
-      clk: i.MX7: do not register PLL bypass clocks as separate clocks
-      clk: i.MX7: setup ethernet clocks
+diff --git a/drivers/clk/imx/clk-imx7.c b/drivers/clk/imx/clk-imx7.c
+index 6bf123419..d3a036c0c 100644
+--- a/drivers/clk/imx/clk-imx7.c
++++ b/drivers/clk/imx/clk-imx7.c
+@@ -844,6 +844,17 @@ static int imx7_clk_setup(void)
+ 	/* set uart module clock's parent clock source that must be great then 80MHz */
+ 	clk_set_parent(clks[IMX7D_UART1_ROOT_SRC], clks[IMX7D_OSC_24M_CLK]);
+ 
++	clk_set_parent(clks[IMX7D_ENET1_REF_ROOT_SRC], clks[IMX7D_PLL_ENET_MAIN_125M_CLK]);
++	clk_set_parent(clks[IMX7D_ENET1_TIME_ROOT_SRC], clks[IMX7D_PLL_ENET_MAIN_100M_CLK]);
++	clk_set_parent(clks[IMX7D_ENET2_REF_ROOT_SRC], clks[IMX7D_PLL_ENET_MAIN_125M_CLK]);
++	clk_set_parent(clks[IMX7D_ENET2_TIME_ROOT_SRC], clks[IMX7D_PLL_ENET_MAIN_100M_CLK]);
++
++	clk_set_rate(clks[IMX7D_PLL_SYS_PFD4_CLK], 392000000);
++	clk_set_parent(clks[IMX7D_ENET_AXI_ROOT_SRC], clks[IMX7D_PLL_SYS_PFD4_CLK]);
++	clk_set_rate(clks[IMX7D_ENET_AXI_ROOT_CLK], 197000000);
++	clk_set_rate(clks[IMX7D_ENET1_TIME_ROOT_CLK], 25000000);
++	clk_set_rate(clks[IMX7D_ENET2_TIME_ROOT_CLK], 25000000);
++
+ 	return 0;
+ }
+ postcore_initcall(imx7_clk_setup);
+-- 
+2.11.0
 
- drivers/clk/Makefile          |   3 +-
- drivers/clk/clk-gate-shared.c | 123 +++++++++++++++++++++
- drivers/clk/clk.c             |  52 +++++++--
- drivers/clk/imx/clk-gate2.c   |  11 +-
- drivers/clk/imx/clk-imx7.c    | 249 +++++++++++++++++++++---------------------
- drivers/clk/imx/clk.h         |  20 ++--
- include/linux/clk.h           |   5 +
- 7 files changed, 315 insertions(+), 148 deletions(-)
- create mode 100644 drivers/clk/clk-gate-shared.c
 
 _______________________________________________
 barebox mailing list
