@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cadBP-0004hQ-42
- for barebox@lists.infradead.org; Mon, 06 Feb 2017 06:53:53 +0000
+ id 1cadBZ-0004kr-3z
+ for barebox@lists.infradead.org; Mon, 06 Feb 2017 06:54:03 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  6 Feb 2017 07:50:50 +0100
-Message-Id: <20170206065057.19483-3-s.hauer@pengutronix.de>
+Date: Mon,  6 Feb 2017 07:50:52 +0100
+Message-Id: <20170206065057.19483-5-s.hauer@pengutronix.de>
 In-Reply-To: <20170206065057.19483-1-s.hauer@pengutronix.de>
 References: <20170206065057.19483-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,94 +21,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/9] clk: implement CLK_OPS_PARENT_ENABLE
+Subject: [PATCH 4/9] clk: i.MX: Pass CLK_OPS_PARENT_ENABLE where necessary
 To: Barebox List <barebox@lists.infradead.org>
 
-Some clocks may only be modified when their parent clocks are enabled.
-The kernel has the CLK_OPS_PARENT_ENABLE flag for this purpose.
-Implement it for barebox aswell.
+CLK_OPS_PARENT_ENABLE was missing on some i.MX7 specific clocks.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/clk.c   | 31 +++++++++++++++++++++++++++----
- include/linux/clk.h |  2 ++
- 2 files changed, 29 insertions(+), 4 deletions(-)
+ drivers/clk/imx/clk.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 6f3053727..93e000c6e 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -141,6 +141,7 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
+diff --git a/drivers/clk/imx/clk.h b/drivers/clk/imx/clk.h
+index 4f80a3262..019114848 100644
+--- a/drivers/clk/imx/clk.h
++++ b/drivers/clk/imx/clk.h
+@@ -19,7 +19,7 @@ static inline struct clk *imx_clk_divider_np(const char *name, const char *paren
+ static inline struct clk *imx_clk_divider2(const char *name, const char *parent,
+ 		void __iomem *reg, u8 shift, u8 width)
  {
- 	struct clk *parent;
- 	unsigned long parent_rate = 0;
-+	int ret;
- 
- 	if (!clk)
- 		return 0;
-@@ -148,14 +149,26 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
- 	if (IS_ERR(clk))
- 		return PTR_ERR(clk);
- 
-+	if (!clk->ops->set_rate)
-+		return -ENOSYS;
-+
- 	parent = clk_get_parent(clk);
--	if (parent)
-+	if (parent) {
- 		parent_rate = clk_get_rate(parent);
- 
--	if (clk->ops->set_rate)
--		return clk->ops->set_rate(clk, rate, parent_rate);
-+		if (clk->flags & CLK_OPS_PARENT_ENABLE) {
-+			ret = clk_enable(parent);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+
-+	ret = clk->ops->set_rate(clk, rate, parent_rate);
-+
-+	if (parent && clk->flags & CLK_OPS_PARENT_ENABLE)
-+		clk_disable(parent);
- 
--	return -ENOSYS;
-+	return ret;
+-	return clk_divider(name, parent, reg, shift, width, 0);
++	return clk_divider(name, parent, reg, shift, width, CLK_OPS_PARENT_ENABLE);
  }
  
- struct clk *clk_lookup(const char *name)
-@@ -203,8 +216,18 @@ int clk_set_parent(struct clk *clk, struct clk *newparent)
- 	if (clk->enable_count)
- 		clk_enable(newparent);
+ static inline struct clk *imx_clk_divider_table(const char *name,
+@@ -53,7 +53,7 @@ static inline struct clk *imx_clk_mux(const char *name, void __iomem *reg,
+ static inline struct clk *imx_clk_mux2(const char *name, void __iomem *reg,
+ 		u8 shift, u8 width, const char **parents, u8 num_parents)
+ {
+-	return clk_mux(name, reg, shift, width, parents, num_parents, 0);
++	return clk_mux(name, reg, shift, width, parents, num_parents, CLK_OPS_PARENT_ENABLE);
+ }
  
-+	if (clk->flags & CLK_OPS_PARENT_ENABLE) {
-+		clk_enable(curparent);
-+		clk_enable(newparent);
-+	}
-+
- 	ret = clk->ops->set_parent(clk, i);
+ static inline struct clk *imx_clk_mux_p(const char *name, void __iomem *reg,
+@@ -89,13 +89,13 @@ static inline struct clk *imx_clk_gate2_cgr(const char *name, const char *parent
+ static inline struct clk *imx_clk_gate3(const char *name, const char *parent,
+ 		void __iomem *reg, u8 shift)
+ {
+-	return clk_gate(name, parent, reg, shift, CLK_SET_RATE_PARENT, 0);
++	return clk_gate(name, parent, reg, shift, CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE, 0);
+ }
  
-+	if (clk->flags & CLK_OPS_PARENT_ENABLE) {
-+		clk_disable(curparent);
-+		clk_disable(newparent);
-+	}
-+
- 	if (clk->enable_count)
- 		clk_disable(curparent);
+ static inline struct clk *imx_clk_gate4(const char *name, const char *parent,
+ 		void __iomem *reg, u8 shift)
+ {
+-	return clk_gate2(name, parent, reg, shift, 0x3, 0);
++	return clk_gate2(name, parent, reg, shift, 0x3, CLK_OPS_PARENT_ENABLE);
+ }
  
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 8cb9731f1..697ab4ff4 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -198,6 +198,8 @@ static inline int clk_set_rate(struct clk *clk, unsigned long rate)
- #ifdef CONFIG_COMMON_CLK
- 
- #define CLK_SET_RATE_PARENT     (1 << 0) /* propagate rate change up one level */
-+/* parents need enable during gate/ungate, set rate and re-parent */
-+#define CLK_OPS_PARENT_ENABLE   (1 << 12)
- 
- #define CLK_GATE_INVERTED	(1 << 0)
- #define CLK_GATE_HIWORD_MASK	(1 << 1)
+ struct clk *imx_clk_pllv1(const char *name, const char *parent,
 -- 
 2.11.0
 
