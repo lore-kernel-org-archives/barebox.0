@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cb1Pa-0004i5-Om
- for barebox@lists.infradead.org; Tue, 07 Feb 2017 08:46:09 +0000
+ id 1cb1Pa-0004i7-QI
+ for barebox@lists.infradead.org; Tue, 07 Feb 2017 08:46:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  7 Feb 2017 09:43:25 +0100
-Message-Id: <20170207084327.7691-3-s.hauer@pengutronix.de>
+Date: Tue,  7 Feb 2017 09:43:27 +0100
+Message-Id: <20170207084327.7691-5-s.hauer@pengutronix.de>
 In-Reply-To: <20170207084327.7691-1-s.hauer@pengutronix.de>
 References: <20170207084327.7691-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,213 +21,140 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] ARM: Add smc call support
+Subject: [PATCH 4/4] ARM: i.MX7: Add PSCI support
 To: Barebox List <barebox@lists.infradead.org>
-
-Taken from the Kernel: A wrapper to make a smc call from C.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/Makefile            |   2 +
- arch/arm/cpu/smccc-call.S        |  64 ++++++++++++++++++++++++
- arch/arm/include/asm/arm-smccc.h | 104 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 170 insertions(+)
- create mode 100644 arch/arm/cpu/smccc-call.S
- create mode 100644 arch/arm/include/asm/arm-smccc.h
+ arch/arm/cpu/psci.c      | 13 +++++++++
+ arch/arm/mach-imx/imx7.c | 76 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 89 insertions(+)
 
-diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-index d8cb1871a..e542f1741 100644
---- a/arch/arm/cpu/Makefile
-+++ b/arch/arm/cpu/Makefile
-@@ -34,6 +34,8 @@ ifeq ($(CONFIG_MMU),)
- obj-y += no-mmu.o
- endif
+diff --git a/arch/arm/cpu/psci.c b/arch/arm/cpu/psci.c
+index 745b8495e..d650c23ea 100644
+--- a/arch/arm/cpu/psci.c
++++ b/arch/arm/cpu/psci.c
+@@ -22,6 +22,17 @@
+ #include <magicvar.h>
  
-+obj-$(CONFIG_ARM_SECURE_MONITOR) += smccc-call.o
+ #ifdef CONFIG_ARM_PSCI_DEBUG
 +
- obj-$(CONFIG_CPU_32v4T) += cache-armv4.o
- pbl-$(CONFIG_CPU_32v4T) += cache-armv4.o
- obj-$(CONFIG_CPU_32v5) += cache-armv5.o
-diff --git a/arch/arm/cpu/smccc-call.S b/arch/arm/cpu/smccc-call.S
-new file mode 100644
-index 000000000..c2781b1ab
---- /dev/null
-+++ b/arch/arm/cpu/smccc-call.S
-@@ -0,0 +1,64 @@
 +/*
-+ * Copyright (c) 2015, Linaro Limited
-+ *
-+ * This software is licensed under the terms of the GNU General Public
-+ * License version 2, as published by the Free Software Foundation, and
-+ * may be copied, distributed, and modified under those terms.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
++ * PSCI debugging functions. Board code can specify a putc() function
++ * which is used for debugging output. Beware that this function is
++ * called while the kernel is running. This means the kernel could have
++ * turned off clocks, configured other baudrates and other stuff that
++ * might confuse the putc function. So it can well be that the debugging
++ * code itself is the problem when somethings not working. You have been
++ * warned.
 + */
-+#include <linux/linkage.h>
 +
-+#include <asm/unwind.h>
+ static void (*__putc)(void *ctx, int c);
+ static void *putc_ctx;
+ 
+@@ -220,6 +231,8 @@ int psci_cpu_entry_c(void)
+ 	if (bootm_arm_security_state() == ARM_STATE_HYP)
+ 		armv7_switch_to_hyp();
+ 
++	psci_printf("core #%d enter function 0x%p\n", cpu, entry);
 +
-+    .arch_extension sec
-+    .arch_extension virt
-+	.arm
+ 	entry(context_id);
+ 
+ 	while (1);
+diff --git a/arch/arm/mach-imx/imx7.c b/arch/arm/mach-imx/imx7.c
+index 1cd27a0db..c4b9b2815 100644
+--- a/arch/arm/mach-imx/imx7.c
++++ b/arch/arm/mach-imx/imx7.c
+@@ -92,6 +92,80 @@ static void imx7_init_csu(void)
+ 		writel(CSU_INIT_SEC_LEVEL0, csu + i * 4);
+ }
+ 
++#define GPC_CPU_PGC_SW_PDN_REQ	0xfc
++#define GPC_CPU_PGC_SW_PUP_REQ	0xf0
++#define GPC_PGC_C1		0x840
++
++#define BM_CPU_PGC_SW_PDN_PUP_REQ_CORE1_A7	0x2
++
++/* below is for i.MX7D */
++#define SRC_GPR1_MX7D		0x074
++#define SRC_A7RCR0		0x004
++#define SRC_A7RCR1		0x008
++
++static void imx_gpcv2_set_core1_power(bool pdn)
++{
++	void __iomem *gpc = IOMEM(MX7_GPC_BASE_ADDR);
++
++	u32 reg = pdn ? GPC_CPU_PGC_SW_PUP_REQ : GPC_CPU_PGC_SW_PDN_REQ;
++	u32 val;
++
++	writel(1, gpc + GPC_PGC_C1);
++
++	val = readl(gpc + reg);
++	val |= BM_CPU_PGC_SW_PDN_PUP_REQ_CORE1_A7;
++	writel(val, gpc + reg);
++
++	while ((readl(gpc + reg) &
++	       BM_CPU_PGC_SW_PDN_PUP_REQ_CORE1_A7) != 0)
++		;
++
++	writel(0, gpc + GPC_PGC_C1);
++}
++
++static int imx7_cpu_on(u32 cpu_id)
++{
++	void __iomem *src = IOMEM(MX7_SRC_BASE_ADDR);
++	u32 val;
++
++	writel(psci_cpu_entry, src + cpu_id * 8 + SRC_GPR1_MX7D);
++	imx_gpcv2_set_core1_power(true);
++
++	val = readl(src + SRC_A7RCR1);
++	val |= 1 << cpu_id;
++	writel(val, src + SRC_A7RCR1);
++
++	return 0;
++}
++
++static int imx7_cpu_off(void)
++{
++	void __iomem *src = IOMEM(MX7_SRC_BASE_ADDR);
++	u32 val;
++	int cpu_id = 1;
++
++	val = readl(src + SRC_A7RCR1);
++	val &= ~(1 << cpu_id);
++	writel(val, src + SRC_A7RCR1);
 +
 +	/*
-+	 * Wrap c macros in asm macros to delay expansion until after the
-+	 * SMCCC asm macro is expanded.
++	 * FIXME: This reads nice and symmetrically to cpu_on above,
++	 * but of course this will never be reached as we have just
++	 * put the CPU we are currently running on into reset.
 +	 */
-+	.macro SMCCC_SMC
-+	smc #0
-+	.endm
 +
-+	.macro SMCCC_HVC
-+	hvc #0
-+	.endm
++	imx_gpcv2_set_core1_power(false);
 +
-+	.macro SMCCC instr
-+UNWIND(	.fnstart)
-+	mov	r12, sp
-+	push	{r4-r7}
-+UNWIND(	.save	{r4-r7})
-+	ldm	r12, {r4-r7}
-+	\instr
-+	pop	{r4-r7}
-+	ldr	r12, [sp, #(4 * 4)]
-+	stm	r12, {r0-r3}
-+	bx	lr
-+UNWIND(	.fnend)
-+	.endm
++	while (1);
 +
-+/*
-+ * void smccc_smc(unsigned long a0, unsigned long a1, unsigned long a2,
-+ *		  unsigned long a3, unsigned long a4, unsigned long a5,
-+ *		  unsigned long a6, unsigned long a7, struct arm_smccc_res *res)
-+ */
-+ENTRY(arm_smccc_smc)
-+	SMCCC SMCCC_SMC
-+ENDPROC(arm_smccc_smc)
++	return 0;
++}
 +
-+/*
-+ * void smccc_hvc(unsigned long a0, unsigned long a1, unsigned long a2,
-+ *		  unsigned long a3, unsigned long a4, unsigned long a5,
-+ *		  unsigned long a6, unsigned long a7, struct arm_smccc_res *res)
-+ */
-+ENTRY(arm_smccc_hvc)
-+	SMCCC SMCCC_HVC
-+ENDPROC(arm_smccc_hvc)
-diff --git a/arch/arm/include/asm/arm-smccc.h b/arch/arm/include/asm/arm-smccc.h
-new file mode 100644
-index 000000000..b5abfda80
---- /dev/null
-+++ b/arch/arm/include/asm/arm-smccc.h
-@@ -0,0 +1,104 @@
-+/*
-+ * Copyright (c) 2015, Linaro Limited
-+ *
-+ * This software is licensed under the terms of the GNU General Public
-+ * License version 2, as published by the Free Software Foundation, and
-+ * may be copied, distributed, and modified under those terms.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+#ifndef __LINUX_ARM_SMCCC_H
-+#define __LINUX_ARM_SMCCC_H
-+
-+#include <linux/linkage.h>
-+#include <linux/types.h>
-+
-+/*
-+ * This file provides common defines for ARM SMC Calling Convention as
-+ * specified in
-+ * http://infocenter.arm.com/help/topic/com.arm.doc.den0028a/index.html
-+ */
-+
-+#define ARM_SMCCC_STD_CALL		0
-+#define ARM_SMCCC_FAST_CALL		1
-+#define ARM_SMCCC_TYPE_SHIFT		31
-+
-+#define ARM_SMCCC_SMC_32		0
-+#define ARM_SMCCC_SMC_64		1
-+#define ARM_SMCCC_CALL_CONV_SHIFT	30
-+
-+#define ARM_SMCCC_OWNER_MASK		0x3F
-+#define ARM_SMCCC_OWNER_SHIFT		24
-+
-+#define ARM_SMCCC_FUNC_MASK		0xFFFF
-+
-+#define ARM_SMCCC_IS_FAST_CALL(smc_val)	\
-+	((smc_val) & (ARM_SMCCC_FAST_CALL << ARM_SMCCC_TYPE_SHIFT))
-+#define ARM_SMCCC_IS_64(smc_val) \
-+	((smc_val) & (ARM_SMCCC_SMC_64 << ARM_SMCCC_CALL_CONV_SHIFT))
-+#define ARM_SMCCC_FUNC_NUM(smc_val)	((smc_val) & ARM_SMCCC_FUNC_MASK)
-+#define ARM_SMCCC_OWNER_NUM(smc_val) \
-+	(((smc_val) >> ARM_SMCCC_OWNER_SHIFT) & ARM_SMCCC_OWNER_MASK)
-+
-+#define ARM_SMCCC_CALL_VAL(type, calling_convention, owner, func_num) \
-+	(((type) << ARM_SMCCC_TYPE_SHIFT) | \
-+	((calling_convention) << ARM_SMCCC_CALL_CONV_SHIFT) | \
-+	(((owner) & ARM_SMCCC_OWNER_MASK) << ARM_SMCCC_OWNER_SHIFT) | \
-+	((func_num) & ARM_SMCCC_FUNC_MASK))
-+
-+#define ARM_SMCCC_OWNER_ARCH		0
-+#define ARM_SMCCC_OWNER_CPU		1
-+#define ARM_SMCCC_OWNER_SIP		2
-+#define ARM_SMCCC_OWNER_OEM		3
-+#define ARM_SMCCC_OWNER_STANDARD	4
-+#define ARM_SMCCC_OWNER_TRUSTED_APP	48
-+#define ARM_SMCCC_OWNER_TRUSTED_APP_END	49
-+#define ARM_SMCCC_OWNER_TRUSTED_OS	50
-+#define ARM_SMCCC_OWNER_TRUSTED_OS_END	63
-+
-+/**
-+ * struct arm_smccc_res - Result from SMC/HVC call
-+ * @a0-a3 result values from registers 0 to 3
-+ */
-+struct arm_smccc_res {
-+	unsigned long a0;
-+	unsigned long a1;
-+	unsigned long a2;
-+	unsigned long a3;
++static struct psci_ops imx7_psci_ops = {
++	.cpu_on = imx7_cpu_on,
++	.cpu_off = imx7_cpu_off,
 +};
 +
-+/**
-+ * arm_smccc_smc() - make SMC calls
-+ * @a0-a7: arguments passed in registers 0 to 7
-+ * @res: result values from registers 0 to 3
-+ *
-+ * This function is used to make SMC calls following SMC Calling Convention.
-+ * The content of the supplied param are copied to registers 0 to 7 prior
-+ * to the SMC instruction. The return values are updated with the content
-+ * from register 0 to 3 on return from the SMC instruction.
-+ */
-+asmlinkage void arm_smccc_smc(unsigned long a0, unsigned long a1,
-+			unsigned long a2, unsigned long a3, unsigned long a4,
-+			unsigned long a5, unsigned long a6, unsigned long a7,
-+			struct arm_smccc_res *res);
+ int imx7_init(void)
+ {
+ 	const char *cputypestr;
+@@ -107,6 +181,8 @@ int imx7_init(void)
+ 
+ 	imx7_silicon_revision = imx7_cpu_revision();
+ 
++	psci_set_ops(&imx7_psci_ops);
 +
-+/**
-+ * arm_smccc_hvc() - make HVC calls
-+ * @a0-a7: arguments passed in registers 0 to 7
-+ * @res: result values from registers 0 to 3
-+ *
-+ * This function is used to make HVC calls following SMC Calling
-+ * Convention.  The content of the supplied param are copied to registers 0
-+ * to 7 prior to the HVC instruction. The return values are updated with
-+ * the content from register 0 to 3 on return from the HVC instruction.
-+ */
-+asmlinkage void arm_smccc_hvc(unsigned long a0, unsigned long a1,
-+			unsigned long a2, unsigned long a3, unsigned long a4,
-+			unsigned long a5, unsigned long a6, unsigned long a7,
-+			struct arm_smccc_res *res);
-+
-+#endif /*__LINUX_ARM_SMCCC_H*/
+ 	switch (imx7_cpu_type()) {
+ 	case IMX7_CPUTYPE_IMX7D:
+ 		cputypestr = "i.MX7d";
 -- 
 2.11.0
 
