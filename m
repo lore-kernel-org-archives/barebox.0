@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cblQM-00048R-Oj
- for barebox@lists.infradead.org; Thu, 09 Feb 2017 09:54:00 +0000
-Date: Thu, 9 Feb 2017 10:53:34 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170209095334.a5brdlab5oqisu5t@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
+Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1cbmSK-0007VY-Iw
+ for barebox@lists.infradead.org; Thu, 09 Feb 2017 11:00:06 +0000
+Message-ID: <1486637980.17583.2.camel@phytec.de>
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Thu, 09 Feb 2017 11:59:40 +0100
+In-Reply-To: <20170209095334.a5brdlab5oqisu5t@pengutronix.de>
+References: <20170209095334.a5brdlab5oqisu5t@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,64 +17,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: GPLv3 file in barebox
-To: Daniel Schultz <d.schultz@phytec.de>
+Subject: Re: GPLv3 file in barebox
+To: Sascha Hauer <s.hauer@pengutronix.de>, Daniel Schultz <d.schultz@phytec.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi Daniel,
-
-We have found that commands/mmc_extcsd.c is licensed under GPLv3 which
-is incompatible to the barebox GPLv2 license. Are you ok with
-relicensing this file? Otherwise we would have to remove it from
-barebox.
-If you're ok with relicensing the file please just ack the following
-patch.
-
-Sascha
-
----------------------------------8<----------------------------
-
-From f75fdb6741fa7f20a810798007ec1ebc12886370 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 9 Feb 2017 10:51:49 +0100
-Subject: [PATCH] commands/mmc_extcsd: Relicense under GPLv2+
-
-GPLv3 is incompatible with the projects license. Relicense file
-under GPLv2+
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/mmc_extcsd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/commands/mmc_extcsd.c b/commands/mmc_extcsd.c
-index d7fc50697c..42adfe0860 100644
---- a/commands/mmc_extcsd.c
-+++ b/commands/mmc_extcsd.c
-@@ -5,7 +5,7 @@
-  *
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation, either version 3 of the License, or
-+ * the Free Software Foundation, either version 2 of the License, or
-  * (at your option) any later version.
-  *
-  * This program is distributed in the hope that it will be useful,
--- 
-2.11.0
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gU2FzY2hhLAoKQW0gRG9ubmVyc3RhZywgZGVuIDA5LjAyLjIwMTcsIDEwOjUzICswMTAw
+IHNjaHJpZWIgU2FzY2hhIEhhdWVyOgo+IEhpIERhbmllbCwKPiAKPiBXZSBoYXZlIGZvdW5kIHRo
+YXQgY29tbWFuZHMvbW1jX2V4dGNzZC5jIGlzIGxpY2Vuc2VkIHVuZGVyIEdQTHYzCj4gd2hpY2gK
+PiBpcyBpbmNvbXBhdGlibGUgdG8gdGhlIGJhcmVib3ggR1BMdjIgbGljZW5zZS4gQXJlIHlvdSBv
+ayB3aXRoCj4gcmVsaWNlbnNpbmcgdGhpcyBmaWxlPyBPdGhlcndpc2Ugd2Ugd291bGQgaGF2ZSB0
+byByZW1vdmUgaXQgZnJvbQo+IGJhcmVib3guCj4gSWYgeW91J3JlIG9rIHdpdGggcmVsaWNlbnNp
+bmcgdGhlIGZpbGUgcGxlYXNlIGp1c3QgYWNrIHRoZSBmb2xsb3dpbmcKPiBwYXRjaC4KCkRhbmll
+bCBpcyBvdXQgb2Ygb2ZmaWNlIHVudGlsIHRoZSBzdGFydCBvZiBtYXJjaC4gU28gaGUgbWlnaHQg
+bm90CmFuc3dlciB0aGlzIG1haWwgdGlsbCB0aGVuLiBJIGhvcGUgdGhpcyBpcyBvay4uLgoKUmVn
+YXJkcywKVGVyZXNhCgo+IAo+IFNhc2NoYQo+IAo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLTg8LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+IAo+IEZyb20gZjc1ZmRiNjc0
+MWZhN2YyMGE4MTA3OTgwMDdlYzFlYmMxMjg4NjM3MCBNb24gU2VwIDE3IDAwOjAwOjAwCj4gMjAw
+MQo+IEZyb206IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KPiBEYXRlOiBU
+aHUsIDkgRmViIDIwMTcgMTA6NTE6NDkgKzAxMDAKPiBTdWJqZWN0OiBbUEFUQ0hdIGNvbW1hbmRz
+L21tY19leHRjc2Q6IFJlbGljZW5zZSB1bmRlciBHUEx2MisKPiAKPiBHUEx2MyBpcyBpbmNvbXBh
+dGlibGUgd2l0aCB0aGUgcHJvamVjdHMgbGljZW5zZS4gUmVsaWNlbnNlIGZpbGUKPiB1bmRlciBH
+UEx2MisKPiAKPiBTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9u
+aXguZGU+Cj4gLS0tCj4gwqBjb21tYW5kcy9tbWNfZXh0Y3NkLmMgfCAyICstCj4gwqAxIGZpbGUg
+Y2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKPiAKPiBkaWZmIC0tZ2l0IGEv
+Y29tbWFuZHMvbW1jX2V4dGNzZC5jIGIvY29tbWFuZHMvbW1jX2V4dGNzZC5jCj4gaW5kZXggZDdm
+YzUwNjk3Yy4uNDJhZGZlMDg2MCAxMDA2NDQKPiAtLS0gYS9jb21tYW5kcy9tbWNfZXh0Y3NkLmMK
+PiArKysgYi9jb21tYW5kcy9tbWNfZXh0Y3NkLmMKPiBAQCAtNSw3ICs1LDcgQEAKPiDCoCAqCj4g
+wqAgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTogeW91IGNhbiByZWRpc3RyaWJ1dGUg
+aXQgYW5kL29yCj4gbW9kaWZ5Cj4gwqAgKiBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBH
+ZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzIHB1Ymxpc2hlZAo+IGJ5Cj4gLSAqIHRoZSBGcmVlIFNv
+ZnR3YXJlIEZvdW5kYXRpb24sIGVpdGhlciB2ZXJzaW9uIDMgb2YgdGhlIExpY2Vuc2UsIG9yCj4g
+KyAqIHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb24sIGVpdGhlciB2ZXJzaW9uIDIgb2YgdGhl
+IExpY2Vuc2UsIG9yCj4gwqAgKiAoYXQgeW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgo+
+IMKgICoKPiDCoCAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0
+IGl0IHdpbGwgYmUgdXNlZnVsLAo+IC0twqAKPiAyLjExLjAKPiAKPiAKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
