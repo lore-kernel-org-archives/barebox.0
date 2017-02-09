@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1cblA7-00067k-TI
- for barebox@lists.infradead.org; Thu, 09 Feb 2017 09:37:14 +0000
+ id 1cblA8-00067l-Pr
+ for barebox@lists.infradead.org; Thu, 09 Feb 2017 09:37:15 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id F3566A003B6
+ by root.phytec.de (Postfix) with ESMTP id EB852A0022B
  for <barebox@lists.infradead.org>; Thu,  9 Feb 2017 10:36:59 +0100 (CET)
 From: Wadim Egorov <w.egorov@phytec.de>
-Date: Thu, 9 Feb 2017 10:36:42 +0100
-Message-Id: <1486633003-34908-2-git-send-email-w.egorov@phytec.de>
-In-Reply-To: <1486633003-34908-1-git-send-email-w.egorov@phytec.de>
-References: <1486633003-34908-1-git-send-email-w.egorov@phytec.de>
+Date: Thu, 9 Feb 2017 10:36:41 +0100
+Message-Id: <1486633003-34908-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,65 +22,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] serial: ns16550: Set read/write functions depending on
- reg-io-width
+Subject: [PATCH 1/2] ARM: phycore-rk3288: Use UART2 as debug output
 To: barebox@lists.infradead.org
 
-Set proper register read/write functions depending on reg-io-width
-device tree property.
+RK3288's UART2 is the default debug uart interface.
 
 Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
 ---
+ arch/arm/boards/phytec-som-rk3288/lowlevel.c | 11 +++++------
+ arch/arm/dts/rk3288-phycore-som.dts          |  2 +-
+ 2 files changed, 6 insertions(+), 7 deletions(-)
 
-of_platform_device_create() creates resources in the device_d struct.
-ns16550_init_iomem() and ns16550_init_ioport() are reading the resources
-and it's flags (register width).
-So both functions are not failing, because there is a valid resource.
-The res->flags might be not set at all. And if it is not set, the driver
-will use always IORESOURCE_MEM_8BIT.
-
-With this patch the probe_dt() func will override the read/write funcs,
-if there is a valid reg-io-width property.
----
- drivers/serial/serial_ns16550.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
-
-diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-index c6548e3..752e77b 100644
---- a/drivers/serial/serial_ns16550.c
-+++ b/drivers/serial/serial_ns16550.c
-@@ -287,12 +287,31 @@ static int ns16550_tstc(struct console_device *cdev)
- static void ns16550_probe_dt(struct device_d *dev, struct ns16550_priv *priv)
- {
- 	struct device_node *np = dev->device_node;
-+	u32 width;
+diff --git a/arch/arm/boards/phytec-som-rk3288/lowlevel.c b/arch/arm/boards/phytec-som-rk3288/lowlevel.c
+index 7804a55..7649ef8 100644
+--- a/arch/arm/boards/phytec-som-rk3288/lowlevel.c
++++ b/arch/arm/boards/phytec-som-rk3288/lowlevel.c
+@@ -30,14 +30,13 @@ ENTRY_FUNCTION(start_rk3288_phycore_som, r0, r1, r2)
  
- 	if (!IS_ENABLED(CONFIG_OFDEVICE))
- 		return;
+ 	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
+ 		struct rk3288_grf * const grf = (void *)RK3288_GRF_BASE;
+-		rk_clrsetreg(&grf->gpio4c_iomux,
+-			GPIO4C1_MASK << GPIO4C1_SHIFT |
+-			GPIO4C0_MASK << GPIO4C0_SHIFT,
+-			GPIO4C1_UART0BT_SOUT << GPIO4C1_SHIFT |
+-			GPIO4C0_UART0BT_SIN << GPIO4C0_SHIFT);
++		rk_clrsetreg(&grf->gpio7ch_iomux,
++			     GPIO7C7_MASK << GPIO7C7_SHIFT |
++			     GPIO7C6_MASK << GPIO7C6_SHIFT,
++			     GPIO7C7_UART2DBG_SOUT << GPIO7C7_SHIFT |
++			     GPIO7C6_UART2DBG_SIN << GPIO7C6_SHIFT);
+ 		INIT_LL();
+ 	}
+-
+ 	fdt = __dtb_rk3288_phycore_som_start - get_runtime_offset();
  
- 	of_property_read_u32(np, "clock-frequency", &priv->plat.clock);
- 	of_property_read_u32(np, "reg-shift", &priv->plat.shift);
-+	if (!of_property_read_u32(np, "reg-io-width", &width))
-+		switch (width) {
-+		case 1:
-+			priv->read_reg = ns16550_read_reg_mmio_8;
-+			priv->write_reg = ns16550_write_reg_mmio_8;
-+			break;
-+		case 2:
-+			priv->read_reg = ns16550_read_reg_mmio_16;
-+			priv->write_reg = ns16550_write_reg_mmio_16;
-+			break;
-+		case 4:
-+			priv->read_reg = ns16550_read_reg_mmio_32;
-+			priv->write_reg = ns16550_write_reg_mmio_32;
-+			break;
-+		default:
-+			dev_err(dev, "unsupported reg-io-width (%d)\n",
-+				width);
-+		}
- }
+ 	barebox_arm_entry(0x0, SZ_1G, fdt);
+diff --git a/arch/arm/dts/rk3288-phycore-som.dts b/arch/arm/dts/rk3288-phycore-som.dts
+index 5410bd1..dd74bcf 100644
+--- a/arch/arm/dts/rk3288-phycore-som.dts
++++ b/arch/arm/dts/rk3288-phycore-som.dts
+@@ -44,7 +44,7 @@
+ 	};
  
- static struct ns16550_drvdata ns16450_drvdata = {
+ 	chosen {
+-		stdout-path = &uart0;
++		stdout-path = &uart2;
+ 
+ 		environment-emmc {
+ 			compatible = "barebox,environment";
 -- 
 1.9.1
 
