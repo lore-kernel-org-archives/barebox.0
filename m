@@ -1,14 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1cbmSK-0007VY-Iw
- for barebox@lists.infradead.org; Thu, 09 Feb 2017 11:00:06 +0000
-Message-ID: <1486637980.17583.2.camel@phytec.de>
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Thu, 09 Feb 2017 11:59:40 +0100
-In-Reply-To: <20170209095334.a5brdlab5oqisu5t@pengutronix.de>
-References: <20170209095334.a5brdlab5oqisu5t@pengutronix.de>
-Mime-Version: 1.0
+Received: from qmail.e-mind.com ([188.94.192.40])
+ by bombadil.infradead.org with smtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1cbprd-000787-HA
+ for barebox@lists.infradead.org; Thu, 09 Feb 2017 14:38:28 +0000
+From: gianluca <gianlucarenzi@eurekelettronica.it>
+Message-ID: <3a707429-03a7-db6b-a1b1-1e70ec0b929e@eurekelettronica.it>
+Date: Thu, 9 Feb 2017 15:37:41 +0100
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,44 +15,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: GPLv3 file in barebox
-To: Sascha Hauer <s.hauer@pengutronix.de>, Daniel Schultz <d.schultz@phytec.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Using LVDS in a iMX6Q/D from Barebox
+To: barebox@lists.infradead.org
 
-SGVsbG8gU2FzY2hhLAoKQW0gRG9ubmVyc3RhZywgZGVuIDA5LjAyLjIwMTcsIDEwOjUzICswMTAw
-IHNjaHJpZWIgU2FzY2hhIEhhdWVyOgo+IEhpIERhbmllbCwKPiAKPiBXZSBoYXZlIGZvdW5kIHRo
-YXQgY29tbWFuZHMvbW1jX2V4dGNzZC5jIGlzIGxpY2Vuc2VkIHVuZGVyIEdQTHYzCj4gd2hpY2gK
-PiBpcyBpbmNvbXBhdGlibGUgdG8gdGhlIGJhcmVib3ggR1BMdjIgbGljZW5zZS4gQXJlIHlvdSBv
-ayB3aXRoCj4gcmVsaWNlbnNpbmcgdGhpcyBmaWxlPyBPdGhlcndpc2Ugd2Ugd291bGQgaGF2ZSB0
-byByZW1vdmUgaXQgZnJvbQo+IGJhcmVib3guCj4gSWYgeW91J3JlIG9rIHdpdGggcmVsaWNlbnNp
-bmcgdGhlIGZpbGUgcGxlYXNlIGp1c3QgYWNrIHRoZSBmb2xsb3dpbmcKPiBwYXRjaC4KCkRhbmll
-bCBpcyBvdXQgb2Ygb2ZmaWNlIHVudGlsIHRoZSBzdGFydCBvZiBtYXJjaC4gU28gaGUgbWlnaHQg
-bm90CmFuc3dlciB0aGlzIG1haWwgdGlsbCB0aGVuLiBJIGhvcGUgdGhpcyBpcyBvay4uLgoKUmVn
-YXJkcywKVGVyZXNhCgo+IAo+IFNhc2NoYQo+IAo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLTg8LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+IAo+IEZyb20gZjc1ZmRiNjc0
-MWZhN2YyMGE4MTA3OTgwMDdlYzFlYmMxMjg4NjM3MCBNb24gU2VwIDE3IDAwOjAwOjAwCj4gMjAw
-MQo+IEZyb206IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KPiBEYXRlOiBU
-aHUsIDkgRmViIDIwMTcgMTA6NTE6NDkgKzAxMDAKPiBTdWJqZWN0OiBbUEFUQ0hdIGNvbW1hbmRz
-L21tY19leHRjc2Q6IFJlbGljZW5zZSB1bmRlciBHUEx2MisKPiAKPiBHUEx2MyBpcyBpbmNvbXBh
-dGlibGUgd2l0aCB0aGUgcHJvamVjdHMgbGljZW5zZS4gUmVsaWNlbnNlIGZpbGUKPiB1bmRlciBH
-UEx2MisKPiAKPiBTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9u
-aXguZGU+Cj4gLS0tCj4gwqBjb21tYW5kcy9tbWNfZXh0Y3NkLmMgfCAyICstCj4gwqAxIGZpbGUg
-Y2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKPiAKPiBkaWZmIC0tZ2l0IGEv
-Y29tbWFuZHMvbW1jX2V4dGNzZC5jIGIvY29tbWFuZHMvbW1jX2V4dGNzZC5jCj4gaW5kZXggZDdm
-YzUwNjk3Yy4uNDJhZGZlMDg2MCAxMDA2NDQKPiAtLS0gYS9jb21tYW5kcy9tbWNfZXh0Y3NkLmMK
-PiArKysgYi9jb21tYW5kcy9tbWNfZXh0Y3NkLmMKPiBAQCAtNSw3ICs1LDcgQEAKPiDCoCAqCj4g
-wqAgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTogeW91IGNhbiByZWRpc3RyaWJ1dGUg
-aXQgYW5kL29yCj4gbW9kaWZ5Cj4gwqAgKiBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBH
-ZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzIHB1Ymxpc2hlZAo+IGJ5Cj4gLSAqIHRoZSBGcmVlIFNv
-ZnR3YXJlIEZvdW5kYXRpb24sIGVpdGhlciB2ZXJzaW9uIDMgb2YgdGhlIExpY2Vuc2UsIG9yCj4g
-KyAqIHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb24sIGVpdGhlciB2ZXJzaW9uIDIgb2YgdGhl
-IExpY2Vuc2UsIG9yCj4gwqAgKiAoYXQgeW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgo+
-IMKgICoKPiDCoCAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0
-IGl0IHdpbGwgYmUgdXNlZnVsLAo+IC0twqAKPiAyLjExLjAKPiAKPiAKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hello,
+I would like to know if there is a clear way on using the lvds pins to 
+drive a LVDS display in a custom made board, based on iMX6Q (in the near 
+future the iMX6Dual).
+
+Actually it boots using Barebox 2017.01 and if there is a HDMI display 
+it uses without hassle.
+
+My init scripts are loading a splash screen, then boot into linux:
+
+> 	echo "Load splash.png from filesystem..."
+> 	splash -f /dev/fb0 -b 0 $bootconfig_path/splash.png
+> 	fb0.enable=1
+
+But now, we are looking for a clear way to activate the LVDS signals in 
+the LCD Controller when an eeprom chip is found in the I2C bus (more or 
+less like EDID stuff) during bootup.
+
+In my bootup script (or specific board initcall code [board.c]) if no 
+EEPROM is found, then it will boot naturally with the HDMI port LCD 
+Display (if any) or completely BLIND board if no lcd is present.
+
+If it easy to activate the i2c bus and check for some chip addresses, I 
+do not know on how to activate the lvds within code.
+
+In my iMX28 based board, I was used the:
+
+> 	add_generic_device("stmfb", 0, NULL, IMX_FB_BASE, 0x2000,
+> 			   IORESOURCE_MEM, &board_fb_pdata);
+
+system call to activate a specific videomode defined in the board_fb_data.
+
+Which is the correct way to enable LVDS stuff? Maybe in the device tree 
+stuff?
+
+Best regards for any example or any help, hint or clue you will give me
+-- 
+Eurek s.r.l.                          |
+Electronic Engineering                | http://www.eurek.it
+via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
+p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
