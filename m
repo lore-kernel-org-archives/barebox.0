@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-f67.google.com ([209.85.215.67])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cb4qq-0001c4-E9
- for barebox@lists.infradead.org; Tue, 07 Feb 2017 12:26:31 +0000
-Received: by mail-lf0-f67.google.com with SMTP id x1so6500121lff.0
- for <barebox@lists.infradead.org>; Tue, 07 Feb 2017 04:26:07 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20170204113525.rkyuqe6uvtjachnz@pengutronix.de>
-References: <CAChPQeC3-EsvZ2s35qcVZL=gusSJf1FKivKjB=LR8LHR1F3POA@mail.gmail.com>
- <CAChPQeBZ0Qgb3a7bk_dJpUf74EB3PNZ9uTY7cVoJJBVt=d=WyA@mail.gmail.com>
- <20170204113525.rkyuqe6uvtjachnz@pengutronix.de>
-From: Falco Hyfing <hyfinglists@gmail.com>
-Date: Tue, 7 Feb 2017 13:25:04 +0100
-Message-ID: <CAChPQeCo18tLMJTYE8cJ43=3Nnw=PeOi-iOBH3g-5RDWjfhVcA@mail.gmail.com>
+Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1cblA7-00067m-SZ
+ for barebox@lists.infradead.org; Thu, 09 Feb 2017 09:37:13 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 2CB79A003C0
+ for <barebox@lists.infradead.org>; Thu,  9 Feb 2017 10:37:00 +0100 (CET)
+From: Wadim Egorov <w.egorov@phytec.de>
+Date: Thu, 9 Feb 2017 10:36:43 +0100
+Message-Id: <1486633003-34908-3-git-send-email-w.egorov@phytec.de>
+In-Reply-To: <1486633003-34908-1-git-send-email-w.egorov@phytec.de>
+References: <1486633003-34908-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,47 +19,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: squashfs: corrupted kernel image when booting/reading from
- squashfs
+Subject: [PATCH 2/2] config: Set UART port 2 as debug port
 To: barebox@lists.infradead.org
 
-SGksCgpJJ3ZlIGZvdW5kIHdoYXQgY2F1c2VzIG15IHByb2JsZW1zIHdpdGggdGhlIHNxdWFzaGZz
-IHZvbHVtZS4gVGhlCnN0YW5kYXJkIGJsb2NrIHNpemUgdXNpbmcgbWtzcXVhc2hmcyBpcyAxMjhL
-aUIsIGJ1dCBPcGVuV3J0J3MgZGVmYXVsdAppcyAyNTZLaUIgKC1iIDI1NmspIGNhdXNpbmcgdGhl
-IGZhaWx1cmU6Cm1rc3F1YXNoZnMgb3BlbndydC9idWlsZF9kaXIvdGFyZ2V0LWFybV94c2NhbGVf
-bXVzbC0xLjEuMTVfZWFiaS9yb290LWJhbHRvc29wZW53cnQvYnVpbGRfZGlyL3RhcmdldC1hcm1f
-eHNjYWxlX211c2wtMS4xLjE1X2VhYmkvbGludXgtYmFsdG9zL3Jvb3Quc3F1YXNoZnMKLXJvb3Qt
-b3duZWQgLW5vYXBwZW5kIC1jb21wIHh6IC1iIDI1NmsgLXAgJy9kZXYgZCA3NTUgMCAwJyAtcAon
-L2Rldi9jb25zb2xlIGMgNjAwIDAgMCA1IDEnIC1wcm9jZXNzb3JzIDEKClNldHRpbmcgLWIgMTI4
-ayB3b3Jrcy4KCkFsc28gT3BlbldydCB1c2VzIGJjaiBmaWx0ZXJzICgtWGJjaiBhcm0pIGZvciB4
-eiB3aGljaCBkb24ndCB3b3JrCmVpdGhlci4gSSBoYWQgY29tbWVudGVkIG91dCB0aGlzIG9wdGlv
-biBlYXJsaWVyLgoKQmVzdCB3aXNoZXMsCgpGYWxjbyBIeWZpbmcKCgpPbiBTYXQsIEZlYiA0LCAy
-MDE3IGF0IDEyOjM1IFBNLCBVbHJpY2ggw5ZsbWFubiA8dS5vZWxtYW5uQHBlbmd1dHJvbml4LmRl
-PiB3cm90ZToKPiBIaSBGYWxjbywKPgo+IE9uIEZyaSwgRmViIDAzLCAyMDE3IGF0IDEyOjI0OjQ3
-UE0gKzAxMDAsIEZhbGNvIEh5ZmluZyB3cm90ZToKPj4gSSB0cnkgdG8gYm9vdCBhIGtlcm5lbC1m
-aXQuaXRiIGZyb20gc3F1YXNoZnMgKHh6IGNvbXByZXNzZWQpIHZvbHVtZSB3aGlsZSB0aGUKPj4g
-c2FtZSBrZXJuZWwtZml0Lml0YiBpcyBib290YWJsZSBmcm9tIGEgZmF0IHZvbHVtZToKPgo+IGN1
-cnJlbnRseSBiYXJlYm94JyBzcXVhc2hmcyBkcml2ZXIgc2VlbXMgdG8gYmUgYnJva2VuIGlmIG5v
-dCB1c2VkIHdpdGggbHpvCj4gY29tcHJlc3Npb246IHRoZSBzeW1wdG9tIGlzIGJhcmVib3ggb25s
-eSByZWFkaW5nIHRoZSBmaXJzdCBzcXVhc2hmcyBibG9jawo+IGNvcnJlY3RseS4KPgo+IEkgbG9v
-a2VkIGludG8gdGhpcyBzb21lIG1vbnRocyBhZ28sIGJ1dCBkaWQgbm90IG1hbmFnZSB0byBmaW5k
-IGFuZCBmaXggdGhlIGJ1Zwo+IGluIHJlYXNvbmFibGUgdGltZS4gQXMgdGhlIGJhcmVib3ggZHJp
-dmVyIGhhcyBiZWVuIHBvcnRlZCBmcm9tIHRoZSBsaW51eCBrZXJuZWwsCj4gdGhlIGxhdHRlciBp
-cyBhIHdvcmtpbmcgcmVmZXJlbmNlIHRvIGxvb2sgYXQgd2hlbiBkZWJ1Z2dpbmcuCj4KPiBTbyB5
-b3UgYXJlIHdlbGNvbWUgdG8gaGFjayBvbiBpdCBhbmQgc2VuZCBwYXRjaGVzLiA6KQo+Cj4gQmVz
-dCByZWdhcmRzCj4gVWxyaWNoCj4gLS0KPiBQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfAo+IEluZHVzdHJpYWwg
-TGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXgu
-ZGUvICB8Cj4gUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhv
-bmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEg
-MjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAo+Cj4gX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxp
-bmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
+ arch/arm/configs/rk3288_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/configs/rk3288_defconfig b/arch/arm/configs/rk3288_defconfig
+index f54f4cc..15e6c15 100644
+--- a/arch/arm/configs/rk3288_defconfig
++++ b/arch/arm/configs/rk3288_defconfig
+@@ -26,7 +26,7 @@ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_RESET_SOURCE=y
+ CONFIG_DEBUG_INFO=y
+ CONFIG_DEBUG_LL=y
+-CONFIG_DEBUG_ROCKCHIP_UART_PORT=0
++CONFIG_DEBUG_ROCKCHIP_UART_PORT=2
+ CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
