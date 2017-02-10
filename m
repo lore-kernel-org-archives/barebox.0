@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94])
+Received: from 8.mo3.mail-out.ovh.net ([87.98.172.249])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cc8VG-0001j7-AX
- for barebox@lists.infradead.org; Fri, 10 Feb 2017 10:32:39 +0000
+ id 1cc8VL-0001tv-Il
+ for barebox@lists.infradead.org; Fri, 10 Feb 2017 10:32:44 +0000
 Received: from player734.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with ESMTP id 24AA7A30E2
- for <barebox@lists.infradead.org>; Fri, 10 Feb 2017 11:32:12 +0100 (CET)
+ by mo3.mail-out.ovh.net (Postfix) with ESMTP id 96023A3108
+ for <barebox@lists.infradead.org>; Fri, 10 Feb 2017 11:32:16 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 10 Feb 2017 11:37:46 +0100
-Message-Id: <1486723070-32548-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 10 Feb 2017 11:37:50 +0100
+Message-Id: <1486723070-32548-9-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1486723070-32548-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20170210095655.GA25859@mail.ovh.net>
  <1486723070-32548-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,73 +25,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/9] efi: move startup and payload to common/efi
+Subject: [PATCH 9/9] efi: bus: add firmware vendor and resision and tables info
 To: barebox@lists.infradead.org
+
+This alllow us to known where we boot from
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/efi/Makefile                                      | 2 +-
- common/Makefile                                        | 1 +
- {arch/efi => common}/efi/Makefile                      | 0
- {arch/efi => common}/efi/efi-image.c                   | 0
- {arch/efi => common}/efi/efi.c                         | 2 +-
- {arch/efi => common}/efi/env-efi/network/eth0-discover | 0
- 6 files changed, 3 insertions(+), 2 deletions(-)
- rename {arch/efi => common}/efi/Makefile (100%)
- rename {arch/efi => common}/efi/efi-image.c (100%)
- rename {arch/efi => common}/efi/efi.c (99%)
- rename {arch/efi => common}/efi/env-efi/network/eth0-discover (100%)
+ drivers/efi/efi-device.c | 23 +++++++++++++++++++++++
+ include/efi.h            |  7 ++++++-
+ 2 files changed, 29 insertions(+), 1 deletion(-)
 
-diff --git a/arch/efi/Makefile b/arch/efi/Makefile
-index b078bd0e3..90ae6ff8f 100644
---- a/arch/efi/Makefile
-+++ b/arch/efi/Makefile
-@@ -40,4 +40,4 @@ barebox.efi: $(KBUILD_BINARY) FORCE
- 
- KBUILD_IMAGE := barebox.efi
- 
--common-y += arch/efi/efi/ arch/efi/lib/
-+common-y += arch/efi/lib/
-diff --git a/common/Makefile b/common/Makefile
-index 869b15a92..5f58c81d2 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -50,6 +50,7 @@ obj-$(CONFIG_BOOTCHOOSER)	+= bootchooser.o
- obj-$(CONFIG_UIMAGE)		+= image.o uimage.o
- obj-$(CONFIG_FITIMAGE)		+= image-fit.o
- obj-$(CONFIG_MENUTREE)		+= menutree.o
-+obj-$(CONFIG_EFI_BOOTUP)	+= efi/
- obj-$(CONFIG_EFI_GUID)		+= efi-guid.o
- obj-$(CONFIG_EFI_DEVICEPATH)	+= efi-devicepath.o
- lwl-$(CONFIG_IMD)		+= imd-barebox.o
-diff --git a/arch/efi/efi/Makefile b/common/efi/Makefile
-similarity index 100%
-rename from arch/efi/efi/Makefile
-rename to common/efi/Makefile
-diff --git a/arch/efi/efi/efi-image.c b/common/efi/efi-image.c
-similarity index 100%
-rename from arch/efi/efi/efi-image.c
-rename to common/efi/efi-image.c
-diff --git a/arch/efi/efi/efi.c b/common/efi/efi.c
-similarity index 99%
-rename from arch/efi/efi/efi.c
-rename to common/efi/efi.c
-index b14e1e823..217a6bea8 100644
---- a/arch/efi/efi/efi.c
-+++ b/common/efi/efi.c
-@@ -119,7 +119,7 @@ struct efi_boot {
- 	void *binary;
+diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
+index 2864d0cf1..7eb94de45 100644
+--- a/drivers/efi/efi-device.c
++++ b/drivers/efi/efi-device.c
+@@ -341,10 +341,33 @@ struct bus_type efi_bus = {
+ 	.remove = efi_bus_remove,
  };
  
--struct efi_boot *efi_get_boot(int num)
-+static struct efi_boot *efi_get_boot(int num)
++static void efi_businfo(struct device_d *dev)
++{
++	int i;
++
++	printf("Tables:\n");
++	for (i = 0; i < efi_sys_table->nr_tables; i++) {
++		efi_config_table_t *t = &efi_sys_table->tables[i];
++
++		printf("  %d: %pUl: %s\n", i, &t->guid,
++					efi_guid_string(&t->guid));
++	}
++}
++
+ static int efi_init_devices(void)
  {
- 	struct efi_boot *boot = xzalloc(sizeof(*boot));
- 	void *buf, *ptr;
-diff --git a/arch/efi/efi/env-efi/network/eth0-discover b/common/efi/env-efi/network/eth0-discover
-similarity index 100%
-rename from arch/efi/efi/env-efi/network/eth0-discover
-rename to common/efi/env-efi/network/eth0-discover
++	char *fw_vendor = NULL;
++
+ 	bus_register(&efi_bus);
+ 
++	fw_vendor = strdup_wchar_to_char((const wchar_t *)efi_sys_table->fw_vendor);
++	dev_add_param_fixed(efi_bus.dev, "fw_vendor", fw_vendor);
++	free(fw_vendor);
++
++	dev_add_param_int_ro(efi_bus.dev, "fw_revision", efi_sys_table->fw_revision, "%u");
++
++	efi_bus.dev->info = efi_businfo;
++
+ 	efi_register_devices();
+ 
+ 	return 0;
+diff --git a/include/efi.h b/include/efi.h
+index fa6fb2782..4b812c9ab 100644
+--- a/include/efi.h
++++ b/include/efi.h
+@@ -488,6 +488,11 @@ extern efi_guid_t efi_block_io_protocol_guid;
+ extern efi_guid_t efi_barebox_vendor_guid;
+ extern efi_guid_t efi_systemd_vendor_guid;
+ 
++typedef struct {
++	efi_guid_t guid;
++	unsigned long table;
++} efi_config_table_t;
++
+ #define EFI_SYSTEM_TABLE_SIGNATURE ((u64)0x5453595320494249ULL)
+ 
+ #define EFI_2_30_SYSTEM_TABLE_REVISION  ((2 << 16) | (30))
+@@ -510,7 +515,7 @@ typedef struct {
+ 	efi_runtime_services_t *runtime;
+ 	efi_boot_services_t *boottime;
+ 	unsigned long nr_tables;
+-	unsigned long tables;
++	efi_config_table_t *tables;
+ } efi_system_table_t;
+ 
+ typedef struct {
 -- 
 2.11.0
 
