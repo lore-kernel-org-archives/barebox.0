@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cc5UV-0002JE-4V
- for barebox@lists.infradead.org; Fri, 10 Feb 2017 07:19:38 +0000
-Date: Fri, 10 Feb 2017 08:19:13 +0100
+ id 1cc5VR-0003l2-90
+ for barebox@lists.infradead.org; Fri, 10 Feb 2017 07:20:36 +0000
+Date: Fri, 10 Feb 2017 08:20:11 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170210071913.wuy4le6cevkkic54@pengutronix.de>
-References: <1486633003-34908-1-git-send-email-w.egorov@phytec.de>
+Message-ID: <20170210072011.dn4dssh46llzjmax@pengutronix.de>
+References: <20170209095334.a5brdlab5oqisu5t@pengutronix.de>
+ <1486637980.17583.2.camel@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1486633003-34908-1-git-send-email-w.egorov@phytec.de>
+In-Reply-To: <1486637980.17583.2.camel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: phycore-rk3288: Use UART2 as debug output
-To: Wadim Egorov <w.egorov@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: GPLv3 file in barebox
+To: Teresa Remmet <t.remmet@phytec.de>
+Cc: Barebox List <barebox@lists.infradead.org>, Daniel Schultz <d.schultz@phytec.de>
 
-On Thu, Feb 09, 2017 at 10:36:41AM +0100, Wadim Egorov wrote:
-> RK3288's UART2 is the default debug uart interface.
+Hi Teresa,
+
+On Thu, Feb 09, 2017 at 11:59:40AM +0100, Teresa Remmet wrote:
+> Hello Sascha,
 > 
-> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
-> ---
+> Am Donnerstag, den 09.02.2017, 10:53 +0100 schrieb Sascha Hauer:
+> > Hi Daniel,
+> > 
+> > We have found that commands/mmc_extcsd.c is licensed under GPLv3
+> > which
+> > is incompatible to the barebox GPLv2 license. Are you ok with
+> > relicensing this file? Otherwise we would have to remove it from
+> > barebox.
+> > If you're ok with relicensing the file please just ack the following
+> > patch.
+> 
+> Daniel is out of office until the start of march. So he might not
+> answer this mail till then. I hope this is ok...
 
-Applied, thanks
+It's in the tree for long enough, so I think one more month won't
+matter.
 
 Sascha
-
->  arch/arm/boards/phytec-som-rk3288/lowlevel.c | 11 +++++------
->  arch/arm/dts/rk3288-phycore-som.dts          |  2 +-
->  2 files changed, 6 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/arm/boards/phytec-som-rk3288/lowlevel.c b/arch/arm/boards/phytec-som-rk3288/lowlevel.c
-> index 7804a55..7649ef8 100644
-> --- a/arch/arm/boards/phytec-som-rk3288/lowlevel.c
-> +++ b/arch/arm/boards/phytec-som-rk3288/lowlevel.c
-> @@ -30,14 +30,13 @@ ENTRY_FUNCTION(start_rk3288_phycore_som, r0, r1, r2)
->  
->  	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
->  		struct rk3288_grf * const grf = (void *)RK3288_GRF_BASE;
-> -		rk_clrsetreg(&grf->gpio4c_iomux,
-> -			GPIO4C1_MASK << GPIO4C1_SHIFT |
-> -			GPIO4C0_MASK << GPIO4C0_SHIFT,
-> -			GPIO4C1_UART0BT_SOUT << GPIO4C1_SHIFT |
-> -			GPIO4C0_UART0BT_SIN << GPIO4C0_SHIFT);
-> +		rk_clrsetreg(&grf->gpio7ch_iomux,
-> +			     GPIO7C7_MASK << GPIO7C7_SHIFT |
-> +			     GPIO7C6_MASK << GPIO7C6_SHIFT,
-> +			     GPIO7C7_UART2DBG_SOUT << GPIO7C7_SHIFT |
-> +			     GPIO7C6_UART2DBG_SIN << GPIO7C6_SHIFT);
->  		INIT_LL();
->  	}
-> -
->  	fdt = __dtb_rk3288_phycore_som_start - get_runtime_offset();
->  
->  	barebox_arm_entry(0x0, SZ_1G, fdt);
-> diff --git a/arch/arm/dts/rk3288-phycore-som.dts b/arch/arm/dts/rk3288-phycore-som.dts
-> index 5410bd1..dd74bcf 100644
-> --- a/arch/arm/dts/rk3288-phycore-som.dts
-> +++ b/arch/arm/dts/rk3288-phycore-som.dts
-> @@ -44,7 +44,7 @@
->  	};
->  
->  	chosen {
-> -		stdout-path = &uart0;
-> +		stdout-path = &uart2;
->  
->  		environment-emmc {
->  			compatible = "barebox,environment";
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
