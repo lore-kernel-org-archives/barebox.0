@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 17.mo3.mail-out.ovh.net ([87.98.178.58])
+Received: from 2.mo3.mail-out.ovh.net ([46.105.75.36])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cc8VD-0001YD-II
- for barebox@lists.infradead.org; Fri, 10 Feb 2017 10:32:36 +0000
+ id 1cc8VF-0001fT-2z
+ for barebox@lists.infradead.org; Fri, 10 Feb 2017 10:32:38 +0000
 Received: from player734.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with ESMTP id BAA94A306A
- for <barebox@lists.infradead.org>; Fri, 10 Feb 2017 11:32:07 +0100 (CET)
+ by mo3.mail-out.ovh.net (Postfix) with ESMTP id 090B5A30DC
+ for <barebox@lists.infradead.org>; Fri, 10 Feb 2017 11:32:11 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 10 Feb 2017 11:37:42 +0100
-Message-Id: <1486723070-32548-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20170210095655.GA25859@mail.ovh.net>
+Date: Fri, 10 Feb 2017 11:37:45 +0100
+Message-Id: <1486723070-32548-4-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1486723070-32548-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20170210095655.GA25859@mail.ovh.net>
+ <1486723070-32548-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,53 +25,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] efi: move block io driver to driver/block
+Subject: [PATCH 4/9] efi: move debug_ll.h to include/efi
 To: barebox@lists.infradead.org
 
-so it can be reused on any ARCH
+so other arch could include it too
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/efi/efi/Makefile                          | 5 ++++-
- drivers/Makefile                               | 1 +
- drivers/block/Makefile                         | 1 +
- {arch/efi/efi => drivers/block}/efi-block-io.c | 0
- 4 files changed, 6 insertions(+), 1 deletion(-)
- create mode 100644 drivers/block/Makefile
- rename {arch/efi/efi => drivers/block}/efi-block-io.c (100%)
+ arch/efi/include/mach/debug_ll.h                  | 21 +--------------------
+ {arch/efi/include/mach => include/efi}/debug_ll.h |  0
+ 2 files changed, 1 insertion(+), 20 deletions(-)
+ copy {arch/efi/include/mach => include/efi}/debug_ll.h (100%)
 
-diff --git a/arch/efi/efi/Makefile b/arch/efi/efi/Makefile
-index a856e5907..f088c7a94 100644
---- a/arch/efi/efi/Makefile
-+++ b/arch/efi/efi/Makefile
-@@ -1,2 +1,5 @@
--obj-y += efi.o clocksource.o efi-block-io.o efi-device.o efi-image.o
-+obj-y += clocksource.o
-+obj-y += efi.o
-+obj-y += efi-device.o
-+obj-y += efi-image.o
- bbenv-y += env-efi
-diff --git a/drivers/Makefile b/drivers/Makefile
-index 6a70f6ee1..9ff261ad2 100644
---- a/drivers/Makefile
-+++ b/drivers/Makefile
-@@ -1,4 +1,5 @@
- obj-y	+= base/
-+obj-y	+= block/
- obj-$(CONFIG_ARM_AMBA) += amba/
- obj-y	+= net/
- obj-y	+= serial/
-diff --git a/drivers/block/Makefile b/drivers/block/Makefile
-new file mode 100644
-index 000000000..8812c0fae
---- /dev/null
-+++ b/drivers/block/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_EFI_BOOTUP) += efi-block-io.o
-diff --git a/arch/efi/efi/efi-block-io.c b/drivers/block/efi-block-io.c
+diff --git a/arch/efi/include/mach/debug_ll.h b/arch/efi/include/mach/debug_ll.h
+index 4ca72de31..e144d86e0 100644
+--- a/arch/efi/include/mach/debug_ll.h
++++ b/arch/efi/include/mach/debug_ll.h
+@@ -1,20 +1 @@
+-#ifndef __MACH_DEBUG_LL_H__
+-#define __MACH_DEBUG_LL_H__
+-
+-#define EFI_DEBUG 0
+-#define EFI_DEBUG_CLEAR_MEMORY 0
+-
+-#include <efi.h>
+-#include <efi/efi.h>
+-
+-static inline void PUTC_LL(char c)
+-{
+-	uint16_t str[2] = {};
+-	struct efi_simple_text_output_protocol *con_out = efi_sys_table->con_out;
+-
+-	str[0] = c;
+-
+-	con_out->output_string(con_out, str);
+-}
+-
+-#endif
++#include <efi/debug_ll.h>
+diff --git a/arch/efi/include/mach/debug_ll.h b/include/efi/debug_ll.h
 similarity index 100%
-rename from arch/efi/efi/efi-block-io.c
-rename to drivers/block/efi-block-io.c
+copy from arch/efi/include/mach/debug_ll.h
+copy to include/efi/debug_ll.h
 -- 
 2.11.0
 
