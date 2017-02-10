@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cc6Jk-00088W-2g
- for barebox@lists.infradead.org; Fri, 10 Feb 2017 08:12:38 +0000
-Date: Fri, 10 Feb 2017 09:12:10 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20170210081210.anhoasldrlhqtork@pengutronix.de>
-References: <CACmkAZEcG-VJCJt6va7fBamCV7BexSrQn3S8hBudyasyk97npA@mail.gmail.com>
+ id 1ccDTp-0007zX-E3
+ for barebox@lists.infradead.org; Fri, 10 Feb 2017 15:51:27 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri, 10 Feb 2017 16:50:58 +0100
+Message-Id: <20170210155100.16463-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CACmkAZEcG-VJCJt6va7fBamCV7BexSrQn3S8hBudyasyk97npA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,64 +15,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Multiple root file systems
-To: Haris Papadopoulos <haris@amberbox.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/2] mvebu: make more RAM available from malloc
+To: barebox@lists.infradead.org
 
-Hello,
-
-On Fri, Feb 03, 2017 at 01:44:43PM +0000, Haris Papadopoulos wrote:
-> I am trying to create a system with one bootloader, one kernel and
-> multiple filesystems. I am going to use barebox bootchooser
-> (http://www.barebox.org/doc/latest/user/bootchooser.html)
-> =
-
-> My current /boot/nand file is as follows:
-> =
-
-> =
-
->    #!/bin/sh
-> =
-
->    [ -e /env/config-expansions ] && /env/config-expansions
-> =
-
->    [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-> =
-
->    global.bootm.image=3D"/dev/nand0.root.ubi.kernel"
->    global.bootm.oftree=3D"/dev/nand0.root.ubi.oftree"
-> =
-
->    global.linux.bootargs.dyn.root=3D"root=3Dubi0:root ubi.mtd=3Droot
-> rootfstype=3Dubifs rw"
-> =
-
-> I would like to use two filesysyems with names root1 and root2. How
-> should I modify the above?
-
-What is the reason to stick to one kernel for both root filesystems?
-
-If you drop that, you can put the kernel into the rootfses and use
-blspec for booting. This way you get rid of the bootscript and just
-mount the rootfs and then call
-
-	boot /mnt/rootfs1
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sCgpJIGhhdmUgYSBib2FyZCBoZXJlIHRoYXQgbmVlZHMgbW9yZSB0aGFuIHRoZSBjdXJy
+ZW50bHkgYXZhaWxhYmxlIG1hbGxvYwpzcGFjZS4gIFRoZSBzaXplIG9mIHRoZSBtYWxsb2Mgc3Bh
+Y2UgZGVwZW5kcyBvbiBtZW1vcnkgc2l6ZS4gT24gbXZlYnUKdGhlcmUgaXMgYW4gaW5pdGlhbCBh
+c3N1bXB0aW9uIG9mIDY0IE1pQiBSQU0gdGhhdCBpcyBsYXRlciBjb3JyZWN0ZWQuCldoZW4gdGhl
+IG1hbGxvYyBtZW1vcnkgaXMgc2V0IGFzaWRlIChoYWxmIG9mIHRoZSBhdmFpbGFibGUgUkFNKSB0
+aGUKbnVtYmVyIGlzbid0IGNvcnJlY3RlZCB5ZXQuCgpTbyB0aGlzIHBhdGNoIHNldCBtYWtlcyBp
+dCBuZWNlc3NhcnkgdG8gbGV0IHRoZSBib2FyZCBkZWZpbmUgdGhlCmF2YWlsYWJsZSBhbW91bnQg
+b2YgUkFNLiBBcyBiZWZvcmUganVzdCBzYXlpbmcgNjQgTWlCIHdvcmtzIGZpbmUuIEFuZCBpZgph
+IGJvYXJkIHdhbnRzIG1vcmUgbWFsbG9jIHNwYWNlLCBpdCBjYW4gc3BlY2lmeSB0aGUgYWN0dWFs
+IHNpemUuCgpUaGUgZmlyc3QgcGF0Y2ggdGhlIGluaXRpYWwgbWVtb3J5IHNpemUgaXMganVzdCBw
+dXNoZWQgdG8gdGhlIGJvYXJkCmZpbGVzIHdpdGggbm8gY2hhbmdlIGluIGZ1bmN0aW9uYWxpdHku
+IFRoZSBzZWNvbmQgcGF0Y2ggY2hhbmdlcyBhIGJvYXJkCnRvIHRoZSByZWFsbHkgYXZhaWxhYmxl
+IFJBTS4KClV3ZSBLbGVpbmUtS8O2bmlnICgyKToKICBtdmVidTogbWFrZSBib2FyZHMgcGFzcyBp
+bml0aWFsIG1lbW9yeSBzaXplCiAgbmV0Z2Vhci1ybjIxMjA6IHVzZSBjb21wbGV0ZSBtZW1vcnkg
+ZnJvbSB0aGUgc3RhcnQKCiBhcmNoL2FybS9ib2FyZHMvZ2xvYmFsc2NhbGUtZ3VydXBsdWcvbG93
+bGV2ZWwuYyAgICB8ICAyICstCiBhcmNoL2FybS9ib2FyZHMvZ2xvYmFsc2NhbGUtbWlyYWJveC9s
+b3dsZXZlbC5jICAgICB8ICAyICstCiBhcmNoL2FybS9ib2FyZHMvbGVub3ZvLWl4NC0zMDBkL2xv
+d2xldmVsLmMgICAgICAgICB8ICAyICstCiBhcmNoL2FybS9ib2FyZHMvbWFydmVsbC1hcm1hZGEt
+eHAtZ3AvbG93bGV2ZWwuYyAgICB8ICAyICstCiBhcmNoL2FybS9ib2FyZHMvbmV0Z2Vhci1ybjEw
+NC9sb3dsZXZlbC5jICAgICAgICAgICB8ICAyICstCiBhcmNoL2FybS9ib2FyZHMvbmV0Z2Vhci1y
+bjIxMjAvbG93bGV2ZWwuYyAgICAgICAgICB8ICAyICstCiBhcmNoL2FybS9ib2FyZHMvcGxhdGhv
+bWUtb3BlbmJsb2Nrcy1hNi9sb3dsZXZlbC5jICB8ICAyICstCiBhcmNoL2FybS9ib2FyZHMvcGxh
+dGhvbWUtb3BlbmJsb2Nrcy1heDMvbG93bGV2ZWwuYyB8ICAyICstCiBhcmNoL2FybS9ib2FyZHMv
+c29saWRydW4tY3Vib3gvbG93bGV2ZWwuYyAgICAgICAgICB8ICAyICstCiBhcmNoL2FybS9ib2Fy
+ZHMvdXNpLXRvcGtpY2svbG93bGV2ZWwuYyAgICAgICAgICAgICB8ICAyICstCiBhcmNoL2FybS9t
+YWNoLW12ZWJ1L2luY2x1ZGUvbWFjaC9sb3dsZXZlbC5oICAgICAgICB8ICAyICstCiBhcmNoL2Fy
+bS9tYWNoLW12ZWJ1L2xvd2xldmVsLmMgICAgICAgICAgICAgICAgICAgICB8IDE1ICsrKysrKyst
+LS0tLS0tLQogMTIgZmlsZXMgY2hhbmdlZCwgMTggaW5zZXJ0aW9ucygrKSwgMTkgZGVsZXRpb25z
+KC0pCgotLSAKMi4xMS4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
