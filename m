@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ccdoO-00074F-9m
- for barebox@lists.infradead.org; Sat, 11 Feb 2017 19:58:32 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Sat, 11 Feb 2017 20:57:52 +0100
-Message-Id: <20170211195752.13616-2-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20170211195752.13616-1-u.kleine-koenig@pengutronix.de>
-References: <20170211195752.13616-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1ccgDL-0007EI-NM
+ for barebox@lists.infradead.org; Sat, 11 Feb 2017 22:32:23 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Sat, 11 Feb 2017 23:31:38 +0100
+Message-Id: <1486852299-30432-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,53 +14,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] scripts/kwboot: new parameter -n to skip a number of NAKs
+Subject: [PATCH 1/2] i.MX: i2c: fix i2c-fsl for non-OF boards
 To: barebox@lists.infradead.org
-Cc: bodhi <tlibertin@gmail.com>
+Cc: Alexander Kurz <akurz@blala.de>
 
-T24gc29tZSBtYWNoaW5lcyB0aGUgQ1BVIHJlc2V0cyB0d2ljZSBhbmQgc28ga3dib290IG11c3Qg
-aGl0IHRoZSBzZWNvbmQKd2luZG93IHRvIGVudGVyIGRlYnVnIG9yIGJvb3QgbW9kZS4gRm9yIHRo
-aXMgc2NlbmFyaW8gaXQgaGVscHMgdG8gaWdub3JlCmEgbnVtYmVyIG9mIE5BS3MuIElmIHlvdSBj
-aG9vc2UgYSBudW1iZXIgdG9vIGhpZ2ggZm9yIGJvb3RpbmcsIHRoZSBwcm9jZXNzCmlzIG9ubHkg
-c2xvd2VkIGRvd24gYmVjYXVzZSB3aGVuIHRoZSBDUFUgZW50ZXJzIFVBUlQgYm9vdCBtb2RlIGl0
-IHNlbmRzIE5BS3MKd2hlbiBub3QgZ2V0dGluZyBhbnkgaW5wdXQuCgpUaGlzIG5ldyBvcHRpb24g
-YWxzbyBoZWxwcyB3aGVuIHRoZXJlIGFyZSB2b2x0YWdlIGZsdWN0dWF0aW9ucyBkdWUgdG8gdGhl
-CnBvd2VyIHVwIHNlcXVlbmNlIHdoaWNoIG1pZ2h0IGJlIGludGVycHJldGVkIGFzIHZhbGlkIGNo
-YXJzLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0Bw
-ZW5ndXRyb25peC5kZT4KLS0tCiBzY3JpcHRzL2t3Ym9vdC5jIHwgMTggKysrKysrKysrKysrKy0t
-LS0tCiAxIGZpbGUgY2hhbmdlZCwgMTMgaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlvbnMoLSkKCmRp
-ZmYgLS1naXQgYS9zY3JpcHRzL2t3Ym9vdC5jIGIvc2NyaXB0cy9rd2Jvb3QuYwppbmRleCAzYWIy
-NmNkOTM2YzUuLjRjNmIxOWFhMjE5ZSAxMDA2NDQKLS0tIGEvc2NyaXB0cy9rd2Jvb3QuYworKysg
-Yi9zY3JpcHRzL2t3Ym9vdC5jCkBAIC0yNjQsMTAgKzI2NCwxMSBAQCBvdXQ6CiB9CiAKIHN0YXRp
-YyBpbnQKLWt3Ym9vdF9ib290bXNnKGludCB0dHksIHZvaWQgKm1zZykKK2t3Ym9vdF9ib290bXNn
-KGludCB0dHksIHZvaWQgKm1zZywgdW5zaWduZWQgbnVtX25hY2tzKQogewogCWludCByYzsKIAlj
-aGFyIGM7CisJdW5zaWduZWQgc2F3X25hY2tzID0gMDsKIAogCWlmIChtc2cgPT0gTlVMTCkKIAkJ
-a3dib290X3ByaW50digiUGxlYXNlIHJlYm9vdCB0aGUgdGFyZ2V0IGludG8gVUFSVCBib290IG1v
-ZGUuLi4iKTsKQEAgLTI5NSwxMSArMjk2LDEzIEBAIGt3Ym9vdF9ib290bXNnKGludCB0dHksIHZv
-aWQgKm1zZykKIAkJCQlrd2Jvb3RfcHJpbnR2KCJcXHglMDJoaHgiLCBjKTsKIAogCQkJcmMgPSBr
-d2Jvb3RfdHR5X3JlY3YodHR5LCAmYywgMSwgS1dCT09UX01TR19SU1BfVElNRU8pOworCisJCQlz
-YXdfbmFja3MgPSAwOwogCQl9CiAKLQl9IHdoaWxlIChyYyB8fCBjICE9IE5BSyk7CisJfSB3aGls
-ZSAocmMgfHwgYyAhPSBOQUsgfHwgKCsrc2F3X25hY2tzIDwgbnVtX25hY2tzKSk7CiAKLQlrd2Jv
-b3RfcHJpbnR2KCJcbkdvdCBleHBlY3RlZCBOQUtcbiIpOworCWt3Ym9vdF9wcmludHYoIlxuR290
-IGV4cGVjdGVkIE5BS3NcbiIpOwogCiAJcmV0dXJuIHJjOwogfQpAQCAtNzM2LDYgKzczOSw3IEBA
-IG1haW4oaW50IGFyZ2MsIGNoYXIgKiphcmd2KQogCXZvaWQgKmJvb3Rtc2c7CiAJdm9pZCAqZGVi
-dWdtc2c7CiAJdm9pZCAqaW1nOworCXVuc2lnbmVkIG51bV9uYWNrcyA9IDE7CiAJc2l6ZV90IHNp
-emU7CiAJc3BlZWRfdCBzcGVlZDsKIApAQCAtNzUyLDcgKzc1Niw3IEBAIG1haW4oaW50IGFyZ2Ms
-IGNoYXIgKiphcmd2KQogCWt3Ym9vdF92ZXJib3NlID0gaXNhdHR5KFNURE9VVF9GSUxFTk8pOwog
-CiAJZG8gewotCQlpbnQgYyA9IGdldG9wdChhcmdjLCBhcmd2LCAiYjpkZmh0QjpEOiIpOworCQlp
-bnQgYyA9IGdldG9wdChhcmdjLCBhcmd2LCAiYjpkZmh0bjpCOkQ6Iik7CiAJCWlmIChjIDwgMCkK
-IAkJCWJyZWFrOwogCkBAIC03NzksNiArNzgzLDEwIEBAIG1haW4oaW50IGFyZ2MsIGNoYXIgKiph
-cmd2KQogCQkJZm9yY2UgPSAxOwogCQkJYnJlYWs7CiAKKwkJY2FzZSAnbic6CisJCQludW1fbmFj
-a3MgPSBhdG9pKG9wdGFyZyk7CisJCQlicmVhazsKKwogCQljYXNlICdCJzoKIAkJCXNwZWVkID0g
-a3dib290X3R0eV9zcGVlZChhdG9pKG9wdGFyZykpOwogCQkJaWYgKHNwZWVkID09IC0xKQpAQCAt
-ODI4LDcgKzgzNiw3IEBAIG1haW4oaW50IGFyZ2MsIGNoYXIgKiphcmd2KQogCQkJZ290byBvdXQ7
-CiAJCX0KIAl9IGVsc2UgewotCQlyYyA9IGt3Ym9vdF9ib290bXNnKHR0eSwgYm9vdG1zZyk7CisJ
-CXJjID0ga3dib290X2Jvb3Rtc2codHR5LCBib290bXNnLCBudW1fbmFja3MpOwogCQlpZiAocmMp
-IHsKIAkJCXBlcnJvcigiYm9vdG1zZyIpOwogCQkJZ290byBvdXQ7Ci0tIAoyLjExLjAKCgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
-bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
-ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+With commit 4ed5b778a56b ("i.MX: i2c: Add Vybrid support") i2c-fsl probe
+returns -EINVAL for all non-OF boards.
+Since newer planforms, especially vf610 are restricted OF-only it is safe to
+assume "fsl,imx21-i2c" if CONFIG_OFDEVICE is not set.
+
+Signed-off-by: Alexander Kurz <akurz@blala.de>
+---
+ drivers/i2c/busses/i2c-imx.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index 5677443..4ff4f5c 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -153,6 +153,8 @@ static struct fsl_i2c_clk_pair vf610_i2c_clk_div[] = {
+ 	{ 3840, 0x3F }, { 4096, 0x7B }, { 5120, 0x7D }, { 6144, 0x7E },
+ };
+ 
++static const struct fsl_i2c_hwdata imx21_i2c_hwdata;
++
+ struct fsl_i2c_hwdata {
+ 	unsigned		regshift;
+ 	struct fsl_i2c_clk_pair	*clk_div;
+@@ -676,10 +678,14 @@ static int __init i2c_fsl_probe(struct device_d *pdev)
+ 	clk_enable(i2c_fsl->clk);
+ #endif
+ 
+-	i2c_fsl->hwdata = of_device_get_match_data(pdev);
+-	if (!i2c_fsl->hwdata) {
+-		ret = -EINVAL;
+-		goto fail;
++	if (IS_ENABLED(CONFIG_OFDEVICE)) {
++		i2c_fsl->hwdata = of_device_get_match_data(pdev);
++		if (!i2c_fsl->hwdata) {
++			ret = -EINVAL;
++			goto fail;
++		}
++	} else {
++		i2c_fsl->hwdata = &imx21_i2c_hwdata;
+ 	}
+ 
+ 	/* Setup i2c_fsl driver structure */
+-- 
+2.1.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
