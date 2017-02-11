@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ccgDL-0007EI-NM
- for barebox@lists.infradead.org; Sat, 11 Feb 2017 22:32:23 +0000
+ id 1ccgDQ-0007EL-FF
+ for barebox@lists.infradead.org; Sat, 11 Feb 2017 22:32:26 +0000
 From: Alexander Kurz <akurz@blala.de>
-Date: Sat, 11 Feb 2017 23:31:38 +0100
-Message-Id: <1486852299-30432-1-git-send-email-akurz@blala.de>
+Date: Sat, 11 Feb 2017 23:31:39 +0100
+Message-Id: <1486852299-30432-2-git-send-email-akurz@blala.de>
+In-Reply-To: <1486852299-30432-1-git-send-email-akurz@blala.de>
+References: <1486852299-30432-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,52 +21,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] i.MX: i2c: fix i2c-fsl for non-OF boards
+Subject: [PATCH 2/2] i.MX: esdhc: fix imx-esdhc driver for non-OF boards
 To: barebox@lists.infradead.org
 Cc: Alexander Kurz <akurz@blala.de>
 
-With commit 4ed5b778a56b ("i.MX: i2c: Add Vybrid support") i2c-fsl probe
-returns -EINVAL for all non-OF boards.
-Since newer planforms, especially vf610 are restricted OF-only it is safe to
-assume "fsl,imx21-i2c" if CONFIG_OFDEVICE is not set.
+Commit 39f7a7ee8b68 ("i.MX: esdhc: Do not rely on CPU type for quirks")
+made imx-esdhc dependent on OF and broke probing for all non-OF boards.
+Since newer platforms like mx6 and vf610 are restricted to OF, the non-OF
+probing only needs to distinguish mx5 vs earlier SoC.
 
 Signed-off-by: Alexander Kurz <akurz@blala.de>
 ---
- drivers/i2c/busses/i2c-imx.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/mci/imx-esdhc.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index 5677443..4ff4f5c 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -153,6 +153,8 @@ static struct fsl_i2c_clk_pair vf610_i2c_clk_div[] = {
- 	{ 3840, 0x3F }, { 4096, 0x7B }, { 5120, 0x7D }, { 6144, 0x7E },
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index b2961cc..141d715 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -600,6 +600,9 @@ static int fsl_esdhc_detect(struct device_d *dev)
+ 	return mci_detect_card(&host->mci);
+ }
+ 
++static struct esdhc_soc_data esdhc_imx25_data;
++static struct esdhc_soc_data esdhc_imx53_data;
++
+ static int fsl_esdhc_probe(struct device_d *dev)
+ {
+ 	struct resource *iores;
+@@ -613,9 +616,16 @@ static int fsl_esdhc_probe(struct device_d *dev)
+ 	host = xzalloc(sizeof(*host));
+ 	mci = &host->mci;
+ 
+-	host->socdata = of_device_get_match_data(dev);
+-	if (!host->socdata)
+-		return -EINVAL;
++	if (IS_ENABLED(CONFIG_OFDEVICE)) {
++		host->socdata = of_device_get_match_data(dev);
++		if (!host->socdata)
++			return -EINVAL;
++	} else {
++		if (cpu_is_mx50() || cpu_is_mx51() || cpu_is_mx53())
++			host->socdata = &esdhc_imx53_data;
++		else
++			host->socdata = &esdhc_imx25_data;
++	}
+ 
+ 	host->clk = clk_get(dev, "per");
+ 	if (IS_ERR(host->clk))
+@@ -693,16 +703,6 @@ static struct esdhc_soc_data esdhc_imx25_data = {
+ 	.flags = ESDHC_FLAG_ENGCM07207,
  };
  
-+static const struct fsl_i2c_hwdata imx21_i2c_hwdata;
-+
- struct fsl_i2c_hwdata {
- 	unsigned		regshift;
- 	struct fsl_i2c_clk_pair	*clk_div;
-@@ -676,10 +678,14 @@ static int __init i2c_fsl_probe(struct device_d *pdev)
- 	clk_enable(i2c_fsl->clk);
- #endif
+-static struct esdhc_soc_data esdhc_imx50_data = {
+-	.flags = ESDHC_FLAG_MULTIBLK_NO_INT,
+-	/* .flags = 0, */
+-};
+-
+-static struct esdhc_soc_data esdhc_imx51_data = {
+-	.flags = ESDHC_FLAG_MULTIBLK_NO_INT,
+-	/* .flags = 0, */
+-};
+-
+ static struct esdhc_soc_data esdhc_imx53_data = {
+ 	.flags = ESDHC_FLAG_MULTIBLK_NO_INT,
+ };
+@@ -724,8 +724,8 @@ static struct esdhc_soc_data usdhc_imx6sx_data = {
  
--	i2c_fsl->hwdata = of_device_get_match_data(pdev);
--	if (!i2c_fsl->hwdata) {
--		ret = -EINVAL;
--		goto fail;
-+	if (IS_ENABLED(CONFIG_OFDEVICE)) {
-+		i2c_fsl->hwdata = of_device_get_match_data(pdev);
-+		if (!i2c_fsl->hwdata) {
-+			ret = -EINVAL;
-+			goto fail;
-+		}
-+	} else {
-+		i2c_fsl->hwdata = &imx21_i2c_hwdata;
- 	}
- 
- 	/* Setup i2c_fsl driver structure */
+ static __maybe_unused struct of_device_id fsl_esdhc_compatible[] = {
+ 	{ .compatible = "fsl,imx25-esdhc",  .data = &esdhc_imx25_data  },
+-	{ .compatible = "fsl,imx50-esdhc",  .data = &esdhc_imx50_data  },
+-	{ .compatible = "fsl,imx51-esdhc",  .data = &esdhc_imx51_data  },
++	{ .compatible = "fsl,imx50-esdhc",  .data = &esdhc_imx53_data  },
++	{ .compatible = "fsl,imx51-esdhc",  .data = &esdhc_imx53_data  },
+ 	{ .compatible = "fsl,imx53-esdhc",  .data = &esdhc_imx53_data  },
+ 	{ .compatible = "fsl,imx6q-usdhc",  .data = &usdhc_imx6q_data  },
+ 	{ .compatible = "fsl,imx6sl-usdhc", .data = &usdhc_imx6sl_data },
 -- 
 2.1.4
 
