@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ccDTp-0007zX-E3
- for barebox@lists.infradead.org; Fri, 10 Feb 2017 15:51:27 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri, 10 Feb 2017 16:50:58 +0100
-Message-Id: <20170210155100.16463-1-u.kleine-koenig@pengutronix.de>
+ id 1cdBeV-00070k-Qe
+ for barebox@lists.infradead.org; Mon, 13 Feb 2017 08:06:29 +0000
+Date: Mon, 13 Feb 2017 09:06:05 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170213080605.4v3ldwhyk7xtiodq@pengutronix.de>
+References: <20170210155100.16463-1-u.kleine-koenig@pengutronix.de>
+ <20170210155100.16463-2-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170210155100.16463-2-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,41 +19,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/2] mvebu: make more RAM available from malloc
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] mvebu: make boards pass initial memory size
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-SGVsbG8sCgpJIGhhdmUgYSBib2FyZCBoZXJlIHRoYXQgbmVlZHMgbW9yZSB0aGFuIHRoZSBjdXJy
-ZW50bHkgYXZhaWxhYmxlIG1hbGxvYwpzcGFjZS4gIFRoZSBzaXplIG9mIHRoZSBtYWxsb2Mgc3Bh
-Y2UgZGVwZW5kcyBvbiBtZW1vcnkgc2l6ZS4gT24gbXZlYnUKdGhlcmUgaXMgYW4gaW5pdGlhbCBh
-c3N1bXB0aW9uIG9mIDY0IE1pQiBSQU0gdGhhdCBpcyBsYXRlciBjb3JyZWN0ZWQuCldoZW4gdGhl
-IG1hbGxvYyBtZW1vcnkgaXMgc2V0IGFzaWRlIChoYWxmIG9mIHRoZSBhdmFpbGFibGUgUkFNKSB0
-aGUKbnVtYmVyIGlzbid0IGNvcnJlY3RlZCB5ZXQuCgpTbyB0aGlzIHBhdGNoIHNldCBtYWtlcyBp
-dCBuZWNlc3NhcnkgdG8gbGV0IHRoZSBib2FyZCBkZWZpbmUgdGhlCmF2YWlsYWJsZSBhbW91bnQg
-b2YgUkFNLiBBcyBiZWZvcmUganVzdCBzYXlpbmcgNjQgTWlCIHdvcmtzIGZpbmUuIEFuZCBpZgph
-IGJvYXJkIHdhbnRzIG1vcmUgbWFsbG9jIHNwYWNlLCBpdCBjYW4gc3BlY2lmeSB0aGUgYWN0dWFs
-IHNpemUuCgpUaGUgZmlyc3QgcGF0Y2ggdGhlIGluaXRpYWwgbWVtb3J5IHNpemUgaXMganVzdCBw
-dXNoZWQgdG8gdGhlIGJvYXJkCmZpbGVzIHdpdGggbm8gY2hhbmdlIGluIGZ1bmN0aW9uYWxpdHku
-IFRoZSBzZWNvbmQgcGF0Y2ggY2hhbmdlcyBhIGJvYXJkCnRvIHRoZSByZWFsbHkgYXZhaWxhYmxl
-IFJBTS4KClV3ZSBLbGVpbmUtS8O2bmlnICgyKToKICBtdmVidTogbWFrZSBib2FyZHMgcGFzcyBp
-bml0aWFsIG1lbW9yeSBzaXplCiAgbmV0Z2Vhci1ybjIxMjA6IHVzZSBjb21wbGV0ZSBtZW1vcnkg
-ZnJvbSB0aGUgc3RhcnQKCiBhcmNoL2FybS9ib2FyZHMvZ2xvYmFsc2NhbGUtZ3VydXBsdWcvbG93
-bGV2ZWwuYyAgICB8ICAyICstCiBhcmNoL2FybS9ib2FyZHMvZ2xvYmFsc2NhbGUtbWlyYWJveC9s
-b3dsZXZlbC5jICAgICB8ICAyICstCiBhcmNoL2FybS9ib2FyZHMvbGVub3ZvLWl4NC0zMDBkL2xv
-d2xldmVsLmMgICAgICAgICB8ICAyICstCiBhcmNoL2FybS9ib2FyZHMvbWFydmVsbC1hcm1hZGEt
-eHAtZ3AvbG93bGV2ZWwuYyAgICB8ICAyICstCiBhcmNoL2FybS9ib2FyZHMvbmV0Z2Vhci1ybjEw
-NC9sb3dsZXZlbC5jICAgICAgICAgICB8ICAyICstCiBhcmNoL2FybS9ib2FyZHMvbmV0Z2Vhci1y
-bjIxMjAvbG93bGV2ZWwuYyAgICAgICAgICB8ICAyICstCiBhcmNoL2FybS9ib2FyZHMvcGxhdGhv
-bWUtb3BlbmJsb2Nrcy1hNi9sb3dsZXZlbC5jICB8ICAyICstCiBhcmNoL2FybS9ib2FyZHMvcGxh
-dGhvbWUtb3BlbmJsb2Nrcy1heDMvbG93bGV2ZWwuYyB8ICAyICstCiBhcmNoL2FybS9ib2FyZHMv
-c29saWRydW4tY3Vib3gvbG93bGV2ZWwuYyAgICAgICAgICB8ICAyICstCiBhcmNoL2FybS9ib2Fy
-ZHMvdXNpLXRvcGtpY2svbG93bGV2ZWwuYyAgICAgICAgICAgICB8ICAyICstCiBhcmNoL2FybS9t
-YWNoLW12ZWJ1L2luY2x1ZGUvbWFjaC9sb3dsZXZlbC5oICAgICAgICB8ICAyICstCiBhcmNoL2Fy
-bS9tYWNoLW12ZWJ1L2xvd2xldmVsLmMgICAgICAgICAgICAgICAgICAgICB8IDE1ICsrKysrKyst
-LS0tLS0tLQogMTIgZmlsZXMgY2hhbmdlZCwgMTggaW5zZXJ0aW9ucygrKSwgMTkgZGVsZXRpb25z
-KC0pCgotLSAKMi4xMS4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Hi Uwe,
+
+On Fri, Feb 10, 2017 at 04:50:59PM +0100, Uwe Kleine-K=F6nig wrote:
+> While assuming SZ_64M initially is save and fixed up later, the size of t=
+he
+> malloc area is determined from this value. So it might make sense for some
+> boards to pass the correct version from the start to have more RAM availa=
+ble
+> for example to write big images into an FPGA.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  arch/arm/boards/globalscale-guruplug/lowlevel.c    |  2 +-
+>  arch/arm/boards/globalscale-mirabox/lowlevel.c     |  2 +-
+>  arch/arm/boards/lenovo-ix4-300d/lowlevel.c         |  2 +-
+>  arch/arm/boards/marvell-armada-xp-gp/lowlevel.c    |  2 +-
+>  arch/arm/boards/netgear-rn104/lowlevel.c           |  2 +-
+>  arch/arm/boards/netgear-rn2120/lowlevel.c          |  2 +-
+>  arch/arm/boards/plathome-openblocks-a6/lowlevel.c  |  2 +-
+>  arch/arm/boards/plathome-openblocks-ax3/lowlevel.c |  2 +-
+>  arch/arm/boards/solidrun-cubox/lowlevel.c          |  2 +-
+>  arch/arm/boards/usi-topkick/lowlevel.c             |  2 +-
+>  arch/arm/mach-mvebu/include/mach/lowlevel.h        |  2 +-
+>  arch/arm/mach-mvebu/lowlevel.c                     | 15 +++++++--------
+>  12 files changed, 18 insertions(+), 19 deletions(-)
+> =
+
+>  /*
+>   * Determining the actual memory size is highly SoC dependent,
+> - * but for all SoCs RAM starts at 0x00000000. Therefore, we start
+> - * with a minimal memory setup of 64M and probe correct memory size
+> - * later.
+> + * but for all SoCs RAM starts at 0x00000000. If the available RAM isn't=
+ known
+> + * at the call-site of mvebu_barebox_entry, using a value that is not to=
+o big is
+> + * safe. The correct memory size will be probed later.
+>   */
+>  #define MVEBU_BOOTUP_MEMORY_BASE	0x00000000
+> -#define MVEBU_BOOTUP_MEMORY_SIZE	SZ_64M
+>  =
+
+> -void __naked __noreturn mvebu_barebox_entry(void *boarddata)
+> +void __naked __noreturn mvebu_barebox_entry(void *boarddata,
+> +					    unsigned long memsize)
+>  {
+>  	mvebu_remap_registers();
+> -	barebox_arm_entry(MVEBU_BOOTUP_MEMORY_BASE,
+> -			  MVEBU_BOOTUP_MEMORY_SIZE, boarddata);
+> +	barebox_arm_entry(MVEBU_BOOTUP_MEMORY_BASE, memsize, boarddata);
+>  }
+
+I would prefer if you could split mvebu_barebox_entry into
+armada_370_xp_barebox_entry, dove_barebox_entry and
+kirkwood_barebox_entry. Then you could call the SoC specific SDRAM
+detection functions and call barebox with the correct amount of SDRAM
+from the start.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
