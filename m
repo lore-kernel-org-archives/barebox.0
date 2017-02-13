@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1chj94-0005pQ-Bj
- for barebox@lists.infradead.org; Sat, 25 Feb 2017 20:40:48 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Sat, 25 Feb 2017 21:40:19 +0100
-Message-Id: <20170225204022.12815-1-u.kleine-koenig@pengutronix.de>
+ id 1cdBxE-0001V7-LD
+ for barebox@lists.infradead.org; Mon, 13 Feb 2017 08:25:50 +0000
+Date: Mon, 13 Feb 2017 09:25:26 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170213082526.nwkiozcgh5ijpvhc@pengutronix.de>
+References: <CAAMcf8C8_QiEOdNz+_AYYo31SSqkCJM9rjdp3cPSoX0JKAMCrA@mail.gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAAMcf8C8_QiEOdNz+_AYYo31SSqkCJM9rjdp3cPSoX0JKAMCrA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,26 +18,89 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3+0/3] retry on simplification of init code flow
-To: barebox@lists.infradead.org
+Subject: Re: [USB BOOT] Help needed
+To: Vicente Bergas <vicencb@gmail.com>
+Cc: barebox@lists.infradead.org
 
-SGVsbG8sCgp0aGlzIHNlcmllcyBpcyB2MiBvZiBbNC02XS8zIGZyb20gRmViIDE1IGFuZCBpcyBz
-dXBwb3NlZCB0byBzdXBlcnNlZWQKKGltcGxpY2l0KSB2MSB3aGljaCBpcyBhbHJlYWR5IGluIG5l
-eHQuCgpUaGUgZGlmZmVyZW5jZSBpcyB0aGF0IHBhdGNoICJtdmVidTogRml4IGZpeHVwIG9mIG1i
-dXMgZGV2aWNlLXRyZWUKcmFuZ2VzIiBpcyBzcXVhc2hlZCBpbnRvIHRoZW0gYW5kIHRoZSBjb21t
-aXQgbG9nIGFkYXB0ZWQgYWNjb3JkaW5nbHkuCgpCZXN0IHJlZ2FyZHMKVXdlCgpVd2UgS2xlaW5l
-LUvDtm5pZyAoMyk6CiAgbXZlYnU6IGFybWFkYS0zNzAteHA6IHNpbXBsaWZ5IHNvYyBpbml0IGNv
-ZGUgZmxvdwogIG12ZWJ1OiBkb3ZlOiBzaW1wbGlmeSBzb2MgaW5pdCBjb2RlIGZsb3cKICBtdmVi
-dToga2lya3dvb2Q6IHNpbXBsaWZ5IHNvYyBpbml0IGNvZGUgZmxvdwoKIGFyY2gvYXJtL21hY2gt
-bXZlYnUvYXJtYWRhLTM3MC14cC5jIHwgMzEgKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LQogYXJjaC9hcm0vbWFjaC1tdmVidS9kb3ZlLmMgICAgICAgICAgfCAxMyArKy0tLS0tLS0tLS0t
-CiBhcmNoL2FybS9tYWNoLW12ZWJ1L2tpcmt3b29kLmMgICAgICB8IDExICsrLS0tLS0tLS0tCiBk
-cml2ZXJzL2J1cy9tdmVidS1tYnVzLmMgICAgICAgICAgICB8IDIyICsrKysrKysrKysrKysrKysr
-KysrKy0KIDQgZmlsZXMgY2hhbmdlZCwgMzMgaW5zZXJ0aW9ucygrKSwgNDQgZGVsZXRpb25zKC0p
-CgotLSAKMi4xMS4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
-dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Hi Vincente,
+
+On Sat, Feb 11, 2017 at 02:50:12PM +0100, Vicente Bergas wrote:
+> Hello
+> 
+> Background on the issue
+> #######################
+> 
+> Some time ago functionality was added to enable OMAP4 to boot over USB:
+> https://git.pengutronix.de/cgit/barebox/commit/?id=6b4dc4d4f128bd22df4d022ad37285ce4858e1e8
+> That implementation uses the usb library stored in the OMAP4 ROM.
+> The use of the OMAP4 ROM is problematic as it requires interrupts
+> and also does not allow the MMU to be enabled.
+> In fact there is an open issue with it:
+> http://lists.infradead.org/pipermail/barebox/2016-August/027880.html
+> 
+> More recently a similar functionality was added to OMAP3:
+> https://git.pengutronix.de/cgit/barebox/commit/?id=1d7c8ec1431aec1c75c79dc17ecad0ab80435311
+> That implementation is using it's own way to access
+> the usb device and has no dependencies on the ROM.
+> 
+> Proposed changes
+> ################
+> 
+> Given this scenario I modified the OMAP4 code to access the
+> usb device directly, bypassing the ROM library, the same way
+> the OMAP3 code does.
+> Both OMAP3 and OMAP4 use the same usb device (musb, mentor-usb),
+> the only change is the base address.
+> So this modification tries to make it generic for both OMAPs,
+> although it has not been tested on OMAP3.
+> The patch with this modification follows.
+> 
+> What is wrong with it
+> #####################
+> 
+> Unfortunately, this modification is not working.
+> The observed behaviour is:
+> 1.- The console over usb works fine, as long as
+> there is constant activity. If there are no transfers
+> for approximately 4 seconds then the usb link is lost.
+
+Do there have to be activity from the host to the device or is it enough
+to do a "while true; do echo "huhu"; sleep 3; done" on the barebox
+console?
+
+I don't exactly know how this internally works, but with USB all
+traffic is initiated by the host. If the device never answers a packet
+since it has nothing to say at the moment it might happen that the host
+thinks the device is dead. It's just an idea that you have to send some
+dummy data every few seconds.
+
+> 2.- The file system over usb works fine. Checked MD5 sums
+> of kernel image and initial ram disk, all OK.
+> 3.- Barebox reaches the start_linux function and executes
+> the kernel function pointer, so, control is transferred
+> to linux-land. But linux does not boot and
+> nothing is printed on the serial console.
+
+Have you tried earlyprintk in the Kernel? Do you also use the same
+serial console in barebox, or do you only use console over USB?
+Sometimes it happens that Linux does not have all initialization code so
+that a device does not work in Linux when it hasn't been used in barebox
+before.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
