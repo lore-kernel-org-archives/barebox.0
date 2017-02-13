@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cdBxE-0001V7-LD
- for barebox@lists.infradead.org; Mon, 13 Feb 2017 08:25:50 +0000
-Date: Mon, 13 Feb 2017 09:25:26 +0100
+ id 1cdDWV-0001f4-1C
+ for barebox@lists.infradead.org; Mon, 13 Feb 2017 10:06:20 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170213082526.nwkiozcgh5ijpvhc@pengutronix.de>
-References: <CAAMcf8C8_QiEOdNz+_AYYo31SSqkCJM9rjdp3cPSoX0JKAMCrA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAAMcf8C8_QiEOdNz+_AYYo31SSqkCJM9rjdp3cPSoX0JKAMCrA@mail.gmail.com>
+Date: Mon, 13 Feb 2017 11:05:56 +0100
+Message-Id: <20170213100556.9340-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,87 +14,124 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [USB BOOT] Help needed
-To: Vicente Bergas <vicencb@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: i.MX: iim: Only register actually equipped fuses
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Vincente,
+The IIM unit in defferent i.MX SoCs is always the same, but the
+number of actually equipped fuses differs between the SoCs.
+Reading nonexistent fuses oopses, so only register the fuses
+we can actually read.
 
-On Sat, Feb 11, 2017 at 02:50:12PM +0100, Vicente Bergas wrote:
-> Hello
-> 
-> Background on the issue
-> #######################
-> 
-> Some time ago functionality was added to enable OMAP4 to boot over USB:
-> https://git.pengutronix.de/cgit/barebox/commit/?id=6b4dc4d4f128bd22df4d022ad37285ce4858e1e8
-> That implementation uses the usb library stored in the OMAP4 ROM.
-> The use of the OMAP4 ROM is problematic as it requires interrupts
-> and also does not allow the MMU to be enabled.
-> In fact there is an open issue with it:
-> http://lists.infradead.org/pipermail/barebox/2016-August/027880.html
-> 
-> More recently a similar functionality was added to OMAP3:
-> https://git.pengutronix.de/cgit/barebox/commit/?id=1d7c8ec1431aec1c75c79dc17ecad0ab80435311
-> That implementation is using it's own way to access
-> the usb device and has no dependencies on the ROM.
-> 
-> Proposed changes
-> ################
-> 
-> Given this scenario I modified the OMAP4 code to access the
-> usb device directly, bypassing the ROM library, the same way
-> the OMAP3 code does.
-> Both OMAP3 and OMAP4 use the same usb device (musb, mentor-usb),
-> the only change is the base address.
-> So this modification tries to make it generic for both OMAPs,
-> although it has not been tested on OMAP3.
-> The patch with this modification follows.
-> 
-> What is wrong with it
-> #####################
-> 
-> Unfortunately, this modification is not working.
-> The observed behaviour is:
-> 1.- The console over usb works fine, as long as
-> there is constant activity. If there are no transfers
-> for approximately 4 seconds then the usb link is lost.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/iim.c | 32 +++++++++++++++++++++++++++++---
+ 1 file changed, 29 insertions(+), 3 deletions(-)
 
-Do there have to be activity from the host to the device or is it enough
-to do a "while true; do echo "huhu"; sleep 3; done" on the barebox
-console?
-
-I don't exactly know how this internally works, but with USB all
-traffic is initiated by the host. If the device never answers a packet
-since it has nothing to say at the moment it might happen that the host
-thinks the device is dead. It's just an idea that you have to send some
-dummy data every few seconds.
-
-> 2.- The file system over usb works fine. Checked MD5 sums
-> of kernel image and initial ram disk, all OK.
-> 3.- Barebox reaches the start_linux function and executes
-> the kernel function pointer, so, control is transferred
-> to linux-land. But linux does not boot and
-> nothing is printed on the serial console.
-
-Have you tried earlyprintk in the Kernel? Do you also use the same
-serial console in barebox, or do you only use console over USB?
-Sometimes it happens that Linux does not have all initialization code so
-that a device does not work in Linux when it hasn't been used in barebox
-before.
-
-Sascha
-
-
+diff --git a/arch/arm/mach-imx/iim.c b/arch/arm/mach-imx/iim.c
+index 6addfed696..d4794cbac8 100644
+--- a/arch/arm/mach-imx/iim.c
++++ b/arch/arm/mach-imx/iim.c
+@@ -62,6 +62,7 @@ struct iim_priv {
+ 
+ struct imx_iim_drvdata {
+ 	void (*supply)(int enable);
++	char nregs[8];
+ };
+ 
+ static struct iim_priv *imx_iim;
+@@ -314,7 +315,7 @@ static struct regmap_bus imx_iim_regmap_bus = {
+ 	.reg_read = imx_iim_reg_read,
+ };
+ 
+-static int imx_iim_add_bank(struct iim_priv *iim, int num)
++static int imx_iim_add_bank(struct iim_priv *iim, int num, int nregs)
+ {
+ 	struct iim_bank *bank;
+ 	char *name;
+@@ -331,7 +332,7 @@ static int imx_iim_add_bank(struct iim_priv *iim, int num)
+ 	bank->map_config.reg_bits = 8,
+ 	bank->map_config.val_bits = 8,
+ 	bank->map_config.reg_stride = 1,
+-	bank->map_config.max_register = 31,
++	bank->map_config.max_register = (nregs - 1),
+ 	bank->map_config.name = xasprintf("bank%d", num);
+ 
+ 	bank->map = regmap_init(&iim->dev, &imx_iim_regmap_bus, bank, &bank->map_config);
+@@ -459,6 +460,7 @@ static int imx_iim_probe(struct device_d *dev)
+ 	struct iim_priv *iim;
+ 	int i, ret;
+ 	struct imx_iim_drvdata *drvdata = NULL;
++	char *nregs = NULL;
+ 
+ 	if (imx_iim)
+ 		return -EBUSY;
+@@ -486,8 +488,16 @@ static int imx_iim_probe(struct device_d *dev)
+ 		return PTR_ERR(iores);
+ 	iim->base = IOMEM(iores->start);
+ 
++	if (drvdata && drvdata->nregs[0])
++		nregs = drvdata->nregs;
++
+ 	for (i = 0; i < IIM_NUM_BANKS; i++) {
+-		ret = imx_iim_add_bank(iim, i);
++		int n = nregs ? nregs[i] : 32;
++
++		if (!n)
++			continue;
++
++		ret = imx_iim_add_bank(iim, i, n);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -529,14 +539,21 @@ static void imx53_iim_supply(int enable)
+ }
+ 
+ static struct imx_iim_drvdata imx27_drvdata = {
++	.nregs = { 32, 32 },
++};
++
++static struct imx_iim_drvdata imx25_imx31_imx35_drvdata = {
++	.nregs = { 32, 32, 32 },
+ };
+ 
+ static struct imx_iim_drvdata imx51_drvdata = {
+ 	.supply = imx51_iim_supply,
++	.nregs = { 32, 32, 32, 32 },
+ };
+ 
+ static struct imx_iim_drvdata imx53_drvdata = {
+ 	.supply = imx53_iim_supply,
++	.nregs = { 32, 32, 32, 32, 16 },
+ };
+ 
+ static __maybe_unused struct of_device_id imx_iim_dt_ids[] = {
+@@ -547,9 +564,18 @@ static __maybe_unused struct of_device_id imx_iim_dt_ids[] = {
+ 		.compatible = "fsl,imx51-iim",
+ 		.data = &imx51_drvdata,
+ 	}, {
++		.compatible = "fsl,imx35-iim",
++		.data = &imx25_imx31_imx35_drvdata,
++	}, {
++		.compatible = "fsl,imx31-iim",
++		.data = &imx25_imx31_imx35_drvdata,
++	}, {
+ 		.compatible = "fsl,imx27-iim",
+ 		.data = &imx27_drvdata,
+ 	}, {
++		.compatible = "fsl,imx25-iim",
++		.data = &imx25_imx31_imx35_drvdata,
++	}, {
+ 		/* sentinel */
+ 	}
+ };
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
