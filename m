@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1cdZpJ-0005WI-O8
- for barebox@lists.infradead.org; Tue, 14 Feb 2017 09:55:20 +0000
-References: <4bcf7de3-5ced-3575-9495-c1f4f20ce60c@phytec.de>
- <20170213192247.gjld5b33genwav2a@pengutronix.de>
-From: Wadim Egorov <w.egorov@phytec.de>
-Message-ID: <6ff1f0fb-5847-e927-0602-a61c35a58e5b@phytec.de>
-Date: Tue, 14 Feb 2017 10:54:49 +0100
+Received: from qmail.e-mind.com ([188.94.192.42])
+ by bombadil.infradead.org with smtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1cdaQC-0000pr-HI
+ for barebox@lists.infradead.org; Tue, 14 Feb 2017 10:33:27 +0000
+References: <3a707429-03a7-db6b-a1b1-1e70ec0b929e@eurekelettronica.it>
+ <20170210073541.73bsfjhk3fu7nnwm@pengutronix.de>
+From: gianluca <gianlucarenzi@eurekelettronica.it>
+Message-ID: <e2e3ab47-9cbd-0437-d889-a98704459d1b@eurekelettronica.it>
+Date: Tue, 14 Feb 2017 11:32:44 +0100
 MIME-Version: 1.0
-In-Reply-To: <20170213192247.gjld5b33genwav2a@pengutronix.de>
+In-Reply-To: <20170210073541.73bsfjhk3fu7nnwm@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,94 +18,160 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox PBL question
+Subject: Re: Using LVDS in a iMX6Q/D from Barebox
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
 
-
-On 13.02.2017 20:22, Sascha Hauer wrote:
-> On Mon, Feb 13, 2017 at 04:13:48PM +0100, Wadim Egorov wrote:
->> Hi,
->>
->> I would like to add SPL support for the RK3288 SoC to barebox. But I am
->> facing
->> a few problems.
->>
->> The maximum size of the SPL image which the ROM code will read is 32KB.
->> I was thinking to use the PBL feature for the SPL part. But using the
->> the pbl code (with decompression) seems to be not a good idea, because
->> it's size
->> is already about 30K. I think this is an overhead.
-> In a test build here the pbl code is 6KiB. The rest is the devicetree
-> included in the binary (which I disabled in the test build). The dtb can
-> be compressed which should give you enough space even in 32KiB.
-OK, I think I checked the wrong file size. pblb is the bare binary file
-
+On 02/10/2017 08:35 AM, Sascha Hauer wrote:
+> Hi Gianluca,
 >
->> But now I wonder how to generate two different images with a single build.
->> A SPL image, which should not exceed 32K and a barebox.
->>
->> I have problems to fully understand the PBL mechanism.
->> Why are the builds always adding the barebox.bin images to the PBL part?
-> The idea is to create an image that contains the PBL and attached to it
-> the compressed barebox image. If your ROM only allows a certain image
-> size then make sure the PBL is small enough and tell the ROM to only
-> load the PBL part of the image. Ideally the PBL then detects from where
-> the PBL is loaded (by reading back the bootsource the SoC provides) and
-> reads the rest of the image into SDRAM (or, for sake of simplicity, the
-> whole image inculding PBL again)
-ty for clarification
-
+> On Thu, Feb 09, 2017 at 03:37:41PM +0100, gianluca wrote:
+>> Hello,
+>> I would like to know if there is a clear way on using the lvds pins to drive
+>> a LVDS display in a custom made board, based on iMX6Q (in the near future
+>> the iMX6Dual).
 >
->> Here is an example, cat .zbarebox.cmd
->>
->> ld -EL  -Map arch/arm/pbl/zbarebox.map --gc-sections -static -o
->> arch/arm/pbl/zbarebox -e pbl_start -T arch/arm/pbl/zbarebox.lds
->> --start-group  common/built-in-pbl.o [...]  arch/arm/pbl/piggy.shipped.o
->> --end-group
->>
->> piggy.shipped.o is barebox.bin, which is added in piggy.shipped.S:
->>
->> .incbin "arch/arm/pbl/piggy.shipped"
-> You should use PBL_MULTI_IMAGES instead. In fact, the existing Rockchip
-> port already does this.
->
-> I think your entry function should look something like:
->
-> ENTRY_FUNCTION(start_rk3288_phycore_som, r0, r1, r2)
-> {
-> 	arm_cpu_lowlevel_init();
->
-> 	if (inside_sdram(get_pc()))
-> 		barebox_arm_entry(0x0, SZ_1G, fdt);
->
-> 	rk3288_phycore_setup_sdram();
->
-> 	jump_back_to_rom();
-> }
->
-> I don't know how jump_back_to_rom() should be implemented. Do you have
-> to return from the entry function to the ROM or does the ROM provide some API
-> which can be used to chainload the rest of the image?
-
-No, there is no API in the ROM.
-In u-boot the spl will return to bootrom in board_init_f(), then bootrom
-loads u-boot binary.
-
-Regards,
-Wadim
-
->
-> What you'll need additionally is a tool which encapsulates the image into
-> a SoC specific container suitable for the ROM.
->
-> Sascha
+> I think what you are looking for is of_device_enable_and_register() or
+> of_device_enable_and_register_by_name(). You can call it on either the
+> lvds device node or the hdmi device node, depending on whether you found
+> an EEPROM or not.
 >
 
+I think this is not necessary as during boot I can see clearly:
+
+> imx-ipuv3 2400000.ipu: IPUv3H probed
+> imx-ipuv3 2800000.ipu: IPUv3H probed
+> imx-ldb ldb.10: probe failed: Invalid argument
+> imx-hdmi 120000.hdmi: Detected HDMI controller 0x13:0xa:0xa0:0xc1
+
+So barebox is trying to bring-up the imx-ldb but fails.
+
+So I suppose something is wrong in my device tree structure.
+
+The LVDS port is connected to LVDS0_... pins of the iMX6Q SoC.
+
+Here is the snippet of .dts file:
+
+> &ldb {
+> 	status = "okay";
+>
+> 	lvds0: lvds-channel@0 {
+> 		fsl,data-mapping = "spwg";
+> 		fsl,data-width = <16>;
+> 		status = "okay";
+>
+> 		display-timings {
+> 			native-mode = <&am128080n3tz>;
+> 			/* DISPLAY 1280x800 AMPIRE AM1280800N3TZ */
+> 			am128080n3tz: am1280800n3tz {
+> 				clock-frequency = <71000000>;
+> 				hactive = <1280>;
+> 				vactive = <800>;
+> 				hback-porch = <50>;
+> 				hfront-porch = <50>;
+> 				vback-porch = <5>;
+> 				vfront-porch = <5>;
+> 				hsync-len = <60>;
+> 				vsync-len = <13>;
+> 				hsync-active = <0>;
+> 				vsync-active = <0>;
+> 				de-active = <1>;
+> 				pixelclk-active = <1>;
+> 			};
+> 			/* DISPLAY 1024x600 AMPIRE AM-1024600LTM LVDS */
+> 			am1024600l: am1024600l {
+> 				clock-frequency = <51200000>;
+> 				hactive = <1024>;
+> 				vactive = <600>;
+> 				hback-porch = <0>;
+> 				hfront-porch = <320>;
+> 				vback-porch = <0>;
+> 				vfront-porch = <35>;
+> 				hsync-len = <1>;
+> 				vsync-len = <1>;
+> 				hsync-active = <0>;
+> 				vsync-active = <0>;
+> 				de-active = <1>;
+> 				pixelclk-active = <0>;
+> 			};
+> 			/* DISPLAY 800x480 */
+> 			ph800480t013: ph800480t013 {
+> 				clock-frequency = <33300000>;
+> 				hactive = <800>;
+> 				vactive = <480>;
+> 				hback-porch = <46>;
+> 				hfront-porch = <210>;
+> 				vback-porch = <23>;
+> 				vfront-porch = <22>;
+> 				hsync-len = <1>;
+> 				vsync-len = <1>;
+> 				hsync-active = <0>;
+> 				vsync-active = <0>;
+> 				de-active = <1>;
+> 				pixelclk-active = <0>;
+> 			};
+> 		};
+>
+> 		port@4 {
+> 			reg = <4>;
+> 			lvds0_out: endpoint {
+> 				remote-endpoint = <&panel_in_lvds0>;
+> 			};
+> 		};
+>
+> 	};
+> };
+>
+
+I was thinking of changing the node 'native-mode' in the init scripts 
+depending on the data read from a special eeprom (like EDID stuff).
+Is this correct?
+
+Here is the panel section:
+
+> 	panel_lvds0 {
+> 		backlight = <&backlight_lvds>;
+> 		port {
+> 			panel_in_lvds0: endpoint {
+> 				remote-endpoint = <&lvds0_out>;
+> 			};
+> 		};
+> 	};
+
+And finally the backlight_lvds section:
+
+> 	backlight_lvds: backlight-lvds {
+> 		pinctrl-names = "default";
+> 		pinctrl-0 = <&pinctrl_backlight>;
+> 		compatible = "pwm-backlight";
+> 		pwms = <&pwm1 0 5000000>;
+> 		brightness-levels = <0 4 8 16 32 64 128 255>;
+> 		default-brightness-level = <6>;
+> 		power-supply = <&reg_3p3v>;
+> 		status = "okay";
+> 	};
+
+With the pinctrl_backlight defined as:
+
+> 		pinctrl_backlight: backlightgrp {
+> 			fsl,pins = <
+> 				MX6QDL_PAD_SD1_DAT3__PWM1_OUT			0x80000000
+> 			>;
+> 		};
+
+How to proceed further? I would like to have some useful debug 
+information (if any) on device driver probing...
+
+Best Regards,
+-- 
+Eurek s.r.l.                          |
+Electronic Engineering                | http://www.eurek.it
+via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
+p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
 
 _______________________________________________
 barebox mailing list
