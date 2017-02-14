@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cdYno-0003OV-FW
- for barebox@lists.infradead.org; Tue, 14 Feb 2017 08:49:39 +0000
-Date: Tue, 14 Feb 2017 09:49:11 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20170214084911.7uhr6t7qrghjoomp@pengutronix.de>
-References: <20170126100159.6036-1-u.kleine-koenig@pengutronix.de>
- <20170126143027.GB21086@berta>
+ id 1cdakY-0000VG-5Z
+ for barebox@lists.infradead.org; Tue, 14 Feb 2017 10:54:23 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue, 14 Feb 2017 11:53:56 +0100
+Message-Id: <20170214105358.6666-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170126143027.GB21086@berta>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,42 +15,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ata: new driver to support the internal sata controller
- on Armada-XP
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] mvebu: simplify detection and fixup of MV78230-A0
+To: barebox@lists.infradead.org
 
-Hallo Peter,
-
-On Thu, Jan 26, 2017 at 05:30:27PM +0300, Peter Mamonov wrote:
-> Our approach for the same problem was to put SATA PHY initialization into=
- the =
-
-> board specific code (I guess in your case it is =
-
-> arch/arm/boards/marvell-armada-xp-gp/board.c) and bind the generic ATA dr=
-iver =
-
-> (drivers/ata/intf_platform_ide.c) via the device tree.
-
-I copied the PHY initialisation from U-Boot generic code, so I think
-there is nothing board-specific here and having that code in a driver is
-fine. Also this approach works with the dt that is imported from the
-kernel. (Not sure if that is applicable to your solution?)
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
+b25peC5kZT4KLS0tCiBhcmNoL2FybS9tYWNoLW12ZWJ1L2FybWFkYS0zNzAteHAuYyB8IDMxICsr
+KysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAxMiBpbnNlcnRp
+b25zKCspLCAxOSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW12ZWJ1
+L2FybWFkYS0zNzAteHAuYyBiL2FyY2gvYXJtL21hY2gtbXZlYnUvYXJtYWRhLTM3MC14cC5jCmlu
+ZGV4IGMzNjJjZmRhYmUyMi4uY2MwZDdiZDYxMmU2IDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNo
+LW12ZWJ1L2FybWFkYS0zNzAteHAuYworKysgYi9hcmNoL2FybS9tYWNoLW12ZWJ1L2FybWFkYS0z
+NzAteHAuYwpAQCAtNTQsMzEgKzU0LDI0IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3Qgb2ZfZGV2aWNl
+X2lkIGFybWFkYV8zNzBfeHBfcGNpZV9vZl9pZHNbXSA9IHsKIAl7IH0sCiB9OwogCi1zdGF0aWMg
+aW50IGFybWFkYV8zNzBfeHBfc29jX2lkX2ZpeHVwKHZvaWQpCisvKgorICogTWFydmVsbCBBcm1h
+ZGEgWFAgTVY3ODIzMC1BMCBpbmNvcnJlY3RseSBpZGVudGlmaWVzIGl0c2VsZiBhcworICogTVY3
+ODQ2MC4gQ2hlY2sgZm9yIERFVklEX01WNzg0NjAgYnV0IGlmIHRoZXJlIGFyZSBvbmx5IDIgQ1BV
+cworICogcHJlc2VudCBpbiBDb2hlcmVuY3kgRmFicmljLCBmaXh1cCBQQ0llIFBST0RVQ1RfSUQu
+CisgKi8KK3N0YXRpYyBpbnQgYXJtYWRhX3hwX3NvY19pZF9maXh1cCh2b2lkKQogewogCXN0cnVj
+dCBkZXZpY2Vfbm9kZSAqbnAsICpjbnA7CiAJdm9pZCBfX2lvbWVtICpiYXNlOwotCXUzMiByZWcs
+IGN0cmwsIG1hc2s7CisJdTMyIHJlZywgY3RybDsKIAl1MzIgc29jaWQsIG51bWNwdXM7CiAKIAlz
+b2NpZCA9IHJlYWRsKEFSTUFEQV8zNzBfWFBfQ1BVX1NPQ19JRCkgJiBDUFVfU09DX0lEX0RFVklD
+RV9NQVNLOwogCW51bWNwdXMgPSAxICsgKHJlYWRsKEFSTUFEQV8zNzBfWFBfRkFCUklDX0NPTkYp
+ICYgRkFCUklDX05VTV9DUFVTX01BU0spOwogCi0Jc3dpdGNoIChzb2NpZCkgewotCS8qCi0JICog
+TWFydmVsbCBBcm1hZGEgWFAgTVY3ODIzMC1BMCBpbmNvcnJlY3RseSBpZGVudGlmaWVzIGl0c2Vs
+ZiBhcwotCSAqIE1WNzg0NjAuIENoZWNrIGZvciBERVZJRF9NVjc4NDYwIGJ1dCBpZiB0aGVyZSBh
+cmUgb25seSAyIENQVXMKLQkgKiBwcmVzZW50IGluIENvaGVyZW5jeSBGYWJyaWMsIGZpeHVwIFBD
+SWUgUFJPRFVDVF9JRC4KLQkgKi8KLQljYXNlIERFVklEX01WNzg0NjA6Ci0JCWlmIChudW1jcHVz
+ICE9IDIpCi0JCQlyZXR1cm4gMDsKLQkJc29jaWQgPSBERVZJRF9NVjc4MjMwOwotCQltYXNrID0g
+UENJRTBfRU4gfCBQQ0lFMV9FTiB8IFBDSUUwX1FVQURYMV9FTjsKLQkJYnJlYWs7Ci0JZGVmYXVs
+dDoKKwlpZiAoc29jaWQgIT0gREVWSURfTVY3ODQ2MCB8fCBudW1jcHVzICE9IDIpCisJCS8qIG5v
+dCBhZmZlY3RlZCAqLwogCQlyZXR1cm4gMDsKLQl9CiAKIAlucCA9IG9mX2ZpbmRfbWF0Y2hpbmdf
+bm9kZShOVUxMLCBhcm1hZGFfMzcwX3hwX3BjaWVfb2ZfaWRzKTsKIAlpZiAoIW5wKQpAQCAtODYs
+NyArNzksNyBAQCBzdGF0aWMgaW50IGFybWFkYV8zNzBfeHBfc29jX2lkX2ZpeHVwKHZvaWQpCiAK
+IAkvKiBFbmFibGUgYWxsIGluZGl2aWR1YWwgeDEgcG9ydHMgKi8KIAljdHJsID0gcmVhZGwoQVJN
+QURBXzM3MF9YUF9TT0NfQ1RSTCk7Ci0Jd3JpdGVsKGN0cmwgfCBtYXNrLCBBUk1BREFfMzcwX1hQ
+X1NPQ19DVFJMKTsKKwl3cml0ZWwoY3RybCB8IFBDSUUwX0VOIHwgUENJRTFfRU4gfCBQQ0lFMF9R
+VUFEWDFfRU4sIEFSTUFEQV8zNzBfWFBfU09DX0NUUkwpOwogCiAJZm9yX2VhY2hfY2hpbGRfb2Zf
+bm9kZShucCwgY25wKSB7CiAJCWJhc2UgPSBvZl9pb21hcChjbnAsIDApOwpAQCAtOTUsNyArODgs
+NyBAQCBzdGF0aWMgaW50IGFybWFkYV8zNzBfeHBfc29jX2lkX2ZpeHVwKHZvaWQpCiAKIAkJLyog
+Rml4dXAgUENJZSBwb3J0IERFVklDRV9JRCAqLwogCQlyZWcgPSByZWFkbChiYXNlICsgUENJRV9W
+RU5fREVWX0lEKTsKLQkJcmVnID0gKHNvY2lkIDw8IDE2KSB8IChyZWcgJiAweGZmZmYpOworCQly
+ZWcgPSAoREVWSURfTVY3ODIzMCA8PCAxNikgfCAocmVnICYgMHhmZmZmKTsKIAkJd3JpdGVsKHJl
+ZywgYmFzZSArIFBDSUVfVkVOX0RFVl9JRCk7CiAJfQogCkBAIC0xNDgsNyArMTQxLDcgQEAgc3Rh
+dGljIGludCBhcm1hZGFfMzcwX3hwX2luaXRfc29jKHN0cnVjdCBkZXZpY2Vfbm9kZSAqcm9vdCwg
+dm9pZCAqY29udGV4dCkKIAltdmVidV9zZXRfbWVtb3J5KHBoeXNfYmFzZSwgcGh5c19zaXplKTsK
+IAltdmVidV9tYnVzX2luaXQoKTsKIAotCWFybWFkYV8zNzBfeHBfc29jX2lkX2ZpeHVwKCk7CisJ
+YXJtYWRhX3hwX3NvY19pZF9maXh1cCgpOwogCiAJaWYgKG9mX21hY2hpbmVfaXNfY29tcGF0aWJs
+ZSgibWFydmVsbCxhcm1hZGF4cCIpKQogCQlhcm1hZGFfeHBfaW5pdF9zb2Mocm9vdCk7Ci0tIAoy
+LjExLjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
+YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
+c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
