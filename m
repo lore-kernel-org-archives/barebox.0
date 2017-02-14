@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vs81.iboxed.net ([185.82.85.146])
+Received: from mout.gmx.net ([212.227.15.15])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cdc7p-0003Vk-LL
- for barebox@lists.infradead.org; Tue, 14 Feb 2017 12:22:33 +0000
-Date: Tue, 14 Feb 2017 13:21:49 +0100 (CET)
-From: Alexander Kurz <akurz@blala.de>
-In-Reply-To: <20170214075053.pnowzjtopzro7fkc@pengutronix.de>
-Message-ID: <alpine.DEB.2.00.1702141317320.13516@blala.de>
-References: <1486852299-30432-1-git-send-email-akurz@blala.de>
- <20170214075053.pnowzjtopzro7fkc@pengutronix.de>
+ id 1cde0N-0005iE-O7
+ for barebox@lists.infradead.org; Tue, 14 Feb 2017 14:22:57 +0000
+Received: from [192.168.1.100] ([31.18.251.158]) by mail.gmx.com (mrgmx002
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 0Ma1pn-1cxna53M0F-00LpuA for
+ <barebox@lists.infradead.org>; Tue, 14 Feb 2017 15:22:30 +0100
+From: Oleksij Rempel <linux@rempel-privat.de>
+Message-ID: <3c0aa707-bb93-df05-e9e2-a3810995ad1f@rempel-privat.de>
+Date: Tue, 14 Feb 2017 15:22:29 +0100
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,88 +18,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============6599364529665143273=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] i.MX: i2c: fix i2c-fsl for non-OF boards
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: problems with ext4
+To: barebox@lists.infradead.org
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============6599364529665143273==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="KSX9sgNsWLfdP0pjEuhFsGljH0haO3OIe"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--KSX9sgNsWLfdP0pjEuhFsGljH0haO3OIe
+Content-Type: multipart/mixed; boundary="ArljTWqGgsPR1g1Xe4xv08qtURkotmpil";
+ protected-headers="v1"
+From: Oleksij Rempel <linux@rempel-privat.de>
+To: barebox@lists.infradead.org
+Message-ID: <3c0aa707-bb93-df05-e9e2-a3810995ad1f@rempel-privat.de>
+Subject: problems with ext4
+
+--ArljTWqGgsPR1g1Xe4xv08qtURkotmpil
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Hallo all,
+
+i'm trying to use Barebox on BeagleBone Black with plain debian sid
+installation. Most of it seems to work fine, except that i can't boot
+from ext4 boot partition. The reason is that some files and folders are
+not readable. For example /boot/dtbs should contain another folder, but
+barebox recognize it as file.
+If i mount same partition from linux, same path is accessible including
+content of the folder.
 
 
+--=20
+Regards,
+Oleksij
 
-On Tue, 14 Feb 2017, Sascha Hauer wrote:
 
-> On Sat, Feb 11, 2017 at 11:31:38PM +0100, Alexander Kurz wrote:
-> > With commit 4ed5b778a56b ("i.MX: i2c: Add Vybrid support") i2c-fsl probe
-> > returns -EINVAL for all non-OF boards.
-> > Since newer planforms, especially vf610 are restricted OF-only it is safe to
-> > assume "fsl,imx21-i2c" if CONFIG_OFDEVICE is not set.
-> > 
-> > Signed-off-by: Alexander Kurz <akurz@blala.de>
-> 
-> Sorry, I should have read these mails before doing the release. Now they
-> have to wait for another month. Applied both to master.
-Actually I have noticed this when 2017.02 was already released during an 
-installation of 2017.02. Sorry for not having tested next before.
-Regards, Alexander
-> 
-> Sascha
-> 
-> > ---
-> >  drivers/i2c/busses/i2c-imx.c | 14 ++++++++++----
-> >  1 file changed, 10 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-> > index 5677443..4ff4f5c 100644
-> > --- a/drivers/i2c/busses/i2c-imx.c
-> > +++ b/drivers/i2c/busses/i2c-imx.c
-> > @@ -153,6 +153,8 @@ static struct fsl_i2c_clk_pair vf610_i2c_clk_div[] = {
-> >  	{ 3840, 0x3F }, { 4096, 0x7B }, { 5120, 0x7D }, { 6144, 0x7E },
-> >  };
-> >  
-> > +static const struct fsl_i2c_hwdata imx21_i2c_hwdata;
-> > +
-> >  struct fsl_i2c_hwdata {
-> >  	unsigned		regshift;
-> >  	struct fsl_i2c_clk_pair	*clk_div;
-> > @@ -676,10 +678,14 @@ static int __init i2c_fsl_probe(struct device_d *pdev)
-> >  	clk_enable(i2c_fsl->clk);
-> >  #endif
-> >  
-> > -	i2c_fsl->hwdata = of_device_get_match_data(pdev);
-> > -	if (!i2c_fsl->hwdata) {
-> > -		ret = -EINVAL;
-> > -		goto fail;
-> > +	if (IS_ENABLED(CONFIG_OFDEVICE)) {
-> > +		i2c_fsl->hwdata = of_device_get_match_data(pdev);
-> > +		if (!i2c_fsl->hwdata) {
-> > +			ret = -EINVAL;
-> > +			goto fail;
-> > +		}
-> > +	} else {
-> > +		i2c_fsl->hwdata = &imx21_i2c_hwdata;
-> >  	}
-> >  
-> >  	/* Setup i2c_fsl driver structure */
-> > -- 
-> > 2.1.4
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> > 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
+--ArljTWqGgsPR1g1Xe4xv08qtURkotmpil--
+
+--KSX9sgNsWLfdP0pjEuhFsGljH0haO3OIe
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iF4EAREIAAYFAlijEqYACgkQHwImuRkmbWlhnAD9F4dLIU7zYcSQ7kYUvIoPGm2W
+r5WHmUsxwEP+nejy3FwA/1J+Ff/idow2qrotdgc5Rf7xtIiSxyhupYNPKPAkq2zL
+=53kV
+-----END PGP SIGNATURE-----
+
+--KSX9sgNsWLfdP0pjEuhFsGljH0haO3OIe--
+
+
+--===============6599364529665143273==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============6599364529665143273==--
