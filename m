@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1chj99-0005pT-8n
- for barebox@lists.infradead.org; Sat, 25 Feb 2017 20:40:55 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Sat, 25 Feb 2017 21:40:21 +0100
-Message-Id: <20170225204022.12815-3-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20170225204022.12815-1-u.kleine-koenig@pengutronix.de>
-References: <20170225204022.12815-1-u.kleine-koenig@pengutronix.de>
+ id 1cdXtM-0002X7-2Z
+ for barebox@lists.infradead.org; Tue, 14 Feb 2017 07:51:21 +0000
+Date: Tue, 14 Feb 2017 08:50:53 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170214075053.pnowzjtopzro7fkc@pengutronix.de>
+References: <1486852299-30432-1-git-send-email-akurz@blala.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1486852299-30432-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,55 +18,80 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/3] mvebu: dove: simplify soc init code flow
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] i.MX: i2c: fix i2c-fsl for non-OF boards
+To: Alexander Kurz <akurz@blala.de>
+Cc: barebox@lists.infradead.org
 
-U2ltaWxhciB0byB0aGUgcHJldmlvdXMgY29tbWl0LCB0aGlzIGdldHMgcmlkIG9mIGEgb2YtZml4
-dXAgd2hpY2ggaXMKc3RyYW5nZSBiZWNhdXNlIHRoZSBzb2MgaW5pdCBzdHVmZiBpcyByZXJ1biB0
-aGVuIHdoZW4gYSBuZXcgZHQgZm9yCmJvb3RpbmcgaW50byBMaW51eCBpcyBsb2FkZWQuCgpUaGUg
-aW5pdGNhbGwgbXVzdCBiZSBwb3N0cG9uZWQgdG8gcG9zdC1jb3JlIHRvIGVuc3VyZQpvZl9tYWNo
-aW5lX2lzX2NvbXBhdGlibGUgaXMgd29ya2luZyBjb3JyZWN0bHkuCgpUaGUgY2FsbCB0byBtdmVi
-dV9tYnVzX2FkZF9yYW5nZSBpcyBtb3ZlZCB0byBkcml2ZXJzL2J1cy9tdmVidS1tYnVzLmMgdG8K
-ZW5zdXJlIGl0J3MgcmVnaXN0ZXJlZCBlYXJseSBlbm91Z2guCgpTaWduZWQtb2ZmLWJ5OiBVd2Ug
-S2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGFyY2gv
-YXJtL21hY2gtbXZlYnUvZG92ZS5jIHwgMTMgKystLS0tLS0tLS0tLQogZHJpdmVycy9idXMvbXZl
-YnUtbWJ1cy5jICAgfCAgOSArKysrKysrKysKIDIgZmlsZXMgY2hhbmdlZCwgMTEgaW5zZXJ0aW9u
-cygrKSwgMTEgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1tdmVidS9k
-b3ZlLmMgYi9hcmNoL2FybS9tYWNoLW12ZWJ1L2RvdmUuYwppbmRleCA5YTNiMDVkMDA0ZDUuLjFj
-ZGI3ZTFiODI5NiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1tdmVidS9kb3ZlLmMKKysrIGIv
-YXJjaC9hcm0vbWFjaC1tdmVidS9kb3ZlLmMKQEAgLTUyLDcgKzUyLDcgQEAgc3RhdGljIHZvaWQg
-X19ub3JldHVybiBkb3ZlX3Jlc3RhcnRfc29jKHN0cnVjdCByZXN0YXJ0X2hhbmRsZXIgKnJzdCkK
-IAloYW5nKCk7CiB9CiAKLXN0YXRpYyBpbnQgZG92ZV9pbml0X3NvYyhzdHJ1Y3QgZGV2aWNlX25v
-ZGUgKnJvb3QsIHZvaWQgKmNvbnRleHQpCitzdGF0aWMgaW50IGRvdmVfaW5pdF9zb2Modm9pZCkK
-IHsKIAlpZiAoIW9mX21hY2hpbmVfaXNfY29tcGF0aWJsZSgibWFydmVsbCxkb3ZlIikpCiAJCXJl
-dHVybiAwOwpAQCAtNjcsMTMgKzY3LDQgQEAgc3RhdGljIGludCBkb3ZlX2luaXRfc29jKHN0cnVj
-dCBkZXZpY2Vfbm9kZSAqcm9vdCwgdm9pZCAqY29udGV4dCkKIAogCXJldHVybiAwOwogfQotCi1z
-dGF0aWMgaW50IGRvdmVfcmVnaXN0ZXJfc29jX2ZpeHVwKHZvaWQpCi17Ci0JbXZlYnVfbWJ1c19h
-ZGRfcmFuZ2UoIm1hcnZlbGwsZG92ZSIsIDB4ZjAsIDB4MDEsCi0JCQkgICAgIE1WRUJVX1JFTUFQ
-X0lOVF9SRUdfQkFTRSk7Ci0JbXZlYnVfbWJ1c19hZGRfcmFuZ2UoIm1hcnZlbGwsZG92ZSIsIDB4
-ZjAsIDB4MDIsCi0JCQkgICAgIERPVkVfUkVNQVBfTUNfUkVHUyk7Ci0JcmV0dXJuIG9mX3JlZ2lz
-dGVyX2ZpeHVwKGRvdmVfaW5pdF9zb2MsIE5VTEwpOwotfQotcHVyZV9pbml0Y2FsbChkb3ZlX3Jl
-Z2lzdGVyX3NvY19maXh1cCk7Citwb3N0Y29yZV9pbml0Y2FsbChkb3ZlX2luaXRfc29jKTsKZGlm
-ZiAtLWdpdCBhL2RyaXZlcnMvYnVzL212ZWJ1LW1idXMuYyBiL2RyaXZlcnMvYnVzL212ZWJ1LW1i
-dXMuYwppbmRleCBiOTVjMDcxZDU3YTQuLmZjOTQwZTNiNTQxZCAxMDA2NDQKLS0tIGEvZHJpdmVy
-cy9idXMvbXZlYnUtbWJ1cy5jCisrKyBiL2RyaXZlcnMvYnVzL212ZWJ1LW1idXMuYwpAQCAtODEx
-LDYgKzgxMSw4IEBAIHN0YXRpYyBpbnQgbXZlYnVfbWJ1c19vZl9maXh1cChzdHJ1Y3QgZGV2aWNl
-X25vZGUgKnJvb3QsIHZvaWQgKmNvbnRleHQpCiAJcmV0dXJuIDA7CiB9CiAKKyNkZWZpbmUgRE9W
-RV9SRU1BUF9NQ19SRUdTICAgICAgMHhmMTgwMDAwMAorCiBzdGF0aWMgaW50IG12ZWJ1X21idXNf
-Zml4dXBfcmVnaXN0ZXIodm9pZCkKIHsKIAlpZiAoSVNfRU5BQkxFRChDT05GSUdfQVJDSF9BUk1B
-REFfMzcwKSB8fApAQCAtODE4LDYgKzgyMCwxMyBAQCBzdGF0aWMgaW50IG12ZWJ1X21idXNfZml4
-dXBfcmVnaXN0ZXIodm9pZCkKIAkJbXZlYnVfbWJ1c19hZGRfcmFuZ2UoIm1hcnZlbGwsYXJtYWRh
-LTM3MC14cCIsIDB4ZjAsIDB4MDEsCiAJCQkJICAgICBNVkVCVV9SRU1BUF9JTlRfUkVHX0JBU0Up
-OwogCisJaWYgKElTX0VOQUJMRUQoQ09ORklHX0FSQ0hfRE9WRSkpIHsKKwkJbXZlYnVfbWJ1c19h
-ZGRfcmFuZ2UoIm1hcnZlbGwsZG92ZSIsIDB4ZjAsIDB4MDEsCisJCQkJICAgICBNVkVCVV9SRU1B
-UF9JTlRfUkVHX0JBU0UpOworCQltdmVidV9tYnVzX2FkZF9yYW5nZSgibWFydmVsbCxkb3ZlIiwg
-MHhmMCwgMHgwMiwKKwkJCQkgICAgIERPVkVfUkVNQVBfTUNfUkVHUyk7CisJfQorCiAJcmV0dXJu
-IG9mX3JlZ2lzdGVyX2ZpeHVwKG12ZWJ1X21idXNfb2ZfZml4dXAsIE5VTEwpOwogfQogcHVyZV9p
-bml0Y2FsbChtdmVidV9tYnVzX2ZpeHVwX3JlZ2lzdGVyKTsKLS0gCjIuMTEuMAoKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
-aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Sat, Feb 11, 2017 at 11:31:38PM +0100, Alexander Kurz wrote:
+> With commit 4ed5b778a56b ("i.MX: i2c: Add Vybrid support") i2c-fsl probe
+> returns -EINVAL for all non-OF boards.
+> Since newer planforms, especially vf610 are restricted OF-only it is safe to
+> assume "fsl,imx21-i2c" if CONFIG_OFDEVICE is not set.
+> 
+> Signed-off-by: Alexander Kurz <akurz@blala.de>
+
+Sorry, I should have read these mails before doing the release. Now they
+have to wait for another month. Applied both to master.
+
+Sascha
+
+> ---
+>  drivers/i2c/busses/i2c-imx.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index 5677443..4ff4f5c 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -153,6 +153,8 @@ static struct fsl_i2c_clk_pair vf610_i2c_clk_div[] = {
+>  	{ 3840, 0x3F }, { 4096, 0x7B }, { 5120, 0x7D }, { 6144, 0x7E },
+>  };
+>  
+> +static const struct fsl_i2c_hwdata imx21_i2c_hwdata;
+> +
+>  struct fsl_i2c_hwdata {
+>  	unsigned		regshift;
+>  	struct fsl_i2c_clk_pair	*clk_div;
+> @@ -676,10 +678,14 @@ static int __init i2c_fsl_probe(struct device_d *pdev)
+>  	clk_enable(i2c_fsl->clk);
+>  #endif
+>  
+> -	i2c_fsl->hwdata = of_device_get_match_data(pdev);
+> -	if (!i2c_fsl->hwdata) {
+> -		ret = -EINVAL;
+> -		goto fail;
+> +	if (IS_ENABLED(CONFIG_OFDEVICE)) {
+> +		i2c_fsl->hwdata = of_device_get_match_data(pdev);
+> +		if (!i2c_fsl->hwdata) {
+> +			ret = -EINVAL;
+> +			goto fail;
+> +		}
+> +	} else {
+> +		i2c_fsl->hwdata = &imx21_i2c_hwdata;
+>  	}
+>  
+>  	/* Setup i2c_fsl driver structure */
+> -- 
+> 2.1.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
