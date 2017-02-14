@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1cdbNt-0001Ao-CW
- for barebox@lists.infradead.org; Tue, 14 Feb 2017 11:35:03 +0000
-References: <4bcf7de3-5ced-3575-9495-c1f4f20ce60c@phytec.de>
- <20170213192247.gjld5b33genwav2a@pengutronix.de>
- <6ff1f0fb-5847-e927-0602-a61c35a58e5b@phytec.de>
- <20170214104833.k5oubzucxb3o67rf@pengutronix.de>
-From: Wadim Egorov <w.egorov@phytec.de>
-Message-ID: <b0644455-f83d-99ea-bda7-757d31fed4db@phytec.de>
-Date: Tue, 14 Feb 2017 12:34:37 +0100
+Received: from vs81.iboxed.net ([185.82.85.146])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cdc7p-0003Vk-LL
+ for barebox@lists.infradead.org; Tue, 14 Feb 2017 12:22:33 +0000
+Date: Tue, 14 Feb 2017 13:21:49 +0100 (CET)
+From: Alexander Kurz <akurz@blala.de>
+In-Reply-To: <20170214075053.pnowzjtopzro7fkc@pengutronix.de>
+Message-ID: <alpine.DEB.2.00.1702141317320.13516@blala.de>
+References: <1486852299-30432-1-git-send-email-akurz@blala.de>
+ <20170214075053.pnowzjtopzro7fkc@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20170214104833.k5oubzucxb3o67rf@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,98 +22,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox PBL question
+Subject: Re: [PATCH 1/2] i.MX: i2c: fix i2c-fsl for non-OF boards
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
 
 
 
-On 14.02.2017 11:48, Sascha Hauer wrote:
-> On Tue, Feb 14, 2017 at 10:54:49AM +0100, Wadim Egorov wrote:
->> On 13.02.2017 20:22, Sascha Hauer wrote:
->>> On Mon, Feb 13, 2017 at 04:13:48PM +0100, Wadim Egorov wrote:
->>>> Hi,
->>>>
->>>> I would like to add SPL support for the RK3288 SoC to barebox. But I am
->>>> facing
->>>> a few problems.
->>>>
->>>> The maximum size of the SPL image which the ROM code will read is 32KB.
->>>> I was thinking to use the PBL feature for the SPL part. But using the
->>>> the pbl code (with decompression) seems to be not a good idea, because
->>>> it's size
->>>> is already about 30K. I think this is an overhead.
->>> In a test build here the pbl code is 6KiB. The rest is the devicetree
->>> included in the binary (which I disabled in the test build). The dtb can
->>> be compressed which should give you enough space even in 32KiB.
->> OK, I think I checked the wrong file size. pblb is the bare binary file
->>
->>>> But now I wonder how to generate two different images with a single build.
->>>> A SPL image, which should not exceed 32K and a barebox.
->>>>
->>>> I have problems to fully understand the PBL mechanism.
->>>> Why are the builds always adding the barebox.bin images to the PBL part?
->>> The idea is to create an image that contains the PBL and attached to it
->>> the compressed barebox image. If your ROM only allows a certain image
->>> size then make sure the PBL is small enough and tell the ROM to only
->>> load the PBL part of the image. Ideally the PBL then detects from where
->>> the PBL is loaded (by reading back the bootsource the SoC provides) and
->>> reads the rest of the image into SDRAM (or, for sake of simplicity, the
->>> whole image inculding PBL again)
->> ty for clarification
->>
->>>> Here is an example, cat .zbarebox.cmd
->>>>
->>>> ld -EL  -Map arch/arm/pbl/zbarebox.map --gc-sections -static -o
->>>> arch/arm/pbl/zbarebox -e pbl_start -T arch/arm/pbl/zbarebox.lds
->>>> --start-group  common/built-in-pbl.o [...]  arch/arm/pbl/piggy.shipped.o
->>>> --end-group
->>>>
->>>> piggy.shipped.o is barebox.bin, which is added in piggy.shipped.S:
->>>>
->>>> .incbin "arch/arm/pbl/piggy.shipped"
->>> You should use PBL_MULTI_IMAGES instead. In fact, the existing Rockchip
->>> port already does this.
->>>
->>> I think your entry function should look something like:
->>>
->>> ENTRY_FUNCTION(start_rk3288_phycore_som, r0, r1, r2)
->>> {
->>> 	arm_cpu_lowlevel_init();
->>>
->>> 	if (inside_sdram(get_pc()))
->>> 		barebox_arm_entry(0x0, SZ_1G, fdt);
->>>
->>> 	rk3288_phycore_setup_sdram();
->>>
->>> 	jump_back_to_rom();
->>> }
->>>
->>> I don't know how jump_back_to_rom() should be implemented. Do you have
->>> to return from the entry function to the ROM or does the ROM provide some API
->>> which can be used to chainload the rest of the image?
->> No, there is no API in the ROM.
->> In u-boot the spl will return to bootrom in board_init_f(), then bootrom
->> loads u-boot binary.
-> The ENTRY_FUNCTION macro is not prepared for returning to the caller.
->
-> You'll have to replace it with something like:
->
-> void __section(.text_head_entry_start_rk3288_phycore_som)
-> start_start_imx6q_sabrelite(uint32_t r0, uint32_t r1, uint32_t r2)
->
-> This makes sure the link register is preserved and is jumped to at the
-> end of the function.
->
-> You could also send me some hardware, I could provide some better help
-> then. I know this early bringup can be tricky ;)
+On Tue, 14 Feb 2017, Sascha Hauer wrote:
 
-I will send you our hardware. After the redesign :)
-
->
+> On Sat, Feb 11, 2017 at 11:31:38PM +0100, Alexander Kurz wrote:
+> > With commit 4ed5b778a56b ("i.MX: i2c: Add Vybrid support") i2c-fsl probe
+> > returns -EINVAL for all non-OF boards.
+> > Since newer planforms, especially vf610 are restricted OF-only it is safe to
+> > assume "fsl,imx21-i2c" if CONFIG_OFDEVICE is not set.
+> > 
+> > Signed-off-by: Alexander Kurz <akurz@blala.de>
+> 
+> Sorry, I should have read these mails before doing the release. Now they
+> have to wait for another month. Applied both to master.
+Actually I have noticed this when 2017.02 was already released during an 
+installation of 2017.02. Sorry for not having tested next before.
+Regards, Alexander
+> 
 > Sascha
->
-
+> 
+> > ---
+> >  drivers/i2c/busses/i2c-imx.c | 14 ++++++++++----
+> >  1 file changed, 10 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> > index 5677443..4ff4f5c 100644
+> > --- a/drivers/i2c/busses/i2c-imx.c
+> > +++ b/drivers/i2c/busses/i2c-imx.c
+> > @@ -153,6 +153,8 @@ static struct fsl_i2c_clk_pair vf610_i2c_clk_div[] = {
+> >  	{ 3840, 0x3F }, { 4096, 0x7B }, { 5120, 0x7D }, { 6144, 0x7E },
+> >  };
+> >  
+> > +static const struct fsl_i2c_hwdata imx21_i2c_hwdata;
+> > +
+> >  struct fsl_i2c_hwdata {
+> >  	unsigned		regshift;
+> >  	struct fsl_i2c_clk_pair	*clk_div;
+> > @@ -676,10 +678,14 @@ static int __init i2c_fsl_probe(struct device_d *pdev)
+> >  	clk_enable(i2c_fsl->clk);
+> >  #endif
+> >  
+> > -	i2c_fsl->hwdata = of_device_get_match_data(pdev);
+> > -	if (!i2c_fsl->hwdata) {
+> > -		ret = -EINVAL;
+> > -		goto fail;
+> > +	if (IS_ENABLED(CONFIG_OFDEVICE)) {
+> > +		i2c_fsl->hwdata = of_device_get_match_data(pdev);
+> > +		if (!i2c_fsl->hwdata) {
+> > +			ret = -EINVAL;
+> > +			goto fail;
+> > +		}
+> > +	} else {
+> > +		i2c_fsl->hwdata = &imx21_i2c_hwdata;
+> >  	}
+> >  
+> >  	/* Setup i2c_fsl driver structure */
+> > -- 
+> > 2.1.4
+> > 
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> > 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
 
 _______________________________________________
 barebox mailing list
