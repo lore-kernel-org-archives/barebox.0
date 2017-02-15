@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cdy7K-0008Et-H6
- for barebox@lists.infradead.org; Wed, 15 Feb 2017 11:51:28 +0000
-Date: Wed, 15 Feb 2017 12:51:04 +0100
+ id 1cdzGV-0001Ox-VW
+ for barebox@lists.infradead.org; Wed, 15 Feb 2017 13:05:02 +0000
+Date: Wed, 15 Feb 2017 14:04:37 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170215115104.qez5tgbsvwt3zxzz@pengutronix.de>
-References: <3a707429-03a7-db6b-a1b1-1e70ec0b929e@eurekelettronica.it>
- <20170210073541.73bsfjhk3fu7nnwm@pengutronix.de>
- <e2e3ab47-9cbd-0437-d889-a98704459d1b@eurekelettronica.it>
+Message-ID: <20170215130437.6i63aa6g76btkld2@pengutronix.de>
+References: <20170210095655.GA25859@mail.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <e2e3ab47-9cbd-0437-d889-a98704459d1b@eurekelettronica.it>
+In-Reply-To: <20170210095655.GA25859@mail.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,57 +22,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Using LVDS in a iMX6Q/D from Barebox
-To: gianluca <gianlucarenzi@eurekelettronica.it>
+Subject: Re: [PATCH 0/9] EFI: drop arch efi
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Feb 14, 2017 at 11:32:44AM +0100, gianluca wrote:
-> On 02/10/2017 08:35 AM, Sascha Hauer wrote:
-> > Hi Gianluca,
-> > 
-> > On Thu, Feb 09, 2017 at 03:37:41PM +0100, gianluca wrote:
-> > > Hello,
-> > > I would like to know if there is a clear way on using the lvds pins to drive
-> > > a LVDS display in a custom made board, based on iMX6Q (in the near future
-> > > the iMX6Dual).
-> > 
-> > I think what you are looking for is of_device_enable_and_register() or
-> > of_device_enable_and_register_by_name(). You can call it on either the
-> > lvds device node or the hdmi device node, depending on whether you found
-> > an EEPROM or not.
-> > 
-> 
-> I think this is not necessary as during boot I can see clearly:
-> 
-> > imx-ipuv3 2400000.ipu: IPUv3H probed
-> > imx-ipuv3 2800000.ipu: IPUv3H probed
-> > imx-ldb ldb.10: probe failed: Invalid argument
-> > imx-hdmi 120000.hdmi: Detected HDMI controller 0x13:0xa:0xa0:0xc1
-> 
-> So barebox is trying to bring-up the imx-ldb but fails.
-> 
-> So I suppose something is wrong in my device tree structure.
+Hi Jean-Christophe,
 
-Nope, there's everything right.
+On Fri, Feb 10, 2017 at 10:56:55AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Today the EFI is build as an other ARCH when in fact it's just a boot mode
+> 
+> so move it back to arch/x86 for the spicific x86 part and the common
+> to common and driver
+> 
+> The following changes since commit 55d29525146dcd280987dfd565bfd34f08858fb3:
+> 
+>   ata: ide-sff: don't call free for ide_port in error path (2017-01-18 12:01:38 +0100)
+> 
+> are available in the git repository at:
+> 
+>   git://git.jcrosoft.org/barebox.git
+> 
+> for you to fetch changes up to 3e07e7f43bcfb5160cc6104f06535f147222570b:
+> 
+>   efi: bus: add firmware vendor and resision and tables info (2017-02-09 17:13:41 +0800)
+> 
+> ----------------------------------------------------------------
+> Jean-Christophe PLAGNIOL-VILLARD (9):
+>       efi: move block io driver to driver/block
+>       efi: move clocksource out of arch
+>       efi: move bus driver to driver/efi
+>       efi: move debug_ll.h to include/efi
+>       efi: move startup and payload to common/efi
+>       x86: move bios bootup code to arch/x86/bios
+>       efi: move x86 efi boot support to x86 arch
+>       ARCH: efi: Finally drop it as now we can build efi bootup from x86
+>       efi: bus: add firmware vendor and resision and tables info
 
-I can reproduce this here on a GuF Santaro board. LVDS works fine on
-current barebox as long as I leave hdmi disabled in the device tree.
-When I enable hdmi I also get a "failed to get modes".
+Some problems found with this series:
 
-Normally when different outputs are available then one would expect
-that each one of them is routed to some framebuffer, maybe with some
-sane default and configurable during runtime. The current code falls
-short here.
-What happens is each framebuffer looks around for outputs, all finding
-hdmi and lvds. Now the hdmi output may not have a monitor connected
-and returns no valid mode. In this case the lvds is not even asked for
-modes.
-Also in the current code it can happen that the lvds is asked for modes
-which are then applied to hdmi.
-Where we currently are is that it should work when exactly one output
-is enabled. Does lvds work properly when hdmi is disabled? In this
-case I would suggest that you manipulate your devicetree so that exactly
-one output is enabled.
+- bisectability breaks in 3/9:
+
+drivers/built-in.o: In function `efi_driver_register':
+/home/sha/dude/barebox/barebox-test/include/efi/efi-device.h:38: undefined reference to `efi_bus'
+fs/built-in.o: In function `efi_driver_register':
+/home/sha/dude/barebox/barebox-test/include/efi/efi-device.h:38: undefined reference to `efi_bus'
+arch/efi/efi/built-in.o: In function `efi_execute_image':
+/home/sha/dude/barebox/barebox-test/arch/efi/efi/efi-image.c:162: undefined reference to `efi_connect_all'
+/home/sha/dude/barebox/barebox-test/arch/efi/efi/efi-image.c:163: undefined reference to `efi_register_devices'
+Makefile:756: recipe for target 'barebox' failed
+make: *** [barebox] Error 1
+
+- The end result won't compile:
+
+arch/x86/Makefile:88: *** recipe commences before first target.  Stop.
+
+With this one fixed we get:
+
+In file included from common/efi/env-efi.bbenv.S:1:0:
+include/asm-generic/barebox.lds.h:12:30: fatal error: mach/barebox.lds.h: No such file or directory
+ #include <mach/barebox.lds.h>
+
+I think you can squash most of the patches together, maybe leaving 6/9
+and 9/9 as separate patches. The rest is probably hard to keep separated
+while maintaining bisectability
 
 Sascha
 
