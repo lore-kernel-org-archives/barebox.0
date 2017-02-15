@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo177.mail-out.ovh.net ([178.32.228.177])
+Received: from 7.mo177.mail-out.ovh.net ([46.105.61.149])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ce5BL-0004XD-CL
- for barebox@lists.infradead.org; Wed, 15 Feb 2017 19:24:05 +0000
+ id 1ce5G1-0007HE-IJ
+ for barebox@lists.infradead.org; Wed, 15 Feb 2017 19:28:55 +0000
 Received: from player716.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo177.mail-out.ovh.net (Postfix) with ESMTP id 9F3922E49A
- for <barebox@lists.infradead.org>; Wed, 15 Feb 2017 20:23:40 +0100 (CET)
-Received: from localhost (unknown [91.134.156.222])
- (Authenticated sender: plagnioj@jcrosoft.com)
- by player716.ha.ovh.net (Postfix) with ESMTPA id 8EA67560071
- for <barebox@lists.infradead.org>; Wed, 15 Feb 2017 20:23:40 +0100 (CET)
-Date: Wed, 15 Feb 2017 20:29:32 +0100
+ by mo177.mail-out.ovh.net (Postfix) with ESMTP id C82052D95D
+ for <barebox@lists.infradead.org>; Wed, 15 Feb 2017 20:28:30 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20170215192932.GB32649@mail.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Wed, 15 Feb 2017 20:34:09 +0100
+Message-Id: <1487187257-29082-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20170215192932.GB32649@mail.ovh.net>
+References: <20170215192932.GB32649@mail.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,171 +19,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/12] EFI: drop arch efi
+Subject: [PATCH 01/12] efi: move block io driver to driver/block
 To: barebox@lists.infradead.org
 
-Today the EFI is build as an other ARCH when in fact it's just a boot mode
+so it can be reused on any ARCH
 
-so move it back to arch/x86 for the spicific x86 part and the common
-to common and driver
-
-The last 3 patches allow to debug EFI and prepare for more efi support
-
-The following changes since commit b225bbf295c92263adbcec2c385c5e8d83542c72:
-
-  i.MX: esdhc: fix imx-esdhc driver for non-OF boards (2017-02-14 08:48:34 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git
-
-for you to fetch changes up to df12536f83b485c9a4ee28f78637356c6abab6f6:
-
-  efi: add efi handle dump command (2017-02-15 07:32:24 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (12):
-      efi: move block io driver to driver/block
-      efi: move clocksource out of arch
-      efi: move bus driver to driver/efi
-      efi: move debug_ll.h to include/efi
-      efi: move startup and payload to common/efi
-      x86: move bios bootup code to arch/x86/bios
-      efi: move x86 efi boot support to x86 arch
-      ARCH: efi: Finally drop it as now we can build efi bootup from x86
-      efi: bus: add firmware vendor and resision and tables info
-      efi: add minor and major to the bus and display it at boot
-      efi-gui: add Timestamp Protocol GUID definition
-      efi: add efi handle dump command
-
- Documentation/boards/efi.rst                            |   2 +-
- arch/efi/Kconfig                                        |  51 ---------------------------------------------------
- arch/efi/Makefile                                       |  43 -------------------------------------------
- arch/efi/efi/Makefile                                   |   2 --
- arch/efi/include/asm/barebox.h                          |   1 -
- arch/efi/include/asm/bitops.h                           |  22 ----------------------
- arch/efi/include/asm/bitsperlong.h                      |  10 ----------
- arch/efi/include/asm/byteorder.h                        |   8 --------
- arch/efi/include/asm/common.h                           |   4 ----
- arch/efi/include/asm/dma.h                              |  13 -------------
- arch/efi/include/asm/elf.h                              |  60 ------------------------------------------------------------
- arch/efi/include/asm/io.h                               |  55 -------------------------------------------------------
- arch/efi/include/asm/posix_types.h                      |   1 -
- arch/efi/include/asm/sections.h                         |   1 -
- arch/efi/include/asm/string.h                           |   1 -
- arch/efi/include/asm/swab.h                             |   6 ------
- arch/efi/include/asm/types.h                            |  65 -----------------------------------------------------------------
- arch/efi/include/asm/unaligned.h                        |  19 -------------------
- arch/efi/lib/asm-offsets.c                              |  12 ------------
- arch/x86/Kconfig                                        |  53 ++++++++++++++++++++++++++++++++++++++++++++++-------
- arch/x86/Makefile                                       |  75 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------
- arch/x86/bios/Makefile                                  |   3 +++
- arch/x86/{lib => bios}/bios_disk.S                      |   0
- arch/x86/{lib => bios}/memory16.S                       |   0
- arch/x86/{lib => bios}/traveler.S                       |   0
- arch/{efi => x86}/configs/efi_defconfig                 |   2 +-
- arch/x86/configs/generic_defconfig                      |   1 +
- arch/x86/include/asm/elf.h                              |  74 ++++++++++++++++++++++++++++++++++++++++++++++++++++++--------------------
- arch/x86/include/asm/io.h                               |  71 +++++++++++++++++++++++++++++++++--------------------------------------
- arch/x86/include/asm/types.h                            |  51 +++++++++++++++++++++++++++++++++------------------
- arch/x86/include/asm/unaligned.h                        |   5 +++++
- arch/x86/lib/Makefile                                   |   5 ++---
- arch/x86/lib/asm-offsets.c                              |   7 +++++++
- arch/{efi/lib => x86/mach-efi}/.gitignore               |   0
- arch/{efi/lib => x86/mach-efi}/Makefile                 |   0
- arch/{efi/lib => x86/mach-efi}/crt0-efi-ia32.S          |   0
- arch/{efi/lib => x86/mach-efi}/crt0-efi-x86_64.S        |   0
- arch/{efi/lib => x86/mach-efi}/elf_ia32_efi.lds.S       |   0
- arch/{efi/lib => x86/mach-efi}/elf_x86_64_efi.lds.S     |   1 -
- arch/x86/mach-efi/include/mach/barebox.lds.h            |   0
- arch/x86/mach-efi/include/mach/debug_ll.h               |   1 +
- arch/{efi/lib => x86/mach-efi}/reloc_ia32.c             |   0
- arch/{efi/lib => x86/mach-efi}/reloc_x86_64.c           |   0
- commands/Kconfig                                        |   2 +-
- commands/edit.c                                         |   2 +-
- common/Makefile                                         |   1 +
- common/efi-guid.c                                       |   6 ++++++
- common/efi/Makefile                                     |   3 +++
- {arch/efi => common}/efi/efi-image.c                    |   4 ++--
- {arch/efi => common}/efi/efi.c                          |   6 +++---
- {arch/efi => common}/efi/env-efi/network/eth0-discover  |   0
- common/memory.c                                         |   2 +-
- drivers/Kconfig                                         |   1 +
- drivers/Makefile                                        |   2 ++
- drivers/block/Makefile                                  |   1 +
- {arch/efi/efi => drivers/block}/efi-block-io.c          |   4 ++--
- drivers/clocksource/Kconfig                             |   4 ++++
- drivers/clocksource/Makefile                            |   1 +
- arch/efi/efi/clocksource.c => drivers/clocksource/efi.c |   2 +-
- drivers/efi/Kconfig                                     |   2 ++
- drivers/efi/Makefile                                    |   1 +
- {arch/efi => drivers}/efi/efi-device.c                  | 205 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
- drivers/net/Kconfig                                     |   2 +-
- drivers/net/efi-snp.c                                   |   4 ++--
- drivers/of/Kconfig                                      |   2 +-
- drivers/serial/Kconfig                                  |   2 +-
- drivers/serial/efi-stdio.c                              |   2 +-
- fs/Kconfig                                              |   4 ++--
- fs/efi.c                                                |   4 ++--
- fs/efivarfs.c                                           |   4 ++--
- include/efi.h                                           |  20 ++++++++++++++++++--
- {arch/efi/include/mach => include/efi}/debug_ll.h       |   2 +-
- {arch/efi/include/mach => include/efi}/efi-device.h     |   6 +++---
- {arch/efi/include/mach => include/efi}/efi.h            |   0
- 74 files changed, 525 insertions(+), 501 deletions(-)
- delete mode 100644 arch/efi/Kconfig
- delete mode 100644 arch/efi/Makefile
- delete mode 100644 arch/efi/efi/Makefile
- delete mode 100644 arch/efi/include/asm/barebox.h
- delete mode 100644 arch/efi/include/asm/bitops.h
- delete mode 100644 arch/efi/include/asm/bitsperlong.h
- delete mode 100644 arch/efi/include/asm/byteorder.h
- delete mode 100644 arch/efi/include/asm/common.h
- delete mode 100644 arch/efi/include/asm/dma.h
- delete mode 100644 arch/efi/include/asm/elf.h
- delete mode 100644 arch/efi/include/asm/io.h
- delete mode 100644 arch/efi/include/asm/posix_types.h
- delete mode 100644 arch/efi/include/asm/sections.h
- delete mode 100644 arch/efi/include/asm/string.h
- delete mode 100644 arch/efi/include/asm/swab.h
- delete mode 100644 arch/efi/include/asm/types.h
- delete mode 100644 arch/efi/include/asm/unaligned.h
- delete mode 100644 arch/efi/lib/asm-offsets.c
- create mode 100644 arch/x86/bios/Makefile
- rename arch/x86/{lib => bios}/bios_disk.S (100%)
- rename arch/x86/{lib => bios}/memory16.S (100%)
- rename arch/x86/{lib => bios}/traveler.S (100%)
- rename arch/{efi => x86}/configs/efi_defconfig (98%)
- rename arch/{efi/lib => x86/mach-efi}/.gitignore (100%)
- rename arch/{efi/lib => x86/mach-efi}/Makefile (100%)
- rename arch/{efi/lib => x86/mach-efi}/crt0-efi-ia32.S (100%)
- rename arch/{efi/lib => x86/mach-efi}/crt0-efi-x86_64.S (100%)
- rename arch/{efi/lib => x86/mach-efi}/elf_ia32_efi.lds.S (100%)
- rename arch/{efi/lib => x86/mach-efi}/elf_x86_64_efi.lds.S (98%)
- create mode 100644 arch/x86/mach-efi/include/mach/barebox.lds.h
- create mode 100644 arch/x86/mach-efi/include/mach/debug_ll.h
- rename arch/{efi/lib => x86/mach-efi}/reloc_ia32.c (100%)
- rename arch/{efi/lib => x86/mach-efi}/reloc_x86_64.c (100%)
- create mode 100644 common/efi/Makefile
- rename {arch/efi => common}/efi/efi-image.c (99%)
- rename {arch/efi => common}/efi/efi.c (99%)
- rename {arch/efi => common}/efi/env-efi/network/eth0-discover (100%)
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/efi/efi/Makefile                          | 5 ++++-
+ drivers/Makefile                               | 1 +
+ drivers/block/Makefile                         | 1 +
+ {arch/efi/efi => drivers/block}/efi-block-io.c | 0
+ 4 files changed, 6 insertions(+), 1 deletion(-)
  create mode 100644 drivers/block/Makefile
- rename {arch/efi/efi => drivers/block}/efi-block-io.c (98%)
- rename arch/efi/efi/clocksource.c => drivers/clocksource/efi.c (97%)
- create mode 100644 drivers/efi/Kconfig
- create mode 100644 drivers/efi/Makefile
- rename {arch/efi => drivers}/efi/efi-device.c (63%)
- rename {arch/efi/include/mach => include/efi}/debug_ll.h (93%)
- rename {arch/efi/include/mach => include/efi}/efi-device.h (91%)
- rename {arch/efi/include/mach => include/efi}/efi.h (100%)
+ rename {arch/efi/efi => drivers/block}/efi-block-io.c (100%)
 
-Best Regards,
-J.
+diff --git a/arch/efi/efi/Makefile b/arch/efi/efi/Makefile
+index a856e5907..f088c7a94 100644
+--- a/arch/efi/efi/Makefile
++++ b/arch/efi/efi/Makefile
+@@ -1,2 +1,5 @@
+-obj-y += efi.o clocksource.o efi-block-io.o efi-device.o efi-image.o
++obj-y += clocksource.o
++obj-y += efi.o
++obj-y += efi-device.o
++obj-y += efi-image.o
+ bbenv-y += env-efi
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 6a70f6ee1..9ff261ad2 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -1,4 +1,5 @@
+ obj-y	+= base/
++obj-y	+= block/
+ obj-$(CONFIG_ARM_AMBA) += amba/
+ obj-y	+= net/
+ obj-y	+= serial/
+diff --git a/drivers/block/Makefile b/drivers/block/Makefile
+new file mode 100644
+index 000000000..8812c0fae
+--- /dev/null
++++ b/drivers/block/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_EFI_BOOTUP) += efi-block-io.o
+diff --git a/arch/efi/efi/efi-block-io.c b/drivers/block/efi-block-io.c
+similarity index 100%
+rename from arch/efi/efi/efi-block-io.c
+rename to drivers/block/efi-block-io.c
+-- 
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
