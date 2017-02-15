@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.20])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cdzun-0005zw-M4
- for barebox@lists.infradead.org; Wed, 15 Feb 2017 13:46:40 +0000
-References: <3c0aa707-bb93-df05-e9e2-a3810995ad1f@rempel-privat.de>
- <20170215070343.zzb7njup3opvbsfd@pengutronix.de>
- <0b9cf71c-c86d-29e4-0cb0-0ddba9e43d2a@rempel-privat.de>
- <CAOpc7mFtB7-Qf4pNSCZsYofdAyj=TPRG17J0=rdi3YEBm+qyRg@mail.gmail.com>
- <e0397e97-ddd8-1acc-d139-bf5397c3046a@rempel-privat.de>
-From: Oleksij Rempel <fishor@gmx.net>
-Message-ID: <6e4fc392-061e-42ab-8cc0-08a645371b5b@gmx.net>
-Date: Wed, 15 Feb 2017 14:46:05 +0100
+Received: from qmail.e-mind.com ([188.94.192.42])
+ by bombadil.infradead.org with smtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1ce0g3-00020p-AG
+ for barebox@lists.infradead.org; Wed, 15 Feb 2017 14:35:31 +0000
+References: <3a707429-03a7-db6b-a1b1-1e70ec0b929e@eurekelettronica.it>
+ <20170210073541.73bsfjhk3fu7nnwm@pengutronix.de>
+ <e2e3ab47-9cbd-0437-d889-a98704459d1b@eurekelettronica.it>
+ <20170215115104.qez5tgbsvwt3zxzz@pengutronix.de>
+From: gianluca <gianlucarenzi@eurekelettronica.it>
+Message-ID: <e77ad532-0850-45a7-d41e-90e83b655dbf@eurekelettronica.it>
+Date: Wed, 15 Feb 2017 15:34:55 +0100
 MIME-Version: 1.0
-In-Reply-To: <e0397e97-ddd8-1acc-d139-bf5397c3046a@rempel-privat.de>
+In-Reply-To: <20170215115104.qez5tgbsvwt3zxzz@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,116 +20,95 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============5931384687375995776=="
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: problems with ext4
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: Using LVDS in a iMX6Q/D from Barebox
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============5931384687375995776==
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="pE0k4a9HjpLgVTTajk1X1BJA1Evtfbrp8"
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---pE0k4a9HjpLgVTTajk1X1BJA1Evtfbrp8
-Content-Type: multipart/mixed; boundary="ROHxM3ujHRnEkGeomEbfv5sTU63ktJGeg";
- protected-headers="v1"
-From: Oleksij Rempel <fishor@gmx.net>
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
- "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Message-ID: <6e4fc392-061e-42ab-8cc0-08a645371b5b@gmx.net>
-Subject: Re: problems with ext4
-References: <3c0aa707-bb93-df05-e9e2-a3810995ad1f@rempel-privat.de>
- <20170215070343.zzb7njup3opvbsfd@pengutronix.de>
- <0b9cf71c-c86d-29e4-0cb0-0ddba9e43d2a@rempel-privat.de>
- <CAOpc7mFtB7-Qf4pNSCZsYofdAyj=TPRG17J0=rdi3YEBm+qyRg@mail.gmail.com>
- <e0397e97-ddd8-1acc-d139-bf5397c3046a@rempel-privat.de>
-In-Reply-To: <e0397e97-ddd8-1acc-d139-bf5397c3046a@rempel-privat.de>
-
---ROHxM3ujHRnEkGeomEbfv5sTU63ktJGeg
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-Am 15.02.2017 um 14:39 schrieb Oleksij Rempel:
-> Am 15.02.2017 um 13:31 schrieb Holger Schurig:
->> For what it's worth, my kernel is also in an ext4 partition (on an
->> SDCARD or eMMC).
+On 02/15/2017 12:51 PM, Sascha Hauer wrote:
+> On Tue, Feb 14, 2017 at 11:32:44AM +0100, gianluca wrote:
+>> On 02/10/2017 08:35 AM, Sascha Hauer wrote:
+>>> Hi Gianluca,
+>>>
+>>> On Thu, Feb 09, 2017 at 03:37:41PM +0100, gianluca wrote:
+>>>> Hello,
+>>>> I would like to know if there is a clear way on using the lvds pins to drive
+>>>> a LVDS display in a custom made board, based on iMX6Q (in the near future
+>>>> the iMX6Dual).
+>>>
+>>> I think what you are looking for is of_device_enable_and_register() or
+>>> of_device_enable_and_register_by_name(). You can call it on either the
+>>> lvds device node or the hdmi device node, depending on whether you found
+>>> an EEPROM or not.
+>>>
 >>
->> I format them with "mkfs.ext4 -q -F -D -j /dev/XXXX"
+>> I think this is not necessary as during boot I can see clearly:
 >>
->> Inside the partition, I use /boot/vmlinuz as a symlink to the real fil=
-e
->> which is in the same directory.
->> =E2=80=8B
+>>> imx-ipuv3 2400000.ipu: IPUv3H probed
+>>> imx-ipuv3 2800000.ipu: IPUv3H probed
+>>> imx-ldb ldb.10: probe failed: Invalid argument
+>>> imx-hdmi 120000.hdmi: Detected HDMI controller 0x13:0xa:0xa0:0xc1
 >>
->> I'm however on an older version of barebox, 2016.07.0
->=20
-> I reformatted boot partition back to ext4. Now the problem is reproduci=
-ble.
-> Partition image can be found here
-> https://github.com/olerem/beagleboneblack/blob/master/boot.tar.bz2
->=20
-> Decompressed it should be:
-> md5sum 2f3474d39f1d7893e310b55ea57d87bd
->=20
-> the /boot/dtb symlink can't be resolved by barebox. And /boot/dtbs
-> folder is broken.
-
-Some more info:
-apt-cache policy e2fsprogs
-e2fsprogs:
-  Installed: 1.43.4-2
-  Candidate: 1.43.4-2
-  Version table:
- *** 1.43.4-2 500
-        500 http://ftp2.de.debian.org/debian stretch/main armhf Packages
-        100 /var/lib/dpkg/status
-
-
-apt-cache policy linux-image-4.9.0-1-armmp
-linux-image-4.9.0-1-armmp:
-  Installed: 4.9.6-3
-  Candidate: 4.9.6-3
-  Version table:
- *** 4.9.6-3 500
-        500 http://ftp2.de.debian.org/debian stretch/main armhf Packages
-        100 /var/lib/dpkg/status
+>> So barebox is trying to bring-up the imx-ldb but fails.
+>>
+>> So I suppose something is wrong in my device tree structure.
+>
+> Nope, there's everything right.
+>
+> I can reproduce this here on a GuF Santaro board. LVDS works fine on
+> current barebox as long as I leave hdmi disabled in the device tree.
+> When I enable hdmi I also get a "failed to get modes".
+>
+> Normally when different outputs are available then one would expect
+> that each one of them is routed to some framebuffer, maybe with some
+> sane default and configurable during runtime. The current code falls
+> short here.
+> What happens is each framebuffer looks around for outputs, all finding
+> hdmi and lvds. Now the hdmi output may not have a monitor connected
+> and returns no valid mode. In this case the lvds is not even asked for
+> modes.
+> Also in the current code it can happen that the lvds is asked for modes
+> which are then applied to hdmi.
+> Where we currently are is that it should work when exactly one output
+> is enabled. Does lvds work properly when hdmi is disabled? In this
+> case I would suggest that you manipulate your devicetree so that exactly
+> one output is enabled.
+>
 
 
+That's works. Thank you!
 
+Now I am planning to adapt the (internal) and external device-tree to 
+match the hardware.
 
+First of all hdmi and ldb node are "disabled" by default.
 
---ROHxM3ujHRnEkGeomEbfv5sTU63ktJGeg--
+Then I am looking for any eeprom in the lvds connector I have.
+If it is found, check the phandle "native-mode" of the display-timings 
+node to match the value found in eeprom. If not matches the native-mode, 
+it should change the native-mode phandle accordingly with the value 
+found. (I was thinking about of_find_node_by_name() and then change its 
+value using of_set_property_to_child_phandle(display, "native-mode")). 
+And finally change the status of ldb node from "disabled" to "okay". Is 
+this the correct way of doing this?
 
---pE0k4a9HjpLgVTTajk1X1BJA1Evtfbrp8
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
+If no eeprom is found activate the status of the hdmi node from 
+"disabled" to "okay". So with the same algorithm as above,
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Those operations will be done in the coredevice_initcall() level. Is 
+this correct?
 
-iF4EAREIAAYFAlikW50ACgkQHwImuRkmbWlbCQD9GwwISgnLu1StL16Kh0aFSBjm
-TcTEXuttJvdzzHGEMZ0A/j6nGtR4Bdqc6cqnpl/J4h+4Ko93M+cyNY/dDaiPmWGT
-=LH+r
------END PGP SIGNATURE-----
-
---pE0k4a9HjpLgVTTajk1X1BJA1Evtfbrp8--
-
-
---===============5931384687375995776==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Regards,
+-- 
+Eurek s.r.l.                          |
+Electronic Engineering                | http://www.eurek.it
+via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
+p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============5931384687375995776==--
