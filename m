@@ -1,14 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from 9.mo177.mail-out.ovh.net ([46.105.72.238])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ce2fk-0003BR-Db
- for barebox@lists.infradead.org; Wed, 15 Feb 2017 16:43:20 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Wed, 15 Feb 2017 17:42:48 +0100
-Message-Id: <20170215164248.31952-3-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20170214105358.6666-1-u.kleine-koenig@pengutronix.de>
-References: <20170214105358.6666-1-u.kleine-koenig@pengutronix.de>
+ id 1ce59Y-0004Lk-JZ
+ for barebox@lists.infradead.org; Wed, 15 Feb 2017 19:22:14 +0000
+Received: from player716.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo177.mail-out.ovh.net (Postfix) with ESMTP id 783C32D1CC
+ for <barebox@lists.infradead.org>; Wed, 15 Feb 2017 20:21:45 +0100 (CET)
+Date: Wed, 15 Feb 2017 20:27:28 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20170215192728.GA32649@mail.ovh.net>
+References: <20170210095655.GA25859@mail.ovh.net>
+ <20170215130437.6i63aa6g76btkld2@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170215130437.6i63aa6g76btkld2@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,41 +22,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/3] mvebu: kirkwood: simplify soc init code flow
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/9] EFI: drop arch efi
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-U2ltaWxhciB0byB0aGUgdHdvIHByZXZpb3VzIGNvbW1pdHMsIHRoaXMgZ2V0cyByaWQgb2YgYSBv
-Zi1maXh1cCB3aGljaAppcyBzdHJhbmdlIGJlY2F1c2UgdGhlIHNvYyBpbml0IHN0dWZmIGlzIHJl
-cnVuIHRoZW4gd2hlbiBhIG5ldyBkdCBmb3IKYm9vdGluZyBpbnRvIExpbnV4IGlzIGxvYWRlZC4g
-SXQgYWxzbyBvbmx5IGNhbGxzIG12ZWJ1X21idXNfYWRkX3JhbmdlIGlmCndlJ3JlIHJ1bm5pbmcg
-b24gYSBLaXJrd29vZC4KClRoZSBpbml0Y2FsbCBtdXN0IGJlIHBvc3Rwb25lZCB0byBwb3N0LWNv
-cmUgdG8gZW5zdXJlCm9mX21hY2hpbmVfaXNfY29tcGF0aWJsZSBpcyB3b3JraW5nIGNvcnJlY3Rs
-eS4KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVu
-Z3V0cm9uaXguZGU+Ci0tLQogYXJjaC9hcm0vbWFjaC1tdmVidS9raXJrd29vZC5jIHwgMTMgKysr
-Ky0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgOSBkZWxldGlvbnMo
-LSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW12ZWJ1L2tpcmt3b29kLmMgYi9hcmNoL2Fy
-bS9tYWNoLW12ZWJ1L2tpcmt3b29kLmMKaW5kZXggZDVkZGYwNWUzNDQ3Li4zNmNkMmE4NGE2ZjUg
-MTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtbXZlYnUva2lya3dvb2QuYworKysgYi9hcmNoL2Fy
-bS9tYWNoLW12ZWJ1L2tpcmt3b29kLmMKQEAgLTI5LDExICsyOSwxMyBAQCBzdGF0aWMgdm9pZCBf
-X25vcmV0dXJuIGtpcmt3b29kX3Jlc3RhcnRfc29jKHN0cnVjdCByZXN0YXJ0X2hhbmRsZXIgKnJz
-dCkKIAloYW5nKCk7CiB9CiAKLXN0YXRpYyBpbnQga2lya3dvb2RfaW5pdF9zb2Moc3RydWN0IGRl
-dmljZV9ub2RlICpyb290LCB2b2lkICpjb250ZXh0KQorc3RhdGljIGludCBraXJrd29vZF9pbml0
-X3NvYyh2b2lkKQogewogCWlmICghb2ZfbWFjaGluZV9pc19jb21wYXRpYmxlKCJtYXJ2ZWxsLGtp
-cmt3b29kIikpCiAJCXJldHVybiAwOwogCisJbXZlYnVfbWJ1c19hZGRfcmFuZ2UoIm1hcnZlbGws
-a2lya3dvb2QiLCAweGYwLCAweDAxLAorCQkJICAgICBNVkVCVV9SRU1BUF9JTlRfUkVHX0JBU0Up
-OwogCXJlc3RhcnRfaGFuZGxlcl9yZWdpc3Rlcl9mbihraXJrd29vZF9yZXN0YXJ0X3NvYyk7CiAK
-IAliYXJlYm94X3NldF9tb2RlbCgiTWFydmVsbCBLaXJrd29vZCIpOwpAQCAtNDMsMTEgKzQ1LDQg
-QEAgc3RhdGljIGludCBraXJrd29vZF9pbml0X3NvYyhzdHJ1Y3QgZGV2aWNlX25vZGUgKnJvb3Qs
-IHZvaWQgKmNvbnRleHQpCiAKIAlyZXR1cm4gMDsKIH0KLQotc3RhdGljIGludCBraXJrd29vZF9y
-ZWdpc3Rlcl9zb2NfZml4dXAodm9pZCkKLXsKLQltdmVidV9tYnVzX2FkZF9yYW5nZSgibWFydmVs
-bCxraXJrd29vZCIsIDB4ZjAsIDB4MDEsCi0JCQkgICAgIE1WRUJVX1JFTUFQX0lOVF9SRUdfQkFT
-RSk7Ci0JcmV0dXJuIG9mX3JlZ2lzdGVyX2ZpeHVwKGtpcmt3b29kX2luaXRfc29jLCBOVUxMKTsK
-LX0KLXB1cmVfaW5pdGNhbGwoa2lya3dvb2RfcmVnaXN0ZXJfc29jX2ZpeHVwKTsKK3Bvc3Rjb3Jl
-X2luaXRjYWxsKGtpcmt3b29kX2luaXRfc29jKTsKLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+On 14:04 Wed 15 Feb     , Sascha Hauer wrote:
+> Hi Jean-Christophe,
+> 
+> On Fri, Feb 10, 2017 at 10:56:55AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Today the EFI is build as an other ARCH when in fact it's just a boot mode
+> > 
+> > so move it back to arch/x86 for the spicific x86 part and the common
+> > to common and driver
+> > 
+> > The following changes since commit 55d29525146dcd280987dfd565bfd34f08858fb3:
+> > 
+> >   ata: ide-sff: don't call free for ide_port in error path (2017-01-18 12:01:38 +0100)
+> > 
+> > are available in the git repository at:
+> > 
+> >   git://git.jcrosoft.org/barebox.git
+> > 
+> > for you to fetch changes up to 3e07e7f43bcfb5160cc6104f06535f147222570b:
+> > 
+> >   efi: bus: add firmware vendor and resision and tables info (2017-02-09 17:13:41 +0800)
+> > 
+> > ----------------------------------------------------------------
+> > Jean-Christophe PLAGNIOL-VILLARD (9):
+> >       efi: move block io driver to driver/block
+> >       efi: move clocksource out of arch
+> >       efi: move bus driver to driver/efi
+> >       efi: move debug_ll.h to include/efi
+> >       efi: move startup and payload to common/efi
+> >       x86: move bios bootup code to arch/x86/bios
+> >       efi: move x86 efi boot support to x86 arch
+> >       ARCH: efi: Finally drop it as now we can build efi bootup from x86
+> >       efi: bus: add firmware vendor and resision and tables info
+> 
+> Some problems found with this series:
+> 
+> - bisectability breaks in 3/9:
+> 
+> drivers/built-in.o: In function `efi_driver_register':
+> /home/sha/dude/barebox/barebox-test/include/efi/efi-device.h:38: undefined reference to `efi_bus'
+> fs/built-in.o: In function `efi_driver_register':
+> /home/sha/dude/barebox/barebox-test/include/efi/efi-device.h:38: undefined reference to `efi_bus'
+> arch/efi/efi/built-in.o: In function `efi_execute_image':
+> /home/sha/dude/barebox/barebox-test/arch/efi/efi/efi-image.c:162: undefined reference to `efi_connect_all'
+> /home/sha/dude/barebox/barebox-test/arch/efi/efi/efi-image.c:163: undefined reference to `efi_register_devices'
+> Makefile:756: recipe for target 'barebox' failed
+> make: *** [barebox] Error 1
+> 
+> - The end result won't compile:
+> 
+> arch/x86/Makefile:88: *** recipe commences before first target.  Stop.
+> 
+> With this one fixed we get:
+> 
+> In file included from common/efi/env-efi.bbenv.S:1:0:
+> include/asm-generic/barebox.lds.h:12:30: fatal error: mach/barebox.lds.h: No such file or directory
+>  #include <mach/barebox.lds.h>
+> 
+> I think you can squash most of the patches together, maybe leaving 6/9
+> and 9/9 as separate patches. The rest is probably hard to keep separated
+> while maintaining bisectability
+I prefer to keep it seperated
+
+As this allow to compare arch/efi and the new arch/x86 with efi boot before
+droping it.
+
+I fix the bisecting issue in the v2
+
+and add few patch that help to debug the efi.
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
