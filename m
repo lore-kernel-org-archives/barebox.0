@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cduSy-0003Pq-Nx
- for barebox@lists.infradead.org; Wed, 15 Feb 2017 07:57:35 +0000
-Date: Wed, 15 Feb 2017 08:57:06 +0100
-From: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-Message-ID: <20170215075706.xgofq6glj34cfvpq@pengutronix.de>
-References: <4bcf7de3-5ced-3575-9495-c1f4f20ce60c@phytec.de>
- <20170213192247.gjld5b33genwav2a@pengutronix.de>
- <a28cc10e07874a53bd28dabd35a558a8@srred1mail01.kymeta.local>
- <20170214072704.7erbpueegfqmjqus@pengutronix.de>
- <1487096017.20042.316.camel@kymetacorp.com>
+Received: from qmail.e-mind.com ([188.94.192.42])
+ by bombadil.infradead.org with smtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1cdwVT-00026M-NV
+ for barebox@lists.infradead.org; Wed, 15 Feb 2017 10:08:19 +0000
+References: <3a707429-03a7-db6b-a1b1-1e70ec0b929e@eurekelettronica.it>
+ <20170210073541.73bsfjhk3fu7nnwm@pengutronix.de>
+ <e2e3ab47-9cbd-0437-d889-a98704459d1b@eurekelettronica.it>
+ <814412dc-f364-70cb-43a9-f9e971a0b3c1@eurekelettronica.it>
+From: gianluca <gianlucarenzi@eurekelettronica.it>
+Message-ID: <0d5e9302-c7d3-f8de-c5bc-970c9b197532@eurekelettronica.it>
+Date: Wed, 15 Feb 2017 11:07:50 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1487096017.20042.316.camel@kymetacorp.com>
+In-Reply-To: <814412dc-f364-70cb-43a9-f9e971a0b3c1@eurekelettronica.it>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,162 +20,338 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox PBL question
-To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: Using LVDS in a iMX6Q/D from Barebox
+To: barebox@lists.infradead.org
 
-On Tue, Feb 14, 2017 at 06:12:15PM +0000, Trent Piepho wrote:
-> On Tue, 2017-02-14 at 08:27 +0100, Sascha Hauer wrote:
-> > > > You should use PBL_MULTI_IMAGES instead. In fact, the existing Rockchip
-> > > > port already does this.
-> > > 
-> > > Is there any advantage to the single image pbl system?  It seems like multi image
-> > > with one image achieves the same result.
-> > 
-> > The advantage is that the same config and only one build step is used
-> > to build images for multiple boards/projects. This greatly increases the
-> > chance that the existing configs are actually tested. Also it makes it
-> > easy to test the same software on different boards. Another thing is
-> > that I can currently built test every commit in every defconfig,
-> > something I couldn't do if every board had its own defconfig, possibly
-> > in a xload and a regular variant. Defconfig files also have the tendency
-> > to bitrot very fast. Most defconfigs are committed once and never
-> > touched again which means you never get the new features and whenever
-> > you change the board you possibly find a defconfig that needs many
-> > adjustments before you feel home.
-> 
-> These all sounds like advantages for the multi-pbl system.  I was asking
-> if the single pbl system had an advantage.  It seems to be mostly a
-> duplication of multi-pbl that can't do as much.  I wondered if there was
-> a reason, besides inertia, to keeping it around.
+On 02/14/2017 11:59 AM, gianluca wrote:
+> On 02/14/2017 11:32 AM, gianluca wrote:
+>> On 02/10/2017 08:35 AM, Sascha Hauer wrote:
+>>> Hi Gianluca,
+>>>
+>>> On Thu, Feb 09, 2017 at 03:37:41PM +0100, gianluca wrote:
+>>>> Hello,
+>>>> I would like to know if there is a clear way on using the lvds pins
+>>>> to drive
+>>>> a LVDS display in a custom made board, based on iMX6Q (in the near
+>>>> future
+>>>> the iMX6Dual).
+>>>
+>>> I think what you are looking for is of_device_enable_and_register() or
+>>> of_device_enable_and_register_by_name(). You can call it on either the
+>>> lvds device node or the hdmi device node, depending on whether you found
+>>> an EEPROM or not.
+>>>
+>>
+>> I think this is not necessary as during boot I can see clearly:
+>>
+>>> imx-ipuv3 2400000.ipu: IPUv3H probed
+>>> imx-ipuv3 2800000.ipu: IPUv3H probed
+>>> imx-ldb ldb.10: probe failed: Invalid argument
+>>> imx-hdmi 120000.hdmi: Detected HDMI controller 0x13:0xa:0xa0:0xc1
+>>
+>
+> I had a wrong configuration:
+>
+>>
+>>> &ldb {
+>>>     status = "okay";
+>>>
+>>>     lvds0: lvds-channel@0 {
+>>>         fsl,data-mapping = "spwg";
+>>>         fsl,data-width = <16>;
+>>>         status = "okay";
+>>>
+>
+> fsl,data-width = must be <18> or <24>
+>
+> Now boots without error, but the framebuffer device is not registered.
+> Why? I need something more??
+>
+>
 
-I would love to remove it, but grepping through the defconfigs there are
-more than 50 boards using it, most of them I cannot test.
-Besides this, yes, there's inertia. I just played it through for an AT91
-board, see below. We would have to do this 50 times...
+Now I did a little step forward. Using the DEBUG_VERBOSE #define 
+somewhere in the hdmi, ldb and pb device drivers I can see what is 
+happening:
 
-Sascha
+>
+>
+> barebox 2017.02.0 #20 Tue Feb 14 17:24:52 CET 2017
+>
+>
+> Board: Eurek EK360 i.MX6Q/D
+> detected i.MX6 Quad revision 1.5
+> mdio_bus: miibus0: probed
+> imx-usb 2184000.usb: Cannot get phy: Function not implemented
+> imx-usb 2184000.usb: probe failed: Function not implemented
+> imx-usb 2184200.usb: Cannot get phy: Function not implemented
+> imx-usb 2184200.usb: probe failed: Function not implemented
 
--------------------------8<---------------------
+Not a problem here as I am running from usb device with no 
+flash-programmed-on-board. ;-)
 
-From 4e81bc5db51c7d91d9fc5c1666e961be7143e09b Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 15 Feb 2017 08:49:18 +0100
-Subject: [PATCH] wip
+> imx-esdhc 2194000.usdhc: registered as 2194000.usdhc
+> imx-esdhc 2198000.usdhc: registered as 2198000.usdhc
+> imx-esdhc 219c000.usdhc: registered as 219c000.usdhc
+> imx-ipuv3 2400000.ipu: IPUv3H probed
+> imx-ipuv3 2800000.ipu: IPUv3H probed
+> VPL: vpl_register: /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0
+> imx-hdmi 120000.hdmi: Detected HDMI controller 0x13:0xa:0xa0:0xc1
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/Kconfig                           |  2 +-
- arch/arm/boards/sama5d3xek/Makefile        |  1 +
- arch/arm/boards/sama5d3xek/lowlevel.c      | 10 ++++++++++
- arch/arm/mach-at91/Kconfig                 |  1 +
- arch/arm/mach-at91/sama5d3_lowlevel_init.c |  4 ++++
- images/Makefile                            |  1 +
- images/Makefile.at91                       |  4 ++++
- 7 files changed, 22 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/boards/sama5d3xek/lowlevel.c
- create mode 100644 images/Makefile.at91
+> VPL: vpl_register: /soc/hdmi@0120000
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index e4663ea268..a5e431d296 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -52,7 +52,7 @@ config ARCH_AT91
- 	select GPIOLIB
- 	select CLKDEV_LOOKUP
- 	select HAS_DEBUG_LL
--	select HAVE_MACH_ARM_HEAD
-+	select HAVE_MACH_ARM_HEAD if !HAVE_PBL_MULTI_IMAGES
- 	select HAVE_CLK
- 	select PINCTRL_AT91
- 
-diff --git a/arch/arm/boards/sama5d3xek/Makefile b/arch/arm/boards/sama5d3xek/Makefile
-index 32dcb4283c..55772623a5 100644
---- a/arch/arm/boards/sama5d3xek/Makefile
-+++ b/arch/arm/boards/sama5d3xek/Makefile
-@@ -1,3 +1,4 @@
- obj-y += init.o
- obj-$(CONFIG_W1) += hw_version.o
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-sama5d3xek
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/sama5d3xek/lowlevel.c b/arch/arm/boards/sama5d3xek/lowlevel.c
-new file mode 100644
-index 0000000000..1d52882caf
---- /dev/null
-+++ b/arch/arm/boards/sama5d3xek/lowlevel.c
-@@ -0,0 +1,10 @@
-+#include <common.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+
-+void __naked sama5d3_barebox_entry(void);
-+
-+ENTRY_FUNCTION(start_sama5d3xek, r0, r1, r2)
-+{
-+	sama5d3_barebox_entry();
-+}
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index c45fc4d6b8..66cfb2aaae 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -472,6 +472,7 @@ choice
- 
- config MACH_SAMA5D3XEK
- 	bool "Atmel SAMA5D3X Evaluation Kit"
-+	select HAVE_PBL_MULTI_IMAGES
- 	help
- 	  Select this if you are using Atmel's SAMA5D3X-EK Evaluation Kit.
- 
-diff --git a/arch/arm/mach-at91/sama5d3_lowlevel_init.c b/arch/arm/mach-at91/sama5d3_lowlevel_init.c
-index 01d28514d1..aaff9b8b04 100644
---- a/arch/arm/mach-at91/sama5d3_lowlevel_init.c
-+++ b/arch/arm/mach-at91/sama5d3_lowlevel_init.c
-@@ -15,7 +15,11 @@
- #include <mach/hardware.h>
- #include <mach/at91sam9_ddrsdr.h>
- 
-+#ifdef CONFIG_PBL_MULTI_IMAGES
-+void __naked sama5d3_barebox_entry(void)
-+#else
- void __naked __bare_init barebox_arm_reset_vector(void)
-+#endif
- {
- 	arm_cpu_lowlevel_init();
- 
-diff --git a/images/Makefile b/images/Makefile
-index 0537af1f6d..f8cd93c365 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -103,6 +103,7 @@ board = $(srctree)/arch/$(ARCH)/boards
- objboard = $(objtree)/arch/$(ARCH)/boards
- 
- include $(srctree)/images/Makefile.am33xx
-+include $(srctree)/images/Makefile.at91
- include $(srctree)/images/Makefile.imx
- include $(srctree)/images/Makefile.mvebu
- include $(srctree)/images/Makefile.mxs
-diff --git a/images/Makefile.at91 b/images/Makefile.at91
-new file mode 100644
-index 0000000000..ccb9fef832
---- /dev/null
-+++ b/images/Makefile.at91
-@@ -0,0 +1,4 @@
-+
-+pblx-$(CONFIG_MACH_SAMA5D3XEK) += start_sama5d3xek
-+FILE_barebox-sama5d3xek.img = start_sama5d3xek.pblx
-+image-$(CONFIG_MACH_SAMA5D3XEK) += barebox-sama5d3xek.img
+Which driver is calling this vpl_register? I can not clue by the 
+previous outputs... :-/
+
+
+> netconsole: registered as netconsole-1
+> malloc space: 0x2ff7b640 -> 0x4fef6c7f (size 511.5 MiB)
+
+> imx-ipuv3-crtc imx-ipuv3-crtc0: i.MX Framebuffer driver IPU
+> imx-ipuv3-crtc imx-ipuv3-crtc0: register vpl for /soc/ipu@02400000
+> VPL: vpl_register: /soc/ipu@02400000
+> VPL: vpl_ioctl: /soc/ipu@02400000 port 2
+> VPL: vpl_ioctl: no remote for endpoint /soc/ipu@02400000/port@2/disp0-endpoint
+> imx-ipuv3-crtc imx-ipuv3-crtc0: failed to get modes: Invalid argument
+> imx-ipuv3-crtc imx-ipuv3-crtc0: probe failed: Invalid argument
+
+CRTC0 - Now the vpl_ioctl is failing because of no modes (or no 
+disp0-endpoint).
+Why? In the dts there the video-timings in the ldb section
+
+> imx-ipuv3-crtc imx-ipuv3-crtc1: i.MX Framebuffer driver IPU
+> imx-ipuv3-crtc imx-ipuv3-crtc1: register vpl for /soc/ipu@02400000
+> VPL: vpl_register: /soc/ipu@02400000
+> VPL: vpl_ioctl: /soc/ipu@02400000 port 3
+> VPL: vpl_ioctl: no remote for endpoint /soc/ipu@02400000/port@3/disp1-endpoint
+> imx-ipuv3-crtc imx-ipuv3-crtc1: failed to get modes: Invalid argument
+> imx-ipuv3-crtc imx-ipuv3-crtc1: probe failed: Invalid argument
+
+CRTC1 - Same issue.
+
+> imx-ipuv3-crtc imx-ipuv3-crtc2: i.MX Framebuffer driver IPU
+> imx-ipuv3-crtc imx-ipuv3-crtc2: register vpl for /soc/ipu@02800000
+> VPL: vpl_register: /soc/ipu@02800000
+> VPL: vpl_ioctl: /soc/ipu@02800000 port 2
+> VPL: vpl_ioctl: no remote for endpoint /soc/ipu@02800000/port@2/disp0-endpoint
+> imx-ipuv3-crtc imx-ipuv3-crtc2: failed to get modes: Invalid argument
+> imx-ipuv3-crtc imx-ipuv3-crtc2: probe failed: Invalid argument
+
+CRTC2 - Same issue
+
+> imx-ipuv3-crtc imx-ipuv3-crtc3: i.MX Framebuffer driver IPU
+> imx-ipuv3-crtc imx-ipuv3-crtc3: register vpl for /soc/ipu@02800000
+> VPL: vpl_register: /soc/ipu@02800000
+> VPL: vpl_ioctl: /soc/ipu@02800000 port 3
+> imx-ipuv3-crtc imx-ipuv3-crtc3: failed to get modes: Invalid argument
+> imx-ipuv3-crtc imx-ipuv3-crtc3: probe failed: Invalid argument
+
+CRTC3 - Not as the others above, as the vpl_ioctl() no checks/fails for 
+endpoint here.
+
+> environment load /dev/env0: No such file or directory
+> Maybe you have to create the partition.
+> running /env/bin/init...
+> Running boot from uSD/MMC or USB...
+> mmc2: set parameter probe: Connection timed out
+> ext4 ext40: probe failed: Invalid argument
+> mount: Invalid argument
+> Hit CTRL-C key to stop autoboot:  1
+
+No Framebuffer driver registered. No /dev/fb[0-3] device node created.
+
+I found something interesting: if I connect a HDMI display (with a EDID 
+EEPROM) the CRTC0-3 is not failing anymore.
+
+> barebox 2017.02.0 #20 Tue Feb 14 17:24:52 CET 2017
+>
+>
+> Board: Eurek EK360 i.MX6Q/D
+> detected i.MX6 Quad revision 1.5
+> mdio_bus: miibus0: probed
+> imx-usb 2184000.usb: Cannot get phy: Function not implemented
+> imx-usb 2184000.usb: probe failed: Function not implemented
+> imx-usb 2184200.usb: Cannot get phy: Function not implemented
+> imx-usb 2184200.usb: probe failed: Function not implemented
+> imx-esdhc 2194000.usdhc: registered as 2194000.usdhc
+> imx-esdhc 2198000.usdhc: registered as 2198000.usdhc
+> imx-esdhc 219c000.usdhc: registered as 219c000.usdhc
+> imx-ipuv3 2400000.ipu: IPUv3H probed
+> imx-ipuv3 2800000.ipu: IPUv3H probed
+> VPL: vpl_register: /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0
+> imx-hdmi 120000.hdmi: Detected HDMI controller 0x13:0xa:0xa0:0xc1
+> VPL: vpl_register: /soc/hdmi@0120000
+> netconsole: registered as netconsole-1
+> malloc space: 0x2ff7b640 -> 0x4fef6c7f (size 511.5 MiB)
+> imx-ipuv3-crtc imx-ipuv3-crtc0: i.MX Framebuffer driver IPU
+> imx-ipuv3-crtc imx-ipuv3-crtc0: register vpl for /soc/ipu@02400000
+> VPL: vpl_register: /soc/ipu@02400000
+> VPL: vpl_ioctl: /soc/ipu@02400000 port 2
+> VPL: vpl_ioctl: no remote for endpoint /soc/ipu@02400000/port@2/disp0-endpoint
+> registered as fbconsole0
+
+Here it is for CRTC0!!!
+
+> imx-ipuv3-crtc imx-ipuv3-crtc1: i.MX Framebuffer driver IPU
+> imx-ipuv3-crtc imx-ipuv3-crtc1: register vpl for /soc/ipu@02400000
+> VPL: vpl_register: /soc/ipu@02400000
+> VPL: vpl_ioctl: /soc/ipu@02400000 port 3
+> VPL: vpl_ioctl: no remote for endpoint /soc/ipu@02400000/port@3/disp1-endpoint
+> registered as fbconsole1
+
+Even for CRTC1!
+
+> imx-ipuv3-crtc imx-ipuv3-crtc2: i.MX Framebuffer driver IPU
+> imx-ipuv3-crtc imx-ipuv3-crtc2: register vpl for /soc/ipu@02800000
+> VPL: vpl_register: /soc/ipu@02800000
+> VPL: vpl_ioctl: /soc/ipu@02800000 port 2
+> VPL: vpl_ioctl: no remote for endpoint /soc/ipu@02800000/port@2/disp0-endpoint
+> registered as fbconsole2
+
+Even for CRTC2
+
+> imx-ipuv3-crtc imx-ipuv3-crtc3: i.MX Framebuffer driver IPU
+> imx-ipuv3-crtc imx-ipuv3-crtc3: register vpl for /soc/ipu@02800000
+> VPL: vpl_register: /soc/ipu@02800000
+> VPL: vpl_ioctl: /soc/ipu@02800000 port 3
+> registered as fbconsole3
+
+...and for CRTC3 too.
+
+The display is a 1024x600 7 inches HDMI display.
+
+Here is the devinfo fb[0-3] information:
+
+> barebox@Eurek EK360 i.MX6Q/D:/ devinfo fb0
+> Resources:
+>   num: 0
+>   start: 0x300cd000
+>   size: 0x003e8000
+> Available modes:
+>   am1280800n3tz: 1280x800@0
+>   am1024600l: 1024x600@0
+>   ph800480t013: 800x480@0
+> Parameters:
+>   enable: 0
+>   mode_name: am1280800n3tz ("am1280800n3tz", "am1024600l", "ph800480t013")
+>   register_simplefb: 0
+>   shadowfb: 1
+> barebox@Eurek EK360 i.MX6Q/D:/ devinfo fb1
+> Resources:
+>   num: 0
+>   start: 0x304b6000
+>   size: 0x003e8000
+> Available modes:
+>   am1280800n3tz: 1280x800@0
+>   am1024600l: 1024x600@0
+>   ph800480t013: 800x480@0
+> Parameters:
+>   enable: 0
+>   mode_name: am1280800n3tz ("am1280800n3tz", "am1024600l", "ph800480t013")
+>   register_simplefb: 0
+>   shadowfb: 1
+> barebox@Eurek EK360 i.MX6Q/D:/ devinfo fb2
+> Resources:
+>   num: 0
+>   start: 0x308a0000
+>   size: 0x003e8000
+> Available modes:
+>   am1280800n3tz: 1280x800@0
+>   am1024600l: 1024x600@0
+>   ph800480t013: 800x480@0
+> Parameters:
+>   enable: 0
+>   mode_name: am1280800n3tz ("am1280800n3tz", "am1024600l", "ph800480t013")
+>   register_simplefb: 0
+>   shadowfb: 1
+> barebox@Eurek EK360 i.MX6Q/D:/ devinfo fb3
+> Resources:
+>   num: 0
+>   start: 0x30c89000
+>   size: 0x003e8000
+> Available modes:
+>   am1280800n3tz: 1280x800@0
+>   am1024600l: 1024x600@0
+>   ph800480t013: 800x480@0
+> Parameters:
+>   enable: 0
+>   mode_name: am1280800n3tz ("am1280800n3tz", "am1024600l", "ph800480t013")
+>   register_simplefb: 0
+>   shadowfb: 1
+
+It looks like the video-timings/mode are getting from the ldb section of 
+the device tree, but activated only when a hdmi display is connected.
+
+Anyway there is a strange value for refresh stuff. It is @0 for every 
+display.
+
+In the device tree timing I have those parameters:
+
+> 			native-mode = <&am128080n3tz>;
+> 			/* DISPLAY 1280x800 AMPIRE AM1280800N3TZ */
+> 			am128080n3tz: am1280800n3tz {
+> 				clock-frequency = <71000000>;
+> 				hactive = <1280>;
+> 				vactive = <800>;
+> 				hback-porch = <50>;
+> 				hfront-porch = <50>;
+> 				vback-porch = <5>;
+> 				vfront-porch = <5>;
+> 				hsync-len = <60>;
+> 				vsync-len = <13>;
+> 				hsync-active = <0>;
+> 				vsync-active = <0>;
+> 				de-active = <1>;
+> 				pixelclk-active = <1>;
+> 			};
+> 			/* DISPLAY 1024x600 AMPIRE AM-1024600LTM LVDS */
+> 			am1024600l: am1024600l {
+> 				clock-frequency = <51200000>;
+> 				hactive = <1024>;
+> 				vactive = <600>;
+> 				hback-porch = <0>;
+> 				hfront-porch = <320>;
+> 				vback-porch = <0>;
+> 				vfront-porch = <35>;
+> 				hsync-len = <1>;
+> 				vsync-len = <1>;
+> 				hsync-active = <0>;
+> 				vsync-active = <0>;
+> 				de-active = <1>;
+> 				pixelclk-active = <0>;
+> 			};
+> 			/* DISPLAY 800x480 */
+> 			ph800480t013: ph800480t013 {
+> 				clock-frequency = <33300000>;
+> 				hactive = <800>;
+> 				vactive = <480>;
+> 				hback-porch = <46>;
+> 				hfront-porch = <210>;
+> 				vback-porch = <23>;
+> 				vfront-porch = <22>;
+> 				hsync-len = <1>;
+> 				vsync-len = <1>;
+> 				hsync-active = <0>;
+> 				vsync-active = <0>;
+> 				de-active = <1>;
+> 				pixelclk-active = <0>;
+> 			};
+> 		};
+
+which more or less is 60Hz every mode.
+
+Can you help me to get out from this situation?
+
+Regards,
+Gianluca Renzi
 -- 
-2.11.0
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Eurek s.r.l.                          |
+Electronic Engineering                | http://www.eurek.it
+via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
+p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
 
 _______________________________________________
 barebox mailing list
