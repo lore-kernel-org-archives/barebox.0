@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cdtlm-0001Ed-Qj
- for barebox@lists.infradead.org; Wed, 15 Feb 2017 07:12:56 +0000
-Received: by mail-lf0-x241.google.com with SMTP id h65so12637822lfi.3
- for <barebox@lists.infradead.org>; Tue, 14 Feb 2017 23:12:34 -0800 (PST)
+ id 1cdtlm-0001Ec-RB
+ for barebox@lists.infradead.org; Wed, 15 Feb 2017 07:12:57 +0000
+Received: by mail-lf0-x241.google.com with SMTP id v186so12680776lfa.2
+ for <barebox@lists.infradead.org>; Tue, 14 Feb 2017 23:12:33 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 15 Feb 2017 10:12:26 +0300
-Message-Id: <20170215071227.31183-2-antonynpavlov@gmail.com>
-In-Reply-To: <20170215071227.31183-1-antonynpavlov@gmail.com>
-References: <20170215071227.31183-1-antonynpavlov@gmail.com>
+Date: Wed, 15 Feb 2017 10:12:25 +0300
+Message-Id: <20170215071227.31183-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,31 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 1/2] sandbox: avoid symbol conflict for {open,read,close}dir
+Subject: [RFC 0/2] sandbox: add gpio support with libftdi1
 To: barebox@lists.infradead.org
 
-This fixes libusb's /dev/bus/usb directory scan.
+This patch series makes it possible to use FT2232H ACBUS[7:0]
+pins as gpio pins from sandbox barebox.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/sandbox/Makefile | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+I have tested output gpio functionality by connecting
+a LED to ACBUS[0] and lightening it with gpio_direction_output
+and gpio_set_value barebox commands.
 
-diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index 8155a790e..9d545c3b7 100644
---- a/arch/sandbox/Makefile
-+++ b/arch/sandbox/Makefile
-@@ -21,7 +21,9 @@ CFLAGS += -Dmalloc=barebox_malloc -Dcalloc=barebox_calloc \
- 		-Dfputs=barebox_fputs -Dsetenv=barebox_setenv \
- 		-Dgetenv=barebox_getenv -Dprintf=barebox_printf \
- 		-Dglob=barebox_glob -Dglobfree=barebox_globfree \
--		-Dioctl=barebox_ioctl -Dfstat=barebox_fstat
-+		-Dioctl=barebox_ioctl -Dfstat=barebox_fstat \
-+		-Dopendir=barebox_opendir -Dreaddir=barebox_readdir \
-+		-Dclosedir=barebox_closedir
- 
- machdirs := $(patsubst %,arch/sandbox/mach-%/,$(machine-y))
- 
+Also I have performed input test with ACBUS[0] -> ACBUS[1] loopback.
+
+The main goal of adding gpio functionality to sandbox barebox
+is using it for connecting real i2c and spi devices to sandbox barebox
+(not tested yet).
+
+
+Antony Pavlov (2):
+  sandbox: avoid symbol conflict for {open,read,close}dir
+  sandbox: add gpio support with libftdi1
+
+ arch/sandbox/Kconfig                           |   1 +
+ arch/sandbox/Makefile                          |  10 +-
+ arch/sandbox/board/board.c                     |   7 ++
+ arch/sandbox/mach-sandbox/include/mach/linux.h |  11 ++
+ arch/sandbox/os/Makefile                       |   3 +
+ arch/sandbox/os/ftdi.c                         | 167 +++++++++++++++++++++++++
+ drivers/gpio/Kconfig                           |   4 +
+ drivers/gpio/Makefile                          |   1 +
+ drivers/gpio/gpio-libftdi1.c                   | 116 +++++++++++++++++
+ 9 files changed, 318 insertions(+), 2 deletions(-)
+ create mode 100644 arch/sandbox/os/ftdi.c
+ create mode 100644 drivers/gpio/gpio-libftdi1.c
+
 -- 
 2.11.0
 
