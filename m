@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 5.mo177.mail-out.ovh.net ([46.105.39.154])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ce5G2-0007HN-2y
- for barebox@lists.infradead.org; Wed, 15 Feb 2017 19:28:56 +0000
+ id 1ce5G2-0007Hd-32
+ for barebox@lists.infradead.org; Wed, 15 Feb 2017 19:28:58 +0000
 Received: from player716.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo177.mail-out.ovh.net (Postfix) with ESMTP id D80042F81A
- for <barebox@lists.infradead.org>; Wed, 15 Feb 2017 20:28:31 +0100 (CET)
+ by mo177.mail-out.ovh.net (Postfix) with ESMTP id 1A3372F835
+ for <barebox@lists.infradead.org>; Wed, 15 Feb 2017 20:28:34 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 15 Feb 2017 20:34:10 +0100
-Message-Id: <1487187257-29082-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 15 Feb 2017 20:34:12 +0100
+Message-Id: <1487187257-29082-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1487187257-29082-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20170215192932.GB32649@mail.ovh.net>
  <1487187257-29082-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,73 +25,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/12] efi: move clocksource out of arch
+Subject: [PATCH 04/12] efi: move debug_ll.h to include/efi
 To: barebox@lists.infradead.org
 
-as efi is not an arch but a boot mode from where barebox is started
+so other arch could include it too
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/efi/Kconfig                                        | 1 +
- arch/efi/efi/Makefile                                   | 1 -
- drivers/clocksource/Kconfig                             | 4 ++++
- drivers/clocksource/Makefile                            | 1 +
- arch/efi/efi/clocksource.c => drivers/clocksource/efi.c | 0
- 5 files changed, 6 insertions(+), 1 deletion(-)
- rename arch/efi/efi/clocksource.c => drivers/clocksource/efi.c (100%)
+ arch/efi/include/mach/debug_ll.h                  | 21 +--------------------
+ {arch/efi/include/mach => include/efi}/debug_ll.h |  0
+ 2 files changed, 1 insertion(+), 20 deletions(-)
+ copy {arch/efi/include/mach => include/efi}/debug_ll.h (100%)
 
-diff --git a/arch/efi/Kconfig b/arch/efi/Kconfig
-index d8d0592e5..01301c04f 100644
---- a/arch/efi/Kconfig
-+++ b/arch/efi/Kconfig
-@@ -7,6 +7,7 @@ config ARCH_EFI
- 	select EFI_DEVICEPATH
- 	select PRINTF_UUID
- 	select GENERIC_FIND_NEXT_BIT
-+	select CLOCKSOURCE_EFI
- 
- config ARCH_TEXT_BASE
- 	hex
-diff --git a/arch/efi/efi/Makefile b/arch/efi/efi/Makefile
-index f088c7a94..51db60b88 100644
---- a/arch/efi/efi/Makefile
-+++ b/arch/efi/efi/Makefile
-@@ -1,4 +1,3 @@
--obj-y += clocksource.o
- obj-y += efi.o
- obj-y += efi-device.o
- obj-y += efi-image.o
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index f1ab554f9..ae1f10eae 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -34,6 +34,10 @@ config CLOCKSOURCE_DUMMY_RATE
- 	  The option CONFIG_CLOCKSOURCE_DUMMY_RATE is used to adjust this clocksource.
- 	  The bigger rate valuest makes clocksource "faster".
- 
-+config CLOCKSOURCE_EFI
-+	bool
-+	depends on ARCH_EFI
-+
- config CLOCKSOURCE_MVEBU
- 	bool
- 	depends on ARCH_MVEBU
-diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-index 39982ffb2..e83fdeeec 100644
---- a/drivers/clocksource/Makefile
-+++ b/drivers/clocksource/Makefile
-@@ -3,6 +3,7 @@ obj-$(CONFIG_ARM_SMP_TWD) += arm_smp_twd.o
- obj-$(CONFIG_CLOCKSOURCE_BCM283X) += bcm2835.o
- obj-$(CONFIG_CLOCKSOURCE_CLPS711X) += clps711x.o
- obj-$(CONFIG_CLOCKSOURCE_DIGIC)   += digic.o
-+obj-$(CONFIG_CLOCKSOURCE_EFI) += efi.o
- obj-$(CONFIG_CLOCKSOURCE_MVEBU)   += mvebu.o
- obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
- obj-$(CONFIG_CLOCKSOURCE_ORION)   += orion.o
-diff --git a/arch/efi/efi/clocksource.c b/drivers/clocksource/efi.c
+diff --git a/arch/efi/include/mach/debug_ll.h b/arch/efi/include/mach/debug_ll.h
+index 4ca72de31..e144d86e0 100644
+--- a/arch/efi/include/mach/debug_ll.h
++++ b/arch/efi/include/mach/debug_ll.h
+@@ -1,20 +1 @@
+-#ifndef __MACH_DEBUG_LL_H__
+-#define __MACH_DEBUG_LL_H__
+-
+-#define EFI_DEBUG 0
+-#define EFI_DEBUG_CLEAR_MEMORY 0
+-
+-#include <efi.h>
+-#include <efi/efi.h>
+-
+-static inline void PUTC_LL(char c)
+-{
+-	uint16_t str[2] = {};
+-	struct efi_simple_text_output_protocol *con_out = efi_sys_table->con_out;
+-
+-	str[0] = c;
+-
+-	con_out->output_string(con_out, str);
+-}
+-
+-#endif
++#include <efi/debug_ll.h>
+diff --git a/arch/efi/include/mach/debug_ll.h b/include/efi/debug_ll.h
 similarity index 100%
-rename from arch/efi/efi/clocksource.c
-rename to drivers/clocksource/efi.c
+copy from arch/efi/include/mach/debug_ll.h
+copy to include/efi/debug_ll.h
 -- 
 2.11.0
 
