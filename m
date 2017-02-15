@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ce2Uj-0005mF-0p
- for barebox@lists.infradead.org; Wed, 15 Feb 2017 16:31:54 +0000
+ id 1ce2ff-0003AB-Fj
+ for barebox@lists.infradead.org; Wed, 15 Feb 2017 16:43:13 +0000
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Wed, 15 Feb 2017 17:31:24 +0100
-Message-Id: <20170215163124.21944-1-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20170214105358.6666-3-u.kleine-koenig@pengutronix.de>
-References: <20170214105358.6666-3-u.kleine-koenig@pengutronix.de>
+Date: Wed, 15 Feb 2017 17:42:46 +0100
+Message-Id: <20170215164248.31952-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170214105358.6666-1-u.kleine-koenig@pengutronix.de>
+References: <20170214105358.6666-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,50 +17,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] fixup! mvebu: rework how memory is detected
+Subject: [PATCH 4/3] mvebu: armada-370-xp: simplify soc init code flow
 To: barebox@lists.infradead.org
 
----
- arch/arm/mach-mvebu/dove.c     | 2 --
- arch/arm/mach-mvebu/kirkwood.c | 2 --
- 2 files changed, 4 deletions(-)
-
-diff --git a/arch/arm/mach-mvebu/dove.c b/arch/arm/mach-mvebu/dove.c
-index d6407f394229..9a3b05d004d5 100644
---- a/arch/arm/mach-mvebu/dove.c
-+++ b/arch/arm/mach-mvebu/dove.c
-@@ -54,8 +54,6 @@ static void __noreturn dove_restart_soc(struct restart_handler *rst)
- 
- static int dove_init_soc(struct device_node *root, void *context)
- {
--	unsigned long phys_base, phys_size;
--
- 	if (!of_machine_is_compatible("marvell,dove"))
- 		return 0;
- 
-diff --git a/arch/arm/mach-mvebu/kirkwood.c b/arch/arm/mach-mvebu/kirkwood.c
-index 51eb69fc4e7f..d5ddf05e3447 100644
---- a/arch/arm/mach-mvebu/kirkwood.c
-+++ b/arch/arm/mach-mvebu/kirkwood.c
-@@ -31,8 +31,6 @@ static void __noreturn kirkwood_restart_soc(struct restart_handler *rst)
- 
- static int kirkwood_init_soc(struct device_node *root, void *context)
- {
--	unsigned long phys_base, phys_size;
--
- 	if (!of_machine_is_compatible("marvell,kirkwood"))
- 		return 0;
- 
--- 
-2.11.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBnZXRzIHJpZCBvZiBhIG9mLWZpeHVwIHdoaWNoIGlzIHN0cmFuZ2UgYmVjYXVzZSB0aGUg
+c29jIGluaXQgc3R1ZmYgaXMKcmVydW4gdGhlbiB3aGVuIGEgbmV3IGR0IGZvciBib290aW5nIGlu
+dG8gTGludXggaXMgbG9hZGVkLiBJdCBhbHNvIG9ubHkgY2FsbHMKbXZlYnVfbWJ1c19hZGRfcmFu
+Z2UgaWYgd2UncmUgcnVubmluZyBvbiBhbiBBcm1hZGEgMzcwIG9yIFhQIGFuZCBpbmxpbmVzCmEg
+c2ltcGxlIGZ1bmN0aW9uLgoKVGhlIGluaXRjYWxsIG11c3QgYmUgcG9zdHBvbmVkIHRvIHBvc3Qt
+Y29yZSB0byBlbnN1cmUKb2ZfbWFjaGluZV9pc19jb21wYXRpYmxlIGlzIHdvcmtpbmcgY29ycmVj
+dGx5LgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0Bw
+ZW5ndXRyb25peC5kZT4KLS0tCiBhcmNoL2FybS9tYWNoLW12ZWJ1L2FybWFkYS0zNzAteHAuYyB8
+IDM0ICsrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAx
+MSBpbnNlcnRpb25zKCspLCAyMyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9t
+YWNoLW12ZWJ1L2FybWFkYS0zNzAteHAuYyBiL2FyY2gvYXJtL21hY2gtbXZlYnUvYXJtYWRhLTM3
+MC14cC5jCmluZGV4IDVmYjIwNzU5NGZkNC4uMTk2Yjc3MDI3N2YzIDEwMDY0NAotLS0gYS9hcmNo
+L2FybS9tYWNoLW12ZWJ1L2FybWFkYS0zNzAteHAuYworKysgYi9hcmNoL2FybS9tYWNoLW12ZWJ1
+L2FybWFkYS0zNzAteHAuYwpAQCAtODMsMjUgKzgzLDE2IEBAIHN0YXRpYyB2b2lkIF9fbm9yZXR1
+cm4gYXJtYWRhXzM3MF94cF9yZXN0YXJ0X3NvYyhzdHJ1Y3QgcmVzdGFydF9oYW5kbGVyICpyc3Qp
+CiAJaGFuZygpOwogfQogCi1zdGF0aWMgaW50IGFybWFkYV94cF9pbml0X3NvYyhzdHJ1Y3QgZGV2
+aWNlX25vZGUgKnJvb3QpCi17Ci0JdTMyIHJlZzsKLQotCS8qIEVuYWJsZSBHQkUwLCBHQkUxLCBM
+Q0QgYW5kIE5GQyBQVVAgKi8KLQlyZWcgPSByZWFkbChBUk1BREFfWFBfUFVQX0VOQUJMRSk7Ci0J
+cmVnIHw9IEdFMF9QVVBfRU4gfCBHRTFfUFVQX0VOIHwgTENEX1BVUF9FTiB8IE5BTkRfUFVQX0VO
+IHwgU1BJX1BVUF9FTjsKLQl3cml0ZWwocmVnLCBBUk1BREFfWFBfUFVQX0VOQUJMRSk7Ci0KLQly
+ZXR1cm4gMDsKLX0KLQotc3RhdGljIGludCBhcm1hZGFfMzcwX3hwX2luaXRfc29jKHN0cnVjdCBk
+ZXZpY2Vfbm9kZSAqcm9vdCwgdm9pZCAqY29udGV4dCkKK3N0YXRpYyBpbnQgYXJtYWRhXzM3MF94
+cF9pbml0X3NvYyh2b2lkKQogewogCXUzMiByZWc7CiAKIAlpZiAoIW9mX21hY2hpbmVfaXNfY29t
+cGF0aWJsZSgibWFydmVsbCxhcm1hZGEtMzcwLXhwIikpCiAJCXJldHVybiAwOwogCisJbXZlYnVf
+bWJ1c19hZGRfcmFuZ2UoIm1hcnZlbGwsYXJtYWRhLTM3MC14cCIsIDB4ZjAsIDB4MDEsCisJCQkg
+ICAgIE1WRUJVX1JFTUFQX0lOVF9SRUdfQkFTRSk7CisKIAlyZXN0YXJ0X2hhbmRsZXJfcmVnaXN0
+ZXJfZm4oYXJtYWRhXzM3MF94cF9yZXN0YXJ0X3NvYyk7CiAKIAliYXJlYm94X3NldF9tb2RlbCgi
+TWFydmVsbCBBcm1hZGEgMzcwL1hQIik7CkBAIC0xMTYsMTYgKzEwNywxMyBAQCBzdGF0aWMgaW50
+IGFybWFkYV8zNzBfeHBfaW5pdF9zb2Moc3RydWN0IGRldmljZV9ub2RlICpyb290LCB2b2lkICpj
+b250ZXh0KQogCiAJYXJtYWRhX3hwX3NvY19pZF9maXh1cCgpOwogCi0JaWYgKG9mX21hY2hpbmVf
+aXNfY29tcGF0aWJsZSgibWFydmVsbCxhcm1hZGF4cCIpKQotCQlhcm1hZGFfeHBfaW5pdF9zb2Mo
+cm9vdCk7CisJaWYgKG9mX21hY2hpbmVfaXNfY29tcGF0aWJsZSgibWFydmVsbCxhcm1hZGF4cCIp
+KSB7CisJCS8qIEVuYWJsZSBHQkUwLCBHQkUxLCBMQ0QgYW5kIE5GQyBQVVAgKi8KKwkJcmVnID0g
+cmVhZGwoQVJNQURBX1hQX1BVUF9FTkFCTEUpOworCQlyZWcgfD0gR0UwX1BVUF9FTiB8IEdFMV9Q
+VVBfRU4gfCBMQ0RfUFVQX0VOIHwgTkFORF9QVVBfRU4gfCBTUElfUFVQX0VOOworCQl3cml0ZWwo
+cmVnLCBBUk1BREFfWFBfUFVQX0VOQUJMRSk7CisJfQogCiAJcmV0dXJuIDA7CiB9Ci0KLXN0YXRp
+YyBpbnQgYXJtYWRhXzM3MF94cF9yZWdpc3Rlcl9zb2NfZml4dXAodm9pZCkKLXsKLQltdmVidV9t
+YnVzX2FkZF9yYW5nZSgibWFydmVsbCxhcm1hZGEtMzcwLXhwIiwgMHhmMCwgMHgwMSwKLQkJCSAg
+ICAgTVZFQlVfUkVNQVBfSU5UX1JFR19CQVNFKTsKLQlyZXR1cm4gb2ZfcmVnaXN0ZXJfZml4dXAo
+YXJtYWRhXzM3MF94cF9pbml0X3NvYywgTlVMTCk7Ci19Ci1wdXJlX2luaXRjYWxsKGFybWFkYV8z
+NzBfeHBfcmVnaXN0ZXJfc29jX2ZpeHVwKTsKK3Bvc3Rjb3JlX2luaXRjYWxsKGFybWFkYV8zNzBf
+eHBfaW5pdF9zb2MpOwotLSAKMi4xMS4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
+YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
+ZWJveAo=
