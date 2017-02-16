@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtprelay0236.hostedemail.com ([216.40.44.236]
- helo=smtprelay.hostedemail.com)
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ceJyK-0002pw-Oz
- for barebox@lists.infradead.org; Thu, 16 Feb 2017 11:11:39 +0000
-References: <20170215071227.31183-1-antonynpavlov@gmail.com>
- <20170216073430.4hctt6wnbkfiemtk@pengutronix.de>
-From: Ian Abbott <abbotti@mev.co.uk>
-Message-ID: <d7f8480d-f190-340b-b881-f59e990cad34@mev.co.uk>
-Date: Thu, 16 Feb 2017 11:11:10 +0000
+Received: from qmail.e-mind.com ([188.94.192.42])
+ by bombadil.infradead.org with smtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1ceNIU-0005HG-Rl
+ for barebox@lists.infradead.org; Thu, 16 Feb 2017 14:44:42 +0000
+References: <3a707429-03a7-db6b-a1b1-1e70ec0b929e@eurekelettronica.it>
+ <20170210073541.73bsfjhk3fu7nnwm@pengutronix.de>
+ <e2e3ab47-9cbd-0437-d889-a98704459d1b@eurekelettronica.it>
+ <20170215115104.qez5tgbsvwt3zxzz@pengutronix.de>
+ <e77ad532-0850-45a7-d41e-90e83b655dbf@eurekelettronica.it>
+ <20170216072801.sh3byseyh3f6osgg@pengutronix.de>
+From: gianluca <gianlucarenzi@eurekelettronica.it>
+Message-ID: <067eac64-0c28-4012-23bb-813e462d74c2@eurekelettronica.it>
+Date: Thu, 16 Feb 2017 15:43:52 +0100
 MIME-Version: 1.0
-In-Reply-To: <20170216073430.4hctt6wnbkfiemtk@pengutronix.de>
+In-Reply-To: <20170216072801.sh3byseyh3f6osgg@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,49 +26,56 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 0/2] sandbox: add gpio support with libftdi1
-To: Sascha Hauer <s.hauer@pengutronix.de>, Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: Using LVDS in a iMX6Q/D from Barebox
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 16/02/17 07:34, Sascha Hauer wrote:
-> Hi Antony,
->
-> On Wed, Feb 15, 2017 at 10:12:25AM +0300, Antony Pavlov wrote:
->> This patch series makes it possible to use FT2232H ACBUS[7:0]
->> pins as gpio pins from sandbox barebox.
+On 02/16/2017 08:28 AM, Sascha Hauer wrote:
+> On Wed, Feb 15, 2017 at 03:34:55PM +0100, gianluca wrote:
+>> On 02/15/2017 12:51 PM, Sascha Hauer wrote:
+>>> On Tue, Feb 14, 2017 at 11:32:44AM +0100, gianluca wrote:
+>>>> On 02/10/2017 08:35 AM, Sascha Hauer wrote:
+>> If no eeprom is found activate the status of the hdmi node from "disabled"
+>> to "okay". So with the same algorithm as above,
 >>
->> I have tested output gpio functionality by connecting
->> a LED to ACBUS[0] and lightening it with gpio_direction_output
->> and gpio_set_value barebox commands.
->>
->> Also I have performed input test with ACBUS[0] -> ACBUS[1] loopback.
->>
->> The main goal of adding gpio functionality to sandbox barebox
->> is using it for connecting real i2c and spi devices to sandbox barebox
->> (not tested yet).
+>> Those operations will be done in the coredevice_initcall() level. Is this
+>> correct?
 >
-> I just read that the FT2232H can even do native I2C and SPI, so no gpio
-> bitbanging would be necessary. Would it be possible to use this mode
-> instead?
+> Sounds like a plan. I'm not sure though if you find your EEPROM at
+> coredevice_initcall time.
 >
-> Otherwise I think there should be a possibility to specify which, if
-> any, FT2232H chip barebox uses.
 
-The MPSSE mode of the FT2232H can sort of do native I2C, but not in a 
-strictly conforming way.  The I2C SDA needs to be connected to two pins 
-on the FT2232H, one for output and one for input, and there is a 
-"Drive-Only-Zero" option for the output to ensure it is only driven low, 
-and tri-stated high.  However, the I2C SCL is only connected to an 
-output pin on the FT2232H, and is always driven in both directions. 
-Therefore, it does not support "clock-stretching" by I2C slaves (where a 
-slave pulls the SCL line low until it is ready), because it cannot read 
-back the state of the SCL line.  Worse, if an I2C slave is doing 
-clock-stretching by driving SCL low, this will contend with the FT2232H 
-driving SCL high at the same time.
+Nope. Accessing device drivers (enabled in the device-tree) is possible 
+in the section: device_initcall() and *NOT* in the coredevice_initcall() 
+time.
 
+Anyway I was wondering if looking for a node in the device-tree, it will 
+be possible to change the status of that node.
+
+in DTS I have
+
+&hdmi {
+	status="disabled";
+}
+
+but I need to set the status to "okay" later on the device_initcall() time.
+
+Iterating in the device tree using for_each_node_by_name_from() does not 
+show any node like hdmi, but using the same function to look for any 
+"display-timing" section it works.
+
+Why? Where I have to look on to change the status of the device driver 
+node &hdmi and &ldb?
+
+I see a lot of __fixup() functions but I do not understand it correctly.
+Like to change the phandle of the native-mode too..
+
+Regards,
 -- 
--=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=-
--=(                          Web: http://www.mev.co.uk/  )=-
+Eurek s.r.l.                          |
+Electronic Engineering                | http://www.eurek.it
+via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
+p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
 
 _______________________________________________
 barebox mailing list
