@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 2.mo68.mail-out.ovh.net ([46.105.52.162])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cfeIB-0003pR-L7
+ id 1cfeIC-0003pQ-LQ
  for barebox@lists.infradead.org; Mon, 20 Feb 2017 03:05:39 +0000
 Received: from player763.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo68.mail-out.ovh.net (Postfix) with ESMTP id 21CFE3BACA
+ by mo68.mail-out.ovh.net (Postfix) with ESMTP id 0A2E13BA7F
  for <barebox@lists.infradead.org>; Mon, 20 Feb 2017 04:05:08 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 20 Feb 2017 04:10:50 +0100
-Message-Id: <1487560251-3005-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1487560251-3005-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 20 Feb 2017 04:10:49 +0100
+Message-Id: <1487560251-3005-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20170215192932.GB32649@mail.ovh.net>
 References: <20170215192932.GB32649@mail.ovh.net>
- <1487560251-3005-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,41 +24,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/12] efi-gui: add Timestamp Protocol GUID definition
+Subject: [PATCH 10/12] efi: add minor and major to the bus and display it at
+ boot
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/efi-guid.c | 1 +
- include/efi.h     | 3 +++
- 2 files changed, 4 insertions(+)
+ drivers/efi/efi-device.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/common/efi-guid.c b/common/efi-guid.c
-index 64f3b1f65..04a00ee87 100644
---- a/common/efi-guid.c
-+++ b/common/efi-guid.c
-@@ -75,6 +75,7 @@ const char *efi_guid_string(efi_guid_t *g)
- 	EFI_GUID_STRING(EFI_COMPONENT_NAME2_PROTOCOL_GUID, "Component Name2 Protocol", "UEFI 2.0 Component Name2 Protocol");
- 	EFI_GUID_STRING(EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL_GUID_31, "Network Interface Identifier Protocol_31",  "EFI1.1 Network Interface Identifier Protocol");
- 	EFI_GUID_STRING(EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL_GUID, "Network Interface Identifier Protocol", "EFI Network Interface Identifier Protocol");
-+	EFI_GUID_STRING(EFI_TIMESTAMP_PROTOCOL_GUID, "Timestamp", "Timestamp");
- 
- 	/* File */
- 	EFI_GUID_STRING(EFI_IDEBUSDXE_INF_GUID, "IdeBusDxe.inf", "EFI IdeBusDxe.inf File GUID");
-diff --git a/include/efi.h b/include/efi.h
-index 4b812c9ab..d1b331ce5 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -469,6 +469,9 @@ extern efi_runtime_services_t *RT;
- #define EFI_VLANCONFIGDXE_INF_GUID \
- 	EFI_GUID(0xe4f61863, 0xfe2c, 0x4b56, 0xa8, 0xf4, 0x08, 0x51, 0x9b, 0xc4, 0x39, 0xdf)
- 
-+#define EFI_TIMESTAMP_PROTOCOL_GUID \
-+	EFI_GUID(0xafbfde41, 0x2e6e, 0x4262, 0xba, 0x65, 0x62, 0xb9, 0x23, 0x6e, 0x54, 0x95)
+diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
+index 7eb94de45..1877794c6 100644
+--- a/drivers/efi/efi-device.c
++++ b/drivers/efi/efi-device.c
+@@ -357,13 +357,22 @@ static void efi_businfo(struct device_d *dev)
+ static int efi_init_devices(void)
+ {
+ 	char *fw_vendor = NULL;
++	u16 sys_major = efi_sys_table->hdr.revision >> 16;
++	u16 sys_minor = efi_sys_table->hdr.revision & 0xffff;
 +
- /* barebox specific GUIDs */
- #define EFI_BAREBOX_VENDOR_GUID \
- 	EFI_GUID(0x5b91f69c, 0x8b88, 0x4a2b, 0x92, 0x69, 0x5f, 0x1d, 0x80, 0x2b, 0x51, 0x75)
++	fw_vendor = strdup_wchar_to_char((const wchar_t *)efi_sys_table->fw_vendor);
++
++	pr_info("EFI v%u.%.02u by %s v%u\n",
++		sys_major, sys_minor,
++		fw_vendor, efi_sys_table->fw_revision);
+ 
+ 	bus_register(&efi_bus);
+ 
+-	fw_vendor = strdup_wchar_to_char((const wchar_t *)efi_sys_table->fw_vendor);
+ 	dev_add_param_fixed(efi_bus.dev, "fw_vendor", fw_vendor);
+ 	free(fw_vendor);
+ 
++	dev_add_param_int_ro(efi_bus.dev, "major", sys_major, "%u");
++	dev_add_param_int_ro(efi_bus.dev, "minor", sys_minor, "%u");
+ 	dev_add_param_int_ro(efi_bus.dev, "fw_revision", efi_sys_table->fw_revision, "%u");
+ 
+ 	efi_bus.dev->info = efi_businfo;
 -- 
 2.11.0
 
