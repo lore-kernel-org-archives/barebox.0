@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1cfnlt-0007At-6g
- for barebox@lists.infradead.org; Mon, 20 Feb 2017 13:12:55 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id B77CDA0044C
- for <barebox@lists.infradead.org>; Mon, 20 Feb 2017 14:12:42 +0100 (CET)
-References: <1486633003-34908-1-git-send-email-w.egorov@phytec.de>
- <1486633003-34908-2-git-send-email-w.egorov@phytec.de>
-From: Wadim Egorov <w.egorov@phytec.de>
-Message-ID: <49f8f06d-ed61-fb14-fb80-aff250676b0d@phytec.de>
-Date: Mon, 20 Feb 2017 14:12:21 +0100
-MIME-Version: 1.0
-In-Reply-To: <1486633003-34908-2-git-send-email-w.egorov@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cfoGY-00043X-LS
+ for barebox@lists.infradead.org; Mon, 20 Feb 2017 13:44:38 +0000
+Message-ID: <1487598249.2268.9.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 20 Feb 2017 14:44:09 +0100
+In-Reply-To: <1485872952-8386-1-git-send-email-s.hauer@pengutronix.de>
+References: <1485872952-8386-1-git-send-email-s.hauer@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,69 +21,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] serial: ns16550: Set read/write functions depending on
- reg-io-width
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] scripts: mxsimage: Fix build with OpenSSL < 1.1.x
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>, ukl@pengutronix.de
 
-Is this patch okay?
+Am Dienstag, den 31.01.2017, 15:29 +0100 schrieb Sascha Hauer:
+> Move the compatibility wrapper functions up so that they
+> are defined before they are used.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
+Tested-by: Lucas Stach <l.stach@pengutronix.de>
 
-Am 09.02.2017 um 10:36 schrieb Wadim Egorov:
-> Set proper register read/write functions depending on reg-io-width
-> device tree property.
->
-> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+This fixes the build failures seen in the randcfg builder. Can you
+please commit this?
+
 > ---
->
-> of_platform_device_create() creates resources in the device_d struct.
-> ns16550_init_iomem() and ns16550_init_ioport() are reading the resources
-> and it's flags (register width).
-> So both functions are not failing, because there is a valid resource.
-> The res->flags might be not set at all. And if it is not set, the driver
-> will use always IORESOURCE_MEM_8BIT.
->
-> With this patch the probe_dt() func will override the read/write funcs,
-> if there is a valid reg-io-width property.
-> ---
->  drivers/serial/serial_ns16550.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
->
-> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-> index c6548e3..752e77b 100644
-> --- a/drivers/serial/serial_ns16550.c
-> +++ b/drivers/serial/serial_ns16550.c
-> @@ -287,12 +287,31 @@ static int ns16550_tstc(struct console_device *cdev)
->  static void ns16550_probe_dt(struct device_d *dev, struct ns16550_priv *priv)
->  {
->  	struct device_node *np = dev->device_node;
-> +	u32 width;
->  
->  	if (!IS_ENABLED(CONFIG_OFDEVICE))
->  		return;
->  
->  	of_property_read_u32(np, "clock-frequency", &priv->plat.clock);
->  	of_property_read_u32(np, "reg-shift", &priv->plat.shift);
-> +	if (!of_property_read_u32(np, "reg-io-width", &width))
-> +		switch (width) {
-> +		case 1:
-> +			priv->read_reg = ns16550_read_reg_mmio_8;
-> +			priv->write_reg = ns16550_write_reg_mmio_8;
-> +			break;
-> +		case 2:
-> +			priv->read_reg = ns16550_read_reg_mmio_16;
-> +			priv->write_reg = ns16550_write_reg_mmio_16;
-> +			break;
-> +		case 4:
-> +			priv->read_reg = ns16550_read_reg_mmio_32;
-> +			priv->write_reg = ns16550_write_reg_mmio_32;
-> +			break;
-> +		default:
-> +			dev_err(dev, "unsupported reg-io-width (%d)\n",
-> +				width);
-> +		}
+>  scripts/mxsimage.c | 62 +++++++++++++++++++++++++++---------------------------
+>  1 file changed, 31 insertions(+), 31 deletions(-)
+> 
+> diff --git a/scripts/mxsimage.c b/scripts/mxsimage.c
+> index bcbbf00..5c2c307 100644
+> --- a/scripts/mxsimage.c
+> +++ b/scripts/mxsimage.c
+> @@ -410,6 +410,37 @@ static void make_crc_table(void)
+>  	crc_table_valid = 1;
 >  }
 >  
->  static struct ns16550_drvdata ns16450_drvdata = {
+> +/*
+> + * OpenSSL 1.1.0 and newer compatibility functions:
+> + * https://wiki.openssl.org/index.php/1.1_API_Changes
+> + */
+> +#if OPENSSL_VERSION_NUMBER < 0x10100000L
+> +static void *OPENSSL_zalloc(size_t num)
+> +{
+> +	void *ret = OPENSSL_malloc(num);
+> +
+> +	if (ret != NULL)
+> +		memset(ret, 0, num);
+> +	return ret;
+> +}
+> +
+> +EVP_MD_CTX *EVP_MD_CTX_new(void)
+> +{
+> +	return OPENSSL_zalloc(sizeof(EVP_MD_CTX));
+> +}
+> +
+> +void EVP_MD_CTX_free(EVP_MD_CTX *ctx)
+> +{
+> +	EVP_MD_CTX_cleanup(ctx);
+> +	OPENSSL_free(ctx);
+> +}
+> +
+> +int EVP_CIPHER_CTX_reset(EVP_CIPHER_CTX *ctx)
+> +{
+> +	return EVP_CIPHER_CTX_cleanup(ctx);
+> +}
+> +#endif
+> +
+>  uint32_t pbl_crc32(uint32_t in_crc, const char *buf, uint32_t len)
+>  {
+>  	uint32_t crc32_val;
+> @@ -2292,37 +2323,6 @@ static int sb_verify_image_end(struct sb_image_ctx *ictx,
+>  	return ret;
+>  }
+>  
+> -/*
+> - * OpenSSL 1.1.0 and newer compatibility functions:
+> - * https://wiki.openssl.org/index.php/1.1_API_Changes
+> - */
+> -#if OPENSSL_VERSION_NUMBER < 0x10100000L
+> -static void *OPENSSL_zalloc(size_t num)
+> -{
+> -	void *ret = OPENSSL_malloc(num);
+> -
+> -	if (ret != NULL)
+> -		memset(ret, 0, num);
+> -	return ret;
+> -}
+> -
+> -EVP_MD_CTX *EVP_MD_CTX_new(void)
+> -{
+> -	return OPENSSL_zalloc(sizeof(EVP_MD_CTX));
+> -}
+> -
+> -void EVP_MD_CTX_free(EVP_MD_CTX *ctx)
+> -{
+> -	EVP_MD_CTX_cleanup(ctx);
+> -	OPENSSL_free(ctx);
+> -}
+> -
+> -int EVP_CIPHER_CTX_reset(EVP_CIPHER_CTX *ctx)
+> -{
+> -	return EVP_CIPHER_CTX_cleanup(ctx);
+> -}
+> -#endif
+> -
+>  static int sb_build_tree_from_img(struct sb_image_ctx *ictx)
+>  {
+>  	long filesize;
+
 
 
 _______________________________________________
