@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cgS5z-0003SX-4z
- for barebox@lists.infradead.org; Wed, 22 Feb 2017 08:16:21 +0000
-Received: by mail-wm0-x244.google.com with SMTP id i186so716300wmf.1
- for <barebox@lists.infradead.org>; Wed, 22 Feb 2017 00:15:58 -0800 (PST)
+ id 1cgSGK-0007yI-EX
+ for barebox@lists.infradead.org; Wed, 22 Feb 2017 08:27:02 +0000
+Date: Wed, 22 Feb 2017 09:26:37 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170222082637.ua4wmgswhrmqchzm@pengutronix.de>
+References: <1487530678-7615-1-git-send-email-akurz@blala.de>
 MIME-Version: 1.0
-In-Reply-To: <0CEC428C-E1EE-48A7-85CF-6FC90A22F47C@jcrosoft.com>
-References: <20170221144751.27760-1-yegorslists@googlemail.com>
- <0CEC428C-E1EE-48A7-85CF-6FC90A22F47C@jcrosoft.com>
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Wed, 22 Feb 2017 09:15:36 +0100
-Message-ID: <CAGm1_ku+mmxKRgdEGzQrTi37+8nmnM5MX+Cn2VQBGfxd-bjqog@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1487530678-7615-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,84 +22,182 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] lib: xz: add support for bcj filters
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: Falco Hyfing <hyfinglists@gmail.com>, barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH] scripts: imx-usb-loader: implement DCD v2 check command
+To: Alexander Kurz <akurz@blala.de>
+Cc: barebox@lists.infradead.org
 
-On Wed, Feb 22, 2017 at 5:29 AM, Jean-Christophe PLAGNIOL-VILLARD
-<plagnioj@jcrosoft.com> wrote:
->
->> On Feb 21, 2017, at 10:47 PM, yegorslists@googlemail.com wrote:
->>
->> From: Yegor Yefremov <yegorslists@googlemail.com>
->>
->> Add missing configuration options for various bcj filters. Without
->> these options the lib/xz/xz_dec_bcj.c file will be compiled, but all
->> filters will be disabled.
->>
->> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
->> ---
->> lib/Kconfig | 28 ++++++++++++++++++++++++++++
->> 1 file changed, 28 insertions(+)
->>
->> diff --git a/lib/Kconfig b/lib/Kconfig
->> index f9f25bdef..83dd8e0a4 100644
->> --- a/lib/Kconfig
->> +++ b/lib/Kconfig
->> @@ -22,6 +22,34 @@ config XZ_DECOMPRESS
->>       bool "include xz uncompression support"
->>       select UNCOMPRESS
->>
->> +if XZ_DECOMPRESS
->> +
->> +config XZ_DEC_X86
->> +        bool "x86 BCJ filter decoder"
->> +        default y
-> this need to be ARCH dependant
+On Sun, Feb 19, 2017 at 07:57:58PM +0100, Alexander Kurz wrote:
+> The DCD v2 check command supported by i.MX53 and later SoC polls a given
+> memory location as long as a given condition is true.
+> Enable imx-usb-loader to perform this check. When the timeout is hit,
+> imx-usb-loader returns an error. For practical reasons the timeout
+> computation will differ from the native implementation, since performing
+> check commands via USB will be much slower compared to native processing.
+> 
+> Signed-off-by: Alexander Kurz <akurz@blala.de>
 
-Why? In Linux kernel it is not arch dependent, because AFAIK it
-describes only compression particularities. This way you can extract
-sqaushfs images on your ARM machine, that were compressed on SPARK
-etc.
+Nice work. Applied, thanks
 
->> +
->> +config XZ_DEC_POWERPC
->> +        bool "PowerPC BCJ filter decoder"
->> +        default y
->> +
-> ditto
->> +config XZ_DEC_IA64
->> +        bool "IA-64 BCJ filter decoder"
->> +        default y
-> ditto
->> +config XZ_DEC_ARM
->> +        bool "ARM BCJ filter decoder"
->> +        default y
->> +
-> ditto
->> +config XZ_DEC_ARMTHUMB
->> +        bool "ARM-Thumb BCJ filter decoder"
->> +        default y
->> +
-> ditto
->> +config XZ_DEC_SPARC
->> +        bool "SPARC BCJ filter decoder"
->> +        default y
->> +
->> +endif
->> +
->> config REED_SOLOMON
->>       bool
->>
->> --
->> 2.11.0
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->
+Sascha
+
+> ---
+>  scripts/imx/imx-usb-loader.c | 95 +++++++++++++++++++++++++++++++++++++++++++-
+>  scripts/imx/imx.h            | 16 ++++++++
+>  2 files changed, 109 insertions(+), 2 deletions(-)
+> 
+> diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+> index 9de7bb3..4105ade 100644
+> --- a/scripts/imx/imx-usb-loader.c
+> +++ b/scripts/imx/imx-usb-loader.c
+> @@ -798,6 +798,98 @@ static int do_dcd_v2_cmd_write(const unsigned char *dcd)
+>  	return 0;
+>  }
+>  
+> +static int do_dcd_v2_cmd_check(const unsigned char *dcd)
+> +{
+> +	uint32_t mask;
+> +	uint32_t poll_count = 0;
+> +	int bytes;
+> +	enum imx_dcd_v2_check_cond cond;
+> +	struct imx_dcd_v2_check *check = (struct imx_dcd_v2_check *) dcd;
+> +	switch (ntohs(check->length)) {
+> +	case 12:
+> +		/* poll indefinitely */
+> +		poll_count = 0xffffffff;
+> +		break;
+> +	case 16:
+> +		poll_count = ntohl(check->count);
+> +		if (poll_count == 0)
+> +			/* this command behaves as for NOP */
+> +			return 0;
+> +		break;
+> +	default:
+> +		fprintf(stderr, "Error: invalid DCD check length\n");
+> +		return -1;
+> +	}
+> +
+> +	switch (check->param & 7) {
+> +	case 1:
+> +	case 2:
+> +	case 4:
+> +		bytes = check->param & 7;
+> +		break;
+> +	default:
+> +		fprintf(stderr, "Error: invalid DCD check size\n");
+> +		return -1;
+> +	}
+> +
+> +	switch ((check->param & 0xf8) >> 3) {
+> +	case check_all_bits_clear:
+> +	case check_all_bits_set:
+> +	case check_any_bit_clear:
+> +	case check_any_bit_set:
+> +		cond = (check->param & 0xf8) >> 3;
+> +		break;
+> +	default:
+> +		fprintf(stderr, "Error: invalid DCD check condition\n");
+> +		return -1;
+> +	}
+> +
+> +	mask = ntohl(check->mask);
+> +
+> +	fprintf(stderr, "DCD check condition %i on address 0x%x\n",
+> +		cond, ntohl(check->addr));
+> +	/* Reduce the poll count to some arbitrary practical limit.
+> +	   Polling via SRP commands will be much slower compared to
+> +	   polling when DCD is interpreted by the SOC microcode.
+> +	*/
+> +	if (poll_count > 1000)
+> +		poll_count = 1000;
+> +
+> +	while (poll_count > 0) {
+> +		uint32_t data = 0;
+> +		int ret = read_memory(ntohl(check->addr), &data, bytes);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		data &= mask;
+> +
+> +		switch (cond) {
+> +		case check_all_bits_clear:
+> +			if (data != 0)
+> +				return 0;
+> +			break;
+> +		case check_all_bits_set:
+> +			if (data != mask)
+> +				return 0;
+> +			break;
+> +		case check_any_bit_clear:
+> +			if (data == mask)
+> +				return 0;
+> +			break;
+> +		case check_any_bit_set:
+> +			if (data == 0)
+> +				return 0;
+> +			break;
+> +		}
+> +		poll_count--;
+> +	}
+> +
+> +	fprintf(stderr, "Error: timeout waiting for DCD check condition %i "
+> +		"on address 0x%08x to match 0x%08x\n", cond,
+> +		ntohl(check->addr), ntohl(check->mask));
+> +	return -1;
+> +}
+> +
+>  static int process_dcd_table_ivt(const struct imx_flash_header_v2 *hdr,
+>  			       const unsigned char *file_start, unsigned cnt)
+>  {
+> @@ -850,8 +942,7 @@ static int process_dcd_table_ivt(const struct imx_flash_header_v2 *hdr,
+>  			ret = do_dcd_v2_cmd_write(dcd);
+>  			break;
+>  		case TAG_CHECK:
+> -			fprintf(stderr, "DCD check not implemented yet\n");
+> -			usleep(50000);
+> +			ret = do_dcd_v2_cmd_check(dcd);
+>  			break;
+>  		case TAG_UNLOCK:
+>  			fprintf(stderr, "DCD unlock not implemented yet\n");
+> diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
+> index 57c7525..f32ae52 100644
+> --- a/scripts/imx/imx.h
+> +++ b/scripts/imx/imx.h
+> @@ -95,4 +95,20 @@ struct imx_dcd_v2_write {
+>  	struct imx_dcd_v2_write_rec data[MAX_RECORDS_DCD_V2];
+>  } __attribute__((packed));
+>  
+> +struct imx_dcd_v2_check {
+> +	uint8_t tag;
+> +	uint16_t length;
+> +	uint8_t param;
+> +	uint32_t addr;
+> +	uint32_t mask;
+> +	uint32_t count;
+> +} __attribute__((packed));
+> +
+> +enum imx_dcd_v2_check_cond {
+> +	check_all_bits_clear = 0,
+> +	check_all_bits_set = 1,
+> +	check_any_bit_clear = 2,
+> +	check_any_bit_set = 3,
+> +} __attribute__((packed));
+> +
+>  int parse_config(struct config_data *data, const char *filename);
+> -- 
+> 2.1.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
