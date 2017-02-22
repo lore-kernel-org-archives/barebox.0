@@ -1,21 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cgVCT-00019A-3U
- for barebox@lists.infradead.org; Wed, 22 Feb 2017 11:35:20 +0000
-Date: Wed, 22 Feb 2017 12:34:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170222113448.vwd6xnj5zspfhdlk@pengutronix.de>
-References: <20170221144751.27760-1-yegorslists@googlemail.com>
- <0CEC428C-E1EE-48A7-85CF-6FC90A22F47C@jcrosoft.com>
- <CAGm1_ku+mmxKRgdEGzQrTi37+8nmnM5MX+Cn2VQBGfxd-bjqog@mail.gmail.com>
- <20170222100350.anjucafhspmwsa2c@pengutronix.de>
- <CAGm1_ktrPpdx3_OGqHfdD2mwCaf9_d=V3y4xXJhX6NYpz5YkEA@mail.gmail.com>
- <20170222102149.anazwahf4adk2zai@pengutronix.de>
- <CAGm1_ktS6tyZPCMC1_HcP5e64=kCyO8=mz-S4hobgBxx6rVkiQ@mail.gmail.com>
+ id 1cgdBU-0006Pc-G7
+ for barebox@lists.infradead.org; Wed, 22 Feb 2017 20:06:46 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Wed, 22 Feb 2017 21:06:18 +0100
+Message-Id: <20170222200618.5723-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAGm1_ktS6tyZPCMC1_HcP5e64=kCyO8=mz-S4hobgBxx6rVkiQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,96 +15,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] lib: xz: add support for bcj filters
-To: Yegor Yefremov <yegorslists@googlemail.com>
-Cc: Falco Hyfing <hyfinglists@gmail.com>, barebox <barebox@lists.infradead.org>
+Subject: [PATCH] mvebu: Fix fixup of mbus device-tree ranges
+To: barebox@lists.infradead.org
 
-On Wed, Feb 22, 2017 at 11:35:46AM +0100, Yegor Yefremov wrote:
-> On Wed, Feb 22, 2017 at 11:21 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > On Wed, Feb 22, 2017 at 11:10:36AM +0100, Yegor Yefremov wrote:
-> >> On Wed, Feb 22, 2017 at 11:03 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> >> > On Wed, Feb 22, 2017 at 09:15:36AM +0100, Yegor Yefremov wrote:
-> >> >> On Wed, Feb 22, 2017 at 5:29 AM, Jean-Christophe PLAGNIOL-VILLARD
-> >> >> <plagnioj@jcrosoft.com> wrote:
-> >> >> >
-> >> >> >> On Feb 21, 2017, at 10:47 PM, yegorslists@googlemail.com wrote:
-> >> >> >>
-> >> >> >> From: Yegor Yefremov <yegorslists@googlemail.com>
-> >> >> >>
-> >> >> >> Add missing configuration options for various bcj filters. Without
-> >> >> >> these options the lib/xz/xz_dec_bcj.c file will be compiled, but all
-> >> >> >> filters will be disabled.
-> >> >> >>
-> >> >> >> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
-> >> >> >> ---
-> >> >> >> lib/Kconfig | 28 ++++++++++++++++++++++++++++
-> >> >> >> 1 file changed, 28 insertions(+)
-> >> >> >>
-> >> >> >> diff --git a/lib/Kconfig b/lib/Kconfig
-> >> >> >> index f9f25bdef..83dd8e0a4 100644
-> >> >> >> --- a/lib/Kconfig
-> >> >> >> +++ b/lib/Kconfig
-> >> >> >> @@ -22,6 +22,34 @@ config XZ_DECOMPRESS
-> >> >> >>       bool "include xz uncompression support"
-> >> >> >>       select UNCOMPRESS
-> >> >> >>
-> >> >> >> +if XZ_DECOMPRESS
-> >> >> >> +
-> >> >> >> +config XZ_DEC_X86
-> >> >> >> +        bool "x86 BCJ filter decoder"
-> >> >> >> +        default y
-> >> >> > this need to be ARCH dependant
-> >> >>
-> >> >> Why? In Linux kernel it is not arch dependent, because AFAIK it
-> >> >> describes only compression particularities. This way you can extract
-> >> >> sqaushfs images on your ARM machine, that were compressed on SPARK
-> >> >> etc.
-> >> >
-> >> > So xz uses the Sparc bcj filter even when compressing ARM binaries? That
-> >> > doesn't sound very mature to me.
-> >>
-> >> This is just an xz command line option. So it is completely in the
-> >> user responsibility.
-> >
-> > I see. What's the default for this option? The architecture xz is
-> > running on?
-> >
-> > Otherwise we could do a:
-> >
-> > config XZ_DEC_ARM
-> >         bool "ARM BCJ filter decoder"
-> >         default y if ARCH_ARM
-> >
-> > On the other hand I'm not sure if the potential image size gain for
-> > disabling the unused bcj filters is even worth thinking about the
-> > problem...
-> 
-> My barebox images without filters:
-> 
-> 4668516 barebox
-> 640752 barebox.bin
-> 
-> with all filters:
-> 
-> 4679592 barebox
-> 642632 barebox.bin
-
-Ok, so not worth discussing about. Size concerned people should disable
-xz support ;)
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Q29tbWl0cyAibXZlYnU6IHthcm1hZGEtMzcwLXhwLGRvdmUsa2lya3dvb2R9OiBzaW1wbGlmeSBz
+b2MgaW5pdCBjb2RlCmZsb3ciIHNpbXBsaWZpZWQgdG9vIG11Y2guIFRoZSBwcm9ibGVtIGlzIHRo
+YXQgaWYgdGhlIGR0YiB1c2VkIGZvcgpwcm9iaW5nIGRvZXNuJ3QgdXNlIHRoZSBzYW1lIG1idXMg
+d2luZG93IGFkZHJlc3MgYXMgYmFyZWJveCAoaS5lLgoweGYxMDAwMDAwKSB0aGUgZml4dXAgZmFp
+bHMgYmVjYXVzZSBhYm92ZSBjb21taXRzIG1vdmVkIHRoZSBpbmZvcm1hdGlvbgphYm91dCB0aGUg
+cmVhbCBwb3NpdGlvbiB0byBhIHBvc3Rjb3JlIGluaXRjYWxsIHdoaWNoIGlzIHRvbyBsYXRlIGJl
+Y2F1c2UKdGhlIGZpeHVwIGhhcHBlbnMgaW4gb2ZfYXJtX2luaXQgd2hpY2ggcnVucyBhcyBjb3Jl
+IGluaXRjYWxsLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtv
+ZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBhcmNoL2FybS9tYWNoLW12ZWJ1L2FybWFkYS0zNzAt
+eHAuYyB8ICAzIC0tLQogYXJjaC9hcm0vbWFjaC1tdmVidS9kb3ZlLmMgICAgICAgICAgfCAgNSAt
+LS0tLQogYXJjaC9hcm0vbWFjaC1tdmVidS9raXJrd29vZC5jICAgICAgfCAgMiAtLQogZHJpdmVy
+cy9idXMvbXZlYnUtbWJ1cy5jICAgICAgICAgICAgfCAyMiArKysrKysrKysrKysrKysrKysrKyst
+CiA0IGZpbGVzIGNoYW5nZWQsIDIxIGluc2VydGlvbnMoKyksIDExIGRlbGV0aW9ucygtKQoKZGlm
+ZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtbXZlYnUvYXJtYWRhLTM3MC14cC5jIGIvYXJjaC9hcm0v
+bWFjaC1tdmVidS9hcm1hZGEtMzcwLXhwLmMKaW5kZXggMTk2Yjc3MDI3N2YzLi45M2FkOTU1YTZl
+NDkgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtbXZlYnUvYXJtYWRhLTM3MC14cC5jCisrKyBi
+L2FyY2gvYXJtL21hY2gtbXZlYnUvYXJtYWRhLTM3MC14cC5jCkBAIC05MCw5ICs5MCw2IEBAIHN0
+YXRpYyBpbnQgYXJtYWRhXzM3MF94cF9pbml0X3NvYyh2b2lkKQogCWlmICghb2ZfbWFjaGluZV9p
+c19jb21wYXRpYmxlKCJtYXJ2ZWxsLGFybWFkYS0zNzAteHAiKSkKIAkJcmV0dXJuIDA7CiAKLQlt
+dmVidV9tYnVzX2FkZF9yYW5nZSgibWFydmVsbCxhcm1hZGEtMzcwLXhwIiwgMHhmMCwgMHgwMSwK
+LQkJCSAgICAgTVZFQlVfUkVNQVBfSU5UX1JFR19CQVNFKTsKLQogCXJlc3RhcnRfaGFuZGxlcl9y
+ZWdpc3Rlcl9mbihhcm1hZGFfMzcwX3hwX3Jlc3RhcnRfc29jKTsKIAogCWJhcmVib3hfc2V0X21v
+ZGVsKCJNYXJ2ZWxsIEFybWFkYSAzNzAvWFAiKTsKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gt
+bXZlYnUvZG92ZS5jIGIvYXJjaC9hcm0vbWFjaC1tdmVidS9kb3ZlLmMKaW5kZXggNTRkYTBkNzg1
+NDkwLi4xY2RiN2UxYjgyOTYgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtbXZlYnUvZG92ZS5j
+CisrKyBiL2FyY2gvYXJtL21hY2gtbXZlYnUvZG92ZS5jCkBAIC01NywxMSArNTcsNiBAQCBzdGF0
+aWMgaW50IGRvdmVfaW5pdF9zb2Modm9pZCkKIAlpZiAoIW9mX21hY2hpbmVfaXNfY29tcGF0aWJs
+ZSgibWFydmVsbCxkb3ZlIikpCiAJCXJldHVybiAwOwogCi0JbXZlYnVfbWJ1c19hZGRfcmFuZ2Uo
+Im1hcnZlbGwsZG92ZSIsIDB4ZjAsIDB4MDEsCi0JCQkgICAgIE1WRUJVX1JFTUFQX0lOVF9SRUdf
+QkFTRSk7Ci0JbXZlYnVfbWJ1c19hZGRfcmFuZ2UoIm1hcnZlbGwsZG92ZSIsIDB4ZjAsIDB4MDIs
+Ci0JCQkgICAgIERPVkVfUkVNQVBfTUNfUkVHUyk7Ci0KIAlyZXN0YXJ0X2hhbmRsZXJfcmVnaXN0
+ZXJfZm4oZG92ZV9yZXN0YXJ0X3NvYyk7CiAKIAliYXJlYm94X3NldF9tb2RlbCgiTWFydmVsbCBE
+b3ZlIik7CmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW12ZWJ1L2tpcmt3b29kLmMgYi9hcmNo
+L2FybS9tYWNoLW12ZWJ1L2tpcmt3b29kLmMKaW5kZXggMzZjZDJhODRhNmY1Li41OWZiOTVmZjRh
+ZGYgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtbXZlYnUva2lya3dvb2QuYworKysgYi9hcmNo
+L2FybS9tYWNoLW12ZWJ1L2tpcmt3b29kLmMKQEAgLTM0LDggKzM0LDYgQEAgc3RhdGljIGludCBr
+aXJrd29vZF9pbml0X3NvYyh2b2lkKQogCWlmICghb2ZfbWFjaGluZV9pc19jb21wYXRpYmxlKCJt
+YXJ2ZWxsLGtpcmt3b29kIikpCiAJCXJldHVybiAwOwogCi0JbXZlYnVfbWJ1c19hZGRfcmFuZ2Uo
+Im1hcnZlbGwsa2lya3dvb2QiLCAweGYwLCAweDAxLAotCQkJICAgICBNVkVCVV9SRU1BUF9JTlRf
+UkVHX0JBU0UpOwogCXJlc3RhcnRfaGFuZGxlcl9yZWdpc3Rlcl9mbihraXJrd29vZF9yZXN0YXJ0
+X3NvYyk7CiAKIAliYXJlYm94X3NldF9tb2RlbCgiTWFydmVsbCBLaXJrd29vZCIpOwpkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9idXMvbXZlYnUtbWJ1cy5jIGIvZHJpdmVycy9idXMvbXZlYnUtbWJ1cy5j
+CmluZGV4IGRmNWY3YTMyZDM0Ni4uNzljODBjZjUyMTE1IDEwMDY0NAotLS0gYS9kcml2ZXJzL2J1
+cy9tdmVidS1tYnVzLmMKKysrIGIvZHJpdmVycy9idXMvbXZlYnUtbWJ1cy5jCkBAIC01OSw2ICs1
+OSw3IEBACiAjaW5jbHVkZSA8b2YuaD4KICNpbmNsdWRlIDxvZl9hZGRyZXNzLmg+CiAjaW5jbHVk
+ZSA8bGludXgvbWJ1cy5oPgorI2luY2x1ZGUgPG1hY2gvY29tbW9uLmg+CiAKIC8qIEREUiB0YXJn
+ZXQgaXMgdGhlIHNhbWUgb24gYWxsIHBsYXRmb3JtcyAqLwogI2RlZmluZSBUQVJHRVRfRERSCQkw
+CkBAIC04MTAsNyArODExLDI2IEBAIHN0YXRpYyBpbnQgbXZlYnVfbWJ1c19vZl9maXh1cChzdHJ1
+Y3QgZGV2aWNlX25vZGUgKnJvb3QsIHZvaWQgKmNvbnRleHQpCiAJcmV0dXJuIDA7CiB9CiAKLXN0
+YXRpYyBpbnQgbXZlYnVfbWJ1c19maXh1cF9yZWdpc3Rlcih2b2lkKSB7CisjZGVmaW5lIERPVkVf
+UkVNQVBfTUNfUkVHUwkJMHhmMTgwMDAwMAorCitzdGF0aWMgaW50IG12ZWJ1X21idXNfZml4dXBf
+cmVnaXN0ZXIodm9pZCkKK3sKKwlpZiAoSVNfRU5BQkxFRChDT05GSUdfQVJDSF9ET1ZFKSkgewor
+CQltdmVidV9tYnVzX2FkZF9yYW5nZSgibWFydmVsbCxkb3ZlIiwgMHhmMCwgMHgwMSwKKwkJCQkg
+ICAgIE1WRUJVX1JFTUFQX0lOVF9SRUdfQkFTRSk7CisJCW12ZWJ1X21idXNfYWRkX3JhbmdlKCJt
+YXJ2ZWxsLGRvdmUiLCAweGYwLCAweDAyLAorCQkJCSAgICAgRE9WRV9SRU1BUF9NQ19SRUdTKTsK
+Kwl9CisKKwlpZiAoSVNfRU5BQkxFRChDT05GSUdfQVJDSF9LSVJLV09PRCkpCisJCW12ZWJ1X21i
+dXNfYWRkX3JhbmdlKCJtYXJ2ZWxsLGtpcmt3b29kIiwgMHhmMCwgMHgwMSwKKwkJCQkgICAgIE1W
+RUJVX1JFTUFQX0lOVF9SRUdfQkFTRSk7CisKKwlpZiAoSVNfRU5BQkxFRChDT05GSUdfQVJDSF9B
+Uk1BREFfMzcwKSB8fAorCSAgICBJU19FTkFCTEVEKENPTkZJR19BUkNIX0FSTUFEQV9YUCkpCisJ
+CW12ZWJ1X21idXNfYWRkX3JhbmdlKCJtYXJ2ZWxsLGFybWFkYS0zNzAteHAiLCAweGYwLCAweDAx
+LAorCQkJCSAgICAgTVZFQlVfUkVNQVBfSU5UX1JFR19CQVNFKTsKKwogCXJldHVybiBvZl9yZWdp
+c3Rlcl9maXh1cChtdmVidV9tYnVzX29mX2ZpeHVwLCBOVUxMKTsKIH0KIHB1cmVfaW5pdGNhbGwo
+bXZlYnVfbWJ1c19maXh1cF9yZWdpc3Rlcik7Ci0tIAoyLjExLjAKCgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
+Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9iYXJlYm94Cg==
