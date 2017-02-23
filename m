@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cikIo-0003Nr-2J
- for barebox@lists.infradead.org; Tue, 28 Feb 2017 16:07:03 +0000
-Date: Tue, 28 Feb 2017 17:06:37 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20170228160637.gtijba6fgvjxvx3p@pengutronix.de>
-References: <20170225205242.18106-1-u.kleine-koenig@pengutronix.de>
- <20170228065947.q26xmiy5xyph3mnz@pengutronix.de>
+Received: from mail-it0-x22d.google.com ([2607:f8b0:4001:c0b::22d])
+ by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1ch2kq-0004mO-Vp
+ for barebox@lists.infradead.org; Thu, 23 Feb 2017 23:24:59 +0000
+Received: by mail-it0-x22d.google.com with SMTP id 203so3478059ith.0
+ for <barebox@lists.infradead.org>; Thu, 23 Feb 2017 15:24:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170228065947.q26xmiy5xyph3mnz@pengutronix.de>
+From: Chris Healy <cphealy@gmail.com>
+Date: Thu, 23 Feb 2017 15:24:33 -0800
+Message-ID: <CAFXsbZo1X6FQ5F8560oAzuf9eygzS22WPxjFwGpo26887NswCQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +17,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/4] mvebu: Make 2nd-stage booting possible
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: mw crash
+To: barebox@lists.infradead.org
 
-On Tue, Feb 28, 2017 at 07:59:47AM +0100, Sascha Hauer wrote:
-> On Sat, Feb 25, 2017 at 09:52:38PM +0100, Uwe Kleine-K=F6nig wrote:
-> > Hello,
-> > =
+I mistakenly used the wrong set of command line arguments when using
+the mw command and it resulted in the following crash:
 
-> > one specialty of mvebu is that it has a movable register window. Its
-> > base address is configured within this register range, so there is no
-> > way to find out the current position. The BootROM leaves this window at
-> > 0xd0000000, however it is beneficial to move it further to the end of
-> > the address range (usually 0xf1000000) to benefit from more continuous
-> > RAM. For this reason one of the first things that barebox does it to
-> > move the window accordingly. If however barebox is loaded as a second
-> > stage image this results in a crash as the register base address
-> > register is already moved.
-> > =
+barebox@ZII RDU2 Board:/ mw -b -l /dev/pic_eeprom_rdu 0x50 3
+unable to handle NULL pointer dereference at address 0x00000000
+pc : [<8fe45134>]    lr : [<8fe45107>]
+sp : 8ffef870  ip : 4ff9def8  fp : 00000000
+r10: 00000006  r9 : 00000000  r8 : ffffffff
+r7 : 8ffef91c  r6 : 8ffef91c  r5 : 00000000  r4 : 00000004
+r3 : 00000050  r2 : 00000003  r1 : 00000003  r0 : 00000000
+Flags: Nzcv  IRQs off  FIQs off  Mode SVC_32
+[<8fe45134>] (memcpy_sz+0x48/0x54) from [<8fe46119>] (mem_write+0x39/0x44)
+[<8fe46119>] (mem_write+0x39/0x44) from [<8fe42f35>] (devfs_write+0x21/0x2a)
+[<8fe42f35>] (devfs_write+0x21/0x2a) from [<8fe44ea1>] (__write+0x79/0x94)
+[<8fe44ea1>] (__write+0x79/0x94) from [<8fe45587>] (write+0x2b/0x48)
+[<8fe45587>] (write+0x2b/0x48) from [<8fe2c813>] (do_mem_mw+0x10f/0x14c)
+[<8fe2c813>] (do_mem_mw+0x10f/0x14c) from [<8fe0324d>]
+(execute_command+0x21/0x48)
+[<8fe0324d>] (execute_command+0x21/0x48) from [<8fe087eb>]
+(run_list_real+0x55b/0x618)
+[<8fe087eb>] (run_list_real+0x55b/0x618) from [<8fe08161>]
+(parse_stream_outer+0xd9/0x164)
+[<8fe08161>] (parse_stream_outer+0xd9/0x164) from [<8fe08a6b>]
+(run_shell+0x33/0x60)
+[<8fe08a6b>] (run_shell+0x33/0x60) from [<8fe0324d>] (execute_command+0x21/0x48)
+[<8fe0324d>] (execute_command+0x21/0x48) from [<8fe087eb>]
+(run_list_real+0x55b/0x618)
+[<8fe087eb>] (run_list_real+0x55b/0x618) from [<8fe08509>]
+(run_list_real+0x279/0x618)
 
-> > This series implements that the called image gets the base address from
-> > the barebox header. It defaults to 0xd0000000 which is right for the
-> > (unaware) BootROM and when barebox jumps into such an image the register
-> > position is passed accordingly.
-> =
+[<8fe4cbe9>] (unwind_backtrace+0x1/0x58) from [<8fe00d39>] (panic+0x1d/0x34)
+[<8fe00d39>] (panic+0x1d/0x34) from [<8fe4b20d>] (do_exception+0xd/0x10)
+[<8fe4b20d>] (do_exception+0xd/0x10) from [<8fe4b26d>] (do_data_abort+0x21/0x2c)
+[<8fe4b26d>] (do_data_abort+0x21/0x2c) from [<8fe4ab34>] (do_abort_6+0x48/0x54)
 
-> This makes the 2nd stage images unnecessary, right? Can you remove them
-> from images/Makefile.mvebu?
 
-I thought about that already, too, but they are still necessary when you
-convert from U-Boot to barebox or upgrade from an older barebox. So I
-think keeping them for now makes sense.
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+I haven't dug in to figure it out but I figured it would be good to report.
 
 _______________________________________________
 barebox mailing list
