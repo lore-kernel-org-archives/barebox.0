@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cgwMQ-0002iO-5v
- for barebox@lists.infradead.org; Thu, 23 Feb 2017 16:35:24 +0000
+ id 1cgwWf-0000gy-5f
+ for barebox@lists.infradead.org; Thu, 23 Feb 2017 16:45:54 +0000
 From: Bastian Stender <bst@pengutronix.de>
-Date: Thu, 23 Feb 2017 17:34:49 +0100
-Message-Id: <20170223163450.6611-1-bst@pengutronix.de>
+Date: Thu, 23 Feb 2017 17:45:26 +0100
+Message-Id: <20170223164527.29878-2-bst@pengutronix.de>
+In-Reply-To: <20170223164527.29878-1-bst@pengutronix.de>
+References: <20170223164527.29878-1-bst@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,91 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] i2c: mv64xxx: add software delays
+Subject: [PATCH 2/3] graphic_utils: do not allocate info in fb_open
 To: barebox@lists.infradead.org
 Cc: Bastian Stender <bst@pengutronix.de>
 
-As stated in Marvell's Functional Specifications in MV-S107021-U0 Rev. A
-on page 420 ff. software delays are needed. "SW delay represent a delay
-of at least 2 internal clock cycles". These delays are hereby
-implemented.
-
-The original kernel driver compensates the needed software delays with
-the time the interrupts take.
+info was errorneously allocated, but it really is a pointer to a fb_info
+struct from the framebuffer. This fixes a memory leak.
 
 Signed-off-by: Bastian Stender <bst@pengutronix.de>
 ---
- drivers/i2c/busses/i2c-mv64xxx.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ lib/gui/graphic_utils.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-mv64xxx.c b/drivers/i2c/busses/i2c-mv64xxx.c
-index 9b9e6c953f..45d5a2b6dc 100644
---- a/drivers/i2c/busses/i2c-mv64xxx.c
-+++ b/drivers/i2c/busses/i2c-mv64xxx.c
-@@ -270,6 +270,7 @@ mv64xxx_i2c_fsm(struct mv64xxx_i2c_data *drv_data, u32 status)
- 		}
- 		/* FALLTHRU */
- 	case STATUS_MAST_RD_DATA_ACK: /* 0x50 */
-+		udelay(2);
- 		if (status != STATUS_MAST_RD_DATA_ACK)
- 			drv_data->action = ACTION_CONTINUE;
- 		else {
-@@ -280,6 +281,7 @@ mv64xxx_i2c_fsm(struct mv64xxx_i2c_data *drv_data, u32 status)
+diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
+index f6ab5ea0d1..7d238e9ff9 100644
+--- a/lib/gui/graphic_utils.c
++++ b/lib/gui/graphic_utils.c
+@@ -277,8 +277,6 @@ struct screen *fb_open(const char * fbdev)
+ 	if (fd < 0)
+ 		return ERR_PTR(fd);
  
- 		if (drv_data->bytes_left == 1)
- 			drv_data->cntl_bits &= ~REG_CONTROL_ACK;
-+			udelay(2);
- 		break;
+-	info = xzalloc(sizeof(*info));
+-
+ 	ret = ioctl(fd, FBIOGET_SCREENINFO, &info);
+ 	if (ret) {
+ 		goto failed_screeninfo;
+@@ -291,7 +289,6 @@ struct screen *fb_open(const char * fbdev)
+ 	}
  
- 	case STATUS_MAST_RD_DATA_NO_ACK: /* 0x58 */
-@@ -318,6 +320,8 @@ static void mv64xxx_i2c_send_start(struct mv64xxx_i2c_data *drv_data)
- 	mv64xxx_i2c_prepare_for_io(drv_data, drv_data->msgs);
- 	mv64xxx_write(drv_data, drv_data->cntl_bits | REG_CONTROL_START,
- 		drv_data->reg_offsets.control);
-+
-+	udelay(2);
- }
+ 	sc->fd = fd;
+-	sc->info = info;
  
- static void
-@@ -333,7 +337,7 @@ mv64xxx_i2c_do_action(struct mv64xxx_i2c_data *drv_data)
- 		mv64xxx_i2c_send_start(drv_data);
- 
- 		if (drv_data->errata_delay)
--			udelay(5);
-+			udelay(3);
- 
- 		/*
- 		 * We're never at the start of the message here, and by this
-@@ -349,6 +353,7 @@ mv64xxx_i2c_do_action(struct mv64xxx_i2c_data *drv_data)
- 		break;
- 
- 	case ACTION_SEND_ADDR_1:
-+		udelay(2);
- 		mv64xxx_write(drv_data, drv_data->addr1,
- 			drv_data->reg_offsets.data);
- 		mv64xxx_write(drv_data, drv_data->cntl_bits,
-@@ -360,9 +365,11 @@ mv64xxx_i2c_do_action(struct mv64xxx_i2c_data *drv_data)
- 			drv_data->reg_offsets.data);
- 		mv64xxx_write(drv_data, drv_data->cntl_bits,
- 			drv_data->reg_offsets.control);
-+		udelay(2);
- 		break;
- 
- 	case ACTION_SEND_DATA:
-+		udelay(2);
- 		mv64xxx_write(drv_data, drv_data->msg->buf[drv_data->byte_posn++],
- 			drv_data->reg_offsets.data);
- 		mv64xxx_write(drv_data, drv_data->cntl_bits,
-@@ -383,8 +390,9 @@ mv64xxx_i2c_do_action(struct mv64xxx_i2c_data *drv_data)
- 		mv64xxx_write(drv_data, drv_data->cntl_bits | REG_CONTROL_STOP,
- 			drv_data->reg_offsets.control);
- 		drv_data->block = false;
-+		udelay(2);
- 		if (drv_data->errata_delay)
--			udelay(5);
-+			udelay(3);
- 
- 		break;
+ 	return sc;
  
 -- 
 2.11.0
