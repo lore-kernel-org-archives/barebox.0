@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cgwMQ-0002iP-5h
- for barebox@lists.infradead.org; Thu, 23 Feb 2017 16:35:20 +0000
+ id 1cgwMQ-0002iO-5v
+ for barebox@lists.infradead.org; Thu, 23 Feb 2017 16:35:24 +0000
 From: Bastian Stender <bst@pengutronix.de>
-Date: Thu, 23 Feb 2017 17:34:50 +0100
-Message-Id: <20170223163450.6611-2-bst@pengutronix.de>
-In-Reply-To: <20170223163450.6611-1-bst@pengutronix.de>
-References: <20170223163450.6611-1-bst@pengutronix.de>
+Date: Thu, 23 Feb 2017 17:34:49 +0100
+Message-Id: <20170223163450.6611-1-bst@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,67 +19,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] i2c: mv64xxx: simplify mv64xxx_i2c_wait_for_completion
+Subject: [PATCH 1/2] i2c: mv64xxx: add software delays
 To: barebox@lists.infradead.org
 Cc: Bastian Stender <bst@pengutronix.de>
 
-Two nested while loops are not necessary here, so integrate the read,
-i2c_fsm and i2c_do_action calls into mv64xxx_i2c_wait_for_completion()
-and remove the obsolete interrupt remains.
+As stated in Marvell's Functional Specifications in MV-S107021-U0 Rev. A
+on page 420 ff. software delays are needed. "SW delay represent a delay
+of at least 2 internal clock cycles". These delays are hereby
+implemented.
+
+The original kernel driver compensates the needed software delays with
+the time the interrupts take.
 
 Signed-off-by: Bastian Stender <bst@pengutronix.de>
 ---
- drivers/i2c/busses/i2c-mv64xxx.c | 29 ++++++++---------------------
- 1 file changed, 8 insertions(+), 21 deletions(-)
+ drivers/i2c/busses/i2c-mv64xxx.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/i2c/busses/i2c-mv64xxx.c b/drivers/i2c/busses/i2c-mv64xxx.c
-index 45d5a2b6dc..caece3b78e 100644
+index 9b9e6c953f..45d5a2b6dc 100644
 --- a/drivers/i2c/busses/i2c-mv64xxx.c
 +++ b/drivers/i2c/busses/i2c-mv64xxx.c
-@@ -414,26 +414,6 @@ mv64xxx_i2c_do_action(struct mv64xxx_i2c_data *drv_data)
- 	}
+@@ -270,6 +270,7 @@ mv64xxx_i2c_fsm(struct mv64xxx_i2c_data *drv_data, u32 status)
+ 		}
+ 		/* FALLTHRU */
+ 	case STATUS_MAST_RD_DATA_ACK: /* 0x50 */
++		udelay(2);
+ 		if (status != STATUS_MAST_RD_DATA_ACK)
+ 			drv_data->action = ACTION_CONTINUE;
+ 		else {
+@@ -280,6 +281,7 @@ mv64xxx_i2c_fsm(struct mv64xxx_i2c_data *drv_data, u32 status)
+ 
+ 		if (drv_data->bytes_left == 1)
+ 			drv_data->cntl_bits &= ~REG_CONTROL_ACK;
++			udelay(2);
+ 		break;
+ 
+ 	case STATUS_MAST_RD_DATA_NO_ACK: /* 0x58 */
+@@ -318,6 +320,8 @@ static void mv64xxx_i2c_send_start(struct mv64xxx_i2c_data *drv_data)
+ 	mv64xxx_i2c_prepare_for_io(drv_data, drv_data->msgs);
+ 	mv64xxx_write(drv_data, drv_data->cntl_bits | REG_CONTROL_START,
+ 		drv_data->reg_offsets.control);
++
++	udelay(2);
  }
  
--static void mv64xxx_i2c_intr(struct mv64xxx_i2c_data *drv_data)
--{
--	u32 status;
--	uint64_t start;
--
--	start = get_time_ns();
--
--	while (mv64xxx_read(drv_data, drv_data->reg_offsets.control) &
--						REG_CONTROL_IFLG) {
--		status = mv64xxx_read(drv_data, drv_data->reg_offsets.status);
--		mv64xxx_i2c_fsm(drv_data, status);
--		mv64xxx_i2c_do_action(drv_data);
--
--		if (is_timeout_non_interruptible(start, 3 * SECOND)) {
--			drv_data->rc = -EIO;
--			break;
--		}
--	}
--}
--
- /*
-  *****************************************************************************
-  *
-@@ -444,8 +424,15 @@ static void mv64xxx_i2c_intr(struct mv64xxx_i2c_data *drv_data)
  static void
- mv64xxx_i2c_wait_for_completion(struct mv64xxx_i2c_data *drv_data)
- {
-+	u32 status;
- 	do {
--		mv64xxx_i2c_intr(drv_data);
-+		if (mv64xxx_read(drv_data, drv_data->reg_offsets.control) &
-+							REG_CONTROL_IFLG) {
-+			status = mv64xxx_read(drv_data,
-+					      drv_data->reg_offsets.status);
-+			mv64xxx_i2c_fsm(drv_data, status);
-+			mv64xxx_i2c_do_action(drv_data);
-+		}
- 		if (drv_data->rc) {
- 			drv_data->state = STATE_IDLE;
- 			dev_err(&drv_data->adapter.dev, "I2C bus error\n");
+@@ -333,7 +337,7 @@ mv64xxx_i2c_do_action(struct mv64xxx_i2c_data *drv_data)
+ 		mv64xxx_i2c_send_start(drv_data);
+ 
+ 		if (drv_data->errata_delay)
+-			udelay(5);
++			udelay(3);
+ 
+ 		/*
+ 		 * We're never at the start of the message here, and by this
+@@ -349,6 +353,7 @@ mv64xxx_i2c_do_action(struct mv64xxx_i2c_data *drv_data)
+ 		break;
+ 
+ 	case ACTION_SEND_ADDR_1:
++		udelay(2);
+ 		mv64xxx_write(drv_data, drv_data->addr1,
+ 			drv_data->reg_offsets.data);
+ 		mv64xxx_write(drv_data, drv_data->cntl_bits,
+@@ -360,9 +365,11 @@ mv64xxx_i2c_do_action(struct mv64xxx_i2c_data *drv_data)
+ 			drv_data->reg_offsets.data);
+ 		mv64xxx_write(drv_data, drv_data->cntl_bits,
+ 			drv_data->reg_offsets.control);
++		udelay(2);
+ 		break;
+ 
+ 	case ACTION_SEND_DATA:
++		udelay(2);
+ 		mv64xxx_write(drv_data, drv_data->msg->buf[drv_data->byte_posn++],
+ 			drv_data->reg_offsets.data);
+ 		mv64xxx_write(drv_data, drv_data->cntl_bits,
+@@ -383,8 +390,9 @@ mv64xxx_i2c_do_action(struct mv64xxx_i2c_data *drv_data)
+ 		mv64xxx_write(drv_data, drv_data->cntl_bits | REG_CONTROL_STOP,
+ 			drv_data->reg_offsets.control);
+ 		drv_data->block = false;
++		udelay(2);
+ 		if (drv_data->errata_delay)
+-			udelay(5);
++			udelay(3);
+ 
+ 		break;
+ 
 -- 
 2.11.0
 
