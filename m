@@ -1,24 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtprelay0145.hostedemail.com ([216.40.44.145]
+Received: from smtprelay0254.hostedemail.com ([216.40.44.254]
  helo=smtprelay.hostedemail.com)
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1chDiF-0001L9-PH
- for barebox@lists.infradead.org; Fri, 24 Feb 2017 11:07:01 +0000
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
- [216.40.38.60])
- by smtprelay07.hostedemail.com (Postfix) with ESMTP id 85260C2122
- for <barebox@lists.infradead.org>; Fri, 24 Feb 2017 11:06:28 +0000 (UTC)
-Received: from [10.0.0.53] (unknown [81.133.34.160])
- (Authenticated sender: ian@abbott.org)
- by omf03.hostedemail.com (Postfix) with ESMTPA
- for <barebox@lists.infradead.org>; Fri, 24 Feb 2017 11:06:27 +0000 (UTC)
-References: <20170223170321.16681-1-bst@pengutronix.de>
- <20170224072557.gj2s27cmnozunbuq@pengutronix.de>
+ id 1chDtw-0006m7-7N
+ for barebox@lists.infradead.org; Fri, 24 Feb 2017 11:19:06 +0000
+References: <20170223172022.858-1-bst@pengutronix.de>
+ <20170224073227.vs2a5lhz7rc2b3g2@pengutronix.de>
 From: Ian Abbott <abbotti@mev.co.uk>
-Message-ID: <e56dd833-1e7e-d1be-7c1b-e1193183c6d3@mev.co.uk>
-Date: Fri, 24 Feb 2017 11:06:27 +0000
+Message-ID: <5d50e55f-ff85-b306-aa74-fd5d2650c28a@mev.co.uk>
+Date: Fri, 24 Feb 2017 11:18:41 +0000
 MIME-Version: 1.0
-In-Reply-To: <20170224072557.gj2s27cmnozunbuq@pengutronix.de>
+In-Reply-To: <20170224073227.vs2a5lhz7rc2b3g2@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,25 +23,49 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] lib/fonts: add VGA8x8 font
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] fbconsole: check cursor position before moving
+To: Sascha Hauer <s.hauer@pengutronix.de>, Bastian Stender <bst@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On 24/02/17 07:25, Sascha Hauer wrote:
-> On Thu, Feb 23, 2017 at 06:03:21PM +0100, Bastian Stender wrote:
->> Ported from Linux v4.10.
->>
->> This font is ideal for displaying a framebuffer console on a small display.
+On 24/02/17 07:32, Sascha Hauer wrote:
+> On Thu, Feb 23, 2017 at 06:20:21PM +0100, Bastian Stender wrote:
+>> Moving the cursor to x=2, y=2 with "\e[3;3H" on a 12x2 framebuffer
+>> console lead to a barebox crash while drawing the cursor. The cursor can
+>> only be moved to a valid position between (0,0) and (priv->cols,
+>> priv->rows) now.
 >>
 >> Signed-off-by: Bastian Stender <bst@pengutronix.de>
+>> ---
+>>  drivers/video/fbconsole.c | 7 +++++--
+>>  1 file changed, 5 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
+>> index 64f7d7364e..3879741b2a 100644
+>> --- a/drivers/video/fbconsole.c
+>> +++ b/drivers/video/fbconsole.c
+>> @@ -264,10 +264,13 @@ static void fbc_parse_csi(struct fbc_priv *priv)
+>>  		return;
+>>  	case 'H':
+>>  		video_invertchar(priv, priv->x, priv->y);
+>> +
+>>  		pos = simple_strtoul(priv->csi, &end, 10);
+>> -		priv->y = pos ? pos - 1 : 0;
+>> +		priv->y = (pos && pos <= priv->rows + 1) ? pos - 1 : 0;
+>> +
+>>  		pos = simple_strtoul(end + 1, NULL, 10);
+>> -		priv->x = pos ? pos - 1 : 0;
+>> +		priv->x = (pos && pos <= priv->cols + 1) ? pos - 1 : 0;
+>> +
 >
-> Applied, thanks
->
-> Sascha
+> When moving out of the screen shouldn't we place the cursor on the
+> bottom right corner of the screen? With this patch we move it to the top
+> left corner.
 
-I know this is all inherited from Linux, but I find it interesting that 
-the non-ASCII characters in the comments are Latin-1 characters 
-transcoded to UTF-8, even though the glyphs in the bitmaps are from Code 
-Page 437.
+Or clip to each edge, something like:
+
+  priv->y = !pos ? 0 : pos < priv->rows ? pos - 1 : priv->rows - 1;
+
+Same for priv->x and priv->cols?
 
 -- 
 -=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=-
