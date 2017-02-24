@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x22d.google.com ([2607:f8b0:4001:c0b::22d])
- by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ch2kq-0004mO-Vp
- for barebox@lists.infradead.org; Thu, 23 Feb 2017 23:24:59 +0000
-Received: by mail-it0-x22d.google.com with SMTP id 203so3478059ith.0
- for <barebox@lists.infradead.org>; Thu, 23 Feb 2017 15:24:36 -0800 (PST)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1chA3c-0003O1-N0
+ for barebox@lists.infradead.org; Fri, 24 Feb 2017 07:12:51 +0000
+Date: Fri, 24 Feb 2017 08:12:25 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170224071225.xqzj5v75fgbnxweo@pengutronix.de>
+References: <20170222200618.5723-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-From: Chris Healy <cphealy@gmail.com>
-Date: Thu, 23 Feb 2017 15:24:33 -0800
-Message-ID: <CAFXsbZo1X6FQ5F8560oAzuf9eygzS22WPxjFwGpo26887NswCQ@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20170222200618.5723-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,50 +18,150 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: mw crash
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] mvebu: Fix fixup of mbus device-tree ranges
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-I mistakenly used the wrong set of command line arguments when using
-the mw command and it resulted in the following crash:
+On Wed, Feb 22, 2017 at 09:06:18PM +0100, Uwe Kleine-K=F6nig wrote:
+> Commits "mvebu: {armada-370-xp,dove,kirkwood}: simplify soc init code
+> flow" simplified too much. The problem is that if the dtb used for
+> probing doesn't use the same mbus window address as barebox (i.e.
+> 0xf1000000) the fixup fails because above commits moved the information
+> about the real position to a postcore initcall which is too late because
+> the fixup happens in of_arm_init which runs as core initcall.
 
-barebox@ZII RDU2 Board:/ mw -b -l /dev/pic_eeprom_rdu 0x50 3
-unable to handle NULL pointer dereference at address 0x00000000
-pc : [<8fe45134>]    lr : [<8fe45107>]
-sp : 8ffef870  ip : 4ff9def8  fp : 00000000
-r10: 00000006  r9 : 00000000  r8 : ffffffff
-r7 : 8ffef91c  r6 : 8ffef91c  r5 : 00000000  r4 : 00000004
-r3 : 00000050  r2 : 00000003  r1 : 00000003  r0 : 00000000
-Flags: Nzcv  IRQs off  FIQs off  Mode SVC_32
-[<8fe45134>] (memcpy_sz+0x48/0x54) from [<8fe46119>] (mem_write+0x39/0x44)
-[<8fe46119>] (mem_write+0x39/0x44) from [<8fe42f35>] (devfs_write+0x21/0x2a)
-[<8fe42f35>] (devfs_write+0x21/0x2a) from [<8fe44ea1>] (__write+0x79/0x94)
-[<8fe44ea1>] (__write+0x79/0x94) from [<8fe45587>] (write+0x2b/0x48)
-[<8fe45587>] (write+0x2b/0x48) from [<8fe2c813>] (do_mem_mw+0x10f/0x14c)
-[<8fe2c813>] (do_mem_mw+0x10f/0x14c) from [<8fe0324d>]
-(execute_command+0x21/0x48)
-[<8fe0324d>] (execute_command+0x21/0x48) from [<8fe087eb>]
-(run_list_real+0x55b/0x618)
-[<8fe087eb>] (run_list_real+0x55b/0x618) from [<8fe08161>]
-(parse_stream_outer+0xd9/0x164)
-[<8fe08161>] (parse_stream_outer+0xd9/0x164) from [<8fe08a6b>]
-(run_shell+0x33/0x60)
-[<8fe08a6b>] (run_shell+0x33/0x60) from [<8fe0324d>] (execute_command+0x21/0x48)
-[<8fe0324d>] (execute_command+0x21/0x48) from [<8fe087eb>]
-(run_list_real+0x55b/0x618)
-[<8fe087eb>] (run_list_real+0x55b/0x618) from [<8fe08509>]
-(run_list_real+0x279/0x618)
+Said patches are currently in -next, so you could send a fixup patch
+instead or I could just remove the patches.
 
-[<8fe4cbe9>] (unwind_backtrace+0x1/0x58) from [<8fe00d39>] (panic+0x1d/0x34)
-[<8fe00d39>] (panic+0x1d/0x34) from [<8fe4b20d>] (do_exception+0xd/0x10)
-[<8fe4b20d>] (do_exception+0xd/0x10) from [<8fe4b26d>] (do_data_abort+0x21/0x2c)
-[<8fe4b26d>] (do_data_abort+0x21/0x2c) from [<8fe4ab34>] (do_abort_6+0x48/0x54)
+Sascha
 
+> =
 
-I haven't dug in to figure it out but I figured it would be good to report.
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  arch/arm/mach-mvebu/armada-370-xp.c |  3 ---
+>  arch/arm/mach-mvebu/dove.c          |  5 -----
+>  arch/arm/mach-mvebu/kirkwood.c      |  2 --
+>  drivers/bus/mvebu-mbus.c            | 22 +++++++++++++++++++++-
+>  4 files changed, 21 insertions(+), 11 deletions(-)
+> =
+
+> diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/ar=
+mada-370-xp.c
+> index 196b770277f3..93ad955a6e49 100644
+> --- a/arch/arm/mach-mvebu/armada-370-xp.c
+> +++ b/arch/arm/mach-mvebu/armada-370-xp.c
+> @@ -90,9 +90,6 @@ static int armada_370_xp_init_soc(void)
+>  	if (!of_machine_is_compatible("marvell,armada-370-xp"))
+>  		return 0;
+>  =
+
+> -	mvebu_mbus_add_range("marvell,armada-370-xp", 0xf0, 0x01,
+> -			     MVEBU_REMAP_INT_REG_BASE);
+> -
+>  	restart_handler_register_fn(armada_370_xp_restart_soc);
+>  =
+
+>  	barebox_set_model("Marvell Armada 370/XP");
+> diff --git a/arch/arm/mach-mvebu/dove.c b/arch/arm/mach-mvebu/dove.c
+> index 54da0d785490..1cdb7e1b8296 100644
+> --- a/arch/arm/mach-mvebu/dove.c
+> +++ b/arch/arm/mach-mvebu/dove.c
+> @@ -57,11 +57,6 @@ static int dove_init_soc(void)
+>  	if (!of_machine_is_compatible("marvell,dove"))
+>  		return 0;
+>  =
+
+> -	mvebu_mbus_add_range("marvell,dove", 0xf0, 0x01,
+> -			     MVEBU_REMAP_INT_REG_BASE);
+> -	mvebu_mbus_add_range("marvell,dove", 0xf0, 0x02,
+> -			     DOVE_REMAP_MC_REGS);
+> -
+>  	restart_handler_register_fn(dove_restart_soc);
+>  =
+
+>  	barebox_set_model("Marvell Dove");
+> diff --git a/arch/arm/mach-mvebu/kirkwood.c b/arch/arm/mach-mvebu/kirkwoo=
+d.c
+> index 36cd2a84a6f5..59fb95ff4adf 100644
+> --- a/arch/arm/mach-mvebu/kirkwood.c
+> +++ b/arch/arm/mach-mvebu/kirkwood.c
+> @@ -34,8 +34,6 @@ static int kirkwood_init_soc(void)
+>  	if (!of_machine_is_compatible("marvell,kirkwood"))
+>  		return 0;
+>  =
+
+> -	mvebu_mbus_add_range("marvell,kirkwood", 0xf0, 0x01,
+> -			     MVEBU_REMAP_INT_REG_BASE);
+>  	restart_handler_register_fn(kirkwood_restart_soc);
+>  =
+
+>  	barebox_set_model("Marvell Kirkwood");
+> diff --git a/drivers/bus/mvebu-mbus.c b/drivers/bus/mvebu-mbus.c
+> index df5f7a32d346..79c80cf52115 100644
+> --- a/drivers/bus/mvebu-mbus.c
+> +++ b/drivers/bus/mvebu-mbus.c
+> @@ -59,6 +59,7 @@
+>  #include <of.h>
+>  #include <of_address.h>
+>  #include <linux/mbus.h>
+> +#include <mach/common.h>
+>  =
+
+>  /* DDR target is the same on all platforms */
+>  #define TARGET_DDR		0
+> @@ -810,7 +811,26 @@ static int mvebu_mbus_of_fixup(struct device_node *r=
+oot, void *context)
+>  	return 0;
+>  }
+>  =
+
+> -static int mvebu_mbus_fixup_register(void) {
+> +#define DOVE_REMAP_MC_REGS		0xf1800000
+> +
+> +static int mvebu_mbus_fixup_register(void)
+> +{
+> +	if (IS_ENABLED(CONFIG_ARCH_DOVE)) {
+> +		mvebu_mbus_add_range("marvell,dove", 0xf0, 0x01,
+> +				     MVEBU_REMAP_INT_REG_BASE);
+> +		mvebu_mbus_add_range("marvell,dove", 0xf0, 0x02,
+> +				     DOVE_REMAP_MC_REGS);
+> +	}
+> +
+> +	if (IS_ENABLED(CONFIG_ARCH_KIRKWOOD))
+> +		mvebu_mbus_add_range("marvell,kirkwood", 0xf0, 0x01,
+> +				     MVEBU_REMAP_INT_REG_BASE);
+> +
+> +	if (IS_ENABLED(CONFIG_ARCH_ARMADA_370) ||
+> +	    IS_ENABLED(CONFIG_ARCH_ARMADA_XP))
+> +		mvebu_mbus_add_range("marvell,armada-370-xp", 0xf0, 0x01,
+> +				     MVEBU_REMAP_INT_REG_BASE);
+> +
+>  	return of_register_fixup(mvebu_mbus_of_fixup, NULL);
+>  }
+>  pure_initcall(mvebu_mbus_fixup_register);
+> -- =
+
+> 2.11.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
