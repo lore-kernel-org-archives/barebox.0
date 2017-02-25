@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ccAFN-0005Gk-3d
- for barebox@lists.infradead.org; Fri, 10 Feb 2017 12:24:23 +0000
-Date: Fri, 10 Feb 2017 13:23:52 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170210122351.7pzykuyfz2mayjky@pengutronix.de>
-References: <1485955486-31573-1-git-send-email-d.schultz@phytec.de>
+ id 1chik8-00089S-NT
+ for barebox@lists.infradead.org; Sat, 25 Feb 2017 20:15:03 +0000
+Date: Sat, 25 Feb 2017 21:14:34 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20170225201434.eikfubeizke6tjho@pengutronix.de>
+References: <20170223212841.12846-1-u.kleine-koenig@pengutronix.de>
+ <20170224074513.pxsqbvjd4uyuqndj@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1485955486-31573-1-git-send-email-d.schultz@phytec.de>
+In-Reply-To: <20170224074513.pxsqbvjd4uyuqndj@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,108 +19,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: boards: phytec-som-am335x: Remove 1GB RAM type
-To: Daniel Schultz <d.schultz@phytec.de>
+Subject: Re: [PATCH] lseek: ensure errno is set on failure and return -1
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Daniel,
+Hello Sascha,
 
-On Wed, Feb 01, 2017 at 02:24:46PM +0100, Daniel Schultz wrote:
-> This machine was a prototype and was never shipped to customers.
-> 
-> Since it has no dependencies to any image, it can be removed.
+On Fri, Feb 24, 2017 at 08:45:13AM +0100, Sascha Hauer wrote:
+> On Thu, Feb 23, 2017 at 10:28:41PM +0100, Uwe Kleine-K=F6nig wrote:
+> > All error paths before calling the driver's lseek callback return -1 and
+> > set errno. Do the same if the callback returns an error.
+> > =
 
-This doesn't seem to be entirely true:
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > ---
+> >  fs/fs.c | 8 +++++++-
+> >  1 file changed, 7 insertions(+), 1 deletion(-)
+> > =
 
-/opt/OSELAS.Toolchain-2014.12.0/arm-v5te-linux-gnueabi/gcc-4.9.2-glibc-2.20-binutils-2.24-kernel-3.16-sanitized/bin/arm-v5te-linux-gnueabi-ld: warning: cannot find entry symbol start_am33xx_phytec_phycore_sram_1024mb; defaulting to 0000000000000000
-invalid magic
-/ptx/work/dude/WORK_A/sha/backup/barebox/barebox-test/images/Makefile:77: recipe for target 'images/start_am33xx_phytec_phycore_sram_1024mb.pblx' failed
-make[1]: *** [images/start_am33xx_phytec_phycore_sram_1024mb.pblx] Error 1
-Makefile:491: recipe for target 'images' failed
-make: *** [images] Error 2
+> > diff --git a/fs/fs.c b/fs/fs.c
+> > index 2b4659cfbb76..e7b696591433 100644
+> > --- a/fs/fs.c
+> > +++ b/fs/fs.c
+> > @@ -926,7 +926,13 @@ loff_t lseek(int fildes, loff_t offset, int whence)
+> >  		goto out;
+> >  	}
+> >  =
 
-Dropped this patch for now. You have to remove the entries in
-Makefile.am335x aswell.
+> > -	return fsdrv->lseek(&f->fsdev->dev, f, pos);
+> > +	pos =3D fsdrv->lseek(&f->fsdev->dev, f, pos);
+> > +	if (pos < 0) {
+> > +		errno =3D -pos;
+> > +		return -1;
+> > +	}
+> =
 
-Sascha
+> Before calling into the drivers lseek checks if the position is within
+> the bounds of the file. So when fsdrv->lseek() returns successfully then
+> the position must be the same that was passed in. I think we can just
+> let fsdrv->lseek() return an error code rather than the file position.
 
-> 
-> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
-> ---
->  arch/arm/boards/phytec-som-am335x/lowlevel.c    |  1 -
->  arch/arm/boards/phytec-som-am335x/ram-timings.h | 21 ---------------------
->  2 files changed, 22 deletions(-)
-> 
-> diff --git a/arch/arm/boards/phytec-som-am335x/lowlevel.c b/arch/arm/boards/phytec-som-am335x/lowlevel.c
-> index 33e83c5..03c7e98 100644
-> --- a/arch/arm/boards/phytec-som-am335x/lowlevel.c
-> +++ b/arch/arm/boards/phytec-som-am335x/lowlevel.c
-> @@ -122,7 +122,6 @@ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_128mb, am335x_phytec_phycore_s
->  PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_256mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J128M16125IT_256MB);
->  PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_512mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J256M16HA15EIT_512MB);
->  PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_2x512mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J512M8125IT_2x512MB);
-> -PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_1024mb, am335x_phytec_phycore_som_mlo, PHYCORE_IM8G16D3FBBG15EI_1024MB);
->  PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_512mb, am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K256M16TW107IT_512MB);
->  PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_256mb, am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K128M16JT_256MB);
->  PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_1024mb,  am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K512M16HA125IT_1024MB);
-> diff --git a/arch/arm/boards/phytec-som-am335x/ram-timings.h b/arch/arm/boards/phytec-som-am335x/ram-timings.h
-> index 4ea654d..d1947b5 100644
-> --- a/arch/arm/boards/phytec-som-am335x/ram-timings.h
-> +++ b/arch/arm/boards/phytec-som-am335x/ram-timings.h
-> @@ -29,7 +29,6 @@ enum {
->  	PHYCORE_MT41J64M1615IT_128MB,
->  	PHYCORE_MT41J256M16HA15EIT_512MB,
->  	PHYCORE_MT41J512M8125IT_2x512MB,
-> -	PHYCORE_IM8G16D3FBBG15EI_1024MB,
->  	PHYCORE_R2_MT41K256M16TW107IT_512MB,
->  	PHYCORE_R2_MT41K128M16JT_256MB,
->  	PHYCORE_R2_MT41K512M16HA125IT_1024MB,
-> @@ -162,26 +161,6 @@ struct am335x_sdram_timings physom_timings[] = {
->  		},
->  	},
->  
-> -	/* 1024MB */
-> -	[PHYCORE_IM8G16D3FBBG15EI_1024MB] = {
-> -		.regs = {
-> -			.emif_read_latency	= 0x7,
-> -			.emif_tim1		= 0x0AAAE4DB,
-> -			.emif_tim2		= 0x268F7FDA,
-> -			.emif_tim3		= 0x501F88BF,
-> -			.ocp_config		= 0x003d3d3d,
-> -			.sdram_config		= 0x61C053B2,
-> -			.zq_config		= 0x50074BE4,
-> -			.sdram_ref_ctrl		= 0x00000C30
-> -		},
-> -		.data = {
-> -			.rd_slave_ratio0	= 0x33,
-> -			.wr_dqs_slave_ratio0	= 0x4a,
-> -			.fifo_we_slave_ratio0	= 0xa4,
-> -			.wr_slave_ratio0	= 0x85,
-> -		},
-> -	},
-> -
->  	/* 256MB */
->  	[PHYCARD_NT5CB128M16BP_256MB] = {
->  		.regs = {
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+This is a separate and orthogonal change however that doesn't make my
+patch wrong.
 
--- 
-Pengutronix e.K.                           |                             |
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
