@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1chISH-00020x-NJ
- for barebox@lists.infradead.org; Fri, 24 Feb 2017 16:10:52 +0000
-Received: from erbse.hi.pengutronix.de ([2001:67c:670:100:9e5c:8eff:fece:cdfe])
- by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
- (envelope-from <bst@pengutronix.de>) id 1chIRv-0002sQ-M0
- for barebox@lists.infradead.org; Fri, 24 Feb 2017 17:10:27 +0100
-References: <20170224142501.2679-1-bst@pengutronix.de>
- <20170224142501.2679-5-bst@pengutronix.de>
-From: Bastian Stender <bst@pengutronix.de>
-Message-ID: <9558ed42-5b09-cbe1-0ff0-064e29c8a281@pengutronix.de>
-Date: Fri, 24 Feb 2017 17:10:27 +0100
+ id 1chj94-0005pR-Bl
+ for barebox@lists.infradead.org; Sat, 25 Feb 2017 20:40:48 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Sat, 25 Feb 2017 21:40:20 +0100
+Message-Id: <20170225204022.12815-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170225204022.12815-1-u.kleine-koenig@pengutronix.de>
+References: <20170225204022.12815-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20170224142501.2679-5-bst@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,674 +17,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] video: add support for Solomon SSD1307 OLED
- controller family
+Subject: [PATCH v2 4/3] mvebu: armada-370-xp: simplify soc init code flow
 To: barebox@lists.infradead.org
 
-On 02/24/2017 03:25 PM, Bastian Stender wrote:
-> It was ported from linux v4.10. Like the kernel driver only
-> communication via I2C is supported.
->
-> It has only been tested with a SSD1306 and a 96x16 OLED display:
->
-> 	&i2c0 {
-> 		status = "okay";
->
-> 		ssd1306: oled@3c {
-> 			compatible = "solomon,ssd1306fb-i2c";
-> 			reg = <0x3c>;
-> 			reset-gpios = <&gpio1 1 0>;
-> 			solomon,height = <16>;
-> 			solomon,width = <96>;
-> 			solomon,page-offset = <0>;
-> 			solomon,com-invdir;
-> 			solomon,com-seq;
-> 		};
->
-> Signed-off-by: Bastian Stender <bst@pengutronix.de>
-> ---
->  drivers/video/Kconfig     |   4 +
->  drivers/video/Makefile    |   1 +
->  drivers/video/ssd1307fb.c | 569 ++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 574 insertions(+)
->  create mode 100644 drivers/video/ssd1307fb.c
->
-> diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-> index 8f31f5af74..50a876acb1 100644
-> --- a/drivers/video/Kconfig
-> +++ b/drivers/video/Kconfig
-> @@ -12,6 +12,10 @@ config FRAMEBUFFER_CONSOLE
->  	select FONTS
->  	prompt "framebuffer console support"
->
-> +config DRIVER_VIDEO_FB_SSD1307
-> +	bool "Solomon SSD1307 framebuffer support"
-> +	depends on PWM && I2C && GPIOLIB
-
-Oops, it actually does not depend on PWM. Only the SSD1307 needs PWM, 
-but I did not port that part as I have no way to test it. I should 
-probably mention that.
-
-> +
->  config VIDEO_VPL
->  	depends on OFTREE
->  	bool
-> diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-> index 1bf2e1f3ca..e23c9c37b6 100644
-> --- a/drivers/video/Makefile
-> +++ b/drivers/video/Makefile
-> @@ -21,3 +21,4 @@ obj-$(CONFIG_DRIVER_VIDEO_OMAP) += omap.o
->  obj-$(CONFIG_DRIVER_VIDEO_BCM283X) += bcm2835.o
->  obj-$(CONFIG_DRIVER_VIDEO_SIMPLEFB) += simplefb.o
->  obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3) += imx-ipu-v3/
-> +obj-$(CONFIG_DRIVER_VIDEO_FB_SSD1307) += ssd1307fb.o
-> diff --git a/drivers/video/ssd1307fb.c b/drivers/video/ssd1307fb.c
-> new file mode 100644
-> index 0000000000..0dfdcc2232
-> --- /dev/null
-> +++ b/drivers/video/ssd1307fb.c
-> @@ -0,0 +1,569 @@
-> +/*
-> + * Driver for the Solomon SSD1307 OLED controller family
-> + *
-> + * Supports:
-> + *	- SSD1305 (untested)
-> + *	- SSD1306
-> + *	- SSD1307 (untested)
-
-Remove that for now.
-
-> + *	- SSD1309 (untested)
-> + *
-> + * Copyright 2012 Maxime Ripard <maxime.ripard@free-electrons.com>, Free Electrons
-> + *
-> + * Ported to barebox from linux v4.10
-> + * Copyright (C) 2017 Pengutronix, Bastian Stender <kernel@pengutronix.de>
-> + *
-> + * Licensed under the GPLv2 or later.
-> + */
-> +
-> +#include <common.h>
-> +#include <init.h>
-> +#include <fb.h>
-> +#include <i2c/i2c.h>
-> +#include <of_device.h>
-> +#include <gpio.h>
-> +#include <of_gpio.h>
-> +#include <printk.h>
-> +
-> +#define SSD1307FB_DATA			0x40
-> +#define SSD1307FB_COMMAND		0x80
-> +
-> +#define SSD1307FB_SET_ADDRESS_MODE	0x20
-> +#define SSD1307FB_SET_ADDRESS_MODE_HORIZONTAL	(0x00)
-> +#define SSD1307FB_SET_ADDRESS_MODE_VERTICAL	(0x01)
-> +#define SSD1307FB_SET_ADDRESS_MODE_PAGE		(0x02)
-> +#define SSD1307FB_SET_COL_RANGE		0x21
-> +#define SSD1307FB_SET_PAGE_RANGE	0x22
-> +#define SSD1307FB_CONTRAST		0x81
-> +#define	SSD1307FB_CHARGE_PUMP		0x8d
-> +#define SSD1307FB_SEG_REMAP_ON		0xa1
-> +#define SSD1307FB_DISPLAY_OFF		0xae
-> +#define SSD1307FB_SET_MULTIPLEX_RATIO	0xa8
-> +#define SSD1307FB_DISPLAY_ON		0xaf
-> +#define SSD1307FB_START_PAGE_ADDRESS	0xb0
-> +#define SSD1307FB_SET_DISPLAY_OFFSET	0xd3
-> +#define	SSD1307FB_SET_CLOCK_FREQ	0xd5
-> +#define	SSD1307FB_SET_PRECHARGE_PERIOD	0xd9
-> +#define	SSD1307FB_SET_COM_PINS_CONFIG	0xda
-> +#define	SSD1307FB_SET_VCOMH		0xdb
-> +
-> +struct ssd1307fb_par;
-> +
-> +struct ssd1307fb_deviceinfo {
-> +	u32 default_vcomh;
-> +	u32 default_dclk_div;
-> +	u32 default_dclk_frq;
-> +	int need_chargepump;
-> +};
-> +
-> +struct ssd1307fb_par {
-> +	u32 com_invdir;
-> +	u32 com_lrremap;
-> +	u32 com_offset;
-> +	u32 com_seq;
-> +	u32 contrast;
-> +	u32 dclk_div;
-> +	u32 dclk_frq;
-> +	const struct ssd1307fb_deviceinfo *device_info;
-> +	struct i2c_client *client;
-> +	u32 height;
-> +	struct fb_info *info;
-> +	u32 page_offset;
-> +	u32 prechargep1;
-> +	u32 prechargep2;
-> +	int reset;
-> +	u32 seg_remap;
-> +	u32 vcomh;
-> +	u32 width;
-> +};
-> +
-> +struct ssd1307fb_array {
-> +	u8	type;
-> +	u8	data[0];
-> +};
-> +
-> +static struct ssd1307fb_array *ssd1307fb_alloc_array(u32 len, u8 type)
-> +{
-> +	struct ssd1307fb_array *array;
-> +
-> +	array = kzalloc(sizeof(struct ssd1307fb_array) + len, GFP_KERNEL);
-> +	if (!array)
-> +		return NULL;
-> +
-> +	array->type = type;
-> +
-> +	return array;
-> +}
-> +
-> +static int ssd1307fb_write_array(struct i2c_client *client,
-> +				 struct ssd1307fb_array *array, u32 len)
-> +{
-> +	int ret;
-> +
-> +	len += sizeof(struct ssd1307fb_array);
-> +
-> +	ret = i2c_master_send(client, (u8 *)array, len);
-> +	if (ret != len) {
-> +		dev_err(&client->dev, "Couldn't send I2C command.\n");
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static inline int ssd1307fb_write_cmd(struct i2c_client *client, u8 cmd)
-> +{
-> +	struct ssd1307fb_array *array;
-> +	int ret;
-> +
-> +	array = ssd1307fb_alloc_array(1, SSD1307FB_COMMAND);
-> +	if (!array)
-> +		return -ENOMEM;
-> +
-> +	array->data[0] = cmd;
-> +
-> +	ret = ssd1307fb_write_array(client, array, 1);
-> +	kfree(array);
-> +
-> +	return ret;
-> +}
-> +
-> +static void ssd1307fb_update_display(struct ssd1307fb_par *par)
-> +{
-> +	struct ssd1307fb_array *array;
-> +	u8 *vmem = par->info->screen_base;
-> +	int i, j, k;
-> +
-> +	array = ssd1307fb_alloc_array(par->width * par->height / 8,
-> +				      SSD1307FB_DATA);
-> +	if (!array)
-> +		return;
-> +
-> +	/*
-> +	 * The screen is divided in pages, each having a height of 8
-> +	 * pixels, and the width of the screen. When sending a byte of
-> +	 * data to the controller, it gives the 8 bits for the current
-> +	 * column. I.e, the first byte are the 8 bits of the first
-> +	 * column, then the 8 bits for the second column, etc.
-> +	 *
-> +	 *
-> +	 * Representation of the screen, assuming it is 5 bits
-> +	 * wide. Each letter-number combination is a bit that controls
-> +	 * one pixel.
-> +	 *
-> +	 * A0 A1 A2 A3 A4
-> +	 * B0 B1 B2 B3 B4
-> +	 * C0 C1 C2 C3 C4
-> +	 * D0 D1 D2 D3 D4
-> +	 * E0 E1 E2 E3 E4
-> +	 * F0 F1 F2 F3 F4
-> +	 * G0 G1 G2 G3 G4
-> +	 * H0 H1 H2 H3 H4
-> +	 *
-> +	 * If you want to update this screen, you need to send 5 bytes:
-> +	 *  (1) A0 B0 C0 D0 E0 F0 G0 H0
-> +	 *  (2) A1 B1 C1 D1 E1 F1 G1 H1
-> +	 *  (3) A2 B2 C2 D2 E2 F2 G2 H2
-> +	 *  (4) A3 B3 C3 D3 E3 F3 G3 H3
-> +	 *  (5) A4 B4 C4 D4 E4 F4 G4 H4
-> +	 */
-> +
-> +	for (i = 0; i < (par->height / 8); i++) {
-> +		for (j = 0; j < par->width; j++) {
-> +			u32 array_idx = i * par->width + j;
-> +			array->data[array_idx] = 0;
-> +			for (k = 0; k < 8; k++) {
-> +				u32 page_length = par->width * i * 8;
-> +				u32 index = page_length + (par->width * k + j);
-> +				u8 byte = *(vmem + index);
-> +				/* convert to 1 bit per pixel */
-> +				u8 bit = byte > 0;
-> +				array->data[array_idx] |= bit << k;
-> +			}
-> +		}
-> +	}
-> +
-> +	ssd1307fb_write_array(par->client, array, par->width * par->height / 8);
-> +	kfree(array);
-> +}
-> +
-> +static void ssd1307fb_enable(struct fb_info *info)
-> +{
-> +	struct ssd1307fb_par *par = info->priv;
-> +	ssd1307fb_write_cmd(par->client, SSD1307FB_DISPLAY_ON);
-> +}
-> +
-> +static void ssd1307fb_disable(struct fb_info *info)
-> +{
-> +	struct ssd1307fb_par *par = info->priv;
-> +	ssd1307fb_write_cmd(par->client, SSD1307FB_DISPLAY_OFF);
-> +}
-> +
-> +static void ssd1307fb_flush(struct fb_info *info)
-> +{
-> +	struct ssd1307fb_par *par = info->priv;
-> +	ssd1307fb_update_display(par);
-> +}
-> +
-> +static struct fb_ops ssd1307fb_ops = {
-> +	.fb_enable	= ssd1307fb_enable,
-> +	.fb_disable	= ssd1307fb_disable,
-> +	.fb_flush	= ssd1307fb_flush,
-> +};
-> +
-> +static int ssd1307fb_init(struct ssd1307fb_par *par)
-> +{
-> +	int ret;
-> +	u32 precharge, dclk, com_invdir, compins;
-> +
-> +	/* Set initial contrast */
-> +	ret = ssd1307fb_write_cmd(par->client, SSD1307FB_CONTRAST);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ssd1307fb_write_cmd(par->client, par->contrast);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Set segment re-map */
-> +	if (par->seg_remap) {
-> +		ret = ssd1307fb_write_cmd(par->client, SSD1307FB_SEG_REMAP_ON);
-> +		if (ret < 0)
-> +			return ret;
-> +	};
-> +
-> +	/* Set COM direction */
-> +	com_invdir = 0xc0 | (par->com_invdir & 0x1) << 3;
-> +	ret = ssd1307fb_write_cmd(par->client,  com_invdir);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Set multiplex ratio value */
-> +	ret = ssd1307fb_write_cmd(par->client, SSD1307FB_SET_MULTIPLEX_RATIO);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ssd1307fb_write_cmd(par->client, par->height - 1);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* set display offset value */
-> +	ret = ssd1307fb_write_cmd(par->client, SSD1307FB_SET_DISPLAY_OFFSET);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ssd1307fb_write_cmd(par->client, par->com_offset);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Set clock frequency */
-> +	ret = ssd1307fb_write_cmd(par->client, SSD1307FB_SET_CLOCK_FREQ);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	dclk = ((par->dclk_div - 1) & 0xf) | (par->dclk_frq & 0xf) << 4;
-> +	ret = ssd1307fb_write_cmd(par->client, dclk);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Set precharge period in number of ticks from the internal clock */
-> +	ret = ssd1307fb_write_cmd(par->client, SSD1307FB_SET_PRECHARGE_PERIOD);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	precharge = (par->prechargep1 & 0xf) | (par->prechargep2 & 0xf) << 4;
-> +	ret = ssd1307fb_write_cmd(par->client, precharge);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Set COM pins configuration */
-> +	ret = ssd1307fb_write_cmd(par->client, SSD1307FB_SET_COM_PINS_CONFIG);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	compins = 0x02 | !(par->com_seq & 0x1) << 4
-> +				   | (par->com_lrremap & 0x1) << 5;
-> +	ret = ssd1307fb_write_cmd(par->client, compins);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Set VCOMH */
-> +	ret = ssd1307fb_write_cmd(par->client, SSD1307FB_SET_VCOMH);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ssd1307fb_write_cmd(par->client, par->vcomh);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Turn on the DC-DC Charge Pump */
-> +	ret = ssd1307fb_write_cmd(par->client, SSD1307FB_CHARGE_PUMP);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ssd1307fb_write_cmd(par->client,
-> +		BIT(4) | (par->device_info->need_chargepump ? BIT(2) : 0));
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Switch to horizontal addressing mode */
-> +	ret = ssd1307fb_write_cmd(par->client, SSD1307FB_SET_ADDRESS_MODE);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ssd1307fb_write_cmd(par->client,
-> +				  SSD1307FB_SET_ADDRESS_MODE_HORIZONTAL);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Set column range */
-> +	ret = ssd1307fb_write_cmd(par->client, SSD1307FB_SET_COL_RANGE);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ssd1307fb_write_cmd(par->client, 0x0);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ssd1307fb_write_cmd(par->client, par->width - 1);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Set page range */
-> +	ret = ssd1307fb_write_cmd(par->client, SSD1307FB_SET_PAGE_RANGE);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ssd1307fb_write_cmd(par->client, 0x0);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ssd1307fb_write_cmd(par->client,
-> +				  par->page_offset + (par->height / 8) - 1);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Turn on the display */
-> +	ret = ssd1307fb_write_cmd(par->client, SSD1307FB_DISPLAY_ON);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return 0;
-> +}
-> +
-> +static struct ssd1307fb_deviceinfo ssd1307fb_ssd1305_deviceinfo = {
-> +	.default_vcomh = 0x34,
-> +	.default_dclk_div = 1,
-> +	.default_dclk_frq = 7,
-> +};
-> +
-> +static struct ssd1307fb_deviceinfo ssd1307fb_ssd1306_deviceinfo = {
-> +	.default_vcomh = 0x20,
-> +	.default_dclk_div = 1,
-> +	.default_dclk_frq = 8,
-> +	.need_chargepump = 1,
-> +};
-> +
-> +static struct ssd1307fb_deviceinfo ssd1307fb_ssd1307_deviceinfo = {
-> +	.default_vcomh = 0x20,
-> +	.default_dclk_div = 2,
-> +	.default_dclk_frq = 12,
-> +};
-
-Remove this too.
-
-> +
-> +static struct ssd1307fb_deviceinfo ssd1307fb_ssd1309_deviceinfo = {
-> +	.default_vcomh = 0x34,
-> +	.default_dclk_div = 1,
-> +	.default_dclk_frq = 10,
-> +};
-> +
-> +static const struct of_device_id ssd1307fb_of_match[] = {
-> +	{
-> +		.compatible = "solomon,ssd1305fb-i2c",
-> +		.data = (void *)&ssd1307fb_ssd1305_deviceinfo,
-> +	},
-> +	{
-> +		.compatible = "solomon,ssd1306fb-i2c",
-> +		.data = (void *)&ssd1307fb_ssd1306_deviceinfo,
-> +	},
-> +	{
-> +		.compatible = "solomon,ssd1307fb-i2c",
-> +		.data = (void *)&ssd1307fb_ssd1307_deviceinfo,
-> +	},
-
-Remove this too.
-
-> +	{
-> +		.compatible = "solomon,ssd1309fb-i2c",
-> +		.data = (void *)&ssd1307fb_ssd1309_deviceinfo,
-> +	},
-> +	{},
-> +};
-> +
-> +static int ssd1307fb_probe(struct device_d *dev)
-> +{
-> +	struct i2c_client *client = to_i2c_client(dev);
-> +	struct fb_info *info;
-> +	struct device_node *node = dev->device_node;
-> +	const struct of_device_id *match =
-> +		of_match_node(ssd1307fb_of_match, dev->device_node);
-> +	u32 vmem_size;
-> +	struct ssd1307fb_par *par;
-> +	struct ssd1307fb_array *array;
-> +	u8 *vmem;
-> +	int ret;
-> +	int i, j;
-> +
-> +	if (!node) {
-> +		dev_err(&client->dev, "No device tree data found!\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	info = xzalloc(sizeof(struct fb_info));
-> +	if (!info) {
-> +		dev_err(&client->dev, "Couldn't allocate framebuffer.\n");
-> +		return -ENOMEM;
-> +	}
-> +
-> +	par = info->priv;
-> +	par->info = info;
-> +	par->client = client;
-> +
-> +	par->device_info = (struct ssd1307fb_deviceinfo *)match->data;
-> +
-> +	par->reset = of_get_named_gpio(node,
-> +					 "reset-gpios", 0);
-> +	if (!gpio_is_valid(par->reset)) {
-> +		dev_err(&client->dev,
-> +			"Couldn't get named gpio 'reset-gpios' %d.\n",
-> +			par->reset);
-> +		ret = par->reset;
-> +		goto fb_alloc_error;
-> +	}
-> +
-> +	if (of_property_read_u32(node, "solomon,width", &par->width))
-> +		par->width = 96;
-> +
-> +	if (of_property_read_u32(node, "solomon,height", &par->height))
-> +		par->height = 16;
-> +
-> +	if (of_property_read_u32(node, "solomon,page-offset",
-> +				 &par->page_offset))
-> +		par->page_offset = 1;
-> +
-> +	if (of_property_read_u32(node, "solomon,com-offset", &par->com_offset))
-> +		par->com_offset = 0;
-> +
-> +	if (of_property_read_u32(node, "solomon,prechargep1",
-> +				 &par->prechargep1))
-> +		par->prechargep1 = 2;
-> +
-> +	if (of_property_read_u32(node, "solomon,prechargep2",
-> +				 &par->prechargep2))
-> +		par->prechargep2 = 2;
-> +
-> +	par->seg_remap = !of_property_read_bool(node,
-> +						"solomon,segment-no-remap");
-> +	par->com_seq = of_property_read_bool(node, "solomon,com-seq");
-> +	par->com_lrremap = of_property_read_bool(node, "solomon,com-lrremap");
-> +	par->com_invdir = of_property_read_bool(node, "solomon,com-invdir");
-> +
-> +	par->contrast = 127;
-> +	par->vcomh = par->device_info->default_vcomh;
-> +
-> +	/* Setup display timing */
-> +	par->dclk_div = par->device_info->default_dclk_div;
-> +	par->dclk_frq = par->device_info->default_dclk_frq;
-> +
-> +	vmem_size = par->width * par->height;
-> +
-> +	vmem = malloc(vmem_size);
-> +	if (!vmem) {
-> +		dev_err(&client->dev, "Couldn't allocate graphical memory.\n");
-> +		ret = -ENOMEM;
-> +		goto fb_alloc_error;
-> +	}
-> +
-> +	info->fbops = &ssd1307fb_ops;
-> +	info->line_length = par->width;
-> +
-> +	info->xres = par->width;
-> +	info->yres = par->height;
-> +
-> +	/* emulate 8 bit per pixel */
-> +	info->bits_per_pixel = 8;
-> +
-> +	info->red.length = 3;
-> +	info->red.offset = 0;
-> +	info->green.length = 3;
-> +	info->green.offset = 0;
-> +	info->blue.length = 2;
-> +	info->blue.offset = 0;
-> +
-> +	info->screen_base = (u8 __force __iomem *)vmem;
-> +
-> +	ret = gpio_request_one(par->reset,
-> +			       GPIOF_OUT_INIT_HIGH,
-> +			       "oled-reset");
-> +	if (ret) {
-> +		dev_err(&client->dev,
-> +			"failed to request gpio %d: %d\n",
-> +			par->reset, ret);
-> +		goto reset_oled_error;
-> +	}
-> +
-> +	i2c_set_clientdata(client, info);
-> +
-> +	/* Reset the screen */
-> +	gpio_set_value(par->reset, 0);
-> +	udelay(4);
-> +	gpio_set_value(par->reset, 1);
-> +	udelay(4);
-> +
-> +	ret = ssd1307fb_init(par);
-> +	if (ret)
-> +		goto reset_oled_error;
-> +
-> +	ret = register_framebuffer(info);
-> +	if (ret) {
-> +		dev_err(&client->dev, "Couldn't register the framebuffer\n");
-> +		goto panel_init_error;
-> +	}
-> +
-> +	/* clear display */
-> +	array = ssd1307fb_alloc_array(par->width * par->height / 8,
-> +				      SSD1307FB_DATA);
-> +	if (!array)
-> +		return -ENOMEM;
-> +
-> +	for (i = 0; i < (par->height / 8); i++) {
-> +		for (j = 0; j < par->width; j++) {
-> +			u32 array_idx = i * par->width + j;
-> +			array->data[array_idx] = 0;
-> +		}
-> +	}
-> +
-> +	ssd1307fb_write_array(par->client, array, par->width * par->height / 8);
-> +	kfree(array);
-> +
-> +	dev_info(&client->dev,
-> +		 "ssd1307 framebuffer device registered, using %d bytes of video memory\n",
-> +		 vmem_size);
-> +
-> +	return 0;
-> +
-> +panel_init_error:
-> +reset_oled_error:
-> +fb_alloc_error:
-> +	free(info);
-> +	return ret;
-> +}
-> +
-> +static struct driver_d ssd1307fb_driver = {
-> +	.name = "ssd1307fb",
-> +	.probe = ssd1307fb_probe,
-> +	.of_compatible = DRV_OF_COMPAT(ssd1307fb_of_match),
-> +};
-> +
-> +static int ssd1307_init(void)
-> +{
-> +	i2c_driver_register(&ssd1307fb_driver);
-> +	return 0;
-> +}
-> +
-> +device_initcall(ssd1307_init);
->
-
-If anybody is confident enough to port the pwm parts or can actually 
-test this, we can add SSD1307 compatability again.
-
-I will send a reworked version of this patch, but for now I'll wait for 
-some more review.
-
-Regards,
-Bastian
-
--- 
-Pengutronix e.K.
-Industrial Linux Solutions
-http://www.pengutronix.de/
-Peiner Str. 6-8, 31137 Hildesheim, Germany
-Amtsgericht Hildesheim, HRA 2686
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBnZXRzIHJpZCBvZiBhIG9mLWZpeHVwIHdoaWNoIGlzIHN0cmFuZ2UgYmVjYXVzZSB0aGUg
+c29jIGluaXQgc3R1ZmYKaXMgcmVydW4gdGhlbiB3aGVuIGEgbmV3IGR0IGZvciBib290aW5nIGlu
+dG8gTGludXggaXMgbG9hZGVkLgoKVGhlIGluaXRjYWxsIG11c3QgYmUgcG9zdHBvbmVkIHRvIHBv
+c3QtY29yZSB0byBlbnN1cmUKb2ZfbWFjaGluZV9pc19jb21wYXRpYmxlIGlzIHdvcmtpbmcgY29y
+cmVjdGx5LgoKVGhlIGNhbGwgdG8gbXZlYnVfbWJ1c19hZGRfcmFuZ2UgaXMgbW92ZWQgdG8gZHJp
+dmVycy9idXMvbXZlYnUtbWJ1cy5jIHRvCmVuc3VyZSBpdCdzIHJlZ2lzdGVyZWQgZWFybHkgZW5v
+dWdoLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0Bw
+ZW5ndXRyb25peC5kZT4KLS0tCiBhcmNoL2FybS9tYWNoLW12ZWJ1L2FybWFkYS0zNzAteHAuYyB8
+IDMxICsrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGRyaXZlcnMvYnVzL212ZWJ1LW1i
+dXMuYyAgICAgICAgICAgIHwgIDkgKysrKysrKystCiAyIGZpbGVzIGNoYW5nZWQsIDE2IGluc2Vy
+dGlvbnMoKyksIDI0IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtbXZl
+YnUvYXJtYWRhLTM3MC14cC5jIGIvYXJjaC9hcm0vbWFjaC1tdmVidS9hcm1hZGEtMzcwLXhwLmMK
+aW5kZXggNWZiMjA3NTk0ZmQ0Li45M2FkOTU1YTZlNDkgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21h
+Y2gtbXZlYnUvYXJtYWRhLTM3MC14cC5jCisrKyBiL2FyY2gvYXJtL21hY2gtbXZlYnUvYXJtYWRh
+LTM3MC14cC5jCkBAIC04MywxOSArODMsNyBAQCBzdGF0aWMgdm9pZCBfX25vcmV0dXJuIGFybWFk
+YV8zNzBfeHBfcmVzdGFydF9zb2Moc3RydWN0IHJlc3RhcnRfaGFuZGxlciAqcnN0KQogCWhhbmco
+KTsKIH0KIAotc3RhdGljIGludCBhcm1hZGFfeHBfaW5pdF9zb2Moc3RydWN0IGRldmljZV9ub2Rl
+ICpyb290KQotewotCXUzMiByZWc7Ci0KLQkvKiBFbmFibGUgR0JFMCwgR0JFMSwgTENEIGFuZCBO
+RkMgUFVQICovCi0JcmVnID0gcmVhZGwoQVJNQURBX1hQX1BVUF9FTkFCTEUpOwotCXJlZyB8PSBH
+RTBfUFVQX0VOIHwgR0UxX1BVUF9FTiB8IExDRF9QVVBfRU4gfCBOQU5EX1BVUF9FTiB8IFNQSV9Q
+VVBfRU47Ci0Jd3JpdGVsKHJlZywgQVJNQURBX1hQX1BVUF9FTkFCTEUpOwotCi0JcmV0dXJuIDA7
+Ci19Ci0KLXN0YXRpYyBpbnQgYXJtYWRhXzM3MF94cF9pbml0X3NvYyhzdHJ1Y3QgZGV2aWNlX25v
+ZGUgKnJvb3QsIHZvaWQgKmNvbnRleHQpCitzdGF0aWMgaW50IGFybWFkYV8zNzBfeHBfaW5pdF9z
+b2Modm9pZCkKIHsKIAl1MzIgcmVnOwogCkBAIC0xMTYsMTYgKzEwNCwxMyBAQCBzdGF0aWMgaW50
+IGFybWFkYV8zNzBfeHBfaW5pdF9zb2Moc3RydWN0IGRldmljZV9ub2RlICpyb290LCB2b2lkICpj
+b250ZXh0KQogCiAJYXJtYWRhX3hwX3NvY19pZF9maXh1cCgpOwogCi0JaWYgKG9mX21hY2hpbmVf
+aXNfY29tcGF0aWJsZSgibWFydmVsbCxhcm1hZGF4cCIpKQotCQlhcm1hZGFfeHBfaW5pdF9zb2Mo
+cm9vdCk7CisJaWYgKG9mX21hY2hpbmVfaXNfY29tcGF0aWJsZSgibWFydmVsbCxhcm1hZGF4cCIp
+KSB7CisJCS8qIEVuYWJsZSBHQkUwLCBHQkUxLCBMQ0QgYW5kIE5GQyBQVVAgKi8KKwkJcmVnID0g
+cmVhZGwoQVJNQURBX1hQX1BVUF9FTkFCTEUpOworCQlyZWcgfD0gR0UwX1BVUF9FTiB8IEdFMV9Q
+VVBfRU4gfCBMQ0RfUFVQX0VOIHwgTkFORF9QVVBfRU4gfCBTUElfUFVQX0VOOworCQl3cml0ZWwo
+cmVnLCBBUk1BREFfWFBfUFVQX0VOQUJMRSk7CisJfQogCiAJcmV0dXJuIDA7CiB9Ci0KLXN0YXRp
+YyBpbnQgYXJtYWRhXzM3MF94cF9yZWdpc3Rlcl9zb2NfZml4dXAodm9pZCkKLXsKLQltdmVidV9t
+YnVzX2FkZF9yYW5nZSgibWFydmVsbCxhcm1hZGEtMzcwLXhwIiwgMHhmMCwgMHgwMSwKLQkJCSAg
+ICAgTVZFQlVfUkVNQVBfSU5UX1JFR19CQVNFKTsKLQlyZXR1cm4gb2ZfcmVnaXN0ZXJfZml4dXAo
+YXJtYWRhXzM3MF94cF9pbml0X3NvYywgTlVMTCk7Ci19Ci1wdXJlX2luaXRjYWxsKGFybWFkYV8z
+NzBfeHBfcmVnaXN0ZXJfc29jX2ZpeHVwKTsKK3Bvc3Rjb3JlX2luaXRjYWxsKGFybWFkYV8zNzBf
+eHBfaW5pdF9zb2MpOwpkaWZmIC0tZ2l0IGEvZHJpdmVycy9idXMvbXZlYnUtbWJ1cy5jIGIvZHJp
+dmVycy9idXMvbXZlYnUtbWJ1cy5jCmluZGV4IGRmNWY3YTMyZDM0Ni4uYjk1YzA3MWQ1N2E0IDEw
+MDY0NAotLS0gYS9kcml2ZXJzL2J1cy9tdmVidS1tYnVzLmMKKysrIGIvZHJpdmVycy9idXMvbXZl
+YnUtbWJ1cy5jCkBAIC01OSw2ICs1OSw3IEBACiAjaW5jbHVkZSA8b2YuaD4KICNpbmNsdWRlIDxv
+Zl9hZGRyZXNzLmg+CiAjaW5jbHVkZSA8bGludXgvbWJ1cy5oPgorI2luY2x1ZGUgPG1hY2gvY29t
+bW9uLmg+CiAKIC8qIEREUiB0YXJnZXQgaXMgdGhlIHNhbWUgb24gYWxsIHBsYXRmb3JtcyAqLwog
+I2RlZmluZSBUQVJHRVRfRERSCQkwCkBAIC04MTAsNyArODExLDEzIEBAIHN0YXRpYyBpbnQgbXZl
+YnVfbWJ1c19vZl9maXh1cChzdHJ1Y3QgZGV2aWNlX25vZGUgKnJvb3QsIHZvaWQgKmNvbnRleHQp
+CiAJcmV0dXJuIDA7CiB9CiAKLXN0YXRpYyBpbnQgbXZlYnVfbWJ1c19maXh1cF9yZWdpc3Rlcih2
+b2lkKSB7CitzdGF0aWMgaW50IG12ZWJ1X21idXNfZml4dXBfcmVnaXN0ZXIodm9pZCkKK3sKKwlp
+ZiAoSVNfRU5BQkxFRChDT05GSUdfQVJDSF9BUk1BREFfMzcwKSB8fAorCSAgICBJU19FTkFCTEVE
+KENPTkZJR19BUkNIX0FSTUFEQV9YUCkpCisJCW12ZWJ1X21idXNfYWRkX3JhbmdlKCJtYXJ2ZWxs
+LGFybWFkYS0zNzAteHAiLCAweGYwLCAweDAxLAorCQkJCSAgICAgTVZFQlVfUkVNQVBfSU5UX1JF
+R19CQVNFKTsKKwogCXJldHVybiBvZl9yZWdpc3Rlcl9maXh1cChtdmVidV9tYnVzX29mX2ZpeHVw
+LCBOVUxMKTsKIH0KIHB1cmVfaW5pdGNhbGwobXZlYnVfbWJ1c19maXh1cF9yZWdpc3Rlcik7Ci0t
+IAoyLjExLjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
+L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
