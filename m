@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo68.mail-out.ovh.net ([46.105.52.162])
+Received: from 6.mo68.mail-out.ovh.net ([46.105.63.100])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ciIJW-0006Aq-Tv
- for barebox@lists.infradead.org; Mon, 27 Feb 2017 10:13:57 +0000
+ id 1ciIJX-0006At-SM
+ for barebox@lists.infradead.org; Mon, 27 Feb 2017 10:13:58 +0000
 Received: from player763.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo68.mail-out.ovh.net (Postfix) with ESMTP id A43533DBFC
- for <barebox@lists.infradead.org>; Mon, 27 Feb 2017 11:13:32 +0100 (CET)
+ by mo68.mail-out.ovh.net (Postfix) with ESMTP id AA1533F769
+ for <barebox@lists.infradead.org>; Mon, 27 Feb 2017 11:13:33 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 27 Feb 2017 11:19:26 +0100
-Message-Id: <1488190770-4034-4-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 27 Feb 2017 11:19:27 +0100
+Message-Id: <1488190770-4034-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1488190770-4034-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20170227101416.GB12475@mail.ovh.net>
  <1488190770-4034-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,68 +25,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/8] efi: move x86 clocksource init at core initcall level
+Subject: [PATCH 5/8] clocksource: allow to have multiple device from clock
+ source
 To: barebox@lists.infradead.org
 
-so we can use device/driver model
+use the one with the most priority.
+
+We can not select the clocksource at user level.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/efi/efi.c          | 1 -
- drivers/clocksource/efi.c | 5 ++++-
- include/efi/efi.h         | 2 --
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ common/clock.c  | 11 +++++++++++
+ include/clock.h |  3 ++-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/common/efi/efi.c b/common/efi/efi.c
-index 1c7aee872..4b589b600 100644
---- a/common/efi/efi.c
-+++ b/common/efi/efi.c
-@@ -348,7 +348,6 @@ efi_status_t efi_main(efi_handle_t image, efi_system_table_t *sys_table)
- 		      efi_strerror(efiret));
- 	mem_malloc_init((void *)mem, (void *)mem + memsize);
+diff --git a/common/clock.c b/common/clock.c
+index 2c5dd91cc..d99d06853 100644
+--- a/common/clock.c
++++ b/common/clock.c
+@@ -213,6 +213,17 @@ EXPORT_SYMBOL(mdelay_non_interruptible);
  
--	efi_clocksource_init();
- 	start_barebox();
+ int init_clock(struct clocksource *cs)
+ {
++	if (current_clock && cs->priority < current_clock->priority)
++		return -EBUSY;
++
++	if (cs->init) {
++		int ret;
++
++		ret = cs->init(cs);
++		if (ret)
++			return ret;
++	}
++
+ 	current_clock = cs;
+ 	time_beginning = get_time_ns();
  
- 	return EFI_SUCCESS;
-diff --git a/drivers/clocksource/efi.c b/drivers/clocksource/efi.c
-index 59fd9918a..6d2fee8eb 100644
---- a/drivers/clocksource/efi.c
-+++ b/drivers/clocksource/efi.c
-@@ -1,4 +1,5 @@
- #include <common.h>
-+#include <init.h>
- #include <efi.h>
- #include <efi/efi.h>
- #include <clock.h>
-@@ -48,7 +49,7 @@ static struct clocksource cs = {
- 	.shift  = 0,
+diff --git a/include/clock.h b/include/clock.h
+index d65e404e8..5f2f53ab6 100644
+--- a/include/clock.h
++++ b/include/clock.h
+@@ -12,7 +12,8 @@ struct clocksource {
+ 	uint64_t	(*read)(void);
+ 	uint64_t	cycle_last;
+ 	uint64_t	mask;
+-
++	int		priority;
++	int		(*init)(struct clocksource*);
  };
  
--int efi_clocksource_init(void)
-+static int efi_clocksource_init(void)
- {
- 	cs.mult = clocksource_hz2mult(1000 * 1000, cs.shift);
- 
-@@ -56,3 +57,5 @@ int efi_clocksource_init(void)
- 
- 	return init_clock(&cs);
- }
-+/* for efi the time must be init at core initcall level */
-+core_initcall(efi_clocksource_init);
-diff --git a/include/efi/efi.h b/include/efi/efi.h
-index 2b25cf186..648afb9ec 100644
---- a/include/efi/efi.h
-+++ b/include/efi/efi.h
-@@ -12,8 +12,6 @@ extern efi_loaded_image_t *efi_loaded_image;
- 
- int efi_errno(efi_status_t err);
- 
--int efi_clocksource_init(void);
--
- void *efi_get_variable(char *name, efi_guid_t *vendor, int *var_size);
- 
- static inline void *efi_get_global_var(char *name, int *var_size)
+ static inline uint32_t cyc2ns(struct clocksource *cs, uint64_t cycles)
 -- 
 2.11.0
 
