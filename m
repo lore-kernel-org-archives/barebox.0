@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 6.mo68.mail-out.ovh.net ([46.105.63.100])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ciIJX-0006At-SM
- for barebox@lists.infradead.org; Mon, 27 Feb 2017 10:13:58 +0000
+ id 1ciIJX-0006Bs-SL
+ for barebox@lists.infradead.org; Mon, 27 Feb 2017 10:14:01 +0000
 Received: from player763.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo68.mail-out.ovh.net (Postfix) with ESMTP id AA1533F769
- for <barebox@lists.infradead.org>; Mon, 27 Feb 2017 11:13:33 +0100 (CET)
+ by mo68.mail-out.ovh.net (Postfix) with ESMTP id 0F3B33F858
+ for <barebox@lists.infradead.org>; Mon, 27 Feb 2017 11:13:37 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 27 Feb 2017 11:19:27 +0100
-Message-Id: <1488190770-4034-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 27 Feb 2017 11:19:30 +0100
+Message-Id: <1488190770-4034-8-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1488190770-4034-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20170227101416.GB12475@mail.ovh.net>
  <1488190770-4034-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,56 +25,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] clocksource: allow to have multiple device from clock
- source
+Subject: [PATCH 8/8] efi: add veriable to report secure boot support and status
 To: barebox@lists.infradead.org
-
-use the one with the most priority.
-
-We can not select the clocksource at user level.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/clock.c  | 11 +++++++++++
- include/clock.h |  3 ++-
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ drivers/efi/efi-device.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/common/clock.c b/common/clock.c
-index 2c5dd91cc..d99d06853 100644
---- a/common/clock.c
-+++ b/common/clock.c
-@@ -213,6 +213,17 @@ EXPORT_SYMBOL(mdelay_non_interruptible);
+diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
+index db8b25147..6ed7f12b3 100644
+--- a/drivers/efi/efi-device.c
++++ b/drivers/efi/efi-device.c
+@@ -354,11 +354,41 @@ static void efi_businfo(struct device_d *dev)
+ 	}
+ }
  
- int init_clock(struct clocksource *cs)
- {
-+	if (current_clock && cs->priority < current_clock->priority)
-+		return -EBUSY;
++static int efi_is_secure_boot(void)
++{
++	uint8_t *val;
++	int ret = 0;
 +
-+	if (cs->init) {
-+		int ret;
-+
-+		ret = cs->init(cs);
-+		if (ret)
-+			return ret;
++	val = efi_get_variable("SecureBoot", &efi_global_variable_guid, NULL);
++	if (!IS_ERR(val)) {
++		ret = *val;
++		free(val);
 +	}
 +
- 	current_clock = cs;
- 	time_beginning = get_time_ns();
++	return ret != 1;
++}
++
++static int efi_is_setup_mode(void)
++{
++	uint8_t *val;
++	int ret = 0;
++
++	val = efi_get_variable("SetupMode", &efi_global_variable_guid, NULL);
++	if (!IS_ERR(val)) {
++		ret = *val;
++		free(val);
++	}
++
++	return ret != 1;
++}
++
+ static int efi_init_devices(void)
+ {
+ 	char *fw_vendor = NULL;
+ 	u16 sys_major = efi_sys_table->hdr.revision >> 16;
+ 	u16 sys_minor = efi_sys_table->hdr.revision & 0xffff;
++	int secure_boot = efi_is_secure_boot();
++	int setup_mode = efi_is_setup_mode();
  
-diff --git a/include/clock.h b/include/clock.h
-index d65e404e8..5f2f53ab6 100644
---- a/include/clock.h
-+++ b/include/clock.h
-@@ -12,7 +12,8 @@ struct clocksource {
- 	uint64_t	(*read)(void);
- 	uint64_t	cycle_last;
- 	uint64_t	mask;
--
-+	int		priority;
-+	int		(*init)(struct clocksource*);
- };
+ 	fw_vendor = strdup_wchar_to_char((const wchar_t *)efi_sys_table->fw_vendor);
  
- static inline uint32_t cyc2ns(struct clocksource *cs, uint64_t cycles)
+@@ -374,6 +404,9 @@ static int efi_init_devices(void)
+ 	dev_add_param_int_ro(efi_bus.dev, "major", sys_major, "%u");
+ 	dev_add_param_int_ro(efi_bus.dev, "minor", sys_minor, "%u");
+ 	dev_add_param_int_ro(efi_bus.dev, "fw_revision", efi_sys_table->fw_revision, "%u");
++	dev_add_param_int_ro(efi_bus.dev, "secure_boot", secure_boot, "%d");
++	dev_add_param_int_ro(efi_bus.dev, "secure_mode",
++			     secure_boot & setup_mode, "%u");
+ 
+ 	efi_bus.dev->info = efi_businfo;
+ 
 -- 
 2.11.0
 
