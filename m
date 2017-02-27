@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from s2.neomailbox.net ([5.148.176.60])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ciI2M-0005ke-EO
- for barebox@lists.infradead.org; Mon, 27 Feb 2017 09:56:12 +0000
-Date: Mon, 27 Feb 2017 10:55:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170227095548.mze7oca5d6dzkobf@pengutronix.de>
-References: <20170224142501.2679-1-bst@pengutronix.de>
- <20170224142501.2679-3-bst@pengutronix.de>
+ id 1ciIAY-0008Ty-3B
+ for barebox@lists.infradead.org; Mon, 27 Feb 2017 10:04:40 +0000
+Date: Mon, 27 Feb 2017 05:03:57 -0500
+From: AndrewCz <andrewcz@neomailbox.net>
+Message-ID: <20170227100356.GA3007@tharch.hub>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170224142501.2679-3-bst@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,47 +20,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] console: expose consoles in devfs
-To: Bastian Stender <bst@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Zyxel NAS540 bricked?
+To: barebox@lists.infradead.org
 
-On Fri, Feb 24, 2017 at 03:24:59PM +0100, Bastian Stender wrote:
-> This enables displaying text on e.g. a framebuffer console by issueing
-> 
-> 	echo -o /dev/fbconsole0 abc123
-> 
-> Signed-off-by: Bastian Stender <bst@pengutronix.de>
-> ---
->  common/console.c  | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++++
->  include/console.h |  3 +++
->  2 files changed, 55 insertions(+)
-> 
-> diff --git a/common/console.c b/common/console.c
-> index 43890b3da8..dcd67afe20 100644
-> --- a/common/console.c
-> +++ b/common/console.c
-> @@ -243,6 +243,39 @@ static int __console_puts(struct console_device *cdev, const char *s)
->  	return n;
->  }
->  
-> +static int fops_open(struct cdev *cdev, unsigned long flags)
-> +{
-> +	struct console_device *priv = cdev->priv;
-> +
-> +	return priv->open(priv);
-> +}
+Hello all, hope you are well.
 
-You do not check if this hook exists in the driver, but this will be
-solved when you follow what I suggested in 1/4.
+Recently, I followed a guide[1] to reflash my Zyxel NAS540[2] in order
+to put Debian on it. I'm pretty sure I bricked it and am just looking
+for confirmation.
 
-Sascha
+I seem to be running into a bootloop where it will restart every two
+minutes or so. At least that is what seems to be indicated based on the
+frequency of the front panel lights lighting up. I reflashed the 'env'
+and 'kernel2' sections of the NOR flash, but neither went the right way.
+I can dive into the specifics if necessary. However, my concern is that
+I was unable to receive any output from the serial connection.
 
+Given that the barebox 'env' may be corrupt as well as the kernel, is it
+correct to expect that there would be no serial output? Thanks for your
+consideration in this matter.
+
+--Andrew Cz
+
+[1] https://l.unchti.me/2016/02/12/debian-nas540.html
+[2] http://zyxel.nas-central.org/wiki/Category:NAS540
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Only an idiot fights a war on two fronts. Only the heir to the throne
+of the kingdom of idiots would fight a war on twelve fronts.
 
 _______________________________________________
 barebox mailing list
