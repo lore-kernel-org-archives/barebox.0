@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ciG5N-00023l-Ap
- for barebox@lists.infradead.org; Mon, 27 Feb 2017 07:51:12 +0000
-Date: Mon, 27 Feb 2017 08:50:44 +0100
+ id 1ciGCE-0004rw-E8
+ for barebox@lists.infradead.org; Mon, 27 Feb 2017 07:58:16 +0000
+Date: Mon, 27 Feb 2017 08:57:52 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170227075044.egcbyi4cfrlmijbk@pengutronix.de>
-References: <20170215192932.GB32649@mail.ovh.net>
- <1487187257-29082-1-git-send-email-plagnioj@jcrosoft.com>
- <1487187257-29082-7-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20170227075752.nb4rg64glmr67cmw@pengutronix.de>
+References: <b1f158a9-5dff-0b2c-4517-a5daf009eeae@pengutronix.de>
+ <20170224133627.26495-1-bst@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1487187257-29082-7-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20170224133627.26495-1-bst@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,41 +23,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 07/12] efi: move x86 efi boot support to x86 arch
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH v2] fbconsole: check cursor position before moving
+To: Bastian Stender <bst@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Feb 15, 2017 at 08:34:15PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> prepare to drop the efi arch as efi boot up is not arch sepecific
+On Fri, Feb 24, 2017 at 02:36:27PM +0100, Bastian Stender wrote:
+> Moving the cursor to x=2, y=2 with "\e[3;3H" on a 12x2 framebuffer
+> console lead to a barebox crash while drawing the cursor. If the
+> cursor position is out of bounds clip the cursor to the corresponding
+> edge.
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> Signed-off-by: Bastian Stender <bst@pengutronix.de>
 > ---
->  Documentation/boards/efi.rst                 |   2 +-
->  arch/x86/Kconfig                             |  53 ++++++++++++--
->  arch/x86/Makefile                            |  74 +++++++++++++++++--
->  arch/x86/configs/efi_defconfig               |  78 ++++++++++++++++++++
->  arch/x86/configs/generic_defconfig           |   1 +
->  arch/x86/include/asm/elf.h                   |  86 +++++++++++++++-------
->  arch/x86/include/asm/io.h                    |  71 +++++++++---------
->  arch/x86/include/asm/types.h                 |  51 ++++++++-----
->  arch/x86/include/asm/unaligned.h             |   5 ++
->  arch/x86/lib/Makefile                        |   2 +
->  arch/x86/lib/asm-offsets.c                   |   7 ++
->  arch/x86/mach-efi/.gitignore                 |   2 +
->  arch/x86/mach-efi/Makefile                   |   4 +
->  arch/x86/mach-efi/crt0-efi-ia32.S            |  76 +++++++++++++++++++
->  arch/x86/mach-efi/crt0-efi-x86_64.S          |  75 +++++++++++++++++++
->  arch/x86/mach-efi/elf_ia32_efi.lds.S         | 106 +++++++++++++++++++++++++++
->  arch/x86/mach-efi/elf_x86_64_efi.lds.S       |  99 +++++++++++++++++++++++++
->  arch/x86/mach-efi/include/mach/barebox.lds.h |   0
+>  drivers/video/fbconsole.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
+> index 64f7d7364e..843a026ff6 100644
+> --- a/drivers/video/fbconsole.c
+> +++ b/drivers/video/fbconsole.c
+> @@ -264,10 +264,13 @@ static void fbc_parse_csi(struct fbc_priv *priv)
+>  		return;
+>  	case 'H':
+>  		video_invertchar(priv, priv->x, priv->y);
+> +
+>  		pos = simple_strtoul(priv->csi, &end, 10);
+> -		priv->y = pos ? pos - 1 : 0;
+> +		priv->y = !pos ? 0 : pos < priv->rows ? pos - 1 : priv->rows - 1;
+> +
+>  		pos = simple_strtoul(end + 1, NULL, 10);
+> -		priv->x = pos ? pos - 1 : 0;
+> +		priv->x = !pos ? 0 : pos < priv->cols ? pos - 1 : priv->cols - 1;
 
-This empty file gets removed during make distclean causing build
-failures here. I made this file non-empty. With this:
+Not nice to read. Fortunately this situation is common enough so that we
+have a function for it:
 
-aplied, thanks
+		priv->x = clamp(pos, 0, priv->cols - 1);
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
