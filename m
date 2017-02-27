@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo68.mail-out.ovh.net ([46.105.74.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ciIEX-0002hr-Eu
- for barebox@lists.infradead.org; Mon, 27 Feb 2017 10:08:47 +0000
-Received: from player763.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo68.mail-out.ovh.net (Postfix) with ESMTP id C8D443E89D
- for <barebox@lists.infradead.org>; Mon, 27 Feb 2017 11:08:16 +0100 (CET)
-Received: from localhost (unknown [91.134.156.222])
- (Authenticated sender: plagnioj@jcrosoft.com)
- by player763.ha.ovh.net (Postfix) with ESMTPA id 974453C0097
- for <barebox@lists.infradead.org>; Mon, 27 Feb 2017 11:08:16 +0100 (CET)
-Date: Mon, 27 Feb 2017 11:14:16 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20170227101416.GB12475@mail.ovh.net>
+ id 1ciIEy-0003Ar-L8
+ for barebox@lists.infradead.org; Mon, 27 Feb 2017 10:09:15 +0000
+Date: Mon, 27 Feb 2017 11:08:50 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170227100850.dv7kxvyxhutqfra6@pengutronix.de>
+References: <20170224142501.2679-1-bst@pengutronix.de>
+ <20170224142501.2679-5-bst@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <20170224142501.2679-5-bst@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,74 +23,198 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/8] add generic EFI timer
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/4] video: add support for Solomon SSD1307 OLED
+ controller family
+To: Bastian Stender <bst@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi,
+On Fri, Feb 24, 2017 at 03:25:01PM +0100, Bastian Stender wrote:
+> It was ported from linux v4.10. Like the kernel driver only
+> communication via I2C is supported.
+> 
+> It has only been tested with a SSD1306 and a 96x16 OLED display:
+> 
+> 	&i2c0 {
+> 		status = "okay";
+> 
+> 		ssd1306: oled@3c {
+> 			compatible = "solomon,ssd1306fb-i2c";
+> 			reg = <0x3c>;
+> 			reset-gpios = <&gpio1 1 0>;
+> 			solomon,height = <16>;
+> 			solomon,width = <96>;
+> 			solomon,page-offset = <0>;
+> 			solomon,com-invdir;
+> 			solomon,com-seq;
+> 		};
+> 
+> Signed-off-by: Bastian Stender <bst@pengutronix.de>
+> ---
+>  drivers/video/Kconfig     |   4 +
+>  drivers/video/Makefile    |   1 +
+>  drivers/video/ssd1307fb.c | 569 ++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 574 insertions(+)
+>  create mode 100644 drivers/video/ssd1307fb.c
+> 
+> diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+> index 8f31f5af74..50a876acb1 100644
+> --- a/drivers/video/Kconfig
+> +++ b/drivers/video/Kconfig
+> @@ -12,6 +12,10 @@ config FRAMEBUFFER_CONSOLE
+>  	select FONTS
+>  	prompt "framebuffer console support"
+>  
+> +config DRIVER_VIDEO_FB_SSD1307
+> +	bool "Solomon SSD1307 framebuffer support"
+> +	depends on PWM && I2C && GPIOLIB
+> +
+>  config VIDEO_VPL
+>  	depends on OFTREE
+>  	bool
+> diff --git a/drivers/video/Makefile b/drivers/video/Makefile
+> index 1bf2e1f3ca..e23c9c37b6 100644
+> --- a/drivers/video/Makefile
+> +++ b/drivers/video/Makefile
+> @@ -21,3 +21,4 @@ obj-$(CONFIG_DRIVER_VIDEO_OMAP) += omap.o
+>  obj-$(CONFIG_DRIVER_VIDEO_BCM283X) += bcm2835.o
+>  obj-$(CONFIG_DRIVER_VIDEO_SIMPLEFB) += simplefb.o
+>  obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3) += imx-ipu-v3/
+> +obj-$(CONFIG_DRIVER_VIDEO_FB_SSD1307) += ssd1307fb.o
+> diff --git a/drivers/video/ssd1307fb.c b/drivers/video/ssd1307fb.c
+> new file mode 100644
+> index 0000000000..0dfdcc2232
+> --- /dev/null
+> +++ b/drivers/video/ssd1307fb.c
+> @@ -0,0 +1,569 @@
+> +/*
+> + * Driver for the Solomon SSD1307 OLED controller family
+> + *
+> + * Supports:
+> + *	- SSD1305 (untested)
+> + *	- SSD1306
+> + *	- SSD1307 (untested)
+> + *	- SSD1309 (untested)
+> + *
+> + * Copyright 2012 Maxime Ripard <maxime.ripard@free-electrons.com>, Free Electrons
+> + *
+> + * Ported to barebox from linux v4.10
+> + * Copyright (C) 2017 Pengutronix, Bastian Stender <kernel@pengutronix.de>
+> + *
+> + * Licensed under the GPLv2 or later.
+> + */
+> +
+> +#include <common.h>
+> +#include <init.h>
+> +#include <fb.h>
+> +#include <i2c/i2c.h>
+> +#include <of_device.h>
+> +#include <gpio.h>
+> +#include <of_gpio.h>
+> +#include <printk.h>
+> +
+> +#define SSD1307FB_DATA			0x40
+> +#define SSD1307FB_COMMAND		0x80
+> +
+> +#define SSD1307FB_SET_ADDRESS_MODE	0x20
+> +#define SSD1307FB_SET_ADDRESS_MODE_HORIZONTAL	(0x00)
+> +#define SSD1307FB_SET_ADDRESS_MODE_VERTICAL	(0x01)
+> +#define SSD1307FB_SET_ADDRESS_MODE_PAGE		(0x02)
+> +#define SSD1307FB_SET_COL_RANGE		0x21
+> +#define SSD1307FB_SET_PAGE_RANGE	0x22
+> +#define SSD1307FB_CONTRAST		0x81
+> +#define	SSD1307FB_CHARGE_PUMP		0x8d
+> +#define SSD1307FB_SEG_REMAP_ON		0xa1
+> +#define SSD1307FB_DISPLAY_OFF		0xae
+> +#define SSD1307FB_SET_MULTIPLEX_RATIO	0xa8
+> +#define SSD1307FB_DISPLAY_ON		0xaf
+> +#define SSD1307FB_START_PAGE_ADDRESS	0xb0
+> +#define SSD1307FB_SET_DISPLAY_OFFSET	0xd3
+> +#define	SSD1307FB_SET_CLOCK_FREQ	0xd5
+> +#define	SSD1307FB_SET_PRECHARGE_PERIOD	0xd9
+> +#define	SSD1307FB_SET_COM_PINS_CONFIG	0xda
+> +#define	SSD1307FB_SET_VCOMH		0xdb
 
-	On EFI you have 3 ways to get to do "timer"
+please consistently use spaces after #define
 
-	1: Simply by waiting X us and calling Boot Service udelay
+> +
+> +struct ssd1307fb_par;
 
-	2: By using event
+Unnecessary.
 
-	3: By use the Timestamp GUID
+> +
+> +struct ssd1307fb_deviceinfo {
+> +	u32 default_vcomh;
+> +	u32 default_dclk_div;
+> +	u32 default_dclk_frq;
+> +	int need_chargepump;
+> +};
+> +
 
-	for barebox this would be the best but even on EDK II this is never
-	ever compiled on any target.
+[...]
 
-	So we have 2 choice, use a Hardware specific timer or implement the
-	timer using timestamp
+> +static int ssd1307fb_probe(struct device_d *dev)
+> +{
+> +	struct i2c_client *client = to_i2c_client(dev);
+> +	struct fb_info *info;
+> +	struct device_node *node = dev->device_node;
+> +	const struct of_device_id *match =
+> +		of_match_node(ssd1307fb_of_match, dev->device_node);
+> +	u32 vmem_size;
+> +	struct ssd1307fb_par *par;
+> +	struct ssd1307fb_array *array;
+> +	u8 *vmem;
+> +	int ret;
+> +	int i, j;
+> +
+> +	if (!node) {
+> +		dev_err(&client->dev, "No device tree data found!\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	info = xzalloc(sizeof(struct fb_info));
+> +	if (!info) {
+> +		dev_err(&client->dev, "Couldn't allocate framebuffer.\n");
+> +		return -ENOMEM;
+> +	}
 
-	This pull request allow you to enable 2 timers and use the best one at
-	runtime.
+xzalloc always returns succesfully, no need to check.
 
-	EFI x86 (HW specific)
-	EFI Generic (based on Event)
+> +
+> +	par = info->priv;
+> +	par->info = info;
+> +	par->client = client;
+> +
+> +	par->device_info = (struct ssd1307fb_deviceinfo *)match->data;
+> +
+> +	par->reset = of_get_named_gpio(node,
+> +					 "reset-gpios", 0);
+> +	if (!gpio_is_valid(par->reset)) {
+> +		dev_err(&client->dev,
+> +			"Couldn't get named gpio 'reset-gpios' %d.\n",
+> +			par->reset);
+> +		ret = par->reset;
+> +		goto fb_alloc_error;
+> +	}
 
-please pull
-The following changes since commit d92ed454107b4d6f0d30fa0271da191ae5911d18:
+Is this gpio really mandatory?
 
-  Merge branch 'for-next/video' into next (2017-02-27 08:51:08 +0100)
+> +
+> +	if (of_property_read_u32(node, "solomon,width", &par->width))
+> +		par->width = 96;
+> +
+> +	if (of_property_read_u32(node, "solomon,height", &par->height))
+> +		par->height = 16;
 
-are available in the git repository at:
+These defaults only work for you. You should bail out with an error if
+the devicetree does not contain values for these instead.
 
-  git://git.jcrosoft.org/barebox.git
+Sascha
 
-for you to fetch changes up to 169af081c48d6739a3727f07a4b8dbfb7ab48ebb:
-
-  efi: add veriable to report secure boot support and status (2017-02-27 18:20:37 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (8):
-      efi: add prototype and definition for creating and closing event
-      efi: add prototype and definition for setting timer
-      efi: move LoaderTimeInitUSec and LoaderDevicePartUUID to postcore initcall
-      efi: move x86 clocksource init at core initcall level
-      clocksource: allow to have multiple device from clock source
-      efi: move x86 clocksource to device/driver
-      efi: clocksoure: use event for timer
-      efi: add veriable to report secure boot support and status
-
- arch/x86/Kconfig                |   2 +-
- arch/x86/mach-efi/Makefile      |   1 +
- arch/x86/mach-efi/clocksource.c |  11 +++++++++++
- common/clock.c                  |  11 +++++++++++
- common/efi/efi.c                |  24 +++++++++++++++++++-----
- drivers/clocksource/Kconfig     |   6 +++++-
- drivers/clocksource/Makefile    |   1 +
- drivers/clocksource/efi.c       | 110 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------------------
- drivers/clocksource/efi_x86.c   |  79 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/efi/efi-device.c        |  33 +++++++++++++++++++++++++++++++++
- include/clock.h                 |   3 ++-
- include/efi.h                   |  25 ++++++++++++++++++++++---
- include/efi/efi.h               |   2 --
- 13 files changed, 266 insertions(+), 42 deletions(-)
- create mode 100644 arch/x86/mach-efi/clocksource.c
- create mode 100644 drivers/clocksource/efi_x86.c
-
-Best Regards,
-J.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
