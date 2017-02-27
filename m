@@ -1,12 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1chjLK-0002iA-9a
- for barebox@lists.infradead.org; Sat, 25 Feb 2017 20:53:29 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Sat, 25 Feb 2017 21:52:38 +0100
-Message-Id: <20170225205242.18106-1-u.kleine-koenig@pengutronix.de>
+ id 1ciG5N-00023l-Ap
+ for barebox@lists.infradead.org; Mon, 27 Feb 2017 07:51:12 +0000
+Date: Mon, 27 Feb 2017 08:50:44 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170227075044.egcbyi4cfrlmijbk@pengutronix.de>
+References: <20170215192932.GB32649@mail.ovh.net>
+ <1487187257-29082-1-git-send-email-plagnioj@jcrosoft.com>
+ <1487187257-29082-7-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1487187257-29082-7-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,46 +20,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4] mvebu: Make 2nd-stage booting possible
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 07/12] efi: move x86 efi boot support to x86 arch
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-SGVsbG8sCgpvbmUgc3BlY2lhbHR5IG9mIG12ZWJ1IGlzIHRoYXQgaXQgaGFzIGEgbW92YWJsZSBy
-ZWdpc3RlciB3aW5kb3cuIEl0cwpiYXNlIGFkZHJlc3MgaXMgY29uZmlndXJlZCB3aXRoaW4gdGhp
-cyByZWdpc3RlciByYW5nZSwgc28gdGhlcmUgaXMgbm8Kd2F5IHRvIGZpbmQgb3V0IHRoZSBjdXJy
-ZW50IHBvc2l0aW9uLiBUaGUgQm9vdFJPTSBsZWF2ZXMgdGhpcyB3aW5kb3cgYXQKMHhkMDAwMDAw
-MCwgaG93ZXZlciBpdCBpcyBiZW5lZmljaWFsIHRvIG1vdmUgaXQgZnVydGhlciB0byB0aGUgZW5k
-IG9mCnRoZSBhZGRyZXNzIHJhbmdlICh1c3VhbGx5IDB4ZjEwMDAwMDApIHRvIGJlbmVmaXQgZnJv
-bSBtb3JlIGNvbnRpbnVvdXMKUkFNLiBGb3IgdGhpcyByZWFzb24gb25lIG9mIHRoZSBmaXJzdCB0
-aGluZ3MgdGhhdCBiYXJlYm94IGRvZXMgaXQgdG8KbW92ZSB0aGUgd2luZG93IGFjY29yZGluZ2x5
-LiBJZiBob3dldmVyIGJhcmVib3ggaXMgbG9hZGVkIGFzIGEgc2Vjb25kCnN0YWdlIGltYWdlIHRo
-aXMgcmVzdWx0cyBpbiBhIGNyYXNoIGFzIHRoZSByZWdpc3RlciBiYXNlIGFkZHJlc3MKcmVnaXN0
-ZXIgaXMgYWxyZWFkeSBtb3ZlZC4KClRoaXMgc2VyaWVzIGltcGxlbWVudHMgdGhhdCB0aGUgY2Fs
-bGVkIGltYWdlIGdldHMgdGhlIGJhc2UgYWRkcmVzcyBmcm9tCnRoZSBiYXJlYm94IGhlYWRlci4g
-SXQgZGVmYXVsdHMgdG8gMHhkMDAwMDAwMCB3aGljaCBpcyByaWdodCBmb3IgdGhlCih1bmF3YXJl
-KSBCb290Uk9NIGFuZCB3aGVuIGJhcmVib3gganVtcHMgaW50byBzdWNoIGFuIGltYWdlIHRoZSBy
-ZWdpc3Rlcgpwb3NpdGlvbiBpcyBwYXNzZWQgYWNjb3JkaW5nbHkuCgpCZXN0IHJlZ2FyZHMKVXdl
-CgpVd2UgS2xlaW5lLUvDtm5pZyAoNCk6CiAgbXZlYnU6IGdldCBpbml0aWFsIHBvc2l0aW9uIG9m
-IHJlZ2lzdGVyIHdpbmRvdyBmcm9tIGltYWdlIGhlYWRlcgogIGZpbGV0eXBlOiBBZGQgaW1hZ2Ug
-dHlwZSBmb3IgYm9vdCBpbWFnZXMgdXNlZCBvbiBBcm1hZGEgMzcwIGFuZCBYUAogIGt3YmltYWdl
-X3YxOiBhZGQgc3VwcG9ydCB0byBib290IGEgbXZlYnUgaW1hZ2UKICBtdmVidTogbmV0Z2Vhci1y
-bjIxMjA6IG1ha2UgdXNlIG9mIG12ZWJ1X2dldF9pbml0aWFsX2ludF9yZWdfYmFzZQoKIGFyY2gv
-YXJtL0tjb25maWcgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDEgKwogYXJj
-aC9hcm0vYm9hcmRzL25ldGdlYXItcm4yMTIwL2xvd2xldmVsLmMgICAgICAgICAgfCAxMiArKy0t
-CiBhcmNoL2FybS9tYWNoLW12ZWJ1L01ha2VmaWxlICAgICAgICAgICAgICAgICAgICAgICB8ICAx
-ICsKIGFyY2gvYXJtL21hY2gtbXZlYnUvY29tbW9uLmMgICAgICAgICAgICAgICAgICAgICAgIHwg
-IDYgKy0KIC4uLi9hcm0vbWFjaC1tdmVidS9pbmNsdWRlL21hY2gvYmFyZWJveC1hcm0taGVhZC5o
-IHwgNTQgKysrKysrKysrKysrKysKIGFyY2gvYXJtL21hY2gtbXZlYnUvaW5jbHVkZS9tYWNoL2Nv
-bW1vbi5oICAgICAgICAgIHwgMTcgKysrKysKIGFyY2gvYXJtL21hY2gtbXZlYnUva3dib290aW1h
-Z2UuYyAgICAgICAgICAgICAgICAgIHwgODQgKysrKysrKysrKysrKysrKysrKysrKwogY29tbW9u
-L2ZpbGV0eXBlLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgOCArKysKIGlu
-Y2x1ZGUvZmlsZXR5cGUuaCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDEgKwog
-OSBmaWxlcyBjaGFuZ2VkLCAxNzYgaW5zZXJ0aW9ucygrKSwgOCBkZWxldGlvbnMoLSkKIGNyZWF0
-ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9tYWNoLW12ZWJ1L2luY2x1ZGUvbWFjaC9iYXJlYm94LWFy
-bS1oZWFkLmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9tYWNoLW12ZWJ1L2t3Ym9vdGlt
-YWdlLmMKCi0tIAoyLjExLjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Wed, Feb 15, 2017 at 08:34:15PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> prepare to drop the efi arch as efi boot up is not arch sepecific
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  Documentation/boards/efi.rst                 |   2 +-
+>  arch/x86/Kconfig                             |  53 ++++++++++++--
+>  arch/x86/Makefile                            |  74 +++++++++++++++++--
+>  arch/x86/configs/efi_defconfig               |  78 ++++++++++++++++++++
+>  arch/x86/configs/generic_defconfig           |   1 +
+>  arch/x86/include/asm/elf.h                   |  86 +++++++++++++++-------
+>  arch/x86/include/asm/io.h                    |  71 +++++++++---------
+>  arch/x86/include/asm/types.h                 |  51 ++++++++-----
+>  arch/x86/include/asm/unaligned.h             |   5 ++
+>  arch/x86/lib/Makefile                        |   2 +
+>  arch/x86/lib/asm-offsets.c                   |   7 ++
+>  arch/x86/mach-efi/.gitignore                 |   2 +
+>  arch/x86/mach-efi/Makefile                   |   4 +
+>  arch/x86/mach-efi/crt0-efi-ia32.S            |  76 +++++++++++++++++++
+>  arch/x86/mach-efi/crt0-efi-x86_64.S          |  75 +++++++++++++++++++
+>  arch/x86/mach-efi/elf_ia32_efi.lds.S         | 106 +++++++++++++++++++++++++++
+>  arch/x86/mach-efi/elf_x86_64_efi.lds.S       |  99 +++++++++++++++++++++++++
+>  arch/x86/mach-efi/include/mach/barebox.lds.h |   0
+
+This empty file gets removed during make distclean causing build
+failures here. I made this file non-empty. With this:
+
+aplied, thanks
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
