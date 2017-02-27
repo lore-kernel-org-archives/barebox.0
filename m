@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo68.mail-out.ovh.net ([46.105.63.100])
+Received: from 4.mo68.mail-out.ovh.net ([46.105.59.63])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ciIJX-0006Bs-SL
- for barebox@lists.infradead.org; Mon, 27 Feb 2017 10:14:01 +0000
+ id 1ciIJZ-0006B2-6B
+ for barebox@lists.infradead.org; Mon, 27 Feb 2017 10:14:05 +0000
 Received: from player763.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo68.mail-out.ovh.net (Postfix) with ESMTP id 0F3B33F858
- for <barebox@lists.infradead.org>; Mon, 27 Feb 2017 11:13:37 +0100 (CET)
+ by mo68.mail-out.ovh.net (Postfix) with ESMTP id BBAA13F782
+ for <barebox@lists.infradead.org>; Mon, 27 Feb 2017 11:13:34 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 27 Feb 2017 11:19:30 +0100
-Message-Id: <1488190770-4034-8-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 27 Feb 2017 11:19:28 +0100
+Message-Id: <1488190770-4034-6-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1488190770-4034-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20170227101416.GB12475@mail.ovh.net>
  <1488190770-4034-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,70 +25,165 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] efi: add veriable to report secure boot support and status
+Subject: [PATCH 6/8] efi: move x86 clocksource to device/driver
 To: barebox@lists.infradead.org
+
+so we can dynamicly register the device
+
+As we may need to use HW IP for clocksource.
+
+As on EFI we could use Timestamp GUID if present (Not often the case as it's
+not even enabled by default on any Target on EDK II not even OVMF)
+
+Or if we choose we could use a Simulated Timestamp driver that work on Event
+(Add Later)
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/efi/efi-device.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ arch/x86/Kconfig                         |  2 +-
+ arch/x86/mach-efi/Makefile               |  1 +
+ arch/x86/mach-efi/clocksource.c          | 11 +++++++++++
+ drivers/clocksource/Kconfig              |  6 +++---
+ drivers/clocksource/Makefile             |  2 +-
+ drivers/clocksource/{efi.c => efi_x86.c} | 34 ++++++++++++++++++++++++--------
+ 6 files changed, 43 insertions(+), 13 deletions(-)
+ create mode 100644 arch/x86/mach-efi/clocksource.c
+ rename drivers/clocksource/{efi.c => efi_x86.c} (56%)
 
-diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
-index db8b25147..6ed7f12b3 100644
---- a/drivers/efi/efi-device.c
-+++ b/drivers/efi/efi-device.c
-@@ -354,11 +354,41 @@ static void efi_businfo(struct device_d *dev)
- 	}
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 9803f3f95..52ccf4894 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -77,7 +77,7 @@ choice
+ 		select EFI_GUID
+ 		select EFI_DEVICEPATH
+ 		select PRINTF_UUID
+-		select CLOCKSOURCE_EFI
++		select CLOCKSOURCE_EFI_X86
+ 
+ 	config X86_BIOS_BRINGUP
+ 		bool "16 bit BIOS"
+diff --git a/arch/x86/mach-efi/Makefile b/arch/x86/mach-efi/Makefile
+index c8a97bae0..f633e7c7e 100644
+--- a/arch/x86/mach-efi/Makefile
++++ b/arch/x86/mach-efi/Makefile
+@@ -1,4 +1,5 @@
+ obj-$(CONFIG_X86_64) += reloc_x86_64.o crt0-efi-x86_64.o
+ obj-$(CONFIG_X86_32) += reloc_ia32.o crt0-efi-ia32.o
++obj-y += clocksource.o
+ extra-$(CONFIG_X86_32) += elf_ia32_efi.lds
+ extra-$(CONFIG_X86_64) += elf_x86_64_efi.lds
+diff --git a/arch/x86/mach-efi/clocksource.c b/arch/x86/mach-efi/clocksource.c
+new file mode 100644
+index 000000000..2023fa19a
+--- /dev/null
++++ b/arch/x86/mach-efi/clocksource.c
+@@ -0,0 +1,11 @@
++#include <common.h>
++#include <init.h>
++#include <driver.h>
++
++static int efi_x86_pure_init(void)
++{
++	struct device_d *dev = device_alloc("efi-cs-x86", DEVICE_ID_SINGLE);
++
++	return platform_device_register(dev);
++}
++core_initcall(efi_x86_pure_init);
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 54b05bbf3..9b7f0a9d7 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -34,9 +34,9 @@ config CLOCKSOURCE_DUMMY_RATE
+ 	  The option CONFIG_CLOCKSOURCE_DUMMY_RATE is used to adjust this clocksource.
+ 	  The bigger rate valuest makes clocksource "faster".
+ 
+-config CLOCKSOURCE_EFI
+-	bool
+-	depends on EFI_BOOTUP
++config CLOCKSOURCE_EFI_X86
++	bool "EFI X86 HW driver"
++	depends on EFI_BOOTUP && X86
+ 
+ config CLOCKSOURCE_MVEBU
+ 	bool
+diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+index e83fdeeec..1fd18296e 100644
+--- a/drivers/clocksource/Makefile
++++ b/drivers/clocksource/Makefile
+@@ -3,7 +3,7 @@ obj-$(CONFIG_ARM_SMP_TWD) += arm_smp_twd.o
+ obj-$(CONFIG_CLOCKSOURCE_BCM283X) += bcm2835.o
+ obj-$(CONFIG_CLOCKSOURCE_CLPS711X) += clps711x.o
+ obj-$(CONFIG_CLOCKSOURCE_DIGIC)   += digic.o
+-obj-$(CONFIG_CLOCKSOURCE_EFI) += efi.o
++obj-$(CONFIG_CLOCKSOURCE_EFI_X86) += efi_x86.o
+ obj-$(CONFIG_CLOCKSOURCE_MVEBU)   += mvebu.o
+ obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
+ obj-$(CONFIG_CLOCKSOURCE_ORION)   += orion.o
+diff --git a/drivers/clocksource/efi.c b/drivers/clocksource/efi_x86.c
+similarity index 56%
+rename from drivers/clocksource/efi.c
+rename to drivers/clocksource/efi_x86.c
+index 6d2fee8eb..4d2657ea1 100644
+--- a/drivers/clocksource/efi.c
++++ b/drivers/clocksource/efi_x86.c
+@@ -1,5 +1,6 @@
+ #include <common.h>
+ #include <init.h>
++#include <driver.h>
+ #include <efi.h>
+ #include <efi/efi.h>
+ #include <clock.h>
+@@ -38,24 +39,41 @@ static uint64_t ticks_freq(void)
+ 	return (ticks_end - ticks_start) * 1000;
  }
  
-+static int efi_is_secure_boot(void)
-+{
-+	uint8_t *val;
-+	int ret = 0;
-+
-+	val = efi_get_variable("SecureBoot", &efi_global_variable_guid, NULL);
-+	if (!IS_ERR(val)) {
-+		ret = *val;
-+		free(val);
-+	}
-+
-+	return ret != 1;
-+}
-+
-+static int efi_is_setup_mode(void)
-+{
-+	uint8_t *val;
-+	int ret = 0;
-+
-+	val = efi_get_variable("SetupMode", &efi_global_variable_guid, NULL);
-+	if (!IS_ERR(val)) {
-+		ret = *val;
-+		free(val);
-+	}
-+
-+	return ret != 1;
-+}
-+
- static int efi_init_devices(void)
+-static uint64_t efi_clocksource_read(void)
++static uint64_t efi_x86_cs_read(void)
  {
- 	char *fw_vendor = NULL;
- 	u16 sys_major = efi_sys_table->hdr.revision >> 16;
- 	u16 sys_minor = efi_sys_table->hdr.revision & 0xffff;
-+	int secure_boot = efi_is_secure_boot();
-+	int setup_mode = efi_is_setup_mode();
+ 	return 1000 * 1000 * ticks_read() / freq;
+ }
  
- 	fw_vendor = strdup_wchar_to_char((const wchar_t *)efi_sys_table->fw_vendor);
+-static struct clocksource cs = {
+-	.read   = efi_clocksource_read,
++static int efi_x86_cs_init(struct clocksource *cs)
++{
++	cs->mult = clocksource_hz2mult(1000 * 1000, cs->shift);
++
++	freq = ticks_freq();
++
++	return 0;
++}
++
++static struct clocksource efi_x86_cs = {
++	.read   = efi_x86_cs_read,
+ 	.mask   = CLOCKSOURCE_MASK(64),
+ 	.shift  = 0,
++	.priority = 100,
++	.init   = efi_x86_cs_init,
+ };
  
-@@ -374,6 +404,9 @@ static int efi_init_devices(void)
- 	dev_add_param_int_ro(efi_bus.dev, "major", sys_major, "%u");
- 	dev_add_param_int_ro(efi_bus.dev, "minor", sys_minor, "%u");
- 	dev_add_param_int_ro(efi_bus.dev, "fw_revision", efi_sys_table->fw_revision, "%u");
-+	dev_add_param_int_ro(efi_bus.dev, "secure_boot", secure_boot, "%d");
-+	dev_add_param_int_ro(efi_bus.dev, "secure_mode",
-+			     secure_boot & setup_mode, "%u");
+-static int efi_clocksource_init(void)
++static int efi_x86_cs_probe(struct device_d *dev)
+ {
+-	cs.mult = clocksource_hz2mult(1000 * 1000, cs.shift);
++	return init_clock(&efi_x86_cs);
++}
  
- 	efi_bus.dev->info = efi_businfo;
+-	freq = ticks_freq();
++static struct driver_d efi_x86_cs_driver = {
++	.name = "efi-cs-x86",
++	.probe = efi_x86_cs_probe,
++};
  
+-	return init_clock(&cs);
++static int efi_x86_cs_initcall(void)
++{
++	return platform_driver_register(&efi_x86_cs_driver);
+ }
+ /* for efi the time must be init at core initcall level */
+-core_initcall(efi_clocksource_init);
++core_initcall(efi_x86_cs_initcall);
 -- 
 2.11.0
 
