@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cicc6-0001bI-7m
- for barebox@lists.infradead.org; Tue, 28 Feb 2017 07:54:27 +0000
-Date: Tue, 28 Feb 2017 08:53:57 +0100
+ by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cicfd-0007uq-G0
+ for barebox@lists.infradead.org; Tue, 28 Feb 2017 07:58:07 +0000
+Date: Tue, 28 Feb 2017 08:57:42 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170228075357.j2r5nprcbswhjewb@pengutronix.de>
-References: <1486633003-34908-1-git-send-email-w.egorov@phytec.de>
- <1486633003-34908-2-git-send-email-w.egorov@phytec.de>
- <49f8f06d-ed61-fb14-fb80-aff250676b0d@phytec.de>
+Message-ID: <20170228075742.p2p6in2mucfsjvkl@pengutronix.de>
+References: <20170224142501.2679-1-bst@pengutronix.de>
+ <20170224142501.2679-5-bst@pengutronix.de>
+ <20170227100850.dv7kxvyxhutqfra6@pengutronix.de>
+ <d6c7b9e3-547d-8231-ae40-15464c48a765@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <49f8f06d-ed61-fb14-fb80-aff250676b0d@phytec.de>
+In-Reply-To: <d6c7b9e3-547d-8231-ae40-15464c48a765@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,83 +25,233 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] serial: ns16550: Set read/write functions depending on
- reg-io-width
-To: Wadim Egorov <w.egorov@phytec.de>
+Subject: Re: [PATCH 4/4] video: add support for Solomon SSD1307 OLED
+ controller family
+To: Bastian Stender <bst@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Feb 20, 2017 at 02:12:21PM +0100, Wadim Egorov wrote:
-> Is this patch okay?
+On Mon, Feb 27, 2017 at 04:45:43PM +0100, Bastian Stender wrote:
+> On 02/27/2017 11:08 AM, Sascha Hauer wrote:
+> > On Fri, Feb 24, 2017 at 03:25:01PM +0100, Bastian Stender wrote:
+> > > It was ported from linux v4.10. Like the kernel driver only
+> > > communication via I2C is supported.
+> > > 
+> > > It has only been tested with a SSD1306 and a 96x16 OLED display:
+> > > 
+> > > 	&i2c0 {
+> > > 		status = "okay";
+> > > 
+> > > 		ssd1306: oled@3c {
+> > > 			compatible = "solomon,ssd1306fb-i2c";
+> > > 			reg = <0x3c>;
+> > > 			reset-gpios = <&gpio1 1 0>;
+> > > 			solomon,height = <16>;
+> > > 			solomon,width = <96>;
+> > > 			solomon,page-offset = <0>;
+> > > 			solomon,com-invdir;
+> > > 			solomon,com-seq;
+> > > 		};
+> > > 
+> > > Signed-off-by: Bastian Stender <bst@pengutronix.de>
+> > > ---
+> > >  drivers/video/Kconfig     |   4 +
+> > >  drivers/video/Makefile    |   1 +
+> > >  drivers/video/ssd1307fb.c | 569 ++++++++++++++++++++++++++++++++++++++++++++++
+> > >  3 files changed, 574 insertions(+)
+> > >  create mode 100644 drivers/video/ssd1307fb.c
+> > > 
+> > > diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+> > > index 8f31f5af74..50a876acb1 100644
+> > > --- a/drivers/video/Kconfig
+> > > +++ b/drivers/video/Kconfig
+> > > @@ -12,6 +12,10 @@ config FRAMEBUFFER_CONSOLE
+> > >  	select FONTS
+> > >  	prompt "framebuffer console support"
+> > > 
+> > > +config DRIVER_VIDEO_FB_SSD1307
+> > > +	bool "Solomon SSD1307 framebuffer support"
+> > > +	depends on PWM && I2C && GPIOLIB
+> > > +
+> > >  config VIDEO_VPL
+> > >  	depends on OFTREE
+> > >  	bool
+> > > diff --git a/drivers/video/Makefile b/drivers/video/Makefile
+> > > index 1bf2e1f3ca..e23c9c37b6 100644
+> > > --- a/drivers/video/Makefile
+> > > +++ b/drivers/video/Makefile
+> > > @@ -21,3 +21,4 @@ obj-$(CONFIG_DRIVER_VIDEO_OMAP) += omap.o
+> > >  obj-$(CONFIG_DRIVER_VIDEO_BCM283X) += bcm2835.o
+> > >  obj-$(CONFIG_DRIVER_VIDEO_SIMPLEFB) += simplefb.o
+> > >  obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3) += imx-ipu-v3/
+> > > +obj-$(CONFIG_DRIVER_VIDEO_FB_SSD1307) += ssd1307fb.o
+> > > diff --git a/drivers/video/ssd1307fb.c b/drivers/video/ssd1307fb.c
+> > > new file mode 100644
+> > > index 0000000000..0dfdcc2232
+> > > --- /dev/null
+> > > +++ b/drivers/video/ssd1307fb.c
+> > > @@ -0,0 +1,569 @@
+> > > +/*
+> > > + * Driver for the Solomon SSD1307 OLED controller family
+> > > + *
+> > > + * Supports:
+> > > + *	- SSD1305 (untested)
+> > > + *	- SSD1306
+> > > + *	- SSD1307 (untested)
+> > > + *	- SSD1309 (untested)
+> > > + *
+> > > + * Copyright 2012 Maxime Ripard <maxime.ripard@free-electrons.com>, Free Electrons
+> > > + *
+> > > + * Ported to barebox from linux v4.10
+> > > + * Copyright (C) 2017 Pengutronix, Bastian Stender <kernel@pengutronix.de>
+> > > + *
+> > > + * Licensed under the GPLv2 or later.
+> > > + */
+> > > +
+> > > +#include <common.h>
+> > > +#include <init.h>
+> > > +#include <fb.h>
+> > > +#include <i2c/i2c.h>
+> > > +#include <of_device.h>
+> > > +#include <gpio.h>
+> > > +#include <of_gpio.h>
+> > > +#include <printk.h>
+> > > +
+> > > +#define SSD1307FB_DATA			0x40
+> > > +#define SSD1307FB_COMMAND		0x80
+> > > +
+> > > +#define SSD1307FB_SET_ADDRESS_MODE	0x20
+> > > +#define SSD1307FB_SET_ADDRESS_MODE_HORIZONTAL	(0x00)
+> > > +#define SSD1307FB_SET_ADDRESS_MODE_VERTICAL	(0x01)
+> > > +#define SSD1307FB_SET_ADDRESS_MODE_PAGE		(0x02)
+> > > +#define SSD1307FB_SET_COL_RANGE		0x21
+> > > +#define SSD1307FB_SET_PAGE_RANGE	0x22
+> > > +#define SSD1307FB_CONTRAST		0x81
+> > > +#define	SSD1307FB_CHARGE_PUMP		0x8d
+> > > +#define SSD1307FB_SEG_REMAP_ON		0xa1
+> > > +#define SSD1307FB_DISPLAY_OFF		0xae
+> > > +#define SSD1307FB_SET_MULTIPLEX_RATIO	0xa8
+> > > +#define SSD1307FB_DISPLAY_ON		0xaf
+> > > +#define SSD1307FB_START_PAGE_ADDRESS	0xb0
+> > > +#define SSD1307FB_SET_DISPLAY_OFFSET	0xd3
+> > > +#define	SSD1307FB_SET_CLOCK_FREQ	0xd5
+> > > +#define	SSD1307FB_SET_PRECHARGE_PERIOD	0xd9
+> > > +#define	SSD1307FB_SET_COM_PINS_CONFIG	0xda
+> > > +#define	SSD1307FB_SET_VCOMH		0xdb
+> > 
+> > please consistently use spaces after #define
+> 
+> Will do.
+> 
+> > 
+> > > +
+> > > +struct ssd1307fb_par;
+> > 
+> > Unnecessary.
+> 
+> Ok.
+> 
+> > 
+> > > +
+> > > +struct ssd1307fb_deviceinfo {
+> > > +	u32 default_vcomh;
+> > > +	u32 default_dclk_div;
+> > > +	u32 default_dclk_frq;
+> > > +	int need_chargepump;
+> > > +};
+> > > +
+> > 
+> > [...]
+> > 
+> > > +static int ssd1307fb_probe(struct device_d *dev)
+> > > +{
+> > > +	struct i2c_client *client = to_i2c_client(dev);
+> > > +	struct fb_info *info;
+> > > +	struct device_node *node = dev->device_node;
+> > > +	const struct of_device_id *match =
+> > > +		of_match_node(ssd1307fb_of_match, dev->device_node);
+> > > +	u32 vmem_size;
+> > > +	struct ssd1307fb_par *par;
+> > > +	struct ssd1307fb_array *array;
+> > > +	u8 *vmem;
+> > > +	int ret;
+> > > +	int i, j;
+> > > +
+> > > +	if (!node) {
+> > > +		dev_err(&client->dev, "No device tree data found!\n");
+> > > +		return -EINVAL;
+> > > +	}
+> > > +
+> > > +	info = xzalloc(sizeof(struct fb_info));
+> > > +	if (!info) {
+> > > +		dev_err(&client->dev, "Couldn't allocate framebuffer.\n");
+> > > +		return -ENOMEM;
+> > > +	}
+> > 
+> > xzalloc always returns succesfully, no need to check.
+> 
+> Ok.
+> 
+> > 
+> > > +
+> > > +	par = info->priv;
+> > > +	par->info = info;
+> > > +	par->client = client;
+> > > +
+> > > +	par->device_info = (struct ssd1307fb_deviceinfo *)match->data;
+> > > +
+> > > +	par->reset = of_get_named_gpio(node,
+> > > +					 "reset-gpios", 0);
+> > > +	if (!gpio_is_valid(par->reset)) {
+> > > +		dev_err(&client->dev,
+> > > +			"Couldn't get named gpio 'reset-gpios' %d.\n",
+> > > +			par->reset);
+> > > +		ret = par->reset;
+> > > +		goto fb_alloc_error;
+> > > +	}
+> > 
+> > Is this gpio really mandatory?
+> 
+> 
+> This is the corresponding snippet from the kernel in
+> drivers/video/fbdev/ssd1307fb.c, line 564 ff. (v4.10):
+> 
+>     par->reset = of_get_named_gpio(client->dev.of_node,
+>                                  "reset-gpios", 0);
+>     if (!gpio_is_valid(par->reset)) {
+>         ret = -EINVAL;
+>         goto fb_alloc_error;
+>     }
+> 
+> "reset-gpios" is one of the required properties, see
+> 
+>   Documentation/devicetree/bindings/display/ssd1307fb.txt
+> 
+> or in barebox:
+> 
+>   dts/Bindings/display/ssd1307fb.txt
 
-I hope so, it's already applied ;)
+Ok.
+
+> 
+> > 
+> > > +
+> > > +	if (of_property_read_u32(node, "solomon,width", &par->width))
+> > > +		par->width = 96;
+> > > +
+> > > +	if (of_property_read_u32(node, "solomon,height", &par->height))
+> > > +		par->height = 16;
+> > 
+> > These defaults only work for you. You should bail out with an error if
+> > the devicetree does not contain values for these instead.
+> 
+> This part was ported 1:1 from linux. As solomon,width and solomon,height are
+> required properties also, should I bail out nonetheless?
+
+Yes, please. The resolution of the framebuffer must be explicitly given
+in the device tree. If it's not then the user gets a better clue what's
+wrong when the driver does not successfully probe.
 
 Sascha
-
-> 
-> 
-> Am 09.02.2017 um 10:36 schrieb Wadim Egorov:
-> > Set proper register read/write functions depending on reg-io-width
-> > device tree property.
-> >
-> > Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
-> > ---
-> >
-> > of_platform_device_create() creates resources in the device_d struct.
-> > ns16550_init_iomem() and ns16550_init_ioport() are reading the resources
-> > and it's flags (register width).
-> > So both functions are not failing, because there is a valid resource.
-> > The res->flags might be not set at all. And if it is not set, the driver
-> > will use always IORESOURCE_MEM_8BIT.
-> >
-> > With this patch the probe_dt() func will override the read/write funcs,
-> > if there is a valid reg-io-width property.
-> > ---
-> >  drivers/serial/serial_ns16550.c | 19 +++++++++++++++++++
-> >  1 file changed, 19 insertions(+)
-> >
-> > diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-> > index c6548e3..752e77b 100644
-> > --- a/drivers/serial/serial_ns16550.c
-> > +++ b/drivers/serial/serial_ns16550.c
-> > @@ -287,12 +287,31 @@ static int ns16550_tstc(struct console_device *cdev)
-> >  static void ns16550_probe_dt(struct device_d *dev, struct ns16550_priv *priv)
-> >  {
-> >  	struct device_node *np = dev->device_node;
-> > +	u32 width;
-> >  
-> >  	if (!IS_ENABLED(CONFIG_OFDEVICE))
-> >  		return;
-> >  
-> >  	of_property_read_u32(np, "clock-frequency", &priv->plat.clock);
-> >  	of_property_read_u32(np, "reg-shift", &priv->plat.shift);
-> > +	if (!of_property_read_u32(np, "reg-io-width", &width))
-> > +		switch (width) {
-> > +		case 1:
-> > +			priv->read_reg = ns16550_read_reg_mmio_8;
-> > +			priv->write_reg = ns16550_write_reg_mmio_8;
-> > +			break;
-> > +		case 2:
-> > +			priv->read_reg = ns16550_read_reg_mmio_16;
-> > +			priv->write_reg = ns16550_write_reg_mmio_16;
-> > +			break;
-> > +		case 4:
-> > +			priv->read_reg = ns16550_read_reg_mmio_32;
-> > +			priv->write_reg = ns16550_write_reg_mmio_32;
-> > +			break;
-> > +		default:
-> > +			dev_err(dev, "unsupported reg-io-width (%d)\n",
-> > +				width);
-> > +		}
-> >  }
-> >  
-> >  static struct ns16550_drvdata ns16450_drvdata = {
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
