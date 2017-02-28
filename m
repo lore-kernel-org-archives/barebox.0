@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1cieIJ-00016O-Ki
- for barebox@lists.infradead.org; Tue, 28 Feb 2017 09:42:09 +0000
-References: <20170209095334.a5brdlab5oqisu5t@pengutronix.de>
-From: Daniel Schultz <d.schultz@phytec.de>
-Message-ID: <775aabc6-5d7e-2ccb-3ef3-c8eaeb29aae1@phytec.de>
-Date: Tue, 28 Feb 2017 10:41:36 +0100
-MIME-Version: 1.0
-In-Reply-To: <20170209095334.a5brdlab5oqisu5t@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1ciiok-0000zH-5P
+ for barebox@lists.infradead.org; Tue, 28 Feb 2017 14:31:57 +0000
+From: Bastian Stender <bst@pengutronix.de>
+Date: Tue, 28 Feb 2017 15:31:23 +0100
+Message-Id: <20170228143127.2945-1-bst@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,66 +14,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="windows-1252"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: GPLv3 file in barebox
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2 0/4] Prepare consoles,
+ add fb flush and Solomon SSD1307 OLED controller support
+To: barebox@lists.infradead.org
+Cc: Bastian Stender <bst@pengutronix.de>
 
-Acked-by: Daniel Schultz <d.schultz@phytec.de>
+Changes since last version:
 
-Thanks
+console: replace set_active by open/close
+  - use a counter rather than flags
+  - inrease counter independent of the presence of the cdev->open() hook
 
--- =
+console: expose consoles in devfs
+  - test for presence before using flush hook
 
-Mit freundlichen Gr=FC=DFen,
-With best regards,
-   Daniel Schultz
+video: add support for Solomon SSD1307 OLED controller family
+  - remove pwm dependency and SSD1307 compatibility
+  - use tabs and spaces consistently
+  - remove unnecessary 'struct ssd1307fb_par'
+  - remove unnecessary xzalloc check
+  - bail out if any of the *required* device tree properties are missing
+  - replace errno on gpio failure with error string
+  - remove obsolete printk include
 
-Am 09.02.2017 um 10:53 schrieb Sascha Hauer:
-> Hi Daniel,
->
-> We have found that commands/mmc_extcsd.c is licensed under GPLv3 which
-> is incompatible to the barebox GPLv2 license. Are you ok with
-> relicensing this file? Otherwise we would have to remove it from
-> barebox.
-> If you're ok with relicensing the file please just ack the following
-> patch.
->
-> Sascha
->
-> ---------------------------------8<----------------------------
->
-> From f75fdb6741fa7f20a810798007ec1ebc12886370 Mon Sep 17 00:00:00 2001
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Date: Thu, 9 Feb 2017 10:51:49 +0100
-> Subject: [PATCH] commands/mmc_extcsd: Relicense under GPLv2+
->
-> GPLv3 is incompatible with the projects license. Relicense file
-> under GPLv2+
->
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  commands/mmc_extcsd.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/commands/mmc_extcsd.c b/commands/mmc_extcsd.c
-> index d7fc50697c..42adfe0860 100644
-> --- a/commands/mmc_extcsd.c
-> +++ b/commands/mmc_extcsd.c
-> @@ -5,7 +5,7 @@
->   *
->   * This program is free software: you can redistribute it and/or modify
->   * it under the terms of the GNU General Public License as published by
-> - * the Free Software Foundation, either version 3 of the License, or
-> + * the Free Software Foundation, either version 2 of the License, or
->   * (at your option) any later version.
->   *
->   * This program is distributed in the hope that it will be useful,
->
+Bastian Stender (4):
+  console: replace set_active by open/close
+  console: expose consoles in devfs
+  fb: introduce flush for virtual framebuffer
+  video: add support for Solomon SSD1307 OLED controller family
 
+ commands/fbtest.c         |   1 +
+ common/console.c          |  99 +++++++-
+ drivers/video/Kconfig     |   4 +
+ drivers/video/Makefile    |   1 +
+ drivers/video/fb.c        |  26 +++
+ drivers/video/fbconsole.c |  31 ++-
+ drivers/video/ssd1307fb.c | 566 ++++++++++++++++++++++++++++++++++++++++++++++
+ include/console.h         |  10 +-
+ include/fb.h              |   2 +
+ net/netconsole.c          |  27 ++-
+ 10 files changed, 744 insertions(+), 23 deletions(-)
+ create mode 100644 drivers/video/ssd1307fb.c
+
+-- 
+2.11.0
 
 
 _______________________________________________
