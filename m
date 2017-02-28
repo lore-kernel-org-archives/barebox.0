@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ciiok-0000zK-5N
- for barebox@lists.infradead.org; Tue, 28 Feb 2017 14:31:57 +0000
+ by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1ciiog-0006N2-Tx
+ for barebox@lists.infradead.org; Tue, 28 Feb 2017 14:31:52 +0000
 From: Bastian Stender <bst@pengutronix.de>
-Date: Tue, 28 Feb 2017 15:31:24 +0100
-Message-Id: <20170228143127.2945-2-bst@pengutronix.de>
+Date: Tue, 28 Feb 2017 15:31:26 +0100
+Message-Id: <20170228143127.2945-4-bst@pengutronix.de>
 In-Reply-To: <20170228143127.2945-1-bst@pengutronix.de>
 References: <20170228143127.2945-1-bst@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,240 +21,121 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/4] console: replace set_active by open/close
+Subject: [PATCH v2 3/4] fb: introduce flush for virtual framebuffer
 To: barebox@lists.infradead.org
 Cc: Bastian Stender <bst@pengutronix.de>
 
-Opening and closing consoles should be independent from setting them
-active. This way it is possible to open e.g. a framebuffer console and
-display text on it without showing stdout/stderr.
+Some drivers need an explicit sync method to flush the virtual
+framebuffer to the display. It is called fb_flush().
+
+fb_flush() gets called on fbc_putc, on fb_close and in the pattern cycle
+in the fbtest command.
 
 Signed-off-by: Bastian Stender <bst@pengutronix.de>
 ---
- common/console.c          | 46 ++++++++++++++++++++++++++++++++++++++++++++--
- drivers/video/fbconsole.c | 28 ++++++++++++++++++----------
- include/console.h         |  7 ++++++-
- net/netconsole.c          | 27 +++++++++++++++++----------
- 4 files changed, 85 insertions(+), 23 deletions(-)
+ commands/fbtest.c         |  1 +
+ drivers/video/fb.c        | 26 ++++++++++++++++++++++++++
+ drivers/video/fbconsole.c |  3 +++
+ include/fb.h              |  2 ++
+ 4 files changed, 32 insertions(+)
 
-diff --git a/common/console.c b/common/console.c
-index 74ccfcfc3e..eccbeed0ca 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -59,6 +59,39 @@ static struct kfifo __console_output_fifo;
- static struct kfifo *console_input_fifo = &__console_input_fifo;
- static struct kfifo *console_output_fifo = &__console_output_fifo;
+diff --git a/commands/fbtest.c b/commands/fbtest.c
+index bd0e140d07..ca6ec21991 100644
+--- a/commands/fbtest.c
++++ b/commands/fbtest.c
+@@ -169,6 +169,7 @@ static int do_fbtest(int argc, char *argv[])
+ 			pattern = patterns[i++ % ARRAY_SIZE(patterns)].func;
+ 			pattern(sc, color);
+ 			gu_screen_blit(sc);
++			fb_flush(sc->info);
  
-+int console_open(struct console_device *cdev)
-+{
-+	int ret;
-+
-+	if (cdev->open && !cdev->open_count) {
-+		ret = cdev->open(cdev);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	cdev->open_count++;
-+
-+	return 0;
-+}
-+
-+int console_close(struct console_device *cdev)
-+{
-+	int ret;
-+
-+	if (!cdev->open_count)
-+		return -EBADFD;
-+
-+	cdev->open_count--;
-+
-+	if (cdev->close && !cdev->open_count) {
-+		ret = cdev->close(cdev);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
- int console_set_active(struct console_device *cdev, unsigned flag)
- {
- 	int ret, i;
-@@ -71,8 +104,15 @@ int console_set_active(struct console_device *cdev, unsigned flag)
- 	if (!flag && cdev->f_active && cdev->flush)
- 		cdev->flush(cdev);
- 
--	if (cdev->set_active) {
--		ret = cdev->set_active(cdev, flag);
-+	if (flag == cdev->f_active)
-+		return 0;
-+
-+	if (!flag) {
-+		ret = console_close(cdev);
-+		if (ret)
-+			return ret;
-+	} else {
-+		ret = console_open(cdev);
- 		if (ret)
- 			return ret;
- 	}
-@@ -264,6 +304,8 @@ int console_register(struct console_device *newcdev)
- 	if (newcdev->putc && !newcdev->puts)
- 		newcdev->puts = __console_puts;
- 
-+	newcdev->open_count = 0;
-+
- 	dev_add_param(dev, "active", console_active_set, console_active_get, 0);
- 
- 	if (IS_ENABLED(CONFIG_CONSOLE_ACTIVATE_FIRST)) {
-diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
-index 693c21f547..64f7d7364e 100644
---- a/drivers/video/fbconsole.c
-+++ b/drivers/video/fbconsole.c
-@@ -365,21 +365,13 @@ static int setup_font(struct fbc_priv *priv)
+ 			start = get_time_ns();
+ 			while (!is_timeout(start, 2 * SECOND))
+diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+index 4d2d3aa650..6b88f2df97 100644
+--- a/drivers/video/fb.c
++++ b/drivers/video/fb.c
+@@ -31,6 +31,30 @@ static int fb_ioctl(struct cdev* cdev, int req, void *data)
  	return 0;
  }
  
--static int fbc_set_active(struct console_device *cdev, unsigned flags)
-+static int fbc_open(struct console_device *cdev)
++static int fb_close(struct cdev *cdev)
++{
++	struct fb_info *info = cdev->priv;
++
++	if (info->fbops->fb_flush)
++		info->fbops->fb_flush(info);
++	return 0;
++}
++
++static int fb_op_flush(struct cdev *cdev)
++{
++	struct fb_info *info = cdev->priv;
++
++	if (info->fbops->fb_flush)
++		info->fbops->fb_flush(info);
++	return 0;
++}
++
++void fb_flush(struct fb_info *info)
++{
++	if (info->fbops->fb_flush)
++		info->fbops->fb_flush(info);
++}
++
+ static void fb_release_shadowfb(struct fb_info *info)
+ {
+ 	free(info->screen_base_shadow);
+@@ -199,6 +223,8 @@ static struct file_operations fb_ops = {
+ 	.memmap	= generic_memmap_rw,
+ 	.lseek	= dev_lseek_default,
+ 	.ioctl	= fb_ioctl,
++	.close  = fb_close,
++	.flush  = fb_op_flush,
+ };
+ 
+ static void fb_print_mode(struct fb_videomode *mode)
+diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
+index 64f7d7364e..4cf8338ed8 100644
+--- a/drivers/video/fbconsole.c
++++ b/drivers/video/fbconsole.c
+@@ -292,6 +292,7 @@ static void fbc_putc(struct console_device *cdev, char c)
  {
  	struct fbc_priv *priv = container_of(cdev,
  					struct fbc_priv, cdev);
- 	struct fb_info *fb = priv->fb;
- 	int ret;
++	struct fb_info *fb = priv->fb;
  
--	if (priv->active) {
--		fb_close(priv->sc);
--		priv->active = false;
--	}
--
--	if (!(flags & (CONSOLE_STDOUT | CONSOLE_STDERR)))
--		return 0;
--
- 	ret = setup_font(priv);
- 	if (ret)
- 		return ret;
-@@ -400,6 +392,21 @@ static int fbc_set_active(struct console_device *cdev, unsigned flags)
- 	return 0;
+ 	if (priv->in_console)
+ 		return;
+@@ -345,6 +346,8 @@ static void fbc_putc(struct console_device *cdev, char c)
+ 		break;
+ 	}
+ 	priv->in_console = 0;
++
++	fb_flush(fb);
  }
  
-+static int fbc_close(struct console_device *cdev)
-+{
-+	struct fbc_priv *priv = container_of(cdev,
-+					struct fbc_priv, cdev);
-+
-+	if (priv->active) {
-+		fb_close(priv->sc);
-+		priv->active = false;
-+
-+		return 0;
-+	}
-+
-+	return -EINVAL;
-+}
-+
- static int set_font(struct param_d *p, void *vpriv)
- {
- 	struct fbc_priv *priv = vpriv;
-@@ -434,7 +441,8 @@ int register_fbconsole(struct fb_info *fb)
- 	cdev->getc = fbc_getc;
- 	cdev->devname = "fbconsole";
- 	cdev->devid = DEVICE_ID_DYNAMIC;
--	cdev->set_active = fbc_set_active;
-+	cdev->open = fbc_open;
-+	cdev->close = fbc_close;
+ static int setup_font(struct fbc_priv *priv)
+diff --git a/include/fb.h b/include/fb.h
+index b2a9c7152b..271b939968 100644
+--- a/include/fb.h
++++ b/include/fb.h
+@@ -86,6 +86,7 @@ struct fb_ops {
+ 	void (*fb_enable)(struct fb_info *info);
+ 	void (*fb_disable)(struct fb_info *info);
+ 	int (*fb_activate_var)(struct fb_info *info);
++	void (*fb_flush)(struct fb_info *info);
+ };
  
- 	ret = console_register(cdev);
- 	if (ret) {
-diff --git a/include/console.h b/include/console.h
-index 4b2f134a4c..a1ebc8581b 100644
---- a/include/console.h
-+++ b/include/console.h
-@@ -44,7 +44,8 @@ struct console_device {
- 	int (*setbrg)(struct console_device *cdev, int baudrate);
- 	void (*flush)(struct console_device *cdev);
- 	int (*set_mode)(struct console_device *cdev, enum console_mode mode);
--	int (*set_active)(struct console_device *cdev, unsigned active);
-+	int (*open)(struct console_device *cdev);
-+	int (*close)(struct console_device *cdev);
+ /*
+@@ -152,6 +153,7 @@ int register_framebuffer(struct fb_info *info);
  
- 	char *devname;
- 	int devid;
-@@ -54,6 +55,8 @@ struct console_device {
- 	unsigned char f_active;
- 	char active[4];
+ int fb_enable(struct fb_info *info);
+ int fb_disable(struct fb_info *info);
++void fb_flush(struct fb_info *info);
  
-+	unsigned int open_count;
-+
- 	unsigned int baudrate;
- 	unsigned int baudrate_param;
- 
-@@ -75,6 +78,8 @@ extern int barebox_loglevel;
- 
- struct console_device *console_get_first_active(void);
- 
-+int console_open(struct console_device *cdev);
-+int console_close(struct console_device *cdev);
- int console_set_active(struct console_device *cdev, unsigned active);
- unsigned console_get_active(struct console_device *cdev);
- int console_set_baudrate(struct console_device *cdev, unsigned baudrate);
-diff --git a/net/netconsole.c b/net/netconsole.c
-index ce3c418798..ef8b1856b6 100644
---- a/net/netconsole.c
-+++ b/net/netconsole.c
-@@ -105,19 +105,11 @@ static void nc_putc(struct console_device *cdev, char c)
- 	priv->busy = 0;
- }
- 
--static int nc_set_active(struct console_device *cdev, unsigned flags)
-+static int nc_open(struct console_device *cdev)
- {
- 	struct nc_priv *priv = container_of(cdev,
- 					struct nc_priv, cdev);
- 
--	if (priv->con) {
--		net_unregister(priv->con);
--		priv->con = NULL;
--	}
--
--	if (!flags)
--		return 0;
--
- 	if (!priv->port) {
- 		pr_err("port not set\n");
- 		return -EINVAL;
-@@ -142,6 +134,20 @@ static int nc_set_active(struct console_device *cdev, unsigned flags)
- 	return 0;
- }
- 
-+static int nc_close(struct console_device *cdev)
-+{
-+	struct nc_priv *priv = container_of(cdev,
-+					struct nc_priv, cdev);
-+
-+	if (priv->con) {
-+		net_unregister(priv->con);
-+		priv->con = NULL;
-+		return 0;
-+	}
-+
-+	return -EINVAL;
-+}
-+
- static int netconsole_init(void)
- {
- 	struct nc_priv *priv;
-@@ -155,7 +161,8 @@ static int netconsole_init(void)
- 	cdev->getc = nc_getc;
- 	cdev->devname = "netconsole";
- 	cdev->devid = DEVICE_ID_SINGLE;
--	cdev->set_active = nc_set_active;
-+	cdev->open = nc_open;
-+	cdev->close = nc_close;
- 
- 	g_priv = priv;
- 
+ #define FBIOGET_SCREENINFO	_IOR('F', 1, loff_t)
+ #define	FBIO_ENABLE		_IO('F', 2)
 -- 
 2.11.0
 
