@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cgx4P-0001g9-EO
- for barebox@lists.infradead.org; Thu, 23 Feb 2017 17:20:48 +0000
-From: Bastian Stender <bst@pengutronix.de>
-Date: Thu, 23 Feb 2017 18:20:22 +0100
-Message-Id: <20170223172022.858-2-bst@pengutronix.de>
-In-Reply-To: <20170223172022.858-1-bst@pengutronix.de>
-References: <20170223172022.858-1-bst@pengutronix.de>
+ by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cikIo-0003Nr-2J
+ for barebox@lists.infradead.org; Tue, 28 Feb 2017 16:07:03 +0000
+Date: Tue, 28 Feb 2017 17:06:37 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20170228160637.gtijba6fgvjxvx3p@pengutronix.de>
+References: <20170225205242.18106-1-u.kleine-koenig@pengutronix.de>
+ <20170228065947.q26xmiy5xyph3mnz@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170228065947.q26xmiy5xyph3mnz@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,145 +19,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] fbconsole: implement vt100 cursor shown/hidden
-To: barebox@lists.infradead.org
-Cc: Bastian Stender <bst@pengutronix.de>
+Subject: Re: [PATCH 0/4] mvebu: Make 2nd-stage booting possible
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This implements the vt100 show cursor command '[?25h' and the hide
-cursor command '[?25l'. It is useful for displaying text on a non-active
-(no stdout/stdin/stderr) console with 'echo'.
+On Tue, Feb 28, 2017 at 07:59:47AM +0100, Sascha Hauer wrote:
+> On Sat, Feb 25, 2017 at 09:52:38PM +0100, Uwe Kleine-K=F6nig wrote:
+> > Hello,
+> > =
 
-Signed-off-by: Bastian Stender <bst@pengutronix.de>
----
- drivers/video/fbconsole.c | 55 ++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 50 insertions(+), 5 deletions(-)
+> > one specialty of mvebu is that it has a movable register window. Its
+> > base address is configured within this register range, so there is no
+> > way to find out the current position. The BootROM leaves this window at
+> > 0xd0000000, however it is beneficial to move it further to the end of
+> > the address range (usually 0xf1000000) to benefit from more continuous
+> > RAM. For this reason one of the first things that barebox does it to
+> > move the window accordingly. If however barebox is loaded as a second
+> > stage image this results in a crash as the register base address
+> > register is already moved.
+> > =
 
-diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
-index 3879741b2a..b6059e86f5 100644
---- a/drivers/video/fbconsole.c
-+++ b/drivers/video/fbconsole.c
-@@ -11,6 +11,7 @@ enum state_t {
- 	LIT,				/* Literal input */
- 	ESC,				/* Start of escape sequence */
- 	CSI,				/* Reading arguments in "CSI Pn ;...*/
-+	CSI_CNT,
- };
- 
- struct fbc_priv {
-@@ -34,10 +35,12 @@ struct fbc_priv {
- 
- #define ANSI_FLAG_INVERT	(1 << 0)
- #define ANSI_FLAG_BRIGHT	(1 << 1)
-+#define HIDE_CURSOR		(1 << 2)
- 	unsigned flags;
- 
- 	int csipos;
- 	u8 csi[256];
-+	unsigned char csi_cmd;
- 
- 	int active;
- 	int in_console;
-@@ -144,6 +147,12 @@ static void video_invertchar(struct fbc_priv *priv, int x, int y)
- 			priv->font->width, priv->font->height);
- }
- 
-+static void show_cursor(struct fbc_priv *priv, int x, int y)
-+{
-+	if (!(priv->flags & HIDE_CURSOR))
-+		video_invertchar(priv, x, y);
-+}
-+
- static void printchar(struct fbc_priv *priv, int c)
- {
- 	video_invertchar(priv, priv->x, priv->y);
-@@ -200,7 +209,7 @@ static void printchar(struct fbc_priv *priv, int c)
- 		priv->y = priv->rows;
- 	}
- 
--	video_invertchar(priv, priv->x, priv->y);
-+	show_cursor(priv, priv->x, priv->y);
- 
- 	return;
- }
-@@ -258,12 +267,43 @@ static void fbc_parse_csi(struct fbc_priv *priv)
- 	case 'm':
- 		fbc_parse_colors(priv);
- 		return;
-+	case '?': /* vt100: show/hide cursor */
-+		priv->csi_cmd = last;
-+		priv->state = CSI_CNT;
-+		return;
-+	case 'h':
-+		/* suffix for vt100 "[?25h" */
-+		switch (priv->csi_cmd) {
-+		case '?': /* cursor visible */
-+			priv->csi_cmd = -1;
-+			if (!(priv->flags & HIDE_CURSOR))
-+				break;
-+
-+			priv->flags &= ~HIDE_CURSOR;
-+			/* show cursor now */
-+			show_cursor(priv, priv->x, priv->y);
-+			break;
-+		}
-+		break;
-+	case 'l':
-+		/* suffix for vt100 "[?25l" */
-+		switch (priv->csi_cmd) {
-+		case '?': /* cursor invisible */
-+			priv->csi_cmd = -1;
-+
-+			/* hide cursor now */
-+			video_invertchar(priv, priv->x, priv->y);
-+			priv->flags |= HIDE_CURSOR;
-+
-+			break;
-+		}
-+		break;
- 	case 'J':
- 		cls(priv);
--		video_invertchar(priv, priv->x, priv->y);
-+		show_cursor(priv, priv->x, priv->y);
- 		return;
- 	case 'H':
--		video_invertchar(priv, priv->x, priv->y);
-+		show_cursor(priv, priv->x, priv->y);
- 
- 		pos = simple_strtoul(priv->csi, &end, 10);
- 		priv->y = (pos && pos <= priv->rows + 1) ? pos - 1 : 0;
-@@ -271,7 +311,7 @@ static void fbc_parse_csi(struct fbc_priv *priv)
- 		pos = simple_strtoul(end + 1, NULL, 10);
- 		priv->x = (pos && pos <= priv->cols + 1) ? pos - 1 : 0;
- 
--		video_invertchar(priv, priv->x, priv->y);
-+		show_cursor(priv, priv->x, priv->y);
- 	case 'K':
- 		pos = simple_strtoul(priv->csi, &end, 10);
- 		video_invertchar(priv, priv->x, priv->y);
-@@ -343,9 +383,14 @@ static void fbc_putc(struct console_device *cdev, char c)
- 			break;
- 		default:
- 			fbc_parse_csi(priv);
--			priv->state = LIT;
-+			if (priv->state != CSI_CNT)
-+				priv->state = LIT;
- 		}
- 		break;
-+	case CSI_CNT:
-+		priv->state = CSI;
-+		break;
-+
- 	}
- 	priv->in_console = 0;
- }
--- 
-2.11.0
+> > This series implements that the called image gets the base address from
+> > the barebox header. It defaults to 0xd0000000 which is right for the
+> > (unaware) BootROM and when barebox jumps into such an image the register
+> > position is passed accordingly.
+> =
 
+> This makes the 2nd stage images unnecessary, right? Can you remove them
+> from images/Makefile.mvebu?
+
+I thought about that already, too, but they are still necessary when you
+convert from U-Boot to barebox or upgrade from an older barebox. So I
+think keeping them for now makes sense.
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
