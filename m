@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cj5IN-00048j-92
- for barebox@lists.infradead.org; Wed, 01 Mar 2017 14:32:10 +0000
+ id 1cj5IN-00048f-91
+ for barebox@lists.infradead.org; Wed, 01 Mar 2017 14:32:11 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
- (envelope-from <l.stach@pengutronix.de>) id 1cj5I2-0005ON-1H
+ (envelope-from <l.stach@pengutronix.de>) id 1cj5I1-0005ON-Vn
  for barebox@lists.infradead.org; Wed, 01 Mar 2017 15:31:38 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed,  1 Mar 2017 15:31:35 +0100
-Message-Id: <20170301143137.11570-7-l.stach@pengutronix.de>
+Date: Wed,  1 Mar 2017 15:31:34 +0100
+Message-Id: <20170301143137.11570-6-l.stach@pengutronix.de>
 In-Reply-To: <20170301143137.11570-1-l.stach@pengutronix.de>
 References: <20170301143137.11570-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -26,43 +26,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/9] ARM: rpi: always build relocatable image
+Subject: [PATCH 6/9] mci-bcm2835: enable devicetree probing
 To: barebox@lists.infradead.org
 
-Makes more space available for the malloc area and will allow
-to switch to multi-image later on.
+From: Enrico Joerns <ejo@pengutronix.de>
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Enrico Joerns <ejo@pengutronix.de>
 ---
- arch/arm/Kconfig              | 1 +
- arch/arm/mach-bcm283x/Kconfig | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/mci/mci-bcm2835.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index e4663ea26872..559cac4016bd 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -27,6 +27,7 @@ config ARCH_BCM283X
- 	select CLOCKSOURCE_BCM283X
- 	select ARM_AMBA
- 	select HAS_DEBUG_LL
-+	select RELOCATABLE
+diff --git a/drivers/mci/mci-bcm2835.c b/drivers/mci/mci-bcm2835.c
+index c7a8cf972ab3..daf771934a6c 100644
+--- a/drivers/mci/mci-bcm2835.c
++++ b/drivers/mci/mci-bcm2835.c
+@@ -543,9 +543,18 @@ static int bcm2835_mci_probe(struct device_d *hw_dev)
+ 	return mci_register(&host->mci);
+ }
  
- menu "System Type"
++static __maybe_unused struct of_device_id bcm2835_mci_compatible[] = {
++	{
++		.compatible = "brcm,bcm2835-sdhci",
++	}, {
++		/* sentinel */
++	}
++};
++
+ static struct driver_d bcm2835_mci_driver = {
+ 	.name = "bcm2835_mci",
+ 	.probe = bcm2835_mci_probe,
++	.of_compatible = DRV_OF_COMPAT(bcm2835_mci_compatible),
+ };
  
-diff --git a/arch/arm/mach-bcm283x/Kconfig b/arch/arm/mach-bcm283x/Kconfig
-index e86126862772..d9be1a9b65c1 100644
---- a/arch/arm/mach-bcm283x/Kconfig
-+++ b/arch/arm/mach-bcm283x/Kconfig
-@@ -2,7 +2,7 @@ if ARCH_BCM283X
- 
- config ARCH_TEXT_BASE
- 	hex
--	default 0x04000000
-+	default 0x0
- 
- config MACH_RPI_COMMON
- 	bool
+ static int bcm2835_mci_add(void)
 -- 
 2.11.0
 
