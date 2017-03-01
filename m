@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cj5IN-00048U-95
- for barebox@lists.infradead.org; Wed, 01 Mar 2017 14:32:20 +0000
+ id 1cj5IN-00048R-94
+ for barebox@lists.infradead.org; Wed, 01 Mar 2017 14:32:21 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
- (envelope-from <l.stach@pengutronix.de>) id 1cj5I1-0005ON-TN
+ (envelope-from <l.stach@pengutronix.de>) id 1cj5I1-0005ON-Sp
  for barebox@lists.infradead.org; Wed, 01 Mar 2017 15:31:37 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed,  1 Mar 2017 15:31:32 +0100
-Message-Id: <20170301143137.11570-4-l.stach@pengutronix.de>
+Date: Wed,  1 Mar 2017 15:31:31 +0100
+Message-Id: <20170301143137.11570-3-l.stach@pengutronix.de>
 In-Reply-To: <20170301143137.11570-1-l.stach@pengutronix.de>
 References: <20170301143137.11570-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -26,166 +26,172 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/9] ARM: rpi: convert watchdog/reset to regular driver
+Subject: [PATCH 3/9] ARM: rpi: convert mailbox interface to regular driver
 To: barebox@lists.infradead.org
 
-This way it can be probed from DT later on.
+In prepareation for devicetree probing.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/boards/raspberry-pi/rpi-common.c |  1 +
- arch/arm/mach-bcm283x/Makefile            |  2 +-
- arch/arm/mach-bcm283x/core.c              | 17 -------
- arch/arm/mach-bcm283x/include/mach/core.h |  5 +++
- arch/arm/mach-bcm283x/include/mach/wd.h   |  6 +--
- arch/arm/mach-bcm283x/wd.c                | 75 +++++++++++++++++++++++++++++++
- 6 files changed, 85 insertions(+), 21 deletions(-)
- create mode 100644 arch/arm/mach-bcm283x/wd.c
+ arch/arm/boards/raspberry-pi/rpi-common.c     |  2 +
+ arch/arm/mach-bcm283x/include/mach/core.h     |  6 +++
+ arch/arm/mach-bcm283x/include/mach/mbox.h     | 19 +++++----
+ arch/arm/mach-bcm283x/include/mach/platform.h |  1 +
+ arch/arm/mach-bcm283x/mbox.c                  | 55 ++++++++++++++++++++++-----
+ 5 files changed, 63 insertions(+), 20 deletions(-)
 
 diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-index d0f4fcb3bad9..331e6873bc49 100644
+index db9af2be4245..d0f4fcb3bad9 100644
 --- a/arch/arm/boards/raspberry-pi/rpi-common.c
 +++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-@@ -326,6 +326,7 @@ static int rpi_env_init(void)
- static int rpi_devices_init(void)
+@@ -280,6 +280,8 @@ mem_initcall(rpi_mem_init);
+ 
+ static int rpi_postcore_init(void)
  {
- 	rpi_model_init();
-+	bcm2835_register_wd();
- 	bcm2835_register_mci();
- 	bcm2835_register_fb();
- 	armlinux_set_architecture(MACH_TYPE_BCM2708);
-diff --git a/arch/arm/mach-bcm283x/Makefile b/arch/arm/mach-bcm283x/Makefile
-index 940f98cbce76..96ea69365e50 100644
---- a/arch/arm/mach-bcm283x/Makefile
-+++ b/arch/arm/mach-bcm283x/Makefile
-@@ -1 +1 @@
--obj-y += core.o mbox.o
-+obj-y += core.o mbox.o wd.o
-diff --git a/arch/arm/mach-bcm283x/core.c b/arch/arm/mach-bcm283x/core.c
-index 64f37813883a..3319ad63c3d7 100644
---- a/arch/arm/mach-bcm283x/core.c
-+++ b/arch/arm/mach-bcm283x/core.c
-@@ -18,7 +18,6 @@
++	bcm2835_register_mbox();
++
+ 	rpi_get_board_rev();
+ 	barebox_set_hostname("rpi");
  
- #include <common.h>
- #include <init.h>
--#include <restart.h>
- 
- #include <linux/clk.h>
- #include <linux/clkdev.h>
-@@ -29,7 +28,6 @@
- #include <linux/sizes.h>
- 
- #include <mach/platform.h>
--#include <mach/wd.h>
- #include <mach/core.h>
- #include <linux/amba/bus.h>
- 
-@@ -64,25 +62,10 @@ void bcm2835_add_device_sdram(u32 size)
- 
- 	arm_add_mem_device("ram0", BCM2835_SDRAM_BASE, size);
- }
--#define RESET_TIMEOUT 10
--
--static void __noreturn bcm2835_restart_soc(struct restart_handler *rst)
--{
--	uint32_t rstc;
--
--	rstc = readl(PM_RSTC);
--	rstc &= ~PM_RSTC_WRCFG_SET;
--	rstc |= PM_RSTC_WRCFG_FULL_RESET;
--	writel(PM_PASSWORD | RESET_TIMEOUT, PM_WDOG);
--	writel(PM_PASSWORD | rstc, PM_RSTC);
--
--	hang();
--}
- 
- static int bcm2835_dev_init(void)
- {
- 	add_generic_device("bcm2835-gpio", 0, NULL, BCM2835_GPIO_BASE, 0xB0, IORESOURCE_MEM, NULL);
--	restart_handler_register_fn(bcm2835_restart_soc);
- 	return 0;
- }
- coredevice_initcall(bcm2835_dev_init);
 diff --git a/arch/arm/mach-bcm283x/include/mach/core.h b/arch/arm/mach-bcm283x/include/mach/core.h
-index ce54d38707d8..5edd99efa25f 100644
+index b0bed80ea000..ce54d38707d8 100644
 --- a/arch/arm/mach-bcm283x/include/mach/core.h
 +++ b/arch/arm/mach-bcm283x/include/mach/core.h
-@@ -37,5 +37,10 @@ static void inline bcm2835_register_mbox(void)
- 	add_generic_device("bcm2835_mbox", 0, NULL, BCM2835_MBOX_BASE, 0x40,
- 			   IORESOURCE_MEM, NULL);
+@@ -32,4 +32,10 @@ static void inline bcm2835_register_fb(void)
+ 	add_generic_device("bcm2835_fb", 0, NULL, 0, 0, 0, NULL);
  }
-+static void inline bcm2835_register_wd(void)
+ 
++static void inline bcm2835_register_mbox(void)
 +{
-+	add_generic_device("bcm2835_wd", 0, NULL, BCM2835_PM_BASE, 0x28,
++	add_generic_device("bcm2835_mbox", 0, NULL, BCM2835_MBOX_BASE, 0x40,
 +			   IORESOURCE_MEM, NULL);
 +}
- 
++
  #endif
-diff --git a/arch/arm/mach-bcm283x/include/mach/wd.h b/arch/arm/mach-bcm283x/include/mach/wd.h
-index ad8b762d9631..cdd22d48c07b 100644
---- a/arch/arm/mach-bcm283x/include/mach/wd.h
-+++ b/arch/arm/mach-bcm283x/include/mach/wd.h
-@@ -21,9 +21,9 @@
- /*
-  * Watchdog
+diff --git a/arch/arm/mach-bcm283x/include/mach/mbox.h b/arch/arm/mach-bcm283x/include/mach/mbox.h
+index cd9ee1f43415..2b5aea88ee0a 100644
+--- a/arch/arm/mach-bcm283x/include/mach/mbox.h
++++ b/arch/arm/mach-bcm283x/include/mach/mbox.h
+@@ -41,16 +41,15 @@
   */
--#define PM_RSTC		(BCM2835_PM_BASE+0x1c)
--#define PM_RSTS		(BCM2835_PM_BASE+0x20)
--#define PM_WDOG		(BCM2835_PM_BASE+0x24)
-+#define PM_RSTC		0x1c
-+#define PM_RSTS		0x20
-+#define PM_WDOG		0x24
  
- #define PM_WDOG_RESET				0000000000
- #define PM_PASSWORD				0x5a000000
-diff --git a/arch/arm/mach-bcm283x/wd.c b/arch/arm/mach-bcm283x/wd.c
-new file mode 100644
-index 000000000000..5a5188fd2e26
---- /dev/null
-+++ b/arch/arm/mach-bcm283x/wd.c
-@@ -0,0 +1,75 @@
-+/*
-+ * Copyright (C) 2017 Pengutronix, Lucas Stach <l.stach@pengutronix.de>
-+ *
-+ * Based on code from  Carlo Caione <carlo@carlocaione.org>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
+ /* Raw mailbox HW */
+-
+-#define BCM2835_MBOX_PHYSADDR		(BCM2835_ARM_BASE + 0x880)
+-
+-struct bcm2835_mbox_regs {
+-	u32 read;
+-	u32 rsvd0[5];
+-	u32 status;
+-	u32 config;
+-	u32 write;
+-};
++#define ARM_0_MAIL0	0x00
++#define ARM_0_MAIL1	0x20
++
++#define MAIL0_RD	(ARM_0_MAIL0 + 0x00)
++#define MAIL0_POL	(ARM_0_MAIL0 + 0x10)
++#define MAIL0_STA	(ARM_0_MAIL0 + 0x18)
++#define MAIL0_CNF	(ARM_0_MAIL0 + 0x1C)
++#define MAIL1_WRT	(ARM_0_MAIL1 + 0x00)
++#define MAIL1_STA	(ARM_0_MAIL1 + 0x18)
+ 
+ #define BCM2835_MBOX_STATUS_WR_FULL	0x80000000
+ #define BCM2835_MBOX_STATUS_RD_EMPTY	0x40000000
+diff --git a/arch/arm/mach-bcm283x/include/mach/platform.h b/arch/arm/mach-bcm283x/include/mach/platform.h
+index 3b73831aa522..09fe78fd41f6 100644
+--- a/arch/arm/mach-bcm283x/include/mach/platform.h
++++ b/arch/arm/mach-bcm283x/include/mach/platform.h
+@@ -41,6 +41,7 @@
+ #define BCM2835_ST_BASE		(BCM2835_PERI_BASE + 0x3000)	/* System Timer */
+ #define BCM2835_DMA_BASE	(BCM2835_PERI_BASE + 0x7000)	/* DMA controller */
+ #define BCM2835_ARM_BASE	(BCM2835_PERI_BASE + 0xB000)	/* BCM2708 ARM control block */
++#define BCM2835_MBOX_BASE	(BCM2835_ARM_BASE + 0x880)	/* BCM2835 mailbox */
+ #define BCM2835_PM_BASE		(BCM2835_PERI_BASE + 0x100000)	/* Power Management, Reset controller and Watchdog registers */
+ #define BCM2835_GPIO_BASE	(BCM2835_PERI_BASE + 0x200000)	/* GPIO */
+ #define BCM2835_UART0_BASE	(BCM2835_PERI_BASE + 0x201000)	/* Uart 0 */
+diff --git a/arch/arm/mach-bcm283x/mbox.c b/arch/arm/mach-bcm283x/mbox.c
+index 9d69bc8ea784..b295993359fa 100644
+--- a/arch/arm/mach-bcm283x/mbox.c
++++ b/arch/arm/mach-bcm283x/mbox.c
+@@ -6,20 +6,21 @@
+  * SPDX-License-Identifier:	GPL-2.0+
+  */
+ 
+-#include <asm/io.h>
+-#include <common.h>
+ #include <clock.h>
 +#include <common.h>
+ #include <dma.h>
 +#include <init.h>
 +#include <io.h>
-+#include <restart.h>
+ 
+ #include <mach/mbox.h>
+ 
+ #define TIMEOUT (MSECOND * 1000)
+ 
++static void __iomem *mbox_base;
 +
-+#include <mach/wd.h>
+ static int bcm2835_mbox_call_raw(u32 chan, struct bcm2835_mbox_hdr *buffer,
+ 					u32 *recv)
+ {
+-	struct bcm2835_mbox_regs __iomem *regs =
+-		(struct bcm2835_mbox_regs *)BCM2835_MBOX_PHYSADDR;
+ 	uint64_t starttime = get_time_ns();
+ 	u32 send = virt_to_phys(buffer);
+ 	u32 val;
+@@ -31,19 +32,19 @@ static int bcm2835_mbox_call_raw(u32 chan, struct bcm2835_mbox_hdr *buffer,
+ 
+ 	/* Drain any stale responses */
+ 	for (;;) {
+-		val = readl(&regs->status);
++		val = readl(mbox_base + MAIL0_STA);
+ 		if (val & BCM2835_MBOX_STATUS_RD_EMPTY)
+ 			break;
+ 		if (is_timeout(starttime, TIMEOUT)) {
+ 			printf("mbox: Timeout draining stale responses\n");
+ 			return -ETIMEDOUT;
+ 		}
+-		val = readl(&regs->read);
++		val = readl(mbox_base + MAIL0_RD);
+ 	}
+ 
+ 	/* Wait for space to send */
+ 	for (;;) {
+-		val = readl(&regs->status);
++		val = readl(mbox_base + MAIL0_STA);
+ 		if (!(val & BCM2835_MBOX_STATUS_WR_FULL))
+ 			break;
+ 		if (is_timeout(starttime, TIMEOUT)) {
+@@ -57,11 +58,11 @@ static int bcm2835_mbox_call_raw(u32 chan, struct bcm2835_mbox_hdr *buffer,
+ 	debug("mbox: TX raw: 0x%08x\n", val);
+ 	dma_sync_single_for_device((unsigned long)send, buffer->buf_size,
+ 				   DMA_BIDIRECTIONAL);
+-	writel(val, &regs->write);
++	writel(val, mbox_base + MAIL1_WRT);
+ 
+ 	/* Wait for the response */
+ 	for (;;) {
+-		val = readl(&regs->status);
++		val = readl(mbox_base + MAIL0_STA);
+ 		if (!(val & BCM2835_MBOX_STATUS_RD_EMPTY))
+ 			break;
+ 		if (is_timeout(starttime, TIMEOUT)) {
+@@ -71,7 +72,7 @@ static int bcm2835_mbox_call_raw(u32 chan, struct bcm2835_mbox_hdr *buffer,
+ 	}
+ 
+ 	/* Read the response */
+-	val = readl(&regs->read);
++	val = readl(mbox_base + MAIL0_RD);
+ 	debug("mbox: RX raw: 0x%08x\n", val);
+ 	dma_sync_single_for_cpu((unsigned long)send, buffer->buf_size,
+ 				DMA_BIDIRECTIONAL);
+@@ -152,3 +153,37 @@ int bcm2835_mbox_call_prop(u32 chan, struct bcm2835_mbox_hdr *buffer)
+ 
+ 	return 0;
+ }
 +
-+static void __iomem *wd_base;
-+
-+#define RESET_TIMEOUT 10
-+
-+static void __noreturn bcm2835_restart_soc(struct restart_handler *rst)
-+{
-+	uint32_t rstc;
-+
-+	rstc = readl(wd_base + PM_RSTC);
-+	rstc &= ~PM_RSTC_WRCFG_SET;
-+	rstc |= PM_RSTC_WRCFG_FULL_RESET;
-+	writel(PM_PASSWORD | RESET_TIMEOUT, wd_base +  PM_WDOG);
-+	writel(PM_PASSWORD | rstc, wd_base + PM_RSTC);
-+
-+	hang();
-+}
-+
-+static int bcm2835_wd_probe(struct device_d *dev)
++static int bcm2835_mbox_probe(struct device_d *dev)
 +{
 +	struct resource *iores;
 +
@@ -194,32 +200,30 @@ index 000000000000..5a5188fd2e26
 +		dev_err(dev, "could not get memory region\n");
 +		return PTR_ERR(iores);
 +	}
-+	wd_base = IOMEM(iores->start);
-+
-+	restart_handler_register_fn(bcm2835_restart_soc);
++	mbox_base = IOMEM(iores->start);
 +
 +	return 0;
 +}
 +
-+static __maybe_unused struct of_device_id bcm2835_wd_dt_ids[] = {
++static __maybe_unused struct of_device_id bcm2835_mbox_dt_ids[] = {
 +	{
-+		.compatible = "brcm,bcm2835-pm-wdt",
++		.compatible = "brcm,bcm2835-mbox",
 +	}, {
 +		/* sentinel */
 +	},
 +};
 +
-+static struct driver_d bcm2835_wd_driver = {
-+	.name		= "bcm2835_wd",
-+	.of_compatible	= DRV_OF_COMPAT(bcm2835_wd_dt_ids),
-+	.probe		= bcm2835_wd_probe,
++static struct driver_d bcm2835_mbox_driver = {
++	.name		= "bcm2835_mbox",
++	.of_compatible	= DRV_OF_COMPAT(bcm2835_mbox_dt_ids),
++	.probe		= bcm2835_mbox_probe,
 +};
 +
-+static int __init bcm2835_wd_init(void)
++static int __init bcm2835_mbox_init(void)
 +{
-+	return platform_driver_register(&bcm2835_wd_driver);
++	return platform_driver_register(&bcm2835_mbox_driver);
 +}
-+device_initcall(bcm2835_wd_init);
++core_initcall(bcm2835_mbox_init);
 -- 
 2.11.0
 
