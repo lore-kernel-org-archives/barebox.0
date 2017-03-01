@@ -1,15 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from 1.mo177.mail-out.ovh.net ([178.33.107.143])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cj5sP-00062D-PI
- for barebox@lists.infradead.org; Wed, 01 Mar 2017 15:09:20 +0000
-Date: Wed, 1 Mar 2017 16:08:51 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170301150851.346zcmbbqbedx5uo@pengutronix.de>
-References: <1488354654-13307-1-git-send-email-d.schultz@phytec.de>
+ id 1cj6Sa-0006Np-1t
+ for barebox@lists.infradead.org; Wed, 01 Mar 2017 15:46:38 +0000
+Received: from player792.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo177.mail-out.ovh.net (Postfix) with ESMTP id A6C633675C
+ for <barebox@lists.infradead.org>; Wed,  1 Mar 2017 16:46:07 +0100 (CET)
+Date: Wed, 1 Mar 2017 16:52:05 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20170301155205.GA4120@mail.ovh.net>
+References: <20170227101416.GB12475@mail.ovh.net>
+ <1488190770-4034-1-git-send-email-plagnioj@jcrosoft.com>
+ <1488190770-4034-5-git-send-email-plagnioj@jcrosoft.com>
+ <20170228070901.gbkwxlh772plqi4e@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1488354654-13307-1-git-send-email-d.schultz@phytec.de>
+In-Reply-To: <20170228070901.gbkwxlh772plqi4e@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,113 +28,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] arm: boards: phytec-som-am335x: Remove 1GB RAM type
-To: Daniel Schultz <d.schultz@phytec.de>
+Subject: Re: [PATCH 5/8] clocksource: allow to have multiple device from
+ clock source
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Mar 01, 2017 at 08:50:54AM +0100, Daniel Schultz wrote:
-> This machine was a prototype and was never shipped to customers.
+On 08:09 Tue 28 Feb     , Sascha Hauer wrote:
+> On Mon, Feb 27, 2017 at 11:19:27AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > use the one with the most priority.
+> > 
+> > We can not select the clocksource at user level.
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  common/clock.c  | 11 +++++++++++
+> >  include/clock.h |  3 ++-
+> >  2 files changed, 13 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/common/clock.c b/common/clock.c
+> > index 2c5dd91cc..d99d06853 100644
+> > --- a/common/clock.c
+> > +++ b/common/clock.c
+> > @@ -213,6 +213,17 @@ EXPORT_SYMBOL(mdelay_non_interruptible);
+> >  
+> >  int init_clock(struct clocksource *cs)
+> >  {
+> > +	if (current_clock && cs->priority < current_clock->priority)
+> > +		return -EBUSY;
 > 
-> Since it has no dependencies to any image, it can be removed.
-> 
-> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
-> ---
-> Changes:
-> 	v2: Removed machine in Makefile
+> You should return successfully here. Otherwise driver probe functions
+> return -EBUSY for something which is not the drivers fault. In fact,
+> it's not an error, it's just that we currently don't have any use for an
+> additional clock.
+my issue is that we will report in barebox that the device is in use but in
+fact is not as we exit the init_clock without doing event the init.
 
-Applied, thanks
+That's why I choosed to return -EBUSY instead of 0
+> Also consider testing for <= current_clock->priority
+> instead of <. All current clocks have priority 0 and we want to
+> initialize only the first one.
+ok
 
-Sascha
-
-> 
->  arch/arm/boards/phytec-som-am335x/lowlevel.c    |  1 -
->  arch/arm/boards/phytec-som-am335x/ram-timings.h | 21 ---------------------
->  images/Makefile.am33xx                          |  6 ------
->  3 files changed, 28 deletions(-)
-> 
-> diff --git a/arch/arm/boards/phytec-som-am335x/lowlevel.c b/arch/arm/boards/phytec-som-am335x/lowlevel.c
-> index 33e83c5..03c7e98 100644
-> --- a/arch/arm/boards/phytec-som-am335x/lowlevel.c
-> +++ b/arch/arm/boards/phytec-som-am335x/lowlevel.c
-> @@ -122,7 +122,6 @@ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_128mb, am335x_phytec_phycore_s
->  PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_256mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J128M16125IT_256MB);
->  PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_512mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J256M16HA15EIT_512MB);
->  PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_2x512mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J512M8125IT_2x512MB);
-> -PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_1024mb, am335x_phytec_phycore_som_mlo, PHYCORE_IM8G16D3FBBG15EI_1024MB);
->  PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_512mb, am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K256M16TW107IT_512MB);
->  PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_256mb, am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K128M16JT_256MB);
->  PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_1024mb,  am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K512M16HA125IT_1024MB);
-> diff --git a/arch/arm/boards/phytec-som-am335x/ram-timings.h b/arch/arm/boards/phytec-som-am335x/ram-timings.h
-> index 4ea654d..d1947b5 100644
-> --- a/arch/arm/boards/phytec-som-am335x/ram-timings.h
-> +++ b/arch/arm/boards/phytec-som-am335x/ram-timings.h
-> @@ -29,7 +29,6 @@ enum {
->  	PHYCORE_MT41J64M1615IT_128MB,
->  	PHYCORE_MT41J256M16HA15EIT_512MB,
->  	PHYCORE_MT41J512M8125IT_2x512MB,
-> -	PHYCORE_IM8G16D3FBBG15EI_1024MB,
->  	PHYCORE_R2_MT41K256M16TW107IT_512MB,
->  	PHYCORE_R2_MT41K128M16JT_256MB,
->  	PHYCORE_R2_MT41K512M16HA125IT_1024MB,
-> @@ -162,26 +161,6 @@ struct am335x_sdram_timings physom_timings[] = {
->  		},
->  	},
->  
-> -	/* 1024MB */
-> -	[PHYCORE_IM8G16D3FBBG15EI_1024MB] = {
-> -		.regs = {
-> -			.emif_read_latency	= 0x7,
-> -			.emif_tim1		= 0x0AAAE4DB,
-> -			.emif_tim2		= 0x268F7FDA,
-> -			.emif_tim3		= 0x501F88BF,
-> -			.ocp_config		= 0x003d3d3d,
-> -			.sdram_config		= 0x61C053B2,
-> -			.zq_config		= 0x50074BE4,
-> -			.sdram_ref_ctrl		= 0x00000C30
-> -		},
-> -		.data = {
-> -			.rd_slave_ratio0	= 0x33,
-> -			.wr_dqs_slave_ratio0	= 0x4a,
-> -			.fifo_we_slave_ratio0	= 0xa4,
-> -			.wr_slave_ratio0	= 0x85,
-> -		},
-> -	},
-> -
->  	/* 256MB */
->  	[PHYCARD_NT5CB128M16BP_256MB] = {
->  		.regs = {
-> diff --git a/images/Makefile.am33xx b/images/Makefile.am33xx
-> index 8168fe4..d1c432e 100644
-> --- a/images/Makefile.am33xx
-> +++ b/images/Makefile.am33xx
-> @@ -77,12 +77,6 @@ FILE_barebox-am33xx-phytec-phycore-mlo-2x512mb.spi.img = start_am33xx_phytec_phy
->  am33xx-mlo-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-mlo-2x512mb.img
->  am33xx-mlospi-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-mlo-2x512mb.spi.img
->  
-> -pblx-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += start_am33xx_phytec_phycore_sram_1024mb
-> -FILE_barebox-am33xx-phytec-phycore-mlo-1024mb.img = start_am33xx_phytec_phycore_sram_1024mb.pblx.mlo
-> -FILE_barebox-am33xx-phytec-phycore-mlo-1024mb.spi.img = start_am33xx_phytec_phycore_sram_1024mb.pblx.mlospi
-> -am33xx-mlo-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-mlo-1024mb.img
-> -am33xx-mlospi-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-mlo-1024mb.spi.img
-> -
->  pblx-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += start_am33xx_phytec_phycore_r2_sram_1024mb
->  FILE_barebox-am33xx-phytec-phycore-r2-mlo-1024mb.img = start_am33xx_phytec_phycore_r2_sram_1024mb.pblx.mlo
->  FILE_barebox-am33xx-phytec-phycore-r2-mlo-1024mb.spi.img = start_am33xx_phytec_phycore_r2_sram_1024mb.pblx.mlospi
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
