@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cj5De-0000xU-Kr
+ id 1cj5De-0000xT-LP
  for barebox@lists.infradead.org; Wed, 01 Mar 2017 14:27:08 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
- (envelope-from <l.stach@pengutronix.de>) id 1cj5DF-0004KM-Qz
+ (envelope-from <l.stach@pengutronix.de>) id 1cj5DF-0004KM-PE
  for barebox@lists.infradead.org; Wed, 01 Mar 2017 15:26:41 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed,  1 Mar 2017 15:26:40 +0100
-Message-Id: <20170301142641.6596-2-l.stach@pengutronix.de>
-In-Reply-To: <20170301142641.6596-1-l.stach@pengutronix.de>
-References: <20170301142641.6596-1-l.stach@pengutronix.de>
+Date: Wed,  1 Mar 2017 15:26:39 +0100
+Message-Id: <20170301142641.6596-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,58 +24,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: correctly identify ARMv6 K/Z
+Subject: [PATCH 1/3] ARM: align exception vectors to 32 byte
 To: barebox@lists.infradead.org
 
-The ARMv6 K/Z derivatives have a v7 compatible MMU, but all other parts
-(including the cache handling) is still at v6. As we don't make use of
-the more advanced features of the v7 MMU in Barebox, it's okay to just
-override this to properly identify the CPU as ARMv6.
+On ARMv7 the exception vectors inside the barebox binary are used directly
+by remapping the vectors base through the VBAR register. While VBAR allows
+to remap the exception vectors freely, it still imposes a minimum alignment
+of 32 byte, as the lower bits are treated as the exception vector offset.
+Enforce this alignment inside the barebox binary.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/cpu/cpuinfo.c             | 8 ++++++++
- arch/arm/include/asm/system_info.h | 8 ++++++++
- 2 files changed, 16 insertions(+)
+ arch/arm/lib32/barebox.lds.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/cpu/cpuinfo.c b/arch/arm/cpu/cpuinfo.c
-index 86e19d9780d5..175475b038dc 100644
---- a/arch/arm/cpu/cpuinfo.c
-+++ b/arch/arm/cpu/cpuinfo.c
-@@ -165,6 +165,14 @@ static int do_cpuinfo(int argc, char *argv[])
- 	} else
- 		cpu_arch = CPU_ARCH_UNKNOWN;
- 
-+	/*
-+	 * Special case for ARMv6 (K/Z) (has v7 compatible MMU, but is v6
-+	 * otherwise). The below check just matches all ARMv6, as done in the
-+	 * Linux kernel.
-+	 */
-+	if ((mainid & 0x7f000) == 0x7b000)
-+		cpu_arch = CPU_ARCH_ARMv6;
-+
- 	switch (cpu_arch) {
- 	case CPU_ARCH_ARMv3:
- 		architecture = "v3";
-diff --git a/arch/arm/include/asm/system_info.h b/arch/arm/include/asm/system_info.h
-index 25fffd268177..a27b79e6dd08 100644
---- a/arch/arm/include/asm/system_info.h
-+++ b/arch/arm/include/asm/system_info.h
-@@ -188,6 +188,14 @@ static inline int arm_early_get_cpu_architecture(void)
- 		cpu_arch = CPU_ARCH_UNKNOWN;
- #endif
- 
-+	/*
-+	 * Special case for ARMv6 (K/Z) (has v7 compatible MMU, but is v6
-+	 * otherwise). The below check just matches all ARMv6, as done in the
-+	 * Linux kernel.
-+	 */
-+	if ((read_cpuid_id() & 0x7f000) == 0x7b000)
-+		cpu_arch = CPU_ARCH_ARMv6;
-+
- 	return cpu_arch;
- }
- 
+diff --git a/arch/arm/lib32/barebox.lds.S b/arch/arm/lib32/barebox.lds.S
+index b49c269a4346..e7b87b7cdd18 100644
+--- a/arch/arm/lib32/barebox.lds.S
++++ b/arch/arm/lib32/barebox.lds.S
+@@ -45,7 +45,7 @@ SECTIONS
+ 		__bare_init_start = .;
+ 		*(.text_bare_init*)
+ 		__bare_init_end = .;
+-		. = ALIGN(4);
++		. = ALIGN(0x20);
+ 		__exceptions_start = .;
+ 		KEEP(*(.text_exceptions*))
+ 		__exceptions_stop = .;
 -- 
 2.11.0
 
