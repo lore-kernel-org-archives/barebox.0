@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ciyK4-0002WZ-1N
- for barebox@lists.infradead.org; Wed, 01 Mar 2017 07:05:17 +0000
-Date: Wed, 1 Mar 2017 08:04:54 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170301070454.vzyx2wg6jct3ghqs@pengutronix.de>
-References: <20170209095334.a5brdlab5oqisu5t@pengutronix.de>
- <775aabc6-5d7e-2ccb-3ef3-c8eaeb29aae1@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <775aabc6-5d7e-2ccb-3ef3-c8eaeb29aae1@phytec.de>
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1ciz2b-0005lp-VN
+ for barebox@lists.infradead.org; Wed, 01 Mar 2017 07:51:20 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 7882BA002DE
+ for <barebox@lists.infradead.org>; Wed,  1 Mar 2017 08:51:18 +0100 (CET)
+From: Daniel Schultz <d.schultz@phytec.de>
+Date: Wed, 1 Mar 2017 08:50:54 +0100
+Message-Id: <1488354654-13307-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,95 +17,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: GPLv3 file in barebox
-To: Daniel Schultz <d.schultz@phytec.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2] arm: boards: phytec-som-am335x: Remove 1GB RAM type
+To: barebox@lists.infradead.org
 
-On Tue, Feb 28, 2017 at 10:41:36AM +0100, Daniel Schultz wrote:
-> Acked-by: Daniel Schultz <d.schultz@phytec.de>
+This machine was a prototype and was never shipped to customers.
 
-Thanks. Applied now with your ack.
+Since it has no dependencies to any image, it can be removed.
 
-Sascha
+Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+---
+Changes:
+	v2: Removed machine in Makefile
 
-> =
+ arch/arm/boards/phytec-som-am335x/lowlevel.c    |  1 -
+ arch/arm/boards/phytec-som-am335x/ram-timings.h | 21 ---------------------
+ images/Makefile.am33xx                          |  6 ------
+ 3 files changed, 28 deletions(-)
 
-> Thanks
-> =
+diff --git a/arch/arm/boards/phytec-som-am335x/lowlevel.c b/arch/arm/boards/phytec-som-am335x/lowlevel.c
+index 33e83c5..03c7e98 100644
+--- a/arch/arm/boards/phytec-som-am335x/lowlevel.c
++++ b/arch/arm/boards/phytec-som-am335x/lowlevel.c
+@@ -122,7 +122,6 @@ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_128mb, am335x_phytec_phycore_s
+ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_256mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J128M16125IT_256MB);
+ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_512mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J256M16HA15EIT_512MB);
+ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_2x512mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J512M8125IT_2x512MB);
+-PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_1024mb, am335x_phytec_phycore_som_mlo, PHYCORE_IM8G16D3FBBG15EI_1024MB);
+ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_512mb, am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K256M16TW107IT_512MB);
+ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_256mb, am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K128M16JT_256MB);
+ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_1024mb,  am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K512M16HA125IT_1024MB);
+diff --git a/arch/arm/boards/phytec-som-am335x/ram-timings.h b/arch/arm/boards/phytec-som-am335x/ram-timings.h
+index 4ea654d..d1947b5 100644
+--- a/arch/arm/boards/phytec-som-am335x/ram-timings.h
++++ b/arch/arm/boards/phytec-som-am335x/ram-timings.h
+@@ -29,7 +29,6 @@ enum {
+ 	PHYCORE_MT41J64M1615IT_128MB,
+ 	PHYCORE_MT41J256M16HA15EIT_512MB,
+ 	PHYCORE_MT41J512M8125IT_2x512MB,
+-	PHYCORE_IM8G16D3FBBG15EI_1024MB,
+ 	PHYCORE_R2_MT41K256M16TW107IT_512MB,
+ 	PHYCORE_R2_MT41K128M16JT_256MB,
+ 	PHYCORE_R2_MT41K512M16HA125IT_1024MB,
+@@ -162,26 +161,6 @@ struct am335x_sdram_timings physom_timings[] = {
+ 		},
+ 	},
+ 
+-	/* 1024MB */
+-	[PHYCORE_IM8G16D3FBBG15EI_1024MB] = {
+-		.regs = {
+-			.emif_read_latency	= 0x7,
+-			.emif_tim1		= 0x0AAAE4DB,
+-			.emif_tim2		= 0x268F7FDA,
+-			.emif_tim3		= 0x501F88BF,
+-			.ocp_config		= 0x003d3d3d,
+-			.sdram_config		= 0x61C053B2,
+-			.zq_config		= 0x50074BE4,
+-			.sdram_ref_ctrl		= 0x00000C30
+-		},
+-		.data = {
+-			.rd_slave_ratio0	= 0x33,
+-			.wr_dqs_slave_ratio0	= 0x4a,
+-			.fifo_we_slave_ratio0	= 0xa4,
+-			.wr_slave_ratio0	= 0x85,
+-		},
+-	},
+-
+ 	/* 256MB */
+ 	[PHYCARD_NT5CB128M16BP_256MB] = {
+ 		.regs = {
+diff --git a/images/Makefile.am33xx b/images/Makefile.am33xx
+index 8168fe4..d1c432e 100644
+--- a/images/Makefile.am33xx
++++ b/images/Makefile.am33xx
+@@ -77,12 +77,6 @@ FILE_barebox-am33xx-phytec-phycore-mlo-2x512mb.spi.img = start_am33xx_phytec_phy
+ am33xx-mlo-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-mlo-2x512mb.img
+ am33xx-mlospi-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-mlo-2x512mb.spi.img
+ 
+-pblx-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += start_am33xx_phytec_phycore_sram_1024mb
+-FILE_barebox-am33xx-phytec-phycore-mlo-1024mb.img = start_am33xx_phytec_phycore_sram_1024mb.pblx.mlo
+-FILE_barebox-am33xx-phytec-phycore-mlo-1024mb.spi.img = start_am33xx_phytec_phycore_sram_1024mb.pblx.mlospi
+-am33xx-mlo-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-mlo-1024mb.img
+-am33xx-mlospi-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-mlo-1024mb.spi.img
+-
+ pblx-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += start_am33xx_phytec_phycore_r2_sram_1024mb
+ FILE_barebox-am33xx-phytec-phycore-r2-mlo-1024mb.img = start_am33xx_phytec_phycore_r2_sram_1024mb.pblx.mlo
+ FILE_barebox-am33xx-phytec-phycore-r2-mlo-1024mb.spi.img = start_am33xx_phytec_phycore_r2_sram_1024mb.pblx.mlospi
+-- 
+1.9.1
 
-> -- =
-
-> Mit freundlichen Gr=FC=DFen,
-> With best regards,
->   Daniel Schultz
-> =
-
-> Am 09.02.2017 um 10:53 schrieb Sascha Hauer:
-> > Hi Daniel,
-> > =
-
-> > We have found that commands/mmc_extcsd.c is licensed under GPLv3 which
-> > is incompatible to the barebox GPLv2 license. Are you ok with
-> > relicensing this file? Otherwise we would have to remove it from
-> > barebox.
-> > If you're ok with relicensing the file please just ack the following
-> > patch.
-> > =
-
-> > Sascha
-> > =
-
-> > ---------------------------------8<----------------------------
-> > =
-
-> > From f75fdb6741fa7f20a810798007ec1ebc12886370 Mon Sep 17 00:00:00 2001
-> > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > Date: Thu, 9 Feb 2017 10:51:49 +0100
-> > Subject: [PATCH] commands/mmc_extcsd: Relicense under GPLv2+
-> > =
-
-> > GPLv3 is incompatible with the projects license. Relicense file
-> > under GPLv2+
-> > =
-
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  commands/mmc_extcsd.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > =
-
-> > diff --git a/commands/mmc_extcsd.c b/commands/mmc_extcsd.c
-> > index d7fc50697c..42adfe0860 100644
-> > --- a/commands/mmc_extcsd.c
-> > +++ b/commands/mmc_extcsd.c
-> > @@ -5,7 +5,7 @@
-> >   *
-> >   * This program is free software: you can redistribute it and/or modify
-> >   * it under the terms of the GNU General Public License as published by
-> > - * the Free Software Foundation, either version 3 of the License, or
-> > + * the Free Software Foundation, either version 2 of the License, or
-> >   * (at your option) any later version.
-> >   *
-> >   * This program is distributed in the hope that it will be useful,
-> > =
-
-> =
-
-> =
-
-> =
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
