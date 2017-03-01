@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cj5IN-00048W-90
- for barebox@lists.infradead.org; Wed, 01 Mar 2017 14:32:08 +0000
+ id 1cj5IN-00048j-92
+ for barebox@lists.infradead.org; Wed, 01 Mar 2017 14:32:10 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
- (envelope-from <l.stach@pengutronix.de>) id 1cj5I1-0005ON-VN
- for barebox@lists.infradead.org; Wed, 01 Mar 2017 15:31:37 +0100
+ (envelope-from <l.stach@pengutronix.de>) id 1cj5I2-0005ON-1H
+ for barebox@lists.infradead.org; Wed, 01 Mar 2017 15:31:38 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed,  1 Mar 2017 15:31:33 +0100
-Message-Id: <20170301143137.11570-5-l.stach@pengutronix.de>
+Date: Wed,  1 Mar 2017 15:31:35 +0100
+Message-Id: <20170301143137.11570-7-l.stach@pengutronix.de>
 In-Reply-To: <20170301143137.11570-1-l.stach@pengutronix.de>
 References: <20170301143137.11570-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -26,74 +26,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/9] clocksource: bcm2835: use clock-frequency property when
- available
+Subject: [PATCH 7/9] ARM: rpi: always build relocatable image
 To: barebox@lists.infradead.org
 
-From: Enrico Joerns <ejo@pengutronix.de>
+Makes more space available for the malloc area and will allow
+to switch to multi-image later on.
 
-If the clock frequency is given by a DT property, use this and don't
-try to use the clock handle.
-
-Signed-off-by: Enrico Joerns <ejo@pengutronix.de>
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
-lst: reworked to fall back gracefully
----
- drivers/clocksource/bcm2835.c | 35 ++++++++++++++++++++++-------------
- 1 file changed, 22 insertions(+), 13 deletions(-)
+ arch/arm/Kconfig              | 1 +
+ arch/arm/mach-bcm283x/Kconfig | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/bcm2835.c b/drivers/clocksource/bcm2835.c
-index b5831d5f107b..9130a4b14f9a 100644
---- a/drivers/clocksource/bcm2835.c
-+++ b/drivers/clocksource/bcm2835.c
-@@ -44,24 +44,33 @@ static int bcm2835_cs_probe(struct device_d *dev)
- {
- 	struct resource *iores;
- 	static struct clk *stc_clk;
--	u32 rate;
-+	u32 rate = 0;
- 	int ret;
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index e4663ea26872..559cac4016bd 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -27,6 +27,7 @@ config ARCH_BCM283X
+ 	select CLOCKSOURCE_BCM283X
+ 	select ARM_AMBA
+ 	select HAS_DEBUG_LL
++	select RELOCATABLE
  
--	stc_clk = clk_get(dev, NULL);
--	if (IS_ERR(stc_clk)) {
--		ret = PTR_ERR(stc_clk);
--		dev_err(dev, "clock not found: %d\n", ret);
--		return ret;
--	}
-+	/* try to read rate from DT property first */
-+	if (IS_ENABLED(CONFIG_OFTREE))
-+		of_property_read_u32(dev->device_node, "clock-frequency",
-+				     &rate);
-+
-+	/* if rate is still empty, try to get rate from clk */
-+	if (!rate) {
-+		stc_clk = clk_get(dev, NULL);
-+		if (IS_ERR(stc_clk)) {
-+			ret = PTR_ERR(stc_clk);
-+			dev_err(dev, "clock not found: %d\n", ret);
-+			return ret;
-+		}
-+
-+		ret = clk_enable(stc_clk);
-+		if (ret) {
-+			dev_err(dev, "clock failed to enable: %d\n", ret);
-+			clk_put(stc_clk);
-+			return ret;
-+		}
+ menu "System Type"
  
--	ret = clk_enable(stc_clk);
--	if (ret) {
--		dev_err(dev, "clock failed to enable: %d\n", ret);
--		clk_put(stc_clk);
--		return ret;
-+		rate = clk_get_rate(stc_clk);
- 	}
+diff --git a/arch/arm/mach-bcm283x/Kconfig b/arch/arm/mach-bcm283x/Kconfig
+index e86126862772..d9be1a9b65c1 100644
+--- a/arch/arm/mach-bcm283x/Kconfig
++++ b/arch/arm/mach-bcm283x/Kconfig
+@@ -2,7 +2,7 @@ if ARCH_BCM283X
  
--	rate = clk_get_rate(stc_clk);
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores))
- 		return PTR_ERR(iores);
+ config ARCH_TEXT_BASE
+ 	hex
+-	default 0x04000000
++	default 0x0
+ 
+ config MACH_RPI_COMMON
+ 	bool
 -- 
 2.11.0
 
