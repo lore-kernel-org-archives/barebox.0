@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1ciz2b-0005lp-VN
- for barebox@lists.infradead.org; Wed, 01 Mar 2017 07:51:20 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 7882BA002DE
- for <barebox@lists.infradead.org>; Wed,  1 Mar 2017 08:51:18 +0100 (CET)
-From: Daniel Schultz <d.schultz@phytec.de>
-Date: Wed, 1 Mar 2017 08:50:54 +0100
-Message-Id: <1488354654-13307-1-git-send-email-d.schultz@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cj5De-0000xU-Kr
+ for barebox@lists.infradead.org; Wed, 01 Mar 2017 14:27:08 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
+ (envelope-from <l.stach@pengutronix.de>) id 1cj5DF-0004KM-Qz
+ for barebox@lists.infradead.org; Wed, 01 Mar 2017 15:26:41 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed,  1 Mar 2017 15:26:40 +0100
+Message-Id: <20170301142641.6596-2-l.stach@pengutronix.de>
+In-Reply-To: <20170301142641.6596-1-l.stach@pengutronix.de>
+References: <20170301142641.6596-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,93 +26,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] arm: boards: phytec-som-am335x: Remove 1GB RAM type
+Subject: [PATCH 2/3] ARM: correctly identify ARMv6 K/Z
 To: barebox@lists.infradead.org
 
-This machine was a prototype and was never shipped to customers.
+The ARMv6 K/Z derivatives have a v7 compatible MMU, but all other parts
+(including the cache handling) is still at v6. As we don't make use of
+the more advanced features of the v7 MMU in Barebox, it's okay to just
+override this to properly identify the CPU as ARMv6.
 
-Since it has no dependencies to any image, it can be removed.
-
-Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
-Changes:
-	v2: Removed machine in Makefile
+ arch/arm/cpu/cpuinfo.c             | 8 ++++++++
+ arch/arm/include/asm/system_info.h | 8 ++++++++
+ 2 files changed, 16 insertions(+)
 
- arch/arm/boards/phytec-som-am335x/lowlevel.c    |  1 -
- arch/arm/boards/phytec-som-am335x/ram-timings.h | 21 ---------------------
- images/Makefile.am33xx                          |  6 ------
- 3 files changed, 28 deletions(-)
-
-diff --git a/arch/arm/boards/phytec-som-am335x/lowlevel.c b/arch/arm/boards/phytec-som-am335x/lowlevel.c
-index 33e83c5..03c7e98 100644
---- a/arch/arm/boards/phytec-som-am335x/lowlevel.c
-+++ b/arch/arm/boards/phytec-som-am335x/lowlevel.c
-@@ -122,7 +122,6 @@ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_128mb, am335x_phytec_phycore_s
- PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_256mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J128M16125IT_256MB);
- PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_512mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J256M16HA15EIT_512MB);
- PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_2x512mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J512M8125IT_2x512MB);
--PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_1024mb, am335x_phytec_phycore_som_mlo, PHYCORE_IM8G16D3FBBG15EI_1024MB);
- PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_512mb, am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K256M16TW107IT_512MB);
- PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_256mb, am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K128M16JT_256MB);
- PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_1024mb,  am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K512M16HA125IT_1024MB);
-diff --git a/arch/arm/boards/phytec-som-am335x/ram-timings.h b/arch/arm/boards/phytec-som-am335x/ram-timings.h
-index 4ea654d..d1947b5 100644
---- a/arch/arm/boards/phytec-som-am335x/ram-timings.h
-+++ b/arch/arm/boards/phytec-som-am335x/ram-timings.h
-@@ -29,7 +29,6 @@ enum {
- 	PHYCORE_MT41J64M1615IT_128MB,
- 	PHYCORE_MT41J256M16HA15EIT_512MB,
- 	PHYCORE_MT41J512M8125IT_2x512MB,
--	PHYCORE_IM8G16D3FBBG15EI_1024MB,
- 	PHYCORE_R2_MT41K256M16TW107IT_512MB,
- 	PHYCORE_R2_MT41K128M16JT_256MB,
- 	PHYCORE_R2_MT41K512M16HA125IT_1024MB,
-@@ -162,26 +161,6 @@ struct am335x_sdram_timings physom_timings[] = {
- 		},
- 	},
+diff --git a/arch/arm/cpu/cpuinfo.c b/arch/arm/cpu/cpuinfo.c
+index 86e19d9780d5..175475b038dc 100644
+--- a/arch/arm/cpu/cpuinfo.c
++++ b/arch/arm/cpu/cpuinfo.c
+@@ -165,6 +165,14 @@ static int do_cpuinfo(int argc, char *argv[])
+ 	} else
+ 		cpu_arch = CPU_ARCH_UNKNOWN;
  
--	/* 1024MB */
--	[PHYCORE_IM8G16D3FBBG15EI_1024MB] = {
--		.regs = {
--			.emif_read_latency	= 0x7,
--			.emif_tim1		= 0x0AAAE4DB,
--			.emif_tim2		= 0x268F7FDA,
--			.emif_tim3		= 0x501F88BF,
--			.ocp_config		= 0x003d3d3d,
--			.sdram_config		= 0x61C053B2,
--			.zq_config		= 0x50074BE4,
--			.sdram_ref_ctrl		= 0x00000C30
--		},
--		.data = {
--			.rd_slave_ratio0	= 0x33,
--			.wr_dqs_slave_ratio0	= 0x4a,
--			.fifo_we_slave_ratio0	= 0xa4,
--			.wr_slave_ratio0	= 0x85,
--		},
--	},
--
- 	/* 256MB */
- 	[PHYCARD_NT5CB128M16BP_256MB] = {
- 		.regs = {
-diff --git a/images/Makefile.am33xx b/images/Makefile.am33xx
-index 8168fe4..d1c432e 100644
---- a/images/Makefile.am33xx
-+++ b/images/Makefile.am33xx
-@@ -77,12 +77,6 @@ FILE_barebox-am33xx-phytec-phycore-mlo-2x512mb.spi.img = start_am33xx_phytec_phy
- am33xx-mlo-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-mlo-2x512mb.img
- am33xx-mlospi-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-mlo-2x512mb.spi.img
++	/*
++	 * Special case for ARMv6 (K/Z) (has v7 compatible MMU, but is v6
++	 * otherwise). The below check just matches all ARMv6, as done in the
++	 * Linux kernel.
++	 */
++	if ((mainid & 0x7f000) == 0x7b000)
++		cpu_arch = CPU_ARCH_ARMv6;
++
+ 	switch (cpu_arch) {
+ 	case CPU_ARCH_ARMv3:
+ 		architecture = "v3";
+diff --git a/arch/arm/include/asm/system_info.h b/arch/arm/include/asm/system_info.h
+index 25fffd268177..a27b79e6dd08 100644
+--- a/arch/arm/include/asm/system_info.h
++++ b/arch/arm/include/asm/system_info.h
+@@ -188,6 +188,14 @@ static inline int arm_early_get_cpu_architecture(void)
+ 		cpu_arch = CPU_ARCH_UNKNOWN;
+ #endif
  
--pblx-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += start_am33xx_phytec_phycore_sram_1024mb
--FILE_barebox-am33xx-phytec-phycore-mlo-1024mb.img = start_am33xx_phytec_phycore_sram_1024mb.pblx.mlo
--FILE_barebox-am33xx-phytec-phycore-mlo-1024mb.spi.img = start_am33xx_phytec_phycore_sram_1024mb.pblx.mlospi
--am33xx-mlo-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-mlo-1024mb.img
--am33xx-mlospi-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-mlo-1024mb.spi.img
--
- pblx-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += start_am33xx_phytec_phycore_r2_sram_1024mb
- FILE_barebox-am33xx-phytec-phycore-r2-mlo-1024mb.img = start_am33xx_phytec_phycore_r2_sram_1024mb.pblx.mlo
- FILE_barebox-am33xx-phytec-phycore-r2-mlo-1024mb.spi.img = start_am33xx_phytec_phycore_r2_sram_1024mb.pblx.mlospi
++	/*
++	 * Special case for ARMv6 (K/Z) (has v7 compatible MMU, but is v6
++	 * otherwise). The below check just matches all ARMv6, as done in the
++	 * Linux kernel.
++	 */
++	if ((read_cpuid_id() & 0x7f000) == 0x7b000)
++		cpu_arch = CPU_ARCH_ARMv6;
++
+ 	return cpu_arch;
+ }
+ 
 -- 
-1.9.1
+2.11.0
 
 
 _______________________________________________
