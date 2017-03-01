@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.mo6.mail-out.ovh.net ([188.165.56.124])
+Received: from 12.mo6.mail-out.ovh.net ([178.32.125.228])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cj8KF-00052Z-Tw
- for barebox@lists.infradead.org; Wed, 01 Mar 2017 17:46:10 +0000
+ id 1cj8Nv-0006Et-DR
+ for barebox@lists.infradead.org; Wed, 01 Mar 2017 17:49:57 +0000
 Received: from player787.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo6.mail-out.ovh.net (Postfix) with ESMTP id E668AB464C
- for <barebox@lists.infradead.org>; Wed,  1 Mar 2017 18:45:44 +0100 (CET)
-Date: Wed, 1 Mar 2017 18:51:44 +0100
+ by mo6.mail-out.ovh.net (Postfix) with ESMTP id C8366B3C0B
+ for <barebox@lists.infradead.org>; Wed,  1 Mar 2017 18:49:31 +0100 (CET)
+Date: Wed, 1 Mar 2017 18:55:38 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20170301175144.GB4120@mail.ovh.net>
-References: <20170227100356.GA3007@tharch.hub>
+Message-ID: <20170301175538.GC4120@mail.ovh.net>
+References: <20170301142641.6596-1-l.stach@pengutronix.de>
+ <20170301142641.6596-2-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170227100356.GA3007@tharch.hub>
+In-Reply-To: <20170301142641.6596-2-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,45 +26,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Zyxel NAS540 bricked?
-To: AndrewCz <andrewcz@neomailbox.net>
+Subject: Re: [PATCH 2/3] ARM: correctly identify ARMv6 K/Z
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 05:03 Mon 27 Feb     , AndrewCz wrote:
-> Hello all, hope you are well.
-> 
-> Recently, I followed a guide[1] to reflash my Zyxel NAS540[2] in order
-> to put Debian on it. I'm pretty sure I bricked it and am just looking
-> for confirmation.
-> 
-> I seem to be running into a bootloop where it will restart every two
-> minutes or so. At least that is what seems to be indicated based on the
-> frequency of the front panel lights lighting up. I reflashed the 'env'
-> and 'kernel2' sections of the NOR flash, but neither went the right way.
-> I can dive into the specifics if necessary. However, my concern is that
-> I was unable to receive any output from the serial connection.
-> 
-> Given that the barebox 'env' may be corrupt as well as the kernel, is it
-> correct to expect that there would be no serial output? Thanks for your
-> consideration in this matter.
+On 15:26 Wed 01 Mar     , Lucas Stach wrote:
+> The ARMv6 K/Z derivatives have a v7 compatible MMU, but all other parts
+> (including the cache handling) is still at v6. As we don't make use of
+> the more advanced features of the v7 MMU in Barebox, it's okay to just
+> override this to properly identify the CPU as ARMv6.
+evenif we do not use it now I do not liek the idea to report it as ARMv6
 
-And evenif we would like to help you zyxel did not provide to source code of
-theur barebox they modified. Just the source code of the 2011.06 version.
-
-So you will have to request them and if they refuse we could then force them
-to release it as Copyright holder.
+It will be better to report it correctly
 
 Best Regards,
 J.
 > 
-> --Andrew Cz
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  arch/arm/cpu/cpuinfo.c             | 8 ++++++++
+>  arch/arm/include/asm/system_info.h | 8 ++++++++
+>  2 files changed, 16 insertions(+)
 > 
-> [1] https://l.unchti.me/2016/02/12/debian-nas540.html
-> [2] http://zyxel.nas-central.org/wiki/Category:NAS540
-> 
+> diff --git a/arch/arm/cpu/cpuinfo.c b/arch/arm/cpu/cpuinfo.c
+> index 86e19d9780d5..175475b038dc 100644
+> --- a/arch/arm/cpu/cpuinfo.c
+> +++ b/arch/arm/cpu/cpuinfo.c
+> @@ -165,6 +165,14 @@ static int do_cpuinfo(int argc, char *argv[])
+>  	} else
+>  		cpu_arch = CPU_ARCH_UNKNOWN;
+>  
+> +	/*
+> +	 * Special case for ARMv6 (K/Z) (has v7 compatible MMU, but is v6
+> +	 * otherwise). The below check just matches all ARMv6, as done in the
+> +	 * Linux kernel.
+> +	 */
+> +	if ((mainid & 0x7f000) == 0x7b000)
+> +		cpu_arch = CPU_ARCH_ARMv6;
+> +
+>  	switch (cpu_arch) {
+>  	case CPU_ARCH_ARMv3:
+>  		architecture = "v3";
+> diff --git a/arch/arm/include/asm/system_info.h b/arch/arm/include/asm/system_info.h
+> index 25fffd268177..a27b79e6dd08 100644
+> --- a/arch/arm/include/asm/system_info.h
+> +++ b/arch/arm/include/asm/system_info.h
+> @@ -188,6 +188,14 @@ static inline int arm_early_get_cpu_architecture(void)
+>  		cpu_arch = CPU_ARCH_UNKNOWN;
+>  #endif
+>  
+> +	/*
+> +	 * Special case for ARMv6 (K/Z) (has v7 compatible MMU, but is v6
+> +	 * otherwise). The below check just matches all ARMv6, as done in the
+> +	 * Linux kernel.
+> +	 */
+> +	if ((read_cpuid_id() & 0x7f000) == 0x7b000)
+> +		cpu_arch = CPU_ARCH_ARMv6;
+> +
+>  	return cpu_arch;
+>  }
+>  
 > -- 
-> Only an idiot fights a war on two fronts. Only the heir to the throne
-> of the kingdom of idiots would fight a war on twelve fronts.
+> 2.11.0
+> 
 > 
 > _______________________________________________
 > barebox mailing list
