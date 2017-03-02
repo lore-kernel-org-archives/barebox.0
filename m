@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo6.mail-out.ovh.net ([178.32.125.228])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cj8Nv-0006Et-DR
- for barebox@lists.infradead.org; Wed, 01 Mar 2017 17:49:57 +0000
-Received: from player787.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo6.mail-out.ovh.net (Postfix) with ESMTP id C8366B3C0B
- for <barebox@lists.infradead.org>; Wed,  1 Mar 2017 18:49:31 +0100 (CET)
-Date: Wed, 1 Mar 2017 18:55:38 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20170301175538.GC4120@mail.ovh.net>
-References: <20170301142641.6596-1-l.stach@pengutronix.de>
- <20170301142641.6596-2-l.stach@pengutronix.de>
+ id 1cjLHu-0003OR-VW
+ for barebox@lists.infradead.org; Thu, 02 Mar 2017 07:36:37 +0000
+Date: Thu, 2 Mar 2017 08:36:12 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170302073612.n6oiwx2hxkjudmjr@pengutronix.de>
+References: <20170227101416.GB12475@mail.ovh.net>
+ <1488190770-4034-1-git-send-email-plagnioj@jcrosoft.com>
+ <1488190770-4034-5-git-send-email-plagnioj@jcrosoft.com>
+ <20170228070901.gbkwxlh772plqi4e@pengutronix.de>
+ <20170301155205.GA4120@mail.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170301142641.6596-2-l.stach@pengutronix.de>
+In-Reply-To: <20170301155205.GA4120@mail.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,74 +26,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] ARM: correctly identify ARMv6 K/Z
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH 5/8] clocksource: allow to have multiple device from
+ clock source
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 15:26 Wed 01 Mar     , Lucas Stach wrote:
-> The ARMv6 K/Z derivatives have a v7 compatible MMU, but all other parts
-> (including the cache handling) is still at v6. As we don't make use of
-> the more advanced features of the v7 MMU in Barebox, it's okay to just
-> override this to properly identify the CPU as ARMv6.
-evenif we do not use it now I do not liek the idea to report it as ARMv6
+On Wed, Mar 01, 2017 at 04:52:05PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 08:09 Tue 28 Feb     , Sascha Hauer wrote:
+> > On Mon, Feb 27, 2017 at 11:19:27AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > use the one with the most priority.
+> > > 
+> > > We can not select the clocksource at user level.
+> > > 
+> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > ---
+> > >  common/clock.c  | 11 +++++++++++
+> > >  include/clock.h |  3 ++-
+> > >  2 files changed, 13 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/common/clock.c b/common/clock.c
+> > > index 2c5dd91cc..d99d06853 100644
+> > > --- a/common/clock.c
+> > > +++ b/common/clock.c
+> > > @@ -213,6 +213,17 @@ EXPORT_SYMBOL(mdelay_non_interruptible);
+> > >  
+> > >  int init_clock(struct clocksource *cs)
+> > >  {
+> > > +	if (current_clock && cs->priority < current_clock->priority)
+> > > +		return -EBUSY;
+> > 
+> > You should return successfully here. Otherwise driver probe functions
+> > return -EBUSY for something which is not the drivers fault. In fact,
+> > it's not an error, it's just that we currently don't have any use for an
+> > additional clock.
+> my issue is that we will report in barebox that the device is in use but in
+> fact is not as we exit the init_clock without doing event the init.
 
-It will be better to report it correctly
+What's the matter? We call init_clock() on a clocksource and barebox
+could decide to use it. It just happens that we only use the clocksource
+with the highest priority, but this shouldn't interest the driver.
 
-Best Regards,
-J.
+BTW the same as you describe also happens with a low priority
+clocksource when it's registered before a high priority clocksource: It
+ends up being unused, though registered.
+
 > 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  arch/arm/cpu/cpuinfo.c             | 8 ++++++++
->  arch/arm/include/asm/system_info.h | 8 ++++++++
->  2 files changed, 16 insertions(+)
-> 
-> diff --git a/arch/arm/cpu/cpuinfo.c b/arch/arm/cpu/cpuinfo.c
-> index 86e19d9780d5..175475b038dc 100644
-> --- a/arch/arm/cpu/cpuinfo.c
-> +++ b/arch/arm/cpu/cpuinfo.c
-> @@ -165,6 +165,14 @@ static int do_cpuinfo(int argc, char *argv[])
->  	} else
->  		cpu_arch = CPU_ARCH_UNKNOWN;
->  
-> +	/*
-> +	 * Special case for ARMv6 (K/Z) (has v7 compatible MMU, but is v6
-> +	 * otherwise). The below check just matches all ARMv6, as done in the
-> +	 * Linux kernel.
-> +	 */
-> +	if ((mainid & 0x7f000) == 0x7b000)
-> +		cpu_arch = CPU_ARCH_ARMv6;
-> +
->  	switch (cpu_arch) {
->  	case CPU_ARCH_ARMv3:
->  		architecture = "v3";
-> diff --git a/arch/arm/include/asm/system_info.h b/arch/arm/include/asm/system_info.h
-> index 25fffd268177..a27b79e6dd08 100644
-> --- a/arch/arm/include/asm/system_info.h
-> +++ b/arch/arm/include/asm/system_info.h
-> @@ -188,6 +188,14 @@ static inline int arm_early_get_cpu_architecture(void)
->  		cpu_arch = CPU_ARCH_UNKNOWN;
->  #endif
->  
-> +	/*
-> +	 * Special case for ARMv6 (K/Z) (has v7 compatible MMU, but is v6
-> +	 * otherwise). The below check just matches all ARMv6, as done in the
-> +	 * Linux kernel.
-> +	 */
-> +	if ((read_cpuid_id() & 0x7f000) == 0x7b000)
-> +		cpu_arch = CPU_ARCH_ARMv6;
-> +
->  	return cpu_arch;
->  }
->  
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> That's why I choosed to return -EBUSY instead of 0
+
+As a clocksource driver I can only loose in this situation. I haven't
+done anything wrong and I can only forward the error, in which case we
+see it in the console or I can ignore it in which case I suppress
+potential real errors.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
