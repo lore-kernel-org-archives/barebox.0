@@ -1,12 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cjTB1-0007iw-RQ
- for barebox@lists.infradead.org; Thu, 02 Mar 2017 16:02:01 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu,  2 Mar 2017 17:01:36 +0100
-Message-Id: <20170302160136.20616-1-u.kleine-koenig@pengutronix.de>
+ id 1cjLKr-0003z4-Dy
+ for barebox@lists.infradead.org; Thu, 02 Mar 2017 07:39:39 +0000
+Date: Thu, 2 Mar 2017 08:39:15 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170302073915.5fn563kbfey5w6kc@pengutronix.de>
+References: <20170223212841.12846-1-u.kleine-koenig@pengutronix.de>
+ <20170224074513.pxsqbvjd4uyuqndj@pengutronix.de>
+ <20170225201434.eikfubeizke6tjho@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170225201434.eikfubeizke6tjho@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,26 +20,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] tftp: trivial code simplification
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] lseek: ensure errno is set on failure and return -1
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBmcy90ZnRwLmMgfCAxMCArKysrLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwg
-NCBpbnNlcnRpb25zKCspLCA2IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2ZzL3RmdHAuYyBi
-L2ZzL3RmdHAuYwppbmRleCAyNzJhNzEwNmViNTEuLmJjMzU4MDI4OTI4NiAxMDA2NDQKLS0tIGEv
-ZnMvdGZ0cC5jCisrKyBiL2ZzL3RmdHAuYwpAQCAtNTY4LDEzICs1NjgsMTEgQEAgc3RhdGljIGlu
-dCB0ZnRwX3JlYWQoc3RydWN0IGRldmljZV9kICpkZXYsIEZJTEUgKmYsIHZvaWQgKmJ1Ziwgc2l6
-ZV90IGluc2l6ZSkKIAogCXdoaWxlIChpbnNpemUpIHsKIAkJbm93ID0ga2ZpZm9fZ2V0KHByaXYt
-PmZpZm8sIGJ1ZiwgaW5zaXplKTsKKwkJb3V0c2l6ZSArPSBub3c7CisJCWJ1ZiArPSBub3c7CisJ
-CWluc2l6ZSAtPSBub3c7CiAJCWlmIChwcml2LT5zdGF0ZSA9PSBTVEFURV9ET05FKQotCQkJcmV0
-dXJuIG91dHNpemUgKyBub3c7Ci0JCWlmIChub3cpIHsKLQkJCW91dHNpemUgKz0gbm93OwotCQkJ
-YnVmICs9IG5vdzsKLQkJCWluc2l6ZSAtPSBub3c7Ci0JCX0KKwkJCXJldHVybiBvdXRzaXplOwog
-CiAJCWlmIChURlRQX0ZJRk9fU0laRSAtIGtmaWZvX2xlbihwcml2LT5maWZvKSA+PSBwcml2LT5i
-bG9ja3NpemUpCiAJCQl0ZnRwX3NlbmQocHJpdik7Ci0tIAoyLjExLjAKCgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
-YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Sat, Feb 25, 2017 at 09:14:34PM +0100, Uwe Kleine-K=F6nig wrote:
+> Hello Sascha,
+> =
+
+> On Fri, Feb 24, 2017 at 08:45:13AM +0100, Sascha Hauer wrote:
+> > On Thu, Feb 23, 2017 at 10:28:41PM +0100, Uwe Kleine-K=F6nig wrote:
+> > > All error paths before calling the driver's lseek callback return -1 =
+and
+> > > set errno. Do the same if the callback returns an error.
+> > > =
+
+> > > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > > ---
+> > >  fs/fs.c | 8 +++++++-
+> > >  1 file changed, 7 insertions(+), 1 deletion(-)
+> > > =
+
+> > > diff --git a/fs/fs.c b/fs/fs.c
+> > > index 2b4659cfbb76..e7b696591433 100644
+> > > --- a/fs/fs.c
+> > > +++ b/fs/fs.c
+> > > @@ -926,7 +926,13 @@ loff_t lseek(int fildes, loff_t offset, int when=
+ce)
+> > >  		goto out;
+> > >  	}
+> > >  =
+
+> > > -	return fsdrv->lseek(&f->fsdev->dev, f, pos);
+> > > +	pos =3D fsdrv->lseek(&f->fsdev->dev, f, pos);
+> > > +	if (pos < 0) {
+> > > +		errno =3D -pos;
+> > > +		return -1;
+> > > +	}
+> > =
+
+> > Before calling into the drivers lseek checks if the position is within
+> > the bounds of the file. So when fsdrv->lseek() returns successfully then
+> > the position must be the same that was passed in. I think we can just
+> > let fsdrv->lseek() return an error code rather than the file position.
+> =
+
+> This is a separate and orthogonal change however that doesn't make my
+> patch wrong.
+
+Right. Applied.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
