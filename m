@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from protonic.xs4all.nl ([83.163.252.89])
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1cjnGM-0007rQ-VR
- for barebox@lists.infradead.org; Fri, 03 Mar 2017 13:28:52 +0000
-From: Robin van der Gracht <robin@protonic.nl>
-Date: Fri,  3 Mar 2017 14:28:27 +0100
-Message-Id: <20170303132827.2372-1-robin@protonic.nl>
+Received: from mail-ot0-x230.google.com ([2607:f8b0:4003:c0f::230])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cjnOX-0003RQ-LL
+ for barebox@lists.infradead.org; Fri, 03 Mar 2017 13:37:21 +0000
+Received: by mail-ot0-x230.google.com with SMTP id 19so2762351oti.0
+ for <barebox@lists.infradead.org>; Fri, 03 Mar 2017 05:36:57 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <20170303132827.2372-1-robin@protonic.nl>
+References: <20170303132827.2372-1-robin@protonic.nl>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Fri, 3 Mar 2017 10:36:56 -0300
+Message-ID: <CAOMZO5D+geun5=9ep8gtbSpO0yDviKvPQi_TVovXV3qphcXwKQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,46 +19,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clk: imx: clk-imx6ul: The i.mx6ul has no aips_tx3 clock
-To: Sascha Hauer <kernel@pengutronix.de>
-Cc: barebox@lists.infradead.org, Robin van der Gracht <robin@protonic.nl>
+Subject: Re: [PATCH] clk: imx: clk-imx6ul: The i.mx6ul has no aips_tx3 clock
+To: Robin van der Gracht <robin@protonic.nl>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Sascha Hauer <kernel@pengutronix.de>
 
-The clock was mapped on CG15 (gpio2_clocks) in the CCRG0 register.
+In the Subject I guess you meant "aips_tz3"
 
-Signed-off-by: Robin van der Gracht <robin@protonic.nl>
----
- drivers/clk/imx/clk-imx6ul.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+On Fri, Mar 3, 2017 at 10:28 AM, Robin van der Gracht <robin@protonic.nl> wrote:
+> The clock was mapped on CG15 (gpio2_clocks) in the CCRG0 register.
+>
+> Signed-off-by: Robin van der Gracht <robin@protonic.nl>
+> ---
 
-diff --git a/drivers/clk/imx/clk-imx6ul.c b/drivers/clk/imx/clk-imx6ul.c
-index f28660d..5879661 100644
---- a/drivers/clk/imx/clk-imx6ul.c
-+++ b/drivers/clk/imx/clk-imx6ul.c
-@@ -71,7 +71,7 @@ static struct clk *clks[IMX6UL_CLK_END];
- static struct clk_onecell_data clk_data;
- 
- static int const clks_init_on[] __initconst = {
--	IMX6UL_CLK_AIPSTZ1, IMX6UL_CLK_AIPSTZ2, IMX6UL_CLK_AIPSTZ3,
-+	IMX6UL_CLK_AIPSTZ1, IMX6UL_CLK_AIPSTZ2,
- 	IMX6UL_CLK_AXI, IMX6UL_CLK_ARM, IMX6UL_CLK_ROM,
- 	IMX6UL_CLK_MMDC_P0_FAST, IMX6UL_CLK_MMDC_P0_IPG,
- };
-@@ -275,7 +275,6 @@ static int imx6_ccm_probe(struct device_d *dev)
- 	clks[IMX6UL_CLK_GPT2_SERIAL]	= imx_clk_gate2("gpt2_serial",	"perclk",	base + 0x68,	26);
- 	clks[IMX6UL_CLK_UART2_IPG]	= imx_clk_gate2("uart2_ipg",	"ipg",		base + 0x68,	28);
- 	clks[IMX6UL_CLK_UART2_SERIAL]	= imx_clk_gate2("uart2_serial",	"uart_podf",	base + 0x68,	28);
--	clks[IMX6UL_CLK_AIPSTZ3]	= imx_clk_gate2("aips_tz3",	"ahb",		base + 0x68,	30);
- 
- 	/* CCGR1 */
- 	clks[IMX6UL_CLK_ECSPI1]		= imx_clk_gate2("ecspi1",	"ecspi_podf",	base + 0x6c,	0);
--- 
-2.9.3
+You should have marked it as v2.
 
+Good catch, with the Subject fixed you can add:
+Reviewed-by: Fabio Estevam <fabio.estevam@nxp.com>
 
 _______________________________________________
 barebox mailing list
