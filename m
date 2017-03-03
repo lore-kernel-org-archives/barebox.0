@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo1.mail-out.ovh.net ([178.32.228.1])
+Received: from 16.mo1.mail-out.ovh.net ([178.33.104.224])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cjmIV-0006oD-KY
- for barebox@lists.infradead.org; Fri, 03 Mar 2017 12:27:01 +0000
+ id 1cjmJs-00074b-3s
+ for barebox@lists.infradead.org; Fri, 03 Mar 2017 12:28:25 +0000
 Received: from player691.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with ESMTP id 9BD265B8F4
- for <barebox@lists.infradead.org>; Fri,  3 Mar 2017 13:26:15 +0100 (CET)
-Received: from localhost (unknown [91.134.156.222])
- (Authenticated sender: plagnioj@jcrosoft.com)
- by player691.ha.ovh.net (Postfix) with ESMTPA id 2C85B2600A8
- for <barebox@lists.infradead.org>; Fri,  3 Mar 2017 13:26:15 +0100 (CET)
-Date: Fri, 3 Mar 2017 13:32:19 +0100
+ by mo1.mail-out.ovh.net (Postfix) with ESMTP id 3C5895BD03
+ for <barebox@lists.infradead.org>; Fri,  3 Mar 2017 13:28:00 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20170303123219.GD4120@mail.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Fri,  3 Mar 2017 13:33:57 +0100
+Message-Id: <1488544445-20105-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20170303123219.GD4120@mail.ovh.net>
+References: <20170303123219.GD4120@mail.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,80 +19,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/9] add generic EFI timer
+Subject: [PATCH 1/9] efi: add prototype and definition for creating and
+ closing event
 To: barebox@lists.infradead.org
 
-Hi,
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ include/efi.h | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-	On EFI you have 3 ways to get to do "timer"
+diff --git a/include/efi.h b/include/efi.h
+index 5691f4e8f..f65980687 100644
+--- a/include/efi.h
++++ b/include/efi.h
+@@ -185,12 +185,25 @@ typedef struct {
+ 				       unsigned long *, u32 *);
+ 	efi_status_t (EFIAPI *allocate_pool)(int, unsigned long, void **);
+ 	efi_status_t (EFIAPI *free_pool)(void *);
+-	void *create_event;
++#define EFI_EVT_TIMER				0x80000000
++#define EFI_EVT_RUNTIME				0x40000000
++#define EFI_EVT_NOTIFY_WAIT			0x00000100
++#define EFI_EVT_NOTIFY_SIGNAL			0x00000200
++#define EFI_EVT_SIGNAL_EXIT_BOOT_SERVICES	0x00000201
++#define EFI_EVT_SIGNAL_VIRTUAL_ADDRESS_CHANGE	0x60000202
++
++#define EFI_TPL_APPLICATION	4
++#define EFI_TPL_CALLBACK	8
++#define EFI_TPL_NOTIFY		16
++#define EFI_TPL_HIGH_LEVEL	31
++	efi_status_t(EFIAPI *create_event)(u32 type , unsigned long tpl,
++			void (*fn) (void *event, void *ctx),
++			void *ctx, void **event);
+ 	void *set_timer;
+ 	efi_status_t(EFIAPI *wait_for_event)(unsigned long number_of_events, void *event,
+ 			unsigned long *index);
+ 	void *signal_event;
+-	void *close_event;
++	efi_status_t(EFIAPI *close_event)(void *event);
+ 	void *check_event;
+ 	void *install_protocol_interface;
+ 	void *reinstall_protocol_interface;
+-- 
+2.11.0
 
-	1: Simply by waiting X us and calling Boot Service udelay
-
-	2: By using event
-
-	3: By use the Timestamp GUID
-
-	for barebox this would be the best but even on EDK II this is never
-	ever compiled on any target.
-
-	So we have 2 choice, use a Hardware specific timer or implement the
-	timer using timestamp
-
-	This pull request allow you to enable 2 timers and use the best one at
-	runtime.
-
-	EFI x86 (HW specific)
-	EFI Generic (based on Event)
-
-please pull
-
-The following changes since commit d92ed454107b4d6f0d30fa0271da191ae5911d18:
-
-  Merge branch 'for-next/video' into next (2017-02-27 08:51:08 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/efi-cs
-
-for you to fetch changes up to f14af7444ad9d8ce674382f222119f5fcd3f2576:
-
-  efi: add veriable to report secure boot support and status (2017-02-28 23:05:31 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (9):
-      efi: add prototype and definition for creating and closing event
-      efi: add prototype and definition for setting timer
-      efi: move LoaderTimeInitUSec and LoaderDevicePartUUID to postcore initcall
-      efi: move x86 clocksource init at core initcall level
-      clocksource: allow to have multiple device from clock source
-      clocksource: move dummy clock source to init_clock
-      efi: move x86 clocksource to device/driver
-      efi: clocksoure: add EFI event timer
-      efi: add veriable to report secure boot support and status
-
- arch/x86/Kconfig                |   2 +-
- arch/x86/mach-efi/Makefile      |   1 +
- arch/x86/mach-efi/clocksource.c |  11 +++++++++++
- common/clock.c                  |  44 +++++++++++++++++++++++++++++++++++---------
- common/efi/efi.c                |  24 +++++++++++++++++++-----
- drivers/clocksource/Kconfig     |   6 +++++-
- drivers/clocksource/Makefile    |   1 +
- drivers/clocksource/efi.c       | 110 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------------------
- drivers/clocksource/efi_x86.c   |  79 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/efi/efi-device.c        |  33 +++++++++++++++++++++++++++++++++
- include/clock.h                 |   3 ++-
- include/efi.h                   |  25 ++++++++++++++++++++++---
- include/efi/efi.h               |   2 --
- 13 files changed, 290 insertions(+), 51 deletions(-)
- create mode 100644 arch/x86/mach-efi/clocksource.c
- create mode 100644 drivers/clocksource/efi_x86.c
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
