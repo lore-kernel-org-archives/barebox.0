@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo1.mail-out.ovh.net ([178.32.228.1])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cjmJy-00077G-HL
- for barebox@lists.infradead.org; Fri, 03 Mar 2017 12:28:37 +0000
-Received: from player691.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with ESMTP id 3AA615BBD3
- for <barebox@lists.infradead.org>; Fri,  3 Mar 2017 13:28:09 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  3 Mar 2017 13:34:05 +0100
-Message-Id: <1488544445-20105-9-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1488544445-20105-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20170303123219.GD4120@mail.ovh.net>
- <1488544445-20105-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from protonic.xs4all.nl ([83.163.252.89])
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1cjnGM-0007rQ-VR
+ for barebox@lists.infradead.org; Fri, 03 Mar 2017 13:28:52 +0000
+From: Robin van der Gracht <robin@protonic.nl>
+Date: Fri,  3 Mar 2017 14:28:27 +0100
+Message-Id: <20170303132827.2372-1-robin@protonic.nl>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,72 +19,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] efi: add veriable to report secure boot support and status
-To: barebox@lists.infradead.org
+Subject: [PATCH] clk: imx: clk-imx6ul: The i.mx6ul has no aips_tx3 clock
+To: Sascha Hauer <kernel@pengutronix.de>
+Cc: barebox@lists.infradead.org, Robin van der Gracht <robin@protonic.nl>
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+The clock was mapped on CG15 (gpio2_clocks) in the CCRG0 register.
+
+Signed-off-by: Robin van der Gracht <robin@protonic.nl>
 ---
- drivers/efi/efi-device.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ drivers/clk/imx/clk-imx6ul.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
-index db8b25147..6ed7f12b3 100644
---- a/drivers/efi/efi-device.c
-+++ b/drivers/efi/efi-device.c
-@@ -354,11 +354,41 @@ static void efi_businfo(struct device_d *dev)
- 	}
- }
+diff --git a/drivers/clk/imx/clk-imx6ul.c b/drivers/clk/imx/clk-imx6ul.c
+index f28660d..5879661 100644
+--- a/drivers/clk/imx/clk-imx6ul.c
++++ b/drivers/clk/imx/clk-imx6ul.c
+@@ -71,7 +71,7 @@ static struct clk *clks[IMX6UL_CLK_END];
+ static struct clk_onecell_data clk_data;
  
-+static int efi_is_secure_boot(void)
-+{
-+	uint8_t *val;
-+	int ret = 0;
-+
-+	val = efi_get_variable("SecureBoot", &efi_global_variable_guid, NULL);
-+	if (!IS_ERR(val)) {
-+		ret = *val;
-+		free(val);
-+	}
-+
-+	return ret != 1;
-+}
-+
-+static int efi_is_setup_mode(void)
-+{
-+	uint8_t *val;
-+	int ret = 0;
-+
-+	val = efi_get_variable("SetupMode", &efi_global_variable_guid, NULL);
-+	if (!IS_ERR(val)) {
-+		ret = *val;
-+		free(val);
-+	}
-+
-+	return ret != 1;
-+}
-+
- static int efi_init_devices(void)
- {
- 	char *fw_vendor = NULL;
- 	u16 sys_major = efi_sys_table->hdr.revision >> 16;
- 	u16 sys_minor = efi_sys_table->hdr.revision & 0xffff;
-+	int secure_boot = efi_is_secure_boot();
-+	int setup_mode = efi_is_setup_mode();
+ static int const clks_init_on[] __initconst = {
+-	IMX6UL_CLK_AIPSTZ1, IMX6UL_CLK_AIPSTZ2, IMX6UL_CLK_AIPSTZ3,
++	IMX6UL_CLK_AIPSTZ1, IMX6UL_CLK_AIPSTZ2,
+ 	IMX6UL_CLK_AXI, IMX6UL_CLK_ARM, IMX6UL_CLK_ROM,
+ 	IMX6UL_CLK_MMDC_P0_FAST, IMX6UL_CLK_MMDC_P0_IPG,
+ };
+@@ -275,7 +275,6 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 	clks[IMX6UL_CLK_GPT2_SERIAL]	= imx_clk_gate2("gpt2_serial",	"perclk",	base + 0x68,	26);
+ 	clks[IMX6UL_CLK_UART2_IPG]	= imx_clk_gate2("uart2_ipg",	"ipg",		base + 0x68,	28);
+ 	clks[IMX6UL_CLK_UART2_SERIAL]	= imx_clk_gate2("uart2_serial",	"uart_podf",	base + 0x68,	28);
+-	clks[IMX6UL_CLK_AIPSTZ3]	= imx_clk_gate2("aips_tz3",	"ahb",		base + 0x68,	30);
  
- 	fw_vendor = strdup_wchar_to_char((const wchar_t *)efi_sys_table->fw_vendor);
- 
-@@ -374,6 +404,9 @@ static int efi_init_devices(void)
- 	dev_add_param_int_ro(efi_bus.dev, "major", sys_major, "%u");
- 	dev_add_param_int_ro(efi_bus.dev, "minor", sys_minor, "%u");
- 	dev_add_param_int_ro(efi_bus.dev, "fw_revision", efi_sys_table->fw_revision, "%u");
-+	dev_add_param_int_ro(efi_bus.dev, "secure_boot", secure_boot, "%d");
-+	dev_add_param_int_ro(efi_bus.dev, "secure_mode",
-+			     secure_boot & setup_mode, "%u");
- 
- 	efi_bus.dev->info = efi_businfo;
- 
+ 	/* CCGR1 */
+ 	clks[IMX6UL_CLK_ECSPI1]		= imx_clk_gate2("ecspi1",	"ecspi_podf",	base + 0x6c,	0);
 -- 
-2.11.0
+2.9.3
 
 
 _______________________________________________
