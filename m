@@ -1,11 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from protonic.xs4all.nl ([83.163.252.89])
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1cjnwe-0003J3-GV
- for barebox@lists.infradead.org; Fri, 03 Mar 2017 14:12:34 +0000
-From: Robin van der Gracht <robin@protonic.nl>
-Date: Fri,  3 Mar 2017 15:12:04 +0100
-Message-Id: <20170303141204.17256-1-robin@protonic.nl>
+Received: from 6.mo68.mail-out.ovh.net ([46.105.63.100])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cjo4x-0001Xg-FI
+ for barebox@lists.infradead.org; Fri, 03 Mar 2017 14:21:09 +0000
+Received: from player698.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo68.mail-out.ovh.net (Postfix) with ESMTP id CC16542ED7
+ for <barebox@lists.infradead.org>; Fri,  3 Mar 2017 15:20:43 +0100 (CET)
+Date: Fri, 3 Mar 2017 15:26:45 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20170303142645.GE4120@mail.ovh.net>
+References: <20170301142641.6596-1-l.stach@pengutronix.de>
+ <20170301142641.6596-2-l.stach@pengutronix.de>
+ <20170301175538.GC4120@mail.ovh.net>
+ <1488451368.2526.1.camel@pengutronix.de>
+ <20170303060455.2s5gge5wpf3cjjpe@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170303060455.2s5gge5wpf3cjjpe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,47 +25,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] clk: imx: clk-imx6ul: The i.mx6ul has no aips_tz3 clock
-To: Sascha Hauer <kernel@pengutronix.de>
-Cc: barebox@lists.infradead.org, Robin van der Gracht <robin@protonic.nl>
+Subject: Re: [PATCH 2/3] ARM: correctly identify ARMv6 K/Z
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The clock was mapped on CG15 (gpio2_clocks) in the CCRG0 register.
+On 07:04 Fri 03 Mar     , Sascha Hauer wrote:
+> On Thu, Mar 02, 2017 at 11:42:48AM +0100, Lucas Stach wrote:
+> > Am Mittwoch, den 01.03.2017, 18:55 +0100 schrieb Jean-Christophe
+> > PLAGNIOL-VILLARD:
+> > > On 15:26 Wed 01 Mar=A0=A0=A0=A0=A0, Lucas Stach wrote:
+> > > > The ARMv6 K/Z derivatives have a v7 compatible MMU, but all other
+> > > > parts
+> > > > (including the cache handling) is still at v6. As we don't make use
+> > > > of
+> > > > the more advanced features of the v7 MMU in Barebox, it's okay to
+> > > > just
+> > > > override this to properly identify the CPU as ARMv6.
+> > > =
 
-Reviewed-by: Fabio Estevam <fabio.estevam@nxp.com>
-Signed-off-by: Robin van der Gracht <robin@protonic.nl>
----
- drivers/clk/imx/clk-imx6ul.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+> > > evenif we do not use it now I do not liek the idea to report it as
+> > > ARMv6
+> > > =
 
-diff --git a/drivers/clk/imx/clk-imx6ul.c b/drivers/clk/imx/clk-imx6ul.c
-index f28660d..5879661 100644
---- a/drivers/clk/imx/clk-imx6ul.c
-+++ b/drivers/clk/imx/clk-imx6ul.c
-@@ -71,7 +71,7 @@ static struct clk *clks[IMX6UL_CLK_END];
- static struct clk_onecell_data clk_data;
- 
- static int const clks_init_on[] __initconst = {
--	IMX6UL_CLK_AIPSTZ1, IMX6UL_CLK_AIPSTZ2, IMX6UL_CLK_AIPSTZ3,
-+	IMX6UL_CLK_AIPSTZ1, IMX6UL_CLK_AIPSTZ2,
- 	IMX6UL_CLK_AXI, IMX6UL_CLK_ARM, IMX6UL_CLK_ROM,
- 	IMX6UL_CLK_MMDC_P0_FAST, IMX6UL_CLK_MMDC_P0_IPG,
- };
-@@ -275,7 +275,6 @@ static int imx6_ccm_probe(struct device_d *dev)
- 	clks[IMX6UL_CLK_GPT2_SERIAL]	= imx_clk_gate2("gpt2_serial",	"perclk",	base + 0x68,	26);
- 	clks[IMX6UL_CLK_UART2_IPG]	= imx_clk_gate2("uart2_ipg",	"ipg",		base + 0x68,	28);
- 	clks[IMX6UL_CLK_UART2_SERIAL]	= imx_clk_gate2("uart2_serial",	"uart_podf",	base + 0x68,	28);
--	clks[IMX6UL_CLK_AIPSTZ3]	= imx_clk_gate2("aips_tz3",	"ahb",		base + 0x68,	30);
- 
- 	/* CCGR1 */
- 	clks[IMX6UL_CLK_ECSPI1]		= imx_clk_gate2("ecspi1",	"ecspi_podf",	base + 0x6c,	0);
--- 
-2.9.3
+> > > It will be better to report it correctly
+> > > =
 
+> > Weather you like it or not, ARM1176 is ARMv6 with a v7 MMU bolted on,
+> > so reporting it as ARMv6 is the correct thing to do.
+
+except when will want to use them we will have to fix the detection it's
+better to do it at assignation to check the arm1176 or v6
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
