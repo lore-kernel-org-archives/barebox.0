@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ot0-x230.google.com ([2607:f8b0:4003:c0f::230])
+Received: from mail-ot0-x232.google.com ([2607:f8b0:4003:c0f::232])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cjnOX-0003RQ-LL
- for barebox@lists.infradead.org; Fri, 03 Mar 2017 13:37:21 +0000
-Received: by mail-ot0-x230.google.com with SMTP id 19so2762351oti.0
- for <barebox@lists.infradead.org>; Fri, 03 Mar 2017 05:36:57 -0800 (PST)
+ id 1cjnQw-0004Il-Jp
+ for barebox@lists.infradead.org; Fri, 03 Mar 2017 13:39:48 +0000
+Received: by mail-ot0-x232.google.com with SMTP id 19so2804524oti.0
+ for <barebox@lists.infradead.org>; Fri, 03 Mar 2017 05:39:26 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20170303132827.2372-1-robin@protonic.nl>
+In-Reply-To: <CAOMZO5D+geun5=9ep8gtbSpO0yDviKvPQi_TVovXV3qphcXwKQ@mail.gmail.com>
 References: <20170303132827.2372-1-robin@protonic.nl>
+ <CAOMZO5D+geun5=9ep8gtbSpO0yDviKvPQi_TVovXV3qphcXwKQ@mail.gmail.com>
 From: Fabio Estevam <festevam@gmail.com>
-Date: Fri, 3 Mar 2017 10:36:56 -0300
-Message-ID: <CAOMZO5D+geun5=9ep8gtbSpO0yDviKvPQi_TVovXV3qphcXwKQ@mail.gmail.com>
+Date: Fri, 3 Mar 2017 10:39:25 -0300
+Message-ID: <CAOMZO5B9PGCfQZWODGCmMpZZ_Zmvx59LdML7CsX_pgxJTYkkpg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,18 +28,19 @@ Subject: Re: [PATCH] clk: imx: clk-imx6ul: The i.mx6ul has no aips_tx3 clock
 To: Robin van der Gracht <robin@protonic.nl>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Sascha Hauer <kernel@pengutronix.de>
 
-In the Subject I guess you meant "aips_tz3"
-
-On Fri, Mar 3, 2017 at 10:28 AM, Robin van der Gracht <robin@protonic.nl> wrote:
-> The clock was mapped on CG15 (gpio2_clocks) in the CCRG0 register.
+On Fri, Mar 3, 2017 at 10:36 AM, Fabio Estevam <festevam@gmail.com> wrote:
+> In the Subject I guess you meant "aips_tz3"
 >
-> Signed-off-by: Robin van der Gracht <robin@protonic.nl>
-> ---
+> On Fri, Mar 3, 2017 at 10:28 AM, Robin van der Gracht <robin@protonic.nl> wrote:
+>> The clock was mapped on CG15 (gpio2_clocks) in the CCRG0 register.
+>>
+>> Signed-off-by: Robin van der Gracht <robin@protonic.nl>
+>> ---
+>
+> You should have marked it as v2.
 
-You should have marked it as v2.
-
-Good catch, with the Subject fixed you can add:
-Reviewed-by: Fabio Estevam <fabio.estevam@nxp.com>
+Sorry, I just realized that you sent two patches: one for Barebox and
+another one for the kernel, so it is not a v2 :-)
 
 _______________________________________________
 barebox mailing list
