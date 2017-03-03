@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from protonic.xs4all.nl ([83.163.252.89])
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1cjjor-0002Z0-M3
- for barebox@lists.infradead.org; Fri, 03 Mar 2017 09:48:15 +0000
-From: Robin van der Gracht <robin@protonic.nl>
-Date: Fri,  3 Mar 2017 10:47:49 +0100
-Message-Id: <20170303094749.29319-1-robin@protonic.nl>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cjkcD-0001It-AY
+ for barebox@lists.infradead.org; Fri, 03 Mar 2017 10:39:14 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Fri,  3 Mar 2017 11:38:41 +0100
+Message-Id: <20170303103841.11783-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,41 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clk: imx: clk-imx6ul: Use anatop_base pointer for consistency
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Robin van der Gracht <robin@protonic.nl>
+Subject: [PATCH] scripts: imx imx-usb-loader: warn if device was excluded by
+ path option
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-The anatop_base pointer was unused, but instead of removing it, assign
-and use it for readability like clk-imx6 and clk-imx6sx do.
+notify user about the reason why device was ignored by imx-usb-loader.
 
-Signed-off-by: Robin van der Gracht <robin@protonic.nl>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/clk/imx/clk-imx6ul.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ scripts/imx/imx-usb-loader.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-imx6ul.c b/drivers/clk/imx/clk-imx6ul.c
-index 0ca0652..f28660d 100644
---- a/drivers/clk/imx/clk-imx6ul.c
-+++ b/drivers/clk/imx/clk-imx6ul.c
-@@ -91,6 +91,7 @@ static int imx6_ccm_probe(struct device_d *dev)
- 	int i;
- 	struct device_node *ccm_node = dev->device_node;
+diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+index e8d746785..b2c9f8f5a 100644
+--- a/scripts/imx/imx-usb-loader.c
++++ b/scripts/imx/imx-usb-loader.c
+@@ -243,6 +243,8 @@ static int device_location_equal(libusb_device *device, const char *location)
+ 	/* walked the full path, all elements match */
+ 	if (path_step == path_len)
+ 		result = 1;
++	else
++		fprintf(stderr, " excluded by device path option\n");
  
-+	anatop_base = IOMEM(MX6_ANATOP_BASE_ADDR);
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores))
- 		return PTR_ERR(iores);
-@@ -100,8 +101,6 @@ static int imx6_ccm_probe(struct device_d *dev)
- 
- 	clks[IMX6UL_CLK_DUMMY] = clk_fixed("dummy", 0);
- 
--	base = IOMEM(MX6_ANATOP_BASE_ADDR);
--
- 	clks[IMX6UL_PLL1_BYPASS_SRC] = imx_clk_mux("pll1_bypass_src", base + 0x00, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
- 	clks[IMX6UL_PLL2_BYPASS_SRC] = imx_clk_mux("pll2_bypass_src", base + 0x30, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
- 	clks[IMX6UL_PLL3_BYPASS_SRC] = imx_clk_mux("pll3_bypass_src", base + 0x10, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
+ done:
+ 	free(loc);
 -- 
-2.9.3
+2.11.0
 
 
 _______________________________________________
