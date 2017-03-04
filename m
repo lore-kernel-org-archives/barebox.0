@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo173.mail-out.ovh.net ([178.33.251.49])
+Received: from 4.mo173.mail-out.ovh.net ([46.105.34.219])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ck3mP-0000GQ-C4
- for barebox@lists.infradead.org; Sat, 04 Mar 2017 07:07:03 +0000
+ id 1ck3nj-0000R2-Cj
+ for barebox@lists.infradead.org; Sat, 04 Mar 2017 07:08:25 +0000
 Received: from player791.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo173.mail-out.ovh.net (Postfix) with ESMTP id 2A8BC26185
- for <barebox@lists.infradead.org>; Sat,  4 Mar 2017 08:06:37 +0100 (CET)
-Received: from localhost (unknown [91.134.156.222])
- (Authenticated sender: plagnioj@jcrosoft.com)
- by player791.ha.ovh.net (Postfix) with ESMTPA id 144C4420071
- for <barebox@lists.infradead.org>; Sat,  4 Mar 2017 08:06:35 +0100 (CET)
-Date: Sat, 4 Mar 2017 08:12:41 +0100
+ by mo173.mail-out.ovh.net (Postfix) with ESMTP id 9C0392880A
+ for <barebox@lists.infradead.org>; Sat,  4 Mar 2017 08:08:00 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20170304071241.GG4120@mail.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Sat,  4 Mar 2017 08:14:07 +0100
+Message-Id: <1488611648-22773-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20170304071241.GG4120@mail.ovh.net>
+References: <20170304071241.GG4120@mail.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,48 +19,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 0/2] use gnuhash to speed up device/driver match
+Subject: [PATCH 1/2] driver: remove the const of struct platform_device_id
+ *id_table
 To: barebox@lists.infradead.org
 
-Hi,
+so we can generate the hash at register time
 
-	The following patch series use the gnu hash to speedup device/driver
-	matching.
+This will allow speed up the device/driver matching as strcmp is slow.
 
-	String compare is slow so we will calculate at runtime a hash that we
-	can compare quickly to speed up the match
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/base/bus.c | 4 ++--
+ include/driver.h   | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-	in a second step we could speed up this more by calculating the hash
-	at compile time
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index b889a4866..03feba502 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -55,7 +55,7 @@ int device_match(struct device_d *dev, struct driver_d *drv)
+ 		return of_match(dev, drv);
+ 
+ 	if (drv->id_table) {
+-		const struct platform_device_id *id = drv->id_table;
++		struct platform_device_id *id = drv->id_table;
+ 
+ 		while (id->name) {
+ 			if (!strcmp(id->name, dev->name)) {
+@@ -73,7 +73,7 @@ int device_match(struct device_d *dev, struct driver_d *drv)
+ 
+ int device_match_of_modalias(struct device_d *dev, struct driver_d *drv)
+ {
+-	const struct platform_device_id *id = drv->id_table;
++	struct platform_device_id *id = drv->id_table;
+ 	const char *of_modalias = NULL, *p;
+ 	int cplen;
+ 	const char *compat;
+diff --git a/include/driver.h b/include/driver.h
+index 6abaaad8b..db7f9c780 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -107,7 +107,7 @@ struct driver_d {
+ 
+ 	struct bus_type *bus;
+ 
+-	const struct platform_device_id *id_table;
++	struct platform_device_id *id_table;
+ 	const struct of_device_id *of_compatible;
+ };
+ 
+-- 
+2.11.0
 
-The following changes since commit d92ed454107b4d6f0d30fa0271da191ae5911d18:
-
-  Merge branch 'for-next/video' into next (2017-02-27 08:51:08 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/gnuhash
-
-for you to fetch changes up to 5ede85afc958bdf488a3c5e56061e7f27c26cbc6:
-
-  driver: generate hash at runtime to speed up device/driver matching (2017-03-01 03:49:34 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (2):
-      driver: remove the const of struct platform_device_id *id_table
-      driver: generate hash at runtime to speed up device/driver matching
-
- drivers/base/bus.c    | 16 ++++++++++------
- drivers/base/driver.c | 27 ++++++++++++++++++++++++++-
- include/driver.h      |  7 ++++++-
- 3 files changed, 42 insertions(+), 8 deletions(-)
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
