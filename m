@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cl1Ws-0007hY-5y
+ id 1cl1Wq-0007dm-AK
  for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:55:06 +0000
-Received: by mail-pg0-x242.google.com with SMTP id 25so20992547pgy.3
- for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:40 -0800 (PST)
+Received: by mail-pg0-x243.google.com with SMTP id 25so20992469pgy.3
+ for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:37 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  6 Mar 2017 14:53:43 -0800
-Message-Id: <20170306225356.31475-33-andrew.smirnov@gmail.com>
+Date: Mon,  6 Mar 2017 14:53:39 -0800
+Message-Id: <20170306225356.31475-29-andrew.smirnov@gmail.com>
 In-Reply-To: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,36 +23,133 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 32/45] usb: ohci-at91: Check result of clk_get()
+Subject: [PATCH 28/45] spi: atmel_spi: Use VERSION register instead of CPU type
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Use VERSION register instead of CPU type to determine IP block's version
+and capabilities. This what corresponding Linux kernel driver does.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/host/ohci-at91.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/spi/atmel_spi.c | 35 +++++++++++++++++++++++++++++------
+ drivers/spi/atmel_spi.h |  1 +
+ 2 files changed, 30 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/host/ohci-at91.c b/drivers/usb/host/ohci-at91.c
-index 0f5c8f1..c70d898 100644
---- a/drivers/usb/host/ohci-at91.c
-+++ b/drivers/usb/host/ohci-at91.c
-@@ -47,7 +47,16 @@ static int at91_ohci_probe(struct device_d *dev)
- 	struct ohci_regs __iomem *regs = (struct ohci_regs __iomem *)dev->resource[0].start;
+diff --git a/drivers/spi/atmel_spi.c b/drivers/spi/atmel_spi.c
+index b183344..55032be 100644
+--- a/drivers/spi/atmel_spi.c
++++ b/drivers/spi/atmel_spi.c
+@@ -41,11 +41,16 @@
  
- 	iclk = clk_get(NULL, "ohci_clk");
-+	if (IS_ERR(iclk)) {
-+		dev_err(dev, "Failed to get 'iclk'\n");
-+		return PTR_ERR(iclk);
-+	}
+ #include "atmel_spi.h"
+ 
++struct atmel_spi_caps {
++	bool	is_spi2;
++};
 +
- 	fclk = clk_get(NULL, "uhpck");
-+	if (IS_ERR(fclk)) {
-+		dev_err(dev, "Failed to get 'fclk'\n");
-+		return PTR_ERR(fclk);
-+	}
+ struct atmel_spi {
+ 	struct spi_master	master;
+ 	void __iomem		*regs;
+ 	struct clk		*clk;
+ 	int			*cs_pins;
++	struct atmel_spi_caps	caps;
+ };
  
- 	/*
- 	 * Start the USB clocks.
+ #define to_atmel_spi(p)		container_of(p, struct atmel_spi, master)
+@@ -63,9 +68,9 @@ struct atmel_spi {
+  * register, but I haven't checked that it exists on all chips, and
+  * this is cheaper anyway.
+  */
+-static inline bool atmel_spi_is_v2(void)
++static inline bool atmel_spi_is_v2(struct atmel_spi *as)
+ {
+-	return !cpu_is_at91rm9200();
++	return as->caps.is_spi2;
+ }
+ 
+ /*
+@@ -105,7 +110,7 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
+ 
+ 	csr = (u32)spi->controller_data;
+ 
+-	if (atmel_spi_is_v2()) {
++	if (atmel_spi_is_v2(as)) {
+ 		/*
+ 		 * Always use CSR0. This ensures that the clock
+ 		 * switches to the correct idle polarity before we
+@@ -164,8 +169,9 @@ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
+ 			npcs_pin, active ? " (low)" : "",
+ 			mr);
+ 
+-	if (atmel_spi_is_v2() || npcs_pin != AT91_PIN_PA3)
++	if (atmel_spi_is_v2(as) || npcs_pin != AT91_PIN_PA3) {
+ 		gpio_set_value(npcs_pin, !active);
++	}
+ }
+ 
+ static int atmel_spi_setup(struct spi_device *spi)
+@@ -200,7 +206,7 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 			spi->max_speed_hz);
+ 
+ 	bus_hz = clk_get_rate(as->clk);
+-	if (!atmel_spi_is_v2())
++	if (!atmel_spi_is_v2(as))
+ 		bus_hz /= 2;
+ 
+ 	if (spi->max_speed_hz) {
+@@ -249,7 +255,7 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 
+ 	cs_deactivate(as, spi);
+ 
+-	if (!atmel_spi_is_v2())
++	if (!atmel_spi_is_v2(as))
+ 		spi_writel(as, CSR0 + 4 * spi->chip_select, csr);
+ 
+ 	return 0;
+@@ -374,6 +380,21 @@ err:
+ 	return ret;
+ }
+ 
++static inline unsigned int atmel_get_version(struct atmel_spi *as)
++{
++	return spi_readl(as, VERSION) & 0x00000fff;
++}
++
++static void atmel_get_caps(struct atmel_spi *as)
++{
++	unsigned int version;
++
++	version = atmel_get_version(as);
++	dev_info(as->master.dev, "version: 0x%x\n", version);
++
++	as->caps.is_spi2 = version > 0x121;
++}
++
+ static int atmel_spi_probe(struct device_d *dev)
+ {
+ 	struct resource *iores;
+@@ -426,6 +447,8 @@ static int atmel_spi_probe(struct device_d *dev)
+ 		return PTR_ERR(iores);
+ 	as->regs = IOMEM(iores->start);
+ 
++	atmel_get_caps(as);
++
+ 	for (i = 0; i < master->num_chipselect; i++) {
+ 		ret = gpio_request(as->cs_pins[i], dev_name(dev));
+ 		if (ret)
+diff --git a/drivers/spi/atmel_spi.h b/drivers/spi/atmel_spi.h
+index 38ce119..3f4d7ba 100644
+--- a/drivers/spi/atmel_spi.h
++++ b/drivers/spi/atmel_spi.h
+@@ -23,6 +23,7 @@
+ #define SPI_CSR1				0x0034
+ #define SPI_CSR2				0x0038
+ #define SPI_CSR3				0x003c
++#define SPI_VERSION				0x00fc
+ #define SPI_RPR					0x0100
+ #define SPI_RCR					0x0104
+ #define SPI_TPR					0x0108
 -- 
 2.9.3
 
