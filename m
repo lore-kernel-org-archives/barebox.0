@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cl1Wk-0001LK-FB
- for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:54:51 +0000
-Received: by mail-pg0-x244.google.com with SMTP id 187so7289752pgb.2
- for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:30 -0800 (PST)
+ id 1cl1X4-0001MQ-6H
+ for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:55:10 +0000
+Received: by mail-pf0-x243.google.com with SMTP id j5so18950550pfb.3
+ for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:52 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  6 Mar 2017 14:53:30 -0800
-Message-Id: <20170306225356.31475-20-andrew.smirnov@gmail.com>
+Date: Mon,  6 Mar 2017 14:53:56 -0800
+Message-Id: <20170306225356.31475-46-andrew.smirnov@gmail.com>
 In-Reply-To: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,73 +23,111 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 19/45] at91sam9x5ek: Configure I2C via DT
+Subject: [PATCH 45/45] at91sam9x5ek: Configure NAND in DT
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/at91sam9x5ek/init.c | 21 ---------------------
- arch/arm/dts/at91sam9x5ek.dts       | 10 ++++++++++
- 2 files changed, 10 insertions(+), 21 deletions(-)
+ arch/arm/boards/at91sam9x5ek/init.c | 47 +++++++++++++------------------------
+ 1 file changed, 16 insertions(+), 31 deletions(-)
 
 diff --git a/arch/arm/boards/at91sam9x5ek/init.c b/arch/arm/boards/at91sam9x5ek/init.c
-index 85f20a9..fca5e7d 100644
+index 29da97d..646cff5 100644
 --- a/arch/arm/boards/at91sam9x5ek/init.c
 +++ b/arch/arm/boards/at91sam9x5ek/init.c
-@@ -187,26 +187,6 @@ static void ek_add_device_mci(void)
- 	at91_add_device_mci(0, &mci0_data);
- }
+@@ -45,22 +45,6 @@
  
--struct qt1070_platform_data qt1070_pdata = {
--	.irq_pin	= AT91_PIN_PA7,
+ #include "hw_version.h"
+ 
+-static struct atmel_nand_data nand_pdata = {
+-	.ale		= 21,
+-	.cle		= 22,
+-	.det_pin	= -EINVAL,
+-	.rdy_pin	= AT91_PIN_PD5,
+-	.enable_pin	= AT91_PIN_PD4,
+-	.has_pmecc	= 1,
+-	.ecc_mode	= NAND_ECC_HW,
+-	.pmecc_sector_size = 512,
+-	.pmecc_corr_cap = 2,
+-#if defined(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)
+-	.bus_width_16	= 1,
+-#endif
+-	.on_flash_bbt	= 1,
 -};
 -
--static struct i2c_board_info i2c_devices[] = {
--	{
--		.platform_data = &qt1070_pdata,
--		I2C_BOARD_INFO("qt1070", 0x1b),
--	}, {
--		I2C_BOARD_INFO("24c512", 0x51)
--	},
--};
+ static struct sam9_smc_config cm_nand_smc_config = {
+ 	.ncs_read_setup		= 0,
+ 	.nrd_setup		= 1,
+@@ -79,15 +63,27 @@ static struct sam9_smc_config cm_nand_smc_config = {
+ 	.tdf_cycles		= 1,
+ };
+ 
+-static void ek_add_device_nand(void)
++static int ek_add_device_smc(void)
+ {
++	unsigned long csa;
++	csa = at91_sys_read(AT91_MATRIX_EBICSA);
++
++	/* Enable CS3 */
++	csa |= AT91_MATRIX_EBI_CS3A_SMC_NANDFLASH;
++	/* NAND flash on D16 */
++	csa |= AT91_MATRIX_NFD0_ON_D16;
++
++	/* Configure IO drive */
++	csa &= ~AT91_MATRIX_EBI_EBI_IOSR_NORMAL;
++	at91_sys_write(AT91_MATRIX_EBICSA, csa);
++
+ 	add_generic_device("at91sam9-smc",
+ 			   DEVICE_ID_SINGLE, NULL,
+ 			   AT91SAM9X5_BASE_SMC, 0x200,
+ 			   IORESOURCE_MEM, NULL);
+ 
+ 	/* setup bus-width (8 or 16) */
+-	if (nand_pdata.bus_width_16)
++	if (IS_ENABLED(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16))
+ 		cm_nand_smc_config.mode |= AT91_SMC_DBW_16;
+ 	else
+ 		cm_nand_smc_config.mode |= AT91_SMC_DBW_8;
+@@ -96,15 +92,14 @@ static void ek_add_device_nand(void)
+ 	sam9_smc_configure(0, 3, &cm_nand_smc_config);
+ 
+ 	if (at91sam9x5ek_cm_is_vendor(VENDOR_COGENT)) {
+-		unsigned long csa;
 -
--static void ek_add_device_i2c(void)
--{
--	at91_set_gpio_input(qt1070_pdata.irq_pin, 0);
--	at91_set_deglitch(qt1070_pdata.irq_pin, 1);
--	at91_add_device_i2c(0, i2c_devices, ARRAY_SIZE(i2c_devices));
--}
--
- static const struct spi_board_info ek_cm_cogent_spi_devices[] = {
- 	{
- 		.name		= "mtd_dataflash",
-@@ -277,7 +257,6 @@ static int at91sam9x5ek_devices_init(void)
- 	ek_add_device_spi();
- 	ek_add_device_mci();
- 	ek_add_device_usb();
--	ek_add_device_i2c();
+ 		csa = at91_sys_read(AT91_MATRIX_EBICSA);
+ 		csa |= AT91_MATRIX_EBI_VDDIOMSEL_1_8V;
+ 		at91_sys_write(AT91_MATRIX_EBICSA, csa);
+ 	}
+ 
+-	at91_add_device_nand(&nand_pdata);
++	return 0;
+ }
++fs_initcall(ek_add_device_smc);
+ 
+ static int ek_register_mac_address(void)
+ {
+@@ -163,20 +158,10 @@ static void ek_add_device_lcdc(void) {}
+ 
+ static int at91sam9x5ek_devices_init(void)
+ {
+-	ek_add_device_nand();
  	ek_add_device_lcdc();
  
  	armlinux_set_architecture(CONFIG_MACH_AT91SAM9X5EK);
-diff --git a/arch/arm/dts/at91sam9x5ek.dts b/arch/arm/dts/at91sam9x5ek.dts
-index db1bd67..f9ae091 100644
---- a/arch/arm/dts/at91sam9x5ek.dts
-+++ b/arch/arm/dts/at91sam9x5ek.dts
-@@ -7,3 +7,13 @@
- #include <arm/at91sam9x5_lcd.dtsi>
- #include <arm/at91sam9x5dm.dtsi>
- #include <arm/at91sam9x5ek.dtsi>
-+
-+/ {
-+	i2c-gpio-0 {
-+		status = "okay";
-+	};
-+};
-+
-+&i2c0 {
-+	status = "disabled";
-+};
+ 
+-	devfs_add_partition("nand0", 0x00000, SZ_256K, DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
+-	dev_add_bb_dev("at91bootstrap_raw", "at91bootstrap");
+-	devfs_add_partition("nand0", SZ_256K, SZ_256K + SZ_128K, DEVFS_PARTITION_FIXED, "self_raw");
+-	dev_add_bb_dev("self_raw", "self0");
+-	devfs_add_partition("nand0", SZ_512K + SZ_128K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw");
+-	dev_add_bb_dev("env_raw", "env0");
+-	devfs_add_partition("nand0", SZ_512K + SZ_256K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw1");
+-	dev_add_bb_dev("env_raw1", "env1");
+-
+ 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC))
+ 		defaultenv_append_directory(defaultenv_at91sam9x5ek);
+ 
 -- 
 2.9.3
 
