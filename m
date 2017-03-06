@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cl1Wy-0007my-Ck
+ id 1cl1Wz-0007sh-AA
  for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:55:13 +0000
-Received: by mail-pf0-x244.google.com with SMTP id 67so14532774pfg.2
- for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:43 -0800 (PST)
+Received: by mail-pg0-x241.google.com with SMTP id 25so20992740pgy.3
+ for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:47 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  6 Mar 2017 14:53:46 -0800
-Message-Id: <20170306225356.31475-36-andrew.smirnov@gmail.com>
+Date: Mon,  6 Mar 2017 14:53:49 -0800
+Message-Id: <20170306225356.31475-39-andrew.smirnov@gmail.com>
 In-Reply-To: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,180 +23,108 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 35/45] usb: ohci-at91: Add DT support
+Subject: [PATCH 38/45] usb: echi-atmel: Convert global variables to private
+ data
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-at91/include/mach/board.h |  6 ++-
- drivers/usb/host/ohci-at91.c            | 84 ++++++++++++++++++++++++++++++++-
- 2 files changed, 86 insertions(+), 4 deletions(-)
+ drivers/usb/host/ehci-atmel.c | 42 ++++++++++++++++++++++++++----------------
+ 1 file changed, 26 insertions(+), 16 deletions(-)
 
-diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
-index 491b220..5d76e00 100644
---- a/arch/arm/mach-at91/include/mach/board.h
-+++ b/arch/arm/mach-at91/include/mach/board.h
-@@ -32,11 +32,13 @@
+diff --git a/drivers/usb/host/ehci-atmel.c b/drivers/usb/host/ehci-atmel.c
+index fa9ca7d..7a9d942 100644
+--- a/drivers/usb/host/ehci-atmel.c
++++ b/drivers/usb/host/ehci-atmel.c
+@@ -29,29 +29,34 @@
  
- void at91_set_main_clock(unsigned long rate);
+ #include "ehci.h"
  
-+#define AT91_MAX_USBH_PORTS	3
-+
-  /* USB Host */
- struct at91_usbh_data {
- 	u8		ports;		/* number of ports on root hub */
--	int		vbus_pin[2];	/* port power-control pin */
--	u8	vbus_pin_active_low[2];	/* vbus polarity */
-+	int		vbus_pin[AT91_MAX_USBH_PORTS];	/* port power-control pin */
-+	u8	vbus_pin_active_low[AT91_MAX_USBH_PORTS];	/* vbus polarity */
- };
- extern void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data);
- extern void __init at91_add_device_usbh_ehci(struct at91_usbh_data *data);
-diff --git a/drivers/usb/host/ohci-at91.c b/drivers/usb/host/ohci-at91.c
-index f413616..54fe45f 100644
---- a/drivers/usb/host/ohci-at91.c
-+++ b/drivers/usb/host/ohci-at91.c
-@@ -23,10 +23,18 @@
- #include <usb/usb.h>
- #include <usb/usb_defs.h>
- #include <errno.h>
-+#include <gpio.h>
-+#include <of_gpio.h>
- #include <io.h>
+-/* interface and function clocks; sometimes also an AHB clock */
+-static struct clk *iclk, *fclk;
++struct atmel_ehci_priv {
++	struct device_d *dev;
++	struct clk *iclk;
++	struct clk *uclk;
++};
  
-+#include <mach/board.h>
-+
- #include "ohci.h"
- 
-+#define at91_for_each_port(index)					\
-+	for ((index) = 0; (index) < AT91_MAX_USBH_PORTS; (index)++)
-+
-+
- struct ohci_at91_priv {
- 	struct device_d *dev;
- 	struct clk *iclk;
-@@ -59,6 +67,53 @@ static void at91_stop_clock(struct ohci_at91_priv *ohci_at91)
- 	clk_disable(ohci_at91->iclk);
- }
- 
-+static void at91_ohci_probe_dt(struct device_d *dev)
-+{
-+	u32 ports;
-+	int i, ret, gpio;
-+	enum of_gpio_flags flags;
-+	struct at91_usbh_data *pdata;
-+	struct device_node *np = dev->device_node;
-+
-+	pdata = xzalloc(sizeof(*pdata));
-+	dev->platform_data = pdata;
-+
-+	if (!of_property_read_u32(np, "num-ports", &ports))
-+		pdata->ports = ports;
-+
-+	at91_for_each_port(i) {
-+		/*
-+		 * do not configure PIO if not in relation with
-+		 * real USB port on board
-+		 */
-+		if (i >= pdata->ports) {
-+			pdata->vbus_pin[i] = -EINVAL;
-+			continue;
-+		}
-+
-+		gpio = of_get_named_gpio_flags(np, "atmel,vbus-gpio", i,
-+					       &flags);
-+		pdata->vbus_pin[i] = gpio;
-+		if (!gpio_is_valid(gpio))
-+			continue;
-+		pdata->vbus_pin_active_low[i] = flags & OF_GPIO_ACTIVE_LOW;
-+
-+		ret = gpio_request(gpio, "ohci_vbus");
-+		if (ret) {
-+			dev_err(dev, "can't request vbus gpio %d\n", gpio);
-+			continue;
-+		}
-+		ret = gpio_direction_output(gpio,
-+					    !pdata->vbus_pin_active_low[i]);
-+		if (ret) {
-+			dev_err(dev, "can't put vbus gpio %d as output %d\n",
-+				gpio, !pdata->vbus_pin_active_low[i]);
-+			gpio_free(gpio);
-+			continue;
-+		}
-+	}
-+}
-+
- static int at91_ohci_probe(struct device_d *dev)
+-static int atmel_start_clock(void)
++static int atmel_start_clock(struct atmel_ehci_priv *atehci)
  {
  	int ret;
-@@ -68,6 +123,9 @@ static int at91_ohci_probe(struct device_d *dev)
- 	dev->priv = ohci_at91;
- 	ohci_at91->dev = dev;
- 
-+	if (dev->device_node)
-+		at91_ohci_probe_dt(dev);
-+
- 	io = dev_get_resource(dev, IORESOURCE_MEM, 0);
- 	if (IS_ERR(io)) {
- 		dev_err(dev, "Failed to get IORESOURCE_MEM\n");
-@@ -75,13 +133,13 @@ static int at91_ohci_probe(struct device_d *dev)
- 	}
- 	ohci_at91->regs = IOMEM(io->start);
- 
--	ohci_at91->iclk = clk_get(NULL, "ohci_clk");
-+	ohci_at91->iclk = clk_get(dev, "ohci_clk");
- 	if (IS_ERR(ohci_at91->iclk)) {
- 		dev_err(dev, "Failed to get 'iclk'\n");
- 		return PTR_ERR(ohci_at91->iclk);
+-	ret = clk_enable(iclk);
++	ret = clk_enable(atehci->iclk);
+ 	if (ret < 0) {
+-		pr_err("Error enabling interface clock\n");
++		dev_err(atehci->dev,
++			"Error enabling interface clock\n");
+ 		return ret;
  	}
  
--	ohci_at91->fclk = clk_get(NULL, "uhpck");
-+	ohci_at91->fclk = clk_get(dev, "uhpck");
- 	if (IS_ERR(ohci_at91->fclk)) {
- 		dev_err(dev, "Failed to get 'fclk'\n");
- 		return PTR_ERR(ohci_at91->fclk);
-@@ -107,6 +165,7 @@ static int at91_ohci_probe(struct device_d *dev)
+-	ret = clk_enable(fclk);
++	ret = clk_enable(atehci->uclk);
+ 	if (ret < 0)
+-		pr_err("Error enabling function clock\n");
++		dev_err(atehci->dev,
++			"Error enabling function clock\n");
  
- static void at91_ohci_remove(struct device_d *dev)
- {
-+	struct at91_usbh_data *pdata = dev->platform_data;
- 	struct ohci_at91_priv *ohci_at91 = dev->priv;
- 
- 	/*
-@@ -118,11 +177,32 @@ static void at91_ohci_remove(struct device_d *dev)
- 	 * Stop the USB clocks.
- 	 */
- 	at91_stop_clock(ohci_at91);
-+
-+	if (pdata) {
-+		bool active_low;
-+		int  i, gpio;
-+
-+		at91_for_each_port(i) {
-+			gpio = pdata->vbus_pin[i];
-+			active_low = pdata->vbus_pin_active_low[i];
-+
-+			if (gpio_is_valid(gpio)) {
-+				gpio_set_value(gpio, active_low);
-+				gpio_free(gpio);
-+			}
-+		}
-+	}
+ 	return ret;
  }
  
-+static const struct of_device_id at91_ohci_dt_ids[] = {
-+	{ .compatible = "atmel,at91rm9200-ohci" },
-+	{ /* sentinel */ }
-+};
+-static void atmel_stop_clock(void)
++static void atmel_stop_clock(struct atmel_ehci_priv *atehci)
+ {
+-	clk_disable(fclk);
+-	clk_disable(iclk);
++	clk_disable(atehci->iclk);
++	clk_disable(atehci->uclk);
+ }
+ 
+ static int atmel_ehci_probe(struct device_d *dev)
+@@ -59,15 +64,20 @@ static int atmel_ehci_probe(struct device_d *dev)
+ 	int ret;
+ 	struct resource *iores;
+ 	struct ehci_data data;
++	struct atmel_ehci_priv *atehci;
 +
- static struct driver_d at91_ohci_driver = {
- 	.name = "at91_ohci",
- 	.probe = at91_ohci_probe,
- 	.remove = at91_ohci_remove,
-+	.of_compatible = DRV_OF_COMPAT(at91_ohci_dt_ids),
- };
- device_platform_driver(at91_ohci_driver);
++	atehci = xzalloc(sizeof(*atehci));
++	atehci->dev = dev;
++	dev->priv = atehci;
+ 
+-	iclk = clk_get(dev, "ehci_clk");
+-	if (IS_ERR(iclk)) {
++	atehci->iclk = clk_get(dev, "ehci_clk");
++	if (IS_ERR(atehci->iclk)) {
+ 		dev_err(dev, "Error getting interface clock\n");
+ 		return -ENOENT;
+ 	}
+ 
+-	fclk = clk_get(dev, "uhpck");
+-	if (IS_ERR(fclk)) {
++	atehci->uclk = clk_get(dev, "uhpck");
++	if (IS_ERR(atehci->iclk)) {
+ 		dev_err(dev, "Error getting function clock\n");
+ 		return -ENOENT;
+ 	}
+@@ -75,7 +85,7 @@ static int atmel_ehci_probe(struct device_d *dev)
+ 	/*
+ 	 * Start the USB clocks.
+ 	 */
+-	ret = atmel_start_clock();
++	ret = atmel_start_clock(atehci);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -96,7 +106,7 @@ static void atmel_ehci_remove(struct device_d *dev)
+ 	/*
+ 	 * Stop the USB clocks.
+ 	 */
+-	atmel_stop_clock();
++	atmel_stop_clock(dev->priv);
+ }
+ 
+ static struct driver_d atmel_ehci_driver = {
 -- 
 2.9.3
 
