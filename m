@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
+Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cl1WV-0007ak-Sa
- for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:54:38 +0000
-Received: by mail-pg0-x241.google.com with SMTP id 187so7289348pgb.2
- for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:16 -0800 (PST)
+ id 1cl1WW-0007am-9Z
+ for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:54:39 +0000
+Received: by mail-pg0-x243.google.com with SMTP id 77so8239530pgc.0
+ for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:18 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  6 Mar 2017 14:53:16 -0800
-Message-Id: <20170306225356.31475-6-andrew.smirnov@gmail.com>
+Date: Mon,  6 Mar 2017 14:53:18 -0800
+Message-Id: <20170306225356.31475-8-andrew.smirnov@gmail.com>
 In-Reply-To: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,88 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/45] clocksource: at91: Move to 'drivers/clocksource'
+Subject: [PATCH 07/45] serial: atmel: Check result of clk_get()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Move PIT driver code to 'drivers/clocsource' and accomodate it by
-adjusting Kconfig variables. Rename the file to 'timer-atmel-pit.c' to
-re-align the driver with code in Linux kernel.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-at91/Kconfig                                         | 7 ++-----
- arch/arm/mach-at91/Makefile                                        | 1 -
- drivers/clocksource/Kconfig                                        | 4 ++++
- drivers/clocksource/Makefile                                       | 1 +
- .../at91sam926x_time.c => drivers/clocksource/timer-atmel-pit.c    | 0
- 5 files changed, 7 insertions(+), 6 deletions(-)
- rename arch/arm/mach-at91/at91sam926x_time.c => drivers/clocksource/timer-atmel-pit.c (100%)
+ drivers/serial/atmel.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index be88bfa..fe0269d 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -15,20 +15,17 @@ config HAVE_AT91_LOWLEVEL_INIT
- config AT91SAM9_SMC
- 	bool
+diff --git a/drivers/serial/atmel.c b/drivers/serial/atmel.c
+index 4e4624e..d47b926 100644
+--- a/drivers/serial/atmel.c
++++ b/drivers/serial/atmel.c
+@@ -403,6 +403,11 @@ static int atmel_serial_init_port(struct console_device *cdev)
+ 		return -ENOENT;
  
--config AT91SAM9_TIMER
--	bool
--
- config SOC_AT91SAM9
- 	bool
- 	select CPU_ARM926T
- 	select AT91SAM9_SMC
--	select AT91SAM9_TIMER
-+	select CLOCKSOURCE_ATMEL_PIT
- 
- config SOC_SAMA5
- 	bool
- 	select CPU_V7
- 	select AT91SAM9_SMC
--	select AT91SAM9_TIMER
-+	select CLOCKSOURCE_ATMEL_PIT
- 
- config ARCH_TEXT_BASE
- 	hex
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index c2991b0..1f63b09 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -19,7 +19,6 @@ obj-$(CONFIG_AT91SAM9_RESET) += at91sam9_reset.o
- obj-$(CONFIG_AT91SAM9G45_RESET) += at91sam9g45_reset.o
- 
- obj-$(CONFIG_AT91SAM9_SMC) += sam9_smc.o
--obj-$(CONFIG_AT91SAM9_TIMER) += at91sam926x_time.o
- 
- # CPU-specific support
- obj-$(CONFIG_ARCH_AT91RM9200)	+= at91rm9200.o at91rm9200_time.o at91rm9200_devices.o
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index f1ab554..f3c3255 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -53,3 +53,7 @@ config CLOCKSOURCE_UEMD
- config CLOCKSOURCE_ROCKCHIP
- 	bool
- 	depends on ARCH_ROCKCHIP
+ 	uart->clk = clk_get(dev, "usart");
++	if (IS_ERR(uart->clk)) {
++		dev_err(dev, "Faield to get 'usart' clock\n");
++		return PTR_ERR(uart->clk);
++	}
 +
-+config CLOCKSOURCE_ATMEL_PIT
-+       bool
-+       depends on SOC_AT91SAM9 || SOC_SAMA5
-diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-index 39982ff..0564d8f 100644
---- a/drivers/clocksource/Makefile
-+++ b/drivers/clocksource/Makefile
-@@ -8,3 +8,4 @@ obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
- obj-$(CONFIG_CLOCKSOURCE_ORION)   += orion.o
- obj-$(CONFIG_CLOCKSOURCE_UEMD)    += uemd.o
- obj-$(CONFIG_CLOCKSOURCE_ROCKCHIP)+= rk_timer.o
-+obj-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += timer-atmel-pit.o
-diff --git a/arch/arm/mach-at91/at91sam926x_time.c b/drivers/clocksource/timer-atmel-pit.c
-similarity index 100%
-rename from arch/arm/mach-at91/at91sam926x_time.c
-rename to drivers/clocksource/timer-atmel-pit.c
+ 	clk_enable(uart->clk);
+ 	uart->uartclk = clk_get_rate(uart->clk);
+ 
 -- 
 2.9.3
 
