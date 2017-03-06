@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cl1X2-0001LM-NS
- for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:55:09 +0000
-Received: by mail-pg0-x242.google.com with SMTP id b5so4150276pgg.1
- for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:48 -0800 (PST)
+ id 1cl1Wu-0001LL-LF
+ for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:55:01 +0000
+Received: by mail-pg0-x241.google.com with SMTP id b5so4150058pgg.1
+ for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:40 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  6 Mar 2017 14:53:50 -0800
-Message-Id: <20170306225356.31475-40-andrew.smirnov@gmail.com>
+Date: Mon,  6 Mar 2017 14:53:42 -0800
+Message-Id: <20170306225356.31475-32-andrew.smirnov@gmail.com>
 In-Reply-To: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,32 +23,122 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 39/45] usb: ehci-atmel: Zero ehci_data before using it
+Subject: [PATCH 31/45] at91sam9x5ek: Configure 1-wire in DT
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Zero ehci_data before using it as an argument for echi_register,
-otherwise bogus values (some of which are interpreted as callbacks) will
-be passed through, resulting in illegal memory accesses.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/host/ehci-atmel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boards/at91sam9x5ek/hw_version.c |  6 +++++-
+ arch/arm/boards/at91sam9x5ek/hw_version.h |  1 -
+ arch/arm/boards/at91sam9x5ek/init.c       | 16 ----------------
+ arch/arm/dts/at91sam9x5ek.dts             | 17 +++++++++++++++++
+ 4 files changed, 22 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/usb/host/ehci-atmel.c b/drivers/usb/host/ehci-atmel.c
-index 7a9d942..4b9fc0a 100644
---- a/drivers/usb/host/ehci-atmel.c
-+++ b/drivers/usb/host/ehci-atmel.c
-@@ -89,7 +89,7 @@ static int atmel_ehci_probe(struct device_d *dev)
- 	if (ret < 0)
- 		return ret;
+diff --git a/arch/arm/boards/at91sam9x5ek/hw_version.c b/arch/arm/boards/at91sam9x5ek/hw_version.c
+index 2f84d82..d1ca036 100644
+--- a/arch/arm/boards/at91sam9x5ek/hw_version.c
++++ b/arch/arm/boards/at91sam9x5ek/hw_version.c
+@@ -15,6 +15,7 @@
+  */
  
--	data.flags = 0;
-+	memset(&data, 0, sizeof(data));
+ #include <common.h>
++#include <init.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <libbb.h>
+@@ -250,7 +251,7 @@ static int cm_cogent_fixup(struct device_node *root, void *unused)
+ 	return 0;
+ }
  
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores))
+-void at91sam9x5ek_devices_detect_hw(void)
++static int at91sam9x5ek_devices_detect_hw(void)
+ {
+ 	at91sam9x5ek_devices_detect_one("/dev/ds24310");
+ 	at91sam9x5ek_devices_detect_one("/dev/ds24311");
+@@ -262,4 +263,7 @@ void at91sam9x5ek_devices_detect_hw(void)
+ 
+ 	if (at91sam9x5ek_cm_is_vendor(VENDOR_COGENT))
+ 		of_register_fixup(cm_cogent_fixup, NULL);
++
++	return 0;
+ }
++late_initcall(at91sam9x5ek_devices_detect_hw);
+diff --git a/arch/arm/boards/at91sam9x5ek/hw_version.h b/arch/arm/boards/at91sam9x5ek/hw_version.h
+index 91fd429..3f3c800 100644
+--- a/arch/arm/boards/at91sam9x5ek/hw_version.h
++++ b/arch/arm/boards/at91sam9x5ek/hw_version.h
+@@ -29,6 +29,5 @@ enum vendor_id {
+ bool at91sam9x5ek_cm_is_vendor(enum vendor_id vid);
+ bool at91sam9x5ek_ek_is_vendor(enum vendor_id vid);
+ bool at91sam9x5ek_dm_is_vendor(enum vendor_id vid);
+-void at91sam9x5ek_devices_detect_hw(void);
+ 
+ #endif /* __HW_REVISION_H__ */
+diff --git a/arch/arm/boards/at91sam9x5ek/init.c b/arch/arm/boards/at91sam9x5ek/init.c
+index 2fe724c..09b7d0f 100644
+--- a/arch/arm/boards/at91sam9x5ek/init.c
++++ b/arch/arm/boards/at91sam9x5ek/init.c
+@@ -45,12 +45,6 @@
+ 
+ #include "hw_version.h"
+ 
+-struct w1_gpio_platform_data w1_pdata = {
+-	.pin = AT91_PIN_PB18,
+-	.ext_pullup_enable_pin = -EINVAL,
+-	.is_open_drain = 0,
+-};
+-
+ static struct atmel_nand_data nand_pdata = {
+ 	.ale		= 21,
+ 	.cle		= 22,
+@@ -186,18 +180,8 @@ static void ek_add_device_usb(void)
+ static void ek_add_device_usb(void) {}
+ #endif
+ 
+-static void ek_add_device_w1(void)
+-{
+-	at91_set_gpio_input(w1_pdata.pin, 0);
+-	at91_set_multi_drive(w1_pdata.pin, 1);
+-	add_generic_device_res("w1-gpio", DEVICE_ID_SINGLE, NULL, 0, &w1_pdata);
+-
+-	at91sam9x5ek_devices_detect_hw();
+-}
+-
+ static int at91sam9x5ek_devices_init(void)
+ {
+-	ek_add_device_w1();
+ 	ek_add_device_nand();
+ 	ek_add_device_eth();
+ 	ek_add_device_usb();
+diff --git a/arch/arm/dts/at91sam9x5ek.dts b/arch/arm/dts/at91sam9x5ek.dts
+index efdba61..fa79347 100644
+--- a/arch/arm/dts/at91sam9x5ek.dts
++++ b/arch/arm/dts/at91sam9x5ek.dts
+@@ -29,6 +29,23 @@
+ 			};
+ 		};
+ 	};
++
++	leds {
++		/*
++		 * PB18 has a resource conflict since it is both used
++                 * as a heartbeat LED and 1-wire bus in the kernel
++                 * device tree. Since 1-wire EEPROMs contains
++                 * importatnt revision information as a part of
++                 * Barebox DT stup we move heartbeat to PD21 and
++                 * remove the original pb18 node
++		 */
++
++		/delete-node/ pb18;
++
++		pd21 {
++			linux,default-trigger = "heartbeat";
++		};
++	};
+ };
+ 
+ &spi0 {
 -- 
 2.9.3
 
