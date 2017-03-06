@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cl1WU-0007ah-HP
- for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:54:37 +0000
-Received: by mail-pg0-x242.google.com with SMTP id b5so4149275pgg.1
- for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:13 -0800 (PST)
+ id 1cl1WV-0007ak-Sa
+ for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:54:38 +0000
+Received: by mail-pg0-x241.google.com with SMTP id 187so7289348pgb.2
+ for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:16 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  6 Mar 2017 14:53:13 -0800
-Message-Id: <20170306225356.31475-3-andrew.smirnov@gmail.com>
+Date: Mon,  6 Mar 2017 14:53:16 -0800
+Message-Id: <20170306225356.31475-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,212 +23,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/45] at91sam9x5ek: Convert to mult-image build
+Subject: [PATCH 05/45] clocksource: at91: Move to 'drivers/clocksource'
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Convert AT91SAM9X5-EK board code to multi-image build process, similar
-to how majority of i.MX board code is built.
+Move PIT driver code to 'drivers/clocsource' and accomodate it by
+adjusting Kconfig variables. Rename the file to 'timer-atmel-pit.c' to
+re-align the driver with code in Linux kernel.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/Kconfig                        |  1 -
- arch/arm/boards/at91sam9x5ek/Makefile   |  1 +
- arch/arm/boards/at91sam9x5ek/lowlevel.c | 16 +++++++++++++
- arch/arm/configs/at91sam9x5ek_defconfig |  4 +++-
- arch/arm/mach-at91/Kconfig              | 40 +++++++++++++++++++--------------
- images/Makefile                         |  1 +
- images/Makefile.at91                    |  7 ++++++
- 7 files changed, 51 insertions(+), 19 deletions(-)
- create mode 100644 arch/arm/boards/at91sam9x5ek/lowlevel.c
- create mode 100644 images/Makefile.at91
+ arch/arm/mach-at91/Kconfig                                         | 7 ++-----
+ arch/arm/mach-at91/Makefile                                        | 1 -
+ drivers/clocksource/Kconfig                                        | 4 ++++
+ drivers/clocksource/Makefile                                       | 1 +
+ .../at91sam926x_time.c => drivers/clocksource/timer-atmel-pit.c    | 0
+ 5 files changed, 7 insertions(+), 6 deletions(-)
+ rename arch/arm/mach-at91/at91sam926x_time.c => drivers/clocksource/timer-atmel-pit.c (100%)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index e4663ea..cfa9214 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -52,7 +52,6 @@ config ARCH_AT91
- 	select GPIOLIB
- 	select CLKDEV_LOOKUP
- 	select HAS_DEBUG_LL
--	select HAVE_MACH_ARM_HEAD
- 	select HAVE_CLK
- 	select PINCTRL_AT91
- 
-diff --git a/arch/arm/boards/at91sam9x5ek/Makefile b/arch/arm/boards/at91sam9x5ek/Makefile
-index 559df8f..4939b7e 100644
---- a/arch/arm/boards/at91sam9x5ek/Makefile
-+++ b/arch/arm/boards/at91sam9x5ek/Makefile
-@@ -1,3 +1,4 @@
- obj-y += init.o
- obj-y += hw_version.o
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-at91sam9x5ek
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/at91sam9x5ek/lowlevel.c b/arch/arm/boards/at91sam9x5ek/lowlevel.c
-new file mode 100644
-index 0000000..9b5c926
---- /dev/null
-+++ b/arch/arm/boards/at91sam9x5ek/lowlevel.c
-@@ -0,0 +1,16 @@
-+#include <common.h>
-+#include <linux/sizes.h>
-+#include <mach/at91sam9_ddrsdr.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <io.h>
-+#include <debug_ll.h>
-+
-+
-+ENTRY_FUNCTION(start_at91sam9x5ek, r0, r1, r2)
-+{
-+	arm_cpu_lowlevel_init();
-+	arm_setup_stack(AT91SAM9X5_SRAM_BASE + AT91SAM9X5_SRAM_SIZE - 16);
-+
-+	barebox_arm_entry(AT91_CHIPSELECT_1, at91sam9x5_get_ddram_size(), NULL);
-+}
-diff --git a/arch/arm/configs/at91sam9x5ek_defconfig b/arch/arm/configs/at91sam9x5ek_defconfig
-index 6ee0052..76ee3d9 100644
---- a/arch/arm/configs/at91sam9x5ek_defconfig
-+++ b/arch/arm/configs/at91sam9x5ek_defconfig
-@@ -1,12 +1,14 @@
- CONFIG_ARCH_AT91SAM9X5=y
-+CONFIG_AT91_MULTI_BOARDS=y
-+CONFIG_MACH_AT91SAM9X5EK=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
- CONFIG_AEABI=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
--CONFIG_PBL_IMAGE=y
- CONFIG_MMU=y
- CONFIG_MALLOC_SIZE=0xa00000
- CONFIG_EXPERIMENTAL=y
- CONFIG_MALLOC_TLSF=y
-+CONFIG_RELOCATABLE=y
- CONFIG_PROMPT="9G20-EK:"
- CONFIG_GLOB=y
- CONFIG_PROMPT_HUSH_PS2="y"
 diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index c45fc4d..969182c 100644
+index be88bfa..fe0269d 100644
 --- a/arch/arm/mach-at91/Kconfig
 +++ b/arch/arm/mach-at91/Kconfig
-@@ -143,18 +143,22 @@ config ARCH_AT91SAM9261
- config ARCH_AT91SAM9263
- 	bool "AT91SAM9263"
- 	select SOC_AT91SAM9263
-+	select HAVE_MACH_ARM_HEAD
+@@ -15,20 +15,17 @@ config HAVE_AT91_LOWLEVEL_INIT
+ config AT91SAM9_SMC
+ 	bool
  
- config ARCH_AT91SAM9G10
- 	bool "AT91SAM9G10"
- 	select SOC_AT91SAM9261
-+	select HAVE_MACH_ARM_HEAD
- 
- config ARCH_AT91SAM9G20
- 	bool "AT91SAM9G20"
- 	select SOC_AT91SAM9260
-+	select HAVE_MACH_ARM_HEAD
- 
- config ARCH_AT91SAM9G45
- 	bool "AT91SAM9G45 or AT91SAM9M10"
- 	select SOC_AT91SAM9G45
-+	select HAVE_MACH_ARM_HEAD
- 
- config ARCH_AT91SAM9X5
- 	bool "AT91SAM9X5"
-@@ -163,6 +167,7 @@ config ARCH_AT91SAM9X5
- config ARCH_AT91SAM9N12
- 	bool "AT91SAM9N12"
- 	select SOC_AT91SAM9N12
-+	select HAVE_MACH_ARM_HEAD
- 
- config ARCH_SAMA5D3
- 	bool "SAMA5D3x"
-@@ -170,6 +175,7 @@ config ARCH_SAMA5D3
- 	select HAVE_AT91_DBGU1
- 	select HAS_MACB
- 	select AT91SAM9G45_RESET
-+	select HAVE_MACH_ARM_HEAD
- 
- config ARCH_SAMA5D4
- 	bool "SAMA5D4"
-@@ -177,6 +183,7 @@ config ARCH_SAMA5D4
- 	select HAVE_AT91_DBGU2
- 	select HAS_MACB
- 	select AT91SAM9G45_RESET
-+	select HAVE_MACH_ARM_HEAD
- 
- endchoice
- 
-@@ -432,23 +439,6 @@ endif
- 
- # ----------------------------------------------------------
- 
--if ARCH_AT91SAM9X5
+-config AT91SAM9_TIMER
+-	bool
 -
--choice
--	prompt "AT91SAM9x5 Series Board Type"
--
--config MACH_AT91SAM9X5EK
--	bool "Atmel AT91SAM9x5 Series Evaluation Kit"
--	help
--	  Select this if you re using Atmel's AT91SAM9x5-EK Evaluation Kit.
--	  Supported chips are sam9g15, sam9g25, sam9x25, sam9g35 and sam9x35.
--
--endchoice
--
--endif
--
--# ----------------------------------------------------------
--
- if ARCH_AT91SAM9N12
+ config SOC_AT91SAM9
+ 	bool
+ 	select CPU_ARM926T
+ 	select AT91SAM9_SMC
+-	select AT91SAM9_TIMER
++	select CLOCKSOURCE_ATMEL_PIT
  
- choice
-@@ -507,6 +497,22 @@ endif
+ config SOC_SAMA5
+ 	bool
+ 	select CPU_V7
+ 	select AT91SAM9_SMC
+-	select AT91SAM9_TIMER
++	select CLOCKSOURCE_ATMEL_PIT
  
- # ----------------------------------------------------------
+ config ARCH_TEXT_BASE
+ 	hex
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index c2991b0..1f63b09 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -19,7 +19,6 @@ obj-$(CONFIG_AT91SAM9_RESET) += at91sam9_reset.o
+ obj-$(CONFIG_AT91SAM9G45_RESET) += at91sam9g45_reset.o
  
-+
-+config AT91_MULTI_BOARDS
-+	bool "Allow multiple boards to be selected"
-+	select HAVE_PBL_MULTI_IMAGES
-+
-+if AT91_MULTI_BOARDS
-+
-+config MACH_AT91SAM9X5EK
-+	bool "Atmel AT91SAM9x5 Series Evaluation Kit"
-+	depends on ARCH_AT91SAM9X5
-+	help
-+	  Select this if you re using Atmel's AT91SAM9x5-EK Evaluation Kit.
-+	  Supported chips are sam9g15, sam9g25, sam9x25, sam9g35 and sam9x35.
-+
-+endif
-+
- comment "AT91 Board Options"
+ obj-$(CONFIG_AT91SAM9_SMC) += sam9_smc.o
+-obj-$(CONFIG_AT91SAM9_TIMER) += at91sam926x_time.o
  
- config MTD_AT91_DATAFLASH_CARD
-diff --git a/images/Makefile b/images/Makefile
-index 0537af1..2e84ba7 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -110,6 +110,7 @@ include $(srctree)/images/Makefile.omap3
- include $(srctree)/images/Makefile.rockchip
- include $(srctree)/images/Makefile.socfpga
- include $(srctree)/images/Makefile.tegra
-+include $(srctree)/images/Makefile.at91
- 
- targets += $(image-y) pbl.lds barebox.x barebox.z
- targets += $(patsubst %,%.pblx,$(pblx-y))
-diff --git a/images/Makefile.at91 b/images/Makefile.at91
-new file mode 100644
-index 0000000..0f40a05
---- /dev/null
-+++ b/images/Makefile.at91
-@@ -0,0 +1,7 @@
-+#
-+# barebox image generation Makefile for AT91 images
-+#
+ # CPU-specific support
+ obj-$(CONFIG_ARCH_AT91RM9200)	+= at91rm9200.o at91rm9200_time.o at91rm9200_devices.o
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index f1ab554..f3c3255 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -53,3 +53,7 @@ config CLOCKSOURCE_UEMD
+ config CLOCKSOURCE_ROCKCHIP
+ 	bool
+ 	depends on ARCH_ROCKCHIP
 +
-+pblx-y += start_at91sam9x5ek
-+FILE_barebox-at91sam9x5ek.img = start_at91sam9x5ek.pblx
-+image-y += barebox-at91sam9x5ek.img
++config CLOCKSOURCE_ATMEL_PIT
++       bool
++       depends on SOC_AT91SAM9 || SOC_SAMA5
+diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+index 39982ff..0564d8f 100644
+--- a/drivers/clocksource/Makefile
++++ b/drivers/clocksource/Makefile
+@@ -8,3 +8,4 @@ obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
+ obj-$(CONFIG_CLOCKSOURCE_ORION)   += orion.o
+ obj-$(CONFIG_CLOCKSOURCE_UEMD)    += uemd.o
+ obj-$(CONFIG_CLOCKSOURCE_ROCKCHIP)+= rk_timer.o
++obj-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += timer-atmel-pit.o
+diff --git a/arch/arm/mach-at91/at91sam926x_time.c b/drivers/clocksource/timer-atmel-pit.c
+similarity index 100%
+rename from arch/arm/mach-at91/at91sam926x_time.c
+rename to drivers/clocksource/timer-atmel-pit.c
 -- 
 2.9.3
 
