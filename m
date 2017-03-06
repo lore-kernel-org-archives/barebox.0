@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cl1Wl-0007cH-9h
+ id 1cl1Wl-0007dM-Pb
  for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:55:00 +0000
-Received: by mail-pg0-x243.google.com with SMTP id 77so8240153pgc.0
- for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:35 -0800 (PST)
+Received: by mail-pf0-x241.google.com with SMTP id o126so4812122pfb.1
+ for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:36 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  6 Mar 2017 14:53:36 -0800
-Message-Id: <20170306225356.31475-26-andrew.smirnov@gmail.com>
+Date: Mon,  6 Mar 2017 14:53:38 -0800
+Message-Id: <20170306225356.31475-28-andrew.smirnov@gmail.com>
 In-Reply-To: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,49 +23,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 25/45] pinctrl: at91: Implement .get_direction hook
+Subject: [PATCH 27/45] spi: atmel_spi: Configure CS GPIO as output
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+On AT91 GPIOs default to being inputs, so we need to explicitly
+configure CS gpio to being an output.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pinctrl/pinctrl-at91.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/spi/atmel_spi.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
-index 34fb0ae..021c1e5 100644
---- a/drivers/pinctrl/pinctrl-at91.c
-+++ b/drivers/pinctrl/pinctrl-at91.c
-@@ -568,6 +568,21 @@ static int at91_gpio_direction_output(struct gpio_chip *chip, unsigned offset,
- 	return 0;
- }
+diff --git a/drivers/spi/atmel_spi.c b/drivers/spi/atmel_spi.c
+index 68466ef..b183344 100644
+--- a/drivers/spi/atmel_spi.c
++++ b/drivers/spi/atmel_spi.c
+@@ -173,6 +173,8 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 	struct spi_master	*master = spi->master;
+ 	struct atmel_spi	*as = to_atmel_spi(master);
  
-+static int at91_gpio_get_direction(struct gpio_chip *chip, unsigned offset)
-+{
-+	struct at91_gpio_chip *at91_gpio = to_at91_gpio_chip(chip);
-+	void __iomem *pio = at91_gpio->regbase;
-+	unsigned mask = 1 << offset;
-+	u32 osr;
++	int			npcs_pin;
++	unsigned		active = spi->mode & SPI_CS_HIGH;
+ 	u32			scbr, csr;
+ 	unsigned int		bits = spi->bits_per_word;
+ 	unsigned long		bus_hz;
+@@ -184,6 +186,8 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 		return -EINVAL;
+ 	}
+ 
++	npcs_pin = as->cs_pins[spi->chip_select];
 +
-+	if (mask & __raw_readl(pio + PIO_PSR)) {
-+		osr = __raw_readl(pio + PIO_OSR);
-+		return !(osr & mask);
-+	} else {
-+		return -EBUSY;
-+	}
-+}
-+
- static int at91_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
- {
- 	struct at91_gpio_chip *at91_gpio = to_at91_gpio_chip(chip);
-@@ -603,6 +618,7 @@ static struct gpio_ops at91_gpio_ops = {
- 	.free = at91_gpio_free,
- 	.direction_input = at91_gpio_direction_input,
- 	.direction_output = at91_gpio_direction_output,
-+	.get_direction = at91_gpio_get_direction,
- 	.get = at91_gpio_get,
- 	.set = at91_gpio_set,
- };
+ 	if (bits < 8 || bits > 16) {
+ 		dev_dbg(&spi->dev,
+ 				"setup: invalid bits_per_word %u (8 to 16)\n",
+@@ -236,7 +240,7 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 	csr |= SPI_BF(DLYBS, 0);
+ 	csr |= SPI_BF(DLYBCT, 0);
+ 
+-	/* gpio_direction_output(npcs_pin, !(spi->mode & SPI_CS_HIGH)); */
++	gpio_direction_output(npcs_pin, !active);
+ 	dev_dbg(master->dev,
+ 		"setup: %lu Hz bpw %u mode 0x%x -> csr%d %08x\n",
+ 		bus_hz / scbr, bits, spi->mode, spi->chip_select, csr);
 -- 
 2.9.3
 
