@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo6.mail-out.ovh.net ([178.32.125.228])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ckox0-0005rF-0t
- for barebox@lists.infradead.org; Mon, 06 Mar 2017 09:29:08 +0000
-Received: from player761.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo6.mail-out.ovh.net (Postfix) with ESMTP id 81A66B5334
- for <barebox@lists.infradead.org>; Mon,  6 Mar 2017 10:28:41 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  6 Mar 2017 10:34:47 +0100
-Message-Id: <1488792887-8715-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1488776651-7555-2-git-send-email-plagnioj@jcrosoft.com>
-References: <1488776651-7555-2-git-send-email-plagnioj@jcrosoft.com>
+ id 1cksOS-0004Lk-Ip
+ for barebox@lists.infradead.org; Mon, 06 Mar 2017 13:09:42 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Mon,  6 Mar 2017 14:09:15 +0100
+Message-Id: <20170306130915.11253-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,282 +19,178 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2 v2] efi: add serial driver support
+Subject: [PATCH] scripts: imx imx-usb-loader: add support for imx23
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-So now we can stop to use the efi-stdio as this driver
-print on the Framebuffer and the serial at the same time.
+imx23 is supported by mxs-usb-loader, but it makes no sense
+to maintain separate tool for this. Espesially if we need some identical
+functionality like usb path filtering.
 
-This is specially usefull if we want to use the framebuffer via efi-gop for
-something else.
+This code was rewrtitten from mxs-usb-loader.
 
-Do not forget to disable the efi-stdio device before enabling the console
-otherwise you will get double printing.
-
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
-Fix copyright
+ scripts/imx/imx-usb-loader.c | 116 +++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 101 insertions(+), 15 deletions(-)
 
- drivers/serial/Kconfig      |   4 +
- drivers/serial/Makefile     |   1 +
- drivers/serial/serial_efi.c | 221 ++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 226 insertions(+)
- create mode 100644 drivers/serial/serial_efi.c
-
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index ced30530a..cfddc2ee9 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -21,6 +21,10 @@ config DRIVER_SERIAL_AR933X
- 	  If you have an Atheros AR933X SOC based board and want to use the
- 	  built-in UART of the SoC, say Y to this option.
+diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+index b2c9f8f5a..dfce3c0d9 100644
+--- a/scripts/imx/imx-usb-loader.c
++++ b/scripts/imx/imx-usb-loader.c
+@@ -69,6 +69,9 @@ struct mach_id {
+ #define HDR_MX53	2
+ 	unsigned char header_type;
+ 	unsigned short max_transfer;
++#define DEV_IMX		0
++#define DEV_MXS		1
++	unsigned char dev_type;
+ };
  
-+config DRIVER_SERIAL_EFI
-+	bool "EFI serial"
-+	depends on EFI_BOOTUP
+ struct usb_work {
+@@ -87,7 +90,9 @@ struct mach_id imx_ids[] = {
+ 		.vid = 0x066f,
+ 		.pid = 0x3780,
+ 		.name = "i.MX23",
+-		.mode = MODE_BULK,
++		.mode = MODE_HID,
++		.max_transfer = 1024,
++		.dev_type = DEV_MXS,
+ 	}, {
+ 		.vid = 0x15a2,
+ 		.pid = 0x0030,
+@@ -180,6 +185,17 @@ struct sdp_command  {
+ 	uint8_t rsvd;
+ } __attribute__((packed));
+ 
++#define MXS_CMD_FW_DOWNLOAD	0x02
++struct mxs_command {
++	uint32_t	sign;		/* Signature */
++	uint32_t	tag;		/* Tag */
++	uint32_t	size;		/* Payload size */
++	uint8_t		flags;		/* Flags (host to device) */
++	uint8_t		rsvd[2];	/* Reserved */
++	uint8_t		cmd;		/* Firmware download */
++	uint32_t	dw_size;	/* Download size */
++} __attribute__((packed));
 +
- config DRIVER_SERIAL_IMX
- 	depends on ARCH_IMX
- 	default y
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index 7d1bae195..3d9f735ed 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -1,6 +1,7 @@
- obj-$(CONFIG_DRIVER_SERIAL_ARM_DCC)		+= arm_dcc.o
- obj-$(CONFIG_SERIAL_AMBA_PL011)			+= amba-pl011.o
- obj-$(CONFIG_DRIVER_SERIAL_AR933X)		+= serial_ar933x.o
-+obj-$(CONFIG_DRIVER_SERIAL_EFI)			+= serial_efi.o
- obj-$(CONFIG_DRIVER_SERIAL_IMX)			+= serial_imx.o
- obj-$(CONFIG_DRIVER_SERIAL_STM378X)		+= stm-serial.o
- obj-$(CONFIG_DRIVER_SERIAL_ATMEL)		+= atmel.o
-diff --git a/drivers/serial/serial_efi.c b/drivers/serial/serial_efi.c
-new file mode 100644
-index 000000000..f0a2b22c2
---- /dev/null
-+++ b/drivers/serial/serial_efi.c
-@@ -0,0 +1,221 @@
-+/*
-+ * Copyright (C) 2017 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2 Only
-+ */
-+
-+#include <common.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include <efi.h>
-+#include <efi/efi.h>
-+#include <efi/efi-device.h>
-+
-+/*
-+ * define for Control bits, grouped by read only, write only, and read write
-+ *
-+ * Read Only
-+ */
-+#define EFI_SERIAL_CLEAR_TO_SEND        0x00000010
-+#define EFI_SERIAL_DATA_SET_READY       0x00000020
-+#define EFI_SERIAL_RING_INDICATE        0x00000040
-+#define EFI_SERIAL_CARRIER_DETECT       0x00000080
-+#define EFI_SERIAL_INPUT_BUFFER_EMPTY   0x00000100
-+#define EFI_SERIAL_OUTPUT_BUFFER_EMPTY  0x00000200
-+
-+/*
-+ * Write Only
-+ */
-+#define EFI_SERIAL_REQUEST_TO_SEND      0x00000002
-+#define EFI_SERIAL_DATA_TERMINAL_READY  0x00000001
-+
-+/*
-+ * Read Write
-+ */
-+#define EFI_SERIAL_HARDWARE_LOOPBACK_ENABLE     0x00001000
-+#define EFI_SERIAL_SOFTWARE_LOOPBACK_ENABLE     0x00002000
-+#define EFI_SERIAL_HARDWARE_FLOW_CONTROL_ENABLE 0x00004000
-+
-+typedef enum {
-+	DefaultParity,
-+	NoParity,
-+	EvenParity,
-+	OddParity,
-+	MarkParity,
-+	SpaceParity
-+} efi_parity_type;
-+
-+typedef enum {
-+	DefaultStopBits,
-+	OneStopBit,
-+	OneFiveStopBits,
-+	TwoStopBits
-+} efi_stop_bits_type;
-+
-+struct efi_serial_io_mode {
-+	uint32_t controlmask;
-+	uint32_t timeout;
-+	uint64_t baudrate;
-+	uint32_t receivefifodepth;
-+	uint32_t databits;
-+	uint32_t parity;
-+	uint32_t stopbits;
-+};
-+
-+struct efi_serial_io_protocol {
-+	uint32_t revision;
-+
-+	efi_status_t (EFIAPI *reset) (struct efi_serial_io_protocol *This);
-+	efi_status_t (EFIAPI *set_attributes) (struct efi_serial_io_protocol *This,
-+			uint64_t baudrate, uint32_t receivefifodepth,
-+			uint32_t timeout, efi_parity_type parity,
-+			uint8_t databits, efi_stop_bits_type stopbits);
-+	efi_status_t (EFIAPI *setcontrol) (struct efi_serial_io_protocol *This,
-+			uint32_t control);
-+	efi_status_t (EFIAPI *getcontrol) (struct efi_serial_io_protocol *This,
-+			uint32_t *control);
-+	efi_status_t (EFIAPI *write) (struct efi_serial_io_protocol *This,
-+			unsigned long *buffersize, void *buffer);
-+	efi_status_t (EFIAPI *read) (struct efi_serial_io_protocol *This,
-+			unsigned long *buffersize, void *buffer);
-+
-+	struct efi_serial_io_mode *mode;
-+};
-+
-+/*
-+ * We wrap our port structure around the generic console_device.
-+ */
-+struct efi_serial_port {
-+	struct efi_serial_io_protocol *serial;
-+	struct console_device	uart;		/* uart */
-+	struct efi_device *efidev;
-+};
-+
-+static inline struct efi_serial_port *
-+to_efi_serial_port(struct console_device *uart)
+ static struct mach_id *imx_device(unsigned short vid, unsigned short pid)
+ {
+ 	int i;
+@@ -1343,6 +1359,72 @@ static int write_mem(const struct config_data *data, uint32_t addr,
+ 	return modify_memory(addr, val, width, set_bits, clear_bits);
+ }
+ 
++/* MXS section */
++static int mxs_load_file(libusb_device_handle *dev, uint8_t *data, int size)
 +{
-+	return container_of(uart, struct efi_serial_port, uart);
++	static struct mxs_command dl_command;
++	int last_trans, err;
++	unsigned char tmp[64];
++	void *p;
++	int cnt;
++
++	dl_command.sign = htonl(0x424c5443); /* Signature: BLTC */
++	dl_command.tag = htonl(0x1);
++	dl_command.size = htonl(size);
++	dl_command.flags = 0;
++	dl_command.rsvd[0] = 0;
++	dl_command.rsvd[1] = 0;
++	dl_command.cmd = MXS_CMD_FW_DOWNLOAD;
++	dl_command.dw_size = htonl(size);
++
++	err = transfer(1, (unsigned char *) &dl_command, 20, &last_trans);
++	if (err) {
++		printf("transfer error at init step: err=%i, last_trans=%i\n",
++		       err, last_trans);
++		return err;
++	}
++
++	p = data;
++	cnt = size;
++
++	while (1) {
++		int now = get_min(cnt, usb_id->mach_id->max_transfer);
++
++		if (!now)
++			break;
++
++		err = transfer(2, p, now, &now);
++		if (err) {
++			printf("dl_command err=%i, last_trans=%i\n", err, now);
++			return err;
++		}
++
++		p += now;
++		cnt -= now;
++	}
++
++	err = transfer(3, tmp, sizeof(tmp), &last_trans);
++	if (err < 0)
++		printf("transfer error at final stage: err=%i, last_trans=%i\n",
++		       err, last_trans);
++
++	return err;
 +}
 +
-+static int efi_serial_setbaudrate(struct console_device *cdev, int baudrate)
++static int mxs_work(struct usb_work *curr)
 +{
-+	struct efi_serial_port *uart = to_efi_serial_port(cdev);
-+	struct efi_serial_io_protocol *serial = uart->serial;
-+	efi_status_t efiret;
++	unsigned fsize = 0;
++	unsigned char *buf = NULL;
++	int ret;
 +
-+	efiret = serial->set_attributes(serial, baudrate, 0, 0, NoParity, 8,
-+					OneStopBit);
-+	if (EFI_ERROR(efiret))
-+		return -efi_errno(efiret);
++	ret = read_file(curr->filename, &buf, &fsize);
++	if (ret < 0)
++		return ret;
 +
-+	return 0;
++	return mxs_load_file(usb_dev_handle, buf, fsize);
 +}
++/* end of mxs section */
 +
-+static void efi_serial_putc(struct console_device *cdev, char c)
-+{
-+	struct efi_serial_port *uart = to_efi_serial_port(cdev);
-+	struct efi_serial_io_protocol *serial = uart->serial;
-+	uint32_t control;
-+	efi_status_t efiret;
-+	unsigned long buffersize = sizeof(char);
+ static int parse_initfile(const char *filename)
+ {
+ 	struct config_data data = {
+@@ -1452,22 +1534,26 @@ int main(int argc, char *argv[])
+ 
+ 	usb_id->mach_id = mach;
+ 
+-	err = do_status();
+-	if (err) {
+-		printf("status failed\n");
+-		goto out;
+-	}
+-
+-	if (initfile) {
+-		err = parse_initfile(initfile);
+-		if (err)
++	if (mach->dev_type == DEV_MXS) {
++		ret = mxs_work(&w);
++	} else {
++		err = do_status();
++		if (err) {
++			printf("status failed\n");
+ 			goto out;
+-	}
++		}
+ 
+-	err = do_irom_download(&w, verify);
+-	if (err) {
+-		err = do_status();
+-		goto out;
++		if (initfile) {
++			err = parse_initfile(initfile);
++			if (err)
++				goto out;
++		}
 +
-+	do {
-+		efiret = serial->getcontrol(serial, &control);
-+		if (EFI_ERROR(efiret))
-+			return;
-+
-+	} while(!(control & EFI_SERIAL_CLEAR_TO_SEND));
-+
-+	serial->write(serial, &buffersize, &c);
-+}
-+
-+static int efi_serial_puts(struct console_device *cdev, const char *s)
-+{
-+	struct efi_serial_port *uart = to_efi_serial_port(cdev);
-+	struct efi_serial_io_protocol *serial = uart->serial;
-+	uint32_t control;
-+	efi_status_t efiret;
-+	unsigned long buffersize = strlen(s) * sizeof(char);
-+
-+	do {
-+		efiret = serial->getcontrol(serial, &control);
-+		if (EFI_ERROR(efiret))
-+			return 0;
-+
-+	} while(!(control & EFI_SERIAL_CLEAR_TO_SEND));
-+
-+	serial->write(serial, &buffersize, (void*)s);
-+
-+	return strlen(s);
-+}
-+
-+static int efi_serial_getc(struct console_device *cdev)
-+{
-+	struct efi_serial_port *uart = to_efi_serial_port(cdev);
-+	struct efi_serial_io_protocol *serial = uart->serial;
-+	uint32_t control;
-+	efi_status_t efiret;
-+	unsigned long buffersize = sizeof(char);
-+	char c;
-+
-+	do {
-+		efiret = serial->getcontrol(serial, &control);
-+		if (EFI_ERROR(efiret))
-+			return (int)-1;
-+
-+	} while(!(control & EFI_SERIAL_DATA_SET_READY));
-+
-+	serial->read(serial, &buffersize, &c);
-+
-+	return (int)c;
-+}
-+
-+static int efi_serial_tstc(struct console_device *cdev)
-+{
-+	struct efi_serial_port *uart = to_efi_serial_port(cdev);
-+	struct efi_serial_io_protocol *serial = uart->serial;
-+	uint32_t control;
-+	efi_status_t efiret;
-+
-+	efiret = serial->getcontrol(serial, &control);
-+	if (EFI_ERROR(efiret))
-+		return 0;
-+
-+	return !(control & EFI_SERIAL_INPUT_BUFFER_EMPTY);
-+}
-+
-+static int efi_serial_probe(struct efi_device *efidev)
-+{
-+	struct efi_serial_port *uart;
-+	struct console_device *cdev;
-+
-+	uart = xzalloc(sizeof(struct efi_serial_port));
-+
-+	cdev = &uart->uart;
-+	cdev->dev = &efidev->dev;
-+	cdev->tstc = efi_serial_tstc;
-+	cdev->putc = efi_serial_putc;
-+	cdev->puts = efi_serial_puts;
-+	cdev->getc = efi_serial_getc;
-+	cdev->setbrg = efi_serial_setbaudrate;
-+
-+	uart->serial = efidev->protocol;
-+
-+	uart->serial->reset(uart->serial);
-+
-+	/* Enable UART */
-+
-+	console_register(cdev);
-+
-+	return 0;
-+}
-+
-+static struct efi_driver efi_serial_driver = {
-+        .driver = {
-+		.name  = "efi-serial",
-+	},
-+        .probe = efi_serial_probe,
-+	.guid = EFI_SERIAL_IO_PROTOCOL_GUID,
-+};
-+device_efi_driver(efi_serial_driver);
++		err = do_irom_download(&w, verify);
++		if (err) {
++			err = do_status();
++			goto out;
++		}
+ 	}
+ 
+ 	ret = 0;
 -- 
 2.11.0
 
