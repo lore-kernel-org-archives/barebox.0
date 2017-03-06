@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from protonic.xs4all.nl ([83.163.252.89])
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1cjhjd-0007ME-UD
- for barebox@lists.infradead.org; Fri, 03 Mar 2017 07:34:44 +0000
-From: David Jander <david@protonic.nl>
-Date: Fri,  3 Mar 2017 08:33:53 +0100
-Message-Id: <20170303073353.27248-1-david@protonic.nl>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1ckmna-0001uA-Mf
+ for barebox@lists.infradead.org; Mon, 06 Mar 2017 07:11:17 +0000
+Date: Mon, 6 Mar 2017 08:10:50 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170306071050.ono6uylom53f6rlw@pengutronix.de>
+References: <20170228143127.2945-5-bst@pengutronix.de>
+ <20170303090633.11500-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170303090633.11500-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,45 +19,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] drivers: clk: clk-imx6.c: Don't gate LDB and IPUs
-To: barebox@lists.infradead.org
-Cc: David Jander <david@protonic.nl>
+Subject: Re: [PATCH] fixup! video: add support for Solomon SSD1307 OLED
+ controller family
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Depending on CONFIG_DRIVER_VIDEO_IMX_IPUV3 to decide whether to
-gate IPU clocks or not is rather fragile. Any inadvertent
-dependency on the IPU (like setting the NoC AQoS registers for
-i.MX6QP) will result in a freeze if CONFIG_DRIVER_VIDEO_IMX_IPUV3
-is disabled.
+On Fri, Mar 03, 2017 at 10:06:33AM +0100, Uwe Kleine-K=F6nig wrote:
+> ---
+>  drivers/video/ssd1307fb.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+> =
 
-Signed-off-by: David Jander <david@protonic.nl>
----
- drivers/clk/imx/clk-imx6.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx6.c b/drivers/clk/imx/clk-imx6.c
-index 8ac43be..d0571bc 100644
---- a/drivers/clk/imx/clk-imx6.c
-+++ b/drivers/clk/imx/clk-imx6.c
-@@ -494,10 +494,7 @@ static int imx6_ccm_probe(struct device_d *dev)
- 	writel(0xffffffff, ccm_base + CCGR0);
- 	writel(0xf0ffffff, ccm_base + CCGR1); /* gate GPU3D, GPU2D */
- 	writel(0xffffffff, ccm_base + CCGR2);
--	if (IS_ENABLED(CONFIG_DRIVER_VIDEO_IMX_IPUV3))
--		writel(0x3fffffff, ccm_base + CCGR3); /* gate OpenVG */
--	else
--		writel(0x3fff0000, ccm_base + CCGR3); /* gate OpenVG, LDB, IPU1, IPU2 */
-+	writel(0x3fffffff, ccm_base + CCGR3); /* gate OpenVG */
- 	if (IS_ENABLED(CONFIG_PCI_IMX6))
- 		writel(0xffffffff, ccm_base + CCGR4);
- 	else
--- 
-2.9.3
+Applied, thanks
 
+Sascha
+
+> diff --git a/drivers/video/ssd1307fb.c b/drivers/video/ssd1307fb.c
+> index ff4af2cdf493..7437d340ee41 100644
+> --- a/drivers/video/ssd1307fb.c
+> +++ b/drivers/video/ssd1307fb.c
+> @@ -415,9 +415,10 @@ static int ssd1307fb_probe(struct device_d *dev)
+>  					 "reset-gpios", 0);
+>  	if (!gpio_is_valid(par->reset)) {
+>  		ret =3D par->reset;
+> -		dev_err(&client->dev,
+> -			"Couldn't get named gpio 'reset-gpios': %s.\n",
+> -			strerror(-ret));
+> +		if (ret !=3D -EPROBE_DEFER)
+> +			dev_err(&client->dev,
+> +				"Couldn't get named gpio 'reset-gpios': %s.\n",
+> +				strerror(-ret));
+>  		goto fb_alloc_error;
+>  	}
+>  =
+
+> -- =
+
+> 2.11.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> =
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
