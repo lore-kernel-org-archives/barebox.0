@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ckmpO-00034K-EX
- for barebox@lists.infradead.org; Mon, 06 Mar 2017 07:13:10 +0000
-Date: Mon, 6 Mar 2017 08:12:44 +0100
+ id 1cknjv-000118-Vq
+ for barebox@lists.infradead.org; Mon, 06 Mar 2017 08:11:34 +0000
+Date: Mon, 6 Mar 2017 09:11:09 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170306071244.2aauk4esduxu2yop@pengutronix.de>
-References: <20170303094749.29319-1-robin@protonic.nl>
+Message-ID: <20170306081109.d5dltjktxtgp5xtb@pengutronix.de>
+References: <20170304071241.GG4120@mail.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170303094749.29319-1-robin@protonic.nl>
+In-Reply-To: <20170304071241.GG4120@mail.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] clk: imx: clk-imx6ul: Use anatop_base pointer for
- consistency
-To: Robin van der Gracht <robin@protonic.nl>
+Subject: Re: [RFC PATCH 0/2] use gnuhash to speed up device/driver match
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Mar 03, 2017 at 10:47:49AM +0100, Robin van der Gracht wrote:
-> The anatop_base pointer was unused, but instead of removing it, assign
-> and use it for readability like clk-imx6 and clk-imx6sx do.
+On Sat, Mar 04, 2017 at 08:12:41AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
 > 
-> Signed-off-by: Robin van der Gracht <robin@protonic.nl>
-> ---
->  drivers/clk/imx/clk-imx6ul.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+> 	The following patch series use the gnu hash to speedup device/driver
+> 	matching.
+> 
+> 	String compare is slow so we will calculate at runtime a hash that we
+> 	can compare quickly to speed up the match
+> 
+> 	in a second step we could speed up this more by calculating the hash
+> 	at compile time
 
-Applied, thanks
+On a i.MX53 quickstart board this patch reduces startup time from 115.9ms
+to 115.4ms. On a i.MX35 board the startup time is reduced by 72us. I
+don't think this is a valuable gain. Do you have any situation where you
+really spend significant time in strcmp?
 
 Sascha
-
-> 
-> diff --git a/drivers/clk/imx/clk-imx6ul.c b/drivers/clk/imx/clk-imx6ul.c
-> index 0ca0652..f28660d 100644
-> --- a/drivers/clk/imx/clk-imx6ul.c
-> +++ b/drivers/clk/imx/clk-imx6ul.c
-> @@ -91,6 +91,7 @@ static int imx6_ccm_probe(struct device_d *dev)
->  	int i;
->  	struct device_node *ccm_node = dev->device_node;
->  
-> +	anatop_base = IOMEM(MX6_ANATOP_BASE_ADDR);
->  	iores = dev_request_mem_resource(dev, 0);
->  	if (IS_ERR(iores))
->  		return PTR_ERR(iores);
-> @@ -100,8 +101,6 @@ static int imx6_ccm_probe(struct device_d *dev)
->  
->  	clks[IMX6UL_CLK_DUMMY] = clk_fixed("dummy", 0);
->  
-> -	base = IOMEM(MX6_ANATOP_BASE_ADDR);
-> -
->  	clks[IMX6UL_PLL1_BYPASS_SRC] = imx_clk_mux("pll1_bypass_src", base + 0x00, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
->  	clks[IMX6UL_PLL2_BYPASS_SRC] = imx_clk_mux("pll2_bypass_src", base + 0x30, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
->  	clks[IMX6UL_PLL3_BYPASS_SRC] = imx_clk_mux("pll3_bypass_src", base + 0x10, 14, 1, pll_bypass_src_sels, ARRAY_SIZE(pll_bypass_src_sels));
-> -- 
-> 2.9.3
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
