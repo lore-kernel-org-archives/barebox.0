@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cl1WW-0007am-9Z
+ id 1cl1WW-0007al-5B
  for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:54:39 +0000
-Received: by mail-pg0-x243.google.com with SMTP id 77so8239530pgc.0
- for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:18 -0800 (PST)
+Received: by mail-pf0-x243.google.com with SMTP id j5so18949541pfb.3
+ for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:17 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  6 Mar 2017 14:53:18 -0800
-Message-Id: <20170306225356.31475-8-andrew.smirnov@gmail.com>
+Date: Mon,  6 Mar 2017 14:53:17 -0800
+Message-Id: <20170306225356.31475-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,31 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/45] serial: atmel: Check result of clk_get()
+Subject: [PATCH 06/45] clocksource: at91: Add DT compatibility table
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/serial/atmel.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/clocksource/timer-atmel-pit.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/serial/atmel.c b/drivers/serial/atmel.c
-index 4e4624e..d47b926 100644
---- a/drivers/serial/atmel.c
-+++ b/drivers/serial/atmel.c
-@@ -403,6 +403,11 @@ static int atmel_serial_init_port(struct console_device *cdev)
- 		return -ENOENT;
+diff --git a/drivers/clocksource/timer-atmel-pit.c b/drivers/clocksource/timer-atmel-pit.c
+index cc7ad2f..d59efa6 100644
+--- a/drivers/clocksource/timer-atmel-pit.c
++++ b/drivers/clocksource/timer-atmel-pit.c
+@@ -102,9 +102,18 @@ static int at91_pit_probe(struct device_d *dev)
+ 	return init_clock(&cs);
+ }
  
- 	uart->clk = clk_get(dev, "usart");
-+	if (IS_ERR(uart->clk)) {
-+		dev_err(dev, "Faield to get 'usart' clock\n");
-+		return PTR_ERR(uart->clk);
++static __maybe_unused struct of_device_id at91_pit_dt_ids[] = {
++	{
++		.compatible = "atmel,at91sam9260-pit",
++	}, {
++		/* sentinel */
 +	}
++};
 +
- 	clk_enable(uart->clk);
- 	uart->uartclk = clk_get_rate(uart->clk);
+ static struct driver_d at91_pit_driver = {
+ 	.name = "at91-pit",
+ 	.probe = at91_pit_probe,
++	.of_compatible = DRV_OF_COMPAT(at91_pit_dt_ids),
+ };
  
+ static int at91_pit_init(void)
 -- 
 2.9.3
 
