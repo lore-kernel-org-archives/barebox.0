@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cl1Wv-0007kQ-9i
- for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:55:10 +0000
-Received: by mail-pg0-x243.google.com with SMTP id 77so8240276pgc.0
- for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:42 -0800 (PST)
+ id 1cl1Wy-0007oj-PA
+ for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:55:12 +0000
+Received: by mail-pf0-x242.google.com with SMTP id 67so14532805pfg.2
+ for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:44 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  6 Mar 2017 14:53:44 -0800
-Message-Id: <20170306225356.31475-34-andrew.smirnov@gmail.com>
+Date: Mon,  6 Mar 2017 14:53:47 -0800
+Message-Id: <20170306225356.31475-37-andrew.smirnov@gmail.com>
 In-Reply-To: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,126 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 33/45] usb: ohci-at91: Convert global variables to private data
+Subject: [PATCH 36/45] usb/host: Allow USB_OHCI_AT91 even if USB_OHCI is
+ disabled
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Store driver data in per-device private variable as opposed to storing
-it in global vairables.
+When probing devices from DT, AT91 SoCs rely on OHCI driver to setup
+various GPIO (e.g. VBUS enabled) for EHCI block as well. So enable
+USB_OHCI_AT91 to be selected even if USB_OHCI is unavailible (due to its
+dependency on !MMU).
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/host/ohci-at91.c | 59 +++++++++++++++++++++++++++-----------------
- 1 file changed, 37 insertions(+), 22 deletions(-)
+ drivers/usb/host/Kconfig | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/usb/host/ohci-at91.c b/drivers/usb/host/ohci-at91.c
-index c70d898..57ca86a 100644
---- a/drivers/usb/host/ohci-at91.c
-+++ b/drivers/usb/host/ohci-at91.c
-@@ -27,66 +27,81 @@
+diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
+index 54eaf46..db44052 100644
+--- a/drivers/usb/host/Kconfig
++++ b/drivers/usb/host/Kconfig
+@@ -10,20 +10,17 @@ config USB_EHCI_OMAP
+ config USB_EHCI_ATMEL
+ 	depends on ARCH_AT91
+ 	depends on USB_EHCI
++	select USB_OHCI_AT91
+ 	bool "Atmel EHCI driver"
  
- #include "ohci.h"
+ config USB_OHCI
+ 	bool "OHCI driver"
+ 	depends on !MMU
  
--/* interface and function clocks; sometimes also an AHB clock */
--static struct clk *iclk, *fclk;
-+struct ohci_at91_priv {
-+	struct device_d *dev;
-+	struct clk *iclk;
-+	struct clk *fclk;
-+	struct ohci_regs __iomem *regs;
-+};
+-if USB_OHCI
+-
+ config USB_OHCI_AT91
+ 	depends on ARCH_AT91
+ 	bool "AT91 OHCI driver"
  
--static void at91_start_clock(void)
-+static void at91_start_clock(struct ohci_at91_priv *ohci_at91)
- {
--	clk_enable(iclk);
--	clk_enable(fclk);
-+	clk_enable(ohci_at91->iclk);
-+	clk_enable(ohci_at91->fclk);
- }
- 
--static void at91_stop_clock(void)
-+static void at91_stop_clock(struct ohci_at91_priv *ohci_at91)
- {
--	clk_disable(fclk);
--	clk_disable(iclk);
-+	clk_disable(ohci_at91->fclk);
-+	clk_disable(ohci_at91->iclk);
- }
- 
- static int at91_ohci_probe(struct device_d *dev)
- {
--	struct ohci_regs __iomem *regs = (struct ohci_regs __iomem *)dev->resource[0].start;
-+	struct resource *io;
-+	struct ohci_at91_priv *ohci_at91 = xzalloc(sizeof(*ohci_at91));
-+
-+	dev->priv = ohci_at91;
-+	ohci_at91->dev = dev;
-+
-+	io = dev_get_resource(dev, IORESOURCE_MEM, 0);
-+	if (IS_ERR(io)) {
-+		dev_err(dev, "Failed to get IORESOURCE_MEM\n");
-+		return PTR_ERR(io);
-+	}
-+	ohci_at91->regs = IOMEM(io->start);
- 
--	iclk = clk_get(NULL, "ohci_clk");
--	if (IS_ERR(iclk)) {
-+	ohci_at91->iclk = clk_get(NULL, "ohci_clk");
-+	if (IS_ERR(ohci_at91->iclk)) {
- 		dev_err(dev, "Failed to get 'iclk'\n");
--		return PTR_ERR(iclk);
-+		return PTR_ERR(ohci_at91->iclk);
- 	}
- 
--	fclk = clk_get(NULL, "uhpck");
--	if (IS_ERR(fclk)) {
-+	ohci_at91->fclk = clk_get(NULL, "uhpck");
-+	if (IS_ERR(ohci_at91->fclk)) {
- 		dev_err(dev, "Failed to get 'fclk'\n");
--		return PTR_ERR(fclk);
-+		return PTR_ERR(ohci_at91->fclk);
- 	}
- 
- 	/*
- 	 * Start the USB clocks.
- 	 */
--	at91_start_clock();
-+	at91_start_clock(ohci_at91);
- 
- 	/*
- 	 * The USB host controller must remain in reset.
- 	 */
--	writel(0, &regs->control);
-+	writel(0, &ohci_at91->regs->control);
- 
--	add_generic_device("ohci", DEVICE_ID_DYNAMIC, NULL, dev->resource[0].start,
--			   resource_size(&dev->resource[0]), IORESOURCE_MEM, NULL);
-+	add_generic_device("ohci", DEVICE_ID_DYNAMIC, NULL, io->start,
-+			   resource_size(io), IORESOURCE_MEM, NULL);
- 
- 	return 0;
- }
- 
- static void at91_ohci_remove(struct device_d *dev)
- {
--	struct ohci_regs __iomem *regs = (struct ohci_regs __iomem *)dev->resource[0].start;
-+	struct ohci_at91_priv *ohci_at91 = dev->priv;
- 
- 	/*
- 	 * Put the USB host controller into reset.
- 	 */
--	writel(0, &regs->control);
-+	writel(0, &ohci_at91->regs->control);
- 
- 	/*
- 	 * Stop the USB clocks.
- 	 */
--	at91_stop_clock();
-+	at91_stop_clock(ohci_at91);
- }
- 
- static struct driver_d at91_ohci_driver = {
+-endif
+-
+ config USB_XHCI
+ 	bool "xHCI driver"
+ 	depends on HAS_DMA
 -- 
 2.9.3
 
