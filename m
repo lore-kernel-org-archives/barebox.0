@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cl1Wi-0007bD-61
- for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:54:55 +0000
-Received: by mail-pg0-x242.google.com with SMTP id b5so4149796pgg.1
- for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:32 -0800 (PST)
+ id 1cl1Wl-0007bt-5e
+ for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:54:59 +0000
+Received: by mail-pf0-x243.google.com with SMTP id j5so18950084pfb.3
+ for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:34 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  6 Mar 2017 14:53:34 -0800
-Message-Id: <20170306225356.31475-24-andrew.smirnov@gmail.com>
+Date: Mon,  6 Mar 2017 14:53:35 -0800
+Message-Id: <20170306225356.31475-25-andrew.smirnov@gmail.com>
 In-Reply-To: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,90 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 23/45] of: base: Use scoring in DT device matching
+Subject: [PATCH 24/45] pinctrl: at91: Fix a bug in at91_pinctrl_set_state
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port Linux kernel algorithm for both of_device_is_compatible() and
-of_match_node(). With this change former now returns a score on the
-scale of 0 to INT_MAX/2, and the latter goes through all compatiblity
-entries and selects the entry that has the best matching score.
-
-This is needed for SoCs where IP blocks are backwards compatible and
-corresponding OF nodes can proclaim compatibility with several entries
-found in driver's compatiblity table. One such example would be PIO
-pinctrl block on AT91SAM9x5 SoCs which declare compatibility with with
-both "atmel,at91sam9x5-pinctrl" and "atmel,at91rm9200-pinctrl".
+Pin number, as specified in OF pinumx entries, is relative to each bank
+start, whereas both at91_mux_pin() and at91_pinctrl_set_conf() asssume
+absolute pin numbering, so we need to take into account each bank's pin
+base and convert pin number appropriately. Failing to do so results in
+any pinmux configuration being applied to pins in bank A.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/of/base.c | 37 +++++++++++++++++++++----------------
- 1 file changed, 21 insertions(+), 16 deletions(-)
+ drivers/pinctrl/pinctrl-at91.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 0c20fcd..bef8f1d 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -472,21 +472,20 @@ EXPORT_SYMBOL(of_get_cpu_node);
- int of_device_is_compatible(const struct device_node *device,
- 		const char *compat)
- {
-+	struct property *prop;
- 	const char *cp;
--	int cplen, l;
-+	int index = 0, score = 0;
+diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
+index e24c9be..34fb0ae 100644
+--- a/drivers/pinctrl/pinctrl-at91.c
++++ b/drivers/pinctrl/pinctrl-at91.c
+@@ -462,6 +462,8 @@ static int at91_pinctrl_set_state(struct pinctrl_device *pdev, struct device_nod
+ 		mux = be32_to_cpu(*list++);
+ 		conf = be32_to_cpu(*list++);
  
--	cp = of_get_property(device, "compatible", &cplen);
--	if (cp == NULL)
--		return 0;
--	while (cplen > 0) {
--		if (of_compat_cmp(cp, compat, strlen(compat)) == 0)
--			return 1;
--		l = strlen(cp) + 1;
--		cp += l;
--		cplen -= l;
-+	prop = of_find_property(device, "compatible", NULL);
-+	for (cp = of_prop_next_string(prop, NULL); cp;
-+	     cp = of_prop_next_string(prop, cp), index++) {
-+		if (of_compat_cmp(cp, compat, strlen(compat)) == 0) {
-+			score = INT_MAX/2 - (index << 2);
-+			break;
-+		}
- 	}
- 
--	return 0;
-+	return score;
- }
- EXPORT_SYMBOL(of_device_is_compatible);
- 
-@@ -602,16 +601,22 @@ EXPORT_SYMBOL(of_find_node_with_property);
- const struct of_device_id *of_match_node(const struct of_device_id *matches,
- 					 const struct device_node *node)
- {
-+	const struct of_device_id *best_match = NULL;
-+	int score, best_score = 0;
++		pin_num += bank_num * MAX_NB_GPIO_PER_BANK;
 +
- 	if (!matches || !node)
- 		return NULL;
- 
--	while (matches->compatible) {
--		if (of_device_is_compatible(node, matches->compatible) == 1)
--			return matches;
--		matches++;
-+	for (; matches->compatible; matches++) {
-+		score = of_device_is_compatible(node, matches->compatible);
-+
-+		if (score > best_score) {
-+			best_match = matches;
-+			best_score = score;
-+		}
- 	}
- 
--	return NULL;
-+	return best_match;
- }
- 
- /**
+ 		ret = at91_mux_pin(pin_num, mux, conf & PULL_UP);
+ 		if (ret) {
+ 			dev_err(pdev->dev, "failed to mux pin %d\n", pin_num);
 -- 
 2.9.3
 
