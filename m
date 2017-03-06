@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cl1Wl-0007dM-Pb
- for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:55:00 +0000
-Received: by mail-pf0-x241.google.com with SMTP id o126so4812122pfb.1
- for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:36 -0800 (PST)
+ id 1cl1Wl-0007fS-KL
+ for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:55:01 +0000
+Received: by mail-pg0-x244.google.com with SMTP id 187so7290105pgb.2
+ for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:39 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  6 Mar 2017 14:53:38 -0800
-Message-Id: <20170306225356.31475-28-andrew.smirnov@gmail.com>
+Date: Mon,  6 Mar 2017 14:53:41 -0800
+Message-Id: <20170306225356.31475-31-andrew.smirnov@gmail.com>
 In-Reply-To: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,49 +23,101 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 27/45] spi: atmel_spi: Configure CS GPIO as output
+Subject: [PATCH 30/45] w1-gpio: Add DT support
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On AT91 GPIOs default to being inputs, so we need to explicitly
-configure CS gpio to being an output.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/spi/atmel_spi.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/w1/masters/w1-gpio.c | 53 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/drivers/spi/atmel_spi.c b/drivers/spi/atmel_spi.c
-index 68466ef..b183344 100644
---- a/drivers/spi/atmel_spi.c
-+++ b/drivers/spi/atmel_spi.c
-@@ -173,6 +173,8 @@ static int atmel_spi_setup(struct spi_device *spi)
- 	struct spi_master	*master = spi->master;
- 	struct atmel_spi	*as = to_atmel_spi(master);
+diff --git a/drivers/w1/masters/w1-gpio.c b/drivers/w1/masters/w1-gpio.c
+index 946e9d3..916027e 100644
+--- a/drivers/w1/masters/w1-gpio.c
++++ b/drivers/w1/masters/w1-gpio.c
+@@ -16,6 +16,7 @@
+ #include <driver.h>
+ #include <linux/w1-gpio.h>
+ #include <gpio.h>
++#include <of_gpio.h>
  
-+	int			npcs_pin;
-+	unsigned		active = spi->mode & SPI_CS_HIGH;
- 	u32			scbr, csr;
- 	unsigned int		bits = spi->bits_per_word;
- 	unsigned long		bus_hz;
-@@ -184,6 +186,8 @@ static int atmel_spi_setup(struct spi_device *spi)
- 		return -EINVAL;
- 	}
+ #include "../w1.h"
  
-+	npcs_pin = as->cs_pins[spi->chip_select];
+@@ -43,12 +44,58 @@ static u8 w1_gpio_read_bit(struct w1_bus *bus)
+ 	return gpio_get_value(pdata->pin) ? 1 : 0;
+ }
+ 
++static int w1_gpio_probe_dt(struct device_d *dev)
++{
++	struct w1_gpio_platform_data *pdata;
++	struct device_node *np = dev->device_node;
++	int gpio;
 +
- 	if (bits < 8 || bits > 16) {
- 		dev_dbg(&spi->dev,
- 				"setup: invalid bits_per_word %u (8 to 16)\n",
-@@ -236,7 +240,7 @@ static int atmel_spi_setup(struct spi_device *spi)
- 	csr |= SPI_BF(DLYBS, 0);
- 	csr |= SPI_BF(DLYBCT, 0);
++	if (dev->platform_data)
++		return 0;
++
++	pdata = xzalloc(sizeof(*pdata));
++
++	if (of_get_property(np, "linux,open-drain", NULL))
++		pdata->is_open_drain = 1;
++
++	gpio = of_get_gpio(np, 0);
++	if (!gpio_is_valid(gpio)) {
++		if (gpio != -EPROBE_DEFER)
++			dev_err(dev,
++				"Failed to parse gpio property for data pin (%d)\n",
++				gpio);
++
++		goto free_pdata;
++	}
++	pdata->pin = gpio;
++
++	gpio = of_get_gpio(np, 1);
++	if (gpio == -EPROBE_DEFER)
++		goto free_pdata;
++
++	/* ignore other errors as the pullup gpio is optional */
++	pdata->ext_pullup_enable_pin = gpio;
++
++	dev->platform_data = pdata;
++	return 0;
++
++free_pdata:
++	free(pdata);
++	return gpio;
++}
++
+ static int __init w1_gpio_probe(struct device_d *dev)
+ {
+ 	struct w1_bus *master;
+ 	struct w1_gpio_platform_data *pdata;
+ 	int err;
  
--	/* gpio_direction_output(npcs_pin, !(spi->mode & SPI_CS_HIGH)); */
-+	gpio_direction_output(npcs_pin, !active);
- 	dev_dbg(master->dev,
- 		"setup: %lu Hz bpw %u mode 0x%x -> csr%d %08x\n",
- 		bus_hz / scbr, bits, spi->mode, spi->chip_select, csr);
++	if (IS_ENABLED(CONFIG_OFDEVICE)) {
++		err = w1_gpio_probe_dt(dev);
++		if (err < 0)
++			return err;
++	}
++
+ 	pdata = dev->platform_data;
+ 
+ 	if (!pdata)
+@@ -104,8 +151,14 @@ static int __init w1_gpio_probe(struct device_d *dev)
+ 	return err;
+ }
+ 
++static __maybe_unused const struct of_device_id w1_gpio_dt_ids[] = {
++	{ .compatible = "w1-gpio" },
++	{}
++};
++
+ static struct driver_d w1_gpio_driver = {
+ 	.name	= "w1-gpio",
+ 	.probe	= w1_gpio_probe,
++	.of_compatible = DRV_OF_COMPAT(w1_gpio_dt_ids),
+ };
+ device_platform_driver(w1_gpio_driver);
 -- 
 2.9.3
 
