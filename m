@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cl1Wl-0007cN-PX
- for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:55:06 +0000
-Received: by mail-pf0-x241.google.com with SMTP id 67so14532562pfg.2
- for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:35 -0800 (PST)
+ id 1cl1Wu-0007lw-A6
+ for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:55:08 +0000
+Received: by mail-pg0-x241.google.com with SMTP id b5so4150140pgg.1
+ for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:43 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  6 Mar 2017 14:53:37 -0800
-Message-Id: <20170306225356.31475-27-andrew.smirnov@gmail.com>
+Date: Mon,  6 Mar 2017 14:53:45 -0800
+Message-Id: <20170306225356.31475-35-andrew.smirnov@gmail.com>
 In-Reply-To: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,88 +23,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 26/45] spi: atmel_spi: Add DT support
+Subject: [PATCH 34/45] usb: ohci-at91: Check result of clk_enable()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/spi/atmel_spi.c | 29 ++++++++++++++++++++++++++---
- 1 file changed, 26 insertions(+), 3 deletions(-)
+ drivers/usb/host/ohci-at91.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/atmel_spi.c b/drivers/spi/atmel_spi.c
-index 3f2c527..68466ef 100644
---- a/drivers/spi/atmel_spi.c
-+++ b/drivers/spi/atmel_spi.c
-@@ -29,6 +29,7 @@
- #include <clock.h>
- #include <xfuncs.h>
- #include <gpio.h>
-+#include <of_gpio.h>
- #include <io.h>
- #include <spi/spi.h>
- #include <mach/io.h>
-@@ -375,10 +376,11 @@ static int atmel_spi_probe(struct device_d *dev)
- 	int ret = 0;
- 	int i;
- 	struct spi_master *master;
-+	struct device_node *node = dev->device_node;
- 	struct atmel_spi *as;
- 	struct at91_spi_platform_data *pdata = dev->platform_data;
+diff --git a/drivers/usb/host/ohci-at91.c b/drivers/usb/host/ohci-at91.c
+index 57ca86a..f413616 100644
+--- a/drivers/usb/host/ohci-at91.c
++++ b/drivers/usb/host/ohci-at91.c
+@@ -34,10 +34,23 @@ struct ohci_at91_priv {
+ 	struct ohci_regs __iomem *regs;
+ };
  
--	if (!pdata) {
-+	if (!IS_ENABLED(CONFIG_OFDEVICE) && !pdata) {
- 		dev_err(dev, "missing platform data\n");
- 		return -EINVAL;
- 	}
-@@ -389,6 +391,23 @@ static int atmel_spi_probe(struct device_d *dev)
- 	master->dev = dev;
- 	master->bus_num = dev->id;
- 
-+	if (pdata) {
-+		master->num_chipselect = pdata->num_chipselect;
-+		as->cs_pins = pdata->chipselect;
-+	} else {
-+		master->num_chipselect = of_gpio_named_count(node, "cs-gpios");
-+		as->cs_pins = xzalloc(sizeof(u32) * master->num_chipselect);
+-static void at91_start_clock(struct ohci_at91_priv *ohci_at91)
++static int at91_start_clock(struct ohci_at91_priv *ohci_at91)
+ {
+-	clk_enable(ohci_at91->iclk);
+-	clk_enable(ohci_at91->fclk);
++	int ret;
 +
-+		for (i = 0; i < master->num_chipselect; i++) {
-+			as->cs_pins[i] = of_get_named_gpio(node, "cs-gpios", i);
-+
-+			if (!gpio_is_valid(as->cs_pins[i]))
-+			    break;
-+		}
-+
-+		master->num_chipselect = i;
++	ret = clk_enable(ohci_at91->iclk);
++	if (ret < 0) {
++		dev_err(ohci_at91->dev, "Failed to enable 'iclk'\n");
++		return ret;
 +	}
 +
- 	as->clk = clk_get(dev, "spi_clk");
- 	if (IS_ERR(as->clk)) {
- 		dev_err(dev, "no spi_clk\n");
-@@ -398,8 +417,6 @@ static int atmel_spi_probe(struct device_d *dev)
- 
- 	master->setup = atmel_spi_setup;
- 	master->transfer = atmel_spi_transfer;
--	master->num_chipselect = pdata->num_chipselect;
--	as->cs_pins = pdata->chipselect;
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores))
- 		return PTR_ERR(iores);
-@@ -438,8 +455,14 @@ out_free:
- 	return ret;
++	ret = clk_enable(ohci_at91->fclk);
++	if (ret < 0) {
++		dev_err(ohci_at91->dev, "Failed to enable 'fclk'\n");
++		return ret;
++	}
++
++	return 0;
  }
  
-+static __maybe_unused const struct of_device_id atmel_spi_dt_ids[] = {
-+	{ .compatible = "atmel,at91rm9200-spi" },
-+	{ /* sentinel */ }
-+};
-+
- static struct driver_d atmel_spi_driver = {
- 	.name  = "atmel_spi",
- 	.probe = atmel_spi_probe,
-+	.of_compatible = DRV_OF_COMPAT(atmel_spi_dt_ids),
- };
- device_platform_driver(atmel_spi_driver);
+ static void at91_stop_clock(struct ohci_at91_priv *ohci_at91)
+@@ -48,6 +61,7 @@ static void at91_stop_clock(struct ohci_at91_priv *ohci_at91)
+ 
+ static int at91_ohci_probe(struct device_d *dev)
+ {
++	int ret;
+ 	struct resource *io;
+ 	struct ohci_at91_priv *ohci_at91 = xzalloc(sizeof(*ohci_at91));
+ 
+@@ -76,7 +90,9 @@ static int at91_ohci_probe(struct device_d *dev)
+ 	/*
+ 	 * Start the USB clocks.
+ 	 */
+-	at91_start_clock(ohci_at91);
++	ret = at91_start_clock(ohci_at91);
++	if (ret < 0)
++		return ret;
+ 
+ 	/*
+ 	 * The USB host controller must remain in reset.
 -- 
 2.9.3
 
