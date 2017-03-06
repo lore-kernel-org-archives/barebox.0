@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cl1Wy-0007oj-PA
- for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:55:12 +0000
-Received: by mail-pf0-x242.google.com with SMTP id 67so14532805pfg.2
- for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:44 -0800 (PST)
+ id 1cl1Wy-0007rc-Ci
+ for barebox@lists.infradead.org; Mon, 06 Mar 2017 22:55:13 +0000
+Received: by mail-pf0-x244.google.com with SMTP id o126so4812379pfb.1
+ for <barebox@lists.infradead.org>; Mon, 06 Mar 2017 14:54:46 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  6 Mar 2017 14:53:47 -0800
-Message-Id: <20170306225356.31475-37-andrew.smirnov@gmail.com>
+Date: Mon,  6 Mar 2017 14:53:48 -0800
+Message-Id: <20170306225356.31475-38-andrew.smirnov@gmail.com>
 In-Reply-To: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,47 +23,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 36/45] usb/host: Allow USB_OHCI_AT91 even if USB_OHCI is
- disabled
+Subject: [PATCH 37/45] usb: ehci-atmel: Check result of clk_enable()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-When probing devices from DT, AT91 SoCs rely on OHCI driver to setup
-various GPIO (e.g. VBUS enabled) for EHCI block as well. So enable
-USB_OHCI_AT91 to be selected even if USB_OHCI is unavailible (due to its
-dependency on !MMU).
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/host/Kconfig | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/usb/host/ehci-atmel.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index 54eaf46..db44052 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -10,20 +10,17 @@ config USB_EHCI_OMAP
- config USB_EHCI_ATMEL
- 	depends on ARCH_AT91
- 	depends on USB_EHCI
-+	select USB_OHCI_AT91
- 	bool "Atmel EHCI driver"
+diff --git a/drivers/usb/host/ehci-atmel.c b/drivers/usb/host/ehci-atmel.c
+index cc9636c..fa9ca7d 100644
+--- a/drivers/usb/host/ehci-atmel.c
++++ b/drivers/usb/host/ehci-atmel.c
+@@ -32,10 +32,20 @@
+ /* interface and function clocks; sometimes also an AHB clock */
+ static struct clk *iclk, *fclk;
  
- config USB_OHCI
- 	bool "OHCI driver"
- 	depends on !MMU
+-static void atmel_start_clock(void)
++static int atmel_start_clock(void)
+ {
+-	clk_enable(iclk);
+-	clk_enable(fclk);
++	int ret;
++	ret = clk_enable(iclk);
++	if (ret < 0) {
++		pr_err("Error enabling interface clock\n");
++		return ret;
++	}
++
++	ret = clk_enable(fclk);
++	if (ret < 0)
++		pr_err("Error enabling function clock\n");
++
++	return ret;
+ }
  
--if USB_OHCI
--
- config USB_OHCI_AT91
- 	depends on ARCH_AT91
- 	bool "AT91 OHCI driver"
+ static void atmel_stop_clock(void)
+@@ -46,6 +56,7 @@ static void atmel_stop_clock(void)
  
--endif
--
- config USB_XHCI
- 	bool "xHCI driver"
- 	depends on HAS_DMA
+ static int atmel_ehci_probe(struct device_d *dev)
+ {
++	int ret;
+ 	struct resource *iores;
+ 	struct ehci_data data;
+ 
+@@ -64,7 +75,9 @@ static int atmel_ehci_probe(struct device_d *dev)
+ 	/*
+ 	 * Start the USB clocks.
+ 	 */
+-	atmel_start_clock();
++	ret = atmel_start_clock();
++	if (ret < 0)
++		return ret;
+ 
+ 	data.flags = 0;
+ 
 -- 
 2.9.3
 
