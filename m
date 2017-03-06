@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo173.mail-out.ovh.net ([178.33.251.49])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cklJs-0000Nf-V0
- for barebox@lists.infradead.org; Mon, 06 Mar 2017 05:36:30 +0000
-Received: from player791.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo173.mail-out.ovh.net (Postfix) with ESMTP id 9B2A02A362
- for <barebox@lists.infradead.org>; Mon,  6 Mar 2017 06:36:05 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  6 Mar 2017 06:42:13 +0100
-Message-Id: <1488778933-8452-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1ckmq2-0003Ob-VY
+ for barebox@lists.infradead.org; Mon, 06 Mar 2017 07:13:49 +0000
+Date: Mon, 6 Mar 2017 08:13:25 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170306071325.334zkyewmcjau6er@pengutronix.de>
+References: <20170303103841.11783-1-o.rempel@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170303103841.11783-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,35 +18,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] video: sdl fix typo
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] scripts: imx imx-usb-loader: warn if device was excluded
+ by path option
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/video/sdl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Fri, Mar 03, 2017 at 11:38:41AM +0100, Oleksij Rempel wrote:
+> notify user about the reason why device was ignored by imx-usb-loader.
+> 
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  scripts/imx/imx-usb-loader.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/video/sdl.c b/drivers/video/sdl.c
-index 5e1dc8e57..8f5b409ef 100644
---- a/drivers/video/sdl.c
-+++ b/drivers/video/sdl.c
-@@ -53,7 +53,7 @@ static int sdlfb_probe(struct device_d *dev)
- 	fb->yres = fb->mode->yres;
- 
- 	fb->priv = fb;
--	fb->fbops = &sdlfb_ops,
-+	fb->fbops = &sdlfb_ops;
- 
- 	fb->dev.parent = dev;
- 	fb->screen_base = xzalloc(fb->xres * fb->yres *
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+> index e8d746785..b2c9f8f5a 100644
+> --- a/scripts/imx/imx-usb-loader.c
+> +++ b/scripts/imx/imx-usb-loader.c
+> @@ -243,6 +243,8 @@ static int device_location_equal(libusb_device *device, const char *location)
+>  	/* walked the full path, all elements match */
+>  	if (path_step == path_len)
+>  		result = 1;
+> +	else
+> +		fprintf(stderr, " excluded by device path option\n");
+>  
+>  done:
+>  	free(loc);
+> -- 
+> 2.11.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.11.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
