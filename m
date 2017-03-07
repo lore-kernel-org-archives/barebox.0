@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cl9kU-0003SI-1R
- for barebox@lists.infradead.org; Tue, 07 Mar 2017 07:41:36 +0000
-Date: Tue, 7 Mar 2017 08:41:12 +0100
+ id 1cl9py-0005Sd-3d
+ for barebox@lists.infradead.org; Tue, 07 Mar 2017 07:47:16 +0000
+Date: Tue, 7 Mar 2017 08:46:52 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170307074112.j6mz6i7ffttmcja4@pengutronix.de>
-References: <20170303123219.GD4120@mail.ovh.net>
- <1488544445-20105-1-git-send-email-plagnioj@jcrosoft.com>
- <1488544445-20105-8-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20170307074652.xlw2mh2m7jxapthe@pengutronix.de>
+References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
+ <20170306225356.31475-8-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1488544445-20105-8-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20170306225356.31475-8-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,34 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 8/9] efi: clocksoure: add EFI event timer
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 07/45] serial: atmel: Check result of clk_get()
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Mar 03, 2017 at 01:34:04PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> with this we can be hw generic
-> 
-> If the EFI implement timestamp protocol we could use instead of event
-> but even EDK2 Never Ever compile it for any target.
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+On Mon, Mar 06, 2017 at 02:53:18PM -0800, Andrey Smirnov wrote:
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
-> +	freq = 1000 * 1000;
-> +	if (ticks_freq() < 800 * 1000) {
-> +		uint64_t nb_100ns;
-> +
-> +		freq = ticks_freq_x86();
-> +		nb_100ns = 10 * 1000 * 1000 / freq;
-> +		pr_warn("EFI Event timer too slow freq = %llu Hz\n", freq);
+>  drivers/serial/atmel.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/serial/atmel.c b/drivers/serial/atmel.c
+> index 4e4624e..d47b926 100644
+> --- a/drivers/serial/atmel.c
+> +++ b/drivers/serial/atmel.c
+> @@ -403,6 +403,11 @@ static int atmel_serial_init_port(struct console_device *cdev)
+>  		return -ENOENT;
+>  
+>  	uart->clk = clk_get(dev, "usart");
+> +	if (IS_ERR(uart->clk)) {
+> +		dev_err(dev, "Faield to get 'usart' clock\n");
 
-Applied this series for now. I weakened this message somewhat:
-
-		pr_warn("EFI Event timer slow, freq = %lluHz\n", freq);
-
-As this is not really an error, only an information one might want to
-know.
+s/Faield/Failed/
 
 Sascha
+
+> +		return PTR_ERR(uart->clk);
+> +	}
+> +
+>  	clk_enable(uart->clk);
+>  	uart->uartclk = clk_get_rate(uart->clk);
+>  
+> -- 
+> 2.9.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
