@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo178.mail-out.ovh.net ([46.105.76.150])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1clAdx-0001GD-Gt
- for barebox@lists.infradead.org; Tue, 07 Mar 2017 08:38:55 +0000
-Received: from player728.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo178.mail-out.ovh.net (Postfix) with ESMTP id D9F712F54E
- for <barebox@lists.infradead.org>; Tue,  7 Mar 2017 09:38:25 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue,  7 Mar 2017 09:44:25 +0100
-Message-Id: <1488876266-9845-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1clBrO-0007mw-OF
+ for barebox@lists.infradead.org; Tue, 07 Mar 2017 09:56:52 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Tue,  7 Mar 2017 10:56:32 +0100
+Message-Id: <20170307095632.13605-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +19,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] x86: efi: fix efiexit support
+Subject: [PATCH] ARM: imx233-olinuxino: add CONFIG_CONSOLE_ACTIVATE_ALL
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+if not set, barebox will use first console by default.
+On this board first console is KEYBOARD_GPIO, so we will end
+in unusable state.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/x86/mach-efi/elf_x86_64_efi.lds.S | 1 +
+ arch/arm/configs/imx233-olinuxino_defconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/mach-efi/elf_x86_64_efi.lds.S b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-index e1bc2120f..93d34d17a 100644
---- a/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-+++ b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-@@ -80,6 +80,7 @@ SECTIONS
- 		*(.rela.data*)
- 		*(.rela.barebox*)
- 		*(.rela.initcall*)
-+		*(.rela.exitcall*)
- 		*(.rela.got)
- 		*(.rela.stab)
- 	}
+diff --git a/arch/arm/configs/imx233-olinuxino_defconfig b/arch/arm/configs/imx233-olinuxino_defconfig
+index 991386b30..47d485b4e 100644
+--- a/arch/arm/configs/imx233-olinuxino_defconfig
++++ b/arch/arm/configs/imx233-olinuxino_defconfig
+@@ -20,6 +20,7 @@ CONFIG_BOOTM_INITRD=y
+ CONFIG_BOOTM_OFTREE=y
+ CONFIG_BOOTM_OFTREE_UIMAGE=y
+ CONFIG_BLSPEC=y
++CONFIG_CONSOLE_ACTIVATE_ALL=y
+ CONFIG_DEFAULT_COMPRESSION_LZO=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_RESET_SOURCE=y
 -- 
 2.11.0
 
