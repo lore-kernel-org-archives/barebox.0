@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x229.google.com ([2607:f8b0:400e:c00::229])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1clMMq-0003h9-Hh
- for barebox@lists.infradead.org; Tue, 07 Mar 2017 21:10:02 +0000
-Received: by mail-pf0-x229.google.com with SMTP id o126so5229234pfb.3
- for <barebox@lists.infradead.org>; Tue, 07 Mar 2017 13:09:37 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20170307081330.gb3iz6gebpbwlt3r@pengutronix.de>
+Received: from asavdk3.altibox.net ([109.247.116.14])
+ by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1clMCI-0007jJ-SJ
+ for barebox@lists.infradead.org; Tue, 07 Mar 2017 20:59:10 +0000
+Date: Tue, 7 Mar 2017 21:58:40 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20170307205840.GA5513@ravnborg.org>
 References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
- <20170307081330.gb3iz6gebpbwlt3r@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 7 Mar 2017 13:09:36 -0800
-Message-ID: <CAHQ1cqEz6H96032_rErSK1zCFCiZA=LAO-8gtjRriG-qnFUUFg@mail.gmail.com>
+ <20170307163416.GA26868@ravnborg.org>
+ <CF3DB1E1-345D-45EB-BF5F-1CAEA118B0DA@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CF3DB1E1-345D-45EB-BF5F-1CAEA118B0DA@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,54 +25,37 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 00/45] AT91, at91sam9x5ek updates
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
 
-On Tue, Mar 7, 2017 at 12:13 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> Hi Andrey,
->
-> On Mon, Mar 06, 2017 at 02:53:11PM -0800, Andrey Smirnov wrote:
->> Hi everyone,
->>
->> I recently had a chance to work with at91sam9x5ek board and as a part
->> of that effort I converted the code to support features found in
->> Barebox for i.MX based SoCs. Most notably this patchset converts
->> at91sam9x5ek to use multi-image PBL build process as well as adds
->> support for board initialization from attached devicetree blob.
->>
->> Sascha, at least for now, all of the patches, in chronological order,
->> are included in this submission. However if this proves to be too
->> burdensome to review, I'd be more than happy to split it into several
->> individual submissions. One such division could be:
->>
->>          - Generic bug fixes/infrastructure enhancements
->>          - Peripheral drivers updates
->>          - at91sam9x5ek specific changes
->>
->> Please let me know if that is preferrable.
->
-> I had a short look at all patches, overall they look good. Nevertheless
-> it would be good to sort them like you suggested. It just makes it
-> easier to apply.
->
+> > 
+> > When booting from an SD-Card/NOR-Flash/USB would I then need
+> > to use at91bootstrap, or can I use only barebox?
+> > 
+> > If I move forward with this and I can find an 9263
+> > evaluation kit I would then also update this.
+> On 9263 the sram is huge so you can build barebox as first stage
 
-OK, will do.
+Good - simplicity is good.
 
-> Thanks for working on this, a general AT91 overhaul was long overdue. I
-> hope this series prepares a path to cleanup the other AT91 SoCs aswell.
->
+> 
+> I add this a long time ago on usb_a9263_bootstrap_defconfig
+> or other (all the EK).
+> 
+> This will build a barebox that can load you image from multiple source in a sequence
+> 
+> and then use a std barebox
+> 
+> To switch to DT you will have to import the DT I did for the kernel
+OK, should be straighforward.
 
-Yeah, I have a bit more AT91 based hardware (at least SAMA5D3 Xplained
-board and maybe more), so I was hoping to get those done after this
-merge request.
+> and replace the hw i2c by a i2c gpio as the i2c IP on at91 has a lot of quirks
+> and for barebox it will not make sense to port it
+Seems less straightforward but doable.
 
-> The clock support you ported over from the kernel is for all AT91 SoCs
-> and not only one, right?
+I will see if I can find time to give it a try and then post patches.
 
-Yeah, I belive it should be usable by the whole AT91 family.
-
-Thanks,
-Andrey
+	Sam
 
 _______________________________________________
 barebox mailing list
