@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from 10.mo178.mail-out.ovh.net ([46.105.76.150])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1clAXj-0006HR-B0
- for barebox@lists.infradead.org; Tue, 07 Mar 2017 08:32:28 +0000
-From: Michael Olbrich <m.olbrich@pengutronix.de>
-Date: Tue,  7 Mar 2017 09:31:47 +0100
-Message-Id: <20170307083147.2471-1-m.olbrich@pengutronix.de>
-In-Reply-To: <20170227075044.egcbyi4cfrlmijbk@pengutronix.de>
-References: <20170227075044.egcbyi4cfrlmijbk@pengutronix.de>
+ id 1clAdx-0001GC-Gv
+ for barebox@lists.infradead.org; Tue, 07 Mar 2017 08:38:55 +0000
+Received: from player728.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo178.mail-out.ovh.net (Postfix) with ESMTP id DA8FE2F5B4
+ for <barebox@lists.infradead.org>; Tue,  7 Mar 2017 09:38:26 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Tue,  7 Mar 2017 09:44:26 +0100
+Message-Id: <1488876266-9845-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1488876266-9845-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1488876266-9845-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,47 +24,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! efi: move x86 efi boot support to x86 arch
+Subject: [PATCH 2/2] x86: efi: fix logo support
 To: barebox@lists.infradead.org
-Cc: Michael Olbrich <m.olbrich@pengutronix.de>
 
-As I noted in my other mail, this got lost during the move.
+we need to copy the logo section too
 
-Regards,
-Michael
-
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/x86/Makefile                      | 4 ++--
- arch/x86/mach-efi/elf_x86_64_efi.lds.S | 1 +
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index e837a2df972c..c36104c2c07f 100644
+index e837a2df9..6921b10a7 100644
 --- a/arch/x86/Makefile
 +++ b/arch/x86/Makefile
-@@ -84,8 +84,8 @@ cmd_barebox__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_barebox) -o $@	\
- quiet_cmd_efi_image = EFI-IMG $@
+@@ -85,7 +85,7 @@ quiet_cmd_efi_image = EFI-IMG $@
        cmd_efi_image = $(OBJCOPY) -j .text -j .sdata -j .data -j .dynamic \
  		      -j .dynsym -j .rel -j .rela -j .reloc -j __barebox_initcalls \
--		      -j __barebox_cmd -j .barebox_magicvar -j .bbenv.* \
+ 		      -j __barebox_cmd -j .barebox_magicvar -j .bbenv.* \
 -		      --target=$(TARGET) $< $@
-+		      -j __barebox_exitcalls -j __barebox_cmd -j .barebox_magicvar \
-+		      -j .bbenv.* --target=$(TARGET) $< $@
++		      -j .bblogo.* --target=$(TARGET) $< $@
  
  KBUILD_BINARY := barebox
  
-diff --git a/arch/x86/mach-efi/elf_x86_64_efi.lds.S b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-index e1bc2120fabc..93d34d17ab1f 100644
---- a/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-+++ b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-@@ -80,6 +80,7 @@ SECTIONS
- 		*(.rela.data*)
- 		*(.rela.barebox*)
- 		*(.rela.initcall*)
-+		*(.rela.exitcall*)
- 		*(.rela.got)
- 		*(.rela.stab)
- 	}
 -- 
 2.11.0
 
