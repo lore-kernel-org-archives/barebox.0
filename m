@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1clAFl-00075A-2v
- for barebox@lists.infradead.org; Tue, 07 Mar 2017 08:13:54 +0000
-Date: Tue, 7 Mar 2017 09:13:30 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170307081330.gb3iz6gebpbwlt3r@pengutronix.de>
-References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170306225356.31475-1-andrew.smirnov@gmail.com>
+ id 1clAXj-0006HR-B0
+ for barebox@lists.infradead.org; Tue, 07 Mar 2017 08:32:28 +0000
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Date: Tue,  7 Mar 2017 09:31:47 +0100
+Message-Id: <20170307083147.2471-1-m.olbrich@pengutronix.de>
+In-Reply-To: <20170227075044.egcbyi4cfrlmijbk@pengutronix.de>
+References: <20170227075044.egcbyi4cfrlmijbk@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,53 +16,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/45] AT91, at91sam9x5ek updates
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fixup! efi: move x86 efi boot support to x86 arch
+To: barebox@lists.infradead.org
+Cc: Michael Olbrich <m.olbrich@pengutronix.de>
 
-Hi Andrey,
+As I noted in my other mail, this got lost during the move.
 
-On Mon, Mar 06, 2017 at 02:53:11PM -0800, Andrey Smirnov wrote:
-> Hi everyone,
-> 
-> I recently had a chance to work with at91sam9x5ek board and as a part
-> of that effort I converted the code to support features found in
-> Barebox for i.MX based SoCs. Most notably this patchset converts
-> at91sam9x5ek to use multi-image PBL build process as well as adds
-> support for board initialization from attached devicetree blob.
-> 
-> Sascha, at least for now, all of the patches, in chronological order,
-> are included in this submission. However if this proves to be too
-> burdensome to review, I'd be more than happy to split it into several
-> individual submissions. One such division could be:
-> 
-> 	   - Generic bug fixes/infrastructure enhancements
-> 	   - Peripheral drivers updates
-> 	   - at91sam9x5ek specific changes
-> 
-> Please let me know if that is preferrable.
+Regards,
+Michael
 
-I had a short look at all patches, overall they look good. Nevertheless
-it would be good to sort them like you suggested. It just makes it
-easier to apply.
+---
+ arch/x86/Makefile                      | 4 ++--
+ arch/x86/mach-efi/elf_x86_64_efi.lds.S | 1 +
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-Thanks for working on this, a general AT91 overhaul was long overdue. I
-hope this series prepares a path to cleanup the other AT91 SoCs aswell.
-
-The clock support you ported over from the kernel is for all AT91 SoCs
-and not only one, right?
-
-Sascha
-
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index e837a2df972c..c36104c2c07f 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -84,8 +84,8 @@ cmd_barebox__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_barebox) -o $@	\
+ quiet_cmd_efi_image = EFI-IMG $@
+       cmd_efi_image = $(OBJCOPY) -j .text -j .sdata -j .data -j .dynamic \
+ 		      -j .dynsym -j .rel -j .rela -j .reloc -j __barebox_initcalls \
+-		      -j __barebox_cmd -j .barebox_magicvar -j .bbenv.* \
+-		      --target=$(TARGET) $< $@
++		      -j __barebox_exitcalls -j __barebox_cmd -j .barebox_magicvar \
++		      -j .bbenv.* --target=$(TARGET) $< $@
+ 
+ KBUILD_BINARY := barebox
+ 
+diff --git a/arch/x86/mach-efi/elf_x86_64_efi.lds.S b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+index e1bc2120fabc..93d34d17ab1f 100644
+--- a/arch/x86/mach-efi/elf_x86_64_efi.lds.S
++++ b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+@@ -80,6 +80,7 @@ SECTIONS
+ 		*(.rela.data*)
+ 		*(.rela.barebox*)
+ 		*(.rela.initcall*)
++		*(.rela.exitcall*)
+ 		*(.rela.got)
+ 		*(.rela.stab)
+ 	}
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
