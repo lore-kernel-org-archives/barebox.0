@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x235.google.com ([2607:f8b0:400e:c00::235])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1clMVJ-0007mN-IU
- for barebox@lists.infradead.org; Tue, 07 Mar 2017 21:18:47 +0000
-Received: by mail-pf0-x235.google.com with SMTP id v190so5338285pfb.1
- for <barebox@lists.infradead.org>; Tue, 07 Mar 2017 13:18:23 -0800 (PST)
+ id 1clMYU-0001U9-92
+ for barebox@lists.infradead.org; Tue, 07 Mar 2017 21:22:04 +0000
+Received: by mail-pg0-x242.google.com with SMTP id b5so1212030pgg.1
+ for <barebox@lists.infradead.org>; Tue, 07 Mar 2017 13:21:41 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20170307205840.GA5513@ravnborg.org>
+In-Reply-To: <20170307163531.GB26868@ravnborg.org>
 References: <20170306225356.31475-1-andrew.smirnov@gmail.com>
- <20170307163416.GA26868@ravnborg.org>
- <CF3DB1E1-345D-45EB-BF5F-1CAEA118B0DA@jcrosoft.com>
- <20170307205840.GA5513@ravnborg.org>
+ <20170306225356.31475-33-andrew.smirnov@gmail.com>
+ <20170307163531.GB26868@ravnborg.org>
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 7 Mar 2017 13:18:22 -0800
-Message-ID: <CAHQ1cqGExu7in-Na44wi+WWX6MyrkET3Rg15h_9Pe=OVLnQDYw@mail.gmail.com>
+Date: Tue, 7 Mar 2017 13:21:40 -0800
+Message-ID: <CAHQ1cqHuaA_3GXqqneUoBgH-xdzMBqTE7fHOP_Rx8cyoVEjVCg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,46 +25,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/45] AT91, at91sam9x5ek updates
+Subject: Re: [PATCH 32/45] usb: ohci-at91: Check result of clk_get()
 To: Sam Ravnborg <sam@ravnborg.org>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Tue, Mar 7, 2017 at 12:58 PM, Sam Ravnborg <sam@ravnborg.org> wrote:
->> >
->> > When booting from an SD-Card/NOR-Flash/USB would I then need
->> > to use at91bootstrap, or can I use only barebox?
->> >
->> > If I move forward with this and I can find an 9263
->> > evaluation kit I would then also update this.
->> On 9263 the sram is huge so you can build barebox as first stage
->
-> Good - simplicity is good.
->
-
-For  at91sam9x5ek I had to use at91bootstrap since there is first
-stage loader in Barebox for it. I don't know about 9263, but I trust
-Jean-Christophe to be correct on this one.
-
+On Tue, Mar 7, 2017 at 8:35 AM, Sam Ravnborg <sam@ravnborg.org> wrote:
+> On Mon, Mar 06, 2017 at 02:53:43PM -0800, Andrey Smirnov wrote:
+>> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+>> ---
+>>  drivers/usb/host/ohci-at91.c | 9 +++++++++
+>>  1 file changed, 9 insertions(+)
 >>
->> I add this a long time ago on usb_a9263_bootstrap_defconfig
->> or other (all the EK).
+>> diff --git a/drivers/usb/host/ohci-at91.c b/drivers/usb/host/ohci-at91.c
+>> index 0f5c8f1..c70d898 100644
+>> --- a/drivers/usb/host/ohci-at91.c
+>> +++ b/drivers/usb/host/ohci-at91.c
+>> @@ -47,7 +47,16 @@ static int at91_ohci_probe(struct device_d *dev)
+>>       struct ohci_regs __iomem *regs = (struct ohci_regs __iomem *)dev->resource[0].start;
 >>
->> This will build a barebox that can load you image from multiple source in a sequence
->>
->> and then use a std barebox
->>
->> To switch to DT you will have to import the DT I did for the kernel
-> OK, should be straighforward.
->
->> and replace the hw i2c by a i2c gpio as the i2c IP on at91 has a lot of quirks
->> and for barebox it will not make sense to port it
-> Seems less straightforward but doable.
+>>       iclk = clk_get(NULL, "ohci_clk");
+>> +     if (IS_ERR(iclk)) {
+>> +             dev_err(dev, "Failed to get 'iclk'\n");
+> iclk is the internal name. Woudl it make more sense to use "ohci_clk" here?
 >
 
-Not sure what the situation on 9263 is, but FWIW, kernel DT file from
-the kernel for 9x5ek secifies I2C0 as GPIO bitbanged on, and I believe
-I had it working so hopefully it would be just a DT related change
-that you'd need to do.
+I was looking at the corresponding kernel driver and that's where I
+got the name for the variable. If you think 'ohci_clk' is a better
+name I have no problem changing it.
+
+>> +             return PTR_ERR(iclk);
+>> +     }
+>> +
+>>       fclk = clk_get(NULL, "uhpck");
+>> +     if (IS_ERR(fclk)) {
+>> +             dev_err(dev, "Failed to get 'fclk'\n");
+> Likewise - uhpck?
+
+Ditto here.
 
 Thanks,
 Andrey Smirnov
