@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cljmI-0006el-95
- for barebox@lists.infradead.org; Wed, 08 Mar 2017 22:09:54 +0000
-Received: by mail-pf0-x243.google.com with SMTP id v190so5076628pfb.0
- for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:33 -0800 (PST)
+ id 1cljmI-0006ee-Ty
+ for barebox@lists.infradead.org; Wed, 08 Mar 2017 22:09:57 +0000
+Received: by mail-pg0-x242.google.com with SMTP id g2so150577pge.2
+ for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:32 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  8 Mar 2017 14:08:58 -0800
-Message-Id: <20170308220909.4560-10-andrew.smirnov@gmail.com>
+Date: Wed,  8 Mar 2017 14:08:57 -0800
+Message-Id: <20170308220909.4560-9-andrew.smirnov@gmail.com>
 In-Reply-To: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 References: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,90 +23,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/20] of: base: Use scoring in DT device matching
+Subject: [PATCH 08/20] clk: No-op CLK_OF_DECLARE if not enabled
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port Linux kernel algorithm for both of_device_is_compatible() and
-of_match_node(). With this change former now returns a score on the
-scale of 0 to INT_MAX/2, and the latter goes through all compatiblity
-entries and selects the entry that has the best matching score.
-
-This is needed for SoCs where IP blocks are backwards compatible and
-corresponding OF nodes can proclaim compatibility with several entries
-found in driver's compatiblity table. One such example would be PIO
-pinctrl block on AT91SAM9x5 SoCs which declare compatibility with with
-both "atmel,at91sam9x5-pinctrl" and "atmel,at91rm9200-pinctrl".
+Instead of wrapping each defenition of CLK_OF_DECLARE hook with
+preprocessor guards, change the definition of CLK_OF_DECLARE to expand
+into no-op if COMMON_CLK_OF_PROVIDER is not enabled.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/of/base.c | 37 +++++++++++++++++++++----------------
- 1 file changed, 21 insertions(+), 16 deletions(-)
+ drivers/clk/clk-fixed-factor.c | 2 --
+ drivers/clk/clk-fixed.c        | 3 +--
+ include/linux/clk.h            | 6 +++++-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 0c20fcd..bef8f1d 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -472,21 +472,20 @@ EXPORT_SYMBOL(of_get_cpu_node);
- int of_device_is_compatible(const struct device_node *device,
- 		const char *compat)
- {
-+	struct property *prop;
- 	const char *cp;
--	int cplen, l;
-+	int index = 0, score = 0;
- 
--	cp = of_get_property(device, "compatible", &cplen);
--	if (cp == NULL)
--		return 0;
--	while (cplen > 0) {
--		if (of_compat_cmp(cp, compat, strlen(compat)) == 0)
--			return 1;
--		l = strlen(cp) + 1;
--		cp += l;
--		cplen -= l;
-+	prop = of_find_property(device, "compatible", NULL);
-+	for (cp = of_prop_next_string(prop, NULL); cp;
-+	     cp = of_prop_next_string(prop, cp), index++) {
-+		if (of_compat_cmp(cp, compat, strlen(compat)) == 0) {
-+			score = INT_MAX/2 - (index << 2);
-+			break;
-+		}
- 	}
- 
--	return 0;
-+	return score;
- }
- EXPORT_SYMBOL(of_device_is_compatible);
- 
-@@ -602,16 +601,22 @@ EXPORT_SYMBOL(of_find_node_with_property);
- const struct of_device_id *of_match_node(const struct of_device_id *matches,
- 					 const struct device_node *node)
- {
-+	const struct of_device_id *best_match = NULL;
-+	int score, best_score = 0;
-+
- 	if (!matches || !node)
- 		return NULL;
- 
--	while (matches->compatible) {
--		if (of_device_is_compatible(node, matches->compatible) == 1)
--			return matches;
--		matches++;
-+	for (; matches->compatible; matches++) {
-+		score = of_device_is_compatible(node, matches->compatible);
-+
-+		if (score > best_score) {
-+			best_match = matches;
-+			best_score = score;
-+		}
- 	}
- 
--	return NULL;
-+	return best_match;
+diff --git a/drivers/clk/clk-fixed-factor.c b/drivers/clk/clk-fixed-factor.c
+index a3dbf33..0be4855 100644
+--- a/drivers/clk/clk-fixed-factor.c
++++ b/drivers/clk/clk-fixed-factor.c
+@@ -93,7 +93,6 @@ struct clk *clk_fixed_factor(const char *name,
+ 	return &f->clk;
  }
  
+-#if defined(CONFIG_COMMON_CLK_OF_PROVIDER)
  /**
+  * of_fixed_factor_clk_setup() - Setup function for simple fixed factor clock
+  */
+@@ -127,4 +126,3 @@ static int of_fixed_factor_clk_setup(struct device_node *node)
+ }
+ CLK_OF_DECLARE(fixed_factor_clk, "fixed-factor-clock",
+ 		of_fixed_factor_clk_setup);
+-#endif
+diff --git a/drivers/clk/clk-fixed.c b/drivers/clk/clk-fixed.c
+index f0f7fba..9fa9a93 100644
+--- a/drivers/clk/clk-fixed.c
++++ b/drivers/clk/clk-fixed.c
+@@ -55,7 +55,6 @@ struct clk *clk_fixed(const char *name, int rate)
+ 	return &fix->clk;
+ }
+ 
+-#if defined(CONFIG_COMMON_CLK_OF_PROVIDER)
+ /**
+  * of_fixed_clk_setup() - Setup function for simple fixed rate clock
+  */
+@@ -76,4 +75,4 @@ static int of_fixed_clk_setup(struct device_node *node)
+ 	return of_clk_add_provider(node, of_clk_src_simple_get, clk);
+ }
+ CLK_OF_DECLARE(fixed_clk, "fixed-clock", of_fixed_clk_setup);
+-#endif
++
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index a061398..f705532 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -324,12 +324,13 @@ struct clk *clk_register_composite(const char *name,
+ struct device_node;
+ struct of_phandle_args;
+ 
++#if defined(CONFIG_COMMON_CLK_OF_PROVIDER)
++
+ #define CLK_OF_DECLARE(name, compat, fn)				\
+ const struct of_device_id __clk_of_table_##name				\
+ __attribute__ ((unused,section (".__clk_of_table"))) \
+ 	= { .compatible = compat, .data = fn }
+ 
+-#if defined(CONFIG_COMMON_CLK_OF_PROVIDER)
+ int of_clk_add_provider(struct device_node *np,
+ 			struct clk *(*clk_src_get)(struct of_phandle_args *args,
+ 						   void *data),
+@@ -354,6 +355,9 @@ int of_clk_parent_fill(struct device_node *np, const char **parents,
+ 		       unsigned int size);
+ int of_clk_init(struct device_node *root, const struct of_device_id *matches);
+ #else
++
++#define CLK_OF_DECLARE(name, compat, fn)
++
+ static inline struct clk *of_clk_get(struct device_node *np, int index)
+ {
+ 	return ERR_PTR(-ENOENT);
 -- 
 2.9.3
 
