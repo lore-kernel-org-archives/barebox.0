@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cljmK-0006en-5X
- for barebox@lists.infradead.org; Wed, 08 Mar 2017 22:09:58 +0000
-Received: by mail-pg0-x241.google.com with SMTP id g2so150623pge.2
- for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:34 -0800 (PST)
+ id 1cljmI-0006eB-U1
+ for barebox@lists.infradead.org; Wed, 08 Mar 2017 22:09:59 +0000
+Received: by mail-pg0-x242.google.com with SMTP id 77so4615534pgc.0
+ for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:30 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  8 Mar 2017 14:08:59 -0800
-Message-Id: <20170308220909.4560-11-andrew.smirnov@gmail.com>
+Date: Wed,  8 Mar 2017 14:08:54 -0800
+Message-Id: <20170308220909.4560-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 References: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,31 +23,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/20] serial: atmel: Check result of clk_get()
+Subject: [PATCH 05/20] pinctrl: at91: Implement .get_direction hook
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/serial/atmel.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pinctrl/pinctrl-at91.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/serial/atmel.c b/drivers/serial/atmel.c
-index 4e4624e..ab94fd2 100644
---- a/drivers/serial/atmel.c
-+++ b/drivers/serial/atmel.c
-@@ -403,6 +403,11 @@ static int atmel_serial_init_port(struct console_device *cdev)
- 		return -ENOENT;
+diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
+index 34fb0ae..021c1e5 100644
+--- a/drivers/pinctrl/pinctrl-at91.c
++++ b/drivers/pinctrl/pinctrl-at91.c
+@@ -568,6 +568,21 @@ static int at91_gpio_direction_output(struct gpio_chip *chip, unsigned offset,
+ 	return 0;
+ }
  
- 	uart->clk = clk_get(dev, "usart");
-+	if (IS_ERR(uart->clk)) {
-+		dev_err(dev, "Failed to get 'usart' clock\n");
-+		return PTR_ERR(uart->clk);
-+	}
++static int at91_gpio_get_direction(struct gpio_chip *chip, unsigned offset)
++{
++	struct at91_gpio_chip *at91_gpio = to_at91_gpio_chip(chip);
++	void __iomem *pio = at91_gpio->regbase;
++	unsigned mask = 1 << offset;
++	u32 osr;
 +
- 	clk_enable(uart->clk);
- 	uart->uartclk = clk_get_rate(uart->clk);
- 
++	if (mask & __raw_readl(pio + PIO_PSR)) {
++		osr = __raw_readl(pio + PIO_OSR);
++		return !(osr & mask);
++	} else {
++		return -EBUSY;
++	}
++}
++
+ static int at91_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
+ {
+ 	struct at91_gpio_chip *at91_gpio = to_at91_gpio_chip(chip);
+@@ -603,6 +618,7 @@ static struct gpio_ops at91_gpio_ops = {
+ 	.free = at91_gpio_free,
+ 	.direction_input = at91_gpio_direction_input,
+ 	.direction_output = at91_gpio_direction_output,
++	.get_direction = at91_gpio_get_direction,
+ 	.get = at91_gpio_get,
+ 	.set = at91_gpio_set,
+ };
 -- 
 2.9.3
 
