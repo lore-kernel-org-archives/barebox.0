@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cljmI-0006eA-96
+ id 1cljmG-0006e2-1P
  for barebox@lists.infradead.org; Wed, 08 Mar 2017 22:09:53 +0000
-Received: by mail-pf0-x243.google.com with SMTP id 67so5068569pfg.2
- for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:29 -0800 (PST)
+Received: by mail-pf0-x242.google.com with SMTP id v190so5076382pfb.0
+ for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:27 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  8 Mar 2017 14:08:53 -0800
-Message-Id: <20170308220909.4560-5-andrew.smirnov@gmail.com>
+Date: Wed,  8 Mar 2017 14:08:52 -0800
+Message-Id: <20170308220909.4560-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 References: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,34 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/20] pinctrl: at91: Fix a bug in at91_pinctrl_set_state()
+Subject: [PATCH 03/20] pinctrl: at91: Fix a bug in at91_pinctrl_set_conf()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Pin number, as specified in OF pinumx entries, is relative to each bank
-start, whereas both at91_mux_pin() and at91_pinctrl_set_conf() asssume
-absolute pin numbering, so we need to take into account each bank's pin
-base and convert pin number appropriately. Failing to do so results in
-any pinmux configuration being applied to pins in bank A.
+Pin_to_controller returns struct at91_gpio_chip, whereas at91_mux_*
+functions expect void __iomem * pointing to controller register
+window. Fix the code to do appropriate conversion between the two.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pinctrl/pinctrl-at91.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pinctrl/pinctrl-at91.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
-index e24c9be..34fb0ae 100644
+index ebbc6f6..e24c9be 100644
 --- a/drivers/pinctrl/pinctrl-at91.c
 +++ b/drivers/pinctrl/pinctrl-at91.c
-@@ -462,6 +462,8 @@ static int at91_pinctrl_set_state(struct pinctrl_device *pdev, struct device_nod
- 		mux = be32_to_cpu(*list++);
- 		conf = be32_to_cpu(*list++);
+@@ -414,8 +414,10 @@ static int at91_pinctrl_set_conf(struct at91_pinctrl *info, unsigned int pin_num
+ {
+ 	unsigned int mask;
+ 	void __iomem *pio;
++	struct at91_gpio_chip *at91_gpio;
  
-+		pin_num += bank_num * MAX_NB_GPIO_PER_BANK;
-+
- 		ret = at91_mux_pin(pin_num, mux, conf & PULL_UP);
- 		if (ret) {
- 			dev_err(pdev->dev, "failed to mux pin %d\n", pin_num);
+-	pio = pin_to_controller(pin_num);
++	at91_gpio = pin_to_controller(pin_num);
++	pio  = at91_gpio->regbase;
+ 	mask = pin_to_mask(pin_num);
+ 
+ 	if (conf & PULL_UP && conf & PULL_DOWN)
 -- 
 2.9.3
 
