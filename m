@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cljmQ-0006lw-KO
- for barebox@lists.infradead.org; Wed, 08 Mar 2017 22:10:10 +0000
-Received: by mail-pg0-x243.google.com with SMTP id 25so4617710pgy.3
- for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:42 -0800 (PST)
+ id 1cljmR-0006iq-T3
+ for barebox@lists.infradead.org; Wed, 08 Mar 2017 22:10:11 +0000
+Received: by mail-pf0-x243.google.com with SMTP id v190so5076941pfb.0
+ for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:40 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  8 Mar 2017 14:09:07 -0800
-Message-Id: <20170308220909.4560-19-andrew.smirnov@gmail.com>
+Date: Wed,  8 Mar 2017 14:09:05 -0800
+Message-Id: <20170308220909.4560-17-andrew.smirnov@gmail.com>
 In-Reply-To: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 References: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,49 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/20] spi: atmel_spi: Configure CS GPIO as output
+Subject: [PATCH 16/20] usb: ehci-atmel: Zero ehci_data before using it
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On AT91 GPIOs default to being inputs, so we need to explicitly
-configure CS gpio to being an output.
+Zero ehci_data before using it as an argument for echi_register,
+otherwise bogus values (some of which are interpreted as callbacks) will
+be passed through, resulting in illegal memory accesses.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/spi/atmel_spi.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/host/ehci-atmel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/atmel_spi.c b/drivers/spi/atmel_spi.c
-index 3f2c527..67028e6 100644
---- a/drivers/spi/atmel_spi.c
-+++ b/drivers/spi/atmel_spi.c
-@@ -172,6 +172,8 @@ static int atmel_spi_setup(struct spi_device *spi)
- 	struct spi_master	*master = spi->master;
- 	struct atmel_spi	*as = to_atmel_spi(master);
+diff --git a/drivers/usb/host/ehci-atmel.c b/drivers/usb/host/ehci-atmel.c
+index 7a9d942..4b9fc0a 100644
+--- a/drivers/usb/host/ehci-atmel.c
++++ b/drivers/usb/host/ehci-atmel.c
+@@ -89,7 +89,7 @@ static int atmel_ehci_probe(struct device_d *dev)
+ 	if (ret < 0)
+ 		return ret;
  
-+	int			npcs_pin;
-+	unsigned		active = spi->mode & SPI_CS_HIGH;
- 	u32			scbr, csr;
- 	unsigned int		bits = spi->bits_per_word;
- 	unsigned long		bus_hz;
-@@ -183,6 +185,8 @@ static int atmel_spi_setup(struct spi_device *spi)
- 		return -EINVAL;
- 	}
+-	data.flags = 0;
++	memset(&data, 0, sizeof(data));
  
-+	npcs_pin = as->cs_pins[spi->chip_select];
-+
- 	if (bits < 8 || bits > 16) {
- 		dev_dbg(&spi->dev,
- 				"setup: invalid bits_per_word %u (8 to 16)\n",
-@@ -235,7 +239,7 @@ static int atmel_spi_setup(struct spi_device *spi)
- 	csr |= SPI_BF(DLYBS, 0);
- 	csr |= SPI_BF(DLYBCT, 0);
- 
--	/* gpio_direction_output(npcs_pin, !(spi->mode & SPI_CS_HIGH)); */
-+	gpio_direction_output(npcs_pin, !active);
- 	dev_dbg(master->dev,
- 		"setup: %lu Hz bpw %u mode 0x%x -> csr%d %08x\n",
- 		bus_hz / scbr, bits, spi->mode, spi->chip_select, csr);
+ 	iores = dev_request_mem_resource(dev, 0);
+ 	if (IS_ERR(iores))
 -- 
 2.9.3
 
