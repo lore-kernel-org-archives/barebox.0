@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cljmI-0006eB-U1
- for barebox@lists.infradead.org; Wed, 08 Mar 2017 22:09:59 +0000
-Received: by mail-pg0-x242.google.com with SMTP id 77so4615534pgc.0
- for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:30 -0800 (PST)
+ id 1cljmO-0006fe-GW
+ for barebox@lists.infradead.org; Wed, 08 Mar 2017 22:10:03 +0000
+Received: by mail-pf0-x241.google.com with SMTP id 67so5068919pfg.2
+ for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:38 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  8 Mar 2017 14:08:54 -0800
-Message-Id: <20170308220909.4560-6-andrew.smirnov@gmail.com>
+Date: Wed,  8 Mar 2017 14:09:03 -0800
+Message-Id: <20170308220909.4560-15-andrew.smirnov@gmail.com>
 In-Reply-To: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 References: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,49 +23,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/20] pinctrl: at91: Implement .get_direction hook
+Subject: [PATCH 14/20] usb: ehci-atmel: Check result of clk_enable()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pinctrl/pinctrl-at91.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/usb/host/ehci-atmel.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
-index 34fb0ae..021c1e5 100644
---- a/drivers/pinctrl/pinctrl-at91.c
-+++ b/drivers/pinctrl/pinctrl-at91.c
-@@ -568,6 +568,21 @@ static int at91_gpio_direction_output(struct gpio_chip *chip, unsigned offset,
- 	return 0;
+diff --git a/drivers/usb/host/ehci-atmel.c b/drivers/usb/host/ehci-atmel.c
+index cc9636c..fa9ca7d 100644
+--- a/drivers/usb/host/ehci-atmel.c
++++ b/drivers/usb/host/ehci-atmel.c
+@@ -32,10 +32,20 @@
+ /* interface and function clocks; sometimes also an AHB clock */
+ static struct clk *iclk, *fclk;
+ 
+-static void atmel_start_clock(void)
++static int atmel_start_clock(void)
+ {
+-	clk_enable(iclk);
+-	clk_enable(fclk);
++	int ret;
++	ret = clk_enable(iclk);
++	if (ret < 0) {
++		pr_err("Error enabling interface clock\n");
++		return ret;
++	}
++
++	ret = clk_enable(fclk);
++	if (ret < 0)
++		pr_err("Error enabling function clock\n");
++
++	return ret;
  }
  
-+static int at91_gpio_get_direction(struct gpio_chip *chip, unsigned offset)
-+{
-+	struct at91_gpio_chip *at91_gpio = to_at91_gpio_chip(chip);
-+	void __iomem *pio = at91_gpio->regbase;
-+	unsigned mask = 1 << offset;
-+	u32 osr;
-+
-+	if (mask & __raw_readl(pio + PIO_PSR)) {
-+		osr = __raw_readl(pio + PIO_OSR);
-+		return !(osr & mask);
-+	} else {
-+		return -EBUSY;
-+	}
-+}
-+
- static int at91_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
+ static void atmel_stop_clock(void)
+@@ -46,6 +56,7 @@ static void atmel_stop_clock(void)
+ 
+ static int atmel_ehci_probe(struct device_d *dev)
  {
- 	struct at91_gpio_chip *at91_gpio = to_at91_gpio_chip(chip);
-@@ -603,6 +618,7 @@ static struct gpio_ops at91_gpio_ops = {
- 	.free = at91_gpio_free,
- 	.direction_input = at91_gpio_direction_input,
- 	.direction_output = at91_gpio_direction_output,
-+	.get_direction = at91_gpio_get_direction,
- 	.get = at91_gpio_get,
- 	.set = at91_gpio_set,
- };
++	int ret;
+ 	struct resource *iores;
+ 	struct ehci_data data;
+ 
+@@ -64,7 +75,9 @@ static int atmel_ehci_probe(struct device_d *dev)
+ 	/*
+ 	 * Start the USB clocks.
+ 	 */
+-	atmel_start_clock();
++	ret = atmel_start_clock();
++	if (ret < 0)
++		return ret;
+ 
+ 	data.flags = 0;
+ 
 -- 
 2.9.3
 
