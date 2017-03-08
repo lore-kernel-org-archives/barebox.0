@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cljmF-0006dx-Is
- for barebox@lists.infradead.org; Wed, 08 Mar 2017 22:09:49 +0000
-Received: by mail-pg0-x241.google.com with SMTP id b5so4631974pgg.1
- for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:27 -0800 (PST)
+ id 1cljmI-0006eA-96
+ for barebox@lists.infradead.org; Wed, 08 Mar 2017 22:09:53 +0000
+Received: by mail-pf0-x243.google.com with SMTP id 67so5068569pfg.2
+ for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:29 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  8 Mar 2017 14:08:51 -0800
-Message-Id: <20170308220909.4560-3-andrew.smirnov@gmail.com>
+Date: Wed,  8 Mar 2017 14:08:53 -0800
+Message-Id: <20170308220909.4560-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 References: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,141 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/20] regmap: Implement syscon_node_to_regmap()
+Subject: [PATCH 04/20] pinctrl: at91: Fix a bug in at91_pinctrl_set_state()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Implement syscon_node_to_regmap() to simplify porting kernel code.
+Pin number, as specified in OF pinumx entries, is relative to each bank
+start, whereas both at91_mux_pin() and at91_pinctrl_set_conf() asssume
+absolute pin numbering, so we need to take into account each bank's pin
+base and convert pin number appropriately. Failing to do so results in
+any pinmux configuration being applied to pins in bank A.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mfd/syscon.c | 54 +++++++++++++++++++++++++++++++++++++++++++++++++++-
- include/mfd/syscon.h |  8 ++++++++
- 2 files changed, 61 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-at91.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 6ef30ce..957d9a7 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -28,6 +28,34 @@ struct syscon {
- 	struct device_node *np;
- 	void __iomem *base;
- 	struct list_head list;
-+	struct regmap *regmap;
-+};
-+
-+static int syscon_reg_write(void *context, unsigned int reg,
-+			    unsigned int val)
-+{
-+	struct syscon *syscon = context;
-+	writel(val, syscon->base + reg);
-+	return 0;
-+}
-+
-+static int syscon_reg_read(void *context, unsigned int reg,
-+			   unsigned int *val)
-+{
-+	struct syscon *syscon = context;
-+	*val = readl(syscon->base + reg);
-+	return 0;
-+}
-+
-+static const struct regmap_bus syscon_regmap_bus = {
-+	.reg_write = syscon_reg_write,
-+	.reg_read  = syscon_reg_read,
-+};
-+
-+static const struct regmap_config syscon_regmap_config = {
-+	.reg_bits = 32,
-+	.val_bits = 32,
-+	.reg_stride = 4,
- };
+diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
+index e24c9be..34fb0ae 100644
+--- a/drivers/pinctrl/pinctrl-at91.c
++++ b/drivers/pinctrl/pinctrl-at91.c
+@@ -462,6 +462,8 @@ static int at91_pinctrl_set_state(struct pinctrl_device *pdev, struct device_nod
+ 		mux = be32_to_cpu(*list++);
+ 		conf = be32_to_cpu(*list++);
  
- static struct syscon *of_syscon_register(struct device_node *np)
-@@ -51,6 +79,10 @@ static struct syscon *of_syscon_register(struct device_node *np)
- 
- 	list_add_tail(&syscon->list, &syscon_list);
- 
-+	syscon->regmap = regmap_init(NULL,
-+				     &syscon_regmap_bus,
-+				     syscon,
-+				     &syscon_regmap_config);
- 	return syscon;
- 
- err_map:
-@@ -58,7 +90,7 @@ err_map:
- 	return ERR_PTR(ret);
- }
- 
--static void __iomem *syscon_node_to_base(struct device_node *np)
-+static struct syscon *node_to_syscon(struct device_node *np)
- {
- 	struct syscon *entry, *syscon = NULL;
- 
-@@ -74,6 +106,16 @@ static void __iomem *syscon_node_to_base(struct device_node *np)
- 	if (IS_ERR(syscon))
- 		return ERR_CAST(syscon);
- 
-+	return syscon;
-+}
++		pin_num += bank_num * MAX_NB_GPIO_PER_BANK;
 +
-+static void __iomem *syscon_node_to_base(struct device_node *np)
-+{
-+	struct syscon *syscon = node_to_syscon(np);
-+
-+	if (IS_ERR(syscon))
-+		return ERR_CAST(syscon);
-+
- 	return syscon->base;
- }
- 
-@@ -108,6 +150,16 @@ void __iomem *syscon_base_lookup_by_phandle(struct device_node *np,
- 	return syscon_node_to_base(syscon_np);
- }
- 
-+struct regmap *syscon_node_to_regmap(struct device_node *np)
-+{
-+	struct syscon *syscon = node_to_syscon(np);
-+
-+	if (IS_ERR(syscon))
-+		return ERR_CAST(syscon);
-+
-+	return syscon->regmap;
-+}
-+
- static int syscon_probe(struct device_d *dev)
- {
- 	struct syscon *syscon;
-diff --git a/include/mfd/syscon.h b/include/mfd/syscon.h
-index 651d4c2..63b893e 100644
---- a/include/mfd/syscon.h
-+++ b/include/mfd/syscon.h
-@@ -14,10 +14,13 @@
- #ifndef __MFD_SYSCON_H__
- #define __MFD_SYSCON_H__
- 
-+#include <regmap.h>
-+
- #ifdef CONFIG_MFD_SYSCON
- void __iomem *syscon_base_lookup_by_pdevname(const char *s);
- void __iomem *syscon_base_lookup_by_phandle
- 	(struct device_node *np, const char *property);
-+struct regmap *syscon_node_to_regmap(struct device_node *np);
- #else
- static inline void __iomem *syscon_base_lookup_by_pdevname(const char *s)
- {
-@@ -29,6 +32,11 @@ static inline void __iomem *syscon_base_lookup_by_phandle
- {
- 	return ERR_PTR(-ENOSYS);
- }
-+
-+static inline struct regmap *syscon_node_to_regmap(struct device_node *np)
-+{
-+	return ERR_PTR(-ENOSYS);
-+}
- #endif
- 
- #endif
+ 		ret = at91_mux_pin(pin_num, mux, conf & PULL_UP);
+ 		if (ret) {
+ 			dev_err(pdev->dev, "failed to mux pin %d\n", pin_num);
 -- 
 2.9.3
 
