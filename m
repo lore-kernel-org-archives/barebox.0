@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1clXpc-0000VS-Iz
- for barebox@lists.infradead.org; Wed, 08 Mar 2017 09:24:32 +0000
+ id 1clXpc-0000V6-Hn
+ for barebox@lists.infradead.org; Wed, 08 Mar 2017 09:24:33 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed,  8 Mar 2017 10:24:02 +0100
-Message-Id: <20170308092402.21245-2-o.rempel@pengutronix.de>
-In-Reply-To: <20170308092402.21245-1-o.rempel@pengutronix.de>
-References: <20170308092402.21245-1-o.rempel@pengutronix.de>
+Date: Wed,  8 Mar 2017 10:24:01 +0100
+Message-Id: <20170308092402.21245-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +19,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] usb: fastboot: umount device before writing to it
+Subject: [PATCH 1/2] bbu: Search for cdev names aswell
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-When a fastboot target refers to a device and we are going to write
-to it, umount it beforehand, so that we do not end up with corrupt
-data after writing.
+In bbu_find_handler_by_device() search for cdev names aswell since some
+update handlers are registered with their cdev name and not the full
+path.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/gadget/f_fastboot.c | 1 +
- 1 file changed, 1 insertion(+)
+ common/bbu.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-index a6192b9eb..8d69aea8b 100644
---- a/drivers/usb/gadget/f_fastboot.c
-+++ b/drivers/usb/gadget/f_fastboot.c
-@@ -754,6 +754,7 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
- 		goto out;
- 	}
+diff --git a/common/bbu.c b/common/bbu.c
+index c5dda8c8b..031c43382 100644
+--- a/common/bbu.c
++++ b/common/bbu.c
+@@ -113,6 +113,15 @@ static struct bbu_handler *bbu_find_handler_by_device(const char *devicepath)
+ 		if (!strcmp(handler->devicefile, devicepath))
+ 			return handler;
  
-+	umount(filename);
- copy:
- 	ret = copy_file(FASTBOOT_TMPFILE, filename, 1);
- 	if (ret) {
++	if (strncmp(devicepath, "/dev/", 5))
++		return NULL;
++
++	devicepath += 5;
++
++	list_for_each_entry(handler, &bbu_image_handlers, list)
++		if (!strcmp(handler->devicefile, devicepath))
++			return handler;
++
+ 	return NULL;
+ }
+ 
 -- 
 2.11.0
 
