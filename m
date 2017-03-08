@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cljmO-0006i4-GK
- for barebox@lists.infradead.org; Wed, 08 Mar 2017 22:10:07 +0000
-Received: by mail-pf0-x241.google.com with SMTP id v190so5076912pfb.0
- for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:40 -0800 (PST)
+ id 1cljmK-0006eQ-KZ
+ for barebox@lists.infradead.org; Wed, 08 Mar 2017 22:10:03 +0000
+Received: by mail-pg0-x244.google.com with SMTP id g2so150549pge.2
+ for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:32 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  8 Mar 2017 14:09:04 -0800
-Message-Id: <20170308220909.4560-16-andrew.smirnov@gmail.com>
+Date: Wed,  8 Mar 2017 14:08:56 -0800
+Message-Id: <20170308220909.4560-8-andrew.smirnov@gmail.com>
 In-Reply-To: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 References: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,108 +23,105 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/20] usb: echi-atmel: Convert global variables to private
- data
+Subject: [PATCH 07/20] clk: Make COMMON_CLK_OF_PROVIDER depend on OFTREE
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Make COMMON_CLK_OF_PROVIDER depend on OFTREE, this way checking for:
+
+	defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK_OF_PROVIDER)
+
+can be simplified to just:
+
+	defined(CONFIG_COMMON_CLK_OF_PROVIDER)
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/host/ehci-atmel.c | 42 ++++++++++++++++++++++++++----------------
- 1 file changed, 26 insertions(+), 16 deletions(-)
+ drivers/clk/Kconfig            | 1 +
+ drivers/clk/clk-fixed-factor.c | 2 +-
+ drivers/clk/clk-fixed.c        | 2 +-
+ drivers/clk/clk.c              | 2 +-
+ drivers/clk/clkdev.c           | 2 +-
+ include/linux/clk.h            | 2 +-
+ 6 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/host/ehci-atmel.c b/drivers/usb/host/ehci-atmel.c
-index fa9ca7d..7a9d942 100644
---- a/drivers/usb/host/ehci-atmel.c
-+++ b/drivers/usb/host/ehci-atmel.c
-@@ -29,29 +29,34 @@
+diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
+index 1cf0ccb..dedbf6c 100644
+--- a/drivers/clk/Kconfig
++++ b/drivers/clk/Kconfig
+@@ -10,6 +10,7 @@ config COMMON_CLK
  
- #include "ehci.h"
+ config COMMON_CLK_OF_PROVIDER
+ 	bool
++	depends on OFTREE
+ 	help
+ 	  Clock driver provides OF-Tree based clock lookup.
  
--/* interface and function clocks; sometimes also an AHB clock */
--static struct clk *iclk, *fclk;
-+struct atmel_ehci_priv {
-+	struct device_d *dev;
-+	struct clk *iclk;
-+	struct clk *uclk;
-+};
+diff --git a/drivers/clk/clk-fixed-factor.c b/drivers/clk/clk-fixed-factor.c
+index 40b63d6..a3dbf33 100644
+--- a/drivers/clk/clk-fixed-factor.c
++++ b/drivers/clk/clk-fixed-factor.c
+@@ -93,7 +93,7 @@ struct clk *clk_fixed_factor(const char *name,
+ 	return &f->clk;
+ }
  
--static int atmel_start_clock(void)
-+static int atmel_start_clock(struct atmel_ehci_priv *atehci)
+-#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK_OF_PROVIDER)
++#if defined(CONFIG_COMMON_CLK_OF_PROVIDER)
+ /**
+  * of_fixed_factor_clk_setup() - Setup function for simple fixed factor clock
+  */
+diff --git a/drivers/clk/clk-fixed.c b/drivers/clk/clk-fixed.c
+index 8164005..f0f7fba 100644
+--- a/drivers/clk/clk-fixed.c
++++ b/drivers/clk/clk-fixed.c
+@@ -55,7 +55,7 @@ struct clk *clk_fixed(const char *name, int rate)
+ 	return &fix->clk;
+ }
+ 
+-#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK_OF_PROVIDER)
++#if defined(CONFIG_COMMON_CLK_OF_PROVIDER)
+ /**
+  * of_fixed_clk_setup() - Setup function for simple fixed rate clock
+  */
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 9189521..5bb147e 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -346,7 +346,7 @@ int clk_parent_set_rate(struct clk *clk, unsigned long rate,
+ 	return clk_set_rate(clk_get_parent(clk), rate);
+ }
+ 
+-#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK_OF_PROVIDER)
++#if defined(CONFIG_COMMON_CLK_OF_PROVIDER)
+ /**
+  * struct of_clk_provider - Clock provider registration structure
+  * @link: Entry in global list of clock providers
+diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
+index 1bc5c6d..7f9f8f2 100644
+--- a/drivers/clk/clkdev.c
++++ b/drivers/clk/clkdev.c
+@@ -24,7 +24,7 @@
+ 
+ static LIST_HEAD(clocks);
+ 
+-#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK_OF_PROVIDER)
++#if defined(CONFIG_COMMON_CLK_OF_PROVIDER)
+ struct clk *of_clk_get(struct device_node *np, int index)
  {
- 	int ret;
--	ret = clk_enable(iclk);
-+	ret = clk_enable(atehci->iclk);
- 	if (ret < 0) {
--		pr_err("Error enabling interface clock\n");
-+		dev_err(atehci->dev,
-+			"Error enabling interface clock\n");
- 		return ret;
- 	}
+ 	struct of_phandle_args clkspec;
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index f73b029..a061398 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -329,7 +329,7 @@ const struct of_device_id __clk_of_table_##name				\
+ __attribute__ ((unused,section (".__clk_of_table"))) \
+ 	= { .compatible = compat, .data = fn }
  
--	ret = clk_enable(fclk);
-+	ret = clk_enable(atehci->uclk);
- 	if (ret < 0)
--		pr_err("Error enabling function clock\n");
-+		dev_err(atehci->dev,
-+			"Error enabling function clock\n");
- 
- 	return ret;
- }
- 
--static void atmel_stop_clock(void)
-+static void atmel_stop_clock(struct atmel_ehci_priv *atehci)
- {
--	clk_disable(fclk);
--	clk_disable(iclk);
-+	clk_disable(atehci->iclk);
-+	clk_disable(atehci->uclk);
- }
- 
- static int atmel_ehci_probe(struct device_d *dev)
-@@ -59,15 +64,20 @@ static int atmel_ehci_probe(struct device_d *dev)
- 	int ret;
- 	struct resource *iores;
- 	struct ehci_data data;
-+	struct atmel_ehci_priv *atehci;
-+
-+	atehci = xzalloc(sizeof(*atehci));
-+	atehci->dev = dev;
-+	dev->priv = atehci;
- 
--	iclk = clk_get(dev, "ehci_clk");
--	if (IS_ERR(iclk)) {
-+	atehci->iclk = clk_get(dev, "ehci_clk");
-+	if (IS_ERR(atehci->iclk)) {
- 		dev_err(dev, "Error getting interface clock\n");
- 		return -ENOENT;
- 	}
- 
--	fclk = clk_get(dev, "uhpck");
--	if (IS_ERR(fclk)) {
-+	atehci->uclk = clk_get(dev, "uhpck");
-+	if (IS_ERR(atehci->iclk)) {
- 		dev_err(dev, "Error getting function clock\n");
- 		return -ENOENT;
- 	}
-@@ -75,7 +85,7 @@ static int atmel_ehci_probe(struct device_d *dev)
- 	/*
- 	 * Start the USB clocks.
- 	 */
--	ret = atmel_start_clock();
-+	ret = atmel_start_clock(atehci);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -96,7 +106,7 @@ static void atmel_ehci_remove(struct device_d *dev)
- 	/*
- 	 * Stop the USB clocks.
- 	 */
--	atmel_stop_clock();
-+	atmel_stop_clock(dev->priv);
- }
- 
- static struct driver_d atmel_ehci_driver = {
+-#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK_OF_PROVIDER)
++#if defined(CONFIG_COMMON_CLK_OF_PROVIDER)
+ int of_clk_add_provider(struct device_node *np,
+ 			struct clk *(*clk_src_get)(struct of_phandle_args *args,
+ 						   void *data),
 -- 
 2.9.3
 
