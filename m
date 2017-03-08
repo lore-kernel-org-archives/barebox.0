@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cljmG-0006e2-1P
+ id 1cljmF-0006eF-Ir
  for barebox@lists.infradead.org; Wed, 08 Mar 2017 22:09:53 +0000
-Received: by mail-pf0-x242.google.com with SMTP id v190so5076382pfb.0
- for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:27 -0800 (PST)
+Received: by mail-pg0-x241.google.com with SMTP id b5so4632118pgg.1
+ for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:31 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  8 Mar 2017 14:08:52 -0800
-Message-Id: <20170308220909.4560-4-andrew.smirnov@gmail.com>
+Date: Wed,  8 Mar 2017 14:08:55 -0800
+Message-Id: <20170308220909.4560-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 References: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,35 +23,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/20] pinctrl: at91: Fix a bug in at91_pinctrl_set_conf()
+Subject: [PATCH 06/20] clk: Port two helper functions from Linux
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Pin_to_controller returns struct at91_gpio_chip, whereas at91_mux_*
-functions expect void __iomem * pointing to controller register
-window. Fix the code to do appropriate conversion between the two.
+Port of_clk_get_parent_count() and of_clk_parent_fill() from Linux.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pinctrl/pinctrl-at91.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/clk/clk.c   | 39 +++++++++++++++++++++++++++++++++++++++
+ include/linux/clk.h |  3 +++
+ 2 files changed, 42 insertions(+)
 
-diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
-index ebbc6f6..e24c9be 100644
---- a/drivers/pinctrl/pinctrl-at91.c
-+++ b/drivers/pinctrl/pinctrl-at91.c
-@@ -414,8 +414,10 @@ static int at91_pinctrl_set_conf(struct at91_pinctrl *info, unsigned int pin_num
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 93e000c..9189521 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -452,6 +452,24 @@ struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec)
+ 	return clk;
+ }
+ 
++/**
++ * of_clk_get_parent_count() - Count the number of clocks a device node has
++ * @np: device node to count
++ *
++ * Returns: The number of clocks that are possible parents of this node
++ */
++unsigned int of_clk_get_parent_count(struct device_node *np)
++{
++	int count;
++
++	count = of_count_phandle_with_args(np, "clocks", "#clock-cells");
++	if (count < 0)
++		return 0;
++
++	return count;
++}
++EXPORT_SYMBOL_GPL(of_clk_get_parent_count);
++
+ char *of_clk_get_parent_name(struct device_node *np, unsigned int index)
  {
- 	unsigned int mask;
- 	void __iomem *pio;
-+	struct at91_gpio_chip *at91_gpio;
+ 	struct of_phandle_args clkspec;
+@@ -472,6 +490,27 @@ char *of_clk_get_parent_name(struct device_node *np, unsigned int index)
+ }
+ EXPORT_SYMBOL_GPL(of_clk_get_parent_name);
  
--	pio = pin_to_controller(pin_num);
-+	at91_gpio = pin_to_controller(pin_num);
-+	pio  = at91_gpio->regbase;
- 	mask = pin_to_mask(pin_num);
- 
- 	if (conf & PULL_UP && conf & PULL_DOWN)
++/**
++ * of_clk_parent_fill() - Fill @parents with names of @np's parents and return
++ * number of parents
++ * @np: Device node pointer associated with clock provider
++ * @parents: pointer to char array that hold the parents' names
++ * @size: size of the @parents array
++ *
++ * Return: number of parents for the clock node.
++ */
++int of_clk_parent_fill(struct device_node *np, const char **parents,
++		       unsigned int size)
++{
++	unsigned int i = 0;
++
++	while (i < size && (parents[i] = of_clk_get_parent_name(np, i)) != NULL)
++		i++;
++
++	return i;
++}
++EXPORT_SYMBOL_GPL(of_clk_parent_fill);
++
+ struct clock_provider {
+ 	of_clk_init_cb_t clk_init_cb;
+ 	struct device_node *np;
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 7dd5238..f73b029 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -348,7 +348,10 @@ struct clk *of_clk_src_simple_get(struct of_phandle_args *clkspec, void *data);
+ struct clk *of_clk_get(struct device_node *np, int index);
+ struct clk *of_clk_get_by_name(struct device_node *np, const char *name);
+ struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec);
++unsigned int of_clk_get_parent_count(struct device_node *np);
+ char *of_clk_get_parent_name(struct device_node *np, unsigned int index);
++int of_clk_parent_fill(struct device_node *np, const char **parents,
++		       unsigned int size);
+ int of_clk_init(struct device_node *root, const struct of_device_id *matches);
+ #else
+ static inline struct clk *of_clk_get(struct device_node *np, int index)
 -- 
 2.9.3
 
