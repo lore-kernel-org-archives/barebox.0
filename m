@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1clsLr-0000iD-9g
- for barebox@lists.infradead.org; Thu, 09 Mar 2017 07:19:09 +0000
-Date: Thu, 9 Mar 2017 08:18:45 +0100
+ id 1clsMk-0000q2-II
+ for barebox@lists.infradead.org; Thu, 09 Mar 2017 07:20:04 +0000
+Date: Thu, 9 Mar 2017 08:19:40 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170309071845.p2atqh7cbe3cvzvq@pengutronix.de>
-References: <20170303073353.27248-1-david@protonic.nl>
+Message-ID: <20170309071940.fodjmtkj2crkgodr@pengutronix.de>
+References: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170303073353.27248-1-david@protonic.nl>
+In-Reply-To: <20170308220909.4560-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +22,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] drivers: clk: clk-imx6.c: Don't gate LDB and IPUs
-To: David Jander <david@protonic.nl>
+Subject: Re: [PATCH 00/20] AT91, at91sam9x5ek updates (part I/III)
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Mar 03, 2017 at 08:33:53AM +0100, David Jander wrote:
-> Depending on CONFIG_DRIVER_VIDEO_IMX_IPUV3 to decide whether to
-> gate IPU clocks or not is rather fragile. Any inadvertent
-> dependency on the IPU (like setting the NoC AQoS registers for
-> i.MX6QP) will result in a freeze if CONFIG_DRIVER_VIDEO_IMX_IPUV3
-> is disabled.
+On Wed, Mar 08, 2017 at 02:08:49PM -0800, Andrey Smirnov wrote:
+> Hi everone,
 > 
-> Signed-off-by: David Jander <david@protonic.nl>
-> ---
->  drivers/clk/imx/clk-imx6.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+> As discussed in original thread [1], here is a first batch of AT91
+> related patches. The patches gathered in this set are bugfixes, port
+> of functionality form Linux or code refactoring.
+> 
+> Feedback from Sascha and Sam has been incorporated, but other than
+> that the code should be as it was in [1].
+> 
+> Any feedback is appreciated.
 
 Applied, thanks
 
 Sascha
 
-> 
-> diff --git a/drivers/clk/imx/clk-imx6.c b/drivers/clk/imx/clk-imx6.c
-> index 8ac43be..d0571bc 100644
-> --- a/drivers/clk/imx/clk-imx6.c
-> +++ b/drivers/clk/imx/clk-imx6.c
-> @@ -494,10 +494,7 @@ static int imx6_ccm_probe(struct device_d *dev)
->  	writel(0xffffffff, ccm_base + CCGR0);
->  	writel(0xf0ffffff, ccm_base + CCGR1); /* gate GPU3D, GPU2D */
->  	writel(0xffffffff, ccm_base + CCGR2);
-> -	if (IS_ENABLED(CONFIG_DRIVER_VIDEO_IMX_IPUV3))
-> -		writel(0x3fffffff, ccm_base + CCGR3); /* gate OpenVG */
-> -	else
-> -		writel(0x3fff0000, ccm_base + CCGR3); /* gate OpenVG, LDB, IPU1, IPU2 */
-> +	writel(0x3fffffff, ccm_base + CCGR3); /* gate OpenVG */
->  	if (IS_ENABLED(CONFIG_PCI_IMX6))
->  		writel(0xffffffff, ccm_base + CCGR4);
->  	else
-> -- 
-> 2.9.3
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
