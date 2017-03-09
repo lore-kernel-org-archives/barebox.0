@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cls5j-0002aH-MH
- for barebox@lists.infradead.org; Thu, 09 Mar 2017 07:02:29 +0000
-Date: Thu, 9 Mar 2017 08:02:04 +0100
+ id 1cls68-0002ru-5u
+ for barebox@lists.infradead.org; Thu, 09 Mar 2017 07:02:54 +0000
+Date: Thu, 9 Mar 2017 08:02:28 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170309070204.3ejyxafipabv4otl@pengutronix.de>
-References: <20170307112249.10689-1-o.rempel@pengutronix.de>
+Message-ID: <20170309070228.3l63difxib6uo3pf@pengutronix.de>
+References: <20170307095632.13605-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170307112249.10689-1-o.rempel@pengutronix.de>
+In-Reply-To: <20170307095632.13605-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,66 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts: imx/mxs remove mxs-usb-loader
+Subject: Re: [PATCH] ARM: imx233-olinuxino: add CONFIG_CONSOLE_ACTIVATE_ALL
 To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Mar 07, 2017 at 12:22:49PM +0100, Oleksij Rempel wrote:
-> ... and use imx-usb-loader instead
+On Tue, Mar 07, 2017 at 10:56:32AM +0100, Oleksij Rempel wrote:
+> if not set, barebox will use first console by default.
+> On this board first console is KEYBOARD_GPIO, so we will end
+> in unusable state.
 > 
 > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  arch/arm/mach-imx/Kconfig |   7 +-
->  arch/arm/mach-mxs/Kconfig |   7 +-
->  scripts/Makefile          |   7 +-
->  scripts/imx/Kconfig       |   6 ++
->  scripts/mxs-usb-loader.c  | 236 ----------------------------------------------
->  5 files changed, 11 insertions(+), 252 deletions(-)
->  create mode 100644 scripts/imx/Kconfig
->  delete mode 100644 scripts/mxs-usb-loader.c
-> 
-> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> index 9dbe31c4b..420b52281 100644
-> --- a/arch/arm/mach-imx/Kconfig
-> +++ b/arch/arm/mach-imx/Kconfig
-> @@ -632,12 +632,7 @@ endmenu
->  
->  menu "i.MX specific settings"
->  
-> -config ARCH_IMX_USBLOADER
-> -	bool "compile imx-usb-loader"
-> -	help
-> -	  imx-usb-loader is a tool to upload and start imximages to an i.MX SoC
-> -	  in ROM boot mode. It requires libusb, so make sure you have the libusb
-> -	  devel package installed on your machine.
-> +source scripts/imx/Kconfig
->  
->  config IMX_IIM
->  	tristate "IIM fusebox device"
-> diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
-> index facab9c25..25e2a8d04 100644
-> --- a/arch/arm/mach-mxs/Kconfig
-> +++ b/arch/arm/mach-mxs/Kconfig
-> @@ -143,11 +143,6 @@ endif
->  
->  endmenu
->  
-> -config ARCH_MXS_USBLOADER
-> -	bool "compile mxs-usb-loader"
-> -	help
-> -	  mxs-usb-loader is a tool to upload and start mxs bootstream images to an
-> -	  i.MX SoC in ROM boot mode. It requires libusb, so make sure you have the libusb
-> -	  devel package installed on your machine.
-> +source scripts/imx/Kconfig
+>  arch/arm/configs/imx233-olinuxino_defconfig | 1 +
+>  1 file changed, 1 insertion(+)
 
-Including the same file two times confuses Kconfig. Here the search
-function found the menu path where it's included the first time, but in
-the menu itself it is then sorted in where it's included the second
-time.
-
-I refactored a bit to include only once.
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/arch/arm/configs/imx233-olinuxino_defconfig b/arch/arm/configs/imx233-olinuxino_defconfig
+> index 991386b30..47d485b4e 100644
+> --- a/arch/arm/configs/imx233-olinuxino_defconfig
+> +++ b/arch/arm/configs/imx233-olinuxino_defconfig
+> @@ -20,6 +20,7 @@ CONFIG_BOOTM_INITRD=y
+>  CONFIG_BOOTM_OFTREE=y
+>  CONFIG_BOOTM_OFTREE_UIMAGE=y
+>  CONFIG_BLSPEC=y
+> +CONFIG_CONSOLE_ACTIVATE_ALL=y
+>  CONFIG_DEFAULT_COMPRESSION_LZO=y
+>  CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+>  CONFIG_RESET_SOURCE=y
+> -- 
+> 2.11.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
