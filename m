@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
- by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cljmY-0005Wu-7w
- for barebox@lists.infradead.org; Wed, 08 Mar 2017 22:10:07 +0000
-Received: by mail-pf0-x244.google.com with SMTP id j5so5060494pfb.3
- for <barebox@lists.infradead.org>; Wed, 08 Mar 2017 14:09:45 -0800 (PST)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  8 Mar 2017 14:09:09 -0800
-Message-Id: <20170308220909.4560-21-andrew.smirnov@gmail.com>
-In-Reply-To: <20170308220909.4560-1-andrew.smirnov@gmail.com>
-References: <20170308220909.4560-1-andrew.smirnov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1clrd1-00059h-Gs
+ for barebox@lists.infradead.org; Thu, 09 Mar 2017 06:32:50 +0000
+Date: Thu, 9 Mar 2017 07:32:21 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170309063221.m3qcaoweqv753cku@pengutronix.de>
+References: <1488876266-9845-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1488876266-9845-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,96 +18,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 20/20] clocksource: at91: Move to 'drivers/clocksource'
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 1/2] x86: efi: fix efiexit support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Move PIT driver code to 'drivers/clocsource' and accomodate it by
-adjusting Kconfig variables. Rename the file to 'timer-atmel-pit.c' to
-re-align the driver with code in Linux kernel.
+On Tue, Mar 07, 2017 at 09:44:25AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/x86/mach-efi/elf_x86_64_efi.lds.S | 1 +
+>  1 file changed, 1 insertion(+)
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- arch/arm/mach-at91/Kconfig                                         | 7 ++-----
- arch/arm/mach-at91/Makefile                                        | 1 -
- drivers/clocksource/Kconfig                                        | 4 ++++
- drivers/clocksource/Makefile                                       | 1 +
- .../at91sam926x_time.c => drivers/clocksource/timer-atmel-pit.c    | 0
- 5 files changed, 7 insertions(+), 6 deletions(-)
- rename arch/arm/mach-at91/at91sam926x_time.c => drivers/clocksource/timer-atmel-pit.c (100%)
+Applied, thanks
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index c45fc4d..2d4721a 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -15,20 +15,17 @@ config HAVE_AT91_LOWLEVEL_INIT
- config AT91SAM9_SMC
- 	bool
- 
--config AT91SAM9_TIMER
--	bool
--
- config SOC_AT91SAM9
- 	bool
- 	select CPU_ARM926T
- 	select AT91SAM9_SMC
--	select AT91SAM9_TIMER
-+	select CLOCKSOURCE_ATMEL_PIT
- 
- config SOC_SAMA5
- 	bool
- 	select CPU_V7
- 	select AT91SAM9_SMC
--	select AT91SAM9_TIMER
-+	select CLOCKSOURCE_ATMEL_PIT
- 
- config ARCH_TEXT_BASE
- 	hex
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index c2991b0..1f63b09 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -19,7 +19,6 @@ obj-$(CONFIG_AT91SAM9_RESET) += at91sam9_reset.o
- obj-$(CONFIG_AT91SAM9G45_RESET) += at91sam9g45_reset.o
- 
- obj-$(CONFIG_AT91SAM9_SMC) += sam9_smc.o
--obj-$(CONFIG_AT91SAM9_TIMER) += at91sam926x_time.o
- 
- # CPU-specific support
- obj-$(CONFIG_ARCH_AT91RM9200)	+= at91rm9200.o at91rm9200_time.o at91rm9200_devices.o
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index f1ab554..f3c3255 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -53,3 +53,7 @@ config CLOCKSOURCE_UEMD
- config CLOCKSOURCE_ROCKCHIP
- 	bool
- 	depends on ARCH_ROCKCHIP
-+
-+config CLOCKSOURCE_ATMEL_PIT
-+       bool
-+       depends on SOC_AT91SAM9 || SOC_SAMA5
-diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-index 39982ff..0564d8f 100644
---- a/drivers/clocksource/Makefile
-+++ b/drivers/clocksource/Makefile
-@@ -8,3 +8,4 @@ obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
- obj-$(CONFIG_CLOCKSOURCE_ORION)   += orion.o
- obj-$(CONFIG_CLOCKSOURCE_UEMD)    += uemd.o
- obj-$(CONFIG_CLOCKSOURCE_ROCKCHIP)+= rk_timer.o
-+obj-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += timer-atmel-pit.o
-diff --git a/arch/arm/mach-at91/at91sam926x_time.c b/drivers/clocksource/timer-atmel-pit.c
-similarity index 100%
-rename from arch/arm/mach-at91/at91sam926x_time.c
-rename to drivers/clocksource/timer-atmel-pit.c
+Sascha
+
+> 
+> diff --git a/arch/x86/mach-efi/elf_x86_64_efi.lds.S b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+> index e1bc2120f..93d34d17a 100644
+> --- a/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+> +++ b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+> @@ -80,6 +80,7 @@ SECTIONS
+>  		*(.rela.data*)
+>  		*(.rela.barebox*)
+>  		*(.rela.initcall*)
+> +		*(.rela.exitcall*)
+>  		*(.rela.got)
+>  		*(.rela.stab)
+>  	}
+> -- 
+> 2.11.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.9.3
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
