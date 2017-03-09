@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo1.mail-out.ovh.net ([178.33.104.224])
+Received: from 20.mo1.mail-out.ovh.net ([188.165.45.168])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1clz0W-0000rr-Ok
- for barebox@lists.infradead.org; Thu, 09 Mar 2017 14:25:34 +0000
+ id 1clz3D-0001Ix-8L
+ for barebox@lists.infradead.org; Thu, 09 Mar 2017 14:28:21 +0000
 Received: from player795.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with ESMTP id 32DF55E86A
- for <barebox@lists.infradead.org>; Thu,  9 Mar 2017 15:25:09 +0100 (CET)
-Received: from localhost (unknown [91.134.156.222])
- (Authenticated sender: plagnioj@jcrosoft.com)
- by player795.ha.ovh.net (Postfix) with ESMTPA id 2EBC81200A8
- for <barebox@lists.infradead.org>; Thu,  9 Mar 2017 15:25:07 +0100 (CET)
-Date: Thu, 9 Mar 2017 15:31:17 +0100
+ by mo1.mail-out.ovh.net (Postfix) with ESMTP id C2B405E7C1
+ for <barebox@lists.infradead.org>; Thu,  9 Mar 2017 15:27:56 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20170309143117.GI4120@mail.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Thu,  9 Mar 2017 15:34:07 +0100
+Message-Id: <1489070050-16024-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20170309143117.GI4120@mail.ovh.net>
+ <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,60 +20,161 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] EFI Secure boot support
+Subject: [PATCH 2/5] efi: fix lds for secure boot support
 To: barebox@lists.infradead.org
 
-Hi,
+everythink need to be aligned to 4096
 
-	This patch serie is the first one to add the secure boot support
-	to barebox on efi
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/x86/mach-efi/elf_ia32_efi.lds.S         | 10 +++++++---
+ arch/x86/mach-efi/elf_x86_64_efi.lds.S       | 10 ++++++----
+ arch/x86/mach-efi/include/mach/barebox.lds.h | 14 +++++++++++++-
+ include/asm-generic/barebox.lds.h            |  8 +++++---
+ 4 files changed, 31 insertions(+), 11 deletions(-)
 
-	For now on this will allow you to execute only properly signed EFI
-	Application.
+diff --git a/arch/x86/mach-efi/elf_ia32_efi.lds.S b/arch/x86/mach-efi/elf_ia32_efi.lds.S
+index 69f43f554..6d9cb973c 100644
+--- a/arch/x86/mach-efi/elf_ia32_efi.lds.S
++++ b/arch/x86/mach-efi/elf_ia32_efi.lds.S
+@@ -50,22 +50,23 @@ SECTIONS
+ 		*(COMMON)
+ 	}
+ 
+-	. = ALIGN(64);
++	. = ALIGN(4096);
+ 
+ 	__barebox_initcalls_start = .;
+ 	__barebox_initcalls : { INITCALLS }
+ 	__barebox_initcalls_end = .;
++	. = ALIGN(4096);
+ 
+ 	__barebox_exitcalls_start = .;
+ 	__barebox_exitcalls : { EXITCALLS }
+ 	__barebox_exitcalls_end = .;
+ 
+-	. = ALIGN(64);
++	. = ALIGN(4096);
+ 	__barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+ 	__barebox_magicvar_end = .;
+ 
+-	. = ALIGN(64);
++	. = ALIGN(4096);
+ 	__barebox_cmd_start = .;
+ 	__barebox_cmd : { BAREBOX_CMDS }
+ 	__barebox_cmd_end = .;
+@@ -76,6 +77,9 @@ SECTIONS
+ 	.rel : {
+ 		*(.rel.data)
+ 		*(.rel.data.*)
++		*(.rela.barebox*)
++		*(.rela.initcall*)
++		*(.rela.exitcall*)
+ 		*(.rel.got)
+ 		*(.rel.stab)
+ 		*(.data.rel.ro.local)
+diff --git a/arch/x86/mach-efi/elf_x86_64_efi.lds.S b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+index 93d34d17a..8216d1d70 100644
+--- a/arch/x86/mach-efi/elf_x86_64_efi.lds.S
++++ b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+@@ -23,6 +23,7 @@ SECTIONS
+ 		*(.text)
+ 		*(.text.*)
+ 		*(.gnu.linkonce.t.*)
++		. = ALIGN(16);
+ 	}
+ 
+ 	_etext = .;
+@@ -33,8 +34,8 @@ SECTIONS
+ 		*(.reloc)
+ 	}
+ 
+-	. = ALIGN(4096);
+ 	_sdata = .;
++	. = ALIGN(4096);
+ 
+ 	.data : {
+ 		*(.rodata*)
+@@ -52,22 +53,23 @@ SECTIONS
+ 		*(.rel.local)
+ 	}
+ 
+-	. = ALIGN(64);
++	. = ALIGN(4096);
+ 
+ 	__barebox_initcalls_start = .;
+ 	__barebox_initcalls : { INITCALLS }
+ 	__barebox_initcalls_end = .;
++	. = ALIGN(4096);
+ 
+ 	__barebox_exitcalls_start = .;
+ 	__barebox_exitcalls : { EXITCALLS }
+ 	__barebox_exitcalls_end = .;
+ 
+-	. = ALIGN(64);
++	. = ALIGN(4096);
+ 	__barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+ 	__barebox_magicvar_end = .;
+ 
+-	. = ALIGN(64);
++	. = ALIGN(4096);
+ 	__barebox_cmd_start = .;
+ 	__barebox_cmd : { BAREBOX_CMDS }
+ 	__barebox_cmd_end = .;
+diff --git a/arch/x86/mach-efi/include/mach/barebox.lds.h b/arch/x86/mach-efi/include/mach/barebox.lds.h
+index 40a8c178f..e7a3bb9cd 100644
+--- a/arch/x86/mach-efi/include/mach/barebox.lds.h
++++ b/arch/x86/mach-efi/include/mach/barebox.lds.h
+@@ -1 +1,13 @@
+-/* empty */
++/*
++ * Copyright (C) 2017 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ *
++ * Under GPL v2
++ */
++
++#ifndef __EFI_MACH_BAREBOX_LDS_H__
++#define __EFI_MACH_BAREBOX_LDS_H__
++
++/* For secure boot we need all the section to be 4096 alligned */
++#define STRUCT_ALIGNMENT 4096
++
++#endif /* __EFI_MACH_BAREBOX_LDS_H__ */
+diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
+index c8a919b92..6c37751b3 100644
+--- a/include/asm-generic/barebox.lds.h
++++ b/include/asm-generic/barebox.lds.h
+@@ -3,15 +3,17 @@
+  * Align to a 32 byte boundary equal to the
+  * alignment gcc 4.5 uses for a struct
+  */
+-#define STRUCT_ALIGNMENT 32
+-#define STRUCT_ALIGN() . = ALIGN(STRUCT_ALIGNMENT)
+-
+ #if defined CONFIG_X86 || \
+ 	defined CONFIG_ARCH_EP93XX || \
+ 	defined CONFIG_ARCH_ZYNQ
+ #include <mach/barebox.lds.h>
+ #endif
+ 
++#ifndef STRUCT_ALIGNMENT
++#define STRUCT_ALIGNMENT 32
++#endif
++#define STRUCT_ALIGN() . = ALIGN(STRUCT_ALIGNMENT)
++
+ #ifndef PRE_IMAGE
+ #define PRE_IMAGE
+ #endif
+-- 
+2.11.0
 
-	And request confirmation for non signed binary other than EFI
-
-	Later will add non signed EFI Application execution request at user
-	request and MoK Support, add other goodies.
-
-Please pull
-The following changes since commit 071eb906506d478a3d0b04460625e64edbcd1294:
-
-  efi: fix secure and setup mode report (2017-03-04 13:20:38 +0800)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/efi-sb
-
-for you to fetch changes up to 99e61a9be467fab5b5127b1233c4c4e70288e84c:
-
-  efi: enable sercure boot support (2017-03-04 13:20:38 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (2):
-      boot: if we are in secure boot mode
-      efi: enable sercure boot support
-
- arch/x86/Kconfig         |  1 +
- commands/go.c            |  7 +++++++
- common/Kconfig           |  8 ++++++++
- common/Makefile          |  1 +
- common/bootm.c           |  7 +++++++
- common/efi/efi-image.c   |  1 +
- common/secure_boot.c     | 43 +++++++++++++++++++++++++++++++++++++++++++
- drivers/efi/efi-device.c |  9 +++++++++
- include/bootm.h          |  1 +
- include/secure_boot.h    | 25 +++++++++++++++++++++++++
- 10 files changed, 103 insertions(+)
- create mode 100644 common/secure_boot.c
- create mode 100644 include/secure_boot.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
