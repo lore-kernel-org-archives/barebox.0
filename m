@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo1.mail-out.ovh.net ([178.33.110.239])
+Received: from 10.mo1.mail-out.ovh.net ([178.32.96.102])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1clz3C-0001Iw-P2
- for barebox@lists.infradead.org; Thu, 09 Mar 2017 14:28:22 +0000
+ id 1clz3G-0001JF-3M
+ for barebox@lists.infradead.org; Thu, 09 Mar 2017 14:28:24 +0000
 Received: from player795.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with ESMTP id 97D665E7D0
- for <barebox@lists.infradead.org>; Thu,  9 Mar 2017 15:27:55 +0100 (CET)
+ by mo1.mail-out.ovh.net (Postfix) with ESMTP id DF66B5E71F
+ for <barebox@lists.infradead.org>; Thu,  9 Mar 2017 15:27:58 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  9 Mar 2017 15:34:06 +0100
-Message-Id: <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20170309143117.GI4120@mail.ovh.net>
+Date: Thu,  9 Mar 2017 15:34:09 +0100
+Message-Id: <1489070050-16024-4-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20170309143117.GI4120@mail.ovh.net>
+ <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,61 +25,206 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] efi: add more security related guid for the efivars
+Subject: [PATCH 4/5] boot: if we are in secure boot mode
 To: barebox@lists.infradead.org
+
+request confirmation before booting an unsigned image
+
+with a default timeout
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/efi-guid.c |  6 ++++++
- include/efi.h     | 18 ++++++++++++++++++
- 2 files changed, 24 insertions(+)
+ commands/go.c         |  7 +++++++
+ common/Kconfig        |  8 ++++++++
+ common/Makefile       |  1 +
+ common/bootm.c        |  7 +++++++
+ common/secure_boot.c  | 43 +++++++++++++++++++++++++++++++++++++++++++
+ include/bootm.h       |  1 +
+ include/secure_boot.h | 25 +++++++++++++++++++++++++
+ 7 files changed, 92 insertions(+)
+ create mode 100644 common/secure_boot.c
+ create mode 100644 include/secure_boot.h
 
-diff --git a/common/efi-guid.c b/common/efi-guid.c
-index 71aa21ddd..01b02bbb1 100644
---- a/common/efi-guid.c
-+++ b/common/efi-guid.c
-@@ -81,6 +81,12 @@ const char *efi_guid_string(efi_guid_t *g)
- 	EFI_GUID_STRING( EFI_TCG_PROTOCOL_GUID, "TcgService", "TCGServices Protocol");
- 	/* TPM 2.0 */
- 	EFI_GUID_STRING( EFI_TCG2_PROTOCOL_GUID, "Tcg2Service", "TCG2Services Protocol");
-+	EFI_GUID_STRING(EFI_VENDOR_KEYS_NV_VARIABLE_NAME_GUID, "VendorKeysNv", "Vendor Keys Non-Volatile");
-+	EFI_GUID_STRING(EFI_AUTHENTICATED_VARIABLE_GUID, "AuthVar", "Authenticated Variable");
-+	EFI_GUID_STRING(EFI_IMAGE_SECURITY_DATABASE_GUID, "ImageSecurityDB", "Image Security Database");
-+	EFI_GUID_STRING(EFI_CERT_DB_GUID, "CertDB", "Certificate Database");
-+	EFI_GUID_STRING(EFI_SECURE_BOOT_ENABLE_DISABLE_GUID, "SecureBootEnable", "Secure Boot Enable Disable");
-+	EFI_GUID_STRING(EFI_CUSTOM_MODE_ENABLE_GUID, "CustomMode", "CustomMode");
+diff --git a/commands/go.c b/commands/go.c
+index fb319b320..61c9ce43f 100644
+--- a/commands/go.c
++++ b/commands/go.c
+@@ -26,6 +26,7 @@
+ #include <fcntl.h>
+ #include <linux/ctype.h>
+ #include <errno.h>
++#include <secure_boot.h>
  
- 	/* File */
- 	EFI_GUID_STRING(EFI_IDEBUSDXE_INF_GUID, "IdeBusDxe.inf", "EFI IdeBusDxe.inf File GUID");
-diff --git a/include/efi.h b/include/efi.h
-index e1fc134ee..31e7b283e 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -507,6 +507,24 @@ extern efi_runtime_services_t *RT;
- #define EFI_TCG2_PROTOCOL_GUID \
- 	EFI_GUID(0x607f766c, 0x7455, 0x42be, 0x93, 0x0b, 0xe4, 0xd7, 0x6d, 0xb2, 0x72, 0x0f)
+ static int do_go(int argc, char *argv[])
+ {
+@@ -37,6 +38,12 @@ static int do_go(int argc, char *argv[])
+ 	if (argc < 2)
+ 		return COMMAND_ERROR_USAGE;
  
-+#define EFI_VENDOR_KEYS_NV_VARIABLE_NAME_GUID \
-+	EFI_GUID(0x9073e4e0, 0x60ec, 0x4b6e, 0x99, 0x3, 0x4c, 0x22, 0x3c, 0x26, 0x0f, 0x3c)
++	rcode = secure_boot_start_unsigned();
++	if (rcode)
++		return rcode ? 1 : 0;
 +
-+#define EFI_AUTHENTICATED_VARIABLE_GUID \
-+	EFI_GUID(0xaaf32c78, 0x947b, 0x439a, 0xa1, 0x80, 0x2e, 0x14, 0x4e, 0xc3,0x77, 0x92)
++	rcode = 1;
 +
-+#define EFI_IMAGE_SECURITY_DATABASE_GUID \
-+	EFI_GUID(0xd719b2cb, 0x3d3a, 0x4596, 0xa3, 0xbc, 0xda, 0xd0, 0xe, 0x67, 0x65, 0x6f)
+ 	if (!isdigit(*argv[1])) {
+ 		fd = open(argv[1], O_RDONLY);
+ 		if (fd < 0) {
+diff --git a/common/Kconfig b/common/Kconfig
+index f7ff04664..9e7d027a2 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -21,6 +21,9 @@ config HAS_KALLSYMS
+ config HAS_MODULES
+ 	bool
+ 
++config HAS_SECURE_BOOT
++	bool
 +
-+#define EFI_CERT_DB_GUID \
-+	EFI_GUID(0xd9bee56e, 0x75dc, 0x49d9, 0xb4, 0xd7, 0xb5, 0x34, 0x21, 0xf, 0x63, 0x7a)
+ config HAS_CACHE
+ 	bool
+ 	help
+@@ -184,6 +187,11 @@ config NVVAR
+ 	  while global variables can be changed during runtime without changing the
+ 	  default.
+ 
++config SECURE_BOOT_TIMEOUT
++	prompt "Secure Boot unsigned boot timeout"
++	int
++	default 3
 +
-+#define EFI_SECURE_BOOT_ENABLE_DISABLE_GUID \
-+	EFI_GUID(0xf0a30bc7, 0xaf08, 0x4556, 0x99, 0xc4, 0x00, 0x10, 0x9, 0xc9, 0x3a, 0x44)
+ menu "memory layout"
+ 
+ source "pbl/Kconfig"
+diff --git a/common/Makefile b/common/Makefile
+index 5f58c81d2..e57cc2c15 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -61,6 +61,7 @@ obj-$(CONFIG_UBIFORMAT)		+= ubiformat.o
+ obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
+ obj-$(CONFIG_CONSOLE_RATP)	+= ratp.o
+ obj-$(CONFIG_BOOT)		+= boot.o
++obj-$(CONFIG_HAS_SECURE_BOOT)	+= secure_boot.o
+ 
+ quiet_cmd_pwd_h = PWDH    $@
+ ifdef CONFIG_PASSWORD
+diff --git a/common/bootm.c b/common/bootm.c
+index 81625d915..0ebf65681 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -23,6 +23,7 @@
+ #include <environment.h>
+ #include <linux/stat.h>
+ #include <magicvar.h>
++#include <secure_boot.h>
+ 
+ static LIST_HEAD(handler_list);
+ 
+@@ -625,6 +626,12 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		printf("Passing control to %s handler\n", handler->name);
+ 	}
+ 
++	if (!handler->is_secure_supported && is_secure_mode()) {
++		ret = secure_boot_start_unsigned();
++		if (ret)
++			goto err_out;
++	}
 +
-+#define EFI_CUSTOM_MODE_ENABLE_GUID \
-+	EFI_GUID(0xc076ec0c, 0x7028, 0x4399, 0xa0, 0x72, 0x71, 0xee, 0x5c, 0x44, 0x8b, 0x9f)
+ 	ret = handler->bootm(data);
+ 	if (data->dryrun)
+ 		printf("Dryrun. Aborted\n");
+diff --git a/common/secure_boot.c b/common/secure_boot.c
+new file mode 100644
+index 000000000..e625ef4e1
+--- /dev/null
++++ b/common/secure_boot.c
+@@ -0,0 +1,43 @@
++/*
++ * Copyright (c) 2017 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * Under GPLv2 Only
++ */
++#include <common.h>
++#include <secure_boot.h>
++#include <console_countdown.h>
++#include <globalvar.h>
++#include <magicvar.h>
++#include <init.h>
 +
- extern efi_guid_t efi_file_info_id;
- extern efi_guid_t efi_simple_file_system_protocol_guid;
- extern efi_guid_t efi_device_path_protocol_guid;
++static unsigned int sb_confirm_timeout = CONFIG_SECURE_BOOT_TIMEOUT;
++
++int secure_boot_start_unsigned(void)
++{
++	int ret;
++	char str[2] = { };
++	int timeout = sb_confirm_timeout;
++
++	if (!is_secure_mode())
++		return 0;
++
++	printf("Are you sure you wish to run an unsigned binary\n");
++	printf("in a secure environment?\n");
++	printf("press y to confirm\n");
++
++	ret = console_countdown(timeout, CONSOLE_COUNTDOWN_ANYKEY, str);
++	if (ret != -EINTR)
++		return -EINVAL;
++
++	return str[0] == 'y' ? 0 : -EINVAL;
++}
++
++static int init_sb_confirm_timeout(void)
++{
++	return globalvar_add_simple_int("sb.confirm_timeout",
++			&sb_confirm_timeout, "%u");
++}
++late_initcall(init_sb_confirm_timeout);
++
++BAREBOX_MAGICVAR_NAMED(global_sb_confirm_timeout, global.sb.confirm_timeout,
++		"Secure Boot Comfirm timeout in seconds before booting an unsigned image");
+diff --git a/include/bootm.h b/include/bootm.h
+index 6e9777a9a..12a61c007 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -89,6 +89,7 @@ struct image_handler {
+ 	struct list_head list;
+ 
+ 	int ih_os;
++	int is_secure_supported;
+ 
+ 	enum filetype filetype;
+ 	int (*bootm)(struct image_data *data);
+diff --git a/include/secure_boot.h b/include/secure_boot.h
+new file mode 100644
+index 000000000..3aa071012
+--- /dev/null
++++ b/include/secure_boot.h
+@@ -0,0 +1,25 @@
++/*
++ * Copyright (c) 2017 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * Under GPLv2 Only
++ */
++
++#ifndef __SECURE_BOOT_H__
++#define __SECURE_BOOT_H__
++
++#ifdef CONFIG_HAS_SECURE_BOOT
++int is_secure_mode(void);
++int secure_boot_start_unsigned(void);
++#else
++static int inline is_secure_mode(void)
++{
++	return 0;
++}
++
++static int inline secure_boot_start_unsigned(void)
++{
++	return 0;
++}
++#endif
++
++#endif /* __SECURE_BOOT_H__ */
 -- 
 2.11.0
 
