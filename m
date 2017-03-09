@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from 16.mo1.mail-out.ovh.net ([178.33.104.224])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1clviw-0002OL-Iz
- for barebox@lists.infradead.org; Thu, 09 Mar 2017 10:55:13 +0000
-Date: Thu, 9 Mar 2017 11:54:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170309105448.nqtziv6lmjqwpgj5@pengutronix.de>
-References: <20170308220909.4560-1-andrew.smirnov@gmail.com>
- <20170308220909.4560-9-andrew.smirnov@gmail.com>
+ id 1clz0W-0000rr-Ok
+ for barebox@lists.infradead.org; Thu, 09 Mar 2017 14:25:34 +0000
+Received: from player795.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo1.mail-out.ovh.net (Postfix) with ESMTP id 32DF55E86A
+ for <barebox@lists.infradead.org>; Thu,  9 Mar 2017 15:25:09 +0100 (CET)
+Received: from localhost (unknown [91.134.156.222])
+ (Authenticated sender: plagnioj@jcrosoft.com)
+ by player795.ha.ovh.net (Postfix) with ESMTPA id 2EBC81200A8
+ for <barebox@lists.infradead.org>; Thu,  9 Mar 2017 15:25:07 +0100 (CET)
+Date: Thu, 9 Mar 2017 15:31:17 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20170309143117.GI4120@mail.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170308220909.4560-9-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,84 +27,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 08/20] clk: No-op CLK_OF_DECLARE if not enabled
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/5] EFI Secure boot support
+To: barebox@lists.infradead.org
 
-Hi Andrey,
+Hi,
 
-On Wed, Mar 08, 2017 at 02:08:57PM -0800, Andrey Smirnov wrote:
-> Instead of wrapping each defenition of CLK_OF_DECLARE hook with
-> preprocessor guards, change the definition of CLK_OF_DECLARE to expand
-> into no-op if COMMON_CLK_OF_PROVIDER is not enabled.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  drivers/clk/clk-fixed-factor.c | 2 --
->  drivers/clk/clk-fixed.c        | 3 +--
->  include/linux/clk.h            | 6 +++++-
->  3 files changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/clk/clk-fixed-factor.c b/drivers/clk/clk-fixed-factor.c
-> index a3dbf33..0be4855 100644
-> --- a/drivers/clk/clk-fixed-factor.c
-> +++ b/drivers/clk/clk-fixed-factor.c
-> @@ -93,7 +93,6 @@ struct clk *clk_fixed_factor(const char *name,
->  	return &f->clk;
->  }
->  
-> -#if defined(CONFIG_COMMON_CLK_OF_PROVIDER)
->  /**
->   * of_fixed_factor_clk_setup() - Setup function for simple fixed factor clock
->   */
-> @@ -127,4 +126,3 @@ static int of_fixed_factor_clk_setup(struct device_node *node)
->  }
->  CLK_OF_DECLARE(fixed_factor_clk, "fixed-factor-clock",
->  		of_fixed_factor_clk_setup);
-> -#endif
+	This patch serie is the first one to add the secure boot support
+	to barebox on efi
 
-This causes compile breakage when CONFIG_COMMON_CLK_OF_PROVIDER is disabled:
+	For now on this will allow you to execute only properly signed EFI
+	Application.
 
-drivers/clk/clk-fixed.c: In function 'of_fixed_clk_setup':
-drivers/clk/clk-fixed.c:75:2: error: implicit declaration of function 'of_clk_add_provider' [-Werror=implicit-function-declaration]
-drivers/clk/clk-fixed.c:75:35: error: 'of_clk_src_simple_get' undeclared (first use in this function)
-drivers/clk/clk-fixed.c:75:35: note: each undeclared identifier is reported only once for each function it appears in
-drivers/clk/clk-fixed.c: At top level:
-drivers/clk/clk-fixed.c:61:12: warning: 'of_fixed_clk_setup' defined but not used [-Wunused-function]
-cc1: some warnings being treated as errors
-ICECC[17949] 11:47:35: Compiled on 10.1.0.23
-/ptx/work/dude/WORK_A/sha/backup/barebox/barebox/scripts/Makefile.build:249: recipe for target 'drivers/clk/clk-fixed.o' failed
-make[3]: *** [drivers/clk/clk-fixed.o] Error 1
-make[3]: *** Waiting for unfinished jobs....
-  LD      drivers/pinctrl/built-in.o
-  CC      drivers/clk/imx/clk-pllv1.o
-  CC      drivers/clk/imx/clk-pllv2.o
-  CC      drivers/clk/imx/clk-pllv3.o
-  CC      drivers/clk/imx/clk-pfd.o
-  CC      drivers/clk/imx/clk-gate2.o
-  CC      drivers/clk/imx/clk-gate-exclusive.o
-  CC      drivers/clk/imx/clk-cpu.o
-  CC      drivers/clk/imx/clk.o
-  LD      drivers/watchdog/built-in.o
-  CC      drivers/clk/imx/clk-imx25.o
-drivers/clk/clk-fixed-factor.c: In function 'of_fixed_factor_clk_setup':
-drivers/clk/clk-fixed-factor.c:119:2: error: implicit declaration of function 'of_clk_get_parent_name' [-Werror=implicit-function-declaration]
-drivers/clk/clk-fixed-factor.c:119:14: warning: assignment makes pointer from integer without a cast
-drivers/clk/clk-fixed-factor.c:125:2: error: implicit declaration of function 'of_clk_add_provider' [-Werror=implicit-function-declaration]
-drivers/clk/clk-fixed-factor.c:125:35: error: 'of_clk_src_simple_get' undeclared (first use in this function)
-drivers/clk/clk-fixed-factor.c:125:35: note: each undeclared identifier is reported only once for each function it appears in
-drivers/clk/clk-fixed-factor.c: At top level:
-drivers/clk/clk-fixed-factor.c:99:12: warning: 'of_fixed_factor_clk_setup' defined but not used [-Wunused-function]
+	And request confirmation for non signed binary other than EFI
 
-I dropped this patch for now.
+	Later will add non signed EFI Application execution request at user
+	request and MoK Support, add other goodies.
 
-Sascha
+Please pull
+The following changes since commit 071eb906506d478a3d0b04460625e64edbcd1294:
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+  efi: fix secure and setup mode report (2017-03-04 13:20:38 +0800)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/efi-sb
+
+for you to fetch changes up to 99e61a9be467fab5b5127b1233c4c4e70288e84c:
+
+  efi: enable sercure boot support (2017-03-04 13:20:38 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (2):
+      boot: if we are in secure boot mode
+      efi: enable sercure boot support
+
+ arch/x86/Kconfig         |  1 +
+ commands/go.c            |  7 +++++++
+ common/Kconfig           |  8 ++++++++
+ common/Makefile          |  1 +
+ common/bootm.c           |  7 +++++++
+ common/efi/efi-image.c   |  1 +
+ common/secure_boot.c     | 43 +++++++++++++++++++++++++++++++++++++++++++
+ drivers/efi/efi-device.c |  9 +++++++++
+ include/bootm.h          |  1 +
+ include/secure_boot.h    | 25 +++++++++++++++++++++++++
+ 10 files changed, 103 insertions(+)
+ create mode 100644 common/secure_boot.c
+ create mode 100644 include/secure_boot.h
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
