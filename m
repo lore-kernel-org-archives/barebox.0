@@ -1,17 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo1.mail-out.ovh.net ([87.98.158.110])
+Received: from 11.mo1.mail-out.ovh.net ([188.165.48.29])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1clz3I-0001KG-Ea
- for barebox@lists.infradead.org; Thu, 09 Mar 2017 14:28:26 +0000
+ id 1clz7W-0004Vy-AK
+ for barebox@lists.infradead.org; Thu, 09 Mar 2017 14:32:48 +0000
 Received: from player795.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with ESMTP id 061825E81C
- for <barebox@lists.infradead.org>; Thu,  9 Mar 2017 15:28:00 +0100 (CET)
+ by mo1.mail-out.ovh.net (Postfix) with ESMTP id 68F865E509
+ for <barebox@lists.infradead.org>; Thu,  9 Mar 2017 15:32:23 +0100 (CET)
+Received: from localhost (unknown [91.134.156.222])
+ (Authenticated sender: plagnioj@jcrosoft.com)
+ by player795.ha.ovh.net (Postfix) with ESMTPA id 3FA5E1200CB
+ for <barebox@lists.infradead.org>; Thu,  9 Mar 2017 15:32:23 +0100 (CET)
+Date: Thu, 9 Mar 2017 15:38:40 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  9 Mar 2017 15:34:10 +0100
-Message-Id: <1489070050-16024-5-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20170309143117.GI4120@mail.ovh.net>
- <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20170309143840.GJ4120@mail.ovh.net>
+References: <20170303152759.GF4120@mail.ovh.net>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170303152759.GF4120@mail.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,81 +25,110 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] efi: enable sercure boot support
+Subject: Re: [PATCH 0/2] efivarfs: rework the filesystem to make it human
+ readable
 To: barebox@lists.infradead.org
 
-This will ensure that we just start secured binary
-without user confirmation
+Hi,
 
-But for now on we only support EFI correctly signed image to start
-Later will allow both.
+	Sascha is this one ok?
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/x86/Kconfig         | 1 +
- common/efi/efi-image.c   | 1 +
- drivers/efi/efi-device.c | 9 +++++++++
- 3 files changed, 11 insertions(+)
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 52ccf4894..65e4c8b7c 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -78,6 +78,7 @@ choice
- 		select EFI_DEVICEPATH
- 		select PRINTF_UUID
- 		select CLOCKSOURCE_EFI_X86
-+		select HAS_SECURE_BOOT
- 
- 	config X86_BIOS_BRINGUP
- 		bool "16 bit BIOS"
-diff --git a/common/efi/efi-image.c b/common/efi/efi-image.c
-index 885348da4..6552d803d 100644
---- a/common/efi/efi-image.c
-+++ b/common/efi/efi-image.c
-@@ -270,6 +270,7 @@ static int do_bootm_efi(struct image_data *data)
- static struct image_handler efi_handle_tr = {
- 	.name = "EFI Application",
- 	.bootm = do_bootm_efi,
-+	.is_secure_supported = 1,
- 	.filetype = filetype_exe,
- };
- 
-diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
-index 7029bfb31..959878e7f 100644
---- a/drivers/efi/efi-device.c
-+++ b/drivers/efi/efi-device.c
-@@ -26,6 +26,7 @@
- #include <linux/sizes.h>
- #include <wchar.h>
- #include <init.h>
-+#include <secure_boot.h>
- #include <efi.h>
- #include <efi/efi.h>
- #include <efi/efi-device.h>
-@@ -382,6 +383,14 @@ static int efi_is_setup_mode(void)
- 	return ret != 0;
- }
- 
-+int is_secure_mode(void)
-+{
-+	int secure_boot = efi_is_secure_boot();
-+	int setup_mode = efi_is_setup_mode();
-+
-+	return secure_boot & !setup_mode;
-+}
-+
- static int efi_init_devices(void)
- {
- 	char *fw_vendor = NULL;
--- 
-2.11.0
-
+Best Regards,
+J.
+On 16:27 Fri 03 Mar     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
+> 
+> efivarfs: rework the filesystem to make it human readable
+> 
+> today we use <varname>-<guid as %pUl>
+> 
+> such as Boot0000-8be4df61-93ca-11d2-aa0d-00e098032b8c
+> 
+> now we will use a different approach where will represent first the vendor
+> as a directory and then inside the associates variable.
+> 
+> But also create symlink on the vendor with readable name.
+> 
+> so it will look like this:
+> 
+> barebox@barebox EFI payload:/ ls -l /efivars/
+> drwxrwxrwx             36 04b37fe8-f6ae-480b-bdd5-37d98c5e89aa
+> drwxrwxrwx             36 4a67b082-0a4c-41cf-b6c7-440b29bb8c4f
+> drwxrwxrwx             36 4c19049f-4137-4dd3-9c10-8b97a83ffdfa
+> drwxrwxrwx             36 5b446ed1-e30b-4faa-871a-3654eca36080
+> drwxrwxrwx             36 5b91f69c-8b88-4a2b-9269-5f1d802b5175
+> drwxrwxrwx             36 8be4df61-93ca-11d2-aa0d-00e098032b8c
+> lrwxrwxrwx              3 Efi -> 8be4df61-93ca-11d2-aa0d-00e098032b8c
+> lrwxrwxrwx              7 barebox -> 5b91f69c-8b88-4a2b-9269-5f1d802b5175
+> drwxrwxrwx             36 eb704011-1402-11d3-8e77-00a0c969723b
+> lrwxrwxrwx              7 systemd -> 4a67b082-0a4c-41cf-b6c7-440b29bb8c4f
+> barebox@barebox EFI payload:/ ls -l /efivars/Efi/
+> -rw-rw-rw-             62 Boot0000
+> -rw-rw-rw-             80 Boot0001
+> -rw-rw-rw-             84 Boot0002
+> -rw-rw-rw-            106 Boot0003
+> -rw-rw-rw-            108 Boot0004
+> -rw-rw-rw-            141 Boot0005
+> -rw-rw-rw-             88 Boot0006
+> -rw-rw-rw-              2 BootCurrent
+> -rw-rw-rw-              4 BootOptionSupport
+> -rw-rw-rw-             14 BootOrder
+> -rw-rw-rw-            107 ConIn
+> -rw-rw-rw-           1567 ConInDev
+> -rw-rw-rw-            103 ConOut
+> -rw-rw-rw-           1855 ConOutDev
+> -rw-rw-rw-             73 ErrOut
+> -rw-rw-rw-           1563 ErrOutDev
+> -rw-rw-rw-             14 Key0000
+> -rw-rw-rw-             14 Key0001
+> -rw-rw-rw-              4 Lang
+> -rw-rw-rw-             13 LangCodes
+> -rw-rw-rw-              8 OsIndicationsSupported
+> -rw-rw-rw-              3 PlatformLang
+> -rw-rw-rw-             18 PlatformLangCodes
+> -rw-rw-rw-            108 PlatformRecovery0000
+> -rw-rw-rw-              2 Timeout
+> barebox@barebox EFI payload:/ ls -l /efivars/barebox/
+> barebox@barebox EFI payload:/ ls -l /efivars/systemd/
+> -rw-rw-rw-             14 LoaderTimeInitUSec
+> 
+> please pull
+> 
+> The following changes since commit f14af7444ad9d8ce674382f222119f5fcd3f2576:
+> 
+>   efi: add veriable to report secure boot support and status (2017-02-28 23:05:31 +0800)
+> 
+> are available in the git repository at:
+> 
+>   git://git.jcrosoft.org/barebox.git delivery/efivarfs
+> 
+> for you to fetch changes up to a757520bfccf17064181ebc15646efdb83ee581b:
+> 
+>   efivarfs: rework the filesystem to make it human readable (2017-03-01 00:15:38 +0800)
+> 
+> ----------------------------------------------------------------
+> Jean-Christophe PLAGNIOL-VILLARD (2):
+>       ls: allow to list a symlink ending with '/' as a dir
+>       efivarfs: rework the filesystem to make it human readable
+> 
+>  commands/ls.c     |  41 +++++++++++++++++----
+>  common/efi-guid.c |  17 +++++++--
+>  common/efi/efi.c  |   2 +-
+>  fs/efivarfs.c     | 379 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------------------------------
+>  include/efi.h     |   1 +
+>  5 files changed, 347 insertions(+), 93 deletions(-)
+> 
+> Best Regards,
+> J.
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
