@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1clriH-00074t-9w
- for barebox@lists.infradead.org; Thu, 09 Mar 2017 06:38:15 +0000
-Date: Thu, 9 Mar 2017 07:37:51 +0100
+ id 1clrls-0001kM-9G
+ for barebox@lists.infradead.org; Thu, 09 Mar 2017 06:41:59 +0000
+Date: Thu, 9 Mar 2017 07:41:34 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170309063751.ip46i6y3o542nh7u@pengutronix.de>
-References: <20170227075044.egcbyi4cfrlmijbk@pengutronix.de>
- <20170307083147.2471-1-m.olbrich@pengutronix.de>
+Message-ID: <20170309064134.wxtqmwuc7btzj3xk@pengutronix.de>
+References: <20170306130915.11253-1-o.rempel@pengutronix.de>
+ <20170307075449.18967-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170307083147.2471-1-m.olbrich@pengutronix.de>
+In-Reply-To: <20170307075449.18967-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,53 +23,155 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! efi: move x86 efi boot support to x86 arch
-To: Michael Olbrich <m.olbrich@pengutronix.de>
+Subject: Re: [PATCH v2] scripts: imx imx-usb-loader: add support for imx23
+ and imx28
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Mar 07, 2017 at 09:31:47AM +0100, Michael Olbrich wrote:
-> As I noted in my other mail, this got lost during the move.
+On Tue, Mar 07, 2017 at 08:54:49AM +0100, Oleksij Rempel wrote:
+> This code was rewrtitten from mxs-usb-loader.
 > 
-> Regards,
-> Michael
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  scripts/imx/imx-usb-loader.c | 85 +++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 84 insertions(+), 1 deletion(-)
 
-Fixed this up.
+Applied, thanks
 
 Sascha
 
 > 
-> ---
->  arch/x86/Makefile                      | 4 ++--
->  arch/x86/mach-efi/elf_x86_64_efi.lds.S | 1 +
->  2 files changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-> index e837a2df972c..c36104c2c07f 100644
-> --- a/arch/x86/Makefile
-> +++ b/arch/x86/Makefile
-> @@ -84,8 +84,8 @@ cmd_barebox__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_barebox) -o $@	\
->  quiet_cmd_efi_image = EFI-IMG $@
->        cmd_efi_image = $(OBJCOPY) -j .text -j .sdata -j .data -j .dynamic \
->  		      -j .dynsym -j .rel -j .rela -j .reloc -j __barebox_initcalls \
-> -		      -j __barebox_cmd -j .barebox_magicvar -j .bbenv.* \
-> -		      --target=$(TARGET) $< $@
-> +		      -j __barebox_exitcalls -j __barebox_cmd -j .barebox_magicvar \
-> +		      -j .bbenv.* --target=$(TARGET) $< $@
+> diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+> index b2c9f8f5a..c61ebaf2f 100644
+> --- a/scripts/imx/imx-usb-loader.c
+> +++ b/scripts/imx/imx-usb-loader.c
+> @@ -69,6 +69,9 @@ struct mach_id {
+>  #define HDR_MX53	2
+>  	unsigned char header_type;
+>  	unsigned short max_transfer;
+> +#define DEV_IMX		0
+> +#define DEV_MXS		1
+> +	unsigned char dev_type;
+>  };
 >  
->  KBUILD_BINARY := barebox
+>  struct usb_work {
+> @@ -87,7 +90,9 @@ struct mach_id imx_ids[] = {
+>  		.vid = 0x066f,
+>  		.pid = 0x3780,
+>  		.name = "i.MX23",
+> -		.mode = MODE_BULK,
+> +		.mode = MODE_HID,
+> +		.max_transfer = 1024,
+> +		.dev_type = DEV_MXS,
+>  	}, {
+>  		.vid = 0x15a2,
+>  		.pid = 0x0030,
+> @@ -120,6 +125,8 @@ struct mach_id imx_ids[] = {
+>  		.vid = 0x15a2,
+>  		.pid = 0x004f,
+>  		.name = "i.MX28",
+> +		.max_transfer = 1024,
+> +		.dev_type = DEV_MXS,
+>  	}, {
+>  		.vid = 0x15a2,
+>  		.pid = 0x0052,
+> @@ -180,6 +187,17 @@ struct sdp_command  {
+>  	uint8_t rsvd;
+>  } __attribute__((packed));
 >  
-> diff --git a/arch/x86/mach-efi/elf_x86_64_efi.lds.S b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-> index e1bc2120fabc..93d34d17ab1f 100644
-> --- a/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-> +++ b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-> @@ -80,6 +80,7 @@ SECTIONS
->  		*(.rela.data*)
->  		*(.rela.barebox*)
->  		*(.rela.initcall*)
-> +		*(.rela.exitcall*)
->  		*(.rela.got)
->  		*(.rela.stab)
->  	}
+> +#define MXS_CMD_FW_DOWNLOAD	0x02
+> +struct mxs_command {
+> +	uint32_t	sign;		/* Signature */
+> +	uint32_t	tag;		/* Tag */
+> +	uint32_t	size;		/* Payload size */
+> +	uint8_t		flags;		/* Flags (host to device) */
+> +	uint8_t		rsvd[2];	/* Reserved */
+> +	uint8_t		cmd;		/* Firmware download */
+> +	uint32_t	dw_size;	/* Download size */
+> +} __attribute__((packed));
+> +
+>  static struct mach_id *imx_device(unsigned short vid, unsigned short pid)
+>  {
+>  	int i;
+> @@ -1343,6 +1361,66 @@ static int write_mem(const struct config_data *data, uint32_t addr,
+>  	return modify_memory(addr, val, width, set_bits, clear_bits);
+>  }
+>  
+> +/* MXS section */
+> +static int mxs_load_file(libusb_device_handle *dev, uint8_t *data, int size)
+> +{
+> +	static struct mxs_command dl_command;
+> +	int last_trans, err;
+> +	void *p;
+> +	int cnt;
+> +
+> +	dl_command.sign = htonl(0x424c5443); /* Signature: BLTC */
+> +	dl_command.tag = htonl(0x1);
+> +	dl_command.size = htonl(size);
+> +	dl_command.flags = 0;
+> +	dl_command.rsvd[0] = 0;
+> +	dl_command.rsvd[1] = 0;
+> +	dl_command.cmd = MXS_CMD_FW_DOWNLOAD;
+> +	dl_command.dw_size = htonl(size);
+> +
+> +	err = transfer(1, (unsigned char *) &dl_command, 20, &last_trans);
+> +	if (err) {
+> +		printf("transfer error at init step: err=%i, last_trans=%i\n",
+> +		       err, last_trans);
+> +		return err;
+> +	}
+> +
+> +	p = data;
+> +	cnt = size;
+> +
+> +	while (1) {
+> +		int now = get_min(cnt, usb_id->mach_id->max_transfer);
+> +
+> +		if (!now)
+> +			break;
+> +
+> +		err = transfer(2, p, now, &now);
+> +		if (err) {
+> +			printf("dl_command err=%i, last_trans=%i\n", err, now);
+> +			return err;
+> +		}
+> +
+> +		p += now;
+> +		cnt -= now;
+> +	}
+> +
+> +	return err;
+> +}
+> +
+> +static int mxs_work(struct usb_work *curr)
+> +{
+> +	unsigned fsize = 0;
+> +	unsigned char *buf = NULL;
+> +	int ret;
+> +
+> +	ret = read_file(curr->filename, &buf, &fsize);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return mxs_load_file(usb_dev_handle, buf, fsize);
+> +}
+> +/* end of mxs section */
+> +
+>  static int parse_initfile(const char *filename)
+>  {
+>  	struct config_data data = {
+> @@ -1452,6 +1530,11 @@ int main(int argc, char *argv[])
+>  
+>  	usb_id->mach_id = mach;
+>  
+> +	if (mach->dev_type == DEV_MXS) {
+> +		ret = mxs_work(&w);
+> +		goto out;
+> +	}
+> +
+>  	err = do_status();
+>  	if (err) {
+>  		printf("status failed\n");
 > -- 
 > 2.11.0
 > 
