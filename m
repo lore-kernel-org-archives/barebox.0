@@ -1,12 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cjRrD-00046S-7C
- for barebox@lists.infradead.org; Thu, 02 Mar 2017 14:37:28 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu,  2 Mar 2017 15:37:03 +0100
-Message-Id: <20170302143703.25167-1-u.kleine-koenig@pengutronix.de>
+ id 1cmGbz-00058g-LS
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 09:13:26 +0000
+Date: Fri, 10 Mar 2017 10:13:02 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20170310091302.fyphi6zwdc3knuhh@pengutronix.de>
+References: <20170309211808.w6jazqlbrlfigl2r@pengutronix.de>
+ <CAHQ1cqFq7+k1KajoqNXAQUzNmp_S19wMyVAHWA5ZOzVgTkzPVg@mail.gmail.com>
+ <20170310091027.ruy5xtzeyej65m6h@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170310091027.ruy5xtzeyej65m6h@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,27 +20,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] lseek: tighten error checking and allow negative offsets for
- SEEK_END
-To: barebox@lists.infradead.org
+Subject: Re: e1000 driver hangs during probe
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org, lst@pengutronix.de
 
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBmcy9mcy5jIHwgNiArKysrLS0KIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2Vy
-dGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZnMvZnMuYyBiL2ZzL2ZzLmMK
-aW5kZXggZTdiNjk2NTkxNDMzLi4xOTAxYzk0YWQxZWEgMTAwNjQ0Ci0tLSBhL2ZzL2ZzLmMKKysr
-IGIvZnMvZnMuYwpAQCAtOTEwLDYgKzkxMCw4IEBAIGxvZmZfdCBsc2VlayhpbnQgZmlsZGVzLCBs
-b2ZmX3Qgb2Zmc2V0LCBpbnQgd2hlbmNlKQogCWNhc2UgU0VFS19TRVQ6CiAJCWlmIChmLT5zaXpl
-ICE9IEZJTEVfU0laRV9TVFJFQU0gJiYgb2Zmc2V0ID4gZi0+c2l6ZSkKIAkJCWdvdG8gb3V0Owor
-CQlpZiAob2Zmc2V0IDwgMCkKKwkJCWdvdG8gb3V0OwogCQlwb3MgPSBvZmZzZXQ7CiAJCWJyZWFr
-OwogCWNhc2UgU0VFS19DVVI6CkBAIC05MTgsOSArOTIwLDkgQEAgbG9mZl90IGxzZWVrKGludCBm
-aWxkZXMsIGxvZmZfdCBvZmZzZXQsIGludCB3aGVuY2UpCiAJCXBvcyA9IGYtPnBvcyArIG9mZnNl
-dDsKIAkJYnJlYWs7CiAJY2FzZSBTRUVLX0VORDoKLQkJaWYgKG9mZnNldCkKKwkJaWYgKG9mZnNl
-dCA+IDApCiAJCQlnb3RvIG91dDsKLQkJcG9zID0gZi0+c2l6ZTsKKwkJcG9zID0gZi0+c2l6ZSAr
-IG9mZnNldDsKIAkJYnJlYWs7CiAJZGVmYXVsdDoKIAkJZ290byBvdXQ7Ci0tIAoyLjExLjAKCgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hello again,
+
+On Fri, Mar 10, 2017 at 10:10:27AM +0100, Uwe Kleine-K=F6nig wrote:
+> With these patches applied the problem is gone and I see:
+> =
+
+> 	e1000 pci-8086:1531.0: Unprogrammed Flash detected, limiting access to f=
+irst 4KB
+> 	0: EEPROM checksum is incorrect!
+> 	0:   ...register was 0x0000, calculated 0xbaba
+> 	e1000 pci-8086:1531.0: probe failed: Invalid argument
+> =
+
+> and I have
+> =
+
+> 	/ ls -l /dev/e1000-nor0 =
+
+> 	crw-------           4096 /dev/e1000-nor0
+> =
+
+> Thanks for your valuable hint.
+
+I was too quick. The situation is better now, but not good yet:
+
+	/ md -s /dev/e1000-nor0
+	pci-8086:1531.0: Timeout waiting for FLSWCTL.DONE to be set
+	read: Connection timed out
+
+:-(
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
