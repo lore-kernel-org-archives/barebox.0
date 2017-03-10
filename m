@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo68.mail-out.ovh.net ([46.105.63.230])
+Received: from 1.mo68.mail-out.ovh.net ([46.105.41.146])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmH06-0003or-ES
- for barebox@lists.infradead.org; Fri, 10 Mar 2017 09:38:22 +0000
+ id 1cmHd8-0000C9-64
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 10:18:40 +0000
 Received: from player776.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo68.mail-out.ovh.net (Postfix) with ESMTP id 5E9EF3D4F9
- for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 10:37:53 +0100 (CET)
+ by mo68.mail-out.ovh.net (Postfix) with ESMTP id 7EE5641A35
+ for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 11:18:13 +0100 (CET)
 Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <20170310072649.whkr4d4vpwuvd2kn@pengutronix.de>
-Date: Fri, 10 Mar 2017 17:37:45 +0800
-Message-Id: <29A532DB-5B12-40F4-BF82-7DF05C0B7ADC@jcrosoft.com>
-References: <1489053441-12772-1-git-send-email-plagnioj@jcrosoft.com>
- <1489053441-12772-2-git-send-email-plagnioj@jcrosoft.com>
- <20170310072649.whkr4d4vpwuvd2kn@pengutronix.de>
+In-Reply-To: <1489080293.24921.0.camel@pengutronix.de>
+Date: Fri, 10 Mar 2017 18:17:09 +0800
+Message-Id: <DA9CFBDA-E7D8-48B7-9CAC-73FDD1A51148@jcrosoft.com>
+References: <20170309143117.GI4120@mail.ovh.net>
+ <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
+ <1489070050-16024-2-git-send-email-plagnioj@jcrosoft.com>
+ <1489080293.24921.0.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,75 +23,178 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] video: some framebuffer such as efi does support
- enable/disable
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 2/5] efi: fix lds for secure boot support
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Cj4gT24gTWFyIDEwLCAyMDE3LCBhdCAzOjI2IFBNLCBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVu
-Z3V0cm9uaXguZGU+IHdyb3RlOgo+IAo+IE9uIFRodSwgTWFyIDA5LCAyMDE3IGF0IDEwOjU3OjIx
-QU0gKzAxMDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIHdyb3RlOgo+PiBzbyBh
-bGxvdyB0aGVtIHRvIGRvIG5vdCBwYXNzIHRoaXMgZnVuY3Rpb24gdmlhIGZib3BzCj4+IGFuZCBp
-bmRpY2F0ZSB0aGV5IGFyZSBhbHdheXMgb24uCj4+IAo+PiBTaWduZWQtb2ZmLWJ5OiBKZWFuLUNo
-cmlzdG9waGUgUExBR05JT0wtVklMTEFSRCA8cGxhZ25pb2pAamNyb3NvZnQuY29tPgo+PiAtLS0K
-Pj4gZHJpdmVycy92aWRlby9mYi5jIHwgMjkgKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0K
-Pj4gMSBmaWxlIGNoYW5nZWQsIDI0IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pCj4gCj4g
-SSBwYXJ0bHkgYXBwbGllZCB0aGlzIG9uZSBvbiB0b3Agb2YKPiAKPiBbUEFUQ0hdIHZpZGVvOiBj
-YWxsIGZiX1tlbnxkaXNdYWJsZSBpbnN0ZWFkIG9mIGZvcHMgZGlyZWN0bHkKPiAKPj4gCj4+IGRp
-ZmYgLS1naXQgYS9kcml2ZXJzL3ZpZGVvL2ZiLmMgYi9kcml2ZXJzL3ZpZGVvL2ZiLmMKPj4gaW5k
-ZXggNmI4OGYyZGY5Li42M2E4MThlYjIgMTAwNjQ0Cj4+IC0tLSBhL2RyaXZlcnMvdmlkZW8vZmIu
-Ywo+PiArKysgYi9kcml2ZXJzL3ZpZGVvL2ZiLmMKPj4gQEAgLTE5LDEwICsxOSwxMiBAQCBzdGF0
-aWMgaW50IGZiX2lvY3RsKHN0cnVjdCBjZGV2KiBjZGV2LCBpbnQgcmVxLCB2b2lkICpkYXRhKQo+
-PiAJCSpmYiA9IGluZm87Cj4+IAkJYnJlYWs7Cj4+IAljYXNlIEZCSU9fRU5BQkxFOgo+PiAtCQlp
-bmZvLT5mYm9wcy0+ZmJfZW5hYmxlKGluZm8pOwo+PiArCQlpZiAoaW5mby0+ZmJvcHMtPmZiX2Vu
-YWJsZSkKPj4gKwkJCWluZm8tPmZib3BzLT5mYl9lbmFibGUoaW5mbyk7Cj4+IAkJYnJlYWs7Cj4+
-IAljYXNlIEZCSU9fRElTQUJMRToKPj4gLQkJaW5mby0+ZmJvcHMtPmZiX2Rpc2FibGUoaW5mbyk7
-Cj4+ICsJCWlmIChpbmZvLT5mYm9wcy0+ZmJfZGlzYWJsZSkKPj4gKwkJCWluZm8tPmZib3BzLT5m
-Yl9kaXNhYmxlKGluZm8pOwo+PiAJCWJyZWFrOwo+PiAJZGVmYXVsdDoKPj4gCQlyZXR1cm4gLUVO
-T1NZUzsKPj4gQEAgLTk0LDcgKzk2LDggQEAgaW50IGZiX2VuYWJsZShzdHJ1Y3QgZmJfaW5mbyAq
-aW5mbykKPj4gCWlmIChyZXQpCj4+IAkJcmV0dXJuIHJldDsKPj4gCj4+IC0JaW5mby0+ZmJvcHMt
-PmZiX2VuYWJsZShpbmZvKTsKPj4gKwlpZiAoaW5mby0+ZmJvcHMtPmZiX2VuYWJsZSkKPj4gKwkJ
-aW5mby0+ZmJvcHMtPmZiX2VuYWJsZShpbmZvKTsKPj4gCj4+IAlpbmZvLT5lbmFibGVkID0gdHJ1
-ZTsKPj4gCj4+IEBAIC0xMDYsNyArMTA5LDggQEAgaW50IGZiX2Rpc2FibGUoc3RydWN0IGZiX2lu
-Zm8gKmluZm8pCj4+IAlpZiAoIWluZm8tPmVuYWJsZWQpCj4+IAkJcmV0dXJuIDA7Cj4+IAo+PiAt
-CWluZm8tPmZib3BzLT5mYl9kaXNhYmxlKGluZm8pOwo+PiArCWlmIChpbmZvLT5mYm9wcy0+ZmJf
-ZGlzYWJsZSkKPj4gKwkJaW5mby0+ZmJvcHMtPmZiX2Rpc2FibGUoaW5mbyk7Cj4gCj4gTWFraW5n
-IGZiX2VuYWJsZS9kaXNhYmxlIG9wdGlvbmFsIGlzIGZpbmUgYW5kIEkgYXBwbGllZCB0aGlzIHBh
-cnQuCj4gCj4+IAo+PiAJZmJfcmVsZWFzZV9zaGFkb3dmYihpbmZvKTsKPj4gCj4+IEBAIC0yNjYs
-NiArMjcwLDggQEAgc3RhdGljIGludCBmYl9zZXRfc2hhZG93ZmIoc3RydWN0IHBhcmFtX2QgKnAs
-IHZvaWQgKnByaXYpCj4+IAlyZXR1cm4gZmJfYWxsb2Nfc2hhZG93ZmIoaW5mbyk7Cj4+IH0KPj4g
-Cj4+ICtzdHJ1Y3QgZmJfb3BzIGR1bW15X2Zib3BzOwo+PiArCj4+IGludCByZWdpc3Rlcl9mcmFt
-ZWJ1ZmZlcihzdHJ1Y3QgZmJfaW5mbyAqaW5mbykKPj4gewo+PiAJaW50IGlkID0gZ2V0X2ZyZWVf
-ZGV2aWNlaWQoImZiIik7Cj4+IEBAIC0yNzMsNiArMjc5LDE2IEBAIGludCByZWdpc3Rlcl9mcmFt
-ZWJ1ZmZlcihzdHJ1Y3QgZmJfaW5mbyAqaW5mbykKPj4gCWludCByZXQsIG51bV9tb2RlcywgaTsK
-Pj4gCWNvbnN0IGNoYXIgKipuYW1lczsKPj4gCj4+ICsJaWYgKCFpbmZvLT5wX2VuYWJsZSkgewo+
-PiArCQlpZiAoIWluZm8tPmZib3BzKQo+PiArCQkJcmV0dXJuIC1FSU5WQUw7Cj4+ICsJCWlmICgh
-aW5mby0+ZmJvcHMtPmZiX2VuYWJsZSAmJiAhaW5mby0+ZmJvcHMtPmZiX2Rpc2FibGUpCj4+ICsJ
-CQlyZXR1cm4gLUVJTlZBTDsKPj4gKwl9IGVsc2Ugewo+PiArCQlpZiAoIWluZm8tPmZib3BzKQo+
-PiArCQkJaW5mby0+ZmJvcHMgPSAmZHVtbXlfZmJvcHM7Cj4+ICsJfQo+IAo+IE1ha2luZyBmYm9w
-cyBvcHRpb25hbCBpcyBub3Qgd2hhdCB0aGUgcGF0Y2ggZGVzY3NyaXB0aW9uIHNheXMuCkl0IGRv
-ZXMgYXMgaWYgeW91IG5lZWQgbm90aGluZyBmcm9tIGZib3BzIHlvdSB3aWxsIG5vdCBldmVuIGlt
-cGxlbWVudCBpdAo+IAo+PiArCj4+IAlkZXYgPSAmaW5mby0+ZGV2Owo+PiAKPj4gCS8qCj4+IEBA
-IC0zMDgsNyArMzI0LDEwIEBAIGludCByZWdpc3Rlcl9mcmFtZWJ1ZmZlcihzdHJ1Y3QgZmJfaW5m
-byAqaW5mbykKPj4gCWlmIChyZXQpCj4+IAkJZ290byBlcnJfZnJlZTsKPj4gCj4+IC0JZGV2X2Fk
-ZF9wYXJhbV9ib29sKGRldiwgImVuYWJsZSIsIGZiX2VuYWJsZV9zZXQsIE5VTEwsCj4+ICsJaWYg
-KGluZm8tPnBfZW5hYmxlKQo+PiArCQlkZXZfYWRkX3BhcmFtX2ludF9ybyhkZXYsICJlbmFibGUi
-LCBpbmZvLT5wX2VuYWJsZSwgIiVkIik7Cj4+ICsJZWxzZQo+PiArCQlkZXZfYWRkX3BhcmFtX2Jv
-b2woZGV2LCAiZW5hYmxlIiwgZmJfZW5hYmxlX3NldCwgTlVMTCwKPj4gCQkJJmluZm8tPnBfZW5h
-YmxlLCBpbmZvKTsKPiAKPiBFdmVuIHdoZW4gdGhlIGZyYW1lYnVmZmVyIGNhbm5vdCBwaHlzaWNh
-bGx5IGRpc2FibGVkIEkgdGhpbmsgd2UKPiBzaG91bGRuJ3QgdGhyb3cgYW4gZXJyb3Igd2hlbiB0
-aGUgdXNlciB0cmllcyB0by4KdGhpcyB3aWxsIGJlIGRvbmUgYnkgdGhlIGVudiBhcyBJIGZpeGVk
-IHRoZSDigKZfaW50X3JvIHN1cHBvcnQKYXMgZW5hYmxlIHdpbGwgbm90IHdlIGFibGUgdG8gY2hh
-bmdlZAoKQmVzdCBSZWdhcmRzLApKLgo+IAo+IFNhc2NoYQo+IAo+IC0tIAo+IFBlbmd1dHJvbml4
-IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICB8Cj4gSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0
-cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKPiBQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRl
-c2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNnZXJp
-Y2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5
-MTctNTU1NSB8CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
-Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+
+> On Mar 10, 2017, at 1:24 AM, Lucas Stach <l.stach@pengutronix.de> wrote:
+> 
+> Am Donnerstag, den 09.03.2017, 15:34 +0100 schrieb Jean-Christophe
+> PLAGNIOL-VILLARD:
+>> everythink need to be aligned to 4096
+> 
+> Why? The commit message isn't really telling anything.
+This is a requierment by EFI
+
+Best Regards,
+J.
+> 
+> Regards,
+> Lucas 
+> 
+>> 
+>> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+>> ---
+>> arch/x86/mach-efi/elf_ia32_efi.lds.S         | 10 +++++++---
+>> arch/x86/mach-efi/elf_x86_64_efi.lds.S       | 10 ++++++----
+>> arch/x86/mach-efi/include/mach/barebox.lds.h | 14 +++++++++++++-
+>> include/asm-generic/barebox.lds.h            |  8 +++++---
+>> 4 files changed, 31 insertions(+), 11 deletions(-)
+>> 
+>> diff --git a/arch/x86/mach-efi/elf_ia32_efi.lds.S b/arch/x86/mach-efi/elf_ia32_efi.lds.S
+>> index 69f43f554..6d9cb973c 100644
+>> --- a/arch/x86/mach-efi/elf_ia32_efi.lds.S
+>> +++ b/arch/x86/mach-efi/elf_ia32_efi.lds.S
+>> @@ -50,22 +50,23 @@ SECTIONS
+>> 		*(COMMON)
+>> 	}
+>> 
+>> -	. = ALIGN(64);
+>> +	. = ALIGN(4096);
+>> 
+>> 	__barebox_initcalls_start = .;
+>> 	__barebox_initcalls : { INITCALLS }
+>> 	__barebox_initcalls_end = .;
+>> +	. = ALIGN(4096);
+>> 
+>> 	__barebox_exitcalls_start = .;
+>> 	__barebox_exitcalls : { EXITCALLS }
+>> 	__barebox_exitcalls_end = .;
+>> 
+>> -	. = ALIGN(64);
+>> +	. = ALIGN(4096);
+>> 	__barebox_magicvar_start = .;
+>> 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+>> 	__barebox_magicvar_end = .;
+>> 
+>> -	. = ALIGN(64);
+>> +	. = ALIGN(4096);
+>> 	__barebox_cmd_start = .;
+>> 	__barebox_cmd : { BAREBOX_CMDS }
+>> 	__barebox_cmd_end = .;
+>> @@ -76,6 +77,9 @@ SECTIONS
+>> 	.rel : {
+>> 		*(.rel.data)
+>> 		*(.rel.data.*)
+>> +		*(.rela.barebox*)
+>> +		*(.rela.initcall*)
+>> +		*(.rela.exitcall*)
+>> 		*(.rel.got)
+>> 		*(.rel.stab)
+>> 		*(.data.rel.ro.local)
+>> diff --git a/arch/x86/mach-efi/elf_x86_64_efi.lds.S b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+>> index 93d34d17a..8216d1d70 100644
+>> --- a/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+>> +++ b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+>> @@ -23,6 +23,7 @@ SECTIONS
+>> 		*(.text)
+>> 		*(.text.*)
+>> 		*(.gnu.linkonce.t.*)
+>> +		. = ALIGN(16);
+>> 	}
+>> 
+>> 	_etext = .;
+>> @@ -33,8 +34,8 @@ SECTIONS
+>> 		*(.reloc)
+>> 	}
+>> 
+>> -	. = ALIGN(4096);
+>> 	_sdata = .;
+>> +	. = ALIGN(4096);
+>> 
+>> 	.data : {
+>> 		*(.rodata*)
+>> @@ -52,22 +53,23 @@ SECTIONS
+>> 		*(.rel.local)
+>> 	}
+>> 
+>> -	. = ALIGN(64);
+>> +	. = ALIGN(4096);
+>> 
+>> 	__barebox_initcalls_start = .;
+>> 	__barebox_initcalls : { INITCALLS }
+>> 	__barebox_initcalls_end = .;
+>> +	. = ALIGN(4096);
+>> 
+>> 	__barebox_exitcalls_start = .;
+>> 	__barebox_exitcalls : { EXITCALLS }
+>> 	__barebox_exitcalls_end = .;
+>> 
+>> -	. = ALIGN(64);
+>> +	. = ALIGN(4096);
+>> 	__barebox_magicvar_start = .;
+>> 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+>> 	__barebox_magicvar_end = .;
+>> 
+>> -	. = ALIGN(64);
+>> +	. = ALIGN(4096);
+>> 	__barebox_cmd_start = .;
+>> 	__barebox_cmd : { BAREBOX_CMDS }
+>> 	__barebox_cmd_end = .;
+>> diff --git a/arch/x86/mach-efi/include/mach/barebox.lds.h b/arch/x86/mach-efi/include/mach/barebox.lds.h
+>> index 40a8c178f..e7a3bb9cd 100644
+>> --- a/arch/x86/mach-efi/include/mach/barebox.lds.h
+>> +++ b/arch/x86/mach-efi/include/mach/barebox.lds.h
+>> @@ -1 +1,13 @@
+>> -/* empty */
+>> +/*
+>> + * Copyright (C) 2017 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
+>> + *
+>> + * Under GPL v2
+>> + */
+>> +
+>> +#ifndef __EFI_MACH_BAREBOX_LDS_H__
+>> +#define __EFI_MACH_BAREBOX_LDS_H__
+>> +
+>> +/* For secure boot we need all the section to be 4096 alligned */
+>> +#define STRUCT_ALIGNMENT 4096
+>> +
+>> +#endif /* __EFI_MACH_BAREBOX_LDS_H__ */
+>> diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
+>> index c8a919b92..6c37751b3 100644
+>> --- a/include/asm-generic/barebox.lds.h
+>> +++ b/include/asm-generic/barebox.lds.h
+>> @@ -3,15 +3,17 @@
+>>  * Align to a 32 byte boundary equal to the
+>>  * alignment gcc 4.5 uses for a struct
+>>  */
+>> -#define STRUCT_ALIGNMENT 32
+>> -#define STRUCT_ALIGN() . = ALIGN(STRUCT_ALIGNMENT)
+>> -
+>> #if defined CONFIG_X86 || \
+>> 	defined CONFIG_ARCH_EP93XX || \
+>> 	defined CONFIG_ARCH_ZYNQ
+>> #include <mach/barebox.lds.h>
+>> #endif
+>> 
+>> +#ifndef STRUCT_ALIGNMENT
+>> +#define STRUCT_ALIGNMENT 32
+>> +#endif
+>> +#define STRUCT_ALIGN() . = ALIGN(STRUCT_ALIGNMENT)
+>> +
+>> #ifndef PRE_IMAGE
+>> #define PRE_IMAGE
+>> #endif
+> 
+> 
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
