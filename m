@@ -1,23 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 1.mo179.mail-out.ovh.net ([178.33.111.220])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmKu1-0002wK-HH
- for barebox@lists.infradead.org; Fri, 10 Mar 2017 13:48:20 +0000
+ id 1cmKxm-0005DV-Pq
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 13:52:14 +0000
 Received: from player716.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo179.mail-out.ovh.net (Postfix) with ESMTP id 6BBD12F00E
- for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 14:47:51 +0100 (CET)
-Date: Fri, 10 Mar 2017 14:54:03 +0100
+ by mo179.mail-out.ovh.net (Postfix) with ESMTP id 39D1D28C5A
+ for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 14:51:49 +0100 (CET)
+Date: Fri, 10 Mar 2017 14:58:06 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20170310135403.GA19458@mail.ovh.net>
-References: <20170309143117.GI4120@mail.ovh.net>
- <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
- <1489070050-16024-2-git-send-email-plagnioj@jcrosoft.com>
- <1489080293.24921.0.camel@pengutronix.de>
- <DA9CFBDA-E7D8-48B7-9CAC-73FDD1A51148@jcrosoft.com>
- <1489143938.24921.17.camel@pengutronix.de>
+Message-ID: <20170310135806.GB19458@mail.ovh.net>
+References: <1489055471-12836-1-git-send-email-plagnioj@jcrosoft.com>
+ <1489055471-12836-3-git-send-email-plagnioj@jcrosoft.com>
+ <20170310070043.qsu5mcr2fmnn3oxi@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1489143938.24921.17.camel@pengutronix.de>
+In-Reply-To: <20170310070043.qsu5mcr2fmnn3oxi@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,201 +27,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] efi: fix lds for secure boot support
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH 3/3] fbcon: use __iowrite{32/64} to speedup the
+ framebuffer console scrolling
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 12:05 Fri 10 Mar     , Lucas Stach wrote:
-> Am Freitag, den 10.03.2017, 18:17 +0800 schrieb Jean-Christophe
-> PLAGNIOL-VILLARD:
-> > > On Mar 10, 2017, at 1:24 AM, Lucas Stach <l.stach@pengutronix.de> wrote:
-> > > 
-> > > Am Donnerstag, den 09.03.2017, 15:34 +0100 schrieb Jean-Christophe
-> > > PLAGNIOL-VILLARD:
-> > >> everythink need to be aligned to 4096
-> > > 
-> > > Why? The commit message isn't really telling anything.
-> > This is a requierment by EFI
+On 08:00 Fri 10 Mar     , Sascha Hauer wrote:
+> On Thu, Mar 09, 2017 at 11:31:11AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > this devide the time by 4 on x86
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  drivers/video/fbconsole.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
+> > index b261f1704..b5e951e23 100644
+> > --- a/drivers/video/fbconsole.c
+> > +++ b/drivers/video/fbconsole.c
+> > @@ -6,6 +6,7 @@
+> >  #include <gui/image_renderer.h>
+> >  #include <gui/graphic_utils.h>
+> >  #include <linux/font.h>
+> > +#include <linux/io.h>
+> >  
+> >  enum state_t {
+> >  	LIT,				/* Literal input */
+> > @@ -202,7 +203,7 @@ static void printchar(struct fbc_priv *priv, int c)
+> >  
+> >  		buf = gui_screen_render_buffer(priv->sc);
+> >  
+> > -		memcpy(buf, buf + line_height, line_height * priv->rows);
+> > +		__iowrite64_copy(buf, buf + line_height, (line_height * priv->rows) >> 2);
 > 
-> This is in no way an EFI requirement.
+> Shouldn't this be >> 3?
+yeah should be 3
 > 
-> Googling tells me that the signing procedure for EFI secure boot is
-> built around a PE binary. PE in turn is based on the COFF binary format
-> which, unlike ELF, has no section descriptions in the header and
-> therefore requires the sections to be placed page aligned (4K on x86, 4K
-> or 64K on ARM64).
-No COFF does not require to have section "page aligned" which is wrong here
-The is a Requirement by EFI from secure boot
+> Besides, I'm not sure using __iowrite64_copy is the right weapon here.
+> Maybe better port arch/x86/lib/memcpy_64.S to get an optimized memcpy?
+we need to test the performance
 
-Otherwise EFI will not work today
-
-> 
-> All of the above is what should have been included in the commit
-> message, to allow other people to understand the commit and not require
-> them to google their way to the justification of this commit.
-And read the Spec is required to undrestant EFI no?
-Or I need to put the spec in the commit too?
+but as far as I remember __iowrite was kicker on ARM at least
 
 Best Regards,
-J
+J.
 > 
-> Regards,
-> Lucas
-> 
-> > Best Regards,
-> > J.
-> > > 
-> > > Regards,
-> > > Lucas 
-> > > 
-> > >> 
-> > >> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > >> ---
-> > >> arch/x86/mach-efi/elf_ia32_efi.lds.S         | 10 +++++++---
-> > >> arch/x86/mach-efi/elf_x86_64_efi.lds.S       | 10 ++++++----
-> > >> arch/x86/mach-efi/include/mach/barebox.lds.h | 14 +++++++++++++-
-> > >> include/asm-generic/barebox.lds.h            |  8 +++++---
-> > >> 4 files changed, 31 insertions(+), 11 deletions(-)
-> > >> 
-> > >> diff --git a/arch/x86/mach-efi/elf_ia32_efi.lds.S b/arch/x86/mach-efi/elf_ia32_efi.lds.S
-> > >> index 69f43f554..6d9cb973c 100644
-> > >> --- a/arch/x86/mach-efi/elf_ia32_efi.lds.S
-> > >> +++ b/arch/x86/mach-efi/elf_ia32_efi.lds.S
-> > >> @@ -50,22 +50,23 @@ SECTIONS
-> > >> 		*(COMMON)
-> > >> 	}
-> > >> 
-> > >> -	. = ALIGN(64);
-> > >> +	. = ALIGN(4096);
-> > >> 
-> > >> 	__barebox_initcalls_start = .;
-> > >> 	__barebox_initcalls : { INITCALLS }
-> > >> 	__barebox_initcalls_end = .;
-> > >> +	. = ALIGN(4096);
-> > >> 
-> > >> 	__barebox_exitcalls_start = .;
-> > >> 	__barebox_exitcalls : { EXITCALLS }
-> > >> 	__barebox_exitcalls_end = .;
-> > >> 
-> > >> -	. = ALIGN(64);
-> > >> +	. = ALIGN(4096);
-> > >> 	__barebox_magicvar_start = .;
-> > >> 	.barebox_magicvar : { BAREBOX_MAGICVARS }
-> > >> 	__barebox_magicvar_end = .;
-> > >> 
-> > >> -	. = ALIGN(64);
-> > >> +	. = ALIGN(4096);
-> > >> 	__barebox_cmd_start = .;
-> > >> 	__barebox_cmd : { BAREBOX_CMDS }
-> > >> 	__barebox_cmd_end = .;
-> > >> @@ -76,6 +77,9 @@ SECTIONS
-> > >> 	.rel : {
-> > >> 		*(.rel.data)
-> > >> 		*(.rel.data.*)
-> > >> +		*(.rela.barebox*)
-> > >> +		*(.rela.initcall*)
-> > >> +		*(.rela.exitcall*)
-> > >> 		*(.rel.got)
-> > >> 		*(.rel.stab)
-> > >> 		*(.data.rel.ro.local)
-> > >> diff --git a/arch/x86/mach-efi/elf_x86_64_efi.lds.S b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-> > >> index 93d34d17a..8216d1d70 100644
-> > >> --- a/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-> > >> +++ b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-> > >> @@ -23,6 +23,7 @@ SECTIONS
-> > >> 		*(.text)
-> > >> 		*(.text.*)
-> > >> 		*(.gnu.linkonce.t.*)
-> > >> +		. = ALIGN(16);
-> > >> 	}
-> > >> 
-> > >> 	_etext = .;
-> > >> @@ -33,8 +34,8 @@ SECTIONS
-> > >> 		*(.reloc)
-> > >> 	}
-> > >> 
-> > >> -	. = ALIGN(4096);
-> > >> 	_sdata = .;
-> > >> +	. = ALIGN(4096);
-> > >> 
-> > >> 	.data : {
-> > >> 		*(.rodata*)
-> > >> @@ -52,22 +53,23 @@ SECTIONS
-> > >> 		*(.rel.local)
-> > >> 	}
-> > >> 
-> > >> -	. = ALIGN(64);
-> > >> +	. = ALIGN(4096);
-> > >> 
-> > >> 	__barebox_initcalls_start = .;
-> > >> 	__barebox_initcalls : { INITCALLS }
-> > >> 	__barebox_initcalls_end = .;
-> > >> +	. = ALIGN(4096);
-> > >> 
-> > >> 	__barebox_exitcalls_start = .;
-> > >> 	__barebox_exitcalls : { EXITCALLS }
-> > >> 	__barebox_exitcalls_end = .;
-> > >> 
-> > >> -	. = ALIGN(64);
-> > >> +	. = ALIGN(4096);
-> > >> 	__barebox_magicvar_start = .;
-> > >> 	.barebox_magicvar : { BAREBOX_MAGICVARS }
-> > >> 	__barebox_magicvar_end = .;
-> > >> 
-> > >> -	. = ALIGN(64);
-> > >> +	. = ALIGN(4096);
-> > >> 	__barebox_cmd_start = .;
-> > >> 	__barebox_cmd : { BAREBOX_CMDS }
-> > >> 	__barebox_cmd_end = .;
-> > >> diff --git a/arch/x86/mach-efi/include/mach/barebox.lds.h b/arch/x86/mach-efi/include/mach/barebox.lds.h
-> > >> index 40a8c178f..e7a3bb9cd 100644
-> > >> --- a/arch/x86/mach-efi/include/mach/barebox.lds.h
-> > >> +++ b/arch/x86/mach-efi/include/mach/barebox.lds.h
-> > >> @@ -1 +1,13 @@
-> > >> -/* empty */
-> > >> +/*
-> > >> + * Copyright (C) 2017 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-> > >> + *
-> > >> + * Under GPL v2
-> > >> + */
-> > >> +
-> > >> +#ifndef __EFI_MACH_BAREBOX_LDS_H__
-> > >> +#define __EFI_MACH_BAREBOX_LDS_H__
-> > >> +
-> > >> +/* For secure boot we need all the section to be 4096 alligned */
-> > >> +#define STRUCT_ALIGNMENT 4096
-> > >> +
-> > >> +#endif /* __EFI_MACH_BAREBOX_LDS_H__ */
-> > >> diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-> > >> index c8a919b92..6c37751b3 100644
-> > >> --- a/include/asm-generic/barebox.lds.h
-> > >> +++ b/include/asm-generic/barebox.lds.h
-> > >> @@ -3,15 +3,17 @@
-> > >>  * Align to a 32 byte boundary equal to the
-> > >>  * alignment gcc 4.5 uses for a struct
-> > >>  */
-> > >> -#define STRUCT_ALIGNMENT 32
-> > >> -#define STRUCT_ALIGN() . = ALIGN(STRUCT_ALIGNMENT)
-> > >> -
-> > >> #if defined CONFIG_X86 || \
-> > >> 	defined CONFIG_ARCH_EP93XX || \
-> > >> 	defined CONFIG_ARCH_ZYNQ
-> > >> #include <mach/barebox.lds.h>
-> > >> #endif
-> > >> 
-> > >> +#ifndef STRUCT_ALIGNMENT
-> > >> +#define STRUCT_ALIGNMENT 32
-> > >> +#endif
-> > >> +#define STRUCT_ALIGN() . = ALIGN(STRUCT_ALIGNMENT)
-> > >> +
-> > >> #ifndef PRE_IMAGE
-> > >> #define PRE_IMAGE
-> > >> #endif
-> > > 
-> > > 
-> > 
+> Sascha
 > 
 > 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
