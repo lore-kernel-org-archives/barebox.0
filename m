@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from 7.mo68.mail-out.ovh.net ([46.105.63.230])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmGgn-0007zL-BH
- for barebox@lists.infradead.org; Fri, 10 Mar 2017 09:18:26 +0000
-Date: Fri, 10 Mar 2017 10:17:59 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170310091759.p2jogd3u7wvf7sh3@pengutronix.de>
-References: <20170308092402.21245-1-o.rempel@pengutronix.de>
- <20170308092402.21245-2-o.rempel@pengutronix.de>
- <20170310073258.nahg4i2wmcrni5s2@pengutronix.de>
- <3f45900f-b45b-a6d0-86c2-919056b25137@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <3f45900f-b45b-a6d0-86c2-919056b25137@pengutronix.de>
+ id 1cmH06-0003or-ES
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 09:38:22 +0000
+Received: from player776.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo68.mail-out.ovh.net (Postfix) with ESMTP id 5E9EF3D4F9
+ for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 10:37:53 +0100 (CET)
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+In-Reply-To: <20170310072649.whkr4d4vpwuvd2kn@pengutronix.de>
+Date: Fri, 10 Mar 2017 17:37:45 +0800
+Message-Id: <29A532DB-5B12-40F4-BF82-7DF05C0B7ADC@jcrosoft.com>
+References: <1489053441-12772-1-git-send-email-plagnioj@jcrosoft.com>
+ <1489053441-12772-2-git-send-email-plagnioj@jcrosoft.com>
+ <20170310072649.whkr4d4vpwuvd2kn@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,60 +22,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] usb: fastboot: umount device before writing to it
-To: Oleksij Rempel <ore@pengutronix.de>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2] video: some framebuffer such as efi does support
+ enable/disable
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Fri, Mar 10, 2017 at 10:14:46AM +0100, Oleksij Rempel wrote:
-> 
-> 
-> On 03/10/2017 08:32 AM, Sascha Hauer wrote:
-> > On Wed, Mar 08, 2017 at 10:24:02AM +0100, Oleksij Rempel wrote:
-> > > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > > 
-> > > When a fastboot target refers to a device and we are going to write
-> > > to it, umount it beforehand, so that we do not end up with corrupt
-> > > data after writing.
-> > > 
-> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > ---
-> > >  drivers/usb/gadget/f_fastboot.c | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > > 
-> > > diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-> > > index a6192b9eb..8d69aea8b 100644
-> > > --- a/drivers/usb/gadget/f_fastboot.c
-> > > +++ b/drivers/usb/gadget/f_fastboot.c
-> > > @@ -754,6 +754,7 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
-> > >  		goto out;
-> > >  	}
-> > > 
-> > > +	umount(filename);
-> > 
-> > I'm not sure about this one. We should probably rather bail out with an
-> > error when it's mounted. When it's mounted then the result is undesired,
-> > even when we unmount it before flashing.
-> 
-> hm... for this case we will probably need some function to check if device
-> is mounted. something like: is_mounted(path). Or, is there some other way to
-> do this?
-
-Yeah, you'll need a function for this. Right now there is no way to
-determine if a device is mounted.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Cj4gT24gTWFyIDEwLCAyMDE3LCBhdCAzOjI2IFBNLCBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVu
+Z3V0cm9uaXguZGU+IHdyb3RlOgo+IAo+IE9uIFRodSwgTWFyIDA5LCAyMDE3IGF0IDEwOjU3OjIx
+QU0gKzAxMDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIHdyb3RlOgo+PiBzbyBh
+bGxvdyB0aGVtIHRvIGRvIG5vdCBwYXNzIHRoaXMgZnVuY3Rpb24gdmlhIGZib3BzCj4+IGFuZCBp
+bmRpY2F0ZSB0aGV5IGFyZSBhbHdheXMgb24uCj4+IAo+PiBTaWduZWQtb2ZmLWJ5OiBKZWFuLUNo
+cmlzdG9waGUgUExBR05JT0wtVklMTEFSRCA8cGxhZ25pb2pAamNyb3NvZnQuY29tPgo+PiAtLS0K
+Pj4gZHJpdmVycy92aWRlby9mYi5jIHwgMjkgKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0K
+Pj4gMSBmaWxlIGNoYW5nZWQsIDI0IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pCj4gCj4g
+SSBwYXJ0bHkgYXBwbGllZCB0aGlzIG9uZSBvbiB0b3Agb2YKPiAKPiBbUEFUQ0hdIHZpZGVvOiBj
+YWxsIGZiX1tlbnxkaXNdYWJsZSBpbnN0ZWFkIG9mIGZvcHMgZGlyZWN0bHkKPiAKPj4gCj4+IGRp
+ZmYgLS1naXQgYS9kcml2ZXJzL3ZpZGVvL2ZiLmMgYi9kcml2ZXJzL3ZpZGVvL2ZiLmMKPj4gaW5k
+ZXggNmI4OGYyZGY5Li42M2E4MThlYjIgMTAwNjQ0Cj4+IC0tLSBhL2RyaXZlcnMvdmlkZW8vZmIu
+Ywo+PiArKysgYi9kcml2ZXJzL3ZpZGVvL2ZiLmMKPj4gQEAgLTE5LDEwICsxOSwxMiBAQCBzdGF0
+aWMgaW50IGZiX2lvY3RsKHN0cnVjdCBjZGV2KiBjZGV2LCBpbnQgcmVxLCB2b2lkICpkYXRhKQo+
+PiAJCSpmYiA9IGluZm87Cj4+IAkJYnJlYWs7Cj4+IAljYXNlIEZCSU9fRU5BQkxFOgo+PiAtCQlp
+bmZvLT5mYm9wcy0+ZmJfZW5hYmxlKGluZm8pOwo+PiArCQlpZiAoaW5mby0+ZmJvcHMtPmZiX2Vu
+YWJsZSkKPj4gKwkJCWluZm8tPmZib3BzLT5mYl9lbmFibGUoaW5mbyk7Cj4+IAkJYnJlYWs7Cj4+
+IAljYXNlIEZCSU9fRElTQUJMRToKPj4gLQkJaW5mby0+ZmJvcHMtPmZiX2Rpc2FibGUoaW5mbyk7
+Cj4+ICsJCWlmIChpbmZvLT5mYm9wcy0+ZmJfZGlzYWJsZSkKPj4gKwkJCWluZm8tPmZib3BzLT5m
+Yl9kaXNhYmxlKGluZm8pOwo+PiAJCWJyZWFrOwo+PiAJZGVmYXVsdDoKPj4gCQlyZXR1cm4gLUVO
+T1NZUzsKPj4gQEAgLTk0LDcgKzk2LDggQEAgaW50IGZiX2VuYWJsZShzdHJ1Y3QgZmJfaW5mbyAq
+aW5mbykKPj4gCWlmIChyZXQpCj4+IAkJcmV0dXJuIHJldDsKPj4gCj4+IC0JaW5mby0+ZmJvcHMt
+PmZiX2VuYWJsZShpbmZvKTsKPj4gKwlpZiAoaW5mby0+ZmJvcHMtPmZiX2VuYWJsZSkKPj4gKwkJ
+aW5mby0+ZmJvcHMtPmZiX2VuYWJsZShpbmZvKTsKPj4gCj4+IAlpbmZvLT5lbmFibGVkID0gdHJ1
+ZTsKPj4gCj4+IEBAIC0xMDYsNyArMTA5LDggQEAgaW50IGZiX2Rpc2FibGUoc3RydWN0IGZiX2lu
+Zm8gKmluZm8pCj4+IAlpZiAoIWluZm8tPmVuYWJsZWQpCj4+IAkJcmV0dXJuIDA7Cj4+IAo+PiAt
+CWluZm8tPmZib3BzLT5mYl9kaXNhYmxlKGluZm8pOwo+PiArCWlmIChpbmZvLT5mYm9wcy0+ZmJf
+ZGlzYWJsZSkKPj4gKwkJaW5mby0+ZmJvcHMtPmZiX2Rpc2FibGUoaW5mbyk7Cj4gCj4gTWFraW5n
+IGZiX2VuYWJsZS9kaXNhYmxlIG9wdGlvbmFsIGlzIGZpbmUgYW5kIEkgYXBwbGllZCB0aGlzIHBh
+cnQuCj4gCj4+IAo+PiAJZmJfcmVsZWFzZV9zaGFkb3dmYihpbmZvKTsKPj4gCj4+IEBAIC0yNjYs
+NiArMjcwLDggQEAgc3RhdGljIGludCBmYl9zZXRfc2hhZG93ZmIoc3RydWN0IHBhcmFtX2QgKnAs
+IHZvaWQgKnByaXYpCj4+IAlyZXR1cm4gZmJfYWxsb2Nfc2hhZG93ZmIoaW5mbyk7Cj4+IH0KPj4g
+Cj4+ICtzdHJ1Y3QgZmJfb3BzIGR1bW15X2Zib3BzOwo+PiArCj4+IGludCByZWdpc3Rlcl9mcmFt
+ZWJ1ZmZlcihzdHJ1Y3QgZmJfaW5mbyAqaW5mbykKPj4gewo+PiAJaW50IGlkID0gZ2V0X2ZyZWVf
+ZGV2aWNlaWQoImZiIik7Cj4+IEBAIC0yNzMsNiArMjc5LDE2IEBAIGludCByZWdpc3Rlcl9mcmFt
+ZWJ1ZmZlcihzdHJ1Y3QgZmJfaW5mbyAqaW5mbykKPj4gCWludCByZXQsIG51bV9tb2RlcywgaTsK
+Pj4gCWNvbnN0IGNoYXIgKipuYW1lczsKPj4gCj4+ICsJaWYgKCFpbmZvLT5wX2VuYWJsZSkgewo+
+PiArCQlpZiAoIWluZm8tPmZib3BzKQo+PiArCQkJcmV0dXJuIC1FSU5WQUw7Cj4+ICsJCWlmICgh
+aW5mby0+ZmJvcHMtPmZiX2VuYWJsZSAmJiAhaW5mby0+ZmJvcHMtPmZiX2Rpc2FibGUpCj4+ICsJ
+CQlyZXR1cm4gLUVJTlZBTDsKPj4gKwl9IGVsc2Ugewo+PiArCQlpZiAoIWluZm8tPmZib3BzKQo+
+PiArCQkJaW5mby0+ZmJvcHMgPSAmZHVtbXlfZmJvcHM7Cj4+ICsJfQo+IAo+IE1ha2luZyBmYm9w
+cyBvcHRpb25hbCBpcyBub3Qgd2hhdCB0aGUgcGF0Y2ggZGVzY3NyaXB0aW9uIHNheXMuCkl0IGRv
+ZXMgYXMgaWYgeW91IG5lZWQgbm90aGluZyBmcm9tIGZib3BzIHlvdSB3aWxsIG5vdCBldmVuIGlt
+cGxlbWVudCBpdAo+IAo+PiArCj4+IAlkZXYgPSAmaW5mby0+ZGV2Owo+PiAKPj4gCS8qCj4+IEBA
+IC0zMDgsNyArMzI0LDEwIEBAIGludCByZWdpc3Rlcl9mcmFtZWJ1ZmZlcihzdHJ1Y3QgZmJfaW5m
+byAqaW5mbykKPj4gCWlmIChyZXQpCj4+IAkJZ290byBlcnJfZnJlZTsKPj4gCj4+IC0JZGV2X2Fk
+ZF9wYXJhbV9ib29sKGRldiwgImVuYWJsZSIsIGZiX2VuYWJsZV9zZXQsIE5VTEwsCj4+ICsJaWYg
+KGluZm8tPnBfZW5hYmxlKQo+PiArCQlkZXZfYWRkX3BhcmFtX2ludF9ybyhkZXYsICJlbmFibGUi
+LCBpbmZvLT5wX2VuYWJsZSwgIiVkIik7Cj4+ICsJZWxzZQo+PiArCQlkZXZfYWRkX3BhcmFtX2Jv
+b2woZGV2LCAiZW5hYmxlIiwgZmJfZW5hYmxlX3NldCwgTlVMTCwKPj4gCQkJJmluZm8tPnBfZW5h
+YmxlLCBpbmZvKTsKPiAKPiBFdmVuIHdoZW4gdGhlIGZyYW1lYnVmZmVyIGNhbm5vdCBwaHlzaWNh
+bGx5IGRpc2FibGVkIEkgdGhpbmsgd2UKPiBzaG91bGRuJ3QgdGhyb3cgYW4gZXJyb3Igd2hlbiB0
+aGUgdXNlciB0cmllcyB0by4KdGhpcyB3aWxsIGJlIGRvbmUgYnkgdGhlIGVudiBhcyBJIGZpeGVk
+IHRoZSDigKZfaW50X3JvIHN1cHBvcnQKYXMgZW5hYmxlIHdpbGwgbm90IHdlIGFibGUgdG8gY2hh
+bmdlZAoKQmVzdCBSZWdhcmRzLApKLgo+IAo+IFNhc2NoYQo+IAo+IC0tIAo+IFBlbmd1dHJvbml4
+IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICB8Cj4gSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0
+cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKPiBQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRl
+c2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNnZXJp
+Y2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5
+MTctNTU1NSB8CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
