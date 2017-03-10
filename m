@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmDgS-0001BI-Ga
- for barebox@lists.infradead.org; Fri, 10 Mar 2017 06:05:53 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Fri, 10 Mar 2017 07:05:22 +0100
-Message-Id: <20170310060523.25810-3-o.rempel@pengutronix.de>
-In-Reply-To: <20170310060523.25810-1-o.rempel@pengutronix.de>
-References: <20170309175832.20213-2-o.rempel@pengutronix.de>
- <20170310060523.25810-1-o.rempel@pengutronix.de>
+ id 1cmDiY-0001j0-KV
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 06:08:00 +0000
+Received: by mail-pg0-x244.google.com with SMTP id g2so4696827pge.2
+ for <barebox@lists.infradead.org>; Thu, 09 Mar 2017 22:07:38 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu,  9 Mar 2017 22:07:32 -0800
+Message-Id: <20170310060732.8955-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,129 +21,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 2/3] console_countdown: add possibility to abort countdown
- by external commands
+Subject: [PATCH] fixup! clk: No-op CLK_OF_DECLARE if not enabled
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-
-This patch makes it possible to abort a console countdown by an external
-command, for example when fastboot is used. This requires additional
-modifications in the external commands, a call to "console_countdown_abort()"
-has to be inserted.
-
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- commands/timeout.c          |  8 ++++++--
- common/console_countdown.c  | 15 +++++++++++++++
- include/console_countdown.h |  2 ++
- 3 files changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/commands/timeout.c b/commands/timeout.c
-index ef1a037c1..d197cedd8 100644
---- a/commands/timeout.c
-+++ b/commands/timeout.c
-@@ -32,7 +32,7 @@ static int do_timeout(int argc, char *argv[])
- 	char str[2] = { };
- 	const char *varname = NULL;
+Sascha, let's try and see if this fixes the build issues you were
+having with the original patch.
+
+If you'd rather I spin a v2 of the original patch, let me know.
+
+Thanks,
+Andrey Smirnov
+
+ include/linux/clk.h | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
+
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index f705532..081a859 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -331,10 +331,6 @@ const struct of_device_id __clk_of_table_##name				\
+ __attribute__ ((unused,section (".__clk_of_table"))) \
+ 	= { .compatible = compat, .data = fn }
  
--	while((opt = getopt(argc, argv, "crsav:")) > 0) {
-+	while ((opt = getopt(argc, argv, "crsav:e")) > 0) {
- 		switch(opt) {
- 		case 'r':
- 			flags |= CONSOLE_COUNTDOWN_RETURN;
-@@ -46,6 +46,9 @@ static int do_timeout(int argc, char *argv[])
- 		case 's':
- 			flags |= CONSOLE_COUNTDOWN_SILENT;
- 			break;
-+		case 'e':
-+			flags |= CONSOLE_COUNTDOWN_EXTERN;
-+			break;
- 		case 'v':
- 			varname = optarg;
- 			break;
-@@ -73,6 +76,7 @@ BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT("-a", "interrupt on any key")
- BAREBOX_CMD_HELP_OPT("-c", "interrupt on Ctrl-C")
- BAREBOX_CMD_HELP_OPT("-r", "interrupt on RETURN")
-+BAREBOX_CMD_HELP_OPT("-e", "interrupt on external commands (i.e. fastboot")
- BAREBOX_CMD_HELP_OPT("-s", "silent mode")
- BAREBOX_CMD_HELP_OPT("-v <VARIABLE>", "export pressed key to environment")
- BAREBOX_CMD_HELP_END
-@@ -80,7 +84,7 @@ BAREBOX_CMD_HELP_END
- BAREBOX_CMD_START(timeout)
- 	.cmd		= do_timeout,
- 	BAREBOX_CMD_DESC("wait for a specified timeout")
--	BAREBOX_CMD_OPTS("[-acrsv] SECONDS")
-+	BAREBOX_CMD_OPTS("[-acrsev] SECONDS")
- 	BAREBOX_CMD_GROUP(CMD_GRP_CONSOLE)
- 	BAREBOX_CMD_HELP(cmd_timeout_help)
- BAREBOX_CMD_END
-diff --git a/common/console_countdown.c b/common/console_countdown.c
-index b2eec72b2..03b9b3353 100644
---- a/common/console_countdown.c
-+++ b/common/console_countdown.c
-@@ -23,6 +23,13 @@
- #include <console_countdown.h>
- #include <stdio.h>
+-int of_clk_add_provider(struct device_node *np,
+-			struct clk *(*clk_src_get)(struct of_phandle_args *args,
+-						   void *data),
+-			void *data);
+ void of_clk_del_provider(struct device_node *np);
  
-+static bool console_countdown_timeout_abort;
+ typedef int (*of_clk_init_cb_t)(struct device_node *);
+@@ -350,13 +346,26 @@ struct clk *of_clk_get(struct device_node *np, int index);
+ struct clk *of_clk_get_by_name(struct device_node *np, const char *name);
+ struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec);
+ unsigned int of_clk_get_parent_count(struct device_node *np);
+-char *of_clk_get_parent_name(struct device_node *np, unsigned int index);
+ int of_clk_parent_fill(struct device_node *np, const char **parents,
+ 		       unsigned int size);
+ int of_clk_init(struct device_node *root, const struct of_device_id *matches);
+ #else
+ 
+-#define CLK_OF_DECLARE(name, compat, fn)
 +
-+void console_countdown_abort(void)
++/*
++ * Create a dummy variable to avoid 'unused function'
++ * warnings. Compiler should be smart enough to throw it out.
++ */
++#define CLK_OF_DECLARE(name, compat, fn)				\
++static const struct of_device_id __clk_of_table_##name			\
++__attribute__ ((unused)) = { .data = fn }
++
++
++static inline struct clk *
++of_clk_src_simple_get(struct of_phandle_args *clkspec, void *data)
 +{
-+	console_countdown_timeout_abort = true;
++	return ERR_PTR(-ENOENT);
 +}
-+
- int console_countdown(int timeout_s, unsigned flags, char *out_key)
+ 
+ static inline struct clk *of_clk_get(struct device_node *np, int index)
  {
- 	uint64_t start, second;
-@@ -48,6 +55,9 @@ int console_countdown(int timeout_s, unsigned flags, char *out_key)
- 				goto out;
- 			key = 0;
- 		}
-+		if ((flags & CONSOLE_COUNTDOWN_EXTERN) &&
-+		    console_countdown_timeout_abort)
-+			goto out;
- 		if (!(flags & CONSOLE_COUNTDOWN_SILENT) &&
- 		    is_timeout(second, SECOND)) {
- 			printf("\b\b\b\b%4d", countdown--);
-@@ -55,6 +65,10 @@ int console_countdown(int timeout_s, unsigned flags, char *out_key)
- 		}
- 	} while (!is_timeout(start, timeout_s * SECOND));
+@@ -378,4 +387,10 @@ struct string_list;
  
-+	if ((flags & CONSOLE_COUNTDOWN_EXTERN) &&
-+	    console_countdown_timeout_abort)
-+		goto out;
+ int clk_name_complete(struct string_list *sl, char *instr);
+ 
++int of_clk_add_provider(struct device_node *np,
++			struct clk *(*clk_src_get)(struct of_phandle_args *args,
++						   void *data),
++			void *data);
++char *of_clk_get_parent_name(struct device_node *np, unsigned int index);
 +
- 	ret = 0;
- 
-  out:
-@@ -62,6 +76,7 @@ int console_countdown(int timeout_s, unsigned flags, char *out_key)
- 		printf("\n");
- 	if (key && out_key)
- 		*out_key = key;
-+	console_countdown_timeout_abort = false;
- 
- 	return ret;
- }
-diff --git a/include/console_countdown.h b/include/console_countdown.h
-index cb46964bc..c6c2d5c00 100644
---- a/include/console_countdown.h
-+++ b/include/console_countdown.h
-@@ -5,7 +5,9 @@
- #define CONSOLE_COUNTDOWN_ANYKEY (1 << 1)
- #define CONSOLE_COUNTDOWN_RETURN (1 << 3)
- #define CONSOLE_COUNTDOWN_CTRLC (1 << 4)
-+#define CONSOLE_COUNTDOWN_EXTERN (1 << 5)
- 
- int console_countdown(int timeout_s, unsigned flags, char *out_key);
-+void console_countdown_abort(void);
- 
- #endif /* __CONSOLE_COUNTDOWN_H */
+ #endif
 -- 
-2.11.0
+2.9.3
 
 
 _______________________________________________
