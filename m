@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmEXz-0008Mf-MX
- for barebox@lists.infradead.org; Fri, 10 Mar 2017 07:01:11 +0000
-Date: Fri, 10 Mar 2017 08:00:43 +0100
+ id 1cmEft-00038R-KI
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 07:09:19 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170310070043.qsu5mcr2fmnn3oxi@pengutronix.de>
-References: <1489055471-12836-1-git-send-email-plagnioj@jcrosoft.com>
- <1489055471-12836-3-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1489055471-12836-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 10 Mar 2017 08:08:54 +0100
+Message-Id: <20170310070854.30358-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,55 +14,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] fbcon: use __iowrite{32/64} to speedup the
- framebuffer console scrolling
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] video: call fb_[en|dis]able instead of fops directly
+To: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Mar 09, 2017 at 11:31:11AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> this devide the time by 4 on x86
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  drivers/video/fbconsole.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
-> index b261f1704..b5e951e23 100644
-> --- a/drivers/video/fbconsole.c
-> +++ b/drivers/video/fbconsole.c
-> @@ -6,6 +6,7 @@
->  #include <gui/image_renderer.h>
->  #include <gui/graphic_utils.h>
->  #include <linux/font.h>
-> +#include <linux/io.h>
->  
->  enum state_t {
->  	LIT,				/* Literal input */
-> @@ -202,7 +203,7 @@ static void printchar(struct fbc_priv *priv, int c)
->  
->  		buf = gui_screen_render_buffer(priv->sc);
->  
-> -		memcpy(buf, buf + line_height, line_height * priv->rows);
-> +		__iowrite64_copy(buf, buf + line_height, (line_height * priv->rows) >> 2);
+We have fb_enable and fb_disable which handle enabling of a
+framebuffer, so use it instead of calling into the ops directly.
+This gets the enable count straight.
 
-Shouldn't this be >> 3?
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/video/fb.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-Besides, I'm not sure using __iowrite64_copy is the right weapon here.
-Maybe better port arch/x86/lib/memcpy_64.S to get an optimized memcpy?
-
-Sascha
-
-
+diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+index 6b88f2df97..b6f87e47c6 100644
+--- a/drivers/video/fb.c
++++ b/drivers/video/fb.c
+@@ -12,23 +12,25 @@ static int fb_ioctl(struct cdev* cdev, int req, void *data)
+ {
+ 	struct fb_info *info = cdev->priv;
+ 	struct fb_info **fb;
++	int ret;
+ 
+ 	switch (req) {
+ 	case FBIOGET_SCREENINFO:
+ 		fb = data;
+ 		*fb = info;
++		ret = 0;
+ 		break;
+ 	case FBIO_ENABLE:
+-		info->fbops->fb_enable(info);
++		ret = fb_enable(info);
+ 		break;
+ 	case FBIO_DISABLE:
+-		info->fbops->fb_disable(info);
++		ret = fb_disable(info);
+ 		break;
+ 	default:
+ 		return -ENOSYS;
+ 	}
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int fb_close(struct cdev *cdev)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
