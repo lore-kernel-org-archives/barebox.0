@@ -1,12 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from 8.mo179.mail-out.ovh.net ([46.105.75.26])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmL2q-000805-UD
- for barebox@lists.infradead.org; Fri, 10 Mar 2017 13:57:28 +0000
-Message-ID: <1489154222.24921.24.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 10 Mar 2017 14:57:02 +0100
-In-Reply-To: <20170310135403.GA19458@mail.ovh.net>
+ id 1cmLCW-0004Sb-HO
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 14:07:28 +0000
+Received: from player716.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo179.mail-out.ovh.net (Postfix) with ESMTP id C3C312BD55
+ for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 15:07:01 +0100 (CET)
+Date: Fri, 10 Mar 2017 15:13:18 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20170310141318.GC19458@mail.ovh.net>
 References: <20170309143117.GI4120@mail.ovh.net>
  <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
  <1489070050-16024-2-git-send-email-plagnioj@jcrosoft.com>
@@ -14,7 +16,9 @@ References: <20170309143117.GI4120@mail.ovh.net>
  <DA9CFBDA-E7D8-48B7-9CAC-73FDD1A51148@jcrosoft.com>
  <1489143938.24921.17.camel@pengutronix.de>
  <20170310135403.GA19458@mail.ovh.net>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170310135403.GA19458@mail.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,11 +32,10 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/5] efi: fix lds for secure boot support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Am Freitag, den 10.03.2017, 14:54 +0100 schrieb Jean-Christophe
-PLAGNIOL-VILLARD:
+On 14:54 Fri 10 Mar     , Jean-Christophe PLAGNIOL-VILLARD wrote:
 > On 12:05 Fri 10 Mar     , Lucas Stach wrote:
 > > Am Freitag, den 10.03.2017, 18:17 +0800 schrieb Jean-Christophe
 > > PLAGNIOL-VILLARD:
@@ -53,27 +56,12 @@ PLAGNIOL-VILLARD:
 > > therefore requires the sections to be placed page aligned (4K on x86, 4K
 > > or 64K on ARM64).
 > No COFF does not require to have section "page aligned" which is wrong here
-> The is a Requirement by EFI from secure boot
-> 
-> Otherwise EFI will not work today
-> 
-> > 
-> > All of the above is what should have been included in the commit
-> > message, to allow other people to understand the commit and not require
-> > them to google their way to the justification of this commit.
-> And read the Spec is required to undrestant EFI no?
-> Or I need to put the spec in the commit too?
-> 
-At least a pointer to the relevant part of the spec would be
-appreciated.
 
-That we are even having this conversation shows that your commit
-messages are a bit too terse. Being a bit more verbose would be really
-helpful for other folks trying to understand your changes.
+This is the job of the loader to aligned them in memory but on EFI it's
+required to sign the binary.
 
-Thanks,
-Lucas
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
