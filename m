@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo179.mail-out.ovh.net ([46.105.76.148])
+Received: from mail-wr0-x244.google.com ([2a00:1450:400c:c0c::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmLde-0000VE-BL
- for barebox@lists.infradead.org; Fri, 10 Mar 2017 14:35:29 +0000
-Received: from player716.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo179.mail-out.ovh.net (Postfix) with ESMTP id 957C229AFF
- for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 15:35:03 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 10 Mar 2017 15:41:16 +0100
-Message-Id: <1489156876-25133-1-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
+ id 1cmM4I-0006jL-8F
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 15:03:00 +0000
+Received: by mail-wr0-x244.google.com with SMTP id u108so11946157wrb.2
+ for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 07:02:37 -0800 (PST)
+From: pmamonov@gmail.com
+Date: Fri, 10 Mar 2017 18:02:09 +0300
+Message-Id: <20170310150209.1564-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,30 +16,174 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] fix: console: expose consoles in devfs
+Subject: [PATCH] net/phy: marvell: import support for 88E1111 from the Linux
 To: barebox@lists.infradead.org
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-b24gNjRiaXQgc3NpemVfdCBpcyBub3QgYW4gaW50IGJ1dCBhIGxvbmcKCnNvIHVzZSB0aGUgcHJv
-dHlwZSBmb3IgZm9wc193cml0ZSBzc2l6ZV90Cgpjb21tb24vY29uc29sZS5jOiBJbiBmdW5jdGlv
-biDigJhjb25zb2xlX3JlZ2lzdGVy4oCZOgpjb21tb24vY29uc29sZS5jOjM3MzoyMjogd2Fybmlu
-ZzogYXNzaWdubWVudCBmcm9tIGluY29tcGF0aWJsZSBwb2ludGVyIHR5cGUgWy1XaW5jb21wYXRp
-YmxlLXBvaW50ZXItdHlwZXNdCiAgbmV3Y2Rldi0+Zm9wcy53cml0ZSA9IGZvcHNfd3JpdGU7Cgpp
-biBjb21taXQgYjRmNTVmY2YzNTVhNGQwYWM0NTY0NDVhNWY0MmYyNTlmMjgxMmI1NwpCeSBCYXN0
-aWFuIFN0ZW5kZXIgPGJzdEBwZW5ndXRyb25peC5kZT4KClNpZ25lZC1vZmYtYnk6IEplYW4tQ2hy
-aXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIDxwbGFnbmlvakBqY3Jvc29mdC5jb20+Ci0tLQogY29t
-bW9uL2NvbnNvbGUuYyB8IDIgKy0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBk
-ZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2NvbW1vbi9jb25zb2xlLmMgYi9jb21tb24vY29uc29s
-ZS5jCmluZGV4IDY2OGM4NzBhYi4uNDEyN2U3NjE3IDEwMDY0NAotLS0gYS9jb21tb24vY29uc29s
-ZS5jCisrKyBiL2NvbW1vbi9jb25zb2xlLmMKQEAgLTI5Niw3ICsyOTYsNyBAQCBzdGF0aWMgaW50
-IGZvcHNfZmx1c2goc3RydWN0IGNkZXYgKmRldikKIAlyZXR1cm4gMDsKIH0KIAotc3RhdGljIGlu
-dCBmb3BzX3dyaXRlKHN0cnVjdCBjZGV2KiBkZXYsIGNvbnN0IHZvaWQqIGJ1Ziwgc2l6ZV90IGNv
-dW50LAorc3RhdGljIHNzaXplX3QgZm9wc193cml0ZShzdHJ1Y3QgY2RldiogZGV2LCBjb25zdCB2
-b2lkKiBidWYsIHNpemVfdCBjb3VudCwKIAkJICAgICAgbG9mZl90IG9mZnNldCwgdWxvbmcgZmxh
-Z3MpCiB7CiAJc3RydWN0IGNvbnNvbGVfZGV2aWNlICpwcml2ID0gZGV2LT5wcml2OwotLSAKMi4x
-MS4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
-ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
-cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+From: Peter Mamonov <pmamonov@gmail.com>
+
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+---
+ drivers/net/phy/marvell.c | 122 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 122 insertions(+)
+
+diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+index 38b2ad31f..bd290ad5a 100644
+--- a/drivers/net/phy/marvell.c
++++ b/drivers/net/phy/marvell.c
+@@ -31,6 +31,22 @@
+ #define MII_M1011_PHY_STATUS_RESOLVED	BIT(11)
+ #define MII_M1011_PHY_STATUS_LINK	BIT(10)
+ 
++#define MII_M1111_PHY_LED_CONTROL	0x18
++#define MII_M1111_PHY_LED_DIRECT	0x4100
++#define MII_M1111_PHY_LED_COMBINE	0x411c
++#define MII_M1111_PHY_EXT_CR		0x14
++#define MII_M1111_RX_DELAY		0x80
++#define MII_M1111_TX_DELAY		0x2
++#define MII_M1111_PHY_EXT_SR		0x1b
++
++#define MII_M1111_HWCFG_MODE_MASK		0xf
++#define MII_M1111_HWCFG_MODE_COPPER_RGMII	0xb
++#define MII_M1111_HWCFG_MODE_FIBER_RGMII	0x3
++#define MII_M1111_HWCFG_MODE_SGMII_NO_CLK	0x4
++#define MII_M1111_HWCFG_MODE_COPPER_RTBI	0x9
++#define MII_M1111_HWCFG_FIBER_COPPER_AUTO	0x8000
++#define MII_M1111_HWCFG_FIBER_COPPER_RES	0x2000
++
+ #define MII_M1111_COPPER		0
+ #define MII_M1111_FIBER			1
+ 
+@@ -465,6 +481,103 @@ static int m88e1318s_config_init(struct phy_device *phydev)
+ 	return m88e1121_config_init(phydev);
+ }
+ 
++static int m88e1111_config_init(struct phy_device *phydev)
++{
++	int err;
++	int temp;
++
++	if ((phydev->interface == PHY_INTERFACE_MODE_RGMII) ||
++	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID) ||
++	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) ||
++	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID)) {
++
++		temp = phy_read(phydev, MII_M1111_PHY_EXT_CR);
++		if (temp < 0)
++			return temp;
++
++		if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID) {
++			temp |= (MII_M1111_RX_DELAY | MII_M1111_TX_DELAY);
++		} else if (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) {
++			temp &= ~MII_M1111_TX_DELAY;
++			temp |= MII_M1111_RX_DELAY;
++		} else if (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID) {
++			temp &= ~MII_M1111_RX_DELAY;
++			temp |= MII_M1111_TX_DELAY;
++		}
++
++		err = phy_write(phydev, MII_M1111_PHY_EXT_CR, temp);
++		if (err < 0)
++			return err;
++
++		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
++		if (temp < 0)
++			return temp;
++
++		temp &= ~(MII_M1111_HWCFG_MODE_MASK);
++
++		if (temp & MII_M1111_HWCFG_FIBER_COPPER_RES)
++			temp |= MII_M1111_HWCFG_MODE_FIBER_RGMII;
++		else
++			temp |= MII_M1111_HWCFG_MODE_COPPER_RGMII;
++
++		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
++		if (err < 0)
++			return err;
++	}
++
++	if (phydev->interface == PHY_INTERFACE_MODE_SGMII) {
++		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
++		if (temp < 0)
++			return temp;
++
++		temp &= ~(MII_M1111_HWCFG_MODE_MASK);
++		temp |= MII_M1111_HWCFG_MODE_SGMII_NO_CLK;
++		temp |= MII_M1111_HWCFG_FIBER_COPPER_AUTO;
++
++		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
++		if (err < 0)
++			return err;
++	}
++
++	if (phydev->interface == PHY_INTERFACE_MODE_RTBI) {
++		temp = phy_read(phydev, MII_M1111_PHY_EXT_CR);
++		if (temp < 0)
++			return temp;
++		temp |= (MII_M1111_RX_DELAY | MII_M1111_TX_DELAY);
++		err = phy_write(phydev, MII_M1111_PHY_EXT_CR, temp);
++		if (err < 0)
++			return err;
++
++		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
++		if (temp < 0)
++			return temp;
++		temp &= ~(MII_M1111_HWCFG_MODE_MASK | MII_M1111_HWCFG_FIBER_COPPER_RES);
++		temp |= 0x7 | MII_M1111_HWCFG_FIBER_COPPER_AUTO;
++		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
++		if (err < 0)
++			return err;
++
++		/* soft reset */
++		err = phy_write(phydev, MII_BMCR, BMCR_RESET);
++		if (err < 0)
++			return err;
++		do
++			temp = phy_read(phydev, MII_BMCR);
++		while (temp & BMCR_RESET);
++
++		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
++		if (temp < 0)
++			return temp;
++		temp &= ~(MII_M1111_HWCFG_MODE_MASK | MII_M1111_HWCFG_FIBER_COPPER_RES);
++		temp |= MII_M1111_HWCFG_MODE_COPPER_RTBI | MII_M1111_HWCFG_FIBER_COPPER_AUTO;
++		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
++		if (err < 0)
++			return err;
++	}
++
++	return marvell_of_reg_init(phydev);
++}
++
+ static int m88e1510_config_init(struct phy_device *phydev)
+ {
+ 	int err;
+@@ -502,6 +615,15 @@ static int m88e1510_config_init(struct phy_device *phydev)
+ 
+ static struct phy_driver marvell_drivers[] = {
+ 	{
++		.phy_id = MARVELL_PHY_ID_88E1111,
++		.phy_id_mask = MARVELL_PHY_ID_MASK,
++		.drv.name = "Marvell 88E1111",
++		.features = PHY_GBIT_FEATURES,
++		.config_init = &m88e1111_config_init,
++		.config_aneg = &genphy_config_aneg,
++		.read_status = &marvell_read_status,
++	},
++	{
+ 		.phy_id = MARVELL_PHY_ID_88E1121R,
+ 		.phy_id_mask = MARVELL_PHY_ID_MASK,
+ 		.drv.name = "Marvell 88E1121R",
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
