@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x231.google.com ([2607:f8b0:400e:c05::231])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmBn4-0002If-WE
- for barebox@lists.infradead.org; Fri, 10 Mar 2017 04:04:33 +0000
-Received: by mail-pg0-x231.google.com with SMTP id 25so34112784pgy.0
- for <barebox@lists.infradead.org>; Thu, 09 Mar 2017 20:04:09 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20170309211808.w6jazqlbrlfigl2r@pengutronix.de>
-References: <20170309211808.w6jazqlbrlfigl2r@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 9 Mar 2017 20:04:08 -0800
-Message-ID: <CAHQ1cqFq7+k1KajoqNXAQUzNmp_S19wMyVAHWA5ZOzVgTkzPVg@mail.gmail.com>
+ id 1cmDgS-0001BH-GY
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 06:05:52 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Fri, 10 Mar 2017 07:05:21 +0100
+Message-Id: <20170310060523.25810-2-o.rempel@pengutronix.de>
+In-Reply-To: <20170310060523.25810-1-o.rempel@pengutronix.de>
+References: <20170309175832.20213-2-o.rempel@pengutronix.de>
+ <20170310060523.25810-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,64 +17,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: e1000 driver hangs during probe
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH v3 1/3] console_countdown: width to of countdown to 4 digits
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-T24gVGh1LCBNYXIgOSwgMjAxNyBhdCAxOjE4IFBNLCBVd2UgS2xlaW5lLUvDtm5pZwo8dS5rbGVp
-bmUta29lbmlnQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPiBIZWxsbywKPgo+IEkgd29yayB3aXRo
-IGFuIGkuTVg2IGJhc2VkIGhhcmR3YXJlIHRoYXQgaGFzIGFuIGkyMTAgcGNpZSBkZXZpY2Ugd2l0
-aAo+IGJhcmVib3ggMjAxNi4xMS4wIChidXQgdGhlcmUgZGlkbid0IGhhcHBlbiBhbnl0aGluZyBy
-ZWxldmFudCBzaW5jZSB0aGVtCj4gaWYgSSdtIG5vdCBtaXN0YWtlbikuIFdoZW4gZW5hYmxpbmcg
-YWxsIG5lY2Vzc2FyeSB0aGluZ3MgdG8gbWFrZSB0aGUKPiBlMTAwMCBiaW5kLCB0aGUgZHJpdmVy
-IHNlZW1zIHRvIGhhbmcuIFRoZSBwcm9ibGVtIGlzIHRoZSBmb2xsb3dpbmcgY29kZQo+IGluIGUx
-MDAwX2dldF9od19lZXByb21fc2VtYXBob3JlKCk6Cj4KPiAgICAgICAgIC8qIEdldCB0aGUgRlcg
-c2VtYXBob3JlLiAqLwo+ICAgICAgICAgdGltZW91dCA9IGh3LT5lZXByb20ud29yZF9zaXplICsg
-MTsKPiAgICAgICAgIHdoaWxlICh0aW1lb3V0KSB7Cj4gICAgICAgICAgICAgICAgIHN3c20gPSBl
-MTAwMF9yZWFkX3JlZyhodywgRTEwMDBfU1dTTSk7Cj4gICAgICAgICAgICAgICAgIHN3c20gfD0g
-RTEwMDBfU1dTTV9TV0VTTUJJOwo+ICAgICAgICAgICAgICAgICBlMTAwMF93cml0ZV9yZWcoaHcs
-IEUxMDAwX1NXU00sIHN3c20pOwo+ICAgICAgICAgICAgICAgICAvKiBpZiB3ZSBtYW5hZ2VkIHRv
-IHNldCB0aGUgYml0IHdlIGdvdCB0aGUgc2VtYXBob3JlLiAqLwo+ICAgICAgICAgICAgICAgICBz
-d3NtID0gZTEwMDBfcmVhZF9yZWcoaHcsIEUxMDAwX1NXU00pOwo+ICAgICAgICAgICAgICAgICBp
-ZiAoc3dzbSAmIEUxMDAwX1NXU01fU1dFU01CSSkKPiAgICAgICAgICAgICAgICAgICAgICAgICBi
-cmVhazsKPgo+ICAgICAgICAgICAgICAgICB1ZGVsYXkoNTApOwo+ICAgICAgICAgICAgICAgICB0
-aW1lb3V0LS07Cj4gICAgICAgICB9Cj4KPiB0b2dldGhlciB3aXRoIHRoZSBmYWN0IHRoYXQgaHct
-PmVlcHJvbS53b3JkX3NpemUgaXMgZWl0aGVyIDB4MjAwMDAwIG9yCj4gMHg0MDAwMDAuIChJIHNh
-dyBib3RoIHZhbHVlcyBhbHJlYWR5IGluIHRocmVlIHJ1bnMpIFRoaXMgdmFsdWUgaXMgc2V0dXAK
-PiBpbiBlMTAwMF9pbml0X2VlcHJvbV9wYXJhbXMoKSBpbiB0aGUgaHctPm1hY190eXBlID09IGUx
-MDAwX2lnYiBjYXNlLgo+Cj4gV2hlbiB3YWl0aW5nIGxvZyBlbm91Z2ggdGhlIGNvZGUgZmluYWxs
-eSB0ZXJtaW5hdGVzIHdpdGggYSBmYWlsdXJlLgo+Cj4gSW4gbXkgY2FzZSB0aGVyZSBpcyBhbiA4
-TWItRmxhc2ggZXF1aXBwZWQgb24gTlZNXyogdGhhdCBpc24ndCBwcm9ncmFtbWVkCj4geWV0LiAo
-TTI1UEU4MCwgUGFnZSBzaXplOiAyNTYgYnl0ZXMsIFN1YnNlY3RvciBlcmFzZTogNEtCLCBTZWN0
-b3IgZXJhc2U6IDY0S0IsCj4gQnVsayBlcmFzZTogOE1iKQo+Cj4gSXMgc29tZW9uZSBhYmxlIHRv
-IHNoZWQgc29tZSBsaWdodCBvbiB3aGVyZSB0aGUgcHJvYmxlbSBpcz8KPgoKVGhpcyBtaWdodCBi
-ZSBhIGxvbmcgc2hvdCwgYnV0IHdoZW4gSSB3YXMgd29ya2luZyB3aXRoIHRoYXQgZXhhY3QKY29t
-YmluYXRpb24gbGFzdCB5ZWFyICh0aGlzIGJvYXJkCmh0dHBzOi8vZ2l0LnBlbmd1dHJvbml4LmRl
-L2NnaXQvYmFyZWJveC90cmVlL2FyY2gvYXJtL2JvYXJkcy96aWktaW14NnEtcmR1MikKSSByYW4g
-aW50byBhbiBpc3N1ZSB3aGVyZSB3aGlsZSB0aGUgcmVhZHMgdG8gUENJIGNvbmZpZ3VyYXRpb24g
-c3BhY2UKd291bGQgd29yayBhbmQgdGhlIGNhcmQgd291bGQgZW51bWVyYXRlLCBhY2Nlc3MgdG8g
-cmVnaXN0ZXJzIG1hcHBlZAp2aWEgYW55IG9mIHRoZSBCQVJzIHdvdWxkIHJldHVybiBib2d1cyB2
-YWx1ZXMuIFRocm91Z2ggdHJpYWwgYW5kIGVycm9yCkkgd2FzIGFibGUgdG8gY29tZSB1cCB3aXRo
-IGEgZW1waXJpY2FsIGhhY2sgdG8gImZpeCIgdGhlIGlzc3VlIGFuZCB3YXMKYWJsZSB0byBjb250
-aW51ZSB3b3JraW5nIHdpdGggdGhlIGRyaXZlci4KClNldmVyYWwgbW9udGggbGF0ZXIgTHVjYXMg
-d2FzIGFza2VkIHRvIHRha2UgYSBsb29rIGF0IHRoZSBpc3N1ZSBhbmQgaGUKd2FzIGFibGUgdG8g
-ZmlndXJlIG91dCB0aGUgdW5kZXJseWluZyBjYXVzZSBhbmQgcG9zdGVkIGEgc2VyaWVzIG9mCnBh
-dGNoZXMgZml4aW5nIHRoZSBwcm9ibGVtOgoKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvcGlw
-ZXJtYWlsL2JhcmVib3gvMjAxNi1Ob3ZlbWJlci8wMjg0MzguaHRtbAoKRm9yIHNvbWUgcmVhc29u
-IEkgYW0gbm90IHNlZWluZyB0aGF0IHdob2xlIHNlcmllcyBldmVuIGluIHRoZSBsYXRlc3QKbWFz
-dGVyLCBsZXQgYWxvbmUgMjAxNi4xMSBjb2RlYmFzZSwgc28ganVzdCB0byBydWxlIG91dCB5b3Ug
-cnVubmluZwppbnRvIHRoZSBzYW1lIHByb2JsZW0gSSBkaWQsIEknZCBzdGFydCBieSBhcHBseWlu
-ZyB0aGF0IHdob2xlIHNlcmllcwp0byB5b3VyIEJhcmVib3ggYW5kIHNlZWluZyBpZiB0aGF0IGlt
-cHJvdmVzIHRoaW5ncy4KClNhc2NoYSwgd2FzIHRoYXQgc2VyaWVzIGludGVudGlvbmFsbHkgaWdu
-b3JlZCBvciBkaWQgaXQganVzdCBzbGlwCnRob3VnaHQgdGhlIGNyYWNrcz8KClVuZm9ydHVuYXRl
-bHkgSSBoYXZlIGEgdmVyeSBtZWRpb2NyZSBtZW1vcnkgYW5kLCBiZXNpZGVzIHRoYXQgb2JzY3Vy
-ZQphbmVjZG90ZSwgSSBkb24ndCB0aGluayBJJ2QgYmUgYWJsZSB0byByZWNhbGwgYW55IGRldGFp
-bHMgcGVydGFpbmluZwp0byBob3cgaTIxMCdzIGZsYXNoIGFjY2VzcyBJUCB3b3Jrcywgc28gSSBo
-b3BlIHRoaXMgaGVscHMuCgpUaGFua3MsCkFuZHJleSBTbWlybm92CgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+
+This patch increases the displayed width of the countdown to 4 digits,
+otherwise waiting for more then 99 seconds doesn't look good.
+
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ common/console_countdown.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/common/console_countdown.c b/common/console_countdown.c
+index c0c8c9502..b2eec72b2 100644
+--- a/common/console_countdown.c
++++ b/common/console_countdown.c
+@@ -35,7 +35,7 @@ int console_countdown(int timeout_s, unsigned flags, char *out_key)
+ 	countdown = timeout_s;
+ 
+ 	if (!(flags & CONSOLE_COUNTDOWN_SILENT))
+-		printf("%2d", countdown--);
++		printf("%4d", countdown--);
+ 
+ 	do {
+ 		if (tstc()) {
+@@ -50,7 +50,7 @@ int console_countdown(int timeout_s, unsigned flags, char *out_key)
+ 		}
+ 		if (!(flags & CONSOLE_COUNTDOWN_SILENT) &&
+ 		    is_timeout(second, SECOND)) {
+-			printf("\b\b%2d", countdown--);
++			printf("\b\b\b\b%4d", countdown--);
+ 			second += SECOND;
+ 		}
+ 	} while (!is_timeout(start, timeout_s * SECOND));
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
