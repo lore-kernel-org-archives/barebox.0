@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmF39-0004oU-VC
- for barebox@lists.infradead.org; Fri, 10 Mar 2017 07:33:22 +0000
-Date: Fri, 10 Mar 2017 08:32:58 +0100
+ id 1cmFIv-00028g-Aj
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 07:49:39 +0000
+Date: Fri, 10 Mar 2017 08:49:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170310073258.nahg4i2wmcrni5s2@pengutronix.de>
-References: <20170308092402.21245-1-o.rempel@pengutronix.de>
- <20170308092402.21245-2-o.rempel@pengutronix.de>
+Message-ID: <20170310074915.3ag3qta6gdzzvobn@pengutronix.de>
+References: <20170309175832.20213-2-o.rempel@pengutronix.de>
+ <20170310060523.25810-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170308092402.21245-2-o.rempel@pengutronix.de>
+In-Reply-To: <20170310060523.25810-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,35 +23,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] usb: fastboot: umount device before writing to it
+Subject: Re: [PATCH v3 0/3] upstream console_countdown related work
 To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Mar 08, 2017 at 10:24:02AM +0100, Oleksij Rempel wrote:
-> From: Sascha Hauer <s.hauer@pengutronix.de>
+On Fri, Mar 10, 2017 at 07:05:20AM +0100, Oleksij Rempel wrote:
+> changes v3:
+>  - make console_countdown_timeout_abort static bool
 > 
-> When a fastboot target refers to a device and we are going to write
-> to it, umount it beforehand, so that we do not end up with corrupt
-> data after writing.
+> changes v2:
+>  - add my Signed-of-by
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  drivers/usb/gadget/f_fastboot.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-> index a6192b9eb..8d69aea8b 100644
-> --- a/drivers/usb/gadget/f_fastboot.c
-> +++ b/drivers/usb/gadget/f_fastboot.c
-> @@ -754,6 +754,7 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
->  		goto out;
->  	}
->  
-> +	umount(filename);
+> Marc Kleine-Budde (3):
+>   console_countdown: width to of countdown to 4 digits
+>   console_countdown: add possibility to abort countdown by external
+>     commands
+>   fastboot: abort autoboot timeout when fastboot gadget is activated
 
-I'm not sure about this one. We should probably rather bail out with an
-error when it's mounted. When it's mounted then the result is undesired,
-even when we unmount it before flashing.
+Applied, thanks
+
+We might add a patch which adds the -e option to the environment.
 
 Sascha
 
