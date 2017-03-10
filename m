@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x244.google.com ([2a00:1450:400c:c0c::244])
+Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmM4I-0006jL-8F
- for barebox@lists.infradead.org; Fri, 10 Mar 2017 15:03:00 +0000
-Received: by mail-wr0-x244.google.com with SMTP id u108so11946157wrb.2
- for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 07:02:37 -0800 (PST)
+ id 1cmMKD-0007sb-Pn
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 15:19:29 +0000
+Received: by mail-wm0-x243.google.com with SMTP id v190so2795171wme.3
+ for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 07:19:05 -0800 (PST)
 From: pmamonov@gmail.com
-Date: Fri, 10 Mar 2017 18:02:09 +0300
-Message-Id: <20170310150209.1564-1-pmamonov@gmail.com>
+Date: Fri, 10 Mar 2017 18:18:51 +0300
+Message-Id: <20170310151851.26978-1-pmamonov@gmail.com>
+In-Reply-To: <20170310150209.1564-1-pmamonov@gmail.com>
+References: <20170310150209.1564-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,11 +31,11 @@ From: Peter Mamonov <pmamonov@gmail.com>
 
 Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- drivers/net/phy/marvell.c | 122 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 122 insertions(+)
+ drivers/net/phy/marvell.c | 126 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 126 insertions(+)
 
 diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
-index 38b2ad31f..bd290ad5a 100644
+index 38b2ad31f..ea5a4a9be 100644
 --- a/drivers/net/phy/marvell.c
 +++ b/drivers/net/phy/marvell.c
 @@ -31,6 +31,22 @@
@@ -59,8 +61,8 @@ index 38b2ad31f..bd290ad5a 100644
  #define MII_M1111_COPPER		0
  #define MII_M1111_FIBER			1
  
-@@ -465,6 +481,103 @@ static int m88e1318s_config_init(struct phy_device *phydev)
- 	return m88e1121_config_init(phydev);
+@@ -402,6 +418,107 @@ static int m88e1540_config_init(struct phy_device *phydev)
+ 	return marvell_config_init(phydev);
  }
  
 +static int m88e1111_config_init(struct phy_device *phydev)
@@ -157,13 +159,17 @@ index 38b2ad31f..bd290ad5a 100644
 +			return err;
 +	}
 +
-+	return marvell_of_reg_init(phydev);
++	err = marvell_of_reg_init(phydev);
++	if (err < 0)
++		return err;
++
++	return phy_write(phydev, MII_BMCR, BMCR_RESET);
 +}
 +
- static int m88e1510_config_init(struct phy_device *phydev)
+ static int m88e1121_config_init(struct phy_device *phydev)
  {
- 	int err;
-@@ -502,6 +615,15 @@ static int m88e1510_config_init(struct phy_device *phydev)
+ 	u16 reg;
+@@ -502,6 +619,15 @@ static int m88e1510_config_init(struct phy_device *phydev)
  
  static struct phy_driver marvell_drivers[] = {
  	{
