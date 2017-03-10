@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf0-x22f.google.com ([2607:f8b0:400e:c00::22f])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmIN0-0002D2-6r
- for barebox@lists.infradead.org; Fri, 10 Mar 2017 11:06:10 +0000
-Message-ID: <1489143938.24921.17.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 10 Mar 2017 12:05:38 +0100
-In-Reply-To: <DA9CFBDA-E7D8-48B7-9CAC-73FDD1A51148@jcrosoft.com>
-References: <20170309143117.GI4120@mail.ovh.net>
- <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
- <1489070050-16024-2-git-send-email-plagnioj@jcrosoft.com>
- <1489080293.24921.0.camel@pengutronix.de>
- <DA9CFBDA-E7D8-48B7-9CAC-73FDD1A51148@jcrosoft.com>
-Mime-Version: 1.0
+ id 1cmKJ8-00018D-ET
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 13:10:20 +0000
+Received: by mail-pf0-x22f.google.com with SMTP id w189so41858975pfb.0
+ for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 05:09:49 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <1489137610.24921.2.camel@pengutronix.de>
+References: <20170309211808.w6jazqlbrlfigl2r@pengutronix.de>
+ <CAHQ1cqFq7+k1KajoqNXAQUzNmp_S19wMyVAHWA5ZOzVgTkzPVg@mail.gmail.com>
+ <20170310091027.ruy5xtzeyej65m6h@pengutronix.de>
+ <1489137610.24921.2.camel@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Fri, 10 Mar 2017 05:09:48 -0800
+Message-ID: <CAHQ1cqEZ=XMiXveOrD+hXYGz_4a83OAZthicMxgAEeGVDLeD_w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,196 +22,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] efi: fix lds for secure boot support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: e1000 driver hangs during probe
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 
-Am Freitag, den 10.03.2017, 18:17 +0800 schrieb Jean-Christophe
-PLAGNIOL-VILLARD:
-> > On Mar 10, 2017, at 1:24 AM, Lucas Stach <l.stach@pengutronix.de> wrote:
-> > 
-> > Am Donnerstag, den 09.03.2017, 15:34 +0100 schrieb Jean-Christophe
-> > PLAGNIOL-VILLARD:
-> >> everythink need to be aligned to 4096
-> > 
-> > Why? The commit message isn't really telling anything.
-> This is a requierment by EFI
-
-This is in no way an EFI requirement.
-
-Googling tells me that the signing procedure for EFI secure boot is
-built around a PE binary. PE in turn is based on the COFF binary format
-which, unlike ELF, has no section descriptions in the header and
-therefore requires the sections to be placed page aligned (4K on x86, 4K
-or 64K on ARM64).
-
-All of the above is what should have been included in the commit
-message, to allow other people to understand the commit and not require
-them to google their way to the justification of this commit.
-
-Regards,
-Lucas
-
-> Best Regards,
-> J.
-> > 
-> > Regards,
-> > Lucas 
-> > 
-> >> 
-> >> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> >> ---
-> >> arch/x86/mach-efi/elf_ia32_efi.lds.S         | 10 +++++++---
-> >> arch/x86/mach-efi/elf_x86_64_efi.lds.S       | 10 ++++++----
-> >> arch/x86/mach-efi/include/mach/barebox.lds.h | 14 +++++++++++++-
-> >> include/asm-generic/barebox.lds.h            |  8 +++++---
-> >> 4 files changed, 31 insertions(+), 11 deletions(-)
-> >> 
-> >> diff --git a/arch/x86/mach-efi/elf_ia32_efi.lds.S b/arch/x86/mach-efi/elf_ia32_efi.lds.S
-> >> index 69f43f554..6d9cb973c 100644
-> >> --- a/arch/x86/mach-efi/elf_ia32_efi.lds.S
-> >> +++ b/arch/x86/mach-efi/elf_ia32_efi.lds.S
-> >> @@ -50,22 +50,23 @@ SECTIONS
-> >> 		*(COMMON)
-> >> 	}
-> >> 
-> >> -	. = ALIGN(64);
-> >> +	. = ALIGN(4096);
-> >> 
-> >> 	__barebox_initcalls_start = .;
-> >> 	__barebox_initcalls : { INITCALLS }
-> >> 	__barebox_initcalls_end = .;
-> >> +	. = ALIGN(4096);
-> >> 
-> >> 	__barebox_exitcalls_start = .;
-> >> 	__barebox_exitcalls : { EXITCALLS }
-> >> 	__barebox_exitcalls_end = .;
-> >> 
-> >> -	. = ALIGN(64);
-> >> +	. = ALIGN(4096);
-> >> 	__barebox_magicvar_start = .;
-> >> 	.barebox_magicvar : { BAREBOX_MAGICVARS }
-> >> 	__barebox_magicvar_end = .;
-> >> 
-> >> -	. = ALIGN(64);
-> >> +	. = ALIGN(4096);
-> >> 	__barebox_cmd_start = .;
-> >> 	__barebox_cmd : { BAREBOX_CMDS }
-> >> 	__barebox_cmd_end = .;
-> >> @@ -76,6 +77,9 @@ SECTIONS
-> >> 	.rel : {
-> >> 		*(.rel.data)
-> >> 		*(.rel.data.*)
-> >> +		*(.rela.barebox*)
-> >> +		*(.rela.initcall*)
-> >> +		*(.rela.exitcall*)
-> >> 		*(.rel.got)
-> >> 		*(.rel.stab)
-> >> 		*(.data.rel.ro.local)
-> >> diff --git a/arch/x86/mach-efi/elf_x86_64_efi.lds.S b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-> >> index 93d34d17a..8216d1d70 100644
-> >> --- a/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-> >> +++ b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-> >> @@ -23,6 +23,7 @@ SECTIONS
-> >> 		*(.text)
-> >> 		*(.text.*)
-> >> 		*(.gnu.linkonce.t.*)
-> >> +		. = ALIGN(16);
-> >> 	}
-> >> 
-> >> 	_etext = .;
-> >> @@ -33,8 +34,8 @@ SECTIONS
-> >> 		*(.reloc)
-> >> 	}
-> >> 
-> >> -	. = ALIGN(4096);
-> >> 	_sdata = .;
-> >> +	. = ALIGN(4096);
-> >> 
-> >> 	.data : {
-> >> 		*(.rodata*)
-> >> @@ -52,22 +53,23 @@ SECTIONS
-> >> 		*(.rel.local)
-> >> 	}
-> >> 
-> >> -	. = ALIGN(64);
-> >> +	. = ALIGN(4096);
-> >> 
-> >> 	__barebox_initcalls_start = .;
-> >> 	__barebox_initcalls : { INITCALLS }
-> >> 	__barebox_initcalls_end = .;
-> >> +	. = ALIGN(4096);
-> >> 
-> >> 	__barebox_exitcalls_start = .;
-> >> 	__barebox_exitcalls : { EXITCALLS }
-> >> 	__barebox_exitcalls_end = .;
-> >> 
-> >> -	. = ALIGN(64);
-> >> +	. = ALIGN(4096);
-> >> 	__barebox_magicvar_start = .;
-> >> 	.barebox_magicvar : { BAREBOX_MAGICVARS }
-> >> 	__barebox_magicvar_end = .;
-> >> 
-> >> -	. = ALIGN(64);
-> >> +	. = ALIGN(4096);
-> >> 	__barebox_cmd_start = .;
-> >> 	__barebox_cmd : { BAREBOX_CMDS }
-> >> 	__barebox_cmd_end = .;
-> >> diff --git a/arch/x86/mach-efi/include/mach/barebox.lds.h b/arch/x86/mach-efi/include/mach/barebox.lds.h
-> >> index 40a8c178f..e7a3bb9cd 100644
-> >> --- a/arch/x86/mach-efi/include/mach/barebox.lds.h
-> >> +++ b/arch/x86/mach-efi/include/mach/barebox.lds.h
-> >> @@ -1 +1,13 @@
-> >> -/* empty */
-> >> +/*
-> >> + * Copyright (C) 2017 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-> >> + *
-> >> + * Under GPL v2
-> >> + */
-> >> +
-> >> +#ifndef __EFI_MACH_BAREBOX_LDS_H__
-> >> +#define __EFI_MACH_BAREBOX_LDS_H__
-> >> +
-> >> +/* For secure boot we need all the section to be 4096 alligned */
-> >> +#define STRUCT_ALIGNMENT 4096
-> >> +
-> >> +#endif /* __EFI_MACH_BAREBOX_LDS_H__ */
-> >> diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-> >> index c8a919b92..6c37751b3 100644
-> >> --- a/include/asm-generic/barebox.lds.h
-> >> +++ b/include/asm-generic/barebox.lds.h
-> >> @@ -3,15 +3,17 @@
-> >>  * Align to a 32 byte boundary equal to the
-> >>  * alignment gcc 4.5 uses for a struct
-> >>  */
-> >> -#define STRUCT_ALIGNMENT 32
-> >> -#define STRUCT_ALIGN() . = ALIGN(STRUCT_ALIGNMENT)
-> >> -
-> >> #if defined CONFIG_X86 || \
-> >> 	defined CONFIG_ARCH_EP93XX || \
-> >> 	defined CONFIG_ARCH_ZYNQ
-> >> #include <mach/barebox.lds.h>
-> >> #endif
-> >> 
-> >> +#ifndef STRUCT_ALIGNMENT
-> >> +#define STRUCT_ALIGNMENT 32
-> >> +#endif
-> >> +#define STRUCT_ALIGN() . = ALIGN(STRUCT_ALIGNMENT)
-> >> +
-> >> #ifndef PRE_IMAGE
-> >> #define PRE_IMAGE
-> >> #endif
-> > 
-> > 
-> 
-
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBNYXIgMTAsIDIwMTcgYXQgMToyMCBBTSwgTHVjYXMgU3RhY2ggPGwuc3RhY2hAcGVu
+Z3V0cm9uaXguZGU+IHdyb3RlOgo+IEFtIEZyZWl0YWcsIGRlbiAxMC4wMy4yMDE3LCAxMDoxMCAr
+MDEwMCBzY2hyaWViIFV3ZSBLbGVpbmUtS8O2bmlnOgo+PiBPbiBUaHUsIE1hciAwOSwgMjAxNyBh
+dCAwODowNDowOFBNIC0wODAwLCBBbmRyZXkgU21pcm5vdiB3cm90ZToKPj4gPiBPbiBUaHUsIE1h
+ciA5LCAyMDE3IGF0IDE6MTggUE0sIFV3ZSBLbGVpbmUtS8O2bmlnCj4+ID4gPHUua2xlaW5lLWtv
+ZW5pZ0BwZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4+ID4gPiBIZWxsbywKPj4gPiA+Cj4+ID4gPiBJ
+IHdvcmsgd2l0aCBhbiBpLk1YNiBiYXNlZCBoYXJkd2FyZSB0aGF0IGhhcyBhbiBpMjEwIHBjaWUg
+ZGV2aWNlIHdpdGgKPj4gPiA+IGJhcmVib3ggMjAxNi4xMS4wIChidXQgdGhlcmUgZGlkbid0IGhh
+cHBlbiBhbnl0aGluZyByZWxldmFudCBzaW5jZSB0aGVtCj4+ID4gPiBpZiBJJ20gbm90IG1pc3Rh
+a2VuKS4gV2hlbiBlbmFibGluZyBhbGwgbmVjZXNzYXJ5IHRoaW5ncyB0byBtYWtlIHRoZQo+PiA+
+ID4gZTEwMDAgYmluZCwgdGhlIGRyaXZlciBzZWVtcyB0byBoYW5nLiBUaGUgcHJvYmxlbSBpcyB0
+aGUgZm9sbG93aW5nIGNvZGUKPj4gPiA+IGluIGUxMDAwX2dldF9od19lZXByb21fc2VtYXBob3Jl
+KCk6Cj4+ID4gPgo+PiA+ID4gICAgICAgICAvKiBHZXQgdGhlIEZXIHNlbWFwaG9yZS4gKi8KPj4g
+PiA+ICAgICAgICAgdGltZW91dCA9IGh3LT5lZXByb20ud29yZF9zaXplICsgMTsKPj4gPiA+ICAg
+ICAgICAgd2hpbGUgKHRpbWVvdXQpIHsKPj4gPiA+ICAgICAgICAgICAgICAgICBzd3NtID0gZTEw
+MDBfcmVhZF9yZWcoaHcsIEUxMDAwX1NXU00pOwo+PiA+ID4gICAgICAgICAgICAgICAgIHN3c20g
+fD0gRTEwMDBfU1dTTV9TV0VTTUJJOwo+PiA+ID4gICAgICAgICAgICAgICAgIGUxMDAwX3dyaXRl
+X3JlZyhodywgRTEwMDBfU1dTTSwgc3dzbSk7Cj4+ID4gPiAgICAgICAgICAgICAgICAgLyogaWYg
+d2UgbWFuYWdlZCB0byBzZXQgdGhlIGJpdCB3ZSBnb3QgdGhlIHNlbWFwaG9yZS4gKi8KPj4gPiA+
+ICAgICAgICAgICAgICAgICBzd3NtID0gZTEwMDBfcmVhZF9yZWcoaHcsIEUxMDAwX1NXU00pOwo+
+PiA+ID4gICAgICAgICAgICAgICAgIGlmIChzd3NtICYgRTEwMDBfU1dTTV9TV0VTTUJJKQo+PiA+
+ID4gICAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7Cj4+ID4gPgo+PiA+ID4gICAgICAgICAg
+ICAgICAgIHVkZWxheSg1MCk7Cj4+ID4gPiAgICAgICAgICAgICAgICAgdGltZW91dC0tOwo+PiA+
+ID4gICAgICAgICB9Cj4+ID4gPgo+PiA+ID4gdG9nZXRoZXIgd2l0aCB0aGUgZmFjdCB0aGF0IGh3
+LT5lZXByb20ud29yZF9zaXplIGlzIGVpdGhlciAweDIwMDAwMCBvcgo+PiA+ID4gMHg0MDAwMDAu
+IChJIHNhdyBib3RoIHZhbHVlcyBhbHJlYWR5IGluIHRocmVlIHJ1bnMpIFRoaXMgdmFsdWUgaXMg
+c2V0dXAKPj4gPiA+IGluIGUxMDAwX2luaXRfZWVwcm9tX3BhcmFtcygpIGluIHRoZSBody0+bWFj
+X3R5cGUgPT0gZTEwMDBfaWdiIGNhc2UuCj4+ID4gPgo+PiA+ID4gV2hlbiB3YWl0aW5nIGxvZyBl
+bm91Z2ggdGhlIGNvZGUgZmluYWxseSB0ZXJtaW5hdGVzIHdpdGggYSBmYWlsdXJlLgo+PiA+ID4K
+Pj4gPiA+IEluIG15IGNhc2UgdGhlcmUgaXMgYW4gOE1iLUZsYXNoIGVxdWlwcGVkIG9uIE5WTV8q
+IHRoYXQgaXNuJ3QgcHJvZ3JhbW1lZAo+PiA+ID4geWV0LiAoTTI1UEU4MCwgUGFnZSBzaXplOiAy
+NTYgYnl0ZXMsIFN1YnNlY3RvciBlcmFzZTogNEtCLCBTZWN0b3IgZXJhc2U6IDY0S0IsCj4+ID4g
+PiBCdWxrIGVyYXNlOiA4TWIpCj4+ID4gPgo+PiA+ID4gSXMgc29tZW9uZSBhYmxlIHRvIHNoZWQg
+c29tZSBsaWdodCBvbiB3aGVyZSB0aGUgcHJvYmxlbSBpcz8KPj4gPiA+Cj4+ID4KPj4gPiBUaGlz
+IG1pZ2h0IGJlIGEgbG9uZyBzaG90LCBidXQgd2hlbiBJIHdhcyB3b3JraW5nIHdpdGggdGhhdCBl
+eGFjdAo+PiA+IGNvbWJpbmF0aW9uIGxhc3QgeWVhciAodGhpcyBib2FyZAo+PiA+IGh0dHBzOi8v
+Z2l0LnBlbmd1dHJvbml4LmRlL2NnaXQvYmFyZWJveC90cmVlL2FyY2gvYXJtL2JvYXJkcy96aWkt
+aW14NnEtcmR1MikKPj4gPiBJIHJhbiBpbnRvIGFuIGlzc3VlIHdoZXJlIHdoaWxlIHRoZSByZWFk
+cyB0byBQQ0kgY29uZmlndXJhdGlvbiBzcGFjZQo+PiA+IHdvdWxkIHdvcmsgYW5kIHRoZSBjYXJk
+IHdvdWxkIGVudW1lcmF0ZSwgYWNjZXNzIHRvIHJlZ2lzdGVycyBtYXBwZWQKPj4gPiB2aWEgYW55
+IG9mIHRoZSBCQVJzIHdvdWxkIHJldHVybiBib2d1cyB2YWx1ZXMuIFRocm91Z2ggdHJpYWwgYW5k
+IGVycm9yCj4+ID4gSSB3YXMgYWJsZSB0byBjb21lIHVwIHdpdGggYSBlbXBpcmljYWwgaGFjayB0
+byAiZml4IiB0aGUgaXNzdWUgYW5kIHdhcwo+PiA+IGFibGUgdG8gY29udGludWUgd29ya2luZyB3
+aXRoIHRoZSBkcml2ZXIuCj4+ID4KPj4gPiBTZXZlcmFsIG1vbnRoIGxhdGVyIEx1Y2FzIHdhcyBh
+c2tlZCB0byB0YWtlIGEgbG9vayBhdCB0aGUgaXNzdWUgYW5kIGhlCj4+ID4gd2FzIGFibGUgdG8g
+ZmlndXJlIG91dCB0aGUgdW5kZXJseWluZyBjYXVzZSBhbmQgcG9zdGVkIGEgc2VyaWVzIG9mCj4+
+ID4gcGF0Y2hlcyBmaXhpbmcgdGhlIHByb2JsZW06Cj4+ID4KPj4gPiBodHRwOi8vbGlzdHMuaW5m
+cmFkZWFkLm9yZy9waXBlcm1haWwvYmFyZWJveC8yMDE2LU5vdmVtYmVyLzAyODQzOC5odG1sCj4+
+ID4KPj4gPiBGb3Igc29tZSByZWFzb24gSSBhbSBub3Qgc2VlaW5nIHRoYXQgd2hvbGUgc2VyaWVz
+IGV2ZW4gaW4gdGhlIGxhdGVzdAo+PiA+IG1hc3RlciwgbGV0IGFsb25lIDIwMTYuMTEgY29kZWJh
+c2UsIHNvIGp1c3QgdG8gcnVsZSBvdXQgeW91IHJ1bm5pbmcKPj4gPiBpbnRvIHRoZSBzYW1lIHBy
+b2JsZW0gSSBkaWQsIEknZCBzdGFydCBieSBhcHBseWluZyB0aGF0IHdob2xlIHNlcmllcwo+PiA+
+IHRvIHlvdXIgQmFyZWJveCBhbmQgc2VlaW5nIGlmIHRoYXQgaW1wcm92ZXMgdGhpbmdzLgo+Pgo+
+PiBXaXRoIHRoZXNlIHBhdGNoZXMgYXBwbGllZCB0aGUgcHJvYmxlbSBpcyBnb25lIGFuZCBJIHNl
+ZToKPj4KPj4gICAgICAgZTEwMDAgcGNpLTgwODY6MTUzMS4wOiBVbnByb2dyYW1tZWQgRmxhc2gg
+ZGV0ZWN0ZWQsIGxpbWl0aW5nIGFjY2VzcyB0byBmaXJzdCA0S0IKPj4gICAgICAgMDogRUVQUk9N
+IGNoZWNrc3VtIGlzIGluY29ycmVjdCEKPj4gICAgICAgMDogICAuLi5yZWdpc3RlciB3YXMgMHgw
+MDAwLCBjYWxjdWxhdGVkIDB4YmFiYQo+PiAgICAgICBlMTAwMCBwY2ktODA4NjoxNTMxLjA6IHBy
+b2JlIGZhaWxlZDogSW52YWxpZCBhcmd1bWVudAo+Pgo+PiBhbmQgSSBoYXZlCj4+Cj4+ICAgICAg
+IC8gbHMgLWwgL2Rldi9lMTAwMC1ub3IwCj4+ICAgICAgIGNydy0tLS0tLS0gICAgICAgICAgIDQw
+OTYgL2Rldi9lMTAwMC1ub3IwCj4+Cj4+IFRoYW5rcyBmb3IgeW91ciB2YWx1YWJsZSBoaW50Lgo+
+Pgo+PiBTYXNjaGE6IElmIHlvdSB3YW50LCBpbnRlcnByZXQgdGhpcyBhcyAiVGVzdGVkLWJ5OiIu
+Cj4KPiBUaGlzIHNlcmllcyBoYXMgYWxyZWFkeSBiZWVuIGFwcGxpZWQgZm9yIGEgbG9uZyB0aW1l
+LiBJdCBmb3VuZCBpdCdzIHdheQo+IGludG8gdGhlIHYyMDE3LjAxLjAgcmVsZWFzZS4KCkkgd2Fz
+bid0IGxvb2tpbmcgYXQgdGhlIHJpZ2h0IHBsYWNlIGZvciB0aG9zZSBwYXRjaGVzIGluIHRoZSBt
+YXN0ZXIuCklnbm9yZSBteSBjb21tZW50IGFib3V0IHRoZW0gbm90IGJlaW5nIHRoZXJlLiBTb3Jy
+eSBmb3IgdGhlIGZhbHNlCmFsYXJtLgoKVGhhbmtzLApBbmRyZXkgU21pcm5vdgoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
+c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
