@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from 2.mo68.mail-out.ovh.net ([46.105.52.162])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmGdg-0005WH-Eb
- for barebox@lists.infradead.org; Fri, 10 Mar 2017 09:15:10 +0000
-References: <20170308092402.21245-1-o.rempel@pengutronix.de>
- <20170308092402.21245-2-o.rempel@pengutronix.de>
- <20170310073258.nahg4i2wmcrni5s2@pengutronix.de>
-From: Oleksij Rempel <ore@pengutronix.de>
-Message-ID: <3f45900f-b45b-a6d0-86c2-919056b25137@pengutronix.de>
-Date: Fri, 10 Mar 2017 10:14:46 +0100
-MIME-Version: 1.0
-In-Reply-To: <20170310073258.nahg4i2wmcrni5s2@pengutronix.de>
+ id 1cmGdq-0005fc-GI
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 09:15:24 +0000
+Received: from player776.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo68.mail-out.ovh.net (Postfix) with ESMTP id 9967743749
+ for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 10:14:53 +0100 (CET)
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+In-Reply-To: <20170310060523.25810-3-o.rempel@pengutronix.de>
+Date: Fri, 10 Mar 2017 17:14:37 +0800
+Message-Id: <9591E4EA-C0D3-4893-9770-3E13804EA055@jcrosoft.com>
+References: <20170309175832.20213-2-o.rempel@pengutronix.de>
+ <20170310060523.25810-1-o.rempel@pengutronix.de>
+ <20170310060523.25810-3-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,47 +22,150 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] usb: fastboot: umount device before writing to it
-To: Sascha Hauer <s.hauer@pengutronix.de>, Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH v3 2/3] console_countdown: add possibility to abort
+ countdown by external commands
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
 
+> On Mar 10, 2017, at 2:05 PM, Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+> 
+> From: Marc Kleine-Budde <mkl@pengutronix.de>
+> 
+> This patch makes it possible to abort a console countdown by an external
+> command, for example when fastboot is used. This requires additional
+> modifications in the external commands, a call to "console_countdown_abort()"
+> has to be inserted.
+> 
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+> commands/timeout.c          |  8 ++++++--
+> common/console_countdown.c  | 15 +++++++++++++++
+> include/console_countdown.h |  2 ++
+> 3 files changed, 23 insertions(+), 2 deletions(-)
+> 
+> diff --git a/commands/timeout.c b/commands/timeout.c
+> index ef1a037c1..d197cedd8 100644
+> --- a/commands/timeout.c
+> +++ b/commands/timeout.c
+> @@ -32,7 +32,7 @@ static int do_timeout(int argc, char *argv[])
+> 	char str[2] = { };
+> 	const char *varname = NULL;
+> 
+> -	while((opt = getopt(argc, argv, "crsav:")) > 0) {
+> +	while ((opt = getopt(argc, argv, "crsav:e")) > 0) {
+> 		switch(opt) {
+> 		case 'r':
+> 			flags |= CONSOLE_COUNTDOWN_RETURN;
+> @@ -46,6 +46,9 @@ static int do_timeout(int argc, char *argv[])
+> 		case 's':
+> 			flags |= CONSOLE_COUNTDOWN_SILENT;
+> 			break;
+> +		case 'e':
+> +			flags |= CONSOLE_COUNTDOWN_EXTERN;
+> +			break;
+> 		case 'v':
+> 			varname = optarg;
+> 			break;
+> @@ -73,6 +76,7 @@ BAREBOX_CMD_HELP_TEXT("Options:")
+> BAREBOX_CMD_HELP_OPT("-a", "interrupt on any key")
+> BAREBOX_CMD_HELP_OPT("-c", "interrupt on Ctrl-C")
+> BAREBOX_CMD_HELP_OPT("-r", "interrupt on RETURN")
+> +BAREBOX_CMD_HELP_OPT("-e", "interrupt on external commands (i.e. fastboot")
+> BAREBOX_CMD_HELP_OPT("-s", "silent mode")
+> BAREBOX_CMD_HELP_OPT("-v <VARIABLE>", "export pressed key to environment")
+> BAREBOX_CMD_HELP_END
+> @@ -80,7 +84,7 @@ BAREBOX_CMD_HELP_END
+> BAREBOX_CMD_START(timeout)
+> 	.cmd		= do_timeout,
+> 	BAREBOX_CMD_DESC("wait for a specified timeout")
+> -	BAREBOX_CMD_OPTS("[-acrsv] SECONDS")
+> +	BAREBOX_CMD_OPTS("[-acrsev] SECONDS")
+> 	BAREBOX_CMD_GROUP(CMD_GRP_CONSOLE)
+> 	BAREBOX_CMD_HELP(cmd_timeout_help)
+> BAREBOX_CMD_END
+> diff --git a/common/console_countdown.c b/common/console_countdown.c
+> index b2eec72b2..03b9b3353 100644
+> --- a/common/console_countdown.c
+> +++ b/common/console_countdown.c
+> @@ -23,6 +23,13 @@
+> #include <console_countdown.h>
+> #include <stdio.h>
+> 
+> +static bool console_countdown_timeout_abort;
+> +
+> +void console_countdown_abort(void)
+> +{
+> +	console_countdown_timeout_abort = true;
+Nack 
 
-On 03/10/2017 08:32 AM, Sascha Hauer wrote:
-> On Wed, Mar 08, 2017 at 10:24:02AM +0100, Oleksij Rempel wrote:
->> From: Sascha Hauer <s.hauer@pengutronix.de>
->>
->> When a fastboot target refers to a device and we are going to write
->> to it, umount it beforehand, so that we do not end up with corrupt
->> data after writing.
->>
->> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
->> ---
->>  drivers/usb/gadget/f_fastboot.c | 1 +
->>  1 file changed, 1 insertion(+)
->>
->> diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
->> index a6192b9eb..8d69aea8b 100644
->> --- a/drivers/usb/gadget/f_fastboot.c
->> +++ b/drivers/usb/gadget/f_fastboot.c
->> @@ -754,6 +754,7 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
->>  		goto out;
->>  	}
->>
->> +	umount(filename);
->
-> I'm not sure about this one. We should probably rather bail out with an
-> error when it's mounted. When it's mounted then the result is undesired,
-> even when we unmount it before flashing.
+this break the security support
 
-hm... for this case we will probably need some function to check if 
-device is mounted. something like: is_mounted(path). Or, is there some 
-other way to do this?
+If we enable password  you can not activate it by default
 
+Best Regards,
+J.
+> +}
+> +
+> int console_countdown(int timeout_s, unsigned flags, char *out_key)
+> {
+> 	uint64_t start, second;
+> @@ -48,6 +55,9 @@ int console_countdown(int timeout_s, unsigned flags, char *out_key)
+> 				goto out;
+> 			key = 0;
+> 		}
+> +		if ((flags & CONSOLE_COUNTDOWN_EXTERN) &&
+> +		    console_countdown_timeout_abort)
+> +			goto out;
+> 		if (!(flags & CONSOLE_COUNTDOWN_SILENT) &&
+> 		    is_timeout(second, SECOND)) {
+> 			printf("\b\b\b\b%4d", countdown--);
+> @@ -55,6 +65,10 @@ int console_countdown(int timeout_s, unsigned flags, char *out_key)
+> 		}
+> 	} while (!is_timeout(start, timeout_s * SECOND));
+> 
+> +	if ((flags & CONSOLE_COUNTDOWN_EXTERN) &&
+> +	    console_countdown_timeout_abort)
+> +		goto out;
+> +
+> 	ret = 0;
+> 
+>  out:
+> @@ -62,6 +76,7 @@ int console_countdown(int timeout_s, unsigned flags, char *out_key)
+> 		printf("\n");
+> 	if (key && out_key)
+> 		*out_key = key;
+> +	console_countdown_timeout_abort = false;
+> 
+> 	return ret;
+> }
+> diff --git a/include/console_countdown.h b/include/console_countdown.h
+> index cb46964bc..c6c2d5c00 100644
+> --- a/include/console_countdown.h
+> +++ b/include/console_countdown.h
+> @@ -5,7 +5,9 @@
+> #define CONSOLE_COUNTDOWN_ANYKEY (1 << 1)
+> #define CONSOLE_COUNTDOWN_RETURN (1 << 3)
+> #define CONSOLE_COUNTDOWN_CTRLC (1 << 4)
+> +#define CONSOLE_COUNTDOWN_EXTERN (1 << 5)
+> 
+> int console_countdown(int timeout_s, unsigned flags, char *out_key);
+> +void console_countdown_abort(void);
+> 
+> #endif /* __CONSOLE_COUNTDOWN_H */
+> -- 
+> 2.11.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 
 _______________________________________________
