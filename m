@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmGeV-0007Ak-7K
- for barebox@lists.infradead.org; Fri, 10 Mar 2017 09:16:01 +0000
-Received: by mail-wm0-x244.google.com with SMTP id z63so1243032wmg.2
- for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 01:15:38 -0800 (PST)
-From: yegorslists@googlemail.com
-Date: Fri, 10 Mar 2017 10:15:25 +0100
-Message-Id: <1489137325-5214-1-git-send-email-yegorslists@googlemail.com>
+ id 1cmGgn-0007zL-BH
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 09:18:26 +0000
+Date: Fri, 10 Mar 2017 10:17:59 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170310091759.p2jogd3u7wvf7sh3@pengutronix.de>
+References: <20170308092402.21245-1-o.rempel@pengutronix.de>
+ <20170308092402.21245-2-o.rempel@pengutronix.de>
+ <20170310073258.nahg4i2wmcrni5s2@pengutronix.de>
+ <3f45900f-b45b-a6d0-86c2-919056b25137@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <3f45900f-b45b-a6d0-86c2-919056b25137@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,40 +21,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arm: baltos: define baltos_sram_init() return type as void
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2] usb: fastboot: umount device before writing to it
+To: Oleksij Rempel <ore@pengutronix.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org
 
-From: Yegor Yefremov <yegorslists@googlemail.com>
+On Fri, Mar 10, 2017 at 10:14:46AM +0100, Oleksij Rempel wrote:
+> 
+> 
+> On 03/10/2017 08:32 AM, Sascha Hauer wrote:
+> > On Wed, Mar 08, 2017 at 10:24:02AM +0100, Oleksij Rempel wrote:
+> > > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > > 
+> > > When a fastboot target refers to a device and we are going to write
+> > > to it, umount it beforehand, so that we do not end up with corrupt
+> > > data after writing.
+> > > 
+> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > ---
+> > >  drivers/usb/gadget/f_fastboot.c | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > > 
+> > > diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
+> > > index a6192b9eb..8d69aea8b 100644
+> > > --- a/drivers/usb/gadget/f_fastboot.c
+> > > +++ b/drivers/usb/gadget/f_fastboot.c
+> > > @@ -754,6 +754,7 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
+> > >  		goto out;
+> > >  	}
+> > > 
+> > > +	umount(filename);
+> > 
+> > I'm not sure about this one. We should probably rather bail out with an
+> > error when it's mounted. When it's mounted then the result is undesired,
+> > even when we unmount it before flashing.
+> 
+> hm... for this case we will probably need some function to check if device
+> is mounted. something like: is_mounted(path). Or, is there some other way to
+> do this?
 
-As stated in the routine's description this routine is to return void,
-hence fix its declaration to remove compiler warning.
+Yeah, you'll need a function for this. Right now there is no way to
+determine if a device is mounted.
 
-Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
----
- arch/arm/boards/vscom-baltos/lowlevel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sascha
 
-diff --git a/arch/arm/boards/vscom-baltos/lowlevel.c b/arch/arm/boards/vscom-baltos/lowlevel.c
-index 9f829b9..c4e2341 100644
---- a/arch/arm/boards/vscom-baltos/lowlevel.c
-+++ b/arch/arm/boards/vscom-baltos/lowlevel.c
-@@ -77,7 +77,7 @@ extern char __dtb_am335x_baltos_minimal_start[];
-  *
-  * @return void
-  */
--static noinline int baltos_sram_init(void)
-+static noinline void baltos_sram_init(void)
- {
- 	uint32_t sdram_size;
- 	void *fdt;
 -- 
-2.1.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
