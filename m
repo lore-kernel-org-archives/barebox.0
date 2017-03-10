@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x241.google.com ([2a00:1450:400c:c09::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmGO0-0007lW-Qy
- for barebox@lists.infradead.org; Fri, 10 Mar 2017 08:58:59 +0000
-Received: by mail-wm0-x241.google.com with SMTP id v190so1161480wme.3
- for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 00:58:35 -0800 (PST)
-From: yegorslists@googlemail.com
-Date: Fri, 10 Mar 2017 09:58:20 +0100
-Message-Id: <1489136300-8428-1-git-send-email-yegorslists@googlemail.com>
+ id 1cmGZW-0004ka-5S
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 09:10:53 +0000
+Date: Fri, 10 Mar 2017 10:10:27 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20170310091027.ruy5xtzeyej65m6h@pengutronix.de>
+References: <20170309211808.w6jazqlbrlfigl2r@pengutronix.de>
+ <CAHQ1cqFq7+k1KajoqNXAQUzNmp_S19wMyVAHWA5ZOzVgTkzPVg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAHQ1cqFq7+k1KajoqNXAQUzNmp_S19wMyVAHWA5ZOzVgTkzPVg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,62 +19,104 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arm: baltos: enable mPCIe slot and configure external GPIO
- controller
-To: barebox@lists.infradead.org
+Subject: Re: e1000 driver hangs during probe
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-From: Yegor Yefremov <yegorslists@googlemail.com>
+On Thu, Mar 09, 2017 at 08:04:08PM -0800, Andrey Smirnov wrote:
+> On Thu, Mar 9, 2017 at 1:18 PM, Uwe Kleine-K=F6nig
+> <u.kleine-koenig@pengutronix.de> wrote:
+> > Hello,
+> >
+> > I work with an i.MX6 based hardware that has an i210 pcie device with
+> > barebox 2016.11.0 (but there didn't happen anything relevant since them
+> > if I'm not mistaken). When enabling all necessary things to make the
+> > e1000 bind, the driver seems to hang. The problem is the following code
+> > in e1000_get_hw_eeprom_semaphore():
+> >
+> >         /* Get the FW semaphore. */
+> >         timeout =3D hw->eeprom.word_size + 1;
+> >         while (timeout) {
+> >                 swsm =3D e1000_read_reg(hw, E1000_SWSM);
+> >                 swsm |=3D E1000_SWSM_SWESMBI;
+> >                 e1000_write_reg(hw, E1000_SWSM, swsm);
+> >                 /* if we managed to set the bit we got the semaphore. */
+> >                 swsm =3D e1000_read_reg(hw, E1000_SWSM);
+> >                 if (swsm & E1000_SWSM_SWESMBI)
+> >                         break;
+> >
+> >                 udelay(50);
+> >                 timeout--;
+> >         }
+> >
+> > together with the fact that hw->eeprom.word_size is either 0x200000 or
+> > 0x400000. (I saw both values already in three runs) This value is setup
+> > in e1000_init_eeprom_params() in the hw->mac_type =3D=3D e1000_igb case.
+> >
+> > When waiting log enough the code finally terminates with a failure.
+> >
+> > In my case there is an 8Mb-Flash equipped on NVM_* that isn't programmed
+> > yet. (M25PE80, Page size: 256 bytes, Subsector erase: 4KB, Sector erase=
+: 64KB,
+> > Bulk erase: 8Mb)
+> >
+> > Is someone able to shed some light on where the problem is?
+> >
+> =
 
-Baltos devices provide a mPCIe slot, whose power is turned off by
-default. This patch activates mPCIe slot in barebox, so that for example
-GSM modem can be already available in user space.
+> This might be a long shot, but when I was working with that exact
+> combination last year (this board
+> https://git.pengutronix.de/cgit/barebox/tree/arch/arm/boards/zii-imx6q-rd=
+u2)
+> I ran into an issue where while the reads to PCI configuration space
+> would work and the card would enumerate, access to registers mapped
+> via any of the BARs would return bogus values. Through trial and error
+> I was able to come up with a empirical hack to "fix" the issue and was
+> able to continue working with the driver.
+> =
 
-Also configure external GPIO controller via setting its output pins to
-low.
+> Several month later Lucas was asked to take a look at the issue and he
+> was able to figure out the underlying cause and posted a series of
+> patches fixing the problem:
+> =
 
-Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
----
- arch/arm/boards/vscom-baltos/board.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+> http://lists.infradead.org/pipermail/barebox/2016-November/028438.html
+> =
 
-diff --git a/arch/arm/boards/vscom-baltos/board.c b/arch/arm/boards/vscom-baltos/board.c
-index fea992d..39f40a6 100644
---- a/arch/arm/boards/vscom-baltos/board.c
-+++ b/arch/arm/boards/vscom-baltos/board.c
-@@ -41,6 +41,7 @@
- #include <linux/err.h>
- #include <mach/bbu.h>
- #include <libfile.h>
-+#include <gpio.h>
- 
- static struct omap_barebox_part baltos_barebox_part = {
- 	.nand_offset = SZ_512K,
-@@ -109,6 +110,17 @@ static int baltos_read_eeprom(void)
- 	sprintf(var_buf, "%d", hw_param.SystemId);
- 	globalvar_add_simple("board.id", var_buf);
- 
-+	/* enable mPCIe slot */
-+	gpio_direction_output(100, 1);
-+
-+	/* configure output signals of the external GPIO controller */
-+	if (hw_param.SystemId == 210 || hw_param.SystemId == 211) {
-+		gpio_direction_output(132, 0);
-+		gpio_direction_output(133, 0);
-+		gpio_direction_output(134, 0);
-+		gpio_direction_output(135, 0);
-+	}
-+
- 	return 0;
- }
- environment_initcall(baltos_read_eeprom);
--- 
-2.1.4
+> For some reason I am not seeing that whole series even in the latest
+> master, let alone 2016.11 codebase, so just to rule out you running
+> into the same problem I did, I'd start by applying that whole series
+> to your Barebox and seeing if that improves things.
 
+With these patches applied the problem is gone and I see:
+
+	e1000 pci-8086:1531.0: Unprogrammed Flash detected, limiting access to fir=
+st 4KB
+	0: EEPROM checksum is incorrect!
+	0:   ...register was 0x0000, calculated 0xbaba
+	e1000 pci-8086:1531.0: probe failed: Invalid argument
+
+and I have
+
+	/ ls -l /dev/e1000-nor0 =
+
+	crw-------           4096 /dev/e1000-nor0
+
+Thanks for your valuable hint.
+
+Sascha: If you want, interpret this as "Tested-by:".
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
