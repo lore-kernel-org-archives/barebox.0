@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cjRld-0001Ny-B5
- for barebox@lists.infradead.org; Thu, 02 Mar 2017 14:31:43 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu,  2 Mar 2017 15:31:14 +0100
-Message-Id: <20170302143114.8319-1-o.rempel@pengutronix.de>
+ id 1cmGiu-00015Z-5O
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 09:20:34 +0000
+Message-ID: <1489137610.24921.2.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Fri, 10 Mar 2017 10:20:10 +0100
+In-Reply-To: <20170310091027.ruy5xtzeyej65m6h@pengutronix.de>
+References: <20170309211808.w6jazqlbrlfigl2r@pengutronix.de>
+ <CAHQ1cqFq7+k1KajoqNXAQUzNmp_S19wMyVAHWA5ZOzVgTkzPVg@mail.gmail.com>
+ <20170310091027.ruy5xtzeyej65m6h@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,190 +19,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] scripts: imx imx-usb-loader: add usb path support
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: e1000 driver hangs during probe
+To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-In some cases we need to work with more then one device attached
-to one host. For this situation we need path filter to make sure
-we talk with proper device.
-
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- scripts/imx/imx-usb-loader.c | 97 ++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 84 insertions(+), 13 deletions(-)
-
-diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-index be0894fa6..d8a72d801 100644
---- a/scripts/imx/imx-usb-loader.c
-+++ b/scripts/imx/imx-usb-loader.c
-@@ -45,6 +45,11 @@
- #define FT_DCD	0xee
- #define FT_LOAD_ONLY	0x00
- 
-+/* comment from libusb:
-+ * As per the USB 3.0 specs, the current maximum limit for the depth is 7.
-+ */
-+#define MAX_USB_PORTS	7
-+
- int verbose;
- static struct libusb_device_handle *usb_dev_handle;
- static struct usb_id *usb_id;
-@@ -190,9 +195,63 @@ static struct mach_id *imx_device(unsigned short vid, unsigned short pid)
- 	return NULL;
- }
- 
--static libusb_device *find_imx_dev(libusb_device **devs, struct mach_id **pp_id)
-+static int device_location_equal(libusb_device *device, const char *location)
-+{
-+	uint8_t port_path[MAX_USB_PORTS];
-+	uint8_t dev_bus;
-+	int path_step, path_len;
-+	int result = 0;
-+	char *ptr, *loc;
-+
-+	path_len = libusb_get_port_numbers(device, port_path, MAX_USB_PORTS);
-+	if (path_len == LIBUSB_ERROR_OVERFLOW) {
-+		fprintf(stderr, "cannot determine path to usb device! (more than %i ports in path)\n",
-+				MAX_USB_PORTS);
-+		goto done;
-+	}
-+
-+	/* strtok need non const char */
-+	loc = strdup(location);
-+	ptr = strtok(loc, "-");
-+	if (ptr == NULL) {
-+		printf("no '-' in path\n");
-+		goto done;
-+	}
-+
-+	dev_bus = libusb_get_bus_number(device);
-+	/* check bus mismatch */
-+	if (atoi(ptr) != dev_bus)
-+		goto done;
-+
-+	path_step = 0;
-+	while (path_step < MAX_USB_PORTS) {
-+		ptr = strtok(NULL, ".");
-+
-+		/* no more tokens in path */
-+		if (ptr == NULL)
-+			break;
-+
-+		/* path mismatch at some step */
-+		if (path_step < path_len && atoi(ptr) != port_path[path_step])
-+			break;
-+
-+		path_step++;
-+	};
-+
-+	/* walked the full path, all elements match */
-+	if (path_step == path_len)
-+		result = 1;
-+
-+done:
-+	free(loc);
-+	return result;
-+}
-+
-+static libusb_device *find_imx_dev(libusb_device **devs, struct mach_id **pp_id,
-+		const char *location)
- {
- 	int i = 0;
-+	int err;
- 	struct mach_id *p;
- 
- 	for (;;) {
-@@ -210,10 +269,24 @@ static libusb_device *find_imx_dev(libusb_device **devs, struct mach_id **pp_id)
- 		}
- 
- 		p = imx_device(desc.idVendor, desc.idProduct);
--		if (p) {
--			*pp_id = p;
--			return dev;
-+		if (!p)
-+			continue;
-+
-+		err = libusb_open(dev, &usb_dev_handle);
-+		if (err) {
-+			fprintf(stderr, "Could not open device vid=0x%x pid=0x%x err=%d\n",
-+				p->vid, p->pid, err);
-+			continue;
-+		}
-+
-+		if (location && !device_location_equal(dev, location)) {
-+			libusb_close(usb_dev_handle);
-+			usb_dev_handle = NULL;
-+			continue;
- 		}
-+
-+		*pp_id = p;
-+		return dev;
- 	}
- 	*pp_id = NULL;
- 
-@@ -1280,6 +1353,7 @@ static void usage(const char *prgname)
- 	fprintf(stderr, "usage: %s [OPTIONS] [FILENAME]\n\n"
- 		"-c           check correctness of flashed image\n"
- 		"-i <cfgfile> Specify custom SoC initialization file\n"
-+		"-p <devpath> Specify device path: <bus>-<port>[.<port>]...\n"
- 		"-s           skip DCD included in image\n"
- 		"-v           verbose (give multiple times to increase)\n"
- 		"-h           this help\n", prgname);
-@@ -1300,10 +1374,11 @@ int main(int argc, char *argv[])
- 	struct usb_work w = {};
- 	int opt;
- 	char *initfile = NULL;
-+	char *devpath = NULL;
- 
- 	w.do_dcd_once = 1;
- 
--	while ((opt = getopt(argc, argv, "cvhi:s")) != -1) {
-+	while ((opt = getopt(argc, argv, "cvhi:p:s")) != -1) {
- 		switch (opt) {
- 		case 'c':
- 			verify = 1;
-@@ -1316,6 +1391,9 @@ int main(int argc, char *argv[])
- 		case 'i':
- 			initfile = optarg;
- 			break;
-+		case 'p':
-+			devpath = optarg;
-+			break;
- 		case 's':
- 			w.do_dcd_once = 0;
- 			break;
-@@ -1343,19 +1421,12 @@ int main(int argc, char *argv[])
- 		goto out;
- 	}
- 
--	dev = find_imx_dev(devs, &mach);
-+	dev = find_imx_dev(devs, &mach, devpath);
- 	if (!dev) {
- 		fprintf(stderr, "no supported device found\n");
- 		goto out;
- 	}
- 
--	err = libusb_open(dev, &usb_dev_handle);
--	if (err) {
--		fprintf(stderr, "Could not open device vid=0x%x pid=0x%x err=%d\n",
--				mach->vid, mach->pid, err);
--		goto out;
--	}
--
- 	libusb_free_device_list(devs, 1);
- 
- 	libusb_get_configuration(usb_dev_handle, &config);
--- 
-2.11.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gRnJlaXRhZywgZGVuIDEwLjAzLjIwMTcsIDEwOjEwICswMTAwIHNjaHJpZWIgVXdlIEtsZWlu
+ZS1Lw7ZuaWc6Cj4gT24gVGh1LCBNYXIgMDksIDIwMTcgYXQgMDg6MDQ6MDhQTSAtMDgwMCwgQW5k
+cmV5IFNtaXJub3Ygd3JvdGU6Cj4gPiBPbiBUaHUsIE1hciA5LCAyMDE3IGF0IDE6MTggUE0sIFV3
+ZSBLbGVpbmUtS8O2bmlnCj4gPiA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPiB3cm90
+ZToKPiA+ID4gSGVsbG8sCj4gPiA+Cj4gPiA+IEkgd29yayB3aXRoIGFuIGkuTVg2IGJhc2VkIGhh
+cmR3YXJlIHRoYXQgaGFzIGFuIGkyMTAgcGNpZSBkZXZpY2Ugd2l0aAo+ID4gPiBiYXJlYm94IDIw
+MTYuMTEuMCAoYnV0IHRoZXJlIGRpZG4ndCBoYXBwZW4gYW55dGhpbmcgcmVsZXZhbnQgc2luY2Ug
+dGhlbQo+ID4gPiBpZiBJJ20gbm90IG1pc3Rha2VuKS4gV2hlbiBlbmFibGluZyBhbGwgbmVjZXNz
+YXJ5IHRoaW5ncyB0byBtYWtlIHRoZQo+ID4gPiBlMTAwMCBiaW5kLCB0aGUgZHJpdmVyIHNlZW1z
+IHRvIGhhbmcuIFRoZSBwcm9ibGVtIGlzIHRoZSBmb2xsb3dpbmcgY29kZQo+ID4gPiBpbiBlMTAw
+MF9nZXRfaHdfZWVwcm9tX3NlbWFwaG9yZSgpOgo+ID4gPgo+ID4gPiAgICAgICAgIC8qIEdldCB0
+aGUgRlcgc2VtYXBob3JlLiAqLwo+ID4gPiAgICAgICAgIHRpbWVvdXQgPSBody0+ZWVwcm9tLndv
+cmRfc2l6ZSArIDE7Cj4gPiA+ICAgICAgICAgd2hpbGUgKHRpbWVvdXQpIHsKPiA+ID4gICAgICAg
+ICAgICAgICAgIHN3c20gPSBlMTAwMF9yZWFkX3JlZyhodywgRTEwMDBfU1dTTSk7Cj4gPiA+ICAg
+ICAgICAgICAgICAgICBzd3NtIHw9IEUxMDAwX1NXU01fU1dFU01CSTsKPiA+ID4gICAgICAgICAg
+ICAgICAgIGUxMDAwX3dyaXRlX3JlZyhodywgRTEwMDBfU1dTTSwgc3dzbSk7Cj4gPiA+ICAgICAg
+ICAgICAgICAgICAvKiBpZiB3ZSBtYW5hZ2VkIHRvIHNldCB0aGUgYml0IHdlIGdvdCB0aGUgc2Vt
+YXBob3JlLiAqLwo+ID4gPiAgICAgICAgICAgICAgICAgc3dzbSA9IGUxMDAwX3JlYWRfcmVnKGh3
+LCBFMTAwMF9TV1NNKTsKPiA+ID4gICAgICAgICAgICAgICAgIGlmIChzd3NtICYgRTEwMDBfU1dT
+TV9TV0VTTUJJKQo+ID4gPiAgICAgICAgICAgICAgICAgICAgICAgICBicmVhazsKPiA+ID4KPiA+
+ID4gICAgICAgICAgICAgICAgIHVkZWxheSg1MCk7Cj4gPiA+ICAgICAgICAgICAgICAgICB0aW1l
+b3V0LS07Cj4gPiA+ICAgICAgICAgfQo+ID4gPgo+ID4gPiB0b2dldGhlciB3aXRoIHRoZSBmYWN0
+IHRoYXQgaHctPmVlcHJvbS53b3JkX3NpemUgaXMgZWl0aGVyIDB4MjAwMDAwIG9yCj4gPiA+IDB4
+NDAwMDAwLiAoSSBzYXcgYm90aCB2YWx1ZXMgYWxyZWFkeSBpbiB0aHJlZSBydW5zKSBUaGlzIHZh
+bHVlIGlzIHNldHVwCj4gPiA+IGluIGUxMDAwX2luaXRfZWVwcm9tX3BhcmFtcygpIGluIHRoZSBo
+dy0+bWFjX3R5cGUgPT0gZTEwMDBfaWdiIGNhc2UuCj4gPiA+Cj4gPiA+IFdoZW4gd2FpdGluZyBs
+b2cgZW5vdWdoIHRoZSBjb2RlIGZpbmFsbHkgdGVybWluYXRlcyB3aXRoIGEgZmFpbHVyZS4KPiA+
+ID4KPiA+ID4gSW4gbXkgY2FzZSB0aGVyZSBpcyBhbiA4TWItRmxhc2ggZXF1aXBwZWQgb24gTlZN
+XyogdGhhdCBpc24ndCBwcm9ncmFtbWVkCj4gPiA+IHlldC4gKE0yNVBFODAsIFBhZ2Ugc2l6ZTog
+MjU2IGJ5dGVzLCBTdWJzZWN0b3IgZXJhc2U6IDRLQiwgU2VjdG9yIGVyYXNlOiA2NEtCLAo+ID4g
+PiBCdWxrIGVyYXNlOiA4TWIpCj4gPiA+Cj4gPiA+IElzIHNvbWVvbmUgYWJsZSB0byBzaGVkIHNv
+bWUgbGlnaHQgb24gd2hlcmUgdGhlIHByb2JsZW0gaXM/Cj4gPiA+Cj4gPiAKPiA+IFRoaXMgbWln
+aHQgYmUgYSBsb25nIHNob3QsIGJ1dCB3aGVuIEkgd2FzIHdvcmtpbmcgd2l0aCB0aGF0IGV4YWN0
+Cj4gPiBjb21iaW5hdGlvbiBsYXN0IHllYXIgKHRoaXMgYm9hcmQKPiA+IGh0dHBzOi8vZ2l0LnBl
+bmd1dHJvbml4LmRlL2NnaXQvYmFyZWJveC90cmVlL2FyY2gvYXJtL2JvYXJkcy96aWktaW14NnEt
+cmR1MikKPiA+IEkgcmFuIGludG8gYW4gaXNzdWUgd2hlcmUgd2hpbGUgdGhlIHJlYWRzIHRvIFBD
+SSBjb25maWd1cmF0aW9uIHNwYWNlCj4gPiB3b3VsZCB3b3JrIGFuZCB0aGUgY2FyZCB3b3VsZCBl
+bnVtZXJhdGUsIGFjY2VzcyB0byByZWdpc3RlcnMgbWFwcGVkCj4gPiB2aWEgYW55IG9mIHRoZSBC
+QVJzIHdvdWxkIHJldHVybiBib2d1cyB2YWx1ZXMuIFRocm91Z2ggdHJpYWwgYW5kIGVycm9yCj4g
+PiBJIHdhcyBhYmxlIHRvIGNvbWUgdXAgd2l0aCBhIGVtcGlyaWNhbCBoYWNrIHRvICJmaXgiIHRo
+ZSBpc3N1ZSBhbmQgd2FzCj4gPiBhYmxlIHRvIGNvbnRpbnVlIHdvcmtpbmcgd2l0aCB0aGUgZHJp
+dmVyLgo+ID4gCj4gPiBTZXZlcmFsIG1vbnRoIGxhdGVyIEx1Y2FzIHdhcyBhc2tlZCB0byB0YWtl
+IGEgbG9vayBhdCB0aGUgaXNzdWUgYW5kIGhlCj4gPiB3YXMgYWJsZSB0byBmaWd1cmUgb3V0IHRo
+ZSB1bmRlcmx5aW5nIGNhdXNlIGFuZCBwb3N0ZWQgYSBzZXJpZXMgb2YKPiA+IHBhdGNoZXMgZml4
+aW5nIHRoZSBwcm9ibGVtOgo+ID4gCj4gPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9waXBl
+cm1haWwvYmFyZWJveC8yMDE2LU5vdmVtYmVyLzAyODQzOC5odG1sCj4gPiAKPiA+IEZvciBzb21l
+IHJlYXNvbiBJIGFtIG5vdCBzZWVpbmcgdGhhdCB3aG9sZSBzZXJpZXMgZXZlbiBpbiB0aGUgbGF0
+ZXN0Cj4gPiBtYXN0ZXIsIGxldCBhbG9uZSAyMDE2LjExIGNvZGViYXNlLCBzbyBqdXN0IHRvIHJ1
+bGUgb3V0IHlvdSBydW5uaW5nCj4gPiBpbnRvIHRoZSBzYW1lIHByb2JsZW0gSSBkaWQsIEknZCBz
+dGFydCBieSBhcHBseWluZyB0aGF0IHdob2xlIHNlcmllcwo+ID4gdG8geW91ciBCYXJlYm94IGFu
+ZCBzZWVpbmcgaWYgdGhhdCBpbXByb3ZlcyB0aGluZ3MuCj4gCj4gV2l0aCB0aGVzZSBwYXRjaGVz
+IGFwcGxpZWQgdGhlIHByb2JsZW0gaXMgZ29uZSBhbmQgSSBzZWU6Cj4gCj4gCWUxMDAwIHBjaS04
+MDg2OjE1MzEuMDogVW5wcm9ncmFtbWVkIEZsYXNoIGRldGVjdGVkLCBsaW1pdGluZyBhY2Nlc3Mg
+dG8gZmlyc3QgNEtCCj4gCTA6IEVFUFJPTSBjaGVja3N1bSBpcyBpbmNvcnJlY3QhCj4gCTA6ICAg
+Li4ucmVnaXN0ZXIgd2FzIDB4MDAwMCwgY2FsY3VsYXRlZCAweGJhYmEKPiAJZTEwMDAgcGNpLTgw
+ODY6MTUzMS4wOiBwcm9iZSBmYWlsZWQ6IEludmFsaWQgYXJndW1lbnQKPiAKPiBhbmQgSSBoYXZl
+Cj4gCj4gCS8gbHMgLWwgL2Rldi9lMTAwMC1ub3IwIAo+IAljcnctLS0tLS0tICAgICAgICAgICA0
+MDk2IC9kZXYvZTEwMDAtbm9yMAo+IAo+IFRoYW5rcyBmb3IgeW91ciB2YWx1YWJsZSBoaW50Lgo+
+IAo+IFNhc2NoYTogSWYgeW91IHdhbnQsIGludGVycHJldCB0aGlzIGFzICJUZXN0ZWQtYnk6Ii4K
+ClRoaXMgc2VyaWVzIGhhcyBhbHJlYWR5IGJlZW4gYXBwbGllZCBmb3IgYSBsb25nIHRpbWUuIEl0
+IGZvdW5kIGl0J3Mgd2F5CmludG8gdGhlIHYyMDE3LjAxLjAgcmVsZWFzZS4KClJlZ2FyZHMsCkx1
+Y2FzCgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
+cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
+dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
