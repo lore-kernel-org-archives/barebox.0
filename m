@@ -1,24 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo179.mail-out.ovh.net ([46.105.75.26])
+Received: from mo179.mail-out.ovh.net ([178.32.228.179])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmLCW-0004Sb-HO
- for barebox@lists.infradead.org; Fri, 10 Mar 2017 14:07:28 +0000
+ id 1cmLSp-0004Mt-Rl
+ for barebox@lists.infradead.org; Fri, 10 Mar 2017 14:24:19 +0000
 Received: from player716.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo179.mail-out.ovh.net (Postfix) with ESMTP id C3C312BD55
- for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 15:07:01 +0100 (CET)
-Date: Fri, 10 Mar 2017 15:13:18 +0100
+ by mo179.mail-out.ovh.net (Postfix) with ESMTP id 4E207303D2
+ for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 15:23:52 +0100 (CET)
+Date: Fri, 10 Mar 2017 15:30:09 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20170310141318.GC19458@mail.ovh.net>
-References: <20170309143117.GI4120@mail.ovh.net>
- <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
- <1489070050-16024-2-git-send-email-plagnioj@jcrosoft.com>
- <1489080293.24921.0.camel@pengutronix.de>
- <DA9CFBDA-E7D8-48B7-9CAC-73FDD1A51148@jcrosoft.com>
- <1489143938.24921.17.camel@pengutronix.de>
- <20170310135403.GA19458@mail.ovh.net>
+Message-ID: <20170310143009.GD19458@mail.ovh.net>
+References: <1489055471-12836-1-git-send-email-plagnioj@jcrosoft.com>
+ <1489055471-12836-3-git-send-email-plagnioj@jcrosoft.com>
+ <20170310070043.qsu5mcr2fmnn3oxi@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170310135403.GA19458@mail.ovh.net>
+In-Reply-To: <20170310070043.qsu5mcr2fmnn3oxi@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,37 +27,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] efi: fix lds for secure boot support
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH 3/3] fbcon: use __iowrite{32/64} to speedup the
+ framebuffer console scrolling
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 14:54 Fri 10 Mar     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 12:05 Fri 10 Mar     , Lucas Stach wrote:
-> > Am Freitag, den 10.03.2017, 18:17 +0800 schrieb Jean-Christophe
-> > PLAGNIOL-VILLARD:
-> > > > On Mar 10, 2017, at 1:24 AM, Lucas Stach <l.stach@pengutronix.de> wrote:
-> > > > 
-> > > > Am Donnerstag, den 09.03.2017, 15:34 +0100 schrieb Jean-Christophe
-> > > > PLAGNIOL-VILLARD:
-> > > >> everythink need to be aligned to 4096
-> > > > 
-> > > > Why? The commit message isn't really telling anything.
-> > > This is a requierment by EFI
+On 08:00 Fri 10 Mar     , Sascha Hauer wrote:
+> On Thu, Mar 09, 2017 at 11:31:11AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > this devide the time by 4 on x86
 > > 
-> > This is in no way an EFI requirement.
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  drivers/video/fbconsole.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
 > > 
-> > Googling tells me that the signing procedure for EFI secure boot is
-> > built around a PE binary. PE in turn is based on the COFF binary format
-> > which, unlike ELF, has no section descriptions in the header and
-> > therefore requires the sections to be placed page aligned (4K on x86, 4K
-> > or 64K on ARM64).
-> No COFF does not require to have section "page aligned" which is wrong here
+> > diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
+> > index b261f1704..b5e951e23 100644
+> > --- a/drivers/video/fbconsole.c
+> > +++ b/drivers/video/fbconsole.c
+> > @@ -6,6 +6,7 @@
+> >  #include <gui/image_renderer.h>
+> >  #include <gui/graphic_utils.h>
+> >  #include <linux/font.h>
+> > +#include <linux/io.h>
+> >  
+> >  enum state_t {
+> >  	LIT,				/* Literal input */
+> > @@ -202,7 +203,7 @@ static void printchar(struct fbc_priv *priv, int c)
+> >  
+> >  		buf = gui_screen_render_buffer(priv->sc);
+> >  
+> > -		memcpy(buf, buf + line_height, line_height * priv->rows);
+> > +		__iowrite64_copy(buf, buf + line_height, (line_height * priv->rows) >> 2);
+> 
+> Shouldn't this be >> 3?
+> 
+> Besides, I'm not sure using __iowrite64_copy is the right weapon here.
+> Maybe better port arch/x86/lib/memcpy_64.S to get an optimized memcpy?
+My other issue to the current driver is so so slow
 
-This is the job of the loader to aligned them in memory but on EFI it's
-required to sign the binary.
+Normaly we need to have a shadow buffer with twice the size of the real buffer
+
+And we should use a timer when we have to blit too much and add scroll support
+
+I've those feature on an other barebox fbcon implementation
 
 Best Regards,
 J.
+> 
+> Sascha
+> 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
