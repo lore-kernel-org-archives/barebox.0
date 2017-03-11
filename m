@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmjYx-0008CL-8X
- for barebox@lists.infradead.org; Sat, 11 Mar 2017 16:08:13 +0000
+ id 1cmjYx-0008CK-93
+ for barebox@lists.infradead.org; Sat, 11 Mar 2017 16:08:14 +0000
 From: Michael Olbrich <m.olbrich@pengutronix.de>
-Date: Sat, 11 Mar 2017 17:07:33 +0100
-Message-Id: <20170311160733.18473-2-m.olbrich@pengutronix.de>
-In-Reply-To: <20170311160733.18473-1-m.olbrich@pengutronix.de>
-References: <20170311160733.18473-1-m.olbrich@pengutronix.de>
+Date: Sat, 11 Mar 2017 17:07:32 +0100
+Message-Id: <20170311160733.18473-1-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,42 +19,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] efi: only iterate over handles that provide the device
- path protocol
+Subject: [PATCH 1/2] efi: load the protocol expected by the driver
 To: barebox@lists.infradead.org
 Cc: Michael Olbrich <m.olbrich@pengutronix.de>
 
-All other handled are skipped anyways.
+The drivers are loaded if any guid provided by the device matches. So load
+the protocol for the matched guid and not for the first guid.
+Otherwise the driver may cast the protocol to the wrong type and proably
+crash.
 
 Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 ---
- drivers/efi/efi-device.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/efi/efi-device.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
-index c5fb404cd36b..db3c0afe3361 100644
+index 959878e7f5cf..c5fb404cd36b 100644
 --- a/drivers/efi/efi-device.c
 +++ b/drivers/efi/efi-device.c
-@@ -102,7 +102,8 @@ static efi_handle_t *efi_find_parent(efi_handle_t *handle)
- 	struct efi_open_protocol_information_entry *entry_buffer;
- 	unsigned long entry_count;
+@@ -184,8 +184,6 @@ static struct efi_device *efi_add_device(efi_handle_t *handle, efi_guid_t **guid
+ 	efidev->dev.info = efi_devinfo;
+ 	efidev->devpath = devpath;
  
--	ret = efi_locate_handle(all_handles, NULL, NULL, &handle_count, &handles);
-+	ret = efi_locate_handle(by_protocol, &efi_device_path_protocol_guid,
-+			NULL, &handle_count, &handles);
- 	if (ret)
- 		return NULL;
+-	BS->handle_protocol(handle, &guidarr[0], &efidev->protocol);
+-
+ 	sprintf(efidev->dev.name, "handle-%p", handle);
  
-@@ -244,7 +245,8 @@ void efi_register_devices(void)
- 	struct efi_device **efidevs;
- 	int registered;
+ 	efidev->parent_handle = efi_find_parent(efidev->handle);
+@@ -311,8 +309,11 @@ static int efi_bus_match(struct device_d *dev, struct driver_d *drv)
+ 	int i;
  
--	ret = efi_locate_handle(all_handles, NULL, NULL, &handle_count, &handles);
-+	ret = efi_locate_handle(by_protocol, &efi_device_path_protocol_guid,
-+			NULL, &handle_count, &handles);
- 	if (ret)
- 		return;
+ 	for (i = 0; i < efidev->num_guids; i++) {
+-		if (!memcmp(&efidrv->guid, &efidev->guids[i], sizeof(efi_guid_t)))
++		if (!memcmp(&efidrv->guid, &efidev->guids[i], sizeof(efi_guid_t))) {
++			BS->handle_protocol(efidev->handle, &efidev->guids[i],
++					&efidev->protocol);
+ 			return 0;
++		}
+ 	}
  
+ 	return 1;
 -- 
 2.11.0
 
