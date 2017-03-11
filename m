@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmMKD-0007sb-Pn
- for barebox@lists.infradead.org; Fri, 10 Mar 2017 15:19:29 +0000
-Received: by mail-wm0-x243.google.com with SMTP id v190so2795171wme.3
- for <barebox@lists.infradead.org>; Fri, 10 Mar 2017 07:19:05 -0800 (PST)
-From: pmamonov@gmail.com
-Date: Fri, 10 Mar 2017 18:18:51 +0300
-Message-Id: <20170310151851.26978-1-pmamonov@gmail.com>
-In-Reply-To: <20170310150209.1564-1-pmamonov@gmail.com>
-References: <20170310150209.1564-1-pmamonov@gmail.com>
+ id 1cmhbs-0006UB-Gi
+ for barebox@lists.infradead.org; Sat, 11 Mar 2017 14:03:10 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Sat, 11 Mar 2017 15:02:36 +0100
+Message-Id: <20170311140237.6958-3-o.rempel@pengutronix.de>
+In-Reply-To: <20170311140237.6958-1-o.rempel@pengutronix.de>
+References: <20170311140237.6958-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,170 +21,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net/phy: marvell: import support for 88E1111 from the Linux
+Subject: [PATCH 3/4] led: trigger: Use led triggers
 To: barebox@lists.infradead.org
-Cc: Peter Mamonov <pmamonov@gmail.com>
 
-From: Peter Mamonov <pmamonov@gmail.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+Since the LED framework now supports blinking/flashing, use this
+functionality in the LED triggers.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/phy/marvell.c | 126 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 126 insertions(+)
+ drivers/led/led-triggers.c | 40 +++++-----------------------------------
+ 1 file changed, 5 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
-index 38b2ad31f..ea5a4a9be 100644
---- a/drivers/net/phy/marvell.c
-+++ b/drivers/net/phy/marvell.c
-@@ -31,6 +31,22 @@
- #define MII_M1011_PHY_STATUS_RESOLVED	BIT(11)
- #define MII_M1011_PHY_STATUS_LINK	BIT(10)
+diff --git a/drivers/led/led-triggers.c b/drivers/led/led-triggers.c
+index dee9367..6c05cc5 100644
+--- a/drivers/led/led-triggers.c
++++ b/drivers/led/led-triggers.c
+@@ -48,34 +48,12 @@
  
-+#define MII_M1111_PHY_LED_CONTROL	0x18
-+#define MII_M1111_PHY_LED_DIRECT	0x4100
-+#define MII_M1111_PHY_LED_COMBINE	0x411c
-+#define MII_M1111_PHY_EXT_CR		0x14
-+#define MII_M1111_RX_DELAY		0x80
-+#define MII_M1111_TX_DELAY		0x2
-+#define MII_M1111_PHY_EXT_SR		0x1b
-+
-+#define MII_M1111_HWCFG_MODE_MASK		0xf
-+#define MII_M1111_HWCFG_MODE_COPPER_RGMII	0xb
-+#define MII_M1111_HWCFG_MODE_FIBER_RGMII	0x3
-+#define MII_M1111_HWCFG_MODE_SGMII_NO_CLK	0x4
-+#define MII_M1111_HWCFG_MODE_COPPER_RTBI	0x9
-+#define MII_M1111_HWCFG_FIBER_COPPER_AUTO	0x8000
-+#define MII_M1111_HWCFG_FIBER_COPPER_RES	0x2000
-+
- #define MII_M1111_COPPER		0
- #define MII_M1111_FIBER			1
+ struct led_trigger_struct {
+ 	struct led *led;
+-	uint64_t flash_start;
+-	int flash;
++	struct list_head list;
++	enum led_trigger trigger;
+ };
  
-@@ -402,6 +418,107 @@ static int m88e1540_config_init(struct phy_device *phydev)
- 	return marvell_config_init(phydev);
+ static struct led_trigger_struct triggers[LED_TRIGGER_MAX];
+ 
+-static void trigger_func(struct poller_struct *poller)
+-{
+-	int i;
+-
+-	for (i = 0; i < LED_TRIGGER_MAX; i++) {
+-		if (triggers[i].led &&
+-		    triggers[i].flash &&
+-		    is_timeout(triggers[i].flash_start, 200 * MSECOND)) {
+-			led_set(triggers[i].led, 0);
+-			triggers[i].flash = 0;
+-		}
+-	}
+-
+-	if (triggers[LED_TRIGGER_HEARTBEAT].led &&
+-			is_timeout(triggers[LED_TRIGGER_HEARTBEAT].flash_start, SECOND))
+-		led_trigger(LED_TRIGGER_HEARTBEAT, TRIGGER_FLASH);
+-}
+-
+-static struct poller_struct trigger_poller = {
+-	.func = trigger_func,
+-};
+-
+ /**
+  * led_trigger - triggers a trigger
+  * @param trigger	The trigger to enable/disable
+@@ -91,11 +69,7 @@ void led_trigger(enum led_trigger trigger, enum trigger_type type)
+ 		return;
+ 
+ 	if (type == TRIGGER_FLASH) {
+-		if (is_timeout(triggers[trigger].flash_start, 400 * MSECOND)) {
+-			led_set(triggers[trigger].led, triggers[trigger].led->max_value);
+-			triggers[trigger].flash_start = get_time_ns();
+-			triggers[trigger].flash = 1;
+-		}
++		led_flash(triggers[trigger].led, 200);
+ 		return;
+ 	}
+ 
+@@ -129,6 +103,8 @@ int led_set_trigger(enum led_trigger trigger, struct led *led)
+ 
+ 	if (led && trigger == LED_TRIGGER_DEFAULT_ON)
+ 		led_set(triggers[trigger].led, triggers[trigger].led->max_value);
++	if (led && trigger == LED_TRIGGER_HEARTBEAT)
++		led_blink(led, 200, 1000);
+ 
+ 	return 0;
  }
- 
-+static int m88e1111_config_init(struct phy_device *phydev)
-+{
-+	int err;
-+	int temp;
-+
-+	if ((phydev->interface == PHY_INTERFACE_MODE_RGMII) ||
-+	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID) ||
-+	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) ||
-+	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID)) {
-+
-+		temp = phy_read(phydev, MII_M1111_PHY_EXT_CR);
-+		if (temp < 0)
-+			return temp;
-+
-+		if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID) {
-+			temp |= (MII_M1111_RX_DELAY | MII_M1111_TX_DELAY);
-+		} else if (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) {
-+			temp &= ~MII_M1111_TX_DELAY;
-+			temp |= MII_M1111_RX_DELAY;
-+		} else if (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID) {
-+			temp &= ~MII_M1111_RX_DELAY;
-+			temp |= MII_M1111_TX_DELAY;
-+		}
-+
-+		err = phy_write(phydev, MII_M1111_PHY_EXT_CR, temp);
-+		if (err < 0)
-+			return err;
-+
-+		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
-+		if (temp < 0)
-+			return temp;
-+
-+		temp &= ~(MII_M1111_HWCFG_MODE_MASK);
-+
-+		if (temp & MII_M1111_HWCFG_FIBER_COPPER_RES)
-+			temp |= MII_M1111_HWCFG_MODE_FIBER_RGMII;
-+		else
-+			temp |= MII_M1111_HWCFG_MODE_COPPER_RGMII;
-+
-+		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
-+		if (err < 0)
-+			return err;
-+	}
-+
-+	if (phydev->interface == PHY_INTERFACE_MODE_SGMII) {
-+		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
-+		if (temp < 0)
-+			return temp;
-+
-+		temp &= ~(MII_M1111_HWCFG_MODE_MASK);
-+		temp |= MII_M1111_HWCFG_MODE_SGMII_NO_CLK;
-+		temp |= MII_M1111_HWCFG_FIBER_COPPER_AUTO;
-+
-+		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
-+		if (err < 0)
-+			return err;
-+	}
-+
-+	if (phydev->interface == PHY_INTERFACE_MODE_RTBI) {
-+		temp = phy_read(phydev, MII_M1111_PHY_EXT_CR);
-+		if (temp < 0)
-+			return temp;
-+		temp |= (MII_M1111_RX_DELAY | MII_M1111_TX_DELAY);
-+		err = phy_write(phydev, MII_M1111_PHY_EXT_CR, temp);
-+		if (err < 0)
-+			return err;
-+
-+		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
-+		if (temp < 0)
-+			return temp;
-+		temp &= ~(MII_M1111_HWCFG_MODE_MASK | MII_M1111_HWCFG_FIBER_COPPER_RES);
-+		temp |= 0x7 | MII_M1111_HWCFG_FIBER_COPPER_AUTO;
-+		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
-+		if (err < 0)
-+			return err;
-+
-+		/* soft reset */
-+		err = phy_write(phydev, MII_BMCR, BMCR_RESET);
-+		if (err < 0)
-+			return err;
-+		do
-+			temp = phy_read(phydev, MII_BMCR);
-+		while (temp & BMCR_RESET);
-+
-+		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
-+		if (temp < 0)
-+			return temp;
-+		temp &= ~(MII_M1111_HWCFG_MODE_MASK | MII_M1111_HWCFG_FIBER_COPPER_RES);
-+		temp |= MII_M1111_HWCFG_MODE_COPPER_RTBI | MII_M1111_HWCFG_FIBER_COPPER_AUTO;
-+		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
-+		if (err < 0)
-+			return err;
-+	}
-+
-+	err = marvell_of_reg_init(phydev);
-+	if (err < 0)
-+		return err;
-+
-+	return phy_write(phydev, MII_BMCR, BMCR_RESET);
-+}
-+
- static int m88e1121_config_init(struct phy_device *phydev)
- {
- 	u16 reg;
-@@ -502,6 +619,15 @@ static int m88e1510_config_init(struct phy_device *phydev)
- 
- static struct phy_driver marvell_drivers[] = {
- 	{
-+		.phy_id = MARVELL_PHY_ID_88E1111,
-+		.phy_id_mask = MARVELL_PHY_ID_MASK,
-+		.drv.name = "Marvell 88E1111",
-+		.features = PHY_GBIT_FEATURES,
-+		.config_init = &m88e1111_config_init,
-+		.config_aneg = &genphy_config_aneg,
-+		.read_status = &marvell_read_status,
-+	},
-+	{
- 		.phy_id = MARVELL_PHY_ID_88E1121R,
- 		.phy_id_mask = MARVELL_PHY_ID_MASK,
- 		.drv.name = "Marvell 88E1121R",
+@@ -147,9 +123,3 @@ int led_get_trigger(enum led_trigger trigger)
+ 		return -ENODEV;
+ 	return led_get_number(triggers[trigger].led);
+ }
+-
+-static int trigger_init(void)
+-{
+-	return poller_register(&trigger_poller);
+-}
+-late_initcall(trigger_init);
 -- 
-2.11.0
+2.7.4
 
 
 _______________________________________________
