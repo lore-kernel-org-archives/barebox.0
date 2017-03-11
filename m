@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmhbs-0006UA-FG
- for barebox@lists.infradead.org; Sat, 11 Mar 2017 14:03:10 +0000
+ id 1cmhbu-0006UR-Pz
+ for barebox@lists.infradead.org; Sat, 11 Mar 2017 14:03:11 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Sat, 11 Mar 2017 15:02:35 +0100
-Message-Id: <20170311140237.6958-2-o.rempel@pengutronix.de>
-In-Reply-To: <20170311140237.6958-1-o.rempel@pengutronix.de>
-References: <20170311140237.6958-1-o.rempel@pengutronix.de>
+Date: Sat, 11 Mar 2017 15:02:34 +0100
+Message-Id: <20170311140237.6958-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,83 +19,188 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] led: Add blink/flash to led command
+Subject: [PATCH 1/4] led: Allow blinking/flashing on led level
 To: barebox@lists.infradead.org
+Cc: Markus Pargmann <mpa@pengutronix.de>
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-The LED framework now supports blinking/flashing LEDs, so
-add this functionality to the led command.
+So far blinking/flashing LEDs is only supported on led-trigger level.
+Even without triggers it useful to be able to blink/flash LEDs, so
+add this functionality to the LED core.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/led.c | 44 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/commands/led.c b/commands/led.c
-index 354f74d..a53f0df 100644
---- a/commands/led.c
-+++ b/commands/led.c
-@@ -29,6 +29,44 @@ static int do_led(int argc, char *argv[])
- 	unsigned long value;
- 	struct led *led;
- 	int ret;
-+	int opt;
-+	int flash = 0, blink = 0;
-+	int blink_on_ms = 500;
-+	int blink_off_ms = 500;
-+
-+	while ((opt = getopt(argc, argv, "fb")) > 0) {
-+		switch(opt) {
-+		case 'f':
-+			flash = 1;
-+			break;
-+		case 'b':
-+			blink = 1;
-+			break;
-+		}
-+	}
-+
-+	if (flash || blink) {
-+		int args = argc - optind;
-+
-+		if (!args || (flash && blink))
-+			return COMMAND_ERROR_USAGE;
-+
-+		led = led_by_name_or_number(argv[optind]);
-+		if (!led) {
-+			printf("no such LED: %s\n", argv[optind]);
-+			return 1;
-+		}
-+
-+		if (args > 1)
-+			blink_on_ms = simple_strtoul(argv[optind + 1], NULL, 0);
-+		if (args > 2)
-+			blink_off_ms = simple_strtoul(argv[optind + 2], NULL, 0);
-+
-+		if (flash)
-+			return led_flash(led, blink_on_ms);
-+		if (blink)
-+			return led_blink(led, blink_on_ms, blink_off_ms);
-+	}
+led: Introduce led_blink_pattern for flexible LED blinking
+
+A pattern consists of a number of on and off-periods which are described
+in an array. Using such an array you can encode nearly every blink
+pattern you need.
+
+led_blink and led_flash are rewritten to use the new mechanism.
+
+Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+---
+ drivers/led/core.c | 102 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ include/led.h      |  11 ++++++
+ 2 files changed, 112 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/led/core.c b/drivers/led/core.c
+index 30b016b..ab293b5 100644
+--- a/drivers/led/core.c
++++ b/drivers/led/core.c
+@@ -23,6 +23,7 @@
+ #include <linux/list.h>
+ #include <errno.h>
+ #include <led.h>
++#include <init.h>
+ #include <poller.h>
+ #include <clock.h>
+ #include <linux/ctype.h>
+@@ -101,7 +102,7 @@ struct led *led_by_name_or_number(const char *str)
+  * @param led	the led
+  * @param value	the value of the LED (0 is disabled)
+  */
+-int led_set(struct led *led, unsigned int value)
++static int __led_set(struct led *led, unsigned int value)
+ {
+ 	if (value > led->max_value)
+ 		value = led->max_value;
+@@ -114,6 +115,105 @@ int led_set(struct led *led, unsigned int value)
+ 	return 0;
+ }
  
- 	if (argc == 1) {
- 		int i = 0;
-@@ -73,9 +111,13 @@ static int do_led(int argc, char *argv[])
- BAREBOX_CMD_HELP_START(led)
- BAREBOX_CMD_HELP_TEXT("Control the value of a LED. The exact meaning of VALUE is unspecified,")
- BAREBOX_CMD_HELP_TEXT("it can be a brightness, or a color. Most often a value of '1' means on")
--BAREBOX_CMD_HELP_TEXT("and '0' means off.")
-+BAREBOX_CMD_HELP_TEXT("and '0' means off. Basic usage is 'led <led> <value>'. LEDs can be given")
-+BAREBOX_CMD_HELP_TEXT("by name or number.")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Without arguments the available LEDs are listed.")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT ("-b <led> [duration-on-ms] [duration-off-ms]",  "blink a LED")
-+BAREBOX_CMD_HELP_OPT ("-f <led> [duration-ms]",  "flash a LED")
- BAREBOX_CMD_HELP_END
++int led_set(struct led *led, unsigned int value)
++{
++	led->blink = 0;
++	led->flash = 0;
++	return __led_set(led, value);
++}
++
++static void led_blink_func(struct poller_struct *poller)
++{
++	struct led *led;
++
++	list_for_each_entry(led, &leds, list) {
++		bool on;
++
++		if (!led->blink && !led->flash)
++			continue;
++
++		if (led->blink_next_event > get_time_ns()) {
++			continue;
++		}
++
++		on = !(led->blink_next_state % 2);
++
++		led->blink_next_event = get_time_ns() +
++			(led->blink_states[led->blink_next_state] * MSECOND);
++		led->blink_next_state = (led->blink_next_state + 1) %
++					led->blink_nr_states;
++
++		if (led->flash && !on)
++			led->flash = 0;
++
++		__led_set(led, on);
++	}
++}
++
++/**
++ * led_blink_pattern - Blink a led with flexible timings.
++ * @led LED used
++ * @pattern Array of millisecond intervals describing the on and off periods of
++ * the pattern. At the end of the array/pattern it is repeated. The array
++ * starts with an on-period. In general every array item with even index
++ * describes an on-period, every item with odd index an off-period.
++ * @pattern_len Length of the pattern array.
++ *
++ * Returns 0 on success.
++ *
++ * Example:
++ * 	pattern = {500, 1000};
++ * 	This will enable the LED for 500ms and disable it for 1000ms after
++ * 	that. This is repeated forever.
++ */
++int led_blink_pattern(struct led *led, const unsigned int *pattern,
++		      unsigned int pattern_len)
++{
++	if (led->blink_states)
++		free(led->blink_states);
++	led->blink_states = xmemdup(pattern,
++				    pattern_len * sizeof(*led->blink_states));
++	led->blink_nr_states = pattern_len;
++	led->blink_next_state = 0;
++	led->blink_next_event = get_time_ns();
++	led->blink = 1;
++	led->flash = 0;
++
++	return 0;
++}
++
++int led_blink(struct led *led, unsigned int on_ms, unsigned int off_ms)
++{
++	unsigned int pattern[] = {on_ms, off_ms};
++
++	return led_blink_pattern(led, pattern, 2);
++}
++
++int led_flash(struct led *led, unsigned int duration_ms)
++{
++	unsigned int pattern[] = {duration_ms, 0};
++	int ret;
++
++	ret = led_blink_pattern(led, pattern, 2);
++	if (ret)
++		return ret;
++
++	led->flash = 1;
++	led->blink = 0;
++
++	return 0;
++}
++
++static struct poller_struct led_poller = {
++	.func = led_blink_func,
++};
++
++static int led_blink_init(void)
++{
++	return poller_register(&led_poller);
++}
++late_initcall(led_blink_init);
++
+ /**
+  * led_set_num - set the value of a LED
+  * @param num	the number of the LED
+diff --git a/include/led.h b/include/led.h
+index 000267c..fb5c48b 100644
+--- a/include/led.h
++++ b/include/led.h
+@@ -12,6 +12,13 @@ struct led {
+ 	char *name;
+ 	int num;
+ 	struct list_head list;
++
++	int blink;
++	int flash;
++	unsigned int *blink_states;
++	int blink_nr_states;
++	int blink_next_state;
++	uint64_t blink_next_event;
+ };
  
- BAREBOX_CMD_START(led)
+ struct led *led_by_number(int no);
+@@ -25,6 +32,10 @@ static inline int led_get_number(struct led *led)
+ 
+ int led_set_num(int num, unsigned int value);
+ int led_set(struct led *led, unsigned int value);
++int led_blink(struct led *led, unsigned int on_ms, unsigned int off_ms);
++int led_blink_pattern(struct led *led, const unsigned int *pattern,
++		      unsigned int pattern_len);
++int led_flash(struct led *led, unsigned int duration_ms);
+ int led_register(struct led *led);
+ void led_unregister(struct led *led);
+ void led_unregister(struct led *led);
 -- 
 2.7.4
 
