@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmhbs-0006UC-F5
- for barebox@lists.infradead.org; Sat, 11 Mar 2017 14:03:07 +0000
+ id 1cmhbs-0006UA-FG
+ for barebox@lists.infradead.org; Sat, 11 Mar 2017 14:03:10 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Sat, 11 Mar 2017 15:02:37 +0100
-Message-Id: <20170311140237.6958-4-o.rempel@pengutronix.de>
+Date: Sat, 11 Mar 2017 15:02:35 +0100
+Message-Id: <20170311140237.6958-2-o.rempel@pengutronix.de>
 In-Reply-To: <20170311140237.6958-1-o.rempel@pengutronix.de>
 References: <20170311140237.6958-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,327 +21,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] led-trigger: rework
+Subject: [PATCH 2/4] led: Add blink/flash to led command
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
+The LED framework now supports blinking/flashing LEDs, so
+add this functionality to the led command.
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/trigger.c         |  54 +++++++++++---------
- drivers/led/led-triggers.c | 125 +++++++++++++++++++++++++++++++++++----------
- include/led.h              |   6 ++-
- 3 files changed, 131 insertions(+), 54 deletions(-)
+ commands/led.c | 44 +++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/commands/trigger.c b/commands/trigger.c
-index 2758ce7..0dd3b34 100644
---- a/commands/trigger.c
-+++ b/commands/trigger.c
-@@ -28,59 +28,62 @@
- #define LED_COMMAND_SHOW_INFO		2
- #define	LED_COMMAND_DISABLE_TRIGGER	3
- 
--static char *trigger_names[] = {
--	[LED_TRIGGER_PANIC] = "panic",
--	[LED_TRIGGER_HEARTBEAT] = "heartbeat",
--	[LED_TRIGGER_NET_RX] = "net rx",
--	[LED_TRIGGER_NET_TX] = "net tx",
--	[LED_TRIGGER_NET_TXRX] = "net",
--	[LED_TRIGGER_DEFAULT_ON] = "default on",
--};
- 
- static int do_trigger(int argc, char *argv[])
- {
--	struct led *led;
--	int i, opt, ret = 0;
-+	struct led *led = NULL;
-+	int opt, ret = 0;
- 	int cmd = LED_COMMAND_SHOW_INFO;
--	unsigned long trigger = 0;
-+	enum led_trigger trigger;
-+	const char *led_name = NULL;
-+	const char *trigger_name = NULL;
- 
- 	while((opt = getopt(argc, argv, "t:d:")) > 0) {
- 		switch(opt) {
- 		case 't':
--			trigger = simple_strtoul(optarg, NULL, 0);
-+			trigger_name = optarg;
- 			cmd = LED_COMMAND_SET_TRIGGER;
- 			break;
- 		case 'd':
--			trigger = simple_strtoul(optarg, NULL, 0);
-+			led_name = optarg;
- 			cmd = LED_COMMAND_DISABLE_TRIGGER;
- 		}
- 	}
- 
-+	if (optind < argc)
-+		led = led_by_name_or_number(argv[optind]);
+diff --git a/commands/led.c b/commands/led.c
+index 354f74d..a53f0df 100644
+--- a/commands/led.c
++++ b/commands/led.c
+@@ -29,6 +29,44 @@ static int do_led(int argc, char *argv[])
+ 	unsigned long value;
+ 	struct led *led;
+ 	int ret;
++	int opt;
++	int flash = 0, blink = 0;
++	int blink_on_ms = 500;
++	int blink_off_ms = 500;
 +
- 	switch (cmd) {
- 	case LED_COMMAND_SHOW_INFO:
--		for (i = 0; i < LED_TRIGGER_MAX; i++) {
--			int led = led_get_trigger(i);
--			printf("%d: %s", i, trigger_names[i]);
--			if (led >= 0)
--				printf(" (led %d)", led);
--			printf("\n");
--		}
-+		led_triggers_show_info();
- 		break;
- 
- 	case LED_COMMAND_DISABLE_TRIGGER:
--		ret = led_set_trigger(trigger, NULL);
-+		led = led_by_name_or_number(led_name);
++	while ((opt = getopt(argc, argv, "fb")) > 0) {
++		switch(opt) {
++		case 'f':
++			flash = 1;
++			break;
++		case 'b':
++			blink = 1;
++			break;
++		}
++	}
++
++	if (flash || blink) {
++		int args = argc - optind;
++
++		if (!args || (flash && blink))
++			return COMMAND_ERROR_USAGE;
++
++		led = led_by_name_or_number(argv[optind]);
 +		if (!led) {
-+			printf("no such led: %s\n", led_name);
++			printf("no such LED: %s\n", argv[optind]);
 +			return 1;
 +		}
 +
-+		led_trigger_disable(led);
- 		break;
- 
- 	case LED_COMMAND_SET_TRIGGER:
- 		if (argc - optind != 1)
- 			return COMMAND_ERROR_USAGE;
--		led = led_by_name_or_number(argv[optind]);
- 
-+		led = led_by_name_or_number(argv[optind]);
- 		if (!led) {
- 			printf("no such led: %s\n", argv[optind]);
- 			return 1;
- 		}
- 
-+		trigger = trigger_by_name(trigger_name);
-+		if (trigger == LED_TRIGGER_INVALID) {
-+			printf("no such trigger: %s\n", trigger_name);
-+			return 1;
-+		}
++		if (args > 1)
++			blink_on_ms = simple_strtoul(argv[optind + 1], NULL, 0);
++		if (args > 2)
++			blink_off_ms = simple_strtoul(argv[optind + 2], NULL, 0);
 +
- 		ret = led_set_trigger(trigger, led);
- 		break;
- 	}
-@@ -92,16 +95,17 @@ static int do_trigger(int argc, char *argv[])
++		if (flash)
++			return led_flash(led, blink_on_ms);
++		if (blink)
++			return led_blink(led, blink_on_ms, blink_off_ms);
++	}
  
- BAREBOX_CMD_HELP_START(trigger)
- BAREBOX_CMD_HELP_TEXT("Control a LED trigger. Without options assigned triggers are shown.")
-+BAREBOX_CMD_HELP_TEXT("triggers are given with their name, LEDs are given with their name or number")
+ 	if (argc == 1) {
+ 		int i = 0;
+@@ -73,9 +111,13 @@ static int do_led(int argc, char *argv[])
+ BAREBOX_CMD_HELP_START(led)
+ BAREBOX_CMD_HELP_TEXT("Control the value of a LED. The exact meaning of VALUE is unspecified,")
+ BAREBOX_CMD_HELP_TEXT("it can be a brightness, or a color. Most often a value of '1' means on")
+-BAREBOX_CMD_HELP_TEXT("and '0' means off.")
++BAREBOX_CMD_HELP_TEXT("and '0' means off. Basic usage is 'led <led> <value>'. LEDs can be given")
++BAREBOX_CMD_HELP_TEXT("by name or number.")
  BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Options:")
--BAREBOX_CMD_HELP_OPT ("-t",  "set a trigger (needs LED argument)")
--BAREBOX_CMD_HELP_OPT ("-d",  "disable a trigger")
-+BAREBOX_CMD_HELP_OPT ("-t <trigger> <led>",  "set a trigger")
-+BAREBOX_CMD_HELP_OPT ("-d <led>",  "disable a trigger")
+ BAREBOX_CMD_HELP_TEXT("Without arguments the available LEDs are listed.")
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT ("-b <led> [duration-on-ms] [duration-off-ms]",  "blink a LED")
++BAREBOX_CMD_HELP_OPT ("-f <led> [duration-ms]",  "flash a LED")
  BAREBOX_CMD_HELP_END
  
- BAREBOX_CMD_START(trigger)
- 	.cmd		= do_trigger,
- 	BAREBOX_CMD_DESC("handle LED triggers")
--	BAREBOX_CMD_OPTS("[-td] TRIGGER [LED]")
-+	BAREBOX_CMD_OPTS("[-td] [LED]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
- 	BAREBOX_CMD_HELP(cmd_trigger_help)
- BAREBOX_CMD_END
-diff --git a/drivers/led/led-triggers.c b/drivers/led/led-triggers.c
-index 6c05cc5..76a1481 100644
---- a/drivers/led/led-triggers.c
-+++ b/drivers/led/led-triggers.c
-@@ -52,7 +52,7 @@ struct led_trigger_struct {
- 	enum led_trigger trigger;
- };
- 
--static struct led_trigger_struct triggers[LED_TRIGGER_MAX];
-+static LIST_HEAD(led_triggers);
- 
- /**
-  * led_trigger - triggers a trigger
-@@ -63,17 +63,53 @@ static struct led_trigger_struct triggers[LED_TRIGGER_MAX];
-  */
- void led_trigger(enum led_trigger trigger, enum trigger_type type)
- {
-+	struct led_trigger_struct *led_trigger;
-+
- 	if (trigger >= LED_TRIGGER_MAX)
- 		return;
--	if (!triggers[trigger].led)
--		return;
- 
--	if (type == TRIGGER_FLASH) {
--		led_flash(triggers[trigger].led, 200);
--		return;
-+	list_for_each_entry(led_trigger, &led_triggers, list) {
-+		if (led_trigger->trigger != trigger)
-+			continue;
-+
-+		switch (type) {
-+		case TRIGGER_FLASH:
-+			led_flash(led_trigger->led, 200);
-+			break;
-+		case TRIGGER_ENABLE:
-+			led_set(led_trigger->led, led_trigger->led->max_value);
-+			break;
-+		case TRIGGER_DISABLE:
-+			led_set(led_trigger->led, 0);
-+			break;
-+		}
- 	}
-+}
-+
-+static struct led_trigger_struct *led_find_trigger(struct led *led)
-+{
-+	struct led_trigger_struct *led_trigger;
-+
-+	list_for_each_entry(led_trigger, &led_triggers, list)
-+		if (led_trigger->led == led)
-+			return led_trigger;
-+
-+	return NULL;
-+}
- 
--	led_set(triggers[trigger].led, type == TRIGGER_ENABLE ? triggers[trigger].led->max_value : 0);
-+void led_trigger_disable(struct led *led)
-+{
-+	struct led_trigger_struct *led_trigger;
-+
-+	led_trigger = led_find_trigger(led);
-+	if (!led_trigger)
-+		return;
-+
-+	list_del(&led_trigger->list);
-+
-+	led_set(led, 0);
-+
-+	free(led_trigger);
- }
- 
- /**
-@@ -86,40 +122,73 @@ void led_trigger(enum led_trigger trigger, enum trigger_type type)
-  */
- int led_set_trigger(enum led_trigger trigger, struct led *led)
- {
--	int i;
-+	struct led_trigger_struct *led_trigger;
- 
- 	if (trigger >= LED_TRIGGER_MAX)
- 		return -EINVAL;
- 
--	if (led)
--		for (i = 0; i < LED_TRIGGER_MAX; i++)
--			if (triggers[i].led == led)
--				return -EBUSY;
-+	led_trigger_disable(led);
- 
--	if (triggers[trigger].led && !led)
--		led_set(triggers[trigger].led, 0);
-+	led_trigger = xzalloc(sizeof(*led_trigger));
- 
--	triggers[trigger].led = led;
-+	led_trigger->led = led;
-+	led_trigger->trigger = trigger;
-+	list_add_tail(&led_trigger->list, &led_triggers);
- 
--	if (led && trigger == LED_TRIGGER_DEFAULT_ON)
--		led_set(triggers[trigger].led, triggers[trigger].led->max_value);
--	if (led && trigger == LED_TRIGGER_HEARTBEAT)
-+	if (trigger == LED_TRIGGER_DEFAULT_ON)
-+		led_set(led, led->max_value);
-+	if (trigger == LED_TRIGGER_HEARTBEAT)
- 		led_blink(led, 200, 1000);
- 
- 	return 0;
- }
- 
-+static char *trigger_names[] = {
-+	[LED_TRIGGER_PANIC] = "panic",
-+	[LED_TRIGGER_HEARTBEAT] = "heartbeat",
-+	[LED_TRIGGER_NET_RX] = "net-rx",
-+	[LED_TRIGGER_NET_TX] = "net-tx",
-+	[LED_TRIGGER_NET_TXRX] = "net",
-+	[LED_TRIGGER_DEFAULT_ON] = "default-on",
-+};
-+
-+const char *trigger_name(enum led_trigger trigger)
-+{
-+	return trigger_names[trigger];
-+}
-+
-+enum led_trigger trigger_by_name(const char *name)
-+{
-+	int i;
-+
-+	for (i = 0; i < LED_TRIGGER_MAX; i++)
-+		if (!strcmp(name, trigger_names[i]))
-+			return i;
-+
-+	return LED_TRIGGER_MAX;
-+}
-+
- /**
-- * led_get_trigger - get the LED for a trigger
-- * @param trigger	The trigger to set a LED for
-- *
-- * return the LED number of a trigger.
-+ * led_triggers_show_info - Show information about all registered
-+ * triggers
-  */
--int led_get_trigger(enum led_trigger trigger)
-+void led_triggers_show_info(void)
- {
--	if (trigger >= LED_TRIGGER_MAX)
--		return -EINVAL;
--	if (!triggers[trigger].led)
--		return -ENODEV;
--	return led_get_number(triggers[trigger].led);
-+	struct led_trigger_struct *led_trigger;
-+	int i;
-+
-+	for (i = 0; i < LED_TRIGGER_MAX; i++) {
-+		printf("%s", trigger_name(i));
-+
-+		list_for_each_entry(led_trigger, &led_triggers, list) {
-+			struct led *led = led_trigger->led;
-+
-+			if (led_trigger->trigger != i)
-+				continue;
-+
-+			printf("\n  LED %d (%s)", led->num, led->name);
-+		}
-+
-+		printf("\n");
-+	}
- }
-diff --git a/include/led.h b/include/led.h
-index fb5c48b..0ce8571 100644
---- a/include/led.h
-+++ b/include/led.h
-@@ -49,6 +49,7 @@ enum led_trigger {
- 	LED_TRIGGER_NET_TXRX,
- 	LED_TRIGGER_DEFAULT_ON,
- 	LED_TRIGGER_MAX,
-+	LED_TRIGGER_INVALID = LED_TRIGGER_MAX,
- };
- 
- enum trigger_type {
-@@ -59,6 +60,7 @@ enum trigger_type {
- 
- #ifdef CONFIG_LED_TRIGGERS
- int led_set_trigger(enum led_trigger trigger, struct led *led);
-+void led_trigger_disable(struct led *led);
- void led_trigger(enum led_trigger trigger, enum trigger_type);
- #else
- static inline int led_set_trigger(enum led_trigger trigger, struct led *led)
-@@ -71,7 +73,9 @@ static inline void led_trigger(enum led_trigger trigger, enum trigger_type type)
- }
- #endif
- 
--int led_get_trigger(enum led_trigger trigger);
-+void led_triggers_show_info(void);
-+const char *trigger_name(enum led_trigger trigger);
-+enum led_trigger trigger_by_name(const char *name);
- 
- void led_of_parse_trigger(struct led *led, struct device_node *np);
- 
+ BAREBOX_CMD_START(led)
 -- 
 2.7.4
 
