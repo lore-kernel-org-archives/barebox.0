@@ -1,14 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mo2.mail-out.ovh.net ([178.32.228.2])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmyjJ-0000FG-8W
- for barebox@lists.infradead.org; Sun, 12 Mar 2017 08:19:57 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Sun, 12 Mar 2017 09:19:23 +0100
-Message-Id: <20170312081924.10179-4-o.rempel@pengutronix.de>
-In-Reply-To: <20170312081924.10179-1-o.rempel@pengutronix.de>
-References: <20170311140706.8851-1-o.rempel@pengutronix.de>
- <20170312081924.10179-1-o.rempel@pengutronix.de>
+ id 1cn2AA-00035j-Jr
+ for barebox@lists.infradead.org; Sun, 12 Mar 2017 11:59:53 +0000
+Received: from player718.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo2.mail-out.ovh.net (Postfix) with ESMTP id 2B9FA6427F
+ for <barebox@lists.infradead.org>; Sun, 12 Mar 2017 12:59:24 +0100 (CET)
+Received: from localhost (unknown [91.134.156.222])
+ (Authenticated sender: plagnioj@jcrosoft.com)
+ by player718.ha.ovh.net (Postfix) with ESMTPA id E809F4E0072
+ for <barebox@lists.infradead.org>; Sun, 12 Mar 2017 12:59:23 +0100 (CET)
+Date: Sun, 12 Mar 2017 13:05:38 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20170312120538.GA25192@mail.ovh.net>
+References: <20170215192932.GB32649@mail.ovh.net>
+ <20170311162611.oti5lvnonnpfmohz@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170311162611.oti5lvnonnpfmohz@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,102 +26,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/4] led: trigger: Use led triggers
+Subject: Re: [PATCH 0/12] EFI: drop arch efi
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+On 17:26 Sat 11 Mar     , Michael Olbrich wrote:
+> On Wed, Feb 15, 2017 at 08:29:32PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Today the EFI is build as an other ARCH when in fact it's just a boot mode
+> > 
+> > so move it back to arch/x86 for the spicific x86 part and the common
+> > to common and driver
+> > 
+> > The last 3 patches allow to debug EFI and prepare for more efi support
+> > 
+> > The following changes since commit b225bbf295c92263adbcec2c385c5e8d83542c72:
+> > 
+> >   i.MX: esdhc: fix imx-esdhc driver for non-OF boards (2017-02-14 08:48:34 +0100)
+> > 
+> > are available in the git repository at:
+> > 
+> >   git://git.jcrosoft.org/barebox.git
+> > 
+> > for you to fetch changes up to df12536f83b485c9a4ee28f78637356c6abab6f6:
+> > 
+> >   efi: add efi handle dump command (2017-02-15 07:32:24 +0800)
+> 
+> While testing the serial stuff I noticed that the
+> CONFIG_ARCH_EFI_REGISTER_COM1 option got lost during this rework.
+I did not merge it as it's a hack more than a feature as this by pass the EFI
+API and access the hw directly instead of using Serial IO
 
-Since the LED framework now supports blinking/flashing, use this
-functionality in the LED triggers.
+Which was add after
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/led/led-triggers.c | 40 +++++-----------------------------------
- 1 file changed, 5 insertions(+), 35 deletions(-)
+And I plan to drop this hack
 
-diff --git a/drivers/led/led-triggers.c b/drivers/led/led-triggers.c
-index dee936739..6c05cc5bb 100644
---- a/drivers/led/led-triggers.c
-+++ b/drivers/led/led-triggers.c
-@@ -48,34 +48,12 @@
- 
- struct led_trigger_struct {
- 	struct led *led;
--	uint64_t flash_start;
--	int flash;
-+	struct list_head list;
-+	enum led_trigger trigger;
- };
- 
- static struct led_trigger_struct triggers[LED_TRIGGER_MAX];
- 
--static void trigger_func(struct poller_struct *poller)
--{
--	int i;
--
--	for (i = 0; i < LED_TRIGGER_MAX; i++) {
--		if (triggers[i].led &&
--		    triggers[i].flash &&
--		    is_timeout(triggers[i].flash_start, 200 * MSECOND)) {
--			led_set(triggers[i].led, 0);
--			triggers[i].flash = 0;
--		}
--	}
--
--	if (triggers[LED_TRIGGER_HEARTBEAT].led &&
--			is_timeout(triggers[LED_TRIGGER_HEARTBEAT].flash_start, SECOND))
--		led_trigger(LED_TRIGGER_HEARTBEAT, TRIGGER_FLASH);
--}
--
--static struct poller_struct trigger_poller = {
--	.func = trigger_func,
--};
--
- /**
-  * led_trigger - triggers a trigger
-  * @param trigger	The trigger to enable/disable
-@@ -91,11 +69,7 @@ void led_trigger(enum led_trigger trigger, enum trigger_type type)
- 		return;
- 
- 	if (type == TRIGGER_FLASH) {
--		if (is_timeout(triggers[trigger].flash_start, 400 * MSECOND)) {
--			led_set(triggers[trigger].led, triggers[trigger].led->max_value);
--			triggers[trigger].flash_start = get_time_ns();
--			triggers[trigger].flash = 1;
--		}
-+		led_flash(triggers[trigger].led, 200);
- 		return;
- 	}
- 
-@@ -129,6 +103,8 @@ int led_set_trigger(enum led_trigger trigger, struct led *led)
- 
- 	if (led && trigger == LED_TRIGGER_DEFAULT_ON)
- 		led_set(triggers[trigger].led, triggers[trigger].led->max_value);
-+	if (led && trigger == LED_TRIGGER_HEARTBEAT)
-+		led_blink(led, 200, 1000);
- 
- 	return 0;
- }
-@@ -147,9 +123,3 @@ int led_get_trigger(enum led_trigger trigger)
- 		return -ENODEV;
- 	return led_get_number(triggers[trigger].led);
- }
--
--static int trigger_init(void)
--{
--	return poller_register(&trigger_poller);
--}
--late_initcall(trigger_init);
--- 
-2.11.0
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
