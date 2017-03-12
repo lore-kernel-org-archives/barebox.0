@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmyjJ-0000Ep-8X
+ id 1cmyjJ-0000F8-8Y
  for barebox@lists.infradead.org; Sun, 12 Mar 2017 08:19:57 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Sun, 12 Mar 2017 09:19:20 +0100
-Message-Id: <20170312081924.10179-1-o.rempel@pengutronix.de>
-In-Reply-To: <20170311140706.8851-1-o.rempel@pengutronix.de>
+Date: Sun, 12 Mar 2017 09:19:22 +0100
+Message-Id: <20170312081924.10179-3-o.rempel@pengutronix.de>
+In-Reply-To: <20170312081924.10179-1-o.rempel@pengutronix.de>
 References: <20170311140706.8851-1-o.rempel@pengutronix.de>
+ <20170312081924.10179-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +22,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/4] upstream led blinking rework
+Subject: [PATCH v2 2/4] led: Add blink/flash to led command
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-changes v1:
- - merge blinking/flashing and led_blink_pattern patches
- - remove new unsued variables from structs
- - add sanity check in the led command to avoid simultan -b anf -f options
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-changes v2:
- - reword commit message in "led: add blinking/flashing..." patch
+The LED framework now supports blinking/flashing LEDs, so
+add this functionality to the led command.
 
-Sascha Hauer (4):
-  led: add blinking/flashing and led_blink_pattern interface
-  led: Add blink/flash to led command
-  led: trigger: Use led triggers
-  led-trigger: rework
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ commands/led.c | 44 +++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
- commands/led.c             |  44 ++++++++++++-
- commands/trigger.c         |  54 ++++++++--------
- drivers/led/core.c         | 102 ++++++++++++++++++++++++++++-
- drivers/led/led-triggers.c | 157 ++++++++++++++++++++++++++++-----------------
- include/led.h              |  17 ++++-
- 5 files changed, 287 insertions(+), 87 deletions(-)
-
+diff --git a/commands/led.c b/commands/led.c
+index 354f74df8..a53f0df6a 100644
+--- a/commands/led.c
++++ b/commands/led.c
+@@ -29,6 +29,44 @@ static int do_led(int argc, char *argv[])
+ 	unsigned long value;
+ 	struct led *led;
+ 	int ret;
++	int opt;
++	int flash = 0, blink = 0;
++	int blink_on_ms = 500;
++	int blink_off_ms = 500;
++
++	while ((opt = getopt(argc, argv, "fb")) > 0) {
++		switch(opt) {
++		case 'f':
++			flash = 1;
++			break;
++		case 'b':
++			blink = 1;
++			break;
++		}
++	}
++
++	if (flash || blink) {
++		int args = argc - optind;
++
++		if (!args || (flash && blink))
++			return COMMAND_ERROR_USAGE;
++
++		led = led_by_name_or_number(argv[optind]);
++		if (!led) {
++			printf("no such LED: %s\n", argv[optind]);
++			return 1;
++		}
++
++		if (args > 1)
++			blink_on_ms = simple_strtoul(argv[optind + 1], NULL, 0);
++		if (args > 2)
++			blink_off_ms = simple_strtoul(argv[optind + 2], NULL, 0);
++
++		if (flash)
++			return led_flash(led, blink_on_ms);
++		if (blink)
++			return led_blink(led, blink_on_ms, blink_off_ms);
++	}
+ 
+ 	if (argc == 1) {
+ 		int i = 0;
+@@ -73,9 +111,13 @@ static int do_led(int argc, char *argv[])
+ BAREBOX_CMD_HELP_START(led)
+ BAREBOX_CMD_HELP_TEXT("Control the value of a LED. The exact meaning of VALUE is unspecified,")
+ BAREBOX_CMD_HELP_TEXT("it can be a brightness, or a color. Most often a value of '1' means on")
+-BAREBOX_CMD_HELP_TEXT("and '0' means off.")
++BAREBOX_CMD_HELP_TEXT("and '0' means off. Basic usage is 'led <led> <value>'. LEDs can be given")
++BAREBOX_CMD_HELP_TEXT("by name or number.")
+ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("Without arguments the available LEDs are listed.")
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT ("-b <led> [duration-on-ms] [duration-off-ms]",  "blink a LED")
++BAREBOX_CMD_HELP_OPT ("-f <led> [duration-ms]",  "flash a LED")
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(led)
 -- 
 2.11.0
 
