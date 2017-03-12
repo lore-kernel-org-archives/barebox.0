@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cn2F1-0005GK-Nz
- for barebox@lists.infradead.org; Sun, 12 Mar 2017 12:04:53 +0000
-Received: from player718.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo2.mail-out.ovh.net (Postfix) with ESMTP id EECB06493F
- for <barebox@lists.infradead.org>; Sun, 12 Mar 2017 13:04:29 +0100 (CET)
-Date: Sun, 12 Mar 2017 13:10:49 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20170312121049.GC25192@mail.ovh.net>
-References: <20170310150209.1564-1-pmamonov@gmail.com>
- <20170310151851.26978-1-pmamonov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170310151851.26978-1-pmamonov@gmail.com>
+ id 1cnA5s-0005Nv-8m
+ for barebox@lists.infradead.org; Sun, 12 Mar 2017 20:27:59 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Sun, 12 Mar 2017 21:27:00 +0100
+Message-Id: <1489350420-10640-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,188 +14,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net/phy: marvell: import support for 88E1111 from the
- Linux
-To: pmamonov@gmail.com
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: zynq7000: make PS_CLK Kconfigurable
+To: barebox@lists.infradead.org
+Cc: Alexander Kurz <akurz@blala.de>
 
-Hi,
+The main clock source on Zynq-7000 based boards (PS_CLK) is not uniform
+for all boards, while typical boards are clocked with 33.3MHz, the
+Z-7010 based Digilent Zybo board is clocked with 50MHz.
+Since barebox is not yet OF aware for Zynq, make PS_CLK board dependent
+via Kconfig.
 
-	Why 2 patches?
+Signed-off-by: Alexander Kurz <akurz@blala.de>
+---
+ arch/arm/mach-zynq/Kconfig        | 6 ++++++
+ arch/arm/mach-zynq/clk-zynq7000.c | 9 ++++++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-Best Regards,
-J/
-On 18:18 Fri 10 Mar     , pmamonov@gmail.com wrote:
-> From: Peter Mamonov <pmamonov@gmail.com>
-> 
-> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> ---
->  drivers/net/phy/marvell.c | 126 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 126 insertions(+)
-> 
-> diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
-> index 38b2ad31f..ea5a4a9be 100644
-> --- a/drivers/net/phy/marvell.c
-> +++ b/drivers/net/phy/marvell.c
-> @@ -31,6 +31,22 @@
->  #define MII_M1011_PHY_STATUS_RESOLVED	BIT(11)
->  #define MII_M1011_PHY_STATUS_LINK	BIT(10)
->  
-> +#define MII_M1111_PHY_LED_CONTROL	0x18
-> +#define MII_M1111_PHY_LED_DIRECT	0x4100
-> +#define MII_M1111_PHY_LED_COMBINE	0x411c
-> +#define MII_M1111_PHY_EXT_CR		0x14
-> +#define MII_M1111_RX_DELAY		0x80
-> +#define MII_M1111_TX_DELAY		0x2
-> +#define MII_M1111_PHY_EXT_SR		0x1b
-> +
-> +#define MII_M1111_HWCFG_MODE_MASK		0xf
-> +#define MII_M1111_HWCFG_MODE_COPPER_RGMII	0xb
-> +#define MII_M1111_HWCFG_MODE_FIBER_RGMII	0x3
-> +#define MII_M1111_HWCFG_MODE_SGMII_NO_CLK	0x4
-> +#define MII_M1111_HWCFG_MODE_COPPER_RTBI	0x9
-> +#define MII_M1111_HWCFG_FIBER_COPPER_AUTO	0x8000
-> +#define MII_M1111_HWCFG_FIBER_COPPER_RES	0x2000
-> +
->  #define MII_M1111_COPPER		0
->  #define MII_M1111_FIBER			1
->  
-> @@ -402,6 +418,107 @@ static int m88e1540_config_init(struct phy_device *phydev)
->  	return marvell_config_init(phydev);
->  }
->  
-> +static int m88e1111_config_init(struct phy_device *phydev)
-> +{
-> +	int err;
-> +	int temp;
-> +
-> +	if ((phydev->interface == PHY_INTERFACE_MODE_RGMII) ||
-> +	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID) ||
-> +	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) ||
-> +	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID)) {
-> +
-> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_CR);
-> +		if (temp < 0)
-> +			return temp;
-> +
-> +		if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID) {
-> +			temp |= (MII_M1111_RX_DELAY | MII_M1111_TX_DELAY);
-> +		} else if (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) {
-> +			temp &= ~MII_M1111_TX_DELAY;
-> +			temp |= MII_M1111_RX_DELAY;
-> +		} else if (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID) {
-> +			temp &= ~MII_M1111_RX_DELAY;
-> +			temp |= MII_M1111_TX_DELAY;
-> +		}
-> +
-> +		err = phy_write(phydev, MII_M1111_PHY_EXT_CR, temp);
-> +		if (err < 0)
-> +			return err;
-> +
-> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
-> +		if (temp < 0)
-> +			return temp;
-> +
-> +		temp &= ~(MII_M1111_HWCFG_MODE_MASK);
-> +
-> +		if (temp & MII_M1111_HWCFG_FIBER_COPPER_RES)
-> +			temp |= MII_M1111_HWCFG_MODE_FIBER_RGMII;
-> +		else
-> +			temp |= MII_M1111_HWCFG_MODE_COPPER_RGMII;
-> +
-> +		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
-> +		if (err < 0)
-> +			return err;
-> +	}
-> +
-> +	if (phydev->interface == PHY_INTERFACE_MODE_SGMII) {
-> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
-> +		if (temp < 0)
-> +			return temp;
-> +
-> +		temp &= ~(MII_M1111_HWCFG_MODE_MASK);
-> +		temp |= MII_M1111_HWCFG_MODE_SGMII_NO_CLK;
-> +		temp |= MII_M1111_HWCFG_FIBER_COPPER_AUTO;
-> +
-> +		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
-> +		if (err < 0)
-> +			return err;
-> +	}
-> +
-> +	if (phydev->interface == PHY_INTERFACE_MODE_RTBI) {
-> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_CR);
-> +		if (temp < 0)
-> +			return temp;
-> +		temp |= (MII_M1111_RX_DELAY | MII_M1111_TX_DELAY);
-> +		err = phy_write(phydev, MII_M1111_PHY_EXT_CR, temp);
-> +		if (err < 0)
-> +			return err;
-> +
-> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
-> +		if (temp < 0)
-> +			return temp;
-> +		temp &= ~(MII_M1111_HWCFG_MODE_MASK | MII_M1111_HWCFG_FIBER_COPPER_RES);
-> +		temp |= 0x7 | MII_M1111_HWCFG_FIBER_COPPER_AUTO;
-> +		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
-> +		if (err < 0)
-> +			return err;
-> +
-> +		/* soft reset */
-> +		err = phy_write(phydev, MII_BMCR, BMCR_RESET);
-> +		if (err < 0)
-> +			return err;
-> +		do
-> +			temp = phy_read(phydev, MII_BMCR);
-> +		while (temp & BMCR_RESET);
-> +
-> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
-> +		if (temp < 0)
-> +			return temp;
-> +		temp &= ~(MII_M1111_HWCFG_MODE_MASK | MII_M1111_HWCFG_FIBER_COPPER_RES);
-> +		temp |= MII_M1111_HWCFG_MODE_COPPER_RTBI | MII_M1111_HWCFG_FIBER_COPPER_AUTO;
-> +		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
-> +		if (err < 0)
-> +			return err;
-> +	}
-> +
-> +	err = marvell_of_reg_init(phydev);
-> +	if (err < 0)
-> +		return err;
-> +
-> +	return phy_write(phydev, MII_BMCR, BMCR_RESET);
-> +}
-> +
->  static int m88e1121_config_init(struct phy_device *phydev)
->  {
->  	u16 reg;
-> @@ -502,6 +619,15 @@ static int m88e1510_config_init(struct phy_device *phydev)
->  
->  static struct phy_driver marvell_drivers[] = {
->  	{
-> +		.phy_id = MARVELL_PHY_ID_88E1111,
-> +		.phy_id_mask = MARVELL_PHY_ID_MASK,
-> +		.drv.name = "Marvell 88E1111",
-> +		.features = PHY_GBIT_FEATURES,
-> +		.config_init = &m88e1111_config_init,
-> +		.config_aneg = &genphy_config_aneg,
-> +		.read_status = &marvell_read_status,
-> +	},
-> +	{
->  		.phy_id = MARVELL_PHY_ID_88E1121R,
->  		.phy_id_mask = MARVELL_PHY_ID_MASK,
->  		.drv.name = "Marvell 88E1121R",
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+diff --git a/arch/arm/mach-zynq/Kconfig b/arch/arm/mach-zynq/Kconfig
+index d35bd41..ff2aedb 100644
+--- a/arch/arm/mach-zynq/Kconfig
++++ b/arch/arm/mach-zynq/Kconfig
+@@ -8,6 +8,12 @@ config ZYNQ_DEBUG_LL_UART_BASE
+ 	hex
+ 	default 0xe0001000 if MACH_ZEDBOARD
+ 
++config ZYNQ_PS_CLK
++	int
++	default 33333330 if MACH_ZEDBOARD
++	help
++	  Select the external clock frequency provided to PS_CLK.
++
+ choice
+ 	prompt "Xilinx Zynq type board"
+ 
+diff --git a/arch/arm/mach-zynq/clk-zynq7000.c b/arch/arm/mach-zynq/clk-zynq7000.c
+index cd49d84..49e020b 100644
+--- a/arch/arm/mach-zynq/clk-zynq7000.c
++++ b/arch/arm/mach-zynq/clk-zynq7000.c
+@@ -29,6 +29,13 @@
+ #include <mach/zynq7000-regs.h>
+ #include <malloc.h>
+ 
++#ifndef CONFIG_ZYNQ_PS_CLK
++#warning define ZYNQ_PS_CLK for your board
++#define ZYNQ_PS_CLK 33333330
++#else
++#define ZYNQ_PS_CLK CONFIG_ZYNQ_PS_CLK
++#endif
++
+ enum zynq_clks {
+ 	dummy, ps_clk, arm_pll, ddr_pll, io_pll, uart_clk, uart0, uart1,
+ 	cpu_clk, cpu_6x4x, cpu_3x2x, cpu_2x, cpu_1x,
+@@ -361,7 +368,7 @@ static int zynq_clock_probe(struct device_d *dev)
+ {
+ 	struct resource *iores;
+ 	void __iomem *slcr_base;
+-	unsigned long ps_clk_rate = 33333330;
++	unsigned long ps_clk_rate = ZYNQ_PS_CLK;
+ 
+ 	iores = dev_request_mem_resource(dev, 0);
+ 	if (IS_ERR(iores))
+-- 
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
