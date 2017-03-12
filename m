@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cmyjJ-0000F8-8Y
+ id 1cmyjJ-0000FG-8W
  for barebox@lists.infradead.org; Sun, 12 Mar 2017 08:19:57 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Sun, 12 Mar 2017 09:19:22 +0100
-Message-Id: <20170312081924.10179-3-o.rempel@pengutronix.de>
+Date: Sun, 12 Mar 2017 09:19:23 +0100
+Message-Id: <20170312081924.10179-4-o.rempel@pengutronix.de>
 In-Reply-To: <20170312081924.10179-1-o.rempel@pengutronix.de>
 References: <20170311140706.8851-1-o.rempel@pengutronix.de>
  <20170312081924.10179-1-o.rempel@pengutronix.de>
@@ -22,85 +22,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/4] led: Add blink/flash to led command
+Subject: [PATCH v2 3/4] led: trigger: Use led triggers
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-The LED framework now supports blinking/flashing LEDs, so
-add this functionality to the led command.
+Since the LED framework now supports blinking/flashing, use this
+functionality in the LED triggers.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- commands/led.c | 44 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 43 insertions(+), 1 deletion(-)
+ drivers/led/led-triggers.c | 40 +++++-----------------------------------
+ 1 file changed, 5 insertions(+), 35 deletions(-)
 
-diff --git a/commands/led.c b/commands/led.c
-index 354f74df8..a53f0df6a 100644
---- a/commands/led.c
-+++ b/commands/led.c
-@@ -29,6 +29,44 @@ static int do_led(int argc, char *argv[])
- 	unsigned long value;
+diff --git a/drivers/led/led-triggers.c b/drivers/led/led-triggers.c
+index dee936739..6c05cc5bb 100644
+--- a/drivers/led/led-triggers.c
++++ b/drivers/led/led-triggers.c
+@@ -48,34 +48,12 @@
+ 
+ struct led_trigger_struct {
  	struct led *led;
- 	int ret;
-+	int opt;
-+	int flash = 0, blink = 0;
-+	int blink_on_ms = 500;
-+	int blink_off_ms = 500;
-+
-+	while ((opt = getopt(argc, argv, "fb")) > 0) {
-+		switch(opt) {
-+		case 'f':
-+			flash = 1;
-+			break;
-+		case 'b':
-+			blink = 1;
-+			break;
-+		}
-+	}
-+
-+	if (flash || blink) {
-+		int args = argc - optind;
-+
-+		if (!args || (flash && blink))
-+			return COMMAND_ERROR_USAGE;
-+
-+		led = led_by_name_or_number(argv[optind]);
-+		if (!led) {
-+			printf("no such LED: %s\n", argv[optind]);
-+			return 1;
-+		}
-+
-+		if (args > 1)
-+			blink_on_ms = simple_strtoul(argv[optind + 1], NULL, 0);
-+		if (args > 2)
-+			blink_off_ms = simple_strtoul(argv[optind + 2], NULL, 0);
-+
-+		if (flash)
-+			return led_flash(led, blink_on_ms);
-+		if (blink)
-+			return led_blink(led, blink_on_ms, blink_off_ms);
-+	}
+-	uint64_t flash_start;
+-	int flash;
++	struct list_head list;
++	enum led_trigger trigger;
+ };
  
- 	if (argc == 1) {
- 		int i = 0;
-@@ -73,9 +111,13 @@ static int do_led(int argc, char *argv[])
- BAREBOX_CMD_HELP_START(led)
- BAREBOX_CMD_HELP_TEXT("Control the value of a LED. The exact meaning of VALUE is unspecified,")
- BAREBOX_CMD_HELP_TEXT("it can be a brightness, or a color. Most often a value of '1' means on")
--BAREBOX_CMD_HELP_TEXT("and '0' means off.")
-+BAREBOX_CMD_HELP_TEXT("and '0' means off. Basic usage is 'led <led> <value>'. LEDs can be given")
-+BAREBOX_CMD_HELP_TEXT("by name or number.")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Without arguments the available LEDs are listed.")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT ("-b <led> [duration-on-ms] [duration-off-ms]",  "blink a LED")
-+BAREBOX_CMD_HELP_OPT ("-f <led> [duration-ms]",  "flash a LED")
- BAREBOX_CMD_HELP_END
+ static struct led_trigger_struct triggers[LED_TRIGGER_MAX];
  
- BAREBOX_CMD_START(led)
+-static void trigger_func(struct poller_struct *poller)
+-{
+-	int i;
+-
+-	for (i = 0; i < LED_TRIGGER_MAX; i++) {
+-		if (triggers[i].led &&
+-		    triggers[i].flash &&
+-		    is_timeout(triggers[i].flash_start, 200 * MSECOND)) {
+-			led_set(triggers[i].led, 0);
+-			triggers[i].flash = 0;
+-		}
+-	}
+-
+-	if (triggers[LED_TRIGGER_HEARTBEAT].led &&
+-			is_timeout(triggers[LED_TRIGGER_HEARTBEAT].flash_start, SECOND))
+-		led_trigger(LED_TRIGGER_HEARTBEAT, TRIGGER_FLASH);
+-}
+-
+-static struct poller_struct trigger_poller = {
+-	.func = trigger_func,
+-};
+-
+ /**
+  * led_trigger - triggers a trigger
+  * @param trigger	The trigger to enable/disable
+@@ -91,11 +69,7 @@ void led_trigger(enum led_trigger trigger, enum trigger_type type)
+ 		return;
+ 
+ 	if (type == TRIGGER_FLASH) {
+-		if (is_timeout(triggers[trigger].flash_start, 400 * MSECOND)) {
+-			led_set(triggers[trigger].led, triggers[trigger].led->max_value);
+-			triggers[trigger].flash_start = get_time_ns();
+-			triggers[trigger].flash = 1;
+-		}
++		led_flash(triggers[trigger].led, 200);
+ 		return;
+ 	}
+ 
+@@ -129,6 +103,8 @@ int led_set_trigger(enum led_trigger trigger, struct led *led)
+ 
+ 	if (led && trigger == LED_TRIGGER_DEFAULT_ON)
+ 		led_set(triggers[trigger].led, triggers[trigger].led->max_value);
++	if (led && trigger == LED_TRIGGER_HEARTBEAT)
++		led_blink(led, 200, 1000);
+ 
+ 	return 0;
+ }
+@@ -147,9 +123,3 @@ int led_get_trigger(enum led_trigger trigger)
+ 		return -ENODEV;
+ 	return led_get_number(triggers[trigger].led);
+ }
+-
+-static int trigger_init(void)
+-{
+-	return poller_register(&trigger_poller);
+-}
+-late_initcall(trigger_init);
 -- 
 2.11.0
 
