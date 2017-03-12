@@ -1,23 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cn2AA-00035j-Jr
- for barebox@lists.infradead.org; Sun, 12 Mar 2017 11:59:53 +0000
+ id 1cn2CG-0004i2-2W
+ for barebox@lists.infradead.org; Sun, 12 Mar 2017 12:02:01 +0000
 Received: from player718.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo2.mail-out.ovh.net (Postfix) with ESMTP id 2B9FA6427F
- for <barebox@lists.infradead.org>; Sun, 12 Mar 2017 12:59:24 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with ESMTP id 0738F6490B
+ for <barebox@lists.infradead.org>; Sun, 12 Mar 2017 13:01:37 +0100 (CET)
 Received: from localhost (unknown [91.134.156.222])
  (Authenticated sender: plagnioj@jcrosoft.com)
- by player718.ha.ovh.net (Postfix) with ESMTPA id E809F4E0072
- for <barebox@lists.infradead.org>; Sun, 12 Mar 2017 12:59:23 +0100 (CET)
-Date: Sun, 12 Mar 2017 13:05:38 +0100
+ by player718.ha.ovh.net (Postfix) with ESMTPA id EEBCB4E0080
+ for <barebox@lists.infradead.org>; Sun, 12 Mar 2017 13:01:36 +0100 (CET)
+Date: Sun, 12 Mar 2017 13:07:57 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20170312120538.GA25192@mail.ovh.net>
-References: <20170215192932.GB32649@mail.ovh.net>
- <20170311162611.oti5lvnonnpfmohz@pengutronix.de>
+Message-ID: <20170312120757.GB25192@mail.ovh.net>
+References: <1488776651-7555-2-git-send-email-plagnioj@jcrosoft.com>
+ <1488792887-8715-1-git-send-email-plagnioj@jcrosoft.com>
+ <20170311162345.6uorq55jzjzjoa7f@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170311162611.oti5lvnonnpfmohz@pengutronix.de>
+In-Reply-To: <20170311162345.6uorq55jzjzjoa7f@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,38 +31,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/12] EFI: drop arch efi
+Subject: Re: [PATCH 2/2 v2] efi: add serial driver support
 To: barebox@lists.infradead.org
 
-On 17:26 Sat 11 Mar     , Michael Olbrich wrote:
-> On Wed, Feb 15, 2017 at 08:29:32PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Today the EFI is build as an other ARCH when in fact it's just a boot mode
+On 17:23 Sat 11 Mar     , Michael Olbrich wrote:
+> On Mon, Mar 06, 2017 at 10:34:47AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > So now we can stop to use the efi-stdio as this driver
+> > print on the Framebuffer and the serial at the same time.
 > > 
-> > so move it back to arch/x86 for the spicific x86 part and the common
-> > to common and driver
+> > This is specially usefull if we want to use the framebuffer via efi-gop for
+> > something else.
 > > 
-> > The last 3 patches allow to debug EFI and prepare for more efi support
-> > 
-> > The following changes since commit b225bbf295c92263adbcec2c385c5e8d83542c72:
-> > 
-> >   i.MX: esdhc: fix imx-esdhc driver for non-OF boards (2017-02-14 08:48:34 +0100)
-> > 
-> > are available in the git repository at:
-> > 
-> >   git://git.jcrosoft.org/barebox.git
-> > 
-> > for you to fetch changes up to df12536f83b485c9a4ee28f78637356c6abab6f6:
-> > 
-> >   efi: add efi handle dump command (2017-02-15 07:32:24 +0800)
+> > Do not forget to disable the efi-stdio device before enabling the console
+> > otherwise you will get double printing.
 > 
-> While testing the serial stuff I noticed that the
-> CONFIG_ARCH_EFI_REGISTER_COM1 option got lost during this rework.
-I did not merge it as it's a hack more than a feature as this by pass the EFI
-API and access the hw directly instead of using Serial IO
+> Works nicely here (with a unrelated fix). However, it might be better to
+> implement this as a console_platform_driver. The efi drivers are loaded
+> rather late during startup and this makes early debugging impossible.
+I did not did it as you can use efi-stdio as early as possible
 
-Which was add after
-
-And I plan to drop this hack
+but we can take a look to probe it earlier
 
 Best Regards,
 J.
