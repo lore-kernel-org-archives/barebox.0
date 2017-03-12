@@ -1,24 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75])
+Received: from mo2.mail-out.ovh.net ([178.32.228.2])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cn2CG-0004i2-2W
- for barebox@lists.infradead.org; Sun, 12 Mar 2017 12:02:01 +0000
+ id 1cn2F1-0005GK-Nz
+ for barebox@lists.infradead.org; Sun, 12 Mar 2017 12:04:53 +0000
 Received: from player718.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo2.mail-out.ovh.net (Postfix) with ESMTP id 0738F6490B
- for <barebox@lists.infradead.org>; Sun, 12 Mar 2017 13:01:37 +0100 (CET)
-Received: from localhost (unknown [91.134.156.222])
- (Authenticated sender: plagnioj@jcrosoft.com)
- by player718.ha.ovh.net (Postfix) with ESMTPA id EEBCB4E0080
- for <barebox@lists.infradead.org>; Sun, 12 Mar 2017 13:01:36 +0100 (CET)
-Date: Sun, 12 Mar 2017 13:07:57 +0100
+ by mo2.mail-out.ovh.net (Postfix) with ESMTP id EECB06493F
+ for <barebox@lists.infradead.org>; Sun, 12 Mar 2017 13:04:29 +0100 (CET)
+Date: Sun, 12 Mar 2017 13:10:49 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20170312120757.GB25192@mail.ovh.net>
-References: <1488776651-7555-2-git-send-email-plagnioj@jcrosoft.com>
- <1488792887-8715-1-git-send-email-plagnioj@jcrosoft.com>
- <20170311162345.6uorq55jzjzjoa7f@pengutronix.de>
+Message-ID: <20170312121049.GC25192@mail.ovh.net>
+References: <20170310150209.1564-1-pmamonov@gmail.com>
+ <20170310151851.26978-1-pmamonov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170311162345.6uorq55jzjzjoa7f@pengutronix.de>
+In-Reply-To: <20170310151851.26978-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,29 +26,184 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2 v2] efi: add serial driver support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] net/phy: marvell: import support for 88E1111 from the
+ Linux
+To: pmamonov@gmail.com
+Cc: barebox@lists.infradead.org
 
-On 17:23 Sat 11 Mar     , Michael Olbrich wrote:
-> On Mon, Mar 06, 2017 at 10:34:47AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > So now we can stop to use the efi-stdio as this driver
-> > print on the Framebuffer and the serial at the same time.
-> > 
-> > This is specially usefull if we want to use the framebuffer via efi-gop for
-> > something else.
-> > 
-> > Do not forget to disable the efi-stdio device before enabling the console
-> > otherwise you will get double printing.
-> 
-> Works nicely here (with a unrelated fix). However, it might be better to
-> implement this as a console_platform_driver. The efi drivers are loaded
-> rather late during startup and this makes early debugging impossible.
-I did not did it as you can use efi-stdio as early as possible
+Hi,
 
-but we can take a look to probe it earlier
+	Why 2 patches?
 
 Best Regards,
-J.
+J/
+On 18:18 Fri 10 Mar     , pmamonov@gmail.com wrote:
+> From: Peter Mamonov <pmamonov@gmail.com>
+> 
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> ---
+>  drivers/net/phy/marvell.c | 126 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 126 insertions(+)
+> 
+> diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+> index 38b2ad31f..ea5a4a9be 100644
+> --- a/drivers/net/phy/marvell.c
+> +++ b/drivers/net/phy/marvell.c
+> @@ -31,6 +31,22 @@
+>  #define MII_M1011_PHY_STATUS_RESOLVED	BIT(11)
+>  #define MII_M1011_PHY_STATUS_LINK	BIT(10)
+>  
+> +#define MII_M1111_PHY_LED_CONTROL	0x18
+> +#define MII_M1111_PHY_LED_DIRECT	0x4100
+> +#define MII_M1111_PHY_LED_COMBINE	0x411c
+> +#define MII_M1111_PHY_EXT_CR		0x14
+> +#define MII_M1111_RX_DELAY		0x80
+> +#define MII_M1111_TX_DELAY		0x2
+> +#define MII_M1111_PHY_EXT_SR		0x1b
+> +
+> +#define MII_M1111_HWCFG_MODE_MASK		0xf
+> +#define MII_M1111_HWCFG_MODE_COPPER_RGMII	0xb
+> +#define MII_M1111_HWCFG_MODE_FIBER_RGMII	0x3
+> +#define MII_M1111_HWCFG_MODE_SGMII_NO_CLK	0x4
+> +#define MII_M1111_HWCFG_MODE_COPPER_RTBI	0x9
+> +#define MII_M1111_HWCFG_FIBER_COPPER_AUTO	0x8000
+> +#define MII_M1111_HWCFG_FIBER_COPPER_RES	0x2000
+> +
+>  #define MII_M1111_COPPER		0
+>  #define MII_M1111_FIBER			1
+>  
+> @@ -402,6 +418,107 @@ static int m88e1540_config_init(struct phy_device *phydev)
+>  	return marvell_config_init(phydev);
+>  }
+>  
+> +static int m88e1111_config_init(struct phy_device *phydev)
+> +{
+> +	int err;
+> +	int temp;
+> +
+> +	if ((phydev->interface == PHY_INTERFACE_MODE_RGMII) ||
+> +	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID) ||
+> +	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) ||
+> +	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID)) {
+> +
+> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_CR);
+> +		if (temp < 0)
+> +			return temp;
+> +
+> +		if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID) {
+> +			temp |= (MII_M1111_RX_DELAY | MII_M1111_TX_DELAY);
+> +		} else if (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) {
+> +			temp &= ~MII_M1111_TX_DELAY;
+> +			temp |= MII_M1111_RX_DELAY;
+> +		} else if (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID) {
+> +			temp &= ~MII_M1111_RX_DELAY;
+> +			temp |= MII_M1111_TX_DELAY;
+> +		}
+> +
+> +		err = phy_write(phydev, MII_M1111_PHY_EXT_CR, temp);
+> +		if (err < 0)
+> +			return err;
+> +
+> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
+> +		if (temp < 0)
+> +			return temp;
+> +
+> +		temp &= ~(MII_M1111_HWCFG_MODE_MASK);
+> +
+> +		if (temp & MII_M1111_HWCFG_FIBER_COPPER_RES)
+> +			temp |= MII_M1111_HWCFG_MODE_FIBER_RGMII;
+> +		else
+> +			temp |= MII_M1111_HWCFG_MODE_COPPER_RGMII;
+> +
+> +		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
+> +		if (err < 0)
+> +			return err;
+> +	}
+> +
+> +	if (phydev->interface == PHY_INTERFACE_MODE_SGMII) {
+> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
+> +		if (temp < 0)
+> +			return temp;
+> +
+> +		temp &= ~(MII_M1111_HWCFG_MODE_MASK);
+> +		temp |= MII_M1111_HWCFG_MODE_SGMII_NO_CLK;
+> +		temp |= MII_M1111_HWCFG_FIBER_COPPER_AUTO;
+> +
+> +		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
+> +		if (err < 0)
+> +			return err;
+> +	}
+> +
+> +	if (phydev->interface == PHY_INTERFACE_MODE_RTBI) {
+> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_CR);
+> +		if (temp < 0)
+> +			return temp;
+> +		temp |= (MII_M1111_RX_DELAY | MII_M1111_TX_DELAY);
+> +		err = phy_write(phydev, MII_M1111_PHY_EXT_CR, temp);
+> +		if (err < 0)
+> +			return err;
+> +
+> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
+> +		if (temp < 0)
+> +			return temp;
+> +		temp &= ~(MII_M1111_HWCFG_MODE_MASK | MII_M1111_HWCFG_FIBER_COPPER_RES);
+> +		temp |= 0x7 | MII_M1111_HWCFG_FIBER_COPPER_AUTO;
+> +		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
+> +		if (err < 0)
+> +			return err;
+> +
+> +		/* soft reset */
+> +		err = phy_write(phydev, MII_BMCR, BMCR_RESET);
+> +		if (err < 0)
+> +			return err;
+> +		do
+> +			temp = phy_read(phydev, MII_BMCR);
+> +		while (temp & BMCR_RESET);
+> +
+> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
+> +		if (temp < 0)
+> +			return temp;
+> +		temp &= ~(MII_M1111_HWCFG_MODE_MASK | MII_M1111_HWCFG_FIBER_COPPER_RES);
+> +		temp |= MII_M1111_HWCFG_MODE_COPPER_RTBI | MII_M1111_HWCFG_FIBER_COPPER_AUTO;
+> +		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
+> +		if (err < 0)
+> +			return err;
+> +	}
+> +
+> +	err = marvell_of_reg_init(phydev);
+> +	if (err < 0)
+> +		return err;
+> +
+> +	return phy_write(phydev, MII_BMCR, BMCR_RESET);
+> +}
+> +
+>  static int m88e1121_config_init(struct phy_device *phydev)
+>  {
+>  	u16 reg;
+> @@ -502,6 +619,15 @@ static int m88e1510_config_init(struct phy_device *phydev)
+>  
+>  static struct phy_driver marvell_drivers[] = {
+>  	{
+> +		.phy_id = MARVELL_PHY_ID_88E1111,
+> +		.phy_id_mask = MARVELL_PHY_ID_MASK,
+> +		.drv.name = "Marvell 88E1111",
+> +		.features = PHY_GBIT_FEATURES,
+> +		.config_init = &m88e1111_config_init,
+> +		.config_aneg = &genphy_config_aneg,
+> +		.read_status = &marvell_read_status,
+> +	},
+> +	{
+>  		.phy_id = MARVELL_PHY_ID_88E1121R,
+>  		.phy_id_mask = MARVELL_PHY_ID_MASK,
+>  		.drv.name = "Marvell 88E1121R",
+> -- 
+> 2.11.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
