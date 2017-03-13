@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnKpT-00014Y-Gf
- for barebox@lists.infradead.org; Mon, 13 Mar 2017 07:55:45 +0000
-Date: Mon, 13 Mar 2017 08:55:21 +0100
+ id 1cnL1U-0005hE-Fc
+ for barebox@lists.infradead.org; Mon, 13 Mar 2017 08:08:10 +0000
+Date: Mon, 13 Mar 2017 09:07:46 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170313075521.dafhf3q5qacszaqw@pengutronix.de>
-References: <20170309143117.GI4120@mail.ovh.net>
- <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
- <1489070050-16024-4-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20170313080746.352fidr5iq2zx2v3@pengutronix.de>
+References: <20170309175832.20213-2-o.rempel@pengutronix.de>
+ <20170310060523.25810-1-o.rempel@pengutronix.de>
+ <20170310060523.25810-3-o.rempel@pengutronix.de>
+ <9591E4EA-C0D3-4893-9770-3E13804EA055@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1489070050-16024-4-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <9591E4EA-C0D3-4893-9770-3E13804EA055@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,116 +25,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] boot: if we are in secure boot mode
+Subject: Re: [PATCH v3 2/3] console_countdown: add possibility to abort
+ countdown by external commands
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org
 
-On Thu, Mar 09, 2017 at 03:34:09PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> request confirmation before booting an unsigned image
+On Fri, Mar 10, 2017 at 05:14:37PM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > 
-> with a default timeout
+> > On Mar 10, 2017, at 2:05 PM, Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+> > 
+> > From: Marc Kleine-Budde <mkl@pengutronix.de>
+> > 
+> > This patch makes it possible to abort a console countdown by an external
+> > command, for example when fastboot is used. This requires additional
+> > modifications in the external commands, a call to "console_countdown_abort()"
+> > has to be inserted.
+> > 
+> > Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> > ---
+> > commands/timeout.c          |  8 ++++++--
+> > common/console_countdown.c  | 15 +++++++++++++++
+> > include/console_countdown.h |  2 ++
+> > 3 files changed, 23 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/commands/timeout.c b/commands/timeout.c
+> > index ef1a037c1..d197cedd8 100644
+> > --- a/commands/timeout.c
+> > +++ b/commands/timeout.c
+> > @@ -32,7 +32,7 @@ static int do_timeout(int argc, char *argv[])
+> > 	char str[2] = { };
+> > 	const char *varname = NULL;
+> > 
+> > -	while((opt = getopt(argc, argv, "crsav:")) > 0) {
+> > +	while ((opt = getopt(argc, argv, "crsav:e")) > 0) {
+> > 		switch(opt) {
+> > 		case 'r':
+> > 			flags |= CONSOLE_COUNTDOWN_RETURN;
+> > @@ -46,6 +46,9 @@ static int do_timeout(int argc, char *argv[])
+> > 		case 's':
+> > 			flags |= CONSOLE_COUNTDOWN_SILENT;
+> > 			break;
+> > +		case 'e':
+> > +			flags |= CONSOLE_COUNTDOWN_EXTERN;
+> > +			break;
+> > 		case 'v':
+> > 			varname = optarg;
+> > 			break;
+> > @@ -73,6 +76,7 @@ BAREBOX_CMD_HELP_TEXT("Options:")
+> > BAREBOX_CMD_HELP_OPT("-a", "interrupt on any key")
+> > BAREBOX_CMD_HELP_OPT("-c", "interrupt on Ctrl-C")
+> > BAREBOX_CMD_HELP_OPT("-r", "interrupt on RETURN")
+> > +BAREBOX_CMD_HELP_OPT("-e", "interrupt on external commands (i.e. fastboot")
+> > BAREBOX_CMD_HELP_OPT("-s", "silent mode")
+> > BAREBOX_CMD_HELP_OPT("-v <VARIABLE>", "export pressed key to environment")
+> > BAREBOX_CMD_HELP_END
+> > @@ -80,7 +84,7 @@ BAREBOX_CMD_HELP_END
+> > BAREBOX_CMD_START(timeout)
+> > 	.cmd		= do_timeout,
+> > 	BAREBOX_CMD_DESC("wait for a specified timeout")
+> > -	BAREBOX_CMD_OPTS("[-acrsv] SECONDS")
+> > +	BAREBOX_CMD_OPTS("[-acrsev] SECONDS")
+> > 	BAREBOX_CMD_GROUP(CMD_GRP_CONSOLE)
+> > 	BAREBOX_CMD_HELP(cmd_timeout_help)
+> > BAREBOX_CMD_END
+> > diff --git a/common/console_countdown.c b/common/console_countdown.c
+> > index b2eec72b2..03b9b3353 100644
+> > --- a/common/console_countdown.c
+> > +++ b/common/console_countdown.c
+> > @@ -23,6 +23,13 @@
+> > #include <console_countdown.h>
+> > #include <stdio.h>
+> > 
+> > +static bool console_countdown_timeout_abort;
+> > +
+> > +void console_countdown_abort(void)
+> > +{
+> > +	console_countdown_timeout_abort = true;
+> Nack 
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  commands/go.c         |  7 +++++++
->  common/Kconfig        |  8 ++++++++
->  common/Makefile       |  1 +
->  common/bootm.c        |  7 +++++++
->  common/secure_boot.c  | 43 +++++++++++++++++++++++++++++++++++++++++++
->  include/bootm.h       |  1 +
->  include/secure_boot.h | 25 +++++++++++++++++++++++++
->  7 files changed, 92 insertions(+)
->  create mode 100644 common/secure_boot.c
->  create mode 100644 include/secure_boot.h
+> this break the security support
 > 
-> diff --git a/commands/go.c b/commands/go.c
-> index fb319b320..61c9ce43f 100644
-> --- a/commands/go.c
-> +++ b/commands/go.c
-> @@ -26,6 +26,7 @@
->  #include <fcntl.h>
->  #include <linux/ctype.h>
->  #include <errno.h>
-> +#include <secure_boot.h>
->  
->  static int do_go(int argc, char *argv[])
->  {
-> @@ -37,6 +38,12 @@ static int do_go(int argc, char *argv[])
->  	if (argc < 2)
->  		return COMMAND_ERROR_USAGE;
->  
-> +	rcode = secure_boot_start_unsigned();
-> +	if (rcode)
-> +		return rcode ? 1 : 0;
-> +
-> +	rcode = 1;
-> +
->  	if (!isdigit(*argv[1])) {
->  		fd = open(argv[1], O_RDONLY);
->  		if (fd < 0) {
-> diff --git a/common/Kconfig b/common/Kconfig
-> index f7ff04664..9e7d027a2 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -21,6 +21,9 @@ config HAS_KALLSYMS
->  config HAS_MODULES
->  	bool
->  
-> +config HAS_SECURE_BOOT
-> +	bool
-> +
->  config HAS_CACHE
->  	bool
->  	help
-> @@ -184,6 +187,11 @@ config NVVAR
->  	  while global variables can be changed during runtime without changing the
->  	  default.
->  
-> +config SECURE_BOOT_TIMEOUT
-> +	prompt "Secure Boot unsigned boot timeout"
-> +	int
-> +	default 3
-> +
->  menu "memory layout"
->  
->  source "pbl/Kconfig"
-> diff --git a/common/Makefile b/common/Makefile
-> index 5f58c81d2..e57cc2c15 100644
-> --- a/common/Makefile
-> +++ b/common/Makefile
-> @@ -61,6 +61,7 @@ obj-$(CONFIG_UBIFORMAT)		+= ubiformat.o
->  obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
->  obj-$(CONFIG_CONSOLE_RATP)	+= ratp.o
->  obj-$(CONFIG_BOOT)		+= boot.o
-> +obj-$(CONFIG_HAS_SECURE_BOOT)	+= secure_boot.o
->  
->  quiet_cmd_pwd_h = PWDH    $@
->  ifdef CONFIG_PASSWORD
-> diff --git a/common/bootm.c b/common/bootm.c
-> index 81625d915..0ebf65681 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -23,6 +23,7 @@
->  #include <environment.h>
->  #include <linux/stat.h>
->  #include <magicvar.h>
-> +#include <secure_boot.h>
->  
->  static LIST_HEAD(handler_list);
->  
-> @@ -625,6 +626,12 @@ int bootm_boot(struct bootm_data *bootm_data)
->  		printf("Passing control to %s handler\n", handler->name);
->  	}
->  
-> +	if (!handler->is_secure_supported && is_secure_mode()) {
-> +		ret = secure_boot_start_unsigned();
-> +		if (ret)
-> +			goto err_out;
-> +	}
+> If we enable password  you can not activate it by default
 
-We already have CONFIG_BOOTM_FORCE_SIGNED_IMAGES which admittedly is not
-the most generic implementation, but in the end we shouldn't have two
-different ways how secure boot is integrated in the bootm code.
+This patch only changes anything when the -e option is given to the
+timeout command, which is not the case in the current startup scripts.
+
+Also this patch only aborts the autoboot timeout, something you can
+always do with a key press, even when password/login is enabled. The
+login comes after the timeout and is unaffected by this code.
 
 Sascha
 
