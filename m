@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnACn-0007VE-TQ
- for barebox@lists.infradead.org; Sun, 12 Mar 2017 20:35:08 +0000
-Date: Sun, 12 Mar 2017 21:34:39 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170312203439.GA9544@ravnborg.org>
-References: <20170310060732.8955-1-andrew.smirnov@gmail.com>
+ id 1cnKH9-0002z0-Bd
+ for barebox@lists.infradead.org; Mon, 13 Mar 2017 07:20:17 +0000
+Date: Mon, 13 Mar 2017 08:19:51 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170313071951.bozyaflcqj45zzlt@pengutronix.de>
+References: <1489156876-25133-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170310060732.8955-1-andrew.smirnov@gmail.com>
+In-Reply-To: <1489156876-25133-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,28 +18,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! clk: No-op CLK_OF_DECLARE if not enabled
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 1/1] fix: console: expose consoles in devfs
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Mar 09, 2017 at 10:07:32PM -0800, Andrey Smirnov wrote:
-> ---
-> 
-> Sascha, let's try and see if this fixes the build issues you were
-> having with the original patch.
-> 
-> If you'd rather I spin a v2 of the original patch, let me know.
-
-As Sasha dropped the original patch you can safely prepare a v2
-of the original patch with this fix.
-
-	Sam
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBNYXIgMTAsIDIwMTcgYXQgMDM6NDE6MTZQTSArMDEwMCwgSmVhbi1DaHJpc3RvcGhl
+IFBMQUdOSU9MLVZJTExBUkQgd3JvdGU6Cj4gb24gNjRiaXQgc3NpemVfdCBpcyBub3QgYW4gaW50
+IGJ1dCBhIGxvbmcKPiAKPiBzbyB1c2UgdGhlIHByb3R5cGUgZm9yIGZvcHNfd3JpdGUgc3NpemVf
+dAo+IAo+IGNvbW1vbi9jb25zb2xlLmM6IEluIGZ1bmN0aW9uIOKAmGNvbnNvbGVfcmVnaXN0ZXLi
+gJk6Cj4gY29tbW9uL2NvbnNvbGUuYzozNzM6MjI6IHdhcm5pbmc6IGFzc2lnbm1lbnQgZnJvbSBp
+bmNvbXBhdGlibGUgcG9pbnRlciB0eXBlIFstV2luY29tcGF0aWJsZS1wb2ludGVyLXR5cGVzXQo+
+ICAgbmV3Y2Rldi0+Zm9wcy53cml0ZSA9IGZvcHNfd3JpdGU7Cj4gCj4gaW4gY29tbWl0IGI0ZjU1
+ZmNmMzU1YTRkMGFjNDU2NDQ1YTVmNDJmMjU5ZjI4MTJiNTcKPiBCeSBCYXN0aWFuIFN0ZW5kZXIg
+PGJzdEBwZW5ndXRyb25peC5kZT4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBKZWFuLUNocmlzdG9waGUg
+UExBR05JT0wtVklMTEFSRCA8cGxhZ25pb2pAamNyb3NvZnQuY29tPgo+IC0tLQo+ICBjb21tb24v
+Y29uc29sZS5jIHwgMiArLQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVs
+ZXRpb24oLSkKCkFwcGxpZWQsIHRoYW5rcwoKU2FzY2hhCgo+IAo+IGRpZmYgLS1naXQgYS9jb21t
+b24vY29uc29sZS5jIGIvY29tbW9uL2NvbnNvbGUuYwo+IGluZGV4IDY2OGM4NzBhYi4uNDEyN2U3
+NjE3IDEwMDY0NAo+IC0tLSBhL2NvbW1vbi9jb25zb2xlLmMKPiArKysgYi9jb21tb24vY29uc29s
+ZS5jCj4gQEAgLTI5Niw3ICsyOTYsNyBAQCBzdGF0aWMgaW50IGZvcHNfZmx1c2goc3RydWN0IGNk
+ZXYgKmRldikKPiAgCXJldHVybiAwOwo+ICB9Cj4gIAo+IC1zdGF0aWMgaW50IGZvcHNfd3JpdGUo
+c3RydWN0IGNkZXYqIGRldiwgY29uc3Qgdm9pZCogYnVmLCBzaXplX3QgY291bnQsCj4gK3N0YXRp
+YyBzc2l6ZV90IGZvcHNfd3JpdGUoc3RydWN0IGNkZXYqIGRldiwgY29uc3Qgdm9pZCogYnVmLCBz
+aXplX3QgY291bnQsCj4gIAkJICAgICAgbG9mZl90IG9mZnNldCwgdWxvbmcgZmxhZ3MpCj4gIHsK
+PiAgCXN0cnVjdCBjb25zb2xlX2RldmljZSAqcHJpdiA9IGRldi0+cHJpdjsKPiAtLSAKPiAyLjEx
+LjAKPiAKPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+Xwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4g
+aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94CgotLSAK
+UGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAg
+ICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEz
+NyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10
+c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIx
+LTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
+dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
