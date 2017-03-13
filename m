@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnKV4-0000Ub-Iz
- for barebox@lists.infradead.org; Mon, 13 Mar 2017 07:34:40 +0000
-Date: Mon, 13 Mar 2017 08:34:16 +0100
+ id 1cnKka-0007N1-MV
+ for barebox@lists.infradead.org; Mon, 13 Mar 2017 07:50:42 +0000
+Date: Mon, 13 Mar 2017 08:50:18 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170313073416.z6cedammb3vgbj6c@pengutronix.de>
+Message-ID: <20170313075018.566tqqmhoymv5v66@pengutronix.de>
 References: <20170309143117.GI4120@mail.ovh.net>
  <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
- <1489070050-16024-3-git-send-email-plagnioj@jcrosoft.com>
+ <1489070050-16024-4-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1489070050-16024-3-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1489070050-16024-4-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,47 +24,180 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] efi: fix secure and setup mode report
+Subject: Re: [PATCH 4/5] boot: if we are in secure boot mode
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Mar 09, 2017 at 03:34:08PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Thu, Mar 09, 2017 at 03:34:09PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> request confirmation before booting an unsigned image
+> 
+> with a default timeout
+> 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  drivers/efi/efi-device.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  commands/go.c         |  7 +++++++
+>  common/Kconfig        |  8 ++++++++
+>  common/Makefile       |  1 +
+>  common/bootm.c        |  7 +++++++
+>  common/secure_boot.c  | 43 +++++++++++++++++++++++++++++++++++++++++++
+>  include/bootm.h       |  1 +
+>  include/secure_boot.h | 25 +++++++++++++++++++++++++
+>  7 files changed, 92 insertions(+)
+>  create mode 100644 common/secure_boot.c
+>  create mode 100644 include/secure_boot.h
 > 
-> diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
-> index 6ed7f12b3..7029bfb31 100644
-> --- a/drivers/efi/efi-device.c
-> +++ b/drivers/efi/efi-device.c
-> @@ -365,7 +365,7 @@ static int efi_is_secure_boot(void)
->  		free(val);
->  	}
+> diff --git a/commands/go.c b/commands/go.c
+> index fb319b320..61c9ce43f 100644
+> --- a/commands/go.c
+> +++ b/commands/go.c
+> @@ -26,6 +26,7 @@
+>  #include <fcntl.h>
+>  #include <linux/ctype.h>
+>  #include <errno.h>
+> +#include <secure_boot.h>
 >  
-> -	return ret != 1;
-> +	return ret != 0;
->  }
+>  static int do_go(int argc, char *argv[])
+>  {
+> @@ -37,6 +38,12 @@ static int do_go(int argc, char *argv[])
+>  	if (argc < 2)
+>  		return COMMAND_ERROR_USAGE;
 >  
->  static int efi_is_setup_mode(void)
-> @@ -379,7 +379,7 @@ static int efi_is_setup_mode(void)
->  		free(val);
->  	}
->  
-> -	return ret != 1;
-> +	return ret != 0;
->  }
->  
->  static int efi_init_devices(void)
-> @@ -406,7 +406,7 @@ static int efi_init_devices(void)
->  	dev_add_param_int_ro(efi_bus.dev, "fw_revision", efi_sys_table->fw_revision, "%u");
->  	dev_add_param_int_ro(efi_bus.dev, "secure_boot", secure_boot, "%d");
->  	dev_add_param_int_ro(efi_bus.dev, "secure_mode",
-> -			     secure_boot & setup_mode, "%u");
-> +			     secure_boot & !setup_mode, "%u");
+> +	rcode = secure_boot_start_unsigned();
+> +	if (rcode)
+> +		return rcode ? 1 : 0;
 
-While a bitwise 'and' operator surely works with booleans here you should still
-use a logical 'and' operator here.
+When rcode is true, then if rcode is true, return 1, otherwise return 0?
+
+> +
+> +	rcode = 1;
+> +
+>  	if (!isdigit(*argv[1])) {
+>  		fd = open(argv[1], O_RDONLY);
+>  		if (fd < 0) {
+> diff --git a/common/Kconfig b/common/Kconfig
+> index f7ff04664..9e7d027a2 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -21,6 +21,9 @@ config HAS_KALLSYMS
+>  config HAS_MODULES
+>  	bool
+>  
+> +config HAS_SECURE_BOOT
+> +	bool
+> +
+>  config HAS_CACHE
+>  	bool
+>  	help
+> @@ -184,6 +187,11 @@ config NVVAR
+>  	  while global variables can be changed during runtime without changing the
+>  	  default.
+>  
+> +config SECURE_BOOT_TIMEOUT
+> +	prompt "Secure Boot unsigned boot timeout"
+> +	int
+> +	default 3
+> +
+>  menu "memory layout"
+>  
+>  source "pbl/Kconfig"
+> diff --git a/common/Makefile b/common/Makefile
+> index 5f58c81d2..e57cc2c15 100644
+> --- a/common/Makefile
+> +++ b/common/Makefile
+> @@ -61,6 +61,7 @@ obj-$(CONFIG_UBIFORMAT)		+= ubiformat.o
+>  obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
+>  obj-$(CONFIG_CONSOLE_RATP)	+= ratp.o
+>  obj-$(CONFIG_BOOT)		+= boot.o
+> +obj-$(CONFIG_HAS_SECURE_BOOT)	+= secure_boot.o
+>  
+>  quiet_cmd_pwd_h = PWDH    $@
+>  ifdef CONFIG_PASSWORD
+> diff --git a/common/bootm.c b/common/bootm.c
+> index 81625d915..0ebf65681 100644
+> --- a/common/bootm.c
+> +++ b/common/bootm.c
+> @@ -23,6 +23,7 @@
+>  #include <environment.h>
+>  #include <linux/stat.h>
+>  #include <magicvar.h>
+> +#include <secure_boot.h>
+>  
+>  static LIST_HEAD(handler_list);
+>  
+> @@ -625,6 +626,12 @@ int bootm_boot(struct bootm_data *bootm_data)
+>  		printf("Passing control to %s handler\n", handler->name);
+>  	}
+>  
+> +	if (!handler->is_secure_supported && is_secure_mode()) {
+> +		ret = secure_boot_start_unsigned();
+> +		if (ret)
+> +			goto err_out;
+> +	}
+> +
+>  	ret = handler->bootm(data);
+>  	if (data->dryrun)
+>  		printf("Dryrun. Aborted\n");
+> diff --git a/common/secure_boot.c b/common/secure_boot.c
+> new file mode 100644
+> index 000000000..e625ef4e1
+> --- /dev/null
+> +++ b/common/secure_boot.c
+> @@ -0,0 +1,43 @@
+> +/*
+> + * Copyright (c) 2017 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> + *
+> + * Under GPLv2 Only
+> + */
+> +#include <common.h>
+> +#include <secure_boot.h>
+> +#include <console_countdown.h>
+> +#include <globalvar.h>
+> +#include <magicvar.h>
+> +#include <init.h>
+> +
+> +static unsigned int sb_confirm_timeout = CONFIG_SECURE_BOOT_TIMEOUT;
+
+Use globalvar_add_simple_int instead of putting this into the config.
+
+> +
+> +int secure_boot_start_unsigned(void)
+
+This function name is very misleading. It sounds like it starts an
+unsigned image, but this function doesn't start anything. Second guess
+is that it returns a boolean whether it's allowed to start an unsigned
+image, but actually it returns the opposite.
+
+> +{
+> +	int ret;
+> +	char str[2] = { };
+> +	int timeout = sb_confirm_timeout;
+> +
+> +	if (!is_secure_mode())
+> +		return 0;
+> +
+> +	printf("Are you sure you wish to run an unsigned binary\n");
+> +	printf("in a secure environment?\n");
+> +	printf("press y to confirm\n");
+> +
+> +	ret = console_countdown(timeout, CONSOLE_COUNTDOWN_ANYKEY, str);
+
+console_countdown puts exactly one character in *str, no need to pass an
+array.
+
+> +	if (ret != -EINTR)
+> +		return -EINVAL;
+> +
+> +	return str[0] == 'y' ? 0 : -EINVAL;
+> +}
+> +
+> +static int init_sb_confirm_timeout(void)
+> +{
+> +	return globalvar_add_simple_int("sb.confirm_timeout",
+> +			&sb_confirm_timeout, "%u");
+> +}
+
+Ok, you already made it a globalvar. No need to put the default into
+kconfig then.
 
 Sascha
 
