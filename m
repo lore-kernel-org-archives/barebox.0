@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnKJ1-0004cb-IA
- for barebox@lists.infradead.org; Mon, 13 Mar 2017 07:22:13 +0000
-Date: Mon, 13 Mar 2017 08:21:48 +0100
+ id 1cnKLo-0005Gx-FE
+ for barebox@lists.infradead.org; Mon, 13 Mar 2017 07:25:06 +0000
+Date: Mon, 13 Mar 2017 08:24:42 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170313072148.ikkjqb64sl7h7y2l@pengutronix.de>
-References: <20170310060732.8955-1-andrew.smirnov@gmail.com>
- <20170312203439.GA9544@ravnborg.org>
+Message-ID: <20170313072442.qmtz4xvytj745tww@pengutronix.de>
+References: <20170303152759.GF4120@mail.ovh.net>
+ <20170309143840.GJ4120@mail.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170312203439.GA9544@ravnborg.org>
+In-Reply-To: <20170309143840.GJ4120@mail.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,26 +23,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! clk: No-op CLK_OF_DECLARE if not enabled
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH 0/2] efivarfs: rework the filesystem to make it human
+ readable
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org, m.olbrich@pengutronix.de
 
-On Sun, Mar 12, 2017 at 09:34:39PM +0100, Sam Ravnborg wrote:
-> On Thu, Mar 09, 2017 at 10:07:32PM -0800, Andrey Smirnov wrote:
-> > ---
-> > 
-> > Sascha, let's try and see if this fixes the build issues you were
-> > having with the original patch.
-> > 
-> > If you'd rather I spin a v2 of the original patch, let me know.
+On Thu, Mar 09, 2017 at 03:38:40PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
 > 
-> As Sasha dropped the original patch you can safely prepare a v2
-> of the original patch with this fix.
+> 	Sascha is this one ok?
 
-Yes, please. That would be easiest.
+I asked Michael to have a look at this series, so far he didn't find
+time.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
