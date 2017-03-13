@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo3.mail-out.ovh.net ([188.165.41.191])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnN5b-0000y5-TM
- for barebox@lists.infradead.org; Mon, 13 Mar 2017 10:20:34 +0000
-Received: from player771.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with ESMTP id 7B68DA788E
- for <barebox@lists.infradead.org>; Mon, 13 Mar 2017 11:20:05 +0100 (CET)
-Mime-Version: 1.0 (Mac OS X Mail 10.2 \(3259\))
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <20170313082042.clsq2tqito7tt7h7@pengutronix.de>
-Date: Mon, 13 Mar 2017 18:19:58 +0800
-Message-Id: <FD96AE73-808A-45E0-AF81-86F03DD28BC7@jcrosoft.com>
-References: <20170303152759.GF4120@mail.ovh.net>
- <20170309143840.GJ4120@mail.ovh.net>
- <20170313072442.qmtz4xvytj745tww@pengutronix.de>
- <20170313082042.clsq2tqito7tt7h7@pengutronix.de>
+ id 1cnN87-0001GT-SV
+ for barebox@lists.infradead.org; Mon, 13 Mar 2017 10:23:10 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Mon, 13 Mar 2017 11:22:07 +0100
+Message-Id: <20170313102207.30590-3-o.rempel@pengutronix.de>
+In-Reply-To: <20170313102207.30590-1-o.rempel@pengutronix.de>
+References: <20170313102207.30590-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,39 +16,207 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] efivarfs: rework the filesystem to make it human
- readable
-To: Michael Olbrich <m.olbrich@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v1 2/2] nvmem: add simple nvstore driver
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Cj4gT24gMTMgTWFyIDIwMTcsIGF0IDQ6MjAgUE0sIE1pY2hhZWwgT2xicmljaCA8bS5vbGJyaWNo
-QHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPiAKPiBIaSwKPiAKPiBPbiBNb24sIE1hciAxMywgMjAx
-NyBhdCAwODoyNDo0MkFNICswMTAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4+IE9uIFRodSwgTWFy
-IDA5LCAyMDE3IGF0IDAzOjM4OjQwUE0gKzAxMDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1W
-SUxMQVJEIHdyb3RlOgo+Pj4gCVNhc2NoYSBpcyB0aGlzIG9uZSBvaz8KPj4gCj4+IEkgYXNrZWQg
-TWljaGFlbCB0byBoYXZlIGEgbG9vayBhdCB0aGlzIHNlcmllcywgc28gZmFyIGhlIGRpZG4ndCBm
-aW5kCj4+IHRpbWUuCj4gCj4gSSdtIG5vdCBzdXJlIEkgbGlrZSBpdCB0aGlzIHdheS4gVGhlIG9s
-ZCB3YXkgbWF0Y2hlcyB3aGF0IHRoZSBMaW51eCBrZXJuZWwKPiBkb2VzIHNvIGl0J3MgZmFtaWxp
-YXIuIEFuZCB0aGUgbWl4IG9mIGd1aWRzIGFuZCAnbmFtZXMnIGlzIHJhdGhlcgo+IGNsdXR0ZXJl
-ZCBiZWNhdXNlIHRoZXkgYXJlIG5vdCBncm91cGVkIHNlcGFyYXRlbHkuCndlIGNhbiBzcGxpdCB0
-aGVtIGluIHN1YiBkaXJzCgovZWZpdmFycy9ieS1ndWlkLzxndWlkPi92YXIKCmFuZCBrZWVwIHRo
-ZSBrbm93biBvbmUgaW4KCi9lZml2YXJzL0VmaS/igKYKL2VmaXZhcnMvYmFyZWJveC/igKYKL2Vm
-aXZhcnMvc3lzdGVtZC/igKYKCmFzIHdlIHdpbGwgdXNlIGtub3duIGd1aWQgZm9yIG1vc3Qgb2Yg
-dGhlIHRpbWUKCmFzIGRvZXMgbGludXggdG9vIG1vc3Qgb2YgdGhlIHRpbWUKCj4gTWF5YmUga2Vl
-cCB0aGUgb2xkIHZlcnNpb24gYW5kIGFkZCBzb21ldGhpbmcgbGlrZSB0aGUgYnktbmFtZSBldGMu
-IHN5bWxpbmtzCj4gdXNlZCBpbiB1ZGV2Ogo+IAo+IDxndWlkLWZvci1mb28+LWJhcgo+IDxzb21l
-dGhpbmc+Cj4gIEVGSQo+ICAgIFsuLi5dCj4gIGZvbwo+ICAgIGJhciAtPiAuLi8uLi88Z3VpZC1m
-b3ItZm9vPi1iYXIKCjxndWlkLWZvci1mb28+LWJhciBpcyB1biByZWFkYWJsZSAKCmFuZCB3ZSBu
-ZWVkIHRvIHBhcnNlIGEgZmlsZW5hbWUgd2hpY2ggaXMgYSBwcm9uZSB0byBlcnJvciBldmVuIHdo
-ZW4gY3JlYXRpbmcgbmV3IHZhcmlhYmxlCmFuZCB0b2RheSB3ZSBvbmx5IGFsbG93IHRvIGNyZWF0
-ZSB2YXIgZm9yIGJhcmVib3ggZ3VpZCBpbiB0aGUgInVzZXIgc3BhY2XigJ0KU28gdGhpcyBpcyBl
-YXNpZXIgdG8gaGFuZGxlCgphbmQgd2hlbiB5b3UgbHMgaXQgYXQgdGhlIGVuZCBpcyBoYXJkIHRv
-IHJlYWQKClRoZSBlZml2YXJmcyBpcyBmb3IgdXNlciBub3QgQyBDb2RlIAoKVGhhdOKAmXMgd2h5
-IEkgcHJlZmVyIHRvIGhhdmUgYSBkZXNpZ24gdGhhdCBpcyBlYXN5IHRvIHJlYWQKCkJlc3QgUmVn
-YXJkcywKSi4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/nvmem/Kconfig   |   8 +++
+ drivers/nvmem/Makefile  |   4 ++
+ drivers/nvmem/nvstore.c | 142 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 154 insertions(+)
+ create mode 100644 drivers/nvmem/nvstore.c
+
+diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
+index 218be05b2..23ebc1ea7 100644
+--- a/drivers/nvmem/Kconfig
++++ b/drivers/nvmem/Kconfig
+@@ -6,3 +6,11 @@ menuconfig NVMEM
+ 	  This framework is designed to provide a generic interface to NVMEM
+ 
+ 	  If unsure, say no.
++
++if NVMEM
++
++config NVMEM_STORE
++       tristate "NVMEM storage"
++       help
++
++endif
+diff --git a/drivers/nvmem/Makefile b/drivers/nvmem/Makefile
+index 6df2c6952..34a59c316 100644
+--- a/drivers/nvmem/Makefile
++++ b/drivers/nvmem/Makefile
+@@ -4,3 +4,7 @@
+ 
+ obj-$(CONFIG_NVMEM)		+= nvmem_core.o
+ nvmem_core-y			:= core.o
++
++# Devices
++obj-$(CONFIG_NVMEM_STORE)	+= nvmem_nvstore.o
++nvmem_nvstore-y			:= nvstore.o
+diff --git a/drivers/nvmem/nvstore.c b/drivers/nvmem/nvstore.c
+new file mode 100644
+index 000000000..c1b256d92
+--- /dev/null
++++ b/drivers/nvmem/nvstore.c
+@@ -0,0 +1,142 @@
++/*
++ * Copyright (c) 2015 Pengutronix, Steffen Trumtrar <kernel@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
++#include <common.h>
++#include <driver.h>
++#include <init.h>
++#include <io.h>
++#include <of.h>
++#include <malloc.h>
++#include <linux/nvmem-provider.h>
++
++struct nvstore_priv {
++	struct device_d *dev;
++	void __iomem	*base;
++};
++
++static int nvstore_write(struct device_d *dev, const int reg, const void *val,
++			 int val_size)
++{
++	struct nvstore_priv *priv = dev->parent->priv;
++	unsigned int offset;
++
++	offset = reg;
++	while (val_size > 0) {
++		switch (val_size) {
++		case 1:
++			writeb(*(u8 *)val, priv->base + offset);
++			break;
++		case 2:
++			writew(*(u16 *)val, priv->base + offset);
++			break;
++		case 4:
++			writel(*(u32 *)val, priv->base + offset);
++			break;
++		}
++		val_size -= 4;
++		val += 4;
++		offset += 4;
++	}
++
++	return 0;
++}
++
++static int nvstore_read(struct device_d *dev, const int reg, void *val,
++			int val_size)
++{
++	struct nvstore_priv *priv = dev->parent->priv;
++	unsigned int offset;
++
++	offset = reg;
++
++	while (val_size > 0) {
++		switch (val_size) {
++		case 1:
++			*(u8 *)val = readb(priv->base + offset);
++			break;
++		case 2:
++			*(u16 *)val = readw(priv->base + offset);
++			break;
++		case 4:
++			*(u32 *)val = readl(priv->base + offset);
++			break;
++		}
++		val_size -= 4;
++		val += 4;
++		offset += 4;
++	}
++
++	return 0;
++}
++
++static struct nvmem_bus nvstore_nvmem_bus = {
++	.write = nvstore_write,
++	.read  = nvstore_read,
++};
++
++static struct nvmem_config nvstore_nvmem_config = {
++	.name = "nvstore",
++	.stride = 4,
++	.word_size = 4,
++};
++
++static int nvstore_probe(struct device_d *dev)
++{
++	struct nvstore_priv *priv;
++	struct nvmem_device *nvmem;
++	struct resource *res;
++
++	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
++	if (IS_ERR(res)) {
++		res = dev_get_resource(dev->parent, IORESOURCE_MEM, 0);
++		if (IS_ERR(res)) {
++			free(priv);
++			return PTR_ERR(res);
++		}
++	}
++
++	res = request_iomem_region(dev_name(dev), res->start, res->end);
++	if (IS_ERR(res)) {
++		free(priv);
++		return PTR_ERR(res);
++	}
++
++	priv->base = (void __iomem *)res->start;
++
++	nvstore_nvmem_config.size = 1;
++	nvstore_nvmem_config.dev = dev;
++	nvstore_nvmem_config.bus = &nvstore_nvmem_bus;
++
++	nvmem = nvmem_register(&nvstore_nvmem_config);
++	if (IS_ERR(nvmem)) {
++		free(priv);
++		return PTR_ERR(nvmem);
++	}
++
++	dev->priv = priv;
++
++	return 0;
++}
++
++static __maybe_unused struct of_device_id nvstore_dt_ids[] = {
++	{ .compatible = "nvstore", },
++	{ },
++};
++
++static struct driver_d nvstore_driver = {
++	.name	= "nvstore",
++	.probe	= nvstore_probe,
++	.of_compatible = DRV_OF_COMPAT(nvstore_dt_ids),
++};
++device_platform_driver(nvstore_driver);
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
