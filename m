@@ -1,15 +1,25 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnL7G-0008Cl-W3
- for barebox@lists.infradead.org; Mon, 13 Mar 2017 08:14:08 +0000
-Date: Mon, 13 Mar 2017 09:13:40 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170313081340.33flyplysuwgytb4@pengutronix.de>
-References: <1489137325-5214-1-git-send-email-yegorslists@googlemail.com>
+ by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cnLE0-0000Sc-RS
+ for barebox@lists.infradead.org; Mon, 13 Mar 2017 08:21:07 +0000
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.84_2)
+ (envelope-from <mol@pengutronix.de>) id 1cnLDe-0000Bk-Na
+ for barebox@lists.infradead.org; Mon, 13 Mar 2017 09:20:42 +0100
+Received: from mol by pty.hi.pengutronix.de with local (Exim 4.84_2)
+ (envelope-from <mol@pengutronix.de>) id 1cnLDe-0005RY-Fv
+ for barebox@lists.infradead.org; Mon, 13 Mar 2017 09:20:42 +0100
+Date: Mon, 13 Mar 2017 09:20:42 +0100
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Message-ID: <20170313082042.clsq2tqito7tt7h7@pengutronix.de>
+References: <20170303152759.GF4120@mail.ovh.net>
+ <20170309143840.GJ4120@mail.ovh.net>
+ <20170313072442.qmtz4xvytj745tww@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1489137325-5214-1-git-send-email-yegorslists@googlemail.com>
+In-Reply-To: <20170313072442.qmtz4xvytj745tww@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +32,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: baltos: define baltos_sram_init() return type as void
-To: yegorslists@googlemail.com
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/2] efivarfs: rework the filesystem to make it human
+ readable
+To: barebox@lists.infradead.org
 
-On Fri, Mar 10, 2017 at 10:15:25AM +0100, yegorslists@googlemail.com wrote:
-> From: Yegor Yefremov <yegorslists@googlemail.com>
-> 
-> As stated in the routine's description this routine is to return void,
-> hence fix its declaration to remove compiler warning.
-> 
-> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
-> ---
->  arch/arm/boards/vscom-baltos/lowlevel.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Hi,
 
-Applied, thanks
+On Mon, Mar 13, 2017 at 08:24:42AM +0100, Sascha Hauer wrote:
+> On Thu, Mar 09, 2017 at 03:38:40PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > 	Sascha is this one ok?
+> 
+> I asked Michael to have a look at this series, so far he didn't find
+> time.
 
-Sascha
+I'm not sure I like it this way. The old way matches what the Linux kernel
+does so it's familiar. And the mix of guids and 'names' is rather
+cluttered because they are not grouped separately.
+Maybe keep the old version and add something like the by-name etc. symlinks
+used in udev:
 
-> 
-> diff --git a/arch/arm/boards/vscom-baltos/lowlevel.c b/arch/arm/boards/vscom-baltos/lowlevel.c
-> index 9f829b9..c4e2341 100644
-> --- a/arch/arm/boards/vscom-baltos/lowlevel.c
-> +++ b/arch/arm/boards/vscom-baltos/lowlevel.c
-> @@ -77,7 +77,7 @@ extern char __dtb_am335x_baltos_minimal_start[];
->   *
->   * @return void
->   */
-> -static noinline int baltos_sram_init(void)
-> +static noinline void baltos_sram_init(void)
->  {
->  	uint32_t sdram_size;
->  	void *fdt;
-> -- 
-> 2.1.4
-> 
-> 
+<guid-for-foo>-bar
+<something>
+  EFI
+    [...]
+  foo
+    bar -> ../../<guid-for-foo>-bar
+
+
+Michael
 
 -- 
 Pengutronix e.K.                           |                             |
