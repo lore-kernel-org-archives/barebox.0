@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnKLo-0005Gx-FE
- for barebox@lists.infradead.org; Mon, 13 Mar 2017 07:25:06 +0000
-Date: Mon, 13 Mar 2017 08:24:42 +0100
+ id 1cnKV4-0000Ub-Iz
+ for barebox@lists.infradead.org; Mon, 13 Mar 2017 07:34:40 +0000
+Date: Mon, 13 Mar 2017 08:34:16 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170313072442.qmtz4xvytj745tww@pengutronix.de>
-References: <20170303152759.GF4120@mail.ovh.net>
- <20170309143840.GJ4120@mail.ovh.net>
+Message-ID: <20170313073416.z6cedammb3vgbj6c@pengutronix.de>
+References: <20170309143117.GI4120@mail.ovh.net>
+ <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
+ <1489070050-16024-3-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170309143840.GJ4120@mail.ovh.net>
+In-Reply-To: <1489070050-16024-3-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,18 +24,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] efivarfs: rework the filesystem to make it human
- readable
+Subject: Re: [PATCH 3/5] efi: fix secure and setup mode report
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, m.olbrich@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-On Thu, Mar 09, 2017 at 03:38:40PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,
+On Thu, Mar 09, 2017 at 03:34:08PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  drivers/efi/efi-device.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> 	Sascha is this one ok?
+> diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
+> index 6ed7f12b3..7029bfb31 100644
+> --- a/drivers/efi/efi-device.c
+> +++ b/drivers/efi/efi-device.c
+> @@ -365,7 +365,7 @@ static int efi_is_secure_boot(void)
+>  		free(val);
+>  	}
+>  
+> -	return ret != 1;
+> +	return ret != 0;
+>  }
+>  
+>  static int efi_is_setup_mode(void)
+> @@ -379,7 +379,7 @@ static int efi_is_setup_mode(void)
+>  		free(val);
+>  	}
+>  
+> -	return ret != 1;
+> +	return ret != 0;
+>  }
+>  
+>  static int efi_init_devices(void)
+> @@ -406,7 +406,7 @@ static int efi_init_devices(void)
+>  	dev_add_param_int_ro(efi_bus.dev, "fw_revision", efi_sys_table->fw_revision, "%u");
+>  	dev_add_param_int_ro(efi_bus.dev, "secure_boot", secure_boot, "%d");
+>  	dev_add_param_int_ro(efi_bus.dev, "secure_mode",
+> -			     secure_boot & setup_mode, "%u");
+> +			     secure_boot & !setup_mode, "%u");
 
-I asked Michael to have a look at this series, so far he didn't find
-time.
+While a bitwise 'and' operator surely works with booleans here you should still
+use a logical 'and' operator here.
 
 Sascha
 
