@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnKka-0007N1-MV
- for barebox@lists.infradead.org; Mon, 13 Mar 2017 07:50:42 +0000
-Date: Mon, 13 Mar 2017 08:50:18 +0100
+ id 1cnKpT-00014Y-Gf
+ for barebox@lists.infradead.org; Mon, 13 Mar 2017 07:55:45 +0000
+Date: Mon, 13 Mar 2017 08:55:21 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170313075018.566tqqmhoymv5v66@pengutronix.de>
+Message-ID: <20170313075521.dafhf3q5qacszaqw@pengutronix.de>
 References: <20170309143117.GI4120@mail.ovh.net>
  <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
  <1489070050-16024-4-git-send-email-plagnioj@jcrosoft.com>
@@ -65,9 +65,6 @@ On Thu, Mar 09, 2017 at 03:34:09PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote
 > +	rcode = secure_boot_start_unsigned();
 > +	if (rcode)
 > +		return rcode ? 1 : 0;
-
-When rcode is true, then if rcode is true, return 1, otherwise return 0?
-
 > +
 > +	rcode = 1;
 > +
@@ -133,71 +130,10 @@ When rcode is true, then if rcode is true, return 1, otherwise return 0?
 > +		if (ret)
 > +			goto err_out;
 > +	}
-> +
->  	ret = handler->bootm(data);
->  	if (data->dryrun)
->  		printf("Dryrun. Aborted\n");
-> diff --git a/common/secure_boot.c b/common/secure_boot.c
-> new file mode 100644
-> index 000000000..e625ef4e1
-> --- /dev/null
-> +++ b/common/secure_boot.c
-> @@ -0,0 +1,43 @@
-> +/*
-> + * Copyright (c) 2017 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> + *
-> + * Under GPLv2 Only
-> + */
-> +#include <common.h>
-> +#include <secure_boot.h>
-> +#include <console_countdown.h>
-> +#include <globalvar.h>
-> +#include <magicvar.h>
-> +#include <init.h>
-> +
-> +static unsigned int sb_confirm_timeout = CONFIG_SECURE_BOOT_TIMEOUT;
 
-Use globalvar_add_simple_int instead of putting this into the config.
-
-> +
-> +int secure_boot_start_unsigned(void)
-
-This function name is very misleading. It sounds like it starts an
-unsigned image, but this function doesn't start anything. Second guess
-is that it returns a boolean whether it's allowed to start an unsigned
-image, but actually it returns the opposite.
-
-> +{
-> +	int ret;
-> +	char str[2] = { };
-> +	int timeout = sb_confirm_timeout;
-> +
-> +	if (!is_secure_mode())
-> +		return 0;
-> +
-> +	printf("Are you sure you wish to run an unsigned binary\n");
-> +	printf("in a secure environment?\n");
-> +	printf("press y to confirm\n");
-> +
-> +	ret = console_countdown(timeout, CONSOLE_COUNTDOWN_ANYKEY, str);
-
-console_countdown puts exactly one character in *str, no need to pass an
-array.
-
-> +	if (ret != -EINTR)
-> +		return -EINVAL;
-> +
-> +	return str[0] == 'y' ? 0 : -EINVAL;
-> +}
-> +
-> +static int init_sb_confirm_timeout(void)
-> +{
-> +	return globalvar_add_simple_int("sb.confirm_timeout",
-> +			&sb_confirm_timeout, "%u");
-> +}
-
-Ok, you already made it a globalvar. No need to put the default into
-kconfig then.
+We already have CONFIG_BOOTM_FORCE_SIGNED_IMAGES which admittedly is not
+the most generic implementation, but in the end we shouldn't have two
+different ways how secure boot is integrated in the bootm code.
 
 Sascha
 
