@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnPpz-0005oL-3o
- for barebox@lists.infradead.org; Mon, 13 Mar 2017 13:16:41 +0000
-From: Michael Olbrich <m.olbrich@pengutronix.de>
-Date: Mon, 13 Mar 2017 14:16:06 +0100
-Message-Id: <20170313131606.8089-1-m.olbrich@pengutronix.de>
-In-Reply-To: <B918A2C9-9BD1-41C2-B996-98A0B775327F@jcrosoft.com>
-References: <B918A2C9-9BD1-41C2-B996-98A0B775327F@jcrosoft.com>
+ id 1cnQFP-0004JX-PX
+ for barebox@lists.infradead.org; Mon, 13 Mar 2017 13:42:54 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Mon, 13 Mar 2017 14:42:26 +0100
+Message-Id: <20170313134228.32521-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +19,242 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! efi: clocksoure: add EFI event timer
+Subject: [PATCH v1 1/3] drivers: add simple hw_random implementation
 To: barebox@lists.infradead.org
-Cc: Michael Olbrich <m.olbrich@pengutronix.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+
+Add a simple hw_random implementation based on code from
+Linux v4.5-rc5.
+
+All the entropypool initialization stuff is left out and
+the obsolete data_read/data_present calls are omitted.
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
+ drivers/Kconfig            |   1 +
+ drivers/Makefile           |   1 +
+ drivers/hw_random/Kconfig  |   6 +++
+ drivers/hw_random/Makefile |   1 +
+ drivers/hw_random/core.c   | 110 +++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/hw_random.h  |  44 ++++++++++++++++++
+ 6 files changed, 163 insertions(+)
+ create mode 100644 drivers/hw_random/Kconfig
+ create mode 100644 drivers/hw_random/Makefile
+ create mode 100644 drivers/hw_random/core.c
+ create mode 100644 include/linux/hw_random.h
 
-I played with the numbers a bit. This hardware has a 18 Hz tick :-/.
-That's not really useful so just skipping the clocksource is probably the
-best solution.
-
-Michael
-
- drivers/clocksource/efi.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/clocksource/efi.c b/drivers/clocksource/efi.c
-index 89906c452eb7..fb5b7ca63de9 100644
---- a/drivers/clocksource/efi.c
-+++ b/drivers/clocksource/efi.c
-@@ -71,6 +71,10 @@ static int efi_cs_init(struct clocksource *cs)
- 		uint64_t nb_100ns;
- 
- 		freq = ticks_freq_x86();
-+		if (freq == 0) {
-+			BS->close_event(efi_cs_evt);
-+			return -ENODEV;
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index cc086ac2d..2f5784a4d 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -21,6 +21,7 @@ source "drivers/eeprom/Kconfig"
+ source "drivers/input/Kconfig"
+ source "drivers/watchdog/Kconfig"
+ source "drivers/pwm/Kconfig"
++source "drivers/hw_random/Kconfig"
+ source "drivers/dma/Kconfig"
+ source "drivers/gpio/Kconfig"
+ source "drivers/w1/Kconfig"
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 6a70f6ee1..7e9b80e59 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -20,6 +20,7 @@ obj-y	+= misc/
+ obj-y	+= dma/
+ obj-y  += watchdog/
+ obj-y	+= gpio/
++obj-$(CONFIG_HWRNG) += hw_random/
+ obj-$(CONFIG_OFTREE) += of/
+ obj-$(CONFIG_W1) += w1/
+ obj-y += pinctrl/
+diff --git a/drivers/hw_random/Kconfig b/drivers/hw_random/Kconfig
+new file mode 100644
+index 000000000..807fcadd3
+--- /dev/null
++++ b/drivers/hw_random/Kconfig
+@@ -0,0 +1,6 @@
++menuconfig HWRNG
++	bool "HWRNG Support"
++	help
++	  Support for HWRNG(Hardware Random Number Generator) devices.
++
++	  If unsure, say no.
+diff --git a/drivers/hw_random/Makefile b/drivers/hw_random/Makefile
+new file mode 100644
+index 000000000..15307b100
+--- /dev/null
++++ b/drivers/hw_random/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_HWRNG)		+= core.o
+diff --git a/drivers/hw_random/core.c b/drivers/hw_random/core.c
+new file mode 100644
+index 000000000..3bf464a8b
+--- /dev/null
++++ b/drivers/hw_random/core.c
+@@ -0,0 +1,110 @@
++/*
++ * Copyright (c) 2016 Pengutronix, Steffen Trumtrar <kernel@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * derived from Linux kernel drivers/char/hw_random/core.c
++ */
++
++#include <common.h>
++#include <linux/hw_random.h>
++#include <malloc.h>
++
++static LIST_HEAD(hwrngs);
++
++#define RNG_BUFFER_SIZE		32
++
++int hwrng_get_data(struct hwrng *rng, u8 *buffer, size_t size, int wait)
++{
++	return rng->read(rng, buffer, size, wait);
++}
++
++static int hwrng_init(struct hwrng *rng)
++{
++	int ret = 0;
++
++	if (rng->init) {
++		ret = rng->init(rng);
++		return ret;
++	}
++
++	list_add_tail(&rng->list, &hwrngs);
++
++	return 0;
++}
++
++static ssize_t rng_dev_read(struct cdev *cdev, void *buf, size_t size,
++			    loff_t offset, unsigned long flags)
++{
++	struct hwrng *rng = container_of(cdev, struct hwrng, cdev);
++	size_t count = size;
++	ssize_t cur = 0;
++	int len;
++
++	memset(buf, 0, size);
++
++	while (count) {
++		int max = min(count, (size_t)RNG_BUFFER_SIZE);
++		len = hwrng_get_data(rng, rng->buf, max, true);
++		if (len < 0) {
++			cur = len;
++			break;
 +		}
- 		nb_100ns = 10 * 1000 * 1000 / freq;
- 		pr_warn("EFI Event timer too slow freq = %llu Hz\n", freq);
- 		efiret = BS->set_timer(efi_cs_evt, EFI_TIMER_PERIODIC, nb_100ns);
++
++		memcpy(buf + cur, rng->buf, len);
++
++		count -= len;
++		cur += len;
++	}
++
++	return cur;
++}
++
++static struct file_operations rng_chrdev_ops = {
++	.read  = rng_dev_read,
++	.lseek = dev_lseek_default,
++};
++
++static int hwrng_register_cdev(struct hwrng *rng)
++{
++	rng->cdev.name = "hwrng";
++	rng->cdev.flags = DEVFS_IS_CHARACTER_DEV;
++	rng->cdev.ops = &rng_chrdev_ops;
++	rng->cdev.dev = rng->dev;
++
++	return devfs_create(&rng->cdev);
++}
++
++struct hwrng *hwrng_get_first(void)
++{
++	if (list_empty(&hwrngs))
++		return ERR_PTR(-ENODEV);
++	else
++		return list_first_entry(&hwrngs, struct hwrng, list);
++}
++
++int hwrng_register(struct device_d *dev, struct hwrng *rng)
++{
++	int err;
++
++	if (rng->name == NULL || rng->read == NULL)
++		return -EINVAL;
++
++	rng->buf = xzalloc(RNG_BUFFER_SIZE);
++
++	err = hwrng_init(rng);
++	if (err) {
++		free(rng->buf);
++		return err;
++	}
++
++	rng->dev = dev;
++
++	err = hwrng_register_cdev(rng);
++	if (err)
++		free(rng->buf);
++
++	return err;
++}
+diff --git a/include/linux/hw_random.h b/include/linux/hw_random.h
+new file mode 100644
+index 000000000..a115cc1fa
+--- /dev/null
++++ b/include/linux/hw_random.h
+@@ -0,0 +1,44 @@
++/*
++	Hardware Random Number Generator
++
++	Please read Documentation/hw_random.txt for details on use.
++
++	----------------------------------------------------------
++	This software may be used and distributed according to the terms
++	of the GNU General Public License, incorporated herein by reference.
++
++ */
++
++#ifndef LINUX_HWRANDOM_H_
++#define LINUX_HWRANDOM_H_
++
++#include <linux/list.h>
++
++/**
++ * struct hwrng - Hardware Random Number Generator driver
++ * @name:		Unique RNG name.
++ * @init:		Initialization callback (can be NULL).
++ * @read:		New API. drivers can fill up to max bytes of data
++ *			into the buffer. The buffer is aligned for any type.
++ * @priv:		Private data, for use by the RNG driver.
++ */
++struct hwrng {
++	const char *name;
++	int (*init)(struct hwrng *rng);
++	int (*read)(struct hwrng *rng, void *data, size_t max, bool wait);
++	unsigned long priv;
++
++	struct list_head list;
++
++	struct cdev cdev;
++	struct device_d *dev;
++	u8 *buf;
++};
++
++/** Register a new Hardware Random Number Generator driver. */
++extern int hwrng_register(struct device_d *dev, struct hwrng *rng);
++extern struct hwrng *hwrng_get_first(void);
++extern int hwrng_get_data(struct hwrng *rng, u8 *buffer, size_t size,
++			  int wait);
++
++#endif /* LINUX_HWRANDOM_H_ */
 -- 
 2.11.0
 
