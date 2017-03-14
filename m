@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cngk4-00013G-R0
- for barebox@lists.infradead.org; Tue, 14 Mar 2017 07:19:38 +0000
-Date: Tue, 14 Mar 2017 08:19:15 +0100
+ id 1cnh19-0000mn-IB
+ for barebox@lists.infradead.org; Tue, 14 Mar 2017 07:37:17 +0000
+Date: Tue, 14 Mar 2017 08:36:53 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170314071915.f2y3viiboadigd42@pengutronix.de>
-References: <20170310150209.1564-1-pmamonov@gmail.com>
- <20170310151851.26978-1-pmamonov@gmail.com>
+Message-ID: <20170314073653.rgexs6q5wwafl5ys@pengutronix.de>
+References: <20170313102207.30590-1-o.rempel@pengutronix.de>
+ <20170313102207.30590-3-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170310151851.26978-1-pmamonov@gmail.com>
+In-Reply-To: <20170313102207.30590-3-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,184 +23,179 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net/phy: marvell: import support for 88E1111 from the
- Linux
-To: pmamonov@gmail.com
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v1 2/2] nvmem: add simple nvstore driver
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-On Fri, Mar 10, 2017 at 06:18:51PM +0300, pmamonov@gmail.com wrote:
-> From: Peter Mamonov <pmamonov@gmail.com>
+On Mon, Mar 13, 2017 at 11:22:07AM +0100, Oleksij Rempel wrote:
+> From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > 
-> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  drivers/net/phy/marvell.c | 126 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 126 insertions(+)
+>  drivers/nvmem/Kconfig   |   8 +++
+>  drivers/nvmem/Makefile  |   4 ++
+>  drivers/nvmem/nvstore.c | 142 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 154 insertions(+)
+>  create mode 100644 drivers/nvmem/nvstore.c
+> 
+> diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
+> index 218be05b2..23ebc1ea7 100644
+> --- a/drivers/nvmem/Kconfig
+> +++ b/drivers/nvmem/Kconfig
+> @@ -6,3 +6,11 @@ menuconfig NVMEM
+>  	  This framework is designed to provide a generic interface to NVMEM
+>  
+>  	  If unsure, say no.
+> +
+> +if NVMEM
+> +
+> +config NVMEM_STORE
+> +       tristate "NVMEM storage"
+> +       help
 
-Applied, thanks
+What is a nvstore?
+
+> +
+> +endif
+> diff --git a/drivers/nvmem/Makefile b/drivers/nvmem/Makefile
+> index 6df2c6952..34a59c316 100644
+> --- a/drivers/nvmem/Makefile
+> +++ b/drivers/nvmem/Makefile
+> @@ -4,3 +4,7 @@
+>  
+>  obj-$(CONFIG_NVMEM)		+= nvmem_core.o
+>  nvmem_core-y			:= core.o
+> +
+> +# Devices
+> +obj-$(CONFIG_NVMEM_STORE)	+= nvmem_nvstore.o
+> +nvmem_nvstore-y			:= nvstore.o
+> diff --git a/drivers/nvmem/nvstore.c b/drivers/nvmem/nvstore.c
+> new file mode 100644
+> index 000000000..c1b256d92
+> --- /dev/null
+> +++ b/drivers/nvmem/nvstore.c
+> @@ -0,0 +1,142 @@
+> +/*
+> + * Copyright (c) 2015 Pengutronix, Steffen Trumtrar <kernel@pengutronix.de>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2
+> + * as published by the Free Software Foundation.
+> + *
+> + * http://www.opensource.org/licenses/gpl-license.html
+> + * http://www.gnu.org/copyleft/gpl.html
+> + */
+> +#include <common.h>
+> +#include <driver.h>
+> +#include <init.h>
+> +#include <io.h>
+> +#include <of.h>
+> +#include <malloc.h>
+> +#include <linux/nvmem-provider.h>
+> +
+> +struct nvstore_priv {
+> +	struct device_d *dev;
+> +	void __iomem	*base;
+> +};
+> +
+> +static int nvstore_write(struct device_d *dev, const int reg, const void *val,
+> +			 int val_size)
+> +{
+> +	struct nvstore_priv *priv = dev->parent->priv;
+> +	unsigned int offset;
+> +
+> +	offset = reg;
+> +	while (val_size > 0) {
+
+Here val_size looks like it's the number of words (bytes?) to write.
+
+> +		switch (val_size) {
+> +		case 1:
+> +			writeb(*(u8 *)val, priv->base + offset);
+> +			break;
+> +		case 2:
+> +			writew(*(u16 *)val, priv->base + offset);
+> +			break;
+> +		case 4:
+> +			writel(*(u32 *)val, priv->base + offset);
+> +			break;
+> +		}
+
+This instead suggests val_size is the width of a single word.
+
+> +		val_size -= 4;
+> +		val += 4;
+> +		offset += 4;
+
+And this looks like a word width of 4 bytes is the only supported.
+
+This looks wrong. Same for the read function.
+
+> +
+> +static struct nvmem_bus nvstore_nvmem_bus = {
+> +	.write = nvstore_write,
+> +	.read  = nvstore_read,
+> +};
+> +
+> +static struct nvmem_config nvstore_nvmem_config = {
+> +	.name = "nvstore",
+> +	.stride = 4,
+> +	.word_size = 4,
+> +};
+> +
+> +static int nvstore_probe(struct device_d *dev)
+> +{
+> +	struct nvstore_priv *priv;
+> +	struct nvmem_device *nvmem;
+> +	struct resource *res;
+> +
+> +	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
+> +	if (IS_ERR(res)) {
+> +		res = dev_get_resource(dev->parent, IORESOURCE_MEM, 0);
+> +		if (IS_ERR(res)) {
+> +			free(priv);
+> +			return PTR_ERR(res);
+> +		}
+> +	}
+> +
+> +	res = request_iomem_region(dev_name(dev), res->start, res->end);
+> +	if (IS_ERR(res)) {
+> +		free(priv);
+> +		return PTR_ERR(res);
+> +	}
+
+dev_request_mem_resource() should do instead of
+dev_get_resource()/request_iomem_region()
+
+> +
+> +	priv->base = (void __iomem *)res->start;
+> +
+> +	nvstore_nvmem_config.size = 1;
+> +	nvstore_nvmem_config.dev = dev;
+> +	nvstore_nvmem_config.bus = &nvstore_nvmem_bus;
+
+Gnagna. This is what happens when the initial driver writer decides that
+his device is single instance only. Everyone copies the template and now
+we find it in a generic driver which clearly is not necessarily single
+instance.
+
+> +
+> +	nvmem = nvmem_register(&nvstore_nvmem_config);
+> +	if (IS_ERR(nvmem)) {
+> +		free(priv);
+> +		return PTR_ERR(nvmem);
+> +	}
+> +
+> +	dev->priv = priv;
+
+This should be set before nvmem_register() is called.
 
 Sascha
-
-> 
-> diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
-> index 38b2ad31f..ea5a4a9be 100644
-> --- a/drivers/net/phy/marvell.c
-> +++ b/drivers/net/phy/marvell.c
-> @@ -31,6 +31,22 @@
->  #define MII_M1011_PHY_STATUS_RESOLVED	BIT(11)
->  #define MII_M1011_PHY_STATUS_LINK	BIT(10)
->  
-> +#define MII_M1111_PHY_LED_CONTROL	0x18
-> +#define MII_M1111_PHY_LED_DIRECT	0x4100
-> +#define MII_M1111_PHY_LED_COMBINE	0x411c
-> +#define MII_M1111_PHY_EXT_CR		0x14
-> +#define MII_M1111_RX_DELAY		0x80
-> +#define MII_M1111_TX_DELAY		0x2
-> +#define MII_M1111_PHY_EXT_SR		0x1b
-> +
-> +#define MII_M1111_HWCFG_MODE_MASK		0xf
-> +#define MII_M1111_HWCFG_MODE_COPPER_RGMII	0xb
-> +#define MII_M1111_HWCFG_MODE_FIBER_RGMII	0x3
-> +#define MII_M1111_HWCFG_MODE_SGMII_NO_CLK	0x4
-> +#define MII_M1111_HWCFG_MODE_COPPER_RTBI	0x9
-> +#define MII_M1111_HWCFG_FIBER_COPPER_AUTO	0x8000
-> +#define MII_M1111_HWCFG_FIBER_COPPER_RES	0x2000
-> +
->  #define MII_M1111_COPPER		0
->  #define MII_M1111_FIBER			1
->  
-> @@ -402,6 +418,107 @@ static int m88e1540_config_init(struct phy_device *phydev)
->  	return marvell_config_init(phydev);
->  }
->  
-> +static int m88e1111_config_init(struct phy_device *phydev)
-> +{
-> +	int err;
-> +	int temp;
-> +
-> +	if ((phydev->interface == PHY_INTERFACE_MODE_RGMII) ||
-> +	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID) ||
-> +	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) ||
-> +	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID)) {
-> +
-> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_CR);
-> +		if (temp < 0)
-> +			return temp;
-> +
-> +		if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID) {
-> +			temp |= (MII_M1111_RX_DELAY | MII_M1111_TX_DELAY);
-> +		} else if (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) {
-> +			temp &= ~MII_M1111_TX_DELAY;
-> +			temp |= MII_M1111_RX_DELAY;
-> +		} else if (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID) {
-> +			temp &= ~MII_M1111_RX_DELAY;
-> +			temp |= MII_M1111_TX_DELAY;
-> +		}
-> +
-> +		err = phy_write(phydev, MII_M1111_PHY_EXT_CR, temp);
-> +		if (err < 0)
-> +			return err;
-> +
-> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
-> +		if (temp < 0)
-> +			return temp;
-> +
-> +		temp &= ~(MII_M1111_HWCFG_MODE_MASK);
-> +
-> +		if (temp & MII_M1111_HWCFG_FIBER_COPPER_RES)
-> +			temp |= MII_M1111_HWCFG_MODE_FIBER_RGMII;
-> +		else
-> +			temp |= MII_M1111_HWCFG_MODE_COPPER_RGMII;
-> +
-> +		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
-> +		if (err < 0)
-> +			return err;
-> +	}
-> +
-> +	if (phydev->interface == PHY_INTERFACE_MODE_SGMII) {
-> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
-> +		if (temp < 0)
-> +			return temp;
-> +
-> +		temp &= ~(MII_M1111_HWCFG_MODE_MASK);
-> +		temp |= MII_M1111_HWCFG_MODE_SGMII_NO_CLK;
-> +		temp |= MII_M1111_HWCFG_FIBER_COPPER_AUTO;
-> +
-> +		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
-> +		if (err < 0)
-> +			return err;
-> +	}
-> +
-> +	if (phydev->interface == PHY_INTERFACE_MODE_RTBI) {
-> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_CR);
-> +		if (temp < 0)
-> +			return temp;
-> +		temp |= (MII_M1111_RX_DELAY | MII_M1111_TX_DELAY);
-> +		err = phy_write(phydev, MII_M1111_PHY_EXT_CR, temp);
-> +		if (err < 0)
-> +			return err;
-> +
-> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
-> +		if (temp < 0)
-> +			return temp;
-> +		temp &= ~(MII_M1111_HWCFG_MODE_MASK | MII_M1111_HWCFG_FIBER_COPPER_RES);
-> +		temp |= 0x7 | MII_M1111_HWCFG_FIBER_COPPER_AUTO;
-> +		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
-> +		if (err < 0)
-> +			return err;
-> +
-> +		/* soft reset */
-> +		err = phy_write(phydev, MII_BMCR, BMCR_RESET);
-> +		if (err < 0)
-> +			return err;
-> +		do
-> +			temp = phy_read(phydev, MII_BMCR);
-> +		while (temp & BMCR_RESET);
-> +
-> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
-> +		if (temp < 0)
-> +			return temp;
-> +		temp &= ~(MII_M1111_HWCFG_MODE_MASK | MII_M1111_HWCFG_FIBER_COPPER_RES);
-> +		temp |= MII_M1111_HWCFG_MODE_COPPER_RTBI | MII_M1111_HWCFG_FIBER_COPPER_AUTO;
-> +		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
-> +		if (err < 0)
-> +			return err;
-> +	}
-> +
-> +	err = marvell_of_reg_init(phydev);
-> +	if (err < 0)
-> +		return err;
-> +
-> +	return phy_write(phydev, MII_BMCR, BMCR_RESET);
-> +}
-> +
->  static int m88e1121_config_init(struct phy_device *phydev)
->  {
->  	u16 reg;
-> @@ -502,6 +619,15 @@ static int m88e1510_config_init(struct phy_device *phydev)
->  
->  static struct phy_driver marvell_drivers[] = {
->  	{
-> +		.phy_id = MARVELL_PHY_ID_88E1111,
-> +		.phy_id_mask = MARVELL_PHY_ID_MASK,
-> +		.drv.name = "Marvell 88E1111",
-> +		.features = PHY_GBIT_FEATURES,
-> +		.config_init = &m88e1111_config_init,
-> +		.config_aneg = &genphy_config_aneg,
-> +		.read_status = &marvell_read_status,
-> +	},
-> +	{
->  		.phy_id = MARVELL_PHY_ID_88E1121R,
->  		.phy_id_mask = MARVELL_PHY_ID_MASK,
->  		.drv.name = "Marvell 88E1121R",
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
