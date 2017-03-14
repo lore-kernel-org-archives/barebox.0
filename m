@@ -1,15 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from 10.mo68.mail-out.ovh.net ([46.105.79.203])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnhJa-0000fX-Bq
- for barebox@lists.infradead.org; Tue, 14 Mar 2017 07:56:21 +0000
-Date: Tue, 14 Mar 2017 08:55:56 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170314075556.qxvfjrkr6ajqpf4k@pengutronix.de>
-References: <20170313134228.32521-1-o.rempel@pengutronix.de>
+ id 1cnhOq-0004CE-2Q
+ for barebox@lists.infradead.org; Tue, 14 Mar 2017 08:01:47 +0000
+Received: from player763.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo68.mail-out.ovh.net (Postfix) with ESMTP id B7B3245BBB
+ for <barebox@lists.infradead.org>; Tue, 14 Mar 2017 09:01:19 +0100 (CET)
+Date: Tue, 14 Mar 2017 09:07:35 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20170314080735.GD25192@mail.ovh.net>
+References: <20170309143117.GI4120@mail.ovh.net>
+ <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
+ <1489070050-16024-4-git-send-email-plagnioj@jcrosoft.com>
+ <20170313075521.dafhf3q5qacszaqw@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170313134228.32521-1-o.rempel@pengutronix.de>
+In-Reply-To: <20170313075521.dafhf3q5qacszaqw@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,262 +28,140 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 1/3] drivers: add simple hw_random implementation
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH 4/5] boot: if we are in secure boot mode
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, Mar 13, 2017 at 02:42:26PM +0100, Oleksij Rempel wrote:
-> From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+On 08:55 Mon 13 Mar     , Sascha Hauer wrote:
+> On Thu, Mar 09, 2017 at 03:34:09PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > request confirmation before booting an unsigned image
+> > 
+> > with a default timeout
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  commands/go.c         |  7 +++++++
+> >  common/Kconfig        |  8 ++++++++
+> >  common/Makefile       |  1 +
+> >  common/bootm.c        |  7 +++++++
+> >  common/secure_boot.c  | 43 +++++++++++++++++++++++++++++++++++++++++++
+> >  include/bootm.h       |  1 +
+> >  include/secure_boot.h | 25 +++++++++++++++++++++++++
+> >  7 files changed, 92 insertions(+)
+> >  create mode 100644 common/secure_boot.c
+> >  create mode 100644 include/secure_boot.h
+> > 
+> > diff --git a/commands/go.c b/commands/go.c
+> > index fb319b320..61c9ce43f 100644
+> > --- a/commands/go.c
+> > +++ b/commands/go.c
+> > @@ -26,6 +26,7 @@
+> >  #include <fcntl.h>
+> >  #include <linux/ctype.h>
+> >  #include <errno.h>
+> > +#include <secure_boot.h>
+> >  
+> >  static int do_go(int argc, char *argv[])
+> >  {
+> > @@ -37,6 +38,12 @@ static int do_go(int argc, char *argv[])
+> >  	if (argc < 2)
+> >  		return COMMAND_ERROR_USAGE;
+> >  
+> > +	rcode = secure_boot_start_unsigned();
+> > +	if (rcode)
+> > +		return rcode ? 1 : 0;
+> > +
+> > +	rcode = 1;
+> > +
+> >  	if (!isdigit(*argv[1])) {
+> >  		fd = open(argv[1], O_RDONLY);
+> >  		if (fd < 0) {
+> > diff --git a/common/Kconfig b/common/Kconfig
+> > index f7ff04664..9e7d027a2 100644
+> > --- a/common/Kconfig
+> > +++ b/common/Kconfig
+> > @@ -21,6 +21,9 @@ config HAS_KALLSYMS
+> >  config HAS_MODULES
+> >  	bool
+> >  
+> > +config HAS_SECURE_BOOT
+> > +	bool
+> > +
+> >  config HAS_CACHE
+> >  	bool
+> >  	help
+> > @@ -184,6 +187,11 @@ config NVVAR
+> >  	  while global variables can be changed during runtime without changing the
+> >  	  default.
+> >  
+> > +config SECURE_BOOT_TIMEOUT
+> > +	prompt "Secure Boot unsigned boot timeout"
+> > +	int
+> > +	default 3
+> > +
+> >  menu "memory layout"
+> >  
+> >  source "pbl/Kconfig"
+> > diff --git a/common/Makefile b/common/Makefile
+> > index 5f58c81d2..e57cc2c15 100644
+> > --- a/common/Makefile
+> > +++ b/common/Makefile
+> > @@ -61,6 +61,7 @@ obj-$(CONFIG_UBIFORMAT)		+= ubiformat.o
+> >  obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
+> >  obj-$(CONFIG_CONSOLE_RATP)	+= ratp.o
+> >  obj-$(CONFIG_BOOT)		+= boot.o
+> > +obj-$(CONFIG_HAS_SECURE_BOOT)	+= secure_boot.o
+> >  
+> >  quiet_cmd_pwd_h = PWDH    $@
+> >  ifdef CONFIG_PASSWORD
+> > diff --git a/common/bootm.c b/common/bootm.c
+> > index 81625d915..0ebf65681 100644
+> > --- a/common/bootm.c
+> > +++ b/common/bootm.c
+> > @@ -23,6 +23,7 @@
+> >  #include <environment.h>
+> >  #include <linux/stat.h>
+> >  #include <magicvar.h>
+> > +#include <secure_boot.h>
+> >  
+> >  static LIST_HEAD(handler_list);
+> >  
+> > @@ -625,6 +626,12 @@ int bootm_boot(struct bootm_data *bootm_data)
+> >  		printf("Passing control to %s handler\n", handler->name);
+> >  	}
+> >  
+> > +	if (!handler->is_secure_supported && is_secure_mode()) {
+> > +		ret = secure_boot_start_unsigned();
+> > +		if (ret)
+> > +			goto err_out;
+> > +	}
 > 
-> Add a simple hw_random implementation based on code from
-> Linux v4.5-rc5.
+> We already have CONFIG_BOOTM_FORCE_SIGNED_IMAGES which admittedly is not
+> the most generic implementation, but in the end we shouldn't have two
+> different ways how secure boot is integrated in the bootm code.
+Did not seen it
+
+I check it and this is only for BOOTM as we have go command too
+
+that need to call image check too
+
+and on efi this is not done at config time but runtime
+
+and this is really FIT image oriented :(
+
+Can we have one for EFI sperately first and then merge them as this will need
+a lot of testing and checking to ensure we break nothing
+
+Best Regards,
+J.
 > 
-> All the entropypool initialization stuff is left out and
-> the obsolete data_read/data_present calls are omitted.
+> Sascha
 > 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  drivers/Kconfig            |   1 +
->  drivers/Makefile           |   1 +
->  drivers/hw_random/Kconfig  |   6 +++
->  drivers/hw_random/Makefile |   1 +
->  drivers/hw_random/core.c   | 110 +++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/hw_random.h  |  44 ++++++++++++++++++
->  6 files changed, 163 insertions(+)
->  create mode 100644 drivers/hw_random/Kconfig
->  create mode 100644 drivers/hw_random/Makefile
->  create mode 100644 drivers/hw_random/core.c
->  create mode 100644 include/linux/hw_random.h
-> 
-> diff --git a/drivers/Kconfig b/drivers/Kconfig
-> index cc086ac2d..2f5784a4d 100644
-> --- a/drivers/Kconfig
-> +++ b/drivers/Kconfig
-> @@ -21,6 +21,7 @@ source "drivers/eeprom/Kconfig"
->  source "drivers/input/Kconfig"
->  source "drivers/watchdog/Kconfig"
->  source "drivers/pwm/Kconfig"
-> +source "drivers/hw_random/Kconfig"
->  source "drivers/dma/Kconfig"
->  source "drivers/gpio/Kconfig"
->  source "drivers/w1/Kconfig"
-> diff --git a/drivers/Makefile b/drivers/Makefile
-> index 6a70f6ee1..7e9b80e59 100644
-> --- a/drivers/Makefile
-> +++ b/drivers/Makefile
-> @@ -20,6 +20,7 @@ obj-y	+= misc/
->  obj-y	+= dma/
->  obj-y  += watchdog/
->  obj-y	+= gpio/
-> +obj-$(CONFIG_HWRNG) += hw_random/
->  obj-$(CONFIG_OFTREE) += of/
->  obj-$(CONFIG_W1) += w1/
->  obj-y += pinctrl/
-> diff --git a/drivers/hw_random/Kconfig b/drivers/hw_random/Kconfig
-> new file mode 100644
-> index 000000000..807fcadd3
-> --- /dev/null
-> +++ b/drivers/hw_random/Kconfig
-> @@ -0,0 +1,6 @@
-> +menuconfig HWRNG
-> +	bool "HWRNG Support"
-> +	help
-> +	  Support for HWRNG(Hardware Random Number Generator) devices.
-> +
-> +	  If unsure, say no.
-> diff --git a/drivers/hw_random/Makefile b/drivers/hw_random/Makefile
-> new file mode 100644
-> index 000000000..15307b100
-> --- /dev/null
-> +++ b/drivers/hw_random/Makefile
-> @@ -0,0 +1 @@
-> +obj-$(CONFIG_HWRNG)		+= core.o
-> diff --git a/drivers/hw_random/core.c b/drivers/hw_random/core.c
-> new file mode 100644
-> index 000000000..3bf464a8b
-> --- /dev/null
-> +++ b/drivers/hw_random/core.c
-> @@ -0,0 +1,110 @@
-> +/*
-> + * Copyright (c) 2016 Pengutronix, Steffen Trumtrar <kernel@pengutronix.de>
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2
-> + * as published by the Free Software Foundation.
-> + *
-> + * derived from Linux kernel drivers/char/hw_random/core.c
-> + */
-> +
-> +#include <common.h>
-> +#include <linux/hw_random.h>
-> +#include <malloc.h>
-> +
-> +static LIST_HEAD(hwrngs);
-> +
-> +#define RNG_BUFFER_SIZE		32
-> +
-> +int hwrng_get_data(struct hwrng *rng, u8 *buffer, size_t size, int wait)
-
-u8 is not a nice type for a buffer. If the callers buffer is of another
-type then we have an unnecessary cast. Use void * instead.
-
-> +{
-> +	return rng->read(rng, buffer, size, wait);
-> +}
-> +
-> +static int hwrng_init(struct hwrng *rng)
-> +{
-> +	int ret = 0;
-> +
-> +	if (rng->init) {
-> +		ret = rng->init(rng);
-> +		return ret;
-> +	}
-> +
-> +	list_add_tail(&rng->list, &hwrngs);
-
-When the new hwrng has an init function, Shouldn't it be added to the list
-also?
-
-> +
-> +	return 0;
-> +}
-> +
-> +static ssize_t rng_dev_read(struct cdev *cdev, void *buf, size_t size,
-> +			    loff_t offset, unsigned long flags)
-> +{
-> +	struct hwrng *rng = container_of(cdev, struct hwrng, cdev);
-> +	size_t count = size;
-> +	ssize_t cur = 0;
-> +	int len;
-> +
-> +	memset(buf, 0, size);
-> +
-> +	while (count) {
-> +		int max = min(count, (size_t)RNG_BUFFER_SIZE);
-> +		len = hwrng_get_data(rng, rng->buf, max, true);
-> +		if (len < 0) {
-> +			cur = len;
-> +			break;
-> +		}
-> +
-> +		memcpy(buf + cur, rng->buf, len);
-> +
-> +		count -= len;
-> +		cur += len;
-> +	}
-
-Why the detour round rng->buf? Can't we copy to the destination buf
-directly?
-
-> +
-> +	return cur;
-> +}
-> +
-> +static struct file_operations rng_chrdev_ops = {
-> +	.read  = rng_dev_read,
-> +	.lseek = dev_lseek_default,
-> +};
-> +
-> +static int hwrng_register_cdev(struct hwrng *rng)
-> +{
-> +	rng->cdev.name = "hwrng";
-> +	rng->cdev.flags = DEVFS_IS_CHARACTER_DEV;
-> +	rng->cdev.ops = &rng_chrdev_ops;
-> +	rng->cdev.dev = rng->dev;
-> +
-> +	return devfs_create(&rng->cdev);
-> +}
-> +
-> +struct hwrng *hwrng_get_first(void)
-> +{
-> +	if (list_empty(&hwrngs))
-> +		return ERR_PTR(-ENODEV);
-> +	else
-> +		return list_first_entry(&hwrngs, struct hwrng, list);
-> +}
-> +
-> +int hwrng_register(struct device_d *dev, struct hwrng *rng)
-> +{
-> +	int err;
-> +
-> +	if (rng->name == NULL || rng->read == NULL)
-> +		return -EINVAL;
-> +
-> +	rng->buf = xzalloc(RNG_BUFFER_SIZE);
-> +
-> +	err = hwrng_init(rng);
-> +	if (err) {
-> +		free(rng->buf);
-> +		return err;
-> +	}
-> +
-> +	rng->dev = dev;
-> +
-> +	err = hwrng_register_cdev(rng);
-> +	if (err)
-> +		free(rng->buf);
-> +
-> +	return err;
-> +}
-> diff --git a/include/linux/hw_random.h b/include/linux/hw_random.h
-> new file mode 100644
-> index 000000000..a115cc1fa
-> --- /dev/null
-> +++ b/include/linux/hw_random.h
-> @@ -0,0 +1,44 @@
-> +/*
-> +	Hardware Random Number Generator
-> +
-> +	Please read Documentation/hw_random.txt for details on use.
-> +
-> +	----------------------------------------------------------
-> +	This software may be used and distributed according to the terms
-> +	of the GNU General Public License, incorporated herein by reference.
-> +
-> + */
-> +
-> +#ifndef LINUX_HWRANDOM_H_
-> +#define LINUX_HWRANDOM_H_
-> +
-> +#include <linux/list.h>
-> +
-> +/**
-> + * struct hwrng - Hardware Random Number Generator driver
-> + * @name:		Unique RNG name.
-> + * @init:		Initialization callback (can be NULL).
-> + * @read:		New API. drivers can fill up to max bytes of data
-> + *			into the buffer. The buffer is aligned for any type.
-> + * @priv:		Private data, for use by the RNG driver.
-> + */
-> +struct hwrng {
-> +	const char *name;
-> +	int (*init)(struct hwrng *rng);
-> +	int (*read)(struct hwrng *rng, void *data, size_t max, bool wait);
-> +	unsigned long priv;
-
-This is unused and can be removed. The RNG driver should embed a struct
-hwrng in it's driver private data and use container_of().
-
-> +	u8 *buf;
-> +};
-> +
-> +/** Register a new Hardware Random Number Generator driver. */
-> +extern int hwrng_register(struct device_d *dev, struct hwrng *rng);
-> +extern struct hwrng *hwrng_get_first(void);
-> +extern int hwrng_get_data(struct hwrng *rng, u8 *buffer, size_t size,
-> +			  int wait);
-
-Drop the 'extern's please.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
