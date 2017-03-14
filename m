@@ -1,21 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo68.mail-out.ovh.net ([46.105.59.63])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnhW7-0007R3-Rd
- for barebox@lists.infradead.org; Tue, 14 Mar 2017 08:09:18 +0000
-Received: from player763.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo68.mail-out.ovh.net (Postfix) with ESMTP id 731D1433A0
- for <barebox@lists.infradead.org>; Tue, 14 Mar 2017 09:08:51 +0100 (CET)
-Date: Tue, 14 Mar 2017 09:15:11 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20170314081511.GF25192@mail.ovh.net>
-References: <20170309143117.GI4120@mail.ovh.net>
- <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
- <1489070050-16024-3-git-send-email-plagnioj@jcrosoft.com>
- <20170313073416.z6cedammb3vgbj6c@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170313073416.z6cedammb3vgbj6c@pengutronix.de>
+ id 1cnitu-0007Xg-8Q
+ for barebox@lists.infradead.org; Tue, 14 Mar 2017 09:37:55 +0000
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Date: Tue, 14 Mar 2017 10:37:29 +0100
+Message-Id: <20170314093729.27803-1-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,64 +14,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] efi: fix secure and setup mode report
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] efi: clocksoure: make sure the meassured frequency is valid
+To: barebox@lists.infradead.org
+Cc: Michael Olbrich <m.olbrich@pengutronix.de>
 
-On 08:34 Mon 13 Mar     , Sascha Hauer wrote:
-> On Thu, Mar 09, 2017 at 03:34:08PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  drivers/efi/efi-device.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
-> > index 6ed7f12b3..7029bfb31 100644
-> > --- a/drivers/efi/efi-device.c
-> > +++ b/drivers/efi/efi-device.c
-> > @@ -365,7 +365,7 @@ static int efi_is_secure_boot(void)
-> >  		free(val);
-> >  	}
-> >  
-> > -	return ret != 1;
-> > +	return ret != 0;
-> >  }
-> >  
-> >  static int efi_is_setup_mode(void)
-> > @@ -379,7 +379,7 @@ static int efi_is_setup_mode(void)
-> >  		free(val);
-> >  	}
-> >  
-> > -	return ret != 1;
-> > +	return ret != 0;
-> >  }
-> >  
-> >  static int efi_init_devices(void)
-> > @@ -406,7 +406,7 @@ static int efi_init_devices(void)
-> >  	dev_add_param_int_ro(efi_bus.dev, "fw_revision", efi_sys_table->fw_revision, "%u");
-> >  	dev_add_param_int_ro(efi_bus.dev, "secure_boot", secure_boot, "%d");
-> >  	dev_add_param_int_ro(efi_bus.dev, "secure_mode",
-> > -			     secure_boot & setup_mode, "%u");
-> > +			     secure_boot & !setup_mode, "%u");
-> 
-> While a bitwise 'and' operator surely works with booleans here you should still
-> use a logical 'and' operator here.
-ok
+Some EFI implementations have a even slower tick rate and the meassured
+frequency may be zero.
 
-Best Regards,
-J.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+Acked-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/clocksource/efi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/clocksource/efi.c b/drivers/clocksource/efi.c
+index 89906c452eb7..fb5b7ca63de9 100644
+--- a/drivers/clocksource/efi.c
++++ b/drivers/clocksource/efi.c
+@@ -71,6 +71,10 @@ static int efi_cs_init(struct clocksource *cs)
+ 		uint64_t nb_100ns;
+ 
+ 		freq = ticks_freq_x86();
++		if (freq == 0) {
++			BS->close_event(efi_cs_evt);
++			return -ENODEV;
++		}
+ 		nb_100ns = 10 * 1000 * 1000 / freq;
+ 		pr_warn("EFI Event timer too slow freq = %llu Hz\n", freq);
+ 		efiret = BS->set_timer(efi_cs_evt, EFI_TIMER_PERIODIC, nb_100ns);
+-- 
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
