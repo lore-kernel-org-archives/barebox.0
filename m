@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnh19-0000mn-IB
- for barebox@lists.infradead.org; Tue, 14 Mar 2017 07:37:17 +0000
-Date: Tue, 14 Mar 2017 08:36:53 +0100
+ id 1cnhJa-0000fX-Bq
+ for barebox@lists.infradead.org; Tue, 14 Mar 2017 07:56:21 +0000
+Date: Tue, 14 Mar 2017 08:55:56 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170314073653.rgexs6q5wwafl5ys@pengutronix.de>
-References: <20170313102207.30590-1-o.rempel@pengutronix.de>
- <20170313102207.30590-3-o.rempel@pengutronix.de>
+Message-ID: <20170314075556.qxvfjrkr6ajqpf4k@pengutronix.de>
+References: <20170313134228.32521-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170313102207.30590-3-o.rempel@pengutronix.de>
+In-Reply-To: <20170313134228.32521-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,177 +22,254 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 2/2] nvmem: add simple nvstore driver
+Subject: Re: [PATCH v1 1/3] drivers: add simple hw_random implementation
 To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-On Mon, Mar 13, 2017 at 11:22:07AM +0100, Oleksij Rempel wrote:
+On Mon, Mar 13, 2017 at 02:42:26PM +0100, Oleksij Rempel wrote:
 > From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> 
+> Add a simple hw_random implementation based on code from
+> Linux v4.5-rc5.
+> 
+> All the entropypool initialization stuff is left out and
+> the obsolete data_read/data_present calls are omitted.
 > 
 > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  drivers/nvmem/Kconfig   |   8 +++
->  drivers/nvmem/Makefile  |   4 ++
->  drivers/nvmem/nvstore.c | 142 ++++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 154 insertions(+)
->  create mode 100644 drivers/nvmem/nvstore.c
+>  drivers/Kconfig            |   1 +
+>  drivers/Makefile           |   1 +
+>  drivers/hw_random/Kconfig  |   6 +++
+>  drivers/hw_random/Makefile |   1 +
+>  drivers/hw_random/core.c   | 110 +++++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/hw_random.h  |  44 ++++++++++++++++++
+>  6 files changed, 163 insertions(+)
+>  create mode 100644 drivers/hw_random/Kconfig
+>  create mode 100644 drivers/hw_random/Makefile
+>  create mode 100644 drivers/hw_random/core.c
+>  create mode 100644 include/linux/hw_random.h
 > 
-> diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
-> index 218be05b2..23ebc1ea7 100644
-> --- a/drivers/nvmem/Kconfig
-> +++ b/drivers/nvmem/Kconfig
-> @@ -6,3 +6,11 @@ menuconfig NVMEM
->  	  This framework is designed to provide a generic interface to NVMEM
->  
->  	  If unsure, say no.
-> +
-> +if NVMEM
-> +
-> +config NVMEM_STORE
-> +       tristate "NVMEM storage"
-> +       help
-
-What is a nvstore?
-
-> +
-> +endif
-> diff --git a/drivers/nvmem/Makefile b/drivers/nvmem/Makefile
-> index 6df2c6952..34a59c316 100644
-> --- a/drivers/nvmem/Makefile
-> +++ b/drivers/nvmem/Makefile
-> @@ -4,3 +4,7 @@
->  
->  obj-$(CONFIG_NVMEM)		+= nvmem_core.o
->  nvmem_core-y			:= core.o
-> +
-> +# Devices
-> +obj-$(CONFIG_NVMEM_STORE)	+= nvmem_nvstore.o
-> +nvmem_nvstore-y			:= nvstore.o
-> diff --git a/drivers/nvmem/nvstore.c b/drivers/nvmem/nvstore.c
+> diff --git a/drivers/Kconfig b/drivers/Kconfig
+> index cc086ac2d..2f5784a4d 100644
+> --- a/drivers/Kconfig
+> +++ b/drivers/Kconfig
+> @@ -21,6 +21,7 @@ source "drivers/eeprom/Kconfig"
+>  source "drivers/input/Kconfig"
+>  source "drivers/watchdog/Kconfig"
+>  source "drivers/pwm/Kconfig"
+> +source "drivers/hw_random/Kconfig"
+>  source "drivers/dma/Kconfig"
+>  source "drivers/gpio/Kconfig"
+>  source "drivers/w1/Kconfig"
+> diff --git a/drivers/Makefile b/drivers/Makefile
+> index 6a70f6ee1..7e9b80e59 100644
+> --- a/drivers/Makefile
+> +++ b/drivers/Makefile
+> @@ -20,6 +20,7 @@ obj-y	+= misc/
+>  obj-y	+= dma/
+>  obj-y  += watchdog/
+>  obj-y	+= gpio/
+> +obj-$(CONFIG_HWRNG) += hw_random/
+>  obj-$(CONFIG_OFTREE) += of/
+>  obj-$(CONFIG_W1) += w1/
+>  obj-y += pinctrl/
+> diff --git a/drivers/hw_random/Kconfig b/drivers/hw_random/Kconfig
 > new file mode 100644
-> index 000000000..c1b256d92
+> index 000000000..807fcadd3
 > --- /dev/null
-> +++ b/drivers/nvmem/nvstore.c
-> @@ -0,0 +1,142 @@
+> +++ b/drivers/hw_random/Kconfig
+> @@ -0,0 +1,6 @@
+> +menuconfig HWRNG
+> +	bool "HWRNG Support"
+> +	help
+> +	  Support for HWRNG(Hardware Random Number Generator) devices.
+> +
+> +	  If unsure, say no.
+> diff --git a/drivers/hw_random/Makefile b/drivers/hw_random/Makefile
+> new file mode 100644
+> index 000000000..15307b100
+> --- /dev/null
+> +++ b/drivers/hw_random/Makefile
+> @@ -0,0 +1 @@
+> +obj-$(CONFIG_HWRNG)		+= core.o
+> diff --git a/drivers/hw_random/core.c b/drivers/hw_random/core.c
+> new file mode 100644
+> index 000000000..3bf464a8b
+> --- /dev/null
+> +++ b/drivers/hw_random/core.c
+> @@ -0,0 +1,110 @@
 > +/*
-> + * Copyright (c) 2015 Pengutronix, Steffen Trumtrar <kernel@pengutronix.de>
+> + * Copyright (c) 2016 Pengutronix, Steffen Trumtrar <kernel@pengutronix.de>
 > + *
 > + * This program is free software; you can redistribute it and/or modify
 > + * it under the terms of the GNU General Public License version 2
 > + * as published by the Free Software Foundation.
 > + *
-> + * http://www.opensource.org/licenses/gpl-license.html
-> + * http://www.gnu.org/copyleft/gpl.html
+> + * derived from Linux kernel drivers/char/hw_random/core.c
 > + */
+> +
 > +#include <common.h>
-> +#include <driver.h>
-> +#include <init.h>
-> +#include <io.h>
-> +#include <of.h>
+> +#include <linux/hw_random.h>
 > +#include <malloc.h>
-> +#include <linux/nvmem-provider.h>
 > +
-> +struct nvstore_priv {
-> +	struct device_d *dev;
-> +	void __iomem	*base;
-> +};
+> +static LIST_HEAD(hwrngs);
 > +
-> +static int nvstore_write(struct device_d *dev, const int reg, const void *val,
-> +			 int val_size)
+> +#define RNG_BUFFER_SIZE		32
+> +
+> +int hwrng_get_data(struct hwrng *rng, u8 *buffer, size_t size, int wait)
+
+u8 is not a nice type for a buffer. If the callers buffer is of another
+type then we have an unnecessary cast. Use void * instead.
+
 > +{
-> +	struct nvstore_priv *priv = dev->parent->priv;
-> +	unsigned int offset;
+> +	return rng->read(rng, buffer, size, wait);
+> +}
 > +
-> +	offset = reg;
-> +	while (val_size > 0) {
+> +static int hwrng_init(struct hwrng *rng)
+> +{
+> +	int ret = 0;
+> +
+> +	if (rng->init) {
+> +		ret = rng->init(rng);
+> +		return ret;
+> +	}
+> +
+> +	list_add_tail(&rng->list, &hwrngs);
 
-Here val_size looks like it's the number of words (bytes?) to write.
+When the new hwrng has an init function, Shouldn't it be added to the list
+also?
 
-> +		switch (val_size) {
-> +		case 1:
-> +			writeb(*(u8 *)val, priv->base + offset);
-> +			break;
-> +		case 2:
-> +			writew(*(u16 *)val, priv->base + offset);
-> +			break;
-> +		case 4:
-> +			writel(*(u32 *)val, priv->base + offset);
+> +
+> +	return 0;
+> +}
+> +
+> +static ssize_t rng_dev_read(struct cdev *cdev, void *buf, size_t size,
+> +			    loff_t offset, unsigned long flags)
+> +{
+> +	struct hwrng *rng = container_of(cdev, struct hwrng, cdev);
+> +	size_t count = size;
+> +	ssize_t cur = 0;
+> +	int len;
+> +
+> +	memset(buf, 0, size);
+> +
+> +	while (count) {
+> +		int max = min(count, (size_t)RNG_BUFFER_SIZE);
+> +		len = hwrng_get_data(rng, rng->buf, max, true);
+> +		if (len < 0) {
+> +			cur = len;
 > +			break;
 > +		}
+> +
+> +		memcpy(buf + cur, rng->buf, len);
+> +
+> +		count -= len;
+> +		cur += len;
+> +	}
 
-This instead suggests val_size is the width of a single word.
-
-> +		val_size -= 4;
-> +		val += 4;
-> +		offset += 4;
-
-And this looks like a word width of 4 bytes is the only supported.
-
-This looks wrong. Same for the read function.
+Why the detour round rng->buf? Can't we copy to the destination buf
+directly?
 
 > +
-> +static struct nvmem_bus nvstore_nvmem_bus = {
-> +	.write = nvstore_write,
-> +	.read  = nvstore_read,
+> +	return cur;
+> +}
+> +
+> +static struct file_operations rng_chrdev_ops = {
+> +	.read  = rng_dev_read,
+> +	.lseek = dev_lseek_default,
 > +};
 > +
-> +static struct nvmem_config nvstore_nvmem_config = {
-> +	.name = "nvstore",
-> +	.stride = 4,
-> +	.word_size = 4,
-> +};
-> +
-> +static int nvstore_probe(struct device_d *dev)
+> +static int hwrng_register_cdev(struct hwrng *rng)
 > +{
-> +	struct nvstore_priv *priv;
-> +	struct nvmem_device *nvmem;
-> +	struct resource *res;
+> +	rng->cdev.name = "hwrng";
+> +	rng->cdev.flags = DEVFS_IS_CHARACTER_DEV;
+> +	rng->cdev.ops = &rng_chrdev_ops;
+> +	rng->cdev.dev = rng->dev;
 > +
-> +	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
+> +	return devfs_create(&rng->cdev);
+> +}
 > +
-> +	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
-> +	if (IS_ERR(res)) {
-> +		res = dev_get_resource(dev->parent, IORESOURCE_MEM, 0);
-> +		if (IS_ERR(res)) {
-> +			free(priv);
-> +			return PTR_ERR(res);
-> +		}
+> +struct hwrng *hwrng_get_first(void)
+> +{
+> +	if (list_empty(&hwrngs))
+> +		return ERR_PTR(-ENODEV);
+> +	else
+> +		return list_first_entry(&hwrngs, struct hwrng, list);
+> +}
+> +
+> +int hwrng_register(struct device_d *dev, struct hwrng *rng)
+> +{
+> +	int err;
+> +
+> +	if (rng->name == NULL || rng->read == NULL)
+> +		return -EINVAL;
+> +
+> +	rng->buf = xzalloc(RNG_BUFFER_SIZE);
+> +
+> +	err = hwrng_init(rng);
+> +	if (err) {
+> +		free(rng->buf);
+> +		return err;
 > +	}
 > +
-> +	res = request_iomem_region(dev_name(dev), res->start, res->end);
-> +	if (IS_ERR(res)) {
-> +		free(priv);
-> +		return PTR_ERR(res);
-> +	}
-
-dev_request_mem_resource() should do instead of
-dev_get_resource()/request_iomem_region()
-
+> +	rng->dev = dev;
 > +
-> +	priv->base = (void __iomem *)res->start;
+> +	err = hwrng_register_cdev(rng);
+> +	if (err)
+> +		free(rng->buf);
 > +
-> +	nvstore_nvmem_config.size = 1;
-> +	nvstore_nvmem_config.dev = dev;
-> +	nvstore_nvmem_config.bus = &nvstore_nvmem_bus;
-
-Gnagna. This is what happens when the initial driver writer decides that
-his device is single instance only. Everyone copies the template and now
-we find it in a generic driver which clearly is not necessarily single
-instance.
-
+> +	return err;
+> +}
+> diff --git a/include/linux/hw_random.h b/include/linux/hw_random.h
+> new file mode 100644
+> index 000000000..a115cc1fa
+> --- /dev/null
+> +++ b/include/linux/hw_random.h
+> @@ -0,0 +1,44 @@
+> +/*
+> +	Hardware Random Number Generator
 > +
-> +	nvmem = nvmem_register(&nvstore_nvmem_config);
-> +	if (IS_ERR(nvmem)) {
-> +		free(priv);
-> +		return PTR_ERR(nvmem);
-> +	}
+> +	Please read Documentation/hw_random.txt for details on use.
 > +
-> +	dev->priv = priv;
+> +	----------------------------------------------------------
+> +	This software may be used and distributed according to the terms
+> +	of the GNU General Public License, incorporated herein by reference.
+> +
+> + */
+> +
+> +#ifndef LINUX_HWRANDOM_H_
+> +#define LINUX_HWRANDOM_H_
+> +
+> +#include <linux/list.h>
+> +
+> +/**
+> + * struct hwrng - Hardware Random Number Generator driver
+> + * @name:		Unique RNG name.
+> + * @init:		Initialization callback (can be NULL).
+> + * @read:		New API. drivers can fill up to max bytes of data
+> + *			into the buffer. The buffer is aligned for any type.
+> + * @priv:		Private data, for use by the RNG driver.
+> + */
+> +struct hwrng {
+> +	const char *name;
+> +	int (*init)(struct hwrng *rng);
+> +	int (*read)(struct hwrng *rng, void *data, size_t max, bool wait);
+> +	unsigned long priv;
 
-This should be set before nvmem_register() is called.
+This is unused and can be removed. The RNG driver should embed a struct
+hwrng in it's driver private data and use container_of().
+
+> +	u8 *buf;
+> +};
+> +
+> +/** Register a new Hardware Random Number Generator driver. */
+> +extern int hwrng_register(struct device_d *dev, struct hwrng *rng);
+> +extern struct hwrng *hwrng_get_first(void);
+> +extern int hwrng_get_data(struct hwrng *rng, u8 *buffer, size_t size,
+> +			  int wait);
+
+Drop the 'extern's please.
 
 Sascha
 
