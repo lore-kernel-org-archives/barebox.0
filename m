@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnolD-0005Dm-6M
+ id 1cnolD-0005Di-6Q
  for barebox@lists.infradead.org; Tue, 14 Mar 2017 15:53:22 +0000
-Received: by mail-pg0-x244.google.com with SMTP id g2so20813486pge.2
- for <barebox@lists.infradead.org>; Tue, 14 Mar 2017 08:53:00 -0700 (PDT)
+Received: by mail-pg0-x244.google.com with SMTP id m5so934986pgk.3
+ for <barebox@lists.infradead.org>; Tue, 14 Mar 2017 08:52:58 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 14 Mar 2017 08:52:15 -0700
-Message-Id: <20170314155222.11657-5-andrew.smirnov@gmail.com>
+Date: Tue, 14 Mar 2017 08:52:13 -0700
+Message-Id: <20170314155222.11657-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20170314155222.11657-1-andrew.smirnov@gmail.com>
 References: <20170314155222.11657-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,76 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/11] mci: Allow parsing for explicit DT node
+Subject: [PATCH 02/11] serial: atmel: Add DT compatibility table
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Convert mci_of_parse into mci_of_parse_node, a function that takes
-explicit deivce tree node pointer to be used for SD/MMC related
-properties extraction. Implement original mci_of_parse as a wrapper
-around the call to new function.
-
-This is useful for controllers who specify parameter like bus witdth and
-GPIOs as a part of main controller's child nodes (e.g. AT91 SoCs).
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mci/mci-core.c | 13 ++++++++-----
- include/mci.h          |  1 +
- 2 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/serial/atmel.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 055a5e2..928277a 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -1843,20 +1843,18 @@ err_free:
- 	return ret;
+diff --git a/drivers/serial/atmel.c b/drivers/serial/atmel.c
+index ab94fd2..2f8adc9 100644
+--- a/drivers/serial/atmel.c
++++ b/drivers/serial/atmel.c
+@@ -446,8 +446,15 @@ static int atmel_serial_probe(struct device_d *dev)
+ 	return 0;
  }
  
--void mci_of_parse(struct mci_host *host)
-+void mci_of_parse_node(struct mci_host *host,
-+		       struct device_node *np)
- {
--	struct device_node *np;
- 	u32 bus_width;
- 	u32 dsr_val;
- 
- 	if (!IS_ENABLED(CONFIG_OFDEVICE))
- 		return;
- 
--	if (!host->hw_dev || !host->hw_dev->device_node)
-+	if (!host->hw_dev || !np)
- 		return;
- 
--	np = host->hw_dev->device_node;
--
- 	/* "bus-width" is translated to MMC_CAP_*_BIT_DATA flags */
- 	if (of_property_read_u32(np, "bus-width", &bus_width) < 0) {
- 		/* If bus-width is missing we get the driver's default, which
-@@ -1897,6 +1895,11 @@ void mci_of_parse(struct mci_host *host)
- 	host->non_removable = of_property_read_bool(np, "non-removable");
- }
- 
-+void mci_of_parse(struct mci_host *host)
-+{
-+	return mci_of_parse_node(host, host->hw_dev->device_node);
-+}
++static const struct of_device_id __maybe_unused atmel_serial_dt_ids[] = {
++	{ .compatible = "atmel,at91rm9200-usart" },
++	{ .compatible = "atmel,at91sam9260-usart" },
++	{ /* sentinel */ }
++};
 +
- struct mci *mci_get_device_by_name(const char *name)
- {
- 	struct mci *mci;
-diff --git a/include/mci.h b/include/mci.h
-index cc4712c..781e6e0 100644
---- a/include/mci.h
-+++ b/include/mci.h
-@@ -480,6 +480,7 @@ struct mci {
- 
- int mci_register(struct mci_host*);
- void mci_of_parse(struct mci_host *host);
-+void mci_of_parse_node(struct mci_host *host, struct device_node *np);
- int mci_detect_card(struct mci_host *);
- int mci_send_ext_csd(struct mci *mci, char *ext_csd);
- int mci_switch(struct mci *mci, unsigned set, unsigned index,
+ static struct driver_d atmel_serial_driver = {
+         .name  = "atmel_usart",
+         .probe = atmel_serial_probe,
++	.of_compatible = DRV_OF_COMPAT(atmel_serial_dt_ids),
+ };
+ console_platform_driver(atmel_serial_driver);
 -- 
 2.9.3
 
