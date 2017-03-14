@@ -1,21 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo68.mail-out.ovh.net ([46.105.79.203])
+Received: from mo68.mail-out.ovh.net ([178.32.228.68])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnhOq-0004CE-2Q
- for barebox@lists.infradead.org; Tue, 14 Mar 2017 08:01:47 +0000
+ id 1cnhVL-0007Dp-Nt
+ for barebox@lists.infradead.org; Tue, 14 Mar 2017 08:08:29 +0000
 Received: from player763.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo68.mail-out.ovh.net (Postfix) with ESMTP id B7B3245BBB
- for <barebox@lists.infradead.org>; Tue, 14 Mar 2017 09:01:19 +0100 (CET)
-Date: Tue, 14 Mar 2017 09:07:35 +0100
+ by mo68.mail-out.ovh.net (Postfix) with ESMTP id 420443F922
+ for <barebox@lists.infradead.org>; Tue, 14 Mar 2017 09:08:05 +0100 (CET)
+Date: Tue, 14 Mar 2017 09:14:26 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20170314080735.GD25192@mail.ovh.net>
+Message-ID: <20170314081426.GE25192@mail.ovh.net>
 References: <20170309143117.GI4120@mail.ovh.net>
  <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
  <1489070050-16024-4-git-send-email-plagnioj@jcrosoft.com>
- <20170313075521.dafhf3q5qacszaqw@pengutronix.de>
+ <20170313075018.566tqqmhoymv5v66@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170313075521.dafhf3q5qacszaqw@pengutronix.de>
+In-Reply-To: <20170313075018.566tqqmhoymv5v66@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -32,7 +32,7 @@ Subject: Re: [PATCH 4/5] boot: if we are in secure boot mode
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 08:55 Mon 13 Mar     , Sascha Hauer wrote:
+On 08:50 Mon 13 Mar     , Sascha Hauer wrote:
 > On Thu, Mar 09, 2017 at 03:34:09PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > > request confirmation before booting an unsigned image
 > > 
@@ -70,6 +70,11 @@ On 08:55 Mon 13 Mar     , Sascha Hauer wrote:
 > > +	rcode = secure_boot_start_unsigned();
 > > +	if (rcode)
 > > +		return rcode ? 1 : 0;
+> 
+> When rcode is true, then if rcode is true, return 1, otherwise return 0?
+
+I forget we could return a negative error on command too
+> 
 > > +
 > > +	rcode = 1;
 > > +
@@ -135,33 +140,49 @@ On 08:55 Mon 13 Mar     , Sascha Hauer wrote:
 > > +		if (ret)
 > > +			goto err_out;
 > > +	}
+> > +
+> >  	ret = handler->bootm(data);
+> >  	if (data->dryrun)
+> >  		printf("Dryrun. Aborted\n");
+> > diff --git a/common/secure_boot.c b/common/secure_boot.c
+> > new file mode 100644
+> > index 000000000..e625ef4e1
+> > --- /dev/null
+> > +++ b/common/secure_boot.c
+> > @@ -0,0 +1,43 @@
+> > +/*
+> > + * Copyright (c) 2017 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > + *
+> > + * Under GPLv2 Only
+> > + */
+> > +#include <common.h>
+> > +#include <secure_boot.h>
+> > +#include <console_countdown.h>
+> > +#include <globalvar.h>
+> > +#include <magicvar.h>
+> > +#include <init.h>
+> > +
+> > +static unsigned int sb_confirm_timeout = CONFIG_SECURE_BOOT_TIMEOUT;
 > 
-> We already have CONFIG_BOOTM_FORCE_SIGNED_IMAGES which admittedly is not
-> the most generic implementation, but in the end we shouldn't have two
-> different ways how secure boot is integrated in the bootm code.
-Did not seen it
+> Use globalvar_add_simple_int instead of putting this into the config.
+> 
+> > +
+> > +int secure_boot_start_unsigned(void)
+> 
+> This function name is very misleading. It sounds like it starts an
+> unsigned image, but this function doesn't start anything. Second guess
+> is that it returns a boolean whether it's allowed to start an unsigned
+> image, but actually it returns the opposite.
 
-I check it and this is only for BOOTM as we have go command too
+secure_boot_can_start_unsigned could be better
 
-that need to call image check too
+it return 0 if ok
+an error otherwise
 
-and on efi this is not done at config time but runtime
-
-and this is really FIT image oriented :(
-
-Can we have one for EFI sperately first and then merge them as this will need
-a lot of testing and checking to ensure we break nothing
+as we can return an security violation or other error
 
 Best Regards,
 J.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
