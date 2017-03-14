@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cngjT-0000tx-CZ
- for barebox@lists.infradead.org; Tue, 14 Mar 2017 07:19:01 +0000
-Date: Tue, 14 Mar 2017 08:18:37 +0100
+ id 1cngk4-00013G-R0
+ for barebox@lists.infradead.org; Tue, 14 Mar 2017 07:19:38 +0000
+Date: Tue, 14 Mar 2017 08:19:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170314071837.55ehyx2b4hqzlrw5@pengutronix.de>
-References: <1489136300-8428-1-git-send-email-yegorslists@googlemail.com>
+Message-ID: <20170314071915.f2y3viiboadigd42@pengutronix.de>
+References: <20170310150209.1564-1-pmamonov@gmail.com>
+ <20170310151851.26978-1-pmamonov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1489136300-8428-1-git-send-email-yegorslists@googlemail.com>
+In-Reply-To: <20170310151851.26978-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,64 +23,183 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: baltos: enable mPCIe slot and configure external
- GPIO controller
-To: yegorslists@googlemail.com
+Subject: Re: [PATCH] net/phy: marvell: import support for 88E1111 from the
+ Linux
+To: pmamonov@gmail.com
 Cc: barebox@lists.infradead.org
 
-On Fri, Mar 10, 2017 at 09:58:20AM +0100, yegorslists@googlemail.com wrote:
-> From: Yegor Yefremov <yegorslists@googlemail.com>
+On Fri, Mar 10, 2017 at 06:18:51PM +0300, pmamonov@gmail.com wrote:
+> From: Peter Mamonov <pmamonov@gmail.com>
 > 
-> Baltos devices provide a mPCIe slot, whose power is turned off by
-> default. This patch activates mPCIe slot in barebox, so that for example
-> GSM modem can be already available in user space.
-> 
-> Also configure external GPIO controller via setting its output pins to
-> low.
-> 
-> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 > ---
->  arch/arm/boards/vscom-baltos/board.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+>  drivers/net/phy/marvell.c | 126 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 126 insertions(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/boards/vscom-baltos/board.c b/arch/arm/boards/vscom-baltos/board.c
-> index fea992d..39f40a6 100644
-> --- a/arch/arm/boards/vscom-baltos/board.c
-> +++ b/arch/arm/boards/vscom-baltos/board.c
-> @@ -41,6 +41,7 @@
->  #include <linux/err.h>
->  #include <mach/bbu.h>
->  #include <libfile.h>
-> +#include <gpio.h>
+> diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+> index 38b2ad31f..ea5a4a9be 100644
+> --- a/drivers/net/phy/marvell.c
+> +++ b/drivers/net/phy/marvell.c
+> @@ -31,6 +31,22 @@
+>  #define MII_M1011_PHY_STATUS_RESOLVED	BIT(11)
+>  #define MII_M1011_PHY_STATUS_LINK	BIT(10)
 >  
->  static struct omap_barebox_part baltos_barebox_part = {
->  	.nand_offset = SZ_512K,
-> @@ -109,6 +110,17 @@ static int baltos_read_eeprom(void)
->  	sprintf(var_buf, "%d", hw_param.SystemId);
->  	globalvar_add_simple("board.id", var_buf);
->  
-> +	/* enable mPCIe slot */
-> +	gpio_direction_output(100, 1);
+> +#define MII_M1111_PHY_LED_CONTROL	0x18
+> +#define MII_M1111_PHY_LED_DIRECT	0x4100
+> +#define MII_M1111_PHY_LED_COMBINE	0x411c
+> +#define MII_M1111_PHY_EXT_CR		0x14
+> +#define MII_M1111_RX_DELAY		0x80
+> +#define MII_M1111_TX_DELAY		0x2
+> +#define MII_M1111_PHY_EXT_SR		0x1b
 > +
-> +	/* configure output signals of the external GPIO controller */
-> +	if (hw_param.SystemId == 210 || hw_param.SystemId == 211) {
-> +		gpio_direction_output(132, 0);
-> +		gpio_direction_output(133, 0);
-> +		gpio_direction_output(134, 0);
-> +		gpio_direction_output(135, 0);
+> +#define MII_M1111_HWCFG_MODE_MASK		0xf
+> +#define MII_M1111_HWCFG_MODE_COPPER_RGMII	0xb
+> +#define MII_M1111_HWCFG_MODE_FIBER_RGMII	0x3
+> +#define MII_M1111_HWCFG_MODE_SGMII_NO_CLK	0x4
+> +#define MII_M1111_HWCFG_MODE_COPPER_RTBI	0x9
+> +#define MII_M1111_HWCFG_FIBER_COPPER_AUTO	0x8000
+> +#define MII_M1111_HWCFG_FIBER_COPPER_RES	0x2000
+> +
+>  #define MII_M1111_COPPER		0
+>  #define MII_M1111_FIBER			1
+>  
+> @@ -402,6 +418,107 @@ static int m88e1540_config_init(struct phy_device *phydev)
+>  	return marvell_config_init(phydev);
+>  }
+>  
+> +static int m88e1111_config_init(struct phy_device *phydev)
+> +{
+> +	int err;
+> +	int temp;
+> +
+> +	if ((phydev->interface == PHY_INTERFACE_MODE_RGMII) ||
+> +	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID) ||
+> +	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) ||
+> +	    (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID)) {
+> +
+> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_CR);
+> +		if (temp < 0)
+> +			return temp;
+> +
+> +		if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID) {
+> +			temp |= (MII_M1111_RX_DELAY | MII_M1111_TX_DELAY);
+> +		} else if (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) {
+> +			temp &= ~MII_M1111_TX_DELAY;
+> +			temp |= MII_M1111_RX_DELAY;
+> +		} else if (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID) {
+> +			temp &= ~MII_M1111_RX_DELAY;
+> +			temp |= MII_M1111_TX_DELAY;
+> +		}
+> +
+> +		err = phy_write(phydev, MII_M1111_PHY_EXT_CR, temp);
+> +		if (err < 0)
+> +			return err;
+> +
+> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
+> +		if (temp < 0)
+> +			return temp;
+> +
+> +		temp &= ~(MII_M1111_HWCFG_MODE_MASK);
+> +
+> +		if (temp & MII_M1111_HWCFG_FIBER_COPPER_RES)
+> +			temp |= MII_M1111_HWCFG_MODE_FIBER_RGMII;
+> +		else
+> +			temp |= MII_M1111_HWCFG_MODE_COPPER_RGMII;
+> +
+> +		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
+> +		if (err < 0)
+> +			return err;
 > +	}
 > +
->  	return 0;
->  }
->  environment_initcall(baltos_read_eeprom);
+> +	if (phydev->interface == PHY_INTERFACE_MODE_SGMII) {
+> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
+> +		if (temp < 0)
+> +			return temp;
+> +
+> +		temp &= ~(MII_M1111_HWCFG_MODE_MASK);
+> +		temp |= MII_M1111_HWCFG_MODE_SGMII_NO_CLK;
+> +		temp |= MII_M1111_HWCFG_FIBER_COPPER_AUTO;
+> +
+> +		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
+> +		if (err < 0)
+> +			return err;
+> +	}
+> +
+> +	if (phydev->interface == PHY_INTERFACE_MODE_RTBI) {
+> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_CR);
+> +		if (temp < 0)
+> +			return temp;
+> +		temp |= (MII_M1111_RX_DELAY | MII_M1111_TX_DELAY);
+> +		err = phy_write(phydev, MII_M1111_PHY_EXT_CR, temp);
+> +		if (err < 0)
+> +			return err;
+> +
+> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
+> +		if (temp < 0)
+> +			return temp;
+> +		temp &= ~(MII_M1111_HWCFG_MODE_MASK | MII_M1111_HWCFG_FIBER_COPPER_RES);
+> +		temp |= 0x7 | MII_M1111_HWCFG_FIBER_COPPER_AUTO;
+> +		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
+> +		if (err < 0)
+> +			return err;
+> +
+> +		/* soft reset */
+> +		err = phy_write(phydev, MII_BMCR, BMCR_RESET);
+> +		if (err < 0)
+> +			return err;
+> +		do
+> +			temp = phy_read(phydev, MII_BMCR);
+> +		while (temp & BMCR_RESET);
+> +
+> +		temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
+> +		if (temp < 0)
+> +			return temp;
+> +		temp &= ~(MII_M1111_HWCFG_MODE_MASK | MII_M1111_HWCFG_FIBER_COPPER_RES);
+> +		temp |= MII_M1111_HWCFG_MODE_COPPER_RTBI | MII_M1111_HWCFG_FIBER_COPPER_AUTO;
+> +		err = phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
+> +		if (err < 0)
+> +			return err;
+> +	}
+> +
+> +	err = marvell_of_reg_init(phydev);
+> +	if (err < 0)
+> +		return err;
+> +
+> +	return phy_write(phydev, MII_BMCR, BMCR_RESET);
+> +}
+> +
+>  static int m88e1121_config_init(struct phy_device *phydev)
+>  {
+>  	u16 reg;
+> @@ -502,6 +619,15 @@ static int m88e1510_config_init(struct phy_device *phydev)
+>  
+>  static struct phy_driver marvell_drivers[] = {
+>  	{
+> +		.phy_id = MARVELL_PHY_ID_88E1111,
+> +		.phy_id_mask = MARVELL_PHY_ID_MASK,
+> +		.drv.name = "Marvell 88E1111",
+> +		.features = PHY_GBIT_FEATURES,
+> +		.config_init = &m88e1111_config_init,
+> +		.config_aneg = &genphy_config_aneg,
+> +		.read_status = &marvell_read_status,
+> +	},
+> +	{
+>  		.phy_id = MARVELL_PHY_ID_88E1121R,
+>  		.phy_id_mask = MARVELL_PHY_ID_MASK,
+>  		.drv.name = "Marvell 88E1121R",
 > -- 
-> 2.1.4
+> 2.11.0
 > 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
