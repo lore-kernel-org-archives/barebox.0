@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
+Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnolD-0005Di-6Q
- for barebox@lists.infradead.org; Tue, 14 Mar 2017 15:53:22 +0000
-Received: by mail-pg0-x244.google.com with SMTP id m5so934986pgk.3
- for <barebox@lists.infradead.org>; Tue, 14 Mar 2017 08:52:58 -0700 (PDT)
+ id 1cnolG-0005EK-K0
+ for barebox@lists.infradead.org; Tue, 14 Mar 2017 15:53:26 +0000
+Received: by mail-pg0-x243.google.com with SMTP id m5so935604pgk.3
+ for <barebox@lists.infradead.org>; Tue, 14 Mar 2017 08:53:05 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 14 Mar 2017 08:52:13 -0700
-Message-Id: <20170314155222.11657-3-andrew.smirnov@gmail.com>
+Date: Tue, 14 Mar 2017 08:52:20 -0700
+Message-Id: <20170314155222.11657-10-andrew.smirnov@gmail.com>
 In-Reply-To: <20170314155222.11657-1-andrew.smirnov@gmail.com>
 References: <20170314155222.11657-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,35 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/11] serial: atmel: Add DT compatibility table
+Subject: [PATCH 09/11] usb/host: Allow USB_OHCI_AT91 even if USB_OHCI is
+ disabled
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+When probing devices from DT, AT91 SoCs rely on OHCI driver to setup
+various GPIO (e.g. VBUS enabled) for EHCI block as well. So enable
+USB_OHCI_AT91 to be selected even if USB_OHCI is unavailible (due to its
+dependency on !MMU).
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/serial/atmel.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/host/Kconfig | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/serial/atmel.c b/drivers/serial/atmel.c
-index ab94fd2..2f8adc9 100644
---- a/drivers/serial/atmel.c
-+++ b/drivers/serial/atmel.c
-@@ -446,8 +446,15 @@ static int atmel_serial_probe(struct device_d *dev)
- 	return 0;
- }
+diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
+index 54eaf46..db44052 100644
+--- a/drivers/usb/host/Kconfig
++++ b/drivers/usb/host/Kconfig
+@@ -10,20 +10,17 @@ config USB_EHCI_OMAP
+ config USB_EHCI_ATMEL
+ 	depends on ARCH_AT91
+ 	depends on USB_EHCI
++	select USB_OHCI_AT91
+ 	bool "Atmel EHCI driver"
  
-+static const struct of_device_id __maybe_unused atmel_serial_dt_ids[] = {
-+	{ .compatible = "atmel,at91rm9200-usart" },
-+	{ .compatible = "atmel,at91sam9260-usart" },
-+	{ /* sentinel */ }
-+};
-+
- static struct driver_d atmel_serial_driver = {
-         .name  = "atmel_usart",
-         .probe = atmel_serial_probe,
-+	.of_compatible = DRV_OF_COMPAT(atmel_serial_dt_ids),
- };
- console_platform_driver(atmel_serial_driver);
+ config USB_OHCI
+ 	bool "OHCI driver"
+ 	depends on !MMU
+ 
+-if USB_OHCI
+-
+ config USB_OHCI_AT91
+ 	depends on ARCH_AT91
+ 	bool "AT91 OHCI driver"
+ 
+-endif
+-
+ config USB_XHCI
+ 	bool "xHCI driver"
+ 	depends on HAS_DMA
 -- 
 2.9.3
 
