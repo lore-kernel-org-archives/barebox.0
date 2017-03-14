@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnj4W-0004eD-Qy
- for barebox@lists.infradead.org; Tue, 14 Mar 2017 09:48:54 +0000
-Date: Tue, 14 Mar 2017 10:48:30 +0100
+ id 1cnnDv-0002Cd-3C
+ for barebox@lists.infradead.org; Tue, 14 Mar 2017 14:14:53 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170314094830.3wavmpy5epqrqz5d@pengutronix.de>
-References: <20170309143117.GI4120@mail.ovh.net>
- <1489070050-16024-1-git-send-email-plagnioj@jcrosoft.com>
- <1489070050-16024-4-git-send-email-plagnioj@jcrosoft.com>
- <20170313075521.dafhf3q5qacszaqw@pengutronix.de>
- <20170314080735.GD25192@mail.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170314080735.GD25192@mail.ovh.net>
+Date: Tue, 14 Mar 2017 15:14:26 +0100
+Message-Id: <20170314141426.8418-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,154 +14,142 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] boot: if we are in secure boot mode
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: i.MX: GuF Santaro: Detect and enable touch controller
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Mar 14, 2017 at 09:07:35AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 08:55 Mon 13 Mar     , Sascha Hauer wrote:
-> > On Thu, Mar 09, 2017 at 03:34:09PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > request confirmation before booting an unsigned image
-> > > 
-> > > with a default timeout
-> > > 
-> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > ---
-> > >  commands/go.c         |  7 +++++++
-> > >  common/Kconfig        |  8 ++++++++
-> > >  common/Makefile       |  1 +
-> > >  common/bootm.c        |  7 +++++++
-> > >  common/secure_boot.c  | 43 +++++++++++++++++++++++++++++++++++++++++++
-> > >  include/bootm.h       |  1 +
-> > >  include/secure_boot.h | 25 +++++++++++++++++++++++++
-> > >  7 files changed, 92 insertions(+)
-> > >  create mode 100644 common/secure_boot.c
-> > >  create mode 100644 include/secure_boot.h
-> > > 
-> > > diff --git a/commands/go.c b/commands/go.c
-> > > index fb319b320..61c9ce43f 100644
-> > > --- a/commands/go.c
-> > > +++ b/commands/go.c
-> > > @@ -26,6 +26,7 @@
-> > >  #include <fcntl.h>
-> > >  #include <linux/ctype.h>
-> > >  #include <errno.h>
-> > > +#include <secure_boot.h>
-> > >  
-> > >  static int do_go(int argc, char *argv[])
-> > >  {
-> > > @@ -37,6 +38,12 @@ static int do_go(int argc, char *argv[])
-> > >  	if (argc < 2)
-> > >  		return COMMAND_ERROR_USAGE;
-> > >  
-> > > +	rcode = secure_boot_start_unsigned();
-> > > +	if (rcode)
-> > > +		return rcode ? 1 : 0;
-> > > +
-> > > +	rcode = 1;
-> > > +
-> > >  	if (!isdigit(*argv[1])) {
-> > >  		fd = open(argv[1], O_RDONLY);
-> > >  		if (fd < 0) {
-> > > diff --git a/common/Kconfig b/common/Kconfig
-> > > index f7ff04664..9e7d027a2 100644
-> > > --- a/common/Kconfig
-> > > +++ b/common/Kconfig
-> > > @@ -21,6 +21,9 @@ config HAS_KALLSYMS
-> > >  config HAS_MODULES
-> > >  	bool
-> > >  
-> > > +config HAS_SECURE_BOOT
-> > > +	bool
-> > > +
-> > >  config HAS_CACHE
-> > >  	bool
-> > >  	help
-> > > @@ -184,6 +187,11 @@ config NVVAR
-> > >  	  while global variables can be changed during runtime without changing the
-> > >  	  default.
-> > >  
-> > > +config SECURE_BOOT_TIMEOUT
-> > > +	prompt "Secure Boot unsigned boot timeout"
-> > > +	int
-> > > +	default 3
-> > > +
-> > >  menu "memory layout"
-> > >  
-> > >  source "pbl/Kconfig"
-> > > diff --git a/common/Makefile b/common/Makefile
-> > > index 5f58c81d2..e57cc2c15 100644
-> > > --- a/common/Makefile
-> > > +++ b/common/Makefile
-> > > @@ -61,6 +61,7 @@ obj-$(CONFIG_UBIFORMAT)		+= ubiformat.o
-> > >  obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
-> > >  obj-$(CONFIG_CONSOLE_RATP)	+= ratp.o
-> > >  obj-$(CONFIG_BOOT)		+= boot.o
-> > > +obj-$(CONFIG_HAS_SECURE_BOOT)	+= secure_boot.o
-> > >  
-> > >  quiet_cmd_pwd_h = PWDH    $@
-> > >  ifdef CONFIG_PASSWORD
-> > > diff --git a/common/bootm.c b/common/bootm.c
-> > > index 81625d915..0ebf65681 100644
-> > > --- a/common/bootm.c
-> > > +++ b/common/bootm.c
-> > > @@ -23,6 +23,7 @@
-> > >  #include <environment.h>
-> > >  #include <linux/stat.h>
-> > >  #include <magicvar.h>
-> > > +#include <secure_boot.h>
-> > >  
-> > >  static LIST_HEAD(handler_list);
-> > >  
-> > > @@ -625,6 +626,12 @@ int bootm_boot(struct bootm_data *bootm_data)
-> > >  		printf("Passing control to %s handler\n", handler->name);
-> > >  	}
-> > >  
-> > > +	if (!handler->is_secure_supported && is_secure_mode()) {
-> > > +		ret = secure_boot_start_unsigned();
-> > > +		if (ret)
-> > > +			goto err_out;
-> > > +	}
-> > 
-> > We already have CONFIG_BOOTM_FORCE_SIGNED_IMAGES which admittedly is not
-> > the most generic implementation, but in the end we shouldn't have two
-> > different ways how secure boot is integrated in the bootm code.
-> Did not seen it
-> 
-> I check it and this is only for BOOTM as we have go command too
-> 
-> that need to call image check too
-> 
-> and on efi this is not done at config time but runtime
-> 
-> and this is really FIT image oriented :(
+The Santaro has two different possible Touchscreen controllers.
+Both are on different I2C addresses.  Let's probe both of them
+and enable in the device tree the one that's actually found on
+the hardware.
 
-You have the handler->is_secure_supported variable. This could be
-implemented by the FIT image support aswell. Also we have the decision
-if we want to boot unsigned images. Right now this is done in the
-data->verify variable. We can force the decision in Kconfig using
-CONFIG_BOOTM_FORCE_SIGNED_IMAGES or we can fill in data->verify before
-booting.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/guf-santaro/board.c | 97 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 97 insertions(+)
 
-> 
-> Can we have one for EFI sperately first and then merge them as this will need
-> a lot of testing and checking to ensure we break nothing
-
-No. It's just too confusing to implement two different secure boot ways
-in the same code and I give nothing to the promise that this will be
-cleaned up later.
-
-Sascha
-
+diff --git a/arch/arm/boards/guf-santaro/board.c b/arch/arm/boards/guf-santaro/board.c
+index b9a52ee258..2e8cd28b5b 100644
+--- a/arch/arm/boards/guf-santaro/board.c
++++ b/arch/arm/boards/guf-santaro/board.c
+@@ -11,6 +11,7 @@
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+  */
++#define pr_fmt(fmt) "Santaro: " fmt
+ 
+ #include <common.h>
+ #include <init.h>
+@@ -25,6 +26,102 @@
+ #include <bbu.h>
+ #include <mach/bbu.h>
+ #include <mach/imx6.h>
++#include <i2c/i2c.h>
++#include <gpio.h>
++
++static int i2c_device_present(struct i2c_adapter *adapter, int addr)
++{
++	struct i2c_client client = {};
++	u8 reg;
++
++	client.adapter = adapter;
++	client.addr = addr;
++
++	return i2c_write_reg(&client, 0x00, &reg, 0) < 0 ? false : true;
++}
++
++#define TOUCH_RESET_GPIO	IMX_GPIO_NR(1, 20)
++
++static int edt_present, egalax_present;
++
++static int santaro_touch_fixup(struct device_node *root, void *unused)
++{
++	struct device_node *i2cnp, *np;
++
++	i2cnp = of_find_node_by_alias(root, "i2c2");
++	if (!i2cnp) {
++		pr_err("Cannot find node i2c2\n");
++		return -EINVAL;
++	}
++
++	for_each_child_of_node(i2cnp, np) {
++		int present;
++
++		if (of_device_is_compatible(np, "edt,edt-ft5206"))
++			present = edt_present;
++		else if (of_device_is_compatible(np, "eeti,egalax_ts"))
++			present = egalax_present;
++		else
++			continue;
++
++		if (present)
++			of_device_enable(np);
++		else
++			of_device_disable(np);
++	}
++
++	return 0;
++}
++
++static int santaro_detect_touch(void)
++{
++	struct device_node *np;
++	struct i2c_adapter *adapter;
++	const char *model = NULL;
++
++	/*
++	 * The Santaro has two different possible Touchscreen
++	 * controllers. Both are on different I2C addresses.
++	 * Let's probe both of them and enable in the device tree
++	 * the one that's actually found on the hardware.
++	 */
++
++	np = of_find_node_by_alias(NULL, "i2c2");
++	if (!np) {
++		pr_err("Cannot find node i2c2\n");
++		return -EINVAL;
++	}
++
++	adapter = of_find_i2c_adapter_by_node(np);
++	if (!adapter) {
++		pr_err("Cannot find i2c2 adapter\n");
++		return -EINVAL;
++	}
++
++	gpio_direction_output(TOUCH_RESET_GPIO, 0);
++	mdelay(10);
++	gpio_set_value(TOUCH_RESET_GPIO, 1);
++	mdelay(10);
++
++	edt_present = i2c_device_present(adapter, 0x38);
++
++	gpio_set_value(TOUCH_RESET_GPIO, 0);
++	mdelay(10);
++
++	egalax_present = i2c_device_present(adapter, 0x4);
++
++	if (edt_present)
++		model = "edt,edt-ft5206";
++	if (egalax_present)
++		model = "eeti,egalax_ts";
++
++	pr_info("Found %s Touchscreen controller\n", model);
++
++	of_register_fixup(santaro_touch_fixup, NULL);
++
++	return 0;
++}
++late_initcall(santaro_detect_touch);
+ 
+ static int santaro_device_init(void)
+ {
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
