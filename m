@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cnolG-0005ED-K3
- for barebox@lists.infradead.org; Tue, 14 Mar 2017 15:53:27 +0000
-Received: by mail-pg0-x243.google.com with SMTP id m5so935390pgk.3
- for <barebox@lists.infradead.org>; Tue, 14 Mar 2017 08:53:03 -0700 (PDT)
+ id 1cnolH-0005EM-Tf
+ for barebox@lists.infradead.org; Tue, 14 Mar 2017 15:53:29 +0000
+Received: by mail-pg0-x244.google.com with SMTP id b5so25326430pgg.1
+ for <barebox@lists.infradead.org>; Tue, 14 Mar 2017 08:53:06 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 14 Mar 2017 08:52:18 -0700
-Message-Id: <20170314155222.11657-8-andrew.smirnov@gmail.com>
+Date: Tue, 14 Mar 2017 08:52:21 -0700
+Message-Id: <20170314155222.11657-11-andrew.smirnov@gmail.com>
 In-Reply-To: <20170314155222.11657-1-andrew.smirnov@gmail.com>
 References: <20170314155222.11657-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,101 +23,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/11] w1-gpio: Add DT support
+Subject: [PATCH 10/11] usb: echi-atmel: Add DT support
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/w1/masters/w1-gpio.c | 53 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+ drivers/usb/host/ehci-atmel.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/w1/masters/w1-gpio.c b/drivers/w1/masters/w1-gpio.c
-index 946e9d3..916027e 100644
---- a/drivers/w1/masters/w1-gpio.c
-+++ b/drivers/w1/masters/w1-gpio.c
-@@ -16,6 +16,7 @@
- #include <driver.h>
- #include <linux/w1-gpio.h>
- #include <gpio.h>
-+#include <of_gpio.h>
+diff --git a/drivers/usb/host/ehci-atmel.c b/drivers/usb/host/ehci-atmel.c
+index f075b50..1132879 100644
+--- a/drivers/usb/host/ehci-atmel.c
++++ b/drivers/usb/host/ehci-atmel.c
+@@ -65,6 +65,9 @@ static int atmel_ehci_probe(struct device_d *dev)
+ 	struct resource *iores;
+ 	struct ehci_data data;
+ 	struct atmel_ehci_priv *atehci;
++	const char *uclk_name;
++
++	uclk_name = (dev->device_node) ? "usb_clk" : "uhpck";
  
- #include "../w1.h"
+ 	atehci = xzalloc(sizeof(*atehci));
+ 	atehci->dev = dev;
+@@ -76,7 +79,7 @@ static int atmel_ehci_probe(struct device_d *dev)
+ 		return -ENOENT;
+ 	}
  
-@@ -43,12 +44,58 @@ static u8 w1_gpio_read_bit(struct w1_bus *bus)
- 	return gpio_get_value(pdata->pin) ? 1 : 0;
+-	atehci->uclk = clk_get(dev, "uhpck");
++	atehci->uclk = clk_get(dev, uclk_name);
+ 	if (IS_ERR(atehci->iclk)) {
+ 		dev_err(dev, "Error getting function clock\n");
+ 		return -ENOENT;
+@@ -107,9 +110,15 @@ static void atmel_ehci_remove(struct device_d *dev)
+ 	atmel_stop_clock(dev->priv);
  }
  
-+static int w1_gpio_probe_dt(struct device_d *dev)
-+{
-+	struct w1_gpio_platform_data *pdata;
-+	struct device_node *np = dev->device_node;
-+	int gpio;
-+
-+	if (dev->platform_data)
-+		return 0;
-+
-+	pdata = xzalloc(sizeof(*pdata));
-+
-+	if (of_get_property(np, "linux,open-drain", NULL))
-+		pdata->is_open_drain = 1;
-+
-+	gpio = of_get_gpio(np, 0);
-+	if (!gpio_is_valid(gpio)) {
-+		if (gpio != -EPROBE_DEFER)
-+			dev_err(dev,
-+				"Failed to parse gpio property for data pin (%d)\n",
-+				gpio);
-+
-+		goto free_pdata;
-+	}
-+	pdata->pin = gpio;
-+
-+	gpio = of_get_gpio(np, 1);
-+	if (gpio == -EPROBE_DEFER)
-+		goto free_pdata;
-+
-+	/* ignore other errors as the pullup gpio is optional */
-+	pdata->ext_pullup_enable_pin = gpio;
-+
-+	dev->platform_data = pdata;
-+	return 0;
-+
-+free_pdata:
-+	free(pdata);
-+	return gpio;
-+}
-+
- static int __init w1_gpio_probe(struct device_d *dev)
- {
- 	struct w1_bus *master;
- 	struct w1_gpio_platform_data *pdata;
- 	int err;
- 
-+	if (IS_ENABLED(CONFIG_OFDEVICE)) {
-+		err = w1_gpio_probe_dt(dev);
-+		if (err < 0)
-+			return err;
-+	}
-+
- 	pdata = dev->platform_data;
- 
- 	if (!pdata)
-@@ -104,8 +151,14 @@ static int __init w1_gpio_probe(struct device_d *dev)
- 	return err;
- }
- 
-+static __maybe_unused const struct of_device_id w1_gpio_dt_ids[] = {
-+	{ .compatible = "w1-gpio" },
-+	{}
++static const struct of_device_id atmel_ehci_dt_ids[] = {
++	{ .compatible = "atmel,at91sam9g45-ehci" },
++	{ /* sentinel */ }
 +};
 +
- static struct driver_d w1_gpio_driver = {
- 	.name	= "w1-gpio",
- 	.probe	= w1_gpio_probe,
-+	.of_compatible = DRV_OF_COMPAT(w1_gpio_dt_ids),
+ static struct driver_d atmel_ehci_driver = {
+ 	.name = "atmel-ehci",
+ 	.probe = atmel_ehci_probe,
+ 	.remove = atmel_ehci_remove,
++	.of_compatible = DRV_OF_COMPAT(atmel_ehci_dt_ids),
  };
- device_platform_driver(w1_gpio_driver);
+ device_platform_driver(atmel_ehci_driver);
 -- 
 2.9.3
 
