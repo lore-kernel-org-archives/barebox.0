@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cngcZ-0005NE-Cs
- for barebox@lists.infradead.org; Tue, 14 Mar 2017 07:11:54 +0000
-Date: Tue, 14 Mar 2017 08:11:29 +0100
+ id 1cngeQ-0006DU-Dm
+ for barebox@lists.infradead.org; Tue, 14 Mar 2017 07:13:48 +0000
+Date: Tue, 14 Mar 2017 08:13:24 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170314071129.fhfxtclmbv5sl5m3@pengutronix.de>
-References: <20170313093339.12597-1-o.rempel@pengutronix.de>
+Message-ID: <20170314071324.oud2nxg6gusxclo4@pengutronix.de>
+References: <20170311160733.18473-1-m.olbrich@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170313093339.12597-1-o.rempel@pengutronix.de>
+In-Reply-To: <20170311160733.18473-1-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 0/4] upstream led blinking rework
-To: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH 1/2] efi: load the protocol expected by the driver
+To: Michael Olbrich <m.olbrich@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 13, 2017 at 10:33:35AM +0100, Oleksij Rempel wrote:
-> changes v1:
->  - merge blinking/flashing and led_blink_pattern patches
->  - remove new unsued variables from structs
->  - add sanity check in the led command to avoid simultan -b anf -f options
+On Sat, Mar 11, 2017 at 05:07:32PM +0100, Michael Olbrich wrote:
+> The drivers are loaded if any guid provided by the device matches. So load
+> the protocol for the matched guid and not for the first guid.
+> Otherwise the driver may cast the protocol to the wrong type and proably
+> crash.
 > 
-> changes v2:
->  - reword commit message in "led: add blinking/flashing..." patch
-> 
-> changes v3:
->  - reword "led-trigger: Allow multiple..." patch
->  - remove sanity check before free()
-> 
-> Sascha Hauer (4):
->   led: add blinking/flashing and led_blink_pattern interface
->   led: Add blink/flash to led command
->   led: trigger: Use led triggers
->   led-trigger: Allow multiple led triggers of the same type
+> Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+> ---
+>  drivers/efi/efi-device.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
->  commands/led.c             |  44 ++++++++++++-
->  commands/trigger.c         |  54 ++++++++--------
->  drivers/led/core.c         | 101 ++++++++++++++++++++++++++++-
->  drivers/led/led-triggers.c | 157 ++++++++++++++++++++++++++++-----------------
->  include/led.h              |  17 ++++-
->  5 files changed, 286 insertions(+), 87 deletions(-)
-> 
+> diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
+> index 959878e7f5cf..c5fb404cd36b 100644
+> --- a/drivers/efi/efi-device.c
+> +++ b/drivers/efi/efi-device.c
+> @@ -184,8 +184,6 @@ static struct efi_device *efi_add_device(efi_handle_t *handle, efi_guid_t **guid
+>  	efidev->dev.info = efi_devinfo;
+>  	efidev->devpath = devpath;
+>  
+> -	BS->handle_protocol(handle, &guidarr[0], &efidev->protocol);
+> -
+>  	sprintf(efidev->dev.name, "handle-%p", handle);
+>  
+>  	efidev->parent_handle = efi_find_parent(efidev->handle);
+> @@ -311,8 +309,11 @@ static int efi_bus_match(struct device_d *dev, struct driver_d *drv)
+>  	int i;
+>  
+>  	for (i = 0; i < efidev->num_guids; i++) {
+> -		if (!memcmp(&efidrv->guid, &efidev->guids[i], sizeof(efi_guid_t)))
+> +		if (!memcmp(&efidrv->guid, &efidev->guids[i], sizeof(efi_guid_t))) {
+> +			BS->handle_protocol(efidev->handle, &efidev->guids[i],
+> +					&efidev->protocol);
+>  			return 0;
+> +		}
+>  	}
+>  
+>  	return 1;
 > -- 
 > 2.11.0
 > 
