@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cngeQ-0006DU-Dm
- for barebox@lists.infradead.org; Tue, 14 Mar 2017 07:13:48 +0000
-Date: Tue, 14 Mar 2017 08:13:24 +0100
+ id 1cnghc-0000Ue-QC
+ for barebox@lists.infradead.org; Tue, 14 Mar 2017 07:17:06 +0000
+Date: Tue, 14 Mar 2017 08:16:43 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170314071324.oud2nxg6gusxclo4@pengutronix.de>
-References: <20170311160733.18473-1-m.olbrich@pengutronix.de>
+Message-ID: <20170314071643.jdsoe4mdiopqta6h@pengutronix.de>
+References: <B918A2C9-9BD1-41C2-B996-98A0B775327F@jcrosoft.com>
+ <20170313131606.8089-1-m.olbrich@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170311160733.18473-1-m.olbrich@pengutronix.de>
+In-Reply-To: <20170313131606.8089-1-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,61 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] efi: load the protocol expected by the driver
+Subject: Re: [PATCH] fixup! efi: clocksoure: add EFI event timer
 To: Michael Olbrich <m.olbrich@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, Mar 11, 2017 at 05:07:32PM +0100, Michael Olbrich wrote:
-> The drivers are loaded if any guid provided by the device matches. So load
-> the protocol for the matched guid and not for the first guid.
-> Otherwise the driver may cast the protocol to the wrong type and proably
-> crash.
-> 
-> Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+On Mon, Mar 13, 2017 at 02:16:06PM +0100, Michael Olbrich wrote:
 > ---
->  drivers/efi/efi-device.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> I played with the numbers a bit. This hardware has a 18 Hz tick :-/.
+> That's not really useful so just skipping the clocksource is probably the
+> best solution.
+> 
+> Michael
+> 
+>  drivers/clocksource/efi.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/clocksource/efi.c b/drivers/clocksource/efi.c
+> index 89906c452eb7..fb5b7ca63de9 100644
+> --- a/drivers/clocksource/efi.c
+> +++ b/drivers/clocksource/efi.c
+> @@ -71,6 +71,10 @@ static int efi_cs_init(struct clocksource *cs)
+>  		uint64_t nb_100ns;
+>  
+>  		freq = ticks_freq_x86();
+> +		if (freq == 0) {
+> +			BS->close_event(efi_cs_evt);
+> +			return -ENODEV;
+> +		}
+>  		nb_100ns = 10 * 1000 * 1000 / freq;
+>  		pr_warn("EFI Event timer too slow freq = %llu Hz\n", freq);
+>  		efiret = BS->set_timer(efi_cs_evt, EFI_TIMER_PERIODIC, nb_100ns);
 
-Applied, thanks
+Since the patch this fixup is for is already in master: Can you provide
+a proper, non-fixup patch?
 
 Sascha
 
-> 
-> diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
-> index 959878e7f5cf..c5fb404cd36b 100644
-> --- a/drivers/efi/efi-device.c
-> +++ b/drivers/efi/efi-device.c
-> @@ -184,8 +184,6 @@ static struct efi_device *efi_add_device(efi_handle_t *handle, efi_guid_t **guid
->  	efidev->dev.info = efi_devinfo;
->  	efidev->devpath = devpath;
->  
-> -	BS->handle_protocol(handle, &guidarr[0], &efidev->protocol);
-> -
->  	sprintf(efidev->dev.name, "handle-%p", handle);
->  
->  	efidev->parent_handle = efi_find_parent(efidev->handle);
-> @@ -311,8 +309,11 @@ static int efi_bus_match(struct device_d *dev, struct driver_d *drv)
->  	int i;
->  
->  	for (i = 0; i < efidev->num_guids; i++) {
-> -		if (!memcmp(&efidrv->guid, &efidev->guids[i], sizeof(efi_guid_t)))
-> +		if (!memcmp(&efidrv->guid, &efidev->guids[i], sizeof(efi_guid_t))) {
-> +			BS->handle_protocol(efidev->handle, &efidev->guids[i],
-> +					&efidev->protocol);
->  			return 0;
-> +		}
->  	}
->  
->  	return 1;
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
