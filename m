@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1co3La-000452-IB
- for barebox@lists.infradead.org; Wed, 15 Mar 2017 07:27:54 +0000
-Date: Wed, 15 Mar 2017 08:27:26 +0100
+ id 1co3wT-0006ec-Mc
+ for barebox@lists.infradead.org; Wed, 15 Mar 2017 08:05:59 +0000
+Date: Wed, 15 Mar 2017 09:05:34 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170315072726.hyiabusdgl4jludz@pengutronix.de>
-References: <20170314093729.27803-1-m.olbrich@pengutronix.de>
+Message-ID: <20170315080534.4wfb7thp3eiddax4@pengutronix.de>
+References: <1489350420-10640-1-git-send-email-akurz@blala.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170314093729.27803-1-m.olbrich@pengutronix.de>
+In-Reply-To: <1489350420-10640-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] efi: clocksoure: make sure the meassured frequency is
- valid
-To: Michael Olbrich <m.olbrich@pengutronix.de>
+Subject: Re: [PATCH] ARM: zynq7000: make PS_CLK Kconfigurable
+To: Alexander Kurz <akurz@blala.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Mar 14, 2017 at 10:37:29AM +0100, Michael Olbrich wrote:
-> Some EFI implementations have a even slower tick rate and the meassured
-> frequency may be zero.
-> 
-> Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
-> Acked-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  drivers/clocksource/efi.c | 4 ++++
->  1 file changed, 4 insertions(+)
+Hi ALexander,
 
-Applied, thanks
+On Sun, Mar 12, 2017 at 09:27:00PM +0100, Alexander Kurz wrote:
+> The main clock source on Zynq-7000 based boards (PS_CLK) is not uniform
+> for all boards, while typical boards are clocked with 33.3MHz, the
+> Z-7010 based Digilent Zybo board is clocked with 50MHz.
+> Since barebox is not yet OF aware for Zynq, make PS_CLK board dependent
+> via Kconfig.
+
+We shouldn't encode differences between boards in Kconfig.
+
+One way around it would be to add platform_data to the clk device and
+call zynq_init() (with an additional freq argument) from the board code rather
+than directly from an initcall.
+Creating a small zynq_set_ps_clk() which sets the clock and is to
+be called by the board before the clock driver is initialized would be
+simpler but also work.
 
 Sascha
-
-> 
-> diff --git a/drivers/clocksource/efi.c b/drivers/clocksource/efi.c
-> index 89906c452eb7..fb5b7ca63de9 100644
-> --- a/drivers/clocksource/efi.c
-> +++ b/drivers/clocksource/efi.c
-> @@ -71,6 +71,10 @@ static int efi_cs_init(struct clocksource *cs)
->  		uint64_t nb_100ns;
->  
->  		freq = ticks_freq_x86();
-> +		if (freq == 0) {
-> +			BS->close_event(efi_cs_evt);
-> +			return -ENODEV;
-> +		}
->  		nb_100ns = 10 * 1000 * 1000 / freq;
->  		pr_warn("EFI Event timer too slow freq = %llu Hz\n", freq);
->  		efiret = BS->set_timer(efi_cs_evt, EFI_TIMER_PERIODIC, nb_100ns);
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
