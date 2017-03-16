@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1coG5O-0004oi-8j
- for barebox@lists.infradead.org; Wed, 15 Mar 2017 21:04:00 +0000
-Date: Wed, 15 Mar 2017 22:03:35 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170315210335.GC3531@ravnborg.org>
-References: <20170314155222.11657-1-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170314155222.11657-1-andrew.smirnov@gmail.com>
+ id 1coO1H-00036F-NJ
+ for barebox@lists.infradead.org; Thu, 16 Mar 2017 05:32:19 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Thu, 16 Mar 2017 06:31:45 +0100
+Message-Id: <20170316053146.5954-3-o.rempel@pengutronix.de>
+In-Reply-To: <20170316053146.5954-1-o.rempel@pengutronix.de>
+References: <20170316053146.5954-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,30 +16,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/11] AT91, at91sam9x5ek updates (part II/III)
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 2/3] lib: random: get_random_bytes from HWRNG if present
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-On Tue, Mar 14, 2017 at 08:52:11AM -0700, Andrey Smirnov wrote:
-> Hi everone,
-> 
-> This is the second batch of AT91 related patches (original thread
-> [1]). The patches gathered in this set are with a few exceptions are
-> patches adding DT probing support for various AT91 drivers.
-> 
-> Feedback from Sam has been incorporated, but other than that the code
-> should be as it was in [1].
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Everything looked good to me - except two small nits about missing const.
+Instead of generating pseudo random numbers, get random bytes
+from an optional HW generator, if enabled and registered.
 
-Feel free to add my:
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ lib/random.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-	Sam
+diff --git a/lib/random.c b/lib/random.c
+index 210fea994..42c0f83b7 100644
+--- a/lib/random.c
++++ b/lib/random.c
+@@ -1,5 +1,6 @@
+ #include <common.h>
+ #include <stdlib.h>
++#include <linux/hw_random.h>
+ 
+ static unsigned int random_seed;
+ 
+@@ -22,6 +23,24 @@ void get_random_bytes(void *_buf, int len)
+ {
+ 	char *buf = _buf;
+ 
++	if (IS_ENABLED(CONFIG_HWRNG)) {
++		struct hwrng *rng;
++		int bytes;
++
++		rng = hwrng_get_first();
++		if (!IS_ERR(rng)) {
++			while (len) {
++				bytes = hwrng_get_data(rng, _buf, len, 1);
++				if (!bytes)
++					goto sw_fallback;
++				len -= bytes;
++			}
++
++			return;
++		}
++	}
++
++sw_fallback:
+ 	while (len--)
+ 		*buf++ = rand() % 256;
+ }
+-- 
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
