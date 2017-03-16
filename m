@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1coWxr-0005pK-UT
+ id 1coWxr-0005dn-7U
  for barebox@lists.infradead.org; Thu, 16 Mar 2017 15:05:25 +0000
-Received: by mail-pg0-x242.google.com with SMTP id y17so6406053pgh.0
- for <barebox@lists.infradead.org>; Thu, 16 Mar 2017 08:05:02 -0700 (PDT)
+Received: by mail-pg0-x241.google.com with SMTP id g2so6391334pge.2
+ for <barebox@lists.infradead.org>; Thu, 16 Mar 2017 08:04:59 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 16 Mar 2017 08:04:46 -0700
-Message-Id: <20170316150448.11773-10-andrew.smirnov@gmail.com>
+Date: Thu, 16 Mar 2017 08:04:43 -0700
+Message-Id: <20170316150448.11773-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20170316150448.11773-1-andrew.smirnov@gmail.com>
 References: <20170316150448.11773-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,48 +23,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 09/11] usb/host: Allow USB_OHCI_AT91 even if USB_OHCI is
- disabled
+Subject: [PATCH v2 06/11] spi: atmel_spi: Add DT support
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
-
-When probing devices from DT, AT91 SoCs rely on OHCI driver to setup
-various GPIO (e.g. VBUS enabled) for EHCI block as well. So enable
-USB_OHCI_AT91 to be selected even if USB_OHCI is unavailible (due to its
-dependency on !MMU).
 
 Acked-by: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/host/Kconfig | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/spi/atmel_spi.c | 29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index 54eaf46..db44052 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -10,20 +10,17 @@ config USB_EHCI_OMAP
- config USB_EHCI_ATMEL
- 	depends on ARCH_AT91
- 	depends on USB_EHCI
-+	select USB_OHCI_AT91
- 	bool "Atmel EHCI driver"
+diff --git a/drivers/spi/atmel_spi.c b/drivers/spi/atmel_spi.c
+index ef57867..446e1d9 100644
+--- a/drivers/spi/atmel_spi.c
++++ b/drivers/spi/atmel_spi.c
+@@ -29,6 +29,7 @@
+ #include <clock.h>
+ #include <xfuncs.h>
+ #include <gpio.h>
++#include <of_gpio.h>
+ #include <io.h>
+ #include <spi/spi.h>
+ #include <mach/io.h>
+@@ -400,10 +401,11 @@ static int atmel_spi_probe(struct device_d *dev)
+ 	int ret = 0;
+ 	int i;
+ 	struct spi_master *master;
++	struct device_node *node = dev->device_node;
+ 	struct atmel_spi *as;
+ 	struct at91_spi_platform_data *pdata = dev->platform_data;
  
- config USB_OHCI
- 	bool "OHCI driver"
- 	depends on !MMU
+-	if (!pdata) {
++	if (!IS_ENABLED(CONFIG_OFDEVICE) && !pdata) {
+ 		dev_err(dev, "missing platform data\n");
+ 		return -EINVAL;
+ 	}
+@@ -414,6 +416,23 @@ static int atmel_spi_probe(struct device_d *dev)
+ 	master->dev = dev;
+ 	master->bus_num = dev->id;
  
--if USB_OHCI
--
- config USB_OHCI_AT91
- 	depends on ARCH_AT91
- 	bool "AT91 OHCI driver"
++	if (pdata) {
++		master->num_chipselect = pdata->num_chipselect;
++		as->cs_pins = pdata->chipselect;
++	} else {
++		master->num_chipselect = of_gpio_named_count(node, "cs-gpios");
++		as->cs_pins = xzalloc(sizeof(u32) * master->num_chipselect);
++
++		for (i = 0; i < master->num_chipselect; i++) {
++			as->cs_pins[i] = of_get_named_gpio(node, "cs-gpios", i);
++
++			if (!gpio_is_valid(as->cs_pins[i]))
++			    break;
++		}
++
++		master->num_chipselect = i;
++	}
++
+ 	as->clk = clk_get(dev, "spi_clk");
+ 	if (IS_ERR(as->clk)) {
+ 		dev_err(dev, "no spi_clk\n");
+@@ -423,8 +442,6 @@ static int atmel_spi_probe(struct device_d *dev)
  
--endif
--
- config USB_XHCI
- 	bool "xHCI driver"
- 	depends on HAS_DMA
+ 	master->setup = atmel_spi_setup;
+ 	master->transfer = atmel_spi_transfer;
+-	master->num_chipselect = pdata->num_chipselect;
+-	as->cs_pins = pdata->chipselect;
+ 	iores = dev_request_mem_resource(dev, 0);
+ 	if (IS_ERR(iores))
+ 		return PTR_ERR(iores);
+@@ -465,8 +482,14 @@ out_free:
+ 	return ret;
+ }
+ 
++const static __maybe_unused const struct of_device_id atmel_spi_dt_ids[] = {
++	{ .compatible = "atmel,at91rm9200-spi" },
++	{ /* sentinel */ }
++};
++
+ static struct driver_d atmel_spi_driver = {
+ 	.name  = "atmel_spi",
+ 	.probe = atmel_spi_probe,
++	.of_compatible = DRV_OF_COMPAT(atmel_spi_dt_ids),
+ };
+ device_platform_driver(atmel_spi_driver);
 -- 
 2.9.3
 
