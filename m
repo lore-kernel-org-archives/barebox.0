@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1coWxn-0005dK-OQ
+ id 1coWxn-0005cc-Ox
  for barebox@lists.infradead.org; Thu, 16 Mar 2017 15:05:20 +0000
-Received: by mail-pg0-x242.google.com with SMTP id y17so6405691pgh.0
- for <barebox@lists.infradead.org>; Thu, 16 Mar 2017 08:04:56 -0700 (PDT)
+Received: by mail-pf0-x244.google.com with SMTP id x63so5971513pfx.2
+ for <barebox@lists.infradead.org>; Thu, 16 Mar 2017 08:04:54 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 16 Mar 2017 08:04:41 -0700
-Message-Id: <20170316150448.11773-5-andrew.smirnov@gmail.com>
+Date: Thu, 16 Mar 2017 08:04:38 -0700
+Message-Id: <20170316150448.11773-2-andrew.smirnov@gmail.com>
 In-Reply-To: <20170316150448.11773-1-andrew.smirnov@gmail.com>
 References: <20170316150448.11773-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,77 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 04/11] mci: Allow parsing for explicit DT node
+Subject: [PATCH v2 01/11] clocksource: at91: Add DT compatibility table
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
-
-Convert mci_of_parse into mci_of_parse_node, a function that takes
-explicit deivce tree node pointer to be used for SD/MMC related
-properties extraction. Implement original mci_of_parse as a wrapper
-around the call to new function.
-
-This is useful for controllers who specify parameter like bus witdth and
-GPIOs as a part of main controller's child nodes (e.g. AT91 SoCs).
 
 Acked-by: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mci/mci-core.c | 13 ++++++++-----
- include/mci.h          |  1 +
- 2 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/clocksource/timer-atmel-pit.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 055a5e2..928277a 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -1843,20 +1843,18 @@ err_free:
- 	return ret;
+diff --git a/drivers/clocksource/timer-atmel-pit.c b/drivers/clocksource/timer-atmel-pit.c
+index cc7ad2f..947a1e7 100644
+--- a/drivers/clocksource/timer-atmel-pit.c
++++ b/drivers/clocksource/timer-atmel-pit.c
+@@ -102,9 +102,18 @@ static int at91_pit_probe(struct device_d *dev)
+ 	return init_clock(&cs);
  }
  
--void mci_of_parse(struct mci_host *host)
-+void mci_of_parse_node(struct mci_host *host,
-+		       struct device_node *np)
- {
--	struct device_node *np;
- 	u32 bus_width;
- 	u32 dsr_val;
- 
- 	if (!IS_ENABLED(CONFIG_OFDEVICE))
- 		return;
- 
--	if (!host->hw_dev || !host->hw_dev->device_node)
-+	if (!host->hw_dev || !np)
- 		return;
- 
--	np = host->hw_dev->device_node;
--
- 	/* "bus-width" is translated to MMC_CAP_*_BIT_DATA flags */
- 	if (of_property_read_u32(np, "bus-width", &bus_width) < 0) {
- 		/* If bus-width is missing we get the driver's default, which
-@@ -1897,6 +1895,11 @@ void mci_of_parse(struct mci_host *host)
- 	host->non_removable = of_property_read_bool(np, "non-removable");
- }
- 
-+void mci_of_parse(struct mci_host *host)
-+{
-+	return mci_of_parse_node(host, host->hw_dev->device_node);
-+}
++const static __maybe_unused struct of_device_id at91_pit_dt_ids[] = {
++	{
++		.compatible = "atmel,at91sam9260-pit",
++	}, {
++		/* sentinel */
++	}
++};
 +
- struct mci *mci_get_device_by_name(const char *name)
- {
- 	struct mci *mci;
-diff --git a/include/mci.h b/include/mci.h
-index cc4712c..781e6e0 100644
---- a/include/mci.h
-+++ b/include/mci.h
-@@ -480,6 +480,7 @@ struct mci {
+ static struct driver_d at91_pit_driver = {
+ 	.name = "at91-pit",
+ 	.probe = at91_pit_probe,
++	.of_compatible = DRV_OF_COMPAT(at91_pit_dt_ids),
+ };
  
- int mci_register(struct mci_host*);
- void mci_of_parse(struct mci_host *host);
-+void mci_of_parse_node(struct mci_host *host, struct device_node *np);
- int mci_detect_card(struct mci_host *);
- int mci_send_ext_csd(struct mci *mci, char *ext_csd);
- int mci_switch(struct mci *mci, unsigned set, unsigned index,
+ static int at91_pit_init(void)
 -- 
 2.9.3
 
