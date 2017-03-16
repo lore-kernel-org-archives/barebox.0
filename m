@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1coWxt-0005eC-9P
+ id 1coWxt-000636-9N
  for barebox@lists.infradead.org; Thu, 16 Mar 2017 15:05:27 +0000
-Received: by mail-pf0-x243.google.com with SMTP id x63so5971724pfx.2
- for <barebox@lists.infradead.org>; Thu, 16 Mar 2017 08:05:00 -0700 (PDT)
+Received: by mail-pf0-x243.google.com with SMTP id p189so555246pfp.0
+ for <barebox@lists.infradead.org>; Thu, 16 Mar 2017 08:05:04 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 16 Mar 2017 08:04:44 -0700
-Message-Id: <20170316150448.11773-8-andrew.smirnov@gmail.com>
+Date: Thu, 16 Mar 2017 08:04:48 -0700
+Message-Id: <20170316150448.11773-12-andrew.smirnov@gmail.com>
 In-Reply-To: <20170316150448.11773-1-andrew.smirnov@gmail.com>
 References: <20170316150448.11773-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,102 +23,116 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 07/11] w1-gpio: Add DT support
+Subject: [PATCH v2 11/11] net: macb: Add DT support
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Acked-by: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/w1/masters/w1-gpio.c | 53 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+ drivers/net/macb.c | 56 ++++++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 42 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/w1/masters/w1-gpio.c b/drivers/w1/masters/w1-gpio.c
-index 946e9d3..916027e 100644
---- a/drivers/w1/masters/w1-gpio.c
-+++ b/drivers/w1/masters/w1-gpio.c
-@@ -16,6 +16,7 @@
- #include <driver.h>
- #include <linux/w1-gpio.h>
- #include <gpio.h>
-+#include <of_gpio.h>
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index 5f2e5e5..36e49c3 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -48,6 +48,7 @@
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <linux/phy.h>
++#include <of_net.h>
  
- #include "../w1.h"
+ #include "macb.h"
  
-@@ -43,12 +44,58 @@ static u8 w1_gpio_read_bit(struct w1_bus *bus)
- 	return gpio_get_value(pdata->pin) ? 1 : 0;
+@@ -615,14 +616,8 @@ static int macb_probe(struct device_d *dev)
+ 	struct resource *iores;
+ 	struct eth_device *edev;
+ 	struct macb_device *macb;
++	const char *pclk_name;
+ 	u32 ncfgr;
+-	struct macb_platform_data *pdata;
+-
+-	if (!dev->platform_data) {
+-		dev_err(dev, "macb: no platform_data\n");
+-		return -ENODEV;
+-	}
+-	pdata = dev->platform_data;
+ 
+ 	edev = xzalloc(sizeof(struct eth_device) + sizeof(struct macb_device));
+ 	edev->priv = (struct macb_device *)(edev + 1);
+@@ -633,22 +628,49 @@ static int macb_probe(struct device_d *dev)
+ 	edev->open = macb_open;
+ 	edev->send = macb_send;
+ 	edev->halt = macb_halt;
+-	edev->get_ethaddr = pdata->get_ethaddr ? pdata->get_ethaddr : macb_get_ethaddr;
++	edev->get_ethaddr = macb_get_ethaddr;
+ 	edev->set_ethaddr = macb_set_ethaddr;
+ 	edev->parent = dev;
+ 
+ 	macb->miibus.read = macb_phy_read;
+ 	macb->miibus.write = macb_phy_write;
+-	macb->phy_addr = pdata->phy_addr;
+ 	macb->miibus.priv = macb;
+ 	macb->miibus.parent = dev;
+ 
+-	if (pdata->phy_interface == PHY_INTERFACE_MODE_NA)
+-		macb->interface = PHY_INTERFACE_MODE_MII;
+-	else
+-		macb->interface = pdata->phy_interface;
++	if (dev->platform_data) {
++		struct macb_platform_data *pdata = dev->platform_data;
++
++		if (pdata->phy_interface == PHY_INTERFACE_MODE_NA)
++			macb->interface = PHY_INTERFACE_MODE_MII;
++		else
++			macb->interface = pdata->phy_interface;
++
++		if (pdata->get_ethaddr)
++			edev->get_ethaddr = pdata->get_ethaddr;
++
++		macb->phy_addr = pdata->phy_addr;
++		macb->phy_flags = pdata->phy_flags;
++		pclk_name = "macb_clk";
++	} else if (dev->device_node) {
++		int ret;
++		struct device_node *mdiobus;
+ 
+-	macb->phy_flags = pdata->phy_flags;
++		ret = of_get_phy_mode(dev->device_node);
++		if (ret < 0)
++			macb->interface = PHY_INTERFACE_MODE_MII;
++		else
++			macb->interface = ret;
++
++		mdiobus = of_get_child_by_name(dev->device_node, "mdio");
++		if (mdiobus)
++			macb->miibus.dev.device_node = mdiobus;
++
++		macb->phy_addr = -1;
++		pclk_name = NULL;
++	} else {
++		dev_err(dev, "macb: no platform_data\n");
++		return -ENODEV;
++	}
+ 
+ 	iores = dev_request_mem_resource(dev, 0);
+ 	if (IS_ERR(iores))
+@@ -698,8 +720,14 @@ static int macb_probe(struct device_d *dev)
+ 	return 0;
  }
  
-+static int w1_gpio_probe_dt(struct device_d *dev)
-+{
-+	struct w1_gpio_platform_data *pdata;
-+	struct device_node *np = dev->device_node;
-+	int gpio;
-+
-+	if (dev->platform_data)
-+		return 0;
-+
-+	pdata = xzalloc(sizeof(*pdata));
-+
-+	if (of_get_property(np, "linux,open-drain", NULL))
-+		pdata->is_open_drain = 1;
-+
-+	gpio = of_get_gpio(np, 0);
-+	if (!gpio_is_valid(gpio)) {
-+		if (gpio != -EPROBE_DEFER)
-+			dev_err(dev,
-+				"Failed to parse gpio property for data pin (%d)\n",
-+				gpio);
-+
-+		goto free_pdata;
-+	}
-+	pdata->pin = gpio;
-+
-+	gpio = of_get_gpio(np, 1);
-+	if (gpio == -EPROBE_DEFER)
-+		goto free_pdata;
-+
-+	/* ignore other errors as the pullup gpio is optional */
-+	pdata->ext_pullup_enable_pin = gpio;
-+
-+	dev->platform_data = pdata;
-+	return 0;
-+
-+free_pdata:
-+	free(pdata);
-+	return gpio;
-+}
-+
- static int __init w1_gpio_probe(struct device_d *dev)
- {
- 	struct w1_bus *master;
- 	struct w1_gpio_platform_data *pdata;
- 	int err;
- 
-+	if (IS_ENABLED(CONFIG_OFDEVICE)) {
-+		err = w1_gpio_probe_dt(dev);
-+		if (err < 0)
-+			return err;
-+	}
-+
- 	pdata = dev->platform_data;
- 
- 	if (!pdata)
-@@ -104,8 +151,14 @@ static int __init w1_gpio_probe(struct device_d *dev)
- 	return err;
- }
- 
-+static __maybe_unused const struct of_device_id w1_gpio_dt_ids[] = {
-+	{ .compatible = "w1-gpio" },
-+	{}
++static const struct of_device_id macb_dt_ids[] = {
++	{ .compatible = "cdns,at91sam9260-macb",},
++	{ /* sentinel */ }
 +};
 +
- static struct driver_d w1_gpio_driver = {
- 	.name	= "w1-gpio",
- 	.probe	= w1_gpio_probe,
-+	.of_compatible = DRV_OF_COMPAT(w1_gpio_dt_ids),
+ static struct driver_d macb_driver = {
+ 	.name  = "macb",
+ 	.probe = macb_probe,
++	.of_compatible = DRV_OF_COMPAT(macb_dt_ids),
  };
- device_platform_driver(w1_gpio_driver);
+ device_platform_driver(macb_driver);
 -- 
 2.9.3
 
