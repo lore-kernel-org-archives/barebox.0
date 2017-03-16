@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1coWxr-0005ek-27
- for barebox@lists.infradead.org; Thu, 16 Mar 2017 15:05:22 +0000
-Received: by mail-pg0-x244.google.com with SMTP id g2so6391511pge.2
- for <barebox@lists.infradead.org>; Thu, 16 Mar 2017 08:05:01 -0700 (PDT)
+ id 1coWxn-0005dZ-ON
+ for barebox@lists.infradead.org; Thu, 16 Mar 2017 15:05:21 +0000
+Received: by mail-pg0-x242.google.com with SMTP id m5so6398749pgk.3
+ for <barebox@lists.infradead.org>; Thu, 16 Mar 2017 08:04:57 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 16 Mar 2017 08:04:45 -0700
-Message-Id: <20170316150448.11773-9-andrew.smirnov@gmail.com>
+Date: Thu, 16 Mar 2017 08:04:42 -0700
+Message-Id: <20170316150448.11773-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20170316150448.11773-1-andrew.smirnov@gmail.com>
 References: <20170316150448.11773-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,190 +23,188 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 08/11] usb: ohci-at91: Add DT support
+Subject: [PATCH v2 05/11] mci: atmel_mci: Add DT support
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Acked-by: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-at91/include/mach/board.h |  6 ++-
- drivers/usb/host/ohci-at91.c            | 93 ++++++++++++++++++++++++++++++++-
- 2 files changed, 95 insertions(+), 4 deletions(-)
+ drivers/mci/atmel_mci.c | 101 +++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 70 insertions(+), 31 deletions(-)
 
-diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
-index 491b220..5d76e00 100644
---- a/arch/arm/mach-at91/include/mach/board.h
-+++ b/arch/arm/mach-at91/include/mach/board.h
-@@ -32,11 +32,13 @@
- 
- void at91_set_main_clock(unsigned long rate);
- 
-+#define AT91_MAX_USBH_PORTS	3
-+
-  /* USB Host */
- struct at91_usbh_data {
- 	u8		ports;		/* number of ports on root hub */
--	int		vbus_pin[2];	/* port power-control pin */
--	u8	vbus_pin_active_low[2];	/* vbus polarity */
-+	int		vbus_pin[AT91_MAX_USBH_PORTS];	/* port power-control pin */
-+	u8	vbus_pin_active_low[AT91_MAX_USBH_PORTS];	/* vbus polarity */
- };
- extern void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data);
- extern void __init at91_add_device_usbh_ehci(struct at91_usbh_data *data);
-diff --git a/drivers/usb/host/ohci-at91.c b/drivers/usb/host/ohci-at91.c
-index 5f74526..1013ba3 100644
---- a/drivers/usb/host/ohci-at91.c
-+++ b/drivers/usb/host/ohci-at91.c
-@@ -23,10 +23,18 @@
- #include <usb/usb.h>
- #include <usb/usb_defs.h>
- #include <errno.h>
-+#include <gpio.h>
+diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
+index 2a0ddb0..317cf46 100644
+--- a/drivers/mci/atmel_mci.c
++++ b/drivers/mci/atmel_mci.c
+@@ -24,6 +24,7 @@
+ #include <mach/board.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
 +#include <of_gpio.h>
- #include <io.h>
  
-+#include <mach/board.h>
-+
- #include "ohci.h"
+ #include "atmel-mci-regs.h"
  
-+#define at91_for_each_port(index)					\
-+	for ((index) = 0; (index) < AT91_MAX_USBH_PORTS; (index)++)
-+
-+
- struct ohci_at91_priv {
- 	struct device_d *dev;
- 	struct clk *iclk;
-@@ -59,6 +67,59 @@ static void at91_stop_clock(struct ohci_at91_priv *ohci_at91)
- 	clk_disable(ohci_at91->iclk);
- }
+@@ -53,6 +54,7 @@ struct atmel_mci {
+ 	u32			cfg_reg;
+ 	u32			sdc_reg;
+ 	bool			need_reset;
++	int			detect_pin;
+ };
  
-+static int at91_ohci_probe_dt(struct device_d *dev)
-+{
-+	u32 ports;
-+	int i, ret, gpio;
-+	enum of_gpio_flags flags;
-+	struct at91_usbh_data *pdata;
-+	struct device_node *np = dev->device_node;
-+
-+	pdata = xzalloc(sizeof(*pdata));
-+	dev->platform_data = pdata;
-+
-+	if (!of_property_read_u32(np, "num-ports", &ports)) {
-+		pdata->ports = ports;
-+	} else {
-+		dev_err(dev, "Failed to read 'num-ports' property\n");
-+		return -EINVAL;
-+	}
-+
-+	at91_for_each_port(i) {
-+		/*
-+		 * do not configure PIO if not in relation with
-+		 * real USB port on board
-+		 */
-+		if (i >= pdata->ports) {
-+			pdata->vbus_pin[i] = -EINVAL;
-+			continue;
-+		}
-+
-+		gpio = of_get_named_gpio_flags(np, "atmel,vbus-gpio", i,
-+					       &flags);
-+		pdata->vbus_pin[i] = gpio;
-+		if (!gpio_is_valid(gpio))
-+			continue;
-+		pdata->vbus_pin_active_low[i] = flags & OF_GPIO_ACTIVE_LOW;
-+
-+		ret = gpio_request(gpio, "ohci_vbus");
-+		if (ret) {
-+			dev_err(dev, "can't request vbus gpio %d\n", gpio);
-+			continue;
-+		}
-+		ret = gpio_direction_output(gpio,
-+					    !pdata->vbus_pin_active_low[i]);
-+		if (ret) {
-+			dev_err(dev, "can't put vbus gpio %d as output %d\n",
-+				gpio, !pdata->vbus_pin_active_low[i]);
-+			gpio_free(gpio);
-+			continue;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static int at91_ohci_probe(struct device_d *dev)
+ #define to_mci_host(mci)	container_of(mci, struct atmel_mci, mci)
+@@ -360,14 +362,13 @@ static int atmci_start_cmd(struct atmel_mci *host, struct mci_cmd *cmd,
+ static int atmci_card_present(struct mci_host *mci)
  {
+ 	struct atmel_mci *host = to_mci_host(mci);
+-	struct atmel_mci_platform_data *pd = host->hw_dev->platform_data;
  	int ret;
-@@ -68,6 +129,12 @@ static int at91_ohci_probe(struct device_d *dev)
- 	dev->priv = ohci_at91;
- 	ohci_at91->dev = dev;
  
-+	if (dev->device_node) {
-+		ret = at91_ohci_probe_dt(dev);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
- 	io = dev_get_resource(dev, IORESOURCE_MEM, 0);
- 	if (IS_ERR(io)) {
- 		dev_err(dev, "Failed to get IORESOURCE_MEM\n");
-@@ -75,13 +142,13 @@ static int at91_ohci_probe(struct device_d *dev)
- 	}
- 	ohci_at91->regs = IOMEM(io->start);
+ 	/* No gpio, assume card is present */
+-	if (!gpio_is_valid(pd->detect_pin))
++	if (!gpio_is_valid(host->detect_pin))
+ 		return 1;
  
--	ohci_at91->iclk = clk_get(NULL, "ohci_clk");
-+	ohci_at91->iclk = clk_get(dev, "ohci_clk");
- 	if (IS_ERR(ohci_at91->iclk)) {
- 		dev_err(dev, "Failed to get 'ohci_clk'\n");
- 		return PTR_ERR(ohci_at91->iclk);
- 	}
+-	ret = gpio_get_value(pd->detect_pin);
++	ret = gpio_get_value(host->detect_pin);
  
--	ohci_at91->fclk = clk_get(NULL, "uhpck");
-+	ohci_at91->fclk = clk_get(dev, "uhpck");
- 	if (IS_ERR(ohci_at91->fclk)) {
- 		dev_err(dev, "Failed to get 'uhpck'\n");
- 		return PTR_ERR(ohci_at91->fclk);
-@@ -107,6 +174,7 @@ static int at91_ohci_probe(struct device_d *dev)
- 
- static void at91_ohci_remove(struct device_d *dev)
+ 	return ret == 0 ? 1 : 0;
+ }
+@@ -535,44 +536,71 @@ static int atmci_probe(struct device_d *hw_dev)
  {
-+	struct at91_usbh_data *pdata = dev->platform_data;
- 	struct ohci_at91_priv *ohci_at91 = dev->priv;
+ 	struct resource *iores;
+ 	struct atmel_mci *host;
++	struct device_node *np = hw_dev->device_node;
+ 	struct atmel_mci_platform_data *pd = hw_dev->platform_data;
+ 	int ret;
  
- 	/*
-@@ -118,11 +186,32 @@ static void at91_ohci_remove(struct device_d *dev)
- 	 * Stop the USB clocks.
- 	 */
- 	at91_stop_clock(ohci_at91);
+-	if (!pd) {
+-		dev_err(hw_dev, "missing platform data\n");
+-		return -EINVAL;
++	host = xzalloc(sizeof(*host));
++	host->mci.send_cmd = atmci_request;
++	host->mci.set_ios = atmci_set_ios;
++	host->mci.init = atmci_reset;
++	host->mci.card_present = atmci_card_present;
++	host->mci.hw_dev = hw_dev;
++	host->detect_pin = -EINVAL;
 +
-+	if (pdata) {
-+		bool active_low;
-+		int  i, gpio;
++	if (pd) {
++		host->detect_pin  = pd->detect_pin;
++		host->mci.devname = pd->devname;
 +
-+		at91_for_each_port(i) {
-+			gpio = pdata->vbus_pin[i];
-+			active_low = pdata->vbus_pin_active_low[i];
++		if (pd->bus_width >= 4)
++			host->mci.host_caps |= MMC_CAP_4_BIT_DATA;
++		if (pd->bus_width == 8)
++			host->mci.host_caps |= MMC_CAP_8_BIT_DATA;
 +
-+			if (gpio_is_valid(gpio)) {
-+				gpio_set_value(gpio, active_low);
-+				gpio_free(gpio);
++		host->slot_b = pd->slot_b;
++	} else if (np) {
++		u32 slot_id;
++		struct device_node *cnp;
++		const char *alias = of_alias_get(np);
++
++		if (alias)
++			host->mci.devname = xstrdup(alias);
++
++		host->detect_pin = of_get_named_gpio(np, "cd-gpios", 0);
++
++		for_each_child_of_node(np, cnp) {
++			if (of_property_read_u32(cnp, "reg", &slot_id)) {
++				dev_warn(hw_dev, "reg property is missing for %s\n",
++					 cnp->full_name);
++				continue;
 +			}
++
++			host->slot_b = slot_id;
++			mci_of_parse_node(&host->mci, cnp);
++			break;
 +		}
-+	}
++	} else {
++		dev_err(hw_dev, "Missing device information\n");
++		ret = -EINVAL;
++		goto error_out;
+ 	}
+ 
+-	if (gpio_is_valid(pd->detect_pin)) {
+-		ret = gpio_request(pd->detect_pin, "mci_cd");
++	if (gpio_is_valid(host->detect_pin)) {
++		ret = gpio_request(host->detect_pin, "mci_cd");
+ 		if (ret) {
+ 			dev_err(hw_dev, "Impossible to request CD gpio %d (%d)\n",
+-				ret, pd->detect_pin);
+-			return ret;
++				ret, host->detect_pin);
++			goto error_out;
+ 		}
+ 
+-		ret = gpio_direction_input(pd->detect_pin);
++		ret = gpio_direction_input(host->detect_pin);
+ 		if (ret) {
+ 			dev_err(hw_dev, "Impossible to configure CD gpio %d as input (%d)\n",
+-				ret, pd->detect_pin);
+-			goto err_gpio_cd_request;
++				ret, host->detect_pin);
++			goto error_out;
+ 		}
+ 	}
+ 
+-	host = xzalloc(sizeof(*host));
+-	host->mci.send_cmd = atmci_request;
+-	host->mci.set_ios = atmci_set_ios;
+-	host->mci.init = atmci_reset;
+-	host->mci.card_present = atmci_card_present;
+-	host->mci.hw_dev = hw_dev;
+-	host->mci.devname = pd->devname;
+-
+-	if (pd->bus_width >= 4)
+-		host->mci.host_caps |= MMC_CAP_4_BIT_DATA;
+-	if (pd->bus_width == 8)
+-		host->mci.host_caps |= MMC_CAP_8_BIT_DATA;
+-	host->slot_b = pd->slot_b;
+-
+ 	iores = dev_request_mem_resource(hw_dev, 0);
+ 	if (IS_ERR(iores))
+ 		return PTR_ERR(iores);
+@@ -583,7 +611,7 @@ static int atmci_probe(struct device_d *hw_dev)
+ 	if (IS_ERR(host->clk)) {
+ 		dev_err(hw_dev, "no mci_clk\n");
+ 		ret = PTR_ERR(host->clk);
+-		goto err_gpio_cd_request;
++		goto error_out;
+ 	}
+ 
+ 	clk_enable(host->clk);
+@@ -614,15 +642,26 @@ static int atmci_probe(struct device_d *hw_dev)
+ 
+ 	return 0;
+ 
+-err_gpio_cd_request:
+-	if (gpio_is_valid(pd->detect_pin))
+-		gpio_free(pd->detect_pin);
++error_out:
++	free(host);
++
++	if (gpio_is_valid(host->detect_pin))
++		gpio_free(host->detect_pin);
+ 
+ 	return ret;
  }
  
-+static const struct of_device_id at91_ohci_dt_ids[] = {
-+	{ .compatible = "atmel,at91rm9200-ohci" },
-+	{ /* sentinel */ }
++static __maybe_unused struct of_device_id atmci_compatible[] = {
++	{
++		.compatible = "atmel,hsmci",
++	}, {
++		/* sentinel */
++	}
 +};
 +
- static struct driver_d at91_ohci_driver = {
- 	.name = "at91_ohci",
- 	.probe = at91_ohci_probe,
- 	.remove = at91_ohci_remove,
-+	.of_compatible = DRV_OF_COMPAT(at91_ohci_dt_ids),
+ static struct driver_d atmci_driver = {
+ 	.name	= "atmel_mci",
+ 	.probe	= atmci_probe,
++	.of_compatible = DRV_OF_COMPAT(atmci_compatible),
  };
- device_platform_driver(at91_ohci_driver);
+ device_platform_driver(atmci_driver);
 -- 
 2.9.3
 
