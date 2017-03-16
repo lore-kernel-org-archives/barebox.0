@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1coWxn-0005d4-OM
+ id 1coWxn-0005cX-ML
  for barebox@lists.infradead.org; Thu, 16 Mar 2017 15:05:18 +0000
-Received: by mail-pg0-x242.google.com with SMTP id b5so6409773pgg.1
- for <barebox@lists.infradead.org>; Thu, 16 Mar 2017 08:04:54 -0700 (PDT)
+Received: by mail-pg0-x244.google.com with SMTP id b5so6409740pgg.1
+ for <barebox@lists.infradead.org>; Thu, 16 Mar 2017 08:04:53 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 16 Mar 2017 08:04:39 -0700
-Message-Id: <20170316150448.11773-3-andrew.smirnov@gmail.com>
-In-Reply-To: <20170316150448.11773-1-andrew.smirnov@gmail.com>
-References: <20170316150448.11773-1-andrew.smirnov@gmail.com>
+Date: Thu, 16 Mar 2017 08:04:37 -0700
+Message-Id: <20170316150448.11773-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,36 +21,99 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 02/11] serial: atmel: Add DT compatibility table
+Subject: [PATCH v2 00/11] AT91, at91sam9x5ek updates (part II/III)
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- drivers/serial/atmel.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Hi everone,
 
-diff --git a/drivers/serial/atmel.c b/drivers/serial/atmel.c
-index ab94fd2..2f8adc9 100644
---- a/drivers/serial/atmel.c
-+++ b/drivers/serial/atmel.c
-@@ -446,8 +446,15 @@ static int atmel_serial_probe(struct device_d *dev)
- 	return 0;
- }
- 
-+static const struct of_device_id __maybe_unused atmel_serial_dt_ids[] = {
-+	{ .compatible = "atmel,at91rm9200-usart" },
-+	{ .compatible = "atmel,at91sam9260-usart" },
-+	{ /* sentinel */ }
-+};
-+
- static struct driver_d atmel_serial_driver = {
-         .name  = "atmel_usart",
-         .probe = atmel_serial_probe,
-+	.of_compatible = DRV_OF_COMPAT(atmel_serial_dt_ids),
- };
- console_platform_driver(atmel_serial_driver);
+This is v2 of the second batch of AT91 related patches (original thread
+[1]). The patches gathered in this set are with a few exceptions are
+patches adding DT probing support for various AT91 drivers.
+
+Feedback from Sam has been incorporated, but other than that the code
+should be as it was in [1].
+
+Any feedback is appreciated.
+
+Thank you,
+Andrey Smirnov
+
+Changes since v1 (see [v1])
+
+	- Added const specifiers to DT ID tables, as pointed out by Sam
+	- Collected Acked-by from Sam
+
+[v1] http://lists.infradead.org/pipermail/barebox/2017-March/029568.html
+[1]  http://lists.infradead.org/pipermail/barebox/2017-March/029337.html
+
+
+Andrey Smirnov (11):
+  clocksource: at91: Add DT compatibility table
+  serial: atmel: Add DT compatibility table
+  clk: at91: Port at91 DT clock code
+  mci: Allow parsing for explicit DT node
+  mci: atmel_mci: Add DT support
+  spi: atmel_spi: Add DT support
+  w1-gpio: Add DT support
+  usb: ohci-at91: Add DT support
+  usb/host: Allow USB_OHCI_AT91 even if USB_OHCI is disabled
+  usb: echi-atmel: Add DT support
+  net: macb: Add DT support
+
+ arch/arm/Kconfig                        |   1 +
+ arch/arm/mach-at91/Kconfig              |  20 ++
+ arch/arm/mach-at91/include/mach/board.h |   6 +-
+ drivers/clk/Makefile                    |   1 +
+ drivers/clk/at91/Makefile               |  15 +
+ drivers/clk/at91/clk-generated.c        | 323 ++++++++++++++++++
+ drivers/clk/at91/clk-h32mx.c            | 125 +++++++
+ drivers/clk/at91/clk-main.c             | 576 ++++++++++++++++++++++++++++++++
+ drivers/clk/at91/clk-master.c           | 245 ++++++++++++++
+ drivers/clk/at91/clk-peripheral.c       | 430 ++++++++++++++++++++++++
+ drivers/clk/at91/clk-pll.c              | 516 ++++++++++++++++++++++++++++
+ drivers/clk/at91/clk-plldiv.c           | 135 ++++++++
+ drivers/clk/at91/clk-programmable.c     | 254 ++++++++++++++
+ drivers/clk/at91/clk-slow.c             | 108 ++++++
+ drivers/clk/at91/clk-smd.c              | 172 ++++++++++
+ drivers/clk/at91/clk-system.c           | 160 +++++++++
+ drivers/clk/at91/clk-usb.c              | 397 ++++++++++++++++++++++
+ drivers/clk/at91/clk-utmi.c             | 138 ++++++++
+ drivers/clk/at91/pmc.c                  |  41 +++
+ drivers/clk/at91/pmc.h                  |  27 ++
+ drivers/clk/at91/sckc.c                 | 485 +++++++++++++++++++++++++++
+ drivers/clocksource/timer-atmel-pit.c   |   9 +
+ drivers/mci/atmel_mci.c                 | 101 ++++--
+ drivers/mci/mci-core.c                  |  13 +-
+ drivers/net/macb.c                      |  56 +++-
+ drivers/serial/atmel.c                  |   7 +
+ drivers/spi/atmel_spi.c                 |  29 +-
+ drivers/usb/host/Kconfig                |   5 +-
+ drivers/usb/host/ehci-atmel.c           |  11 +-
+ drivers/usb/host/ohci-at91.c            |  93 +++++-
+ drivers/w1/masters/w1-gpio.c            |  53 +++
+ include/linux/clk/at91_pmc.h            | 188 +++++++++++
+ include/mci.h                           |   1 +
+ 33 files changed, 4679 insertions(+), 62 deletions(-)
+ create mode 100644 drivers/clk/at91/Makefile
+ create mode 100644 drivers/clk/at91/clk-generated.c
+ create mode 100644 drivers/clk/at91/clk-h32mx.c
+ create mode 100644 drivers/clk/at91/clk-main.c
+ create mode 100644 drivers/clk/at91/clk-master.c
+ create mode 100644 drivers/clk/at91/clk-peripheral.c
+ create mode 100644 drivers/clk/at91/clk-pll.c
+ create mode 100644 drivers/clk/at91/clk-plldiv.c
+ create mode 100644 drivers/clk/at91/clk-programmable.c
+ create mode 100644 drivers/clk/at91/clk-slow.c
+ create mode 100644 drivers/clk/at91/clk-smd.c
+ create mode 100644 drivers/clk/at91/clk-system.c
+ create mode 100644 drivers/clk/at91/clk-usb.c
+ create mode 100644 drivers/clk/at91/clk-utmi.c
+ create mode 100644 drivers/clk/at91/pmc.c
+ create mode 100644 drivers/clk/at91/pmc.h
+ create mode 100644 drivers/clk/at91/sckc.c
+ create mode 100644 include/linux/clk/at91_pmc.h
+
 -- 
 2.9.3
 
