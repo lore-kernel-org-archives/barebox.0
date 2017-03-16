@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1coWxr-0005dn-7U
- for barebox@lists.infradead.org; Thu, 16 Mar 2017 15:05:25 +0000
-Received: by mail-pg0-x241.google.com with SMTP id g2so6391334pge.2
- for <barebox@lists.infradead.org>; Thu, 16 Mar 2017 08:04:59 -0700 (PDT)
+ id 1coWxt-0005eC-9P
+ for barebox@lists.infradead.org; Thu, 16 Mar 2017 15:05:27 +0000
+Received: by mail-pf0-x243.google.com with SMTP id x63so5971724pfx.2
+ for <barebox@lists.infradead.org>; Thu, 16 Mar 2017 08:05:00 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 16 Mar 2017 08:04:43 -0700
-Message-Id: <20170316150448.11773-7-andrew.smirnov@gmail.com>
+Date: Thu, 16 Mar 2017 08:04:44 -0700
+Message-Id: <20170316150448.11773-8-andrew.smirnov@gmail.com>
 In-Reply-To: <20170316150448.11773-1-andrew.smirnov@gmail.com>
 References: <20170316150448.11773-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,89 +23,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 06/11] spi: atmel_spi: Add DT support
+Subject: [PATCH v2 07/11] w1-gpio: Add DT support
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Acked-by: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/spi/atmel_spi.c | 29 ++++++++++++++++++++++++++---
- 1 file changed, 26 insertions(+), 3 deletions(-)
+ drivers/w1/masters/w1-gpio.c | 53 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/drivers/spi/atmel_spi.c b/drivers/spi/atmel_spi.c
-index ef57867..446e1d9 100644
---- a/drivers/spi/atmel_spi.c
-+++ b/drivers/spi/atmel_spi.c
-@@ -29,6 +29,7 @@
- #include <clock.h>
- #include <xfuncs.h>
+diff --git a/drivers/w1/masters/w1-gpio.c b/drivers/w1/masters/w1-gpio.c
+index 946e9d3..916027e 100644
+--- a/drivers/w1/masters/w1-gpio.c
++++ b/drivers/w1/masters/w1-gpio.c
+@@ -16,6 +16,7 @@
+ #include <driver.h>
+ #include <linux/w1-gpio.h>
  #include <gpio.h>
 +#include <of_gpio.h>
- #include <io.h>
- #include <spi/spi.h>
- #include <mach/io.h>
-@@ -400,10 +401,11 @@ static int atmel_spi_probe(struct device_d *dev)
- 	int ret = 0;
- 	int i;
- 	struct spi_master *master;
-+	struct device_node *node = dev->device_node;
- 	struct atmel_spi *as;
- 	struct at91_spi_platform_data *pdata = dev->platform_data;
  
--	if (!pdata) {
-+	if (!IS_ENABLED(CONFIG_OFDEVICE) && !pdata) {
- 		dev_err(dev, "missing platform data\n");
- 		return -EINVAL;
- 	}
-@@ -414,6 +416,23 @@ static int atmel_spi_probe(struct device_d *dev)
- 	master->dev = dev;
- 	master->bus_num = dev->id;
+ #include "../w1.h"
  
-+	if (pdata) {
-+		master->num_chipselect = pdata->num_chipselect;
-+		as->cs_pins = pdata->chipselect;
-+	} else {
-+		master->num_chipselect = of_gpio_named_count(node, "cs-gpios");
-+		as->cs_pins = xzalloc(sizeof(u32) * master->num_chipselect);
-+
-+		for (i = 0; i < master->num_chipselect; i++) {
-+			as->cs_pins[i] = of_get_named_gpio(node, "cs-gpios", i);
-+
-+			if (!gpio_is_valid(as->cs_pins[i]))
-+			    break;
-+		}
-+
-+		master->num_chipselect = i;
-+	}
-+
- 	as->clk = clk_get(dev, "spi_clk");
- 	if (IS_ERR(as->clk)) {
- 		dev_err(dev, "no spi_clk\n");
-@@ -423,8 +442,6 @@ static int atmel_spi_probe(struct device_d *dev)
- 
- 	master->setup = atmel_spi_setup;
- 	master->transfer = atmel_spi_transfer;
--	master->num_chipselect = pdata->num_chipselect;
--	as->cs_pins = pdata->chipselect;
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores))
- 		return PTR_ERR(iores);
-@@ -465,8 +482,14 @@ out_free:
- 	return ret;
+@@ -43,12 +44,58 @@ static u8 w1_gpio_read_bit(struct w1_bus *bus)
+ 	return gpio_get_value(pdata->pin) ? 1 : 0;
  }
  
-+const static __maybe_unused const struct of_device_id atmel_spi_dt_ids[] = {
-+	{ .compatible = "atmel,at91rm9200-spi" },
-+	{ /* sentinel */ }
++static int w1_gpio_probe_dt(struct device_d *dev)
++{
++	struct w1_gpio_platform_data *pdata;
++	struct device_node *np = dev->device_node;
++	int gpio;
++
++	if (dev->platform_data)
++		return 0;
++
++	pdata = xzalloc(sizeof(*pdata));
++
++	if (of_get_property(np, "linux,open-drain", NULL))
++		pdata->is_open_drain = 1;
++
++	gpio = of_get_gpio(np, 0);
++	if (!gpio_is_valid(gpio)) {
++		if (gpio != -EPROBE_DEFER)
++			dev_err(dev,
++				"Failed to parse gpio property for data pin (%d)\n",
++				gpio);
++
++		goto free_pdata;
++	}
++	pdata->pin = gpio;
++
++	gpio = of_get_gpio(np, 1);
++	if (gpio == -EPROBE_DEFER)
++		goto free_pdata;
++
++	/* ignore other errors as the pullup gpio is optional */
++	pdata->ext_pullup_enable_pin = gpio;
++
++	dev->platform_data = pdata;
++	return 0;
++
++free_pdata:
++	free(pdata);
++	return gpio;
++}
++
+ static int __init w1_gpio_probe(struct device_d *dev)
+ {
+ 	struct w1_bus *master;
+ 	struct w1_gpio_platform_data *pdata;
+ 	int err;
+ 
++	if (IS_ENABLED(CONFIG_OFDEVICE)) {
++		err = w1_gpio_probe_dt(dev);
++		if (err < 0)
++			return err;
++	}
++
+ 	pdata = dev->platform_data;
+ 
+ 	if (!pdata)
+@@ -104,8 +151,14 @@ static int __init w1_gpio_probe(struct device_d *dev)
+ 	return err;
+ }
+ 
++static __maybe_unused const struct of_device_id w1_gpio_dt_ids[] = {
++	{ .compatible = "w1-gpio" },
++	{}
 +};
 +
- static struct driver_d atmel_spi_driver = {
- 	.name  = "atmel_spi",
- 	.probe = atmel_spi_probe,
-+	.of_compatible = DRV_OF_COMPAT(atmel_spi_dt_ids),
+ static struct driver_d w1_gpio_driver = {
+ 	.name	= "w1-gpio",
+ 	.probe	= w1_gpio_probe,
++	.of_compatible = DRV_OF_COMPAT(w1_gpio_dt_ids),
  };
- device_platform_driver(atmel_spi_driver);
+ device_platform_driver(w1_gpio_driver);
 -- 
 2.9.3
 
