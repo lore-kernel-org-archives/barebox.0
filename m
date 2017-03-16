@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1coWxt-000636-9N
- for barebox@lists.infradead.org; Thu, 16 Mar 2017 15:05:27 +0000
-Received: by mail-pf0-x243.google.com with SMTP id p189so555246pfp.0
- for <barebox@lists.infradead.org>; Thu, 16 Mar 2017 08:05:04 -0700 (PDT)
+ id 1coWxx-0006kT-Ek
+ for barebox@lists.infradead.org; Thu, 16 Mar 2017 15:05:31 +0000
+Received: by mail-pf0-x243.google.com with SMTP id x63so5971993pfx.2
+ for <barebox@lists.infradead.org>; Thu, 16 Mar 2017 08:05:08 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 16 Mar 2017 08:04:48 -0700
-Message-Id: <20170316150448.11773-12-andrew.smirnov@gmail.com>
+Date: Thu, 16 Mar 2017 08:04:47 -0700
+Message-Id: <20170316150448.11773-11-andrew.smirnov@gmail.com>
 In-Reply-To: <20170316150448.11773-1-andrew.smirnov@gmail.com>
 References: <20170316150448.11773-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,116 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 11/11] net: macb: Add DT support
+Subject: [PATCH v2 10/11] usb: echi-atmel: Add DT support
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Acked-by: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/macb.c | 56 ++++++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 42 insertions(+), 14 deletions(-)
+ drivers/usb/host/ehci-atmel.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index 5f2e5e5..36e49c3 100644
---- a/drivers/net/macb.c
-+++ b/drivers/net/macb.c
-@@ -48,6 +48,7 @@
- #include <linux/clk.h>
- #include <linux/err.h>
- #include <linux/phy.h>
-+#include <of_net.h>
- 
- #include "macb.h"
- 
-@@ -615,14 +616,8 @@ static int macb_probe(struct device_d *dev)
+diff --git a/drivers/usb/host/ehci-atmel.c b/drivers/usb/host/ehci-atmel.c
+index f075b50..1132879 100644
+--- a/drivers/usb/host/ehci-atmel.c
++++ b/drivers/usb/host/ehci-atmel.c
+@@ -65,6 +65,9 @@ static int atmel_ehci_probe(struct device_d *dev)
  	struct resource *iores;
- 	struct eth_device *edev;
- 	struct macb_device *macb;
-+	const char *pclk_name;
- 	u32 ncfgr;
--	struct macb_platform_data *pdata;
--
--	if (!dev->platform_data) {
--		dev_err(dev, "macb: no platform_data\n");
--		return -ENODEV;
--	}
--	pdata = dev->platform_data;
- 
- 	edev = xzalloc(sizeof(struct eth_device) + sizeof(struct macb_device));
- 	edev->priv = (struct macb_device *)(edev + 1);
-@@ -633,22 +628,49 @@ static int macb_probe(struct device_d *dev)
- 	edev->open = macb_open;
- 	edev->send = macb_send;
- 	edev->halt = macb_halt;
--	edev->get_ethaddr = pdata->get_ethaddr ? pdata->get_ethaddr : macb_get_ethaddr;
-+	edev->get_ethaddr = macb_get_ethaddr;
- 	edev->set_ethaddr = macb_set_ethaddr;
- 	edev->parent = dev;
- 
- 	macb->miibus.read = macb_phy_read;
- 	macb->miibus.write = macb_phy_write;
--	macb->phy_addr = pdata->phy_addr;
- 	macb->miibus.priv = macb;
- 	macb->miibus.parent = dev;
- 
--	if (pdata->phy_interface == PHY_INTERFACE_MODE_NA)
--		macb->interface = PHY_INTERFACE_MODE_MII;
--	else
--		macb->interface = pdata->phy_interface;
-+	if (dev->platform_data) {
-+		struct macb_platform_data *pdata = dev->platform_data;
+ 	struct ehci_data data;
+ 	struct atmel_ehci_priv *atehci;
++	const char *uclk_name;
 +
-+		if (pdata->phy_interface == PHY_INTERFACE_MODE_NA)
-+			macb->interface = PHY_INTERFACE_MODE_MII;
-+		else
-+			macb->interface = pdata->phy_interface;
-+
-+		if (pdata->get_ethaddr)
-+			edev->get_ethaddr = pdata->get_ethaddr;
-+
-+		macb->phy_addr = pdata->phy_addr;
-+		macb->phy_flags = pdata->phy_flags;
-+		pclk_name = "macb_clk";
-+	} else if (dev->device_node) {
-+		int ret;
-+		struct device_node *mdiobus;
++	uclk_name = (dev->device_node) ? "usb_clk" : "uhpck";
  
--	macb->phy_flags = pdata->phy_flags;
-+		ret = of_get_phy_mode(dev->device_node);
-+		if (ret < 0)
-+			macb->interface = PHY_INTERFACE_MODE_MII;
-+		else
-+			macb->interface = ret;
-+
-+		mdiobus = of_get_child_by_name(dev->device_node, "mdio");
-+		if (mdiobus)
-+			macb->miibus.dev.device_node = mdiobus;
-+
-+		macb->phy_addr = -1;
-+		pclk_name = NULL;
-+	} else {
-+		dev_err(dev, "macb: no platform_data\n");
-+		return -ENODEV;
-+	}
+ 	atehci = xzalloc(sizeof(*atehci));
+ 	atehci->dev = dev;
+@@ -76,7 +79,7 @@ static int atmel_ehci_probe(struct device_d *dev)
+ 		return -ENOENT;
+ 	}
  
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores))
-@@ -698,8 +720,14 @@ static int macb_probe(struct device_d *dev)
- 	return 0;
+-	atehci->uclk = clk_get(dev, "uhpck");
++	atehci->uclk = clk_get(dev, uclk_name);
+ 	if (IS_ERR(atehci->iclk)) {
+ 		dev_err(dev, "Error getting function clock\n");
+ 		return -ENOENT;
+@@ -107,9 +110,15 @@ static void atmel_ehci_remove(struct device_d *dev)
+ 	atmel_stop_clock(dev->priv);
  }
  
-+static const struct of_device_id macb_dt_ids[] = {
-+	{ .compatible = "cdns,at91sam9260-macb",},
++static const struct of_device_id atmel_ehci_dt_ids[] = {
++	{ .compatible = "atmel,at91sam9g45-ehci" },
 +	{ /* sentinel */ }
 +};
 +
- static struct driver_d macb_driver = {
- 	.name  = "macb",
- 	.probe = macb_probe,
-+	.of_compatible = DRV_OF_COMPAT(macb_dt_ids),
+ static struct driver_d atmel_ehci_driver = {
+ 	.name = "atmel-ehci",
+ 	.probe = atmel_ehci_probe,
+ 	.remove = atmel_ehci_remove,
++	.of_compatible = DRV_OF_COMPAT(atmel_ehci_dt_ids),
  };
- device_platform_driver(macb_driver);
+ device_platform_driver(atmel_ehci_driver);
 -- 
 2.9.3
 
