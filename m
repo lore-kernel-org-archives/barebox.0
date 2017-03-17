@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cou5y-0006nM-9H
+ id 1cou5y-0006me-AJ
  for barebox@lists.infradead.org; Fri, 17 Mar 2017 15:47:22 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Fri, 17 Mar 2017 16:46:37 +0100
-Message-Id: <20170317154638.30513-4-o.rempel@pengutronix.de>
+Date: Fri, 17 Mar 2017 16:46:35 +0100
+Message-Id: <20170317154638.30513-2-o.rempel@pengutronix.de>
 In-Reply-To: <20170317154638.30513-1-o.rempel@pengutronix.de>
 References: <20170317154638.30513-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,116 +21,239 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 3/4] caamrng: port to hwrng framework
+Subject: [PATCH v3 1/4] drivers: add simple hw_random implementation
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+
+Add a simple hw_random implementation based on code from
+Linux v4.5-rc5.
+
+All the entropypool initialization stuff is left out and
+the obsolete data_read/data_present calls are omitted.
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/crypto/caam/Kconfig   |  1 +
- drivers/crypto/caam/caamrng.c | 40 ++++++++++++----------------------------
- 2 files changed, 13 insertions(+), 28 deletions(-)
+ drivers/Kconfig            |   1 +
+ drivers/Makefile           |   1 +
+ drivers/hw_random/Kconfig  |   6 +++
+ drivers/hw_random/Makefile |   1 +
+ drivers/hw_random/core.c   | 108 +++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/hw_random.h  |  43 ++++++++++++++++++
+ 6 files changed, 160 insertions(+)
+ create mode 100644 drivers/hw_random/Kconfig
+ create mode 100644 drivers/hw_random/Makefile
+ create mode 100644 drivers/hw_random/core.c
+ create mode 100644 include/linux/hw_random.h
 
-diff --git a/drivers/crypto/caam/Kconfig b/drivers/crypto/caam/Kconfig
-index cf05d1c07..2ab509d11 100644
---- a/drivers/crypto/caam/Kconfig
-+++ b/drivers/crypto/caam/Kconfig
-@@ -29,6 +29,7 @@ config CRYPTO_DEV_FSL_CAAM_RINGSIZE
- config CRYPTO_DEV_FSL_CAAM_RNG
- 	bool "Register caam RNG device"
- 	depends on CRYPTO_DEV_FSL_CAAM
-+	depends on HWRNG
- 	default y
- 	help
- 	  Selecting this will register the SEC4 hardware rng.
-diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
-index 0fef171a2..aabad0416 100644
---- a/drivers/crypto/caam/caamrng.c
-+++ b/drivers/crypto/caam/caamrng.c
-@@ -35,6 +35,7 @@
- #include <driver.h>
- #include <init.h>
- #include <linux/spinlock.h>
-+#include <linux/hw_random.h>
- 
- #include "regs.h"
- #include "intern.h"
-@@ -71,7 +72,7 @@ struct caam_rng_ctx {
- 	unsigned int cur_buf_idx;
- 	int current_buf;
- 	struct buf_data bufs[2];
--	struct cdev cdev;
-+	struct hwrng rng;
- };
- 
- static struct caam_rng_ctx *rng_ctx;
-@@ -116,8 +117,9 @@ static inline int submit_job(struct caam_rng_ctx *ctx, int to_current)
- 	return err;
- }
- 
--static int caam_read(struct caam_rng_ctx *ctx, void *data, size_t max, bool wait)
-+static int caam_read(struct hwrng *rng, void *data, size_t max, bool wait)
- {
-+	struct caam_rng_ctx *ctx = container_of(rng, struct caam_rng_ctx, rng);
- 	struct buf_data *bd = &ctx->bufs[ctx->current_buf];
- 	int next_buf_idx, copied_idx;
- 	int err;
-@@ -162,7 +164,7 @@ static int caam_read(struct caam_rng_ctx *ctx, void *data, size_t max, bool wait
- 	dev_dbg(ctx->jrdev, "switched to buffer %d\n", ctx->current_buf);
- 
- 	/* since there already is some data read, don't wait */
--	return copied_idx + caam_read(ctx, data + copied_idx,
-+	return copied_idx + caam_read(rng, data + copied_idx,
- 				      max - copied_idx, false);
- }
- 
-@@ -248,29 +250,6 @@ static int caam_init_rng(struct caam_rng_ctx *ctx, struct device_d *jrdev)
- 	return 0;
- }
- 
--static ssize_t random_read(struct cdev *cdev, void *buf, size_t count,
--			   loff_t offset, ulong flags)
--{
--	struct caam_rng_ctx *ctx = container_of(cdev, struct caam_rng_ctx, cdev);
--
--	return caam_read(ctx, buf, count, true);
--}
--
--static struct file_operations randomops = {
--	.read  = random_read,
--	.lseek = dev_lseek_default,
--};
--
--static int caam_init_devrandom(struct caam_rng_ctx *ctx, struct device_d *dev)
--{
--	ctx->cdev.name = "hwrng";
--	ctx->cdev.flags = DEVFS_IS_CHARACTER_DEV;
--	ctx->cdev.ops = &randomops;
--	ctx->cdev.dev = dev;
--
--	return devfs_create(&ctx->cdev);
--}
--
- int caam_rng_probe(struct device_d *dev, struct device_d *jrdev)
- {
- 	int err;
-@@ -281,9 +260,14 @@ int caam_rng_probe(struct device_d *dev, struct device_d *jrdev)
- 	if (err)
- 		return err;
- 
--	err = caam_init_devrandom(rng_ctx, dev);
--	if (err)
-+	rng_ctx->rng.name = dev->name;
-+	rng_ctx->rng.read = caam_read;
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index cc086ac2d..2f5784a4d 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -21,6 +21,7 @@ source "drivers/eeprom/Kconfig"
+ source "drivers/input/Kconfig"
+ source "drivers/watchdog/Kconfig"
+ source "drivers/pwm/Kconfig"
++source "drivers/hw_random/Kconfig"
+ source "drivers/dma/Kconfig"
+ source "drivers/gpio/Kconfig"
+ source "drivers/w1/Kconfig"
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 6a70f6ee1..7e9b80e59 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -20,6 +20,7 @@ obj-y	+= misc/
+ obj-y	+= dma/
+ obj-y  += watchdog/
+ obj-y	+= gpio/
++obj-$(CONFIG_HWRNG) += hw_random/
+ obj-$(CONFIG_OFTREE) += of/
+ obj-$(CONFIG_W1) += w1/
+ obj-y += pinctrl/
+diff --git a/drivers/hw_random/Kconfig b/drivers/hw_random/Kconfig
+new file mode 100644
+index 000000000..807fcadd3
+--- /dev/null
++++ b/drivers/hw_random/Kconfig
+@@ -0,0 +1,6 @@
++menuconfig HWRNG
++	bool "HWRNG Support"
++	help
++	  Support for HWRNG(Hardware Random Number Generator) devices.
 +
-+	err = hwrng_register(dev, &rng_ctx->rng);
-+	if (err) {
-+		dev_err(dev, "rng-caam registering failed (%d)\n", err);
- 		return err;
++	  If unsure, say no.
+diff --git a/drivers/hw_random/Makefile b/drivers/hw_random/Makefile
+new file mode 100644
+index 000000000..15307b100
+--- /dev/null
++++ b/drivers/hw_random/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_HWRNG)		+= core.o
+diff --git a/drivers/hw_random/core.c b/drivers/hw_random/core.c
+new file mode 100644
+index 000000000..2991f58c3
+--- /dev/null
++++ b/drivers/hw_random/core.c
+@@ -0,0 +1,108 @@
++/*
++ * Copyright (c) 2016 Pengutronix, Steffen Trumtrar <kernel@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * derived from Linux kernel drivers/char/hw_random/core.c
++ */
++
++#include <common.h>
++#include <linux/hw_random.h>
++#include <malloc.h>
++
++static LIST_HEAD(hwrngs);
++
++#define RNG_BUFFER_SIZE		32
++
++int hwrng_get_data(struct hwrng *rng, void *buffer, size_t size, int wait)
++{
++	return rng->read(rng, buffer, size, wait);
++}
++
++static int hwrng_init(struct hwrng *rng)
++{
++	int ret = 0;
++
++	if (rng->init)
++		ret = rng->init(rng);
++
++	if (!ret)
++		list_add_tail(&rng->list, &hwrngs);
++
++	return ret;
++}
++
++static ssize_t rng_dev_read(struct cdev *cdev, void *buf, size_t size,
++			    loff_t offset, unsigned long flags)
++{
++	struct hwrng *rng = container_of(cdev, struct hwrng, cdev);
++	size_t count = size;
++	ssize_t cur = 0;
++	int len;
++
++	memset(buf, 0, size);
++
++	while (count) {
++		int max = min(count, (size_t)RNG_BUFFER_SIZE);
++		len = hwrng_get_data(rng, rng->buf, max, true);
++		if (len < 0) {
++			cur = len;
++			break;
++		}
++
++		memcpy(buf + cur, rng->buf, len);
++
++		count -= len;
++		cur += len;
 +	}
- 
- 	dev_info(dev, "registering rng-caam\n");
- 
++
++	return cur;
++}
++
++static struct file_operations rng_chrdev_ops = {
++	.read  = rng_dev_read,
++	.lseek = dev_lseek_default,
++};
++
++static int hwrng_register_cdev(struct hwrng *rng)
++{
++	rng->cdev.name = "hwrng";
++	rng->cdev.flags = DEVFS_IS_CHARACTER_DEV;
++	rng->cdev.ops = &rng_chrdev_ops;
++	rng->cdev.dev = rng->dev;
++
++	return devfs_create(&rng->cdev);
++}
++
++struct hwrng *hwrng_get_first(void)
++{
++	if (list_empty(&hwrngs))
++		return ERR_PTR(-ENODEV);
++	else
++		return list_first_entry(&hwrngs, struct hwrng, list);
++}
++
++int hwrng_register(struct device_d *dev, struct hwrng *rng)
++{
++	int err;
++
++	if (rng->name == NULL || rng->read == NULL)
++		return -EINVAL;
++
++	rng->buf = xzalloc(RNG_BUFFER_SIZE);
++	rng->dev = dev;
++
++	err = hwrng_init(rng);
++	if (err) {
++		free(rng->buf);
++		return err;
++	}
++
++	err = hwrng_register_cdev(rng);
++	if (err)
++		free(rng->buf);
++
++	return err;
++}
+diff --git a/include/linux/hw_random.h b/include/linux/hw_random.h
+new file mode 100644
+index 000000000..299a717dd
+--- /dev/null
++++ b/include/linux/hw_random.h
+@@ -0,0 +1,43 @@
++/*
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#ifndef LINUX_HWRANDOM_H_
++#define LINUX_HWRANDOM_H_
++
++#include <linux/list.h>
++
++/**
++ * struct hwrng - Hardware Random Number Generator driver
++ * @name:		Unique RNG name.
++ * @init:		Initialization callback (can be NULL).
++ * @read:		New API. drivers can fill up to max bytes of data
++ *			into the buffer. The buffer is aligned for any type.
++ * @priv:		Private data, for use by the RNG driver.
++ */
++struct hwrng {
++	const char *name;
++	int (*init)(struct hwrng *rng);
++	int (*read)(struct hwrng *rng, void *data, size_t max, bool wait);
++
++	struct list_head list;
++
++	struct cdev cdev;
++	struct device_d *dev;
++	void *buf;
++};
++
++/* Register a new Hardware Random Number Generator driver. */
++int hwrng_register(struct device_d *dev, struct hwrng *rng);
++struct hwrng *hwrng_get_first(void);
++int hwrng_get_data(struct hwrng *rng, void *buffer, size_t size, int wait);
++
++#endif /* LINUX_HWRANDOM_H_ */
 -- 
 2.11.0
 
