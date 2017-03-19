@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1cpdvW-00023i-KU
- for barebox@lists.infradead.org; Sun, 19 Mar 2017 16:43:32 +0000
-Received: from tellur.intern.lynxeye.de.fritz.box (a89-183-7-62.net-htp.de
- [89.183.7.62]) by lynxeye.de (Postfix) with ESMTPA id E91A6E743D1
- for <barebox@lists.infradead.org>; Sun, 19 Mar 2017 17:31:55 +0100 (CET)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 19 Mar 2017 17:31:51 +0100
-Message-Id: <20170319163151.13403-3-dev@lynxeye.de>
-In-Reply-To: <20170319163151.13403-1-dev@lynxeye.de>
-References: <20170319163151.13403-1-dev@lynxeye.de>
+Received: from vs81.iboxed.net ([185.82.85.146])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cpeEJ-0001FR-Ql
+ for barebox@lists.infradead.org; Sun, 19 Mar 2017 17:02:57 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Sun, 19 Mar 2017 18:01:57 +0100
+Message-Id: <1489942917-16190-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,32 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] ARM: tegra: jetson-tk1: use phandle for stdout path
+Subject: [PATCH] ARM: i.MX7: Kconfig: ARCH_IMX7 selects PINCTRL_IMX_IOMUX_V3
 To: barebox@lists.infradead.org
+Cc: Alexander Kurz <akurz@blala.de>
 
-Now that the UARTs have phandles in the upstream DT, we can
-make use of them in Barebox.
+fsl,imx7d-iomuxc is provided by selecting PINCTRL_IMX_IOMUX_V3. Select it
+since a system without it will not be very usefull.
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
+Signed-off-by: Alexander Kurz <akurz@blala.de>
 ---
- arch/arm/dts/tegra124-jetson-tk1.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-imx/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/dts/tegra124-jetson-tk1.dts b/arch/arm/dts/tegra124-jetson-tk1.dts
-index e1974db..00ae58f 100644
---- a/arch/arm/dts/tegra124-jetson-tk1.dts
-+++ b/arch/arm/dts/tegra124-jetson-tk1.dts
-@@ -3,7 +3,7 @@
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 831755c..e1459d2 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -165,6 +165,7 @@ config ARCH_IMX6UL
+ config ARCH_IMX7
+ 	bool
+ 	select CPU_V7
++	select PINCTRL_IMX_IOMUX_V3
+ 	select OFTREE
+ 	select COMMON_CLK_OF_PROVIDER
  
- / {
- 	chosen {
--		stdout-path = "/serial@0,70006300/";
-+		stdout-path = &uartd;
- 
- 		environment@0 {
- 			compatible = "barebox,environment";
 -- 
-2.9.3
+2.1.4
 
 
 _______________________________________________
