@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vs81.iboxed.net ([185.82.85.146])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cpeEc-0001GO-F4
- for barebox@lists.infradead.org; Sun, 19 Mar 2017 17:03:16 +0000
-From: Alexander Kurz <akurz@blala.de>
-Date: Sun, 19 Mar 2017 18:02:21 +0100
-Message-Id: <1489942941-16270-1-git-send-email-akurz@blala.de>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1cpfLy-00024l-4v
+ for barebox@lists.infradead.org; Sun, 19 Mar 2017 18:14:56 +0000
+Received: from tellur.intern.lynxeye.de.fritz.box (a89-183-7-62.net-htp.de
+ [89.183.7.62]) by lynxeye.de (Postfix) with ESMTPA id 28A95E743CD
+ for <barebox@lists.infradead.org>; Sun, 19 Mar 2017 19:13:57 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Sun, 19 Mar 2017 19:13:52 +0100
+Message-Id: <20170319181353.2930-1-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,74 +22,151 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX WaRP7: Add defaultenv and boot pre-installed kernel
+Subject: [PATCH 1/2] add driver for Tegra124 memory controller
 To: barebox@lists.infradead.org
-Cc: Alexander Kurz <akurz@blala.de>
 
-The WaRP7 board is shipped with a pre-installed system.
-Boot the zImage and dtb from the first partition by default.
+This driver performs the required initialization to get the GPU
+into a functional state, so it can be used when the OS is running.
 
-Signed-off-by: Alexander Kurz <akurz@blala.de>
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/boards/element14-warp7/Makefile                         | 1 +
- arch/arm/boards/element14-warp7/board.c                          | 3 +++
- arch/arm/boards/element14-warp7/defaultenv-warp7/boot/mmc_kernel | 7 +++++++
- arch/arm/boards/element14-warp7/defaultenv-warp7/nv/boot.default | 1 +
- 4 files changed, 12 insertions(+)
- create mode 100644 arch/arm/boards/element14-warp7/defaultenv-warp7/boot/mmc_kernel
- create mode 100644 arch/arm/boards/element14-warp7/defaultenv-warp7/nv/boot.default
+ drivers/Kconfig              |  1 +
+ drivers/Makefile             |  1 +
+ drivers/memory/Kconfig       | 11 +++++++
+ drivers/memory/Makefile      |  1 +
+ drivers/memory/mc-tegra124.c | 75 ++++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 89 insertions(+)
+ create mode 100644 drivers/memory/Kconfig
+ create mode 100644 drivers/memory/Makefile
+ create mode 100644 drivers/memory/mc-tegra124.c
 
-diff --git a/arch/arm/boards/element14-warp7/Makefile b/arch/arm/boards/element14-warp7/Makefile
-index 01c7a25..847f452 100644
---- a/arch/arm/boards/element14-warp7/Makefile
-+++ b/arch/arm/boards/element14-warp7/Makefile
-@@ -1,2 +1,3 @@
- obj-y += board.o
- lwl-y += lowlevel.o
-+bbenv-y += defaultenv-warp7
-diff --git a/arch/arm/boards/element14-warp7/board.c b/arch/arm/boards/element14-warp7/board.c
-index 84fc885..b1fe202 100644
---- a/arch/arm/boards/element14-warp7/board.c
-+++ b/arch/arm/boards/element14-warp7/board.c
-@@ -21,6 +21,7 @@
- #include <partition.h>
- #include <mach/generic.h>
- #include <linux/sizes.h>
-+#include <envfs.h>
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index bf31115..ab9afb5 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -34,5 +34,6 @@ source "drivers/rtc/Kconfig"
+ source "drivers/firmware/Kconfig"
+ source "drivers/phy/Kconfig"
+ source "drivers/crypto/Kconfig"
++source "drivers/memory/Kconfig"
  
- static int warp7_devices_init(void)
- {
-@@ -30,6 +31,8 @@ static int warp7_devices_init(void)
- 	imx6_bbu_internal_mmc_register_handler("mmc", "/dev/mmc2.boot0.barebox",
- 					       BBU_HANDLER_FLAG_DEFAULT);
- 
-+	defaultenv_append_directory(defaultenv_warp7);
-+
- 	return 0;
- }
- device_initcall(warp7_devices_init);
-diff --git a/arch/arm/boards/element14-warp7/defaultenv-warp7/boot/mmc_kernel b/arch/arm/boards/element14-warp7/defaultenv-warp7/boot/mmc_kernel
+ endmenu
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 0fadf4e..a1d2d23 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -35,3 +35,4 @@ obj-$(CONFIG_GENERIC_PHY) += phy/
+ obj-$(CONFIG_HAB) += hab/
+ obj-$(CONFIG_CRYPTO_HW) += crypto/
+ obj-$(CONFIG_AIODEV) += aiodev/
++obj-y	+= memory/
+diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
 new file mode 100644
-index 0000000..dd0a31b
+index 0000000..39fd644
 --- /dev/null
-+++ b/arch/arm/boards/element14-warp7/defaultenv-warp7/boot/mmc_kernel
-@@ -0,0 +1,7 @@
-+#!/bin/sh
-+[ -d /mnt/mmc2.0 ] || mkdir /mnt/mmc2.0
-+mount -t fat /dev/mmc2.0 /mnt/mmc2.0/
++++ b/drivers/memory/Kconfig
+@@ -0,0 +1,11 @@
++menu "Memory controller drivers"
 +
-+global linux.bootargs.dyn.root="console=ttymxc0,115200 root=/dev/mmcblk2p2 rootwait rw"
++config MC_TEGRA124
++	bool "Support for Tegra124 memory controller"
++	depends on ARCH_TEGRA
++	help
++	  Say yes here to include the driver for the memory controller found on
++	  the Tegra124 SoC. This driver performs the necessary initialization
++	  to provide a function GPU when the OS is running.
 +
-+bootm -v -o /mnt/mmc2.0/imx7s-warp.dtb /mnt/mmc2.0/zImage
-diff --git a/arch/arm/boards/element14-warp7/defaultenv-warp7/nv/boot.default b/arch/arm/boards/element14-warp7/defaultenv-warp7/nv/boot.default
++endmenu
+diff --git a/drivers/memory/Makefile b/drivers/memory/Makefile
 new file mode 100644
-index 0000000..3118b7a
+index 0000000..bd5ace9
 --- /dev/null
-+++ b/arch/arm/boards/element14-warp7/defaultenv-warp7/nv/boot.default
++++ b/drivers/memory/Makefile
 @@ -0,0 +1 @@
-+mmc_kernel
++obj-$(CONFIG_MC_TEGRA124)	+= mc-tegra124.o
+diff --git a/drivers/memory/mc-tegra124.c b/drivers/memory/mc-tegra124.c
+new file mode 100644
+index 0000000..a8d1609
+--- /dev/null
++++ b/drivers/memory/mc-tegra124.c
+@@ -0,0 +1,75 @@
++/* *
++ * Copyright (C) 2017 Lucas Stach <l.stach@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <io.h>
++#include <of.h>
++
++#define MC_VIDEO_PROTECT_SIZE_MB	0x64c
++#define MC_VIDEO_PROTECT_REG_CTRL	0x650
++#define  MC_VIDEO_PROTECT_REG_WR_DIS	(1 << 0)
++
++static int tegra124_mc_of_fixup(struct device_node *root, void *context)
++{
++	struct device_node *np;
++
++	np = of_find_compatible_node(root, NULL, "nvidia,gk20a");
++	if (np)
++		of_device_enable(np);
++
++	return 0;
++}
++
++static int tegra124_mc_probe(struct device_d *dev)
++{
++	struct resource *iores;
++	void __iomem *base;
++
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores)) {
++		dev_err(dev, "could not get memory region\n");
++		return PTR_ERR(iores);
++	}
++	base = IOMEM(iores->start);
++
++	/* disable video protect region */
++	writel(0 , base + MC_VIDEO_PROTECT_SIZE_MB);
++	writel(MC_VIDEO_PROTECT_REG_WR_DIS, base + MC_VIDEO_PROTECT_REG_CTRL);
++	readl(base + MC_VIDEO_PROTECT_REG_CTRL); /* readback to flush */
++
++	return of_register_fixup(tegra124_mc_of_fixup, NULL);
++}
++
++static __maybe_unused struct of_device_id tegra124_mc_dt_ids[] = {
++	{
++		.compatible = "nvidia,tegra124-mc",
++	}, {
++		/* sentinel */
++	},
++};
++
++static struct driver_d tegra124_mc_driver = {
++	.name		= "tegra124-mc",
++	.of_compatible	= DRV_OF_COMPAT(tegra124_mc_dt_ids),
++	.probe		= tegra124_mc_probe,
++};
++
++static int __init tegra124_mc_init(void)
++{
++	return platform_driver_register(&tegra124_mc_driver);
++}
++device_initcall(tegra124_mc_init);
 -- 
-2.1.4
+2.9.3
 
 
 _______________________________________________
