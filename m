@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cprIm-00086v-1u
- for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:00:29 +0000
-Received: by mail-lf0-x243.google.com with SMTP id v2so9286760lfi.2
- for <barebox@lists.infradead.org>; Mon, 20 Mar 2017 00:00:03 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 20 Mar 2017 09:59:52 +0300
-Message-Id: <20170320065954.8330-2-antonynpavlov@gmail.com>
-In-Reply-To: <20170320065954.8330-1-antonynpavlov@gmail.com>
-References: <20170320065954.8330-1-antonynpavlov@gmail.com>
+ id 1cprKE-0001v0-Of
+ for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:01:57 +0000
+Date: Mon, 20 Mar 2017 08:01:30 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170320070130.ixaavr5jafelvoki@pengutronix.de>
+References: <CAGUZs0mnJVHpN59qB5zsZsZA193pnhCpb=vATo-asaKVMj0HfQ@mail.gmail.com>
+ <20170317073933.xiq2uej4qn6c3tp4@pengutronix.de>
+ <CAGUZs0kZHzqL_YPV6HoC+uRNiFFtgNCTMckvrtF1hUJ93Rv8vA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAGUZs0kZHzqL_YPV6HoC+uRNiFFtgNCTMckvrtF1hUJ93Rv8vA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,55 +20,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] gui: bmp.c: fix "no previous prototype" warning
-To: barebox@lists.infradead.org
+Subject: Re: Barebox State Framework
+To: =?utf-8?B?w4dhxJ9sYXI=?= Kilimci <ckilimci@gmail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-The patch fixes these compiler's warnings:
-
-  lib/gui/bmp.c:12:15: warning: no previous prototype for 'bmp_open' [-Wmissing-prototypes]
-   struct image *bmp_open(char *inbuf, int insize)
-                 ^
-  lib/gui/bmp.c:33:6: warning: no previous prototype for 'bmp_close' [-Wmissing-prototypes]
-   void bmp_close(struct image *img)
-        ^
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- lib/gui/bmp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/lib/gui/bmp.c b/lib/gui/bmp.c
-index 143aa2805..8bffc70a4 100644
---- a/lib/gui/bmp.c
-+++ b/lib/gui/bmp.c
-@@ -9,7 +9,7 @@
- #include <gui/image_renderer.h>
- #include <asm/unaligned.h>
- 
--struct image *bmp_open(char *inbuf, int insize)
-+static struct image *bmp_open(char *inbuf, int insize)
- {
- 	struct image *img = calloc(1, sizeof(struct image));
- 	struct bmp_image *bmp = (struct bmp_image*)inbuf;
-@@ -30,7 +30,7 @@ struct image *bmp_open(char *inbuf, int insize)
- 	return img;
- }
- 
--void bmp_close(struct image *img)
-+static void bmp_close(struct image *img)
- {
- 	free(img->data);
- }
--- 
-2.11.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW9uLCBNYXIgMjAsIDIwMTcgYXQgMDc6Mzk6MjdBTSArMDMwMCwgw4dhxJ9sYXIgS2lsaW1j
+aSB3cm90ZToKPiBIaSwKPiAKPiAKPiAyMDE3LTAzLTE3IDEwOjM5IEdNVCswMzowMCBTYXNjaGEg
+SGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ogo+ID4gSGksCj4gPgo+ID4gT24gVGh1LCBN
+YXIgMTYsIDIwMTcgYXQgMDQ6NTU6MDdQTSArMDMwMCwgw4dhxJ9sYXIgS2lsaW1jaSB3cm90ZToK
+PiA+PiBIZWxsbyBhbGwsCj4gPj4KPiA+PiBBcyBteSBnZW5lcmFsIHB1cnBvc2Ugb2YgdXBkYXRp
+bmcgYSBzeXN0ZW0gd2l0aCBSVUFDIFsxXSwgSSBuZWVkIHRvCj4gPj4gdXNlIEJhcmVib3ggU3Rh
+dGUgRnJhbWV3b3JrIGJ1dCBJIGNvdWxkIG5vdCBydW4gaXQgcHJvcGVybHkuIEkgaGF2ZQo+ID4+
+IGFwcGVuZGVkIEJhcmVib3ggY29uZmlnIHRoZXNlOgo+ID4+Cj4gPj4gQ09ORklHX1NUQVRFPXkK
+PiA+PiBDT05GSUdfU1RBVEVfQ1JZUFRPPXkKPiA+PiBDT05GSUdfQ01EX1NIQTFTVU09eQo+ID4+
+IENPTkZJR19DTURfU0hBMjI0U1VNPXkKPiA+PiBDT05GSUdfQ01EX1NIQTI1NlNVTT15Cj4gPj4g
+Q09ORklHX0NNRF9TSEEzODRTVU09eQo+ID4+IENPTkZJR19DTURfU0hBNTEyU1VNPXkKPiA+PiBD
+T05GSUdfQ01EX1NUQVRFPXkKPiA+PiBDT05GSUdfU1RBVEVfRFJWPXkKPiA+PiBDT05GSUdfRElH
+RVNUX0hNQUM9eQo+ID4+IENPTkZJR19ESUdFU1RfU0hBMV9HRU5FUklDPXkKPiA+PiBDT05GSUdf
+RElHRVNUX0hNQUNfR0VORVJJQz15Cj4gPj4gQ09ORklHX0NSWVBUT19LRVlTVE9SRT15Cj4gPj4g
+Q09ORklHX0JPT1RDSE9PU0VSPXkKPiA+PiBDT05GSUdfQ01EX0JPT1RDSE9PU0VSPXkKPiA+Pgo+
+ID4+IEFuZCBhbHNvLCBJIGluY2x1ZGUgYmVsb3cgaW50byBteSBkdHM6Cj4gPj4gc3RhdGU6IHN0
+YXRlQDAgewo+ID4+IG1hZ2ljID0gPDB4MjcwMzE5Nzc+Owo+ID4+IGNvbXBhdGlibGUgPSAiYmFy
+ZWJveCxzdGF0ZSI7Cj4gPj4gYmFja2VuZC10eXBlID0gInJhdyI7Cj4gPj4gYmFja2VuZCA9ICJw
+YXJ0bmFtZTpzdGF0ZSI7Cj4gPgo+ID4gVGhpcyBsb29rcyB3cm9uZy4gVGhpcyBzaG91bGQgYmUg
+YSBwaGFuZGxlIHBvaW50aW5nIHRvIHRoZSBwYXJ0aXRpb24geW91Cj4gPiB3YW50IHRvIHVzZS4K
+PiAKPiBTaG91bGQgaXQgYmUgbGlrZToKPiAgICBiYWNrZW5kID0gIm1tYzA6MCI7CgpOby4gQSBw
+aGFuZGxlIGlzIGEgcG9pbnRlciB0byBhbiBleGlzdGluZyBub2RlOgoKCWJhY2tlbmQgPSAmc3Rh
+dGVfcGFydGl0aW9uOwoKV2l0aCBzdGF0ZV9wYXJ0aXRpb24gZGVmaW5lZCBzb21ld2hlcmUgZWxz
+ZSBhczoKCgltbWMwOiBtbWNAMHhkZWFkYmVlZiB7CgkJY29tcGF0aWJsZSA9ICJmb28tbW1jIjsK
+CQlzdGF0ZV9wYXJ0aXRpb246IHBhcnRpdGlvbkAxMDAwMCB7CgkJCXJlZyA9IDwweDEwMDAwMCAw
+eDIwMDAwPjsKCQl9OwoJfTsKCk9yLCBpZiB5b3Ugd2FudCB0byB1c2UgZG9zIHBhcnRpdGlvbnMs
+IHlvdSBjYW4gZ28gbGlrZSB0aGlzOgoKCWJhY2tlbmQgPSAmbW1jMCAicGFydG5hbWU6MSI7CgpT
+YXNjaGEKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAg
+ICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3Ry
+LiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3
+LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6
+ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
+YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
+ZWJveAo=
