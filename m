@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cpwXf-0002qF-0s
- for barebox@lists.infradead.org; Mon, 20 Mar 2017 12:36:09 +0000
-Received: by mail-lf0-x244.google.com with SMTP id v2so10138724lfi.2
- for <barebox@lists.infradead.org>; Mon, 20 Mar 2017 05:35:49 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 20 Mar 2017 15:35:32 +0300
-Message-Id: <20170320123532.24059-8-antonynpavlov@gmail.com>
-In-Reply-To: <20170320123532.24059-1-antonynpavlov@gmail.com>
-References: <20170320123532.24059-1-antonynpavlov@gmail.com>
-MIME-Version: 1.0
+ id 1cpwqy-0004ha-5l
+ for barebox@lists.infradead.org; Mon, 20 Mar 2017 12:56:05 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Mon, 20 Mar 2017 13:55:40 +0100
+Message-Id: <20170320125540.8431-2-o.rempel@pengutronix.de>
+In-Reply-To: <20170320125540.8431-1-o.rempel@pengutronix.de>
+References: <20170320125540.8431-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +16,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] ext4: Use correct descriptor size when reading the block
- group descriptor
+Subject: [PATCH v1 2/2] bootm: fit: support rsa2048
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-VGhpcyBpcyBhbiBhZG9wdGlvbiBvZiB0aGUgVS1Cb290IGNvbW1pdAoKfCBjb21taXQgZjc5OGIx
-ZGRhMWM1ZGU4MThiODA2MTg5ZTUyM2QxYjc1ZGI3ZTcyZAp8IEF1dGhvcjogU3RlZmFuIEJyw7xu
-cyA8c3RlZmFuLmJydWVuc0Byd3RoLWFhY2hlbi5kZT4KfCBEYXRlOiAgIFNhdCBTZXAgMTcgMDI6
-MTA6MDkgMjAxNiArMDIwMAp8CnwgICAgIGV4dDQ6IFVzZSBjb3JyZWN0IGRlc2NyaXB0b3Igc2l6
-ZSB3aGVuIHJlYWRpbmcgdGhlIGJsb2NrIGdyb3VwIGRlc2NyaXB0b3IKfAp8ICAgICBUaGUgY29y
-cmVjdCBkZXNjcmlwdG9yIHNpemUgbXVzdCBiZSB1c2VkIHdoZW4gY2FsY3VsYXRpbmcgb2Zmc2V0
-cywgYW5kCnwgICAgIGFsc28gdG8gcmVhZCB0aGUgY29ycmVjdCBhbW91bnQgb2YgZGF0YS4KfAp8
-ICAgICBTaWduZWQtb2ZmLWJ5OiBTdGVmYW4gQnLDvG5zIDxzdGVmYW4uYnJ1ZW5zQHJ3dGgtYWFj
-aGVuLmRlPgoKU2lnbmVkLW9mZi1ieTogQW50b255IFBhdmxvdiA8YW50b255bnBhdmxvdkBnbWFp
-bC5jb20+Ci0tLQogZnMvZXh0NC9leHQ0X2NvbW1vbi5jIHwgOCArKysrLS0tLQogMSBmaWxlIGNo
-YW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9mcy9l
-eHQ0L2V4dDRfY29tbW9uLmMgYi9mcy9leHQ0L2V4dDRfY29tbW9uLmMKaW5kZXggZjM1ZWViYzIx
-Li41NWU4MzdiNGIgMTAwNjQ0Ci0tLSBhL2ZzL2V4dDQvZXh0NF9jb21tb24uYworKysgYi9mcy9l
-eHQ0L2V4dDRfY29tbW9uLmMKQEAgLTgzLDE5ICs4MywxOSBAQCBzdGF0aWMgaW50IGV4dDRmc19i
-bG9ja2dyb3VwKHN0cnVjdCBleHQyX2RhdGEgKmRhdGEsIGludCBncm91cCwKIAlsb25nIGludCBi
-bGtubzsKIAl1bnNpZ25lZCBpbnQgYmxrb2ZmLCBkZXNjX3Blcl9ibGs7CiAJc3RydWN0IGV4dF9m
-aWxlc3lzdGVtICpmcyA9IGRhdGEtPmZzOworCWludCBkZXNjX3NpemUgPSBmcy0+Z2RzaXplOwog
-Ci0JZGVzY19wZXJfYmxrID0gRVhUMl9CTE9DS19TSVpFKGRhdGEpIC8gc2l6ZW9mKHN0cnVjdCBl
-eHQyX2Jsb2NrX2dyb3VwKTsKKwlkZXNjX3Blcl9ibGsgPSBFWFQyX0JMT0NLX1NJWkUoZGF0YSkg
-LyBkZXNjX3NpemU7CiAKIAlibGtubyA9IGxlMzJfdG9fY3B1KGRhdGEtPnNibG9jay5maXJzdF9k
-YXRhX2Jsb2NrKSArIDEgKwogCQkJZ3JvdXAgLyBkZXNjX3Blcl9ibGs7Ci0JYmxrb2ZmID0gKGdy
-b3VwICUgZGVzY19wZXJfYmxrKSAqIHNpemVvZihzdHJ1Y3QgZXh0Ml9ibG9ja19ncm91cCk7CisJ
-Ymxrb2ZmID0gKGdyb3VwICUgZGVzY19wZXJfYmxrKSAqIGRlc2Nfc2l6ZTsKIAogCWRldl9kYmco
-ZnMtPmRldiwgInJlYWQgJWQgZ3JvdXAgZGVzY3JpcHRvciAoYmxrbm8gJWxkIGJsa29mZiAldSlc
-biIsCiAJICAgICAgZ3JvdXAsIGJsa25vLCBibGtvZmYpOwogCiAJcmV0dXJuIGV4dDRmc19kZXZy
-ZWFkKGZzLCBibGtubyA8PCBMT0cyX0VYVDJfQkxPQ0tfU0laRShkYXRhKSwKLQkJCSAgICAgIGJs
-a29mZiwgc2l6ZW9mKHN0cnVjdCBleHQyX2Jsb2NrX2dyb3VwKSwKLQkJCSAgICAgIChjaGFyICop
-YmxrZ3JwKTsKKwkJCQlibGtvZmYsIGRlc2Nfc2l6ZSwgKGNoYXIgKilibGtncnApOwogfQogCiBp
-bnQgZXh0NGZzX3JlYWRfaW5vZGUoc3RydWN0IGV4dDJfZGF0YSAqZGF0YSwgaW50IGlubywgc3Ry
-dWN0IGV4dDJfaW5vZGUgKmlub2RlKQotLSAKMi4xMS4wCgoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ common/image-fit.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/common/image-fit.c b/common/image-fit.c
+index 48c021347..2597312f7 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -254,6 +254,8 @@ static int fit_verify_signature(struct device_node *sig_node, void *fit)
+ 	}
+ 	if (strcmp(algo_name, "sha1,rsa2048") == 0) {
+ 		algo = HASH_ALGO_SHA1;
++	} else if (strcmp(algo_name, "sha256,rsa2048") == 0) {
++		algo = HASH_ALGO_SHA256;
+ 	} else if (strcmp(algo_name, "sha256,rsa4096") == 0) {
+ 		algo = HASH_ALGO_SHA256;
+ 	} else	{
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
