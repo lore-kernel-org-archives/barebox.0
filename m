@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cprvF-0001EQ-HK
- for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:40:12 +0000
-Date: Mon, 20 Mar 2017 08:39:47 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170320073947.bd2azbvm73fcguus@pengutronix.de>
-References: <1489942941-16270-1-git-send-email-akurz@blala.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1489942941-16270-1-git-send-email-akurz@blala.de>
+ id 1cprwx-0003HG-S4
+ for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:41:57 +0000
+Received: by mail-lf0-x244.google.com with SMTP id y193so9344140lfd.1
+ for <barebox@lists.infradead.org>; Mon, 20 Mar 2017 00:41:35 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon, 20 Mar 2017 10:41:29 +0300
+Message-Id: <20170320074129.16346-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,61 +16,148 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX WaRP7: Add defaultenv and boot pre-installed
- kernel
-To: Alexander Kurz <akurz@blala.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ata: ide-sff: add LBA48 support
+To: barebox@lists.infradead.org
 
-Hi Alexander,
+See http://wiki.osdev.org/ATA_PIO_Mode#48_bit_PIO for datails.
 
-Some small optimizations for the boot script inside.
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/ata/disk_ata_drive.c |  1 +
+ drivers/ata/ide-sff.c        | 54 +++++++++++++++++++++++++++++++++++---------
+ include/ata_drive.h          |  3 +++
+ 3 files changed, 47 insertions(+), 11 deletions(-)
 
-On Sun, Mar 19, 2017 at 06:02:21PM +0100, Alexander Kurz wrote:
->  static int warp7_devices_init(void)
->  {
-> @@ -30,6 +31,8 @@ static int warp7_devices_init(void)
->  	imx6_bbu_internal_mmc_register_handler("mmc", "/dev/mmc2.boot0.barebox",
->  					       BBU_HANDLER_FLAG_DEFAULT);
->  
-> +	defaultenv_append_directory(defaultenv_warp7);
-> +
->  	return 0;
->  }
->  device_initcall(warp7_devices_init);
-> diff --git a/arch/arm/boards/element14-warp7/defaultenv-warp7/boot/mmc_kernel b/arch/arm/boards/element14-warp7/defaultenv-warp7/boot/mmc_kernel
-> new file mode 100644
-> index 0000000..dd0a31b
-> --- /dev/null
-> +++ b/arch/arm/boards/element14-warp7/defaultenv-warp7/boot/mmc_kernel
-> @@ -0,0 +1,7 @@
-> +#!/bin/sh
-> +[ -d /mnt/mmc2.0 ] || mkdir /mnt/mmc2.0
-
-mkdir -p would be simpler, but this is not needed when...
-
-> +mount -t fat /dev/mmc2.0 /mnt/mmc2.0/
-
-...this is replaced with "mount mmc2.0". The partition is then mounted
-to the default path which is also /mnt/mmc2.0.
-
-> +
-> +global linux.bootargs.dyn.root="console=ttymxc0,115200 root=/dev/mmcblk2p2 rootwait rw"
-
-The console=ttymxc0,115200 shouldn't be necessary. barebox adds this
-automatically.
-
-Sascha
-
-
+diff --git a/drivers/ata/disk_ata_drive.c b/drivers/ata/disk_ata_drive.c
+index 1aa1bb145..7b5305990 100644
+--- a/drivers/ata/disk_ata_drive.c
++++ b/drivers/ata/disk_ata_drive.c
+@@ -233,6 +233,7 @@ static int ata_port_init(struct ata_port *port)
+ 	}
+ 
+ 	ata_fix_endianess(port->id, SECTOR_SIZE / sizeof(uint16_t));
++	port->lba48 = ata_id_has_lba48(port->id);
+ 
+ #ifdef DEBUG
+ 	ata_dump_id(port->id);
+diff --git a/drivers/ata/ide-sff.c b/drivers/ata/ide-sff.c
+index 6dc89d79a..b7c884726 100644
+--- a/drivers/ata/ide-sff.c
++++ b/drivers/ata/ide-sff.c
+@@ -136,17 +136,33 @@ static int ata_wait_ready(struct ide_port *ide, unsigned timeout)
+  * @param io Register file
+  * @param drive 0 master drive, 1 slave drive
+  * @param num Sector number
+- *
+- * @todo LBA48 support
+  */
+-static int ata_set_lba_sector(struct ide_port *ide, unsigned drive, uint64_t num)
++static int ata_set_lba_sector(struct ata_port *port, unsigned drive,
++				uint64_t num)
+ {
+-	if (num > 0x0FFFFFFF || drive > 1)
++	struct ide_port *ide = to_ata_drive_access(port);
++
++	if (drive > 1)
+ 		return -EINVAL;
+ 
+-	ata_wr_byte(ide, 0xA0 | LBA_FLAG | drive << 4 | num >> 24,
+-		    ide->io.device_addr);
+-	ata_wr_byte(ide, 0x00, ide->io.error_addr);
++	if (port->lba48) {
++		if (num > (1ULL << 48) - 1)
++			return -EINVAL;
++
++		ata_wr_byte(ide, LBA_FLAG | drive << 4, ide->io.device_addr);
++
++		ata_wr_byte(ide, 0x00, ide->io.nsect_addr);
++		ata_wr_byte(ide, num >> 24, ide->io.lbal_addr);
++		ata_wr_byte(ide, num >> 32, ide->io.lbam_addr);
++		ata_wr_byte(ide, num >> 40, ide->io.lbah_addr);
++	} else {
++		if (num > (1ULL << 28) - 1)
++			return -EINVAL;
++
++		ata_wr_byte(ide, 0xA0 | LBA_FLAG | drive << 4 | num >> 24,
++			    ide->io.device_addr);
++	}
++
+ 	ata_wr_byte(ide, 0x01, ide->io.nsect_addr);
+ 	ata_wr_byte(ide, num, ide->io.lbal_addr);	/* 0 ... 7 */
+ 	ata_wr_byte(ide, num >> 8, ide->io.lbam_addr); /* 8 ... 15 */
+@@ -316,10 +332,18 @@ static int ide_read(struct ata_port *port, void *buffer, unsigned int block,
+ 	struct ide_port *ide = to_ata_drive_access(port);
+ 
+ 	while (num_blocks) {
+-		rc = ata_set_lba_sector(ide, DISK_MASTER, sector);
++		uint8_t cmd;
++
++		rc = ata_set_lba_sector(port, DISK_MASTER, sector);
+ 		if (rc != 0)
+ 			return rc;
+-		rc = ata_wr_cmd(ide, ATA_CMD_READ);
++
++		if (port->lba48)
++			cmd = ATA_CMD_PIO_READ_EXT;
++		else
++			cmd = ATA_CMD_READ;
++
++		rc = ata_wr_cmd(ide, cmd);
+ 		if (rc != 0)
+ 			return rc;
+ 		rc = ata_wait_ready(ide, MAX_TIMEOUT);
+@@ -355,10 +379,18 @@ static int __maybe_unused ide_write(struct ata_port *port,
+ 	struct ide_port *ide = to_ata_drive_access(port);
+ 
+ 	while (num_blocks) {
+-		rc = ata_set_lba_sector(ide, DISK_MASTER, sector);
++		uint8_t cmd;
++
++		rc = ata_set_lba_sector(port, DISK_MASTER, sector);
+ 		if (rc != 0)
+ 			return rc;
+-		rc = ata_wr_cmd(ide, ATA_CMD_WRITE);
++
++		if (port->lba48)
++			cmd = ATA_CMD_PIO_WRITE_EXT;
++		else
++			cmd = ATA_CMD_WRITE;
++
++		rc = ata_wr_cmd(ide, cmd);
+ 		if (rc != 0)
+ 			return rc;
+ 		rc = ata_wait_ready(ide, MAX_TIMEOUT);
+diff --git a/include/ata_drive.h b/include/ata_drive.h
+index 44073cb1b..11685eef1 100644
+--- a/include/ata_drive.h
++++ b/include/ata_drive.h
+@@ -37,8 +37,10 @@
+ 
+ #define ATA_CMD_ID_ATA		0xEC
+ #define ATA_CMD_READ		0x20
++#define ATA_CMD_PIO_READ_EXT	0x24
+ #define ATA_CMD_READ_EXT	0x25
+ #define ATA_CMD_WRITE		0x30
++#define ATA_CMD_PIO_WRITE_EXT	0x34
+ #define ATA_CMD_WRITE_EXT	0x35
+ 
+ /* drive's status flags */
+@@ -140,6 +142,7 @@ struct ata_port {
+ 	void *drvdata;
+ 	struct block_device blk;
+ 	uint16_t *id;
++	int lba48;
+ 	int initialized;
+ 	int probe;
+ };
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
