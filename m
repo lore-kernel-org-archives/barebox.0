@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cprMT-0002SZ-LY
- for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:04:16 +0000
-Date: Mon, 20 Mar 2017 08:03:52 +0100
+ id 1cprlu-0005UW-7M
+ for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:30:32 +0000
+Date: Mon, 20 Mar 2017 08:30:07 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170320070352.blag4bpzoitkg6f7@pengutronix.de>
-References: <20170317080853.11470-1-u.oelmann@pengutronix.de>
+Message-ID: <20170320073007.rtzs23ss6e5jswtv@pengutronix.de>
+References: <20170319163151.13403-1-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170317080853.11470-1-u.oelmann@pengutronix.de>
+In-Reply-To: <20170319163151.13403-1-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,57 +18,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: mvebu: remove obsolete select
-To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/3] ARM: tegra: jetson-tk1: adapt internal DT paths to
+ changed upstream DT
+To: Lucas Stach <dev@lynxeye.de>
+Cc: barebox@lists.infradead.org
 
-On Fri, Mar 17, 2017 at 09:08:53AM +0100, Ulrich =D6lmann wrote:
-> This is a user choice now and has been removed for all other boards in co=
-mmit
-> 790980bf18af ("Make generic default environment type a use choice").
-> =
-
-> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
+On Sun, Mar 19, 2017 at 05:31:49PM +0100, Lucas Stach wrote:
+> The upstream DT changed the node names, so the barebox internal
+> references didn't work anymore.
+> 
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
 > ---
->  arch/arm/Kconfig | 1 -
->  1 file changed, 1 deletion(-)
+>  arch/arm/dts/tegra124-jetson-tk1.dts | 2 +-
+>  arch/arm/dts/tegra124.dtsi           | 8 ++++----
+>  2 files changed, 5 insertions(+), 5 deletions(-)
 
-Applied, thanks
+Applied. thanks
 
 Sascha
 
-> =
-
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index 4d952698fc5c..c665eae30a2a 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -117,7 +117,6 @@ config ARCH_MVEBU
->  	select CLKDEV_LOOKUP
->  	select GPIOLIB
->  	select HAS_DEBUG_LL
-> -	select HAVE_DEFAULT_ENVIRONMENT_NEW
->  	select HAVE_MACH_ARM_HEAD
->  	select HAVE_PBL_MULTI_IMAGES
->  	select HW_HAS_PCI
-> -- =
-
-> 2.11.0
-> =
-
-> =
-
+> 
+> diff --git a/arch/arm/dts/tegra124-jetson-tk1.dts b/arch/arm/dts/tegra124-jetson-tk1.dts
+> index 26f405c..e1974db 100644
+> --- a/arch/arm/dts/tegra124-jetson-tk1.dts
+> +++ b/arch/arm/dts/tegra124-jetson-tk1.dts
+> @@ -12,6 +12,6 @@
+>  	};
+>  
+>  	/* eMMC */
+> -	emmc: sdhci@0,700b0600 {
+> +	emmc: sdhci@700b0600 {
+>  	};
+>  };
+> diff --git a/arch/arm/dts/tegra124.dtsi b/arch/arm/dts/tegra124.dtsi
+> index 9276f2f..8af3a58 100644
+> --- a/arch/arm/dts/tegra124.dtsi
+> +++ b/arch/arm/dts/tegra124.dtsi
+> @@ -1,8 +1,8 @@
+>  / {
+>  	aliases {
+> -		mmc0 = "/sdhci@0,700b0000/";
+> -		mmc1 = "/sdhci@0,700b0200/";
+> -		mmc2 = "/sdhci@0,700b0400/";
+> -		mmc3 = "/sdhci@0,700b0600/";
+> +		mmc0 = "/sdhci@700b0000/";
+> +		mmc1 = "/sdhci@700b0200/";
+> +		mmc2 = "/sdhci@700b0400/";
+> +		mmc3 = "/sdhci@700b0600/";
+>  	};
+>  };
+> -- 
+> 2.9.3
+> 
+> 
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
