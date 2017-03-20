@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cprKE-0001v0-Of
- for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:01:57 +0000
-Date: Mon, 20 Mar 2017 08:01:30 +0100
+ id 1cprMT-0002SZ-LY
+ for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:04:16 +0000
+Date: Mon, 20 Mar 2017 08:03:52 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170320070130.ixaavr5jafelvoki@pengutronix.de>
-References: <CAGUZs0mnJVHpN59qB5zsZsZA193pnhCpb=vATo-asaKVMj0HfQ@mail.gmail.com>
- <20170317073933.xiq2uej4qn6c3tp4@pengutronix.de>
- <CAGUZs0kZHzqL_YPV6HoC+uRNiFFtgNCTMckvrtF1hUJ93Rv8vA@mail.gmail.com>
+Message-ID: <20170320070352.blag4bpzoitkg6f7@pengutronix.de>
+References: <20170317080853.11470-1-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAGUZs0kZHzqL_YPV6HoC+uRNiFFtgNCTMckvrtF1hUJ93Rv8vA@mail.gmail.com>
+In-Reply-To: <20170317080853.11470-1-u.oelmann@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,47 +18,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox State Framework
-To: =?utf-8?B?w4dhxJ9sYXI=?= Kilimci <ckilimci@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH] ARM: mvebu: remove obsolete select
+To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-T24gTW9uLCBNYXIgMjAsIDIwMTcgYXQgMDc6Mzk6MjdBTSArMDMwMCwgw4dhxJ9sYXIgS2lsaW1j
-aSB3cm90ZToKPiBIaSwKPiAKPiAKPiAyMDE3LTAzLTE3IDEwOjM5IEdNVCswMzowMCBTYXNjaGEg
-SGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ogo+ID4gSGksCj4gPgo+ID4gT24gVGh1LCBN
-YXIgMTYsIDIwMTcgYXQgMDQ6NTU6MDdQTSArMDMwMCwgw4dhxJ9sYXIgS2lsaW1jaSB3cm90ZToK
-PiA+PiBIZWxsbyBhbGwsCj4gPj4KPiA+PiBBcyBteSBnZW5lcmFsIHB1cnBvc2Ugb2YgdXBkYXRp
-bmcgYSBzeXN0ZW0gd2l0aCBSVUFDIFsxXSwgSSBuZWVkIHRvCj4gPj4gdXNlIEJhcmVib3ggU3Rh
-dGUgRnJhbWV3b3JrIGJ1dCBJIGNvdWxkIG5vdCBydW4gaXQgcHJvcGVybHkuIEkgaGF2ZQo+ID4+
-IGFwcGVuZGVkIEJhcmVib3ggY29uZmlnIHRoZXNlOgo+ID4+Cj4gPj4gQ09ORklHX1NUQVRFPXkK
-PiA+PiBDT05GSUdfU1RBVEVfQ1JZUFRPPXkKPiA+PiBDT05GSUdfQ01EX1NIQTFTVU09eQo+ID4+
-IENPTkZJR19DTURfU0hBMjI0U1VNPXkKPiA+PiBDT05GSUdfQ01EX1NIQTI1NlNVTT15Cj4gPj4g
-Q09ORklHX0NNRF9TSEEzODRTVU09eQo+ID4+IENPTkZJR19DTURfU0hBNTEyU1VNPXkKPiA+PiBD
-T05GSUdfQ01EX1NUQVRFPXkKPiA+PiBDT05GSUdfU1RBVEVfRFJWPXkKPiA+PiBDT05GSUdfRElH
-RVNUX0hNQUM9eQo+ID4+IENPTkZJR19ESUdFU1RfU0hBMV9HRU5FUklDPXkKPiA+PiBDT05GSUdf
-RElHRVNUX0hNQUNfR0VORVJJQz15Cj4gPj4gQ09ORklHX0NSWVBUT19LRVlTVE9SRT15Cj4gPj4g
-Q09ORklHX0JPT1RDSE9PU0VSPXkKPiA+PiBDT05GSUdfQ01EX0JPT1RDSE9PU0VSPXkKPiA+Pgo+
-ID4+IEFuZCBhbHNvLCBJIGluY2x1ZGUgYmVsb3cgaW50byBteSBkdHM6Cj4gPj4gc3RhdGU6IHN0
-YXRlQDAgewo+ID4+IG1hZ2ljID0gPDB4MjcwMzE5Nzc+Owo+ID4+IGNvbXBhdGlibGUgPSAiYmFy
-ZWJveCxzdGF0ZSI7Cj4gPj4gYmFja2VuZC10eXBlID0gInJhdyI7Cj4gPj4gYmFja2VuZCA9ICJw
-YXJ0bmFtZTpzdGF0ZSI7Cj4gPgo+ID4gVGhpcyBsb29rcyB3cm9uZy4gVGhpcyBzaG91bGQgYmUg
-YSBwaGFuZGxlIHBvaW50aW5nIHRvIHRoZSBwYXJ0aXRpb24geW91Cj4gPiB3YW50IHRvIHVzZS4K
-PiAKPiBTaG91bGQgaXQgYmUgbGlrZToKPiAgICBiYWNrZW5kID0gIm1tYzA6MCI7CgpOby4gQSBw
-aGFuZGxlIGlzIGEgcG9pbnRlciB0byBhbiBleGlzdGluZyBub2RlOgoKCWJhY2tlbmQgPSAmc3Rh
-dGVfcGFydGl0aW9uOwoKV2l0aCBzdGF0ZV9wYXJ0aXRpb24gZGVmaW5lZCBzb21ld2hlcmUgZWxz
-ZSBhczoKCgltbWMwOiBtbWNAMHhkZWFkYmVlZiB7CgkJY29tcGF0aWJsZSA9ICJmb28tbW1jIjsK
-CQlzdGF0ZV9wYXJ0aXRpb246IHBhcnRpdGlvbkAxMDAwMCB7CgkJCXJlZyA9IDwweDEwMDAwMCAw
-eDIwMDAwPjsKCQl9OwoJfTsKCk9yLCBpZiB5b3Ugd2FudCB0byB1c2UgZG9zIHBhcnRpdGlvbnMs
-IHlvdSBjYW4gZ28gbGlrZSB0aGlzOgoKCWJhY2tlbmQgPSAmbW1jMCAicGFydG5hbWU6MSI7CgpT
-YXNjaGEKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAg
-ICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3Ry
-LiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3
-LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6
-ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+On Fri, Mar 17, 2017 at 09:08:53AM +0100, Ulrich =D6lmann wrote:
+> This is a user choice now and has been removed for all other boards in co=
+mmit
+> 790980bf18af ("Make generic default environment type a use choice").
+> =
+
+> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
+> ---
+>  arch/arm/Kconfig | 1 -
+>  1 file changed, 1 deletion(-)
+
+Applied, thanks
+
+Sascha
+
+> =
+
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 4d952698fc5c..c665eae30a2a 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -117,7 +117,6 @@ config ARCH_MVEBU
+>  	select CLKDEV_LOOKUP
+>  	select GPIOLIB
+>  	select HAS_DEBUG_LL
+> -	select HAVE_DEFAULT_ENVIRONMENT_NEW
+>  	select HAVE_MACH_ARM_HEAD
+>  	select HAVE_PBL_MULTI_IMAGES
+>  	select HW_HAS_PCI
+> -- =
+
+> 2.11.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
