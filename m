@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cprmQ-0005gq-2q
- for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:31:05 +0000
-Date: Mon, 20 Mar 2017 08:30:39 +0100
+ id 1cprot-0006WL-H4
+ for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:33:37 +0000
+Date: Mon, 20 Mar 2017 08:33:13 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170320073039.fo5uix7cnkd2pzu2@pengutronix.de>
-References: <1489942917-16190-1-git-send-email-akurz@blala.de>
+Message-ID: <20170320073313.66bibqorbi35xdgd@pengutronix.de>
+References: <1489942930-16229-1-git-send-email-akurz@blala.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1489942917-16190-1-git-send-email-akurz@blala.de>
+In-Reply-To: <1489942930-16229-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +22,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX7: Kconfig: ARCH_IMX7 selects
- PINCTRL_IMX_IOMUX_V3
+Subject: Re: [PATCH] ARM: dts: i.MX7 WaRP7: remove wdog1 pinctrl workaround
 To: Alexander Kurz <akurz@blala.de>
 Cc: barebox@lists.infradead.org
 
-On Sun, Mar 19, 2017 at 06:01:57PM +0100, Alexander Kurz wrote:
-> fsl,imx7d-iomuxc is provided by selecting PINCTRL_IMX_IOMUX_V3. Select it
-> since a system without it will not be very usefull.
+On Sun, Mar 19, 2017 at 06:02:10PM +0100, Alexander Kurz wrote:
+> The wdog1 pinctrl got fixed with linux upstream commit 213e51ca8df1 ("ARM:
+> dts: imx7: Add "LPSR" to LPSR iomux pin names").
+> Remove the old workaround, since it triggers a build error.
 > 
 > Signed-off-by: Alexander Kurz <akurz@blala.de>
 > ---
->  arch/arm/mach-imx/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
+>  arch/arm/dts/imx7s-warp.dts | 17 -----------------
+>  1 file changed, 17 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> index 831755c..e1459d2 100644
-> --- a/arch/arm/mach-imx/Kconfig
-> +++ b/arch/arm/mach-imx/Kconfig
-> @@ -165,6 +165,7 @@ config ARCH_IMX6UL
->  config ARCH_IMX7
->  	bool
->  	select CPU_V7
-> +	select PINCTRL_IMX_IOMUX_V3
->  	select OFTREE
->  	select COMMON_CLK_OF_PROVIDER
->  
+> diff --git a/arch/arm/dts/imx7s-warp.dts b/arch/arm/dts/imx7s-warp.dts
+> index a59823d..c2db0d8 100644
+> --- a/arch/arm/dts/imx7s-warp.dts
+> +++ b/arch/arm/dts/imx7s-warp.dts
+> @@ -43,20 +43,3 @@
+>  		};
+>  	};
+>  };
+> -
+> -/*
+> -/* The watchdog pinctrl is attached to the wrong iomux controller in
+> - * the upstream dts file. This can be removed once we pull in the
+> - * corresponding fix from the upstream dts files.
+> - */
+> -&wdog1 {
+> -	pinctrl-0 = <&pinctrl_wdog_lpsr>;
+> -};
+> -
+> -&iomuxc_lpsr {
+> -	pinctrl_wdog_lpsr: wdoggrp {
+> -		fsl,pins = <
+> -			MX7D_PAD_GPIO1_IO00__WDOD1_WDOG_B       0x74
+> -		>;
+> -	};
+> -};
 > -- 
 > 2.1.4
 > 
