@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cprlu-0005UW-7M
- for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:30:32 +0000
-Date: Mon, 20 Mar 2017 08:30:07 +0100
+ id 1cprmQ-0005gq-2q
+ for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:31:05 +0000
+Date: Mon, 20 Mar 2017 08:30:39 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170320073007.rtzs23ss6e5jswtv@pengutronix.de>
-References: <20170319163151.13403-1-dev@lynxeye.de>
+Message-ID: <20170320073039.fo5uix7cnkd2pzu2@pengutronix.de>
+References: <1489942917-16190-1-git-send-email-akurz@blala.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170319163151.13403-1-dev@lynxeye.de>
+In-Reply-To: <1489942917-16190-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,57 +22,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ARM: tegra: jetson-tk1: adapt internal DT paths to
- changed upstream DT
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [PATCH] ARM: i.MX7: Kconfig: ARCH_IMX7 selects
+ PINCTRL_IMX_IOMUX_V3
+To: Alexander Kurz <akurz@blala.de>
 Cc: barebox@lists.infradead.org
 
-On Sun, Mar 19, 2017 at 05:31:49PM +0100, Lucas Stach wrote:
-> The upstream DT changed the node names, so the barebox internal
-> references didn't work anymore.
+On Sun, Mar 19, 2017 at 06:01:57PM +0100, Alexander Kurz wrote:
+> fsl,imx7d-iomuxc is provided by selecting PINCTRL_IMX_IOMUX_V3. Select it
+> since a system without it will not be very usefull.
 > 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> Signed-off-by: Alexander Kurz <akurz@blala.de>
 > ---
->  arch/arm/dts/tegra124-jetson-tk1.dts | 2 +-
->  arch/arm/dts/tegra124.dtsi           | 8 ++++----
->  2 files changed, 5 insertions(+), 5 deletions(-)
+>  arch/arm/mach-imx/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 
-Applied. thanks
+Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/dts/tegra124-jetson-tk1.dts b/arch/arm/dts/tegra124-jetson-tk1.dts
-> index 26f405c..e1974db 100644
-> --- a/arch/arm/dts/tegra124-jetson-tk1.dts
-> +++ b/arch/arm/dts/tegra124-jetson-tk1.dts
-> @@ -12,6 +12,6 @@
->  	};
+> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> index 831755c..e1459d2 100644
+> --- a/arch/arm/mach-imx/Kconfig
+> +++ b/arch/arm/mach-imx/Kconfig
+> @@ -165,6 +165,7 @@ config ARCH_IMX6UL
+>  config ARCH_IMX7
+>  	bool
+>  	select CPU_V7
+> +	select PINCTRL_IMX_IOMUX_V3
+>  	select OFTREE
+>  	select COMMON_CLK_OF_PROVIDER
 >  
->  	/* eMMC */
-> -	emmc: sdhci@0,700b0600 {
-> +	emmc: sdhci@700b0600 {
->  	};
->  };
-> diff --git a/arch/arm/dts/tegra124.dtsi b/arch/arm/dts/tegra124.dtsi
-> index 9276f2f..8af3a58 100644
-> --- a/arch/arm/dts/tegra124.dtsi
-> +++ b/arch/arm/dts/tegra124.dtsi
-> @@ -1,8 +1,8 @@
->  / {
->  	aliases {
-> -		mmc0 = "/sdhci@0,700b0000/";
-> -		mmc1 = "/sdhci@0,700b0200/";
-> -		mmc2 = "/sdhci@0,700b0400/";
-> -		mmc3 = "/sdhci@0,700b0600/";
-> +		mmc0 = "/sdhci@700b0000/";
-> +		mmc1 = "/sdhci@700b0200/";
-> +		mmc2 = "/sdhci@700b0400/";
-> +		mmc3 = "/sdhci@700b0600/";
->  	};
->  };
 > -- 
-> 2.9.3
+> 2.1.4
 > 
 > 
 > _______________________________________________
