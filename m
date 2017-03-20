@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cprIm-0008LO-28
- for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:00:28 +0000
-Received: by mail-lf0-x243.google.com with SMTP id y193so9280385lfd.1
- for <barebox@lists.infradead.org>; Mon, 20 Mar 2017 00:00:05 -0700 (PDT)
+ id 1cprIm-00086v-1u
+ for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:00:29 +0000
+Received: by mail-lf0-x243.google.com with SMTP id v2so9286760lfi.2
+ for <barebox@lists.infradead.org>; Mon, 20 Mar 2017 00:00:03 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 20 Mar 2017 09:59:54 +0300
-Message-Id: <20170320065954.8330-4-antonynpavlov@gmail.com>
+Date: Mon, 20 Mar 2017 09:59:52 +0300
+Message-Id: <20170320065954.8330-2-antonynpavlov@gmail.com>
 In-Reply-To: <20170320065954.8330-1-antonynpavlov@gmail.com>
 References: <20170320065954.8330-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,34 +23,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] gui: image_renderer: fix "no previous prototype for
- 'image_renderer_unregister'" warning
+Subject: [PATCH 1/3] gui: bmp.c: fix "no previous prototype" warning
 To: barebox@lists.infradead.org
 
-The patch fixes this compiler's warning:
+The patch fixes these compiler's warnings:
 
-  lib/gui/image_renderer.c:92:6: warning: no previous prototype for 'image_renderer_unregister' [-Wmissing-prototypes]
-   void image_renderer_unregister(struct image_renderer *ir)
+  lib/gui/bmp.c:12:15: warning: no previous prototype for 'bmp_open' [-Wmissing-prototypes]
+   struct image *bmp_open(char *inbuf, int insize)
+                 ^
+  lib/gui/bmp.c:33:6: warning: no previous prototype for 'bmp_close' [-Wmissing-prototypes]
+   void bmp_close(struct image *img)
         ^
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- include/gui/image_renderer.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/gui/bmp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/gui/image_renderer.h b/include/gui/image_renderer.h
-index e0b1eae25..bfdea1b14 100644
---- a/include/gui/image_renderer.h
-+++ b/include/gui/image_renderer.h
-@@ -32,7 +32,7 @@ struct image_renderer {
+diff --git a/lib/gui/bmp.c b/lib/gui/bmp.c
+index 143aa2805..8bffc70a4 100644
+--- a/lib/gui/bmp.c
++++ b/lib/gui/bmp.c
+@@ -9,7 +9,7 @@
+ #include <gui/image_renderer.h>
+ #include <asm/unaligned.h>
  
- #ifdef CONFIG_IMAGE_RENDERER
- int image_renderer_register(struct image_renderer *ir);
--void image_render_unregister(struct image_renderer *ir);
-+void image_renderer_unregister(struct image_renderer *ir);
+-struct image *bmp_open(char *inbuf, int insize)
++static struct image *bmp_open(char *inbuf, int insize)
+ {
+ 	struct image *img = calloc(1, sizeof(struct image));
+ 	struct bmp_image *bmp = (struct bmp_image*)inbuf;
+@@ -30,7 +30,7 @@ struct image *bmp_open(char *inbuf, int insize)
+ 	return img;
+ }
  
- int image_renderer_image(struct screen *sc, struct surface *s, struct image *img);
- 
+-void bmp_close(struct image *img)
++static void bmp_close(struct image *img)
+ {
+ 	free(img->data);
+ }
 -- 
 2.11.0
 
