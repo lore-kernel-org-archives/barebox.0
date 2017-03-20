@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cpwqy-0004ha-5l
+ id 1cpwqy-0004hZ-5m
  for barebox@lists.infradead.org; Mon, 20 Mar 2017 12:56:05 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Mon, 20 Mar 2017 13:55:40 +0100
-Message-Id: <20170320125540.8431-2-o.rempel@pengutronix.de>
-In-Reply-To: <20170320125540.8431-1-o.rempel@pengutronix.de>
-References: <20170320125540.8431-1-o.rempel@pengutronix.de>
+Date: Mon, 20 Mar 2017 13:55:39 +0100
+Message-Id: <20170320125540.8431-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,7 +19,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 2/2] bootm: fit: support rsa2048
+Subject: [PATCH v1 1/2] bootm: fit: support multiple configuration nodes
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
@@ -30,22 +28,66 @@ From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- common/image-fit.c | 2 ++
- 1 file changed, 2 insertions(+)
+ common/image-fit.c | 39 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 37 insertions(+), 2 deletions(-)
 
 diff --git a/common/image-fit.c b/common/image-fit.c
-index 48c021347..2597312f7 100644
+index 6a01c614c..48c021347 100644
 --- a/common/image-fit.c
 +++ b/common/image-fit.c
-@@ -254,6 +254,8 @@ static int fit_verify_signature(struct device_node *sig_node, void *fit)
+@@ -489,6 +489,37 @@ static int fit_config_verify_signature(struct fit_handle *handle, struct device_
+ 	return ret;
+ }
+ 
++static int fit_find_compatible_unit(struct device_node *conf_node,
++				    const char **unit)
++{
++	struct device_node *child = NULL;
++	struct device_node *barebox_root;
++	const char *machine;
++	int ret;
++
++	barebox_root = of_get_root_node();
++	if (!barebox_root)
++		return -ENOSYS;
++
++	ret = of_property_read_string(barebox_root, "compatible", &machine);
++	if (ret)
++		return -ENOENT;
++
++	for_each_child_of_node(conf_node, child) {
++		if (of_device_is_compatible(child, machine)) {
++			*unit = xasprintf("%s", child->name);
++			pr_info("matching unit '%s' found\n", *unit);
++			return 0;
++		}
++	}
++
++	pr_info("No match found. Trying default.\n");
++	if (of_property_read_string(conf_node, "default", unit) == 0)
++		return 0;
++
++	return -ENOENT;
++}
++
+ static int fit_open_configuration(struct fit_handle *handle, const char *name)
+ {
+ 	struct device_node *conf_node = NULL;
+@@ -501,8 +532,12 @@ static int fit_open_configuration(struct fit_handle *handle, const char *name)
+ 
+ 	if (name) {
+ 		unit = name;
+-	} else if (of_property_read_string(conf_node, "default", &unit)) {
+-		unit = "conf@1";
++	} else {
++		ret = fit_find_compatible_unit(conf_node, &unit);
++		if (ret) {
++			pr_info("Couldn't get a valid configuration. Aborting.\n");
++			return ret;
++		}
  	}
- 	if (strcmp(algo_name, "sha1,rsa2048") == 0) {
- 		algo = HASH_ALGO_SHA1;
-+	} else if (strcmp(algo_name, "sha256,rsa2048") == 0) {
-+		algo = HASH_ALGO_SHA256;
- 	} else if (strcmp(algo_name, "sha256,rsa4096") == 0) {
- 		algo = HASH_ALGO_SHA256;
- 	} else	{
+ 
+ 	conf_node = of_get_child_by_name(conf_node, unit);
 -- 
 2.11.0
 
