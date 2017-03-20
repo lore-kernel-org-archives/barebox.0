@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cprot-0006WL-H4
- for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:33:37 +0000
-Date: Mon, 20 Mar 2017 08:33:13 +0100
+ id 1cprvF-0001EQ-HK
+ for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:40:12 +0000
+Date: Mon, 20 Mar 2017 08:39:47 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170320073313.66bibqorbi35xdgd@pengutronix.de>
-References: <1489942930-16229-1-git-send-email-akurz@blala.de>
+Message-ID: <20170320073947.bd2azbvm73fcguus@pengutronix.de>
+References: <1489942941-16270-1-git-send-email-akurz@blala.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1489942930-16229-1-git-send-email-akurz@blala.de>
+In-Reply-To: <1489942941-16270-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,59 +22,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: dts: i.MX7 WaRP7: remove wdog1 pinctrl workaround
+Subject: Re: [PATCH] ARM: i.MX WaRP7: Add defaultenv and boot pre-installed
+ kernel
 To: Alexander Kurz <akurz@blala.de>
 Cc: barebox@lists.infradead.org
 
-On Sun, Mar 19, 2017 at 06:02:10PM +0100, Alexander Kurz wrote:
-> The wdog1 pinctrl got fixed with linux upstream commit 213e51ca8df1 ("ARM:
-> dts: imx7: Add "LPSR" to LPSR iomux pin names").
-> Remove the old workaround, since it triggers a build error.
-> 
-> Signed-off-by: Alexander Kurz <akurz@blala.de>
-> ---
->  arch/arm/dts/imx7s-warp.dts | 17 -----------------
->  1 file changed, 17 deletions(-)
+Hi Alexander,
 
-Applied, thanks
+Some small optimizations for the boot script inside.
+
+On Sun, Mar 19, 2017 at 06:02:21PM +0100, Alexander Kurz wrote:
+>  static int warp7_devices_init(void)
+>  {
+> @@ -30,6 +31,8 @@ static int warp7_devices_init(void)
+>  	imx6_bbu_internal_mmc_register_handler("mmc", "/dev/mmc2.boot0.barebox",
+>  					       BBU_HANDLER_FLAG_DEFAULT);
+>  
+> +	defaultenv_append_directory(defaultenv_warp7);
+> +
+>  	return 0;
+>  }
+>  device_initcall(warp7_devices_init);
+> diff --git a/arch/arm/boards/element14-warp7/defaultenv-warp7/boot/mmc_kernel b/arch/arm/boards/element14-warp7/defaultenv-warp7/boot/mmc_kernel
+> new file mode 100644
+> index 0000000..dd0a31b
+> --- /dev/null
+> +++ b/arch/arm/boards/element14-warp7/defaultenv-warp7/boot/mmc_kernel
+> @@ -0,0 +1,7 @@
+> +#!/bin/sh
+> +[ -d /mnt/mmc2.0 ] || mkdir /mnt/mmc2.0
+
+mkdir -p would be simpler, but this is not needed when...
+
+> +mount -t fat /dev/mmc2.0 /mnt/mmc2.0/
+
+...this is replaced with "mount mmc2.0". The partition is then mounted
+to the default path which is also /mnt/mmc2.0.
+
+> +
+> +global linux.bootargs.dyn.root="console=ttymxc0,115200 root=/dev/mmcblk2p2 rootwait rw"
+
+The console=ttymxc0,115200 shouldn't be necessary. barebox adds this
+automatically.
 
 Sascha
 
-> 
-> diff --git a/arch/arm/dts/imx7s-warp.dts b/arch/arm/dts/imx7s-warp.dts
-> index a59823d..c2db0d8 100644
-> --- a/arch/arm/dts/imx7s-warp.dts
-> +++ b/arch/arm/dts/imx7s-warp.dts
-> @@ -43,20 +43,3 @@
->  		};
->  	};
->  };
-> -
-> -/*
-> -/* The watchdog pinctrl is attached to the wrong iomux controller in
-> - * the upstream dts file. This can be removed once we pull in the
-> - * corresponding fix from the upstream dts files.
-> - */
-> -&wdog1 {
-> -	pinctrl-0 = <&pinctrl_wdog_lpsr>;
-> -};
-> -
-> -&iomuxc_lpsr {
-> -	pinctrl_wdog_lpsr: wdoggrp {
-> -		fsl,pins = <
-> -			MX7D_PAD_GPIO1_IO00__WDOD1_WDOG_B       0x74
-> -		>;
-> -	};
-> -};
-> -- 
-> 2.1.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
