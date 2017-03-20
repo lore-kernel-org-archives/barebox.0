@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cpwXd-0002qA-U8
+ id 1cpwXd-0002q3-UA
  for barebox@lists.infradead.org; Mon, 20 Mar 2017 12:36:08 +0000
-Received: by mail-lf0-x243.google.com with SMTP id v2so10138651lfi.2
- for <barebox@lists.infradead.org>; Mon, 20 Mar 2017 05:35:47 -0700 (PDT)
+Received: by mail-lf0-x243.google.com with SMTP id g70so10118450lfh.3
+ for <barebox@lists.infradead.org>; Mon, 20 Mar 2017 05:35:45 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 20 Mar 2017 15:35:31 +0300
-Message-Id: <20170320123532.24059-7-antonynpavlov@gmail.com>
+Date: Mon, 20 Mar 2017 15:35:29 +0300
+Message-Id: <20170320123532.24059-5-antonynpavlov@gmail.com>
 In-Reply-To: <20170320123532.24059-1-antonynpavlov@gmail.com>
 References: <20170320123532.24059-1-antonynpavlov@gmail.com>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,69 +18,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] ext4: determine group descriptor size for 64bit feature
+Subject: [PATCH 4/7] ext4: fix wrong usage of le32_to_cpu()
 To: barebox@lists.infradead.org
 
-VGhpcyBpcyBhbiBhZG9wdGlvbiBvZiB0aGUgVS1Cb290IGNvbW1pdHMKCnwgY29tbWl0IGZjMjE0
-ZWY5MDkxMDE1OWYzM2ZiZTkyYTZjYjc3ODM5YTI3ZmE4YTYKfCBBdXRob3I6IFN0ZWZhbiBCcsO8
-bnMgPHN0ZWZhbi5icnVlbnNAcnd0aC1hYWNoZW4uZGU+CnwgRGF0ZTogICBTYXQgU2VwIDE3IDAy
-OjEwOjA3IDIwMTYgKzAyMDAKfAp8ICAgICBleHQ0OiBkZXRlcm1pbmUgZ3JvdXAgZGVzY3JpcHRv
-ciBzaXplIGZvciA2NGJpdCBmZWF0dXJlCnwKfCAgICAgSWYgRVhUNF9GRUFUVVJFX0lOQ09NUEFU
-XzY0QklUIGlzIHNldCwgdGhlIGRlc2NyaXB0b3IgY2FuIGJlIHJlYWQgZnJvbQp8ICAgICB0aGUg
-c3VwZXJibG9ja3MsIG90aGVyd2lzZSBpdCBkZWZhdWx0cyB0byAzMi4KfAp8ICAgICBTaWduZWQt
-b2ZmLWJ5OiBTdGVmYW4gQnLDvG5zIDxzdGVmYW4uYnJ1ZW5zQHJ3dGgtYWFjaGVuLmRlPgoKfCBj
-b21taXQgM2NjNWJiYjhlNjhkYzY3YjdjM2QyZmRlYmVmNjk0MDhlNTI3MTQ2OQp8IEF1dGhvcjog
-U3RlZmFuIEJyw7xucyA8c3RlZmFuLmJydWVuc0Byd3RoLWFhY2hlbi5kZT4KfCBEYXRlOiAgIFR1
-ZSBEZWMgMjcgMDI6MzU6MDggMjAxNiArMDEwMAp8CnwgICAgIGZzL2V4dDQ6IEluaXRpYWxpemUg
-Z3JvdXAgZGVzY3JpcHRvciBzaXplIGZvciByZXZpc2lvbiBsZXZlbCAwIGZpbGVzeXN0ZW1zCnwK
-fCAgICAgZ2VuZXh0MmZzIGNyZWF0ZXMgcmV2aXNpb24gbGV2ZWwgMCBmaWxlc3lzdGVtcywgd2hp
-Y2ggYXJlIG5vdCByZWFkYWJsZQp8ICAgICBieSB1LWJvb3QgZHVlIHRvIHRoZSBpbml0aWFsaXpl
-ZCBncm91cCBkZXNjcmlwdG9yIHNpemUgZmllbGQuCnwgICAgIGY3OThiMWRkYTFjNWRlODE4Yjgw
-NjE4OWU1MjNkMWI3NWRiN2U3MmQKfAp8ICAgICBSZXBvcnRlZC1ieTogS2V2ZXIgWWFuZyA8a2V2
-ZXIueWFuZ0Byb2NrLWNoaXBzLmNvbT4KfCAgICAgUmVwb3J0ZWQtYnk6IEZyb3N0eUJ5dGVzQHBy
-b3Rvbm1haWwuY29tCnwgICAgIFNpZ25lZC1vZmYtYnk6IFN0ZWZhbiBCcsO8bnMgPHN0ZWZhbi5i
-cnVlbnNAcnd0aC1hYWNoZW4uZGU+CnwgICAgIFRlc3RlZC1ieTogS2V2ZXIgWWFuZyA8a2V2ZXIu
-eWFuZ0Byb2NrLWNoaXBzLmNvbT4KClNpZ25lZC1vZmYtYnk6IEFudG9ueSBQYXZsb3YgPGFudG9u
-eW5wYXZsb3ZAZ21haWwuY29tPgotLS0KIGZzL2V4dDQvZXh0NF9jb21tb24uYyB8IDIxICsrKysr
-KysrKysrKysrKystLS0tLQogZnMvZXh0NC9leHQ0ZnMuaCAgICAgIHwgIDMgKysrCiAyIGZpbGVz
-IGNoYW5nZWQsIDE5IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEv
-ZnMvZXh0NC9leHQ0X2NvbW1vbi5jIGIvZnMvZXh0NC9leHQ0X2NvbW1vbi5jCmluZGV4IDljYmUz
-ZGJiMS4uZjM1ZWViYzIxIDEwMDY0NAotLS0gYS9mcy9leHQ0L2V4dDRfY29tbW9uLmMKKysrIGIv
-ZnMvZXh0NC9leHQ0X2NvbW1vbi5jCkBAIC01MDYsMTMgKzUwNiwyNCBAQCBpbnQgZXh0NGZzX21v
-dW50KHN0cnVjdCBleHRfZmlsZXN5c3RlbSAqZnMpCiAJCWdvdG8gZmFpbDsKIAl9CiAKLQlpZiAo
-bGUzMl90b19jcHUoZGF0YS0+c2Jsb2NrLnJldmlzaW9uX2xldmVsKSA9PSAwKQorCWlmIChsZTMy
-X3RvX2NwdShkYXRhLT5zYmxvY2sucmV2aXNpb25fbGV2ZWwpID09IDApIHsKIAkJZnMtPmlub2Rl
-c3ogPSAxMjg7Ci0JZWxzZQotCQlmcy0+aW5vZGVzeiA9IGxlMTZfdG9fY3B1KGRhdGEtPnNibG9j
-ay5pbm9kZV9zaXplKTsKKwkJZnMtPmdkc2l6ZSA9IDMyOworCX0gZWxzZSB7CisJCWRlYnVnKCJF
-WFQ0IGZlYXR1cmVzIENPTVBBVDogJTA4eCBJTkNPTVBBVDogJTA4eCBST19DT01QQVQ6ICUwOHhc
-biIsCisJCSAgICAgIGxlMzJfdG9fY3B1KGRhdGEtPnNibG9jay5mZWF0dXJlX2NvbXBhdGliaWxp
-dHkpLAorCQkgICAgICBsZTMyX3RvX2NwdShkYXRhLT5zYmxvY2suZmVhdHVyZV9pbmNvbXBhdCks
-CisJCSAgICAgIGxlMzJfdG9fY3B1KGRhdGEtPnNibG9jay5mZWF0dXJlX3JvX2NvbXBhdCkpOwog
-Ci0JZGV2X2luZm8oZnMtPmRldiwgIkVYVDIgcmV2ICVkLCBpbm9kZV9zaXplICVkXG4iLAotCSAg
-ICAgICBsZTMyX3RvX2NwdShkYXRhLT5zYmxvY2sucmV2aXNpb25fbGV2ZWwpLCBmcy0+aW5vZGVz
-eik7CisJCWZzLT5pbm9kZXN6ID0gbGUxNl90b19jcHUoZGF0YS0+c2Jsb2NrLmlub2RlX3NpemUp
-OworCQlmcy0+Z2RzaXplID0gbGUzMl90b19jcHUoZGF0YS0+c2Jsb2NrLmZlYXR1cmVfaW5jb21w
-YXQpICYKKwkJCUVYVDRfRkVBVFVSRV9JTkNPTVBBVF82NEJJVCA/CisJCQlsZTE2X3RvX2NwdShk
-YXRhLT5zYmxvY2suZGVzY3JpcHRvcl9zaXplKSA6IDMyOworCX0KKworCWRldl9pbmZvKGZzLT5k
-ZXYsICJFWFQyIHJldiAlZCwgaW5vZGVfc2l6ZSAlZCwgZGVzY3JpcHRvciBzaXplICVkXG4iLAor
-CSAgICAgIGxlMzJfdG9fY3B1KGRhdGEtPnNibG9jay5yZXZpc2lvbl9sZXZlbCksCisJICAgICAg
-ZnMtPmlub2Rlc3osIGZzLT5nZHNpemUpOwogCiAJZGF0YS0+ZGlyb3Blbi5kYXRhID0gZGF0YTsK
-IAlkYXRhLT5kaXJvcGVuLmlubyA9IDI7CmRpZmYgLS1naXQgYS9mcy9leHQ0L2V4dDRmcy5oIGIv
-ZnMvZXh0NC9leHQ0ZnMuaAppbmRleCBlYWQyMTJkOTcuLjE3YTQ5MGE5NCAxMDA2NDQKLS0tIGEv
-ZnMvZXh0NC9leHQ0ZnMuaAorKysgYi9mcy9leHQ0L2V4dDRmcy5oCkBAIC0yOCw2ICsyOCw3IEBA
-CiAjZGVmaW5lIEVYVDRfRVhUX01BR0lDCQkJMHhmMzBhCiAjZGVmaW5lIEVYVDRfRkVBVFVSRV9S
-T19DT01QQVRfR0RUX0NTVU0JMHgwMDEwCiAjZGVmaW5lIEVYVDRfRkVBVFVSRV9JTkNPTVBBVF9F
-WFRFTlRTCTB4MDA0MAorI2RlZmluZSBFWFQ0X0ZFQVRVUkVfSU5DT01QQVRfNjRCSVQJMHgwMDgw
-CiAjZGVmaW5lIEVYVDRfSU5ESVJFQ1RfQkxPQ0tTCQkxMgogCiAjZGVmaW5lIEVYVDRfQkdfSU5P
-REVfVU5JTklUCQkweDAwMDEKQEAgLTgxLDYgKzgyLDggQEAgc3RydWN0IGV4dF9maWxlc3lzdGVt
-IHsKIAl1aW50MzJfdCBpbm9kZXN6OwogCS8qIFNlY3RvcnMgcGVyIEJsb2NrICovCiAJdWludDMy
-X3Qgc2VjdF9wZXJibGs7CisJLyogR3JvdXAgRGVzY3JpcHRvciBzaXplICovCisJdWludDE2X3Qg
-Z2RzaXplOwogCS8qIEdyb3VwIERlc2NyaXB0b3IgQmxvY2sgTnVtYmVyICovCiAJdWludDMyX3Qg
-Z2R0YWJsZV9ibGtubzsKIAkvKiBUb3RhbCBibG9jayBncm91cHMgb2YgcGFydGl0aW9uICovCi0t
-IAoyLjExLjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+This is an adoption of the U-Boot commit
+
+| commit 011bc3342a485345f7136eed20e0477b8cd5580f
+| Author: Michael Walle <michael@walle.cc>
+| Date:   Mon Aug 29 10:46:46 2016 +0200
+|
+|     ext4: fix wrong usage of le32_to_cpu()
+|
+|     le32_to_cpu() must only convert the revision_level and not the boolean
+|     result.
+|
+|     Signed-off-by: Michael Walle <michael@walle.cc>
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ fs/ext4/ext4_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/ext4/ext4_common.c b/fs/ext4/ext4_common.c
+index f11ca6b32..9cbe3dbb1 100644
+--- a/fs/ext4/ext4_common.c
++++ b/fs/ext4/ext4_common.c
+@@ -506,7 +506,7 @@ int ext4fs_mount(struct ext_filesystem *fs)
+ 		goto fail;
+ 	}
+ 
+-	if (le32_to_cpu(data->sblock.revision_level == 0))
++	if (le32_to_cpu(data->sblock.revision_level) == 0)
+ 		fs->inodesz = 128;
+ 	else
+ 		fs->inodesz = le16_to_cpu(data->sblock.inode_size);
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
