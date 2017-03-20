@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cpsKA-0005cw-Hz
- for barebox@lists.infradead.org; Mon, 20 Mar 2017 08:05:56 +0000
-Date: Mon, 20 Mar 2017 09:05:31 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170320080531.nm6n25gsvqe3qk2k@pengutronix.de>
-References: <20170320065954.8330-1-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170320065954.8330-1-antonynpavlov@gmail.com>
+ id 1cpulX-0003WB-1J
+ for barebox@lists.infradead.org; Mon, 20 Mar 2017 10:42:20 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Mon, 20 Mar 2017 11:41:49 +0100
+Message-Id: <20170320104153.28902-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,36 +14,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] fix "no previous prototype" warnings
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 0/4] upstream nvmem patches
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-On Mon, Mar 20, 2017 at 09:59:51AM +0300, Antony Pavlov wrote:
-> Antony Pavlov (3):
->   gui: bmp.c: fix "no previous prototype" warning
->   clk: clk-gate-shared: fix "no previous prototype" warning
->   gui: image_renderer: fix "no previous prototype for
->     'image_renderer_unregister'" warning
+changes v1:
+ - rebase against 2017.03.0
 
-Applied, thanks
+changes v2:
+ - rename nvstore to snvs_lpgpr, the actual hw name.
+ - patch DTs to provide snvs_lpgpr device
 
-I notice we currently have -Wmissing-prototypes only on Mips. Maybe we
-should enable this on other architectures aswell to make these warnings
-more visible.
-On ARM though we have tons of missing prototypes, so we should fix a
-fair amount of them before enabling this warning in the tree.
+Oleksij Rempel (2):
+  dts: arm: imx6sl: provide snvs-lpgpr device
+  dts: arm: imx6qdl: provide snvs-lpgpr device
 
-Sascha
+Steffen Trumtrar (2):
+  drivers: add nvmem framework from kernel
+  nvmem: add snvs_lpgpr for freescale imx6
+
+ drivers/Kconfig                |   1 +
+ drivers/Makefile               |   1 +
+ drivers/nvmem/Kconfig          |  17 +
+ drivers/nvmem/Makefile         |  10 +
+ drivers/nvmem/core.c           | 829 +++++++++++++++++++++++++++++++++++++++++
+ drivers/nvmem/snvs_lpgpr.c     | 122 ++++++
+ dts/src/arm/imx6qdl.dtsi       |   6 +
+ dts/src/arm/imx6sl.dtsi        |   6 +
+ include/linux/nvmem-consumer.h |  94 +++++
+ include/linux/nvmem-provider.h |  56 +++
+ 10 files changed, 1142 insertions(+)
+ create mode 100644 drivers/nvmem/Kconfig
+ create mode 100644 drivers/nvmem/Makefile
+ create mode 100644 drivers/nvmem/core.c
+ create mode 100644 drivers/nvmem/snvs_lpgpr.c
+ create mode 100644 include/linux/nvmem-consumer.h
+ create mode 100644 include/linux/nvmem-provider.h
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
