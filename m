@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cprIm-00080Y-23
- for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:00:25 +0000
-Received: by mail-lf0-x243.google.com with SMTP id r36so9302467lfi.0
- for <barebox@lists.infradead.org>; Mon, 20 Mar 2017 00:00:02 -0700 (PDT)
+ id 1cprIm-0008LO-28
+ for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:00:28 +0000
+Received: by mail-lf0-x243.google.com with SMTP id y193so9280385lfd.1
+ for <barebox@lists.infradead.org>; Mon, 20 Mar 2017 00:00:05 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 20 Mar 2017 09:59:51 +0300
-Message-Id: <20170320065954.8330-1-antonynpavlov@gmail.com>
+Date: Mon, 20 Mar 2017 09:59:54 +0300
+Message-Id: <20170320065954.8330-4-antonynpavlov@gmail.com>
+In-Reply-To: <20170320065954.8330-1-antonynpavlov@gmail.com>
+References: <20170320065954.8330-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,20 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] fix "no previous prototype" warnings
+Subject: [PATCH 3/3] gui: image_renderer: fix "no previous prototype for
+ 'image_renderer_unregister'" warning
 To: barebox@lists.infradead.org
 
-Antony Pavlov (3):
-  gui: bmp.c: fix "no previous prototype" warning
-  clk: clk-gate-shared: fix "no previous prototype" warning
-  gui: image_renderer: fix "no previous prototype for
-    'image_renderer_unregister'" warning
+The patch fixes this compiler's warning:
 
- drivers/clk/clk-gate-shared.c | 6 +++---
- include/gui/image_renderer.h  | 2 +-
- lib/gui/bmp.c                 | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+  lib/gui/image_renderer.c:92:6: warning: no previous prototype for 'image_renderer_unregister' [-Wmissing-prototypes]
+   void image_renderer_unregister(struct image_renderer *ir)
+        ^
 
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ include/gui/image_renderer.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/gui/image_renderer.h b/include/gui/image_renderer.h
+index e0b1eae25..bfdea1b14 100644
+--- a/include/gui/image_renderer.h
++++ b/include/gui/image_renderer.h
+@@ -32,7 +32,7 @@ struct image_renderer {
+ 
+ #ifdef CONFIG_IMAGE_RENDERER
+ int image_renderer_register(struct image_renderer *ir);
+-void image_render_unregister(struct image_renderer *ir);
++void image_renderer_unregister(struct image_renderer *ir);
+ 
+ int image_renderer_image(struct screen *sc, struct surface *s, struct image *img);
+ 
 -- 
 2.11.0
 
