@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
+Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cprIi-0008EN-LY
- for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:00:22 +0000
-Received: by mail-lf0-x241.google.com with SMTP id y193so9280291lfd.1
- for <barebox@lists.infradead.org>; Mon, 20 Mar 2017 00:00:04 -0700 (PDT)
+ id 1cprIm-00080Y-23
+ for barebox@lists.infradead.org; Mon, 20 Mar 2017 07:00:25 +0000
+Received: by mail-lf0-x243.google.com with SMTP id r36so9302467lfi.0
+ for <barebox@lists.infradead.org>; Mon, 20 Mar 2017 00:00:02 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 20 Mar 2017 09:59:53 +0300
-Message-Id: <20170320065954.8330-3-antonynpavlov@gmail.com>
-In-Reply-To: <20170320065954.8330-1-antonynpavlov@gmail.com>
-References: <20170320065954.8330-1-antonynpavlov@gmail.com>
+Date: Mon, 20 Mar 2017 09:59:51 +0300
+Message-Id: <20170320065954.8330-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,47 +21,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] clk: clk-gate-shared: fix "no previous prototype" warning
+Subject: [PATCH 0/3] fix "no previous prototype" warnings
 To: barebox@lists.infradead.org
 
-The patch fixes these compiler's warnings:
+Antony Pavlov (3):
+  gui: bmp.c: fix "no previous prototype" warning
+  clk: clk-gate-shared: fix "no previous prototype" warning
+  gui: image_renderer: fix "no previous prototype for
+    'image_renderer_unregister'" warning
 
-  drivers/clk/clk-gate-shared.c:72:13: warning: no previous prototype for 'clk_gate_shared_alloc' [-Wmissing-prototypes]
-   struct clk *clk_gate_shared_alloc(const char *name, const char *parent, const char *companion,
-               ^
-  drivers/clk/clk-gate-shared.c:89:6: warning: no previous prototype for 'clk_gate_shared_free' [-Wmissing-prototypes]
-   void clk_gate_shared_free(struct clk *clk)
-        ^
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
  drivers/clk/clk-gate-shared.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/gui/image_renderer.h  | 2 +-
+ lib/gui/bmp.c                 | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/clk-gate-shared.c b/drivers/clk/clk-gate-shared.c
-index a95f940dd..c3b678a31 100644
---- a/drivers/clk/clk-gate-shared.c
-+++ b/drivers/clk/clk-gate-shared.c
-@@ -69,8 +69,8 @@ static struct clk_ops clk_gate_shared_ops = {
- 	.is_enabled = clk_gate_shared_is_enabled,
- };
- 
--struct clk *clk_gate_shared_alloc(const char *name, const char *parent, const char *companion,
--			   unsigned flags)
-+static struct clk *clk_gate_shared_alloc(const char *name, const char *parent,
-+				const char *companion, unsigned flags)
- {
- 	struct clk_gate_shared *g = xzalloc(sizeof(*g));
- 
-@@ -86,7 +86,7 @@ struct clk *clk_gate_shared_alloc(const char *name, const char *parent, const ch
- 	return &g->clk;
- }
- 
--void clk_gate_shared_free(struct clk *clk)
-+static void clk_gate_shared_free(struct clk *clk)
- {
- 	struct clk_gate_shared *g = to_clk_gate_shared(clk);
- 
 -- 
 2.11.0
 
