@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqHSM-0006el-ET
- for barebox@lists.infradead.org; Tue, 21 Mar 2017 10:56:04 +0000
-Received: by mail-lf0-x244.google.com with SMTP id y193so12706480lfd.1
- for <barebox@lists.infradead.org>; Tue, 21 Mar 2017 03:55:41 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 21 Mar 2017 13:55:31 +0300
-Message-Id: <20170321105531.11896-4-antonynpavlov@gmail.com>
-In-Reply-To: <20170321105531.11896-1-antonynpavlov@gmail.com>
-References: <20170321105531.11896-1-antonynpavlov@gmail.com>
+ id 1cqKLH-0003E2-5q
+ for barebox@lists.infradead.org; Tue, 21 Mar 2017 14:00:57 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Tue, 21 Mar 2017 15:00:17 +0100
+Message-Id: <20170321140025.25784-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,51 +19,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] tags: Process Kconfig files in a single pass
+Subject: [PATCH v6 0/8] upstream hwrng framework
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-This is an adoption of the linux kernel commit
+changes v1:
+ - initial version
 
-| commit a281b8569e9eb4beb1651c92145271555ba05f0c
-| Author: Michal Marek <mmarek@suse.com>
-| Date:   Wed Oct 14 11:17:13 2015 +0200
-|
-|     tags: Process Kconfig files in a single pass
-|
-|     Signed-off-by: Michal Marek <mmarek@suse.com>
+changes v2:
+ - drop Freescale RNGC for now. It need more testing
+ - add caamrng port
+ - fix hwrng_init()
+ - fix hwrng_get_first check in get_random_bytes
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- scripts/tags.sh | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+changes v3:
+ - check if hwrng_get_data returns error
+ - provide /dev/randomdd random device
 
-diff --git a/scripts/tags.sh b/scripts/tags.sh
-index 22a5cc4bf..8ae44642a 100755
---- a/scripts/tags.sh
-+++ b/scripts/tags.sh
-@@ -154,10 +154,7 @@ exuberant()
- 
- 	all_kconfigs | xargs $1 -a                              \
- 	--langdef=kconfig --language-force=kconfig              \
--	--regex-kconfig='/^[[:blank:]]*(menu|)config[[:blank:]]+([[:alnum:]_]+)/\2/'
--
--	all_kconfigs | xargs $1 -a                              \
--	--langdef=kconfig --language-force=kconfig              \
-+	--regex-kconfig='/^[[:blank:]]*(menu|)config[[:blank:]]+([[:alnum:]_]+)/\2/' \
- 	--regex-kconfig='/^[[:blank:]]*(menu|)config[[:blank:]]+([[:alnum:]_]+)/CONFIG_\2/'
- }
- 
-@@ -193,9 +190,7 @@ emacs()
- 	--regex='/PCI_OP_WRITE\(([a-z]*[a-z]).*[1-4]\)/pci_bus_write_config_\1/'
- 
- 	all_kconfigs | xargs $1 -a                              \
--	--regex='/^[ \t]*\(\(menu\)*config\)[ \t]+\([a-zA-Z0-9_]+\)/\3/'
--
--	all_kconfigs | xargs $1 -a                              \
-+	--regex='/^[ \t]*\(\(menu\)*config\)[ \t]+\([a-zA-Z0-9_]+\)/\3/' \
- 	--regex='/^[ \t]*\(\(menu\)*config\)[ \t]+\([a-zA-Z0-9_]+\)/CONFIG_\3/'
- }
- 
+changes v4:
+ - provide get_crypto_bytes() interface.
+ - add CONFIG_ALLOW_PRNG_FALLBACK
+ - make cmd_password use get_crypto_bytes
+ - add cmd_seed
+
+changes v5:
+ - make cmd_seed fail if no VALUE is set
+
+changes v6:
+ - reword second patch and remove useless if (bytes > lenght) check.
+
+Oleksij Rempel (6):
+  lib: random: add get_crypto_bytes interface and use HWRNG if posssible
+  caamrng: port to hwrng framework
+  fs: add prng device
+  crypto: caam - fix RNG buffer cache alignment
+  common: password: make use of get_crypto_bytes
+  add seed command
+
+Sascha Hauer (1):
+  Release v2017.02.0
+
+Steffen Trumtrar (1):
+  drivers: add simple hw_random implementation
+
+ Makefile                      |   2 +-
+ commands/Kconfig              |   6 +++
+ commands/Makefile             |   1 +
+ commands/seed.c               |  44 +++++++++++++++++
+ commands/stddev.c             |  29 ++++++++++++
+ common/password.c             |   6 ++-
+ drivers/Kconfig               |   1 +
+ drivers/Makefile              |   1 +
+ drivers/crypto/caam/Kconfig   |   1 +
+ drivers/crypto/caam/caamrng.c |  44 ++++++-----------
+ drivers/hw_random/Kconfig     |   6 +++
+ drivers/hw_random/Makefile    |   1 +
+ drivers/hw_random/core.c      | 108 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/hw_random.h     |  43 +++++++++++++++++
+ include/stdlib.h              |   1 +
+ lib/Kconfig                   |   9 ++++
+ lib/random.c                  |  56 ++++++++++++++++++++++
+ 17 files changed, 328 insertions(+), 31 deletions(-)
+ create mode 100644 commands/seed.c
+ create mode 100644 drivers/hw_random/Kconfig
+ create mode 100644 drivers/hw_random/Makefile
+ create mode 100644 drivers/hw_random/core.c
+ create mode 100644 include/linux/hw_random.h
+
 -- 
 2.11.0
 
