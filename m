@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqG1r-0006LZ-Qs
+ id 1cqG1r-0006Lh-Qt
  for barebox@lists.infradead.org; Tue, 21 Mar 2017 09:24:39 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue, 21 Mar 2017 10:24:11 +0100
-Message-Id: <20170321092411.8844-8-o.rempel@pengutronix.de>
+Date: Tue, 21 Mar 2017 10:24:09 +0100
+Message-Id: <20170321092411.8844-6-o.rempel@pengutronix.de>
 In-Reply-To: <20170321092411.8844-1-o.rempel@pengutronix.de>
 References: <20170321092411.8844-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,98 +21,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 7/7] add seed command
+Subject: [PATCH v4 5/7] crypto: caam - fix RNG buffer cache alignment
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Victoria Milhoan <vicki.milhoan@freescale.com>, Steve Cornelius <steve.cornelius@freescale.com>, stable@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>
+
+this is alternate version of linux fix:
+---------------------------------------------------------------------
+The hwrng output buffers (2) are cast inside of a a struct
+(caam_rng_ctx)
+allocated in one DMA-tagged region. While the kernel's heap allocator
+should place the overall struct on a cacheline aligned boundary, the 2
+buffers contained within may not necessarily align. Consenquently, the
+ends
+of unaligned buffers may not fully flush, and if so, stale data will be
+left
+behind, resulting in small repeating patterns.
+
+This fix aligns the buffers inside the struct.
+
+Note that not all of the data inside caam_rng_ctx necessarily needs to
+be
+DMA-tagged, only the buffers themselves require this. However, a fix
+would
+incur the expense of error-handling bloat in the case of allocation
+failure.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve Cornelius <steve.cornelius@freescale.com>
+Signed-off-by: Victoria Milhoan <vicki.milhoan@freescale.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+---------------------------------------------------------------------
+
+instead we will use just dma_alloc()
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- commands/Kconfig  |  6 ++++++
- commands/Makefile |  1 +
- commands/seed.c   | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 55 insertions(+)
- create mode 100644 commands/seed.c
+ drivers/crypto/caam/caamrng.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 21d921268..c983b62d0 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -2115,6 +2115,12 @@ config CMD_SPD_DECODE
- 	help
- 	  decode spd eeprom
+diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
+index aabad0416..31a92731d 100644
+--- a/drivers/crypto/caam/caamrng.c
++++ b/drivers/crypto/caam/caamrng.c
+@@ -55,7 +55,7 @@
  
-+config CMD_SEED
-+	tristate
-+	prompt "seed"
-+	help
-+	  Seed the pseudo random number generator (PRNG)
-+
- # end Miscellaneous commands
- endmenu
+ /* Buffer, its dma address and lock */
+ struct buf_data {
+-	u8 buf[RN_BUF_SIZE];
++	u8 *buf;
+ 	dma_addr_t addr;
+ 	u32 hw_desc[DESC_JOB_O_LEN];
+ #define BUF_NOT_EMPTY 0
+@@ -218,6 +218,8 @@ static int caam_init_buf(struct caam_rng_ctx *ctx, int buf_id)
+ 	struct buf_data *bd = &ctx->bufs[buf_id];
+ 	int err;
  
-diff --git a/commands/Makefile b/commands/Makefile
-index 601f15fc3..ab5902156 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -120,3 +120,4 @@ obj-$(CONFIG_CMD_DHRYSTONE)	+= dhrystone.o
- obj-$(CONFIG_CMD_SPD_DECODE)	+= spd_decode.o
- obj-$(CONFIG_CMD_MMC_EXTCSD)	+= mmc_extcsd.o
- obj-$(CONFIG_CMD_NAND_BITFLIP)	+= nand-bitflip.o
-+obj-$(CONFIG_CMD_SEED)		+= seed.o
-diff --git a/commands/seed.c b/commands/seed.c
-new file mode 100644
-index 000000000..288b48b09
---- /dev/null
-+++ b/commands/seed.c
-@@ -0,0 +1,48 @@
-+/*
-+ * (c) 2017 Oleksij Rempel <kernel@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
++	bd->buf = dma_alloc(RN_BUF_SIZE);
 +
-+#include <common.h>
-+#include <command.h>
-+#include <stdlib.h>
-+#include <linux/ctype.h>
-+
-+static int do_seed(int argc, char *argv[])
-+{
-+	if (argc > 1) {
-+		if (isdigit(*argv[1])) {
-+			srand(simple_strtoul(argv[1], NULL, 0));
-+		} else {
-+			printf("numerical parameter expected\n");
-+			return 1;
-+		}
-+	}
-+
-+	/* running rand() will influence prng as well, so it is part of seeding */
-+	rand();
-+
-+	return 0;
-+}
-+
-+BAREBOX_CMD_HELP_START(seed)
-+BAREBOX_CMD_HELP_TEXT("Seed the pseudo random number generator")
-+BAREBOX_CMD_HELP_TEXT("Without a parameter the PRNG will be reexecuted")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(seed)
-+	.cmd = do_seed,
-+	BAREBOX_CMD_DESC("seed the PRNG")
-+	BAREBOX_CMD_OPTS("[SEED]")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_HELP(cmd_seed_help)
-+BAREBOX_CMD_END
+ 	err = rng_create_job_desc(ctx, buf_id);
+ 	if (err)
+ 		return err;
 -- 
 2.11.0
 
