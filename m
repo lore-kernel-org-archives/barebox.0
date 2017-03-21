@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqKLP-0003H1-2g
- for barebox@lists.infradead.org; Tue, 21 Mar 2017 14:01:06 +0000
+ id 1cqKLP-0003Gc-3v
+ for barebox@lists.infradead.org; Tue, 21 Mar 2017 14:01:09 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue, 21 Mar 2017 15:00:21 +0100
-Message-Id: <20170321140025.25784-5-o.rempel@pengutronix.de>
+Date: Tue, 21 Mar 2017 15:00:20 +0100
+Message-Id: <20170321140025.25784-4-o.rempel@pengutronix.de>
 In-Reply-To: <20170321140025.25784-1-o.rempel@pengutronix.de>
 References: <20170321140025.25784-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,116 +21,131 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v6 4/8] caamrng: port to hwrng framework
+Subject: [PATCH v6 3/8] lib: random: add get_crypto_bytes interface and use
+ HWRNG if posssible
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
+For crypto applications we need to use some thing else as PRNG.
+So provide get_crypto_bytes() and use HWRNG as main source.
+PRNG is allowed as fallback if user decided to configure it so.
+
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/crypto/caam/Kconfig   |  1 +
- drivers/crypto/caam/caamrng.c | 40 ++++++++++++----------------------------
- 2 files changed, 13 insertions(+), 28 deletions(-)
+ include/stdlib.h |  1 +
+ lib/Kconfig      |  9 +++++++++
+ lib/random.c     | 56 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 66 insertions(+)
 
-diff --git a/drivers/crypto/caam/Kconfig b/drivers/crypto/caam/Kconfig
-index cf05d1c07..2ab509d11 100644
---- a/drivers/crypto/caam/Kconfig
-+++ b/drivers/crypto/caam/Kconfig
-@@ -29,6 +29,7 @@ config CRYPTO_DEV_FSL_CAAM_RINGSIZE
- config CRYPTO_DEV_FSL_CAAM_RNG
- 	bool "Register caam RNG device"
- 	depends on CRYPTO_DEV_FSL_CAAM
-+	depends on HWRNG
- 	default y
- 	help
- 	  Selecting this will register the SEC4 hardware rng.
-diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
-index 0fef171a2..aabad0416 100644
---- a/drivers/crypto/caam/caamrng.c
-+++ b/drivers/crypto/caam/caamrng.c
-@@ -35,6 +35,7 @@
- #include <driver.h>
- #include <init.h>
- #include <linux/spinlock.h>
+diff --git a/include/stdlib.h b/include/stdlib.h
+index f3185069f..ee3f22996 100644
+--- a/include/stdlib.h
++++ b/include/stdlib.h
+@@ -13,6 +13,7 @@ void srand(unsigned int seed);
+ 
+ /* fill a buffer with pseudo-random data */
+ void get_random_bytes(void *buf, int len);
++int get_crypto_bytes(void *buf, int len);
+ 
+ static inline u32 random32(void)
+ {
+diff --git a/lib/Kconfig b/lib/Kconfig
+index f9f25bdef..c16511c05 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -66,6 +66,15 @@ config RATP
+ 	  transferring packets over serial links described in RFC916. This implementation
+ 	  is used for controlling barebox over serial ports.
+ 
++config ALLOW_PRNG_FALLBACK
++	bool "Allow fallback to PRNG if HWRNG not available."
++	help
++	  WARNING: it is not secure!!
++
++	  get_crypto_bytes() users like cmd_password relay on HWRNG. If HWRNG is not
++	  available and this option is disabled, cmd_password will fail.
++	  Enable it on your own risk.
++
+ source lib/gui/Kconfig
+ 
+ source lib/fonts/Kconfig
+diff --git a/lib/random.c b/lib/random.c
+index 210fea994..1cd8166bf 100644
+--- a/lib/random.c
++++ b/lib/random.c
+@@ -1,5 +1,6 @@
+ #include <common.h>
+ #include <stdlib.h>
 +#include <linux/hw_random.h>
  
- #include "regs.h"
- #include "intern.h"
-@@ -71,7 +72,7 @@ struct caam_rng_ctx {
- 	unsigned int cur_buf_idx;
- 	int current_buf;
- 	struct buf_data bufs[2];
--	struct cdev cdev;
-+	struct hwrng rng;
- };
+ static unsigned int random_seed;
  
- static struct caam_rng_ctx *rng_ctx;
-@@ -116,8 +117,9 @@ static inline int submit_job(struct caam_rng_ctx *ctx, int to_current)
- 	return err;
+@@ -18,6 +19,11 @@ void srand(unsigned int seed)
+ 	random_seed = seed;
  }
  
--static int caam_read(struct caam_rng_ctx *ctx, void *data, size_t max, bool wait)
-+static int caam_read(struct hwrng *rng, void *data, size_t max, bool wait)
++/**
++ * get_random_bytes - get pseudo random numbers.
++ * This interface can be good enough to generate MAC address
++ * or use for NAND test.
++ */
+ void get_random_bytes(void *_buf, int len)
  {
-+	struct caam_rng_ctx *ctx = container_of(rng, struct caam_rng_ctx, rng);
- 	struct buf_data *bd = &ctx->bufs[ctx->current_buf];
- 	int next_buf_idx, copied_idx;
- 	int err;
-@@ -162,7 +164,7 @@ static int caam_read(struct caam_rng_ctx *ctx, void *data, size_t max, bool wait
- 	dev_dbg(ctx->jrdev, "switched to buffer %d\n", ctx->current_buf);
- 
- 	/* since there already is some data read, don't wait */
--	return copied_idx + caam_read(ctx, data + copied_idx,
-+	return copied_idx + caam_read(rng, data + copied_idx,
- 				      max - copied_idx, false);
+ 	char *buf = _buf;
+@@ -25,3 +31,53 @@ void get_random_bytes(void *_buf, int len)
+ 	while (len--)
+ 		*buf++ = rand() % 256;
  }
- 
-@@ -248,29 +250,6 @@ static int caam_init_rng(struct caam_rng_ctx *ctx, struct device_d *jrdev)
- 	return 0;
- }
- 
--static ssize_t random_read(struct cdev *cdev, void *buf, size_t count,
--			   loff_t offset, ulong flags)
--{
--	struct caam_rng_ctx *ctx = container_of(cdev, struct caam_rng_ctx, cdev);
--
--	return caam_read(ctx, buf, count, true);
--}
--
--static struct file_operations randomops = {
--	.read  = random_read,
--	.lseek = dev_lseek_default,
--};
--
--static int caam_init_devrandom(struct caam_rng_ctx *ctx, struct device_d *dev)
--{
--	ctx->cdev.name = "hwrng";
--	ctx->cdev.flags = DEVFS_IS_CHARACTER_DEV;
--	ctx->cdev.ops = &randomops;
--	ctx->cdev.dev = dev;
--
--	return devfs_create(&ctx->cdev);
--}
--
- int caam_rng_probe(struct device_d *dev, struct device_d *jrdev)
- {
- 	int err;
-@@ -281,9 +260,14 @@ int caam_rng_probe(struct device_d *dev, struct device_d *jrdev)
- 	if (err)
- 		return err;
- 
--	err = caam_init_devrandom(rng_ctx, dev);
--	if (err)
-+	rng_ctx->rng.name = dev->name;
-+	rng_ctx->rng.read = caam_read;
 +
-+	err = hwrng_register(dev, &rng_ctx->rng);
-+	if (err) {
-+		dev_err(dev, "rng-caam registering failed (%d)\n", err);
- 		return err;
++/**
++ * get_crypto_bytes - get random numbers suitable for cryptographic needs.
++ */
++static int _get_crypto_bytes(void *_buf, int len)
++{
++	struct hwrng *rng;
++	u8 *buf = _buf;
++
++	if (!IS_ENABLED(CONFIG_HWRNG))
++		return -ENOENT;
++
++	rng = hwrng_get_first();
++	if (IS_ERR(rng))
++		return PTR_ERR(rng);
++
++	while (len) {
++		int bytes = hwrng_get_data(rng, buf, len, true);
++		if (!bytes)
++			return -ENOMEDIUM;
++
++		if (bytes < 0)
++			return bytes;
++
++		len -= bytes;
++		buf = buf + bytes;
 +	}
- 
- 	dev_info(dev, "registering rng-caam\n");
- 
++
++	return 0;
++}
++
++int get_crypto_bytes(void *buf, int len)
++{
++	int err;
++
++	err = _get_crypto_bytes(buf, len);
++	if (!err)
++		return 0;
++
++	if (!IS_ENABLED(CONFIG_ALLOW_PRNG_FALLBACK)) {
++		pr_err("error: no HWRNG available!\n");
++		return err;
++	}
++
++	pr_warn("warning: falling back to Pseudo RNG source!\n");
++
++	get_random_bytes(buf, len);
++
++	return 0;
++}
 -- 
 2.11.0
 
