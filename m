@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqHSK-0006ek-QG
+ id 1cqHSK-0006eX-QE
  for barebox@lists.infradead.org; Tue, 21 Mar 2017 10:56:02 +0000
-Received: by mail-lf0-x242.google.com with SMTP id y193so12706451lfd.1
- for <barebox@lists.infradead.org>; Tue, 21 Mar 2017 03:55:40 -0700 (PDT)
+Received: by mail-lf0-x242.google.com with SMTP id v2so12713634lfi.2
+ for <barebox@lists.infradead.org>; Tue, 21 Mar 2017 03:55:39 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 21 Mar 2017 13:55:30 +0300
-Message-Id: <20170321105531.11896-3-antonynpavlov@gmail.com>
+Date: Tue, 21 Mar 2017 13:55:29 +0300
+Message-Id: <20170321105531.11896-2-antonynpavlov@gmail.com>
 In-Reply-To: <20170321105531.11896-1-antonynpavlov@gmail.com>
 References: <20170321105531.11896-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,65 +23,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] tags: Do not try to index defconfigs
+Subject: [PATCH 1/3] scripts/tags.sh: drop __TestClearPage*() helpers
 To: barebox@lists.infradead.org
 
 This is an adoption of the linux kernel commit
 
-| commit ab9ca615f5f4053417cba464015bf2d7334a2371
-| Author: Michal Marek <mmarek@suse.com>
-| Date:   Thu Oct 15 11:14:02 2015 +0200
+| commit 685eaade56c66c806dbe8102f12e2926cf4ec870
+| Author: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+| Date:   Fri Jan 15 16:52:10 2016 -0800
 |
-|     tags: Do not try to index defconfigs
+|     page-flags: drop __TestClearPage*() helpers
 |
-|     The defconfig files are in predictable locations, so there is no need to
-|     index them. Plus, the script was only looking for files named
-|     'defconfig', which only works on a few architectures nowadays.
+|     Nobody uses them.
 |
-|     Signed-off-by: Michal Marek <mmarek@suse.com>
+|     Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+|     Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+|     Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- scripts/tags.sh | 12 ------------
- 1 file changed, 12 deletions(-)
+ scripts/tags.sh | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/scripts/tags.sh b/scripts/tags.sh
-index c3ce5f945..22a5cc4bf 100755
+index 79fdafb0d..c3ce5f945 100755
 --- a/scripts/tags.sh
 +++ b/scripts/tags.sh
-@@ -103,11 +103,6 @@ all_kconfigs()
- 	find_other_sources 'Kconfig*'
- }
- 
--all_defconfigs()
--{
--	find_sources $ALLSOURCE_ARCHS "defconfig"
--}
--
- docscope()
- {
- 	(echo \-k; echo \-q; all_sources) > cscope.files
-@@ -164,10 +159,6 @@ exuberant()
- 	all_kconfigs | xargs $1 -a                              \
- 	--langdef=kconfig --language-force=kconfig              \
- 	--regex-kconfig='/^[[:blank:]]*(menu|)config[[:blank:]]+([[:alnum:]_]+)/CONFIG_\2/'
--
--	all_defconfigs | xargs -r $1 -a                         \
--	--langdef=dotconfig --language-force=dotconfig          \
--	--regex-dotconfig='/^#?[[:blank:]]*(CONFIG_[[:alnum:]_]+)/\1/'
- }
- 
- emacs()
-@@ -206,9 +197,6 @@ emacs()
- 
- 	all_kconfigs | xargs $1 -a                              \
- 	--regex='/^[ \t]*\(\(menu\)*config\)[ \t]+\([a-zA-Z0-9_]+\)/CONFIG_\3/'
--
--	all_defconfigs | xargs -r $1 -a                         \
--	--regex='/^#?[ \t]?\(CONFIG_[a-zA-Z0-9_]+\)/\1/'
- }
- 
- xtags()
+@@ -153,7 +153,6 @@ exuberant()
+ 	--regex-c++='/CLEARPAGEFLAG_NOOP\(([^,)]*).*/ClearPage\1/'	\
+ 	--regex-c++='/__CLEARPAGEFLAG_NOOP\(([^,)]*).*/__ClearPage\1/'	\
+ 	--regex-c++='/TESTCLEARFLAG_FALSE\(([^,)]*).*/TestClearPage\1/' \
+-	--regex-c++='/__TESTCLEARFLAG_FALSE\(([^,)]*).*/__TestClearPage\1/' \
+ 	--regex-c++='/_PE\(([^,)]*).*/PEVENT_ERRNO__\1/'		\
+ 	--regex-c='/PCI_OP_READ\(([a-z]*[a-z]).*[1-4]\)/pci_bus_read_config_\1/' \
+ 	--regex-c='/PCI_OP_WRITE\(([a-z]*[a-z]).*[1-4]\)/pci_bus_write_config_\1/'
+@@ -198,7 +197,6 @@ emacs()
+ 	--regex='/CLEARPAGEFLAG_NOOP\(([^,)]*).*/ClearPage\1/'	\
+ 	--regex='/__CLEARPAGEFLAG_NOOP\(([^,)]*).*/__ClearPage\1/' \
+ 	--regex='/TESTCLEARFLAG_FALSE\(([^,)]*).*/TestClearPage\1/' \
+-	--regex='/__TESTCLEARFLAG_FALSE\(([^,)]*).*/__TestClearPage\1/' \
+ 	--regex='/_PE\(([^,)]*).*/PEVENT_ERRNO__\1/'		\
+ 	--regex='/PCI_OP_READ\(([a-z]*[a-z]).*[1-4]\)/pci_bus_read_config_\1/' \
+ 	--regex='/PCI_OP_WRITE\(([a-z]*[a-z]).*[1-4]\)/pci_bus_write_config_\1/'
 -- 
 2.11.0
 
