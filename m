@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqKLU-0003Hp-3r
- for barebox@lists.infradead.org; Tue, 21 Mar 2017 14:01:13 +0000
+ id 1cqKLU-0003HY-2q
+ for barebox@lists.infradead.org; Tue, 21 Mar 2017 14:01:15 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue, 21 Mar 2017 15:00:24 +0100
-Message-Id: <20170321140025.25784-8-o.rempel@pengutronix.de>
+Date: Tue, 21 Mar 2017 15:00:23 +0100
+Message-Id: <20170321140025.25784-7-o.rempel@pengutronix.de>
 In-Reply-To: <20170321140025.25784-1-o.rempel@pengutronix.de>
 References: <20170321140025.25784-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,35 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v6 7/8] common: password: make use of get_crypto_bytes
+Subject: [PATCH v6 6/8] crypto: caam - fix RNG buffer cache alignment
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-get_random_bytes is providing prng, if we have HWRNG we should be
-able to use it over get_crypto_bytes
+this is alternate version of linux fix:
+---------------------------------------------------------------------
+| commit 412c98c1bef65fe7589f1300e93735d96130307c
+| Author: Steve Cornelius <steve.cornelius@freescale.com>
+| Date:   Mon Jun 15 16:52:59 2015 -0700
+|
+| crypto: caam - fix RNG buffer cache alignment
+|
+| The hwrng output buffers (2) are cast inside of a a struct (caam_rng_ctx)
+| allocated in one DMA-tagged region. While the kernel's heap allocator
+| should place the overall struct on a cacheline aligned boundary, the 2
+| buffers contained within may not necessarily align. Consenquently, the
+| ends of unaligned buffers may not fully flush, and if so, stale data will be
+| left behind, resulting in small repeating patterns.
+|
+| This fix aligns the buffers inside the struct.
+|
+| Note that not all of the data inside caam_rng_ctx necessarily needs to
+| be DMA-tagged, only the buffers themselves require this. However, a fix
+| would incur the expense of error-handling bloat in the case of allocation
+| failure.
+|
+| Cc: stable@vger.kernel.org
+| Signed-off-by: Steve Cornelius <steve.cornelius@freescale.com>
+| Signed-off-by: Victoria Milhoan <vicki.milhoan@freescale.com>
+| Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+---------------------------------------------------------------------
+
+instead we will use just dma_alloc()
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- common/password.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/crypto/caam/caamrng.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/common/password.c b/common/password.c
-index d52b746f0..74d328f4b 100644
---- a/common/password.c
-+++ b/common/password.c
-@@ -365,7 +365,11 @@ int set_env_passwd(unsigned char* passwd, size_t length)
- 		char *salt = passwd_sum;
- 		int keylen = PBKDF2_LENGTH - PBKDF2_SALT_LEN;
+diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
+index aabad0416..31a92731d 100644
+--- a/drivers/crypto/caam/caamrng.c
++++ b/drivers/crypto/caam/caamrng.c
+@@ -55,7 +55,7 @@
  
--		get_random_bytes(passwd_sum, PBKDF2_SALT_LEN);
-+		ret = get_crypto_bytes(passwd_sum, PBKDF2_SALT_LEN);
-+		if (ret) {
-+			pr_err("Can't get random numbers\n");
-+			return ret;
-+		}
+ /* Buffer, its dma address and lock */
+ struct buf_data {
+-	u8 buf[RN_BUF_SIZE];
++	u8 *buf;
+ 	dma_addr_t addr;
+ 	u32 hw_desc[DESC_JOB_O_LEN];
+ #define BUF_NOT_EMPTY 0
+@@ -218,6 +218,8 @@ static int caam_init_buf(struct caam_rng_ctx *ctx, int buf_id)
+ 	struct buf_data *bd = &ctx->bufs[buf_id];
+ 	int err;
  
- 		ret = pkcs5_pbkdf2_hmac_sha1(passwd, length, salt,
- 				PBKDF2_SALT_LEN, PBKDF2_COUNT, keylen, key);
++	bd->buf = dma_alloc(RN_BUF_SIZE);
++
+ 	err = rng_create_job_desc(ctx, buf_id);
+ 	if (err)
+ 		return err;
 -- 
 2.11.0
 
