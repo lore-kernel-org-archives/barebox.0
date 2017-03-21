@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqG1r-0006La-Qu
- for barebox@lists.infradead.org; Tue, 21 Mar 2017 09:24:39 +0000
+ id 1cqG1r-0006LY-Qp
+ for barebox@lists.infradead.org; Tue, 21 Mar 2017 09:24:40 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue, 21 Mar 2017 10:24:10 +0100
-Message-Id: <20170321092411.8844-7-o.rempel@pengutronix.de>
+Date: Tue, 21 Mar 2017 10:24:06 +0100
+Message-Id: <20170321092411.8844-3-o.rempel@pengutronix.de>
 In-Reply-To: <20170321092411.8844-1-o.rempel@pengutronix.de>
 References: <20170321092411.8844-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,35 +21,134 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 6/7] common: password: make use of get_crypto_bytes
+Subject: [PATCH v4 2/7] lib: random: get_random_bytes from HWRNG if present
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-get_random_bytes is providing prng, if we have HWRNG we should be
-able to use it over get_crypto_bytes
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
+Instead of generating pseudo random numbers, get random bytes
+from an optional HW generator, if enabled and registered.
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- common/password.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/stdlib.h |  1 +
+ lib/Kconfig      |  9 +++++++++
+ lib/random.c     | 58 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 68 insertions(+)
 
-diff --git a/common/password.c b/common/password.c
-index d52b746f0..74d328f4b 100644
---- a/common/password.c
-+++ b/common/password.c
-@@ -365,7 +365,11 @@ int set_env_passwd(unsigned char* passwd, size_t length)
- 		char *salt = passwd_sum;
- 		int keylen = PBKDF2_LENGTH - PBKDF2_SALT_LEN;
+diff --git a/include/stdlib.h b/include/stdlib.h
+index f3185069f..ee3f22996 100644
+--- a/include/stdlib.h
++++ b/include/stdlib.h
+@@ -13,6 +13,7 @@ void srand(unsigned int seed);
  
--		get_random_bytes(passwd_sum, PBKDF2_SALT_LEN);
-+		ret = get_crypto_bytes(passwd_sum, PBKDF2_SALT_LEN);
-+		if (ret) {
-+			pr_err("Can't get random numbers\n");
-+			return ret;
-+		}
+ /* fill a buffer with pseudo-random data */
+ void get_random_bytes(void *buf, int len);
++int get_crypto_bytes(void *buf, int len);
  
- 		ret = pkcs5_pbkdf2_hmac_sha1(passwd, length, salt,
- 				PBKDF2_SALT_LEN, PBKDF2_COUNT, keylen, key);
+ static inline u32 random32(void)
+ {
+diff --git a/lib/Kconfig b/lib/Kconfig
+index f9f25bdef..c16511c05 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -66,6 +66,15 @@ config RATP
+ 	  transferring packets over serial links described in RFC916. This implementation
+ 	  is used for controlling barebox over serial ports.
+ 
++config ALLOW_PRNG_FALLBACK
++	bool "Allow fallback to PRNG if HWRNG not available."
++	help
++	  WARNING: it is not secure!!
++
++	  get_crypto_bytes() users like cmd_password relay on HWRNG. If HWRNG is not
++	  available and this option is disabled, cmd_password will fail.
++	  Enable it on your own risk.
++
+ source lib/gui/Kconfig
+ 
+ source lib/fonts/Kconfig
+diff --git a/lib/random.c b/lib/random.c
+index 210fea994..fa1fa5606 100644
+--- a/lib/random.c
++++ b/lib/random.c
+@@ -1,5 +1,6 @@
+ #include <common.h>
+ #include <stdlib.h>
++#include <linux/hw_random.h>
+ 
+ static unsigned int random_seed;
+ 
+@@ -18,6 +19,11 @@ void srand(unsigned int seed)
+ 	random_seed = seed;
+ }
+ 
++/**
++ * get_random_bytes - get pseudo random numbers.
++ * This interface can be good enough to generate MAC address
++ * or use for NAND test.
++ */
+ void get_random_bytes(void *_buf, int len)
+ {
+ 	char *buf = _buf;
+@@ -25,3 +31,55 @@ void get_random_bytes(void *_buf, int len)
+ 	while (len--)
+ 		*buf++ = rand() % 256;
+ }
++
++/**
++ * get_crypto_bytes - get random numbers suitable for cryptographic needs.
++ */
++static int _get_crypto_bytes(void *_buf, int len)
++{
++	struct hwrng *rng;
++	u8 *buf = _buf;
++
++	if (!IS_ENABLED(CONFIG_HWRNG))
++		return -ENOENT;
++
++	rng = hwrng_get_first();
++	if (IS_ERR(rng))
++		return PTR_ERR(rng);
++
++	while (len) {
++		int bytes = hwrng_get_data(rng, buf, len, true);
++		if (!bytes)
++			return -ENOMEDIUM;
++
++		if (bytes < 0)
++			return bytes;
++
++		if (bytes > len)
++			bytes = len;
++		len -= bytes;
++		buf = buf + bytes;
++	}
++
++	return 0;
++}
++
++int get_crypto_bytes(void *buf, int len)
++{
++	int err;
++
++	err = _get_crypto_bytes(buf, len);
++	if (!err)
++		return 0;
++
++	if (!IS_ENABLED(CONFIG_ALLOW_PRNG_FALLBACK)) {
++		pr_err("error: no HWRNG available!\n");
++		return err;
++	}
++
++	pr_warn("warning: falling back to Pseudo RNG source!\n");
++
++	get_random_bytes(buf, len);
++
++	return 0;
++}
 -- 
 2.11.0
 
