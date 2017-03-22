@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqcMH-00013D-Ok
- for barebox@lists.infradead.org; Wed, 22 Mar 2017 09:15:12 +0000
+ id 1cqcMH-00013U-OW
+ for barebox@lists.infradead.org; Wed, 22 Mar 2017 09:15:16 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 22 Mar 2017 10:14:36 +0100
-Message-Id: <20170322091439.18187-5-o.rempel@pengutronix.de>
+Date: Wed, 22 Mar 2017 10:14:38 +0100
+Message-Id: <20170322091439.18187-7-o.rempel@pengutronix.de>
 In-Reply-To: <20170322091439.18187-1-o.rempel@pengutronix.de>
 References: <20170322091439.18187-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,61 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v8 4/7] fs: add prng device
+Subject: [PATCH v8 6/7] common: password: make use of get_crypto_bytes
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-this should provide easy access to get_random_bytes() interfaces.
+get_random_bytes is providing prng, if we have HWRNG we should be
+able to use it over get_crypto_bytes
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- commands/stddev.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ common/password.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/commands/stddev.c b/commands/stddev.c
-index 318d05741..93da2c739 100644
---- a/commands/stddev.c
-+++ b/commands/stddev.c
-@@ -17,6 +17,7 @@
+diff --git a/common/password.c b/common/password.c
+index d52b746f0..74d328f4b 100644
+--- a/common/password.c
++++ b/common/password.c
+@@ -365,7 +365,11 @@ int set_env_passwd(unsigned char* passwd, size_t length)
+ 		char *salt = passwd_sum;
+ 		int keylen = PBKDF2_LENGTH - PBKDF2_SALT_LEN;
  
- #include <common.h>
- #include <init.h>
-+#include <stdlib.h>
+-		get_random_bytes(passwd_sum, PBKDF2_SALT_LEN);
++		ret = get_crypto_bytes(passwd_sum, PBKDF2_SALT_LEN);
++		if (ret) {
++			pr_err("Can't get random numbers\n");
++			return ret;
++		}
  
- static ssize_t zero_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
- {
-@@ -100,3 +101,31 @@ static int null_init(void)
- }
- 
- device_initcall(null_init);
-+
-+static ssize_t prng_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
-+{
-+	get_random_bytes(buf, count);
-+	return count;
-+}
-+
-+static struct file_operations prngops = {
-+	.read  = prng_read,
-+	.lseek = dev_lseek_default,
-+};
-+
-+static int prng_init(void)
-+{
-+	struct cdev *cdev;
-+
-+	cdev = xzalloc(sizeof (*cdev));
-+
-+	cdev->name = "prng";
-+	cdev->flags = DEVFS_IS_CHARACTER_DEV;
-+	cdev->ops = &prngops;
-+
-+	devfs_create(cdev);
-+
-+	return 0;
-+}
-+
-+device_initcall(prng_init);
+ 		ret = pkcs5_pbkdf2_hmac_sha1(passwd, length, salt,
+ 				PBKDF2_SALT_LEN, PBKDF2_COUNT, keylen, key);
 -- 
 2.11.0
 
