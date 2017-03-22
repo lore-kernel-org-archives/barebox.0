@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqcMC-0000re-Qm
- for barebox@lists.infradead.org; Wed, 22 Mar 2017 09:15:08 +0000
+ id 1cqcMH-00013H-Ol
+ for barebox@lists.infradead.org; Wed, 22 Mar 2017 09:15:14 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 22 Mar 2017 10:14:32 +0100
-Message-Id: <20170322091439.18187-1-o.rempel@pengutronix.de>
+Date: Wed, 22 Mar 2017 10:14:37 +0100
+Message-Id: <20170322091439.18187-6-o.rempel@pengutronix.de>
+In-Reply-To: <20170322091439.18187-1-o.rempel@pengutronix.de>
+References: <20170322091439.18187-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,78 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v8 0/7] upstream hwrng framework
+Subject: [PATCH v8 5/7] crypto: caam - fix RNG buffer cache alignment
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-changes v1:
- - initial version
+this is alternate version of linux fix:
+---------------------------------------------------------------------
+| commit 412c98c1bef65fe7589f1300e93735d96130307c
+| Author: Steve Cornelius <steve.cornelius@freescale.com>
+| Date:   Mon Jun 15 16:52:59 2015 -0700
+|
+| crypto: caam - fix RNG buffer cache alignment
+|
+| The hwrng output buffers (2) are cast inside of a a struct (caam_rng_ctx)
+| allocated in one DMA-tagged region. While the kernel's heap allocator
+| should place the overall struct on a cacheline aligned boundary, the 2
+| buffers contained within may not necessarily align. Consenquently, the
+| ends of unaligned buffers may not fully flush, and if so, stale data will be
+| left behind, resulting in small repeating patterns.
+|
+| This fix aligns the buffers inside the struct.
+|
+| Note that not all of the data inside caam_rng_ctx necessarily needs to
+| be DMA-tagged, only the buffers themselves require this. However, a fix
+| would incur the expense of error-handling bloat in the case of allocation
+| failure.
+|
+| Cc: stable@vger.kernel.org
+| Signed-off-by: Steve Cornelius <steve.cornelius@freescale.com>
+| Signed-off-by: Victoria Milhoan <vicki.milhoan@freescale.com>
+| Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+---------------------------------------------------------------------
 
-changes v2:
- - drop Freescale RNGC for now. It need more testing
- - add caamrng port
- - fix hwrng_init()
- - fix hwrng_get_first check in get_random_bytes
+instead we will use just dma_alloc()
 
-changes v3:
- - check if hwrng_get_data returns error
- - provide /dev/randomdd random device
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/crypto/caam/caamrng.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-changes v4:
- - provide get_crypto_bytes() interface.
- - add CONFIG_ALLOW_PRNG_FALLBACK
- - make cmd_password use get_crypto_bytes
- - add cmd_seed
-
-changes v5:
- - make cmd_seed fail if no VALUE is set
-
-changes v6:
- - reword second patch and remove useless if (bytes > lenght) check.
-
-changes v7:
- - use numbered names: /dev/hwrngN
- - allow to use aliases for device name.
-
-changes v8:
- - remove comment about nonexisting priv variable
- - make hwrng_get_first() static inline with return error if CONFIG_HWRNG
-   is disabled.
-
-Oleksij Rempel (6):
-  lib: random: add get_crypto_bytes interface and use HWRNG if posssible
-  caamrng: port to hwrng framework
-  fs: add prng device
-  crypto: caam - fix RNG buffer cache alignment
-  common: password: make use of get_crypto_bytes
-  add seed command
-
-Steffen Trumtrar (1):
-  drivers: add simple hw_random implementation
-
- commands/Kconfig              |   6 ++
- commands/Makefile             |   1 +
- commands/seed.c               |  44 +++++++++++++++
- commands/stddev.c             |  29 ++++++++++
- common/password.c             |   6 +-
- drivers/Kconfig               |   1 +
- drivers/Makefile              |   1 +
- drivers/crypto/caam/Kconfig   |   1 +
- drivers/crypto/caam/caamrng.c |  44 +++++----------
- drivers/hw_random/Kconfig     |   6 ++
- drivers/hw_random/Makefile    |   1 +
- drivers/hw_random/core.c      | 125 ++++++++++++++++++++++++++++++++++++++++++
- include/linux/hw_random.h     |  47 ++++++++++++++++
- include/stdlib.h              |   1 +
- lib/Kconfig                   |   9 +++
- lib/random.c                  |  52 ++++++++++++++++++
- 16 files changed, 344 insertions(+), 30 deletions(-)
- create mode 100644 commands/seed.c
- create mode 100644 drivers/hw_random/Kconfig
- create mode 100644 drivers/hw_random/Makefile
- create mode 100644 drivers/hw_random/core.c
- create mode 100644 include/linux/hw_random.h
-
+diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
+index aabad0416..31a92731d 100644
+--- a/drivers/crypto/caam/caamrng.c
++++ b/drivers/crypto/caam/caamrng.c
+@@ -55,7 +55,7 @@
+ 
+ /* Buffer, its dma address and lock */
+ struct buf_data {
+-	u8 buf[RN_BUF_SIZE];
++	u8 *buf;
+ 	dma_addr_t addr;
+ 	u32 hw_desc[DESC_JOB_O_LEN];
+ #define BUF_NOT_EMPTY 0
+@@ -218,6 +218,8 @@ static int caam_init_buf(struct caam_rng_ctx *ctx, int buf_id)
+ 	struct buf_data *bd = &ctx->bufs[buf_id];
+ 	int err;
+ 
++	bd->buf = dma_alloc(RN_BUF_SIZE);
++
+ 	err = rng_create_job_desc(ctx, buf_id);
+ 	if (err)
+ 		return err;
 -- 
 2.11.0
 
