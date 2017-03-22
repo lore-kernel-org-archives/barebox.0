@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqaFU-0000mV-7o
- for barebox@lists.infradead.org; Wed, 22 Mar 2017 07:00:02 +0000
-Date: Wed, 22 Mar 2017 07:59:38 +0100
+ id 1cqaNg-0004yF-KP
+ for barebox@lists.infradead.org; Wed, 22 Mar 2017 07:08:30 +0000
+Date: Wed, 22 Mar 2017 08:08:06 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170322065938.sjpdwjgmyoimblll@pengutronix.de>
-References: <20170320130708.15741-1-l.stach@pengutronix.de>
+Message-ID: <20170322070806.6uwbggidlwfbylsd@pengutronix.de>
+References: <20170320125540.8431-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170320130708.15741-1-l.stach@pengutronix.de>
+In-Reply-To: <20170320125540.8431-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +22,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ARM: add AFLAGS for secure monitor files
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v1 1/2] bootm: fit: support multiple configuration nodes
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-On Mon, Mar 20, 2017 at 02:07:06PM +0100, Lucas Stach wrote:
-> The instructions used in those files are only supported on ARMv7.
+On Mon, Mar 20, 2017 at 01:55:39PM +0100, Oleksij Rempel wrote:
+> From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  arch/arm/cpu/Makefile | 2 ++
->  1 file changed, 2 insertions(+)
+>  common/image-fit.c | 39 +++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 37 insertions(+), 2 deletions(-)
+> 
+> diff --git a/common/image-fit.c b/common/image-fit.c
+> index 6a01c614c..48c021347 100644
+> --- a/common/image-fit.c
+> +++ b/common/image-fit.c
+> @@ -489,6 +489,37 @@ static int fit_config_verify_signature(struct fit_handle *handle, struct device_
+>  	return ret;
+>  }
+>  
+> +static int fit_find_compatible_unit(struct device_node *conf_node,
+> +				    const char **unit)
+> +{
+> +	struct device_node *child = NULL;
+> +	struct device_node *barebox_root;
+> +	const char *machine;
+> +	int ret;
+> +
+> +	barebox_root = of_get_root_node();
+> +	if (!barebox_root)
+> +		return -ENOSYS;
+> +
+> +	ret = of_property_read_string(barebox_root, "compatible", &machine);
+> +	if (ret)
+> +		return -ENOENT;
+> +
+> +	for_each_child_of_node(conf_node, child) {
+> +		if (of_device_is_compatible(child, machine)) {
+> +			*unit = xasprintf("%s", child->name);
 
-Applied, thanks
+This is never freed. *unit is a const char * in the caller.
 
 Sascha
-
-> 
-> diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-> index 13b4f9590d21..13fe12c31f6f 100644
-> --- a/arch/arm/cpu/Makefile
-> +++ b/arch/arm/cpu/Makefile
-> @@ -36,7 +36,9 @@ endif
->  
->  obj-$(CONFIG_ARM_PSCI) += psci.o
->  obj-$(CONFIG_ARM_SECURE_MONITOR) += smccc-call.o
-> +AFLAGS_smccc-call.o	:=-Wa,-march=armv7-a
->  obj-$(CONFIG_ARM_SECURE_MONITOR) += sm.o sm_as.o
-> +AFLAGS_sm_as.o		:=-Wa,-march=armv7-a
->  
->  obj-$(CONFIG_CPU_32v4T) += cache-armv4.o
->  pbl-$(CONFIG_CPU_32v4T) += cache-armv4.o
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
