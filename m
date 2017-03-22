@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqcMH-00013H-Ol
+ id 1cqcMH-00010C-OY
  for barebox@lists.infradead.org; Wed, 22 Mar 2017 09:15:14 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 22 Mar 2017 10:14:37 +0100
-Message-Id: <20170322091439.18187-6-o.rempel@pengutronix.de>
+Date: Wed, 22 Mar 2017 10:14:35 +0100
+Message-Id: <20170322091439.18187-4-o.rempel@pengutronix.de>
 In-Reply-To: <20170322091439.18187-1-o.rempel@pengutronix.de>
 References: <20170322091439.18187-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,67 +21,116 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v8 5/7] crypto: caam - fix RNG buffer cache alignment
+Subject: [PATCH v8 3/7] caamrng: port to hwrng framework
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-this is alternate version of linux fix:
----------------------------------------------------------------------
-| commit 412c98c1bef65fe7589f1300e93735d96130307c
-| Author: Steve Cornelius <steve.cornelius@freescale.com>
-| Date:   Mon Jun 15 16:52:59 2015 -0700
-|
-| crypto: caam - fix RNG buffer cache alignment
-|
-| The hwrng output buffers (2) are cast inside of a a struct (caam_rng_ctx)
-| allocated in one DMA-tagged region. While the kernel's heap allocator
-| should place the overall struct on a cacheline aligned boundary, the 2
-| buffers contained within may not necessarily align. Consenquently, the
-| ends of unaligned buffers may not fully flush, and if so, stale data will be
-| left behind, resulting in small repeating patterns.
-|
-| This fix aligns the buffers inside the struct.
-|
-| Note that not all of the data inside caam_rng_ctx necessarily needs to
-| be DMA-tagged, only the buffers themselves require this. However, a fix
-| would incur the expense of error-handling bloat in the case of allocation
-| failure.
-|
-| Cc: stable@vger.kernel.org
-| Signed-off-by: Steve Cornelius <steve.cornelius@freescale.com>
-| Signed-off-by: Victoria Milhoan <vicki.milhoan@freescale.com>
-| Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
----------------------------------------------------------------------
-
-instead we will use just dma_alloc()
-
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/crypto/caam/caamrng.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/crypto/caam/Kconfig   |  1 +
+ drivers/crypto/caam/caamrng.c | 40 ++++++++++++----------------------------
+ 2 files changed, 13 insertions(+), 28 deletions(-)
 
+diff --git a/drivers/crypto/caam/Kconfig b/drivers/crypto/caam/Kconfig
+index cf05d1c07..2ab509d11 100644
+--- a/drivers/crypto/caam/Kconfig
++++ b/drivers/crypto/caam/Kconfig
+@@ -29,6 +29,7 @@ config CRYPTO_DEV_FSL_CAAM_RINGSIZE
+ config CRYPTO_DEV_FSL_CAAM_RNG
+ 	bool "Register caam RNG device"
+ 	depends on CRYPTO_DEV_FSL_CAAM
++	depends on HWRNG
+ 	default y
+ 	help
+ 	  Selecting this will register the SEC4 hardware rng.
 diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
-index aabad0416..31a92731d 100644
+index 0fef171a2..aabad0416 100644
 --- a/drivers/crypto/caam/caamrng.c
 +++ b/drivers/crypto/caam/caamrng.c
-@@ -55,7 +55,7 @@
+@@ -35,6 +35,7 @@
+ #include <driver.h>
+ #include <init.h>
+ #include <linux/spinlock.h>
++#include <linux/hw_random.h>
  
- /* Buffer, its dma address and lock */
- struct buf_data {
--	u8 buf[RN_BUF_SIZE];
-+	u8 *buf;
- 	dma_addr_t addr;
- 	u32 hw_desc[DESC_JOB_O_LEN];
- #define BUF_NOT_EMPTY 0
-@@ -218,6 +218,8 @@ static int caam_init_buf(struct caam_rng_ctx *ctx, int buf_id)
- 	struct buf_data *bd = &ctx->bufs[buf_id];
+ #include "regs.h"
+ #include "intern.h"
+@@ -71,7 +72,7 @@ struct caam_rng_ctx {
+ 	unsigned int cur_buf_idx;
+ 	int current_buf;
+ 	struct buf_data bufs[2];
+-	struct cdev cdev;
++	struct hwrng rng;
+ };
+ 
+ static struct caam_rng_ctx *rng_ctx;
+@@ -116,8 +117,9 @@ static inline int submit_job(struct caam_rng_ctx *ctx, int to_current)
+ 	return err;
+ }
+ 
+-static int caam_read(struct caam_rng_ctx *ctx, void *data, size_t max, bool wait)
++static int caam_read(struct hwrng *rng, void *data, size_t max, bool wait)
+ {
++	struct caam_rng_ctx *ctx = container_of(rng, struct caam_rng_ctx, rng);
+ 	struct buf_data *bd = &ctx->bufs[ctx->current_buf];
+ 	int next_buf_idx, copied_idx;
  	int err;
+@@ -162,7 +164,7 @@ static int caam_read(struct caam_rng_ctx *ctx, void *data, size_t max, bool wait
+ 	dev_dbg(ctx->jrdev, "switched to buffer %d\n", ctx->current_buf);
  
-+	bd->buf = dma_alloc(RN_BUF_SIZE);
-+
- 	err = rng_create_job_desc(ctx, buf_id);
+ 	/* since there already is some data read, don't wait */
+-	return copied_idx + caam_read(ctx, data + copied_idx,
++	return copied_idx + caam_read(rng, data + copied_idx,
+ 				      max - copied_idx, false);
+ }
+ 
+@@ -248,29 +250,6 @@ static int caam_init_rng(struct caam_rng_ctx *ctx, struct device_d *jrdev)
+ 	return 0;
+ }
+ 
+-static ssize_t random_read(struct cdev *cdev, void *buf, size_t count,
+-			   loff_t offset, ulong flags)
+-{
+-	struct caam_rng_ctx *ctx = container_of(cdev, struct caam_rng_ctx, cdev);
+-
+-	return caam_read(ctx, buf, count, true);
+-}
+-
+-static struct file_operations randomops = {
+-	.read  = random_read,
+-	.lseek = dev_lseek_default,
+-};
+-
+-static int caam_init_devrandom(struct caam_rng_ctx *ctx, struct device_d *dev)
+-{
+-	ctx->cdev.name = "hwrng";
+-	ctx->cdev.flags = DEVFS_IS_CHARACTER_DEV;
+-	ctx->cdev.ops = &randomops;
+-	ctx->cdev.dev = dev;
+-
+-	return devfs_create(&ctx->cdev);
+-}
+-
+ int caam_rng_probe(struct device_d *dev, struct device_d *jrdev)
+ {
+ 	int err;
+@@ -281,9 +260,14 @@ int caam_rng_probe(struct device_d *dev, struct device_d *jrdev)
  	if (err)
  		return err;
+ 
+-	err = caam_init_devrandom(rng_ctx, dev);
+-	if (err)
++	rng_ctx->rng.name = dev->name;
++	rng_ctx->rng.read = caam_read;
++
++	err = hwrng_register(dev, &rng_ctx->rng);
++	if (err) {
++		dev_err(dev, "rng-caam registering failed (%d)\n", err);
+ 		return err;
++	}
+ 
+ 	dev_info(dev, "registering rng-caam\n");
+ 
 -- 
 2.11.0
 
