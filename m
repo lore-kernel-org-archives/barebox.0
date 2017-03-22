@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqbri-000298-2G
- for barebox@lists.infradead.org; Wed, 22 Mar 2017 08:43:35 +0000
+ id 1cqbrj-0002DQ-6J
+ for barebox@lists.infradead.org; Wed, 22 Mar 2017 08:43:38 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 22 Mar 2017 09:42:59 +0100
-Message-Id: <20170322084306.16726-1-o.rempel@pengutronix.de>
+Date: Wed, 22 Mar 2017 09:43:03 +0100
+Message-Id: <20170322084306.16726-5-o.rempel@pengutronix.de>
+In-Reply-To: <20170322084306.16726-1-o.rempel@pengutronix.de>
+References: <20170322084306.16726-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,73 +21,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v7 0/7] upstream hwrng framework
+Subject: [PATCH v7 4/7] fs: add prng device
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-changes v1:
- - initial version
+this should provide easy access to get_random_bytes() interfaces.
 
-changes v2:
- - drop Freescale RNGC for now. It need more testing
- - add caamrng port
- - fix hwrng_init()
- - fix hwrng_get_first check in get_random_bytes
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ commands/stddev.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-changes v3:
- - check if hwrng_get_data returns error
- - provide /dev/randomdd random device
-
-changes v4:
- - provide get_crypto_bytes() interface.
- - add CONFIG_ALLOW_PRNG_FALLBACK
- - make cmd_password use get_crypto_bytes
- - add cmd_seed
-
-changes v5:
- - make cmd_seed fail if no VALUE is set
-
-changes v6:
- - reword second patch and remove useless if (bytes > lenght) check.
-
-changes v7:
- - use numbered names: /dev/hwrngN
- - allow to use aliases for device name.
-
-Oleksij Rempel (6):
-  lib: random: add get_crypto_bytes interface and use HWRNG if posssible
-  caamrng: port to hwrng framework
-  fs: add prng device
-  crypto: caam - fix RNG buffer cache alignment
-  common: password: make use of get_crypto_bytes
-  add seed command
-
-Steffen Trumtrar (1):
-  drivers: add simple hw_random implementation
-
- commands/Kconfig              |   6 ++
- commands/Makefile             |   1 +
- commands/seed.c               |  44 +++++++++++++++
- commands/stddev.c             |  29 ++++++++++
- common/password.c             |   6 +-
- drivers/Kconfig               |   1 +
- drivers/Makefile              |   1 +
- drivers/crypto/caam/Kconfig   |   1 +
- drivers/crypto/caam/caamrng.c |  44 +++++----------
- drivers/hw_random/Kconfig     |   6 ++
- drivers/hw_random/Makefile    |   1 +
- drivers/hw_random/core.c      | 125 ++++++++++++++++++++++++++++++++++++++++++
- include/linux/hw_random.h     |  43 +++++++++++++++
- include/stdlib.h              |   1 +
- lib/Kconfig                   |   9 +++
- lib/random.c                  |  56 +++++++++++++++++++
- 16 files changed, 344 insertions(+), 30 deletions(-)
- create mode 100644 commands/seed.c
- create mode 100644 drivers/hw_random/Kconfig
- create mode 100644 drivers/hw_random/Makefile
- create mode 100644 drivers/hw_random/core.c
- create mode 100644 include/linux/hw_random.h
-
+diff --git a/commands/stddev.c b/commands/stddev.c
+index 318d05741..93da2c739 100644
+--- a/commands/stddev.c
++++ b/commands/stddev.c
+@@ -17,6 +17,7 @@
+ 
+ #include <common.h>
+ #include <init.h>
++#include <stdlib.h>
+ 
+ static ssize_t zero_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
+ {
+@@ -100,3 +101,31 @@ static int null_init(void)
+ }
+ 
+ device_initcall(null_init);
++
++static ssize_t prng_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
++{
++	get_random_bytes(buf, count);
++	return count;
++}
++
++static struct file_operations prngops = {
++	.read  = prng_read,
++	.lseek = dev_lseek_default,
++};
++
++static int prng_init(void)
++{
++	struct cdev *cdev;
++
++	cdev = xzalloc(sizeof (*cdev));
++
++	cdev->name = "prng";
++	cdev->flags = DEVFS_IS_CHARACTER_DEV;
++	cdev->ops = &prngops;
++
++	devfs_create(cdev);
++
++	return 0;
++}
++
++device_initcall(prng_init);
 -- 
 2.11.0
 
