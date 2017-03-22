@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqcMH-00013a-OU
- for barebox@lists.infradead.org; Wed, 22 Mar 2017 09:15:14 +0000
+ id 1cqcMH-00013D-Ok
+ for barebox@lists.infradead.org; Wed, 22 Mar 2017 09:15:12 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 22 Mar 2017 10:14:39 +0100
-Message-Id: <20170322091439.18187-8-o.rempel@pengutronix.de>
+Date: Wed, 22 Mar 2017 10:14:36 +0100
+Message-Id: <20170322091439.18187-5-o.rempel@pengutronix.de>
 In-Reply-To: <20170322091439.18187-1-o.rempel@pengutronix.de>
 References: <20170322091439.18187-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,94 +21,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v8 7/7] add seed command
+Subject: [PATCH v8 4/7] fs: add prng device
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
+this should provide easy access to get_random_bytes() interfaces.
+
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- commands/Kconfig  |  6 ++++++
- commands/Makefile |  1 +
- commands/seed.c   | 44 ++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 51 insertions(+)
- create mode 100644 commands/seed.c
+ commands/stddev.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 21d921268..c983b62d0 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -2115,6 +2115,12 @@ config CMD_SPD_DECODE
- 	help
- 	  decode spd eeprom
+diff --git a/commands/stddev.c b/commands/stddev.c
+index 318d05741..93da2c739 100644
+--- a/commands/stddev.c
++++ b/commands/stddev.c
+@@ -17,6 +17,7 @@
  
-+config CMD_SEED
-+	tristate
-+	prompt "seed"
-+	help
-+	  Seed the pseudo random number generator (PRNG)
-+
- # end Miscellaneous commands
- endmenu
- 
-diff --git a/commands/Makefile b/commands/Makefile
-index 601f15fc3..ab5902156 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -120,3 +120,4 @@ obj-$(CONFIG_CMD_DHRYSTONE)	+= dhrystone.o
- obj-$(CONFIG_CMD_SPD_DECODE)	+= spd_decode.o
- obj-$(CONFIG_CMD_MMC_EXTCSD)	+= mmc_extcsd.o
- obj-$(CONFIG_CMD_NAND_BITFLIP)	+= nand-bitflip.o
-+obj-$(CONFIG_CMD_SEED)		+= seed.o
-diff --git a/commands/seed.c b/commands/seed.c
-new file mode 100644
-index 000000000..e378cd763
---- /dev/null
-+++ b/commands/seed.c
-@@ -0,0 +1,44 @@
-+/*
-+ * (c) 2017 Oleksij Rempel <kernel@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <common.h>
-+#include <command.h>
+ #include <common.h>
+ #include <init.h>
 +#include <stdlib.h>
-+#include <linux/ctype.h>
+ 
+ static ssize_t zero_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
+ {
+@@ -100,3 +101,31 @@ static int null_init(void)
+ }
+ 
+ device_initcall(null_init);
 +
-+static int do_seed(int argc, char *argv[])
++static ssize_t prng_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
 +{
-+	if (argc < 2)
-+		return COMMAND_ERROR_USAGE;
-+
-+	if (isdigit(*argv[1])) {
-+		srand(simple_strtoul(argv[1], NULL, 0));
-+		return 0;
-+	}
-+
-+	printf("numerical parameter expected\n");
-+	return 1;
++	get_random_bytes(buf, count);
++	return count;
 +}
 +
-+BAREBOX_CMD_HELP_START(seed)
-+BAREBOX_CMD_HELP_TEXT("Seed the pseudo random number generator")
-+BAREBOX_CMD_HELP_END
++static struct file_operations prngops = {
++	.read  = prng_read,
++	.lseek = dev_lseek_default,
++};
 +
-+BAREBOX_CMD_START(seed)
-+	.cmd = do_seed,
-+	BAREBOX_CMD_DESC("seed the PRNG")
-+	BAREBOX_CMD_OPTS("VALUE")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_HELP(cmd_seed_help)
-+BAREBOX_CMD_END
++static int prng_init(void)
++{
++	struct cdev *cdev;
++
++	cdev = xzalloc(sizeof (*cdev));
++
++	cdev->name = "prng";
++	cdev->flags = DEVFS_IS_CHARACTER_DEV;
++	cdev->ops = &prngops;
++
++	devfs_create(cdev);
++
++	return 0;
++}
++
++device_initcall(prng_init);
 -- 
 2.11.0
 
