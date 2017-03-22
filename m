@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqbrj-0002Fz-6K
- for barebox@lists.infradead.org; Wed, 22 Mar 2017 08:43:38 +0000
+ id 1cqbro-0002Hy-5w
+ for barebox@lists.infradead.org; Wed, 22 Mar 2017 08:43:44 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 22 Mar 2017 09:43:05 +0100
-Message-Id: <20170322084306.16726-7-o.rempel@pengutronix.de>
+Date: Wed, 22 Mar 2017 09:43:06 +0100
+Message-Id: <20170322084306.16726-8-o.rempel@pengutronix.de>
 In-Reply-To: <20170322084306.16726-1-o.rempel@pengutronix.de>
 References: <20170322084306.16726-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,35 +21,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v7 6/7] common: password: make use of get_crypto_bytes
+Subject: [PATCH v7 7/7] add seed command
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-get_random_bytes is providing prng, if we have HWRNG we should be
-able to use it over get_crypto_bytes
-
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- common/password.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ commands/Kconfig  |  6 ++++++
+ commands/Makefile |  1 +
+ commands/seed.c   | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 51 insertions(+)
+ create mode 100644 commands/seed.c
 
-diff --git a/common/password.c b/common/password.c
-index d52b746f0..74d328f4b 100644
---- a/common/password.c
-+++ b/common/password.c
-@@ -365,7 +365,11 @@ int set_env_passwd(unsigned char* passwd, size_t length)
- 		char *salt = passwd_sum;
- 		int keylen = PBKDF2_LENGTH - PBKDF2_SALT_LEN;
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 21d921268..c983b62d0 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -2115,6 +2115,12 @@ config CMD_SPD_DECODE
+ 	help
+ 	  decode spd eeprom
  
--		get_random_bytes(passwd_sum, PBKDF2_SALT_LEN);
-+		ret = get_crypto_bytes(passwd_sum, PBKDF2_SALT_LEN);
-+		if (ret) {
-+			pr_err("Can't get random numbers\n");
-+			return ret;
-+		}
++config CMD_SEED
++	tristate
++	prompt "seed"
++	help
++	  Seed the pseudo random number generator (PRNG)
++
+ # end Miscellaneous commands
+ endmenu
  
- 		ret = pkcs5_pbkdf2_hmac_sha1(passwd, length, salt,
- 				PBKDF2_SALT_LEN, PBKDF2_COUNT, keylen, key);
+diff --git a/commands/Makefile b/commands/Makefile
+index 601f15fc3..ab5902156 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -120,3 +120,4 @@ obj-$(CONFIG_CMD_DHRYSTONE)	+= dhrystone.o
+ obj-$(CONFIG_CMD_SPD_DECODE)	+= spd_decode.o
+ obj-$(CONFIG_CMD_MMC_EXTCSD)	+= mmc_extcsd.o
+ obj-$(CONFIG_CMD_NAND_BITFLIP)	+= nand-bitflip.o
++obj-$(CONFIG_CMD_SEED)		+= seed.o
+diff --git a/commands/seed.c b/commands/seed.c
+new file mode 100644
+index 000000000..e378cd763
+--- /dev/null
++++ b/commands/seed.c
+@@ -0,0 +1,44 @@
++/*
++ * (c) 2017 Oleksij Rempel <kernel@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
++#include <command.h>
++#include <stdlib.h>
++#include <linux/ctype.h>
++
++static int do_seed(int argc, char *argv[])
++{
++	if (argc < 2)
++		return COMMAND_ERROR_USAGE;
++
++	if (isdigit(*argv[1])) {
++		srand(simple_strtoul(argv[1], NULL, 0));
++		return 0;
++	}
++
++	printf("numerical parameter expected\n");
++	return 1;
++}
++
++BAREBOX_CMD_HELP_START(seed)
++BAREBOX_CMD_HELP_TEXT("Seed the pseudo random number generator")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(seed)
++	.cmd = do_seed,
++	BAREBOX_CMD_DESC("seed the PRNG")
++	BAREBOX_CMD_OPTS("VALUE")
++	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
++	BAREBOX_CMD_HELP(cmd_seed_help)
++BAREBOX_CMD_END
 -- 
 2.11.0
 
