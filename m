@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqbrj-0002DQ-6J
+ id 1cqbrj-0002Ep-6F
  for barebox@lists.infradead.org; Wed, 22 Mar 2017 08:43:38 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 22 Mar 2017 09:43:03 +0100
-Message-Id: <20170322084306.16726-5-o.rempel@pengutronix.de>
+Date: Wed, 22 Mar 2017 09:43:04 +0100
+Message-Id: <20170322084306.16726-6-o.rempel@pengutronix.de>
 In-Reply-To: <20170322084306.16726-1-o.rempel@pengutronix.de>
 References: <20170322084306.16726-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,61 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v7 4/7] fs: add prng device
+Subject: [PATCH v7 5/7] crypto: caam - fix RNG buffer cache alignment
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-this should provide easy access to get_random_bytes() interfaces.
+this is alternate version of linux fix:
+---------------------------------------------------------------------
+| commit 412c98c1bef65fe7589f1300e93735d96130307c
+| Author: Steve Cornelius <steve.cornelius@freescale.com>
+| Date:   Mon Jun 15 16:52:59 2015 -0700
+|
+| crypto: caam - fix RNG buffer cache alignment
+|
+| The hwrng output buffers (2) are cast inside of a a struct (caam_rng_ctx)
+| allocated in one DMA-tagged region. While the kernel's heap allocator
+| should place the overall struct on a cacheline aligned boundary, the 2
+| buffers contained within may not necessarily align. Consenquently, the
+| ends of unaligned buffers may not fully flush, and if so, stale data will be
+| left behind, resulting in small repeating patterns.
+|
+| This fix aligns the buffers inside the struct.
+|
+| Note that not all of the data inside caam_rng_ctx necessarily needs to
+| be DMA-tagged, only the buffers themselves require this. However, a fix
+| would incur the expense of error-handling bloat in the case of allocation
+| failure.
+|
+| Cc: stable@vger.kernel.org
+| Signed-off-by: Steve Cornelius <steve.cornelius@freescale.com>
+| Signed-off-by: Victoria Milhoan <vicki.milhoan@freescale.com>
+| Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+---------------------------------------------------------------------
+
+instead we will use just dma_alloc()
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- commands/stddev.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ drivers/crypto/caam/caamrng.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/commands/stddev.c b/commands/stddev.c
-index 318d05741..93da2c739 100644
---- a/commands/stddev.c
-+++ b/commands/stddev.c
-@@ -17,6 +17,7 @@
+diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
+index aabad0416..31a92731d 100644
+--- a/drivers/crypto/caam/caamrng.c
++++ b/drivers/crypto/caam/caamrng.c
+@@ -55,7 +55,7 @@
  
- #include <common.h>
- #include <init.h>
-+#include <stdlib.h>
+ /* Buffer, its dma address and lock */
+ struct buf_data {
+-	u8 buf[RN_BUF_SIZE];
++	u8 *buf;
+ 	dma_addr_t addr;
+ 	u32 hw_desc[DESC_JOB_O_LEN];
+ #define BUF_NOT_EMPTY 0
+@@ -218,6 +218,8 @@ static int caam_init_buf(struct caam_rng_ctx *ctx, int buf_id)
+ 	struct buf_data *bd = &ctx->bufs[buf_id];
+ 	int err;
  
- static ssize_t zero_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
- {
-@@ -100,3 +101,31 @@ static int null_init(void)
- }
- 
- device_initcall(null_init);
++	bd->buf = dma_alloc(RN_BUF_SIZE);
 +
-+static ssize_t prng_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
-+{
-+	get_random_bytes(buf, count);
-+	return count;
-+}
-+
-+static struct file_operations prngops = {
-+	.read  = prng_read,
-+	.lseek = dev_lseek_default,
-+};
-+
-+static int prng_init(void)
-+{
-+	struct cdev *cdev;
-+
-+	cdev = xzalloc(sizeof (*cdev));
-+
-+	cdev->name = "prng";
-+	cdev->flags = DEVFS_IS_CHARACTER_DEV;
-+	cdev->ops = &prngops;
-+
-+	devfs_create(cdev);
-+
-+	return 0;
-+}
-+
-+device_initcall(prng_init);
+ 	err = rng_create_job_desc(ctx, buf_id);
+ 	if (err)
+ 		return err;
 -- 
 2.11.0
 
