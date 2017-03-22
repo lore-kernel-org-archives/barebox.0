@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x241.google.com ([2a00:1450:400c:c09::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqcMH-00013U-OW
- for barebox@lists.infradead.org; Wed, 22 Mar 2017 09:15:16 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 22 Mar 2017 10:14:38 +0100
-Message-Id: <20170322091439.18187-7-o.rempel@pengutronix.de>
-In-Reply-To: <20170322091439.18187-1-o.rempel@pengutronix.de>
-References: <20170322091439.18187-1-o.rempel@pengutronix.de>
+ id 1cqnw0-0006ht-Ag
+ for barebox@lists.infradead.org; Wed, 22 Mar 2017 21:36:50 +0000
+Received: by mail-wm0-x241.google.com with SMTP id x124so13090058wmf.3
+ for <barebox@lists.infradead.org>; Wed, 22 Mar 2017 14:36:27 -0700 (PDT)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Thu, 23 Mar 2017 00:36:15 +0300
+Message-Id: <20170322213615.24527-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v8 6/7] common: password: make use of get_crypto_bytes
+Subject: [PATCH] usb: uhci-hcd: fix uhci_alloc_int_td()
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-get_random_bytes is providing prng, if we have HWRNG we should be
-able to use it over get_crypto_bytes
-
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- common/password.c | 6 +++++-
+ drivers/usb/host/uhci-hcd.c | 6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/common/password.c b/common/password.c
-index d52b746f0..74d328f4b 100644
---- a/common/password.c
-+++ b/common/password.c
-@@ -365,7 +365,11 @@ int set_env_passwd(unsigned char* passwd, size_t length)
- 		char *salt = passwd_sum;
- 		int keylen = PBKDF2_LENGTH - PBKDF2_SALT_LEN;
+diff --git a/drivers/usb/host/uhci-hcd.c b/drivers/usb/host/uhci-hcd.c
+index 9ad4644e8..04d167ee3 100644
+--- a/drivers/usb/host/uhci-hcd.c
++++ b/drivers/usb/host/uhci-hcd.c
+@@ -554,8 +554,12 @@ static int submit_bulk_msg(struct usb_device *dev, unsigned long pipe,
+  */
+ static struct uhci_td *uhci_alloc_int_td(struct uhci_priv *uhci)
+ {
+-	return &uhci->tmp_int_td[0];
++	int i;
  
--		get_random_bytes(passwd_sum, PBKDF2_SALT_LEN);
-+		ret = get_crypto_bytes(passwd_sum, PBKDF2_SALT_LEN);
-+		if (ret) {
-+			pr_err("Can't get random numbers\n");
-+			return ret;
-+		}
++	for (i = 0; i < USB_MAX_TEMP_INT_TD; i++)
++		if (uhci->tmp_int_td[i].dev_ptr == 0)
++			return &uhci->tmp_int_td[i];
++	return NULL;
+ }
  
- 		ret = pkcs5_pbkdf2_hmac_sha1(passwd, length, salt,
- 				PBKDF2_SALT_LEN, PBKDF2_COUNT, keylen, key);
+ /*
 -- 
 2.11.0
 
