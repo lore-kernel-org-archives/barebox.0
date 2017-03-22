@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqbrj-0002CF-66
- for barebox@lists.infradead.org; Wed, 22 Mar 2017 08:43:39 +0000
+ id 1cqbrj-0002Fz-6K
+ for barebox@lists.infradead.org; Wed, 22 Mar 2017 08:43:38 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 22 Mar 2017 09:43:02 +0100
-Message-Id: <20170322084306.16726-4-o.rempel@pengutronix.de>
+Date: Wed, 22 Mar 2017 09:43:05 +0100
+Message-Id: <20170322084306.16726-7-o.rempel@pengutronix.de>
 In-Reply-To: <20170322084306.16726-1-o.rempel@pengutronix.de>
 References: <20170322084306.16726-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,116 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v7 3/7] caamrng: port to hwrng framework
+Subject: [PATCH v7 6/7] common: password: make use of get_crypto_bytes
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
+get_random_bytes is providing prng, if we have HWRNG we should be
+able to use it over get_crypto_bytes
+
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/crypto/caam/Kconfig   |  1 +
- drivers/crypto/caam/caamrng.c | 40 ++++++++++++----------------------------
- 2 files changed, 13 insertions(+), 28 deletions(-)
+ common/password.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/caam/Kconfig b/drivers/crypto/caam/Kconfig
-index cf05d1c07..2ab509d11 100644
---- a/drivers/crypto/caam/Kconfig
-+++ b/drivers/crypto/caam/Kconfig
-@@ -29,6 +29,7 @@ config CRYPTO_DEV_FSL_CAAM_RINGSIZE
- config CRYPTO_DEV_FSL_CAAM_RNG
- 	bool "Register caam RNG device"
- 	depends on CRYPTO_DEV_FSL_CAAM
-+	depends on HWRNG
- 	default y
- 	help
- 	  Selecting this will register the SEC4 hardware rng.
-diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
-index 0fef171a2..aabad0416 100644
---- a/drivers/crypto/caam/caamrng.c
-+++ b/drivers/crypto/caam/caamrng.c
-@@ -35,6 +35,7 @@
- #include <driver.h>
- #include <init.h>
- #include <linux/spinlock.h>
-+#include <linux/hw_random.h>
+diff --git a/common/password.c b/common/password.c
+index d52b746f0..74d328f4b 100644
+--- a/common/password.c
++++ b/common/password.c
+@@ -365,7 +365,11 @@ int set_env_passwd(unsigned char* passwd, size_t length)
+ 		char *salt = passwd_sum;
+ 		int keylen = PBKDF2_LENGTH - PBKDF2_SALT_LEN;
  
- #include "regs.h"
- #include "intern.h"
-@@ -71,7 +72,7 @@ struct caam_rng_ctx {
- 	unsigned int cur_buf_idx;
- 	int current_buf;
- 	struct buf_data bufs[2];
--	struct cdev cdev;
-+	struct hwrng rng;
- };
+-		get_random_bytes(passwd_sum, PBKDF2_SALT_LEN);
++		ret = get_crypto_bytes(passwd_sum, PBKDF2_SALT_LEN);
++		if (ret) {
++			pr_err("Can't get random numbers\n");
++			return ret;
++		}
  
- static struct caam_rng_ctx *rng_ctx;
-@@ -116,8 +117,9 @@ static inline int submit_job(struct caam_rng_ctx *ctx, int to_current)
- 	return err;
- }
- 
--static int caam_read(struct caam_rng_ctx *ctx, void *data, size_t max, bool wait)
-+static int caam_read(struct hwrng *rng, void *data, size_t max, bool wait)
- {
-+	struct caam_rng_ctx *ctx = container_of(rng, struct caam_rng_ctx, rng);
- 	struct buf_data *bd = &ctx->bufs[ctx->current_buf];
- 	int next_buf_idx, copied_idx;
- 	int err;
-@@ -162,7 +164,7 @@ static int caam_read(struct caam_rng_ctx *ctx, void *data, size_t max, bool wait
- 	dev_dbg(ctx->jrdev, "switched to buffer %d\n", ctx->current_buf);
- 
- 	/* since there already is some data read, don't wait */
--	return copied_idx + caam_read(ctx, data + copied_idx,
-+	return copied_idx + caam_read(rng, data + copied_idx,
- 				      max - copied_idx, false);
- }
- 
-@@ -248,29 +250,6 @@ static int caam_init_rng(struct caam_rng_ctx *ctx, struct device_d *jrdev)
- 	return 0;
- }
- 
--static ssize_t random_read(struct cdev *cdev, void *buf, size_t count,
--			   loff_t offset, ulong flags)
--{
--	struct caam_rng_ctx *ctx = container_of(cdev, struct caam_rng_ctx, cdev);
--
--	return caam_read(ctx, buf, count, true);
--}
--
--static struct file_operations randomops = {
--	.read  = random_read,
--	.lseek = dev_lseek_default,
--};
--
--static int caam_init_devrandom(struct caam_rng_ctx *ctx, struct device_d *dev)
--{
--	ctx->cdev.name = "hwrng";
--	ctx->cdev.flags = DEVFS_IS_CHARACTER_DEV;
--	ctx->cdev.ops = &randomops;
--	ctx->cdev.dev = dev;
--
--	return devfs_create(&ctx->cdev);
--}
--
- int caam_rng_probe(struct device_d *dev, struct device_d *jrdev)
- {
- 	int err;
-@@ -281,9 +260,14 @@ int caam_rng_probe(struct device_d *dev, struct device_d *jrdev)
- 	if (err)
- 		return err;
- 
--	err = caam_init_devrandom(rng_ctx, dev);
--	if (err)
-+	rng_ctx->rng.name = dev->name;
-+	rng_ctx->rng.read = caam_read;
-+
-+	err = hwrng_register(dev, &rng_ctx->rng);
-+	if (err) {
-+		dev_err(dev, "rng-caam registering failed (%d)\n", err);
- 		return err;
-+	}
- 
- 	dev_info(dev, "registering rng-caam\n");
- 
+ 		ret = pkcs5_pbkdf2_hmac_sha1(passwd, length, salt,
+ 				PBKDF2_SALT_LEN, PBKDF2_COUNT, keylen, key);
 -- 
 2.11.0
 
