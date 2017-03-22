@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cqbrj-0002Ep-6F
- for barebox@lists.infradead.org; Wed, 22 Mar 2017 08:43:38 +0000
+ id 1cqbrj-0002B6-64
+ for barebox@lists.infradead.org; Wed, 22 Mar 2017 08:43:39 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 22 Mar 2017 09:43:04 +0100
-Message-Id: <20170322084306.16726-6-o.rempel@pengutronix.de>
+Date: Wed, 22 Mar 2017 09:43:01 +0100
+Message-Id: <20170322084306.16726-3-o.rempel@pengutronix.de>
 In-Reply-To: <20170322084306.16726-1-o.rempel@pengutronix.de>
 References: <20170322084306.16726-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,67 +21,131 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v7 5/7] crypto: caam - fix RNG buffer cache alignment
+Subject: [PATCH v7 2/7] lib: random: add get_crypto_bytes interface and use
+ HWRNG if posssible
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-this is alternate version of linux fix:
----------------------------------------------------------------------
-| commit 412c98c1bef65fe7589f1300e93735d96130307c
-| Author: Steve Cornelius <steve.cornelius@freescale.com>
-| Date:   Mon Jun 15 16:52:59 2015 -0700
-|
-| crypto: caam - fix RNG buffer cache alignment
-|
-| The hwrng output buffers (2) are cast inside of a a struct (caam_rng_ctx)
-| allocated in one DMA-tagged region. While the kernel's heap allocator
-| should place the overall struct on a cacheline aligned boundary, the 2
-| buffers contained within may not necessarily align. Consenquently, the
-| ends of unaligned buffers may not fully flush, and if so, stale data will be
-| left behind, resulting in small repeating patterns.
-|
-| This fix aligns the buffers inside the struct.
-|
-| Note that not all of the data inside caam_rng_ctx necessarily needs to
-| be DMA-tagged, only the buffers themselves require this. However, a fix
-| would incur the expense of error-handling bloat in the case of allocation
-| failure.
-|
-| Cc: stable@vger.kernel.org
-| Signed-off-by: Steve Cornelius <steve.cornelius@freescale.com>
-| Signed-off-by: Victoria Milhoan <vicki.milhoan@freescale.com>
-| Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
----------------------------------------------------------------------
-
-instead we will use just dma_alloc()
+For crypto applications we need to use some thing else as PRNG.
+So provide get_crypto_bytes() and use HWRNG as main source.
+PRNG is allowed as fallback if user decided to configure it so.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/crypto/caam/caamrng.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/stdlib.h |  1 +
+ lib/Kconfig      |  9 +++++++++
+ lib/random.c     | 56 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 66 insertions(+)
 
-diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
-index aabad0416..31a92731d 100644
---- a/drivers/crypto/caam/caamrng.c
-+++ b/drivers/crypto/caam/caamrng.c
-@@ -55,7 +55,7 @@
+diff --git a/include/stdlib.h b/include/stdlib.h
+index f3185069f..ee3f22996 100644
+--- a/include/stdlib.h
++++ b/include/stdlib.h
+@@ -13,6 +13,7 @@ void srand(unsigned int seed);
  
- /* Buffer, its dma address and lock */
- struct buf_data {
--	u8 buf[RN_BUF_SIZE];
-+	u8 *buf;
- 	dma_addr_t addr;
- 	u32 hw_desc[DESC_JOB_O_LEN];
- #define BUF_NOT_EMPTY 0
-@@ -218,6 +218,8 @@ static int caam_init_buf(struct caam_rng_ctx *ctx, int buf_id)
- 	struct buf_data *bd = &ctx->bufs[buf_id];
- 	int err;
+ /* fill a buffer with pseudo-random data */
+ void get_random_bytes(void *buf, int len);
++int get_crypto_bytes(void *buf, int len);
  
-+	bd->buf = dma_alloc(RN_BUF_SIZE);
+ static inline u32 random32(void)
+ {
+diff --git a/lib/Kconfig b/lib/Kconfig
+index f9f25bdef..c16511c05 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -66,6 +66,15 @@ config RATP
+ 	  transferring packets over serial links described in RFC916. This implementation
+ 	  is used for controlling barebox over serial ports.
+ 
++config ALLOW_PRNG_FALLBACK
++	bool "Allow fallback to PRNG if HWRNG not available."
++	help
++	  WARNING: it is not secure!!
 +
- 	err = rng_create_job_desc(ctx, buf_id);
- 	if (err)
- 		return err;
++	  get_crypto_bytes() users like cmd_password relay on HWRNG. If HWRNG is not
++	  available and this option is disabled, cmd_password will fail.
++	  Enable it on your own risk.
++
+ source lib/gui/Kconfig
+ 
+ source lib/fonts/Kconfig
+diff --git a/lib/random.c b/lib/random.c
+index 210fea994..1cd8166bf 100644
+--- a/lib/random.c
++++ b/lib/random.c
+@@ -1,5 +1,6 @@
+ #include <common.h>
+ #include <stdlib.h>
++#include <linux/hw_random.h>
+ 
+ static unsigned int random_seed;
+ 
+@@ -18,6 +19,11 @@ void srand(unsigned int seed)
+ 	random_seed = seed;
+ }
+ 
++/**
++ * get_random_bytes - get pseudo random numbers.
++ * This interface can be good enough to generate MAC address
++ * or use for NAND test.
++ */
+ void get_random_bytes(void *_buf, int len)
+ {
+ 	char *buf = _buf;
+@@ -25,3 +31,53 @@ void get_random_bytes(void *_buf, int len)
+ 	while (len--)
+ 		*buf++ = rand() % 256;
+ }
++
++/**
++ * get_crypto_bytes - get random numbers suitable for cryptographic needs.
++ */
++static int _get_crypto_bytes(void *_buf, int len)
++{
++	struct hwrng *rng;
++	u8 *buf = _buf;
++
++	if (!IS_ENABLED(CONFIG_HWRNG))
++		return -ENOENT;
++
++	rng = hwrng_get_first();
++	if (IS_ERR(rng))
++		return PTR_ERR(rng);
++
++	while (len) {
++		int bytes = hwrng_get_data(rng, buf, len, true);
++		if (!bytes)
++			return -ENOMEDIUM;
++
++		if (bytes < 0)
++			return bytes;
++
++		len -= bytes;
++		buf = buf + bytes;
++	}
++
++	return 0;
++}
++
++int get_crypto_bytes(void *buf, int len)
++{
++	int err;
++
++	err = _get_crypto_bytes(buf, len);
++	if (!err)
++		return 0;
++
++	if (!IS_ENABLED(CONFIG_ALLOW_PRNG_FALLBACK)) {
++		pr_err("error: no HWRNG available!\n");
++		return err;
++	}
++
++	pr_warn("warning: falling back to Pseudo RNG source!\n");
++
++	get_random_bytes(buf, len);
++
++	return 0;
++}
 -- 
 2.11.0
 
