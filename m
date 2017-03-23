@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cr2gm-0003wL-S9
- for barebox@lists.infradead.org; Thu, 23 Mar 2017 13:22:06 +0000
+ id 1cr2gm-0003wM-SA
+ for barebox@lists.infradead.org; Thu, 23 Mar 2017 13:22:07 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 23 Mar 2017 14:21:41 +0100
-Message-Id: <20170323132142.28871-1-s.hauer@pengutronix.de>
+Date: Thu, 23 Mar 2017 14:21:42 +0100
+Message-Id: <20170323132142.28871-2-s.hauer@pengutronix.de>
+In-Reply-To: <20170323132142.28871-1-s.hauer@pengutronix.de>
+References: <20170323132142.28871-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,39 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] state: bucket_cached: Fix reading pages which need cleanup
+Subject: [PATCH 2/2] state: bucket_circular: -EUCLEAN means data could be read
 To: Barebox List <barebox@lists.infradead.org>
 
-When the raw device returns -EUCLEAN we have to return
-successfully to the upper layer, otherwise it will discard the
-data.
+-EUCLEAN returned from state_mtd_peb_read() means that the
+data shall still be used. This fixes initialization of buckets
+which need cleanup
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/state/backend_bucket_cached.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ common/state/backend_bucket_circular.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/state/backend_bucket_cached.c b/common/state/backend_bucket_cached.c
-index 781ac2debd..ba0af7f373 100644
---- a/common/state/backend_bucket_cached.c
-+++ b/common/state/backend_bucket_cached.c
-@@ -52,12 +52,12 @@ static int state_backend_bucket_cache_fill(
- 	int ret;
+diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
+index d8504e035c..9cb9dce2ac 100644
+--- a/common/state/backend_bucket_circular.c
++++ b/common/state/backend_bucket_circular.c
+@@ -390,7 +390,7 @@ static int state_backend_bucket_circular_init(
  
- 	ret = cache->raw->read(cache->raw, &cache->data, &cache->data_len);
--	if (ret == -EUCLEAN)
-+	if (ret == -EUCLEAN) {
- 		cache->force_write = true;
--	else if (ret)
--		return ret;
-+		ret = 0;
-+	}
+ 		ret = state_mtd_peb_read(circ, buf, sub_offset,
+ 					 circ->writesize);
+-		if (ret)
++		if (ret && ret != -EUCLEAN)
+ 			return ret;
  
--	return 0;
-+	return ret;
- }
- 
- static int state_backend_bucket_cache_read(struct state_backend_storage_bucket *bucket,
+ 		ret = mtd_buf_all_ff(buf, circ->writesize);
 -- 
 2.11.0
 
