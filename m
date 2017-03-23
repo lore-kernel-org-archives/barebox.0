@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cr2jG-0005Ea-P2
- for barebox@lists.infradead.org; Thu, 23 Mar 2017 13:24:44 +0000
-Received: by mail-pf0-x242.google.com with SMTP id n11so20579641pfg.2
- for <barebox@lists.infradead.org>; Thu, 23 Mar 2017 06:24:20 -0700 (PDT)
+ id 1cr2jJ-0005Ee-J2
+ for barebox@lists.infradead.org; Thu, 23 Mar 2017 13:24:46 +0000
+Received: by mail-pg0-x242.google.com with SMTP id g2so36232053pge.2
+ for <barebox@lists.infradead.org>; Thu, 23 Mar 2017 06:24:21 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 23 Mar 2017 06:23:50 -0700
-Message-Id: <20170323132358.8539-7-andrew.smirnov@gmail.com>
+Date: Thu, 23 Mar 2017 06:23:51 -0700
+Message-Id: <20170323132358.8539-8-andrew.smirnov@gmail.com>
 In-Reply-To: <20170323132358.8539-1-andrew.smirnov@gmail.com>
 References: <20170323132358.8539-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,27 +23,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/14] at91: Enable PINCTRL for SOC_AT91SAM9
+Subject: [PATCH 07/14] at91sam9x5ek: Configure LEDs in DT
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-at91/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boards/at91sam9x5ek/init.c     | 27 ---------------------------
+ arch/arm/configs/at91sam9x5ek_defconfig |  1 +
+ 2 files changed, 1 insertion(+), 27 deletions(-)
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 28f66ac..0b77653 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -44,6 +44,7 @@ config SOC_AT91SAM9
- 	select COMMON_CLK_OF_PROVIDER
- 	select AT91SAM9_SMC
- 	select CLOCKSOURCE_ATMEL_PIT
-+	select PINCTRL
+diff --git a/arch/arm/boards/at91sam9x5ek/init.c b/arch/arm/boards/at91sam9x5ek/init.c
+index 068897a..85f20a9 100644
+--- a/arch/arm/boards/at91sam9x5ek/init.c
++++ b/arch/arm/boards/at91sam9x5ek/init.c
+@@ -260,32 +260,6 @@ static void ek_add_device_usb(void)
+ static void ek_add_device_usb(void) {}
+ #endif
  
- config SOC_SAMA5
- 	bool
+-struct gpio_led leds[] = {
+-	{
+-		.gpio	= AT91_PIN_PB18,
+-		.active_low	= 1,
+-		.led	= {
+-			.name = "d1",
+-		},
+-	}, {
+-		.gpio	= AT91_PIN_PD21,
+-		.led	= {
+-			.name = "d2",
+-		},
+-	},
+-};
+-
+-static void __init ek_add_led(void)
+-{
+-	int i;
+-
+-	for (i = 0; i < ARRAY_SIZE(leds); i++) {
+-		at91_set_gpio_output(leds[i].gpio, leds[i].active_low);
+-		led_gpio_register(&leds[i]);
+-	}
+-	led_set_trigger(LED_TRIGGER_HEARTBEAT, &leds[1].led);
+-}
+-
+ static void ek_add_device_w1(void)
+ {
+ 	at91_set_gpio_input(w1_pdata.pin, 0);
+@@ -303,7 +277,6 @@ static int at91sam9x5ek_devices_init(void)
+ 	ek_add_device_spi();
+ 	ek_add_device_mci();
+ 	ek_add_device_usb();
+-	ek_add_led();
+ 	ek_add_device_i2c();
+ 	ek_add_device_lcdc();
+ 
+diff --git a/arch/arm/configs/at91sam9x5ek_defconfig b/arch/arm/configs/at91sam9x5ek_defconfig
+index 0691145..dd42755 100644
+--- a/arch/arm/configs/at91sam9x5ek_defconfig
++++ b/arch/arm/configs/at91sam9x5ek_defconfig
+@@ -90,3 +90,4 @@ CONFIG_FS_TFTP=y
+ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_WRITE=y
+ CONFIG_FS_FAT_LFN=y
++CONFIG_LED_GPIO_OF=y
 -- 
 2.9.3
 
