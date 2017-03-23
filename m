@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cr2hA-0004IQ-JH
- for barebox@lists.infradead.org; Thu, 23 Mar 2017 13:22:30 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 23 Mar 2017 14:22:05 +0100
-Message-Id: <20170323132206.29164-1-s.hauer@pengutronix.de>
+ id 1cr2jD-0005EP-Mp
+ for barebox@lists.infradead.org; Thu, 23 Mar 2017 13:24:37 +0000
+Received: by mail-pg0-x241.google.com with SMTP id 81so28193565pgh.3
+ for <barebox@lists.infradead.org>; Thu, 23 Mar 2017 06:24:15 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu, 23 Mar 2017 06:23:46 -0700
+Message-Id: <20170323132358.8539-3-andrew.smirnov@gmail.com>
+In-Reply-To: <20170323132358.8539-1-andrew.smirnov@gmail.com>
+References: <20170323132358.8539-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,34 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] video: ipu: convert "failed to get modes" message to
- dev_dbg
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 02/14] at91sam9x5ek: Add CONFIG_KALLSYMS to defconfig
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-When no monitor is connected the it's normal for some outputs
-that no modes can be found. Convert dev_err to dev_dbg to decrease
-the visibility of this message.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/video/imx-ipu-v3/ipufb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/configs/at91sam9x5ek_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/video/imx-ipu-v3/ipufb.c b/drivers/video/imx-ipu-v3/ipufb.c
-index 343f9e5578..4781c45098 100644
---- a/drivers/video/imx-ipu-v3/ipufb.c
-+++ b/drivers/video/imx-ipu-v3/ipufb.c
-@@ -334,7 +334,7 @@ static int ipufb_probe(struct device_d *dev)
- 
- 		ret = vpl_ioctl(&fbi->vpl, 2 + fbi->dino, VPL_GET_VIDEOMODES, &info->modes);
- 		if (ret) {
--			dev_err(fbi->dev, "failed to get modes: %s\n", strerror(-ret));
-+			dev_dbg(fbi->dev, "failed to get modes: %s\n", strerror(-ret));
- 			return ret;
- 		}
- 
+diff --git a/arch/arm/configs/at91sam9x5ek_defconfig b/arch/arm/configs/at91sam9x5ek_defconfig
+index 76ee3d9..d6f18b2 100644
+--- a/arch/arm/configs/at91sam9x5ek_defconfig
++++ b/arch/arm/configs/at91sam9x5ek_defconfig
+@@ -8,6 +8,7 @@ CONFIG_MMU=y
+ CONFIG_MALLOC_SIZE=0xa00000
+ CONFIG_EXPERIMENTAL=y
+ CONFIG_MALLOC_TLSF=y
++CONFIG_KALLSYMS=y
+ CONFIG_RELOCATABLE=y
+ CONFIG_PROMPT="9G20-EK:"
+ CONFIG_GLOB=y
 -- 
-2.11.0
+2.9.3
 
 
 _______________________________________________
