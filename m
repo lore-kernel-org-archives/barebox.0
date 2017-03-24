@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cr7mJ-0002DF-Do
- for barebox@lists.infradead.org; Thu, 23 Mar 2017 18:48:09 +0000
-Date: Thu, 23 Mar 2017 19:47:42 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170323184742.k2wspb2n3li75kvu@pengutronix.de>
-References: <aa01e3d6-5a0b-9c65-4af9-21f0fac12f4c@eurekelettronica.it>
- <1490282153.29056.39.camel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1490282153.29056.39.camel@pengutronix.de>
+ id 1crG5P-0004pc-UJ
+ for barebox@lists.infradead.org; Fri, 24 Mar 2017 03:40:25 +0000
+Received: by mail-lf0-x244.google.com with SMTP id n78so228911lfi.3
+ for <barebox@lists.infradead.org>; Thu, 23 Mar 2017 20:40:02 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri, 24 Mar 2017 06:39:54 +0300
+Message-Id: <20170324033954.2364-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,42 +16,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Information regarding iMX6 QuadPlus and iMX6 DualLite
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org, gianluca <gianlucarenzi@eurekelettronica.it>
+Subject: [PATCH] net: phy: mdio-gpio.c: fix "no previous prototype" warning
+To: barebox@lists.infradead.org
 
-Hi,
+The patch fixes this compiler's warning:
 
-On Thu, Mar 23, 2017 at 04:15:53PM +0100, Lucas Stach wrote:
-> Hi,
-> 
-> Am Donnerstag, den 23.03.2017, 16:04 +0100 schrieb gianluca:
-> > But I do not found any switch between choosing one Soc or another.
-> > Where is done the startup entry?
-> 
-> If you want a single binary, you need build a 2 stage barebox. First
-> stage needs to be loaded into SRAM, then you can look at which board you
-> are running and do the specific DRAM setup. Then you can load the bigger
-> 2nd stage into DRAM, where you again need to look at the board you are
-> running at and select the correct devicetree for barebox to use.
+drivers/net/phy/mdio-gpio.c:48:24: warning: no previous prototype
+        for 'mdio_gpio_of_get_info' [-Wmissing-prototypes]
+ struct mdio_gpio_info *mdio_gpio_of_get_info(struct device_d *dev)
+                        ^
 
-For an example how this can be done look at the wandboard support:
-arch/arm/boards/technexion-wandboard/lowlevel.c
-The wandboard doesn't have QuadPLus support, but the principle is the
-same. It comes with different device trees and DRAMs. Both are selected
-depending on the SoC type.
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/net/phy/mdio-gpio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
+diff --git a/drivers/net/phy/mdio-gpio.c b/drivers/net/phy/mdio-gpio.c
+index a839f2dee..a846fb28e 100644
+--- a/drivers/net/phy/mdio-gpio.c
++++ b/drivers/net/phy/mdio-gpio.c
+@@ -45,7 +45,7 @@ struct mdio_gpio_info {
+ 	int mdc_active_low, mdio_active_low, mdo_active_low;
+ };
+ 
+-struct mdio_gpio_info *mdio_gpio_of_get_info(struct device_d *dev)
++static struct mdio_gpio_info *mdio_gpio_of_get_info(struct device_d *dev)
+ {
+ 	int ret;
+ 	enum of_gpio_flags flags;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
