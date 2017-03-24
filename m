@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1crLCK-0003ZI-9Y
- for barebox@lists.infradead.org; Fri, 24 Mar 2017 09:07:53 +0000
+ id 1crMLt-0000Ry-He
+ for barebox@lists.infradead.org; Fri, 24 Mar 2017 10:21:51 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Fri, 24 Mar 2017 10:07:24 +0100
-Message-Id: <20170324090725.22192-1-o.rempel@pengutronix.de>
+Date: Fri, 24 Mar 2017 11:21:22 +0100
+Message-Id: <20170324102123.9564-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,11 +19,11 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 1/2] usb: gadget: start usbgadget automatically
+Subject: [PATCH v1 1/2] usb: gadget: start usbgadget automatically
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-... if glocal variable configured to do this.
+... if global variable configured to do it.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
