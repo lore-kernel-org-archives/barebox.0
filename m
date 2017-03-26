@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 11.mo3.mail-out.ovh.net ([87.98.184.158])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cry5C-00051L-MK
- for barebox@lists.infradead.org; Sun, 26 Mar 2017 02:39:10 +0000
+ id 1cry5C-00051G-ML
+ for barebox@lists.infradead.org; Sun, 26 Mar 2017 02:39:11 +0000
 Received: from player758.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with ESMTP id 87DE0B9B09
- for <barebox@lists.infradead.org>; Sun, 26 Mar 2017 04:38:44 +0200 (CEST)
+ by mo3.mail-out.ovh.net (Postfix) with ESMTP id 51301B9683
+ for <barebox@lists.infradead.org>; Sun, 26 Mar 2017 04:38:42 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 26 Mar 2017 04:44:55 +0200
-Message-Id: <1490496304-30850-4-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1490496304-30850-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 26 Mar 2017 04:44:52 +0200
+Message-Id: <1490496304-30850-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20170325083155.GA14076@mail.ovh.net>
 References: <20170325083155.GA14076@mail.ovh.net>
- <1490496304-30850-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,89 +24,327 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/13] boot: invert the secure boot forcing support
+Subject: [PATCH 01/13] bootm: move open to image_handler
 To: barebox@lists.infradead.org
-
-Add HAS_SECURE_BOOT as we will add other image format that support secure boot
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/Kconfig | 12 ++++++++----
- common/bootm.c |  6 +++---
- 2 files changed, 11 insertions(+), 7 deletions(-)
+ arch/arm/lib/bootm.c               |  2 +
+ arch/blackfin/lib/blackfin_linux.c |  1 +
+ arch/nios2/lib/bootm.c             |  1 +
+ arch/ppc/lib/ppclinux.c            |  1 +
+ common/bootm.c                     | 79 ++++++++++++--------------------------
+ common/image-fit.c                 | 14 +++++++
+ common/misc.c                      |  1 +
+ common/uimage.c                    | 32 +++++++++++++++
+ include/bootm.h                    |  1 +
+ include/image-fit.h                |  1 +
+ include/image.h                    |  2 +
+ 11 files changed, 80 insertions(+), 55 deletions(-)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index f7ff04664..895814ee9 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -21,6 +21,9 @@ config HAS_KALLSYMS
- config HAS_MODULES
- 	bool
+diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+index 8068a53be..204344f87 100644
+--- a/arch/arm/lib/bootm.c
++++ b/arch/arm/lib/bootm.c
+@@ -217,6 +217,7 @@ static int do_bootm_linux(struct image_data *data)
  
-+config HAS_SECURE_BOOT
-+	bool
-+
- config HAS_CACHE
- 	bool
- 	help
-@@ -624,6 +627,7 @@ config BOOTM_FITIMAGE_SIGNATURE
- 	prompt "support verifying signed FIT images"
- 	depends on BOOTM_FITIMAGE
- 	select FITIMAGE_SIGNATURE
-+	select HAS_SECURE_BOOT
- 	help
- 	  Support verifying signed FIT images. This requires FIT images
- 	  as described in:
-@@ -631,14 +635,14 @@ config BOOTM_FITIMAGE_SIGNATURE
- 	  Additionally the barebox device tree needs a /signature node with the
- 	  public key with which the image has been signed.
+ static struct image_handler uimage_handler = {
+ 	.name = "ARM Linux uImage",
++	.open = uimage_bootm_open,
+ 	.bootm = do_bootm_linux,
+ 	.filetype = filetype_uimage,
+ 	.ih_os = IH_OS_LINUX,
+@@ -579,6 +580,7 @@ BAREBOX_MAGICVAR(aimage_noverwrite_tags, "Disable overwrite of the tags addr wit
  
--config BOOTM_FORCE_SIGNED_IMAGES
-+config BOOT_FORCE_SIGNED_IMAGES
- 	bool
- 	prompt "Force booting of signed images"
--	depends on BOOTM_FITIMAGE_SIGNATURE
-+	depends on HAS_SECURE_BOOT
- 	help
- 	  With this option enabled only signed images can be booted, unsigned images
--	  are refused to boot. Effectively this means only FIT images can be booted
--	  since they are the only supported image type that support signing.
-+	  are refused to boot. Effectively this means only Signed images can
-+	  be booted.
+ static struct image_handler arm_fit_handler = {
+         .name = "FIT image",
++	.open = fit_bootm_open,
+         .bootm = do_bootm_linux,
+         .filetype = filetype_oftree,
+ };
+diff --git a/arch/blackfin/lib/blackfin_linux.c b/arch/blackfin/lib/blackfin_linux.c
+index 5ebd284d1..27002eadb 100644
+--- a/arch/blackfin/lib/blackfin_linux.c
++++ b/arch/blackfin/lib/blackfin_linux.c
+@@ -68,6 +68,7 @@ static int do_bootm_linux(struct image_data *idata)
  
- config BLSPEC
- 	depends on BLOCK
+ static struct image_handler handler = {
+ 	.name = "Blackfin Linux",
++	.open = uimage_bootm_open,
+ 	.bootm = do_bootm_linux,
+ 	.filetype = filetype_uimage,
+ 	.ih_os = IH_OS_LINUX,
+diff --git a/arch/nios2/lib/bootm.c b/arch/nios2/lib/bootm.c
+index 34908bde3..f1b3c2624 100644
+--- a/arch/nios2/lib/bootm.c
++++ b/arch/nios2/lib/bootm.c
+@@ -69,6 +69,7 @@ static int do_bootm_linux(struct image_data *idata)
+ 
+ static struct image_handler handler = {
+ 	.name = "NIOS2 Linux",
++	.open = uimage_bootm_open,
+ 	.bootm = do_bootm_linux,
+ 	.filetype = filetype_uimage,
+ 	.ih_os = IH_OS_LINUX,
+diff --git a/arch/ppc/lib/ppclinux.c b/arch/ppc/lib/ppclinux.c
+index 3fca6b272..c882938fa 100644
+--- a/arch/ppc/lib/ppclinux.c
++++ b/arch/ppc/lib/ppclinux.c
+@@ -100,6 +100,7 @@ error:
+ 
+ static struct image_handler handler = {
+ 	.name = "PowerPC Linux",
++	.open = uimage_bootm_open,
+ 	.bootm = do_bootm_linux,
+ 	.filetype = filetype_uimage,
+ 	.ih_os = IH_OS_LINUX,
 diff --git a/common/bootm.c b/common/bootm.c
-index 53311ab1c..885b09f81 100644
+index 81625d915..64c933b3c 100644
 --- a/common/bootm.c
 +++ b/common/bootm.c
-@@ -82,7 +82,7 @@ enum bootm_verify bootm_get_verify_mode(void)
+@@ -34,7 +34,7 @@ int register_image_handler(struct image_handler *handler)
  }
  
- static const char * const bootm_verify_names[] = {
--#ifndef CONFIG_BOOTM_FORCE_SIGNED_IMAGES
-+#ifndef CONFIG_BOOT_FORCE_SIGNED_IMAGES
- 	[BOOTM_VERIFY_NONE] = "none",
- 	[BOOTM_VERIFY_HASH] = "hash",
- 	[BOOTM_VERIFY_AVAILABLE] = "available",
-@@ -531,7 +531,7 @@ int bootm_boot(struct bootm_data *bootm_data)
+ static struct image_handler *bootm_find_handler(enum filetype filetype,
+-		struct image_data *data)
++		struct image_data *data, int enforce_os)
+ {
+ 	struct image_handler *handler;
+ 
+@@ -42,9 +42,16 @@ static struct image_handler *bootm_find_handler(enum filetype filetype,
+ 		if (filetype != filetype_uimage &&
+ 				handler->filetype == filetype)
+ 			return handler;
+-		if  (filetype == filetype_uimage &&
+-				handler->ih_os == data->os->header.ih_os)
+-			return handler;
++		if (filetype == filetype_uimage) {
++			/*
++			 * we can take the first one as open is the same
++			 * not matter the OS
++			 */
++			if (enforce_os && handler->ih_os == data->os->header.ih_os)
++				return handler;
++			else
++				return handler;
++		}
+ 	}
+ 
+ 	return NULL;
+@@ -441,38 +448,6 @@ int bootm_get_os_size(struct image_data *data)
+ 	return -EINVAL;
+ }
+ 
+-static int bootm_open_os_uimage(struct image_data *data)
+-{
+-	int ret;
+-
+-	data->os = uimage_open(data->os_file);
+-	if (!data->os)
+-		return -EINVAL;
+-
+-	if (bootm_get_verify_mode() > BOOTM_VERIFY_NONE) {
+-		ret = uimage_verify(data->os);
+-		if (ret) {
+-			printf("Checking data crc failed with %s\n",
+-					strerror(-ret));
+-			uimage_close(data->os);
+-			return ret;
+-		}
+-	}
+-
+-	uimage_print_contents(data->os);
+-
+-	if (data->os->header.ih_arch != IH_ARCH) {
+-		printf("Unsupported Architecture 0x%x\n",
+-		       data->os->header.ih_arch);
+-		return -EINVAL;
+-	}
+-
+-	if (data->os_address == UIMAGE_SOME_ADDRESS)
+-		data->os_address = data->os->header.ih_load;
+-
+-	return 0;
+-}
+-
+ static void bootm_print_info(struct image_data *data)
+ {
+ 	if (data->os_res)
+@@ -548,6 +523,14 @@ int bootm_boot(struct bootm_data *bootm_data)
  		goto err_out;
  	}
  
--	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES)) {
-+	if (IS_ENABLED(CONFIG_BOOT_FORCE_SIGNED_IMAGES)) {
++	handler = bootm_find_handler(os_type, data, 0);
++	if (!handler) {
++		printf("no image handler found for image type %s\n",
++			file_type_to_string(os_type));
++		ret = -ENODEV;
++		goto err_out;
++	}
++
+ 	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES)) {
  		data->verify = BOOTM_VERIFY_SIGNATURE;
  
- 		/*
-@@ -635,7 +635,7 @@ static int bootm_init(void)
- 		globalvar_add_simple("bootm.initrd.loadaddr", NULL);
+@@ -565,25 +548,11 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		}
  	}
  
--	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES))
-+	if (IS_ENABLED(CONFIG_BOOT_FORCE_SIGNED_IMAGES))
- 		bootm_verify_mode = BOOTM_VERIFY_SIGNATURE;
+-	if (IS_ENABLED(CONFIG_FITIMAGE) && os_type == filetype_oftree) {
+-		struct fit_handle *fit;
+-
+-		fit = fit_open(data->os_file, data->os_part, data->verbose, data->verify);
+-		if (IS_ERR(fit)) {
+-			printf("Loading FIT image %s failed with: %s\n", data->os_file,
+-			       strerrorp(fit));
+-			ret = PTR_ERR(fit);
+-			goto err_out;
+-		}
+-
+-		data->os_fit = fit;
+-	}
+-
+-	if (os_type == filetype_uimage) {
+-		ret = bootm_open_os_uimage(data);
++	if (handler->open) {
++		ret = handler->open(data);
+ 		if (ret) {
+-			printf("Loading OS image failed with: %s\n",
+-					strerror(-ret));
++			printf("Loading OS image %s failed with: %s\n",
++					handler->name, strerror(-ret));
+ 			goto err_out;
+ 		}
+ 	}
+@@ -610,7 +579,7 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 	if (data->os_address == UIMAGE_SOME_ADDRESS)
+ 		data->os_address = UIMAGE_INVALID_ADDRESS;
  
- 	globalvar_add_simple_int("bootm.verbose", &bootm_verbosity, "%u");
+-	handler = bootm_find_handler(os_type, data);
++	handler = bootm_find_handler(os_type, data, 1);
+ 	if (!handler) {
+ 		printf("no image handler found for image type %s\n",
+ 			file_type_to_string(os_type));
+diff --git a/common/image-fit.c b/common/image-fit.c
+index 6a01c614c..5c014d66b 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -583,6 +583,19 @@ struct fit_handle *fit_open(const char *filename, const char *config, bool verbo
+ 	return ERR_PTR(ret);
+ }
+ 
++int fit_bootm_open(struct image_data *data)
++{
++	struct fit_handle *fit;
++
++	fit = fit_open(data->os_file, data->os_part, data->verbose, data->verify);
++	if (IS_ERR(fit))
++		return PTR_ERR(fit);
++
++	data->os_fit = fit;
++
++	return 0;
++}
++
+ void fit_close(struct fit_handle *handle)
+ {
+ 	if (handle->root)
+@@ -604,6 +617,7 @@ static int do_bootm_sandbox_fit(struct image_data *data)
+ 
+ static struct image_handler sandbox_fit_handler = {
+ 	.name = "FIT image",
++	.open = fit_bootm_open,
+ 	.bootm = do_bootm_sandbox_fit,
+ 	.filetype = filetype_oftree,
+ };
+diff --git a/common/misc.c b/common/misc.c
+index f0f0b808b..60acbd009 100644
+--- a/common/misc.c
++++ b/common/misc.c
+@@ -101,6 +101,7 @@ const char *strerror(int errnum)
+ 	case	EISNAM		: str = "Is a named type file"; break;
+ 	case	EREMOTEIO	: str = "Remote I/O error"; break;
+ #endif
++	case	ESECVIOLATION	: str = "Security Violation"; break;
+ 	default:
+ 		sprintf(errno_string, "error %d", errnum);
+ 		return errno_string;
+diff --git a/common/uimage.c b/common/uimage.c
+index 28a25bba2..72c868882 100644
+--- a/common/uimage.c
++++ b/common/uimage.c
+@@ -527,3 +527,35 @@ out:
+ 
+ 	return buf;
+ }
++
++int uimage_bootm_open(struct image_data *data)
++{
++	int ret;
++
++	data->os = uimage_open(data->os_file);
++	if (!data->os)
++		return -EINVAL;
++
++	if (bootm_get_verify_mode() > BOOTM_VERIFY_NONE) {
++		ret = uimage_verify(data->os);
++		if (ret) {
++			printf("Checking data crc failed with %s\n",
++					strerror(-ret));
++			uimage_close(data->os);
++			return ret;
++		}
++	}
++
++	uimage_print_contents(data->os);
++
++	if (data->os->header.ih_arch != IH_ARCH) {
++		printf("Unsupported Architecture 0x%x\n",
++		       data->os->header.ih_arch);
++		return -EINVAL;
++	}
++
++	if (data->os_address == UIMAGE_SOME_ADDRESS)
++		data->os_address = data->os->header.ih_load;
++
++	return 0;
++}
+diff --git a/include/bootm.h b/include/bootm.h
+index 6e9777a9a..1c7a145c6 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -92,6 +92,7 @@ struct image_handler {
+ 
+ 	enum filetype filetype;
+ 	int (*bootm)(struct image_data *data);
++	int (*open)(struct image_data *data);
+ };
+ 
+ int register_image_handler(struct image_handler *handle);
+diff --git a/include/image-fit.h b/include/image-fit.h
+index c49f95826..e817ebfae 100644
+--- a/include/image-fit.h
++++ b/include/image-fit.h
+@@ -38,6 +38,7 @@ struct fit_handle {
+ 	unsigned long initrd_size;
+ };
+ 
++int fit_bootm_open(struct image_data *data);
+ struct fit_handle *fit_open(const char *filename, const char *config, bool verbose,
+ 			    enum bootm_verify verify);
+ void fit_close(struct fit_handle *handle);
+diff --git a/include/image.h b/include/image.h
+index 3e75d49b8..9ed265658 100644
+--- a/include/image.h
++++ b/include/image.h
+@@ -229,6 +229,8 @@ struct uimage_handle_data {
+ 	ulong len;
+ };
+ 
++struct image_data;
++int uimage_bootm_open(struct image_data *data);
+ struct uimage_handle *uimage_open(const char *filename);
+ void uimage_close(struct uimage_handle *handle);
+ int uimage_verify(struct uimage_handle *handle);
 -- 
 2.11.0
 
