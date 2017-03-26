@@ -1,25 +1,25 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cs358-0001ZY-Ht
- for barebox@lists.infradead.org; Sun, 26 Mar 2017 07:59:25 +0000
+ id 1cs3Lx-0000MS-Ir
+ for barebox@lists.infradead.org; Sun, 26 Mar 2017 08:16:47 +0000
 Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.84_2)
- (envelope-from <mol@pengutronix.de>) id 1cs34n-0003bE-6c
- for barebox@lists.infradead.org; Sun, 26 Mar 2017 09:59:01 +0200
+ (envelope-from <mol@pengutronix.de>) id 1cs3Lc-00067b-06
+ for barebox@lists.infradead.org; Sun, 26 Mar 2017 10:16:24 +0200
 Received: from mol by pty.hi.pengutronix.de with local (Exim 4.84_2)
- (envelope-from <mol@pengutronix.de>) id 1cs34n-00041Z-0K
- for barebox@lists.infradead.org; Sun, 26 Mar 2017 09:59:01 +0200
-Date: Sun, 26 Mar 2017 09:59:00 +0200
+ (envelope-from <mol@pengutronix.de>) id 1cs3Lb-0004NA-On
+ for barebox@lists.infradead.org; Sun, 26 Mar 2017 10:16:23 +0200
+Date: Sun, 26 Mar 2017 10:16:23 +0200
 From: Michael Olbrich <m.olbrich@pengutronix.de>
-Message-ID: <20170326075900.hhdcxlywoh5p5sxm@pengutronix.de>
+Message-ID: <20170326081623.v4xvqw67x6nvx2wf@pengutronix.de>
 References: <20170325083155.GA14076@mail.ovh.net>
  <1490496304-30850-1-git-send-email-plagnioj@jcrosoft.com>
- <1490496304-30850-2-git-send-email-plagnioj@jcrosoft.com>
+ <1490496304-30850-6-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1490496304-30850-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1490496304-30850-6-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -32,120 +32,149 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 02/13] boot_verify: use a new error ESECVIOLATION
+Subject: Re: [PATCH 06/13] boot_verify: make it modifiable at start time
 To: barebox@lists.infradead.org
 
-On Sun, Mar 26, 2017 at 04:44:53AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> so we can indentify it correctly
-> 
+On Sun, Mar 26, 2017 at 04:44:57AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  common/bootm.c              |  7 ++++---
->  common/efi/efi.c            |  2 +-
->  common/image-fit.c          | 12 ++++++------
->  include/asm-generic/errno.h |  1 +
->  4 files changed, 12 insertions(+), 10 deletions(-)
+>  commands/bootm.c      |  2 +-
+>  common/boot_verify.c  | 39 +++++++++++++++++++++++++++++++++------
+>  common/bootm.c        |  2 +-
+>  include/boot_verify.h | 15 ++++++++++++---
+>  4 files changed, 47 insertions(+), 11 deletions(-)
 > 
-> diff --git a/common/bootm.c b/common/bootm.c
-> index 64c933b3c..53311ab1c 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -541,9 +541,10 @@ int bootm_boot(struct bootm_data *bootm_data)
->  		data->oftree = NULL;
->  		data->oftree_file = NULL;
->  		data->initrd_file = NULL;
-> -		if (os_type != filetype_oftree) {
-> -			printf("Signed boot and image is no FIT image, aborting\n");
-> -			ret = -EINVAL;
-> +		if (!handler->is_secure_supported) {
+> diff --git a/commands/bootm.c b/commands/bootm.c
+> index b35aaa914..cb520a1ba 100644
+> --- a/commands/bootm.c
+> +++ b/commands/bootm.c
+> @@ -64,7 +64,7 @@ static int do_bootm(int argc, char *argv[])
+>  	while ((opt = getopt(argc, argv, BOOTM_OPTS)) > 0) {
+>  		switch(opt) {
+>  		case 'c':
+> -			if (data.verify < BOOT_VERIFY_HASH)
+> +			if (data.verify > BOOT_VERIFY_HASH)
 
-is_secure_supported is introduced on the next patch, so this hunk belongs
-into that patch.
+This is very confusing without a comment. It took me a while to figure out
+that this does not actually change anything.
+I think you could change the order in the array without modifying the enum.
+Or at least comment on it in the commit message.
 
 Regards,
 Michael
 
-> +			printf("Signed boot and image %s does not support it",
-> +				handler->name);
-> +			ret = -ESECVIOLATION;
->  			goto err_out;
->  		}
->  	}
-> diff --git a/common/efi/efi.c b/common/efi/efi.c
-> index 05c58250f..19ee96411 100644
-> --- a/common/efi/efi.c
-> +++ b/common/efi/efi.c
-> @@ -244,7 +244,7 @@ int efi_errno(efi_status_t err)
->  	case EFI_TFTP_ERROR: ret = EINVAL; break;
->  	case EFI_PROTOCOL_ERROR: ret = EPROTO; break;
->  	case EFI_INCOMPATIBLE_VERSION: ret = EINVAL; break;
-> -	case EFI_SECURITY_VIOLATION: ret = EINVAL; break;
-> +	case EFI_SECURITY_VIOLATION: ret = ESECVIOLATION; break;
->  	case EFI_CRC_ERROR: ret = EINVAL; break;
->  	case EFI_END_OF_MEDIA: ret = EINVAL; break;
->  	case EFI_END_OF_FILE: ret = EINVAL; break;
-> diff --git a/common/image-fit.c b/common/image-fit.c
-> index 5c014d66b..5750199c3 100644
-> --- a/common/image-fit.c
-> +++ b/common/image-fit.c
-> @@ -353,23 +353,23 @@ static int fit_verify_hash(struct device_node *hash, const void *data, int data_
->  	value_read = of_get_property(hash, "value", &hash_len);
->  	if (!value_read) {
->  		pr_err("%s: \"value\" property not found\n", hash->full_name);
-> -		return -EINVAL;
-> +		return -ESECVIOLATION;
->  	}
+>  				data.verify = BOOT_VERIFY_HASH;
+>  			break;
+>  		case 's':
+> diff --git a/common/boot_verify.c b/common/boot_verify.c
+> index afe929e68..9cbeb7a65 100644
+> --- a/common/boot_verify.c
+> +++ b/common/boot_verify.c
+> @@ -11,22 +11,49 @@ enum boot_verify boot_get_verify_mode(void)
+>  	return boot_verify_mode;
+>  }
 >  
->  	if (of_property_read_string(hash, "algo", &algo)) {
->  		pr_err("%s: \"algo\" property not found\n", hash->full_name);
-> -		return -EINVAL;
-> +		return -ESECVIOLATION;
->  	}
+> +/* keep it for the most secure to the less */
+>  static const char * const boot_verify_names[] = {
+> -#ifndef CONFIG_BOOT_FORCE_SIGNED_IMAGES
+> -	[BOOT_VERIFY_NONE] = "none",
+> -	[BOOT_VERIFY_HASH] = "hash",
+> -	[BOOT_VERIFY_AVAILABLE] = "available",
+> -#endif
+>  	[BOOT_VERIFY_SIGNATURE] = "signature",
+> +	[BOOT_VERIFY_AVAILABLE] = "available",
+> +	[BOOT_VERIFY_HASH] = "hash",
+> +	[BOOT_VERIFY_NONE] = "none",
+>  };
 >  
->  	d = digest_alloc(algo);
->  	if (!d) {
->  		pr_err("%s: unsupported algo %s\n", hash->full_name, algo);
-> -		return -EINVAL;
-> +		return -ESECVIOLATION;
->  	}
+> +/* allow architecture to overwrite it such as EFI */
+> +static int default_is_secure_mode(void)
+> +{
+> +	if (IS_ENABLED(CONFIG_BOOT_FORCE_SIGNED_IMAGES))
+> +		return 1;
+> +
+> +	return 0;
+> +}
+> +
+> +static int (*__is_secure_mode)(void) = default_is_secure_mode;
+> +
+> +int is_secure_mode(void)
+> +{
+> +	return __is_secure_mode();
+> +}
+> +
+> +void boot_set_is_secure_mode(int (*fn)(void))
+> +{
+> +	__is_secure_mode = fn;
+> +}
+> +
+>  static int init_boot_verify(void)
+>  {
+> +	int size;
+> +
+>  	if (IS_ENABLED(CONFIG_BOOT_FORCE_SIGNED_IMAGES))
+>  		boot_verify_mode = BOOT_VERIFY_SIGNATURE;
 >  
->  	if (hash_len != digest_length(d)) {
->  		pr_err("%s: invalid hash length %d\n", hash->full_name, hash_len);
-> -		ret = -EINVAL;
-> +		ret = -ESECVIOLATION;
->  		goto err_digest_free;
->  	}
+> +	if (is_secure_mode())
+> +		size = 1;
+> +	else
+> +		size = ARRAY_SIZE(boot_verify_names);
+> +
+>  	globalvar_add_simple_enum("boot.verify", (unsigned int *)&boot_verify_mode,
+> -				  boot_verify_names, ARRAY_SIZE(boot_verify_names));
+> +				  boot_verify_names, size);
 >  
-> @@ -381,7 +381,7 @@ static int fit_verify_hash(struct device_node *hash, const void *data, int data_
+>  	return 0;
+>  }
+> diff --git a/common/bootm.c b/common/bootm.c
+> index 74202a829..1558f3c5d 100644
+> --- a/common/bootm.c
+> +++ b/common/bootm.c
+> @@ -159,7 +159,7 @@ static int bootm_open_initrd_uimage(struct image_data *data)
+>  		if (!data->initrd)
+>  			return -EINVAL;
 >  
->  	if (memcmp(value_read, value_calc, hash_len)) {
->  		pr_info("%s: hash BAD\n", hash->full_name);
-> -		ret =  -EBADMSG;
-> +		ret =  -ESECVIOLATION;
->  	} else {
->  		pr_info("%s: hash OK\n", hash->full_name);
->  		ret = 0;
-> @@ -431,7 +431,7 @@ static int fit_open_image(struct fit_handle *handle, const char *unit, const voi
->  		if (handle->verify == BOOTM_VERIFY_AVAILABLE)
->  			ret = 0;
->  		else
-> -			ret = -EINVAL;
-> +			ret = -ESECVIOLATION;
->  		for_each_child_of_node(image, hash) {
->  			if (handle->verbose)
->  				of_print_nodes(hash, 0);
-> diff --git a/include/asm-generic/errno.h b/include/asm-generic/errno.h
-> index 7d99a9537..45b2a2065 100644
-> --- a/include/asm-generic/errno.h
-> +++ b/include/asm-generic/errno.h
-> @@ -133,6 +133,7 @@
->  #define	EKEYREJECTED	129	/* Key was rejected by service */
+> -		if (boot_get_verify_mode() > BOOT_VERIFY_NONE) {
+> +		if (boot_get_verify_mode() != BOOT_VERIFY_NONE) {
+>  			ret = uimage_verify(data->initrd);
+>  			if (ret) {
+>  				printf("Checking data crc failed with %s\n",
+> diff --git a/include/boot_verify.h b/include/boot_verify.h
+> index 3a4436584..ee830bf5c 100644
+> --- a/include/boot_verify.h
+> +++ b/include/boot_verify.h
+> @@ -2,10 +2,10 @@
+>  #define __BOOT_VERIFY_H__
 >  
->  /* Should never be seen by user programs */
-> +#define ESECVIOLATION	511
->  #define ERESTARTSYS	512
->  #define ERESTARTNOINTR	513
->  #define ERESTARTNOHAND	514	/* restart if no handler.. */
+>  enum boot_verify {
+> -	BOOT_VERIFY_NONE,
+> -	BOOT_VERIFY_HASH,
+> -	BOOT_VERIFY_AVAILABLE,
+>  	BOOT_VERIFY_SIGNATURE,
+> +	BOOT_VERIFY_AVAILABLE,
+> +	BOOT_VERIFY_HASH,
+> +	BOOT_VERIFY_NONE,
+>  };
+>  
+>  #ifndef CONFIG_BOOT_VERIFY
+> @@ -13,8 +13,17 @@ static inline enum boot_verify boot_get_verify_mode(void)
+>  {
+>  	return BOOT_VERIFY_NONE;
+>  }
+> +
+> +static int inline is_secure_mode(void)
+> +{
+> +	return 0;
+> +}
+> +
+> +static void inline boot_set_is_secure_mode(int (*fn)(void)) {}
+>  #else
+>  enum boot_verify boot_get_verify_mode(void);
+> +int is_secure_mode(void);
+> +void boot_set_is_secure_mode(int (*fn)(void));
+>  #endif
+>  
+>  #endif /* __BOOT_VERIFY_H__ */
 > -- 
 > 2.11.0
 > 
