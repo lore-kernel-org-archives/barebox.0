@@ -1,24 +1,25 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cs344-0001NZ-Mh
- for barebox@lists.infradead.org; Sun, 26 Mar 2017 07:58:19 +0000
+ id 1cs358-0001ZY-Ht
+ for barebox@lists.infradead.org; Sun, 26 Mar 2017 07:59:25 +0000
 Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.84_2)
- (envelope-from <mol@pengutronix.de>) id 1cs33g-0003Xe-8V
- for barebox@lists.infradead.org; Sun, 26 Mar 2017 09:57:52 +0200
+ (envelope-from <mol@pengutronix.de>) id 1cs34n-0003bE-6c
+ for barebox@lists.infradead.org; Sun, 26 Mar 2017 09:59:01 +0200
 Received: from mol by pty.hi.pengutronix.de with local (Exim 4.84_2)
- (envelope-from <mol@pengutronix.de>) id 1cs33g-00041J-1A
- for barebox@lists.infradead.org; Sun, 26 Mar 2017 09:57:52 +0200
-Date: Sun, 26 Mar 2017 09:57:51 +0200
+ (envelope-from <mol@pengutronix.de>) id 1cs34n-00041Z-0K
+ for barebox@lists.infradead.org; Sun, 26 Mar 2017 09:59:01 +0200
+Date: Sun, 26 Mar 2017 09:59:00 +0200
 From: Michael Olbrich <m.olbrich@pengutronix.de>
-Message-ID: <20170326075751.i2b7jpo2nscpqvew@pengutronix.de>
+Message-ID: <20170326075900.hhdcxlywoh5p5sxm@pengutronix.de>
 References: <20170325083155.GA14076@mail.ovh.net>
  <1490496304-30850-1-git-send-email-plagnioj@jcrosoft.com>
+ <1490496304-30850-2-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1490496304-30850-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1490496304-30850-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,341 +32,120 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/13] bootm: move open to image_handler
+Subject: Re: [PATCH 02/13] boot_verify: use a new error ESECVIOLATION
 To: barebox@lists.infradead.org
 
-On Sun, Mar 26, 2017 at 04:44:52AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Sun, Mar 26, 2017 at 04:44:53AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> so we can indentify it correctly
+> 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  arch/arm/lib/bootm.c               |  2 +
->  arch/blackfin/lib/blackfin_linux.c |  1 +
->  arch/nios2/lib/bootm.c             |  1 +
->  arch/ppc/lib/ppclinux.c            |  1 +
->  common/bootm.c                     | 79 ++++++++++++--------------------------
->  common/image-fit.c                 | 14 +++++++
->  common/misc.c                      |  1 +
->  common/uimage.c                    | 32 +++++++++++++++
->  include/bootm.h                    |  1 +
->  include/image-fit.h                |  1 +
->  include/image.h                    |  2 +
->  11 files changed, 80 insertions(+), 55 deletions(-)
+>  common/bootm.c              |  7 ++++---
+>  common/efi/efi.c            |  2 +-
+>  common/image-fit.c          | 12 ++++++------
+>  include/asm-generic/errno.h |  1 +
+>  4 files changed, 12 insertions(+), 10 deletions(-)
 > 
-> diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-> index 8068a53be..204344f87 100644
-> --- a/arch/arm/lib/bootm.c
-> +++ b/arch/arm/lib/bootm.c
-> @@ -217,6 +217,7 @@ static int do_bootm_linux(struct image_data *data)
->  
->  static struct image_handler uimage_handler = {
->  	.name = "ARM Linux uImage",
-> +	.open = uimage_bootm_open,
->  	.bootm = do_bootm_linux,
->  	.filetype = filetype_uimage,
->  	.ih_os = IH_OS_LINUX,
-> @@ -579,6 +580,7 @@ BAREBOX_MAGICVAR(aimage_noverwrite_tags, "Disable overwrite of the tags addr wit
->  
->  static struct image_handler arm_fit_handler = {
->          .name = "FIT image",
-> +	.open = fit_bootm_open,
->          .bootm = do_bootm_linux,
->          .filetype = filetype_oftree,
->  };
-> diff --git a/arch/blackfin/lib/blackfin_linux.c b/arch/blackfin/lib/blackfin_linux.c
-> index 5ebd284d1..27002eadb 100644
-> --- a/arch/blackfin/lib/blackfin_linux.c
-> +++ b/arch/blackfin/lib/blackfin_linux.c
-> @@ -68,6 +68,7 @@ static int do_bootm_linux(struct image_data *idata)
->  
->  static struct image_handler handler = {
->  	.name = "Blackfin Linux",
-> +	.open = uimage_bootm_open,
->  	.bootm = do_bootm_linux,
->  	.filetype = filetype_uimage,
->  	.ih_os = IH_OS_LINUX,
-> diff --git a/arch/nios2/lib/bootm.c b/arch/nios2/lib/bootm.c
-> index 34908bde3..f1b3c2624 100644
-> --- a/arch/nios2/lib/bootm.c
-> +++ b/arch/nios2/lib/bootm.c
-> @@ -69,6 +69,7 @@ static int do_bootm_linux(struct image_data *idata)
->  
->  static struct image_handler handler = {
->  	.name = "NIOS2 Linux",
-> +	.open = uimage_bootm_open,
->  	.bootm = do_bootm_linux,
->  	.filetype = filetype_uimage,
->  	.ih_os = IH_OS_LINUX,
-> diff --git a/arch/ppc/lib/ppclinux.c b/arch/ppc/lib/ppclinux.c
-> index 3fca6b272..c882938fa 100644
-> --- a/arch/ppc/lib/ppclinux.c
-> +++ b/arch/ppc/lib/ppclinux.c
-> @@ -100,6 +100,7 @@ error:
->  
->  static struct image_handler handler = {
->  	.name = "PowerPC Linux",
-> +	.open = uimage_bootm_open,
->  	.bootm = do_bootm_linux,
->  	.filetype = filetype_uimage,
->  	.ih_os = IH_OS_LINUX,
 > diff --git a/common/bootm.c b/common/bootm.c
-> index 81625d915..64c933b3c 100644
+> index 64c933b3c..53311ab1c 100644
 > --- a/common/bootm.c
 > +++ b/common/bootm.c
-> @@ -34,7 +34,7 @@ int register_image_handler(struct image_handler *handler)
->  }
->  
->  static struct image_handler *bootm_find_handler(enum filetype filetype,
-> -		struct image_data *data)
-> +		struct image_data *data, int enforce_os)
->  {
->  	struct image_handler *handler;
->  
-> @@ -42,9 +42,16 @@ static struct image_handler *bootm_find_handler(enum filetype filetype,
->  		if (filetype != filetype_uimage &&
->  				handler->filetype == filetype)
->  			return handler;
-> -		if  (filetype == filetype_uimage &&
-> -				handler->ih_os == data->os->header.ih_os)
-> -			return handler;
-> +		if (filetype == filetype_uimage) {
-> +			/*
-> +			 * we can take the first one as open is the same
-> +			 * not matter the OS
-> +			 */
-> +			if (enforce_os && handler->ih_os == data->os->header.ih_os)
-> +				return handler;
-> +			else
-> +				return handler;
-> +		}
->  	}
->  
->  	return NULL;
-> @@ -441,38 +448,6 @@ int bootm_get_os_size(struct image_data *data)
->  	return -EINVAL;
->  }
->  
-> -static int bootm_open_os_uimage(struct image_data *data)
-> -{
-> -	int ret;
-> -
-> -	data->os = uimage_open(data->os_file);
-> -	if (!data->os)
-> -		return -EINVAL;
-> -
-> -	if (bootm_get_verify_mode() > BOOTM_VERIFY_NONE) {
-> -		ret = uimage_verify(data->os);
-> -		if (ret) {
-> -			printf("Checking data crc failed with %s\n",
-> -					strerror(-ret));
-> -			uimage_close(data->os);
-> -			return ret;
-> -		}
-> -	}
-> -
-> -	uimage_print_contents(data->os);
-> -
-> -	if (data->os->header.ih_arch != IH_ARCH) {
-> -		printf("Unsupported Architecture 0x%x\n",
-> -		       data->os->header.ih_arch);
-> -		return -EINVAL;
-> -	}
-> -
-> -	if (data->os_address == UIMAGE_SOME_ADDRESS)
-> -		data->os_address = data->os->header.ih_load;
-> -
-> -	return 0;
-> -}
-> -
->  static void bootm_print_info(struct image_data *data)
->  {
->  	if (data->os_res)
-> @@ -548,6 +523,14 @@ int bootm_boot(struct bootm_data *bootm_data)
->  		goto err_out;
->  	}
->  
-> +	handler = bootm_find_handler(os_type, data, 0);
-> +	if (!handler) {
-> +		printf("no image handler found for image type %s\n",
-> +			file_type_to_string(os_type));
-> +		ret = -ENODEV;
-> +		goto err_out;
-> +	}
+> @@ -541,9 +541,10 @@ int bootm_boot(struct bootm_data *bootm_data)
+>  		data->oftree = NULL;
+>  		data->oftree_file = NULL;
+>  		data->initrd_file = NULL;
+> -		if (os_type != filetype_oftree) {
+> -			printf("Signed boot and image is no FIT image, aborting\n");
+> -			ret = -EINVAL;
+> +		if (!handler->is_secure_supported) {
 
-I get that the handler needs to be found here for the open callback, but
-what's 'enforce_os' for?
-We need a handler that can start the image later anyways, so that's the
-use-case for this?
-
-> +
->  	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES)) {
->  		data->verify = BOOTM_VERIFY_SIGNATURE;
->  
-> @@ -565,25 +548,11 @@ int bootm_boot(struct bootm_data *bootm_data)
->  		}
->  	}
->  
-> -	if (IS_ENABLED(CONFIG_FITIMAGE) && os_type == filetype_oftree) {
-> -		struct fit_handle *fit;
-> -
-> -		fit = fit_open(data->os_file, data->os_part, data->verbose, data->verify);
-> -		if (IS_ERR(fit)) {
-> -			printf("Loading FIT image %s failed with: %s\n", data->os_file,
-> -			       strerrorp(fit));
-> -			ret = PTR_ERR(fit);
-> -			goto err_out;
-> -		}
-> -
-> -		data->os_fit = fit;
-> -	}
-> -
-> -	if (os_type == filetype_uimage) {
-> -		ret = bootm_open_os_uimage(data);
-> +	if (handler->open) {
-> +		ret = handler->open(data);
->  		if (ret) {
-> -			printf("Loading OS image failed with: %s\n",
-> -					strerror(-ret));
-> +			printf("Loading OS image %s failed with: %s\n",
-> +					handler->name, strerror(-ret));
->  			goto err_out;
->  		}
->  	}
-> @@ -610,7 +579,7 @@ int bootm_boot(struct bootm_data *bootm_data)
->  	if (data->os_address == UIMAGE_SOME_ADDRESS)
->  		data->os_address = UIMAGE_INVALID_ADDRESS;
->  
-> -	handler = bootm_find_handler(os_type, data);
-> +	handler = bootm_find_handler(os_type, data, 1);
->  	if (!handler) {
->  		printf("no image handler found for image type %s\n",
->  			file_type_to_string(os_type));
-> diff --git a/common/image-fit.c b/common/image-fit.c
-> index 6a01c614c..5c014d66b 100644
-> --- a/common/image-fit.c
-> +++ b/common/image-fit.c
-> @@ -583,6 +583,19 @@ struct fit_handle *fit_open(const char *filename, const char *config, bool verbo
->  	return ERR_PTR(ret);
->  }
->  
-> +int fit_bootm_open(struct image_data *data)
-> +{
-> +	struct fit_handle *fit;
-> +
-> +	fit = fit_open(data->os_file, data->os_part, data->verbose, data->verify);
-> +	if (IS_ERR(fit))
-> +		return PTR_ERR(fit);
-> +
-> +	data->os_fit = fit;
-> +
-> +	return 0;
-> +}
-> +
->  void fit_close(struct fit_handle *handle)
->  {
->  	if (handle->root)
-> @@ -604,6 +617,7 @@ static int do_bootm_sandbox_fit(struct image_data *data)
->  
->  static struct image_handler sandbox_fit_handler = {
->  	.name = "FIT image",
-> +	.open = fit_bootm_open,
->  	.bootm = do_bootm_sandbox_fit,
->  	.filetype = filetype_oftree,
->  };
-> diff --git a/common/misc.c b/common/misc.c
-> index f0f0b808b..60acbd009 100644
-> --- a/common/misc.c
-> +++ b/common/misc.c
-> @@ -101,6 +101,7 @@ const char *strerror(int errnum)
->  	case	EISNAM		: str = "Is a named type file"; break;
->  	case	EREMOTEIO	: str = "Remote I/O error"; break;
->  #endif
-> +	case	ESECVIOLATION	: str = "Security Violation"; break;
-
-ESECVIOLATION is introduced in the next patch, so this hunk should be in
-that patch.
+is_secure_supported is introduced on the next patch, so this hunk belongs
+into that patch.
 
 Regards,
 Michael
 
->  	default:
->  		sprintf(errno_string, "error %d", errnum);
->  		return errno_string;
-> diff --git a/common/uimage.c b/common/uimage.c
-> index 28a25bba2..72c868882 100644
-> --- a/common/uimage.c
-> +++ b/common/uimage.c
-> @@ -527,3 +527,35 @@ out:
+> +			printf("Signed boot and image %s does not support it",
+> +				handler->name);
+> +			ret = -ESECVIOLATION;
+>  			goto err_out;
+>  		}
+>  	}
+> diff --git a/common/efi/efi.c b/common/efi/efi.c
+> index 05c58250f..19ee96411 100644
+> --- a/common/efi/efi.c
+> +++ b/common/efi/efi.c
+> @@ -244,7 +244,7 @@ int efi_errno(efi_status_t err)
+>  	case EFI_TFTP_ERROR: ret = EINVAL; break;
+>  	case EFI_PROTOCOL_ERROR: ret = EPROTO; break;
+>  	case EFI_INCOMPATIBLE_VERSION: ret = EINVAL; break;
+> -	case EFI_SECURITY_VIOLATION: ret = EINVAL; break;
+> +	case EFI_SECURITY_VIOLATION: ret = ESECVIOLATION; break;
+>  	case EFI_CRC_ERROR: ret = EINVAL; break;
+>  	case EFI_END_OF_MEDIA: ret = EINVAL; break;
+>  	case EFI_END_OF_FILE: ret = EINVAL; break;
+> diff --git a/common/image-fit.c b/common/image-fit.c
+> index 5c014d66b..5750199c3 100644
+> --- a/common/image-fit.c
+> +++ b/common/image-fit.c
+> @@ -353,23 +353,23 @@ static int fit_verify_hash(struct device_node *hash, const void *data, int data_
+>  	value_read = of_get_property(hash, "value", &hash_len);
+>  	if (!value_read) {
+>  		pr_err("%s: \"value\" property not found\n", hash->full_name);
+> -		return -EINVAL;
+> +		return -ESECVIOLATION;
+>  	}
 >  
->  	return buf;
->  }
-> +
-> +int uimage_bootm_open(struct image_data *data)
-> +{
-> +	int ret;
-> +
-> +	data->os = uimage_open(data->os_file);
-> +	if (!data->os)
-> +		return -EINVAL;
-> +
-> +	if (bootm_get_verify_mode() > BOOTM_VERIFY_NONE) {
-> +		ret = uimage_verify(data->os);
-> +		if (ret) {
-> +			printf("Checking data crc failed with %s\n",
-> +					strerror(-ret));
-> +			uimage_close(data->os);
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	uimage_print_contents(data->os);
-> +
-> +	if (data->os->header.ih_arch != IH_ARCH) {
-> +		printf("Unsupported Architecture 0x%x\n",
-> +		       data->os->header.ih_arch);
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (data->os_address == UIMAGE_SOME_ADDRESS)
-> +		data->os_address = data->os->header.ih_load;
-> +
-> +	return 0;
-> +}
-> diff --git a/include/bootm.h b/include/bootm.h
-> index 6e9777a9a..1c7a145c6 100644
-> --- a/include/bootm.h
-> +++ b/include/bootm.h
-> @@ -92,6 +92,7 @@ struct image_handler {
+>  	if (of_property_read_string(hash, "algo", &algo)) {
+>  		pr_err("%s: \"algo\" property not found\n", hash->full_name);
+> -		return -EINVAL;
+> +		return -ESECVIOLATION;
+>  	}
 >  
->  	enum filetype filetype;
->  	int (*bootm)(struct image_data *data);
-> +	int (*open)(struct image_data *data);
->  };
+>  	d = digest_alloc(algo);
+>  	if (!d) {
+>  		pr_err("%s: unsupported algo %s\n", hash->full_name, algo);
+> -		return -EINVAL;
+> +		return -ESECVIOLATION;
+>  	}
 >  
->  int register_image_handler(struct image_handler *handle);
-> diff --git a/include/image-fit.h b/include/image-fit.h
-> index c49f95826..e817ebfae 100644
-> --- a/include/image-fit.h
-> +++ b/include/image-fit.h
-> @@ -38,6 +38,7 @@ struct fit_handle {
->  	unsigned long initrd_size;
->  };
+>  	if (hash_len != digest_length(d)) {
+>  		pr_err("%s: invalid hash length %d\n", hash->full_name, hash_len);
+> -		ret = -EINVAL;
+> +		ret = -ESECVIOLATION;
+>  		goto err_digest_free;
+>  	}
 >  
-> +int fit_bootm_open(struct image_data *data);
->  struct fit_handle *fit_open(const char *filename, const char *config, bool verbose,
->  			    enum bootm_verify verify);
->  void fit_close(struct fit_handle *handle);
-> diff --git a/include/image.h b/include/image.h
-> index 3e75d49b8..9ed265658 100644
-> --- a/include/image.h
-> +++ b/include/image.h
-> @@ -229,6 +229,8 @@ struct uimage_handle_data {
->  	ulong len;
->  };
+> @@ -381,7 +381,7 @@ static int fit_verify_hash(struct device_node *hash, const void *data, int data_
 >  
-> +struct image_data;
-> +int uimage_bootm_open(struct image_data *data);
->  struct uimage_handle *uimage_open(const char *filename);
->  void uimage_close(struct uimage_handle *handle);
->  int uimage_verify(struct uimage_handle *handle);
+>  	if (memcmp(value_read, value_calc, hash_len)) {
+>  		pr_info("%s: hash BAD\n", hash->full_name);
+> -		ret =  -EBADMSG;
+> +		ret =  -ESECVIOLATION;
+>  	} else {
+>  		pr_info("%s: hash OK\n", hash->full_name);
+>  		ret = 0;
+> @@ -431,7 +431,7 @@ static int fit_open_image(struct fit_handle *handle, const char *unit, const voi
+>  		if (handle->verify == BOOTM_VERIFY_AVAILABLE)
+>  			ret = 0;
+>  		else
+> -			ret = -EINVAL;
+> +			ret = -ESECVIOLATION;
+>  		for_each_child_of_node(image, hash) {
+>  			if (handle->verbose)
+>  				of_print_nodes(hash, 0);
+> diff --git a/include/asm-generic/errno.h b/include/asm-generic/errno.h
+> index 7d99a9537..45b2a2065 100644
+> --- a/include/asm-generic/errno.h
+> +++ b/include/asm-generic/errno.h
+> @@ -133,6 +133,7 @@
+>  #define	EKEYREJECTED	129	/* Key was rejected by service */
+>  
+>  /* Should never be seen by user programs */
+> +#define ESECVIOLATION	511
+>  #define ERESTARTSYS	512
+>  #define ERESTARTNOINTR	513
+>  #define ERESTARTNOHAND	514	/* restart if no handler.. */
 > -- 
 > 2.11.0
 > 
