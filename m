@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 11.mo3.mail-out.ovh.net ([87.98.184.158])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cry5C-00051F-MM
- for barebox@lists.infradead.org; Sun, 26 Mar 2017 02:39:09 +0000
+ id 1cry5C-00051L-MK
+ for barebox@lists.infradead.org; Sun, 26 Mar 2017 02:39:10 +0000
 Received: from player758.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with ESMTP id 560FDB970E
- for <barebox@lists.infradead.org>; Sun, 26 Mar 2017 04:38:42 +0200 (CEST)
+ by mo3.mail-out.ovh.net (Postfix) with ESMTP id 87DE0B9B09
+ for <barebox@lists.infradead.org>; Sun, 26 Mar 2017 04:38:44 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 26 Mar 2017 04:44:53 +0200
-Message-Id: <1490496304-30850-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 26 Mar 2017 04:44:55 +0200
+Message-Id: <1490496304-30850-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1490496304-30850-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20170325083155.GA14076@mail.ovh.net>
  <1490496304-30850-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,112 +25,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/13] boot_verify: use a new error ESECVIOLATION
+Subject: [PATCH 04/13] boot: invert the secure boot forcing support
 To: barebox@lists.infradead.org
 
-so we can indentify it correctly
+Add HAS_SECURE_BOOT as we will add other image format that support secure boot
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/bootm.c              |  7 ++++---
- common/efi/efi.c            |  2 +-
- common/image-fit.c          | 12 ++++++------
- include/asm-generic/errno.h |  1 +
- 4 files changed, 12 insertions(+), 10 deletions(-)
+ common/Kconfig | 12 ++++++++----
+ common/bootm.c |  6 +++---
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
+diff --git a/common/Kconfig b/common/Kconfig
+index f7ff04664..895814ee9 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -21,6 +21,9 @@ config HAS_KALLSYMS
+ config HAS_MODULES
+ 	bool
+ 
++config HAS_SECURE_BOOT
++	bool
++
+ config HAS_CACHE
+ 	bool
+ 	help
+@@ -624,6 +627,7 @@ config BOOTM_FITIMAGE_SIGNATURE
+ 	prompt "support verifying signed FIT images"
+ 	depends on BOOTM_FITIMAGE
+ 	select FITIMAGE_SIGNATURE
++	select HAS_SECURE_BOOT
+ 	help
+ 	  Support verifying signed FIT images. This requires FIT images
+ 	  as described in:
+@@ -631,14 +635,14 @@ config BOOTM_FITIMAGE_SIGNATURE
+ 	  Additionally the barebox device tree needs a /signature node with the
+ 	  public key with which the image has been signed.
+ 
+-config BOOTM_FORCE_SIGNED_IMAGES
++config BOOT_FORCE_SIGNED_IMAGES
+ 	bool
+ 	prompt "Force booting of signed images"
+-	depends on BOOTM_FITIMAGE_SIGNATURE
++	depends on HAS_SECURE_BOOT
+ 	help
+ 	  With this option enabled only signed images can be booted, unsigned images
+-	  are refused to boot. Effectively this means only FIT images can be booted
+-	  since they are the only supported image type that support signing.
++	  are refused to boot. Effectively this means only Signed images can
++	  be booted.
+ 
+ config BLSPEC
+ 	depends on BLOCK
 diff --git a/common/bootm.c b/common/bootm.c
-index 64c933b3c..53311ab1c 100644
+index 53311ab1c..885b09f81 100644
 --- a/common/bootm.c
 +++ b/common/bootm.c
-@@ -541,9 +541,10 @@ int bootm_boot(struct bootm_data *bootm_data)
- 		data->oftree = NULL;
- 		data->oftree_file = NULL;
- 		data->initrd_file = NULL;
--		if (os_type != filetype_oftree) {
--			printf("Signed boot and image is no FIT image, aborting\n");
--			ret = -EINVAL;
-+		if (!handler->is_secure_supported) {
-+			printf("Signed boot and image %s does not support it",
-+				handler->name);
-+			ret = -ESECVIOLATION;
- 			goto err_out;
- 		}
- 	}
-diff --git a/common/efi/efi.c b/common/efi/efi.c
-index 05c58250f..19ee96411 100644
---- a/common/efi/efi.c
-+++ b/common/efi/efi.c
-@@ -244,7 +244,7 @@ int efi_errno(efi_status_t err)
- 	case EFI_TFTP_ERROR: ret = EINVAL; break;
- 	case EFI_PROTOCOL_ERROR: ret = EPROTO; break;
- 	case EFI_INCOMPATIBLE_VERSION: ret = EINVAL; break;
--	case EFI_SECURITY_VIOLATION: ret = EINVAL; break;
-+	case EFI_SECURITY_VIOLATION: ret = ESECVIOLATION; break;
- 	case EFI_CRC_ERROR: ret = EINVAL; break;
- 	case EFI_END_OF_MEDIA: ret = EINVAL; break;
- 	case EFI_END_OF_FILE: ret = EINVAL; break;
-diff --git a/common/image-fit.c b/common/image-fit.c
-index 5c014d66b..5750199c3 100644
---- a/common/image-fit.c
-+++ b/common/image-fit.c
-@@ -353,23 +353,23 @@ static int fit_verify_hash(struct device_node *hash, const void *data, int data_
- 	value_read = of_get_property(hash, "value", &hash_len);
- 	if (!value_read) {
- 		pr_err("%s: \"value\" property not found\n", hash->full_name);
--		return -EINVAL;
-+		return -ESECVIOLATION;
+@@ -82,7 +82,7 @@ enum bootm_verify bootm_get_verify_mode(void)
+ }
+ 
+ static const char * const bootm_verify_names[] = {
+-#ifndef CONFIG_BOOTM_FORCE_SIGNED_IMAGES
++#ifndef CONFIG_BOOT_FORCE_SIGNED_IMAGES
+ 	[BOOTM_VERIFY_NONE] = "none",
+ 	[BOOTM_VERIFY_HASH] = "hash",
+ 	[BOOTM_VERIFY_AVAILABLE] = "available",
+@@ -531,7 +531,7 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		goto err_out;
  	}
  
- 	if (of_property_read_string(hash, "algo", &algo)) {
- 		pr_err("%s: \"algo\" property not found\n", hash->full_name);
--		return -EINVAL;
-+		return -ESECVIOLATION;
+-	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES)) {
++	if (IS_ENABLED(CONFIG_BOOT_FORCE_SIGNED_IMAGES)) {
+ 		data->verify = BOOTM_VERIFY_SIGNATURE;
+ 
+ 		/*
+@@ -635,7 +635,7 @@ static int bootm_init(void)
+ 		globalvar_add_simple("bootm.initrd.loadaddr", NULL);
  	}
  
- 	d = digest_alloc(algo);
- 	if (!d) {
- 		pr_err("%s: unsupported algo %s\n", hash->full_name, algo);
--		return -EINVAL;
-+		return -ESECVIOLATION;
- 	}
+-	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES))
++	if (IS_ENABLED(CONFIG_BOOT_FORCE_SIGNED_IMAGES))
+ 		bootm_verify_mode = BOOTM_VERIFY_SIGNATURE;
  
- 	if (hash_len != digest_length(d)) {
- 		pr_err("%s: invalid hash length %d\n", hash->full_name, hash_len);
--		ret = -EINVAL;
-+		ret = -ESECVIOLATION;
- 		goto err_digest_free;
- 	}
- 
-@@ -381,7 +381,7 @@ static int fit_verify_hash(struct device_node *hash, const void *data, int data_
- 
- 	if (memcmp(value_read, value_calc, hash_len)) {
- 		pr_info("%s: hash BAD\n", hash->full_name);
--		ret =  -EBADMSG;
-+		ret =  -ESECVIOLATION;
- 	} else {
- 		pr_info("%s: hash OK\n", hash->full_name);
- 		ret = 0;
-@@ -431,7 +431,7 @@ static int fit_open_image(struct fit_handle *handle, const char *unit, const voi
- 		if (handle->verify == BOOTM_VERIFY_AVAILABLE)
- 			ret = 0;
- 		else
--			ret = -EINVAL;
-+			ret = -ESECVIOLATION;
- 		for_each_child_of_node(image, hash) {
- 			if (handle->verbose)
- 				of_print_nodes(hash, 0);
-diff --git a/include/asm-generic/errno.h b/include/asm-generic/errno.h
-index 7d99a9537..45b2a2065 100644
---- a/include/asm-generic/errno.h
-+++ b/include/asm-generic/errno.h
-@@ -133,6 +133,7 @@
- #define	EKEYREJECTED	129	/* Key was rejected by service */
- 
- /* Should never be seen by user programs */
-+#define ESECVIOLATION	511
- #define ERESTARTSYS	512
- #define ERESTARTNOINTR	513
- #define ERESTARTNOHAND	514	/* restart if no handler.. */
+ 	globalvar_add_simple_int("bootm.verbose", &bootm_verbosity, "%u");
 -- 
 2.11.0
 
