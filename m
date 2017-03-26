@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 11.mo3.mail-out.ovh.net ([87.98.184.158])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cry5C-00051H-MK
+ id 1cry5C-00051F-MM
  for barebox@lists.infradead.org; Sun, 26 Mar 2017 02:39:09 +0000
 Received: from player758.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with ESMTP id 726F1B97A9
- for <barebox@lists.infradead.org>; Sun, 26 Mar 2017 04:38:43 +0200 (CEST)
+ by mo3.mail-out.ovh.net (Postfix) with ESMTP id 560FDB970E
+ for <barebox@lists.infradead.org>; Sun, 26 Mar 2017 04:38:42 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 26 Mar 2017 04:44:54 +0200
-Message-Id: <1490496304-30850-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 26 Mar 2017 04:44:53 +0200
+Message-Id: <1490496304-30850-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1490496304-30850-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20170325083155.GA14076@mail.ovh.net>
  <1490496304-30850-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,54 +25,112 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/13] bootm: make security generic
+Subject: [PATCH 02/13] boot_verify: use a new error ESECVIOLATION
 To: barebox@lists.infradead.org
 
-so other secure format can be used
+so we can indentify it correctly
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/lib/bootm.c | 1 +
- common/image-fit.c   | 1 +
- include/bootm.h      | 1 +
- 3 files changed, 3 insertions(+)
+ common/bootm.c              |  7 ++++---
+ common/efi/efi.c            |  2 +-
+ common/image-fit.c          | 12 ++++++------
+ include/asm-generic/errno.h |  1 +
+ 4 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index 204344f87..5b90705cd 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -580,6 +580,7 @@ BAREBOX_MAGICVAR(aimage_noverwrite_tags, "Disable overwrite of the tags addr wit
- 
- static struct image_handler arm_fit_handler = {
-         .name = "FIT image",
-+	.is_secure_supported = 1,
- 	.open = fit_bootm_open,
-         .bootm = do_bootm_linux,
-         .filetype = filetype_oftree,
+diff --git a/common/bootm.c b/common/bootm.c
+index 64c933b3c..53311ab1c 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -541,9 +541,10 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		data->oftree = NULL;
+ 		data->oftree_file = NULL;
+ 		data->initrd_file = NULL;
+-		if (os_type != filetype_oftree) {
+-			printf("Signed boot and image is no FIT image, aborting\n");
+-			ret = -EINVAL;
++		if (!handler->is_secure_supported) {
++			printf("Signed boot and image %s does not support it",
++				handler->name);
++			ret = -ESECVIOLATION;
+ 			goto err_out;
+ 		}
+ 	}
+diff --git a/common/efi/efi.c b/common/efi/efi.c
+index 05c58250f..19ee96411 100644
+--- a/common/efi/efi.c
++++ b/common/efi/efi.c
+@@ -244,7 +244,7 @@ int efi_errno(efi_status_t err)
+ 	case EFI_TFTP_ERROR: ret = EINVAL; break;
+ 	case EFI_PROTOCOL_ERROR: ret = EPROTO; break;
+ 	case EFI_INCOMPATIBLE_VERSION: ret = EINVAL; break;
+-	case EFI_SECURITY_VIOLATION: ret = EINVAL; break;
++	case EFI_SECURITY_VIOLATION: ret = ESECVIOLATION; break;
+ 	case EFI_CRC_ERROR: ret = EINVAL; break;
+ 	case EFI_END_OF_MEDIA: ret = EINVAL; break;
+ 	case EFI_END_OF_FILE: ret = EINVAL; break;
 diff --git a/common/image-fit.c b/common/image-fit.c
-index 5750199c3..7563eb955 100644
+index 5c014d66b..5750199c3 100644
 --- a/common/image-fit.c
 +++ b/common/image-fit.c
-@@ -617,6 +617,7 @@ static int do_bootm_sandbox_fit(struct image_data *data)
+@@ -353,23 +353,23 @@ static int fit_verify_hash(struct device_node *hash, const void *data, int data_
+ 	value_read = of_get_property(hash, "value", &hash_len);
+ 	if (!value_read) {
+ 		pr_err("%s: \"value\" property not found\n", hash->full_name);
+-		return -EINVAL;
++		return -ESECVIOLATION;
+ 	}
  
- static struct image_handler sandbox_fit_handler = {
- 	.name = "FIT image",
-+	.is_secure_supported = 1,
- 	.open = fit_bootm_open,
- 	.bootm = do_bootm_sandbox_fit,
- 	.filetype = filetype_oftree,
-diff --git a/include/bootm.h b/include/bootm.h
-index 1c7a145c6..27c9f571e 100644
---- a/include/bootm.h
-+++ b/include/bootm.h
-@@ -88,6 +88,7 @@ struct image_handler {
+ 	if (of_property_read_string(hash, "algo", &algo)) {
+ 		pr_err("%s: \"algo\" property not found\n", hash->full_name);
+-		return -EINVAL;
++		return -ESECVIOLATION;
+ 	}
  
- 	struct list_head list;
+ 	d = digest_alloc(algo);
+ 	if (!d) {
+ 		pr_err("%s: unsupported algo %s\n", hash->full_name, algo);
+-		return -EINVAL;
++		return -ESECVIOLATION;
+ 	}
  
-+	int is_secure_supported;
- 	int ih_os;
+ 	if (hash_len != digest_length(d)) {
+ 		pr_err("%s: invalid hash length %d\n", hash->full_name, hash_len);
+-		ret = -EINVAL;
++		ret = -ESECVIOLATION;
+ 		goto err_digest_free;
+ 	}
  
- 	enum filetype filetype;
+@@ -381,7 +381,7 @@ static int fit_verify_hash(struct device_node *hash, const void *data, int data_
+ 
+ 	if (memcmp(value_read, value_calc, hash_len)) {
+ 		pr_info("%s: hash BAD\n", hash->full_name);
+-		ret =  -EBADMSG;
++		ret =  -ESECVIOLATION;
+ 	} else {
+ 		pr_info("%s: hash OK\n", hash->full_name);
+ 		ret = 0;
+@@ -431,7 +431,7 @@ static int fit_open_image(struct fit_handle *handle, const char *unit, const voi
+ 		if (handle->verify == BOOTM_VERIFY_AVAILABLE)
+ 			ret = 0;
+ 		else
+-			ret = -EINVAL;
++			ret = -ESECVIOLATION;
+ 		for_each_child_of_node(image, hash) {
+ 			if (handle->verbose)
+ 				of_print_nodes(hash, 0);
+diff --git a/include/asm-generic/errno.h b/include/asm-generic/errno.h
+index 7d99a9537..45b2a2065 100644
+--- a/include/asm-generic/errno.h
++++ b/include/asm-generic/errno.h
+@@ -133,6 +133,7 @@
+ #define	EKEYREJECTED	129	/* Key was rejected by service */
+ 
+ /* Should never be seen by user programs */
++#define ESECVIOLATION	511
+ #define ERESTARTSYS	512
+ #define ERESTARTNOINTR	513
+ #define ERESTARTNOHAND	514	/* restart if no handler.. */
 -- 
 2.11.0
 
