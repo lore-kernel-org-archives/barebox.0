@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1csNsZ-0004aA-3B
- for barebox@lists.infradead.org; Mon, 27 Mar 2017 06:11:49 +0000
-Date: Mon, 27 Mar 2017 08:11:23 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170327061123.yhvwfxnrit3os4pk@pengutronix.de>
+ id 1csUT4-0000QE-1F
+ for barebox@lists.infradead.org; Mon, 27 Mar 2017 13:13:57 +0000
+Received: from player157.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with ESMTP id 5349278565
+ for <barebox@lists.infradead.org>; Mon, 27 Mar 2017 15:13:28 +0200 (CEST)
+Mime-Version: 1.0 (Mac OS X Mail 10.2 \(3259\))
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+In-Reply-To: <20170326082322.bgy7gkj3duid4wjb@pengutronix.de>
+Date: Mon, 27 Mar 2017 19:50:44 +0800
+Message-Id: <A092B5A1-489D-4A2C-AA73-B2F5F4FBCC18@jcrosoft.com>
 References: <20170325083155.GA14076@mail.ovh.net>
  <1490496304-30850-1-git-send-email-plagnioj@jcrosoft.com>
- <1490496304-30850-9-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1490496304-30850-9-git-send-email-plagnioj@jcrosoft.com>
+ <1490496304-30850-7-git-send-email-plagnioj@jcrosoft.com>
+ <20170326082322.bgy7gkj3duid4wjb@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,121 +27,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 09/13] boot_verify: add password request support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 07/13] go: only use it if boot signature is not required
+To: Michael Olbrich <m.olbrich@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sun, Mar 26, 2017 at 04:45:00AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> This will allow to let the user enter a password before booting more safe
-> than just a 'y'
+
+> On 26 Mar 2017, at 4:23 PM, Michael Olbrich <m.olbrich@pengutronix.de> wrote:
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  common/boot_verify.c | 10 ++++++++++
->  common/password.c    | 18 ++++++++++++++++++
->  include/password.h   |  6 ++++++
->  3 files changed, 34 insertions(+)
+> On Sun, Mar 26, 2017 at 04:44:58AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+>> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > 
-> diff --git a/common/boot_verify.c b/common/boot_verify.c
-> index 07ae07e16..2faa8d56c 100644
-> --- a/common/boot_verify.c
-> +++ b/common/boot_verify.c
-> @@ -10,6 +10,7 @@
->  #include <globalvar.h>
->  #include <magicvar.h>
->  #include <init.h>
-> +#include <password.h>
->  
->  static unsigned int boot_verify_confirm_timeout = 10;
->  static enum boot_verify boot_verify_mode = BOOT_VERIFY_HASH;
-> @@ -63,6 +64,14 @@ int boot_can_start_unsigned(void)
->  
->  	printf("Are you sure you wish to run an unsigned binary\n");
->  	printf("in a secure environment?\n");
-> +	if (IS_ENABLED(CONFIG_PASSWORD)) {
-> +		printf("enter password to confirm\n");
+> Does this realy help? If someone has access to the barebox shell, then
+> there are many ways to overwrite the secure boot check.
 
-This needs to be in request_password(), otherwise you may end up
-printing this without a password ever being asked for.
+No have shell support does not mean been allow to by pass secure boot
+As you think user interaction vs script
 
-> +		ret = request_password(timeout);
-> +		if (ret != -ENOTSUPP)
-> +			return -ESECVIOLATION;
+And do not forget the boot sequence can be change by the OS (user)
 
-Shouldn't you continue when the correct password is entered?
+So we may endup to try to boot other images or boot sequence that use go
 
-> +
-> +	}
-> +
->  	printf("press y to confirm\n");
->  
->  	ret = console_countdown(timeout, CONSOLE_COUNTDOWN_ANYKEY, &c);
-> @@ -72,6 +81,7 @@ int boot_can_start_unsigned(void)
->  	return c == 'y' ? 0 : -ESECVIOLATION;
->  }
->  
-> +
->  static int init_boot_verify(void)
->  {
->  	int size;
-> diff --git a/common/password.c b/common/password.c
-> index d52b746f0..1147111cd 100644
-> --- a/common/password.c
-> +++ b/common/password.c
-> @@ -435,6 +435,24 @@ void login(void)
->  	}
->  }
->  
-> +int request_password(int timeout)
-> +{
-> +	unsigned char passwd[PASSWD_MAX_LENGTH];
-> +	int ret;
-> +
-> +	if (!is_passwd_default_enable() && !is_passwd_env_enable())
-> +		return -ENOTSUPP;
-> +
-> +	ret = password(passwd, PASSWD_MAX_LENGTH, LOGIN_MODE, timeout);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (check_passwd(passwd, ret) == 1)
-> +		return 0;
-> +
-> +	return -EINVAL;
-> +}
-> +
->  static int login_global_init(void)
->  {
->  	login_fail_command = xstrdup("boot");
-> diff --git a/include/password.h b/include/password.h
-> index 8b9961815..5e8964929 100644
-> --- a/include/password.h
-> +++ b/include/password.h
-> @@ -31,10 +31,16 @@ int set_env_passwd(unsigned char *passwd, size_t length);
->  
->  #ifdef CONFIG_PASSWORD
->  void login(void);
-> +int request_password(int timeout);
->  #else
->  static inline void login(void)
->  {
->  }
-> +
-> +static inline int request_password(int timeout)
-> +{
-> +	return 0;
-> +}
+Best Regards,
+J.
 
-You have a static inline wrapper for request_password(), why not use it
-and drop the IS_ENABLED(CONFIG_PASSWORD) above when you use it?
 
-Sascha
+> Michael
+> 
+>> ---
+>> commands/go.c | 4 ++++
+>> 1 file changed, 4 insertions(+)
+>> 
+>> diff --git a/commands/go.c b/commands/go.c
+>> index fb319b320..e0385a977 100644
+>> --- a/commands/go.c
+>> +++ b/commands/go.c
+>> @@ -26,6 +26,7 @@
+>> #include <fcntl.h>
+>> #include <linux/ctype.h>
+>> #include <errno.h>
+>> +#include <boot_verify.h>
+>> 
+>> static int do_go(int argc, char *argv[])
+>> {
+>> @@ -37,6 +38,9 @@ static int do_go(int argc, char *argv[])
+>> 	if (argc < 2)
+>> 		return COMMAND_ERROR_USAGE;
+>> 
+>> +	if (boot_get_verify_mode() < BOOT_VERIFY_AVAILABLE)
+>> +		return -ESECVIOLATION;
+>> +
+>> 	if (!isdigit(*argv[1])) {
+>> 		fd = open(argv[1], O_RDONLY);
+>> 		if (fd < 0) {
+>> -- 
+>> 2.11.0
+>> 
+>> 
+>> _______________________________________________
+>> barebox mailing list
+>> barebox@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/barebox
+>> 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
