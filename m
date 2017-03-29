@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ct83T-0001vP-Th
- for barebox@lists.infradead.org; Wed, 29 Mar 2017 07:30:09 +0000
-Date: Wed, 29 Mar 2017 09:29:46 +0200
+ id 1ct8DU-0007RQ-4V
+ for barebox@lists.infradead.org; Wed, 29 Mar 2017 07:40:30 +0000
+Date: Wed, 29 Mar 2017 09:40:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170329072946.njifngyflm5km62i@pengutronix.de>
-References: <20170324102123.9564-1-o.rempel@pengutronix.de>
+Message-ID: <20170329074006.twf75aelyncstrd5@pengutronix.de>
+References: <20170327151741.9971-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170324102123.9564-1-o.rempel@pengutronix.de>
+In-Reply-To: <20170327151741.9971-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,127 +22,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 1/2] usb: gadget: start usbgadget automatically
+Subject: Re: [PATCH v4 0/4] upstream nvmem patches
 To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Mar 24, 2017 at 11:21:22AM +0100, Oleksij Rempel wrote:
-> ... if global variable configured to do it.
+On Mon, Mar 27, 2017 at 05:17:37PM +0200, Oleksij Rempel wrote:
+> changes v1:
+>  - rebase against 2017.03.0
 > 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  drivers/usb/gadget/Kconfig     |  6 ++++
->  drivers/usb/gadget/Makefile    |  1 +
->  drivers/usb/gadget/autostart.c | 67 ++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 74 insertions(+)
->  create mode 100644 drivers/usb/gadget/autostart.c
+> changes v2:
+>  - rename nvstore to snvs_lpgpr, the actual hw name.
+>  - patch DTs to provide snvs_lpgpr device
+> 
+> changes v3:
+>  - for local review
+> 
+> changes v4:
+>  - rebase against patch: "regmap: Implement syscon_node_to_regmap()"
+>  - port to regmap
+>  - make struct nvmem_config dynamically allocatable
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
-> index eb279ae8d..dd5d4a75a 100644
-> --- a/drivers/usb/gadget/Kconfig
-> +++ b/drivers/usb/gadget/Kconfig
-> @@ -30,6 +30,12 @@ config USB_GADGET_DRIVER_PXA27X
->  	default y
->  	select USB_GADGET_DUALSPEED
->  
-> +config USB_GADGET_AUTOSTART
-> +	bool
-> +	default y
-> +	select ENVIRONMENT_VARIABLES
-> +	prompt "Automatically start usbgadget on boot"
-> +
->  comment "USB Gadget drivers"
->  
->  config USB_GADGET_DFU
-> diff --git a/drivers/usb/gadget/Makefile b/drivers/usb/gadget/Makefile
-> index 9ef594575..e74cf0266 100644
-> --- a/drivers/usb/gadget/Makefile
-> +++ b/drivers/usb/gadget/Makefile
-> @@ -1,5 +1,6 @@
->  
->  obj-$(CONFIG_USB_GADGET) += composite.o config.o usbstring.o epautoconf.o udc-core.o functions.o config.o multi.o
-> +obj-$(CONFIG_USB_GADGET_AUTOSTART) += autostart.o
->  obj-$(CONFIG_USB_GADGET_SERIAL) += u_serial.o serial.o f_serial.o f_acm.o
->  obj-$(CONFIG_USB_GADGET_DFU) += dfu.o
->  obj-$(CONFIG_USB_GADGET_FASTBOOT) += f_fastboot.o
-> diff --git a/drivers/usb/gadget/autostart.c b/drivers/usb/gadget/autostart.c
-> new file mode 100644
-> index 000000000..43c2ba23d
-> --- /dev/null
-> +++ b/drivers/usb/gadget/autostart.c
-> @@ -0,0 +1,67 @@
-> +/*
-> + * Copyright (c) 2017 Oleksij Rempel <o.rempel@pengutronix.de>, Pengutronix
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2
-> + * as published by the Free Software Foundation.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + */
-> +#include <common.h>
-> +#include <command.h>
-> +#include <errno.h>
-> +#include <malloc.h>
-> +#include <getopt.h>
-> +#include <fs.h>
-> +#include <xfuncs.h>
-> +#include <usb/usbserial.h>
-> +#include <usb/dfu.h>
-> +#include <usb/gadget-multi.h>
-> +#include <globalvar.h>
-> +#include <magicvar.h>
-> +
-> +static int autostart;
-> +static int acm;
-> +static char *fastboot_function;
-> +
-> +static int usbgadget_autostart(void)
-> +{
-> +	struct f_multi_opts opts = {};
-> +
-> +	if (!autostart)
-> +		return 0;
-> +
-> +	if (fastboot_function)
-> +		opts.fastboot_opts.files = file_list_parse(fastboot_function);
-> +
-> +	opts.create_acm = acm;
-> +
-> +	return usb_multi_register(&opts);
-> +}
-> +postenvironment_initcall(usbgadget_autostart);
-> +
-> +static int usbgadget_globalvars_init(void)
-> +{
-> +
-> +	globalvar_add_simple_bool("usbgadget.autostart", &autostart);
-> +	globalvar_add_simple_bool("usbgadget.acm", &acm);
-> +	globalvar_add_simple_string("usbgadget.fastboot_function",
-> +				    &fastboot_function);
-> +
-> +	return 0;
-> +}
-> +device_initcall(usbgadget_globalvars_init);
-> +
-> +BAREBOX_MAGICVAR_NAMED(global_usbgadget_autostart,
-> +		       global.usbgadget.autostart,
-> +		       "usbgadget: Automatically start usbgadget on boot");
-> +BAREBOX_MAGICVAR_NAMED(global_usbgadget_acm,
-> +		       global.usbgadget.acm,
-> +		       "usbgadget: Create CDC ACM function");
-> +BAREBOX_MAGICVAR_NAMED(global_usbgadget_fastboot_function,
-> +		       global.usbgadget.fastboot_function,
-> +		       "usbgadget: Create Android Fastboot function");
+> Oleksij Rempel (2):
+>   dts: arm: imx6sl: provide snvs-lpgpr device
+>   dts: arm: imx6qdl: provide snvs-lpgpr device
+> 
+> Steffen Trumtrar (2):
+>   drivers: add nvmem framework from kernel
+>   nvmem: add snvs_lpgpr for freescale imx6
+> 
+>  drivers/Kconfig                |   1 +
+>  drivers/Makefile               |   1 +
+>  drivers/nvmem/Kconfig          |  18 +
+>  drivers/nvmem/Makefile         |  10 +
+>  drivers/nvmem/core.c           | 764 +++++++++++++++++++++++++++++++++++++++++
+>  drivers/nvmem/snvs_lpgpr.c     | 115 +++++++
+>  dts/src/arm/imx6qdl.dtsi       |   6 +
+>  dts/src/arm/imx6sl.dtsi        |   6 +
+>  include/linux/nvmem-consumer.h |  94 +++++
+>  include/linux/nvmem-provider.h |  49 +++
+>  10 files changed, 1064 insertions(+)
+>  create mode 100644 drivers/nvmem/Kconfig
+>  create mode 100644 drivers/nvmem/Makefile
+>  create mode 100644 drivers/nvmem/core.c
+>  create mode 100644 drivers/nvmem/snvs_lpgpr.c
+>  create mode 100644 include/linux/nvmem-consumer.h
+>  create mode 100644 include/linux/nvmem-provider.h
+> 
 > -- 
 > 2.11.0
 > 
