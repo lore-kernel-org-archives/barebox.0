@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ct7VG-0004FN-Lc
- for barebox@lists.infradead.org; Wed, 29 Mar 2017 06:54:48 +0000
-Date: Wed, 29 Mar 2017 08:54:23 +0200
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1ct83T-0001vP-Th
+ for barebox@lists.infradead.org; Wed, 29 Mar 2017 07:30:09 +0000
+Date: Wed, 29 Mar 2017 09:29:46 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170329065423.fhehywbzpv7dk773@pengutronix.de>
-References: <20170327060647.14269-1-o.rempel@pengutronix.de>
+Message-ID: <20170329072946.njifngyflm5km62i@pengutronix.de>
+References: <20170324102123.9564-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170327060647.14269-1-o.rempel@pengutronix.de>
+In-Reply-To: <20170324102123.9564-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,81 +22,127 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] bootm: fit: support multiple configuration nodes
+Subject: Re: [PATCH v1 1/2] usb: gadget: start usbgadget automatically
 To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, Mar 27, 2017 at 08:06:47AM +0200, Oleksij Rempel wrote:
-> From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+On Fri, Mar 24, 2017 at 11:21:22AM +0100, Oleksij Rempel wrote:
+> ... if global variable configured to do it.
 > 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  common/image-fit.c | 39 +++++++++++++++++++++++++++++++++++++--
->  1 file changed, 37 insertions(+), 2 deletions(-)
-> 
-> diff --git a/common/image-fit.c b/common/image-fit.c
-> index 0536c49b1..cd2d7519a 100644
-> --- a/common/image-fit.c
-> +++ b/common/image-fit.c
-> @@ -491,6 +491,37 @@ static int fit_config_verify_signature(struct fit_handle *handle, struct device_
->  	return ret;
->  }
->  
-> +static int fit_find_compatible_unit(struct device_node *conf_node,
-> +				    const char **unit)
-> +{
-> +	struct device_node *child = NULL;
-> +	struct device_node *barebox_root;
-> +	const char *machine;
-> +	int ret;
-> +
-> +	barebox_root = of_get_root_node();
-> +	if (!barebox_root)
-> +		return -ENOSYS;
+>  drivers/usb/gadget/Kconfig     |  6 ++++
+>  drivers/usb/gadget/Makefile    |  1 +
+>  drivers/usb/gadget/autostart.c | 67 ++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 74 insertions(+)
+>  create mode 100644 drivers/usb/gadget/autostart.c
 
-Fall back to default here for non of machines?
+Applied, thanks
 
 Sascha
 
+> 
+> diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
+> index eb279ae8d..dd5d4a75a 100644
+> --- a/drivers/usb/gadget/Kconfig
+> +++ b/drivers/usb/gadget/Kconfig
+> @@ -30,6 +30,12 @@ config USB_GADGET_DRIVER_PXA27X
+>  	default y
+>  	select USB_GADGET_DUALSPEED
+>  
+> +config USB_GADGET_AUTOSTART
+> +	bool
+> +	default y
+> +	select ENVIRONMENT_VARIABLES
+> +	prompt "Automatically start usbgadget on boot"
 > +
-> +	ret = of_property_read_string(barebox_root, "compatible", &machine);
-> +	if (ret)
-> +		return -ENOENT;
+>  comment "USB Gadget drivers"
+>  
+>  config USB_GADGET_DFU
+> diff --git a/drivers/usb/gadget/Makefile b/drivers/usb/gadget/Makefile
+> index 9ef594575..e74cf0266 100644
+> --- a/drivers/usb/gadget/Makefile
+> +++ b/drivers/usb/gadget/Makefile
+> @@ -1,5 +1,6 @@
+>  
+>  obj-$(CONFIG_USB_GADGET) += composite.o config.o usbstring.o epautoconf.o udc-core.o functions.o config.o multi.o
+> +obj-$(CONFIG_USB_GADGET_AUTOSTART) += autostart.o
+>  obj-$(CONFIG_USB_GADGET_SERIAL) += u_serial.o serial.o f_serial.o f_acm.o
+>  obj-$(CONFIG_USB_GADGET_DFU) += dfu.o
+>  obj-$(CONFIG_USB_GADGET_FASTBOOT) += f_fastboot.o
+> diff --git a/drivers/usb/gadget/autostart.c b/drivers/usb/gadget/autostart.c
+> new file mode 100644
+> index 000000000..43c2ba23d
+> --- /dev/null
+> +++ b/drivers/usb/gadget/autostart.c
+> @@ -0,0 +1,67 @@
+> +/*
+> + * Copyright (c) 2017 Oleksij Rempel <o.rempel@pengutronix.de>, Pengutronix
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2
+> + * as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + */
+> +#include <common.h>
+> +#include <command.h>
+> +#include <errno.h>
+> +#include <malloc.h>
+> +#include <getopt.h>
+> +#include <fs.h>
+> +#include <xfuncs.h>
+> +#include <usb/usbserial.h>
+> +#include <usb/dfu.h>
+> +#include <usb/gadget-multi.h>
+> +#include <globalvar.h>
+> +#include <magicvar.h>
 > +
-> +	for_each_child_of_node(conf_node, child) {
-> +		if (of_device_is_compatible(child, machine)) {
-> +			*unit = child->name;
-> +			pr_info("matching unit '%s' found\n", *unit);
-> +			return 0;
-> +		}
-> +	}
+> +static int autostart;
+> +static int acm;
+> +static char *fastboot_function;
 > +
-> +	pr_info("No match found. Trying default.\n");
-> +	if (of_property_read_string(conf_node, "default", unit) == 0)
+> +static int usbgadget_autostart(void)
+> +{
+> +	struct f_multi_opts opts = {};
+> +
+> +	if (!autostart)
 > +		return 0;
 > +
-> +	return -ENOENT;
-> +}
+> +	if (fastboot_function)
+> +		opts.fastboot_opts.files = file_list_parse(fastboot_function);
 > +
->  static int fit_open_configuration(struct fit_handle *handle, const char *name)
->  {
->  	struct device_node *conf_node = NULL;
-> @@ -503,8 +534,12 @@ static int fit_open_configuration(struct fit_handle *handle, const char *name)
->  
->  	if (name) {
->  		unit = name;
-> -	} else if (of_property_read_string(conf_node, "default", &unit)) {
-> -		unit = "conf@1";
-> +	} else {
-> +		ret = fit_find_compatible_unit(conf_node, &unit);
-> +		if (ret) {
-> +			pr_info("Couldn't get a valid configuration. Aborting.\n");
-> +			return ret;
-> +		}
->  	}
->  
->  	conf_node = of_get_child_by_name(conf_node, unit);
+> +	opts.create_acm = acm;
+> +
+> +	return usb_multi_register(&opts);
+> +}
+> +postenvironment_initcall(usbgadget_autostart);
+> +
+> +static int usbgadget_globalvars_init(void)
+> +{
+> +
+> +	globalvar_add_simple_bool("usbgadget.autostart", &autostart);
+> +	globalvar_add_simple_bool("usbgadget.acm", &acm);
+> +	globalvar_add_simple_string("usbgadget.fastboot_function",
+> +				    &fastboot_function);
+> +
+> +	return 0;
+> +}
+> +device_initcall(usbgadget_globalvars_init);
+> +
+> +BAREBOX_MAGICVAR_NAMED(global_usbgadget_autostart,
+> +		       global.usbgadget.autostart,
+> +		       "usbgadget: Automatically start usbgadget on boot");
+> +BAREBOX_MAGICVAR_NAMED(global_usbgadget_acm,
+> +		       global.usbgadget.acm,
+> +		       "usbgadget: Create CDC ACM function");
+> +BAREBOX_MAGICVAR_NAMED(global_usbgadget_fastboot_function,
+> +		       global.usbgadget.fastboot_function,
+> +		       "usbgadget: Create Android Fastboot function");
 > -- 
 > 2.11.0
 > 
