@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ct7Km-0006T0-0Z
- for barebox@lists.infradead.org; Wed, 29 Mar 2017 06:43:58 +0000
-Date: Wed, 29 Mar 2017 08:43:32 +0200
+ id 1ct7RW-00022a-08
+ for barebox@lists.infradead.org; Wed, 29 Mar 2017 06:50:56 +0000
+Date: Wed, 29 Mar 2017 08:50:32 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170329064332.k64rsjt2o6y5rp3l@pengutronix.de>
-References: <1490518497-12690-1-git-send-email-akurz@blala.de>
+Message-ID: <20170329065032.qzav23kufhpoyffr@pengutronix.de>
+References: <1490537832-14971-1-git-send-email-akurz@blala.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1490518497-12690-1-git-send-email-akurz@blala.de>
+In-Reply-To: <1490537832-14971-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM Kindle3 defconfig: add clock manipulation command
+Subject: Re: [PATCH] console: console_get_by_name: do not strcmp NULL
 To: Alexander Kurz <akurz@blala.de>
 Cc: barebox@lists.infradead.org
 
-On Sun, Mar 26, 2017 at 10:54:57AM +0200, Alexander Kurz wrote:
-> The clock manipulation command provides usefull information for a
-> potential kernel developper. Just add it for kindle3 defconfig.
+On Sun, Mar 26, 2017 at 04:17:12PM +0200, Alexander Kurz wrote:
+> console_get_by_name iterates through the console_list using strcmp to mach
+> a given console by name. console_list may contain entries with devname = NULL,
+> inserted there e.g. by KEYBOARD_GPIO. In worst case loady -t usbserial
+> will crash barebox when strcmp hits 0 NULL devname:
+> > unable to handle NULL pointer dereference at address 0x00000000
+> 
+> Let console_get_by_name just ignore the anonymous consoles.
 > 
 > Signed-off-by: Alexander Kurz <akurz@blala.de>
 > ---
->  arch/arm/configs/kindle3_defconfig | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
 
-Applied, thanks
+Applied to master, thanks
 
 Sascha
 
+>  common/console_common.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/arm/configs/kindle3_defconfig b/arch/arm/configs/kindle3_defconfig
-> index 0b7088e..a4e08df 100644
-> --- a/arch/arm/configs/kindle3_defconfig
-> +++ b/arch/arm/configs/kindle3_defconfig
-> @@ -1,8 +1,8 @@
->  CONFIG_ARCH_IMX=y
->  CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x30000
->  CONFIG_MACH_KINDLE3=y
-> -CONFIG_ARCH_IMX_USBLOADER=y
->  CONFIG_IMX_IIM=y
-> +CONFIG_ARCH_IMX_USBLOADER=y
->  CONFIG_AEABI=y
->  CONFIG_ARM_BOARD_APPEND_ATAG=y
->  CONFIG_ARM_BOARD_PREPEND_ATAG=y
-> @@ -46,6 +46,7 @@ CONFIG_CMD_TIMEOUT=y
->  CONFIG_CMD_CRC=y
->  CONFIG_CMD_CRC_CMP=y
->  CONFIG_CMD_MEMTEST=y
-> +CONFIG_CMD_CLK=y
->  CONFIG_CMD_GPIO=y
->  CONFIG_CMD_I2C=y
->  CONFIG_CMD_SPI=y
+> diff --git a/common/console_common.c b/common/console_common.c
+> index 2e5869f..d051458 100644
+> --- a/common/console_common.c
+> +++ b/common/console_common.c
+> @@ -246,7 +246,7 @@ struct console_device *console_get_by_name(const char *name)
+>  	struct console_device *cdev;
+>  
+>  	for_each_console(cdev) {
+> -		if (!strcmp(cdev->devname, name))
+> +		if (cdev->devname && !strcmp(cdev->devname, name))
+>  			return cdev;
+>  	}
+>  
 > -- 
 > 2.1.4
 > 
