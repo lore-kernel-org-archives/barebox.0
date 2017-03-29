@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1csnD8-000119-Qu
- for barebox@lists.infradead.org; Tue, 28 Mar 2017 09:14:45 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue, 28 Mar 2017 11:14:16 +0200
-Message-Id: <20170328091416.16715-1-o.rempel@pengutronix.de>
+ id 1ct7BY-0002Rz-9P
+ for barebox@lists.infradead.org; Wed, 29 Mar 2017 06:34:27 +0000
+Date: Wed, 29 Mar 2017 08:33:58 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170329063358.biyccahufx6ybfu3@pengutronix.de>
+References: <20170323132358.8539-1-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170323132358.8539-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,76 +18,91 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1] i.MX: hab: fix compile after define renames
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH 00/14] AT91, at91sam9x5ek updates (part III/III)
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Some defines was renamed by this patch:
-| commit 75e98198234ce18ab15f581cf7b52aaf0b46d792
-| i.MX: Add fusemap for VF610
+On Thu, Mar 23, 2017 at 06:23:44AM -0700, Andrey Smirnov wrote:
+> Hi everone,
+> 
+> As discussed in original thread [1], here is a last batch of AT91
+> related patches. The patches gathered in this set are all related to
+> converting of at91sam9x5ek board to multi-image build process and DT.
+> 
+> With exception of a small fix to original "at91sam9x5ek: Convert to
+> mult-image build" and a number of comment/commit message rewordings
+> the code should mostly be the same as it was in original submission
+> [1]
+> 
+> Any feedback is appreciated.
 
-which was not included in my initial patch. So fix it.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/hab/hab.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Applied, thanks
 
-diff --git a/drivers/hab/hab.c b/drivers/hab/hab.c
-index 56d49e8e3..512ff7ecf 100644
---- a/drivers/hab/hab.c
-+++ b/drivers/hab/hab.c
-@@ -126,7 +126,7 @@ static int imx_hab_read_srk_hash_ocotp(u8 *__srk)
- 	int ret, i;
- 
- 	for (i = 0; i < SRK_HASH_SIZE / sizeof(uint32_t); i++) {
--		ret = imx_ocotp_read_field(IMX6_OCOTP_SRK_HASH(i), &srk[i]);
-+		ret = imx_ocotp_read_field(OCOTP_SRK_HASH(i), &srk[i]);
- 		if (ret < 0)
- 			return ret;
- 	}
-@@ -140,13 +140,13 @@ static int imx_hab_write_srk_hash_ocotp(const u8 *__newsrk, unsigned flags)
- 	int ret, i;
- 
- 	for (i = 0; i < SRK_HASH_SIZE / sizeof(uint32_t); i++) {
--		ret = imx_ocotp_write_field(IMX6_OCOTP_SRK_HASH(i), newsrk[i]);
-+		ret = imx_ocotp_write_field(OCOTP_SRK_HASH(i), newsrk[i]);
- 		if (ret < 0)
- 			return ret;
- 	}
- 
- 	if (flags & IMX_SRK_HASH_WRITE_LOCK) {
--		ret = imx_ocotp_write_field(IMX6_OCOTP_SRK_LOCK, 1);
-+		ret = imx_ocotp_write_field(OCOTP_SRK_LOCK, 1);
- 		if (ret < 0)
- 			return ret;
- 	}
-@@ -161,7 +161,7 @@ static int imx_hab_permanent_write_enable_ocotp(int enable)
- 
- static int imx_hab_lockdown_device_ocotp(void)
- {
--	return imx_ocotp_write_field(IMX6_OCOTP_SEC_CONFIG, 1);
-+	return imx_ocotp_write_field(OCOTP_SEC_CONFIG_1, 1);
- }
- 
- static int imx_hab_device_locked_down_ocotp(void)
-@@ -169,7 +169,7 @@ static int imx_hab_device_locked_down_ocotp(void)
- 	int ret;
- 	unsigned int v;
- 
--	ret = imx_ocotp_read_field(IMX6_OCOTP_SEC_CONFIG, &v);
-+	ret = imx_ocotp_read_field(OCOTP_SEC_CONFIG_1, &v);
- 	if (ret < 0)
- 		return ret;
- 
+Sascha
+
+> 
+> Thank you,
+> Andrey Smirnov
+> 
+> [1] http://lists.infradead.org/pipermail/barebox/2017-March/029337.html
+> 
+> Andrey Smirnov (14):
+>   at91sam9x5ek: Convert to mult-image build
+>   at91sam9x5ek: Add CONFIG_KALLSYMS to defconfig
+>   at91sam9x5ek: Add preliminary device tree support
+>   at91sam9x5ek: Convert to use DT clock tree
+>   at91sam9x5ek: Remove at91sam9x5ek_mem_init()
+>   at91: Enable PINCTRL for SOC_AT91SAM9
+>   at91sam9x5ek: Configure LEDs in DT
+>   at91sam9x5ek: Configure I2C via DT
+>   at91sam9x5ek: Configure MMC in DT
+>   at91sam9x5ek: Configure SPI in DT
+>   at91sam9x5ek: Configure 1-wire in DT
+>   at91sam9x5ek: Configure USB in DT
+>   at91sam9x5ek: Configure Ethernet in DT
+>   at91sam9x5ek: Configure NAND in DT
+> 
+>  arch/arm/Kconfig                          |   1 -
+>  arch/arm/boards/at91sam9x5ek/Makefile     |   1 +
+>  arch/arm/boards/at91sam9x5ek/hw_version.c |   6 +-
+>  arch/arm/boards/at91sam9x5ek/hw_version.h |   1 -
+>  arch/arm/boards/at91sam9x5ek/init.c       | 226 +++-------------------
+>  arch/arm/boards/at91sam9x5ek/lowlevel.c   |  21 ++
+>  arch/arm/configs/at91sam9x5ek_defconfig   |   8 +-
+>  arch/arm/dts/Makefile                     |   2 +
+>  arch/arm/dts/at91sam9x5ek.dts             |  70 +++++++
+>  arch/arm/mach-at91/Kconfig                |  46 +++--
+>  arch/arm/mach-at91/Makefile               |   2 +-
+>  arch/arm/mach-at91/at91sam9x5.c           | 311 ------------------------------
+>  arch/arm/mach-at91/setup.c                |   4 +-
+>  images/Makefile                           |   1 +
+>  images/Makefile.at91                      |   7 +
+>  15 files changed, 176 insertions(+), 531 deletions(-)
+>  create mode 100644 arch/arm/boards/at91sam9x5ek/lowlevel.c
+>  create mode 100644 arch/arm/dts/at91sam9x5ek.dts
+>  delete mode 100644 arch/arm/mach-at91/at91sam9x5.c
+>  create mode 100644 images/Makefile.at91
+> 
+> -- 
+> 2.9.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.11.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
