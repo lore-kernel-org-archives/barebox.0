@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ct8DU-0007RQ-4V
- for barebox@lists.infradead.org; Wed, 29 Mar 2017 07:40:30 +0000
-Date: Wed, 29 Mar 2017 09:40:06 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170329074006.twf75aelyncstrd5@pengutronix.de>
-References: <20170327151741.9971-1-o.rempel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170327151741.9971-1-o.rempel@pengutronix.de>
+ id 1ct8WE-0006Zc-Oh
+ for barebox@lists.infradead.org; Wed, 29 Mar 2017 07:59:53 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Wed, 29 Mar 2017 09:59:27 +0200
+Message-Id: <20170329075927.1131-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,76 +14,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4 0/4] upstream nvmem patches
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v3] bootm: fit: support multiple configuration nodes
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-On Mon, Mar 27, 2017 at 05:17:37PM +0200, Oleksij Rempel wrote:
-> changes v1:
->  - rebase against 2017.03.0
-> 
-> changes v2:
->  - rename nvstore to snvs_lpgpr, the actual hw name.
->  - patch DTs to provide snvs_lpgpr device
-> 
-> changes v3:
->  - for local review
-> 
-> changes v4:
->  - rebase against patch: "regmap: Implement syscon_node_to_regmap()"
->  - port to regmap
->  - make struct nvmem_config dynamically allocatable
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Applied, thanks
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ common/image-fit.c | 40 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 38 insertions(+), 2 deletions(-)
 
-Sascha
-
-> 
-> Oleksij Rempel (2):
->   dts: arm: imx6sl: provide snvs-lpgpr device
->   dts: arm: imx6qdl: provide snvs-lpgpr device
-> 
-> Steffen Trumtrar (2):
->   drivers: add nvmem framework from kernel
->   nvmem: add snvs_lpgpr for freescale imx6
-> 
->  drivers/Kconfig                |   1 +
->  drivers/Makefile               |   1 +
->  drivers/nvmem/Kconfig          |  18 +
->  drivers/nvmem/Makefile         |  10 +
->  drivers/nvmem/core.c           | 764 +++++++++++++++++++++++++++++++++++++++++
->  drivers/nvmem/snvs_lpgpr.c     | 115 +++++++
->  dts/src/arm/imx6qdl.dtsi       |   6 +
->  dts/src/arm/imx6sl.dtsi        |   6 +
->  include/linux/nvmem-consumer.h |  94 +++++
->  include/linux/nvmem-provider.h |  49 +++
->  10 files changed, 1064 insertions(+)
->  create mode 100644 drivers/nvmem/Kconfig
->  create mode 100644 drivers/nvmem/Makefile
->  create mode 100644 drivers/nvmem/core.c
->  create mode 100644 drivers/nvmem/snvs_lpgpr.c
->  create mode 100644 include/linux/nvmem-consumer.h
->  create mode 100644 include/linux/nvmem-provider.h
-> 
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/common/image-fit.c b/common/image-fit.c
+index 0536c49b1..81433e6ec 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -491,6 +491,38 @@ static int fit_config_verify_signature(struct fit_handle *handle, struct device_
+ 	return ret;
+ }
+ 
++static int fit_find_compatible_unit(struct device_node *conf_node,
++				    const char **unit)
++{
++	struct device_node *child = NULL;
++	struct device_node *barebox_root;
++	const char *machine;
++	int ret;
++
++	barebox_root = of_get_root_node();
++	if (!barebox_root)
++		goto default_unit;
++
++	ret = of_property_read_string(barebox_root, "compatible", &machine);
++	if (ret)
++		return -ENOENT;
++
++	for_each_child_of_node(conf_node, child) {
++		if (of_device_is_compatible(child, machine)) {
++			*unit = child->name;
++			pr_info("matching unit '%s' found\n", *unit);
++			return 0;
++		}
++	}
++
++default_unit:
++	pr_info("No match found. Trying default.\n");
++	if (of_property_read_string(conf_node, "default", unit) == 0)
++		return 0;
++
++	return -ENOENT;
++}
++
+ static int fit_open_configuration(struct fit_handle *handle, const char *name)
+ {
+ 	struct device_node *conf_node = NULL;
+@@ -503,8 +535,12 @@ static int fit_open_configuration(struct fit_handle *handle, const char *name)
+ 
+ 	if (name) {
+ 		unit = name;
+-	} else if (of_property_read_string(conf_node, "default", &unit)) {
+-		unit = "conf@1";
++	} else {
++		ret = fit_find_compatible_unit(conf_node, &unit);
++		if (ret) {
++			pr_info("Couldn't get a valid configuration. Aborting.\n");
++			return ret;
++		}
+ 	}
+ 
+ 	conf_node = of_get_child_by_name(conf_node, unit);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
