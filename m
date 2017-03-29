@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ct7BY-0002Rz-9P
- for barebox@lists.infradead.org; Wed, 29 Mar 2017 06:34:27 +0000
-Date: Wed, 29 Mar 2017 08:33:58 +0200
+ id 1ct7K8-0006LS-4B
+ for barebox@lists.infradead.org; Wed, 29 Mar 2017 06:43:17 +0000
+Date: Wed, 29 Mar 2017 08:42:53 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170329063358.biyccahufx6ybfu3@pengutronix.de>
-References: <20170323132358.8539-1-andrew.smirnov@gmail.com>
+Message-ID: <20170329064253.4rsnyzsfuaxzlm42@pengutronix.de>
+References: <1490384122-13960-1-git-send-email-franck.jullien@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170323132358.8539-1-andrew.smirnov@gmail.com>
+In-Reply-To: <1490384122-13960-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,81 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/14] AT91, at91sam9x5ek updates (part III/III)
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH] openrisc: fix call to restart_handler_register_fn
+To: Franck Jullien <franck.jullien@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Mar 23, 2017 at 06:23:44AM -0700, Andrey Smirnov wrote:
-> Hi everone,
+On Fri, Mar 24, 2017 at 08:35:22PM +0100, Franck Jullien wrote:
+> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+> ---
+>  arch/openrisc/cpu/cpu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> As discussed in original thread [1], here is a last batch of AT91
-> related patches. The patches gathered in this set are all related to
-> converting of at91sam9x5ek board to multi-image build process and DT.
-> 
-> With exception of a small fix to original "at91sam9x5ek: Convert to
-> mult-image build" and a number of comment/commit message rewordings
-> the code should mostly be the same as it was in original submission
-> [1]
-> 
-> Any feedback is appreciated.
+> diff --git a/arch/openrisc/cpu/cpu.c b/arch/openrisc/cpu/cpu.c
+> index d52b021..e7f9445 100644
+> --- a/arch/openrisc/cpu/cpu.c
+> +++ b/arch/openrisc/cpu/cpu.c
+> @@ -41,6 +41,6 @@ static void __noreturn openrisc_restart_cpu(struct restart_handler *rst)
+>  
+>  static int restart_register_feature(void)
+>  {
+> -	restart_handler_register_fn(openrisc_restart_cpu, NULL, RESET_SCOPE_CPU);
+> +	return restart_handler_register_fn(openrisc_restart_cpu);
+>  }
 
-
-Applied, thanks
+Applied, thanks. It seems I have disabled my openrisc autobuild at some
+point. Just re-enabled it. Normally such build failures shouldn't
+happen.
 
 Sascha
-
-> 
-> Thank you,
-> Andrey Smirnov
-> 
-> [1] http://lists.infradead.org/pipermail/barebox/2017-March/029337.html
-> 
-> Andrey Smirnov (14):
->   at91sam9x5ek: Convert to mult-image build
->   at91sam9x5ek: Add CONFIG_KALLSYMS to defconfig
->   at91sam9x5ek: Add preliminary device tree support
->   at91sam9x5ek: Convert to use DT clock tree
->   at91sam9x5ek: Remove at91sam9x5ek_mem_init()
->   at91: Enable PINCTRL for SOC_AT91SAM9
->   at91sam9x5ek: Configure LEDs in DT
->   at91sam9x5ek: Configure I2C via DT
->   at91sam9x5ek: Configure MMC in DT
->   at91sam9x5ek: Configure SPI in DT
->   at91sam9x5ek: Configure 1-wire in DT
->   at91sam9x5ek: Configure USB in DT
->   at91sam9x5ek: Configure Ethernet in DT
->   at91sam9x5ek: Configure NAND in DT
-> 
->  arch/arm/Kconfig                          |   1 -
->  arch/arm/boards/at91sam9x5ek/Makefile     |   1 +
->  arch/arm/boards/at91sam9x5ek/hw_version.c |   6 +-
->  arch/arm/boards/at91sam9x5ek/hw_version.h |   1 -
->  arch/arm/boards/at91sam9x5ek/init.c       | 226 +++-------------------
->  arch/arm/boards/at91sam9x5ek/lowlevel.c   |  21 ++
->  arch/arm/configs/at91sam9x5ek_defconfig   |   8 +-
->  arch/arm/dts/Makefile                     |   2 +
->  arch/arm/dts/at91sam9x5ek.dts             |  70 +++++++
->  arch/arm/mach-at91/Kconfig                |  46 +++--
->  arch/arm/mach-at91/Makefile               |   2 +-
->  arch/arm/mach-at91/at91sam9x5.c           | 311 ------------------------------
->  arch/arm/mach-at91/setup.c                |   4 +-
->  images/Makefile                           |   1 +
->  images/Makefile.at91                      |   7 +
->  15 files changed, 176 insertions(+), 531 deletions(-)
->  create mode 100644 arch/arm/boards/at91sam9x5ek/lowlevel.c
->  create mode 100644 arch/arm/dts/at91sam9x5ek.dts
->  delete mode 100644 arch/arm/mach-at91/at91sam9x5.c
->  create mode 100644 images/Makefile.at91
-> 
-> -- 
-> 2.9.3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
