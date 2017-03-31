@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ctqbb-0005ff-MI
- for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:04:21 +0000
+ id 1ctqbc-0005fo-71
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:04:22 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 31 Mar 2017 09:03:36 +0200
-Message-Id: <20170331070346.26878-33-s.hauer@pengutronix.de>
+Date: Fri, 31 Mar 2017 09:03:39 +0200
+Message-Id: <20170331070346.26878-36-s.hauer@pengutronix.de>
 In-Reply-To: <20170331070346.26878-1-s.hauer@pengutronix.de>
 References: <20170331070346.26878-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,154 +21,215 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 32/42] commands: implement keystore command
+Subject: [PATCH 35/42] state: backend_raw: alloc digest only when needed
 To: Barebox List <barebox@lists.infradead.org>
 
-The keystore command provides access to the barebox keystore.
+Instead of deferring probe just allocate the digest when
+it's needed. This way the credentials can be added later,
+possibly on the commandline.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig    |   6 ++++
- commands/Makefile   |   1 +
- commands/keystore.c | 100 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 107 insertions(+)
- create mode 100644 commands/keystore.c
+ common/state/backend_format_raw.c | 112 ++++++++++++++++++++------------------
+ 1 file changed, 59 insertions(+), 53 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index bc0885c69d..6bb47d6363 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -1967,6 +1967,12 @@ config CMD_FIRMWARELOAD
- 	  Provides the "firmwareload" command which deals with devices which need
- 	  firmware to work. It is also used to upload firmware to FPGA devices.
+diff --git a/common/state/backend_format_raw.c b/common/state/backend_format_raw.c
+index a425b636d0..43a5523152 100644
+--- a/common/state/backend_format_raw.c
++++ b/common/state/backend_format_raw.c
+@@ -35,6 +35,10 @@ struct state_backend_format_raw {
  
-+config CMD_KEYSTORE
-+	depends on CRYPTO_KEYSTORE
-+	bool
-+	prompt "keystore"
-+	help
-+	  keystore provides access to the barebox keystore.
- 
- config CMD_LINUX_EXEC
- 	bool "linux exec"
-diff --git a/commands/Makefile b/commands/Makefile
-index 601f15fc38..a20c675929 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -92,6 +92,7 @@ obj-$(CONFIG_CMD_READLINK)	+= readlink.o
- obj-$(CONFIG_CMD_LET)		+= let.o
- obj-$(CONFIG_CMD_LN)		+= ln.o
- obj-$(CONFIG_CMD_CLK)		+= clk.o
-+obj-$(CONFIG_CMD_KEYSTORE)	+= keystore.o
- obj-$(CONFIG_CMD_TFTP)		+= tftp.o
- obj-$(CONFIG_CMD_FILETYPE)	+= filetype.o
- obj-$(CONFIG_CMD_BAREBOX_UPDATE)+= barebox-update.o
-diff --git a/commands/keystore.c b/commands/keystore.c
-new file mode 100644
-index 0000000000..52c4be2639
---- /dev/null
-+++ b/commands/keystore.c
-@@ -0,0 +1,100 @@
-+#include <common.h>
-+#include <command.h>
-+#include <getopt.h>
-+#include <libfile.h>
-+#include <crypto/keystore.h>
-+#include <linux/kernel.h>
-+#include <fs.h>
+ 	/* For outputs */
+ 	struct device_d *dev;
 +
-+static int do_keystore(int argc, char *argv[])
++	char *secret_name;
++	int needs_secret;
++	char *algo;
+ };
+ 
+ struct __attribute__((__packed__)) backend_raw_header {
+@@ -53,6 +57,43 @@ static inline struct state_backend_format_raw *get_format_raw(
+ 	return container_of(format, struct state_backend_format_raw, format);
+ }
+ 
++static int backend_raw_digest_init(struct state_backend_format_raw *raw)
 +{
-+	int opt;
++	const unsigned char *key;
++	int key_len;
 +	int ret;
-+	int do_remove = 0;
-+	const char *name;
-+	const char *file = NULL;
-+	char *secret_str = NULL;
-+	void *secret;
-+	int s_len;
 +
-+	while ((opt = getopt(argc, argv, "rs:f:")) > 0) {
-+		switch (opt) {
-+		case 'r':
-+			do_remove = 1;
-+			break;
-+		case 's':
-+			secret_str = optarg;
-+			break;
-+		case 'f':
-+			file = optarg;
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
++	if (!raw->digest) {
++		raw->digest = digest_alloc(raw->algo);
++		if (!raw->digest) {
++			dev_err(raw->dev, "algo %s not found\n",
++				raw->algo);
++			return -ENODEV;
 +		}
++		raw->digest_length = digest_length(raw->digest);
 +	}
 +
-+	if (argc == optind)
-+		return COMMAND_ERROR_USAGE;
-+
-+	if (!do_remove && !file && !secret_str)
-+		return COMMAND_ERROR_USAGE;
-+
-+	if (file && secret_str)
-+		return COMMAND_ERROR_USAGE;
-+
-+	name = argv[optind];
-+
-+	if (do_remove) {
-+		keystore_forget_secret(name);
-+		printf("forgotten secret for key %s\n", name);
-+		return 0;
-+	}
-+
-+	if (file) {
-+		ret = read_file_2(file, &s_len, (void *)&secret_str, FILESIZE_MAX);
-+		if (ret) {
-+			printf("Cannot open %s: %s\n", file, strerror(-ret));
-+			return 1;
-+		}
-+	} else if (secret_str) {
-+		s_len = strlen(secret_str);
-+	}
-+
-+	if (s_len & 1) {
-+		printf("invalid secret len. Must be whole bytes\n");
-+		return 1;
-+	}
-+
-+	secret = xzalloc(s_len / 2);
-+	ret = hex2bin(secret, secret_str, s_len / 2);
++	ret = keystore_get_secret(raw->secret_name, &key, &key_len);
 +	if (ret) {
-+		printf("Cannot convert %s to binary: %s\n", secret_str, strerror(-ret));
-+		return 1;
++		dev_err(raw->dev, "Could not get secret '%s'\n",
++			raw->secret_name);
++		return ret;
 +	}
 +
-+	ret = keystore_set_secret(name, secret, s_len / 2);
++	ret = digest_set_key(raw->digest, key, key_len);
 +	if (ret)
-+		printf("cannot set secret for key %s: %s\n", name, strerror(-ret));
-+	else
-+		printf("Added secret for key %s\n", name);
++		return ret;
 +
-+	free(secret);
++	ret = digest_init(raw->digest);
++	if (ret) {
++		dev_err(raw->dev, "Failed to initialize digest: %s\n",
++			strerror(-ret));
++		return ret;
++	}
 +
-+	return ret ? 1 : 0;
++	return 0;
 +}
 +
-+BAREBOX_CMD_HELP_START(keystore)
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT("-r", "remove a key from the keystore")
-+BAREBOX_CMD_HELP_OPT("-s <key>", "set a key in the keystore")
-+BAREBOX_CMD_HELP_OPT("-f <keyfile>", "set a key in the keystore, read secret from file")
-+BAREBOX_CMD_HELP_END
+ static int backend_format_raw_verify(struct state_backend_format *format,
+ 				     uint32_t magic, const void * buf,
+ 				     ssize_t *lenp)
+@@ -86,7 +127,11 @@ static int backend_format_raw_verify(struct state_backend_format *format,
+ 		return -EINVAL;
+ 	}
+ 
+-	if (backend_raw->digest) {
++	if (backend_raw->algo) {
++		ret = backend_raw_digest_init(backend_raw);
++		if (ret)
++			return ret;
 +
-+BAREBOX_CMD_START(keystore)
-+	.cmd	= do_keystore,
-+	BAREBOX_CMD_DESC("manage keys")
-+	BAREBOX_CMD_OPTS("[-rsf] <keyname>")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_HELP(cmd_keystore_help)
-+BAREBOX_CMD_END
+ 		d_len = digest_length(backend_raw->digest);
+ 	}
+ 
+@@ -108,26 +153,18 @@ static int backend_format_raw_verify(struct state_backend_format *format,
+ 
+ 	*lenp = header->data_len + sizeof(*header);
+ 
+-	if (backend_raw->digest) {
+-		struct digest *d = backend_raw->digest;
++	if (backend_raw->algo) {
+ 		const void *hmac = data + header->data_len;
+ 
+-		ret = digest_init(d);
+-		if (ret) {
+-			dev_err(backend_raw->dev, "Failed to initialize digest, %d\n",
+-				ret);
+-			return ret;
+-		}
+-
+ 		/* hmac over header and data */
+-		ret = digest_update(d, buf, sizeof(*header) + header->data_len);
++		ret = digest_update(backend_raw->digest, buf, sizeof(*header) + header->data_len);
+ 		if (ret) {
+ 			dev_err(backend_raw->dev, "Failed to update digest, %d\n",
+ 				ret);
+ 			return ret;
+ 		}
+ 
+-		ret = digest_verify(d, hmac);
++		ret = digest_verify(backend_raw->digest, hmac);
+ 		if (ret < 0) {
+ 			dev_err(backend_raw->dev, "Failed to verify data, hmac, %d\n",
+ 				ret);
+@@ -195,25 +232,20 @@ static int backend_format_raw_pack(struct state_backend_format *format,
+ 	header->header_crc = crc32(0, header,
+ 				   sizeof(*header) - sizeof(uint32_t));
+ 
+-	if (backend_raw->digest) {
+-		struct digest *d = backend_raw->digest;
+-
+-		ret = digest_init(d);
+-		if (ret) {
+-			dev_err(backend_raw->dev, "Failed to initialize digest for packing, %d\n",
+-				ret);
+-			goto out_free;
+-		}
++	if (backend_raw->algo) {
++		ret = backend_raw_digest_init(backend_raw);
++		if (ret)
++			return ret;
+ 
+ 		/* hmac over header and data */
+-		ret = digest_update(d, buf, sizeof(*header) + size_data);
++		ret = digest_update(backend_raw->digest, buf, sizeof(*header) + size_data);
+ 		if (ret) {
+ 			dev_err(backend_raw->dev, "Failed to update digest for packing, %d\n",
+ 				ret);
+ 			goto out_free;
+ 		}
+ 
+-		ret = digest_final(d, hmac);
++		ret = digest_final(backend_raw->digest, hmac);
+ 		if (ret < 0) {
+ 			dev_err(backend_raw->dev, "Failed to finish digest for packing, %d\n",
+ 				ret);
+@@ -243,11 +275,9 @@ static int backend_format_raw_init_digest(struct state_backend_format_raw *raw,
+ 					  struct device_node *root,
+ 					  const char *secret_name)
+ {
+-	struct digest *digest;
+ 	struct property *p;
+ 	const char *algo;
+-	const unsigned char *key;
+-	int key_len, ret;
++	int ret;
+ 
+ 	p = of_find_property(root, "algo", NULL);
+ 	if (!p)			/* does not exist */
+@@ -263,30 +293,7 @@ static int backend_format_raw_init_digest(struct state_backend_format_raw *raw,
+ 		return -EINVAL;
+ 	}
+ 
+-	ret = keystore_get_secret(secret_name, &key, &key_len);
+-	if (ret == -ENOENT) {	/* -ENOENT == does not exist */
+-		dev_info(raw->dev, "Could not get secret '%s' - probe deferred\n",
+-			 secret_name);
+-		return -EPROBE_DEFER;
+-	} else if (ret) {
+-		return ret;
+-	}
+-
+-	digest = digest_alloc(algo);
+-	if (!digest) {
+-		dev_info(raw->dev, "algo %s not found - probe deferred\n",
+-			 algo);
+-		return -EPROBE_DEFER;
+-	}
+-
+-	ret = digest_set_key(digest, key, key_len);
+-	if (ret) {
+-		digest_free(digest);
+-		return ret;
+-	}
+-
+-	raw->digest = digest;
+-	raw->digest_length = digest_length(digest);
++	raw->algo = xstrdup(algo);
+ 
+ 	return 0;
+ }
+@@ -304,15 +311,14 @@ int backend_format_raw_create(struct state_backend_format **format,
+ 
+ 	raw->dev = dev;
+ 	ret = backend_format_raw_init_digest(raw, node, secret_name);
+-	if (ret == -EPROBE_DEFER) {
+-		return ret;
+-	} else if (ret) {
++	if (ret) {
+ 		dev_err(raw->dev, "Failed initializing digest for raw format, %d\n",
+ 			ret);
+ 		free(raw);
+ 		return ret;
+ 	}
+ 
++	raw->secret_name = xstrdup(secret_name);
+ 	raw->format.pack = backend_format_raw_pack;
+ 	raw->format.unpack = backend_format_raw_unpack;
+ 	raw->format.verify = backend_format_raw_verify;
 -- 
 2.11.0
 
