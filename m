@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ctqbS-0008Fl-Ch
+ id 1ctqbT-0008Fr-RF
  for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:04:19 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 31 Mar 2017 09:03:10 +0200
-Message-Id: <20170331070346.26878-7-s.hauer@pengutronix.de>
+Date: Fri, 31 Mar 2017 09:03:18 +0200
+Message-Id: <20170331070346.26878-15-s.hauer@pengutronix.de>
 In-Reply-To: <20170331070346.26878-1-s.hauer@pengutronix.de>
 References: <20170331070346.26878-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,411 +21,192 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/42] state: merge backend.c into state.c
+Subject: [PATCH 14/42] state: replace len_hint logic
 To: Barebox List <barebox@lists.infradead.org>
 
-The code in backend.c is too small to justify an extra file. Merge it
-into state.c.
+The len_hint mechanism is rather hard to understand as it's not clear
+from where to where the hint is passed and also it's not clear what
+happens if the hint is empty or wrong.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/state/Makefile  |   1 -
- common/state/backend.c | 183 -------------------------------------------------
- common/state/state.c   | 161 +++++++++++++++++++++++++++++++++++++++++++
- common/state/state.h   |   6 --
- 4 files changed, 161 insertions(+), 190 deletions(-)
- delete mode 100644 common/state/backend.c
+ common/state/backend_bucket_circular.c |  4 ++--
+ common/state/backend_bucket_direct.c   | 11 +++--------
+ common/state/backend_format_dtb.c      |  7 +++++--
+ common/state/backend_format_raw.c      |  5 ++++-
+ common/state/backend_storage.c         |  9 ++++++---
+ common/state/state.h                   |  2 +-
+ 6 files changed, 21 insertions(+), 17 deletions(-)
 
-diff --git a/common/state/Makefile b/common/state/Makefile
-index 3e0e2c6e55..d3518feab4 100644
---- a/common/state/Makefile
-+++ b/common/state/Makefile
-@@ -1,6 +1,5 @@
- obj-y += state.o
- obj-y += state_variables.o
--obj-y += backend.o
- obj-y += backend_format_dtb.o
- obj-y += backend_format_raw.o
- obj-y += backend_storage.o
-diff --git a/common/state/backend.c b/common/state/backend.c
-deleted file mode 100644
-index 1773392e8d..0000000000
---- a/common/state/backend.c
-+++ /dev/null
-@@ -1,183 +0,0 @@
--/*
-- * Copyright (C) 2016 Pengutronix, Markus Pargmann <mpa@pengutronix.de>
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License
-- * version 2, as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- */
--
--#include <linux/kernel.h>
--#include <linux/list.h>
--#include <linux/string.h>
--#include <malloc.h>
--#include <printk.h>
--
--#include "state.h"
--
--
--/**
-- * Save the state
-- * @param state
-- * @return
-- */
--int state_save(struct state *state)
--{
--	uint8_t *buf;
--	ssize_t len;
--	int ret;
--
--	if (!state->dirty)
--		return 0;
--
--	ret = state->format->pack(state->format, state, &buf, &len);
--	if (ret) {
--		dev_err(&state->dev, "Failed to pack state with backend format %s, %d\n",
--			state->format->name, ret);
--		return ret;
--	}
--
--	ret = state_storage_write(&state->storage, buf, len);
--	if (ret) {
--		dev_err(&state->dev, "Failed to write packed state, %d\n", ret);
--		goto out;
--	}
--
--	state->dirty = 0;
--
--out:
--	free(buf);
--	return ret;
--}
--
--/**
-- * state_load - Loads a state from the backend
-- * @param state The state that should be updated to contain the loaded data
-- * @return 0 on success, -errno on failure. If no state is loaded the previous
-- * values remain in the state.
-- *
-- * This function uses the registered storage backend to read data. All data that
-- * we read is checked for integrity by the formatter. After that we unpack the
-- * data into our state.
-- */
--int state_load(struct state *state)
--{
--	uint8_t *buf;
--	ssize_t len;
--	int ret;
--
--	ret = state_storage_read(&state->storage, state->format,
--				 state->magic, &buf, &len);
--	if (ret) {
--		dev_err(&state->dev, "Failed to read state with format %s, %d\n",
--			state->format->name, ret);
--		return ret;
--	}
--
--	ret = state->format->unpack(state->format, state, buf, len);
--	if (ret) {
--		dev_err(&state->dev, "Failed to unpack read data with format %s although verified, %d\n",
--			state->format->name, ret);
--		goto out;
--	}
--
--	state->dirty = 0;
--
--out:
--	free(buf);
--	return ret;
--}
--
--static int state_format_init(struct state *state,
--			     struct device_d *dev, const char *backend_format,
--			     struct device_node *node, const char *state_name)
--{
--	int ret;
--
--	if (!strcmp(backend_format, "raw")) {
--		ret = backend_format_raw_create(&state->format, node,
--						state_name, dev);
--	} else if (!strcmp(backend_format, "dtb")) {
--		ret = backend_format_dtb_create(&state->format, dev);
--	} else {
--		dev_err(dev, "Invalid backend format %s\n",
--			backend_format);
--		return -EINVAL;
--	}
--
--	if (ret && ret != -EPROBE_DEFER)
--		dev_err(dev, "Failed to initialize format %s, %d\n",
--			backend_format, ret);
--
--	return ret;
--}
--
--static void state_format_free(struct state_backend_format *format)
--{
--	if (format->free)
--		format->free(format);
--}
--
--/**
-- * state_backend_init - Initiates the backend storage and format using the
-- * passed arguments
-- * @param backend state backend
-- * @param dev Device pointer used for prints
-- * @param node the DT device node corresponding to the state
-- * @param backend_format a string describing the format. Valid values are 'raw'
-- * and 'dtb' currently
-- * @param storage_path Path to the backend storage file/device/partition/...
-- * @param state_name Name of the state
-- * @param of_path Path in the devicetree
-- * @param stridesize stridesize in case we have a medium without eraseblocks.
-- * stridesize describes how far apart copies of the same data should be stored.
-- * For blockdevices it makes sense to align them on blocksize.
-- * @param storagetype Type of the storage backend. This may be NULL where we
-- * autoselect some backwardscompatible backend options
-- * @return 0 on success, -errno otherwise
-- */
--int state_backend_init(struct state *state, struct device_d *dev,
--		       struct device_node *node, const char *backend_format,
--		       const char *storage_path, const char *state_name, const
--		       char *of_path, off_t offset, size_t max_size,
--		       uint32_t stridesize, const char *storagetype)
--{
--	int ret;
--
--	ret = state_format_init(state, dev, backend_format, node, state_name);
--	if (ret)
--		return ret;
--
--	ret = state_storage_init(&state->storage, dev, storage_path, offset,
--				 max_size, stridesize, storagetype);
--	if (ret)
--		goto out_free_format;
--
--	state->of_backend_path = xstrdup(of_path);
--
--	return 0;
--
--out_free_format:
--	state_format_free(state->format);
--	state->format = NULL;
--
--	return ret;
--}
--
--void state_backend_set_readonly(struct state *state)
--{
--	state_storage_set_readonly(&state->storage);
--}
--
--void state_backend_free(struct state *state)
--{
--	state_storage_free(&state->storage);
--	if (state->format)
--		state_format_free(state->format);
--	free(state->of_path);
--}
-diff --git a/common/state/state.c b/common/state/state.c
-index 62357fb248..570fa498c5 100644
---- a/common/state/state.c
-+++ b/common/state/state.c
-@@ -34,6 +34,167 @@
- /* list of all registered state instances */
- static LIST_HEAD(state_list);
+diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
+index 8eae86694a..0b8286f9cc 100644
+--- a/common/state/backend_bucket_circular.c
++++ b/common/state/backend_bucket_circular.c
+@@ -227,7 +227,7 @@ static int state_mtd_peb_erase(struct state_backend_storage_bucket_circular *cir
  
-+/**
-+ * Save the state
-+ * @param state
-+ * @return
-+ */
-+int state_save(struct state *state)
-+{
-+	uint8_t *buf;
-+	ssize_t len;
-+	int ret;
-+
-+	if (!state->dirty)
-+		return 0;
-+
-+	ret = state->format->pack(state->format, state, &buf, &len);
-+	if (ret) {
-+		dev_err(&state->dev, "Failed to pack state with backend format %s, %d\n",
-+			state->format->name, ret);
-+		return ret;
-+	}
-+
-+	ret = state_storage_write(&state->storage, buf, len);
-+	if (ret) {
-+		dev_err(&state->dev, "Failed to write packed state, %d\n", ret);
-+		goto out;
-+	}
-+
-+	state->dirty = 0;
-+
-+out:
-+	free(buf);
-+	return ret;
-+}
-+
-+/**
-+ * state_load - Loads a state from the backend
-+ * @param state The state that should be updated to contain the loaded data
-+ * @return 0 on success, -errno on failure. If no state is loaded the previous
-+ * values remain in the state.
-+ *
-+ * This function uses the registered storage backend to read data. All data that
-+ * we read is checked for integrity by the formatter. After that we unpack the
-+ * data into our state.
-+ */
-+int state_load(struct state *state)
-+{
-+	uint8_t *buf;
-+	ssize_t len;
-+	int ret;
-+
-+	ret = state_storage_read(&state->storage, state->format,
-+				 state->magic, &buf, &len);
-+	if (ret) {
-+		dev_err(&state->dev, "Failed to read state with format %s, %d\n",
-+			state->format->name, ret);
-+		return ret;
-+	}
-+
-+	ret = state->format->unpack(state->format, state, buf, len);
-+	if (ret) {
-+		dev_err(&state->dev, "Failed to unpack read data with format %s although verified, %d\n",
-+			state->format->name, ret);
-+		goto out;
-+	}
-+
-+	state->dirty = 0;
-+
-+out:
-+	free(buf);
-+	return ret;
-+}
-+
-+static int state_format_init(struct state *state,
-+			     struct device_d *dev, const char *backend_format,
-+			     struct device_node *node, const char *state_name)
-+{
-+	int ret;
-+
-+	if (!backend_format || !strcmp(backend_format, "raw")) {
-+		ret = backend_format_raw_create(&state->format, node,
-+						state_name, dev);
-+	} else if (!strcmp(backend_format, "dtb")) {
-+		ret = backend_format_dtb_create(&state->format, dev);
-+	} else {
-+		dev_err(dev, "Invalid backend format %s\n",
-+			backend_format);
-+		return -EINVAL;
-+	}
-+
-+	if (ret && ret != -EPROBE_DEFER)
-+		dev_err(dev, "Failed to initialize format %s, %d\n",
-+			backend_format, ret);
-+
-+	return ret;
-+}
-+
-+static void state_format_free(struct state_backend_format *format)
-+{
-+	if (format->free)
-+		format->free(format);
-+}
-+
-+/**
-+ * state_backend_init - Initiates the backend storage and format using the
-+ * passed arguments
-+ * @param backend state backend
-+ * @param dev Device pointer used for prints
-+ * @param node the DT device node corresponding to the state
-+ * @param backend_format a string describing the format. Valid values are 'raw'
-+ * and 'dtb' currently
-+ * @param storage_path Path to the backend storage file/device/partition/...
-+ * @param state_name Name of the state
-+ * @param of_path Path in the devicetree
-+ * @param stridesize stridesize in case we have a medium without eraseblocks.
-+ * stridesize describes how far apart copies of the same data should be stored.
-+ * For blockdevices it makes sense to align them on blocksize.
-+ * @param storagetype Type of the storage backend. This may be NULL where we
-+ * autoselect some backwardscompatible backend options
-+ * @return 0 on success, -errno otherwise
-+ */
-+static int state_backend_init(struct state *state, struct device_d *dev,
-+		       struct device_node *node, const char *backend_format,
-+		       const char *storage_path, const char *state_name, const
-+		       char *of_path, off_t offset, size_t max_size,
-+		       uint32_t stridesize, const char *storagetype)
-+{
-+	int ret;
-+
-+	ret = state_format_init(state, dev, backend_format, node, state_name);
-+	if (ret)
-+		return ret;
-+
-+	ret = state_storage_init(&state->storage, dev, storage_path, offset,
-+				 max_size, stridesize, storagetype);
-+	if (ret)
-+		goto out_free_format;
-+
-+	state->of_backend_path = xstrdup(of_path);
-+
-+	return 0;
-+
-+out_free_format:
-+	state_format_free(state->format);
-+	state->format = NULL;
-+
-+	return ret;
-+}
-+
-+void state_backend_set_readonly(struct state *state)
-+{
-+	state_storage_set_readonly(&state->storage);
-+}
-+
-+void state_backend_free(struct state *state)
-+{
-+	state_storage_free(&state->storage);
-+	if (state->format)
-+		state_format_free(state->format);
-+	free(state->of_path);
-+}
-+
- static struct state *state_new(const char *name)
+ static int state_backend_bucket_circular_read(struct state_backend_storage_bucket *bucket,
+ 					      uint8_t ** buf_out,
+-					      ssize_t * len_hint)
++					      ssize_t * len_out)
  {
- 	struct state *state;
+ 	struct state_backend_storage_bucket_circular *circ =
+ 	    get_bucket_circular(bucket);
+@@ -282,7 +282,7 @@ static int state_backend_bucket_circular_read(struct state_backend_storage_bucke
+ 	}
+ 
+ 	*buf_out = buf;
+-	*len_hint = read_len - sizeof(struct state_backend_storage_bucket_circular_meta);
++	*len_out = read_len - sizeof(struct state_backend_storage_bucket_circular_meta);
+ 
+ 	return ret;
+ }
+diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
+index 5225433ec5..06a5433c45 100644
+--- a/common/state/backend_bucket_direct.c
++++ b/common/state/backend_bucket_direct.c
+@@ -47,7 +47,7 @@ static inline struct state_backend_storage_bucket_direct
+ 
+ static int state_backend_bucket_direct_read(struct state_backend_storage_bucket
+ 					    *bucket, uint8_t ** buf_out,
+-					    ssize_t * len_hint)
++					    ssize_t * len_out)
+ {
+ 	struct state_backend_storage_bucket_direct *direct =
+ 	    get_bucket_direct(bucket);
+@@ -69,18 +69,13 @@ static int state_backend_bucket_direct_read(struct state_backend_storage_bucket
+ 	if (meta.magic == direct_magic) {
+ 		read_len = meta.written_length;
+ 	} else {
+-		if (*len_hint)
+-			read_len = *len_hint;
+-		else
+-			read_len = direct->max_size;
++		read_len = direct->max_size;
+ 		ret = lseek(direct->fd, direct->offset, SEEK_SET);
+ 		if (ret < 0) {
+ 			dev_err(direct->dev, "Failed to seek file, %d\n", ret);
+ 			return ret;
+ 		}
+ 	}
+-	if (direct->max_size)
+-		read_len = min(read_len, direct->max_size);
+ 
+ 	buf = xmalloc(read_len);
+ 	if (!buf)
+@@ -94,7 +89,7 @@ static int state_backend_bucket_direct_read(struct state_backend_storage_bucket
+ 	}
+ 
+ 	*buf_out = buf;
+-	*len_hint = read_len;
++	*len_out = read_len;
+ 
+ 	return 0;
+ }
+diff --git a/common/state/backend_format_dtb.c b/common/state/backend_format_dtb.c
+index dc19c888e5..abf8921dc4 100644
+--- a/common/state/backend_format_dtb.c
++++ b/common/state/backend_format_dtb.c
+@@ -40,12 +40,13 @@ static inline struct state_backend_format_dtb *get_format_dtb(struct
+ 
+ static int state_backend_format_dtb_verify(struct state_backend_format *format,
+ 					   uint32_t magic, const uint8_t * buf,
+-					   ssize_t len)
++					   ssize_t *lenp)
+ {
+ 	struct state_backend_format_dtb *fdtb = get_format_dtb(format);
+ 	struct device_node *root;
+ 	struct fdt_header *fdt = (struct fdt_header *)buf;
+ 	size_t dtb_len = fdt32_to_cpu(fdt->totalsize);
++	size_t len = *lenp;
+ 
+ 	if (dtb_len > len) {
+ 		dev_err(fdtb->dev, "Error, stored DTB length (%d) longer than read buffer (%d)\n",
+@@ -67,6 +68,8 @@ static int state_backend_format_dtb_verify(struct state_backend_format *format,
+ 
+ 	fdtb->root = root;
+ 
++	*lenp = be32_to_cpu(fdt->totalsize);
++
+ 	return 0;
+ }
+ 
+@@ -78,7 +81,7 @@ static int state_backend_format_dtb_unpack(struct state_backend_format *format,
+ 	int ret;
+ 
+ 	if (!fdtb->root) {
+-		state_backend_format_dtb_verify(format, 0, buf, len);
++		state_backend_format_dtb_verify(format, 0, buf, &len);
+ 	}
+ 
+ 	ret = state_from_node(state, fdtb->root, 0);
+diff --git a/common/state/backend_format_raw.c b/common/state/backend_format_raw.c
+index e028ea616c..3c8956f8ef 100644
+--- a/common/state/backend_format_raw.c
++++ b/common/state/backend_format_raw.c
+@@ -55,13 +55,14 @@ static inline struct state_backend_format_raw *get_format_raw(
+ 
+ static int backend_format_raw_verify(struct state_backend_format *format,
+ 				     uint32_t magic, const uint8_t * buf,
+-				     ssize_t len)
++				     ssize_t *lenp)
+ {
+ 	uint32_t crc;
+ 	struct backend_raw_header *header;
+ 	int d_len = 0;
+ 	int ret;
+ 	const uint8_t *data;
++	ssize_t len = *lenp;
+ 	struct state_backend_format_raw *backend_raw = get_format_raw(format);
+ 	ssize_t complete_len;
+ 
+@@ -105,6 +106,8 @@ static int backend_format_raw_verify(struct state_backend_format *format,
+ 		return -EINVAL;
+ 	}
+ 
++	*lenp = header->data_len + sizeof(*header);
++
+ 	if (backend_raw->digest) {
+ 		struct digest *d = backend_raw->digest;
+ 		const void *hmac = data + header->data_len;
+diff --git a/common/state/backend_storage.c b/common/state/backend_storage.c
+index 52f4aedee7..f1b3f5a6b2 100644
+--- a/common/state/backend_storage.c
++++ b/common/state/backend_storage.c
+@@ -111,15 +111,18 @@ int state_storage_read(struct state_backend_storage *storage,
+ 	int ret;
+ 
+ 	list_for_each_entry(bucket, &storage->buckets, bucket_list) {
+-		*len = 0;
+-
+ 		ret = bucket->read(bucket, buf, len);
+ 		if (ret) {
+ 			dev_warn(storage->dev, "Failed to read from state backend bucket, trying next, %d\n",
+ 				 ret);
+ 			continue;
+ 		}
+-		ret = format->verify(format, magic, *buf, *len);
++
++		/*
++		 * Verify the buffer crcs. The buffer length is passed in the len argument,
++		 * .verify overwrites it with the length actually used.
++		 */
++		ret = format->verify(format, magic, *buf, len);
+ 		if (!ret) {
+ 			goto found;
+ 		}
 diff --git a/common/state/state.h b/common/state/state.h
-index cb248fc609..254ff31a06 100644
+index 6f5de31dff..0b1a7e5ec2 100644
 --- a/common/state/state.h
 +++ b/common/state/state.h
-@@ -205,13 +205,7 @@ int state_backend_bucket_cached_create(struct device_d *dev,
- struct state_variable *state_find_var(struct state *state, const char *name);
- struct digest *state_backend_format_raw_get_digest(struct state_backend_format
- 						   *format);
--int state_backend_init(struct state *state, struct device_d *dev,
--		       struct device_node *node, const char *backend_format,
--		       const char *storage_path, const char *state_name, const
--		       char *of_path, off_t offset, size_t max_size,
--		       uint32_t stridesize, const char *storagetype);
- void state_backend_set_readonly(struct state *state);
--void state_backend_free(struct state *state);
- void state_storage_free(struct state_backend_storage *storage);
- int state_backend_bucket_direct_create(struct device_d *dev, const char *path,
- 				       struct state_backend_storage_bucket **bucket,
+@@ -46,7 +46,7 @@ struct state_backend_storage_bucket {
+  */
+ struct state_backend_format {
+ 	int (*verify) (struct state_backend_format * format, uint32_t magic,
+-		       const uint8_t * buf, ssize_t len);
++		       const uint8_t * buf, ssize_t *lenp);
+ 	int (*pack) (struct state_backend_format * format, struct state * state,
+ 		     uint8_t ** buf, ssize_t * len);
+ 	int (*unpack) (struct state_backend_format * format,
 -- 
 2.11.0
 
