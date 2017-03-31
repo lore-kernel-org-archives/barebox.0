@@ -1,21 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ctque-0003xF-B8
- for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:24:02 +0000
-Date: Fri, 31 Mar 2017 09:23:38 +0200
+ id 1ctsCP-0003Ae-0x
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 08:46:27 +0000
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.84_2)
+ (envelope-from <sha@pengutronix.de>) id 1ctsC3-0002Ie-3I
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 10:46:03 +0200
+Received: from sha by pty.hi.pengutronix.de with local (Exim 4.84_2)
+ (envelope-from <sha@pengutronix.de>) id 1ctsC2-0002gt-Sk
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 10:46:02 +0200
+Date: Fri, 31 Mar 2017 10:46:02 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170331072338.er5w3t42yvfgtrf6@pengutronix.de>
-References: <CAGUZs0n9Piigr3=NTt4vz2YhMz_TKzhUtfKewRrGzk=dNT0=Dw@mail.gmail.com>
- <20170330063139.kfxjxb33cbrbzrdp@pengutronix.de>
- <CAGUZs0n93ZWNASvyyUddCPfSKPYavomXxGwHMd6caGGn3w65hw@mail.gmail.com>
- <20170331062139.d5kaoagglgnylr2r@pengutronix.de>
- <CAGUZs0=TQxEabVqdm4gbmazEwK4xvaBmLFmaJT==mZ-0-Lvorg@mail.gmail.com>
- <20170331070209.ogz4znywovz2rneb@pengutronix.de>
- <CAGUZs0nPy2PCRz3YQjT-O=SE1RwLgudrBW4x9H90R7jRKUmDNQ@mail.gmail.com>
+Message-ID: <20170331084602.6ytfjepjlm3lyljz@pengutronix.de>
+References: <20170331053323.17821-1-s.hauer@pengutronix.de>
+ <20170331053323.17821-7-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAGUZs0nPy2PCRz3YQjT-O=SE1RwLgudrBW4x9H90R7jRKUmDNQ@mail.gmail.com>
+In-Reply-To: <20170331053323.17821-7-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,48 +27,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: State Framework and dtb
-To: =?utf-8?B?w4dhxJ9sYXI=?= Kilimci <ckilimci@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 06/14] mtd: partition: set cdev->offset to the actual
+ offset
+To: Barebox List <barebox@lists.infradead.org>
 
-T24gRnJpLCBNYXIgMzEsIDIwMTcgYXQgMTA6MTg6MDVBTSArMDMwMCwgw4dhxJ9sYXIgS2lsaW1j
-aSB3cm90ZToKPiAyMDE3LTAzLTMxIDEwOjAyIEdNVCswMzowMCBTYXNjaGEgSGF1ZXIgPHMuaGF1
-ZXJAcGVuZ3V0cm9uaXguZGU+Ogo+ID4gT24gRnJpLCBNYXIgMzEsIDIwMTcgYXQgMDk6NTQ6NTZB
-TSArMDMwMCwgw4dhxJ9sYXIgS2lsaW1jaSB3cm90ZToKPiA+PiBIZWxsbywKPiA+Pgo+ID4+ID4g
-SSBzaG91bGQgaGF2ZSBuZXZlciBpbXBsZW1lbnRlZCB0aGlzIGZyZWVpbmcgb2YgdGhlIHN0b3Jl
-ZCBkZXZpY2UgdHJlZS4KPiA+PiA+IFRoZXJlIGFyZSB0b28gbWFueSBwb2ludGVycyBpbiB0aGUg
-Y29kZSB0byBub2RlcyBvZiB0aGlzIHRyZWUuIFBsZWFzZQo+ID4+ID4gZG8gbm90IHVzZSB0aGlz
-IGZyZWUvbG9hZCBkZXZpY2UgdHJlZSBmZWF0dXJlIGZvciBzdGF0ZS4KPiA+Pgo+ID4+IFN1cmUs
-IEkgdXN1YWxseSBhdm9pZCB1c2luZyBpdC4gSGVyZSBJIHVzZSB0byB0ZXN0IGl0IGlmIGl0IGlz
-IGFibGUgdG8KPiA+PiByZWFkIHRoZSBkdGIgb3Igbm90PyBBcHBhcmVudGx5LCBpdCAiY2FuIiBy
-ZWFkIGFuZCBwYXJzZSBpdCBidXQgYXQgdGhlCj4gPj4gYm9vdCBzdGFnZSwgaXQgZG9lcyBub3Qg
-Y2FyZS4KPiA+Pgo+ID4+ID4gU28geW91IGVkaXRlZAo+ID4+ID4gdGhlIGRldmljZXRyZWUgaW4g
-dGhlIGJhcmVib3ggc291cmNlIGNvZGUsIGJ1aWx0IGEgbmV3IGJpbmFyeSB3aXRoIGl0Cj4gPj4g
-PiBhbmQgc3RhcnRlZCBpdC4gTm93IHdoZW4geW91IGVudGVyICJvZl9kdW1wIC9zdGF0ZUAwIiB5
-b3Ugc2hvdWxkCj4gPj4gPiBzZWUgdGhlIHN0YXRlIG5vZGUgeW91IGNyZWF0ZWQuIElzIHRoYXQg
-d2hhdCBoYXBwZW5zPwo+ID4+Cj4gPj4gTm8sIG5vdCBhdCBhbGwuIEkgY291bGQgbm90IGFueSBz
-aWduIG9mIHN0YXRlIChvciBzdGF0ZUAwKS4KPiA+PiBiYXJlYm94QFBoeXRlYyBwaHlDT1JFIEFN
-MzM1eDovIG9mX2R1bXAgL3N0YXRlQDAKPiA+PiBDYW5ub3QgZmluZCBub2RlcGF0aCAvc3RhdGVA
-MAo+ID4+IG9mX2R1bXA6IE5vIHN1Y2ggZmlsZSBvciBkaXJlY3RvcnkKPiA+Cj4gPiBPaywgaGVy
-ZSdzIHlvdXIgcHJvYmxlbS4gSSBhc3N1bWUgeW91IGVkaXRlZAo+ID4gYXJjaC9hcm0vZHRzL2Ft
-MzM1eC1waHl0ZWMtcGh5Y29yZS1zb20uZHRzLCByaWdodD8gQ291bGQgeW91IHNlbmQgdGhlCj4g
-PiBkaWZmIHRvIHRoYXQgZmlsZSAob3IgdG8gdGhlIG9uZSB5b3UgZWRpdGVkKT8gVGhlcmUgbXVz
-dCBiZSBzb21ldGhpbmcKPiA+IHdyb25nIGhlcmUuCj4gCj4gQWN0dWFsbHksIEkgd2FzIHVzaW5n
-IGFyY2gvYXJtL2Jvb3QvZHRzL2FtMzM1eC1waHljb3JlLXNvbS5kdHNpIGluIHRoZQo+IGxpbnV4
-LXRpIGtlcm5lbCBhbmQgdGhlIGRpZmYgaXM6CgpPaywgd2hlbiB5b3UncmUgY2hhbmdpbmcgdGhl
-IExpbnV4IGR0cyB0aGVuIGJhcmVib3ggb2YgY291cnNlIGRvZXNuJ3QKa25vdyBhYm91dCB0aGlz
-LgoKPiAKPiBMZXQgbWUgZWRpdCAiYXJjaC9hcm0vZHRzL2FtMzM1eC1waHl0ZWMtcGh5Y29yZS1z
-b20uZHRzIiBhbmQgdHJ5IGl0LgoKWWVzLCBwbGVhc2UuIFRoYXQgc291bmRzIGJldHRlci4KClNh
-c2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAg
-ICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIu
-IDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTct
-MCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDog
-ICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
-ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
-Ym94Cg==
+On Fri, Mar 31, 2017 at 07:33:15AM +0200, Sascha Hauer wrote:
+> cdev->offset is currently not used, but can be useful later when
+> we separate the of_partition_fixup from mtd, because then we will
+> need the offset of the partition.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/mtd/partition.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/mtd/partition.c b/drivers/mtd/partition.c
+> index 777cb758ce..745834384f 100644
+> --- a/drivers/mtd/partition.c
+> +++ b/drivers/mtd/partition.c
+> @@ -225,6 +225,8 @@ struct mtd_info *mtd_add_partition(struct mtd_info *mtd, off_t offset,
+>  	if (ret)
+>  		goto err;
+>  
+> +	part->cdev.offset = offset;
+> +
+
+Nah, this does not work. Will drop this one.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
