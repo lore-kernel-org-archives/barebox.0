@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ctpYa-0007Kt-Pm
- for barebox@lists.infradead.org; Fri, 31 Mar 2017 05:57:10 +0000
-Date: Fri, 31 Mar 2017 07:56:46 +0200
+ id 1ctpwf-0000it-Qf
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 06:22:03 +0000
+Date: Fri, 31 Mar 2017 08:21:40 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170331055646.r25oixsqwc4xvu5j@pengutronix.de>
-References: <20170329075927.1131-1-o.rempel@pengutronix.de>
+Message-ID: <20170331062139.d5kaoagglgnylr2r@pengutronix.de>
+References: <CAGUZs0n9Piigr3=NTt4vz2YhMz_TKzhUtfKewRrGzk=dNT0=Dw@mail.gmail.com>
+ <20170330063139.kfxjxb33cbrbzrdp@pengutronix.de>
+ <CAGUZs0n93ZWNASvyyUddCPfSKPYavomXxGwHMd6caGGn3w65hw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170329075927.1131-1-o.rempel@pengutronix.de>
+In-Reply-To: <CAGUZs0n93ZWNASvyyUddCPfSKPYavomXxGwHMd6caGGn3w65hw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,103 +20,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] bootm: fit: support multiple configuration nodes
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: State Framework and dtb
+To: =?utf-8?B?w4dhxJ9sYXI=?= Kilimci <ckilimci@gmail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Wed, Mar 29, 2017 at 09:59:27AM +0200, Oleksij Rempel wrote:
-> From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  common/image-fit.c | 40 ++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 38 insertions(+), 2 deletions(-)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/common/image-fit.c b/common/image-fit.c
-> index 0536c49b1..81433e6ec 100644
-> --- a/common/image-fit.c
-> +++ b/common/image-fit.c
-> @@ -491,6 +491,38 @@ static int fit_config_verify_signature(struct fit_handle *handle, struct device_
->  	return ret;
->  }
->  
-> +static int fit_find_compatible_unit(struct device_node *conf_node,
-> +				    const char **unit)
-> +{
-> +	struct device_node *child = NULL;
-> +	struct device_node *barebox_root;
-> +	const char *machine;
-> +	int ret;
-> +
-> +	barebox_root = of_get_root_node();
-> +	if (!barebox_root)
-> +		goto default_unit;
-> +
-> +	ret = of_property_read_string(barebox_root, "compatible", &machine);
-> +	if (ret)
-> +		return -ENOENT;
-> +
-> +	for_each_child_of_node(conf_node, child) {
-> +		if (of_device_is_compatible(child, machine)) {
-> +			*unit = child->name;
-> +			pr_info("matching unit '%s' found\n", *unit);
-> +			return 0;
-> +		}
-> +	}
-> +
-> +default_unit:
-> +	pr_info("No match found. Trying default.\n");
-> +	if (of_property_read_string(conf_node, "default", unit) == 0)
-> +		return 0;
-> +
-> +	return -ENOENT;
-> +}
-> +
->  static int fit_open_configuration(struct fit_handle *handle, const char *name)
->  {
->  	struct device_node *conf_node = NULL;
-> @@ -503,8 +535,12 @@ static int fit_open_configuration(struct fit_handle *handle, const char *name)
->  
->  	if (name) {
->  		unit = name;
-> -	} else if (of_property_read_string(conf_node, "default", &unit)) {
-> -		unit = "conf@1";
-> +	} else {
-> +		ret = fit_find_compatible_unit(conf_node, &unit);
-> +		if (ret) {
-> +			pr_info("Couldn't get a valid configuration. Aborting.\n");
-> +			return ret;
-> +		}
->  	}
->  
->  	conf_node = of_get_child_by_name(conf_node, unit);
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVGh1LCBNYXIgMzAsIDIwMTcgYXQgMDE6MzM6MjZQTSArMDMwMCwgw4dhxJ9sYXIgS2lsaW1j
+aSB3cm90ZToKPiBIaSwKPiAKPiA+PiAgIGJhY2tlbmQgPSAmc3RhdGVfcGFydGl0aW9uOwo+ID4K
+PiA+IFRoaXMgc2hvdWxkIGJlIGEgcGhhbmRsZS4gU29ycnksIHRoZSBleGFtcGxlIEkgZ2F2ZSB5
+b3UgbGFzdCB0aW1lIHdhcwo+ID4gd3JvbmcuIEl0IHNob3VsZCBiZQo+ID4KPiA+ICAgICAgICAg
+YmFja2VuZCA9IDwmc3RhdGVfcGFydGl0aW9uPjsKPiA+Cj4gPiBOb3RlIHRoZSAnPD4nCj4gSXQn
+cyBhbHJpZ2h0LiBJIGFwcGxpZWQgdGhlIGNoYW5nZXMsIGJ1dCBzdGlsbCBubyByZWdpc3RlcmVk
+IHN0YXRlCj4gaW5zdGFuY2VzIHRoZXJlLiBTaW1pbGFybHksIGlmIEkgZnJlZSBzdG9yZWQgZGV2
+aWNlIHRyZWUgYW5kIGxvYWQgaXQKPiBiYWNrIGFnYWluOyBiZWZvcmUgcHJvYmUgaXQsIEkgY2Fu
+IG9ic2VydmUgc3RhdGUgbGlrZSB0aGlzOgoKSSBzaG91bGQgaGF2ZSBuZXZlciBpbXBsZW1lbnRl
+ZCB0aGlzIGZyZWVpbmcgb2YgdGhlIHN0b3JlZCBkZXZpY2UgdHJlZS4KVGhlcmUgYXJlIHRvbyBt
+YW55IHBvaW50ZXJzIGluIHRoZSBjb2RlIHRvIG5vZGVzIG9mIHRoaXMgdHJlZS4gUGxlYXNlCmRv
+IG5vdCB1c2UgdGhpcyBmcmVlL2xvYWQgZGV2aWNlIHRyZWUgZmVhdHVyZSBmb3Igc3RhdGUuIFNv
+IHlvdSBlZGl0ZWQKdGhlIGRldmljZXRyZWUgaW4gdGhlIGJhcmVib3ggc291cmNlIGNvZGUsIGJ1
+aWx0IGEgbmV3IGJpbmFyeSB3aXRoIGl0CmFuZCBzdGFydGVkIGl0LiBOb3cgd2hlbiB5b3UgZW50
+ZXIgIm9mX2R1bXAgL3N0YXRlQDAiIHlvdSBzaG91bGQKc2VlIHRoZSBzdGF0ZSBub2RlIHlvdSBj
+cmVhdGVkLiBJcyB0aGF0IHdoYXQgaGFwcGVucz8KCj4gCj4gSSBhcHBlbmRlZCBtYW55IGNvbmZp
+Z3MgZXZlbiBpZiBJIGRvIG5vdCBuZWVkIGFsbCBvZiB0aGVtOgoKVGhlIGNvbmZpZ3Mgc2VlbSB0
+byBoYXZlIGV2ZXJ5dGhpbmcgbmVjZXNzYXJ5CgpTYXNjaGEKCi0tIApQZW5ndXRyb25peCBlLksu
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+fApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3
+LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdl
+cm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNo
+ZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
