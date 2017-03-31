@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ctpC4-0005Gd-99
- for barebox@lists.infradead.org; Fri, 31 Mar 2017 05:34:00 +0000
+ id 1ctpC4-0005GT-8i
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 05:33:59 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
+ (envelope-from <sha@pengutronix.de>) id 1ctpBe-0002ct-KU
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:33:26 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.88)
+ (envelope-from <sha@pengutronix.de>) id 1ctpBe-0005mt-2C
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:33:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 31 Mar 2017 07:33:18 +0200
-Message-Id: <20170331053323.17821-10-s.hauer@pengutronix.de>
-In-Reply-To: <20170331053323.17821-1-s.hauer@pengutronix.de>
-References: <20170331053323.17821-1-s.hauer@pengutronix.de>
+Date: Fri, 31 Mar 2017 07:33:09 +0200
+Message-Id: <20170331053323.17821-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,103 +27,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/14] fs: devfs-core: remove unused code
+Subject: OF partitions rework
 To: Barebox List <barebox@lists.infradead.org>
 
-Partitions on mtd devices are implemented as mtd devices themselves
-which have a ioctl hook. The DEVFS_IS_PARTITION flag is never set
-for these devices, so the partition offset translation code in
-fs/devfs-core.c is unused. Remove it.
+This series reworks some aspects of device tree partitions.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- fs/devfs-core.c | 68 ---------------------------------------------------------
- 1 file changed, 68 deletions(-)
+- device tree partitions can be > 4GiB. So far we assumed
+  #address-cells and #size-cells are both 1. Parse the
+  cell size properly to support bigger partitions
+- support the new device tree partition binding which collects
+  the device tree partitions under a "partitions" node with
+  compatible = "fixed-partitions"
+- Add the counterpart of of_find_path(): of_find_node_by_devpath()
+  converts a barebox device path back to a device node. This function
+  will be used by the state framework in a later series.
 
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index c51ea6a871..7b3754ed8e 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -184,76 +184,8 @@ int cdev_flush(struct cdev *cdev)
- 	return cdev->ops->flush(cdev);
- }
- 
--static int partition_ioctl(struct cdev *cdev, int request, void *buf)
--{
--	int ret = 0;
--	loff_t offset, *_buf = buf;
--	struct mtd_info_user *user = buf;
--
--	switch (request) {
--	case MEMSETBADBLOCK:
--	case MEMSETGOODBLOCK:
--	case MEMGETBADBLOCK:
--		offset = *_buf;
--		offset += cdev->offset;
--		ret = cdev->ops->ioctl(cdev, request, &offset);
--		break;
--	case MEMGETINFO:
--		if (cdev->mtd) {
--			user->type	= cdev->mtd->type;
--			user->flags	= cdev->mtd->flags;
--			user->size	= cdev->mtd->size;
--			user->erasesize	= cdev->mtd->erasesize;
--			user->writesize	= cdev->mtd->writesize;
--			user->oobsize	= cdev->mtd->oobsize;
--			user->subpagesize = cdev->mtd->writesize >> cdev->mtd->subpage_sft;
--			user->mtd	= cdev->mtd;
--			/* The below fields are obsolete */
--			user->ecctype	= -1;
--			user->eccsize	= 0;
--			break;
--		}
--		if (!cdev->ops->ioctl) {
--			ret = -EINVAL;
--			break;
--		}
--		ret = cdev->ops->ioctl(cdev, request, buf);
--		break;
--#if (defined(CONFIG_NAND_ECC_HW) || defined(CONFIG_NAND_ECC_SOFT))
--	case ECCGETSTATS:
--#endif
--	case MEMERASE:
--		if (!cdev->ops->ioctl) {
--			ret = -EINVAL;
--			break;
--		}
--		ret = cdev->ops->ioctl(cdev, request, buf);
--		break;
--#ifdef CONFIG_PARTITION
--	case MEMGETREGIONINFO:
--		if (cdev->mtd) {
--			struct region_info_user *reg = buf;
--			int erasesize_shift = ffs(cdev->mtd->erasesize) - 1;
--
--			reg->offset = cdev->offset;
--			reg->erasesize = cdev->mtd->erasesize;
--			reg->numblocks = cdev->size >> erasesize_shift;
--			reg->regionindex = cdev->mtd->index;
--		}
--	break;
--#endif
--	default:
--		ret = -EINVAL;
--	}
--
--	return ret;
--}
--
- int cdev_ioctl(struct cdev *cdev, int request, void *buf)
- {
--	if (cdev->flags & DEVFS_IS_PARTITION)
--		return partition_ioctl(cdev, request, buf);
--
- 	if (!cdev->ops->ioctl)
- 		return -EINVAL;
- 
--- 
-2.11.0
+----------------------------------------------------------------
+Sascha Hauer (14):
+      of: Add of_property_write_string()
+      treewide: Use of_property_write_string() where appropriate
+      of: partition: Move of_mtd_fixup to drivers/of/
+      mtd: of: Make used partition binding configurable
+      of: partition: support 64bit partition sizes
+      mtd: partition: set cdev->offset to the actual offset
+      cdev: Collect partitions on list
+      of: partition: Make partition fixup independent from mtd devices
+      fs: devfs-core: remove unused code
+      fs: devfs-core: replace DEVFS_PARTITION_FIXED flag with pointer to the master cdev
+      of: partition: only create partition node when partitions exist
+      of: partitions: flag partitions from a partition table
+      of: partition: Register the of partition fixup for of partition users
+      of: of_path: add of_find_node_by_devpath()
 
+ arch/arm/boards/highbank/init.c |   6 +-
+ arch/arm/cpu/psci.c             |   6 +-
+ arch/sandbox/board/hostfile.c   |   6 +-
+ common/memory.c                 |   2 +-
+ common/oftree.c                 |   2 +-
+ common/partitions.c             |   2 +
+ common/state/state.c            |   5 +-
+ drivers/base/driver.c           |   2 +-
+ drivers/eeprom/at24.c           |   1 +
+ drivers/eeprom/at25.c           |   2 +
+ drivers/mci/mci-core.c          |   4 +-
+ drivers/mtd/core.c              |  65 +--------------
+ drivers/mtd/partition.c         |   3 +
+ drivers/of/base.c               |  24 +++++-
+ drivers/of/of_path.c            | 107 +++++++++++++++++++++++++
+ drivers/of/partition.c          | 170 +++++++++++++++++++++++++++++++++++++++-
+ drivers/video/simplefb.c        |  12 +--
+ fs/devfs-core.c                 |  82 +++----------------
+ include/driver.h                |   4 +-
+ include/linux/mtd/mtd.h         |   1 +
+ include/of.h                    |  15 ++++
+ 21 files changed, 355 insertions(+), 166 deletions(-)
 
 _______________________________________________
 barebox mailing list
