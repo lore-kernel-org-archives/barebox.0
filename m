@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ctqbZ-0001ee-6H
- for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:04:18 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1ctqbT-0008G2-Uv
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:04:20 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 31 Mar 2017 09:03:40 +0200
-Message-Id: <20170331070346.26878-37-s.hauer@pengutronix.de>
+Date: Fri, 31 Mar 2017 09:03:26 +0200
+Message-Id: <20170331070346.26878-23-s.hauer@pengutronix.de>
 In-Reply-To: <20170331070346.26878-1-s.hauer@pengutronix.de>
 References: <20170331070346.26878-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,32 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 36/42] state: backend_circular: Set minumum writesize to 8
+Subject: [PATCH 22/42] state: storage: direct: do not close file that is not
+ opened
 To: Barebox List <barebox@lists.infradead.org>
 
-NOR flashes have a write size of 1. With this the metadata may
-end up on non-4-byte-aligned offsets. Force the minimum writesize
-to 8 so that the metadata is always at aligned offsets.
+When open failed to not try to close the invalid fd afterwards.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/state/backend_bucket_circular.c | 3 +++
- 1 file changed, 3 insertions(+)
+ common/state/backend_bucket_direct.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
-index 58fffd18e3..5a525f68e1 100644
---- a/common/state/backend_bucket_circular.c
-+++ b/common/state/backend_bucket_circular.c
-@@ -475,6 +475,9 @@ int state_backend_bucket_circular_create(struct device_d *dev, const char *path,
- 	struct state_backend_storage_bucket_circular *circ;
- 	int ret;
+diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
+index b72e8adb96..4465ed0e41 100644
+--- a/common/state/backend_bucket_direct.c
++++ b/common/state/backend_bucket_direct.c
+@@ -156,7 +156,6 @@ int state_backend_bucket_direct_create(struct device_d *dev, const char *path,
+ 	fd = open(path, O_RDWR);
+ 	if (fd < 0) {
+ 		dev_err(dev, "Failed to open file '%s', %d\n", path, -errno);
+-		close(fd);
+ 		return -errno;
+ 	}
  
-+	if (writesize < 8)
-+		writesize = 8;
-+
- 	circ = xzalloc(sizeof(*circ));
- 	circ->eraseblock = eraseblock;
- 	circ->writesize = writesize;
 -- 
 2.11.0
 
