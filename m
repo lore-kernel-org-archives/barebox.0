@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ctqbc-0001eh-7A
- for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:04:22 +0000
+ id 1ctqbV-0001eM-Id
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:04:17 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 31 Mar 2017 09:03:34 +0200
-Message-Id: <20170331070346.26878-31-s.hauer@pengutronix.de>
+Date: Fri, 31 Mar 2017 09:03:31 +0200
+Message-Id: <20170331070346.26878-28-s.hauer@pengutronix.de>
 In-Reply-To: <20170331070346.26878-1-s.hauer@pengutronix.de>
 References: <20170331070346.26878-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,66 +21,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 30/42] state: backend_storage: rename more variables
+Subject: [PATCH 27/42] state: backend_storage: Rename variable desired_copies
+ to desired_buckets
 To: Barebox List <barebox@lists.infradead.org>
 
-Use "buckets" rather than "copies" in variable names.
+We defined what a bucket is, so rename the variable that holds the
+number of desired buckets from desired_copies to desired_buckets.
+
+While at it, make locally used variable static.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/state/backend_storage.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ common/state/backend_storage.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/common/state/backend_storage.c b/common/state/backend_storage.c
-index 8d0f285f77..a5688aa424 100644
+index c29004071b..1310531dd1 100644
 --- a/common/state/backend_storage.c
 +++ b/common/state/backend_storage.c
-@@ -47,7 +47,7 @@
-  * when storing a new state we can just write all buckets in order.
-  */
- 
--static const unsigned int min_copies_written = 1;
-+static const unsigned int min_buckets_written = 1;
- 
- /**
-  * state_storage_write - Writes the given data to the storage
-@@ -60,7 +60,7 @@ static const unsigned int min_copies_written = 1;
-  * operation on all of them. Writes are always in the same sequence. This
-  * ensures, that reading in the same sequence will always return the latest
-  * written valid data first.
-- * We try to at least write min_copies_written. If this fails we return with an
-+ * We try to at least write min_buckets_written. If this fails we return with an
-  * error.
-  */
- int state_storage_write(struct state_backend_storage *storage,
-@@ -68,7 +68,7 @@ int state_storage_write(struct state_backend_storage *storage,
- {
- 	struct state_backend_storage_bucket *bucket;
- 	int ret;
--	int copies_written = 0;
-+	int buckets_written = 0;
- 
- 	if (storage->readonly)
- 		return 0;
-@@ -79,15 +79,15 @@ int state_storage_write(struct state_backend_storage *storage,
- 			dev_warn(storage->dev, "Failed to write state backend bucket, %d\n",
- 				 ret);
- 		} else {
--			++copies_written;
-+			++buckets_written;
- 		}
- 	}
- 
--	if (copies_written >= min_copies_written)
-+	if (buckets_written >= min_buckets_written)
- 		return 0;
- 
- 	dev_err(storage->dev, "Failed to write state to at least %d buckets. Successfully written to %d buckets\n",
--		min_copies_written, copies_written);
-+		min_buckets_written, buckets_written);
- 	return -EIO;
+@@ -216,8 +216,8 @@ static int mtd_get_meminfo(const char *path, struct mtd_info_user *meminfo)
+ 	return ret;
  }
  
+-/* Number of copies that should be allocated */
+-const int desired_copies = 3;
++/* Number of buckets that should be used */
++static const int desired_buckets = 3;
+ 
+ /**
+  * state_storage_mtd_buckets_init - Creates storage buckets for mtd devices
+@@ -270,7 +270,7 @@ static int state_storage_mtd_buckets_init(struct state_backend_storage *storage,
+ 
+ 		list_add_tail(&bucket->bucket_list, &storage->buckets);
+ 		++n_buckets;
+-		if (n_buckets >= desired_copies)
++		if (n_buckets >= desired_buckets)
+ 			return 0;
+ 	}
+ 
+@@ -280,7 +280,7 @@ static int state_storage_mtd_buckets_init(struct state_backend_storage *storage,
+ 	}
+ 
+ 	dev_warn(storage->dev, "Failed to initialize desired amount of buckets, only %d of %d succeeded\n",
+-		 n_buckets, desired_copies);
++		 n_buckets, desired_buckets);
+ 	return 0;
+ }
+ 
+@@ -306,12 +306,12 @@ static int state_storage_file_buckets_init(struct state_backend_storage *storage
+ 		return -EINVAL;
+ 	}
+ 
+-	if (max_size && max_size < desired_copies * stridesize) {
+-		dev_err(storage->dev, "device is too small to hold %d copies\n", desired_copies);
++	if (max_size && max_size < desired_buckets * stridesize) {
++		dev_err(storage->dev, "device is too small to hold %d copies\n", desired_buckets);
+ 		return -EINVAL;
+ 	}
+ 
+-	for (n = 0; n < desired_copies; n++) {
++	for (n = 0; n < desired_buckets; n++) {
+ 		offset = storage->offset + n * stridesize;
+ 		ret = state_backend_bucket_direct_create(storage->dev, storage->path,
+ 							 &bucket, offset,
+@@ -334,9 +334,9 @@ static int state_storage_file_buckets_init(struct state_backend_storage *storage
+ 		return -EIO;
+ 	}
+ 
+-	if (n_buckets < desired_copies)
++	if (n_buckets < desired_buckets)
+ 		dev_warn(storage->dev, "Failed to initialize desired amount of direct buckets, only %d of %d succeeded\n",
+-			n_buckets, desired_copies);
++			n_buckets, desired_buckets);
+ 
+ 	return 0;
+ }
 -- 
 2.11.0
 
