@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ctpC4-0005GZ-9j
- for barebox@lists.infradead.org; Fri, 31 Mar 2017 05:33:59 +0000
+ id 1ctpC4-0005Gd-99
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 05:34:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 31 Mar 2017 07:33:20 +0200
-Message-Id: <20170331053323.17821-12-s.hauer@pengutronix.de>
+Date: Fri, 31 Mar 2017 07:33:18 +0200
+Message-Id: <20170331053323.17821-10-s.hauer@pengutronix.de>
 In-Reply-To: <20170331053323.17821-1-s.hauer@pengutronix.de>
 References: <20170331053323.17821-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,47 +21,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/14] of: partition: only create partition node when
- partitions exist
+Subject: [PATCH 09/14] fs: devfs-core: remove unused code
 To: Barebox List <barebox@lists.infradead.org>
 
-With the legacy partition binding we did not modify the device
-node when no partition exist, but with the new binding we would
-create the "partitions" node with compatible = "fixed-partitions".
-Prevent that by catching the absence of partitions early.
+Partitions on mtd devices are implemented as mtd devices themselves
+which have a ioctl hook. The DEVFS_IS_PARTITION flag is never set
+for these devices, so the partition offset translation code in
+fs/devfs-core.c is unused. Remove it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/partition.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/devfs-core.c | 68 ---------------------------------------------------------
+ 1 file changed, 68 deletions(-)
 
-diff --git a/drivers/of/partition.c b/drivers/of/partition.c
-index 9b96a39edb..2e2ba35e87 100644
---- a/drivers/of/partition.c
-+++ b/drivers/of/partition.c
-@@ -131,7 +131,7 @@ static int of_partition_fixup(struct device_node *root, void *ctx)
- 	struct cdev *cdev = ctx, *partcdev;
- 	struct device_node *np, *part, *partnode;
- 	int ret;
--	int n_cells;
-+	int n_cells, n_parts = 0;
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index c51ea6a871..7b3754ed8e 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -184,76 +184,8 @@ int cdev_flush(struct cdev *cdev)
+ 	return cdev->ops->flush(cdev);
+ }
  
- 	if (of_partition_binding == MTD_OF_BINDING_DONTTOUCH)
- 		return 0;
-@@ -139,6 +139,13 @@ static int of_partition_fixup(struct device_node *root, void *ctx)
- 	if (!cdev->device_node)
+-static int partition_ioctl(struct cdev *cdev, int request, void *buf)
+-{
+-	int ret = 0;
+-	loff_t offset, *_buf = buf;
+-	struct mtd_info_user *user = buf;
+-
+-	switch (request) {
+-	case MEMSETBADBLOCK:
+-	case MEMSETGOODBLOCK:
+-	case MEMGETBADBLOCK:
+-		offset = *_buf;
+-		offset += cdev->offset;
+-		ret = cdev->ops->ioctl(cdev, request, &offset);
+-		break;
+-	case MEMGETINFO:
+-		if (cdev->mtd) {
+-			user->type	= cdev->mtd->type;
+-			user->flags	= cdev->mtd->flags;
+-			user->size	= cdev->mtd->size;
+-			user->erasesize	= cdev->mtd->erasesize;
+-			user->writesize	= cdev->mtd->writesize;
+-			user->oobsize	= cdev->mtd->oobsize;
+-			user->subpagesize = cdev->mtd->writesize >> cdev->mtd->subpage_sft;
+-			user->mtd	= cdev->mtd;
+-			/* The below fields are obsolete */
+-			user->ecctype	= -1;
+-			user->eccsize	= 0;
+-			break;
+-		}
+-		if (!cdev->ops->ioctl) {
+-			ret = -EINVAL;
+-			break;
+-		}
+-		ret = cdev->ops->ioctl(cdev, request, buf);
+-		break;
+-#if (defined(CONFIG_NAND_ECC_HW) || defined(CONFIG_NAND_ECC_SOFT))
+-	case ECCGETSTATS:
+-#endif
+-	case MEMERASE:
+-		if (!cdev->ops->ioctl) {
+-			ret = -EINVAL;
+-			break;
+-		}
+-		ret = cdev->ops->ioctl(cdev, request, buf);
+-		break;
+-#ifdef CONFIG_PARTITION
+-	case MEMGETREGIONINFO:
+-		if (cdev->mtd) {
+-			struct region_info_user *reg = buf;
+-			int erasesize_shift = ffs(cdev->mtd->erasesize) - 1;
+-
+-			reg->offset = cdev->offset;
+-			reg->erasesize = cdev->mtd->erasesize;
+-			reg->numblocks = cdev->size >> erasesize_shift;
+-			reg->regionindex = cdev->mtd->index;
+-		}
+-	break;
+-#endif
+-	default:
+-		ret = -EINVAL;
+-	}
+-
+-	return ret;
+-}
+-
+ int cdev_ioctl(struct cdev *cdev, int request, void *buf)
+ {
+-	if (cdev->flags & DEVFS_IS_PARTITION)
+-		return partition_ioctl(cdev, request, buf);
+-
+ 	if (!cdev->ops->ioctl)
  		return -EINVAL;
  
-+	list_for_each_entry(partcdev, &cdev->partitions, partition_entry) {
-+		n_parts++;
-+	}
-+
-+	if (!n_parts)
-+		return 0;
-+
- 	if (cdev->size >= 0x100000000)
- 		n_cells = 2;
- 	else
 -- 
 2.11.0
 
