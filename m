@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ctqbS-0008Fk-Cq
- for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:04:17 +0000
+ by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1ctqbV-0001eL-GU
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:04:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 31 Mar 2017 09:03:13 +0200
-Message-Id: <20170331070346.26878-10-s.hauer@pengutronix.de>
+Date: Fri, 31 Mar 2017 09:03:29 +0200
+Message-Id: <20170331070346.26878-26-s.hauer@pengutronix.de>
 In-Reply-To: <20170331070346.26878-1-s.hauer@pengutronix.de>
 References: <20170331070346.26878-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,78 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/42] state: pass struct state * to storage functions
+Subject: [PATCH 25/42] state: backend_circular: rewrite function doc
 To: Barebox List <barebox@lists.infradead.org>
 
-We can get a state_backend_storage * and the device * from struct state,
-so pass this to the storage functions rather than the two pointers.
+The commment talks about copies where buckets are meant and also
+claims we start at offset 0, which may not be true. Rewrite comment.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/state/backend_storage.c | 7 +++----
- common/state/state.c           | 2 +-
- common/state/state.h           | 3 +--
- 3 files changed, 5 insertions(+), 7 deletions(-)
+ common/state/backend_storage.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/common/state/backend_storage.c b/common/state/backend_storage.c
-index 5481f27df9..e1869830bd 100644
+index 036204c188..d29db36cca 100644
 --- a/common/state/backend_storage.c
 +++ b/common/state/backend_storage.c
-@@ -454,7 +454,6 @@ static int state_storage_file_buckets_init(struct state_backend_storage *storage
- 
- /**
-  * state_storage_init - Init backend storage
-- * @param storage Storage object
-  * @param path Path to the backend storage file
-  * @param dev_offset Offset in the device to start writing at.
-  * @param max_size Maximum size of the data. May be 0 for infinite.
-@@ -465,16 +464,16 @@ static int state_storage_file_buckets_init(struct state_backend_storage *storage
+@@ -226,11 +226,9 @@ const int desired_copies = 3;
+  * @param circular If false, use non-circular mode to write data that is compatible with the old on-flash format
+  * @return 0 on success, -errno otherwise
   *
-  * Depending on the filetype, we create mtd buckets or normal file buckets.
+- * Starting from offset 0 this function tries to create circular buckets on
+- * different offsets in the device. Different copies of the data are located in
+- * different eraseblocks.
+- * For MTD devices we use circular buckets to minimize the number of erases.
+- * Circular buckets write new data always in the next free space.
++ * This function iterates over the eraseblocks and creates one bucket on
++ * each eraseblock until we have the number of desired buckets. Bad blocks
++ * will be skipped and the next block will be used.
   */
--int state_storage_init(struct state_backend_storage *storage,
--		       struct device_d *dev, const char *path,
-+int state_storage_init(struct state *state, const char *path,
- 		       off_t offset, size_t max_size, uint32_t stridesize,
- 		       const char *storagetype)
- {
-+	struct state_backend_storage *storage = &state->storage;
- 	int ret = -ENODEV;
- 	struct mtd_info_user meminfo;
- 
- 	INIT_LIST_HEAD(&storage->buckets);
--	storage->dev = dev;
-+	storage->dev = &state->dev;
- 	storage->name = storagetype;
- 	storage->stridesize = stridesize;
- 
-diff --git a/common/state/state.c b/common/state/state.c
-index 87b704feba..8d2dca2523 100644
---- a/common/state/state.c
-+++ b/common/state/state.c
-@@ -602,7 +602,7 @@ struct state *state_new_from_node(struct device_node *node, char *path,
- 	if (ret)
- 		goto out_release_state;
- 
--	ret = state_storage_init(&state->storage, &state->dev, path, offset,
-+	ret = state_storage_init(state, path, offset,
- 				 max_size, stridesize, storage_type);
- 	if (ret)
- 		goto out_release_state;
-diff --git a/common/state/state.h b/common/state/state.h
-index 254ff31a06..4ef46693c6 100644
---- a/common/state/state.h
-+++ b/common/state/state.h
-@@ -186,8 +186,7 @@ int backend_format_raw_create(struct state_backend_format **format,
- 			      struct device_d *dev);
- int backend_format_dtb_create(struct state_backend_format **format,
- 			      struct device_d *dev);
--int state_storage_init(struct state_backend_storage *storage,
--		       struct device_d *dev, const char *path,
-+int state_storage_init(struct state *state, const char *path,
- 		       off_t offset, size_t max_size, uint32_t stridesize,
- 		       const char *storagetype);
- void state_storage_set_readonly(struct state_backend_storage *storage);
+ static int state_storage_mtd_buckets_init(struct state_backend_storage *storage,
+ 					  struct mtd_info_user *meminfo, bool circular)
 -- 
 2.11.0
 
