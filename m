@@ -1,23 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ctwB6-0002Oq-MI
- for barebox@lists.infradead.org; Fri, 31 Mar 2017 13:01:22 +0000
-Date: Fri, 31 Mar 2017 15:00:58 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170331130058.y6prkk3xsys2ypg5@pengutronix.de>
-References: <CAGUZs0n9Piigr3=NTt4vz2YhMz_TKzhUtfKewRrGzk=dNT0=Dw@mail.gmail.com>
- <20170330063139.kfxjxb33cbrbzrdp@pengutronix.de>
- <CAGUZs0n93ZWNASvyyUddCPfSKPYavomXxGwHMd6caGGn3w65hw@mail.gmail.com>
- <20170331062139.d5kaoagglgnylr2r@pengutronix.de>
- <CAGUZs0=TQxEabVqdm4gbmazEwK4xvaBmLFmaJT==mZ-0-Lvorg@mail.gmail.com>
- <20170331070209.ogz4znywovz2rneb@pengutronix.de>
- <CAGUZs0nPy2PCRz3YQjT-O=SE1RwLgudrBW4x9H90R7jRKUmDNQ@mail.gmail.com>
- <20170331072338.er5w3t42yvfgtrf6@pengutronix.de>
- <CAGUZs0nLA3qTnAnuidvq-LBuj3VE9unJ+Y5+sjgyr2hBb7hFMg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAGUZs0nLA3qTnAnuidvq-LBuj3VE9unJ+Y5+sjgyr2hBb7hFMg@mail.gmail.com>
+ id 1cu0Rz-0004z8-1N
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 17:35:05 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Fri, 31 Mar 2017 19:34:36 +0200
+Message-Id: <20170331173436.10767-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,42 +14,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: State Framework and dtb
-To: =?utf-8?B?w4dhxJ9sYXI=?= Kilimci <ckilimci@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH v1] usb: gadget: set otg to peripheral mode on autostart
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-T24gRnJpLCBNYXIgMzEsIDIwMTcgYXQgMDI6NDE6MTlQTSArMDMwMCwgw4dhxJ9sYXIgS2lsaW1j
-aSB3cm90ZToKPiBIZXksCj4gCj4gPj4gPiBPaywgaGVyZSdzIHlvdXIgcHJvYmxlbS4gSSBhc3N1
-bWUgeW91IGVkaXRlZAo+ID4+ID4gYXJjaC9hcm0vZHRzL2FtMzM1eC1waHl0ZWMtcGh5Y29yZS1z
-b20uZHRzLCByaWdodD8gQ291bGQgeW91IHNlbmQgdGhlCj4gPj4gPiBkaWZmIHRvIHRoYXQgZmls
-ZSAob3IgdG8gdGhlIG9uZSB5b3UgZWRpdGVkKT8gVGhlcmUgbXVzdCBiZSBzb21ldGhpbmcKPiA+
-PiA+IHdyb25nIGhlcmUuCj4gPj4KPiA+PiBBY3R1YWxseSwgSSB3YXMgdXNpbmcgYXJjaC9hcm0v
-Ym9vdC9kdHMvYW0zMzV4LXBoeWNvcmUtc29tLmR0c2kgaW4gdGhlCj4gPj4gbGludXgtdGkga2Vy
-bmVsIGFuZCB0aGUgZGlmZiBpczoKPiA+Cj4gPiBPaywgd2hlbiB5b3UncmUgY2hhbmdpbmcgdGhl
-IExpbnV4IGR0cyB0aGVuIGJhcmVib3ggb2YgY291cnNlIGRvZXNuJ3QKPiA+IGtub3cgYWJvdXQg
-dGhpcy4KPiA+Cj4gPj4KPiA+PiBMZXQgbWUgZWRpdCAiYXJjaC9hcm0vZHRzL2FtMzM1eC1waHl0
-ZWMtcGh5Y29yZS1zb20uZHRzIiBhbmQgdHJ5IGl0Lgo+ID4KPiA+IFllcywgcGxlYXNlLiBUaGF0
-IHNvdW5kcyBiZXR0ZXIuCj4gCj4gSSB0cmllZCBidXQgZ290IHRoZSBzYW1lIHJlc3VsdCBhbmQg
-dGhlbiBJIHdvdWxkIGxpa2UgdG8gYXBwbHkgeW91cgo+IHNlcmlvdXMgcGF0Y2ggc2VyaWVzIG9m
-IHRoZSBzdGF0ZSBmcmFtZXdvcmsgYnV0IHJlbGVhc2UgdGhhdCBvdXIKPiB3b3JraW5nIGJyYW5j
-aCBpcyAyMDE2LjA3IHNvIGNvdWxkIG5vdCBhcHBseSBwYXRjaGVzLiBMZXQgbWUgdXBkYXRlCj4g
-YmFyZWJveCBhbmQgYXBwbHkgdGhvc2UgcGF0Y2hlcy4gQXJlIHRob3NlIGJhc2VkIG9uIG1hc3Rl
-ciBicmFuY2gKPiByaWdodD8gIE9yLCB3aGljaCBicmFuY2ggZG8geW91IHJlY29tbWVuZCB0byB3
-b3JrIG9uPwoKVGhlIHBhdGNoZXMgYXJlIGJhc2VkIG9uIG1hc3RlciwgeWVzLiBBbnl3YXksIHlv
-dSBzZWVtIHRvIGhhdmUgYSBwcm9ibGVtCmluIGdldHRpbmcgeW91ciBjaGFuZ2VzIGluIHRoZSBk
-dHMgZmlsZSB0byB0aGUgcnVubmluZyBiYXJlYm94LiBQbGVhc2UKdHJ5IHRvIGFkZCBzb21lIG5v
-ZGVzL3Byb3BlcnRpZXMgdG8geW91ciBkdHMgZmlsZSBhbmQgdmVyaWZ5IHRoYXQgYQpvZl9kdW1w
-IHNob3dzIHRoZXNlIG5vZGVzLiBCZWZvcmUgdGhhdCBpcyB0aGUgY2FzZSBpdCdzIG5vdCB3b3J0
-aCB0bwpsb29rIGFueSBmdXJ0aGVyLgoKU2FzY2hhCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5k
-dXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5n
-dXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55
-IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwg
-SFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
-ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+we won't be able to start if otg is not properly configured.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/usb/gadget/autostart.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/usb/gadget/autostart.c b/drivers/usb/gadget/autostart.c
+index 43c2ba23d..87781a11a 100644
+--- a/drivers/usb/gadget/autostart.c
++++ b/drivers/usb/gadget/autostart.c
+@@ -14,6 +14,7 @@
+ #include <common.h>
+ #include <command.h>
+ #include <errno.h>
++#include <environment.h>
+ #include <malloc.h>
+ #include <getopt.h>
+ #include <fs.h>
+@@ -31,10 +32,15 @@ static char *fastboot_function;
+ static int usbgadget_autostart(void)
+ {
+ 	struct f_multi_opts opts = {};
++	int ret;
+ 
+ 	if (!autostart)
+ 		return 0;
+ 
++	ret = setenv("otg.mode", "peripheral");
++	if (ret)
++		return ret;
++
+ 	if (fastboot_function)
+ 		opts.fastboot_opts.files = file_list_parse(fastboot_function);
+ 
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
