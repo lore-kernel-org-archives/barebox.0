@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ctqbT-0008Fw-Qc
+ id 1ctqbT-0008G0-Um
  for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:04:21 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 31 Mar 2017 09:03:12 +0200
-Message-Id: <20170331070346.26878-9-s.hauer@pengutronix.de>
+Date: Fri, 31 Mar 2017 09:03:23 +0200
+Message-Id: <20170331070346.26878-20-s.hauer@pengutronix.de>
 In-Reply-To: <20170331070346.26878-1-s.hauer@pengutronix.de>
 References: <20170331070346.26878-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,62 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/42] state: remove unnecessary argument from
- state_format_init
+Subject: [PATCH 19/42] state: backend_bucket_direct: max_size is always given
 To: Barebox List <barebox@lists.infradead.org>
 
-The device pointer is already in struct state, no need to pass it
-around when a struct state * is already passed.
+max_size is always != 0, so if(direct->max_size) can be skipped.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/state/state.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ common/state/backend_bucket_direct.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/state/state.c b/common/state/state.c
-index fce8fcc943..87b704feba 100644
---- a/common/state/state.c
-+++ b/common/state/state.c
-@@ -106,25 +106,24 @@ out:
- 	return ret;
- }
- 
--static int state_format_init(struct state *state,
--			     struct device_d *dev, const char *backend_format,
-+static int state_format_init(struct state *state, const char *backend_format,
- 			     struct device_node *node, const char *state_name)
- {
+diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
+index 9996ac2919..b72e8adb96 100644
+--- a/common/state/backend_bucket_direct.c
++++ b/common/state/backend_bucket_direct.c
+@@ -103,7 +103,7 @@ static int state_backend_bucket_direct_write(struct state_backend_storage_bucket
  	int ret;
+ 	struct state_backend_storage_bucket_direct_meta meta;
  
- 	if (!backend_format || !strcmp(backend_format, "raw")) {
- 		ret = backend_format_raw_create(&state->format, node,
--						state_name, dev);
-+						state_name, &state->dev);
- 	} else if (!strcmp(backend_format, "dtb")) {
--		ret = backend_format_dtb_create(&state->format, dev);
-+		ret = backend_format_dtb_create(&state->format, &state->dev);
- 	} else {
--		dev_err(dev, "Invalid backend format %s\n",
-+		dev_err(&state->dev, "Invalid backend format %s\n",
- 			backend_format);
- 		return -EINVAL;
- 	}
+-	if (direct->max_size && len > direct->max_size - sizeof(meta))
++	if (len > direct->max_size - sizeof(meta))
+ 		return -E2BIG;
  
- 	if (ret && ret != -EPROBE_DEFER)
--		dev_err(dev, "Failed to initialize format %s, %d\n",
-+		dev_err(&state->dev, "Failed to initialize format %s, %d\n",
- 			backend_format, ret);
- 
- 	return ret;
-@@ -599,7 +598,7 @@ struct state *state_new_from_node(struct device_node *node, char *path,
- 		dev_info(&state->dev, "No backend-storage-type found, using default.\n");
- 	}
- 
--	ret = state_format_init(state, &state->dev, backend_type, node, alias);
-+	ret = state_format_init(state, backend_type, node, alias);
- 	if (ret)
- 		goto out_release_state;
- 
+ 	ret = lseek(direct->fd, direct->offset, SEEK_SET);
 -- 
 2.11.0
 
