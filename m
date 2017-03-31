@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ctqbb-0005fd-It
- for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:04:20 +0000
+ id 1ctqbb-0005ff-MI
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:04:21 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 31 Mar 2017 09:03:44 +0200
-Message-Id: <20170331070346.26878-41-s.hauer@pengutronix.de>
+Date: Fri, 31 Mar 2017 09:03:36 +0200
+Message-Id: <20170331070346.26878-33-s.hauer@pengutronix.de>
 In-Reply-To: <20170331070346.26878-1-s.hauer@pengutronix.de>
 References: <20170331070346.26878-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,59 +21,154 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 40/42] state: Do not load state during state_new_from_node
+Subject: [PATCH 32/42] commands: implement keystore command
 To: Barebox List <barebox@lists.infradead.org>
 
-The caller of state_new_from_node() may have it's own ideas what to
-do when loading the state fails, so do not load it in the initialization
-function, but instead let the caller do it.
+The keystore command provides access to the barebox keystore.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/state/state.c | 5 -----
- drivers/misc/state.c | 6 ++++++
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ commands/Kconfig    |   6 ++++
+ commands/Makefile   |   1 +
+ commands/keystore.c | 100 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 107 insertions(+)
+ create mode 100644 commands/keystore.c
 
-diff --git a/common/state/state.c b/common/state/state.c
-index 1232ff3207..bdeda2e5a1 100644
---- a/common/state/state.c
-+++ b/common/state/state.c
-@@ -632,11 +632,6 @@ struct state *state_new_from_node(struct device_node *node, char *path,
- 		goto out_release_state;
- 	}
+diff --git a/commands/Kconfig b/commands/Kconfig
+index bc0885c69d..6bb47d6363 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -1967,6 +1967,12 @@ config CMD_FIRMWARELOAD
+ 	  Provides the "firmwareload" command which deals with devices which need
+ 	  firmware to work. It is also used to upload firmware to FPGA devices.
  
--	ret = state_load(state);
--	if (ret) {
--		dev_warn(&state->dev, "Failed to load persistent state, continuing with defaults, %d\n", ret);
--	}
--
- 	dev_info(&state->dev, "New state registered '%s'\n", alias);
++config CMD_KEYSTORE
++	depends on CRYPTO_KEYSTORE
++	bool
++	prompt "keystore"
++	help
++	  keystore provides access to the barebox keystore.
  
- 	return state;
-diff --git a/drivers/misc/state.c b/drivers/misc/state.c
-index b43aee60fe..98ed42e757 100644
---- a/drivers/misc/state.c
-+++ b/drivers/misc/state.c
-@@ -26,6 +26,7 @@ static int state_probe(struct device_d *dev)
- 	struct device_node *np = dev->device_node;
- 	struct state *state;
- 	bool readonly = false;
-+	int ret;
- 
- 	state = state_new_from_node(np, NULL, 0, 0, readonly);
- 	if (IS_ERR(state)) {
-@@ -35,6 +36,11 @@ static int state_probe(struct device_d *dev)
- 		return ret;
- 	}
- 
-+	ret = state_load(state);
-+	if (ret)
-+		dev_warn(dev, "Failed to load persistent state, continuing with defaults, %d\n",
-+			 ret);
+ config CMD_LINUX_EXEC
+ 	bool "linux exec"
+diff --git a/commands/Makefile b/commands/Makefile
+index 601f15fc38..a20c675929 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -92,6 +92,7 @@ obj-$(CONFIG_CMD_READLINK)	+= readlink.o
+ obj-$(CONFIG_CMD_LET)		+= let.o
+ obj-$(CONFIG_CMD_LN)		+= ln.o
+ obj-$(CONFIG_CMD_CLK)		+= clk.o
++obj-$(CONFIG_CMD_KEYSTORE)	+= keystore.o
+ obj-$(CONFIG_CMD_TFTP)		+= tftp.o
+ obj-$(CONFIG_CMD_FILETYPE)	+= filetype.o
+ obj-$(CONFIG_CMD_BAREBOX_UPDATE)+= barebox-update.o
+diff --git a/commands/keystore.c b/commands/keystore.c
+new file mode 100644
+index 0000000000..52c4be2639
+--- /dev/null
++++ b/commands/keystore.c
+@@ -0,0 +1,100 @@
++#include <common.h>
++#include <command.h>
++#include <getopt.h>
++#include <libfile.h>
++#include <crypto/keystore.h>
++#include <linux/kernel.h>
++#include <fs.h>
 +
- 	return 0;
- }
- 
++static int do_keystore(int argc, char *argv[])
++{
++	int opt;
++	int ret;
++	int do_remove = 0;
++	const char *name;
++	const char *file = NULL;
++	char *secret_str = NULL;
++	void *secret;
++	int s_len;
++
++	while ((opt = getopt(argc, argv, "rs:f:")) > 0) {
++		switch (opt) {
++		case 'r':
++			do_remove = 1;
++			break;
++		case 's':
++			secret_str = optarg;
++			break;
++		case 'f':
++			file = optarg;
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
++	}
++
++	if (argc == optind)
++		return COMMAND_ERROR_USAGE;
++
++	if (!do_remove && !file && !secret_str)
++		return COMMAND_ERROR_USAGE;
++
++	if (file && secret_str)
++		return COMMAND_ERROR_USAGE;
++
++	name = argv[optind];
++
++	if (do_remove) {
++		keystore_forget_secret(name);
++		printf("forgotten secret for key %s\n", name);
++		return 0;
++	}
++
++	if (file) {
++		ret = read_file_2(file, &s_len, (void *)&secret_str, FILESIZE_MAX);
++		if (ret) {
++			printf("Cannot open %s: %s\n", file, strerror(-ret));
++			return 1;
++		}
++	} else if (secret_str) {
++		s_len = strlen(secret_str);
++	}
++
++	if (s_len & 1) {
++		printf("invalid secret len. Must be whole bytes\n");
++		return 1;
++	}
++
++	secret = xzalloc(s_len / 2);
++	ret = hex2bin(secret, secret_str, s_len / 2);
++	if (ret) {
++		printf("Cannot convert %s to binary: %s\n", secret_str, strerror(-ret));
++		return 1;
++	}
++
++	ret = keystore_set_secret(name, secret, s_len / 2);
++	if (ret)
++		printf("cannot set secret for key %s: %s\n", name, strerror(-ret));
++	else
++		printf("Added secret for key %s\n", name);
++
++	free(secret);
++
++	return ret ? 1 : 0;
++}
++
++BAREBOX_CMD_HELP_START(keystore)
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT("-r", "remove a key from the keystore")
++BAREBOX_CMD_HELP_OPT("-s <key>", "set a key in the keystore")
++BAREBOX_CMD_HELP_OPT("-f <keyfile>", "set a key in the keystore, read secret from file")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(keystore)
++	.cmd	= do_keystore,
++	BAREBOX_CMD_DESC("manage keys")
++	BAREBOX_CMD_OPTS("[-rsf] <keyname>")
++	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
++	BAREBOX_CMD_HELP(cmd_keystore_help)
++BAREBOX_CMD_END
 -- 
 2.11.0
 
