@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x22e.google.com ([2a00:1450:400c:c0c::22e])
- by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ctuw2-0000by-Cu
- for barebox@lists.infradead.org; Fri, 31 Mar 2017 11:41:43 +0000
-Received: by mail-wr0-x22e.google.com with SMTP id l43so103672274wre.1
- for <barebox@lists.infradead.org>; Fri, 31 Mar 2017 04:41:21 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20170331072338.er5w3t42yvfgtrf6@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1ctwB6-0002Oq-MI
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 13:01:22 +0000
+Date: Fri, 31 Mar 2017 15:00:58 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170331130058.y6prkk3xsys2ypg5@pengutronix.de>
 References: <CAGUZs0n9Piigr3=NTt4vz2YhMz_TKzhUtfKewRrGzk=dNT0=Dw@mail.gmail.com>
  <20170330063139.kfxjxb33cbrbzrdp@pengutronix.de>
  <CAGUZs0n93ZWNASvyyUddCPfSKPYavomXxGwHMd6caGGn3w65hw@mail.gmail.com>
@@ -15,9 +14,10 @@ References: <CAGUZs0n9Piigr3=NTt4vz2YhMz_TKzhUtfKewRrGzk=dNT0=Dw@mail.gmail.com>
  <20170331070209.ogz4znywovz2rneb@pengutronix.de>
  <CAGUZs0nPy2PCRz3YQjT-O=SE1RwLgudrBW4x9H90R7jRKUmDNQ@mail.gmail.com>
  <20170331072338.er5w3t42yvfgtrf6@pengutronix.de>
-From: =?UTF-8?B?w4dhxJ9sYXIgS2lsaW1jaQ==?= <ckilimci@gmail.com>
-Date: Fri, 31 Mar 2017 14:41:19 +0300
-Message-ID: <CAGUZs0nLA3qTnAnuidvq-LBuj3VE9unJ+Y5+sjgyr2hBb7hFMg@mail.gmail.com>
+ <CAGUZs0nLA3qTnAnuidvq-LBuj3VE9unJ+Y5+sjgyr2hBb7hFMg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAGUZs0nLA3qTnAnuidvq-LBuj3VE9unJ+Y5+sjgyr2hBb7hFMg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,25 +31,37 @@ Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: State Framework and dtb
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: =?utf-8?B?w4dhxJ9sYXI=?= Kilimci <ckilimci@gmail.com>
 Cc: barebox <barebox@lists.infradead.org>
 
-SGV5LAoKPj4gPiBPaywgaGVyZSdzIHlvdXIgcHJvYmxlbS4gSSBhc3N1bWUgeW91IGVkaXRlZAo+
-PiA+IGFyY2gvYXJtL2R0cy9hbTMzNXgtcGh5dGVjLXBoeWNvcmUtc29tLmR0cywgcmlnaHQ/IENv
-dWxkIHlvdSBzZW5kIHRoZQo+PiA+IGRpZmYgdG8gdGhhdCBmaWxlIChvciB0byB0aGUgb25lIHlv
-dSBlZGl0ZWQpPyBUaGVyZSBtdXN0IGJlIHNvbWV0aGluZwo+PiA+IHdyb25nIGhlcmUuCj4+Cj4+
-IEFjdHVhbGx5LCBJIHdhcyB1c2luZyBhcmNoL2FybS9ib290L2R0cy9hbTMzNXgtcGh5Y29yZS1z
-b20uZHRzaSBpbiB0aGUKPj4gbGludXgtdGkga2VybmVsIGFuZCB0aGUgZGlmZiBpczoKPgo+IE9r
-LCB3aGVuIHlvdSdyZSBjaGFuZ2luZyB0aGUgTGludXggZHRzIHRoZW4gYmFyZWJveCBvZiBjb3Vy
-c2UgZG9lc24ndAo+IGtub3cgYWJvdXQgdGhpcy4KPgo+Pgo+PiBMZXQgbWUgZWRpdCAiYXJjaC9h
-cm0vZHRzL2FtMzM1eC1waHl0ZWMtcGh5Y29yZS1zb20uZHRzIiBhbmQgdHJ5IGl0Lgo+Cj4gWWVz
-LCBwbGVhc2UuIFRoYXQgc291bmRzIGJldHRlci4KCkkgdHJpZWQgYnV0IGdvdCB0aGUgc2FtZSBy
-ZXN1bHQgYW5kIHRoZW4gSSB3b3VsZCBsaWtlIHRvIGFwcGx5IHlvdXIKc2VyaW91cyBwYXRjaCBz
-ZXJpZXMgb2YgdGhlIHN0YXRlIGZyYW1ld29yayBidXQgcmVsZWFzZSB0aGF0IG91cgp3b3JraW5n
-IGJyYW5jaCBpcyAyMDE2LjA3IHNvIGNvdWxkIG5vdCBhcHBseSBwYXRjaGVzLiBMZXQgbWUgdXBk
-YXRlCmJhcmVib3ggYW5kIGFwcGx5IHRob3NlIHBhdGNoZXMuIEFyZSB0aG9zZSBiYXNlZCBvbiBt
-YXN0ZXIgYnJhbmNoCnJpZ2h0PyAgT3IsIHdoaWNoIGJyYW5jaCBkbyB5b3UgcmVjb21tZW5kIHRv
-IHdvcmsgb24/CgotLSAKw4dhxJ9sYXIgS2lsaW1jaQoKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
-cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
-Zm8vYmFyZWJveAo=
+T24gRnJpLCBNYXIgMzEsIDIwMTcgYXQgMDI6NDE6MTlQTSArMDMwMCwgw4dhxJ9sYXIgS2lsaW1j
+aSB3cm90ZToKPiBIZXksCj4gCj4gPj4gPiBPaywgaGVyZSdzIHlvdXIgcHJvYmxlbS4gSSBhc3N1
+bWUgeW91IGVkaXRlZAo+ID4+ID4gYXJjaC9hcm0vZHRzL2FtMzM1eC1waHl0ZWMtcGh5Y29yZS1z
+b20uZHRzLCByaWdodD8gQ291bGQgeW91IHNlbmQgdGhlCj4gPj4gPiBkaWZmIHRvIHRoYXQgZmls
+ZSAob3IgdG8gdGhlIG9uZSB5b3UgZWRpdGVkKT8gVGhlcmUgbXVzdCBiZSBzb21ldGhpbmcKPiA+
+PiA+IHdyb25nIGhlcmUuCj4gPj4KPiA+PiBBY3R1YWxseSwgSSB3YXMgdXNpbmcgYXJjaC9hcm0v
+Ym9vdC9kdHMvYW0zMzV4LXBoeWNvcmUtc29tLmR0c2kgaW4gdGhlCj4gPj4gbGludXgtdGkga2Vy
+bmVsIGFuZCB0aGUgZGlmZiBpczoKPiA+Cj4gPiBPaywgd2hlbiB5b3UncmUgY2hhbmdpbmcgdGhl
+IExpbnV4IGR0cyB0aGVuIGJhcmVib3ggb2YgY291cnNlIGRvZXNuJ3QKPiA+IGtub3cgYWJvdXQg
+dGhpcy4KPiA+Cj4gPj4KPiA+PiBMZXQgbWUgZWRpdCAiYXJjaC9hcm0vZHRzL2FtMzM1eC1waHl0
+ZWMtcGh5Y29yZS1zb20uZHRzIiBhbmQgdHJ5IGl0Lgo+ID4KPiA+IFllcywgcGxlYXNlLiBUaGF0
+IHNvdW5kcyBiZXR0ZXIuCj4gCj4gSSB0cmllZCBidXQgZ290IHRoZSBzYW1lIHJlc3VsdCBhbmQg
+dGhlbiBJIHdvdWxkIGxpa2UgdG8gYXBwbHkgeW91cgo+IHNlcmlvdXMgcGF0Y2ggc2VyaWVzIG9m
+IHRoZSBzdGF0ZSBmcmFtZXdvcmsgYnV0IHJlbGVhc2UgdGhhdCBvdXIKPiB3b3JraW5nIGJyYW5j
+aCBpcyAyMDE2LjA3IHNvIGNvdWxkIG5vdCBhcHBseSBwYXRjaGVzLiBMZXQgbWUgdXBkYXRlCj4g
+YmFyZWJveCBhbmQgYXBwbHkgdGhvc2UgcGF0Y2hlcy4gQXJlIHRob3NlIGJhc2VkIG9uIG1hc3Rl
+ciBicmFuY2gKPiByaWdodD8gIE9yLCB3aGljaCBicmFuY2ggZG8geW91IHJlY29tbWVuZCB0byB3
+b3JrIG9uPwoKVGhlIHBhdGNoZXMgYXJlIGJhc2VkIG9uIG1hc3RlciwgeWVzLiBBbnl3YXksIHlv
+dSBzZWVtIHRvIGhhdmUgYSBwcm9ibGVtCmluIGdldHRpbmcgeW91ciBjaGFuZ2VzIGluIHRoZSBk
+dHMgZmlsZSB0byB0aGUgcnVubmluZyBiYXJlYm94LiBQbGVhc2UKdHJ5IHRvIGFkZCBzb21lIG5v
+ZGVzL3Byb3BlcnRpZXMgdG8geW91ciBkdHMgZmlsZSBhbmQgdmVyaWZ5IHRoYXQgYQpvZl9kdW1w
+IHNob3dzIHRoZXNlIG5vZGVzLiBCZWZvcmUgdGhhdCBpcyB0aGUgY2FzZSBpdCdzIG5vdCB3b3J0
+aCB0bwpsb29rIGFueSBmdXJ0aGVyLgoKU2FzY2hhCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5k
+dXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5n
+dXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55
+IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwg
+SFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
+ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
