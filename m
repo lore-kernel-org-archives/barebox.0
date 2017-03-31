@@ -1,13 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wr0-x231.google.com ([2a00:1450:400c:c0c::231])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ctqbT-0008G1-Vp
- for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:04:21 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 31 Mar 2017 09:03:21 +0200
-Message-Id: <20170331070346.26878-18-s.hauer@pengutronix.de>
-In-Reply-To: <20170331070346.26878-1-s.hauer@pengutronix.de>
-References: <20170331070346.26878-1-s.hauer@pengutronix.de>
+ id 1ctqpI-0002H4-Kv
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 07:18:30 +0000
+Received: by mail-wr0-x231.google.com with SMTP id k6so86787900wre.2
+ for <barebox@lists.infradead.org>; Fri, 31 Mar 2017 00:18:06 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20170331070209.ogz4znywovz2rneb@pengutronix.de>
+References: <CAGUZs0n9Piigr3=NTt4vz2YhMz_TKzhUtfKewRrGzk=dNT0=Dw@mail.gmail.com>
+ <20170330063139.kfxjxb33cbrbzrdp@pengutronix.de>
+ <CAGUZs0n93ZWNASvyyUddCPfSKPYavomXxGwHMd6caGGn3w65hw@mail.gmail.com>
+ <20170331062139.d5kaoagglgnylr2r@pengutronix.de>
+ <CAGUZs0=TQxEabVqdm4gbmazEwK4xvaBmLFmaJT==mZ-0-Lvorg@mail.gmail.com>
+ <20170331070209.ogz4znywovz2rneb@pengutronix.de>
+From: =?UTF-8?B?w4dhxJ9sYXIgS2lsaW1jaQ==?= <ckilimci@gmail.com>
+Date: Fri, 31 Mar 2017 10:18:05 +0300
+Message-ID: <CAGUZs0nPy2PCRz3YQjT-O=SE1RwLgudrBW4x9H90R7jRKUmDNQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,40 +24,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/42] state: backend-direct: Fix max_size
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: State Framework and dtb
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>
 
-The max_size in the direct backend includes the meta data, so
-substract its size when determing the max data size we can store.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/state/backend_bucket_direct.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
-index 246cb499c4..9996ac2919 100644
---- a/common/state/backend_bucket_direct.c
-+++ b/common/state/backend_bucket_direct.c
-@@ -103,7 +103,7 @@ static int state_backend_bucket_direct_write(struct state_backend_storage_bucket
- 	int ret;
- 	struct state_backend_storage_bucket_direct_meta meta;
- 
--	if (direct->max_size && len > direct->max_size)
-+	if (direct->max_size && len > direct->max_size - sizeof(meta))
- 		return -E2BIG;
- 
- 	ret = lseek(direct->fd, direct->offset, SEEK_SET);
--- 
-2.11.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+MjAxNy0wMy0zMSAxMDowMiBHTVQrMDM6MDAgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJv
+bml4LmRlPjoKPiBPbiBGcmksIE1hciAzMSwgMjAxNyBhdCAwOTo1NDo1NkFNICswMzAwLCDDh2HE
+n2xhciBLaWxpbWNpIHdyb3RlOgo+PiBIZWxsbywKPj4KPj4gPiBJIHNob3VsZCBoYXZlIG5ldmVy
+IGltcGxlbWVudGVkIHRoaXMgZnJlZWluZyBvZiB0aGUgc3RvcmVkIGRldmljZSB0cmVlLgo+PiA+
+IFRoZXJlIGFyZSB0b28gbWFueSBwb2ludGVycyBpbiB0aGUgY29kZSB0byBub2RlcyBvZiB0aGlz
+IHRyZWUuIFBsZWFzZQo+PiA+IGRvIG5vdCB1c2UgdGhpcyBmcmVlL2xvYWQgZGV2aWNlIHRyZWUg
+ZmVhdHVyZSBmb3Igc3RhdGUuCj4+Cj4+IFN1cmUsIEkgdXN1YWxseSBhdm9pZCB1c2luZyBpdC4g
+SGVyZSBJIHVzZSB0byB0ZXN0IGl0IGlmIGl0IGlzIGFibGUgdG8KPj4gcmVhZCB0aGUgZHRiIG9y
+IG5vdD8gQXBwYXJlbnRseSwgaXQgImNhbiIgcmVhZCBhbmQgcGFyc2UgaXQgYnV0IGF0IHRoZQo+
+PiBib290IHN0YWdlLCBpdCBkb2VzIG5vdCBjYXJlLgo+Pgo+PiA+IFNvIHlvdSBlZGl0ZWQKPj4g
+PiB0aGUgZGV2aWNldHJlZSBpbiB0aGUgYmFyZWJveCBzb3VyY2UgY29kZSwgYnVpbHQgYSBuZXcg
+YmluYXJ5IHdpdGggaXQKPj4gPiBhbmQgc3RhcnRlZCBpdC4gTm93IHdoZW4geW91IGVudGVyICJv
+Zl9kdW1wIC9zdGF0ZUAwIiB5b3Ugc2hvdWxkCj4+ID4gc2VlIHRoZSBzdGF0ZSBub2RlIHlvdSBj
+cmVhdGVkLiBJcyB0aGF0IHdoYXQgaGFwcGVucz8KPj4KPj4gTm8sIG5vdCBhdCBhbGwuIEkgY291
+bGQgbm90IGFueSBzaWduIG9mIHN0YXRlIChvciBzdGF0ZUAwKS4KPj4gYmFyZWJveEBQaHl0ZWMg
+cGh5Q09SRSBBTTMzNXg6LyBvZl9kdW1wIC9zdGF0ZUAwCj4+IENhbm5vdCBmaW5kIG5vZGVwYXRo
+IC9zdGF0ZUAwCj4+IG9mX2R1bXA6IE5vIHN1Y2ggZmlsZSBvciBkaXJlY3RvcnkKPgo+IE9rLCBo
+ZXJlJ3MgeW91ciBwcm9ibGVtLiBJIGFzc3VtZSB5b3UgZWRpdGVkCj4gYXJjaC9hcm0vZHRzL2Ft
+MzM1eC1waHl0ZWMtcGh5Y29yZS1zb20uZHRzLCByaWdodD8gQ291bGQgeW91IHNlbmQgdGhlCj4g
+ZGlmZiB0byB0aGF0IGZpbGUgKG9yIHRvIHRoZSBvbmUgeW91IGVkaXRlZCk/IFRoZXJlIG11c3Qg
+YmUgc29tZXRoaW5nCj4gd3JvbmcgaGVyZS4KCkFjdHVhbGx5LCBJIHdhcyB1c2luZyBhcmNoL2Fy
+bS9ib290L2R0cy9hbTMzNXgtcGh5Y29yZS1zb20uZHRzaSBpbiB0aGUKbGludXgtdGkga2VybmVs
+IGFuZCB0aGUgZGlmZiBpczoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Jvb3QvZHRzL2FtMzM1eC1w
+aHljb3JlLXNvbS5kdHNpCmIvYXJjaC9hcm0vYm9vdC9kdHMvYW0zMzV4LXBoeWNvcmUtc29tLmR0
+c2kKaW5kZXggNThlNjlmMS4uZDhhZTg0MSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9vdC9kdHMv
+YW0zMzV4LXBoeWNvcmUtc29tLmR0c2kKKysrIGIvYXJjaC9hcm0vYm9vdC9kdHMvYW0zMzV4LXBo
+eWNvcmUtc29tLmR0c2kKQEAgLTQzLDYgKzQzLDI3IEBACiAgICAgICAgICAgICAgICAgICAgICAg
+IHJlZ3VsYXRvci1hbHdheXMtb247CiAgICAgICAgICAgICAgICB9OwogICAgICAgIH07CisKKyAg
+ICAgICBzdGF0ZTogc3RhdGVAMCB7CisgICAgICAgICAgICAgICBtYWdpYyA9IDwweDI3MDMxOTkz
+PjsKKyAgICAgICAgICAgICAgIGNvbXBhdGlibGUgPSAiYmFyZWJveCxzdGF0ZSI7CisgICAgICAg
+ICAgICAgICBiYWNrZW5kLXR5cGUgPSAiZHRiIjsKKyAgICAgICAgICAgICAgIGJhY2tlbmQgPSA8
+JnN0YXRlX3BhcnRpdGlvbj47CisKKyAgICAgICAgICAgICAgIGZvbyB7CisgICAgICAgICAgICAg
+ICAgICAgICAgIHJlZyA9IDwweDAwIDB4ND47CisgICAgICAgICAgICAgICAgICAgICAgIHR5cGUg
+PSAidWludDMyIjsKKyAgICAgICAgICAgICAgICAgICAgICAgZGVmYXVsdCA9IDwweDA+OworICAg
+ICAgICAgICAgICAgfTsKKworICAgICAgICAgICAgICAgYmFyIHsKKyAgICAgICAgICAgICAgICAg
+ICAgICAgcmVnID0gPDB4MTAgMHg0PjsKKyAgICAgICAgICAgICAgICAgICAgICAgdHlwZSA9ICJl
+bnVtMzIiOworICAgICAgICAgICAgICAgICAgICAgICBuYW1lcyA9ICJiYXoiLCAicXV4IjsKKyAg
+ICAgICAgICAgICAgICAgICAgICAgZGVmYXVsdCA9IDwxPjsKKyAgICAgICAgICAgICAgIH07Cisg
+ICAgICAgfTsKKwogfTsKCiAvKiBDcnlwdG8gTW9kdWxlICovCkBAIC0xMzEsNiArMTUyLDkgQEAK
+ICAgICAgICAgICAgICAgIHBhZ2VzaXplID0gPDMyPjsKICAgICAgICAgICAgICAgIHJlZyA9IDww
+eDUyPjsKICAgICAgICAgICAgICAgIHN0YXR1cyA9ICJkaXNhYmxlZCI7CisgICAgICAgICAgICAg
+ICBzdGF0ZV9wYXJ0aXRpb246IHBhcnRpdGlvbkAxMDAwIHsKKyAgICAgICAgICAgICAgICAgICAg
+ICAgcmVnID0gPDB4MTAwMCAweDIwMDA+OworICAgICAgICAgICAgICAgfTsKICAgICAgICB9OwoK
+ICAgICAgICBpMmNfcnRjOiBydGNANjggewoKTGV0IG1lIGVkaXQgImFyY2gvYXJtL2R0cy9hbTMz
+NXgtcGh5dGVjLXBoeWNvcmUtc29tLmR0cyIgYW5kIHRyeSBpdC4KCi0tIArDh2HEn2xhciBLaWxp
+bWNpCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
+Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
