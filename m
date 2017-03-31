@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from gandharva.secretlabs.de ([2a01:4f8:161:8201::2:4])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ctf8n-0007y4-3i
- for barebox@lists.infradead.org; Thu, 30 Mar 2017 18:49:51 +0000
-Received: from [10.0.1.2] (ip127-36-210-87.adsl2.static.versatel.nl
- [87.210.36.127])
- by gandharva.secretlabs.de (Postfix) with ESMTPSA id 4C32AAE281
- for <barebox@lists.infradead.org>; Thu, 30 Mar 2017 18:49:22 +0000 (UTC)
-From: Holger Freyther <holger@moiji-mobile.com>
-Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
-Message-Id: <CCE0355C-0078-435E-A307-9D64235CC014@moiji-mobile.com>
-Date: Thu, 30 Mar 2017 20:49:21 +0200
+ id 1ctpC4-0005GW-57
+ for barebox@lists.infradead.org; Fri, 31 Mar 2017 05:33:56 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 31 Mar 2017 07:33:10 +0200
+Message-Id: <20170331053323.17821-2-s.hauer@pengutronix.de>
+In-Reply-To: <20170331053323.17821-1-s.hauer@pengutronix.de>
+References: <20170331053323.17821-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,175 +16,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Linking issue with ld.bfd 2.28.0.20170307
-To: barebox@lists.infradead.org
+Subject: [PATCH 01/14] of: Add of_property_write_string()
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi,
+Setting a property to a string is used many times. Create a convenience
+function for it.
 
-I am rebuilding the bootloader with gcc6 and the above version
-of binutils and it is failing to link with .bfd but is working
-with .gold.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/of/base.c | 22 ++++++++++++++++++++++
+ include/of.h      |  8 ++++++++
+ 2 files changed, 30 insertions(+)
 
-Is this known? Is anyone else seeing this issue? And no I did
-not try linking with -N and I have no idea what ld thinks is
-the program headers here.
-
-cheers
-	holger
-
-   arm-poky-linux-gnueabi-ld.bfd     -r -o common/built-in.o common/memory.o common/memory_display.o common/clock.o common/console_common.o common/startup.o common/misc.o common/resource.o common/bootsource.o common/restart.o common/complete.o common/version.o common/binfmt.o common/bootm.o common/memtest.o common/command.o common/console.o common/console_countdown.o common/environment.o common/env.o common/filetype.o common/bootargs.o common/globalvar.o common/date.o common/kallsyms.o common/dlmalloc.o common/meminfo.o common/oftree.o common/password.o common/poller.o common/hush.o common/state/built-in.o common/image.o common/uimage.o common/imd.o common/ubiformat.o common/boot.o common/memsize.o
-   arm-poky-linux-gnueabi-ld.bfd     -r -o common/built-in-pbl.o common/pbl-imd-barebox.o common/pbl-memsize.o common/state/built-in-pbl.o
-  arm-poky-linux-gnueabi-ld.bfd    -Map barebox.map --gc-sections -pie -o .tmp_barebox1 -T arch/arm/lib32/barebox.lds --start-group  common/built-in.o  drivers/built-in.o  commands/built-in.o  lib/built-in.o  crypto/built-in.o  net/built-in.o  fs/built-in.o  arch/arm/boards/built-in.o  arch/arm/mach-davinci/built-in.o  arch/arm/cpu/built-in.o  arch/arm/lib/built-in.o  arch/arm/lib32/built-in.o  arch/arm/crypto/built-in.o  arch/arm/dts/built-in.o  pbl/built-in.o  defaultenv/built-in.o --end-group 
-arm-poky-linux-gnueabi-ld.bfd: .tmp_barebox1: Not enough room for program headers, try linking with -N
-arm-poky-linux-gnueabi-ld.bfd: final link failed: Bad value
-
-/*
- *
- * Automatically generated file; DO NOT EDIT.
- * Barebox/arm 2017.03.0 Configuration
- *
- */
-/*
- * Helper macros to use CONFIG_ options in C expressions. Note that
- * these only work with boolean and tristate options.
- */
-/*
- * Getting something that works in C and CPP for an arg that may or may
- * not be defined is tricky.  Here, if we have "#define CONFIG_BOOGER 1"
- * we match on the placeholder define, insert the "0," for arg1 and generate
- * the triplet (0, 1, 0).  Then the last step cherry picks the 2nd arg (a one).
- * When CONFIG_BOOGER is not defined, we generate a (... 1, 0) pair, and when
- * the last step cherry picks the 2nd arg, we get a zero.
- */
-/*
- * IS_ENABLED(CONFIG_FOO) evaluates to 1 if CONFIG_FOO is set to 'y' or 'm',
- * 0 otherwise.
- *
- */
-/*
- * IS_BUILTIN(CONFIG_FOO) evaluates to 1 if CONFIG_FOO is set to 'y', 0
- * otherwise. For boolean options, this is equivalent to
- * IS_ENABLED(CONFIG_FOO).
- */
-/*
- * IS_MODULE(CONFIG_FOO) evaluates to 1 if CONFIG_FOO is set to 'm', 0
- * otherwise.
- */
-/*
- * (C) Copyright 2000-2004
- * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
- *
- * See file CREDITS for list of people who contributed to this
- * project.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- *
- */
-/*
- * Align to a 32 byte boundary equal to the
- * alignment gcc 4.5 uses for a struct
- */
-/* Indirect stringification.  Doing two levels allows the parameter to be a
- * macro itself.  For example, compile with -DFOO=bar, __stringify(FOO)
- * converts to "bar".
- */
-/* use 2 ASSERT because ld can not accept '"size" "10"' format */
-OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
-OUTPUT_ARCH(arm)
-ENTRY(start)
-SECTIONS
-{
- . = 0x0;
- .image_start : { *(.__image_start) }
- . = ALIGN(4);
- .text :
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index bef8f1de1a..01ab38907d 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1217,6 +1217,28 @@ int of_property_write_u64_array(struct device_node *np,
+ }
+ 
+ /**
++ * of_property_write_string - Write a string to a property. If
++ * the property does not exist, it will be created and appended to the given
++ * device node.
++ *
++ * @np:		device node to which the property value is to be written.
++ * @propname:	name of the property to be written.
++ * value:	pointer to the string to write
++ *
++ * Search for a property in a device node and write a string to
++ * it. If the property does not exist, it will be created and appended to
++ * the device node. Returns 0 on success, -ENOMEM if the property or array
++ * of elements cannot be created.
++ */
++int of_property_write_string(struct device_node *np,
++			     const char *propname, const char *value)
++{
++	size_t len = strlen(value);
++
++	return of_set_property(np, propname, value, len + 1, 1);
++}
++
++/**
+  * of_parse_phandle_from - Resolve a phandle property to a device_node pointer from
+  * a given root node
+  * @np: Pointer to device node holding phandle property
+diff --git a/include/of.h b/include/of.h
+index e3bb452b86..6bff13388d 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -205,6 +205,8 @@ extern int of_property_write_u32_array(struct device_node *np,
+ extern int of_property_write_u64_array(struct device_node *np,
+ 				const char *propname, const u64 *values,
+ 				size_t sz);
++extern int of_property_write_string(struct device_node *np, const char *propname,
++				    const char *value);
+ 
+ extern struct device_node *of_parse_phandle(const struct device_node *np,
+ 					    const char *phandle_name,
+@@ -466,6 +468,12 @@ static inline int of_property_write_u64_array(struct device_node *np,
+ 	return -ENOSYS;
+ }
+ 
++static inline int of_property_write_string(struct device_node *np, const char *propname,
++				    const char *value)
++{
++	return -ENOSYS;
++}
++
+ static inline struct device_node *of_parse_phandle(const struct device_node *np,
+ 					    const char *phandle_name, int index)
  {
-  _stext = .;
-  _text = .;
-  *(.text_entry*)
-  __bare_init_start = .;
-  *(.text_bare_init*)
-  __bare_init_end = .;
-  . = ALIGN(0x20);
-  __exceptions_start = .;
-  KEEP(*(.text_exceptions*))
-  __exceptions_stop = .;
-  *(.text*)
- }
- _barebox_bare_init_size = __bare_init_end - _text; ASSERT(_barebox_bare_init_size < 0xffffffff, "Barebox bare_init size > ") ASSERT(_barebox_bare_init_size < 0xffffffff, "0xffffffff"
-)
- . = ALIGN(4);
- .rodata : { *(.rodata*) }
- /*
-         * Stack unwinding tables
-         */
- . = ALIGN(8);
- .ARM.unwind_idx : {
-  __start_unwind_idx = .;
-  *(.ARM.exidx*)
-  __stop_unwind_idx = .;
- }
- .ARM.unwind_tab : {
-  __start_unwind_tab = .;
-  *(.ARM.extab*)
-  *(.ARM.extab*)
-  __stop_unwind_tab = .;
- }
- _etext = .; /* End of text and rodata section */
- _sdata = .;
- . = ALIGN(4);
- .data : { *(.data*) }
- .barebox_imd : { KEEP(*(.barebox_imd_start)) KEEP(*(.barebox_imd_1*)) *(.barebox_imd_0*) KEEP(*(.barebox_imd_end)) }
- . = .;
- __barebox_cmd_start = .;
- .barebox_cmd : { KEEP(*(SORT_BY_NAME(.barebox_cmd*))) }
- __barebox_cmd_end = .;
- __barebox_magicvar_start = .;
- .barebox_magicvar : { KEEP(*(SORT_BY_NAME(.barebox_magicvar*))) }
- __barebox_magicvar_end = .;
- __barebox_initcalls_start = .;
- .barebox_initcalls : { KEEP(*(.initcall.0)) KEEP(*(.initcall.1)) KEEP(*(.initcall.2)) KEEP(*(.initcall.3)) KEEP(*(.initcall.4)) KEEP(*(.initcall.5)) KEEP(*(.initcall.6)) KEEP(*(.initcall.7)) KEEP(*(.initcall.8)) KEEP(*(.initcall.9)) KEEP(*(.initcall.10)) KEEP(*(.initcall.11)) KEEP(*(.initcall.12)) KEEP(*(.initcall.13)) KEEP(*(.initcall.14)) }
- __barebox_initcalls_end = .;
- __barebox_exitcalls_start = .;
- .barebox_exitcalls : { KEEP(*(.exitcall.0)) KEEP(*(.exitcall.1)) KEEP(*(.exitcall.2)) KEEP(*(.exitcall.3)) KEEP(*(.exitcall.4)) KEEP(*(.exitcall.5)) KEEP(*(.exitcall.6)) }
- __barebox_exitcalls_end = .;
- __usymtab_start = .;
- __usymtab : { KEEP(*(__usymtab)) }
- __usymtab_end = .;
- .oftables : { . = ALIGN(8); __clk_of_table_start = .; KEEP(*(.__clk_of_table)); KEEP(*(.__clk_of_table_end)); __clk_of_table_end = .; }
- .dtb : { . = ALIGN(8); __dtb_start = .; KEEP(*(.dtb.rodata.*)); __dtb_end = .; }
- .rel.dyn : {
-  __rel_dyn_start = .;
-  *(.rel*)
-  __rel_dyn_end = .;
- }
- .dynsym : {
-  __dynsym_start = .;
-  *(.dynsym)
-  __dynsym_end = .;
- }
- _edata = .;
- .image_end : { *(.__image_end) }
- . = ALIGN(4);
- __bss_start = .;
- .bss : { *(.bss*) }
- __bss_stop = .;
- _end = .;
- _barebox_image_size = __bss_start - 0x82000000;
-}
+-- 
+2.11.0
 
 
 _______________________________________________
