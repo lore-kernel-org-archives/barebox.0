@@ -1,15 +1,25 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from mail-wr0-x22b.google.com ([2a00:1450:400c:c0c::22b])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cv8O4-0005Wn-VJ
- for barebox@lists.infradead.org; Mon, 03 Apr 2017 20:15:43 +0000
-Date: Mon, 3 Apr 2017 22:15:11 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170403201511.GA29829@ravnborg.org>
-References: <20170331070346.26878-1-s.hauer@pengutronix.de>
+ id 1cv95B-0004xF-Tq
+ for barebox@lists.infradead.org; Mon, 03 Apr 2017 21:00:16 +0000
+Received: by mail-wr0-x22b.google.com with SMTP id k6so181986466wre.2
+ for <barebox@lists.infradead.org>; Mon, 03 Apr 2017 13:59:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170331070346.26878-1-s.hauer@pengutronix.de>
+In-Reply-To: <20170331130058.y6prkk3xsys2ypg5@pengutronix.de>
+References: <CAGUZs0n9Piigr3=NTt4vz2YhMz_TKzhUtfKewRrGzk=dNT0=Dw@mail.gmail.com>
+ <20170330063139.kfxjxb33cbrbzrdp@pengutronix.de>
+ <CAGUZs0n93ZWNASvyyUddCPfSKPYavomXxGwHMd6caGGn3w65hw@mail.gmail.com>
+ <20170331062139.d5kaoagglgnylr2r@pengutronix.de>
+ <CAGUZs0=TQxEabVqdm4gbmazEwK4xvaBmLFmaJT==mZ-0-Lvorg@mail.gmail.com>
+ <20170331070209.ogz4znywovz2rneb@pengutronix.de>
+ <CAGUZs0nPy2PCRz3YQjT-O=SE1RwLgudrBW4x9H90R7jRKUmDNQ@mail.gmail.com>
+ <20170331072338.er5w3t42yvfgtrf6@pengutronix.de>
+ <CAGUZs0nLA3qTnAnuidvq-LBuj3VE9unJ+Y5+sjgyr2hBb7hFMg@mail.gmail.com>
+ <20170331130058.y6prkk3xsys2ypg5@pengutronix.de>
+From: =?UTF-8?B?w4dhxJ9sYXIgS2lsaW1jaQ==?= <ckilimci@gmail.com>
+Date: Mon, 3 Apr 2017 23:59:50 +0300
+Message-ID: <CAGUZs0=zmi+GciKgtSRUe8sT=_SXNBGH4p5jXqk8MogyQ5MMwA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,46 +28,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: State patches
+Subject: Re: State Framework and dtb
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Cc: barebox <barebox@lists.infradead.org>
 
-Hi Sasha.
-
-On Fri, Mar 31, 2017 at 09:03:04AM +0200, Sascha Hauer wrote:
-> Hi All,
-> 
-> Here is a ton of patches working on the state framework:
-> 
-> - make code easier to follow
->   - Drop cached backend, replace with open coded more direct code
->   - drop backend as extra struct type
->   - drop lazy init code
-> - update documentation
-> - Add keystore command
->   Using authenticated state requires hardware support which currently
->   is only available for i.MX6. At least for testing purposes a keystore
->   command to set keys is useful. This way authenticated state can be
->   tested without hardware support
-> - more robust conversion of the backend path to a device node
-> - make work better with NOR flash: The current code ended up reading
->   from NOR Flash byte by byte which was painfully slow
-
-From browsing the patches this also brings a nice boot time improvement.
-We avoid earsing the whole block (or whatever the right name is) until
-we have filled it up with state entries.
-I expect this tospeed up booting with at least a second on our target.
-
-Will this require a newer version of dt-utils to work?
-(When we for example update the sate from linux userspace)
-
-	Sam
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sCgoyMDE3LTAzLTMxIDE2OjAwIEdNVCswMzowMCBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJA
+cGVuZ3V0cm9uaXguZGU+Ogo+IE9uIEZyaSwgTWFyIDMxLCAyMDE3IGF0IDAyOjQxOjE5UE0gKzAz
+MDAsIMOHYcSfbGFyIEtpbGltY2kgd3JvdGU6Cj4+IEhleSwKPj4KPj4KPj4gSSB0cmllZCBidXQg
+Z290IHRoZSBzYW1lIHJlc3VsdCBhbmQgdGhlbiBJIHdvdWxkIGxpa2UgdG8gYXBwbHkgeW91cgo+
+PiBzZXJpb3VzIHBhdGNoIHNlcmllcyBvZiB0aGUgc3RhdGUgZnJhbWV3b3JrIGJ1dCByZWxlYXNl
+IHRoYXQgb3VyCj4+IHdvcmtpbmcgYnJhbmNoIGlzIDIwMTYuMDcgc28gY291bGQgbm90IGFwcGx5
+IHBhdGNoZXMuIExldCBtZSB1cGRhdGUKPj4gYmFyZWJveCBhbmQgYXBwbHkgdGhvc2UgcGF0Y2hl
+cy4gQXJlIHRob3NlIGJhc2VkIG9uIG1hc3RlciBicmFuY2gKPj4gcmlnaHQ/ICBPciwgd2hpY2gg
+YnJhbmNoIGRvIHlvdSByZWNvbW1lbmQgdG8gd29yayBvbj8KPgo+IFRoZSBwYXRjaGVzIGFyZSBi
+YXNlZCBvbiBtYXN0ZXIsIHllcy4gQW55d2F5LCB5b3Ugc2VlbSB0byBoYXZlIGEgcHJvYmxlbQo+
+IGluIGdldHRpbmcgeW91ciBjaGFuZ2VzIGluIHRoZSBkdHMgZmlsZSB0byB0aGUgcnVubmluZyBi
+YXJlYm94LiBQbGVhc2UKPiB0cnkgdG8gYWRkIHNvbWUgbm9kZXMvcHJvcGVydGllcyB0byB5b3Vy
+IGR0cyBmaWxlIGFuZCB2ZXJpZnkgdGhhdCBhCj4gb2ZfZHVtcCBzaG93cyB0aGVzZSBub2Rlcy4g
+QmVmb3JlIHRoYXQgaXMgdGhlIGNhc2UgaXQncyBub3Qgd29ydGggdG8KPiBsb29rIGFueSBmdXJ0
+aGVyLgoKRmluYWxseSwgSSB1cGRhdGVkIGFuZCBwYXRjaGVkIHRoZSBjb2RlIGFuZCBub3cgSSBj
+YW4gc2VlIHN0YXRlQDAKZGV2aWNlIGluIHRoZSBvZl9kdW1wOgogICAgICAgIHN0YXRlQDAgewog
+ICAgICAgICAgICAgICAgbWFnaWMgPSA8MHgyNzAzMTk3Nz47CiAgICAgICAgICAgICAgICBjb21w
+YXRpYmxlID0gImJhcmVib3gsc3RhdGUiOwogICAgICAgICAgICAgICAgYmFja2VuZC10eXBlID0g
+InJhdyI7CiAgICAgICAgICAgICAgICBiYWNrZW5kID0gPDB4NDI+OwogICAgICAgICAgICAgICAg
+Zm9vIHsKICAgICAgICAgICAgICAgICAgICAgICAgcmVnID0gPDB4MCAweDQ+OwogICAgICAgICAg
+ICAgICAgICAgICAgICB0eXBlID0gInVpbnQzMiI7CiAgICAgICAgICAgICAgICAgICAgICAgIGRl
+ZmF1bHQgPSA8MHgwPjsKICAgICAgICAgICAgICAgIH07CiAgICAgICAgICAgICAgICBiYXIgewog
+ICAgICAgICAgICAgICAgICAgICAgICByZWcgPSA8MHgxMCAweDQ+OwogICAgICAgICAgICAgICAg
+ICAgICAgICB0eXBlID0gImVudW0zMiI7CiAgICAgICAgICAgICAgICAgICAgICAgIG5hbWVzID0g
+ImJheiIsICJxdXgiOwogICAgICAgICAgICAgICAgICAgICAgICBkZWZhdWx0ID0gPDB4MT47CiAg
+ICAgICAgICAgICAgICB9OwogICAgICAgIH07CkkgY2FuIHNlZSBpbiB0aGUgZWVwcm9tIHNlY3Rp
+b24sIHRvbzoKYmFyZWJveEBQaHl0ZWMgcGh5Q09SRSBBTTMzNXg6LyBvZl9kdW1wIGkyYzAKaTJj
+QDQ0ZTBiMDAwIHsKICAgICAgICBjb21wYXRpYmxlID0gInRpLG9tYXA0LWkyYyI7CiAgICAgICAg
+I2FkZHJlc3MtY2VsbHMgPSA8MHgxPjsKICAgICAgICAjc2l6ZS1jZWxscyA9IDwweDA+OwogICAg
+ICAgIHRpLGh3bW9kcyA9ICJpMmMxIjsKICAgICAgICByZWcgPSA8MHg0NGUwYjAwMCAweDEwMDA+
+OwogICAgICAgIGludGVycnVwdHMgPSA8MHg0Nj47CiAgICAgICAgc3RhdHVzID0gIm9rYXkiOwog
+ICAgICAgIHBpbmN0cmwtbmFtZXMgPSAiZGVmYXVsdCI7CiAgICAgICAgcGluY3RybC0wID0gPDB4
+MmM+OwogICAgICAgIGNsb2NrLWZyZXF1ZW5jeSA9IDwweDYxYTgwPjsKICAgICAgICBlZXByb21A
+NTIgewogICAgICAgICAgICAgICAgc3RhdHVzID0gIm9rYXkiOwogICAgICAgICAgICAgICAgY29t
+cGF0aWJsZSA9ICJhdG1lbCwyNGMzMiI7CiAgICAgICAgICAgICAgICBwYWdlc2l6ZSA9IDwweDIw
+PjsKICAgICAgICAgICAgICAgIHJlZyA9IDwweDUyPjsKICAgICAgICAgICAgICAgIHN0YXRlQDEw
+MDAgewogICAgICAgICAgICAgICAgICAgICAgICBsYWJlbCA9ICJzdGF0ZSI7CiAgICAgICAgICAg
+ICAgICAgICAgICAgIHJlZyA9IDwweDEwMDAgMHgxMDAwPjsKICAgICAgICAgICAgICAgICAgICAg
+ICAgbGludXgscGhhbmRsZSA9IDwweDQyPjsKICAgICAgICAgICAgICAgICAgICAgICAgcGhhbmRs
+ZSA9IDwweDQyPjsKICAgICAgICAgICAgICAgIH07CiAgICAgICAgfTsKfTsKCkJ1dCBzdGlsbCBz
+dGF0ZSBjb21tYW5kIGRvZXMgbm90IHNob3cgYW55IHN0YXRlIGRldmljZToKYmFyZWJveEBQaHl0
+ZWMgcGh5Q09SRSBBTTMzNXg6LyBzdGF0ZQpyZWdpc3RlcmVkIHN0YXRlIGluc3RhbmNlczoKCkhl
+cmUgaXMgbXkgZGlmZiBmb3IgdGhlIGR0czoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0cy9hbTMz
+NXgtcGh5dGVjLXBoeWNvcmUtc29tLmR0c2kKYi9hcmNoL2FybS9kdHMvYW0zMzV4LXBoeXRlYy1w
+aHljb3JlLXNvbS5kdHNpCmluZGV4IDBiOGM0NTQuLjBkNzFlOGIgMTAwNjQ0Ci0tLSBhL2FyY2gv
+YXJtL2R0cy9hbTMzNXgtcGh5dGVjLXBoeWNvcmUtc29tLmR0c2kKKysrIGIvYXJjaC9hcm0vZHRz
+L2FtMzM1eC1waHl0ZWMtcGh5Y29yZS1zb20uZHRzaQpAQCAtMTQsNiArMTQsMjYgQEAKICAgICAg
+ICAgICAgICAgICAgICAgICAgc3RhdHVzID0gImRpc2FibGVkIjsKICAgICAgICAgICAgICAgIH07
+CiAgICAgICAgfTsKKworICAgICAgIHN0YXRlOiBzdGF0ZUAwIHsKKyAgICAgICAgICAgICAgIG1h
+Z2ljID0gPDB4MjcwMzE5Nzc+OworICAgICAgICAgICAgICAgY29tcGF0aWJsZSA9ICJiYXJlYm94
+LHN0YXRlIjsKKyAgICAgICAgICAgICAgIGJhY2tlbmQtdHlwZSA9ICJyYXciOworICAgICAgICAg
+ICAgICAgYmFja2VuZCA9IDwmc3RhdGVfcGFydD47CisKKyAgICAgICAgICAgICAgIGZvbyB7Cisg
+ICAgICAgICAgICAgICAgICAgICByZWcgPSA8MHgwMCAweDQ+OworICAgICAgICAgICAgICAgICAg
+ICAgdHlwZSA9ICJ1aW50MzIiOworICAgICAgICAgICAgICAgICAgICAgZGVmYXVsdCA9IDwweDA+
+OworICAgICAgICAgICAgICAgfTsKKworICAgICAgICAgICAgICAgYmFyIHsKKyAgICAgICAgICAg
+ICAgICAgICAgIHJlZyA9IDwweDEwIDB4ND47CisgICAgICAgICAgICAgICAgICAgICB0eXBlID0g
+ImVudW0zMiI7CisgICAgICAgICAgICAgICAgICAgICBuYW1lcyA9ICJiYXoiLCAicXV4IjsKKyAg
+ICAgICAgICAgICAgICAgICAgIGRlZmF1bHQgPSA8MT47CisgICAgICAgICAgICAgICB9OworICAg
+ICAgIH07CiB9OwoKICZhbTMzeHhfcGlubXV4IHsKQEAgLTE0OCw2ICsxNjgsMTAgQEAKICAgICAg
+ICAgICAgICAgIGNvbXBhdGlibGUgPSAiYXRtZWwsMjRjMzIiOwogICAgICAgICAgICAgICAgcGFn
+ZXNpemUgPSA8MzI+OwogICAgICAgICAgICAgICAgcmVnID0gPDB4NTI+OworICAgICAgICAgICAg
+ICAgc3RhdGVfcGFydDogc3RhdGVAMTAwMCB7CisgICAgICAgICAgICAgICAgICAgICAgIGxhYmVs
+ID0gInN0YXRlIjsKKyAgICAgICAgICAgICAgICAgICAgICAgcmVnID0gPDB4MTAwMCAweDEwMDA+
+OworICAgICAgICAgICAgICAgfTsKICAgICAgICB9OwogfTsKClNvLCB3aHkgZG9lcyBub3Qgc3Rh
+dGUgZnJhbWV3b3JrIGNhdGNoIG15IHN0YXRlIGRldmljZT8KClNpbmNlcmVseSwKLS0gCsOHYcSf
+bGFyIEtpbGltY2kKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
+Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
