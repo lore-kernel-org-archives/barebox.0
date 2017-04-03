@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cuzeN-0007YP-IA
- for barebox@lists.infradead.org; Mon, 03 Apr 2017 10:56:02 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon,  3 Apr 2017 12:55:18 +0200
-Message-Id: <20170403105523.16797-3-s.trumtrar@pengutronix.de>
-In-Reply-To: <20170403105523.16797-1-s.trumtrar@pengutronix.de>
-References: <20170403105523.16797-1-s.trumtrar@pengutronix.de>
+ id 1cv8O4-0005Wn-VJ
+ for barebox@lists.infradead.org; Mon, 03 Apr 2017 20:15:43 +0000
+Date: Mon, 3 Apr 2017 22:15:11 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20170403201511.GA29829@ravnborg.org>
+References: <20170331070346.26878-1-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170331070346.26878-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,50 +18,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] clk: socfpga: move driver to subdirectory
-To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: State patches
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- drivers/clk/Makefile                     | 2 +-
- drivers/clk/socfpga/Makefile             | 1 +
- drivers/clk/{socfpga.c => socfpga/clk.c} | 0
- 3 files changed, 2 insertions(+), 1 deletion(-)
- create mode 100644 drivers/clk/socfpga/Makefile
- rename drivers/clk/{socfpga.c => socfpga/clk.c} (100%)
+Hi Sasha.
 
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index 5811d28b88ce..2a8c058d84e9 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -8,6 +8,6 @@ obj-$(CONFIG_ARCH_MVEBU)	+= mvebu/
- obj-$(CONFIG_ARCH_MXS)		+= mxs/
- obj-$(CONFIG_ARCH_ROCKCHIP)	+= rockchip/
- obj-$(CONFIG_ARCH_TEGRA)	+= tegra/
--obj-$(CONFIG_CLK_SOCFPGA)	+= socfpga.o
-+obj-$(CONFIG_CLK_SOCFPGA)	+= socfpga/
- obj-$(CONFIG_MACH_MIPS_ATH79)	+= clk-ar933x.o
- obj-$(CONFIG_ARCH_IMX)		+= imx/
-diff --git a/drivers/clk/socfpga/Makefile b/drivers/clk/socfpga/Makefile
-new file mode 100644
-index 000000000000..fc216adb744e
---- /dev/null
-+++ b/drivers/clk/socfpga/Makefile
-@@ -0,0 +1 @@
-+obj-y	+= clk.o
-diff --git a/drivers/clk/socfpga.c b/drivers/clk/socfpga/clk.c
-similarity index 100%
-rename from drivers/clk/socfpga.c
-rename to drivers/clk/socfpga/clk.c
--- 
-2.11.0
+On Fri, Mar 31, 2017 at 09:03:04AM +0200, Sascha Hauer wrote:
+> Hi All,
+> 
+> Here is a ton of patches working on the state framework:
+> 
+> - make code easier to follow
+>   - Drop cached backend, replace with open coded more direct code
+>   - drop backend as extra struct type
+>   - drop lazy init code
+> - update documentation
+> - Add keystore command
+>   Using authenticated state requires hardware support which currently
+>   is only available for i.MX6. At least for testing purposes a keystore
+>   command to set keys is useful. This way authenticated state can be
+>   tested without hardware support
+> - more robust conversion of the backend path to a device node
+> - make work better with NOR flash: The current code ended up reading
+>   from NOR Flash byte by byte which was painfully slow
 
+From browsing the patches this also brings a nice boot time improvement.
+We avoid earsing the whole block (or whatever the right name is) until
+we have filled it up with state entries.
+I expect this tospeed up booting with at least a second on our target.
+
+Will this require a newer version of dt-utils to work?
+(When we for example update the sate from linux userspace)
+
+	Sam
 
 _______________________________________________
 barebox mailing list
