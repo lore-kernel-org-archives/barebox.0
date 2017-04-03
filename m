@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cuzeN-0007YQ-G3
- for barebox@lists.infradead.org; Mon, 03 Apr 2017 10:56:08 +0000
+ id 1cuzeN-0007YL-JK
+ for barebox@lists.infradead.org; Mon, 03 Apr 2017 10:56:10 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon,  3 Apr 2017 12:55:21 +0200
-Message-Id: <20170403105523.16797-6-s.trumtrar@pengutronix.de>
+Date: Mon,  3 Apr 2017 12:55:17 +0200
+Message-Id: <20170403105523.16797-2-s.trumtrar@pengutronix.de>
 In-Reply-To: <20170403105523.16797-1-s.trumtrar@pengutronix.de>
 References: <20170403105523.16797-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,659 +21,884 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] clk: socfpga: add arria10 clk drivers
+Subject: [PATCH 1/7] ARM: socfpga: rename socfpga->cyclone5
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
+Prepare the SoCFPGA code base for different system types
+(Arria10, Stratix10,...).
+
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/clk/socfpga/Makefile         |   2 +
- drivers/clk/socfpga/clk-gate-a10.c   | 197 +++++++++++++++++++++++++++++++++++
- drivers/clk/socfpga/clk-periph-a10.c | 130 +++++++++++++++++++++++
- drivers/clk/socfpga/clk-pll-a10.c    | 143 +++++++++++++++++++++++++
- drivers/clk/socfpga/clk.c            |  11 +-
- drivers/clk/socfpga/clk.h            |  90 ++++++++++++++++
- 6 files changed, 572 insertions(+), 1 deletion(-)
- create mode 100644 drivers/clk/socfpga/clk-gate-a10.c
- create mode 100644 drivers/clk/socfpga/clk-periph-a10.c
- create mode 100644 drivers/clk/socfpga/clk-pll-a10.c
- create mode 100644 drivers/clk/socfpga/clk.h
+ arch/arm/boards/altera-socdk/board.c               |   2 +-
+ .../boards/altera-socdk/iocsr_config_cyclone5.c    |   2 +-
+ arch/arm/boards/altera-socdk/lowlevel.c            |   4 +-
+ arch/arm/boards/ebv-socrates/board.c               |   2 +-
+ .../boards/ebv-socrates/iocsr_config_cyclone5.c    |   2 +-
+ arch/arm/boards/ebv-socrates/lowlevel.c            |   4 +-
+ arch/arm/boards/terasic-de0-nano-soc/board.c       |   2 +-
+ .../terasic-de0-nano-soc/iocsr_config_cyclone5.c   |   2 +-
+ arch/arm/boards/terasic-de0-nano-soc/lowlevel.c    |   4 +-
+ arch/arm/boards/terasic-sockit/board.c             |   1 -
+ .../boards/terasic-sockit/iocsr_config_cyclone5.c  |   2 +-
+ arch/arm/boards/terasic-sockit/lowlevel.c          |   4 +-
+ arch/arm/mach-socfpga/Makefile                     |   6 +-
+ .../{bootsource.c => cyclone5-bootsource.c}        |  12 +-
+ .../{clock-manager.c => cyclone5-clock-manager.c}  |   4 +-
+ ...e-controller.c => cyclone5-freeze-controller.c} |   2 +-
+ arch/arm/mach-socfpga/cyclone5-generic.c           | 210 +++++++++++++++++++++
+ arch/arm/mach-socfpga/{init.c => cyclone5-init.c}  |  10 +-
+ .../{reset-manager.c => cyclone5-reset-manager.c}  |   4 +-
+ .../{scan-manager.c => cyclone5-scan-manager.c}    |   4 +-
+ ...{system-manager.c => cyclone5-system-manager.c} |   4 +-
+ .../{clock-manager.h => cyclone5-clock-manager.h}  |   6 +-
+ ...e-controller.h => cyclone5-freeze-controller.h} |   6 +-
+ .../mach/{socfpga-regs.h => cyclone5-regs.h}       |   0
+ .../{reset-manager.h => cyclone5-reset-manager.h}  |   0
+ .../{scan-manager.h => cyclone5-scan-manager.h}    |   2 +-
+ .../{sdram_config.h => cyclone5-sdram-config.h}    |   6 +-
+ .../include/mach/{sdram.h => cyclone5-sdram.h}     |   0
+ .../mach/{sequencer.c => cyclone5-sequencer.c}     |   6 +-
+ .../mach/{sequencer.h => cyclone5-sequencer.h}     |   0
+ ...{system-manager.h => cyclone5-system-manager.h} |   0
+ arch/arm/mach-socfpga/include/mach/pll_config.h    |   2 +-
+ arch/arm/mach-socfpga/include/mach/sdram_io.h      |   2 +-
+ .../mach-socfpga/include/mach/sequencer_defines.h  |   6 -
+ arch/arm/mach-socfpga/include/mach/system.h        |   0
+ arch/arm/mach-socfpga/include/mach/tclrpt.h        |   2 +-
+ arch/arm/mach-socfpga/nic301.c                     |   2 +-
+ arch/arm/mach-socfpga/xload.c                      |   4 +-
+ drivers/firmware/socfpga.c                         |   8 +-
+ scripts/socfpga_import_preloader                   |   2 +-
+ 40 files changed, 271 insertions(+), 70 deletions(-)
+ rename arch/arm/mach-socfpga/{bootsource.c => cyclone5-bootsource.c} (79%)
+ rename arch/arm/mach-socfpga/{clock-manager.c => cyclone5-clock-manager.c} (99%)
+ rename arch/arm/mach-socfpga/{freeze-controller.c => cyclone5-freeze-controller.c} (99%)
+ create mode 100644 arch/arm/mach-socfpga/cyclone5-generic.c
+ rename arch/arm/mach-socfpga/{init.c => cyclone5-init.c} (89%)
+ rename arch/arm/mach-socfpga/{reset-manager.c => cyclone5-reset-manager.c} (96%)
+ rename arch/arm/mach-socfpga/{scan-manager.c => cyclone5-scan-manager.c} (98%)
+ rename arch/arm/mach-socfpga/{system-manager.c => cyclone5-system-manager.c} (93%)
+ rename arch/arm/mach-socfpga/include/mach/{clock-manager.h => cyclone5-clock-manager.h} (99%)
+ rename arch/arm/mach-socfpga/include/mach/{freeze-controller.h => cyclone5-freeze-controller.h} (96%)
+ rename arch/arm/mach-socfpga/include/mach/{socfpga-regs.h => cyclone5-regs.h} (100%)
+ rename arch/arm/mach-socfpga/include/mach/{reset-manager.h => cyclone5-reset-manager.h} (100%)
+ rename arch/arm/mach-socfpga/include/mach/{scan-manager.h => cyclone5-scan-manager.h} (99%)
+ rename arch/arm/mach-socfpga/include/mach/{sdram_config.h => cyclone5-sdram-config.h} (98%)
+ rename arch/arm/mach-socfpga/include/mach/{sdram.h => cyclone5-sdram.h} (100%)
+ rename arch/arm/mach-socfpga/include/mach/{sequencer.c => cyclone5-sequencer.c} (99%)
+ rename arch/arm/mach-socfpga/include/mach/{sequencer.h => cyclone5-sequencer.h} (100%)
+ rename arch/arm/mach-socfpga/include/mach/{system-manager.h => cyclone5-system-manager.h} (100%)
+ mode change 100755 => 100644 arch/arm/mach-socfpga/include/mach/sdram_io.h
+ delete mode 100644 arch/arm/mach-socfpga/include/mach/sequencer_defines.h
+ mode change 100755 => 100644 arch/arm/mach-socfpga/include/mach/system.h
+ mode change 100755 => 100644 arch/arm/mach-socfpga/include/mach/tclrpt.h
 
-diff --git a/drivers/clk/socfpga/Makefile b/drivers/clk/socfpga/Makefile
-index fc216adb744e..341e6433e560 100644
---- a/drivers/clk/socfpga/Makefile
-+++ b/drivers/clk/socfpga/Makefile
-@@ -1 +1,3 @@
- obj-y	+= clk.o
-+
-+obj-$(CONFIG_ARCH_SOCFPGA_ARRIA10) += clk-gate-a10.o clk-periph-a10.o clk-pll-a10.o
-diff --git a/drivers/clk/socfpga/clk-gate-a10.c b/drivers/clk/socfpga/clk-gate-a10.c
-new file mode 100644
-index 000000000000..07f6026c2e8d
---- /dev/null
-+++ b/drivers/clk/socfpga/clk-gate-a10.c
-@@ -0,0 +1,197 @@
-+/*
-+ * Copyright (C) 2015 Altera Corporation. All rights reserved
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#include <common.h>
-+#include <io.h>
-+#include <malloc.h>
-+#include <regmap.h>
-+#include <linux/clk.h>
-+#include <linux/clkdev.h>
-+#include <mach/arria10-regs.h>
-+#include <mach/arria10-system-manager.h>
-+
-+#include "clk.h"
-+
-+#define to_socfpga_gate_clk(p) container_of(p, struct socfpga_gate_clk, clk)
-+
-+/* SDMMC Group for System Manager defines */
-+#define SYSMGR_SDMMCGRP_CTRL_OFFSET	0x28
-+
-+static unsigned long socfpga_gate_clk_recalc_rate(struct clk *clk,
-+	unsigned long parent_rate)
-+{
-+	struct socfpga_gate_clk *socfpgaclk = to_socfpga_gate_clk(clk);
-+	u32 div = 1, val;
-+
-+	if (socfpgaclk->fixed_div)
-+		div = socfpgaclk->fixed_div;
-+	else if (socfpgaclk->div_reg) {
-+		val = readl(socfpgaclk->div_reg) >> socfpgaclk->shift;
-+		val &= GENMASK(socfpgaclk->width - 1, 0);
-+		div = (1 << val);
-+	}
-+
-+	return parent_rate / div;
-+}
-+
-+static int socfpga_clk_prepare(struct clk *clk)
-+{
-+	struct socfpga_gate_clk *socfpgaclk = to_socfpga_gate_clk(clk);
-+	int i;
-+	u32 hs_timing;
-+	u32 clk_phase[2];
-+
-+	if (socfpgaclk->clk_phase[0] || socfpgaclk->clk_phase[1]) {
-+		for (i = 0; i < ARRAY_SIZE(clk_phase); i++) {
-+			switch (socfpgaclk->clk_phase[i]) {
-+			case 0:
-+				clk_phase[i] = 0;
-+				break;
-+			case 45:
-+				clk_phase[i] = 1;
-+				break;
-+			case 90:
-+				clk_phase[i] = 2;
-+				break;
-+			case 135:
-+				clk_phase[i] = 3;
-+				break;
-+			case 180:
-+				clk_phase[i] = 4;
-+				break;
-+			case 225:
-+				clk_phase[i] = 5;
-+				break;
-+			case 270:
-+				clk_phase[i] = 6;
-+				break;
-+			case 315:
-+				clk_phase[i] = 7;
-+				break;
-+			default:
-+				clk_phase[i] = 0;
-+				break;
-+			}
-+		}
-+
-+		hs_timing = SYSMGR_SDMMC_CTRL_SET(clk_phase[0], clk_phase[1]);
-+		writel(hs_timing, ARRIA10_SYSMGR_SDMMC);
-+	}
-+	return 0;
-+}
-+
-+static int clk_socfpga_enable(struct clk *clk)
-+{
-+	struct socfpga_gate_clk *socfpga_clk = to_socfpga_gate_clk(clk);
-+	u32 val;
-+
-+	socfpga_clk_prepare(clk);
-+
-+	val = readl(socfpga_clk->reg);
-+	val |= 1 << socfpga_clk->bit_idx;
-+	writel(val, socfpga_clk->reg);
-+
-+	return 0;
-+}
-+
-+static void clk_socfpga_disable(struct clk *clk)
-+{
-+	struct socfpga_gate_clk *socfpga_clk = to_socfpga_gate_clk(clk);
-+	u32 val;
-+
-+	val = readl(socfpga_clk->reg);
-+	val &= ~(1 << socfpga_clk->shift);
-+	writel(val, socfpga_clk->reg);
-+}
-+
-+static struct clk_ops gateclk_ops = {
-+	.recalc_rate = socfpga_gate_clk_recalc_rate,
-+};
-+
-+static struct clk *__socfpga_gate_init(struct device_node *node,
-+	const struct clk_ops *ops)
-+{
-+	u32 clk_gate[2];
-+	u32 div_reg[3];
-+	u32 clk_phase[2];
-+	u32 fixed_div;
-+	struct socfpga_gate_clk *socfpga_clk;
-+	const char *clk_name = node->name;
-+	int rc;
-+	int i;
-+
-+	socfpga_clk = xzalloc(sizeof(*socfpga_clk));
-+
-+	rc = of_property_read_u32_array(node, "clk-gate", clk_gate, 2);
-+	if (rc)
-+		clk_gate[0] = 0;
-+
-+	if (clk_gate[0]) {
-+		socfpga_clk->reg = clk_mgr_base_addr + clk_gate[0];
-+		socfpga_clk->bit_idx = clk_gate[1];
-+
-+		gateclk_ops.enable = clk_socfpga_enable;
-+		gateclk_ops.disable = clk_socfpga_disable;
-+	}
-+
-+	rc = of_property_read_u32(node, "fixed-divider", &fixed_div);
-+	if (rc)
-+		socfpga_clk->fixed_div = 0;
-+	else
-+		socfpga_clk->fixed_div = fixed_div;
-+
-+	rc = of_property_read_u32_array(node, "div-reg", div_reg, 3);
-+	if (!rc) {
-+		socfpga_clk->div_reg = clk_mgr_base_addr + div_reg[0];
-+		socfpga_clk->shift = div_reg[1];
-+		socfpga_clk->width = div_reg[2];
-+	} else {
-+		socfpga_clk->div_reg = NULL;
-+	}
-+
-+	rc = of_property_read_u32_array(node, "clk-phase", clk_phase, 2);
-+	if (!rc) {
-+		socfpga_clk->clk_phase[0] = clk_phase[0];
-+		socfpga_clk->clk_phase[1] = clk_phase[1];
-+	}
-+
-+	of_property_read_string(node, "clock-output-names", &clk_name);
-+
-+	socfpga_clk->clk.name = xstrdup(clk_name);
-+	socfpga_clk->clk.ops = ops;
-+
-+	for (i = 0; i < SOCFPGA_MAX_PARENTS; i++) {
-+		socfpga_clk->parent_names[i] = of_clk_get_parent_name(node, i);
-+		if (!socfpga_clk->parent_names[i])
-+			break;
-+	}
-+
-+	socfpga_clk->clk.num_parents = i;
-+	socfpga_clk->clk.parent_names = socfpga_clk->parent_names;
-+
-+	rc = clk_register(&socfpga_clk->clk);
-+	if (rc) {
-+		free(socfpga_clk);
-+		return ERR_PTR(rc);
-+	}
-+
-+	return &socfpga_clk->clk;
-+}
-+
-+struct clk *socfpga_a10_gate_init(struct device_node *node)
-+{
-+	return __socfpga_gate_init(node, &gateclk_ops);
-+}
-diff --git a/drivers/clk/socfpga/clk-periph-a10.c b/drivers/clk/socfpga/clk-periph-a10.c
-new file mode 100644
-index 000000000000..9dd7fc9c2552
---- /dev/null
-+++ b/drivers/clk/socfpga/clk-periph-a10.c
-@@ -0,0 +1,130 @@
-+/*
-+ * Copyright (C) 2015 Altera Corporation. All rights reserved
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#include <common.h>
-+#include <io.h>
-+#include <malloc.h>
-+#include <linux/clk.h>
-+#include <linux/clkdev.h>
-+
-+#include "clk.h"
-+
-+#define CLK_MGR_FREE_SHIFT		16
-+#define CLK_MGR_FREE_MASK		0x7
-+
-+#define SOCFPGA_MPU_FREE_CLK		"mpu_free_clk"
-+#define SOCFPGA_NOC_FREE_CLK		"noc_free_clk"
-+#define SOCFPGA_SDMMC_FREE_CLK		"sdmmc_free_clk"
-+#define to_socfpga_periph_clk(p) container_of(p, struct socfpga_periph_clk, clk)
-+
-+static unsigned long clk_periclk_recalc_rate(struct clk *clk,
-+					     unsigned long parent_rate)
-+{
-+	struct socfpga_periph_clk *socfpgaclk = to_socfpga_periph_clk(clk);
-+	u32 div;
-+
-+	if (socfpgaclk->fixed_div) {
-+		div = socfpgaclk->fixed_div;
-+	} else if (socfpgaclk->div_reg) {
-+		div = readl(socfpgaclk->div_reg) >> socfpgaclk->shift;
-+		div &= GENMASK(socfpgaclk->width - 1, 0);
-+		div += 1;
-+	} else {
-+		div = ((readl(socfpgaclk->reg) & 0x7ff) + 1);
-+	}
-+
-+	return parent_rate / div;
-+}
-+
-+static int clk_periclk_get_parent(struct clk *clk)
-+{
-+	struct socfpga_periph_clk *socfpgaclk = to_socfpga_periph_clk(clk);
-+	u32 clk_src;
-+
-+	clk_src = readl(socfpgaclk->reg);
-+	if (streq(clk->name, SOCFPGA_MPU_FREE_CLK) ||
-+	    streq(clk->name, SOCFPGA_NOC_FREE_CLK) ||
-+	    streq(clk->name, SOCFPGA_SDMMC_FREE_CLK))
-+		return (clk_src >> CLK_MGR_FREE_SHIFT) &
-+			CLK_MGR_FREE_MASK;
-+	else
-+		return 0;
-+}
-+
-+static const struct clk_ops periclk_ops = {
-+	.recalc_rate = clk_periclk_recalc_rate,
-+	.get_parent = clk_periclk_get_parent,
-+};
-+
-+static struct clk *__socfpga_periph_init(struct device_node *node,
-+	const struct clk_ops *ops)
-+{
-+	u32 reg;
-+	struct socfpga_periph_clk *periph_clk;
-+	const char *clk_name = node->name;
-+	int rc;
-+	u32 fixed_div;
-+	u32 div_reg[3];
-+	int i;
-+
-+	of_property_read_u32(node, "reg", &reg);
-+
-+	periph_clk = xzalloc(sizeof(*periph_clk));
-+
-+	periph_clk->reg = clk_mgr_base_addr + reg;
-+
-+	rc = of_property_read_u32_array(node, "div-reg", div_reg, 3);
-+	if (!rc) {
-+		periph_clk->div_reg = clk_mgr_base_addr + div_reg[0];
-+		periph_clk->shift = div_reg[1];
-+		periph_clk->width = div_reg[2];
-+	} else {
-+		periph_clk->div_reg = NULL;
-+	}
-+
-+	rc = of_property_read_u32(node, "fixed-divider", &fixed_div);
-+	if (rc)
-+		periph_clk->fixed_div = 0;
-+	else
-+		periph_clk->fixed_div = fixed_div;
-+
-+	of_property_read_string(node, "clock-output-names", &clk_name);
-+
-+	for (i = 0; i < SOCFPGA_MAX_PARENTS; i++) {
-+		periph_clk->parent_names[i] = of_clk_get_parent_name(node, i);
-+		if (!periph_clk->parent_names[i])
-+			break;
-+	}
-+
-+	periph_clk->clk.num_parents = i;
-+	periph_clk->clk.parent_names = periph_clk->parent_names;
-+
-+	periph_clk->clk.name = xstrdup(clk_name);
-+	periph_clk->clk.ops = ops;
-+
-+	rc = clk_register(&periph_clk->clk);
-+	if (rc) {
-+		free(periph_clk);
-+		return ERR_PTR(rc);
-+	}
-+
-+	return &periph_clk->clk;
-+}
-+
-+struct clk *socfpga_a10_periph_init(struct device_node *node)
-+{
-+	return __socfpga_periph_init(node, &periclk_ops);
-+}
-diff --git a/drivers/clk/socfpga/clk-pll-a10.c b/drivers/clk/socfpga/clk-pll-a10.c
-new file mode 100644
-index 000000000000..4dae3e537bc2
---- /dev/null
-+++ b/drivers/clk/socfpga/clk-pll-a10.c
-@@ -0,0 +1,143 @@
-+/*
-+ * Copyright (C) 2015 Altera Corporation. All rights reserved
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+#include <common.h>
-+#include <io.h>
-+#include <malloc.h>
-+#include <linux/clk.h>
-+#include <linux/clkdev.h>
-+#include <asm-generic/div64.h>
-+
-+#include "clk.h"
-+
-+/* Clock Manager offsets */
-+#define CLK_MGR_PLL_CLK_SRC_SHIFT	8
-+#define CLK_MGR_PLL_CLK_SRC_MASK	0x3
-+
-+/* Clock bypass bits */
-+#define SOCFPGA_PLL_BG_PWRDWN		0
-+#define SOCFPGA_PLL_PWR_DOWN		1
-+#define SOCFPGA_PLL_EXT_ENA		2
-+#define SOCFPGA_PLL_DIVF_MASK		0x00001FFF
-+#define SOCFPGA_PLL_DIVF_SHIFT	0
-+#define SOCFPGA_PLL_DIVQ_MASK		0x003F0000
-+#define SOCFPGA_PLL_DIVQ_SHIFT	16
-+#define SOCFGPA_MAX_PARENTS	5
-+
-+#define SOCFPGA_MAIN_PLL_CLK		"main_pll"
-+#define SOCFPGA_PERIP_PLL_CLK		"periph_pll"
-+
-+#define to_socfpga_clk(p) container_of(p, struct socfpga_pll, clk)
-+
-+static unsigned long clk_pll_recalc_rate(struct clk *clk,
-+					 unsigned long parent_rate)
-+{
-+	struct socfpga_pll *socfpgaclk = to_socfpga_clk(clk);
-+	unsigned long divf, divq, reg;
-+	unsigned long long vco_freq;
-+
-+	/* read VCO1 reg for numerator and denominator */
-+	reg = readl(socfpgaclk->reg + 0x4);
-+	divf = (reg & SOCFPGA_PLL_DIVF_MASK) >> SOCFPGA_PLL_DIVF_SHIFT;
-+	divq = (reg & SOCFPGA_PLL_DIVQ_MASK) >> SOCFPGA_PLL_DIVQ_SHIFT;
-+	vco_freq = (unsigned long long)parent_rate * (divf + 1);
-+	do_div(vco_freq, (1 + divq));
-+	return (unsigned long)vco_freq;
-+}
-+
-+static int clk_pll_get_parent(struct clk *clk)
-+{
-+	struct socfpga_pll *socfpgaclk = to_socfpga_clk(clk);
-+	u32 pll_src;
-+
-+	pll_src = readl(socfpgaclk->reg);
-+
-+	return (pll_src >> CLK_MGR_PLL_CLK_SRC_SHIFT) &
-+		CLK_MGR_PLL_CLK_SRC_MASK;
-+}
-+
-+static int clk_socfpga_enable(struct clk *clk)
-+{
-+	struct socfpga_pll *socfpga_clk = to_socfpga_clk(clk);
-+	u32 val;
-+
-+	val = readl(socfpga_clk->reg);
-+	val |= 1 << socfpga_clk->bit_idx;
-+	writel(val, socfpga_clk->reg);
-+
-+	return 0;
-+}
-+
-+static void clk_socfpga_disable(struct clk *clk)
-+{
-+	struct socfpga_pll *socfpga_clk = to_socfpga_clk(clk);
-+	u32 val;
-+
-+	val = readl(socfpga_clk->reg);
-+	val &= ~(1 << socfpga_clk->bit_idx);
-+	writel(val, socfpga_clk->reg);
-+}
-+
-+static struct clk_ops clk_pll_ops = {
-+	.recalc_rate = clk_pll_recalc_rate,
-+	.get_parent = clk_pll_get_parent,
-+};
-+
-+static struct clk *__socfpga_pll_init(struct device_node *node,
-+	const struct clk_ops *ops)
-+{
-+	u32 reg;
-+	struct socfpga_pll *pll_clk;
-+	const char *clk_name = node->name;
-+	int rc;
-+	int i;
-+
-+	of_property_read_u32(node, "reg", &reg);
-+
-+	pll_clk = xzalloc(sizeof(*pll_clk));
-+
-+	pll_clk->reg = clk_mgr_base_addr + reg;
-+
-+	of_property_read_string(node, "clock-output-names", &clk_name);
-+
-+	pll_clk->clk.name = xstrdup(clk_name);
-+	pll_clk->clk.ops = ops;
-+
-+	for (i = 0; i < SOCFPGA_MAX_PARENTS; i++) {
-+		pll_clk->parent_names[i] = of_clk_get_parent_name(node, i);
-+		if (!pll_clk->parent_names[i])
-+			break;
-+	}
-+
-+	pll_clk->bit_idx = SOCFPGA_PLL_EXT_ENA;
-+	pll_clk->clk.num_parents = i;
-+	pll_clk->clk.parent_names = pll_clk->parent_names;
-+
-+	clk_pll_ops.enable = clk_socfpga_enable;
-+	clk_pll_ops.disable = clk_socfpga_disable;
-+
-+	rc = clk_register(&pll_clk->clk);
-+	if (rc) {
-+		free(pll_clk);
-+		return NULL;
-+	}
-+
-+	return &pll_clk->clk;
-+}
-+
-+struct clk *socfpga_a10_pll_init(struct device_node *node)
-+{
-+	return __socfpga_pll_init(node, &clk_pll_ops);
-+}
-diff --git a/drivers/clk/socfpga/clk.c b/drivers/clk/socfpga/clk.c
-index 6af0632cafc2..ade608ffe314 100644
---- a/drivers/clk/socfpga/clk.c
-+++ b/drivers/clk/socfpga/clk.c
-@@ -12,6 +12,7 @@
+diff --git a/arch/arm/boards/altera-socdk/board.c b/arch/arm/boards/altera-socdk/board.c
+index d7fb923a043b..f4b1dcd3249f 100644
+--- a/arch/arm/boards/altera-socdk/board.c
++++ b/arch/arm/boards/altera-socdk/board.c
+@@ -8,7 +8,7 @@
+ #include <linux/sizes.h>
+ #include <fcntl.h>
+ #include <fs.h>
+-#include <mach/socfpga-regs.h>
++#include <mach/cyclone5-regs.h>
+ 
+ static int ksz9021rn_phy_fixup(struct phy_device *dev)
+ {
+diff --git a/arch/arm/boards/altera-socdk/iocsr_config_cyclone5.c b/arch/arm/boards/altera-socdk/iocsr_config_cyclone5.c
+index 07a4485f1fe6..9777d15dfebf 100644
+--- a/arch/arm/boards/altera-socdk/iocsr_config_cyclone5.c
++++ b/arch/arm/boards/altera-socdk/iocsr_config_cyclone5.c
+@@ -27,7 +27,7 @@
+  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   */
  
- #include <common.h>
-+#include <debug_ll.h>
+-#include <mach/scan-manager.h>
++#include <mach/cyclone5-scan-manager.h>
+ 
+ static const unsigned long iocsr_scan_chain0_table[((CONFIG_HPS_IOCSR_SCANCHAIN0_LENGTH / 32) + 1)]
+     = {
+diff --git a/arch/arm/boards/altera-socdk/lowlevel.c b/arch/arm/boards/altera-socdk/lowlevel.c
+index 02c995fe4522..8cfe8391596d 100644
+--- a/arch/arm/boards/altera-socdk/lowlevel.c
++++ b/arch/arm/boards/altera-socdk/lowlevel.c
+@@ -7,13 +7,13 @@
+ #include <debug_ll.h>
+ #include <asm/cache.h>
+ #include "sdram_config.h"
+-#include <mach/sdram_config.h>
++#include <mach/cyclone5-sdram-config.h>
+ #include "pinmux_config.c"
+ #include "pll_config.h"
+ #include <mach/pll_config.h>
+ #include "sequencer_defines.h"
+ #include "sequencer_auto.h"
+-#include <mach/sequencer.c>
++#include <mach/cyclone5-sequencer.c>
+ #include "sequencer_auto_inst_init.c"
+ #include "sequencer_auto_ac_init.c"
+ #include "iocsr_config_cyclone5.c"
+diff --git a/arch/arm/boards/ebv-socrates/board.c b/arch/arm/boards/ebv-socrates/board.c
+index f3207b88efdf..965150f9a3be 100644
+--- a/arch/arm/boards/ebv-socrates/board.c
++++ b/arch/arm/boards/ebv-socrates/board.c
+@@ -11,7 +11,7 @@
+ #include <linux/sizes.h>
+ #include <fcntl.h>
+ #include <fs.h>
+-#include <mach/socfpga-regs.h>
++#include <mach/cyclone5-regs.h>
+ 
+ static int phy_fixup(struct phy_device *dev)
+ {
+diff --git a/arch/arm/boards/ebv-socrates/iocsr_config_cyclone5.c b/arch/arm/boards/ebv-socrates/iocsr_config_cyclone5.c
+index ab6733f92bcf..9a814cba796c 100644
+--- a/arch/arm/boards/ebv-socrates/iocsr_config_cyclone5.c
++++ b/arch/arm/boards/ebv-socrates/iocsr_config_cyclone5.c
+@@ -27,7 +27,7 @@
+  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ 
+-#include <mach/scan-manager.h>
++#include <mach/cyclone5-scan-manager.h>
+ 
+ static const unsigned long iocsr_scan_chain0_table[((CONFIG_HPS_IOCSR_SCANCHAIN0_LENGTH / 32) + 1)] = {
+ 	0x00000000,
+diff --git a/arch/arm/boards/ebv-socrates/lowlevel.c b/arch/arm/boards/ebv-socrates/lowlevel.c
+index ea4e1d746a95..9643269f8e16 100644
+--- a/arch/arm/boards/ebv-socrates/lowlevel.c
++++ b/arch/arm/boards/ebv-socrates/lowlevel.c
+@@ -7,13 +7,13 @@
+ #include <mach/generic.h>
+ #include <debug_ll.h>
+ #include "sdram_config.h"
+-#include <mach/sdram_config.h>
++#include <mach/cyclone5-sdram-config.h>
+ #include "pinmux_config.c"
+ #include "pll_config.h"
+ #include <mach/pll_config.h>
+ #include "sequencer_defines.h"
+ #include "sequencer_auto.h"
+-#include <mach/sequencer.c>
++#include <mach/cyclone5-sequencer.c>
+ #include "sequencer_auto_inst_init.c"
+ #include "sequencer_auto_ac_init.c"
+ #include "iocsr_config_cyclone5.c"
+diff --git a/arch/arm/boards/terasic-de0-nano-soc/board.c b/arch/arm/boards/terasic-de0-nano-soc/board.c
+index 919bfc8c543a..8e69319d17b8 100644
+--- a/arch/arm/boards/terasic-de0-nano-soc/board.c
++++ b/arch/arm/boards/terasic-de0-nano-soc/board.c
+@@ -8,7 +8,7 @@
+ #include <linux/sizes.h>
+ #include <fcntl.h>
+ #include <fs.h>
+-#include <mach/socfpga-regs.h>
++#include <mach/cyclone5-regs.h>
+ 
+ static int phy_fixup(struct phy_device *dev)
+ {
+diff --git a/arch/arm/boards/terasic-de0-nano-soc/iocsr_config_cyclone5.c b/arch/arm/boards/terasic-de0-nano-soc/iocsr_config_cyclone5.c
+index 4e9ac7fb7721..d5098055ff63 100644
+--- a/arch/arm/boards/terasic-de0-nano-soc/iocsr_config_cyclone5.c
++++ b/arch/arm/boards/terasic-de0-nano-soc/iocsr_config_cyclone5.c
+@@ -27,7 +27,7 @@
+  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ 
+-#include <mach/scan-manager.h>
++#include <mach/cyclone5-scan-manager.h>
+ 
+ static const unsigned long iocsr_scan_chain0_table[((CONFIG_HPS_IOCSR_SCANCHAIN0_LENGTH / 32) + 1)] = {
+ 	0x00000000,
+diff --git a/arch/arm/boards/terasic-de0-nano-soc/lowlevel.c b/arch/arm/boards/terasic-de0-nano-soc/lowlevel.c
+index 6d937abda589..1d5ea6b12a52 100644
+--- a/arch/arm/boards/terasic-de0-nano-soc/lowlevel.c
++++ b/arch/arm/boards/terasic-de0-nano-soc/lowlevel.c
+@@ -7,13 +7,13 @@
+ #include <debug_ll.h>
+ #include <asm/cache.h>
+ #include "sdram_config.h"
+-#include <mach/sdram_config.h>
++#include <mach/cyclone5-sdram-config.h>
+ #include "pinmux_config.c"
+ #include "pll_config.h"
+ #include <mach/pll_config.h>
+ #include "sequencer_defines.h"
+ #include "sequencer_auto.h"
+-#include <mach/sequencer.c>
++#include <mach/cyclone5-sequencer.c>
+ #include "sequencer_auto_inst_init.c"
+ #include "sequencer_auto_ac_init.c"
+ #include "iocsr_config_cyclone5.c"
+diff --git a/arch/arm/boards/terasic-sockit/board.c b/arch/arm/boards/terasic-sockit/board.c
+index 53cd36834fc1..ec6831599803 100644
+--- a/arch/arm/boards/terasic-sockit/board.c
++++ b/arch/arm/boards/terasic-sockit/board.c
+@@ -8,7 +8,6 @@
+ #include <linux/sizes.h>
+ #include <fcntl.h>
+ #include <fs.h>
+-#include <mach/socfpga-regs.h>
+ 
+ static int phy_fixup(struct phy_device *dev)
+ {
+diff --git a/arch/arm/boards/terasic-sockit/iocsr_config_cyclone5.c b/arch/arm/boards/terasic-sockit/iocsr_config_cyclone5.c
+index 117d7f4ebcc9..9367b0d11072 100644
+--- a/arch/arm/boards/terasic-sockit/iocsr_config_cyclone5.c
++++ b/arch/arm/boards/terasic-sockit/iocsr_config_cyclone5.c
+@@ -27,7 +27,7 @@
+  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ 
+-#include <mach/scan-manager.h>
++#include <mach/cyclone5-scan-manager.h>
+ 
+ static const unsigned long iocsr_scan_chain0_table[((CONFIG_HPS_IOCSR_SCANCHAIN0_LENGTH / 32) + 1)] = {
+ 	0x00000000,
+diff --git a/arch/arm/boards/terasic-sockit/lowlevel.c b/arch/arm/boards/terasic-sockit/lowlevel.c
+index 8012783df3f8..0a6eb2136517 100644
+--- a/arch/arm/boards/terasic-sockit/lowlevel.c
++++ b/arch/arm/boards/terasic-sockit/lowlevel.c
+@@ -7,13 +7,13 @@
+ #include <debug_ll.h>
+ #include <asm/cache.h>
+ #include "sdram_config.h"
+-#include <mach/sdram_config.h>
++#include <mach/cyclone5-sdram-config.h>
+ #include "pinmux_config.c"
+ #include "pll_config.h"
+ #include <mach/pll_config.h>
+ #include "sequencer_defines.h"
+ #include "sequencer_auto.h"
+-#include <mach/sequencer.c>
++#include <mach/cyclone5-sequencer.c>
+ #include "sequencer_auto_inst_init.c"
+ #include "sequencer_auto_ac_init.c"
+ #include "iocsr_config_cyclone5.c"
+diff --git a/arch/arm/mach-socfpga/Makefile b/arch/arm/mach-socfpga/Makefile
+index dea0e075d145..30b796dd3b4f 100644
+--- a/arch/arm/mach-socfpga/Makefile
++++ b/arch/arm/mach-socfpga/Makefile
+@@ -1,4 +1,4 @@
+-obj-y += generic.o nic301.o bootsource.o reset-manager.o
+-pbl-y += init.o freeze-controller.o scan-manager.o system-manager.o
+-pbl-y += clock-manager.o
++pbl-y += cyclone5-init.o cyclone5-freeze-controller.o cyclone5-scan-manager.o cyclone5-system-manager.o
++pbl-y += cyclone5-clock-manager.o
++obj-y += cyclone5-generic.o nic301.o cyclone5-bootsource.o cyclone5-reset-manager.o
+ obj-$(CONFIG_ARCH_SOCFPGA_XLOAD) += xload.o
+diff --git a/arch/arm/mach-socfpga/bootsource.c b/arch/arm/mach-socfpga/cyclone5-bootsource.c
+similarity index 79%
+rename from arch/arm/mach-socfpga/bootsource.c
+rename to arch/arm/mach-socfpga/cyclone5-bootsource.c
+index 739f0b5c0e94..da4102c4f531 100644
+--- a/arch/arm/mach-socfpga/bootsource.c
++++ b/arch/arm/mach-socfpga/cyclone5-bootsource.c
+@@ -16,17 +16,17 @@
+ #include <environment.h>
  #include <init.h>
- #include <driver.h>
- #include <linux/clk.h>
-@@ -20,6 +21,8 @@
- #include <linux/clkdev.h>
- #include <linux/err.h>
+ #include <io.h>
+-#include <mach/socfpga-regs.h>
+-#include <mach/system-manager.h>
++#include <mach/cyclone5-system-manager.h>
++#include <mach/cyclone5-regs.h>
  
-+#include "clk.h"
-+
- /* Clock Manager offsets */
- #define CLKMGR_CTRL	0x0
- #define CLKMGR_BYPASS	0x4
-@@ -52,7 +55,7 @@
- #define div_mask(width)	((1 << (width)) - 1)
- #define streq(a, b) (strcmp((a), (b)) == 0)
+-#define SYSMGR_BOOTINFO	0x14
++#define CYCLONE5_SYSMGR_BOOTINFO	0x14
  
--static void __iomem *clk_mgr_base_addr;
-+void __iomem *clk_mgr_base_addr;
+-static int socfpga_boot_save_loc(void)
++static int cyclone5_boot_save_loc(void)
+ {
+ 	enum bootsource src = BOOTSOURCE_UNKNOWN;
+ 	uint32_t val;
  
- struct clk_pll {
- 	struct clk clk;
-@@ -385,6 +388,12 @@ static void socfpga_register_clocks(struct device_d *dev, struct device_node *no
- 		clk = socfpga_periph_clk(node);
- 	else if (of_device_is_compatible(node, "altr,socfpga-gate-clk"))
- 		clk = socfpga_gate_clk(node);
-+	else if (of_device_is_compatible(node, "altr,socfpga-a10-pll-clock"))
-+		clk = socfpga_a10_pll_init(node);
-+	else if (of_device_is_compatible(node, "altr,socfpga-a10-perip-clk"))
-+		clk = socfpga_a10_periph_init(node);
-+	else if (of_device_is_compatible(node, "altr,socfpga-a10-gate-clk"))
-+		clk = socfpga_a10_gate_init(node);
- 	else
- 		return;
+-	val = readl(CYCLONE5_SYSMGR_ADDRESS + SYSMGR_BOOTINFO);
++	val = readl(CYCLONE5_SYSMGR_ADDRESS + CYCLONE5_SYSMGR_BOOTINFO);
  
-diff --git a/drivers/clk/socfpga/clk.h b/drivers/clk/socfpga/clk.h
+ 	switch (val & 0x7) {
+ 	case 0:
+@@ -54,4 +54,4 @@ static int socfpga_boot_save_loc(void)
+ 
+ 	return 0;
+ }
+-core_initcall(socfpga_boot_save_loc);
++core_initcall(cyclone5_boot_save_loc);
+diff --git a/arch/arm/mach-socfpga/clock-manager.c b/arch/arm/mach-socfpga/cyclone5-clock-manager.c
+similarity index 99%
+rename from arch/arm/mach-socfpga/clock-manager.c
+rename to arch/arm/mach-socfpga/cyclone5-clock-manager.c
+index f17371365fe4..79c8b6bf2874 100644
+--- a/arch/arm/mach-socfpga/clock-manager.c
++++ b/arch/arm/mach-socfpga/cyclone5-clock-manager.c
+@@ -17,8 +17,8 @@
+ 
+ #include <common.h>
+ #include <io.h>
+-#include <mach/clock-manager.h>
+-#include <mach/socfpga-regs.h>
++#include <mach/cyclone5-clock-manager.h>
++#include <mach/cyclone5-regs.h>
+ #include <mach/generic.h>
+ 
+ static inline void cm_wait_for_lock(void __iomem *cm, uint32_t mask)
+diff --git a/arch/arm/mach-socfpga/freeze-controller.c b/arch/arm/mach-socfpga/cyclone5-freeze-controller.c
+similarity index 99%
+rename from arch/arm/mach-socfpga/freeze-controller.c
+rename to arch/arm/mach-socfpga/cyclone5-freeze-controller.c
+index 570bdeb7353f..87160161b0e6 100644
+--- a/arch/arm/mach-socfpga/freeze-controller.c
++++ b/arch/arm/mach-socfpga/cyclone5-freeze-controller.c
+@@ -18,7 +18,7 @@
+ #include <common.h>
+ #include <io.h>
+ #include <mach/generic.h>
+-#include <mach/freeze-controller.h>
++#include <mach/cyclone5-freeze-controller.h>
+ 
+ #define SYSMGR_FRZCTRL_LOOP_PARAM       (1000)
+ #define SYSMGR_FRZCTRL_DELAY_LOOP_PARAM (10)
+diff --git a/arch/arm/mach-socfpga/cyclone5-generic.c b/arch/arm/mach-socfpga/cyclone5-generic.c
 new file mode 100644
-index 000000000000..6d6c28344df4
+index 000000000000..3f49a9a542eb
 --- /dev/null
-+++ b/drivers/clk/socfpga/clk.h
-@@ -0,0 +1,90 @@
-+/*
-+ * Copyright (c) 2013, Steffen Trumtrar <s.trumtrar@pengutronix.de>
-+ *
-+ * based on drivers/clk/tegra/clk.h
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ */
-+
-+#ifndef __SOCFPGA_CLK_H
-+#define __SOCFPGA_CLK_H
-+
++++ b/arch/arm/mach-socfpga/cyclone5-generic.c
+@@ -0,0 +1,210 @@
++#include <common.h>
++#include <malloc.h>
++#include <envfs.h>
++#include <init.h>
++#include <io.h>
++#include <fs.h>
++#include <mci.h>
++#include <linux/clkdev.h>
 +#include <linux/clk.h>
++#include <linux/stat.h>
++#include <linux/sizes.h>
++#include <asm/memory.h>
++#include <mach/cyclone5-system-manager.h>
++#include <mach/cyclone5-reset-manager.h>
++#include <mach/cyclone5-regs.h>
++#include <mach/generic.h>
++#include <mach/nic301.h>
++#include <platform_data/dw_mmc.h>
++#include <platform_data/serial-ns16550.h>
++#include <platform_data/cadence_qspi.h>
 +
-+/* Clock Manager offsets */
-+#define CLKMGR_CTRL		0x0
-+#define CLKMGR_BYPASS		0x4
-+#define CLKMGR_DBCTRL		0x10
-+#define CLKMGR_L4SRC		0x70
-+#define CLKMGR_PERPLL_SRC	0xAC
++#define SYSMGR_SDMMCGRP_CTRL_REG		(CYCLONE5_SYSMGR_ADDRESS + 0x108)
++#define SYSMGR_SDMMC_CTRL_SMPLSEL(smplsel)	(((smplsel) & 0x7) << 3)
++#define SYSMGR_SDMMC_CTRL_DRVSEL(drvsel)	((drvsel) & 0x7)
 +
-+#define SOCFPGA_MAX_PARENTS		5
++enum socfpga_clks {
++	timer, mmc, qspi_clk, uart, clk_max
++};
 +
-+#define streq(a, b) (strcmp((a), (b)) == 0)
++static struct clk *clks[clk_max];
 +
-+extern void __iomem *clk_mgr_base_addr;
++#if defined(CONFIG_MCI_DW)
++static struct dw_mmc_platform_data mmc_pdata = {
++	.bus_width_caps = MMC_CAP_4_BIT_DATA,
++	.ciu_div = 3,
++};
 +
-+void __init socfpga_pll_init(struct device_node *node);
-+void __init socfpga_periph_init(struct device_node *node);
-+void __init socfpga_gate_init(struct device_node *node);
-+
-+#ifdef CONFIG_ARCH_SOCFPGA_ARRIA10
-+struct clk *socfpga_a10_pll_init(struct device_node *node);
-+struct clk *socfpga_a10_periph_init(struct device_node *node);
-+struct clk *socfpga_a10_gate_init(struct device_node *node);
++void socfpga_cyclone5_mmc_init(void)
++{
++	clks[mmc] = clk_fixed("mmc", 400000000);
++	clkdev_add_physbase(clks[mmc], CYCLONE5_SDMMC_ADDRESS, NULL);
++	add_generic_device("dw_mmc", 0, NULL, CYCLONE5_SDMMC_ADDRESS, SZ_4K,
++			IORESOURCE_MEM, &mmc_pdata);
++}
 +#else
-+struct clk *socfpga_a10_pll_init(struct device_node *node)
++void socfpga_cyclone5_mmc_init(void)
 +{
-+	return ERR_PTR(-ENOSYS);
-+}
-+struct clk *socfpga_a10_periph_init(struct device_node *node)
-+{
-+	return ERR_PTR(-ENOSYS);
-+}
-+struct clk *socfpga_a10_gate_init(struct device_node *node)
-+{
-+	return ERR_PTR(-ENOSYS);
++	pr_debug("%s: MMC support not compiled in!\n", __func__);
++
++	return;
 +}
 +#endif
 +
-+struct socfpga_pll {
-+	struct clk clk;
-+	void __iomem *reg;
-+	u32 bit_idx;
-+	const char *parent_names[SOCFPGA_MAX_PARENTS];
++#if defined(CONFIG_SPI_CADENCE_QUADSPI)
++static struct cadence_qspi_platform_data qspi_pdata = {
++	.ext_decoder = 0,
++	.fifo_depth = 128,
 +};
 +
-+struct socfpga_gate_clk {
-+	struct clk clk;
-+	char *parent_name;
-+	u32 fixed_div;
-+	void __iomem *div_reg;
-+	struct regmap *sys_mgr_base_addr;
-+	u32 width;	/* only valid if div_reg != 0 */
-+	u32 shift;	/* only valid if div_reg != 0 */
-+	u32 bit_idx;
-+	void __iomem *reg;
-+	u32 clk_phase[2];
-+	const char *parent_names[SOCFPGA_MAX_PARENTS];
++static void add_cadence_qspi_device(int id, resource_size_t ctrl,
++				    resource_size_t data, void *pdata)
++{
++	struct device_d *dev;
++	struct resource *res;
++
++	res = xzalloc(sizeof(struct resource) * 2);
++	res[0].start = ctrl;
++	res[0].end = ctrl + 0x100 - 1;
++	res[0].flags = IORESOURCE_MEM;
++	res[1].start = data;
++	res[1].end = data + 0x100 - 1;
++	res[1].flags = IORESOURCE_MEM;
++
++	dev = add_generic_device_res("cadence_qspi", id, res, 2, pdata);
++
++	dev_dbg(dev, "added resource\n");
++}
++
++void socfpga_cyclone5_qspi_init(void)
++{
++	clks[qspi_clk] = clk_fixed("qspi_clk", 370000000);
++	clkdev_add_physbase(clks[qspi_clk], CYCLONE5_QSPI_CTRL_ADDRESS, NULL);
++	clkdev_add_physbase(clks[qspi_clk], CYCLONE5_QSPI_DATA_ADDRESS, NULL);
++	add_cadence_qspi_device(0, CYCLONE5_QSPI_CTRL_ADDRESS,
++				CYCLONE5_QSPI_DATA_ADDRESS, &qspi_pdata);
++}
++#else
++void socfpga_cyclone5_qspi_init(void)
++{
++	pr_debug("%s: QSPI support not compiled in!\n", __func__);
++
++	return;
++}
++#endif
++
++static struct NS16550_plat uart_pdata = {
++	.clock = 100000000,
++	.shift = 2,
 +};
 +
-+struct socfpga_periph_clk {
-+	struct clk clk;
-+	void __iomem *reg;
-+	char *parent_name;
-+	u32 fixed_div;
-+	void __iomem *div_reg;
-+	u32 width;      /* only valid if div_reg != 0 */
-+	u32 shift;      /* only valid if div_reg != 0 */
-+	const char *parent_names[SOCFPGA_MAX_PARENTS];
-+};
++void socfpga_cyclone5_uart_init(void)
++{
++	struct device_d *dev;
 +
-+#endif /* SOCFPGA_CLK_H */
++	clks[uart] = clk_fixed("uart", 100000000);
++	clkdev_add_physbase(clks[uart], CYCLONE5_UART0_ADDRESS, NULL);
++	clkdev_add_physbase(clks[uart], CYCLONE5_UART1_ADDRESS, NULL);
++	dev = add_ns16550_device(0, 0xffc02000, 1024, IORESOURCE_MEM |
++			IORESOURCE_MEM_8BIT, &uart_pdata);
++
++	dev_dbg(dev, "initialized\n");
++}
++
++void socfpga_cyclone5_timer_init(void)
++{
++	struct device_d *dev;
++
++	clks[timer] = clk_fixed("timer", 200000000);
++	clkdev_add_physbase(clks[timer], CYCLONE5_SMP_TWD_ADDRESS, NULL);
++	dev = add_generic_device("smp_twd", 0, NULL, CYCLONE5_SMP_TWD_ADDRESS, 0x100,
++				 IORESOURCE_MEM, NULL);
++
++	dev_dbg(dev, "added smp_twd\n");
++}
++
++static int socfpga_detect_sdram(void)
++{
++	void __iomem *base = (void *)CYCLONE5_SDR_ADDRESS;
++	uint32_t dramaddrw, ctrlwidth, memsize;
++	int colbits, rowbits, bankbits;
++	int width_bytes;
++
++	dramaddrw = readl(base + 0x5000 + 0x2c);
++
++	colbits = dramaddrw & 0x1f;
++	rowbits = (dramaddrw >> 5) & 0x1f;
++	bankbits = (dramaddrw >> 10) & 0x7;
++
++	ctrlwidth = readl(base + 0x5000 + 0x60);
++
++	switch (ctrlwidth & 0x3) {
++	default:
++	case 0:
++		width_bytes = 1;
++		break;
++	case 1:
++		width_bytes = 2;
++		break;
++	case 2:
++		width_bytes = 4;
++		break;
++	}
++
++	memsize = (1 << colbits) * (1 << rowbits) * (1 << bankbits) * width_bytes;
++
++	pr_debug("%s: colbits: %d rowbits: %d bankbits: %d width: %d => memsize: 0x%08x\n",
++			__func__, colbits, rowbits, bankbits, width_bytes, memsize);
++
++	arm_add_mem_device("ram0", 0x0, memsize);
++
++	return 0;
++}
++
++/* Some initialization for the EMAC */
++static void socfpga_init_emac(void)
++{
++	uint32_t rst, val;
++
++	/* No need for this without network support, e.g. xloader build */
++	if (!IS_ENABLED(CONFIG_NET))
++		return;
++
++	/* According to Cyclone V datasheet, 17-60 "EMAC HPS Interface
++	 * Initialization", changing PHYSEL should be done with EMAC in reset
++	 * via permodrst.  */
++
++	/* Everything, except L4WD0/1, is out of reset via socfpga_lowlevel_init() */
++	rst = readl(CYCLONE5_RSTMGR_ADDRESS + RESET_MGR_PER_MOD_RESET_OFS);
++	rst |= RSTMGR_PERMODRST_EMAC0 | RSTMGR_PERMODRST_EMAC1;
++	writel(rst, CYCLONE5_RSTMGR_ADDRESS + RESET_MGR_PER_MOD_RESET_OFS);
++
++	/* Set emac0/1 PHY interface select to RGMII.  We could read phy-mode
++	 * from the device tree, if it was desired to support interfaces other
++	 * than RGMII. */
++	val = readl(CONFIG_SYSMGR_EMAC_CTRL);
++	val &= ~(SYSMGR_EMACGRP_CTRL_PHYSEL_MASK << SYSMGR_EMACGRP_CTRL_PHYSEL0_LSB);
++	val &= ~(SYSMGR_EMACGRP_CTRL_PHYSEL_MASK << SYSMGR_EMACGRP_CTRL_PHYSEL1_LSB);
++	val |= SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_RGMII << SYSMGR_EMACGRP_CTRL_PHYSEL0_LSB;
++	val |= SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_RGMII << SYSMGR_EMACGRP_CTRL_PHYSEL1_LSB;
++	writel(val, CONFIG_SYSMGR_EMAC_CTRL);
++
++	/* Take emac0 and emac1 out of reset */
++	rst &= ~(RSTMGR_PERMODRST_EMAC0 | RSTMGR_PERMODRST_EMAC1);
++	writel(rst, CYCLONE5_RSTMGR_ADDRESS + RESET_MGR_PER_MOD_RESET_OFS);
++}
++
++static int socfpga_init(void)
++{
++	socfpga_init_emac();
++
++	writel(SYSMGR_SDMMC_CTRL_DRVSEL(3) | SYSMGR_SDMMC_CTRL_SMPLSEL(0),
++		SYSMGR_SDMMCGRP_CTRL_REG);
++
++	nic301_slave_ns();
++
++	socfpga_detect_sdram();
++
++	return 0;
++}
++core_initcall(socfpga_init);
+diff --git a/arch/arm/mach-socfpga/init.c b/arch/arm/mach-socfpga/cyclone5-init.c
+similarity index 89%
+rename from arch/arm/mach-socfpga/init.c
+rename to arch/arm/mach-socfpga/cyclone5-init.c
+index 0c679e3d2dac..412808b8416f 100644
+--- a/arch/arm/mach-socfpga/init.c
++++ b/arch/arm/mach-socfpga/cyclone5-init.c
+@@ -2,11 +2,11 @@
+ #include <common.h>
+ #include <init.h>
+ #include <io.h>
+-#include <mach/freeze-controller.h>
+-#include <mach/system-manager.h>
+-#include <mach/clock-manager.h>
+-#include <mach/reset-manager.h>
+-#include <mach/scan-manager.h>
++#include <mach/cyclone5-freeze-controller.h>
++#include <mach/cyclone5-system-manager.h>
++#include <mach/cyclone5-clock-manager.h>
++#include <mach/cyclone5-reset-manager.h>
++#include <mach/cyclone5-scan-manager.h>
+ #include <mach/generic.h>
+ 
+ void socfpga_lowlevel_init(struct socfpga_cm_config *cm_config,
+diff --git a/arch/arm/mach-socfpga/reset-manager.c b/arch/arm/mach-socfpga/cyclone5-reset-manager.c
+similarity index 96%
+rename from arch/arm/mach-socfpga/reset-manager.c
+rename to arch/arm/mach-socfpga/cyclone5-reset-manager.c
+index 04522da4d1ae..4bbe1a8101f1 100644
+--- a/arch/arm/mach-socfpga/reset-manager.c
++++ b/arch/arm/mach-socfpga/cyclone5-reset-manager.c
+@@ -19,8 +19,8 @@
+ #include <io.h>
+ #include <init.h>
+ #include <restart.h>
+-#include <mach/socfpga-regs.h>
+-#include <mach/reset-manager.h>
++#include <mach/cyclone5-regs.h>
++#include <mach/cyclone5-reset-manager.h>
+ 
+ /* Disable the watchdog (toggle reset to watchdog) */
+ void watchdog_disable(void)
+diff --git a/arch/arm/mach-socfpga/scan-manager.c b/arch/arm/mach-socfpga/cyclone5-scan-manager.c
+similarity index 98%
+rename from arch/arm/mach-socfpga/scan-manager.c
+rename to arch/arm/mach-socfpga/cyclone5-scan-manager.c
+index 57979b90a208..cf076c3885b3 100644
+--- a/arch/arm/mach-socfpga/scan-manager.c
++++ b/arch/arm/mach-socfpga/cyclone5-scan-manager.c
+@@ -17,8 +17,8 @@
+ 
+ #include <common.h>
+ #include <io.h>
+-#include <mach/freeze-controller.h>
+-#include <mach/scan-manager.h>
++#include <mach/cyclone5-freeze-controller.h>
++#include <mach/cyclone5-scan-manager.h>
+ 
+ /*
+  * @fn scan_mgr_io_scan_chain_engine_is_idle
+diff --git a/arch/arm/mach-socfpga/system-manager.c b/arch/arm/mach-socfpga/cyclone5-system-manager.c
+similarity index 93%
+rename from arch/arm/mach-socfpga/system-manager.c
+rename to arch/arm/mach-socfpga/cyclone5-system-manager.c
+index 45db921f1a02..7e86692c397e 100644
+--- a/arch/arm/mach-socfpga/system-manager.c
++++ b/arch/arm/mach-socfpga/cyclone5-system-manager.c
+@@ -17,8 +17,8 @@
+ 
+ #include <common.h>
+ #include <io.h>
+-#include <mach/system-manager.h>
+-#include <mach/socfpga-regs.h>
++#include <mach/cyclone5-system-manager.h>
++#include <mach/cyclone5-regs.h>
+ 
+ void socfpga_sysmgr_pinmux_init(unsigned long *sys_mgr_init_table, int num)
+ {
+diff --git a/arch/arm/mach-socfpga/include/mach/clock-manager.h b/arch/arm/mach-socfpga/include/mach/cyclone5-clock-manager.h
+similarity index 99%
+rename from arch/arm/mach-socfpga/include/mach/clock-manager.h
+rename to arch/arm/mach-socfpga/include/mach/cyclone5-clock-manager.h
+index 45800de79a7a..797aa5d3cfe8 100644
+--- a/arch/arm/mach-socfpga/include/mach/clock-manager.h
++++ b/arch/arm/mach-socfpga/include/mach/cyclone5-clock-manager.h
+@@ -15,8 +15,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
+-#ifndef	_CLOCK_MANAGER_H_
+-#define	_CLOCK_MANAGER_H_
++#ifndef	_CLOCK_MANAGER_CYCLONE5_H_
++#define	_CLOCK_MANAGER_CYCLONE5_H_
+ 
+ struct socfpga_cm_config {
+ 	/* main group */
+@@ -197,4 +197,4 @@ void socfpga_cm_basic_init(const struct socfpga_cm_config *cfg);
+ 	CLKMGR_MAINPLLGRP_VCO_EN_SET(0)| \
+ 	CLKMGR_MAINPLLGRP_VCO_BGPWRDN_SET(0))
+ 
+-#endif /* _CLOCK_MANAGER_H_ */
++#endif
+diff --git a/arch/arm/mach-socfpga/include/mach/freeze-controller.h b/arch/arm/mach-socfpga/include/mach/cyclone5-freeze-controller.h
+similarity index 96%
+rename from arch/arm/mach-socfpga/include/mach/freeze-controller.h
+rename to arch/arm/mach-socfpga/include/mach/cyclone5-freeze-controller.h
+index 4253f5b38f92..93ce5152eda9 100644
+--- a/arch/arm/mach-socfpga/include/mach/freeze-controller.h
++++ b/arch/arm/mach-socfpga/include/mach/cyclone5-freeze-controller.h
+@@ -15,10 +15,10 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
+-#ifndef _FREEZE_CONTROLLER_H_
+-#define _FREEZE_CONTROLLER_H_
++#ifndef _CYCLONE5_FREEZE_CONTROLLER_H_
++#define _CYCLONE5_FREEZE_CONTROLLER_H_
+ 
+-#include <mach/socfpga-regs.h>
++#include <mach/cyclone5-regs.h>
+ 
+ #define SYSMGR_FRZCTRL_ADDRESS		0x40
+ #define SYSMGR_FRZCTRL_VIOCTRL_ADDRESS	0x40
+diff --git a/arch/arm/mach-socfpga/include/mach/socfpga-regs.h b/arch/arm/mach-socfpga/include/mach/cyclone5-regs.h
+similarity index 100%
+rename from arch/arm/mach-socfpga/include/mach/socfpga-regs.h
+rename to arch/arm/mach-socfpga/include/mach/cyclone5-regs.h
+diff --git a/arch/arm/mach-socfpga/include/mach/reset-manager.h b/arch/arm/mach-socfpga/include/mach/cyclone5-reset-manager.h
+similarity index 100%
+rename from arch/arm/mach-socfpga/include/mach/reset-manager.h
+rename to arch/arm/mach-socfpga/include/mach/cyclone5-reset-manager.h
+diff --git a/arch/arm/mach-socfpga/include/mach/scan-manager.h b/arch/arm/mach-socfpga/include/mach/cyclone5-scan-manager.h
+similarity index 99%
+rename from arch/arm/mach-socfpga/include/mach/scan-manager.h
+rename to arch/arm/mach-socfpga/include/mach/cyclone5-scan-manager.h
+index 568bedfde13c..df720a7e086c 100644
+--- a/arch/arm/mach-socfpga/include/mach/scan-manager.h
++++ b/arch/arm/mach-socfpga/include/mach/cyclone5-scan-manager.h
+@@ -19,7 +19,7 @@
+ #define _SCAN_MANAGER_H_
+ 
+ #include <io.h>
+-#include <mach/socfpga-regs.h>
++#include <mach/cyclone5-regs.h>
+ 
+ /***********************************************************
+  *                                                         *
+diff --git a/arch/arm/mach-socfpga/include/mach/sdram_config.h b/arch/arm/mach-socfpga/include/mach/cyclone5-sdram-config.h
+similarity index 98%
+rename from arch/arm/mach-socfpga/include/mach/sdram_config.h
+rename to arch/arm/mach-socfpga/include/mach/cyclone5-sdram-config.h
+index 2af797a920d9..a19a837994e2 100644
+--- a/arch/arm/mach-socfpga/include/mach/sdram_config.h
++++ b/arch/arm/mach-socfpga/include/mach/cyclone5-sdram-config.h
+@@ -1,9 +1,9 @@
+ #ifndef __MACH_SDRAM_CONFIG_H
+ #define __MACH_SDRAM_CONFIG_H
+ 
+-#include <mach/sdram.h>
+-#include <mach/socfpga-regs.h>
+-#include <mach/system-manager.h>
++#include <mach/cyclone5-sdram.h>
++#include <mach/cyclone5-regs.h>
++#include <mach/cyclone5-system-manager.h>
+ 
+ static inline void sdram_write(unsigned register_offset, unsigned val)
+ {
+diff --git a/arch/arm/mach-socfpga/include/mach/sdram.h b/arch/arm/mach-socfpga/include/mach/cyclone5-sdram.h
+similarity index 100%
+rename from arch/arm/mach-socfpga/include/mach/sdram.h
+rename to arch/arm/mach-socfpga/include/mach/cyclone5-sdram.h
+diff --git a/arch/arm/mach-socfpga/include/mach/sequencer.c b/arch/arm/mach-socfpga/include/mach/cyclone5-sequencer.c
+similarity index 99%
+rename from arch/arm/mach-socfpga/include/mach/sequencer.c
+rename to arch/arm/mach-socfpga/include/mach/cyclone5-sequencer.c
+index d2338e640686..e5ecb0f1b8b5 100644
+--- a/arch/arm/mach-socfpga/include/mach/sequencer.c
++++ b/arch/arm/mach-socfpga/include/mach/cyclone5-sequencer.c
+@@ -26,11 +26,9 @@
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+ 
+-#include "sequencer_defines.h"
+-
+ #include "system.h"
+ #include "sdram_io.h"
+-#include "sequencer.h"
++#include "cyclone5-sequencer.h"
+ #include "tclrpt.h"
+ 
+ /******************************************************************************
+@@ -57,7 +55,7 @@ asm(".global __alt_stack_pointer");
+ asm("__alt_stack_pointer = " STRINGIFY(STACK_POINTER));
+ #endif
+ 
+-#include <mach/sdram.h>
++#include <mach/cyclone5-sdram.h>
+ 
+ #define NEWVERSION_RDDESKEW 1
+ #define NEWVERSION_WRDESKEW 1
+diff --git a/arch/arm/mach-socfpga/include/mach/sequencer.h b/arch/arm/mach-socfpga/include/mach/cyclone5-sequencer.h
+similarity index 100%
+rename from arch/arm/mach-socfpga/include/mach/sequencer.h
+rename to arch/arm/mach-socfpga/include/mach/cyclone5-sequencer.h
+diff --git a/arch/arm/mach-socfpga/include/mach/system-manager.h b/arch/arm/mach-socfpga/include/mach/cyclone5-system-manager.h
+similarity index 100%
+rename from arch/arm/mach-socfpga/include/mach/system-manager.h
+rename to arch/arm/mach-socfpga/include/mach/cyclone5-system-manager.h
+diff --git a/arch/arm/mach-socfpga/include/mach/pll_config.h b/arch/arm/mach-socfpga/include/mach/pll_config.h
+index bb491d82f12c..1a7e851eda43 100644
+--- a/arch/arm/mach-socfpga/include/mach/pll_config.h
++++ b/arch/arm/mach-socfpga/include/mach/pll_config.h
+@@ -1,5 +1,5 @@
+ 
+-#include <mach/clock-manager.h>
++#include <mach/cyclone5-clock-manager.h>
+ 
+ static struct socfpga_cm_config cm_default_cfg = {
+ 	/* main group */
+diff --git a/arch/arm/mach-socfpga/include/mach/sdram_io.h b/arch/arm/mach-socfpga/include/mach/sdram_io.h
+old mode 100755
+new mode 100644
+index 62698000f6d8..ef87bdaf63b3
+--- a/arch/arm/mach-socfpga/include/mach/sdram_io.h
++++ b/arch/arm/mach-socfpga/include/mach/sdram_io.h
+@@ -26,7 +26,7 @@
+  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ 
+-#include <mach/sdram.h>
++#include <mach/cyclone5-sdram.h>
+ 
+ #define MGR_SELECT_MASK   0xf8000
+ 
+diff --git a/arch/arm/mach-socfpga/include/mach/sequencer_defines.h b/arch/arm/mach-socfpga/include/mach/sequencer_defines.h
+deleted file mode 100644
+index 50598441069d..000000000000
+--- a/arch/arm/mach-socfpga/include/mach/sequencer_defines.h
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#define TINIT_CNTR1_VAL 32
+-#define TINIT_CNTR2_VAL 32
+-#define TINIT_CNTR0_VAL 99
+-#define TRESET_CNTR1_VAL 99
+-#define TRESET_CNTR2_VAL 10
+-#define TRESET_CNTR0_VAL 99
+diff --git a/arch/arm/mach-socfpga/include/mach/system.h b/arch/arm/mach-socfpga/include/mach/system.h
+old mode 100755
+new mode 100644
+diff --git a/arch/arm/mach-socfpga/include/mach/tclrpt.h b/arch/arm/mach-socfpga/include/mach/tclrpt.h
+old mode 100755
+new mode 100644
+index 4345b23ba65c..6b332c875412
+--- a/arch/arm/mach-socfpga/include/mach/tclrpt.h
++++ b/arch/arm/mach-socfpga/include/mach/tclrpt.h
+@@ -28,7 +28,7 @@
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+ 
+-#include "sequencer.h"
++#include "cyclone5-sequencer.h"
+ 
+ #define TCLRPT_SET(item, value)
+ 
+diff --git a/arch/arm/mach-socfpga/nic301.c b/arch/arm/mach-socfpga/nic301.c
+index 206dd48ff911..7069c6e5b9ae 100644
+--- a/arch/arm/mach-socfpga/nic301.c
++++ b/arch/arm/mach-socfpga/nic301.c
+@@ -18,7 +18,7 @@
+ #include <common.h>
+ #include <io.h>
+ #include <mach/nic301.h>
+-#include <mach/socfpga-regs.h>
++#include <mach/cyclone5-regs.h>
+ 
+ /*
+  * Convert all slave from secure to non secure
+diff --git a/arch/arm/mach-socfpga/xload.c b/arch/arm/mach-socfpga/xload.c
+index d24944bbb85e..5d47bb9d3ea2 100644
+--- a/arch/arm/mach-socfpga/xload.c
++++ b/arch/arm/mach-socfpga/xload.c
+@@ -17,8 +17,8 @@
+ #include <linux/clk.h>
+ 
+ #include <mach/generic.h>
+-#include <mach/system-manager.h>
+-#include <mach/socfpga-regs.h>
++#include <mach/cyclone5-system-manager.h>
++#include <mach/cyclone5-regs.h>
+ 
+ static struct socfpga_barebox_part default_parts[] = {
+ 	{
+diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
+index a0cd2011cbce..c1eae98acc91 100644
+--- a/drivers/firmware/socfpga.c
++++ b/drivers/firmware/socfpga.c
+@@ -34,10 +34,10 @@
+ #include <fcntl.h>
+ #include <init.h>
+ #include <io.h>
+-#include <mach/system-manager.h>
+-#include <mach/reset-manager.h>
+-#include <mach/socfpga-regs.h>
+-#include <mach/sdram.h>
++#include <mach/cyclone5-system-manager.h>
++#include <mach/cyclone5-reset-manager.h>
++#include <mach/cyclone5-regs.h>
++#include <mach/cyclone5-sdram.h>
+ 
+ #define FPGAMGRREGS_STAT			0x0
+ #define FPGAMGRREGS_CTRL			0x4
+diff --git a/scripts/socfpga_import_preloader b/scripts/socfpga_import_preloader
+index b08262cb6c83..63ff30ec2a21 100755
+--- a/scripts/socfpga_import_preloader
++++ b/scripts/socfpga_import_preloader
+@@ -46,7 +46,7 @@ copy_source() {
+ 
+ 	echo "	Fixing include pathes..."
+ 	# Fix include pathes
+-	sed -i 's/#include <iocsr_config_cyclone5.h>/#include <mach\/scan-manager.h>/g' $tgt
++	sed -i 's/#include <iocsr_config_cyclone5.h>/#include <mach\/cyclone5-scan-manager.h>/g' $tgt
+ 	sed -i 's/#include <pinmux_config.h>/#include <common.h>/g' $tgt
+ 	sed -i 's/#include "sequencer_auto.h"//g' $tgt
+ 	sed -i 's/#include "sequencer_defines.h"//g' $tgt
 -- 
 2.11.0
 
