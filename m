@@ -1,15 +1,26 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1cvLQz-0003w4-OA
- for barebox@lists.infradead.org; Tue, 04 Apr 2017 10:11:35 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 7FC19A0022B
- for <barebox@lists.infradead.org>; Tue,  4 Apr 2017 12:11:46 +0200 (CEST)
-From: Daniel Schultz <d.schultz@phytec.de>
-Message-ID: <ea78b774-b055-9b43-4b18-03eeabd2e06b@phytec.de>
-Date: Tue, 4 Apr 2017 12:11:09 +0200
+Received: from mail-wr0-x233.google.com ([2a00:1450:400c:c0c::233])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cvLgu-0003MZ-Fs
+ for barebox@lists.infradead.org; Tue, 04 Apr 2017 10:28:02 +0000
+Received: by mail-wr0-x233.google.com with SMTP id t20so3142278wra.1
+ for <barebox@lists.infradead.org>; Tue, 04 Apr 2017 03:27:39 -0700 (PDT)
 MIME-Version: 1.0
+In-Reply-To: <58e3539f.0582540a.1e64d.751fSMTPIN_ADDED_BROKEN@mx.google.com>
+References: <20170330063139.kfxjxb33cbrbzrdp@pengutronix.de>
+ <CAGUZs0n93ZWNASvyyUddCPfSKPYavomXxGwHMd6caGGn3w65hw@mail.gmail.com>
+ <20170331062139.d5kaoagglgnylr2r@pengutronix.de>
+ <CAGUZs0=TQxEabVqdm4gbmazEwK4xvaBmLFmaJT==mZ-0-Lvorg@mail.gmail.com>
+ <20170331070209.ogz4znywovz2rneb@pengutronix.de>
+ <CAGUZs0nPy2PCRz3YQjT-O=SE1RwLgudrBW4x9H90R7jRKUmDNQ@mail.gmail.com>
+ <20170331072338.er5w3t42yvfgtrf6@pengutronix.de>
+ <CAGUZs0nLA3qTnAnuidvq-LBuj3VE9unJ+Y5+sjgyr2hBb7hFMg@mail.gmail.com>
+ <20170331130058.y6prkk3xsys2ypg5@pengutronix.de>
+ <CAGUZs0=zmi+GciKgtSRUe8sT=_SXNBGH4p5jXqk8MogyQ5MMwA@mail.gmail.com>
+ <58e3539f.0582540a.1e64d.751fSMTPIN_ADDED_BROKEN@mx.google.com>
+From: =?UTF-8?B?w4dhxJ9sYXIgS2lsaW1jaQ==?= <ckilimci@gmail.com>
+Date: Tue, 4 Apr 2017 13:27:37 +0300
+Message-ID: <CAGUZs0==LajQvqc2STju-Ohx=T--yFFed1EzrJTUi5TCF2qBbw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,19 +29,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Directory mirroring
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: State Framework and dtb
+To: Jan Remmet <J.Remmet@phytec.de>
+Cc: barebox <barebox@lists.infradead.org>
 
-SGkgZXZlcnlvbmUsCgpteSBib290IHBhcnRpdGlvbiBpcyBtb3VudGVkIHRvIC9ib290Ly4gTm93
-LCBJIHdhbnQgdG8gbWFrZSBpdCAKYWNjZXNzaWJsZSBpbiAvbW50LyBhcyBtbWMgb3IgZW1tYywg
-ZGVwZW5kaW5nIHRvIHRoZSBib290c291cmNlLiBTYWRseSwgCmxuIGNhbiBvbmx5IGNyZWF0ZSBz
-eW1saW5rcyBmb3IgZmlsZXMgYW5kIHR3byBtb3VudHMgZm9yIG9uZSBkZXZpY2UgCnNlZW1zIG5v
-dCB0byB3b3JrLgoKQXJlIHRoZXJlIG90aGVyIHdheXMgdG8gbWlycm9yIGEgZmlsZSBzeXN0ZW0/
-CgotLSAKTWl0IGZyZXVuZGxpY2hlbiBHcsO8w59lbiwKV2l0aCBiZXN0IHJlZ2FyZHMsCiAgIERh
-bmllbCBTY2h1bHR6CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
-cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+SGV5LAoKMjAxNy0wNC0wNCAxMTowNCBHTVQrMDM6MDAgSmFuIFJlbW1ldCA8Si5SZW1tZXRAcGh5
+dGVjLmRlPjoKPiBPbiBNb24sIEFwciAwMywgMjAxNyBhdCAxMTo1OTo1MFBNICswMzAwLCDDh2HE
+n2xhciBLaWxpbWNpIHdyb3RlOgo+PiBIZWxsbywKPj4KPj4gMjAxNy0wMy0zMSAxNjowMCBHTVQr
+MDM6MDAgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPj4gPiBPbiBGcmks
+IE1hciAzMSwgMjAxNyBhdCAwMjo0MToxOVBNICswMzAwLCDDh2HEn2xhciBLaWxpbWNpIHdyb3Rl
+Ogo+PiA+PiBIZXksCj4+ID4+Cj4+ID4+Cj4+ID4+IEkgdHJpZWQgYnV0IGdvdCB0aGUgc2FtZSBy
+ZXN1bHQgYW5kIHRoZW4gSSB3b3VsZCBsaWtlIHRvIGFwcGx5IHlvdXIKPj4gPj4gc2VyaW91cyBw
+YXRjaCBzZXJpZXMgb2YgdGhlIHN0YXRlIGZyYW1ld29yayBidXQgcmVsZWFzZSB0aGF0IG91cgo+
+PiA+PiB3b3JraW5nIGJyYW5jaCBpcyAyMDE2LjA3IHNvIGNvdWxkIG5vdCBhcHBseSBwYXRjaGVz
+LiBMZXQgbWUgdXBkYXRlCj4+ID4+IGJhcmVib3ggYW5kIGFwcGx5IHRob3NlIHBhdGNoZXMuIEFy
+ZSB0aG9zZSBiYXNlZCBvbiBtYXN0ZXIgYnJhbmNoCj4+ID4+IHJpZ2h0PyAgT3IsIHdoaWNoIGJy
+YW5jaCBkbyB5b3UgcmVjb21tZW5kIHRvIHdvcmsgb24/Cj4+ID4KPj4gPiBUaGUgcGF0Y2hlcyBh
+cmUgYmFzZWQgb24gbWFzdGVyLCB5ZXMuIEFueXdheSwgeW91IHNlZW0gdG8gaGF2ZSBhIHByb2Js
+ZW0KPj4gPiBpbiBnZXR0aW5nIHlvdXIgY2hhbmdlcyBpbiB0aGUgZHRzIGZpbGUgdG8gdGhlIHJ1
+bm5pbmcgYmFyZWJveC4gUGxlYXNlCj4+ID4gdHJ5IHRvIGFkZCBzb21lIG5vZGVzL3Byb3BlcnRp
+ZXMgdG8geW91ciBkdHMgZmlsZSBhbmQgdmVyaWZ5IHRoYXQgYQo+PiA+IG9mX2R1bXAgc2hvd3Mg
+dGhlc2Ugbm9kZXMuIEJlZm9yZSB0aGF0IGlzIHRoZSBjYXNlIGl0J3Mgbm90IHdvcnRoIHRvCj4+
+ID4gbG9vayBhbnkgZnVydGhlci4KPj4KPj4gRmluYWxseSwgSSB1cGRhdGVkIGFuZCBwYXRjaGVk
+IHRoZSBjb2RlIGFuZCBub3cgSSBjYW4gc2VlIHN0YXRlQDAKPj4gZGV2aWNlIGluIHRoZSBvZl9k
+dW1wOgo+PiAgICAgICAgIHN0YXRlQDAgewo+PiAgICAgICAgICAgICAgICAgbWFnaWMgPSA8MHgy
+NzAzMTk3Nz47Cj4+ICAgICAgICAgICAgICAgICBjb21wYXRpYmxlID0gImJhcmVib3gsc3RhdGUi
+Owo+PiAgICAgICAgICAgICAgICAgYmFja2VuZC10eXBlID0gInJhdyI7Cj4+ICAgICAgICAgICAg
+ICAgICBiYWNrZW5kID0gPDB4NDI+Owo+PiAgICAgICAgICAgICAgICAgZm9vIHsKPj4gICAgICAg
+ICAgICAgICAgICAgICAgICAgcmVnID0gPDB4MCAweDQ+Owo+PiAgICAgICAgICAgICAgICAgICAg
+ICAgICB0eXBlID0gInVpbnQzMiI7Cj4+ICAgICAgICAgICAgICAgICAgICAgICAgIGRlZmF1bHQg
+PSA8MHgwPjsKPj4gICAgICAgICAgICAgICAgIH07Cj4+ICAgICAgICAgICAgICAgICBiYXIgewo+
+PiAgICAgICAgICAgICAgICAgICAgICAgICByZWcgPSA8MHgxMCAweDQ+Owo+PiAgICAgICAgICAg
+ICAgICAgICAgICAgICB0eXBlID0gImVudW0zMiI7Cj4+ICAgICAgICAgICAgICAgICAgICAgICAg
+IG5hbWVzID0gImJheiIsICJxdXgiOwo+PiAgICAgICAgICAgICAgICAgICAgICAgICBkZWZhdWx0
+ID0gPDB4MT47Cj4+ICAgICAgICAgICAgICAgICB9Owo+PiAgICAgICAgIH07Cj4KPiBIZXJlIGEg
+d29ya2luZyBleGFtcGxlIGZvciBiYXJlYm94IDIwMTYuMTEuMCBzbyB0aGVyZSBtYXkgYmUgY2hh
+bmdlcyB3aXRoIHRoZQo+IGFjdHVhbCBzdGF0ZSBjbGVhbnVwIHBhdGNoZXMKPgo+ICsgICAgICAg
+c3RhdGUyOiBzdGF0ZV9zb2NrZXQgewo+ICsgICAgICAgICAgICAgICBtYWdpYyA9IDwweDQ1NmVm
+MzYzPjsKPiArICAgICAgICAgICAgICAgY29tcGF0aWJsZSA9ICJiYXJlYm94LHN0YXRlIjsKPiAr
+ICAgICAgICAgICAgICAgYmFja2VuZC10eXBlID0gInJhdyI7Cj4gKyAgICAgICAgICAgICAgIGJh
+Y2tlbmQgPSAmZWVwcm9tOwoKSSBjaGFuZ2VkIHRvOgpiYWNrZW5kID0gPCZlZXByb20+Owp0aGVu
+IGl0IHdvcmtzIDopCmJhcmVib3hAUGh5dGVjIHBoeUNPUkUgQU0zMzV4Oi8gc3RhdGUKcmVnaXN0
+ZXJlZCBzdGF0ZSBpbnN0YW5jZXM6CnN0YXRlX3NvY2tldCAgICAgICAgIChiYWNrZW5kOiByYXcs
+IHBhdGg6IC9kZXYvZWVwcm9tMCkKCj4KPiBNYXliZSB0aGUgbWlzc2luZyBiYWNrZW5kLXN0b3Jh
+Z2UtdHlwZSBpcyBhIHByb2JsZW0/CgpBcyBhIGRvY3VtZW50YXRpb24sIGl0IHNob3VsZCBub3Qg
+YmUuCgpUaGFuayB5b3UgYWxsLgoKLS0gCsOHYcSfbGFyIEtpbGltY2kKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
