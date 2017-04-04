@@ -1,34 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtprelay0149.hostedemail.com ([216.40.44.149]
- helo=smtprelay.hostedemail.com)
+Received: from mail.kymetacorp.com ([208.187.125.9])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cvM0v-0006on-Cx
- for barebox@lists.infradead.org; Tue, 04 Apr 2017 10:48:44 +0000
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
- [216.40.38.60])
- by smtprelay08.hostedemail.com (Postfix) with ESMTP id 28FF029DDE4
- for <barebox@lists.infradead.org>; Tue,  4 Apr 2017 10:48:11 +0000 (UTC)
-Received: from [10.0.0.53] (unknown [81.133.34.160])
- (Authenticated sender: ian@abbott.org)
- by omf02.hostedemail.com (Postfix) with ESMTPA
- for <barebox@lists.infradead.org>; Tue,  4 Apr 2017 10:48:10 +0000 (UTC)
-References: <20170330063139.kfxjxb33cbrbzrdp@pengutronix.de>
- <CAGUZs0n93ZWNASvyyUddCPfSKPYavomXxGwHMd6caGGn3w65hw@mail.gmail.com>
- <20170331062139.d5kaoagglgnylr2r@pengutronix.de>
- <CAGUZs0=TQxEabVqdm4gbmazEwK4xvaBmLFmaJT==mZ-0-Lvorg@mail.gmail.com>
- <20170331070209.ogz4znywovz2rneb@pengutronix.de>
- <CAGUZs0nPy2PCRz3YQjT-O=SE1RwLgudrBW4x9H90R7jRKUmDNQ@mail.gmail.com>
- <20170331072338.er5w3t42yvfgtrf6@pengutronix.de>
- <CAGUZs0nLA3qTnAnuidvq-LBuj3VE9unJ+Y5+sjgyr2hBb7hFMg@mail.gmail.com>
- <20170331130058.y6prkk3xsys2ypg5@pengutronix.de>
- <CAGUZs0=zmi+GciKgtSRUe8sT=_SXNBGH4p5jXqk8MogyQ5MMwA@mail.gmail.com>
- <58e3539f.0582540a.1e64d.751fSMTPIN_ADDED_BROKEN@mx.google.com>
- <CAGUZs0==LajQvqc2STju-Ohx=T--yFFed1EzrJTUi5TCF2qBbw@mail.gmail.com>
-From: Ian Abbott <abbotti@mev.co.uk>
-Message-ID: <457a7e12-b457-e4b8-8fea-df041b636fb5@mev.co.uk>
-Date: Tue, 4 Apr 2017 11:48:09 +0100
+ id 1cvSdN-0007HG-UZ
+ for barebox@lists.infradead.org; Tue, 04 Apr 2017 17:52:52 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Tue, 4 Apr 2017 17:52:25 +0000
+Message-ID: <1491328345.18442.39.camel@kymetacorp.com>
+References: <20170403105523.16797-1-s.trumtrar@pengutronix.de>
+In-Reply-To: <20170403105523.16797-1-s.trumtrar@pengutronix.de>
+Content-Language: en-US
+Content-ID: <F95213AB315D7D4490217ED31FF595C6@kymetacorp.com>
 MIME-Version: 1.0
-In-Reply-To: <CAGUZs0==LajQvqc2STju-Ohx=T--yFFed1EzrJTUi5TCF2qBbw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -37,59 +19,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: State Framework and dtb
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/7] SoCFPGA: add support for Arria10
+To: "s.trumtrar@pengutronix.de" <s.trumtrar@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-T24gMDQvMDQvMTcgMTE6MjcsIMOHYcSfbGFyIEtpbGltY2kgd3JvdGU6Cj4gSGV5LAo+Cj4gMjAx
-Ny0wNC0wNCAxMTowNCBHTVQrMDM6MDAgSmFuIFJlbW1ldCA8Si5SZW1tZXRAcGh5dGVjLmRlPjoK
-Pj4gT24gTW9uLCBBcHIgMDMsIDIwMTcgYXQgMTE6NTk6NTBQTSArMDMwMCwgw4dhxJ9sYXIgS2ls
-aW1jaSB3cm90ZToKPj4+IEhlbGxvLAo+Pj4KPj4+IDIwMTctMDMtMzEgMTY6MDAgR01UKzAzOjAw
-IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT46Cj4+Pj4gT24gRnJpLCBNYXIg
-MzEsIDIwMTcgYXQgMDI6NDE6MTlQTSArMDMwMCwgw4dhxJ9sYXIgS2lsaW1jaSB3cm90ZToKPj4+
-Pj4gSGV5LAo+Pj4+Pgo+Pj4+Pgo+Pj4+PiBJIHRyaWVkIGJ1dCBnb3QgdGhlIHNhbWUgcmVzdWx0
-IGFuZCB0aGVuIEkgd291bGQgbGlrZSB0byBhcHBseSB5b3VyCj4+Pj4+IHNlcmlvdXMgcGF0Y2gg
-c2VyaWVzIG9mIHRoZSBzdGF0ZSBmcmFtZXdvcmsgYnV0IHJlbGVhc2UgdGhhdCBvdXIKPj4+Pj4g
-d29ya2luZyBicmFuY2ggaXMgMjAxNi4wNyBzbyBjb3VsZCBub3QgYXBwbHkgcGF0Y2hlcy4gTGV0
-IG1lIHVwZGF0ZQo+Pj4+PiBiYXJlYm94IGFuZCBhcHBseSB0aG9zZSBwYXRjaGVzLiBBcmUgdGhv
-c2UgYmFzZWQgb24gbWFzdGVyIGJyYW5jaAo+Pj4+PiByaWdodD8gIE9yLCB3aGljaCBicmFuY2gg
-ZG8geW91IHJlY29tbWVuZCB0byB3b3JrIG9uPwo+Pj4+Cj4+Pj4gVGhlIHBhdGNoZXMgYXJlIGJh
-c2VkIG9uIG1hc3RlciwgeWVzLiBBbnl3YXksIHlvdSBzZWVtIHRvIGhhdmUgYSBwcm9ibGVtCj4+
-Pj4gaW4gZ2V0dGluZyB5b3VyIGNoYW5nZXMgaW4gdGhlIGR0cyBmaWxlIHRvIHRoZSBydW5uaW5n
-IGJhcmVib3guIFBsZWFzZQo+Pj4+IHRyeSB0byBhZGQgc29tZSBub2Rlcy9wcm9wZXJ0aWVzIHRv
-IHlvdXIgZHRzIGZpbGUgYW5kIHZlcmlmeSB0aGF0IGEKPj4+PiBvZl9kdW1wIHNob3dzIHRoZXNl
-IG5vZGVzLiBCZWZvcmUgdGhhdCBpcyB0aGUgY2FzZSBpdCdzIG5vdCB3b3J0aCB0bwo+Pj4+IGxv
-b2sgYW55IGZ1cnRoZXIuCj4+Pgo+Pj4gRmluYWxseSwgSSB1cGRhdGVkIGFuZCBwYXRjaGVkIHRo
-ZSBjb2RlIGFuZCBub3cgSSBjYW4gc2VlIHN0YXRlQDAKPj4+IGRldmljZSBpbiB0aGUgb2ZfZHVt
-cDoKPj4+ICAgICAgICAgc3RhdGVAMCB7Cj4+PiAgICAgICAgICAgICAgICAgbWFnaWMgPSA8MHgy
-NzAzMTk3Nz47Cj4+PiAgICAgICAgICAgICAgICAgY29tcGF0aWJsZSA9ICJiYXJlYm94LHN0YXRl
-IjsKPj4+ICAgICAgICAgICAgICAgICBiYWNrZW5kLXR5cGUgPSAicmF3IjsKPj4+ICAgICAgICAg
-ICAgICAgICBiYWNrZW5kID0gPDB4NDI+Owo+Pj4gICAgICAgICAgICAgICAgIGZvbyB7Cj4+PiAg
-ICAgICAgICAgICAgICAgICAgICAgICByZWcgPSA8MHgwIDB4ND47Cj4+PiAgICAgICAgICAgICAg
-ICAgICAgICAgICB0eXBlID0gInVpbnQzMiI7Cj4+PiAgICAgICAgICAgICAgICAgICAgICAgICBk
-ZWZhdWx0ID0gPDB4MD47Cj4+PiAgICAgICAgICAgICAgICAgfTsKPj4+ICAgICAgICAgICAgICAg
-ICBiYXIgewo+Pj4gICAgICAgICAgICAgICAgICAgICAgICAgcmVnID0gPDB4MTAgMHg0PjsKPj4+
-ICAgICAgICAgICAgICAgICAgICAgICAgIHR5cGUgPSAiZW51bTMyIjsKPj4+ICAgICAgICAgICAg
-ICAgICAgICAgICAgIG5hbWVzID0gImJheiIsICJxdXgiOwo+Pj4gICAgICAgICAgICAgICAgICAg
-ICAgICAgZGVmYXVsdCA9IDwweDE+Owo+Pj4gICAgICAgICAgICAgICAgIH07Cj4+PiAgICAgICAg
-IH07Cj4+Cj4+IEhlcmUgYSB3b3JraW5nIGV4YW1wbGUgZm9yIGJhcmVib3ggMjAxNi4xMS4wIHNv
-IHRoZXJlIG1heSBiZSBjaGFuZ2VzIHdpdGggdGhlCj4+IGFjdHVhbCBzdGF0ZSBjbGVhbnVwIHBh
-dGNoZXMKPj4KPj4gKyAgICAgICBzdGF0ZTI6IHN0YXRlX3NvY2tldCB7Cj4+ICsgICAgICAgICAg
-ICAgICBtYWdpYyA9IDwweDQ1NmVmMzYzPjsKPj4gKyAgICAgICAgICAgICAgIGNvbXBhdGlibGUg
-PSAiYmFyZWJveCxzdGF0ZSI7Cj4+ICsgICAgICAgICAgICAgICBiYWNrZW5kLXR5cGUgPSAicmF3
-IjsKPj4gKyAgICAgICAgICAgICAgIGJhY2tlbmQgPSAmZWVwcm9tOwo+Cj4gSSBjaGFuZ2VkIHRv
-Ogo+IGJhY2tlbmQgPSA8JmVlcHJvbT47Cj4gdGhlbiBpdCB3b3JrcyA6KQo+IGJhcmVib3hAUGh5
-dGVjIHBoeUNPUkUgQU0zMzV4Oi8gc3RhdGUKPiByZWdpc3RlcmVkIHN0YXRlIGluc3RhbmNlczoK
-PiBzdGF0ZV9zb2NrZXQgICAgICAgICAoYmFja2VuZDogcmF3LCBwYXRoOiAvZGV2L2VlcHJvbTAp
-CgpXb24ndCB0aGF0IHVzZSB0aGUgd2hvbGUgRUVQUk9NIHJhdGhlciB0aGFuIGEgcGFydGl0aW9u
-IHRoZXJlb2Y/IApBY2NvcmRpbmcgdG8gdGhlIGRvY3VtZW50YXRpb24sIHlvdSBjYW4gdXNlOgoK
-CQliYWNrZW5kID0gPCZlZXByb20+LCAicGFydG5hbWU6c3RhdGUiOwoKYXNzdW1pbmcgdGhlIHBh
-cnRpdGlvbiBoYXMgYGxhYmVsID0gInN0YXRlIjtgLgoKLS0gCi09KCBJYW4gQWJib3R0IEAgTUVW
-IEx0ZC4gICAgRS1tYWlsOiA8YWJib3R0aUBtZXYuY28udWs+ICk9LQotPSggICAgICAgICAgICAg
-ICAgICAgICAgICAgIFdlYjogaHR0cDovL3d3dy5tZXYuY28udWsvICApPS0KCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
-CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Mon, 2017-04-03 at 12:55 +0200, Steffen Trumtrar wrote:
+> Although Cyclone5 and Arria10 share a lot of the peripherals,
+> they a different in the critical parts (SDRAM controller, clock setup,...)
+> 
+> The Arria10 has a larger OCRAM (64KB vs 256KB), that is why we can
+> omit the xload support for now. The xload support can be added, once
+> Arria10 boards that need to program the FPGA very early (might be needed for
+> the SDRAM controller) are available.
+> 
+
+That means this support doesn't include loading the FPGA from barebox?
+
+The boot strategy is that the Barebox PBL image will fit in OCRAM and be
+loaded by the ROM loader, and then the PBL will decompress barebox into
+SDRAM?  If so, it will be necessary to have the FPGA loaded from an
+external device, such as an EPCQ flash chip, before barebox boots.  As
+SDRAM is not accessible until at least the peripheral FPGA image is
+loaded.
+
+U-Boot is able to load a FPGA image with a single bootloader.  A U-Boot
+image can be made that is small enough run in 256 kB yet has enough
+drivers to load an FPGA image from eMMC or NOR flash into the FPGA and
+then enable SDRAM.
+
+It seems like this might be possible for barebox as well.  If enough
+drivers to load the FPGA were part of the PBL.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
