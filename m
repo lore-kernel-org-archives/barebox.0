@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cvIDo-0005XN-IS
- for barebox@lists.infradead.org; Tue, 04 Apr 2017 06:45:46 +0000
-Date: Tue, 4 Apr 2017 08:45:22 +0200
+ id 1cvIF3-0005o2-Gb
+ for barebox@lists.infradead.org; Tue, 04 Apr 2017 06:47:03 +0000
+Date: Tue, 4 Apr 2017 08:46:39 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170404064522.7k7ao43jtmtqj5vt@pengutronix.de>
-References: <20170328091416.16715-1-o.rempel@pengutronix.de>
+Message-ID: <20170404064639.4bpzano7t57joqwo@pengutronix.de>
+References: <1490384122-13960-1-git-send-email-franck.jullien@gmail.com>
+ <20170329064253.4rsnyzsfuaxzlm42@pengutronix.de>
+ <CAJfOKBxJ0FwF0VBpeDTxe7cvgxmTW2xYHoCgXNAL+q+=9v=O6Q@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170328091416.16715-1-o.rempel@pengutronix.de>
+In-Reply-To: <CAJfOKBxJ0FwF0VBpeDTxe7cvgxmTW2xYHoCgXNAL+q+=9v=O6Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,83 +24,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1] i.MX: hab: fix compile after define renames
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] openrisc: fix call to restart_handler_register_fn
+To: Franck Jullien <franck.jullien@gmail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Tue, Mar 28, 2017 at 11:14:16AM +0200, Oleksij Rempel wrote:
-> Some defines was renamed by this patch:
-> | commit 75e98198234ce18ab15f581cf7b52aaf0b46d792
-> | i.MX: Add fusemap for VF610
+On Wed, Mar 29, 2017 at 03:45:04PM +0200, Franck Jullien wrote:
+> 2017-03-29 8:42 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> > On Fri, Mar 24, 2017 at 08:35:22PM +0100, Franck Jullien wrote:
+> >> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+> >> ---
+> >>  arch/openrisc/cpu/cpu.c | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/arch/openrisc/cpu/cpu.c b/arch/openrisc/cpu/cpu.c
+> >> index d52b021..e7f9445 100644
+> >> --- a/arch/openrisc/cpu/cpu.c
+> >> +++ b/arch/openrisc/cpu/cpu.c
+> >> @@ -41,6 +41,6 @@ static void __noreturn openrisc_restart_cpu(struct restart_handler *rst)
+> >>
+> >>  static int restart_register_feature(void)
+> >>  {
+> >> -     restart_handler_register_fn(openrisc_restart_cpu, NULL, RESET_SCOPE_CPU);
+> >> +     return restart_handler_register_fn(openrisc_restart_cpu);
+> >>  }
+> >
+> > Applied, thanks. It seems I have disabled my openrisc autobuild at some
+> > point. Just re-enabled it. Normally such build failures shouldn't
+> > happen.
+> >
 > 
-> which was not included in my initial patch. So fix it.
+> FYI, you can get the lastest toolchain here:
 > 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  drivers/hab/hab.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+> https://github.com/openrisc/or1k-gcc/releases/tag/or1k-5.4.0-20170218
 
-Applied, thanks
+Thanks for noting. I just updated my toolchain to the latest one. From a
+quick test it seems to work.
 
 Sascha
-
-> 
-> diff --git a/drivers/hab/hab.c b/drivers/hab/hab.c
-> index 56d49e8e3..512ff7ecf 100644
-> --- a/drivers/hab/hab.c
-> +++ b/drivers/hab/hab.c
-> @@ -126,7 +126,7 @@ static int imx_hab_read_srk_hash_ocotp(u8 *__srk)
->  	int ret, i;
->  
->  	for (i = 0; i < SRK_HASH_SIZE / sizeof(uint32_t); i++) {
-> -		ret = imx_ocotp_read_field(IMX6_OCOTP_SRK_HASH(i), &srk[i]);
-> +		ret = imx_ocotp_read_field(OCOTP_SRK_HASH(i), &srk[i]);
->  		if (ret < 0)
->  			return ret;
->  	}
-> @@ -140,13 +140,13 @@ static int imx_hab_write_srk_hash_ocotp(const u8 *__newsrk, unsigned flags)
->  	int ret, i;
->  
->  	for (i = 0; i < SRK_HASH_SIZE / sizeof(uint32_t); i++) {
-> -		ret = imx_ocotp_write_field(IMX6_OCOTP_SRK_HASH(i), newsrk[i]);
-> +		ret = imx_ocotp_write_field(OCOTP_SRK_HASH(i), newsrk[i]);
->  		if (ret < 0)
->  			return ret;
->  	}
->  
->  	if (flags & IMX_SRK_HASH_WRITE_LOCK) {
-> -		ret = imx_ocotp_write_field(IMX6_OCOTP_SRK_LOCK, 1);
-> +		ret = imx_ocotp_write_field(OCOTP_SRK_LOCK, 1);
->  		if (ret < 0)
->  			return ret;
->  	}
-> @@ -161,7 +161,7 @@ static int imx_hab_permanent_write_enable_ocotp(int enable)
->  
->  static int imx_hab_lockdown_device_ocotp(void)
->  {
-> -	return imx_ocotp_write_field(IMX6_OCOTP_SEC_CONFIG, 1);
-> +	return imx_ocotp_write_field(OCOTP_SEC_CONFIG_1, 1);
->  }
->  
->  static int imx_hab_device_locked_down_ocotp(void)
-> @@ -169,7 +169,7 @@ static int imx_hab_device_locked_down_ocotp(void)
->  	int ret;
->  	unsigned int v;
->  
-> -	ret = imx_ocotp_read_field(IMX6_OCOTP_SEC_CONFIG, &v);
-> +	ret = imx_ocotp_read_field(OCOTP_SEC_CONFIG_1, &v);
->  	if (ret < 0)
->  		return ret;
->  
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
