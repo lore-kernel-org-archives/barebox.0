@@ -1,17 +1,26 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wr0-x22a.google.com ([2a00:1450:400c:c0c::22a])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cvIF3-0005o2-Gb
- for barebox@lists.infradead.org; Tue, 04 Apr 2017 06:47:03 +0000
-Date: Tue, 4 Apr 2017 08:46:39 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170404064639.4bpzano7t57joqwo@pengutronix.de>
-References: <1490384122-13960-1-git-send-email-franck.jullien@gmail.com>
- <20170329064253.4rsnyzsfuaxzlm42@pengutronix.de>
- <CAJfOKBxJ0FwF0VBpeDTxe7cvgxmTW2xYHoCgXNAL+q+=9v=O6Q@mail.gmail.com>
+ id 1cvIIG-0007Ma-7G
+ for barebox@lists.infradead.org; Tue, 04 Apr 2017 06:50:22 +0000
+Received: by mail-wr0-x22a.google.com with SMTP id w11so198764894wrc.3
+ for <barebox@lists.infradead.org>; Mon, 03 Apr 2017 23:49:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAJfOKBxJ0FwF0VBpeDTxe7cvgxmTW2xYHoCgXNAL+q+=9v=O6Q@mail.gmail.com>
+In-Reply-To: <20170404062231.xltos7rjqf6bjjvb@pengutronix.de>
+References: <20170330063139.kfxjxb33cbrbzrdp@pengutronix.de>
+ <CAGUZs0n93ZWNASvyyUddCPfSKPYavomXxGwHMd6caGGn3w65hw@mail.gmail.com>
+ <20170331062139.d5kaoagglgnylr2r@pengutronix.de>
+ <CAGUZs0=TQxEabVqdm4gbmazEwK4xvaBmLFmaJT==mZ-0-Lvorg@mail.gmail.com>
+ <20170331070209.ogz4znywovz2rneb@pengutronix.de>
+ <CAGUZs0nPy2PCRz3YQjT-O=SE1RwLgudrBW4x9H90R7jRKUmDNQ@mail.gmail.com>
+ <20170331072338.er5w3t42yvfgtrf6@pengutronix.de>
+ <CAGUZs0nLA3qTnAnuidvq-LBuj3VE9unJ+Y5+sjgyr2hBb7hFMg@mail.gmail.com>
+ <20170331130058.y6prkk3xsys2ypg5@pengutronix.de>
+ <CAGUZs0=zmi+GciKgtSRUe8sT=_SXNBGH4p5jXqk8MogyQ5MMwA@mail.gmail.com>
+ <20170404062231.xltos7rjqf6bjjvb@pengutronix.de>
+From: =?UTF-8?B?w4dhxJ9sYXIgS2lsaW1jaQ==?= <ckilimci@gmail.com>
+Date: Tue, 4 Apr 2017 09:49:57 +0300
+Message-ID: <CAGUZs0=kjv9Yw6FtomwwXWXPTKk9WiDmd1P-XaK5uUBV-1uGZA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,55 +29,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] openrisc: fix call to restart_handler_register_fn
-To: Franck Jullien <franck.jullien@gmail.com>
+Subject: Re: State Framework and dtb
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox <barebox@lists.infradead.org>
 
-On Wed, Mar 29, 2017 at 03:45:04PM +0200, Franck Jullien wrote:
-> 2017-03-29 8:42 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> > On Fri, Mar 24, 2017 at 08:35:22PM +0100, Franck Jullien wrote:
-> >> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
-> >> ---
-> >>  arch/openrisc/cpu/cpu.c | 2 +-
-> >>  1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/arch/openrisc/cpu/cpu.c b/arch/openrisc/cpu/cpu.c
-> >> index d52b021..e7f9445 100644
-> >> --- a/arch/openrisc/cpu/cpu.c
-> >> +++ b/arch/openrisc/cpu/cpu.c
-> >> @@ -41,6 +41,6 @@ static void __noreturn openrisc_restart_cpu(struct restart_handler *rst)
-> >>
-> >>  static int restart_register_feature(void)
-> >>  {
-> >> -     restart_handler_register_fn(openrisc_restart_cpu, NULL, RESET_SCOPE_CPU);
-> >> +     return restart_handler_register_fn(openrisc_restart_cpu);
-> >>  }
-> >
-> > Applied, thanks. It seems I have disabled my openrisc autobuild at some
-> > point. Just re-enabled it. Normally such build failures shouldn't
-> > happen.
-> >
-> 
-> FYI, you can get the lastest toolchain here:
-> 
-> https://github.com/openrisc/or1k-gcc/releases/tag/or1k-5.4.0-20170218
-
-Thanks for noting. I just updated my toolchain to the latest one. From a
-quick test it seems to work.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+MjAxNy0wNC0wNCA5OjIyIEdNVCswMzowMCBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9u
+aXguZGU+Ogo+IE9uIE1vbiwgQXByIDAzLCAyMDE3IGF0IDExOjU5OjUwUE0gKzAzMDAsIMOHYcSf
+bGFyIEtpbGltY2kgd3JvdGU6Cj4+IEhlbGxvLAo+Pgo+PiBGaW5hbGx5LCBJIHVwZGF0ZWQgYW5k
+IHBhdGNoZWQgdGhlIGNvZGUgYW5kIG5vdyBJIGNhbiBzZWUgc3RhdGVAMAo+PiBkZXZpY2UgaW4g
+dGhlIG9mX2R1bXA6Cj4KPiBPaywgbG9va3MgZ29vZC4gSG93IGRvZXMgdGhlIGJvb3QgbG9nIGxv
+b2sgbGlrZT8gU3RpbGwgdGhlIHNhbWU/CgpJIHRoaW5rIHNvLiBIZXJlIGl0IGlzOgpiYXJlYm94
+IDIwMTcuMDMuMC0wMDEyOS1nNDQ0ZWUzNiAjMSBNb24gQXByIDMgMTA6Mjg6MDQgKzAzIDIwMTcK
+CgpCb2FyZDogUGh5dGVjIHBoeUNPUkUgQU0zMzV4Cm9tYXAtaHNtbWMgNDgwNjAwMDAubW1jOiBy
+ZWdpc3RlcmVkIGFzIDQ4MDYwMDAwLm1tYwpib290aW5nIGZyb20gTU1DCm1tYzA6IGRldGVjdGVk
+IFNEIGNhcmQgdmVyc2lvbiAyLjAKbW1jMDogcmVnaXN0ZXJlZCBtbWMwCgoKYmFyZWJveCAyMDE3
+LjAzLjAtMDAxNTMtZzg4MGZhMTItZGlydHkgIzMgTW9uIEFwciAzIDIzOjE0OjM0ICswMyAyMDE3
+CgoKQm9hcmQ6IFBoeXRlYyBwaHlDT1JFIEFNMzM1eApjcHN3IDRhMTAwMDAwLmV0aGVybmV0OiBk
+ZXRlY3RlZCBwaHkgbWFzayAweDMKbWRpb19idXM6IG1paWJ1czA6IHByb2JlZApldGgwOiBnb3Qg
+cHJlc2V0IE1BQyBhZGRyZXNzOiBhMDpmNjpmZDo2YzowZDpiMAphbTMzNXgtcGh5LWRyaXZlciA0
+NzQwMWIwMC51c2ItcGh5OiBhbV91c2JwaHkgODdmNzFjZGMgZW5hYmxlZAptdXNiLWhkcmM6IENv
+bmZpZ0RhdGE9MHhkZSAoVVRNSS04LCBkeW4gRklGT3MsIGJ1bGsgY29tYmluZSwgYnVsawpzcGxp
+dCwgSEItSVNPIFJ4LCBIQi1JU08gVHgsIFNvZnRDb25uKQptdXNiLWhkcmM6IE1IRFJDIFJUTCB2
+ZXJzaW9uIDIuMAptdXNiLWhkcmM6IHNldHVwIGZpZm9fbW9kZSA0Cm11c2ItaGRyYzogMjgvMzEg
+bWF4IGVwLCAxNjM4NC8xNjM4NCBtZW1vcnkKbTI1cDgwIG0yNXA4MEAwMDogdW5yZWNvZ25pemVk
+IEpFREVDIGlkIGJ5dGVzOiAwMCwgIDAsICAwCm0yNXA4MCBtMjVwODBAMDA6IHByb2JlIGZhaWxl
+ZDogTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9yeQppMmMtb21hcCA0NGUwYjAwMC5pMmM6IGJ1cyAw
+IHJldjAuMTEgYXQgNDAwIGtIegpvbWFwLWhzbW1jIDQ4MDYwMDAwLm1tYzogcmVnaXN0ZXJlZCBh
+cyA0ODA2MDAwMC5tbWMKbW1jMDogZGV0ZWN0ZWQgU0QgY2FyZCB2ZXJzaW9uIDIuMAptbWMwOiBy
+ZWdpc3RlcmVkIG1tYzAKb21hcF93ZHQgNDRlMzUwMDAud2R0OiBPTUFQIFdhdGNoZG9nIFRpbWVy
+IFJldiAweDAxCm5hbmQ6IE9ORkkgZmxhc2ggZGV0ZWN0ZWQKbmFuZDogTkFORCBkZXZpY2U6IE1h
+bnVmYWN0dXJlciBJRDogMHgyYywgQ2hpcCBJRDogMHhmMSAoTWljcm9uCk1UMjlGMUcwOEFCQURB
+SDQpLCAxMjhNaUIsIHBhZ2Ugc2l6ZTogMjA0OCwgT09CIHNpemU6IDY0Cm5ldGNvbnNvbGU6IHJl
+Z2lzdGVyZWQgYXMgbmV0Y29uc29sZS0xCm1hbGxvYyBzcGFjZTogMHg4N2VmZWY2MCAtPiAweDhm
+ZGZkZWJmIChzaXplIDEyNyBNaUIpCnJ1bm5pbmcgL2Vudi9iaW4vaW5pdC4uLgpldGgwOiAxMDBN
+YnBzIGZ1bGwgZHVwbGV4IGxpbmsgZGV0ZWN0ZWQKREhDUCBjbGllbnQgYm91bmQgdG8gYWRkcmVz
+cyAxOTIuMTY4LjEuMjkKCkhpdCBtIGZvciBtZW51IG9yIGFueSBvdGhlciBrZXkgdG8gc3RvcCBh
+dXRvYm9vdDogICAgMwoKdHlwZSBleGl0IHRvIGdldCB0byB0aGUgbWVudQpiYXJlYm94QFBoeXRl
+YyBwaHlDT1JFIEFNMzM1eDovCgoKLS0gCsOHYcSfbGFyIEtpbGltY2kKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
