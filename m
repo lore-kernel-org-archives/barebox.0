@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cvfWQ-0008B0-6f
- for barebox@lists.infradead.org; Wed, 05 Apr 2017 07:43:07 +0000
-References: <20170403105523.16797-1-s.trumtrar@pengutronix.de>
- <1491328345.18442.39.camel@kymetacorp.com>
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-In-reply-to: <1491328345.18442.39.camel@kymetacorp.com>
-Date: Wed, 05 Apr 2017 09:35:48 +0200
-Message-ID: <73o9wbxq5n.fsf@pengutronix.de>
+ id 1cvhpR-0006EU-FY
+ for barebox@lists.infradead.org; Wed, 05 Apr 2017 10:06:19 +0000
+Received: by mail-lf0-x242.google.com with SMTP id v2so733394lfi.2
+ for <barebox@lists.infradead.org>; Wed, 05 Apr 2017 03:05:56 -0700 (PDT)
+Date: Wed, 5 Apr 2017 13:05:47 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20170405100547.GA16849@berta>
+References: <20170322213615.24527-1-pmamonov@gmail.com>
+ <20170324062055.f7oeacmhkm3hkizj@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170324062055.f7oeacmhkm3hkizj@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +25,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/7] SoCFPGA: add support for Arria10
-To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] usb: uhci-hcd: fix uhci_alloc_int_td()
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
+Hi Sasha,
 
-Trent Piepho <tpiepho@kymetacorp.com> writes:
+On Fri, Mar 24, 2017 at 07:20:55AM +0100, Sascha Hauer wrote:
+> Hi Peter,
+> 
+> On Thu, Mar 23, 2017 at 12:36:15AM +0300, Peter Mamonov wrote:
+> > Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> > ---
+> >  drivers/usb/host/uhci-hcd.c | 6 +++++-
+> >  1 file changed, 5 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/usb/host/uhci-hcd.c b/drivers/usb/host/uhci-hcd.c
+> > index 9ad4644e8..04d167ee3 100644
+> > --- a/drivers/usb/host/uhci-hcd.c
+> > +++ b/drivers/usb/host/uhci-hcd.c
+> > @@ -554,8 +554,12 @@ static int submit_bulk_msg(struct usb_device *dev, unsigned long pipe,
+> >   */
+> >  static struct uhci_td *uhci_alloc_int_td(struct uhci_priv *uhci)
+> >  {
+> > -	return &uhci->tmp_int_td[0];
+> > +	int i;
+> >  
+> > +	for (i = 0; i < USB_MAX_TEMP_INT_TD; i++)
+> > +		if (uhci->tmp_int_td[i].dev_ptr == 0)
+> > +			return &uhci->tmp_int_td[i];
+> > +	return NULL;
+> 
+> You have to upstream the uhci driver first before I can apply fixes for
+> it ;)
 
-> On Mon, 2017-04-03 at 12:55 +0200, Steffen Trumtrar wrote:
->> Although Cyclone5 and Arria10 share a lot of the peripherals,
->> they a different in the critical parts (SDRAM controller, clock setup,...)
->> 
->> The Arria10 has a larger OCRAM (64KB vs 256KB), that is why we can
->> omit the xload support for now. The xload support can be added, once
->> Arria10 boards that need to program the FPGA very early (might be needed for
->> the SDRAM controller) are available.
->> 
->
-> That means this support doesn't include loading the FPGA from barebox?
+Right =)
 
-That is correct.
-
->
-> The boot strategy is that the Barebox PBL image will fit in OCRAM and be
-> loaded by the ROM loader, and then the PBL will decompress barebox into
-> SDRAM?  If so, it will be necessary to have the FPGA loaded from an
-> external device, such as an EPCQ flash chip, before barebox boots.  As
-> SDRAM is not accessible until at least the peripheral FPGA image is
-> loaded.
->
-> U-Boot is able to load a FPGA image with a single bootloader.  A U-Boot
-> image can be made that is small enough run in 256 kB yet has enough
-> drivers to load an FPGA image from eMMC or NOR flash into the FPGA and
-> then enable SDRAM.
->
-> It seems like this might be possible for barebox as well.  If enough
-> drivers to load the FPGA were part of the PBL.
-
-Of course this is also possible with barebox. The reason that the
-support is not added yet, is that I do not have any Arria10 board that
-needs or uses this; even with the provided vendor U-Boot.
-This series is just groundwork for future development.
+I've just realized it was not accepted... for a good reason: 
+http://lists.infradead.org/pipermail/barebox/2016-January/026016.html
 
 Regards,
-Steffen
+Peter
 
--- 
-Pengutronix e.K.                           | Steffen Trumtrar            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
