@@ -1,11 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cvf6o-0008Fe-Ax
- for barebox@lists.infradead.org; Wed, 05 Apr 2017 07:12:04 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed,  5 Apr 2017 09:11:35 +0200
-Message-Id: <20170405071135.27974-1-o.rempel@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cve1g-0000Ev-Ep
+ for barebox@lists.infradead.org; Wed, 05 Apr 2017 06:06:49 +0000
+Date: Wed, 5 Apr 2017 08:01:30 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170405060130.op2dpeeoy5if5ti2@pengutronix.de>
+References: <CAGUZs0=TQxEabVqdm4gbmazEwK4xvaBmLFmaJT==mZ-0-Lvorg@mail.gmail.com>
+ <20170331070209.ogz4znywovz2rneb@pengutronix.de>
+ <CAGUZs0nPy2PCRz3YQjT-O=SE1RwLgudrBW4x9H90R7jRKUmDNQ@mail.gmail.com>
+ <20170331072338.er5w3t42yvfgtrf6@pengutronix.de>
+ <CAGUZs0nLA3qTnAnuidvq-LBuj3VE9unJ+Y5+sjgyr2hBb7hFMg@mail.gmail.com>
+ <20170331130058.y6prkk3xsys2ypg5@pengutronix.de>
+ <CAGUZs0=zmi+GciKgtSRUe8sT=_SXNBGH4p5jXqk8MogyQ5MMwA@mail.gmail.com>
+ <58e3539f.0582540a.1e64d.751fSMTPIN_ADDED_BROKEN@mx.google.com>
+ <CAGUZs0==LajQvqc2STju-Ohx=T--yFFed1EzrJTUi5TCF2qBbw@mail.gmail.com>
+ <457a7e12-b457-e4b8-8fea-df041b636fb5@mev.co.uk>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <457a7e12-b457-e4b8-8fea-df041b636fb5@mev.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,138 +27,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1] mtd: ubi: add ubi_attach_mtd_path function
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Oleksij Rempel <linux@rempel-privat.de>
+Subject: Re: State Framework and dtb
+To: Ian Abbott <abbotti@mev.co.uk>
+Cc: barebox@lists.infradead.org
 
-From: Oleksij Rempel <linux@rempel-privat.de>
-
-Add funktion to attach mtd device by path. This will
-reduce some code duplications.
-
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- commands/ubi.c          | 23 ++---------------------
- drivers/mtd/ubi/build.c | 34 ++++++++++++++++++++++++++++++++++
- include/mtd/ubi-user.h  |  1 +
- 3 files changed, 37 insertions(+), 21 deletions(-)
-
-diff --git a/commands/ubi.c b/commands/ubi.c
-index 5e2758400..795ac3a53 100644
---- a/commands/ubi.c
-+++ b/commands/ubi.c
-@@ -174,8 +174,7 @@ BAREBOX_CMD_END
- static int do_ubiattach(int argc, char *argv[])
- {
- 	int opt;
--	struct mtd_info_user user;
--	int fd, ret;
-+	int ret;
- 	int vid_hdr_offset = 0;
- 	int devnum = UBI_DEV_NUM_AUTO;
- 
-@@ -195,25 +194,7 @@ static int do_ubiattach(int argc, char *argv[])
- 	if (optind == argc)
- 		return COMMAND_ERROR_USAGE;
- 
--	fd = open(argv[optind], O_RDWR);
--	if (fd < 0) {
--		perror("open");
--		return 1;
--	}
--
--	ret = ioctl(fd, MEMGETINFO, &user);
--	if (ret) {
--		printf("MEMGETINFO failed: %s\n", strerror(-ret));
--		goto err;
--	}
--
--	ret = ubi_attach_mtd_dev(user.mtd, devnum, vid_hdr_offset, 20);
--	if (ret < 0)
--		printf("failed to attach: %s\n", strerror(-ret));
--	else
--		ret = 0;
--err:
--	close(fd);
-+	ret = ubi_attach_mtd_path(argv[optind]);
- 
- 	return ret ? 1 : 0;
- }
-diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
-index 2ea66ed06..de8aae729 100644
---- a/drivers/mtd/ubi/build.c
-+++ b/drivers/mtd/ubi/build.c
-@@ -25,6 +25,8 @@
-  * later using the "UBI control device".
-  */
- 
-+#include <fs.h>
-+#include <ioctl.h>
- #include <linux/err.h>
- #include <linux/stringify.h>
- #include <linux/stat.h>
-@@ -684,6 +686,38 @@ out_free:
- }
- 
- /**
-+ * ubi_attach_mtd_path - attach an MTD device by path.
-+ * @path: path to MTD device.
-+ */
-+int ubi_attach_mtd_path(const char *path)
-+{
-+	struct mtd_info_user user;
-+	int fd, ret;
-+
-+	fd = open(path, O_RDWR);
-+	if (fd < 0) {
-+		perror("open");
-+		return fd;
-+	}
-+
-+	ret = ioctl(fd, MEMGETINFO, &user);
-+	if (ret) {
-+		pr_err("MEMGETINFO failed: %s\n", strerror(-ret));
-+		goto err;
-+	}
-+
-+	ret = ubi_attach_mtd_dev(user.mtd, UBI_DEV_NUM_AUTO, 0, 20);
-+	if (ret < 0)
-+		pr_err("failed to attach: %s\n", strerror(-ret));
-+	else
-+		ret = 0;
-+err:
-+	close(fd);
-+
-+	return ret;
-+}
-+
-+/**
-  * ubi_detach_mtd_dev - detach an MTD device.
-  * @ubi_num: UBI device number to detach from
-  * @anyway: detach MTD even if device reference count is not zero
-diff --git a/include/mtd/ubi-user.h b/include/mtd/ubi-user.h
-index 9425533d1..1a1dbb04a 100644
---- a/include/mtd/ubi-user.h
-+++ b/include/mtd/ubi-user.h
-@@ -408,6 +408,7 @@ struct ubi_set_vol_prop_req {
- 
- int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
- 		       int vid_hdr_offset, int max_beb_per1024);
-+int ubi_attach_mtd_path(const char *path);
- int ubi_detach(int ubi_num);
- int ubi_num_get_by_mtd(struct mtd_info *mtd);
- 
--- 
-2.11.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVHVlLCBBcHIgMDQsIDIwMTcgYXQgMTE6NDg6MDlBTSArMDEwMCwgSWFuIEFiYm90dCB3cm90
+ZToKPiBPbiAwNC8wNC8xNyAxMToyNywgw4dhxJ9sYXIgS2lsaW1jaSB3cm90ZToKPiA+IEhleSwK
+PiA+IAo+ID4gMjAxNy0wNC0wNCAxMTowNCBHTVQrMDM6MDAgSmFuIFJlbW1ldCA8Si5SZW1tZXRA
+cGh5dGVjLmRlPjoKPiA+ID4gT24gTW9uLCBBcHIgMDMsIDIwMTcgYXQgMTE6NTk6NTBQTSArMDMw
+MCwgw4dhxJ9sYXIgS2lsaW1jaSB3cm90ZToKPiA+ID4gPiBIZWxsbywKPiA+ID4gPiAKPiA+ID4g
+PiAyMDE3LTAzLTMxIDE2OjAwIEdNVCswMzowMCBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0
+cm9uaXguZGU+Ogo+ID4gPiA+ID4gT24gRnJpLCBNYXIgMzEsIDIwMTcgYXQgMDI6NDE6MTlQTSAr
+MDMwMCwgw4dhxJ9sYXIgS2lsaW1jaSB3cm90ZToKPiA+ID4gPiA+ID4gSGV5LAo+ID4gPiA+ID4g
+PiAKPiA+ID4gPiA+ID4gCj4gPiA+ID4gPiA+IEkgdHJpZWQgYnV0IGdvdCB0aGUgc2FtZSByZXN1
+bHQgYW5kIHRoZW4gSSB3b3VsZCBsaWtlIHRvIGFwcGx5IHlvdXIKPiA+ID4gPiA+ID4gc2VyaW91
+cyBwYXRjaCBzZXJpZXMgb2YgdGhlIHN0YXRlIGZyYW1ld29yayBidXQgcmVsZWFzZSB0aGF0IG91
+cgo+ID4gPiA+ID4gPiB3b3JraW5nIGJyYW5jaCBpcyAyMDE2LjA3IHNvIGNvdWxkIG5vdCBhcHBs
+eSBwYXRjaGVzLiBMZXQgbWUgdXBkYXRlCj4gPiA+ID4gPiA+IGJhcmVib3ggYW5kIGFwcGx5IHRo
+b3NlIHBhdGNoZXMuIEFyZSB0aG9zZSBiYXNlZCBvbiBtYXN0ZXIgYnJhbmNoCj4gPiA+ID4gPiA+
+IHJpZ2h0PyAgT3IsIHdoaWNoIGJyYW5jaCBkbyB5b3UgcmVjb21tZW5kIHRvIHdvcmsgb24/Cj4g
+PiA+ID4gPiAKPiA+ID4gPiA+IFRoZSBwYXRjaGVzIGFyZSBiYXNlZCBvbiBtYXN0ZXIsIHllcy4g
+QW55d2F5LCB5b3Ugc2VlbSB0byBoYXZlIGEgcHJvYmxlbQo+ID4gPiA+ID4gaW4gZ2V0dGluZyB5
+b3VyIGNoYW5nZXMgaW4gdGhlIGR0cyBmaWxlIHRvIHRoZSBydW5uaW5nIGJhcmVib3guIFBsZWFz
+ZQo+ID4gPiA+ID4gdHJ5IHRvIGFkZCBzb21lIG5vZGVzL3Byb3BlcnRpZXMgdG8geW91ciBkdHMg
+ZmlsZSBhbmQgdmVyaWZ5IHRoYXQgYQo+ID4gPiA+ID4gb2ZfZHVtcCBzaG93cyB0aGVzZSBub2Rl
+cy4gQmVmb3JlIHRoYXQgaXMgdGhlIGNhc2UgaXQncyBub3Qgd29ydGggdG8KPiA+ID4gPiA+IGxv
+b2sgYW55IGZ1cnRoZXIuCj4gPiA+ID4gCj4gPiA+ID4gRmluYWxseSwgSSB1cGRhdGVkIGFuZCBw
+YXRjaGVkIHRoZSBjb2RlIGFuZCBub3cgSSBjYW4gc2VlIHN0YXRlQDAKPiA+ID4gPiBkZXZpY2Ug
+aW4gdGhlIG9mX2R1bXA6Cj4gPiA+ID4gICAgICAgICBzdGF0ZUAwIHsKPiA+ID4gPiAgICAgICAg
+ICAgICAgICAgbWFnaWMgPSA8MHgyNzAzMTk3Nz47Cj4gPiA+ID4gICAgICAgICAgICAgICAgIGNv
+bXBhdGlibGUgPSAiYmFyZWJveCxzdGF0ZSI7Cj4gPiA+ID4gICAgICAgICAgICAgICAgIGJhY2tl
+bmQtdHlwZSA9ICJyYXciOwo+ID4gPiA+ICAgICAgICAgICAgICAgICBiYWNrZW5kID0gPDB4NDI+
+Owo+ID4gPiA+ICAgICAgICAgICAgICAgICBmb28gewo+ID4gPiA+ICAgICAgICAgICAgICAgICAg
+ICAgICAgIHJlZyA9IDwweDAgMHg0PjsKPiA+ID4gPiAgICAgICAgICAgICAgICAgICAgICAgICB0
+eXBlID0gInVpbnQzMiI7Cj4gPiA+ID4gICAgICAgICAgICAgICAgICAgICAgICAgZGVmYXVsdCA9
+IDwweDA+Owo+ID4gPiA+ICAgICAgICAgICAgICAgICB9Owo+ID4gPiA+ICAgICAgICAgICAgICAg
+ICBiYXIgewo+ID4gPiA+ICAgICAgICAgICAgICAgICAgICAgICAgIHJlZyA9IDwweDEwIDB4ND47
+Cj4gPiA+ID4gICAgICAgICAgICAgICAgICAgICAgICAgdHlwZSA9ICJlbnVtMzIiOwo+ID4gPiA+
+ICAgICAgICAgICAgICAgICAgICAgICAgIG5hbWVzID0gImJheiIsICJxdXgiOwo+ID4gPiA+ICAg
+ICAgICAgICAgICAgICAgICAgICAgIGRlZmF1bHQgPSA8MHgxPjsKPiA+ID4gPiAgICAgICAgICAg
+ICAgICAgfTsKPiA+ID4gPiAgICAgICAgIH07Cj4gPiA+IAo+ID4gPiBIZXJlIGEgd29ya2luZyBl
+eGFtcGxlIGZvciBiYXJlYm94IDIwMTYuMTEuMCBzbyB0aGVyZSBtYXkgYmUgY2hhbmdlcyB3aXRo
+IHRoZQo+ID4gPiBhY3R1YWwgc3RhdGUgY2xlYW51cCBwYXRjaGVzCj4gPiA+IAo+ID4gPiArICAg
+ICAgIHN0YXRlMjogc3RhdGVfc29ja2V0IHsKPiA+ID4gKyAgICAgICAgICAgICAgIG1hZ2ljID0g
+PDB4NDU2ZWYzNjM+Owo+ID4gPiArICAgICAgICAgICAgICAgY29tcGF0aWJsZSA9ICJiYXJlYm94
+LHN0YXRlIjsKPiA+ID4gKyAgICAgICAgICAgICAgIGJhY2tlbmQtdHlwZSA9ICJyYXciOwo+ID4g
+PiArICAgICAgICAgICAgICAgYmFja2VuZCA9ICZlZXByb207Cj4gPiAKPiA+IEkgY2hhbmdlZCB0
+bzoKPiA+IGJhY2tlbmQgPSA8JmVlcHJvbT47Cj4gPiB0aGVuIGl0IHdvcmtzIDopCj4gPiBiYXJl
+Ym94QFBoeXRlYyBwaHlDT1JFIEFNMzM1eDovIHN0YXRlCj4gPiByZWdpc3RlcmVkIHN0YXRlIGlu
+c3RhbmNlczoKPiA+IHN0YXRlX3NvY2tldCAgICAgICAgIChiYWNrZW5kOiByYXcsIHBhdGg6IC9k
+ZXYvZWVwcm9tMCkKPiAKPiBXb24ndCB0aGF0IHVzZSB0aGUgd2hvbGUgRUVQUk9NIHJhdGhlciB0
+aGFuIGEgcGFydGl0aW9uIHRoZXJlb2Y/IEFjY29yZGluZwo+IHRvIHRoZSBkb2N1bWVudGF0aW9u
+LCB5b3UgY2FuIHVzZToKPiAKPiAJCWJhY2tlbmQgPSA8JmVlcHJvbT4sICJwYXJ0bmFtZTpzdGF0
+ZSI7Cj4gCj4gYXNzdW1pbmcgdGhlIHBhcnRpdGlvbiBoYXMgYGxhYmVsID0gInN0YXRlIjtgLgoK
+SSByZW1vdmVkIHRoaXMgZnJvbSB0aGUgZG9jdW1lbnRhdGlvbiBpbiB0aGUgYmlnIHN0YXRlIHBh
+dGNoIHNlcmllcyBJCnNlbnQsIGJlY2F1c2UgaXQgd2FzIGJyb2tlbiBhbHJlYWR5LiBJdCBzaG91
+bGQgYmUgYmFja2VuZCA9IDwmZWVwcm9tPiBvcgpiYWNrZW5kID0gPCZlZXByb21fc3RhdGU+LCBh
+c3N1bWluZyBlZXByb21fc3RhdGUgaXMgYSBwaGFuZGxlIHRvIGEKZml4ZWQtcGFydGl0aW9uIG9u
+IHRoZSBFRVBST00uCgpTYXNjaGEKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExp
+bnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRl
+LyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTog
+KzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAg
+ICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
+ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
+YW4vbGlzdGluZm8vYmFyZWJveAo=
