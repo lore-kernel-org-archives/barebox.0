@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cw37I-00020g-46
- for barebox@lists.infradead.org; Thu, 06 Apr 2017 08:50:09 +0000
+ id 1cw37M-000228-Ra
+ for barebox@lists.infradead.org; Thu, 06 Apr 2017 08:50:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  6 Apr 2017 10:49:43 +0200
-Message-Id: <20170406084943.28150-4-s.hauer@pengutronix.de>
+Date: Thu,  6 Apr 2017 10:49:41 +0200
+Message-Id: <20170406084943.28150-2-s.hauer@pengutronix.de>
 In-Reply-To: <20170406084943.28150-1-s.hauer@pengutronix.de>
 References: <20170406084943.28150-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,80 +21,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] bootchooser: export bootchooser_boot
+Subject: [PATCH 2/4] blspec: register as bootentry provider
 To: Barebox List <barebox@lists.infradead.org>
 
-Some boards that boot directly from C code do already know that
-they want to boot from bootchooser and nothing else. For these
-it's easiest to call bootchooser_boot directly, so export this
-function.
+Instead of using a global function called by
+bootentry_create_from_name(), register blspec as bootentry
+provider.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/bootchooser.c  | 19 ++++++++++++-------
- include/bootchooser.h |  2 ++
- 2 files changed, 14 insertions(+), 7 deletions(-)
+ common/blspec.c | 24 ++++++++++++++++++++++++
+ common/boot.c   | 12 ------------
+ 2 files changed, 24 insertions(+), 12 deletions(-)
 
-diff --git a/common/bootchooser.c b/common/bootchooser.c
-index f2174a1348..455f290fa2 100644
---- a/common/bootchooser.c
-+++ b/common/bootchooser.c
-@@ -827,15 +827,10 @@ out:
- 	return ret;
+diff --git a/common/blspec.c b/common/blspec.c
+index ec63ddb407..8132d141ab 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -732,3 +732,27 @@ int blspec_scan_devicename(struct bootentries *bootentries, const char *devname)
+ 
+ 	return blspec_scan_device(bootentries, dev);
  }
- 
--static int bootchooser_boot(struct bootentry *entry, int verbose, int dryrun)
-+int bootchooser_boot(struct bootchooser *bc)
- {
--	struct bootchooser *bc = container_of(entry, struct bootchooser,
--						       entry);
- 	int ret, tryagain;
- 
--	bc->verbose = verbose;
--	bc->dryrun = dryrun;
--
- 	do {
- 		ret = bootchooser_boot_one(bc, &tryagain);
- 
-@@ -846,6 +841,16 @@ static int bootchooser_boot(struct bootentry *entry, int verbose, int dryrun)
- 	return ret;
- }
- 
-+static int bootchooser_entry_boot(struct bootentry *entry, int verbose, int dryrun)
-+{
-+	struct bootchooser *bc = container_of(entry, struct bootchooser,
-+						       entry);
-+	bc->verbose = verbose;
-+	bc->dryrun = dryrun;
 +
-+	return bootchooser_boot(bc);
++static int blspec_bootentry_provider(struct bootentries *bootentries,
++				     const char *name)
++{
++	int ret, found = 0;
++
++	ret = blspec_scan_devicename(bootentries, name);
++	if (ret > 0)
++		found += ret;
++
++	if (*name == '/' || !strncmp(name, "nfs://", 6)) {
++		ret = blspec_scan_directory(bootentries, name);
++		if (ret > 0)
++			found += ret;
++	}
++
++	return found;
 +}
 +
- static void bootchooser_release(struct bootentry *entry)
- {
- 	struct bootchooser *bc = container_of(entry, struct bootchooser,
-@@ -874,7 +879,7 @@ static int bootchooser_add_entry(struct bootentries *entries, const char *name)
- 	if (IS_ERR(bc))
- 		return PTR_ERR(bc);
++static int blspec_init(void)
++{
++	return bootentry_register_provider(blspec_bootentry_provider);
++}
++device_initcall(blspec_init);
+\ No newline at end of file
+diff --git a/common/boot.c b/common/boot.c
+index f0359cff38..3280ac4f54 100644
+--- a/common/boot.c
++++ b/common/boot.c
+@@ -283,18 +283,6 @@ int bootentry_create_from_name(struct bootentries *bootentries,
+ 	struct bootentry_provider *p;
+ 	int found = 0, ret;
  
--	bc->entry.boot = bootchooser_boot;
-+	bc->entry.boot = bootchooser_entry_boot;
- 	bc->entry.release = bootchooser_release;
- 	bc->entry.title = xstrdup("bootchooser");
- 	bc->entry.description = xstrdup("bootchooser");
-diff --git a/include/bootchooser.h b/include/bootchooser.h
-index 246258e8c9..7822c01459 100644
---- a/include/bootchooser.h
-+++ b/include/bootchooser.h
-@@ -13,6 +13,8 @@ int bootchooser_put(struct bootchooser *bootchooser);
- 
- void bootchooser_info(struct bootchooser *bootchooser);
- 
-+int bootchooser_boot(struct bootchooser *bc);
-+
- struct bootchooser_target *bootchooser_get_last_chosen(struct bootchooser *bootchooser);
- const char *bootchooser_target_name(struct bootchooser_target *target);
- struct bootchooser_target *bootchooser_target_by_name(struct bootchooser *bootchooser,
+-	if (IS_ENABLED(CONFIG_BLSPEC)) {
+-		ret = blspec_scan_devicename(bootentries, name);
+-		if (ret > 0)
+-			found += ret;
+-
+-		if (*name == '/' || !strncmp(name, "nfs://", 6)) {
+-			ret = blspec_scan_directory(bootentries, name);
+-			if (ret > 0)
+-				found += ret;
+-		}
+-	}
+-
+ 	list_for_each_entry(p, &bootentry_providers, list) {
+ 		ret = p->fn(bootentries, name);
+ 		if (ret > 0)
 -- 
 2.11.0
 
