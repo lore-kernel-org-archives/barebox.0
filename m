@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cw1TK-0003B6-IQ
- for barebox@lists.infradead.org; Thu, 06 Apr 2017 07:04:48 +0000
-Date: Thu, 6 Apr 2017 09:04:24 +0200
+ id 1cw1VH-0004dX-GP
+ for barebox@lists.infradead.org; Thu, 06 Apr 2017 07:06:49 +0000
+Date: Thu, 6 Apr 2017 09:06:25 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170406070424.ybniwgrulvmmdwzr@pengutronix.de>
-References: <20170322213615.24527-1-pmamonov@gmail.com>
- <20170324062055.f7oeacmhkm3hkizj@pengutronix.de>
- <20170405100547.GA16849@berta>
+Message-ID: <20170406070625.xpvqhrg4dmdjkf3p@pengutronix.de>
+References: <ea78b774-b055-9b43-4b18-03eeabd2e06b@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170405100547.GA16849@berta>
+In-Reply-To: <ea78b774-b055-9b43-4b18-03eeabd2e06b@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,48 +22,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb: uhci-hcd: fix uhci_alloc_int_td()
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: Directory mirroring
+To: Daniel Schultz <d.schultz@phytec.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, Apr 05, 2017 at 01:05:47PM +0300, Peter Mamonov wrote:
-> Hi Sasha,
-> 
-> On Fri, Mar 24, 2017 at 07:20:55AM +0100, Sascha Hauer wrote:
-> > Hi Peter,
-> > 
-> > On Thu, Mar 23, 2017 at 12:36:15AM +0300, Peter Mamonov wrote:
-> > > Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> > > ---
-> > >  drivers/usb/host/uhci-hcd.c | 6 +++++-
-> > >  1 file changed, 5 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/usb/host/uhci-hcd.c b/drivers/usb/host/uhci-hcd.c
-> > > index 9ad4644e8..04d167ee3 100644
-> > > --- a/drivers/usb/host/uhci-hcd.c
-> > > +++ b/drivers/usb/host/uhci-hcd.c
-> > > @@ -554,8 +554,12 @@ static int submit_bulk_msg(struct usb_device *dev, unsigned long pipe,
-> > >   */
-> > >  static struct uhci_td *uhci_alloc_int_td(struct uhci_priv *uhci)
-> > >  {
-> > > -	return &uhci->tmp_int_td[0];
-> > > +	int i;
-> > >  
-> > > +	for (i = 0; i < USB_MAX_TEMP_INT_TD; i++)
-> > > +		if (uhci->tmp_int_td[i].dev_ptr == 0)
-> > > +			return &uhci->tmp_int_td[i];
-> > > +	return NULL;
-> > 
-> > You have to upstream the uhci driver first before I can apply fixes for
-> > it ;)
-> 
-> Right =)
-> 
-> I've just realized it was not accepted... for a good reason: 
-> http://lists.infradead.org/pipermail/barebox/2016-January/026016.html
+Hi Daniel,
 
-Well the driver doesn't look bad from a first glance. You could repost
-it with your fixup applied and see what the maintainer says ;)
+On Tue, Apr 04, 2017 at 12:11:09PM +0200, Daniel Schultz wrote:
+> Hi everyone,
+> 
+> my boot partition is mounted to /boot/. Now, I want to make it accessible in
+> /mnt/ as mmc or emmc, depending to the bootsource. Sadly, ln can only create
+> symlinks for files and two mounts for one device seems not to work.
+> 
+> Are there other ways to mirror a file system?
+
+Not that I know of. You could implement directory links, but why do you
+want to have it accessible under /mnt in the first place?
 
 Sascha
 
