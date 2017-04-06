@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cw37M-000228-Ra
- for barebox@lists.infradead.org; Thu, 06 Apr 2017 08:50:15 +0000
+ id 1cw37W-0002Ho-S7
+ for barebox@lists.infradead.org; Thu, 06 Apr 2017 08:50:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  6 Apr 2017 10:49:41 +0200
-Message-Id: <20170406084943.28150-2-s.hauer@pengutronix.de>
+Date: Thu,  6 Apr 2017 10:49:42 +0200
+Message-Id: <20170406084943.28150-3-s.hauer@pengutronix.de>
 In-Reply-To: <20170406084943.28150-1-s.hauer@pengutronix.de>
 References: <20170406084943.28150-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,75 +21,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] blspec: register as bootentry provider
+Subject: [PATCH 3/4] bootchooser: register as bootentry provider
 To: Barebox List <barebox@lists.infradead.org>
 
 Instead of using a global function called by
-bootentry_create_from_name(), register blspec as bootentry
+bootentry_create_from_name(), register the bootchooser as bootentry
 provider.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/blspec.c | 24 ++++++++++++++++++++++++
- common/boot.c   | 12 ------------
- 2 files changed, 24 insertions(+), 12 deletions(-)
+ common/boot.c         |  6 ------
+ common/bootchooser.c  | 11 +++++++++--
+ include/bootchooser.h |  2 --
+ 3 files changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/common/blspec.c b/common/blspec.c
-index ec63ddb407..8132d141ab 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -732,3 +732,27 @@ int blspec_scan_devicename(struct bootentries *bootentries, const char *devname)
- 
- 	return blspec_scan_device(bootentries, dev);
- }
-+
-+static int blspec_bootentry_provider(struct bootentries *bootentries,
-+				     const char *name)
-+{
-+	int ret, found = 0;
-+
-+	ret = blspec_scan_devicename(bootentries, name);
-+	if (ret > 0)
-+		found += ret;
-+
-+	if (*name == '/' || !strncmp(name, "nfs://", 6)) {
-+		ret = blspec_scan_directory(bootentries, name);
-+		if (ret > 0)
-+			found += ret;
-+	}
-+
-+	return found;
-+}
-+
-+static int blspec_init(void)
-+{
-+	return bootentry_register_provider(blspec_bootentry_provider);
-+}
-+device_initcall(blspec_init);
-\ No newline at end of file
 diff --git a/common/boot.c b/common/boot.c
-index f0359cff38..3280ac4f54 100644
+index 3280ac4f54..cef3d5e514 100644
 --- a/common/boot.c
 +++ b/common/boot.c
-@@ -283,18 +283,6 @@ int bootentry_create_from_name(struct bootentries *bootentries,
- 	struct bootentry_provider *p;
- 	int found = 0, ret;
+@@ -289,12 +289,6 @@ int bootentry_create_from_name(struct bootentries *bootentries,
+ 			found += ret;
+ 	}
  
--	if (IS_ENABLED(CONFIG_BLSPEC)) {
--		ret = blspec_scan_devicename(bootentries, name);
+-	if (IS_ENABLED(CONFIG_BOOTCHOOSER) && !strcmp(name, "bootchooser")) {
+-		ret = bootchooser_create_bootentry(bootentries);
 -		if (ret > 0)
 -			found += ret;
--
--		if (*name == '/' || !strncmp(name, "nfs://", 6)) {
--			ret = blspec_scan_directory(bootentries, name);
--			if (ret > 0)
--				found += ret;
--		}
 -	}
 -
- 	list_for_each_entry(p, &bootentry_providers, list) {
- 		ret = p->fn(bootentries, name);
- 		if (ret > 0)
+ 	if (!found) {
+ 		char *path;
+ 
+diff --git a/common/bootchooser.c b/common/bootchooser.c
+index 9c110f267e..f2174a1348 100644
+--- a/common/bootchooser.c
++++ b/common/bootchooser.c
+@@ -863,10 +863,14 @@ static void bootchooser_release(struct bootentry *entry)
+  *
+  * Return: The number of entries added to the list
+  */
+-int bootchooser_create_bootentry(struct bootentries *entries)
++static int bootchooser_add_entry(struct bootentries *entries, const char *name)
+ {
+-	struct bootchooser *bc = bootchooser_get();
++	struct bootchooser *bc;
++
++	if (strcmp(name, "bootchooser"))
++		return 0;
+ 
++	bc = bootchooser_get();
+ 	if (IS_ERR(bc))
+ 		return PTR_ERR(bc);
+ 
+@@ -904,6 +908,9 @@ static int bootchooser_init(void)
+ 				  reset_attempts_names, ARRAY_SIZE(reset_attempts_names));
+ 	globalvar_add_simple_bitmask("bootchooser.reset_priorities", &reset_priorities,
+ 				  reset_priorities_names, ARRAY_SIZE(reset_priorities_names));
++
++	bootentry_register_provider(bootchooser_add_entry);
++
+ 	return 0;
+ }
+ device_initcall(bootchooser_init);
+diff --git a/include/bootchooser.h b/include/bootchooser.h
+index c948247722..246258e8c9 100644
+--- a/include/bootchooser.h
++++ b/include/bootchooser.h
+@@ -19,8 +19,6 @@ struct bootchooser_target *bootchooser_target_by_name(struct bootchooser *bootch
+ 						      const char *name);
+ void bootchooser_target_force_boot(struct bootchooser_target *target);
+ 
+-int bootchooser_create_bootentry(struct bootentries *entries);
+-
+ int bootchooser_target_set_attempts(struct bootchooser_target *target, int attempts);
+ int bootchooser_target_set_priority(struct bootchooser_target *target, int priority);
+ 
 -- 
 2.11.0
 
