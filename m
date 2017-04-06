@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([208.187.125.9])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cvq5f-0004T1-Mt
- for barebox@lists.infradead.org; Wed, 05 Apr 2017 18:55:37 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Wed, 5 Apr 2017 18:55:12 +0000
-Message-ID: <1491418512.18442.119.camel@kymetacorp.com>
-References: <20170403105523.16797-1-s.trumtrar@pengutronix.de>
- <1491328345.18442.39.camel@kymetacorp.com> <73o9wbxq5n.fsf@pengutronix.de>
-In-Reply-To: <73o9wbxq5n.fsf@pengutronix.de>
-Content-Language: en-US
-Content-ID: <1C62BC9BFB033E40BC86E2B0C3CA8F64@kymetacorp.com>
+ id 1cw1HD-0007Ju-LO
+ for barebox@lists.infradead.org; Thu, 06 Apr 2017 06:52:17 +0000
+Date: Thu, 6 Apr 2017 08:51:51 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170406065151.ecalmbyilijggaxu@pengutronix.de>
+References: <20170403083101.28047-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170403083101.28047-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,68 +22,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/7] SoCFPGA: add support for Arria10
-To: "s.trumtrar@pengutronix.de" <s.trumtrar@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2] usb: gadget: set otg to peripheral mode on autostart
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Wed, 2017-04-05 at 09:35 +0200, Steffen Trumtrar wrote:
-> Trent Piepho <tpiepho@kymetacorp.com> writes:
-
-> >
-> > U-Boot is able to load a FPGA image with a single bootloader.  A U-Boot
-> > image can be made that is small enough run in 256 kB yet has enough
-> > drivers to load an FPGA image from eMMC or NOR flash into the FPGA and
-> > then enable SDRAM.
-> >
-> > It seems like this might be possible for barebox as well.  If enough
-> > drivers to load the FPGA were part of the PBL.
+On Mon, Apr 03, 2017 at 10:31:01AM +0200, Oleksij Rempel wrote:
+> we won't be able to start if otg is not properly configured.
 > 
-> Of course this is also possible with barebox. The reason that the
-> support is not added yet, is that I do not have any Arria10 board that
-> needs or uses this; even with the provided vendor U-Boot.
-> This series is just groundwork for future development.
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  drivers/usb/gadget/autostart.c | 3 +++
+>  1 file changed, 3 insertions(+)
 
-Any A10 board should be able to use CvP, as Altera calls it, to load the
-FPGA image from a processor accessible memory like QSPI or mmc or even
-perhaps NFS.  While most of the dev kits seem to have an EPCQ flash so
-this isn't necessary, after you have used JTAG to reprogram that EPCQ
-flash at 20 minutes each time, the drawbacks become more apparent!
+Applied, thanks
 
-Being able to use barebox to NFS load the image or copy an image into
-eMMC at far faster rate than EPCQ NOR flash over JTAG would be really
-nice.
+Sascha
 
-U-Boot doesn't have a PBL.  It does this by building a somewhat stripped
-u-boot that fits, uncompressed, into 256 kB.  It uses the qspi or mmc
-drivers (pretty sure only one will fit!) to stream the image into the
-FPGA before enabling SDRAM.
+> 
+> diff --git a/drivers/usb/gadget/autostart.c b/drivers/usb/gadget/autostart.c
+> index 43c2ba23d..4ad1dd6be 100644
+> --- a/drivers/usb/gadget/autostart.c
+> +++ b/drivers/usb/gadget/autostart.c
+> @@ -14,6 +14,7 @@
+>  #include <common.h>
+>  #include <command.h>
+>  #include <errno.h>
+> +#include <environment.h>
+>  #include <malloc.h>
+>  #include <getopt.h>
+>  #include <fs.h>
+> @@ -35,6 +36,8 @@ static int usbgadget_autostart(void)
+>  	if (!autostart)
+>  		return 0;
+>  
+> +	setenv("otg.mode", "peripheral");
+> +
+>  	if (fastboot_function)
+>  		opts.fastboot_opts.files = file_list_parse(fastboot_function);
+>  
+> -- 
+> 2.11.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-Barebox is larger than u-boot so this might not work.  Try making a <
-224 kB _uncompressed_ barebox.  It has to be pretty stripped.  It's
-already a pain that u-boot can't have mmc, qspi, and network support at
-the same time.  A barebox that runs inside 256 kB would be even more
-limited.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
-But, barebox has the ability to use a compressed image plus a PBL.
-Maybe this can let barebox do better than u-boot on arria10?
-
-One could try to place the drivers needed to load the FPGA into the PBL,
-have the PBL code load the FPGA and enable SDRAM, then uncompress the
-not-stripped main barebox.
-
-The difficulty would be getting the drivers needed to load the FPGA to
-run from PBL context.  Then fitting those uncompressed drivers and PBL
-code plus the compressed main barebox into a 224kB image.
-
-One could also try a two barebox solution like Cyclone5, where one
-builds barebox twice in an xloader and main configuration.  In that
-case, it might make sense for the xloader to NOT use a PBL.  The reason
-PBL works on C5, is because the code to enable SDRAM isn't that large
-and fits in the PBL.  On A10, enabling SDRAM means finding and streaming
-a file in a filesystem on MMC into the FPGA.  Much more complex if you
-want to leverage the existing drivers.  The PBL will be so large that
-the extra code to uncompress and relocate barebox is larger than any
-savings of having what's not in the PBL be compressed.
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
