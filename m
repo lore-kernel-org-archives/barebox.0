@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1cw5Ml-0001ig-I0
- for barebox@lists.infradead.org; Thu, 06 Apr 2017 11:14:18 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 2CAF3A003C9
- for <barebox@lists.infradead.org>; Thu,  6 Apr 2017 13:14:23 +0200 (CEST)
-References: <ea78b774-b055-9b43-4b18-03eeabd2e06b@phytec.de>
- <20170406070625.xpvqhrg4dmdjkf3p@pengutronix.de>
-From: Daniel Schultz <d.schultz@phytec.de>
-Message-ID: <84941f69-f50b-ee7d-8b36-3547bc0fb2dd@phytec.de>
-Date: Thu, 6 Apr 2017 13:13:45 +0200
-MIME-Version: 1.0
-In-Reply-To: <20170406070625.xpvqhrg4dmdjkf3p@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1cwNQE-000305-FT
+ for barebox@lists.infradead.org; Fri, 07 Apr 2017 06:31:04 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri,  7 Apr 2017 08:30:38 +0200
+Message-Id: <20170407063038.2703-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,43 +14,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="windows-1252"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Directory mirroring
-To: barebox@lists.infradead.org
+Subject: [PATCH] nvvar: Fix creation without value
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Sascha,
+When a new nvvar is added without a value we want to get the value
+from the corresponding globalvar. We do this by using nv_set which
+ends up freeing the exact string that we passed into nv_set as
+value. This results in a corrupt value. Fix this by assigning a
+value manually without calling nv_set.
 
-Am 06.04.2017 um 09:06 schrieb Sascha Hauer:
-> Hi Daniel,
->
-> On Tue, Apr 04, 2017 at 12:11:09PM +0200, Daniel Schultz wrote:
->> Hi everyone,
->>
->> my boot partition is mounted to /boot/. Now, I want to make it accessibl=
-e in
->> /mnt/ as mmc or emmc, depending to the bootsource. Sadly, ln can only cr=
-eate
->> symlinks for files and two mounts for one device seems not to work.
->>
->> Are there other ways to mirror a file system?
->
-> Not that I know of. You could implement directory links, but why do you
-> want to have it accessible under /mnt in the first place?
->
-I think it would be good, if all mountable boot devices are accessible =
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/globalvar.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-in /mnt, but the boot source still remains at /boot.
-1) All boot scripts can use /mnt
-2) Barebox environment always lies in /boot
+diff --git a/common/globalvar.c b/common/globalvar.c
+index 52808f8852..ab573cc68d 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -233,10 +233,16 @@ static int __nvvar_add(const char *name, const char *value)
+ 	if (ret && ret != -EEXIST)
+ 		return ret;
+ 
+-	if (!value)
+-		value = dev_get_param(&global_device, name);
++	if (value)
++		return nv_set(&nv_device, p, value);
++
++	value = dev_get_param(&global_device, name);
++	if (value) {
++		free(p->value);
++		p->value = xstrdup(value);
++	}
+ 
+-	return nv_set(&nv_device, p, value);
++	return 0;
+ }
+ 
+ int nvvar_add(const char *name, const char *value)
+-- 
+2.11.0
 
--- =
-
-Mit freundlichen Gr=FC=DFen,
-With best regards,
-   Daniel Schultz
 
 _______________________________________________
 barebox mailing list
