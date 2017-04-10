@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cxTXT-0006zU-25
- for barebox@lists.infradead.org; Mon, 10 Apr 2017 07:15:15 +0000
+ id 1cxTXE-0006x0-2H
+ for barebox@lists.infradead.org; Mon, 10 Apr 2017 07:15:17 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 10 Apr 2017 09:14:19 +0200
-Message-Id: <20170410071420.26884-10-s.hauer@pengutronix.de>
+Date: Mon, 10 Apr 2017 09:14:18 +0200
+Message-Id: <20170410071420.26884-9-s.hauer@pengutronix.de>
 In-Reply-To: <20170410071420.26884-1-s.hauer@pengutronix.de>
 References: <20170410071420.26884-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,423 +21,891 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/10] globalvar: make globalvar functions more consistent
+Subject: [PATCH 08/10] param: make parameter functions more consistent
 To: Barebox List <barebox@lists.infradead.org>
 
-Similar to the device parameter functions also make the globalvar
-functions more consistent. This also adds support for readonly
-globalvars and changes several existing globalvars which should
-really be readonly to readonly.
+This patch creates a consitent set of device parameter functions.
+
+With this we have: dev_add_param_<type><access>
+
+"type" is one of: int32, uint32, int64, uint64, string, mac, ipv4, enum, bitmask
+The improvement here is that we now can exactly specify the width of the
+int type parameters and also correctly distinguish between signed and
+unsigned variables which means that a variable no longer ends up with
+INT_MAX when it's assigned -1.
+
+"access" can be empty for regular read/write parameter, "_ro" for readonly
+parameters which get their value from a variable pointer in the
+background or "_fixed" for parameters which are set to a fixed value
+(without a pointer in the background).
+
+Some more exotic types are not (yet) implemented, like
+dev_add_param_ip_ro.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/beaglebone/board.c               |   2 +-
- arch/arm/boards/crystalfontz-cfa10036/hwdetect.c |   2 +-
- arch/arm/boards/phytec-som-imx6/board.c          |   2 +-
- arch/arm/boards/vscom-baltos/board.c             |   7 +-
- arch/ppc/boards/pcm030/eeprom.c                  |   4 +-
- common/boot.c                                    |   2 +-
- common/bootchooser.c                             |   4 +-
- common/bootm.c                                   |   2 +-
- common/console_common.c                          |   6 +-
- common/globalvar.c                               |  28 ++----
- common/password.c                                |   2 +-
- common/reset_source.c                            |   2 +-
- drivers/mtd/peb.c                                |   6 +-
- include/globalvar.h                              | 109 ++++++++++++++++++++---
- 14 files changed, 123 insertions(+), 55 deletions(-)
+ arch/arm/boards/at91sam9m10ihd/hw_version.c |   4 +-
+ arch/arm/boards/at91sam9x5ek/hw_version.c   |   4 +-
+ arch/arm/boards/sama5d3xek/hw_version.c     |   4 +-
+ common/console.c                            |   2 +-
+ common/partitions/dos.c                     |   2 +-
+ common/state/state_variables.c              |   4 +-
+ drivers/amba/bus.c                          |   2 +-
+ drivers/efi/efi-device.c                    |  10 +-
+ drivers/input/qt1070.c                      |   4 +-
+ drivers/mtd/core.c                          |   8 +-
+ drivers/mtd/ubi/build.c                     |  22 ++--
+ drivers/net/phy/mdio_bus.c                  |   4 +-
+ drivers/pwm/core.c                          |   4 +-
+ drivers/usb/core/usb.c                      |  16 +--
+ drivers/usb/gadget/udc-core.c               |   4 +-
+ drivers/video/backlight.c                   |   2 +-
+ drivers/video/imx-ipu-fb.c                  |   2 +-
+ drivers/video/imx.c                         |   2 +-
+ include/param.h                             | 169 +++++++++++++++++++------
+ lib/parameter.c                             | 190 ++++++++++++----------------
+ 20 files changed, 260 insertions(+), 199 deletions(-)
 
-diff --git a/arch/arm/boards/beaglebone/board.c b/arch/arm/boards/beaglebone/board.c
-index 5717c45020..18a9a10a86 100644
---- a/arch/arm/boards/beaglebone/board.c
-+++ b/arch/arm/boards/beaglebone/board.c
-@@ -87,7 +87,7 @@ static int beaglebone_devices_init(void)
- 
- 	defaultenv_append_directory(defaultenv_beaglebone);
- 
--	globalvar_add_simple("board.variant", black ? "boneblack" : "bone");
-+	globalvar_add_simple_string_fixed("board.variant", black ? "boneblack" : "bone");
- 
- 	printf("detected 'BeagleBone %s'\n", black ? "Black" : "White");
- 
-diff --git a/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c b/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c
-index c94cb355e2..d0907c11f0 100644
---- a/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c
-+++ b/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c
-@@ -105,7 +105,7 @@ void cfa10036_detect_hw(void)
- 		return;
+diff --git a/arch/arm/boards/at91sam9m10ihd/hw_version.c b/arch/arm/boards/at91sam9m10ihd/hw_version.c
+index 96fb02d801..cab26b0ac4 100644
+--- a/arch/arm/boards/at91sam9m10ihd/hw_version.c
++++ b/arch/arm/boards/at91sam9m10ihd/hw_version.c
+@@ -195,8 +195,8 @@ static void at91sam9m10ihd_devices_detect_one(const char *name)
+ 	dev_add_param_fixed(dev, "board", info.board_name);
+ 	sprintf(str, "%.2s", info.vendor_country);
+ 	dev_add_param_fixed(dev, "country", str);
+-	dev_add_param_int_ro(dev, "year", info.year, "%d");
+-	dev_add_param_int_ro(dev, "week", info.week, "%d");
++	dev_add_param_uint32_fixed(dev, "year", info.year, "%u");
++	dev_add_param_uint32_fixed(dev, "week", info.week, "%u");
+ 	sprintf(str, "%c", info.revision_code);
+ 	dev_add_param_fixed(dev, "revision_code", str);
+ 	sprintf(str, "%c", info.revision_id);
+diff --git a/arch/arm/boards/at91sam9x5ek/hw_version.c b/arch/arm/boards/at91sam9x5ek/hw_version.c
+index d1ca036fe9..10563cf98b 100644
+--- a/arch/arm/boards/at91sam9x5ek/hw_version.c
++++ b/arch/arm/boards/at91sam9x5ek/hw_version.c
+@@ -221,8 +221,8 @@ static void at91sam9x5ek_devices_detect_one(const char *name)
+ 	dev_add_param_fixed(dev, "board", info.board_name);
+ 	sprintf(str, "%.2s", info.vendor_country);
+ 	dev_add_param_fixed(dev, "country", str);
+-	dev_add_param_int_ro(dev, "year", info.year, "%d");
+-	dev_add_param_int_ro(dev, "week", info.week, "%d");
++	dev_add_param_uint32_fixed(dev, "year", info.year, "%u");
++	dev_add_param_uint32_fixed(dev, "week", info.week, "%u");
+ 	sprintf(str, "%c", info.revision_code);
+ 	dev_add_param_fixed(dev, "revision_code", str);
+ 	sprintf(str, "%c", info.revision_id);
+diff --git a/arch/arm/boards/sama5d3xek/hw_version.c b/arch/arm/boards/sama5d3xek/hw_version.c
+index c809c37742..e5077854e3 100644
+--- a/arch/arm/boards/sama5d3xek/hw_version.c
++++ b/arch/arm/boards/sama5d3xek/hw_version.c
+@@ -227,8 +227,8 @@ static void at91sama5d3xek_devices_detect_one(const char *name)
+ 	dev_add_param_fixed(dev, "board", bname);
+ 	sprintf(str, "%.2s", info.vendor_country);
+ 	dev_add_param_fixed(dev, "country", str);
+-	dev_add_param_int_ro(dev, "year", info.year, "%d");
+-	dev_add_param_int_ro(dev, "week", info.week, "%d");
++	dev_add_param_uint32_fixed(dev, "year", info.year, "%u");
++	dev_add_param_uint32_fixed(dev, "week", info.week, "%u");
+ 	sprintf(str, "%c", info.revision_board);
+ 	dev_add_param_fixed(dev, "revision_board", str);
+ 	sprintf(str, "%c", info.revision_schema);
+diff --git a/common/console.c b/common/console.c
+index 1bcb13fa0b..f4c799fa54 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -328,7 +328,7 @@ int console_register(struct console_device *newcdev)
+ 		if (ret)
+ 			return ret;
+ 		newcdev->baudrate_param = newcdev->baudrate = CONFIG_BAUDRATE;
+-		dev_add_param_int(dev, "baudrate", console_baudrate_set,
++		dev_add_param_uint32(dev, "baudrate", console_baudrate_set,
+ 			NULL, &newcdev->baudrate_param, "%u", newcdev);
  	}
  
--	globalvar_add_simple("board.variant", board_name);
-+	globalvar_add_simple_string_fixed("board.variant", board_name);
- 
- 	pr_info("Booting on a CFA10036 with %s\n", board_name);
+diff --git a/common/partitions/dos.c b/common/partitions/dos.c
+index 5f08e253ee..91b5399079 100644
+--- a/common/partitions/dos.c
++++ b/common/partitions/dos.c
+@@ -251,7 +251,7 @@ static void dos_partition(void *buf, struct block_device *blk,
+ 	 * signature and pp is a zero-filled hex representation of the 1-based
+ 	 * partition number.
+ 	 */
+-	dev_add_param_int(blk->dev, "nt_signature",
++	dev_add_param_uint32(blk->dev, "nt_signature",
+ 			dos_set_disk_signature, dos_get_disk_signature,
+ 			&dsp->signature, "%08x", dsp);
  }
-diff --git a/arch/arm/boards/phytec-som-imx6/board.c b/arch/arm/boards/phytec-som-imx6/board.c
-index ed9453bdda..31b2761024 100644
---- a/arch/arm/boards/phytec-som-imx6/board.c
-+++ b/arch/arm/boards/phytec-som-imx6/board.c
-@@ -152,7 +152,7 @@ static int physom_imx6_devices_init(void)
- 		phyflex_err006282_workaround();
+diff --git a/common/state/state_variables.c b/common/state/state_variables.c
+index 5b8e6284d9..56bcd9590a 100644
+--- a/common/state/state_variables.c
++++ b/common/state/state_variables.c
+@@ -108,7 +108,7 @@ static struct state_variable *state_uint8_create(struct state *state,
  
- 		pfla02_module_revision = get_module_rev();
--		globalvar_add_simple_int("board.revision", &pfla02_module_revision, "%u");
-+		globalvar_add_simple_uint32_fixed("board.revision", pfla02_module_revision, "%u");
- 		pr_info("Module Revision: %u\n", pfla02_module_revision);
+ 	su32 = xzalloc(sizeof(*su32));
  
- 		barebox_set_hostname("phyFLEX-i.MX6");
-diff --git a/arch/arm/boards/vscom-baltos/board.c b/arch/arm/boards/vscom-baltos/board.c
-index 39f40a6061..1a4dc30936 100644
---- a/arch/arm/boards/vscom-baltos/board.c
-+++ b/arch/arm/boards/vscom-baltos/board.c
-@@ -64,7 +64,7 @@ static int baltos_read_eeprom(void)
- {
- 	struct bsp_vs_hwparam hw_param;
- 	size_t size;
--	char *buf, var_buf[32];
-+	char *buf;
- 	int rc;
- 	unsigned char mac_addr[6];
+-	param = dev_add_param_int(&state->dev, name, state_uint8_set,
++	param = dev_add_param_uint32(&state->dev, name, state_uint8_set,
+ 				  NULL, &su32->value, "%u", &su32->var);
+ 	if (IS_ERR(param)) {
+ 		free(su32);
+@@ -136,7 +136,7 @@ static struct state_variable *state_uint32_create(struct state *state,
  
-@@ -107,8 +107,7 @@ static int baltos_read_eeprom(void)
- 		hw_param.SystemId = 0;
+ 	su32 = xzalloc(sizeof(*su32));
+ 
+-	param = dev_add_param_int(&state->dev, name, state_set_dirty,
++	param = dev_add_param_uint32(&state->dev, name, state_set_dirty,
+ 				  NULL, &su32->value, "%u", &su32->var);
+ 	if (IS_ERR(param)) {
+ 		free(su32);
+diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
+index ddd9661806..ae5df13c96 100644
+--- a/drivers/amba/bus.c
++++ b/drivers/amba/bus.c
+@@ -155,7 +155,7 @@ int amba_device_add(struct amba_device *dev)
+ 	if (ret)
+ 		goto err_release;
+ 
+-	dev_add_param_int_ro(&dev->dev, "periphid", dev->periphid, "0x%08x");
++	dev_add_param_uint32_fixed(&dev->dev, "periphid", dev->periphid, "0x%08x");
+ 
+ 	return ret;
+  err_release:
+diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
+index e9b03cb02a..77802fcb95 100644
+--- a/drivers/efi/efi-device.c
++++ b/drivers/efi/efi-device.c
+@@ -404,11 +404,11 @@ static int efi_init_devices(void)
+ 	dev_add_param_fixed(efi_bus.dev, "fw_vendor", fw_vendor);
+ 	free(fw_vendor);
+ 
+-	dev_add_param_int_ro(efi_bus.dev, "major", sys_major, "%u");
+-	dev_add_param_int_ro(efi_bus.dev, "minor", sys_minor, "%u");
+-	dev_add_param_int_ro(efi_bus.dev, "fw_revision", efi_sys_table->fw_revision, "%u");
+-	dev_add_param_int_ro(efi_bus.dev, "secure_boot", secure_boot, "%d");
+-	dev_add_param_int_ro(efi_bus.dev, "secure_mode",
++	dev_add_param_uint32_fixed(efi_bus.dev, "major", sys_major, "%u");
++	dev_add_param_uint32_fixed(efi_bus.dev, "minor", sys_minor, "%u");
++	dev_add_param_uint32_fixed(efi_bus.dev, "fw_revision", efi_sys_table->fw_revision, "%u");
++	dev_add_param_bool_fixed(efi_bus.dev, "secure_boot", secure_boot, "%u");
++	dev_add_param_bool_fixed(efi_bus.dev, "secure_mode",
+ 			     secure_boot & setup_mode, "%u");
+ 
+ 	efi_bus.dev->info = efi_businfo;
+diff --git a/drivers/input/qt1070.c b/drivers/input/qt1070.c
+index 1ee868dfdd..d81a8fa401 100644
+--- a/drivers/input/qt1070.c
++++ b/drivers/input/qt1070.c
+@@ -238,8 +238,8 @@ static int qt1070_probe(struct device_d *dev)
+ 		goto err;
  	}
  
--	sprintf(var_buf, "%d", hw_param.SystemId);
--	globalvar_add_simple("board.id", var_buf);
-+	globalvar_add_simple_uint32_fixed("board.id", hw_param.SystemId, "%u");
+-	dev_add_param_int_ro(dev, "fw_version", fw_version, "0x%x");
+-	dev_add_param_int_ro(dev, "chip_ip", chip_id, "0x%x");
++	dev_add_param_uint32_fixed(dev, "fw_version", fw_version, "0x%x");
++	dev_add_param_uint32_fixed(dev, "chip_ip", chip_id, "0x%x");
  
- 	/* enable mPCIe slot */
- 	gpio_direction_output(100, 1);
-@@ -131,7 +130,7 @@ static int baltos_devices_init(void)
- 	if (!of_machine_is_compatible("vscom,onrisc"))
- 		return 0;
+ 	memcpy(data->code, default_code, sizeof(int) * ARRAY_SIZE(default_code));
  
--	globalvar_add_simple("board.variant", "baltos");
-+	globalvar_add_simple_string_fixed("board.variant", "baltos");
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index f071373501..1950ee87ee 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -637,10 +637,10 @@ int add_mtd_device(struct mtd_info *mtd, const char *devname, int device_id)
+ 	mtd->cdev.mtd = mtd;
  
- 	if (bootsource_get() == BOOTSOURCE_MMC)
- 		omap_set_bootmmc_devname("mmc0");
-diff --git a/arch/ppc/boards/pcm030/eeprom.c b/arch/ppc/boards/pcm030/eeprom.c
-index aa00f361cd..34bce85b94 100644
---- a/arch/ppc/boards/pcm030/eeprom.c
-+++ b/arch/ppc/boards/pcm030/eeprom.c
-@@ -53,7 +53,7 @@ static void pcm030_read_factory_data(const struct pcm030_eeprom *buf)
- 			continue;
- 		board = xstrndup(&buf->product[u], l);
- 		u += l + 1;
--		globalvar_add_simple("model.type", board);
-+		globalvar_add_simple_string_fixed("model.type", board);
- 		free(board);
+ 	if (IS_ENABLED(CONFIG_PARAMETER)) {
+-		dev_add_param_llint_ro(&mtd->class_dev, "size", mtd->size, "%llu");
+-		dev_add_param_int_ro(&mtd->class_dev, "erasesize", mtd->erasesize, "%u");
+-		dev_add_param_int_ro(&mtd->class_dev, "writesize", mtd->writesize, "%u");
+-		dev_add_param_int_ro(&mtd->class_dev, "oobsize", mtd->oobsize, "%u");
++		dev_add_param_uint64_ro(&mtd->class_dev, "size", &mtd->size, "%llu");
++		dev_add_param_uint32_ro(&mtd->class_dev, "erasesize", &mtd->erasesize, "%u");
++		dev_add_param_uint32_ro(&mtd->class_dev, "writesize", &mtd->writesize, "%u");
++		dev_add_param_uint32_ro(&mtd->class_dev, "oobsize", &mtd->oobsize, "%u");
  	}
  
-@@ -62,7 +62,7 @@ static void pcm030_read_factory_data(const struct pcm030_eeprom *buf)
- 			continue;
- 		serial = xstrndup(&buf->product[u], l);
- 		u += l + 1;
--		globalvar_add_simple("model.serial", serial);
-+		globalvar_add_simple_string_fixed("model.serial", serial);
- 		free(serial);
- 	}
+ 	ret = devfs_create(&mtd->cdev);
+diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
+index 2ea66ed067..40fa890c9e 100644
+--- a/drivers/mtd/ubi/build.c
++++ b/drivers/mtd/ubi/build.c
+@@ -656,17 +656,17 @@ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
+ 	ubi_msg(ubi, "available PEBs: %d, total reserved PEBs: %d, PEBs reserved for bad PEB handling: %d",
+ 		ubi->avail_pebs, ubi->rsvd_pebs, ubi->beb_rsvd_pebs);
  
-diff --git a/common/boot.c b/common/boot.c
-index cef3d5e514..a2d27d1593 100644
---- a/common/boot.c
-+++ b/common/boot.c
-@@ -123,7 +123,7 @@ void boot_set_watchdog_timeout(unsigned int timeout)
+-	dev_add_param_int_ro(&ubi->dev, "peb_size", ubi->peb_size, "%d");
+-	dev_add_param_int_ro(&ubi->dev, "leb_size", ubi->leb_size, "%d");
+-	dev_add_param_int_ro(&ubi->dev, "vid_header_offset", ubi->vid_hdr_offset, "%d");
+-	dev_add_param_int_ro(&ubi->dev, "min_io_size", ubi->min_io_size, "%d");
+-	dev_add_param_int_ro(&ubi->dev, "sub_page_size", ubi->hdrs_min_io_size, "%d");
+-	dev_add_param_int_ro(&ubi->dev, "good_peb_count", ubi->good_peb_count, "%d");
+-	dev_add_param_int_ro(&ubi->dev, "bad_peb_count", ubi->bad_peb_count, "%d");
+-	dev_add_param_int_ro(&ubi->dev, "max_erase_counter", ubi->max_ec, "%d");
+-	dev_add_param_int_ro(&ubi->dev, "mean_erase_counter", ubi->mean_ec, "%d");
+-	dev_add_param_int_ro(&ubi->dev, "available_pebs", ubi->avail_pebs, "%d");
+-	dev_add_param_int_ro(&ubi->dev, "reserved_pebs", ubi->rsvd_pebs, "%d");
++	dev_add_param_uint32_ro(&ubi->dev, "peb_size", &ubi->peb_size, "%u");
++	dev_add_param_uint32_ro(&ubi->dev, "leb_size", &ubi->leb_size, "%u");
++	dev_add_param_uint32_ro(&ubi->dev, "vid_header_offset", &ubi->vid_hdr_offset, "%u");
++	dev_add_param_uint32_ro(&ubi->dev, "min_io_size", &ubi->min_io_size, "%u");
++	dev_add_param_uint32_ro(&ubi->dev, "sub_page_size", &ubi->hdrs_min_io_size, "%u");
++	dev_add_param_uint32_ro(&ubi->dev, "good_peb_count", &ubi->good_peb_count, "%u");
++	dev_add_param_uint32_ro(&ubi->dev, "bad_peb_count", &ubi->bad_peb_count, "%u");
++	dev_add_param_uint32_ro(&ubi->dev, "max_erase_counter", &ubi->max_ec, "%u");
++	dev_add_param_uint32_ro(&ubi->dev, "mean_erase_counter", &ubi->mean_ec, "%u");
++	dev_add_param_uint32_ro(&ubi->dev, "available_pebs", &ubi->avail_pebs, "%u");
++	dev_add_param_uint32_ro(&ubi->dev, "reserved_pebs", &ubi->rsvd_pebs, "%u");
  
- static int init_boot_watchdog_timeout(void)
- {
--	return globalvar_add_simple_int("boot.watchdog_timeout",
-+	return globalvar_add_simple_uint32("boot.watchdog_timeout",
- 			&boot_watchdog_timeout, "%u");
- }
- late_initcall(init_boot_watchdog_timeout);
-diff --git a/common/bootchooser.c b/common/bootchooser.c
-index 455f290fa2..f6d99d130b 100644
---- a/common/bootchooser.c
-+++ b/common/bootchooser.c
-@@ -907,8 +907,8 @@ static int bootchooser_init(void)
- 	globalvar_add_simple_bool("bootchooser.retry", &retry);
- 	globalvar_add_simple_string("bootchooser.targets", &available_targets);
- 	globalvar_add_simple_string("bootchooser.state_prefix", &state_prefix);
--	globalvar_add_simple_int("bootchooser.default_attempts", &global_default_attempts, "%u");
--	globalvar_add_simple_int("bootchooser.default_priority", &global_default_priority, "%u");
-+	globalvar_add_simple_uint32("bootchooser.default_attempts", &global_default_attempts, "%u");
-+	globalvar_add_simple_uint32("bootchooser.default_priority", &global_default_priority, "%u");
- 	globalvar_add_simple_bitmask("bootchooser.reset_attempts", &reset_attempts,
- 				  reset_attempts_names, ARRAY_SIZE(reset_attempts_names));
- 	globalvar_add_simple_bitmask("bootchooser.reset_priorities", &reset_priorities,
-diff --git a/common/bootm.c b/common/bootm.c
-index 81625d9157..92cfeb6c32 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -668,7 +668,7 @@ static int bootm_init(void)
- 	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES))
- 		bootm_verify_mode = BOOTM_VERIFY_SIGNATURE;
+ 	ubi_devices[ubi_num] = ubi;
  
--	globalvar_add_simple_int("bootm.verbose", &bootm_verbosity, "%u");
-+	globalvar_add_simple_uint32("bootm.verbose", &bootm_verbosity, "%u");
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 41bf018141..012b90e834 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -330,8 +330,8 @@ static int mdio_bus_probe(struct device_d *_dev)
+ 	of_set_phy_supported(dev);
+ 	dev->advertising = dev->supported;
  
- 	globalvar_add_simple_enum("bootm.verify", (unsigned int *)&bootm_verify_mode,
- 				  bootm_verify_names, ARRAY_SIZE(bootm_verify_names));
-diff --git a/common/console_common.c b/common/console_common.c
-index d051458de4..b36b3ff083 100644
---- a/common/console_common.c
-+++ b/common/console_common.c
-@@ -148,10 +148,10 @@ int dev_printf(int level, const struct device_d *dev, const char *format, ...)
- static int loglevel_init(void)
- {
- 	if (IS_ENABLED(CONFIG_LOGBUF))
--		globalvar_add_simple_int("log_max_messages",
--				&barebox_log_max_messages, "%d");
-+		globalvar_add_simple_uint32("log_max_messages",
-+				&barebox_log_max_messages, "%u");
+-	dev_add_param_int_ro(&dev->dev, "phy_addr", dev->addr, "%d");
+-	dev_add_param_int_ro(&dev->dev, "phy_id", dev->phy_id, "0x%08x");
++	dev_add_param_uint32_ro(&dev->dev, "phy_addr", &dev->addr, "%u");
++	dev_add_param_uint32_ro(&dev->dev, "phy_id", &dev->phy_id, "0x%08x");
  
--	return globalvar_add_simple_int("loglevel", &barebox_loglevel, "%d");
-+	return globalvar_add_simple_uint32("loglevel", &barebox_loglevel, "%u");
- }
- device_initcall(loglevel_init);
+ 	dev->cdev.name = xasprintf("mdio%d-phy%02x",
+ 				   dev->bus->dev.id,
+diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+index ee65619c4e..80fade0611 100644
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -99,12 +99,12 @@ int pwmchip_add(struct pwm_chip *chip, struct device_d *dev)
  
-diff --git a/common/globalvar.c b/common/globalvar.c
-index 32ca6a24db..2f65ca805f 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -424,7 +424,7 @@ int globalvar_add_simple(const char *name, const char *value)
- 	return 0;
- }
+ 	list_add_tail(&pwm->node, &pwm_list);
  
--int globalvar_add_simple_string(const char *name, char **value)
-+int __globalvar_add_simple_string(const char *name, char **value)
- {
- 	struct param_d *p;
- 
-@@ -439,28 +439,14 @@ int globalvar_add_simple_string(const char *name, char **value)
- 	return 0;
- }
- 
--int globalvar_add_simple_int(const char *name, int *value,
--			     const char *format)
-+int __globalvar_add_simple_int(const char *name, void *value,
-+				      enum param_type type,
-+				      const char *format)
- {
- 	struct param_d *p;
- 
--	p = dev_add_param_int(&global_device, name, NULL, NULL,
--		value, format, NULL);
--
--	if (IS_ERR(p))
--		return PTR_ERR(p);
--
--	globalvar_nv_sync(name);
--
--	return 0;
--}
--
--int globalvar_add_simple_bool(const char *name, int *value)
--{
--	struct param_d *p;
--
--	p = dev_add_param_bool(&global_device, name, NULL, NULL,
--		value, NULL);
-+	p = __dev_add_param_int(&global_device, name, NULL, NULL,
-+		value, type, format, NULL);
- 
+-	p = dev_add_param_int(&pwm->dev, "duty_ns", set_duty_period_ns,
++	p = dev_add_param_uint32(&pwm->dev, "duty_ns", set_duty_period_ns,
+ 			NULL, &pwm->chip->duty_ns, "%u", pwm);
  	if (IS_ERR(p))
  		return PTR_ERR(p);
-@@ -522,7 +508,7 @@ static int globalvar_init(void)
- 	if (IS_ENABLED(CONFIG_NVVAR))
- 		register_device(&nv_device);
  
--	globalvar_add_simple("version", UTS_RELEASE);
-+	globalvar_add_simple_string_fixed("version", UTS_RELEASE);
+-	p = dev_add_param_int(&pwm->dev, "period_ns", set_duty_period_ns,
++	p = dev_add_param_uint32(&pwm->dev, "period_ns", set_duty_period_ns,
+ 			NULL, &pwm->chip->period_ns, "%u", pwm);
+ 	if (IS_ERR(p))
+ 		return PTR_ERR(p);
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index aba2da0ad3..9170ba4d53 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -447,19 +447,19 @@ int usb_new_device(struct usb_device *dev)
+ 		goto err_out;
+ 	}
+ 
+-	dev_add_param_int_ro(&dev->dev, "iManufacturer",
+-			dev->descriptor->iManufacturer, "%d");
+-	dev_add_param_int_ro(&dev->dev, "iProduct",
+-			dev->descriptor->iProduct, "%d");
+-	dev_add_param_int_ro(&dev->dev, "iSerialNumber",
+-			dev->descriptor->iSerialNumber, "%d");
++	dev_add_param_uint32_fixed(&dev->dev, "iManufacturer",
++			dev->descriptor->iManufacturer, "%u");
++	dev_add_param_uint32_fixed(&dev->dev, "iProduct",
++			dev->descriptor->iProduct, "%u");
++	dev_add_param_uint32_fixed(&dev->dev, "iSerialNumber",
++			dev->descriptor->iSerialNumber, "%u");
+ 	dev_add_param_fixed(&dev->dev, "iSerialNumber", str);
+ 	dev_add_param_fixed(&dev->dev, "Manufacturer", dev->mf);
+ 	dev_add_param_fixed(&dev->dev, "Product", dev->prod);
+ 	dev_add_param_fixed(&dev->dev, "SerialNumber", dev->serial);
+-	dev_add_param_int_ro(&dev->dev, "idVendor",
++	dev_add_param_uint32_fixed(&dev->dev, "idVendor",
+ 			dev->descriptor->idVendor, "%04x");
+-	dev_add_param_int_ro(&dev->dev, "idProduct",
++	dev_add_param_uint32_fixed(&dev->dev, "idProduct",
+ 			dev->descriptor->idProduct, "%04x");
+ 	list_add_tail(&dev->list, &usb_device_list);
+ 	dev_count++;
+diff --git a/drivers/usb/gadget/udc-core.c b/drivers/usb/gadget/udc-core.c
+index 4f001e102f..ed99b53df7 100644
+--- a/drivers/usb/gadget/udc-core.c
++++ b/drivers/usb/gadget/udc-core.c
+@@ -187,9 +187,9 @@ int usb_add_gadget_udc_release(struct device_d *parent, struct usb_gadget *gadge
+ 	if (ret)
+ 		goto err2;
+ 
+-	dev_add_param_int(&gadget->dev, "product", NULL, NULL,
++	dev_add_param_uint32(&gadget->dev, "product", NULL, NULL,
+ 			&gadget->product_id, "0x%04x", NULL);
+-	dev_add_param_int(&gadget->dev, "vendor", NULL, NULL,
++	dev_add_param_uint32(&gadget->dev, "vendor", NULL, NULL,
+ 			&gadget->vendor_id, "0x%04x", NULL);
+ 	gadget->manufacturer = xstrdup("barebox");
+ 	dev_add_param_string(&gadget->dev, "manufacturer", NULL, NULL,
+diff --git a/drivers/video/backlight.c b/drivers/video/backlight.c
+index ddde6f8523..09c0e47af6 100644
+--- a/drivers/video/backlight.c
++++ b/drivers/video/backlight.c
+@@ -70,7 +70,7 @@ int backlight_register(struct backlight_device *bl)
+ 	if (ret)
+ 		return ret;
+ 
+-	dev_add_param_int(&bl->dev, "brightness", backlight_brightness_set,
++	dev_add_param_uint32(&bl->dev, "brightness", backlight_brightness_set,
+ 			NULL, &bl->brightness, "%d", bl);
+ 
+ 	list_add_tail(&bl->list, &backlights);
+diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
+index 7c3a800149..9cc7a911ea 100644
+--- a/drivers/video/imx-ipu-fb.c
++++ b/drivers/video/imx-ipu-fb.c
+@@ -978,7 +978,7 @@ static int sdc_fb_register_overlay(struct ipu_fb_info *fbi, void *fb)
+ 		return ret;
+ 	}
+ 
+-	dev_add_param_int(&overlay->dev, "alpha", sdc_alpha_set,
++	dev_add_param_uint32(&overlay->dev, "alpha", sdc_alpha_set,
+ 			NULL, &fbi->alpha, "%u", overlay);
  
  	return 0;
+diff --git a/drivers/video/imx.c b/drivers/video/imx.c
+index 78cb5c0ca2..947f8d5349 100644
+--- a/drivers/video/imx.c
++++ b/drivers/video/imx.c
+@@ -530,7 +530,7 @@ static int imxfb_register_overlay(struct imxfb_info *fbi, void *fb)
+ 		return ret;
+ 	}
+ 
+-	dev_add_param_int(&overlay->dev, "alpha", imxfb_alpha_set,
++	dev_add_param_uint32(&overlay->dev, "alpha", imxfb_alpha_set,
+ 			NULL, &fbi->alpha, "%u", overlay);
+ 
+ 	return 0;
+diff --git a/include/param.h b/include/param.h
+index 2eb040fea4..be4cca7b68 100644
+--- a/include/param.h
++++ b/include/param.h
+@@ -52,15 +52,10 @@ struct param_d *dev_add_param_string(struct device_d *dev, const char *name,
+ 		int (*get)(struct param_d *p, void *priv),
+ 		char **value, void *priv);
+ 
+-struct param_d *dev_add_param_int(struct device_d *dev, const char *name,
++struct param_d *__dev_add_param_int(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+-		int *value, const char *format, void *priv);
+-
+-struct param_d *dev_add_param_bool(struct device_d *dev, const char *name,
+-		int (*set)(struct param_d *p, void *priv),
+-		int (*get)(struct param_d *p, void *priv),
+-		int *value, void *priv);
++		void *value, enum param_type type, const char *format, void *priv);
+ 
+ struct param_d *dev_add_param_enum(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+@@ -72,12 +67,6 @@ struct param_d *dev_add_param_bitmask(struct device_d *dev, const char *name,
+ 		int (*get)(struct param_d *p, void *priv),
+ 		unsigned long *value, const char * const *names, int max, void *priv);
+ 
+-struct param_d *dev_add_param_int_ro(struct device_d *dev, const char *name,
+-		int value, const char *format);
+-
+-struct param_d *dev_add_param_llint_ro(struct device_d *dev, const char *name,
+-		long long value, const char *format);
+-
+ struct param_d *dev_add_param_ip(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+@@ -88,7 +77,7 @@ struct param_d *dev_add_param_mac(struct device_d *dev, const char *name,
+ 		int (*get)(struct param_d *p, void *priv),
+ 		u8 *mac, void *priv);
+ 
+-int dev_add_param_fixed(struct device_d *dev, const char *name, const char *value);
++struct param_d *dev_add_param_fixed(struct device_d *dev, const char *name, const char *value);
+ 
+ void dev_remove_param(struct param_d *p);
+ 
+@@ -129,10 +118,10 @@ static inline struct param_d *dev_add_param_string(struct device_d *dev, const c
+ 	return ERR_PTR(-ENOSYS);
  }
-diff --git a/common/password.c b/common/password.c
-index 74d328f4b2..5e6bfc53e7 100644
---- a/common/password.c
-+++ b/common/password.c
-@@ -443,7 +443,7 @@ static int login_global_init(void)
+ 
+-static inline struct param_d *dev_add_param_int(struct device_d *dev, const char *name,
++static inline struct param_d *__dev_add_param_int(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+-		int *value, const char *format, void *priv)
++		void *value, enum param_type type, const char *format, void *priv)
  {
- 	login_fail_command = xstrdup("boot");
- 
--	globalvar_add_simple_int("login.timeout", &login_timeout, "%d");
-+	globalvar_add_simple_uint32("login.timeout", &login_timeout, "%u");
- 	globalvar_add_simple_string("login.fail_command", &login_fail_command);
- 
- 	return 0;
-diff --git a/common/reset_source.c b/common/reset_source.c
-index 06e2ca85f5..e18bf6db68 100644
---- a/common/reset_source.c
-+++ b/common/reset_source.c
-@@ -54,7 +54,7 @@ EXPORT_SYMBOL(reset_source_set_priority);
- 
- static int reset_source_init(void)
- {
--	globalvar_add_simple_enum("system.reset", (unsigned int *)&reset_source,
-+	globalvar_add_simple_enum_ro("system.reset", (unsigned int *)&reset_source,
- 			reset_src_names, ARRAY_SIZE(reset_src_names));
- 
- 	return 0;
-diff --git a/drivers/mtd/peb.c b/drivers/mtd/peb.c
-index c35b63f2fd..0e64fe1671 100644
---- a/drivers/mtd/peb.c
-+++ b/drivers/mtd/peb.c
-@@ -76,11 +76,11 @@ static int mtd_peb_emulate_erase_failure(void)
- #ifdef CONFIG_MTD_PEB_DEBUG
- static int mtd_peb_debug_init(void)
- {
--	globalvar_add_simple_int("mtd_peb.mtd_peb_emulate_bitflip",
-+	globalvar_add_simple_uint32("mtd_peb.mtd_peb_emulate_bitflip",
- 				 &__mtd_peb_emulate_bitflip, "%u");
--	globalvar_add_simple_int("mtd_peb.mtd_peb_emulate_write_failure",
-+	globalvar_add_simple_uint32("mtd_peb.mtd_peb_emulate_write_failure",
- 				 &__mtd_peb_emulate_write_failure, "%u");
--	globalvar_add_simple_int("mtd_peb.mtd_peb_emulate_erase_failures",
-+	globalvar_add_simple_uint32("mtd_peb.mtd_peb_emulate_erase_failures",
- 				 &__mtd_peb_emulate_erase_failures, "%u");
- 	globalvar_add_simple_bool("mtd_peb.mtd_peb_chk_io",
- 				 &__mtd_peb_chk_io);
-diff --git a/include/globalvar.h b/include/globalvar.h
-index df43f1fe66..aea43b193d 100644
---- a/include/globalvar.h
-+++ b/include/globalvar.h
-@@ -15,10 +15,9 @@ void globalvar_remove(const char *name);
- char *globalvar_get_match(const char *match, const char *separator);
- void globalvar_set_match(const char *match, const char *val);
- 
--int globalvar_add_simple_string(const char *name, char **value);
--int globalvar_add_simple_int(const char *name, int *value,
--			     const char *format);
--int globalvar_add_simple_bool(const char *name, int *value);
-+int __globalvar_add_simple_string(const char *name, char **value);
-+int __globalvar_add_simple_int(const char *name, void *value,
-+			       enum param_type type, const char *format);
- int globalvar_add_simple_enum(const char *name,	int *value,
- 			      const char * const *names, int max);
- int globalvar_add_simple_bitmask(const char *name, unsigned long *value,
-@@ -39,19 +38,13 @@ static inline int globalvar_add_simple(const char *name, const char *value)
- 	return 0;
+ 	return ERR_PTR(-ENOSYS);
+ }
+@@ -154,56 +143,162 @@ static inline struct param_d *dev_add_param_bitmask(struct device_d *dev, const
+ 	return ERR_PTR(-ENOSYS);
  }
  
--static inline int globalvar_add_simple_string(const char *name, char **value)
-+static inline int __globalvar_add_simple_int(const char *name, void *value,
-+			       enum param_type type, const char *format)
+-static inline struct param_d *dev_add_param_bool(struct device_d *dev, const char *name,
++static inline struct param_d *dev_add_param_ip(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+-		int *value, void *priv)
++		IPaddr_t *ip, void *priv)
  {
- 	return 0;
+ 	return ERR_PTR(-ENOSYS);
  }
  
--static inline int globalvar_add_simple_int(const char *name,
--		int *value, const char *format)
--{
+-static inline struct param_d *dev_add_param_int_ro(struct device_d *dev, const char *name,
+-		int value, const char *format)
++static inline struct param_d *dev_add_param_mac(struct device_d *dev, const char *name,
++		int (*set)(struct param_d *p, void *priv),
++		int (*get)(struct param_d *p, void *priv),
++		u8 *mac, void *priv)
+ {
+ 	return ERR_PTR(-ENOSYS);
+ }
+ 
+-static inline struct param_d *dev_add_param_llint_ro(struct device_d *dev, const char *name,
+-		long long value, const char *format)
++static inline struct param_d *dev_add_param_fixed(struct device_d *dev, const char *name,
++						  const char *value)
+ {
+ 	return ERR_PTR(-ENOSYS);
+ }
+ 
+-static inline struct param_d *dev_add_param_ip(struct device_d *dev, const char *name,
++static inline void dev_remove_param(struct param_d *p) {}
++
++static inline void dev_remove_parameters(struct device_d *dev) {}
++
++static inline int dev_param_set_generic(struct device_d *dev, struct param_d *p,
++		const char *val)
++{
++	return 0;
++}
++#endif
++
++int param_set_readonly(struct param_d *p, void *priv);
++
++/*
++ * dev_add_param_int
++ * dev_add_param_int32
++ * dev_add_param_uint32
++ * dev_add_param_int64
++ * dev_add_param_uint64
++ */
++#define DECLARE_PARAM_INT(intname, inttype, paramtype) \
++	static inline struct param_d *dev_add_param_##intname(struct device_d *dev, const char *name,	\
++			int (*set)(struct param_d *p, void *priv),					\
++			int (*get)(struct param_d *p, void *priv),					\
++			inttype *value, const char *format, void *priv)					\
++	{												\
++		return __dev_add_param_int(dev, name, set, get, value, paramtype, format, priv);	\
++	}
++
++DECLARE_PARAM_INT(int, int, PARAM_TYPE_INT32)
++DECLARE_PARAM_INT(int32, int32_t, PARAM_TYPE_INT32)
++DECLARE_PARAM_INT(uint32, uint32_t, PARAM_TYPE_UINT32)
++DECLARE_PARAM_INT(int64, int64_t, PARAM_TYPE_INT64)
++DECLARE_PARAM_INT(uint64, uint64_t, PARAM_TYPE_UINT64)
++
++/*
++ * dev_add_param_int_fixed
++ * dev_add_param_int32_fixed
++ * dev_add_param_uint32_fixed
++ * dev_add_param_int64_fixed
++ * dev_add_param_uint64_fixed
++ */
++#define DECLARE_PARAM_INT_FIXED(intname, inttype, paramtype) \
++	static inline struct param_d *dev_add_param_##intname##_fixed(struct device_d *dev, const char *name,	\
++			inttype value, const char *format)							\
++	{													\
++		return __dev_add_param_int(dev, name, ERR_PTR(-EROFS), NULL, &value, paramtype, format, NULL);	\
++	}
++
++DECLARE_PARAM_INT_FIXED(int, int, PARAM_TYPE_INT32)
++DECLARE_PARAM_INT_FIXED(int32, int32_t, PARAM_TYPE_INT32)
++DECLARE_PARAM_INT_FIXED(uint32, uint32_t, PARAM_TYPE_UINT32)
++DECLARE_PARAM_INT_FIXED(int64, int64_t, PARAM_TYPE_INT64)
++DECLARE_PARAM_INT_FIXED(uint64, uint64_t, PARAM_TYPE_UINT64)
++
++/*
++ * dev_add_param_int_ro
++ * dev_add_param_int32_ro
++ * dev_add_param_uint32_ro
++ * dev_add_param_int64_ro
++ * dev_add_param_uint64_ro
++ */
++#define DECLARE_PARAM_INT_RO(intname, inttype, paramtype) \
++	static inline struct param_d *dev_add_param_##intname##_ro(struct device_d *dev, const char *name,		\
++			inttype *value, const char *format)								\
++	{														\
++		return __dev_add_param_int(dev, name, param_set_readonly, NULL, value, paramtype, format, NULL);	\
++	}
++
++DECLARE_PARAM_INT_RO(int, int, PARAM_TYPE_INT32)
++DECLARE_PARAM_INT_RO(int32, int32_t, PARAM_TYPE_INT32)
++DECLARE_PARAM_INT_RO(uint32, uint32_t, PARAM_TYPE_UINT32)
++DECLARE_PARAM_INT_RO(int64, int64_t, PARAM_TYPE_INT64)
++DECLARE_PARAM_INT_RO(uint64, uint64_t, PARAM_TYPE_UINT64)
++
++static inline struct param_d *dev_add_param_bool(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+-		IPaddr_t *ip, void *priv)
++		uint32_t *value, void *priv)
+ {
+-	return ERR_PTR(-ENOSYS);
++	return __dev_add_param_int(dev, name, set, get, value, PARAM_TYPE_BOOL, "%u", priv);
+ }
+ 
+-static inline struct param_d *dev_add_param_mac(struct device_d *dev, const char *name,
++static inline struct param_d *dev_add_param_bool_fixed(struct device_d *dev, const char *name,
++		uint32_t value)
++{
++	return __dev_add_param_int(dev, name, ERR_PTR(-EROFS), NULL, &value, PARAM_TYPE_BOOL,
++				   "%u", NULL);
++}
++
++static inline struct param_d *dev_add_param_bool_ro(struct device_d *dev, const char *name,
++		uint32_t *value)
++{
++	return __dev_add_param_int(dev, name, param_set_readonly, NULL, value, PARAM_TYPE_BOOL,
++				   "%u", NULL);
++}
++
++static inline struct param_d *dev_add_param_string_ro(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+-		u8 *mac, void *priv)
++		char **value, void *priv)
+ {
+-	return ERR_PTR(-ENOSYS);
++	return dev_add_param_string(dev, name, param_set_readonly, NULL, value, NULL);
+ }
+ 
+-static inline int dev_add_param_fixed(struct device_d *dev, const char *name, const char *value)
++static inline struct param_d *dev_add_param_string_fixed(struct device_d *dev, const char *name,
++		char *value)
+ {
 -	return 0;
++	return dev_add_param_fixed(dev, name, value);
+ }
+ 
+-static inline void dev_remove_param(struct param_d *p) {}
+-
+-static inline void dev_remove_parameters(struct device_d *dev) {}
++static inline struct param_d *dev_add_param_enum_ro(struct device_d *dev, const char *name,
++		int *value, const char * const *names, int max)
++{
++	return dev_add_param_enum(dev, name, param_set_readonly, NULL,
++				  value, names, max, NULL);
++}
+ 
+-static inline int dev_param_set_generic(struct device_d *dev, struct param_d *p,
+-		const char *val)
++static inline struct param_d *dev_add_param_bitmask_ro(struct device_d *dev, const char *name,
++		int (*set)(struct param_d *p, void *priv),
++		int (*get)(struct param_d *p, void *priv),
++		unsigned long *value, const char * const *names, int max, void *priv)
+ {
+-	return 0;
++	return dev_add_param_bitmask(dev, name, param_set_readonly, NULL,
++				     value, names, max, NULL);
+ }
+-#endif
+ 
++/*
++ * unimplemented:
++ * dev_add_param_enum_fixed
++ * dev_add_param_bitmask_fixed
++ * dev_add_param_ip_ro
++ * dev_add_param_ip_fixed
++ * dev_add_param_mac_ro
++ * dev_add_param_mac_fixed
++ */
+ #endif /* PARAM_H */
+diff --git a/lib/parameter.c b/lib/parameter.c
+index 6456779e71..a21b8fa4a4 100644
+--- a/lib/parameter.c
++++ b/lib/parameter.c
+@@ -218,7 +218,7 @@ struct param_d *dev_add_param(struct device_d *dev, const char *name,
+  * @param name	The name of the parameter
+  * @param value	The value of the parameter
+  */
+-int dev_add_param_fixed(struct device_d *dev, const char *name, const char *value)
++struct param_d *dev_add_param_fixed(struct device_d *dev, const char *name, const char *value)
+ {
+ 	struct param_d *param;
+ 	int ret;
+@@ -228,12 +228,12 @@ int dev_add_param_fixed(struct device_d *dev, const char *name, const char *valu
+ 	ret = __dev_add_param(param, dev, name, NULL, NULL, PARAM_FLAG_RO);
+ 	if (ret) {
+ 		free(param);
+-		return ret;
++		return ERR_PTR(ret);
+ 	}
+ 
+ 	param->value = strdup(value);
+ 
+-	return 0;
++	return param;
+ }
+ 
+ struct param_string {
+@@ -315,10 +315,9 @@ struct param_d *dev_add_param_string(struct device_d *dev, const char *name,
+ 
+ struct param_int {
+ 	struct param_d param;
+-	int *value;
++	void *value;
++	int dsize;
+ 	const char *format;
+-#define PARAM_INT_FLAG_BOOL (1 << 0)
+-	unsigned flags;
+ 	int (*set)(struct param_d *p, void *priv);
+ 	int (*get)(struct param_d *p, void *priv);
+ };
+@@ -331,18 +330,32 @@ static inline struct param_int *to_param_int(struct param_d *p)
+ static int param_int_set(struct device_d *dev, struct param_d *p, const char *val)
+ {
+ 	struct param_int *pi = to_param_int(p);
+-	int value_save = *pi->value;
++	u8 value_save[pi->dsize];
+ 	int ret;
+ 
+ 	if (!val)
+ 		return -EINVAL;
+ 
+-	if (pi->flags & PARAM_INT_FLAG_BOOL) {
++	memcpy(value_save, pi->value, pi->dsize);
++
++	switch (p->type) {
++	case PARAM_TYPE_BOOL:
+ 		ret = strtobool(val, pi->value);
+-		if (ret)
+-			return ret;
+-	} else {
+-		*pi->value = simple_strtol(val, NULL, 0);
++		break;
++	case PARAM_TYPE_INT32:
++		*(uint32_t *)pi->value = simple_strtol(val, NULL, 0);
++		break;
++	case PARAM_TYPE_UINT32:
++		*(int32_t *)pi->value = simple_strtoul(val, NULL, 0);
++		break;
++	case PARAM_TYPE_INT64:
++		*(int64_t *)pi->value = simple_strtoll(val, NULL, 0);
++		break;
++	case PARAM_TYPE_UINT64:
++		*(uint64_t *)pi->value = simple_strtoull(val, NULL, 0);
++		break;
++	default:
++		return -EINVAL;
+ 	}
+ 
+ 	if (!pi->set)
+@@ -350,7 +363,7 @@ static int param_int_set(struct device_d *dev, struct param_d *p, const char *va
+ 
+ 	ret = pi->set(p, p->driver_priv);
+ 	if (ret)
+-		*pi->value = value_save;
++		memcpy(pi->value, value_save, pi->dsize);
+ 
+ 	return ret;
+ }
+@@ -367,11 +380,28 @@ static const char *param_int_get(struct device_d *dev, struct param_d *p)
+ 	}
+ 
+ 	free(p->value);
+-	p->value = basprintf(pi->format, *pi->value);
++	switch (p->type) {
++	case PARAM_TYPE_BOOL:
++	case PARAM_TYPE_INT32:
++	case PARAM_TYPE_UINT32:
++		p->value = basprintf(pi->format, *(int32_t *)pi->value);
++		break;
++	case PARAM_TYPE_INT64:
++	case PARAM_TYPE_UINT64:
++		p->value = basprintf(pi->format, *(int64_t *)pi->value);
++		break;
++	default:
++		return NULL;
++	}
+ 
+ 	return p->value;
+ }
+ 
++int param_set_readonly(struct param_d *p, void *priv)
++{
++	return -EROFS;
++}
++
+ /**
+  * dev_add_param_int - add an integer parameter to a device
+  * @param dev	The device
+@@ -379,6 +409,7 @@ static const char *param_int_get(struct device_d *dev, struct param_d *p)
+  * @param set	set function
+  * @param get	get function
+  * @param value	pointer to the integer containing the value of the parameter
++ * @param type  The variable type
+  * @param format the printf format used to print the value
+  * @param priv	user private data, will be passed to get/set
+  *
+@@ -387,23 +418,51 @@ static const char *param_int_get(struct device_d *dev, struct param_d *p)
+  * The set function can be used as a notifer when the variable is about
+  * to be written. Can also be used to limit the value.
+  */
+-struct param_d *dev_add_param_int(struct device_d *dev, const char *name,
++struct param_d *__dev_add_param_int(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+-		int *value, const char *format, void *priv)
++		void *value, enum param_type type, const char *format, void *priv)
+ {
+ 	struct param_int *pi;
+ 	struct param_d *p;
+-	int ret;
++	int ret, dsize;
++
++	switch (type) {
++	case PARAM_TYPE_BOOL:
++		dsize = sizeof(uint32_t);
++		break;
++	case PARAM_TYPE_INT32:
++		dsize = sizeof(int32_t);
++		break;
++	case PARAM_TYPE_UINT32:
++		dsize = sizeof(uint32_t);
++		break;
++	case PARAM_TYPE_INT64:
++		dsize = sizeof(int64_t);
++		break;
++	case PARAM_TYPE_UINT64:
++		dsize = sizeof(uint64_t);
++		break;
++	default:
++		return ERR_PTR(-EINVAL);
++	}
+ 
+ 	pi = xzalloc(sizeof(*pi));
+-	pi->value = value;
++
++	if (IS_ERR(set)) {
++		pi->value = xmemdup(value, dsize);
++		set = param_set_readonly;
++	} else {
++		pi->value = value;
++	}
++
++	pi->dsize = dsize;
+ 	pi->format = format;
+ 	pi->set = set;
+ 	pi->get = get;
+ 	p = &pi->param;
+ 	p->driver_priv = priv;
+-	p->type = PARAM_TYPE_INT32;
++	p->type = type;
+ 
+ 	ret = __dev_add_param(p, dev, name, param_int_set, param_int_get, 0);
+ 	if (ret) {
+@@ -662,99 +721,6 @@ struct param_d *dev_add_param_bitmask(struct device_d *dev, const char *name,
+ 	return &pb->param;
+ }
+ 
+-/**
+- * dev_add_param_bool - add an boolean parameter to a device
+- * @param dev	The device
+- * @param name	The name of the parameter
+- * @param set	set function
+- * @param get	get function
+- * @param value	pointer to the integer containing the value of the parameter
+- * @param priv	user private data, will be passed to get/set
+- *
+- * The get function can be used as a notifier when the variable is about
+- * to be read.
+- * The set function can be used as a notifer when the variable is about
+- * to be written. Can also be used to limit the value.
+- */
+-struct param_d *dev_add_param_bool(struct device_d *dev, const char *name,
+-		int (*set)(struct param_d *p, void *priv),
+-		int (*get)(struct param_d *p, void *priv),
+-		int *value, void *priv)
+-{
+-	struct param_int *pi;
+-	struct param_d *p;
+-
+-	p = dev_add_param_int(dev, name, set, get, value, "%d", priv);
+-	if (IS_ERR(p))
+-		return p;
+-
+-	p->type = PARAM_TYPE_BOOL;
+-
+-	pi = to_param_int(p);
+-	pi->flags |= PARAM_INT_FLAG_BOOL;
+-
+-	return p;
 -}
 -
--static inline int globalvar_add_simple_bool(const char *name,
--		int *value)
-+static inline int __globalvar_add_simple_string(const char *name, char **value)
- {
- 	return 0;
- }
-@@ -115,6 +108,96 @@ static inline void dev_param_init_from_nv(struct device_d *dev, const char *name
- 
- #endif
- 
-+#define DECLARE_GLOBALVAR_INT(intname, inttype, paramtype) \
-+	static inline int globalvar_add_simple_##intname(const char *name,	\
-+						      inttype *value,		\
-+						      const char *format)	\
-+	{									\
-+		return __globalvar_add_simple_int(name, value,			\
-+						  paramtype,			\
-+						  format);			\
-+	}
-+
-+DECLARE_GLOBALVAR_INT(uint32, uint32_t, PARAM_TYPE_UINT32)
-+DECLARE_GLOBALVAR_INT(int32, int32_t, PARAM_TYPE_INT32)
-+DECLARE_GLOBALVAR_INT(uint64, uint64_t, PARAM_TYPE_UINT64)
-+DECLARE_GLOBALVAR_INT(int64, int64_t, PARAM_TYPE_INT64)
-+
-+static inline int globalvar_add_simple_bool(const char *name, uint32_t *value)
-+{
-+	return __globalvar_add_simple_int(name, value, PARAM_TYPE_BOOL, "%u");
-+}
-+
-+static inline int globalvar_add_simple_string(const char *name, char **value)
-+{
-+	return __globalvar_add_simple_string(name, value);
-+}
-+
-+#define DECLARE_GLOBALVAR_INT_RO(intname, inttype, paramtype) \
-+	static inline int globalvar_add_simple_##intname##_ro(const char *name,	\
-+						      inttype *value,		\
-+						      const char *format)	\
-+	{									\
-+		return PTR_ERR_OR_ZERO(__dev_add_param_int(&global_device, name,\
-+							   param_set_readonly,	\
-+							   NULL, value,		\
-+							   paramtype,		\
-+							   format, NULL));	\
-+	}
-+
-+DECLARE_GLOBALVAR_INT_RO(uint32, uint32_t, PARAM_TYPE_UINT32)
-+DECLARE_GLOBALVAR_INT_RO(int32, int32_t, PARAM_TYPE_INT32)
-+DECLARE_GLOBALVAR_INT_RO(uint64, uint64_t, PARAM_TYPE_UINT64)
-+DECLARE_GLOBALVAR_INT_RO(int64, int64_t, PARAM_TYPE_INT64)
-+
-+static inline int globalvar_add_simple_bool_ro(const char *name, uint32_t *value)
-+{
-+	return PTR_ERR_OR_ZERO(__dev_add_param_int(&global_device, name,
-+						   param_set_readonly, NULL,
-+						   value, PARAM_TYPE_BOOL, "%u",
-+						   NULL));
-+}
-+
-+static inline int globalvar_add_simple_string_ro(const char *name, char **value)
-+{
-+	return __globalvar_add_simple_string(name, value);
-+}
-+
-+#define DECLARE_GLOBALVAR_INT_FIXED(intname, inttype, paramtype) \
-+	static inline int globalvar_add_simple_##intname##_fixed(const char *name,	\
-+								 inttype value,		\
-+								 const char *format)	\
-+	{										\
-+		return PTR_ERR_OR_ZERO(__dev_add_param_int(&global_device, name,	\
-+							   ERR_PTR(-EROFS), NULL,	\
-+							   &value, paramtype,		\
-+							   format, NULL));		\
-+	}
-+
-+DECLARE_GLOBALVAR_INT_FIXED(uint32, uint32_t, PARAM_TYPE_UINT32)
-+DECLARE_GLOBALVAR_INT_FIXED(int32, int32_t, PARAM_TYPE_INT32)
-+DECLARE_GLOBALVAR_INT_FIXED(uint64, uint64_t, PARAM_TYPE_UINT64)
-+DECLARE_GLOBALVAR_INT_FIXED(int64, int64_t, PARAM_TYPE_INT64)
-+
-+static inline int globalvar_add_simple_bool_fixed(const char *name, uint32_t value)
-+{
-+	return PTR_ERR_OR_ZERO(__dev_add_param_int(&global_device, name, ERR_PTR(-EROFS),
-+						   NULL, &value, PARAM_TYPE_BOOL, "%u",
-+						   NULL));
-+}
-+
-+static inline int globalvar_add_simple_string_fixed(const char *name, char *value)
-+{
-+	return PTR_ERR_OR_ZERO(dev_add_param_string_fixed(&global_device, name, value));
-+}
-+
-+static inline int globalvar_add_simple_enum_ro(const char *name, int *value,
-+					       const char * const *names, int max)
-+{
-+	return PTR_ERR_OR_ZERO(dev_add_param_enum_ro(&global_device, name, value, names,
-+						     max));
-+}
-+
- void nv_var_set_clean(void);
- int nvvar_save(void);
- int nv_global_complete(struct string_list *sl, char *instr);
+-struct param_int_ro {
+-	struct param_d param;
+-	char *value;
+-};
+-
+-/**
+- * dev_add_param_int_ro - add a read only integer parameter to a device
+- * @param dev	The device
+- * @param name	The name of the parameter
+- * @param value	The value of the parameter
+- * @param format the printf format used to print the value
+- */
+-struct param_d *dev_add_param_int_ro(struct device_d *dev, const char *name,
+-		int value, const char *format)
+-{
+-	struct param_int *piro;
+-	int ret;
+-
+-	piro = xzalloc(sizeof(*piro));
+-
+-	ret = __dev_add_param(&piro->param, dev, name, NULL, NULL, PARAM_FLAG_RO);
+-	if (ret) {
+-		free(piro);
+-		return ERR_PTR(ret);
+-	}
+-
+-	piro->param.type = PARAM_TYPE_INT32;
+-	piro->param.value = basprintf(format, value);
+-
+-	return &piro->param;
+-}
+-
+-/**
+- * dev_add_param_llint_ro - add a read only long long parameter to a device
+- * @param dev	The device
+- * @param name	The name of the parameter
+- * @param value	The value of the parameter
+- * @param format the printf format used to print the value
+- */
+-struct param_d *dev_add_param_llint_ro(struct device_d *dev, const char *name,
+-		long long value, const char *format)
+-{
+-	struct param_int *piro;
+-	int ret;
+-
+-	piro = xzalloc(sizeof(*piro));
+-
+-	ret = __dev_add_param(&piro->param, dev, name, NULL, NULL, PARAM_FLAG_RO);
+-	if (ret) {
+-		free(piro);
+-		return ERR_PTR(ret);
+-	}
+-
+-	piro->param.type = PARAM_TYPE_INT64;
+-	piro->param.value = basprintf(format, value);
+-
+-	return &piro->param;
+-}
+-
+ struct param_ip {
+ 	struct param_d param;
+ 	IPaddr_t *ip;
 -- 
 2.11.0
 
