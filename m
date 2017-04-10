@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cxTX9-0006w2-3n
+ id 1cxTX9-0006w4-3n
  for barebox@lists.infradead.org; Mon, 10 Apr 2017 07:14:47 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 10 Apr 2017 09:14:12 +0200
-Message-Id: <20170410071420.26884-3-s.hauer@pengutronix.de>
+Date: Mon, 10 Apr 2017 09:14:20 +0200
+Message-Id: <20170410071420.26884-11-s.hauer@pengutronix.de>
 In-Reply-To: <20170410071420.26884-1-s.hauer@pengutronix.de>
 References: <20170410071420.26884-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,181 +21,300 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/10] parameter: Give device parameters types
+Subject: [PATCH 10/10] param: remove unnecessary device_d * argument
 To: Barebox List <barebox@lists.infradead.org>
-
-This adds a variable type enum and adds this to the device parameters.
-This information gives the user a hint which values a parameter expects
-and also helps to organize the parameters better internally.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/devinfo.c |  3 ++-
- include/param.h    | 15 +++++++++++++++
- lib/parameter.c    | 30 +++++++++++++++++++++++++++++-
- 3 files changed, 46 insertions(+), 2 deletions(-)
+ common/globalvar.c | 14 +++++++-------
+ include/param.h    | 11 +++++------
+ lib/parameter.c    | 44 ++++++++++++++++++++++----------------------
+ 3 files changed, 34 insertions(+), 35 deletions(-)
 
-diff --git a/commands/devinfo.c b/commands/devinfo.c
-index 9d5e8b86eb..cd69d2e5f8 100644
---- a/commands/devinfo.c
-+++ b/commands/devinfo.c
-@@ -103,7 +103,8 @@ static int do_devinfo(int argc, char *argv[])
- 				printf("Parameters:\n");
- 				first = false;
- 			}
--			printf("  %s: %s", param->name, dev_get_param(dev, param->name));
-+			printf("  %s: %s (type: %s)", param->name, dev_get_param(dev, param->name),
-+			       get_param_type(param));
- 			if (param->info) {
- 				param->info(param);
- 			}
+diff --git a/common/globalvar.c b/common/globalvar.c
+index 2f65ca805f..d33bc64a13 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -163,7 +163,7 @@ static int nvvar_device_dispatch(const char *name, struct device_d **dev,
+ 	return 1;
+ }
+ 
+-static int nv_set(struct device_d *dev, struct param_d *p, const char *val)
++static int nv_set(struct param_d *p, const char *val)
+ {
+ 	struct param_d *g;
+ 	int ret;
+@@ -184,16 +184,16 @@ static int nv_set(struct device_d *dev, struct param_d *p, const char *val)
+ 	return 0;
+ }
+ 
+-static const char *nv_param_get(struct device_d *dev, struct param_d *p)
++static const char *nv_param_get(struct param_d *p)
+ {
+ 	return p->value ? p->value : "";
+ }
+ 
+-static int nv_param_set(struct device_d *dev, struct param_d *p, const char *val)
++static int nv_param_set(struct param_d *p, const char *val)
+ {
+ 	int ret;
+ 
+-	ret = nv_set(dev, p, val);
++	ret = nv_set(p, val);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -216,7 +216,7 @@ static int __nvvar_add(const char *name, const char *value)
+ 	}
+ 
+ 	if (value)
+-		return nv_set(&nv_device, p, value);
++		return nv_set(p, value);
+ 
+ 	value = dev_get_param(&global_device, name);
+ 	if (value) {
+@@ -370,7 +370,7 @@ void globalvar_set_match(const char *match, const char *val)
+ 	}
+ }
+ 
+-static int globalvar_simple_set(struct device_d *dev, struct param_d *p, const char *val)
++static int globalvar_simple_set(struct param_d *p, const char *val)
+ {
+ 	struct device_d *rdev;
+ 	const char *pname = NULL;
+@@ -388,7 +388,7 @@ static int globalvar_simple_set(struct device_d *dev, struct param_d *p, const c
+ 	}
+ 
+ 	/* Pass to the generic function we have overwritten */
+-	return dev_param_set_generic(dev, p, val);
++	return dev_param_set_generic(p, val);
+ }
+ 
+ static void globalvar_nv_sync(const char *name)
 diff --git a/include/param.h b/include/param.h
-index f9f3398cae..2eb040fea4 100644
+index be4cca7b68..50bca62588 100644
 --- a/include/param.h
 +++ b/include/param.h
-@@ -10,6 +10,19 @@
- struct device_d;
- typedef uint32_t          IPaddr_t;
- 
-+enum param_type {
-+	PARAM_TYPE_STRING = 0,
-+	PARAM_TYPE_INT32,
-+	PARAM_TYPE_UINT32,
-+	PARAM_TYPE_INT64,
-+	PARAM_TYPE_UINT64,
-+	PARAM_TYPE_BOOL,
-+	PARAM_TYPE_ENUM,
-+	PARAM_TYPE_BITMASK,
-+	PARAM_TYPE_IPV4,
-+	PARAM_TYPE_MAC,
-+};
-+
- struct param_d {
- 	const char* (*get)(struct device_d *, struct param_d *param);
- 	int (*set)(struct device_d *, struct param_d *param, const char *val);
-@@ -20,9 +33,11 @@ struct param_d {
- 	struct device_d *dev;
- 	void *driver_priv;
- 	struct list_head list;
-+	enum param_type type;
+@@ -24,8 +24,8 @@ enum param_type {
  };
  
- #ifdef CONFIG_PARAMETER
-+const char *get_param_type(struct param_d *param);
- const char *dev_get_param(struct device_d *dev, const char *name);
- int dev_set_param(struct device_d *dev, const char *name, const char *val);
+ struct param_d {
+-	const char* (*get)(struct device_d *, struct param_d *param);
+-	int (*set)(struct device_d *, struct param_d *param, const char *val);
++	const char* (*get)(struct param_d *param);
++	int (*set)(struct param_d *param, const char *val);
+ 	void (*info)(struct param_d *param);
+ 	unsigned int flags;
+ 	char *name;
+@@ -43,8 +43,8 @@ int dev_set_param(struct device_d *dev, const char *name, const char *val);
  struct param_d *get_param_by_name(struct device_d *dev, const char *name);
+ 
+ struct param_d *dev_add_param(struct device_d *dev, const char *name,
+-		int (*set)(struct device_d *dev, struct param_d *p, const char *val),
+-		const char *(*get)(struct device_d *, struct param_d *p),
++		int (*set)(struct param_d *p, const char *val),
++		const char *(*get)(struct param_d *p),
+ 		unsigned long flags);
+ 
+ struct param_d *dev_add_param_string(struct device_d *dev, const char *name,
+@@ -83,8 +83,7 @@ void dev_remove_param(struct param_d *p);
+ 
+ void dev_remove_parameters(struct device_d *dev);
+ 
+-int dev_param_set_generic(struct device_d *dev, struct param_d *p,
+-		const char *val);
++int dev_param_set_generic(struct param_d *p, const char *val);
+ 
+ #else
+ static inline const char *dev_get_param(struct device_d *dev, const char *name)
 diff --git a/lib/parameter.c b/lib/parameter.c
-index 65d6c7c0df..6456779e71 100644
+index a21b8fa4a4..ab36b15591 100644
 --- a/lib/parameter.c
 +++ b/lib/parameter.c
-@@ -31,6 +31,24 @@
- #include <globalvar.h>
- #include <linux/err.h>
+@@ -76,7 +76,7 @@ const char *dev_get_param(struct device_d *dev, const char *name)
+ 		return NULL;
+ 	}
  
-+static const char *param_type_string[] = {
-+	[PARAM_TYPE_STRING] = "string",
-+	[PARAM_TYPE_INT32] = "int32",
-+	[PARAM_TYPE_UINT32] = "uint32",
-+	[PARAM_TYPE_INT64] = "int64",
-+	[PARAM_TYPE_UINT64] = "uint64",
-+	[PARAM_TYPE_BOOL] = "bool",
-+	[PARAM_TYPE_ENUM] = "enum",
-+	[PARAM_TYPE_BITMASK] = "bitmask",
-+	[PARAM_TYPE_IPV4] = "ipv4",
-+	[PARAM_TYPE_MAC] = "MAC",
-+};
-+
-+const char *get_param_type(struct param_d *param)
-+{
-+	return param_type_string[param->type];
-+}
-+
- struct param_d *get_param_by_name(struct device_d *dev, const char *name)
+-	return param->get(dev, param);
++	return param->get(param);
+ }
+ 
+ /**
+@@ -107,7 +107,7 @@ int dev_set_param(struct device_d *dev, const char *name, const char *val)
+ 		return -EACCES;
+ 	}
+ 
+-	ret = param->set(dev, param, val);
++	ret = param->set(param, val);
+ 	if (ret)
+ 		errno = -ret;
+ 
+@@ -125,7 +125,7 @@ int dev_set_param(struct device_d *dev, const char *name, const char *val)
+  * used during deregistration of the parameter to free the alloctated
+  * memory.
+  */
+-int dev_param_set_generic(struct device_d *dev, struct param_d *p,
++int dev_param_set_generic(struct param_d *p,
+ 		const char *val)
  {
- 	struct param_d *p;
-@@ -284,6 +302,7 @@ struct param_d *dev_add_param_string(struct device_d *dev, const char *name,
- 	ps->get = get;
- 	p = &ps->param;
- 	p->driver_priv = priv;
-+	p->type = PARAM_TYPE_STRING;
+ 	free(p->value);
+@@ -137,7 +137,7 @@ int dev_param_set_generic(struct device_d *dev, struct param_d *p,
+ 	return p->value ? 0 : -ENOMEM;
+ }
  
- 	ret = __dev_add_param(p, dev, name, param_string_set, param_string_get, 0);
- 	if (ret) {
-@@ -384,6 +403,7 @@ struct param_d *dev_add_param_int(struct device_d *dev, const char *name,
- 	pi->get = get;
- 	p = &pi->param;
- 	p->driver_priv = priv;
-+	p->type = PARAM_TYPE_INT32;
+-static const char *param_get_generic(struct device_d *dev, struct param_d *p)
++static const char *param_get_generic(struct param_d *p)
+ {
+ 	return p->value ? p->value : "";
+ }
+@@ -151,8 +151,8 @@ static int compare(struct list_head *a, struct list_head *b)
+ }
  
- 	ret = __dev_add_param(p, dev, name, param_int_set, param_int_get, 0);
- 	if (ret) {
-@@ -465,7 +485,7 @@ static void param_enum_info(struct param_d *p)
- 	if (pe->num_names <= 1)
- 		return;
+ static int __dev_add_param(struct param_d *param, struct device_d *dev, const char *name,
+-		int (*set)(struct device_d *dev, struct param_d *p, const char *val),
+-		const char *(*get)(struct device_d *dev, struct param_d *p),
++		int (*set)(struct param_d *p, const char *val),
++		const char *(*get)(struct param_d *p),
+ 		unsigned long flags)
+ {
+ 	if (get_param_by_name(dev, name))
+@@ -194,8 +194,8 @@ static int __dev_add_param(struct param_d *param, struct device_d *dev, const ch
+  * not use static arrays when using the generic functions.
+  */
+ struct param_d *dev_add_param(struct device_d *dev, const char *name,
+-		int (*set)(struct device_d *dev, struct param_d *p, const char *val),
+-		const char *(*get)(struct device_d *dev, struct param_d *param),
++		int (*set)(struct param_d *p, const char *val),
++		const char *(*get)(struct param_d *param),
+ 		unsigned long flags)
+ {
+ 	struct param_d *param;
+@@ -248,7 +248,7 @@ static inline struct param_string *to_param_string(struct param_d *p)
+ 	return container_of(p, struct param_string, param);
+ }
  
--	printf(" (");
-+	printf(" (values: ");
+-static int param_string_set(struct device_d *dev, struct param_d *p, const char *val)
++static int param_string_set(struct param_d *p, const char *val)
+ {
+ 	struct param_string *ps = to_param_string(p);
+ 	int ret;
+@@ -273,7 +273,7 @@ static int param_string_set(struct device_d *dev, struct param_d *p, const char
+ 	return ret;
+ }
  
- 	for (i = 0; i < pe->num_names; i++) {
- 		if (!pe->names[i] || !*pe->names[i])
-@@ -493,6 +513,7 @@ struct param_d *dev_add_param_enum(struct device_d *dev, const char *name,
- 	pe->num_names = num_names;
- 	p = &pe->param;
- 	p->driver_priv = priv;
-+	p->type = PARAM_TYPE_ENUM;
+-static const char *param_string_get(struct device_d *dev, struct param_d *p)
++static const char *param_string_get(struct param_d *p)
+ {
+ 	struct param_string *ps = to_param_string(p);
+ 	int ret;
+@@ -327,7 +327,7 @@ static inline struct param_int *to_param_int(struct param_d *p)
+ 	return container_of(p, struct param_int, param);
+ }
  
- 	ret = __dev_add_param(p, dev, name, param_enum_set, param_enum_get, 0);
- 	if (ret) {
-@@ -622,6 +643,7 @@ struct param_d *dev_add_param_bitmask(struct device_d *dev, const char *name,
- 	pb->num_names = max;
- 	p = &pb->param;
- 	p->driver_priv = priv;
-+	p->type = PARAM_TYPE_BITMASK;
+-static int param_int_set(struct device_d *dev, struct param_d *p, const char *val)
++static int param_int_set(struct param_d *p, const char *val)
+ {
+ 	struct param_int *pi = to_param_int(p);
+ 	u8 value_save[pi->dsize];
+@@ -368,7 +368,7 @@ static int param_int_set(struct device_d *dev, struct param_d *p, const char *va
+ 	return ret;
+ }
  
- 	for (i = 0; i < pb->num_names; i++)
- 		if (pb->names[i])
-@@ -666,6 +688,8 @@ struct param_d *dev_add_param_bool(struct device_d *dev, const char *name,
- 	if (IS_ERR(p))
- 		return p;
+-static const char *param_int_get(struct device_d *dev, struct param_d *p)
++static const char *param_int_get(struct param_d *p)
+ {
+ 	struct param_int *pi = to_param_int(p);
+ 	int ret;
+@@ -487,7 +487,7 @@ static inline struct param_enum *to_param_enum(struct param_d *p)
+ 	return container_of(p, struct param_enum, param);
+ }
  
-+	p->type = PARAM_TYPE_BOOL;
-+
- 	pi = to_param_int(p);
- 	pi->flags |= PARAM_INT_FLAG_BOOL;
+-static int param_enum_set(struct device_d *dev, struct param_d *p, const char *val)
++static int param_enum_set(struct param_d *p, const char *val)
+ {
+ 	struct param_enum *pe = to_param_enum(p);
+ 	int value_save = *pe->value;
+@@ -515,7 +515,7 @@ static int param_enum_set(struct device_d *dev, struct param_d *p, const char *v
+ 	return ret;
+ }
  
-@@ -698,6 +722,7 @@ struct param_d *dev_add_param_int_ro(struct device_d *dev, const char *name,
- 		return ERR_PTR(ret);
- 	}
+-static const char *param_enum_get(struct device_d *dev, struct param_d *p)
++static const char *param_enum_get(struct param_d *p)
+ {
+ 	struct param_enum *pe = to_param_enum(p);
+ 	int ret;
+@@ -599,7 +599,7 @@ static inline struct param_bitmask *to_param_bitmask(struct param_d *p)
+ 	return container_of(p, struct param_bitmask, param);
+ }
  
-+	piro->param.type = PARAM_TYPE_INT32;
- 	piro->param.value = basprintf(format, value);
+-static int param_bitmask_set(struct device_d *dev, struct param_d *p, const char *val)
++static int param_bitmask_set(struct param_d *p, const char *val)
+ {
+ 	struct param_bitmask *pb = to_param_bitmask(p);
+ 	void *value_save;
+@@ -645,7 +645,7 @@ out:
+ 	return ret;
+ }
  
- 	return &piro->param;
-@@ -724,6 +749,7 @@ struct param_d *dev_add_param_llint_ro(struct device_d *dev, const char *name,
- 		return ERR_PTR(ret);
- 	}
+-static const char *param_bitmask_get(struct device_d *dev, struct param_d *p)
++static const char *param_bitmask_get(struct param_d *p)
+ {
+ 	struct param_bitmask *pb = to_param_bitmask(p);
+ 	int ret, bit;
+@@ -734,7 +734,7 @@ static inline struct param_ip *to_param_ip(struct param_d *p)
+ 	return container_of(p, struct param_ip, param);
+ }
  
-+	piro->param.type = PARAM_TYPE_INT64;
- 	piro->param.value = basprintf(format, value);
+-static int param_ip_set(struct device_d *dev, struct param_d *p, const char *val)
++static int param_ip_set(struct param_d *p, const char *val)
+ {
+ 	struct param_ip *pi = to_param_ip(p);
+ 	IPaddr_t ip_save = *pi->ip;
+@@ -757,7 +757,7 @@ static int param_ip_set(struct device_d *dev, struct param_d *p, const char *val
+ 	return ret;
+ }
  
- 	return &piro->param;
-@@ -795,6 +821,7 @@ struct param_d *dev_add_param_ip(struct device_d *dev, const char *name,
- 	pi->set = set;
- 	pi->get = get;
- 	pi->param.driver_priv = priv;
-+	pi->param.type = PARAM_TYPE_IPV4;
+-static const char *param_ip_get(struct device_d *dev, struct param_d *p)
++static const char *param_ip_get(struct param_d *p)
+ {
+ 	struct param_ip *pi = to_param_ip(p);
+ 	int ret;
+@@ -816,7 +816,7 @@ static inline struct param_mac *to_param_mac(struct param_d *p)
+ 	return container_of(p, struct param_mac, param);
+ }
  
- 	ret = __dev_add_param(&pi->param, dev, name,
- 			param_ip_set, param_ip_get, 0);
-@@ -882,6 +909,7 @@ struct param_d *dev_add_param_mac(struct device_d *dev, const char *name,
- 	pm->get = get;
- 	pm->param.driver_priv = priv;
- 	pm->param.value = pm->mac_str;
-+	pm->param.type = PARAM_TYPE_MAC;
+-static int param_mac_set(struct device_d *dev, struct param_d *p, const char *val)
++static int param_mac_set(struct param_d *p, const char *val)
+ {
+ 	struct param_mac *pm = to_param_mac(p);
+ 	char mac_save[6];
+@@ -845,7 +845,7 @@ out:
+ 	return ret;
+ }
  
- 	ret = __dev_add_param(&pm->param, dev, name,
- 			param_mac_set, param_mac_get, 0);
+-static const char *param_mac_get(struct device_d *dev, struct param_d *p)
++static const char *param_mac_get(struct param_d *p)
+ {
+ 	struct param_mac *pm = to_param_mac(p);
+ 	int ret;
+@@ -894,7 +894,7 @@ struct param_d *dev_add_param_mac(struct device_d *dev, const char *name,
+  */
+ void dev_remove_param(struct param_d *p)
+ {
+-	p->set(p->dev, p, NULL);
++	p->set(p, NULL);
+ 	list_del(&p->list);
+ 	free(p->name);
+ 	free(p);
+@@ -910,7 +910,7 @@ void dev_remove_parameters(struct device_d *dev)
+ 	struct param_d *p, *n;
+ 
+ 	list_for_each_entry_safe(p, n, &dev->parameters, list) {
+-		p->set(dev, p, NULL);
++		p->set(p, NULL);
+ 		list_del(&p->list);
+ 		free(p->name);
+ 		free(p);
 -- 
 2.11.0
 
