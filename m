@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cxhJ6-0003uH-VX
- for barebox@lists.infradead.org; Mon, 10 Apr 2017 21:57:11 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
- (envelope-from <mgr@pengutronix.de>) id 1cxhIl-0007ZZ-2S
- for barebox@lists.infradead.org; Mon, 10 Apr 2017 23:56:47 +0200
-Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.88)
- (envelope-from <mgr@pengutronix.de>) id 1cxhIk-0003uJ-Ln
- for barebox@lists.infradead.org; Mon, 10 Apr 2017 23:56:46 +0200
+ id 1cxhhM-0003eo-Db
+ for barebox@lists.infradead.org; Mon, 10 Apr 2017 22:22:14 +0000
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Mon, 10 Apr 2017 23:56:39 +0200
-Message-Id: <20170410215639.13259-1-m.grzeschik@pengutronix.de>
+Date: Tue, 11 Apr 2017 00:21:29 +0200
+Message-Id: <20170410222129.2293-1-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,76 +19,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] ARM: i.MX6: add Technexion Pico Hobbit support
+Subject: [PATCH v1] mci: add Marvell Dove SDHCI driver
 To: barebox@lists.infradead.org
 
-This adds support support for the i.MX6UL Technexion Pico Hobbit.
-The board comes with different amounts of RAM. We create one image
-for the 256MB and one for the 512MB variant.
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 
+This adds a driver for the SDHCI controller found on Marvell Dove SoCs.
+Despite a missing pinctrl driver, corresponding MPP config has to be
+set on a per board basis.
+
+This driver was succesfully tested with Solidrun Dove Cubox.
+
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
-v1 -> v2: - left only the hardware do phy reset handling
-            software reset is unstable without some phy-post-reset-delay
-          - removed property device_type from memory to let barebox
-	    get the correct memory size
+RFC -> v1: - acknowledging the dma_int status bit to resume xfer
+           - added dma_sync_single_for_device where we handover data
+	   - rate limited the multiwrite size with an max_req_size
+	     and increased the timeout according to the data being
+	     handled
+---
+ arch/arm/configs/mvebu_defconfig |   1 +
+ drivers/mci/Kconfig              |   7 +
+ drivers/mci/Makefile             |   1 +
+ drivers/mci/dove-sdhci.c         | 391 +++++++++++++++++++++++++++++++++++++++
+ drivers/mci/sdhci.h              |  59 ++++++
+ 5 files changed, 459 insertions(+)
+ create mode 100644 drivers/mci/dove-sdhci.c
 
- arch/arm/boards/Makefile                           |   1 +
- arch/arm/boards/technexion-pico-hobbit/Makefile    |   7 ++
- arch/arm/boards/technexion-pico-hobbit/board.c     | 105 +++++++++++++++++++++
- .../defaultenv-pico-hobbit/init/automount          |  11 +++
- .../defaultenv-pico-hobbit/network/eth1            |  18 ++++
- .../flash-header-imx6ul-pico-hobbit-256.imxcfg     |  64 +++++++++++++
- .../flash-header-imx6ul-pico-hobbit-512.imxcfg     |  65 +++++++++++++
- arch/arm/boards/technexion-pico-hobbit/lowlevel.c  |  78 +++++++++++++++
- arch/arm/configs/imx_v7_defconfig                  |   1 +
- arch/arm/dts/Makefile                              |   1 +
- arch/arm/dts/imx6ul-pico-hobbit.dts                |  44 +++++++++
- arch/arm/mach-imx/Kconfig                          |   6 ++
- images/Makefile.imx                                |  10 ++
- 13 files changed, 411 insertions(+)
- create mode 100644 arch/arm/boards/technexion-pico-hobbit/Makefile
- create mode 100644 arch/arm/boards/technexion-pico-hobbit/board.c
- create mode 100644 arch/arm/boards/technexion-pico-hobbit/defaultenv-pico-hobbit/init/automount
- create mode 100644 arch/arm/boards/technexion-pico-hobbit/defaultenv-pico-hobbit/network/eth1
- create mode 100644 arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-256.imxcfg
- create mode 100644 arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-512.imxcfg
- create mode 100644 arch/arm/boards/technexion-pico-hobbit/lowlevel.c
- create mode 100644 arch/arm/dts/imx6ul-pico-hobbit.dts
-
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 250ccb8889..d9f9d7778e 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -114,6 +114,7 @@ obj-$(CONFIG_MACH_SOCFPGA_TERASIC_DE0_NANO_SOC)	+= terasic-de0-nano-soc/
- obj-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT)	+= terasic-sockit/
- obj-$(CONFIG_MACH_SOLIDRUN_CUBOX)		+= solidrun-cubox/
- obj-$(CONFIG_MACH_SOLIDRUN_MICROSOM)		+= solidrun-microsom/
-+obj-$(CONFIG_MACH_TECHNEXION_PICO_HOBBIT)	+= technexion-pico-hobbit/
- obj-$(CONFIG_MACH_TECHNEXION_WANDBOARD)		+= technexion-wandboard/
- obj-$(CONFIG_MACH_TNY_A9260)			+= tny-a926x/
- obj-$(CONFIG_MACH_TNY_A9263)			+= tny-a926x/
-diff --git a/arch/arm/boards/technexion-pico-hobbit/Makefile b/arch/arm/boards/technexion-pico-hobbit/Makefile
+diff --git a/arch/arm/configs/mvebu_defconfig b/arch/arm/configs/mvebu_defconfig
+index dab3d7a45e..cfbccb5a14 100644
+--- a/arch/arm/configs/mvebu_defconfig
++++ b/arch/arm/configs/mvebu_defconfig
+@@ -112,6 +112,7 @@ CONFIG_USB_STORAGE=y
+ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+ CONFIG_MCI_MMC_BOOT_PARTITIONS=y
++CONFIG_MCI_DOVE=y
+ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
+ CONFIG_LED_GPIO_OF=y
+diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+index 0f3504c735..954f957bc7 100644
+--- a/drivers/mci/Kconfig
++++ b/drivers/mci/Kconfig
+@@ -66,6 +66,13 @@ config MCI_BCM283X
+ 	bool "MCI support for BCM283X"
+ 	depends on ARCH_BCM283X
+ 
++config MCI_DOVE
++	bool "Marvell Dove SDHCI"
++	depends on ARCH_DOVE
++	help
++	  Enable this entry to add support to read and write SD cards on a
++	  Marvell Dove SoC based system.
++
+ config MCI_IMX
+ 	bool "i.MX"
+ 	depends on ARCH_IMX27 || ARCH_IMX31
+diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
+index 88ec456aa3..fe2c8adbac 100644
+--- a/drivers/mci/Makefile
++++ b/drivers/mci/Makefile
+@@ -1,6 +1,7 @@
+ obj-$(CONFIG_MCI)		+= mci-core.o
+ obj-$(CONFIG_MCI_ATMEL)		+= atmel_mci.o
+ obj-$(CONFIG_MCI_BCM283X)	+= mci-bcm2835.o
++obj-$(CONFIG_MCI_DOVE)		+= dove-sdhci.o
+ obj-$(CONFIG_MCI_IMX)		+= imx.o
+ obj-$(CONFIG_MCI_IMX_ESDHC)	+= imx-esdhc.o
+ obj-$(CONFIG_MCI_MXS)		+= mxs.o
+diff --git a/drivers/mci/dove-sdhci.c b/drivers/mci/dove-sdhci.c
 new file mode 100644
-index 0000000000..b60dcd2bc1
+index 0000000000..82188960c6
 --- /dev/null
-+++ b/arch/arm/boards/technexion-pico-hobbit/Makefile
-@@ -0,0 +1,7 @@
-+obj-y += board.o
-+lwl-y += lowlevel.o
-+extra-y += flash-header-imx6ul-pico-hobbit-256.dcd.S \
-+           flash-header-imx6ul-pico-hobbit-256.dcd \
-+           flash-header-imx6ul-pico-hobbit-512.dcd.S \
-+           flash-header-imx6ul-pico-hobbit-512.dcd
-+bbenv-y += defaultenv-pico-hobbit
-diff --git a/arch/arm/boards/technexion-pico-hobbit/board.c b/arch/arm/boards/technexion-pico-hobbit/board.c
-new file mode 100644
-index 0000000000..40b49de669
---- /dev/null
-+++ b/arch/arm/boards/technexion-pico-hobbit/board.c
-@@ -0,0 +1,105 @@
++++ b/drivers/mci/dove-sdhci.c
+@@ -0,0 +1,391 @@
 +/*
-+ * Copyright (C) 2017 Michael Grzeschik, Pengutronix
++ * Marvell Dove SDHCI MCI driver
++ *
++ * Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -108,476 +113,464 @@ index 0000000000..40b49de669
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
 + *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation.
-+ *
 + */
 +
-+#include <asm/armlinux.h>
-+#include <asm/io.h>
-+#include <bootsource.h>
++#include <clock.h>
 +#include <common.h>
-+#include <environment.h>
-+#include <envfs.h>
-+#include <gpio.h>
 +#include <init.h>
-+#include <mach/generic.h>
-+#include <mach/imx6-regs.h>
-+#include <mach/imx6.h>
-+#include <mach/bbu.h>
-+#include <linux/sizes.h>
-+#include <linux/phy.h>
-+#include <mfd/imx6q-iomuxc-gpr.h>
-+
-+#include <linux/clk.h>
-+#include <linux/micrel_phy.h>
-+
-+static int ksz8081_phy_fixup(struct phy_device *dev)
-+{
-+	phy_write(dev, 0x1f, 0x8190);
-+	phy_write(dev, 0x16, 0x202);
-+
-+	return 0;
-+}
-+
-+static int imx6ul_setup_fec(void)
-+{
-+	void __iomem *gprbase = IOMEM(MX6_IOMUXC_BASE_ADDR) + 0x4000;
-+	uint32_t val;
-+	struct clk *clk;
-+
-+	phy_register_fixup_for_uid(PHY_ID_KSZ8081, MICREL_PHY_ID_MASK,
-+			ksz8081_phy_fixup);
-+
-+	clk = clk_lookup("enet_ptp");
-+	if (IS_ERR(clk))
-+		goto err;
-+
-+	clk_enable(clk);
-+
-+	clk = clk_lookup("enet_ref");
-+	if (IS_ERR(clk))
-+		goto err;
-+	clk_enable(clk);
-+
-+	clk = clk_lookup("enet_ref_125m");
-+	if (IS_ERR(clk))
-+		goto err;
-+
-+	clk_enable(clk);
-+
-+	val = readl(gprbase + IOMUXC_GPR1);
-+	/* Use 50M anatop loopback REF_CLK1 for ENET1, clear gpr1[13], set gpr1[17]*/
-+	val &= ~(1 << 13);
-+	val |= (1 << 17);
-+	/* Use 50M anatop loopback REF_CLK1 for ENET2, clear gpr1[14], set gpr1[18]*/
-+	val &= ~(1 << 14);
-+	val |= (1 << 18);
-+	writel(val, gprbase + IOMUXC_GPR1);
-+
-+	return 0;
-+err:
-+	pr_err("Setting up DFEC\n");
-+
-+	return -EIO;
-+}
-+
-+static int pico_hobbit_device_init(void)
-+{
-+	if (!of_machine_is_compatible("technexion,imx6ul-pico-hobbit"))
-+		return 0;
-+
-+	imx6ul_setup_fec();
-+
-+	imx6_bbu_internal_mmc_register_handler("emmc", "/dev/mmc0.barebox",
-+			BBU_HANDLER_FLAG_DEFAULT);
-+
-+	barebox_set_hostname("pico-hobbit");
-+
-+	defaultenv_append_directory(defaultenv_pico_hobbit);
-+
-+	return 0;
-+}
-+device_initcall(pico_hobbit_device_init);
-diff --git a/arch/arm/boards/technexion-pico-hobbit/defaultenv-pico-hobbit/init/automount b/arch/arm/boards/technexion-pico-hobbit/defaultenv-pico-hobbit/init/automount
-new file mode 100644
-index 0000000000..fdcfa36045
---- /dev/null
-+++ b/arch/arm/boards/technexion-pico-hobbit/defaultenv-pico-hobbit/init/automount
-@@ -0,0 +1,11 @@
-+#!/bin/sh
-+
-+# automount tftp server based on $eth1.serverip
-+
-+mkdir -p /mnt/tftp
-+automount /mnt/tftp 'ifup eth1 && mount -t tftp $eth1.serverip /mnt/tftp'
-+
-+# automount nfs server's nfsroot
-+
-+mkdir -p /mnt/nfs
-+automount /mnt/nfs 'ifup eth1 && mount -t nfs ${eth1.serverip}:/home/${global.user}/nfsroot/${global.hostname} /mnt/nfs'
-diff --git a/arch/arm/boards/technexion-pico-hobbit/defaultenv-pico-hobbit/network/eth1 b/arch/arm/boards/technexion-pico-hobbit/defaultenv-pico-hobbit/network/eth1
-new file mode 100644
-index 0000000000..dfe63971df
---- /dev/null
-+++ b/arch/arm/boards/technexion-pico-hobbit/defaultenv-pico-hobbit/network/eth1
-@@ -0,0 +1,18 @@
-+#!/bin/sh
-+
-+# ip setting (static/dhcp)
-+ip=dhcp
-+global.dhcp.vendor_id=barebox-${global.hostname}
-+
-+# static setup used if ip=static
-+ipaddr=
-+netmask=
-+gateway=
-+serverip=
-+
-+# MAC address if needed
-+#ethaddr=xx:xx:xx:xx:xx:xx
-+
-+# put code to discover eth1 (i.e. 'usb') to /env/network/eth1-discover
-+
-+exit 0
-diff --git a/arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-256.imxcfg b/arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-256.imxcfg
-new file mode 100644
-index 0000000000..12cda04e60
---- /dev/null
-+++ b/arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-256.imxcfg
-@@ -0,0 +1,64 @@
-+loadaddr 0x80000000
-+soc imx6
-+dcdofs 0x400
-+
-+wm 32 0x020c4068 0xffffffff
-+wm 32 0x020c406c 0xffffffff
-+wm 32 0x020c4070 0xffffffff
-+wm 32 0x020c4074 0xffffffff
-+wm 32 0x020c4078 0xffffffff
-+wm 32 0x020c407c 0xffffffff
-+wm 32 0x020c4080 0xffffffff
-+
-+wm 32 0x020E04B4 0x000C0000
-+wm 32 0x020E04AC 0x00000000
-+wm 32 0x020E027C 0x00000030
-+wm 32 0x020E0250 0x00000030
-+wm 32 0x020E024C 0x00000030
-+wm 32 0x020E0490 0x00000030
-+wm 32 0x020E0288 0x00000030
-+wm 32 0x020E0270 0x00000000
-+wm 32 0x020E0260 0x00000030
-+wm 32 0x020E0264 0x00000030
-+wm 32 0x020E04A0 0x00000030
-+wm 32 0x020E0494 0x00020000
-+wm 32 0x020E0280 0x00000030
-+wm 32 0x020E0284 0x00000030
-+wm 32 0x020E04B0 0x00020000
-+wm 32 0x020E0498 0x00000030
-+wm 32 0x020E04A4 0x00000030
-+wm 32 0x020E0244 0x00000030
-+wm 32 0x020E0248 0x00000030
-+wm 32 0x021B001C 0x00008000
-+wm 32 0x021B0800 0xA1390003
-+wm 32 0x021B080C 0x00000000
-+wm 32 0x021B083C 0x01380134
-+wm 32 0x021B0848 0x40404244
-+wm 32 0x021B0850 0x40405050
-+wm 32 0x021B081C 0x33333333
-+wm 32 0x021B0820 0x33333333
-+wm 32 0x021B082C 0xf3333333
-+wm 32 0x021B0830 0xf3333333
-+wm 32 0x021B08C0 0x00921012
-+wm 32 0x021B08b8 0x00000800
-+wm 32 0x021B0004 0x0002002D
-+wm 32 0x021B0008 0x00333030
-+wm 32 0x021B000C 0x676B52F3
-+wm 32 0x021B0010 0xB66D8B63
-+wm 32 0x021B0014 0x01FF00DB
-+wm 32 0x021B0018 0x00201740
-+wm 32 0x021B001C 0x00008000
-+wm 32 0x021B002C 0x000026D2
-+wm 32 0x021B0030 0x006B1023
-+wm 32 0x021B0040 0x00000047
-+wm 32 0x021B0000 0x83180000
-+wm 32 0x021B001C 0x02008032
-+wm 32 0x021B001C 0x00008033
-+wm 32 0x021B001C 0x00048031
-+wm 32 0x021B001C 0x15208030
-+wm 32 0x021B001C 0x04008040
-+wm 32 0x021B0020 0x00000800
-+wm 32 0x021B0818 0x00000227
-+wm 32 0x021B0004 0x0002552D
-+wm 32 0x021B0404 0x00011006
-+wm 32 0x021B001C 0x00000000
-diff --git a/arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-512.imxcfg b/arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-512.imxcfg
-new file mode 100644
-index 0000000000..0a1915b982
---- /dev/null
-+++ b/arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-512.imxcfg
-@@ -0,0 +1,65 @@
-+loadaddr 0x80000000
-+soc imx6
-+dcdofs 0x400
-+
-+wm 32 0x020c4068 0xffffffff
-+wm 32 0x020c406c 0xffffffff
-+wm 32 0x020c4070 0xffffffff
-+wm 32 0x020c4074 0xffffffff
-+wm 32 0x020c4078 0xffffffff
-+wm 32 0x020c407c 0xffffffff
-+wm 32 0x020c4080 0xffffffff
-+
-+wm 32 0x020E04B4 0x000C0000
-+wm 32 0x020E04AC 0x00000000
-+wm 32 0x020E027C 0x00000030
-+wm 32 0x020E0250 0x00000030
-+wm 32 0x020E024C 0x00000030
-+wm 32 0x020E0490 0x00000030
-+wm 32 0x020E0288 0x00000030
-+wm 32 0x020E0270 0x00000000
-+wm 32 0x020E0260 0x00000030
-+wm 32 0x020E0264 0x00000030
-+wm 32 0x020E04A0 0x00000030
-+wm 32 0x020E0494 0x00020000
-+wm 32 0x020E0280 0x00000030
-+wm 32 0x020E0284 0x00000030
-+wm 32 0x020E04B0 0x00020000
-+wm 32 0x020E0498 0x00000030
-+wm 32 0x020E04A4 0x00000030
-+wm 32 0x020E0244 0x00000030
-+wm 32 0x020E0248 0x00000030
-+wm 32 0x021B001C 0x00008000
-+wm 32 0x021B0800 0xA1390003
-+wm 32 0x021B080C 0x00000000
-+wm 32 0x021B083C 0x41570155
-+wm 32 0x021B0848 0x4040474A
-+wm 32 0x021B0850 0x40405550
-+wm 32 0x021B081C 0x33333333
-+wm 32 0x021B0820 0x33333333
-+wm 32 0x021B082C 0xf3333333
-+wm 32 0x021B0830 0xf3333333
-+wm 32 0x021B08C0 0x00921012
-+wm 32 0x021B08b8 0x00000800
-+wm 32 0x021B0004 0x0002002D
-+wm 32 0x021B0008 0x1b333030
-+wm 32 0x021B000C 0x676B52F3
-+wm 32 0x021B0010 0xB66D0B63
-+wm 32 0x021B0014 0x01FF00DB
-+wm 32 0x021B0018 0x00201740
-+wm 32 0x021B001C 0x00008000
-+wm 32 0x021B002C 0x000026D2
-+wm 32 0x021B0030 0x006B1023
-+wm 32 0x021B0040 0x0000004f
-+wm 32 0x021B0000 0x84180000
-+wm 32 0x021B0890 0x23400a38
-+wm 32 0x021B001C 0x02008032
-+wm 32 0x021B001C 0x00008033
-+wm 32 0x021B001C 0x00048031
-+wm 32 0x021B001C 0x15208030
-+wm 32 0x021B001C 0x04008040
-+wm 32 0x021B0020 0x00000800
-+wm 32 0x021B0818 0x00000227
-+wm 32 0x021B0004 0x0002552D
-+wm 32 0x021B0404 0x00011006
-+wm 32 0x021B001C 0x00000000
-diff --git a/arch/arm/boards/technexion-pico-hobbit/lowlevel.c b/arch/arm/boards/technexion-pico-hobbit/lowlevel.c
-new file mode 100644
-index 0000000000..aad55127bf
---- /dev/null
-+++ b/arch/arm/boards/technexion-pico-hobbit/lowlevel.c
-@@ -0,0 +1,78 @@
-+#include <common.h>
-+#include <linux/sizes.h>
-+#include <mach/generic.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/imx6-regs.h>
 +#include <io.h>
-+#include <debug_ll.h>
-+#include <mach/esdctl.h>
-+#include <asm/cache.h>
-+#include <asm/sections.h>
-+#include <image-metadata.h>
++#include <dma.h>
++#include <malloc.h>
++#include <mci.h>
++#include <linux/err.h>
 +
-+#define MX6_UART6_BASE_ADDR             (MX6_AIPS2_OFF_BASE_ADDR + 0x7C000)
++#include "sdhci.h"
 +
-+static inline void setup_uart(void)
++struct dove_sdhci {
++	struct mci_host mci;
++	void __iomem *base;
++};
++
++#define priv_from_mci_host(h)	\
++	container_of(h, struct dove_sdhci, mci);
++
++static inline void dove_sdhci_writel(struct dove_sdhci *p, int reg, u32 val)
 +{
-+	void __iomem *iomuxbase = IOMEM(MX6_IOMUXC_BASE_ADDR);
-+	void __iomem *uart = IOMEM(MX6_UART6_BASE_ADDR);
-+
-+	imx6_ungate_all_peripherals();
-+
-+	writel(0x8, iomuxbase + 0x1d4);
-+	writel(0x1b0b1, iomuxbase + 0x0460);
-+	writel(0x8, iomuxbase + 0x1d8);
-+	writel(0x1b0b1, iomuxbase + 0x0460);
-+
-+	imx6_uart_setup(uart);
-+	pbl_set_putc(imx_uart_putc, uart);
-+
-+	putc_ll('>');
++	writel(val, p->base + reg);
 +}
 +
-+static void __noreturn start_imx6_pico_hobbit_common(uint32_t size,
-+						bool do_early_uart_config,
-+						void *fdt_blob_fixed_offset)
++static inline void dove_sdhci_writew(struct dove_sdhci *p, int reg, u16 val)
 +{
-+	void *fdt;
-+
-+	arm_cpu_lowlevel_init();
-+
-+	arm_setup_stack(0x00910000 - 8);
-+
-+	arm_early_mmu_cache_invalidate();
-+
-+	relocate_to_current_adr();
-+	setup_c();
-+	barrier();
-+
-+	if (do_early_uart_config && IS_ENABLED(CONFIG_DEBUG_LL))
-+		setup_uart();
-+
-+	/* disable all watchdog powerdown counters */
-+	writew(0x0, 0x020bc008);
-+	writew(0x0, 0x020c0008);
-+	writew(0x0, 0x021e4008);
-+
-+	fdt = fdt_blob_fixed_offset - get_runtime_offset();
-+
-+	imx6ul_barebox_entry(fdt);
++	writew(val, p->base + reg);
 +}
 +
-+BAREBOX_IMD_TAG_STRING(pico_hobbit_mx6_memsize_SZ_256M, IMD_TYPE_PARAMETER, "memsize=256", 0);
-+BAREBOX_IMD_TAG_STRING(pico_hobbit_mx6_memsize_SZ_512M, IMD_TYPE_PARAMETER, "memsize=512", 0);
++static inline void dove_sdhci_writeb(struct dove_sdhci *p, int reg, u8 val)
++{
++	writeb(val, p->base + reg);
++}
 +
-+#define EDM1_ENTRY(name, fdt_name, memory_size, do_early_uart_config)	\
-+	ENTRY_FUNCTION(name, r0, r1, r2)				\
-+	{								\
-+		extern char __dtb_##fdt_name##_start[];			\
-+									\
-+		IMD_USED(pico_hobbit_mx6_memsize_##memory_size);		\
-+									\
-+		start_imx6_pico_hobbit_common(memory_size, do_early_uart_config, \
-+					 __dtb_##fdt_name##_start);	\
++static inline u32 dove_sdhci_readl(struct dove_sdhci *p, int reg)
++{
++	return readl(p->base + reg);
++}
++
++static inline u16 dove_sdhci_readw(struct dove_sdhci *p, int reg)
++{
++	return readw(p->base + reg);
++}
++
++static inline u8 dove_sdhci_readb(struct dove_sdhci *p, int reg)
++{
++	return readb(p->base + reg);
++}
++
++static int dove_sdhci_wait_for_done(struct dove_sdhci *host, u16 mask)
++{
++	u16 status;
++	u64 start;
++
++	start = get_time_ns();
++	while (1) {
++		status = dove_sdhci_readw(host, SDHCI_INT_NORMAL_STATUS);
++		if (status & SDHCI_INT_ERROR)
++			return -EPERM;
++		/* this special quirk is necessary, as the dma
++		 * engine stops on dma boundary and will only
++		 * restart after acknowledging it this way.
++		 */
++		if (status & SDHCI_INT_DMA) {
++			u32 addr = dove_sdhci_readl(host, SDHCI_DMA_ADDRESS);
++			dove_sdhci_writel(host, SDHCI_DMA_ADDRESS, addr);
++		}
++		if (status & mask)
++			break;
++		if (is_timeout(start, 1000 * MSECOND)) {
++			dev_err(host->mci.hw_dev, "SDHCI timeout while waiting for done\n");
++			return -ETIMEDOUT;
++		}
++	}
++	return 0;
++}
++
++static int dove_sdhci_mci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
++				struct mci_data *data)
++{
++	u16 val;
++	u64 start;
++	int ret;
++	unsigned int num_bytes = data->blocks * data->blocksize;
++	struct dove_sdhci *host = priv_from_mci_host(mci);
++
++	dove_sdhci_writel(host, SDHCI_INT_STATUS, ~0);
++
++	/* Do not wait for CMD_INHIBIT_DAT on stop commands */
++	if (cmd->cmdidx == MMC_CMD_STOP_TRANSMISSION)
++		val = SDHCI_CMD_INHIBIT_CMD;
++	else
++		val = SDHCI_CMD_INHIBIT_CMD | SDHCI_CMD_INHIBIT_DATA;
++
++	/* Wait for bus idle */
++	start = get_time_ns();
++	while (1) {
++		if (!(dove_sdhci_readw(host, SDHCI_PRESENT_STATE) & val))
++			break;
++		if (is_timeout(start, 10 * MSECOND)) {
++			dev_err(host->mci.hw_dev, "SDHCI timeout while waiting for idle\n");
++			return -ETIMEDOUT;
++		}
 +	}
 +
-+EDM1_ENTRY(start_imx6ul_pico_hobbit_256mb, imx6ul_pico_hobbit, SZ_256M, true);
-+EDM1_ENTRY(start_imx6ul_pico_hobbit_512mb, imx6ul_pico_hobbit, SZ_512M, true);
-diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
-index df67cd0a92..f7d631d2cc 100644
---- a/arch/arm/configs/imx_v7_defconfig
-+++ b/arch/arm/configs/imx_v7_defconfig
-@@ -22,6 +22,7 @@ CONFIG_MACH_SABRESD=y
- CONFIG_MACH_FREESCALE_IMX6SX_SABRESDB=y
- CONFIG_MACH_NITROGEN6=y
- CONFIG_MACH_SOLIDRUN_MICROSOM=y
-+CONFIG_MACH_TECHNEXION_PICO_HOBBIT=y
- CONFIG_MACH_TECHNEXION_WANDBOARD=y
- CONFIG_MACH_EMBEST_RIOTBOARD=y
- CONFIG_MACH_UDOO=y
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 0c9e0e8dad..2b76a97140 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -70,6 +70,7 @@ pbl-dtb-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += socfpga_cyclone5_sockit.dtb.o
- pbl-dtb-$(CONFIG_MACH_SOLIDRUN_CUBOX) += dove-cubox-bb.dtb.o
- pbl-dtb-$(CONFIG_MACH_SOLIDRUN_MICROSOM) += imx6dl-hummingboard.dtb.o imx6q-hummingboard.dtb.o imx6q-h100.dtb.o
- pbl-dtb-$(CONFIG_MACH_TECHNEXION_WANDBOARD) += imx6q-wandboard.dtb.o imx6dl-wandboard.dtb.o
-+pbl-dtb-$(CONFIG_MACH_TECHNEXION_PICO_HOBBIT) += imx6ul-pico-hobbit.dtb.o
- pbl-dtb-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += tegra20-colibri-iris.dtb.o
- pbl-dtb-$(CONFIG_MACH_TOSHIBA_AC100) += tegra20-paz00.dtb.o
- pbl-dtb-$(CONFIG_MACH_TQMA53) += imx53-mba53.dtb.o
-diff --git a/arch/arm/dts/imx6ul-pico-hobbit.dts b/arch/arm/dts/imx6ul-pico-hobbit.dts
-new file mode 100644
-index 0000000000..dd6f9da0a5
---- /dev/null
-+++ b/arch/arm/dts/imx6ul-pico-hobbit.dts
-@@ -0,0 +1,44 @@
-+#include <arm/imx6ul-pico-hobbit.dts>
++	/* setup transfer data */
++	if (data) {
++		if (data->flags & MMC_DATA_READ)
++			dove_sdhci_writel(host, SDHCI_DMA_ADDRESS, (u32)data->dest);
++		else
++			dove_sdhci_writel(host, SDHCI_DMA_ADDRESS, (u32)data->src);
++		dove_sdhci_writew(host, SDHCI_BLOCK_SIZE, SDHCI_DMA_BOUNDARY_512K |
++				SDHCI_TRANSFER_BLOCK_SIZE(data->blocksize));
++		dove_sdhci_writew(host, SDHCI_BLOCK_COUNT, data->blocks);
++		dove_sdhci_writeb(host, SDHCI_TIMEOUT_CONTROL, 0xe);
 +
-+/ {
-+	chosen {
-+		linux,stdout-path = &uart1;
 +
-+		environment@0 {
-+			compatible = "barebox,environment";
-+			device-path = &environment_usdhc1;
-+		};
-+	};
++		if (data->flags & MMC_DATA_WRITE)
++			dma_sync_single_for_device((unsigned long)data->src,
++						    num_bytes, DMA_TO_DEVICE);
++		else
++			dma_sync_single_for_device((unsigned long)data->dest,
++						    num_bytes, DMA_FROM_DEVICE);
++	}
 +
-+	memory {
-+		/delete-property/ device_type;
-+	};
++	/* setup transfer mode */
++	val = 0;
++	if (data) {
++		val |= SDHCI_DMA_EN | SDHCI_BLOCK_COUNT_EN;
++		if (data->blocks > 1)
++			val |= SDHCI_MULTIPLE_BLOCKS;
++		if (data->flags & MMC_DATA_READ)
++			val |= SDHCI_DATA_TO_HOST;
++	}
++	dove_sdhci_writew(host, SDHCI_TRANSFER_MODE, val);
++
++	dove_sdhci_writel(host, SDHCI_ARGUMENT, cmd->cmdarg);
++
++	if (!(cmd->resp_type & MMC_RSP_PRESENT))
++		val = SDHCI_RESP_NONE;
++	else if (cmd->resp_type & MMC_RSP_136)
++		val = SDHCI_RESP_TYPE_136;
++	else if (cmd->resp_type & MMC_RSP_BUSY)
++		val = SDHCI_RESP_TYPE_48_BUSY;
++	else
++		val = SDHCI_RESP_TYPE_48;
++
++	if (cmd->resp_type & MMC_RSP_CRC)
++		val |= SDHCI_CMD_CRC_CHECK_EN;
++	if (cmd->resp_type & MMC_RSP_OPCODE)
++		val |= SDHCI_CMD_INDEX_CHECK_EN;
++	if (data)
++		val |= SDHCI_DATA_PRESENT;
++	val |= SDHCI_CMD_INDEX(cmd->cmdidx);
++
++	dove_sdhci_writew(host, SDHCI_COMMAND, val);
++
++	ret = dove_sdhci_wait_for_done(host, SDHCI_INT_CMD_COMPLETE);
++	if (ret) {
++		dev_err(host->mci.hw_dev, "error on command %d\n", cmd->cmdidx);
++		dev_err(host->mci.hw_dev, "state = %04x %04x, interrupt = %04x %04x\n",
++			dove_sdhci_readw(host, SDHCI_PRESENT_STATE),
++			dove_sdhci_readw(host, SDHCI_PRESENT_STATE1),
++			dove_sdhci_readw(host, SDHCI_INT_NORMAL_STATUS),
++			dove_sdhci_readw(host, SDHCI_INT_ERROR_STATUS));
++		goto cmd_error;
++	}
++
++	/* CRC is stripped so we need to do some shifting. */
++	if (cmd->resp_type & MMC_RSP_136) {
++		int i;
++		for (i = 0; i < 4; i++) {
++			cmd->response[i] = dove_sdhci_readl(host,
++					SDHCI_RESPONSE_0 + 4*(3-i)) << 8;
++			if (i != 3)
++				cmd->response[i] |= dove_sdhci_readb(host,
++					SDHCI_RESPONSE_0 + 4*(3-i) - 1);
++		}
++	} else
++		cmd->response[0] = dove_sdhci_readl(host, SDHCI_RESPONSE_0);
++
++	if (data->flags & MMC_DATA_WRITE)
++		dma_sync_single_for_cpu((unsigned long)data->src,
++					 num_bytes, DMA_TO_DEVICE);
++	else
++		dma_sync_single_for_cpu((unsigned long)data->dest,
++					 num_bytes, DMA_FROM_DEVICE);
++
++	if (data) {
++		ret = dove_sdhci_wait_for_done(host, SDHCI_INT_XFER_COMPLETE);
++		if (ret) {
++			dev_err(host->mci.hw_dev, "error while transfering data for command %d\n",
++				cmd->cmdidx);
++			dev_err(host->mci.hw_dev, "state = %04x %04x, interrupt = %04x %04x\n",
++				dove_sdhci_readw(host, SDHCI_PRESENT_STATE),
++				dove_sdhci_readw(host, SDHCI_PRESENT_STATE1),
++				dove_sdhci_readw(host, SDHCI_INT_NORMAL_STATUS),
++				dove_sdhci_readw(host, SDHCI_INT_ERROR_STATUS));
++			goto cmd_error;
++		}
++	}
++
++cmd_error:
++	dove_sdhci_writel(host, SDHCI_INT_STATUS, ~0);
++	return ret;
++}
++
++static u16 dove_sdhci_get_clock_divider(struct dove_sdhci *host, u32 reqclk)
++{
++	u16 div;
++
++	for (div = 1; div < SDHCI_SPEC_200_MAX_CLK_DIVIDER; div *= 2)
++		if ((host->mci.f_max / div) <= reqclk)
++			break;
++	div /= 2;
++
++	return div;
++}
++
++static void dove_sdhci_mci_set_ios(struct mci_host *mci, struct mci_ios *ios)
++{
++	u16 val;
++	u64 start;
++	struct dove_sdhci *host = priv_from_mci_host(mci);
++
++	debug("%s: clock = %u, bus-width = %d, timing = %02x\n", __func__, ios->clock, ios->bus_width, ios->timing);
++
++	/* disable on zero clock */
++	if (!ios->clock)
++		return;
++
++	/* enable bus power */
++	val = SDHCI_BUS_VOLTAGE_330;
++	dove_sdhci_writeb(host, SDHCI_POWER_CONTROL, val | SDHCI_BUS_POWER_EN);
++	udelay(400);
++
++	/* set bus width */
++	val = dove_sdhci_readb(host, SDHCI_HOST_CONTROL) &
++		~(SDHCI_DATA_WIDTH_4BIT | SDHCI_DATA_WIDTH_8BIT);
++	switch (ios->bus_width) {
++	case MMC_BUS_WIDTH_8:
++		val |= SDHCI_DATA_WIDTH_8BIT;
++		break;
++	case MMC_BUS_WIDTH_4:
++		val |= SDHCI_DATA_WIDTH_4BIT;
++		break;
++	}
++
++	if (ios->clock > 26000000)
++		val |= SDHCI_HIGHSPEED_EN;
++	else
++		val &= ~SDHCI_HIGHSPEED_EN;
++
++	dove_sdhci_writeb(host, SDHCI_HOST_CONTROL, val);
++
++	/* set bus clock */
++	dove_sdhci_writew(host, SDHCI_CLOCK_CONTROL, 0);
++	val = dove_sdhci_get_clock_divider(host, ios->clock);
++	val = SDHCI_INTCLOCK_EN | SDHCI_FREQ_SEL(val);
++	dove_sdhci_writew(host, SDHCI_CLOCK_CONTROL, val);
++
++	/* wait for internal clock stable */
++	start = get_time_ns();
++	while (!(dove_sdhci_readw(host, SDHCI_CLOCK_CONTROL) &
++			SDHCI_INTCLOCK_STABLE)) {
++		if (is_timeout(start, 20 * MSECOND)) {
++			dev_err(host->mci.hw_dev, "SDHCI clock stable timeout\n");
++			return;
++		}
++	}
++
++	/* enable bus clock */
++	dove_sdhci_writew(host, SDHCI_CLOCK_CONTROL, val | SDHCI_SDCLOCK_EN);
++}
++
++static int dove_sdhci_mci_init(struct mci_host *mci, struct device_d *dev)
++{
++	u64 start;
++	struct dove_sdhci *host = priv_from_mci_host(mci);
++
++	/* reset sdhci controller */
++	dove_sdhci_writeb(host, SDHCI_SOFTWARE_RESET, SDHCI_RESET_ALL);
++
++	/* wait for reset completion */
++	start = get_time_ns();
++	while (1) {
++		if ((dove_sdhci_readb(host, SDHCI_SOFTWARE_RESET) &
++				SDHCI_RESET_ALL) == 0)
++			break;
++		if (is_timeout(start, 100 * MSECOND)) {
++			dev_err(dev, "SDHCI reset timeout\n");
++			return -ETIMEDOUT;
++		}
++	}
++
++	dove_sdhci_writel(host, SDHCI_INT_STATUS, ~0);
++	dove_sdhci_writel(host, SDHCI_INT_ENABLE, ~0);
++	dove_sdhci_writel(host, SDHCI_SIGNAL_ENABLE, ~0);
++
++	return 0;
++}
++
++static void dove_sdhci_set_mci_caps(struct dove_sdhci *host)
++{
++	u16 caps[2];
++
++	caps[0] = dove_sdhci_readw(host, SDHCI_CAPABILITIES);
++	caps[1] = dove_sdhci_readw(host, SDHCI_CAPABILITIES_1);
++
++	if (caps[1] & SDHCI_HOSTCAP_VOLTAGE_180)
++		host->mci.voltages |= MMC_VDD_165_195;
++	if (caps[1] & SDHCI_HOSTCAP_VOLTAGE_300)
++		host->mci.voltages |= MMC_VDD_29_30 | MMC_VDD_30_31;
++	if (caps[1] & SDHCI_HOSTCAP_VOLTAGE_330)
++		host->mci.voltages |= MMC_VDD_32_33 | MMC_VDD_33_34;
++
++	if (caps[1] & SDHCI_HOSTCAP_HIGHSPEED)
++		host->mci.host_caps |= (MMC_CAP_MMC_HIGHSPEED_52MHZ |
++					MMC_CAP_MMC_HIGHSPEED |
++					MMC_CAP_SD_HIGHSPEED);
++
++	/* parse board supported bus width capabilities */
++	mci_of_parse(&host->mci);
++
++	/* limit bus widths to controller capabilities */
++	if ((caps[1] & SDHCI_HOSTCAP_8BIT) == 0)
++		host->mci.host_caps &= ~MMC_CAP_8_BIT_DATA;
++}
++
++static int dove_sdhci_detect(struct device_d *dev)
++{
++	struct dove_sdhci *host = dev->priv;
++	return mci_detect_card(&host->mci);
++}
++
++static int dove_sdhci_probe(struct device_d *dev)
++{
++	struct dove_sdhci *host;
++	int ret;
++
++	host = xzalloc(sizeof(*host));
++	host->base = dev_request_mem_region(dev, 0);
++	host->mci.max_req_size = 0x8000;
++	host->mci.hw_dev = dev;
++	host->mci.send_cmd = dove_sdhci_mci_send_cmd;
++	host->mci.set_ios = dove_sdhci_mci_set_ios;
++	host->mci.init = dove_sdhci_mci_init;
++	host->mci.f_max = 50000000;
++	host->mci.f_min = host->mci.f_max / 256;
++	dev->priv = host;
++	dev->detect = dove_sdhci_detect;
++
++	dove_sdhci_set_mci_caps(host);
++
++	ret = mci_register(&host->mci);
++	if (ret)
++		free(host);
++	return ret;
++}
++
++static struct of_device_id dove_sdhci_dt_ids[] = {
++	{ .compatible = "marvell,dove-sdhci", },
++	{ }
 +};
 +
-+&usdhc1 {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	partition@0 {
-+		label = "barebox";
-+		reg = <0x0 0xc0000>;
-+	};
-+
-+	environment_usdhc1: partition@c0000 {
-+		label = "barebox-environment";
-+		reg = <0xc0000 0x40000>;
-+	};
++static struct driver_d dove_sdhci_driver = {
++	.name = "dove-sdhci",
++	.probe = dove_sdhci_probe,
++	.of_compatible = DRV_OF_COMPAT(dove_sdhci_dt_ids),
 +};
-+
-+&fec2 {
-+	/*
-+	  There are two possible ways to start the phy. Let the hardware
-+	  reset it properly or reset it a second time in software.
-+	  Unfortunetly the phy needs some microseconds after reset to
-+	  settle down. As there is no property like
-+	  phy-post-reset-delay, we better leave the reset to the
-+	  hardware.
-+	*/
-+	/delete-property/ phy-reset-gpios;
-+	/delete-property/ phy-reset-duration;
-+};
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index e1459d2a77..a1cf7a6ab9 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -329,6 +329,12 @@ config MACH_SOLIDRUN_MICROSOM
- 	bool "SolidRun MicroSOM based devices"
- 	select ARCH_IMX6
++device_platform_driver(dove_sdhci_driver);
+diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
+index 82a692e732..90595e6433 100644
+--- a/drivers/mci/sdhci.h
++++ b/drivers/mci/sdhci.h
+@@ -3,21 +3,80 @@
  
-+config MACH_TECHNEXION_PICO_HOBBIT
-+	bool "Technexion Pico Hobbit"
-+	select ARCH_IMX6
-+	select ARCH_IMX6UL
-+	select ARM_USE_COMPRESSED_DTB
+ #define SDHCI_DMA_ADDRESS					0x00
+ #define SDHCI_BLOCK_SIZE__BLOCK_COUNT				0x04
++#define SDHCI_BLOCK_SIZE					0x04
++#define  SDHCI_DMA_BOUNDARY_512K		SDHCI_DMA_BOUNDARY(7)
++#define  SDHCI_DMA_BOUNDARY_256K		SDHCI_DMA_BOUNDARY(6)
++#define  SDHCI_DMA_BOUNDARY_128K		SDHCI_DMA_BOUNDARY(5)
++#define  SDHCI_DMA_BOUNDARY_64K			SDHCI_DMA_BOUNDARY(4)
++#define  SDHCI_DMA_BOUNDARY_32K			SDHCI_DMA_BOUNDARY(3)
++#define  SDHCI_DMA_BOUNDARY_16K			SDHCI_DMA_BOUNDARY(2)
++#define  SDHCI_DMA_BOUNDARY_8K			SDHCI_DMA_BOUNDARY(1)
++#define  SDHCI_DMA_BOUNDARY_4K			SDHCI_DMA_BOUNDARY(0)
++#define  SDHCI_DMA_BOUNDARY(x)			(((x) & 0x7) << 12)
++#define  SDHCI_TRANSFER_BLOCK_SIZE(x)		((x) & 0xfff)
++#define SDHCI_BLOCK_COUNT					0x06
+ #define SDHCI_ARGUMENT						0x08
+ #define SDHCI_TRANSFER_MODE__COMMAND				0x0c
++#define SDHCI_TRANSFER_MODE					0x0c
++#define  SDHCI_MULTIPLE_BLOCKS			BIT(5)
++#define  SDHCI_DATA_TO_HOST			BIT(4)
++#define  SDHCI_BLOCK_COUNT_EN			BIT(1)
++#define  SDHCI_DMA_EN				BIT(0)
++#define SDHCI_COMMAND						0x0e
++#define  SDHCI_CMD_INDEX(c)			(((c) & 0x3f) << 8)
++#define  SDHCI_DATA_PRESENT			BIT(5)
++#define  SDHCI_CMD_INDEX_CHECK_EN		BIT(4)
++#define  SDHCI_CMD_CRC_CHECK_EN			BIT(3)
++#define  SDHCI_RESP_TYPE_48_BUSY		3
++#define  SDHCI_RESP_TYPE_48			2
++#define  SDHCI_RESP_TYPE_136			1
++#define  SDHCI_RESP_NONE			0
+ #define SDHCI_RESPONSE_0					0x10
+ #define SDHCI_RESPONSE_1					0x14
+ #define SDHCI_RESPONSE_2					0x18
+ #define SDHCI_RESPONSE_3					0x1c
+ #define SDHCI_BUFFER						0x20
+ #define SDHCI_PRESENT_STATE					0x24
++#define  SDHCI_CMD_INHIBIT_DATA			BIT(1)
++#define  SDHCI_CMD_INHIBIT_CMD			BIT(0)
++#define SDHCI_PRESENT_STATE1					0x26
+ #define SDHCI_HOST_CONTROL__POWER_CONTROL__BLOCK_GAP_CONTROL	0x28
++#define SDHCI_HOST_CONTROL					0x28
++#define  SDHCI_DATA_WIDTH_8BIT			BIT(5)
++#define  SDHCI_HIGHSPEED_EN			BIT(2)
++#define  SDHCI_DATA_WIDTH_4BIT			BIT(1)
++#define SDHCI_POWER_CONTROL					0x29
++#define  SDHCI_BUS_VOLTAGE_330			SDHCI_BUS_VOLTAGE(7)
++#define  SDHCI_BUS_VOLTAGE(v)			((v) << 1)
++#define  SDHCI_BUS_POWER_EN			BIT(0)
+ #define SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET	0x2c
++#define SDHCI_CLOCK_CONTROL					0x2c
++#define  SDHCI_FREQ_SEL(x)			(((x) & 0xff) << 8)
++#define  SDHCI_SDCLOCK_EN			BIT(2)
++#define  SDHCI_INTCLOCK_STABLE			BIT(1)
++#define  SDHCI_INTCLOCK_EN			BIT(0)
++#define SDHCI_TIMEOUT_CONTROL					0x2e
++#define SDHCI_SOFTWARE_RESET					0x2f
++#define  SDHCI_RESET_ALL			BIT(0)
+ #define SDHCI_INT_STATUS					0x30
++#define SDHCI_INT_NORMAL_STATUS					0x30
++#define  SDHCI_INT_ERROR			BIT(15)
++#define  SDHCI_INT_DMA				BIT(3)
++#define  SDHCI_INT_XFER_COMPLETE		BIT(1)
++#define  SDHCI_INT_CMD_COMPLETE			BIT(0)
++#define SDHCI_INT_ERROR_STATUS					0x32
+ #define SDHCI_INT_ENABLE					0x34
+ #define SDHCI_SIGNAL_ENABLE					0x38
+ #define SDHCI_ACMD12_ERR__HOST_CONTROL2				0x3C
+ #define SDHCI_CAPABILITIES					0x40
++#define SDHCI_CAPABILITIES_1					0x42
++#define  SDHCI_HOSTCAP_VOLTAGE_180		BIT(10)
++#define  SDHCI_HOSTCAP_VOLTAGE_300		BIT(9)
++#define  SDHCI_HOSTCAP_VOLTAGE_330		BIT(8)
++#define  SDHCI_HOSTCAP_HIGHSPEED		BIT(5)
++#define  SDHCI_HOSTCAP_8BIT			BIT(2)
 +
- config MACH_TECHNEXION_WANDBOARD
- 	bool "Technexion Wandboard"
- 	select ARCH_IMX6
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index 2563779484..4aedef60d6 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -279,6 +279,16 @@ CFG_start_h100_microsom_i2ex.pblx.imximg = $(board)/solidrun-microsom/flash-head
- FILE_barebox-auvidea-h100-microsom-i2eX.img = start_h100_microsom_i2ex.pblx.imximg
- image-$(CONFIG_MACH_SOLIDRUN_MICROSOM) += barebox-auvidea-h100-microsom-i2eX.img
++#define SDHCI_SPEC_200_MAX_CLK_DIVIDER	256
+ #define SDHCI_MMC_BOOT						0xC4
  
-+pblx-$(CONFIG_MACH_TECHNEXION_PICO_HOBBIT) += start_imx6ul_pico_hobbit_256mb
-+CFG_start_imx6ul_pico_hobbit_256mb.pblx.imximg = $(board)/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-256.imxcfg
-+FILE_barebox-imx6ul-pico-hobbit-256mb.img = start_imx6ul_pico_hobbit_256mb.pblx.imximg
-+image-$(CONFIG_MACH_TECHNEXION_PICO_HOBBIT) += barebox-imx6ul-pico-hobbit-256mb.img
-+
-+pblx-$(CONFIG_MACH_TECHNEXION_PICO_HOBBIT) += start_imx6ul_pico_hobbit_512mb
-+CFG_start_imx6ul_pico_hobbit_512mb.pblx.imximg = $(board)/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-512.imxcfg
-+FILE_barebox-imx6ul-pico-hobbit-512mb.img = start_imx6ul_pico_hobbit_512mb.pblx.imximg
-+image-$(CONFIG_MACH_TECHNEXION_PICO_HOBBIT) += barebox-imx6ul-pico-hobbit-512mb.img
-+
- pblx-$(CONFIG_MACH_NITROGEN6) += start_imx6q_nitrogen6x_1g
- CFG_start_imx6q_nitrogen6x_1g.pblx.imximg = $(board)/boundarydevices-nitrogen6/flash-header-nitrogen6q-1g.imxcfg
- FILE_barebox-boundarydevices-imx6q-nitrogen6x-1g.img = start_imx6q_nitrogen6x_1g.pblx.imximg
+ #define COMMAND_CMD(x)		((x & 0x3f) << 24)
 -- 
 2.11.0
 
