@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout02.posteo.de ([185.67.36.66])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cxVlL-0002tS-9Z
- for barebox@lists.infradead.org; Mon, 10 Apr 2017 09:37:33 +0000
-Received: from submission (posteo.de [89.146.220.130]) 
- by mout02.posteo.de (Postfix) with ESMTPS id 61A1B20B16
- for <barebox@lists.infradead.org>; Mon, 10 Apr 2017 11:37:05 +0200 (CEST)
-References: <1490524837-8826-1-git-send-email-menschel-d@posteo.de>
-From: Dennis Menschel <menschel-d@posteo.de>
-Message-ID: <a5ab6d55-509a-8d61-d1cb-1140703682f6@posteo.de>
-Date: Mon, 10 Apr 2017 11:37:01 +0200
+ id 1cxYh1-0007VS-67
+ for barebox@lists.infradead.org; Mon, 10 Apr 2017 12:45:18 +0000
+Date: Mon, 10 Apr 2017 14:44:48 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20170410124448.GA1965@ravnborg.org>
+References: <20170410071420.26884-1-s.hauer@pengutronix.de>
+ <20170410071420.26884-4-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <1490524837-8826-1-git-send-email-menschel-d@posteo.de>
+Content-Disposition: inline
+In-Reply-To: <20170410071420.26884-4-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,28 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts: mkmakefile: apply changes from Linux kernel
-To: barebox@lists.infradead.org
-Cc: Dennis Menschel <menschel-d@posteo.de>
+Subject: Re: [PATCH 03/10] lib: implement simple_strtoll
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Hello everyone,
+Hi Sascha.
 
-Am 26.03.2017 um 12:40 schrieb Dennis Menschel:
-> The version of mkmakefile which has been used in barebox until now dates
-> back to commit fd5f0cd6b0cef59ba18e5ac13be5b2775fa6ec28 from the Linux
-> kernel git history (Tue May 2 12:33:20 2006 +0200).
-> This patch effectively includes all changes from the aforementioned
-> commit to the latest stable version of the Linux kernel:
->
-> [...]
+Nitpick mode...
 
-about 2 weeks have passed since I submitted the aforementioned patch. As
-a haven't received any comments or feedback until now, I wanted to ask
-whether the patch has simply been overseen or maybe contains obvious
-errors of which I am not aware.
+> --- a/lib/strtox.c
+> +++ b/lib/strtox.c
+> @@ -65,3 +65,11 @@ unsigned long long simple_strtoull (const char *cp, char **endp, unsigned int ba
+>  	return result;
+>  }
+>  EXPORT_SYMBOL(simple_strtoull);
+> +
+> +long long simple_strtoll(const char *cp,char **endp,unsigned int base)
+> +{
+> +	if(*cp=='-')
 
-Best regards,
-Dennis Menschel
+It hurts my eyes to see the missing space between if  and "(".
+
+simple_strtol() suffer from the same issue, but in the rest of the file
+there is a space between if and "("
+
+And on top I did not see simple_strtoull() used in the patch series.
+But then I may have missed it as I just skimmed the patches.
+Everything else I saw looked good.
+
+	Sam
 
 _______________________________________________
 barebox mailing list
