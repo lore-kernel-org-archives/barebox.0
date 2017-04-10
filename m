@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cxdYI-00010K-EQ
- for barebox@lists.infradead.org; Mon, 10 Apr 2017 17:56:37 +0000
+ id 1cxhJ6-0003uH-VX
+ for barebox@lists.infradead.org; Mon, 10 Apr 2017 21:57:11 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
- (envelope-from <mgr@pengutronix.de>) id 1cxdXu-0005YC-AP
- for barebox@lists.infradead.org; Mon, 10 Apr 2017 19:56:10 +0200
+ (envelope-from <mgr@pengutronix.de>) id 1cxhIl-0007ZZ-2S
+ for barebox@lists.infradead.org; Mon, 10 Apr 2017 23:56:47 +0200
 Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.88)
- (envelope-from <mgr@pengutronix.de>) id 1cxdXu-00085v-2W
- for barebox@lists.infradead.org; Mon, 10 Apr 2017 19:56:10 +0200
+ (envelope-from <mgr@pengutronix.de>) id 1cxhIk-0003uJ-Ln
+ for barebox@lists.infradead.org; Mon, 10 Apr 2017 23:56:46 +0200
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Mon, 10 Apr 2017 19:55:59 +0200
-Message-Id: <20170410175559.29476-1-m.grzeschik@pengutronix.de>
+Date: Mon, 10 Apr 2017 23:56:39 +0200
+Message-Id: <20170410215639.13259-1-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,7 +27,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX6: add Technexion Pico Hobbit support
+Subject: [PATCH v2] ARM: i.MX6: add Technexion Pico Hobbit support
 To: barebox@lists.infradead.org
 
 This adds support support for the i.MX6UL Technexion Pico Hobbit.
@@ -36,6 +36,11 @@ for the 256MB and one for the 512MB variant.
 
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
+v1 -> v2: - left only the hardware do phy reset handling
+            software reset is unstable without some phy-post-reset-delay
+          - removed property device_type from memory to let barebox
+	    get the correct memory size
+
  arch/arm/boards/Makefile                           |   1 +
  arch/arm/boards/technexion-pico-hobbit/Makefile    |   7 ++
  arch/arm/boards/technexion-pico-hobbit/board.c     | 105 +++++++++++++++++++++
@@ -46,10 +51,10 @@ Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
  arch/arm/boards/technexion-pico-hobbit/lowlevel.c  |  78 +++++++++++++++
  arch/arm/configs/imx_v7_defconfig                  |   1 +
  arch/arm/dts/Makefile                              |   1 +
- arch/arm/dts/imx6ul-pico-hobbit.dts                |  27 ++++++
+ arch/arm/dts/imx6ul-pico-hobbit.dts                |  44 +++++++++
  arch/arm/mach-imx/Kconfig                          |   6 ++
  images/Makefile.imx                                |  10 ++
- 13 files changed, 394 insertions(+)
+ 13 files changed, 411 insertions(+)
  create mode 100644 arch/arm/boards/technexion-pico-hobbit/Makefile
  create mode 100644 arch/arm/boards/technexion-pico-hobbit/board.c
  create mode 100644 arch/arm/boards/technexion-pico-hobbit/defaultenv-pico-hobbit/init/automount
@@ -474,7 +479,7 @@ index df67cd0a92..f7d631d2cc 100644
  CONFIG_MACH_EMBEST_RIOTBOARD=y
  CONFIG_MACH_UDOO=y
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index e8ad43bfd8..ccf9cf73ce 100644
+index 0c9e0e8dad..2b76a97140 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
 @@ -70,6 +70,7 @@ pbl-dtb-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += socfpga_cyclone5_sockit.dtb.o
@@ -487,10 +492,10 @@ index e8ad43bfd8..ccf9cf73ce 100644
  pbl-dtb-$(CONFIG_MACH_TQMA53) += imx53-mba53.dtb.o
 diff --git a/arch/arm/dts/imx6ul-pico-hobbit.dts b/arch/arm/dts/imx6ul-pico-hobbit.dts
 new file mode 100644
-index 0000000000..81569359d3
+index 0000000000..dd6f9da0a5
 --- /dev/null
 +++ b/arch/arm/dts/imx6ul-pico-hobbit.dts
-@@ -0,0 +1,27 @@
+@@ -0,0 +1,44 @@
 +#include <arm/imx6ul-pico-hobbit.dts>
 +
 +/ {
@@ -501,6 +506,10 @@ index 0000000000..81569359d3
 +			compatible = "barebox,environment";
 +			device-path = &environment_usdhc1;
 +		};
++	};
++
++	memory {
++		/delete-property/ device_type;
 +	};
 +};
 +
@@ -517,6 +526,19 @@ index 0000000000..81569359d3
 +		label = "barebox-environment";
 +		reg = <0xc0000 0x40000>;
 +	};
++};
++
++&fec2 {
++	/*
++	  There are two possible ways to start the phy. Let the hardware
++	  reset it properly or reset it a second time in software.
++	  Unfortunetly the phy needs some microseconds after reset to
++	  settle down. As there is no property like
++	  phy-post-reset-delay, we better leave the reset to the
++	  hardware.
++	*/
++	/delete-property/ phy-reset-gpios;
++	/delete-property/ phy-reset-duration;
 +};
 diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
 index e1459d2a77..a1cf7a6ab9 100644
