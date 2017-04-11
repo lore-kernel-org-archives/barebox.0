@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cxpDZ-00048j-BI
- for barebox@lists.infradead.org; Tue, 11 Apr 2017 06:23:59 +0000
-Date: Tue, 11 Apr 2017 08:23:32 +0200
+ id 1cxpT4-0002WU-6g
+ for barebox@lists.infradead.org; Tue, 11 Apr 2017 06:40:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170411062332.oitlhkzkgsp4poqu@pengutronix.de>
-References: <1490524837-8826-1-git-send-email-menschel-d@posteo.de>
- <a5ab6d55-509a-8d61-d1cb-1140703682f6@posteo.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <a5ab6d55-509a-8d61-d1cb-1140703682f6@posteo.de>
+Date: Tue, 11 Apr 2017 08:39:33 +0200
+Message-Id: <20170411063934.20613-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +14,125 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts: mkmakefile: apply changes from Linux kernel
-To: Dennis Menschel <menschel-d@posteo.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] lib/strtox: whitespace cleanup
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Dennis,
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ lib/strtox.c | 53 +++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 31 insertions(+), 22 deletions(-)
 
-On Mon, Apr 10, 2017 at 11:37:01AM +0200, Dennis Menschel wrote:
-> Hello everyone,
-> 
-> Am 26.03.2017 um 12:40 schrieb Dennis Menschel:
-> > The version of mkmakefile which has been used in barebox until now dates
-> > back to commit fd5f0cd6b0cef59ba18e5ac13be5b2775fa6ec28 from the Linux
-> > kernel git history (Tue May 2 12:33:20 2006 +0200).
-> > This patch effectively includes all changes from the aforementioned
-> > commit to the latest stable version of the Linux kernel:
-> >
-> > [...]
-> 
-> about 2 weeks have passed since I submitted the aforementioned patch. As
-> a haven't received any comments or feedback until now, I wanted to ask
-> whether the patch has simply been overseen or maybe contains obvious
-> errors of which I am not aware.
-
-Sorry, I have really overseen this patch. If this patch was not ok, I
-would at least have provided feedback what's wrong with it. Anyway, the
-patch looks good, applied now.
-
-Sascha
-
-
+diff --git a/lib/strtox.c b/lib/strtox.c
+index cfe61240cc..45aa06bacc 100644
+--- a/lib/strtox.c
++++ b/lib/strtox.c
+@@ -1,67 +1,76 @@
+ #include <common.h>
+ #include <linux/ctype.h>
+ 
+-unsigned long simple_strtoul(const char *cp,char **endp,unsigned int base)
++unsigned long simple_strtoul(const char *cp, char **endp, unsigned int base)
+ {
+-	unsigned long result = 0,value;
++	unsigned long result = 0, value;
+ 
+ 	if (*cp == '0') {
+ 		cp++;
++
+ 		if ((*cp == 'x') && isxdigit(cp[1])) {
+ 			base = 16;
+ 			cp++;
+ 		}
+-		if (!base) {
++
++		if (!base)
+ 			base = 8;
+-		}
+ 	}
+-	if (!base) {
++
++	if (!base)
+ 		base = 10;
+-	}
+-	while (isxdigit(*cp) && (value = isdigit(*cp) ? *cp-'0' : (islower(*cp)
+-	    ? toupper(*cp) : *cp)-'A'+10) < base) {
+-		result = result*base + value;
++
++	while (isxdigit(*cp) && (value = isdigit(*cp) ? *cp - '0' : (islower(*cp)
++	    ? toupper(*cp) : *cp) - 'A' + 10) < base) {
++		result = result * base + value;
+ 		cp++;
+ 	}
++
+ 	if (endp)
+ 		*endp = (char *)cp;
++
+ 	return result;
+ }
+ EXPORT_SYMBOL(simple_strtoul);
+ 
+-long simple_strtol(const char *cp,char **endp,unsigned int base)
++long simple_strtol(const char *cp, char **endp, unsigned int base)
+ {
+-	if(*cp=='-')
+-		return -simple_strtoul(cp+1,endp,base);
+-	return simple_strtoul(cp,endp,base);
++	if (*cp == '-')
++		return -simple_strtoul(cp + 1, endp, base);
++
++	return simple_strtoul(cp, endp, base);
+ }
+ EXPORT_SYMBOL(simple_strtol);
+ 
+-unsigned long long simple_strtoull (const char *cp, char **endp, unsigned int base)
++unsigned long long simple_strtoull(const char *cp, char **endp, unsigned int base)
+ {
+ 	unsigned long long result = 0, value;
+ 
+ 	if (*cp == '0') {
+ 		cp++;
+-		if ((*cp == 'x') && isxdigit (cp[1])) {
++
++		if ((*cp == 'x') && isxdigit(cp[1])) {
+ 			base = 16;
+ 			cp++;
+ 		}
+-		if (!base) {
++
++		if (!base)
+ 			base = 8;
+-		}
+ 	}
+-	if (!base) {
++
++	if (!base)
+ 		base = 10;
+-	}
+-	while (isxdigit (*cp) && (value = isdigit (*cp)
++
++	while (isxdigit(*cp) && (value = isdigit(*cp)
+ 				? *cp - '0'
+-				: (islower (*cp) ? toupper (*cp) : *cp) - 'A' + 10) < base) {
++				: (islower(*cp) ? toupper(*cp) : *cp) - 'A' + 10) < base) {
+ 		result = result * base + value;
+ 		cp++;
+ 	}
++
+ 	if (endp)
+-		*endp = (char *) cp;
++		*endp = (char *)cp;
++
+ 	return result;
+ }
+ EXPORT_SYMBOL(simple_strtoull);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
