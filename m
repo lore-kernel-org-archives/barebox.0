@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cyFHi-0004n8-A7
- for barebox@lists.infradead.org; Wed, 12 Apr 2017 10:14:00 +0000
+ id 1cyFNN-00073y-IR
+ for barebox@lists.infradead.org; Wed, 12 Apr 2017 10:19:51 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 12 Apr 2017 12:13:35 +0200
-Message-Id: <20170412101336.32256-1-s.hauer@pengutronix.de>
+Date: Wed, 12 Apr 2017 12:19:27 +0200
+Message-Id: <20170412101927.27440-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,66 +19,121 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] of: use of_property_read_bool where appropriate
+Subject: [PATCH] xfuncs: Be more informative when out of memory panic occurs
 To: Barebox List <barebox@lists.infradead.org>
 
-Use of_property_read_bool where boolean properties are read.
+When one of the xfuncs panics we can be a bit more informative. We
+can at least print the amount of bytes we wanted to allocate and
+how much memory we have left.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/eeprom/at25.c | 2 +-
- drivers/net/dm9k.c    | 2 +-
- drivers/spi/spi.c     | 8 ++++----
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ lib/xfuncs.c | 32 ++++++++++++++++++++++++--------
+ 1 file changed, 24 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/eeprom/at25.c b/drivers/eeprom/at25.c
-index 1caaebd371..9f16f964a8 100644
---- a/drivers/eeprom/at25.c
-+++ b/drivers/eeprom/at25.c
-@@ -290,7 +290,7 @@ static int at25_np_to_chip(struct device_d *dev,
- 				val);
- 			return -ENODEV;
- 		}
--		if (of_find_property(np, "read-only", NULL))
-+		if (of_property_read_bool(np, "read-only"))
- 			chip->flags |= EE_READONLY;
- 	}
- 	return 0;
-diff --git a/drivers/net/dm9k.c b/drivers/net/dm9k.c
-index 25f08602f6..c99d188ded 100644
---- a/drivers/net/dm9k.c
-+++ b/drivers/net/dm9k.c
-@@ -737,7 +737,7 @@ static int dm9000_parse_dt(struct device_d *dev, struct dm9k *priv)
- 	if (!IS_ENABLED(CONFIG_OFDEVICE) || !np)
- 		return -ENODEV;
+diff --git a/lib/xfuncs.c b/lib/xfuncs.c
+index 1dc2ea92d8..1bcaa5e10e 100644
+--- a/lib/xfuncs.c
++++ b/lib/xfuncs.c
+@@ -18,18 +18,30 @@
+  * GNU General Public License for more details.
+  *
+  */
++#define pr_fmt(fmt) "xfuncs: " fmt
  
--	if (of_find_property(np, "davicom,no-eeprom", NULL)) {
-+	if (of_property_read_bool(np, "davicom,no-eeprom")) {
- 		priv->srom = 0;
- 	} else {
- 		priv->srom = 1;
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 99412b07e2..5650098a0a 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -118,13 +118,13 @@ static void spi_of_register_slaves(struct spi_master *master)
- 		chip.name = xstrdup(n->name);
- 		chip.bus_num = master->bus_num;
- 		/* Mode (clock phase/polarity/etc.) */
--		if (of_find_property(n, "spi-cpha", NULL))
-+		if (of_property_read_bool(n, "spi-cpha"))
- 			chip.mode |= SPI_CPHA;
--		if (of_find_property(n, "spi-cpol", NULL))
-+		if (of_property_read_bool(n, "spi-cpol"))
- 			chip.mode |= SPI_CPOL;
--		if (of_find_property(n, "spi-cs-high", NULL))
-+		if (of_property_read_bool(n, "spi-cs-high"))
- 			chip.mode |= SPI_CS_HIGH;
--		if (of_find_property(n, "spi-3wire", NULL))
-+		if (of_property_read_bool(n, "spi-3wire"))
- 			chip.mode |= SPI_3WIRE;
- 		of_property_read_u32(n, "spi-max-frequency",
- 				&chip.max_speed_hz);
+ #include <common.h>
+ #include <malloc.h>
+ #include <module.h>
+ #include <wchar.h>
+ 
++static void __noreturn enomem_panic(size_t size)
++{
++	pr_emerg("out of memory\n");
++	if (size)
++		pr_emerg("Unable to allocate %d bytes\n", size);
++
++	malloc_stats();
++
++	panic("out of memory");
++}
++
+ void *xmalloc(size_t size)
+ {
+ 	void *p = NULL;
+ 
+ 	if (!(p = malloc(size)))
+-		panic("ERROR: out of memory\n");
++		enomem_panic(size);
+ 
+ 	return p;
+ }
+@@ -40,7 +52,7 @@ void *xrealloc(void *ptr, size_t size)
+ 	void *p = NULL;
+ 
+ 	if (!(p = realloc(ptr, size)))
+-		panic("ERROR: out of memory\n");
++		enomem_panic(size);
+ 
+ 	return p;
+ }
+@@ -63,7 +75,7 @@ char *xstrdup(const char *s)
+ 
+ 	p = strdup(s);
+ 	if (!p)
+-		panic("ERROR: out of memory\n");
++		enomem_panic(strlen(s) + 1);
+ 
+ 	return p;
+ }
+@@ -95,7 +107,8 @@ void* xmemalign(size_t alignment, size_t bytes)
+ {
+ 	void *p = memalign(alignment, bytes);
+ 	if (!p)
+-		panic("ERROR: out of memory\n");
++		enomem_panic(bytes);
++
+ 	return p;
+ }
+ EXPORT_SYMBOL(xmemalign);
+@@ -116,7 +129,7 @@ char *xvasprintf(const char *fmt, va_list ap)
+ 
+ 	p = bvasprintf(fmt, ap);
+ 	if (!p)
+-		panic("ERROR: out of memory\n");
++		enomem_panic(0);
+ 	return p;
+ }
+ EXPORT_SYMBOL(xvasprintf);
+@@ -139,7 +152,8 @@ wchar_t *xstrdup_wchar(const wchar_t *s)
+ 	wchar_t *p = strdup_wchar(s);
+ 
+ 	if (!p)
+-		panic("ERROR: out of memory\n");
++		enomem_panic((wcslen(s) + 1) * sizeof(wchar_t));
++
+ 	return p;
+ }
+ EXPORT_SYMBOL(xstrdup_wchar);
+@@ -149,7 +163,8 @@ wchar_t *xstrdup_char_to_wchar(const char *s)
+ 	wchar_t *p = strdup_char_to_wchar(s);
+ 
+ 	if (!p)
+-		panic("ERROR: out of memory\n");
++		enomem_panic((strlen(s) + 1) * sizeof(wchar_t));
++
+ 	return p;
+ }
+ EXPORT_SYMBOL(xstrdup_char_to_wchar);
+@@ -159,7 +174,8 @@ char *xstrdup_wchar_to_char(const wchar_t *s)
+ 	char *p = strdup_wchar_to_char(s);
+ 
+ 	if (!p)
+-		panic("ERROR: out of memory\n");
++		enomem_panic((wcslen(s) + 1) * sizeof(wchar_t));
++
+ 	return p;
+ }
+ EXPORT_SYMBOL(xstrdup_wchar_to_char);
 -- 
 2.11.0
 
