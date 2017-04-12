@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cyFEk-0004SE-9K
- for barebox@lists.infradead.org; Wed, 12 Apr 2017 10:10:56 +0000
+ id 1cyFHi-0004n9-A8
+ for barebox@lists.infradead.org; Wed, 12 Apr 2017 10:14:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 12 Apr 2017 12:10:32 +0200
-Message-Id: <20170412101032.3444-1-s.hauer@pengutronix.de>
+Date: Wed, 12 Apr 2017 12:13:36 +0200
+Message-Id: <20170412101336.32256-2-s.hauer@pengutronix.de>
+In-Reply-To: <20170412101336.32256-1-s.hauer@pengutronix.de>
+References: <20170412101336.32256-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,32 +21,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usb: gadget: fastboot: delete temporary file
+Subject: [PATCH 2/2] of: of_net: use a loop
 To: Barebox List <barebox@lists.infradead.org>
 
-After we have copied the data to its final destination there is
-no need to keep the temporary file around. Remove it when done
-with it.
+iterate over the different property names rather than having
+the same code three times.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/gadget/f_fastboot.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/of/of_net.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-index ef5f7ec6e0..598637619d 100644
---- a/drivers/usb/gadget/f_fastboot.c
-+++ b/drivers/usb/gadget/f_fastboot.c
-@@ -758,6 +758,9 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
+diff --git a/drivers/of/of_net.c b/drivers/of/of_net.c
+index 086573fc1a..9b54e44674 100644
+--- a/drivers/of/of_net.c
++++ b/drivers/of/of_net.c
+@@ -77,19 +77,15 @@ EXPORT_SYMBOL_GPL(of_get_phy_mode);
+ */
+ const void *of_get_mac_address(struct device_node *np)
+ {
+-	struct property *pp;
++	const void *p;
++	int len, i;
++	const char *str[] = { "mac-address", "local-mac-address", "address" };
  
- copy:
- 	ret = copy_file(FASTBOOT_TMPFILE, filename, 1);
-+
-+	unlink(FASTBOOT_TMPFILE);
-+
- 	if (ret) {
- 		fastboot_tx_print(f_fb, "FAILwrite partition: %s", strerror(-ret));
- 		return;
+-	pp = of_find_property(np, "mac-address", NULL);
+-	if (pp && (pp->length == 6) && is_valid_ether_addr(pp->value))
+-		return pp->value;
+-
+-	pp = of_find_property(np, "local-mac-address", NULL);
+-	if (pp && (pp->length == 6) && is_valid_ether_addr(pp->value))
+-		return pp->value;
+-
+-	pp = of_find_property(np, "address", NULL);
+-	if (pp && (pp->length == 6) && is_valid_ether_addr(pp->value))
+-		return pp->value;
++	for (i = 0; i < ARRAY_SIZE(str); i++) {
++		p = of_get_property(np, str[i], &len);
++		if (p && (len == 6) && is_valid_ether_addr(p))
++			return p;
++	}
+ 
+ 	return NULL;
+ }
 -- 
 2.11.0
 
