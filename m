@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cyEtJ-0003ge-2t
- for barebox@lists.infradead.org; Wed, 12 Apr 2017 09:48:47 +0000
-Date: Wed, 12 Apr 2017 11:48:23 +0200
-From: Michael Grzeschik <mgr@pengutronix.de>
-Message-ID: <20170412094823.kfycvawvjt4rmyz4@pengutronix.de>
+ id 1cyF9G-0001aq-BP
+ for barebox@lists.infradead.org; Wed, 12 Apr 2017 10:05:16 +0000
+Date: Wed, 12 Apr 2017 12:04:48 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170412100448.ivecuii233vzxitn@pengutronix.de>
 References: <20170410175559.29476-1-m.grzeschik@pengutronix.de>
  <20170411083540.fqr4nnxqlh6thbib@pengutronix.de>
  <20170412083232.lnqk7bn5h2tk64lo@pengutronix.de>
@@ -25,7 +25,7 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM: i.MX6: add Technexion Pico Hobbit support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Michael Grzeschik <mgr@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
 On Wed, Apr 12, 2017 at 10:32:32AM +0200, Michael Grzeschik wrote:
@@ -195,14 +195,17 @@ On Wed, Apr 12, 2017 at 10:32:32AM +0200, Michael Grzeschik wrote:
 >                                          <&clks IMX6UL_CLK_ENET2_REF_125M>;
 >                                 clock-names = "ipg", "ahb", "ptp",
 >                                               "enet_clk_ref", "enet_out";
+> 
+> > For the GPR setting: Maybe we should create a imx6ul_setup_fec() in
+> > arch/arm/mach-imx which for now just hardcodes this setting so we can
+> > extend this later.
+> 
+> What do you mean with hardcoding? I thought of a helper function every board
+> who needs it can call.
 
-Unfortunately this was probably to fast. The driver fec_imx is currently
-only loading ipg, ahb and ptp. I will write a patch to optionaly load
-enet_clk_ref and enet_out. Until that got fixed, please ignore both
-patches for phytec-som-imx6 and mx6sx-sabresdb I just send.
+That's what I meant, yes.
 
-Thanks,
-Michael
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
