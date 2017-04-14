@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x229.google.com ([2a00:1450:4010:c07::229])
+Received: from mail-pg0-x229.google.com ([2607:f8b0:400e:c05::229])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cyyCG-0004U4-9S
- for barebox@lists.infradead.org; Fri, 14 Apr 2017 10:11:21 +0000
-Received: by mail-lf0-x229.google.com with SMTP id t144so40564375lff.1
- for <barebox@lists.infradead.org>; Fri, 14 Apr 2017 03:10:59 -0700 (PDT)
-Received: from berta (t109.niisi.ras.ru. [193.232.173.109])
- by smtp.gmail.com with ESMTPSA id 187sm275348ljf.32.2017.04.14.03.10.55
- for <barebox@lists.infradead.org>
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Fri, 14 Apr 2017 03:10:55 -0700 (PDT)
-Date: Fri, 14 Apr 2017 13:10:51 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20170414101051.GB16849@berta>
-MIME-Version: 1.0
-Content-Disposition: inline
+ id 1cz5yW-0007F6-PH
+ for barebox@lists.infradead.org; Fri, 14 Apr 2017 18:29:44 +0000
+Received: by mail-pg0-x229.google.com with SMTP id 21so46492480pgg.1
+ for <barebox@lists.infradead.org>; Fri, 14 Apr 2017 11:29:19 -0700 (PDT)
+From: Matt Reimer <mreimer@sdgsystems.com>
+Date: Fri, 14 Apr 2017 11:29:14 -0700
+Message-Id: <20170414182914.62739-1-mreimer@sdgsystems.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,35 +16,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: cp: incorrect behaviour when copying recursively
+Subject: [PATCH] mtd: nand_omap_gpmc: fix BCH error correction
 To: barebox@lists.infradead.org
+Cc: Matt Reimer <mreimer@sdgsystems.com>
 
-Hi,
+BCH error detection and correction was only looking at the first
+of four syndrome polynomials, which meant it was failing to detect
+and correct bitflips in the last 3/4 of the data. In effect, only
+the first 512 bytes of a 2048 byte page were being protected by ECC.
 
-The "cp -r <src> <dst>" command omits top directory, when the trailing "/" is 
-present in the <src> string. Here is the test case:
+The syndrome polynomials (BCH error codes) are stored in the NAND's
+OOB, each of which protects 512 bytes of data. The driver used
+eccsteps = 1 which effectively made it only use the first polynomial,
+and therefore was only protecting the first 512 bytes of the page.
 
-	barebox@barebox sandbox:/test mkdir d1
-	barebox@barebox sandbox:/test echo -o d1/f1 1
-	barebox@barebox sandbox:/test mkdir d2       
-	barebox@barebox sandbox:/test cd d2
-	barebox@barebox sandbox:/test/d2 cp -r ../d1/ . 
-	barebox@barebox sandbox:/test/d2 ls
-	.     ..    f1    
-	barebox@barebox sandbox:/test/d2 cp -r ../d1 . 
-	barebox@barebox sandbox:/test/d2 ls
-	.     ..    d1    f1    
+The fix is to pull over a bit of code from the kernel's
+omap_correct_data() that sets eccsteps = 4 when the page size is 2048
+bytes and hardware ECC is being used.
 
-	barebox@barebox sandbox:/test/d2 version 
-	
-	barebox 2017.04.0-00169-g90e7a35e6 #1 Fri Apr 14 12:46:09 MSK 2017
+Signed-off-by: Matt Reimer <mreimer@sdgsystems.com>
+---
+ drivers/mtd/nand/nand_omap_gpmc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Regards,
-Peter
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index 9d9d27e..2fe6a10 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -302,7 +302,8 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
+ 	unsigned int err_loc[8];
+ 	int select_4_8;
+ 
+-	int eccsteps = oinfo->nand.ecc.steps;
++        int eccsteps = (nand->ecc.mode == NAND_ECC_HW) &&
++                (nand->ecc.size == 2048) ? 4 : 1;
+ 	int eccsize = oinfo->nand.ecc.bytes;
+ 
+ 	switch (oinfo->ecc_mode) {
+-- 
+2.10.1
+
 
 _______________________________________________
 barebox mailing list
