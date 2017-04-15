@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1czJSn-0004m9-H6
- for barebox@lists.infradead.org; Sat, 15 Apr 2017 08:53:51 +0000
-Date: Sat, 15 Apr 2017 10:53:25 +0200
+ id 1czVb3-00069b-3S
+ for barebox@lists.infradead.org; Sat, 15 Apr 2017 21:51:11 +0000
+Date: Sat, 15 Apr 2017 23:50:42 +0200
 From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170415085325.GD20400@ravnborg.org>
-References: <20170331070346.26878-1-s.hauer@pengutronix.de>
- <20170331070346.26878-17-s.hauer@pengutronix.de>
+Message-ID: <20170415215042.GA3267@ravnborg.org>
+References: <20170316150448.11773-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170331070346.26878-17-s.hauer@pengutronix.de>
+In-Reply-To: <20170316150448.11773-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,70 +22,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 16/42] state: Drop cache bucket
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2 00/11] AT91, at91sam9x5ek updates (part II/III)
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi Sasha.
+Hi Andrey.
 
-> diff --git a/common/state/backend_storage.c b/common/state/backend_storage.c
-> index 6ec58a0c97..218c67f2d7 100644
-> --- a/common/state/backend_storage.c
-> +++ b/common/state/backend_storage.c
-> @@ -69,22 +69,29 @@ int state_storage_write(struct state_backend_storage *storage,
->  	return -EIO;
->  }
->  
-> -/**
-> - * state_storage_restore_consistency - Restore consistency on all storage backends
-> - * @param storage Storage object
-> - * @param buf Buffer with valid data that should be on all buckets after this operation
-> - * @param len Length of the buffer
-> - * @return 0 on success, -errno otherwise
-> - *
-> - * This function brings valid data onto all buckets we have to ensure that all
-> - * data copies are in sync. In the current implementation we just write the data
-> - * to all buckets. Bucket implementations that need to keep the number of writes
-> - * low, can read their own copy first and compare it.
-> - */
-> -int state_storage_restore_consistency(struct state_backend_storage *storage,
-> -				      const void * buf, ssize_t len)
-> +static int bucket_refresh(struct state_backend_storage *storage,
-> +			  struct state_backend_storage_bucket *bucket, void *buf, ssize_t len)
->  {
-> -	return state_storage_write(storage, buf, len);
-> +	int ret;
-> +
-> +	if (bucket->needs_refresh)
-> +		goto refresh;
-> +
-> +	if (bucket->len != len)
-> +		goto refresh;
-> +
-> +	if (memcmp(bucket->buf, buf, len))
-> +		goto refresh;
-> +
-> +	return 0;
-> +
-> +refresh:
-> +	ret = bucket->write(bucket, buf, len);
+While trying to port my proprietary at91sam9263 based board
+I have stumbled over how the early init works.
+And so far I have used at91sam9x5ek as reference.
 
-In the code above we check needs_refresh and len.
-But needs_refresh is never set back to 0 so it looks like we will refresh it too often.
-The same with the len argument.
+If I follow the code paths for sam9x5 it looks like this:
 
-> +	/*
-> +	 * Iterate over all buckets. The first valid one we find is the
-> +	 * one we want to use.
-> +	 */
->  	list_for_each_entry(bucket, &storage->buckets, bucket_list) {
-> -		ret = bucket->read(bucket, buf, len);
-> -		if (ret) {
-> +		ret = bucket->read(bucket, &bucket->buf, &bucket->len);
-> +		if (ret == -EUCLEAN) {
-> +			bucket->needs_refresh = 1;
-> +		} else if (ret) {
-This is where we mark it as need_refresh.
+	barebox_arm_head  (arch/arm/include/asm/barebox-arm-head.h)
+	    _barebox_arm_head
+	    b barebox_arm_reset_vector -->
+
+	barebox_arm_reset_vector (arch/arm/mach-at91/at91sam9x5_lowlevel_init.c)
+	    arm_cpu_lowlevel_init
+	    arm_setup_stack(AT91SAM9X5_SRAM_BASE + AT91SAM9X5_SRAM_SIZE - 16);
+	    barebox_arm_entry -->
+
+	barebox_arm_entry (arch/arm/cpu/entry.c)
+	    arm_setup_stack(arm_mem_stack_top(membase, membase + memsize) - 16);
+	    arm_early_mmu_cache_invalidate
+	    barebox_{multi,single,non}_pbl_start
+
+	And then we have:
+	ENTRY_FUNCTION(start_at91sam9x5ek, r0, r1, r2)  (arch/arm/boards/at91sam9x5ek/lowlevel.c)
+	    arm_cpu_lowlevel_init
+	    arm_setup_stack(AT91SAM9X5_SRAM_BASE + AT91SAM9X5_SRAM_SIZE - 16);
+	    barebox_arm_entry
+
+
+And something in this confuses me...
+I know at91sam9x5 is built for multi image support.
+Which is why start_at91sam9x5ek() is referenced in images/Makefile.at91
+
+But why do we need to call arm_setup_stack() in three different places.
+And with different parameters.
+And arm_cpu_lowlevel_init is called from two places.
+
+Can someone shed some light on this.
+
+Thanks in advance,
 
 	Sam
 
