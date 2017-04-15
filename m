@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x230.google.com ([2607:f8b0:400e:c00::230])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1cz61I-000140-VL
- for barebox@lists.infradead.org; Fri, 14 Apr 2017 18:32:34 +0000
-Received: by mail-pf0-x230.google.com with SMTP id i5so43472602pfc.2
- for <barebox@lists.infradead.org>; Fri, 14 Apr 2017 11:32:12 -0700 (PDT)
-From: Matt Reimer <mreimer@sdgsystems.com>
-Date: Fri, 14 Apr 2017 11:32:05 -0700
-Message-Id: <20170414183205.62794-1-mreimer@sdgsystems.com>
+ id 1czHIY-0007LG-Ju
+ for barebox@lists.infradead.org; Sat, 15 Apr 2017 06:35:08 +0000
+Date: Sat, 15 Apr 2017 08:34:36 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170415063436.umvxggf7bran2dox@pengutronix.de>
+References: <221c9119-96fa-845d-4525-b983d5b3fc03@126.com>
+ <45b7af9b-719f-e34e-1075-60770af91c4a@126.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <45b7af9b-719f-e34e-1075-60770af91c4a@126.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,53 +19,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: nand_omap_gpmc: fix BCH error correction
-To: barebox@lists.infradead.org
-Cc: Matt Reimer <mreimer@sdgsystems.com>
+Subject: Re: How to change filesystem size of root
+To: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
+Cc: barebox@lists.infradead.org
 
-BCH error detection and correction was only looking at the first
-of four syndrome polynomials, which meant it was failing to detect
-and correct bitflips in the last 3/4 of the data. In effect, only
-the first 512 bytes of a 2048 byte page were being protected by ECC.
-
-The syndrome polynomials (BCH error codes) are stored in the NAND's
-OOB, each of which protects 512 bytes of data. The driver used
-eccsteps = 1 which effectively made it only use the first polynomial,
-and therefore was only protecting the first 512 bytes of the page.
-
-The fix is to pull over a bit of code from the kernel's
-omap_correct_data() that sets eccsteps = 4 when the page size is 2048
-bytes and hardware ECC is being used.
-
-Signed-off-by: Matt Reimer <mreimer@sdgsystems.com>
----
- drivers/mtd/nand/nand_omap_gpmc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-index 9d9d27e..2fe6a10 100644
---- a/drivers/mtd/nand/nand_omap_gpmc.c
-+++ b/drivers/mtd/nand/nand_omap_gpmc.c
-@@ -302,7 +302,8 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
- 	unsigned int err_loc[8];
- 	int select_4_8;
- 
--	int eccsteps = oinfo->nand.ecc.steps;
-+        int eccsteps = (nand->ecc.mode == NAND_ECC_HW) &&
-+                (nand->ecc.size == 2048) ? 4 : 1;
- 	int eccsize = oinfo->nand.ecc.bytes;
- 
- 	switch (oinfo->ecc_mode) {
--- 
-2.10.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBBcHIgMTQsIDIwMTcgYXQgMDM6MDM6MzZQTSArMDgwMCwg5byg5b+g5bGxIHdyb3Rl
+Ogo+IOWcqCAyMDE35bm0MDTmnIgxNOaXpSAxMTo0OCwg5byg5b+g5bGxIOWGmemBkzoKPiA+IFdo
+ZW4gdHJhbnNmZXIgYSBsYXJnZSBmaWxlIHRvIHJvb3QgdGhyb3VnaCB0ZnRwLiAiT3V0IG9mIG1l
+bW9yeSIgZXJyb3IKPiA+IGxpa2UgdGhpczoKPiA+IAo+ID4gIyB0ZnRwIC94eTc1MjAvb3V0cHV0
+X2ZpbGUucmJmIGEucmJmCj4gPiBUICAgICBbIyMjIyMjIyMjIyN3cml0ZTogT3V0IG9mIG1lbW9y
+eSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBdCj4gPiAKPiA+IE15IGJvYXJkIGhh
+cyAxRyBkZHIgYnV0IHRoZSBmaWxlIGp1cyAyM00uIFNvIHRoZSBtZW1vcnkgbGFyZ2UgZW5vdWdo
+IHRvCj4gPiBob2xkIHRoZSBmaWxlLgo+ID4gCj4gPiBJIHRoaW5rIGl0IHNob3VsZCBoYXZlIGEg
+bWV0aG9kIHRvIGFkanVzdCB0aGUgZmlsZXN5c3RlbSdzIHNpemUgb2Ygcm9vdC4KPiA+IEJ1dCBJ
+IGNhbid0IGZpbmQgaXQuCj4gPiBIZWxwIG1lIHBsZWFzZS4KPiAKPiBKdWN0IGNoYW5nZSB0aGUg
+c2l6ZSBvZiAiTUFMTE9DX1NJWkUiCgpXaGljaCBzaXplIHdhcyBjb25maWd1cmVkPyBOb3JtYWxs
+eSB5b3UgY2FuIHNwZWNpZnkgaXQgdG8gMHgwIGFuZApiYXJlYm94IGZpZ3VyZXMgb3V0IGEgZ29v
+ZCBtYWxsb2Mgc3BhY2UgYXJlYSBhdXRvbWF0aWNhbGx5LiBUaGF0IHdvdWxkCmJlIHJvdWdobHkg
+aGFsZiBvZiB0aGUgbWVtb3J5LiAoVGhpcyBpcyBhdCBsZWFzdCB0cnVlIGZvciBBUk0pCgpTYXNj
+aGEKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAg
+ICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2
+LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAg
+ICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAg
+KzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
+YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
+eAo=
