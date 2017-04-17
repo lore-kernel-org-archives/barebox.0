@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
+Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d047C-0005Lj-8o
- for barebox@lists.infradead.org; Mon, 17 Apr 2017 10:42:39 +0000
-Received: by mail-lf0-x242.google.com with SMTP id 88so4553575lfr.0
- for <barebox@lists.infradead.org>; Mon, 17 Apr 2017 03:42:17 -0700 (PDT)
+ id 1d047A-0005LY-VM
+ for barebox@lists.infradead.org; Mon, 17 Apr 2017 10:42:38 +0000
+Received: by mail-lf0-x244.google.com with SMTP id x72so15533921lfb.1
+ for <barebox@lists.infradead.org>; Mon, 17 Apr 2017 03:42:16 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 17 Apr 2017 13:42:10 +0300
-Message-Id: <20170417104210.8196-3-antonynpavlov@gmail.com>
-In-Reply-To: <20170417104210.8196-1-antonynpavlov@gmail.com>
-References: <20170417104210.8196-1-antonynpavlov@gmail.com>
+Date: Mon, 17 Apr 2017 13:42:08 +0300
+Message-Id: <20170417104210.8196-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,41 +21,16 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] of: base: of_new_property(): use xstrdup() instead of
- strdup()
+Subject: [PATCH 0/2] of: base: some simplifications
 To: barebox@lists.infradead.org
 
-At the moment of_new_property() uses xfunctions for memory
-allocation so we can use xstrdup() instead of strdup()
-for code simplification.
+Antony Pavlov (2):
+  of: base: exclude memcpy-like code from of_property_write_u8_array()
+  of: base: of_new_property(): use xstrdup() instead of strdup()
 
-A side effect of this commmit is that
-the of_new_property() function can't return NULL
-anymore if CONFIG_OFTREE is set.
+ drivers/of/base.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/of/base.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
-
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 1161ce9793..c9bdd91810 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1802,12 +1802,7 @@ struct property *of_new_property(struct device_node *node, const char *name,
- 	struct property *prop;
- 
- 	prop = xzalloc(sizeof(*prop));
--	prop->name = strdup(name);
--	if (!prop->name) {
--		free(prop);
--		return NULL;
--	}
--
-+	prop->name = xstrdup(name);
- 	prop->length = len;
- 	prop->value = xzalloc(len);
- 
 -- 
 2.11.0
 
