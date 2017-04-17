@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from gandharva.secretlabs.de ([5.9.72.18])
+Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1czzKE-00076W-L6
- for barebox@lists.infradead.org; Mon, 17 Apr 2017 05:35:49 +0000
-Received: from [10.0.1.2] (ip127-36-210-87.adsl2.static.versatel.nl
- [87.210.36.127])
- by gandharva.secretlabs.de (Postfix) with ESMTPSA id 2B5C1ACF18
- for <barebox@lists.infradead.org>; Mon, 17 Apr 2017 05:35:20 +0000 (UTC)
-From: Holger Freyther <holger@moiji-mobile.com>
-Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
-Date: Mon, 17 Apr 2017 07:35:19 +0200
-References: <CCE0355C-0078-435E-A307-9D64235CC014@moiji-mobile.com>
-In-Reply-To: <CCE0355C-0078-435E-A307-9D64235CC014@moiji-mobile.com>
-Message-Id: <2CBFB5C4-AB2B-448E-9127-DEBE0B12E168@moiji-mobile.com>
+ id 1d047A-0005Ld-VD
+ for barebox@lists.infradead.org; Mon, 17 Apr 2017 10:42:38 +0000
+Received: by mail-lf0-x244.google.com with SMTP id 75so15535496lfs.3
+ for <barebox@lists.infradead.org>; Mon, 17 Apr 2017 03:42:17 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon, 17 Apr 2017 13:42:09 +0300
+Message-Id: <20170417104210.8196-2-antonynpavlov@gmail.com>
+In-Reply-To: <20170417104210.8196-1-antonynpavlov@gmail.com>
+References: <20170417104210.8196-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,40 +18,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Linking issue with ld.bfd 2.28.0.20170307
+Subject: [PATCH 1/2] of: base: exclude memcpy-like code from
+ of_property_write_u8_array()
 To: barebox@lists.infradead.org
 
+The of_new_property() function already has functionality
+to copy data into of_property so we can make
+of_property_write_u8_array() simpler.
 
-> On 30. Mar 2017, at 20:49, Holger Freyther <holger@moiji-mobile.com> wrote:
-> 
-> Hi,
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/of/base.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-Hi!
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 6632f4d9dd..1161ce9793 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1090,19 +1090,14 @@ int of_property_write_u8_array(struct device_node *np,
+ 			       size_t sz)
+ {
+ 	struct property *prop = of_find_property(np, propname, NULL);
+-	u8 *val;
+ 
+ 	if (prop)
+ 		of_delete_property(prop);
+ 
+-	prop = of_new_property(np, propname, NULL, sizeof(*val) * sz);
++	prop = of_new_property(np, propname, values, sizeof(*values) * sz);
+ 	if (!prop)
+ 		return -ENOMEM;
+ 
+-	val = prop->value;
+-	while (sz--)
+-		*val++ = *values++;
+-
+ 	return 0;
+ }
+ 
+-- 
+2.11.0
 
-> I am rebuilding the bootloader with gcc6 and the above version
-> of binutils and it is failing to link with .bfd but is working
-> with .gold.
-> 
-> Is this known? Is anyone else seeing this issue? And no I did
-> not try linking with -N and I have no idea what ld thinks is
-> the program headers here.
 
-my steps to reproduce this with Yocto's gcc-6.3 and ld.bfd
-2.28.0.20170307 are the following. CROSS_COMPILE points into
-the sysroot of a build on poky master.
-
-git clone --branch=hfreyther/v2017.03-rebase git://git.sysmocom.de/barebox
-cd barebox/
-wget -O .config "http://git.sysmocom.de/poky/meta-sysmocom-bsp/plain/recipes-bsp/barebox/barebox-sysmobts/defconfig?id=39afcd35ae40b8468868f1e942706dec11e03961"
-make ARCH=arm
-
-
-.../arm-poky-linux-gnueabi-ld: .tmp_barebox1: Not enough room for program headers, try linking with -N
-.../arm-poky-linux-gnueabi-ld: final link failed: Bad value
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
