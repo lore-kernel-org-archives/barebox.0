@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d0keO-0002zD-M9
- for barebox@lists.infradead.org; Wed, 19 Apr 2017 08:07:46 +0000
-Date: Wed, 19 Apr 2017 10:07:23 +0200
+ by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1d0kmK-00019b-PG
+ for barebox@lists.infradead.org; Wed, 19 Apr 2017 08:15:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170419080723.cq3cs7djdshvvlgg@pengutronix.de>
-References: <20170414101051.GB16849@berta>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170414101051.GB16849@berta>
+Date: Wed, 19 Apr 2017 10:15:31 +0200
+Message-Id: <20170419081531.10935-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,33 +14,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: cp: incorrect behaviour when copying recursively
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] state: backend_bucket_circular: Do not leak memory
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Peter,
+buf was just allocated, free it before returning an error.
 
-On Fri, Apr 14, 2017 at 01:10:51PM +0300, Peter Mamonov wrote:
-> Hi,
-> 
-> The "cp -r <src> <dst>" command omits top directory, when the trailing "/" is 
-> present in the <src> string. Here is the test case:
+Reported-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/state/backend_bucket_circular.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-I can confirm that. It turned out this is because we used GNU basename
-in barebox, but we should use POSIX basename. Please check the series
-I just sent out.
-
-Sascha
-
+diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
+index 5279ec9ce2..832f44e599 100644
+--- a/common/state/backend_bucket_circular.c
++++ b/common/state/backend_bucket_circular.c
+@@ -385,7 +385,7 @@ static int state_backend_bucket_circular_init(
+ 
+ 	ret = state_mtd_peb_read(circ, buf, 0, circ->max_size);
+ 	if (ret && ret != -EUCLEAN)
+-		return ret;
++		goto out;
+ 
+ 	for (sub_offset = circ->max_size - circ->writesize; sub_offset >= 0;
+ 	     sub_offset -= circ->writesize) {
+@@ -408,9 +408,11 @@ static int state_backend_bucket_circular_init(
+ 	circ->write_area = sub_offset + circ->writesize;
+ 	circ->last_written_length = written_length;
+ 
++	ret = 0;
++out:
+ 	free(buf);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static void state_backend_bucket_circular_free(struct
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
