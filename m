@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d0ksP-0003XJ-Sw
- for barebox@lists.infradead.org; Wed, 19 Apr 2017 08:22:15 +0000
+ id 1d0kh8-0003SA-RO
+ for barebox@lists.infradead.org; Wed, 19 Apr 2017 08:10:36 +0000
+Date: Wed, 19 Apr 2017 10:10:08 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 19 Apr 2017 10:21:51 +0200
-Message-Id: <20170419082151.21841-1-s.hauer@pengutronix.de>
+Message-ID: <20170419081008.i6unqcli7fhmq5xd@pengutronix.de>
+References: <20170414183205.62794-1-mreimer@sdgsystems.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170414183205.62794-1-mreimer@sdgsystems.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,50 +18,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] state: backend_storage: Set needs_refresh back to 0 after
- refreshing
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] mtd: nand_omap_gpmc: fix BCH error correction
+To: Matt Reimer <mreimer@sdgsystems.com>
+Cc: barebox@lists.infradead.org
 
-Set needs_refresh back to 0 after refreshing so that we do not refresh
-it again without need. This would only happen when we read the state
-from the storage multiple times, which normally is not the case.
-However, it's more consistent like this.
+Hi Matt,
 
-Reported-by: Sam Ravnborg <sam@ravnborg.org>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/state/backend_storage.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+On Fri, Apr 14, 2017 at 11:32:05AM -0700, Matt Reimer wrote:
+> BCH error detection and correction was only looking at the first
+> of four syndrome polynomials, which meant it was failing to detect
+> and correct bitflips in the last 3/4 of the data. In effect, only
+> the first 512 bytes of a 2048 byte page were being protected by ECC.
+> 
+> The syndrome polynomials (BCH error codes) are stored in the NAND's
+> OOB, each of which protects 512 bytes of data. The driver used
+> eccsteps = 1 which effectively made it only use the first polynomial,
+> and therefore was only protecting the first 512 bytes of the page.
+> 
+> The fix is to pull over a bit of code from the kernel's
+> omap_correct_data() that sets eccsteps = 4 when the page size is 2048
+> bytes and hardware ECC is being used.
+> 
+> Signed-off-by: Matt Reimer <mreimer@sdgsystems.com>
+> ---
+>  drivers/mtd/nand/nand_omap_gpmc.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+> index 9d9d27e..2fe6a10 100644
+> --- a/drivers/mtd/nand/nand_omap_gpmc.c
+> +++ b/drivers/mtd/nand/nand_omap_gpmc.c
+> @@ -302,7 +302,8 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
+>  	unsigned int err_loc[8];
+>  	int select_4_8;
+>  
+> -	int eccsteps = oinfo->nand.ecc.steps;
+> +        int eccsteps = (nand->ecc.mode == NAND_ECC_HW) &&
+> +                (nand->ecc.size == 2048) ? 4 : 1;
 
-diff --git a/common/state/backend_storage.c b/common/state/backend_storage.c
-index 9ed6ad79ac..8d24f7053d 100644
---- a/common/state/backend_storage.c
-+++ b/common/state/backend_storage.c
-@@ -110,12 +110,14 @@ static int bucket_refresh(struct state_backend_storage *storage,
- refresh:
- 	ret = bucket->write(bucket, buf, len);
- 
--	if (ret)
-+	if (ret) {
- 		dev_warn(storage->dev, "Failed to restore bucket %d@0x%08lx\n",
- 			 bucket->num, bucket->offset);
--	else
-+	} else {
- 		dev_info(storage->dev, "restored bucket %d@0x%08lx\n",
- 			 bucket->num, bucket->offset);
-+		bucket->needs_refresh = 0;
-+	}
- 
- 	return ret;
- }
+Fixed up indention and applied, thanks
+
+Sascha
+
 -- 
-2.11.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
