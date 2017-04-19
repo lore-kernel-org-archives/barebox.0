@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtprelay0164.hostedemail.com ([216.40.44.164]
+ helo=smtprelay.hostedemail.com)
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d0miE-0005jE-R9
- for barebox@lists.infradead.org; Wed, 19 Apr 2017 10:19:52 +0000
-Date: Wed, 19 Apr 2017 12:19:28 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170419101928.5khm52lba5o4bj6s@pengutronix.de>
-References: <20170417104210.8196-1-antonynpavlov@gmail.com>
- <20170417104210.8196-3-antonynpavlov@gmail.com>
- <20170419132026.5ac56ed0b7fc52b8ad61477d@gmail.com>
+ id 1d0mod-0000hz-4t
+ for barebox@lists.infradead.org; Wed, 19 Apr 2017 10:26:28 +0000
+References: <ec298b0f-90cb-5ce0-0a26-ab89836ad687@126.com>
+ <20170419101410.ozjeh4frxdfujn73@pengutronix.de>
+From: Ian Abbott <abbotti@mev.co.uk>
+Message-ID: <cb6c8ff7-61dc-2ae1-fe4a-0a27e7b89176@mev.co.uk>
+Date: Wed, 19 Apr 2017 11:25:48 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170419132026.5ac56ed0b7fc52b8ad61477d@gmail.com>
+In-Reply-To: <20170419101410.ozjeh4frxdfujn73@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,50 +19,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] of: base: of_new_property(): use xstrdup() instead
- of strdup()
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: Howto set var from command output
+To: Sascha Hauer <s.hauer@pengutronix.de>, =?UTF-8?B?5byg5b+g5bGx?= <zzs213@126.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Apr 19, 2017 at 01:20:26PM +0300, Antony Pavlov wrote:
-> On Mon, 17 Apr 2017 13:42:10 +0300
-> Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> 
-> > At the moment of_new_property() uses xfunctions for memory
-> > allocation so we can use xstrdup() instead of strdup()
-> > for code simplification.
-> > 
-> > A side effect of this commmit is that
-> > the of_new_property() function can't return NULL
-> > anymore if CONFIG_OFTREE is set.
-> 
-> If of_new_property() can't return NULL we can skip all numerous
-> checks after of_new_property() call. So the checks are actual only
-> if CONFIG_OFTREE isn't set.
-> 
-> Have you any sugestions on removing of_new_property() return value checks?
-
-I'm not sure removing these checks is a good idea. One possible error
-return for of_new_property() could be -EEXIST. Right now we do not check
-is the property already exists and just create a second property with
-the same name. Also if you consider FIT images: These store a whole
-kernel in a device tree property, so the xmalloc() we have for
-allocating the data for the property might better be malloc() so that
-it can fail.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMTkvMDQvMTcgMTE6MTQsIFNhc2NoYSBIYXVlciB3cm90ZToKPiBPbiBXZWQsIEFwciAxOSwg
+MjAxNyBhdCAwNjowNDoxN1BNICswODAwLCDlvKDlv6DlsbEgd3JvdGU6Cj4+IEh1c2ggZG9lcyBu
+b3Qgc3VwcG9ydCBjb21tYW5kICBzdWJzdGl0dXRpb24KPj4gSW4gYmFyZWJveCBpcyB0aGVyZSBz
+b21lIHRvIHNldCB2YXIgZnJvbSBhIGNvbW1hbmQgb3V0cHV0Pwo+PiBPciBpcyB0aGVyZSBhIGNv
+bW1hbmQgdG8gZG8gaXQ/Cj4KPiBUaGVyZSBpcyBubyB3YXkgdG8gc2V0IGEgdmFyaWFibGUgZnJv
+bSBhIGNvbW1hbmQgb3V0cHV0LCBtb3N0bHkgYmVjYXVzZQo+IHRoaXMgd291bGQgYmUgcmVhbGx5
+IGhhcmQgdG8gaW1wbGVtZW50LiBIb3dldmVyLCBzb21lIGNvbW1hbmRzIHN1cHBvcnQKPiBzZXR0
+aW5nIGEgdmFyaWFibGUgZGlyZWN0bHksIGxpa2UgZm9yIGV4YW1wbGUgdGhlIGJhc2VuYW1lIGNv
+bW1hbmQuCj4gV2hpY2ggY29tbWFuZCBvdXRwdXQgZG8geW91IHdhbnQgdG8gaGF2ZSBpbiBhIHZh
+cmlhYmxlPwoKSSBndWVzcyBpdCB3b3VsZCBiZSBhIG5pY2UgbGl0dGxlIHByb2plY3QgZm9yIHNv
+bWVvbmUsIG1heWJlIEdvb2dsZSAKU3VtbWVyIG9mIENvZGUgaWYgdGhhdCdzIHN0aWxsIGdvaW5n
+PyAgQWZ0ZXIgYWxsLCBNUy1ET1MgaGFzIGZpbGUgCnJlZGlyZWN0aW9uIGFuZCBwcmltaXRpdmUg
+cGlwZWxpbmUgc3VwcG9ydCwgc28gSSBndWVzcyBpdCdzIGRvYWJsZS4KCi0tIAotPSggSWFuIEFi
+Ym90dCBAIE1FViBMdGQuICAgIEUtbWFpbDogPGFiYm90dGlAbWV2LmNvLnVrPiApPS0KLT0oICAg
+ICAgICAgICAgICAgICAgICAgICAgICBXZWI6IGh0dHA6Ly93d3cubWV2LmNvLnVrLyAgKT0tCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
