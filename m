@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d0ksu-0003Xk-3g
- for barebox@lists.infradead.org; Wed, 19 Apr 2017 08:22:44 +0000
-Date: Wed, 19 Apr 2017 10:22:22 +0200
+ id 1d0ksP-0003XJ-Sw
+ for barebox@lists.infradead.org; Wed, 19 Apr 2017 08:22:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170419082222.mohjbxbj2doxuywj@pengutronix.de>
-References: <20170331070346.26878-1-s.hauer@pengutronix.de>
- <20170331070346.26878-17-s.hauer@pengutronix.de>
- <20170415085325.GD20400@ravnborg.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170415085325.GD20400@ravnborg.org>
+Date: Wed, 19 Apr 2017 10:21:51 +0200
+Message-Id: <20170419082151.21841-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,38 +14,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 16/42] state: Drop cache bucket
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] state: backend_storage: Set needs_refresh back to 0 after
+ refreshing
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Sam,
+Set needs_refresh back to 0 after refreshing so that we do not refresh
+it again without need. This would only happen when we read the state
+from the storage multiple times, which normally is not the case.
+However, it's more consistent like this.
 
-On Sat, Apr 15, 2017 at 10:53:25AM +0200, Sam Ravnborg wrote:
-> > +	if (memcmp(bucket->buf, buf, len))
-> > +		goto refresh;
-> > +
-> > +	return 0;
-> > +
-> > +refresh:
-> > +	ret = bucket->write(bucket, buf, len);
-> 
-> In the code above we check needs_refresh and len.
-> But needs_refresh is never set back to 0 so it looks like we will refresh it too often.
-> The same with the len argument.
+Reported-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/state/backend_storage.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-You are right, I just sent a patch.
-
-Sascha
-
+diff --git a/common/state/backend_storage.c b/common/state/backend_storage.c
+index 9ed6ad79ac..8d24f7053d 100644
+--- a/common/state/backend_storage.c
++++ b/common/state/backend_storage.c
+@@ -110,12 +110,14 @@ static int bucket_refresh(struct state_backend_storage *storage,
+ refresh:
+ 	ret = bucket->write(bucket, buf, len);
+ 
+-	if (ret)
++	if (ret) {
+ 		dev_warn(storage->dev, "Failed to restore bucket %d@0x%08lx\n",
+ 			 bucket->num, bucket->offset);
+-	else
++	} else {
+ 		dev_info(storage->dev, "restored bucket %d@0x%08lx\n",
+ 			 bucket->num, bucket->offset);
++		bucket->needs_refresh = 0;
++	}
+ 
+ 	return ret;
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
