@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d0mdC-0003Zg-RW
- for barebox@lists.infradead.org; Wed, 19 Apr 2017 10:14:40 +0000
-Date: Wed, 19 Apr 2017 12:14:10 +0200
+ id 1d0miE-0005jE-R9
+ for barebox@lists.infradead.org; Wed, 19 Apr 2017 10:19:52 +0000
+Date: Wed, 19 Apr 2017 12:19:28 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170419101410.ozjeh4frxdfujn73@pengutronix.de>
-References: <ec298b0f-90cb-5ce0-0a26-ab89836ad687@126.com>
+Message-ID: <20170419101928.5khm52lba5o4bj6s@pengutronix.de>
+References: <20170417104210.8196-1-antonynpavlov@gmail.com>
+ <20170417104210.8196-3-antonynpavlov@gmail.com>
+ <20170419132026.5ac56ed0b7fc52b8ad61477d@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <ec298b0f-90cb-5ce0-0a26-ab89836ad687@126.com>
+In-Reply-To: <20170419132026.5ac56ed0b7fc52b8ad61477d@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,28 +20,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Howto set var from command output
-To: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
+Subject: Re: [PATCH 2/2] of: base: of_new_property(): use xstrdup() instead
+ of strdup()
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-T24gV2VkLCBBcHIgMTksIDIwMTcgYXQgMDY6MDQ6MTdQTSArMDgwMCwg5byg5b+g5bGxIHdyb3Rl
-Ogo+IEh1c2ggZG9lcyBub3Qgc3VwcG9ydCBjb21tYW5kICBzdWJzdGl0dXRpb24KPiBJbiBiYXJl
-Ym94IGlzIHRoZXJlIHNvbWUgdG8gc2V0IHZhciBmcm9tIGEgY29tbWFuZCBvdXRwdXQ/Cj4gT3Ig
-aXMgdGhlcmUgYSBjb21tYW5kIHRvIGRvIGl0PwoKVGhlcmUgaXMgbm8gd2F5IHRvIHNldCBhIHZh
-cmlhYmxlIGZyb20gYSBjb21tYW5kIG91dHB1dCwgbW9zdGx5IGJlY2F1c2UKdGhpcyB3b3VsZCBi
-ZSByZWFsbHkgaGFyZCB0byBpbXBsZW1lbnQuIEhvd2V2ZXIsIHNvbWUgY29tbWFuZHMgc3VwcG9y
-dApzZXR0aW5nIGEgdmFyaWFibGUgZGlyZWN0bHksIGxpa2UgZm9yIGV4YW1wbGUgdGhlIGJhc2Vu
-YW1lIGNvbW1hbmQuCldoaWNoIGNvbW1hbmQgb3V0cHV0IGRvIHlvdSB3YW50IHRvIGhhdmUgaW4g
-YSB2YXJpYWJsZT8KClNhc2NoYQoKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExp
-bnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRl
-LyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTog
-KzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAg
-ICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+On Wed, Apr 19, 2017 at 01:20:26PM +0300, Antony Pavlov wrote:
+> On Mon, 17 Apr 2017 13:42:10 +0300
+> Antony Pavlov <antonynpavlov@gmail.com> wrote:
+> 
+> > At the moment of_new_property() uses xfunctions for memory
+> > allocation so we can use xstrdup() instead of strdup()
+> > for code simplification.
+> > 
+> > A side effect of this commmit is that
+> > the of_new_property() function can't return NULL
+> > anymore if CONFIG_OFTREE is set.
+> 
+> If of_new_property() can't return NULL we can skip all numerous
+> checks after of_new_property() call. So the checks are actual only
+> if CONFIG_OFTREE isn't set.
+> 
+> Have you any sugestions on removing of_new_property() return value checks?
+
+I'm not sure removing these checks is a good idea. One possible error
+return for of_new_property() could be -EEXIST. Right now we do not check
+is the property already exists and just create a second property with
+the same name. Also if you consider FIT images: These store a whole
+kernel in a device tree property, so the xmalloc() we have for
+allocating the data for the property might better be malloc() so that
+it can fail.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
