@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from gandharva.secretlabs.de ([5.9.72.18])
- by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d1VH9-0007C5-Oi
- for barebox@lists.infradead.org; Fri, 21 Apr 2017 09:54:53 +0000
-Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
-From: Holger Freyther <holger@moiji-mobile.com>
-In-Reply-To: <417131492630253@web37j.yandex.ru>
-Date: Fri, 21 Apr 2017 11:54:21 +0200
-Message-Id: <AC3F3867-8E54-40D9-8CF1-3A1DD4FFAE31@moiji-mobile.com>
-References: <CCE0355C-0078-435E-A307-9D64235CC014@moiji-mobile.com>
- <2CBFB5C4-AB2B-448E-9127-DEBE0B12E168@moiji-mobile.com>
- <20170419103108.bmocd6whapavxs4q@pengutronix.de>
- <417131492630253@web37j.yandex.ru>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1d1XtT-0003T0-LV
+ for barebox@lists.infradead.org; Fri, 21 Apr 2017 12:42:37 +0000
+Date: Fri, 21 Apr 2017 14:42:10 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170421124209.sgsgwl4hoe33qd7a@pengutronix.de>
+References: <20170421095325.7142-1-abbotti@mev.co.uk>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170421095325.7142-1-abbotti@mev.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,22 +18,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Linking issue with ld.bfd 2.28.0.20170307
-To: =?utf-8?B?0J/QsNC90L7QsiDQkNC90LTRgNC10Lk=?= <rockford@yandex.ru>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] state: Fix "pack" returning freed data for DTB backend
+To: Ian Abbott <abbotti@mev.co.uk>
+Cc: barebox@lists.infradead.org, Norbert Wiedmann <info@n-wiedmann.de>
 
-Cj4gT24gMTkuIEFwciAyMDE3LCBhdCAyMTozMCwg0J/QsNC90L7QsiDQkNC90LTRgNC10LkgPHJv
-Y2tmb3JkQHlhbmRleC5ydT4gd3JvdGU6Cj4gCj4gSGkhCj4gCj4gVS1ib290IGhhcyBmaXggZm9y
-IHRoaXMgaXNzdWU6Cj4gaHR0cDovL2dpdC5kZW54LmRlLz9wPXUtYm9vdC5naXQ7YT1jb21taXQ7
-aD1lMzkxYjFlNjRiMGJkNjU3MDlhMjhhNDc2NGFmZTRmMzJkNDA4MjQzCj4gCj4gV2l0aCBhdHRh
-Y2hlZCBwYXRjaCBJIHdhcyBhYmxlIHRvIGJ1aWxkIGJhcmVib3ggd2l0aCBuZXcgbGQuIFRlc3Rl
-ZCBvbiBpbXg2IGFyY2ggb25seS4KCgpUaGFuayB5b3UhCgpQYXNzaW5nIC0tbm8tZHluYW1pYyBk
-b2VzIGxpbmsgdGhlIGJhcmVib3ggYmluYXJ5LiBJIHdpbGwgdHJ5IHRvIHRlc3QgdGhlIHJlc3Vs
-dGluZyBiaW5hcnkgc29vbi4KCmhvbGdlcgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
-ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
-Ym94Cg==
+On Fri, Apr 21, 2017 at 10:53:25AM +0100, Ian Abbott wrote:
+> `state_backend_format_dtb_pack()` passes a buffer containing state
+> packed in flattened DTB format back to its caller via its `buf`
+> parameter.  It then frees the buffer before returning.  This means the
+> caller (`state_save()`) will be working on freed buffer contents before
+> freeing the buffer a second time itself.  Fix it by removing the
+> spurious call to `free()`.
+> 
+> This should fix a bug reported by Norbert Wiedmann in
+> <http://lists.infradead.org/pipermail/barebox/2017-April/029980.html>.
+> 
+> Cc: Norbert Wiedmann <info@n-wiedmann.de>
+> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+
+Applied, thanks
+
+Sascha
+
+> ---
+> As reported by Norbert, there is an identical bug in the "dt-utils"
+> package.
+> ---
+>  common/state/backend_format_dtb.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/common/state/backend_format_dtb.c b/common/state/backend_format_dtb.c
+> index 55fa1fc59..e88cda499 100644
+> --- a/common/state/backend_format_dtb.c
+> +++ b/common/state/backend_format_dtb.c
+> @@ -120,8 +120,6 @@ static int state_backend_format_dtb_pack(struct state_backend_format *format,
+>  		of_delete_node(fdtb->root);
+>  	fdtb->root = root;
+>  
+> -	free(fdt);
+> -
+>  	return 0;
+>  }
+>  
+> -- 
+> 2.11.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
