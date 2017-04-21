@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp117.ord1c.emailsrvr.com ([108.166.43.117])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d1756-000636-38
- for barebox@lists.infradead.org; Thu, 20 Apr 2017 08:04:50 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 20 Apr 2017 10:04:22 +0200
-Message-Id: <20170420080422.13210-1-s.hauer@pengutronix.de>
+ id 1d1VGM-00070i-4I
+ for barebox@lists.infradead.org; Fri, 21 Apr 2017 09:54:04 +0000
+From: Ian Abbott <abbotti@mev.co.uk>
+Date: Fri, 21 Apr 2017 10:53:25 +0100
+Message-Id: <20170421095325.7142-1-abbotti@mev.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +19,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: cache-l2x0: honour aux_val when determing way size
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] state: Fix "pack" returning freed data for DTB backend
+To: barebox@lists.infradead.org
+Cc: Ian Abbott <abbotti@mev.co.uk>, Norbert Wiedmann <info@n-wiedmann.de>
 
-l2x0_init() allows to overwrite bits in the AUX_CTRL register
-using the aux_val/aux_mask arguments. On i.MX35 this is used
-to pass a correct AUX_CTRL value to overwrite bogus reset values
-for this register. To make this work we have to apply
-aux_val/aux_mask before using the AUX_CTRL value to determine the
-way size.
+`state_backend_format_dtb_pack()` passes a buffer containing state
+packed in flattened DTB format back to its caller via its `buf`
+parameter.  It then frees the buffer before returning.  This means the
+caller (`state_save()`) will be working on freed buffer contents before
+freeing the buffer a second time itself.  Fix it by removing the
+spurious call to `free()`.
 
-This fixes: 3f7e890da7 ARM: l2x0: Implement L310 support
-Before this commit the way size was hardcoded to 8.
+This should fix a bug reported by Norbert Wiedmann in
+<http://lists.infradead.org/pipermail/barebox/2017-April/029980.html>.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Norbert Wiedmann <info@n-wiedmann.de>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
 ---
- arch/arm/cpu/cache-l2x0.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+As reported by Norbert, there is an identical bug in the "dt-utils"
+package.
+---
+ common/state/backend_format_dtb.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm/cpu/cache-l2x0.c b/arch/arm/cpu/cache-l2x0.c
-index 0aa2482321..8e0fff66d5 100644
---- a/arch/arm/cpu/cache-l2x0.c
-+++ b/arch/arm/cpu/cache-l2x0.c
-@@ -139,6 +139,9 @@ void l2x0_init(void __iomem *base, __u32 aux_val, __u32 aux_mask)
- 	cache_id = readl(l2x0_base + L2X0_CACHE_ID);
- 	aux = readl(l2x0_base + L2X0_AUX_CTRL);
+diff --git a/common/state/backend_format_dtb.c b/common/state/backend_format_dtb.c
+index 55fa1fc59..e88cda499 100644
+--- a/common/state/backend_format_dtb.c
++++ b/common/state/backend_format_dtb.c
+@@ -120,8 +120,6 @@ static int state_backend_format_dtb_pack(struct state_backend_format *format,
+ 		of_delete_node(fdtb->root);
+ 	fdtb->root = root;
  
-+	aux &= aux_mask;
-+	aux |= aux_val;
-+
- 	/* Determine the number of ways */
- 	switch (cache_id & L2X0_CACHE_ID_PART_MASK) {
- 	case L2X0_CACHE_ID_PART_L310:
-@@ -169,10 +172,6 @@ void l2x0_init(void __iomem *base, __u32 aux_val, __u32 aux_mask)
- 	if (!(readl(l2x0_base + L2X0_CTRL) & 1)) {
- 
- 		/* l2x0 controller is disabled */
+-	free(fdt);
 -
--		aux = readl(l2x0_base + L2X0_AUX_CTRL);
--		aux &= aux_mask;
--		aux |= aux_val;
- 		writel(aux, l2x0_base + L2X0_AUX_CTRL);
+ 	return 0;
+ }
  
- 		l2x0_inv_all();
 -- 
 2.11.0
 
