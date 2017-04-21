@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x22f.google.com ([2a00:1450:4010:c07::22f])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d1XtT-0003T0-LV
- for barebox@lists.infradead.org; Fri, 21 Apr 2017 12:42:37 +0000
-Date: Fri, 21 Apr 2017 14:42:10 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170421124209.sgsgwl4hoe33qd7a@pengutronix.de>
-References: <20170421095325.7142-1-abbotti@mev.co.uk>
+ id 1d1boS-0000v6-6j
+ for barebox@lists.infradead.org; Fri, 21 Apr 2017 16:53:42 +0000
+Received: by mail-lf0-x22f.google.com with SMTP id c80so47792531lfh.3
+ for <barebox@lists.infradead.org>; Fri, 21 Apr 2017 09:53:19 -0700 (PDT)
+Date: Fri, 21 Apr 2017 19:53:13 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20170421165313.GD16849@berta>
+References: <20170414101051.GB16849@berta>
+ <20170419080723.cq3cs7djdshvvlgg@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170421095325.7142-1-abbotti@mev.co.uk>
+In-Reply-To: <20170419080723.cq3cs7djdshvvlgg@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,63 +25,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] state: Fix "pack" returning freed data for DTB backend
-To: Ian Abbott <abbotti@mev.co.uk>
-Cc: barebox@lists.infradead.org, Norbert Wiedmann <info@n-wiedmann.de>
+Subject: Re: cp: incorrect behaviour when copying recursively
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Fri, Apr 21, 2017 at 10:53:25AM +0100, Ian Abbott wrote:
-> `state_backend_format_dtb_pack()` passes a buffer containing state
-> packed in flattened DTB format back to its caller via its `buf`
-> parameter.  It then frees the buffer before returning.  This means the
-> caller (`state_save()`) will be working on freed buffer contents before
-> freeing the buffer a second time itself.  Fix it by removing the
-> spurious call to `free()`.
+Hi Sasha,
+
+On Wed, Apr 19, 2017 at 10:07:23AM +0200, Sascha Hauer wrote:
+> Hi Peter,
 > 
-> This should fix a bug reported by Norbert Wiedmann in
-> <http://lists.infradead.org/pipermail/barebox/2017-April/029980.html>.
+> On Fri, Apr 14, 2017 at 01:10:51PM +0300, Peter Mamonov wrote:
+> > Hi,
+> > 
+> > The "cp -r <src> <dst>" command omits top directory, when the trailing "/" is 
+> > present in the <src> string. Here is the test case:
 > 
-> Cc: Norbert Wiedmann <info@n-wiedmann.de>
-> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+> I can confirm that. It turned out this is because we used GNU basename
+> in barebox, but we should use POSIX basename. Please check the series
+> I just sent out.
 
-Applied, thanks
+Tested the `next` branch: everything works as expected.
 
-Sascha
+Thanks!
+Peter
 
-> ---
-> As reported by Norbert, there is an identical bug in the "dt-utils"
-> package.
-> ---
->  common/state/backend_format_dtb.c | 2 --
->  1 file changed, 2 deletions(-)
 > 
-> diff --git a/common/state/backend_format_dtb.c b/common/state/backend_format_dtb.c
-> index 55fa1fc59..e88cda499 100644
-> --- a/common/state/backend_format_dtb.c
-> +++ b/common/state/backend_format_dtb.c
-> @@ -120,8 +120,6 @@ static int state_backend_format_dtb_pack(struct state_backend_format *format,
->  		of_delete_node(fdtb->root);
->  	fdtb->root = root;
->  
-> -	free(fdt);
-> -
->  	return 0;
->  }
->  
+> Sascha
+> 
 > -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
