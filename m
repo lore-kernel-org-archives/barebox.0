@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22f.google.com ([2a00:1450:4010:c07::22f])
+Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d1boS-0000v6-6j
- for barebox@lists.infradead.org; Fri, 21 Apr 2017 16:53:42 +0000
-Received: by mail-lf0-x22f.google.com with SMTP id c80so47792531lfh.3
- for <barebox@lists.infradead.org>; Fri, 21 Apr 2017 09:53:19 -0700 (PDT)
-Date: Fri, 21 Apr 2017 19:53:13 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20170421165313.GD16849@berta>
-References: <20170414101051.GB16849@berta>
- <20170419080723.cq3cs7djdshvvlgg@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170419080723.cq3cs7djdshvvlgg@pengutronix.de>
+ id 1d2LTT-000353-Fb
+ for barebox@lists.infradead.org; Sun, 23 Apr 2017 17:39:08 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Sun, 23 Apr 2017 19:37:40 +0200
+Message-Id: <1492969061-12273-2-git-send-email-akurz@blala.de>
+In-Reply-To: <1492969061-12273-1-git-send-email-akurz@blala.de>
+References: <1492969061-12273-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,42 +16,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: cp: incorrect behaviour when copying recursively
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 2/3] ARM: i.MX50 clock: add clock for USB physbase
+To: barebox@lists.infradead.org
+Cc: Alexander Kurz <akurz@blala.de>
 
-Hi Sasha,
+Add the USB physbase clock entry for i.MX50 SoC to enable USB device
+creation via DT.
 
-On Wed, Apr 19, 2017 at 10:07:23AM +0200, Sascha Hauer wrote:
-> Hi Peter,
-> 
-> On Fri, Apr 14, 2017 at 01:10:51PM +0300, Peter Mamonov wrote:
-> > Hi,
-> > 
-> > The "cp -r <src> <dst>" command omits top directory, when the trailing "/" is 
-> > present in the <src> string. Here is the test case:
-> 
-> I can confirm that. It turned out this is because we used GNU basename
-> in barebox, but we should use POSIX basename. Please check the series
-> I just sent out.
+Signed-off-by: Alexander Kurz <akurz@blala.de>
+---
+ drivers/clk/imx/clk-imx5.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Tested the `next` branch: everything works as expected.
+diff --git a/drivers/clk/imx/clk-imx5.c b/drivers/clk/imx/clk-imx5.c
+index c4c47a6..edebd25 100644
+--- a/drivers/clk/imx/clk-imx5.c
++++ b/drivers/clk/imx/clk-imx5.c
+@@ -313,6 +313,7 @@ int __init mx50_clocks_init(struct device_d *dev, void __iomem *regs)
+ 	clkdev_add_physbase(clks[IMX5_CLK_ESDHC_D_SEL], MX50_ESDHC4_BASE_ADDR, NULL);
+ 	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX50_PWM1_BASE_ADDR, "per");
+ 	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX50_PWM2_BASE_ADDR, "per");
++	clkdev_add_physbase(clks[IMX5_CLK_AHB], MX50_OTG_BASE_ADDR, NULL);
+ 
+ 	return 0;
+ }
+-- 
+2.1.4
 
-Thanks!
-Peter
-
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
