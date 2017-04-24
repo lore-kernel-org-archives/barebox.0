@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
+Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d2gXl-0002KE-Ci
- for barebox@lists.infradead.org; Mon, 24 Apr 2017 16:08:59 +0000
-Received: by mail-lf0-x241.google.com with SMTP id i3so17232044lfh.2
- for <barebox@lists.infradead.org>; Mon, 24 Apr 2017 09:08:33 -0700 (PDT)
+ id 1d2gyP-0008E9-AW
+ for barebox@lists.infradead.org; Mon, 24 Apr 2017 16:36:26 +0000
+Received: by mail-lf0-x242.google.com with SMTP id i3so17328333lfh.2
+ for <barebox@lists.infradead.org>; Mon, 24 Apr 2017 09:36:04 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 24 Apr 2017 19:08:16 +0300
-Message-Id: <20170424160816.20936-1-antonynpavlov@gmail.com>
+Date: Mon, 24 Apr 2017 19:35:59 +0300
+Message-Id: <20170424163559.22379-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,38 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] readline_simple: drop unusable u-boot legacy stuff
+Subject: [PATCH] eeprom: at24: add the "read-only" dt parameter support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- lib/readline_simple.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ drivers/eeprom/at24.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/lib/readline_simple.c b/lib/readline_simple.c
-index c2960665fb..c4d3d240e5 100644
---- a/lib/readline_simple.c
-+++ b/lib/readline_simple.c
-@@ -57,19 +57,6 @@ int readline (const char *prompt, char *line, int len)
- 	col = plen;
+diff --git a/drivers/eeprom/at24.c b/drivers/eeprom/at24.c
+index 1227286fbe..050a35aed8 100644
+--- a/drivers/eeprom/at24.c
++++ b/drivers/eeprom/at24.c
+@@ -454,6 +454,10 @@ static int at24_probe(struct device_d *dev)
+ 	at24->cdev.size = chip.byte_len;
  
- 	for (;;) {
--#ifdef CONFIG_BOOT_RETRY_TIME
--		while (!tstc()) {	/* while no incoming data */
--			if (retry_time >= 0 && get_ticks() > endtime)
--				return (-2);	/* timed out */
--		}
--#endif
--
--#ifdef CONFIG_SHOW_ACTIVITY
--		while (!tstc()) {
--			extern void show_activity(int arg);
--			show_activity(0);
--		}
--#endif
- 		c = getchar();
+ 	writable = !(chip.flags & AT24_FLAG_READONLY);
++
++	if (of_get_property(dev->device_node, "read-only", NULL))
++		writable = 0;
++
+ 	if (writable) {
+ 		unsigned write_max = chip.page_size;
  
- 		/*
 -- 
 2.11.0
 
