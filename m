@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d2h3A-0002Mt-RE
- for barebox@lists.infradead.org; Mon, 24 Apr 2017 16:41:24 +0000
-Received: by mail-lf0-x243.google.com with SMTP id 75so17319790lfs.3
- for <barebox@lists.infradead.org>; Mon, 24 Apr 2017 09:41:00 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 24 Apr 2017 19:40:54 +0300
-Message-Id: <20170424164054.22574-1-antonynpavlov@gmail.com>
+ id 1d2tGm-0003GK-EW
+ for barebox@lists.infradead.org; Tue, 25 Apr 2017 05:44:14 +0000
+Date: Tue, 25 Apr 2017 07:43:48 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170425054348.pi2pqtaiqxhdr5en@pengutronix.de>
+References: <20170424154408.15860-1-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170424154408.15860-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,33 +18,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands: add spd_decode to the 'hardware manipulation' group
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/2] globalvar: nv_device fixes
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- commands/spd_decode.c | 1 +
- 1 file changed, 1 insertion(+)
+On Mon, Apr 24, 2017 at 06:44:06PM +0300, Antony Pavlov wrote:
+> Antony Pavlov (2):
+>   globalvar: make nv_device static
+>   globalvar: don't use nv_device if CONFIG_NVVAR is disabled
+> 
+>  common/globalvar.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/commands/spd_decode.c b/commands/spd_decode.c
-index 2bedcf05c5..08b9589622 100644
---- a/commands/spd_decode.c
-+++ b/commands/spd_decode.c
-@@ -59,5 +59,6 @@ BAREBOX_CMD_START(spd_decode)
- 	.cmd	= do_spd_decode,
- 	BAREBOX_CMD_DESC("Decode SPD EEPROM")
- 	BAREBOX_CMD_OPTS("FILE")
-+	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
- 	BAREBOX_CMD_HELP(cmd_spd_decode_help)
- BAREBOX_CMD_END
+Applied, thanks
+
+Sascha
+
+> 
+> -- 
+> 2.11.0
+> 
+> 
+
 -- 
-2.11.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
