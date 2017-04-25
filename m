@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d2tHc-0003PU-5w
- for barebox@lists.infradead.org; Tue, 25 Apr 2017 05:45:05 +0000
-Date: Tue, 25 Apr 2017 07:44:42 +0200
+ id 1d2tI8-0004ps-PO
+ for barebox@lists.infradead.org; Tue, 25 Apr 2017 05:45:39 +0000
+Date: Tue, 25 Apr 2017 07:45:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170425054442.borbh2frns3pkcua@pengutronix.de>
-References: <20170424163559.22379-1-antonynpavlov@gmail.com>
+Message-ID: <20170425054515.dghlcpiaivnzdaj5@pengutronix.de>
+References: <20170424164054.22574-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170424163559.22379-1-antonynpavlov@gmail.com>
+In-Reply-To: <20170424164054.22574-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,36 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] eeprom: at24: add the "read-only" dt parameter support
+Subject: Re: [PATCH] commands: add spd_decode to the 'hardware manipulation'
+ group
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Apr 24, 2017 at 07:35:59PM +0300, Antony Pavlov wrote:
+On Mon, Apr 24, 2017 at 07:40:54PM +0300, Antony Pavlov wrote:
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  drivers/eeprom/at24.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  commands/spd_decode.c | 1 +
+>  1 file changed, 1 insertion(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/eeprom/at24.c b/drivers/eeprom/at24.c
-> index 1227286fbe..050a35aed8 100644
-> --- a/drivers/eeprom/at24.c
-> +++ b/drivers/eeprom/at24.c
-> @@ -454,6 +454,10 @@ static int at24_probe(struct device_d *dev)
->  	at24->cdev.size = chip.byte_len;
->  
->  	writable = !(chip.flags & AT24_FLAG_READONLY);
-> +
-> +	if (of_get_property(dev->device_node, "read-only", NULL))
-> +		writable = 0;
-> +
->  	if (writable) {
->  		unsigned write_max = chip.page_size;
->  
+> diff --git a/commands/spd_decode.c b/commands/spd_decode.c
+> index 2bedcf05c5..08b9589622 100644
+> --- a/commands/spd_decode.c
+> +++ b/commands/spd_decode.c
+> @@ -59,5 +59,6 @@ BAREBOX_CMD_START(spd_decode)
+>  	.cmd	= do_spd_decode,
+>  	BAREBOX_CMD_DESC("Decode SPD EEPROM")
+>  	BAREBOX_CMD_OPTS("FILE")
+> +	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
+>  	BAREBOX_CMD_HELP(cmd_spd_decode_help)
+>  BAREBOX_CMD_END
 > -- 
 > 2.11.0
 > 
