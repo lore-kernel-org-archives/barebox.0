@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d2uBT-0004F2-Ks
- for barebox@lists.infradead.org; Tue, 25 Apr 2017 06:42:50 +0000
-Date: Tue, 25 Apr 2017 08:42:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170425064225.ubl6v2fdorcfbu63@pengutronix.de>
-References: <CAGUZs0k15t=zEVwjsjUAxvRaow2c-UTm+0NKbkiYCXO_kAhPew@mail.gmail.com>
- <20170425055130.x7zhlezvpkb7hmx3@pengutronix.de>
- <CAGUZs0=NzW1dFyjRus0b_WzUMkoBwiL9A4f9U5ZWqH6q1r3jxw@mail.gmail.com>
+ id 1d2uF1-00071h-Qn
+ for barebox@lists.infradead.org; Tue, 25 Apr 2017 06:46:30 +0000
+Date: Tue, 25 Apr 2017 08:45:10 +0200 (CEST)
+From: Alexander Kurz <akurz@blala.de>
+In-Reply-To: <20170424133712.6r5zegwnwwkctf6o@pengutronix.de>
+Message-ID: <alpine.DEB.2.00.1704250844160.6159@blala.de>
+References: <1492969061-12273-1-git-send-email-akurz@blala.de>
+ <1492969061-12273-3-git-send-email-akurz@blala.de>
+ <20170424133712.6r5zegwnwwkctf6o@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAGUZs0=NzW1dFyjRus0b_WzUMkoBwiL9A4f9U5ZWqH6q1r3jxw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,49 +19,96 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Reach out "dirty" state value
-To: =?utf-8?B?w4dhxJ9sYXI=?= Kilimci <ckilimci@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2 3/3] ARM i.MX50: Add support for i.MX50 based Amazon
+ Kindle e-book readers
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-T24gVHVlLCBBcHIgMjUsIDIwMTcgYXQgMDk6MDg6MjVBTSArMDMwMCwgw4dhxJ9sYXIgS2lsaW1j
-aSB3cm90ZToKPiBIaSBTYXNjaGEsCj4gCj4gMjAxNy0wNC0yNSA4OjUxIEdNVCswMzowMCBTYXNj
-aGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ogo+ID4gSGkgw4dhxJ9sYXIsCj4gPgo+
-ID4gT24gTW9uLCBBcHIgMjQsIDIwMTcgYXQgMTE6MjA6NDdBTSArMDMwMCwgw4dhxJ9sYXIgS2ls
-aW1jaSB3cm90ZToKPiA+PiBIaSBhbGwsCj4gPj4KPiA+PiBJIHdvdWxkIGxpa2UgdG8gdXNlIHN0
-YXRlIGZyYW1ld29yayBhbmQgbm93IEkgY2FuIHJlYWQgdmFyaWFibGVzIGZyb20KPiA+PiBib3Ro
-IGJhcmVib3ggYW5kIHJlZ3VsYXIga2VybmVsIHNwYWNlLiBJbiBhZGRpdGlvbiwgaWYgSSBjYW4g
-Y2hhbmdlCj4gPj4gZnJvbSBiYXJlYm94LCBJIGNhbiBzdWNjZXNzZnVsbHkgcmVhZCB0aGUgY2hh
-bmdlcyBmcm9tIGtlcm5lbCBzcGFjZQo+ID4+IGJ1dCBpZiBJIGNoYW5nZSBmcm9tIGtlcm5lbCBz
-cGFjZSwgSSBjb3VsZCBub3QgcmVhY2ggb3V0IHRoZSBuZXcgdmFsdWUKPiA+PiBmcm9tIGJhcmVi
-b3guIFRoZSBkaXJ0eSB2YXJpYWJsZSBpcyBzZXQgYW5kIEkgY2FuIHNlZSB0aGUgbmV3IHZhbHVl
-Cj4gPj4gZnJvbSBlZXByb20gKHdoZXJlIEkgc3RvcmUgdGhlIHZhbHVlcykgYnV0IEkgZ3Vlc3Mg
-dGhlcmUgd291bGQgYmUKPiA+PiBiZXR0ZXIgd2F5IHRvIHJlYWNoIG91dCB0aGUgImRpcnR5IiB2
-YWx1ZXMuIFNvLCBob3cgY2FuIEkgcmVhZCBsYXN0Cj4gPj4gdmFsdWUgZm9yIHRoYXQgc3RhdGUg
-dmFyaWFibGU/Cj4gPgo+ID4gSWYgeW91IGdldCBvdXRkYXRlZCB2YXJpYWJsZXMgaW4gYmFyZWJv
-eCB0aGF0J3MgYSBidWcuIFlvdSBhcmUgb24gbGF0ZXN0Cj4gPiBtYXN0ZXIsIHJpZ2h0PyBEbyB5
-b3UgaGF2ZSBzdHJpZGVzaXplIHNwZWNpZmllZCBpbiB0aGUgZGV2aWNldHJlZT8KPiAKPiBZZXMs
-IEkgYW0gb24gdGhlIGxhdGVzdCBtYXN0ZXIuIEFuZCB5ZXMsIEkgaGF2ZSBzcGVjaWZpZWQgc3Ry
-aWRzaXplLgo+IEhlcmUgaXMgbXkgb2ZfZHVtcCBvZiBteSBzdGF0ZSBkZXZpY2U6Cj4gCj4gYmFy
-ZWJveEBQaHl0ZWMgcGh5Q09SRSBBTTMzNXg6LyBvZl9kdW1wIC9zdGF0ZQo+IHN0YXRlIHsKPiAg
-ICAgICAgIG1hZ2ljID0gPDB4NGFhZWYzOTM+Owo+ICAgICAgICAgY29tcGF0aWJsZSA9ICJiYXJl
-Ym94LHN0YXRlIjsKPiAgICAgICAgIGJhY2tlbmQtdHlwZSA9ICJyYXciOwo+ICAgICAgICAgYmFj
-a2VuZCA9IDwweDNmPjsKPiAgICAgICAgIGJhY2tlbmQtc3RvcmFnZS10eXBlID0gImRpcmVjdCI7
-Cj4gICAgICAgICBiYWNrZW5kLXN0cmlkZXNpemUgPSA8MHgxMD47CgpUaGUgc3RyaWRlc2l6ZSBp
-cyB0b28gc21hbGwuIEl0IG11c3QgYmUgYXQgbGVhc3QgdGhlIHNpemUgb2Ygb25lIHN0YXRlCmlu
-c3RhbmNlIHN0b3JhZ2Ugc3BhY2Ugd2hpY2ggaXMgdGhlIHNpemUgb2YgeW91ciBkYXRhICgweDIw
-KSBhbmQgdGhlCnNpemUgb2YgdGhlIGhlYWRlciAoMHhjKSwgc28gdG90YWwgMHgyYy4gSG93ZXZl
-ciwgSSByZWNvbW1lbmQgYSBiaWdnZXIKdmFsdWUsIG1heWJlIDB4NDAgb3IgMHg4MC4KVGhlcmUg
-c2hvdWxkIGJlIGFuIGVycm9yIG1lc3NhZ2Ugd2hlbiB0aGUgc3RyaWRlc2l6ZSBpcyB0b28gc21h
-bGwuCgpTYXNjaGEKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0
-aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWlu
-ZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEt
-MjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAg
-fCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
-cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
-Zm8vYmFyZWJveAo=
+Hi Sasha,
+thanks for noting and fixing those two issues,
+it's perfectly fine for me.
+
+Thanks, Alexander
+
+On Mon, 24 Apr 2017, Sascha Hauer wrote:
+
+> Hi Alexander,
+> 
+> On Sun, Apr 23, 2017 at 07:37:41PM +0200, Alexander Kurz wrote:
+> > The Kindle Model No. D01100 (Kindle Wi-Fi), D01200 (Kindle Touch)
+> > and EY21 (Kindle Paperwhite) are refered as the Kindle 4th and 5th generation.
+> > Those models are based on an i.MX50 SoC and use LPDDR1 or LPDDR2 Memory.
+> > 
+> > The devices boot in internal boot mode from a build-in eMMC, alternatively
+> > some devices may be set into USB-downloader mode by pressing a specific key
+> > at startup.
+> > 
+> > Add support for the i.MX50 based Kindle device and make barebox a drop-in
+> > replacement for the factory shipped u-boot image.
+> > 
+> > Notable features:
+> > - Support for eMMC, USB, UART, I2C, SPI and Keys (except keyboard).
+> > - LPDDR1 and LPDDR2 setup is done via DCD, the same imximage may be used
+> >   for USB-startup and for installation.
+> > - Support for vendor specific ATAGs that are required for the Kindle-System.
+> > - usbserial barebox console access by pressing Select button at startup,
+> >   alternatively full console support on connector J14.
+> > 
+> > Signed-off-by: Alexander Kurz <akurz@blala.de>
+> > diff --git a/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/nv/autoboot_timeout b/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/nv/autoboot_timeout
+> > new file mode 100644
+> > index 0000000..00750ed
+> > --- /dev/null
+> > +++ b/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/nv/autoboot_timeout
+> > @@ -0,0 +1 @@
+> > +3
+> > diff --git a/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/nv/boot.default b/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/nv/boot.default
+> > new file mode 100644
+> > index 0000000..3118b7a
+> > --- /dev/null
+> > +++ b/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/nv/boot.default
+> > @@ -0,0 +1 @@
+> > +mmc_kernel
+> > diff --git a/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/nv/linux.bootargs.console b/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/nv/linux.bootargs.console
+> > new file mode 100644
+> > index 0000000..d775310
+> > --- /dev/null
+> > +++ b/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/nv/linux.bootargs.console
+> > @@ -0,0 +1 @@
+> > +console=ttymxc0,115200
+> 
+> This shouldn't be needed. barebox will automatically add
+> console=ttymxc0,115200 to the kernel command line when
+> this UART is used as console in barebox.
+> 
+> > diff --git a/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/nv/linux.bootargs.consoleblank b/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/nv/linux.bootargs.consoleblank
+> > new file mode 100644
+> > index 0000000..573541a
+> > --- /dev/null
+> > +++ b/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/nv/linux.bootargs.consoleblank
+> > @@ -0,0 +1 @@
+> > +0
+> 
+> This results in "0" being passed to the kernel command line. You
+> probably want to have "consoleblank=0", right?
+> 
+> I applied the series with these two things fixed. Is that ok for you?
+> 
+> Sascha
+> 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
