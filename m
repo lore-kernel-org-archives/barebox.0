@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d3Ghj-0003gO-6e
- for barebox@lists.infradead.org; Wed, 26 Apr 2017 06:45:36 +0000
-Date: Wed, 26 Apr 2017 08:45:13 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170426064513.5hlh4ijj2z72hhdt@pengutronix.de>
-References: <20170425085526.4037-1-l.stach@pengutronix.de>
+ id 1d3Nla-0005V3-Fr
+ for barebox@lists.infradead.org; Wed, 26 Apr 2017 14:18:06 +0000
+Received: by mail-lf0-x242.google.com with SMTP id 75so216295lfs.3
+ for <barebox@lists.infradead.org>; Wed, 26 Apr 2017 07:17:41 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed, 26 Apr 2017 17:17:34 +0300
+Message-Id: <20170426141734.18670-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170425085526.4037-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,57 +17,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] common: BLSPEC needs boot infrastructure and at
- least simple command support
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mtd: m25p80: make it possible to use 4K erase block
+To: barebox@lists.infradead.org
 
-On Tue, Apr 25, 2017 at 10:55:23AM +0200, Lucas Stach wrote:
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  common/Kconfig | 3 +++
->  1 file changed, 3 insertions(+)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/common/Kconfig b/common/Kconfig
-> index b075e582adae..8d026b41f9a1 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -645,6 +645,9 @@ config BOOTM_FORCE_SIGNED_IMAGES
->  config BLSPEC
->  	depends on BLOCK
->  	depends on FLEXIBLE_BOOTARGS
-> +	depends on !SHELL_NONE
-> +	select BOOT
-> +	select BOOTM
->  	select OFTREE
->  	bool
->  	prompt "Support bootloader spec"
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+V2UgYWxyZWFkeSBoYXZlIHRoZSBNVERfU1BJX05PUl9VU0VfNEtfU0VDVE9SUyBvcHRpb24gaGFu
+ZGxpbmcgaW4gQyBjb2RlCmZvciA0SyBlcmFzZSBibG9jayBzdXBwb3J0LiBBbGFzIHRoaXMgNEsg
+ZXJhc2UgYmxvY2sgc3VwcG9ydCBjb2RlCmNhbid0IGJlIHVzZWQgYmVjYXVzZSB0aGUgTVREX1NQ
+SV9OT1JfVVNFXzRLX1NFQ1RPUlMgb3B0aW9uIHN1cHBvcnQKaXMgbWlzc2VkIGluIEtjb25maWcu
+CgpUaGlzIHBhdGNoIGltcG9ydHMgbmVjZXNzYXJ5IEtjb25maWcgTVREX1NQSV9OT1JfVVNFXzRL
+X1NFQ1RPUlMgb3B0aW9uCmRlY2xhcmF0aW9uIGZyb20gbGludXggdjQuMTEtcmM4LgoKU2lnbmVk
+LW9mZi1ieTogQW50b255IFBhdmxvdiA8YW50b255bnBhdmxvdkBnbWFpbC5jb20+Ci0tLQogZHJp
+dmVycy9tdGQvc3BpLW5vci9LY29uZmlnIHwgMTQgKysrKysrKysrKysrKysKIDEgZmlsZSBjaGFu
+Z2VkLCAxNCBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvc3BpLW5vci9L
+Y29uZmlnIGIvZHJpdmVycy9tdGQvc3BpLW5vci9LY29uZmlnCmluZGV4IGE4NDU5MWZkZDEuLjhl
+ZGUzYzkwYmUgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbXRkL3NwaS1ub3IvS2NvbmZpZworKysgYi9k
+cml2ZXJzL210ZC9zcGktbm9yL0tjb25maWcKQEAgLTcsNiArNywyMCBAQCBtZW51Y29uZmlnIE1U
+RF9TUElfTk9SCiAKIGlmIE1URF9TUElfTk9SCiAKK2NvbmZpZyBNVERfU1BJX05PUl9VU0VfNEtf
+U0VDVE9SUworCWJvb2wgIlVzZSBzbWFsbCA0MDk2IEIgZXJhc2Ugc2VjdG9ycyIKKwlkZWZhdWx0
+IHkKKwloZWxwCisJICBNYW55IGZsYXNoIG1lbW9yaWVzIHN1cHBvcnQgZXJhc2luZyBzbWFsbCAo
+NDA5NiBCKSBzZWN0b3JzLiBEZXBlbmRpbmcKKwkgIG9uIHRoZSB1c2FnZSB0aGlzIGZlYXR1cmUg
+bWF5IHByb3ZpZGUgcGVyZm9ybWFuY2UgZ2FpbiBpbiBjb21wYXJpc29uCisJICB0byBlcmFzaW5n
+IHdob2xlIGJsb2NrcyAoMzIvNjQgS2lCKS4KKwkgIENoYW5naW5nIGEgc21hbGwgcGFydCBvZiB0
+aGUgZmxhc2gncyBjb250ZW50cyBpcyB1c3VhbGx5IGZhc3RlciB3aXRoCisJICBzbWFsbCBzZWN0
+b3JzLiBPbiB0aGUgb3RoZXIgaGFuZCBlcmFzaW5nIHNob3VsZCBiZSBmYXN0ZXIgd2hlbiB1c2lu
+ZworCSAgNjQgS2lCIGJsb2NrIGluc3RlYWQgb2YgMTYgw5cgNCBLaUIgc2VjdG9ycy4KKworCSAg
+UGxlYXNlIG5vdGUgdGhhdCBzb21lIHRvb2xzL2RyaXZlcnMvZmlsZXN5c3RlbXMgbWF5IG5vdCB3
+b3JrIHdpdGgKKwkgIDQwOTYgQiBlcmFzZSBzaXplIChlLmcuIFVCSUZTIHJlcXVpcmVzIDE1IEtp
+QiBhcyBhIG1pbmltdW0pLgorCiBjb25maWcgU1BJX0NBREVOQ0VfUVVBRFNQSQogCXRyaXN0YXRl
+ICJDYWRlbmNlIFF1YWQgU1BJIGNvbnRyb2xsZXIiCiAJaGVscAotLSAKMi4xMS4wCgoKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
+IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
+b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
