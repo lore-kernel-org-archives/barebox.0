@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x234.google.com ([2a00:1450:400c:c09::234])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d30So-0007aZ-4Y
- for barebox@lists.infradead.org; Tue, 25 Apr 2017 13:25:07 +0000
-Received: by mail-wm0-x234.google.com with SMTP id m123so96026364wma.0
- for <barebox@lists.infradead.org>; Tue, 25 Apr 2017 06:24:45 -0700 (PDT)
+ id 1d3GgV-0002Ic-Uh
+ for barebox@lists.infradead.org; Wed, 26 Apr 2017 06:44:22 +0000
+Date: Wed, 26 Apr 2017 08:43:54 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170426064354.aedrleshzalotvyb@pengutronix.de>
+References: <20170425063206.24083-1-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <CAGUZs0nENP5i-6xvQ9ASRdnLTwMpnhWUY+LUno2ZSAcVUc2TFg@mail.gmail.com>
-References: <CAGUZs0k15t=zEVwjsjUAxvRaow2c-UTm+0NKbkiYCXO_kAhPew@mail.gmail.com>
- <20170425055130.x7zhlezvpkb7hmx3@pengutronix.de>
- <CAGUZs0=NzW1dFyjRus0b_WzUMkoBwiL9A4f9U5ZWqH6q1r3jxw@mail.gmail.com>
- <20170425064225.ubl6v2fdorcfbu63@pengutronix.de>
- <CAGUZs0=7_Rg2pia3buPHytzLndjX0ai9JkAQ4RyeW7=SddH0Lw@mail.gmail.com>
- <CAGUZs0nENP5i-6xvQ9ASRdnLTwMpnhWUY+LUno2ZSAcVUc2TFg@mail.gmail.com>
-From: =?UTF-8?B?w4dhxJ9sYXIgS2lsaW1jaQ==?= <ckilimci@gmail.com>
-Date: Tue, 25 Apr 2017 16:24:43 +0300
-Message-ID: <CAGUZs0n3VJGb-eGpwRhC4LhdXE-Db4McjKgaJZ7S4bJnmHzK=Q@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20170425063206.24083-1-u.oelmann@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,23 +18,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Reach out "dirty" state value
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH] docs: update vendor URL for Vincell-LT
+To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-MjAxNy0wNC0yNSAxNjowOCBHTVQrMDM6MDAgw4dhxJ9sYXIgS2lsaW1jaSA8Y2tpbGltY2lAZ21h
-aWwuY29tPjoKPiBIaSBhZ2FpbiwKPgo+IEZvdW5kIHRoZSByZWFzb24uIEl0IGxvZ3MgaW4gdGhl
-IGJvb3Q6Cj4gc3RhdGU6IGludmFsaWQgaGVhZGVyIGNyYywgY2FsY3VsYXRlZCAweDNhMjVhMWUz
-LCBmb3VuZCAweDAwMjAwMDAwCj4gc3RhdGU6IGludmFsaWQgaGVhZGVyIGNyYywgY2FsY3VsYXRl
-ZCAweDIwM2U1ZWQ4LCBmb3VuZCAweGQwZGZiOTk0Cj4gc3RhdGU6IGxvYWQgZmFpbGVkIC0gdXNp
-bmcgZGVmYXVsdHMKPiBzdGF0ZSBzdGF0ZS40OiBiYWNrZW5kOiByYXcsIHBhdGg6IC9kZXYvZWVw
-cm9tMCwgb2ZfcGF0aDoKPiAvb2NwL2kyY0A0NGUwYjAwMC9lZXByb21ANTIKPgo+IFNvLCBkbyB5
-b3Uga25vdyB3aHk/CgpJdCBpcyB3b3JraW5nIHdpdGhvdXQgYW4gaXNzdWUgbm93LiBJIGFtIHVz
-aW5nIDIwMTcuMDMgdmVyc2lvbiBib3RoCmR0LXV0aWxzIGFuZCBiYXJlYm94LgoKCgotLSAKw4dh
-xJ9sYXIgS2lsaW1jaQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
-dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Tue, Apr 25, 2017 at 08:32:06AM +0200, Ulrich =D6lmann wrote:
+> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
+> ---
+>  Documentation/boards/imx/Garz-Fricke-Vincell.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Applied, thanks
+
+Sascha
+
+> =
+
+> diff --git a/Documentation/boards/imx/Garz-Fricke-Vincell.rst b/Documenta=
+tion/boards/imx/Garz-Fricke-Vincell.rst
+> index 2eb5f65c64f7..58ab0ab42f23 100644
+> --- a/Documentation/boards/imx/Garz-Fricke-Vincell.rst
+> +++ b/Documentation/boards/imx/Garz-Fricke-Vincell.rst
+> @@ -7,7 +7,7 @@ This CPU card is based on a Freescale i.MX53 CPU. The car=
+d is shipped with:
+>    * 512MiB synchronous dynamic RAM
+>    * microSD slot
+>  =
+
+> -see http://www.garz-fricke.com/vincell-lt-core_de.html for more informat=
+ion
+> +see http://www.garz-fricke.com/en/products/embedded-systems/single-board=
+-computer/ia-0086r/ for more information
+>  =
+
+>  =
+
+>  Bootstrapping barebox
+> -- =
+
+> 2.11.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
