@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1d45IZ-0008DF-69
- for barebox@lists.infradead.org; Fri, 28 Apr 2017 12:47:01 +0000
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+ by casper.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1d45IF-0001TN-Ou
+ for barebox@lists.infradead.org; Fri, 28 Apr 2017 12:46:42 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 90F5CA004EC
+ by root.phytec.de (Postfix) with ESMTP id 827E3A004D7
  for <barebox@lists.infradead.org>; Fri, 28 Apr 2017 14:46:54 +0200 (CEST)
 From: Daniel Schultz <d.schultz@phytec.de>
-Date: Fri, 28 Apr 2017 14:46:07 +0200
-Message-Id: <1493383568-27798-6-git-send-email-d.schultz@phytec.de>
+Date: Fri, 28 Apr 2017 14:46:05 +0200
+Message-Id: <1493383568-27798-4-git-send-email-d.schultz@phytec.de>
 In-Reply-To: <1493383568-27798-1-git-send-email-d.schultz@phytec.de>
 References: <1493383568-27798-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,84 +24,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] arm: boards: beaglebone: Update boot scripts
+Subject: [PATCH 4/7] arm: boards: phytec-som-am335x: Add automount script
 To: barebox@lists.infradead.org
 
-Remove the current SD boot script and add support for MMC, EMMC and
-network bootsources.
+Each boot source is mounted to either /mnt/mmc or /mnt/emmc. To make the
+not-mounted boot source available in Barebox, an automount script mounts
+this device to /mnt/{mmc, emmc}, if the directory will be accessed.
 
 Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 ---
- arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/emmc  |  9 +++++++++
- arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/mmc   |  9 +++++++++
- arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd    |  6 ------
- .../boards/beaglebone/defaultenv-beaglebone/init/bootsource | 13 +++++++++++++
- 4 files changed, 31 insertions(+), 6 deletions(-)
- create mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/emmc
- create mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/mmc
- delete mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
- create mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/init/bootsource
+ .../defaultenv-physom-am335x/init/automount           | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+ create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/automount
 
-diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/emmc b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/emmc
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/automount b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/automount
 new file mode 100644
-index 0000000..5734e3b
+index 0000000..3d109ec
 --- /dev/null
-+++ b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/emmc
-@@ -0,0 +1,9 @@
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/automount
+@@ -0,0 +1,19 @@
 +#!/bin/sh
 +
-+if [ -e /mnt/emmc/linuximage ]
-+	global.bootm.image=/mnt/emmc/linuximage
-+else
-+	global.bootm.image=/mnt/emmc/uImage
-+fi
-+global.bootm.oftree=/mnt/emmc/oftree
-+global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
-diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/mmc b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/mmc
-new file mode 100644
-index 0000000..e8bd769
---- /dev/null
-+++ b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/mmc
-@@ -0,0 +1,9 @@
-+#!/bin/sh
++# automount tftp server based on $eth0.serverip
 +
-+if [ -e /mnt/mmc/linuximage ]
-+	global.bootm.image=/mnt/mmc/linuximage
-+else
-+	global.bootm.image=/mnt/mmc/uImage
-+fi
-+global.bootm.oftree=/mnt/mmc/oftree
-+global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
-diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
-deleted file mode 100644
-index aa94b2f..0000000
---- a/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
-+++ /dev/null
-@@ -1,6 +0,0 @@
--#!/bin/sh
--
--global.bootm.image=/boot/uImage
--global.bootm.oftree=/boot/oftree
--#global.bootm.initrd=<path to initrd>
--global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootfstype=ext4 rootwait"
-diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/init/bootsource b/arch/arm/boards/beaglebone/defaultenv-beaglebone/init/bootsource
-new file mode 100644
-index 0000000..6301d1d
---- /dev/null
-+++ b/arch/arm/boards/beaglebone/defaultenv-beaglebone/init/bootsource
-@@ -0,0 +1,13 @@
-+#!/bin/sh
++mkdir -p /mnt/tftp
++automount /mnt/tftp 'ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp'
 +
-+if [ -n "$nv.boot.default" ]; then
-+    exit
-+fi
++# automount nfs server's nfsroot
++
++mkdir -p /mnt/nfs
++automount /mnt/nfs 'ifup eth0 && mount -t nfs ${eth0.serverip}:/home/${global.user}/nfsroot/${global.hostname} /mnt/nfs'
++
++#automount SD card and EMMC boot partitions
 +
 +if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
-+    global.boot.default="emmc mmc net"
-+elif [ $bootsource = mmc -a $bootsource_instance = 0 ]; then
-+    global.boot.default="mmc emmc net"
-+elif [ $bootsource = net ]; then
-+    global.boot.default="net emmc mmc"
++	automount /mnt/mmc '[ -e /dev/mmc0.0 ] && mount /dev/mmc0.0 /mnt/mmc'
++else
++	automount /mnt/emmc '[ -e /dev/mmc1.0 ] && mount /dev/mmc1.0 /mnt/emmc'
 +fi
 -- 
 1.9.1
