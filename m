@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d43Sa-0004hr-C6
- for barebox@lists.infradead.org; Fri, 28 Apr 2017 10:49:14 +0000
-Received: by mail-lf0-x241.google.com with SMTP id 75so6739112lfs.3
- for <barebox@lists.infradead.org>; Fri, 28 Apr 2017 03:48:51 -0700 (PDT)
-Date: Fri, 28 Apr 2017 13:57:27 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20170428135727.22c87f114377fac81b1c7a66@gmail.com>
-In-Reply-To: <20170428081848.bvfttqhjhfpewjqi@pengutronix.de>
-References: <20170426141734.18670-1-antonynpavlov@gmail.com>
- <20170428081848.bvfttqhjhfpewjqi@pengutronix.de>
-Mime-Version: 1.0
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1d45IC-0008As-7m
+ for barebox@lists.infradead.org; Fri, 28 Apr 2017 12:46:38 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 7A671A00422
+ for <barebox@lists.infradead.org>; Fri, 28 Apr 2017 14:46:54 +0200 (CEST)
+From: Daniel Schultz <d.schultz@phytec.de>
+Date: Fri, 28 Apr 2017 14:46:04 +0200
+Message-Id: <1493383568-27798-3-git-send-email-d.schultz@phytec.de>
+In-Reply-To: <1493383568-27798-1-git-send-email-d.schultz@phytec.de>
+References: <1493383568-27798-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,58 +19,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: m25p80: make it possible to use 4K erase block
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/7] arm: mach-omap: Change mountpoint of boot partitions
+To: barebox@lists.infradead.org
 
-On Fri, 28 Apr 2017 10:18:48 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+If using EMMC and SD as bootsources, mounting the boot partition of both
+devices to /boot makes trouble. Either the correct device is mounted to
+/boot or a remount of /boot has to be performed.
 
-> On Wed, Apr 26, 2017 at 05:17:34PM +0300, Antony Pavlov wrote:
-> > We already have the MTD_SPI_NOR_USE_4K_SECTORS option handling in C code
-> > for 4K erase block support. Alas this 4K erase block support code
-> > can't be used because the MTD_SPI_NOR_USE_4K_SECTORS option support
-> > is missed in Kconfig.
-> > =
+To ensure this problem each MMCn bootsource will be mounted to his own
+path in /mnt/{mmc,emmc}.
 
-> > This patch imports necessary Kconfig MTD_SPI_NOR_USE_4K_SECTORS option
-> > declaration from linux v4.11-rc8.
-> > =
+Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+---
+ arch/arm/mach-omap/omap_generic.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > ---
-> >  drivers/mtd/spi-nor/Kconfig | 14 ++++++++++++++
-> >  1 file changed, 14 insertions(+)
-> > =
+diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap_generic.c
+index 1d03eac..7c50806 100644
+--- a/arch/arm/mach-omap/omap_generic.c
++++ b/arch/arm/mach-omap/omap_generic.c
+@@ -113,10 +113,15 @@ const char *omap_get_bootmmc_devname(void)
+ }
+ 
+ #if defined(CONFIG_ENV_HANDLING)
+-#define ENV_PATH "/boot/barebox.env"
++#define MMC_PATH "/mnt/mmc/"
++#define MMC_ENV_PATH MMC_PATH "barebox.env"
++#define EMMC_PATH "/mnt/emmc/"
++#define EMMC_ENV_PATH EMMC_PATH "barebox.env"
+ static int omap_env_init(void)
+ {
+ 	char *partname;
++	char *mntpath;
++	char *envpath;
+ 	const char *diskdev;
+ 	int ret;
+ 
+@@ -132,15 +137,24 @@ static int omap_env_init(void)
+ 
+ 	partname = basprintf("/dev/%s.0", diskdev);
+ 
+-	mkdir("/boot", 0666);
+-	ret = mount(partname, "fat", "/boot", NULL);
++	if (bootsource_get_instance() == 1) {
++		mntpath = EMMC_PATH;
++		envpath = EMMC_ENV_PATH;
++	} else {
++		mntpath = MMC_PATH;
++		envpath = MMC_ENV_PATH;
++	}
++	mkdir("/mnt", 0666);
++	mkdir(MMC_PATH, 0666);
++	mkdir(EMMC_PATH, 0666);
++	ret = mount(partname, "fat", mntpath, NULL);
+ 	if (ret) {
+ 		pr_err("Failed to load environment: mount %s failed (%d)\n", partname, ret);
+ 		goto out;
+ 	}
+ 
+-	pr_debug("Loading default env from %s on device %s\n", ENV_PATH, partname);
+-	default_environment_path_set(ENV_PATH);
++	pr_debug("Loading default env from %s on device %s\n", envpath, partname);
++	default_environment_path_set(envpath);
+ 
+ out:
+ 	free(partname);
+-- 
+1.9.1
 
-> > diff --git a/drivers/mtd/spi-nor/Kconfig b/drivers/mtd/spi-nor/Kconfig
-> > index a84591fdd1..8ede3c90be 100644
-> > --- a/drivers/mtd/spi-nor/Kconfig
-> > +++ b/drivers/mtd/spi-nor/Kconfig
-> > @@ -7,6 +7,20 @@ menuconfig MTD_SPI_NOR
-> >  =
-
-> >  if MTD_SPI_NOR
-> >  =
-
-> > +config MTD_SPI_NOR_USE_4K_SECTORS
-> > +	bool "Use small 4096 B erase sectors"
-> > +	default y
-> =
-
-> This changes the default which breaks existing UBI users. Can you drop
-> this?
-
-Yes, we can drop this 'default y'.
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
