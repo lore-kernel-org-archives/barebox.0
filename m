@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d4768-0005BK-T5
- for barebox@lists.infradead.org; Fri, 28 Apr 2017 14:42:18 +0000
+ id 1d4769-0005BQ-00
+ for barebox@lists.infradead.org; Fri, 28 Apr 2017 14:42:20 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri, 28 Apr 2017 16:41:40 +0200
-Message-Id: <4bf3ce312dc1215817950962465cc03dc08f114c.1493390425.git-series.s.trumtrar@pengutronix.de>
+Date: Fri, 28 Apr 2017 16:41:44 +0200
+Message-Id: <bb3887e367ac422e50898ff261aca310bfa1ea9c.1493390425.git-series.s.trumtrar@pengutronix.de>
 In-Reply-To: <cover.b17594671f0f1ee5a936d08ad9512705c8fa52e5.1493390425.git-series.s.trumtrar@pengutronix.de>
 References: <cover.b17594671f0f1ee5a936d08ad9512705c8fa52e5.1493390425.git-series.s.trumtrar@pengutronix.de>
 In-Reply-To: <cover.b17594671f0f1ee5a936d08ad9512705c8fa52e5.1493390425.git-series.s.trumtrar@pengutronix.de>
@@ -23,155 +23,111 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/8] ARM: socfpga: make debug_ll configurable
+Subject: [PATCH v2 8/8] ARM: socfpga: add arria10 defconfig
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Allow configuring the serial port and clock rate
-instead of hardcoding it.
-
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/mach-socfpga/include/mach/debug_ll.h | 69 ++++++++++++--------
- common/Kconfig                                | 20 ++++++-
- 2 files changed, 64 insertions(+), 25 deletions(-)
+ arch/arm/configs/socfpga-arria10_defconfig | 89 +++++++++++++++++++++++-
+ 1 file changed, 89 insertions(+)
+ create mode 100644 arch/arm/configs/socfpga-arria10_defconfig
 
-diff --git a/arch/arm/mach-socfpga/include/mach/debug_ll.h b/arch/arm/mach-socfpga/include/mach/debug_ll.h
-index f378435970d8..4e906ea66edd 100644
---- a/arch/arm/mach-socfpga/include/mach/debug_ll.h
-+++ b/arch/arm/mach-socfpga/include/mach/debug_ll.h
-@@ -2,24 +2,33 @@
- #define   __MACH_DEBUG_LL_H__
- 
- #include <io.h>
-+#include <errno.h>
- 
--#define UART_BASE	0xffc02000
-+#ifdef CONFIG_DEBUG_LL
-+#define UART_BASE	CONFIG_DEBUG_SOCFPGA_UART_PHYS_ADDR
-+#endif
- 
- #define LSR_THRE	0x20	/* Xmit holding register empty */
--#define LSR		(5 << 2)
--#define THR		(0 << 2)
-+#define LSR_TEMT	0x40
- 
- #define LCR_BKSE	0x80	/* Bank select enable */
--#define LSR		(5 << 2)
--#define THR		(0 << 2)
--#define DLL		(0 << 2)
--#define IER		(1 << 2)
--#define DLM		(1 << 2)
--#define FCR		(2 << 2)
--#define LCR		(3 << 2)
--#define MCR		(4 << 2)
--#define MDR		(8 << 2)
-+#define LCRVAL		0x3
-+#define MCRVAL		0x3
-+#define FCRVAL		0xc1
-+
-+#define RBR		0x0
-+#define DLL		0x0
-+#define IER		0x4
-+#define DLM		0x4
-+#define FCR		0x8
-+#define LCR		0xc
-+#define MCR		0x10
-+#define LSR		0x14
-+#define MSR		0x18
-+#define SCR		0x1c
-+#define THR		0x30
- 
-+#ifdef CONFIG_DEBUG_LL
- static inline unsigned int ns16550_calc_divisor(unsigned int clk,
- 					 unsigned int baudrate)
- {
-@@ -28,19 +37,20 @@ static inline unsigned int ns16550_calc_divisor(unsigned int clk,
- 
- static inline void INIT_LL(void)
- {
--	unsigned int clk = 100000000;
--	unsigned int divisor = clk / 16 / 115200;
--
--	writeb(0x00, UART_BASE + LCR);
--	writeb(0x00, UART_BASE + IER);
--	writeb(0x07, UART_BASE + MDR);
--	writeb(LCR_BKSE, UART_BASE + LCR);
--	writeb(divisor & 0xff, UART_BASE + DLL);
--	writeb(divisor >> 8, UART_BASE + DLM);
--	writeb(0x03, UART_BASE + LCR);
--	writeb(0x03, UART_BASE + MCR);
--	writeb(0x07, UART_BASE + FCR);
--	writeb(0x00, UART_BASE + MDR);
-+	unsigned int div = ns16550_calc_divisor(CONFIG_DEBUG_SOCFPGA_UART_CLOCK,
-+						115200);
-+
-+	while ((readl(UART_BASE + LSR) & LSR_TEMT) == 0);
-+
-+	writel(0x00, UART_BASE + IER);
-+
-+	writel(LCR_BKSE, UART_BASE + LCR);
-+	writel(div & 0xff, UART_BASE + DLL);
-+	writel((div >> 8) & 0xff, UART_BASE + DLM);
-+	writel(LCRVAL, UART_BASE + LCR);
-+
-+	writel(MCRVAL, UART_BASE + MCR);
-+	writel(FCRVAL, UART_BASE + FCR);
- }
- 
- static inline void PUTC_LL(char c)
-@@ -52,4 +62,13 @@ static inline void PUTC_LL(char c)
- 	/* Wait to make sure it hits the line, in case we die too soon. */
- 	while ((readb(UART_BASE + LSR) & LSR_THRE) == 0);
- }
-+
-+#else
-+static inline unsigned int ns16550_calc_divisor(unsigned int clk,
-+					 unsigned int baudrate) {
-+	return -ENOSYS;
-+}
-+static inline void INIT_LL(void) {}
-+static inline void PUTC_LL(char c) {}
-+#endif
- #endif
-diff --git a/common/Kconfig b/common/Kconfig
-index f7ff04664d6c..1901c2a256b3 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1116,6 +1116,14 @@ config DEBUG_ROCKCHIP_UART
- 	  Say Y here if you want kernel low-level debugging support
- 	  on RK3XXX.
- 
-+config DEBUG_SOCFPGA_UART0
-+	bool "Use SOCFPGA UART0 for low-level debug"
-+	depends on ARCH_SOCFPGA
-+	help
-+	  Say Y here if you want kernel low-level debugging support
-+	  on SOCFPGA(Cyclone 5 and Arria 5) based platforms.
-+
-+
- endchoice
- 
- config DEBUG_IMX_UART_PORT
-@@ -1158,6 +1166,18 @@ config DEBUG_ROCKCHIP_UART_PORT
- 	  Choose UART port on which kernel low-level debug messages
- 	  should be output.
- 
-+config DEBUG_SOCFPGA_UART_PHYS_ADDR
-+	hex "Physical base address of debug UART" if DEBUG_LL
-+	default 0xffc02000 if DEBUG_SOCFPGA_UART0
-+	depends on ARCH_SOCFPGA
-+
-+config DEBUG_SOCFPGA_UART_CLOCK
-+	int "SoCFPGA UART debug clock" if DEBUG_LL
-+	default 100000000
-+	depends on ARCH_SOCFPGA
-+	help
-+	  Choose UART root clock.
-+
- config DEBUG_INITCALLS
- 	bool "Trace initcalls"
- 	help
+diff --git a/arch/arm/configs/socfpga-arria10_defconfig b/arch/arm/configs/socfpga-arria10_defconfig
+new file mode 100644
+index 000000000000..e661895d6e6c
+--- /dev/null
++++ b/arch/arm/configs/socfpga-arria10_defconfig
+@@ -0,0 +1,89 @@
++CONFIG_ARCH_SOCFPGA=y
++CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES=y
++CONFIG_THUMB2_BAREBOX=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_ARM_UNWIND=y
++CONFIG_MMU=y
++CONFIG_MALLOC_SIZE=0x0
++CONFIG_MALLOC_TLSF=y
++CONFIG_KALLSYMS=y
++CONFIG_RELOCATABLE=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++# CONFIG_TIMESTAMP is not set
++CONFIG_BOOTM_SHOW_TYPE=y
++CONFIG_BOOTM_VERBOSE=y
++CONFIG_BOOTM_INITRD=y
++CONFIG_BOOTM_OFTREE=y
++CONFIG_PBL_CONSOLE=y
++CONFIG_DEFAULT_COMPRESSION_LZO=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_POLLER=y
++CONFIG_STATE=y
++CONFIG_DEBUG_INFO=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_ARM_MMUINFO=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_FILETYPE=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA256SUM=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_CRC=y
++CONFIG_CMD_CRC_CMP=y
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_DETECT=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_BAREBOX_UPDATE=y
++CONFIG_CMD_FIRMWARELOAD=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_STATE=y
++CONFIG_NET=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_NET_RESOLV=y
++CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_OF_BAREBOX_ENV_IN_FS=y
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_DRIVER_NET_DESIGNWARE=y
++CONFIG_MICREL_PHY=y
++# CONFIG_SPI is not set
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++CONFIG_MCI_MMC_BOOT_PARTITIONS=y
++CONFIG_MCI_DW=y
++# CONFIG_PINCTRL is not set
++CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_WRITE=y
++CONFIG_FS_FAT_LFN=y
++CONFIG_ZLIB=y
++CONFIG_LZO_DECOMPRESS=y
++CONFIG_DIGEST_SHA256_ARM=y
 -- 
 git-series 0.9.1
 
