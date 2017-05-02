@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d5RgJ-00077n-DV
- for barebox@lists.infradead.org; Tue, 02 May 2017 06:53:09 +0000
-Date: Tue, 2 May 2017 08:52:43 +0200
+ id 1d5Ryb-0006Pa-N7
+ for barebox@lists.infradead.org; Tue, 02 May 2017 07:12:04 +0000
+Date: Tue, 2 May 2017 09:11:39 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170502065243.at6bsonkk3ya6odh@pengutronix.de>
+Message-ID: <20170502071139.ah4ukxeqqjn47i6s@pengutronix.de>
 References: <1493383568-27798-1-git-send-email-d.schultz@phytec.de>
- <1493383568-27798-3-git-send-email-d.schultz@phytec.de>
+ <1493383568-27798-6-git-send-email-d.schultz@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1493383568-27798-3-git-send-email-d.schultz@phytec.de>
+In-Reply-To: <1493383568-27798-6-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,73 +23,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/7] arm: mach-omap: Change mountpoint of boot partitions
+Subject: Re: [PATCH 6/7] arm: boards: beaglebone: Update boot scripts
 To: Daniel Schultz <d.schultz@phytec.de>
 Cc: barebox@lists.infradead.org
 
-Hi Daniel,
-
-On Fri, Apr 28, 2017 at 02:46:04PM +0200, Daniel Schultz wrote:
-> If using EMMC and SD as bootsources, mounting the boot partition of both
-> devices to /boot makes trouble. Either the correct device is mounted to
-> /boot or a remount of /boot has to be performed.
-> 
-> To ensure this problem each MMCn bootsource will be mounted to his own
-> path in /mnt/{mmc,emmc}.
+On Fri, Apr 28, 2017 at 02:46:07PM +0200, Daniel Schultz wrote:
+> Remove the current SD boot script and add support for MMC, EMMC and
+> network bootsources.
 > 
 > Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 > ---
->  arch/arm/mach-omap/omap_generic.c | 24 +++++++++++++++++++-----
->  1 file changed, 19 insertions(+), 5 deletions(-)
+>  arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/emmc  |  9 +++++++++
+>  arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/mmc   |  9 +++++++++
+>  arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd    |  6 ------
+>  .../boards/beaglebone/defaultenv-beaglebone/init/bootsource | 13 +++++++++++++
+>  4 files changed, 31 insertions(+), 6 deletions(-)
+>  create mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/emmc
+>  create mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/mmc
+>  delete mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
+>  create mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/init/bootsource
 > 
-> diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap_generic.c
-> index 1d03eac..7c50806 100644
-> --- a/arch/arm/mach-omap/omap_generic.c
-> +++ b/arch/arm/mach-omap/omap_generic.c
-> @@ -113,10 +113,15 @@ const char *omap_get_bootmmc_devname(void)
->  }
->  
->  #if defined(CONFIG_ENV_HANDLING)
-> -#define ENV_PATH "/boot/barebox.env"
-> +#define MMC_PATH "/mnt/mmc/"
-> +#define MMC_ENV_PATH MMC_PATH "barebox.env"
-> +#define EMMC_PATH "/mnt/emmc/"
-> +#define EMMC_ENV_PATH EMMC_PATH "barebox.env"
->  static int omap_env_init(void)
->  {
->  	char *partname;
-> +	char *mntpath;
-> +	char *envpath;
->  	const char *diskdev;
->  	int ret;
->  
-> @@ -132,15 +137,24 @@ static int omap_env_init(void)
->  
->  	partname = basprintf("/dev/%s.0", diskdev);
->  
-> -	mkdir("/boot", 0666);
-> -	ret = mount(partname, "fat", "/boot", NULL);
-> +	if (bootsource_get_instance() == 1) {
-> +		mntpath = EMMC_PATH;
-> +		envpath = EMMC_ENV_PATH;
-> +	} else {
-> +		mntpath = MMC_PATH;
-> +		envpath = MMC_ENV_PATH;
-> +	}
+> diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/emmc b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/emmc
+> new file mode 100644
+> index 0000000..5734e3b
+> --- /dev/null
+> +++ b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/emmc
+> @@ -0,0 +1,9 @@
+> +#!/bin/sh
+> +
+> +if [ -e /mnt/emmc/linuximage ]
+> +	global.bootm.image=/mnt/emmc/linuximage
+> +else
+> +	global.bootm.image=/mnt/emmc/uImage
+> +fi
+> +global.bootm.oftree=/mnt/emmc/oftree
+> +global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
 
-Hardcoding that one instance is eMMC while the other is a SD card slot
-is not so nice.
+I know I asked this quite some times already, but: Why not bootloader
+spec? grepping for "global.bootm.image=" shows that we expect the kernel
+at "/linuximage", "/zImage" or "/uImage", depending on the board.
+"data=journal" is only valid for ext4 and even there is not an option
+everybody wants to have.
+With bootloader spec the rootfs can describe itself which kernel(s)
+shall be started with which devicetrees. From barebox it's easy aswell,
+only type "boot mmcx" and you're done.
 
-> +	mkdir("/mnt", 0666);
-> +	mkdir(MMC_PATH, 0666);
-> +	mkdir(EMMC_PATH, 0666);
-> +	ret = mount(partname, "fat", mntpath, NULL);
-
-You could use cdev_mount_default() instead of mount directly. This
-function only mounts when it's not mounted already and returns the
-path the device is mounted to.
+With these bootscripts the first one who comes decides how the board is
+intended to be used. I really don't want to have this in generic boards.
 
 Sascha
+
+
 
 -- 
 Pengutronix e.K.                           |                             |
