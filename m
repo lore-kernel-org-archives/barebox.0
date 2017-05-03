@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d5ssX-0004hY-6J
- for barebox@lists.infradead.org; Wed, 03 May 2017 11:55:35 +0000
-Date: Wed, 3 May 2017 13:55:11 +0200
+ id 1d5sxG-0006H7-Ht
+ for barebox@lists.infradead.org; Wed, 03 May 2017 12:00:28 +0000
+Date: Wed, 3 May 2017 14:00:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170503115511.7bpclt36poipjojt@pengutronix.de>
-References: <20170503114118.10851-1-antonynpavlov@gmail.com>
+Message-ID: <20170503120003.pjiatub2wusfrqxl@pengutronix.de>
+References: <20170410215639.13259-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170503114118.10851-1-antonynpavlov@gmail.com>
+In-Reply-To: <20170410215639.13259-1-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,38 +22,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] state: backend_bucket_circular: drop unused free_pattern
- constant
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH v2] ARM: i.MX6: add Technexion Pico Hobbit support
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, May 03, 2017 at 02:41:18PM +0300, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+On Mon, Apr 10, 2017 at 11:56:39PM +0200, Michael Grzeschik wrote:
+> This adds support support for the i.MX6UL Technexion Pico Hobbit.
+> The board comes with different amounts of RAM. We create one image
+> for the 256MB and one for the 512MB variant.
+> 
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 > ---
->  common/state/backend_bucket_circular.c | 1 -
->  1 file changed, 1 deletion(-)
+> v1 -> v2: - left only the hardware do phy reset handling
+>             software reset is unstable without some phy-post-reset-delay
+>           - removed property device_type from memory to let barebox
+> 	    get the correct memory size
 
 Applied, thanks
 
 Sascha
 
-> 
-> diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
-> index 832f44e599..7c81cdfaff 100644
-> --- a/common/state/backend_bucket_circular.c
-> +++ b/common/state/backend_bucket_circular.c
-> @@ -72,7 +72,6 @@ struct __attribute__((__packed__)) state_backend_storage_bucket_circular_meta {
->  };
->  
->  static const uint32_t circular_magic = 0x14fa2d02;
-> -static const uint8_t free_pattern = 0xff;
->  
->  static inline struct state_backend_storage_bucket_circular
->      *get_bucket_circular(struct state_backend_storage_bucket *bucket)
-> -- 
-> 2.11.0
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
