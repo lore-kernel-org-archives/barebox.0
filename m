@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d5sxZ-0006qi-Ih
- for barebox@lists.infradead.org; Wed, 03 May 2017 12:00:49 +0000
-Date: Wed, 3 May 2017 14:00:28 +0200
+ id 1d5tAA-0001KA-Pf
+ for barebox@lists.infradead.org; Wed, 03 May 2017 12:13:48 +0000
+Date: Wed, 3 May 2017 14:13:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: Re: [PATCH] ARM: phytec-som-imx6: the ethernet clocks get enabled by
- fec_imx
-Message-ID: <20170503120028.garkiqb7edoiwqod@pengutronix.de>
-References: <20170412092630.22040-1-m.grzeschik@pengutronix.de>
+Message-ID: <20170503121324.qguy2tsch7gepob7@pengutronix.de>
+References: <af0065c8-141d-dce0-11bf-1aca9c46d73c@emlix.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170412092630.22040-1-m.grzeschik@pengutronix.de>
+In-Reply-To: <af0065c8-141d-dce0-11bf-1aca9c46d73c@emlix.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,91 +22,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Subject: Re: barebox-state setup
+To: Andreas Wilhelm <andreas.wilhelm@emlix.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Apr 12, 2017 at 11:26:30AM +0200, Michael Grzeschik wrote:
-> All necessary clocks get already enabled through the fec_imx driver
-> configured by the devicetree.
+On Tue, May 02, 2017 at 03:24:10PM +0200, Andreas Wilhelm wrote:
+> Hello,
 > 
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> ---
->  arch/arm/boards/phytec-som-imx6/board.c | 27 +--------------------------
->  1 file changed, 1 insertion(+), 26 deletions(-)
+> I am using barebox state to exchange data between barebox and linux. From barebox I can access and change the state without any problems. If I try to access the state using the barebox-state util included with dt-utils (v2017.03.0), I get the following error:
+> 
+> > # barebox-state -g myvar
+> > of_get_devicepath: no 'label' property found in /soc/aips-bus@02000000/spba-bus@02000000/ecspi@02008000/m25p80@0
+> > Cannot find backend path in /state
+> 
+> This problem does not occur when using version 2016.08.0 of dt-utils. However, in this version I experienced an other problem. Even with backend-storage-type set to "circular" barebox attempted to storte data in "direct" mode:
+> 
+> > WARNING, no stridesize given although we use a direct file
+> > write. Starting in degraded mode
+> > Failed to initialize desired amount of direct buckets, only 1 of 3
+> > succeeded
+> 
+> Furthermore changing the state from within barebox worked just fine, while changing it using dt-utils from within a booted linux didn't.
+> 
+> The barebox state is stored in NOR-flash and configured in barebox as followed:
+> 
+> > state: state {
+> >     magic = <0x27031977>;
+> >     compatible = "barebox,state";
+> >     backend-type = "raw";
+> >     backend = &flash, "partname:barebox-state";
 
-Applied, thanks
+Please use "backend = &barebox_state;" with a partition like this:
+
+barebox_state: partition@0 {
+	reg = <0x0 0x40000>;
+};
+
+> Within the linux kernel I use the following configuration
+
+Note that barebox will rewrite the state node in the device tree passed
+to Linux to make sure that both are consistent. You do not need to add a
+state node to the Linux device tree manually. Unfortunately the
+rewriting of the device node does not work correctly if you use the
+"partname:" binding above in barebox.
 
 Sascha
-
-> 
-> diff --git a/arch/arm/boards/phytec-som-imx6/board.c b/arch/arm/boards/phytec-som-imx6/board.c
-> index ed9453bdda..4d24a55f74 100644
-> --- a/arch/arm/boards/phytec-som-imx6/board.c
-> +++ b/arch/arm/boards/phytec-som-imx6/board.c
-> @@ -31,7 +31,6 @@
->  #include <mach/bbu.h>
->  #include <platform_data/eth-fec.h>
->  #include <mfd/imx6q-iomuxc-gpr.h>
-> -#include <linux/clk.h>
->  #include <linux/micrel_phy.h>
->  
->  #include <globalvar.h>
-> @@ -97,32 +96,14 @@ int ksz8081_phy_fixup(struct phy_device *phydev)
->  	return 0;
->  }
->  
-> -static int imx6ul_setup_fec(void)
-> +static void imx6ul_setup_fec(void)
->  {
->  	void __iomem *gprbase = IOMEM(MX6_IOMUXC_BASE_ADDR) + 0x4000;
->  	uint32_t val;
-> -	struct clk *clk;
->  
->  	phy_register_fixup_for_uid(PHY_ID_KSZ8081, MICREL_PHY_ID_MASK,
->  			ksz8081_phy_fixup);
->  
-> -	clk = clk_lookup("enet_ptp");
-> -	if (IS_ERR(clk))
-> -		goto err;
-> -
-> -	clk_enable(clk);
-> -
-> -	clk = clk_lookup("enet_ref");
-> -	if (IS_ERR(clk))
-> -		goto err;
-> -	clk_enable(clk);
-> -
-> -	clk = clk_lookup("enet_ref_125m");
-> -	if (IS_ERR(clk))
-> -		goto err;
-> -
-> -	clk_enable(clk);
-> -
->  	val = readl(gprbase + IOMUXC_GPR1);
->  	/* Use 50M anatop loopback REF_CLK1 for ENET1, clear gpr1[13], set gpr1[17]*/
->  	val &= ~(1 << 13);
-> @@ -131,12 +112,6 @@ static int imx6ul_setup_fec(void)
->  	val &= ~(1 << 14);
->  	val |= (1 << 18);
->  	writel(val, gprbase + IOMUXC_GPR1);
-> -
-> -	return 0;
-> -err:
-> -	pr_err("Setting up DFEC\n");
-> -
-> -	return -EIO;
->  }
->  
->  static int physom_imx6_devices_init(void)
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
