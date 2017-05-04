@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d6EWx-0007yr-NK
- for barebox@lists.infradead.org; Thu, 04 May 2017 11:02:46 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
- (envelope-from <sha@pengutronix.de>) id 1d6EWb-0001Vt-Fr
- for barebox@lists.infradead.org; Thu, 04 May 2017 13:02:21 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <sha@pengutronix.de>) id 1d6EWb-0007RI-74
- for barebox@lists.infradead.org; Thu, 04 May 2017 13:02:21 +0200
+ id 1d6EWx-0007ys-NM
+ for barebox@lists.infradead.org; Thu, 04 May 2017 11:02:47 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  4 May 2017 13:02:15 +0200
-Message-Id: <20170504110219.17929-1-s.hauer@pengutronix.de>
+Date: Thu,  4 May 2017 13:02:16 +0200
+Message-Id: <20170504110219.17929-2-s.hauer@pengutronix.de>
+In-Reply-To: <20170504110219.17929-1-s.hauer@pengutronix.de>
+References: <20170504110219.17929-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,31 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: state fixes/clarifications
+Subject: [PATCH 1/4] state: Binding: remove @0 from node name
 To: Barebox List <barebox@lists.infradead.org>
 
-There are some common pitfalls when using the barebox state framework.
-This series has some fixes clarifications to hopefully make usage easier.
-First of all it doesn't seem to be clear that the state node in the device
-tree the Kernel is started with is created by barebox; a previously existing
-node will be replaced. For this reason we now issue a warning when a device
-tree contains a state node which does not have any effect.
-The userspace barebox-state utility needs a alias which for the state node
-(it may work with a full path to the node, like /state, but this has some
-additional surprises). We therefore make the alias mandatory so that we
-can issue a clear error message when no alias exists and we can make
-sure barebox-state will find an alias.
+The '@0' suffix is for nodes which have a reg property, so
+do not use this suffix in the state example node which does
+not have a reg property.
 
-----------------------------------------------------------------
-Sascha Hauer (4):
-      state: Binding: remove @0 from node name
-      state: warn when a state node will be overwritten
-      state: Make an alias mandatory
-      state: Create alias in of_state_fixup()
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ Documentation/devicetree/bindings/barebox/barebox,state.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- .../devicetree/bindings/barebox/barebox,state.rst  |  8 ++++++-
- common/state/state.c                               | 28 +++++++++++++++++++---
- 2 files changed, 32 insertions(+), 4 deletions(-)
+diff --git a/Documentation/devicetree/bindings/barebox/barebox,state.rst b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+index 00fb592614..51b874a8be 100644
+--- a/Documentation/devicetree/bindings/barebox/barebox,state.rst
++++ b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+@@ -74,7 +74,7 @@ Optional properties:
+ 
+ Example::
+ 
+-  state: state@0 {
++  state: state {
+   	magic = <0x27031977>;
+   	compatible = "barebox,state";
+   	backend-type = "raw";
+-- 
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
