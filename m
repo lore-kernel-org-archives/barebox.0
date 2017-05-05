@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22b.google.com ([2a00:1450:4010:c07::22b])
+Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d6bVm-0005R2-Ai
+ id 1d6bVo-0005RK-WC
  for barebox@lists.infradead.org; Fri, 05 May 2017 11:35:08 +0000
-Received: by mail-lf0-x22b.google.com with SMTP id r17so1904371lfg.0
- for <barebox@lists.infradead.org>; Fri, 05 May 2017 04:34:41 -0700 (PDT)
+Received: by mail-lf0-x241.google.com with SMTP id 99so310772lfu.2
+ for <barebox@lists.infradead.org>; Fri, 05 May 2017 04:34:44 -0700 (PDT)
 Received: from localhost.localdomain (t109.niisi.ras.ru. [193.232.173.109])
- by smtp.gmail.com with ESMTPSA id h14sm981892ljb.46.2017.05.05.04.34.37
+ by smtp.gmail.com with ESMTPSA id h14sm981892ljb.46.2017.05.05.04.34.41
  for <barebox@lists.infradead.org>
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 05 May 2017 04:34:38 -0700 (PDT)
+ Fri, 05 May 2017 04:34:41 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri,  5 May 2017 14:34:30 +0300
-Message-Id: <20170505113435.19928-1-antonynpavlov@gmail.com>
+Date: Fri,  5 May 2017 14:34:33 +0300
+Message-Id: <20170505113435.19928-4-antonynpavlov@gmail.com>
+In-Reply-To: <20170505113435.19928-1-antonynpavlov@gmail.com>
+References: <20170505113435.19928-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,21 +28,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] MIPS: start*.S and barebox.lds.S fixups
+Subject: [PATCH 3/5] MIPS: barebox.lds.S: remove unused got
 To: barebox@lists.infradead.org
 
-Antony Pavlov (5):
-  MIPS: start*.S: drop redundant .text
-  MIPS: barebox.lds.S: drop unneeded '_start = .'
-  MIPS: barebox.lds.S: remove unused got
-  MIPS: barebox.lds.S: put .text_entry contents after _stext and _text
-  MIPS: start.S: put entry code into the ".text_entry" section
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/lib/barebox.lds.S | 3 ---
+ 1 file changed, 3 deletions(-)
 
- arch/mips/boot/start-pbl.S  | 1 -
- arch/mips/boot/start.S      | 3 +--
- arch/mips/lib/barebox.lds.S | 6 +-----
- 3 files changed, 2 insertions(+), 8 deletions(-)
-
+diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
+index ffe846728f..cc214920e3 100644
+--- a/arch/mips/lib/barebox.lds.S
++++ b/arch/mips/lib/barebox.lds.S
+@@ -50,9 +50,6 @@ SECTIONS
+ 
+ 	.barebox_imd : { BAREBOX_IMD }
+ 
+-	. = ALIGN(4);
+-	.got : { *(.got*) }
+-
+ 	. = .;
+ 	__barebox_cmd_start = .;
+ 	.barebox_cmd : { BAREBOX_CMDS }
 -- 
 2.11.0
 
