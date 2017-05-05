@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1d6eVz-0005y8-8w
- for barebox@lists.infradead.org; Fri, 05 May 2017 14:47:29 +0000
+ id 1d6eVz-0005y7-9z
+ for barebox@lists.infradead.org; Fri, 05 May 2017 14:47:30 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id BD9F1A0079B
+ by root.phytec.de (Postfix) with ESMTP id 7EAEEA0077D
  for <barebox@lists.infradead.org>; Fri,  5 May 2017 16:47:47 +0200 (CEST)
 From: Daniel Schultz <d.schultz@phytec.de>
-Date: Fri, 5 May 2017 16:46:58 +0200
-Message-Id: <1493995618-7289-5-git-send-email-d.schultz@phytec.de>
+Date: Fri, 5 May 2017 16:46:55 +0200
+Message-Id: <1493995618-7289-2-git-send-email-d.schultz@phytec.de>
 In-Reply-To: <1493995618-7289-1-git-send-email-d.schultz@phytec.de>
 References: <1493995618-7289-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,30 +24,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/5] arm: boards: afi-gf: Update SD card boot script
+Subject: [PATCH v2 2/5] arm: boards: phytec-som-am335x: Add automount script
 To: barebox@lists.infradead.org
 
-The default mount path for SD cards changed from /boot to /mnt/mmc0.0.
-Updated paths in SD card boot script.
+Each MMC boot source is mounted to /mnt/mmcN.0. To make the not-mounted
+boot source available in Barebox, an automount script mounts
+this device also to /mnt/, if the directory will be accessed.
 
 Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 ---
- arch/arm/boards/afi-gf/defaultenv-gf/boot/sd | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../defaultenv-physom-am335x/init/automount         | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+ create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/automount
 
-diff --git a/arch/arm/boards/afi-gf/defaultenv-gf/boot/sd b/arch/arm/boards/afi-gf/defaultenv-gf/boot/sd
-index aa94b2f..1a6fab5 100644
---- a/arch/arm/boards/afi-gf/defaultenv-gf/boot/sd
-+++ b/arch/arm/boards/afi-gf/defaultenv-gf/boot/sd
-@@ -1,6 +1,6 @@
- #!/bin/sh
- 
--global.bootm.image=/boot/uImage
--global.bootm.oftree=/boot/oftree
-+global.bootm.image=/mnt/mmc0.0/uImage
-+global.bootm.oftree=/mnt/mmc0.0/oftree
- #global.bootm.initrd=<path to initrd>
- global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootfstype=ext4 rootwait"
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/automount b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/automount
+new file mode 100644
+index 0000000..53ecbe3
+--- /dev/null
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/automount
+@@ -0,0 +1,21 @@
++#!/bin/sh
++
++# automount tftp server based on $eth0.serverip
++
++mkdir -p /mnt/tftp
++automount /mnt/tftp 'ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp'
++
++# automount nfs server's nfsroot
++
++mkdir -p /mnt/nfs
++automount /mnt/nfs 'ifup eth0 && mount -t nfs ${eth0.serverip}:/home/${global.user}/nfsroot/${global.hostname} /mnt/nfs'
++
++#automount SD card and EMMC boot partitions
++
++if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
++	mkdir -p /mnt/mmc0.0
++	automount /mnt/mmc0.0 '[ -e /dev/mmc0.0 ] && mount /dev/mmc0.0 /mnt/mmc0.0'
++else
++	mkdir -p /mnt/mmc1.0
++	automount /mnt/mmc1.0 '[ -e /dev/mmc1.0 ] && mount /dev/mmc1.0 /mnt/mmc1.0'
++fi
 -- 
 1.9.1
 
