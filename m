@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
+Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d6bVo-0005RB-1y
+ id 1d6bVo-0005RM-W9
  for barebox@lists.infradead.org; Fri, 05 May 2017 11:35:07 +0000
-Received: by mail-lf0-x244.google.com with SMTP id h4so309736lfj.3
- for <barebox@lists.infradead.org>; Fri, 05 May 2017 04:34:43 -0700 (PDT)
+Received: by mail-lf0-x241.google.com with SMTP id q70so319333lfi.0
+ for <barebox@lists.infradead.org>; Fri, 05 May 2017 04:34:45 -0700 (PDT)
 Received: from localhost.localdomain (t109.niisi.ras.ru. [193.232.173.109])
- by smtp.gmail.com with ESMTPSA id h14sm981892ljb.46.2017.05.05.04.34.40
+ by smtp.gmail.com with ESMTPSA id h14sm981892ljb.46.2017.05.05.04.34.42
  for <barebox@lists.infradead.org>
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 05 May 2017 04:34:40 -0700 (PDT)
+ Fri, 05 May 2017 04:34:42 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri,  5 May 2017 14:34:32 +0300
-Message-Id: <20170505113435.19928-3-antonynpavlov@gmail.com>
+Date: Fri,  5 May 2017 14:34:34 +0300
+Message-Id: <20170505113435.19928-5-antonynpavlov@gmail.com>
 In-Reply-To: <20170505113435.19928-1-antonynpavlov@gmail.com>
 References: <20170505113435.19928-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -28,26 +28,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] MIPS: barebox.lds.S: drop unneeded '_start = .'
+Subject: [PATCH 4/5] MIPS: barebox.lds.S: put .text_entry contents after
+ _stext and _text
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/lib/barebox.lds.S | 1 -
- 1 file changed, 1 deletion(-)
+ arch/mips/lib/barebox.lds.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
-index 8057634ddb..ffe846728f 100644
+index cc214920e3..899f62b968 100644
 --- a/arch/mips/lib/barebox.lds.S
 +++ b/arch/mips/lib/barebox.lds.S
-@@ -27,7 +27,6 @@ SECTIONS
+@@ -27,9 +27,9 @@ SECTIONS
  	. = ALIGN(4);
  	.text      :
  	{
--		_start = .;
- 		*(.text_entry*)
+-		*(.text_entry*)
  		_stext = .;
  		_text = .;
++		*(.text_entry*)
+ 		__bare_init_start = .;
+ 		*(.text_bare_init*)
+ 		__bare_init_end = .;
 -- 
 2.11.0
 
