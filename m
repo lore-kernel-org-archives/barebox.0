@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d6bVn-0005RN-1T
- for barebox@lists.infradead.org; Fri, 05 May 2017 11:35:06 +0000
-Received: by mail-lf0-x243.google.com with SMTP id q24so315448lfb.1
- for <barebox@lists.infradead.org>; Fri, 05 May 2017 04:34:46 -0700 (PDT)
+ id 1d6bVo-0005RB-1y
+ for barebox@lists.infradead.org; Fri, 05 May 2017 11:35:07 +0000
+Received: by mail-lf0-x244.google.com with SMTP id h4so309736lfj.3
+ for <barebox@lists.infradead.org>; Fri, 05 May 2017 04:34:43 -0700 (PDT)
 Received: from localhost.localdomain (t109.niisi.ras.ru. [193.232.173.109])
- by smtp.gmail.com with ESMTPSA id h14sm981892ljb.46.2017.05.05.04.34.43
+ by smtp.gmail.com with ESMTPSA id h14sm981892ljb.46.2017.05.05.04.34.40
  for <barebox@lists.infradead.org>
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 05 May 2017 04:34:43 -0700 (PDT)
+ Fri, 05 May 2017 04:34:40 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri,  5 May 2017 14:34:35 +0300
-Message-Id: <20170505113435.19928-6-antonynpavlov@gmail.com>
+Date: Fri,  5 May 2017 14:34:32 +0300
+Message-Id: <20170505113435.19928-3-antonynpavlov@gmail.com>
 In-Reply-To: <20170505113435.19928-1-antonynpavlov@gmail.com>
 References: <20170505113435.19928-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -28,31 +28,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] MIPS: start.S: put entry code into the ".text_entry"
- section
+Subject: [PATCH 2/5] MIPS: barebox.lds.S: drop unneeded '_start = .'
 To: barebox@lists.infradead.org
-
-The ".text_bare_init" section is not intended to be used
-for storing entry code.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/boot/start.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/lib/barebox.lds.S | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/mips/boot/start.S b/arch/mips/boot/start.S
-index 0828ee4927..e937e89af1 100644
---- a/arch/mips/boot/start.S
-+++ b/arch/mips/boot/start.S
-@@ -20,7 +20,7 @@
- #include <asm/pbl_macros.h>
- 
- 	.set noreorder
--	.section ".text_bare_init"
-+	.section ".text_entry"
- 	.align 4
- 
- EXPORT(_start)
+diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
+index 8057634ddb..ffe846728f 100644
+--- a/arch/mips/lib/barebox.lds.S
++++ b/arch/mips/lib/barebox.lds.S
+@@ -27,7 +27,6 @@ SECTIONS
+ 	. = ALIGN(4);
+ 	.text      :
+ 	{
+-		_start = .;
+ 		*(.text_entry*)
+ 		_stext = .;
+ 		_text = .;
 -- 
 2.11.0
 
