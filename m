@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx1.emlix.com ([46.4.235.150])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d6df3-0005Wr-Q9
- for barebox@lists.infradead.org; Fri, 05 May 2017 13:52:48 +0000
-References: <af0065c8-141d-dce0-11bf-1aca9c46d73c@emlix.com>
- <20170503121324.qguy2tsch7gepob7@pengutronix.de>
-From: Andreas Wilhelm <andreas.wilhelm@emlix.com>
-Message-ID: <9d5f2e1b-c065-8969-14fb-3cf309b580d9@emlix.com>
-Date: Fri, 5 May 2017 15:52:22 +0200
-MIME-Version: 1.0
-In-Reply-To: <20170503121324.qguy2tsch7gepob7@pengutronix.de>
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1d6eVz-0005y6-8j
+ for barebox@lists.infradead.org; Fri, 05 May 2017 14:47:29 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 8F3B4A00785
+ for <barebox@lists.infradead.org>; Fri,  5 May 2017 16:47:47 +0200 (CEST)
+From: Daniel Schultz <d.schultz@phytec.de>
+Date: Fri, 5 May 2017 16:46:57 +0200
+Message-Id: <1493995618-7289-4-git-send-email-d.schultz@phytec.de>
+In-Reply-To: <1493995618-7289-1-git-send-email-d.schultz@phytec.de>
+References: <1493995618-7289-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,77 +19,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox-state setup
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 4/5] arm: boards: beaglebone: Delete default env
+To: barebox@lists.infradead.org
 
-On 05/03/2017 02:13 PM, Sascha Hauer wrote:
-> On Tue, May 02, 2017 at 03:24:10PM +0200, Andreas Wilhelm wrote:
->> Hello,
->>
->> I am using barebox state to exchange data between barebox and linux. From barebox I can access and change the state without any problems. If I try to access the state using the barebox-state util included with dt-utils (v2017.03.0), I get the following error:
->>
->>> # barebox-state -g myvar
->>> of_get_devicepath: no 'label' property found in /soc/aips-bus@02000000/spba-bus@02000000/ecspi@02008000/m25p80@0
->>> Cannot find backend path in /state
->> This problem does not occur when using version 2016.08.0 of dt-utils. However, in this version I experienced an other problem. Even with backend-storage-type set to "circular" barebox attempted to storte data in "direct" mode:
->>
->>> WARNING, no stridesize given although we use a direct file
->>> write. Starting in degraded mode
->>> Failed to initialize desired amount of direct buckets, only 1 of 3
->>> succeeded
->> Furthermore changing the state from within barebox worked just fine, while changing it using dt-utils from within a booted linux didn't.
->>
->> The barebox state is stored in NOR-flash and configured in barebox as followed:
->>
->>> state: state {
->>>     magic = <0x27031977>;
->>>     compatible = "barebox,state";
->>>     backend-type = "raw";
->>>     backend = &flash, "partname:barebox-state";
-> Please use "backend = &barebox_state;" with a partition like this:
->
-> barebox_state: partition@0 {
-> 	reg = <0x0 0x40000>;
-> };
->
->> Within the linux kernel I use the following configuration
-> Note that barebox will rewrite the state node in the device tree passed
-> to Linux to make sure that both are consistent. You do not need to add a
-> state node to the Linux device tree manually. Unfortunately the
-> rewriting of the device node does not work correctly if you use the
-> "partname:" binding above in barebox.
->
-> Sascha
->
-Thanks for your fast reply.
+The Beaglebone environment should be set from outside with an application
+specific environment.
 
-Removing the state definition from the linux device tree and changing the backend definition stopped barebox and dt-utils from complaining about a bad state backend. However, now I am facing a strange error.
+Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+---
+ arch/arm/boards/beaglebone/Makefile                                 | 1 -
+ arch/arm/boards/beaglebone/board.c                                  | 2 --
+ arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd            | 6 ------
+ .../arm/boards/beaglebone/defaultenv-beaglebone/init/usb-limit-1300 | 5 -----
+ 4 files changed, 14 deletions(-)
+ delete mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
+ delete mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/init/usb-limit-1300
 
-I am able to read and change the barebox state from within barebox and changes are reflected when reading from within barebox and linux. When changing the state using dt-utils, the change is persistent between reboots, but cannot be seen from within barebox.
+diff --git a/arch/arm/boards/beaglebone/Makefile b/arch/arm/boards/beaglebone/Makefile
+index 21a1a29..092c31d 100644
+--- a/arch/arm/boards/beaglebone/Makefile
++++ b/arch/arm/boards/beaglebone/Makefile
+@@ -1,3 +1,2 @@
+ lwl-y += lowlevel.o
+ obj-y += board.o
+-bbenv-y += defaultenv-beaglebone
+diff --git a/arch/arm/boards/beaglebone/board.c b/arch/arm/boards/beaglebone/board.c
+index 5717c45..fc16aea 100644
+--- a/arch/arm/boards/beaglebone/board.c
++++ b/arch/arm/boards/beaglebone/board.c
+@@ -85,8 +85,6 @@ static int beaglebone_devices_init(void)
+ 
+ 	black = is_beaglebone_black();
+ 
+-	defaultenv_append_directory(defaultenv_beaglebone);
+-
+ 	globalvar_add_simple("board.variant", black ? "boneblack" : "bone");
+ 
+ 	printf("detected 'BeagleBone %s'\n", black ? "Black" : "White");
+diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
+deleted file mode 100644
+index aa94b2f..0000000
+--- a/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#!/bin/sh
+-
+-global.bootm.image=/boot/uImage
+-global.bootm.oftree=/boot/oftree
+-#global.bootm.initrd=<path to initrd>
+-global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootfstype=ext4 rootwait"
+diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/init/usb-limit-1300 b/arch/arm/boards/beaglebone/defaultenv-beaglebone/init/usb-limit-1300
+deleted file mode 100644
+index 56313bf..0000000
+--- a/arch/arm/boards/beaglebone/defaultenv-beaglebone/init/usb-limit-1300
++++ /dev/null
+@@ -1,5 +0,0 @@
+-#!/bin/sh
+-
+-echo -n "changing USB current limit to 1300 mA... "
+-i2c_write -b 0 -a 0x24 -r 0x01 0x3e
+-echo "done"
+-- 
+1.9.1
 
-Example:
-
-// State myvar initialized with A by default
-
-state.myvar=B; state -s
-=> Barebox: echo $state.myvar // myvar=B
-=> Linux: barebox-state -g myvar // myvar=B
-
-barebox-state -s myvar=C
-=> Barebox: echo $state.myvar // myvar=B
-=> Linux: barebox-state -g myvar // myvar=C
-
-This looks to me like dt-utils reading and writing only one of the state copies, while the barebox internal code maintains all copies.
-
-Ideas, opinions ?
-
-Best regards
-Andreas
 
 _______________________________________________
 barebox mailing list
