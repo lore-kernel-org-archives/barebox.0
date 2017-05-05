@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d6EX2-000805-A8
- for barebox@lists.infradead.org; Thu, 04 May 2017 11:02:55 +0000
+ id 1d6XHU-0000JL-OZ
+ for barebox@lists.infradead.org; Fri, 05 May 2017 07:04:04 +0000
+Date: Fri, 5 May 2017 09:03:36 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  4 May 2017 13:02:18 +0200
-Message-Id: <20170504110219.17929-4-s.hauer@pengutronix.de>
-In-Reply-To: <20170504110219.17929-1-s.hauer@pengutronix.de>
-References: <20170504110219.17929-1-s.hauer@pengutronix.de>
+Message-ID: <20170505070336.xmya6fzeeie2vzqf@pengutronix.de>
+References: <1493383568-27798-1-git-send-email-d.schultz@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1493383568-27798-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,68 +18,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] state: Make an alias mandatory
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/7] arm: mach-omap: Change file flags in emmc handler
+To: Daniel Schultz <d.schultz@phytec.de>
+Cc: barebox@lists.infradead.org
 
-The userspace barebox-state utility gets confused when no alias exists.
-Make the alias mandatory, so that people make it right^tm without having
-to ask.
+On Fri, Apr 28, 2017 at 02:46:02PM +0200, Daniel Schultz wrote:
+> This handler tries to read from a file descriptor with 'write only'
+> flags and fails. Add read permissions for the file, so the handler can
+> read the partition layout.
+> 
+> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- Documentation/devicetree/bindings/barebox/barebox,state.rst | 6 ++++++
- common/state/state.c                                        | 6 ++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
+Applied this one and 2/7 for now.
 
-diff --git a/Documentation/devicetree/bindings/barebox/barebox,state.rst b/Documentation/devicetree/bindings/barebox/barebox,state.rst
-index 51b874a8be..06a0d100c8 100644
---- a/Documentation/devicetree/bindings/barebox/barebox,state.rst
-+++ b/Documentation/devicetree/bindings/barebox/barebox,state.rst
-@@ -32,6 +32,8 @@ Required properties:
- * ``backend``: contains a phandle to the device/partition which holds the
-   actual state data.
- * ``backend-type``: should be ``raw`` or ``dtb``.
-+* additionally a state node must have an alias in the /aliases/ node pointing
-+  to it.
- 
- Optional properties:
- 
-@@ -74,6 +76,10 @@ Optional properties:
- 
- Example::
- 
-+  /aliases {
-+  	state = &state;
-+  };
-+
-   state: state {
-   	magic = <0x27031977>;
-   	compatible = "barebox,state";
-diff --git a/common/state/state.c b/common/state/state.c
-index c3c8b768c7..41bee0fdc5 100644
---- a/common/state/state.c
-+++ b/common/state/state.c
-@@ -567,8 +567,10 @@ struct state *state_new_from_node(struct device_node *node, char *path,
- 	uint32_t stridesize;
- 
- 	alias = of_alias_get(node);
--	if (!alias)
--		alias = node->name;
-+	if (!alias) {
-+		pr_err("State node %s does not have an alias in the /aliases/ node\n", node->full_name);
-+		return ERR_PTR(-EINVAL);
-+	}
- 
- 	state = state_new(alias);
- 	if (IS_ERR(state))
+Sascha
+
+> ---
+>  arch/arm/mach-omap/am33xx_bbu_emmc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/mach-omap/am33xx_bbu_emmc.c b/arch/arm/mach-omap/am33xx_bbu_emmc.c
+> index 3220575..d3adb37 100644
+> --- a/arch/arm/mach-omap/am33xx_bbu_emmc.c
+> +++ b/arch/arm/mach-omap/am33xx_bbu_emmc.c
+> @@ -39,7 +39,7 @@ static int emmc_mlo_handler(struct bbu_handler *handler, struct bbu_data *data)
+>  	if (ret != 0)
+>  		return ret;
+>  
+> -	fd = open(handler->devicefile, O_WRONLY);
+> +	fd = open(handler->devicefile, O_RDWR);
+>  	if (fd < 0) {
+>  		pr_err("could not open %s: %s\n", handler->devicefile,
+>  			errno_str());
+> -- 
+> 1.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.11.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
