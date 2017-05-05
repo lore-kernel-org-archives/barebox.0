@@ -1,15 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1d6etb-0002Zh-RG
- for barebox@lists.infradead.org; Fri, 05 May 2017 15:11:53 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 97690A003DB
- for <barebox@lists.infradead.org>; Fri,  5 May 2017 17:12:19 +0200 (CEST)
-From: Daniel Schultz <d.schultz@phytec.de>
-Message-ID: <890269e4-1c96-691c-065b-82ad619b3140@phytec.de>
-Date: Fri, 5 May 2017 17:11:30 +0200
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1d6fUU-0007CD-RZ
+ for barebox@lists.infradead.org; Fri, 05 May 2017 15:50:02 +0000
+Received: from birne.hi.pengutronix.de ([2001:67c:670:100:feaa:14ff:fe28:e6f5]
+ helo=birne) by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.84_2)
+ (envelope-from <mgr@pengutronix.de>) id 1d6fU6-0000bS-Qq
+ for barebox@lists.infradead.org; Fri, 05 May 2017 17:49:34 +0200
+Received: from mgr by birne with local (Exim 4.84_2)
+ (envelope-from <mgr@pengutronix.de>) id 1d6fU6-0007Ew-JB
+ for barebox@lists.infradead.org; Fri, 05 May 2017 17:49:34 +0200
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Fri,  5 May 2017 17:49:19 +0200
+Message-Id: <20170505154920.27685-3-m.grzeschik@pengutronix.de>
+In-Reply-To: <20170505154920.27685-1-m.grzeschik@pengutronix.de>
+References: <20170505154920.27685-1-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,40 +24,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: GCC 6.3 Linker error
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 2/3] ARM: phytec-som-imx6: the ethernet clocks get enabled by
+ fec_imx
+To: barebox@lists.infradead.org
 
-SGkgZXZlcnlvbmUsCgp3aGVuIEkgYnVpbGQgdGhlIEJhcmVib3ggd2l0aCBHQ0MgNi4zIGFuZCBh
-bTMzNXhfZGVmY29uZmlnLCBJIGdldCB0aGUgCmZvbGxvd2luZyBlcnJvcjoKCgp8ICAgTEQgICAg
-ICBjb21tYW5kcy9idWlsdC1pbi5vCnwgICBMRCAgICAgIGRyaXZlcnMvdXNiL2J1aWx0LWluLm8K
-fCAgIFBCTExEICAgZHJpdmVycy91c2IvYnVpbHQtaW4tcGJsLm8KfCAgIExEICAgICAgZnMvYnVp
-bHQtaW4ubwp8ICAgUEJMTEQgICBmcy9idWlsdC1pbi1wYmwubwp8ICAgTEQgICAgICBkcml2ZXJz
-L210ZC91YmkvYnVpbHQtaW4ubwp8ICAgTEQgICAgICBkcml2ZXJzL210ZC9idWlsdC1pbi5vCnwg
-ICBQQkxMRCAgIGRyaXZlcnMvbXRkL2J1aWx0LWluLXBibC5vCnwgICBMRCAgICAgIGRyaXZlcnMv
-YnVpbHQtaW4ubwp8ICAgUEJMTEQgICBkcml2ZXJzL2J1aWx0LWluLXBibC5vCnwgICBHRU4gICAg
-IC52ZXJzaW9uCnwgICBDSEsgICAgIGluY2x1ZGUvZ2VuZXJhdGVkL2NvbXBpbGUuaAp8ICAgVVBE
-ICAgICBpbmNsdWRlL2dlbmVyYXRlZC9jb21waWxlLmgKfCAgIENDICAgICAgY29tbW9uL3ZlcnNp
-b24ubwp8ICAgTEQgICAgICBjb21tb24vYnVpbHQtaW4ubwp8ICAgTEQgICAgICAudG1wX2JhcmVi
-b3gxCnwgYXJtLXBoeXRlYy1saW51eC1nbnVlYWJpLWxkOiAudG1wX2JhcmVib3gxOiBOb3QgZW5v
-dWdoIHJvb20gZm9yIApwcm9ncmFtIGhlYWRlcnMsIHRyeSBsaW5raW5nIHdpdGggLU4KfCBhcm0t
-cGh5dGVjLWxpbnV4LWdudWVhYmktbGQ6IGZpbmFsIGxpbmsgZmFpbGVkOiBCYWQgdmFsdWUKfCBt
-YWtlWzJdOiAqKiogWy50bXBfYmFyZWJveDFdIEVycm9yIDEKfCBtYWtlWzFdOiAqKiogW19hbGxd
-IEVycm9yIDIKfCBtYWtlOiAqKiogW2FsbF0gRXJyb3IgMgp8IEVSUk9SOiBGdW5jdGlvbiBmYWls
-ZWQ6IGRvX2NvbXBpbGUgKGxvZyBmaWxlIGlzIGxvY2F0ZWQgYXQgCi9ob21lL3NjaHVsdHoveW9j
-dG8vUEQxNy4yLjAvYnVpbGQvdG1wL3dvcmsvcGh5Ym9hcmRfd2VnYV9hbTMzNXhfMi1waHl0ZWMt
-bGludXgtZ251ZWFiaS9iYXJlYm94LzIwMTcuMDMuMC1waHkxLXI3LjAvdGVtcC9sb2cuZG9fY29t
-cGlsZS4yMzk5NykKRVJST1I6IFRhc2sgCigvaG9tZS9zY2h1bHR6L3lvY3RvL1BEMTcuMi4wL3Nv
-dXJjZXMvcG9reS8uLi9tZXRhLXBoeXRlYy9yZWNpcGVzLWJzcC9iYXJlYm94L2JhcmVib3hfMjAx
-Ny4wMy4wLXBoeTEuYmI6ZG9fY29tcGlsZSkgCmZhaWxlZCB3aXRoIGV4aXQgY29kZSAnMScKTk9U
-RTogVGFza3MgU3VtbWFyeTogQXR0ZW1wdGVkIDQ5NyB0YXNrcyBvZiB3aGljaCA0OTUgZGlkbid0
-IG5lZWQgdG8gYmUgCnJlcnVuIGFuZCAxIGZhaWxlZC4KTk9URTogV3JpdGluZyBidWlsZGhpc3Rv
-cnkKCgpoYXMgc29tZWJvZHkgZWxzZSBmYWNlZCB3aXRoIHRoaXMgcHJvYmxlbT8gSSBmaWd1cmVk
-IG91dCB0aGF0IGxpbmtpbmcgCndpdGggIi1ubWFnaWMiIGZpeCB0aGlzIHByb2JsZW0uCgotLSAK
-TWl0IGZyZXVuZGxpY2hlbiBHcsO8w59lbiwKV2l0aCBiZXN0IHJlZ2FyZHMsCiAgIERhbmllbCBT
-Y2h1bHR6CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
-YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
-c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+All necessary clocks get already enabled through the fec_imx driver
+configured by the devicetree.
+
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+---
+ arch/arm/boards/phytec-som-imx6/board.c | 27 +--------------------------
+ 1 file changed, 1 insertion(+), 26 deletions(-)
+
+diff --git a/arch/arm/boards/phytec-som-imx6/board.c b/arch/arm/boards/phytec-som-imx6/board.c
+index ed9453bdda..4d24a55f74 100644
+--- a/arch/arm/boards/phytec-som-imx6/board.c
++++ b/arch/arm/boards/phytec-som-imx6/board.c
+@@ -31,7 +31,6 @@
+ #include <mach/bbu.h>
+ #include <platform_data/eth-fec.h>
+ #include <mfd/imx6q-iomuxc-gpr.h>
+-#include <linux/clk.h>
+ #include <linux/micrel_phy.h>
+ 
+ #include <globalvar.h>
+@@ -97,32 +96,14 @@ int ksz8081_phy_fixup(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
+-static int imx6ul_setup_fec(void)
++static void imx6ul_setup_fec(void)
+ {
+ 	void __iomem *gprbase = IOMEM(MX6_IOMUXC_BASE_ADDR) + 0x4000;
+ 	uint32_t val;
+-	struct clk *clk;
+ 
+ 	phy_register_fixup_for_uid(PHY_ID_KSZ8081, MICREL_PHY_ID_MASK,
+ 			ksz8081_phy_fixup);
+ 
+-	clk = clk_lookup("enet_ptp");
+-	if (IS_ERR(clk))
+-		goto err;
+-
+-	clk_enable(clk);
+-
+-	clk = clk_lookup("enet_ref");
+-	if (IS_ERR(clk))
+-		goto err;
+-	clk_enable(clk);
+-
+-	clk = clk_lookup("enet_ref_125m");
+-	if (IS_ERR(clk))
+-		goto err;
+-
+-	clk_enable(clk);
+-
+ 	val = readl(gprbase + IOMUXC_GPR1);
+ 	/* Use 50M anatop loopback REF_CLK1 for ENET1, clear gpr1[13], set gpr1[17]*/
+ 	val &= ~(1 << 13);
+@@ -131,12 +112,6 @@ static int imx6ul_setup_fec(void)
+ 	val &= ~(1 << 14);
+ 	val |= (1 << 18);
+ 	writel(val, gprbase + IOMUXC_GPR1);
+-
+-	return 0;
+-err:
+-	pr_err("Setting up DFEC\n");
+-
+-	return -EIO;
+ }
+ 
+ static int physom_imx6_devices_init(void)
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
