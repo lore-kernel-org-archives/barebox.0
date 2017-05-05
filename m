@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1d6eVz-0005y7-9z
+ id 1d6eVz-0005y5-V6
  for barebox@lists.infradead.org; Fri, 05 May 2017 14:47:30 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 7EAEEA0077D
+ by root.phytec.de (Postfix) with ESMTP id 720CEA00243
  for <barebox@lists.infradead.org>; Fri,  5 May 2017 16:47:47 +0200 (CEST)
 From: Daniel Schultz <d.schultz@phytec.de>
-Date: Fri, 5 May 2017 16:46:55 +0200
-Message-Id: <1493995618-7289-2-git-send-email-d.schultz@phytec.de>
-In-Reply-To: <1493995618-7289-1-git-send-email-d.schultz@phytec.de>
-References: <1493995618-7289-1-git-send-email-d.schultz@phytec.de>
+Date: Fri, 5 May 2017 16:46:54 +0200
+Message-Id: <1493995618-7289-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,46 +22,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/5] arm: boards: phytec-som-am335x: Add automount script
+Subject: [PATCH v2 1/5] arm: mach-omap: Change mountpoint of boot partitions
 To: barebox@lists.infradead.org
 
-Each MMC boot source is mounted to /mnt/mmcN.0. To make the not-mounted
-boot source available in Barebox, an automount script mounts
-this device also to /mnt/, if the directory will be accessed.
+If using EMMC and SD as bootsources, mounting the boot partition of both
+devices to /boot makes trouble. Either the correct device is mounted to
+/boot or a remount of /boot has to be performed.
+
+To ensure this problem each MMCn bootsource will be mounted to his own
+path in /mnt/mmcN.0
 
 Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 ---
- .../defaultenv-physom-am335x/init/automount         | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
- create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/automount
+ arch/arm/mach-omap/omap_generic.c | 31 ++++++++++++++++++++-----------
+ 1 file changed, 20 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/automount b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/automount
-new file mode 100644
-index 0000000..53ecbe3
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/automount
-@@ -0,0 +1,21 @@
-+#!/bin/sh
+diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap_generic.c
+index 1d03eac..aa7424d 100644
+--- a/arch/arm/mach-omap/omap_generic.c
++++ b/arch/arm/mach-omap/omap_generic.c
+@@ -113,12 +113,15 @@ const char *omap_get_bootmmc_devname(void)
+ }
+ 
+ #if defined(CONFIG_ENV_HANDLING)
+-#define ENV_PATH "/boot/barebox.env"
++static char *envpath = "/mnt/mmc0.0/barebox.env";
 +
-+# automount tftp server based on $eth0.serverip
-+
-+mkdir -p /mnt/tftp
-+automount /mnt/tftp 'ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp'
-+
-+# automount nfs server's nfsroot
-+
-+mkdir -p /mnt/nfs
-+automount /mnt/nfs 'ifup eth0 && mount -t nfs ${eth0.serverip}:/home/${global.user}/nfsroot/${global.hostname} /mnt/nfs'
-+
-+#automount SD card and EMMC boot partitions
-+
-+if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
-+	mkdir -p /mnt/mmc0.0
-+	automount /mnt/mmc0.0 '[ -e /dev/mmc0.0 ] && mount /dev/mmc0.0 /mnt/mmc0.0'
-+else
-+	mkdir -p /mnt/mmc1.0
-+	automount /mnt/mmc1.0 '[ -e /dev/mmc1.0 ] && mount /dev/mmc1.0 /mnt/mmc1.0'
-+fi
+ static int omap_env_init(void)
+ {
+-	char *partname;
+-	const char *diskdev;
+ 	int ret;
++	const char *diskdev;
++	char *partname;
++	struct cdev *cdev;
++	const char *rootpath;
+ 
+ 	if (bootsource_get() != BOOTSOURCE_MMC)
+ 		return 0;
+@@ -129,18 +132,24 @@ static int omap_env_init(void)
+ 		diskdev = "disk0";
+ 
+ 	device_detect_by_name(diskdev);
++	partname = basprintf("%s.0", diskdev);
++	cdev = cdev_by_name(partname);
++	if (cdev == NULL) {
++		pr_err("Failed to get device %s\n", partname);
++		goto out;
++	}
+ 
+-	partname = basprintf("/dev/%s.0", diskdev);
+-
+-	mkdir("/boot", 0666);
+-	ret = mount(partname, "fat", "/boot", NULL);
+-	if (ret) {
+-		pr_err("Failed to load environment: mount %s failed (%d)\n", partname, ret);
++	rootpath = cdev_mount_default(cdev, NULL);
++	if (IS_ERR(rootpath)) {
++		pr_err("Failed to load environment: mount %s failed (%d)\n",
++						cdev->name, IS_ERR(rootpath));
+ 		goto out;
+ 	}
++	envpath = basprintf("%s/barebox.env", rootpath);
+ 
+-	pr_debug("Loading default env from %s on device %s\n", ENV_PATH, partname);
+-	default_environment_path_set(ENV_PATH);
++	pr_debug("Loading default env from %s on device %s\n", envpath,
++								partname);
++	default_environment_path_set(envpath);
+ 
+ out:
+ 	free(partname);
 -- 
 1.9.1
 
