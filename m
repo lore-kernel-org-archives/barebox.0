@@ -1,11 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtprelay0115.hostedemail.com ([216.40.44.115]
+ helo=smtprelay.hostedemail.com)
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d7ikv-0002OI-OZ
- for barebox@lists.infradead.org; Mon, 08 May 2017 13:31:19 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Mon,  8 May 2017 15:30:54 +0200
-Message-Id: <20170508133054.10569-1-o.rempel@pengutronix.de>
+ id 1d7it9-0004IR-8J
+ for barebox@lists.infradead.org; Mon, 08 May 2017 13:39:49 +0000
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
+ [216.40.38.60])
+ by smtprelay06.hostedemail.com (Postfix) with ESMTP id 555D69ED8D
+ for <barebox@lists.infradead.org>; Mon,  8 May 2017 13:39:22 +0000 (UTC)
+Received: from [10.0.0.53] (unknown [81.133.34.160])
+ (Authenticated sender: ian@abbott.org)
+ by omf04.hostedemail.com (Postfix) with ESMTPA
+ for <barebox@lists.infradead.org>; Mon,  8 May 2017 13:39:21 +0000 (UTC)
+From: Ian Abbott <abbotti@mev.co.uk>
+Message-ID: <91e8e828-d3c3-5c56-0a92-a52c493b8354@mev.co.uk>
+Date: Mon, 8 May 2017 14:39:19 +0100
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,69 +24,133 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] Documentation: provide documentation for RNG interfaces.
+Subject: Setting MAC address from nv variable broken in barebox 2017.05.0?
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-U2lnbmVkLW9mZi1ieTogT2xla3NpaiBSZW1wZWwgPG8ucmVtcGVsQHBlbmd1dHJvbml4LmRlPgot
-LS0KIERvY3VtZW50YXRpb24vdXNlci9yYW5kb20ucnN0ICAgICAgfCA2MiArKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKwogRG9jdW1lbnRhdGlvbi91c2VyL3VzZXItbWFudWFs
-LnJzdCB8ICAxICsKIDIgZmlsZXMgY2hhbmdlZCwgNjMgaW5zZXJ0aW9ucygrKQogY3JlYXRlIG1v
-ZGUgMTAwNjQ0IERvY3VtZW50YXRpb24vdXNlci9yYW5kb20ucnN0CgpkaWZmIC0tZ2l0IGEvRG9j
-dW1lbnRhdGlvbi91c2VyL3JhbmRvbS5yc3QgYi9Eb2N1bWVudGF0aW9uL3VzZXIvcmFuZG9tLnJz
-dApuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwLi5mN2M1YjJkNGM2Ci0tLSAv
-ZGV2L251bGwKKysrIGIvRG9jdW1lbnRhdGlvbi91c2VyL3JhbmRvbS5yc3QKQEAgLTAsMCArMSw2
-MiBAQAorUmFuZG9tIE51bWJlciBHZW5lcmF0b3Igc3VwcG9ydAorPT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PQorCitCYXJlYm94IHByb3ZpZGVzIHR3byB0eXBlcyBvZiBSTkcgc291cmNl
-cyAtIFBSTkcgYW5kIEhXUk5HOgorCistICJBIHBzZXVkb3JhbmRvbSBudW1iZXIgZ2VuZXJhdG9y
-IChQUk5HKSwgYWxzbyBrbm93biBhcyBhIGRldGVybWluaXN0aWMgcmFuZG9tCisgIGJpdCBnZW5l
-cmF0b3IgKERSQkcpLFsxXSBpcyBhbiBhbGdvcml0aG0gZm9yIGdlbmVyYXRpbmcgYSBzZXF1ZW5j
-ZSBvZiBudW1iZXJzCisgIHdob3NlIHByb3BlcnRpZXMgYXBwcm94aW1hdGUgdGhlIHByb3BlcnRp
-ZXMgb2Ygc2VxdWVuY2VzIG9mIHJhbmRvbSBudW1iZXJzLgorICBUaGUgUFJORy1nZW5lcmF0ZWQg
-c2VxdWVuY2UgaXMgbm90IHRydWx5IHJhbmRvbSwgYmVjYXVzZSBpdCBpcyBjb21wbGV0ZWx5Cisg
-IGRldGVybWluZWQgYnkgYSByZWxhdGl2ZWx5IHNtYWxsIHNldCBvZiBpbml0aWFsIHZhbHVlcywg
-Y2FsbGVkIHRoZSBQUk5HJ3Mgc2VlZAorICAod2hpY2ggbWF5IGluY2x1ZGUgdHJ1bHkgcmFuZG9t
-IHZhbHVlcykuIEFsdGhvdWdoIHNlcXVlbmNlcyB0aGF0IGFyZSBjbG9zZXIgdG8KKyAgdHJ1bHkg
-cmFuZG9tIGNhbiBiZSBnZW5lcmF0ZWQgdXNpbmcgaGFyZHdhcmUgcmFuZG9tIG51bWJlciBnZW5l
-cmF0b3JzLiIKKyAgUHNldWRvcmFuZG9tIG51bWJlciBnZW5lcmF0b3IuIGh0dHBzOi8vZW4ud2lr
-aXBlZGlhLm9yZy93aWtpL1BzZXVkb3JhbmRvbV9udW1iZXJfZ2VuZXJhdG9yICgyMDE3LjA1LjA4
-KS4KKyAgVGhlIFBSTkcgdXNlZCBieSBCYXJlYm94IGlzIExDRyAobGluZWFyIGNvbmdydWVudGlh
-bCBnZW5lcmF0b3IpIG5vbiBjcnlwdG9ncmFwaGljYWxseQorICBzZWN1cmUsIHNvIHBsZWFzZSB1
-c2Ugd2l0aCBjYXV0aW9uLgorCistIFRoZSBIV1JORyBmcmFtZXdvcmsgaXMgc29mdHdhcmUgdGhh
-dCBtYWtlcyB1c2Ugb2YgYSBzcGVjaWFsIGhhcmR3YXJlIGZlYXR1cmUgb24KKyAgeW91ciBDUFUs
-IFNvQyBvciBtb3RoZXJib2FyZC4gSXQgY2Fu4oCYdCBwcm92aWRlIGFueSBndWFyYW50ZWUgYWJv
-dXQgY3J5cHRvZ3JhcGhpYworICBzZWN1cml0eSBvZiB1c2VkIEhXLiBQbGVhc2UgcmVmZXIgdG8g
-dmVuZG9yIGRvY3VtZW50YXRpb24gYW5kL29yIFJORyBjZXJ0aWZpY2F0aW9uLgorCitBUEkKK15e
-XgorCisuLiBjb2RlLWJsb2NrOjogYworCisgICAgICAgIC8qIHNlZWQgdGhlIFBSTkcuICovCisg
-ICAgICAgIHZvaWQgc3JhbmQodW5zaWduZWQgaW50IHNlZWQpOworCisgICAgICAgIC8qIEZpbGwg
-dGhlIGJ1ZmZlciB3aXRoIFBSTkcgYml0cy4gKi8KKyAgICAgICAgdm9pZCBnZXRfcmFuZG9tX2J5
-dGVzKHZvaWQgKmJ1ZiwgaW50IGxlbik7CisKKyAgICAgICAgLyogRmlsbCB0aGUgYnVmZmVyIHdp
-dGggYml0cyBwcm92aWRlZCBieSBIV1JORy4KKyAgICAgICAgICogVGhpcyBmdW5jdGlvbiBtYXkg
-ZmFpbCB3aXRoIGEgbWVzc2FnZSDigJxlcnJvcjogbm8gSFdSTkcgYXZhaWxhYmxlIeKAnQorICAg
-ICAgICAgKiBpbiBjYXNlIEhXUk5HIGlzIG5vdCBhdmFpbGFibGUgb3IgSFcgZ290IHNvbWUgcnVu
-dGltZSBlcnJvci4KKyAgICAgICAgICogSWYgYmFyZWJveCBpcyBjb21waWxlZCB3aXRoIENPTkZJ
-R19BTExPV19QUk5HX0ZBTExCQUNLLAorICAgICAgICAgKiB0aGVuIGdldF9jcnlwdG9fYnl0ZXMo
-KSB3aWxsIHByaW50IOKAnHdhcm5pbmc6IGZhbGxpbmcgYmFjayB0byBQc2V1ZG8gUk5HIHNvdXJj
-ZSHigJ0KKyAgICAgICAgICogYW5kIHVzZSBQUk5HIGluc3RlYWQgb2YgcmV0dXJuaW5nIGVycm9y
-LgorICAgICAgICAgKi8KKyAgICAgICAgaW50IGdldF9jcnlwdG9fYnl0ZXModm9pZCAqYnVmLCBp
-bnQgbGVuKTsKKworVXNlciBpbnRlcmZhY2UKK15eXl5eXl5eXl5eXl5eCisKKy0gL2Rldi9od3Ju
-ZzAKKyAgcHJvdmlkZXMgYWNjZXNzIHRvIGZpcnN0IGF2YWlsYWJsZSBIV1JORy4gVG8gZXhhbWlu
-ZSB0aGlzIHNvdXJjZSB5b3UgY2FuIHVzZToKKy4uIGNvZGUtYmxvY2s6OiBzaAorCisgIG1kIC1z
-IC9kZXYvaHdybmcwCisKKy0gL2Rldi9wcm5nCisgIHByb3ZpZGVzIGFjY2VzcyB0byBQUk5HLiBU
-byBleGFtaW5lIHRoaXMgc291cmNlIHlvdSBjYW4gdXNlOgorLi4gY29kZS1ibG9jazo6IHNoCisK
-KyAgbWQgLXMgL2Rldi9wcm5nCisKK1RvIHNlZWQgUFJORyBmcm9tIHVzZXIgc3BhY2UgdGhlIDpy
-ZWY6YGNvbW1hbmRfc2VlZGAgaXMgcHJvdmlkZWQuCitGb3IgZXhhbXBsZToKKy4uIGNvZGUtYmxv
-Y2s6OiBzaAorCisgIHNlZWQgMTIzNDUKKyAgbWQgLXMgL2Rldi9wcm5nCisKZGlmZiAtLWdpdCBh
-L0RvY3VtZW50YXRpb24vdXNlci91c2VyLW1hbnVhbC5yc3QgYi9Eb2N1bWVudGF0aW9uL3VzZXIv
-dXNlci1tYW51YWwucnN0CmluZGV4IDQzNTY0OWYzNTMuLjc5MWM4ZTA5NzkgMTAwNjQ0Ci0tLSBh
-L0RvY3VtZW50YXRpb24vdXNlci91c2VyLW1hbnVhbC5yc3QKKysrIGIvRG9jdW1lbnRhdGlvbi91
-c2VyL3VzZXItbWFudWFsLnJzdApAQCAtMzMsNiArMzMsNyBAQCBDb250ZW50czoKICAgIHJlc2V0
-LXJlYXNvbgogICAgc3lzdGVtLXJlc2V0CiAgICBzdGF0ZQorICAgcmFuZG9tCiAKICogOnJlZjpg
-c2VhcmNoYAogKiA6cmVmOmBnZW5pbmRleGAKLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+Hi,
+
+I'm not sure if this is a bug or whether I'm doing something wrong.  In 
+barebox 2017.04.0 and earlier, I stored the Ethernet MAC address in a 
+non-volatile ('nv') variable dev.eth0.macaddr=xx:xx:xx:xx:xx:xx and that 
+got propagated to 'global' and the eth0 device on boot:
+
+barebox@xxxx:/ nv
+   allow_color: true
+   autoboot_timeout: 3
+   dev.eth0.ethaddr: xx:xx:xx:xx:xx:xx
+   user: none
+
+barebox@xxxx:/ global
+* allow_color: true
+* autoboot_timeout: 3
+   boot.default: xxxx
+   boot.watchdog_timeout: 0
+   bootm.appendroot: 0
+   bootm.image:
+   bootm.image.loadaddr:
+   bootm.initrd:
+   bootm.initrd.loadaddr:
+   bootm.oftree:
+   bootm.verbose: 0
+   bootm.verify: hash
+* dev.eth0.ethaddr: xx:xx:xx:xx:xx:xx
+   dhcp.bootfile:
+   dhcp.client_id:
+   dhcp.client_uuid:
+   dhcp.oftree_file:
+   dhcp.rootpath:
+   dhcp.tftp_server_name:
+   dhcp.user_class:
+   dhcp.vendor_id:
+   editcmd: sedit
+   hostname: generic
+   linux.bootargs.base:
+   linux.bootargs.console:
+   linux.bootargs.dyn.ip:
+   linux.bootargs.dyn.root:
+   linux.rootnfsopts: v3,tcp
+   loglevel: 4
+   model: xxxx
+   system.reset: unknown
+* user: none
+   version: 2017.04.0
+
+barebox@xxxx:/ devinfo eth0
+Parameters:
+   ethaddr: xx:xx:xx:xx:xx:xx
+   gateway: 0.0.0.0
+   ipaddr: 0.0.0.0
+   linux.bootargs:
+   netmask: 0.0.0.0
+   serverip: 0.0.0.0
+
+However, in 2017.05.0, my 'dev.eth0.ethaddr' variable is no longer being 
+propagated to global on boot, and as a consequence, is no longer 
+propagated to eth0 (note that 'dev.eth0.ethaddr' is the only nv variable 
+that I set manually when setting up a new board):
+
+barebox@xxxx:/ global
+* allow_color: true
+* autoboot_timeout: 3
+   boot.default: xxxx
+   boot.watchdog_timeout: 0
+   bootm.appendroot: 0
+   bootm.image:
+   bootm.image.loadaddr:
+   bootm.initrd:
+   bootm.initrd.loadaddr:
+   bootm.oftree:
+   bootm.verbose: 0
+   bootm.verify: hash ("none", "hash", "signature", "available")
+   dhcp.bootfile:
+   dhcp.client_id:
+   dhcp.client_uuid:
+   dhcp.oftree_file:
+   dhcp.rootpath:
+   dhcp.tftp_server_name:
+   dhcp.user_class:
+   dhcp.vendor_id:
+   editcmd: sedit
+   hostname: generic
+   linux.bootargs.base:
+   linux.bootargs.console:
+   linux.bootargs.dyn.ip:
+   linux.bootargs.dyn.root:
+   linux.rootnfsopts: v3,tcp
+   loglevel: 4
+   model: xxxx
+   of_partition_binding: new ("new", "legacy", "donttouch")
+   system.reset: unknown ("unknown", "POR", "RST", "WDG", "WKE", "JTAG", 
+"THERM", "EXT")
+* user: none
+   version: 2017.05.0
+
+barebox@xxxx:/ devinfo eth0
+Parameters:
+   ethaddr: 00:00:00:00:00:00
+   gateway: 0.0.0.0
+   ipaddr: 0.0.0.0
+   linux.bootargs:
+   netmask: 0.0.0.0
+   serverip: 0.0.0.0
+
+I can work around this using a script in /env/init/ to set the global 
+from the nv variable, or change /env/network/eth0 to set the MAC address 
+from the nv variable.
+
+Is this the proper behaviour or a bug?  Could it be related to commit 
+35d8e858bea17ec4796069c9c27fd0b134125eaf ("nv: Do not create globalvars 
+from nvvars")?
+
+-- 
+-=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=-
+-=(                          Web: http://www.mev.co.uk/  )=-
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
