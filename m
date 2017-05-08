@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d70IX-0000I3-89
- for barebox@lists.infradead.org; Sat, 06 May 2017 14:03:03 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Sat,  6 May 2017 16:02:32 +0200
-Message-Id: <20170506140233.3129-1-o.rempel@pengutronix.de>
+ id 1d7eLz-0007mM-Gv
+ for barebox@lists.infradead.org; Mon, 08 May 2017 08:49:17 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon,  8 May 2017 10:48:50 +0200
+Message-Id: <20170508084850.9215-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,47 +19,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/2] Documentation: usbgadget: provide autostart notes
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: [PATCH] clock: initialize dummy clocksource statically
+To: Barebox List <barebox@lists.infradead.org>
 
-The usbgadget autostart functionality is already added. It's
-time to reflect it in the documentation.
+Assigning the dummy clocksource in a initcall has the problem that
+get_time_ns() crashes before that initcall is executed. This happens
+when dmesg support is enabled in conjunction with CONFIG_DEBUG_INITCALLS.
+In this case the dmesg code wants to have the timestamp of a log
+message.
+Solve this by setting the current clocksource to the dummy clock
+statically and not at runtime. This way we always have a dummy
+clock available.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Fixes:
+commit 8972eb7ff17ad058a6c6018305bb912138ab0ca2
+Author: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date:   Fri Mar 3 13:34:02 2017 +0100
+
+    clocksource: move dummy clock source to init_clock
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/user/usb.rst | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ common/clock.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
-index bbcb045cee..ec219cfbe4 100644
---- a/Documentation/user/usb.rst
-+++ b/Documentation/user/usb.rst
-@@ -216,3 +216,24 @@ mode. Once a specific mode has been selected it can't be changed later anymore.
-   musb-hdrc: setup fifo_mode 4
-   musb-hdrc: 28/31 max ep, 16384/16384 memory
-   barebox:/
-+
-+USB Gadget autostart Support
-+----------------------------
-+
-+Barebox can be configured to start usbgadget automatically by using global variables,
-+instead of creating boot script. This can be useful if autostart policy should be
-+chosen at boot time from other driver or script.
-+To get usbgadget autostart support barebox has to be compiled with
-+CONFIG_USB_GADGET_AUTOSTART enabled.
-+
-+USB Gadget autostart Options
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+``global.usbgadget.autostart``
-+  Boolean flag. If set to 1, usbgadget will be started automatically on boot and
-+  enable USB OTG mode. (Default 0).
-+``global.usbgadget.acm``
-+  Boolean flag. If set to 1, CDC ACM function will be created.
-+  See :ref:`command_usbgadget` -a. (Default 0).
-+``global.usbgadget.fastboot_function``
-+  Function description for fastboot. See :ref:`command_usbgadget` -A [desc].
+diff --git a/common/clock.c b/common/clock.c
+index 0d581c2c7e..f98176dd52 100644
+--- a/common/clock.c
++++ b/common/clock.c
+@@ -27,7 +27,6 @@
+ #include <clock.h>
+ #include <poller.h>
+ 
+-static struct clocksource *current_clock;
+ static uint64_t time_ns;
+ 
+ /*
+@@ -53,11 +52,7 @@ static struct clocksource dummy_cs = {
+ 	.priority = -1,
+ };
+ 
+-static int dummy_csrc_init(void)
+-{
+-	return init_clock(&dummy_cs);
+-}
+-pure_initcall(dummy_csrc_init);
++static struct clocksource *current_clock = &dummy_cs;
+ 
+ static int dummy_csrc_warn(void)
+ {
 -- 
 2.11.0
 
