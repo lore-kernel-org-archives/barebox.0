@@ -1,11 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d7ifb-0007pd-Rt
- for barebox@lists.infradead.org; Mon, 08 May 2017 13:25:49 +0000
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Mon,  8 May 2017 15:25:20 +0200
-Message-Id: <20170508132520.13112-1-mkl@pengutronix.de>
+ id 1d7ikv-0002OI-OZ
+ for barebox@lists.infradead.org; Mon, 08 May 2017 13:31:19 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Mon,  8 May 2017 15:30:54 +0200
+Message-Id: <20170508133054.10569-1-o.rempel@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,101 +15,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX: HAB: update documentation of command sequence
- files (CSF)
+Subject: [PATCH v2] Documentation: provide documentation for RNG interfaces.
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h | 11 ++++++++---
- arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h  |  9 +++++----
- 2 files changed, 13 insertions(+), 7 deletions(-)
-
-diff --git a/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h b/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
-index f4804fe63f19..60f730f8eca9 100644
---- a/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
-+++ b/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
-@@ -4,8 +4,8 @@
-  * are expected in these config variables:
-  *
-  * CONFIG_HABV3_SRK_PEM
-- * CONFIG_HABV3_SRK_PEM
-- * CONFIG_HABV3_IMG_CRT_PEM
-+ * CONFIG_HABV3_CSF_CRT_DER
-+ * CONFIG_HABV3_IMG_CRT_DER
-  */
- super_root_key CONFIG_HABV3_SRK_PEM
- 
-@@ -23,21 +23,26 @@ hab [Install SRK]
- hab File = "not-used"
- 
- hab [Install CSFK]
-+/* target key index in keystore 1 */
- hab File = CONFIG_HABV3_CSF_CRT_DER
- 
- hab [Authenticate CSF]
--/* below is the command that unlock the access to the DryIce registers */
- 
-+/* unlock the access to the DryIce registers */
- hab [Write Data]
- hab Width = 4
- hab Address Data = 0x53FFC03C 0xCA693569
- 
- hab [Install Key]
-+/* verification key index in key store (1...4) */
-+/* in contrast to documentation 0 seems to be valid, too */
- hab Verification index = 1
-+/* target key index in key store (1...4) */
- hab Target index = 2
- hab File = CONFIG_HABV3_IMG_CRT_DER
- 
- hab [Authenticate Data]
-+/* verification key index in key store (2...4) */
- hab Verification index = 2
- 
- hab_blocks
-diff --git a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-index 1a143a8b1870..0649caa0cb88 100644
---- a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-+++ b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-@@ -22,6 +22,7 @@ hab # SRK index within SRK-Table 0..3
- hab Source index = 0
- 
- hab [Install CSFK]
-+/* target key index in keystore 1 */
- hab File = CONFIG_HABV4_CSF_CRT_PEM
- 
- hab [Authenticate CSF]
-@@ -31,14 +32,14 @@ hab Engine = CAAM
- hab Features = RNG
- 
- hab [Install Key]
--/* verification key index in key store (0, 2...5) */
-+/* verification key index in key store (0, 2...4) */
- hab Verification index = 0
--/* target key index in key store (2...5) */
-+/* target key index in key store (2...4) */
- hab Target index = 2
- hab File = CONFIG_HABV4_IMG_CRT_PEM
- 
- hab [Authenticate Data]
--/* verification key index in key store (2...5) */
-+/* verification key index in key store (2...4) */
- hab Verification index = 2
- 
--hab_blocks
-\ No newline at end of file
-+hab_blocks
--- 
-2.11.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogT2xla3NpaiBSZW1wZWwgPG8ucmVtcGVsQHBlbmd1dHJvbml4LmRlPgot
+LS0KIERvY3VtZW50YXRpb24vdXNlci9yYW5kb20ucnN0ICAgICAgfCA2MiArKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKwogRG9jdW1lbnRhdGlvbi91c2VyL3VzZXItbWFudWFs
+LnJzdCB8ICAxICsKIDIgZmlsZXMgY2hhbmdlZCwgNjMgaW5zZXJ0aW9ucygrKQogY3JlYXRlIG1v
+ZGUgMTAwNjQ0IERvY3VtZW50YXRpb24vdXNlci9yYW5kb20ucnN0CgpkaWZmIC0tZ2l0IGEvRG9j
+dW1lbnRhdGlvbi91c2VyL3JhbmRvbS5yc3QgYi9Eb2N1bWVudGF0aW9uL3VzZXIvcmFuZG9tLnJz
+dApuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwLi5mN2M1YjJkNGM2Ci0tLSAv
+ZGV2L251bGwKKysrIGIvRG9jdW1lbnRhdGlvbi91c2VyL3JhbmRvbS5yc3QKQEAgLTAsMCArMSw2
+MiBAQAorUmFuZG9tIE51bWJlciBHZW5lcmF0b3Igc3VwcG9ydAorPT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PQorCitCYXJlYm94IHByb3ZpZGVzIHR3byB0eXBlcyBvZiBSTkcgc291cmNl
+cyAtIFBSTkcgYW5kIEhXUk5HOgorCistICJBIHBzZXVkb3JhbmRvbSBudW1iZXIgZ2VuZXJhdG9y
+IChQUk5HKSwgYWxzbyBrbm93biBhcyBhIGRldGVybWluaXN0aWMgcmFuZG9tCisgIGJpdCBnZW5l
+cmF0b3IgKERSQkcpLFsxXSBpcyBhbiBhbGdvcml0aG0gZm9yIGdlbmVyYXRpbmcgYSBzZXF1ZW5j
+ZSBvZiBudW1iZXJzCisgIHdob3NlIHByb3BlcnRpZXMgYXBwcm94aW1hdGUgdGhlIHByb3BlcnRp
+ZXMgb2Ygc2VxdWVuY2VzIG9mIHJhbmRvbSBudW1iZXJzLgorICBUaGUgUFJORy1nZW5lcmF0ZWQg
+c2VxdWVuY2UgaXMgbm90IHRydWx5IHJhbmRvbSwgYmVjYXVzZSBpdCBpcyBjb21wbGV0ZWx5Cisg
+IGRldGVybWluZWQgYnkgYSByZWxhdGl2ZWx5IHNtYWxsIHNldCBvZiBpbml0aWFsIHZhbHVlcywg
+Y2FsbGVkIHRoZSBQUk5HJ3Mgc2VlZAorICAod2hpY2ggbWF5IGluY2x1ZGUgdHJ1bHkgcmFuZG9t
+IHZhbHVlcykuIEFsdGhvdWdoIHNlcXVlbmNlcyB0aGF0IGFyZSBjbG9zZXIgdG8KKyAgdHJ1bHkg
+cmFuZG9tIGNhbiBiZSBnZW5lcmF0ZWQgdXNpbmcgaGFyZHdhcmUgcmFuZG9tIG51bWJlciBnZW5l
+cmF0b3JzLiIKKyAgUHNldWRvcmFuZG9tIG51bWJlciBnZW5lcmF0b3IuIGh0dHBzOi8vZW4ud2lr
+aXBlZGlhLm9yZy93aWtpL1BzZXVkb3JhbmRvbV9udW1iZXJfZ2VuZXJhdG9yICgyMDE3LjA1LjA4
+KS4KKyAgVGhlIFBSTkcgdXNlZCBieSBCYXJlYm94IGlzIExDRyAobGluZWFyIGNvbmdydWVudGlh
+bCBnZW5lcmF0b3IpIG5vbiBjcnlwdG9ncmFwaGljYWxseQorICBzZWN1cmUsIHNvIHBsZWFzZSB1
+c2Ugd2l0aCBjYXV0aW9uLgorCistIFRoZSBIV1JORyBmcmFtZXdvcmsgaXMgc29mdHdhcmUgdGhh
+dCBtYWtlcyB1c2Ugb2YgYSBzcGVjaWFsIGhhcmR3YXJlIGZlYXR1cmUgb24KKyAgeW91ciBDUFUs
+IFNvQyBvciBtb3RoZXJib2FyZC4gSXQgY2Fu4oCYdCBwcm92aWRlIGFueSBndWFyYW50ZWUgYWJv
+dXQgY3J5cHRvZ3JhcGhpYworICBzZWN1cml0eSBvZiB1c2VkIEhXLiBQbGVhc2UgcmVmZXIgdG8g
+dmVuZG9yIGRvY3VtZW50YXRpb24gYW5kL29yIFJORyBjZXJ0aWZpY2F0aW9uLgorCitBUEkKK15e
+XgorCisuLiBjb2RlLWJsb2NrOjogYworCisgICAgICAgIC8qIHNlZWQgdGhlIFBSTkcuICovCisg
+ICAgICAgIHZvaWQgc3JhbmQodW5zaWduZWQgaW50IHNlZWQpOworCisgICAgICAgIC8qIEZpbGwg
+dGhlIGJ1ZmZlciB3aXRoIFBSTkcgYml0cy4gKi8KKyAgICAgICAgdm9pZCBnZXRfcmFuZG9tX2J5
+dGVzKHZvaWQgKmJ1ZiwgaW50IGxlbik7CisKKyAgICAgICAgLyogRmlsbCB0aGUgYnVmZmVyIHdp
+dGggYml0cyBwcm92aWRlZCBieSBIV1JORy4KKyAgICAgICAgICogVGhpcyBmdW5jdGlvbiBtYXkg
+ZmFpbCB3aXRoIGEgbWVzc2FnZSDigJxlcnJvcjogbm8gSFdSTkcgYXZhaWxhYmxlIeKAnQorICAg
+ICAgICAgKiBpbiBjYXNlIEhXUk5HIGlzIG5vdCBhdmFpbGFibGUgb3IgSFcgZ290IHNvbWUgcnVu
+dGltZSBlcnJvci4KKyAgICAgICAgICogSWYgYmFyZWJveCBpcyBjb21waWxlZCB3aXRoIENPTkZJ
+R19BTExPV19QUk5HX0ZBTExCQUNLLAorICAgICAgICAgKiB0aGVuIGdldF9jcnlwdG9fYnl0ZXMo
+KSB3aWxsIHByaW50IOKAnHdhcm5pbmc6IGZhbGxpbmcgYmFjayB0byBQc2V1ZG8gUk5HIHNvdXJj
+ZSHigJ0KKyAgICAgICAgICogYW5kIHVzZSBQUk5HIGluc3RlYWQgb2YgcmV0dXJuaW5nIGVycm9y
+LgorICAgICAgICAgKi8KKyAgICAgICAgaW50IGdldF9jcnlwdG9fYnl0ZXModm9pZCAqYnVmLCBp
+bnQgbGVuKTsKKworVXNlciBpbnRlcmZhY2UKK15eXl5eXl5eXl5eXl5eCisKKy0gL2Rldi9od3Ju
+ZzAKKyAgcHJvdmlkZXMgYWNjZXNzIHRvIGZpcnN0IGF2YWlsYWJsZSBIV1JORy4gVG8gZXhhbWlu
+ZSB0aGlzIHNvdXJjZSB5b3UgY2FuIHVzZToKKy4uIGNvZGUtYmxvY2s6OiBzaAorCisgIG1kIC1z
+IC9kZXYvaHdybmcwCisKKy0gL2Rldi9wcm5nCisgIHByb3ZpZGVzIGFjY2VzcyB0byBQUk5HLiBU
+byBleGFtaW5lIHRoaXMgc291cmNlIHlvdSBjYW4gdXNlOgorLi4gY29kZS1ibG9jazo6IHNoCisK
+KyAgbWQgLXMgL2Rldi9wcm5nCisKK1RvIHNlZWQgUFJORyBmcm9tIHVzZXIgc3BhY2UgdGhlIDpy
+ZWY6YGNvbW1hbmRfc2VlZGAgaXMgcHJvdmlkZWQuCitGb3IgZXhhbXBsZToKKy4uIGNvZGUtYmxv
+Y2s6OiBzaAorCisgIHNlZWQgMTIzNDUKKyAgbWQgLXMgL2Rldi9wcm5nCisKZGlmZiAtLWdpdCBh
+L0RvY3VtZW50YXRpb24vdXNlci91c2VyLW1hbnVhbC5yc3QgYi9Eb2N1bWVudGF0aW9uL3VzZXIv
+dXNlci1tYW51YWwucnN0CmluZGV4IDQzNTY0OWYzNTMuLjc5MWM4ZTA5NzkgMTAwNjQ0Ci0tLSBh
+L0RvY3VtZW50YXRpb24vdXNlci91c2VyLW1hbnVhbC5yc3QKKysrIGIvRG9jdW1lbnRhdGlvbi91
+c2VyL3VzZXItbWFudWFsLnJzdApAQCAtMzMsNiArMzMsNyBAQCBDb250ZW50czoKICAgIHJlc2V0
+LXJlYXNvbgogICAgc3lzdGVtLXJlc2V0CiAgICBzdGF0ZQorICAgcmFuZG9tCiAKICogOnJlZjpg
+c2VhcmNoYAogKiA6cmVmOmBnZW5pbmRleGAKLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
