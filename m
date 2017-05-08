@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x241.google.com ([2a00:1450:400c:c09::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d7iJz-0006Dt-D9
- for barebox@lists.infradead.org; Mon, 08 May 2017 13:03:29 +0000
-Received: by mail-wm0-x241.google.com with SMTP id y10so15366161wmh.0
- for <barebox@lists.infradead.org>; Mon, 08 May 2017 06:03:06 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20170508123214.18608-1-o.rempel@pengutronix.de>
-References: <20170508123214.18608-1-o.rempel@pengutronix.de>
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Mon, 8 May 2017 15:02:44 +0200
-Message-ID: <CAGm1_ktodvaCBzqFbnsgC2rrEq2_7PSqOWnmKbYgm_tG6XqpWw@mail.gmail.com>
+ id 1d7ifb-0007pd-Rt
+ for barebox@lists.infradead.org; Mon, 08 May 2017 13:25:49 +0000
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Mon,  8 May 2017 15:25:20 +0200
+Message-Id: <20170508132520.13112-1-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,78 +14,101 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1] Documentation: random: provide documentation.
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: i.MX: HAB: update documentation of command sequence
+ files (CSF)
+To: barebox@lists.infradead.org
 
-SGkgT2xla3NpaiwKCk9uIE1vbiwgTWF5IDgsIDIwMTcgYXQgMjozMiBQTSwgT2xla3NpaiBSZW1w
-ZWwgPG8ucmVtcGVsQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPiBTaWduZWQtb2ZmLWJ5OiBPbGVr
-c2lqIFJlbXBlbCA8by5yZW1wZWxAcGVuZ3V0cm9uaXguZGU+Cj4gLS0tCj4gIERvY3VtZW50YXRp
-b24vdXNlci9yYW5kb20ucnN0ICAgICAgfCA2MCArKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKwo+ICBEb2N1bWVudGF0aW9uL3VzZXIvdXNlci1tYW51YWwucnN0IHwgIDEgKwo+
-ICAyIGZpbGVzIGNoYW5nZWQsIDYxIGluc2VydGlvbnMoKykKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0
-IERvY3VtZW50YXRpb24vdXNlci9yYW5kb20ucnN0Cj4KPiBkaWZmIC0tZ2l0IGEvRG9jdW1lbnRh
-dGlvbi91c2VyL3JhbmRvbS5yc3QgYi9Eb2N1bWVudGF0aW9uL3VzZXIvcmFuZG9tLnJzdAo+IG5l
-dyBmaWxlIG1vZGUgMTAwNjQ0Cj4gaW5kZXggMDAwMDAwMDAwMC4uMDc1NTY3YWM1OQo+IC0tLSAv
-ZGV2L251bGwKPiArKysgYi9Eb2N1bWVudGF0aW9uL3VzZXIvcmFuZG9tLnJzdAo+IEBAIC0wLDAg
-KzEsNjAgQEAKPiArUmFuZG9tIE51bWJlciBHZW5lcmF0b3Igc3VwcG9ydAo+ICs9PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09Cj4gKwo+ICtCYXJlYm94IGlzIHByb3ZpZGluZyB0d28gdHlw
-ZXMgb2YgUk5HIHNvdXJjZXM6CgpzL2lzIHByb3ZpZGluZy9wcm92aWRlcwoKPiArLSAiQSBwc2V1
-ZG9yYW5kb20gbnVtYmVyIGdlbmVyYXRvciAoUFJORyksIGFsc28ga25vd24gYXMgYSBkZXRlcm1p
-bmlzdGljIHJhbmRvbQo+ICsgIGJpdCBnZW5lcmF0b3IgKERSQkcpLFsxXSBpcyBhbiBhbGdvcml0
-aG0gZm9yIGdlbmVyYXRpbmcgYSBzZXF1ZW5jZSBvZiBudW1iZXJzCj4gKyAgd2hvc2UgcHJvcGVy
-dGllcyBhcHByb3hpbWF0ZSB0aGUgcHJvcGVydGllcyBvZiBzZXF1ZW5jZXMgb2YgcmFuZG9tIG51
-bWJlcnMuCj4gKyAgVGhlIFBSTkctZ2VuZXJhdGVkIHNlcXVlbmNlIGlzIG5vdCB0cnVseSByYW5k
-b20sIGJlY2F1c2UgaXQgaXMgY29tcGxldGVseQo+ICsgIGRldGVybWluZWQgYnkgYSByZWxhdGl2
-ZWx5IHNtYWxsIHNldCBvZiBpbml0aWFsIHZhbHVlcywgY2FsbGVkIHRoZSBQUk5HJ3Mgc2VlZAo+
-ICsgICh3aGljaCBtYXkgaW5jbHVkZSB0cnVseSByYW5kb20gdmFsdWVzKS4gQWx0aG91Z2ggc2Vx
-dWVuY2VzIHRoYXQgYXJlIGNsb3NlciB0bwo+ICsgIHRydWx5IHJhbmRvbSBjYW4gYmUgZ2VuZXJh
-dGVkIHVzaW5nIGhhcmR3YXJlIHJhbmRvbSBudW1iZXIgZ2VuZXJhdG9ycy4iCj4gKyAgUHNldWRv
-cmFuZG9tIG51bWJlciBnZW5lcmF0b3IuIGh0dHBzOi8vZW4ud2lraXBlZGlhLm9yZy93aWtpL1Bz
-ZXVkb3JhbmRvbV9udW1iZXJfZ2VuZXJhdG9yICgyMDE3LjA1LjA4KS4KPiArICBUaGUgUFJORyB1
-c2VkIGJ5IEJhcmVib3ggaXMgTENHIChsaW5lYXIgY29uZ3J1ZW50aWFsIGdlbmVyYXRvcikgbm9u
-IGNyeXB0b2dyYXBoaWNhbGx5Cj4gKyAgc2VjdXJlLCBzbyBwbGVhc2UgdXNlIHdpdGggY2F1dGlv
-bi4KPiArCj4gKy0gVGhlIEhXUk5HIGZyYW1ld29yayBpcyBzb2Z0d2FyZSB0aGF0IG1ha2VzIHVz
-ZSBvZiBhIHNwZWNpYWwgaGFyZHdhcmUgZmVhdHVyZSBvbgo+ICsgIHlvdXIgQ1BVLCBTb0Mgb3Ig
-bW90aGVyYm9hcmQuIEl0IGNhbuKAmHQgcHJvdmlkZSBhbnkgZ3VhcmFudGVlIGFib3V0IGNyeXB0
-b2dyYXBoaWMKPiArICBzZWN1cml0eSBvZiB1c2VkIEhXLiBQbGVhc2UgcmVmZXIgdG8gdmVuZG9y
-IGRvY3VtZW50YXRpb24gYW5kL29yIFJORyBjZXJ0aWZpY2F0aW9uLgo+ICsKPiArQVBJCj4gK15e
-Xgo+ICsKPiArLi4gY29kZS1ibG9jazo6IGMKPiArCj4gKyAgICAgICAgLyogc2VlZCB0aGUgUFJO
-Ry4gKi8KPiArICAgICAgICB2b2lkIHNyYW5kKHVuc2lnbmVkIGludCBzZWVkKTsKPiArCj4gKyAg
-ICAgICAgLyogRmlsbCB0aGUgYnVmZmVyIHdpdGggUFJORyBiaXRzLiAqLwo+ICsgICAgICAgIHZv
-aWQgZ2V0X3JhbmRvbV9ieXRlcyh2b2lkICpidWYsIGludCBsZW4pOwo+ICsKPiArICAgICAgICAv
-KiBGaWxsIHRoZSBidWZmZXIgd2l0aCBiaXRzIHByb3ZpZGVkIGJ5IEhXUk5HLgo+ICsgICAgICAg
-ICAqIFRoaXMgZnVuY3Rpb24gbWF5IGZhaWwgd2l0aCBtZXNzYWdlIOKAnGVycm9yOiBubyBIV1JO
-RyBhdmFpbGFibGUh4oCdCgpzL3dpdGggbWVzc2FnZS93aXRoIGEgbWVzc2FnZQoKPiArICAgICAg
-ICAgKiBpbiBjYXNlIEhXUk5HIGlzIG5vdCBhdmFpbGFibGUgb3IgSFcgZ290IHNvbWUgcnVudGlt
-ZSBlcnJvci4KPiArICAgICAgICAgKiBJZiBiYXJlYm94IGlzIGNvbXBpbGVkIHdpdGggQ09ORklH
-X0FMTE9XX1BSTkdfRkFMTEJBQ0ssCj4gKyAgICAgICAgICogdGhlbiBnZXRfY3J5cHRvX2J5dGVz
-KCkgd2lsbCBwcmludCDigJx3YXJuaW5nOiBmYWxsaW5nIGJhY2sgdG8gUHNldWRvIFJORyBzb3Vy
-Y2Uh4oCdCj4gKyAgICAgICAgICogYW5kIHVzZSBQUk5HIGluc3RlYWQgb2YgcmV0dXJuaW5nIGVy
-cm9yLgo+ICsgICAgICAgICAqLwo+ICsgICAgICAgIGludCBnZXRfY3J5cHRvX2J5dGVzKHZvaWQg
-KmJ1ZiwgaW50IGxlbik7Cj4gKwo+ICtVc2VyIGludGVyZmFjZQo+ICteXl5eXl5eXl5eXl5eXgo+
-ICsKPiArLSAvZGV2L2h3cm5nMAo+ICsgIGlzIHByb3ZpbmcgYWNjZXNzIHRvIGZpcnN0IGF2YWls
-YWJsZSBIV1JORy4gVG8gZXhhbWluZSB0aGlzIHNvdXJjZSB5b3UgY2FuIHVzZToKCnMvaXMgcHJv
-dmlkaW5nL3Byb3ZpZGVzCgo+ICsuLiBjb2RlLWJsb2NrOjogc2gKPiArCj4gKyAgbWQgLXMgL2Rl
-di9od3JuZzAKPiArCj4gKy0gL2Rldi9wcm5nIOKAkyBpcyBwcm92aWRpbmcgYWNjZXNzIHRvIFBS
-TkcuIFRvIGV4YW1pbmUgdGhpcyBzb3VyY2UgeW91IGNhbiB1c2U6CgpzL2lzIHByb3ZpZGluZy9w
-cm92aWRlcwoKWWVnb3IKCj4gKy4uIGNvZGUtYmxvY2s6OiBzaAo+ICsKPiArICBtZCAtcyAvZGV2
-L3BybmcKPiArCj4gK1RvIHNlZWQgUFJORyBmcm9tIHVzZXIgc3BhY2UgdGhlIDpyZWY6YGNvbW1h
-bmRfc2VlZGAgaXMgcHJvdmlkZWQuCj4gK0ZvciBleGFtcGxlOgo+ICsuLiBjb2RlLWJsb2NrOjog
-c2gKPiArCj4gKyAgc2VlZCAxMjM0NQo+ICsgIG1kIC1zIC9kZXYvcHJuZwo+ICsKPiBkaWZmIC0t
-Z2l0IGEvRG9jdW1lbnRhdGlvbi91c2VyL3VzZXItbWFudWFsLnJzdCBiL0RvY3VtZW50YXRpb24v
-dXNlci91c2VyLW1hbnVhbC5yc3QKPiBpbmRleCA0MzU2NDlmMzUzLi43OTFjOGUwOTc5IDEwMDY0
-NAo+IC0tLSBhL0RvY3VtZW50YXRpb24vdXNlci91c2VyLW1hbnVhbC5yc3QKPiArKysgYi9Eb2N1
-bWVudGF0aW9uL3VzZXIvdXNlci1tYW51YWwucnN0Cj4gQEAgLTMzLDYgKzMzLDcgQEAgQ29udGVu
-dHM6Cj4gICAgIHJlc2V0LXJlYXNvbgo+ICAgICBzeXN0ZW0tcmVzZXQKPiAgICAgc3RhdGUKPiAr
-ICAgcmFuZG9tCj4KPiAgKiA6cmVmOmBzZWFyY2hgCj4gICogOnJlZjpgZ2VuaW5kZXhgCj4gLS0K
-PiAyLjExLjAKPgo+Cj4KPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
-b3JnCj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
-Cj4KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h | 11 ++++++++---
+ arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h  |  9 +++++----
+ 2 files changed, 13 insertions(+), 7 deletions(-)
+
+diff --git a/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h b/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
+index f4804fe63f19..60f730f8eca9 100644
+--- a/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
++++ b/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
+@@ -4,8 +4,8 @@
+  * are expected in these config variables:
+  *
+  * CONFIG_HABV3_SRK_PEM
+- * CONFIG_HABV3_SRK_PEM
+- * CONFIG_HABV3_IMG_CRT_PEM
++ * CONFIG_HABV3_CSF_CRT_DER
++ * CONFIG_HABV3_IMG_CRT_DER
+  */
+ super_root_key CONFIG_HABV3_SRK_PEM
+ 
+@@ -23,21 +23,26 @@ hab [Install SRK]
+ hab File = "not-used"
+ 
+ hab [Install CSFK]
++/* target key index in keystore 1 */
+ hab File = CONFIG_HABV3_CSF_CRT_DER
+ 
+ hab [Authenticate CSF]
+-/* below is the command that unlock the access to the DryIce registers */
+ 
++/* unlock the access to the DryIce registers */
+ hab [Write Data]
+ hab Width = 4
+ hab Address Data = 0x53FFC03C 0xCA693569
+ 
+ hab [Install Key]
++/* verification key index in key store (1...4) */
++/* in contrast to documentation 0 seems to be valid, too */
+ hab Verification index = 1
++/* target key index in key store (1...4) */
+ hab Target index = 2
+ hab File = CONFIG_HABV3_IMG_CRT_DER
+ 
+ hab [Authenticate Data]
++/* verification key index in key store (2...4) */
+ hab Verification index = 2
+ 
+ hab_blocks
+diff --git a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
+index 1a143a8b1870..0649caa0cb88 100644
+--- a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
++++ b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
+@@ -22,6 +22,7 @@ hab # SRK index within SRK-Table 0..3
+ hab Source index = 0
+ 
+ hab [Install CSFK]
++/* target key index in keystore 1 */
+ hab File = CONFIG_HABV4_CSF_CRT_PEM
+ 
+ hab [Authenticate CSF]
+@@ -31,14 +32,14 @@ hab Engine = CAAM
+ hab Features = RNG
+ 
+ hab [Install Key]
+-/* verification key index in key store (0, 2...5) */
++/* verification key index in key store (0, 2...4) */
+ hab Verification index = 0
+-/* target key index in key store (2...5) */
++/* target key index in key store (2...4) */
+ hab Target index = 2
+ hab File = CONFIG_HABV4_IMG_CRT_PEM
+ 
+ hab [Authenticate Data]
+-/* verification key index in key store (2...5) */
++/* verification key index in key store (2...4) */
+ hab Verification index = 2
+ 
+-hab_blocks
+\ No newline at end of file
++hab_blocks
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
