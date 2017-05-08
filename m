@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d7hEx-0004iT-EP
- for barebox@lists.infradead.org; Mon, 08 May 2017 11:54:13 +0000
-Date: Mon, 8 May 2017 13:53:49 +0200
+ id 1d7hGa-0006Xw-M0
+ for barebox@lists.infradead.org; Mon, 08 May 2017 11:55:58 +0000
+Date: Mon, 8 May 2017 13:55:30 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170508115349.267jiaq4p5jwqojv@pengutronix.de>
-References: <20170505154920.27685-1-m.grzeschik@pengutronix.de>
+Message-ID: <20170508115530.a2bpinjsgcmtsodf@pengutronix.de>
+References: <20170506140233.3129-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170505154920.27685-1-m.grzeschik@pengutronix.de>
+In-Reply-To: <20170506140233.3129-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] i.MX: fec: enable optional clocks in fec driver
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Subject: Re: [PATCH v2 1/2] Documentation: usbgadget: provide autostart notes
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, May 05, 2017 at 05:49:17PM +0200, Michael Grzeschik wrote:
-> All clocks necessary for the fec are described in the device trees. This
-> series enables them if found. After that change, all board files
-> explicitly enabling them can rely on the fec driver.
+On Sat, May 06, 2017 at 04:02:32PM +0200, Oleksij Rempel wrote:
+> The usbgadget autostart functionality is already added. It's
+> time to reflect it in the documentation.
 > 
-> Michael Grzeschik (3):
->   i.MX: fec: also enable optional clocks
->   ARM: phytec-som-imx6: the ethernet clocks get enabled by fec_imx
->   ARM: mx6sx-sabresdb: the ethernet clocks get enabled by fec_imx
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  Documentation/user/usb.rst | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
 
 Applied, thanks
 
 Sascha
 
 > 
->  arch/arm/boards/freescale-mx6sx-sabresdb/board.c | 27 +---------------------
->  arch/arm/boards/phytec-som-imx6/board.c          | 27 +---------------------
->  drivers/net/fec_imx.c                            | 29 ++++++++++++++++++++++++
->  drivers/net/fec_imx.h                            |  8 +++++++
->  4 files changed, 39 insertions(+), 52 deletions(-)
-> 
+> diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
+> index bbcb045cee..ec219cfbe4 100644
+> --- a/Documentation/user/usb.rst
+> +++ b/Documentation/user/usb.rst
+> @@ -216,3 +216,24 @@ mode. Once a specific mode has been selected it can't be changed later anymore.
+>    musb-hdrc: setup fifo_mode 4
+>    musb-hdrc: 28/31 max ep, 16384/16384 memory
+>    barebox:/
+> +
+> +USB Gadget autostart Support
+> +----------------------------
+> +
+> +Barebox can be configured to start usbgadget automatically by using global variables,
+> +instead of creating boot script. This can be useful if autostart policy should be
+> +chosen at boot time from other driver or script.
+> +To get usbgadget autostart support barebox has to be compiled with
+> +CONFIG_USB_GADGET_AUTOSTART enabled.
+> +
+> +USB Gadget autostart Options
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +
+> +``global.usbgadget.autostart``
+> +  Boolean flag. If set to 1, usbgadget will be started automatically on boot and
+> +  enable USB OTG mode. (Default 0).
+> +``global.usbgadget.acm``
+> +  Boolean flag. If set to 1, CDC ACM function will be created.
+> +  See :ref:`command_usbgadget` -a. (Default 0).
+> +``global.usbgadget.fastboot_function``
+> +  Function description for fastboot. See :ref:`command_usbgadget` -A [desc].
 > -- 
 > 2.11.0
 > 
