@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d7gME-0002Jz-JH
- for barebox@lists.infradead.org; Mon, 08 May 2017 10:57:40 +0000
-Date: Mon, 8 May 2017 12:57:16 +0200
+ id 1d7h2a-0007fw-ER
+ for barebox@lists.infradead.org; Mon, 08 May 2017 11:41:26 +0000
+Date: Mon, 8 May 2017 13:41:02 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170508105716.a3hzzoqop2fsl5bm@pengutronix.de>
-References: <890269e4-1c96-691c-065b-82ad619b3140@phytec.de>
+Message-ID: <20170508114101.byb73mubbmcbunyc@pengutronix.de>
+References: <20170505113435.19928-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <890269e4-1c96-691c-065b-82ad619b3140@phytec.de>
+In-Reply-To: <20170505113435.19928-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,57 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: GCC 6.3 Linker error
-To: Daniel Schultz <d.schultz@phytec.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 0/5] MIPS: start*.S and barebox.lds.S fixups
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Fri, May 05, 2017 at 05:11:30PM +0200, Daniel Schultz wrote:
-> Hi everyone,
-> 
-> when I build the Barebox with GCC 6.3 and am335x_defconfig, I get the
-> following error:
-> 
-> 
-> |   LD      commands/built-in.o
-> |   LD      drivers/usb/built-in.o
-> |   PBLLD   drivers/usb/built-in-pbl.o
-> |   LD      fs/built-in.o
-> |   PBLLD   fs/built-in-pbl.o
-> |   LD      drivers/mtd/ubi/built-in.o
-> |   LD      drivers/mtd/built-in.o
-> |   PBLLD   drivers/mtd/built-in-pbl.o
-> |   LD      drivers/built-in.o
-> |   PBLLD   drivers/built-in-pbl.o
-> |   GEN     .version
-> |   CHK     include/generated/compile.h
-> |   UPD     include/generated/compile.h
-> |   CC      common/version.o
-> |   LD      common/built-in.o
-> |   LD      .tmp_barebox1
-> | arm-phytec-linux-gnueabi-ld: .tmp_barebox1: Not enough room for program
-> headers, try linking with -N
-> | arm-phytec-linux-gnueabi-ld: final link failed: Bad value
-> | make[2]: *** [.tmp_barebox1] Error 1
-> | make[1]: *** [_all] Error 2
-> | make: *** [all] Error 2
-> | ERROR: Function failed: do_compile (log file is located at /home/schultz/yocto/PD17.2.0/build/tmp/work/phyboard_wega_am335x_2-phytec-linux-gnueabi/barebox/2017.03.0-phy1-r7.0/temp/log.do_compile.23997)
-> ERROR: Task (/home/schultz/yocto/PD17.2.0/sources/poky/../meta-phytec/recipes-bsp/barebox/barebox_2017.03.0-phy1.bb:do_compile)
-> failed with exit code '1'
-> NOTE: Tasks Summary: Attempted 497 tasks of which 495 didn't need to be
-> rerun and 1 failed.
-> NOTE: Writing buildhistory
-> 
-> 
-> has somebody else faced with this problem? I figured out that linking with
-> "-nmagic" fix this problem.
+On Fri, May 05, 2017 at 02:34:30PM +0300, Antony Pavlov wrote:
+> Antony Pavlov (5):
+>   MIPS: start*.S: drop redundant .text
+>   MIPS: barebox.lds.S: drop unneeded '_start = .'
+>   MIPS: barebox.lds.S: remove unused got
+>   MIPS: barebox.lds.S: put .text_entry contents after _stext and _text
+>   MIPS: start.S: put entry code into the ".text_entry" section
 
-This was reported here: https://www.spinics.net/lists/u-boot-v2/msg29899.html
-The patch should fix this. It was never sent for inclusion in barebox
-though, so I haven't applied it yet.
-If you can test this patch successfully you could just resend the patch
-so we get this solved in mainline.
+Applied, thanks
 
 Sascha
+
+> 
+>  arch/mips/boot/start-pbl.S  | 1 -
+>  arch/mips/boot/start.S      | 3 +--
+>  arch/mips/lib/barebox.lds.S | 6 +-----
+>  3 files changed, 2 insertions(+), 8 deletions(-)
+> 
+> -- 
+> 2.11.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
