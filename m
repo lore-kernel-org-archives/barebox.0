@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d7n7Z-00068P-Mo
- for barebox@lists.infradead.org; Mon, 08 May 2017 18:10:59 +0000
+ id 1d7n94-0006KN-5z
+ for barebox@lists.infradead.org; Mon, 08 May 2017 18:12:31 +0000
+Date: Mon, 8 May 2017 20:12:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  8 May 2017 20:10:31 +0200
-Message-Id: <20170508181031.25106-1-s.hauer@pengutronix.de>
+Message-ID: <20170508181206.cibrghbpdrjbryx4@pengutronix.de>
+References: <91e8e828-d3c3-5c56-0a92-a52c493b8354@mev.co.uk>
+ <4208aa68-1cb6-0224-781a-4572a78ba6fd@mev.co.uk>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <4208aa68-1cb6-0224-781a-4572a78ba6fd@mev.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,50 +19,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] globalvar: Fix value of new globalvar when nvvar exists
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Ian Abbott <abbotti@mev.co.uk>
+Subject: Re: Setting MAC address from nv variable broken in barebox 2017.05.0?
+To: Ian Abbott <abbotti@mev.co.uk>
+Cc: barebox@lists.infradead.org
 
-When a new globalvar with a value is created and the corresponding
-nvvar exists, then the globalvar gets the value of the nvvar, not
-from the newly assigned value as expected.
+On Mon, May 08, 2017 at 03:45:49PM +0100, Ian Abbott wrote:
+> On 08/05/17 14:39, Ian Abbott wrote:
+> > Hi,
+> > 
+> > I'm not sure if this is a bug or whether I'm doing something wrong.  In
+> > barebox 2017.04.0 and earlier, I stored the Ethernet MAC address in a
+> > non-volatile ('nv') variable dev.eth0.macaddr=xx:xx:xx:xx:xx:xx and that
+> > got propagated to 'global' and the eth0 device on boot:
+> > 
+> > barebox@xxxx:/ nv
+> >   allow_color: true
+> >   autoboot_timeout: 3
+> >   dev.eth0.ethaddr: xx:xx:xx:xx:xx:xx
+> >   user: none
+> [snip]
+> > However, in 2017.05.0, my 'dev.eth0.ethaddr' variable is no longer being
+> > propagated to global on boot, and as a consequence, is no longer
+> > propagated to eth0 (note that 'dev.eth0.ethaddr' is the only nv variable
+> > that I set manually when setting up a new board):
+> > 
+> > barebox@xxxx:/ devinfo eth0
+> > Parameters:
+> >   ethaddr: 00:00:00:00:00:00
+> >   gateway: 0.0.0.0
+> >   ipaddr: 0.0.0.0
+> >   linux.bootargs:
+> >   netmask: 0.0.0.0
+> >   serverip: 0.0.0.0
+> > 
+> [snip]
+> > Is this the proper behaviour or a bug?  Could it be related to commit
+> > 35d8e858bea17ec4796069c9c27fd0b134125eaf ("nv: Do not create globalvars
+> > from nvvars")?
+> 
+> As a related follow-up, this code in globalvar_add_simple() looks a bit
+> strange:
+> 
+> 	if (value)
+> 		dev_set_param(&global_device, name, value);
+> 
+> 	globalvar_nv_sync(name);
 
-nv quux=foo; global quux=bar; echo ${global.quux}
+Ok, I think this should just be the other way round. Fixed in a patch I
+just sent.
 
-Should give "bar", not "foo". Fix this.
+Sascha
 
-Reported-by: Ian Abbott <abbotti@mev.co.uk>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/globalvar.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/common/globalvar.c b/common/globalvar.c
-index c48e7df067..c528b24062 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -403,11 +403,11 @@ int globalvar_add_simple(const char *name, const char *value)
- 			return PTR_ERR(param);
- 	}
- 
-+	globalvar_nv_sync(name);
-+
- 	if (value)
- 		dev_set_param(&global_device, name, value);
- 
--	globalvar_nv_sync(name);
--
- 	return 0;
- }
- 
 -- 
-2.11.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
