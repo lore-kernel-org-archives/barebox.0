@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp85.iad3a.emailsrvr.com ([173.203.187.85])
+Received: from smtp69.iad3a.emailsrvr.com ([173.203.187.69])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d7jyc-0002M1-Km
- for barebox@lists.infradead.org; Mon, 08 May 2017 14:49:32 +0000
-Received: from smtp11.relay.iad3a.emailsrvr.com (localhost [127.0.0.1])
- by smtp11.relay.iad3a.emailsrvr.com (SMTP Server) with ESMTP id A458755A4
- for <barebox@lists.infradead.org>; Mon,  8 May 2017 10:49:05 -0400 (EDT)
-Received: by smtp11.relay.iad3a.emailsrvr.com (Authenticated sender:
- siepeng-AT-mev.co.uk) with ESMTPSA id 6A136557F
- for <barebox@lists.infradead.org>; Mon,  8 May 2017 10:49:05 -0400 (EDT)
+ id 1d7kqX-0004ON-1C
+ for barebox@lists.infradead.org; Mon, 08 May 2017 15:45:15 +0000
 References: <91e8e828-d3c3-5c56-0a92-a52c493b8354@mev.co.uk>
- <4208aa68-1cb6-0224-781a-4572a78ba6fd@mev.co.uk>
+ <20170508143410.xdeqghqeehd6mdt5@pengutronix.de>
 From: Ian Abbott <abbotti@mev.co.uk>
-Message-ID: <7222213a-da96-3a82-c7b8-8d365f9f6f7a@mev.co.uk>
-Date: Mon, 8 May 2017 15:49:04 +0100
+Message-ID: <b32120e6-a0b5-4891-5cc9-0389c5a24e5b@mev.co.uk>
+Date: Mon, 8 May 2017 16:44:48 +0100
 MIME-Version: 1.0
-In-Reply-To: <4208aa68-1cb6-0224-781a-4572a78ba6fd@mev.co.uk>
+In-Reply-To: <20170508143410.xdeqghqeehd6mdt5@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,30 +23,49 @@ Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Setting MAC address from nv variable broken in barebox 2017.05.0?
-To: barebox@lists.infradead.org
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On 08/05/17 15:45, Ian Abbott wrote:
-> As a related follow-up, this code in globalvar_add_simple() looks a bit
-> strange:
+On 08/05/17 15:34, Sascha Hauer wrote:
+> Hi Ian,
 >
->     if (value)
->         dev_set_param(&global_device, name, value);
+> On Mon, May 08, 2017 at 02:39:19PM +0100, Ian Abbott wrote:
+>> Hi,
+>>
+>> I'm not sure if this is a bug or whether I'm doing something wrong.  In
+>> barebox 2017.04.0 and earlier, I stored the Ethernet MAC address in a
+>> non-volatile ('nv') variable dev.eth0.macaddr=xx:xx:xx:xx:xx:xx and that got
+>> propagated to 'global' and the eth0 device on boot:
 >
->     globalvar_nv_sync(name);
+> Yes this is broken. Sorry for breaking it and thank you for reporting it
+> ;)
+> I just sent out a fix, you're on Cc. Please let me know if this works.
 >
-> If you set a new global variable with a specified value and there is an
-> existing nv variable of the same name, the global variable will be set
-> to the value of the nv variable, rather than the specified value:
->
-> barebox@xxxx:/ nv -r quux
-> barebox@xxxx:/ global -r quux
-> barebox@xxxx:/ nv quux=foo
-> barebox@xxxx:/ global quux=bar
-> barebox@xxxx:/ echo ${global.quux}
-> foo
+> Sascha
 
-That was with 2017.05.0.  I'll check the behaviour with Sascha's patch 
-shortly.
+Hi Sacha,
+
+I tried it.  I had to modify the patch slightly to apply it directly to 
+2017-05-0 due to other changes on master (I think mostly due to commit
+0071bacb4c7cab21c9fab8540f5aa9922a270a85 ("param: remove unnecessary 
+device_d * argument")).
+
+The global.dev.eth0.ethaddr variable is not created, but the 
+nv.dev.eth0.ethaddr variable does now get applied to the eth0 device.  I 
+think this is as expected.
+
+The other problem I mentioned about setting global variables is still 
+present.  That is:
+
+barebox@xxxx:/ nv -r quux
+barebox@xxxx:/ global -r quux
+barebox@xxxx:/ nv quux=foo
+barebox@xxxx:/ global quux=bar
+barebox@xxxx:/ echo ${global.quux}
+foo
+barebox@xxxx:/ global quux=i_really_mean_it
+barebox@xxxx:/ echo ${global.quux}
+foo
 
 -- 
 -=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=-
