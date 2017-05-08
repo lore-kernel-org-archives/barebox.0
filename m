@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d7hGa-0006Xw-M0
- for barebox@lists.infradead.org; Mon, 08 May 2017 11:55:58 +0000
-Date: Mon, 8 May 2017 13:55:30 +0200
+ id 1d7hdH-0002iw-7m
+ for barebox@lists.infradead.org; Mon, 08 May 2017 12:19:21 +0000
+Date: Mon, 8 May 2017 14:18:57 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170508115530.a2bpinjsgcmtsodf@pengutronix.de>
-References: <20170506140233.3129-1-o.rempel@pengutronix.de>
+Message-ID: <20170508121857.zyag2yras6ljip5q@pengutronix.de>
+References: <af0065c8-141d-dce0-11bf-1aca9c46d73c@emlix.com>
+ <20170503121324.qguy2tsch7gepob7@pengutronix.de>
+ <9d5f2e1b-c065-8969-14fb-3cf309b580d9@emlix.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170506140233.3129-1-o.rempel@pengutronix.de>
+In-Reply-To: <9d5f2e1b-c065-8969-14fb-3cf309b580d9@emlix.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,62 +24,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] Documentation: usbgadget: provide autostart notes
-To: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: barebox-state setup
+To: Andreas Wilhelm <andreas.wilhelm@emlix.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, May 06, 2017 at 04:02:32PM +0200, Oleksij Rempel wrote:
-> The usbgadget autostart functionality is already added. It's
-> time to reflect it in the documentation.
+On Fri, May 05, 2017 at 03:52:22PM +0200, Andreas Wilhelm wrote:
+> On 05/03/2017 02:13 PM, Sascha Hauer wrote:
+> > On Tue, May 02, 2017 at 03:24:10PM +0200, Andreas Wilhelm wrote:
+> >> Hello,
+> >>
+> >> I am using barebox state to exchange data between barebox and linux. From barebox I can access and change the state without any problems. If I try to access the state using the barebox-state util included with dt-utils (v2017.03.0), I get the following error:
+> >>
+> >>> # barebox-state -g myvar
+> >>> of_get_devicepath: no 'label' property found in /soc/aips-bus@02000000/spba-bus@02000000/ecspi@02008000/m25p80@0
+> >>> Cannot find backend path in /state
+> >> This problem does not occur when using version 2016.08.0 of dt-utils. However, in this version I experienced an other problem. Even with backend-storage-type set to "circular" barebox attempted to storte data in "direct" mode:
+> >>
+> >>> WARNING, no stridesize given although we use a direct file
+> >>> write. Starting in degraded mode
+> >>> Failed to initialize desired amount of direct buckets, only 1 of 3
+> >>> succeeded
+> >> Furthermore changing the state from within barebox worked just fine, while changing it using dt-utils from within a booted linux didn't.
+> >>
+> >> The barebox state is stored in NOR-flash and configured in barebox as followed:
+> >>
+> >>> state: state {
+> >>>     magic = <0x27031977>;
+> >>>     compatible = "barebox,state";
+> >>>     backend-type = "raw";
+> >>>     backend = &flash, "partname:barebox-state";
+> > Please use "backend = &barebox_state;" with a partition like this:
+> >
+> > barebox_state: partition@0 {
+> > 	reg = <0x0 0x40000>;
+> > };
+> >
+> >> Within the linux kernel I use the following configuration
+> > Note that barebox will rewrite the state node in the device tree passed
+> > to Linux to make sure that both are consistent. You do not need to add a
+> > state node to the Linux device tree manually. Unfortunately the
+> > rewriting of the device node does not work correctly if you use the
+> > "partname:" binding above in barebox.
+> >
+> > Sascha
+> >
+> Thanks for your fast reply.
 > 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  Documentation/user/usb.rst | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
+> Removing the state definition from the linux device tree and changing
+> the backend definition stopped barebox and dt-utils from complaining
+> about a bad state backend. However, now I am facing a strange error.
+> 
+> I am able to read and change the barebox state from within barebox and
+> changes are reflected when reading from within barebox and linux. When
+> changing the state using dt-utils, the change is persistent between
+> reboots, but cannot be seen from within barebox.
 
-Applied, thanks
+First of all, what storage device are you using? Is it a real flash or
+some EEPROM or NVRAM?
+
+> 
+> Example:
+> 
+> // State myvar initialized with A by default
+> 
+> state.myvar=B; state -s
+> => Barebox: echo $state.myvar // myvar=B
+> => Linux: barebox-state -g myvar // myvar=B
+> 
+> barebox-state -s myvar=C
+> => Barebox: echo $state.myvar // myvar=B
+> => Linux: barebox-state -g myvar // myvar=C
+
+This looks like a circular/noncircular mixup somewhere. Could you
+hexdump the state partition (using the md command in barebox) to see if
+the data is stored in circular or noncircular format? In circular format
+you should see two copies of the same data directly after each other.
+
+Also the output of barebox-state with -v might contain some useful
+information.
 
 Sascha
 
-> 
-> diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
-> index bbcb045cee..ec219cfbe4 100644
-> --- a/Documentation/user/usb.rst
-> +++ b/Documentation/user/usb.rst
-> @@ -216,3 +216,24 @@ mode. Once a specific mode has been selected it can't be changed later anymore.
->    musb-hdrc: setup fifo_mode 4
->    musb-hdrc: 28/31 max ep, 16384/16384 memory
->    barebox:/
-> +
-> +USB Gadget autostart Support
-> +----------------------------
-> +
-> +Barebox can be configured to start usbgadget automatically by using global variables,
-> +instead of creating boot script. This can be useful if autostart policy should be
-> +chosen at boot time from other driver or script.
-> +To get usbgadget autostart support barebox has to be compiled with
-> +CONFIG_USB_GADGET_AUTOSTART enabled.
-> +
-> +USB Gadget autostart Options
-> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> +
-> +``global.usbgadget.autostart``
-> +  Boolean flag. If set to 1, usbgadget will be started automatically on boot and
-> +  enable USB OTG mode. (Default 0).
-> +``global.usbgadget.acm``
-> +  Boolean flag. If set to 1, CDC ACM function will be created.
-> +  See :ref:`command_usbgadget` -a. (Default 0).
-> +``global.usbgadget.fastboot_function``
-> +  Function description for fastboot. See :ref:`command_usbgadget` -A [desc].
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
