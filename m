@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d7n94-0006KN-5z
- for barebox@lists.infradead.org; Mon, 08 May 2017 18:12:31 +0000
-Date: Mon, 8 May 2017 20:12:06 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170508181206.cibrghbpdrjbryx4@pengutronix.de>
-References: <91e8e828-d3c3-5c56-0a92-a52c493b8354@mev.co.uk>
- <4208aa68-1cb6-0224-781a-4572a78ba6fd@mev.co.uk>
+ id 1d7xn1-0005Mr-RS
+ for barebox@lists.infradead.org; Tue, 09 May 2017 05:34:29 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Tue,  9 May 2017 07:34:04 +0200
+Message-Id: <20170509053404.12860-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4208aa68-1cb6-0224-781a-4572a78ba6fd@mev.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,68 +15,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Setting MAC address from nv variable broken in barebox 2017.05.0?
-To: Ian Abbott <abbotti@mev.co.uk>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v3] Documentation: provide documentation for RNG interfaces.
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-On Mon, May 08, 2017 at 03:45:49PM +0100, Ian Abbott wrote:
-> On 08/05/17 14:39, Ian Abbott wrote:
-> > Hi,
-> > 
-> > I'm not sure if this is a bug or whether I'm doing something wrong.  In
-> > barebox 2017.04.0 and earlier, I stored the Ethernet MAC address in a
-> > non-volatile ('nv') variable dev.eth0.macaddr=xx:xx:xx:xx:xx:xx and that
-> > got propagated to 'global' and the eth0 device on boot:
-> > 
-> > barebox@xxxx:/ nv
-> >   allow_color: true
-> >   autoboot_timeout: 3
-> >   dev.eth0.ethaddr: xx:xx:xx:xx:xx:xx
-> >   user: none
-> [snip]
-> > However, in 2017.05.0, my 'dev.eth0.ethaddr' variable is no longer being
-> > propagated to global on boot, and as a consequence, is no longer
-> > propagated to eth0 (note that 'dev.eth0.ethaddr' is the only nv variable
-> > that I set manually when setting up a new board):
-> > 
-> > barebox@xxxx:/ devinfo eth0
-> > Parameters:
-> >   ethaddr: 00:00:00:00:00:00
-> >   gateway: 0.0.0.0
-> >   ipaddr: 0.0.0.0
-> >   linux.bootargs:
-> >   netmask: 0.0.0.0
-> >   serverip: 0.0.0.0
-> > 
-> [snip]
-> > Is this the proper behaviour or a bug?  Could it be related to commit
-> > 35d8e858bea17ec4796069c9c27fd0b134125eaf ("nv: Do not create globalvars
-> > from nvvars")?
-> 
-> As a related follow-up, this code in globalvar_add_simple() looks a bit
-> strange:
-> 
-> 	if (value)
-> 		dev_set_param(&global_device, name, value);
-> 
-> 	globalvar_nv_sync(name);
-
-Ok, I think this should just be the other way round. Fixed in a patch I
-just sent.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogT2xla3NpaiBSZW1wZWwgPG8ucmVtcGVsQHBlbmd1dHJvbml4LmRlPgot
+LS0KIERvY3VtZW50YXRpb24vdXNlci9yYW5kb20ucnN0ICAgICAgfCA2MyArKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKwogRG9jdW1lbnRhdGlvbi91c2VyL3VzZXItbWFudWFs
+LnJzdCB8ICAxICsKIDIgZmlsZXMgY2hhbmdlZCwgNjQgaW5zZXJ0aW9ucygrKQogY3JlYXRlIG1v
+ZGUgMTAwNjQ0IERvY3VtZW50YXRpb24vdXNlci9yYW5kb20ucnN0CgpkaWZmIC0tZ2l0IGEvRG9j
+dW1lbnRhdGlvbi91c2VyL3JhbmRvbS5yc3QgYi9Eb2N1bWVudGF0aW9uL3VzZXIvcmFuZG9tLnJz
+dApuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwLi45NWRhZDcyZTU1Ci0tLSAv
+ZGV2L251bGwKKysrIGIvRG9jdW1lbnRhdGlvbi91c2VyL3JhbmRvbS5yc3QKQEAgLTAsMCArMSw2
+MyBAQAorUmFuZG9tIE51bWJlciBHZW5lcmF0b3Igc3VwcG9ydAorPT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PQorCitCYXJlYm94IHByb3ZpZGVzIHR3byB0eXBlcyBvZiBSTkcgc291cmNl
+cyAtIFBSTkcgYW5kIEhXUk5HOgorCistICJBIHBzZXVkb3JhbmRvbSBudW1iZXIgZ2VuZXJhdG9y
+IChQUk5HKSwgYWxzbyBrbm93biBhcyBhIGRldGVybWluaXN0aWMgcmFuZG9tCisgIGJpdCBnZW5l
+cmF0b3IgKERSQkcpLFsxXSBpcyBhbiBhbGdvcml0aG0gZm9yIGdlbmVyYXRpbmcgYSBzZXF1ZW5j
+ZSBvZiBudW1iZXJzCisgIHdob3NlIHByb3BlcnRpZXMgYXBwcm94aW1hdGUgdGhlIHByb3BlcnRp
+ZXMgb2Ygc2VxdWVuY2VzIG9mIHJhbmRvbSBudW1iZXJzLgorICBUaGUgUFJORy1nZW5lcmF0ZWQg
+c2VxdWVuY2UgaXMgbm90IHRydWx5IHJhbmRvbSwgYmVjYXVzZSBpdCBpcyBjb21wbGV0ZWx5Cisg
+IGRldGVybWluZWQgYnkgYSByZWxhdGl2ZWx5IHNtYWxsIHNldCBvZiBpbml0aWFsIHZhbHVlcywg
+Y2FsbGVkIHRoZSBQUk5HJ3Mgc2VlZAorICAod2hpY2ggbWF5IGluY2x1ZGUgdHJ1bHkgcmFuZG9t
+IHZhbHVlcykuIEFsdGhvdWdoIHNlcXVlbmNlcyB0aGF0IGFyZSBjbG9zZXIgdG8KKyAgdHJ1bHkg
+cmFuZG9tIGNhbiBiZSBnZW5lcmF0ZWQgdXNpbmcgaGFyZHdhcmUgcmFuZG9tIG51bWJlciBnZW5l
+cmF0b3JzLiIKKyAgUHNldWRvcmFuZG9tIG51bWJlciBnZW5lcmF0b3IuIGh0dHBzOi8vZW4ud2lr
+aXBlZGlhLm9yZy93aWtpL1BzZXVkb3JhbmRvbV9udW1iZXJfZ2VuZXJhdG9yICgyMDE3LjA1LjA4
+KS4KKyAgVGhlIFBSTkcgdXNlZCBieSBCYXJlYm94IGlzIExDRyAobGluZWFyIGNvbmdydWVudGlh
+bCBnZW5lcmF0b3IpIG5vbiBjcnlwdG9ncmFwaGljYWxseQorICBzZWN1cmUsIHNvIHBsZWFzZSB1
+c2Ugd2l0aCBjYXV0aW9uLgorCistIFRoZSBIV1JORyBmcmFtZXdvcmsgaXMgc29mdHdhcmUgdGhh
+dCBtYWtlcyB1c2Ugb2YgYSBzcGVjaWFsIGhhcmR3YXJlIGZlYXR1cmUgb24KKyAgeW91ciBDUFUs
+IFNvQyBvciBtb3RoZXJib2FyZC4gSXQgY2Fu4oCYdCBwcm92aWRlIGFueSBndWFyYW50ZWUgYWJv
+dXQgY3J5cHRvZ3JhcGhpYworICBzZWN1cml0eSBvZiB1c2VkIEhXLiBQbGVhc2UgcmVmZXIgdG8g
+dmVuZG9yIGRvY3VtZW50YXRpb24gYW5kL29yIFJORyBjZXJ0aWZpY2F0aW9uLgorCitBUEkKK15e
+XgorCisuLiBjb2RlLWJsb2NrOjogYworCisgICAgICAgIC8qIHNlZWQgdGhlIFBSTkcuICovCisg
+ICAgICAgIHZvaWQgc3JhbmQodW5zaWduZWQgaW50IHNlZWQpOworCisgICAgICAgIC8qIEZpbGwg
+dGhlIGJ1ZmZlciB3aXRoIFBSTkcgYml0cy4gKi8KKyAgICAgICAgdm9pZCBnZXRfcmFuZG9tX2J5
+dGVzKHZvaWQgKmJ1ZiwgaW50IGxlbik7CisKKyAgICAgICAgLyogRmlsbCB0aGUgYnVmZmVyIHdp
+dGggYml0cyBwcm92aWRlZCBieSBIV1JORy4KKyAgICAgICAgICogVGhpcyBmdW5jdGlvbiBtYXkg
+ZmFpbCB3aXRoIGEgbWVzc2FnZSDigJxlcnJvcjogbm8gSFdSTkcgYXZhaWxhYmxlIeKAnQorICAg
+ICAgICAgKiBpbiBjYXNlIEhXUk5HIGlzIG5vdCBhdmFpbGFibGUgb3IgSFcgZ290IHNvbWUgcnVu
+dGltZSBlcnJvci4KKyAgICAgICAgICogSWYgYmFyZWJveCBpcyBjb21waWxlZCB3aXRoIENPTkZJ
+R19BTExPV19QUk5HX0ZBTExCQUNLLAorICAgICAgICAgKiB0aGVuIGdldF9jcnlwdG9fYnl0ZXMo
+KSB3aWxsIHByaW50IOKAnHdhcm5pbmc6IGZhbGxpbmcgYmFjayB0byBQc2V1ZG8gUk5HIHNvdXJj
+ZSHigJ0KKyAgICAgICAgICogYW5kIHVzZSBQUk5HIGluc3RlYWQgb2YgcmV0dXJuaW5nIGVycm9y
+LgorICAgICAgICAgKi8KKyAgICAgICAgaW50IGdldF9jcnlwdG9fYnl0ZXModm9pZCAqYnVmLCBp
+bnQgbGVuKTsKKworVXNlciBpbnRlcmZhY2UKK15eXl5eXl5eXl5eXl5eCisKKy0gL2Rldi9od3Ju
+ZzAKKyAgcHJvdmlkZXMgYWNjZXNzIHRvIGZpcnN0IGF2YWlsYWJsZSBIV1JORy4gVG8gZXhhbWlu
+ZSB0aGlzIHNvdXJjZSB5b3UgY2FuIHVzZToKKworLi4gY29kZS1ibG9jazo6IHNoCisKKyAgbWQg
+LXMgL2Rldi9od3JuZzAKKworLSAvZGV2L3BybmcKKyAgcHJvdmlkZXMgYWNjZXNzIHRvIFBSTkcu
+IFRvIGV4YW1pbmUgdGhpcyBzb3VyY2UgeW91IGNhbiB1c2U6CisKKy4uIGNvZGUtYmxvY2s6OiBz
+aAorCisgIG1kIC1zIC9kZXYvcHJuZworCitUbyBzZWVkIFBSTkcgZnJvbSB1c2VyIHNwYWNlIHRo
+ZSA6cmVmOmBjb21tYW5kX3NlZWRgIGlzIHByb3ZpZGVkLiBGb3IgZXhhbXBsZToKKworLi4gY29k
+ZS1ibG9jazo6IHNoCisKKyAgc2VlZCAxMjM0NQorICBtZCAtcyAvZGV2L3BybmcKZGlmZiAtLWdp
+dCBhL0RvY3VtZW50YXRpb24vdXNlci91c2VyLW1hbnVhbC5yc3QgYi9Eb2N1bWVudGF0aW9uL3Vz
+ZXIvdXNlci1tYW51YWwucnN0CmluZGV4IDQzNTY0OWYzNTMuLjc5MWM4ZTA5NzkgMTAwNjQ0Ci0t
+LSBhL0RvY3VtZW50YXRpb24vdXNlci91c2VyLW1hbnVhbC5yc3QKKysrIGIvRG9jdW1lbnRhdGlv
+bi91c2VyL3VzZXItbWFudWFsLnJzdApAQCAtMzMsNiArMzMsNyBAQCBDb250ZW50czoKICAgIHJl
+c2V0LXJlYXNvbgogICAgc3lzdGVtLXJlc2V0CiAgICBzdGF0ZQorICAgcmFuZG9tCiAKICogOnJl
+Zjpgc2VhcmNoYAogKiA6cmVmOmBnZW5pbmRleGAKLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
