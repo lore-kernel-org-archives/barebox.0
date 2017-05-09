@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d7xwL-0000AD-D3
- for barebox@lists.infradead.org; Tue, 09 May 2017 05:44:07 +0000
-Date: Tue, 9 May 2017 07:43:43 +0200
+ id 1d7y4s-00033k-1x
+ for barebox@lists.infradead.org; Tue, 09 May 2017 05:52:55 +0000
+Date: Tue, 9 May 2017 07:52:32 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170509054343.s4afthixfza2c62a@pengutronix.de>
-References: <20170508132520.13112-1-mkl@pengutronix.de>
+Message-ID: <20170509055231.sz4jplgkom47m3ww@pengutronix.de>
+References: <CAE=AiOPuC_YytvYSQoBnL4DGPypZ7_35zTmMWB5NMcbad2WPcw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170508132520.13112-1-mkl@pengutronix.de>
+In-Reply-To: <CAE=AiOPuC_YytvYSQoBnL4DGPypZ7_35zTmMWB5NMcbad2WPcw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,107 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX: HAB: update documentation of command sequence
- files (CSF)
-To: Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: Re: barebox 2017.05 freezes on VirtualBox x86 boot with "BAREBOX JMP"
+To: Josh Beavers <josh.beavers@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, May 08, 2017 at 03:25:20PM +0200, Marc Kleine-Budde wrote:
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> ---
->  arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h | 11 ++++++++---
->  arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h  |  9 +++++----
->  2 files changed, 13 insertions(+), 7 deletions(-)
+Hi Josh,
 
-Applied, thanks
+On Mon, May 08, 2017 at 04:49:05AM -0400, Josh Beavers wrote:
+> Greetings,
+> 
+> I am trying to boot barebox on x86.  I have tried barebox 2016.06.0
+> and 2017.05, both of which produce the same result.  I see the same
+> thing as this thread from 2016, except the message has now been
+> upgraded to "BAREBOX JMP":
+> 
+> http://lists.infradead.org/pipermail/barebox/2016-November/028631.html
+> 
+> 
+> As far as I can tell by adding a pr_err() call, start_barebox() from
+> common/startup.c does not get called at all.  Instead, something is
+> locking up the system between the jump out of boot_hdisk.S and the
+> startup code.  I am using VirtualBox as a generic 64-bit x86 system in
+> case that matters.
+> 
+> Any suggestions about what to investigate would be appreciated.
+
+The barebox x86 port was probably only compile tested the last five
+years, so I am not wondering at all. The EFI port should work fine and
+is tested, but plain old x86 never reached a level in barebox that could
+be called mature or usable.
 
 Sascha
-
-> 
-> diff --git a/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h b/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
-> index f4804fe63f19..60f730f8eca9 100644
-> --- a/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
-> +++ b/arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h
-> @@ -4,8 +4,8 @@
->   * are expected in these config variables:
->   *
->   * CONFIG_HABV3_SRK_PEM
-> - * CONFIG_HABV3_SRK_PEM
-> - * CONFIG_HABV3_IMG_CRT_PEM
-> + * CONFIG_HABV3_CSF_CRT_DER
-> + * CONFIG_HABV3_IMG_CRT_DER
->   */
->  super_root_key CONFIG_HABV3_SRK_PEM
->  
-> @@ -23,21 +23,26 @@ hab [Install SRK]
->  hab File = "not-used"
->  
->  hab [Install CSFK]
-> +/* target key index in keystore 1 */
->  hab File = CONFIG_HABV3_CSF_CRT_DER
->  
->  hab [Authenticate CSF]
-> -/* below is the command that unlock the access to the DryIce registers */
->  
-> +/* unlock the access to the DryIce registers */
->  hab [Write Data]
->  hab Width = 4
->  hab Address Data = 0x53FFC03C 0xCA693569
->  
->  hab [Install Key]
-> +/* verification key index in key store (1...4) */
-> +/* in contrast to documentation 0 seems to be valid, too */
->  hab Verification index = 1
-> +/* target key index in key store (1...4) */
->  hab Target index = 2
->  hab File = CONFIG_HABV3_IMG_CRT_DER
->  
->  hab [Authenticate Data]
-> +/* verification key index in key store (2...4) */
->  hab Verification index = 2
->  
->  hab_blocks
-> diff --git a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-> index 1a143a8b1870..0649caa0cb88 100644
-> --- a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-> +++ b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-> @@ -22,6 +22,7 @@ hab # SRK index within SRK-Table 0..3
->  hab Source index = 0
->  
->  hab [Install CSFK]
-> +/* target key index in keystore 1 */
->  hab File = CONFIG_HABV4_CSF_CRT_PEM
->  
->  hab [Authenticate CSF]
-> @@ -31,14 +32,14 @@ hab Engine = CAAM
->  hab Features = RNG
->  
->  hab [Install Key]
-> -/* verification key index in key store (0, 2...5) */
-> +/* verification key index in key store (0, 2...4) */
->  hab Verification index = 0
-> -/* target key index in key store (2...5) */
-> +/* target key index in key store (2...4) */
->  hab Target index = 2
->  hab File = CONFIG_HABV4_IMG_CRT_PEM
->  
->  hab [Authenticate Data]
-> -/* verification key index in key store (2...5) */
-> +/* verification key index in key store (2...4) */
->  hab Verification index = 2
->  
-> -hab_blocks
-> \ No newline at end of file
-> +hab_blocks
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
