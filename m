@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d7xn1-0005Mr-RS
- for barebox@lists.infradead.org; Tue, 09 May 2017 05:34:29 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue,  9 May 2017 07:34:04 +0200
-Message-Id: <20170509053404.12860-1-o.rempel@pengutronix.de>
+ id 1d7xtF-0008Or-3J
+ for barebox@lists.infradead.org; Tue, 09 May 2017 05:40:54 +0000
+Date: Tue, 9 May 2017 07:40:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170509054031.25ebyo75subsfede@pengutronix.de>
+References: <20170508125607.32511-1-jbe@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170508125607.32511-1-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,69 +18,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3] Documentation: provide documentation for RNG interfaces.
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH] PPC: request a consistent memory layout
+To: Juergen Borleis <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogT2xla3NpaiBSZW1wZWwgPG8ucmVtcGVsQHBlbmd1dHJvbml4LmRlPgot
-LS0KIERvY3VtZW50YXRpb24vdXNlci9yYW5kb20ucnN0ICAgICAgfCA2MyArKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKwogRG9jdW1lbnRhdGlvbi91c2VyL3VzZXItbWFudWFs
-LnJzdCB8ICAxICsKIDIgZmlsZXMgY2hhbmdlZCwgNjQgaW5zZXJ0aW9ucygrKQogY3JlYXRlIG1v
-ZGUgMTAwNjQ0IERvY3VtZW50YXRpb24vdXNlci9yYW5kb20ucnN0CgpkaWZmIC0tZ2l0IGEvRG9j
-dW1lbnRhdGlvbi91c2VyL3JhbmRvbS5yc3QgYi9Eb2N1bWVudGF0aW9uL3VzZXIvcmFuZG9tLnJz
-dApuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwLi45NWRhZDcyZTU1Ci0tLSAv
-ZGV2L251bGwKKysrIGIvRG9jdW1lbnRhdGlvbi91c2VyL3JhbmRvbS5yc3QKQEAgLTAsMCArMSw2
-MyBAQAorUmFuZG9tIE51bWJlciBHZW5lcmF0b3Igc3VwcG9ydAorPT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PQorCitCYXJlYm94IHByb3ZpZGVzIHR3byB0eXBlcyBvZiBSTkcgc291cmNl
-cyAtIFBSTkcgYW5kIEhXUk5HOgorCistICJBIHBzZXVkb3JhbmRvbSBudW1iZXIgZ2VuZXJhdG9y
-IChQUk5HKSwgYWxzbyBrbm93biBhcyBhIGRldGVybWluaXN0aWMgcmFuZG9tCisgIGJpdCBnZW5l
-cmF0b3IgKERSQkcpLFsxXSBpcyBhbiBhbGdvcml0aG0gZm9yIGdlbmVyYXRpbmcgYSBzZXF1ZW5j
-ZSBvZiBudW1iZXJzCisgIHdob3NlIHByb3BlcnRpZXMgYXBwcm94aW1hdGUgdGhlIHByb3BlcnRp
-ZXMgb2Ygc2VxdWVuY2VzIG9mIHJhbmRvbSBudW1iZXJzLgorICBUaGUgUFJORy1nZW5lcmF0ZWQg
-c2VxdWVuY2UgaXMgbm90IHRydWx5IHJhbmRvbSwgYmVjYXVzZSBpdCBpcyBjb21wbGV0ZWx5Cisg
-IGRldGVybWluZWQgYnkgYSByZWxhdGl2ZWx5IHNtYWxsIHNldCBvZiBpbml0aWFsIHZhbHVlcywg
-Y2FsbGVkIHRoZSBQUk5HJ3Mgc2VlZAorICAod2hpY2ggbWF5IGluY2x1ZGUgdHJ1bHkgcmFuZG9t
-IHZhbHVlcykuIEFsdGhvdWdoIHNlcXVlbmNlcyB0aGF0IGFyZSBjbG9zZXIgdG8KKyAgdHJ1bHkg
-cmFuZG9tIGNhbiBiZSBnZW5lcmF0ZWQgdXNpbmcgaGFyZHdhcmUgcmFuZG9tIG51bWJlciBnZW5l
-cmF0b3JzLiIKKyAgUHNldWRvcmFuZG9tIG51bWJlciBnZW5lcmF0b3IuIGh0dHBzOi8vZW4ud2lr
-aXBlZGlhLm9yZy93aWtpL1BzZXVkb3JhbmRvbV9udW1iZXJfZ2VuZXJhdG9yICgyMDE3LjA1LjA4
-KS4KKyAgVGhlIFBSTkcgdXNlZCBieSBCYXJlYm94IGlzIExDRyAobGluZWFyIGNvbmdydWVudGlh
-bCBnZW5lcmF0b3IpIG5vbiBjcnlwdG9ncmFwaGljYWxseQorICBzZWN1cmUsIHNvIHBsZWFzZSB1
-c2Ugd2l0aCBjYXV0aW9uLgorCistIFRoZSBIV1JORyBmcmFtZXdvcmsgaXMgc29mdHdhcmUgdGhh
-dCBtYWtlcyB1c2Ugb2YgYSBzcGVjaWFsIGhhcmR3YXJlIGZlYXR1cmUgb24KKyAgeW91ciBDUFUs
-IFNvQyBvciBtb3RoZXJib2FyZC4gSXQgY2Fu4oCYdCBwcm92aWRlIGFueSBndWFyYW50ZWUgYWJv
-dXQgY3J5cHRvZ3JhcGhpYworICBzZWN1cml0eSBvZiB1c2VkIEhXLiBQbGVhc2UgcmVmZXIgdG8g
-dmVuZG9yIGRvY3VtZW50YXRpb24gYW5kL29yIFJORyBjZXJ0aWZpY2F0aW9uLgorCitBUEkKK15e
-XgorCisuLiBjb2RlLWJsb2NrOjogYworCisgICAgICAgIC8qIHNlZWQgdGhlIFBSTkcuICovCisg
-ICAgICAgIHZvaWQgc3JhbmQodW5zaWduZWQgaW50IHNlZWQpOworCisgICAgICAgIC8qIEZpbGwg
-dGhlIGJ1ZmZlciB3aXRoIFBSTkcgYml0cy4gKi8KKyAgICAgICAgdm9pZCBnZXRfcmFuZG9tX2J5
-dGVzKHZvaWQgKmJ1ZiwgaW50IGxlbik7CisKKyAgICAgICAgLyogRmlsbCB0aGUgYnVmZmVyIHdp
-dGggYml0cyBwcm92aWRlZCBieSBIV1JORy4KKyAgICAgICAgICogVGhpcyBmdW5jdGlvbiBtYXkg
-ZmFpbCB3aXRoIGEgbWVzc2FnZSDigJxlcnJvcjogbm8gSFdSTkcgYXZhaWxhYmxlIeKAnQorICAg
-ICAgICAgKiBpbiBjYXNlIEhXUk5HIGlzIG5vdCBhdmFpbGFibGUgb3IgSFcgZ290IHNvbWUgcnVu
-dGltZSBlcnJvci4KKyAgICAgICAgICogSWYgYmFyZWJveCBpcyBjb21waWxlZCB3aXRoIENPTkZJ
-R19BTExPV19QUk5HX0ZBTExCQUNLLAorICAgICAgICAgKiB0aGVuIGdldF9jcnlwdG9fYnl0ZXMo
-KSB3aWxsIHByaW50IOKAnHdhcm5pbmc6IGZhbGxpbmcgYmFjayB0byBQc2V1ZG8gUk5HIHNvdXJj
-ZSHigJ0KKyAgICAgICAgICogYW5kIHVzZSBQUk5HIGluc3RlYWQgb2YgcmV0dXJuaW5nIGVycm9y
-LgorICAgICAgICAgKi8KKyAgICAgICAgaW50IGdldF9jcnlwdG9fYnl0ZXModm9pZCAqYnVmLCBp
-bnQgbGVuKTsKKworVXNlciBpbnRlcmZhY2UKK15eXl5eXl5eXl5eXl5eCisKKy0gL2Rldi9od3Ju
-ZzAKKyAgcHJvdmlkZXMgYWNjZXNzIHRvIGZpcnN0IGF2YWlsYWJsZSBIV1JORy4gVG8gZXhhbWlu
-ZSB0aGlzIHNvdXJjZSB5b3UgY2FuIHVzZToKKworLi4gY29kZS1ibG9jazo6IHNoCisKKyAgbWQg
-LXMgL2Rldi9od3JuZzAKKworLSAvZGV2L3BybmcKKyAgcHJvdmlkZXMgYWNjZXNzIHRvIFBSTkcu
-IFRvIGV4YW1pbmUgdGhpcyBzb3VyY2UgeW91IGNhbiB1c2U6CisKKy4uIGNvZGUtYmxvY2s6OiBz
-aAorCisgIG1kIC1zIC9kZXYvcHJuZworCitUbyBzZWVkIFBSTkcgZnJvbSB1c2VyIHNwYWNlIHRo
-ZSA6cmVmOmBjb21tYW5kX3NlZWRgIGlzIHByb3ZpZGVkLiBGb3IgZXhhbXBsZToKKworLi4gY29k
-ZS1ibG9jazo6IHNoCisKKyAgc2VlZCAxMjM0NQorICBtZCAtcyAvZGV2L3BybmcKZGlmZiAtLWdp
-dCBhL0RvY3VtZW50YXRpb24vdXNlci91c2VyLW1hbnVhbC5yc3QgYi9Eb2N1bWVudGF0aW9uL3Vz
-ZXIvdXNlci1tYW51YWwucnN0CmluZGV4IDQzNTY0OWYzNTMuLjc5MWM4ZTA5NzkgMTAwNjQ0Ci0t
-LSBhL0RvY3VtZW50YXRpb24vdXNlci91c2VyLW1hbnVhbC5yc3QKKysrIGIvRG9jdW1lbnRhdGlv
-bi91c2VyL3VzZXItbWFudWFsLnJzdApAQCAtMzMsNiArMzMsNyBAQCBDb250ZW50czoKICAgIHJl
-c2V0LXJlYXNvbgogICAgc3lzdGVtLXJlc2V0CiAgICBzdGF0ZQorICAgcmFuZG9tCiAKICogOnJl
-Zjpgc2VhcmNoYAogKiA6cmVmOmBnZW5pbmRleGAKLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi J=FCrgen,
+
+On Mon, May 08, 2017 at 02:56:07PM +0200, Juergen Borleis wrote:
+> Using the memory test command will crash barebox, because it tests the
+> area where the stack is located for the PPC architecture.
+> =
+
+> On PPC the stack is below the barebox binary. Below the stack the malloc
+> area is located. Until this change some routines used the macros
+> from memory_layout.h, some other calculated their values by their
+> own - which resulted into an unrequested and unprotected stack area.
+> =
+
+> Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
+> ---
+>  arch/ppc/mach-mpc5xxx/Kconfig       |  1 -
+>  arch/ppc/mach-mpc5xxx/cpu-mpc5200.c | 18 ++++++++++++++++++
+>  2 files changed, 18 insertions(+), 1 deletion(-)
+> =
+
+> diff --git a/arch/ppc/mach-mpc5xxx/Kconfig b/arch/ppc/mach-mpc5xxx/Kconfig
+> index d0f5d78f4..fef661b0f 100644
+> --- a/arch/ppc/mach-mpc5xxx/Kconfig
+> +++ b/arch/ppc/mach-mpc5xxx/Kconfig
+> @@ -52,7 +52,6 @@ config ARCH_MPC5200
+>  config MPC5xxx
+>  	bool
+>  	depends on MACH_PHYCORE_MPC5200B_TINY || MMC12
+> -	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
+>  	default y
+>  =
+
+>  menu "Board specific settings"
+> diff --git a/arch/ppc/mach-mpc5xxx/cpu-mpc5200.c b/arch/ppc/mach-mpc5xxx/=
+cpu-mpc5200.c
+
+This files doesn't exist in master. Could you rebase on a current tree?
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
