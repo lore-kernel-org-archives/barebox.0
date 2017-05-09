@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1d86lK-0006BE-Sm
- for barebox@lists.infradead.org; Tue, 09 May 2017 15:09:20 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id E46AFA0079C
- for <barebox@lists.infradead.org>; Tue,  9 May 2017 17:09:41 +0200 (CEST)
-MIME-Version: 1.0
-In-Reply-To: 
-References: 
-From: =?ISO-8859-1?Q?Stefan_Riedm=FCller?= <S.Riedmueller@phytec.de>
-Message-ID: <OF7204A8B9.F7D47FA3-ONC125811B.00533563-C125811B.00533568@phytec.de>
-Date: Tue, 9 May 2017 17:08:51 +0200
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1d87xa-0006Ae-S8
+ for barebox@lists.infradead.org; Tue, 09 May 2017 16:26:04 +0000
+Message-ID: <1494347137.2322.32.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue, 09 May 2017 18:25:37 +0200
+In-Reply-To: <OF7204A8B9.F7D47FA3-ONC125811B.00533563-C125811B.00533568@phytec.de>
+References: <OF7204A8B9.F7D47FA3-ONC125811B.00533563-C125811B.00533568@phytec.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,36 +17,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: master breaks phytec-phycore-imx6ul
-To: barebox@lists.infradead.org
+Subject: Re: master breaks phytec-phycore-imx6ul
+To: Stefan =?ISO-8859-1?Q?Riedm=FCller?= <S.Riedmueller@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Hi guys,
-
-after applying the latest master patches barebox does not boot anymore on m=
-y PHYTEC-phyCORE-i.MX6UL. It doesn't show any output. I was able to identif=
-y the commit which seems to be responsible for this behavior.
-
-It's 2c506afbadcd546dcc54a0e8599e454fd4aecfdc (ARM: i.MX50: Add support for=
- i.MX50 based Amazon Kindle e-book readers).
-
-It is possible to make the board boot again by disabling System Type --> CO=
-NFIG_MACH_KINDLE_MX50 (i.MX50 based Amazon Kindle 4 and 5) in the menuconfi=
-g. This deactivates ARCH_IMX50. I also tested it on the PHYTEC-phyCORE-i.MX=
-6-Quad board and the Fresscale SabreSD board with i.MX6 Quad and found the =
-same behavior. I could not find an explanation yet for this so I hope you c=
-an help me.
-
-Mit freundlichen Gr=FC=DFen,
-Best regards,
-
-Stefan Riedm=FCller
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gRGllbnN0YWcsIGRlbiAwOS4wNS4yMDE3LCAxNzowOCArMDIwMCBzY2hyaWViIFN0ZWZhbiBS
+aWVkbcO8bGxlcjoKPiBIaSBndXlzLAo+IAo+IGFmdGVyIGFwcGx5aW5nIHRoZSBsYXRlc3QgbWFz
+dGVyIHBhdGNoZXMgYmFyZWJveCBkb2VzIG5vdCBib290IGFueW1vcmUgb24gbXkgUEhZVEVDLXBo
+eUNPUkUtaS5NWDZVTC4gSXQgZG9lc24ndCBzaG93IGFueSBvdXRwdXQuIEkgd2FzIGFibGUgdG8g
+aWRlbnRpZnkgdGhlIGNvbW1pdCB3aGljaCBzZWVtcyB0byBiZSByZXNwb25zaWJsZSBmb3IgdGhp
+cyBiZWhhdmlvci4KPiAKPiBJdCdzIDJjNTA2YWZiYWRjZDU0NmRjYzU0YTBlODU5OWU0NTRmZDRh
+ZWNmZGMgKEFSTTogaS5NWDUwOiBBZGQgc3VwcG9ydCBmb3IgaS5NWDUwIGJhc2VkIEFtYXpvbiBL
+aW5kbGUgZS1ib29rIHJlYWRlcnMpLgo+IAo+IEl0IGlzIHBvc3NpYmxlIHRvIG1ha2UgdGhlIGJv
+YXJkIGJvb3QgYWdhaW4gYnkgZGlzYWJsaW5nIFN5c3RlbSBUeXBlIC0tPiBDT05GSUdfTUFDSF9L
+SU5ETEVfTVg1MCAoaS5NWDUwIGJhc2VkIEFtYXpvbiBLaW5kbGUgNCBhbmQgNSkgaW4gdGhlIG1l
+bnVjb25maWcuIFRoaXMgZGVhY3RpdmF0ZXMgQVJDSF9JTVg1MC4gSSBhbHNvIHRlc3RlZCBpdCBv
+biB0aGUgUEhZVEVDLXBoeUNPUkUtaS5NWDYtUXVhZCBib2FyZCBhbmQgdGhlIEZyZXNzY2FsZSBT
+YWJyZVNEIGJvYXJkIHdpdGggaS5NWDYgUXVhZCBhbmQgZm91bmQgdGhlIHNhbWUgYmVoYXZpb3Iu
+IEkgY291bGQgbm90IGZpbmQgYW4gZXhwbGFuYXRpb24geWV0IGZvciB0aGlzIHNvIEkgaG9wZSB5
+b3UgY2FuIGhlbHAgbWUuCgpUaGUga2luZGxlIGluaXRjYWxscyBhcmUgbWlzc2luZyB0aGUgY29t
+cGF0aWJpbGl0eSBjaGVja3MsIHNvIHRoZXkgd2lsbApiZSBleGVjdXRlZCBvbiBldmVyeSBtYWNo
+aW5lIG9uIGEgbXVsdGktaW1hZ2UgYnVpbGQsIHdoaWNoIGlzIHdyb25nLgoKUmVnYXJkcywKTHVj
+YXMKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
+Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
