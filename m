@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward10m.cmail.yandex.net ([5.255.216.203])
+Received: from forward12h.cmail.yandex.net ([2a02:6b8:0:f35::9d])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d8sIY-0004Fi-57
- for barebox@lists.infradead.org; Thu, 11 May 2017 17:54:48 +0000
-Received: from smtp1o.mail.yandex.net (smtp1o.mail.yandex.net [37.140.190.26])
- by forward10m.cmail.yandex.net (Yandex) with ESMTP id DA1A221AAC
- for <barebox@lists.infradead.org>; Thu, 11 May 2017 20:54:17 +0300 (MSK)
-Received: from smtp1o.mail.yandex.net (localhost.localdomain [127.0.0.1])
- by smtp1o.mail.yandex.net (Yandex) with ESMTP id A561A130050A
- for <barebox@lists.infradead.org>; Thu, 11 May 2017 20:54:16 +0300 (MSK)
+ id 1d8sIe-0004QZ-3N
+ for barebox@lists.infradead.org; Thu, 11 May 2017 17:54:54 +0000
+Received: from smtp2o.mail.yandex.net (smtp2o.mail.yandex.net [37.140.190.27])
+ by forward12h.cmail.yandex.net (Yandex) with ESMTP id E7780214C5
+ for <barebox@lists.infradead.org>; Thu, 11 May 2017 20:54:27 +0300 (MSK)
+Received: from smtp2o.mail.yandex.net (localhost.localdomain [127.0.0.1])
+ by smtp2o.mail.yandex.net (Yandex) with ESMTP id BC00A5080C96
+ for <barebox@lists.infradead.org>; Thu, 11 May 2017 20:54:26 +0300 (MSK)
 From: Andrey Panov <rockford@yandex.ru>
-Date: Thu, 11 May 2017 20:54:15 +0300
-Message-Id: <20170511175415.25466-1-rockford@yandex.ru>
+Date: Thu, 11 May 2017 20:54:25 +0300
+Message-Id: <20170511175425.25515-1-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,60 +25,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] Fix linking with new ld, based on u-boot
+Subject: [PATCH] ARM: Embedsky E9: Update environment
 To: barebox@lists.infradead.org
-
-U-boot commit info:
-http://git.denx.de/?p=u-boot.git;a=commit;h=e391b1e64b0bd65709a28a4764afe4f32d408243
 
 Signed-off-by: Andrey Panov <rockford@yandex.ru>
 ---
- Makefile               | 3 +++
- images/Makefile        | 3 +++
- scripts/Kbuild.include | 2 +-
- 3 files changed, 7 insertions(+), 1 deletion(-)
+ arch/arm/boards/embedsky-e9/defaultenv-e9/boot/mmc1       | 1 +
+ arch/arm/boards/embedsky-e9/defaultenv-e9/boot/mmc3       | 1 +
+ arch/arm/boards/embedsky-e9/defaultenv-e9/nv/boot.default | 1 +
+ 3 files changed, 3 insertions(+)
+ create mode 100644 arch/arm/boards/embedsky-e9/defaultenv-e9/nv/boot.default
 
-diff --git a/Makefile b/Makefile
-index 09be653a3..3b8d73dab 100644
---- a/Makefile
-+++ b/Makefile
-@@ -306,6 +306,9 @@ AFLAGS          := -D__ASSEMBLY__
+diff --git a/arch/arm/boards/embedsky-e9/defaultenv-e9/boot/mmc1 b/arch/arm/boards/embedsky-e9/defaultenv-e9/boot/mmc1
+index 0177e6c6b..a54b77726 100644
+--- a/arch/arm/boards/embedsky-e9/defaultenv-e9/boot/mmc1
++++ b/arch/arm/boards/embedsky-e9/defaultenv-e9/boot/mmc1
+@@ -3,4 +3,5 @@
+ mount /dev/mmc1.0
  
- LDFLAGS_barebox	:= -Map barebox.map
+ global.bootm.image=/mnt/mmc1.0/zImage
++global.bootm.oftree=/mnt/mmc1.0/imx6q-embedsky-e9.dtb
+ global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootwait"
+diff --git a/arch/arm/boards/embedsky-e9/defaultenv-e9/boot/mmc3 b/arch/arm/boards/embedsky-e9/defaultenv-e9/boot/mmc3
+index f6cb529d3..154cef9e7 100644
+--- a/arch/arm/boards/embedsky-e9/defaultenv-e9/boot/mmc3
++++ b/arch/arm/boards/embedsky-e9/defaultenv-e9/boot/mmc3
+@@ -3,4 +3,5 @@
+ mount /dev/mmc3.0
  
-+# Avoid 'Not enough room for program headers' error on binutils 2.28 onwards.
-+LDFLAGS_barebox += $(call ld-option, --no-dynamic-linker)
-+
- # Read KERNELRELEASE from include/config/kernel.release (if it exists)
- KERNELRELEASE = $(shell cat include/config/kernel.release 2> /dev/null)
- KERNELVERSION = $(VERSION).$(PATCHLEVEL).$(SUBLEVEL)$(EXTRAVERSION)
-diff --git a/images/Makefile b/images/Makefile
-index adf950aa9..8c5dac4bf 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -53,6 +53,9 @@ extra-y += $(pbl-lds)
- $(pbl-lds): $(obj)/../arch/$(ARCH)/lib/pbl.lds.S FORCE
- 	$(call if_changed_dep,cpp_lds_S)
- 
-+# Avoid 'Not enough room for program headers' error on binutils 2.28 onwards.
-+LDFLAGS += $(call ld-option, --no-dynamic-linker)
-+
- quiet_cmd_elf__ ?= LD      $@
-       cmd_elf__ ?= $(LD) $(LDFLAGS) --gc-sections -pie			\
- 		-e $(2) -Map $@.map $(LDFLAGS_$(@F)) -o $@		\
-diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
-index c7faf67a2..310dcdc94 100644
---- a/scripts/Kbuild.include
-+++ b/scripts/Kbuild.include
-@@ -148,7 +148,7 @@ cc-ldoption = $(call try-run,\
- # ld-option
- # Usage: LDFLAGS += $(call ld-option, -X)
- ld-option = $(call try-run,\
--	$(CC) /dev/null -c -o "$$TMPO" ; $(LD) $(1) "$$TMPO" -o "$$TMP",$(1),$(2))
-+	$(CC) -x c /dev/null -c -o "$$TMPO" ; $(LD) $(1) "$$TMPO" -o "$$TMP",$(1),$(2))
- 
- # ar-option
- # Usage: KBUILD_ARFLAGS := $(call ar-option,D)
+ global.bootm.image=/mnt/mmc3.0/zImage
++global.bootm.oftree=/mnt/mmc3.0/imx6q-embedsky-e9.dtb
+ global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootwait"
+diff --git a/arch/arm/boards/embedsky-e9/defaultenv-e9/nv/boot.default b/arch/arm/boards/embedsky-e9/defaultenv-e9/nv/boot.default
+new file mode 100644
+index 000000000..da228862c
+--- /dev/null
++++ b/arch/arm/boards/embedsky-e9/defaultenv-e9/nv/boot.default
+@@ -0,0 +1 @@
++mmc1 mmc3
 -- 
 2.11.0
 
