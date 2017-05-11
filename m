@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d8j9H-00021C-QB
- for barebox@lists.infradead.org; Thu, 11 May 2017 08:08:37 +0000
+ by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1d8jB7-0003oS-KS
+ for barebox@lists.infradead.org; Thu, 11 May 2017 08:10:33 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 11 May 2017 10:08:11 +0200
-Message-Id: <20170511080811.18032-1-s.hauer@pengutronix.de>
+Date: Thu, 11 May 2017 10:10:03 +0200
+Message-Id: <20170511081003.18988-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,33 +19,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] of: of_find_node_by_devpath: Fix offset in mtd devices
+Subject: [PATCH] state: remove unused variables
 To: Barebox List <barebox@lists.infradead.org>
 
-When a cdev is a mtd device the partition offset must be used from
-there, not from the cdev.
+There's no need to check for the existence of the backend property as
+this is done implicitly later anyway. With this check removed of_path
+is only assigned, but never used. Remove the unused code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/of_path.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ common/state/state.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
-index a5886dffac..334eab841a 100644
---- a/drivers/of/of_path.c
-+++ b/drivers/of/of_path.c
-@@ -142,7 +142,10 @@ struct device_node *of_find_node_by_devpath(struct device_node *root, const char
- 	 */
- 	if (cdev->master) {
- 		is_partition = true;
--		part_offset = cdev->offset;
-+		if (cdev->mtd)
-+			part_offset = cdev->mtd->master_offset;
-+		else
-+			part_offset = cdev->offset;
- 		part_size = cdev->size;
- 		pr_debug("%s path %s: is a partition with offset 0x%08llx, size 0x%08llx\n",
- 			 __func__, path, part_offset, part_size);
+diff --git a/common/state/state.c b/common/state/state.c
+index b4a634fa99..878fd1b0fb 100644
+--- a/common/state/state.c
++++ b/common/state/state.c
+@@ -570,10 +570,8 @@ struct state *state_new_from_node(struct device_node *node, char *path,
+ {
+ 	struct state *state;
+ 	int ret = 0;
+-	int len;
+ 	const char *backend_type;
+ 	const char *storage_type;
+-	const char *of_path;
+ 	const char *alias;
+ 	uint32_t stridesize;
+ 
+@@ -587,12 +585,6 @@ struct state *state_new_from_node(struct device_node *node, char *path,
+ 	if (IS_ERR(state))
+ 		return state;
+ 
+-	of_path = of_get_property(node, "backend", &len);
+-	if (!of_path) {
+-		ret = -ENODEV;
+-		goto out_release_state;
+-	}
+-
+ 	if (!path) {
+ 		struct device_node *partition_node;
+ 
+@@ -603,7 +595,6 @@ struct state *state_new_from_node(struct device_node *node, char *path,
+ 			goto out_release_state;
+ 		}
+ 
+-		of_path = partition_node->full_name;
+ 		ret = of_find_path_by_node(partition_node, &path, 0);
+ 		if (ret) {
+ 			if (ret != -EPROBE_DEFER)
 -- 
 2.11.0
 
