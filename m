@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward18m.cmail.yandex.net ([2a02:6b8:b030::9f])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d8Vm4-0001Vv-Vz
- for barebox@lists.infradead.org; Wed, 10 May 2017 17:51:47 +0000
-Received: from smtp1p.mail.yandex.net (smtp1p.mail.yandex.net [77.88.29.84])
- by forward18m.cmail.yandex.net (Yandex) with ESMTP id 2DE3E20B59
- for <barebox@lists.infradead.org>; Wed, 10 May 2017 20:51:20 +0300 (MSK)
-Received: from smtp1p.mail.yandex.net (localhost.localdomain [127.0.0.1])
- by smtp1p.mail.yandex.net (Yandex) with ESMTP id 0449B178087F
- for <barebox@lists.infradead.org>; Wed, 10 May 2017 20:51:19 +0300 (MSK)
-From: Andrey Panov <rockford@yandex.ru>
-Date: Wed, 10 May 2017 20:51:17 +0300
-Message-Id: <20170510175117.18709-1-rockford@yandex.ru>
+ id 1d8hBL-00068G-6J
+ for barebox@lists.infradead.org; Thu, 11 May 2017 06:02:37 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 11 May 2017 08:02:07 +0200
+Message-Id: <20170511060207.11121-1-s.hauer@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,41 +15,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] of: Search for /memory node by type,
- if it is not found by name
-To: barebox@lists.infradead.org
+Subject: [PATCH] ARM: i.MX50: Amazon Kindle: Add missing compatibility checks
+To: Barebox List <barebox@lists.infradead.org>
 
-Update of Rockchip dts featured changes of simple "/memory" node
-to "/memory@6000000". Support this change.
-
-Signed-off-by: Andrey Panov <rockford@yandex.ru>
----
- drivers/of/base.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index c9bdd9181..33f61622a 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1910,6 +1910,8 @@ int of_probe(void)
- 		barebox_set_model(of_model);
- 
- 	memory = of_find_node_by_path("/memory");
-+	if (!memory)
-+		memory = of_find_node_by_type(root_node, "memory");
- 	if (memory)
- 		of_add_memory(memory, false);
- 
--- 
-2.11.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QWRkIHRoZSBjaGVja3MgdG8gcHJldmVudCBLaW5kbGUgc3BlY2lmaWMgY29kZSBvbiBvdGhlciBt
+YWNoaW5lcy4KVGhpcyBhbHNvIGFkZHMgY29tcGF0aWJsZSBzdHJpbmdzIGZvciB0aGUgS2luZGxl
+IG1hY2hpbmVzIGFzIHRoZXkKY3VycmVudGx5IGxhY2sgdGhlbS4KClJlcG9ydGVkLWJ5OiBTdGVm
+YW4gUmllZG3DvGxsZXIgPFMuUmllZG11ZWxsZXJAcGh5dGVjLmRlPgpTaWduZWQtb2ZmLWJ5OiBT
+YXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ci0tLQogYXJjaC9hcm0vYm9hcmRz
+L2tpbmRsZS1teDUwL2JvYXJkLmMgIHwgMTkgKysrKysrKysrKysrKysrKysrKwogYXJjaC9hcm0v
+ZHRzL2lteDUwLWtpbmRsZS1kMDExMDAuZHRzIHwgIDIgKy0KIGFyY2gvYXJtL2R0cy9pbXg1MC1r
+aW5kbGUtZDAxMjAwLmR0cyB8ICAyICstCiAzIGZpbGVzIGNoYW5nZWQsIDIxIGluc2VydGlvbnMo
+KyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2tpbmRsZS1t
+eDUwL2JvYXJkLmMgYi9hcmNoL2FybS9ib2FyZHMva2luZGxlLW14NTAvYm9hcmQuYwppbmRleCBm
+YTRiZWI3ZjNjLi43YmQ0ZjkxZTBiIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMva2luZGxl
+LW14NTAvYm9hcmQuYworKysgYi9hcmNoL2FybS9ib2FyZHMva2luZGxlLW14NTAvYm9hcmQuYwpA
+QCAtMTIwLDggKzEyMCwxNyBAQCBzdGF0aWMgdm9pZCBraW5kbGVfcmV2X2luaXQodm9pZCkKIAlm
+cmVlKGJ1Zik7CiB9CiAKK3N0YXRpYyBpbnQgaXNfbXg1MF9raW5kbGUodm9pZCkKK3sKKwlyZXR1
+cm4gb2ZfbWFjaGluZV9pc19jb21wYXRpYmxlKCJhbWF6b24sa2luZGxlLWQwMTEwMCIpIHx8CisJ
+CW9mX21hY2hpbmVfaXNfY29tcGF0aWJsZSgiYW1hem9uLGtpbmRsZS1kMDEyMDAiKTsKK30KKwog
+c3RhdGljIGludCBraW5kbGVfbXg1MF9sYXRlX2luaXQodm9pZCkKIHsKKwlpZiAoIWlzX214NTBf
+a2luZGxlKCkpCisJCXJldHVybiAwOworCiAJYXJtbGludXhfc2V0X3JldmlzaW9uKDB4NTAwMDAg
+fCBpbXhfc2lsaWNvbl9yZXZpc2lvbigpKTsKIAkvKiBDb21wYXRpYmlsaXR5IEFUQUdzIGZvciBv
+cmlnaW5hbCBrZXJuZWwgKi8KIAlhcm1saW51eF9zZXRfYXRhZ19hcHBlbmRlcihraW5kbGVfbXg1
+MF9hcHBlbmRfYXRhZ3MpOwpAQCAtMTM0LDYgKzE0Myw5IEBAIGxhdGVfaW5pdGNhbGwoa2luZGxl
+X214NTBfbGF0ZV9pbml0KTsKIAogc3RhdGljIGludCBraW5kbGVfbXg1MF9tZW1faW5pdCh2b2lk
+KQogeworCWlmICghaXNfbXg1MF9raW5kbGUoKSkKKwkJcmV0dXJuIDA7CisKIAlhcm1fYWRkX21l
+bV9kZXZpY2UoInJhbTAiLCBNWDUwX0NTRDBfQkFTRV9BRERSLCBTWl8yNTZNKTsKIAlyZXR1cm4g
+MDsKIH0KQEAgLTE0Miw2ICsxNTQsMTAgQEAgbWVtX2luaXRjYWxsKGtpbmRsZV9teDUwX21lbV9p
+bml0KTsKIHN0YXRpYyBpbnQga2luZGxlX214NTBfZGV2aWNlc19pbml0KHZvaWQpCiB7CiAJc3Ry
+dWN0IGRldmljZV9kICpkZXY7CisKKwlpZiAoIWlzX214NTBfa2luZGxlKCkpCisJCXJldHVybiAw
+OworCiAJLyogUHJvYmUgdGhlIGVNTUMgdG8gYWxsb3cgcmVhZGluZyB0aGUgYm9hcmQgc2VyaWFs
+IGFuZCByZXZpc2lvbiAqLwogCWRldiA9IGdldF9kZXZpY2VfYnlfbmFtZSgibWNpMCIpOwogCWlm
+IChkZXYpCkBAIC0xNTUsNiArMTcxLDkgQEAgZGV2aWNlX2luaXRjYWxsKGtpbmRsZV9teDUwX2Rl
+dmljZXNfaW5pdCk7CiAKIHN0YXRpYyBpbnQga2luZGxlX214NTBfcG9zdGNvcmVfaW5pdCh2b2lk
+KQogeworCWlmICghaXNfbXg1MF9raW5kbGUoKSkKKwkJcmV0dXJuIDA7CisKIAlpbXg1MF9pbml0
+X2xvd2xldmVsKDgwMCk7CiAKIAlyZXR1cm4gMDsKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0cy9p
+bXg1MC1raW5kbGUtZDAxMTAwLmR0cyBiL2FyY2gvYXJtL2R0cy9pbXg1MC1raW5kbGUtZDAxMTAw
+LmR0cwppbmRleCBlZGJjOTI5MTIwLi4yM2JmYmI1ZDI0IDEwMDY0NAotLS0gYS9hcmNoL2FybS9k
+dHMvaW14NTAta2luZGxlLWQwMTEwMC5kdHMKKysrIGIvYXJjaC9hcm0vZHRzL2lteDUwLWtpbmRs
+ZS1kMDExMDAuZHRzCkBAIC0xNyw3ICsxNyw3IEBACiAKIC8gewogCW1vZGVsID0gIkFtYXpvbiBL
+aW5kbGUgRDAxMTAwIjsKLQljb21wYXRpYmxlID0gImZzbCxpbXg1MCI7CisJY29tcGF0aWJsZSA9
+ICJhbWF6b24sa2luZGxlLWQwMTEwMCIsICJmc2wsaW14NTAiOwogCiAJY2hvc2VuIHsKIAkJbGlu
+dXgsc3Rkb3V0LXBhdGggPSAmdWFydDE7CmRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvaW14NTAt
+a2luZGxlLWQwMTIwMC5kdHMgYi9hcmNoL2FybS9kdHMvaW14NTAta2luZGxlLWQwMTIwMC5kdHMK
+aW5kZXggOGY5M2MxYjUyMC4uZDhlNWVkMzI4MyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vZHRzL2lt
+eDUwLWtpbmRsZS1kMDEyMDAuZHRzCisrKyBiL2FyY2gvYXJtL2R0cy9pbXg1MC1raW5kbGUtZDAx
+MjAwLmR0cwpAQCAtMTcsNyArMTcsNyBAQAogCiAvIHsKIAltb2RlbCA9ICJBbWF6b24gS2luZGxl
+IEQwMTIwMCI7Ci0JY29tcGF0aWJsZSA9ICJmc2wsaW14NTAiOworCWNvbXBhdGlibGUgPSAiYW1h
+em9uLGtpbmRsZS1kMDEyMDAiLCAiZnNsLGlteDUwIjsKIAogCWNob3NlbiB7CiAJCWxpbnV4LHN0
+ZG91dC1wYXRoID0gJnVhcnQxOwotLSAKMi4xMS4wCgoKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
+cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
+Zm8vYmFyZWJveAo=
