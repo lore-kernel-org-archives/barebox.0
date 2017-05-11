@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d8hQU-0003dX-SW
- for barebox@lists.infradead.org; Thu, 11 May 2017 06:18:16 +0000
-Date: Thu, 11 May 2017 08:17:53 +0200
+ id 1d8hQy-0003ly-IN
+ for barebox@lists.infradead.org; Thu, 11 May 2017 06:18:48 +0000
+Date: Thu, 11 May 2017 08:18:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170511061753.5xsrhw5usm3ldcgg@pengutronix.de>
-References: <20170509075115.15702-1-jbe@pengutronix.de>
+Message-ID: <20170511061822.cek36oy7eecgu4mn@pengutronix.de>
+References: <20170509053404.12860-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170509075115.15702-1-jbe@pengutronix.de>
+In-Reply-To: <20170509053404.12860-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,99 +18,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] PPC: request a consistent memory layout
-To: Juergen Borleis <jbe@pengutronix.de>
+Subject: Re: [PATCH v3] Documentation: provide documentation for RNG
+ interfaces.
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, May 09, 2017 at 09:51:15AM +0200, Juergen Borleis wrote:
-> Using the memory test command will crash barebox, because it tests the
-> area where the stack is located for the PPC architecture.
-> 
-> On PPC the stack is below the barebox binary. Below the stack the malloc
-> area is located. Until this change some routines used the macros
-> from 'memory_layout.h', some other calculated their values by their
-> own - which resulted into an unrequested and unprotected stack area.
-> 
-> Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
-
-Applied, thanks
-
-Sascha
-
-> ---
->  arch/ppc/mach-mpc5xxx/Kconfig |  1 -
->  arch/ppc/mach-mpc5xxx/cpu.c   | 18 ++++++++++++++++++
->  2 files changed, 18 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/ppc/mach-mpc5xxx/Kconfig b/arch/ppc/mach-mpc5xxx/Kconfig
-> index 1ecce3a56..180aa32ad 100644
-> --- a/arch/ppc/mach-mpc5xxx/Kconfig
-> +++ b/arch/ppc/mach-mpc5xxx/Kconfig
-> @@ -32,7 +32,6 @@ config ARCH_MPC5200
->  config MPC5xxx
->  	bool
->  	depends on MACH_PHYCORE_MPC5200B_TINY
-> -	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
->  	default y
->  
->  menu "Board specific settings"
-> diff --git a/arch/ppc/mach-mpc5xxx/cpu.c b/arch/ppc/mach-mpc5xxx/cpu.c
-> index 42ced9ac5..ab58967aa 100644
-> --- a/arch/ppc/mach-mpc5xxx/cpu.c
-> +++ b/arch/ppc/mach-mpc5xxx/cpu.c
-> @@ -33,6 +33,8 @@
->  #include <of.h>
->  #include <restart.h>
->  #include <mach/clock.h>
-> +#include <asm-generic/memory_layout.h>
-> +#include <memory.h>
->  
->  int checkcpu (void)
->  {
-> @@ -60,6 +62,22 @@ int checkcpu (void)
->  
->  /* ------------------------------------------------------------------------- */
->  
-> +static int mpc5xxx_reserve_region(void)
-> +{
-> +	struct resource *r;
-> +
-> +	/* keep this in sync with the assembler routines setting up the stack */
-> +	r = request_sdram_region("stack", _text_base - STACK_SIZE, STACK_SIZE);
-> +	if (r == NULL) {
-> +		pr_err("Failed to request stack region at: 0x%08lx/0x%08lx\n",
-> +			_text_base - STACK_SIZE, _text_base - 1);
-> +		return -EBUSY;
-> +	}
-> +
-> +	return 0;
-> +}
-> +coredevice_initcall(mpc5xxx_reserve_region);
-> +
->  static void __noreturn mpc5xxx_restart_soc(struct restart_handler *rst)
->  {
->  	ulong msr;
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVHVlLCBNYXkgMDksIDIwMTcgYXQgMDc6MzQ6MDRBTSArMDIwMCwgT2xla3NpaiBSZW1wZWwg
+d3JvdGU6Cj4gU2lnbmVkLW9mZi1ieTogT2xla3NpaiBSZW1wZWwgPG8ucmVtcGVsQHBlbmd1dHJv
+bml4LmRlPgo+IC0tLQo+ICBEb2N1bWVudGF0aW9uL3VzZXIvcmFuZG9tLnJzdCAgICAgIHwgNjMg
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKPiAgRG9jdW1lbnRhdGlvbi91
+c2VyL3VzZXItbWFudWFsLnJzdCB8ICAxICsKPiAgMiBmaWxlcyBjaGFuZ2VkLCA2NCBpbnNlcnRp
+b25zKCspCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBEb2N1bWVudGF0aW9uL3VzZXIvcmFuZG9tLnJz
+dAoKQXBwbGllZCwgdGhhbmtzCgpTYXNjaGEKCj4gCj4gZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRp
+b24vdXNlci9yYW5kb20ucnN0IGIvRG9jdW1lbnRhdGlvbi91c2VyL3JhbmRvbS5yc3QKPiBuZXcg
+ZmlsZSBtb2RlIDEwMDY0NAo+IGluZGV4IDAwMDAwMDAwMDAuLjk1ZGFkNzJlNTUKPiAtLS0gL2Rl
+di9udWxsCj4gKysrIGIvRG9jdW1lbnRhdGlvbi91c2VyL3JhbmRvbS5yc3QKPiBAQCAtMCwwICsx
+LDYzIEBACj4gK1JhbmRvbSBOdW1iZXIgR2VuZXJhdG9yIHN1cHBvcnQKPiArPT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PQo+ICsKPiArQmFyZWJveCBwcm92aWRlcyB0d28gdHlwZXMgb2Yg
+Uk5HIHNvdXJjZXMgLSBQUk5HIGFuZCBIV1JORzoKPiArCj4gKy0gIkEgcHNldWRvcmFuZG9tIG51
+bWJlciBnZW5lcmF0b3IgKFBSTkcpLCBhbHNvIGtub3duIGFzIGEgZGV0ZXJtaW5pc3RpYyByYW5k
+b20KPiArICBiaXQgZ2VuZXJhdG9yIChEUkJHKSxbMV0gaXMgYW4gYWxnb3JpdGhtIGZvciBnZW5l
+cmF0aW5nIGEgc2VxdWVuY2Ugb2YgbnVtYmVycwo+ICsgIHdob3NlIHByb3BlcnRpZXMgYXBwcm94
+aW1hdGUgdGhlIHByb3BlcnRpZXMgb2Ygc2VxdWVuY2VzIG9mIHJhbmRvbSBudW1iZXJzLgo+ICsg
+IFRoZSBQUk5HLWdlbmVyYXRlZCBzZXF1ZW5jZSBpcyBub3QgdHJ1bHkgcmFuZG9tLCBiZWNhdXNl
+IGl0IGlzIGNvbXBsZXRlbHkKPiArICBkZXRlcm1pbmVkIGJ5IGEgcmVsYXRpdmVseSBzbWFsbCBz
+ZXQgb2YgaW5pdGlhbCB2YWx1ZXMsIGNhbGxlZCB0aGUgUFJORydzIHNlZWQKPiArICAod2hpY2gg
+bWF5IGluY2x1ZGUgdHJ1bHkgcmFuZG9tIHZhbHVlcykuIEFsdGhvdWdoIHNlcXVlbmNlcyB0aGF0
+IGFyZSBjbG9zZXIgdG8KPiArICB0cnVseSByYW5kb20gY2FuIGJlIGdlbmVyYXRlZCB1c2luZyBo
+YXJkd2FyZSByYW5kb20gbnVtYmVyIGdlbmVyYXRvcnMuIgo+ICsgIFBzZXVkb3JhbmRvbSBudW1i
+ZXIgZ2VuZXJhdG9yLiBodHRwczovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9Qc2V1ZG9yYW5kb21f
+bnVtYmVyX2dlbmVyYXRvciAoMjAxNy4wNS4wOCkuCj4gKyAgVGhlIFBSTkcgdXNlZCBieSBCYXJl
+Ym94IGlzIExDRyAobGluZWFyIGNvbmdydWVudGlhbCBnZW5lcmF0b3IpIG5vbiBjcnlwdG9ncmFw
+aGljYWxseQo+ICsgIHNlY3VyZSwgc28gcGxlYXNlIHVzZSB3aXRoIGNhdXRpb24uCj4gKwo+ICst
+IFRoZSBIV1JORyBmcmFtZXdvcmsgaXMgc29mdHdhcmUgdGhhdCBtYWtlcyB1c2Ugb2YgYSBzcGVj
+aWFsIGhhcmR3YXJlIGZlYXR1cmUgb24KPiArICB5b3VyIENQVSwgU29DIG9yIG1vdGhlcmJvYXJk
+LiBJdCBjYW7igJh0IHByb3ZpZGUgYW55IGd1YXJhbnRlZSBhYm91dCBjcnlwdG9ncmFwaGljCj4g
+KyAgc2VjdXJpdHkgb2YgdXNlZCBIVy4gUGxlYXNlIHJlZmVyIHRvIHZlbmRvciBkb2N1bWVudGF0
+aW9uIGFuZC9vciBSTkcgY2VydGlmaWNhdGlvbi4KPiArCj4gK0FQSQo+ICteXl4KPiArCj4gKy4u
+IGNvZGUtYmxvY2s6OiBjCj4gKwo+ICsgICAgICAgIC8qIHNlZWQgdGhlIFBSTkcuICovCj4gKyAg
+ICAgICAgdm9pZCBzcmFuZCh1bnNpZ25lZCBpbnQgc2VlZCk7Cj4gKwo+ICsgICAgICAgIC8qIEZp
+bGwgdGhlIGJ1ZmZlciB3aXRoIFBSTkcgYml0cy4gKi8KPiArICAgICAgICB2b2lkIGdldF9yYW5k
+b21fYnl0ZXModm9pZCAqYnVmLCBpbnQgbGVuKTsKPiArCj4gKyAgICAgICAgLyogRmlsbCB0aGUg
+YnVmZmVyIHdpdGggYml0cyBwcm92aWRlZCBieSBIV1JORy4KPiArICAgICAgICAgKiBUaGlzIGZ1
+bmN0aW9uIG1heSBmYWlsIHdpdGggYSBtZXNzYWdlIOKAnGVycm9yOiBubyBIV1JORyBhdmFpbGFi
+bGUh4oCdCj4gKyAgICAgICAgICogaW4gY2FzZSBIV1JORyBpcyBub3QgYXZhaWxhYmxlIG9yIEhX
+IGdvdCBzb21lIHJ1bnRpbWUgZXJyb3IuCj4gKyAgICAgICAgICogSWYgYmFyZWJveCBpcyBjb21w
+aWxlZCB3aXRoIENPTkZJR19BTExPV19QUk5HX0ZBTExCQUNLLAo+ICsgICAgICAgICAqIHRoZW4g
+Z2V0X2NyeXB0b19ieXRlcygpIHdpbGwgcHJpbnQg4oCcd2FybmluZzogZmFsbGluZyBiYWNrIHRv
+IFBzZXVkbyBSTkcgc291cmNlIeKAnQo+ICsgICAgICAgICAqIGFuZCB1c2UgUFJORyBpbnN0ZWFk
+IG9mIHJldHVybmluZyBlcnJvci4KPiArICAgICAgICAgKi8KPiArICAgICAgICBpbnQgZ2V0X2Ny
+eXB0b19ieXRlcyh2b2lkICpidWYsIGludCBsZW4pOwo+ICsKPiArVXNlciBpbnRlcmZhY2UKPiAr
+Xl5eXl5eXl5eXl5eXl4KPiArCj4gKy0gL2Rldi9od3JuZzAKPiArICBwcm92aWRlcyBhY2Nlc3Mg
+dG8gZmlyc3QgYXZhaWxhYmxlIEhXUk5HLiBUbyBleGFtaW5lIHRoaXMgc291cmNlIHlvdSBjYW4g
+dXNlOgo+ICsKPiArLi4gY29kZS1ibG9jazo6IHNoCj4gKwo+ICsgIG1kIC1zIC9kZXYvaHdybmcw
+Cj4gKwo+ICstIC9kZXYvcHJuZwo+ICsgIHByb3ZpZGVzIGFjY2VzcyB0byBQUk5HLiBUbyBleGFt
+aW5lIHRoaXMgc291cmNlIHlvdSBjYW4gdXNlOgo+ICsKPiArLi4gY29kZS1ibG9jazo6IHNoCj4g
+Kwo+ICsgIG1kIC1zIC9kZXYvcHJuZwo+ICsKPiArVG8gc2VlZCBQUk5HIGZyb20gdXNlciBzcGFj
+ZSB0aGUgOnJlZjpgY29tbWFuZF9zZWVkYCBpcyBwcm92aWRlZC4gRm9yIGV4YW1wbGU6Cj4gKwo+
+ICsuLiBjb2RlLWJsb2NrOjogc2gKPiArCj4gKyAgc2VlZCAxMjM0NQo+ICsgIG1kIC1zIC9kZXYv
+cHJuZwo+IGRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL3VzZXIvdXNlci1tYW51YWwucnN0IGIv
+RG9jdW1lbnRhdGlvbi91c2VyL3VzZXItbWFudWFsLnJzdAo+IGluZGV4IDQzNTY0OWYzNTMuLjc5
+MWM4ZTA5NzkgMTAwNjQ0Cj4gLS0tIGEvRG9jdW1lbnRhdGlvbi91c2VyL3VzZXItbWFudWFsLnJz
+dAo+ICsrKyBiL0RvY3VtZW50YXRpb24vdXNlci91c2VyLW1hbnVhbC5yc3QKPiBAQCAtMzMsNiAr
+MzMsNyBAQCBDb250ZW50czoKPiAgICAgcmVzZXQtcmVhc29uCj4gICAgIHN5c3RlbS1yZXNldAo+
+ICAgICBzdGF0ZQo+ICsgICByYW5kb20KPiAgCj4gICogOnJlZjpgc2VhcmNoYAo+ICAqIDpyZWY6
+YGdlbmluZGV4YAo+IC0tIAo+IDIuMTEuMAo+IAo+IAo+IF9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94
+QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4
+IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAg
+fApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5
+LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAg
+ICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
+eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
+bGlzdGluZm8vYmFyZWJveAo=
