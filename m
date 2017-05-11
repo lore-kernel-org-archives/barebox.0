@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d8jdR-0005yL-Tt
- for barebox@lists.infradead.org; Thu, 11 May 2017 08:39:47 +0000
-Date: Thu, 11 May 2017 10:39:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170511083924.n7lxxmpjkl65k4xh@pengutronix.de>
-References: <20170510174949.18631-1-rockford@yandex.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170510174949.18631-1-rockford@yandex.ru>
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1d8k6f-0006MN-Gy
+ for barebox@lists.infradead.org; Thu, 11 May 2017 09:09:58 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id D447AA0022F
+ for <barebox@lists.infradead.org>; Thu, 11 May 2017 11:10:18 +0200 (CEST)
+From: Stefan Riedmueller <s.riedmueller@phytec.de>
+Date: Thu, 11 May 2017 11:09:26 +0200
+Message-Id: <1494493768-42043-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,83 +17,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Fix linking with new ld, based on u-boot
-To: Andrey Panov <rockford@yandex.ru>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] ARM: i.MX: Add i.MX6 ULL support
+To: barebox@lists.infradead.org
 
-Hi Andrey,
+Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+---
+ arch/arm/mach-imx/imx.c               | 2 ++
+ arch/arm/mach-imx/imx6.c              | 3 +++
+ arch/arm/mach-imx/include/mach/imx6.h | 2 ++
+ 3 files changed, 7 insertions(+)
 
-The patch looks fine, but lacks a signed-off-by. Could you resend?
-
-Sascha
-
-On Wed, May 10, 2017 at 08:49:49PM +0300, Andrey Panov wrote:
-> ---
->  Makefile               | 3 +++
->  images/Makefile        | 3 +++
->  scripts/Kbuild.include | 2 +-
->  3 files changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index afa4bf802..c78f66f73 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -306,6 +306,9 @@ AFLAGS          := -D__ASSEMBLY__
->  
->  LDFLAGS_barebox	:= -Map barebox.map
->  
-> +# Avoid 'Not enough room for program headers' error on binutils 2.28 onwards.
-> +LDFLAGS_barebox += $(call ld-option, --no-dynamic-linker)
-> +
->  # Read KERNELRELEASE from include/config/kernel.release (if it exists)
->  KERNELRELEASE = $(shell cat include/config/kernel.release 2> /dev/null)
->  KERNELVERSION = $(VERSION).$(PATCHLEVEL).$(SUBLEVEL)$(EXTRAVERSION)
-> diff --git a/images/Makefile b/images/Makefile
-> index adf950aa9..8c5dac4bf 100644
-> --- a/images/Makefile
-> +++ b/images/Makefile
-> @@ -53,6 +53,9 @@ extra-y += $(pbl-lds)
->  $(pbl-lds): $(obj)/../arch/$(ARCH)/lib/pbl.lds.S FORCE
->  	$(call if_changed_dep,cpp_lds_S)
->  
-> +# Avoid 'Not enough room for program headers' error on binutils 2.28 onwards.
-> +LDFLAGS += $(call ld-option, --no-dynamic-linker)
-> +
->  quiet_cmd_elf__ ?= LD      $@
->        cmd_elf__ ?= $(LD) $(LDFLAGS) --gc-sections -pie			\
->  		-e $(2) -Map $@.map $(LDFLAGS_$(@F)) -o $@		\
-> diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
-> index c7faf67a2..310dcdc94 100644
-> --- a/scripts/Kbuild.include
-> +++ b/scripts/Kbuild.include
-> @@ -148,7 +148,7 @@ cc-ldoption = $(call try-run,\
->  # ld-option
->  # Usage: LDFLAGS += $(call ld-option, -X)
->  ld-option = $(call try-run,\
-> -	$(CC) /dev/null -c -o "$$TMPO" ; $(LD) $(1) "$$TMPO" -o "$$TMP",$(1),$(2))
-> +	$(CC) -x c /dev/null -c -o "$$TMPO" ; $(LD) $(1) "$$TMPO" -o "$$TMP",$(1),$(2))
->  
->  # ar-option
->  # Usage: KBUILD_ARFLAGS := $(call ar-option,D)
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
+index 1990739..9400105 100644
+--- a/arch/arm/mach-imx/imx.c
++++ b/arch/arm/mach-imx/imx.c
+@@ -67,6 +67,8 @@ static int imx_soc_from_dt(void)
+ 		return IMX_CPU_IMX6;
+ 	if (of_machine_is_compatible("fsl,imx6ul"))
+ 		return IMX_CPU_IMX6;
++	if (of_machine_is_compatible("fsl,imx6ull"))
++		return IMX_CPU_IMX6;
+ 	if (of_machine_is_compatible("fsl,imx7s"))
+ 		return IMX_CPU_IMX7;
+ 	if (of_machine_is_compatible("fsl,imx7d"))
+diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+index 44a8dbe..7b3fc1d 100644
+--- a/arch/arm/mach-imx/imx6.c
++++ b/arch/arm/mach-imx/imx6.c
+@@ -160,6 +160,9 @@ int imx6_init(void)
+ 	case IMX6_CPUTYPE_IMX6UL:
+ 		cputypestr = "i.MX6 UltraLite";
+ 		break;
++	case IMX6_CPUTYPE_IMX6ULL:
++		cputypestr = "i.MX6 ULL";
++		break;
+ 	default:
+ 		cputypestr = "unknown i.MX6";
+ 		break;
+diff --git a/arch/arm/mach-imx/include/mach/imx6.h b/arch/arm/mach-imx/include/mach/imx6.h
+index 327676b..6ad5343 100644
+--- a/arch/arm/mach-imx/include/mach/imx6.h
++++ b/arch/arm/mach-imx/include/mach/imx6.h
+@@ -18,6 +18,7 @@ void imx6_init_lowlevel(void);
+ #define IMX6_CPUTYPE_IMX6D	0x263
+ #define IMX6_CPUTYPE_IMX6Q	0x463
+ #define IMX6_CPUTYPE_IMX6UL	0x164
++#define IMX6_CPUTYPE_IMX6ULL	0x165
+ 
+ #define SCU_CONFIG              0x04
+ 
+@@ -82,6 +83,7 @@ DEFINE_MX6_CPU_TYPE(mx6d, IMX6_CPUTYPE_IMX6D);
+ DEFINE_MX6_CPU_TYPE(mx6sx, IMX6_CPUTYPE_IMX6SX);
+ DEFINE_MX6_CPU_TYPE(mx6sl, IMX6_CPUTYPE_IMX6SL);
+ DEFINE_MX6_CPU_TYPE(mx6ul, IMX6_CPUTYPE_IMX6UL);
++DEFINE_MX6_CPU_TYPE(mx6ull, IMX6_CPUTYPE_IMX6ULL);
+ 
+ static inline int __imx6_cpu_revision(void)
+ {
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
