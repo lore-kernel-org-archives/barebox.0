@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1d98QD-0005rB-Ah
- for barebox@lists.infradead.org; Fri, 12 May 2017 11:07:49 +0000
+ id 1d98ci-00047j-DD
+ for barebox@lists.infradead.org; Fri, 12 May 2017 11:20:42 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 72718A00733
- for <barebox@lists.infradead.org>; Fri, 12 May 2017 13:08:10 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id B6FBCA003C0
+ for <barebox@lists.infradead.org>; Fri, 12 May 2017 13:21:10 +0200 (CEST)
+References: <1493995618-7289-1-git-send-email-d.schultz@phytec.de>
+ <20170511091446.evilkhroas4jmck5@pengutronix.de>
 From: Daniel Schultz <d.schultz@phytec.de>
-Date: Fri, 12 May 2017 13:07:19 +0200
-Message-Id: <1494587239-33771-4-git-send-email-d.schultz@phytec.de>
-In-Reply-To: <1494587239-33771-1-git-send-email-d.schultz@phytec.de>
-References: <1494587239-33771-1-git-send-email-d.schultz@phytec.de>
+Message-ID: <c8bbdd4c-6300-52d6-1abf-f266ae0d5310@phytec.de>
+Date: Fri, 12 May 2017 13:20:19 +0200
+MIME-Version: 1.0
+In-Reply-To: <20170511091446.evilkhroas4jmck5@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,74 +21,126 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="windows-1252"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 4/4] arm: boards: beaglebone: Delete default env
+Subject: Re: [PATCH v2 1/5] arm: mach-omap: Change mountpoint of boot
+ partitions
 To: barebox@lists.infradead.org
 
-The Beaglebone environment should be set from outside with an application
-specific environment.
+Hi,
 
-Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
----
- arch/arm/boards/beaglebone/Makefile                                 | 1 -
- arch/arm/boards/beaglebone/board.c                                  | 2 --
- arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd            | 6 ------
- .../arm/boards/beaglebone/defaultenv-beaglebone/init/usb-limit-1300 | 5 -----
- 4 files changed, 14 deletions(-)
- delete mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
- delete mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/init/usb-limit-1300
+Am 11.05.2017 um 11:14 schrieb Sascha Hauer:
+> Hi Daniel,
+>
+> Your series wasn't forgotten. It's only that it took me some time to try
+> and implement links to directories. With this series I just sent and
+> "fs: Create automount entries for the default mount pathes" you should
+> be able to make this series a bit nicer. What I think of is that /boot
+> becomes a link to /mnt/mmcx.y or whatever provided /boot previously.
+>
+> Could you give it a try?
+I added this to the newest patch series. Now, all AM335x boards can =
 
-diff --git a/arch/arm/boards/beaglebone/Makefile b/arch/arm/boards/beaglebone/Makefile
-index 21a1a29..092c31d 100644
---- a/arch/arm/boards/beaglebone/Makefile
-+++ b/arch/arm/boards/beaglebone/Makefile
-@@ -1,3 +1,2 @@
- lwl-y += lowlevel.o
- obj-y += board.o
--bbenv-y += defaultenv-beaglebone
-diff --git a/arch/arm/boards/beaglebone/board.c b/arch/arm/boards/beaglebone/board.c
-index 5717c45..fc16aea 100644
---- a/arch/arm/boards/beaglebone/board.c
-+++ b/arch/arm/boards/beaglebone/board.c
-@@ -85,8 +85,6 @@ static int beaglebone_devices_init(void)
- 
- 	black = is_beaglebone_black();
- 
--	defaultenv_append_directory(defaultenv_beaglebone);
--
- 	globalvar_add_simple("board.variant", black ? "boneblack" : "bone");
- 
- 	printf("detected 'BeagleBone %s'\n", black ? "Black" : "White");
-diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
-deleted file mode 100644
-index aa94b2f..0000000
---- a/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
-+++ /dev/null
-@@ -1,6 +0,0 @@
--#!/bin/sh
--
--global.bootm.image=/boot/uImage
--global.bootm.oftree=/boot/oftree
--#global.bootm.initrd=<path to initrd>
--global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootfstype=ext4 rootwait"
-diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/init/usb-limit-1300 b/arch/arm/boards/beaglebone/defaultenv-beaglebone/init/usb-limit-1300
-deleted file mode 100644
-index 56313bf..0000000
---- a/arch/arm/boards/beaglebone/defaultenv-beaglebone/init/usb-limit-1300
-+++ /dev/null
-@@ -1,5 +0,0 @@
--#!/bin/sh
--
--echo -n "changing USB current limit to 1300 mA... "
--i2c_write -b 0 -a 0x24 -r 0x01 0x3e
--echo "done"
--- 
-1.9.1
+either boot from /boot or one of the /mnt/ boot partitions. Non Phytec =
 
+Boards won't need an environment change. Thanks!
+
+You can decide if you want the 4th path (delete BBB environment).
+
+Daniel
+
+>
+> Sascha
+>
+>> If using EMMC and SD as bootsources, mounting the boot partition of both
+>> devices to /boot makes trouble. Either the correct device is mounted to
+>> /boot or a remount of /boot has to be performed.
+>>
+>> To ensure this problem each MMCn bootsource will be mounted to his own
+>> path in /mnt/mmcN.0
+>>
+>> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+>> ---
+>>  arch/arm/mach-omap/omap_generic.c | 31 ++++++++++++++++++++-----------
+>>  1 file changed, 20 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap=
+_generic.c
+>> index 1d03eac..aa7424d 100644
+>> --- a/arch/arm/mach-omap/omap_generic.c
+>> +++ b/arch/arm/mach-omap/omap_generic.c
+>> @@ -113,12 +113,15 @@ const char *omap_get_bootmmc_devname(void)
+>>  }
+>>
+>>  #if defined(CONFIG_ENV_HANDLING)
+>> -#define ENV_PATH "/boot/barebox.env"
+>> +static char *envpath =3D "/mnt/mmc0.0/barebox.env";
+>> +
+>>  static int omap_env_init(void)
+>>  {
+>> -	char *partname;
+>> -	const char *diskdev;
+>>  	int ret;
+>> +	const char *diskdev;
+>> +	char *partname;
+>> +	struct cdev *cdev;
+>> +	const char *rootpath;
+>>
+>>  	if (bootsource_get() !=3D BOOTSOURCE_MMC)
+>>  		return 0;
+>> @@ -129,18 +132,24 @@ static int omap_env_init(void)
+>>  		diskdev =3D "disk0";
+>>
+>>  	device_detect_by_name(diskdev);
+>> +	partname =3D basprintf("%s.0", diskdev);
+>> +	cdev =3D cdev_by_name(partname);
+>> +	if (cdev =3D=3D NULL) {
+>> +		pr_err("Failed to get device %s\n", partname);
+>> +		goto out;
+>> +	}
+>>
+>> -	partname =3D basprintf("/dev/%s.0", diskdev);
+>> -
+>> -	mkdir("/boot", 0666);
+>> -	ret =3D mount(partname, "fat", "/boot", NULL);
+>> -	if (ret) {
+>> -		pr_err("Failed to load environment: mount %s failed (%d)\n", partname=
+, ret);
+>> +	rootpath =3D cdev_mount_default(cdev, NULL);
+>> +	if (IS_ERR(rootpath)) {
+>> +		pr_err("Failed to load environment: mount %s failed (%d)\n",
+>> +						cdev->name, IS_ERR(rootpath));
+>>  		goto out;
+>>  	}
+>> +	envpath =3D basprintf("%s/barebox.env", rootpath);
+>>
+>> -	pr_debug("Loading default env from %s on device %s\n", ENV_PATH, partn=
+ame);
+>> -	default_environment_path_set(ENV_PATH);
+>> +	pr_debug("Loading default env from %s on device %s\n", envpath,
+>> +								partname);
+>> +	default_environment_path_set(envpath);
+>>
+>>  out:
+>>  	free(partname);
+>> --
+>> 1.9.1
+>>
+>>
+>> _______________________________________________
+>> barebox mailing list
+>> barebox@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/barebox
+>>
+>
+
+-- =
+
+Mit freundlichen Gr=FC=DFen,
+With best regards,
+   Daniel Schultz
 
 _______________________________________________
 barebox mailing list
