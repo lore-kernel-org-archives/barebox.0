@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1d98QD-0005rC-F4
+ id 1d98QD-0005rB-Ah
  for barebox@lists.infradead.org; Fri, 12 May 2017 11:07:49 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 61E55A0041F
+ by root.phytec.de (Postfix) with ESMTP id 72718A00733
  for <barebox@lists.infradead.org>; Fri, 12 May 2017 13:08:10 +0200 (CEST)
 From: Daniel Schultz <d.schultz@phytec.de>
-Date: Fri, 12 May 2017 13:07:17 +0200
-Message-Id: <1494587239-33771-2-git-send-email-d.schultz@phytec.de>
+Date: Fri, 12 May 2017 13:07:19 +0200
+Message-Id: <1494587239-33771-4-git-send-email-d.schultz@phytec.de>
 In-Reply-To: <1494587239-33771-1-git-send-email-d.schultz@phytec.de>
 References: <1494587239-33771-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,46 +24,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 2/4] arm: boards: phytec-som-am335x: Add automount script
+Subject: [PATCH v3 4/4] arm: boards: beaglebone: Delete default env
 To: barebox@lists.infradead.org
 
-Each MMC boot source is mounted to /mnt/mmcN.0. To make the not-mounted
-boot source available in Barebox, an automount script mounts
-this device also to /mnt/, if the directory will be accessed.
+The Beaglebone environment should be set from outside with an application
+specific environment.
 
 Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 ---
- .../defaultenv-physom-am335x/init/automount         | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
- create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/automount
+ arch/arm/boards/beaglebone/Makefile                                 | 1 -
+ arch/arm/boards/beaglebone/board.c                                  | 2 --
+ arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd            | 6 ------
+ .../arm/boards/beaglebone/defaultenv-beaglebone/init/usb-limit-1300 | 5 -----
+ 4 files changed, 14 deletions(-)
+ delete mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
+ delete mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/init/usb-limit-1300
 
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/automount b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/automount
-new file mode 100644
-index 0000000..53ecbe3
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/automount
-@@ -0,0 +1,21 @@
-+#!/bin/sh
-+
-+# automount tftp server based on $eth0.serverip
-+
-+mkdir -p /mnt/tftp
-+automount /mnt/tftp 'ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp'
-+
-+# automount nfs server's nfsroot
-+
-+mkdir -p /mnt/nfs
-+automount /mnt/nfs 'ifup eth0 && mount -t nfs ${eth0.serverip}:/home/${global.user}/nfsroot/${global.hostname} /mnt/nfs'
-+
-+#automount SD card and EMMC boot partitions
-+
-+if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
-+	mkdir -p /mnt/mmc0.0
-+	automount /mnt/mmc0.0 '[ -e /dev/mmc0.0 ] && mount /dev/mmc0.0 /mnt/mmc0.0'
-+else
-+	mkdir -p /mnt/mmc1.0
-+	automount /mnt/mmc1.0 '[ -e /dev/mmc1.0 ] && mount /dev/mmc1.0 /mnt/mmc1.0'
-+fi
+diff --git a/arch/arm/boards/beaglebone/Makefile b/arch/arm/boards/beaglebone/Makefile
+index 21a1a29..092c31d 100644
+--- a/arch/arm/boards/beaglebone/Makefile
++++ b/arch/arm/boards/beaglebone/Makefile
+@@ -1,3 +1,2 @@
+ lwl-y += lowlevel.o
+ obj-y += board.o
+-bbenv-y += defaultenv-beaglebone
+diff --git a/arch/arm/boards/beaglebone/board.c b/arch/arm/boards/beaglebone/board.c
+index 5717c45..fc16aea 100644
+--- a/arch/arm/boards/beaglebone/board.c
++++ b/arch/arm/boards/beaglebone/board.c
+@@ -85,8 +85,6 @@ static int beaglebone_devices_init(void)
+ 
+ 	black = is_beaglebone_black();
+ 
+-	defaultenv_append_directory(defaultenv_beaglebone);
+-
+ 	globalvar_add_simple("board.variant", black ? "boneblack" : "bone");
+ 
+ 	printf("detected 'BeagleBone %s'\n", black ? "Black" : "White");
+diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
+deleted file mode 100644
+index aa94b2f..0000000
+--- a/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#!/bin/sh
+-
+-global.bootm.image=/boot/uImage
+-global.bootm.oftree=/boot/oftree
+-#global.bootm.initrd=<path to initrd>
+-global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootfstype=ext4 rootwait"
+diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/init/usb-limit-1300 b/arch/arm/boards/beaglebone/defaultenv-beaglebone/init/usb-limit-1300
+deleted file mode 100644
+index 56313bf..0000000
+--- a/arch/arm/boards/beaglebone/defaultenv-beaglebone/init/usb-limit-1300
++++ /dev/null
+@@ -1,5 +0,0 @@
+-#!/bin/sh
+-
+-echo -n "changing USB current limit to 1300 mA... "
+-i2c_write -b 0 -a 0x24 -r 0x01 0x3e
+-echo "done"
 -- 
 1.9.1
 
