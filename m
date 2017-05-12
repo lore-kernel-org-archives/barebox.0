@@ -1,24 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d8trX-0005Jt-IK
- for barebox@lists.infradead.org; Thu, 11 May 2017 19:35:01 +0000
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.84_2)
- (envelope-from <sha@pengutronix.de>) id 1d8trB-0006AE-2b
- for barebox@lists.infradead.org; Thu, 11 May 2017 21:34:37 +0200
-Received: from sha by pty.hi.pengutronix.de with local (Exim 4.84_2)
- (envelope-from <sha@pengutronix.de>) id 1d8trA-0000K6-MK
- for barebox@lists.infradead.org; Thu, 11 May 2017 21:34:36 +0200
-Date: Thu, 11 May 2017 21:34:36 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170511193436.kjigsnnk23d5ppzy@pengutronix.de>
-References: <20170511091101.5821-1-s.hauer@pengutronix.de>
- <20170511091101.5821-4-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170511091101.5821-4-s.hauer@pengutronix.de>
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1d98QD-0005rA-2M
+ for barebox@lists.infradead.org; Fri, 12 May 2017 11:07:47 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 5A60EA00243
+ for <barebox@lists.infradead.org>; Fri, 12 May 2017 13:08:10 +0200 (CEST)
+From: Daniel Schultz <d.schultz@phytec.de>
+Date: Fri, 12 May 2017 13:07:16 +0200
+Message-Id: <1494587239-33771-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,83 +17,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] fs: Implement links to directories
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v3 1/4] arm: mach-omap: Change mountpoint of boot partitions
+To: barebox@lists.infradead.org
 
-On Thu, May 11, 2017 at 11:11:00AM +0200, Sascha Hauer wrote:
-> So far links can only point to files. Implement links to
-> directories. With this all kinds of links are supported:
-> 
-> - relative links
-> - absolute links
-> - links including ".."
-> - link loops (are detected, return -EMLINK)
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  commands/readlink.c |   2 +-
->  fs/fs.c             | 272 +++++++++++++++++++++++++++++-----------------------
->  include/fs.h        |   3 +-
->  3 files changed, 157 insertions(+), 120 deletions(-)
-> 
-> diff --git a/commands/readlink.c b/commands/readlink.c
-> index 4ac576f16f..a19c8e0041 100644
-> --- a/commands/readlink.c
-> +++ b/commands/readlink.c
+If using EMMC and SD as bootsources, mounting the boot partition of both
+devices to /boot makes trouble. Either the correct device is mounted to
+/boot or a remount of /boot has to be performed.
 
-[...]
+To ensure this problem each MMCn bootsource will be mounted to his own
+path in /mnt/mmcN.0
 
-  
->  int stat(const char *filename, struct stat *s)
->  {
-> -	char *f;
-> +	char *path = canonicalize_path(filename);
-> +	int ret;
->  
-> -	f = realfile(filename, s);
-> -	if (IS_ERR(f))
-> -		return PTR_ERR(f);
-> +	if (IS_ERR(path))
-> +		return PTR_ERR(path);
->  
-> -	free(f);
-> -	return 0;
-> +	ret = lstat(path, s);
-> +
-> +	free(path);
-> +
-> +	return ret;
->  }
+Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+---
+Changes:
+	v3: Added symlink from rootpath to BOOT_PATH
 
-The following is missing in this patch, it slipped into a debug
-patch I removed from this series:
+ arch/arm/mach-omap/omap_generic.c | 36 +++++++++++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
 
-int lstat(const char *filename, struct stat *s)
-{
-	char *f = canonicalize_dir(filename);
-	int ret;
-
-	if (IS_ERR(f))
-		return PTR_ERR(f);
-
-	ret = __lstat(f, s);
-
-	free(f);
-
-	return ret;
-}
-
-Sascha
-
+diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap_generic.c
+index 1d03eac..694c951 100644
+--- a/arch/arm/mach-omap/omap_generic.c
++++ b/arch/arm/mach-omap/omap_generic.c
+@@ -113,12 +113,15 @@ const char *omap_get_bootmmc_devname(void)
+ }
+ 
+ #if defined(CONFIG_ENV_HANDLING)
+-#define ENV_PATH "/boot/barebox.env"
++static char *envpath = "/mnt/mmc0.0/barebox.env";
++
+ static int omap_env_init(void)
+ {
+-	char *partname;
+-	const char *diskdev;
+ 	int ret;
++	const char *diskdev;
++	char *partname;
++	struct cdev *cdev;
++	const char *rootpath;
+ 
+ 	if (bootsource_get() != BOOTSOURCE_MMC)
+ 		return 0;
+@@ -129,18 +132,29 @@ static int omap_env_init(void)
+ 		diskdev = "disk0";
+ 
+ 	device_detect_by_name(diskdev);
++	partname = basprintf("%s.0", diskdev);
++	cdev = cdev_by_name(partname);
++	if (cdev == NULL) {
++		pr_err("Failed to get device %s\n", partname);
++		goto out;
++	}
+ 
+-	partname = basprintf("/dev/%s.0", diskdev);
+-
+-	mkdir("/boot", 0666);
+-	ret = mount(partname, "fat", "/boot", NULL);
+-	if (ret) {
+-		pr_err("Failed to load environment: mount %s failed (%d)\n", partname, ret);
++	rootpath = cdev_mount_default(cdev, NULL);
++	if (IS_ERR(rootpath)) {
++		pr_err("Failed to load environment: mount %s failed (%d)\n",
++						cdev->name, IS_ERR(rootpath));
+ 		goto out;
+ 	}
++	ret = symlink(rootpath, "/boot");
++	if (ret < 0)
++		pr_warn("Failed to create symlink from %s to %s\n", rootpath
++								, "/boot");
++
++	envpath = basprintf("%s/barebox.env", rootpath);
+ 
+-	pr_debug("Loading default env from %s on device %s\n", ENV_PATH, partname);
+-	default_environment_path_set(ENV_PATH);
++	pr_debug("Loading default env from %s on device %s\n", envpath,
++								partname);
++	default_environment_path_set(envpath);
+ 
+ out:
+ 	free(partname);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
