@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1d98ci-00047j-DD
- for barebox@lists.infradead.org; Fri, 12 May 2017 11:20:42 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id B6FBCA003C0
- for <barebox@lists.infradead.org>; Fri, 12 May 2017 13:21:10 +0200 (CEST)
-References: <1493995618-7289-1-git-send-email-d.schultz@phytec.de>
- <20170511091446.evilkhroas4jmck5@pengutronix.de>
-From: Daniel Schultz <d.schultz@phytec.de>
-Message-ID: <c8bbdd4c-6300-52d6-1abf-f266ae0d5310@phytec.de>
-Date: Fri, 12 May 2017 13:20:19 +0200
-MIME-Version: 1.0
-In-Reply-To: <20170511091446.evilkhroas4jmck5@pengutronix.de>
+Received: from vs81.iboxed.net ([185.82.85.146])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dA13V-0001Qq-Rj
+ for barebox@lists.infradead.org; Sun, 14 May 2017 21:28:00 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Sun, 14 May 2017 23:26:26 +0200
+Message-Id: <1494797186-3338-2-git-send-email-akurz@blala.de>
+In-Reply-To: <1494797186-3338-1-git-send-email-akurz@blala.de>
+References: <1494797186-3338-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,126 +16,121 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="windows-1252"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/5] arm: mach-omap: Change mountpoint of boot
- partitions
+Subject: [PATCH 2/2] ARM: i.MX50: Kindle-MX50 DT fixes
 To: barebox@lists.infradead.org
+Cc: Alexander Kurz <akurz@blala.de>
 
-Hi,
+* fix IOMUX for MAX14656 IRQ, it requires a pull-up to work
+* enable UART console for Model EY21
+* set up IOMUX for EY21 GPIO lid-close hall sensor
+* remove IOMUX for non-existing EY21 GPIO keys
+* replace space indention with tabs
 
-Am 11.05.2017 um 11:14 schrieb Sascha Hauer:
-> Hi Daniel,
->
-> Your series wasn't forgotten. It's only that it took me some time to try
-> and implement links to directories. With this series I just sent and
-> "fs: Create automount entries for the default mount pathes" you should
-> be able to make this series a bit nicer. What I think of is that /boot
-> becomes a link to /mnt/mmcx.y or whatever provided /boot previously.
->
-> Could you give it a try?
-I added this to the newest patch series. Now, all AM335x boards can =
+Signed-off-by: Alexander Kurz <akurz@blala.de>
+---
+ arch/arm/dts/imx50-kindle-common.dtsi |  2 +-
+ arch/arm/dts/imx50-kindle-d01100.dts  |  6 +++---
+ arch/arm/dts/imx50-kindle-d01200.dts  |  2 +-
+ arch/arm/dts/imx50-kindle-ey21.dts    | 13 ++++++++++---
+ 4 files changed, 15 insertions(+), 8 deletions(-)
 
-either boot from /boot or one of the /mnt/ boot partitions. Non Phytec =
+diff --git a/arch/arm/dts/imx50-kindle-common.dtsi b/arch/arm/dts/imx50-kindle-common.dtsi
+index a6ea504..048e953 100644
+--- a/arch/arm/dts/imx50-kindle-common.dtsi
++++ b/arch/arm/dts/imx50-kindle-common.dtsi
+@@ -124,7 +124,7 @@
+ 
+ 		pinctrl_charger_detect: chargerdetectgrp {
+ 			fsl,pins = <
+-				MX50_PAD_OWIRE__GPIO6_26		0x84
++				MX50_PAD_OWIRE__GPIO6_26		0xe4
+ 			>;
+ 		};
+ 	};
+diff --git a/arch/arm/dts/imx50-kindle-d01100.dts b/arch/arm/dts/imx50-kindle-d01100.dts
+index 23bfbb5..55171d7 100644
+--- a/arch/arm/dts/imx50-kindle-d01100.dts
++++ b/arch/arm/dts/imx50-kindle-d01100.dts
+@@ -34,8 +34,8 @@
+ 	pinctrl-0 = <&pinctrl_hog>;
+ 
+ 	imx50-kindle-d01100 {
+-                pinctrl_hog: hoggrp {
+-                        fsl,pins = <
++		pinctrl_hog: hoggrp {
++			fsl,pins = <
+ 				MX50_PAD_EIM_EB1__GPIO1_20		0xc0
+ 				MX50_PAD_EIM_EB0__GPIO1_19		0xc0
+ 				MX50_PAD_EIM_CS2__GPIO1_16		0xc0
+@@ -60,7 +60,7 @@
+ 		pinctrl-0 = <&pinctrl_charger_detect>;
+ 		interrupt-parent = <&gpio6>;
+ 		interrupts = <26 IRQ_TYPE_LEVEL_HIGH>;
+-        };
++	};
+ 
+ 	smart-battery@55 {
+ 		compatible = "ti,bq27210";
+diff --git a/arch/arm/dts/imx50-kindle-d01200.dts b/arch/arm/dts/imx50-kindle-d01200.dts
+index d8e5ed3..cf65966 100644
+--- a/arch/arm/dts/imx50-kindle-d01200.dts
++++ b/arch/arm/dts/imx50-kindle-d01200.dts
+@@ -68,7 +68,7 @@
+ 		pinctrl-0 = <&pinctrl_charger_detect>;
+ 		interrupt-parent = <&gpio6>;
+ 		interrupts = <26 IRQ_TYPE_LEVEL_HIGH>;
+-        };
++	};
+ 
+ 	smart-battery@55 {
+ 		compatible = "ti,bq27210";
+diff --git a/arch/arm/dts/imx50-kindle-ey21.dts b/arch/arm/dts/imx50-kindle-ey21.dts
+index 0be7001..3b8b5d8 100644
+--- a/arch/arm/dts/imx50-kindle-ey21.dts
++++ b/arch/arm/dts/imx50-kindle-ey21.dts
+@@ -19,6 +19,10 @@
+ 	model = "Amazon Kindle EY21";
+ 	compatible = "amazon,kindle-ey21", "fsl,imx50";
+ 
++	chosen {
++		linux,stdout-path = &uart1;
++	};
++
+ 	memory {
+ 		device_type = "memory";
+ 		reg = <0x70000000 0x10000000>;
+@@ -27,9 +31,12 @@
+ 
+ &iomuxc {
+ 	imx50-kindle-ey21 {
+-		pinctrl_gpiokey: gpiokeygrp {
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_hog>;
++
++		pinctrl_hog: hoggrp {
+ 			fsl,pins = <
+-				MX50_PAD_EIM_EB1__GPIO1_20		0x40
++				MX50_PAD_SD2_WP__GPIO5_16	0xe4 /* hall */
+ 			>;
+ 		};
+ 	};
+@@ -48,7 +55,7 @@
+ 		pinctrl-0 = <&pinctrl_charger_detect>;
+ 		interrupt-parent = <&gpio6>;
+ 		interrupts = <26 IRQ_TYPE_LEVEL_HIGH>;
+-        };
++	};
+ 
+ 	smart-battery@55 {
+ 		compatible = "ti,bq27210";
+-- 
+2.1.4
 
-Boards won't need an environment change. Thanks!
-
-You can decide if you want the 4th path (delete BBB environment).
-
-Daniel
-
->
-> Sascha
->
->> If using EMMC and SD as bootsources, mounting the boot partition of both
->> devices to /boot makes trouble. Either the correct device is mounted to
->> /boot or a remount of /boot has to be performed.
->>
->> To ensure this problem each MMCn bootsource will be mounted to his own
->> path in /mnt/mmcN.0
->>
->> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
->> ---
->>  arch/arm/mach-omap/omap_generic.c | 31 ++++++++++++++++++++-----------
->>  1 file changed, 20 insertions(+), 11 deletions(-)
->>
->> diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap=
-_generic.c
->> index 1d03eac..aa7424d 100644
->> --- a/arch/arm/mach-omap/omap_generic.c
->> +++ b/arch/arm/mach-omap/omap_generic.c
->> @@ -113,12 +113,15 @@ const char *omap_get_bootmmc_devname(void)
->>  }
->>
->>  #if defined(CONFIG_ENV_HANDLING)
->> -#define ENV_PATH "/boot/barebox.env"
->> +static char *envpath =3D "/mnt/mmc0.0/barebox.env";
->> +
->>  static int omap_env_init(void)
->>  {
->> -	char *partname;
->> -	const char *diskdev;
->>  	int ret;
->> +	const char *diskdev;
->> +	char *partname;
->> +	struct cdev *cdev;
->> +	const char *rootpath;
->>
->>  	if (bootsource_get() !=3D BOOTSOURCE_MMC)
->>  		return 0;
->> @@ -129,18 +132,24 @@ static int omap_env_init(void)
->>  		diskdev =3D "disk0";
->>
->>  	device_detect_by_name(diskdev);
->> +	partname =3D basprintf("%s.0", diskdev);
->> +	cdev =3D cdev_by_name(partname);
->> +	if (cdev =3D=3D NULL) {
->> +		pr_err("Failed to get device %s\n", partname);
->> +		goto out;
->> +	}
->>
->> -	partname =3D basprintf("/dev/%s.0", diskdev);
->> -
->> -	mkdir("/boot", 0666);
->> -	ret =3D mount(partname, "fat", "/boot", NULL);
->> -	if (ret) {
->> -		pr_err("Failed to load environment: mount %s failed (%d)\n", partname=
-, ret);
->> +	rootpath =3D cdev_mount_default(cdev, NULL);
->> +	if (IS_ERR(rootpath)) {
->> +		pr_err("Failed to load environment: mount %s failed (%d)\n",
->> +						cdev->name, IS_ERR(rootpath));
->>  		goto out;
->>  	}
->> +	envpath =3D basprintf("%s/barebox.env", rootpath);
->>
->> -	pr_debug("Loading default env from %s on device %s\n", ENV_PATH, partn=
-ame);
->> -	default_environment_path_set(ENV_PATH);
->> +	pr_debug("Loading default env from %s on device %s\n", envpath,
->> +								partname);
->> +	default_environment_path_set(envpath);
->>
->>  out:
->>  	free(partname);
->> --
->> 1.9.1
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
->
-
--- =
-
-Mit freundlichen Gr=FC=DFen,
-With best regards,
-   Daniel Schultz
 
 _______________________________________________
 barebox mailing list
