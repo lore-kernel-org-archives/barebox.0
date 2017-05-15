@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from stcim.de ([2a01:4f8:120:4065::2])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dAJa4-000387-OV
+ id 1dAJa4-000385-OI
  for barebox@lists.infradead.org; Mon, 15 May 2017 17:14:52 +0000
 Received: from port-92-204-74-254.dynamic.qsc.de ([92.204.74.254]
  helo=localhost.localdomain)
  by stcim.de with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA256:128)
  (Exim 4.84_2) (envelope-from <contact@stefanchrist.eu>)
- id 1dAJZf-0004hT-M9
- for barebox@lists.infradead.org; Mon, 15 May 2017 19:14:23 +0200
+ id 1dAJZg-0004hT-4P
+ for barebox@lists.infradead.org; Mon, 15 May 2017 19:14:24 +0200
 From: Stefan Lengfeld <contact@stefanchrist.eu>
-Date: Mon, 15 May 2017 19:14:18 +0200
-Message-Id: <20170515171422.1648-1-contact@stefanchrist.eu>
+Date: Mon, 15 May 2017 19:14:20 +0200
+Message-Id: <20170515171422.1648-3-contact@stefanchrist.eu>
+In-Reply-To: <20170515171422.1648-1-contact@stefanchrist.eu>
+References: <20170515171422.1648-1-contact@stefanchrist.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,31 +27,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] images: clean *.imx-sram-img files
+Subject: [PATCH 3/5] docs: fix hiding of chapter from imx.rst
 To: barebox@lists.infradead.org
 
-The command
+The files 'mxs.rst' and 'imx.rst' used the same chapter headline:
 
-    make ARCH=arm clean
+    Freescale i.MXs
 
-should also clean the *.imx-sram-img files.
+This confuses sphinx. It does not support having the same headline at
+the same level twice and hides the other chapter. Just rename the
+chapter heading to avoid that.
+
+And rename the subchapter headline to 'MXS boards' for clarity.
 
 Signed-off-by: Stefan Lengfeld <contact@stefanchrist.eu>
 ---
- images/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/boards/mxs.rst | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/images/Makefile b/images/Makefile
-index adf950a..c5024f1 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -145,5 +145,5 @@ $(flash-list): $(image-y-path)
- clean-files := *.pbl *.pblb *.pblx *.map start_*.imximg *.img barebox.z start_*.kwbimg \
- 	start_*.kwbuartimg *.socfpgaimg *.mlo *.t20img *.t20img.cfg *.t30img \
- 	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd \
--	start_*.simximg start_*.usimximg
-+	start_*.simximg start_*.usimximg *.imx-sram-img
- clean-files += pbl.lds
+diff --git a/Documentation/boards/mxs.rst b/Documentation/boards/mxs.rst
+index ad10b87..82f2321 100644
+--- a/Documentation/boards/mxs.rst
++++ b/Documentation/boards/mxs.rst
+@@ -1,5 +1,5 @@
+-Freescale i.MXs
+-===============
++Freescale MXS
++=============
+ 
+ Freescale i.MXs or MXS are a SoC family which consists of the i.MX23
+ and the i.MX28. These are quite different from the regular i.MX SoCs
+@@ -118,8 +118,8 @@ Booting second stage
+ The second stage images can be started with the barebox :ref:`command_bootm` command or
+ just jumped into using the :ref:`command_go` command.
+ 
+-i.MXs boards
+-------------
++MXS boards
++----------
+ 
+ Not all supported boards have a description here.
+ 
 -- 
 2.7.4
 
