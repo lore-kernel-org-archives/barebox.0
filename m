@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dAV7o-0008TD-3F
- for barebox@lists.infradead.org; Tue, 16 May 2017 05:34:26 +0000
-Date: Tue, 16 May 2017 07:33:58 +0200
+ id 1dAVAI-0001jX-Ax
+ for barebox@lists.infradead.org; Tue, 16 May 2017 05:37:00 +0000
+Date: Tue, 16 May 2017 07:36:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170516053358.dminnyfrdncswv5k@pengutronix.de>
-References: <20170331070346.26878-1-s.hauer@pengutronix.de>
- <20170331070346.26878-2-s.hauer@pengutronix.de>
- <20170515091800.GA4612@lws-weitzel2@phytec.de>
- <20170515101428.GB4612@lws-weitzel2@phytec.de>
+Message-ID: <20170516053635.agrat3ir57xonjes@pengutronix.de>
+References: <1494797186-3338-1-git-send-email-akurz@blala.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170515101428.GB4612@lws-weitzel2@phytec.de>
+In-Reply-To: <1494797186-3338-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,30 +22,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/42] state: Make pointing to the backend using a
- phandle the only supported method
-To: Jan Remmet <J.Remmet@phytec.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/2] ARM: i.MX50: Amazon Kindle: Model EY21 compatibility
+ check
+To: Alexander Kurz <akurz@blala.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, May 15, 2017 at 12:14:28PM +0200, Jan Remmet wrote:
-> On Mon, May 15, 2017 at 11:18:00AM +0200, Jan Remmet wrote:
-> > On Fri, Mar 31, 2017 at 09:03:05AM +0200, Sascha Hauer wrote:
-> > > All other methods are broken for some time already: When starting the
-> > > kernel the state code rewrites the state node in the device tree and
-> > > replaced the "backend" property with a phandle - even when the target
-> > > can't be described as a phandle. Since using phandles is the nicest way
-> > > to point to the storage device anyway remove the other methods.
-> > Is there a way to use block devices as storage? On eMMC we use mtd style
-> > partitios inside the sd/mmc host node to access barebox and
-> > barebox-environment. But using this barebox-state didn't find the backend
-> > path.
-> Using barebox-state 2016.12.0 the states from the mtd style partition is found
-> now.
+On Sun, May 14, 2017 at 11:26:25PM +0200, Alexander Kurz wrote:
+> Extend the compatibility check for i.MX50 based kindles also on model EY21.
+> 
+> Signed-off-by: Alexander Kurz <akurz@blala.de>
+> ---
+>  arch/arm/boards/kindle-mx50/board.c | 3 ++-
+>  arch/arm/dts/imx50-kindle-ey21.dts  | 2 +-
+>  2 files changed, 3 insertions(+), 2 deletions(-)
 
-There's v2017.03.0 already. Or was that the version you tried before and
-failed with?
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/arch/arm/boards/kindle-mx50/board.c b/arch/arm/boards/kindle-mx50/board.c
+> index 7bd4f91..089dd8e 100644
+> --- a/arch/arm/boards/kindle-mx50/board.c
+> +++ b/arch/arm/boards/kindle-mx50/board.c
+> @@ -123,7 +123,8 @@ static void kindle_rev_init(void)
+>  static int is_mx50_kindle(void)
+>  {
+>  	return of_machine_is_compatible("amazon,kindle-d01100") ||
+> -		of_machine_is_compatible("amazon,kindle-d01200");
+> +		of_machine_is_compatible("amazon,kindle-d01200") ||
+> +		of_machine_is_compatible("amazon,kindle-ey21");
+>  }
+>  
+>  static int kindle_mx50_late_init(void)
+> diff --git a/arch/arm/dts/imx50-kindle-ey21.dts b/arch/arm/dts/imx50-kindle-ey21.dts
+> index 1b8f2ad..0be7001 100644
+> --- a/arch/arm/dts/imx50-kindle-ey21.dts
+> +++ b/arch/arm/dts/imx50-kindle-ey21.dts
+> @@ -17,7 +17,7 @@
+>  
+>  / {
+>  	model = "Amazon Kindle EY21";
+> -	compatible = "fsl,imx50";
+> +	compatible = "amazon,kindle-ey21", "fsl,imx50";
+>  
+>  	memory {
+>  		device_type = "memory";
+> -- 
+> 2.1.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
