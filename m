@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp85.iad3a.emailsrvr.com ([173.203.187.85])
+Received: from smtp109.iad3a.emailsrvr.com ([173.203.187.109])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dAxfM-0005ZA-Sc
- for barebox@lists.infradead.org; Wed, 17 May 2017 12:02:59 +0000
+ id 1dAywm-0001ZR-PO
+ for barebox@lists.infradead.org; Wed, 17 May 2017 13:25:02 +0000
 From: Ian Abbott <abbotti@mev.co.uk>
-Date: Wed, 17 May 2017 13:02:24 +0100
-Message-Id: <20170517120224.30260-1-abbotti@mev.co.uk>
+Date: Wed, 17 May 2017 14:24:22 +0100
+Message-Id: <20170517132426.13367-2-abbotti@mev.co.uk>
+In-Reply-To: <20170517132426.13367-1-abbotti@mev.co.uk>
+References: <20170517132426.13367-1-abbotti@mev.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] xfuncs: fix format specifier in pr_emerg call
+Subject: [PATCH 2/6] hush: make source_aliases[] const
 To: barebox@lists.infradead.org
 Cc: Ian Abbott <abbotti@mev.co.uk>
 
-`enomem_panic()` calls `pr_emerg()` using `%d` in the format specifier
-string to print a value of type `size_t`.  Change it to `%zu`.
+Although the elements of `source_aliases[]` are of type `const char *`,
+the elements themselves are not const-qualified.  Make them `const`.
 
 Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
 ---
- lib/xfuncs.c | 2 +-
+ common/hush.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/xfuncs.c b/lib/xfuncs.c
-index 1bcaa5e10..1942c1e7f 100644
---- a/lib/xfuncs.c
-+++ b/lib/xfuncs.c
-@@ -29,7 +29,7 @@ static void __noreturn enomem_panic(size_t size)
- {
- 	pr_emerg("out of memory\n");
- 	if (size)
--		pr_emerg("Unable to allocate %d bytes\n", size);
-+		pr_emerg("Unable to allocate %zu bytes\n", size);
+diff --git a/common/hush.c b/common/hush.c
+index d3f7bf330..792b61ac9 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -1974,7 +1974,7 @@ static int do_source(int argc, char *argv[])
+ 	return ret;
+ }
  
- 	malloc_stats();
+-static const char *source_aliases[] = { ".", NULL};
++static const char * const source_aliases[] = { ".", NULL};
  
+ BAREBOX_CMD_HELP_START(source)
+ BAREBOX_CMD_HELP_TEXT("Read and execute commands from FILE in the current shell environment.")
 -- 
 2.11.0
 
