@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x231.google.com ([2607:f8b0:400e:c00::231])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dAyzw-00040g-HT
- for barebox@lists.infradead.org; Wed, 17 May 2017 13:28:18 +0000
-Received: by mail-pf0-x231.google.com with SMTP id m17so7479158pfg.3
- for <barebox@lists.infradead.org>; Wed, 17 May 2017 06:27:55 -0700 (PDT)
+ id 1dAzOa-0006cP-6J
+ for barebox@lists.infradead.org; Wed, 17 May 2017 13:53:46 +0000
+Date: Wed, 17 May 2017 15:53:15 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170517135315.eqikyu6dbs6izbrv@pengutronix.de>
+References: <20170517120224.30260-1-abbotti@mev.co.uk>
 MIME-Version: 1.0
-In-Reply-To: <ce9d88fb-a15a-c533-521e-62ad84d161d8@webdyn.com>
-References: <ce9d88fb-a15a-c533-521e-62ad84d161d8@webdyn.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 17 May 2017 06:27:55 -0700
-Message-ID: <CAHQ1cqHFfkO=184mwee2Dyi9+seD+-5rZShEcb=t5t01OV_+GA@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20170517120224.30260-1-abbotti@mev.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: USB ohci on sama5d3
-To: Georg Hofmann <georg.hofmann@webdyn.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] xfuncs: fix format specifier in pr_emerg call
+To: Ian Abbott <abbotti@mev.co.uk>
+Cc: barebox@lists.infradead.org
 
-On Wed, May 17, 2017 at 2:44 AM, Georg Hofmann <georg.hofmann@webdyn.com> wrote:
-> Hello,
->
-> First of all, thanks for barebox, it's really a nice tool which I am
-> discovering.
->
-> I am trying to get USB ohci working on a sama5D3 evk. My current state
-> is that the ohci driver get compiled and is called when I use the
-> command usb, the root hub shows up, but the device enumeration don't work.
->
-> So my question was: is the presence of the file ohci-at91.C indicating
-> that ohci should work on some at91* platforms or is it just a copy/past
-> from another place. If it should work, on which platform? In the may
-> release are some USB patched (e.g.: "Allow USB_OHCI_AT91 even if
-> USB_OHCI is disabled"). Where these patches runtime tested?
+On Wed, May 17, 2017 at 01:02:24PM +0100, Ian Abbott wrote:
+> `enomem_panic()` calls `pr_emerg()` using `%d` in the format specifier
+> string to print a value of type `size_t`.  Change it to `%zu`.
+> 
+> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+> ---
+>  lib/xfuncs.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Georg:
+Applied, thanks
 
-Yes, I did runtime test those patches, however:
+Sascha
 
-- all of the patchset then went in in May release were done against
-AT91SAM9G25 SoC and I haven't had a chance to convert SAMA5D3 related
-code to leverage those changes.
+> 
+> diff --git a/lib/xfuncs.c b/lib/xfuncs.c
+> index 1bcaa5e10..1942c1e7f 100644
+> --- a/lib/xfuncs.c
+> +++ b/lib/xfuncs.c
+> @@ -29,7 +29,7 @@ static void __noreturn enomem_panic(size_t size)
+>  {
+>  	pr_emerg("out of memory\n");
+>  	if (size)
+> -		pr_emerg("Unable to allocate %d bytes\n", size);
+> +		pr_emerg("Unable to allocate %zu bytes\n", size);
+>  
+>  	malloc_stats();
+>  
+> -- 
+> 2.11.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-- pure OHCI, (i.e. EHCI being disabled) never worked for me on AT91 (I
-never debugged it since I didn't care about getting OHCI to work) and
-the only thing that this driver was needed for was to configure VBUS
-related GPIOs that are shared with EHCI. Using EHCI on SAM9G25 _did_
-work and I was able to read/write data from/to a USB pen-drive.
-
-Hope this is gives you at least some answers.
-
-Thanks,
-Andrey Smirnov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
