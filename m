@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dAvoU-0001hR-Gc
- for barebox@lists.infradead.org; Wed, 17 May 2017 10:04:16 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 17 May 2017 12:03:48 +0200
-Message-Id: <20170517100348.6268-1-o.rempel@pengutronix.de>
+ id 1dAw1B-0002pm-MN
+ for barebox@lists.infradead.org; Wed, 17 May 2017 10:17:38 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
+ (envelope-from <l.stach@pengutronix.de>) id 1dAw0n-0004oV-MP
+ for barebox@lists.infradead.org; Wed, 17 May 2017 12:16:57 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 17 May 2017 12:16:56 +0200
+Message-Id: <20170517101656.31717-2-l.stach@pengutronix.de>
+In-Reply-To: <20170517101656.31717-1-l.stach@pengutronix.de>
+References: <20170517101656.31717-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,65 +26,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1] Documentation: provide documentation for NVMEM interfaces.
+Subject: [PATCH 2/2] video: select OFTREE from DRIVER_VIDEO_IMX_IPUV3
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+DRIVER_VIDEO_IMX_IPUV3 selects VIDEO_VPL, which has a hard dependency
+on OFTREE, so it is required to select this one, too.
+
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- Documentation/user/nvmem.rst       | 30 ++++++++++++++++++++++++++++++
- Documentation/user/user-manual.rst |  1 +
- 2 files changed, 31 insertions(+)
- create mode 100644 Documentation/user/nvmem.rst
+ drivers/video/imx-ipu-v3/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/user/nvmem.rst b/Documentation/user/nvmem.rst
-new file mode 100644
-index 0000000000..f860b80fd5
---- /dev/null
-+++ b/Documentation/user/nvmem.rst
-@@ -0,0 +1,30 @@
-+NVMEM subsystem
-+===============
-+
-+The NVMEM framework was partially ported from linux kernel.
-+
-+Except from linux kernel documentation:
-+*NVMEM* is the abbreviation for Non Volatile Memory layer. It is used to
-+retrieve configuration of SOC or Device specific data from non volatile
-+memories like eeprom, efuses and so on.
-+
-+Userspace binary interface
-+^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+Userspace can read/write the raw NVMEM file located at
-+/dev/nvmem*
-+
-+.. code-block:: sh
-+
-+  md -s /dev/nvmem0 0+4
-+  00000000: 00000000                                           ....
-+
-+  mw -d /dev/nvmem0 0 0x12345678
-+
-+  md -s /dev/nvmem0 0+4
-+  00000000: 12345678                                           xV4.
-+
-+DeviceTree Binding
-+^^^^^^^^^^^^^^^^^^
-+
-+See linux kernel Documentation/devicetree/bindings/nvmem/nvmem.txt
-diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
-index 791c8e0979..b66782ef6a 100644
---- a/Documentation/user/user-manual.rst
-+++ b/Documentation/user/user-manual.rst
-@@ -34,6 +34,7 @@ Contents:
-    system-reset
-    state
-    random
-+   nvmem
+diff --git a/drivers/video/imx-ipu-v3/Kconfig b/drivers/video/imx-ipu-v3/Kconfig
+index d04123731434..55aeac941550 100644
+--- a/drivers/video/imx-ipu-v3/Kconfig
++++ b/drivers/video/imx-ipu-v3/Kconfig
+@@ -2,6 +2,7 @@ config DRIVER_VIDEO_IMX_IPUV3
+ 	bool "i.MX IPUv3 driver"
+ 	depends on ARCH_IMX
+ 	select VIDEO_VPL
++	select OFTREE
+ 	help
+ 	  Support the IPUv3 found on Freescale i.MX51/53/6 SoCs
  
- * :ref:`search`
- * :ref:`genindex`
 -- 
 2.11.0
 
