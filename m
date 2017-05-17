@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x230.google.com ([2a00:1450:4010:c07::230])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dD2zg-0003ZK-PU
- for barebox@lists.infradead.org; Tue, 23 May 2017 06:08:34 +0000
-Received: by mail-lf0-x230.google.com with SMTP id m18so42295279lfj.0
- for <barebox@lists.infradead.org>; Mon, 22 May 2017 23:08:12 -0700 (PDT)
-References: <20170522152420.14443-1-andrew.smirnov@gmail.com>
-From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Message-ID: <b28071c7-b945-49c8-715b-6b237e4e4c04@cogentembedded.com>
-Date: Tue, 23 May 2017 09:08:09 +0300
+ id 1dAsPT-0000GB-Qe
+ for barebox@lists.infradead.org; Wed, 17 May 2017 06:26:13 +0000
+Date: Wed, 17 May 2017 08:25:50 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170517062550.u47kdfllw4pbxwlu@pengutronix.de>
+References: <1494587239-33771-1-git-send-email-d.schultz@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <20170522152420.14443-1-andrew.smirnov@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1494587239-33771-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,29 +22,108 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] gpio-imx: Do not use gpio_set_value()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
-Cc: cphealy@gmail.com
+Subject: Re: [PATCH v3 1/4] arm: mach-omap: Change mountpoint of boot
+ partitions
+To: Daniel Schultz <d.schultz@phytec.de>
+Cc: barebox@lists.infradead.org
 
-> Do not use gpio_set_value() in imx_gpio_direction_output() for two
-> reasons:
+On Fri, May 12, 2017 at 01:07:16PM +0200, Daniel Schultz wrote:
+> If using EMMC and SD as bootsources, mounting the boot partition of both
+> devices to /boot makes trouble. Either the correct device is mounted to
+> /boot or a remount of /boot has to be performed.
 > 
-> 	- Since we don't check gpio_set_value's result, using it
->           instead of imx_gpio_set_value doesn't seem to have any
->           advantages
+> To ensure this problem each MMCn bootsource will be mounted to his own
+> path in /mnt/mmcN.0
 > 
-> 	- Using gpiolib's function at this level makes it hard to
->           implement 'active low' support (commit that follows) since
->           gpio driver is dealing with physical GPIO levels, whereas
->           gpiolib is explected to accept logical levels.
-> 
-> As a remedy swithch imx_gpio_direction_output() to using
-> imx_gpio_set_value().
+> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+> ---
+> Changes:
+> 	v3: Added symlink from rootpath to BOOT_PATH
 
-I'd say calling back into subsystem from driver is generally invalid
-pattern, and this patch fixes that.
+Applied (this patch), thanks
 
-Acked-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Sascha
+
+> 
+>  arch/arm/mach-omap/omap_generic.c | 36 +++++++++++++++++++++++++-----------
+>  1 file changed, 25 insertions(+), 11 deletions(-)
+> 
+> diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap_generic.c
+> index 1d03eac..694c951 100644
+> --- a/arch/arm/mach-omap/omap_generic.c
+> +++ b/arch/arm/mach-omap/omap_generic.c
+> @@ -113,12 +113,15 @@ const char *omap_get_bootmmc_devname(void)
+>  }
+>  
+>  #if defined(CONFIG_ENV_HANDLING)
+> -#define ENV_PATH "/boot/barebox.env"
+> +static char *envpath = "/mnt/mmc0.0/barebox.env";
+> +
+>  static int omap_env_init(void)
+>  {
+> -	char *partname;
+> -	const char *diskdev;
+>  	int ret;
+> +	const char *diskdev;
+> +	char *partname;
+> +	struct cdev *cdev;
+> +	const char *rootpath;
+>  
+>  	if (bootsource_get() != BOOTSOURCE_MMC)
+>  		return 0;
+> @@ -129,18 +132,29 @@ static int omap_env_init(void)
+>  		diskdev = "disk0";
+>  
+>  	device_detect_by_name(diskdev);
+> +	partname = basprintf("%s.0", diskdev);
+> +	cdev = cdev_by_name(partname);
+> +	if (cdev == NULL) {
+> +		pr_err("Failed to get device %s\n", partname);
+> +		goto out;
+> +	}
+>  
+> -	partname = basprintf("/dev/%s.0", diskdev);
+> -
+> -	mkdir("/boot", 0666);
+> -	ret = mount(partname, "fat", "/boot", NULL);
+> -	if (ret) {
+> -		pr_err("Failed to load environment: mount %s failed (%d)\n", partname, ret);
+> +	rootpath = cdev_mount_default(cdev, NULL);
+> +	if (IS_ERR(rootpath)) {
+> +		pr_err("Failed to load environment: mount %s failed (%d)\n",
+> +						cdev->name, IS_ERR(rootpath));
+>  		goto out;
+>  	}
+> +	ret = symlink(rootpath, "/boot");
+> +	if (ret < 0)
+> +		pr_warn("Failed to create symlink from %s to %s\n", rootpath
+> +								, "/boot");
+> +
+> +	envpath = basprintf("%s/barebox.env", rootpath);
+>  
+> -	pr_debug("Loading default env from %s on device %s\n", ENV_PATH, partname);
+> -	default_environment_path_set(ENV_PATH);
+> +	pr_debug("Loading default env from %s on device %s\n", envpath,
+> +								partname);
+> +	default_environment_path_set(envpath);
+>  
+>  out:
+>  	free(partname);
+> -- 
+> 1.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
