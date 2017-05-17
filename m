@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp93.iad3a.emailsrvr.com ([173.203.187.93])
+Received: from smtp85.iad3a.emailsrvr.com ([173.203.187.85])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dAxQX-0006HM-OU
- for barebox@lists.infradead.org; Wed, 17 May 2017 11:47:40 +0000
+ id 1dAxfM-0005ZA-Sc
+ for barebox@lists.infradead.org; Wed, 17 May 2017 12:02:59 +0000
 From: Ian Abbott <abbotti@mev.co.uk>
-Date: Wed, 17 May 2017 12:46:49 +0100
-Message-Id: <20170517114649.26061-1-abbotti@mev.co.uk>
+Date: Wed, 17 May 2017 13:02:24 +0100
+Message-Id: <20170517120224.30260-1-abbotti@mev.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +19,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands: add ':' as alias for 'true'
+Subject: [PATCH] xfuncs: fix format specifier in pr_emerg call
 To: barebox@lists.infradead.org
 Cc: Ian Abbott <abbotti@mev.co.uk>
 
-':' is the null command, sometimes used in shell scripts (especially
-after 'then'), but it is not yet supported by barebox.  It is supposed
-to do nothing, successfully, just like the 'true' command, so add it as
-an alias.
+`enomem_panic()` calls `pr_emerg()` using `%d` in the format specifier
+string to print a value of type `size_t`.  Change it to `%zu`.
 
 Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
 ---
- commands/true.c | 3 +++
- 1 file changed, 3 insertions(+)
+ lib/xfuncs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/commands/true.c b/commands/true.c
-index 24dea4692..b850f5165 100644
---- a/commands/true.c
-+++ b/commands/true.c
-@@ -26,7 +26,10 @@ static int do_true(int argc, char *argv[])
- 	return 0;
- }
+diff --git a/lib/xfuncs.c b/lib/xfuncs.c
+index 1bcaa5e10..1942c1e7f 100644
+--- a/lib/xfuncs.c
++++ b/lib/xfuncs.c
+@@ -29,7 +29,7 @@ static void __noreturn enomem_panic(size_t size)
+ {
+ 	pr_emerg("out of memory\n");
+ 	if (size)
+-		pr_emerg("Unable to allocate %d bytes\n", size);
++		pr_emerg("Unable to allocate %zu bytes\n", size);
  
-+static const char *true_aliases[] = { ":", NULL};
-+
- BAREBOX_CMD_START(true)
-+	.aliases	= true_aliases,
- 	.cmd		= do_true,
- 	BAREBOX_CMD_DESC("do nothing, successfully")
- 	BAREBOX_CMD_GROUP(CMD_GRP_SCRIPT)
+ 	malloc_stats();
+ 
 -- 
 2.11.0
 
