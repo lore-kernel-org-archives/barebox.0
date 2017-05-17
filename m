@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dAv1w-0004pX-B5
- for barebox@lists.infradead.org; Wed, 17 May 2017 09:14:06 +0000
-Date: Wed, 17 May 2017 11:13:36 +0200
-From: Jan Remmet <J.Remmet@phytec.de>
-Message-ID: <20170517091335.GA2865@lws-weitzel2@phytec.de>
-References: <20170331070346.26878-1-s.hauer@pengutronix.de>
- <20170331070346.26878-2-s.hauer@pengutronix.de>
- <20170515091800.GA4612@lws-weitzel2@phytec.de>
- <20170515101428.GB4612@lws-weitzel2@phytec.de>
- <20170516053358.dminnyfrdncswv5k@pengutronix.de>
+Received: from 2.mo179.mail-out.ovh.net ([178.33.250.45])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dAvVl-000695-Rv
+ for barebox@lists.infradead.org; Wed, 17 May 2017 09:44:56 +0000
+Received: from player755.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo179.mail-out.ovh.net (Postfix) with ESMTP id 9AF6A3B372
+ for <barebox@lists.infradead.org>; Wed, 17 May 2017 11:44:26 +0200 (CEST)
+Received: from [192.93.121.120] (LMontsouris-657-1-9-166.w90-63.abo.wanadoo.fr
+ [90.63.250.166]) (Authenticated sender: georg.hofmann@webdyn.com)
+ by player755.ha.ovh.net (Postfix) with ESMTPSA id BF396260089
+ for <barebox@lists.infradead.org>; Wed, 17 May 2017 11:44:24 +0200 (CEST)
+From: Georg Hofmann <georg.hofmann@webdyn.com>
+Message-ID: <ce9d88fb-a15a-c533-521e-62ad84d161d8@webdyn.com>
+Date: Wed, 17 May 2017 11:44:24 +0200
 MIME-Version: 1.0
-In-Reply-To: <20170516053358.dminnyfrdncswv5k@pengutronix.de>
-Content-Disposition: inline
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +23,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: Jan Remmet <J.Remmet@phytec.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/42] state: Make pointing to the backend using a
- phandle the only supported method
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: USB ohci on sama5d3
+To: barebox@lists.infradead.org
 
-On Tue, May 16, 2017 at 07:33:58AM +0200, Sascha Hauer wrote:
-> On Mon, May 15, 2017 at 12:14:28PM +0200, Jan Remmet wrote:
-> > On Mon, May 15, 2017 at 11:18:00AM +0200, Jan Remmet wrote:
-> > > On Fri, Mar 31, 2017 at 09:03:05AM +0200, Sascha Hauer wrote:
-> > > > All other methods are broken for some time already: When starting the
-> > > > kernel the state code rewrites the state node in the device tree and
-> > > > replaced the "backend" property with a phandle - even when the target
-> > > > can't be described as a phandle. Since using phandles is the nicest way
-> > > > to point to the storage device anyway remove the other methods.
-> > > Is there a way to use block devices as storage? On eMMC we use mtd style
-> > > partitios inside the sd/mmc host node to access barebox and
-> > > barebox-environment. But using this barebox-state didn't find the backend
-> > > path.
-> > Using barebox-state 2016.12.0 the states from the mtd style partition is found
-> > now.
-> 
-> There's v2017.03.0 already. Or was that the version you tried before and
-> failed with?
-I was still on 2016.08.0 with barebox_2016.11.0. 
+Hello,
 
-Jan
+First of all, thanks for barebox, it's really a nice tool which I am
+discovering.
 
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I am trying to get USB ohci working on a sama5D3 evk. My current state
+is that the ohci driver get compiled and is called when I use the
+command usb, the root hub shows up, but the device enumeration don't work.
+
+So my question was: is the presence of the file ohci-at91.C indicating
+that ohci should work on some at91* platforms or is it just a copy/past
+from another place. If it should work, on which platform? In the may
+release are some USB patched (e.g.: "Allow USB_OHCI_AT91 even if
+USB_OHCI is disabled"). Where these patches runtime tested?
+
+Thanks in advance.
+Best regards,
+Georg
+
 
 _______________________________________________
 barebox mailing list
