@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dBaGn-0001Th-JQ
- for barebox@lists.infradead.org; Fri, 19 May 2017 05:16:11 +0000
-Date: Fri, 19 May 2017 07:15:47 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170519051547.bpsngicznyvcnuug@pengutronix.de>
-References: <20170517100348.6268-1-o.rempel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170517100348.6268-1-o.rempel@pengutronix.de>
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1dBiUm-0004xC-3h
+ for barebox@lists.infradead.org; Fri, 19 May 2017 14:03:10 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 4DCEBA00353
+ for <barebox@lists.infradead.org>; Fri, 19 May 2017 16:03:31 +0200 (CEST)
+From: Christian Hemp <c.hemp@phytec.de>
+Date: Fri, 19 May 2017 16:02:37 +0200
+Message-Id: <1495202557-24290-1-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,91 +17,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1] Documentation: provide documentation for NVMEM
- interfaces.
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] imx-bbu-nand-fcb: add support for imx6ull
+To: barebox@lists.infradead.org
 
-On Wed, May 17, 2017 at 12:03:48PM +0200, Oleksij Rempel wrote:
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  Documentation/user/nvmem.rst       | 30 ++++++++++++++++++++++++++++++
->  Documentation/user/user-manual.rst |  1 +
->  2 files changed, 31 insertions(+)
->  create mode 100644 Documentation/user/nvmem.rst
+The i.MX 6ull secures the fcb with bch 40. This is identical to i.MX 6ul.
 
-Applied, thanks
+Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+---
+ common/imx-bbu-nand-fcb.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/Documentation/user/nvmem.rst b/Documentation/user/nvmem.rst
-> new file mode 100644
-> index 0000000000..f860b80fd5
-> --- /dev/null
-> +++ b/Documentation/user/nvmem.rst
-> @@ -0,0 +1,30 @@
-> +NVMEM subsystem
-> +===============
-> +
-> +The NVMEM framework was partially ported from linux kernel.
-> +
-> +Except from linux kernel documentation:
-> +*NVMEM* is the abbreviation for Non Volatile Memory layer. It is used to
-> +retrieve configuration of SOC or Device specific data from non volatile
-> +memories like eeprom, efuses and so on.
-> +
-> +Userspace binary interface
-> +^^^^^^^^^^^^^^^^^^^^^^^^^^
-> +
-> +Userspace can read/write the raw NVMEM file located at
-> +/dev/nvmem*
-> +
-> +.. code-block:: sh
-> +
-> +  md -s /dev/nvmem0 0+4
-> +  00000000: 00000000                                           ....
-> +
-> +  mw -d /dev/nvmem0 0 0x12345678
-> +
-> +  md -s /dev/nvmem0 0+4
-> +  00000000: 12345678                                           xV4.
-> +
-> +DeviceTree Binding
-> +^^^^^^^^^^^^^^^^^^
-> +
-> +See linux kernel Documentation/devicetree/bindings/nvmem/nvmem.txt
-> diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
-> index 791c8e0979..b66782ef6a 100644
-> --- a/Documentation/user/user-manual.rst
-> +++ b/Documentation/user/user-manual.rst
-> @@ -34,6 +34,7 @@ Contents:
->     system-reset
->     state
->     random
-> +   nvmem
->  
->  * :ref:`search`
->  * :ref:`genindex`
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
+index 5d3d3f7..7218c5e 100644
+--- a/common/imx-bbu-nand-fcb.c
++++ b/common/imx-bbu-nand-fcb.c
+@@ -441,7 +441,7 @@ static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
+ 		goto err;
+ 	}
+ 
+-	if (cpu_is_mx6ul())
++	if (cpu_is_mx6ul() || cpu_is_mx6ull())
+ 		fcb = read_fcb_bch(rawpage, 40);
+ 	else
+ 		fcb = read_fcb_hamming_13_8(rawpage);
+@@ -899,8 +899,8 @@ static int imx_bbu_write_fcbs_dbbts(struct mtd_info *mtd, struct fcb_block *fcb)
+ 
+ 	fcb_raw_page = xzalloc(mtd->writesize + mtd->oobsize);
+ 
+-	if (cpu_is_mx6ul()) {
+-		/* 40 bit BCH, for i.MX6UL */
++	if (cpu_is_mx6ul() || cpu_is_mx6ull()) {
++		/* 40 bit BCH, for i.MX6UL(L) */
+ 		encode_bch_ecc(fcb_raw_page + 32, fcb, 40);
+ 	} else {
+ 		memcpy(fcb_raw_page + 12, fcb, sizeof(struct fcb_block));
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
