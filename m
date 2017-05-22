@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dCniR-0005Xs-O3
- for barebox@lists.infradead.org; Mon, 22 May 2017 13:49:45 +0000
-References: <20170522132934.9079-1-antonynpavlov@gmail.com>
-From: Bastian Stender <bst@pengutronix.de>
-Message-ID: <e2b029c9-0f11-5ec7-b780-e1965e41317a@pengutronix.de>
-Date: Mon, 22 May 2017 15:49:18 +0200
-MIME-Version: 1.0
-In-Reply-To: <20170522132934.9079-1-antonynpavlov@gmail.com>
+ id 1dCpAY-0007yo-VB
+ for barebox@lists.infradead.org; Mon, 22 May 2017 15:22:52 +0000
+Received: by mail-pf0-x244.google.com with SMTP id f27so20729523pfe.0
+ for <barebox@lists.infradead.org>; Mon, 22 May 2017 08:22:30 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 22 May 2017 08:22:13 -0700
+Message-Id: <20170522152213.14028-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,41 +16,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i2c: mv64xxx: fix indentation
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] clk: i.MX51: Add missing USBOH3_GATE clock
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Nikita Yushchenko <nikita.yoush@cogentembedded.com>, cphealy@gmail.com
 
-T24gMDUvMjIvMjAxNyAwMzoyOSBQTSwgQW50b255IFBhdmxvdiB3cm90ZToKPiBUaGUgcGF0Y2gg
-Zml4ZXMgdGhpcyBjb21waWxlcidzIHdhcm5pbmc6Cj4KPiAgICAgZHJpdmVycy9pMmMvYnVzc2Vz
-L2kyYy1tdjY0eHh4LmM6IEluIGZ1bmN0aW9uIOKAmG12NjR4eHhfaTJjX2ZzbeKAmToKPiAgICAg
-ZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1tdjY0eHh4LmM6MzAzOjM6IHdhcm5pbmc6IHRoaXMg4oCY
-aWbigJkgY2xhdXNlIGRvZXMKPiAgICAgbm90IGd1YXJkLi4uIFstV21pc2xlYWRpbmctaW5kZW50
-YXRpb25dCj4gICAgICAgIGlmIChkcnZfZGF0YS0+Ynl0ZXNfbGVmdCA9PSAxKQo+ICAgICAgICBe
-fgo+ICAgICBkcml2ZXJzL2kyYy9idXNzZXMvaTJjLW12NjR4eHguYzozMDU6NDogbm90ZTogLi4u
-dGhpcyBzdGF0ZW1lbnQsIGJ1dCB0aGUKPiAgICAgbGF0dGVyIGlzIG1pc2xlYWRpbmdseSBpbmRl
-bnRlZCBhcyBpZiBpdCBpcyBndWFyZGVkIGJ5IHRoZSDigJhpZuKAmQo+ICAgICAgICAgdWRlbGF5
-KDIpOwo+ICAgICAgICAgXn5+fn5+Cj4KPiBTaWduZWQtb2ZmLWJ5OiBBbnRvbnkgUGF2bG92IDxh
-bnRvbnlucGF2bG92QGdtYWlsLmNvbT4KPiBDYzogQmFzdGlhbiBTdGVuZGVyIDxic3RAcGVuZ3V0
-cm9uaXguZGU+Cj4gLS0tCj4gIGRyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtbXY2NHh4eC5jIHwgMiAr
-LQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKPgo+IGRp
-ZmYgLS1naXQgYS9kcml2ZXJzL2kyYy9idXNzZXMvaTJjLW12NjR4eHguYyBiL2RyaXZlcnMvaTJj
-L2J1c3Nlcy9pMmMtbXY2NHh4eC5jCj4gaW5kZXggMWE1ZDVlZjliLi4yODVlZGU4NGMgMTAwNjQ0
-Cj4gLS0tIGEvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1tdjY0eHh4LmMKPiArKysgYi9kcml2ZXJz
-L2kyYy9idXNzZXMvaTJjLW12NjR4eHguYwo+IEBAIC0zMDIsNyArMzAyLDcgQEAgbXY2NHh4eF9p
-MmNfZnNtKHN0cnVjdCBtdjY0eHh4X2kyY19kYXRhICpkcnZfZGF0YSwgdTMyIHN0YXR1cykKPgo+
-ICAJCWlmIChkcnZfZGF0YS0+Ynl0ZXNfbGVmdCA9PSAxKQo+ICAJCQlkcnZfZGF0YS0+Y250bF9i
-aXRzICY9IH5SRUdfQ09OVFJPTF9BQ0s7Cj4gLQkJCXVkZWxheSgyKTsKPiArCQl1ZGVsYXkoMik7
-Cj4gIAkJYnJlYWs7Cj4KPiAgCWNhc2UgU1RBVFVTX01BU1RfUkRfREFUQV9OT19BQ0s6IC8qIDB4
-NTggKi8KPgoKWWVzLCB0aGUgaW5kZW50YXRpb24gaGFwcGVuZWQgYWNjaWRlbnRhbGx5LiBJIGp1
-c3QgY2hlY2tlZCB0aGUgCmZ1bmN0aW9uYWwgc3BlYyBhZ2FpbjogdGhlIHVkZWxheSBpcyBuZWNl
-c3NhcnkgcmVnYXJkbGVzcyBvZiAKZHJ2X2RhdGEtPmJ5dGVzX2xlZnQuCgpUaGFua3MuCgpSZWdh
-cmRzLApCYXN0aWFuCgotLSAKUGVuZ3V0cm9uaXggZS5LLgpJbmR1c3RyaWFsIExpbnV4IFNvbHV0
-aW9ucwpodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLwpQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhp
-bGRlc2hlaW0sIEdlcm1hbnkKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
-ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+This clock is requested by chipidea driver during probe and its
+absense breaks USB functionality.
+
+Cc: cphealy@gmail.com
+Cc: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/clk/imx/clk-imx5.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/clk/imx/clk-imx5.c b/drivers/clk/imx/clk-imx5.c
+index c4c47a6..62e7842 100644
+--- a/drivers/clk/imx/clk-imx5.c
++++ b/drivers/clk/imx/clk-imx5.c
+@@ -244,6 +244,8 @@ static void __init mx5_clocks_common_init(struct device_d *dev, void __iomem *ba
+ 		"ecspi_pred", base + CCM_CSCDR2, 19, 6);
+ 	clks[IMX5_CLK_CPU_PODF] = imx_clk_divider("cpu_podf",
+ 		"pll1_sw", base + CCM_CACRR, 0, 3);
++
++	clks[IMX5_CLK_USBOH3_GATE] = imx_clk_gate2("usboh3_gate", "ipg", base + CCM_CCGR2, 26);
+ }
+ 
+ static void mx5_clocks_mx51_mx53_init(void __iomem *base)
+@@ -392,6 +394,12 @@ int __init mx51_clocks_init(struct device_d *dev, void __iomem *regs)
+ 	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX51_PWM1_BASE_ADDR, "per");
+ 	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX51_PWM2_BASE_ADDR, "per");
+ 
++	clkdev_add_physbase(clks[IMX5_CLK_USBOH3_GATE], MX51_OTG_BASE_ADDR + 0x000, NULL);
++	clkdev_add_physbase(clks[IMX5_CLK_USBOH3_GATE], MX51_OTG_BASE_ADDR + 0x200, NULL);
++	clkdev_add_physbase(clks[IMX5_CLK_USBOH3_GATE], MX51_OTG_BASE_ADDR + 0x400, NULL);
++	clkdev_add_physbase(clks[IMX5_CLK_USBOH3_GATE], MX51_OTG_BASE_ADDR + 0x600, NULL);
++	clkdev_add_physbase(clks[IMX5_CLK_USBOH3_GATE], MX51_OTG_BASE_ADDR + 0x800, NULL);
++
+ 	if (IS_ENABLED(CONFIG_DRIVER_VIDEO_IMX_IPUV3))
+ 		mx51_clocks_ipu_init(regs);
+ 
+-- 
+2.9.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
