@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dCkQ3-00012y-SL
- for barebox@lists.infradead.org; Mon, 22 May 2017 10:18:33 +0000
-Date: Mon, 22 May 2017 12:18:07 +0200
+ id 1dCkYL-0004va-BD
+ for barebox@lists.infradead.org; Mon, 22 May 2017 10:27:07 +0000
+Date: Mon, 22 May 2017 12:26:43 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170522101807.bzkhfmb3lyzoys4u@pengutronix.de>
-References: <1495202557-24290-1-git-send-email-c.hemp@phytec.de>
+Message-ID: <20170522102643.outnjbd4ymnrph5f@pengutronix.de>
+References: <20170522084930.6072-1-jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1495202557-24290-1-git-send-email-c.hemp@phytec.de>
+In-Reply-To: <20170522084930.6072-1-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +22,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] imx-bbu-nand-fcb: add support for imx6ull
-To: Christian Hemp <c.hemp@phytec.de>
+Subject: Re: [PATCH] PPC: request a consistent memory layout (part II)
+To: Juergen Borleis <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, May 19, 2017 at 04:02:37PM +0200, Christian Hemp wrote:
-> The i.MX 6ull secures the fcb with bch 40. This is identical to i.MX 6ul.
+On Mon, May 22, 2017 at 10:49:30AM +0200, Juergen Borleis wrote:
+> Using the memory test command will crash barebox, because it may tests the
+> area where the vector table is located for the PPC architecture.
 > 
-> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+> On the e300 PPC core the vectors are programmable in their location.
+> This change checks the used location at run-time and requests the area
+> to prevent the memory test from overwriting it.
+> 
+> Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 > ---
->  common/imx-bbu-nand-fcb.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  arch/ppc/include/asm/common.h |  1 +
+>  arch/ppc/mach-mpc5xxx/cpu.c   | 17 +++++++++++++++++
+>  arch/ppc/mach-mpc5xxx/start.S |  5 +++++
+>  3 files changed, 23 insertions(+)
+> 
+> diff --git a/arch/ppc/include/asm/common.h b/arch/ppc/include/asm/common.h
+> index 045817bed..7ea5dacdb 100644
+> --- a/arch/ppc/include/asm/common.h
+> +++ b/arch/ppc/include/asm/common.h
+> @@ -11,6 +11,7 @@ int	cpu_init      (void);
+>  
+>  uint	get_pvr	      (void);
+>  uint	get_svr	      (void);
+> +uint	get_msr	      (void);
+>  
+>  void	trap_init     (ulong);
+>  
+> diff --git a/arch/ppc/mach-mpc5xxx/cpu.c b/arch/ppc/mach-mpc5xxx/cpu.c
+> index ab58967aa..75bb7b9e8 100644
+> --- a/arch/ppc/mach-mpc5xxx/cpu.c
+> +++ b/arch/ppc/mach-mpc5xxx/cpu.c
+> @@ -61,10 +61,27 @@ int checkcpu (void)
+>  }
+>  
+>  /* ------------------------------------------------------------------------- */
+> +static unsigned mpc5125_get_CPU_exception_vector_begin(void)
+> +{
+> +	unsigned msr = get_msr();
+> +
+> +	if (msr & MSR_IP)
+> +		return 0xfff00000;
+> +	return 0x00000000;
+> +}
+>  
+>  static int mpc5xxx_reserve_region(void)
+>  {
+>  	struct resource *r;
+> +	unsigned exception_vector;
+> +
+> +	exception_vector = mpc5125_get_CPU_exception_vector_begin();
+> +	r = request_sdram_region("vector_table", exception_vector, exception_vector + 0x2fff);
+> +	if (r == NULL) {
+> +		pr_err("Failed to request vector_table region at: 0x%08x/0x%08x\n",
+> +			exception_vector, exception_vector + 0x2fff);
+> +		return -EBUSY;
+> +	}
 
-Applied, thanks
+I have the feeling that we should actively put the vector table to one
+of the two locations, so we should implicitly know where it is and not
+have to test the MSR_IP bit.
+
+Also there is no SDRAM at 0xfff00000, right? Requesting SDRAM there
+will fail every time for a good reason.
 
 Sascha
-
-> 
-> diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
-> index 5d3d3f7..7218c5e 100644
-> --- a/common/imx-bbu-nand-fcb.c
-> +++ b/common/imx-bbu-nand-fcb.c
-> @@ -441,7 +441,7 @@ static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
->  		goto err;
->  	}
->  
-> -	if (cpu_is_mx6ul())
-> +	if (cpu_is_mx6ul() || cpu_is_mx6ull())
->  		fcb = read_fcb_bch(rawpage, 40);
->  	else
->  		fcb = read_fcb_hamming_13_8(rawpage);
-> @@ -899,8 +899,8 @@ static int imx_bbu_write_fcbs_dbbts(struct mtd_info *mtd, struct fcb_block *fcb)
->  
->  	fcb_raw_page = xzalloc(mtd->writesize + mtd->oobsize);
->  
-> -	if (cpu_is_mx6ul()) {
-> -		/* 40 bit BCH, for i.MX6UL */
-> +	if (cpu_is_mx6ul() || cpu_is_mx6ull()) {
-> +		/* 40 bit BCH, for i.MX6UL(L) */
->  		encode_bch_ecc(fcb_raw_page + 32, fcb, 40);
->  	} else {
->  		memcpy(fcb_raw_page + 12, fcb, sizeof(struct fcb_block));
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
