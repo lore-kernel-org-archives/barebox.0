@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dCpAY-0007yo-VB
- for barebox@lists.infradead.org; Mon, 22 May 2017 15:22:52 +0000
-Received: by mail-pf0-x244.google.com with SMTP id f27so20729523pfe.0
- for <barebox@lists.infradead.org>; Mon, 22 May 2017 08:22:30 -0700 (PDT)
+ id 1dCpCZ-0008Sz-N8
+ for barebox@lists.infradead.org; Mon, 22 May 2017 15:24:57 +0000
+Received: by mail-pf0-x243.google.com with SMTP id u26so20733022pfd.2
+ for <barebox@lists.infradead.org>; Mon, 22 May 2017 08:24:35 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 22 May 2017 08:22:13 -0700
-Message-Id: <20170522152213.14028-1-andrew.smirnov@gmail.com>
+Date: Mon, 22 May 2017 08:24:17 -0700
+Message-Id: <20170522152420.14443-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,46 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clk: i.MX51: Add missing USBOH3_GATE clock
+Subject: [PATCH 1/4] gpio-imx: Do not use gpio_set_value()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Nikita Yushchenko <nikita.yoush@cogentembedded.com>, cphealy@gmail.com
 
-This clock is requested by chipidea driver during probe and its
-absense breaks USB functionality.
+Do not use gpio_set_value() in imx_gpio_direction_output() for two
+reasons:
+
+	- Since we don't check gpio_set_value's result, using it
+          instead of imx_gpio_set_value doesn't seem to have any
+          advantages
+
+	- Using gpiolib's function at this level makes it hard to
+          implement 'active low' support (commit that follows) since
+          gpio driver is dealing with physical GPIO levels, whereas
+          gpiolib is explected to accept logical levels.
+
+As a remedy swithch imx_gpio_direction_output() to using
+imx_gpio_set_value().
 
 Cc: cphealy@gmail.com
 Cc: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/clk/imx/clk-imx5.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpio/gpio-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk-imx5.c b/drivers/clk/imx/clk-imx5.c
-index c4c47a6..62e7842 100644
---- a/drivers/clk/imx/clk-imx5.c
-+++ b/drivers/clk/imx/clk-imx5.c
-@@ -244,6 +244,8 @@ static void __init mx5_clocks_common_init(struct device_d *dev, void __iomem *ba
- 		"ecspi_pred", base + CCM_CSCDR2, 19, 6);
- 	clks[IMX5_CLK_CPU_PODF] = imx_clk_divider("cpu_podf",
- 		"pll1_sw", base + CCM_CACRR, 0, 3);
-+
-+	clks[IMX5_CLK_USBOH3_GATE] = imx_clk_gate2("usboh3_gate", "ipg", base + CCM_CCGR2, 26);
- }
+diff --git a/drivers/gpio/gpio-imx.c b/drivers/gpio/gpio-imx.c
+index ab4f596..a9d44d4 100644
+--- a/drivers/gpio/gpio-imx.c
++++ b/drivers/gpio/gpio-imx.c
+@@ -93,7 +93,7 @@ static int imx_gpio_direction_output(struct gpio_chip *chip, unsigned gpio, int
+ 	void __iomem *base = imxgpio->base;
+ 	u32 val;
  
- static void mx5_clocks_mx51_mx53_init(void __iomem *base)
-@@ -392,6 +394,12 @@ int __init mx51_clocks_init(struct device_d *dev, void __iomem *regs)
- 	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX51_PWM1_BASE_ADDR, "per");
- 	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX51_PWM2_BASE_ADDR, "per");
+-	gpio_set_value(gpio + chip->base, value);
++	imx_gpio_set_value(chip, gpio, value);
  
-+	clkdev_add_physbase(clks[IMX5_CLK_USBOH3_GATE], MX51_OTG_BASE_ADDR + 0x000, NULL);
-+	clkdev_add_physbase(clks[IMX5_CLK_USBOH3_GATE], MX51_OTG_BASE_ADDR + 0x200, NULL);
-+	clkdev_add_physbase(clks[IMX5_CLK_USBOH3_GATE], MX51_OTG_BASE_ADDR + 0x400, NULL);
-+	clkdev_add_physbase(clks[IMX5_CLK_USBOH3_GATE], MX51_OTG_BASE_ADDR + 0x600, NULL);
-+	clkdev_add_physbase(clks[IMX5_CLK_USBOH3_GATE], MX51_OTG_BASE_ADDR + 0x800, NULL);
-+
- 	if (IS_ENABLED(CONFIG_DRIVER_VIDEO_IMX_IPUV3))
- 		mx51_clocks_ipu_init(regs);
- 
+ 	val = readl(base + imxgpio->regs->gdir);
+ 	val |= 1 << gpio;
 -- 
 2.9.3
 
