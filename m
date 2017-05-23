@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x229.google.com ([2a00:1450:4010:c07::229])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dD3jr-0006gI-4F
- for barebox@lists.infradead.org; Tue, 23 May 2017 06:56:16 +0000
-Received: by mail-lf0-x229.google.com with SMTP id h4so42858194lfj.3
- for <barebox@lists.infradead.org>; Mon, 22 May 2017 23:55:54 -0700 (PDT)
-References: <20170522152420.14443-1-andrew.smirnov@gmail.com>
- <20170522152420.14443-4-andrew.smirnov@gmail.com>
-From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Message-ID: <402515be-7bed-cbad-449d-907747f0b513@cogentembedded.com>
-Date: Tue, 23 May 2017 09:55:51 +0300
-MIME-Version: 1.0
-In-Reply-To: <20170522152420.14443-4-andrew.smirnov@gmail.com>
+ id 1dD4XE-0005Yb-MM
+ for barebox@lists.infradead.org; Tue, 23 May 2017 07:47:18 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 23 May 2017 09:46:52 +0200
+Message-Id: <20170523074653.32180-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,27 +14,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] usb-nop-xceiv: Add support for 'reset-gpios' binding
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
-Cc: cphealy@gmail.com
+Subject: [PATCH 1/2] state: do not complain about missing backend-storage-type
+To: Barebox List <barebox@lists.infradead.org>
 
-> +
-> +	if (gpio_is_valid(nopphy->reset)) {
-> +		/*
-> +		 * Let's wait for 100 ms before deasserting reset line
-> +		 */
-> +		mdelay(100);
-> +		gpio_direction_output(nopphy->reset, 0);
-> +	}
+backend-storage-type is irrelevant for mtd devices, so do not
+complain about this option missing. The mtd backend will print
+messages if necessary.
 
-Why not gpio_set_value() here?  Direction is already configured at this
-stage.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/state/state.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-Nikita
+diff --git a/common/state/state.c b/common/state/state.c
+index 878fd1b0fb..121ba0c6d3 100644
+--- a/common/state/state.c
++++ b/common/state/state.c
+@@ -571,7 +571,7 @@ struct state *state_new_from_node(struct device_node *node, char *path,
+ 	struct state *state;
+ 	int ret = 0;
+ 	const char *backend_type;
+-	const char *storage_type;
++	const char *storage_type = NULL;
+ 	const char *alias;
+ 	uint32_t stridesize;
+ 
+@@ -616,12 +616,7 @@ struct state *state_new_from_node(struct device_node *node, char *path,
+ 		stridesize = 0;
+ 	}
+ 
+-	ret = of_property_read_string(node, "backend-storage-type",
+-				      &storage_type);
+-	if (ret) {
+-		storage_type = NULL;
+-		dev_info(&state->dev, "No backend-storage-type found, using default.\n");
+-	}
++	of_property_read_string(node, "backend-storage-type", &storage_type);
+ 
+ 	ret = state_format_init(state, backend_type, node, alias);
+ 	if (ret)
+-- 
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
