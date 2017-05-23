@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x232.google.com ([2a00:1450:4010:c07::232])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dAsUL-0002No-7D
- for barebox@lists.infradead.org; Wed, 17 May 2017 06:31:15 +0000
-Date: Wed, 17 May 2017 08:30:51 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170517063051.eh3fp2qth3ntm7uf@pengutronix.de>
-References: <1494587239-33771-1-git-send-email-d.schultz@phytec.de>
- <1494587239-33771-3-git-send-email-d.schultz@phytec.de>
+ id 1dD3LG-0003UI-VO
+ for barebox@lists.infradead.org; Tue, 23 May 2017 06:30:52 +0000
+Received: by mail-lf0-x232.google.com with SMTP id m18so42531723lfj.0
+ for <barebox@lists.infradead.org>; Mon, 22 May 2017 23:30:30 -0700 (PDT)
+References: <20170522152420.14443-1-andrew.smirnov@gmail.com>
+ <20170522152420.14443-2-andrew.smirnov@gmail.com>
+From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Message-ID: <b2e10c3a-cf7d-e3ff-4707-447d56f2e45f@cogentembedded.com>
+Date: Tue, 23 May 2017 09:30:27 +0300
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1494587239-33771-3-git-send-email-d.schultz@phytec.de>
+In-Reply-To: <20170522152420.14443-2-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,49 +24,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 3/4] arm: boards: phytec-som-am335x: Update boot scripts
-To: Daniel Schultz <d.schultz@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/4] gpiolib: Add code to support "active low" GPIOs
+To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Cc: cphealy@gmail.com
 
-On Fri, May 12, 2017 at 01:07:18PM +0200, Daniel Schultz wrote:
-> Expand the boot scripts with EMMC and add a default file source for
-> expansions.
-> 
-> Removed "rw" and "rootwait" bootargs from existing boot scripts.
-> Added "rootflags='data=journal'" bootarg to SD card boot script.
-> 
-> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
-> ---
->  .../defaultenv-physom-am335x/boot/emmc                  |  7 +++++++
->  .../phytec-som-am335x/defaultenv-physom-am335x/boot/mmc |  7 ++++---
->  .../defaultenv-physom-am335x/boot/nand                  |  4 +++-
->  .../phytec-som-am335x/defaultenv-physom-am335x/boot/net | 17 +++++++++++++++++
->  .../phytec-som-am335x/defaultenv-physom-am335x/boot/spi |  4 +++-
->  .../defaultenv-physom-am335x/init/bootsource            | 16 ++++++++++++----
->  6 files changed, 46 insertions(+), 9 deletions(-)
->  create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
->  create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/net
-> 
-> diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
-> new file mode 100644
-> index 0000000..6ad5f87
-> --- /dev/null
-> +++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
-> @@ -0,0 +1,7 @@
-> +#!/bin/sh
-> +
-> +[ -e /env/config-expansions ] && /env/config-expansions
+> So far this particular aspect of various DT-bindings has been handled
+> on a per-driver basis. With this change, hopefully, we'll have a
+> single place to handle necessary logic inversions and eventually
+> would be able to migrate existing users as well as avoiding adding
+> redundant code to new drivers.
 
-What do you have in these config-expansions or what do you expect to be
-there?
+Do we have at least single case when same pin of the same chip is active
+high in one use and active low in other use?
 
-Sascha
+I'd say that "logic values" of gpiolib is a major source of confusion,
+at least in it's current form. The fact that
+  gpio_set_value(..., 1)
+does not set gpio value to 1 but instead sets gpio value to what is
+configured as active, is non-intuitive at least. Maybe with different
+API names (e.g. gpio_activate() / gpio_deactivate()) it could be better.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I understand that we have these logic values in linux and may want
+similarity between linux and barebox. But far not sure at which side it
+should be fixed.
+
+Right now I'm trying to handle a situation (in linux) where chip has
+signal active low, but driver author just used gpiolib calls with
+physical values, inverted.  So device trees are plain wrong (stating
+gpio is active high which is not true) but changing that is about to
+break existing working setups.
+
+I don't know how many similar cases exist, but I guess that quite a few.
+ And all this is caused by enforcement of logical gpio values concept
+everywhere - while it is useful only in rare case of setup-dependent
+signal polarity.  In vast majority of cases signal polarity is
+chip-dependent, not setup-dependent.
+
+Nikita
 
 _______________________________________________
 barebox mailing list
