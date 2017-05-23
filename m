@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dD4mE-0004AZ-Px
- for barebox@lists.infradead.org; Tue, 23 May 2017 08:02:51 +0000
-Date: Tue, 23 May 2017 10:02:24 +0200
+ id 1dD5GC-0007oE-1a
+ for barebox@lists.infradead.org; Tue, 23 May 2017 08:33:46 +0000
+Date: Tue, 23 May 2017 10:33:21 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170523080224.fabrnculzezwn3rx@pengutronix.de>
-References: <20170522132934.9079-1-antonynpavlov@gmail.com>
+Message-ID: <20170523083321.owwdw7vpirjpstup@pengutronix.de>
+References: <20170522152420.14443-1-andrew.smirnov@gmail.com>
+ <20170522152420.14443-2-andrew.smirnov@gmail.com>
+ <b2e10c3a-cf7d-e3ff-4707-447d56f2e45f@cogentembedded.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170522132934.9079-1-antonynpavlov@gmail.com>
+In-Reply-To: <b2e10c3a-cf7d-e3ff-4707-447d56f2e45f@cogentembedded.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +20,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i2c: mv64xxx: fix indentation
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Bastian Stender <bst@pengutronix.de>
+Subject: Re: [PATCH 2/4] gpiolib: Add code to support "active low" GPIOs
+To: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org, cphealy@gmail.com
 
-T24gTW9uLCBNYXkgMjIsIDIwMTcgYXQgMDQ6Mjk6MzRQTSArMDMwMCwgQW50b255IFBhdmxvdiB3
-cm90ZToKPiBUaGUgcGF0Y2ggZml4ZXMgdGhpcyBjb21waWxlcidzIHdhcm5pbmc6Cj4gCj4gICAg
-IGRyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtbXY2NHh4eC5jOiBJbiBmdW5jdGlvbiDigJhtdjY0eHh4
-X2kyY19mc23igJk6Cj4gICAgIGRyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtbXY2NHh4eC5jOjMwMzoz
-OiB3YXJuaW5nOiB0aGlzIOKAmGlm4oCZIGNsYXVzZSBkb2VzCj4gICAgIG5vdCBndWFyZC4uLiBb
-LVdtaXNsZWFkaW5nLWluZGVudGF0aW9uXQo+ICAgICAgICBpZiAoZHJ2X2RhdGEtPmJ5dGVzX2xl
-ZnQgPT0gMSkKPiAgICAgICAgXn4KPiAgICAgZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1tdjY0eHh4
-LmM6MzA1OjQ6IG5vdGU6IC4uLnRoaXMgc3RhdGVtZW50LCBidXQgdGhlCj4gICAgIGxhdHRlciBp
-cyBtaXNsZWFkaW5nbHkgaW5kZW50ZWQgYXMgaWYgaXQgaXMgZ3VhcmRlZCBieSB0aGUg4oCYaWbi
-gJkKPiAgICAgICAgIHVkZWxheSgyKTsKPiAgICAgICAgIF5+fn5+fgo+IAo+IFNpZ25lZC1vZmYt
-Ynk6IEFudG9ueSBQYXZsb3YgPGFudG9ueW5wYXZsb3ZAZ21haWwuY29tPgo+IENjOiBCYXN0aWFu
-IFN0ZW5kZXIgPGJzdEBwZW5ndXRyb25peC5kZT4KCkFwcGxpZWQsIHRoYW5rcwoKU2FzY2hhCgo+
-IC0tLQo+ICBkcml2ZXJzL2kyYy9idXNzZXMvaTJjLW12NjR4eHguYyB8IDIgKy0KPiAgMSBmaWxl
-IGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCj4gCj4gZGlmZiAtLWdpdCBh
-L2RyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtbXY2NHh4eC5jIGIvZHJpdmVycy9pMmMvYnVzc2VzL2ky
-Yy1tdjY0eHh4LmMKPiBpbmRleCAxYTVkNWVmOWIuLjI4NWVkZTg0YyAxMDA2NDQKPiAtLS0gYS9k
-cml2ZXJzL2kyYy9idXNzZXMvaTJjLW12NjR4eHguYwo+ICsrKyBiL2RyaXZlcnMvaTJjL2J1c3Nl
-cy9pMmMtbXY2NHh4eC5jCj4gQEAgLTMwMiw3ICszMDIsNyBAQCBtdjY0eHh4X2kyY19mc20oc3Ry
-dWN0IG12NjR4eHhfaTJjX2RhdGEgKmRydl9kYXRhLCB1MzIgc3RhdHVzKQo+ICAKPiAgCQlpZiAo
-ZHJ2X2RhdGEtPmJ5dGVzX2xlZnQgPT0gMSkKPiAgCQkJZHJ2X2RhdGEtPmNudGxfYml0cyAmPSB+
-UkVHX0NPTlRST0xfQUNLOwo+IC0JCQl1ZGVsYXkoMik7Cj4gKwkJdWRlbGF5KDIpOwo+ICAJCWJy
-ZWFrOwo+ICAKPiAgCWNhc2UgU1RBVFVTX01BU1RfUkRfREFUQV9OT19BQ0s6IC8qIDB4NTggKi8K
-PiAtLSAKPiAyLjExLjAKPiAKPiAKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExp
-bnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRl
-LyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTog
-KzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAg
-ICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+On Tue, May 23, 2017 at 09:30:27AM +0300, Nikita Yushchenko wrote:
+> > So far this particular aspect of various DT-bindings has been handled
+> > on a per-driver basis. With this change, hopefully, we'll have a
+> > single place to handle necessary logic inversions and eventually
+> > would be able to migrate existing users as well as avoiding adding
+> > redundant code to new drivers.
+> 
+> Do we have at least single case when same pin of the same chip is active
+> high in one use and active low in other use?
+> 
+> I'd say that "logic values" of gpiolib is a major source of confusion,
+> at least in it's current form. The fact that
+>   gpio_set_value(..., 1)
+> does not set gpio value to 1 but instead sets gpio value to what is
+> configured as active, is non-intuitive at least. Maybe with different
+> API names (e.g. gpio_activate() / gpio_deactivate()) it could be better.
+
+Plain gpio_set_value() in Linux does not honour any ACTIVE_LOW flags,
+only gpiod_set_value() does. But anyway, you are right, it *is*
+confusing. I agree that we should have a different set of functions
+which honour the ACTIVE_LOW flag. Besides of being more consistent
+in the end I think it's the only way to not break any existing gpio
+setups in barebox. With a different API set we can review each driver
+change for unwanted side effects.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
