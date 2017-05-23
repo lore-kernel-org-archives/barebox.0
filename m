@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x241.google.com ([2a00:1450:400c:c0c::241])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1d4pB9-0008VK-Cg
- for barebox@lists.infradead.org; Sun, 30 Apr 2017 13:46:25 +0000
-Received: by mail-wr0-x241.google.com with SMTP id w50so11657781wrc.0
- for <barebox@lists.infradead.org>; Sun, 30 Apr 2017 06:46:00 -0700 (PDT)
-Received: from mars.fritz.box
- (HSI-KBW-109-193-021-110.hsi7.kabel-badenwuerttemberg.de. [109.193.21.110])
- by smtp.gmail.com with ESMTPSA id y63sm10707384wme.31.2017.04.30.06.45.58
- for <barebox@lists.infradead.org>
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 30 Apr 2017 06:45:58 -0700 (PDT)
-Message-ID: <1493559958.1977.38.camel@googlemail.com>
-From: Christoph Fritz <chf.fritz@googlemail.com>
-Date: Sun, 30 Apr 2017 15:45:58 +0200
-Mime-Version: 1.0
+ id 1dDJB7-0006cp-NN
+ for barebox@lists.infradead.org; Tue, 23 May 2017 23:25:27 +0000
+Received: by mail-pf0-x242.google.com with SMTP id n23so30476833pfb.3
+ for <barebox@lists.infradead.org>; Tue, 23 May 2017 16:25:04 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <46762e56-b2a0-4afd-6967-99b36af1e6fb@cogentembedded.com>
+References: <20170522152420.14443-1-andrew.smirnov@gmail.com>
+ <20170522152420.14443-3-andrew.smirnov@gmail.com>
+ <46762e56-b2a0-4afd-6967-99b36af1e6fb@cogentembedded.com>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 23 May 2017 16:25:03 -0700
+Message-ID: <CAHQ1cqE+CmNAAFcwvHZ6KLR0h=7X6GNV_8gYx0HbwcwNf65x3A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,75 +21,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: chf.fritz@googlemail.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mci: be more verbose about wrong bus-width
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/4] gpiolib: Add support for GPIO "hog" nodes
+To: Nikita Yushchenko <nikita.yoush@cogentembedded.com>, Sascha Hauer <kernel@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Chris Healy <cphealy@gmail.com>
 
-If configured or default bus-width is wrong for the current hardware,
-registration of card/emmc is likely to fail.  This patch adds more verbosity
-in the case of a failed detection:
+On Mon, May 22, 2017 at 11:52 PM, Nikita Yushchenko
+<nikita.yoush@cogentembedded.com> wrote:
+>> +     ret = of_property_read_u32(chip_np, "#gpio-cells", &gpio_cells);
+>> +     if (ret)
+>> +             return ret;
+>> +
+>> +     if (WARN_ON(gpio_cells != 2))
+>> +             return -ENOTSUPP;
+>> +
+>> +     ret = of_property_read_u32_index(np, "gpios", idx * gpio_cells,
+>> +                                      &gpio_num);
+>> +     if (ret)
+>> +             return ret;
+>> +
+>> +     ret = of_property_read_u32_index(np, "gpios", idx * gpio_cells + 1,
+>> +                                      &gpio_flags);
+>> +     if (ret)
+>> +             return ret;
+>
+> Doesn't this hardcode interpretation of device tree words in gpio
+> specification - while this is intended to be gpio-provider specific and
+> that's why #gpio-cells exist?
+>
 
-    | omap-hsmmc 48060000.mmc: registered as 48060000.mmc
-    | mmc0: detected MMC card version 4.41
-    | mmc0: Changing MMC bus width failed: -110
-    | mmc0: Card's startup fails with -110
+It does and yes that's my understanding of the purpose of #gpio-cells
+as well. The reason I did in such a primitive way was because
+Barebox's GPIO subsystem doesn't have any translation plumbing to be
+able to handle anything more than a simple one dimensional offset.
+Given the fact that of_get_named_gpio_flags() make similar assumption
+I thought that there are no real consumers of that functionality and
+left proper implementation as a future improvement that can be made
+once the need arises.
 
-Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
----
- drivers/mci/mci-core.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+>
+>> +static int of_gpiochip_scan_gpios(struct gpio_chip *chip)
+>
+> Not best choice of name for routine that scans hogs?
+>
+> (although I understand that it comes from linux counterpart)
+>
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index b173a17..3da1c26 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -984,7 +984,7 @@ static int mci_startup_sd(struct mci *mci)
- 		mci_setup_cmd(&cmd, SD_CMD_APP_SET_BUS_WIDTH, 2, MMC_RSP_R1);
- 		err = mci_send_cmd(mci, &cmd, NULL);
- 		if (err) {
--			dev_dbg(&mci->dev, "Changing SD bus width failed: %d\n", err);
-+			dev_warn(&mci->dev, "Changing SD bus width failed: %d\n", err);
- 			/* TODO continue with 1 bit? */
- 			return err;
- 		}
-@@ -1041,8 +1041,11 @@ static int mci_startup_mmc(struct mci *mci)
- 		err = mci_switch(mci, EXT_CSD_CMD_SET_NORMAL,
- 				 EXT_CSD_BUS_WIDTH,
- 				 ext_csd_bits[idx]);
--		if (err)
-+		if (err) {
-+			if (idx == 0)
-+				dev_warn(&mci->dev, "Changing MMC bus width failed: %d\n", err);
- 			continue;
-+		}
- 
- 		mci_set_bus_width(mci, bus_widths[idx]);
- 
-@@ -1051,7 +1054,7 @@ static int mci_startup_mmc(struct mci *mci)
- 			break;
- 	}
- 
--	return 0;
-+	return err;
- }
- 
- /**
-@@ -1693,7 +1696,7 @@ static int mci_card_probe(struct mci *mci)
- 
- 	rc = mci_startup(mci);
- 	if (rc) {
--		dev_dbg(&mci->dev, "Card's startup fails with %d\n", rc);
-+		dev_warn(&mci->dev, "Card's startup fails with %d\n", rc);
- 		goto on_error;
- 	}
- 
--- 
-2.1.4
+Eh, I don't have any strong opinion on this one, I am more than happy
+to rename it if you think there are better alternatives.
 
+>> -     return 0;
+>> +     return of_gpiochip_scan_gpios(chip);
+>
+> Should we fail gpiochip registration on failure to claim hogs?
+> I don't know.
+
+I couldn't think of a use-case where it wasn't basically all or
+nothing: either I get everything working or I need to go back and fix
+my DT. Sascha, do you have an opinion on this one?
+
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
