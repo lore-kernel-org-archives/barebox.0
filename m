@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dD5GC-0007oE-1a
- for barebox@lists.infradead.org; Tue, 23 May 2017 08:33:46 +0000
-Date: Tue, 23 May 2017 10:33:21 +0200
+ id 1dD9Zb-0006qt-0l
+ for barebox@lists.infradead.org; Tue, 23 May 2017 13:10:04 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170523083321.owwdw7vpirjpstup@pengutronix.de>
-References: <20170522152420.14443-1-andrew.smirnov@gmail.com>
- <20170522152420.14443-2-andrew.smirnov@gmail.com>
- <b2e10c3a-cf7d-e3ff-4707-447d56f2e45f@cogentembedded.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <b2e10c3a-cf7d-e3ff-4707-447d56f2e45f@cogentembedded.com>
+Date: Tue, 23 May 2017 15:09:37 +0200
+Message-Id: <20170523130937.24433-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,47 +14,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] gpiolib: Add code to support "active low" GPIOs
-To: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org, cphealy@gmail.com
+Subject: [PATCH] usb: imx: Only use clock when it exists
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, jbe@pengutronix.de
 
-On Tue, May 23, 2017 at 09:30:27AM +0300, Nikita Yushchenko wrote:
-> > So far this particular aspect of various DT-bindings has been handled
-> > on a per-driver basis. With this change, hopefully, we'll have a
-> > single place to handle necessary logic inversions and eventually
-> > would be able to migrate existing users as well as avoiding adding
-> > redundant code to new drivers.
-> 
-> Do we have at least single case when same pin of the same chip is active
-> high in one use and active low in other use?
-> 
-> I'd say that "logic values" of gpiolib is a major source of confusion,
-> at least in it's current form. The fact that
->   gpio_set_value(..., 1)
-> does not set gpio value to 1 but instead sets gpio value to what is
-> configured as active, is non-intuitive at least. Maybe with different
-> API names (e.g. gpio_activate() / gpio_deactivate()) it could be better.
+Fixes: bbe0df90b8e2463dd8db651e9f1dd57702985d2d
 
-Plain gpio_set_value() in Linux does not honour any ACTIVE_LOW flags,
-only gpiod_set_value() does. But anyway, you are right, it *is*
-confusing. I agree that we should have a different set of functions
-which honour the ACTIVE_LOW flag. Besides of being more consistent
-in the end I think it's the only way to not break any existing gpio
-setups in barebox. With a different API set we can review each driver
-change for unwanted side effects.
+I assumed all chipidea devices actually have a clock. This is true
+when looking at the device tree, but in barebox not all i.MX SoCs
+use the clocks provided by the device tree. Most instead use
+clkdev_add_physbase() to attach a clocks to devices. For these the
+chipidea device does not have a clock.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/imx/chipidea-imx.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-
+diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
+index 67d01d3de5..39593c40fb 100644
+--- a/drivers/usb/imx/chipidea-imx.c
++++ b/drivers/usb/imx/chipidea-imx.c
+@@ -276,10 +276,8 @@ static int imx_chipidea_probe(struct device_d *dev)
+ 	 * devices which have only one.
+ 	 */
+ 	ci->clk = clk_get(dev, NULL);
+-	if (IS_ERR(ci->clk))
+-		return PTR_ERR(ci->clk);
+-
+-	clk_enable(ci->clk);
++	if (!IS_ERR(ci->clk))
++		clk_enable(ci->clk);
+ 
+ 	if (of_property_read_bool(dev->device_node, "fsl,usbphy")) {
+ 		ci->phy = of_phy_get_by_phandle(dev, "fsl,usbphy", 0);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
