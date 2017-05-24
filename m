@@ -1,19 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22e.google.com ([2a00:1450:4010:c07::22e])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dDQhO-0005cs-AD
- for barebox@lists.infradead.org; Wed, 24 May 2017 07:27:16 +0000
-Received: by mail-lf0-x22e.google.com with SMTP id m18so62188334lfj.0
- for <barebox@lists.infradead.org>; Wed, 24 May 2017 00:26:53 -0700 (PDT)
-References: <20170522152420.14443-1-andrew.smirnov@gmail.com>
- <20170522152420.14443-2-andrew.smirnov@gmail.com>
- <b2e10c3a-cf7d-e3ff-4707-447d56f2e45f@cogentembedded.com>
- <CAHQ1cqFDcR49fvD9JrtSgR5tEMZPnFdPsxSJvwF8c1crqGd7jA@mail.gmail.com>
-From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Message-ID: <db78852f-c295-d85b-1c38-3c31f2442d5f@cogentembedded.com>
-Date: Wed, 24 May 2017 10:26:50 +0300
+ id 1dDQqf-0001XI-Ai
+ for barebox@lists.infradead.org; Wed, 24 May 2017 07:36:51 +0000
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.84_2)
+ (envelope-from <sha@pengutronix.de>) id 1dDQqJ-0003qn-Va
+ for barebox@lists.infradead.org; Wed, 24 May 2017 09:36:27 +0200
+Received: from sha by pty.hi.pengutronix.de with local (Exim 4.84_2)
+ (envelope-from <sha@pengutronix.de>) id 1dDQqJ-0003tJ-KY
+ for barebox@lists.infradead.org; Wed, 24 May 2017 09:36:27 +0200
+Date: Wed, 24 May 2017 09:36:27 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170524073627.dqfb7v7td3utbcos@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <CAHQ1cqFDcR49fvD9JrtSgR5tEMZPnFdPsxSJvwF8c1crqGd7jA@mail.gmail.com>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,39 +28,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] gpiolib: Add code to support "active low" GPIOs
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Chris Healy <cphealy@gmail.com>
+Subject: Stable branches resurrected
+To: Barebox List <barebox@lists.infradead.org>
 
-> I am not sure I really see a problem with the situation you describe
-> and why you'd want to change device tree description (perhaps because
-> I don't know all of the details). I agree, that, depending on you
-> personal preferences, one might find it annoying that driver uses
-> physical values, but other than that I don't see a technical problem
-> with using physical values in the driver, since as you said, it's not
-> very likely that same pin on the same chip would be active low/vs
-> active high.
+Hi All,
 
-First point is that words "active high" (or "active low") have very
-clear meaning. And situation when chip's signal is active low, but one
-has to write "active high" in signal definition to make things working,
-is not something I welcome in systems I deal with.
+v2017.05.0 contains some nasty bugs. This led me to the idea to
+resurrect the stable branches. I created stable/v2017.05 and also
+released v2017.05.1. Please update to this one if you are using
+v2017.05.0.
 
-Second point is that by cleaning up the above, you make drivers depend
-on correct polarity settings in dts. Which means that when writing dts,
-you get need to dig over datasheets (which may be under NDA) to find out
-polarity of each signal. This looks like breakage of information
-locality - knowledge of chip's signals polarity belongs to chip's
-driver. Common case of signals connected directly to gpio providers
-should just work.  It's nice to have a way to override driver's default,
-to handle signal inversion by board logic and other special cases, but
-that should be purely optional.
+Experience shows that very few people semm to test the master branch,
+but that I get bug reports relatively fast after a release. I'll try and
+collect at least the bugfixes for the current release in a stable
+branch. I'm not yet sure how long I maintain each stable branch though,
+probably not too long to keep people motivated to update ;)
 
-Third point is code clearance. If routine is called set_value, has
-argument that very looks like value to be set, but instead of setting
-given value does something different, it's source of confusion and errors.
+If you want to have a patch in a stable branch, please tell me so to
+keep me reminded that we have these branches.
 
-But perhaps this thread is wrong place to discuss all that.
+Thanks
+ Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
