@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dDQhK-0005cj-C6
- for barebox@lists.infradead.org; Wed, 24 May 2017 07:27:12 +0000
-Date: Wed, 24 May 2017 09:26:47 +0200
+ id 1dDQPz-0006dj-Ay
+ for barebox@lists.infradead.org; Wed, 24 May 2017 07:09:17 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170524072647.6cwgihhtcu2vgqjv@pengutronix.de>
-References: <20170522152420.14443-1-andrew.smirnov@gmail.com>
- <20170522152420.14443-3-andrew.smirnov@gmail.com>
- <46762e56-b2a0-4afd-6967-99b36af1e6fb@cogentembedded.com>
- <CAHQ1cqE+CmNAAFcwvHZ6KLR0h=7X6GNV_8gYx0HbwcwNf65x3A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqE+CmNAAFcwvHZ6KLR0h=7X6GNV_8gYx0HbwcwNf65x3A@mail.gmail.com>
+Date: Wed, 24 May 2017 09:08:51 +0200
+Message-Id: <20170524070851.9647-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,80 +14,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] gpiolib: Add support for GPIO "hog" nodes
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Nikita Yushchenko <nikita.yoush@cogentembedded.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Chris Healy <cphealy@gmail.com>, Sascha Hauer <kernel@pengutronix.de>
+Subject: [PATCH] Makefile: Speed up evaluation of ld options
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, May 23, 2017 at 04:25:03PM -0700, Andrey Smirnov wrote:
-> On Mon, May 22, 2017 at 11:52 PM, Nikita Yushchenko
-> <nikita.yoush@cogentembedded.com> wrote:
-> >> +     ret = of_property_read_u32(chip_np, "#gpio-cells", &gpio_cells);
-> >> +     if (ret)
-> >> +             return ret;
-> >> +
-> >> +     if (WARN_ON(gpio_cells != 2))
-> >> +             return -ENOTSUPP;
-> >> +
-> >> +     ret = of_property_read_u32_index(np, "gpios", idx * gpio_cells,
-> >> +                                      &gpio_num);
-> >> +     if (ret)
-> >> +             return ret;
-> >> +
-> >> +     ret = of_property_read_u32_index(np, "gpios", idx * gpio_cells + 1,
-> >> +                                      &gpio_flags);
-> >> +     if (ret)
-> >> +             return ret;
-> >
-> > Doesn't this hardcode interpretation of device tree words in gpio
-> > specification - while this is intended to be gpio-provider specific and
-> > that's why #gpio-cells exist?
-> >
-> 
-> It does and yes that's my understanding of the purpose of #gpio-cells
-> as well. The reason I did in such a primitive way was because
-> Barebox's GPIO subsystem doesn't have any translation plumbing to be
-> able to handle anything more than a simple one dimensional offset.
-> Given the fact that of_get_named_gpio_flags() make similar assumption
-> I thought that there are no real consumers of that functionality and
-> left proper implementation as a future improvement that can be made
-> once the need arises.
-> 
-> >
-> >> +static int of_gpiochip_scan_gpios(struct gpio_chip *chip)
-> >
-> > Not best choice of name for routine that scans hogs?
-> >
-> > (although I understand that it comes from linux counterpart)
-> >
-> 
-> Eh, I don't have any strong opinion on this one, I am more than happy
-> to rename it if you think there are better alternatives.
-> 
-> >> -     return 0;
-> >> +     return of_gpiochip_scan_gpios(chip);
-> >
-> > Should we fail gpiochip registration on failure to claim hogs?
-> > I don't know.
-> 
-> I couldn't think of a use-case where it wasn't basically all or
-> nothing: either I get everything working or I need to go back and fix
-> my DT. Sascha, do you have an opinion on this one?
+Since "333ff7b1e4 Fix linking with new ld, based on u-boot" the build
+with multiple images became unreasonable slow. This is because the
+ld-option macro was evaluated once for each image. Fix this by exporting
+and using LDFLAGS_barebox from the main Makefile.
 
-I can't think of any good reason why the hog initialization should fail
-and we still want to keep the gpio chip.
-Let's keep it like this until someone delivers us a good reason.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ Makefile        | 1 +
+ images/Makefile | 5 +----
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-Sasch
-
+diff --git a/Makefile b/Makefile
+index 3b8d73dab8..da65a1ab40 100644
+--- a/Makefile
++++ b/Makefile
+@@ -321,6 +321,7 @@ export HOSTCXX HOSTCXXFLAGS LDFLAGS_MODULE CHECK CHECKFLAGS
+ export CPPFLAGS NOSTDINC_FLAGS LINUXINCLUDE OBJCOPYFLAGS LDFLAGS
+ export CFLAGS CFLAGS_KERNEL
+ export AFLAGS AFLAGS_KERNEL
++export LDFLAGS_barebox
+ 
+ # Files to ignore in find ... statements
+ 
+diff --git a/images/Makefile b/images/Makefile
+index 3f48267bca..705c8ad03e 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -53,11 +53,8 @@ extra-y += $(pbl-lds)
+ $(pbl-lds): $(obj)/../arch/$(ARCH)/lib/pbl.lds.S FORCE
+ 	$(call if_changed_dep,cpp_lds_S)
+ 
+-# Avoid 'Not enough room for program headers' error on binutils 2.28 onwards.
+-LDFLAGS += $(call ld-option, --no-dynamic-linker)
+-
+ quiet_cmd_elf__ ?= LD      $@
+-      cmd_elf__ ?= $(LD) $(LDFLAGS) --gc-sections -pie			\
++      cmd_elf__ ?= $(LD) $(LDFLAGS_barebox) --gc-sections -pie			\
+ 		-e $(2) -Map $@.map $(LDFLAGS_$(@F)) -o $@		\
+ 		-T $(pbl-lds)						\
+ 		--start-group $(barebox-pbl-common) --end-group
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
