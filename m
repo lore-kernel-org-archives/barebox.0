@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dDO8N-0007aC-1X
- for barebox@lists.infradead.org; Wed, 24 May 2017 04:42:56 +0000
-Received: by mail-pg0-x242.google.com with SMTP id s62so15675876pgc.0
- for <barebox@lists.infradead.org>; Tue, 23 May 2017 21:42:34 -0700 (PDT)
+ id 1dDO8z-0007j9-Np
+ for barebox@lists.infradead.org; Wed, 24 May 2017 04:43:35 +0000
+Received: by mail-pg0-x242.google.com with SMTP id h64so15651858pge.3
+ for <barebox@lists.infradead.org>; Tue, 23 May 2017 21:43:13 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20170523130937.24433-1-s.hauer@pengutronix.de>
-References: <20170523130937.24433-1-s.hauer@pengutronix.de>
+In-Reply-To: <99117b21-0d83-87ab-e196-1e02e0df6601@cogentembedded.com>
+References: <20170522152213.14028-1-andrew.smirnov@gmail.com>
+ <99117b21-0d83-87ab-e196-1e02e0df6601@cogentembedded.com>
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 23 May 2017 21:42:33 -0700
-Message-ID: <CAHQ1cqE445BUz9y8_rmBENYD5nxhYU9AeJhPv5O7GGQcgq5-ww@mail.gmail.com>
+Date: Tue, 23 May 2017 21:43:12 -0700
+Message-ID: <CAHQ1cqHRZW1EJ-Q35U_WgGhNJJSq8ggf-t_o6N8SxqwO7PukTg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,51 +24,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb: imx: Only use clock when it exists
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>, jbe@pengutronix.de
+Subject: Re: [PATCH] clk: i.MX51: Add missing USBOH3_GATE clock
+To: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Chris Healy <cphealy@gmail.com>
 
-On Tue, May 23, 2017 at 6:09 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> Fixes: bbe0df90b8e2463dd8db651e9f1dd57702985d2d
+On Mon, May 22, 2017 at 10:42 PM, Nikita Yushchenko
+<nikita.yoush@cogentembedded.com> wrote:
+>>  static void mx5_clocks_mx51_mx53_init(void __iomem *base)
+>> @@ -392,6 +394,12 @@ int __init mx51_clocks_init(struct device_d *dev, void __iomem *regs)
+>>       clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX51_PWM1_BASE_ADDR, "per");
+>>       clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX51_PWM2_BASE_ADDR, "per");
+>>
+>> +     clkdev_add_physbase(clks[IMX5_CLK_USBOH3_GATE], MX51_OTG_BASE_ADDR + 0x000, NULL);
+>> +     clkdev_add_physbase(clks[IMX5_CLK_USBOH3_GATE], MX51_OTG_BASE_ADDR + 0x200, NULL);
+>> +     clkdev_add_physbase(clks[IMX5_CLK_USBOH3_GATE], MX51_OTG_BASE_ADDR + 0x400, NULL);
+>> +     clkdev_add_physbase(clks[IMX5_CLK_USBOH3_GATE], MX51_OTG_BASE_ADDR + 0x600, NULL);
+>> +     clkdev_add_physbase(clks[IMX5_CLK_USBOH3_GATE], MX51_OTG_BASE_ADDR + 0x800, NULL);
+>> +
+>>       if (IS_ENABLED(CONFIG_DRIVER_VIDEO_IMX_IPUV3))
+>>               mx51_clocks_ipu_init(regs);
 >
-> I assumed all chipidea devices actually have a clock. This is true
-> when looking at the device tree, but in barebox not all i.MX SoCs
-> use the clocks provided by the device tree. Most instead use
-> clkdev_add_physbase() to attach a clocks to devices. For these the
-> chipidea device does not have a clock.
+> It may be cleaner to setup USB related clocks under
+> if (IS_ENABLED(CONFIG_...) { ... }  - i.e. in the same way as IPU
+> related clocks are added in neighbour line.
 >
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Also, this is the only place in this file where address arithmetic is
+> used.  Not sure if this is ok or not but it catches eye.
 
-Just tried on a custom i.MX51 based board I wrote my USB clock patch
-from earlier for. Seems to work with said patch dropped from the tree,
-so:
+Looks like this patch is not really necessary, so I'll just drop it.
 
-Tested-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-
-> ---
->  drivers/usb/imx/chipidea-imx.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
-> index 67d01d3de5..39593c40fb 100644
-> --- a/drivers/usb/imx/chipidea-imx.c
-> +++ b/drivers/usb/imx/chipidea-imx.c
-> @@ -276,10 +276,8 @@ static int imx_chipidea_probe(struct device_d *dev)
->          * devices which have only one.
->          */
->         ci->clk = clk_get(dev, NULL);
-> -       if (IS_ERR(ci->clk))
-> -               return PTR_ERR(ci->clk);
-> -
-> -       clk_enable(ci->clk);
-> +       if (!IS_ERR(ci->clk))
-> +               clk_enable(ci->clk);
->
->         if (of_property_read_bool(dev->device_node, "fsl,usbphy")) {
->                 ci->phy = of_phy_get_by_phandle(dev, "fsl,usbphy", 0);
-> --
-> 2.11.0
->
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
