@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
+Received: from mail-lf0-x22e.google.com ([2a00:1450:4010:c07::22e])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dFiHv-0006Gp-4I
- for barebox@lists.infradead.org; Tue, 30 May 2017 14:38:24 +0000
-Received: by mail-pf0-x244.google.com with SMTP id w69so18290623pfk.1
- for <barebox@lists.infradead.org>; Tue, 30 May 2017 07:38:02 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <06bc04e1-6a7c-c676-23f9-5566f93e5d56@cogentembedded.com>
+ id 1dDQhO-0005cs-AD
+ for barebox@lists.infradead.org; Wed, 24 May 2017 07:27:16 +0000
+Received: by mail-lf0-x22e.google.com with SMTP id m18so62188334lfj.0
+ for <barebox@lists.infradead.org>; Wed, 24 May 2017 00:26:53 -0700 (PDT)
 References: <20170522152420.14443-1-andrew.smirnov@gmail.com>
- <20170522152420.14443-3-andrew.smirnov@gmail.com>
- <46762e56-b2a0-4afd-6967-99b36af1e6fb@cogentembedded.com>
- <CAHQ1cqE+CmNAAFcwvHZ6KLR0h=7X6GNV_8gYx0HbwcwNf65x3A@mail.gmail.com>
- <06bc04e1-6a7c-c676-23f9-5566f93e5d56@cogentembedded.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 30 May 2017 07:38:01 -0700
-Message-ID: <CAHQ1cqGth-Q0V-YzMMR54EZQKOHeC6A8GwDxu1ugfPum_pBCBg@mail.gmail.com>
+ <20170522152420.14443-2-andrew.smirnov@gmail.com>
+ <b2e10c3a-cf7d-e3ff-4707-447d56f2e45f@cogentembedded.com>
+ <CAHQ1cqFDcR49fvD9JrtSgR5tEMZPnFdPsxSJvwF8c1crqGd7jA@mail.gmail.com>
+From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Message-ID: <db78852f-c295-d85b-1c38-3c31f2442d5f@cogentembedded.com>
+Date: Wed, 24 May 2017 10:26:50 +0300
+MIME-Version: 1.0
+In-Reply-To: <CAHQ1cqFDcR49fvD9JrtSgR5tEMZPnFdPsxSJvwF8c1crqGd7jA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,76 +26,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] gpiolib: Add support for GPIO "hog" nodes
-To: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Chris Healy <cphealy@gmail.com>, Sascha Hauer <kernel@pengutronix.de>
+Subject: Re: [PATCH 2/4] gpiolib: Add code to support "active low" GPIOs
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Chris Healy <cphealy@gmail.com>
 
-On Tue, May 23, 2017 at 11:43 PM, Nikita Yushchenko
-<nikita.yoush@cogentembedded.com> wrote:
->
->
-> 24.05.2017 02:25, Andrey Smirnov wrote:
->> On Mon, May 22, 2017 at 11:52 PM, Nikita Yushchenko
->> <nikita.yoush@cogentembedded.com> wrote:
->>>> +     ret = of_property_read_u32(chip_np, "#gpio-cells", &gpio_cells);
->>>> +     if (ret)
->>>> +             return ret;
->>>> +
->>>> +     if (WARN_ON(gpio_cells != 2))
->>>> +             return -ENOTSUPP;
->>>> +
->>>> +     ret = of_property_read_u32_index(np, "gpios", idx * gpio_cells,
->>>> +                                      &gpio_num);
->>>> +     if (ret)
->>>> +             return ret;
->>>> +
->>>> +     ret = of_property_read_u32_index(np, "gpios", idx * gpio_cells + 1,
->>>> +                                      &gpio_flags);
->>>> +     if (ret)
->>>> +             return ret;
->>>
->>> Doesn't this hardcode interpretation of device tree words in gpio
->>> specification - while this is intended to be gpio-provider specific and
->>> that's why #gpio-cells exist?
->>>
->>
->> It does and yes that's my understanding of the purpose of #gpio-cells
->> as well. The reason I did in such a primitive way was because
->> Barebox's GPIO subsystem doesn't have any translation plumbing to be
->> able to handle anything more than a simple one dimensional offset.
->> Given the fact that of_get_named_gpio_flags() make similar assumption
->> I thought that there are no real consumers of that functionality and
->> left proper implementation as a future improvement that can be made
->> once the need arises.
->
-> Maybe then at least make this [wrong] thing done in single place?  I.e.
-> extract relevant code from of_get_named_gpio_flags() into separate
-> routine and call it from two places?  (And add a comment there, that it
-> is a stub assuming dump representation)
->
+> I am not sure I really see a problem with the situation you describe
+> and why you'd want to change device tree description (perhaps because
+> I don't know all of the details). I agree, that, depending on you
+> personal preferences, one might find it annoying that driver uses
+> physical values, but other than that I don't see a technical problem
+> with using physical values in the driver, since as you said, it's not
+> very likely that same pin on the same chip would be active low/vs
+> active high.
 
-The code of the two doesn't have much, if anything, in common.
-Of_get_named_gpio_flags is expecting a phandle to the gpio node be a
-part of the field it parses, whereas gpio specifier in hog nodes omits
-that. I don't think I can have any meaningful code sharing here.
+First point is that words "active high" (or "active low") have very
+clear meaning. And situation when chip's signal is active low, but one
+has to write "active high" in signal definition to make things working,
+is not something I welcome in systems I deal with.
 
->>>> +static int of_gpiochip_scan_gpios(struct gpio_chip *chip)
->>>
->>> Not best choice of name for routine that scans hogs?
->>>
->>> (although I understand that it comes from linux counterpart)
->>>
->>
->> Eh, I don't have any strong opinion on this one, I am more than happy
->> to rename it if you think there are better alternatives.
->
-> of_gpiochip_scan_hogs() ?
->
+Second point is that by cleaning up the above, you make drivers depend
+on correct polarity settings in dts. Which means that when writing dts,
+you get need to dig over datasheets (which may be under NDA) to find out
+polarity of each signal. This looks like breakage of information
+locality - knowledge of chip's signals polarity belongs to chip's
+driver. Common case of signals connected directly to gpio providers
+should just work.  It's nice to have a way to override driver's default,
+to handle signal inversion by board logic and other special cases, but
+that should be purely optional.
 
-Sure, I'll do that in v2.
+Third point is code clearance. If routine is called set_value, has
+argument that very looks like value to be set, but instead of setting
+given value does something different, it's source of confusion and errors.
 
-Thanks,
-Andrey Smirnov
+But perhaps this thread is wrong place to discuss all that.
 
 _______________________________________________
 barebox mailing list
