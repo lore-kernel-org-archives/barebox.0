@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dFR4D-0008Dk-Q3
- for barebox@lists.infradead.org; Mon, 29 May 2017 20:15:07 +0000
+ id 1dFR7j-000277-B6
+ for barebox@lists.infradead.org; Mon, 29 May 2017 20:18:44 +0000
 Received: from tellur.fritz.box (a89-183-58-206.net-htp.de [89.183.58.206])
- by lynxeye.de (Postfix) with ESMTPA id BD5E0E7421F
- for <barebox@lists.infradead.org>; Mon, 29 May 2017 22:02:45 +0200 (CEST)
+ by lynxeye.de (Postfix) with ESMTPA id 26E71E7421F
+ for <barebox@lists.infradead.org>; Mon, 29 May 2017 22:17:49 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 29 May 2017 22:02:41 +0200
-Message-Id: <20170529200242.17934-1-dev@lynxeye.de>
+Date: Mon, 29 May 2017 22:17:46 +0200
+Message-Id: <20170529201746.32046-1-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: imx6: gw54xx: add function to retrieve board
- revision from GSC
+Subject: [PATCH] ARM: imx6: gw54xx: use wdog1 for barebox
 To: barebox@lists.infradead.org
 
-This parses the board revision from the GSC EEPROm model string.
+As Barebox isn't changing the external PMIC power rails the internal
+watchdog reset is fine for the Barebox reset purposes. Watchdog 2 is
+only usable on boards with revision E or later, as this on is incapable
+of executing an internal reset.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/boards/gateworks-ventana/gsc.c | 14 ++++++++++++++
- arch/arm/boards/gateworks-ventana/gsc.h |  2 ++
- 2 files changed, 16 insertions(+)
+ arch/arm/dts/imx6q-gw54xx.dts | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm/boards/gateworks-ventana/gsc.c b/arch/arm/boards/gateworks-ventana/gsc.c
-index 3614230..92244d1 100644
---- a/arch/arm/boards/gateworks-ventana/gsc.c
-+++ b/arch/arm/boards/gateworks-ventana/gsc.c
-@@ -65,3 +65,17 @@ int gsc_i2c_write(struct i2c_client *client, u32 addr, const u8 *buf, u16 count)
- 
- 	return ret;
- }
+diff --git a/arch/arm/dts/imx6q-gw54xx.dts b/arch/arm/dts/imx6q-gw54xx.dts
+index 8113542..ec0f363 100644
+--- a/arch/arm/dts/imx6q-gw54xx.dts
++++ b/arch/arm/dts/imx6q-gw54xx.dts
+@@ -22,3 +22,11 @@
+ &sata {
+ 	status = "okay";
+ };
 +
-+char gsc_get_rev(struct i2c_client *client)
-+{
-+	int i;
-+	u8 model[16];
++&wdog1 {
++	status = "okay";
++};
 +
-+	gsc_i2c_read(client, 0x30, model, 16);
-+	for (i = sizeof(model) - 1; i > 0; i--) {
-+		if (model[i] >= 'A')
-+			return model[i];
-+	}
-+
-+	return 'A';
-+}
-diff --git a/arch/arm/boards/gateworks-ventana/gsc.h b/arch/arm/boards/gateworks-ventana/gsc.h
-index a6e7e22..13f2262 100644
---- a/arch/arm/boards/gateworks-ventana/gsc.h
-+++ b/arch/arm/boards/gateworks-ventana/gsc.h
-@@ -56,3 +56,5 @@
-  */
- int gsc_i2c_read(struct i2c_client *client, u32 addr, u8 *buf, u16 count);
- int gsc_i2c_write(struct i2c_client *client, u32 addr, const u8 *buf, u16 count);
-+
-+char gsc_get_rev(struct i2c_client *client);
++&wdog2 {
++	status = "disabled";
++};
 -- 
 2.9.4
 
