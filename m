@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dEEMN-0002R0-S8
- for barebox@lists.infradead.org; Fri, 26 May 2017 12:28:54 +0000
-References: <20170414183205.62794-1-mreimer@sdgsystems.com>
-From: Daniel Schultz <d.schultz@phytec.de>
-Message-ID: <0a3e4049-a2d7-dedb-f22e-7d4b30df8d71@phytec.de>
-Date: Fri, 26 May 2017 14:28:18 +0200
-MIME-Version: 1.0
-In-Reply-To: <20170414183205.62794-1-mreimer@sdgsystems.com>
+Received: from mail.haslerrail.com ([212.103.73.117])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dFH4x-000436-Cp
+ for barebox@lists.infradead.org; Mon, 29 May 2017 09:35:13 +0000
+From: Joye Laurent <Laurent.Joye@haslerrail.com>
+Date: Mon, 29 May 2017 09:34:43 +0000
+Message-ID: <1496050483.2610.35.camel@haslerrail.com>
 Content-Language: en-US
+Content-ID: <46C1FD440C70E94580719F92510019F7@haslerrail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,56 +17,122 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: nand_omap_gpmc: fix BCH error correction
-To: barebox@lists.infradead.org, mreimer@sdgsystems.com
+Subject: Barebox State stored in DOS partition
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-SGkgTWF0dCwKCmNvdWxkIHlvdSBnaXZlIG1lIHNvbWUgbW9yZSBpbmZvcm1hdGlvbnMgYWJvdXQg
-aG93IHlvdSBmaWd1cmVkIG91dCB0aGlzIApwcm9ibGVtIGFuZCBob3cgeW91IHRlc3RlZCBpdD8K
-ClRoZSBMaW51eCBrZXJuZWwgYW5kIEJhcmVib3ggZGlmZmVycyBhIGxvdCBpbiB0aGlzIGRyaXZl
-ci4gWW91ciAKY29uZGl0aW9uYWwgYXNzaWdubWVudCBvZiBlY2NzdGVwcyBpcyBmcm9tIHRoZSBv
-bWFwX2NvcnJlY3RfZGF0YSAKZnVuY3Rpb24sIHdoaWNoIHdpbGwgb25seSBiZSBjYWxsZWQgaWYg
-SGFtbWluZyBlcnJvciBjb3JyZWN0aW9uIGlzIHVzZWQsIApidXQgQkNIIHVzZXMgZWl0aGVyIG9t
-YXBfZWxtX2NvcnJlY3RfZGF0YSBvciBuYW5kX2JjaF9jb3JyZWN0X2RhdGEuIApUaGVzZSB0d28g
-ZnVuY3Rpb24gdXNlIHRoZSBvbGQgd2F5IG9mIGdldHRpbmcgZWNjc3RlcHMuCgpBZnRlciBJIGFw
-cGxpZWQgeW91ciBwYXRjaCwgb25seSB0aGUgZmlyc3QgNTEyIEJ5dGVzIG9mIGEgcGFnZSB3YXMg
-CmNvcnJlY3RlZCAoSSBtYWRlIG9tYXBfY29ycmVjdF9iY2ggbW9yZSB2ZXJib3NlKSwgYmVmb3Jl
-IHRoYXQgdGhlIHdob2xlIApwYWdlIHdhcyBjb3JyZWN0ZWQuIEJDSCBpbiBCYXJlYm94ICh3aGlj
-aCBpcyBkZWZhdWx0IGJ5IHRoZSBEVFMpIGNhbiAKb25seSB1c2UgdGhlIFJPTUNPREUgb25lLCB3
-aGljaCBoYXMgYSBkZWZhdWx0IEVDQyBzaXplIG9mIDUxMiBCeXRlcy4gU28sIAplY2NzdGVwcyB3
-b3VsZCBhbHdheXMgYmUgMSwgaW5zdGVhZCBvZiA0LgoKU2luY2UgaGFtbWluZyBpcyB1c2luZyB0
-aGUgb21hcF9jb3JyZWN0X2hhbW1pbmcgZnVuY3Rpb24sIG1heWJlIHRoaXMgCnBhdGNoIGlzbid0
-IG5lZWRlZD8KCi0tIApNaXQgZnJldW5kbGljaGVuIEdyw7zDn2VuLApXaXRoIGJlc3QgcmVnYXJk
-cywKICAgRGFuaWVsIFNjaHVsdHoKCkFtIDE0LjA0LjIwMTcgdW0gMjA6MzIgc2NocmllYiBNYXR0
-IFJlaW1lcjoKPiBCQ0ggZXJyb3IgZGV0ZWN0aW9uIGFuZCBjb3JyZWN0aW9uIHdhcyBvbmx5IGxv
-b2tpbmcgYXQgdGhlIGZpcnN0Cj4gb2YgZm91ciBzeW5kcm9tZSBwb2x5bm9taWFscywgd2hpY2gg
-bWVhbnQgaXQgd2FzIGZhaWxpbmcgdG8gZGV0ZWN0Cj4gYW5kIGNvcnJlY3QgYml0ZmxpcHMgaW4g
-dGhlIGxhc3QgMy80IG9mIHRoZSBkYXRhLiBJbiBlZmZlY3QsIG9ubHkKPiB0aGUgZmlyc3QgNTEy
-IGJ5dGVzIG9mIGEgMjA0OCBieXRlIHBhZ2Ugd2VyZSBiZWluZyBwcm90ZWN0ZWQgYnkgRUNDLgo+
-IAo+IFRoZSBzeW5kcm9tZSBwb2x5bm9taWFscyAoQkNIIGVycm9yIGNvZGVzKSBhcmUgc3RvcmVk
-IGluIHRoZSBOQU5EJ3MKPiBPT0IsIGVhY2ggb2Ygd2hpY2ggcHJvdGVjdHMgNTEyIGJ5dGVzIG9m
-IGRhdGEuIFRoZSBkcml2ZXIgdXNlZAo+IGVjY3N0ZXBzID0gMSB3aGljaCBlZmZlY3RpdmVseSBt
-YWRlIGl0IG9ubHkgdXNlIHRoZSBmaXJzdCBwb2x5bm9taWFsLAo+IGFuZCB0aGVyZWZvcmUgd2Fz
-IG9ubHkgcHJvdGVjdGluZyB0aGUgZmlyc3QgNTEyIGJ5dGVzIG9mIHRoZSBwYWdlLgo+IAo+IFRo
-ZSBmaXggaXMgdG8gcHVsbCBvdmVyIGEgYml0IG9mIGNvZGUgZnJvbSB0aGUga2VybmVsJ3MKPiBv
-bWFwX2NvcnJlY3RfZGF0YSgpIHRoYXQgc2V0cyBlY2NzdGVwcyA9IDQgd2hlbiB0aGUgcGFnZSBz
-aXplIGlzIDIwNDgKPiBieXRlcyBhbmQgaGFyZHdhcmUgRUNDIGlzIGJlaW5nIHVzZWQuCj4gCj4g
-U2lnbmVkLW9mZi1ieTogTWF0dCBSZWltZXIgPG1yZWltZXJAc2Rnc3lzdGVtcy5jb20+Cj4gLS0t
-Cj4gICBkcml2ZXJzL210ZC9uYW5kL25hbmRfb21hcF9ncG1jLmMgfCAzICsrLQo+ICAgMSBmaWxl
-IGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQo+IAo+IGRpZmYgLS1naXQg
-YS9kcml2ZXJzL210ZC9uYW5kL25hbmRfb21hcF9ncG1jLmMgYi9kcml2ZXJzL210ZC9uYW5kL25h
-bmRfb21hcF9ncG1jLmMKPiBpbmRleCA5ZDlkMjdlLi4yZmU2YTEwIDEwMDY0NAo+IC0tLSBhL2Ry
-aXZlcnMvbXRkL25hbmQvbmFuZF9vbWFwX2dwbWMuYwo+ICsrKyBiL2RyaXZlcnMvbXRkL25hbmQv
-bmFuZF9vbWFwX2dwbWMuYwo+IEBAIC0zMDIsNyArMzAyLDggQEAgc3RhdGljIGludCBvbWFwX2Nv
-cnJlY3RfYmNoKHN0cnVjdCBtdGRfaW5mbyAqbXRkLCB1aW50OF90ICpkYXQsCj4gICAJdW5zaWdu
-ZWQgaW50IGVycl9sb2NbOF07Cj4gICAJaW50IHNlbGVjdF80Xzg7Cj4gICAKPiAtCWludCBlY2Nz
-dGVwcyA9IG9pbmZvLT5uYW5kLmVjYy5zdGVwczsKPiArICAgICAgICBpbnQgZWNjc3RlcHMgPSAo
-bmFuZC0+ZWNjLm1vZGUgPT0gTkFORF9FQ0NfSFcpICYmCj4gKyAgICAgICAgICAgICAgICAobmFu
-ZC0+ZWNjLnNpemUgPT0gMjA0OCkgPyA0IDogMTsKPiAgIAlpbnQgZWNjc2l6ZSA9IG9pbmZvLT5u
-YW5kLmVjYy5ieXRlczsKPiAgIAo+ICAgCXN3aXRjaCAob2luZm8tPmVjY19tb2RlKSB7Cj4gCgoK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hello,
+
+I'm trying to save my state variable set inside a DOS partition.
+I'm working on a beaglebone black board.
+I use the version v2017.05.0 of barebox.
+
+I've just added the following code to the file
+arch/arm/dts/am335x-boneblack.dts file:
+	state: part2boot {
+		/* <:-) */
+		magic = <0x292D3A3C>;
+		compatible = "barebox,state";
+		backend-type = "dtb";
+		backend = &mmc2, "partname:1";
+		backend-stridesize = <512>;
+		#address-cells = <0x1>;
+		#size-cells = <0x1>;
+
+		active {
+			reg = <0x00 0x04>;
+			type = "enum32";
+			names = "rootfs1", "rootfs2";
+			default = <0>;
+		};
+
+		state {
+			reg = <0x04 0x04>;
+			type = "enum32";
+			names = "no_change", "new_image", "check_validity";
+			default = <0>;
+		};
+	};
+};
+
+Note that the related emmc device (referred as mmc2 in the dts tree, and
+as mmc1 by the barebox command devinfo) is already formatted (FAT32) on
+its second partition (mmc1.1).
+Note that the backend node is defined as suggested here
+(https://www.spinics.net/lists/u-boot-v2/msg29515.html).
+
+By starting barebox, I get the following:
+barebox 2017.05.0-UNTAGGED_VERSION-dirty #1 Mon May 29 09:52:48 CEST
+2017
+Board: TI AM335x BeagleBone black
+detected 'BeagleBone Black'
+cpsw 4a100000.ethernet: detected phy mask 0x1
+mdio_bus: miibus0: probed
+eth0: got preset MAC address: 60:64:05:fe:de:67
+cpsw 4a100000.ethernet: Failed to setup slave 1: I/O error
+am335x-phy-driver 47401300.usb-phy: am_usbphy 8ffa7fbc enabled
+am335x-phy-driver 47401b00.usb-phy: am_usbphy 8ffa92dc enabled
+musb-hdrc: ConfigData=0xde (UTMI-8, dyn FIFOs, bulk combine, bulk split,
+HB-ISO Rx, HB-ISO Tx, SoftConn)
+musb-hdrc: MHDRC RTL version 2.0 
+musb-hdrc: setup fifo_mode 4
+musb-hdrc: 28/31 max ep, 16384/16384 memory
+i2c-omap 44e0b000.i2c: bus 0 rev0.11 at 400 kHz
+omap-hsmmc 48060000.mmc: registered as 48060000.mmc
+mmc0: detected SD card version 2.0
+mmc0: registered mmc0
+omap-hsmmc 481d8000.mmc: registered as 481d8000.mmc
+mmc1: detected MMC card version 4.5
+mmc1: registered mmc1
+part2boot: Cannot resolve "backend" phandle
+state part2boot.6: probe failed: Invalid argument
+omap_wdt 44e35000.wdt: OMAP Watchdog Timer Rev 0x01
+netconsole: registered as netconsole-1
+malloc space: 0x8fefef60 -> 0x9fdfdebf (size 255 MiB)
+environment load /boot/barebox.env: No such file or directory
+Maybe you have to create the partition.
+running /env/bin/init...
+HaslerRail initialization...
+changing USB current limit to 1300 mA... done
+
+Here is the output of the command of_dump /part2boot:
+part2boot {
+        magic = <0x292d3a3c>;
+        compatible = "barebox,state";
+        backend-type = "dtb";
+        backend = "/ocp/mmc@481d8000", "partname:1";
+        backend-stridesize = <0x200>;
+        #address-cells = <0x1>;
+        #size-cells = <0x1>;
+        active {
+                reg = <0x0 0x4>;
+                type = "enum32";
+                names = "rootfs1", "rootfs2";
+                default = <0x0>;
+        };
+        state {
+                reg = <0x4 0x4>;
+                type = "enum32";
+                names = "no_change", "new_image", "check_validity";
+                default = <0x0>;
+        };
+};
+
+Could you please help me to correctly describe my state variable set
+inside the dts file?
+Is it really possible to store a variable set inside a formatted FAT32
+filesystem?
+
+Many thanks in advance for your help
+
+Laurent Joye
+HaslerRail AG
+Switzerland
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
