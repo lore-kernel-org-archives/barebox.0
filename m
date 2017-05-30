@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dFhqj-0004Yb-PR
+ id 1dFhqj-0004Yf-RR
  for barebox@lists.infradead.org; Tue, 30 May 2017 14:10:19 +0000
 From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Tue, 30 May 2017 16:09:44 +0200
-Message-Id: <20170530140947.3988-2-p.zabel@pengutronix.de>
+Date: Tue, 30 May 2017 16:09:45 +0200
+Message-Id: <20170530140947.3988-3-p.zabel@pengutronix.de>
 In-Reply-To: <20170530140947.3988-1-p.zabel@pengutronix.de>
 References: <20170530140947.3988-1-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,64 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] commands: mount: combine dev and devstr,
- which are the same
+Subject: [PATCH 3/5] fs: add parseopt_b for loop mount option
 To: barebox@lists.infradead.org
-
-Unify the device path used by the default mount and mount with specified
-mount point paths.
 
 Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
- commands/mount.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ fs/parseopt.c | 26 ++++++++++++++++++++++++++
+ fs/parseopt.h |  1 +
+ 2 files changed, 27 insertions(+)
 
-diff --git a/commands/mount.c b/commands/mount.c
-index aa769d46fe..f05e23b227 100644
---- a/commands/mount.c
-+++ b/commands/mount.c
-@@ -29,7 +29,7 @@ static int do_mount(int argc, char *argv[])
- 	int opt, verbose = 0;
- 	struct driver_d *drv;
- 	const char *type = NULL;
--	const char *mountpoint, *dev;
-+	const char *mountpoint, *devstr;
- 	const char *fsoptions = NULL;
+diff --git a/fs/parseopt.c b/fs/parseopt.c
+index 12dbe1813c..8ff83019a7 100644
+--- a/fs/parseopt.c
++++ b/fs/parseopt.c
+@@ -2,6 +2,32 @@
  
- 	while ((opt = getopt(argc, argv, "ao:t:v")) > 0) {
-@@ -70,11 +70,11 @@ static int do_mount(int argc, char *argv[])
- 		return 0;
- 	}
+ #include "parseopt.h"
  
-+	devstr = argv[optind];
++void parseopt_b(const char *options, const char *opt, bool *val)
++{
++	const char *start;
++	size_t optlen = strlen(opt);
 +
- 	if (argc == optind + 1) {
- 		struct cdev *cdev;
--		const char *path, *devstr;
--
--		devstr = argv[optind];
-+		const char *path;
- 
- 		if (!strncmp(devstr, "/dev/", 5))
- 			devstr += 5;
-@@ -97,8 +97,6 @@ static int do_mount(int argc, char *argv[])
- 	if (argc < optind + 2)
- 		return COMMAND_ERROR_USAGE;
- 
--	dev = argv[optind];
--
- 	if (argc == optind + 3) {
- 		/*
- 		 * Old behaviour: mount <dev> <type> <mountpoint>
-@@ -109,7 +107,7 @@ static int do_mount(int argc, char *argv[])
- 		mountpoint = argv[optind + 1];
- 	}
- 
--	return mount(dev, type, mountpoint, fsoptions);
-+	return mount(devstr, type, mountpoint, fsoptions);
- }
- 
- BAREBOX_CMD_HELP_START(mount)
++again:
++	start = strstr(options, opt);
++
++	if (!start) {
++		*val = false;
++		return;
++	}
++
++	if (start > options && start[-1] != ',') {
++		options = start;
++		goto again;
++	}
++
++	if (start[optlen] != ',' && start[optlen] != '\0') {
++		options = start;
++		goto again;
++	}
++
++	*val = true;
++}
++
+ void parseopt_hu(const char *options, const char *opt, unsigned short *val)
+ {
+ 	const char *start;
+diff --git a/fs/parseopt.h b/fs/parseopt.h
+index a8523b6a10..abf3be3f35 100644
+--- a/fs/parseopt.h
++++ b/fs/parseopt.h
+@@ -1 +1,2 @@
++void parseopt_b(const char *options, const char *opt, bool *val);
+ void parseopt_hu(const char *options, const char *opt, unsigned short *val);
 -- 
 2.11.0
 
