@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dFaMx-0000B5-3l
- for barebox@lists.infradead.org; Tue, 30 May 2017 06:11:04 +0000
-Date: Tue, 30 May 2017 08:10:41 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170530061041.3tdgj4vzhaebl5wb@pengutronix.de>
-References: <20170524073627.dqfb7v7td3utbcos@pengutronix.de>
- <c7e87a03-b1a7-209c-12a0-f984b2553754@mev.co.uk>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <c7e87a03-b1a7-209c-12a0-f984b2553754@mev.co.uk>
+ id 1dFhqj-0004YY-Qc
+ for barebox@lists.infradead.org; Tue, 30 May 2017 14:10:21 +0000
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Tue, 30 May 2017 16:09:43 +0200
+Message-Id: <20170530140947.3988-1-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,48 +14,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Stable branches resurrected
-To: Ian Abbott <abbotti@mev.co.uk>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/5] cdev: make file operations const
+To: barebox@lists.infradead.org
 
-Hi Ian,
+scripts/checkpatch.pl warns that struct file_operations should be const,
+but cdev->ops is not const, so without this patch we can choose between
+a warning from checkpatch and a warning from the compiler about
+discarding the const attribute when assigning the struct file_operations
+cdev->ops.
 
-On Wed, May 24, 2017 at 04:13:13PM +0100, Ian Abbott wrote:
-> On 24/05/17 08:36, Sascha Hauer wrote:
-> > Hi All,
-> > 
-> > v2017.05.0 contains some nasty bugs. This led me to the idea to
-> > resurrect the stable branches. I created stable/v2017.05 and also
-> > released v2017.05.1. Please update to this one if you are using
-> > v2017.05.0.
-> > 
-> > Experience shows that very few people semm to test the master branch,
-> > but that I get bug reports relatively fast after a release. I'll try and
-> > collect at least the bugfixes for the current release in a stable
-> > branch. I'm not yet sure how long I maintain each stable branch though,
-> > probably not too long to keep people motivated to update ;)
-> > 
-> > If you want to have a patch in a stable branch, please tell me so to
-> > keep me reminded that we have these branches.
-> 
-> The only one I can think of at the moment for the 2017.05 series is commit
-> eaf884ba55def055fd81ff3291a1a534fc8bd8f9 ("nv: Fix setting of
-> nv.dev.<devname>.<param> variables").
+Since there is no reason to modify the contents of cdev->ops after
+probing, make it const.
 
-Thanks for noting. Took this one for stable/v2017.05 aswell.
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+---
+ include/driver.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
-
+diff --git a/include/driver.h b/include/driver.h
+index 52e06f7d62..086e44636b 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -440,7 +440,7 @@ struct file_operations {
+ #define MAX_PARTUUID_STR	sizeof("00112233-4455-6677-8899-AABBCCDDEEFF")
+ 
+ struct cdev {
+-	struct file_operations *ops;
++	const struct file_operations *ops;
+ 	void *priv;
+ 	struct device_d *dev;
+ 	struct device_node *device_node;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
