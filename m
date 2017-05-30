@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dFhqj-0004Yf-RR
- for barebox@lists.infradead.org; Tue, 30 May 2017 14:10:19 +0000
+ id 1dFhqj-0004Yk-Pt
+ for barebox@lists.infradead.org; Tue, 30 May 2017 14:10:21 +0000
 From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Tue, 30 May 2017 16:09:45 +0200
-Message-Id: <20170530140947.3988-3-p.zabel@pengutronix.de>
+Date: Tue, 30 May 2017 16:09:47 +0200
+Message-Id: <20170530140947.3988-5-p.zabel@pengutronix.de>
 In-Reply-To: <20170530140947.3988-1-p.zabel@pengutronix.de>
 References: <20170530140947.3988-1-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,59 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] fs: add parseopt_b for loop mount option
+Subject: [PATCH 5/5] commands: mount: mention file loop mounts in the help text
 To: barebox@lists.infradead.org
 
 Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
- fs/parseopt.c | 26 ++++++++++++++++++++++++++
- fs/parseopt.h |  1 +
- 2 files changed, 27 insertions(+)
+ commands/mount.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/parseopt.c b/fs/parseopt.c
-index 12dbe1813c..8ff83019a7 100644
---- a/fs/parseopt.c
-+++ b/fs/parseopt.c
-@@ -2,6 +2,32 @@
- 
- #include "parseopt.h"
- 
-+void parseopt_b(const char *options, const char *opt, bool *val)
-+{
-+	const char *start;
-+	size_t optlen = strlen(opt);
-+
-+again:
-+	start = strstr(options, opt);
-+
-+	if (!start) {
-+		*val = false;
-+		return;
-+	}
-+
-+	if (start > options && start[-1] != ',') {
-+		options = start;
-+		goto again;
-+	}
-+
-+	if (start[optlen] != ',' && start[optlen] != '\0') {
-+		options = start;
-+		goto again;
-+	}
-+
-+	*val = true;
-+}
-+
- void parseopt_hu(const char *options, const char *opt, unsigned short *val)
- {
- 	const char *start;
-diff --git a/fs/parseopt.h b/fs/parseopt.h
-index a8523b6a10..abf3be3f35 100644
---- a/fs/parseopt.h
-+++ b/fs/parseopt.h
-@@ -1 +1,2 @@
-+void parseopt_b(const char *options, const char *opt, bool *val);
- void parseopt_hu(const char *options, const char *opt, unsigned short *val);
+diff --git a/commands/mount.c b/commands/mount.c
+index f05e23b227..4cf1179b7b 100644
+--- a/commands/mount.c
++++ b/commands/mount.c
+@@ -117,6 +117,7 @@ BAREBOX_CMD_HELP_TEXT("With -a the mount command mounts all block devices whose
+ BAREBOX_CMD_HELP_TEXT("can be detected automatically to /mnt/PARTNAME")
+ BAREBOX_CMD_HELP_TEXT("If mountpoint is not given, a standard mountpoint of /mnt/DEVICE")
+ BAREBOX_CMD_HELP_TEXT("is used. This directoy is created automatically if necessary.")
++BAREBOX_CMD_HELP_TEXT("With -o loop the mount command mounts a file instead of a device.")
+ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT("-a\t", "mount all blockdevices")
 -- 
 2.11.0
 
