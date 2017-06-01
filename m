@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dGUd5-00039u-Ir
- for barebox@lists.infradead.org; Thu, 01 Jun 2017 18:15:29 +0000
-Received: by mail-wm0-x243.google.com with SMTP id k15so13312856wmh.3
- for <barebox@lists.infradead.org>; Thu, 01 Jun 2017 11:15:06 -0700 (PDT)
-From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Thu,  1 Jun 2017 20:14:57 +0200
-Message-Id: <20170601181457.12858-1-aleksander@aleksander.es>
+ id 1dGWnS-00084E-4S
+ for barebox@lists.infradead.org; Thu, 01 Jun 2017 20:34:19 +0000
+Received: by mail-pf0-x243.google.com with SMTP id u26so8785978pfd.2
+ for <barebox@lists.infradead.org>; Thu, 01 Jun 2017 13:33:56 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20170601071934.oxscwirivn7c2a4b@pengutronix.de>
+References: <20170530145228.18655-1-andrew.smirnov@gmail.com>
+ <20170530145228.18655-3-andrew.smirnov@gmail.com>
+ <20170601071934.oxscwirivn7c2a4b@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu, 1 Jun 2017 13:33:55 -0700
+Message-ID: <CAHQ1cqFnvA3NuO0oDLuhD_O1Ro71tv0ZwdaEPdhb5NK=N6in4A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,60 +21,117 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] console: only bidirectional consoles allow RATP
-To: barebox@lists.infradead.org
-Cc: Aleksander Morgado <aleksander@aleksander.es>
+Subject: Re: [PATCH v2 2/4] gpiolib: Add code to support "active low" GPIOs
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Nikita Yushchenko <nikita.yoush@cogentembedded.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Chris Healy <cphealy@gmail.com>
 
-If a request to switch to RATP mode is received in an input-only
-console, ignore the request.
+On Thu, Jun 1, 2017 at 12:19 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Tue, May 30, 2017 at 07:52:26AM -0700, Andrey Smirnov wrote:
+>> So far this particular aspect of various DT-bindings has been handled
+>> on a per-driver basis. With this change, hopefully, we'll have a
+>> single place to handle necessary logic inversions and eventually
+>> would be able to migrate existing users as well as avoiding adding
+>> redundant code to new drivers.
+>>
+>> Cc: cphealy@gmail.com
+>> Cc: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+>> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+>> ---
+>>  drivers/gpio/gpiolib.c | 42 ++++++++++++++++++++++++++++++++++++++++--
+>>  include/gpio.h         | 20 ++++++++++++++++++++
+>>  2 files changed, 60 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+>> index 1f57c76..36d8874 100644
+>> --- a/drivers/gpio/gpiolib.c
+>> +++ b/drivers/gpio/gpiolib.c
+>> @@ -13,6 +13,7 @@ static LIST_HEAD(chip_list);
+>>  struct gpio_info {
+>>       struct gpio_chip *chip;
+>>       bool requested;
+>> +     bool active_low;
+>>       char *label;
+>>  };
+>>
+>> @@ -45,6 +46,15 @@ static struct gpio_info *gpio_to_desc(unsigned gpio)
+>>       return NULL;
+>>  }
+>>
+>> +static int gpio_adjust_value(struct gpio_info *gi,
+>> +                          int value)
+>> +{
+>> +     if (value < 0)
+>> +             return value;
+>> +
+>> +     return !!value ^ gi->active_low;
+>> +}
+>> +
+>>  int gpio_request(unsigned gpio, const char *label)
+>>  {
+>>       struct gpio_info *gi = gpio_to_desc(gpio);
+>> @@ -69,6 +79,7 @@ int gpio_request(unsigned gpio, const char *label)
+>>       }
+>>
+>>       gi->requested = true;
+>> +     gi->active_low = false;
+>>       gi->label = xstrdup(label);
+>>
+>>  done:
+>> @@ -93,6 +104,7 @@ void gpio_free(unsigned gpio)
+>>               gi->chip->ops->free(gi->chip, gpio - gi->chip->base);
+>>
+>>       gi->requested = false;
+>> +     gi->active_low = false;
+>>       free(gi->label);
+>>       gi->label = NULL;
+>>  }
+>> @@ -111,10 +123,15 @@ int gpio_request_one(unsigned gpio, unsigned long flags, const char *label)
+>>       if (err)
+>>               return err;
+>>
+>> +     if (flags & GPIOF_ACTIVE_LOW) {
+>> +             struct gpio_info *gi = gpio_to_desc(gpio);
+>> +             gi->active_low = true;
+>> +     }
+>> +
+>>       if (flags & GPIOF_DIR_IN)
+>>               err = gpio_direction_input(gpio);
+>>       else
+>> -             err = gpio_direction_output(gpio,
+>> +             err = gpio_direction_active(gpio,
+>>                               (flags & GPIOF_INIT_HIGH) ? 1 : 0);
+>
+> And here things get messy.
+>
+> For me 'high' and 'low' represent the physical values of a GPIO whereas
+> "active" and "inactive" represent the logical values of a GPIO. The flag
+> is named GPIOF_INIT_*HIGH*, not GPIOF_INIT_*ACTIVE*, which means a GPIO
+> with this flag should get the physical 'high' value, not the logical
+> 'active' value.
+>
+> They goofed the binding in the kernel, so I'm afraid there's nothing we
+> can do about this :(
 
-This actually also avoids segfaulting later on:
+So do we want to:
 
-    #0  0x0000000000000000 in ?? ()
-    #1  0x000000000040b2a4 in console_send (r=<optimized out>, pkt=0x7fffffffd8ec, len=4) at common/ratp.c:102
-    #2  0x000000000042ab99 in ratp_behaviour_a (pkt=0x7ffff7298780, ri=0x7ffff72766d0) at lib/ratp.c:530
-    #3  ratp_state_machine (pkt=0x7ffff7298780, ri=0x7ffff72766d0) at lib/ratp.c:1384
-    #4  ratp_poll (ratp=0x7ffff7277ed8) at lib/ratp.c:1561
-    #5  0x000000000042b2ab in ratp_establish (ratp=ratp@entry=0x7ffff7277ed8, active=active@entry=false, timeout_ms=timeout_ms@entry=100) at lib/ratp.c:1645
-    #6  0x000000000040b888 in barebox_ratp (cdev=cdev@entry=0x7ffff7212bd0) at common/ratp.c:470
-    #7  0x00000000004046c3 in getc_raw () at common/console.c:416
-    ...
+a) Keep things as is in v2(I am assuming that is not really an option)
+b) Improve the optics by introducing GPIOF_INIT_ACTIVE, but keeping
+the behavior of hog nodes consistent with Linux kernel
+c) Drop this particular chunk of code, not support keep using
+gpio_direciton_output(), and print a warning when we encounter a hog
+with 'active low' set
+d) Drop active low API patch and handle that aspect inside of code of
+the driver that needs it
+e) Something else
 
-Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
----
+?
 
-Hey Sascha,
-
-Looks like I may actually need to update the options to allow setting up bidirectional consoles, instead of separate input/output ones. Otherwise I won't be able to use RATP over the FIFO-based console. This patch fixes a segfault happening in barebox sandbox when the input-only console receives a request to switch to RATP mode, it ends up crashing afterwards when the SYN/ACK response is to be sent via the non-existent output path.
-
-Cheers!
-
----
- common/console.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/common/console.c b/common/console.c
-index f4c799fa5..f8677659e 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -412,7 +412,9 @@ static int getc_raw(void)
- 			if (cdev->tstc(cdev)) {
- 				int ch = cdev->getc(cdev);
-
--				if (IS_ENABLED(CONFIG_RATP) && ch == 0x01) {
-+				if (IS_ENABLED(CONFIG_RATP) &&
-+				    ch == 0x01 &&
-+				    (cdev->f_active & CONSOLE_STDOUT)) {
- 					barebox_ratp(cdev);
- 					return -1;
- 				}
---
-2.13.0
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
