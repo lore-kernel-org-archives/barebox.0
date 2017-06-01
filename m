@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dGP5a-00030f-Rp
- for barebox@lists.infradead.org; Thu, 01 Jun 2017 12:20:33 +0000
-Date: Thu, 1 Jun 2017 14:20:06 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170601122006.akyvhivh4tsxng7v@pengutronix.de>
-References: <1496313450-14507-1-git-send-email-p.zabel@pengutronix.de>
+ id 1dGPC3-0006BC-E0
+ for barebox@lists.infradead.org; Thu, 01 Jun 2017 12:27:14 +0000
+Received: by mail-wm0-x244.google.com with SMTP id b84so10953445wmh.0
+ for <barebox@lists.infradead.org>; Thu, 01 Jun 2017 05:26:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1496313450-14507-1-git-send-email-p.zabel@pengutronix.de>
+In-Reply-To: <20170601073043.3r6cbj3ib3sjv72o@pengutronix.de>
+References: <20170530214634.6768-1-aleksander@aleksander.es>
+ <20170601073043.3r6cbj3ib3sjv72o@pengutronix.de>
+From: Aleksander Morgado <aleksander@aleksander.es>
+Date: Thu, 1 Jun 2017 14:26:29 +0200
+Message-ID: <CAAP7ucJJ22msx8z1vjV4LUOAUCs4z0FUsfzydfi92P80x4Psww@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,83 +24,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 1/3] fs: add parseopt_b for loop mount option
-To: Philipp Zabel <p.zabel@pengutronix.de>
+Subject: Re: [PATCH] Documentation: remote-control: fix typo
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jun 01, 2017 at 12:37:28PM +0200, Philipp Zabel wrote:
-> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-> ---
-> No changes since v2.
-> ---
->  fs/parseopt.c | 26 ++++++++++++++++++++++++++
->  fs/parseopt.h |  1 +
->  2 files changed, 27 insertions(+)
+On Thu, Jun 1, 2017 at 9:30 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Tue, May 30, 2017 at 11:46:34PM +0200, Aleksander Morgado wrote:
+>> Correctly reference `--port` instead of       `--baudrate` when explaining
+>> how to specify the port.
+>>
+>> Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
+>> ---
+>>  Documentation/user/remote-control.rst | 7 +++----
+>>  1 file changed, 3 insertions(+), 4 deletions(-)
+>
+> Applied, thanks
 
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/fs/parseopt.c b/fs/parseopt.c
-> index 12dbe1813c..8ff83019a7 100644
-> --- a/fs/parseopt.c
-> +++ b/fs/parseopt.c
-> @@ -2,6 +2,32 @@
->  
->  #include "parseopt.h"
->  
-> +void parseopt_b(const char *options, const char *opt, bool *val)
-> +{
-> +	const char *start;
-> +	size_t optlen = strlen(opt);
-> +
-> +again:
-> +	start = strstr(options, opt);
-> +
-> +	if (!start) {
-> +		*val = false;
-> +		return;
-> +	}
-> +
-> +	if (start > options && start[-1] != ',') {
-> +		options = start;
-> +		goto again;
-> +	}
-> +
-> +	if (start[optlen] != ',' && start[optlen] != '\0') {
-> +		options = start;
-> +		goto again;
-> +	}
-> +
-> +	*val = true;
-> +}
-> +
->  void parseopt_hu(const char *options, const char *opt, unsigned short *val)
->  {
->  	const char *start;
-> diff --git a/fs/parseopt.h b/fs/parseopt.h
-> index a8523b6a10..abf3be3f35 100644
-> --- a/fs/parseopt.h
-> +++ b/fs/parseopt.h
-> @@ -1 +1,2 @@
-> +void parseopt_b(const char *options, const char *opt, bool *val);
->  void parseopt_hu(const char *options, const char *opt, unsigned short *val);
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Sorry I'm a bit out of the loop, in which git repository are the
+patches applied? Didn't see them in
+https://git.pengutronix.de/cgit/barebox so I assume you have a 'next'
+repo somewhere?
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Aleksander
+https://aleksander.es
 
 _______________________________________________
 barebox mailing list
