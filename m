@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dGJUB-0002a5-4S
- for barebox@lists.infradead.org; Thu, 01 Jun 2017 06:21:33 +0000
-Date: Thu, 1 Jun 2017 08:21:06 +0200
+ id 1dGJdt-0006Zw-GZ
+ for barebox@lists.infradead.org; Thu, 01 Jun 2017 06:31:35 +0000
+Date: Thu, 1 Jun 2017 08:31:11 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170601062106.hx52egldtsuwhhd5@pengutronix.de>
-References: <20170529200242.17934-1-dev@lynxeye.de>
+Message-ID: <20170601063111.k36wjyxac6uwslgv@pengutronix.de>
+References: <20170530140947.3988-1-p.zabel@pengutronix.de>
+ <20170530140947.3988-4-p.zabel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170529200242.17934-1-dev@lynxeye.de>
+In-Reply-To: <20170530140947.3988-4-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,66 +23,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: imx6: gw54xx: add function to retrieve board
- revision from GSC
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [PATCH 4/5] fs: add cdev_create_from_file for loop mount option
+To: Philipp Zabel <p.zabel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, May 29, 2017 at 10:02:41PM +0200, Lucas Stach wrote:
-> This parses the board revision from the GSC EEPROm model string.
-> 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> ---
->  arch/arm/boards/gateworks-ventana/gsc.c | 14 ++++++++++++++
->  arch/arm/boards/gateworks-ventana/gsc.h |  2 ++
->  2 files changed, 16 insertions(+)
+Hi Philipp,
 
-Applied, thanks
+On Tue, May 30, 2017 at 04:09:46PM +0200, Philipp Zabel wrote:
+> Allow to create a loopback cdev from a file.
+> 
+> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+> ---
+>  fs/devfs-core.c  | 81 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  fs/fs.c          | 21 ++++++++++++---
+>  include/driver.h |  1 +
+>  3 files changed, 99 insertions(+), 4 deletions(-)
+> 
+> diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+> +static ssize_t loop_write(struct cdev *cdev, const void *buf, size_t count,
+> +		loff_t offset, ulong flags)
+> +{
+> +	struct loop_priv *priv = cdev->priv;
+> +	loff_t ofs;
+> +
+> +	ofs = lseek(priv->fd, offset, SEEK_SET);
+> +	if (ofs < 0)
+> +		return ofs;
+> +
+> +	return write(priv->fd, buf, count);
+> +}
+> +
+> +static const struct file_operations loop_ops = {
+> +	.read = loop_read,
+> +	.write = loop_write,
+> +	.memmap = generic_memmap_rw,
+> +	.lseek = dev_lseek_default,
+> +};
+> +
+> +struct cdev *cdev_create_from_file(const char *path, ulong flags)
+
+Looks good, but I'm missing the counterpart of this function and its
+usage in umount().
 
 Sascha
-
-> 
-> diff --git a/arch/arm/boards/gateworks-ventana/gsc.c b/arch/arm/boards/gateworks-ventana/gsc.c
-> index 3614230..92244d1 100644
-> --- a/arch/arm/boards/gateworks-ventana/gsc.c
-> +++ b/arch/arm/boards/gateworks-ventana/gsc.c
-> @@ -65,3 +65,17 @@ int gsc_i2c_write(struct i2c_client *client, u32 addr, const u8 *buf, u16 count)
->  
->  	return ret;
->  }
-> +
-> +char gsc_get_rev(struct i2c_client *client)
-> +{
-> +	int i;
-> +	u8 model[16];
-> +
-> +	gsc_i2c_read(client, 0x30, model, 16);
-> +	for (i = sizeof(model) - 1; i > 0; i--) {
-> +		if (model[i] >= 'A')
-> +			return model[i];
-> +	}
-> +
-> +	return 'A';
-> +}
-> diff --git a/arch/arm/boards/gateworks-ventana/gsc.h b/arch/arm/boards/gateworks-ventana/gsc.h
-> index a6e7e22..13f2262 100644
-> --- a/arch/arm/boards/gateworks-ventana/gsc.h
-> +++ b/arch/arm/boards/gateworks-ventana/gsc.h
-> @@ -56,3 +56,5 @@
->   */
->  int gsc_i2c_read(struct i2c_client *client, u32 addr, u8 *buf, u16 count);
->  int gsc_i2c_write(struct i2c_client *client, u32 addr, const u8 *buf, u16 count);
-> +
-> +char gsc_get_rev(struct i2c_client *client);
-> -- 
-> 2.9.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
