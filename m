@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dGMYB-0000mc-0D
- for barebox@lists.infradead.org; Thu, 01 Jun 2017 09:37:52 +0000
-Message-ID: <1496309849.3204.0.camel@pengutronix.de>
+ id 1dGNUL-0001Ed-33
+ for barebox@lists.infradead.org; Thu, 01 Jun 2017 10:38:00 +0000
 From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Thu, 01 Jun 2017 11:37:29 +0200
-In-Reply-To: <20170601063111.k36wjyxac6uwslgv@pengutronix.de>
-References: <20170530140947.3988-1-p.zabel@pengutronix.de>
- <20170530140947.3988-4-p.zabel@pengutronix.de>
- <20170601063111.k36wjyxac6uwslgv@pengutronix.de>
-Mime-Version: 1.0
+Date: Thu,  1 Jun 2017 12:37:30 +0200
+Message-Id: <1496313450-14507-3-git-send-email-p.zabel@pengutronix.de>
+In-Reply-To: <1496313450-14507-1-git-send-email-p.zabel@pengutronix.de>
+References: <1496313450-14507-1-git-send-email-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,59 +16,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] fs: add cdev_create_from_file for loop mount option
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v3 3/3] commands: mount: mention file loop mounts in the help
+ text
+To: barebox@lists.infradead.org
 
-On Thu, 2017-06-01 at 08:31 +0200, Sascha Hauer wrote:
-> Hi Philipp,
-> 
-> On Tue, May 30, 2017 at 04:09:46PM +0200, Philipp Zabel wrote:
-> > Allow to create a loopback cdev from a file.
-> > 
-> > Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-> > ---
-> >  fs/devfs-core.c  | 81 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-> >  fs/fs.c          | 21 ++++++++++++---
-> >  include/driver.h |  1 +
-> >  3 files changed, 99 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-> > +static ssize_t loop_write(struct cdev *cdev, const void *buf, size_t count,
-> > +		loff_t offset, ulong flags)
-> > +{
-> > +	struct loop_priv *priv = cdev->priv;
-> > +	loff_t ofs;
-> > +
-> > +	ofs = lseek(priv->fd, offset, SEEK_SET);
-> > +	if (ofs < 0)
-> > +		return ofs;
-> > +
-> > +	return write(priv->fd, buf, count);
-> > +}
-> > +
-> > +static const struct file_operations loop_ops = {
-> > +	.read = loop_read,
-> > +	.write = loop_write,
-> > +	.memmap = generic_memmap_rw,
-> > +	.lseek = dev_lseek_default,
-> > +};
-> > +
-> > +struct cdev *cdev_create_from_file(const char *path, ulong flags)
-> 
-> Looks good, but I'm missing the counterpart of this function and its
-> usage in umount().
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+---
+No changes since v2.
+---
+ commands/mount.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks, I'll add a .close callback to loop_ops to call close(priv->fd)
-on umount.
-
-regards
-Philipp
-
+diff --git a/commands/mount.c b/commands/mount.c
+index f05e23b227..4cf1179b7b 100644
+--- a/commands/mount.c
++++ b/commands/mount.c
+@@ -117,6 +117,7 @@ BAREBOX_CMD_HELP_TEXT("With -a the mount command mounts all block devices whose
+ BAREBOX_CMD_HELP_TEXT("can be detected automatically to /mnt/PARTNAME")
+ BAREBOX_CMD_HELP_TEXT("If mountpoint is not given, a standard mountpoint of /mnt/DEVICE")
+ BAREBOX_CMD_HELP_TEXT("is used. This directoy is created automatically if necessary.")
++BAREBOX_CMD_HELP_TEXT("With -o loop the mount command mounts a file instead of a device.")
+ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT("-a\t", "mount all blockdevices")
+-- 
+2.11.0
 
 
 _______________________________________________
