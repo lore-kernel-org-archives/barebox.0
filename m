@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
+Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dGU60-0006jR-5L
- for barebox@lists.infradead.org; Thu, 01 Jun 2017 17:41:19 +0000
-Received: by mail-wm0-x244.google.com with SMTP id k15so13104501wmh.3
- for <barebox@lists.infradead.org>; Thu, 01 Jun 2017 10:40:54 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20170601123107.mwtl34x5myx5wbqm@pengutronix.de>
-References: <20170530214634.6768-1-aleksander@aleksander.es>
- <20170601073043.3r6cbj3ib3sjv72o@pengutronix.de>
- <CAAP7ucJJ22msx8z1vjV4LUOAUCs4z0FUsfzydfi92P80x4Psww@mail.gmail.com>
- <20170601123107.mwtl34x5myx5wbqm@pengutronix.de>
+ id 1dGUd5-00039u-Ir
+ for barebox@lists.infradead.org; Thu, 01 Jun 2017 18:15:29 +0000
+Received: by mail-wm0-x243.google.com with SMTP id k15so13312856wmh.3
+ for <barebox@lists.infradead.org>; Thu, 01 Jun 2017 11:15:06 -0700 (PDT)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Thu, 1 Jun 2017 19:40:33 +0200
-Message-ID: <CAAP7uc+dr8VTAcUt18VHm5Kmcb4nuGGgH=NrvTQbHJ1GYzapCA@mail.gmail.com>
+Date: Thu,  1 Jun 2017 20:14:57 +0200
+Message-Id: <20170601181457.12858-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +16,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: remote-control: fix typo
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] console: only bidirectional consoles allow RATP
+To: barebox@lists.infradead.org
+Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-On Thu, Jun 1, 2017 at 2:31 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> >> Correctly reference `--port` instead of       `--baudrate` when explaining
->> >> how to specify the port.
->> >>
->> >> Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
->> >> ---
->> >>  Documentation/user/remote-control.rst | 7 +++----
->> >>  1 file changed, 3 insertions(+), 4 deletions(-)
->> >
->> > Applied, thanks
->>
->> Sorry I'm a bit out of the loop, in which git repository are the
->> patches applied? Didn't see them in
->> https://git.pengutronix.de/cgit/barebox so I assume you have a 'next'
->> repo somewhere?
->
-> I haven't pushed yet, try again. The repository is the correct one.
+If a request to switch to RATP mode is received in an input-only
+console, ignore the request.
 
-Got it now, thanks.
+This actually also avoids segfaulting later on:
 
--- 
-Aleksander
-https://aleksander.es
+    #0  0x0000000000000000 in ?? ()
+    #1  0x000000000040b2a4 in console_send (r=<optimized out>, pkt=0x7fffffffd8ec, len=4) at common/ratp.c:102
+    #2  0x000000000042ab99 in ratp_behaviour_a (pkt=0x7ffff7298780, ri=0x7ffff72766d0) at lib/ratp.c:530
+    #3  ratp_state_machine (pkt=0x7ffff7298780, ri=0x7ffff72766d0) at lib/ratp.c:1384
+    #4  ratp_poll (ratp=0x7ffff7277ed8) at lib/ratp.c:1561
+    #5  0x000000000042b2ab in ratp_establish (ratp=ratp@entry=0x7ffff7277ed8, active=active@entry=false, timeout_ms=timeout_ms@entry=100) at lib/ratp.c:1645
+    #6  0x000000000040b888 in barebox_ratp (cdev=cdev@entry=0x7ffff7212bd0) at common/ratp.c:470
+    #7  0x00000000004046c3 in getc_raw () at common/console.c:416
+    ...
+
+Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
+---
+
+Hey Sascha,
+
+Looks like I may actually need to update the options to allow setting up bidirectional consoles, instead of separate input/output ones. Otherwise I won't be able to use RATP over the FIFO-based console. This patch fixes a segfault happening in barebox sandbox when the input-only console receives a request to switch to RATP mode, it ends up crashing afterwards when the SYN/ACK response is to be sent via the non-existent output path.
+
+Cheers!
+
+---
+ common/console.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/common/console.c b/common/console.c
+index f4c799fa5..f8677659e 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -412,7 +412,9 @@ static int getc_raw(void)
+ 			if (cdev->tstc(cdev)) {
+ 				int ch = cdev->getc(cdev);
+
+-				if (IS_ENABLED(CONFIG_RATP) && ch == 0x01) {
++				if (IS_ENABLED(CONFIG_RATP) &&
++				    ch == 0x01 &&
++				    (cdev->f_active & CONSOLE_STDOUT)) {
+ 					barebox_ratp(cdev);
+ 					return -1;
+ 				}
+--
+2.13.0
 
 _______________________________________________
 barebox mailing list
