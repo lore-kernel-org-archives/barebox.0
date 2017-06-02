@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dGfRc-00073a-6H
- for barebox@lists.infradead.org; Fri, 02 Jun 2017 05:48:21 +0000
-Received: by mail-pf0-x241.google.com with SMTP id n23so11376804pfb.3
- for <barebox@lists.infradead.org>; Thu, 01 Jun 2017 22:47:59 -0700 (PDT)
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1dGhUa-0001r8-BC
+ for barebox@lists.infradead.org; Fri, 02 Jun 2017 07:59:34 +0000
+References: <1494587239-33771-1-git-send-email-d.schultz@phytec.de>
+ <1494587239-33771-2-git-send-email-d.schultz@phytec.de>
+ <20170517062659.t4ir7yv73jogpmpv@pengutronix.de>
+From: Daniel Schultz <d.schultz@phytec.de>
+Message-ID: <2b514c8e-09f6-ca7f-aeda-039746e7261e@phytec.de>
+Date: Fri, 2 Jun 2017 09:59:00 +0200
 MIME-Version: 1.0
-In-Reply-To: <20170602052832.h7kf3jtabx5zp3uo@pengutronix.de>
-References: <20170530145228.18655-1-andrew.smirnov@gmail.com>
- <20170530145228.18655-3-andrew.smirnov@gmail.com>
- <20170601071934.oxscwirivn7c2a4b@pengutronix.de>
- <CAHQ1cqFnvA3NuO0oDLuhD_O1Ro71tv0ZwdaEPdhb5NK=N6in4A@mail.gmail.com>
- <20170602052832.h7kf3jtabx5zp3uo@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 1 Jun 2017 22:47:58 -0700
-Message-ID: <CAHQ1cqEkQCBzYsC9xdsDtmbbcJsr71D+DnvWi4ASEDQA1CH69w@mail.gmail.com>
+In-Reply-To: <20170517062659.t4ir7yv73jogpmpv@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,121 +20,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/4] gpiolib: Add code to support "active low" GPIOs
+Subject: Re: [PATCH v3 2/4] arm: boards: phytec-som-am335x: Add automount
+ script
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Nikita Yushchenko <nikita.yoush@cogentembedded.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Chris Healy <cphealy@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Thu, Jun 1, 2017 at 10:28 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Thu, Jun 01, 2017 at 01:33:55PM -0700, Andrey Smirnov wrote:
->> On Thu, Jun 1, 2017 at 12:19 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> > On Tue, May 30, 2017 at 07:52:26AM -0700, Andrey Smirnov wrote:
->> >> So far this particular aspect of various DT-bindings has been handled
->> >> on a per-driver basis. With this change, hopefully, we'll have a
->> >> single place to handle necessary logic inversions and eventually
->> >> would be able to migrate existing users as well as avoiding adding
->> >> redundant code to new drivers.
->> >>
->> >> Cc: cphealy@gmail.com
->> >> Cc: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
->> >> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
->> >> ---
->> >>  drivers/gpio/gpiolib.c | 42 ++++++++++++++++++++++++++++++++++++++++--
->> >>  include/gpio.h         | 20 ++++++++++++++++++++
->> >>  2 files changed, 60 insertions(+), 2 deletions(-)
->> >>
->> >> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
->> >> index 1f57c76..36d8874 100644
->> >> --- a/drivers/gpio/gpiolib.c
->> >> +++ b/drivers/gpio/gpiolib.c
->> >> @@ -13,6 +13,7 @@ static LIST_HEAD(chip_list);
->> >>  struct gpio_info {
->> >>       struct gpio_chip *chip;
->> >>       bool requested;
->> >> +     bool active_low;
->> >>       char *label;
->> >>  };
->> >>
->> >> @@ -45,6 +46,15 @@ static struct gpio_info *gpio_to_desc(unsigned gpio)
->> >>       return NULL;
->> >>  }
->> >>
->> >> +static int gpio_adjust_value(struct gpio_info *gi,
->> >> +                          int value)
->> >> +{
->> >> +     if (value < 0)
->> >> +             return value;
->> >> +
->> >> +     return !!value ^ gi->active_low;
->> >> +}
->> >> +
->> >>  int gpio_request(unsigned gpio, const char *label)
->> >>  {
->> >>       struct gpio_info *gi = gpio_to_desc(gpio);
->> >> @@ -69,6 +79,7 @@ int gpio_request(unsigned gpio, const char *label)
->> >>       }
->> >>
->> >>       gi->requested = true;
->> >> +     gi->active_low = false;
->> >>       gi->label = xstrdup(label);
->> >>
->> >>  done:
->> >> @@ -93,6 +104,7 @@ void gpio_free(unsigned gpio)
->> >>               gi->chip->ops->free(gi->chip, gpio - gi->chip->base);
->> >>
->> >>       gi->requested = false;
->> >> +     gi->active_low = false;
->> >>       free(gi->label);
->> >>       gi->label = NULL;
->> >>  }
->> >> @@ -111,10 +123,15 @@ int gpio_request_one(unsigned gpio, unsigned long flags, const char *label)
->> >>       if (err)
->> >>               return err;
->> >>
->> >> +     if (flags & GPIOF_ACTIVE_LOW) {
->> >> +             struct gpio_info *gi = gpio_to_desc(gpio);
->> >> +             gi->active_low = true;
->> >> +     }
->> >> +
->> >>       if (flags & GPIOF_DIR_IN)
->> >>               err = gpio_direction_input(gpio);
->> >>       else
->> >> -             err = gpio_direction_output(gpio,
->> >> +             err = gpio_direction_active(gpio,
->> >>                               (flags & GPIOF_INIT_HIGH) ? 1 : 0);
->> >
->> > And here things get messy.
->> >
->> > For me 'high' and 'low' represent the physical values of a GPIO whereas
->> > "active" and "inactive" represent the logical values of a GPIO. The flag
->> > is named GPIOF_INIT_*HIGH*, not GPIOF_INIT_*ACTIVE*, which means a GPIO
->> > with this flag should get the physical 'high' value, not the logical
->> > 'active' value.
->> >
->> > They goofed the binding in the kernel, so I'm afraid there's nothing we
->> > can do about this :(
->>
->> So do we want to:
->>
->> a) Keep things as is in v2(I am assuming that is not really an option)
->> b) Improve the optics by introducing GPIOF_INIT_ACTIVE, but keeping
->> the behavior of hog nodes consistent with Linux kernel
->
-> We must keep the behaviour consistent with the Kernel, everything else
-> is not an option. A GPIOF_INIT_ACTIVE flag sounds like a good idea. The
-> place where "output-[high|low]" is translated into this flag seems a
-> good place to put a big comment what is going on.
->
-
-Sounds good. I'll update the patchset accordingly.
-
-Thanks,
-Andrey Smirnov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgpBbSAxNy4wNS4yMDE3IHVtIDA4OjI2IHNjaHJpZWIgU2FzY2hhIEhhdWVyOgo+IE9uIEZy
+aSwgTWF5IDEyLCAyMDE3IGF0IDAxOjA3OjE3UE0gKzAyMDAsIERhbmllbCBTY2h1bHR6IHdyb3Rl
+Ogo+PiBFYWNoIE1NQyBib290IHNvdXJjZSBpcyBtb3VudGVkIHRvIC9tbnQvbW1jTi4wLiBUbyBt
+YWtlIHRoZSBub3QtbW91bnRlZAo+PiBib290IHNvdXJjZSBhdmFpbGFibGUgaW4gQmFyZWJveCwg
+YW4gYXV0b21vdW50IHNjcmlwdCBtb3VudHMKPj4gdGhpcyBkZXZpY2UgYWxzbyB0byAvbW50Lywg
+aWYgdGhlIGRpcmVjdG9yeSB3aWxsIGJlIGFjY2Vzc2VkLgo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBE
+YW5pZWwgU2NodWx0eiA8ZC5zY2h1bHR6QHBoeXRlYy5kZT4KPj4gLS0tCj4+ICAgLi4uL2RlZmF1
+bHRlbnYtcGh5c29tLWFtMzM1eC9pbml0L2F1dG9tb3VudCAgICAgICAgIHwgMjEgKysrKysrKysr
+KysrKysrKysrKysrCj4+ICAgMSBmaWxlIGNoYW5nZWQsIDIxIGluc2VydGlvbnMoKykKPj4gICBj
+cmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1
+bHRlbnYtcGh5c29tLWFtMzM1eC9pbml0L2F1dG9tb3VudAo+IAo+IFRoaXMgc2hvdWxkIG5vdCBi
+ZSBuZWVkZWQgd2hlbiAiZnM6IENyZWF0ZSBhdXRvbW91bnQgZW50cmllcyBmb3IgdGhlCj4gZGVm
+YXVsdCBtb3VudCBwYXRoZXMiIGlzIGFwcGxpZWQsIHJpZ2h0PwoKSWYgeW91ciBwYXRjaCB3aWxs
+IG1vdW50IGV2ZXJ5IG1vdW50YWJsZSBkZXZpY2UgdG8gL21udC8sIHRoaXMgcGF0Y2ggaXMgCm5v
+dCBuZWNlc3NhcnkuCgpEYW5pZWwKPiAKPiBTYXNjaGEKPiAKPj4KPj4gZGlmZiAtLWdpdCBhL2Fy
+Y2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgv
+aW5pdC9hdXRvbW91bnQgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVs
+dGVudi1waHlzb20tYW0zMzV4L2luaXQvYXV0b21vdW50Cj4+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0
+Cj4+IGluZGV4IDAwMDAwMDAuLjUzZWNiZTMKPj4gLS0tIC9kZXYvbnVsbAo+PiArKysgYi9hcmNo
+L2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2lu
+aXQvYXV0b21vdW50Cj4+IEBAIC0wLDAgKzEsMjEgQEAKPj4gKyMhL2Jpbi9zaAo+PiArCj4+ICsj
+IGF1dG9tb3VudCB0ZnRwIHNlcnZlciBiYXNlZCBvbiAkZXRoMC5zZXJ2ZXJpcAo+PiArCj4+ICtt
+a2RpciAtcCAvbW50L3RmdHAKPj4gK2F1dG9tb3VudCAvbW50L3RmdHAgJ2lmdXAgZXRoMCAmJiBt
+b3VudCAtdCB0ZnRwICRldGgwLnNlcnZlcmlwIC9tbnQvdGZ0cCcKPj4gKwo+PiArIyBhdXRvbW91
+bnQgbmZzIHNlcnZlcidzIG5mc3Jvb3QKPj4gKwo+PiArbWtkaXIgLXAgL21udC9uZnMKPj4gK2F1
+dG9tb3VudCAvbW50L25mcyAnaWZ1cCBldGgwICYmIG1vdW50IC10IG5mcyAke2V0aDAuc2VydmVy
+aXB9Oi9ob21lLyR7Z2xvYmFsLnVzZXJ9L25mc3Jvb3QvJHtnbG9iYWwuaG9zdG5hbWV9IC9tbnQv
+bmZzJwo+PiArCj4+ICsjYXV0b21vdW50IFNEIGNhcmQgYW5kIEVNTUMgYm9vdCBwYXJ0aXRpb25z
+Cj4+ICsKPj4gK2lmIFsgJGJvb3Rzb3VyY2UgPSBtbWMgLWEgJGJvb3Rzb3VyY2VfaW5zdGFuY2Ug
+PSAxIF07IHRoZW4KPj4gKwlta2RpciAtcCAvbW50L21tYzAuMAo+PiArCWF1dG9tb3VudCAvbW50
+L21tYzAuMCAnWyAtZSAvZGV2L21tYzAuMCBdICYmIG1vdW50IC9kZXYvbW1jMC4wIC9tbnQvbW1j
+MC4wJwo+PiArZWxzZQo+PiArCW1rZGlyIC1wIC9tbnQvbW1jMS4wCj4+ICsJYXV0b21vdW50IC9t
+bnQvbW1jMS4wICdbIC1lIC9kZXYvbW1jMS4wIF0gJiYgbW91bnQgL2Rldi9tbWMxLjAgL21udC9t
+bWMxLjAnCj4+ICtmaQo+PiAtLSAKPj4gMS45LjEKPj4KPj4KPj4gX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPj4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPj4g
+YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo+Pgo+IAoKLS0gCk1pdCBmcmV1bmRsaWNoZW4gR3LD
+vMOfZW4sCldpdGggYmVzdCByZWdhcmRzLAogICBEYW5pZWwgU2NodWx0egoKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
+YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
