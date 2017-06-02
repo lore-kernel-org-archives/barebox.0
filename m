@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dGkUq-0002EZ-4w
- for barebox@lists.infradead.org; Fri, 02 Jun 2017 11:12:05 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id A11EBA00409
- for <barebox@lists.infradead.org>; Fri,  2 Jun 2017 13:12:35 +0200 (CEST)
-From: Daniel Schultz <d.schultz@phytec.de>
-Date: Fri, 2 Jun 2017 13:11:36 +0200
-Message-Id: <1496401896-38147-1-git-send-email-d.schultz@phytec.de>
+Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dGlGm-0006o3-9j
+ for barebox@lists.infradead.org; Fri, 02 Jun 2017 12:01:34 +0000
+Received: by mail-wm0-x244.google.com with SMTP id b84so18541845wmh.0
+ for <barebox@lists.infradead.org>; Fri, 02 Jun 2017 05:01:10 -0700 (PDT)
+From: Aleksander Morgado <aleksander@aleksander.es>
+Date: Fri,  2 Jun 2017 14:01:05 +0200
+Message-Id: <20170602120105.20663-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +21,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fs: Makefile: Add parseopt to all builds
+Subject: [PATCH] sandbox: new --stdinout option to enable a bidirectional
+ console
 To: barebox@lists.infradead.org
+Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-parseopt.h was included to fs.c with commit 9248b, but parseopt.o has a
-dependency to CONFIG_FS_NFS.
+In addition to allowing read-only and write-only consoles with --stdin
+and --stdout, we now allow bidirectional read/write consoles with FIFO
+files. This is e.g. to allow doing RATP over the FIFO based consoles.
 
-Moved parseopt.o to the default build to eliminate build failures.
-
-Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
- fs/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/sandbox/os/common.c | 53 ++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 42 insertions(+), 11 deletions(-)
 
-diff --git a/fs/Makefile b/fs/Makefile
-index f2bb702..b3f929f 100644
---- a/fs/Makefile
-+++ b/fs/Makefile
-@@ -4,11 +4,11 @@ obj-$(CONFIG_FS_RAMFS)	+= ramfs.o
- obj-y			+= devfs-core.o
- obj-$(CONFIG_FS_DEVFS)	+= devfs.o
- obj-$(CONFIG_FS_FAT)	+= fat/
--obj-y	+= fs.o
-+obj-y	+= fs.o parseopt.o
- obj-$(CONFIG_FS_UBIFS)	+= ubifs/
- obj-$(CONFIG_FS_TFTP)	+= tftp.o
- obj-$(CONFIG_FS_OMAP4_USBBOOT)	+= omap4_usbbootfs.o
--obj-$(CONFIG_FS_NFS)	+= nfs.o parseopt.o
-+obj-$(CONFIG_FS_NFS)	+= nfs.o
- obj-$(CONFIG_FS_BPKFS) += bpkfs.o
- obj-$(CONFIG_FS_UIMAGEFS)	+= uimagefs.o
- obj-$(CONFIG_FS_EFI)	 += efi.o
+diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
+index 8cf087313..665e8194e 100644
+--- a/arch/sandbox/os/common.c
++++ b/arch/sandbox/os/common.c
+@@ -312,26 +312,28 @@ static int add_dtb(const char *file)
+ static void print_usage(const char*);
+ 
+ static struct option long_options[] = {
+-	{"help",   0, 0, 'h'},
+-	{"malloc", 1, 0, 'm'},
+-	{"image",  1, 0, 'i'},
+-	{"env",    1, 0, 'e'},
+-	{"dtb",    1, 0, 'd'},
+-	{"stdout", 1, 0, 'O'},
+-	{"stdin",  1, 0, 'I'},
+-	{"xres",  1, 0, 'x'},
+-	{"yres",  1, 0, 'y'},
++	{"help",     0, 0, 'h'},
++	{"malloc",   1, 0, 'm'},
++	{"image",    1, 0, 'i'},
++	{"env",      1, 0, 'e'},
++	{"dtb",      1, 0, 'd'},
++	{"stdout",   1, 0, 'O'},
++	{"stdin",    1, 0, 'I'},
++	{"stdinout", 1, 0, 'B'},
++	{"xres",     1, 0, 'x'},
++	{"yres",     1, 0, 'y'},
+ 	{0, 0, 0, 0},
+ };
+ 
+-static const char optstring[] = "hm:i:e:d:O:I:x:y:";
++static const char optstring[] = "hm:i:e:d:O:I:B:x:y:";
+ 
+ int main(int argc, char *argv[])
+ {
+ 	void *ram;
+-	int opt, ret, fd;
++	int opt, ret, fd, fd2;
+ 	int malloc_size = CONFIG_MALLOC_SIZE;
+ 	int fdno = 0, envno = 0, option_index = 0;
++	char *aux;
+ 
+ 	while (1) {
+ 		option_index = 0;
+@@ -421,6 +423,31 @@ int main(int argc, char *argv[])
+ 
+ 			barebox_register_console(fd, -1);
+ 			break;
++		case 'B':
++			aux = strchr(optarg, ',');
++			if (!aux) {
++				printf("-B, --stdinout requires two file paths given\n");
++				exit(1);
++			}
++
++			/* open stdout file */
++			fd = open(aux + 1, O_WRONLY);
++			if (fd < 0) {
++				perror("open stdout");
++				exit(1);
++			}
++
++			/* open stdin file */
++			aux = strndup(optarg, aux - optarg);
++			fd2 = open(aux, O_RDWR);
++			if (fd2 < 0) {
++				perror("open stdin");
++				exit(1);
++			}
++			free(aux);
++
++			barebox_register_console(fd2, fd);
++			break;
+ 		default:
+ 			break;
+ 		}
+@@ -463,6 +490,10 @@ static void print_usage(const char *prgname)
+ "                       <file> can be a regular file or a FIFO.\n"
+ "  -I, --stdin=<file>   Register a file as a console capable of doing stdin.\n"
+ "                       <file> can be a regular file or a FIFO.\n"
++"  -B, --stdinout=<filein>,<fileout>\n"
++"                       Register a bidirectional console capable of doing both\n"
++"                       stdin and stdout. <filein> and <fileout> can be regular\n"
++"                       files or FIFOs.\n"
+ "  -x, --xres=<res>     SDL width.\n"
+ "  -y, --yres=<res>     SDL height.\n",
+ 	prgname
 -- 
-1.9.1
+2.13.0
 
 
 _______________________________________________
