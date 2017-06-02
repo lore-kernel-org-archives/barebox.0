@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dGhch-0005RG-Sa
- for barebox@lists.infradead.org; Fri, 02 Jun 2017 08:07:57 +0000
-References: <1494587239-33771-1-git-send-email-d.schultz@phytec.de>
- <1494587239-33771-3-git-send-email-d.schultz@phytec.de>
- <20170517063051.eh3fp2qth3ntm7uf@pengutronix.de>
+ id 1dGkUq-0002EZ-4w
+ for barebox@lists.infradead.org; Fri, 02 Jun 2017 11:12:05 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id A11EBA00409
+ for <barebox@lists.infradead.org>; Fri,  2 Jun 2017 13:12:35 +0200 (CEST)
 From: Daniel Schultz <d.schultz@phytec.de>
-Message-ID: <4c2533fb-5070-b056-959c-a4fa2028d9d7@phytec.de>
-Date: Fri, 2 Jun 2017 10:07:34 +0200
-MIME-Version: 1.0
-In-Reply-To: <20170517063051.eh3fp2qth3ntm7uf@pengutronix.de>
-Content-Language: en-US
+Date: Fri, 2 Jun 2017 13:11:36 +0200
+Message-Id: <1496401896-38147-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,49 +17,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 3/4] arm: boards: phytec-som-am335x: Update boot scripts
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fs: Makefile: Add parseopt to all builds
+To: barebox@lists.infradead.org
 
-SGksCgpBbSAxNy4wNS4yMDE3IHVtIDA4OjMwIHNjaHJpZWIgU2FzY2hhIEhhdWVyOgo+IE9uIEZy
-aSwgTWF5IDEyLCAyMDE3IGF0IDAxOjA3OjE4UE0gKzAyMDAsIERhbmllbCBTY2h1bHR6IHdyb3Rl
-Ogo+PiBFeHBhbmQgdGhlIGJvb3Qgc2NyaXB0cyB3aXRoIEVNTUMgYW5kIGFkZCBhIGRlZmF1bHQg
-ZmlsZSBzb3VyY2UgZm9yCj4+IGV4cGFuc2lvbnMuCj4+Cj4+IFJlbW92ZWQgInJ3IiBhbmQgInJv
-b3R3YWl0IiBib290YXJncyBmcm9tIGV4aXN0aW5nIGJvb3Qgc2NyaXB0cy4KPj4gQWRkZWQgInJv
-b3RmbGFncz0nZGF0YT1qb3VybmFsJyIgYm9vdGFyZyB0byBTRCBjYXJkIGJvb3Qgc2NyaXB0Lgo+
-Pgo+PiBTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgU2NodWx0eiA8ZC5zY2h1bHR6QHBoeXRlYy5kZT4K
-Pj4gLS0tCj4+ICAgLi4uL2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L2VtbWMgICAgICAg
-ICAgICAgICAgICB8ICA3ICsrKysrKysKPj4gICAuLi4vcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVs
-dGVudi1waHlzb20tYW0zMzV4L2Jvb3QvbW1jIHwgIDcgKysrKy0tLQo+PiAgIC4uLi9kZWZhdWx0
-ZW52LXBoeXNvbS1hbTMzNXgvYm9vdC9uYW5kICAgICAgICAgICAgICAgICAgfCAgNCArKystCj4+
-ICAgLi4uL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L25l
-dCB8IDE3ICsrKysrKysrKysrKysrKysrCj4+ICAgLi4uL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1
-bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L3NwaSB8ICA0ICsrKy0KPj4gICAuLi4vZGVmYXVsdGVu
-di1waHlzb20tYW0zMzV4L2luaXQvYm9vdHNvdXJjZSAgICAgICAgICAgIHwgMTYgKysrKysrKysr
-KysrLS0tLQo+PiAgIDYgZmlsZXMgY2hhbmdlZCwgNDYgaW5zZXJ0aW9ucygrKSwgOSBkZWxldGlv
-bnMoLSkKPj4gICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20t
-YW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L2VtbWMKPj4gICBjcmVhdGUgbW9k
-ZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5
-c29tLWFtMzM1eC9ib290L25ldAo+Pgo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3Bo
-eXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L2VtbWMgYi9hcmNo
-L2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jv
-b3QvZW1tYwo+PiBuZXcgZmlsZSBtb2RlIDEwMDY0NAo+PiBpbmRleCAwMDAwMDAwLi42YWQ1Zjg3
-Cj4+IC0tLSAvZGV2L251bGwKPj4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0z
-MzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L2VtbWMKPj4gQEAgLTAsMCArMSw3IEBA
-Cj4+ICsjIS9iaW4vc2gKPj4gKwo+PiArWyAtZSAvZW52L2NvbmZpZy1leHBhbnNpb25zIF0gJiYg
-L2Vudi9jb25maWctZXhwYW5zaW9ucwo+IAo+IFdoYXQgZG8geW91IGhhdmUgaW4gdGhlc2UgY29u
-ZmlnLWV4cGFuc2lvbnMgb3Igd2hhdCBkbyB5b3UgZXhwZWN0IHRvIGJlCj4gdGhlcmU/Cj4gCgpU
-aGVzZSBjb25maWctZXhwYW5pb25zIGZpbGVzIGNvbnRhaW4gc291cmNlIGNvbW1hbmRzIGZvciBk
-aWZmZXJlbnQgCmV4cGFuc2lvbnMgbGlrZSBIRE1JLCBMQ0QsIFdpRmksIC4uLiBhbmQgYXJlIHdy
-aXR0ZW4gZnJvbSBZb2N0by4gV2UgCmRvbid0IHdhbnQgdG8gYnJpbmcgdGhlc2UgbWFpbmxpbmUs
-IGJ1dCB3aXRob3V0IHRoaXMgbGluZSB3ZSBoYXZlIHRvIApvdmVyd3JpdGUgZWFjaCBib290IHNj
-cmlwdCBmaWxlIGZyb20gWW9jdG8uCgpNYXliZSB0aGlzIGNvdWxkIGJlIGEgZ29vZCBmZWF0dXJl
-IHNpbmNlIHdlJ3JlIG5vdCB0aGUgb25seSBvbmUgd2l0aCAKZXhwYW5zaW9uIGNvbmZpZ3VyYXRp
-b25zLgoKLS0gCk1pdCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4sCldpdGggYmVzdCByZWdhcmRzLAog
-ICBEYW5pZWwgU2NodWx0egoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+parseopt.h was included to fs.c with commit 9248b, but parseopt.o has a
+dependency to CONFIG_FS_NFS.
+
+Moved parseopt.o to the default build to eliminate build failures.
+
+Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+---
+ fs/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/fs/Makefile b/fs/Makefile
+index f2bb702..b3f929f 100644
+--- a/fs/Makefile
++++ b/fs/Makefile
+@@ -4,11 +4,11 @@ obj-$(CONFIG_FS_RAMFS)	+= ramfs.o
+ obj-y			+= devfs-core.o
+ obj-$(CONFIG_FS_DEVFS)	+= devfs.o
+ obj-$(CONFIG_FS_FAT)	+= fat/
+-obj-y	+= fs.o
++obj-y	+= fs.o parseopt.o
+ obj-$(CONFIG_FS_UBIFS)	+= ubifs/
+ obj-$(CONFIG_FS_TFTP)	+= tftp.o
+ obj-$(CONFIG_FS_OMAP4_USBBOOT)	+= omap4_usbbootfs.o
+-obj-$(CONFIG_FS_NFS)	+= nfs.o parseopt.o
++obj-$(CONFIG_FS_NFS)	+= nfs.o
+ obj-$(CONFIG_FS_BPKFS) += bpkfs.o
+ obj-$(CONFIG_FS_UIMAGEFS)	+= uimagefs.o
+ obj-$(CONFIG_FS_EFI)	 += efi.o
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
