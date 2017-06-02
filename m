@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dGooo-0008BP-4j
- for barebox@lists.infradead.org; Fri, 02 Jun 2017 15:48:56 +0000
-Received: by mail-wm0-x242.google.com with SMTP id b84so19654839wmh.0
- for <barebox@lists.infradead.org>; Fri, 02 Jun 2017 08:48:34 -0700 (PDT)
-From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Fri,  2 Jun 2017 17:48:28 +0200
-Message-Id: <20170602154828.4429-1-aleksander@aleksander.es>
+ id 1dGrDS-0001YK-Jn
+ for barebox@lists.infradead.org; Fri, 02 Jun 2017 18:22:32 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri,  2 Jun 2017 20:22:04 +0200
+Message-Id: <20170602182204.32309-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170602182204.32309-1-u.kleine-koenig@pengutronix.de>
+References: <20170602182204.32309-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,50 +17,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ratp: avoid using already freed memory
+Subject: [PATCH 2/2] docs: move kwboot description to generic mvebu section
 To: barebox@lists.infradead.org
-Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-If ratp_establish() fails we would be accessing the ratp_internal
-struct after having disposed it.
-
-Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
----
- lib/ratp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/lib/ratp.c b/lib/ratp.c
-index d596a0e8b..22e83636f 100644
---- a/lib/ratp.c
-+++ b/lib/ratp.c
-@@ -1658,6 +1658,8 @@ int ratp_establish(struct ratp *ratp, bool active, int timeout_ms)
- 	}
- 
- out:
-+	ri->in_ratp--;
-+
- 	if (ret) {
- 		free(ri->recvbuf);
- 		free(ri->sendbuf);
-@@ -1665,8 +1667,6 @@ out:
- 		ratp->internal = NULL;
- 	}
- 
--	ri->in_ratp--;
--
- 	return ret;
- }
- 
--- 
-2.13.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RXhwYW5kIHRoZSBnZW5lcmljIHBhcnQgYWJvdXQga3dib290IHRvIHRoZSBtdmVidSBwYWdlIGFu
+ZCBhZHZlcnRpc2UgdGhlCnBhcmFtZXRlciAtbiB0byBtYWtlIGl0IHNpbXBsZXIgdG8gYm9vdCBz
+b21lIG1hY2hpbmVzLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5l
+LWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBEb2N1bWVudGF0aW9uL2JvYXJkcy9tdmVidS5y
+c3QgICAgICAgICAgICAgICAgICAgICAgIHwgIDUgKysrKy0KIERvY3VtZW50YXRpb24vYm9hcmRz
+L212ZWJ1L05ldGdlYXItUmVhZHlOQVMtMjEyMC5yc3QgfCAxMyArKy0tLS0tLS0tLS0tCiAyIGZp
+bGVzIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwgMTIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0
+IGEvRG9jdW1lbnRhdGlvbi9ib2FyZHMvbXZlYnUucnN0IGIvRG9jdW1lbnRhdGlvbi9ib2FyZHMv
+bXZlYnUucnN0CmluZGV4IDRkZmRjNGE4Zjc2MS4uMThhNWMxNTBiYjk1IDEwMDY0NAotLS0gYS9E
+b2N1bWVudGF0aW9uL2JvYXJkcy9tdmVidS5yc3QKKysrIGIvRG9jdW1lbnRhdGlvbi9ib2FyZHMv
+bXZlYnUucnN0CkBAIC0zNSw3ICszNSwxMCBAQCBCb290aW5nIGZyb20gVUFSVAogLS0tLS0tLS0t
+LS0tLS0tLS0KIAogVGhlIG12ZWJ1IFNvQ3Mgc3VwcG9ydCBib290aW5nIGZyb20gVUFSVC4gRm9y
+IHRoaXMgdGhlcmUgaXMgYSB0b29sIGF2YWlsYWJsZSBpbgotYmFyZWJveCBjYWxsZWQga3dib290
+LgorYmFyZWJveCBjYWxsZWQgYGBrd2Jvb3RgYC4gUXVpdGUgc29tZSBtdmVidSBib2FyZHMgYXJl
+IHJlc2V0IG9uY2UgbW9yZSB3aGVuCit0aGV5IGFscmVhZHkgc3RhcnRlZCB0byByZWFkIHRoZSBm
+aXJzdCBibG9jayBvZiB0aGUgaW1hZ2UgdG8gYm9vdC4gSWYgeW91IHdhbnQKK3RvIGJvb3Qgc3Vj
+aCBhIGJvYXJkLCB1c2UgdGhlIHBhcmFtZXRlciBgYC1uIDE1YGAgZm9yIGBga3dib290YGAuIChU
+aGUgbnVtYmVyCittaWdodCBoYXZlIHRvIGJlIGFkYXB0ZWQgcGVyIGJvYXJkLikKIAogbXZlYnUg
+Ym9hcmRzCiAtLS0tLS0tLS0tLS0KZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vYm9hcmRzL212
+ZWJ1L05ldGdlYXItUmVhZHlOQVMtMjEyMC5yc3QgYi9Eb2N1bWVudGF0aW9uL2JvYXJkcy9tdmVi
+dS9OZXRnZWFyLVJlYWR5TkFTLTIxMjAucnN0CmluZGV4IDViZWUwM2FmOWQzOC4uNDg4YWYyZDdh
+Y2ZlIDEwMDY0NAotLS0gYS9Eb2N1bWVudGF0aW9uL2JvYXJkcy9tdmVidS9OZXRnZWFyLVJlYWR5
+TkFTLTIxMjAucnN0CisrKyBiL0RvY3VtZW50YXRpb24vYm9hcmRzL212ZWJ1L05ldGdlYXItUmVh
+ZHlOQVMtMjEyMC5yc3QKQEAgLTYsMTQgKzYsNSBAQCBUaGlzIGlzIGEgcmFjayBtb3VudGFibGUg
+NCBiYXkgTkFTIHVzaW5nIGFuIEFybWFkYSBYUCBkdWFsLWNvcmUgcHJvY2Vzc29yLgogVUFSVCBi
+b290aW5nCiAtLS0tLS0tLS0tLS0KIAotVGhlIGZpcnN0IFVBUlQgaGlkZXMgYmVoaW5kIGEgc3Rp
+Y2tlciBvbiA0IHBpbnMuCi0KLVRoZSBtYWNoaW5lIHNlZW1zIHRvIGRvIHR3byByZXNldHMgYXQg
+cG93ZXIgb24gd2hpY2ggbWFrZXMgVUFSVCBib290aW5nIGhhcmQuIEEKLXRyaWNrIHRvIHdvcmsg
+YXJvdW5kIHRoaXMgaXM6OgotCi0gIHNjcmlwdHMva3dib290IC1kIC9kZXYvdHR5VVNCMDsga3di
+b290IC1iIGltYWdlcy9iYXJlYm94LW5ldGdlYXItcm4yMTIwLmltZyAtdCAvZGV2L3R0eVVTQjAK
+LQotVGhpcyB3YXkgdGhlIGZpcnN0IHdpbmRvdyBpbiB3aGljaCB0aGUgQ1BVIGFjY2VwdHMgdGhl
+IG1hZ2ljIHN0cmluZyBpcyB0YWtlbiBieQotdGhlIGZpcnN0IGludm9rYXRpb24gd2hpY2ggYmxv
+Y2tzIHVudGlsIHRoZSBzZWNvbmQgcmVzZXQgaGFwcGVucy4gVGhlIHNlY29uZAotd2luZG93IGlz
+IHRoZW4gaGl0IHdpdGggdGhlIGltYWdlIHRvIGJvb3QuIFRoaXMgaXMgbm90IDEwMCUgcmVsaWFi
+bGUgYnV0IHdvcmtzCi1tb3N0IG9mIHRoZSB0aW1lLgorVGhlIFVBUlQgdGhhdCBjYW4gYmUgdXNl
+ZCB0byBib290IHZpYSBSUzIzMiAodXNpbmcgYGBrd2Jvb3RgYCkgaGlkZXMgYmVoaW5kIGEKK3N0
+aWNrZXIgb24gdGhlIGJhY2tzaWRlIG9mIHRoZSBtYWNoaW5lLiBJdCB1c2VzIFRUTCBsZXZlbHMu
+Ci0tIAoyLjExLjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
