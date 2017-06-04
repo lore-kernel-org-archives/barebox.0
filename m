@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dHLxy-0000KD-Ox
+ id 1dHLxy-0000Kq-P0
  for barebox@lists.infradead.org; Sun, 04 Jun 2017 03:12:36 +0000
-Received: by mail-pf0-x244.google.com with SMTP id u26so16834764pfd.2
- for <barebox@lists.infradead.org>; Sat, 03 Jun 2017 20:12:14 -0700 (PDT)
+Received: by mail-pf0-x244.google.com with SMTP id f27so16859920pfe.0
+ for <barebox@lists.infradead.org>; Sat, 03 Jun 2017 20:12:15 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat,  3 Jun 2017 20:11:50 -0700
-Message-Id: <20170604031154.26663-1-andrew.smirnov@gmail.com>
+Date: Sat,  3 Jun 2017 20:11:51 -0700
+Message-Id: <20170604031154.26663-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20170604031154.26663-1-andrew.smirnov@gmail.com>
+References: <20170604031154.26663-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,45 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 0/4] GPIO "active low",
- hogging and usb-nop-xceive 'reset-gpio' support
+Subject: [PATCH v3 1/4] gpio-imx: Do not use gpio_set_value()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Nikita Yushchenko <nikita.yoush@cogentembedded.com>, cphealy@gmail.com
 
-Hi everyone,
+Do not use gpio_set_value() in imx_gpio_direction_output().  We don't
+check gpio_set_value's result, so calling imx_gpio_set_value()
+directly instead should be as good.
 
-This is a v3 of my original patchset. Changes in this version are the following:
+Cc: cphealy@gmail.com
+Cc: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Acked-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/gpio/gpio-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  - new flags, GPIOF_INIT_[IN]ACTIVE and GPIOF_OUT_INIT_[IN]ACTIVE are
-    added to avoid semantically overloading the meaing of "HIGH/LOW"
-    variants of those
-
-  - added commentary about GPIO 'hog' interpretation of the meaning of
-    'output-high', 'output-low'
-
-Changes since v1:
-
-  - 'active low' support is moved inot a dedicated API
-  - of_gpiochip_scan_gpios renamed to of_gpiochip_scan_hogs
-  - nop_usbphy_init doesn't try to needlessly configure reset gpio's directionality
-
-Let me know if anything else needs changing.
-
-Thanks,
-Andrey Smirnov
-
-Andrey Smirnov (4):
-  gpio-imx: Do not use gpio_set_value()
-  gpiolib: Add code to support "active low" GPIOs
-  gpiolib: Add support for GPIO "hog" nodes
-  usb-nop-xceiv: Add support for 'reset-gpios' binding
-
- drivers/gpio/gpio-imx.c     |   2 +-
- drivers/gpio/gpiolib.c      | 146 ++++++++++++++++++++++++++++++++++++++++++--
- drivers/phy/usb-nop-xceiv.c |  45 ++++++++++++--
- include/gpio.h              |  25 ++++++++
- 4 files changed, 208 insertions(+), 10 deletions(-)
-
+diff --git a/drivers/gpio/gpio-imx.c b/drivers/gpio/gpio-imx.c
+index ab4f596..a9d44d4 100644
+--- a/drivers/gpio/gpio-imx.c
++++ b/drivers/gpio/gpio-imx.c
+@@ -93,7 +93,7 @@ static int imx_gpio_direction_output(struct gpio_chip *chip, unsigned gpio, int
+ 	void __iomem *base = imxgpio->base;
+ 	u32 val;
+ 
+-	gpio_set_value(gpio + chip->base, value);
++	imx_gpio_set_value(chip, gpio, value);
+ 
+ 	val = readl(base + imxgpio->regs->gdir);
+ 	val |= 1 << gpio;
 -- 
 2.9.4
 
