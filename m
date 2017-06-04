@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dHLy2-0000LR-91
- for barebox@lists.infradead.org; Sun, 04 Jun 2017 03:12:39 +0000
-Received: by mail-pg0-x241.google.com with SMTP id f127so5970760pgc.2
- for <barebox@lists.infradead.org>; Sat, 03 Jun 2017 20:12:17 -0700 (PDT)
+ id 1dHLy3-0000LU-H5
+ for barebox@lists.infradead.org; Sun, 04 Jun 2017 03:12:42 +0000
+Received: by mail-pg0-x242.google.com with SMTP id f127so5970784pgc.2
+ for <barebox@lists.infradead.org>; Sat, 03 Jun 2017 20:12:19 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat,  3 Jun 2017 20:11:53 -0700
-Message-Id: <20170604031154.26663-4-andrew.smirnov@gmail.com>
+Date: Sat,  3 Jun 2017 20:11:54 -0700
+Message-Id: <20170604031154.26663-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20170604031154.26663-1-andrew.smirnov@gmail.com>
 References: <20170604031154.26663-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,141 +23,121 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 3/4] gpiolib: Add support for GPIO "hog" nodes
+Subject: [PATCH v3 4/4] usb-nop-xceiv: Add support for 'reset-gpios' binding
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Nikita Yushchenko <nikita.yoush@cogentembedded.com>, cphealy@gmail.com
-
-Add code to support 'gpio-hog' nodes used in some .dts files in Linux
-kernel.
 
 Cc: cphealy@gmail.com
 Cc: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/gpio/gpiolib.c | 96 +++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 95 insertions(+), 1 deletion(-)
+ drivers/phy/usb-nop-xceiv.c | 45 +++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 41 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 28f6a5e..a3e17ad 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -5,6 +5,7 @@
- #include <command.h>
- #include <complete.h>
- #include <gpio.h>
+diff --git a/drivers/phy/usb-nop-xceiv.c b/drivers/phy/usb-nop-xceiv.c
+index d403fe4..b124e6c 100644
+--- a/drivers/phy/usb-nop-xceiv.c
++++ b/drivers/phy/usb-nop-xceiv.c
+@@ -22,12 +22,15 @@
+ #include <linux/phy/phy.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
++#include <gpio.h>
 +#include <of_gpio.h>
- #include <errno.h>
- #include <malloc.h>
  
-@@ -304,6 +305,99 @@ static int gpiochip_find_base(int start, int ngpio)
- 	return base;
- }
+ struct nop_usbphy {
+ 	struct usb_phy usb_phy;
+ 	struct phy *phy;
+ 	struct phy_provider *provider;
+ 	struct clk *clk;
++	int reset;
+ };
  
-+static int of_hog_gpio(struct device_node *np, struct gpio_chip *chip,
-+		       unsigned int idx)
-+{
-+	struct device_node *chip_np = chip->dev->device_node;
-+	unsigned long flags = 0;
-+	u32 gpio_cells, gpio_num, gpio_flags;
-+	int ret, gpio;
-+	const char *name = NULL;
-+
-+	ret = of_property_read_u32(chip_np, "#gpio-cells", &gpio_cells);
-+	if (ret)
+ static struct phy *nop_usbphy_xlate(struct device_d *dev,
+@@ -40,9 +43,22 @@ static struct phy *nop_usbphy_xlate(struct device_d *dev,
+ 
+ static int nop_usbphy_init(struct phy *phy)
+ {
++	int ret;
+ 	struct nop_usbphy *nopphy = phy_get_drvdata(phy);
+ 
+-	return clk_enable(nopphy->clk);
++	ret = clk_enable(nopphy->clk);
++	if (ret < 0)
 +		return ret;
 +
-+	/*
-+	 * Support for GPIOs that don't have #gpio-cells set to 2 is
-+	 * not implemented
-+	 */
-+	if (WARN_ON(gpio_cells != 2))
-+		return -ENOTSUPP;
-+
-+	ret = of_property_read_u32_index(np, "gpios", idx * gpio_cells,
-+					 &gpio_num);
-+	if (ret)
-+		return ret;
-+
-+	ret = of_property_read_u32_index(np, "gpios", idx * gpio_cells + 1,
-+					 &gpio_flags);
-+	if (ret)
-+		return ret;
-+
-+	if (gpio_flags & OF_GPIO_ACTIVE_LOW)
-+		flags |= GPIOF_ACTIVE_LOW;
-+
-+	gpio = gpio_get_num(chip->dev, gpio_num);
-+	if (ret == -EPROBE_DEFER)
-+		return ret;
-+
-+	if (ret < 0) {
-+		dev_err(chip->dev, "unable to get gpio %u\n", gpio_num);
-+		return ret;
-+	}
-+
-+
-+	/*
-+	 * Note that, in order to be compatible with Linux, the code
-+	 * below interprets 'output-high' as to mean 'output-active'.
-+	 * That is, when processed for active-low GPIO, it will result
-+	 * in output being asserted logically 'active', but physically
-+	 * 'low'.
-+	 *
-+	 * Conversely it means that specifying 'output-low' for
-+	 * 'active-low' GPIO would result in 'high' level observed on
-+	 * the corresponding pin
-+	 *
-+	 */
-+	if (of_property_read_bool(np, "input"))
-+		flags |= GPIOF_DIR_IN;
-+	else if (of_property_read_bool(np, "output-low"))
-+		flags |= GPIOF_OUT_INIT_INACTIVE;
-+	else if (of_property_read_bool(np, "output-high"))
-+		flags |= GPIOF_OUT_INIT_ACTIVE;
-+	else
-+		return -EINVAL;
-+
-+	of_property_read_string(np, "line-name", &name);
-+
-+	return gpio_request_one(gpio, flags, name);
-+}
-+
-+static int of_gpiochip_scan_hogs(struct gpio_chip *chip)
-+{
-+	struct device_node *np;
-+	int ret, i;
-+
-+	for_each_available_child_of_node(chip->dev->device_node, np) {
-+		if (!of_property_read_bool(np, "gpio-hog"))
-+			continue;
-+
-+		for (ret = 0, i = 0;
-+		     !ret;
-+		     ret = of_hog_gpio(np, chip, i), i++)
-+			;
++	if (gpio_is_valid(nopphy->reset)) {
 +		/*
-+		 * We ignore -EOVERFLOW because it serves us as an
-+		 * indicator that there's no more GPIOs to handle.
++		 * Let's wait for 100 ms before deasserting reset line
 +		 */
-+		if (ret < 0 && ret != -EOVERFLOW)
-+			return ret;
++		mdelay(100);
++		gpio_set_active(nopphy->reset, false);
 +	}
 +
 +	return 0;
-+}
-+
- int gpiochip_add(struct gpio_chip *chip)
- {
- 	int base, i;
-@@ -322,7 +416,7 @@ int gpiochip_add(struct gpio_chip *chip)
- 	for (i = chip->base; i < chip->base + chip->ngpio; i++)
- 		gpio_desc[i].chip = chip;
- 
--	return 0;
-+	return of_gpiochip_scan_hogs(chip);
  }
  
- void gpiochip_remove(struct gpio_chip *chip)
+ static struct usb_phy *nop_usbphy_to_usbphy(struct phy *phy)
+@@ -61,6 +77,9 @@ static int nop_usbphy_probe(struct device_d *dev)
+ {
+ 	int ret;
+ 	struct nop_usbphy *nopphy;
++	enum of_gpio_flags of_flags;
++	char *name = NULL;
++	unsigned long flags = GPIOF_OUT_INIT_ACTIVE;
+ 
+ 	nopphy = xzalloc(sizeof(*nopphy));
+ 
+@@ -70,6 +89,20 @@ static int nop_usbphy_probe(struct device_d *dev)
+ 	if (IS_ERR(nopphy->clk))
+ 		nopphy->clk = NULL;
+ 
++	nopphy->reset = of_get_named_gpio_flags(dev->device_node,
++						"reset-gpios", 0, &of_flags);
++	if (gpio_is_valid(nopphy->reset)) {
++		/* assert reset */
++
++		if (of_flags & OF_GPIO_ACTIVE_LOW)
++			flags |= GPIOF_ACTIVE_LOW;
++
++		name = basprintf("%s reset", dev_name(dev));
++		ret  = gpio_request_one(nopphy->reset, flags, name);
++		if (ret < 0)
++			goto err_free;
++	}
++
+ 	/* FIXME: Add vbus regulator support */
+ 	/* FIXME: Add vbus-detect-gpio support */
+ 
+@@ -77,7 +110,7 @@ static int nop_usbphy_probe(struct device_d *dev)
+ 	nopphy->phy = phy_create(dev, NULL, &nop_phy_ops, NULL);
+ 	if (IS_ERR(nopphy->phy)) {
+ 		ret = PTR_ERR(nopphy->phy);
+-		goto err_free;
++		goto release_gpio;
+ 	}
+ 
+ 	phy_set_drvdata(nopphy->phy, nopphy);
+@@ -85,13 +118,17 @@ static int nop_usbphy_probe(struct device_d *dev)
+ 	nopphy->provider = of_phy_provider_register(dev, nop_usbphy_xlate);
+ 	if (IS_ERR(nopphy->provider)) {
+ 		ret = PTR_ERR(nopphy->provider);
+-		goto err_free;
++		goto release_gpio;
+ 	}
+ 
+ 	return 0;
++
++release_gpio:
++	if (gpio_is_valid(nopphy->reset))
++		gpio_free(nopphy->reset);
+ err_free:
+ 	free(nopphy);
+-
++	free(name);
+ 	return ret;
+ };
+ 
 -- 
 2.9.4
 
