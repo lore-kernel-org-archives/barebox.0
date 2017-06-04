@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dHLy1-0000LQ-2m
- for barebox@lists.infradead.org; Sun, 04 Jun 2017 03:12:38 +0000
-Received: by mail-pf0-x243.google.com with SMTP id w69so16855354pfk.1
- for <barebox@lists.infradead.org>; Sat, 03 Jun 2017 20:12:16 -0700 (PDT)
+ id 1dHLy2-0000LR-91
+ for barebox@lists.infradead.org; Sun, 04 Jun 2017 03:12:39 +0000
+Received: by mail-pg0-x241.google.com with SMTP id f127so5970760pgc.2
+ for <barebox@lists.infradead.org>; Sat, 03 Jun 2017 20:12:17 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat,  3 Jun 2017 20:11:52 -0700
-Message-Id: <20170604031154.26663-3-andrew.smirnov@gmail.com>
+Date: Sat,  3 Jun 2017 20:11:53 -0700
+Message-Id: <20170604031154.26663-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20170604031154.26663-1-andrew.smirnov@gmail.com>
 References: <20170604031154.26663-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,193 +23,141 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 2/4] gpiolib: Add code to support "active low" GPIOs
+Subject: [PATCH v3 3/4] gpiolib: Add support for GPIO "hog" nodes
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Nikita Yushchenko <nikita.yoush@cogentembedded.com>, cphealy@gmail.com
 
-So far this particular aspect of various DT-bindings has been handled
-on a per-driver basis. With this change, hopefully, we'll have a
-single place to handle necessary logic inversions and eventually
-would be able to migrate existing users as well as avoiding adding
-redundant code to new drivers.
+Add code to support 'gpio-hog' nodes used in some .dts files in Linux
+kernel.
 
 Cc: cphealy@gmail.com
 Cc: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/gpio/gpiolib.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++----
- include/gpio.h         | 25 +++++++++++++++++++++++++
- 2 files changed, 71 insertions(+), 4 deletions(-)
+ drivers/gpio/gpiolib.c | 96 +++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 95 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 1f57c76..28f6a5e 100644
+index 28f6a5e..a3e17ad 100644
 --- a/drivers/gpio/gpiolib.c
 +++ b/drivers/gpio/gpiolib.c
-@@ -13,6 +13,7 @@ static LIST_HEAD(chip_list);
- struct gpio_info {
- 	struct gpio_chip *chip;
- 	bool requested;
-+	bool active_low;
- 	char *label;
- };
+@@ -5,6 +5,7 @@
+ #include <command.h>
+ #include <complete.h>
+ #include <gpio.h>
++#include <of_gpio.h>
+ #include <errno.h>
+ #include <malloc.h>
  
-@@ -45,6 +46,15 @@ static struct gpio_info *gpio_to_desc(unsigned gpio)
- 	return NULL;
+@@ -304,6 +305,99 @@ static int gpiochip_find_base(int start, int ngpio)
+ 	return base;
  }
  
-+static int gpio_adjust_value(struct gpio_info *gi,
-+			     int value)
++static int of_hog_gpio(struct device_node *np, struct gpio_chip *chip,
++		       unsigned int idx)
 +{
-+	if (value < 0)
-+		return value;
++	struct device_node *chip_np = chip->dev->device_node;
++	unsigned long flags = 0;
++	u32 gpio_cells, gpio_num, gpio_flags;
++	int ret, gpio;
++	const char *name = NULL;
 +
-+	return !!value ^ gi->active_low;
-+}
++	ret = of_property_read_u32(chip_np, "#gpio-cells", &gpio_cells);
++	if (ret)
++		return ret;
 +
- int gpio_request(unsigned gpio, const char *label)
- {
- 	struct gpio_info *gi = gpio_to_desc(gpio);
-@@ -69,6 +79,7 @@ int gpio_request(unsigned gpio, const char *label)
- 	}
- 
- 	gi->requested = true;
-+	gi->active_low = false;
- 	gi->label = xstrdup(label);
- 
- done:
-@@ -93,6 +104,7 @@ void gpio_free(unsigned gpio)
- 		gi->chip->ops->free(gi->chip, gpio - gi->chip->base);
- 
- 	gi->requested = false;
-+	gi->active_low = false;
- 	free(gi->label);
- 	gi->label = NULL;
- }
-@@ -111,11 +123,20 @@ int gpio_request_one(unsigned gpio, unsigned long flags, const char *label)
- 	if (err)
- 		return err;
- 
--	if (flags & GPIOF_DIR_IN)
-+	if (flags & GPIOF_ACTIVE_LOW) {
-+		struct gpio_info *gi = gpio_to_desc(gpio);
-+		gi->active_low = true;
++	/*
++	 * Support for GPIOs that don't have #gpio-cells set to 2 is
++	 * not implemented
++	 */
++	if (WARN_ON(gpio_cells != 2))
++		return -ENOTSUPP;
++
++	ret = of_property_read_u32_index(np, "gpios", idx * gpio_cells,
++					 &gpio_num);
++	if (ret)
++		return ret;
++
++	ret = of_property_read_u32_index(np, "gpios", idx * gpio_cells + 1,
++					 &gpio_flags);
++	if (ret)
++		return ret;
++
++	if (gpio_flags & OF_GPIO_ACTIVE_LOW)
++		flags |= GPIOF_ACTIVE_LOW;
++
++	gpio = gpio_get_num(chip->dev, gpio_num);
++	if (ret == -EPROBE_DEFER)
++		return ret;
++
++	if (ret < 0) {
++		dev_err(chip->dev, "unable to get gpio %u\n", gpio_num);
++		return ret;
 +	}
 +
-+	if (flags & GPIOF_DIR_IN) {
- 		err = gpio_direction_input(gpio);
--	else
-+	} else if (flags & GPIOF_LOGICAL) {
-+		err = gpio_direction_active(gpio,
-+					    !!(flags & GPIOF_INIT_ACTIVE));
-+	} else {
- 		err = gpio_direction_output(gpio,
--				(flags & GPIOF_INIT_HIGH) ? 1 : 0);
-+					    !!(flags & GPIOF_INIT_HIGH));
++
++	/*
++	 * Note that, in order to be compatible with Linux, the code
++	 * below interprets 'output-high' as to mean 'output-active'.
++	 * That is, when processed for active-low GPIO, it will result
++	 * in output being asserted logically 'active', but physically
++	 * 'low'.
++	 *
++	 * Conversely it means that specifying 'output-low' for
++	 * 'active-low' GPIO would result in 'high' level observed on
++	 * the corresponding pin
++	 *
++	 */
++	if (of_property_read_bool(np, "input"))
++		flags |= GPIOF_DIR_IN;
++	else if (of_property_read_bool(np, "output-low"))
++		flags |= GPIOF_OUT_INIT_INACTIVE;
++	else if (of_property_read_bool(np, "output-high"))
++		flags |= GPIOF_OUT_INIT_ACTIVE;
++	else
++		return -EINVAL;
++
++	of_property_read_string(np, "line-name", &name);
++
++	return gpio_request_one(gpio, flags, name);
++}
++
++static int of_gpiochip_scan_hogs(struct gpio_chip *chip)
++{
++	struct device_node *np;
++	int ret, i;
++
++	for_each_available_child_of_node(chip->dev->device_node, np) {
++		if (!of_property_read_bool(np, "gpio-hog"))
++			continue;
++
++		for (ret = 0, i = 0;
++		     !ret;
++		     ret = of_hog_gpio(np, chip, i), i++)
++			;
++		/*
++		 * We ignore -EOVERFLOW because it serves us as an
++		 * indicator that there's no more GPIOs to handle.
++		 */
++		if (ret < 0 && ret != -EOVERFLOW)
++			return ret;
 +	}
- 
- 	if (err)
- 		goto free_gpio;
-@@ -178,6 +199,13 @@ void gpio_set_value(unsigned gpio, int value)
- }
- EXPORT_SYMBOL(gpio_set_value);
- 
-+void gpio_set_active(unsigned gpio, bool value)
-+{
-+	struct gpio_info *gi = gpio_to_desc(gpio);
-+	gpio_set_value(gpio, gpio_adjust_value(gi, value));
-+}
-+EXPORT_SYMBOL(gpio_set_active);
 +
- int gpio_get_value(unsigned gpio)
- {
- 	struct gpio_info *gi = gpio_to_desc(gpio);
-@@ -196,6 +224,13 @@ int gpio_get_value(unsigned gpio)
- }
- EXPORT_SYMBOL(gpio_get_value);
- 
-+int gpio_is_active(unsigned gpio)
-+{
-+	struct gpio_info *gi = gpio_to_desc(gpio);
-+	return gpio_adjust_value(gi, gpio_get_value(gpio));
-+}
-+EXPORT_SYMBOL(gpio_is_active);
-+
- int gpio_direction_output(unsigned gpio, int value)
- {
- 	struct gpio_info *gi = gpio_to_desc(gpio);
-@@ -215,6 +250,13 @@ int gpio_direction_output(unsigned gpio, int value)
- }
- EXPORT_SYMBOL(gpio_direction_output);
- 
-+int gpio_direction_active(unsigned gpio, bool value)
-+{
-+	struct gpio_info *gi = gpio_to_desc(gpio);
-+	return gpio_direction_output(gpio, gpio_adjust_value(gi, value));
-+}
-+EXPORT_SYMBOL(gpio_direction_active);
-+
- int gpio_direction_input(unsigned gpio)
- {
- 	struct gpio_info *gi = gpio_to_desc(gpio);
-@@ -334,7 +376,7 @@ static int do_gpiolib(int argc, char *argv[])
- 		printf("  GPIO %*d: %*s %*s %*s  %s\n", 4, i,
- 			3, (dir < 0) ? "unk" : ((dir == GPIOF_DIR_IN) ? "in" : "out"),
- 			3, (val < 0) ? "unk" : ((val == 0) ? "lo" : "hi"),
--			9, gi->requested ? "true" : "false",
-+		        12, gi->requested ? (gi->active_low ? "active low" : "true") : "false",
- 			(gi->requested && gi->label) ? gi->label : "");
- 	}
- 
-diff --git a/include/gpio.h b/include/gpio.h
-index 7b3f512..56aae22 100644
---- a/include/gpio.h
-+++ b/include/gpio.h
-@@ -6,6 +6,11 @@ void gpio_set_value(unsigned gpio, int value);
- int gpio_get_value(unsigned gpio);
- int gpio_direction_output(unsigned gpio, int value);
- int gpio_direction_input(unsigned gpio);
-+
-+void gpio_set_active(unsigned gpio, bool state);
-+int gpio_is_active(unsigned gpio);
-+int gpio_direction_active(unsigned gpio, bool state);
-+
- #else
- static inline void gpio_set_value(unsigned gpio, int value)
- {
-@@ -22,6 +27,18 @@ static inline int gpio_direction_input(unsigned gpio)
- {
- 	return -EINVAL;
- }
-+
-+static inline void gpio_set_active(unsigned gpio, int value)
-+{
-+}
-+static inline int gpio_is_active(unsigned gpio)
-+{
 +	return 0;
 +}
-+static inline int gpio_direction_active(unsigned gpio, int value)
-+{
-+	return -EINVAL;
-+}
- #endif
- 
- #define ARCH_NR_GPIOS 256
-@@ -45,6 +62,14 @@ static inline int gpio_is_valid(int gpio)
- #define GPIOF_OUT_INIT_LOW	(GPIOF_DIR_OUT | GPIOF_INIT_LOW)
- #define GPIOF_OUT_INIT_HIGH	(GPIOF_DIR_OUT | GPIOF_INIT_HIGH)
- 
-+#define GPIOF_LOGICAL		BIT(2)
-+#define GPIOF_ACTIVE_HIGH	GPIOF_LOGICAL
-+#define GPIOF_ACTIVE_LOW	(BIT(3) | GPIOF_LOGICAL)
-+#define GPIOF_INIT_INACTIVE	GPIOF_LOGICAL
-+#define GPIOF_INIT_ACTIVE	(GPIOF_LOGICAL | GPIOF_INIT_HIGH)
-+#define GPIOF_OUT_INIT_ACTIVE	(GPIOF_DIR_OUT | GPIOF_INIT_ACTIVE)
-+#define GPIOF_OUT_INIT_INACTIVE	(GPIOF_DIR_OUT | GPIOF_INIT_INACTIVE)
 +
- /**
-  * struct gpio - a structure describing a GPIO with configuration
-  * @gpio:	the GPIO number
+ int gpiochip_add(struct gpio_chip *chip)
+ {
+ 	int base, i;
+@@ -322,7 +416,7 @@ int gpiochip_add(struct gpio_chip *chip)
+ 	for (i = chip->base; i < chip->base + chip->ngpio; i++)
+ 		gpio_desc[i].chip = chip;
+ 
+-	return 0;
++	return of_gpiochip_scan_hogs(chip);
+ }
+ 
+ void gpiochip_remove(struct gpio_chip *chip)
 -- 
 2.9.4
 
