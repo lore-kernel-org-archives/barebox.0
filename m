@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dG6FE-0007xc-Nl
- for barebox@lists.infradead.org; Wed, 31 May 2017 16:13:14 +0000
-Received: by mail-wm0-x244.google.com with SMTP id k15so4763530wmh.3
- for <barebox@lists.infradead.org>; Wed, 31 May 2017 09:12:52 -0700 (PDT)
-From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Wed, 31 May 2017 18:12:41 +0200
-Message-Id: <7499fda2a3c12627c05a66d1a6a9111646beb695.1496247033.git.aleksander@aleksander.es>
-In-Reply-To: <cover.1496247033.git.aleksander@aleksander.es>
-References: <cover.1496247033.git.aleksander@aleksander.es>
-In-Reply-To: <cover.1496247033.git.aleksander@aleksander.es>
-References: <cover.1496247033.git.aleksander@aleksander.es>
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1dIB8b-0002As-7y
+ for barebox@lists.infradead.org; Tue, 06 Jun 2017 09:51:00 +0000
+References: <1494587239-33771-1-git-send-email-d.schultz@phytec.de>
+ <1494587239-33771-3-git-send-email-d.schultz@phytec.de>
+ <20170517063051.eh3fp2qth3ntm7uf@pengutronix.de>
+ <4c2533fb-5070-b056-959c-a4fa2028d9d7@phytec.de>
+ <20170606054630.nf5awnvvf4qapoxq@pengutronix.de>
+From: Daniel Schultz <d.schultz@phytec.de>
+Message-ID: <627823a3-1d4b-dd92-cff5-8a37feda6601@phytec.de>
+Date: Tue, 6 Jun 2017 11:50:25 +0200
+MIME-Version: 1.0
+In-Reply-To: <20170606054630.nf5awnvvf4qapoxq@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,138 +22,72 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] sandbox: --stdin and --stdout allow max one bidirectional
- console
-To: barebox@lists.infradead.org
-Cc: Aleksander Morgado <aleksander@aleksander.es>
+Subject: Re: [PATCH v3 3/4] arm: boards: phytec-som-am335x: Update boot scripts
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Allow up to one bidirectional FIFO/file based console in addition to
-the default stdin/stdout console that is always registered.
-
-We avoid opening the FIFO files while parsing the options because the
-whole logic may block if e.g. trying to open the --stdout FIFO and
-there is no reader in the other end. So instead, we store the --stdout
-and --stdin file paths given, and we open both sequentially once all
-the options have been parsed. This also allows us to validate that at
-most a single pair of --stdin and --stdout paths has been given.
-e.g.:
-    term1 $ mkfifo /tmp/bbstdin
-    term1 $ mkfifo /tmp/bbstdout
-    term1 $ ./barebox -I /tmp/bbstdin -O /tmp/bbstdout
-       (blocks until a reader is available in the stdout FIFO)
-
-    term2 $ cat /tmp/bbstdout & cat > /tmp/bbstdin
-       (starts reader and writer, which triggers barebox to continue)
-
-If only one console is activated (CONFIG_CONSOLE_ACTIVATE_ALL=n), the
-default stdin/stdout console will be preferred instead of the new
-FIFO/file based, which would need to be activated explicitly later on.
-e.g.:
-    barebox@barebox sandbox:/ cs1.active=ioe
-
-Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
----
- arch/sandbox/os/common.c | 48 +++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 37 insertions(+), 11 deletions(-)
-
-diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
-index 192917ac2..0461abaac 100644
---- a/arch/sandbox/os/common.c
-+++ b/arch/sandbox/os/common.c
-@@ -39,6 +39,7 @@
- #include <signal.h>
- #include <sys/select.h>
- #include <sys/wait.h>
-+#include <linux/limits.h>
- /*
-  * ...except the ones needed to connect with barebox
-  */
-@@ -329,9 +330,11 @@ static const char optstring[] = "hm:i:e:d:O:I:x:y:";
- int main(int argc, char *argv[])
- {
- 	void *ram;
--	int opt, ret, fd;
-+	int opt, ret;
- 	int malloc_size = CONFIG_MALLOC_SIZE;
- 	int fdno = 0, envno = 0, option_index = 0;
-+	char path_stdout[PATH_MAX + 1] = { 0 };
-+	char path_stdin[PATH_MAX + 1] = { 0 };
- 
- 	while (1) {
- 		option_index = 0;
-@@ -360,22 +363,18 @@ int main(int argc, char *argv[])
- 			}
- 			break;
- 		case 'O':
--			fd = open(optarg, O_WRONLY);
--			if (fd < 0) {
--				perror("open");
-+			if (path_stdout[0]) {
-+				printf("error: cannot specify -O,--stdout multiple times\n");
- 				exit(1);
- 			}
--
--			barebox_register_console(-1, fd);
-+			strncpy(path_stdout, optarg, PATH_MAX);
- 			break;
- 		case 'I':
--			fd = open(optarg, O_RDWR);
--			if (fd < 0) {
--				perror("open");
-+			if (path_stdin[0]) {
-+				printf("error: cannot specify -I,--stdin multiple times\n");
- 				exit(1);
- 			}
--
--			barebox_register_console(fd, -1);
-+			strncpy(path_stdin, optarg, PATH_MAX);
- 			break;
- 		case 'x':
- 			sdl_xres = strtoul(optarg, NULL, 0);
-@@ -426,6 +425,33 @@ int main(int argc, char *argv[])
- 		}
- 	}
- 
-+	/* Register additional FIFO console */
-+	if (path_stdout[0] || path_stdin[0]) {
-+		int fdout, fdin;
-+
-+		/* Both must be given to build a FIFO console */
-+		if (!path_stdin[0] || !path_stdout[0]) {
-+			printf("error: both -I,--stdin and -O,--stdout must be"
-+			       "specified to enable the FIFO console\n");
-+			exit(1);
-+		}
-+
-+		fdout = open(path_stdout, O_WRONLY);
-+		if (fdout < 0) {
-+			perror("open stdout");
-+			exit(1);
-+		}
-+
-+		fdin = open(path_stdin, O_RDWR);
-+		if (fdin < 0) {
-+			perror("open stdin");
-+			exit(1);
-+		}
-+
-+		barebox_register_console(fdin, fdout);
-+	}
-+
-+	/* Register default stdin/stdout console */
- 	barebox_register_console(fileno(stdin), fileno(stdout));
- 
- 	rawmode();
--- 
-2.13.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKQW0gMDYuMDYuMjAxNyB1bSAwNzo0NiBzY2hyaWViIFNhc2NoYSBIYXVlcjoK
+PiBIaSBEYW5pZWwsCj4gCj4gT24gRnJpLCBKdW4gMDIsIDIwMTcgYXQgMTA6MDc6MzRBTSArMDIw
+MCwgRGFuaWVsIFNjaHVsdHogd3JvdGU6Cj4+IEhpLAo+Pgo+PiBBbSAxNy4wNS4yMDE3IHVtIDA4
+OjMwIHNjaHJpZWIgU2FzY2hhIEhhdWVyOgo+Pj4gT24gRnJpLCBNYXkgMTIsIDIwMTcgYXQgMDE6
+MDc6MThQTSArMDIwMCwgRGFuaWVsIFNjaHVsdHogd3JvdGU6Cj4+Pj4gRXhwYW5kIHRoZSBib290
+IHNjcmlwdHMgd2l0aCBFTU1DIGFuZCBhZGQgYSBkZWZhdWx0IGZpbGUgc291cmNlIGZvcgo+Pj4+
+IGV4cGFuc2lvbnMuCj4+Pj4KPj4+PiBSZW1vdmVkICJydyIgYW5kICJyb290d2FpdCIgYm9vdGFy
+Z3MgZnJvbSBleGlzdGluZyBib290IHNjcmlwdHMuCj4+Pj4gQWRkZWQgInJvb3RmbGFncz0nZGF0
+YT1qb3VybmFsJyIgYm9vdGFyZyB0byBTRCBjYXJkIGJvb3Qgc2NyaXB0Lgo+Pj4+Cj4+Pj4gU2ln
+bmVkLW9mZi1ieTogRGFuaWVsIFNjaHVsdHogPGQuc2NodWx0ekBwaHl0ZWMuZGU+Cj4+Pj4gLS0t
+Cj4+Pj4gICAgLi4uL2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L2VtbWMgICAgICAgICAg
+ICAgICAgICB8ICA3ICsrKysrKysKPj4+PiAgICAuLi4vcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVs
+dGVudi1waHlzb20tYW0zMzV4L2Jvb3QvbW1jIHwgIDcgKysrKy0tLQo+Pj4+ICAgIC4uLi9kZWZh
+dWx0ZW52LXBoeXNvbS1hbTMzNXgvYm9vdC9uYW5kICAgICAgICAgICAgICAgICAgfCAgNCArKyst
+Cj4+Pj4gICAgLi4uL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9i
+b290L25ldCB8IDE3ICsrKysrKysrKysrKysrKysrCj4+Pj4gICAgLi4uL3BoeXRlYy1zb20tYW0z
+MzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L3NwaSB8ICA0ICsrKy0KPj4+PiAgICAu
+Li4vZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2luaXQvYm9vdHNvdXJjZSAgICAgICAgICAgIHwg
+MTYgKysrKysrKysrKysrLS0tLQo+Pj4+ICAgIDYgZmlsZXMgY2hhbmdlZCwgNDYgaW5zZXJ0aW9u
+cygrKSwgOSBkZWxldGlvbnMoLSkKPj4+PiAgICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0v
+Ym9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L2Vt
+bWMKPj4+PiAgICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20t
+YW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L25ldAo+Pj4+Cj4+Pj4gZGlmZiAt
+LWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9kZWZhdWx0ZW52LXBoeXNv
+bS1hbTMzNXgvYm9vdC9lbW1jIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2Rl
+ZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L2VtbWMKPj4+PiBuZXcgZmlsZSBtb2RlIDEwMDY0
+NAo+Pj4+IGluZGV4IDAwMDAwMDAuLjZhZDVmODcKPj4+PiAtLS0gL2Rldi9udWxsCj4+Pj4gKysr
+IGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFt
+MzM1eC9ib290L2VtbWMKPj4+PiBAQCAtMCwwICsxLDcgQEAKPj4+PiArIyEvYmluL3NoCj4+Pj4g
+Kwo+Pj4+ICtbIC1lIC9lbnYvY29uZmlnLWV4cGFuc2lvbnMgXSAmJiAvZW52L2NvbmZpZy1leHBh
+bnNpb25zCj4+Pgo+Pj4gV2hhdCBkbyB5b3UgaGF2ZSBpbiB0aGVzZSBjb25maWctZXhwYW5zaW9u
+cyBvciB3aGF0IGRvIHlvdSBleHBlY3QgdG8gYmUKPj4+IHRoZXJlPwo+Pj4KPj4KPj4gVGhlc2Ug
+Y29uZmlnLWV4cGFuaW9ucyBmaWxlcyBjb250YWluIHNvdXJjZSBjb21tYW5kcyBmb3IgZGlmZmVy
+ZW50Cj4+IGV4cGFuc2lvbnMgbGlrZSBIRE1JLCBMQ0QsIFdpRmksIC4uLiBhbmQgYXJlIHdyaXR0
+ZW4gZnJvbSBZb2N0by4gV2UgZG9uJ3QKPj4gd2FudCB0byBicmluZyB0aGVzZSBtYWlubGluZSwg
+YnV0IHdpdGhvdXQgdGhpcyBsaW5lIHdlIGhhdmUgdG8gb3ZlcndyaXRlCj4+IGVhY2ggYm9vdCBz
+Y3JpcHQgZmlsZSBmcm9tIFlvY3RvLgo+Pgo+PiBNYXliZSB0aGlzIGNvdWxkIGJlIGEgZ29vZCBm
+ZWF0dXJlIHNpbmNlIHdlJ3JlIG5vdCB0aGUgb25seSBvbmUgd2l0aAo+PiBleHBhbnNpb24gY29u
+ZmlndXJhdGlvbnMuCj4gCj4gSSBhbSBnZW5lcmFsbHkgb3BlbiB0byBzdWNoIGV4cGFuc2lvbnMs
+IEkganVzdCB3YW50IHRvIHVuZGVyc3RhbmQgd2hhdCdzCj4gbWlzc2luZyBmaXJzdC4KPiBJbiB0
+aGlzIGNhc2UgSSdkIGxpa2UgdG8gdW5kZXJzdGFuZCB3aHkgeW91IGNhbid0IGFkZCBhbiBpbml0
+IHNjcmlwdCB0bwo+IC9lbnYvYmluL2luaXQvIGluc3RlYWQuIElmIHlvdSB3YW50IHRvIGV4dGVu
+ZCB0aGUga2VybmVsIGNvbW1hbmRsaW5lIHlvdQo+IGNvdWxkIGFsc28gYWRkIGEgbnYgdmFyaWFi
+bGUgdG8gL2Vudi9udi9saW51eC5ib290YXJncy55b2N0by4KPiAKCk9oIEkgZGlkbid0IGtub3cg
+dGhpcyBwYXJ0IG9mIHRoZSBiaW4vaW5pdCBzY3JpcHQuIFdoYXQgZG8geW91IHRoaW5rIAphYm91
+dCB0aGlzIGNoYW5nZT8gVGhpcyB3b3VsZCBjb21wbGV0ZSB0aGUgY29uZmlnIGhpZXJhcmNoeSBi
+eSBleHBlbnNpb25zOgoKKysrIGIvZGVmYXVsdGVudi9kZWZhdWx0ZW52LTItYmFzZS9iaW4vaW5p
+dApAQCAtMjUsNiArMjUsNyBAQCBtYWdpY3ZhciAtYSBnbG9iYWwuYWxsb3dfY29sb3IgIkFsbG93
+IGNvbG9yIG9uIHRoZSAKY29uc29sZSAoYm9vbGVhbikiCiAgWyAteiAiJHtnbG9iYWwuZWRpdGNt
+ZH0iIF0gJiYgZ2xvYmFsLmVkaXRjbWQ9c2VkaXQKCiAgWyAtZSAvZW52L2NvbmZpZy1ib2FyZCBd
+ICYmIC9lbnYvY29uZmlnLWJvYXJkCitbIC1lIC9lbnYvY29uZmlnLWV4cGFuc2lvbnMgXSAmJiAv
+ZW52L2NvbmZpZy1leHBhbnNpb25zCiAgL2Vudi9jb25maWcKCiAgIyBhbGxvdyB0byBzdG9wIHRo
+ZSBib290IGJlZm9yZSBleGVjdXRlIHRoZSAvZW52L2luaXQvKgoKT3RoZXJ3aXNlIEkgd291bGQg
+bW92ZSB0aGUgY29uZmlnLWV4cGFuaW9ucyBzY3JpcHRzIHRvIGluaXQvCgpUaGUgcHJvYmxlbSB3
+aXRoIHRoZSBudiB2YXJzIGFyZSB0aGUgZGlmZmVyZW5jZXMgYmV0d2VlbiB0aGUgCmJvb3Rzb3Vy
+Y2VzLiBJcyB0aGVyZSBhIHdheSB0byBhZGQgdGhlc2UgdmFycyB3aXRoIHNvbWV0aGluZyBsaWtl
+IApsaW51eC5ib290YXJncy5yb290ZnMubW1jID8KCi0tIApNaXQgZnJldW5kbGljaGVuIEdyw7zD
+n2VuLApXaXRoIGJlc3QgcmVnYXJkcywKICAgRGFuaWVsIFNjaHVsdHoKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
