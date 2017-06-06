@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dKgEw-0000Nw-TO
- for barebox@lists.infradead.org; Tue, 13 Jun 2017 07:27:53 +0000
-Date: Tue, 13 Jun 2017 09:27:29 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170613072729.gx63q5adesl67tmf@pengutronix.de>
-References: <1496947297-23502-1-git-send-email-akurz@blala.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1496947297-23502-1-git-send-email-akurz@blala.de>
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1dIH4A-0006mS-DZ
+ for barebox@lists.infradead.org; Tue, 06 Jun 2017 16:10:48 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 25ADFA00269
+ for <barebox@lists.infradead.org>; Tue,  6 Jun 2017 18:11:26 +0200 (CEST)
+From: Daniel Schultz <d.schultz@phytec.de>
+Date: Tue, 6 Jun 2017 18:10:25 +0200
+Message-Id: <1496765425-9702-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,75 +17,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] ARM: i.MX6 Wandboard: dont do MMDC Write Leveling
- Calibration
-To: Alexander Kurz <akurz@blala.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mtd: nand: omap: Fix BCH bit correction
+To: barebox@lists.infradead.org
 
-On Thu, Jun 08, 2017 at 08:41:34PM +0200, Alexander Kurz wrote:
-> The hardware requirements to perform a write leveling calibration are
-> not fulfilled by the Wandboard modules.
-> IMX6DQRM =A744.11.6 "Write leveling Calibration" Note2 states that the fi=
-rst
-> bit of each data byte group (D0, D8, ..., D56) from memory must be connec=
-ted
-> to the same data bus bit on the controller, which is not given on the
-> Wandboard modules, resulting in unpredictable calib results and breaking =
-the
-> WBQUAD 2GiB SDRAM setup. Similar restrictions exist for the i.MX6SD.
-> =
+After commit dec7b4d2bf9 was applied our barebox only corrected the
+first 512 Bytes of NAND pages.
 
-> Remove this calibration and use the MPWLDECTRL defaults.
-> =
+This patch separates between Hamming and BCH when finding out the
+eccsteps, because BCH always works with 2kB pages.
 
-> Signed-off-by: Alexander Kurz <akurz@blala.de>
+Before this patch:
 
-Applied, thanks
+barebox@Phytec phyCORE AM335x:/ nand_bitflip -r -n 5 /dev/nand0.barebox
+nand0.barebox: Flipping bit 5 @ 1796
+nand0.barebox: Flipping bit 6 @ 1258
+nand0.barebox: Flipping bit 5 @ 1062
+nand0.barebox: Flipping bit 2 @ 1399
+nand0.barebox: Flipping bit 6 @ 1243
+No bitflips found on block 0, offset 0x00000000
+barebox@Phytec phyCORE AM335x:/ nand_bitflip -r -n 5 /dev/nand0.barebox
+nand0.barebox: Flipping bit 2 @ 872
+nand0.barebox: Flipping bit 4 @ 252
+nand0.barebox: Flipping bit 3 @ 568
+nand0.barebox: Flipping bit 2 @ 247
+nand0.barebox: Flipping bit 5 @ 401
+page at block 0, offset 0x00000000 has 3 bitflips
 
-Sascha
+After this patch:
 
-> ---
->  arch/arm/boards/technexion-wandboard/lowlevel.c | 1 -
->  1 file changed, 1 deletion(-)
-> =
+barebox@Phytec phyCORE AM335x:/ nand_bitflip -r -n 5 /dev/nand0.barebox
+nand0.barebox: Flipping bit 2 @ 1962
+nand0.barebox: Flipping bit 0 @ 1563
+nand0.barebox: Flipping bit 0 @ 1808
+nand0.barebox: Flipping bit 6 @ 1460
+nand0.barebox: Flipping bit 7 @ 2034
+page at block 0, offset 0x00000000 has 5 bitflips
+barebox@Phytec phyCORE AM335x:/ nand_bitflip -r -n 5 /dev/nand0.barebox
+nand0.barebox: Flipping bit 1 @ 1352
+nand0.barebox: Flipping bit 7 @ 1542
+nand0.barebox: Flipping bit 2 @ 1021
+nand0.barebox: Flipping bit 7 @ 691
+nand0.barebox: Flipping bit 6 @ 1196
+page at block 0, offset 0x00000000 has 10 bitflips, needs cleanup
 
-> diff --git a/arch/arm/boards/technexion-wandboard/lowlevel.c b/arch/arm/b=
-oards/technexion-wandboard/lowlevel.c
-> index d3eb9a0..ff5ae6d 100644
-> --- a/arch/arm/boards/technexion-wandboard/lowlevel.c
-> +++ b/arch/arm/boards/technexion-wandboard/lowlevel.c
-> @@ -276,7 +276,6 @@ static unsigned long wandboard_dram_init(void)
->  =
+Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+---
+ drivers/mtd/nand/nand_omap_gpmc.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
->  	__udelay(100);
->  =
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index 05c8486..61220da 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -302,10 +302,17 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
+ 	unsigned int err_loc[8];
+ 	int bitflip_count;
+ 	int bch_max_err;
++	int eccsteps;
+ 
+-	int eccsteps = (nand->ecc.mode == NAND_ECC_HW) &&
+-			(nand->ecc.size == 2048) ? 4 : 1;
+ 	int eccsize = oinfo->nand.ecc.bytes;
++	if (oinfo->ecc_mode == OMAP_ECC_HAMMING_CODE_HW_ROMCODE)
++		if ((nand->ecc.mode == NAND_ECC_HW) &&
++				(nand->ecc.size == 2048))
++			eccsteps = 4;
++		else
++			eccsteps = 1;
++	else
++		eccsteps = oinfo->nand.ecc.steps;
+ 
+ 	switch (oinfo->ecc_mode) {
+ 	case OMAP_ECC_BCH8_CODE_HW:
+-- 
+1.9.1
 
-> -	mmdc_do_write_level_calibration();
->  	mmdc_do_dqs_calibration();
->  #ifdef DEBUG
->  	mmdc_print_calibration_results();
-> -- =
-
-> 2.1.4
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
