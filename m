@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dI7KO-00046g-B9
- for barebox@lists.infradead.org; Tue, 06 Jun 2017 05:46:54 +0000
-Date: Tue, 6 Jun 2017 07:46:30 +0200
+ id 1dI7LR-0004Im-Ds
+ for barebox@lists.infradead.org; Tue, 06 Jun 2017 05:47:59 +0000
+Date: Tue, 6 Jun 2017 07:47:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170606054630.nf5awnvvf4qapoxq@pengutronix.de>
-References: <1494587239-33771-1-git-send-email-d.schultz@phytec.de>
- <1494587239-33771-3-git-send-email-d.schultz@phytec.de>
- <20170517063051.eh3fp2qth3ntm7uf@pengutronix.de>
- <4c2533fb-5070-b056-959c-a4fa2028d9d7@phytec.de>
+Message-ID: <20170606054735.vvnraasb4n2i6do5@pengutronix.de>
+References: <1496401896-38147-1-git-send-email-d.schultz@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <4c2533fb-5070-b056-959c-a4fa2028d9d7@phytec.de>
+In-Reply-To: <1496401896-38147-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,64 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 3/4] arm: boards: phytec-som-am335x: Update boot scripts
+Subject: Re: [PATCH] fs: Makefile: Add parseopt to all builds
 To: Daniel Schultz <d.schultz@phytec.de>
 Cc: barebox@lists.infradead.org
 
-Hi Daniel,
+On Fri, Jun 02, 2017 at 01:11:36PM +0200, Daniel Schultz wrote:
+> parseopt.h was included to fs.c with commit 9248b, but parseopt.o has a
+> dependency to CONFIG_FS_NFS.
+> 
+> Moved parseopt.o to the default build to eliminate build failures.
+> 
+> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+> ---
+>  fs/Makefile | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-On Fri, Jun 02, 2017 at 10:07:34AM +0200, Daniel Schultz wrote:
-> Hi,
-> 
-> Am 17.05.2017 um 08:30 schrieb Sascha Hauer:
-> > On Fri, May 12, 2017 at 01:07:18PM +0200, Daniel Schultz wrote:
-> > > Expand the boot scripts with EMMC and add a default file source for
-> > > expansions.
-> > > 
-> > > Removed "rw" and "rootwait" bootargs from existing boot scripts.
-> > > Added "rootflags='data=journal'" bootarg to SD card boot script.
-> > > 
-> > > Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
-> > > ---
-> > >   .../defaultenv-physom-am335x/boot/emmc                  |  7 +++++++
-> > >   .../phytec-som-am335x/defaultenv-physom-am335x/boot/mmc |  7 ++++---
-> > >   .../defaultenv-physom-am335x/boot/nand                  |  4 +++-
-> > >   .../phytec-som-am335x/defaultenv-physom-am335x/boot/net | 17 +++++++++++++++++
-> > >   .../phytec-som-am335x/defaultenv-physom-am335x/boot/spi |  4 +++-
-> > >   .../defaultenv-physom-am335x/init/bootsource            | 16 ++++++++++++----
-> > >   6 files changed, 46 insertions(+), 9 deletions(-)
-> > >   create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
-> > >   create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/net
-> > > 
-> > > diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
-> > > new file mode 100644
-> > > index 0000000..6ad5f87
-> > > --- /dev/null
-> > > +++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
-> > > @@ -0,0 +1,7 @@
-> > > +#!/bin/sh
-> > > +
-> > > +[ -e /env/config-expansions ] && /env/config-expansions
-> > 
-> > What do you have in these config-expansions or what do you expect to be
-> > there?
-> > 
-> 
-> These config-expanions files contain source commands for different
-> expansions like HDMI, LCD, WiFi, ... and are written from Yocto. We don't
-> want to bring these mainline, but without this line we have to overwrite
-> each boot script file from Yocto.
-> 
-> Maybe this could be a good feature since we're not the only one with
-> expansion configurations.
-
-I am generally open to such expansions, I just want to understand what's
-missing first.
-In this case I'd like to understand why you can't add an init script to
-/env/bin/init/ instead. If you want to extend the kernel commandline you
-could also add a nv variable to /env/nv/linux.bootargs.yocto.
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/fs/Makefile b/fs/Makefile
+> index f2bb702..b3f929f 100644
+> --- a/fs/Makefile
+> +++ b/fs/Makefile
+> @@ -4,11 +4,11 @@ obj-$(CONFIG_FS_RAMFS)	+= ramfs.o
+>  obj-y			+= devfs-core.o
+>  obj-$(CONFIG_FS_DEVFS)	+= devfs.o
+>  obj-$(CONFIG_FS_FAT)	+= fat/
+> -obj-y	+= fs.o
+> +obj-y	+= fs.o parseopt.o
+>  obj-$(CONFIG_FS_UBIFS)	+= ubifs/
+>  obj-$(CONFIG_FS_TFTP)	+= tftp.o
+>  obj-$(CONFIG_FS_OMAP4_USBBOOT)	+= omap4_usbbootfs.o
+> -obj-$(CONFIG_FS_NFS)	+= nfs.o parseopt.o
+> +obj-$(CONFIG_FS_NFS)	+= nfs.o
+>  obj-$(CONFIG_FS_BPKFS) += bpkfs.o
+>  obj-$(CONFIG_FS_UIMAGEFS)	+= uimagefs.o
+>  obj-$(CONFIG_FS_EFI)	 += efi.o
+> -- 
+> 1.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
