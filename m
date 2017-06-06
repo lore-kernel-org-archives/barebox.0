@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dICBb-0002hs-4b
- for barebox@lists.infradead.org; Tue, 06 Jun 2017 10:58:08 +0000
-References: <1494587239-33771-1-git-send-email-d.schultz@phytec.de>
- <1494587239-33771-4-git-send-email-d.schultz@phytec.de>
- <20170517063514.hexnde6jhbix5j3t@pengutronix.de>
-From: Daniel Schultz <d.schultz@phytec.de>
-Message-ID: <fe539eca-9c25-6d4c-5594-71249a1584af@phytec.de>
-Date: Tue, 6 Jun 2017 12:57:43 +0200
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dI7UA-00086N-1L
+ for barebox@lists.infradead.org; Tue, 06 Jun 2017 05:56:59 +0000
+Date: Tue, 6 Jun 2017 07:56:36 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170606055636.6kr6qglik5xbwjwe@pengutronix.de>
+References: <20170602182204.32309-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20170517063514.hexnde6jhbix5j3t@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20170602182204.32309-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,40 +18,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 4/4] arm: boards: beaglebone: Delete default env
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 1/2] docs: mvebu can do 2nd stage booting
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLAoKQW0gMTcuMDUuMjAxNyB1bSAwODozNSBzY2hyaWViIFNhc2NoYSBIYXVlcjoK
-PiBPbiBGcmksIE1heSAxMiwgMjAxNyBhdCAwMTowNzoxOVBNICswMjAwLCBEYW5pZWwgU2NodWx0
-eiB3cm90ZToKPj4gVGhlIEJlYWdsZWJvbmUgZW52aXJvbm1lbnQgc2hvdWxkIGJlIHNldCBmcm9t
-IG91dHNpZGUgd2l0aCBhbiBhcHBsaWNhdGlvbgo+PiBzcGVjaWZpYyBlbnZpcm9ubWVudC4KPj4K
-Pj4gU2lnbmVkLW9mZi1ieTogRGFuaWVsIFNjaHVsdHogPGQuc2NodWx0ekBwaHl0ZWMuZGU+Cj4+
-IC0tLQo+PiAgIGFyY2gvYXJtL2JvYXJkcy9iZWFnbGVib25lL01ha2VmaWxlICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgfCAxIC0KPj4gICBhcmNoL2FybS9ib2FyZHMvYmVhZ2xlYm9u
-ZS9ib2FyZC5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgMiAtLQo+PiAgIGFy
-Y2gvYXJtL2JvYXJkcy9iZWFnbGVib25lL2RlZmF1bHRlbnYtYmVhZ2xlYm9uZS9ib290L3NkICAg
-ICAgICAgICAgfCA2IC0tLS0tLQo+PiAgIC4uLi9hcm0vYm9hcmRzL2JlYWdsZWJvbmUvZGVmYXVs
-dGVudi1iZWFnbGVib25lL2luaXQvdXNiLWxpbWl0LTEzMDAgfCA1IC0tLS0tCj4+ICAgNCBmaWxl
-cyBjaGFuZ2VkLCAxNCBkZWxldGlvbnMoLSkKPj4gICBkZWxldGUgbW9kZSAxMDA2NDQgYXJjaC9h
-cm0vYm9hcmRzL2JlYWdsZWJvbmUvZGVmYXVsdGVudi1iZWFnbGVib25lL2Jvb3Qvc2QKPj4gICBk
-ZWxldGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL2JlYWdsZWJvbmUvZGVmYXVsdGVudi1i
-ZWFnbGVib25lL2luaXQvdXNiLWxpbWl0LTEzMDAKPj4KPj4gLS0tIGEvYXJjaC9hcm0vYm9hcmRz
-L2JlYWdsZWJvbmUvZGVmYXVsdGVudi1iZWFnbGVib25lL2luaXQvdXNiLWxpbWl0LTEzMDAKPj4g
-KysrIC9kZXYvbnVsbAo+PiBAQCAtMSw1ICswLDAgQEAKPj4gLSMhL2Jpbi9zaAo+PiAtCj4+IC1l
-Y2hvIC1uICJjaGFuZ2luZyBVU0IgY3VycmVudCBsaW1pdCB0byAxMzAwIG1BLi4uICIKPj4gLWky
-Y193cml0ZSAtYiAwIC1hIDB4MjQgLXIgMHgwMSAweDNlCj4+IC1lY2hvICJkb25lIgo+IAo+IFdl
-IG5lZWQgdGhpcyBvbiB0aGUgYmVhZ2xlYm9hcmQuIFdlIGNhbid0IGp1c3QgZGVsZXRlIGl0IHdp
-dGhvdXQgZG9pbmcKPiB0aGlzIHNvbWV3aGVyZSBlbHNlLgo+IAo+IEFsc28gSSBzdGlsbCBkbyBu
-b3QgdW5kZXJzdGFuZCB0aGUgcmVhc29uaW5nIGJlaGluZCB0aGlzIGNoYW5nZS4gV2hlcmUKPiBp
-cyAib3V0c2lkZSIsIHRvIHdoaWNoIGFwcGxpY2F0aW9uIHNob3VsZCB0aGUgZW52aXJvbm1lbnQg
-YmUgc3BlY2lmaWMKPiB0bz8KUGxlYXNlIHJldm9rZSB0aGlzIHBhdGNoLiBTb3JyeS4KCj4gCj4g
-U2FzY2hhCj4gCgotLSAKTWl0IGZyZXVuZGxpY2hlbiBHcsO8w59lbiwKV2l0aCBiZXN0IHJlZ2Fy
-ZHMsCiAgIERhbmllbCBTY2h1bHR6CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
-ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
-Cg==
+On Fri, Jun 02, 2017 at 08:22:03PM +0200, Uwe Kleine-K=F6nig wrote:
+> Since commit
+> =
+
+> 	823d08e3e261 ("kwbimage_v1: add support to boot a mvebu image")
+> =
+
+> barebox can use bootm to load a 2nd barebox image. Update the
+> documentation accordingly.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  Documentation/boards/mvebu.rst | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> =
+
+> diff --git a/Documentation/boards/mvebu.rst b/Documentation/boards/mvebu.=
+rst
+> index b4f8e6043dac..4dfdc4a8f761 100644
+> --- a/Documentation/boards/mvebu.rst
+> +++ b/Documentation/boards/mvebu.rst
+> @@ -28,8 +28,8 @@ initialisation that could be taken.
+>  Booting second stage
+>  --------------------
+>  =
+
+> -This is currently not possible because barebox assumes the registers are=
+ mapped
+> -at 0xd0000000 as is the case when the boot ROM gives control to the boot=
+loader.
+> +Since ``v2017.04.0`` barebox can boot a barebox image even if the regist=
+er
+> +window is moved. This is implemented by writing the actual window positi=
+on into the image where it is then picked up by the second stage bootloader.
+
+Applied with an additional line break, thanks
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
