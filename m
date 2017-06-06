@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dI7LR-0004Im-Ds
- for barebox@lists.infradead.org; Tue, 06 Jun 2017 05:47:59 +0000
-Date: Tue, 6 Jun 2017 07:47:35 +0200
+ id 1dI7S6-0006I0-6L
+ for barebox@lists.infradead.org; Tue, 06 Jun 2017 05:54:51 +0000
+Date: Tue, 6 Jun 2017 07:54:28 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170606054735.vvnraasb4n2i6do5@pengutronix.de>
-References: <1496401896-38147-1-git-send-email-d.schultz@phytec.de>
+Message-ID: <20170606055428.25unjole6ygcskrl@pengutronix.de>
+References: <20170602154828.4429-1-aleksander@aleksander.es>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1496401896-38147-1-git-send-email-d.schultz@phytec.de>
+In-Reply-To: <20170602154828.4429-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,19 +22,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fs: Makefile: Add parseopt to all builds
-To: Daniel Schultz <d.schultz@phytec.de>
+Subject: Re: [PATCH] ratp: avoid using already freed memory
+To: Aleksander Morgado <aleksander@aleksander.es>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jun 02, 2017 at 01:11:36PM +0200, Daniel Schultz wrote:
-> parseopt.h was included to fs.c with commit 9248b, but parseopt.o has a
-> dependency to CONFIG_FS_NFS.
+On Fri, Jun 02, 2017 at 05:48:28PM +0200, Aleksander Morgado wrote:
+> If ratp_establish() fails we would be accessing the ratp_internal
+> struct after having disposed it.
 > 
-> Moved parseopt.o to the default build to eliminate build failures.
-> 
-> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+> Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 > ---
->  fs/Makefile | 4 ++--
+>  lib/ratp.c | 4 ++--
 >  1 file changed, 2 insertions(+), 2 deletions(-)
 
 Applied, thanks
@@ -42,32 +40,31 @@ Applied, thanks
 Sascha
 
 > 
-> diff --git a/fs/Makefile b/fs/Makefile
-> index f2bb702..b3f929f 100644
-> --- a/fs/Makefile
-> +++ b/fs/Makefile
-> @@ -4,11 +4,11 @@ obj-$(CONFIG_FS_RAMFS)	+= ramfs.o
->  obj-y			+= devfs-core.o
->  obj-$(CONFIG_FS_DEVFS)	+= devfs.o
->  obj-$(CONFIG_FS_FAT)	+= fat/
-> -obj-y	+= fs.o
-> +obj-y	+= fs.o parseopt.o
->  obj-$(CONFIG_FS_UBIFS)	+= ubifs/
->  obj-$(CONFIG_FS_TFTP)	+= tftp.o
->  obj-$(CONFIG_FS_OMAP4_USBBOOT)	+= omap4_usbbootfs.o
-> -obj-$(CONFIG_FS_NFS)	+= nfs.o parseopt.o
-> +obj-$(CONFIG_FS_NFS)	+= nfs.o
->  obj-$(CONFIG_FS_BPKFS) += bpkfs.o
->  obj-$(CONFIG_FS_UIMAGEFS)	+= uimagefs.o
->  obj-$(CONFIG_FS_EFI)	 += efi.o
+> diff --git a/lib/ratp.c b/lib/ratp.c
+> index d596a0e8b..22e83636f 100644
+> --- a/lib/ratp.c
+> +++ b/lib/ratp.c
+> @@ -1658,6 +1658,8 @@ int ratp_establish(struct ratp *ratp, bool active, int timeout_ms)
+>  	}
+>  
+>  out:
+> +	ri->in_ratp--;
+> +
+>  	if (ret) {
+>  		free(ri->recvbuf);
+>  		free(ri->sendbuf);
+> @@ -1665,8 +1667,6 @@ out:
+>  		ratp->internal = NULL;
+>  	}
+>  
+> -	ri->in_ratp--;
+> -
+>  	return ret;
+>  }
+>  
 > -- 
-> 1.9.1
+> 2.13.0
 > 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
