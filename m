@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dIVaa-0004SB-8i
- for barebox@lists.infradead.org; Wed, 07 Jun 2017 07:41:14 +0000
-Date: Wed, 7 Jun 2017 09:40:49 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170607074049.54p75immahcjiru3@pengutronix.de>
-References: <20170602131808.18781-1-m.grzeschik@pengutronix.de>
- <20170602131808.18781-4-m.grzeschik@pengutronix.de>
- <20170606061840.3ygatsyaswtpqebz@pengutronix.de>
- <20170606110348.qogfyllbixa5wfaf@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170606110348.qogfyllbixa5wfaf@pengutronix.de>
+ id 1dIYAM-0007qS-Sn
+ for barebox@lists.infradead.org; Wed, 07 Jun 2017 10:26:20 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
+ (envelope-from <jbe@pengutronix.de>) id 1dIY9y-0007Q8-Sb
+ for barebox@lists.infradead.org; Wed, 07 Jun 2017 12:25:54 +0200
+Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.89)
+ (envelope-from <jbe@pengutronix.de>) id 1dIY9x-0005jq-RB
+ for barebox@lists.infradead.org; Wed, 07 Jun 2017 12:25:53 +0200
+From: Juergen Borleis <jbe@pengutronix.de>
+Date: Wed,  7 Jun 2017 12:25:53 +0200
+Message-Id: <20170607102553.21992-1-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,79 +22,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 3/3] ARM: i.MX6: add Technexion Pico Hobbit support
-To: Michael Grzeschik <mgr@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] state: add missing help texts
+To: barebox@lists.infradead.org
 
-On Tue, Jun 06, 2017 at 01:03:48PM +0200, Michael Grzeschik wrote:
-> On Tue, Jun 06, 2017 at 08:18:40AM +0200, Sascha Hauer wrote:
-> > On Fri, Jun 02, 2017 at 03:18:08PM +0200, Michael Grzeschik wrote:
-> > > This adds support support for the i.MX6UL Technexion Pico Hobbit.
-> > > The board comes with different amounts of RAM. We create one image
-> > > for the 256MB and one for the 512MB variant.
-> > > 
-> > > Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> > > ---
-> > > v1 -> v2: - removed already prepared clock setup
-> > > 
-> > > +
-> > > +&usdhc1 {
-> > > +	#address-cells = <1>;
-> > > +	#size-cells = <1>;
-> > > +
-> > > +	partition@0 {
-> > > +		label = "barebox";
-> > > +		reg = <0x0 0xc0000>;
-> > > +	};
-> > > +
-> > > +	environment_usdhc1: partition@c0000 {
-> > > +		label = "barebox-environment";
-> > > +		reg = <0xc0000 0x40000>;
-> > > +	};
-> > > +};
-> > > +
-> > > +&fec2 {
-> > > +	/*
-> > > +	  There are two possible ways to start the phy. Let the hardware
-> > > +	  reset it properly or reset it a second time in software.
-> > > +	  Unfortunetly the phy needs some microseconds after reset to
-> > > +	  settle down. As there is no property like
-> > > +	  phy-post-reset-delay, we better leave the reset to the
-> > > +	  hardware.
-> > > +	*/
-> > > +	/delete-property/ phy-reset-gpios;
-> > > +	/delete-property/ phy-reset-duration;
-> > 
-> > Recent Kernels support phy-reset-post-delay. Can we just add support for
-> > it in barebox aswell?
-> 
-> Could we for now stick with this? When I write the phy-reset-post-delay
-> patches I will then adopt this node in the regarding series. This gives
-> me some time, as I can not test the post-delay patch in the next two
-> weeks.
+Commits 3a5ddf3 and 0c74367 add more options to the command but do not
+extend the help texts.
 
-Ok, I reworded the comment to:
+Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
+---
+ commands/state.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-	/*
-	 * There are two possible ways to start the phy. Let the hardware
-	 * reset it properly or reset it a second time in software.
-	 * Unfortunetly the phy needs some microseconds after reset to
-	 * settle down.
-	 * FIXME: Port support for the "phy-reset-post-delay" property to
-	 *        barebox.
-	 */
-
-Sascha
-
+diff --git a/commands/state.c b/commands/state.c
+index c57a906ff..a5c3ba790 100644
+--- a/commands/state.c
++++ b/commands/state.c
+@@ -72,12 +72,16 @@ BAREBOX_CMD_HELP_TEXT("Usage: state [OPTIONS] [STATENAME]")
+ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("options:")
+ BAREBOX_CMD_HELP_OPT ("-s", "save state")
++BAREBOX_CMD_HELP_OPT ("-l", "load state")
++BAREBOX_CMD_HELP_OPT ("-n", "no authentication")
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(state)
+ 	.cmd		= do_state,
+-	BAREBOX_CMD_DESC("save state information")
++	BAREBOX_CMD_DESC("load or save state information")
+ 	BAREBOX_CMD_OPTS("[-s] [STATENAME]")
++	BAREBOX_CMD_OPTS("[-l] [STATENAME]")
++	BAREBOX_CMD_OPTS("[-n]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
+ 	BAREBOX_CMD_HELP(cmd_state_help)
+ BAREBOX_CMD_END
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
