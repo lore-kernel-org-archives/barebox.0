@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dKgEB-0000EC-1f
- for barebox@lists.infradead.org; Tue, 13 Jun 2017 07:27:04 +0000
-Date: Tue, 13 Jun 2017 09:26:41 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170613072641.cazsl2bnl22r3mcz@pengutronix.de>
-References: <1497250835-34583-1-git-send-email-c.hemp@phytec.de>
+ id 1dJ2P1-0000kH-3g
+ for barebox@lists.infradead.org; Thu, 08 Jun 2017 18:43:29 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Thu,  8 Jun 2017 20:41:34 +0200
+Message-Id: <1496947297-23502-1-git-send-email-akurz@blala.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1497250835-34583-1-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,64 +15,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] watchdog: i.MX: fix i.MX6 reset
-To: Christian Hemp <c.hemp@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/4] ARM: i.MX6 Wandboard: dont do MMDC Write Leveling
+ Calibration
+To: barebox@lists.infradead.org
+Cc: Alexander Kurz <akurz@blala.de>
 
-On Mon, Jun 12, 2017 at 09:00:35AM +0200, Christian Hemp wrote:
-> According to the Errata ERR004346 (WDOG: WDOG SRS bit requires to be written
-> twice), add another two writes to ensure there must be at least two
-> writes happen in the same one 32kHz clock period.
-> Without this two additional writes, the system will not reset always.
-> 
-> Tested with i.MX6Quad and i.MX6 UltraLite
-> 
-> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
-
-Applied, thanks
-
-Sascha
-
-> ---
->  drivers/watchdog/imxwd.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
-> index b920c72..0617fc6 100644
-> --- a/drivers/watchdog/imxwd.c
-> +++ b/drivers/watchdog/imxwd.c
-> @@ -134,6 +134,10 @@ static void imx21_soc_reset(struct imx_wd *priv)
->  		val |= IMX21_WDOG_WCR_WDA; /* do not assert ext-reset */
->  
->  	writew(val, priv->base + IMX21_WDOG_WCR);
-> +
-> +	/* Two additional writes due to errata ERR004346 */
-> +	writew(val, priv->base + IMX21_WDOG_WCR);
-> +	writew(val, priv->base + IMX21_WDOG_WCR);
->  }
->  
->  static int imx_watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGhhcmR3YXJlIHJlcXVpcmVtZW50cyB0byBwZXJmb3JtIGEgd3JpdGUgbGV2ZWxpbmcgY2Fs
+aWJyYXRpb24gYXJlCm5vdCBmdWxmaWxsZWQgYnkgdGhlIFdhbmRib2FyZCBtb2R1bGVzLgpJTVg2
+RFFSTSDCpzQ0LjExLjYgIldyaXRlIGxldmVsaW5nIENhbGlicmF0aW9uIiBOb3RlMiBzdGF0ZXMg
+dGhhdCB0aGUgZmlyc3QKYml0IG9mIGVhY2ggZGF0YSBieXRlIGdyb3VwIChEMCwgRDgsIC4uLiwg
+RDU2KSBmcm9tIG1lbW9yeSBtdXN0IGJlIGNvbm5lY3RlZAp0byB0aGUgc2FtZSBkYXRhIGJ1cyBi
+aXQgb24gdGhlIGNvbnRyb2xsZXIsIHdoaWNoIGlzIG5vdCBnaXZlbiBvbiB0aGUKV2FuZGJvYXJk
+IG1vZHVsZXMsIHJlc3VsdGluZyBpbiB1bnByZWRpY3RhYmxlIGNhbGliIHJlc3VsdHMgYW5kIGJy
+ZWFraW5nIHRoZQpXQlFVQUQgMkdpQiBTRFJBTSBzZXR1cC4gU2ltaWxhciByZXN0cmljdGlvbnMg
+ZXhpc3QgZm9yIHRoZSBpLk1YNlNELgoKUmVtb3ZlIHRoaXMgY2FsaWJyYXRpb24gYW5kIHVzZSB0
+aGUgTVBXTERFQ1RSTCBkZWZhdWx0cy4KClNpZ25lZC1vZmYtYnk6IEFsZXhhbmRlciBLdXJ6IDxh
+a3VyekBibGFsYS5kZT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvdGVjaG5leGlvbi13YW5kYm9hcmQv
+bG93bGV2ZWwuYyB8IDEgLQogMSBmaWxlIGNoYW5nZWQsIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1n
+aXQgYS9hcmNoL2FybS9ib2FyZHMvdGVjaG5leGlvbi13YW5kYm9hcmQvbG93bGV2ZWwuYyBiL2Fy
+Y2gvYXJtL2JvYXJkcy90ZWNobmV4aW9uLXdhbmRib2FyZC9sb3dsZXZlbC5jCmluZGV4IGQzZWI5
+YTAuLmZmNWFlNmQgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy90ZWNobmV4aW9uLXdhbmRi
+b2FyZC9sb3dsZXZlbC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy90ZWNobmV4aW9uLXdhbmRib2Fy
+ZC9sb3dsZXZlbC5jCkBAIC0yNzYsNyArMjc2LDYgQEAgc3RhdGljIHVuc2lnbmVkIGxvbmcgd2Fu
+ZGJvYXJkX2RyYW1faW5pdCh2b2lkKQogCiAJX191ZGVsYXkoMTAwKTsKIAotCW1tZGNfZG9fd3Jp
+dGVfbGV2ZWxfY2FsaWJyYXRpb24oKTsKIAltbWRjX2RvX2Rxc19jYWxpYnJhdGlvbigpOwogI2lm
+ZGVmIERFQlVHCiAJbW1kY19wcmludF9jYWxpYnJhdGlvbl9yZXN1bHRzKCk7Ci0tIAoyLjEuNAoK
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
+bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
+cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
