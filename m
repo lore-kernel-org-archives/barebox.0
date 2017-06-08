@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dJCzw-0003Ha-PA
- for barebox@lists.infradead.org; Fri, 09 Jun 2017 06:02:19 +0000
-Date: Fri, 9 Jun 2017 08:01:51 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170609060151.jpbtktdqsophglja@pengutronix.de>
-References: <20170607161551.28713-1-bst@pengutronix.de>
+Received: from qmail34.e-mind.com ([188.94.192.34] helo=qmail.e-mind.com)
+ by bombadil.infradead.org with smtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1dIz1x-0006i0-L9
+ for barebox@lists.infradead.org; Thu, 08 Jun 2017 15:07:30 +0000
+From: gianluca <gianlucarenzi@eurekelettronica.it>
+Message-ID: <5caded00-8ec7-f66e-0922-11d32f719081@eurekelettronica.it>
+Date: Thu, 8 Jun 2017 17:06:46 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170607161551.28713-1-bst@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,375 +15,221 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] firmware: altera-serial: add support for Arria 10
-To: Bastian Stender <bst@pengutronix.de>
+Subject: New Board i.MX6 Dual Lite based
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jun 07, 2017 at 06:15:51PM +0200, Bastian Stender wrote:
-> Make FPGA specific settings configurable (padding, spi bits per word,
-> delays) and add Arria 10 support. The Arria 10 compatible is the same
-> as in the kernel patch "fpga manager: Add altera-ps-spi driver for
-> Altera FPGAs" (drivers/fpga/altera-ps-spi.c). The Arria 5 compatible
-> works unchanged.
-> =
+Hello,
+I would like to know if somebody has never faced a strange issue using 
+Barebox (in detail the version I am actually using is 2017.02).
 
-> This patch was tested with Arria 5 and Arria 10.
-> =
+After running the the flash-header for memory using the xlsx file from 
+FreeScale to setup the memory controller for iMX6 Dual Lite, the boot 
+from the serial console is saying:
 
-> Signed-off-by: Bastian Stender <bst@pengutronix.de>
-> ---
 
-Applied, thanks
+> barebox 2017.02.0 #1 Thu Jun 8 15:51:17 CEST 2017
+>
+>
+> Board: Eurek EK360 i.MX6DL
+> detected i.MX6 DualLite revision 1.3
+> mdio_bus: miibus0: probed
+> imx-usb 2184000.usb: Cannot get phy: Function not implemented
+> imx-usb 2184000.usb: probe failed: Function not implemented
+> imx-usb 2184200.usb: Cannot get phy: Function not implemented
+> imx-usb 2184200.usb: probe failed: Function not implemented
 
-Sascha
+this is pretty strange... Any hint? The device-tree for usb is like that:
 
->  .../bindings/firmware/altr,passive-serial.txt      |   3 +-
->  drivers/firmware/altera_serial.c                   | 159 +++++++++++++++=
-------
->  2 files changed, 115 insertions(+), 47 deletions(-)
-> =
+> 		pinctrl_usbh1: usbh1grp {
+> 			fsl,pins = <
+> 				MX6QDL_PAD_EIM_D30__USB_H1_OC			0x1b0b0
+> 			>;
+> 		};
+>
+> 		pinctrl_usbh1_vcc: usbh1vccgrp {
+> 			fsl,pins = <
+> 				MX6QDL_PAD_EIM_D31__GPIO3_IO31			0x1b0b0
+> 			>;
+> 		};
 
-> diff --git a/Documentation/devicetree/bindings/firmware/altr,passive-seri=
-al.txt b/Documentation/devicetree/bindings/firmware/altr,passive-serial.txt
-> index d357dd39c..eec12fbac 100644
-> --- a/Documentation/devicetree/bindings/firmware/altr,passive-serial.txt
-> +++ b/Documentation/devicetree/bindings/firmware/altr,passive-serial.txt
-> @@ -6,7 +6,8 @@ passive serial mode. This is used to upload the firmware =
-and
->  to start the FPGA.
->  =
+> &usbh1 {
+> 	vbus-supply = <&reg_usb_h1_vbus>;
+> 	pinctrl-names = "default";
+> 	pinctrl-0 = <&pinctrl_usbh1
+> 					&pinctrl_usbh1_vcc>;
+> 	dr_mode = "host";
+> 	status = "okay";
+> };
 
->  Required properties:
-> -- compatible: shall be "altr,fpga-passive-serial"
-> +- compatible: shall be "altr,fpga-passive-serial" or
-> +  "altr,fpga-arria10-passive-serial" for Arria 10
->  - reg: SPI chip select
->  - nstat-gpios: Specify GPIO for controlling the nstat pin
->  - confd-gpios: Specify GPIO for controlling the confd pin
-> diff --git a/drivers/firmware/altera_serial.c b/drivers/firmware/altera_s=
-erial.c
-> index b119778d7..3a0175dd0 100644
-> --- a/drivers/firmware/altera_serial.c
-> +++ b/drivers/firmware/altera_serial.c
-> @@ -25,11 +25,12 @@
->  #include <fcntl.h>
->  #include <fs.h>
->  =
+And it looks normal to me...
 
-> -
->  /*
->   * Physical requirements:
-> - * - three free GPIOs for the signals nCONFIG, CONFIGURE_DONE, nSTATUS
-> - * - 32 bit per word, LSB first capable SPI master (MOSI + clock)
-> + * - free GPIOs for the signals nCONFIG, CONFIGURE_DONE, nSTATUS (option=
-ally
-> + *   for ARRIA 10)
-> + * - 32 bit / 8 bit (ARRIA 10) per word, LSB first capable SPI master
-> + *   (MOSI + clock)
->   *
->   * Example how to configure this driver via device tree
->   *
-> @@ -43,6 +44,13 @@
->   *	};
->   */
->  =
+> imx-esdhc 2194000.usdhc: registered as 2194000.usdhc
+> imx-esdhc 2198000.usdhc: registered as 2198000.usdhc
+> imx-esdhc 219c000.usdhc: registered as 219c000.usdhc
+> imx-ipuv3 2400000.ipu: IPUv3H probed
+> netconsole: registered as netconsole-1
+> malloc space: 0x2ff7b920 -> 0x4fef723f (size 511.5 MiB)
+> environment load /dev/env0: No such file or directory
+> Maybe you have to create the partition.
+> running /env/bin/init...
+> Running boot from uSD/MMC or USB...
+> mmc2: detected SD card version 2.0
+> mmc2: registered mmc2
+> ext4 ext40: EXT2 rev 1, inode_size 128
 
-> +struct altera_ps_data {
-> +	int status_wait_max_us;
-> +	int t_st2ck_us;
-> +	int spi_bits_per_word;
-> +	int padding;
-> +};
-> +
->  struct fpga_spi {
->  	struct firmware_handler fh;
->  	int nstat_gpio; /* input GPIO to read the status line */
-> @@ -50,9 +58,36 @@ struct fpga_spi {
->  	int nconfig_gpio; /* output GPIO to start the FPGA's config */
->  	struct device_d *dev;
->  	struct spi_device *spi;
-> +	const struct altera_ps_data *data;
->  	bool padding_done;
->  };
->  =
+The mmc connected to the mmc2 is looking good, but:
 
-> +/*          |   Arria 5   |   Arria 10  |
-> + * t_CF2ST0 |     [; 600] |     [; 600] | ns
-> + * t_CFG    |        [2;] |        [2;] | =B5s
-> + * t_STATUS | [268; 1506] | [268; 3000] | =B5s
-> + * t_CF2ST1 |    [; 1506] |    [; 3000] | =B5s
-> + * t_CF2CK  |     [1506;] |  [3010 =B5s;] | =B5s
-> + * t_ST2CK  |        [2;] |       [10;] | =B5s
-> + * t_CD2UM  |  [175; 437] |  [175; 830] | =B5s
-> + */
-> +
-> +/* Arria 5 */
-> +static struct altera_ps_data a5_data =3D {
-> +	.status_wait_max_us =3D 1506, /* max(t_CF2ST1) */
-> +	.t_st2ck_us =3D 2, /* min(t_ST2CK) */
-> +	.spi_bits_per_word =3D 32,
-> +	.padding =3D true,
-> +};
-> +
-> +/* Arria 10 */
-> +static struct altera_ps_data a10_data =3D {
-> +	.status_wait_max_us =3D 3000, /* max(t_CF2ST1) */
-> +	.t_st2ck_us =3D 10, /* min(t_ST2CK) */
-> +	.spi_bits_per_word =3D 8,
-> +	.padding =3D false,
-> +};
-> +
->  static int altera_spi_open(struct firmware_handler *fh)
->  {
->  	struct fpga_spi *this =3D container_of(fh, struct fpga_spi, fh);
-> @@ -77,7 +112,6 @@ static int altera_spi_open(struct firmware_handler *fh)
->  				(gpio_get_value(this->confd_gpio) =3D=3D 0));
->  	}
->  =
+1- I have an internal eMMC with these defs in the device-tree:
 
-> -
->  	if (ret !=3D 0) {
->  		dev_err(dev, "FPGA does not acknowledge the programming initiation\n");
->  		if (gpio_is_valid(this->nstat_gpio) && gpio_get_value(this->nstat_gpio=
-))
-> @@ -94,24 +128,30 @@ static int altera_spi_open(struct firmware_handler *=
-fh)
->  	this->padding_done =3D false;
->  =
+> &usdhc4 {
+> 	/* eMMC */
+> 	pinctrl-names = "default";
+> 	pinctrl-0 = <&pinctrl_usdhc4>;
+> 	bus-width = <8>;
+> 	vmmc-supply = <&reg_3p3v>;
+> 	vqmmc-supply = <&reg_3p3v>;
+> 	voltage-ranges = <3300 3300>;
+> 	no-1-8-v;
+> 	non-removable;
+> 	status = "okay";
+> };
 
->  	/*
-> -	 * after about 1506 =B5s the FPGA must acknowledge this step
-> -	 * with the STATUS line at high level
-> +	 * after max { max(t_STATUS), max(t_CF2ST1) } the FPGA must acknowledge=
- this
-> +	 * step with the STATUS line at high level
->  	 */
-> -
->  	if (gpio_is_valid(this->nstat_gpio)) {
-> -		ret =3D wait_on_timeout(1600 * USECOND,
-> -				gpio_get_value(this->nstat_gpio) =3D=3D 1);
-> -		if (ret !=3D 0) {
-> -			dev_err(dev, "FPGA does not acknowledge the programming start\n");
-> +		ret =3D wait_on_timeout(this->data->status_wait_max_us * USECOND,
-> +				gpio_get_value(this->nstat_gpio));
-> +		if (ret) {
-> +			dev_err(dev, "nSTATUS still low after max(t_CF2ST1)! %d\n", ret);
->  			return ret;
->  		}
->  	} else {
-> -		udelay(1600);
-> +		udelay(this->data->status_wait_max_us);
->  	}
->  =
+> 		pinctrl_usdhc4: usdhc4grp {
+> 			/* eMMC */
+> 			fsl,pins = <
+> 				MX6QDL_PAD_SD4_CMD__SD4_CMD			0x17059
+> 				MX6QDL_PAD_SD4_CLK__SD4_CLK			0x10059
+> 				MX6QDL_PAD_SD4_DAT0__SD4_DATA0		0x17059
+> 				MX6QDL_PAD_SD4_DAT1__SD4_DATA1		0x17059
+> 				MX6QDL_PAD_SD4_DAT2__SD4_DATA2		0x17059
+> 				MX6QDL_PAD_SD4_DAT3__SD4_DATA3		0x17059
+> 				MX6QDL_PAD_SD4_DAT4__SD4_DATA4		0x17059
+> 				MX6QDL_PAD_SD4_DAT5__SD4_DATA5		0x17059
+> 				MX6QDL_PAD_SD4_DAT6__SD4_DATA6		0x17059
+> 				MX6QDL_PAD_SD4_DAT7__SD4_DATA7		0x17059
+> 			>;
+> 		};
 
->  	dev_dbg(dev, "Initiating passed\n");
-> -	/* at the end, wait at least 2 =B5s prior beginning writing data */
-> -	udelay(2);
-> +
-> +	/*
-> +	 * t_CF2CK doesn't need to be honored if nSTATUS is monitored in which
-> +	 * case only t_ST2CK applies. As we have
-> +	 * 	max(t_CF2ST1) + min(t_ST2CK) >=3D min(t_CF2CK)
-> +	 * and we waited for max(t_CF2ST1) in the non-monitored
-> +	 * case already above, only waiting for min(t_ST2CK) is fine here.
-> +	 */
-> +	udelay(this->data->t_st2ck_us * USECOND);
->  =
+But when I try to devinfo:
 
->  	return 0;
->  }
-> @@ -129,30 +169,38 @@ static int altera_spi_write(struct firmware_handler=
- *fh, const void *buf, size_t
->  =
+>        `-- 2194000.usdhc
+>             `-- mmc1
+>          `-- 2198000.usdhc
+>             `-- mmc2
+>                `-- 0x00000000-0xefffffff (   3.8 GiB): /dev/mmc2
+>                `-- 0x00400000-0x00bfffff (     8 MiB): /dev/mmc2.0
+>                `-- 0x00c00000-0x02bfffff (    32 MiB): /dev/mmc2.1
+>                `-- 0x02c00000-0xefffffff (   3.7 GiB): /dev/mmc2.2
+>                `-- ext40
+>          `-- 219c000.usdhc
+>             `-- mmc3
 
->  	spi_message_init(&m);
->  =
+It looks empty (mmc3)... Any clue here? I will try another board, just 
+to see if there is an hardware problem in the first board, but meanwhile 
+is there some places to look at?
 
-> -	if (sz < sizeof(u32)) {
-> -		/* simple padding */
-> -		dummy =3D 0;
-> -		memcpy(&dummy, buf, sz);
-> -		buf =3D &dummy;
-> -		sz =3D sizeof(u32);
-> -		this->padding_done =3D true;
-> -	}
-> +	if (this->data->padding) {
-> +		if (sz < sizeof(u32)) {
-> +			/* simple padding */
-> +			dummy =3D 0;
-> +			memcpy(&dummy, buf, sz);
-> +			buf =3D &dummy;
-> +			sz =3D sizeof(u32);
-> +			this->padding_done =3D true;
-> +		}
->  =
+> i2c0: <i2c_fsl_bus_busy> timeout waiting for I2C bus busy
+> ek360_read_eeprom :Error on reading eeprom @ 0
+> ek360_read_eeprom :Error on reading bytes.
+> ek360_detect_hw :** ERROR on READ EEPROM BOARD ret: -1
+> Hit CTRL-C key to stop autoboot:  1
 
-> -	t[0].tx_buf =3D buf;
-> -	t[0].rx_buf =3D NULL;
-> -	t[0].len =3D sz;
-> -	spi_message_add_tail(&t[0], &m);
-> -
-> -	if (sz & 0x3) { /* padding required? */
-> -		u32 *word_buf =3D (u32 *)buf;
-> -		dummy =3D 0;
-> -		memcpy(&dummy, &word_buf[sz >> 2], sz & 0x3);
-> -		t[0].len &=3D ~0x03;
-> -		t[1].tx_buf =3D &dummy;
-> -		t[1].rx_buf =3D NULL;
-> -		t[1].len =3D sizeof(u32);
-> -		spi_message_add_tail(&t[1], &m);
-> -		this->padding_done =3D true;
-> +		t[0].tx_buf =3D buf;
-> +		t[0].rx_buf =3D NULL;
-> +		t[0].len =3D sz;
-> +		spi_message_add_tail(&t[0], &m);
-> +
-> +		if (sz & 0x3) { /* padding required? */
-> +			u32 *word_buf =3D (u32 *)buf;
-> +			dummy =3D 0;
-> +			memcpy(&dummy, &word_buf[sz >> 2], sz & 0x3);
-> +			t[0].len &=3D ~0x03;
-> +			t[1].tx_buf =3D &dummy;
-> +			t[1].rx_buf =3D NULL;
-> +			t[1].len =3D sizeof(u32);
-> +			spi_message_add_tail(&t[1], &m);
-> +			this->padding_done =3D true;
-> +		}
-> +	} else {
-> +		memset(&t[0], 0, sizeof(t[0]));
-> +		t[0].tx_buf =3D buf;
-> +		t[0].rx_buf =3D NULL;
-> +		t[0].len =3D sz;
-> +		spi_message_add_tail(&t[0], &m);
->  	}
->  =
+Another issue is the i2c bus.
 
->  	ret =3D spi_sync(this->spi, &m);
-> @@ -173,7 +221,7 @@ static int altera_spi_close(struct firmware_handler *=
-fh)
->  =
+The devicetree has those definition about the bus:
 
->  	dev_dbg(dev, "Finalize programming\n");
->  =
+> 		pinctrl_i2c1: i2c1grp {
+> 			fsl,pins = <
+> 				MX6QDL_PAD_CSI0_DAT8__I2C1_SDA		0x4001b8b1
+> 				MX6QDL_PAD_CSI0_DAT9__I2C1_SCL		0x4001b8b1
+> 			>;
+> 		};
 
-> -	if (this->padding_done =3D=3D false) {
-> +	if (this->data->padding && this->padding_done =3D=3D false) {
->  		spi_message_init(&m);
->  		t.tx_buf =3D &dummy;
->  		t.rx_buf =3D NULL;
-> @@ -196,12 +244,23 @@ static int altera_spi_close(struct firmware_handler=
- *fh)
->  	} else {
->  		ret =3D wait_on_timeout(10 * USECOND,
->  				(gpio_get_value(this->confd_gpio) =3D=3D 1));
-> -
->  	}
->  =
+> &i2c1 {
+> 	clock-frequency = <100000>;
+> 	pinctrl-names = "default";
+> 	pinctrl-0 = <&pinctrl_i2c1>;
+> 	status = "okay";
+>
+> 	codec: sgtl5000@0a {
+> 		compatible = "fsl,sgtl5000";
+> 		reg = <0x0a>;
+> 		clocks = <&clks IMX6QDL_CLK_CKO>;
+> 		VDDA-supply = <&reg_3p3v>;
+> 		VDDIO-supply = <&reg_3p3v>;
+> 		VDDD-supply = <&reg_1p2v>;
+> 		status = "okay";
+> 	};
+>
+> 	touchscreen@48 {
+> 		compatible = "eurek,sx8656-ek";
+> 		reg = <0x48>;
+> 		pinctrl-names = "default";
+> 		pinctrl-0 = <&pinctrl_touchscreen>;
+> 		interrupt-parent = <&gpio1>;
+> 		interrupts = <17 IRQ_TYPE_EDGE_FALLING>;
+> 		status = "okay";
+> 	};
+>
+> 	at24@50 {
+> 		compatible = "at24,24c64";
+> 		pagesize = <64>;
+> 		reg = <0x50>;
+> 		status = "okay";
+> 	};
+>
+> 	pcf8563: rtc@51 {
+> 		compatible = "phg,pcf8563";
+> 		reg = <0x51>;
+> 		status = "okay";
+> 	};
+>
+> };
 
-> +
->  	if (ret =3D=3D 0) {
->  		dev_dbg(dev, "Programming successful\n");
-> -		return ret;
-> +
-> +		/*
-> +		 * After CONF_DONE goes high, send two additional falling edges on DCLK
-> +		 * to begin initialization and enter user mode
-> +		 */
-> +		spi_message_init(&m);
-> +		memset(&t, 0, sizeof(t));
-> +		t.tx_buf =3D NULL;
-> +		t.rx_buf =3D NULL;
-> +		t.len =3D 2;
-> +		spi_message_add_tail(&t, &m);
-> +		return spi_sync(this->spi, &m);
->  	}
->  =
+but when I devinfo here is the magic (apart the '0' in the last position 
+of the name... sgtl5000 and NOT sgtl50000):
 
->  	dev_err(dev, "Programming failed due to time out\n");
-> @@ -267,9 +326,10 @@ out:
->  	return ret;
->  }
->  =
+>         `-- 21a0000.i2c
+>             `-- i2c0
+>                `-- sgtl50000
+>                `-- sx8656-ek0
+>                `-- 24c640
+>                   `-- 0x00000000-0x00001fff (     8 KiB): /dev/eeprom0
+>                `-- pcf85630
 
-> -static void altera_spi_init_mode(struct spi_device *spi)
-> +static void altera_spi_init_mode(struct spi_device *spi, int spi_bits_pe=
-r_word)
->  {
-> -	spi->bits_per_word =3D 32;
-> +	spi->bits_per_word =3D spi_bits_per_word;
-> +
->  	/*
->  	 * CPHA =3D CPOL =3D 0
->  	 * the FPGA expects its firmware data with LSB first
-> @@ -284,9 +344,14 @@ static int altera_spi_probe(struct device_d *dev)
->  	struct firmware_handler *fh;
->  	const char *alias =3D of_alias_get(dev->device_node);
->  	const char *model =3D NULL;
-> +	const struct altera_ps_data *data;
->  =
+But if I do a i2c_dump, here is the issue again:
 
->  	dev_dbg(dev, "Probing FPGA firmware programmer\n");
->  =
+> i2c_probe 0
+> probing i2c0 range 0x00-0x7f: i2c0: <i2c_fsl_bus_busy> timeout waiting for I2C bus busy
+> i2c0: <i2c_fsl_bus_busy> timeout waiting for I2C bus busy
+> i2c0: <i2c_fsl_bus_busy> timeout waiting for I2C bus busy
+> i2c0: <i2c_fsl_bus_busy> timeout waiting for I2C bus busy
+> i2c0: <i2c_fsl_bus_busy> timeout waiting for I2C bus busy
+> i2c0: <i2c_fsl_bus_busy> timeout waiting for I2C bus busy
+> i2c0: <i2c_fsl_bus_busy> timeout waiting for I2C bus busy
+> i2c0: <i2c_fsl_bus_busy> timeout waiting for I2C bus busy
+> i2c0: <i2c_fsl_bus_busy> timeout waiting for I2C bus busy
+> i2c0: <i2c_fsl_bus_busy> timeout waiting for I2C bus busy
+> i2c0: <i2c_fsl_bus_busy> timeout waiting for I2C bus busy
 
-> +	rc =3D dev_get_drvdata(dev, (const void **)&data);
-> +	if (rc)
-> +		return rc;
-> +
->  	this =3D xzalloc(sizeof(*this));
->  	fh =3D &this->fh;
->  =
+There is a place where I can find the problem to lead to this?
 
-> @@ -308,7 +373,9 @@ static int altera_spi_probe(struct device_d *dev)
->  	fh->dev =3D dev;
->  =
+Any help will be appreciated.
 
->  	this->spi =3D (struct spi_device *)dev->type_data;
-> -	altera_spi_init_mode(this->spi);
-> +	this->data =3D data;
-> +
-> +	altera_spi_init_mode(this->spi, this->data->spi_bits_per_word);
->  	this->dev =3D dev;
->  =
+As soon those problems are gone, I will be glad to switch to the latest 
+Barebox 2017.06 and a newer linux...
 
->  	dev_dbg(dev, "Registering FPGA firmware programmer\n");
-> @@ -327,9 +394,9 @@ out:
->  }
->  =
-
->  static struct of_device_id altera_spi_id_table[] =3D {
-> -	{
-> -		.compatible =3D "altr,fpga-passive-serial",
-> -	},
-> +	{ .compatible =3D "altr,fpga-passive-serial", .data =3D &a5_data },
-> +	{ .compatible =3D "altr,fpga-arria10-passive-serial", .data =3D &a10_da=
-ta },
-> +	{ }
->  };
->  =
-
->  static struct driver_d altera_spi_driver =3D {
-> -- =
-
-> 2.11.0
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards,
+-- 
+Eurek s.r.l.                          |
+Electronic Engineering                | http://www.eurek.it
+via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
+p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
 
 _______________________________________________
 barebox mailing list
