@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dJFnS-0001DQ-6G
- for barebox@lists.infradead.org; Fri, 09 Jun 2017 09:01:36 +0000
+ id 1dJFnN-0001Cj-6E
+ for barebox@lists.infradead.org; Fri, 09 Jun 2017 09:01:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  9 Jun 2017 11:01:05 +0200
-Message-Id: <20170609090106.10933-1-s.hauer@pengutronix.de>
+Date: Fri,  9 Jun 2017 11:01:06 +0200
+Message-Id: <20170609090106.10933-2-s.hauer@pengutronix.de>
+In-Reply-To: <20170609090106.10933-1-s.hauer@pengutronix.de>
+References: <20170609090106.10933-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,79 +21,136 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] mtd: nand_omap_gpmc: Fix ecc size
+Subject: [PATCH 2/2] mtd: nand_omap_gpmc: remove unnecessary loop
 To: Barebox List <barebox@lists.infradead.org>
 
-The ECC size for BCH correction is always 512 byte. Correct the ecc.size
-for the OMAP_ECC_BCH8_CODE_HW mode from 2048 to 512. This change will
-let the framework iterate over the 4 ecc steps and we no longer	need
-special cases in omap_correct_bch().
+With eccsteps always being one the loop in omap_correct_bch() is
+iterated over exactly once, so it can be optimized away.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand_omap_gpmc.c | 27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ drivers/mtd/nand/nand_omap_gpmc.c | 85 ++++++++++++++++++---------------------
+ 1 file changed, 40 insertions(+), 45 deletions(-)
 
 diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-index e18ce6358a..fa838f39a4 100644
+index fa838f39a4..334014a895 100644
 --- a/drivers/mtd/nand/nand_omap_gpmc.c
 +++ b/drivers/mtd/nand/nand_omap_gpmc.c
-@@ -303,8 +303,7 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
+@@ -297,18 +297,16 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
+ {
+ 	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
+ 	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
+-	int i, j, eccflag, totalcount, actual_eccsize;
++	int j, eccflag, totalcount, actual_eccsize;
+ 	const uint8_t *erased_ecc_vec;
+ 	unsigned int err_loc[8];
  	int bitflip_count;
  	int bch_max_err;
- 
--	int eccsteps = (nand->ecc.mode == NAND_ECC_HW) &&
--			(nand->ecc.size == 2048) ? 4 : 1;
-+	int eccsteps = 1;
+-
+-	int eccsteps = 1;
  	int eccsize = oinfo->nand.ecc.bytes;
++	bool is_error_reported = false;
  
  	switch (oinfo->ecc_mode) {
-@@ -667,6 +666,10 @@ static int omap_gpmc_read_page_bch_rom_mode(struct mtd_info *mtd,
- 	uint8_t *ecc_code = chip->buffers->ecccode;
- 	uint32_t *eccpos = chip->ecc.layout->eccpos;
- 	int stat, i;
-+	unsigned int max_bitflips = 0;
-+	int eccsize = chip->ecc.size;
-+	int eccbytes = chip->ecc.bytes;
-+	int eccsteps = chip->ecc.steps;
+ 	case OMAP_ECC_BCH8_CODE_HW:
+-		eccsize /= eccsteps;
+ 		actual_eccsize = eccsize;
+ 		erased_ecc_vec = bch8_vector;
+ 		bch_max_err = BCH8_MAX_ERROR;
+@@ -325,55 +323,52 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
  
- 	writel(GPMC_ECC_SIZE_CONFIG_ECCSIZE1(0) |
- 			GPMC_ECC_SIZE_CONFIG_ECCSIZE0(64),
-@@ -706,13 +709,17 @@ static int omap_gpmc_read_page_bch_rom_mode(struct mtd_info *mtd,
+ 	totalcount = 0;
  
- 	__omap_calculate_ecc(mtd, buf, ecc_calc, 1);
+-	for (i = 0; i < eccsteps; i++) {
+-		bool is_error_reported = false;
+-		bitflip_count = 0;
+-		eccflag = 0;
+-
+-		/* check for any ecc error */
+-		for (j = 0; (j < actual_eccsize) && (eccflag == 0); j++) {
+-			if (calc_ecc[j] != 0) {
+-				eccflag = 1;
+-				break;
+-			}
+-		}
++	bitflip_count = 0;
++	eccflag = 0;
  
--	stat = omap_correct_bch(mtd, buf, ecc_code, ecc_calc);
--	if (stat < 0)
--		mtd->ecc_stats.failed++;
--	else
--		mtd->ecc_stats.corrected += stat;
-+	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
-+		stat = omap_correct_bch(mtd, buf, ecc_code, ecc_calc);
-+		if (stat < 0) {
-+			mtd->ecc_stats.failed++;
-+		} else {
-+			mtd->ecc_stats.corrected += stat;
-+			max_bitflips = max_t(unsigned int, max_bitflips, stat);
-+		}
+-		if (eccflag == 1) {
+-			if (memcmp(calc_ecc, erased_ecc_vec, actual_eccsize) == 0) {
+-				/*
+-				 * calc_ecc[] matches pattern for ECC
+-				 * (all 0xff) so this is definitely
+-				 * an erased-page
+-				 */
+-			} else {
+-				bitflip_count = nand_check_erased_ecc_chunk(
+-						dat, oinfo->nand.ecc.size, read_ecc,
+-						eccsize, NULL, 0, bch_max_err);
+-				if (bitflip_count < 0)
+-					is_error_reported = true;
+-			}
++	/* check for any ecc error */
++	for (j = 0; (j < actual_eccsize) && (eccflag == 0); j++) {
++		if (calc_ecc[j] != 0) {
++			eccflag = 1;
++			break;
+ 		}
 +	}
  
--	return 0;
-+	return max_bitflips;
+-		if (is_error_reported) {
+-			bitflip_count = omap_gpmc_decode_bch(1,
+-					calc_ecc, err_loc);
++	if (eccflag == 1) {
++		if (memcmp(calc_ecc, erased_ecc_vec, actual_eccsize) == 0) {
++			/*
++			 * calc_ecc[] matches pattern for ECC
++			 * (all 0xff) so this is definitely
++			 * an erased-page
++			 */
++		} else {
++			bitflip_count = nand_check_erased_ecc_chunk(
++					dat, oinfo->nand.ecc.size, read_ecc,
++					eccsize, NULL, 0, bch_max_err);
+ 			if (bitflip_count < 0)
+-				return bitflip_count;
+-
+-			for (j = 0; j < bitflip_count; j++) {
+-				if (err_loc[j] < 4096)
+-					dat[err_loc[j] >> 3] ^=
+-						1 << (err_loc[j] & 7);
+-				/* else, not interested to correct ecc */
+-			}
++				is_error_reported = true;
+ 		}
++	}
+ 
+-		totalcount += bitflip_count;
+-		calc_ecc = calc_ecc + actual_eccsize;
+-		read_ecc = read_ecc + eccsize;
+-		dat += 512;
++	if (is_error_reported) {
++		bitflip_count = omap_gpmc_decode_bch(1,
++				calc_ecc, err_loc);
++		if (bitflip_count < 0)
++			return bitflip_count;
++
++		for (j = 0; j < bitflip_count; j++) {
++			if (err_loc[j] < 4096)
++				dat[err_loc[j] >> 3] ^=
++					1 << (err_loc[j] & 7);
++			/* else, not interested to correct ecc */
++		}
+ 	}
+ 
++	totalcount += bitflip_count;
++	calc_ecc = calc_ecc + actual_eccsize;
++	read_ecc = read_ecc + eccsize;
++	dat += 512;
++
+ 	return totalcount;
  }
  
- static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
-@@ -765,8 +772,8 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
- 					offset - omap_oobinfo.eccbytes;
- 		break;
- 	case OMAP_ECC_BCH8_CODE_HW:
--		oinfo->nand.ecc.bytes    = 13 * 4;
--		oinfo->nand.ecc.size     = 512 * 4;
-+		oinfo->nand.ecc.bytes    = 13;
-+		oinfo->nand.ecc.size     = 512;
- 		oinfo->nand.ecc.strength = BCH8_MAX_ERROR;
- 		omap_oobinfo.oobfree->offset = offset;
- 		omap_oobinfo.oobfree->length = minfo->oobsize -
 -- 
 2.11.0
 
