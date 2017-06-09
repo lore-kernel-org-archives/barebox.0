@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dIddg-00057j-L2
- for barebox@lists.infradead.org; Wed, 07 Jun 2017 16:16:58 +0000
-From: Bastian Stender <bst@pengutronix.de>
-Date: Wed,  7 Jun 2017 18:15:51 +0200
-Message-Id: <20170607161551.28713-1-bst@pengutronix.de>
+ id 1dJCzw-0003Ha-PA
+ for barebox@lists.infradead.org; Fri, 09 Jun 2017 06:02:19 +0000
+Date: Fri, 9 Jun 2017 08:01:51 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170609060151.jpbtktdqsophglja@pengutronix.de>
+References: <20170607161551.28713-1-bst@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170607161551.28713-1-bst@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,170 +18,377 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] firmware: altera-serial: add support for Arria 10
-To: barebox@lists.infradead.org
-Cc: Bastian Stender <bst@pengutronix.de>
+Subject: Re: [PATCH] firmware: altera-serial: add support for Arria 10
+To: Bastian Stender <bst@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-TWFrZSBGUEdBIHNwZWNpZmljIHNldHRpbmdzIGNvbmZpZ3VyYWJsZSAocGFkZGluZywgc3BpIGJp
-dHMgcGVyIHdvcmQsCmRlbGF5cykgYW5kIGFkZCBBcnJpYSAxMCBzdXBwb3J0LiBUaGUgQXJyaWEg
-MTAgY29tcGF0aWJsZSBpcyB0aGUgc2FtZQphcyBpbiB0aGUga2VybmVsIHBhdGNoICJmcGdhIG1h
-bmFnZXI6IEFkZCBhbHRlcmEtcHMtc3BpIGRyaXZlciBmb3IKQWx0ZXJhIEZQR0FzIiAoZHJpdmVy
-cy9mcGdhL2FsdGVyYS1wcy1zcGkuYykuIFRoZSBBcnJpYSA1IGNvbXBhdGlibGUKd29ya3MgdW5j
-aGFuZ2VkLgoKVGhpcyBwYXRjaCB3YXMgdGVzdGVkIHdpdGggQXJyaWEgNSBhbmQgQXJyaWEgMTAu
-CgpTaWduZWQtb2ZmLWJ5OiBCYXN0aWFuIFN0ZW5kZXIgPGJzdEBwZW5ndXRyb25peC5kZT4KLS0t
-CiAuLi4vYmluZGluZ3MvZmlybXdhcmUvYWx0cixwYXNzaXZlLXNlcmlhbC50eHQgICAgICB8ICAg
-MyArLQogZHJpdmVycy9maXJtd2FyZS9hbHRlcmFfc2VyaWFsLmMgICAgICAgICAgICAgICAgICAg
-fCAxNTkgKysrKysrKysrKysrKysrLS0tLS0tCiAyIGZpbGVzIGNoYW5nZWQsIDExNSBpbnNlcnRp
-b25zKCspLCA0NyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2Rldmlj
-ZXRyZWUvYmluZGluZ3MvZmlybXdhcmUvYWx0cixwYXNzaXZlLXNlcmlhbC50eHQgYi9Eb2N1bWVu
-dGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvZmlybXdhcmUvYWx0cixwYXNzaXZlLXNlcmlhbC50
-eHQKaW5kZXggZDM1N2RkMzljLi5lZWMxMmZiYWMgMTAwNjQ0Ci0tLSBhL0RvY3VtZW50YXRpb24v
-ZGV2aWNldHJlZS9iaW5kaW5ncy9maXJtd2FyZS9hbHRyLHBhc3NpdmUtc2VyaWFsLnR4dAorKysg
-Yi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvZmlybXdhcmUvYWx0cixwYXNzaXZl
-LXNlcmlhbC50eHQKQEAgLTYsNyArNiw4IEBAIHBhc3NpdmUgc2VyaWFsIG1vZGUuIFRoaXMgaXMg
-dXNlZCB0byB1cGxvYWQgdGhlIGZpcm13YXJlIGFuZAogdG8gc3RhcnQgdGhlIEZQR0EuCiAKIFJl
-cXVpcmVkIHByb3BlcnRpZXM6Ci0tIGNvbXBhdGlibGU6IHNoYWxsIGJlICJhbHRyLGZwZ2EtcGFz
-c2l2ZS1zZXJpYWwiCistIGNvbXBhdGlibGU6IHNoYWxsIGJlICJhbHRyLGZwZ2EtcGFzc2l2ZS1z
-ZXJpYWwiIG9yCisgICJhbHRyLGZwZ2EtYXJyaWExMC1wYXNzaXZlLXNlcmlhbCIgZm9yIEFycmlh
-IDEwCiAtIHJlZzogU1BJIGNoaXAgc2VsZWN0CiAtIG5zdGF0LWdwaW9zOiBTcGVjaWZ5IEdQSU8g
-Zm9yIGNvbnRyb2xsaW5nIHRoZSBuc3RhdCBwaW4KIC0gY29uZmQtZ3Bpb3M6IFNwZWNpZnkgR1BJ
-TyBmb3IgY29udHJvbGxpbmcgdGhlIGNvbmZkIHBpbgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9maXJt
-d2FyZS9hbHRlcmFfc2VyaWFsLmMgYi9kcml2ZXJzL2Zpcm13YXJlL2FsdGVyYV9zZXJpYWwuYwpp
-bmRleCBiMTE5Nzc4ZDcuLjNhMDE3NWRkMCAxMDA2NDQKLS0tIGEvZHJpdmVycy9maXJtd2FyZS9h
-bHRlcmFfc2VyaWFsLmMKKysrIGIvZHJpdmVycy9maXJtd2FyZS9hbHRlcmFfc2VyaWFsLmMKQEAg
-LTI1LDExICsyNSwxMiBAQAogI2luY2x1ZGUgPGZjbnRsLmg+CiAjaW5jbHVkZSA8ZnMuaD4KIAot
-CiAvKgogICogUGh5c2ljYWwgcmVxdWlyZW1lbnRzOgotICogLSB0aHJlZSBmcmVlIEdQSU9zIGZv
-ciB0aGUgc2lnbmFscyBuQ09ORklHLCBDT05GSUdVUkVfRE9ORSwgblNUQVRVUwotICogLSAzMiBi
-aXQgcGVyIHdvcmQsIExTQiBmaXJzdCBjYXBhYmxlIFNQSSBtYXN0ZXIgKE1PU0kgKyBjbG9jaykK
-KyAqIC0gZnJlZSBHUElPcyBmb3IgdGhlIHNpZ25hbHMgbkNPTkZJRywgQ09ORklHVVJFX0RPTkUs
-IG5TVEFUVVMgKG9wdGlvbmFsbHkKKyAqICAgZm9yIEFSUklBIDEwKQorICogLSAzMiBiaXQgLyA4
-IGJpdCAoQVJSSUEgMTApIHBlciB3b3JkLCBMU0IgZmlyc3QgY2FwYWJsZSBTUEkgbWFzdGVyCisg
-KiAgIChNT1NJICsgY2xvY2spCiAgKgogICogRXhhbXBsZSBob3cgdG8gY29uZmlndXJlIHRoaXMg
-ZHJpdmVyIHZpYSBkZXZpY2UgdHJlZQogICoKQEAgLTQzLDYgKzQ0LDEzIEBACiAgKgl9OwogICov
-CiAKK3N0cnVjdCBhbHRlcmFfcHNfZGF0YSB7CisJaW50IHN0YXR1c193YWl0X21heF91czsKKwlp
-bnQgdF9zdDJja191czsKKwlpbnQgc3BpX2JpdHNfcGVyX3dvcmQ7CisJaW50IHBhZGRpbmc7Cit9
-OworCiBzdHJ1Y3QgZnBnYV9zcGkgewogCXN0cnVjdCBmaXJtd2FyZV9oYW5kbGVyIGZoOwogCWlu
-dCBuc3RhdF9ncGlvOyAvKiBpbnB1dCBHUElPIHRvIHJlYWQgdGhlIHN0YXR1cyBsaW5lICovCkBA
-IC01MCw5ICs1OCwzNiBAQCBzdHJ1Y3QgZnBnYV9zcGkgewogCWludCBuY29uZmlnX2dwaW87IC8q
-IG91dHB1dCBHUElPIHRvIHN0YXJ0IHRoZSBGUEdBJ3MgY29uZmlnICovCiAJc3RydWN0IGRldmlj
-ZV9kICpkZXY7CiAJc3RydWN0IHNwaV9kZXZpY2UgKnNwaTsKKwljb25zdCBzdHJ1Y3QgYWx0ZXJh
-X3BzX2RhdGEgKmRhdGE7CiAJYm9vbCBwYWRkaW5nX2RvbmU7CiB9OwogCisvKiAgICAgICAgICB8
-ICAgQXJyaWEgNSAgIHwgICBBcnJpYSAxMCAgfAorICogdF9DRjJTVDAgfCAgICAgWzsgNjAwXSB8
-ICAgICBbOyA2MDBdIHwgbnMKKyAqIHRfQ0ZHICAgIHwgICAgICAgIFsyO10gfCAgICAgICAgWzI7
-XSB8IMK1cworICogdF9TVEFUVVMgfCBbMjY4OyAxNTA2XSB8IFsyNjg7IDMwMDBdIHwgwrVzCisg
-KiB0X0NGMlNUMSB8ICAgIFs7IDE1MDZdIHwgICAgWzsgMzAwMF0gfCDCtXMKKyAqIHRfQ0YyQ0sg
-IHwgICAgIFsxNTA2O10gfCAgWzMwMTAgwrVzO10gfCDCtXMKKyAqIHRfU1QyQ0sgIHwgICAgICAg
-IFsyO10gfCAgICAgICBbMTA7XSB8IMK1cworICogdF9DRDJVTSAgfCAgWzE3NTsgNDM3XSB8ICBb
-MTc1OyA4MzBdIHwgwrVzCisgKi8KKworLyogQXJyaWEgNSAqLworc3RhdGljIHN0cnVjdCBhbHRl
-cmFfcHNfZGF0YSBhNV9kYXRhID0geworCS5zdGF0dXNfd2FpdF9tYXhfdXMgPSAxNTA2LCAvKiBt
-YXgodF9DRjJTVDEpICovCisJLnRfc3QyY2tfdXMgPSAyLCAvKiBtaW4odF9TVDJDSykgKi8KKwku
-c3BpX2JpdHNfcGVyX3dvcmQgPSAzMiwKKwkucGFkZGluZyA9IHRydWUsCit9OworCisvKiBBcnJp
-YSAxMCAqLworc3RhdGljIHN0cnVjdCBhbHRlcmFfcHNfZGF0YSBhMTBfZGF0YSA9IHsKKwkuc3Rh
-dHVzX3dhaXRfbWF4X3VzID0gMzAwMCwgLyogbWF4KHRfQ0YyU1QxKSAqLworCS50X3N0MmNrX3Vz
-ID0gMTAsIC8qIG1pbih0X1NUMkNLKSAqLworCS5zcGlfYml0c19wZXJfd29yZCA9IDgsCisJLnBh
-ZGRpbmcgPSBmYWxzZSwKK307CisKIHN0YXRpYyBpbnQgYWx0ZXJhX3NwaV9vcGVuKHN0cnVjdCBm
-aXJtd2FyZV9oYW5kbGVyICpmaCkKIHsKIAlzdHJ1Y3QgZnBnYV9zcGkgKnRoaXMgPSBjb250YWlu
-ZXJfb2YoZmgsIHN0cnVjdCBmcGdhX3NwaSwgZmgpOwpAQCAtNzcsNyArMTEyLDYgQEAgc3RhdGlj
-IGludCBhbHRlcmFfc3BpX29wZW4oc3RydWN0IGZpcm13YXJlX2hhbmRsZXIgKmZoKQogCQkJCShn
-cGlvX2dldF92YWx1ZSh0aGlzLT5jb25mZF9ncGlvKSA9PSAwKSk7CiAJfQogCi0KIAlpZiAocmV0
-ICE9IDApIHsKIAkJZGV2X2VycihkZXYsICJGUEdBIGRvZXMgbm90IGFja25vd2xlZGdlIHRoZSBw
-cm9ncmFtbWluZyBpbml0aWF0aW9uXG4iKTsKIAkJaWYgKGdwaW9faXNfdmFsaWQodGhpcy0+bnN0
-YXRfZ3BpbykgJiYgZ3Bpb19nZXRfdmFsdWUodGhpcy0+bnN0YXRfZ3BpbykpCkBAIC05NCwyNCAr
-MTI4LDMwIEBAIHN0YXRpYyBpbnQgYWx0ZXJhX3NwaV9vcGVuKHN0cnVjdCBmaXJtd2FyZV9oYW5k
-bGVyICpmaCkKIAl0aGlzLT5wYWRkaW5nX2RvbmUgPSBmYWxzZTsKIAogCS8qCi0JICogYWZ0ZXIg
-YWJvdXQgMTUwNiDCtXMgdGhlIEZQR0EgbXVzdCBhY2tub3dsZWRnZSB0aGlzIHN0ZXAKLQkgKiB3
-aXRoIHRoZSBTVEFUVVMgbGluZSBhdCBoaWdoIGxldmVsCisJICogYWZ0ZXIgbWF4IHsgbWF4KHRf
-U1RBVFVTKSwgbWF4KHRfQ0YyU1QxKSB9IHRoZSBGUEdBIG11c3QgYWNrbm93bGVkZ2UgdGhpcwor
-CSAqIHN0ZXAgd2l0aCB0aGUgU1RBVFVTIGxpbmUgYXQgaGlnaCBsZXZlbAogCSAqLwotCiAJaWYg
-KGdwaW9faXNfdmFsaWQodGhpcy0+bnN0YXRfZ3BpbykpIHsKLQkJcmV0ID0gd2FpdF9vbl90aW1l
-b3V0KDE2MDAgKiBVU0VDT05ELAotCQkJCWdwaW9fZ2V0X3ZhbHVlKHRoaXMtPm5zdGF0X2dwaW8p
-ID09IDEpOwotCQlpZiAocmV0ICE9IDApIHsKLQkJCWRldl9lcnIoZGV2LCAiRlBHQSBkb2VzIG5v
-dCBhY2tub3dsZWRnZSB0aGUgcHJvZ3JhbW1pbmcgc3RhcnRcbiIpOworCQlyZXQgPSB3YWl0X29u
-X3RpbWVvdXQodGhpcy0+ZGF0YS0+c3RhdHVzX3dhaXRfbWF4X3VzICogVVNFQ09ORCwKKwkJCQln
-cGlvX2dldF92YWx1ZSh0aGlzLT5uc3RhdF9ncGlvKSk7CisJCWlmIChyZXQpIHsKKwkJCWRldl9l
-cnIoZGV2LCAiblNUQVRVUyBzdGlsbCBsb3cgYWZ0ZXIgbWF4KHRfQ0YyU1QxKSEgJWRcbiIsIHJl
-dCk7CiAJCQlyZXR1cm4gcmV0OwogCQl9CiAJfSBlbHNlIHsKLQkJdWRlbGF5KDE2MDApOworCQl1
-ZGVsYXkodGhpcy0+ZGF0YS0+c3RhdHVzX3dhaXRfbWF4X3VzKTsKIAl9CiAKIAlkZXZfZGJnKGRl
-diwgIkluaXRpYXRpbmcgcGFzc2VkXG4iKTsKLQkvKiBhdCB0aGUgZW5kLCB3YWl0IGF0IGxlYXN0
-IDIgwrVzIHByaW9yIGJlZ2lubmluZyB3cml0aW5nIGRhdGEgKi8KLQl1ZGVsYXkoMik7CisKKwkv
-KgorCSAqIHRfQ0YyQ0sgZG9lc24ndCBuZWVkIHRvIGJlIGhvbm9yZWQgaWYgblNUQVRVUyBpcyBt
-b25pdG9yZWQgaW4gd2hpY2gKKwkgKiBjYXNlIG9ubHkgdF9TVDJDSyBhcHBsaWVzLiBBcyB3ZSBo
-YXZlCisJICogCW1heCh0X0NGMlNUMSkgKyBtaW4odF9TVDJDSykgPj0gbWluKHRfQ0YyQ0spCisJ
-ICogYW5kIHdlIHdhaXRlZCBmb3IgbWF4KHRfQ0YyU1QxKSBpbiB0aGUgbm9uLW1vbml0b3JlZAor
-CSAqIGNhc2UgYWxyZWFkeSBhYm92ZSwgb25seSB3YWl0aW5nIGZvciBtaW4odF9TVDJDSykgaXMg
-ZmluZSBoZXJlLgorCSAqLworCXVkZWxheSh0aGlzLT5kYXRhLT50X3N0MmNrX3VzICogVVNFQ09O
-RCk7CiAKIAlyZXR1cm4gMDsKIH0KQEAgLTEyOSwzMCArMTY5LDM4IEBAIHN0YXRpYyBpbnQgYWx0
-ZXJhX3NwaV93cml0ZShzdHJ1Y3QgZmlybXdhcmVfaGFuZGxlciAqZmgsIGNvbnN0IHZvaWQgKmJ1
-Ziwgc2l6ZV90CiAKIAlzcGlfbWVzc2FnZV9pbml0KCZtKTsKIAotCWlmIChzeiA8IHNpemVvZih1
-MzIpKSB7Ci0JCS8qIHNpbXBsZSBwYWRkaW5nICovCi0JCWR1bW15ID0gMDsKLQkJbWVtY3B5KCZk
-dW1teSwgYnVmLCBzeik7Ci0JCWJ1ZiA9ICZkdW1teTsKLQkJc3ogPSBzaXplb2YodTMyKTsKLQkJ
-dGhpcy0+cGFkZGluZ19kb25lID0gdHJ1ZTsKLQl9CisJaWYgKHRoaXMtPmRhdGEtPnBhZGRpbmcp
-IHsKKwkJaWYgKHN6IDwgc2l6ZW9mKHUzMikpIHsKKwkJCS8qIHNpbXBsZSBwYWRkaW5nICovCisJ
-CQlkdW1teSA9IDA7CisJCQltZW1jcHkoJmR1bW15LCBidWYsIHN6KTsKKwkJCWJ1ZiA9ICZkdW1t
-eTsKKwkJCXN6ID0gc2l6ZW9mKHUzMik7CisJCQl0aGlzLT5wYWRkaW5nX2RvbmUgPSB0cnVlOwor
-CQl9CiAKLQl0WzBdLnR4X2J1ZiA9IGJ1ZjsKLQl0WzBdLnJ4X2J1ZiA9IE5VTEw7Ci0JdFswXS5s
-ZW4gPSBzejsKLQlzcGlfbWVzc2FnZV9hZGRfdGFpbCgmdFswXSwgJm0pOwotCi0JaWYgKHN6ICYg
-MHgzKSB7IC8qIHBhZGRpbmcgcmVxdWlyZWQ/ICovCi0JCXUzMiAqd29yZF9idWYgPSAodTMyICop
-YnVmOwotCQlkdW1teSA9IDA7Ci0JCW1lbWNweSgmZHVtbXksICZ3b3JkX2J1ZltzeiA+PiAyXSwg
-c3ogJiAweDMpOwotCQl0WzBdLmxlbiAmPSB+MHgwMzsKLQkJdFsxXS50eF9idWYgPSAmZHVtbXk7
-Ci0JCXRbMV0ucnhfYnVmID0gTlVMTDsKLQkJdFsxXS5sZW4gPSBzaXplb2YodTMyKTsKLQkJc3Bp
-X21lc3NhZ2VfYWRkX3RhaWwoJnRbMV0sICZtKTsKLQkJdGhpcy0+cGFkZGluZ19kb25lID0gdHJ1
-ZTsKKwkJdFswXS50eF9idWYgPSBidWY7CisJCXRbMF0ucnhfYnVmID0gTlVMTDsKKwkJdFswXS5s
-ZW4gPSBzejsKKwkJc3BpX21lc3NhZ2VfYWRkX3RhaWwoJnRbMF0sICZtKTsKKworCQlpZiAoc3og
-JiAweDMpIHsgLyogcGFkZGluZyByZXF1aXJlZD8gKi8KKwkJCXUzMiAqd29yZF9idWYgPSAodTMy
-ICopYnVmOworCQkJZHVtbXkgPSAwOworCQkJbWVtY3B5KCZkdW1teSwgJndvcmRfYnVmW3N6ID4+
-IDJdLCBzeiAmIDB4Myk7CisJCQl0WzBdLmxlbiAmPSB+MHgwMzsKKwkJCXRbMV0udHhfYnVmID0g
-JmR1bW15OworCQkJdFsxXS5yeF9idWYgPSBOVUxMOworCQkJdFsxXS5sZW4gPSBzaXplb2YodTMy
-KTsKKwkJCXNwaV9tZXNzYWdlX2FkZF90YWlsKCZ0WzFdLCAmbSk7CisJCQl0aGlzLT5wYWRkaW5n
-X2RvbmUgPSB0cnVlOworCQl9CisJfSBlbHNlIHsKKwkJbWVtc2V0KCZ0WzBdLCAwLCBzaXplb2Yo
-dFswXSkpOworCQl0WzBdLnR4X2J1ZiA9IGJ1ZjsKKwkJdFswXS5yeF9idWYgPSBOVUxMOworCQl0
-WzBdLmxlbiA9IHN6OworCQlzcGlfbWVzc2FnZV9hZGRfdGFpbCgmdFswXSwgJm0pOwogCX0KIAog
-CXJldCA9IHNwaV9zeW5jKHRoaXMtPnNwaSwgJm0pOwpAQCAtMTczLDcgKzIyMSw3IEBAIHN0YXRp
-YyBpbnQgYWx0ZXJhX3NwaV9jbG9zZShzdHJ1Y3QgZmlybXdhcmVfaGFuZGxlciAqZmgpCiAKIAlk
-ZXZfZGJnKGRldiwgIkZpbmFsaXplIHByb2dyYW1taW5nXG4iKTsKIAotCWlmICh0aGlzLT5wYWRk
-aW5nX2RvbmUgPT0gZmFsc2UpIHsKKwlpZiAodGhpcy0+ZGF0YS0+cGFkZGluZyAmJiB0aGlzLT5w
-YWRkaW5nX2RvbmUgPT0gZmFsc2UpIHsKIAkJc3BpX21lc3NhZ2VfaW5pdCgmbSk7CiAJCXQudHhf
-YnVmID0gJmR1bW15OwogCQl0LnJ4X2J1ZiA9IE5VTEw7CkBAIC0xOTYsMTIgKzI0NCwyMyBAQCBz
-dGF0aWMgaW50IGFsdGVyYV9zcGlfY2xvc2Uoc3RydWN0IGZpcm13YXJlX2hhbmRsZXIgKmZoKQog
-CX0gZWxzZSB7CiAJCXJldCA9IHdhaXRfb25fdGltZW91dCgxMCAqIFVTRUNPTkQsCiAJCQkJKGdw
-aW9fZ2V0X3ZhbHVlKHRoaXMtPmNvbmZkX2dwaW8pID09IDEpKTsKLQogCX0KIAorCiAJaWYgKHJl
-dCA9PSAwKSB7CiAJCWRldl9kYmcoZGV2LCAiUHJvZ3JhbW1pbmcgc3VjY2Vzc2Z1bFxuIik7Ci0J
-CXJldHVybiByZXQ7CisKKwkJLyoKKwkJICogQWZ0ZXIgQ09ORl9ET05FIGdvZXMgaGlnaCwgc2Vu
-ZCB0d28gYWRkaXRpb25hbCBmYWxsaW5nIGVkZ2VzIG9uIERDTEsKKwkJICogdG8gYmVnaW4gaW5p
-dGlhbGl6YXRpb24gYW5kIGVudGVyIHVzZXIgbW9kZQorCQkgKi8KKwkJc3BpX21lc3NhZ2VfaW5p
-dCgmbSk7CisJCW1lbXNldCgmdCwgMCwgc2l6ZW9mKHQpKTsKKwkJdC50eF9idWYgPSBOVUxMOwor
-CQl0LnJ4X2J1ZiA9IE5VTEw7CisJCXQubGVuID0gMjsKKwkJc3BpX21lc3NhZ2VfYWRkX3RhaWwo
-JnQsICZtKTsKKwkJcmV0dXJuIHNwaV9zeW5jKHRoaXMtPnNwaSwgJm0pOwogCX0KIAogCWRldl9l
-cnIoZGV2LCAiUHJvZ3JhbW1pbmcgZmFpbGVkIGR1ZSB0byB0aW1lIG91dFxuIik7CkBAIC0yNjcs
-OSArMzI2LDEwIEBAIG91dDoKIAlyZXR1cm4gcmV0OwogfQogCi1zdGF0aWMgdm9pZCBhbHRlcmFf
-c3BpX2luaXRfbW9kZShzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKQorc3RhdGljIHZvaWQgYWx0ZXJh
-X3NwaV9pbml0X21vZGUoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwgaW50IHNwaV9iaXRzX3Blcl93
-b3JkKQogewotCXNwaS0+Yml0c19wZXJfd29yZCA9IDMyOworCXNwaS0+Yml0c19wZXJfd29yZCA9
-IHNwaV9iaXRzX3Blcl93b3JkOworCiAJLyoKIAkgKiBDUEhBID0gQ1BPTCA9IDAKIAkgKiB0aGUg
-RlBHQSBleHBlY3RzIGl0cyBmaXJtd2FyZSBkYXRhIHdpdGggTFNCIGZpcnN0CkBAIC0yODQsOSAr
-MzQ0LDE0IEBAIHN0YXRpYyBpbnQgYWx0ZXJhX3NwaV9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRl
-dikKIAlzdHJ1Y3QgZmlybXdhcmVfaGFuZGxlciAqZmg7CiAJY29uc3QgY2hhciAqYWxpYXMgPSBv
-Zl9hbGlhc19nZXQoZGV2LT5kZXZpY2Vfbm9kZSk7CiAJY29uc3QgY2hhciAqbW9kZWwgPSBOVUxM
-OworCWNvbnN0IHN0cnVjdCBhbHRlcmFfcHNfZGF0YSAqZGF0YTsKIAogCWRldl9kYmcoZGV2LCAi
-UHJvYmluZyBGUEdBIGZpcm13YXJlIHByb2dyYW1tZXJcbiIpOwogCisJcmMgPSBkZXZfZ2V0X2Ry
-dmRhdGEoZGV2LCAoY29uc3Qgdm9pZCAqKikmZGF0YSk7CisJaWYgKHJjKQorCQlyZXR1cm4gcmM7
-CisKIAl0aGlzID0geHphbGxvYyhzaXplb2YoKnRoaXMpKTsKIAlmaCA9ICZ0aGlzLT5maDsKIApA
-QCAtMzA4LDcgKzM3Myw5IEBAIHN0YXRpYyBpbnQgYWx0ZXJhX3NwaV9wcm9iZShzdHJ1Y3QgZGV2
-aWNlX2QgKmRldikKIAlmaC0+ZGV2ID0gZGV2OwogCiAJdGhpcy0+c3BpID0gKHN0cnVjdCBzcGlf
-ZGV2aWNlICopZGV2LT50eXBlX2RhdGE7Ci0JYWx0ZXJhX3NwaV9pbml0X21vZGUodGhpcy0+c3Bp
-KTsKKwl0aGlzLT5kYXRhID0gZGF0YTsKKworCWFsdGVyYV9zcGlfaW5pdF9tb2RlKHRoaXMtPnNw
-aSwgdGhpcy0+ZGF0YS0+c3BpX2JpdHNfcGVyX3dvcmQpOwogCXRoaXMtPmRldiA9IGRldjsKIAog
-CWRldl9kYmcoZGV2LCAiUmVnaXN0ZXJpbmcgRlBHQSBmaXJtd2FyZSBwcm9ncmFtbWVyXG4iKTsK
-QEAgLTMyNyw5ICszOTQsOSBAQCBvdXQ6CiB9CiAKIHN0YXRpYyBzdHJ1Y3Qgb2ZfZGV2aWNlX2lk
-IGFsdGVyYV9zcGlfaWRfdGFibGVbXSA9IHsKLQl7Ci0JCS5jb21wYXRpYmxlID0gImFsdHIsZnBn
-YS1wYXNzaXZlLXNlcmlhbCIsCi0JfSwKKwl7IC5jb21wYXRpYmxlID0gImFsdHIsZnBnYS1wYXNz
-aXZlLXNlcmlhbCIsIC5kYXRhID0gJmE1X2RhdGEgfSwKKwl7IC5jb21wYXRpYmxlID0gImFsdHIs
-ZnBnYS1hcnJpYTEwLXBhc3NpdmUtc2VyaWFsIiwgLmRhdGEgPSAmYTEwX2RhdGEgfSwKKwl7IH0K
-IH07CiAKIHN0YXRpYyBzdHJ1Y3QgZHJpdmVyX2QgYWx0ZXJhX3NwaV9kcml2ZXIgPSB7Ci0tIAoy
-LjExLjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
-YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
-c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Wed, Jun 07, 2017 at 06:15:51PM +0200, Bastian Stender wrote:
+> Make FPGA specific settings configurable (padding, spi bits per word,
+> delays) and add Arria 10 support. The Arria 10 compatible is the same
+> as in the kernel patch "fpga manager: Add altera-ps-spi driver for
+> Altera FPGAs" (drivers/fpga/altera-ps-spi.c). The Arria 5 compatible
+> works unchanged.
+> =
+
+> This patch was tested with Arria 5 and Arria 10.
+> =
+
+> Signed-off-by: Bastian Stender <bst@pengutronix.de>
+> ---
+
+Applied, thanks
+
+Sascha
+
+>  .../bindings/firmware/altr,passive-serial.txt      |   3 +-
+>  drivers/firmware/altera_serial.c                   | 159 +++++++++++++++=
+------
+>  2 files changed, 115 insertions(+), 47 deletions(-)
+> =
+
+> diff --git a/Documentation/devicetree/bindings/firmware/altr,passive-seri=
+al.txt b/Documentation/devicetree/bindings/firmware/altr,passive-serial.txt
+> index d357dd39c..eec12fbac 100644
+> --- a/Documentation/devicetree/bindings/firmware/altr,passive-serial.txt
+> +++ b/Documentation/devicetree/bindings/firmware/altr,passive-serial.txt
+> @@ -6,7 +6,8 @@ passive serial mode. This is used to upload the firmware =
+and
+>  to start the FPGA.
+>  =
+
+>  Required properties:
+> -- compatible: shall be "altr,fpga-passive-serial"
+> +- compatible: shall be "altr,fpga-passive-serial" or
+> +  "altr,fpga-arria10-passive-serial" for Arria 10
+>  - reg: SPI chip select
+>  - nstat-gpios: Specify GPIO for controlling the nstat pin
+>  - confd-gpios: Specify GPIO for controlling the confd pin
+> diff --git a/drivers/firmware/altera_serial.c b/drivers/firmware/altera_s=
+erial.c
+> index b119778d7..3a0175dd0 100644
+> --- a/drivers/firmware/altera_serial.c
+> +++ b/drivers/firmware/altera_serial.c
+> @@ -25,11 +25,12 @@
+>  #include <fcntl.h>
+>  #include <fs.h>
+>  =
+
+> -
+>  /*
+>   * Physical requirements:
+> - * - three free GPIOs for the signals nCONFIG, CONFIGURE_DONE, nSTATUS
+> - * - 32 bit per word, LSB first capable SPI master (MOSI + clock)
+> + * - free GPIOs for the signals nCONFIG, CONFIGURE_DONE, nSTATUS (option=
+ally
+> + *   for ARRIA 10)
+> + * - 32 bit / 8 bit (ARRIA 10) per word, LSB first capable SPI master
+> + *   (MOSI + clock)
+>   *
+>   * Example how to configure this driver via device tree
+>   *
+> @@ -43,6 +44,13 @@
+>   *	};
+>   */
+>  =
+
+> +struct altera_ps_data {
+> +	int status_wait_max_us;
+> +	int t_st2ck_us;
+> +	int spi_bits_per_word;
+> +	int padding;
+> +};
+> +
+>  struct fpga_spi {
+>  	struct firmware_handler fh;
+>  	int nstat_gpio; /* input GPIO to read the status line */
+> @@ -50,9 +58,36 @@ struct fpga_spi {
+>  	int nconfig_gpio; /* output GPIO to start the FPGA's config */
+>  	struct device_d *dev;
+>  	struct spi_device *spi;
+> +	const struct altera_ps_data *data;
+>  	bool padding_done;
+>  };
+>  =
+
+> +/*          |   Arria 5   |   Arria 10  |
+> + * t_CF2ST0 |     [; 600] |     [; 600] | ns
+> + * t_CFG    |        [2;] |        [2;] | =B5s
+> + * t_STATUS | [268; 1506] | [268; 3000] | =B5s
+> + * t_CF2ST1 |    [; 1506] |    [; 3000] | =B5s
+> + * t_CF2CK  |     [1506;] |  [3010 =B5s;] | =B5s
+> + * t_ST2CK  |        [2;] |       [10;] | =B5s
+> + * t_CD2UM  |  [175; 437] |  [175; 830] | =B5s
+> + */
+> +
+> +/* Arria 5 */
+> +static struct altera_ps_data a5_data =3D {
+> +	.status_wait_max_us =3D 1506, /* max(t_CF2ST1) */
+> +	.t_st2ck_us =3D 2, /* min(t_ST2CK) */
+> +	.spi_bits_per_word =3D 32,
+> +	.padding =3D true,
+> +};
+> +
+> +/* Arria 10 */
+> +static struct altera_ps_data a10_data =3D {
+> +	.status_wait_max_us =3D 3000, /* max(t_CF2ST1) */
+> +	.t_st2ck_us =3D 10, /* min(t_ST2CK) */
+> +	.spi_bits_per_word =3D 8,
+> +	.padding =3D false,
+> +};
+> +
+>  static int altera_spi_open(struct firmware_handler *fh)
+>  {
+>  	struct fpga_spi *this =3D container_of(fh, struct fpga_spi, fh);
+> @@ -77,7 +112,6 @@ static int altera_spi_open(struct firmware_handler *fh)
+>  				(gpio_get_value(this->confd_gpio) =3D=3D 0));
+>  	}
+>  =
+
+> -
+>  	if (ret !=3D 0) {
+>  		dev_err(dev, "FPGA does not acknowledge the programming initiation\n");
+>  		if (gpio_is_valid(this->nstat_gpio) && gpio_get_value(this->nstat_gpio=
+))
+> @@ -94,24 +128,30 @@ static int altera_spi_open(struct firmware_handler *=
+fh)
+>  	this->padding_done =3D false;
+>  =
+
+>  	/*
+> -	 * after about 1506 =B5s the FPGA must acknowledge this step
+> -	 * with the STATUS line at high level
+> +	 * after max { max(t_STATUS), max(t_CF2ST1) } the FPGA must acknowledge=
+ this
+> +	 * step with the STATUS line at high level
+>  	 */
+> -
+>  	if (gpio_is_valid(this->nstat_gpio)) {
+> -		ret =3D wait_on_timeout(1600 * USECOND,
+> -				gpio_get_value(this->nstat_gpio) =3D=3D 1);
+> -		if (ret !=3D 0) {
+> -			dev_err(dev, "FPGA does not acknowledge the programming start\n");
+> +		ret =3D wait_on_timeout(this->data->status_wait_max_us * USECOND,
+> +				gpio_get_value(this->nstat_gpio));
+> +		if (ret) {
+> +			dev_err(dev, "nSTATUS still low after max(t_CF2ST1)! %d\n", ret);
+>  			return ret;
+>  		}
+>  	} else {
+> -		udelay(1600);
+> +		udelay(this->data->status_wait_max_us);
+>  	}
+>  =
+
+>  	dev_dbg(dev, "Initiating passed\n");
+> -	/* at the end, wait at least 2 =B5s prior beginning writing data */
+> -	udelay(2);
+> +
+> +	/*
+> +	 * t_CF2CK doesn't need to be honored if nSTATUS is monitored in which
+> +	 * case only t_ST2CK applies. As we have
+> +	 * 	max(t_CF2ST1) + min(t_ST2CK) >=3D min(t_CF2CK)
+> +	 * and we waited for max(t_CF2ST1) in the non-monitored
+> +	 * case already above, only waiting for min(t_ST2CK) is fine here.
+> +	 */
+> +	udelay(this->data->t_st2ck_us * USECOND);
+>  =
+
+>  	return 0;
+>  }
+> @@ -129,30 +169,38 @@ static int altera_spi_write(struct firmware_handler=
+ *fh, const void *buf, size_t
+>  =
+
+>  	spi_message_init(&m);
+>  =
+
+> -	if (sz < sizeof(u32)) {
+> -		/* simple padding */
+> -		dummy =3D 0;
+> -		memcpy(&dummy, buf, sz);
+> -		buf =3D &dummy;
+> -		sz =3D sizeof(u32);
+> -		this->padding_done =3D true;
+> -	}
+> +	if (this->data->padding) {
+> +		if (sz < sizeof(u32)) {
+> +			/* simple padding */
+> +			dummy =3D 0;
+> +			memcpy(&dummy, buf, sz);
+> +			buf =3D &dummy;
+> +			sz =3D sizeof(u32);
+> +			this->padding_done =3D true;
+> +		}
+>  =
+
+> -	t[0].tx_buf =3D buf;
+> -	t[0].rx_buf =3D NULL;
+> -	t[0].len =3D sz;
+> -	spi_message_add_tail(&t[0], &m);
+> -
+> -	if (sz & 0x3) { /* padding required? */
+> -		u32 *word_buf =3D (u32 *)buf;
+> -		dummy =3D 0;
+> -		memcpy(&dummy, &word_buf[sz >> 2], sz & 0x3);
+> -		t[0].len &=3D ~0x03;
+> -		t[1].tx_buf =3D &dummy;
+> -		t[1].rx_buf =3D NULL;
+> -		t[1].len =3D sizeof(u32);
+> -		spi_message_add_tail(&t[1], &m);
+> -		this->padding_done =3D true;
+> +		t[0].tx_buf =3D buf;
+> +		t[0].rx_buf =3D NULL;
+> +		t[0].len =3D sz;
+> +		spi_message_add_tail(&t[0], &m);
+> +
+> +		if (sz & 0x3) { /* padding required? */
+> +			u32 *word_buf =3D (u32 *)buf;
+> +			dummy =3D 0;
+> +			memcpy(&dummy, &word_buf[sz >> 2], sz & 0x3);
+> +			t[0].len &=3D ~0x03;
+> +			t[1].tx_buf =3D &dummy;
+> +			t[1].rx_buf =3D NULL;
+> +			t[1].len =3D sizeof(u32);
+> +			spi_message_add_tail(&t[1], &m);
+> +			this->padding_done =3D true;
+> +		}
+> +	} else {
+> +		memset(&t[0], 0, sizeof(t[0]));
+> +		t[0].tx_buf =3D buf;
+> +		t[0].rx_buf =3D NULL;
+> +		t[0].len =3D sz;
+> +		spi_message_add_tail(&t[0], &m);
+>  	}
+>  =
+
+>  	ret =3D spi_sync(this->spi, &m);
+> @@ -173,7 +221,7 @@ static int altera_spi_close(struct firmware_handler *=
+fh)
+>  =
+
+>  	dev_dbg(dev, "Finalize programming\n");
+>  =
+
+> -	if (this->padding_done =3D=3D false) {
+> +	if (this->data->padding && this->padding_done =3D=3D false) {
+>  		spi_message_init(&m);
+>  		t.tx_buf =3D &dummy;
+>  		t.rx_buf =3D NULL;
+> @@ -196,12 +244,23 @@ static int altera_spi_close(struct firmware_handler=
+ *fh)
+>  	} else {
+>  		ret =3D wait_on_timeout(10 * USECOND,
+>  				(gpio_get_value(this->confd_gpio) =3D=3D 1));
+> -
+>  	}
+>  =
+
+> +
+>  	if (ret =3D=3D 0) {
+>  		dev_dbg(dev, "Programming successful\n");
+> -		return ret;
+> +
+> +		/*
+> +		 * After CONF_DONE goes high, send two additional falling edges on DCLK
+> +		 * to begin initialization and enter user mode
+> +		 */
+> +		spi_message_init(&m);
+> +		memset(&t, 0, sizeof(t));
+> +		t.tx_buf =3D NULL;
+> +		t.rx_buf =3D NULL;
+> +		t.len =3D 2;
+> +		spi_message_add_tail(&t, &m);
+> +		return spi_sync(this->spi, &m);
+>  	}
+>  =
+
+>  	dev_err(dev, "Programming failed due to time out\n");
+> @@ -267,9 +326,10 @@ out:
+>  	return ret;
+>  }
+>  =
+
+> -static void altera_spi_init_mode(struct spi_device *spi)
+> +static void altera_spi_init_mode(struct spi_device *spi, int spi_bits_pe=
+r_word)
+>  {
+> -	spi->bits_per_word =3D 32;
+> +	spi->bits_per_word =3D spi_bits_per_word;
+> +
+>  	/*
+>  	 * CPHA =3D CPOL =3D 0
+>  	 * the FPGA expects its firmware data with LSB first
+> @@ -284,9 +344,14 @@ static int altera_spi_probe(struct device_d *dev)
+>  	struct firmware_handler *fh;
+>  	const char *alias =3D of_alias_get(dev->device_node);
+>  	const char *model =3D NULL;
+> +	const struct altera_ps_data *data;
+>  =
+
+>  	dev_dbg(dev, "Probing FPGA firmware programmer\n");
+>  =
+
+> +	rc =3D dev_get_drvdata(dev, (const void **)&data);
+> +	if (rc)
+> +		return rc;
+> +
+>  	this =3D xzalloc(sizeof(*this));
+>  	fh =3D &this->fh;
+>  =
+
+> @@ -308,7 +373,9 @@ static int altera_spi_probe(struct device_d *dev)
+>  	fh->dev =3D dev;
+>  =
+
+>  	this->spi =3D (struct spi_device *)dev->type_data;
+> -	altera_spi_init_mode(this->spi);
+> +	this->data =3D data;
+> +
+> +	altera_spi_init_mode(this->spi, this->data->spi_bits_per_word);
+>  	this->dev =3D dev;
+>  =
+
+>  	dev_dbg(dev, "Registering FPGA firmware programmer\n");
+> @@ -327,9 +394,9 @@ out:
+>  }
+>  =
+
+>  static struct of_device_id altera_spi_id_table[] =3D {
+> -	{
+> -		.compatible =3D "altr,fpga-passive-serial",
+> -	},
+> +	{ .compatible =3D "altr,fpga-passive-serial", .data =3D &a5_data },
+> +	{ .compatible =3D "altr,fpga-arria10-passive-serial", .data =3D &a10_da=
+ta },
+> +	{ }
+>  };
+>  =
+
+>  static struct driver_d altera_spi_driver =3D {
+> -- =
+
+> 2.11.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
