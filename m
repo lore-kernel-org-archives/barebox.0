@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from qmail34.e-mind.com ([188.94.192.34] helo=qmail.e-mind.com)
- by bombadil.infradead.org with smtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dJEOE-00066f-Cg
- for barebox@lists.infradead.org; Fri, 09 Jun 2017 07:31:33 +0000
-References: <5caded00-8ec7-f66e-0922-11d32f719081@eurekelettronica.it>
- <20170609061505.3tnirp55o5rfpbra@pengutronix.de>
- <8b1cafb3-8e87-8ce8-e4e1-42d28f82d1b0@eurekelettronica.it>
-From: gianluca <gianlucarenzi@eurekelettronica.it>
-Message-ID: <b1dd6d19-7733-fe2c-1589-1421c1188ed5@eurekelettronica.it>
-Date: Fri, 9 Jun 2017 09:31:05 +0200
-MIME-Version: 1.0
-In-Reply-To: <8b1cafb3-8e87-8ce8-e4e1-42d28f82d1b0@eurekelettronica.it>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dJFnS-0001DQ-6G
+ for barebox@lists.infradead.org; Fri, 09 Jun 2017 09:01:36 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri,  9 Jun 2017 11:01:05 +0200
+Message-Id: <20170609090106.10933-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,54 +14,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: New Board i.MX6 Dual Lite based
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] mtd: nand_omap_gpmc: Fix ecc size
+To: Barebox List <barebox@lists.infradead.org>
 
-On 06/09/2017 09:25 AM, gianluca wrote:
->
->>>> i2c0: <i2c_fsl_bus_busy> timeout waiting for I2C bus busy
->>>> ek360_read_eeprom :Error on reading eeprom @ 0
->>>> ek360_read_eeprom :Error on reading bytes.
->>>> ek360_detect_hw :** ERROR on READ EEPROM BOARD ret: -1
->>>> Hit CTRL-C key to stop autoboot:  1
->>>
->>> Another issue is the i2c bus.
->>
->> You should measure the I2C data line with an oscilloscope. It could be
->> that the line is constantly low. This can happen if the pullup resistor
->> is missing (Pinmux?). Also in rare cases this can happen when a board is
->> resetted in the middle of a I2C transfer.
->>
->
-> Now I am trying to extend the I2C Lines outside the board for a
-> oscilloscope and/or a Saleae Logic Bus Analyzer. As soon as I find the
-> solution or not I will keep you informed.
->
-> Anyway in the config there is both GPIO BASED I2C DRIVER and Platform
-> iMX Driver. I tried to disable the GPIO Based but it does not work.
->
-> Now I am thinking about some pulled-low/high line by some chips in the
-> board. I will see.
->
+The ECC size for BCH correction is always 512 byte. Correct the ecc.size
+for the OMAP_ECC_BCH8_CODE_HW mode from 2048 to 512. This change will
+let the framework iterate over the 4 ecc steps and we no longer	need
+special cases in omap_correct_bch().
 
-Due to an inversion on mounting the i2c eeprom all i2c chips are 
-mulfunctioning, so I am trying to uses another board.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/nand/nand_omap_gpmc.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-Now it works.
-
-Good!
-
-Thank you for everything.
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index e18ce6358a..fa838f39a4 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -303,8 +303,7 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
+ 	int bitflip_count;
+ 	int bch_max_err;
+ 
+-	int eccsteps = (nand->ecc.mode == NAND_ECC_HW) &&
+-			(nand->ecc.size == 2048) ? 4 : 1;
++	int eccsteps = 1;
+ 	int eccsize = oinfo->nand.ecc.bytes;
+ 
+ 	switch (oinfo->ecc_mode) {
+@@ -667,6 +666,10 @@ static int omap_gpmc_read_page_bch_rom_mode(struct mtd_info *mtd,
+ 	uint8_t *ecc_code = chip->buffers->ecccode;
+ 	uint32_t *eccpos = chip->ecc.layout->eccpos;
+ 	int stat, i;
++	unsigned int max_bitflips = 0;
++	int eccsize = chip->ecc.size;
++	int eccbytes = chip->ecc.bytes;
++	int eccsteps = chip->ecc.steps;
+ 
+ 	writel(GPMC_ECC_SIZE_CONFIG_ECCSIZE1(0) |
+ 			GPMC_ECC_SIZE_CONFIG_ECCSIZE0(64),
+@@ -706,13 +709,17 @@ static int omap_gpmc_read_page_bch_rom_mode(struct mtd_info *mtd,
+ 
+ 	__omap_calculate_ecc(mtd, buf, ecc_calc, 1);
+ 
+-	stat = omap_correct_bch(mtd, buf, ecc_code, ecc_calc);
+-	if (stat < 0)
+-		mtd->ecc_stats.failed++;
+-	else
+-		mtd->ecc_stats.corrected += stat;
++	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
++		stat = omap_correct_bch(mtd, buf, ecc_code, ecc_calc);
++		if (stat < 0) {
++			mtd->ecc_stats.failed++;
++		} else {
++			mtd->ecc_stats.corrected += stat;
++			max_bitflips = max_t(unsigned int, max_bitflips, stat);
++		}
++	}
+ 
+-	return 0;
++	return max_bitflips;
+ }
+ 
+ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+@@ -765,8 +772,8 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+ 					offset - omap_oobinfo.eccbytes;
+ 		break;
+ 	case OMAP_ECC_BCH8_CODE_HW:
+-		oinfo->nand.ecc.bytes    = 13 * 4;
+-		oinfo->nand.ecc.size     = 512 * 4;
++		oinfo->nand.ecc.bytes    = 13;
++		oinfo->nand.ecc.size     = 512;
+ 		oinfo->nand.ecc.strength = BCH8_MAX_ERROR;
+ 		omap_oobinfo.oobfree->offset = offset;
+ 		omap_oobinfo.oobfree->length = minfo->oobsize -
 -- 
-Eurek s.r.l.                          |
-Electronic Engineering                | http://www.eurek.it
-via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
-p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
