@@ -1,14 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x22d.google.com ([2a00:1450:400c:c0c::22d])
+Received: from mail.kernel.org ([198.145.29.99])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dLSo7-0005h8-P3
- for barebox@lists.infradead.org; Thu, 15 Jun 2017 11:19:25 +0000
-Received: by mail-wr0-x22d.google.com with SMTP id 36so17239858wry.3
- for <barebox@lists.infradead.org>; Thu, 15 Jun 2017 04:19:03 -0700 (PDT)
+ id 1dJM3C-0008IR-7j
+ for barebox@lists.infradead.org; Fri, 09 Jun 2017 15:42:15 +0000
+Received: from mail-yw0-f177.google.com (mail-yw0-f177.google.com
+ [209.85.161.177])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 351A3239E6
+ for <barebox@lists.infradead.org>; Fri,  9 Jun 2017 15:41:51 +0000 (UTC)
+Received: by mail-yw0-f177.google.com with SMTP id e142so14047973ywa.1
+ for <barebox@lists.infradead.org>; Fri, 09 Jun 2017 08:41:51 -0700 (PDT)
 MIME-Version: 1.0
-From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Thu, 15 Jun 2017 13:18:41 +0200
-Message-ID: <CAAP7uc+itatZvN+dwD9TKfSFr=HXOQ0OWT6JUz9dBxbW+1G1FQ@mail.gmail.com>
+In-Reply-To: <20170609141622.21502-1-o.rempel@pengutronix.de>
+References: <20170609141622.21502-1-o.rempel@pengutronix.de>
+From: Rob Herring <robh+dt@kernel.org>
+Date: Fri, 9 Jun 2017 10:41:30 -0500
+Message-ID: <CAL_JsqJeSCN88JnVnofb2Ncy4bDyXiKQbLniHmvbE4j854ZePA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,85 +29,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: libratp, libratp-barebox and ratp-barebox-cli
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v1 1/1] gpio: of: provide option generic property for
+ initial line states
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Mark Rutland <mark.rutland@arm.com>, Alexandre Courbot <gnurou@gmail.com>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Linus Walleij <linus.walleij@linaro.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, "kernel@pengutronix.de" <kernel@pengutronix.de>, barebox@lists.infradead.org
 
-Hey,
+On Fri, Jun 9, 2017 at 9:16 AM, Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+> This property is needed for barebox or may be other bootloaders
+> to set proper gpio configuration as early as possible.
+>
+> This example is mainly based on "lines-initial-states" property
+> from this binding documentation:
+> Documentation/devicetree/bindings/gpio/gpio-pcf857x.txt
 
-For anyone interested, I ended up preparing a pair of C libraries and
-a CLI tool that allow controlling barebox remotely using RATP, in the
-same way as bbremote does it. The libraries would allow easy
-integration on C applications that may want to remotely control
-barebox.
+Don't we have a binding for this already based on gpio-hogs.
 
-Repositories:
-  https://github.com/aleksander0m/libratp
-  https://github.com/aleksander0m/libratp-barebox
-
-Some initial 0.0.2 tagged versions here:
-  https://aleksander.es/software/libratp-0.0.2.tar.xz
-  https://aleksander.es/software/libratp-barebox-0.0.2.tar.xz
-
-APIs:
-  https://aleksander0m.github.io/libratp
-  https://aleksander0m.github.io/libratp-barebox
-
-The libratp library provides a generic RATP implementation, much like
-barebox' lib/ratp.c:
-  * The library currently supports creating ratp_t objects for TTYs or
-FIFO pairs (e.g. for barebox sandbox testing).
-  * The library launches a background thread running a libevent main
-loop, which takes care of all the async reading from the TTY (or
-FIFO). all the timers in the RATP logic and all the link management
-state machine.
-  * Callbacks may be registered by the user to get reported when new
-data arrives or when RATP link state changes. Worth noting that these
-callbacks are called from within the support thread.
-  * The ratp_close() and ratp_establish() operations in barebox'
-lib/ratp.c are blocking, they will not return until the desired final
-state has been reached or a timeout happened. In the libratp library
-the equivalent operations would be ratp_link_active_open_sync() and
-ratp_link_close_sync(); but the library also includes support for just
-sending the active open or close requests, without waiting for the
-final state to be reached, via ratp_link_active_open() and
-ratp_link_close(). This allows to e.g. request an active open and
-queue data to be sent, so that the data is directly sent on the ACK
-finishing the establishment.
-  * The library doesn't make any assumption on the maximum data length
-chosen by each peer, so a peer may choose a MDL<255 to receive data in
-shorter chunks or even choose MDL=0 to indicate no data may be
-received.
-
-The libratp-barebox library "extends" the libratp library with barebox
-specific operations. Right now, these are implemented:
- * ratp_barebox_link_ping()
- * ratp_barebox_link_command()
- * ratp_barebox_link_getenv()
-
-The ratp-barebox-cli implements the barebox specific operations in a
-CLI, just a simple way to exercise the library APIs:
-
-$ ratp-barebox-cli -t /dev/ttyUSB3 --ping
-Sending PING...
-PONG received...
-
-$ ratp-barebox-cli -t /dev/ttyUSB3 --getenv global.boot.default
-Sending getenv request: global.boot.default
-global.boot.default: net
-
-$ ratp-barebox-cli -t /dev/ttyUSB3 --command "ls /dev"
-Sending command: ls /dev
-Received response (errno Success):
-cs0              eeprom0          eeprom1          full
-imx-ocotp        mem              netconsole-1     null
-prng             ram0             ratpconsole-1    serial0-1
-serial1-1        serial2-1        zero
-
-Cheers!
-
--- 
-Aleksander
-https://aleksander.es
+Rob
 
 _______________________________________________
 barebox mailing list
