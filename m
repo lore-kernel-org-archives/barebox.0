@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dJFnN-0001Cj-6E
- for barebox@lists.infradead.org; Fri, 09 Jun 2017 09:01:30 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  9 Jun 2017 11:01:06 +0200
-Message-Id: <20170609090106.10933-2-s.hauer@pengutronix.de>
-In-Reply-To: <20170609090106.10933-1-s.hauer@pengutronix.de>
-References: <20170609090106.10933-1-s.hauer@pengutronix.de>
+Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
+ by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dJKiX-0008Nk-2B
+ for barebox@lists.infradead.org; Fri, 09 Jun 2017 14:16:50 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Fri,  9 Jun 2017 16:16:22 +0200
+Message-Id: <20170609141622.21502-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,136 +19,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] mtd: nand_omap_gpmc: remove unnecessary loop
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v1 1/1] gpio: of: provide option generic property for initial
+ line states
+To: kernel@pengutronix.de, Linus Walleij <linus.walleij@linaro.org>, Alexandre Courbot <gnurou@gmail.com>, Rob Herring <robh+dt@kernel.org>, Mark Rutland <mark.rutland@arm.com>, linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-With eccsteps always being one the loop in omap_correct_bch() is
-iterated over exactly once, so it can be optimized away.
+This property is needed for barebox or may be other bootloaders
+to set proper gpio configuration as early as possible.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+This example is mainly based on "lines-initial-states" property
+from this binding documentation:
+Documentation/devicetree/bindings/gpio/gpio-pcf857x.txt
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/mtd/nand/nand_omap_gpmc.c | 85 ++++++++++++++++++---------------------
- 1 file changed, 40 insertions(+), 45 deletions(-)
+ Documentation/devicetree/bindings/gpio/gpio.txt | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-index fa838f39a4..334014a895 100644
---- a/drivers/mtd/nand/nand_omap_gpmc.c
-+++ b/drivers/mtd/nand/nand_omap_gpmc.c
-@@ -297,18 +297,16 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
- {
- 	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
- 	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
--	int i, j, eccflag, totalcount, actual_eccsize;
-+	int j, eccflag, totalcount, actual_eccsize;
- 	const uint8_t *erased_ecc_vec;
- 	unsigned int err_loc[8];
- 	int bitflip_count;
- 	int bch_max_err;
--
--	int eccsteps = 1;
- 	int eccsize = oinfo->nand.ecc.bytes;
-+	bool is_error_reported = false;
- 
- 	switch (oinfo->ecc_mode) {
- 	case OMAP_ECC_BCH8_CODE_HW:
--		eccsize /= eccsteps;
- 		actual_eccsize = eccsize;
- 		erased_ecc_vec = bch8_vector;
- 		bch_max_err = BCH8_MAX_ERROR;
-@@ -325,55 +323,52 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
- 
- 	totalcount = 0;
- 
--	for (i = 0; i < eccsteps; i++) {
--		bool is_error_reported = false;
--		bitflip_count = 0;
--		eccflag = 0;
--
--		/* check for any ecc error */
--		for (j = 0; (j < actual_eccsize) && (eccflag == 0); j++) {
--			if (calc_ecc[j] != 0) {
--				eccflag = 1;
--				break;
--			}
--		}
-+	bitflip_count = 0;
-+	eccflag = 0;
- 
--		if (eccflag == 1) {
--			if (memcmp(calc_ecc, erased_ecc_vec, actual_eccsize) == 0) {
--				/*
--				 * calc_ecc[] matches pattern for ECC
--				 * (all 0xff) so this is definitely
--				 * an erased-page
--				 */
--			} else {
--				bitflip_count = nand_check_erased_ecc_chunk(
--						dat, oinfo->nand.ecc.size, read_ecc,
--						eccsize, NULL, 0, bch_max_err);
--				if (bitflip_count < 0)
--					is_error_reported = true;
--			}
-+	/* check for any ecc error */
-+	for (j = 0; (j < actual_eccsize) && (eccflag == 0); j++) {
-+		if (calc_ecc[j] != 0) {
-+			eccflag = 1;
-+			break;
- 		}
-+	}
- 
--		if (is_error_reported) {
--			bitflip_count = omap_gpmc_decode_bch(1,
--					calc_ecc, err_loc);
-+	if (eccflag == 1) {
-+		if (memcmp(calc_ecc, erased_ecc_vec, actual_eccsize) == 0) {
-+			/*
-+			 * calc_ecc[] matches pattern for ECC
-+			 * (all 0xff) so this is definitely
-+			 * an erased-page
-+			 */
-+		} else {
-+			bitflip_count = nand_check_erased_ecc_chunk(
-+					dat, oinfo->nand.ecc.size, read_ecc,
-+					eccsize, NULL, 0, bch_max_err);
- 			if (bitflip_count < 0)
--				return bitflip_count;
--
--			for (j = 0; j < bitflip_count; j++) {
--				if (err_loc[j] < 4096)
--					dat[err_loc[j] >> 3] ^=
--						1 << (err_loc[j] & 7);
--				/* else, not interested to correct ecc */
--			}
-+				is_error_reported = true;
- 		}
-+	}
- 
--		totalcount += bitflip_count;
--		calc_ecc = calc_ecc + actual_eccsize;
--		read_ecc = read_ecc + eccsize;
--		dat += 512;
-+	if (is_error_reported) {
-+		bitflip_count = omap_gpmc_decode_bch(1,
-+				calc_ecc, err_loc);
-+		if (bitflip_count < 0)
-+			return bitflip_count;
-+
-+		for (j = 0; j < bitflip_count; j++) {
-+			if (err_loc[j] < 4096)
-+				dat[err_loc[j] >> 3] ^=
-+					1 << (err_loc[j] & 7);
-+			/* else, not interested to correct ecc */
-+		}
- 	}
- 
-+	totalcount += bitflip_count;
-+	calc_ecc = calc_ecc + actual_eccsize;
-+	read_ecc = read_ecc + eccsize;
-+	dat += 512;
-+
- 	return totalcount;
+diff --git a/Documentation/devicetree/bindings/gpio/gpio.txt b/Documentation/devicetree/bindings/gpio/gpio.txt
+index 84ede036f73d..60f8e8d8ab32 100644
+--- a/Documentation/devicetree/bindings/gpio/gpio.txt
++++ b/Documentation/devicetree/bindings/gpio/gpio.txt
+@@ -181,6 +181,26 @@ gpio-controller@00000000 {
+ 		"poweroff", "reset";
  }
  
++Optionally, a GPIO controller may have a "gpio-lines-initial-states" property.
++This is an array of values that specifies the initial state of each line. When
++a value is set to one, the corresponding line will be initialized to the input
++(pulled-up) state. When the values is set to two, the line will be initialized
++the low-level output state. If values is set to zero the line will be
++initialized to the input state.
++If the property is not specified no specific configuration will be set. Driver
++should reuse HW configuration provided by bootloader or other system.
++
++Example:
++
++gpio-controller@00000000 {
++	compatible = "foo";
++	reg = <0x00000000 0x1000>;
++	gpio-controller;
++	#gpio-cells = <2>;
++	ngpios = <9>;
++	gpio-lines-initial-states = <0>, <1>, <2>, <0>, <0>, <2>, <2>, <1>, <1>;
++}
++
+ The GPIO chip may contain GPIO hog definitions. GPIO hogging is a mechanism
+ providing automatic GPIO request and configuration as part of the
+ gpio-controller's driver probe function.
 -- 
 2.11.0
 
