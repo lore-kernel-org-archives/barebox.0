@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dIUqs-00011A-EW
- for barebox@lists.infradead.org; Wed, 07 Jun 2017 06:54:00 +0000
-Date: Wed, 7 Jun 2017 08:53:36 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170607065336.utyv5z72fivph2ha@pengutronix.de>
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1dJF7k-0000C7-EK
+ for barebox@lists.infradead.org; Fri, 09 Jun 2017 08:18:30 +0000
 References: <1496765425-9702-1-git-send-email-d.schultz@phytec.de>
  <20170607064508.lau5rlqb5k6hslf3@pengutronix.de>
  <20170607064909.rw2aa6atbrb37xmt@pengutronix.de>
+ <20170607065336.utyv5z72fivph2ha@pengutronix.de>
+From: Daniel Schultz <d.schultz@phytec.de>
+Message-ID: <23fe6b1a-f4af-40e0-a796-51464027b251@phytec.de>
+Date: Fri, 9 Jun 2017 10:17:55 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170607064909.rw2aa6atbrb37xmt@pengutronix.de>
+In-Reply-To: <20170607065336.utyv5z72fivph2ha@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,139 +21,127 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] mtd: nand: omap: Fix BCH bit correction
-To: Daniel Schultz <d.schultz@phytec.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org, Matt Reimer <mreimer@sdgsystems.com>
 
-On Wed, Jun 07, 2017 at 08:49:09AM +0200, Sascha Hauer wrote:
-> On Wed, Jun 07, 2017 at 08:45:08AM +0200, Sascha Hauer wrote:
-> > +Cc Matt Reimer <mreimer@sdgsystems.com>
-> > 
-> > On Tue, Jun 06, 2017 at 06:10:25PM +0200, Daniel Schultz wrote:
-> > > After commit dec7b4d2bf9 was applied our barebox only corrected the
-> > > first 512 Bytes of NAND pages.
-> > > 
-> > > This patch separates between Hamming and BCH when finding out the
-> > > eccsteps, because BCH always works with 2kB pages.
-> > > 
-> > > Before this patch:
-> > > 
-> > > barebox@Phytec phyCORE AM335x:/ nand_bitflip -r -n 5 /dev/nand0.barebox
-> > > nand0.barebox: Flipping bit 5 @ 1796
-> > > nand0.barebox: Flipping bit 6 @ 1258
-> > > nand0.barebox: Flipping bit 5 @ 1062
-> > > nand0.barebox: Flipping bit 2 @ 1399
-> > > nand0.barebox: Flipping bit 6 @ 1243
-> > > No bitflips found on block 0, offset 0x00000000
-> > > barebox@Phytec phyCORE AM335x:/ nand_bitflip -r -n 5 /dev/nand0.barebox
-> > > nand0.barebox: Flipping bit 2 @ 872
-> > > nand0.barebox: Flipping bit 4 @ 252
-> > > nand0.barebox: Flipping bit 3 @ 568
-> > > nand0.barebox: Flipping bit 2 @ 247
-> > > nand0.barebox: Flipping bit 5 @ 401
-> > > page at block 0, offset 0x00000000 has 3 bitflips
-> > > 
-> > > After this patch:
-> > > 
-> > > barebox@Phytec phyCORE AM335x:/ nand_bitflip -r -n 5 /dev/nand0.barebox
-> > > nand0.barebox: Flipping bit 2 @ 1962
-> > > nand0.barebox: Flipping bit 0 @ 1563
-> > > nand0.barebox: Flipping bit 0 @ 1808
-> > > nand0.barebox: Flipping bit 6 @ 1460
-> > > nand0.barebox: Flipping bit 7 @ 2034
-> > > page at block 0, offset 0x00000000 has 5 bitflips
-> > > barebox@Phytec phyCORE AM335x:/ nand_bitflip -r -n 5 /dev/nand0.barebox
-> > > nand0.barebox: Flipping bit 1 @ 1352
-> > > nand0.barebox: Flipping bit 7 @ 1542
-> > > nand0.barebox: Flipping bit 2 @ 1021
-> > > nand0.barebox: Flipping bit 7 @ 691
-> > > nand0.barebox: Flipping bit 6 @ 1196
-> > > page at block 0, offset 0x00000000 has 10 bitflips, needs cleanup
-> > > 
-> > > Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
-> > > ---
-> > >  drivers/mtd/nand/nand_omap_gpmc.c | 11 +++++++++--
-> > >  1 file changed, 9 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-> > > index 05c8486..61220da 100644
-> > > --- a/drivers/mtd/nand/nand_omap_gpmc.c
-> > > +++ b/drivers/mtd/nand/nand_omap_gpmc.c
-> > > @@ -302,10 +302,17 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
-> > >  	unsigned int err_loc[8];
-> > >  	int bitflip_count;
-> > >  	int bch_max_err;
-> > > +	int eccsteps;
-> > >  
-> > > -	int eccsteps = (nand->ecc.mode == NAND_ECC_HW) &&
-> > > -			(nand->ecc.size == 2048) ? 4 : 1;
-> > >  	int eccsize = oinfo->nand.ecc.bytes;
-> > > +	if (oinfo->ecc_mode == OMAP_ECC_HAMMING_CODE_HW_ROMCODE)
-> > 
-> > This is wrong. When in Hamming ECC mode you shouldn't get into this
-> > function. The test should always fail.
-> > 
-> > > +		if ((nand->ecc.mode == NAND_ECC_HW) &&
-> > > +				(nand->ecc.size == 2048))
-> > > +			eccsteps = 4;
-> > > +		else
-> > > +			eccsteps = 1;
-> > 
-> > The question is why ecc.size is set to the wrong value in the first
-> > place:
-> > 
-> > 	case OMAP_ECC_BCH8_CODE_HW:
-> > 		...
-> > 		oinfo->nand.ecc.size     = 512 * 4;
-> > 
-> > This seems to be wrong. The BCH controller works in 512 Byte chunks, so
-> > ecc.size should be 512. This would make the special cases in
-> > omap_correct_bch() unnecessary.
-> > 
-> > In dec7b4d2bf9 Matt said:
-> > 
-> > |  The fix is to pull over a bit of code from the kernel's
-> > |  omap_correct_data() that sets eccsteps = 4 when the page size is 2048
-> > |  bytes and hardware ECC is being used.
-> > 
-> > In fact, this piece is in the kernel code:
-> > 
-> > 	/* Ex NAND_ECC_HW12_2048 */
-> > 	if ((info->nand.ecc.mode == NAND_ECC_HW) &&
-> > 			(info->nand.ecc.size  == 2048))
-> > 		blockCnt = 4;
-> > 	else
-> > 		blockCnt = 1;
-> > 
-> > I just suspect this is never used, because ecc.size is correctly set to 512 in
-> > all cases. Then ecc.steps results in 4 for 2k page sizes and the framework correctly
-> > iterates over the ecc steps.
-> > 
-> > Please give the attached test a try. It's completely untested.
-> 
-> And can not work. Additionally eccsteps must be set to 1 in
-> omap_correct_bch(). This effectively makes the loop in this function
-> unnecessary which can then removed.
-
-Which then means omap_gpmc_read_page_bch_rom_mode() has to iterate over
-ecc.steps itself, just like the other read_page implementations in the
-framework do.
-
-So long, enough of self-replying for now ;)
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKQW0gMDcuMDYuMjAxNyB1bSAwODo1MyBzY2hyaWViIFNhc2NoYSBIYXVlcjoK
+PiBPbiBXZWQsIEp1biAwNywgMjAxNyBhdCAwODo0OTowOUFNICswMjAwLCBTYXNjaGEgSGF1ZXIg
+d3JvdGU6Cj4+IE9uIFdlZCwgSnVuIDA3LCAyMDE3IGF0IDA4OjQ1OjA4QU0gKzAyMDAsIFNhc2No
+YSBIYXVlciB3cm90ZToKPj4+ICtDYyBNYXR0IFJlaW1lciA8bXJlaW1lckBzZGdzeXN0ZW1zLmNv
+bT4KPj4+Cj4+PiBPbiBUdWUsIEp1biAwNiwgMjAxNyBhdCAwNjoxMDoyNVBNICswMjAwLCBEYW5p
+ZWwgU2NodWx0eiB3cm90ZToKPj4+PiBBZnRlciBjb21taXQgZGVjN2I0ZDJiZjkgd2FzIGFwcGxp
+ZWQgb3VyIGJhcmVib3ggb25seSBjb3JyZWN0ZWQgdGhlCj4+Pj4gZmlyc3QgNTEyIEJ5dGVzIG9m
+IE5BTkQgcGFnZXMuCj4+Pj4KPj4+PiBUaGlzIHBhdGNoIHNlcGFyYXRlcyBiZXR3ZWVuIEhhbW1p
+bmcgYW5kIEJDSCB3aGVuIGZpbmRpbmcgb3V0IHRoZQo+Pj4+IGVjY3N0ZXBzLCBiZWNhdXNlIEJD
+SCBhbHdheXMgd29ya3Mgd2l0aCAya0IgcGFnZXMuCj4+Pj4KPj4+PiBCZWZvcmUgdGhpcyBwYXRj
+aDoKPj4+Pgo+Pj4+IGJhcmVib3hAUGh5dGVjIHBoeUNPUkUgQU0zMzV4Oi8gbmFuZF9iaXRmbGlw
+IC1yIC1uIDUgL2Rldi9uYW5kMC5iYXJlYm94Cj4+Pj4gbmFuZDAuYmFyZWJveDogRmxpcHBpbmcg
+Yml0IDUgQCAxNzk2Cj4+Pj4gbmFuZDAuYmFyZWJveDogRmxpcHBpbmcgYml0IDYgQCAxMjU4Cj4+
+Pj4gbmFuZDAuYmFyZWJveDogRmxpcHBpbmcgYml0IDUgQCAxMDYyCj4+Pj4gbmFuZDAuYmFyZWJv
+eDogRmxpcHBpbmcgYml0IDIgQCAxMzk5Cj4+Pj4gbmFuZDAuYmFyZWJveDogRmxpcHBpbmcgYml0
+IDYgQCAxMjQzCj4+Pj4gTm8gYml0ZmxpcHMgZm91bmQgb24gYmxvY2sgMCwgb2Zmc2V0IDB4MDAw
+MDAwMDAKPj4+PiBiYXJlYm94QFBoeXRlYyBwaHlDT1JFIEFNMzM1eDovIG5hbmRfYml0ZmxpcCAt
+ciAtbiA1IC9kZXYvbmFuZDAuYmFyZWJveAo+Pj4+IG5hbmQwLmJhcmVib3g6IEZsaXBwaW5nIGJp
+dCAyIEAgODcyCj4+Pj4gbmFuZDAuYmFyZWJveDogRmxpcHBpbmcgYml0IDQgQCAyNTIKPj4+PiBu
+YW5kMC5iYXJlYm94OiBGbGlwcGluZyBiaXQgMyBAIDU2OAo+Pj4+IG5hbmQwLmJhcmVib3g6IEZs
+aXBwaW5nIGJpdCAyIEAgMjQ3Cj4+Pj4gbmFuZDAuYmFyZWJveDogRmxpcHBpbmcgYml0IDUgQCA0
+MDEKPj4+PiBwYWdlIGF0IGJsb2NrIDAsIG9mZnNldCAweDAwMDAwMDAwIGhhcyAzIGJpdGZsaXBz
+Cj4+Pj4KPj4+PiBBZnRlciB0aGlzIHBhdGNoOgo+Pj4+Cj4+Pj4gYmFyZWJveEBQaHl0ZWMgcGh5
+Q09SRSBBTTMzNXg6LyBuYW5kX2JpdGZsaXAgLXIgLW4gNSAvZGV2L25hbmQwLmJhcmVib3gKPj4+
+PiBuYW5kMC5iYXJlYm94OiBGbGlwcGluZyBiaXQgMiBAIDE5NjIKPj4+PiBuYW5kMC5iYXJlYm94
+OiBGbGlwcGluZyBiaXQgMCBAIDE1NjMKPj4+PiBuYW5kMC5iYXJlYm94OiBGbGlwcGluZyBiaXQg
+MCBAIDE4MDgKPj4+PiBuYW5kMC5iYXJlYm94OiBGbGlwcGluZyBiaXQgNiBAIDE0NjAKPj4+PiBu
+YW5kMC5iYXJlYm94OiBGbGlwcGluZyBiaXQgNyBAIDIwMzQKPj4+PiBwYWdlIGF0IGJsb2NrIDAs
+IG9mZnNldCAweDAwMDAwMDAwIGhhcyA1IGJpdGZsaXBzCj4+Pj4gYmFyZWJveEBQaHl0ZWMgcGh5
+Q09SRSBBTTMzNXg6LyBuYW5kX2JpdGZsaXAgLXIgLW4gNSAvZGV2L25hbmQwLmJhcmVib3gKPj4+
+PiBuYW5kMC5iYXJlYm94OiBGbGlwcGluZyBiaXQgMSBAIDEzNTIKPj4+PiBuYW5kMC5iYXJlYm94
+OiBGbGlwcGluZyBiaXQgNyBAIDE1NDIKPj4+PiBuYW5kMC5iYXJlYm94OiBGbGlwcGluZyBiaXQg
+MiBAIDEwMjEKPj4+PiBuYW5kMC5iYXJlYm94OiBGbGlwcGluZyBiaXQgNyBAIDY5MQo+Pj4+IG5h
+bmQwLmJhcmVib3g6IEZsaXBwaW5nIGJpdCA2IEAgMTE5Ngo+Pj4+IHBhZ2UgYXQgYmxvY2sgMCwg
+b2Zmc2V0IDB4MDAwMDAwMDAgaGFzIDEwIGJpdGZsaXBzLCBuZWVkcyBjbGVhbnVwCj4+Pj4KPj4+
+PiBTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgU2NodWx0eiA8ZC5zY2h1bHR6QHBoeXRlYy5kZT4KPj4+
+PiAtLS0KPj4+PiAgIGRyaXZlcnMvbXRkL25hbmQvbmFuZF9vbWFwX2dwbWMuYyB8IDExICsrKysr
+KysrKy0tCj4+Pj4gICAxIGZpbGUgY2hhbmdlZCwgOSBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9u
+cygtKQo+Pj4+Cj4+Pj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9vbWFwX2dw
+bWMuYyBiL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9vbWFwX2dwbWMuYwo+Pj4+IGluZGV4IDA1Yzg0
+ODYuLjYxMjIwZGEgMTAwNjQ0Cj4+Pj4gLS0tIGEvZHJpdmVycy9tdGQvbmFuZC9uYW5kX29tYXBf
+Z3BtYy5jCj4+Pj4gKysrIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX29tYXBfZ3BtYy5jCj4+Pj4g
+QEAgLTMwMiwxMCArMzAyLDE3IEBAIHN0YXRpYyBpbnQgb21hcF9jb3JyZWN0X2JjaChzdHJ1Y3Qg
+bXRkX2luZm8gKm10ZCwgdWludDhfdCAqZGF0LAo+Pj4+ICAgCXVuc2lnbmVkIGludCBlcnJfbG9j
+WzhdOwo+Pj4+ICAgCWludCBiaXRmbGlwX2NvdW50Owo+Pj4+ICAgCWludCBiY2hfbWF4X2VycjsK
+Pj4+PiArCWludCBlY2NzdGVwczsKPj4+PiAgIAo+Pj4+IC0JaW50IGVjY3N0ZXBzID0gKG5hbmQt
+PmVjYy5tb2RlID09IE5BTkRfRUNDX0hXKSAmJgo+Pj4+IC0JCQkobmFuZC0+ZWNjLnNpemUgPT0g
+MjA0OCkgPyA0IDogMTsKPj4+PiAgIAlpbnQgZWNjc2l6ZSA9IG9pbmZvLT5uYW5kLmVjYy5ieXRl
+czsKPj4+PiArCWlmIChvaW5mby0+ZWNjX21vZGUgPT0gT01BUF9FQ0NfSEFNTUlOR19DT0RFX0hX
+X1JPTUNPREUpCj4+Pgo+Pj4gVGhpcyBpcyB3cm9uZy4gV2hlbiBpbiBIYW1taW5nIEVDQyBtb2Rl
+IHlvdSBzaG91bGRuJ3QgZ2V0IGludG8gdGhpcwo+Pj4gZnVuY3Rpb24uIFRoZSB0ZXN0IHNob3Vs
+ZCBhbHdheXMgZmFpbC4KVGhhdCdzIHdoeSBJIGFkZGVkIHRoaXMgdGVzdC4gSSBkb24ndCBrbm93
+IHdoeSB0aGlzIGNoYW5nZSB3YXMgbWFkZSBbMV0KPj4+Cj4+Pj4gKwkJaWYgKChuYW5kLT5lY2Mu
+bW9kZSA9PSBOQU5EX0VDQ19IVykgJiYKPj4+PiArCQkJCShuYW5kLT5lY2Muc2l6ZSA9PSAyMDQ4
+KSkKPj4+PiArCQkJZWNjc3RlcHMgPSA0Owo+Pj4+ICsJCWVsc2UKPj4+PiArCQkJZWNjc3RlcHMg
+PSAxOwo+Pj4KPj4+IFRoZSBxdWVzdGlvbiBpcyB3aHkgZWNjLnNpemUgaXMgc2V0IHRvIHRoZSB3
+cm9uZyB2YWx1ZSBpbiB0aGUgZmlyc3QKPj4+IHBsYWNlOgo+Pj4KPj4+IAljYXNlIE9NQVBfRUND
+X0JDSDhfQ09ERV9IVzoKPj4+IAkJLi4uCj4+PiAJCW9pbmZvLT5uYW5kLmVjYy5zaXplICAgICA9
+IDUxMiAqIDQ7Cj4+Pgo+Pj4gVGhpcyBzZWVtcyB0byBiZSB3cm9uZy4gVGhlIEJDSCBjb250cm9s
+bGVyIHdvcmtzIGluIDUxMiBCeXRlIGNodW5rcywgc28KPj4+IGVjYy5zaXplIHNob3VsZCBiZSA1
+MTIuIFRoaXMgd291bGQgbWFrZSB0aGUgc3BlY2lhbCBjYXNlcyBpbgo+Pj4gb21hcF9jb3JyZWN0
+X2JjaCgpIHVubmVjZXNzYXJ5LgpPbmx5IE9NQVBfRUNDX0JDSDhfQ09ERV9IV19ST01DT0RFIGNh
+biBjYWxsIApvbWFwX2dwbWNfcmVhZF9wYWdlX2JjaF9yb21fbW9kZSgpLiBTbywgdGhpcyBzaG91
+bGQgYmUgbm8gcHJvYmxlbSwgYnV0IAp0aGlzIG11bHRpcGx5aW5nIGlzIG5vdCBpbiB0aGUga2Vy
+bmVsLiBNYXliZSB0aGlzIGNhbiBhZmZlY3Qgb2xkZXIgCnN5c3RlbXMgKE9NQVBfRUNDX0JDSDhf
+Q09ERV9IVyBpcyBvbmx5IHVzZWQgYnkgb2xkIHBoeWNhcmRzKS4KPj4+Cj4+PiBJbiBkZWM3YjRk
+MmJmOSBNYXR0IHNhaWQ6Cj4+Pgo+Pj4gfCAgVGhlIGZpeCBpcyB0byBwdWxsIG92ZXIgYSBiaXQg
+b2YgY29kZSBmcm9tIHRoZSBrZXJuZWwncwo+Pj4gfCAgb21hcF9jb3JyZWN0X2RhdGEoKSB0aGF0
+IHNldHMgZWNjc3RlcHMgPSA0IHdoZW4gdGhlIHBhZ2Ugc2l6ZSBpcyAyMDQ4Cj4+PiB8ICBieXRl
+cyBhbmQgaGFyZHdhcmUgRUNDIGlzIGJlaW5nIHVzZWQuCj4+Pgo+Pj4gSW4gZmFjdCwgdGhpcyBw
+aWVjZSBpcyBpbiB0aGUga2VybmVsIGNvZGU6Cj4+Pgo+Pj4gCS8qIEV4IE5BTkRfRUNDX0hXMTJf
+MjA0OCAqLwo+Pj4gCWlmICgoaW5mby0+bmFuZC5lY2MubW9kZSA9PSBOQU5EX0VDQ19IVykgJiYK
+Pj4+IAkJCShpbmZvLT5uYW5kLmVjYy5zaXplICA9PSAyMDQ4KSkKPj4+IAkJYmxvY2tDbnQgPSA0
+Owo+Pj4gCWVsc2UKPj4+IAkJYmxvY2tDbnQgPSAxOwpbMV0gc2luY2UgdGhpcyBpcyBmcm9tIHRo
+ZSBIYW1taW5nIGxvZ2ljIGFuZCBub3QgQkNILgoKVGhpcyBpcyBhIHNuaXBwZXQgZnJvbSB0aGUg
+bGludXgtdGkga2VybmVsOgoKICAgICAgICAgIGNhc2UgT01BUF9FQ0NfSEFNMV9DT0RFX0hXOiAK
+CiAgICAgICAgICAgICAgICAgIHByX2luZm8oIm5hbmQ6IHVzaW5nIE9NQVBfRUNDX0hBTTFfQ09E
+RV9IV1xuIik7IAoKICAgICAgICAgICAgICAgICAgbmFuZF9jaGlwLT5lY2MubW9kZSAgICAgICAg
+ICAgICA9IE5BTkRfRUNDX0hXOyAKCiAgICAgICAgICAgICAgICAgIG5hbmRfY2hpcC0+ZWNjLmJ5
+dGVzICAgICAgICAgICAgPSAzOyAKCiAgICAgICAgICAgICAgICAgIG5hbmRfY2hpcC0+ZWNjLnNp
+emUgICAgICAgICAgICAgPSA1MTI7IAoKICAgICAgICAgICAgICAgICAgbmFuZF9jaGlwLT5lY2Mu
+c3RyZW5ndGggICAgICAgICA9IDE7IAoKICAgICAgICAgICAgICAgICAgbmFuZF9jaGlwLT5lY2Mu
+Y2FsY3VsYXRlICAgICAgICA9IG9tYXBfY2FsY3VsYXRlX2VjYzsgCgogICAgICAgICAgICAgICAg
+ICBuYW5kX2NoaXAtPmVjYy5od2N0bCAgICAgICAgICAgID0gb21hcF9lbmFibGVfaHdlY2M7IAoK
+ICAgICAgICAgICAgICAgICAgbmFuZF9jaGlwLT5lY2MuY29ycmVjdCAgICAgICAgICA9IG9tYXBf
+Y29ycmVjdF9kYXRhOyAKCiAgICAgICAgICAgICAgICAgIC8qIGRlZmluZSBFQ0MgbGF5b3V0ICov
+IAoKICAgICAgICAgICAgICAgICAgZWNjbGF5b3V0LT5lY2NieXRlcyAgICAgICAgICAgICA9IG5h
+bmRfY2hpcC0+ZWNjLmJ5dGVzCgkJIC4uLgoKICAgICAgICAgIGNhc2UgT01BUF9FQ0NfQkNIOF9D
+T0RFX0hXOiAKCiAgICAgICAgICAgICAgICAgIG5hbmRfY2hpcC0+ZWNjLm1vZGUgICAgICAgICAg
+ID0gTkFORF9FQ0NfSFc7IAoKICAgICAgICAgICAgICAgICAgbmFuZF9jaGlwLT5lY2Muc2l6ZSAg
+ICAgICAgICAgPSA1MTI7IAoKICAgICAgICAgICAgICAgICAgbmFuZF9jaGlwLT5lY2MuYnl0ZXMg
+ICAgICAgICAgPSAxMyArIDE7IAoKICAgICAgICAgICAgICAgICAgbmFuZF9jaGlwLT5lY2Muc3Ry
+ZW5ndGggICAgICAgPSA4OyAKCiAgICAgICAgICAgICAgICAgIG5hbmRfY2hpcC0+ZWNjLmh3Y3Rs
+ICAgICAgICAgID0gb21hcF9lbmFibGVfaHdlY2NfYmNoOyAKCiAgICAgICAgICAgICAgICAgIG5h
+bmRfY2hpcC0+ZWNjLmNvcnJlY3QgICAgICAgID0gb21hcF9lbG1fY29ycmVjdF9kYXRhOyAKCiAg
+ICAgICAgICAgICAgICAgIG5hbmRfY2hpcC0+ZWNjLmNhbGN1bGF0ZSAgICAgID0gCm9tYXBfY2Fs
+Y3VsYXRlX2VjY19iY2g7CiAgICAgICAgICAgICAgICAgIG5hbmRfY2hpcC0+ZWNjLnJlYWRfcGFn
+ZSAgICAgID0gb21hcF9yZWFkX3BhZ2VfYmNoOyAKCiAgICAgICAgICAgICAgICAgIG5hbmRfY2hp
+cC0+ZWNjLndyaXRlX3BhZ2UgICAgID0gb21hcF93cml0ZV9wYWdlX2JjaDsKCgo+Pj4KPj4+IEkg
+anVzdCBzdXNwZWN0IHRoaXMgaXMgbmV2ZXIgdXNlZCwgYmVjYXVzZSBlY2Muc2l6ZSBpcyBjb3Jy
+ZWN0bHkgc2V0IHRvIDUxMiBpbgo+Pj4gYWxsIGNhc2VzLiBUaGVuIGVjYy5zdGVwcyByZXN1bHRz
+IGluIDQgZm9yIDJrIHBhZ2Ugc2l6ZXMgYW5kIHRoZSBmcmFtZXdvcmsgY29ycmVjdGx5Cj4+PiBp
+dGVyYXRlcyBvdmVyIHRoZSBlY2Mgc3RlcHMuCj4+Pgo+Pj4gUGxlYXNlIGdpdmUgdGhlIGF0dGFj
+aGVkIHRlc3QgYSB0cnkuIEl0J3MgY29tcGxldGVseSB1bnRlc3RlZC4KPj4KPj4gQW5kIGNhbiBu
+b3Qgd29yay4gQWRkaXRpb25hbGx5IGVjY3N0ZXBzIG11c3QgYmUgc2V0IHRvIDEgaW4KPj4gb21h
+cF9jb3JyZWN0X2JjaCgpLiBUaGlzIGVmZmVjdGl2ZWx5IG1ha2VzIHRoZSBsb29wIGluIHRoaXMg
+ZnVuY3Rpb24KPj4gdW5uZWNlc3Nhcnkgd2hpY2ggY2FuIHRoZW4gcmVtb3ZlZC4KPiAKPiBXaGlj
+aCB0aGVuIG1lYW5zIG9tYXBfZ3BtY19yZWFkX3BhZ2VfYmNoX3JvbV9tb2RlKCkgaGFzIHRvIGl0
+ZXJhdGUgb3Zlcgo+IGVjYy5zdGVwcyBpdHNlbGYsIGp1c3QgbGlrZSB0aGUgb3RoZXIgcmVhZF9w
+YWdlIGltcGxlbWVudGF0aW9ucyBpbiB0aGUKPiBmcmFtZXdvcmsgZG8uCj4gClNvLCB0aGUgcHJl
+dmlvdXMgYXNzaWdubWVudCBvZiBlY2NzdGVwcyB3YXMgZmluZT8KCj4gU28gbG9uZywgZW5vdWdo
+IG9mIHNlbGYtcmVwbHlpbmcgZm9yIG5vdyA7KQo+IAo+IFNhc2NoYQo+IAoKLS0gCk1pdCBmcmV1
+bmRsaWNoZW4gR3LDvMOfZW4sCldpdGggYmVzdCByZWdhcmRzLAogICBEYW5pZWwgU2NodWx0egoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
