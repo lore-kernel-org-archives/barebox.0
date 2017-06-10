@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dKm5Y-00048D-AP
- for barebox@lists.infradead.org; Tue, 13 Jun 2017 13:42:34 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id B8799A0020F
- for <barebox@lists.infradead.org>; Tue, 13 Jun 2017 15:43:14 +0200 (CEST)
-References: <1497361028-39920-1-git-send-email-d.schultz@phytec.de>
-From: Daniel Schultz <d.schultz@phytec.de>
-Message-ID: <2ec5295d-6784-c1ea-a254-d03231752830@phytec.de>
-Date: Tue, 13 Jun 2017 15:42:11 +0200
+Received: from sonic304-22.consmr.mail.ne1.yahoo.com ([66.163.191.148])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dJbXj-0002rn-0C
+ for barebox@lists.infradead.org; Sat, 10 Jun 2017 08:14:48 +0000
+Date: Sat, 10 Jun 2017 08:14:09 +0000 (UTC)
+From: B Gol <behnam_golds@yahoo.com>
+Message-ID: <1270235505.6719556.1497082449606@mail.yahoo.com>
 MIME-Version: 1.0
-In-Reply-To: <1497361028-39920-1-git-send-email-d.schultz@phytec.de>
-Content-Language: en-US
+References: <1270235505.6719556.1497082449606.ref@mail.yahoo.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,114 +16,138 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Reply-To: B Gol <behnam_golds@yahoo.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4] arm: boards: phytec-som-am335x: Update boot scripts
-To: barebox@lists.infradead.org
+Subject: How to use eMMC/SD DOS partitions as backend for the state framework?
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Y291bGQgeW91IGFsc28gcGxlYXNlIGFwcGx5IHRoZXNlIHBhdGNoZXMgdG8gdGhlIG5leHQgcmVs
-ZWFzZT8KCmxzOiBGaXggc2hvd2luZyBsaW5rcyB0byBkaXJlY3RvcmllcwpmczogSW1wbGVtZW50
-IGxpbmtzIHRvIGRpcmVjdG9yaWVzCmZzOiBkcm9wIHBhdGhfY2hlY2tfcHJlcmVxKCkKZXJybm86
-IEluY2x1ZGUgc3RyaW5nIGZvciBFTE9PUAphcm06IG1hY2gtb21hcDogQ2hhbmdlIG1vdW50cG9p
-bnQgb2YgYm9vdCBwYXJ0aXRpb25zCmZzOiBDcmVhdGUgYXV0b21vdW50IGVudHJpZXMgZm9yIHRo
-ZSBkZWZhdWx0IG1vdW50IHBhdGhlcwoKRGFuaWVsCgpBbSAxMy4wNi4yMDE3IHVtIDE1OjM3IHNj
-aHJpZWIgRGFuaWVsIFNjaHVsdHo6Cj4gRXhwYW5kIHRoZSBib290IHNjcmlwdHMgd2l0aCBFTU1D
-IGFuZCBhZGQgYSBkZWZhdWx0IGZpbGUgc291cmNlIGZvcgo+IGV4cGFuc2lvbnMuCj4gCj4gUmVt
-b3ZlZCAicnciIGFuZCAicm9vdHdhaXQiIGJvb3RhcmdzIGZyb20gZXhpc3RpbmcgYm9vdCBzY3Jp
-cHRzLgo+IEFkZGVkICJyb290ZmxhZ3M9J2RhdGE9am91cm5hbCciIGJvb3RhcmcgdG8gU0QgY2Fy
-ZCBib290IHNjcmlwdC4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgU2NodWx0eiA8ZC5zY2h1
-bHR6QHBoeXRlYy5kZT4KPiAtLS0KPiAgIC4uLi9waHl0ZWMtc29tLWFtMzM1eC9kZWZhdWx0ZW52
-LXBoeXNvbS1hbTMzNXgvYm9vdC9lbW1jIHwgIDUgKysrKysKPiAgIC4uLi9waHl0ZWMtc29tLWFt
-MzM1eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvYm9vdC9tbWMgIHwgIDcgKysrLS0tLQo+ICAg
-Li4uL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L25hbmQg
-fCAgMiArLQo+ICAgLi4uL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1
-eC9ib290L25ldCAgfCAxNSArKysrKysrKysrKysrKysKPiAgIC4uLi9waHl0ZWMtc29tLWFtMzM1
-eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvYm9vdC9zcGkgIHwgIDIgKy0KPiAgIC4uLi9kZWZh
-dWx0ZW52LXBoeXNvbS1hbTMzNXgvaW5pdC9ib290c291cmNlICAgICAgICAgICAgIHwgMTYgKysr
-KysrKysrKysrLS0tLQo+ICAgNiBmaWxlcyBjaGFuZ2VkLCAzNyBpbnNlcnRpb25zKCspLCAxMCBk
-ZWxldGlvbnMoLSkKPiAgIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvcGh5dGVj
-LXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3QvZW1tYwo+ICAgY3JlYXRl
-IG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9kZWZhdWx0ZW52
-LXBoeXNvbS1hbTMzNXgvYm9vdC9uZXQKPiAKPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRz
-L3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L2VtbWMgYi9h
-cmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4
-L2Jvb3QvZW1tYwo+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4gaW5kZXggMDAwMDAwMC4uYjE3OTJh
-Ngo+IC0tLSAvZGV2L251bGwKPiArKysgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMz
-NXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3QvZW1tYwo+IEBAIC0wLDAgKzEsNSBAQAo+
-ICsjIS9iaW4vc2gKPiArCj4gK2dsb2JhbC5ib290bS5pbWFnZT0vbW50L21tYzEuMC9saW51eGlt
-YWdlCj4gK2dsb2JhbC5ib290bS5vZnRyZWU9L21udC9tbWMxLjAvb2Z0cmVlCj4gK2dsb2JhbC5s
-aW51eC5ib290YXJncy5keW4ucm9vdD0icm9vdD0vZGV2L21tY2JsazFwMiByb290ZmxhZ3M9J2Rh
-dGE9am91cm5hbCciCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFt
-MzM1eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvYm9vdC9tbWMgYi9hcmNoL2FybS9ib2FyZHMv
-cGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3QvbW1jCj4gaW5k
-ZXggODM0NjY5ZC4uNzdhMDc2ZCAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVj
-LXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3QvbW1jCj4gKysrIGIvYXJj
-aC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9i
-b290L21tYwo+IEBAIC0xLDYgKzEsNSBAQAo+ICAgIyEvYmluL3NoCj4gICAKPiAtZ2xvYmFsLmJv
-b3RtLmltYWdlPS9ib290L2xpbnV4aW1hZ2UKPiAtZ2xvYmFsLmJvb3RtLm9mdHJlZT0vYm9vdC9v
-ZnRyZWUKPiAtCj4gLWdsb2JhbC5saW51eC5ib290YXJncy5keW4ucm9vdD0icm9vdD0vZGV2L21t
-Y2JsazBwMiBydyByb290d2FpdCIKPiArZ2xvYmFsLmJvb3RtLmltYWdlPS9tbnQvbW1jMC4wL2xp
-bnV4aW1hZ2UKPiArZ2xvYmFsLmJvb3RtLm9mdHJlZT0vbW50L21tYzAuMC9vZnRyZWUKPiArZ2xv
-YmFsLmxpbnV4LmJvb3RhcmdzLmR5bi5yb290PSJyb290PS9kZXYvbW1jYmxrMHAyIHJvb3RmbGFn
-cz0nZGF0YT1qb3VybmFsJyIKPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1z
-b20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L25hbmQgYi9hcmNoL2FybS9i
-b2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3QvbmFu
-ZAo+IGluZGV4IGVjZTQ0YjcuLjMzZjVmMDIgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9hcm0vYm9hcmRz
-L3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L25hbmQKPiAr
-KysgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20t
-YW0zMzV4L2Jvb3QvbmFuZAo+IEBAIC01LDQgKzUsNCBAQAo+ICAgZ2xvYmFsLmJvb3RtLmltYWdl
-PSIvZGV2L25hbmQwLnJvb3QudWJpLmtlcm5lbCIKPiAgIGdsb2JhbC5ib290bS5vZnRyZWU9Ii9k
-ZXYvbmFuZDAucm9vdC51Ymkub2Z0cmVlIgo+ICAgCj4gLWdsb2JhbC5saW51eC5ib290YXJncy5k
-eW4ucm9vdD0icm9vdD11YmkwOnJvb3QgdWJpLm10ZD1yb290IHJ3IHJvb3Rmc3R5cGU9dWJpZnMi
-Cj4gK2dsb2JhbC5saW51eC5ib290YXJncy5keW4ucm9vdD0icm9vdD11YmkwOnJvb3QgdWJpLm10
-ZD1yb290IHJvb3Rmc3R5cGU9dWJpZnMiCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9w
-aHl0ZWMtc29tLWFtMzM1eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvYm9vdC9uZXQgYi9hcmNo
-L2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jv
-b3QvbmV0Cj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwLi4xMDA1MTk5Cj4g
-LS0tIC9kZXYvbnVsbAo+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9k
-ZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvYm9vdC9uZXQKPiBAQCAtMCwwICsxLDE1IEBACj4gKyMh
-L2Jpbi9zaAo+ICsKPiArcGF0aD0iL21udC90ZnRwIgo+ICsKPiArZ2xvYmFsLmJvb3RtLmltYWdl
-PSIke3BhdGh9LyR7Z2xvYmFsLnVzZXJ9LWxpbnV4LSR7Z2xvYmFsLmhvc3RuYW1lfSIKPiArCj4g
-K29mdHJlZT0iJHtwYXRofS8ke2dsb2JhbC51c2VyfS1vZnRyZWUtJHtnbG9iYWwuaG9zdG5hbWV9
-Igo+ICtpZiBbIC1mICIke29mdHJlZX0iIF07IHRoZW4KPiArICAgIGdsb2JhbC5ib290bS5vZnRy
-ZWU9IiRvZnRyZWUiCj4gK2ZpCj4gKwo+ICtuZnNyb290PSIvbmZzcm9vdC8ke2dsb2JhbC5ob3N0
-bmFtZX0iCj4gK2Jvb3RhcmdzLWlwCj4gKwo+ICtnbG9iYWwubGludXguYm9vdGFyZ3MuZHluLnJv
-b3Q9InJvb3Q9L2Rldi9uZnMgbmZzcm9vdD0kbmZzcm9vdCx2ZXJzPTMsdWRwIgo+IGRpZmYgLS1n
-aXQgYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20t
-YW0zMzV4L2Jvb3Qvc3BpIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1
-bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L3NwaQo+IGluZGV4IDcxYzU4MzQuLmEzMjFhYTkgMTAw
-NjQ0Cj4gLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYt
-cGh5c29tLWFtMzM1eC9ib290L3NwaQo+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29t
-LWFtMzM1eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvYm9vdC9zcGkKPiBAQCAtNCw0ICs0LDQg
-QEAgZ2xvYmFsLmJvb3RtLmltYWdlPSIvZGV2L20yNXAwLmtlcm5lbCIKPiAgIGdsb2JhbC5ib290
-bS5vZnRyZWU9Ii9kZXYvbTI1cDAub2Z0cmVlIgo+ICAgCj4gICAjIFVzZSByb290ZnMgZnJvbSBO
-QU5ECj4gLWdsb2JhbC5saW51eC5ib290YXJncy5keW4ucm9vdD0icm9vdD11YmkwOnJvb3QgdWJp
-Lm10ZD1uYW5kMC5yb290IHJ3IHJvb3Rmc3R5cGU9dWJpZnMiCj4gK2dsb2JhbC5saW51eC5ib290
-YXJncy5keW4ucm9vdD0icm9vdD11YmkwOnJvb3QgdWJpLm10ZD1uYW5kMC5yb290IHJvb3Rmc3R5
-cGU9dWJpZnMiCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1
-eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvaW5pdC9ib290c291cmNlIGIvYXJjaC9hcm0vYm9h
-cmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9pbml0L2Jvb3Rz
-b3VyY2UKPiBpbmRleCAzZjJmZjRiLi42MWEwODc5IDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL2Jv
-YXJkcy9waHl0ZWMtc29tLWFtMzM1eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvaW5pdC9ib290
-c291cmNlCj4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRl
-bnYtcGh5c29tLWFtMzM1eC9pbml0L2Jvb3Rzb3VyY2UKPiBAQCAtNCwxMiArNCwyMCBAQCBpZiBb
-IC1uICIkbnYuYm9vdC5kZWZhdWx0IiBdOyB0aGVuCj4gICAJZXhpdAo+ICAgZmkKPiAgIAo+IC1p
-ZiBbICRib290c291cmNlID0gbW1jIF07IHRoZW4KPiAtCWdsb2JhbC5ib290LmRlZmF1bHQ9Im1t
-YyBuYW5kIHNwaSBuZXQiCj4gK2lmIFsgLWUgL2Rldi9tbWMxLjAgXTsgdGhlbgo+ICsJbnZtZW09
-ImVtbWMiCj4gK2Vsc2UKPiArCW52bWVtPSJuYW5kIgo+ICtmaQo+ICsKPiAraWYgWyAkYm9vdHNv
-dXJjZSA9IG1tYyAtYSAkYm9vdHNvdXJjZV9pbnN0YW5jZSA9IDEgXTsgdGhlbgo+ICsJZ2xvYmFs
-LmJvb3QuZGVmYXVsdD0iZW1tYyBtbWMgc3BpIG5ldCIKPiArZWxpZiBbICRib290c291cmNlID0g
-bW1jIC1hICRib290c291cmNlX2luc3RhbmNlID0gMCBdOyB0aGVuCj4gKwlnbG9iYWwuYm9vdC5k
-ZWZhdWx0PSJtbWMgJG52bWVtIHNwaSBuZXQiCj4gICBlbGlmIFsgJGJvb3Rzb3VyY2UgPSBuYW5k
-IF07IHRoZW4KPiAgIAlnbG9iYWwuYm9vdC5kZWZhdWx0PSJuYW5kIHNwaSBtbWMgbmV0Igo+ICAg
-ZWxpZiBbICRib290c291cmNlID0gc3BpIF07IHRoZW4KPiAtCWdsb2JhbC5ib290LmRlZmF1bHQ9
-InNwaSBuYW5kIG1tYyBuZXQiCj4gKwlnbG9iYWwuYm9vdC5kZWZhdWx0PSJzcGkgJG52bWVtIG1t
-YyBuZXQiCj4gICBlbGlmIFsgJGJvb3Rzb3VyY2UgPSBuZXQgXTsgdGhlbgo+IC0JZ2xvYmFsLmJv
-b3QuZGVmYXVsdD0ibmV0IG5hbmQgc3BpIG1tYyIKPiArCWdsb2JhbC5ib290LmRlZmF1bHQ9Im5l
-dCAkbnZtZW0gc3BpIG1tYyIKPiAgIGZpCj4gCgotLSAKTWl0IGZyZXVuZGxpY2hlbiBHcsO8w59l
-biwKV2l0aCBiZXN0IHJlZ2FyZHMsCiAgIERhbmllbCBTY2h1bHR6CgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+Hi,
+I was trying to figure out the state framework recently , and found out 
+that till version 2017.04.0 it kinda works with the following lines in 
+my dtb :
+
+#############################################################################
+
+/ {
+  state: state {
+        magic = <0x27031977>;
+        compatible = "barebox,state";
+        backend-type = "dtb";
+        backend-storage-type = "direct";
+        backend-stridesize = <0x500>;
+        backend = &mmc1, "partname:6";
+        bootchooser {
+                system0 {
+                        boot {
+                                reg = <0x00 0x10>;
+                                type = "string";
+                                default = "system0";
+                        };
+                        remaining_attempts {
+                                reg = <0x15 0x4>;
+                                type = "uint32";
+                                default = <0x3>;
+                        };
+                        priority {
+                                reg = <0x20 0x4>;
+                                type = "uint32";
+                                default = <0x15>;
+                        };
+                };
+
+                system1 {
+                        boot {
+                                reg = <0x25 0x10>;
+                                type = "string";
+                                default = "system1";
+                        };
+                        remaining_attempts {
+                                reg = <0x40 0x4>;
+                                type = "uint32";
+                                default = <0x3>;
+                        };
+                        priority {
+                                reg = <0x45 0x4>;
+                                type = "uint32";
+                                default = <0x14>;
+                        };
+                };
+
+        };
+  };
+
+
+};
+
+
+
+#############################################################################
+The problem was it just worked for the first boot , after that it goes 
+through a boot loop and all the remaining_attempts become zero , and I 
+see the following bizarre logs on the console :
+
+
+#############################################################################
+state: set parameter bootchooser.last_chosen: Invalid argument
+unable to handle paging request at address 0x14040008
+pc : [<9fe05314>]    lr : [<9fe05363>]
+sp : 9ffefab8  ip : 0000000c  fp : 9fe56ad5
+r10: 9fea17c8  r9 : 9fe56f8a  r8 : 9fe56f71
+r7 : 9011852c  r6 : 8fefef40  r5 : 14040000  r4 : edfe0dd0
+r3 : 00000000  r2 : 00000004  r1 : 90119214  r0 : 8fefef40
+Flags: nzCv  IRQs off  FIQs on  Mode SVC_32
+[<9fe05314>] (remove_free_block+0x10/0x3e) from [<9fe05363>] (block_remove+0x21/0x24)
+[<9fe05363>] (block_remove+0x21/0x24) from [<9fe05667>] (tlsf_free+0x37/0x62)
+[<9fe05667>] (tlsf_free+0x37/0x62) from [<9fe08875>] (state_save+0x5d/0x6c)
+[<9fe08875>] (state_save+0x5d/0x6c) from [<9fe09c6b>] (bootchooser_save+0x33/0xa0)
+[<9fe09c6b>] (bootchooser_save+0x33/0xa0) from [<9fe09e3b>] (bootchooser_get_target+0x5f/0x7c)
+[<9fe09e3b>] (bootchooser_get_target+0x5f/0x7c) from [<9fe09e7b>] (bootchooser_boot+0x23/0xbc)
+[<9fe09e7b>] (bootchooser_boot+0x23/0xbc) from [<9fe0ba33>] (boot_entry+0x37/0x60)
+[<9fe0ba33>] (boot_entry+0x37/0x60) from [<9fe36a1f>] (do_boot+0x137/0x160)
+[<9fe36a1f>] (do_boot+0x137/0x160) from [<9fe02f25>] (execute_command+0x21/0x48)
+[<9fe02f25>] (execute_command+0x21/0x48) from [<9fe076d3>] (run_list_real+0x5a3/0x604)
+[<9fe076d3>] (run_list_real+0x5a3/0x604) from [<9fe073c7>] (run_list_real+0x297/0x604)
+[<9fe073c7>] (run_list_real+0x297/0x604) from [<9fe07035>] (parse_stream_outer+0x105/0x15c)
+[<9fe07035>] (parse_stream_outer+0x105/0x15c) from [<9fe070f1>] (parse_string_outer+0x65/0xa4)
+[<9fe070f1>] (parse_string_outer+0x65/0xa4) from [<9fe07777>] (source_script+0x43/0x68)
+[<9fe07777>] (source_script+0x43/0x68) from [<9fe077c3>] (do_source+0x27/0x46)
+[<9fe077c3>] (do_source+0x27/0x46) from [<9fe02f25>] (execute_command+0x21/0x48)
+[<9fe02f25>] (execute_command+0x21/0x48) from [<9fe076d3>] (run_list_real+0x5a3/0x604)
+[<9fe076d3>] (run_list_real+0x5a3/0x604) from [<9fe07035>] (parse_stream_outer+0x105/0x15c)
+[<9fe07035>] (parse_stream_outer+0x105/0x15c) from [<9fe070f1>] (parse_string_outer+0x65/0xa4)
+[<9fe070f1>] (parse_string_outer+0x65/0xa4) from [<9fe078b5>] (run_command+0x21/0x30)
+[<9fe078b5>] (run_command+0x21/0x30) from [<9fe0094d>] (start_barebox+0x2d/0x94)
+[<9fe0094d>] (start_barebox+0x2d/0x94) from [<9fe51e3b>] (barebox_non_pbl_start+0xbb/0xf8)
+[<9fe51e3b>] (barebox_non_pbl_start+0xbb/0xf8) from [<9fe00005>] (__bare_init_start+0x1/0xc)
+
+[<9fe535fd>] (unwind_backtrace+0x1/0x58) from [<9fe00bbd>] (panic+0x1d/0x34)
+[<9fe00bbd>] (panic+0x1d/0x34) from [<9fe51c11>] (do_exception+0xd/0x10)
+[<9fe51c11>] (do_exception+0xd/0x10) from [<9fe51c71>] (do_data_abort+0x21/0x2c)
+[<9fe51c71>] (do_data_abort+0x21/0x2c) from [<9fe51714>] (do_abort_6+0x48/0x54)
+
+
+
+#############################################################################
+
+Now with the last version (2017.05.0) I have another problem. This is what
+I see on the console while trying to boot :
+
+
+#############################################################################
+state: Cannot resolve "backend" phandle
+state state.7: probe failed: Invalid argument
+
+#############################################################################
+
+
+The question is, how should I declare the backend in the dts file and which 
+
+one is the most stable version that supports my case?
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
