@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dQ8Ei-0008Nm-0v
- for barebox@lists.infradead.org; Wed, 28 Jun 2017 08:22:10 +0000
-Date: Wed, 28 Jun 2017 10:16:07 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20170628081607.oidrzpkvvfc5zj2a@pengutronix.de>
-References: <20170627190317.19253-1-uwe@kleine-koenig.org>
- <20170627194002.GB675@sill.h.stcim.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170627194002.GB675@sill.h.stcim.de>
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dKXOl-0001wC-EJ
+ for barebox@lists.infradead.org; Mon, 12 Jun 2017 22:01:25 +0000
+From: Roland Hieber <r.hieber@pengutronix.de>
+Date: Tue, 13 Jun 2017 00:00:47 +0200
+Message-Id: <20170612220047.17473-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,87 +14,118 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: imx: add support for Udoo Neo full
-To: Stefan Lengfeld <contact@stefanchrist.eu>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Documentation: improve network boot section
+To: barebox@lists.infradead.org
+Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-Hello Stefan,
+Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
+---
+ Documentation/user/booting-linux.rst | 56 +++++++++++++++++++++++++-----------
+ 1 file changed, 39 insertions(+), 17 deletions(-)
 
-On Tue, Jun 27, 2017 at 09:40:02PM +0200, Stefan Lengfeld wrote:
-> > new file mode 100644
-> > index 000000000000..9bf480305d70
-> > --- /dev/null
-> > +++ b/arch/arm/boards/udoo-neo/board.c
-> > @@ -0,0 +1,27 @@
-> > +/*
-> > + * Copyright (C) 2014 Pengutronix, Sascha Hauer
-> =
+diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+index f26299efd..f8c45b7de 100644
+--- a/Documentation/user/booting-linux.rst
++++ b/Documentation/user/booting-linux.rst
+@@ -229,10 +229,10 @@ time.
+ Network boot
+ ------------
+ 
+-With the following steps barebox can start the Kernel and root filesystem
+-over network, a standard development case.
++With the following steps, barebox can start the kernel and root filesystem
++over the network, a standard development case.
+ 
+-Configure network: edit ``/env/network/eth0``. For a standard dhcp setup
++Configure network: edit ``/env/network/eth0``. For a standard DHCP setup
+ the following is enough:
+ 
+ .. code-block:: sh
+@@ -242,8 +242,11 @@ the following is enough:
+   ip=dhcp
+   serverip=192.168.23.45
+ 
+-serverip is only necessary if it differs from the serverip offered from the dhcp server.
+-A static ip setup can look like this:
++The optional setting ``serverip`` specifies the IP address of your TFTP and NFS
++server, and is only necessary if it differs from the server IP offered by the
++DHCP server (i.e., the field ``siaddr`` in the DHCP ACK Reply).
++
++A static IP setup can look like this:
+ 
+ .. code-block:: sh
+ 
+@@ -255,27 +258,43 @@ A static ip setup can look like this:
+   gateway=192.168.2.1
+   serverip=192.168.2.1
+ 
+-Note that barebox will pass the same ip settings to the kernel, i.e. it passes
+-``ip=$ipaddr:$serverip:$gateway:$netmask::eth0:`` for a static ip setup and
+-``ip=dhcp`` for a dynamic dhcp setup.
++Note that barebox will pass the same IP settings to the kernel, i.e. it passes
++``ip=$ipaddr:$serverip:$gateway:$netmask::eth0:`` for a static IP setup and
++``ip=dhcp`` for a dynamic DHCP setup.
+ 
+-Adjust ``global.user`` and maybe ``global.hostname`` in ``/env/config``::
++By default, barebox uses the variables ``global.user`` and ``global.hostname``
++to retrieve its kernel image over TFTP, which makes it possible to use multiple
++boards for multiple users with one single server.
++You can adjust those variables in ``/env/config``::
+ 
+   global.user=sha
+   global.hostname=efikasb
+ 
+-Copy the kernel (and devicetree if needed) to the base dir of the TFTP server::
++Copy the kernel (and devicetree if needed) to the root directory of your TFTP
++server, and name them accordingly; for example::
+ 
+   cp zImage /tftpboot/sha-linux-efikasb
+   cp myboard.dtb /tftpboot/sha-oftree-efikasb
+ 
+-barebox will pass ``nfsroot=/home/${global.user}/nfsroot/${global.hostname}``
+-This may be a link to another location on the NFS server. Make sure that the
+-link target is exported from the server.
+-
+-``boot net`` will then start the Kernel.
+-
+-If the paths or names are not suitable they can be adjusted in
++(In this example, the directory ``/tftpboot`` represents the root directory of
++the TFTP server.
++That directory depends on the configuration of your TFTP server, some servers
++may also use ``/srv/tftp`` instead.)
++
++barebox will pass ``nfsroot=/home/${global.user}/nfsroot/${global.hostname}`` to
++the kernel.
++This causes the kernel to mount its root filesystem from a NFS server, which is
++detected through the DHCP reply.
++To choose a different server, simply prepend its IP address to the mount path,
++e.g. ``nfsroot=192.168.23.5:/home/...``.
++In any case, make sure that the specified mountpoint is exported by your NFS
++server.
++
++For more information about booting with ``nfsroot``, see
++`Documentation/filesystems/nfs/nfsroot.txt <https://github.com/torvalds/linux/blob/master/Documentation/filesystems/nfs/nfsroot.txt>`__
++in the Linux kernel documentation.
++
++If the preconfigured paths or names are not suitable, they can be adjusted in
+ ``/env/boot/net``:
+ 
+ .. code-block:: sh
+@@ -294,3 +313,6 @@ If the paths or names are not suitable they can be adjusted in
+   nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
+   bootargs-ip
+   global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
++
++``boot net`` will then retrieve the kernel (and also the device tree and
++initramfs, if used) over TFTP and boot it.
+-- 
+2.11.0
 
-> Maybe add or replace your copyright here. At least you have changed some
-> strings and function names.
-
-I wonder if a board.c like this is copyrightable at all and don't feel
-an urge to eternalize my name there.
- =
-
-> > + * This program is free software; you can redistribute it and/or
-> > + * modify it under the terms of the GNU General Public License
-> > + * version 2, as published by the Free Software Foundation.
-> > + *
-> > + * This program is distributed in the hope that it will be useful,
-> > + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> > + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> > + * GNU General Public License for more details.
-> > + */
-> > +
-> > +#include <common.h>
-> > +#include <init.h>
-> > +#include <linux/clk.h>
-> > +
-> > +static int imx6sx_udoneo_coredevices_init(void)
-> > +{
-> > +	if (!of_machine_is_compatible("fsl,imx6sx-udoo-neo"))
-> > +		return 0;
-> > +
-> > +	barebox_set_hostname("mx6sx-udooneo");
-> > +
-> > +	return 0;
-> > +}
-> > +coredevice_initcall(imx6sx_udoneo_coredevices_init);
-> > diff --git a/arch/arm/boards/udoo-neo/flash-header-mx6sx-udoo-neo_full.=
-imxcfg b/arch/arm/boards/udoo-neo/flash-header-mx6sx-udoo-neo_full.imxcfg
-> > new file mode 100644
-> > index 000000000000..176aff49b3ec
-> > --- /dev/null
-> > +++ b/arch/arm/boards/udoo-neo/flash-header-mx6sx-udoo-neo_full.imxcfg
-> > @@ -0,0 +1,124 @@
-> > +loadaddr 0x80000000
-> > +soc imx6
-> > +dcdofs 0x400
-> =
-
-> I'm always wondering where the magic values in the flash headers are
-> coming from. Whether they are copied from u-boot or another
-> variant/board or completely self-made or provided by a friendly hardware
-> engineer in an Excel sheet ;-) Maybe you can add a comment here or in
-> the commit message. But this would be a new convention, because I have
-> not seen it in other flash headers yet.
-
-I got it in a patch from Sascha, don't know where he got it from. I
-guess it's a mixure of copy-and-paste from other imxcfgs and the RAMs
-datasheet.
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
