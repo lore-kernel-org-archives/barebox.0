@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dPmjM-0004Bc-Dr
- for barebox@lists.infradead.org; Tue, 27 Jun 2017 09:24:22 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 27 Jun 2017 11:23:57 +0200
-Message-Id: <20170627092357.20680-1-s.hauer@pengutronix.de>
+Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1dKm0a-0000wA-Pq
+ for barebox@lists.infradead.org; Tue, 13 Jun 2017 13:37:29 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 24077A0014F
+ for <barebox@lists.infradead.org>; Tue, 13 Jun 2017 15:38:04 +0200 (CEST)
+From: Daniel Schultz <d.schultz@phytec.de>
+Date: Tue, 13 Jun 2017 15:37:00 +0200
+Message-Id: <1497361020-33828-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,34 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] pinctrl: at91: Bail out if atmel, pins property does not exist
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] defaultenv: bin: init: Add sourcing of config-expansions
+To: barebox@lists.infradead.org
 
-Do not blindly assume that a device node has a atmel,pins property.
-Instead, test it for being NULL before using it. This also silences
-a compiler warning when the driver is compiled without OF support.
+This patch adds a further layer to the config hierarchy. It allows a
+dynamic configuration of expansions.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 ---
- drivers/pinctrl/pinctrl-at91.c | 3 +++
- 1 file changed, 3 insertions(+)
+ defaultenv/defaultenv-2-base/bin/init | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
-index 021c1e5a2e..d52c184e44 100644
---- a/drivers/pinctrl/pinctrl-at91.c
-+++ b/drivers/pinctrl/pinctrl-at91.c
-@@ -449,6 +449,9 @@ static int at91_pinctrl_set_state(struct pinctrl_device *pdev, struct device_nod
- 	info = to_at91_pinctrl(pdev);
+diff --git a/defaultenv/defaultenv-2-base/bin/init b/defaultenv/defaultenv-2-base/bin/init
+index 7af3c7d..a93ea58 100644
+--- a/defaultenv/defaultenv-2-base/bin/init
++++ b/defaultenv/defaultenv-2-base/bin/init
+@@ -25,6 +25,7 @@ magicvar -a global.allow_color "Allow color on the console (boolean)"
+ [ -z "${global.editcmd}" ] && global.editcmd=sedit
  
- 	list = of_get_property(np, "atmel,pins", &size);
-+	if (!list)
-+		return -EINVAL;
-+
- 	size /= sizeof(*list);
+ [ -e /env/config-board ] && /env/config-board
++[ -e /env/config-expansions ] && /env/config-expansions
+ /env/config
  
- 	if (!size || size % 4) {
+ # allow to stop the boot before execute the /env/init/*
 -- 
-2.11.0
+1.9.1
 
 
 _______________________________________________
