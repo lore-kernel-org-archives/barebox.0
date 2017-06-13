@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dI7UA-00086N-1L
- for barebox@lists.infradead.org; Tue, 06 Jun 2017 05:56:59 +0000
-Date: Tue, 6 Jun 2017 07:56:36 +0200
+ id 1dKgAf-0006Q6-Kx
+ for barebox@lists.infradead.org; Tue, 13 Jun 2017 07:23:28 +0000
+Date: Tue, 13 Jun 2017 09:23:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170606055636.6kr6qglik5xbwjwe@pengutronix.de>
-References: <20170602182204.32309-1-u.kleine-koenig@pengutronix.de>
+Message-ID: <20170613072303.2pkx6wwqp3sysara@pengutronix.de>
+References: <20170612223749.13780-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170602182204.32309-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170612223749.13780-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +22,54 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] docs: mvebu can do 2nd stage booting
+Subject: Re: [PATCH] ARM: mvebu: fix size mask for RAM window
 To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jun 02, 2017 at 08:22:03PM +0200, Uwe Kleine-K=F6nig wrote:
-> Since commit
-> =
-
-> 	823d08e3e261 ("kwbimage_v1: add support to boot a mvebu image")
-> =
-
-> barebox can use bootm to load a 2nd barebox image. Update the
-> documentation accordingly.
+On Tue, Jun 13, 2017 at 12:37:49AM +0200, Uwe Kleine-K=F6nig wrote:
+> The size field in the window control register occupies bits 31:16. So
+> adapt ARMADA_370_XP_DDR_SIZE_MASK accordingly. This fixes detection of
+> RAM chips smaller than 32 MiB and so probably doesn't affect any
+> supported machine.
 > =
 
 > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > ---
->  Documentation/boards/mvebu.rst | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> =
+>  arch/arm/mach-mvebu/common.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-> diff --git a/Documentation/boards/mvebu.rst b/Documentation/boards/mvebu.=
-rst
-> index b4f8e6043dac..4dfdc4a8f761 100644
-> --- a/Documentation/boards/mvebu.rst
-> +++ b/Documentation/boards/mvebu.rst
-> @@ -28,8 +28,8 @@ initialisation that could be taken.
->  Booting second stage
->  --------------------
->  =
-
-> -This is currently not possible because barebox assumes the registers are=
- mapped
-> -at 0xd0000000 as is the case when the boot ROM gives control to the boot=
-loader.
-> +Since ``v2017.04.0`` barebox can boot a barebox image even if the regist=
-er
-> +window is moved. This is implemented by writing the actual window positi=
-on into the image where it is then picked up by the second stage bootloader.
-
-Applied with an additional line break, thanks
+Applied, thanks
 
 Sascha
 
+> =
+
+> diff --git a/arch/arm/mach-mvebu/common.c b/arch/arm/mach-mvebu/common.c
+> index 06bfb7261544..fa971da11e75 100644
+> --- a/arch/arm/mach-mvebu/common.c
+> +++ b/arch/arm/mach-mvebu/common.c
+> @@ -47,7 +47,7 @@
+>  #define ARMADA_370_XP_SDRAM_BASE	(IOMEM(MVEBU_REMAP_INT_REG_BASE) + 0x20=
+000)
+>  #define ARMADA_370_XP_DDR_SIZE_CSn(n)	(0x184 + ((n) * 0x8))
+>  #define ARMADA_370_XP_DDR_SIZE_ENABLED	BIT(0)
+> -#define ARMADA_370_XP_DDR_SIZE_MASK	0xff000000
+> +#define ARMADA_370_XP_DDR_SIZE_MASK	0xffff0000
+>  =
+
+>  /*
+>   * Marvell MVEBU SoC id and revision can be read from any PCIe
+> -- =
+
+> 2.11.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 -- =
 
