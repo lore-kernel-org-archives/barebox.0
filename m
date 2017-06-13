@@ -1,22 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dKkLL-000736-Vd
- for barebox@lists.infradead.org; Tue, 13 Jun 2017 11:50:48 +0000
-References: <1496765425-9702-1-git-send-email-d.schultz@phytec.de>
- <20170607064508.lau5rlqb5k6hslf3@pengutronix.de>
- <20170607064909.rw2aa6atbrb37xmt@pengutronix.de>
- <20170607065336.utyv5z72fivph2ha@pengutronix.de>
- <23fe6b1a-f4af-40e0-a796-51464027b251@phytec.de>
- <20170609090830.cgid2zfz2cufjqq5@pengutronix.de>
- <8697fc1c-f5dc-c29a-3c22-320cacc77ede@phytec.de>
- <20170612134156.wahywpnmtwecgofc@pengutronix.de>
-From: Daniel Schultz <d.schultz@phytec.de>
-Message-ID: <77ed0a6f-7455-3320-ba7d-ce3ff9ae7cc5@phytec.de>
-Date: Tue, 13 Jun 2017 13:50:13 +0200
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dKgdp-00043Y-W7
+ for barebox@lists.infradead.org; Tue, 13 Jun 2017 07:53:36 +0000
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.84_2)
+ (envelope-from <sha@pengutronix.de>) id 1dKgdT-0008RD-Ht
+ for barebox@lists.infradead.org; Tue, 13 Jun 2017 09:53:11 +0200
+Received: from sha by pty.hi.pengutronix.de with local (Exim 4.84_2)
+ (envelope-from <sha@pengutronix.de>) id 1dKgdT-0006Sn-BC
+ for barebox@lists.infradead.org; Tue, 13 Jun 2017 09:53:11 +0200
+Date: Tue, 13 Jun 2017 09:53:11 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170613075311.jwdw4j4pv3vhvusb@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20170612134156.wahywpnmtwecgofc@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,180 +24,163 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: nand: omap: Fix BCH bit correction
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: v2017.06.0
+To: Barebox List <barebox@lists.infradead.org>
 
-SGkgU2FzY2hhLAoKQW0gMTIuMDYuMjAxNyB1bSAxNTo0MSBzY2hyaWViIFNhc2NoYSBIYXVlcjoK
-PiBIaSBEYW5pZWwsCj4gCj4gT24gRnJpLCBKdW4gMDksIDIwMTcgYXQgMDM6Mjg6NTlQTSArMDIw
-MCwgRGFuaWVsIFNjaHVsdHogd3JvdGU6Cj4+IEhpLAo+Pgo+PiBBbSAwOS4wNi4yMDE3IHVtIDEx
-OjA4IHNjaHJpZWIgU2FzY2hhIEhhdWVyOgo+Pj4gT24gRnJpLCBKdW4gMDksIDIwMTcgYXQgMTA6
-MTc6NTVBTSArMDIwMCwgRGFuaWVsIFNjaHVsdHogd3JvdGU6Cj4+Pj4gSGkgU2FzY2hhLAo+Pj4+
-Cj4+Pj4+Pgo+Pj4+Pj4gQW5kIGNhbiBub3Qgd29yay4gQWRkaXRpb25hbGx5IGVjY3N0ZXBzIG11
-c3QgYmUgc2V0IHRvIDEgaW4KPj4+Pj4+IG9tYXBfY29ycmVjdF9iY2goKS4gVGhpcyBlZmZlY3Rp
-dmVseSBtYWtlcyB0aGUgbG9vcCBpbiB0aGlzIGZ1bmN0aW9uCj4+Pj4+PiB1bm5lY2Vzc2FyeSB3
-aGljaCBjYW4gdGhlbiByZW1vdmVkLgo+Pj4+Pgo+Pj4+PiBXaGljaCB0aGVuIG1lYW5zIG9tYXBf
-Z3BtY19yZWFkX3BhZ2VfYmNoX3JvbV9tb2RlKCkgaGFzIHRvIGl0ZXJhdGUgb3Zlcgo+Pj4+PiBl
-Y2Muc3RlcHMgaXRzZWxmLCBqdXN0IGxpa2UgdGhlIG90aGVyIHJlYWRfcGFnZSBpbXBsZW1lbnRh
-dGlvbnMgaW4gdGhlCj4+Pj4+IGZyYW1ld29yayBkby4KPj4+Pj4KPj4+PiBTbywgdGhlIHByZXZp
-b3VzIGFzc2lnbm1lbnQgb2YgZWNjc3RlcHMgd2FzIGZpbmU/Cj4+Pgo+Pj4gSSBqdXN0IHNlbnQg
-YW4gdXBkYXRlZCBwYXRjaCgtc2VyaWVzKS4gQ291bGQgeW91IGdpdmUgaXQgYSB0cnk/Cj4+Pgo+
-PiBJdCB3b3JrcywgYnV0IHRoZSBjdXJyZW50IHZlcnNpb24gb25seSBjaGFuZ2VzIHRoZSBsb2Nh
-bCBjb3B5IG9mIHRoZQo+PiBwb2ludGVyLiBBcyBhIHJlc3VsdCBvZiB0aGF0IGl0IHdpbGwgb25s
-eSBjaGVjayB0aGUgZmlyc3QgNTEyIEJ5dGVzLgo+PiBJIGFwcGVuZGVkIGEgZG91YmxlIHBvaW50
-ZXIgd29ya2Fyb3VuZCBmb3IgdGhpcyBwcm9ibGVtIDopCj4gCj4gVGhlIHBvaW50ZXIgc2hvdWxk
-IGJlIGluY3JlbWVudGVkIGJ5IHRoZSBjYWxsZXIsIG5vdCBieQo+IG9tYXBfY29ycmVjdF9iY2go
-KS4KPiAKPj4KPj4KPj4gb21hcF9jb3JyZWN0X2RhdGEoKSBhbHNvIGNhbGxzIG9tYXBfY29ycmVj
-dF9iY2goKS4gRG9lcyBCYXJlYm94IGNvcnJlY3QgTkFORAo+PiBwYXJ0aXRpb25zPyBJIGhhdmUg
-bmV2ZXIgc2VlbiB0aGlzLiBNYXliZSB3ZSBuZWVkIGhlcmUgYWxzbyBhIGxvb3AuCj4gCj4gVGhl
-IGNvcmUgYWxyZWFkeSBsb29wcyBhcm91bmQgZWNjc3RlcHMgd2hlbiBjYWxsaW5nIGVjYy5jb3Jy
-ZWN0Lgo+IAo+IEkgZGlnZ2VkIGEgYml0IGZ1cnRoZXIgYW5kIHRoaXMgaXMgd2hhdCBJIGNhbiBj
-b21lIHVwIHdpdGguIEFueXdheSwgSSBhbQo+IGdldHRpbmcgbGVzcyBhbmQgbGVzcyBjb25maWRl
-bnQgdGhhdCB0aGUgcGF0Y2ggY2FuIHdvcmsuCj4gCj4gUGxlYXNlIGdpdmUgaXQgYSB0cnkgYW5k
-IHNlZSBpZiBpdCB3b3Jrcy4gSWYgaXQgZG9lc24ndCBhbmQgd2UgY2FuJ3QKPiBmaW5kIG91dCB3
-aGF0J3Mgd3JvbmcgSSB0ZW5kIHRvIHRha2UgeW91ciBvcmlnaW5hbCBwYXRjaCwgYWx0aG91Z2gg
-SQo+IHN0aWxsIHRoaW5rIHRoaXMgaXMgdGhlIHdyb25nIHNvbHV0aW9uLgo+IAoKV2l0aCB0aGVz
-ZSBjaGFuZ2VzIGl0IHdvcmtzLCBidXQgSSBvbmx5IHRlc3RlcyB3aXRoIG5hbmRfYml0ZmxpcC4g
-SWRrIGlmIAp0aGVyZSdyZSBiZXR0ZXIgd2F5cyB0byB0ZXN0IE5BTkQgRUNDLiBIb3dldmVyLCBh
-ZnRlciA2IGJpdGZsaXBzIG9uIG9uZSAKc3VicGFnZSBpdCB3aWxsIHN1Y2Nlc3NmdWxseSBib290
-IGluIHRoZSBiYWNrdXAgcGFydGl0aW9uLCB3aXRoIGxlc3MgCnRoYW4gNiBpdCB3aWxsIGJvb3Qg
-dGhlIGJpdGZsaXBwZWQtcGFydGl0aW9uLgoKRGFuaWVsCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9t
-dGQvbmFuZC9uYW5kX29tYXBfZ3BtYy5jIApiL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9vbWFwX2dw
-bWMuYwppbmRleCAyZTEzMGJmLi45MDA2ZTJlIDEwMDY0NAotLS0gYS9kcml2ZXJzL210ZC9uYW5k
-L25hbmRfb21hcF9ncG1jLmMKKysrIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX29tYXBfZ3BtYy5j
-CkBAIC02ODQsMTAgKzY4NCwxMCBAQCBzdGF0aWMgaW50IG9tYXBfZ3BtY19yZWFkX3BhZ2VfYmNo
-X3JvbV9tb2RlKHN0cnVjdCAKbXRkX2luZm8gKm10ZCwKCiAgICAgICAgIF9fb21hcF9jYWxjdWxh
-dGVfZWNjKG10ZCwgYnVmLCBlY2NfY2FsYywgMSk7CgotICAgICAgIGZvciAoaSA9IDA7IGVjY3N0
-ZXBzOyBlY2NzdGVwcy0tLCBpICs9IGVjY2J5dGVzLCBwICs9IGVjY3NpemUpIHsKLSAgICAgICAg
-ICAgICAgIHN0YXQgPSBvbWFwX2NvcnJlY3RfYmNoKG10ZCwgcCwgZWNjX2NvZGUsIGVjY19jYWxj
-KTsKLSAgICAgICAgICAgICAgIGVjY19jb2RlICs9IGVjY3NpemUgKyAxOwotICAgICAgICAgICAg
-ICAgZWNjX2NhbGMgKz0gZWNjc2l6ZTsKKyAgICAgICBmb3IgKGkgPSAwOyBlY2NzdGVwczsgZWNj
-c3RlcHMtLSwgaSArPSBlY2NieXRlcywgYnVmICs9IGVjY3NpemUpIHsKKyAgICAgICAgICAgICAg
-IHN0YXQgPSBvbWFwX2NvcnJlY3RfYmNoKG10ZCwgYnVmLCBlY2NfY29kZSwgZWNjX2NhbGMpOwor
-ICAgICAgICAgICAgICAgZWNjX2NvZGUgKz0gZWNjYnl0ZXMgKyAxOworICAgICAgICAgICAgICAg
-ZWNjX2NhbGMgKz0gZWNjYnl0ZXM7CiAgICAgICAgICAgICAgICAgaWYgKHN0YXQgPCAwKSB7CiAg
-ICAgICAgICAgICAgICAgICAgICAgICBtdGQtPmVjY19zdGF0cy5mYWlsZWQrKzsKICAgICAgICAg
-ICAgICAgICB9IGVsc2UgewoKCj4gU2FzY2hhCj4gCj4gLS0tLS0tLS0tLS0tLS0tLS0tLS04PC0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+IAo+ICBGcm9tIDJjNjVhMDA5ZGJjZjIxMzZl
-MDM3ZjAwOWI1MDMwNmFhMDgwZTI5MjAgTW9uIFNlcCAxNyAwMDowMDowMCAyMDAxCj4gRnJvbTog
-U2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgo+IERhdGU6IEZyaSwgOSBKdW4g
-MjAxNyAxMDo0NToyMSArMDIwMAo+IFN1YmplY3Q6IFtQQVRDSF0gbXRkOiBuYW5kX29tYXBfZ3Bt
-YzogRml4IGVjYyBzaXplCj4gCj4gVGhlIEVDQyBzaXplIGZvciBCQ0ggY29ycmVjdGlvbiBpcyBh
-bHdheXMgNTEyIGJ5dGUuIENvcnJlY3QgdGhlIGVjYy5zaXplCj4gZm9yIHRoZSBPTUFQX0VDQ19C
-Q0g4X0NPREVfSFcgbW9kZSBmcm9tIDIwNDggdG8gNTEyLiBUaGlzIGNoYW5nZSB3aWxsCj4gbGV0
-IHRoZSBmcmFtZXdvcmsgaXRlcmF0ZSBvdmVyIHRoZSA0IGVjYyBzdGVwcyBhbmQgd2Ugbm8gbG9u
-Z2VyCW5lZWQKPiBzcGVjaWFsIGNhc2VzIGluIG9tYXBfY29ycmVjdF9iY2goKS4KPiAKPiBTaWdu
-ZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Cj4gLS0tCj4g
-ICBkcml2ZXJzL210ZC9uYW5kL25hbmRfb21hcF9ncG1jLmMgfCAxMzAgKysrKysrKysrKysrKysr
-KystLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiAgIDEgZmlsZSBjaGFuZ2VkLCA1NyBpbnNlcnRpb25z
-KCspLCA3MyBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvbmFuZC9u
-YW5kX29tYXBfZ3BtYy5jIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX29tYXBfZ3BtYy5jCj4gaW5k
-ZXggZTE4Y2U2MzU4YS4uMmUxMzBiZmQ5YSAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL210ZC9uYW5k
-L25hbmRfb21hcF9ncG1jLmMKPiArKysgYi9kcml2ZXJzL210ZC9uYW5kL25hbmRfb21hcF9ncG1j
-LmMKPiBAQCAtMjk3LDg1ICsyOTcsNTkgQEAgc3RhdGljIGludCBvbWFwX2NvcnJlY3RfYmNoKHN0
-cnVjdCBtdGRfaW5mbyAqbXRkLCB1aW50OF90ICpkYXQsCj4gICB7Cj4gICAJc3RydWN0IG5hbmRf
-Y2hpcCAqbmFuZCA9IChzdHJ1Y3QgbmFuZF9jaGlwICopKG10ZC0+cHJpdik7Cj4gICAJc3RydWN0
-IGdwbWNfbmFuZF9pbmZvICpvaW5mbyA9IChzdHJ1Y3QgZ3BtY19uYW5kX2luZm8gKikobmFuZC0+
-cHJpdik7Cj4gLQlpbnQgaSwgaiwgZWNjZmxhZywgdG90YWxjb3VudCwgYWN0dWFsX2VjY3NpemU7
-Cj4gKwlpbnQgaiwgZWNjZmxhZzsKPiAgIAljb25zdCB1aW50OF90ICplcmFzZWRfZWNjX3ZlYzsK
-PiAgIAl1bnNpZ25lZCBpbnQgZXJyX2xvY1s4XTsKPiAgIAlpbnQgYml0ZmxpcF9jb3VudDsKPiAg
-IAlpbnQgYmNoX21heF9lcnI7Cj4gLQo+IC0JaW50IGVjY3N0ZXBzID0gKG5hbmQtPmVjYy5tb2Rl
-ID09IE5BTkRfRUNDX0hXKSAmJgo+IC0JCQkobmFuZC0+ZWNjLnNpemUgPT0gMjA0OCkgPyA0IDog
-MTsKPiAgIAlpbnQgZWNjc2l6ZSA9IG9pbmZvLT5uYW5kLmVjYy5ieXRlczsKPiArCWJvb2wgaXNf
-ZXJyb3JfcmVwb3J0ZWQgPSBmYWxzZTsKPiAgIAo+IC0Jc3dpdGNoIChvaW5mby0+ZWNjX21vZGUp
-IHsKPiAtCWNhc2UgT01BUF9FQ0NfQkNIOF9DT0RFX0hXOgo+IC0JCWVjY3NpemUgLz0gZWNjc3Rl
-cHM7Cj4gLQkJYWN0dWFsX2VjY3NpemUgPSBlY2NzaXplOwo+IC0JCWVyYXNlZF9lY2NfdmVjID0g
-YmNoOF92ZWN0b3I7Cj4gLQkJYmNoX21heF9lcnIgPSBCQ0g4X01BWF9FUlJPUjsKPiAtCQlicmVh
-azsKPiAtCWNhc2UgT01BUF9FQ0NfQkNIOF9DT0RFX0hXX1JPTUNPREU6Cj4gLQkJYWN0dWFsX2Vj
-Y3NpemUgPSBlY2NzaXplIC0gMTsKPiAtCQllcmFzZWRfZWNjX3ZlYyA9IGJjaDhfdmVjdG9yOwo+
-IC0JCWJjaF9tYXhfZXJyID0gQkNIOF9NQVhfRVJST1I7Cj4gLQkJYnJlYWs7Cj4gLQlkZWZhdWx0
-Ogo+IC0JCWRldl9lcnIob2luZm8tPnBkZXYsICJpbnZhbGlkIGRyaXZlciBjb25maWd1cmF0aW9u
-XG4iKTsKPiAtCQlyZXR1cm4gLUVJTlZBTDsKPiAtCX0KPiAtCj4gLQl0b3RhbGNvdW50ID0gMDsK
-PiArCWVyYXNlZF9lY2NfdmVjID0gYmNoOF92ZWN0b3I7Cj4gKwliY2hfbWF4X2VyciA9IEJDSDhf
-TUFYX0VSUk9SOwo+ICAgCj4gLQlmb3IgKGkgPSAwOyBpIDwgZWNjc3RlcHM7IGkrKykgewo+IC0J
-CWJvb2wgaXNfZXJyb3JfcmVwb3J0ZWQgPSBmYWxzZTsKPiAtCQliaXRmbGlwX2NvdW50ID0gMDsK
-PiAtCQllY2NmbGFnID0gMDsKPiArCWJpdGZsaXBfY291bnQgPSAwOwo+ICsJZWNjZmxhZyA9IDA7
-Cj4gICAKPiAtCQkvKiBjaGVjayBmb3IgYW55IGVjYyBlcnJvciAqLwo+IC0JCWZvciAoaiA9IDA7
-IChqIDwgYWN0dWFsX2VjY3NpemUpICYmIChlY2NmbGFnID09IDApOyBqKyspIHsKPiAtCQkJaWYg
-KGNhbGNfZWNjW2pdICE9IDApIHsKPiAtCQkJCWVjY2ZsYWcgPSAxOwo+IC0JCQkJYnJlYWs7Cj4g
-LQkJCX0KPiAtCQl9Cj4gLQo+IC0JCWlmIChlY2NmbGFnID09IDEpIHsKPiAtCQkJaWYgKG1lbWNt
-cChjYWxjX2VjYywgZXJhc2VkX2VjY192ZWMsIGFjdHVhbF9lY2NzaXplKSA9PSAwKSB7Cj4gLQkJ
-CQkvKgo+IC0JCQkJICogY2FsY19lY2NbXSBtYXRjaGVzIHBhdHRlcm4gZm9yIEVDQwo+IC0JCQkJ
-ICogKGFsbCAweGZmKSBzbyB0aGlzIGlzIGRlZmluaXRlbHkKPiAtCQkJCSAqIGFuIGVyYXNlZC1w
-YWdlCj4gLQkJCQkgKi8KPiAtCQkJfSBlbHNlIHsKPiAtCQkJCWJpdGZsaXBfY291bnQgPSBuYW5k
-X2NoZWNrX2VyYXNlZF9lY2NfY2h1bmsoCj4gLQkJCQkJCWRhdCwgb2luZm8tPm5hbmQuZWNjLnNp
-emUsIHJlYWRfZWNjLAo+IC0JCQkJCQllY2NzaXplLCBOVUxMLCAwLCBiY2hfbWF4X2Vycik7Cj4g
-LQkJCQlpZiAoYml0ZmxpcF9jb3VudCA8IDApCj4gLQkJCQkJaXNfZXJyb3JfcmVwb3J0ZWQgPSB0
-cnVlOwo+IC0JCQl9Cj4gKwkvKiBjaGVjayBmb3IgYW55IGVjYyBlcnJvciAqLwo+ICsJZm9yIChq
-ID0gMDsgKGogPCBlY2NzaXplKSAmJiAoZWNjZmxhZyA9PSAwKTsgaisrKSB7Cj4gKwkJaWYgKGNh
-bGNfZWNjW2pdICE9IDApIHsKPiArCQkJZWNjZmxhZyA9IDE7Cj4gKwkJCWJyZWFrOwo+ICAgCQl9
-Cj4gKwl9Cj4gICAKPiAtCQlpZiAoaXNfZXJyb3JfcmVwb3J0ZWQpIHsKPiAtCQkJYml0ZmxpcF9j
-b3VudCA9IG9tYXBfZ3BtY19kZWNvZGVfYmNoKDEsCj4gLQkJCQkJY2FsY19lY2MsIGVycl9sb2Mp
-Owo+ICsJaWYgKGVjY2ZsYWcgPT0gMSkgewo+ICsJCWlmIChtZW1jbXAoY2FsY19lY2MsIGVyYXNl
-ZF9lY2NfdmVjLCBlY2NzaXplKSA9PSAwKSB7Cj4gKwkJCS8qCj4gKwkJCSAqIGNhbGNfZWNjW10g
-bWF0Y2hlcyBwYXR0ZXJuIGZvciBFQ0MKPiArCQkJICogKGFsbCAweGZmKSBzbyB0aGlzIGlzIGRl
-ZmluaXRlbHkKPiArCQkJICogYW4gZXJhc2VkLXBhZ2UKPiArCQkJICovCj4gKwkJfSBlbHNlIHsK
-PiArCQkJYml0ZmxpcF9jb3VudCA9IG5hbmRfY2hlY2tfZXJhc2VkX2VjY19jaHVuaygKPiArCQkJ
-CQlkYXQsIG9pbmZvLT5uYW5kLmVjYy5zaXplLCByZWFkX2VjYywKPiArCQkJCQllY2NzaXplLCBO
-VUxMLCAwLCBiY2hfbWF4X2Vycik7Cj4gICAJCQlpZiAoYml0ZmxpcF9jb3VudCA8IDApCj4gLQkJ
-CQlyZXR1cm4gYml0ZmxpcF9jb3VudDsKPiAtCj4gLQkJCWZvciAoaiA9IDA7IGogPCBiaXRmbGlw
-X2NvdW50OyBqKyspIHsKPiAtCQkJCWlmIChlcnJfbG9jW2pdIDwgNDA5NikKPiAtCQkJCQlkYXRb
-ZXJyX2xvY1tqXSA+PiAzXSBePQo+IC0JCQkJCQkxIDw8IChlcnJfbG9jW2pdICYgNyk7Cj4gLQkJ
-CQkvKiBlbHNlLCBub3QgaW50ZXJlc3RlZCB0byBjb3JyZWN0IGVjYyAqLwo+IC0JCQl9Cj4gKwkJ
-CQlpc19lcnJvcl9yZXBvcnRlZCA9IHRydWU7Cj4gICAJCX0KPiArCX0KPiAgIAo+IC0JCXRvdGFs
-Y291bnQgKz0gYml0ZmxpcF9jb3VudDsKPiAtCQljYWxjX2VjYyA9IGNhbGNfZWNjICsgYWN0dWFs
-X2VjY3NpemU7Cj4gLQkJcmVhZF9lY2MgPSByZWFkX2VjYyArIGVjY3NpemU7Cj4gLQkJZGF0ICs9
-IDUxMjsKPiArCWlmIChpc19lcnJvcl9yZXBvcnRlZCkgewo+ICsJCWJpdGZsaXBfY291bnQgPSBv
-bWFwX2dwbWNfZGVjb2RlX2JjaCgxLAo+ICsJCQkJY2FsY19lY2MsIGVycl9sb2MpOwo+ICsJCWlm
-IChiaXRmbGlwX2NvdW50IDwgMCkKPiArCQkJcmV0dXJuIGJpdGZsaXBfY291bnQ7Cj4gKwo+ICsJ
-CWZvciAoaiA9IDA7IGogPCBiaXRmbGlwX2NvdW50OyBqKyspIHsKPiArCQkJaWYgKGVycl9sb2Nb
-al0gPCA0MDk2KQo+ICsJCQkJZGF0W2Vycl9sb2Nbal0gPj4gM10gXj0KPiArCQkJCQkxIDw8IChl
-cnJfbG9jW2pdICYgNyk7Cj4gKwkJCS8qIGVsc2UsIG5vdCBpbnRlcmVzdGVkIHRvIGNvcnJlY3Qg
-ZWNjICovCj4gKwkJfQo+ICAgCX0KPiAgIAo+IC0JcmV0dXJuIHRvdGFsY291bnQ7Cj4gKwlyZXR1
-cm4gYml0ZmxpcF9jb3VudDsKPiAgIH0KPiAgIAo+ICAgc3RhdGljIGludCBvbWFwX2NvcnJlY3Rf
-aGFtbWluZyhzdHJ1Y3QgbXRkX2luZm8gKm10ZCwgdWludDhfdCAqZGF0LAo+IEBAIC02NjcsNiAr
-NjQxLDEwIEBAIHN0YXRpYyBpbnQgb21hcF9ncG1jX3JlYWRfcGFnZV9iY2hfcm9tX21vZGUoc3Ry
-dWN0IG10ZF9pbmZvICptdGQsCj4gICAJdWludDhfdCAqZWNjX2NvZGUgPSBjaGlwLT5idWZmZXJz
-LT5lY2Njb2RlOwo+ICAgCXVpbnQzMl90ICplY2Nwb3MgPSBjaGlwLT5lY2MubGF5b3V0LT5lY2Nw
-b3M7Cj4gICAJaW50IHN0YXQsIGk7Cj4gKwl1bnNpZ25lZCBpbnQgbWF4X2JpdGZsaXBzID0gMDsK
-PiArCWludCBlY2NzaXplID0gY2hpcC0+ZWNjLnNpemU7Cj4gKwlpbnQgZWNjYnl0ZXMgPSBjaGlw
-LT5lY2MuYnl0ZXM7Cj4gKwlpbnQgZWNjc3RlcHMgPSBjaGlwLT5lY2Muc3RlcHM7Cj4gICAKPiAg
-IAl3cml0ZWwoR1BNQ19FQ0NfU0laRV9DT05GSUdfRUNDU0laRTEoMCkgfAo+ICAgCQkJR1BNQ19F
-Q0NfU0laRV9DT05GSUdfRUNDU0laRTAoNjQpLAo+IEBAIC03MDYsMTMgKzY4NCwxOSBAQCBzdGF0
-aWMgaW50IG9tYXBfZ3BtY19yZWFkX3BhZ2VfYmNoX3JvbV9tb2RlKHN0cnVjdCBtdGRfaW5mbyAq
-bXRkLAo+ICAgCj4gICAJX19vbWFwX2NhbGN1bGF0ZV9lY2MobXRkLCBidWYsIGVjY19jYWxjLCAx
-KTsKPiAgIAo+IC0Jc3RhdCA9IG9tYXBfY29ycmVjdF9iY2gobXRkLCBidWYsIGVjY19jb2RlLCBl
-Y2NfY2FsYyk7Cj4gLQlpZiAoc3RhdCA8IDApCj4gLQkJbXRkLT5lY2Nfc3RhdHMuZmFpbGVkKys7
-Cj4gLQllbHNlCj4gLQkJbXRkLT5lY2Nfc3RhdHMuY29ycmVjdGVkICs9IHN0YXQ7Cj4gKwlmb3Ig
-KGkgPSAwOyBlY2NzdGVwczsgZWNjc3RlcHMtLSwgaSArPSBlY2NieXRlcywgcCArPSBlY2NzaXpl
-KSB7Cj4gKwkJc3RhdCA9IG9tYXBfY29ycmVjdF9iY2gobXRkLCBwLCBlY2NfY29kZSwgZWNjX2Nh
-bGMpOwo+ICsJCWVjY19jb2RlICs9IGVjY3NpemUgKyAxOwo+ICsJCWVjY19jYWxjICs9IGVjY3Np
-emU7Cj4gKwkJaWYgKHN0YXQgPCAwKSB7Cj4gKwkJCW10ZC0+ZWNjX3N0YXRzLmZhaWxlZCsrOwo+
-ICsJCX0gZWxzZSB7Cj4gKwkJCW10ZC0+ZWNjX3N0YXRzLmNvcnJlY3RlZCArPSBzdGF0Owo+ICsJ
-CQltYXhfYml0ZmxpcHMgPSBtYXhfdCh1bnNpZ25lZCBpbnQsIG1heF9iaXRmbGlwcywgc3RhdCk7
-Cj4gKwkJfQo+ICsJfQo+ICAgCj4gLQlyZXR1cm4gMDsKPiArCXJldHVybiBtYXhfYml0ZmxpcHM7
-Cj4gICB9Cj4gICAKPiAgIHN0YXRpYyBpbnQgb21hcF9ncG1jX2VjY21vZGUoc3RydWN0IGdwbWNf
-bmFuZF9pbmZvICpvaW5mbywKPiBAQCAtNzY1LDggKzc0OSw4IEBAIHN0YXRpYyBpbnQgb21hcF9n
-cG1jX2VjY21vZGUoc3RydWN0IGdwbWNfbmFuZF9pbmZvICpvaW5mbywKPiAgIAkJCQkJb2Zmc2V0
-IC0gb21hcF9vb2JpbmZvLmVjY2J5dGVzOwo+ICAgCQlicmVhazsKPiAgIAljYXNlIE9NQVBfRUND
-X0JDSDhfQ09ERV9IVzoKPiAtCQlvaW5mby0+bmFuZC5lY2MuYnl0ZXMgICAgPSAxMyAqIDQ7Cj4g
-LQkJb2luZm8tPm5hbmQuZWNjLnNpemUgICAgID0gNTEyICogNDsKPiArCQlvaW5mby0+bmFuZC5l
-Y2MuYnl0ZXMgICAgPSAxMzsKPiArCQlvaW5mby0+bmFuZC5lY2Muc2l6ZSAgICAgPSA1MTI7Cj4g
-ICAJCW9pbmZvLT5uYW5kLmVjYy5zdHJlbmd0aCA9IEJDSDhfTUFYX0VSUk9SOwo+ICAgCQlvbWFw
-X29vYmluZm8ub29iZnJlZS0+b2Zmc2V0ID0gb2Zmc2V0Owo+ICAgCQlvbWFwX29vYmluZm8ub29i
-ZnJlZS0+bGVuZ3RoID0gbWluZm8tPm9vYnNpemUgLQo+IEBAIC03NzYsNyArNzYwLDcgQEAgc3Rh
-dGljIGludCBvbWFwX2dwbWNfZWNjbW9kZShzdHJ1Y3QgZ3BtY19uYW5kX2luZm8gKm9pbmZvLAo+
-ICAgCQkJb21hcF9vb2JpbmZvLmVjY3Bvc1tpXSA9IGkgKyBvZmZzZXQ7Cj4gICAJCWJyZWFrOwo+
-ICAgCWNhc2UgT01BUF9FQ0NfQkNIOF9DT0RFX0hXX1JPTUNPREU6Cj4gLQkJb2luZm8tPm5hbmQu
-ZWNjLmJ5dGVzICAgID0gMTMgKyAxOwo+ICsJCW9pbmZvLT5uYW5kLmVjYy5ieXRlcyAgICA9IDEz
-Owo+ICAgCQlvaW5mby0+bmFuZC5lY2Muc2l6ZSAgICAgPSA1MTI7Cj4gICAJCW9pbmZvLT5uYW5k
-LmVjYy5zdHJlbmd0aCA9IEJDSDhfTUFYX0VSUk9SOwo+ICAgCQluYW5kLT5lY2MucmVhZF9wYWdl
-ID0gb21hcF9ncG1jX3JlYWRfcGFnZV9iY2hfcm9tX21vZGU7Cj4gCgotLSAKTWl0IGZyZXVuZGxp
-Y2hlbiBHcsO8w59lbiwKV2l0aCBiZXN0IHJlZ2FyZHMsCiAgIERhbmllbCBTY2h1bHR6CgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
-bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
-ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+
+Hi All,
+
+barebox v2017.06.0 is available. I originally wanted to wait for the
+fix of the OMAP Nand controller issue, but unfortunately there's no
+full solution in sight. Since waiting longer would effectively mean that
+we skip the June release, I decided to do a release with this bug still
+standing.
+
+See below for changes in this release
+
+Sascha
+
+----------------------------------------------------------------
+Aleksander Morgado (4):
+      Documentation: remote-control: fix typo
+      sandbox: fix registering multiple consoles
+      ratp: avoid using already freed memory
+      ratp: only allow bidirectional consoles
+
+Alexander Kurz (5):
+      ARM: i.MX50: Add imx50.dtsi as workaround
+      ARM: i.MX50 clock: add clock for USB physbase
+      ARM: i.MX50: Add support for i.MX50 based Amazon Kindle e-book readers
+      ARM: i.MX50: Amazon Kindle: Model EY21 compatibility check
+      ARM: i.MX50: Kindle-MX50 DT fixes
+
+Andrey Panov (1):
+      Fix linking with new ld, based on u-boot
+
+Antony Pavlov (9):
+      drivers: video: drop unused of_display_timings_exist()
+      of: base: exclude memcpy-like code from of_property_write_u8_array()
+      of: base: of_new_property(): use xstrdup() instead of strdup()
+      globalvar: make nv_device static
+      readline_simple: drop unusable u-boot legacy stuff
+      eeprom: at24: add the "read-only" dt parameter support
+      commands: add spd_decode to the 'hardware manipulation' group
+      net: rtl8139: drop unused rtl8139_intr_mask constant
+      state: backend_bucket_circular: drop unused free_pattern constant
+
+Christian Hemp (1):
+      watchdog: i.MX: fix i.MX6 reset
+
+Christoph Fritz (1):
+      mci: be more verbose about wrong bus-width
+
+Daniel Schultz (1):
+      arm: boards: Add MLO handler for EMMC devices
+
+Dennis Menschel (1):
+      scripts: mkmakefile: apply changes from Linux kernel
+
+Ian Abbott (1):
+      xfuncs: fix format specifier in pr_emerg call
+
+Jan Remmet (1):
+      imx-bbu-nand-fcb: add support for imx6ul
+
+Juergen Borleis (1):
+      PPC: request a consistent memory layout
+
+Lucas Stach (5):
+      ARM: imx6: add Hummingboard2 support
+      ARM: socfpga: fix QSPI platform data init
+      param: fix stub prototype of dev_add_param
+      mtd: only build mtdraw_raw_to_mtd_offset when write support is enabled
+      video: select OFTREE from DRIVER_VIDEO_IMX_IPUV3
+
+Michael Grzeschik (1):
+      mci: add Marvell Dove SDHCI driver
+
+Sascha Hauer (46):
+      ARM: socfpga: change param_type struct name
+      parameter: Give device parameters types
+      lib: implement simple_strtoll
+      console: Use dev_add_param_string
+      mtd: nand: use dev_add_param_enum
+      mtd: use dev_add_param_string
+      net: use dev_add_param_string
+      param: make parameter functions more consistent
+      globalvar: make globalvar functions more consistent
+      param: remove unnecessary device_d * argument
+      lib/strtox: whitespace cleanup
+      lib/strtox: remove unnecessary islower()
+      usb: gadget: fastboot: delete temporary file
+      of: use of_property_read_bool where appropriate
+      of: of_net: use a loop
+      libgen: implement posix_basename
+      cp: Use posix_basename() on source argument
+      commands: basename: Use posix_basename()
+      dts: update to v4.11-rc6
+      dts: update to v4.11-rc7
+      xfuncs: Be more informative when out of memory panic occurs
+      state: Binding: remove @0 from node name
+      state: warn when a state node will be overwritten
+      state: Make an alias mandatory
+      state: Create alias in of_state_fixup()
+      dts: update to v4.11-rc8
+      Merge branch 'for-next/arm'
+      Merge branch 'for-next/dts'
+      Merge branch 'for-next/imx'
+      Merge branch 'for-next/libgen'
+      Merge branch 'for-next/misc'
+      Merge branch 'for-next/mvebu'
+      Merge branch 'for-next/omap'
+      Merge branch 'for-next/parameter-types'
+      Merge branch 'for-next/socfpga'
+      Merge branch 'for-next/state'
+      clock: initialize dummy clocksource statically
+      nv: Fix setting of nv.dev.<devname>.<param> variables
+      globalvar: Fix value of new globalvar when nvvar exists
+      state: Fix example in documentation
+      ARM: i.MX50: Amazon Kindle: Add missing compatibility checks
+      of: of_find_node_by_devpath: Fix offset in mtd devices
+      usb: imx: Only use clock when it exists
+      Makefile: Speed up evaluation of ld options
+      sandbox: Fix registering file/fifo consoles
+      Release v2017.06.0
+
+Stefan Lengfeld (5):
+      images: clean *.imx-sram-img files
+      imx-usb-loader: add prefix '0x' for hex value
+      docs: fix hiding of chapter from imx.rst
+      docs: add file suffix rst for inclusion in sphinx documentation
+      docs: render DIP switches as verbatim text
+
+Steffen Trumtrar (10):
+      mtd: spi-nor: cadence: change devicetree bindings to upstream
+      ARM: socfpga: dtsi: use upstream node
+      ARM: socfpga: rename socfpga->cyclone5
+      clk: socfpga: move driver to subdirectory
+      net: designware: add dwmac-3.72a compatible
+      ARM: socfpga: make debug_ll configurable
+      ARM: socfpga: add arria10 support
+      clk: socfpga: add arria10 clk drivers
+      ARM: socfpga: add support for reflex achilles board
+      ARM: socfpga: add arria10 defconfig
+
+Ulrich =D6lmann (1):
+      docs: update vendor URL for Vincell-LT
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
