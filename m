@@ -1,11 +1,8 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dKPbp-0004dt-9D
- for barebox@lists.infradead.org; Mon, 12 Jun 2017 13:42:30 +0000
-Date: Mon, 12 Jun 2017 15:41:56 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170612134156.wahywpnmtwecgofc@pengutronix.de>
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1dKkLL-000736-Vd
+ for barebox@lists.infradead.org; Tue, 13 Jun 2017 11:50:48 +0000
 References: <1496765425-9702-1-git-send-email-d.schultz@phytec.de>
  <20170607064508.lau5rlqb5k6hslf3@pengutronix.de>
  <20170607064909.rw2aa6atbrb37xmt@pengutronix.de>
@@ -13,9 +10,13 @@ References: <1496765425-9702-1-git-send-email-d.schultz@phytec.de>
  <23fe6b1a-f4af-40e0-a796-51464027b251@phytec.de>
  <20170609090830.cgid2zfz2cufjqq5@pengutronix.de>
  <8697fc1c-f5dc-c29a-3c22-320cacc77ede@phytec.de>
+ <20170612134156.wahywpnmtwecgofc@pengutronix.de>
+From: Daniel Schultz <d.schultz@phytec.de>
+Message-ID: <77ed0a6f-7455-3320-ba7d-ce3ff9ae7cc5@phytec.de>
+Date: Tue, 13 Jun 2017 13:50:13 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <8697fc1c-f5dc-c29a-3c22-320cacc77ede@phytec.de>
+In-Reply-To: <20170612134156.wahywpnmtwecgofc@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,271 +25,180 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] mtd: nand: omap: Fix BCH bit correction
-To: Daniel Schultz <d.schultz@phytec.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Daniel,
-
-On Fri, Jun 09, 2017 at 03:28:59PM +0200, Daniel Schultz wrote:
-> Hi,
-> 
-> Am 09.06.2017 um 11:08 schrieb Sascha Hauer:
-> > On Fri, Jun 09, 2017 at 10:17:55AM +0200, Daniel Schultz wrote:
-> > > Hi Sascha,
-> > > 
-> > > > > 
-> > > > > And can not work. Additionally eccsteps must be set to 1 in
-> > > > > omap_correct_bch(). This effectively makes the loop in this function
-> > > > > unnecessary which can then removed.
-> > > > 
-> > > > Which then means omap_gpmc_read_page_bch_rom_mode() has to iterate over
-> > > > ecc.steps itself, just like the other read_page implementations in the
-> > > > framework do.
-> > > > 
-> > > So, the previous assignment of eccsteps was fine?
-> > 
-> > I just sent an updated patch(-series). Could you give it a try?
-> > 
-> It works, but the current version only changes the local copy of the
-> pointer. As a result of that it will only check the first 512 Bytes.
-> I appended a double pointer workaround for this problem :)
-
-The pointer should be incremented by the caller, not by
-omap_correct_bch().
-
-> 
-> 
-> omap_correct_data() also calls omap_correct_bch(). Does Barebox correct NAND
-> partitions? I have never seen this. Maybe we need here also a loop.
-
-The core already loops around eccsteps when calling ecc.correct.
-
-I digged a bit further and this is what I can come up with. Anyway, I am
-getting less and less confident that the patch can work.
-
-Please give it a try and see if it works. If it doesn't and we can't
-find out what's wrong I tend to take your original patch, although I
-still think this is the wrong solution.
-
-Sascha
-
---------------------8<------------------------------
-
-From 2c65a009dbcf2136e037f009b50306aa080e2920 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 9 Jun 2017 10:45:21 +0200
-Subject: [PATCH] mtd: nand_omap_gpmc: Fix ecc size
-
-The ECC size for BCH correction is always 512 byte. Correct the ecc.size
-for the OMAP_ECC_BCH8_CODE_HW mode from 2048 to 512. This change will
-let the framework iterate over the 4 ecc steps and we no longer	need
-special cases in omap_correct_bch().
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mtd/nand/nand_omap_gpmc.c | 130 +++++++++++++++++---------------------
- 1 file changed, 57 insertions(+), 73 deletions(-)
-
-diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-index e18ce6358a..2e130bfd9a 100644
---- a/drivers/mtd/nand/nand_omap_gpmc.c
-+++ b/drivers/mtd/nand/nand_omap_gpmc.c
-@@ -297,85 +297,59 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
- {
- 	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
- 	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
--	int i, j, eccflag, totalcount, actual_eccsize;
-+	int j, eccflag;
- 	const uint8_t *erased_ecc_vec;
- 	unsigned int err_loc[8];
- 	int bitflip_count;
- 	int bch_max_err;
--
--	int eccsteps = (nand->ecc.mode == NAND_ECC_HW) &&
--			(nand->ecc.size == 2048) ? 4 : 1;
- 	int eccsize = oinfo->nand.ecc.bytes;
-+	bool is_error_reported = false;
- 
--	switch (oinfo->ecc_mode) {
--	case OMAP_ECC_BCH8_CODE_HW:
--		eccsize /= eccsteps;
--		actual_eccsize = eccsize;
--		erased_ecc_vec = bch8_vector;
--		bch_max_err = BCH8_MAX_ERROR;
--		break;
--	case OMAP_ECC_BCH8_CODE_HW_ROMCODE:
--		actual_eccsize = eccsize - 1;
--		erased_ecc_vec = bch8_vector;
--		bch_max_err = BCH8_MAX_ERROR;
--		break;
--	default:
--		dev_err(oinfo->pdev, "invalid driver configuration\n");
--		return -EINVAL;
--	}
--
--	totalcount = 0;
-+	erased_ecc_vec = bch8_vector;
-+	bch_max_err = BCH8_MAX_ERROR;
- 
--	for (i = 0; i < eccsteps; i++) {
--		bool is_error_reported = false;
--		bitflip_count = 0;
--		eccflag = 0;
-+	bitflip_count = 0;
-+	eccflag = 0;
- 
--		/* check for any ecc error */
--		for (j = 0; (j < actual_eccsize) && (eccflag == 0); j++) {
--			if (calc_ecc[j] != 0) {
--				eccflag = 1;
--				break;
--			}
--		}
--
--		if (eccflag == 1) {
--			if (memcmp(calc_ecc, erased_ecc_vec, actual_eccsize) == 0) {
--				/*
--				 * calc_ecc[] matches pattern for ECC
--				 * (all 0xff) so this is definitely
--				 * an erased-page
--				 */
--			} else {
--				bitflip_count = nand_check_erased_ecc_chunk(
--						dat, oinfo->nand.ecc.size, read_ecc,
--						eccsize, NULL, 0, bch_max_err);
--				if (bitflip_count < 0)
--					is_error_reported = true;
--			}
-+	/* check for any ecc error */
-+	for (j = 0; (j < eccsize) && (eccflag == 0); j++) {
-+		if (calc_ecc[j] != 0) {
-+			eccflag = 1;
-+			break;
- 		}
-+	}
- 
--		if (is_error_reported) {
--			bitflip_count = omap_gpmc_decode_bch(1,
--					calc_ecc, err_loc);
-+	if (eccflag == 1) {
-+		if (memcmp(calc_ecc, erased_ecc_vec, eccsize) == 0) {
-+			/*
-+			 * calc_ecc[] matches pattern for ECC
-+			 * (all 0xff) so this is definitely
-+			 * an erased-page
-+			 */
-+		} else {
-+			bitflip_count = nand_check_erased_ecc_chunk(
-+					dat, oinfo->nand.ecc.size, read_ecc,
-+					eccsize, NULL, 0, bch_max_err);
- 			if (bitflip_count < 0)
--				return bitflip_count;
--
--			for (j = 0; j < bitflip_count; j++) {
--				if (err_loc[j] < 4096)
--					dat[err_loc[j] >> 3] ^=
--						1 << (err_loc[j] & 7);
--				/* else, not interested to correct ecc */
--			}
-+				is_error_reported = true;
- 		}
-+	}
- 
--		totalcount += bitflip_count;
--		calc_ecc = calc_ecc + actual_eccsize;
--		read_ecc = read_ecc + eccsize;
--		dat += 512;
-+	if (is_error_reported) {
-+		bitflip_count = omap_gpmc_decode_bch(1,
-+				calc_ecc, err_loc);
-+		if (bitflip_count < 0)
-+			return bitflip_count;
-+
-+		for (j = 0; j < bitflip_count; j++) {
-+			if (err_loc[j] < 4096)
-+				dat[err_loc[j] >> 3] ^=
-+					1 << (err_loc[j] & 7);
-+			/* else, not interested to correct ecc */
-+		}
- 	}
- 
--	return totalcount;
-+	return bitflip_count;
- }
- 
- static int omap_correct_hamming(struct mtd_info *mtd, uint8_t *dat,
-@@ -667,6 +641,10 @@ static int omap_gpmc_read_page_bch_rom_mode(struct mtd_info *mtd,
- 	uint8_t *ecc_code = chip->buffers->ecccode;
- 	uint32_t *eccpos = chip->ecc.layout->eccpos;
- 	int stat, i;
-+	unsigned int max_bitflips = 0;
-+	int eccsize = chip->ecc.size;
-+	int eccbytes = chip->ecc.bytes;
-+	int eccsteps = chip->ecc.steps;
- 
- 	writel(GPMC_ECC_SIZE_CONFIG_ECCSIZE1(0) |
- 			GPMC_ECC_SIZE_CONFIG_ECCSIZE0(64),
-@@ -706,13 +684,19 @@ static int omap_gpmc_read_page_bch_rom_mode(struct mtd_info *mtd,
- 
- 	__omap_calculate_ecc(mtd, buf, ecc_calc, 1);
- 
--	stat = omap_correct_bch(mtd, buf, ecc_code, ecc_calc);
--	if (stat < 0)
--		mtd->ecc_stats.failed++;
--	else
--		mtd->ecc_stats.corrected += stat;
-+	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
-+		stat = omap_correct_bch(mtd, p, ecc_code, ecc_calc);
-+		ecc_code += eccsize + 1;
-+		ecc_calc += eccsize;
-+		if (stat < 0) {
-+			mtd->ecc_stats.failed++;
-+		} else {
-+			mtd->ecc_stats.corrected += stat;
-+			max_bitflips = max_t(unsigned int, max_bitflips, stat);
-+		}
-+	}
- 
--	return 0;
-+	return max_bitflips;
- }
- 
- static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
-@@ -765,8 +749,8 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
- 					offset - omap_oobinfo.eccbytes;
- 		break;
- 	case OMAP_ECC_BCH8_CODE_HW:
--		oinfo->nand.ecc.bytes    = 13 * 4;
--		oinfo->nand.ecc.size     = 512 * 4;
-+		oinfo->nand.ecc.bytes    = 13;
-+		oinfo->nand.ecc.size     = 512;
- 		oinfo->nand.ecc.strength = BCH8_MAX_ERROR;
- 		omap_oobinfo.oobfree->offset = offset;
- 		omap_oobinfo.oobfree->length = minfo->oobsize -
-@@ -776,7 +760,7 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
- 			omap_oobinfo.eccpos[i] = i + offset;
- 		break;
- 	case OMAP_ECC_BCH8_CODE_HW_ROMCODE:
--		oinfo->nand.ecc.bytes    = 13 + 1;
-+		oinfo->nand.ecc.bytes    = 13;
- 		oinfo->nand.ecc.size     = 512;
- 		oinfo->nand.ecc.strength = BCH8_MAX_ERROR;
- 		nand->ecc.read_page = omap_gpmc_read_page_bch_rom_mode;
--- 
-2.11.0
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKQW0gMTIuMDYuMjAxNyB1bSAxNTo0MSBzY2hyaWViIFNhc2NoYSBIYXVlcjoK
+PiBIaSBEYW5pZWwsCj4gCj4gT24gRnJpLCBKdW4gMDksIDIwMTcgYXQgMDM6Mjg6NTlQTSArMDIw
+MCwgRGFuaWVsIFNjaHVsdHogd3JvdGU6Cj4+IEhpLAo+Pgo+PiBBbSAwOS4wNi4yMDE3IHVtIDEx
+OjA4IHNjaHJpZWIgU2FzY2hhIEhhdWVyOgo+Pj4gT24gRnJpLCBKdW4gMDksIDIwMTcgYXQgMTA6
+MTc6NTVBTSArMDIwMCwgRGFuaWVsIFNjaHVsdHogd3JvdGU6Cj4+Pj4gSGkgU2FzY2hhLAo+Pj4+
+Cj4+Pj4+Pgo+Pj4+Pj4gQW5kIGNhbiBub3Qgd29yay4gQWRkaXRpb25hbGx5IGVjY3N0ZXBzIG11
+c3QgYmUgc2V0IHRvIDEgaW4KPj4+Pj4+IG9tYXBfY29ycmVjdF9iY2goKS4gVGhpcyBlZmZlY3Rp
+dmVseSBtYWtlcyB0aGUgbG9vcCBpbiB0aGlzIGZ1bmN0aW9uCj4+Pj4+PiB1bm5lY2Vzc2FyeSB3
+aGljaCBjYW4gdGhlbiByZW1vdmVkLgo+Pj4+Pgo+Pj4+PiBXaGljaCB0aGVuIG1lYW5zIG9tYXBf
+Z3BtY19yZWFkX3BhZ2VfYmNoX3JvbV9tb2RlKCkgaGFzIHRvIGl0ZXJhdGUgb3Zlcgo+Pj4+PiBl
+Y2Muc3RlcHMgaXRzZWxmLCBqdXN0IGxpa2UgdGhlIG90aGVyIHJlYWRfcGFnZSBpbXBsZW1lbnRh
+dGlvbnMgaW4gdGhlCj4+Pj4+IGZyYW1ld29yayBkby4KPj4+Pj4KPj4+PiBTbywgdGhlIHByZXZp
+b3VzIGFzc2lnbm1lbnQgb2YgZWNjc3RlcHMgd2FzIGZpbmU/Cj4+Pgo+Pj4gSSBqdXN0IHNlbnQg
+YW4gdXBkYXRlZCBwYXRjaCgtc2VyaWVzKS4gQ291bGQgeW91IGdpdmUgaXQgYSB0cnk/Cj4+Pgo+
+PiBJdCB3b3JrcywgYnV0IHRoZSBjdXJyZW50IHZlcnNpb24gb25seSBjaGFuZ2VzIHRoZSBsb2Nh
+bCBjb3B5IG9mIHRoZQo+PiBwb2ludGVyLiBBcyBhIHJlc3VsdCBvZiB0aGF0IGl0IHdpbGwgb25s
+eSBjaGVjayB0aGUgZmlyc3QgNTEyIEJ5dGVzLgo+PiBJIGFwcGVuZGVkIGEgZG91YmxlIHBvaW50
+ZXIgd29ya2Fyb3VuZCBmb3IgdGhpcyBwcm9ibGVtIDopCj4gCj4gVGhlIHBvaW50ZXIgc2hvdWxk
+IGJlIGluY3JlbWVudGVkIGJ5IHRoZSBjYWxsZXIsIG5vdCBieQo+IG9tYXBfY29ycmVjdF9iY2go
+KS4KPiAKPj4KPj4KPj4gb21hcF9jb3JyZWN0X2RhdGEoKSBhbHNvIGNhbGxzIG9tYXBfY29ycmVj
+dF9iY2goKS4gRG9lcyBCYXJlYm94IGNvcnJlY3QgTkFORAo+PiBwYXJ0aXRpb25zPyBJIGhhdmUg
+bmV2ZXIgc2VlbiB0aGlzLiBNYXliZSB3ZSBuZWVkIGhlcmUgYWxzbyBhIGxvb3AuCj4gCj4gVGhl
+IGNvcmUgYWxyZWFkeSBsb29wcyBhcm91bmQgZWNjc3RlcHMgd2hlbiBjYWxsaW5nIGVjYy5jb3Jy
+ZWN0Lgo+IAo+IEkgZGlnZ2VkIGEgYml0IGZ1cnRoZXIgYW5kIHRoaXMgaXMgd2hhdCBJIGNhbiBj
+b21lIHVwIHdpdGguIEFueXdheSwgSSBhbQo+IGdldHRpbmcgbGVzcyBhbmQgbGVzcyBjb25maWRl
+bnQgdGhhdCB0aGUgcGF0Y2ggY2FuIHdvcmsuCj4gCj4gUGxlYXNlIGdpdmUgaXQgYSB0cnkgYW5k
+IHNlZSBpZiBpdCB3b3Jrcy4gSWYgaXQgZG9lc24ndCBhbmQgd2UgY2FuJ3QKPiBmaW5kIG91dCB3
+aGF0J3Mgd3JvbmcgSSB0ZW5kIHRvIHRha2UgeW91ciBvcmlnaW5hbCBwYXRjaCwgYWx0aG91Z2gg
+SQo+IHN0aWxsIHRoaW5rIHRoaXMgaXMgdGhlIHdyb25nIHNvbHV0aW9uLgo+IAoKV2l0aCB0aGVz
+ZSBjaGFuZ2VzIGl0IHdvcmtzLCBidXQgSSBvbmx5IHRlc3RlcyB3aXRoIG5hbmRfYml0ZmxpcC4g
+SWRrIGlmIAp0aGVyZSdyZSBiZXR0ZXIgd2F5cyB0byB0ZXN0IE5BTkQgRUNDLiBIb3dldmVyLCBh
+ZnRlciA2IGJpdGZsaXBzIG9uIG9uZSAKc3VicGFnZSBpdCB3aWxsIHN1Y2Nlc3NmdWxseSBib290
+IGluIHRoZSBiYWNrdXAgcGFydGl0aW9uLCB3aXRoIGxlc3MgCnRoYW4gNiBpdCB3aWxsIGJvb3Qg
+dGhlIGJpdGZsaXBwZWQtcGFydGl0aW9uLgoKRGFuaWVsCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9t
+dGQvbmFuZC9uYW5kX29tYXBfZ3BtYy5jIApiL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9vbWFwX2dw
+bWMuYwppbmRleCAyZTEzMGJmLi45MDA2ZTJlIDEwMDY0NAotLS0gYS9kcml2ZXJzL210ZC9uYW5k
+L25hbmRfb21hcF9ncG1jLmMKKysrIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX29tYXBfZ3BtYy5j
+CkBAIC02ODQsMTAgKzY4NCwxMCBAQCBzdGF0aWMgaW50IG9tYXBfZ3BtY19yZWFkX3BhZ2VfYmNo
+X3JvbV9tb2RlKHN0cnVjdCAKbXRkX2luZm8gKm10ZCwKCiAgICAgICAgIF9fb21hcF9jYWxjdWxh
+dGVfZWNjKG10ZCwgYnVmLCBlY2NfY2FsYywgMSk7CgotICAgICAgIGZvciAoaSA9IDA7IGVjY3N0
+ZXBzOyBlY2NzdGVwcy0tLCBpICs9IGVjY2J5dGVzLCBwICs9IGVjY3NpemUpIHsKLSAgICAgICAg
+ICAgICAgIHN0YXQgPSBvbWFwX2NvcnJlY3RfYmNoKG10ZCwgcCwgZWNjX2NvZGUsIGVjY19jYWxj
+KTsKLSAgICAgICAgICAgICAgIGVjY19jb2RlICs9IGVjY3NpemUgKyAxOwotICAgICAgICAgICAg
+ICAgZWNjX2NhbGMgKz0gZWNjc2l6ZTsKKyAgICAgICBmb3IgKGkgPSAwOyBlY2NzdGVwczsgZWNj
+c3RlcHMtLSwgaSArPSBlY2NieXRlcywgYnVmICs9IGVjY3NpemUpIHsKKyAgICAgICAgICAgICAg
+IHN0YXQgPSBvbWFwX2NvcnJlY3RfYmNoKG10ZCwgYnVmLCBlY2NfY29kZSwgZWNjX2NhbGMpOwor
+ICAgICAgICAgICAgICAgZWNjX2NvZGUgKz0gZWNjYnl0ZXMgKyAxOworICAgICAgICAgICAgICAg
+ZWNjX2NhbGMgKz0gZWNjYnl0ZXM7CiAgICAgICAgICAgICAgICAgaWYgKHN0YXQgPCAwKSB7CiAg
+ICAgICAgICAgICAgICAgICAgICAgICBtdGQtPmVjY19zdGF0cy5mYWlsZWQrKzsKICAgICAgICAg
+ICAgICAgICB9IGVsc2UgewoKCj4gU2FzY2hhCj4gCj4gLS0tLS0tLS0tLS0tLS0tLS0tLS04PC0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+IAo+ICBGcm9tIDJjNjVhMDA5ZGJjZjIxMzZl
+MDM3ZjAwOWI1MDMwNmFhMDgwZTI5MjAgTW9uIFNlcCAxNyAwMDowMDowMCAyMDAxCj4gRnJvbTog
+U2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgo+IERhdGU6IEZyaSwgOSBKdW4g
+MjAxNyAxMDo0NToyMSArMDIwMAo+IFN1YmplY3Q6IFtQQVRDSF0gbXRkOiBuYW5kX29tYXBfZ3Bt
+YzogRml4IGVjYyBzaXplCj4gCj4gVGhlIEVDQyBzaXplIGZvciBCQ0ggY29ycmVjdGlvbiBpcyBh
+bHdheXMgNTEyIGJ5dGUuIENvcnJlY3QgdGhlIGVjYy5zaXplCj4gZm9yIHRoZSBPTUFQX0VDQ19C
+Q0g4X0NPREVfSFcgbW9kZSBmcm9tIDIwNDggdG8gNTEyLiBUaGlzIGNoYW5nZSB3aWxsCj4gbGV0
+IHRoZSBmcmFtZXdvcmsgaXRlcmF0ZSBvdmVyIHRoZSA0IGVjYyBzdGVwcyBhbmQgd2Ugbm8gbG9u
+Z2VyCW5lZWQKPiBzcGVjaWFsIGNhc2VzIGluIG9tYXBfY29ycmVjdF9iY2goKS4KPiAKPiBTaWdu
+ZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Cj4gLS0tCj4g
+ICBkcml2ZXJzL210ZC9uYW5kL25hbmRfb21hcF9ncG1jLmMgfCAxMzAgKysrKysrKysrKysrKysr
+KystLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiAgIDEgZmlsZSBjaGFuZ2VkLCA1NyBpbnNlcnRpb25z
+KCspLCA3MyBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvbmFuZC9u
+YW5kX29tYXBfZ3BtYy5jIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX29tYXBfZ3BtYy5jCj4gaW5k
+ZXggZTE4Y2U2MzU4YS4uMmUxMzBiZmQ5YSAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL210ZC9uYW5k
+L25hbmRfb21hcF9ncG1jLmMKPiArKysgYi9kcml2ZXJzL210ZC9uYW5kL25hbmRfb21hcF9ncG1j
+LmMKPiBAQCAtMjk3LDg1ICsyOTcsNTkgQEAgc3RhdGljIGludCBvbWFwX2NvcnJlY3RfYmNoKHN0
+cnVjdCBtdGRfaW5mbyAqbXRkLCB1aW50OF90ICpkYXQsCj4gICB7Cj4gICAJc3RydWN0IG5hbmRf
+Y2hpcCAqbmFuZCA9IChzdHJ1Y3QgbmFuZF9jaGlwICopKG10ZC0+cHJpdik7Cj4gICAJc3RydWN0
+IGdwbWNfbmFuZF9pbmZvICpvaW5mbyA9IChzdHJ1Y3QgZ3BtY19uYW5kX2luZm8gKikobmFuZC0+
+cHJpdik7Cj4gLQlpbnQgaSwgaiwgZWNjZmxhZywgdG90YWxjb3VudCwgYWN0dWFsX2VjY3NpemU7
+Cj4gKwlpbnQgaiwgZWNjZmxhZzsKPiAgIAljb25zdCB1aW50OF90ICplcmFzZWRfZWNjX3ZlYzsK
+PiAgIAl1bnNpZ25lZCBpbnQgZXJyX2xvY1s4XTsKPiAgIAlpbnQgYml0ZmxpcF9jb3VudDsKPiAg
+IAlpbnQgYmNoX21heF9lcnI7Cj4gLQo+IC0JaW50IGVjY3N0ZXBzID0gKG5hbmQtPmVjYy5tb2Rl
+ID09IE5BTkRfRUNDX0hXKSAmJgo+IC0JCQkobmFuZC0+ZWNjLnNpemUgPT0gMjA0OCkgPyA0IDog
+MTsKPiAgIAlpbnQgZWNjc2l6ZSA9IG9pbmZvLT5uYW5kLmVjYy5ieXRlczsKPiArCWJvb2wgaXNf
+ZXJyb3JfcmVwb3J0ZWQgPSBmYWxzZTsKPiAgIAo+IC0Jc3dpdGNoIChvaW5mby0+ZWNjX21vZGUp
+IHsKPiAtCWNhc2UgT01BUF9FQ0NfQkNIOF9DT0RFX0hXOgo+IC0JCWVjY3NpemUgLz0gZWNjc3Rl
+cHM7Cj4gLQkJYWN0dWFsX2VjY3NpemUgPSBlY2NzaXplOwo+IC0JCWVyYXNlZF9lY2NfdmVjID0g
+YmNoOF92ZWN0b3I7Cj4gLQkJYmNoX21heF9lcnIgPSBCQ0g4X01BWF9FUlJPUjsKPiAtCQlicmVh
+azsKPiAtCWNhc2UgT01BUF9FQ0NfQkNIOF9DT0RFX0hXX1JPTUNPREU6Cj4gLQkJYWN0dWFsX2Vj
+Y3NpemUgPSBlY2NzaXplIC0gMTsKPiAtCQllcmFzZWRfZWNjX3ZlYyA9IGJjaDhfdmVjdG9yOwo+
+IC0JCWJjaF9tYXhfZXJyID0gQkNIOF9NQVhfRVJST1I7Cj4gLQkJYnJlYWs7Cj4gLQlkZWZhdWx0
+Ogo+IC0JCWRldl9lcnIob2luZm8tPnBkZXYsICJpbnZhbGlkIGRyaXZlciBjb25maWd1cmF0aW9u
+XG4iKTsKPiAtCQlyZXR1cm4gLUVJTlZBTDsKPiAtCX0KPiAtCj4gLQl0b3RhbGNvdW50ID0gMDsK
+PiArCWVyYXNlZF9lY2NfdmVjID0gYmNoOF92ZWN0b3I7Cj4gKwliY2hfbWF4X2VyciA9IEJDSDhf
+TUFYX0VSUk9SOwo+ICAgCj4gLQlmb3IgKGkgPSAwOyBpIDwgZWNjc3RlcHM7IGkrKykgewo+IC0J
+CWJvb2wgaXNfZXJyb3JfcmVwb3J0ZWQgPSBmYWxzZTsKPiAtCQliaXRmbGlwX2NvdW50ID0gMDsK
+PiAtCQllY2NmbGFnID0gMDsKPiArCWJpdGZsaXBfY291bnQgPSAwOwo+ICsJZWNjZmxhZyA9IDA7
+Cj4gICAKPiAtCQkvKiBjaGVjayBmb3IgYW55IGVjYyBlcnJvciAqLwo+IC0JCWZvciAoaiA9IDA7
+IChqIDwgYWN0dWFsX2VjY3NpemUpICYmIChlY2NmbGFnID09IDApOyBqKyspIHsKPiAtCQkJaWYg
+KGNhbGNfZWNjW2pdICE9IDApIHsKPiAtCQkJCWVjY2ZsYWcgPSAxOwo+IC0JCQkJYnJlYWs7Cj4g
+LQkJCX0KPiAtCQl9Cj4gLQo+IC0JCWlmIChlY2NmbGFnID09IDEpIHsKPiAtCQkJaWYgKG1lbWNt
+cChjYWxjX2VjYywgZXJhc2VkX2VjY192ZWMsIGFjdHVhbF9lY2NzaXplKSA9PSAwKSB7Cj4gLQkJ
+CQkvKgo+IC0JCQkJICogY2FsY19lY2NbXSBtYXRjaGVzIHBhdHRlcm4gZm9yIEVDQwo+IC0JCQkJ
+ICogKGFsbCAweGZmKSBzbyB0aGlzIGlzIGRlZmluaXRlbHkKPiAtCQkJCSAqIGFuIGVyYXNlZC1w
+YWdlCj4gLQkJCQkgKi8KPiAtCQkJfSBlbHNlIHsKPiAtCQkJCWJpdGZsaXBfY291bnQgPSBuYW5k
+X2NoZWNrX2VyYXNlZF9lY2NfY2h1bmsoCj4gLQkJCQkJCWRhdCwgb2luZm8tPm5hbmQuZWNjLnNp
+emUsIHJlYWRfZWNjLAo+IC0JCQkJCQllY2NzaXplLCBOVUxMLCAwLCBiY2hfbWF4X2Vycik7Cj4g
+LQkJCQlpZiAoYml0ZmxpcF9jb3VudCA8IDApCj4gLQkJCQkJaXNfZXJyb3JfcmVwb3J0ZWQgPSB0
+cnVlOwo+IC0JCQl9Cj4gKwkvKiBjaGVjayBmb3IgYW55IGVjYyBlcnJvciAqLwo+ICsJZm9yIChq
+ID0gMDsgKGogPCBlY2NzaXplKSAmJiAoZWNjZmxhZyA9PSAwKTsgaisrKSB7Cj4gKwkJaWYgKGNh
+bGNfZWNjW2pdICE9IDApIHsKPiArCQkJZWNjZmxhZyA9IDE7Cj4gKwkJCWJyZWFrOwo+ICAgCQl9
+Cj4gKwl9Cj4gICAKPiAtCQlpZiAoaXNfZXJyb3JfcmVwb3J0ZWQpIHsKPiAtCQkJYml0ZmxpcF9j
+b3VudCA9IG9tYXBfZ3BtY19kZWNvZGVfYmNoKDEsCj4gLQkJCQkJY2FsY19lY2MsIGVycl9sb2Mp
+Owo+ICsJaWYgKGVjY2ZsYWcgPT0gMSkgewo+ICsJCWlmIChtZW1jbXAoY2FsY19lY2MsIGVyYXNl
+ZF9lY2NfdmVjLCBlY2NzaXplKSA9PSAwKSB7Cj4gKwkJCS8qCj4gKwkJCSAqIGNhbGNfZWNjW10g
+bWF0Y2hlcyBwYXR0ZXJuIGZvciBFQ0MKPiArCQkJICogKGFsbCAweGZmKSBzbyB0aGlzIGlzIGRl
+ZmluaXRlbHkKPiArCQkJICogYW4gZXJhc2VkLXBhZ2UKPiArCQkJICovCj4gKwkJfSBlbHNlIHsK
+PiArCQkJYml0ZmxpcF9jb3VudCA9IG5hbmRfY2hlY2tfZXJhc2VkX2VjY19jaHVuaygKPiArCQkJ
+CQlkYXQsIG9pbmZvLT5uYW5kLmVjYy5zaXplLCByZWFkX2VjYywKPiArCQkJCQllY2NzaXplLCBO
+VUxMLCAwLCBiY2hfbWF4X2Vycik7Cj4gICAJCQlpZiAoYml0ZmxpcF9jb3VudCA8IDApCj4gLQkJ
+CQlyZXR1cm4gYml0ZmxpcF9jb3VudDsKPiAtCj4gLQkJCWZvciAoaiA9IDA7IGogPCBiaXRmbGlw
+X2NvdW50OyBqKyspIHsKPiAtCQkJCWlmIChlcnJfbG9jW2pdIDwgNDA5NikKPiAtCQkJCQlkYXRb
+ZXJyX2xvY1tqXSA+PiAzXSBePQo+IC0JCQkJCQkxIDw8IChlcnJfbG9jW2pdICYgNyk7Cj4gLQkJ
+CQkvKiBlbHNlLCBub3QgaW50ZXJlc3RlZCB0byBjb3JyZWN0IGVjYyAqLwo+IC0JCQl9Cj4gKwkJ
+CQlpc19lcnJvcl9yZXBvcnRlZCA9IHRydWU7Cj4gICAJCX0KPiArCX0KPiAgIAo+IC0JCXRvdGFs
+Y291bnQgKz0gYml0ZmxpcF9jb3VudDsKPiAtCQljYWxjX2VjYyA9IGNhbGNfZWNjICsgYWN0dWFs
+X2VjY3NpemU7Cj4gLQkJcmVhZF9lY2MgPSByZWFkX2VjYyArIGVjY3NpemU7Cj4gLQkJZGF0ICs9
+IDUxMjsKPiArCWlmIChpc19lcnJvcl9yZXBvcnRlZCkgewo+ICsJCWJpdGZsaXBfY291bnQgPSBv
+bWFwX2dwbWNfZGVjb2RlX2JjaCgxLAo+ICsJCQkJY2FsY19lY2MsIGVycl9sb2MpOwo+ICsJCWlm
+IChiaXRmbGlwX2NvdW50IDwgMCkKPiArCQkJcmV0dXJuIGJpdGZsaXBfY291bnQ7Cj4gKwo+ICsJ
+CWZvciAoaiA9IDA7IGogPCBiaXRmbGlwX2NvdW50OyBqKyspIHsKPiArCQkJaWYgKGVycl9sb2Nb
+al0gPCA0MDk2KQo+ICsJCQkJZGF0W2Vycl9sb2Nbal0gPj4gM10gXj0KPiArCQkJCQkxIDw8IChl
+cnJfbG9jW2pdICYgNyk7Cj4gKwkJCS8qIGVsc2UsIG5vdCBpbnRlcmVzdGVkIHRvIGNvcnJlY3Qg
+ZWNjICovCj4gKwkJfQo+ICAgCX0KPiAgIAo+IC0JcmV0dXJuIHRvdGFsY291bnQ7Cj4gKwlyZXR1
+cm4gYml0ZmxpcF9jb3VudDsKPiAgIH0KPiAgIAo+ICAgc3RhdGljIGludCBvbWFwX2NvcnJlY3Rf
+aGFtbWluZyhzdHJ1Y3QgbXRkX2luZm8gKm10ZCwgdWludDhfdCAqZGF0LAo+IEBAIC02NjcsNiAr
+NjQxLDEwIEBAIHN0YXRpYyBpbnQgb21hcF9ncG1jX3JlYWRfcGFnZV9iY2hfcm9tX21vZGUoc3Ry
+dWN0IG10ZF9pbmZvICptdGQsCj4gICAJdWludDhfdCAqZWNjX2NvZGUgPSBjaGlwLT5idWZmZXJz
+LT5lY2Njb2RlOwo+ICAgCXVpbnQzMl90ICplY2Nwb3MgPSBjaGlwLT5lY2MubGF5b3V0LT5lY2Nw
+b3M7Cj4gICAJaW50IHN0YXQsIGk7Cj4gKwl1bnNpZ25lZCBpbnQgbWF4X2JpdGZsaXBzID0gMDsK
+PiArCWludCBlY2NzaXplID0gY2hpcC0+ZWNjLnNpemU7Cj4gKwlpbnQgZWNjYnl0ZXMgPSBjaGlw
+LT5lY2MuYnl0ZXM7Cj4gKwlpbnQgZWNjc3RlcHMgPSBjaGlwLT5lY2Muc3RlcHM7Cj4gICAKPiAg
+IAl3cml0ZWwoR1BNQ19FQ0NfU0laRV9DT05GSUdfRUNDU0laRTEoMCkgfAo+ICAgCQkJR1BNQ19F
+Q0NfU0laRV9DT05GSUdfRUNDU0laRTAoNjQpLAo+IEBAIC03MDYsMTMgKzY4NCwxOSBAQCBzdGF0
+aWMgaW50IG9tYXBfZ3BtY19yZWFkX3BhZ2VfYmNoX3JvbV9tb2RlKHN0cnVjdCBtdGRfaW5mbyAq
+bXRkLAo+ICAgCj4gICAJX19vbWFwX2NhbGN1bGF0ZV9lY2MobXRkLCBidWYsIGVjY19jYWxjLCAx
+KTsKPiAgIAo+IC0Jc3RhdCA9IG9tYXBfY29ycmVjdF9iY2gobXRkLCBidWYsIGVjY19jb2RlLCBl
+Y2NfY2FsYyk7Cj4gLQlpZiAoc3RhdCA8IDApCj4gLQkJbXRkLT5lY2Nfc3RhdHMuZmFpbGVkKys7
+Cj4gLQllbHNlCj4gLQkJbXRkLT5lY2Nfc3RhdHMuY29ycmVjdGVkICs9IHN0YXQ7Cj4gKwlmb3Ig
+KGkgPSAwOyBlY2NzdGVwczsgZWNjc3RlcHMtLSwgaSArPSBlY2NieXRlcywgcCArPSBlY2NzaXpl
+KSB7Cj4gKwkJc3RhdCA9IG9tYXBfY29ycmVjdF9iY2gobXRkLCBwLCBlY2NfY29kZSwgZWNjX2Nh
+bGMpOwo+ICsJCWVjY19jb2RlICs9IGVjY3NpemUgKyAxOwo+ICsJCWVjY19jYWxjICs9IGVjY3Np
+emU7Cj4gKwkJaWYgKHN0YXQgPCAwKSB7Cj4gKwkJCW10ZC0+ZWNjX3N0YXRzLmZhaWxlZCsrOwo+
+ICsJCX0gZWxzZSB7Cj4gKwkJCW10ZC0+ZWNjX3N0YXRzLmNvcnJlY3RlZCArPSBzdGF0Owo+ICsJ
+CQltYXhfYml0ZmxpcHMgPSBtYXhfdCh1bnNpZ25lZCBpbnQsIG1heF9iaXRmbGlwcywgc3RhdCk7
+Cj4gKwkJfQo+ICsJfQo+ICAgCj4gLQlyZXR1cm4gMDsKPiArCXJldHVybiBtYXhfYml0ZmxpcHM7
+Cj4gICB9Cj4gICAKPiAgIHN0YXRpYyBpbnQgb21hcF9ncG1jX2VjY21vZGUoc3RydWN0IGdwbWNf
+bmFuZF9pbmZvICpvaW5mbywKPiBAQCAtNzY1LDggKzc0OSw4IEBAIHN0YXRpYyBpbnQgb21hcF9n
+cG1jX2VjY21vZGUoc3RydWN0IGdwbWNfbmFuZF9pbmZvICpvaW5mbywKPiAgIAkJCQkJb2Zmc2V0
+IC0gb21hcF9vb2JpbmZvLmVjY2J5dGVzOwo+ICAgCQlicmVhazsKPiAgIAljYXNlIE9NQVBfRUND
+X0JDSDhfQ09ERV9IVzoKPiAtCQlvaW5mby0+bmFuZC5lY2MuYnl0ZXMgICAgPSAxMyAqIDQ7Cj4g
+LQkJb2luZm8tPm5hbmQuZWNjLnNpemUgICAgID0gNTEyICogNDsKPiArCQlvaW5mby0+bmFuZC5l
+Y2MuYnl0ZXMgICAgPSAxMzsKPiArCQlvaW5mby0+bmFuZC5lY2Muc2l6ZSAgICAgPSA1MTI7Cj4g
+ICAJCW9pbmZvLT5uYW5kLmVjYy5zdHJlbmd0aCA9IEJDSDhfTUFYX0VSUk9SOwo+ICAgCQlvbWFw
+X29vYmluZm8ub29iZnJlZS0+b2Zmc2V0ID0gb2Zmc2V0Owo+ICAgCQlvbWFwX29vYmluZm8ub29i
+ZnJlZS0+bGVuZ3RoID0gbWluZm8tPm9vYnNpemUgLQo+IEBAIC03NzYsNyArNzYwLDcgQEAgc3Rh
+dGljIGludCBvbWFwX2dwbWNfZWNjbW9kZShzdHJ1Y3QgZ3BtY19uYW5kX2luZm8gKm9pbmZvLAo+
+ICAgCQkJb21hcF9vb2JpbmZvLmVjY3Bvc1tpXSA9IGkgKyBvZmZzZXQ7Cj4gICAJCWJyZWFrOwo+
+ICAgCWNhc2UgT01BUF9FQ0NfQkNIOF9DT0RFX0hXX1JPTUNPREU6Cj4gLQkJb2luZm8tPm5hbmQu
+ZWNjLmJ5dGVzICAgID0gMTMgKyAxOwo+ICsJCW9pbmZvLT5uYW5kLmVjYy5ieXRlcyAgICA9IDEz
+Owo+ICAgCQlvaW5mby0+bmFuZC5lY2Muc2l6ZSAgICAgPSA1MTI7Cj4gICAJCW9pbmZvLT5uYW5k
+LmVjYy5zdHJlbmd0aCA9IEJDSDhfTUFYX0VSUk9SOwo+ICAgCQluYW5kLT5lY2MucmVhZF9wYWdl
+ID0gb21hcF9ncG1jX3JlYWRfcGFnZV9iY2hfcm9tX21vZGU7Cj4gCgotLSAKTWl0IGZyZXVuZGxp
+Y2hlbiBHcsO8w59lbiwKV2l0aCBiZXN0IHJlZ2FyZHMsCiAgIERhbmllbCBTY2h1bHR6CgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
+bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
+ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
