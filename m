@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dKm0f-00011F-Gf
- for barebox@lists.infradead.org; Tue, 13 Jun 2017 13:37:34 +0000
+ id 1dKm5Y-00048D-AP
+ for barebox@lists.infradead.org; Tue, 13 Jun 2017 13:42:34 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 027B1A002FA
- for <barebox@lists.infradead.org>; Tue, 13 Jun 2017 15:38:12 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id B8799A0020F
+ for <barebox@lists.infradead.org>; Tue, 13 Jun 2017 15:43:14 +0200 (CEST)
+References: <1497361028-39920-1-git-send-email-d.schultz@phytec.de>
 From: Daniel Schultz <d.schultz@phytec.de>
-Date: Tue, 13 Jun 2017 15:37:08 +0200
-Message-Id: <1497361028-39920-1-git-send-email-d.schultz@phytec.de>
+Message-ID: <2ec5295d-6784-c1ea-a254-d03231752830@phytec.de>
+Date: Tue, 13 Jun 2017 15:42:11 +0200
+MIME-Version: 1.0
+In-Reply-To: <1497361028-39920-1-git-send-email-d.schultz@phytec.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,132 +21,114 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4] arm: boards: phytec-som-am335x: Update boot scripts
+Subject: Re: [PATCH v4] arm: boards: phytec-som-am335x: Update boot scripts
 To: barebox@lists.infradead.org
 
-Expand the boot scripts with EMMC and add a default file source for
-expansions.
-
-Removed "rw" and "rootwait" bootargs from existing boot scripts.
-Added "rootflags='data=journal'" bootarg to SD card boot script.
-
-Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
----
- .../phytec-som-am335x/defaultenv-physom-am335x/boot/emmc |  5 +++++
- .../phytec-som-am335x/defaultenv-physom-am335x/boot/mmc  |  7 +++----
- .../phytec-som-am335x/defaultenv-physom-am335x/boot/nand |  2 +-
- .../phytec-som-am335x/defaultenv-physom-am335x/boot/net  | 15 +++++++++++++++
- .../phytec-som-am335x/defaultenv-physom-am335x/boot/spi  |  2 +-
- .../defaultenv-physom-am335x/init/bootsource             | 16 ++++++++++++----
- 6 files changed, 37 insertions(+), 10 deletions(-)
- create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
- create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/net
-
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
-new file mode 100644
-index 0000000..b1792a6
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
-@@ -0,0 +1,5 @@
-+#!/bin/sh
-+
-+global.bootm.image=/mnt/mmc1.0/linuximage
-+global.bootm.oftree=/mnt/mmc1.0/oftree
-+global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
-index 834669d..77a076d 100644
---- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
-@@ -1,6 +1,5 @@
- #!/bin/sh
- 
--global.bootm.image=/boot/linuximage
--global.bootm.oftree=/boot/oftree
--
--global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rw rootwait"
-+global.bootm.image=/mnt/mmc0.0/linuximage
-+global.bootm.oftree=/mnt/mmc0.0/oftree
-+global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
-index ece44b7..33f5f02 100644
---- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
-@@ -5,4 +5,4 @@
- global.bootm.image="/dev/nand0.root.ubi.kernel"
- global.bootm.oftree="/dev/nand0.root.ubi.oftree"
- 
--global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rw rootfstype=ubifs"
-+global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/net b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/net
-new file mode 100644
-index 0000000..1005199
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/net
-@@ -0,0 +1,15 @@
-+#!/bin/sh
-+
-+path="/mnt/tftp"
-+
-+global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
-+
-+oftree="${path}/${global.user}-oftree-${global.hostname}"
-+if [ -f "${oftree}" ]; then
-+    global.bootm.oftree="$oftree"
-+fi
-+
-+nfsroot="/nfsroot/${global.hostname}"
-+bootargs-ip
-+
-+global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,udp"
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
-index 71c5834..a321aa9 100644
---- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
-@@ -4,4 +4,4 @@ global.bootm.image="/dev/m25p0.kernel"
- global.bootm.oftree="/dev/m25p0.oftree"
- 
- # Use rootfs from NAND
--global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rw rootfstype=ubifs"
-+global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rootfstype=ubifs"
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
-index 3f2ff4b..61a0879 100644
---- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
-@@ -4,12 +4,20 @@ if [ -n "$nv.boot.default" ]; then
- 	exit
- fi
- 
--if [ $bootsource = mmc ]; then
--	global.boot.default="mmc nand spi net"
-+if [ -e /dev/mmc1.0 ]; then
-+	nvmem="emmc"
-+else
-+	nvmem="nand"
-+fi
-+
-+if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
-+	global.boot.default="emmc mmc spi net"
-+elif [ $bootsource = mmc -a $bootsource_instance = 0 ]; then
-+	global.boot.default="mmc $nvmem spi net"
- elif [ $bootsource = nand ]; then
- 	global.boot.default="nand spi mmc net"
- elif [ $bootsource = spi ]; then
--	global.boot.default="spi nand mmc net"
-+	global.boot.default="spi $nvmem mmc net"
- elif [ $bootsource = net ]; then
--	global.boot.default="net nand spi mmc"
-+	global.boot.default="net $nvmem spi mmc"
- fi
--- 
-1.9.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Y291bGQgeW91IGFsc28gcGxlYXNlIGFwcGx5IHRoZXNlIHBhdGNoZXMgdG8gdGhlIG5leHQgcmVs
+ZWFzZT8KCmxzOiBGaXggc2hvd2luZyBsaW5rcyB0byBkaXJlY3RvcmllcwpmczogSW1wbGVtZW50
+IGxpbmtzIHRvIGRpcmVjdG9yaWVzCmZzOiBkcm9wIHBhdGhfY2hlY2tfcHJlcmVxKCkKZXJybm86
+IEluY2x1ZGUgc3RyaW5nIGZvciBFTE9PUAphcm06IG1hY2gtb21hcDogQ2hhbmdlIG1vdW50cG9p
+bnQgb2YgYm9vdCBwYXJ0aXRpb25zCmZzOiBDcmVhdGUgYXV0b21vdW50IGVudHJpZXMgZm9yIHRo
+ZSBkZWZhdWx0IG1vdW50IHBhdGhlcwoKRGFuaWVsCgpBbSAxMy4wNi4yMDE3IHVtIDE1OjM3IHNj
+aHJpZWIgRGFuaWVsIFNjaHVsdHo6Cj4gRXhwYW5kIHRoZSBib290IHNjcmlwdHMgd2l0aCBFTU1D
+IGFuZCBhZGQgYSBkZWZhdWx0IGZpbGUgc291cmNlIGZvcgo+IGV4cGFuc2lvbnMuCj4gCj4gUmVt
+b3ZlZCAicnciIGFuZCAicm9vdHdhaXQiIGJvb3RhcmdzIGZyb20gZXhpc3RpbmcgYm9vdCBzY3Jp
+cHRzLgo+IEFkZGVkICJyb290ZmxhZ3M9J2RhdGE9am91cm5hbCciIGJvb3RhcmcgdG8gU0QgY2Fy
+ZCBib290IHNjcmlwdC4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgU2NodWx0eiA8ZC5zY2h1
+bHR6QHBoeXRlYy5kZT4KPiAtLS0KPiAgIC4uLi9waHl0ZWMtc29tLWFtMzM1eC9kZWZhdWx0ZW52
+LXBoeXNvbS1hbTMzNXgvYm9vdC9lbW1jIHwgIDUgKysrKysKPiAgIC4uLi9waHl0ZWMtc29tLWFt
+MzM1eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvYm9vdC9tbWMgIHwgIDcgKysrLS0tLQo+ICAg
+Li4uL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L25hbmQg
+fCAgMiArLQo+ICAgLi4uL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1
+eC9ib290L25ldCAgfCAxNSArKysrKysrKysrKysrKysKPiAgIC4uLi9waHl0ZWMtc29tLWFtMzM1
+eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvYm9vdC9zcGkgIHwgIDIgKy0KPiAgIC4uLi9kZWZh
+dWx0ZW52LXBoeXNvbS1hbTMzNXgvaW5pdC9ib290c291cmNlICAgICAgICAgICAgIHwgMTYgKysr
+KysrKysrKysrLS0tLQo+ICAgNiBmaWxlcyBjaGFuZ2VkLCAzNyBpbnNlcnRpb25zKCspLCAxMCBk
+ZWxldGlvbnMoLSkKPiAgIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvcGh5dGVj
+LXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3QvZW1tYwo+ICAgY3JlYXRl
+IG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9kZWZhdWx0ZW52
+LXBoeXNvbS1hbTMzNXgvYm9vdC9uZXQKPiAKPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRz
+L3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L2VtbWMgYi9h
+cmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4
+L2Jvb3QvZW1tYwo+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4gaW5kZXggMDAwMDAwMC4uYjE3OTJh
+Ngo+IC0tLSAvZGV2L251bGwKPiArKysgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMz
+NXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3QvZW1tYwo+IEBAIC0wLDAgKzEsNSBAQAo+
+ICsjIS9iaW4vc2gKPiArCj4gK2dsb2JhbC5ib290bS5pbWFnZT0vbW50L21tYzEuMC9saW51eGlt
+YWdlCj4gK2dsb2JhbC5ib290bS5vZnRyZWU9L21udC9tbWMxLjAvb2Z0cmVlCj4gK2dsb2JhbC5s
+aW51eC5ib290YXJncy5keW4ucm9vdD0icm9vdD0vZGV2L21tY2JsazFwMiByb290ZmxhZ3M9J2Rh
+dGE9am91cm5hbCciCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFt
+MzM1eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvYm9vdC9tbWMgYi9hcmNoL2FybS9ib2FyZHMv
+cGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3QvbW1jCj4gaW5k
+ZXggODM0NjY5ZC4uNzdhMDc2ZCAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVj
+LXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3QvbW1jCj4gKysrIGIvYXJj
+aC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9i
+b290L21tYwo+IEBAIC0xLDYgKzEsNSBAQAo+ICAgIyEvYmluL3NoCj4gICAKPiAtZ2xvYmFsLmJv
+b3RtLmltYWdlPS9ib290L2xpbnV4aW1hZ2UKPiAtZ2xvYmFsLmJvb3RtLm9mdHJlZT0vYm9vdC9v
+ZnRyZWUKPiAtCj4gLWdsb2JhbC5saW51eC5ib290YXJncy5keW4ucm9vdD0icm9vdD0vZGV2L21t
+Y2JsazBwMiBydyByb290d2FpdCIKPiArZ2xvYmFsLmJvb3RtLmltYWdlPS9tbnQvbW1jMC4wL2xp
+bnV4aW1hZ2UKPiArZ2xvYmFsLmJvb3RtLm9mdHJlZT0vbW50L21tYzAuMC9vZnRyZWUKPiArZ2xv
+YmFsLmxpbnV4LmJvb3RhcmdzLmR5bi5yb290PSJyb290PS9kZXYvbW1jYmxrMHAyIHJvb3RmbGFn
+cz0nZGF0YT1qb3VybmFsJyIKPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1z
+b20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L25hbmQgYi9hcmNoL2FybS9i
+b2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3QvbmFu
+ZAo+IGluZGV4IGVjZTQ0YjcuLjMzZjVmMDIgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9hcm0vYm9hcmRz
+L3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L25hbmQKPiAr
+KysgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20t
+YW0zMzV4L2Jvb3QvbmFuZAo+IEBAIC01LDQgKzUsNCBAQAo+ICAgZ2xvYmFsLmJvb3RtLmltYWdl
+PSIvZGV2L25hbmQwLnJvb3QudWJpLmtlcm5lbCIKPiAgIGdsb2JhbC5ib290bS5vZnRyZWU9Ii9k
+ZXYvbmFuZDAucm9vdC51Ymkub2Z0cmVlIgo+ICAgCj4gLWdsb2JhbC5saW51eC5ib290YXJncy5k
+eW4ucm9vdD0icm9vdD11YmkwOnJvb3QgdWJpLm10ZD1yb290IHJ3IHJvb3Rmc3R5cGU9dWJpZnMi
+Cj4gK2dsb2JhbC5saW51eC5ib290YXJncy5keW4ucm9vdD0icm9vdD11YmkwOnJvb3QgdWJpLm10
+ZD1yb290IHJvb3Rmc3R5cGU9dWJpZnMiCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9w
+aHl0ZWMtc29tLWFtMzM1eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvYm9vdC9uZXQgYi9hcmNo
+L2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jv
+b3QvbmV0Cj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwLi4xMDA1MTk5Cj4g
+LS0tIC9kZXYvbnVsbAo+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9k
+ZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvYm9vdC9uZXQKPiBAQCAtMCwwICsxLDE1IEBACj4gKyMh
+L2Jpbi9zaAo+ICsKPiArcGF0aD0iL21udC90ZnRwIgo+ICsKPiArZ2xvYmFsLmJvb3RtLmltYWdl
+PSIke3BhdGh9LyR7Z2xvYmFsLnVzZXJ9LWxpbnV4LSR7Z2xvYmFsLmhvc3RuYW1lfSIKPiArCj4g
+K29mdHJlZT0iJHtwYXRofS8ke2dsb2JhbC51c2VyfS1vZnRyZWUtJHtnbG9iYWwuaG9zdG5hbWV9
+Igo+ICtpZiBbIC1mICIke29mdHJlZX0iIF07IHRoZW4KPiArICAgIGdsb2JhbC5ib290bS5vZnRy
+ZWU9IiRvZnRyZWUiCj4gK2ZpCj4gKwo+ICtuZnNyb290PSIvbmZzcm9vdC8ke2dsb2JhbC5ob3N0
+bmFtZX0iCj4gK2Jvb3RhcmdzLWlwCj4gKwo+ICtnbG9iYWwubGludXguYm9vdGFyZ3MuZHluLnJv
+b3Q9InJvb3Q9L2Rldi9uZnMgbmZzcm9vdD0kbmZzcm9vdCx2ZXJzPTMsdWRwIgo+IGRpZmYgLS1n
+aXQgYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20t
+YW0zMzV4L2Jvb3Qvc3BpIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1
+bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L3NwaQo+IGluZGV4IDcxYzU4MzQuLmEzMjFhYTkgMTAw
+NjQ0Cj4gLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYt
+cGh5c29tLWFtMzM1eC9ib290L3NwaQo+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29t
+LWFtMzM1eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvYm9vdC9zcGkKPiBAQCAtNCw0ICs0LDQg
+QEAgZ2xvYmFsLmJvb3RtLmltYWdlPSIvZGV2L20yNXAwLmtlcm5lbCIKPiAgIGdsb2JhbC5ib290
+bS5vZnRyZWU9Ii9kZXYvbTI1cDAub2Z0cmVlIgo+ICAgCj4gICAjIFVzZSByb290ZnMgZnJvbSBO
+QU5ECj4gLWdsb2JhbC5saW51eC5ib290YXJncy5keW4ucm9vdD0icm9vdD11YmkwOnJvb3QgdWJp
+Lm10ZD1uYW5kMC5yb290IHJ3IHJvb3Rmc3R5cGU9dWJpZnMiCj4gK2dsb2JhbC5saW51eC5ib290
+YXJncy5keW4ucm9vdD0icm9vdD11YmkwOnJvb3QgdWJpLm10ZD1uYW5kMC5yb290IHJvb3Rmc3R5
+cGU9dWJpZnMiCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1
+eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvaW5pdC9ib290c291cmNlIGIvYXJjaC9hcm0vYm9h
+cmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9pbml0L2Jvb3Rz
+b3VyY2UKPiBpbmRleCAzZjJmZjRiLi42MWEwODc5IDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL2Jv
+YXJkcy9waHl0ZWMtc29tLWFtMzM1eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvaW5pdC9ib290
+c291cmNlCj4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRl
+bnYtcGh5c29tLWFtMzM1eC9pbml0L2Jvb3Rzb3VyY2UKPiBAQCAtNCwxMiArNCwyMCBAQCBpZiBb
+IC1uICIkbnYuYm9vdC5kZWZhdWx0IiBdOyB0aGVuCj4gICAJZXhpdAo+ICAgZmkKPiAgIAo+IC1p
+ZiBbICRib290c291cmNlID0gbW1jIF07IHRoZW4KPiAtCWdsb2JhbC5ib290LmRlZmF1bHQ9Im1t
+YyBuYW5kIHNwaSBuZXQiCj4gK2lmIFsgLWUgL2Rldi9tbWMxLjAgXTsgdGhlbgo+ICsJbnZtZW09
+ImVtbWMiCj4gK2Vsc2UKPiArCW52bWVtPSJuYW5kIgo+ICtmaQo+ICsKPiAraWYgWyAkYm9vdHNv
+dXJjZSA9IG1tYyAtYSAkYm9vdHNvdXJjZV9pbnN0YW5jZSA9IDEgXTsgdGhlbgo+ICsJZ2xvYmFs
+LmJvb3QuZGVmYXVsdD0iZW1tYyBtbWMgc3BpIG5ldCIKPiArZWxpZiBbICRib290c291cmNlID0g
+bW1jIC1hICRib290c291cmNlX2luc3RhbmNlID0gMCBdOyB0aGVuCj4gKwlnbG9iYWwuYm9vdC5k
+ZWZhdWx0PSJtbWMgJG52bWVtIHNwaSBuZXQiCj4gICBlbGlmIFsgJGJvb3Rzb3VyY2UgPSBuYW5k
+IF07IHRoZW4KPiAgIAlnbG9iYWwuYm9vdC5kZWZhdWx0PSJuYW5kIHNwaSBtbWMgbmV0Igo+ICAg
+ZWxpZiBbICRib290c291cmNlID0gc3BpIF07IHRoZW4KPiAtCWdsb2JhbC5ib290LmRlZmF1bHQ9
+InNwaSBuYW5kIG1tYyBuZXQiCj4gKwlnbG9iYWwuYm9vdC5kZWZhdWx0PSJzcGkgJG52bWVtIG1t
+YyBuZXQiCj4gICBlbGlmIFsgJGJvb3Rzb3VyY2UgPSBuZXQgXTsgdGhlbgo+IC0JZ2xvYmFsLmJv
+b3QuZGVmYXVsdD0ibmV0IG5hbmQgc3BpIG1tYyIKPiArCWdsb2JhbC5ib290LmRlZmF1bHQ9Im5l
+dCAkbnZtZW0gc3BpIG1tYyIKPiAgIGZpCj4gCgotLSAKTWl0IGZyZXVuZGxpY2hlbiBHcsO8w59l
+biwKV2l0aCBiZXN0IHJlZ2FyZHMsCiAgIERhbmllbCBTY2h1bHR6CgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
+Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9iYXJlYm94Cg==
