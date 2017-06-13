@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dMrCz-00080T-4F
- for barebox@lists.infradead.org; Mon, 19 Jun 2017 07:34:51 +0000
-Date: Mon, 19 Jun 2017 09:34:27 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170619073427.oja6l4ebvqjc3fp7@pengutronix.de>
-References: <1497361020-33828-1-git-send-email-d.schultz@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1497361020-33828-1-git-send-email-d.schultz@phytec.de>
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1dKm0f-00011F-Gf
+ for barebox@lists.infradead.org; Tue, 13 Jun 2017 13:37:34 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 027B1A002FA
+ for <barebox@lists.infradead.org>; Tue, 13 Jun 2017 15:38:12 +0200 (CEST)
+From: Daniel Schultz <d.schultz@phytec.de>
+Date: Tue, 13 Jun 2017 15:37:08 +0200
+Message-Id: <1497361028-39920-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,44 +17,130 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] defaultenv: bin: init: Add sourcing of config-expansions
-To: Daniel Schultz <d.schultz@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v4] arm: boards: phytec-som-am335x: Update boot scripts
+To: barebox@lists.infradead.org
 
-On Tue, Jun 13, 2017 at 03:37:00PM +0200, Daniel Schultz wrote:
-> This patch adds a further layer to the config hierarchy. It allows a
-> dynamic configuration of expansions.
-> 
-> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
-> ---
->  defaultenv/defaultenv-2-base/bin/init | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/defaultenv/defaultenv-2-base/bin/init b/defaultenv/defaultenv-2-base/bin/init
-> index 7af3c7d..a93ea58 100644
-> --- a/defaultenv/defaultenv-2-base/bin/init
-> +++ b/defaultenv/defaultenv-2-base/bin/init
-> @@ -25,6 +25,7 @@ magicvar -a global.allow_color "Allow color on the console (boolean)"
->  [ -z "${global.editcmd}" ] && global.editcmd=sedit
->  
->  [ -e /env/config-board ] && /env/config-board
-> +[ -e /env/config-expansions ] && /env/config-expansions
+Expand the boot scripts with EMMC and add a default file source for
+expansions.
 
-I read the last thread again and I think my question remains
-unanswered. Why can't you put the config-expansions to /env/init/ and
-let it be executed automatically without changing /bin/init?
+Removed "rw" and "rootwait" bootargs from existing boot scripts.
+Added "rootflags='data=journal'" bootarg to SD card boot script.
 
-Sascha
+Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+---
+ .../phytec-som-am335x/defaultenv-physom-am335x/boot/emmc |  5 +++++
+ .../phytec-som-am335x/defaultenv-physom-am335x/boot/mmc  |  7 +++----
+ .../phytec-som-am335x/defaultenv-physom-am335x/boot/nand |  2 +-
+ .../phytec-som-am335x/defaultenv-physom-am335x/boot/net  | 15 +++++++++++++++
+ .../phytec-som-am335x/defaultenv-physom-am335x/boot/spi  |  2 +-
+ .../defaultenv-physom-am335x/init/bootsource             | 16 ++++++++++++----
+ 6 files changed, 37 insertions(+), 10 deletions(-)
+ create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+ create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/net
 
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+new file mode 100644
+index 0000000..b1792a6
+--- /dev/null
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+@@ -0,0 +1,5 @@
++#!/bin/sh
++
++global.bootm.image=/mnt/mmc1.0/linuximage
++global.bootm.oftree=/mnt/mmc1.0/oftree
++global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
+index 834669d..77a076d 100644
+--- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
+@@ -1,6 +1,5 @@
+ #!/bin/sh
+ 
+-global.bootm.image=/boot/linuximage
+-global.bootm.oftree=/boot/oftree
+-
+-global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rw rootwait"
++global.bootm.image=/mnt/mmc0.0/linuximage
++global.bootm.oftree=/mnt/mmc0.0/oftree
++global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
+index ece44b7..33f5f02 100644
+--- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
+@@ -5,4 +5,4 @@
+ global.bootm.image="/dev/nand0.root.ubi.kernel"
+ global.bootm.oftree="/dev/nand0.root.ubi.oftree"
+ 
+-global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rw rootfstype=ubifs"
++global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/net b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/net
+new file mode 100644
+index 0000000..1005199
+--- /dev/null
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/net
+@@ -0,0 +1,15 @@
++#!/bin/sh
++
++path="/mnt/tftp"
++
++global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
++
++oftree="${path}/${global.user}-oftree-${global.hostname}"
++if [ -f "${oftree}" ]; then
++    global.bootm.oftree="$oftree"
++fi
++
++nfsroot="/nfsroot/${global.hostname}"
++bootargs-ip
++
++global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,udp"
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
+index 71c5834..a321aa9 100644
+--- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
+@@ -4,4 +4,4 @@ global.bootm.image="/dev/m25p0.kernel"
+ global.bootm.oftree="/dev/m25p0.oftree"
+ 
+ # Use rootfs from NAND
+-global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rw rootfstype=ubifs"
++global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rootfstype=ubifs"
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
+index 3f2ff4b..61a0879 100644
+--- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
+@@ -4,12 +4,20 @@ if [ -n "$nv.boot.default" ]; then
+ 	exit
+ fi
+ 
+-if [ $bootsource = mmc ]; then
+-	global.boot.default="mmc nand spi net"
++if [ -e /dev/mmc1.0 ]; then
++	nvmem="emmc"
++else
++	nvmem="nand"
++fi
++
++if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
++	global.boot.default="emmc mmc spi net"
++elif [ $bootsource = mmc -a $bootsource_instance = 0 ]; then
++	global.boot.default="mmc $nvmem spi net"
+ elif [ $bootsource = nand ]; then
+ 	global.boot.default="nand spi mmc net"
+ elif [ $bootsource = spi ]; then
+-	global.boot.default="spi nand mmc net"
++	global.boot.default="spi $nvmem mmc net"
+ elif [ $bootsource = net ]; then
+-	global.boot.default="net nand spi mmc"
++	global.boot.default="net $nvmem spi mmc"
+ fi
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
