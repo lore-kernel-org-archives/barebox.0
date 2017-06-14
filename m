@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dL2hn-0001y8-MS
- for barebox@lists.infradead.org; Wed, 14 Jun 2017 07:27:09 +0000
+ id 1dL2hn-0001y7-Qy
+ for barebox@lists.infradead.org; Wed, 14 Jun 2017 07:27:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 14 Jun 2017 09:26:36 +0200
-Message-Id: <20170614072641.29942-4-s.hauer@pengutronix.de>
+Date: Wed, 14 Jun 2017 09:26:34 +0200
+Message-Id: <20170614072641.29942-2-s.hauer@pengutronix.de>
 In-Reply-To: <20170614072641.29942-1-s.hauer@pengutronix.de>
 References: <20170614072641.29942-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,27 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] Revert "globalvar: make nv_device static"
+Subject: [PATCH 1/8] Revert "globalvar: Fix value of new globalvar when nvvar
+ exists"
 To: Barebox List <barebox@lists.infradead.org>
 
-This reverts commit f655902cfad63b9ba5cea7d0c9fc9c3632143e02.
+This reverts commit f8a177478c1b79e369ecc65501d9d15ff573339f.
 ---
- common/globalvar.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/globalvar.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/common/globalvar.c b/common/globalvar.c
-index 1385559fd7..9bb363f3a5 100644
+index c528b24062..c48e7df067 100644
 --- a/common/globalvar.c
 +++ b/common/globalvar.c
-@@ -19,7 +19,7 @@ struct device_d global_device = {
- 	.id = DEVICE_ID_SINGLE,
- };
+@@ -403,11 +403,11 @@ int globalvar_add_simple(const char *name, const char *value)
+ 			return PTR_ERR(param);
+ 	}
  
--static struct device_d nv_device = {
-+struct device_d nv_device = {
- 	.name = "nv",
- 	.id = DEVICE_ID_SINGLE,
- };
+-	globalvar_nv_sync(name);
+-
+ 	if (value)
+ 		dev_set_param(&global_device, name, value);
+ 
++	globalvar_nv_sync(name);
++
+ 	return 0;
+ }
+ 
 -- 
 2.11.0
 
