@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dMq44-00050R-RE
- for barebox@lists.infradead.org; Mon, 19 Jun 2017 06:21:34 +0000
-Date: Mon, 19 Jun 2017 08:21:12 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170619062112.w4x2uigp6ctrocjp@pengutronix.de>
-References: <20170614113110.21604-1-u.kleine-koenig@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dLCdP-0002QM-39
+ for barebox@lists.infradead.org; Wed, 14 Jun 2017 18:03:17 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Wed, 14 Jun 2017 20:02:49 +0200
+Message-Id: <20170614180249.12644-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170614113110.21604-2-u.kleine-koenig@pengutronix.de>
+References: <20170614113110.21604-2-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170614113110.21604-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,83 +17,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] of_device_is_stdout_path: simplify
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 2/2] of_device_is_stdout_path: split off options and
+ support aliases
+To: barebox@lists.infradead.org
 
-On Wed, Jun 14, 2017 at 01:31:09PM +0200, Uwe Kleine-K=F6nig wrote:
-> Test for dev->device_node being NULL earlier which at the end of the
-> function allows to simplify the calculation of the return value
-> =
-
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  drivers/of/base.c | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
-
-Applied, thanks
-
-Sascha
-
-> =
-
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index c9bdd91810f2..592ebb015a73 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -2000,6 +2000,9 @@ int of_device_is_stdout_path(struct device_d *dev)
->  	struct device_node *dn;
->  	const char *name;
->  =
-
-> +	if (!dev->device_node)
-> +		return 0;
-> +
->  	name =3D of_get_property(of_chosen, "stdout-path", NULL);
->  	if (!name)
->  		name =3D of_get_property(of_chosen, "linux,stdout-path", NULL);
-> @@ -2008,13 +2011,8 @@ int of_device_is_stdout_path(struct device_d *dev)
->  		return 0;
->  =
-
->  	dn =3D of_find_node_by_path(name);
-> -	if (!dn)
-> -		return 0;
->  =
-
-> -	if (dn =3D=3D dev->device_node)
-> -		return 1;
-> -
-> -	return 0;
-> +	return dn =3D=3D dev->device_node;
->  }
->  =
-
->  /**
-> -- =
-
-> 2.11.0
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2V2ZXJhbCBkZXZpY2UgdHJlZXMgdXNlIHNvbWV0aGluZyBsaWtlOgoKCXN0ZG91dC1wYXRoID0g
+InNlcmlhbDA6MTE1MjAwbjgiOwoKQ3VycmVudGx5IG9mX2RldmljZV9pc19zdGRvdXRfcGF0aCBm
+YWlscyB0byBkbyB0aGUgcmlnaHQgdGhpbmcgaGVyZQpiZWNhdXNlIGl0IGV4cGVjdHMgYW4gYWJz
+b2x1dGUgbm9kZSBwYXRoIGFuZCBubyBvcHRpb25zLiBTbyBzcGxpdCBvZmYKb3B0aW9ucyAoZXZl
+cnl0aGluZyBhZnRlciB0aGUgY29sb24pIGFuZCByZXNvbHZlIGFsaWFzZXMuCgpTaWduZWQtb2Zm
+LWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgot
+LS0KQ2hhbmdlcyBzaW5jZSAoaW1wbGljaXQpIHYxLCBzZW50IHdpdGggTWVzc2FnZS1JZDogMjAx
+NzA2MTQxMTMxMTAuMjE2MDQtMi11LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU6CgogLSBm
+aXggdHlwbwogLSBzb3J0IG91dCBjb25zdG5lc3MgaXNzdWVzCgogZHJpdmVycy9vZi9iYXNlLmMg
+fCAxMyArKysrKysrKysrKystCiAxIGZpbGUgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKSwgMSBk
+ZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvb2YvYmFzZS5jIGIvZHJpdmVycy9vZi9i
+YXNlLmMKaW5kZXggNTkyZWJiMDE1YTczLi5hMmQ3NWQ0MGJkNjcgMTAwNjQ0Ci0tLSBhL2RyaXZl
+cnMvb2YvYmFzZS5jCisrKyBiL2RyaXZlcnMvb2YvYmFzZS5jCkBAIC0xOTk5LDYgKzE5OTksOCBA
+QCBpbnQgb2ZfZGV2aWNlX2lzX3N0ZG91dF9wYXRoKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQogewog
+CXN0cnVjdCBkZXZpY2Vfbm9kZSAqZG47CiAJY29uc3QgY2hhciAqbmFtZTsKKwljb25zdCBjaGFy
+ICpwOworCWNoYXIgKnE7CiAKIAlpZiAoIWRldi0+ZGV2aWNlX25vZGUpCiAJCXJldHVybiAwOwpA
+QCAtMjAxMCw3ICsyMDEyLDE2IEBAIGludCBvZl9kZXZpY2VfaXNfc3Rkb3V0X3BhdGgoc3RydWN0
+IGRldmljZV9kICpkZXYpCiAJaWYgKCFuYW1lKQogCQlyZXR1cm4gMDsKIAotCWRuID0gb2ZfZmlu
+ZF9ub2RlX2J5X3BhdGgobmFtZSk7CisJLyogVGhpcyBjb3VsZCBtYWtlIHVzZSBvZiBzdHJjaHJu
+dWwgaWYgaXQgd2VyZSBhdmFpbGFibGUgKi8KKwlwID0gc3RyY2hyKG5hbWUsICc6Jyk7CisJaWYg
+KCFwKQorCQlwID0gbmFtZSArIHN0cmxlbihuYW1lKTsKKworCXEgPSB4c3RybmR1cChuYW1lLCBw
+IC0gbmFtZSk7CisKKwlkbiA9IG9mX2ZpbmRfbm9kZV9ieV9wYXRoX29yX2FsaWFzKE5VTEwsIHEp
+OworCisJZnJlZShxKTsKIAogCXJldHVybiBkbiA9PSBkZXYtPmRldmljZV9ub2RlOwogfQotLSAK
+Mi4xMS4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
+aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
