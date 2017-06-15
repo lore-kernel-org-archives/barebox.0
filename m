@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x244.google.com ([2a00:1450:400c:c0c::244])
+Received: from mail-wr0-x230.google.com ([2a00:1450:400c:c0c::230])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dLSju-0002YH-EZ
- for barebox@lists.infradead.org; Thu, 15 Jun 2017 11:15:07 +0000
-Received: by mail-wr0-x244.google.com with SMTP id 77so2873490wrb.3
- for <barebox@lists.infradead.org>; Thu, 15 Jun 2017 04:14:42 -0700 (PDT)
+ id 1dLSjx-0002Ye-RU
+ for barebox@lists.infradead.org; Thu, 15 Jun 2017 11:15:08 +0000
+Received: by mail-wr0-x230.google.com with SMTP id 36so17079057wry.3
+ for <barebox@lists.infradead.org>; Thu, 15 Jun 2017 04:14:47 -0700 (PDT)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Thu, 15 Jun 2017 13:14:06 +0200
-Message-Id: <20170615111420.5318-3-aleksander@aleksander.es>
+Date: Thu, 15 Jun 2017 13:14:12 +0200
+Message-Id: <20170615111420.5318-9-aleksander@aleksander.es>
 In-Reply-To: <20170615111420.5318-1-aleksander@aleksander.es>
 References: <20170615111420.5318-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
@@ -23,37 +23,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/16] ratp: avoid unnecessary variable initializations
+Subject: [PATCH 08/16] ratp: remove bogus data checks in behavior C2
 To: s.hauer@pengutronix.de, barebox@lists.infradead.org
 Cc: Aleksander Morgado <aleksander@aleksander.es>
 
+The SN validation was being completely ignored if the packet had no
+data (e.g. for RST, FIN or SYN or plain ACKs). This condition is now
+removed so that the SN check is done.
+
+The second check removed was actually never being used, as it was
+already being tested for not having data in the first one.
+
 Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
- lib/ratp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/ratp.c             |  8 +-------
+ scripts/remote/ratp.py | 16 +++++-----------
+ 2 files changed, 6 insertions(+), 18 deletions(-)
 
 diff --git a/lib/ratp.c b/lib/ratp.c
-index 0d384aa4e..e9536499e 100644
+index 846f8130c..321721ab7 100644
 --- a/lib/ratp.c
 +++ b/lib/ratp.c
-@@ -382,7 +382,7 @@ static int ratp_send_ack(struct ratp_internal *ri, struct ratp_header *hdr)
- static int ratp_send_next_data(struct ratp_internal *ri)
- {
- 	uint16_t crc;
--	uint8_t control = RATP_CONTROL_ACK;
-+	uint8_t control;
- 	struct ratp_header *hdr;
- 	int pktlen;
- 	struct ratp_message *msg;
-@@ -594,7 +594,7 @@ static void ratp_behaviour_b(struct ratp_internal *ri, void *pkt)
+@@ -721,9 +721,6 @@ static int ratp_behaviour_c2(struct ratp_internal *ri, void *pkt)
  
- 	if ((hdr->control & RATP_CONTROL_ACK) && !ratp_an_expected(ri, hdr)) {
- 		if (!(hdr->control & RATP_CONTROL_RST)) {
--			uint8_t control = RATP_CONTROL_RST;
-+			uint8_t control;
+ 	pr_debug("%s\n", __func__);
  
- 			control = RATP_CONTROL_RST |
- 				ratp_set_sn(ratp_an(hdr));
+-	if (!ratp_has_data(hdr))
+-		return 0;
+-
+ 	if (ratp_sn_expected(ri, hdr))
+ 		return 0;
+ 
+@@ -745,9 +742,6 @@ static int ratp_behaviour_c2(struct ratp_internal *ri, void *pkt)
+ 		return 1;
+ 	}
+ 
+-	if (!ratp_has_data(hdr))
+-		return 1;
+-
+ 	pr_debug("Sending ack for duplicate message\n");
+ 	ret = ratp_send_ack(ri, hdr);
+ 	if (ret)
+@@ -1846,4 +1840,4 @@ eor:
+ 	}
+ 
+ 	return 0;
+-}
+\ No newline at end of file
++}
+diff --git a/scripts/remote/ratp.py b/scripts/remote/ratp.py
+index a41d2e8a3..0dfc8420c 100644
+--- a/scripts/remote/ratp.py
++++ b/scripts/remote/ratp.py
+@@ -339,9 +339,6 @@ class RatpConnection(object):
+     def _c2(self, r):
+         logging.info("C2")
+ 
+-        if r.length == 0 and r.c_so == 0:
+-            return True
+-
+         if r.c_sn != self._r_sn:
+             return True
+ 
+@@ -358,14 +355,11 @@ class RatpConnection(object):
+             self._state = RatpState.closed
+             return False
+ 
+-        # FIXME: only ack duplicate data packages?
+-        # This is not documented in RFC 916
+-        if r.length or r.c_so:
+-            logging.info("C2: duplicate data packet, dropping")
+-            s = RatpPacket(flags='A')
+-            s.c_sn = r.c_an
+-            s.c_an = (r.c_sn + 1) % 2
+-            self._write(s)
++        logging.info("C2: duplicate packet")
++        s = RatpPacket(flags='A')
++        s.c_sn = r.c_an
++        s.c_an = (r.c_sn + 1) % 2
++        self._write(s)
+ 
+         return False
+ 
 -- 
 2.13.1
 
