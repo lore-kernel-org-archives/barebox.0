@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x22e.google.com ([2a00:1450:400c:c0c::22e])
+Received: from mail-wr0-x244.google.com ([2a00:1450:400c:c0c::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dLSjv-0002YJ-BA
+ id 1dLSju-0002YO-Ei
  for barebox@lists.infradead.org; Thu, 15 Jun 2017 11:15:06 +0000
-Received: by mail-wr0-x22e.google.com with SMTP id 36so17076156wry.3
- for <barebox@lists.infradead.org>; Thu, 15 Jun 2017 04:14:42 -0700 (PDT)
+Received: by mail-wr0-x244.google.com with SMTP id y25so673239wrd.1
+ for <barebox@lists.infradead.org>; Thu, 15 Jun 2017 04:14:44 -0700 (PDT)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Thu, 15 Jun 2017 13:14:07 +0200
-Message-Id: <20170615111420.5318-4-aleksander@aleksander.es>
+Date: Thu, 15 Jun 2017 13:14:09 +0200
+Message-Id: <20170615111420.5318-6-aleksander@aleksander.es>
 In-Reply-To: <20170615111420.5318-1-aleksander@aleksander.es>
 References: <20170615111420.5318-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
@@ -23,44 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/16] ratp: send missing RST in behavior C2
+Subject: [PATCH 05/16] ratp: completely ignore RST flagged packets in behavior
+ G
 To: s.hauer@pengutronix.de, barebox@lists.infradead.org
 Cc: Aleksander Morgado <aleksander@aleksander.es>
 
 The reference says:
 
-    If SYN was set we assume that the other end crashed and has
-    attempted to open a new connection.  We respond by sending a
-    legal reset:
-        <SN=received AN><AN=received SN+1 modulo 2><CTL=RST, ACK>
+    This procedure represents the behavior of the CLOSED state of a
+    connection. All incoming packets are discarded. If the packet
+    had the RST flag set take no action. Otherwise it is necessary
+    to build a RST packet.
 
-Add this missing step.
+So, skip building the RST packet if the incoming one had RST set.
 
 Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
- lib/ratp.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ lib/ratp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/lib/ratp.c b/lib/ratp.c
-index e9536499e..a8ac52c75 100644
+index 43b8b04dc..d3c252047 100644
 --- a/lib/ratp.c
 +++ b/lib/ratp.c
-@@ -731,8 +731,15 @@ static int ratp_behaviour_c2(struct ratp_internal *ri, void *pkt)
- 		return 1;
+@@ -1033,6 +1033,9 @@ static int ratp_behaviour_g(struct ratp_internal *ri, void *pkt)
  
- 	if (hdr->control & RATP_CONTROL_SYN) {
-+		uint8_t control;
+ 	pr_debug("%s\n", __func__);
+ 
++	if (hdr->control & RATP_CONTROL_RST)
++		return 0;
 +
- 		ri->status = -ECONNRESET;
- 		pr_debug("Error: Connection reset\n");
-+
-+		control = RATP_CONTROL_RST | RATP_CONTROL_ACK |
-+			ratp_set_sn(ratp_an(hdr)) | ratp_set_an(!ratp_sn(hdr));
-+		ratp_send_hdr(ri, control);
-+
- 		ratp_state_change(ri, RATP_STATE_CLOSED);
- 		return 1;
- 	}
+ 	control = RATP_CONTROL_RST;
+ 
+ 	if (hdr->control & RATP_CONTROL_ACK)
 -- 
 2.13.1
 
