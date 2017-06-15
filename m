@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x230.google.com ([2a00:1450:400c:c0c::230])
+Received: from mail-wr0-x235.google.com ([2a00:1450:400c:c0c::235])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dLSjx-0002Ye-RU
- for barebox@lists.infradead.org; Thu, 15 Jun 2017 11:15:08 +0000
-Received: by mail-wr0-x230.google.com with SMTP id 36so17079057wry.3
- for <barebox@lists.infradead.org>; Thu, 15 Jun 2017 04:14:47 -0700 (PDT)
+ id 1dLSjy-0002YR-AQ
+ for barebox@lists.infradead.org; Thu, 15 Jun 2017 11:15:09 +0000
+Received: by mail-wr0-x235.google.com with SMTP id 77so17185018wrb.1
+ for <barebox@lists.infradead.org>; Thu, 15 Jun 2017 04:14:45 -0700 (PDT)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Thu, 15 Jun 2017 13:14:12 +0200
-Message-Id: <20170615111420.5318-9-aleksander@aleksander.es>
+Date: Thu, 15 Jun 2017 13:14:10 +0200
+Message-Id: <20170615111420.5318-7-aleksander@aleksander.es>
 In-Reply-To: <20170615111420.5318-1-aleksander@aleksander.es>
 References: <20170615111420.5318-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
@@ -23,88 +23,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/16] ratp: remove bogus data checks in behavior C2
+Subject: [PATCH 06/16] ratp: fix data presence check
 To: s.hauer@pengutronix.de, barebox@lists.infradead.org
 Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-The SN validation was being completely ignored if the packet had no
-data (e.g. for RST, FIN or SYN or plain ACKs). This condition is now
-removed so that the SN check is done.
+Looking at the "data length" and SO flag isn't enough to declare a
+packet with or without data, because SYN flagged packets will also use
+the "data length" field to define MDL.
 
-The second check removed was actually never being used, as it was
-already being tested for not having data in the first one.
+So, improve the check to match against SYN|RST|FIN flagged packets,
+which can never have data.
 
 Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
- lib/ratp.c             |  8 +-------
- scripts/remote/ratp.py | 16 +++++-----------
- 2 files changed, 6 insertions(+), 18 deletions(-)
+ lib/ratp.c             | 4 ++--
+ scripts/remote/ratp.py | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/lib/ratp.c b/lib/ratp.c
-index 846f8130c..321721ab7 100644
+index d3c252047..c946bea1a 100644
 --- a/lib/ratp.c
 +++ b/lib/ratp.c
-@@ -721,9 +721,6 @@ static int ratp_behaviour_c2(struct ratp_internal *ri, void *pkt)
- 
- 	pr_debug("%s\n", __func__);
- 
--	if (!ratp_has_data(hdr))
--		return 0;
--
- 	if (ratp_sn_expected(ri, hdr))
- 		return 0;
- 
-@@ -745,9 +742,6 @@ static int ratp_behaviour_c2(struct ratp_internal *ri, void *pkt)
+@@ -165,7 +165,7 @@ static bool ratp_has_data(struct ratp_header *hdr)
+ {
+ 	if (hdr->control & RATP_CONTROL_SO)
  		return 1;
- 	}
- 
--	if (!ratp_has_data(hdr))
--		return 1;
--
- 	pr_debug("Sending ack for duplicate message\n");
- 	ret = ratp_send_ack(ri, hdr);
- 	if (ret)
-@@ -1846,4 +1840,4 @@ eor:
- 	}
- 
+-	if (hdr->data_length)
++	if (!(hdr->control & (RATP_CONTROL_SYN | RATP_CONTROL_RST | RATP_CONTROL_FIN)) && hdr->data_length)
+ 		return 1;
  	return 0;
--}
-\ No newline at end of file
-+}
+ }
+@@ -1338,7 +1338,7 @@ static int ratp_behaviour_i1(struct ratp_internal *ri, void *pkt)
+ 	struct ratp_header *hdr = pkt;
+ 	uint8_t control = 0;
+ 
+-	if (!hdr->data_length && !(hdr->control & RATP_CONTROL_SO))
++	if (!ratp_has_data (hdr))
+ 		return 1;
+ 
+ 	pr_vdebug("%s **received** %d\n", __func__, hdr->data_length);
 diff --git a/scripts/remote/ratp.py b/scripts/remote/ratp.py
-index a41d2e8a3..0dfc8420c 100644
+index 079fb871a..a41d2e8a3 100644
 --- a/scripts/remote/ratp.py
 +++ b/scripts/remote/ratp.py
-@@ -339,9 +339,6 @@ class RatpConnection(object):
-     def _c2(self, r):
-         logging.info("C2")
- 
--        if r.length == 0 and r.c_so == 0:
--            return True
--
-         if r.c_sn != self._r_sn:
-             return True
- 
-@@ -358,14 +355,11 @@ class RatpConnection(object):
-             self._state = RatpState.closed
+@@ -525,7 +525,7 @@ class RatpConnection(object):
+             # Our fin was lost, rely on retransmission
              return False
  
--        # FIXME: only ack duplicate data packages?
--        # This is not documented in RFC 916
 -        if r.length or r.c_so:
--            logging.info("C2: duplicate data packet, dropping")
--            s = RatpPacket(flags='A')
--            s.c_sn = r.c_an
--            s.c_an = (r.c_sn + 1) % 2
--            self._write(s)
-+        logging.info("C2: duplicate packet")
-+        s = RatpPacket(flags='A')
-+        s.c_sn = r.c_an
-+        s.c_an = (r.c_sn + 1) % 2
-+        self._write(s)
- 
-         return False
- 
++        if (r.length and not r.c_syn and not r.c_rst and not r.c_fin) or r.c_so:
+             self._retrans = None
+             s = RatpPacket(flags='RA')
+             s.c_sn = r.c_an
+@@ -596,7 +596,7 @@ class RatpConnection(object):
+         if r.c_so:
+             self._r_sn = r.c_sn
+             self._rx_buf.append(chr(r.length))
+-        elif r.length:
++        elif r.length and not r.c_syn and not r.c_rst and not r.c_fin:
+             self._r_sn = r.c_sn
+             self._rx_buf.append(r.payload)
+         else:
 -- 
 2.13.1
 
