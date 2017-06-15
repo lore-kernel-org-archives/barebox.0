@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x243.google.com ([2a00:1450:400c:c0c::243])
+Received: from mail-wr0-x22d.google.com ([2a00:1450:400c:c0c::22d])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dLSk3-0002Yw-U0
- for barebox@lists.infradead.org; Thu, 15 Jun 2017 11:15:17 +0000
-Received: by mail-wr0-x243.google.com with SMTP id y25so674479wrd.1
- for <barebox@lists.infradead.org>; Thu, 15 Jun 2017 04:14:55 -0700 (PDT)
+ id 1dLSo7-0005h8-P3
+ for barebox@lists.infradead.org; Thu, 15 Jun 2017 11:19:25 +0000
+Received: by mail-wr0-x22d.google.com with SMTP id 36so17239858wry.3
+ for <barebox@lists.infradead.org>; Thu, 15 Jun 2017 04:19:03 -0700 (PDT)
+MIME-Version: 1.0
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Thu, 15 Jun 2017 13:14:20 +0200
-Message-Id: <20170615111420.5318-17-aleksander@aleksander.es>
-In-Reply-To: <20170615111420.5318-1-aleksander@aleksander.es>
-References: <20170615111420.5318-1-aleksander@aleksander.es>
+Date: Thu, 15 Jun 2017 13:18:41 +0200
+Message-ID: <CAAP7uc+itatZvN+dwD9TKfSFr=HXOQ0OWT6JUz9dBxbW+1G1FQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,60 +17,89 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 16/16] ratp: user close may happen in SYN-RECEIVED state
-To: s.hauer@pengutronix.de, barebox@lists.infradead.org
-Cc: Aleksander Morgado <aleksander@aleksander.es>
+Subject: libratp, libratp-barebox and ratp-barebox-cli
+To: barebox@lists.infradead.org
 
-The reference says:
+Hey,
 
-     5.2.3. SYN-RECEIVED
-     ...
-     Departures
-       - A CLOSE request is made by the user.  Create a packet with
-         FIN set.  Send it and go to the FIN-WAIT state.
+For anyone interested, I ended up preparing a pair of C libraries and
+a CLI tool that allow controlling barebox remotely using RATP, in the
+same way as bbremote does it. The libraries would allow easy
+integration on C applications that may want to remotely control
+barebox.
 
-Add this missing step.
+Repositories:
+  https://github.com/aleksander0m/libratp
+  https://github.com/aleksander0m/libratp-barebox
 
-Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
----
- lib/ratp.c             | 2 +-
- scripts/remote/ratp.py | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Some initial 0.0.2 tagged versions here:
+  https://aleksander.es/software/libratp-0.0.2.tar.xz
+  https://aleksander.es/software/libratp-barebox-0.0.2.tar.xz
 
-diff --git a/lib/ratp.c b/lib/ratp.c
-index 46a82c69a..e7fbf640a 100644
---- a/lib/ratp.c
-+++ b/lib/ratp.c
-@@ -1689,7 +1689,7 @@ void ratp_close(struct ratp *ratp)
- 	if (!ri)
- 		return;
- 
--	if (ri->state == RATP_STATE_ESTABLISHED) {
-+	if (ri->state == RATP_STATE_ESTABLISHED || ri->state == RATP_STATE_SYN_RECEIVED) {
- 		uint64_t start;
- 		u8 control;
- 
-diff --git a/scripts/remote/ratp.py b/scripts/remote/ratp.py
-index 7972d31f2..44f3e2f40 100644
---- a/scripts/remote/ratp.py
-+++ b/scripts/remote/ratp.py
-@@ -721,7 +721,7 @@ class RatpConnection(object):
-     def close(self, timeout=1.0):
-         deadline = monotonic() + timeout
-         logging.info("CLOSE")
--        if self._state == RatpState.established:
-+        if self._state == RatpState.established or self._state == RatpState.syn_received:
-             fin = RatpPacket(flags='FA')
-             fin.c_sn = (self._s_sn + 1) % 2
-             fin.c_an = (self._r_sn + 1) % 2
+APIs:
+  https://aleksander0m.github.io/libratp
+  https://aleksander0m.github.io/libratp-barebox
+
+The libratp library provides a generic RATP implementation, much like
+barebox' lib/ratp.c:
+  * The library currently supports creating ratp_t objects for TTYs or
+FIFO pairs (e.g. for barebox sandbox testing).
+  * The library launches a background thread running a libevent main
+loop, which takes care of all the async reading from the TTY (or
+FIFO). all the timers in the RATP logic and all the link management
+state machine.
+  * Callbacks may be registered by the user to get reported when new
+data arrives or when RATP link state changes. Worth noting that these
+callbacks are called from within the support thread.
+  * The ratp_close() and ratp_establish() operations in barebox'
+lib/ratp.c are blocking, they will not return until the desired final
+state has been reached or a timeout happened. In the libratp library
+the equivalent operations would be ratp_link_active_open_sync() and
+ratp_link_close_sync(); but the library also includes support for just
+sending the active open or close requests, without waiting for the
+final state to be reached, via ratp_link_active_open() and
+ratp_link_close(). This allows to e.g. request an active open and
+queue data to be sent, so that the data is directly sent on the ACK
+finishing the establishment.
+  * The library doesn't make any assumption on the maximum data length
+chosen by each peer, so a peer may choose a MDL<255 to receive data in
+shorter chunks or even choose MDL=0 to indicate no data may be
+received.
+
+The libratp-barebox library "extends" the libratp library with barebox
+specific operations. Right now, these are implemented:
+ * ratp_barebox_link_ping()
+ * ratp_barebox_link_command()
+ * ratp_barebox_link_getenv()
+
+The ratp-barebox-cli implements the barebox specific operations in a
+CLI, just a simple way to exercise the library APIs:
+
+$ ratp-barebox-cli -t /dev/ttyUSB3 --ping
+Sending PING...
+PONG received...
+
+$ ratp-barebox-cli -t /dev/ttyUSB3 --getenv global.boot.default
+Sending getenv request: global.boot.default
+global.boot.default: net
+
+$ ratp-barebox-cli -t /dev/ttyUSB3 --command "ls /dev"
+Sending command: ls /dev
+Received response (errno Success):
+cs0              eeprom0          eeprom1          full
+imx-ocotp        mem              netconsole-1     null
+prng             ram0             ratpconsole-1    serial0-1
+serial1-1        serial2-1        zero
+
+Cheers!
+
 -- 
-2.13.1
-
+Aleksander
+https://aleksander.es
 
 _______________________________________________
 barebox mailing list
