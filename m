@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x244.google.com ([2a00:1450:400c:c0c::244])
+Received: from mail-wr0-x243.google.com ([2a00:1450:400c:c0c::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dLSjz-0002Yh-60
- for barebox@lists.infradead.org; Thu, 15 Jun 2017 11:15:09 +0000
-Received: by mail-wr0-x244.google.com with SMTP id 77so2874299wrb.3
- for <barebox@lists.infradead.org>; Thu, 15 Jun 2017 04:14:49 -0700 (PDT)
+ id 1dLSjz-0002Yd-7E
+ for barebox@lists.infradead.org; Thu, 15 Jun 2017 11:15:10 +0000
+Received: by mail-wr0-x243.google.com with SMTP id 77so2874008wrb.3
+ for <barebox@lists.infradead.org>; Thu, 15 Jun 2017 04:14:46 -0700 (PDT)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Thu, 15 Jun 2017 13:14:14 +0200
-Message-Id: <20170615111420.5318-11-aleksander@aleksander.es>
+Date: Thu, 15 Jun 2017 13:14:11 +0200
+Message-Id: <20170615111420.5318-8-aleksander@aleksander.es>
 In-Reply-To: <20170615111420.5318-1-aleksander@aleksander.es>
 References: <20170615111420.5318-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
@@ -23,44 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/16] ratp: fix sending ACKs without data
+Subject: [PATCH 07/16] ratp: fix single byte sending flagged with SO
 To: s.hauer@pengutronix.de, barebox@lists.infradead.org
 Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-All ACKs without data must be built in the same way from the input
-message:
-     <SN=received AN><AN=received SN+1 modulo 2><CTL=ACK>
-
-The code was actually doing this instead:
-     <SN=0><AN=SN><CTL=ACK>
+When a single data byte is sent, it is flagged as SO and the actual
+data goes in the length byte within the header.
 
 Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
- lib/ratp.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ lib/ratp.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/lib/ratp.c b/lib/ratp.c
-index 321721ab7..5c52d3b5f 100644
+index c946bea1a..846f8130c 100644
 --- a/lib/ratp.c
 +++ b/lib/ratp.c
-@@ -364,13 +364,12 @@ static bool ratp_sn_expected(struct ratp_internal *ri, struct ratp_header *hdr)
+@@ -384,6 +384,7 @@ static int ratp_send_next_data(struct ratp_internal *ri)
+ 	uint16_t crc;
+ 	uint8_t control;
+ 	struct ratp_header *hdr;
++	uint8_t *data;
+ 	int pktlen;
+ 	struct ratp_message *msg;
+ 	int len;
+@@ -409,19 +410,19 @@ static int ratp_send_next_data(struct ratp_internal *ri)
+ 		RATP_CONTROL_ACK;
  
- static int ratp_send_ack(struct ratp_internal *ri, struct ratp_header *hdr)
- {
--	uint8_t control = RATP_CONTROL_ACK;
-+	uint8_t control;
- 	int ret;
+ 	hdr = msg->buf;
++	data = (uint8_t *)(hdr + 1);
  
--	if (hdr->control & RATP_CONTROL_SN)
--		control |= RATP_CONTROL_AN;
--	else
--		control |= 0;
-+	control = ratp_set_sn(ratp_an(hdr)) |
-+		ratp_set_an(ratp_sn(hdr) + 1) |
-+		RATP_CONTROL_ACK;
+ 	if (msg->eor)
+ 		control |= RATP_CONTROL_EOR;
  
- 	ret = ratp_send_hdr(ri, control);
- 	if (ret)
++	pktlen = sizeof(struct ratp_header);
+ 	if (len > 1) {
+-		void *data = hdr + 1;
+-		pktlen = sizeof(*hdr) + len + 2;
++		pktlen += len + 2;
+ 		crc = cyg_crc16(data, len);
+ 		put_unaligned_be16(crc, data + len);
+-	} else {
+-		pktlen = sizeof(struct ratp_header);
++	} else if (len == 1) {
+ 		control |= RATP_CONTROL_SO;
+-		len = 0;
++		len = *data;
+ 	}
+ 
+ 	ratp_create_packet(ri, hdr, control, len);
 -- 
 2.13.1
 
