@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x230.google.com ([2a00:1450:400c:c0c::230])
+Received: from mail-wr0-x241.google.com ([2a00:1450:400c:c0c::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dLSjt-0002YD-Pl
- for barebox@lists.infradead.org; Thu, 15 Jun 2017 11:15:04 +0000
-Received: by mail-wr0-x230.google.com with SMTP id 77so17181640wrb.1
- for <barebox@lists.infradead.org>; Thu, 15 Jun 2017 04:14:40 -0700 (PDT)
+ id 1dLSju-0002YN-CH
+ for barebox@lists.infradead.org; Thu, 15 Jun 2017 11:15:06 +0000
+Received: by mail-wr0-x241.google.com with SMTP id 77so2873638wrb.3
+ for <barebox@lists.infradead.org>; Thu, 15 Jun 2017 04:14:43 -0700 (PDT)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Thu, 15 Jun 2017 13:14:04 +0200
-Message-Id: <20170615111420.5318-1-aleksander@aleksander.es>
+Date: Thu, 15 Jun 2017 13:14:08 +0200
+Message-Id: <20170615111420.5318-5-aleksander@aleksander.es>
+In-Reply-To: <20170615111420.5318-1-aleksander@aleksander.es>
+References: <20170615111420.5318-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,41 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/16] RATP logic fixes and improvements
+Subject: [PATCH 04/16] ratp: add missing RST flag in behavior G
 To: s.hauer@pengutronix.de, barebox@lists.infradead.org
 Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-Hey Sascha,
+The reference says:
 
-I went through the RFC916 and ended up preparing a set of fixes and improvements for the RATP logic in barebox.
-Let me know what you think.
+   If the ACK flag was set then send:
+       <SN=received AN><CTL=RST>
+   If the ACK flag was not set then send:
+       <SN=0><AN=received SN+1 modulo 2><CTL=RST, ACK>
+   (i.e. in both cases RST is needed)
 
-Cheers!
+The RST flag is set initially in the 'control' variable; so instead of
+completely overwriting it, make sure the additional flags are OR-ed
+to the current value.
 
-Aleksander Morgado (16):
-  ratp: add missing transition to SYN-RECEIVED in behavior B
-  ratp: avoid unnecessary variable initializations
-  ratp: send missing RST in behavior C2
-  ratp: add missing RST flag in behavior G
-  ratp: completely ignore RST flagged packets in behavior G
-  ratp: fix data presence check
-  ratp: fix single byte sending flagged with SO
-  ratp: remove bogus data checks in behavior C2
-  ratp: remove FIXME comment: FIN always requires ACK
-  ratp: fix sending ACKs without data
-  ratp: consolidate ratp_sn_expected() and ratp_an_expected()
-  ratp: prefer using ratp_send_ack() in behaviour I1
-  ratp: send initial data in behaviour B if any pending
-  ratp: don't ignore data that may arrive in behaviour H1
-  ratp: consolidate setting the next AN or SN flags
-  ratp: user close may happen in SYN-RECEIVED state
+Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
+---
+ lib/ratp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- lib/ratp.c             | 116 +++++++++++++++++++++++++++----------------------
- scripts/remote/ratp.py |  38 +++++++---------
- 2 files changed, 78 insertions(+), 76 deletions(-)
-
---
+diff --git a/lib/ratp.c b/lib/ratp.c
+index a8ac52c75..43b8b04dc 100644
+--- a/lib/ratp.c
++++ b/lib/ratp.c
+@@ -1038,7 +1038,7 @@ static int ratp_behaviour_g(struct ratp_internal *ri, void *pkt)
+ 	if (hdr->control & RATP_CONTROL_ACK)
+ 		control |= ratp_set_sn(ratp_an(hdr));
+ 	else
+-		control = ratp_set_an(ratp_sn(hdr) + 1) | RATP_CONTROL_ACK;
++		control |= ratp_set_an(ratp_sn(hdr) + 1) | RATP_CONTROL_ACK;
+ 
+ 	ratp_send_hdr(ri, control);
+ 
+-- 
 2.13.1
+
 
 _______________________________________________
 barebox mailing list
