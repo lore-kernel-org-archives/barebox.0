@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wr0-x230.google.com ([2a00:1450:400c:c0c::230])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dPNTb-00055H-BQ
- for barebox@lists.infradead.org; Mon, 26 Jun 2017 06:26:25 +0000
-Date: Mon, 26 Jun 2017 08:25:57 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170626062557.5kaeyculqgi3mske@pengutronix.de>
-References: <1497361020-33828-1-git-send-email-d.schultz@phytec.de>
- <20170619073427.oja6l4ebvqjc3fp7@pengutronix.de>
- <661a7f8c-9ba8-bd25-7eb9-da77e6fb7ed4@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <661a7f8c-9ba8-bd25-7eb9-da77e6fb7ed4@phytec.de>
+ id 1dLSjt-0002YD-Pl
+ for barebox@lists.infradead.org; Thu, 15 Jun 2017 11:15:04 +0000
+Received: by mail-wr0-x230.google.com with SMTP id 77so17181640wrb.1
+ for <barebox@lists.infradead.org>; Thu, 15 Jun 2017 04:14:40 -0700 (PDT)
+From: Aleksander Morgado <aleksander@aleksander.es>
+Date: Thu, 15 Jun 2017 13:14:04 +0200
+Message-Id: <20170615111420.5318-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,56 +16,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] defaultenv: bin: init: Add sourcing of config-expansions
-To: Daniel Schultz <d.schultz@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 00/16] RATP logic fixes and improvements
+To: s.hauer@pengutronix.de, barebox@lists.infradead.org
+Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-On Tue, Jun 20, 2017 at 05:50:56PM +0200, Daniel Schultz wrote:
-> Hi,
-> 
-> Am 19.06.2017 um 09:34 schrieb Sascha Hauer:
-> > On Tue, Jun 13, 2017 at 03:37:00PM +0200, Daniel Schultz wrote:
-> > > This patch adds a further layer to the config hierarchy. It allows a
-> > > dynamic configuration of expansions.
-> > > 
-> > > Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
-> > > ---
-> > >   defaultenv/defaultenv-2-base/bin/init | 1 +
-> > >   1 file changed, 1 insertion(+)
-> > > 
-> > > diff --git a/defaultenv/defaultenv-2-base/bin/init b/defaultenv/defaultenv-2-base/bin/init
-> > > index 7af3c7d..a93ea58 100644
-> > > --- a/defaultenv/defaultenv-2-base/bin/init
-> > > +++ b/defaultenv/defaultenv-2-base/bin/init
-> > > @@ -25,6 +25,7 @@ magicvar -a global.allow_color "Allow color on the console (boolean)"
-> > >   [ -z "${global.editcmd}" ] && global.editcmd=sedit
-> > >   [ -e /env/config-board ] && /env/config-board
-> > > +[ -e /env/config-expansions ] && /env/config-expansions
-> > 
-> > I read the last thread again and I think my question remains
-> > unanswered. Why can't you put the config-expansions to /env/init/ and
-> > let it be executed automatically without changing /bin/init?
-> > 
-> I can change the path of the config-expanions file without problems, but I
-> thought there could be more who need a config for expansions. So, they have
-> config files with a same behavior in different dirs.
+Hey Sascha,
 
-I think we are talking at cross-purposes. All files in /env/init/ are
-executed by the init script, so adding stuff that shall be executed
-during init to that directory would be the natural way to "expand the
-config".
+I went through the RFC916 and ended up preparing a set of fixes and improvements for the RATP logic in barebox.
+Let me know what you think.
 
-Sascha
+Cheers!
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Aleksander Morgado (16):
+  ratp: add missing transition to SYN-RECEIVED in behavior B
+  ratp: avoid unnecessary variable initializations
+  ratp: send missing RST in behavior C2
+  ratp: add missing RST flag in behavior G
+  ratp: completely ignore RST flagged packets in behavior G
+  ratp: fix data presence check
+  ratp: fix single byte sending flagged with SO
+  ratp: remove bogus data checks in behavior C2
+  ratp: remove FIXME comment: FIN always requires ACK
+  ratp: fix sending ACKs without data
+  ratp: consolidate ratp_sn_expected() and ratp_an_expected()
+  ratp: prefer using ratp_send_ack() in behaviour I1
+  ratp: send initial data in behaviour B if any pending
+  ratp: don't ignore data that may arrive in behaviour H1
+  ratp: consolidate setting the next AN or SN flags
+  ratp: user close may happen in SYN-RECEIVED state
+
+ lib/ratp.c             | 116 +++++++++++++++++++++++++++----------------------
+ scripts/remote/ratp.py |  38 +++++++---------
+ 2 files changed, 78 insertions(+), 76 deletions(-)
+
+--
+2.13.1
 
 _______________________________________________
 barebox mailing list
