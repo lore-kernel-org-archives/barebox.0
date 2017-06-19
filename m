@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dKgAf-0006Q6-Kx
- for barebox@lists.infradead.org; Tue, 13 Jun 2017 07:23:28 +0000
-Date: Tue, 13 Jun 2017 09:23:03 +0200
+ id 1dMpyU-00063A-Ct
+ for barebox@lists.infradead.org; Mon, 19 Jun 2017 06:16:18 +0000
+Date: Mon, 19 Jun 2017 08:15:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170613072303.2pkx6wwqp3sysara@pengutronix.de>
-References: <20170612223749.13780-1-u.kleine-koenig@pengutronix.de>
+Message-ID: <20170619061522.gcnal44nqd4riyht@pengutronix.de>
+References: <20170613175805.24686-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170612223749.13780-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170613175805.24686-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,20 +22,14 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: mvebu: fix size mask for RAM window
+Subject: Re: [PATCH] pci: mvebu: terminate error message with a newline
 To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 13, 2017 at 12:37:49AM +0200, Uwe Kleine-K=F6nig wrote:
-> The size field in the window control register occupies bits 31:16. So
-> adapt ARMADA_370_XP_DDR_SIZE_MASK accordingly. This fixes detection of
-> RAM chips smaller than 32 MiB and so probably doesn't affect any
-> supported machine.
-> =
-
+On Tue, Jun 13, 2017 at 07:58:05PM +0200, Uwe Kleine-K=F6nig wrote:
 > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > ---
->  arch/arm/mach-mvebu/common.c | 2 +-
+>  drivers/pci/pci-mvebu.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
@@ -44,21 +38,23 @@ Sascha
 
 > =
 
-> diff --git a/arch/arm/mach-mvebu/common.c b/arch/arm/mach-mvebu/common.c
-> index 06bfb7261544..fa971da11e75 100644
-> --- a/arch/arm/mach-mvebu/common.c
-> +++ b/arch/arm/mach-mvebu/common.c
-> @@ -47,7 +47,7 @@
->  #define ARMADA_370_XP_SDRAM_BASE	(IOMEM(MVEBU_REMAP_INT_REG_BASE) + 0x20=
-000)
->  #define ARMADA_370_XP_DDR_SIZE_CSn(n)	(0x184 + ((n) * 0x8))
->  #define ARMADA_370_XP_DDR_SIZE_ENABLED	BIT(0)
-> -#define ARMADA_370_XP_DDR_SIZE_MASK	0xff000000
-> +#define ARMADA_370_XP_DDR_SIZE_MASK	0xffff0000
+> diff --git a/drivers/pci/pci-mvebu.c b/drivers/pci/pci-mvebu.c
+> index 907bda0f9646..91e8ca870b7f 100644
+> --- a/drivers/pci/pci-mvebu.c
+> +++ b/drivers/pci/pci-mvebu.c
+> @@ -342,7 +342,7 @@ static struct mvebu_pcie *mvebu_pcie_port_probe(struc=
+t device_d *dev,
+>  	if (mvebu_mbus_add_window_remap_by_id(mem_target, mem_attr,
+>  			      (resource_size_t)pcie->membase, resource_size(&pcie->mem),
+>  			      (u32)pcie->mem.start)) {
+> -		dev_err(dev, "PCIe%d.%d unable to add mbus window for mem at %08x+%08x=
+",
+> +		dev_err(dev, "PCIe%d.%d unable to add mbus window for mem at %08x+%08x=
+\n",
+>  			port, lane, (u32)pcie->mem.start, resource_size(&pcie->mem));
 >  =
 
->  /*
->   * Marvell MVEBU SoC id and revision can be read from any PCIe
+>  		free(pcie);
 > -- =
 
 > 2.11.0
