@@ -1,24 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp69.iad3a.emailsrvr.com ([173.203.187.69])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dKkOB-0008Ck-Qj
- for barebox@lists.infradead.org; Tue, 13 Jun 2017 11:53:41 +0000
-Received: from smtp9.relay.iad3a.emailsrvr.com (localhost [127.0.0.1])
- by smtp9.relay.iad3a.emailsrvr.com (SMTP Server) with ESMTP id 7E57B587E
- for <barebox@lists.infradead.org>; Tue, 13 Jun 2017 07:53:18 -0400 (EDT)
-Received: by smtp9.relay.iad3a.emailsrvr.com (Authenticated sender:
- siepeng-AT-mev.co.uk) with ESMTPSA id 455335869
- for <barebox@lists.infradead.org>; Tue, 13 Jun 2017 07:53:18 -0400 (EDT)
-References: <20170613075311.jwdw4j4pv3vhvusb@pengutronix.de>
- <381afd4b-3d4b-a32a-5679-cd7aa6a22129@mev.co.uk>
- <a2c0e379-1c8b-a977-c6f5-5b188becff94@mev.co.uk>
- <e85f684f-6832-09fc-0a0a-8a3771b093ed@mev.co.uk>
- <20170613113820.f2jr6tqpt63bdymu@pengutronix.de>
-From: Ian Abbott <abbotti@mev.co.uk>
-Message-ID: <56502b6d-3551-03c6-fb74-b37e51b92530@mev.co.uk>
-Date: Tue, 13 Jun 2017 12:53:17 +0100
+ id 1dMrCz-00080T-4F
+ for barebox@lists.infradead.org; Mon, 19 Jun 2017 07:34:51 +0000
+Date: Mon, 19 Jun 2017 09:34:27 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170619073427.oja6l4ebvqjc3fp7@pengutronix.de>
+References: <1497361020-33828-1-git-send-email-d.schultz@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <20170613113820.f2jr6tqpt63bdymu@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <1497361020-33828-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,38 +18,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: v2017.06.0
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] defaultenv: bin: init: Add sourcing of config-expansions
+To: Daniel Schultz <d.schultz@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On 13/06/17 12:38, Sascha Hauer wrote:
-> On Tue, Jun 13, 2017 at 10:52:33AM +0100, Ian Abbott wrote:
->> On 13/06/17 10:43, Ian Abbott wrote:
->>> On 13/06/17 10:42, Ian Abbott wrote:
->>>> On 13/06/17 08:53, Sascha Hauer wrote:
->>>>> barebox v2017.06.0 is available. I originally wanted to wait for the
->>>>> fix of the OMAP Nand controller issue, but unfortunately there's no
->>>>> full solution in sight. Since waiting longer would effectively mean that
->>>>> we skip the June release, I decided to do a release with this bug still
->>>>> standing.
->>>>
->>>> Thanks Sasha.  Could you git push the release, please?
->>>
->>> I mean "Sascha".  Sorry!
->>
->> Oh, I see the tag is in the repository, but it's currently three commits
->> ahead of origin/master.
->
-> Try again, forgot to push master.
+On Tue, Jun 13, 2017 at 03:37:00PM +0200, Daniel Schultz wrote:
+> This patch adds a further layer to the config hierarchy. It allows a
+> dynamic configuration of expansions.
+> 
+> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+> ---
+>  defaultenv/defaultenv-2-base/bin/init | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/defaultenv/defaultenv-2-base/bin/init b/defaultenv/defaultenv-2-base/bin/init
+> index 7af3c7d..a93ea58 100644
+> --- a/defaultenv/defaultenv-2-base/bin/init
+> +++ b/defaultenv/defaultenv-2-base/bin/init
+> @@ -25,6 +25,7 @@ magicvar -a global.allow_color "Allow color on the console (boolean)"
+>  [ -z "${global.editcmd}" ] && global.editcmd=sedit
+>  
+>  [ -e /env/config-board ] && /env/config-board
+> +[ -e /env/config-expansions ] && /env/config-expansions
 
-Thanks.  All okay now.
+I read the last thread again and I think my question remains
+unanswered. Why can't you put the config-expansions to /env/init/ and
+let it be executed automatically without changing /bin/init?
+
+Sascha
 
 -- 
--=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=-
--=(                          Web: http://www.mev.co.uk/  )=-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
