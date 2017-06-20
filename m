@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dNLEX-0000Wc-Vs
- for barebox@lists.infradead.org; Tue, 20 Jun 2017 15:38:29 +0000
-References: <1497361028-39920-1-git-send-email-d.schultz@phytec.de>
- <20170619072511.x6gmx5oa7u7eiprq@pengutronix.de>
+ id 1dNLIh-00029x-JU
+ for barebox@lists.infradead.org; Tue, 20 Jun 2017 15:42:45 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id A6AACA00338
+ for <barebox@lists.infradead.org>; Tue, 20 Jun 2017 17:43:28 +0200 (CEST)
 From: Daniel Schultz <d.schultz@phytec.de>
-Message-ID: <f7fcf91d-0079-f9b0-51a3-5882e92abb6b@phytec.de>
-Date: Tue, 20 Jun 2017 17:37:56 +0200
-MIME-Version: 1.0
-In-Reply-To: <20170619072511.x6gmx5oa7u7eiprq@pengutronix.de>
-Content-Language: en-US
+Date: Tue, 20 Jun 2017 17:42:22 +0200
+Message-Id: <1497973342-30198-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,39 +17,109 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4] arm: boards: phytec-som-am335x: Update boot scripts
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v5] arm: boards: phytec-som-am335x: Update boot scripts
+To: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLAoKQW0gMTkuMDYuMjAxNyB1bSAwOToyNSBzY2hyaWViIFNhc2NoYSBIYXVlcjoK
-PiBPbiBUdWUsIEp1biAxMywgMjAxNyBhdCAwMzozNzowOFBNICswMjAwLCBEYW5pZWwgU2NodWx0
-eiB3cm90ZToKPj4gRXhwYW5kIHRoZSBib290IHNjcmlwdHMgd2l0aCBFTU1DIGFuZCBhZGQgYSBk
-ZWZhdWx0IGZpbGUgc291cmNlIGZvcgo+PiBleHBhbnNpb25zLgo+Pgo+PiBSZW1vdmVkICJydyIg
-YW5kICJyb290d2FpdCIgYm9vdGFyZ3MgZnJvbSBleGlzdGluZyBib290IHNjcmlwdHMuCj4+IEFk
-ZGVkICJyb290ZmxhZ3M9J2RhdGE9am91cm5hbCciIGJvb3RhcmcgdG8gU0QgY2FyZCBib290IHNj
-cmlwdC4KPj4KPj4gU2lnbmVkLW9mZi1ieTogRGFuaWVsIFNjaHVsdHogPGQuc2NodWx0ekBwaHl0
-ZWMuZGU+Cj4+IC0tLQo+PiArIyEvYmluL3NoCj4+ICsKPj4gK3BhdGg9Ii9tbnQvdGZ0cCIKPj4g
-Kwo+PiArZ2xvYmFsLmJvb3RtLmltYWdlPSIke3BhdGh9LyR7Z2xvYmFsLnVzZXJ9LWxpbnV4LSR7
-Z2xvYmFsLmhvc3RuYW1lfSIKPj4gKwo+PiArb2Z0cmVlPSIke3BhdGh9LyR7Z2xvYmFsLnVzZXJ9
-LW9mdHJlZS0ke2dsb2JhbC5ob3N0bmFtZX0iCj4+ICtpZiBbIC1mICIke29mdHJlZX0iIF07IHRo
-ZW4KPj4gKyAgICBnbG9iYWwuYm9vdG0ub2Z0cmVlPSIkb2Z0cmVlIgo+PiArZmkKPj4gKwo+PiAr
-bmZzcm9vdD0iL25mc3Jvb3QvJHtnbG9iYWwuaG9zdG5hbWV9Igo+IAo+IFRoaXMgYXNzdW1lZCB0
-aGVyZSBpcyBvbmUgbmZzcm9vdCBmb3IgYWxsIHVzZXJzLiBUaGUgaW50ZW50aW9uIHdpdGggdGhl
-Cj4gb3JpZ2luYWwgbmFtaW5nIHdhcyB0aGF0IGVhY2ggdXNlciBjYW4gY3JlYXRlIGEgbGluayBp
-biBoaXMgaG9tZQo+IGRpcmVjdG9yeSB0byB3aGVyZXZlciB0aGUgbmZzcm9vdCBsaXZlcywgd2hp
-Y2ggbWF5IGluY2x1ZGUgc29tZSBnbG9iYWxseQo+IGF2YWlsYWJsZSBuZnNyb290IGZvciBhbGwg
-dXNlcnMuIFdoeSBjaGFuZ2UgaXQ/Cj4gClNlZW1zIGxpa2UgdGhpcyB3YXMgYW4gb2xkZXIgc2Ny
-aXB0LiBXZSB3aWxsIHN3aXRjaCB0byB0aGUgQmFyZWJveCAKbmV0d29yayBib290IHNjcmlwdC4K
-Cj4+ICtib290YXJncy1pcAo+PiArCj4+ICtnbG9iYWwubGludXguYm9vdGFyZ3MuZHluLnJvb3Q9
-InJvb3Q9L2Rldi9uZnMgbmZzcm9vdD0kbmZzcm9vdCx2ZXJzPTMsdWRwIgo+IAo+IFdoeSB1ZHA/
-IE5vcm1hbGx5IHRjcCBpcyBwcmVmZXJyZWQsIG5vPwo+IApVRFAgaXMgdXNlZCBhcyBkZWZhdWx0
-IGJ5IHRoZSBuZnNyb290IGtlcm5lbCBzeXN0ZW0gYW5kIGFsc28gYnkgdGZ0cC4KQWRkaXRpb25h
-bGx5LCB3ZSBoYWQgdHJvdWJsZXMgd2l0aCBib290aW5nIGluIHRjcCBtb2RlLgoKPiBTYXNjaGEK
-PiAKCi0tIApNaXQgZnJldW5kbGljaGVuIEdyw7zDn2VuLApXaXRoIGJlc3QgcmVnYXJkcywKICAg
-RGFuaWVsIFNjaHVsdHoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Expand the boot scripts with EMMC and add a default file source for
+expansions.
+
+Removed "rw" and "rootwait" bootargs from existing boot scripts.
+Added "rootflags='data=journal'" bootarg to SD card boot script.
+
+Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+---
+ .../phytec-som-am335x/defaultenv-physom-am335x/boot/emmc |  5 +++++
+ .../phytec-som-am335x/defaultenv-physom-am335x/boot/mmc  |  7 +++----
+ .../phytec-som-am335x/defaultenv-physom-am335x/boot/nand |  2 +-
+ .../phytec-som-am335x/defaultenv-physom-am335x/boot/spi  |  2 +-
+ .../defaultenv-physom-am335x/init/bootsource             | 16 ++++++++++++----
+ 5 files changed, 22 insertions(+), 10 deletions(-)
+ create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+new file mode 100644
+index 0000000..b1792a6
+--- /dev/null
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+@@ -0,0 +1,5 @@
++#!/bin/sh
++
++global.bootm.image=/mnt/mmc1.0/linuximage
++global.bootm.oftree=/mnt/mmc1.0/oftree
++global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
+index 834669d..77a076d 100644
+--- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
+@@ -1,6 +1,5 @@
+ #!/bin/sh
+ 
+-global.bootm.image=/boot/linuximage
+-global.bootm.oftree=/boot/oftree
+-
+-global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rw rootwait"
++global.bootm.image=/mnt/mmc0.0/linuximage
++global.bootm.oftree=/mnt/mmc0.0/oftree
++global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
+index ece44b7..33f5f02 100644
+--- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
+@@ -5,4 +5,4 @@
+ global.bootm.image="/dev/nand0.root.ubi.kernel"
+ global.bootm.oftree="/dev/nand0.root.ubi.oftree"
+ 
+-global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rw rootfstype=ubifs"
++global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
+index 71c5834..a321aa9 100644
+--- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
+@@ -4,4 +4,4 @@ global.bootm.image="/dev/m25p0.kernel"
+ global.bootm.oftree="/dev/m25p0.oftree"
+ 
+ # Use rootfs from NAND
+-global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rw rootfstype=ubifs"
++global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rootfstype=ubifs"
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
+index 3f2ff4b..61a0879 100644
+--- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
+@@ -4,12 +4,20 @@ if [ -n "$nv.boot.default" ]; then
+ 	exit
+ fi
+ 
+-if [ $bootsource = mmc ]; then
+-	global.boot.default="mmc nand spi net"
++if [ -e /dev/mmc1.0 ]; then
++	nvmem="emmc"
++else
++	nvmem="nand"
++fi
++
++if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
++	global.boot.default="emmc mmc spi net"
++elif [ $bootsource = mmc -a $bootsource_instance = 0 ]; then
++	global.boot.default="mmc $nvmem spi net"
+ elif [ $bootsource = nand ]; then
+ 	global.boot.default="nand spi mmc net"
+ elif [ $bootsource = spi ]; then
+-	global.boot.default="spi nand mmc net"
++	global.boot.default="spi $nvmem mmc net"
+ elif [ $bootsource = net ]; then
+-	global.boot.default="net nand spi mmc"
++	global.boot.default="net $nvmem spi mmc"
+ fi
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
