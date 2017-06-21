@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x243.google.com ([2a00:1450:400c:c0c::243])
+Received: from mail-wr0-x244.google.com ([2a00:1450:400c:c0c::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dNl4x-0004IN-Ph
+ id 1dNl4z-0004IY-ML
  for barebox@lists.infradead.org; Wed, 21 Jun 2017 19:14:19 +0000
-Received: by mail-wr0-x243.google.com with SMTP id 77so29049409wrb.3
- for <barebox@lists.infradead.org>; Wed, 21 Jun 2017 12:13:58 -0700 (PDT)
+Received: by mail-wr0-x244.google.com with SMTP id k67so997213wrc.1
+ for <barebox@lists.infradead.org>; Wed, 21 Jun 2017 12:14:00 -0700 (PDT)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Wed, 21 Jun 2017 21:13:17 +0200
-Message-Id: <20170621191323.18191-11-aleksander@aleksander.es>
+Date: Wed, 21 Jun 2017 21:13:19 +0200
+Message-Id: <20170621191323.18191-13-aleksander@aleksander.es>
 In-Reply-To: <20170621191323.18191-1-aleksander@aleksander.es>
 References: <20170621191323.18191-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
@@ -23,47 +23,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 10/16] ratp: fix sending ACKs without data
+Subject: [PATCH v2 12/16] ratp: prefer using ratp_send_ack() in behaviour I1
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org, Aleksander Morgado <aleksander@aleksander.es>
 
-All ACKs without data must be built in the same way from the input
-message:
-     <SN=received AN><AN=received SN+1 modulo 2><CTL=ACK>
-
-The code was actually doing this instead:
-     <SN=0><AN=SN><CTL=ACK>
-
-This change fixes how the retransmissions are ACK-ed by the peer, and
-would have affected the barebox<->bbremote interactions.
+Instead of manually constructing an ACK, use the ratp_send_ack()
+method, which already does that properly.
 
 Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
- lib/ratp.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ lib/ratp.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
 diff --git a/lib/ratp.c b/lib/ratp.c
-index 321721ab7..5c52d3b5f 100644
+index 46a2b645c..c7f3f4171 100644
 --- a/lib/ratp.c
 +++ b/lib/ratp.c
-@@ -364,13 +364,12 @@ static bool ratp_sn_expected(struct ratp_internal *ri, struct ratp_header *hdr)
- 
- static int ratp_send_ack(struct ratp_internal *ri, struct ratp_header *hdr)
+@@ -1330,7 +1330,6 @@ static int msg_recv(struct ratp_internal *ri, void *pkt)
+ static int ratp_behaviour_i1(struct ratp_internal *ri, void *pkt)
  {
--	uint8_t control = RATP_CONTROL_ACK;
-+	uint8_t control;
- 	int ret;
+ 	struct ratp_header *hdr = pkt;
+-	uint8_t control = 0;
  
--	if (hdr->control & RATP_CONTROL_SN)
--		control |= RATP_CONTROL_AN;
--	else
--		control |= 0;
-+	control = ratp_set_sn(ratp_an(hdr)) |
-+		ratp_set_an(ratp_sn(hdr) + 1) |
-+		RATP_CONTROL_ACK;
+ 	if (!ratp_has_data (hdr))
+ 		return 1;
+@@ -1341,15 +1340,10 @@ static int ratp_behaviour_i1(struct ratp_internal *ri, void *pkt)
  
- 	ret = ratp_send_hdr(ri, control);
- 	if (ret)
+ 	msg_recv(ri, pkt);
+ 
+-	if (list_empty(&ri->sendmsg) || ri->sendmsg_current) {
+-		control = ratp_set_sn(!ri->sn_sent) |
+-			ratp_set_an(ri->sn_received + 1) |
+-			RATP_CONTROL_ACK;
+-
+-		ratp_send_hdr(ri, control);
+-	} else {
++	if (list_empty(&ri->sendmsg) || ri->sendmsg_current)
++		ratp_send_ack(ri, hdr);
++	else
+ 		ratp_send_next_data(ri);
+-	}
+ 
+ 	return 0;
+ }
 -- 
 2.13.1
 
