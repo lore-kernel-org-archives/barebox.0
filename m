@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wr0-x243.google.com ([2a00:1450:400c:c0c::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dNl4u-0004Hk-WD
+ id 1dNl4u-0004Hm-WC
  for barebox@lists.infradead.org; Wed, 21 Jun 2017 19:14:15 +0000
-Received: by mail-wr0-x243.google.com with SMTP id 77so29048064wrb.3
- for <barebox@lists.infradead.org>; Wed, 21 Jun 2017 12:13:50 -0700 (PDT)
+Received: by mail-wr0-x243.google.com with SMTP id x23so29084110wrb.0
+ for <barebox@lists.infradead.org>; Wed, 21 Jun 2017 12:13:51 -0700 (PDT)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Wed, 21 Jun 2017 21:13:09 +0200
-Message-Id: <20170621191323.18191-3-aleksander@aleksander.es>
+Date: Wed, 21 Jun 2017 21:13:10 +0200
+Message-Id: <20170621191323.18191-4-aleksander@aleksander.es>
 In-Reply-To: <20170621191323.18191-1-aleksander@aleksander.es>
 References: <20170621191323.18191-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
@@ -23,40 +23,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 02/16] ratp: avoid unnecessary variable initializations
+Subject: [PATCH v2 03/16] ratp: send missing RST in behavior C2
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org, Aleksander Morgado <aleksander@aleksander.es>
 
-This is just a cleanup; the variables are completely initialized later
-on so the initial values are totally discarded anyway.
+The reference says:
+
+    If SYN was set we assume that the other end crashed and has
+    attempted to open a new connection.  We respond by sending a
+    legal reset:
+        <SN=received AN><AN=received SN+1 modulo 2><CTL=RST, ACK>
+
+Add this missing step.
+
+This issue affects the barebox<->bbremote interaction if bbremote
+crashes without closing the channel and restarts opening a complete
+new connection.
 
 Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
- lib/ratp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/ratp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/lib/ratp.c b/lib/ratp.c
-index 0d384aa4e..e9536499e 100644
+index e9536499e..a8ac52c75 100644
 --- a/lib/ratp.c
 +++ b/lib/ratp.c
-@@ -382,7 +382,7 @@ static int ratp_send_ack(struct ratp_internal *ri, struct ratp_header *hdr)
- static int ratp_send_next_data(struct ratp_internal *ri)
- {
- 	uint16_t crc;
--	uint8_t control = RATP_CONTROL_ACK;
-+	uint8_t control;
- 	struct ratp_header *hdr;
- 	int pktlen;
- 	struct ratp_message *msg;
-@@ -594,7 +594,7 @@ static void ratp_behaviour_b(struct ratp_internal *ri, void *pkt)
+@@ -731,8 +731,15 @@ static int ratp_behaviour_c2(struct ratp_internal *ri, void *pkt)
+ 		return 1;
  
- 	if ((hdr->control & RATP_CONTROL_ACK) && !ratp_an_expected(ri, hdr)) {
- 		if (!(hdr->control & RATP_CONTROL_RST)) {
--			uint8_t control = RATP_CONTROL_RST;
-+			uint8_t control;
- 
- 			control = RATP_CONTROL_RST |
- 				ratp_set_sn(ratp_an(hdr));
+ 	if (hdr->control & RATP_CONTROL_SYN) {
++		uint8_t control;
++
+ 		ri->status = -ECONNRESET;
+ 		pr_debug("Error: Connection reset\n");
++
++		control = RATP_CONTROL_RST | RATP_CONTROL_ACK |
++			ratp_set_sn(ratp_an(hdr)) | ratp_set_an(!ratp_sn(hdr));
++		ratp_send_hdr(ri, control);
++
+ 		ratp_state_change(ri, RATP_STATE_CLOSED);
+ 		return 1;
+ 	}
 -- 
 2.13.1
 
