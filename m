@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dPNdA-0008Nz-Cw
- for barebox@lists.infradead.org; Mon, 26 Jun 2017 06:36:18 +0000
-Date: Mon, 26 Jun 2017 08:35:54 +0200
+ id 1dNZCP-0006vo-T1
+ for barebox@lists.infradead.org; Wed, 21 Jun 2017 06:33:12 +0000
+Date: Wed, 21 Jun 2017 08:32:46 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170626063554.kskmccgsdzwtusew@pengutronix.de>
-References: <1497973342-30198-1-git-send-email-d.schultz@phytec.de>
+Message-ID: <20170621063246.wdfct6r2boyx4xo3@pengutronix.de>
+References: <63687e34-f354-81d3-aed7-1a59866925c5@eurekelettronica.it>
+ <2f43179e-2aa0-1dba-eafa-a9c0025afd24@eurekelettronica.it>
+ <1487689380.2268.18.camel@pengutronix.de>
+ <82857526-9f9a-2878-9b8e-070f124e2a41@eurekelettronica.it>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1497973342-30198-1-git-send-email-d.schultz@phytec.de>
+In-Reply-To: <82857526-9f9a-2878-9b8e-070f124e2a41@eurekelettronica.it>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +25,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v5] arm: boards: phytec-som-am335x: Update boot scripts
-To: Daniel Schultz <d.schultz@phytec.de>
+Subject: Re: Fwd: Barebox 2017.02 works great but no Linux Framebuffer... :-/
+To: gianluca <gianlucarenzi@eurekelettronica.it>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 20, 2017 at 05:42:22PM +0200, Daniel Schultz wrote:
-> Expand the boot scripts with EMMC and add a default file source for
-> expansions.
+Hi Gianluca,
+
+On Mon, Jun 19, 2017 at 05:49:41PM +0200, gianluca wrote:
+> Hello Lucas, Sascha and the barebox mailing list guys!
 > 
-> Removed "rw" and "rootwait" bootargs from existing boot scripts.
+> I am back with the new boards batch release (now QuadPlus and DualLite iMX6)
+> 
+> Now I adapted barebox to fit both processors and it works quite well.
+> 
+> From Barebox point-of-view the ldb node of the device-tree is using three
+> timings and they are working good depending on which panel bridge board I am
+> connecting to (1280x800, 1024x600 and 800x480).
+> 
+> The custom startup code of barebox is looking for a special eeprom on the
+> panel-bridge and set the device tree accordingly, i.e. setting the
+> native-mode node to the correct display-timing.
+> 
+> The same device-tree is used in Linux (as in attachment) as you can see the
+> ldb section and the panel section, using a simple-panel and a correct panel
+> timing using the innolux,g101ice_l01 panel driver timings.
+> 
+> > 
+> > > No, Linux does not support DT defined modes in the panel. You need a
+> > > panel with a proper compatible and driver.
+> > > 
+> > > See drivers/gpu/drm/panel. For most LVDS panels simple-panel is what you
+> > > want to use.
+> > > 
+> 
+> They are ignored in the Barebox starup (as you know barebox can use the
+> display-timings in the ldb section) but the panel section is used in linux.
+> 
+> Nevertheless it does not work.
 
-Why is "rootwait" removed? From my experience adding "rootwait" is
-pretty essential when booting from mmc. Has that changed?
-
->  
-> -if [ $bootsource = mmc ]; then
-> -	global.boot.default="mmc nand spi net"
-> +if [ -e /dev/mmc1.0 ]; then
-> +	nvmem="emmc"
-> +else
-> +	nvmem="nand"
-> +fi
-> +
-> +if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
-> +	global.boot.default="emmc mmc spi net"
-> +elif [ $bootsource = mmc -a $bootsource_instance = 0 ]; then
-> +	global.boot.default="mmc $nvmem spi net"
->  elif [ $bootsource = nand ]; then
->  	global.boot.default="nand spi mmc net"
->  elif [ $bootsource = spi ]; then
-> -	global.boot.default="spi nand mmc net"
-> +	global.boot.default="spi $nvmem mmc net"
->  elif [ $bootsource = net ]; then
-> -	global.boot.default="net nand spi mmc"
-> +	global.boot.default="net $nvmem spi mmc"
->  fi
-
-Normally the desired behaviour is that the bootsource can be changed
-persistently by setting nv.boot.default to the desired source. This
-does not work when global.boot.default gets overwritten after the nvvars
-have been read from the environment.
-
-This behaviour is not changed with this patch, but I would welcome a
-patch that changes this script to the desired behaviour. This could
-be done by changing global.boot.default only when nv.boot.default is
-empty.
+What exactly does not work? No picture in barebox? Any error messages?
+Does it work in Linux?
 
 Sascha
 
