@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x244.google.com ([2a00:1450:400c:c0c::244])
+Received: from mail-wr0-x232.google.com ([2a00:1450:400c:c0c::232])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dNl4z-0004IY-ML
- for barebox@lists.infradead.org; Wed, 21 Jun 2017 19:14:19 +0000
-Received: by mail-wr0-x244.google.com with SMTP id k67so997213wrc.1
- for <barebox@lists.infradead.org>; Wed, 21 Jun 2017 12:14:00 -0700 (PDT)
+ id 1dNl50-0004I4-Bv
+ for barebox@lists.infradead.org; Wed, 21 Jun 2017 19:14:22 +0000
+Received: by mail-wr0-x232.google.com with SMTP id c11so92263609wrc.3
+ for <barebox@lists.infradead.org>; Wed, 21 Jun 2017 12:13:57 -0700 (PDT)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Wed, 21 Jun 2017 21:13:19 +0200
-Message-Id: <20170621191323.18191-13-aleksander@aleksander.es>
+Date: Wed, 21 Jun 2017 21:13:16 +0200
+Message-Id: <20170621191323.18191-10-aleksander@aleksander.es>
 In-Reply-To: <20170621191323.18191-1-aleksander@aleksander.es>
 References: <20170621191323.18191-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
@@ -23,49 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 12/16] ratp: prefer using ratp_send_ack() in behaviour I1
+Subject: [PATCH v2 09/16] ratp: remove FIXME comment: FIN always requires ACK
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org, Aleksander Morgado <aleksander@aleksander.es>
 
-Instead of manually constructing an ACK, use the ratp_send_ack()
-method, which already does that properly.
+Section 3.4 in the RFC916 shows a packet flow for the connection close
+where the initial packet sent by the endpoint starting the close has
+just the FIN flag set, without an ACK:
+
+          -->     <SN=0><AN=1><CTL=FIN>
+                <SN=1><AN=1><CTL=FIN,ACK>  <--
+          -->     <SN=1><AN=0><CTL=ACK>
+
+This may lead to think that it is actually allowed to send the initial
+packet with just FIN set, without ACK-ing any other packet from the
+peer.
+
+But, this is actually not possible, the packet MUST be ACK-ing a
+previous packet from the peer, even if this is just a duplicated ACK,
+because otherwise the packet with the FIN wouldn't get processed in
+the H2 behavior (FIN processing) of the peer, as the F2 behavior (ACK
+processing) would filter it out.
+
+This is actually the same reasoning why data packets always have ACK
+set, even if the same ACK has already been sent previously (e.g. with
+a simple ACK packet without data); if they didn't have it, they would
+be filtered out in the F2 behavior, never arriving the I1 behavior,
+which is where the received data is processed.
 
 Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
- lib/ratp.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ scripts/remote/ratp.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/ratp.c b/lib/ratp.c
-index 46a2b645c..c7f3f4171 100644
---- a/lib/ratp.c
-+++ b/lib/ratp.c
-@@ -1330,7 +1330,6 @@ static int msg_recv(struct ratp_internal *ri, void *pkt)
- static int ratp_behaviour_i1(struct ratp_internal *ri, void *pkt)
- {
- 	struct ratp_header *hdr = pkt;
--	uint8_t control = 0;
- 
- 	if (!ratp_has_data (hdr))
- 		return 1;
-@@ -1341,15 +1340,10 @@ static int ratp_behaviour_i1(struct ratp_internal *ri, void *pkt)
- 
- 	msg_recv(ri, pkt);
- 
--	if (list_empty(&ri->sendmsg) || ri->sendmsg_current) {
--		control = ratp_set_sn(!ri->sn_sent) |
--			ratp_set_an(ri->sn_received + 1) |
--			RATP_CONTROL_ACK;
--
--		ratp_send_hdr(ri, control);
--	} else {
-+	if (list_empty(&ri->sendmsg) || ri->sendmsg_current)
-+		ratp_send_ack(ri, hdr);
-+	else
- 		ratp_send_next_data(ri);
--	}
- 
- 	return 0;
- }
+diff --git a/scripts/remote/ratp.py b/scripts/remote/ratp.py
+index 0dfc8420c..e6b3e19b6 100644
+--- a/scripts/remote/ratp.py
++++ b/scripts/remote/ratp.py
+@@ -724,7 +724,7 @@ class RatpConnection(object):
+         deadline = monotonic() + timeout
+         logging.info("CLOSE")
+         if self._state == RatpState.established:
+-            fin = RatpPacket(flags='FA')  # FIXME: only F?
++            fin = RatpPacket(flags='FA')
+             fin.c_sn = (self._s_sn + 1) % 2
+             fin.c_an = (self._r_sn + 1) % 2
+             self._write(fin)
 -- 
 2.13.1
 
