@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dNLIh-00029x-JU
- for barebox@lists.infradead.org; Tue, 20 Jun 2017 15:42:45 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id A6AACA00338
- for <barebox@lists.infradead.org>; Tue, 20 Jun 2017 17:43:28 +0200 (CEST)
-From: Daniel Schultz <d.schultz@phytec.de>
-Date: Tue, 20 Jun 2017 17:42:22 +0200
-Message-Id: <1497973342-30198-1-git-send-email-d.schultz@phytec.de>
+Received: from mail-qk0-x232.google.com ([2607:f8b0:400d:c09::232])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dNWX8-0005lU-Jy
+ for barebox@lists.infradead.org; Wed, 21 Jun 2017 03:42:24 +0000
+Received: by mail-qk0-x232.google.com with SMTP id r62so73284146qkf.0
+ for <barebox@lists.infradead.org>; Tue, 20 Jun 2017 20:42:01 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20170620073505.5j424abxcpezwizd@pengutronix.de>
+References: <20170619144039.20552-1-andrew.smirnov@gmail.com>
+ <20170620073505.5j424abxcpezwizd@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 20 Jun 2017 20:41:59 -0700
+Message-ID: <CAHQ1cqGe_1cq_0XVOgG=oVXPg7bnoZ5t0cTT+5j8rruLiTOKVQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,107 +20,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5] arm: boards: phytec-som-am335x: Update boot scripts
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/3] Fix "i.MX: vf610: Ramp CPU clock to maximum frequency"
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Chris Healy <cphealy@gmail.com>
 
-Expand the boot scripts with EMMC and add a default file source for
-expansions.
+On Tue, Jun 20, 2017 at 12:35 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Mon, Jun 19, 2017 at 07:40:36AM -0700, Andrey Smirnov wrote:
+>> Everyone,
+>>
+>> It looks like my test setup was somehow contaminated -- possibly by
+>> using JTAG to initalize SoC and upload Barebox binary -- so
+>> 21921f7f419dfaabcd385595ada24f0352310f1a ("i.MX: vf610: Ramp CPU clock
+>> to maximum frequency") didn't actually work as I thought it was and
+>> instead it made Barebox not boot on Vybrid.
+>>
+>> This patch series contains all of the changes I had to make in order
+>> to make CPU clock switching work/"unbreak" Barebox on Vybrid.
+>
+> You mean you want to have this series on master, right?
+>
 
-Removed "rw" and "rootwait" bootargs from existing boot scripts.
-Added "rootflags='data=journal'" bootarg to SD card boot script.
+I didn't really think about it, but yeah It probably would make sense
+to apply it to master.
 
-Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
----
- .../phytec-som-am335x/defaultenv-physom-am335x/boot/emmc |  5 +++++
- .../phytec-som-am335x/defaultenv-physom-am335x/boot/mmc  |  7 +++----
- .../phytec-som-am335x/defaultenv-physom-am335x/boot/nand |  2 +-
- .../phytec-som-am335x/defaultenv-physom-am335x/boot/spi  |  2 +-
- .../defaultenv-physom-am335x/init/bootsource             | 16 ++++++++++++----
- 5 files changed, 22 insertions(+), 10 deletions(-)
- create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
-
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
-new file mode 100644
-index 0000000..b1792a6
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
-@@ -0,0 +1,5 @@
-+#!/bin/sh
-+
-+global.bootm.image=/mnt/mmc1.0/linuximage
-+global.bootm.oftree=/mnt/mmc1.0/oftree
-+global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
-index 834669d..77a076d 100644
---- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
-@@ -1,6 +1,5 @@
- #!/bin/sh
- 
--global.bootm.image=/boot/linuximage
--global.bootm.oftree=/boot/oftree
--
--global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rw rootwait"
-+global.bootm.image=/mnt/mmc0.0/linuximage
-+global.bootm.oftree=/mnt/mmc0.0/oftree
-+global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
-index ece44b7..33f5f02 100644
---- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
-@@ -5,4 +5,4 @@
- global.bootm.image="/dev/nand0.root.ubi.kernel"
- global.bootm.oftree="/dev/nand0.root.ubi.oftree"
- 
--global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rw rootfstype=ubifs"
-+global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
-index 71c5834..a321aa9 100644
---- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
-@@ -4,4 +4,4 @@ global.bootm.image="/dev/m25p0.kernel"
- global.bootm.oftree="/dev/m25p0.oftree"
- 
- # Use rootfs from NAND
--global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rw rootfstype=ubifs"
-+global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rootfstype=ubifs"
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
-index 3f2ff4b..61a0879 100644
---- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
-@@ -4,12 +4,20 @@ if [ -n "$nv.boot.default" ]; then
- 	exit
- fi
- 
--if [ $bootsource = mmc ]; then
--	global.boot.default="mmc nand spi net"
-+if [ -e /dev/mmc1.0 ]; then
-+	nvmem="emmc"
-+else
-+	nvmem="nand"
-+fi
-+
-+if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
-+	global.boot.default="emmc mmc spi net"
-+elif [ $bootsource = mmc -a $bootsource_instance = 0 ]; then
-+	global.boot.default="mmc $nvmem spi net"
- elif [ $bootsource = nand ]; then
- 	global.boot.default="nand spi mmc net"
- elif [ $bootsource = spi ]; then
--	global.boot.default="spi nand mmc net"
-+	global.boot.default="spi $nvmem mmc net"
- elif [ $bootsource = net ]; then
--	global.boot.default="net nand spi mmc"
-+	global.boot.default="net $nvmem spi mmc"
- fi
--- 
-1.9.1
-
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
