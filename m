@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x241.google.com ([2a00:1450:400c:c0c::241])
+Received: from mail-wr0-x242.google.com ([2a00:1450:400c:c0c::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dNl54-0004Ib-Ij
+ id 1dNl56-0004Ih-Lt
  for barebox@lists.infradead.org; Wed, 21 Jun 2017 19:14:28 +0000
-Received: by mail-wr0-x241.google.com with SMTP id 77so29049996wrb.3
- for <barebox@lists.infradead.org>; Wed, 21 Jun 2017 12:14:02 -0700 (PDT)
+Received: by mail-wr0-x242.google.com with SMTP id 77so29050246wrb.3
+ for <barebox@lists.infradead.org>; Wed, 21 Jun 2017 12:14:04 -0700 (PDT)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Wed, 21 Jun 2017 21:13:21 +0200
-Message-Id: <20170621191323.18191-15-aleksander@aleksander.es>
+Date: Wed, 21 Jun 2017 21:13:23 +0200
+Message-Id: <20170621191323.18191-17-aleksander@aleksander.es>
 In-Reply-To: <20170621191323.18191-1-aleksander@aleksander.es>
 References: <20170621191323.18191-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
@@ -23,100 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 14/16] ratp: don't ignore data that may arrive in behaviour
- H1
+Subject: [PATCH v2 16/16] ratp: user close may happen in SYN-RECEIVED state
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org, Aleksander Morgado <aleksander@aleksander.es>
 
-If an input packet arrives H1 that has data in it, we need to:
-  * track sn_received
-  * if we have data pending, send it
-  * if we don't have data pending, send a plain ACK
+The reference says:
 
-This process, as noted in RFC916, is the same as the I1 procedure, so
-go and run it:
+     5.2.3. SYN-RECEIVED
+     ...
+     Departures
+       - A CLOSE request is made by the user.  Create a packet with
+         FIN set.  Send it and go to the FIN-WAIT state.
 
-     Go to the ESTABLISHED state and execute procedure I1 to process
-     any data which might be in this packet.
+Add this missing step.
 
-This fix allows the peer to queue data in the last packet doing the
-connection establishment. It doesn't apply to the barebox<->bbremote
-interaction because bbremote won't queue data until the connection is
-completely established, but it allows third party ratp implementations
-to do that.
+Probably not a real usecase for barebox anyway as there is no user
+triggered close.
 
 Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
- lib/ratp.c             |  8 +++++++-
- scripts/remote/ratp.py | 14 ++++++--------
- 2 files changed, 13 insertions(+), 9 deletions(-)
+ lib/ratp.c             | 2 +-
+ scripts/remote/ratp.py | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/lib/ratp.c b/lib/ratp.c
-index e810a9e54..2dee41009 100644
+index 46a82c69a..e7fbf640a 100644
 --- a/lib/ratp.c
 +++ b/lib/ratp.c
-@@ -1042,6 +1042,8 @@ static int ratp_behaviour_g(struct ratp_internal *ri, void *pkt)
- 	return 0;
- }
+@@ -1689,7 +1689,7 @@ void ratp_close(struct ratp *ratp)
+ 	if (!ri)
+ 		return;
  
-+static int ratp_behaviour_i1(struct ratp_internal *ri, void *pkt);
-+
- /*
-  * Our SYN has been acknowledged.  At this point we are
-  * technically in the ESTABLISHED state.  Send any initial data
-@@ -1062,7 +1064,11 @@ static int ratp_behaviour_h1(struct ratp_internal *ri, void *pkt)
+-	if (ri->state == RATP_STATE_ESTABLISHED) {
++	if (ri->state == RATP_STATE_ESTABLISHED || ri->state == RATP_STATE_SYN_RECEIVED) {
+ 		uint64_t start;
+ 		u8 control;
  
- 	ratp_state_change(ri, RATP_STATE_ESTABLISHED);
- 
--	return 0;
-+	/* If the input message has data (i.e. it is not just an ACK
-+	 * without data) then we need to send back an ACK ourselves,
-+	 * or even data if we have it pending. This is the same
-+	 * procedure done in i1, so just run it. */
-+	return ratp_behaviour_i1 (ri, pkt);
- }
- 
- /*
 diff --git a/scripts/remote/ratp.py b/scripts/remote/ratp.py
-index e6b3e19b6..7972d31f2 100644
+index 7972d31f2..44f3e2f40 100644
 --- a/scripts/remote/ratp.py
 +++ b/scripts/remote/ratp.py
-@@ -489,12 +489,8 @@ class RatpConnection(object):
- 
-     def _h1(self, r):
-         logging.info("H1")
--
--        # FIXME: initial data?
-         self._state = RatpState.established
--        self._r_sn = r.c_sn
--
--        return False
-+        return self._common_i1(r)
- 
-     def _h2(self, r):
-         logging.info("H2")
-@@ -584,9 +580,7 @@ class RatpConnection(object):
-         self._time_wait_deadline = monotonic() + self._get_rto()
-         return False
- 
--    def _i1(self, r):
--        logging.info("I1")
--
-+    def _common_i1(self, r):
-         if r.c_so:
-             self._r_sn = r.c_sn
-             self._rx_buf.append(chr(r.length))
-@@ -608,6 +602,10 @@ class RatpConnection(object):
-         self._write(s)
-         return False
- 
-+    def _i1(self, r):
-+        logging.info("I1")
-+        return self._common_i1(r)
-+
-     def _machine(self, pkt):
-         logging.info("State: %r", self._state)
-         if self._state == RatpState.listen:
+@@ -721,7 +721,7 @@ class RatpConnection(object):
+     def close(self, timeout=1.0):
+         deadline = monotonic() + timeout
+         logging.info("CLOSE")
+-        if self._state == RatpState.established:
++        if self._state == RatpState.established or self._state == RatpState.syn_received:
+             fin = RatpPacket(flags='FA')
+             fin.c_sn = (self._s_sn + 1) % 2
+             fin.c_an = (self._r_sn + 1) % 2
 -- 
 2.13.1
 
