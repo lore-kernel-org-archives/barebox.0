@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x242.google.com ([2a00:1450:400c:c0c::242])
+Received: from mail-wr0-x241.google.com ([2a00:1450:400c:c0c::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dNl51-0004If-LF
- for barebox@lists.infradead.org; Wed, 21 Jun 2017 19:14:24 +0000
-Received: by mail-wr0-x242.google.com with SMTP id 77so29050115wrb.3
- for <barebox@lists.infradead.org>; Wed, 21 Jun 2017 12:14:03 -0700 (PDT)
+ id 1dNl54-0004Ib-Ij
+ for barebox@lists.infradead.org; Wed, 21 Jun 2017 19:14:28 +0000
+Received: by mail-wr0-x241.google.com with SMTP id 77so29049996wrb.3
+ for <barebox@lists.infradead.org>; Wed, 21 Jun 2017 12:14:02 -0700 (PDT)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Wed, 21 Jun 2017 21:13:22 +0200
-Message-Id: <20170621191323.18191-16-aleksander@aleksander.es>
+Date: Wed, 21 Jun 2017 21:13:21 +0200
+Message-Id: <20170621191323.18191-15-aleksander@aleksander.es>
 In-Reply-To: <20170621191323.18191-1-aleksander@aleksander.es>
 References: <20170621191323.18191-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
@@ -23,140 +23,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 15/16] ratp: consolidate setting the next AN or SN flags
+Subject: [PATCH v2 14/16] ratp: don't ignore data that may arrive in behaviour
+ H1
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org, Aleksander Morgado <aleksander@aleksander.es>
 
-Setting the next AN or SN flag was being done in two different ways
-throughout the code; e.g. here for AN:
+If an input packet arrives H1 that has data in it, we need to:
+  * track sn_received
+  * if we have data pending, send it
+  * if we don't have data pending, send a plain ACK
 
-    ratp_set_an(ratp_sn(hdr) + 1);
-or:
-    ratp_set_an(!ratp_sn(hdr));
+This process, as noted in RFC916, is the same as the I1 procedure, so
+go and run it:
 
-We define a pair of new ratp_set_next_sn() and ratp_set_next_an()
-macros that make it clear that the next value is desired, and also
-hide the computation of the actual flag value within the macro, so the
-previous example would now look like:
+     Go to the ESTABLISHED state and execute procedure I1 to process
+     any data which might be in this packet.
 
-    ratp_set_next_an(ratp_sn(hdr));
+This fix allows the peer to queue data in the last packet doing the
+connection establishment. It doesn't apply to the barebox<->bbremote
+interaction because bbremote won't queue data until the connection is
+completely established, but it allows third party ratp implementations
+to do that.
 
 Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
- lib/ratp.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ lib/ratp.c             |  8 +++++++-
+ scripts/remote/ratp.py | 14 ++++++--------
+ 2 files changed, 13 insertions(+), 9 deletions(-)
 
 diff --git a/lib/ratp.c b/lib/ratp.c
-index 2dee41009..46a82c69a 100644
+index e810a9e54..2dee41009 100644
 --- a/lib/ratp.c
 +++ b/lib/ratp.c
-@@ -139,8 +139,10 @@ static bool ratp_an(struct ratp_header *hdr)
- 	return hdr->control & RATP_CONTROL_AN ? 1 : 0;
+@@ -1042,6 +1042,8 @@ static int ratp_behaviour_g(struct ratp_internal *ri, void *pkt)
+ 	return 0;
  }
  
--#define ratp_set_sn(sn) (((sn) % 2) ? RATP_CONTROL_SN : 0)
--#define ratp_set_an(an) (((an) % 2) ? RATP_CONTROL_AN : 0)
-+#define ratp_set_sn(sn) (sn ? RATP_CONTROL_SN : 0)
-+#define ratp_set_an(an) (an ? RATP_CONTROL_AN : 0)
-+#define ratp_set_next_sn(sn) (((sn + 1) % 2) ? RATP_CONTROL_SN : 0)
-+#define ratp_set_next_an(an) (((an + 1) % 2) ? RATP_CONTROL_AN : 0)
++static int ratp_behaviour_i1(struct ratp_internal *ri, void *pkt);
++
+ /*
+  * Our SYN has been acknowledged.  At this point we are
+  * technically in the ESTABLISHED state.  Send any initial data
+@@ -1062,7 +1064,11 @@ static int ratp_behaviour_h1(struct ratp_internal *ri, void *pkt)
  
- static inline int ratp_header_ok(struct ratp_internal *ri, struct ratp_header *h)
- {
-@@ -368,7 +370,7 @@ static int ratp_send_ack(struct ratp_internal *ri, struct ratp_header *hdr)
- 	int ret;
+ 	ratp_state_change(ri, RATP_STATE_ESTABLISHED);
  
- 	control = ratp_set_sn(ratp_an(hdr)) |
--		ratp_set_an(ratp_sn(hdr) + 1) |
-+		ratp_set_next_an(ratp_sn(hdr)) |
- 		RATP_CONTROL_ACK;
+-	return 0;
++	/* If the input message has data (i.e. it is not just an ACK
++	 * without data) then we need to send back an ACK ourselves,
++	 * or even data if we have it pending. This is the same
++	 * procedure done in i1, so just run it. */
++	return ratp_behaviour_i1 (ri, pkt);
+ }
  
- 	ret = ratp_send_hdr(ri, control);
-@@ -404,8 +406,8 @@ static int ratp_send_next_data(struct ratp_internal *ri)
+ /*
+diff --git a/scripts/remote/ratp.py b/scripts/remote/ratp.py
+index e6b3e19b6..7972d31f2 100644
+--- a/scripts/remote/ratp.py
++++ b/scripts/remote/ratp.py
+@@ -489,12 +489,8 @@ class RatpConnection(object):
  
- 	len = msg->len;
+     def _h1(self, r):
+         logging.info("H1")
+-
+-        # FIXME: initial data?
+         self._state = RatpState.established
+-        self._r_sn = r.c_sn
+-
+-        return False
++        return self._common_i1(r)
  
--	control = ratp_set_sn(ri->sn_sent + 1) |
--		ratp_set_an(ri->sn_received + 1) |
-+	control = ratp_set_next_sn(ri->sn_sent) |
-+		ratp_set_next_an(ri->sn_received) |
- 		RATP_CONTROL_ACK;
+     def _h2(self, r):
+         logging.info("H2")
+@@ -584,9 +580,7 @@ class RatpConnection(object):
+         self._time_wait_deadline = monotonic() + self._get_rto()
+         return False
  
- 	hdr = msg->buf;
-@@ -630,7 +632,7 @@ static void ratp_behaviour_b(struct ratp_internal *ri, void *pkt)
- 		} else {
- 			struct ratp_header synack = {};
+-    def _i1(self, r):
+-        logging.info("I1")
+-
++    def _common_i1(self, r):
+         if r.c_so:
+             self._r_sn = r.c_sn
+             self._rx_buf.append(chr(r.length))
+@@ -608,6 +602,10 @@ class RatpConnection(object):
+         self._write(s)
+         return False
  
--			control = ratp_set_an(!ratp_sn(hdr)) |
-+			control = ratp_set_next_an(ratp_sn(hdr)) |
- 				RATP_CONTROL_SYN |
- 				RATP_CONTROL_ACK;
- 
-@@ -734,7 +736,7 @@ static int ratp_behaviour_c2(struct ratp_internal *ri, void *pkt)
- 		pr_debug("Error: Connection reset\n");
- 
- 		control = RATP_CONTROL_RST | RATP_CONTROL_ACK |
--			ratp_set_sn(ratp_an(hdr)) | ratp_set_an(!ratp_sn(hdr));
-+			ratp_set_sn(ratp_an(hdr)) | ratp_set_next_an(ratp_sn(hdr));
- 		ratp_send_hdr(ri, control);
- 
- 		ratp_state_change(ri, RATP_STATE_CLOSED);
-@@ -1035,7 +1037,7 @@ static int ratp_behaviour_g(struct ratp_internal *ri, void *pkt)
- 	if (hdr->control & RATP_CONTROL_ACK)
- 		control |= ratp_set_sn(ratp_an(hdr));
- 	else
--		control |= ratp_set_an(ratp_sn(hdr) + 1) | RATP_CONTROL_ACK;
-+		control |= ratp_set_next_an(ratp_sn(hdr)) | RATP_CONTROL_ACK;
- 
- 	ratp_send_hdr(ri, control);
- 
-@@ -1099,7 +1101,7 @@ static int ratp_behaviour_h2(struct ratp_internal *ri, void *pkt)
- 	ri->status = -ENETDOWN;
- 
- 	control = ratp_set_sn(ratp_an(hdr)) |
--		ratp_set_an(ratp_sn(hdr) + 1) |
-+		ratp_set_next_an(ratp_sn(hdr)) |
- 		RATP_CONTROL_FIN |
- 		RATP_CONTROL_ACK;
- 
-@@ -1165,7 +1167,7 @@ static int ratp_behaviour_h3(struct ratp_internal *ri, void *pkt)
- 
- 	if (ratp_has_data(hdr)) {
- 		control = ratp_set_sn(ratp_an(hdr)) |
--			ratp_set_an(ratp_sn(hdr) + 1) |
-+			ratp_set_next_an(ratp_sn(hdr)) |
- 			RATP_CONTROL_RST |
- 			RATP_CONTROL_ACK;
- 		ratp_send_hdr(ri, control);
-@@ -1176,7 +1178,7 @@ static int ratp_behaviour_h3(struct ratp_internal *ri, void *pkt)
- 	}
- 
- 	control = ratp_set_sn(ratp_an(hdr)) |
--		ratp_set_an(ratp_sn(hdr) + 1) |
-+		ratp_set_next_an(ratp_sn(hdr)) |
- 		RATP_CONTROL_ACK;
- 
- 	expected = ratp_an_expected(ri, hdr);
-@@ -1278,7 +1280,7 @@ static int ratp_behaviour_h6(struct ratp_internal *ri, void *pkt)
- 	if (!(hdr->control & RATP_CONTROL_FIN))
- 		return 1;
- 
--	control = ratp_set_sn(ratp_an(hdr) + 1) | RATP_CONTROL_ACK;
-+	control = ratp_set_next_sn(ratp_an(hdr)) | RATP_CONTROL_ACK;
- 
- 	ratp_send_hdr(ri, control);
- 
-@@ -1695,8 +1697,8 @@ void ratp_close(struct ratp *ratp)
- 
- 		ratp_state_change(ri, RATP_STATE_FIN_WAIT);
- 
--		control = ratp_set_sn(!ri->sn_sent) |
--			ratp_set_an(ri->sn_received + 1) |
-+		control = ratp_set_next_sn(ri->sn_sent) |
-+			ratp_set_next_an(ri->sn_received) |
- 			RATP_CONTROL_FIN | RATP_CONTROL_ACK;
- 
- 		ratp_create_packet(ri, &fin, control, 0);
++    def _i1(self, r):
++        logging.info("I1")
++        return self._common_i1(r)
++
+     def _machine(self, pkt):
+         logging.info("State: %r", self._state)
+         if self._state == RatpState.listen:
 -- 
 2.13.1
 
