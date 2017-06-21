@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dNfhQ-0003ze-6v
- for barebox@lists.infradead.org; Wed, 21 Jun 2017 13:29:41 +0000
-From: Bastian Stender <bst@pengutronix.de>
-Date: Wed, 21 Jun 2017 15:28:54 +0200
-Message-Id: <20170621132854.3908-1-bst@pengutronix.de>
+ id 1dNgER-0002TW-Dx
+ for barebox@lists.infradead.org; Wed, 21 Jun 2017 14:03:48 +0000
+From: Roland Hieber <r.hieber@pengutronix.de>
+Date: Wed, 21 Jun 2017 16:03:15 +0200
+Message-Id: <20170621140315.18927-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,15 +19,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] lib/fonts: add 6x8 font
+Subject: [PATCH v2] lib/fonts: add 6x8 font
 To: barebox@lists.infradead.org
-Cc: Sven Schneider <s.schneider@arkona-technologies.de>
+Cc: Sven Schneider <s.schneider@arkona-technologies.de>, Roland Hieber <r.hieber@pengutronix.de>
 
 From: Sven Schneider <s.schneider@arkona-technologies.de>
 
 This font is derived from linux lib/fonts/font_6x10.c.
 
 Signed-off-by: Sven Schneider <s.schneider@arkona-technologies.de>
+[rhi: fix indentation for block /* 36 0x28 '$' */]
+Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
  lib/fonts/Kconfig    |    8 +-
  lib/fonts/Makefile   |    1 +
@@ -72,7 +74,7 @@ index 9e63ce630..394e2c5e4 100644
  
 diff --git a/lib/fonts/font_6x8.c b/lib/fonts/font_6x8.c
 new file mode 100644
-index 000000000..4ed7a8d43
+index 000000000..a5efeee61
 --- /dev/null
 +++ b/lib/fonts/font_6x8.c
 @@ -0,0 +1,2581 @@
@@ -444,14 +446,14 @@ index 000000000..4ed7a8d43
 +	0x00, /* 000000 */
 +
 +	/* 36 0x24 '$' */
-+    0x10, /* 000000 */
-+    0x38, /* 001000 */
-+    0x40, /* 010000 */
-+    0x30, /* 001000 */
-+    0x08, /* 000000 */
-+    0x70, /* 011000 */
-+    0x20, /* 001000 */
-+    0x00, /* 000000 */
++	0x10, /* 000000 */
++	0x38, /* 001000 */
++	0x40, /* 010000 */
++	0x30, /* 001000 */
++	0x08, /* 000000 */
++	0x70, /* 011000 */
++	0x20, /* 001000 */
++	0x00, /* 000000 */
 +
 +	/* 37 0x25 '%' */
 +	0x64, /* 011001 */
