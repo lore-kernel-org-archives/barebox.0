@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x242.google.com ([2a00:1450:400c:c0c::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dNl56-0004Ih-Lt
- for barebox@lists.infradead.org; Wed, 21 Jun 2017 19:14:28 +0000
-Received: by mail-wr0-x242.google.com with SMTP id 77so29050246wrb.3
- for <barebox@lists.infradead.org>; Wed, 21 Jun 2017 12:14:04 -0700 (PDT)
-From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Wed, 21 Jun 2017 21:13:23 +0200
-Message-Id: <20170621191323.18191-17-aleksander@aleksander.es>
-In-Reply-To: <20170621191323.18191-1-aleksander@aleksander.es>
+ id 1dOMuo-0000mB-7D
+ for barebox@lists.infradead.org; Fri, 23 Jun 2017 11:38:20 +0000
+Date: Fri, 23 Jun 2017 13:37:56 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170623113756.gnd2amqfj4hczrw5@pengutronix.de>
 References: <20170621191323.18191-1-aleksander@aleksander.es>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170621191323.18191-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,63 +18,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 16/16] ratp: user close may happen in SYN-RECEIVED state
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org, Aleksander Morgado <aleksander@aleksander.es>
+Subject: Re: [PATCH v2 00/16] RATP logic fixes and improvements
+To: Aleksander Morgado <aleksander@aleksander.es>
+Cc: barebox@lists.infradead.org
 
-The reference says:
+On Wed, Jun 21, 2017 at 09:13:07PM +0200, Aleksander Morgado wrote:
+> Hey Sascha,
+> 
+> This v2 series of patches includes just changes in the commit
+> messages, trying to explain which of the patches apply to barebox
+> and/or the barebox<->bbremote interactions. I did test all these
+> patches also with RATP FS, and I didn't see any regression.
+> 
+> I did see issues in RATP FS happening with and without my patches,
+> though. E.g. "cat"-ing a long file (>1024 bytes) that is being
+> exported via RATFS results in each byte read being sent through the
+> ratp output console messages one by one (the actual read operation
+> over RATFS goes in chunks of 255, but the cat stdout messages via RATP
+> go byte by byte...). After that, the additional read operations above
+> offset 1024 end up timing out. I believe I'm going to have to work
+> with RATFS in the near future, so I'll likely spend some time looking
+> at those issues soon anyway.
 
-     5.2.3. SYN-RECEIVED
-     ...
-     Departures
-       - A CLOSE request is made by the user.  Create a packet with
-         FIN set.  Send it and go to the FIN-WAIT state.
+Ok, you see RATP FS issues, but they are unrelated to your series. Fine
+then, let's leave this for a future task. Applied, thanks
 
-Add this missing step.
+Sascha
 
-Probably not a real usecase for barebox anyway as there is no user
-triggered close.
-
-Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
----
- lib/ratp.c             | 2 +-
- scripts/remote/ratp.py | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/lib/ratp.c b/lib/ratp.c
-index 46a82c69a..e7fbf640a 100644
---- a/lib/ratp.c
-+++ b/lib/ratp.c
-@@ -1689,7 +1689,7 @@ void ratp_close(struct ratp *ratp)
- 	if (!ri)
- 		return;
- 
--	if (ri->state == RATP_STATE_ESTABLISHED) {
-+	if (ri->state == RATP_STATE_ESTABLISHED || ri->state == RATP_STATE_SYN_RECEIVED) {
- 		uint64_t start;
- 		u8 control;
- 
-diff --git a/scripts/remote/ratp.py b/scripts/remote/ratp.py
-index 7972d31f2..44f3e2f40 100644
---- a/scripts/remote/ratp.py
-+++ b/scripts/remote/ratp.py
-@@ -721,7 +721,7 @@ class RatpConnection(object):
-     def close(self, timeout=1.0):
-         deadline = monotonic() + timeout
-         logging.info("CLOSE")
--        if self._state == RatpState.established:
-+        if self._state == RatpState.established or self._state == RatpState.syn_received:
-             fin = RatpPacket(flags='FA')
-             fin.c_sn = (self._s_sn + 1) % 2
-             fin.c_an = (self._r_sn + 1) % 2
 -- 
-2.13.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
