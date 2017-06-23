@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dPk3q-0003Az-7K
- for barebox@lists.infradead.org; Tue, 27 Jun 2017 06:33:20 +0000
-Date: Tue, 27 Jun 2017 08:32:53 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170627063253.eyegd3ghsdhlpjqk@pengutronix.de>
-References: <20170623101848.8183-1-m.niestroj@grinn-global.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170623101848.8183-1-m.niestroj@grinn-global.com>
+ id 1dOQE2-0002sy-St
+ for barebox@lists.infradead.org; Fri, 23 Jun 2017 15:10:24 +0000
+From: Michael Tretter <m.tretter@pengutronix.de>
+Date: Fri, 23 Jun 2017 17:09:50 +0200
+Message-Id: <1498230590-7661-1-git-send-email-m.tretter@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,55 +14,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [DT-UTILS PATCH 1/2] common: Rename strlcpy to DT_strlcpy
-To: Marcin Niestroj <m.niestroj@grinn-global.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: dts: i.MX6: fix usdhc3 pinmuxing on tqma6x
+To: barebox@lists.infradead.org
+Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-T24gRnJpLCBKdW4gMjMsIDIwMTcgYXQgMTI6MTg6NDdQTSArMDIwMCwgTWFyY2luIE5pZXN0cm9q
-IHdyb3RlOgo+IHN0cmxjcHkgZnVuY3Rpb24gaXMgZGVmaW5lZCBpbiB1Q2xpYmMgbGlicmFyeSwg
-Y2F1c2luZyAic3RhdGljCj4gZGVjbGFyYXRpb24gb2Yg4oCYc3RybGNweeKAmSBmb2xsb3dzIG5v
-bi1zdGF0aWMgZGVjbGFyYXRpb24iIGJ1aWxkCj4gZXJyb3JzLgo+IAo+IFJlbmFtZSBpbnRlcm5h
-bCBzdHJsY3B5IGZ1bmN0aW9uIHRvIERUX3N0cmxjcHkgdG8gYXZvaWQgY29uZmxpY3RzLgo+IAo+
-IFNpZ25lZC1vZmYtYnk6IE1hcmNpbiBOaWVzdHJvaiA8bS5uaWVzdHJvakBncmlubi1nbG9iYWwu
-Y29tPgo+IC0tLQoKQXBwbGllZCwgdGhhbmtzCgpTYXNjaGEKCj4gIHNyYy9kdC9jb21tb24uaCB8
-IDQgKystLQo+ICBzcmMvbGliZHQuYyAgICAgfCAyICstCj4gIDIgZmlsZXMgY2hhbmdlZCwgMyBp
-bnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS9zcmMvZHQvY29t
-bW9uLmggYi9zcmMvZHQvY29tbW9uLmgKPiBpbmRleCBmNmJhZDQ0Li45OTJlMjhmIDEwMDY0NAo+
-IC0tLSBhL3NyYy9kdC9jb21tb24uaAo+ICsrKyBiL3NyYy9kdC9jb21tb24uaAo+IEBAIC0xNjgs
-NyArMTY4LDcgQEAgc3RhdGljIGlubGluZSBjaGFyICpiYXJlYm94X2FzcHJpbnRmKGNvbnN0IGNo
-YXIgKmZtdCwgLi4uKQo+ICAjZGVmaW5lIGJhc3ByaW50ZihmbXQsIGFyZy4uLikgYmFyZWJveF9h
-c3ByaW50ZihmbXQsICMjYXJnKQo+ICAKPiAgLyoqCj4gLSAqIHN0cmxjcHkgLSBDb3B5IGEgJU5V
-TCB0ZXJtaW5hdGVkIHN0cmluZyBpbnRvIGEgc2l6ZWQgYnVmZmVyCj4gKyAqIERUX3N0cmxjcHkg
-LSBDb3B5IGEgJU5VTCB0ZXJtaW5hdGVkIHN0cmluZyBpbnRvIGEgc2l6ZWQgYnVmZmVyCj4gICAq
-IEBkZXN0OiBXaGVyZSB0byBjb3B5IHRoZSBzdHJpbmcgdG8KPiAgICogQHNyYzogV2hlcmUgdG8g
-Y29weSB0aGUgc3RyaW5nIGZyb20KPiAgICogQHNpemU6IHNpemUgb2YgZGVzdGluYXRpb24gYnVm
-ZmVyCj4gQEAgLTE3OCw3ICsxNzgsNyBAQCBzdGF0aWMgaW5saW5lIGNoYXIgKmJhcmVib3hfYXNw
-cmludGYoY29uc3QgY2hhciAqZm10LCAuLi4pCj4gICAqIG9mIGNvdXJzZSwgdGhlIGJ1ZmZlciBz
-aXplIGlzIHplcm8pLiBJdCBkb2VzIG5vdCBwYWQKPiAgICogb3V0IHRoZSByZXN1bHQgbGlrZSBz
-dHJuY3B5KCkgZG9lcy4KPiAgICovCj4gLXN0YXRpYyBpbmxpbmUgc2l6ZV90IHN0cmxjcHkoY2hh
-ciAqZGVzdCwgY29uc3QgY2hhciAqc3JjLCBzaXplX3Qgc2l6ZSkKPiArc3RhdGljIGlubGluZSBz
-aXplX3QgRFRfc3RybGNweShjaGFyICpkZXN0LCBjb25zdCBjaGFyICpzcmMsIHNpemVfdCBzaXpl
-KQo+ICB7Cj4gIAlzaXplX3QgcmV0ID0gc3RybGVuKHNyYyk7Cj4gIAo+IGRpZmYgLS1naXQgYS9z
-cmMvbGliZHQuYyBiL3NyYy9saWJkdC5jCj4gaW5kZXggNGRiNTE2MC4uM2FkZWVkMiAxMDA2NDQK
-PiAtLS0gYS9zcmMvbGliZHQuYwo+ICsrKyBiL3NyYy9saWJkdC5jCj4gQEAgLTE1MDMsNyArMTUw
-Myw3IEBAIGludCBvZl9tb2RhbGlhc19ub2RlKHN0cnVjdCBkZXZpY2Vfbm9kZSAqbm9kZSwgY2hh
-ciAqbW9kYWxpYXMsIGludCBsZW4pCj4gIAlpZiAoIWNvbXBhdGlibGUgfHwgc3RybGVuKGNvbXBh
-dGlibGUpID4gY3BsZW4pCj4gIAkJcmV0dXJuIC1FTk9ERVY7Cj4gIAlwID0gc3RyY2hyKGNvbXBh
-dGlibGUsICcsJyk7Cj4gLQlzdHJsY3B5KG1vZGFsaWFzLCBwID8gcCArIDEgOiBjb21wYXRpYmxl
-LCBsZW4pOwo+ICsJRFRfc3RybGNweShtb2RhbGlhcywgcCA/IHAgKyAxIDogY29tcGF0aWJsZSwg
-bGVuKTsKPiAgCXJldHVybiAwOwo+ICB9Cj4gIAo+IC0tIAo+IDIuMTMuMQo+IAo+IAo+IF9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFyZWJveCBtYWls
-aW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCi0tIApQZW5ndXRyb25peCBlLksu
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-fApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3
-LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdl
-cm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNo
-ZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
-YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+The usdhc3 pin group wrongly referred the SD4 pads instead of the SD3 pads.
+This leads to issues when muxing the SD4_CMD and SD4_CLK pads for uart3.
+
+This regression was introduced by code refactoring in commit a5207a6 ("ARM:
+dts: i.MX6: drop usage of pin group defines").
+
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+---
+ arch/arm/dts/imx6qdl-tqma6x.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arm/dts/imx6qdl-tqma6x.dtsi b/arch/arm/dts/imx6qdl-tqma6x.dtsi
+index f0b1a0db7..82f9ec368 100644
+--- a/arch/arm/dts/imx6qdl-tqma6x.dtsi
++++ b/arch/arm/dts/imx6qdl-tqma6x.dtsi
+@@ -76,12 +76,12 @@
+ 
+ 		pinctrl_usdhc3: usdhc3grp {
+ 			fsl,pins = <
+-				MX6QDL_PAD_SD4_CMD__SD4_CMD		0x17059
+-				MX6QDL_PAD_SD4_CLK__SD4_CLK		0x10059
+-				MX6QDL_PAD_SD4_DAT0__SD4_DATA0		0x17059
+-				MX6QDL_PAD_SD4_DAT1__SD4_DATA1		0x17059
+-				MX6QDL_PAD_SD4_DAT2__SD4_DATA2		0x17059
+-				MX6QDL_PAD_SD4_DAT3__SD4_DATA3		0x17059
++				MX6QDL_PAD_SD3_CMD__SD3_CMD		0x17059
++				MX6QDL_PAD_SD3_CLK__SD3_CLK		0x10059
++				MX6QDL_PAD_SD3_DAT0__SD3_DATA0		0x17059
++				MX6QDL_PAD_SD3_DAT1__SD3_DATA1		0x17059
++				MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x17059
++				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x17059
+ 				MX6QDL_PAD_SD3_DAT4__SD3_DATA4		0x17059
+ 				MX6QDL_PAD_SD3_DAT5__SD3_DATA5		0x17059
+ 				MX6QDL_PAD_SD3_DAT6__SD3_DATA6		0x17059
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
