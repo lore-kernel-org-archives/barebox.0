@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dLPgt-0005Gy-0L
- for barebox@lists.infradead.org; Thu, 15 Jun 2017 07:59:45 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu, 15 Jun 2017 09:59:16 +0200
-Message-Id: <20170615075916.5356-1-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20170614215010.11886-3-u.kleine-koenig@pengutronix.de>
-References: <20170614215010.11886-3-u.kleine-koenig@pengutronix.de>
+ id 1dPNTb-00055H-BQ
+ for barebox@lists.infradead.org; Mon, 26 Jun 2017 06:26:25 +0000
+Date: Mon, 26 Jun 2017 08:25:57 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170626062557.5kaeyculqgi3mske@pengutronix.de>
+References: <1497361020-33828-1-git-send-email-d.schultz@phytec.de>
+ <20170619073427.oja6l4ebvqjc3fp7@pengutronix.de>
+ <661a7f8c-9ba8-bd25-7eb9-da77e6fb7ed4@phytec.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <661a7f8c-9ba8-bd25-7eb9-da77e6fb7ed4@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,124 +20,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/3] ARM: mvebu: Add initial support for Turris Omnia
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] defaultenv: bin: init: Add sourcing of config-expansions
+To: Daniel Schultz <d.schultz@phytec.de>
+Cc: barebox@lists.infradead.org
 
-VXAgdG8gbm93IG9ubHkgMm5kIHN0YWdlIGJvb3RpbmcgaXMgdGVzdGVkIGFuZCBib290cyB1cCB0
-byBhIHByb21wdC4KaTJjIGFuZCBzcGkgYXJlIHdvcmtpbmcsIGV0aGVybmV0LCB1c2IgYW5kIHNh
-dGEgZG9uJ3QuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29l
-bmlnQHBlbmd1dHJvbml4LmRlPgotLS0KQ2hhbmdlcyBzaW5jZSAoaW1wbGljaXQpIHYxOgogLSBm
-aXggY29weXJpZ2h0IHN0dWZmCiAtIGRyb3Agc29tZSBkZWJ1ZyByZW1haW5zCiAtIGZpeCBrd2Jv
-b3QuY2ZnCgogYXJjaC9hcm0vYm9hcmRzL01ha2VmaWxlICAgICAgICAgICAgICAgICAgICB8ICAx
-ICsKIGFyY2gvYXJtL2JvYXJkcy90dXJyaXMtb21uaWEvTWFrZWZpbGUgICAgICAgfCAgMiArKwog
-YXJjaC9hcm0vYm9hcmRzL3R1cnJpcy1vbW5pYS9ib2FyZC5jICAgICAgICB8ICAxICsKIGFyY2gv
-YXJtL2JvYXJkcy90dXJyaXMtb21uaWEva3diaW1hZ2UuY2ZnICAgfCAgNyArKysrKysKIGFyY2gv
-YXJtL2JvYXJkcy90dXJyaXMtb21uaWEvbG93bGV2ZWwuYyAgICAgfCAzMyArKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKwogYXJjaC9hcm0vZHRzL01ha2VmaWxlICAgICAgICAgICAgICAgICAg
-ICAgICB8ICAxICsKIGFyY2gvYXJtL2R0cy9hcm1hZGEtMzg1LXR1cnJpcy1vbW5pYS1iYi5kdHMg
-fCAgNyArKysrKysKIGFyY2gvYXJtL21hY2gtbXZlYnUvS2NvbmZpZyAgICAgICAgICAgICAgICAg
-fCAxMCArKysrKysrKysKIGltYWdlcy9NYWtlZmlsZS5tdmVidSAgICAgICAgICAgICAgICAgICAg
-ICAgfCAgOCArKysrKysrCiA5IGZpbGVzIGNoYW5nZWQsIDcwIGluc2VydGlvbnMoKykKIGNyZWF0
-ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvdHVycmlzLW9tbmlhL01ha2VmaWxlCiBjcmVh
-dGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL3R1cnJpcy1vbW5pYS9ib2FyZC5jCiBjcmVh
-dGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL3R1cnJpcy1vbW5pYS9rd2JpbWFnZS5jZmcK
-IGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvdHVycmlzLW9tbmlhL2xvd2xldmVs
-LmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9kdHMvYXJtYWRhLTM4NS10dXJyaXMtb21u
-aWEtYmIuZHRzCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL01ha2VmaWxlIGIvYXJjaC9h
-cm0vYm9hcmRzL01ha2VmaWxlCmluZGV4IDBlY2ZiM2U0YjM5OC4uODk2YTNmNWNiYWI1IDEwMDY0
-NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvTWFrZWZpbGUKKysrIGIvYXJjaC9hcm0vYm9hcmRzL01h
-a2VmaWxlCkBAIC0xMjQsNiArMTI0LDcgQEAgb2JqLSQoQ09ORklHX01BQ0hfVE9SQURFWF9DT0xJ
-QlJJX1QyMCkJCSs9IHRvcmFkZXgtY29saWJyaS10MjAvCiBvYmotJChDT05GSUdfTUFDSF9UT1NI
-SUJBX0FDMTAwKQkJKz0gdG9zaGliYS1hYzEwMC8KIG9iai0kKENPTkZJR19NQUNIX1RRTUE1MykJ
-CQkrPSB0cW1hNTMvCiBvYmotJChDT05GSUdfTUFDSF9UUU1BNlgpCQkJKz0gdHFtYTZ4Lworb2Jq
-LSQoQ09ORklHX01BQ0hfVFVSUklTX09NTklBKQkJCSs9IHR1cnJpcy1vbW5pYS8KIG9iai0kKENP
-TkZJR19NQUNIX1RYMjUpCQkJCSs9IGthcm8tdHgyNS8KIG9iai0kKENPTkZJR19NQUNIX1RYMjgp
-CQkJCSs9IGthcm8tdHgyOC8KIG9iai0kKENPTkZJR19NQUNIX1RYNTEpCQkJCSs9IGthcm8tdHg1
-MS8KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy90dXJyaXMtb21uaWEvTWFrZWZpbGUgYi9h
-cmNoL2FybS9ib2FyZHMvdHVycmlzLW9tbmlhL01ha2VmaWxlCm5ldyBmaWxlIG1vZGUgMTAwNjQ0
-CmluZGV4IDAwMDAwMDAwMDAwMC4uMDFjN2EyNTllOWE1Ci0tLSAvZGV2L251bGwKKysrIGIvYXJj
-aC9hcm0vYm9hcmRzL3R1cnJpcy1vbW5pYS9NYWtlZmlsZQpAQCAtMCwwICsxLDIgQEAKK29iai15
-ICs9IGJvYXJkLm8KK2x3bC15ICs9IGxvd2xldmVsLm8KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Jv
-YXJkcy90dXJyaXMtb21uaWEvYm9hcmQuYyBiL2FyY2gvYXJtL2JvYXJkcy90dXJyaXMtb21uaWEv
-Ym9hcmQuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAuLjQwYThjMTc4
-ZjEwZAotLS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL2JvYXJkcy90dXJyaXMtb21uaWEvYm9h
-cmQuYwpAQCAtMCwwICsxIEBACisvKiBlbXB0eSAqLwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9h
-cmRzL3R1cnJpcy1vbW5pYS9rd2JpbWFnZS5jZmcgYi9hcmNoL2FybS9ib2FyZHMvdHVycmlzLW9t
-bmlhL2t3YmltYWdlLmNmZwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAu
-Ljc4OWVlNWRmMTdkZQotLS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL2JvYXJkcy90dXJyaXMt
-b21uaWEva3diaW1hZ2UuY2ZnCkBAIC0wLDAgKzEsNyBAQAorVkVSU0lPTiAxCitCT09UX0ZST00g
-c3BpCitERVNUQUREUiAwMDgwMDAwMAorRVhFQ0FERFIgMDA4MDAwMDAKK05BTkRfQkxLU1ogMDAw
-MDAwMDAKK05BTkRfQkFEQkxLX0xPQ0FUSU9OIDAwCitCSU5BUlkgYmluYXJ5LjAgMDAwMDAwNWIg
-MDAwMDAwNjgKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy90dXJyaXMtb21uaWEvbG93bGV2
-ZWwuYyBiL2FyY2gvYXJtL2JvYXJkcy90dXJyaXMtb21uaWEvbG93bGV2ZWwuYwpuZXcgZmlsZSBt
-b2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAuLjNmMjA5MDhmZjdmZAotLS0gL2Rldi9udWxs
-CisrKyBiL2FyY2gvYXJtL2JvYXJkcy90dXJyaXMtb21uaWEvbG93bGV2ZWwuYwpAQCAtMCwwICsx
-LDMzIEBACisvKgorICogQ29weXJpZ2h0IChDKSAyMDE3IFBlbmd1dHJvbml4LCBVd2UgS2xlaW5l
-LUtvZW5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgorICoKKyAqIFRoaXMgcHJv
-Z3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IKKyAq
-IG1vZGlmeSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNl
-bnNlCisgKiB2ZXJzaW9uIDIsIGFzIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3Vu
-ZGF0aW9uLgorICoKKyAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0
-aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAorICogYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRo
-b3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YKKyAqIE1FUkNIQU5UQUJJTElUWSBvciBG
-SVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGUKKyAqIEdOVSBHZW5lcmFs
-IFB1YmxpYyBMaWNlbnNlIGZvciBtb3JlIGRldGFpbHMuCisgKi8KKworI2luY2x1ZGUgPGNvbW1v
-bi5oPgorI2luY2x1ZGUgPGFzbS9iYXJlYm94LWFybS5oPgorI2luY2x1ZGUgPGFzbS9iYXJlYm94
-LWFybS1oZWFkLmg+CisjaW5jbHVkZSA8bWFjaC9sb3dsZXZlbC5oPgorCisjaW5jbHVkZSA8YXNt
-L2lvLmg+CisKK2V4dGVybiBjaGFyIF9fZHRiX2FybWFkYV8zODVfdHVycmlzX29tbmlhX2JiX3N0
-YXJ0W107CisKK0VOVFJZX0ZVTkNUSU9OKHN0YXJ0X3R1cnJpc19vbW5pYSwgcjAsIHIxLCByMikK
-K3sKKwl2b2lkICpmZHQ7CisKKwlhcm1fY3B1X2xvd2xldmVsX2luaXQoKTsKKworCWZkdCA9IF9f
-ZHRiX2FybWFkYV8zODVfdHVycmlzX29tbmlhX2JiX3N0YXJ0IC0KKwkJZ2V0X3J1bnRpbWVfb2Zm
-c2V0KCk7CisKKwlhcm1hZGFfMzcwX3hwX2JhcmVib3hfZW50cnkoZmR0KTsKK30KZGlmZiAtLWdp
-dCBhL2FyY2gvYXJtL2R0cy9NYWtlZmlsZSBiL2FyY2gvYXJtL2R0cy9NYWtlZmlsZQppbmRleCAy
-MzQyZDM1YTRiZDEuLmM4MWU2ZTBlNDkyYyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vZHRzL01ha2Vm
-aWxlCisrKyBiL2FyY2gvYXJtL2R0cy9NYWtlZmlsZQpAQCAtODEsNiArODEsNyBAQCBwYmwtZHRi
-LSQoQ09ORklHX01BQ0hfVFFNQTZYKSArPSBpbXg2ZGwtbWJhNnguZHRiLm8gaW14NnEtbWJhNngu
-ZHRiLm8KIHBibC1kdGItJChDT05GSUdfTUFDSF9UWDI1KSArPSBpbXgyNS1rYXJvLXR4MjUuZHRi
-Lm8KIHBibC1kdGItJChDT05GSUdfTUFDSF9UWDZYKSArPSBpbXg2ZGwtdHg2dS5kdGIubwogcGJs
-LWR0Yi0kKENPTkZJR19NQUNIX1RYNlgpICs9IGlteDZxLXR4NnEuZHRiLm8KK3BibC1kdGItJChD
-T05GSUdfTUFDSF9UVVJSSVNfT01OSUEpICs9IGFybWFkYS0zODUtdHVycmlzLW9tbmlhLWJiLmR0
-Yi5vCiBwYmwtZHRiLSQoQ09ORklHX01BQ0hfVURPTykgKz0gaW14NnEtdWRvby5kdGIubwogcGJs
-LWR0Yi0kKENPTkZJR19NQUNIX1VTSV9UT1BLSUNLKSArPSBraXJrd29vZC10b3BraWNrLWJiLmR0
-Yi5vCiBwYmwtZHRiLSQoQ09ORklHX01BQ0hfVkFSSVNDSVRFX01YNikgKz0gaW14NnEtdmFyLWN1
-c3RvbS5kdGIubwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL2FybWFkYS0zODUtdHVycmlzLW9t
-bmlhLWJiLmR0cyBiL2FyY2gvYXJtL2R0cy9hcm1hZGEtMzg1LXR1cnJpcy1vbW5pYS1iYi5kdHMK
-bmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAwMDAwLi41M2JlZjAxYWY3NTgKLS0t
-IC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9kdHMvYXJtYWRhLTM4NS10dXJyaXMtb21uaWEtYmIu
-ZHRzCkBAIC0wLDAgKzEsNyBAQAorI2luY2x1ZGUgImFybS9hcm1hZGEtMzg1LXR1cnJpcy1vbW5p
-YS5kdHMiCisKKy8geworCWNob3NlbiB7CisJCXN0ZG91dC1wYXRoID0gIi9zb2MvaW50ZXJuYWwt
-cmVncy9zZXJpYWxAMTIwMDAiOworCX07Cit9OwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1t
-dmVidS9LY29uZmlnIGIvYXJjaC9hcm0vbWFjaC1tdmVidS9LY29uZmlnCmluZGV4IDgyNzk2N2Vl
-YTM4MC4uYWQ5N2U4MzcwMWU3IDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW12ZWJ1L0tjb25m
-aWcKKysrIGIvYXJjaC9hcm0vbWFjaC1tdmVidS9LY29uZmlnCkBAIC02OSw2ICs2OSwxNiBAQCBj
-b25maWcgTUFDSF9QTEFUSE9NRV9PUEVOQkxPQ0tTX0FYMwogCXNlbGVjdCBBUkNIX0FSTUFEQV9Y
-UAogCiAjCisjIEFybWFkYSAzOHggU29DIGJvYXJkcworIworCitjb21tZW50ICJBcm1hZGEgMzh4
-IGJhc2VkIGJvYXJkcyIKKworY29uZmlnIE1BQ0hfVFVSUklTX09NTklBCisJYm9vbCAiVHVycmlz
-IE9tbmlhIgorCXNlbGVjdCBBUkNIX0FSTUFEQV8zOFgKKworIwogIyBEb3ZlIDg4QVA1MTAgU29D
-IGJvYXJkcwogIwogCmRpZmYgLS1naXQgYS9pbWFnZXMvTWFrZWZpbGUubXZlYnUgYi9pbWFnZXMv
-TWFrZWZpbGUubXZlYnUKaW5kZXggYjU3MjkxY2JhZmUyLi4xN2ZhMDYxNmIyZmUgMTAwNjQ0Ci0t
-LSBhL2ltYWdlcy9NYWtlZmlsZS5tdmVidQorKysgYi9pbWFnZXMvTWFrZWZpbGUubXZlYnUKQEAg
-LTUxLDYgKzUxLDE0IEBAIHBibHgtJChDT05GSUdfTUFDSF9ORVRHRUFSX1JOMjEyMCkgKz0gc3Rh
-cnRfbmV0Z2Vhcl9ybjIxMjAKIGltYWdlLSQoQ09ORklHX01BQ0hfTkVUR0VBUl9STjIxMjApICs9
-IGJhcmVib3gtbmV0Z2Vhci1ybjIxMjAuaW1nCiBpbWFnZS0kKENPTkZJR19NQUNIX05FVEdFQVJf
-Uk4yMTIwKSArPSBiYXJlYm94LW5ldGdlYXItcm4yMTIwLTJuZC5pbWcKIAorIyAtLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLSBBcm1hZGEgMzh4IGJhc2VkIGJvYXJkcyAtLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KK1RVUlJJU19PTU5JQV9LV0JPUFRTID0gJHtLV0JPUFRTfSAtaSAkKGJvYXJkKS90
-dXJyaXMtb21uaWEva3diaW1hZ2UuY2ZnCitPUFRTX3N0YXJ0X3R1cnJpc19vbW5pYS5wYmx4Lmt3
-YmltZyA9ICQoVFVSUklTX09NTklBX0tXQk9QVFMpCitGSUxFX2JhcmVib3gtdHVycmlzLW9tbmlh
-LmltZyA9IHN0YXJ0X3R1cnJpc19vbW5pYS5wYmx4Lmt3YmltZworRklMRV9iYXJlYm94LXR1cnJp
-cy1vbW5pYS0ybmQuaW1nID0gc3RhcnRfdHVycmlzX29tbmlhLnBibHgKK3BibHgtJChDT05GSUdf
-TUFDSF9UVVJSSVNfT01OSUEpICs9IHN0YXJ0X3R1cnJpc19vbW5pYQoraW1hZ2UtJChDT05GSUdf
-TUFDSF9UVVJSSVNfT01OSUEpICs9IGJhcmVib3gtdHVycmlzLW9tbmlhLmltZworCiBQTEFUSE9N
-RV9PUEVOQkxPQ0tTX0FYM19LV0JPUFRTID0gJHtLV0JPUFRTfSAtaSAkKGJvYXJkKS9wbGF0aG9t
-ZS1vcGVuYmxvY2tzLWF4My9rd2JpbWFnZS5jZmcKIE9QVFNfc3RhcnRfcGxhdGhvbWVfb3BlbmJs
-b2Nrc19heDMucGJseC5rd2JpbWcgPSAkKFBMQVRIT01FX09QRU5CTE9DS1NfQVgzX0tXQk9QVFMp
-CiBGSUxFX2JhcmVib3gtcGxhdGhvbWUtb3BlbmJsb2Nrcy1heDMuaW1nICAgPSBzdGFydF9wbGF0
-aG9tZV9vcGVuYmxvY2tzX2F4My5wYmx4Lmt3YmltZwotLSAKMi4xMS4wCgoKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
-YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Tue, Jun 20, 2017 at 05:50:56PM +0200, Daniel Schultz wrote:
+> Hi,
+> 
+> Am 19.06.2017 um 09:34 schrieb Sascha Hauer:
+> > On Tue, Jun 13, 2017 at 03:37:00PM +0200, Daniel Schultz wrote:
+> > > This patch adds a further layer to the config hierarchy. It allows a
+> > > dynamic configuration of expansions.
+> > > 
+> > > Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+> > > ---
+> > >   defaultenv/defaultenv-2-base/bin/init | 1 +
+> > >   1 file changed, 1 insertion(+)
+> > > 
+> > > diff --git a/defaultenv/defaultenv-2-base/bin/init b/defaultenv/defaultenv-2-base/bin/init
+> > > index 7af3c7d..a93ea58 100644
+> > > --- a/defaultenv/defaultenv-2-base/bin/init
+> > > +++ b/defaultenv/defaultenv-2-base/bin/init
+> > > @@ -25,6 +25,7 @@ magicvar -a global.allow_color "Allow color on the console (boolean)"
+> > >   [ -z "${global.editcmd}" ] && global.editcmd=sedit
+> > >   [ -e /env/config-board ] && /env/config-board
+> > > +[ -e /env/config-expansions ] && /env/config-expansions
+> > 
+> > I read the last thread again and I think my question remains
+> > unanswered. Why can't you put the config-expansions to /env/init/ and
+> > let it be executed automatically without changing /bin/init?
+> > 
+> I can change the path of the config-expanions file without problems, but I
+> thought there could be more who need a config for expansions. So, they have
+> config files with a same behavior in different dirs.
+
+I think we are talking at cross-purposes. All files in /env/init/ are
+executed by the init script, so adding stuff that shall be executed
+during init to that directory would be the natural way to "expand the
+config".
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
