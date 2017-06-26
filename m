@@ -1,12 +1,8 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dPPfC-0003wG-KH
- for barebox@lists.infradead.org; Mon, 26 Jun 2017 08:46:32 +0000
-Message-ID: <1498466766.2414.5.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 26 Jun 2017 10:46:06 +0200
-In-Reply-To: <f950d875-85a7-988a-5425-441a05339a7c@eurekelettronica.it>
+Received: from qmail34.e-mind.com ([188.94.192.34] helo=qmail.e-mind.com)
+ by bombadil.infradead.org with smtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1dPU4U-0000bS-2Z
+ for barebox@lists.infradead.org; Mon, 26 Jun 2017 13:28:57 +0000
 References: <63687e34-f354-81d3-aed7-1a59866925c5@eurekelettronica.it>
  <2f43179e-2aa0-1dba-eafa-a9c0025afd24@eurekelettronica.it>
  <1487689380.2268.18.camel@pengutronix.de>
@@ -18,7 +14,12 @@ References: <63687e34-f354-81d3-aed7-1a59866925c5@eurekelettronica.it>
  <1498059009.2904.108.camel@pengutronix.de>
  <aaba2d2b-6d53-07a7-bfdd-f70c22ad13c6@eurekelettronica.it>
  <f950d875-85a7-988a-5425-441a05339a7c@eurekelettronica.it>
-Mime-Version: 1.0
+ <1498466766.2414.5.camel@pengutronix.de>
+From: gianluca <gianlucarenzi@eurekelettronica.it>
+Message-ID: <5e3f93ae-e91a-8e89-9979-e90584c5ad3d@eurekelettronica.it>
+Date: Mon, 26 Jun 2017 15:28:28 +0200
+MIME-Version: 1.0
+In-Reply-To: <1498466766.2414.5.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,233 +28,183 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Fwd: Barebox 2017.02 works great but no Linux Framebuffer... :-/
-To: gianluca <gianlucarenzi@eurekelettronica.it>
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-QW0gTW9udGFnLCBkZW4gMjYuMDYuMjAxNywgMTA6NDAgKzAyMDAgc2NocmllYiBnaWFubHVjYToK
-PiBPbiAwNi8yMy8yMDE3IDExOjQ1IEFNLCBnaWFubHVjYSB3cm90ZToKPiA+IE9uIDA2LzIxLzIw
-MTcgMDU6MzAgUE0sIEx1Y2FzIFN0YWNoIHdyb3RlOgo+ID4gPiA+IEFzIHlvdSBjYW4gc2VlIGlt
-eC1kcm0ubGVnYWN5X2RlcHRoPTMyIGlzIHBhc3NlZCB0byB0aGUga2VybmVsCj4gPiA+ID4gZnJv
-bQo+ID4gPiA+IGJvb3Rsb2FkZXIuCj4gPiA+IAo+ID4gPiBUaGUgbW9kdWxlIGlzIGNhbGxlZCAi
-aW14ZHJtIiB3aXRob3V0IGEgZGFzaCwgc28gdGhlIGNvcnJlY3Qgd2F5Cj4gPiA+IHRvCj4gPiA+
-IHNwZWNpZnkgdGhlIHBhcmFtZXRlciBvbiB0aGUgY29tbWFuZCBsaW5lIGlzCj4gPiA+ICJpbXhk
-cm0ubGVnYWN5ZmJfZGVwdGg9MzIiLgo+ID4gCj4gPiBJdCB3b3JrcyBub3csIHRoZSBjdWxwcml0
-IHdhcyB0aGUgbmFtZSBvZiB0aGUgZHJpdmVyOiBpbXhkcm0gaXMgdGhlCj4gPiByaWdodCBvbmUu
-Cj4gPiAKPiAKPiBJbiBCYXJlYm94IGV2ZXJ5dGhpbmcgbG9va3MgbGlrZSBnb29kLiBCb3RoIGJv
-YXJkcyBhcmUgcnVubmluZyBxdWl0ZcKgCj4gd2VsbCBhbmQgYWxsIHN0dWZmIGFyZSB3b3JraW5n
-IGFzIGV4cGVjdGVkLgo+IEluIExpbnV4IEkgaGF2ZSBzb21lIHN0cmFuZ2UgYmVhaHZpb3Vycy4K
-PiAKPiBJZiBJIHJlcGxhY2UgdGhlIGJvb3Rsb2FkZXIgYW5kIHRoZSBkZXZpY2UtdHJlZSBvbiB0
-aGUgbWljcm9TRCBjYXJkCj4gKHRoZcKgCj4gTGludXgga2VybmVsIGFuZCB0aGUgcm9vdGZpbGVz
-eXN0ZW0gcmVtYWlucyB0aGUgc2FtZSkgdGhlCj4gaU1YNlF1YWRQbHVzwqAKPiByZWZ1c2VzIHRv
-IHVzZSB0aGUgZnJhbWVidWZmZXIuCj4gCj4gRnJhbmtseSwgSSBkbyBub3QgdW5kZXJzdGFuZCBo
-b3cgdGhvc2UgZHJpdmVycyByZWFjdCBkaWZmZXJlbnRseSBpZgo+IHRoZXnCoAo+IGFyZSBydW5u
-aW5nIG9uIHRoZSBEdWFsTGl0ZSBvciB0aGUgUXVhZFBsdXMuCj4gCj4gVGhlIG1haW4gZGlmZmVy
-ZW5jZXMgaW4gdGhlIGRldmljZS10cmVlIGFyZSAoZm9yIEJhcmVib3ggcG9pbnQgb2YKPiB2aWV3
-KToKPiA+IAo+ID4gZGlmZiAtTnJ1IGlteDZkbC1ldXJlay1lazM2MC5kdHMgaW14NnFwLWV1cmVr
-LWVrMzYwLmR0cwo+ID4gLS0tIGlteDZkbC1ldXJlay1lazM2MC5kdHMJMjAxNy0wNi0yMSAxMjoy
-MjozMi4wMDAwMDAwMDAKPiA+ICswMjAwCj4gPiArKysgaW14NnFwLWV1cmVrLWVrMzYwLmR0cwky
-MDE3LTA2LTIxIDEzOjQ2OjM1LjAwMDAwMDAwMAo+ID4gKzAyMDAKPiA+IEBAIC0xLDUgKzEsNSBA
-QAo+ID4gwqAvKgo+ID4gLSAqICRJZDogaW14NmRsLWV1cmVrLWVrMzYwLmR0cyx2IDEuNCAyMDE3
-LzA2LzIxIDEwOjIyOjMyIGdpYW5sdWNhCj4gPiBFeHAgJAo+ID4gKyAqICRJZDogaW14NnFwLWV1
-cmVrLWVrMzYwLmR0cyx2IDEuNSAyMDE3LzA2LzIxIDExOjQ2OjM1IGdpYW5sdWNhCj4gPiBFeHAg
-JAo+ID4gwqAgKgo+ID4gwqAgKiBDb3B5cmlnaHQgMjAxNi8yMDE3IEdpYW5sdWNhIFJlbnppLCBF
-dXJlayBFbGV0dHJvbmljYSBTLlIuTC4KPiA+IMKgICogQ29weXJpZ2h0IDIwMTQgUmFwaGHDq2wg
-UG9nZ2kKPiA+IEBAIC0xOCwxMyArMTgsMTMgQEAKPiA+IAo+ID4gwqAjaW5jbHVkZSA8ZHQtYmlu
-ZGluZ3MvZ3Bpby9ncGlvLmg+Cj4gPiDCoCNpbmNsdWRlIDxkdC1iaW5kaW5ncy9pbnB1dC9pbnB1
-dC5oPgo+ID4gLSNpbmNsdWRlIDxhcm0vaW14NnFkbC5kdHNpPgo+ID4gLSNpbmNsdWRlIDxhcm0v
-aW14NmRsLmR0c2k+Cj4gPiAtI2luY2x1ZGUgImlteDZkbC5kdHNpIgo+ID4gKyNpbmNsdWRlIDxh
-cm0vaW14NnFwLmR0c2k+Cj4gPiArI2luY2x1ZGUgImlteDZxZGwuZHRzaSIKPiA+ICsjaW5jbHVk
-ZSAiaW14NnEuZHRzaSIKPiA+IAo+ID4gwqAvIHsKPiA+IC0JbW9kZWwgPSAiRXVyZWsgRUszNjAg
-aS5NWDZETCI7Cj4gPiAtCWNvbXBhdGlibGUgPSAiZXVyZWssZWszNjAiLCAiZnNsLGlteDZkbCI7
-Cj4gPiArCW1vZGVsID0gIkV1cmVrIEVLMzYwIGkuTVg2UVAiOwo+ID4gKwljb21wYXRpYmxlID0g
-ImV1cmVrLGVrMzYwIiwgImZzbCxpbXg2cXAiOwo+ID4gCj4gPiDCoAljaG9zZW4gewo+ID4gwqAJ
-CWxpbnV4LHN0ZG91dC1wYXRoID0gJnVhcnQzOwo+IAo+IEp1c3QgYSBtYXR0ZXIgb2YgaW5jbHVk
-ZSBhbmQgYSBjb21wYXRpYmxlIHByb3BlcnR5IGxpbmUuLi4KPiAKPiBPZiBjb3Vyc2UgdGhlIGZs
-YXNoIGhlYWRlciBhbmQgbWVtb3J5IGluaXRpYWxpemVycyBhcmUgc3RpbGwKPiBkaWZmZXJlbnTC
-oAo+IGZvciBib3RoIHByb2Nlc3NvcnMgKE5vQyBhbmQgb3RoZXIgc3R1ZmYpLgo+IAo+IEluIExp
-bnV4IHRoZSBvbmx5IHRoaW5nIHdpY2ggZGlmZmVycyBpcyB0aGUgZGV2aWNlLXRyZWUgZmlsZSAo
-bW9yZQo+IG9ywqAKPiBsZXNzIGxpa2UgaW4gQmFyZWJveCk6Cj4gCj4gPiAtLS0gbGludXgtNC45
-LjctRUszNjAtRUszNjBETC1kdHMucGF0Y2gJMjAxNy0wNi0yMQo+ID4gMTI6NDI6MDAuOTQ0ODMz
-MjIwICswMjAwCj4gPiArKysgbGludXgtNC45LjctRUszNjAtRUszNjBRUC1kdHMucGF0Y2gJMjAx
-Ny0wNi0yMgo+ID4gMTc6Mjk6MjQuNjM0NTM0NjU5ICswMjAwCj4gPiBAQCAtMSw4ICsxLDggQEAK
-PiA+IC0tLS0gYS9hcmNoL2FybS9ib290L2R0cy9pbXg2ZGwtZXVyZWstZWszNjAuZHRzCTE5NzAt
-MDEtMDEKPiA+IDAxOjAwOjAwLjAwMDAwMDAwMCArMDEwMAo+ID4gLSsrKyBiL2FyY2gvYXJtL2Jv
-b3QvZHRzL2lteDZkbC1ldXJlay1lazM2MC5kdHMJMjAxNy0wNi0yMQo+ID4gMTI6NDI6MDAuNDEy
-ODMzMjM4ICswMjAwCj4gPiArLS0tIGEvYXJjaC9hcm0vYm9vdC9kdHMvaW14NnFwLWV1cmVrLWVr
-MzYwLmR0cwkxOTcwLTAxLTAxCj4gPiAwMTowMDowMC4wMDAwMDAwMDAgKzAxMDAKPiA+ICsrKysg
-Yi9hcmNoL2FybS9ib290L2R0cy9pbXg2cXAtZXVyZWstZWszNjAuZHRzCTIwMTctMDYtMjIKPiA+
-IDE3OjI5OjI0LjYzNDUzNDY1OSArMDIwMAo+ID4gwqBAQCAtMCwwICsxLDYyNiBAQAo+ID4gwqAr
-LyoKPiA+IC0rICogJElkOiBpbXg2ZGwtZXVyZWstZWszNjAuZHRzLHYgMS40IDIwMTcvMDYvMjEg
-MTA6MjI6MzIgZ2lhbmx1Y2EKPiA+IEV4cCAkCj4gPiArKyAqICRJZDogaW14NnFwLWV1cmVrLWVr
-MzYwLmR0cyx2IDEuNSAyMDE3LzA2LzIxIDExOjQ2OjM1IGdpYW5sdWNhCj4gPiBFeHAgJAo+ID4g
-wqArICoKPiA+IMKgKyAqIENvcHlyaWdodCAyMDE2LzIwMTcgR2lhbmx1Y2EgUmVuemksIEV1cmVr
-IEVsZXR0cm9uaWNhIFMuUi5MLgo+ID4gwqArICogQ29weXJpZ2h0IDIwMTQgUmFwaGHDq2wgUG9n
-Z2kKPiA+IEBAIC0yMSwxMyArMjEsMTMgQEAKPiA+IMKgKwo+ID4gwqArI2luY2x1ZGUgPGR0LWJp
-bmRpbmdzL2dwaW8vZ3Bpby5oPgo+ID4gwqArI2luY2x1ZGUgPGR0LWJpbmRpbmdzL2lucHV0L2lu
-cHV0Lmg+Cj4gPiAtKy8qICNpbmNsdWRlIDxhcm0vaW14NnFkbC5kdHNpPiAqLwo+ID4gLSsjaW5j
-bHVkZSAiaW14NnFkbC5kdHNpIgo+ID4gLSsjaW5jbHVkZSAiaW14NmRsLmR0c2kiCj4gPiArKy8q
-ICNpbmNsdWRlIDxhcm0vaW14NnFwLmR0c2k+ICovCj4gPiArKy8qICNpbmNsdWRlICJpbXg2cWRs
-LmR0c2kiICovCj4gPiArKyNpbmNsdWRlICJpbXg2cXAuZHRzaSIKPiA+IMKgKwo+ID4gwqArLyB7
-Cj4gPiAtKwltb2RlbCA9ICJFdXJlayBFSzM2MCBpLk1YNkRMIjsKPiA+IC0rCWNvbXBhdGlibGUg
-PSAiZXVyZWssZWszNjAiLCAiZnNsLGlteDZkbCI7Cj4gPiArKwltb2RlbCA9ICJFdXJlayBFSzM2
-MCBpLk1YNlFQIjsKPiA+ICsrCWNvbXBhdGlibGUgPSAiZXVyZWssZWszNjAiLCAiZnNsLGlteDZx
-cCI7Cj4gPiDCoCsKPiA+IMKgKwljaG9zZW4gewo+ID4gwqArCQlsaW51eCxzdGRvdXQtcGF0aCA9
-ICZ1YXJ0MzsKPiAKPiBUaGUgRHVhTGl0ZSBoYXMgdGhvc2UgaW5jbHVkZXM6Cj4gCj4gI2luY2x1
-ZGUgPGR0LWJpbmRpbmdzL2dwaW8vZ3Bpby5oPgo+ICNpbmNsdWRlIDxkdC1iaW5kaW5ncy9pbnB1
-dC9pbnB1dC5oPgo+IC8qICNpbmNsdWRlIDxhcm0vaW14NnFkbC5kdHNpPiAqLwo+ICNpbmNsdWRl
-ICJpbXg2cWRsLmR0c2kiCj4gI2luY2x1ZGUgImlteDZkbC5kdHNpIgo+IAo+IGFuZCB0aGUgY29t
-cGF0aWJsZSBzdHJpbmcgaXM6IGNvbXBhdGlibGUgPSAiZXVyZWssZWszNjAiLAo+ICJmc2wsaW14
-NmRsIgo+IAo+IFRoZSBRdWFkUGx1cyBoYXMgdGhvc2UgaW5jbHVkZXM6Cj4gCj4gI2luY2x1ZGUg
-PGR0LWJpbmRpbmdzL2dwaW8vZ3Bpby5oPgo+ICNpbmNsdWRlIDxkdC1iaW5kaW5ncy9pbnB1dC9p
-bnB1dC5oPgo+IC8qICNpbmNsdWRlIDxhcm0vaW14NnFwLmR0c2k+ICovCj4gLyogI2luY2x1ZGUg
-ImlteDZxZGwuZHRzaSIgKi8KPiAjaW5jbHVkZSAiaW14NnFwLmR0c2kiCj4gCj4gYW5kIHRoZSBj
-b21wYXRpYmxlIHN0cmluZyBpczogY29tcGF0aWJsZSA9ICJldXJlayxlazM2MCIsCj4gImZzbCxp
-bXg2cXAiCj4gCj4gRHVyaW5nIGJvb3QgSSBjYW4gc2VlIG5vIG91dHB1dCBvbiB0aGUgZnJhbWVi
-dWZmZXIgb24gdGhlIFF1YWRQbHVzCj4gYW5kwqAKPiB0aGUga2VybmVsIGxvZyBoYXZlIHRob3Nl
-IG1lc3NhZ2VzOgo+IAo+ID4gW8KgwqDCoMKgNC45MTQ3MzddIC0tLS0tLS0tLS0tLVsgY3V0IGhl
-cmUgXS0tLS0tLS0tLS0tLQo+ID4gW8KgwqDCoMKgNC45MTQ3NjldIFdBUk5JTkc6IENQVTogMSBQ
-SUQ6IDE3IGF0Cj4gPiBkcml2ZXJzL2dwdS9kcm0vZHJtX2F0b21pY19oZWxwZXIuYzoxMTQwCj4g
-PiBkcm1fYXRvbWljX2hlbHBlcl93YWl0X2Zvcl92YmxhbmtzKzB4MjU4LzB4MjVjCj4gPiBbwqDC
-oMKgwqA0LjkxNDc3Ml0gW0NSVEM6MjRdIHZibGFuayB3YWl0IHRpbWVkIG91dAo+ID4gW8KgwqDC
-oMKgNC45MTQ4NDZdIE1vZHVsZXMgbGlua2VkIGluOiBldmRldiBqb3lkZXYgcmZraWxsIGF0MjQK
-PiA+IG52bWVtX2lteF9vY290cCBjaV9oZHJjX2lteCBudm1lbV9jb3JlIHN4ODY1Nl9layhPKSBj
-aV9oZHJjCj4gPiB1ZGNfY29yZSBlaGNpX2hjZCB1c2Jjb3JlIHVzYm1pc2NfaW14IGNvZGEgcGh5
-X214c191c2IgdjRsMl9tZW0ybWVtCj4gPiBwYW5lbF9zaW1wbGUgdmlkZW9idWYyX3Y0bDIgaW14
-X3RoZXJtYWwgdmlkZW9idWYyX2RtYV9jb250aWcKPiA+IGlteDJfd2R0IHZpZGVvYnVmMl9jb3Jl
-IHNuZF9zb2NfZnNsX2FzcmMgZmxleGNhbiBjYW5fZGV2Cj4gPiB2aWRlb2J1ZjJfdm1hbGxvYyBz
-bmRfc29jX2ZzbF9hc29jX2NhcmQgdmlkZW9idWYyX21lbW9wcyBwd21fYmwKPiA+IHB3bV9pbXgg
-c25kX2FjOTdfY29kZWMgYmFja2xpZ2h0IGxlZHNfZ3Bpbwo+ID4gW8KgwqDCoMKgNC45MTQ4NTZd
-IENQVTogMSBQSUQ6IDE3IENvbW06IGt3b3JrZXIvMTowIFRhaW50ZWQ6Cj4gPiBHwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoE/CoMKgwqDCoDQuOS43LUVLMjAxNzA2MjMgIzEKPiA+IFvCoMKgwqDCoDQu
-OTE0ODU5XSBIYXJkd2FyZSBuYW1lOiBGcmVlc2NhbGUgaS5NWDYgUXVhZC9EdWFsTGl0ZSAoRGV2
-aWNlCj4gPiBUcmVlKQo+ID4gW8KgwqDCoMKgNC45MTQ4NzVdIFdvcmtxdWV1ZTogZXZlbnRzIGRl
-ZmVycmVkX3Byb2JlX3dvcmtfZnVuYwo+ID4gW8KgwqDCoMKgNC45MTQ5MDBdIFs8YzAxMTUzNTQ+
-XSAodW53aW5kX2JhY2t0cmFjZSkgZnJvbSBbPGMwMTBlNDE0Pl0KPiA+IChzaG93X3N0YWNrKzB4
-MjAvMHgyNCkKPiA+IFvCoMKgwqDCoDQuOTE0OTE1XSBbPGMwMTBlNDE0Pl0gKHNob3dfc3RhY2sp
-IGZyb20gWzxjMDQ3MTZmOD5dCj4gPiAoZHVtcF9zdGFjaysweDk0LzB4YjApCj4gPiBbwqDCoMKg
-wqA0LjkxNDkyN10gWzxjMDQ3MTZmOD5dIChkdW1wX3N0YWNrKSBmcm9tIFs8YzAxNGNkOGM+XQo+
-ID4gKF9fd2FybisweGY4LzB4MTEwKQo+ID4gW8KgwqDCoMKgNC45MTQ5MzddIFs8YzAxNGNkOGM+
-XSAoX193YXJuKSBmcm9tIFs8YzAxNGNlNzQ+XQo+ID4gKHdhcm5fc2xvd3BhdGhfZm10KzB4NDgv
-MHg1MCkKPiA+IFvCoMKgwqDCoDQuOTE0OTUxXSBbPGMwMTRjZTc0Pl0gKHdhcm5fc2xvd3BhdGhf
-Zm10KSBmcm9tIFs8YzA1Y2EyOTg+XQo+ID4gKGRybV9hdG9taWNfaGVscGVyX3dhaXRfZm9yX3Zi
-bGFua3MrMHgyNTgvMHgyNWMpCj4gPiBbwqDCoMKgwqA0LjkxNDk3MF0gWzxjMDVjYTI5OD5dIChk
-cm1fYXRvbWljX2hlbHBlcl93YWl0X2Zvcl92YmxhbmtzKQo+ID4gZnJvbSBbPGMwNWY2ZWY0Pl0g
-KGlteF9kcm1fYXRvbWljX2NvbW1pdF90YWlsKzB4NTgvMHg2OCkKPiA+IFvCoMKgwqDCoDQuOTE0
-OTgyXSBbPGMwNWY2ZWY0Pl0gKGlteF9kcm1fYXRvbWljX2NvbW1pdF90YWlsKSBmcm9tCj4gPiBb
-PGMwNWNhYzY0Pl0gKGNvbW1pdF90YWlsKzB4NTAvMHg2YykKPiA+IFvCoMKgwqDCoDQuOTE0OTky
-XSBbPGMwNWNhYzY0Pl0gKGNvbW1pdF90YWlsKSBmcm9tIFs8YzA1Y2I4OTA+XQo+ID4gKGRybV9h
-dG9taWNfaGVscGVyX2NvbW1pdCsweGE0LzB4ZTQpCj4gPiBbwqDCoMKgwqA0LjkxNTAwM10gWzxj
-MDVjYjg5MD5dIChkcm1fYXRvbWljX2hlbHBlcl9jb21taXQpIGZyb20KPiA+IFs8YzA1ZjcwMDg+
-XSAoaW14X2RybV9hdG9taWNfY29tbWl0KzB4MTA0LzB4MTMwKQo+ID4gW8KgwqDCoMKgNC45MTUw
-MjFdIFs8YzA1ZjcwMDg+XSAoaW14X2RybV9hdG9taWNfY29tbWl0KSBmcm9tCj4gPiBbPGMwNWVj
-MjVjPl0gKGRybV9hdG9taWNfY29tbWl0KzB4NWMvMHg2OCkKPiA+IFvCoMKgwqDCoDQuOTE1MDM4
-XSBbPGMwNWVjMjVjPl0gKGRybV9hdG9taWNfY29tbWl0KSBmcm9tIFs8YzA1Y2YzNTg+XQo+ID4g
-KHJlc3RvcmVfZmJkZXZfbW9kZSsweDE1OC8weDI5OCkKPiA+IFvCoMKgwqDCoDQuOTE1MDUxXSBb
-PGMwNWNmMzU4Pl0gKHJlc3RvcmVfZmJkZXZfbW9kZSkgZnJvbSBbPGMwNWNmNmJjPl0KPiA+IChk
-cm1fZmJfaGVscGVyX3Jlc3RvcmVfZmJkZXZfbW9kZV91bmxvY2tlZCsweDQwLzB4ODQpCj4gPiBb
-wqDCoMKgwqA0LjkxNTA2M10gWzxjMDVjZjZiYz5dCj4gPiAoZHJtX2ZiX2hlbHBlcl9yZXN0b3Jl
-X2ZiZGV2X21vZGVfdW5sb2NrZWQpIGZyb20gWzxjMDVjZjU3OD5dCj4gPiAoZHJtX2ZiX2hlbHBl
-cl9zZXRfcGFyKzB4NDAvMHg2YykKPiA+IFvCoMKgwqDCoDQuOTE1MDc2XSBbPGMwNWNmNTc4Pl0g
-KGRybV9mYl9oZWxwZXJfc2V0X3BhcikgZnJvbQo+ID4gWzxjMDRmZTAwOD5dIChmYmNvbl9pbml0
-KzB4NGI0LzB4NGY4KQo+ID4gW8KgwqDCoMKgNC45MTUwODhdIFs8YzA0ZmUwMDg+XSAoZmJjb25f
-aW5pdCkgZnJvbSBbPGMwNTg3NmUwPl0KPiA+ICh2aXN1YWxfaW5pdCsweGQ0LzB4MTFjKQo+ID4g
-W8KgwqDCoMKgNC45MTUxMDJdIFs8YzA1ODc2ZTA+XSAodmlzdWFsX2luaXQpIGZyb20gWzxjMDU4
-OThiND5dCj4gPiAoZG9fYmluZF9jb25fZHJpdmVyKzB4MTRjLzB4MzM0KQo+ID4gW8KgwqDCoMKg
-NC45MTUxMTJdIFs8YzA1ODk4YjQ+XSAoZG9fYmluZF9jb25fZHJpdmVyKSBmcm9tIFs8YzA1ODli
-ZWM+XQo+ID4gKGRvX3Rha2Vfb3Zlcl9jb25zb2xlKzB4MTUwLzB4MWI0KQo+ID4gW8KgwqDCoMKg
-NC45MTUxMjFdIFs8YzA1ODliZWM+XSAoZG9fdGFrZV9vdmVyX2NvbnNvbGUpIGZyb20KPiA+IFs8
-YzA0ZmUwZDQ+XSAoZG9fZmJjb25fdGFrZW92ZXIrMHg4OC8weGU4KQo+ID4gW8KgwqDCoMKgNC45
-MTUxMzBdIFs8YzA0ZmUwZDQ+XSAoZG9fZmJjb25fdGFrZW92ZXIpIGZyb20gWzxjMDRmZWRhOD5d
-Cj4gPiAoZmJjb25fZXZlbnRfbm90aWZ5KzB4N2MwLzB4N2Y4KQo+ID4gW8KgwqDCoMKgNC45MTUx
-NDJdIFs8YzA0ZmVkYTg+XSAoZmJjb25fZXZlbnRfbm90aWZ5KSBmcm9tIFs8YzAxNmY1N2M+XQo+
-ID4gKG5vdGlmaWVyX2NhbGxfY2hhaW4rMHg1NC8weDk0KQo+ID4gW8KgwqDCoMKgNC45MTUxNTNd
-IFs8YzAxNmY1N2M+XSAobm90aWZpZXJfY2FsbF9jaGFpbikgZnJvbSBbPGMwMTZmODhjPl0KPiA+
-IChfX2Jsb2NraW5nX25vdGlmaWVyX2NhbGxfY2hhaW4rMHg1OC8weDcwKQo+ID4gW8KgwqDCoMKg
-NC45MTUxNjRdIFs8YzAxNmY4OGM+XSAoX19ibG9ja2luZ19ub3RpZmllcl9jYWxsX2NoYWluKSBm
-cm9tCj4gPiBbPGMwMTZmOGNjPl0gKGJsb2NraW5nX25vdGlmaWVyX2NhbGxfY2hhaW4rMHgyOC8w
-eDMwKQo+ID4gW8KgwqDCoMKgNC45MTUxNzVdIFs8YzAxNmY4Y2M+XSAoYmxvY2tpbmdfbm90aWZp
-ZXJfY2FsbF9jaGFpbikgZnJvbQo+ID4gWzxjMDUwNGQ1Yz5dIChmYl9ub3RpZmllcl9jYWxsX2No
-YWluKzB4MmMvMHgzMCkKPiA+IFvCoMKgwqDCoDQuOTE1MTg3XSBbPGMwNTA0ZDVjPl0gKGZiX25v
-dGlmaWVyX2NhbGxfY2hhaW4pIGZyb20KPiA+IFs8YzA1MDZiMTA+XSAocmVnaXN0ZXJfZnJhbWVi
-dWZmZXIrMHgxZjgvMHgyYjApCj4gPiBbwqDCoMKgwqA0LjkxNTIwMF0gWzxjMDUwNmIxMD5dIChy
-ZWdpc3Rlcl9mcmFtZWJ1ZmZlcikgZnJvbQo+ID4gWzxjMDVjZjk2MD5dIChkcm1fZmJfaGVscGVy
-X2luaXRpYWxfY29uZmlnKzB4MjYwLzB4NDA4KQo+ID4gW8KgwqDCoMKgNC45MTUyMTJdIFs8YzA1
-Y2Y5NjA+XSAoZHJtX2ZiX2hlbHBlcl9pbml0aWFsX2NvbmZpZykgZnJvbQo+ID4gWzxjMDVkMDBh
-MD5dIChkcm1fZmJkZXZfY21hX2luaXRfd2l0aF9mdW5jcysweDkwLzB4MTEwKQo+ID4gW8KgwqDC
-oMKgNC45MTUyMjNdIFs8YzA1ZDAwYTA+XSAoZHJtX2ZiZGV2X2NtYV9pbml0X3dpdGhfZnVuY3Mp
-IGZyb20KPiA+IFs8YzA1ZDAxNDg+XSAoZHJtX2ZiZGV2X2NtYV9pbml0KzB4MjgvMHgzMCkKPiA+
-IFvCoMKgwqDCoDQuOTE1MjM2XSBbPGMwNWQwMTQ4Pl0gKGRybV9mYmRldl9jbWFfaW5pdCkgZnJv
-bSBbPGMwNWY3MTgwPl0KPiA+IChpbXhfZHJtX2JpbmQrMHgxMDQvMHgxOTQpCj4gPiBbwqDCoMKg
-wqA0LjkxNTI1NF0gWzxjMDVmNzE4MD5dIChpbXhfZHJtX2JpbmQpIGZyb20gWzxjMDYxYjc4MD5d
-Cj4gPiAodHJ5X3RvX2JyaW5nX3VwX21hc3RlcisweDIzNC8weDI5NCkKPiA+IFvCoMKgwqDCoDQu
-OTE1MjY2XSBbPGMwNjFiNzgwPl0gKHRyeV90b19icmluZ191cF9tYXN0ZXIpIGZyb20KPiA+IFs8
-YzA2MWI4YTA+XSAoY29tcG9uZW50X2FkZCsweGMwLzB4MTU4KQo+ID4gW8KgwqDCoMKgNC45MTUy
-NzddIFs8YzA2MWI4YTA+XSAoY29tcG9uZW50X2FkZCkgZnJvbSBbPGMwNWZhMTc4Pl0KPiA+IChp
-cHVfZHJtX3Byb2JlKzB4NjgvMHg3NCkKPiA+IFvCoMKgwqDCoDQuOTE1MjkxXSBbPGMwNWZhMTc4
-Pl0gKGlwdV9kcm1fcHJvYmUpIGZyb20gWzxjMDYyMmU5MD5dCj4gPiAocGxhdGZvcm1fZHJ2X3By
-b2JlKzB4NjAvMHhjMCkKPiA+IFvCoMKgwqDCoDQuOTE1MzA0XSBbPGMwNjIyZTkwPl0gKHBsYXRm
-b3JtX2Rydl9wcm9iZSkgZnJvbSBbPGMwNjIwY2U0Pl0KPiA+IChkcml2ZXJfcHJvYmVfZGV2aWNl
-KzB4MjM4LzB4NDI4KQo+ID4gW8KgwqDCoMKgNC45MTUzMTRdIFs8YzA2MjBjZTQ+XSAoZHJpdmVy
-X3Byb2JlX2RldmljZSkgZnJvbSBbPGMwNjIxMjMwPl0KPiA+IChfX2RldmljZV9hdHRhY2hfZHJp
-dmVyKzB4YWMvMHgxMGMpCj4gPiBbwqDCoMKgwqA0LjkxNTMyNF0gWzxjMDYyMTIzMD5dIChfX2Rl
-dmljZV9hdHRhY2hfZHJpdmVyKSBmcm9tCj4gPiBbPGMwNjFlYzE4Pl0gKGJ1c19mb3JfZWFjaF9k
-cnYrMHg1NC8weDljKQo+ID4gW8KgwqDCoMKgNC45MTUzMzVdIFs8YzA2MWVjMTg+XSAoYnVzX2Zv
-cl9lYWNoX2RydikgZnJvbSBbPGMwNjIwOWE4Pl0KPiA+IChfX2RldmljZV9hdHRhY2grMHhiMC8w
-eDEzNCkKPiA+IFvCoMKgwqDCoDQuOTE1MzQ0XSBbPGMwNjIwOWE4Pl0gKF9fZGV2aWNlX2F0dGFj
-aCkgZnJvbSBbPGMwNjIxMmFjPl0KPiA+IChkZXZpY2VfaW5pdGlhbF9wcm9iZSsweDFjLzB4MjAp
-Cj4gPiBbwqDCoMKgwqA0LjkxNTM1NF0gWzxjMDYyMTJhYz5dIChkZXZpY2VfaW5pdGlhbF9wcm9i
-ZSkgZnJvbQo+ID4gWzxjMDYxZmRiOD5dIChidXNfcHJvYmVfZGV2aWNlKzB4OTQvMHg5YykKPiA+
-IFvCoMKgwqDCoDQuOTE1MzY0XSBbPGMwNjFmZGI4Pl0gKGJ1c19wcm9iZV9kZXZpY2UpIGZyb20g
-WzxjMDYyMDI5MD5dCj4gPiAoZGVmZXJyZWRfcHJvYmVfd29ya19mdW5jKzB4N2MvMHhjOCkKPiA+
-IFvCoMKgwqDCoDQuOTE1Mzc3XSBbPGMwNjIwMjkwPl0gKGRlZmVycmVkX3Byb2JlX3dvcmtfZnVu
-YykgZnJvbQo+ID4gWzxjMDE2NzlkYz5dIChwcm9jZXNzX29uZV93b3JrKzB4MTRjLzB4NDQwKQo+
-ID4gW8KgwqDCoMKgNC45MTUzODZdIFs8YzAxNjc5ZGM+XSAocHJvY2Vzc19vbmVfd29yaykgZnJv
-bSBbPGMwMTY3ZDZjPl0KPiA+ICh3b3JrZXJfdGhyZWFkKzB4NTQvMHg1MDQpCj4gPiBbwqDCoMKg
-wqA0LjkxNTM5OF0gWzxjMDE2N2Q2Yz5dICh3b3JrZXJfdGhyZWFkKSBmcm9tIFs8YzAxNmRlNDg+
-XQo+ID4gKGt0aHJlYWQrMHhmMC8weDEwOCkKPiA+IFvCoMKgwqDCoDQuOTE1NDE1XSBbPGMwMTZk
-ZTQ4Pl0gKGt0aHJlYWQpIGZyb20gWzxjMDEwOWNmOD5dCj4gPiAocmV0X2Zyb21fZm9yaysweDE0
-LzB4M2MpCj4gPiBbwqDCoMKgwqA0LjkxNTQxOV0gLS0tWyBlbmQgdHJhY2UgNjRhZTU5ZDJiNjlj
-YzRkMyBdLS0tCj4gPiAKPiAKPiBhbmQgYWZ0ZXIgYSB3aGlsZToKPiAKPiA+IFvCoMKgwqAxNS4x
-MDI3NThdIFtkcm06ZHJtX2F0b21pY19oZWxwZXJfY29tbWl0X2NsZWFudXBfZG9uZV0gKkVSUk9S
-Kgo+ID4gW0NSVEM6MjQ6Y3J0Yy0wXSBmbGlwX2RvbmUgdGltZWQgb3V0Cj4gPiBbwqDCoMKgMjUu
-MzQyNzQ2XSBbZHJtOmRybV9hdG9taWNfaGVscGVyX2NvbW1pdF9jbGVhbnVwX2RvbmVdICpFUlJP
-UioKPiA+IFtDUlRDOjI0OmNydGMtMF0gZmxpcF9kb25lIHRpbWVkIG91dAo+ID4gW8KgwqDCoDI1
-LjM1ODU4Ml0gQ29uc29sZTogc3dpdGNoaW5nIHRvIGNvbG91ciBmcmFtZSBidWZmZXIgZGV2aWNl
-Cj4gPiAxNjB4NTAKPiA+IFvCoMKgwqAzNS41ODI3NDRdIFtkcm06ZHJtX2F0b21pY19oZWxwZXJf
-Y29tbWl0X2NsZWFudXBfZG9uZV0gKkVSUk9SKgo+ID4gW0NSVEM6MjQ6Y3J0Yy0wXSBmbGlwX2Rv
-bmUgdGltZWQgb3V0Cj4gPiBbwqDCoMKgMzYuMjE0MjQzXSBpbXgtZHJtIGRpc3BsYXktc3Vic3lz
-dGVtOiBmYjA6wqDCoGZyYW1lIGJ1ZmZlciBkZXZpY2UKPiA+IFvCoMKgwqA0Ni4zMzQ3NThdIFtk
-cm06ZHJtX2F0b21pY19oZWxwZXJfY29tbWl0X2NsZWFudXBfZG9uZV0gKkVSUk9SKgo+ID4gW0NS
-VEM6MjQ6Y3J0Yy0wXSBmbGlwX2RvbmUgdGltZWQgb3V0Cj4gPiBbwqDCoMKgNTYuNTc0NzU3XSBb
-ZHJtOmRybV9hdG9taWNfaGVscGVyX2NvbW1pdF9jbGVhbnVwX2RvbmVdICpFUlJPUioKPiA+IFtD
-UlRDOjI0OmNydGMtMF0gZmxpcF9kb25lIHRpbWVkIG91dAo+ID4gW8KgwqDCoDY2LjgxNDc1MV0g
-W2RybTpkcm1fYXRvbWljX2hlbHBlcl9jb21taXRfY2xlYW51cF9kb25lXSAqRVJST1IqCj4gPiBb
-Q1JUQzoyNDpjcnRjLTBdIGZsaXBfZG9uZSB0aW1lZCBvdXQKPiA+IFvCoMKgwqA3Ny4wNTQ3NDBd
-IFtkcm06ZHJtX2F0b21pY19oZWxwZXJfY29tbWl0X2NsZWFudXBfZG9uZV0gKkVSUk9SKgo+ID4g
-W0NSVEM6MjQ6Y3J0Yy0wXSBmbGlwX2RvbmUgdGltZWQgb3V0Cj4gPiBbwqDCoMKgODcuMjk0NzQ4
-XSBbZHJtOmRybV9hdG9taWNfaGVscGVyX2NvbW1pdF9jbGVhbnVwX2RvbmVdICpFUlJPUioKPiA+
-IFtDUlRDOjI0OmNydGMtMF0gZmxpcF9kb25lIHRpbWVkIG91dAo+ID4gW8KgwqDCoDk3LjUzNDc0
-NF0gW2RybTpkcm1fYXRvbWljX2hlbHBlcl9jb21taXRfY2xlYW51cF9kb25lXSAqRVJST1IqCj4g
-PiBbQ1JUQzoyNDpjcnRjLTBdIGZsaXBfZG9uZSB0aW1lZCBvdXQKPiA+IFvCoMKgMTA3Ljc3NDc1
-MV0gW2RybTpkcm1fYXRvbWljX2hlbHBlcl9jb21taXRfY2xlYW51cF9kb25lXSAqRVJST1IqCj4g
-PiBbQ1JUQzoyNDpjcnRjLTBdIGZsaXBfZG9uZSB0aW1lZCBvdXQKPiA+IFvCoMKgMTE4LjAxNDc1
-MF0gW2RybTpkcm1fYXRvbWljX2hlbHBlcl9jb21taXRfY2xlYW51cF9kb25lXSAqRVJST1IqCj4g
-PiBbQ1JUQzoyNDpjcnRjLTBdIGZsaXBfZG9uZSB0aW1lZCBvdXQKPiAKPiBPbiBib3RoIGJvYXJk
-IHRoZSBrZXJuZWwgY21kIGxpbmUgaXM6Cj4gPiB+IyBjYXQgL3Byb2MvY21kbGluZQo+ID4gY29u
-c29sZT10dHlteGMyLDExNTIwMCByb290d2FpdCBub3N3YXAgaXA9bm9uZSBub2luaXRyZAo+ID4g
-cm9vdGZzdHlwZT1uaWxmczIgcm9vdD0vZGV2L21tY2JsazFwMwo+ID4gZmVjLm1hY2FkZHI9MHg3
-YSwweDNmLDB4MDMsMHhlMywweGEyLDB4ZmYgc3lzdGVtX3Jldj0weGUzNjAwMDAwCj4gPiBzeXN0
-ZW1fc2VyaWFsbnI9MHgwMDAwMDAwMCBsY2RfdHlwZT1hbTEyODA4MDBuM3R6IGZhc3Rib290Cj4g
-PiBpbXhkcm0ubGVnYWN5ZmJfZGVwdGg9MzIKPiAKPiBBbnkgaGVscD8KCllvdXIga2VybmVsIGlz
-IHRvbyBvbGQuIEZ1bGwgc3VwcG9ydCBmb3IgdGhlIFF1YWRQbHVzIGlzIGEgcmVhbGx5CnJlY2Vu
-dCBhZGRpdGlvbi4gRWl0aGVyIHVwZGF0ZSB5b3VyIGtlcm5lbCB0byA0LjEyLXJjLCBvciBhZGQK
-ImNsa19pZ25vcmVfdW51c2VkIiB0byBnZXQgYXQgbGVhc3QgYmFzaWMgZnVuY3Rpb25hbGl0eSB3
-b3JraW5nLgoKUmVnYXJkcywKTHVjYXMKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+On 06/26/2017 10:46 AM, Lucas Stach wrote:
+> Am Montag, den 26.06.2017, 10:40 +0200 schrieb gianluca:
+>> During boot I can see no output on the framebuffer on the QuadPlus
+>> and
+>> the kernel log have those messages:
+>>
+>>> [    4.914737] ------------[ cut here ]------------
+>>> [    4.914769] WARNING: CPU: 1 PID: 17 at
+>>> drivers/gpu/drm/drm_atomic_helper.c:1140
+>>> drm_atomic_helper_wait_for_vblanks+0x258/0x25c
+>>> [    4.914772] [CRTC:24] vblank wait timed out
+>>> [    4.914846] Modules linked in: evdev joydev rfkill at24
+>>> nvmem_imx_ocotp ci_hdrc_imx nvmem_core sx8656_ek(O) ci_hdrc
+>>> udc_core ehci_hcd usbcore usbmisc_imx coda phy_mxs_usb v4l2_mem2mem
+>>> panel_simple videobuf2_v4l2 imx_thermal videobuf2_dma_contig
+>>> imx2_wdt videobuf2_core snd_soc_fsl_asrc flexcan can_dev
+>>> videobuf2_vmalloc snd_soc_fsl_asoc_card videobuf2_memops pwm_bl
+>>> pwm_imx snd_ac97_codec backlight leds_gpio
+>>> [    4.914856] CPU: 1 PID: 17 Comm: kworker/1:0 Tainted:
+>>> G           O    4.9.7-EK20170623 #1
+>>> [    4.914859] Hardware name: Freescale i.MX6 Quad/DualLite (Device
+>>> Tree)
+>>> [    4.914875] Workqueue: events deferred_probe_work_func
+>>> [    4.914900] [<c0115354>] (unwind_backtrace) from [<c010e414>]
+>>> (show_stack+0x20/0x24)
+>>> [    4.914915] [<c010e414>] (show_stack) from [<c04716f8>]
+>>> (dump_stack+0x94/0xb0)
+>>> [    4.914927] [<c04716f8>] (dump_stack) from [<c014cd8c>]
+>>> (__warn+0xf8/0x110)
+>>> [    4.914937] [<c014cd8c>] (__warn) from [<c014ce74>]
+>>> (warn_slowpath_fmt+0x48/0x50)
+>>> [    4.914951] [<c014ce74>] (warn_slowpath_fmt) from [<c05ca298>]
+>>> (drm_atomic_helper_wait_for_vblanks+0x258/0x25c)
+>>> [    4.914970] [<c05ca298>] (drm_atomic_helper_wait_for_vblanks)
+>>> from [<c05f6ef4>] (imx_drm_atomic_commit_tail+0x58/0x68)
+>>> [    4.914982] [<c05f6ef4>] (imx_drm_atomic_commit_tail) from
+>>> [<c05cac64>] (commit_tail+0x50/0x6c)
+>>> [    4.914992] [<c05cac64>] (commit_tail) from [<c05cb890>]
+>>> (drm_atomic_helper_commit+0xa4/0xe4)
+>>> [    4.915003] [<c05cb890>] (drm_atomic_helper_commit) from
+>>> [<c05f7008>] (imx_drm_atomic_commit+0x104/0x130)
+>>> [    4.915021] [<c05f7008>] (imx_drm_atomic_commit) from
+>>> [<c05ec25c>] (drm_atomic_commit+0x5c/0x68)
+>>> [    4.915038] [<c05ec25c>] (drm_atomic_commit) from [<c05cf358>]
+>>> (restore_fbdev_mode+0x158/0x298)
+>>> [    4.915051] [<c05cf358>] (restore_fbdev_mode) from [<c05cf6bc>]
+>>> (drm_fb_helper_restore_fbdev_mode_unlocked+0x40/0x84)
+>>> [    4.915063] [<c05cf6bc>]
+>>> (drm_fb_helper_restore_fbdev_mode_unlocked) from [<c05cf578>]
+>>> (drm_fb_helper_set_par+0x40/0x6c)
+>>> [    4.915076] [<c05cf578>] (drm_fb_helper_set_par) from
+>>> [<c04fe008>] (fbcon_init+0x4b4/0x4f8)
+>>> [    4.915088] [<c04fe008>] (fbcon_init) from [<c05876e0>]
+>>> (visual_init+0xd4/0x11c)
+>>> [    4.915102] [<c05876e0>] (visual_init) from [<c05898b4>]
+>>> (do_bind_con_driver+0x14c/0x334)
+>>> [    4.915112] [<c05898b4>] (do_bind_con_driver) from [<c0589bec>]
+>>> (do_take_over_console+0x150/0x1b4)
+>>> [    4.915121] [<c0589bec>] (do_take_over_console) from
+>>> [<c04fe0d4>] (do_fbcon_takeover+0x88/0xe8)
+>>> [    4.915130] [<c04fe0d4>] (do_fbcon_takeover) from [<c04feda8>]
+>>> (fbcon_event_notify+0x7c0/0x7f8)
+>>> [    4.915142] [<c04feda8>] (fbcon_event_notify) from [<c016f57c>]
+>>> (notifier_call_chain+0x54/0x94)
+>>> [    4.915153] [<c016f57c>] (notifier_call_chain) from [<c016f88c>]
+>>> (__blocking_notifier_call_chain+0x58/0x70)
+>>> [    4.915164] [<c016f88c>] (__blocking_notifier_call_chain) from
+>>> [<c016f8cc>] (blocking_notifier_call_chain+0x28/0x30)
+>>> [    4.915175] [<c016f8cc>] (blocking_notifier_call_chain) from
+>>> [<c0504d5c>] (fb_notifier_call_chain+0x2c/0x30)
+>>> [    4.915187] [<c0504d5c>] (fb_notifier_call_chain) from
+>>> [<c0506b10>] (register_framebuffer+0x1f8/0x2b0)
+>>> [    4.915200] [<c0506b10>] (register_framebuffer) from
+>>> [<c05cf960>] (drm_fb_helper_initial_config+0x260/0x408)
+>>> [    4.915212] [<c05cf960>] (drm_fb_helper_initial_config) from
+>>> [<c05d00a0>] (drm_fbdev_cma_init_with_funcs+0x90/0x110)
+>>> [    4.915223] [<c05d00a0>] (drm_fbdev_cma_init_with_funcs) from
+>>> [<c05d0148>] (drm_fbdev_cma_init+0x28/0x30)
+>>> [    4.915236] [<c05d0148>] (drm_fbdev_cma_init) from [<c05f7180>]
+>>> (imx_drm_bind+0x104/0x194)
+>>> [    4.915254] [<c05f7180>] (imx_drm_bind) from [<c061b780>]
+>>> (try_to_bring_up_master+0x234/0x294)
+>>> [    4.915266] [<c061b780>] (try_to_bring_up_master) from
+>>> [<c061b8a0>] (component_add+0xc0/0x158)
+>>> [    4.915277] [<c061b8a0>] (component_add) from [<c05fa178>]
+>>> (ipu_drm_probe+0x68/0x74)
+>>> [    4.915291] [<c05fa178>] (ipu_drm_probe) from [<c0622e90>]
+>>> (platform_drv_probe+0x60/0xc0)
+>>> [    4.915304] [<c0622e90>] (platform_drv_probe) from [<c0620ce4>]
+>>> (driver_probe_device+0x238/0x428)
+>>> [    4.915314] [<c0620ce4>] (driver_probe_device) from [<c0621230>]
+>>> (__device_attach_driver+0xac/0x10c)
+>>> [    4.915324] [<c0621230>] (__device_attach_driver) from
+>>> [<c061ec18>] (bus_for_each_drv+0x54/0x9c)
+>>> [    4.915335] [<c061ec18>] (bus_for_each_drv) from [<c06209a8>]
+>>> (__device_attach+0xb0/0x134)
+>>> [    4.915344] [<c06209a8>] (__device_attach) from [<c06212ac>]
+>>> (device_initial_probe+0x1c/0x20)
+>>> [    4.915354] [<c06212ac>] (device_initial_probe) from
+>>> [<c061fdb8>] (bus_probe_device+0x94/0x9c)
+>>> [    4.915364] [<c061fdb8>] (bus_probe_device) from [<c0620290>]
+>>> (deferred_probe_work_func+0x7c/0xc8)
+>>> [    4.915377] [<c0620290>] (deferred_probe_work_func) from
+>>> [<c01679dc>] (process_one_work+0x14c/0x440)
+>>> [    4.915386] [<c01679dc>] (process_one_work) from [<c0167d6c>]
+>>> (worker_thread+0x54/0x504)
+>>> [    4.915398] [<c0167d6c>] (worker_thread) from [<c016de48>]
+>>> (kthread+0xf0/0x108)
+>>> [    4.915415] [<c016de48>] (kthread) from [<c0109cf8>]
+>>> (ret_from_fork+0x14/0x3c)
+>>> [    4.915419] ---[ end trace 64ae59d2b69cc4d3 ]---
+>>>
+>>
+>> and after a while:
+>>
+>>> [   15.102758] [drm:drm_atomic_helper_commit_cleanup_done] *ERROR*
+>>> [CRTC:24:crtc-0] flip_done timed out
+>>> [   25.342746] [drm:drm_atomic_helper_commit_cleanup_done] *ERROR*
+>>> [CRTC:24:crtc-0] flip_done timed out
+>>> [   25.358582] Console: switching to colour frame buffer device
+>>> 160x50
+>>> [   35.582744] [drm:drm_atomic_helper_commit_cleanup_done] *ERROR*
+>>> [CRTC:24:crtc-0] flip_done timed out
+>>> [   36.214243] imx-drm display-subsystem: fb0:  frame buffer device
+>>> [   46.334758] [drm:drm_atomic_helper_commit_cleanup_done] *ERROR*
+>>> [CRTC:24:crtc-0] flip_done timed out
+>>> [   56.574757] [drm:drm_atomic_helper_commit_cleanup_done] *ERROR*
+>>> [CRTC:24:crtc-0] flip_done timed out
+>>> [   66.814751] [drm:drm_atomic_helper_commit_cleanup_done] *ERROR*
+>>> [CRTC:24:crtc-0] flip_done timed out
+>>> [   77.054740] [drm:drm_atomic_helper_commit_cleanup_done] *ERROR*
+>>> [CRTC:24:crtc-0] flip_done timed out
+>>> [   87.294748] [drm:drm_atomic_helper_commit_cleanup_done] *ERROR*
+>>> [CRTC:24:crtc-0] flip_done timed out
+>>> [   97.534744] [drm:drm_atomic_helper_commit_cleanup_done] *ERROR*
+>>> [CRTC:24:crtc-0] flip_done timed out
+>>> [  107.774751] [drm:drm_atomic_helper_commit_cleanup_done] *ERROR*
+>>> [CRTC:24:crtc-0] flip_done timed out
+>>> [  118.014750] [drm:drm_atomic_helper_commit_cleanup_done] *ERROR*
+>>> [CRTC:24:crtc-0] flip_done timed out
+>>
+>> On both board the kernel cmd line is:
+>>> ~# cat /proc/cmdline
+>>> console=ttymxc2,115200 rootwait noswap ip=none noinitrd
+>>> rootfstype=nilfs2 root=/dev/mmcblk1p3
+>>> fec.macaddr=0x7a,0x3f,0x03,0xe3,0xa2,0xff system_rev=0xe3600000
+>>> system_serialnr=0x00000000 lcd_type=am1280800n3tz fastboot
+>>> imxdrm.legacyfb_depth=32
+>>
+>> Any help?
+>
+> Your kernel is too old. Full support for the QuadPlus is a really
+> recent addition. Either update your kernel to 4.12-rc, or add
+> "clk_ignore_unused" to get at least basic functionality working.
+>
+
+
+Now I am compiling the 4.12-rc7. Hope this helps.
+
+I will keep you informed about that...
+
+Regards,
+-- 
+Eurek s.r.l.                          |
+Electronic Engineering                | http://www.eurek.it
+via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
+p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
