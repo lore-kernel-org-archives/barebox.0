@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dOMuo-0000mB-7D
- for barebox@lists.infradead.org; Fri, 23 Jun 2017 11:38:20 +0000
-Date: Fri, 23 Jun 2017 13:37:56 +0200
+ id 1dPNdA-0008Nz-Cw
+ for barebox@lists.infradead.org; Mon, 26 Jun 2017 06:36:18 +0000
+Date: Mon, 26 Jun 2017 08:35:54 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170623113756.gnd2amqfj4hczrw5@pengutronix.de>
-References: <20170621191323.18191-1-aleksander@aleksander.es>
+Message-ID: <20170626063554.kskmccgsdzwtusew@pengutronix.de>
+References: <1497973342-30198-1-git-send-email-d.schultz@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170621191323.18191-1-aleksander@aleksander.es>
+In-Reply-To: <1497973342-30198-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +22,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 00/16] RATP logic fixes and improvements
-To: Aleksander Morgado <aleksander@aleksander.es>
+Subject: Re: [PATCH v5] arm: boards: phytec-som-am335x: Update boot scripts
+To: Daniel Schultz <d.schultz@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jun 21, 2017 at 09:13:07PM +0200, Aleksander Morgado wrote:
-> Hey Sascha,
+On Tue, Jun 20, 2017 at 05:42:22PM +0200, Daniel Schultz wrote:
+> Expand the boot scripts with EMMC and add a default file source for
+> expansions.
 > 
-> This v2 series of patches includes just changes in the commit
-> messages, trying to explain which of the patches apply to barebox
-> and/or the barebox<->bbremote interactions. I did test all these
-> patches also with RATP FS, and I didn't see any regression.
-> 
-> I did see issues in RATP FS happening with and without my patches,
-> though. E.g. "cat"-ing a long file (>1024 bytes) that is being
-> exported via RATFS results in each byte read being sent through the
-> ratp output console messages one by one (the actual read operation
-> over RATFS goes in chunks of 255, but the cat stdout messages via RATP
-> go byte by byte...). After that, the additional read operations above
-> offset 1024 end up timing out. I believe I'm going to have to work
-> with RATFS in the near future, so I'll likely spend some time looking
-> at those issues soon anyway.
+> Removed "rw" and "rootwait" bootargs from existing boot scripts.
 
-Ok, you see RATP FS issues, but they are unrelated to your series. Fine
-then, let's leave this for a future task. Applied, thanks
+Why is "rootwait" removed? From my experience adding "rootwait" is
+pretty essential when booting from mmc. Has that changed?
+
+>  
+> -if [ $bootsource = mmc ]; then
+> -	global.boot.default="mmc nand spi net"
+> +if [ -e /dev/mmc1.0 ]; then
+> +	nvmem="emmc"
+> +else
+> +	nvmem="nand"
+> +fi
+> +
+> +if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
+> +	global.boot.default="emmc mmc spi net"
+> +elif [ $bootsource = mmc -a $bootsource_instance = 0 ]; then
+> +	global.boot.default="mmc $nvmem spi net"
+>  elif [ $bootsource = nand ]; then
+>  	global.boot.default="nand spi mmc net"
+>  elif [ $bootsource = spi ]; then
+> -	global.boot.default="spi nand mmc net"
+> +	global.boot.default="spi $nvmem mmc net"
+>  elif [ $bootsource = net ]; then
+> -	global.boot.default="net nand spi mmc"
+> +	global.boot.default="net $nvmem spi mmc"
+>  fi
+
+Normally the desired behaviour is that the bootsource can be changed
+persistently by setting nv.boot.default to the desired source. This
+does not work when global.boot.default gets overwritten after the nvvars
+have been read from the environment.
+
+This behaviour is not changed with this patch, but I would welcome a
+patch that changes this script to the desired behaviour. This could
+be done by changing global.boot.default only when nv.boot.default is
+empty.
 
 Sascha
 
