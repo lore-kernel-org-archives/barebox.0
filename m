@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dPrTr-0000KJ-Br
- for barebox@lists.infradead.org; Tue, 27 Jun 2017 14:28:41 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 65D55A0023F
- for <barebox@lists.infradead.org>; Tue, 27 Jun 2017 16:29:23 +0200 (CEST)
+ id 1dPn4a-0007lb-Ch
+ for barebox@lists.infradead.org; Tue, 27 Jun 2017 09:46:18 +0000
+References: <1497973342-30198-1-git-send-email-d.schultz@phytec.de>
+ <20170626063554.kskmccgsdzwtusew@pengutronix.de>
 From: Daniel Schultz <d.schultz@phytec.de>
-Date: Tue, 27 Jun 2017 16:28:15 +0200
-Message-Id: <1498573695-3135-1-git-send-email-d.schultz@phytec.de>
+Message-ID: <6876fb2d-ab61-087f-22a8-b4431d09328e@phytec.de>
+Date: Tue, 27 Jun 2017 11:45:44 +0200
+MIME-Version: 1.0
+In-Reply-To: <20170626063554.kskmccgsdzwtusew@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,144 +19,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v6] arm: boards: phytec-som-am335x: Update boot scripts
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v5] arm: boards: phytec-som-am335x: Update boot scripts
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Expand the boot scripts by eMMC and clean them up.
-Add NV variable files and removed unnecessary kernel bootargs from the
-boot scripts.
-Add "rootflags='data=journal'" bootarg to SD card boot script.
-
-Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
----
- .../phytec-som-am335x/defaultenv-physom-am335x/boot/emmc |  5 +++++
- .../phytec-som-am335x/defaultenv-physom-am335x/boot/mmc  |  7 +++----
- .../phytec-som-am335x/defaultenv-physom-am335x/boot/nand |  2 +-
- .../phytec-som-am335x/defaultenv-physom-am335x/boot/spi  |  2 +-
- .../defaultenv-physom-am335x/init/bootsource             | 16 ++++++++++++----
- .../defaultenv-physom-am335x/nv/allow_color              |  1 +
- .../defaultenv-physom-am335x/nv/boot.watchdog_timeout    |  1 +
- .../defaultenv-physom-am335x/nv/linux.bootargs.base      |  1 +
- .../defaultenv-physom-am335x/nv/linux.bootargs.rootfs    |  1 +
- 9 files changed, 26 insertions(+), 10 deletions(-)
- create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
- create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/allow_color
- create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/boot.watchdog_timeout
- create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.base
- create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.rootfs
-
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
-new file mode 100644
-index 0000000..b1792a6
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
-@@ -0,0 +1,5 @@
-+#!/bin/sh
-+
-+global.bootm.image=/mnt/mmc1.0/linuximage
-+global.bootm.oftree=/mnt/mmc1.0/oftree
-+global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
-index 834669d..77a076d 100644
---- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
-@@ -1,6 +1,5 @@
- #!/bin/sh
- 
--global.bootm.image=/boot/linuximage
--global.bootm.oftree=/boot/oftree
--
--global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rw rootwait"
-+global.bootm.image=/mnt/mmc0.0/linuximage
-+global.bootm.oftree=/mnt/mmc0.0/oftree
-+global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
-index ece44b7..33f5f02 100644
---- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
-@@ -5,4 +5,4 @@
- global.bootm.image="/dev/nand0.root.ubi.kernel"
- global.bootm.oftree="/dev/nand0.root.ubi.oftree"
- 
--global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rw rootfstype=ubifs"
-+global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
-index 71c5834..a321aa9 100644
---- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
-@@ -4,4 +4,4 @@ global.bootm.image="/dev/m25p0.kernel"
- global.bootm.oftree="/dev/m25p0.oftree"
- 
- # Use rootfs from NAND
--global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rw rootfstype=ubifs"
-+global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rootfstype=ubifs"
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
-index 3f2ff4b..61a0879 100644
---- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
-@@ -4,12 +4,20 @@ if [ -n "$nv.boot.default" ]; then
- 	exit
- fi
- 
--if [ $bootsource = mmc ]; then
--	global.boot.default="mmc nand spi net"
-+if [ -e /dev/mmc1.0 ]; then
-+	nvmem="emmc"
-+else
-+	nvmem="nand"
-+fi
-+
-+if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
-+	global.boot.default="emmc mmc spi net"
-+elif [ $bootsource = mmc -a $bootsource_instance = 0 ]; then
-+	global.boot.default="mmc $nvmem spi net"
- elif [ $bootsource = nand ]; then
- 	global.boot.default="nand spi mmc net"
- elif [ $bootsource = spi ]; then
--	global.boot.default="spi nand mmc net"
-+	global.boot.default="spi $nvmem mmc net"
- elif [ $bootsource = net ]; then
--	global.boot.default="net nand spi mmc"
-+	global.boot.default="net $nvmem spi mmc"
- fi
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/allow_color b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/allow_color
-new file mode 100644
-index 0000000..c508d53
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/allow_color
-@@ -0,0 +1 @@
-+false
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/boot.watchdog_timeout b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/boot.watchdog_timeout
-new file mode 100644
-index 0000000..abdfb05
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/boot.watchdog_timeout
-@@ -0,0 +1 @@
-+60
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.base b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.base
-new file mode 100644
-index 0000000..efc4ee6
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.base
-@@ -0,0 +1 @@
-+consoleblank=0
-diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.rootfs b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.rootfs
-new file mode 100644
-index 0000000..199c7b5
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.rootfs
-@@ -0,0 +1 @@
-+rootwait ro fsck.repair=yes
--- 
-1.9.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKQW0gMjYuMDYuMjAxNyB1bSAwODozNSBzY2hyaWViIFNhc2NoYSBIYXVlcjoK
+PiBPbiBUdWUsIEp1biAyMCwgMjAxNyBhdCAwNTo0MjoyMlBNICswMjAwLCBEYW5pZWwgU2NodWx0
+eiB3cm90ZToKPj4gRXhwYW5kIHRoZSBib290IHNjcmlwdHMgd2l0aCBFTU1DIGFuZCBhZGQgYSBk
+ZWZhdWx0IGZpbGUgc291cmNlIGZvcgo+PiBleHBhbnNpb25zLgo+Pgo+PiBSZW1vdmVkICJydyIg
+YW5kICJyb290d2FpdCIgYm9vdGFyZ3MgZnJvbSBleGlzdGluZyBib290IHNjcmlwdHMuCj4gCj4g
+V2h5IGlzICJyb290d2FpdCIgcmVtb3ZlZD8gRnJvbSBteSBleHBlcmllbmNlIGFkZGluZyAicm9v
+dHdhaXQiIGlzCj4gcHJldHR5IGVzc2VudGlhbCB3aGVuIGJvb3RpbmcgZnJvbSBtbWMuIEhhcyB0
+aGF0IGNoYW5nZWQ/Cj4gCkFoIHRoYXQncyBhIGdvb2QgcG9pbnQhIFdlIGFkZCB0aGVzZSBjb21t
+YW5kcyBpbiBZb2N0bywgYnV0IEkgZm9yZ290IHRoZSAKdXNlIGNhc2Ugd2l0aG91dCBZb2N0by4g
+U28gSSB3aWxsIGFkZCBhIG52L2xpbnV4LmJvb3RhcmdzLnJvb3RmcyBmaWxlIAp3aXRoICJyb290
+d2FpdCBybyBmc2NrLnJlcGFpcj15ZXMiIChmc2NrLnJlcGFpciBpcyBhIHN5c3RlbWQgdW5pdCku
+Cgo+PiAgIAo+PiAtaWYgWyAkYm9vdHNvdXJjZSA9IG1tYyBdOyB0aGVuCj4+IC0JZ2xvYmFsLmJv
+b3QuZGVmYXVsdD0ibW1jIG5hbmQgc3BpIG5ldCIKPj4gK2lmIFsgLWUgL2Rldi9tbWMxLjAgXTsg
+dGhlbgo+PiArCW52bWVtPSJlbW1jIgo+PiArZWxzZQo+PiArCW52bWVtPSJuYW5kIgo+PiArZmkK
+Pj4gKwo+PiAraWYgWyAkYm9vdHNvdXJjZSA9IG1tYyAtYSAkYm9vdHNvdXJjZV9pbnN0YW5jZSA9
+IDEgXTsgdGhlbgo+PiArCWdsb2JhbC5ib290LmRlZmF1bHQ9ImVtbWMgbW1jIHNwaSBuZXQiCj4+
+ICtlbGlmIFsgJGJvb3Rzb3VyY2UgPSBtbWMgLWEgJGJvb3Rzb3VyY2VfaW5zdGFuY2UgPSAwIF07
+IHRoZW4KPj4gKwlnbG9iYWwuYm9vdC5kZWZhdWx0PSJtbWMgJG52bWVtIHNwaSBuZXQiCj4+ICAg
+ZWxpZiBbICRib290c291cmNlID0gbmFuZCBdOyB0aGVuCj4+ICAgCWdsb2JhbC5ib290LmRlZmF1
+bHQ9Im5hbmQgc3BpIG1tYyBuZXQiCj4+ICAgZWxpZiBbICRib290c291cmNlID0gc3BpIF07IHRo
+ZW4KPj4gLQlnbG9iYWwuYm9vdC5kZWZhdWx0PSJzcGkgbmFuZCBtbWMgbmV0Igo+PiArCWdsb2Jh
+bC5ib290LmRlZmF1bHQ9InNwaSAkbnZtZW0gbW1jIG5ldCIKPj4gICBlbGlmIFsgJGJvb3Rzb3Vy
+Y2UgPSBuZXQgXTsgdGhlbgo+PiAtCWdsb2JhbC5ib290LmRlZmF1bHQ9Im5ldCBuYW5kIHNwaSBt
+bWMiCj4+ICsJZ2xvYmFsLmJvb3QuZGVmYXVsdD0ibmV0ICRudm1lbSBzcGkgbW1jIgo+PiAgIGZp
+Cj4gCj4gTm9ybWFsbHkgdGhlIGRlc2lyZWQgYmVoYXZpb3VyIGlzIHRoYXQgdGhlIGJvb3Rzb3Vy
+Y2UgY2FuIGJlIGNoYW5nZWQKPiBwZXJzaXN0ZW50bHkgYnkgc2V0dGluZyBudi5ib290LmRlZmF1
+bHQgdG8gdGhlIGRlc2lyZWQgc291cmNlLiBUaGlzCj4gZG9lcyBub3Qgd29yayB3aGVuIGdsb2Jh
+bC5ib290LmRlZmF1bHQgZ2V0cyBvdmVyd3JpdHRlbiBhZnRlciB0aGUgbnZ2YXJzCj4gaGF2ZSBi
+ZWVuIHJlYWQgZnJvbSB0aGUgZW52aXJvbm1lbnQuCj4gCj4gVGhpcyBiZWhhdmlvdXIgaXMgbm90
+IGNoYW5nZWQgd2l0aCB0aGlzIHBhdGNoLCBidXQgSSB3b3VsZCB3ZWxjb21lIGEKPiBwYXRjaCB0
+aGF0IGNoYW5nZXMgdGhpcyBzY3JpcHQgdG8gdGhlIGRlc2lyZWQgYmVoYXZpb3VyLiBUaGlzIGNv
+dWxkCj4gYmUgZG9uZSBieSBjaGFuZ2luZyBnbG9iYWwuYm9vdC5kZWZhdWx0IG9ubHkgd2hlbiBu
+di5ib290LmRlZmF1bHQgaXMKPiBlbXB0eS4KPiAKClRoaXMgaXMgYWxyZWFkeSBpbXBsZW1lbnRl
+ZCBieSBhIHRlc3QgYWJvdmUgdGhlc2UgY2hhbmdlcywgaXNuJ3QgaXQ/CgpzbmlwcGV0IGZyb20g
+aW5pdC9ib290c291cmNlOgogICAxICMhL2Jpbi9zaCAKCiAgIDIgCgogICAzIGlmIFsgLW4gIiRu
+di5ib290LmRlZmF1bHQiIF07IHRoZW4gCgogICA0ICAgICAgICAgZXhpdCAKCiAgIDUgZmkgCgog
+ICA2IAoKICAgNyBpZiBbIC1lIC9kZXYvbW1jMS4wIF07IHRoZW4KICAgLi4uCgo+IFNhc2NoYQo+
+IAoKLS0gCk1pdCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4sCldpdGggYmVzdCByZWdhcmRzLAogICBE
+YW5pZWwgU2NodWx0egoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
+dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
