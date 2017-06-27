@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dPoID-0004lY-Pa
- for barebox@lists.infradead.org; Tue, 27 Jun 2017 11:04:27 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 27 Jun 2017 13:04:04 +0200
-Message-Id: <20170627110404.16252-1-s.hauer@pengutronix.de>
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1dPrTr-0000KJ-Br
+ for barebox@lists.infradead.org; Tue, 27 Jun 2017 14:28:41 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 65D55A0023F
+ for <barebox@lists.infradead.org>; Tue, 27 Jun 2017 16:29:23 +0200 (CEST)
+From: Daniel Schultz <d.schultz@phytec.de>
+Date: Tue, 27 Jun 2017 16:28:15 +0200
+Message-Id: <1498573695-3135-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +22,136 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fs: Make locally used function canonicalize_dir() static
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v6] arm: boards: phytec-som-am335x: Update boot scripts
+To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Expand the boot scripts by eMMC and clean them up.
+Add NV variable files and removed unnecessary kernel bootargs from the
+boot scripts.
+Add "rootflags='data=journal'" bootarg to SD card boot script.
+
+Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 ---
- fs/fs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../phytec-som-am335x/defaultenv-physom-am335x/boot/emmc |  5 +++++
+ .../phytec-som-am335x/defaultenv-physom-am335x/boot/mmc  |  7 +++----
+ .../phytec-som-am335x/defaultenv-physom-am335x/boot/nand |  2 +-
+ .../phytec-som-am335x/defaultenv-physom-am335x/boot/spi  |  2 +-
+ .../defaultenv-physom-am335x/init/bootsource             | 16 ++++++++++++----
+ .../defaultenv-physom-am335x/nv/allow_color              |  1 +
+ .../defaultenv-physom-am335x/nv/boot.watchdog_timeout    |  1 +
+ .../defaultenv-physom-am335x/nv/linux.bootargs.base      |  1 +
+ .../defaultenv-physom-am335x/nv/linux.bootargs.rootfs    |  1 +
+ 9 files changed, 26 insertions(+), 10 deletions(-)
+ create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+ create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/allow_color
+ create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/boot.watchdog_timeout
+ create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.base
+ create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.rootfs
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 0a5b61a2b0..c9226f9ba6 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -246,7 +246,7 @@ char *canonicalize_path(const char *pathname)
-  *
-  * Return: Path with links resolved. Allocated, must be freed after use.
-  */
--char *canonicalize_dir(const char *pathname)
-+static char *canonicalize_dir(const char *pathname)
- {
- 	char *f, *d, *r, *ret, *p;
- 	char *freep1, *freep2;
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+new file mode 100644
+index 0000000..b1792a6
+--- /dev/null
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+@@ -0,0 +1,5 @@
++#!/bin/sh
++
++global.bootm.image=/mnt/mmc1.0/linuximage
++global.bootm.oftree=/mnt/mmc1.0/oftree
++global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
+index 834669d..77a076d 100644
+--- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
+@@ -1,6 +1,5 @@
+ #!/bin/sh
+ 
+-global.bootm.image=/boot/linuximage
+-global.bootm.oftree=/boot/oftree
+-
+-global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rw rootwait"
++global.bootm.image=/mnt/mmc0.0/linuximage
++global.bootm.oftree=/mnt/mmc0.0/oftree
++global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
+index ece44b7..33f5f02 100644
+--- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
+@@ -5,4 +5,4 @@
+ global.bootm.image="/dev/nand0.root.ubi.kernel"
+ global.bootm.oftree="/dev/nand0.root.ubi.oftree"
+ 
+-global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rw rootfstype=ubifs"
++global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
+index 71c5834..a321aa9 100644
+--- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
+@@ -4,4 +4,4 @@ global.bootm.image="/dev/m25p0.kernel"
+ global.bootm.oftree="/dev/m25p0.oftree"
+ 
+ # Use rootfs from NAND
+-global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rw rootfstype=ubifs"
++global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rootfstype=ubifs"
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
+index 3f2ff4b..61a0879 100644
+--- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
+@@ -4,12 +4,20 @@ if [ -n "$nv.boot.default" ]; then
+ 	exit
+ fi
+ 
+-if [ $bootsource = mmc ]; then
+-	global.boot.default="mmc nand spi net"
++if [ -e /dev/mmc1.0 ]; then
++	nvmem="emmc"
++else
++	nvmem="nand"
++fi
++
++if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
++	global.boot.default="emmc mmc spi net"
++elif [ $bootsource = mmc -a $bootsource_instance = 0 ]; then
++	global.boot.default="mmc $nvmem spi net"
+ elif [ $bootsource = nand ]; then
+ 	global.boot.default="nand spi mmc net"
+ elif [ $bootsource = spi ]; then
+-	global.boot.default="spi nand mmc net"
++	global.boot.default="spi $nvmem mmc net"
+ elif [ $bootsource = net ]; then
+-	global.boot.default="net nand spi mmc"
++	global.boot.default="net $nvmem spi mmc"
+ fi
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/allow_color b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/allow_color
+new file mode 100644
+index 0000000..c508d53
+--- /dev/null
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/allow_color
+@@ -0,0 +1 @@
++false
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/boot.watchdog_timeout b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/boot.watchdog_timeout
+new file mode 100644
+index 0000000..abdfb05
+--- /dev/null
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/boot.watchdog_timeout
+@@ -0,0 +1 @@
++60
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.base b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.base
+new file mode 100644
+index 0000000..efc4ee6
+--- /dev/null
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.base
+@@ -0,0 +1 @@
++consoleblank=0
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.rootfs b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.rootfs
+new file mode 100644
+index 0000000..199c7b5
+--- /dev/null
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.rootfs
+@@ -0,0 +1 @@
++rootwait ro fsck.repair=yes
 -- 
-2.11.0
+1.9.1
 
 
 _______________________________________________
