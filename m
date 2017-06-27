@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dPn4a-0007lb-Ch
- for barebox@lists.infradead.org; Tue, 27 Jun 2017 09:46:18 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dPrbc-0004vI-3j
+ for barebox@lists.infradead.org; Tue, 27 Jun 2017 14:36:42 +0000
+Date: Tue, 27 Jun 2017 16:36:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170627143617.4q6ufyh3uaohsa5k@pengutronix.de>
 References: <1497973342-30198-1-git-send-email-d.schultz@phytec.de>
  <20170626063554.kskmccgsdzwtusew@pengutronix.de>
-From: Daniel Schultz <d.schultz@phytec.de>
-Message-ID: <6876fb2d-ab61-087f-22a8-b4431d09328e@phytec.de>
-Date: Tue, 27 Jun 2017 11:45:44 +0200
+ <6876fb2d-ab61-087f-22a8-b4431d09328e@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <20170626063554.kskmccgsdzwtusew@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <6876fb2d-ab61-087f-22a8-b4431d09328e@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,52 +20,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v5] arm: boards: phytec-som-am335x: Update boot scripts
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Daniel Schultz <d.schultz@phytec.de>
 Cc: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLAoKQW0gMjYuMDYuMjAxNyB1bSAwODozNSBzY2hyaWViIFNhc2NoYSBIYXVlcjoK
-PiBPbiBUdWUsIEp1biAyMCwgMjAxNyBhdCAwNTo0MjoyMlBNICswMjAwLCBEYW5pZWwgU2NodWx0
-eiB3cm90ZToKPj4gRXhwYW5kIHRoZSBib290IHNjcmlwdHMgd2l0aCBFTU1DIGFuZCBhZGQgYSBk
-ZWZhdWx0IGZpbGUgc291cmNlIGZvcgo+PiBleHBhbnNpb25zLgo+Pgo+PiBSZW1vdmVkICJydyIg
-YW5kICJyb290d2FpdCIgYm9vdGFyZ3MgZnJvbSBleGlzdGluZyBib290IHNjcmlwdHMuCj4gCj4g
-V2h5IGlzICJyb290d2FpdCIgcmVtb3ZlZD8gRnJvbSBteSBleHBlcmllbmNlIGFkZGluZyAicm9v
-dHdhaXQiIGlzCj4gcHJldHR5IGVzc2VudGlhbCB3aGVuIGJvb3RpbmcgZnJvbSBtbWMuIEhhcyB0
-aGF0IGNoYW5nZWQ/Cj4gCkFoIHRoYXQncyBhIGdvb2QgcG9pbnQhIFdlIGFkZCB0aGVzZSBjb21t
-YW5kcyBpbiBZb2N0bywgYnV0IEkgZm9yZ290IHRoZSAKdXNlIGNhc2Ugd2l0aG91dCBZb2N0by4g
-U28gSSB3aWxsIGFkZCBhIG52L2xpbnV4LmJvb3RhcmdzLnJvb3RmcyBmaWxlIAp3aXRoICJyb290
-d2FpdCBybyBmc2NrLnJlcGFpcj15ZXMiIChmc2NrLnJlcGFpciBpcyBhIHN5c3RlbWQgdW5pdCku
-Cgo+PiAgIAo+PiAtaWYgWyAkYm9vdHNvdXJjZSA9IG1tYyBdOyB0aGVuCj4+IC0JZ2xvYmFsLmJv
-b3QuZGVmYXVsdD0ibW1jIG5hbmQgc3BpIG5ldCIKPj4gK2lmIFsgLWUgL2Rldi9tbWMxLjAgXTsg
-dGhlbgo+PiArCW52bWVtPSJlbW1jIgo+PiArZWxzZQo+PiArCW52bWVtPSJuYW5kIgo+PiArZmkK
-Pj4gKwo+PiAraWYgWyAkYm9vdHNvdXJjZSA9IG1tYyAtYSAkYm9vdHNvdXJjZV9pbnN0YW5jZSA9
-IDEgXTsgdGhlbgo+PiArCWdsb2JhbC5ib290LmRlZmF1bHQ9ImVtbWMgbW1jIHNwaSBuZXQiCj4+
-ICtlbGlmIFsgJGJvb3Rzb3VyY2UgPSBtbWMgLWEgJGJvb3Rzb3VyY2VfaW5zdGFuY2UgPSAwIF07
-IHRoZW4KPj4gKwlnbG9iYWwuYm9vdC5kZWZhdWx0PSJtbWMgJG52bWVtIHNwaSBuZXQiCj4+ICAg
-ZWxpZiBbICRib290c291cmNlID0gbmFuZCBdOyB0aGVuCj4+ICAgCWdsb2JhbC5ib290LmRlZmF1
-bHQ9Im5hbmQgc3BpIG1tYyBuZXQiCj4+ICAgZWxpZiBbICRib290c291cmNlID0gc3BpIF07IHRo
-ZW4KPj4gLQlnbG9iYWwuYm9vdC5kZWZhdWx0PSJzcGkgbmFuZCBtbWMgbmV0Igo+PiArCWdsb2Jh
-bC5ib290LmRlZmF1bHQ9InNwaSAkbnZtZW0gbW1jIG5ldCIKPj4gICBlbGlmIFsgJGJvb3Rzb3Vy
-Y2UgPSBuZXQgXTsgdGhlbgo+PiAtCWdsb2JhbC5ib290LmRlZmF1bHQ9Im5ldCBuYW5kIHNwaSBt
-bWMiCj4+ICsJZ2xvYmFsLmJvb3QuZGVmYXVsdD0ibmV0ICRudm1lbSBzcGkgbW1jIgo+PiAgIGZp
-Cj4gCj4gTm9ybWFsbHkgdGhlIGRlc2lyZWQgYmVoYXZpb3VyIGlzIHRoYXQgdGhlIGJvb3Rzb3Vy
-Y2UgY2FuIGJlIGNoYW5nZWQKPiBwZXJzaXN0ZW50bHkgYnkgc2V0dGluZyBudi5ib290LmRlZmF1
-bHQgdG8gdGhlIGRlc2lyZWQgc291cmNlLiBUaGlzCj4gZG9lcyBub3Qgd29yayB3aGVuIGdsb2Jh
-bC5ib290LmRlZmF1bHQgZ2V0cyBvdmVyd3JpdHRlbiBhZnRlciB0aGUgbnZ2YXJzCj4gaGF2ZSBi
-ZWVuIHJlYWQgZnJvbSB0aGUgZW52aXJvbm1lbnQuCj4gCj4gVGhpcyBiZWhhdmlvdXIgaXMgbm90
-IGNoYW5nZWQgd2l0aCB0aGlzIHBhdGNoLCBidXQgSSB3b3VsZCB3ZWxjb21lIGEKPiBwYXRjaCB0
-aGF0IGNoYW5nZXMgdGhpcyBzY3JpcHQgdG8gdGhlIGRlc2lyZWQgYmVoYXZpb3VyLiBUaGlzIGNv
-dWxkCj4gYmUgZG9uZSBieSBjaGFuZ2luZyBnbG9iYWwuYm9vdC5kZWZhdWx0IG9ubHkgd2hlbiBu
-di5ib290LmRlZmF1bHQgaXMKPiBlbXB0eS4KPiAKClRoaXMgaXMgYWxyZWFkeSBpbXBsZW1lbnRl
-ZCBieSBhIHRlc3QgYWJvdmUgdGhlc2UgY2hhbmdlcywgaXNuJ3QgaXQ/CgpzbmlwcGV0IGZyb20g
-aW5pdC9ib290c291cmNlOgogICAxICMhL2Jpbi9zaCAKCiAgIDIgCgogICAzIGlmIFsgLW4gIiRu
-di5ib290LmRlZmF1bHQiIF07IHRoZW4gCgogICA0ICAgICAgICAgZXhpdCAKCiAgIDUgZmkgCgog
-ICA2IAoKICAgNyBpZiBbIC1lIC9kZXYvbW1jMS4wIF07IHRoZW4KICAgLi4uCgo+IFNhc2NoYQo+
-IAoKLS0gCk1pdCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4sCldpdGggYmVzdCByZWdhcmRzLAogICBE
-YW5pZWwgU2NodWx0egoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
-dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Tue, Jun 27, 2017 at 11:45:44AM +0200, Daniel Schultz wrote:
+> Hi Sascha,
+> 
+> > Normally the desired behaviour is that the bootsource can be changed
+> > persistently by setting nv.boot.default to the desired source. This
+> > does not work when global.boot.default gets overwritten after the nvvars
+> > have been read from the environment.
+> > 
+> > This behaviour is not changed with this patch, but I would welcome a
+> > patch that changes this script to the desired behaviour. This could
+> > be done by changing global.boot.default only when nv.boot.default is
+> > empty.
+> > 
+> 
+> This is already implemented by a test above these changes, isn't it?
+> 
+> snippet from init/bootsource:
+>   1 #!/bin/sh
+> 
+>   2
+>   3 if [ -n "$nv.boot.default" ]; then
+>   4         exit
+>   5 fi
+
+Yes, right, that already does it. Sorry for the noise.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
