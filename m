@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dPn5e-0008E4-Mg
- for barebox@lists.infradead.org; Tue, 27 Jun 2017 09:47:24 +0000
-References: <1497361020-33828-1-git-send-email-d.schultz@phytec.de>
- <20170619073427.oja6l4ebvqjc3fp7@pengutronix.de>
- <661a7f8c-9ba8-bd25-7eb9-da77e6fb7ed4@phytec.de>
- <20170626062557.5kaeyculqgi3mske@pengutronix.de>
-From: Daniel Schultz <d.schultz@phytec.de>
-Message-ID: <9913d70a-c21b-c7f1-6385-3bbad1a4c901@phytec.de>
-Date: Tue, 27 Jun 2017 11:47:01 +0200
-MIME-Version: 1.0
-In-Reply-To: <20170626062557.5kaeyculqgi3mske@pengutronix.de>
-Content-Language: en-US
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dPoHz-0004kg-4K
+ for barebox@lists.infradead.org; Tue, 27 Jun 2017 11:04:13 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 27 Jun 2017 13:03:46 +0200
+Message-Id: <20170627110346.8208-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,46 +14,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] defaultenv: bin: init: Add sourcing of config-expansions
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: omap: phytec-phycore-omap4460: Fix compiler warning
+To: Barebox List <barebox@lists.infradead.org>
 
-SGksCgpBbSAyNi4wNi4yMDE3IHVtIDA4OjI1IHNjaHJpZWIgU2FzY2hhIEhhdWVyOgo+IE9uIFR1
-ZSwgSnVuIDIwLCAyMDE3IGF0IDA1OjUwOjU2UE0gKzAyMDAsIERhbmllbCBTY2h1bHR6IHdyb3Rl
-Ogo+PiBIaSwKPj4KPj4gQW0gMTkuMDYuMjAxNyB1bSAwOTozNCBzY2hyaWViIFNhc2NoYSBIYXVl
-cjoKPj4+IE9uIFR1ZSwgSnVuIDEzLCAyMDE3IGF0IDAzOjM3OjAwUE0gKzAyMDAsIERhbmllbCBT
-Y2h1bHR6IHdyb3RlOgo+Pj4+IFRoaXMgcGF0Y2ggYWRkcyBhIGZ1cnRoZXIgbGF5ZXIgdG8gdGhl
-IGNvbmZpZyBoaWVyYXJjaHkuIEl0IGFsbG93cyBhCj4+Pj4gZHluYW1pYyBjb25maWd1cmF0aW9u
-IG9mIGV4cGFuc2lvbnMuCj4+Pj4KPj4+PiBTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgU2NodWx0eiA8
-ZC5zY2h1bHR6QHBoeXRlYy5kZT4KPj4+PiAtLS0KPj4+PiAgICBkZWZhdWx0ZW52L2RlZmF1bHRl
-bnYtMi1iYXNlL2Jpbi9pbml0IHwgMSArCj4+Pj4gICAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0
-aW9uKCspCj4+Pj4KPj4+PiBkaWZmIC0tZ2l0IGEvZGVmYXVsdGVudi9kZWZhdWx0ZW52LTItYmFz
-ZS9iaW4vaW5pdCBiL2RlZmF1bHRlbnYvZGVmYXVsdGVudi0yLWJhc2UvYmluL2luaXQKPj4+PiBp
-bmRleCA3YWYzYzdkLi5hOTNlYTU4IDEwMDY0NAo+Pj4+IC0tLSBhL2RlZmF1bHRlbnYvZGVmYXVs
-dGVudi0yLWJhc2UvYmluL2luaXQKPj4+PiArKysgYi9kZWZhdWx0ZW52L2RlZmF1bHRlbnYtMi1i
-YXNlL2Jpbi9pbml0Cj4+Pj4gQEAgLTI1LDYgKzI1LDcgQEAgbWFnaWN2YXIgLWEgZ2xvYmFsLmFs
-bG93X2NvbG9yICJBbGxvdyBjb2xvciBvbiB0aGUgY29uc29sZSAoYm9vbGVhbikiCj4+Pj4gICAg
-WyAteiAiJHtnbG9iYWwuZWRpdGNtZH0iIF0gJiYgZ2xvYmFsLmVkaXRjbWQ9c2VkaXQKPj4+PiAg
-ICBbIC1lIC9lbnYvY29uZmlnLWJvYXJkIF0gJiYgL2Vudi9jb25maWctYm9hcmQKPj4+PiArWyAt
-ZSAvZW52L2NvbmZpZy1leHBhbnNpb25zIF0gJiYgL2Vudi9jb25maWctZXhwYW5zaW9ucwo+Pj4K
-Pj4+IEkgcmVhZCB0aGUgbGFzdCB0aHJlYWQgYWdhaW4gYW5kIEkgdGhpbmsgbXkgcXVlc3Rpb24g
-cmVtYWlucwo+Pj4gdW5hbnN3ZXJlZC4gV2h5IGNhbid0IHlvdSBwdXQgdGhlIGNvbmZpZy1leHBh
-bnNpb25zIHRvIC9lbnYvaW5pdC8gYW5kCj4+PiBsZXQgaXQgYmUgZXhlY3V0ZWQgYXV0b21hdGlj
-YWxseSB3aXRob3V0IGNoYW5naW5nIC9iaW4vaW5pdD8KPj4+Cj4+IEkgY2FuIGNoYW5nZSB0aGUg
-cGF0aCBvZiB0aGUgY29uZmlnLWV4cGFuaW9ucyBmaWxlIHdpdGhvdXQgcHJvYmxlbXMsIGJ1dCBJ
-Cj4+IHRob3VnaHQgdGhlcmUgY291bGQgYmUgbW9yZSB3aG8gbmVlZCBhIGNvbmZpZyBmb3IgZXhw
-YW5zaW9ucy4gU28sIHRoZXkgaGF2ZQo+PiBjb25maWcgZmlsZXMgd2l0aCBhIHNhbWUgYmVoYXZp
-b3IgaW4gZGlmZmVyZW50IGRpcnMuCj4gCj4gSSB0aGluayB3ZSBhcmUgdGFsa2luZyBhdCBjcm9z
-cy1wdXJwb3Nlcy4gQWxsIGZpbGVzIGluIC9lbnYvaW5pdC8gYXJlCj4gZXhlY3V0ZWQgYnkgdGhl
-IGluaXQgc2NyaXB0LCBzbyBhZGRpbmcgc3R1ZmYgdGhhdCBzaGFsbCBiZSBleGVjdXRlZAo+IGR1
-cmluZyBpbml0IHRvIHRoYXQgZGlyZWN0b3J5IHdvdWxkIGJlIHRoZSBuYXR1cmFsIHdheSB0byAi
-ZXhwYW5kIHRoZQo+IGNvbmZpZyIuCj4gCk9rYXksIHNvIEkgbWlzdW5kZXJzdG9vZCB5b3UuIEkg
-d2lsbCBhZGQgYWxsIGNvbmZpZy1leHBhbnNpb25zIHRvIAovZW52L2luaXQsIHNvcnJ5IQoKPiBT
-YXNjaGEKPiAKCi0tIApNaXQgZnJldW5kbGljaGVuIEdyw7zDn2VuLApXaXRoIGJlc3QgcmVnYXJk
-cywKICAgRGFuaWVsIFNjaHVsdHoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Use IS_ENABLED() rather than #ifdef to get rid of unused variable
+warning.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/phytec-phycore-omap4460/lowlevel.c | 26 +++++++++++-----------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/arch/arm/boards/phytec-phycore-omap4460/lowlevel.c b/arch/arm/boards/phytec-phycore-omap4460/lowlevel.c
+index 71ab793354..02297adb95 100644
+--- a/arch/arm/boards/phytec-phycore-omap4460/lowlevel.c
++++ b/arch/arm/boards/phytec-phycore-omap4460/lowlevel.c
+@@ -96,19 +96,19 @@ static void noinline pcm049_init_lowlevel(void)
+ 
+ 	set_muxconf_regs();
+ 
+-#ifdef CONFIG_1024MB_DDR2RAM
+-	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
+-	writel(EMIF_SDRAM_CONFIG, OMAP44XX_EMIF1_BASE +
+-			EMIF_LPDDR2_MODE_REG_CONFIG);
+-	density = (readl(OMAP44XX_EMIF1_BASE + EMIF_LPDDR2_MODE_REG_DATA) &
+-			LPDDR2_DENSITY_MASK) >> LPDDR2_DENSITY_SHIFT;
+-	if (density == LPDDR2_2G)
+-		omap4_ddr_init(&ddr_regs_mt42L128M64_25_400_mhz, &core);
+-	else if (density == LPDDR2_4G)
+-		omap4_ddr_init(&ddr_regs_mt42L128M64D2LL_25_400_mhz, &core);
+-#else
+-	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
+-#endif
++	if (IS_ENABLED(CONFIG_1024MB_DDR2RAM)) {
++		omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
++		writel(EMIF_SDRAM_CONFIG, OMAP44XX_EMIF1_BASE +
++		       EMIF_LPDDR2_MODE_REG_CONFIG);
++		density = (readl(OMAP44XX_EMIF1_BASE + EMIF_LPDDR2_MODE_REG_DATA) &
++			   LPDDR2_DENSITY_MASK) >> LPDDR2_DENSITY_SHIFT;
++		if (density == LPDDR2_2G)
++			omap4_ddr_init(&ddr_regs_mt42L128M64_25_400_mhz, &core);
++		else if (density == LPDDR2_4G)
++			omap4_ddr_init(&ddr_regs_mt42L128M64D2LL_25_400_mhz, &core);
++	} else {
++		omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
++	}
+ 
+ 	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+ 	if (rev < OMAP4460_ES1_0)
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
