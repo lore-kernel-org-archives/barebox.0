@@ -1,28 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from qmail34.e-mind.com ([188.94.192.34] helo=qmail.e-mind.com)
- by bombadil.infradead.org with smtp (Exim 4.87 #1 (Red Hat Linux))
- id 1dQWN2-0004IW-D3
- for barebox@lists.infradead.org; Thu, 29 Jun 2017 10:08:23 +0000
-References: <63687e34-f354-81d3-aed7-1a59866925c5@eurekelettronica.it>
- <2f43179e-2aa0-1dba-eafa-a9c0025afd24@eurekelettronica.it>
- <1487689380.2268.18.camel@pengutronix.de>
- <82857526-9f9a-2878-9b8e-070f124e2a41@eurekelettronica.it>
- <20170621063246.wdfct6r2boyx4xo3@pengutronix.de>
- <126e2527-f179-0c82-c384-c6c975a7c8e9@eurekelettronica.it>
- <1498045832.2904.105.camel@pengutronix.de>
- <3f12f02e-cccc-1edb-94d1-8cff2b69c808@eurekelettronica.it>
- <1498059009.2904.108.camel@pengutronix.de>
- <aaba2d2b-6d53-07a7-bfdd-f70c22ad13c6@eurekelettronica.it>
- <f950d875-85a7-988a-5425-441a05339a7c@eurekelettronica.it>
- <1498466766.2414.5.camel@pengutronix.de>
- <5e3f93ae-e91a-8e89-9979-e90584c5ad3d@eurekelettronica.it>
- <228fff5b-6629-368c-b491-34cc37e4ee8e@eurekelettronica.it>
- <1498725475.2315.29.camel@pengutronix.de>
-From: gianluca <gianlucarenzi@eurekelettronica.it>
-Message-ID: <d824085a-c1db-a97b-1103-dd84c2892970@eurekelettronica.it>
-Date: Thu, 29 Jun 2017 12:07:55 +0200
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dQow7-0000f9-SQ
+ for barebox@lists.infradead.org; Fri, 30 Jun 2017 05:57:50 +0000
+Date: Fri, 30 Jun 2017 07:57:06 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170630055706.svfai3z2f3ixme77@pengutronix.de>
+References: <1498573695-3135-1-git-send-email-d.schultz@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <1498725475.2315.29.camel@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <1498573695-3135-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,108 +18,160 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Fwd: Barebox 2017.02 works great but no Linux Framebuffer... :-/
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH v6] arm: boards: phytec-som-am335x: Update boot scripts
+To: Daniel Schultz <d.schultz@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On 06/29/2017 10:37 AM, Lucas Stach wrote:
-> Am Mittwoch, den 28.06.2017, 18:55 +0200 schrieb gianluca:
->> On 06/26/2017 03:28 PM, gianluca wrote:
->>>>
->>>> Your kernel is too old. Full support for the QuadPlus is a really
->>>> recent addition. Either update your kernel to 4.12-rc, or add
->>>> "clk_ignore_unused" to get at least basic functionality working.
->>>>
->>>
->>>
->>> Now I am compiling the 4.12-rc7. Hope this helps.
->>>
->>> I will keep you informed about that...
->>>
->>
->>
->> Now I am using the kernel 4.12-rc7 as the time of this writing.
->
-> And now your devicetree is too old, it's missing the PRE/PRG nodes on
-> imx6qp.
->
+On Tue, Jun 27, 2017 at 04:28:15PM +0200, Daniel Schultz wrote:
+> Expand the boot scripts by eMMC and clean them up.
+> Add NV variable files and removed unnecessary kernel bootargs from the
+> boot scripts.
+> Add "rootflags='data=journal'" bootarg to SD card boot script.
+> 
+> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+> ---
 
-Now, it works. After adding in the /soc node and in the ipu node the 
-pre[x] and prg[x] stuff, it works.
+Applied, thanks
 
-Are those parameters defined in the device-tree present in the latest 
-Barebox 2017.06.[whatever]?? If so, next step is use the latest Barebox...
+Sascha
 
-Now the only issue is how to fix the volume/dac/pcm value in alsa...
+>  .../phytec-som-am335x/defaultenv-physom-am335x/boot/emmc |  5 +++++
+>  .../phytec-som-am335x/defaultenv-physom-am335x/boot/mmc  |  7 +++----
+>  .../phytec-som-am335x/defaultenv-physom-am335x/boot/nand |  2 +-
+>  .../phytec-som-am335x/defaultenv-physom-am335x/boot/spi  |  2 +-
+>  .../defaultenv-physom-am335x/init/bootsource             | 16 ++++++++++++----
+>  .../defaultenv-physom-am335x/nv/allow_color              |  1 +
+>  .../defaultenv-physom-am335x/nv/boot.watchdog_timeout    |  1 +
+>  .../defaultenv-physom-am335x/nv/linux.bootargs.base      |  1 +
+>  .../defaultenv-physom-am335x/nv/linux.bootargs.rootfs    |  1 +
+>  9 files changed, 26 insertions(+), 10 deletions(-)
+>  create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+>  create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/allow_color
+>  create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/boot.watchdog_timeout
+>  create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.base
+>  create mode 100644 arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.rootfs
+> 
+> diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+> new file mode 100644
+> index 0000000..b1792a6
+> --- /dev/null
+> +++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+> @@ -0,0 +1,5 @@
+> +#!/bin/sh
+> +
+> +global.bootm.image=/mnt/mmc1.0/linuximage
+> +global.bootm.oftree=/mnt/mmc1.0/oftree
+> +global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
+> diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
+> index 834669d..77a076d 100644
+> --- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
+> +++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
+> @@ -1,6 +1,5 @@
+>  #!/bin/sh
+>  
+> -global.bootm.image=/boot/linuximage
+> -global.bootm.oftree=/boot/oftree
+> -
+> -global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rw rootwait"
+> +global.bootm.image=/mnt/mmc0.0/linuximage
+> +global.bootm.oftree=/mnt/mmc0.0/oftree
+> +global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
+> diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
+> index ece44b7..33f5f02 100644
+> --- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
+> +++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/nand
+> @@ -5,4 +5,4 @@
+>  global.bootm.image="/dev/nand0.root.ubi.kernel"
+>  global.bootm.oftree="/dev/nand0.root.ubi.oftree"
+>  
+> -global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rw rootfstype=ubifs"
+> +global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
+> diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
+> index 71c5834..a321aa9 100644
+> --- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
+> +++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/spi
+> @@ -4,4 +4,4 @@ global.bootm.image="/dev/m25p0.kernel"
+>  global.bootm.oftree="/dev/m25p0.oftree"
+>  
+>  # Use rootfs from NAND
+> -global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rw rootfstype=ubifs"
+> +global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rootfstype=ubifs"
+> diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
+> index 3f2ff4b..61a0879 100644
+> --- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
+> +++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/init/bootsource
+> @@ -4,12 +4,20 @@ if [ -n "$nv.boot.default" ]; then
+>  	exit
+>  fi
+>  
+> -if [ $bootsource = mmc ]; then
+> -	global.boot.default="mmc nand spi net"
+> +if [ -e /dev/mmc1.0 ]; then
+> +	nvmem="emmc"
+> +else
+> +	nvmem="nand"
+> +fi
+> +
+> +if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
+> +	global.boot.default="emmc mmc spi net"
+> +elif [ $bootsource = mmc -a $bootsource_instance = 0 ]; then
+> +	global.boot.default="mmc $nvmem spi net"
+>  elif [ $bootsource = nand ]; then
+>  	global.boot.default="nand spi mmc net"
+>  elif [ $bootsource = spi ]; then
+> -	global.boot.default="spi nand mmc net"
+> +	global.boot.default="spi $nvmem mmc net"
+>  elif [ $bootsource = net ]; then
+> -	global.boot.default="net nand spi mmc"
+> +	global.boot.default="net $nvmem spi mmc"
+>  fi
+> diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/allow_color b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/allow_color
+> new file mode 100644
+> index 0000000..c508d53
+> --- /dev/null
+> +++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/allow_color
+> @@ -0,0 +1 @@
+> +false
+> diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/boot.watchdog_timeout b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/boot.watchdog_timeout
+> new file mode 100644
+> index 0000000..abdfb05
+> --- /dev/null
+> +++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/boot.watchdog_timeout
+> @@ -0,0 +1 @@
+> +60
+> diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.base b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.base
+> new file mode 100644
+> index 0000000..efc4ee6
+> --- /dev/null
+> +++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.base
+> @@ -0,0 +1 @@
+> +consoleblank=0
+> diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.rootfs b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.rootfs
+> new file mode 100644
+> index 0000000..199c7b5
+> --- /dev/null
+> +++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/nv/linux.bootargs.rootfs
+> @@ -0,0 +1 @@
+> +rootwait ro fsck.repair=yes
+> -- 
+> 1.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-
-> # amixer
-> Simple mixer control 'Headphone',0
->   Capabilities: pvolume pswitch pswitch-joined
->   Playback channels: Front Left - Front Right
->   Limits: Playback 0 - 127
->   Mono:
->   Front Left: Playback 127 [2147483647%] [12.00dB] [on]
->   Front Right: Playback 63 [2147483647%] [-20.00dB] [on]
-> Simple mixer control 'Headphone Mux',0
->   Capabilities: enum
->   Items: 'DAC' 'LINE_IN'
->   Item0: 'DAC'
-> Simple mixer control 'Headphone Playback ZC',0
->   Capabilities: pswitch pswitch-joined
->   Playback channels: Mono
->   Mono: Playback [on]
-> Simple mixer control 'PCM',0
->   Capabilities: pvolume
->   Playback channels: Front Left - Front Right
->   Limits: Playback 0 - 192
->   Mono:
->   Front Left: Playback 1 [2147483647%]
->   Front Right: Playback 0 [2147483647%]
-> Simple mixer control 'Lineout',0
->   Capabilities: pvolume pswitch pswitch-joined
->   Playback channels: Front Left - Front Right
->   Limits: Playback 0 - 31
->   Mono:
->   Front Left: Playback 18 [2147483647%] [-6.50dB] [on]
->   Front Right: Playback 18 [2147483647%] [-6.50dB] [on]
-> Simple mixer control 'Mic',0
->   Capabilities: volume volume-joined
->   Playback channels: Mono
->   Capture channels: Mono
->   Limits: 0 - 3
->   Mono: 0 [2147483647%] [0.00dB]
-> Simple mixer control 'Capture',0
->   Capabilities: cvolume
->   Capture channels: Front Left - Front Right
->   Limits: Capture 0 - 15
->   Front Left: Capture 0 [2147483647%]
->   Front Right: Capture 0 [2147483647%]
-> Simple mixer control 'Capture Attenuate Switch (-6dB)',0
->   Capabilities: pswitch pswitch-joined
->   Playback channels: Mono
->   Mono: Playback [off]
-> Simple mixer control 'Capture Mux',0
->   Capabilities: enum
->   Items: 'MIC_IN' 'LINE_IN'
->   Item0: 'MIC_IN'
-> Simple mixer control 'Capture ZC',0
->   Capabilities: pswitch pswitch-joined
->   Playback channels: Mono
->   Mono: Playback [on]
-
-2147483647% looks like an max-int value 0x7FFFFFFF...
-
-Regards,
 -- 
-Eurek s.r.l.                          |
-Electronic Engineering                | http://www.eurek.it
-via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
-p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
