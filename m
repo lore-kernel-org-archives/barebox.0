@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x234.google.com ([2a00:1450:4010:c07::234])
+Received: from mail-lf0-x231.google.com ([2a00:1450:4010:c07::231])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dQuIt-0002qF-Jn
- for barebox@lists.infradead.org; Fri, 30 Jun 2017 11:41:44 +0000
-Received: by mail-lf0-x234.google.com with SMTP id h22so68619109lfk.3
- for <barebox@lists.infradead.org>; Fri, 30 Jun 2017 04:41:19 -0700 (PDT)
+ id 1dQuIw-0002qg-78
+ for barebox@lists.infradead.org; Fri, 30 Jun 2017 11:41:45 +0000
+Received: by mail-lf0-x231.google.com with SMTP id b207so68606019lfg.2
+ for <barebox@lists.infradead.org>; Fri, 30 Jun 2017 04:41:21 -0700 (PDT)
 From: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
-Date: Fri, 30 Jun 2017 14:43:01 +0300
-Message-Id: <20170630114304.8070-6-andrey.gusakov@cogentembedded.com>
+Date: Fri, 30 Jun 2017 14:43:03 +0300
+Message-Id: <20170630114304.8070-8-andrey.gusakov@cogentembedded.com>
 In-Reply-To: <20170630114304.8070-1-andrey.gusakov@cogentembedded.com>
 References: <20170630114304.8070-1-andrey.gusakov@cogentembedded.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,80 +23,118 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] video: tc358767: fix timing calculation
+Subject: [PATCH 7/8] video: tc358767: filter out modes with too high pixelclock
 To: barebox@lists.infradead.org
 Cc: andrey.gusakov@cogentembedded.com, Chris.Healy@zii.aero
 
-Fields in HTIM01 and HTIM02 regs should be even.
-Recomended thresh_dly value is max_tu_symbol.
+Minimum pixel clock period is 6.5 nS for DPI. Remove modes with
+lower pixel clock period. Also sort modes in decreasing order
+because currently first resolution in list is picked.
 ---
- drivers/video/tc358767.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ drivers/video/tc358767.c | 83 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
 
 diff --git a/drivers/video/tc358767.c b/drivers/video/tc358767.c
-index 033da4fb2..d2c94c616 100644
+index 1541b18c9..61695b61c 100644
 --- a/drivers/video/tc358767.c
 +++ b/drivers/video/tc358767.c
-@@ -730,13 +730,15 @@ err_dpcd_inval:
- 	return -EINVAL;
+@@ -1210,6 +1210,82 @@ err:
+ 	return ret;
  }
  
-+#define EVEN_HI(val)	((val + 1) & (~0x01))
++static int tc_filter_videomodes(struct tc_data *tc, struct display_timings *timings)
++{
++	int i;
++	int num_modes = 0;
++	struct fb_videomode *mode, *valid_modes;
 +
- static int tc_set_video_mode(struct tc_data *tc, struct fb_videomode *mode)
++	valid_modes = xzalloc(timings->num_modes * sizeof(struct fb_videomode));
++
++	/* first filter modes with too high pclock */
++	for (i = 0; i < timings->num_modes; i++) {
++		mode = &timings->modes[i];
++
++		/* minimum Pixel Clock Period for DPI is 6.5 nS = 6500 pS */
++		if (mode->pixclock < 6500) {
++			dev_dbg(tc->dev, "%dx%d@%d (%d KHz, flags 0x%08x, sync 0x%08x) skipped\n",
++				mode->xres, mode->yres, mode->refresh,
++				(int)PICOS2KHZ(mode->pixclock), mode->display_flags,
++				mode->sync);
++			/* remove from list */
++			mode->xres = mode->yres = 0;
++		}
++	}
++
++	/* then sort from hi to low */
++	do {
++		int index = -1;
++
++		/* find higest resolution */
++		for (i = 0; i < timings->num_modes; i++) {
++			mode = &timings->modes[i];
++			if (!(mode->xres && mode->yres))
++				continue;
++			if (index == -1) {
++				index = i;
++			} else {
++				/* compare square */
++				if (timings->modes[index].xres * timings->modes[index].yres <
++				    mode->xres * mode->yres)
++					index = i;
++			}
++		}
++
++		/* nothing left */
++		if (index == -1)
++			break;
++
++		/* copy to output list */
++		mode = &timings->modes[index];
++		memcpy(&valid_modes[num_modes], mode, sizeof(struct fb_videomode));
++		mode->xres = mode->yres = 0;
++		num_modes++;
++	} while (1);
++
++	free(timings->modes);
++	timings->modes = NULL;
++
++	if (!num_modes) {
++		free(valid_modes);
++		return -EINVAL;
++	}
++
++	timings->num_modes = num_modes;
++	timings->modes = valid_modes;
++
++	dev_dbg(tc->dev, "Valid modes (%d):\n", num_modes);
++	for (i = 0; i < timings->num_modes; i++) {
++		mode = &timings->modes[i];
++		dev_dbg(tc->dev, "%dx%d@%d (%d KHz, flags 0x%08x, sync 0x%08x)\n",
++			mode->xres, mode->yres, mode->refresh,
++			(int)PICOS2KHZ(mode->pixclock), mode->display_flags,
++			mode->sync);
++	}
++
++	return 0;
++}
++
+ static int tc_get_videomodes(struct tc_data *tc, struct display_timings *timings)
  {
  	int ret;
- 	int htotal;
- 	int vtotal;
- 	int vid_sync_dly;
--	int max_tu_symbol;
-+	int max_tu_symbol = TU_SIZE_RECOMMENDED - 1;
+@@ -1229,6 +1305,13 @@ static int tc_get_videomodes(struct tc_data *tc, struct display_timings *timings
+ 		return ret;
+ 	}
  
- 	htotal = mode->hsync_len + mode->left_margin + mode->xres +
- 		mode->right_margin;
-@@ -750,14 +752,18 @@ static int tc_set_video_mode(struct tc_data *tc, struct fb_videomode *mode)
- 		mode->upper_margin, mode->lower_margin, mode->vsync_len);
- 	dev_dbg(tc->dev, "total: %dx%d\n", htotal, vtotal);
- 
--
--	/* LCD Ctl Frame Size */
--	tc_write(VPCTRL0, (0x40 << 20) /* VSDELAY */ |
-+	/*
-+	 * Datasheet is not clear of vsdelay in case of DPI
-+	 * assume we do not need any delay when DPI is a source of
-+	 * sync signals
-+	 */
-+	tc_write(VPCTRL0, (0 << 20) /* VSDELAY */ |
- 		 OPXLFMT_RGB888 | FRMSYNC_DISABLED | MSF_DISABLED);
--	tc_write(HTIM01, (mode->left_margin << 16) |		/* H back porch */
--			 (mode->hsync_len << 0));		/* Hsync */
--	tc_write(HTIM02, (mode->right_margin << 16) |		/* H front porch */
--			 (mode->xres << 0));			/* width */
-+	/* LCD Ctl Frame Size */
-+	tc_write(HTIM01, (EVEN_HI(mode->left_margin) << 16) |	/* H back porch */
-+			 (EVEN_HI(mode->hsync_len) << 0));	/* Hsync */
-+	tc_write(HTIM02, (EVEN_HI(mode->right_margin) << 16) |	/* H front porch */
-+			 (EVEN_HI(mode->xres) << 0));		/* width */
- 	tc_write(VTIM01, (mode->upper_margin << 16) |		/* V back porch */
- 			 (mode->vsync_len << 0));		/* Vsync */
- 	tc_write(VTIM02, (mode->lower_margin << 16) |		/* V front porch */
-@@ -776,7 +782,7 @@ static int tc_set_video_mode(struct tc_data *tc, struct fb_videomode *mode)
- 	/* DP Main Stream Attributes */
- 	vid_sync_dly = mode->hsync_len + mode->left_margin + mode->xres;
- 	tc_write(DP0_VIDSYNCDELAY,
--		 (0x003e << 16) |	/* thresh_dly */
-+		 (max_tu_symbol << 16) |	/* thresh_dly */
- 		 (vid_sync_dly << 0));
- 
- 	tc_write(DP0_TOTALVAL, (vtotal << 16) | (htotal));
-@@ -798,7 +804,6 @@ static int tc_set_video_mode(struct tc_data *tc, struct fb_videomode *mode)
- 	 *              (output active video bandwidth in bytes))
- 	 * Must be less than tu_size.
- 	 */
--	max_tu_symbol = TU_SIZE_RECOMMENDED - 1;
- 	tc_write(DP0_MISC, (max_tu_symbol << 23) | (TU_SIZE_RECOMMENDED << 16) | BPC_8);
- 
- 	return 0;
++	/* filter out unsupported due to high pixelxlock */
++	ret = tc_filter_videomodes(tc, timings);
++	if (ret < 0) {
++		dev_err(tc->dev, "No supported modes found\n");
++		return ret;
++	}
++
+ 	/* hsync, vsync active low */
+ 	timings->modes->sync &= ~(FB_SYNC_HOR_HIGH_ACT |
+ 				  FB_SYNC_VERT_HIGH_ACT);
 -- 
 2.13.0
 
