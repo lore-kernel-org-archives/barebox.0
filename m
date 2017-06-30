@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dQuBF-0006JR-Lg
- for barebox@lists.infradead.org; Fri, 30 Jun 2017 11:33:49 +0000
-Date: Fri, 30 Jun 2017 13:32:47 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170630113247.nljwxvjwba6lyhwm@pengutronix.de>
-References: <20170630080822.5027-1-s.trumtrar@pengutronix.de>
+ id 1dQsb2-0004lu-SN
+ for barebox@lists.infradead.org; Fri, 30 Jun 2017 09:52:18 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri, 30 Jun 2017 11:51:44 +0200
+Message-Id: <20170630095145.32488-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170630080822.5027-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,67 +15,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: socfpga: remove unused fpgaintf setup
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] scripts/kwboot: document -n option
+To: barebox@lists.infradead.org
 
-On Fri, Jun 30, 2017 at 10:08:22AM +0200, Steffen Trumtrar wrote:
-> The disable bits for the ethernet interfaces between FPGA and HPS are read
-> and configured, but never written back.
-> The configuration itself doesn't make that much sense however. So instead of
-> writing it back to the register, remove the whole read-modify operation altogether.
-> 
-> Reported-by: Ian Abbott <abbotti@mev.co.uk>
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  arch/arm/mach-socfpga/arria10-generic.c | 8 --------
->  1 file changed, 8 deletions(-)
-> 
-
-Applied, thanks
-
-Sascha
-
-> diff --git a/arch/arm/mach-socfpga/arria10-generic.c b/arch/arm/mach-socfpga/arria10-generic.c
-> index b8129eaf23ff..6a10c19d1417 100644
-> --- a/arch/arm/mach-socfpga/arria10-generic.c
-> +++ b/arch/arm/mach-socfpga/arria10-generic.c
-> @@ -37,14 +37,6 @@ static void arria10_init_emac(void)
->  	val |= ARRIA10_SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_RGMII;
->  	writel(val, ARRIA10_SYSMGR_EMAC2);
->  
-> -	val = readl(ARRIA10_SYSMGR_FPGAINTF_EN_3);
-> -	val &= ~(ARRIA10_SYSMGR_FPGAINTF_EN3_EMAC0 |
-> -		 ARRIA10_SYSMGR_FPGAINTF_EN3_EMAC0_SW |
-> -		 ARRIA10_SYSMGR_FPGAINTF_EN3_EMAC1 |
-> -		 ARRIA10_SYSMGR_FPGAINTF_EN3_EMAC1_SW |
-> -		 ARRIA10_SYSMGR_FPGAINTF_EN3_EMAC2 |
-> -		 ARRIA10_SYSMGR_FPGAINTF_EN3_EMAC2_SW);
-> -
->  	rst = readl(ARRIA10_RSTMGR_ADDR + ARRIA10_RSTMGR_PER0MODRST);
->  	rst &= ~(ARRIA10_RSTMGR_PER0MODRST_EMAC0 |
->  		 ARRIA10_RSTMGR_PER0MODRST_EMAC1 |
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyB3YXMgZm9yZ290dGVuIGluIHRoZSBjb21taXQgdGhhdCBhZGRlZCBzdXBwb3J0IGZvciB0
+aGF0IG9wdGlvbgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtv
+ZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBzY3JpcHRzL2t3Ym9vdC5jIHwgNCArKystCiAxIGZp
+bGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEv
+c2NyaXB0cy9rd2Jvb3QuYyBiL3NjcmlwdHMva3dib290LmMKaW5kZXggNGM2YjE5YWEyMTllLi5k
+YjE3N2NlYjVmMmUgMTAwNjQ0Ci0tLSBhL3NjcmlwdHMva3dib290LmMKKysrIGIvc2NyaXB0cy9r
+d2Jvb3QuYwpAQCAtNzE2LDcgKzcxNiw3IEBAIHN0YXRpYyB2b2lkCiBrd2Jvb3RfdXNhZ2UoRklM
+RSAqc3RyZWFtLCBjaGFyICpwcm9nbmFtZSkKIHsKIAlmcHJpbnRmKHN0cmVhbSwKLQkJIlVzYWdl
+OiAlcyBbLWQgfCAtYiA8aW1hZ2U+IHwgLUQgPGltYWdlPiBdIFsgLXQgXSBbLUIgPGJhdWQ+IF0g
+PFRUWT5cbiIsCisJCSJVc2FnZTogJXMgWy1kIHwgLWIgPGltYWdlPiBbIC1uIDxuYWtzPiBdIHwg
+LUQgPGltYWdlPiBdIFsgLXQgXSBbLUIgPGJhdWQ+IF0gPFRUWT5cbiIsCiAJCXByb2duYW1lKTsK
+IAlmcHJpbnRmKHN0cmVhbSwgIlxuIik7CiAJZnByaW50ZihzdHJlYW0sCkBAIC03MjQsNiArNzI0
+LDggQEAga3dib290X3VzYWdlKEZJTEUgKnN0cmVhbSwgY2hhciAqcHJvZ25hbWUpCiAJZnByaW50
+ZihzdHJlYW0sCiAJCSIgIC1EIDxpbWFnZT46IGJvb3QgPGltYWdlPiB3aXRob3V0IHByZWFtYmxl
+IChEb3ZlKVxuIik7CiAJZnByaW50ZihzdHJlYW0sICIgIC1kOiBlbnRlciBkZWJ1ZyBtb2RlXG4i
+KTsKKwlmcHJpbnRmKHN0cmVhbSwKKwkJIiAgLW4gPG5ha3M+OiB3YWl0IGZvciA8bmFrcz4gTkFL
+IGJlZm9yZSB1cGxvYWRpbmcgaW1hZ2UgKGRlZmF1bHQ6IDEpXG4iKTsKIAlmcHJpbnRmKHN0cmVh
+bSwgIlxuIik7CiAJZnByaW50ZihzdHJlYW0sICIgIC10OiBtaW5pIHRlcm1pbmFsXG4iKTsKIAlm
+cHJpbnRmKHN0cmVhbSwgIlxuIik7Ci0tIAoyLjExLjAKCgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
+c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9iYXJlYm94Cg==
