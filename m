@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x22b.google.com ([2a00:1450:4010:c07::22b])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dQWMZ-00044S-8b
- for barebox@lists.infradead.org; Thu, 29 Jun 2017 10:07:53 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu, 29 Jun 2017 12:07:18 +0200
-Message-Id: <20170629100718.13190-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1dQuIe-0002ny-PE
+ for barebox@lists.infradead.org; Fri, 30 Jun 2017 11:41:26 +0000
+Received: by mail-lf0-x22b.google.com with SMTP id h22so68615615lfk.3
+ for <barebox@lists.infradead.org>; Fri, 30 Jun 2017 04:41:03 -0700 (PDT)
+From: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
+Date: Fri, 30 Jun 2017 14:42:56 +0300
+Message-Id: <20170630114304.8070-1-andrey.gusakov@cogentembedded.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,56 +16,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] enable LFS support for host programs
+Subject: [PATCH 0/8] video: tc358767: fixes and improvements
 To: barebox@lists.infradead.org
+Cc: andrey.gusakov@cogentembedded.com, Chris.Healy@zii.aero
 
-VGhpcyBmaXhlcyBidWlsZGluZyBvbiBhbiBYRlMgcGFydGl0aW9uIG9uIGEgMzIgYml0IG1hY2hp
-bmU6CgoJJCBhcm1tYWtlIC1DIH4vZ3NyYy9iYXJlYm94IE89JFBXRCBpbXhfZGVmY29uZmlnCgkg
-IEhPU1RDQyAgc2NyaXB0cy9iYXNpYy9maXhkZXAKCWZpeGRlcDogZXJyb3IgZnN0YXQnaW5nIGRl
-cGZpbGU6IHNjcmlwdHMvYmFzaWMvLmZpeGRlcC5kOiBWYWx1ZSB0b28gbGFyZ2UgZm9yIGRlZmlu
-ZWQgZGF0YSB0eXBlCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUt
-a29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIE1ha2VmaWxlICAgICAgICAgICAgICB8IDEyICsr
-KysrKysrKy0tLQogc2NyaXB0cy9NYWtlZmlsZS5ob3N0IHwgIDIgKy0KIDIgZmlsZXMgY2hhbmdl
-ZCwgMTAgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9NYWtlZmls
-ZSBiL01ha2VmaWxlCmluZGV4IDQyOTQ4ZmFmYTMzZi4uMzI5MWQzMTBmZWJmIDEwMDY0NAotLS0g
-YS9NYWtlZmlsZQorKysgYi9NYWtlZmlsZQpAQCAtMTgxLDEwICsxODEsMTYgQEAgQ09ORklHX1NI
-RUxMIDo9ICQoc2hlbGwgaWYgWyAteCAiJCRCQVNIIiBdOyB0aGVuIGVjaG8gJCRCQVNIOyBcCiAJ
-ICBlbHNlIGlmIFsgLXggL2Jpbi9iYXNoIF07IHRoZW4gZWNobyAvYmluL2Jhc2g7IFwKIAkgIGVs
-c2UgZWNobyBzaDsgZmkgOyBmaSkKIAorSE9TVF9MRlNfQ0ZMQUdTIDo9ICQoc2hlbGwgZ2V0Y29u
-ZiBMRlNfQ0ZMQUdTKQorSE9TVF9MRlNfTERGTEFHUyA6PSAkKHNoZWxsIGdldGNvbmYgTEZTX0xE
-RkxBR1MpCitIT1NUX0xGU19MSUJTIDo9ICQoc2hlbGwgZ2V0Y29uZiBMRlNfTElCUykKKwogSE9T
-VENDICAgICAgID0gZ2NjCiBIT1NUQ1hYICAgICAgPSBnKysKLUhPU1RDRkxBR1MgICA9IC1XYWxs
-IC1Xc3RyaWN0LXByb3RvdHlwZXMgLU8yIC1mb21pdC1mcmFtZS1wb2ludGVyCi1IT1NUQ1hYRkxB
-R1MgPSAtTzIKK0hPU1RDRkxBR1MgICA9IC1XYWxsIC1Xc3RyaWN0LXByb3RvdHlwZXMgLU8yIC1m
-b21pdC1mcmFtZS1wb2ludGVyICQoSE9TVF9MRlNfQ0ZMQUdTKQorSE9TVENYWEZMQUdTID0gLU8y
-ICQoSE9TVF9MRlNfQ0ZMQUdTKQorSE9TVExERkxBR1MgPSAkKEhPU1RfTEZTX0xERkxBR1MpCitI
-T1NUX0xPQURMSUJFUyA9ICQoSE9TVF9MRlNfTElCUykKIAogIyBEZWNpZGUgd2hldGhlciB0byBi
-dWlsZCBidWlsdC1pbiwgbW9kdWxhciwgb3IgYm90aC4KICMgTm9ybWFsbHksIGp1c3QgZG8gYnVp
-bHQtaW4uCkBAIC0zMTYsNyArMzIyLDcgQEAgS0VSTkVMVkVSU0lPTiA9ICQoVkVSU0lPTikuJChQ
-QVRDSExFVkVMKS4kKFNVQkxFVkVMKSQoRVhUUkFWRVJTSU9OKQogZXhwb3J0IFZFUlNJT04gUEFU
-Q0hMRVZFTCBTVUJMRVZFTCBLRVJORUxSRUxFQVNFIEtFUk5FTFZFUlNJT04KIGV4cG9ydCBBUkNI
-IFNSQ0FSQ0ggQ09ORklHX1NIRUxMIEhPU1RDQyBIT1NUQ0ZMQUdTIENST1NTX0NPTVBJTEUgQVMg
-TEQgQ0MKIGV4cG9ydCBDUFAgQVIgTk0gU1RSSVAgT0JKQ09QWSBPQkpEVU1QIE1BS0UgQVdLIEdF
-TktTWU1TIFBFUkwgVVRTX01BQ0hJTkUKLWV4cG9ydCBIT1NUQ1hYIEhPU1RDWFhGTEFHUyBMREZM
-QUdTX01PRFVMRSBDSEVDSyBDSEVDS0ZMQUdTCitleHBvcnQgSE9TVENYWCBIT1NUQ1hYRkxBR1Mg
-SE9TVExERkxBR1MgSE9TVF9MT0FETElCRVMgTERGTEFHU19NT0RVTEUgQ0hFQ0sgQ0hFQ0tGTEFH
-UwogCiBleHBvcnQgQ1BQRkxBR1MgTk9TVERJTkNfRkxBR1MgTElOVVhJTkNMVURFIE9CSkNPUFlG
-TEFHUyBMREZMQUdTCiBleHBvcnQgQ0ZMQUdTIENGTEFHU19LRVJORUwKZGlmZiAtLWdpdCBhL3Nj
-cmlwdHMvTWFrZWZpbGUuaG9zdCBiL3NjcmlwdHMvTWFrZWZpbGUuaG9zdAppbmRleCAxMzNlZGZh
-ZTViOGEuLmE4OWEwYzVkNDNiMiAxMDA2NDQKLS0tIGEvc2NyaXB0cy9NYWtlZmlsZS5ob3N0Cisr
-KyBiL3NjcmlwdHMvTWFrZWZpbGUuaG9zdApAQCAtODUsNyArODUsNyBAQCBob3N0Y3h4X2ZsYWdz
-ICA9IC1XcCwtTUQsJChkZXBmaWxlKSAkKF9faG9zdGN4eF9mbGFncykKICMgQ3JlYXRlIGV4ZWN1
-dGFibGUgZnJvbSBhIHNpbmdsZSAuYyBmaWxlCiAjIGhvc3QtY3NpbmdsZSAtPiBFeGVjdXRhYmxl
-CiBxdWlldF9jbWRfaG9zdC1jc2luZ2xlIAk9IEhPU1RDQyAgJEAKLSAgICAgIGNtZF9ob3N0LWNz
-aW5nbGUJPSAkKEhPU1RDQykgJChob3N0Y19mbGFncykgLW8gJEAgJDwgXAorICAgICAgY21kX2hv
-c3QtY3NpbmdsZQk9ICQoSE9TVENDKSAkKGhvc3RjX2ZsYWdzKSAkKEhPU1RMREZMQUdTKSAtbyAk
-QCAkPCBcCiAJICAJJChIT1NUX0xPQURMSUJFUykgJChIT1NUTE9BRExJQkVTXyQoQEYpKQogJCho
-b3N0LWNzaW5nbGUpOiAkKG9iaikvJTogJChzcmMpLyUuYyBGT1JDRQogCSQoY2FsbCBpZl9jaGFu
-Z2VkX2RlcCxob3N0LWNzaW5nbGUpCi0tIAoyLjExLjAKCgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
-c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9iYXJlYm94Cg==
+Hi Barebox,
+
+This set of patches fixes several issues that was found during testing
+tc358767 with several desktop DP displays.
+
+Andrey Gusakov (8):
+  video: tc358767: do not fail if sink supports more than 2 lanes
+  video: tc358767: support newer DPCD revisions and higher data rates
+  video: tc358767: fix EDID read for DP displays
+  video: tc358767: fix DP0_MISC register set
+  video: tc358767: fix timing calculation
+  video: tc358767: fix AUXDATAn registers access
+  video: tc358767: filter out modes with too high pixelclock
+  video: tc358767: accept any hsync and vsync polatiry
+
+ drivers/video/tc358767.c | 218 ++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 179 insertions(+), 39 deletions(-)
+
+-- 
+2.13.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
