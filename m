@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo173.mail-out.ovh.net ([46.105.44.159])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dQzrZ-0005uF-1H
- for barebox@lists.infradead.org; Fri, 30 Jun 2017 17:37:51 +0000
-Received: from player778.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo173.mail-out.ovh.net (Postfix) with ESMTP id 0D9CC5EF83
- for <barebox@lists.infradead.org>; Fri, 30 Jun 2017 19:37:23 +0200 (CEST)
-Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <54f52983-da4d-35a6-e0ed-edfe286f61c5@mev.co.uk>
-Date: Sat, 1 Jul 2017 01:37:17 +0800
-Message-Id: <B5A80E7D-BD0B-4E5F-A4DC-16CB9769FB3F@jcrosoft.com>
-References: <54f52983-da4d-35a6-e0ed-edfe286f61c5@mev.co.uk>
+ id 1dQpXI-00078Y-Uq
+ for barebox@lists.infradead.org; Fri, 30 Jun 2017 06:36:15 +0000
+Date: Fri, 30 Jun 2017 08:35:47 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170630063547.cji5g7inho5efioo@pengutronix.de>
+References: <20170627190317.19253-1-uwe@kleine-koenig.org>
+ <20170627194002.GB675@sill.h.stcim.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170627194002.GB675@sill.h.stcim.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,70 +19,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [BUG v2017.07.0] readlink -f command broken?
-To: Ian Abbott <abbotti@mev.co.uk>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] ARM: imx: add support for Udoo Neo full
+To: Stefan Lengfeld <contact@stefanchrist.eu>
+Cc: barebox@lists.infradead.org, Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>
 
-HI,
+On Tue, Jun 27, 2017 at 09:40:02PM +0200, Stefan Lengfeld wrote:
+> Hi Uwe,
+> =
 
-	I wrote the symlink support in barebox
+> Just my too cents:
+> =
 
-	But I Worte a partial support only end path file not dirs
+> On Tue, Jun 27, 2017 at 09:03:17PM +0200, Uwe Kleine-K=F6nig wrote:
+> > From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > =
 
-	As this is a boot loader not an OS
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > +++ b/arch/arm/boards/udoo-neo/flash-header-mx6sx-udoo-neo_full.imxcfg
+> > @@ -0,0 +1,124 @@
+> > +loadaddr 0x80000000
+> > +soc imx6
+> > +dcdofs 0x400
+> =
 
-Best Regards,
-J.
-> On 30 Jun 2017, at 9:28 PM, Ian Abbott <abbotti@mev.co.uk> wrote:
-> 
-> Hi folks,
-> 
-> I know there were changes to do with links to directories in v2017.07.0, but this looks like a bug in readlink with the -f option:
-> 
-> barebox@fred:/ ls -l /mnt/root
-> lrwxrwxrwx              7 bin -> usr/bin
-> drwxr-xr-x            304 boot
-> drwxr-xr-x            160 dev
-> drwxr-xr-x           1920 etc
-> drwxrwsr-x            160 home
-> lrwxrwxrwx              7 lib -> usr/lib
-> drwxr-xr-x            160 mnt
-> dr-xr-xr-x            160 proc
-> drwx------            160 root
-> drwxr-xr-x            160 run
-> lrwxrwxrwx              8 sbin -> usr/sbin
-> drwxr-xr-x            224 srv
-> drwxr-xr-x            160 sys
-> drwxrwxrwt            160 tmp
-> drwxr-xr-x            480 usr
-> drwxr-xr-x            544 var
-> barebox@fred:/ readlink -f /mnt/root/lib libdir
-> barebox@fred:/ echo $libdir
-> /usr
-> 
-> (I expected $libdir to contain "/mnt/root/usr/lib" here, as it did in barebox v2017.06.1.)
-> 
-> (Let's try it without the -f option....)
-> 
-> barebox@fred:/ readlink /mnt/root/lib libdir2
-> barebox@fred:/ echo $libdir2
-> usr/lib
-> 
-> (That is the same as barebox v2017.06.1.)
-> 
-> -- 
-> -=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=-
-> -=(                          Web: http://www.mev.co.uk/  )=-
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> I'm always wondering where the magic values in the flash headers are
+> coming from. Whether they are copied from u-boot or another
+> variant/board or completely self-made or provided by a friendly hardware
+> engineer in an Excel sheet ;-) Maybe you can add a comment here or in
+> the commit message. But this would be a new convention, because I have
+> not seen it in other flash headers yet.
 
+Adding this information is a good idea. In this case the values come
+from:
+
+/*
+ * These values are taken from:
+ * repository: https://github.com/UDOOboard/uboot-imx
+ * branch: udoo/2015.04.imx
+ * file: board/udoo/udoo_neo/udoo_neo_basic.cfg
+ */
+
+I was about to apply Uwes patch along with this comment, but I just
+realized that the values are from udoo_neo_basic whereas the patch
+seems to support the udoo_neo_full. The udoo neo full has slightly
+different calibration values in the branch above, but probably they
+work on both boards. Uwe, do you know which hardware we actually have
+and support?
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
