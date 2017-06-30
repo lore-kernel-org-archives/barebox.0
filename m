@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dQqsF-00053m-DW
- for barebox@lists.infradead.org; Fri, 30 Jun 2017 08:01:58 +0000
-References: <2d407908-2a83-809c-692a-5d289b6d2eed@mev.co.uk>
+ id 1dQqzB-00089T-17
+ for barebox@lists.infradead.org; Fri, 30 Jun 2017 08:09:15 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-In-reply-to: <2d407908-2a83-809c-692a-5d289b6d2eed@mev.co.uk>
-Date: Fri, 30 Jun 2017 10:01:00 +0200
-Message-ID: <73o9t5q4zn.fsf@pengutronix.de>
-MIME-Version: 1.0
+Date: Fri, 30 Jun 2017 10:08:22 +0200
+Message-Id: <20170630080822.5027-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,40 +14,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: arria10_init_emac() bug?
-To: Ian Abbott <abbotti@mev.co.uk>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: socfpga: remove unused fpgaintf setup
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
+The disable bits for the ethernet interfaces between FPGA and HPS are read
+and configured, but never written back.
+The configuration itself doesn't make that much sense however. So instead of
+writing it back to the register, remove the whole read-modify operation altogether.
 
-Hi,
+Reported-by: Ian Abbott <abbotti@mev.co.uk>
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ arch/arm/mach-socfpga/arria10-generic.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-Ian Abbott <abbotti@mev.co.uk> writes:
-
-> Hi,
->
-> I'm not using Arria-10, but noticed a possible bug in the 
-> arria10_init_emac() function in 
-> "arch/arm/mach-socfpga/arria10-generic.c".  The code reads the 
-> ARRIA10_SYSMGR_FPGAINTF_EN_3 register into a variable, modifies the 
-> variable value, but doesn't write it back to the register.
-
-Thanks for catching that.
-I will send a patch for removing the whole read-modify operation, as it
-doesn't do anything now anyway and half of the bits aren't even
-mentioned in the datasheet.
-
-Best regards,
-Steffen
-
+diff --git a/arch/arm/mach-socfpga/arria10-generic.c b/arch/arm/mach-socfpga/arria10-generic.c
+index b8129eaf23ff..6a10c19d1417 100644
+--- a/arch/arm/mach-socfpga/arria10-generic.c
++++ b/arch/arm/mach-socfpga/arria10-generic.c
+@@ -37,14 +37,6 @@ static void arria10_init_emac(void)
+ 	val |= ARRIA10_SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_RGMII;
+ 	writel(val, ARRIA10_SYSMGR_EMAC2);
+ 
+-	val = readl(ARRIA10_SYSMGR_FPGAINTF_EN_3);
+-	val &= ~(ARRIA10_SYSMGR_FPGAINTF_EN3_EMAC0 |
+-		 ARRIA10_SYSMGR_FPGAINTF_EN3_EMAC0_SW |
+-		 ARRIA10_SYSMGR_FPGAINTF_EN3_EMAC1 |
+-		 ARRIA10_SYSMGR_FPGAINTF_EN3_EMAC1_SW |
+-		 ARRIA10_SYSMGR_FPGAINTF_EN3_EMAC2 |
+-		 ARRIA10_SYSMGR_FPGAINTF_EN3_EMAC2_SW);
+-
+ 	rst = readl(ARRIA10_RSTMGR_ADDR + ARRIA10_RSTMGR_PER0MODRST);
+ 	rst &= ~(ARRIA10_RSTMGR_PER0MODRST_EMAC0 |
+ 		 ARRIA10_RSTMGR_PER0MODRST_EMAC1 |
 -- 
-Pengutronix e.K.                           | Steffen Trumtrar            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
