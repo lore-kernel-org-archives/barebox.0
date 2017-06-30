@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dMpzE-0006v0-AV
- for barebox@lists.infradead.org; Mon, 19 Jun 2017 06:17:11 +0000
-Date: Mon, 19 Jun 2017 08:16:10 +0200
+ id 1dQuBc-0006tn-7F
+ for barebox@lists.infradead.org; Fri, 30 Jun 2017 11:34:11 +0000
+Date: Fri, 30 Jun 2017 13:33:43 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170619061610.x7si6a7myznwjyun@pengutronix.de>
-References: <20170613215128.17243-1-u.kleine-koenig@pengutronix.de>
+Message-ID: <20170630113343.ykwwdjolstoi7wgk@pengutronix.de>
+References: <20170630095145.32488-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170613215128.17243-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170630095145.32488-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,19 +22,18 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] clk: let clk_get return errors from of_clk_get_by_name
+Subject: Re: [PATCH 1/2] scripts/kwboot: document -n option
 To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 13, 2017 at 11:51:28PM +0200, Uwe Kleine-K=F6nig wrote:
-> When of_clk_get_by_name fails with -ENODEV it's fine to continue with
-> clk_get_sys. Other errors (e.g. -EPROBE_DEFER) should be returned however.
+On Fri, Jun 30, 2017 at 11:51:44AM +0200, Uwe Kleine-K=F6nig wrote:
+> This was forgotten in the commit that added support for that option
 > =
 
 > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > ---
->  drivers/clk/clkdev.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  scripts/kwboot.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 
 Applied, thanks
 
@@ -42,22 +41,31 @@ Sascha
 
 > =
 
-> diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
-> index 7f9f8f2adc00..6b16663551ef 100644
-> --- a/drivers/clk/clkdev.c
-> +++ b/drivers/clk/clkdev.c
-> @@ -181,7 +181,7 @@ struct clk *clk_get(struct device_d *dev, const char =
-*con_id)
->  =
-
->  	if (dev) {
->  		clk =3D of_clk_get_by_name(dev->device_node, con_id);
-> -		if (!IS_ERR(clk))
-> +		if (!IS_ERR(clk) || PTR_ERR(clk) !=3D -ENODEV)
->  			return clk;
->  	}
->  =
-
+> diff --git a/scripts/kwboot.c b/scripts/kwboot.c
+> index 4c6b19aa219e..db177ceb5f2e 100644
+> --- a/scripts/kwboot.c
+> +++ b/scripts/kwboot.c
+> @@ -716,7 +716,7 @@ static void
+>  kwboot_usage(FILE *stream, char *progname)
+>  {
+>  	fprintf(stream,
+> -		"Usage: %s [-d | -b <image> | -D <image> ] [ -t ] [-B <baud> ] <TTY>\n=
+",
+> +		"Usage: %s [-d | -b <image> [ -n <naks> ] | -D <image> ] [ -t ] [-B <b=
+aud> ] <TTY>\n",
+>  		progname);
+>  	fprintf(stream, "\n");
+>  	fprintf(stream,
+> @@ -724,6 +724,8 @@ kwboot_usage(FILE *stream, char *progname)
+>  	fprintf(stream,
+>  		"  -D <image>: boot <image> without preamble (Dove)\n");
+>  	fprintf(stream, "  -d: enter debug mode\n");
+> +	fprintf(stream,
+> +		"  -n <naks>: wait for <naks> NAK before uploading image (default: 1)\=
+n");
+>  	fprintf(stream, "\n");
+>  	fprintf(stream, "  -t: mini terminal\n");
+>  	fprintf(stream, "\n");
 > -- =
 
 > 2.11.0
