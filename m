@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x233.google.com ([2a00:1450:4010:c07::233])
+Received: from mail-lf0-x22f.google.com ([2a00:1450:4010:c07::22f])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dQuIs-0002q5-47
- for barebox@lists.infradead.org; Fri, 30 Jun 2017 11:41:40 +0000
-Received: by mail-lf0-x233.google.com with SMTP id z78so27036556lff.0
- for <barebox@lists.infradead.org>; Fri, 30 Jun 2017 04:41:17 -0700 (PDT)
+ id 1dQuIu-0002qO-TU
+ for barebox@lists.infradead.org; Fri, 30 Jun 2017 11:41:44 +0000
+Received: by mail-lf0-x22f.google.com with SMTP id z78so27037169lff.0
+ for <barebox@lists.infradead.org>; Fri, 30 Jun 2017 04:41:20 -0700 (PDT)
 From: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
-Date: Fri, 30 Jun 2017 14:43:00 +0300
-Message-Id: <20170630114304.8070-5-andrey.gusakov@cogentembedded.com>
+Date: Fri, 30 Jun 2017 14:43:02 +0300
+Message-Id: <20170630114304.8070-7-andrey.gusakov@cogentembedded.com>
 In-Reply-To: <20170630114304.8070-1-andrey.gusakov@cogentembedded.com>
 References: <20170630114304.8070-1-andrey.gusakov@cogentembedded.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,38 +23,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/8] video: tc358767: fix DP0_MISC register set
+Subject: [PATCH 6/8] video: tc358767: fix AUXDATAn registers access
 To: barebox@lists.infradead.org
 Cc: andrey.gusakov@cogentembedded.com, Chris.Healy@zii.aero
 
-Remove shift from TU_SIZE_RECOMMENDED define as it used to
-calculate max_tu_symbols.
+Also optimize DPCD writes
 ---
- drivers/video/tc358767.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/tc358767.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/video/tc358767.c b/drivers/video/tc358767.c
-index 3d38f86ba..033da4fb2 100644
+index d2c94c616..1541b18c9 100644
 --- a/drivers/video/tc358767.c
 +++ b/drivers/video/tc358767.c
-@@ -122,7 +122,7 @@
- #define DP0_ACTIVEVAL		0x0650
- #define DP0_SYNCVAL		0x0654
- #define DP0_MISC		0x0658
--#define TU_SIZE_RECOMMENDED		(0x3f << 16) /* LSCLK cycles per TU */
-+#define TU_SIZE_RECOMMENDED		(63) /* LSCLK cycles per TU */
- #define BPC_6				(0 << 5)
- #define BPC_8				(1 << 5)
+@@ -35,6 +35,7 @@
+ #include <asm-generic/div64.h>
  
-@@ -799,7 +799,7 @@ static int tc_set_video_mode(struct tc_data *tc, struct fb_videomode *mode)
- 	 * Must be less than tu_size.
- 	 */
- 	max_tu_symbol = TU_SIZE_RECOMMENDED - 1;
--	tc_write(DP0_MISC, (max_tu_symbol << 23) | TU_SIZE_RECOMMENDED | BPC_8);
-+	tc_write(DP0_MISC, (max_tu_symbol << 23) | (TU_SIZE_RECOMMENDED << 16) | BPC_8);
+ #define DP_LINK_BW_SET			0x100
++#define DP_ENHANCED_FRAME_EN		(1 << 7)
+ #define DP_TRAINING_PATTERN_SET		0x102
+ #define TRAINING_LANE0_SET		0x103
  
- 	return 0;
- err:
+@@ -389,7 +390,7 @@ static int tc_aux_write(struct tc_data *tc, int reg, char *data, int size)
+ 		i++;
+ 		if (((i % 4) == 0) ||
+ 		    (i == size)) {
+-			tc_write(DP0_AUXWDATA(i >> 2), tmp);
++			tc_write(DP0_AUXWDATA((i - 1) >> 2), tmp);
+ 			tmp = 0;
+ 		}
+ 	}
+@@ -477,7 +478,7 @@ static int tc_aux_i2c_write(struct tc_data *tc, struct i2c_msg *msg)
+ 		i++;
+ 		if (((i % 4) == 0) ||
+ 		    (i == msg->len)) {
+-			tc_write(DP0_AUXWDATA(i >> 2), tmp);
++			tc_write(DP0_AUXWDATA((i - 1) >> 2), tmp);
+ 			tmp = 0;
+ 		}
+ 	}
+@@ -903,7 +904,7 @@ static int tc_main_link_setup(struct tc_data *tc)
+ 	bool ready;
+ 	u32 value;
+ 	int ret;
+-	u8 tmp[8];
++	u8 tmp[16];
+ 
+ 	/* display mode should be set at this point */
+ 	if (!tc->mode)
+@@ -1004,21 +1005,22 @@ static int tc_main_link_setup(struct tc_data *tc)
+ 	/* LANE_COUNT_SET */
+ 	tmp[1] = tc->link.lanes;
+ 	if (tc->link.enhanced)
+-		tmp[1] |= (1 << 7);
+-	ret = tc_aux_write(tc, DP_LINK_BW_SET, tmp, 2);
+-	if (ret)
+-		goto err_dpcd_write;
++		tmp[1] |= DP_ENHANCED_FRAME_EN;
+ 
+-	/* TRAINING_LANE0_SET .. TRAINING_LANE3_SET */
+-	tmp[0] = 0x00;
+-	tmp[1] = 0x00;
++	/* TRAINING_PATTERN_SET */
+ 	tmp[2] = 0x00;
++	/* TRAINING_LANE0_SET .. TRAINING_LANE3_SET */
+ 	tmp[3] = 0x00;
++	tmp[4] = 0x00;
++	tmp[5] = 0x00;
++	tmp[6] = 0x00;
+ 	/* DOWNSPREAD_CTRL */
+-	tmp[4] = tc->link.spread ? DP_SPREAD_AMP_0_5 : 0x00;
++	tmp[7] = tc->link.spread ? DP_SPREAD_AMP_0_5 : 0x00;
+ 	/* MAIN_LINK_CHANNEL_CODING_SET */
+-	tmp[5] = tc->link.coding8b10b ? DP_SET_ANSI_8B10B : 0x00;
+-	ret = tc_aux_write(tc, TRAINING_LANE0_SET, tmp, 6);
++	tmp[8] = tc->link.coding8b10b ? DP_SET_ANSI_8B10B : 0x00;
++
++	/* DP_LINK_BW_SET .. MAIN_LINK_CHANNEL_CODING_SET */
++	ret = tc_aux_write(tc, DP_LINK_BW_SET, tmp, 9);
+ 	if (ret)
+ 		goto err_dpcd_write;
+ 
 -- 
 2.13.0
 
