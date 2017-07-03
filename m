@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp77.iad3a.emailsrvr.com ([173.203.187.77])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dS1Eq-0004FH-8e
- for barebox@lists.infradead.org; Mon, 03 Jul 2017 13:18:06 +0000
-From: Ian Abbott <abbotti@mev.co.uk>
-Date: Mon,  3 Jul 2017 14:17:29 +0100
-Message-Id: <20170703131729.12055-1-abbotti@mev.co.uk>
+ id 1dS44o-0005Gx-Ur
+ for barebox@lists.infradead.org; Mon, 03 Jul 2017 16:19:56 +0000
+Received: from ravnborg.org (unknown [188.228.89.252])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by asavdk3.altibox.net (Postfix) with ESMTPS id E27B820028
+ for <barebox@lists.infradead.org>; Mon,  3 Jul 2017 18:19:23 +0200 (CEST)
+Date: Mon, 3 Jul 2017 18:19:22 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20170703161922.GA24614@ravnborg.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,85 +21,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] readlink: Improve -f handling
+Subject: Observations with AT91SAM9263-EK
 To: barebox@lists.infradead.org
-Cc: Ian Abbott <abbotti@mev.co.uk>
 
-For `readlink -f FILE VARIABLE`, set VARIABLE to the absolute, canonical
-file name of FILE by following symbolic links.  All but the final
-component of FILE must exist.
+Hi all.
 
-Prior to commit a602bebcf7e4 ("fs: Implement links to directories") the
-above worked in the limited case where FILE was an absolute path, the
-final component was a symbolic link, and all preceding components were
-directories.  If FILE was a relative path with the final component being
-a symbolic link, and all preceding paths being directories, the command
-sort of worked, but produced a relative path as the result.  Both of
-these cases were broken by the above commit.
+I recently purchased an AT91SAM9263-EK from ebay and
+have played around a little with barebox.
+For now only some observations.
 
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
----
- commands/readlink.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+I had the impression that I could
+drop AT91BootStrap when using barebox.
 
-diff --git a/commands/readlink.c b/commands/readlink.c
-index a19c8e004..2dfa56667 100644
---- a/commands/readlink.c
-+++ b/commands/readlink.c
-@@ -44,17 +44,21 @@ static int do_readlink(int argc, char *argv[])
- 	if (argc < optind + 2)
- 		return COMMAND_ERROR_USAGE;
- 
--	if (readlink(argv[optind], realname, PATH_MAX - 1) < 0)
--		goto err;
--
- 	if (canonicalize) {
--		char *buf = canonicalize_path(realname);
-+		char *buf = canonicalize_path(argv[optind]);
-+		struct stat s;
- 
- 		if (!buf)
- 			goto err;
-+		if (stat(dirname(argv[optind]), &s) || !S_ISDIR(s.st_mode)) {
-+			free(buf);
-+			goto err;
-+		}
- 		setenv(argv[optind + 1], buf);
- 		free(buf);
- 	} else {
-+		if (readlink(argv[optind], realname, PATH_MAX - 1) < 0)
-+			goto err;
- 		setenv(argv[optind + 1], realname);
- 	}
- 
-@@ -65,15 +69,16 @@ err:
- }
- 
- BAREBOX_CMD_HELP_START(readlink)
--BAREBOX_CMD_HELP_TEXT("Read value of a symbolic link and store it into VARIABLE.")
-+BAREBOX_CMD_HELP_TEXT("Read value of a symbolic link or canonical file name and store it into VARIABLE.")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Options:")
--BAREBOX_CMD_HELP_OPT ("-f", "canonicalize by following first symlink");
-+BAREBOX_CMD_HELP_OPT("-f", "canonicalize by following symlinks;")
-+BAREBOX_CMD_HELP_OPT("",   "final component need not exist");
- BAREBOX_CMD_HELP_END
- 
- BAREBOX_CMD_START(readlink)
- 	.cmd		= do_readlink,
--	BAREBOX_CMD_DESC("read value of a symbolic link")
-+	BAREBOX_CMD_DESC("read value of a symbolic link or canonical file name")
- 	BAREBOX_CMD_OPTS("[-f] FILE VARIABLE")
- 	BAREBOX_CMD_GROUP(CMD_GRP_FILE)
- 	BAREBOX_CMD_HELP(cmd_readlink_help)
--- 
-2.11.0
+But I could not make it boot until I deployed 
+at91bootstrap (named BOOT.BIN) on the SD-card.
+And I named arch/arm/pbl/zbarebox.bin => u-boot.bin
+on the SD-card.
 
+I wanted to boot barebox - but nothing happened.
+So I tried older versions af barebox:
+
+v2017.06.0 => Boots OK (did not try to load a kernel)
+
+v2017.07.0 => Boots but emits:
+NULL pointer dereference at address 0x00000014
+### Please RESET the board ###
+(A bit more was written to the serial console)
+
+master from git => Nothing written to the console at all
+
+I will as time permits dig deeper into this.
+Seems like we are facing two bugs:
+One that causes the NULL pointer, and another that
+prevents any output.
+
+As barebox is quick to build and the bug is simple to spot
+I will likely just try to bisect and see where I end up.
+
+	Sam
 
 _______________________________________________
 barebox mailing list
