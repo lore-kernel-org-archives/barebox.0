@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from 17.mo1.mail-out.ovh.net ([87.98.179.142])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dS7s3-0001OD-2C
- for barebox@lists.infradead.org; Mon, 03 Jul 2017 20:23:01 +0000
-Date: Mon, 3 Jul 2017 22:22:34 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170703202234.GB15480@ravnborg.org>
-References: <20170703161922.GA24614@ravnborg.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+ id 1dS4K1-0004MB-Lv
+ for barebox@lists.infradead.org; Mon, 03 Jul 2017 16:35:42 +0000
+Received: from player795.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo1.mail-out.ovh.net (Postfix) with ESMTP id E294E83EF2
+ for <barebox@lists.infradead.org>; Mon,  3 Jul 2017 18:35:08 +0200 (CEST)
+Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 In-Reply-To: <20170703161922.GA24614@ravnborg.org>
+Date: Tue, 4 Jul 2017 00:34:58 +0800
+Message-Id: <08E6B5A4-F877-410B-9BDB-9AA0BE065C07@jcrosoft.com>
+References: <20170703161922.GA24614@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,67 +24,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] gpio: fix null pointer exception when there is no oftree
-To: barebox@lists.infradead.org
-Cc: Alexander Kurz <akurz@blala.de>
-
-From 500c564285890fd0c9c47dc68f7fe6bc916e4589 Mon Sep 17 00:00:00 2001
-From: Sam Ravnborg <srn@skov.dk>
-Date: Mon, 3 Jul 2017 22:07:41 +0200
-Subject: [PATCH 2/2] gpio: fix null pointer exception when there is no oftree
-
-In a system with oftree support enabled but with no oftree the
-of_gpiochip_scan_hogs() would fail due to device_node equals NULL.
-
-Check device_node and return with 0 in this situation, as this
-mirrors what would have happened before we added support for gpio-hogs.
-
-Fixes: 37e6bee7 ("gpiolib: Add support for GPIO "hog" nodes")
-Cc: Alexander Kurz <akurz@blala.de>
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
----
+Subject: Re: Observations with AT91SAM9263-EK
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: barebox@lists.infradead.org
 
 
-Alexander posted a patch to fix this problem earlier this week.
-I only looked at it after I had cooked up this patch.
+> On 4 Jul 2017, at 12:19 AM, Sam Ravnborg <sam@ravnborg.org> wrote:
+> 
+> Hi all.
+> 
+> I recently purchased an AT91SAM9263-EK from ebay and
+> have played around a little with barebox.
+> For now only some observations.
+> 
+> I had the impression that I could
+> drop AT91BootStrap when using barebox.
 
-Not too happy about the approach here, but seems to me to be
-the best way.
+Yes Wrote the support for that but on the 9263 you are limited.
 
-Also the two static functions in this file may be wrapped in
-#ifdef CONFIG_OFTREE
-#else
-static int of_gpiochip_scan_hogs(struct gpio_chip *chip) { return 0; }
-#endif
-Or maybe moved to of/of_gpio.c?
+you have 2 choice boot a small barebox <= 72kiB
 
-So they do not waste binary size with no OFTREE support.
-I could not from existing code base see what was the preferred
-approach here, likely because I looked in the wrong places.
+or use a console less barebox to boot the second barebox
 
-	Sam
+as the rom code on at91 will load the barebox from the SD or Nand
+into SRAM
+> 
+> But I could not make it boot until I deployed 
+> at91bootstrap (named BOOT.BIN) on the SD-card.
+> And I named arch/arm/pbl/zbarebox.bin => u-boot.bin
+> on the SD-card.
+> 
 
+on 9263ek you have a nor flash so why not flash it
 
+in this case barebox will boot by itself
 
- drivers/gpio/gpiolib.c | 3 +++
- 1 file changed, 3 insertions(+)
+without the bootstrap
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index a3e17ada0..2d0b778c8 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -379,6 +379,9 @@ static int of_gpiochip_scan_hogs(struct gpio_chip *chip)
- 	struct device_node *np;
- 	int ret, i;
- 
-+	if (!chip->dev->device_node)
-+		return 0;
-+
- 	for_each_available_child_of_node(chip->dev->device_node, np) {
- 		if (!of_property_read_bool(np, "gpio-hog"))
- 			continue;
--- 
-2.12.0
+Best Regards,
+J. 
+> I wanted to boot barebox - but nothing happened.
+> So I tried older versions af barebox:
+> 
+> v2017.06.0 => Boots OK (did not try to load a kernel)
+> 
+> v2017.07.0 => Boots but emits:
+> NULL pointer dereference at address 0x00000014
+> ### Please RESET the board ###
+> (A bit more was written to the serial console)
+> 
+
+> master from git => Nothing written to the console at all
+> 
+> I will as time permits dig deeper into this.
+> Seems like we are facing two bugs:
+> One that causes the NULL pointer, and another that
+> prevents any output.
+> 
+> As barebox is quick to build and the bug is simple to spot
+> I will likely just try to bisect and see where I end up.
+> 
+> 	Sam
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 
 _______________________________________________
