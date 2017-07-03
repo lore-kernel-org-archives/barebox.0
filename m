@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp77.iad3a.emailsrvr.com ([173.203.187.77])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dRy5h-0000LV-1a
- for barebox@lists.infradead.org; Mon, 03 Jul 2017 09:56:27 +0000
-Message-ID: <1499075760.2308.14.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 03 Jul 2017 11:56:00 +0200
-In-Reply-To: <1499027092-2522-1-git-send-email-akurz@blala.de>
-References: <1499027092-2522-1-git-send-email-akurz@blala.de>
-Mime-Version: 1.0
+ id 1dS1Eq-0004FH-8e
+ for barebox@lists.infradead.org; Mon, 03 Jul 2017 13:18:06 +0000
+From: Ian Abbott <abbotti@mev.co.uk>
+Date: Mon,  3 Jul 2017 14:17:29 +0100
+Message-Id: <20170703131729.12055-1-abbotti@mev.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,43 +14,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] gpiolib: fix: do not access oftree on non-OFDEVICE boards
-To: Alexander Kurz <akurz@blala.de>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Subject: [PATCH] readlink: Improve -f handling
+To: barebox@lists.infradead.org
+Cc: Ian Abbott <abbotti@mev.co.uk>
 
-Am Sonntag, den 02.07.2017, 22:24 +0200 schrieb Alexander Kurz:
-> Non-OFDEVICE boards may have OFTREE=y set, e.g. by BOOTM_OFTREE.
-> Attempts to browse the oftree will crash barebox on those boards.
-> 
-> Signed-off-by: Alexander Kurz <akurz@blala.de>
-> ---
->  drivers/gpio/gpiolib.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> index a3e17ad..a1ff965 100644
-> --- a/drivers/gpio/gpiolib.c
-> +++ b/drivers/gpio/gpiolib.c
-> @@ -416,7 +416,10 @@ int gpiochip_add(struct gpio_chip *chip)
->  	for (i = chip->base; i < chip->base + chip->ngpio; i++)
->  		gpio_desc[i].chip = chip;
->  
-> -	return of_gpiochip_scan_hogs(chip);
-> +	if (IS_ENABLED(CONFIG_OFDEVICE))
-> +		return of_gpiochip_scan_hogs(chip);
-> +	else
-> +		return 0;
+For `readlink -f FILE VARIABLE`, set VARIABLE to the absolute, canonical
+file name of FILE by following symbolic links.  All but the final
+component of FILE must exist.
 
-This may also crash in mixed oftree/board file based systems (however
-unlikely that is). I think an early return from of_gpiochip_scan_hogs ()
-if chip->dev->device_node is NULL would be more robust.
+Prior to commit a602bebcf7e4 ("fs: Implement links to directories") the
+above worked in the limited case where FILE was an absolute path, the
+final component was a symbolic link, and all preceding components were
+directories.  If FILE was a relative path with the final component being
+a symbolic link, and all preceding paths being directories, the command
+sort of worked, but produced a relative path as the result.  Both of
+these cases were broken by the above commit.
 
-Regards,
-Lucas
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+---
+ commands/readlink.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
+
+diff --git a/commands/readlink.c b/commands/readlink.c
+index a19c8e004..2dfa56667 100644
+--- a/commands/readlink.c
++++ b/commands/readlink.c
+@@ -44,17 +44,21 @@ static int do_readlink(int argc, char *argv[])
+ 	if (argc < optind + 2)
+ 		return COMMAND_ERROR_USAGE;
+ 
+-	if (readlink(argv[optind], realname, PATH_MAX - 1) < 0)
+-		goto err;
+-
+ 	if (canonicalize) {
+-		char *buf = canonicalize_path(realname);
++		char *buf = canonicalize_path(argv[optind]);
++		struct stat s;
+ 
+ 		if (!buf)
+ 			goto err;
++		if (stat(dirname(argv[optind]), &s) || !S_ISDIR(s.st_mode)) {
++			free(buf);
++			goto err;
++		}
+ 		setenv(argv[optind + 1], buf);
+ 		free(buf);
+ 	} else {
++		if (readlink(argv[optind], realname, PATH_MAX - 1) < 0)
++			goto err;
+ 		setenv(argv[optind + 1], realname);
+ 	}
+ 
+@@ -65,15 +69,16 @@ err:
+ }
+ 
+ BAREBOX_CMD_HELP_START(readlink)
+-BAREBOX_CMD_HELP_TEXT("Read value of a symbolic link and store it into VARIABLE.")
++BAREBOX_CMD_HELP_TEXT("Read value of a symbolic link or canonical file name and store it into VARIABLE.")
+ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("Options:")
+-BAREBOX_CMD_HELP_OPT ("-f", "canonicalize by following first symlink");
++BAREBOX_CMD_HELP_OPT("-f", "canonicalize by following symlinks;")
++BAREBOX_CMD_HELP_OPT("",   "final component need not exist");
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(readlink)
+ 	.cmd		= do_readlink,
+-	BAREBOX_CMD_DESC("read value of a symbolic link")
++	BAREBOX_CMD_DESC("read value of a symbolic link or canonical file name")
+ 	BAREBOX_CMD_OPTS("[-f] FILE VARIABLE")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_FILE)
+ 	BAREBOX_CMD_HELP(cmd_readlink_help)
+-- 
+2.11.0
 
 
 _______________________________________________
