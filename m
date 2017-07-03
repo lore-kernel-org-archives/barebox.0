@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dRxeF-0006ss-Gt
- for barebox@lists.infradead.org; Mon, 03 Jul 2017 09:28:05 +0000
-Message-ID: <1499074029.2308.12.camel@pengutronix.de>
+ id 1dRy5h-0000LV-1a
+ for barebox@lists.infradead.org; Mon, 03 Jul 2017 09:56:27 +0000
+Message-ID: <1499075760.2308.14.camel@pengutronix.de>
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 03 Jul 2017 11:27:09 +0200
-In-Reply-To: <20170630114304.8070-1-andrey.gusakov@cogentembedded.com>
-References: <20170630114304.8070-1-andrey.gusakov@cogentembedded.com>
+Date: Mon, 03 Jul 2017 11:56:00 +0200
+In-Reply-To: <1499027092-2522-1-git-send-email-akurz@blala.de>
+References: <1499027092-2522-1-git-send-email-akurz@blala.de>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,33 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/8] video: tc358767: fixes and improvements
-To: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
-Cc: barebox@lists.infradead.org, Chris.Healy@zii.aero
+Subject: Re: [PATCH] gpiolib: fix: do not access oftree on non-OFDEVICE boards
+To: Alexander Kurz <akurz@blala.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
 
-Hi Andrey,
+Am Sonntag, den 02.07.2017, 22:24 +0200 schrieb Alexander Kurz:
+> Non-OFDEVICE boards may have OFTREE=y set, e.g. by BOOTM_OFTREE.
+> Attempts to browse the oftree will crash barebox on those boards.
+> 
+> Signed-off-by: Alexander Kurz <akurz@blala.de>
+> ---
+>  drivers/gpio/gpiolib.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> index a3e17ad..a1ff965 100644
+> --- a/drivers/gpio/gpiolib.c
+> +++ b/drivers/gpio/gpiolib.c
+> @@ -416,7 +416,10 @@ int gpiochip_add(struct gpio_chip *chip)
+>  	for (i = chip->base; i < chip->base + chip->ngpio; i++)
+>  		gpio_desc[i].chip = chip;
+>  
+> -	return of_gpiochip_scan_hogs(chip);
+> +	if (IS_ENABLED(CONFIG_OFDEVICE))
+> +		return of_gpiochip_scan_hogs(chip);
+> +	else
+> +		return 0;
 
-Am Freitag, den 30.06.2017, 14:42 +0300 schrieb Andrey Gusakov:
-> Hi Barebox,
-> 
-> This set of patches fixes several issues that was found during testing
-> tc358767 with several desktop DP displays.
-> 
-> Andrey Gusakov (8):
->   video: tc358767: do not fail if sink supports more than 2 lanes
->   video: tc358767: support newer DPCD revisions and higher data rates
->   video: tc358767: fix EDID read for DP displays
->   video: tc358767: fix DP0_MISC register set
->   video: tc358767: fix timing calculation
->   video: tc358767: fix AUXDATAn registers access
->   video: tc358767: filter out modes with too high pixelclock
->   video: tc358767: accept any hsync and vsync polatiry
-> 
->  drivers/video/tc358767.c | 218 ++++++++++++++++++++++++++++++++++++++---------
->  1 file changed, 179 insertions(+), 39 deletions(-)
-> 
-All those patches are missing a signed-off-by line, so I can not apply
-them. Please fix this for the next revision.
+This may also crash in mixed oftree/board file based systems (however
+unlikely that is). I think an early return from of_gpiochip_scan_hogs ()
+if chip->dev->device_node is NULL would be more robust.
 
 Regards,
 Lucas
