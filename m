@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dShzT-0005xB-94
+ id 1dShzT-0005x2-97
  for barebox@lists.infradead.org; Wed, 05 Jul 2017 10:57:07 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed,  5 Jul 2017 12:56:37 +0200
-Message-Id: <20170705105637.4484-8-s.trumtrar@pengutronix.de>
+Date: Wed,  5 Jul 2017 12:56:31 +0200
+Message-Id: <20170705105637.4484-2-s.trumtrar@pengutronix.de>
 In-Reply-To: <20170705105637.4484-1-s.trumtrar@pengutronix.de>
 References: <20170705105637.4484-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,37 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] efi: efi: register barebox-update handler
+Subject: [PATCH 2/8] common: efi: do not use undefined kconfig option
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- common/efi/efi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ common/efi/efi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/common/efi/efi.c b/common/efi/efi.c
-index cc3051dedae9..2c3ad33976c4 100644
+index 05c58250f4a7..f924385958e1 100644
 --- a/common/efi/efi.c
 +++ b/common/efi/efi.c
-@@ -42,6 +42,7 @@
- #include <efi/efi-device.h>
- #include <libfile.h>
- #include <state.h>
-+#include <bbu.h>
+@@ -266,8 +266,7 @@ static int efi_console_init(void)
  
- efi_runtime_services_t *RT;
- efi_boot_services_t *BS;
-@@ -382,6 +383,9 @@ static int efi_postcore_init(void)
- 		free(uuid16);
- 	}
+ 	add_generic_device("efi-stdio", DEVICE_ID_SINGLE, NULL, 0 , 0, 0, NULL);
  
-+	bbu_register_std_file_update("fat", 0,	"/boot/EFI/BOOT/BOOTx64.EFI",
-+				     filetype_exe);
-+
+-	if (IS_ENABLED(CONFIG_ARCH_EFI_REGISTER_COM1))
+-		add_ns16550_device(0, 0x3f8, 0x10, IORESOURCE_IO | IORESOURCE_MEM_8BIT,
++	add_ns16550_device(0, 0x3f8, 0x10, IORESOURCE_IO | IORESOURCE_MEM_8BIT,
+ 				&ns16550_plat);
+ 
  	return 0;
- }
- postcore_initcall(efi_postcore_init);
 -- 
 2.11.0
 
