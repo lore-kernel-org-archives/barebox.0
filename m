@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dSp84-0007Cf-1S
- for barebox@lists.infradead.org; Wed, 05 Jul 2017 18:34:25 +0000
-Date: Wed, 5 Jul 2017 20:34:00 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170705183400.GC17038@ravnborg.org>
-References: <20170705182747.GB13920@ravnborg.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170705182747.GB13920@ravnborg.org>
+ id 1dSh9Q-0006e9-2p
+ for barebox@lists.infradead.org; Wed, 05 Jul 2017 10:03:17 +0000
+Message-ID: <1499248963.22075.2.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 05 Jul 2017 12:02:43 +0200
+In-Reply-To: <20170705093301.7411-2-o.rempel@pengutronix.de>
+References: <20170705093301.7411-1-o.rempel@pengutronix.de>
+ <20170705093301.7411-2-o.rempel@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +22,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] arm: at91 bootstrap: declare local function static
-To: barebox@lists.infradead.org, Alexander Kurz <akurz@blala.de>, Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH v1 2/2] dts: arm: imx6qdl: provide snvs-lpgpr device
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-From 8eb65eccbdd304ba4fb06e8de2a958791e0077f0 Mon Sep 17 00:00:00 2001
-From: Sam Ravnborg <srn@skov.dk>
-Date: Wed, 5 Jul 2017 08:52:19 +0200
-Subject: [PATCH 3/3] arm: at91 bootstrap: declare local function static
+Hi Oleksij,
 
-Function is only used in this file and no prototype exist
-in any header.
+Am Mittwoch, den 05.07.2017, 11:33 +0200 schrieb Oleksij Rempel:
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  dts/src/arm/imx6qdl.dtsi | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/dts/src/arm/imx6qdl.dtsi b/dts/src/arm/imx6qdl.dtsi
 
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
----
- arch/arm/mach-at91/bootstrap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Files in dts/src/arm/... are verbatim copies of the upstream DTS files
+and can not be changed by Barebox patches. As long as the this node
+addition hasn't been applied upstream the node needs to be carried in
+the Barebox override files in arch/arm/dts/...
 
-diff --git a/arch/arm/mach-at91/bootstrap.c b/arch/arm/mach-at91/bootstrap.c
-index 9dd575b74..5d21b2d02 100644
---- a/arch/arm/mach-at91/bootstrap.c
-+++ b/arch/arm/mach-at91/bootstrap.c
-@@ -149,7 +149,7 @@ static void boot_reset_action(struct menu *m, struct menu_entry *me)
- 	restart_machine();
- }
- 
--void at91_bootstrap_menu(void)
-+static void at91_bootstrap_menu(void)
- {
- 	struct menu *m;
- 	struct menu_entry *me;
--- 
-2.12.0
+Regards,
+Lucas
+
+> index e426faa9c2..94e9925582 100644
+> --- a/dts/src/arm/imx6qdl.dtsi
+> +++ b/dts/src/arm/imx6qdl.dtsi
+> @@ -769,6 +769,10 @@
+>  					mask = <0x60>;
+>  					status = "disabled";
+>  				};
+> +
+> +				snvs_lpgpr: snvs-lpgpr {
+> +					compatible = "fsl,imx6q-snvs-lpgpr";
+> +				};
+>  			};
+>  
+>  			epit1: epit@020d0000 { /* EPIT1 */
+
 
 
 _______________________________________________
