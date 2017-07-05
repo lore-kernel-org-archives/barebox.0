@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dShzQ-0005wy-NY
- for barebox@lists.infradead.org; Wed, 05 Jul 2017 10:57:02 +0000
+ id 1dShzT-0005x9-97
+ for barebox@lists.infradead.org; Wed, 05 Jul 2017 10:57:04 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed,  5 Jul 2017 12:56:33 +0200
-Message-Id: <20170705105637.4484-4-s.trumtrar@pengutronix.de>
+Date: Wed,  5 Jul 2017 12:56:36 +0200
+Message-Id: <20170705105637.4484-7-s.trumtrar@pengutronix.de>
 In-Reply-To: <20170705105637.4484-1-s.trumtrar@pengutronix.de>
 References: <20170705105637.4484-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,53 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/8] devfs-core: add function to find cdev by partuuid
+Subject: [PATCH 7/8] blspec: skip all devicetree tests if entry doesn't
+ specify one
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
+If the blspec entry does not specify a devicetree to test against,
+it doesn't make any sense to check the compatible of the machine or
+find the root node.
+
+Instead of first testing the barebox devicetree check if the entry
+specifies one.
+
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- fs/devfs-core.c  | 14 ++++++++++++++
- include/driver.h |  1 +
- 2 files changed, 15 insertions(+)
+ common/blspec.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 3368d3ed68bd..be56edd18d80 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -95,6 +95,20 @@ struct cdev *cdev_by_device_node(struct device_node *node)
- 	return NULL;
- }
+diff --git a/common/blspec.c b/common/blspec.c
+index 8132d141ab5c..b258e6600bbe 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -361,6 +361,14 @@ static bool entry_is_of_compatible(struct blspec_entry *entry)
+ 	const char *compat;
+ 	char *filename;
  
-+struct cdev *cdev_by_partuuid(const char *partuuid)
-+{
-+	struct cdev *cdev;
++	/* If the entry doesn't specifiy a devicetree we are compatible */
++	devicetree = blspec_entry_var_get(entry, "devicetree");
++	if (!devicetree)
++		return true;
 +
-+	if (!partuuid)
-+		return NULL;
++	if (!strcmp(devicetree, "none"))
++		return true;
 +
-+	list_for_each_entry(cdev, &cdev_list, list) {
-+		if (!strcmp(cdev->partuuid, partuuid))
-+			return cdev;
-+	}
-+	return NULL;
-+}
-+
- /**
-  * device_find_partition - find a partition belonging to a physical device
-  *
-diff --git a/include/driver.h b/include/driver.h
-index 3d701f24398a..8617872053d8 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -472,6 +472,7 @@ struct cdev *cdev_by_name(const char *filename);
- struct cdev *lcdev_by_name(const char *filename);
- struct cdev *cdev_readlink(struct cdev *cdev);
- struct cdev *cdev_by_device_node(struct device_node *node);
-+struct cdev *cdev_by_partuuid(const char *partuuid);
- struct cdev *cdev_open(const char *name, unsigned long flags);
- struct cdev *cdev_create_loop(const char *path, ulong flags);
- void cdev_remove_loop(struct cdev *cdev);
+ 	/* If we don't have a root node every entry is compatible */
+ 	barebox_root = of_get_root_node();
+ 	if (!barebox_root)
+@@ -375,14 +383,6 @@ static bool entry_is_of_compatible(struct blspec_entry *entry)
+ 	else
+ 		abspath = "";
+ 
+-	/* If the entry doesn't specifiy a devicetree we are compatible */
+-	devicetree = blspec_entry_var_get(entry, "devicetree");
+-	if (!devicetree)
+-		return true;
+-
+-	if (!strcmp(devicetree, "none"))
+-		return true;
+-
+ 	filename = basprintf("%s/%s", abspath, devicetree);
+ 
+ 	fdt = read_file(filename, &size);
 -- 
 2.11.0
 
