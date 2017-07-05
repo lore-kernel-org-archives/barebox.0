@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf0-x235.google.com ([2a00:1450:4010:c07::235])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dSnv3-0008Jx-07
+ id 1dSnv3-0008Je-08
  for barebox@lists.infradead.org; Wed, 05 Jul 2017 17:16:56 +0000
-Received: by mail-lf0-x235.google.com with SMTP id b207so138232214lfg.2
- for <barebox@lists.infradead.org>; Wed, 05 Jul 2017 10:16:37 -0700 (PDT)
+Received: by mail-lf0-x235.google.com with SMTP id h22so138291701lfk.3
+ for <barebox@lists.infradead.org>; Wed, 05 Jul 2017 10:16:34 -0700 (PDT)
 From: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
-Date: Wed,  5 Jul 2017 20:18:10 +0300
-Message-Id: <20170705171813.17527-8-andrey.gusakov@cogentembedded.com>
+Date: Wed,  5 Jul 2017 20:18:07 +0300
+Message-Id: <20170705171813.17527-5-andrey.gusakov@cogentembedded.com>
 In-Reply-To: <20170705171813.17527-1-andrey.gusakov@cogentembedded.com>
 References: <20170705171813.17527-1-andrey.gusakov@cogentembedded.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,56 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 07/10] video: tc358767: optimize aux i2c bus checks
+Subject: [PATCH v1 04/10] video: tc358767: fix AUXDATAn registers access
+ during write
 To: barebox@lists.infradead.org
 Cc: andrey.gusakov@cogentembedded.com
 
-Move common check to tc_aux_i2c_xfer
-Remove duplicated check from tc_aux_i2c_write
+First four bytes should go to DP0_AUXWDATA0. Due to bug if
+len > 4 first four bytes was writen to DP0_AUXWDATA1 and all
+data get shifted by 4 bytes. Fix it.
 
 Signed-off-by: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
 ---
- drivers/video/tc358767.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ drivers/video/tc358767.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/video/tc358767.c b/drivers/video/tc358767.c
-index c2222d916..cd56bb4f4 100644
+index cc6a35e70..4d311c464 100644
 --- a/drivers/video/tc358767.c
 +++ b/drivers/video/tc358767.c
-@@ -418,9 +418,6 @@ static int tc_aux_i2c_read(struct tc_data *tc, struct i2c_msg *msg)
- 	int ret;
- 	u32 tmp;
- 
--	if (msg->flags & I2C_M_DATA_ONLY)
--		return -EINVAL;
--
- 	ret = tc_aux_wait_busy(tc, 100);
- 	if (ret)
- 		goto err;
-@@ -459,14 +456,6 @@ static int tc_aux_i2c_write(struct tc_data *tc, struct i2c_msg *msg)
- 	int ret;
- 	u32 tmp = 0;
- 
--	if (msg->flags & I2C_M_DATA_ONLY)
--		return -EINVAL;
--
--	if (msg->len > 16) {
--		dev_err(tc->dev, "this bus support max 16 bytes per transfer\n");
--		return -EINVAL;
--	}
--
- 	ret = tc_aux_wait_busy(tc, 100);
- 	if (ret)
- 		goto err;
-@@ -512,6 +501,8 @@ static int tc_aux_i2c_xfer(struct i2c_adapter *adapter,
- 			dev_err(tc->dev, "this bus support max 16 bytes per transfer\n");
- 			return -EINVAL;
+@@ -388,7 +388,7 @@ static int tc_aux_write(struct tc_data *tc, int reg, char *data, int size)
+ 		i++;
+ 		if (((i % 4) == 0) ||
+ 		    (i == size)) {
+-			tc_write(DP0_AUXWDATA(i >> 2), tmp);
++			tc_write(DP0_AUXWDATA((i - 1) >> 2), tmp);
+ 			tmp = 0;
  		}
-+		if (msgs[i].flags & I2C_M_DATA_ONLY)
-+			return -EINVAL;
  	}
- 
- 	/* read/write data */
+@@ -476,7 +476,7 @@ static int tc_aux_i2c_write(struct tc_data *tc, struct i2c_msg *msg)
+ 		i++;
+ 		if (((i % 4) == 0) ||
+ 		    (i == msg->len)) {
+-			tc_write(DP0_AUXWDATA(i >> 2), tmp);
++			tc_write(DP0_AUXWDATA((i - 1) >> 2), tmp);
+ 			tmp = 0;
+ 		}
+ 	}
 -- 
 2.13.0
 
