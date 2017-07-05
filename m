@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dSmNy-00031Z-LE
- for barebox@lists.infradead.org; Wed, 05 Jul 2017 15:38:41 +0000
+ id 1dSmO1-00031o-Ad
+ for barebox@lists.infradead.org; Wed, 05 Jul 2017 15:38:43 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed,  5 Jul 2017 17:38:08 +0200
-Message-Id: <20170705153809.20050-2-o.rempel@pengutronix.de>
+Date: Wed,  5 Jul 2017 17:38:09 +0200
+Message-Id: <20170705153809.20050-3-o.rempel@pengutronix.de>
 In-Reply-To: <20170705153809.20050-1-o.rempel@pengutronix.de>
 References: <20170705153809.20050-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,171 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/2] nvmem: snvs_lpgpr: sync with latest version for kernel
+Subject: [PATCH v2 2/2] dts: arm: imx6qdl: provide snvs-lpgpr device
 To: barebox@lists.infradead.org, l.stach@pengutronix.de
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-DT format is ACKed now without "offset" parameter.
-Make sure barebox driver will work with it properly.
-
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/nvmem/snvs_lpgpr.c | 96 ++++++++++++++++++++++++++++++----------------
- 1 file changed, 62 insertions(+), 34 deletions(-)
+ arch/arm/dts/imx6qdl.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/nvmem/snvs_lpgpr.c b/drivers/nvmem/snvs_lpgpr.c
-index 74118a6b75..6c79743cc0 100644
---- a/drivers/nvmem/snvs_lpgpr.c
-+++ b/drivers/nvmem/snvs_lpgpr.c
-@@ -11,45 +11,71 @@
- #include <init.h>
- #include <io.h>
- #include <of.h>
-+#include <of_device.h>
- #include <malloc.h>
- #include <regmap.h>
- #include <mfd/syscon.h>
- #include <linux/nvmem-provider.h>
+diff --git a/arch/arm/dts/imx6qdl.dtsi b/arch/arm/dts/imx6qdl.dtsi
+index 06b10392cd..9b0127767c 100644
+--- a/arch/arm/dts/imx6qdl.dtsi
++++ b/arch/arm/dts/imx6qdl.dtsi
+@@ -9,3 +9,8 @@
+ 	};
+ };
  
-+#define IMX6Q_SNVS_HPLR		0x00
-+#define IMX6Q_GPR_SL		BIT(5)
-+#define IMX6Q_SNVS_LPLR		0x34
-+#define IMX6Q_GPR_HL		BIT(5)
-+#define IMX6Q_SNVS_LPGPR	0x68
-+
-+struct snvs_lpgpr_cfg {
-+	int offset;
-+	int offset_hplr;
-+	int offset_lplr;
++&snvs {
++	snvs_lpgpr: snvs-lpgpr {
++		compatible = "fsl,imx6q-snvs-lpgpr";
++	};
 +};
-+
- struct snvs_lpgpr_priv {
--	struct device_d		*dev;
--	struct regmap		*regmap;
--	int			offset;
--	struct nvmem_config	cfg;
-+	struct device_d			*dev;
-+	struct regmap			*regmap;
-+	struct nvmem_config		cfg;
-+	const struct snvs_lpgpr_cfg	*dcfg;
-+};
-+
-+static const struct snvs_lpgpr_cfg snvs_lpgpr_cfg_imx6q = {
-+	.offset		= IMX6Q_SNVS_LPGPR,
-+	.offset_hplr	= IMX6Q_SNVS_HPLR,
-+	.offset_lplr	= IMX6Q_SNVS_LPLR,
- };
- 
--static int snvs_lpgpr_write(struct device_d *dev, const int reg,
--			    const void *_val, int bytes)
-+static int snvs_lpgpr_write(struct device_d *dev, const int offset,
-+			    const void *val, int bytes)
- {
- 	struct snvs_lpgpr_priv *priv = dev->parent->priv;
--	const u32 *val = _val;
--	int i = 0, words = bytes / 4;
-+	const struct snvs_lpgpr_cfg *dcfg = priv->dcfg;
-+	unsigned int lock_reg;
-+	int ret;
- 
--	while (words--)
--		regmap_write(priv->regmap, priv->offset + reg + (i++ * 4),
--			     *val++);
-+	ret = regmap_read(priv->regmap, dcfg->offset_hplr, &lock_reg);
-+	if (ret < 0)
-+		return ret;
- 
--	return 0;
-+	if (lock_reg & IMX6Q_GPR_SL)
-+		return -EPERM;
-+
-+	ret = regmap_read(priv->regmap, dcfg->offset_lplr, &lock_reg);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (lock_reg & IMX6Q_GPR_HL)
-+		return -EPERM;
-+
-+	return regmap_bulk_write(priv->regmap, dcfg->offset + offset, val,
-+				 bytes);
- }
- 
--static int snvs_lpgpr_read(struct device_d *dev, const int reg, void *_val,
--			int bytes)
-+static int snvs_lpgpr_read(struct device_d *dev, const int offset, void *val,
-+			   int bytes)
- {
- 	struct snvs_lpgpr_priv *priv = dev->parent->priv;
--	u32 *val = _val;
--	int i = 0, words = bytes / 4;
-+	const struct snvs_lpgpr_cfg *dcfg = priv->dcfg;
- 
--	while (words--)
--		regmap_read(priv->regmap, priv->offset + reg + (i++ * 4),
--			    val++);
--
--
--	return 0;
-+	return regmap_bulk_read(priv->regmap, dcfg->offset + offset,
-+				val, bytes);
- }
- 
- static const struct nvmem_bus snvs_lpgpr_nvmem_bus = {
-@@ -60,10 +86,10 @@ static const struct nvmem_bus snvs_lpgpr_nvmem_bus = {
- static int snvs_lpgpr_probe(struct device_d *dev)
- {
- 	struct device_node *node = dev->device_node;
-+	struct device_node *syscon_node;
- 	struct snvs_lpgpr_priv *priv;
- 	struct nvmem_config *cfg;
- 	struct nvmem_device *nvmem;
--	int err;
- 
- 	if (!node)
- 		return -ENOENT;
-@@ -72,15 +98,17 @@ static int snvs_lpgpr_probe(struct device_d *dev)
- 	if (!priv)
- 		return -ENOMEM;
- 
--	priv->regmap = syscon_node_to_regmap(of_get_parent(node));
--	if (IS_ERR(priv->regmap)) {
--		free(priv);
--		return PTR_ERR(priv->regmap);
--	}
-+	priv->dcfg = of_device_get_match_data(dev);
-+	if (!priv->dcfg)
-+		return -EINVAL;
- 
--	err = of_property_read_u32(node, "offset", &priv->offset);
--	if (err)
--		return err;
-+	syscon_node = of_get_parent(node);
-+	if (!syscon_node)
-+		return -ENODEV;
-+
-+	priv->regmap = syscon_node_to_regmap(syscon_node);
-+	if (IS_ERR(priv->regmap))
-+		return PTR_ERR(priv->regmap);
- 
- 	cfg = &priv->cfg;
- 	cfg->name = dev_name(dev);
-@@ -102,13 +130,13 @@ static int snvs_lpgpr_probe(struct device_d *dev)
- }
- 
- static __maybe_unused struct of_device_id snvs_lpgpr_dt_ids[] = {
--	{ .compatible = "fsl,imx6sl-snvs-lpgpr", },
--	{ .compatible = "fsl,imx6q-snvs-lpgpr", },
-+	{ .compatible = "fsl,imx6q-snvs-lpgpr", .data = &snvs_lpgpr_cfg_imx6q },
-+	{ .compatible = "fsl,imx6ul-snvs-lpgpr", .data = &snvs_lpgpr_cfg_imx6q },
- 	{ },
- };
- 
- static struct driver_d snvs_lpgpr_driver = {
--	.name	= "nvmem-snvs-lpgpr",
-+	.name	= "snvs_lpgpr",
- 	.probe	= snvs_lpgpr_probe,
- 	.of_compatible = DRV_OF_COMPAT(snvs_lpgpr_dt_ids),
- };
 -- 
 2.11.0
 
