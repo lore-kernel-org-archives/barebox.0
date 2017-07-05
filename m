@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dShzT-0005x0-96
+ id 1dShzT-0005xB-94
  for barebox@lists.infradead.org; Wed, 05 Jul 2017 10:57:07 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed,  5 Jul 2017 12:56:32 +0200
-Message-Id: <20170705105637.4484-3-s.trumtrar@pengutronix.de>
+Date: Wed,  5 Jul 2017 12:56:37 +0200
+Message-Id: <20170705105637.4484-8-s.trumtrar@pengutronix.de>
 In-Reply-To: <20170705105637.4484-1-s.trumtrar@pengutronix.de>
 References: <20170705105637.4484-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,33 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] fs: efi: return with correct error code in efifs_stat
+Subject: [PATCH 8/8] efi: efi: register barebox-update handler
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Instead of erroring out when a file is not present, just return ENOENT if the
-file does not exist and let the fs-layer handle the situation correctly.
-
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- fs/efi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ common/efi/efi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/efi.c b/fs/efi.c
-index 0c0f52e87c47..85ff914291ed 100644
---- a/fs/efi.c
-+++ b/fs/efi.c
-@@ -407,9 +407,7 @@ static int efifs_stat(struct device_d *dev, const char *filename, struct stat *s
+diff --git a/common/efi/efi.c b/common/efi/efi.c
+index cc3051dedae9..2c3ad33976c4 100644
+--- a/common/efi/efi.c
++++ b/common/efi/efi.c
+@@ -42,6 +42,7 @@
+ #include <efi/efi-device.h>
+ #include <libfile.h>
+ #include <state.h>
++#include <bbu.h>
  
- 	efiret = priv->root_dir->open(priv->root_dir, &entry, efi_path, EFI_FILE_MODE_READ, 0ULL);
- 	if (EFI_ERROR(efiret)) {
--		pr_err("%s: unable to Open %s: %s\n", __func__, filename,
--				efi_strerror(efiret));
--		ret = -efi_errno(efiret);
-+		ret = -ENOENT;
- 		goto out_free;
+ efi_runtime_services_t *RT;
+ efi_boot_services_t *BS;
+@@ -382,6 +383,9 @@ static int efi_postcore_init(void)
+ 		free(uuid16);
  	}
  
++	bbu_register_std_file_update("fat", 0,	"/boot/EFI/BOOT/BOOTx64.EFI",
++				     filetype_exe);
++
+ 	return 0;
+ }
+ postcore_initcall(efi_postcore_init);
 -- 
 2.11.0
 
