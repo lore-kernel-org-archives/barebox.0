@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x229.google.com ([2a00:1450:4010:c07::229])
+Received: from mail-lf0-x22a.google.com ([2a00:1450:4010:c07::22a])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dSnv7-0008Jo-FJ
- for barebox@lists.infradead.org; Wed, 05 Jul 2017 17:17:00 +0000
-Received: by mail-lf0-x229.google.com with SMTP id t72so28798993lff.1
- for <barebox@lists.infradead.org>; Wed, 05 Jul 2017 10:16:36 -0700 (PDT)
+ id 1dSnv7-0008Md-Il
+ for barebox@lists.infradead.org; Wed, 05 Jul 2017 17:17:01 +0000
+Received: by mail-lf0-x22a.google.com with SMTP id b207so138232890lfg.2
+ for <barebox@lists.infradead.org>; Wed, 05 Jul 2017 10:16:40 -0700 (PDT)
 From: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
-Date: Wed,  5 Jul 2017 20:18:09 +0300
-Message-Id: <20170705171813.17527-7-andrey.gusakov@cogentembedded.com>
+Date: Wed,  5 Jul 2017 20:18:12 +0300
+Message-Id: <20170705171813.17527-10-andrey.gusakov@cogentembedded.com>
 In-Reply-To: <20170705171813.17527-1-andrey.gusakov@cogentembedded.com>
 References: <20170705171813.17527-1-andrey.gusakov@cogentembedded.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,54 +23,121 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 06/10] video: tc358767: support newer DPCD revisions and
- higher data rates
+Subject: [PATCH v1 09/10] video: tc358767: filter out modes with too high
+ pixelclock
 To: barebox@lists.infradead.org
 Cc: andrey.gusakov@cogentembedded.com
 
-Do not fail on newer DPCD revision. Assume it backwards compatible.
-Try to fall back to supported data rate in case display reports too
-high data rate.
+Minimum pixel clock period is 6.5 nS for DPI. Remove modes with
+lower pixel clock period. Also sort modes in decreasing order
+because currently first resolution in list is picked.
 
 Signed-off-by: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
 ---
- drivers/video/tc358767.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ drivers/video/tc358767.c | 83 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
 
 diff --git a/drivers/video/tc358767.c b/drivers/video/tc358767.c
-index d652c1442..c2222d916 100644
+index 246b49e07..0ef9e642d 100644
 --- a/drivers/video/tc358767.c
 +++ b/drivers/video/tc358767.c
-@@ -674,13 +674,25 @@ static int tc_get_display_props(struct tc_data *tc)
- 	ret = tc_aux_read(tc, 0x000, tmp, 8);
- 	if (ret)
- 		goto err_dpcd_read;
--	/* check rev 1.0 or 1.1 */
--	if ((tmp[1] != 0x06) && (tmp[1] != 0x0a))
--		goto err_dpcd_inval;
+@@ -1199,6 +1199,82 @@ err:
+ 	return ret;
+ }
  
- 	tc->assr = !(tc->rev & 0x02);
++static int tc_filter_videomodes(struct tc_data *tc, struct display_timings *timings)
++{
++	int i;
++	int num_modes = 0;
++	struct fb_videomode *mode, *valid_modes;
 +
-+	/* check DPCD rev */
-+	if (tmp[0] < 0x10) {
-+		dev_err(tc->dev, "Too low DPCD revision 0x%02x\n", tmp[0]);
-+		goto err_dpcd_inval;
-+	}
-+	if ((tmp[0] != 0x10) && (tmp[0] != 0x11))
-+		dev_warn(tc->dev, "Unknown DPCD revision 0x%02x\n", tmp[0]);
- 	tc->link.rev = tmp[0];
--	tc->link.rate = tmp[1];
++	valid_modes = xzalloc(timings->num_modes * sizeof(struct fb_videomode));
 +
-+	/* check rate */
-+	if ((tmp[1] == 0x06) || (tmp[1] == 0x0a)) {
-+		tc->link.rate = tmp[1];
-+	} else {
-+		dev_warn(tc->dev, "Unknown link rate 0x%02x, falling to 2.7Gbps\n", tmp[1]);
-+		tc->link.rate = 0x0a;
++	/* first filter modes with too high pclock */
++	for (i = 0; i < timings->num_modes; i++) {
++		mode = &timings->modes[i];
++
++		/* minimum Pixel Clock Period for DPI is 6.5 nS = 6500 pS */
++		if (mode->pixclock < 6500) {
++			dev_dbg(tc->dev, "%dx%d@%d (%d KHz, flags 0x%08x, sync 0x%08x) skipped\n",
++				mode->xres, mode->yres, mode->refresh,
++				(int)PICOS2KHZ(mode->pixclock), mode->display_flags,
++				mode->sync);
++			/* remove from list */
++			mode->xres = mode->yres = 0;
++		}
 +	}
- 	tc->link.lanes = tmp[2] & 0x0f;
- 	if (tc->link.lanes > 2) {
- 		dev_dbg(tc->dev, "Display supports %d lanes, host only 2 max. "
++
++	/* then sort from hi to low */
++	do {
++		int index = -1;
++
++		/* find higest resolution */
++		for (i = 0; i < timings->num_modes; i++) {
++			mode = &timings->modes[i];
++			if (!(mode->xres && mode->yres))
++				continue;
++			if (index == -1) {
++				index = i;
++			} else {
++				/* compare square */
++				if (timings->modes[index].xres * timings->modes[index].yres <
++				    mode->xres * mode->yres)
++					index = i;
++			}
++		}
++
++		/* nothing left */
++		if (index == -1)
++			break;
++
++		/* copy to output list */
++		mode = &timings->modes[index];
++		memcpy(&valid_modes[num_modes], mode, sizeof(struct fb_videomode));
++		mode->xres = mode->yres = 0;
++		num_modes++;
++	} while (1);
++
++	free(timings->modes);
++	timings->modes = NULL;
++
++	if (!num_modes) {
++		free(valid_modes);
++		return -EINVAL;
++	}
++
++	timings->num_modes = num_modes;
++	timings->modes = valid_modes;
++
++	dev_dbg(tc->dev, "Valid modes (%d):\n", num_modes);
++	for (i = 0; i < timings->num_modes; i++) {
++		mode = &timings->modes[i];
++		dev_dbg(tc->dev, "%dx%d@%d (%d KHz, flags 0x%08x, sync 0x%08x)\n",
++			mode->xres, mode->yres, mode->refresh,
++			(int)PICOS2KHZ(mode->pixclock), mode->display_flags,
++			mode->sync);
++	}
++
++	return 0;
++}
++
+ static int tc_get_videomodes(struct tc_data *tc, struct display_timings *timings)
+ {
+ 	int ret;
+@@ -1218,6 +1294,13 @@ static int tc_get_videomodes(struct tc_data *tc, struct display_timings *timings
+ 		return ret;
+ 	}
+ 
++	/* filter out unsupported due to high pixelxlock */
++	ret = tc_filter_videomodes(tc, timings);
++	if (ret < 0) {
++		dev_err(tc->dev, "No supported modes found\n");
++		return ret;
++	}
++
+ 	/* hsync, vsync active low */
+ 	timings->modes->sync &= ~(FB_SYNC_HOR_HIGH_ACT |
+ 				  FB_SYNC_VERT_HIGH_ACT);
 -- 
 2.13.0
 
