@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dSHil-0003p4-J9
- for barebox@lists.infradead.org; Tue, 04 Jul 2017 06:54:05 +0000
-Date: Tue, 4 Jul 2017 08:53:38 +0200
+ id 1dSowe-0002mE-MB
+ for barebox@lists.infradead.org; Wed, 05 Jul 2017 18:22:39 +0000
+Date: Wed, 5 Jul 2017 20:22:10 +0200
 From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170704065338.GA12492@ravnborg.org>
-References: <20170703161922.GA24614@ravnborg.org>
- <20170703201746.GA15480@ravnborg.org>
- <20170704061133.jow6aixpw5mp5m4c@pengutronix.de>
+Message-ID: <20170705182210.GA13920@ravnborg.org>
+References: <1499027092-2522-1-git-send-email-akurz@blala.de>
+ <1499075760.2308.14.camel@pengutronix.de>
+ <alpine.DEB.2.00.1707042212240.19314@blala.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170704061133.jow6aixpw5mp5m4c@pengutronix.de>
+In-Reply-To: <alpine.DEB.2.00.1707042212240.19314@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,29 +24,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] clk: fix clk_get error handling
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] gpiolib: fix: do not access oftree on non-OFDEVICE boards
+To: Alexander Kurz <akurz@blala.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
 
-Hi Uwe.
-
-Thanks for the quick feedback!
-
-> Looking into the tree of functions that can be called from
-> of_clk_get_by_name I didn't find a function that returns ENODEV.
+On Tue, Jul 04, 2017 at 10:17:39PM +0200, Alexander Kurz wrote:
+> Hi Lucas,
 > 
-> But consider a clock provider that tries to give you the clock and
-> triggers a EIO or ETIMEOUT. IMHO this should be given to the caller
-> instead of continuing with clk_get_sys. So I suggest
+> On Mon, 3 Jul 2017, Lucas Stach wrote:
 > 
-> -		if (!IS_ERR(clk) || PTR_ERR(clk) != -ENODEV)
-> +		if (!IS_ERR(clk) || PTR_ERR(clk) != -ENOENT)
-> 
-> instead of your patch.
+> > Am Sonntag, den 02.07.2017, 22:24 +0200 schrieb Alexander Kurz:
+> > > Non-OFDEVICE boards may have OFTREE=y set, e.g. by BOOTM_OFTREE.
+> > > Attempts to browse the oftree will crash barebox on those boards.
+> > > 
+> > > Signed-off-by: Alexander Kurz <akurz@blala.de>
+> > > ---
+> > >  drivers/gpio/gpiolib.c | 5 ++++-
+> > >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> > > index a3e17ad..a1ff965 100644
+> > > --- a/drivers/gpio/gpiolib.c
+> > > +++ b/drivers/gpio/gpiolib.c
+> > > @@ -416,7 +416,10 @@ int gpiochip_add(struct gpio_chip *chip)
+> > >  	for (i = chip->base; i < chip->base + chip->ngpio; i++)
+> > >  		gpio_desc[i].chip = chip;
+> > >  
+> > > -	return of_gpiochip_scan_hogs(chip);
+> > > +	if (IS_ENABLED(CONFIG_OFDEVICE))
+> > > +		return of_gpiochip_scan_hogs(chip);
+> > > +	else
+> > > +		return 0;
+> > 
+> > This may also crash in mixed oftree/board file based systems (however
+> > unlikely that is). I think an early return from of_gpiochip_scan_hogs ()
+> > if chip->dev->device_node is NULL would be more robust.
+> IS_ENABLED(...) is evaluated at compile time.
+> Checking CONFIG_OFDEVICE even before calling the OF-function gives the 
+> compiler the chance to omit the integration of the unneeded function.
+> A quick test on with kindle3_defconfig resulted in half a kilobyte
+> image size difference.
 
-Makes good sense and it was only because the kernel did otherwise
-I explicitly tested for -EPROBE_DEFER.
-Will rework and send an updated patch later today.
+I have incorporat this change in the fix I posted, and added your
+Signed-off-by: as you posted this first and my change came on
+top of yours.
+Will post in a new thread.
 
 	Sam
 
