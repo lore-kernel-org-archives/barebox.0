@@ -1,25 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dT1GQ-0004pj-7L
- for barebox@lists.infradead.org; Thu, 06 Jul 2017 07:31:53 +0000
-Received: from [2001:67c:670:100:5054:ff:fe2a:3aa] (helo=pty.hi.pengutronix.de)
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
- (envelope-from <mol@pengutronix.de>) id 1dT1Ft-0002al-2s
- for barebox@lists.infradead.org; Thu, 06 Jul 2017 09:31:17 +0200
-Received: from mol by pty.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <mol@pengutronix.de>) id 1dT1Fs-0005JS-RT
- for barebox@lists.infradead.org; Thu, 06 Jul 2017 09:31:16 +0200
-Date: Thu, 6 Jul 2017 09:31:16 +0200
-From: Michael Olbrich <m.olbrich@pengutronix.de>
-Message-ID: <20170706073116.jkfwdmxibbgopmmz@pengutronix.de>
-References: <20170705105637.4484-1-s.trumtrar@pengutronix.de>
- <20170705105637.4484-2-s.trumtrar@pengutronix.de>
- <1499252725.22075.6.camel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1499252725.22075.6.camel@pengutronix.de>
+ id 1dT61T-0002dq-4Q
+ for barebox@lists.infradead.org; Thu, 06 Jul 2017 12:36:46 +0000
+Message-ID: <1499344455.22075.55.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 06 Jul 2017 14:34:15 +0200
+In-Reply-To: <20170705171813.17527-1-andrey.gusakov@cogentembedded.com>
+References: <20170705171813.17527-1-andrey.gusakov@cogentembedded.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -32,53 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/8] common: efi: do not use undefined kconfig option
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v1 00/10] video: tc358767: fixes and improvements
+To: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
+Cc: barebox@lists.infradead.org
 
-On Wed, Jul 05, 2017 at 01:05:25PM +0200, Lucas Stach wrote:
-> Am Mittwoch, den 05.07.2017, 12:56 +0200 schrieb Steffen Trumtrar:
-> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > ---
-> >  common/efi/efi.c | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> > 
-> > diff --git a/common/efi/efi.c b/common/efi/efi.c
-> > index 05c58250f4a7..f924385958e1 100644
-> > --- a/common/efi/efi.c
-> > +++ b/common/efi/efi.c
-> > @@ -266,8 +266,7 @@ static int efi_console_init(void)
-> >  
-> >  	add_generic_device("efi-stdio", DEVICE_ID_SINGLE, NULL, 0 , 0, 0, NULL);
-> >  
-> > -	if (IS_ENABLED(CONFIG_ARCH_EFI_REGISTER_COM1))
+Am Mittwoch, den 05.07.2017, 20:18 +0300 schrieb Andrey Gusakov:
+> Hi Barebox,
 > 
-> It seems we lost this option when moving arch/efi to arch/x86. As
-> unconditionally enabling the serial console may break some boards, the
-> proper fix should be to bring back the Kconfig option.
+> This set of patches fixes several issues that was found during testing
+> tc358767 with desktop DisplayPort displays.
+> 
+> Changes since v0:
+>  - signed-off added
+>  - 'fix AUXDATAn registers access' is broken into two
+>  - ALIGN used
+> 
+> Andrey Gusakov (10):
+>   video: tc358767: fix EDID read for DP displays
+>   video: tc358767: fix DP0_MISC register set
+>   video: tc358767: fix timing calculation
+>   video: tc358767: fix AUXDATAn registers access during write
+>   video: tc358767: do not fail if sink supports more than 2 lanes
+>   video: tc358767: support newer DPCD revisions and higher data rates
+>   video: tc358767: optimize aux i2c bus checks
+>   video: tc358767: optimize DPCD register write
+>   video: tc358767: filter out modes with too high pixelclock
+>   video: tc358767: accept any hsync and vsync polatiry
+> 
+>  drivers/video/tc358767.c | 229 ++++++++++++++++++++++++++++++++++++-----------
+>  1 file changed, 179 insertions(+), 50 deletions(-)
+> 
+Applied, thanks.
 
-I think that option is pretty much redundant. This is x86. There is no
-device tree to enable devices.
-There are only two possible scenarios: use ns16550 or not. Building the
-driver and maybe use it does not exist. And we can use
-CONFIG_DRIVER_SERIAL_NS16550 to choose.
-
-Somewhat unrelated: I think this driver should be avoided if possible. I'm
-quite certain, that the original use-case for this was a bug in barebox and
-not a broken EFI serial driver.
-
-Michael
-
-> > -		add_ns16550_device(0, 0x3f8, 0x10, IORESOURCE_IO | IORESOURCE_MEM_8BIT,
-> > +	add_ns16550_device(0, 0x3f8, 0x10, IORESOURCE_IO | IORESOURCE_MEM_8BIT,
-> >  				&ns16550_plat);
-> >  
-> >  	return 0;
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
