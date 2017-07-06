@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dT61T-0002dq-4Q
- for barebox@lists.infradead.org; Thu, 06 Jul 2017 12:36:46 +0000
-Message-ID: <1499344455.22075.55.camel@pengutronix.de>
+ id 1dT6Fb-0000XA-DS
+ for barebox@lists.infradead.org; Thu, 06 Jul 2017 12:51:21 +0000
+Message-ID: <1499345180.22075.58.camel@pengutronix.de>
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu, 06 Jul 2017 14:34:15 +0200
-In-Reply-To: <20170705171813.17527-1-andrey.gusakov@cogentembedded.com>
-References: <20170705171813.17527-1-andrey.gusakov@cogentembedded.com>
+Date: Thu, 06 Jul 2017 14:46:20 +0200
+In-Reply-To: <20170705183315.GB17038@ravnborg.org>
+References: <20170705182747.GB13920@ravnborg.org>
+ <20170705183315.GB17038@ravnborg.org>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,37 +22,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 00/10] video: tc358767: fixes and improvements
-To: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/3] gpio: fix null pointer exception when there is no
+ oftree
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: barebox@lists.infradead.org, Alexander Kurz <akurz@blala.de>, Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 
-Am Mittwoch, den 05.07.2017, 20:18 +0300 schrieb Andrey Gusakov:
-> Hi Barebox,
+Am Mittwoch, den 05.07.2017, 20:33 +0200 schrieb Sam Ravnborg:
+> From d10f426e1b8cec7de257dabf59e7fe53a591b3c1 Mon Sep 17 00:00:00 2001
+> From: Sam Ravnborg <srn@skov.dk>
+> Date: Mon, 3 Jul 2017 22:07:41 +0200
+> Subject: [PATCH 2/3] gpio: fix null pointer exception when there is no oftree
 > 
-> This set of patches fixes several issues that was found during testing
-> tc358767 with desktop DisplayPort displays.
+> In a system with oftree support enabled but with no oftree the
+> of_gpiochip_scan_hogs() would fail due to device_node equals NULL.
 > 
-> Changes since v0:
->  - signed-off added
->  - 'fix AUXDATAn registers access' is broken into two
->  - ALIGN used
+> Check device_node and return with 0 in this situation, as this
+> mirrors what would have happened before we added support for gpio-hogs.
 > 
-> Andrey Gusakov (10):
->   video: tc358767: fix EDID read for DP displays
->   video: tc358767: fix DP0_MISC register set
->   video: tc358767: fix timing calculation
->   video: tc358767: fix AUXDATAn registers access during write
->   video: tc358767: do not fail if sink supports more than 2 lanes
->   video: tc358767: support newer DPCD revisions and higher data rates
->   video: tc358767: optimize aux i2c bus checks
->   video: tc358767: optimize DPCD register write
->   video: tc358767: filter out modes with too high pixelclock
->   video: tc358767: accept any hsync and vsync polatiry
+> Use IS_ENABLED(CONFIG_OFDEVICE) to teach compiler to leave
+> out the of_* specific functions if not needed.
 > 
->  drivers/video/tc358767.c | 229 ++++++++++++++++++++++++++++++++++++-----------
->  1 file changed, 179 insertions(+), 50 deletions(-)
+> Fixes: 37e6bee7 ("gpiolib: Add support for GPIO "hog" nodes")
+> Signed-off-by: Alexander Kurz <akurz@blala.de>
+> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> ---
+>  drivers/gpio/gpiolib.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 > 
-Applied, thanks.
+> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> index a3e17ada0..2bd8ef2a8 100644
+> --- a/drivers/gpio/gpiolib.c
+> +++ b/drivers/gpio/gpiolib.c
+> @@ -379,6 +379,9 @@ static int of_gpiochip_scan_hogs(struct gpio_chip *chip)
+>  	struct device_node *np;
+>  	int ret, i;
+>  
+> +	if (!chip->dev->device_node)
+> +		return 0;
+> +
+>  	for_each_available_child_of_node(chip->dev->device_node, np) {
+>  		if (!of_property_read_bool(np, "gpio-hog"))
+>  			continue;
+> @@ -416,7 +419,10 @@ int gpiochip_add(struct gpio_chip *chip)
+>  	for (i = chip->base; i < chip->base + chip->ngpio; i++)
+>  		gpio_desc[i].chip = chip;
+>  
+> -	return of_gpiochip_scan_hogs(chip);
+> +	if (IS_ENABLED(CONFIG_OFDEVICE))
+> +		return of_gpiochip_scan_hogs(chip);
+> +	else
+> +		return 0;
+>  }
+>  
+>  void gpiochip_remove(struct gpio_chip *chip)
+
+I think this can be simplified to:
+
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index a3e17ada0d39..1a373ef149a5 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -379,6 +379,9 @@ static int of_gpiochip_scan_hogs(struct gpio_chip
+*chip)
+        struct device_node *np;
+        int ret, i;
+
++       if (!IS_ENABLED(CONFIG_OFDEVICE) || !chip->dev->device_node)
++               return 0;
++
+        for_each_available_child_of_node(chip->dev->device_node, np) {
+                if (!of_property_read_bool(np, "gpio-hog"))
+                        continue;
+
+The optimizer should be able to work this out. Can you check that this
+works for you? No need to resend, if it works I'll just commit this.
+
+Regards,
+Lucas
 
 
 _______________________________________________
