@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.21])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dT9k2-00057D-Tn
- for barebox@lists.infradead.org; Thu, 06 Jul 2017 16:35:01 +0000
-Received: from [192.168.1.100] ([31.18.251.132]) by mail.gmx.com (mrgmx102
- [212.227.17.168]) with ESMTPSA (Nemesis) id 0M8pKi-1dYcr610Tk-00C7Qo for
- <barebox@lists.infradead.org>; Thu, 06 Jul 2017 18:34:32 +0200
-References: <20170706140042.5029-1-o.rempel@pengutronix.de>
- <20170706140042.5029-3-o.rempel@pengutronix.de>
- <1499350371.23968.4.camel@pengutronix.de>
-From: Oleksij Rempel <linux@rempel-privat.de>
-Message-ID: <56c7ef37-f608-6a9c-6a0f-4a0b8677f40f@rempel-privat.de>
-Date: Thu, 6 Jul 2017 18:34:30 +0200
-MIME-Version: 1.0
-In-Reply-To: <1499350371.23968.4.camel@pengutronix.de>
+ id 1dT3xQ-00030C-N0
+ for barebox@lists.infradead.org; Thu, 06 Jul 2017 10:24:26 +0000
+Message-ID: <1499336637.22075.54.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 06 Jul 2017 12:23:57 +0200
+In-Reply-To: <20170706101126.lb23q2t3v4c5mqh5@pengutronix.de>
+References: <20170705192328.14900-1-u.kleine-koenig@pengutronix.de>
+ <1499330981.22075.48.camel@pengutronix.de>
+ <20170706101126.lb23q2t3v4c5mqh5@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,110 +19,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============4728347854818463935=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 3/3] regulator: pfuze: provide power over standby
- handler
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: imx: use register defines in imxcfg files instead
+ of plain numbers
+To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============4728347854818463935==
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="XpPh7UxAXs1MsbjHM5P7vA1ubwhRJaxM0"
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---XpPh7UxAXs1MsbjHM5P7vA1ubwhRJaxM0
-Content-Type: multipart/mixed; boundary="VqrD256bgGUp4jKKRJWJfFMJJfAjLf71t";
- protected-headers="v1"
-From: Oleksij Rempel <linux@rempel-privat.de>
-To: barebox@lists.infradead.org
-Message-ID: <56c7ef37-f608-6a9c-6a0f-4a0b8677f40f@rempel-privat.de>
-Subject: Re: [PATCH v1 3/3] regulator: pfuze: provide power over standby
- handler
-References: <20170706140042.5029-1-o.rempel@pengutronix.de>
- <20170706140042.5029-3-o.rempel@pengutronix.de>
- <1499350371.23968.4.camel@pengutronix.de>
-In-Reply-To: <1499350371.23968.4.camel@pengutronix.de>
-
---VqrD256bgGUp4jKKRJWJfFMJJfAjLf71t
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-
-Am 06.07.2017 um 16:12 schrieb Lucas Stach:
-> Am Donnerstag, den 06.07.2017, 16:00 +0200 schrieb Oleksij Rempel:
->> This patch is providing an optional power off handler
->> which will configure standby state of the PMIC to disable all power li=
-nes.
->>
->> In my power consumption test on RIoTBoard, I got the following results=
-:
->> power off without this patch:   320 mA
->> power off with this patch:      2   mA
->> suspend to ram:                 40  mA
->=20
-> You probably haven't measured suspend to ram with barebox, right? ;)
-
-Oops... yeas :)
-
->>
->> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
->> ---
->>  drivers/regulator/pfuze.c | 87 ++++++++++++++++++++++++++++++++++++++=
-+++++++++
->>  1 file changed, 87 insertions(+)
->>
->> diff --git a/drivers/regulator/pfuze.c b/drivers/regulator/pfuze.c
->> index 2a5fb715ce..94fa03ff15 100644
->> --- a/drivers/regulator/pfuze.c
->> +++ b/drivers/regulator/pfuze.c
->> @@ -26,10 +26,53 @@
->> =20
->>  #include <i2c/i2c.h>
->> =20
->> +#include <poweroff.h>
->> +#include <mach/imx6.h>
->> +
-> This introduces a build dependency of the PFUZE driver to the i.MX6
-> architecture. While I think this is fine, as it keeps things
-> straight-forward and the PFUZE is unlikely to be used on other SoCs,
-> this needs at least a "depends on ARCH_IMX6" in the Kconfig entry.
-
-Ok.
---=20
-Regards,
-Oleksij
-
-
---VqrD256bgGUp4jKKRJWJfFMJJfAjLf71t--
-
---XpPh7UxAXs1MsbjHM5P7vA1ubwhRJaxM0
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iF4EAREIAAYFAlleZpYACgkQHwImuRkmbWnWlQD+OcZumKIgBjMfOw8juXAIAXeb
-g4QD2IcSyfWb2sNQArsA/RDT/VVnLMQuzelHRV2EUU2jzpL3XFMp621FpZ4DjZlW
-=sUFb
------END PGP SIGNATURE-----
-
---XpPh7UxAXs1MsbjHM5P7vA1ubwhRJaxM0--
-
-
---===============4728347854818463935==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
-
---===============4728347854818463935==--
+QW0gRG9ubmVyc3RhZywgZGVuIDA2LjA3LjIwMTcsIDEyOjExICswMjAwIHNjaHJpZWIgVXdlIEts
+ZWluZS1Lw7ZuaWc6Cj4gT24gVGh1LCBKdWwgMDYsIDIwMTcgYXQgMTA6NDk6NDFBTSArMDIwMCwg
+THVjYXMgU3RhY2ggd3JvdGU6Cj4gPiBBbSBNaXR0d29jaCwgZGVuIDA1LjA3LjIwMTcsIDIxOjIz
+ICswMjAwIHNjaHJpZWIgVXdlIEtsZWluZS1Lw7ZuaWc6Cj4gPiA+IFRoaXMgbWFrZXMgdGhlIGlt
+eGNmZyBmaWxlcyBtb3JlIHJlYWRhYmxlIGFuZCBhbHNvIG1ha2VzIGl0IHBvc3NpYmxlIHRvCj4g
+PiA+IHNoYXJlIG1vcmUgYXNzaWdubWVudHMgYmV0d2VlbiBtYWNoaW5lcyB0aGF0IGp1c3QgZGlm
+ZmVyIGJ5IHRoZSB1c2VkCj4gPiA+IFNvQy4gKFRob3VnaCBJIGhhdmUgdG8gYWRtaXQgdGhhdCBp
+biB0aGUgY2FzZXMgY29udmVydGVkIGhlcmUgaXQganVzdAo+ID4gPiBtb3JlIGVhc2lseSBhbGxv
+d3MgdG8gc2VlIHRoYXQgdGhlIFJBTSBjb25maWcgZGlmZmVycyBtb3JlIHRoYW4gcHJvYmFibHkK
+PiA+ID4gbmVjZXNzYXJ5LikKPiA+ID4gCj4gPiA+IFRoaXMgY2hhbmdlIGlzIGludGVuZGVkIHRv
+IGhhdmUgbm8gZWZmZWN0IG9uIHRoZSBidWlsdCBhcnRpZmFjdHMuCj4gPiAKPiA+IERvZXMgdGhl
+ICJpbnRlbmRlZCIgaW4gdGhlIGFib3ZlIHNlbnRlbmNlIG1lYW4geW91IGRpZG4ndCB2YWxpZGF0
+ZSB0aGF0Cj4gPiB0aGUgdGhlIGdlbmVyYXRlZCBmbGFzaCBoZWFkZXJzIGFyZSBlcXVhbCBiZWZv
+cmUgYW5kIGFmdGVyIHRoZSBjaGFuZ2UgaW4KPiA+IGFueSB3YXk/IEFzIG11Y2ggYXMgSSBsaWtl
+IHRoZSBwYXRjaCBvdGhlcndpc2UsIHRoaXMgc291bmRzIHNjYXJ5Lgo+IAo+IEkgdmVyaWZpZWQg
+aXQgZm9yIHNvbWUgb2YgdGhlbS4gSSBjcmVhdGVkIGEgLmNvbmZpZyB0aGF0IGVuYWJsZXMgYWxs
+Cj4gYWZmZWN0ZWQgbWFjaGluZSwgYnV0IG5vdCBmb3IgYWxsIG9mIHRoZW0gYSBjb3JyZXNwb25k
+aW5nIC5kY2Qgd2FzCj4gZ2VuZXJhdGVkLiBUaGUgb25lIHRoYXQgZXhpc3RlZCB0aGVuIGhvd2V2
+ZXIgZGlkbid0IGNoYW5nZSB3aXRoIG15Cj4gcGF0Y2guCj4gCj4gCSQgZ3JlcCBISVBFUiAuY29u
+ZmlnCj4gCUNPTkZJR19NQUNIX0VMVEVDX0hJUEVSQ0FNPXkKPiAKPiAJJCBhcm1tYWtlCj4gCS4u
+Lgo+IAo+IAkkIGZpbmQgLW5hbWUgXCouZGNkIHwgc29ydAo+IAkuL2FyY2gvYXJtL2JvYXJkcy9j
+bS1meDYvZmxhc2gtaGVhZGVyLW14Ni1jbS1meDYuZGNkCj4gCS4vYXJjaC9hcm0vYm9hcmRzL2Rm
+aS1mczcwMC1tNjAvZmxhc2gtaGVhZGVyLWZzNzAwLW02MC02cS1taWNyb24uZGNkCj4gCS4vYXJj
+aC9hcm0vYm9hcmRzL2RmaS1mczcwMC1tNjAvZmxhc2gtaGVhZGVyLWZzNzAwLW02MC02cS1uYW55
+YS5kY2QKPiAJLi9hcmNoL2FybS9ib2FyZHMvZGZpLWZzNzAwLW02MC9mbGFzaC1oZWFkZXItZnM3
+MDAtbTYwLTZzLmRjZAo+IAkuL2FyY2gvYXJtL2JvYXJkcy9lbWJlZHNreS1lOS9mbGFzaC1oZWFk
+ZXItZTkuZGNkCj4gCS4vYXJjaC9hcm0vYm9hcmRzL2VtYmVzdC1yaW90Ym9hcmQvZmxhc2gtaGVh
+ZGVyLWVtYmVzdC1yaW90Ym9hcmQuZGNkCj4gCS4vYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1t
+eDYtc2FicmVsaXRlL2ZsYXNoLWhlYWRlci1teDYtc2FicmVsaXRlLmRjZAo+IAkuL2FyY2gvYXJt
+L2JvYXJkcy9mcmVlc2NhbGUtbXg2LXNhYnJlc2QvZmxhc2gtaGVhZGVyLW14Ni1zYWJyZXNkLmRj
+ZAo+IAkuL2FyY2gvYXJtL2JvYXJkcy9nazgwMi9mbGFzaC1oZWFkZXIuZGNkCj4gCS4vYXJjaC9h
+cm0vYm9hcmRzL3RlY2huZXhpb24tcGljby1ob2JiaXQvZmxhc2gtaGVhZGVyLWlteDZ1bC1waWNv
+LWhvYmJpdC0yNTYuZGNkCj4gCS4vYXJjaC9hcm0vYm9hcmRzL3RlY2huZXhpb24tcGljby1ob2Ji
+aXQvZmxhc2gtaGVhZGVyLWlteDZ1bC1waWNvLWhvYmJpdC01MTIuZGNkCj4gCS4vYXJjaC9hcm0v
+Ym9hcmRzL3RlY2huZXhpb24td2FuZGJvYXJkL2ZsYXNoLWhlYWRlci10ZWNobmV4aW9uLXdhbmRi
+b2FyZC5kY2QKPiAJLi9hcmNoL2FybS9ib2FyZHMvdHFtYTZ4L2ZsYXNoLWhlYWRlci10cW1hNmRs
+LmRjZAo+IAkuL2FyY2gvYXJtL2JvYXJkcy90cW1hNngvZmxhc2gtaGVhZGVyLXRxbWE2cS5kY2QK
+PiAJLi9hcmNoL2FybS9ib2FyZHMvdWRvby9mbGFzaC1oZWFkZXItbXg2LXVkb28uZGNkCj4gCS4v
+YXJjaC9hcm0vYm9hcmRzL3ZhcmlzY2l0ZS1teDYvZmxhc2gtaGVhZGVyLXZhcmlzY2l0ZS5kY2QK
+ClRob3NlIGFyZW4ndCB1c2VkIGFueW1vcmUgYW5kIGFyZSBqdXN0IHRoZSByZXN1bHQgb2YgbWlz
+c2luZyBqYW5pdG9yaWFsCndvcmsgdG8gdGhlIGJvYXJkIE1ha2VmaWxlcy4KCj4gCj4gbWlzc2lu
+ZyAoYW5kIHNvIHVuY2hlY2tlZCkgYXJlOgo+IAo+IAlmbGFzaC1oZWFkZXItZWx0ZWMtaGlwZXJj
+YW0uaW14Y2ZnCj4gCWthcm8tdHg2eC8qCgpXaGF0IHlvdSBuZWVkIHRvIGxvb2sgZm9yIGlzIHNv
+bWV0aGluZyBsaWtlCiJhcmNoL2FybS9ib2FyZHMvdHFtYTZ4Ly5mbGFzaC1oZWFkZXItdHFtYTZx
+LmRjZC5kY2QudG1wIiB3aGljaCBpcwpnZW5lcmF0ZWQgZnJvbSB0aGUgZGVwZW5kZW5jaWVzIGlu
+IGltYWdlcy9NYWtlZmlsZS5pbXgKClJlZ2FyZHMsCkx1Y2FzCgoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
+eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
+bGlzdGluZm8vYmFyZWJveAo=
