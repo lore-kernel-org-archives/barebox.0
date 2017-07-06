@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dT3lF-0006Es-L6
- for barebox@lists.infradead.org; Thu, 06 Jul 2017 10:11:53 +0000
-Date: Thu, 6 Jul 2017 12:11:26 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20170706101126.lb23q2t3v4c5mqh5@pengutronix.de>
-References: <20170705192328.14900-1-u.kleine-koenig@pengutronix.de>
- <1499330981.22075.48.camel@pengutronix.de>
+ id 1dTB5w-0006Xq-OW
+ for barebox@lists.infradead.org; Thu, 06 Jul 2017 18:01:42 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu,  6 Jul 2017 20:01:12 +0200
+Message-Id: <20170706180112.32540-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1499330981.22075.48.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,87 +15,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: imx: use register defines in imxcfg files instead
- of plain numbers
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] crypto: digest: Fix digesting over memory chunks > 4096 bytes
+To: barebox@lists.infradead.org
 
-On Thu, Jul 06, 2017 at 10:49:41AM +0200, Lucas Stach wrote:
-> Am Mittwoch, den 05.07.2017, 21:23 +0200 schrieb Uwe Kleine-K=F6nig:
-> > This makes the imxcfg files more readable and also makes it possible to
-> > share more assignments between machines that just differ by the used
-> > SoC. (Though I have to admit that in the cases converted here it just
-> > more easily allows to see that the RAM config differs more than probably
-> > necessary.)
-> > =
-
-> > This change is intended to have no effect on the built artifacts.
-> =
-
-> Does the "intended" in the above sentence mean you didn't validate that
-> the the generated flash headers are equal before and after the change in
-> any way? As much as I like the patch otherwise, this sounds scary.
-
-I verified it for some of them. I created a .config that enables all
-affected machine, but not for all of them a corresponding .dcd was
-generated. The one that existed then however didn't change with my
-patch.
-
-	$ grep HIPER .config
-	CONFIG_MACH_ELTEC_HIPERCAM=3Dy
-
-	$ armmake
-	...
-
-	$ find -name \*.dcd | sort
-	./arch/arm/boards/cm-fx6/flash-header-mx6-cm-fx6.dcd
-	./arch/arm/boards/dfi-fs700-m60/flash-header-fs700-m60-6q-micron.dcd
-	./arch/arm/boards/dfi-fs700-m60/flash-header-fs700-m60-6q-nanya.dcd
-	./arch/arm/boards/dfi-fs700-m60/flash-header-fs700-m60-6s.dcd
-	./arch/arm/boards/embedsky-e9/flash-header-e9.dcd
-	./arch/arm/boards/embest-riotboard/flash-header-embest-riotboard.dcd
-	./arch/arm/boards/freescale-mx6-sabrelite/flash-header-mx6-sabrelite.dcd
-	./arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6-sabresd.dcd
-	./arch/arm/boards/gk802/flash-header.dcd
-	./arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-2=
-56.dcd
-	./arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-5=
-12.dcd
-	./arch/arm/boards/technexion-wandboard/flash-header-technexion-wandboard.d=
-cd
-	./arch/arm/boards/tqma6x/flash-header-tqma6dl.dcd
-	./arch/arm/boards/tqma6x/flash-header-tqma6q.dcd
-	./arch/arm/boards/udoo/flash-header-mx6-udoo.dcd
-	./arch/arm/boards/variscite-mx6/flash-header-variscite.dcd
-
-missing (and so unchecked) are:
-
-	flash-header-eltec-hipercam.imxcfg
-	karo-tx6x/*
-	phytec-som-imx6/*
-	zii-imx6q-rdu2/*
-
-even though:
-
-	$ grep -E 'HIPER|TX6|_SOM|RDU2' .config
-	CONFIG_MACH_PHYTEC_SOM_IMX6=3Dy
-	CONFIG_MACH_ELTEC_HIPERCAM=3Dy
-	CONFIG_MACH_TX6X=3Dy
-	CONFIG_MACH_ZII_RDU2=3Dy
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlcmUgYXJlIHR3byBkaWZmZXJlbnQgY2FzZXMgdGhhdCBhcmUgaGFuZGxlZCBpbiBkaWdlc3Rf
+ZmlsZV93aW5kb3c6CgogYSkgdGhlIGZpbGUgdG8gZGlnZXN0IGlzIG1lbW1hcHBhYmxlIChlLmcu
+IC9kZXYvbWVtKQogYikgaXQgaXNuJ3QgKGUuZy4gZmlsZXMgaW4gLykKCkluIGJvdGggY2FzZXMg
+YSBmaWxlIGlzIGRpZ2VzdGVkIGluIGh1bmtzIG9mICh1cCB0bykgNDA5NiBieXRlcy4gQWZ0ZXIK
+ZWFjaCBodW5rIGluIGIpIHRoZSBidWZmZXIgdGhhdCBpcyBmZWQgdG8gZGlnZXN0X3VwZGF0ZSgp
+IGlzIHRoZW4Kb3ZlcndyaXR0ZW4gdXNpbmcgcmVhZCgpIHRvIGdldCB0aGUgbmV4dCBodW5rIHRv
+IGRpZ2VzdC4gSW4gY2FzZSBhKQpob3dldmVyIGl0IHdhcyBmb3Jnb3R0ZW4gdG8gc3RlcCBmb3J3
+YXJkIGluIHRoZSBidWZmZXIgYW5kIGluc3RlYWQgdGhlCnNhbWUgZGF0YSB3YXMgaGFuZGVkIHRv
+IGRpZ2VzdF91cGRhdGUoKSBhZ2FpbiBhbmQgYWdhaW4uCgpTbyB0byBmaXggdGhhdCBpbmNyZWFz
+ZSBidWZmZXIgYnkgdGhlIG51bWJlciBvZiBieXRlcyBhbHJlYWR5IGRpZ2VzdGVkCmZvciBjYXNl
+IGEpIHdoaWNoIGlzIGNoYXJhY3Rlcml6ZWQgYnkgZmxhZ3MgPT0gMC4KClNpZ25lZC1vZmYtYnk6
+IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQpI
+ZWxsbywKCnRoaXMgaXMgdGhlIG9idmlvdXMgYW5kIG1pbmltYWwgcGF0Y2ggdG8gZml4IHRoaXMg
+aXNzdWUuIE1heWJlIGl0IGlzCndvcnRoIHRvIHNpbXBsaWZ5IHRoZSBmdW5jdGlvbiBieSBzcGxp
+dHRpbmcgaXQgaW4gdHdvIHdoZXJlIGVhY2ggb25lCmhhbmRsZXMgb25lIG9mIHRoZSBjYXNlcyBh
+Ym92ZS4KCkJlc3QgcmVnYXJkcwpVd2UKCiBjcnlwdG8vZGlnZXN0LmMgfCAzICsrKwogMSBmaWxl
+IGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2NyeXB0by9kaWdlc3QuYyBi
+L2NyeXB0by9kaWdlc3QuYwppbmRleCA3YThjM2MwOTJkN2QuLmJjNmRlMGI5OGY0NiAxMDA2NDQK
+LS0tIGEvY3J5cHRvL2RpZ2VzdC5jCisrKyBiL2NyeXB0by9kaWdlc3QuYwpAQCAtMjcyLDYgKzI3
+Miw5IEBAIGludCBkaWdlc3RfZmlsZV93aW5kb3coc3RydWN0IGRpZ2VzdCAqZCwgY29uc3QgY2hh
+ciAqZmlsZW5hbWUsCiAJCQlnb3RvIG91dF9mcmVlOwogCQlzaXplIC09IG5vdzsKIAkJbGVuICs9
+IG5vdzsKKworCQlpZiAoIWZsYWdzKQorCQkJYnVmICs9IG5vdzsKIAl9CiAKIAlpZiAoc2lnKQot
+LSAKMi4xMS4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
