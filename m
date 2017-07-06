@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dT6Fb-0000XA-DS
- for barebox@lists.infradead.org; Thu, 06 Jul 2017 12:51:21 +0000
-Message-ID: <1499345180.22075.58.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu, 06 Jul 2017 14:46:20 +0200
-In-Reply-To: <20170705183315.GB17038@ravnborg.org>
-References: <20170705182747.GB13920@ravnborg.org>
- <20170705183315.GB17038@ravnborg.org>
-Mime-Version: 1.0
+ id 1dT7is-0005EV-P6
+ for barebox@lists.infradead.org; Thu, 06 Jul 2017 14:25:40 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Thu,  6 Jul 2017 16:25:05 +0200
+Message-Id: <20170706142506.790-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,87 +14,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] gpio: fix null pointer exception when there is no
- oftree
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: barebox@lists.infradead.org, Alexander Kurz <akurz@blala.de>, Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 1/2] scripts: socfpga_get_sequencer: update importer
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Am Mittwoch, den 05.07.2017, 20:33 +0200 schrieb Sam Ravnborg:
-> From d10f426e1b8cec7de257dabf59e7fe53a591b3c1 Mon Sep 17 00:00:00 2001
-> From: Sam Ravnborg <srn@skov.dk>
-> Date: Mon, 3 Jul 2017 22:07:41 +0200
-> Subject: [PATCH 2/3] gpio: fix null pointer exception when there is no oftree
-> 
-> In a system with oftree support enabled but with no oftree the
-> of_gpiochip_scan_hogs() would fail due to device_node equals NULL.
-> 
-> Check device_node and return with 0 in this situation, as this
-> mirrors what would have happened before we added support for gpio-hogs.
-> 
-> Use IS_ENABLED(CONFIG_OFDEVICE) to teach compiler to leave
-> out the of_* specific functions if not needed.
-> 
-> Fixes: 37e6bee7 ("gpiolib: Add support for GPIO "hog" nodes")
-> Signed-off-by: Alexander Kurz <akurz@blala.de>
-> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> ---
->  drivers/gpio/gpiolib.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> index a3e17ada0..2bd8ef2a8 100644
-> --- a/drivers/gpio/gpiolib.c
-> +++ b/drivers/gpio/gpiolib.c
-> @@ -379,6 +379,9 @@ static int of_gpiochip_scan_hogs(struct gpio_chip *chip)
->  	struct device_node *np;
->  	int ret, i;
->  
-> +	if (!chip->dev->device_node)
-> +		return 0;
-> +
->  	for_each_available_child_of_node(chip->dev->device_node, np) {
->  		if (!of_property_read_bool(np, "gpio-hog"))
->  			continue;
-> @@ -416,7 +419,10 @@ int gpiochip_add(struct gpio_chip *chip)
->  	for (i = chip->base; i < chip->base + chip->ngpio; i++)
->  		gpio_desc[i].chip = chip;
->  
-> -	return of_gpiochip_scan_hogs(chip);
-> +	if (IS_ENABLED(CONFIG_OFDEVICE))
-> +		return of_gpiochip_scan_hogs(chip);
-> +	else
-> +		return 0;
->  }
->  
->  void gpiochip_remove(struct gpio_chip *chip)
+Adjust two header files that where renamed in the meantime.
+While at it, also remove trailing whitespace and cleanup the
+script a little.
 
-I think this can be simplified to:
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ scripts/socfpga_get_sequencer | 25 +++++++++----------------
+ 1 file changed, 9 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index a3e17ada0d39..1a373ef149a5 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -379,6 +379,9 @@ static int of_gpiochip_scan_hogs(struct gpio_chip
-*chip)
-        struct device_node *np;
-        int ret, i;
-
-+       if (!IS_ENABLED(CONFIG_OFDEVICE) || !chip->dev->device_node)
-+               return 0;
+diff --git a/scripts/socfpga_get_sequencer b/scripts/socfpga_get_sequencer
+index e0f2e6de2abd..36f67498bcbb 100755
+--- a/scripts/socfpga_get_sequencer
++++ b/scripts/socfpga_get_sequencer
+@@ -41,14 +41,18 @@ copy_source() {
+ 	sed -i 's/alt_8/int8_t/g' $tgt
+ 	sed -i 's/#include "alt_types.h"//g' $tgt
+ 
+-	echo "	Fixing include pathes..."
++	echo "	Fixing include paths..."
+ 	# Fix include pathes
+-	sed -i 's/#include <sdram.h>/#include <mach\/sdram.h>/g' $tgt
++	sed -i 's/#include <sdram.h>/#include <mach\/cyclone5-sdram.h>/g' $tgt
+ 	sed -i 's/#include "sequencer_auto.h"//g' $tgt
++	sed -i 's/#include "sequencer.h"/#include "cyclone5-sequencer.h"/g' $tgt
+ 
+ 	echo "	Automated readability fixup..."
+ 	indent -npro -kr -i8 -ts8 -sob -l100 -ss -ncs -cp1 -il0 $tgt
+ 
++	echo "  Whitespace cleanup..."
++	sed -i 's/[ \t]\+$//' $tgt
 +
-        for_each_available_child_of_node(chip->dev->device_node, np) {
-                if (!of_property_read_bool(np, "gpio-hog"))
-                        continue;
-
-The optimizer should be able to work this out. Can you check that this
-works for you? No need to resend, if it works I'll just commit this.
-
-Regards,
-Lucas
+ 	echo "  Running coccinelle cleanups..."
+ 	spatch -sp_file scripts/coccinelle/misc/altera_sequencer.cocci -in_place arch/arm/mach-socfpga/include/mach
+ 
+@@ -61,19 +65,10 @@ copy_source() {
+ 	sed -i 's/^static void rw_mgr_decr_vfifo_auto(uint32_t grp);$//g' $tgt
+ }
+ 
+-copy_source ${ubootsrc}/board/altera/socfpga/sdram/sequencer.c arch/arm/mach-socfpga/include/mach/sequencer.c
+-sed -i 's/static int sdram_calibration(void)/static int socfpga_mem_calibration(void)/g' arch/arm/mach-socfpga/include/mach/sequencer.c
+-
+-cat <<'EOF' > arch/arm/mach-socfpga/include/mach/sequencer_defines.h
+-#define TINIT_CNTR1_VAL 32
+-#define TINIT_CNTR2_VAL 32
+-#define TINIT_CNTR0_VAL 99
+-#define TRESET_CNTR1_VAL 99
+-#define TRESET_CNTR2_VAL 10
+-#define TRESET_CNTR0_VAL 99
+-EOF
++copy_source ${ubootsrc}/board/altera/socfpga/sdram/sequencer.c arch/arm/mach-socfpga/include/mach/cyclone5-sequencer.c
++sed -i 's/static int sdram_calibration(void)/static int socfpga_mem_calibration(void)/g' arch/arm/mach-socfpga/include/mach/cyclone5-sequencer.c
+ 
+-copy_source ${ubootsrc}/board/altera/socfpga/sdram/sequencer.h arch/arm/mach-socfpga/include/mach/sequencer.h
++copy_source ${ubootsrc}/board/altera/socfpga/sdram/sequencer.h arch/arm/mach-socfpga/include/mach/cyclone5-sequencer.h
+ copy_source ${ubootsrc}/board/altera/socfpga/sdram/tclrpt.h arch/arm/mach-socfpga/include/mach/tclrpt.h
+ copy_source ${ubootsrc}/board/altera/socfpga/sdram/sdram_io.h arch/arm/mach-socfpga/include/mach/sdram_io.h
+ cat <<'EOF' >> arch/arm/mach-socfpga/include/mach/sdram_io.h
+@@ -85,7 +80,5 @@ cat <<'EOF' >> arch/arm/mach-socfpga/include/mach/sdram_io.h
+ EOF
+ copy_source ${ubootsrc}/board/altera/socfpga/sdram/system.h arch/arm/mach-socfpga/include/mach/system.h
+ 
+-#unifdef -f ${sequencer_defines} ${ubootsrc}/board/altera/socfpga/sdram/tclrpt.c -o arch/arm/mach-socfpga/include/mach/tclrpt.c
+-
+ echo "DONE"
+ 
+-- 
+2.11.0
 
 
 _______________________________________________
