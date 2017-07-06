@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dTS8j-0006hb-0e
- for barebox@lists.infradead.org; Fri, 07 Jul 2017 12:13:46 +0000
-From: Sam Ravnborg <sam@ravnborg.org>
-Date: Fri,  7 Jul 2017 14:12:33 +0200
-Message-Id: <20170707121242.18499-14-sam@ravnborg.org>
-In-Reply-To: <20170707121000.GA16920@ravnborg.org>
-References: <20170707121000.GA16920@ravnborg.org>
+ id 1dTDoH-0000W6-Fi
+ for barebox@lists.infradead.org; Thu, 06 Jul 2017 20:55:40 +0000
+Date: Thu, 6 Jul 2017 22:53:38 +0200 (CEST)
+From: Alexander Kurz <akurz@blala.de>
+In-Reply-To: <1499345180.22075.58.camel@pengutronix.de>
+Message-ID: <alpine.DEB.2.00.1707062233390.12561@blala.de>
+References: <20170705182747.GB13920@ravnborg.org>
+ <20170705183315.GB17038@ravnborg.org>
+ <1499345180.22075.58.camel@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,107 +19,97 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/23] at91: delete unused at91sam9263_lowlevel_init.c
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>
+Subject: Re: [PATCH 2/3] gpio: fix null pointer exception when there is no
+ oftree
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org, Sam Ravnborg <sam@ravnborg.org>, =?ISO-8859-15?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 
-With the last users gone delete it
 
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
----
- arch/arm/mach-at91/Kconfig                     |  2 --
- arch/arm/mach-at91/Makefile                    |  1 -
- arch/arm/mach-at91/at91sam9263_lowlevel_init.c | 48 --------------------------
- 3 files changed, 51 deletions(-)
- delete mode 100644 arch/arm/mach-at91/at91sam9263_lowlevel_init.c
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 89ef5bfa7..225b4735b 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -37,8 +37,6 @@ config HAVE_AT91_BOOTSTRAP
- # as implemented in the *lowlevel_init.c files
- config AT91SAM9260_LWL
- 	bool
--config AT91SAM9263_LWL
--	bool
- config AT91SAM9G45_LWL
- 	bool
- config AT91SAM9N12_LWL
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 8293f279a..c044bfe26 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -9,7 +9,6 @@ obj-$(CONFIG_CMD_AT91_BOOT_TEST) += boot_test_cmd.o
- obj-$(CONFIG_AT91_BOOTSTRAP) += bootstrap.o
- 
- lwl-$(CONFIG_AT91SAM9260_LWL) += at91sam9260_lowlevel_init.o
--lwl-$(CONFIG_AT91SAM9263_LWL) += at91sam9263_lowlevel_init.o
- lwl-$(CONFIG_AT91SAM9G45_LWL) += at91sam9g45_lowlevel_init.o
- lwl-$(CONFIG_AT91SAM9N12_LWL) += at91sam9n12_lowlevel_init.o
- lwl-$(CONFIG_AT91RM9200_LWL) += at91rm9200_lowlevel_init.o
-diff --git a/arch/arm/mach-at91/at91sam9263_lowlevel_init.c b/arch/arm/mach-at91/at91sam9263_lowlevel_init.c
-deleted file mode 100644
-index 0be84551f..000000000
---- a/arch/arm/mach-at91/at91sam9263_lowlevel_init.c
-+++ /dev/null
-@@ -1,48 +0,0 @@
--/*
-- * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-- *
-- * Under GPLv2
--  */
--
--#define __LOWLEVEL_INIT__
--
--#include <common.h>
--#include <asm/system.h>
--#include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
--#include <mach/hardware.h>
--#include <mach/at91_pmc.h>
--#include <mach/at91_pio.h>
--#include <mach/at91_rstc.h>
--#include <mach/at91_wdt.h>
--#include <mach/at91sam9_matrix.h>
--#include <mach/at91sam9_sdramc.h>
--#include <mach/at91sam9_smc.h>
--#include <mach/at91_lowlevel_init.h>
--#include <mach/io.h>
--#include <init.h>
--#include <linux/sizes.h>
--
--void __bare_init at91sam9263_lowlevel_init(void)
--{
--	struct at91sam926x_lowlevel_cfg cfg;
--
--	cfg.pio = IOMEM(AT91SAM9263_BASE_PIOD);
--	cfg.sdramc = IOMEM(AT91SAM9263_BASE_SDRAMC0);
--	cfg.ebi_pio_is_peripha = true;
--	cfg.matrix_csa = AT91_MATRIX_EBI0CSA;
--
--	at91sam926x_lowlevel_init(&cfg);
--
--	barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(cfg.sdramc),
--	                  NULL);
--}
--
--void __naked __bare_init barebox_arm_reset_vector(void)
--{
--	arm_cpu_lowlevel_init();
--
--	arm_setup_stack(AT91SAM9263_SRAM0_BASE + AT91SAM9263_SRAM0_SIZE - 16);
--
--	at91sam9263_lowlevel_init();
--}
--- 
-2.12.0
+On Thu, 6 Jul 2017, Lucas Stach wrote:
 
+> Am Mittwoch, den 05.07.2017, 20:33 +0200 schrieb Sam Ravnborg:
+> > From d10f426e1b8cec7de257dabf59e7fe53a591b3c1 Mon Sep 17 00:00:00 2001
+> > From: Sam Ravnborg <srn@skov.dk>
+> > Date: Mon, 3 Jul 2017 22:07:41 +0200
+> > Subject: [PATCH 2/3] gpio: fix null pointer exception when there is no oftree
+> > 
+> > In a system with oftree support enabled but with no oftree the
+> > of_gpiochip_scan_hogs() would fail due to device_node equals NULL.
+> > 
+> > Check device_node and return with 0 in this situation, as this
+> > mirrors what would have happened before we added support for gpio-hogs.
+> > 
+> > Use IS_ENABLED(CONFIG_OFDEVICE) to teach compiler to leave
+> > out the of_* specific functions if not needed.
+> > 
+> > Fixes: 37e6bee7 ("gpiolib: Add support for GPIO "hog" nodes")
+> > Signed-off-by: Alexander Kurz <akurz@blala.de>
+> > Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> > ---
+> >  drivers/gpio/gpiolib.c | 8 +++++++-
+> >  1 file changed, 7 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> > index a3e17ada0..2bd8ef2a8 100644
+> > --- a/drivers/gpio/gpiolib.c
+> > +++ b/drivers/gpio/gpiolib.c
+> > @@ -379,6 +379,9 @@ static int of_gpiochip_scan_hogs(struct gpio_chip *chip)
+> >  	struct device_node *np;
+> >  	int ret, i;
+> >  
+> > +	if (!chip->dev->device_node)
+> > +		return 0;
+> > +
+> >  	for_each_available_child_of_node(chip->dev->device_node, np) {
+> >  		if (!of_property_read_bool(np, "gpio-hog"))
+> >  			continue;
+> > @@ -416,7 +419,10 @@ int gpiochip_add(struct gpio_chip *chip)
+> >  	for (i = chip->base; i < chip->base + chip->ngpio; i++)
+> >  		gpio_desc[i].chip = chip;
+> >  
+> > -	return of_gpiochip_scan_hogs(chip);
+> > +	if (IS_ENABLED(CONFIG_OFDEVICE))
+> > +		return of_gpiochip_scan_hogs(chip);
+> > +	else
+> > +		return 0;
+> >  }
+> >  
+> >  void gpiochip_remove(struct gpio_chip *chip)
+> 
+> I think this can be simplified to:
+> 
+> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> index a3e17ada0d39..1a373ef149a5 100644
+> --- a/drivers/gpio/gpiolib.c
+> +++ b/drivers/gpio/gpiolib.c
+> @@ -379,6 +379,9 @@ static int of_gpiochip_scan_hogs(struct gpio_chip
+> *chip)
+>         struct device_node *np;
+>         int ret, i;
+> 
+> +       if (!IS_ENABLED(CONFIG_OFDEVICE) || !chip->dev->device_node)
+> +               return 0;
+> +
+>         for_each_available_child_of_node(chip->dev->device_node, np) {
+>                 if (!of_property_read_bool(np, "gpio-hog"))
+>                         continue;
+> 
+> The optimizer should be able to work this out. Can you check that this
+> works for you? No need to resend, if it works I'll just commit this.
+This works perfecty fine with gcc-5.2 and gcc-4.6
+(although gcc-4.6 compatibilty broke with commit 4ef026c3048)
+
+Thanks, Alexander
+
+> 
+> Regards,
+> Lucas
+> 
 
 _______________________________________________
 barebox mailing list
