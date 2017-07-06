@@ -1,20 +1,25 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dSrN8-0004uA-Np
- for barebox@lists.infradead.org; Wed, 05 Jul 2017 20:58:08 +0000
-Received: from ravnborg.org (unknown [188.228.89.252])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by asavdk3.altibox.net (Postfix) with ESMTPS id 404E520037
- for <barebox@lists.infradead.org>; Wed,  5 Jul 2017 22:57:45 +0200 (CEST)
-Date: Wed, 5 Jul 2017 22:57:44 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170705205744.GE19343@ravnborg.org>
-References: <20170705204935.GA20093@ravnborg.org>
+ id 1dT1GQ-0004pj-7L
+ for barebox@lists.infradead.org; Thu, 06 Jul 2017 07:31:53 +0000
+Received: from [2001:67c:670:100:5054:ff:fe2a:3aa] (helo=pty.hi.pengutronix.de)
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
+ (envelope-from <mol@pengutronix.de>) id 1dT1Ft-0002al-2s
+ for barebox@lists.infradead.org; Thu, 06 Jul 2017 09:31:17 +0200
+Received: from mol by pty.hi.pengutronix.de with local (Exim 4.89)
+ (envelope-from <mol@pengutronix.de>) id 1dT1Fs-0005JS-RT
+ for barebox@lists.infradead.org; Thu, 06 Jul 2017 09:31:16 +0200
+Date: Thu, 6 Jul 2017 09:31:16 +0200
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Message-ID: <20170706073116.jkfwdmxibbgopmmz@pengutronix.de>
+References: <20170705105637.4484-1-s.trumtrar@pengutronix.de>
+ <20170705105637.4484-2-s.trumtrar@pengutronix.de>
+ <1499252725.22075.6.camel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170705204935.GA20093@ravnborg.org>
+In-Reply-To: <1499252725.22075.6.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,96 +32,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] pm9261: move reset vector to board code
+Subject: Re: [PATCH 2/8] common: efi: do not use undefined kconfig option
 To: barebox@lists.infradead.org
 
-From 75592860c696b241ee788f19ea7708628636cef9 Mon Sep 17 00:00:00 2001
-From: Sam Ravnborg <srn@skov.dk>
-Date: Wed, 5 Jul 2017 22:27:43 +0200
-Subject: [PATCH 5/5] pm9261: move reset vector to board code
+On Wed, Jul 05, 2017 at 01:05:25PM +0200, Lucas Stach wrote:
+> Am Mittwoch, den 05.07.2017, 12:56 +0200 schrieb Steffen Trumtrar:
+> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> > ---
+> >  common/efi/efi.c | 3 +--
+> >  1 file changed, 1 insertion(+), 2 deletions(-)
+> > 
+> > diff --git a/common/efi/efi.c b/common/efi/efi.c
+> > index 05c58250f4a7..f924385958e1 100644
+> > --- a/common/efi/efi.c
+> > +++ b/common/efi/efi.c
+> > @@ -266,8 +266,7 @@ static int efi_console_init(void)
+> >  
+> >  	add_generic_device("efi-stdio", DEVICE_ID_SINGLE, NULL, 0 , 0, 0, NULL);
+> >  
+> > -	if (IS_ENABLED(CONFIG_ARCH_EFI_REGISTER_COM1))
+> 
+> It seems we lost this option when moving arch/efi to arch/x86. As
+> unconditionally enabling the serial console may break some boards, the
+> proper fix should be to bring back the Kconfig option.
 
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
----
- arch/arm/boards/pm9261/lowlevel_init.c | 39 +++++++++++++++++++++++++---------
- arch/arm/mach-at91/Kconfig             |  2 --
- 2 files changed, 29 insertions(+), 12 deletions(-)
+I think that option is pretty much redundant. This is x86. There is no
+device tree to enable devices.
+There are only two possible scenarios: use ns16550 or not. Building the
+driver and maybe use it does not exist. And we can use
+CONFIG_DRIVER_SERIAL_NS16550 to choose.
 
-diff --git a/arch/arm/boards/pm9261/lowlevel_init.c b/arch/arm/boards/pm9261/lowlevel_init.c
-index 91a64b415..a4cb8af69 100644
---- a/arch/arm/boards/pm9261/lowlevel_init.c
-+++ b/arch/arm/boards/pm9261/lowlevel_init.c
-@@ -4,22 +4,16 @@
-  * Under GPLv2
-  */
- 
--#include <common.h>
--#include <init.h>
--#include <mach/hardware.h>
--#include <mach/at91_rstc.h>
--#include <mach/at91_wdt.h>
--#include <mach/at91_pmc.h>
--#include <mach/at91sam9_smc.h>
--#include <mach/at91sam9_sdramc.h>
-+#include <asm/barebox-arm.h>
-+
-+#include <mach/at91sam926x_board_init.h>
- #include <mach/at91sam9_matrix.h>
--#include <mach/at91_lowlevel_init.h>
- 
- #define MASTER_PLL_DIV		15
- #define MASTER_PLL_MUL		162
- #define MAIN_PLL_DIV		2
- 
--void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_cfg *cfg)
-+static void __bare_init pm9261_board_config(struct at91sam926x_board_cfg *cfg)
- {
- 	/* Disable Watchdog */
- 	cfg->wdt_mr =
-@@ -100,3 +94,28 @@ void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_c
- 		AT91_RSTC_RSTTYP_WAKEUP |
- 		AT91_RSTC_RSTTYP_WATCHDOG;
- }
-+
-+static void __bare_init pm9261_init(void)
-+{
-+	struct at91sam926x_board_cfg cfg;
-+
-+	cfg.pio = IOMEM(AT91SAM9261_BASE_PIOC);
-+	cfg.sdramc = IOMEM(AT91SAM9261_BASE_SDRAMC);
-+	cfg.ebi_pio_is_peripha = false;
-+	cfg.matrix_csa = AT91_MATRIX_EBICSA;
-+
-+	pm9261_board_config(&cfg);
-+	at91sam926x_board_init(&cfg);
-+
-+	barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(cfg.sdramc),
-+	                  NULL);
-+}
-+
-+void __naked __bare_init barebox_arm_reset_vector(void)
-+{
-+	arm_cpu_lowlevel_init();
-+
-+	arm_setup_stack(AT91SAM9261_SRAM_BASE + AT91SAM9261_SRAM_SIZE - 16);
-+
-+	pm9261_init();
-+}
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 6ae794f06..3e41fe70d 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -339,8 +339,6 @@ config MACH_PM9261
- 	bool "Ronetix PM9261"
- 	select HAS_DM9000
- 	select HAVE_AT91_BOOTSTRAP
--	select AT91SAM9261_LWL
--	select AT91SAM926X_LWL
- 	help
- 	  Say y here if you are using the Ronetix PM9261 Board
- 
+Somewhat unrelated: I think this driver should be avoided if possible. I'm
+quite certain, that the original use-case for this was a bug in barebox and
+not a broken EFI serial driver.
+
+Michael
+
+> > -		add_ns16550_device(0, 0x3f8, 0x10, IORESOURCE_IO | IORESOURCE_MEM_8BIT,
+> > +	add_ns16550_device(0, 0x3f8, 0x10, IORESOURCE_IO | IORESOURCE_MEM_8BIT,
+> >  				&ns16550_plat);
+> >  
+> >  	return 0;
+
 -- 
-2.12.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
