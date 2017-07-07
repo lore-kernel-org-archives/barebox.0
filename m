@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dTOFa-0003TD-IJ
- for barebox@lists.infradead.org; Fri, 07 Jul 2017 08:04:34 +0000
+ id 1dTOFh-0003TE-9v
+ for barebox@lists.infradead.org; Fri, 07 Jul 2017 08:04:40 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Fri,  7 Jul 2017 10:04:00 +0200
-Message-Id: <20170707080401.2785-3-o.rempel@pengutronix.de>
+Date: Fri,  7 Jul 2017 10:04:01 +0200
+Message-Id: <20170707080401.2785-4-o.rempel@pengutronix.de>
 In-Reply-To: <20170707080401.2785-1-o.rempel@pengutronix.de>
 References: <20170707080401.2785-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,104 +21,130 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/3] ARM: i.MX: provide handler for power off over standby
+Subject: [PATCH v2 3/3] regulator: pfuze: provide power over standby handler
 To: barebox@lists.infradead.org, l.stach@pengutronix.de
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-One of the Freescale recommended sequences for power off with external
-PMIC is the following:
-...
-3.  SoC is programming PMIC for power off when standby is asserted.
-4.  In CCM STOP mode, Standby is asserted, PMIC gates SoC supplies.
+This patch is providing an optional power off handler
+which will configure standby state of the PMIC to disable all power lines.
 
-See:
-http://www.nxp.com/assets/documents/data/en/reference-manuals/IMX6DQRM.pdf
-page 5083
-
-This patch implements step 4. of this sequence.
+In my power consumption test on RIoTBoard, I got the following results:
+power off without this patch:   320 mA
+power off with this patch:      2   mA
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/mach-imx/imx6.c              | 49 +++++++++++++++++++++++++++++++++++
- arch/arm/mach-imx/include/mach/imx6.h |  1 +
- 2 files changed, 50 insertions(+)
+ drivers/regulator/Kconfig |  1 +
+ drivers/regulator/pfuze.c | 67 +++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 68 insertions(+)
 
-diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-index 5afbf6b30f..96c1f64093 100644
---- a/arch/arm/mach-imx/imx6.c
-+++ b/arch/arm/mach-imx/imx6.c
-@@ -25,6 +25,19 @@
- #include <asm/mmu.h>
- #include <asm/cache-l2x0.h>
+diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
+index 6a6c6d2248..92db8dc0e0 100644
+--- a/drivers/regulator/Kconfig
++++ b/drivers/regulator/Kconfig
+@@ -19,5 +19,6 @@ config REGULATOR_BCM283X
+ config REGULATOR_PFUZE
+ 	bool "Freescale PFUZE100/200/3000 regulator driver"
+ 	depends on I2C
++	depends on ARCH_IMX6
+ 
+ endif
+diff --git a/drivers/regulator/pfuze.c b/drivers/regulator/pfuze.c
+index 2a5fb715ce..dc41e8f55b 100644
+--- a/drivers/regulator/pfuze.c
++++ b/drivers/regulator/pfuze.c
+@@ -26,10 +26,33 @@
+ 
+ #include <i2c/i2c.h>
  
 +#include <poweroff.h>
-+#include <mach/imx6-regs.h>
-+#include <io.h>
++#include <mach/imx6.h>
 +
-+#define CLPCR				0x54
-+#define BP_CLPCR_LPM(mode)		((mode) & 0x3)
-+#define BM_CLPCR_LPM			(0x3 << 0)
-+#define BM_CLPCR_SBYOS			(0x1 << 6)
-+#define BM_CLPCR_VSTBY			(0x1 << 8)
-+#define BP_CLPCR_STBY_COUNT		9
-+#define BM_CLPCR_COSC_PWRDOWN		(0x1 << 11)
-+#define BM_CLPCR_BYP_MMDC_CH1_LPM_HS	(0x1 << 21)
+ #define DRIVERNAME		"pfuze"
+ 
+ #define MC13XXX_NUMREGS		0x3f
+ 
++#define PFUZE100_SW1ABMODE	0x23
++#define PFUZE100_SW1CMODE	0x31
++#define PFUZE100_SW2MODE	0x38
++#define PFUZE100_SW3AMODE	0x3f
++#define PFUZE100_SW3BMODE	0x46
++#define PFUZE100_SW4MODE	0x4d
++#define PFUZE100_VGEN1VOL	0x6c
++#define PFUZE100_VGEN2VOL	0x6d
++#define PFUZE100_VGEN3VOL	0x6e
++#define PFUZE100_VGEN4VOL	0x6f
++#define PFUZE100_VGEN5VOL	0x70
++#define PFUZE100_VGEN6VOL	0x71
 +
- void imx6_init_lowlevel(void)
- {
- 	void __iomem *aips1 = (void *)MX6_AIPS1_ON_BASE_ADDR;
-@@ -296,3 +309,39 @@ static int imx6_fixup_cpus_register(void)
- 	return of_register_fixup(imx6_fixup_cpus, NULL);
++#define PFUZE100_SWxMODE_MASK	0xf
++#define PFUZE100_SWxMODE_APS_APS	0x8
++#define PFUZE100_SWxMODE_APS_OFF	0x4
++
++#define PFUZE100_VGENxLPWR	BIT(6)
++#define PFUZE100_VGENxSTBY	BIT(5)
++
+ struct pfuze {
+ 	struct device_d			*dev;
+ 	struct regmap			*map;
+@@ -85,6 +108,46 @@ static int pfuze_i2c_reg_write(void *ctx, unsigned int reg, unsigned int val)
+ 	return ret == 1 ? 0 : ret;
  }
- device_initcall(imx6_fixup_cpus_register);
-+
-+void __noreturn imx6_pm_stby_poweroff(void)
+ 
++static void pfuze_power_off_prepare(struct poweroff_handler *handler)
 +{
-+	void *ccm_base = IOMEM(MX6_CCM_BASE_ADDR);
-+	void *gpc_base = IOMEM(MX6_GPC_BASE_ADDR);
-+	u32 val;
++	dev_info(pfuze_dev->dev, "Configure standy mode for power off");
 +
-+	/*
-+	 * All this is done to get the PMIC_STBY_REQ line high which will
-+	 * cause the PMIC to turn off the i.MX6.
-+	 */
++	/* Switch from default mode: APS/APS to APS/Off */
++	regmap_write_bits(pfuze_dev->map, PFUZE100_SW1ABMODE,
++			  PFUZE100_SWxMODE_MASK, PFUZE100_SWxMODE_APS_OFF);
++	regmap_write_bits(pfuze_dev->map, PFUZE100_SW1CMODE,
++			  PFUZE100_SWxMODE_MASK, PFUZE100_SWxMODE_APS_OFF);
++	regmap_write_bits(pfuze_dev->map, PFUZE100_SW2MODE,
++			  PFUZE100_SWxMODE_MASK, PFUZE100_SWxMODE_APS_OFF);
++	regmap_write_bits(pfuze_dev->map, PFUZE100_SW3AMODE,
++			  PFUZE100_SWxMODE_MASK, PFUZE100_SWxMODE_APS_OFF);
++	regmap_write_bits(pfuze_dev->map, PFUZE100_SW3BMODE,
++			  PFUZE100_SWxMODE_MASK, PFUZE100_SWxMODE_APS_OFF);
++	regmap_write_bits(pfuze_dev->map, PFUZE100_SW4MODE,
++			  PFUZE100_SWxMODE_MASK, PFUZE100_SWxMODE_APS_OFF);
 +
-+	/*
-+	 * First mask all interrupts in the GPC. This is necessary for
-+	 * unknown reasons
-+	 */
-+	writel(0xffffffff, gpc_base + 0x8);
-+	writel(0xffffffff, gpc_base + 0xc);
-+	writel(0xffffffff, gpc_base + 0x10);
-+	writel(0xffffffff, gpc_base + 0x14);
++	regmap_write_bits(pfuze_dev->map, PFUZE100_VGEN1VOL,
++			  PFUZE100_VGENxLPWR | PFUZE100_VGENxSTBY,
++			  PFUZE100_VGENxSTBY);
++	regmap_write_bits(pfuze_dev->map, PFUZE100_VGEN2VOL,
++			  PFUZE100_VGENxLPWR | PFUZE100_VGENxSTBY,
++			  PFUZE100_VGENxSTBY);
++	regmap_write_bits(pfuze_dev->map, PFUZE100_VGEN3VOL,
++			  PFUZE100_VGENxLPWR | PFUZE100_VGENxSTBY,
++			  PFUZE100_VGENxSTBY);
++	regmap_write_bits(pfuze_dev->map, PFUZE100_VGEN4VOL,
++			  PFUZE100_VGENxLPWR | PFUZE100_VGENxSTBY,
++			  PFUZE100_VGENxSTBY);
++	regmap_write_bits(pfuze_dev->map, PFUZE100_VGEN5VOL,
++			  PFUZE100_VGENxLPWR | PFUZE100_VGENxSTBY,
++			  PFUZE100_VGENxSTBY);
++	regmap_write_bits(pfuze_dev->map, PFUZE100_VGEN6VOL,
++			  PFUZE100_VGENxLPWR | PFUZE100_VGENxSTBY,
++			  PFUZE100_VGENxSTBY);
 +
-+	val = readl(ccm_base + CLPCR);
-+
-+	val &= ~BM_CLPCR_LPM;
-+	val |= BP_CLPCR_LPM(2);
-+	val |= 0x3 << BP_CLPCR_STBY_COUNT;
-+	val |= BM_CLPCR_VSTBY;
-+	val |= BM_CLPCR_SBYOS;
-+	val |= BM_CLPCR_BYP_MMDC_CH1_LPM_HS;
-+
-+	writel(val, ccm_base + CLPCR);
-+
-+	asm("wfi");
-+
-+	while(1);
++	imx6_pm_stby_poweroff();
 +}
-diff --git a/arch/arm/mach-imx/include/mach/imx6.h b/arch/arm/mach-imx/include/mach/imx6.h
-index 6ad53433cb..e4633ed5f2 100644
---- a/arch/arm/mach-imx/include/mach/imx6.h
-+++ b/arch/arm/mach-imx/include/mach/imx6.h
-@@ -7,6 +7,7 @@
- #include <mach/revision.h>
++
+ static struct regmap_bus regmap_pfuze_i2c_bus = {
+ 	.reg_write = pfuze_i2c_reg_write,
+ 	.reg_read = pfuze_i2c_reg_read,
+@@ -122,6 +185,10 @@ static int __init pfuze_probe(struct device_d *dev)
+ 	if (pfuze_init_callback)
+ 		pfuze_init_callback(pfuze_dev->map);
  
- void imx6_init_lowlevel(void);
-+void __noreturn imx6_pm_stby_poweroff(void);
++	if (of_property_read_bool(dev->device_node,
++				  "fsl,pmic-stby-poweroff"))
++		return poweroff_handler_register_fn(pfuze_power_off_prepare);
++
+ 	return 0;
+ }
  
- #define IMX6_ANATOP_SI_REV 0x260
- #define IMX6SL_ANATOP_SI_REV 0x280
 -- 
 2.11.0
 
