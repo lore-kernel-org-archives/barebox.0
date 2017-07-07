@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dTS98-0007K5-2t
+ id 1dTS98-0007KG-2y
  for barebox@lists.infradead.org; Fri, 07 Jul 2017 12:14:08 +0000
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Fri,  7 Jul 2017 14:12:39 +0200
-Message-Id: <20170707121242.18499-20-sam@ravnborg.org>
+Date: Fri,  7 Jul 2017 14:12:40 +0200
+Message-Id: <20170707121242.18499-21-sam@ravnborg.org>
 In-Reply-To: <20170707121000.GA16920@ravnborg.org>
 References: <20170707121000.GA16920@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,31 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 20/23] animeo: move reset vector to board code
+Subject: [PATCH 21/23] dss11: move reset vector to board code
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- arch/arm/boards/animeo_ip/Makefile   |  1 +
- arch/arm/boards/animeo_ip/lowlevel.c | 26 ++++++++++++++++++++++++++
- arch/arm/mach-at91/Kconfig           |  1 -
+ arch/arm/boards/dss11/Makefile   |  1 +
+ arch/arm/boards/dss11/lowlevel.c | 26 ++++++++++++++++++++++++++
+ arch/arm/mach-at91/Kconfig       |  1 -
  3 files changed, 27 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/boards/animeo_ip/lowlevel.c
+ create mode 100644 arch/arm/boards/dss11/lowlevel.c
 
-diff --git a/arch/arm/boards/animeo_ip/Makefile b/arch/arm/boards/animeo_ip/Makefile
-index 510b142ff..eef5879cb 100644
---- a/arch/arm/boards/animeo_ip/Makefile
-+++ b/arch/arm/boards/animeo_ip/Makefile
-@@ -1,2 +1,3 @@
+diff --git a/arch/arm/boards/dss11/Makefile b/arch/arm/boards/dss11/Makefile
+index eb072c016..2da0494d4 100644
+--- a/arch/arm/boards/dss11/Makefile
++++ b/arch/arm/boards/dss11/Makefile
+@@ -1 +1,2 @@
  obj-y += init.o
 +lwl-y += lowlevel.o
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-animeo_ip
-diff --git a/arch/arm/boards/animeo_ip/lowlevel.c b/arch/arm/boards/animeo_ip/lowlevel.c
+diff --git a/arch/arm/boards/dss11/lowlevel.c b/arch/arm/boards/dss11/lowlevel.c
 new file mode 100644
 index 000000000..02896856d
 --- /dev/null
-+++ b/arch/arm/boards/animeo_ip/lowlevel.c
++++ b/arch/arm/boards/dss11/lowlevel.c
 @@ -0,0 +1,26 @@
 +/*
 + * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
@@ -74,17 +73,17 @@ index 000000000..02896856d
 +			  NULL);
 +}
 diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index bae049726..abbf9d4a1 100644
+index abbf9d4a1..73be26749 100644
 --- a/arch/arm/mach-at91/Kconfig
 +++ b/arch/arm/mach-at91/Kconfig
-@@ -256,7 +256,6 @@ choice
- 
- config MACH_ANIMEO_IP
- 	bool "Somfy Animeo IP"
+@@ -372,7 +372,6 @@ config MACH_USB_A9G20
+ config MACH_DSS11
+ 	bool "aizo dSS11"
+ 	select HAVE_NAND_ATMEL_BUSWIDTH_16
 -	select AT91SAM9260_LWL
- 
- config MACH_AT91SAM9260EK
- 	bool "Atmel AT91SAM9260-EK"
+ 	help
+ 	  Select this if you are using aizo dSS11
+ 	  that embeds only one SD/MMC slot.
 -- 
 2.12.0
 
