@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dX2hy-0002Sm-6h
- for barebox@lists.infradead.org; Mon, 17 Jul 2017 09:52:56 +0000
-Message-ID: <1500285149.6594.30.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 17 Jul 2017 11:52:29 +0200
+ id 1dTS8L-0006dT-Mj
+ for barebox@lists.infradead.org; Fri, 07 Jul 2017 12:13:21 +0000
+From: Sam Ravnborg <sam@ravnborg.org>
+Date: Fri,  7 Jul 2017 14:12:24 +0200
+Message-Id: <20170707121242.18499-5-sam@ravnborg.org>
 In-Reply-To: <20170707121000.GA16920@ravnborg.org>
 References: <20170707121000.GA16920@ravnborg.org>
-Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,51 +16,96 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/23] at91: move reset vector to board code
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 05/23] pm9261: move reset vector to board code
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Hi Sam,
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+---
+ arch/arm/boards/pm9261/lowlevel_init.c | 39 +++++++++++++++++++++++++---------
+ arch/arm/mach-at91/Kconfig             |  2 --
+ 2 files changed, 29 insertions(+), 12 deletions(-)
 
-Am Freitag, den 07.07.2017, 14:10 +0200 schrieb Sam Ravnborg:
-> The following patchset moves the reset vector
-> for at91 boards from mach-at91 to board code.
-> This is similar to what other boards do and is done to
-> prepare for multi-image and DT support.
-> 
-> The patchset convert all boards and thus clean up the
-> old code that resided in mach-at91/
-> 
-> The first patch have minimal impact, but prepares for a
-> board-by-board conversion.
-> All temporary CONFIG symbols are gone at the end of this series.
-> 
-> I kept Jean-Christophe PLAGNIOL-VILLARD and others
-> copyright in all the created files and did not add
-> copyright myself. The patchset does IMO not add any
-> copyrightable material from my side as this is
-> in reality just moving around code.
-> 
-> The patchset was successfully booted on a AT91SAM9263EK,
-> and all defconfigs was built (expect the ones that failed
-> to build before this patchset was applied).
-> 
-> Changes v1 => v2
-> - converted all boards over
-> - fixed author info
-
-Just to let you know the current status here: While I think you are on
-the right track with this, I'm currently lacking the bandwidth to
-properly review this series. I'm a bit hesitant to just throw it into
--next without any kind of review, so I'm still hoping for others to take
-a look.
-
-Regards,
-Lucas
+diff --git a/arch/arm/boards/pm9261/lowlevel_init.c b/arch/arm/boards/pm9261/lowlevel_init.c
+index 91a64b415..a4cb8af69 100644
+--- a/arch/arm/boards/pm9261/lowlevel_init.c
++++ b/arch/arm/boards/pm9261/lowlevel_init.c
+@@ -4,22 +4,16 @@
+  * Under GPLv2
+  */
+ 
+-#include <common.h>
+-#include <init.h>
+-#include <mach/hardware.h>
+-#include <mach/at91_rstc.h>
+-#include <mach/at91_wdt.h>
+-#include <mach/at91_pmc.h>
+-#include <mach/at91sam9_smc.h>
+-#include <mach/at91sam9_sdramc.h>
++#include <asm/barebox-arm.h>
++
++#include <mach/at91sam926x_board_init.h>
+ #include <mach/at91sam9_matrix.h>
+-#include <mach/at91_lowlevel_init.h>
+ 
+ #define MASTER_PLL_DIV		15
+ #define MASTER_PLL_MUL		162
+ #define MAIN_PLL_DIV		2
+ 
+-void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_cfg *cfg)
++static void __bare_init pm9261_board_config(struct at91sam926x_board_cfg *cfg)
+ {
+ 	/* Disable Watchdog */
+ 	cfg->wdt_mr =
+@@ -100,3 +94,28 @@ void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_c
+ 		AT91_RSTC_RSTTYP_WAKEUP |
+ 		AT91_RSTC_RSTTYP_WATCHDOG;
+ }
++
++static void __bare_init pm9261_init(void)
++{
++	struct at91sam926x_board_cfg cfg;
++
++	cfg.pio = IOMEM(AT91SAM9261_BASE_PIOC);
++	cfg.sdramc = IOMEM(AT91SAM9261_BASE_SDRAMC);
++	cfg.ebi_pio_is_peripha = false;
++	cfg.matrix_csa = AT91_MATRIX_EBICSA;
++
++	pm9261_board_config(&cfg);
++	at91sam926x_board_init(&cfg);
++
++	barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(cfg.sdramc),
++	                  NULL);
++}
++
++void __naked __bare_init barebox_arm_reset_vector(void)
++{
++	arm_cpu_lowlevel_init();
++
++	arm_setup_stack(AT91SAM9261_SRAM_BASE + AT91SAM9261_SRAM_SIZE - 16);
++
++	pm9261_init();
++}
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 6ae794f06..3e41fe70d 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -339,8 +339,6 @@ config MACH_PM9261
+ 	bool "Ronetix PM9261"
+ 	select HAS_DM9000
+ 	select HAVE_AT91_BOOTSTRAP
+-	select AT91SAM9261_LWL
+-	select AT91SAM926X_LWL
+ 	help
+ 	  Say y here if you are using the Ronetix PM9261 Board
+ 
+-- 
+2.12.0
 
 
 _______________________________________________
