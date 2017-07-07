@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dTS98-0007KK-2r
- for barebox@lists.infradead.org; Fri, 07 Jul 2017 12:14:12 +0000
+ id 1dTS8j-0006h7-09
+ for barebox@lists.infradead.org; Fri, 07 Jul 2017 12:13:44 +0000
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Fri,  7 Jul 2017 14:12:41 +0200
-Message-Id: <20170707121242.18499-22-sam@ravnborg.org>
+Date: Fri,  7 Jul 2017 14:12:31 +0200
+Message-Id: <20170707121242.18499-12-sam@ravnborg.org>
 In-Reply-To: <20170707121000.GA16920@ravnborg.org>
 References: <20170707121000.GA16920@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 22/23] telit-evk-pro3: move reset vector to board code
+Subject: [PATCH 12/23] qil-a926x: move reset vector to board code
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- arch/arm/boards/telit-evk-pro3/Makefile   |  1 +
- arch/arm/boards/telit-evk-pro3/lowlevel.c | 26 ++++++++++++++++++++++++++
- arch/arm/mach-at91/Kconfig                |  1 -
- 3 files changed, 27 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/boards/telit-evk-pro3/lowlevel.c
+ arch/arm/boards/qil-a926x/Makefile   |  3 +++
+ arch/arm/boards/qil-a926x/lowlevel.c | 26 ++++++++++++++++++++++++++
+ arch/arm/mach-at91/Kconfig           |  2 --
+ 3 files changed, 29 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/boards/qil-a926x/lowlevel.c
 
-diff --git a/arch/arm/boards/telit-evk-pro3/Makefile b/arch/arm/boards/telit-evk-pro3/Makefile
-index eb072c016..2da0494d4 100644
---- a/arch/arm/boards/telit-evk-pro3/Makefile
-+++ b/arch/arm/boards/telit-evk-pro3/Makefile
-@@ -1 +1,2 @@
+diff --git a/arch/arm/boards/qil-a926x/Makefile b/arch/arm/boards/qil-a926x/Makefile
+index 0c7bc3f04..82e46b369 100644
+--- a/arch/arm/boards/qil-a926x/Makefile
++++ b/arch/arm/boards/qil-a926x/Makefile
+@@ -1,2 +1,5 @@
  obj-y += init.o
++
 +lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/telit-evk-pro3/lowlevel.c b/arch/arm/boards/telit-evk-pro3/lowlevel.c
++
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-qil-a926x
+diff --git a/arch/arm/boards/qil-a926x/lowlevel.c b/arch/arm/boards/qil-a926x/lowlevel.c
 new file mode 100644
 index 000000000..02896856d
 --- /dev/null
-+++ b/arch/arm/boards/telit-evk-pro3/lowlevel.c
++++ b/arch/arm/boards/qil-a926x/lowlevel.c
 @@ -0,0 +1,26 @@
 +/*
 + * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
@@ -73,17 +76,25 @@ index 000000000..02896856d
 +			  NULL);
 +}
 diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 73be26749..323287e6f 100644
+index c48923ba6..ed961593b 100644
 --- a/arch/arm/mach-at91/Kconfig
 +++ b/arch/arm/mach-at91/Kconfig
-@@ -285,7 +285,6 @@ config MACH_USB_A9260
+@@ -280,7 +280,6 @@ config MACH_AT91SAM9260EK
  
- config MACH_GE863
- 	bool "Telit EVK-PRO3"
+ config MACH_QIL_A9260
+ 	bool "CALAO QIL-A9260 board"
 -	select AT91SAM9260_LWL
  	help
- 	  Say y here if you are using Telit EVK-PRO3 with GE863-PRO3
- 	  <http://www.telit.com>
+ 	  Select this if you are using a Calao Systems QIL-A9260 Board.
+ 	  <http://www.calao-systems.com>
+@@ -396,7 +395,6 @@ config MACH_DSS11
+ 
+ config MACH_QIL_A9G20
+ 	bool "CALAO QIL-A9G20 board"
+-	select AT91SAM9260_LWL
+ 	help
+ 	  Select this if you are using a Calao Systems QIL-A9G20 Board.
+ 	  <http://www.calao-systems.com>
 -- 
 2.12.0
 
