@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dSjZv-0006qC-QZ
- for barebox@lists.infradead.org; Wed, 05 Jul 2017 12:38:50 +0000
-Message-ID: <1499258301.22075.8.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 05 Jul 2017 14:38:21 +0200
-In-Reply-To: <20170705105637.4484-6-s.trumtrar@pengutronix.de>
-References: <20170705105637.4484-1-s.trumtrar@pengutronix.de>
- <20170705105637.4484-6-s.trumtrar@pengutronix.de>
-Mime-Version: 1.0
+ id 1dTyKX-00073T-5e
+ for barebox@lists.infradead.org; Sat, 08 Jul 2017 22:36:03 +0000
+Date: Sun, 9 Jul 2017 00:35:31 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20170708223531.GA2280@ravnborg.org>
+References: <20170316150448.11773-1-andrew.smirnov@gmail.com>
+ <20170316150448.11773-12-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170316150448.11773-12-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,95 +23,142 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/8] efi: efi: load state from devicetree
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH v2 11/11] net: macb: Add DT support
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Am Mittwoch, den 05.07.2017, 12:56 +0200 schrieb Steffen Trumtrar:
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Hi Andrey.
+
+Looks like somethign was missing here, see below.
+
+On Thu, Mar 16, 2017 at 08:04:48AM -0700, Andrey Smirnov wrote:
+> Acked-by: Sam Ravnborg <sam@ravnborg.org>
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  common/efi/efi.c | 56 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 56 insertions(+)
+>  drivers/net/macb.c | 56 ++++++++++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 42 insertions(+), 14 deletions(-)
 > 
-> diff --git a/common/efi/efi.c b/common/efi/efi.c
-> index f924385958e1..cc3051dedae9 100644
-> --- a/common/efi/efi.c
-> +++ b/common/efi/efi.c
-> @@ -40,6 +40,8 @@
->  #include <efi.h>
->  #include <efi/efi.h>
->  #include <efi/efi-device.h>
-> +#include <libfile.h>
-> +#include <state.h>
+> diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+> index 5f2e5e5..36e49c3 100644
+> --- a/drivers/net/macb.c
+> +++ b/drivers/net/macb.c
+> @@ -48,6 +48,7 @@
+>  #include <linux/clk.h>
+>  #include <linux/err.h>
+>  #include <linux/phy.h>
+> +#include <of_net.h>
 >  
->  efi_runtime_services_t *RT;
->  efi_boot_services_t *BS;
-> @@ -384,6 +386,60 @@ static int efi_postcore_init(void)
->  }
->  postcore_initcall(efi_postcore_init);
+>  #include "macb.h"
 >  
-> +static int efi_late_init(void)
-> +{
-> +	char *state_desc;
-> +	int ret;
+> @@ -615,14 +616,8 @@ static int macb_probe(struct device_d *dev)
+>  	struct resource *iores;
+>  	struct eth_device *edev;
+>  	struct macb_device *macb;
+> +	const char *pclk_name;
+>  	u32 ncfgr;
+> -	struct macb_platform_data *pdata;
+> -
+> -	if (!dev->platform_data) {
+> -		dev_err(dev, "macb: no platform_data\n");
+> -		return -ENODEV;
+> -	}
+> -	pdata = dev->platform_data;
+>  
+>  	edev = xzalloc(sizeof(struct eth_device) + sizeof(struct macb_device));
+>  	edev->priv = (struct macb_device *)(edev + 1);
+> @@ -633,22 +628,49 @@ static int macb_probe(struct device_d *dev)
+>  	edev->open = macb_open;
+>  	edev->send = macb_send;
+>  	edev->halt = macb_halt;
+> -	edev->get_ethaddr = pdata->get_ethaddr ? pdata->get_ethaddr : macb_get_ethaddr;
+> +	edev->get_ethaddr = macb_get_ethaddr;
+>  	edev->set_ethaddr = macb_set_ethaddr;
+>  	edev->parent = dev;
+>  
+>  	macb->miibus.read = macb_phy_read;
+>  	macb->miibus.write = macb_phy_write;
+> -	macb->phy_addr = pdata->phy_addr;
+>  	macb->miibus.priv = macb;
+>  	macb->miibus.parent = dev;
+>  
+> -	if (pdata->phy_interface == PHY_INTERFACE_MODE_NA)
+> -		macb->interface = PHY_INTERFACE_MODE_MII;
+> -	else
+> -		macb->interface = pdata->phy_interface;
+> +	if (dev->platform_data) {
+> +		struct macb_platform_data *pdata = dev->platform_data;
 > +
-> +	state_desc = xasprintf("/boot/EFI/barebox/state.dtb");
-
-This might deserve a few sentences in the documentation, instead of
-being buried in the code.
-
-> +	if (state_desc) {
-> +		void *fdt;
-> +		size_t size;
-> +		struct device_node *root = NULL;
-> +		struct device_node *np = NULL;
-> +		struct state *state;
+> +		if (pdata->phy_interface == PHY_INTERFACE_MODE_NA)
+> +			macb->interface = PHY_INTERFACE_MODE_MII;
+> +		else
+> +			macb->interface = pdata->phy_interface;
 > +
-> +		fdt = read_file(state_desc, &size);
-> +		if (!fdt) {
-> +			pr_err("unable to read %s: %s\n", state_desc,
-> +			       strerror(errno));
-> +			return -errno;
-> +		}
+> +		if (pdata->get_ethaddr)
+> +			edev->get_ethaddr = pdata->get_ethaddr;
 > +
-> +		if (file_detect_type(fdt, size) != filetype_oftree) {
-> +			pr_err("%s is not an oftree file.\n", state_desc);
-> +			free(fdt);
-> +			return -EINVAL;
-> +		}
+> +		macb->phy_addr = pdata->phy_addr;
+> +		macb->phy_flags = pdata->phy_flags;
+> +		pclk_name = "macb_clk";
+> +	} else if (dev->device_node) {
+> +		int ret;
+> +		struct device_node *mdiobus;
+>  
+> -	macb->phy_flags = pdata->phy_flags;
+> +		ret = of_get_phy_mode(dev->device_node);
+> +		if (ret < 0)
+> +			macb->interface = PHY_INTERFACE_MODE_MII;
+> +		else
+> +			macb->interface = ret;
 > +
-> +		root = of_unflatten_dtb(fdt);
+> +		mdiobus = of_get_child_by_name(dev->device_node, "mdio");
+> +		if (mdiobus)
+> +			macb->miibus.dev.device_node = mdiobus;
 > +
-> +		free(fdt);
-> +
-> +		if (IS_ERR(root))
-> +			return PTR_ERR(root);
-> +
-> +		of_set_root_node(root);
-> +
-> +		np = of_find_node_by_alias(root, "state");
-> +
-> +		state = state_new_from_node(np, NULL, 0, 0, false);
-> +		if (IS_ERR(state))
-> +			return PTR_ERR(state);
-> +
-> +		ret = state_load(state);
-> +		if (ret)
-> +			pr_warn("Failed to load persistent state, continuing with defaults, %d\n",
-> +				ret);
-> +
-> +		return 0;
+> +		macb->phy_addr = -1;
+> +		pclk_name = NULL;
+> +	} else {
+> +		dev_err(dev, "macb: no platform_data\n");
+> +		return -ENODEV;
 > +	}
-> +
-> +	return 0;
-> +}
-> +late_initcall(efi_late_init);
-> +
->  static int do_efiexit(int argc, char *argv[])
->  {
->  	return BS->exit(efi_parent_image, EFI_SUCCESS, 0, NULL);
+>  
+>  	iores = dev_request_mem_resource(dev, 0);
+>  	if (IS_ERR(iores))
 
+I fail to get any clock for macb - and need this patch to at least
+silence any warnings fro missing clock.
+I have not tested the network interface yet - too many other issues.
 
+Looks like this was the origianl intention as pclk_name was introduced
+but never used.
+
+I know the patch I reply to is already committed, but
+this was where the bug was introduced (if I am right).
+Will follow-up with a proper patch should you ack this.
+
+	Sam
+
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index 739a3dfbe..7721bcb56 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -666,7 +666,7 @@ static int macb_probe(struct device_d *dev)
+ 			macb->miibus.dev.device_node = mdiobus;
+ 
+ 		macb->phy_addr = -1;
+-		pclk_name = NULL;
++		pclk_name = "pclk";
+ 	} else {
+ 		dev_err(dev, "macb: no platform_data\n");
+ 		return -ENODEV;
+@@ -681,7 +681,7 @@ static int macb_probe(struct device_d *dev)
+ 	 * Do some basic initialization so that we at least can talk
+ 	 * to the PHY
+ 	 */
+-	macb->pclk = clk_get(dev, "macb_clk");
++	macb->pclk = clk_get(dev, pclk_name);
+ 	if (IS_ERR(macb->pclk)) {
+ 		dev_err(dev, "no macb_clk\n");
+ 		return PTR_ERR(macb->pclk);
 
 _______________________________________________
 barebox mailing list
