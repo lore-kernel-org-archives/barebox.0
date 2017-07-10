@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from stcim.de ([2a01:4f8:120:4065::2])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dUbFW-0006ig-Oz
- for barebox@lists.infradead.org; Mon, 10 Jul 2017 16:09:28 +0000
-Date: Mon, 10 Jul 2017 18:09:02 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170710160902.GA24241@ravnborg.org>
+ id 1dUeYh-0007vm-AA
+ for barebox@lists.infradead.org; Mon, 10 Jul 2017 19:41:29 +0000
+Date: Mon, 10 Jul 2017 21:40:59 +0200
+From: Stefan Lengfeld <contact@stefanchrist.eu>
+Message-ID: <20170710194059.GA765@sill.h.stcim.de>
 References: <20170710152108.23601-1-l.stach@pengutronix.de>
- <20170710152706.GA12108@ravnborg.org>
- <1499701357.18894.1.camel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1499701357.18894.1.camel@pengutronix.de>
+In-Reply-To: <20170710152108.23601-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,52 +26,123 @@ Subject: Re: [PATCH] ARM: imx: phyCORE i.MX7 on phyBOARD-Zeta support
 To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jul 10, 2017 at 05:42:37PM +0200, Lucas Stach wrote:
-> Am Montag, den 10.07.2017, 17:27 +0200 schrieb Sam Ravnborg:
-> > Hi Lucas
-> > 
-> > > index 000000000000..b1608dd9c730
-> > > --- /dev/null
-> > > +++ b/arch/arm/boards/phytec-phycore-imx7/flash-header-phytec-phycore-imx7.imxcfg
-> > > @@ -0,0 +1,76 @@
-> > > +/*
-> > > + * Copyright (C) 2016 NXP Semiconductors
-> > > + *
-> > > + * SPDX-License-Identifier:	GPL-2.0
-> > > + *
-> > > + * Refer docs/README.imxmage for more details about how-to configure
-> > > + * and create imximage boot image
-> > > + *
-> > > + * The syntax is taken as close as possible with the kwbimage
-> > > + */
-> > > +
-> > > +soc imx7
-> > > +loadaddr 0x80000000
-> > > +dcdofs 0x400
-> > > +
-> > > +wm 32 0x30340004 0x4F400005
-> > > +/* Clear then set bit30 to ensure exit from DDR retention */
-> > > +wm 32 0x30360388 0x40000000
-> > > +wm 32 0x30360384 0x40000000
-> > > +
-> > > +wm 32 0x30391000 0x00000002
-> > > +wm 32 0x307a0000 0x01040001
-> > 
-> > 
-> > Uwe posted a patch the other day to replace all these
-> > constants with defines across the tree.
-> > Looks like a step backward to introduce a new file where this approach is not used.
-> 
-> Uwes patch replaces raw values in the i.MX6 files (where we have defines
-> for the registers). This is a new i.MX7 board, where no such defines
-> exists for now.
-OK, I had missed that "little" detail.
-> 
-> I'm not saying that we shouldn't try to do the same thing for i.MX7, but
-> it is considerably more work than for MX6.
-Nice janitorial task for someone.
+Hi Lucas,
 
-	Sam
+On Mon, Jul 10, 2017 at 05:21:08PM +0200, Lucas Stach wrote:
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> 
+> This adds preliminary support for the phyCORE i.MX7 module on a
+> phyBOARD-Zeta baseboard. The DTs will likely change in the future
+> when PHYTEC finalizes their BSP.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+> lst: Rebased and fixed for upstream pinfunc changes. Tested PSCI
+> kernel booting.
+> ---
+>  arch/arm/boards/Makefile                           |   1 +
+>  arch/arm/boards/phytec-phycore-imx7/Makefile       |   2 +
+>  arch/arm/boards/phytec-phycore-imx7/board.c        |  42 ++++
+>  .../flash-header-phytec-phycore-imx7.imxcfg        |  76 ++++++
+>  arch/arm/boards/phytec-phycore-imx7/lowlevel.c     |  48 ++++
+>  arch/arm/configs/imx_v7_defconfig                  |   4 +-
+>  arch/arm/dts/Makefile                              |   1 +
+>  arch/arm/dts/imx7d-pba-c-09.dtsi                   | 272 +++++++++++++++++++++
+>  arch/arm/dts/imx7d-peb-av-02.dtsi                  | 104 ++++++++
+>  arch/arm/dts/imx7d-peb-eval-02.dtsi                | 130 ++++++++++
+>  arch/arm/dts/imx7d-phyboard-zeta.dts               | 144 +++++++++++
+>  arch/arm/dts/imx7d-phycore-som.dtsi                | 272 +++++++++++++++++++++
+>  arch/arm/mach-imx/Kconfig                          |   4 +
+>  images/Makefile.imx                                |   5 +
+>  14 files changed, 1104 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/arm/boards/phytec-phycore-imx7/Makefile
+>  create mode 100644 arch/arm/boards/phytec-phycore-imx7/board.c
+>  create mode 100644 arch/arm/boards/phytec-phycore-imx7/flash-header-phytec-phycore-imx7.imxcfg
+>  create mode 100644 arch/arm/boards/phytec-phycore-imx7/lowlevel.c
+>  create mode 100644 arch/arm/dts/imx7d-pba-c-09.dtsi
+>  create mode 100644 arch/arm/dts/imx7d-peb-av-02.dtsi
+>  create mode 100644 arch/arm/dts/imx7d-peb-eval-02.dtsi
+>  create mode 100644 arch/arm/dts/imx7d-phyboard-zeta.dts
+>  create mode 100644 arch/arm/dts/imx7d-phycore-som.dtsi
+> 
+> diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+> index 9bbdd684fa6c..c6840a633c0d 100644
+> --- a/arch/arm/boards/Makefile
+> +++ b/arch/arm/boards/Makefile
+> @@ -89,6 +89,7 @@ obj-$(CONFIG_MACH_PCM043)			+= phytec-phycore-imx35/
+>  obj-$(CONFIG_MACH_PCM049)			+= phytec-phycore-omap4460/
+>  obj-$(CONFIG_MACH_PHYTEC_SOM_AM335X)		+= phytec-som-am335x/
+>  obj-$(CONFIG_MACH_PHYTEC_SOM_IMX6)		+= phytec-som-imx6/
+> +obj-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7)		+= phytec-phycore-imx7/
+>  obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3)	+= plathome-openblocks-ax3/
+>  obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6)	+= plathome-openblocks-a6/
+>  obj-$(CONFIG_MACH_PM9261)			+= pm9261/
+> diff --git a/arch/arm/boards/phytec-phycore-imx7/Makefile b/arch/arm/boards/phytec-phycore-imx7/Makefile
+> new file mode 100644
+> index 000000000000..01c7a259e9a5
+> --- /dev/null
+> +++ b/arch/arm/boards/phytec-phycore-imx7/Makefile
+> @@ -0,0 +1,2 @@
+> +obj-y += board.o
+> +lwl-y += lowlevel.o
+> diff --git a/arch/arm/boards/phytec-phycore-imx7/board.c b/arch/arm/boards/phytec-phycore-imx7/board.c
+> new file mode 100644
+> index 000000000000..d4451602b047
+> --- /dev/null
+> +++ b/arch/arm/boards/phytec-phycore-imx7/board.c
+> @@ -0,0 +1,42 @@
+> +/*
+> + * Copyright (C) 2017 Sascha Hauer, Pengutronix
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + */
+> +
+> +#include <common.h>
+> +#include <init.h>
+> +#include <environment.h>
+> +#include <mach/bbu.h>
+> +#include <asm/armlinux.h>
+> +#include <generated/mach-types.h>
+> +#include <partition.h>
+> +#include <mach/generic.h>
+> +#include <linux/sizes.h>
+> +#include <asm/psci.h>
+> +#include <io.h>
+> +#include <mach/imx7-regs.h>
+> +#include <serial/imx-uart.h>
+> +#include <asm/secure.h>
+> +
+> +static int warp7_devices_init(void)
+
+Maybe this function should be renamed to hide the origin of the code ;-)
+
+> +{
+> +	if (!of_machine_is_compatible("phytec,imx7d-phycore-som"))
+> +		return 0;
+> +
+> +	imx6_bbu_internal_mmc_register_handler("mmc", "/dev/mmc2.boot0.barebox",
+> +					       BBU_HANDLER_FLAG_DEFAULT);
+> +
+> +	psci_set_putc(imx_uart_putc, IOMEM(MX7_UART5_BASE_ADDR));
+> +
+> +	return 0;
+> +}
+> +mem_initcall(warp7_devices_init);
+
+Shouldn't this be a device_initcall()?  Using mem_initcall() for a
+function that does nothing memory specific is a bit strange. 
+
+Kind regards,
+    Stefan Lengfeld
 
 _______________________________________________
 barebox mailing list
