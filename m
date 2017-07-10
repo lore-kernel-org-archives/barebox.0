@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dUW1P-0005w8-Jm
- for barebox@lists.infradead.org; Mon, 10 Jul 2017 10:34:36 +0000
+ id 1dUW1P-0005w9-JI
+ for barebox@lists.infradead.org; Mon, 10 Jul 2017 10:34:37 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 10 Jul 2017 12:33:51 +0200
-Message-Id: <20170710103355.15652-5-s.trumtrar@pengutronix.de>
+Date: Mon, 10 Jul 2017 12:33:52 +0200
+Message-Id: <20170710103355.15652-6-s.trumtrar@pengutronix.de>
 In-Reply-To: <20170710103355.15652-1-s.trumtrar@pengutronix.de>
 References: <20170710103355.15652-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,82 +21,108 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/9] of: of_path: find device via partuuid
+Subject: [PATCH v2 6/9] efi: efi: load state from devicetree
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-
-When a node is compatible to a fixed-partitions, support searching the
-corresponding device via the partuuid, if it specified in the device tree.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
 Changes since v1:
   - add documentation
 
- Documentation/devicetree/bindings/mtd/partition.txt | 21 +++++++++++++++++++++
- drivers/of/of_path.c                                | 17 ++++++++++++++++-
- 2 files changed, 37 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/devicetree/bindings/mtd/partition.txt
+ Documentation/boards/efi.rst |  4 ++++
+ common/efi/efi.c             | 56 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 60 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/mtd/partition.txt b/Documentation/devicetree/bindings/mtd/partition.txt
-new file mode 100644
-index 000000000000..ab21ff25bb11
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mtd/partition.txt
-@@ -0,0 +1,21 @@
-+Representing flash partitions in devicetree
-+
-+In addition to the upstream binding, another property is added:
-+
-+Optional properties:
-+- partuuid : The partition UUID for this partition.
-+
-+
-+Examples:
-+
-+flash@0 {
-+	partitions {
-+		compatible = "fixed-partitions";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		state_part: state {
-+			partuuid = "16367da7-c518-499f-9aad-e1f366692365";
-+		};
-+	};
-+};
-diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
-index 334eab841a01..e53041b0a16c 100644
---- a/drivers/of/of_path.c
-+++ b/drivers/of/of_path.c
-@@ -56,11 +56,26 @@ static int __of_find_path(struct device_node *node, const char *part, char **out
+diff --git a/Documentation/boards/efi.rst b/Documentation/boards/efi.rst
+index ecadb3ebba57..8f78a800ef74 100644
+--- a/Documentation/boards/efi.rst
++++ b/Documentation/boards/efi.rst
+@@ -42,6 +42,10 @@ architectures. Switching to USB boot in the BIOS should then be enough to
+ start barebox via USB. Some BIOSes allow to specify a path to a binary to
+ be executed, others have a "start UEFI shell" entry which executes
+ EFI/Shellx64.efi on the :term:`ESP`. This can be a barebox binary aswell.
++To use the :ref:`state_framework`, the describing devicetree file ``state.dtb``
++has to be put into the ``EFI/barebox/`` directory.
++Supported backends for EFI are raw partitions that can be discovered via a
++partition UUID.
  
- 	dev = of_find_device_by_node_path(node->full_name);
- 	if (!dev) {
-+		int ret;
-+		const char *uuid;
- 		struct device_node *devnode = node->parent;
+ Running EFI barebox on qemu
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+diff --git a/common/efi/efi.c b/common/efi/efi.c
+index f924385958e1..cc3051dedae9 100644
+--- a/common/efi/efi.c
++++ b/common/efi/efi.c
+@@ -40,6 +40,8 @@
+ #include <efi.h>
+ #include <efi/efi.h>
+ #include <efi/efi-device.h>
++#include <libfile.h>
++#include <state.h>
  
--		if (of_device_is_compatible(devnode, "fixed-partitions"))
-+		if (of_device_is_compatible(devnode, "fixed-partitions")) {
- 			devnode = devnode->parent;
+ efi_runtime_services_t *RT;
+ efi_boot_services_t *BS;
+@@ -384,6 +386,60 @@ static int efi_postcore_init(void)
+ }
+ postcore_initcall(efi_postcore_init);
  
-+			/* when partuuid is specified short-circuit the search for the cdev */
-+			ret = of_property_read_string(node, "partuuid", &uuid);
-+			if (!ret) {
-+				cdev = cdev_by_partuuid(uuid);
-+				if (!cdev)
-+					return -ENODEV;
++static int efi_late_init(void)
++{
++	char *state_desc;
++	int ret;
 +
-+				*outpath = basprintf("/dev/%s", cdev->name);
++	state_desc = xasprintf("/boot/EFI/barebox/state.dtb");
 +
-+				return 0;
-+			}
++	if (state_desc) {
++		void *fdt;
++		size_t size;
++		struct device_node *root = NULL;
++		struct device_node *np = NULL;
++		struct state *state;
++
++		fdt = read_file(state_desc, &size);
++		if (!fdt) {
++			pr_err("unable to read %s: %s\n", state_desc,
++			       strerror(errno));
++			return -errno;
 +		}
 +
- 		dev = of_find_device_by_node_path(devnode->full_name);
- 		if (!dev)
- 			return -ENODEV;
++		if (file_detect_type(fdt, size) != filetype_oftree) {
++			pr_err("%s is not an oftree file.\n", state_desc);
++			free(fdt);
++			return -EINVAL;
++		}
++
++		root = of_unflatten_dtb(fdt);
++
++		free(fdt);
++
++		if (IS_ERR(root))
++			return PTR_ERR(root);
++
++		of_set_root_node(root);
++
++		np = of_find_node_by_alias(root, "state");
++
++		state = state_new_from_node(np, NULL, 0, 0, false);
++		if (IS_ERR(state))
++			return PTR_ERR(state);
++
++		ret = state_load(state);
++		if (ret)
++			pr_warn("Failed to load persistent state, continuing with defaults, %d\n",
++				ret);
++
++		return 0;
++	}
++
++	return 0;
++}
++late_initcall(efi_late_init);
++
+ static int do_efiexit(int argc, char *argv[])
+ {
+ 	return BS->exit(efi_parent_image, EFI_SUCCESS, 0, NULL);
 -- 
 2.11.0
 
