@@ -1,14 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dUvaW-0004PP-Hq
- for barebox@lists.infradead.org; Tue, 11 Jul 2017 13:52:30 +0000
-Message-ID: <1499781122.5060.3.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 11 Jul 2017 15:52:02 +0200
-In-Reply-To: <20170706142506.790-1-s.trumtrar@pengutronix.de>
-References: <20170706142506.790-1-s.trumtrar@pengutronix.de>
-Mime-Version: 1.0
+ id 1dUW1P-0005w4-KI
+ for barebox@lists.infradead.org; Mon, 10 Jul 2017 10:34:35 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Mon, 10 Jul 2017 12:33:47 +0200
+Message-Id: <20170710103355.15652-1-s.trumtrar@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,87 +15,106 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] scripts: socfpga_get_sequencer: update importer
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 1/9] state: fix compile warnings for dev_err expansion
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Am Donnerstag, den 06.07.2017, 16:25 +0200 schrieb Steffen Trumtrar:
-> Adjust two header files that where renamed in the meantime.
-> While at it, also remove trailing whitespace and cleanup the
-> script a little.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-
-Applied, thanks.
-
-> ---
->  scripts/socfpga_get_sequencer | 25 +++++++++----------------
->  1 file changed, 9 insertions(+), 16 deletions(-)
-> 
-> diff --git a/scripts/socfpga_get_sequencer b/scripts/socfpga_get_sequencer
-> index e0f2e6de2abd..36f67498bcbb 100755
-> --- a/scripts/socfpga_get_sequencer
-> +++ b/scripts/socfpga_get_sequencer
-> @@ -41,14 +41,18 @@ copy_source() {
->  	sed -i 's/alt_8/int8_t/g' $tgt
->  	sed -i 's/#include "alt_types.h"//g' $tgt
->  
-> -	echo "	Fixing include pathes..."
-> +	echo "	Fixing include paths..."
->  	# Fix include pathes
-> -	sed -i 's/#include <sdram.h>/#include <mach\/sdram.h>/g' $tgt
-> +	sed -i 's/#include <sdram.h>/#include <mach\/cyclone5-sdram.h>/g' $tgt
->  	sed -i 's/#include "sequencer_auto.h"//g' $tgt
-> +	sed -i 's/#include "sequencer.h"/#include "cyclone5-sequencer.h"/g' $tgt
->  
->  	echo "	Automated readability fixup..."
->  	indent -npro -kr -i8 -ts8 -sob -l100 -ss -ncs -cp1 -il0 $tgt
->  
-> +	echo "  Whitespace cleanup..."
-> +	sed -i 's/[ \t]\+$//' $tgt
-> +
->  	echo "  Running coccinelle cleanups..."
->  	spatch -sp_file scripts/coccinelle/misc/altera_sequencer.cocci -in_place arch/arm/mach-socfpga/include/mach
->  
-> @@ -61,19 +65,10 @@ copy_source() {
->  	sed -i 's/^static void rw_mgr_decr_vfifo_auto(uint32_t grp);$//g' $tgt
->  }
->  
-> -copy_source ${ubootsrc}/board/altera/socfpga/sdram/sequencer.c arch/arm/mach-socfpga/include/mach/sequencer.c
-> -sed -i 's/static int sdram_calibration(void)/static int socfpga_mem_calibration(void)/g' arch/arm/mach-socfpga/include/mach/sequencer.c
-> -
-> -cat <<'EOF' > arch/arm/mach-socfpga/include/mach/sequencer_defines.h
-> -#define TINIT_CNTR1_VAL 32
-> -#define TINIT_CNTR2_VAL 32
-> -#define TINIT_CNTR0_VAL 99
-> -#define TRESET_CNTR1_VAL 99
-> -#define TRESET_CNTR2_VAL 10
-> -#define TRESET_CNTR0_VAL 99
-> -EOF
-> +copy_source ${ubootsrc}/board/altera/socfpga/sdram/sequencer.c arch/arm/mach-socfpga/include/mach/cyclone5-sequencer.c
-> +sed -i 's/static int sdram_calibration(void)/static int socfpga_mem_calibration(void)/g' arch/arm/mach-socfpga/include/mach/cyclone5-sequencer.c
->  
-> -copy_source ${ubootsrc}/board/altera/socfpga/sdram/sequencer.h arch/arm/mach-socfpga/include/mach/sequencer.h
-> +copy_source ${ubootsrc}/board/altera/socfpga/sdram/sequencer.h arch/arm/mach-socfpga/include/mach/cyclone5-sequencer.h
->  copy_source ${ubootsrc}/board/altera/socfpga/sdram/tclrpt.h arch/arm/mach-socfpga/include/mach/tclrpt.h
->  copy_source ${ubootsrc}/board/altera/socfpga/sdram/sdram_io.h arch/arm/mach-socfpga/include/mach/sdram_io.h
->  cat <<'EOF' >> arch/arm/mach-socfpga/include/mach/sdram_io.h
-> @@ -85,7 +80,5 @@ cat <<'EOF' >> arch/arm/mach-socfpga/include/mach/sdram_io.h
->  EOF
->  copy_source ${ubootsrc}/board/altera/socfpga/sdram/system.h arch/arm/mach-socfpga/include/mach/system.h
->  
-> -#unifdef -f ${sequencer_defines} ${ubootsrc}/board/altera/socfpga/sdram/tclrpt.c -o arch/arm/mach-socfpga/include/mach/tclrpt.c
-> -
->  echo "DONE"
->  
-
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Rml4IHRoZSBmb2xsb3dpbmcgd2FybmluZ3M6CgogIENDICAgICAgY29tbW9uL3N0YXRlL2JhY2tl
+bmRfZm9ybWF0X2R0Yi5vCkluIGZpbGUgaW5jbHVkZWQgZnJvbSBpbmNsdWRlL2NvbW1vbi5oOjMz
+OjAsCiAgICAgICAgICAgICAgICAgZnJvbSBjb21tb24vc3RhdGUvYmFja2VuZF9mb3JtYXRfZHRi
+LmM6MTg6CmNvbW1vbi9zdGF0ZS9iYWNrZW5kX2Zvcm1hdF9kdGIuYzogSW4gZnVuY3Rpb24g4oCY
+c3RhdGVfYmFja2VuZF9mb3JtYXRfZHRiX3ZlcmlmeeKAmToKaW5jbHVkZS9wcmludGsuaDo1Mjo1
+Mjogd2FybmluZzogZm9ybWF0IOKAmCVk4oCZIGV4cGVjdHMgYXJndW1lbnQgb2YgdHlwZSDigJhp
+bnTigJksIGJ1dAphcmd1bWVudCA0IGhhcyB0eXBlIOKAmHNpemVfdCB7YWthIGxvbmcgdW5zaWdu
+ZWQgaW50feKAmSBbLVdmb3JtYXQ9XQogICAobGV2ZWwpIDw9IExPR0xFVkVMID8gZGV2X3ByaW50
+ZigobGV2ZWwpLCAoZGV2KSwgKGZvcm1hdCksICMjYXJncykgOiAwOyBcCiAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBeCmluY2x1ZGUvcHJpbnRrLmg6
+NjM6Mjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmF9fZGV2X3ByaW50ZuKAmQogIF9f
+ZGV2X3ByaW50ZigzLCAoZGV2KSAsIGZvcm1hdCAsICMjIGFyZykKICBefn5+fn5+fn5+fn4KY29t
+bW9uL3N0YXRlL2JhY2tlbmRfZm9ybWF0X2R0Yi5jOjUyOjM6IG5vdGU6IGluIGV4cGFuc2lvbiBv
+ZiBtYWNybyDigJhkZXZfZXJy4oCZCiAgIGRldl9lcnIoZmR0Yi0+ZGV2LCAiRXJyb3IsIHN0b3Jl
+ZCBEVEIgbGVuZ3RoICglZCkgbG9uZ2VyIHRoYW4gcmVhZCBidWZmZXIgKCVkKVxuIiwKICAgXn5+
+fn5+fgppbmNsdWRlL3ByaW50ay5oOjUyOjUyOiB3YXJuaW5nOiBmb3JtYXQg4oCYJWTigJkgZXhw
+ZWN0cyBhcmd1bWVudCBvZiB0eXBlIOKAmGludOKAmSwgYnV0CmFyZ3VtZW50IDUgaGFzIHR5cGUg
+4oCYc2l6ZV90IHtha2EgbG9uZyB1bnNpZ25lZCBpbnR94oCZIFstV2Zvcm1hdD1dCiAgIChsZXZl
+bCkgPD0gTE9HTEVWRUwgPyBkZXZfcHJpbnRmKChsZXZlbCksIChkZXYpLCAoZm9ybWF0KSwgIyNh
+cmdzKSA6IDA7IFwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIF4KaW5jbHVkZS9wcmludGsuaDo2MzoyOiBub3RlOiBpbiBleHBhbnNpb24gb2YgbWFj
+cm8g4oCYX19kZXZfcHJpbnRm4oCZCiAgX19kZXZfcHJpbnRmKDMsIChkZXYpICwgZm9ybWF0ICwg
+IyMgYXJnKQogIF5+fn5+fn5+fn5+fgpjb21tb24vc3RhdGUvYmFja2VuZF9mb3JtYXRfZHRiLmM6
+NTI6Mzogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmGRldl9lcnLigJkKICAgZGV2X2Vy
+cihmZHRiLT5kZXYsICJFcnJvciwgc3RvcmVkIERUQiBsZW5ndGggKCVkKSBsb25nZXIgdGhhbiBy
+ZWFkIGJ1ZmZlciAoJWQpXG4iLAogICBefn5+fn5+CiAgQ0MgICAgICBjb21tb24vc3RhdGUvYmFj
+a2VuZF9mb3JtYXRfcmF3Lm8KSW4gZmlsZSBpbmNsdWRlZCBmcm9tIGluY2x1ZGUvY29tbW9uLmg6
+MzM6MCwKICAgICAgICAgICAgICAgICBmcm9tIGNvbW1vbi9zdGF0ZS9iYWNrZW5kX2Zvcm1hdF9y
+YXcuYzoxODoKY29tbW9uL3N0YXRlL2JhY2tlbmRfZm9ybWF0X3Jhdy5jOiBJbiBmdW5jdGlvbiDi
+gJhiYWNrZW5kX2Zvcm1hdF9yYXdfdmVyaWZ54oCZOgppbmNsdWRlL3ByaW50ay5oOjUyOjUyOiB3
+YXJuaW5nOiBmb3JtYXQg4oCYJWTigJkgZXhwZWN0cyBhcmd1bWVudCBvZiB0eXBlIOKAmGludOKA
+mSwgYnV0CmFyZ3VtZW50IDQgaGFzIHR5cGUg4oCYc3NpemVfdCB7YWthIGxvbmcgaW50feKAmSBb
+LVdmb3JtYXQ9XQogICAobGV2ZWwpIDw9IExPR0xFVkVMID8gZGV2X3ByaW50ZigobGV2ZWwpLCAo
+ZGV2KSwgKGZvcm1hdCksICMjYXJncykgOiAwOyBcCiAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICBeCmluY2x1ZGUvcHJpbnRrLmg6NjM6Mjogbm90ZTog
+aW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmF9fZGV2X3ByaW50ZuKAmQogIF9fZGV2X3ByaW50Zigz
+LCAoZGV2KSAsIGZvcm1hdCAsICMjIGFyZykKICBefn5+fn5+fn5+fn4KY29tbW9uL3N0YXRlL2Jh
+Y2tlbmRfZm9ybWF0X3Jhdy5jOjExMTozOiBub3RlOiBpbiBleHBhbnNpb24gb2YgbWFjcm8g4oCY
+ZGV2X2VycuKAmQogICBkZXZfZXJyKGJhY2tlbmRfcmF3LT5kZXYsICJFcnJvciwgYnVmZmVyIGxl
+bmd0aCAoJWQpIGlzIHNob3J0ZXIgdGhhbiB0aGUgbWluaW11bSByZXF1aXJlZCBoZWFkZXIgbGVu
+Z3RoXG4iLAogICBefn5+fn5+CiAgQ0MgICAgICBjb21tb24vc3RhdGUvYmFja2VuZF9zdG9yYWdl
+Lm8KSW4gZmlsZSBpbmNsdWRlZCBmcm9tIGNvbW1vbi9zdGF0ZS9iYWNrZW5kX3N0b3JhZ2UuYzoy
+NDowOgpjb21tb24vc3RhdGUvYmFja2VuZF9zdG9yYWdlLmM6IEluIGZ1bmN0aW9uIOKAmHN0YXRl
+X3N0b3JhZ2VfbXRkX2J1Y2tldHNfaW5pdOKAmToKaW5jbHVkZS9wcmludGsuaDo1Mjo1Mjogd2Fy
+bmluZzogZm9ybWF0IOKAmCV6deKAmSBleHBlY3RzIGFyZ3VtZW50IG9mIHR5cGUg4oCYc2l6ZV90
+4oCZLApidXQgYXJndW1lbnQgNSBoYXMgdHlwZSDigJh1aW50MzJfdCB7YWthIHVuc2lnbmVkIGlu
+dH3igJkgWy1XZm9ybWF0PV0KICAgKGxldmVsKSA8PSBMT0dMRVZFTCA/IGRldl9wcmludGYoKGxl
+dmVsKSwgKGRldiksIChmb3JtYXQpLCAjI2FyZ3MpIDogMDsgXAogICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXgppbmNsdWRlL3ByaW50ay5oOjYzOjI6
+IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyDigJhfX2Rldl9wcmludGbigJkKICBfX2Rldl9w
+cmludGYoMywgKGRldikgLCBmb3JtYXQgLCAjIyBhcmcpCiAgXn5+fn5+fn5+fn5+CmNvbW1vbi9z
+dGF0ZS9iYWNrZW5kX3N0b3JhZ2UuYzoyNTA6Mzogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3Jv
+IOKAmGRldl9lcnLigJkKICAgZGV2X2VycihzdG9yYWdlLT5kZXYsICJPZmZzZXQgd2l0aGluIHRo
+ZSBkZXZpY2UgaXMgbm90IGFsaWduZWQgdG8gZXJhc2VibG9ja3MuIE9mZnNldCBpcyAlbGQsIGVy
+YXNlc2l6ZSAlenVcbiIsCiAgIF5+fn5+fn4KClNpZ25lZC1vZmYtYnk6IFN0ZWZmZW4gVHJ1bXRy
+YXIgPHMudHJ1bXRyYXJAcGVuZ3V0cm9uaXguZGU+Ci0tLQogY29tbW9uL3N0YXRlL2JhY2tlbmRf
+Zm9ybWF0X2R0Yi5jIHwgMiArLQogY29tbW9uL3N0YXRlL2JhY2tlbmRfZm9ybWF0X3Jhdy5jIHwg
+MiArLQogY29tbW9uL3N0YXRlL2JhY2tlbmRfc3RvcmFnZS5jICAgIHwgMiArLQogMyBmaWxlcyBj
+aGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvY29t
+bW9uL3N0YXRlL2JhY2tlbmRfZm9ybWF0X2R0Yi5jIGIvY29tbW9uL3N0YXRlL2JhY2tlbmRfZm9y
+bWF0X2R0Yi5jCmluZGV4IGU4OGNkYTQ5OWI2NC4uNGM5ZDJlZWZjNzgwIDEwMDY0NAotLS0gYS9j
+b21tb24vc3RhdGUvYmFja2VuZF9mb3JtYXRfZHRiLmMKKysrIGIvY29tbW9uL3N0YXRlL2JhY2tl
+bmRfZm9ybWF0X2R0Yi5jCkBAIC00OSw3ICs0OSw3IEBAIHN0YXRpYyBpbnQgc3RhdGVfYmFja2Vu
+ZF9mb3JtYXRfZHRiX3ZlcmlmeShzdHJ1Y3Qgc3RhdGVfYmFja2VuZF9mb3JtYXQgKmZvcm1hdCwK
+IAlzaXplX3QgbGVuID0gKmxlbnA7CiAKIAlpZiAoZHRiX2xlbiA+IGxlbikgewotCQlkZXZfZXJy
+KGZkdGItPmRldiwgIkVycm9yLCBzdG9yZWQgRFRCIGxlbmd0aCAoJWQpIGxvbmdlciB0aGFuIHJl
+YWQgYnVmZmVyICglZClcbiIsCisJCWRldl9lcnIoZmR0Yi0+ZGV2LCAiRXJyb3IsIHN0b3JlZCBE
+VEIgbGVuZ3RoICglemQpIGxvbmdlciB0aGFuIHJlYWQgYnVmZmVyICglemQpXG4iLAogCQkJZHRi
+X2xlbiwgbGVuKTsKIAkJcmV0dXJuIC1FSU5WQUw7CiAJfQpkaWZmIC0tZ2l0IGEvY29tbW9uL3N0
+YXRlL2JhY2tlbmRfZm9ybWF0X3Jhdy5jIGIvY29tbW9uL3N0YXRlL2JhY2tlbmRfZm9ybWF0X3Jh
+dy5jCmluZGV4IGQ3NjcxOGNmODI3MC4uMmJhOTdlMDhhMGFlIDEwMDY0NAotLS0gYS9jb21tb24v
+c3RhdGUvYmFja2VuZF9mb3JtYXRfcmF3LmMKKysrIGIvY29tbW9uL3N0YXRlL2JhY2tlbmRfZm9y
+bWF0X3Jhdy5jCkBAIC0xMDgsNyArMTA4LDcgQEAgc3RhdGljIGludCBiYWNrZW5kX2Zvcm1hdF9y
+YXdfdmVyaWZ5KHN0cnVjdCBzdGF0ZV9iYWNrZW5kX2Zvcm1hdCAqZm9ybWF0LAogCXNzaXplX3Qg
+Y29tcGxldGVfbGVuOwogCiAJaWYgKGxlbiA8IGZvcm1hdF9yYXdfbWluX2xlbmd0aCkgewotCQlk
+ZXZfZXJyKGJhY2tlbmRfcmF3LT5kZXYsICJFcnJvciwgYnVmZmVyIGxlbmd0aCAoJWQpIGlzIHNo
+b3J0ZXIgdGhhbiB0aGUgbWluaW11bSByZXF1aXJlZCBoZWFkZXIgbGVuZ3RoXG4iLAorCQlkZXZf
+ZXJyKGJhY2tlbmRfcmF3LT5kZXYsICJFcnJvciwgYnVmZmVyIGxlbmd0aCAoJXpkKSBpcyBzaG9y
+dGVyIHRoYW4gdGhlIG1pbmltdW0gcmVxdWlyZWQgaGVhZGVyIGxlbmd0aFxuIiwKIAkJCWxlbik7
+CiAJCXJldHVybiAtRUlOVkFMOwogCX0KZGlmZiAtLWdpdCBhL2NvbW1vbi9zdGF0ZS9iYWNrZW5k
+X3N0b3JhZ2UuYyBiL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX3N0b3JhZ2UuYwppbmRleCA4ZDI0Zjcw
+NTNkM2QuLjkxMTM1ZTk5YTY0ZiAxMDA2NDQKLS0tIGEvY29tbW9uL3N0YXRlL2JhY2tlbmRfc3Rv
+cmFnZS5jCisrKyBiL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX3N0b3JhZ2UuYwpAQCAtMjQ3LDcgKzI0
+Nyw3IEBAIHN0YXRpYyBpbnQgc3RhdGVfc3RvcmFnZV9tdGRfYnVja2V0c19pbml0KHN0cnVjdCBz
+dGF0ZV9iYWNrZW5kX3N0b3JhZ2UgKnN0b3JhZ2UsCiAJCWVuZCA9IG1lbWluZm8tPnNpemU7CiAK
+IAlpZiAoIUlTX0FMSUdORUQoc3RvcmFnZS0+b2Zmc2V0LCBtZW1pbmZvLT5lcmFzZXNpemUpKSB7
+Ci0JCWRldl9lcnIoc3RvcmFnZS0+ZGV2LCAiT2Zmc2V0IHdpdGhpbiB0aGUgZGV2aWNlIGlzIG5v
+dCBhbGlnbmVkIHRvIGVyYXNlYmxvY2tzLiBPZmZzZXQgaXMgJWxkLCBlcmFzZXNpemUgJXp1XG4i
+LAorCQlkZXZfZXJyKHN0b3JhZ2UtPmRldiwgIk9mZnNldCB3aXRoaW4gdGhlIGRldmljZSBpcyBu
+b3QgYWxpZ25lZCB0byBlcmFzZWJsb2Nrcy4gT2Zmc2V0IGlzICVsZCwgZXJhc2VzaXplICV1XG4i
+LAogCQkJc3RvcmFnZS0+b2Zmc2V0LCBtZW1pbmZvLT5lcmFzZXNpemUpOwogCQlyZXR1cm4gLUVJ
+TlZBTDsKIAl9Ci0tIAoyLjExLjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
+ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
+Cg==
