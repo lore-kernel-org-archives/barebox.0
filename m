@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dUagh-0000kg-6f
- for barebox@lists.infradead.org; Mon, 10 Jul 2017 15:33:29 +0000
-Date: Mon, 10 Jul 2017 17:33:03 +0200
+ id 1dUaay-0004uB-03
+ for barebox@lists.infradead.org; Mon, 10 Jul 2017 15:27:34 +0000
+Date: Mon, 10 Jul 2017 17:27:06 +0200
 From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170710153303.GB12108@ravnborg.org>
+Message-ID: <20170710152706.GA12108@ravnborg.org>
 References: <20170710152108.23601-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -26,22 +26,39 @@ Subject: Re: [PATCH] ARM: imx: phyCORE i.MX7 on phyBOARD-Zeta support
 To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-> \ No newline at end of file
-> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> index 6110924af642..49149e334d43 100644
-> --- a/arch/arm/mach-imx/Kconfig
-> +++ b/arch/arm/mach-imx/Kconfig
-> @@ -395,6 +395,10 @@ config MACH_ZII_VF610_DEV
->  	select ARCH_VF610
->  	select CLKDEV_LOOKUP
->  
-> +config MACH_PHYTEC_PHYCORE_IMX7
-> +	bool "Phytec phyCORE i.MX7"
-> +	select ARCH_IMX7
-> +
+Hi Lucas
 
-A little help text here introducing the board would be good like
-done for most - but unfortunately not all - boards.
+> index 000000000000..b1608dd9c730
+> --- /dev/null
+> +++ b/arch/arm/boards/phytec-phycore-imx7/flash-header-phytec-phycore-imx7.imxcfg
+> @@ -0,0 +1,76 @@
+> +/*
+> + * Copyright (C) 2016 NXP Semiconductors
+> + *
+> + * SPDX-License-Identifier:	GPL-2.0
+> + *
+> + * Refer docs/README.imxmage for more details about how-to configure
+> + * and create imximage boot image
+> + *
+> + * The syntax is taken as close as possible with the kwbimage
+> + */
+> +
+> +soc imx7
+> +loadaddr 0x80000000
+> +dcdofs 0x400
+> +
+> +wm 32 0x30340004 0x4F400005
+> +/* Clear then set bit30 to ensure exit from DDR retention */
+> +wm 32 0x30360388 0x40000000
+> +wm 32 0x30360384 0x40000000
+> +
+> +wm 32 0x30391000 0x00000002
+> +wm 32 0x307a0000 0x01040001
+
+
+Uwe posted a patch the other day to replace all these
+constants with defines across the tree.
+Looks like a step backward to introduce a new file where this approach is not used.
 
 	Sam
 
