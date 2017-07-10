@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x22b.google.com ([2a00:1450:400c:c0c::22b])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dUSUf-0004u1-FY
- for barebox@lists.infradead.org; Mon, 10 Jul 2017 06:48:31 +0000
-Received: by mail-wr0-x22b.google.com with SMTP id 77so124638866wrb.1
- for <barebox@lists.infradead.org>; Sun, 09 Jul 2017 23:48:04 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <CAGUZs0ke=+-Hc+bj0yKcke_W08CPBBq2tb6Pkq=xL2FjrLb-YQ@mail.gmail.com>
-References: <CAGUZs0ke=+-Hc+bj0yKcke_W08CPBBq2tb6Pkq=xL2FjrLb-YQ@mail.gmail.com>
-From: =?UTF-8?B?w4dhxJ9sYXIgS2lsaW1jaQ==?= <ckilimci@gmail.com>
-Date: Mon, 10 Jul 2017 09:48:01 +0300
-Message-ID: <CAGUZs0nTzR6HvQ8YnDH0xBZ6quCdhUHejp4O1dvCon9pgRyiCg@mail.gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dUUoU-0001mb-Ei
+ for barebox@lists.infradead.org; Mon, 10 Jul 2017 09:17:07 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
+ (envelope-from <l.stach@pengutronix.de>) id 1dUUo9-0006rk-Gb
+ for barebox@lists.infradead.org; Mon, 10 Jul 2017 11:16:45 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 10 Jul 2017 11:16:45 +0200
+Message-Id: <20170710091645.7141-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,61 +19,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Bootchooser - remaining_attempts
-To: barebox <barebox@lists.infradead.org>
+Subject: [PATCH] gpio: move active state function stubs to GPIOLIB
+To: barebox@lists.infradead.org
 
-SGVsbG8gZXZlcnlvbmUsCgpJIGFtIHN0aWxsIHByb2R1Y2luZyB0aGUgc2FtZSBwcm9ibGVtIHdp
-dGgKImdsb2JhbC5ib290Y2hvb3Nlci5yZXNldF9hdHRlbXB0cyIuIEkgd291bGQgYXBwcmVjaWF0
-ZSBhbnkgaWRlYXMuCgpTaW5jZXJlbHksCgoyMDE3LTA3LTA1IDE1OjM2IEdNVCswMzowMCDDh2HE
-n2xhciBLaWxpbWNpIDxja2lsaW1jaUBnbWFpbC5jb20+Ogo+IEhpIGFsbCwKPgo+IEkgYW0gdXNp
-bmcgYmFyZWJveCAyMDE3LjAzLjAgYW5kIG15IGJvb3RjaG9vc2VyIHZhcmlhYmxlcyBhcmU6Cj4g
-ICBib290Y2hvb3Nlci5sYXN0X2Nob3NlbjogMgo+ICAgYm9vdGNob29zZXIucmV0cnk6IHRydWUK
-PiAgIGJvb3RjaG9vc2VyLnN5c3RlbTEuYm9vdDogc3lzdGVtMQo+ICAgYm9vdGNob29zZXIuc3lz
-dGVtMS5kZWZhdWx0X2F0dGVtcHRzOiA5OQo+ICAgYm9vdGNob29zZXIuc3lzdGVtMS5kZWZhdWx0
-X3ByaW9yaXR5OiAxNgo+ICAgYm9vdGNob29zZXIuc3lzdGVtMS5wcmlvcml0eTogMjAKPiAgIGJv
-b3RjaG9vc2VyLnN5c3RlbTEucmVtYWluaW5nX2F0dGVtcHRzOiA1Cj4gICBib290Y2hvb3Nlci5z
-eXN0ZW0yLmJvb3Q6IHN5c3RlbTIKPiAgIGJvb3RjaG9vc2VyLnN5c3RlbTIuZGVmYXVsdF9hdHRl
-bXB0czogOQo+ICAgYm9vdGNob29zZXIuc3lzdGVtMi5kZWZhdWx0X3ByaW9yaXR5OiAxNQo+ICAg
-Ym9vdGNob29zZXIuc3lzdGVtMi5wcmlvcml0eTogMTAKPiAgIGJvb3RjaG9vc2VyLnN5c3RlbTIu
-cmVtYWluaW5nX2F0dGVtcHRzOiAzCj4gICBib290Y2hvb3Nlci50YXJnZXRzOiBzeXN0ZW0xIHN5
-c3RlbTIKPgo+IEFuZCAiZ2xvYmFsLmJvb3RjaG9vc2VyLnJlc2V0X2F0dGVtcHRzIiBpcyBlbXB0
-eS4gSSBhc3N1bWUgY291bnRlcnMKPiB3aWxsIG5ldmVyIGJlIHJlc2V0IGFzIHdyaXR0ZW4gaW4g
-WzFdLgo+Cj4gU28sIGhlcmUgaXMgdGhlIGNhc2UgdGhhdCBJIHRoaW5rIGl0IGhhcyBhIHByb2Js
-ZW0uIHN5c3RlbTEgaGFzIGEKPiBwcm9ibGVtIHRoYXQgZG9lcyBub3QgYm9vdC4gQm9vdGNob29z
-ZXIgdHJpZXMgc3lzdGVtMSBhbmQgZmFpbHMgYSBmZXcKPiB0aW1lcyBhbmQgdGhlbiBjaG9vc2Vz
-IHN5c3RlbTIuIEFmdGVyIHN1Y2Nlc3NmdWwgYm9vdCBvZiBzeXN0ZW0yLAo+ICJib290Y2hvb3Nl
-ci5zeXN0ZW0xLnJlbWFpbmluZ19hdHRlbXB0cyIgaXMgc3RpbGwgNS4gRXZlcnkgYm9vdAo+IHNl
-cXVlbmNlIGJvb3RjaG9vc2VyIHRyaWVzIHN5c3RlbTEgYW5kIGZhaWxzIGFuZCB0aGVuIHN5c3Rl
-bTIgaXMKPiBjaG9zZW4uIElmIEkgdW5kZXJzdGFuZCBjb3JyZWN0bHkgZnJvbSB0aGUgZG9jdW1l
-bnRhdGlvbiwgaXQgc2hvdWxkIGJlCj4gMCBhbmQgZGlzYWJsZWQgYW5kIHdpbGwgbmV2ZXIgdHJ5
-IGF0IGFsbC4gUmlnaHQ/Cj4KPiBTZWNvbmRseSwgVGhlcmUgaXMgYSBidWc6IGlmIGJvb3RjaG9v
-c2VyLnN5c3RlbTEucmVtYWluaW5nX2F0dGVtcHRzIGlzCj4gYmlnIGVub3VnaCBsaWtlIDEwLCBi
-b290Y2hvb3NlciB0cmllcyB0byBib290IHN5c3RlbTEgYXMgdXN1YWwgYW5kCj4gZmFpbHMgYXMg
-dXN1YWwgYWdhaW4gYnV0IGl0IGNvdWxkIG5vdCBib290IHN5c3RlbTIuIEkgYW0gc2VuZGluZyB0
-aGUKPiBsb2cgYmVsb3csIGFzIGEgc3VtbWFyeSAiY291bGQgbm90IG9wZW4gL2Jvb3QvYmFyZWJv
-eC5lbnY6IGVycm9yIDI0IjoKPiBib290aW5nICdzeXN0ZW0xJwo+IHNvcnJ5LCBubyBuZXN0ZWQg
-bW91bnRzCj4gbW91bnQ6IERldmljZSBvciByZXNvdXJjZSBidXN5Cj4gY291bGQgbm90IG9wZW4g
-L21udC9yb290ZnMxL2Jvb3QvekltYWdlOiBObyBzdWNoIGZpbGUgb3IgZGlyZWN0b3J5Cj4gQm9v
-dGluZyAnc3lzdGVtMScgZmFpbGVkOiBObyBzdWNoIGZpbGUgb3IgZGlyZWN0b3J5Cj4gYm9vdGlu
-ZyAnc3lzdGVtMScgZmFpbGVkOiBObyBzdWNoIGZpbGUgb3IgZGlyZWN0b3J5Cj4gY291bGQgbm90
-IG9wZW4gL2Jvb3QvYmFyZWJveC5lbnY6IGVycm9yIDI0Cj4gTm90aGluZyBib290YWJsZSBmb3Vu
-ZCBvbiAnc3lzdGVtMicKPiBOb3RoaW5nIGJvb3RhYmxlIGZvdW5kIG9uICdzeXN0ZW0yJwo+IE5v
-dGhpbmcgYm9vdGFibGUgZm91bmQgb24gJ3N5c3RlbTInCj4gYm9vdGNob29zZXI6IE5vIHZhbGlk
-IHRhcmdldHMgZm91bmQ6Cj4gc3lzdGVtMQo+ICAgICBpZDogMQo+ICAgICBwcmlvcml0eTogMjAK
-PiAgICAgZGVmYXVsdF9wcmlvcml0eTogMTYKPiAgICAgcmVtYWluaW5nIGF0dGVtcHRzOiAwCj4g
-ICAgIGRlZmF1bHQgYXR0ZW1wdHM6IDk5Cj4gICAgIGJvb3Q6ICdzeXN0ZW0xJwo+ICAgICBkaXNh
-YmxlZCBkdWUgdG8gcmVtYWluaW5nIGF0dGVtcHRzID0gMAo+IHN5c3RlbTIKPiAgICAgaWQ6IDIK
-PiAgICAgcHJpb3JpdHk6IDEwCj4gICAgIGRlZmF1bHRfcHJpb3JpdHk6IDE1Cj4gICAgIHJlbWFp
-bmluZyBhdHRlbXB0czogMAo+ICAgICBkZWZhdWx0IGF0dGVtcHRzOiA5Cj4gICAgIGJvb3Q6ICdz
-eXN0ZW0yJwo+ICAgICBkaXNhYmxlZCBkdWUgdG8gcmVtYWluaW5nIGF0dGVtcHRzID0gMAo+IGJv
-b3RpbmcgJ2Jvb3RjaG9vc2VyJyBmYWlsZWQ6IE5vIHN1Y2ggZmlsZSBvciBkaXJlY3RvcnkKPgo+
-Cj4gWzFdIGh0dHA6Ly9iYXJlYm94Lm9yZy9kb2MvbGF0ZXN0L3VzZXIvYm9vdGNob29zZXIuaHRt
-bD9oaWdobGlnaHQ9cmVzZXRfYXR0ZW1wdHMKPgo+IFNpbmNlcmVseSwKPiAtLQo+IMOHYcSfbGFy
-IEtpbGltY2kKCgoKLS0gCsOHYcSfbGFyIEtpbGltY2kKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+Those are only implemented by GPIOLIB, not by GENERIC_GPIO.
+Fixes like failure on old platforms, that aren't converted to
+gpiolib, yet.
+
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ include/gpio.h | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/include/gpio.h b/include/gpio.h
+index 56aae2223669..f5262aac423e 100644
+--- a/include/gpio.h
++++ b/include/gpio.h
+@@ -6,11 +6,6 @@ void gpio_set_value(unsigned gpio, int value);
+ int gpio_get_value(unsigned gpio);
+ int gpio_direction_output(unsigned gpio, int value);
+ int gpio_direction_input(unsigned gpio);
+-
+-void gpio_set_active(unsigned gpio, bool state);
+-int gpio_is_active(unsigned gpio);
+-int gpio_direction_active(unsigned gpio, bool state);
+-
+ #else
+ static inline void gpio_set_value(unsigned gpio, int value)
+ {
+@@ -27,7 +22,13 @@ static inline int gpio_direction_input(unsigned gpio)
+ {
+ 	return -EINVAL;
+ }
++#endif
+ 
++#ifdef CONFIG_GPIOLIB
++void gpio_set_active(unsigned gpio, bool state);
++int gpio_is_active(unsigned gpio);
++int gpio_direction_active(unsigned gpio, bool state);
++#else
+ static inline void gpio_set_active(unsigned gpio, int value)
+ {
+ }
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
