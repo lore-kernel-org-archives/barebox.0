@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dUW1P-0005w7-IQ
+ id 1dUW1P-0005w6-JY
  for barebox@lists.infradead.org; Mon, 10 Jul 2017 10:34:35 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 10 Jul 2017 12:33:50 +0200
-Message-Id: <20170710103355.15652-4-s.trumtrar@pengutronix.de>
+Date: Mon, 10 Jul 2017 12:33:49 +0200
+Message-Id: <20170710103355.15652-3-s.trumtrar@pengutronix.de>
 In-Reply-To: <20170710103355.15652-1-s.trumtrar@pengutronix.de>
 References: <20170710103355.15652-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,53 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/9] devfs-core: add function to find cdev by partuuid
+Subject: [PATCH v2 3/9] fs: efi: return with correct error code in efifs_stat
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
+Instead of erroring out when a file is not present, just return ENOENT if the
+file does not exist and let the fs-layer handle the situation correctly.
+
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- fs/devfs-core.c  | 14 ++++++++++++++
- include/driver.h |  1 +
- 2 files changed, 15 insertions(+)
+ fs/efi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 3368d3ed68bd..be56edd18d80 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -95,6 +95,20 @@ struct cdev *cdev_by_device_node(struct device_node *node)
- 	return NULL;
- }
+diff --git a/fs/efi.c b/fs/efi.c
+index 0c0f52e87c47..85ff914291ed 100644
+--- a/fs/efi.c
++++ b/fs/efi.c
+@@ -407,9 +407,7 @@ static int efifs_stat(struct device_d *dev, const char *filename, struct stat *s
  
-+struct cdev *cdev_by_partuuid(const char *partuuid)
-+{
-+	struct cdev *cdev;
-+
-+	if (!partuuid)
-+		return NULL;
-+
-+	list_for_each_entry(cdev, &cdev_list, list) {
-+		if (!strcmp(cdev->partuuid, partuuid))
-+			return cdev;
-+	}
-+	return NULL;
-+}
-+
- /**
-  * device_find_partition - find a partition belonging to a physical device
-  *
-diff --git a/include/driver.h b/include/driver.h
-index 3d701f24398a..8617872053d8 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -472,6 +472,7 @@ struct cdev *cdev_by_name(const char *filename);
- struct cdev *lcdev_by_name(const char *filename);
- struct cdev *cdev_readlink(struct cdev *cdev);
- struct cdev *cdev_by_device_node(struct device_node *node);
-+struct cdev *cdev_by_partuuid(const char *partuuid);
- struct cdev *cdev_open(const char *name, unsigned long flags);
- struct cdev *cdev_create_loop(const char *path, ulong flags);
- void cdev_remove_loop(struct cdev *cdev);
+ 	efiret = priv->root_dir->open(priv->root_dir, &entry, efi_path, EFI_FILE_MODE_READ, 0ULL);
+ 	if (EFI_ERROR(efiret)) {
+-		pr_err("%s: unable to Open %s: %s\n", __func__, filename,
+-				efi_strerror(efiret));
+-		ret = -efi_errno(efiret);
++		ret = -ENOENT;
+ 		goto out_free;
+ 	}
+ 
 -- 
 2.11.0
 
