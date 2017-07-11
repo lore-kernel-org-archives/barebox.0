@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from sonic306-22.consmr.mail.ne1.yahoo.com ([66.163.189.84])
+Received: from mx0.itk-engineering.de ([212.121.145.30])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dUsiu-00042H-4J
- for barebox@lists.infradead.org; Tue, 11 Jul 2017 10:48:57 +0000
-Date: Tue, 11 Jul 2017 10:48:33 +0000 (UTC)
-From: B Gol <behnam_golds@yahoo.com>
-Message-ID: <1501522313.3325137.1499770113670@mail.yahoo.com>
-In-Reply-To: <CAGUZs0ke=+-Hc+bj0yKcke_W08CPBBq2tb6Pkq=xL2FjrLb-YQ@mail.gmail.com>
+ id 1dUrjy-0000Zb-Bb
+ for barebox@lists.infradead.org; Tue, 11 Jul 2017 09:46:00 +0000
+From: Martin Hollingsworth <Martin.Hollingsworth@itk-engineering.de>
+Date: Tue, 11 Jul 2017 09:45:27 +0000
+Message-ID: <11441e7979d54a34951ab2bd2860a75f@itk-engineering.de>
 References: <CAGUZs0ke=+-Hc+bj0yKcke_W08CPBBq2tb6Pkq=xL2FjrLb-YQ@mail.gmail.com>
+ <CAGUZs0nTzR6HvQ8YnDH0xBZ6quCdhUHejp4O1dvCon9pgRyiCg@mail.gmail.com>
+In-Reply-To: <CAGUZs0nTzR6HvQ8YnDH0xBZ6quCdhUHejp4O1dvCon9pgRyiCg@mail.gmail.com>
+Content-Language: de-DE
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,27 +19,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: B Gol <behnam_golds@yahoo.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Bootchooser - remaining_attempts
-To: Barebox List <barebox@lists.infradead.org>
+Subject: AW: Bootchooser - remaining_attempts
+To: =?utf-8?B?w4dhxJ9sYXIgS2lsaW1jaQ==?= <ckilimci@gmail.com>, barebox <barebox@lists.infradead.org>
 
-According to the following passage of the documentation, I suggest you check and see if the  "global.system.reset" is causing the problem.
+Hello Caglar,
+I am no expert in bootchooser, but I am currently implementing it on an imx6 board using barebox 2017-3.
 
-power-on: The remaining_attempts counters of all enabled targets are reset after a power-on reset ($global.system.reset="POR"). This means after a power cycle all targets will be tried again for the configured number of retries
-all-zero: The remaining_attempts counters of all enabled targets are reset when none of them has any remaining_attempts left.
+Regarding the first issue. These are my settings, with them target A is successfully disabled after 5 attempts and never automatically enabled again. 
+I set the "default_xxx" values within the config-board script of my barebox default-environment. I do not set the current values (like "A.remaining_attempts") within the environment. They are generated on the first execution of bootchooser and stored within the nv variables. Do you maybe accidentally overwrite the current values on startup with some script from the environment? (happened to me ^^^).
+Have you tried explicitly configuring global.bootchooser.reset_attempts='' as empty, instead of not defining it?
 
-_______________________________________________
+<<< from: config-board <<<<<<
+# General bootchooser settings
+global.bootchooser.disable_on_zero_attempts=0
+global.bootchooser.default_attempts=5
+global.bootchooser.default_priority=1
+global.bootchooser.reset_attempts=''
+global.bootchooser.reset_priorities=''
+global.bootchooser.retry=1
+global.bootchooser.targets="A B"
 
-barebox mailing list
+# Slot "A" default configuration
+nv bootchooser.A.boot=A
+nv bootchooser.A.default_attempts=5
+nv bootchooser.A.default_priority=10
 
-barebox@lists.infradead.org
+# Slot "B" default configuration
+nv bootchooser.B.boot=B
+nv bootchooser.B.default_attempts=1
+nv bootchooser.B.default_priority=5
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-http://lists.infradead.org/mailman/listinfo/barebox
-
+Regards, 
+Martin Hollingsworth
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
