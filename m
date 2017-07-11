@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dVJ2m-0007pF-OP
- for barebox@lists.infradead.org; Wed, 12 Jul 2017 14:55:14 +0000
-Message-ID: <1499871288.5060.118.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 12 Jul 2017 16:54:48 +0200
-In-Reply-To: <20170712044028.9309-2-o.rempel@pengutronix.de>
-References: <20170712044028.9309-1-o.rempel@pengutronix.de>
- <20170712044028.9309-2-o.rempel@pengutronix.de>
-Mime-Version: 1.0
+ id 1dUrVq-0003jj-D8
+ for barebox@lists.infradead.org; Tue, 11 Jul 2017 09:31:24 +0000
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Tue, 11 Jul 2017 11:30:50 +0200
+Message-Id: <20170711093050.23278-1-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,63 +14,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] crypto: caam: use dma_alloc_coherent instead of
- dma_alloc
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] i.MX: clk-pllv3: Initially disable PLL_BYPASS bit
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Am Mittwoch, den 12.07.2017, 06:40 +0200 schrieb Oleksij Rempel:
-> It is a fixup for following patch:
-> | commit ef4144b4ab6301d7417af3eb4d79cfc66bf0e731
-> | Date:   Wed Mar 22 10:14:37 2017 +0100
-> |
-> |    crypto: caam - fix RNG buffer cache alignment
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Commit cbff8031b491 ("i.MX: clk-pllv3: Do not touch PLL_BYPASS bit")
+overreached a bit by removing the code that disables the PLL_BYPASS bit
+for all architectures instead of making an exception for Vybrid and
+i.MX6SL. This causes the USB controller on i.MX6Q to run at bypass
+frequency and fail:
 
-Thanks. I've applied this patch with the commit message changed to the
-following, to add a bit more information about the failure this is
-fixing:
+    barebox@Boundary Devices i.MX6 Quad Nitrogen6x Board:/ usb
+    usb: USB: scanning bus for devices...
+    usb: Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+    imx-usb 2184200.usb: port(0) reset error
 
-crypto: caam: use dma_alloc_coherent instead of dma_alloc
+Also, the linux clk-pllv3 driver never looks at or touches the
+PLL_BYPASS bit, but expects the bootloader to set it up correctly.
 
-dma_alloc return non-coherent memory, but the driver does no cache
-maintenance on the buffer, causing memory corruption. Fix this by
-requesting coherent memory for the DMA transfer.
+This patch adds code to unconditionally disable the PLL_BYPASS bit
+initially, when the PLL clocks are registered.
 
-Fixes: ef4144b4ab63 (crypto: caam - fix RNG buffer cache alignment)
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Fixes: cbff8031b491 ("i.MX: clk-pllv3: Do not touch PLL_BYPASS bit")
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+---
+ drivers/clk/imx/clk-pllv3.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-> ---
->  drivers/crypto/caam/caamrng.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
-> index 31a92731d2..51c267e3d3 100644
-> --- a/drivers/crypto/caam/caamrng.c
-> +++ b/drivers/crypto/caam/caamrng.c
-> @@ -203,8 +203,6 @@ static inline int rng_create_job_desc(struct caam_rng_ctx *ctx, int buf_id)
->  	init_job_desc_shared(desc, ctx->sh_desc_dma, sh_len, HDR_SHARE_DEFER |
->  			     HDR_REVERSE);
->  
-> -	bd->addr = (dma_addr_t)bd->buf;
-> -
->  	append_seq_out_ptr_intlen(desc, bd->addr, RN_BUF_SIZE, 0);
->  #ifdef DEBUG
->  	print_hex_dump(KERN_ERR, "rng job desc@: ", DUMP_PREFIX_OFFSET, 16, 4,
-> @@ -218,7 +216,7 @@ static int caam_init_buf(struct caam_rng_ctx *ctx, int buf_id)
->  	struct buf_data *bd = &ctx->bufs[buf_id];
->  	int err;
->  
-> -	bd->buf = dma_alloc(RN_BUF_SIZE);
-> +	bd->buf = dma_alloc_coherent(RN_BUF_SIZE, &bd->addr);
->  
->  	err = rng_create_job_desc(ctx, buf_id);
->  	if (err)
-
+diff --git a/drivers/clk/imx/clk-pllv3.c b/drivers/clk/imx/clk-pllv3.c
+index 0e55a63e9..44642e88f 100644
+--- a/drivers/clk/imx/clk-pllv3.c
++++ b/drivers/clk/imx/clk-pllv3.c
+@@ -370,6 +370,7 @@ struct clk *imx_clk_pllv3(enum imx_pllv3_type type, const char *name,
+ 	struct clk_pllv3 *pll;
+ 	const struct clk_ops *ops;
+ 	int ret;
++	u32 val;
+ 
+ 	pll = xzalloc(sizeof(*pll));
+ 
+@@ -414,6 +415,10 @@ struct clk *imx_clk_pllv3(enum imx_pllv3_type type, const char *name,
+ 	pll->clk.parent_names = &pll->parent;
+ 	pll->clk.num_parents = 1;
+ 
++	val = readl(pll->base);
++	val &= ~BM_PLL_BYPASS;
++	writel(val, pll->base);
++
+ 	ret = clk_register(&pll->clk);
+ 	if (ret) {
+ 		free(pll);
+-- 
+2.11.0
 
 
 _______________________________________________
