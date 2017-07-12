@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx0.itk-engineering.de ([212.121.145.30])
+Received: from mail-wr0-x22f.google.com ([2a00:1450:400c:c0c::22f])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dUrjy-0000Zb-Bb
- for barebox@lists.infradead.org; Tue, 11 Jul 2017 09:46:00 +0000
-From: Martin Hollingsworth <Martin.Hollingsworth@itk-engineering.de>
-Date: Tue, 11 Jul 2017 09:45:27 +0000
-Message-ID: <11441e7979d54a34951ab2bd2860a75f@itk-engineering.de>
+ id 1dVBlH-0003uO-2g
+ for barebox@lists.infradead.org; Wed, 12 Jul 2017 07:08:40 +0000
+Received: by mail-wr0-x22f.google.com with SMTP id r103so20527709wrb.0
+ for <barebox@lists.infradead.org>; Wed, 12 Jul 2017 00:08:18 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <11441e7979d54a34951ab2bd2860a75f@itk-engineering.de>
 References: <CAGUZs0ke=+-Hc+bj0yKcke_W08CPBBq2tb6Pkq=xL2FjrLb-YQ@mail.gmail.com>
  <CAGUZs0nTzR6HvQ8YnDH0xBZ6quCdhUHejp4O1dvCon9pgRyiCg@mail.gmail.com>
-In-Reply-To: <CAGUZs0nTzR6HvQ8YnDH0xBZ6quCdhUHejp4O1dvCon9pgRyiCg@mail.gmail.com>
-Content-Language: de-DE
-MIME-Version: 1.0
+ <11441e7979d54a34951ab2bd2860a75f@itk-engineering.de>
+From: =?UTF-8?B?w4dhxJ9sYXIgS2lsaW1jaQ==?= <ckilimci@gmail.com>
+Date: Wed, 12 Jul 2017 10:08:16 +0300
+Message-ID: <CAGUZs0mQMQ_J6BNk4H3me_8t_pNC4aRYErSzmTSbHGVj6MrQ2Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +21,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: AW: Bootchooser - remaining_attempts
-To: =?utf-8?B?w4dhxJ9sYXIgS2lsaW1jaQ==?= <ckilimci@gmail.com>, barebox <barebox@lists.infradead.org>
+Subject: Re: Bootchooser - remaining_attempts
+To: Martin Hollingsworth <Martin.Hollingsworth@itk-engineering.de>
+Cc: barebox <barebox@lists.infradead.org>
 
-Hello Caglar,
-I am no expert in bootchooser, but I am currently implementing it on an imx6 board using barebox 2017-3.
-
-Regarding the first issue. These are my settings, with them target A is successfully disabled after 5 attempts and never automatically enabled again. 
-I set the "default_xxx" values within the config-board script of my barebox default-environment. I do not set the current values (like "A.remaining_attempts") within the environment. They are generated on the first execution of bootchooser and stored within the nv variables. Do you maybe accidentally overwrite the current values on startup with some script from the environment? (happened to me ^^^).
-Have you tried explicitly configuring global.bootchooser.reset_attempts='' as empty, instead of not defining it?
-
-<<< from: config-board <<<<<<
-# General bootchooser settings
-global.bootchooser.disable_on_zero_attempts=0
-global.bootchooser.default_attempts=5
-global.bootchooser.default_priority=1
-global.bootchooser.reset_attempts=''
-global.bootchooser.reset_priorities=''
-global.bootchooser.retry=1
-global.bootchooser.targets="A B"
-
-# Slot "A" default configuration
-nv bootchooser.A.boot=A
-nv bootchooser.A.default_attempts=5
-nv bootchooser.A.default_priority=10
-
-# Slot "B" default configuration
-nv bootchooser.B.boot=B
-nv bootchooser.B.default_attempts=1
-nv bootchooser.B.default_priority=5
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-Regards, 
-Martin Hollingsworth
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gTWFydGluLAoKRmlyc3RseSwgdGhhbmsgeW91IGZvciB5b3VyIHJlcGx5LgoKMjAxNy0w
+Ny0xMSAxMjo0NSBHTVQrMDM6MDAgTWFydGluIEhvbGxpbmdzd29ydGgKPE1hcnRpbi5Ib2xsaW5n
+c3dvcnRoQGl0ay1lbmdpbmVlcmluZy5kZT46Cj4gSGVsbG8gQ2FnbGFyLAo+IEkgYW0gbm8gZXhw
+ZXJ0IGluIGJvb3RjaG9vc2VyLCBidXQgSSBhbSBjdXJyZW50bHkgaW1wbGVtZW50aW5nIGl0IG9u
+IGFuIGlteDYgYm9hcmQgdXNpbmcgYmFyZWJveCAyMDE3LTMuCj4KPiBSZWdhcmRpbmcgdGhlIGZp
+cnN0IGlzc3VlLiBUaGVzZSBhcmUgbXkgc2V0dGluZ3MsIHdpdGggdGhlbSB0YXJnZXQgQSBpcyBz
+dWNjZXNzZnVsbHkgZGlzYWJsZWQgYWZ0ZXIgNSBhdHRlbXB0cyBhbmQgbmV2ZXIgYXV0b21hdGlj
+YWxseSBlbmFibGVkIGFnYWluLgo+IEkgc2V0IHRoZSAiZGVmYXVsdF94eHgiIHZhbHVlcyB3aXRo
+aW4gdGhlIGNvbmZpZy1ib2FyZCBzY3JpcHQgb2YgbXkgYmFyZWJveCBkZWZhdWx0LWVudmlyb25t
+ZW50LiBJIGRvIG5vdCBzZXQgdGhlIGN1cnJlbnQgdmFsdWVzIChsaWtlICJBLnJlbWFpbmluZ19h
+dHRlbXB0cyIpIHdpdGhpbiB0aGUgZW52aXJvbm1lbnQuIFRoZXkgYXJlIGdlbmVyYXRlZCBvbiB0
+aGUgZmlyc3QgZXhlY3V0aW9uIG9mIGJvb3RjaG9vc2VyIGFuZCBzdG9yZWQgd2l0aGluIHRoZSBu
+diB2YXJpYWJsZXMuIERvIHlvdSBtYXliZSBhY2NpZGVudGFsbHkgb3ZlcndyaXRlIHRoZSBjdXJy
+ZW50IHZhbHVlcyBvbiBzdGFydHVwIHdpdGggc29tZSBzY3JpcHQgZnJvbSB0aGUgZW52aXJvbm1l
+bnQ/IChoYXBwZW5lZCB0byBtZSBeXl4pLgo+IEhhdmUgeW91IHRyaWVkIGV4cGxpY2l0bHkgY29u
+ZmlndXJpbmcgZ2xvYmFsLmJvb3RjaG9vc2VyLnJlc2V0X2F0dGVtcHRzPScnIGFzIGVtcHR5LCBp
+bnN0ZWFkIG9mIG5vdCBkZWZpbmluZyBpdD8KCkFjdHVhbGx5LCBuby4gSSBkaWQgbm90IGludGVu
+dGlvbmFsbHkgc2V0IHJlc2V0X2F0dGVtcHRzIGFzIGFuIGVtcHR5CnN0cmluZy4gQXMgeW91ciBy
+ZWNvbW1lbmQsIHdoaWxlIHNldHRpbmcgaXQgYXMgYW4gZW1wdHkgc3RyaW5nLCBJIHNhdwp0aGF0
+IGVhY2ggYm9vdCB0aW1lIEkgYW0gc2V0dGluZyBib290Y2hvb3NlciB2YXJpYWJsZSBmcm9tIHRo
+ZSBzdGF0ZQpmcmFtZXdvcms6CgpudiBib290Y2hvb3Nlci5zeXN0ZW0xLmJvb3Q9JHN0YXRlLmJv
+b3RjaG9vc2VyLnN5c3RlbTEuYm9vdApudiBib290Y2hvb3Nlci5zeXN0ZW0xLmRlZmF1bHRfYXR0
+ZW1wdHM9JHN0YXRlLmJvb3RjaG9vc2VyLnN5c3RlbTEuZGVmYXVsdF9hdHRlbXB0cwpudiBib290
+Y2hvb3Nlci5zeXN0ZW0xLnJlbWFpbmluZ19hdHRlbXB0cz0kc3RhdGUuYm9vdGNob29zZXIuc3lz
+dGVtMS5yZW1haW5pbmdfYXR0ZW1wdHMKbnYgYm9vdGNob29zZXIuc3lzdGVtMS5kZWZhdWx0X3By
+aW9yaXR5PSRzdGF0ZS5ib290Y2hvb3Nlci5zeXN0ZW0xLmRlZmF1bHRfcHJpb3JpdHkKbnYgYm9v
+dGNob29zZXIuc3lzdGVtMS5wcmlvcml0eT0kc3RhdGUuYm9vdGNob29zZXIuc3lzdGVtMS5wcmlv
+cml0eQoKbnYgYm9vdGNob29zZXIuc3lzdGVtMi5ib290PSRzdGF0ZS5ib290Y2hvb3Nlci5zeXN0
+ZW0yLmJvb3QKbnYgYm9vdGNob29zZXIuc3lzdGVtMi5kZWZhdWx0X2F0dGVtcHRzPSRzdGF0ZS5i
+b290Y2hvb3Nlci5zeXN0ZW0yLmRlZmF1bHRfYXR0ZW1wdHMKbnYgYm9vdGNob29zZXIuc3lzdGVt
+Mi5yZW1haW5pbmdfYXR0ZW1wdHM9JHN0YXRlLmJvb3RjaG9vc2VyLnN5c3RlbTIucmVtYWluaW5n
+X2F0dGVtcHRzCm52IGJvb3RjaG9vc2VyLnN5c3RlbTIuZGVmYXVsdF9wcmlvcml0eT0kc3RhdGUu
+Ym9vdGNob29zZXIuc3lzdGVtMi5kZWZhdWx0X3ByaW9yaXR5Cm52IGJvb3RjaG9vc2VyLnN5c3Rl
+bTIucHJpb3JpdHk9JHN0YXRlLmJvb3RjaG9vc2VyLnN5c3RlbTIucHJpb3JpdHkKCkkgYW0gbm93
+IGRlY3JlYXNpbmcgMSBmcm9tIHRoZSBzdGF0ZSBlYWNoIGJvb3QgdGltZS4gQWZ0ZXIgZW5vdWdo
+CnVuc3VjY2Vzc2Z1bCBhdHRlbXB0cywgaXQgaXMgZGlzYWJsZWQgYW5kIG5ldmVyIGVuYWJsZWQg
+YWdhaW4uCgpUaGFua3MgYWdhaW4uCgpCZXN0IFJlZ2FyZHMsCi0tIArDh2HEn2xhciBLaWxpbWNp
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
+IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
