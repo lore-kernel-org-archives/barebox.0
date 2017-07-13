@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22f.google.com ([2a00:1450:400c:c09::22f])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dVjfo-0008U8-JP
- for barebox@lists.infradead.org; Thu, 13 Jul 2017 19:21:18 +0000
-Received: by mail-wm0-x22f.google.com with SMTP id w126so1950844wme.0
- for <barebox@lists.infradead.org>; Thu, 13 Jul 2017 12:20:55 -0700 (PDT)
+ id 1dVlBm-0003qq-78
+ for barebox@lists.infradead.org; Thu, 13 Jul 2017 20:58:24 +0000
+Received: from ravnborg.org (unknown [188.228.89.252])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by asavdk4.altibox.net (Postfix) with ESMTPS id 118A9803A7
+ for <barebox@lists.infradead.org>; Thu, 13 Jul 2017 22:57:53 +0200 (CEST)
+Date: Thu, 13 Jul 2017 22:57:51 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20170713205751.GA9385@ravnborg.org>
+References: <20170707220714.GB28540@ravnborg.org>
 MIME-Version: 1.0
-From: Kevin Du Huanpeng <u74147@gmail.com>
-Date: Fri, 14 Jul 2017 04:20:53 +0900
-Message-ID: <CANvTkNZ+gLF_0FPnq-HiLGHN-BKQCj9PR7KrmeeXeR03Px1MAA@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20170707220714.GB28540@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +27,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: how to make barebox supports pcf font format support
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 2/2] at91sam9263ek: enable multi-image build
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi, I am intrested in pcf font, there are many language has pcf font, eg.
+On Sat, Jul 08, 2017 at 12:07:14AM +0200, Sam Ravnborg wrote:
+> >From 265d9e416b53e6ad1f7941e0de61d0257ab1e233 Mon Sep 17 00:00:00 2001
+> From: Sam Ravnborg <sam@ravnborg.org>
+> Date: Fri, 7 Jul 2017 17:56:20 +0200
+> Subject: [PATCH 2/2] at91sam9263ek: enable multi-image build
+> 
+> Convert at91sam9263ek to multi-image build as we already do
+> for many of the i.MX based boards and recently for
+> the at91sam9x5ek board.
+> 
+> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 
-https://www.netsarang.com/download/font.html
-(be careful, not sure it is free or not)
+Some additional testing revealed that this patch is buggy.
+I was missing CONFIG_RELOCTABLE and for some reasons this
+did not show up in my initial testing.
 
-I want to try make barebox supports pcf,
-where to start?
+I will send an updated version in some days.
 
-I can find some code in freetype supports pcf font.
-
----------------------------------------------------------------------------------------------
-du@DESKTOP-A3GTHUO MINGW64 /d/work/freetype-2.8/src
-$ ls
-Jamfile   bzip2/  gxvalid/  pcf/       psnames/  tools/     winfonts/
-autofit/  cache/  gzip/     pfr/       raster/   truetype/
-base/     cff/    lzw/      psaux/     sfnt/     type1/
-bdf/      cid/    otvalid/  pshinter/  smooth/   type42/
----------------------------------------------------------------------------------------------
-which way is better, make barebox supports freetype, or any other idea?
-
-thanks!
-
-Du Huanpeng
+	Sam
 
 _______________________________________________
 barebox mailing list
