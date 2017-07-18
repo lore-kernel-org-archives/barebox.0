@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dX4PY-0001dX-11
- for barebox@lists.infradead.org; Mon, 17 Jul 2017 11:42:12 +0000
-Date: Mon, 17 Jul 2017 13:41:33 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170717114133.GA26062@ravnborg.org>
-References: <20170707121000.GA16920@ravnborg.org>
- <1500285149.6594.30.camel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1500285149.6594.30.camel@pengutronix.de>
+ id 1dXSLe-0006Ix-E5
+ for barebox@lists.infradead.org; Tue, 18 Jul 2017 13:15:36 +0000
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Tue, 18 Jul 2017 15:14:45 +0200
+Message-Id: <20170718131445.6859-1-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,52 +14,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/23] at91: move reset vector to board code
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] state: backend_bucket_circular: fix old state reads
+To: barebox@lists.infradead.org
 
-Hi Lucas.
-> 
-> Just to let you know the current status here: While I think you are on
-> the right track with this, I'm currently lacking the bandwidth to
-> properly review this series. I'm a bit hesitant to just throw it into
-> -next without any kind of review, so I'm still hoping for others to take
-> a look.
+When the circular bucket meta magic was not found, it is assumed that
+the whole written state is in the old on-storage format. In that case,
+the size of the circular bucket meta must not be subtracted from the
+read length, or the (complete_len > len) check in the raw backend's
+verify function will fail:
 
-Thanks for the heads-up.
-Review is a must as I am in unknown land here.
-The most important part is if the apporach is correct or not.
+    state: Error, invalid data_len 16 in header, have data of len 24
 
-I have continued with the effort to DT enable
-the at91sam9263ek board and have a barebox that
-boots using DT now with most stuff working.
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+---
+ common/state/backend_bucket_circular.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-atmel_lcdfb did not support DT which I have added.
-All other drivers worked more or less out-of-the-box.
+diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
+index 7c81cdfaf..3dcff5cf0 100644
+--- a/common/state/backend_bucket_circular.c
++++ b/common/state/backend_bucket_circular.c
+@@ -279,7 +279,10 @@ static int state_backend_bucket_circular_read(struct state_backend_storage_bucke
+ 	}
+ 
+ 	*buf_out = buf;
+-	*len_out = read_len - sizeof(struct state_backend_storage_bucket_circular_meta);
++	/* When reading old state there is no circular bucket metadata */
++	if (circ->last_written_length)
++		read_len -= sizeof(struct state_backend_storage_bucket_circular_meta);
++	*len_out = read_len;
+ 
+ 	return ret;
+ }
+-- 
+2.11.0
 
-In the process there have been a few cleanups and fixes
-and I will post the patches after some more testing.
-
-Not everything is working yet:
-- the NAND cannot read BBT (NAND is properly identified)
-- environment load /dev/env0 fails (maybe related to the above)
-- no kernel booted yet
-- bootstrap not tested (will provide a defconfig if I get it working)
-- network is not yet tested
-
-I expect to work on the above list and hold back patches
-until everything is working. That will take a few days.
-
-If everything goes like for the other challenges I will
-run to the other side of the forest to pick up a small
-splinter of wood in my effort to find a fix.
-Which is OK as this is part of the fun :-)
-
-	Sam
 
 _______________________________________________
 barebox mailing list
