@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dXULi-0003Kl-WA
- for barebox@lists.infradead.org; Tue, 18 Jul 2017 15:23:48 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue, 18 Jul 2017 17:23:20 +0200
-Message-Id: <20170718152320.16792-1-u.kleine-koenig@pengutronix.de>
+ id 1dXV9k-0007FV-LP
+ for barebox@lists.infradead.org; Tue, 18 Jul 2017 16:15:30 +0000
+Date: Tue, 18 Jul 2017 18:15:01 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20170718161501.GA13114@ravnborg.org>
+References: <20170718152320.16792-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170718152320.16792-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,69 +18,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] scripts: Provide script that helps using cpp defines in dcd
- tables
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] scripts: Provide script that helps using cpp defines in
+ dcd tables
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-VGhpcyBzY3JpcHQgd2FzIHVzZWQgdG8gaGVscCBjcmVhdGUgY29tbWl0ICgiQVJNOiBpbXg6IHVz
-ZSByZWdpc3RlcgpkZWZpbmVzIGluIGlteGNmZyBmaWxlcyBpbnN0ZWFkIG9mIHBsYWluIG51bWJl
-cnMiKS4KCkl0IGlzIGRvY3VtZW50ZWQgaW4gUGVybCBQb2QsIHlvdSBjYW4gcHJldHR5LXByaW50
-IGl0IHVzaW5nCgoJJCBwZXJsZG9jIHNjcmlwdHMvcmVnc3Vic3QucGwuCgpTaWduZWQtb2ZmLWJ5
-OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0K
-IHNjcmlwdHMvcmVnc3Vic3QucGwgfCAxMjMgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKwogMSBmaWxlIGNoYW5nZWQsIDEyMyBpbnNlcnRpb25zKCsp
-CiBjcmVhdGUgbW9kZSAxMDA3NTUgc2NyaXB0cy9yZWdzdWJzdC5wbAoKZGlmZiAtLWdpdCBhL3Nj
-cmlwdHMvcmVnc3Vic3QucGwgYi9zY3JpcHRzL3JlZ3N1YnN0LnBsCm5ldyBmaWxlIG1vZGUgMTAw
-NzU1CmluZGV4IDAwMDAwMDAwMDAwMC4uNjE5OGNiNTdkZDUxCi0tLSAvZGV2L251bGwKKysrIGIv
-c2NyaXB0cy9yZWdzdWJzdC5wbApAQCAtMCwwICsxLDEyMyBAQAorIyEvdXNyL2Jpbi9wZXJsCisK
-Kz1oZWFkMSBOQU1FCisKK3JlZ3N1YnN0LnBsIC0gaGVscGVyIHNjcmlwdCB0byBtYWtlIHVzZSBv
-ZiBkZWZpbmVzCisKKz1oZWFkMSBTWU5PUFNJUworCitCPHJlZ3N1YnN0LnBsPiBbQjwtST4gSTxp
-bmNsdWRlcGF0aD5dIEk8ZmlsZW5hbWU+CisKKz1oZWFkMSBERVNDUklQVElPTgorCitCPHJlZ3N1
-YnN0LnBsPiBwYXJzZXMgdGhlIGdpdmVuIGZpbGUgcmVjdXJzaXZlbHkgZm9yICNpbmNsdWRlIGRp
-cmVjdGl2ZXMgYW5kCit0aGVuIHN1YnN0aXR1dGVzIHJhdyBoZXggdmFsdWVzIGluIEk8ZmlsZW5h
-bWU+IGJ5IGRlZmluaXRpb25zIGZvdW5kIGFuZCBwcmludHMKK3RoZSByZXN1bHQgdG8gc3Rkb3V0
-LgorCitUaGlzIGlzIHRhcmdldGVkIHRvIG1ha2UgaS5NWCBEQ0QgdGFibGVzIG1vcmUgcmVhZGFi
-bGUgYnV0IGZvciBzdXJlIGNhbiBiZSB1c2VkCitlbHNld2hlcmUgdG9vLgorCis9aGVhZDEgQlVH
-UworCitCPHJlZ3N1YnN0LnBsPiBpcyBkdW1iIGFuZCBzbyBtaWdodCByZXBsYWNlIHZhbHVlcyB0
-byBhZ2dyZXNzaXZlbHkuIFNvIGJldHRlcgorZG91YmxlIGNoZWNrIHRoZSByZXN1bHQuCisKKz1o
-ZWFkMSBPUFRJT05TCisKKz1vdmVyIDQKKworPWl0ZW0gQjwtST4gSTxpbmNsdWRlcGF0aD4KKwor
-QWRkIEk8aW5jbHVkZXBhdGg+IHRvIHRoZSBsaXN0IG9mIHNlYXJjaCBwYXRocyBmb3IgaW5jbHVk
-ZSBmaWxlcy4KKworPWJhY2sKKworPWhlYWQxIEVYQU1QTEUKKworRmlyc3QgeW91IGhhdmUgdG8g
-YWRkIHRoZSByaWdodCAjaW5jbHVkZSBkaXJlY3RpdmVzIHRvIHlvdXIgZmlsZToKKworICQgY2F0
-IGZsYXNoLWhlYWRlci1teWJvYXJkLmlteGNmZworIHNvYyBpbXg2CisgbG9hZGFkZHIgMHgyMDAw
-MDAwMAorIGRjZG9mcyAweDQwMAorIAorICNpbmNsdWRlIDxtYWNoL2lteDYtZGRyLXJlZ3MuaD4K
-KyAjaW5jbHVkZSA8bWFjaC9pbXg2ZGwtZGRyLXJlZ3MuaD4KKyAKKyB3bSAzMiAweDAyMGUwNzc0
-IDB4MDAwQzAwMDAKKyB3bSAzMiAweDAyMGUwNzU0IDB4MDAwMDAwMDAKKyAuLi4KKyAKK1RoZW4g
-eW91IGNhbiBwcm9jZXNzIHRoZSBmaWxlIHdpdGggQjxyZWdzdWJzdC5wbD46CisKKyAkIHNjcmlw
-dHMvcmVnc3Vic3QucGwgLUkgYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZSBmbGFzaC1oZWFkZXIt
-bXlib2FyZC5pbXhjZmcKKyBzb2MgaW14NgorIGxvYWRhZGRyIDB4MjAwMDAwMDAKKyBkY2RvZnMg
-MHg0MDAKKyAKKyAjaW5jbHVkZSA8bWFjaC9pbXg2LWRkci1yZWdzLmg+CisgI2luY2x1ZGUgPG1h
-Y2gvaW14NmRsLWRkci1yZWdzLmg+CisgCisgd20gMzIgTVg2X0lPTV9HUlBfRERSX1RZUEUgMHgw
-MDBDMDAwMAorIHdtIDMyIE1YNl9JT01fR1JQX0REUlBLRSAweDAwMDAwMDAwCisgLi4uCisKK0lm
-IHRoZSByZXN1bHQgbG9va3Mgb2ssIHlvdSBjYW4gcmVwbGFjZSB0aGUgZmlsZToKKworICQgc2Ny
-aXB0cy9yZWdzdWJzdC5wbCAtSSBhcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlIGZsYXNoLWhlYWRl
-ci1teWJvYXJkLmlteGNmZyA+IHUKKyAkIG1vdiB1IGZsYXNoLWhlYWRlci1teWJvYXJkLmlteGNm
-ZworCis9Y3V0CisKK3VzZSBzdHJpY3Q7Cit1c2Ugd2FybmluZ3M7Cit1c2UgR2V0b3B0OjpMb25n
-IHF3KEdldE9wdGlvbnMpOworCitteSBAaW5jbHVkZXBhdGhzOworCitHZXRPcHRpb25zKCdJPXMn
-ID0+IFxAaW5jbHVkZXBhdGhzKTsKKworbXkgJXJlZ25hbWVtYXA7CisKK3N1YiBzY2FuIHsKKwlt
-eSBAaW5jZmlsZXM7CisKKwlwdXNoIEBpbmNmaWxlcywgQF87CisKKwlmb3JlYWNoIG15ICRpIChA
-aW5jZmlsZXMpIHsKKwkJZm9yZWFjaCBteSAkaW5jcGF0aCAoQGluY2x1ZGVwYXRocykgeworCQkJ
-aWYgKC1lICIkaW5jcGF0aC8kaSIpIHsKKwkJCQlvcGVuKG15ICRmZCwgIjwiLCAiJGluY3BhdGgv
-JGkiKSB8fCBkaWUgIkZhaWxlZCB0byBvcGVuIGluY2x1ZGUgZmlsZSAkaW5jcGF0aC8kaSI7CisK
-KwkJCQl3aGlsZSAoPCRmZD4pIHsKKwkJCQkJaWYgKC9eXHMqI1xzKmluY2x1ZGVccytbIjxdKC4q
-KVsiPl0vKSB7CisJCQkJCQlwdXNoIEBpbmNmaWxlcywgJDE7CisJCQkJCX07CisKKwkJCQkJaWYg
-KC9eXHMqI1xzKmRlZmluZVxzKyhbQS1aXzAtOV0qKVxzKygweFswLTlhLWZdKykvKSB7CisJCQkJ
-CQlteSAkcmVnbmFtZSA9ICQxOworCQkJCQkJbXkgJHJlZ2FkZHJyZSA9ICQyID1+IHMvXjB4MCov
-MHgwXCovcjsKKwkJCQkJCSRyZWduYW1lbWFweyRyZWdhZGRycmV9ID0gJHJlZ25hbWU7CisJCQkJ
-CX07CisJCQkJfTsKKworCQkJCWNsb3NlKCRmZCk7CisKKwkJCQlsYXN0OworCQkJfQorCQl9CisJ
-fQorfQorCit3aGlsZSAoPD4pIHsKKwlteSAkbGluZSA9ICRfOworCisJaWYgKC8jaW5jbHVkZSBb
-IjxdKC4qKVsiPl0vKSB7CisJCXNjYW4gJDE7CisJfQorCisJZm9yZWFjaCBteSAkcmVnYWRkciAo
-a2V5cyAlcmVnbmFtZW1hcCkgeworCQkkbGluZSA9fiBzLyRyZWdhZGRyLyRyZWduYW1lbWFweyRy
-ZWdhZGRyfS9laTsKKwl9CisJcHJpbnQgJGxpbmU7Cit9OwotLSAKMi4xMS4wCgoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
-c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Tue, Jul 18, 2017 at 05:23:20PM +0200, Uwe Kleine-K=F6nig wrote:
+> This script was used to help create commit ("ARM: imx: use register
+> defines in imxcfg files instead of plain numbers").
+> =
+
+> It is documented in Perl Pod, you can pretty-print it using
+> =
+
+> 	$ perldoc scripts/regsubst.pl.
+
+Could you add this info as a comment in the perl script too?
+So people not used to perl is reminded by this when they look
+in the perl script and see something only halfway readable.
+
+(halway readable is maybe what one are sued to with respect
+to (some) perl scripts, but thats another story).
+
+	Sam
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
