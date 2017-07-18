@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dXSLq-0006Jr-Jo
- for barebox@lists.infradead.org; Tue, 18 Jul 2017 13:15:48 +0000
+ id 1dXSLv-0006KD-JY
+ for barebox@lists.infradead.org; Tue, 18 Jul 2017 13:15:54 +0000
 From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Tue, 18 Jul 2017 15:15:23 +0200
-Message-Id: <20170718131523.23296-1-p.zabel@pengutronix.de>
+Date: Tue, 18 Jul 2017 15:15:34 +0200
+Message-Id: <20170718131534.26564-1-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +19,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] state: backend_bucket_circular: promote old state debug
- message to info
+Subject: [PATCH] state: backend_storage: remove unreachable error message
 To: barebox@lists.infradead.org
 
-A report about the changed on-storage state format might be interesting
-to the user.
+This looks like a leftover.
 
 Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
- common/state/backend_bucket_circular.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/state/backend_storage.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
-index 3dcff5cf0..f83bd679d 100644
---- a/common/state/backend_bucket_circular.c
-+++ b/common/state/backend_bucket_circular.c
-@@ -246,7 +246,7 @@ static int state_backend_bucket_circular_read(struct state_backend_storage_bucke
- 		read_len = min(circ->write_area, (off_t)(circ->max_size -
- 			       sizeof(struct state_backend_storage_bucket_circular_meta)));
- 		circ->write_area = 0;
--		dev_dbg(circ->dev, "Detected old on-storage format\n");
-+		dev_info(circ->dev, "Detected old on-storage format\n");
- 	} else if (circ->last_written_length > circ->write_area
- 		   || !IS_ALIGNED(circ->last_written_length, circ->writesize)) {
- 		circ->write_area = 0;
+diff --git a/common/state/backend_storage.c b/common/state/backend_storage.c
+index 8d24f7053..1abf8c866 100644
+--- a/common/state/backend_storage.c
++++ b/common/state/backend_storage.c
+@@ -392,8 +392,6 @@ int state_storage_init(struct state *state, const char *path,
+ 	} else {
+ 		return state_storage_file_buckets_init(storage);
+ 	}
+-
+-	dev_err(storage->dev, "storage init done\n");
+ }
+ 
+ void state_storage_set_readonly(struct state_backend_storage *storage)
 -- 
 2.11.0
 
