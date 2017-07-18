@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dXSLe-0006Ix-E5
- for barebox@lists.infradead.org; Tue, 18 Jul 2017 13:15:36 +0000
+ id 1dXSLq-0006Jr-Jo
+ for barebox@lists.infradead.org; Tue, 18 Jul 2017 13:15:48 +0000
 From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Tue, 18 Jul 2017 15:14:45 +0200
-Message-Id: <20170718131445.6859-1-p.zabel@pengutronix.de>
+Date: Tue, 18 Jul 2017 15:15:23 +0200
+Message-Id: <20170718131523.23296-1-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,38 +19,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] state: backend_bucket_circular: fix old state reads
+Subject: [PATCH] state: backend_bucket_circular: promote old state debug
+ message to info
 To: barebox@lists.infradead.org
 
-When the circular bucket meta magic was not found, it is assumed that
-the whole written state is in the old on-storage format. In that case,
-the size of the circular bucket meta must not be subtracted from the
-read length, or the (complete_len > len) check in the raw backend's
-verify function will fail:
-
-    state: Error, invalid data_len 16 in header, have data of len 24
+A report about the changed on-storage state format might be interesting
+to the user.
 
 Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
- common/state/backend_bucket_circular.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ common/state/backend_bucket_circular.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
-index 7c81cdfaf..3dcff5cf0 100644
+index 3dcff5cf0..f83bd679d 100644
 --- a/common/state/backend_bucket_circular.c
 +++ b/common/state/backend_bucket_circular.c
-@@ -279,7 +279,10 @@ static int state_backend_bucket_circular_read(struct state_backend_storage_bucke
- 	}
- 
- 	*buf_out = buf;
--	*len_out = read_len - sizeof(struct state_backend_storage_bucket_circular_meta);
-+	/* When reading old state there is no circular bucket metadata */
-+	if (circ->last_written_length)
-+		read_len -= sizeof(struct state_backend_storage_bucket_circular_meta);
-+	*len_out = read_len;
- 
- 	return ret;
- }
+@@ -246,7 +246,7 @@ static int state_backend_bucket_circular_read(struct state_backend_storage_bucke
+ 		read_len = min(circ->write_area, (off_t)(circ->max_size -
+ 			       sizeof(struct state_backend_storage_bucket_circular_meta)));
+ 		circ->write_area = 0;
+-		dev_dbg(circ->dev, "Detected old on-storage format\n");
++		dev_info(circ->dev, "Detected old on-storage format\n");
+ 	} else if (circ->last_written_length > circ->write_area
+ 		   || !IS_ALIGNED(circ->last_written_length, circ->writesize)) {
+ 		circ->write_area = 0;
 -- 
 2.11.0
 
