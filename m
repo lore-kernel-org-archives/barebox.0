@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk3.altibox.net ([109.247.116.14])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dXwPV-0001La-Ug
- for barebox@lists.infradead.org; Wed, 19 Jul 2017 21:21:40 +0000
+ by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dXwPd-0006Dc-Nu
+ for barebox@lists.infradead.org; Wed, 19 Jul 2017 21:21:44 +0000
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Wed, 19 Jul 2017 23:21:01 +0200
-Message-Id: <20170719212104.2613-3-sam@ravnborg.org>
+Date: Wed, 19 Jul 2017 23:21:02 +0200
+Message-Id: <20170719212104.2613-4-sam@ravnborg.org>
 In-Reply-To: <20170719212013.GA1675@ravnborg.org>
 References: <20170719212013.GA1675@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,35 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] clk: at91: fix clk-main
+Subject: [PATCH 4/6] pinctrl: at91: move initcalls to postcore_initcall
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Sam Ravnborg <sam@ravnborg.org>
+Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Following warning was reported during boot with
-at91sam9263ek with DT enabled.
+Move initcalls to postcore_initcall() like all other pinctrl drivers.
+This will init this driver earlier right after pinctrl driver.
 
-    "Main crystal frequency not set, using approximate value"
-
-This occured due to a missing parent in clk_rm9200_main.
+No know bugs are fixed by this change.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/clk/at91/clk-main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pinctrl/pinctrl-at91.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/at91/clk-main.c b/drivers/clk/at91/clk-main.c
-index 55bc618a3..77dfdef51 100644
---- a/drivers/clk/at91/clk-main.c
-+++ b/drivers/clk/at91/clk-main.c
-@@ -391,6 +391,7 @@ at91_clk_register_rm9200_main(struct regmap *regmap,
+diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
+index d52c184e4..030386977 100644
+--- a/drivers/pinctrl/pinctrl-at91.c
++++ b/drivers/pinctrl/pinctrl-at91.c
+@@ -538,7 +538,7 @@ static int at91_pinctrl_init(void)
+ {
+ 	return platform_driver_register(&at91_pinctrl_driver);
+ }
+-coredevice_initcall(at91_pinctrl_init);
++postcore_initcall(at91_pinctrl_init);
  
- 	clkmain = xzalloc(sizeof(*clkmain));
- 
-+	clkmain->parent = parent_name;
- 	clkmain->clk.name = name;
- 	clkmain->clk.ops = &rm9200_main_ops;
- 	clkmain->clk.parent_names = &clkmain->parent;
+ static int at91_gpio_get(struct gpio_chip *chip, unsigned offset)
+ {
+@@ -718,4 +718,4 @@ static int at91_gpio_init(void)
+ {
+ 	return platform_driver_register(&at91_gpio_driver);
+ }
+-coredevice_initcall(at91_gpio_init);
++postcore_initcall(at91_gpio_init);
 -- 
 2.12.0
 
