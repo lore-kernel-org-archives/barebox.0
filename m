@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk3.altibox.net ([109.247.116.14])
- by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dXwPd-0006Dc-Nu
- for barebox@lists.infradead.org; Wed, 19 Jul 2017 21:21:44 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dXwPu-0001Ot-2V
+ for barebox@lists.infradead.org; Wed, 19 Jul 2017 21:22:03 +0000
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Wed, 19 Jul 2017 23:21:02 +0200
-Message-Id: <20170719212104.2613-4-sam@ravnborg.org>
+Date: Wed, 19 Jul 2017 23:21:04 +0200
+Message-Id: <20170719212104.2613-6-sam@ravnborg.org>
 In-Reply-To: <20170719212013.GA1675@ravnborg.org>
 References: <20170719212013.GA1675@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] pinctrl: at91: move initcalls to postcore_initcall
+Subject: [PATCH 6/6] atmel_lcdfb: fix so the correct guard_time is used
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Move initcalls to postcore_initcall() like all other pinctrl drivers.
-This will init this driver earlier right after pinctrl driver.
+guard_time is set in platform data but was never copied
+to atmel_lcdfb_info thus a guard_time of 0 have always been used.
 
-No know bugs are fixed by this change.
+This issue was found during code inspection and no know
+bugs is fixed by this.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- drivers/pinctrl/pinctrl-at91.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/atmel_lcdfb.c      | 2 +-
+ drivers/video/atmel_lcdfb_core.c | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
-index d52c184e4..030386977 100644
---- a/drivers/pinctrl/pinctrl-at91.c
-+++ b/drivers/pinctrl/pinctrl-at91.c
-@@ -538,7 +538,7 @@ static int at91_pinctrl_init(void)
- {
- 	return platform_driver_register(&at91_pinctrl_driver);
- }
--coredevice_initcall(at91_pinctrl_init);
-+postcore_initcall(at91_pinctrl_init);
+diff --git a/drivers/video/atmel_lcdfb.c b/drivers/video/atmel_lcdfb.c
+index 20204c1dd..a0e41d10c 100644
+--- a/drivers/video/atmel_lcdfb.c
++++ b/drivers/video/atmel_lcdfb.c
+@@ -85,7 +85,7 @@ static void atmel_lcdfb_start(struct atmel_lcdfb_info *sinfo)
  
- static int at91_gpio_get(struct gpio_chip *chip, unsigned offset)
- {
-@@ -718,4 +718,4 @@ static int at91_gpio_init(void)
- {
- 	return platform_driver_register(&at91_gpio_driver);
+ 	lcdc_writel(sinfo, ATMEL_LCDC_DMACON, pdata->default_dmacon);
+ 	lcdc_writel(sinfo, ATMEL_LCDC_PWRCON,
+-		(pdata->guard_time << ATMEL_LCDC_GUARDT_OFFSET)
++		(sinfo->guard_time << ATMEL_LCDC_GUARDT_OFFSET)
+ 		| ATMEL_LCDC_PWR);
  }
--coredevice_initcall(at91_gpio_init);
-+postcore_initcall(at91_gpio_init);
+ 
+diff --git a/drivers/video/atmel_lcdfb_core.c b/drivers/video/atmel_lcdfb_core.c
+index 555799ea4..f6c5d7c05 100644
+--- a/drivers/video/atmel_lcdfb_core.c
++++ b/drivers/video/atmel_lcdfb_core.c
+@@ -258,6 +258,7 @@ int atmel_lcdc_register(struct device_d *dev, struct atmel_lcdfb_devdata *data)
+ 
+ 	sinfo = xzalloc(sizeof(*sinfo));
+ 	sinfo->pdata = pdata;
++	sinfo->guard_time = pdata->guard_time;
+ 	iores = dev_request_mem_resource(dev, 0);
+ 	if (IS_ERR(iores))
+ 		return PTR_ERR(iores);
 -- 
 2.12.0
 
