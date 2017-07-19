@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk3.altibox.net ([109.247.116.14])
- by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dXwPX-0000Op-84
- for barebox@lists.infradead.org; Wed, 19 Jul 2017 21:21:36 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dXwPV-0001La-Ug
+ for barebox@lists.infradead.org; Wed, 19 Jul 2017 21:21:40 +0000
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Wed, 19 Jul 2017 23:21:03 +0200
-Message-Id: <20170719212104.2613-5-sam@ravnborg.org>
+Date: Wed, 19 Jul 2017 23:21:01 +0200
+Message-Id: <20170719212104.2613-3-sam@ravnborg.org>
 In-Reply-To: <20170719212013.GA1675@ravnborg.org>
 References: <20170719212013.GA1675@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,41 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/6] mci: atmel_mci: fix devinfo DEV with OF enabled
+Subject: [PATCH 3/6] clk: at91: fix clk-main
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Sam Ravnborg <sam@ravnborg.org>
 
-devinfo DEV resulted in a NULL pointer expection.
-As platform_data is only valid in non-DT setup,
-fix this so we no longer reference platform_data
-outside the probe function
+Following warning was reported during boot with
+at91sam9263ek with DT enabled.
+
+    "Main crystal frequency not set, using approximate value"
+
+This occured due to a missing parent in clk_rm9200_main.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mci/atmel_mci.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/clk/at91/clk-main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
-index 317cf4602..0d3b245ce 100644
---- a/drivers/mci/atmel_mci.c
-+++ b/drivers/mci/atmel_mci.c
-@@ -474,7 +474,6 @@ static int atmci_request(struct mci_host *mci, struct mci_cmd *cmd, struct mci_d
- static void atmci_info(struct device_d *mci_dev)
- {
- 	struct atmel_mci *host = mci_dev->priv;
--	struct atmel_mci_platform_data *pd = host->hw_dev->platform_data;
+diff --git a/drivers/clk/at91/clk-main.c b/drivers/clk/at91/clk-main.c
+index 55bc618a3..77dfdef51 100644
+--- a/drivers/clk/at91/clk-main.c
++++ b/drivers/clk/at91/clk-main.c
+@@ -391,6 +391,7 @@ at91_clk_register_rm9200_main(struct regmap *regmap,
  
- 	printf("  Bus data width: %d bit\n", host->mci.bus_width);
+ 	clkmain = xzalloc(sizeof(*clkmain));
  
-@@ -490,7 +489,7 @@ static void atmci_info(struct device_d *mci_dev)
- 		printf("- %u Hz upper limit", host->mci.f_max);
- 
- 	printf("\n  Card detection support: %s\n",
--		gpio_is_valid(pd->detect_pin) ? "yes" : "no");
-+		gpio_is_valid(host->detect_pin) ? "yes" : "no");
- 
- }
- /*
++	clkmain->parent = parent_name;
+ 	clkmain->clk.name = name;
+ 	clkmain->clk.ops = &rm9200_main_ops;
+ 	clkmain->clk.parent_names = &clkmain->parent;
 -- 
 2.12.0
 
