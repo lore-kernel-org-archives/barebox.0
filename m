@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk3.altibox.net ([109.247.116.14])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dXwPV-0001LO-Uf
+ by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dXwPX-0000Op-84
  for barebox@lists.infradead.org; Wed, 19 Jul 2017 21:21:36 +0000
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Wed, 19 Jul 2017 23:20:59 +0200
-Message-Id: <20170719212104.2613-1-sam@ravnborg.org>
+Date: Wed, 19 Jul 2017 23:21:03 +0200
+Message-Id: <20170719212104.2613-5-sam@ravnborg.org>
 In-Reply-To: <20170719212013.GA1675@ravnborg.org>
 References: <20170719212013.GA1675@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,33 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] arm: at91 bootstrap: declare local function static
+Subject: [PATCH 5/6] mci: atmel_mci: fix devinfo DEV with OF enabled
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Sam Ravnborg <srn@skov.dk>, Sam Ravnborg <sam@ravnborg.org>
+Cc: Sam Ravnborg <sam@ravnborg.org>
 
-From: Sam Ravnborg <srn@skov.dk>
-
-Function is only used in this file and no prototype exist
-in any header.
+devinfo DEV resulted in a NULL pointer expection.
+As platform_data is only valid in non-DT setup,
+fix this so we no longer reference platform_data
+outside the probe function
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- arch/arm/mach-at91/bootstrap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mci/atmel_mci.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-at91/bootstrap.c b/arch/arm/mach-at91/bootstrap.c
-index 9dd575b74..5d21b2d02 100644
---- a/arch/arm/mach-at91/bootstrap.c
-+++ b/arch/arm/mach-at91/bootstrap.c
-@@ -149,7 +149,7 @@ static void boot_reset_action(struct menu *m, struct menu_entry *me)
- 	restart_machine();
- }
- 
--void at91_bootstrap_menu(void)
-+static void at91_bootstrap_menu(void)
+diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
+index 317cf4602..0d3b245ce 100644
+--- a/drivers/mci/atmel_mci.c
++++ b/drivers/mci/atmel_mci.c
+@@ -474,7 +474,6 @@ static int atmci_request(struct mci_host *mci, struct mci_cmd *cmd, struct mci_d
+ static void atmci_info(struct device_d *mci_dev)
  {
- 	struct menu *m;
- 	struct menu_entry *me;
+ 	struct atmel_mci *host = mci_dev->priv;
+-	struct atmel_mci_platform_data *pd = host->hw_dev->platform_data;
+ 
+ 	printf("  Bus data width: %d bit\n", host->mci.bus_width);
+ 
+@@ -490,7 +489,7 @@ static void atmci_info(struct device_d *mci_dev)
+ 		printf("- %u Hz upper limit", host->mci.f_max);
+ 
+ 	printf("\n  Card detection support: %s\n",
+-		gpio_is_valid(pd->detect_pin) ? "yes" : "no");
++		gpio_is_valid(host->detect_pin) ? "yes" : "no");
+ 
+ }
+ /*
 -- 
 2.12.0
 
