@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dY8Py-0008DU-OO
- for barebox@lists.infradead.org; Thu, 20 Jul 2017 10:10:53 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
- helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
- (envelope-from <l.stach@pengutronix.de>) id 1dY8Pd-0005pZ-5D
- for barebox@lists.infradead.org; Thu, 20 Jul 2017 12:10:29 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu, 20 Jul 2017 12:10:28 +0200
-Message-Id: <20170720101028.4289-3-l.stach@pengutronix.de>
-In-Reply-To: <20170720101028.4289-1-l.stach@pengutronix.de>
-References: <20170720101028.4289-1-l.stach@pengutronix.de>
+ id 1dXwOf-0000yI-GS
+ for barebox@lists.infradead.org; Wed, 19 Jul 2017 21:20:44 +0000
+Date: Wed, 19 Jul 2017 23:20:13 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20170719212013.GA1675@ravnborg.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +16,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] ARM: at91: animeo: depend on !CONSOLE_NONE
-To: barebox@lists.infradead.org
+Subject: [PATCH 0/6] assorted fixes, mainly at91 related
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Sam Ravnborg <sam@ravnborg.org>
 
-The board file configures the consoles, so need console support.
+While working on enabling DT support for at91sam9263ek
+I have stumbled over a fev issues that are
+all fixed in the following patches.
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- arch/arm/mach-at91/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Some of the issues may only be relevant when we have more at91
+boards supporting DT.
+None of the fixes are critical and are thus mainly -next material.
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 9db53b2261db..3b572ebdfe61 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -256,6 +256,7 @@ choice
- 
- config MACH_ANIMEO_IP
- 	bool "Somfy Animeo IP"
-+	depends on !CONSOLE_NONE
- 
- config MACH_AT91SAM9260EK
- 	bool "Atmel AT91SAM9260-EK"
--- 
-2.11.0
+	Sam
 
+Sam Ravnborg (6):
+      arm: at91 bootstrap: declare local function static
+      macb: fix clock probing with DT
+      clk: at91: fix clk-main
+      pinctrl: at91: move initcalls to postcore_initcall
+      mci: atmel_mci: fix devinfo DEV with OF enabled
+      atmel_lcdfb: fix so the correct guard_time is used
+
+ arch/arm/mach-at91/bootstrap.c   | 2 +-
+ drivers/clk/at91/clk-main.c      | 1 +
+ drivers/mci/atmel_mci.c          | 3 +--
+ drivers/net/macb.c               | 4 ++--
+ drivers/pinctrl/pinctrl-at91.c   | 4 ++--
+ drivers/video/atmel_lcdfb.c      | 2 +-
+ drivers/video/atmel_lcdfb_core.c | 1 +
+ 7 files changed, 9 insertions(+), 8 deletions(-)
 
 _______________________________________________
 barebox mailing list
