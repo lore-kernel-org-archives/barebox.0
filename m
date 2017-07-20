@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dYHhs-0003UE-DL
+ id 1dYHhs-0003UI-DN
  for barebox@lists.infradead.org; Thu, 20 Jul 2017 20:05:58 +0000
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Thu, 20 Jul 2017 22:05:23 +0200
-Message-Id: <20170720200526.19523-3-sam@ravnborg.org>
+Date: Thu, 20 Jul 2017 22:05:25 +0200
+Message-Id: <20170720200526.19523-5-sam@ravnborg.org>
 In-Reply-To: <20170720200103.GA16205@ravnborg.org>
 References: <20170720200103.GA16205@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,78 +21,119 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] atmel_lcdfb: move lcd_wiring_mode,
- have_intensity_bit to local data
+Subject: [PATCH 5/6] atmel_lcdfb: move pdata init to a separate function
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Copy lcd_wiring_mode and have_intensity_bit to
-atmel_lcdfb_info to minimize dependency on the
-atmel_lcdfb_platform_data.
+Keep atmel_lcdc_register() readable by separating out
+pdata handling in a helper function
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- drivers/video/atmel_lcdfb.h      | 2 ++
- drivers/video/atmel_lcdfb_core.c | 9 +++++----
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/video/atmel_lcdfb_core.c | 65 +++++++++++++++++++++++++---------------
+ 1 file changed, 41 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/video/atmel_lcdfb.h b/drivers/video/atmel_lcdfb.h
-index 1be9cccd9..90992df02 100644
---- a/drivers/video/atmel_lcdfb.h
-+++ b/drivers/video/atmel_lcdfb.h
-@@ -23,6 +23,8 @@ struct atmel_lcdfb_info {
- 	unsigned int		smem_len;
- 	unsigned int		lcdcon2;
- 	unsigned int		dmacon;
-+	unsigned int		lcd_wiring_mode;
-+	bool			have_intensity_bit;
- 	struct clk		*bus_clk;
- 	struct clk		*lcdc_clk;
- 
 diff --git a/drivers/video/atmel_lcdfb_core.c b/drivers/video/atmel_lcdfb_core.c
-index a79c31ae4..cdeb927ad 100644
+index cc065397d..87bddade4 100644
 --- a/drivers/video/atmel_lcdfb_core.c
 +++ b/drivers/video/atmel_lcdfb_core.c
-@@ -69,7 +69,6 @@ static int atmel_lcdfb_check_var(struct fb_info *info)
- {
- 	struct device_d *dev = &info->dev;
- 	struct atmel_lcdfb_info *sinfo = info->priv;
--	struct atmel_lcdfb_platform_data *pdata = sinfo->pdata;
- 	struct fb_videomode *mode = info->mode;
- 	unsigned long clk_value_khz;
+@@ -278,31 +278,23 @@ static int power_control_init(struct device_d *dev,
+ 	return ret;
+ }
  
-@@ -126,11 +125,11 @@ static int atmel_lcdfb_check_var(struct fb_info *info)
- 		break;
- 	case 16:
- 		/* Older SOCs use IBGR:555 rather than BGR:565. */
--		if (pdata->have_intensity_bit)
-+		if (sinfo->have_intensity_bit)
- 			info->green.length = 5;
- 		else
- 			info->green.length = 6;
--		if (pdata->lcd_wiring_mode == ATMEL_LCDC_WIRING_RGB) {
-+		if (sinfo->lcd_wiring_mode == ATMEL_LCDC_WIRING_RGB) {
- 			/* RGB:5X5 mode */
- 			info->red.offset = info->green.length + 5;
- 			info->blue.offset = 0;
-@@ -147,7 +146,7 @@ static int atmel_lcdfb_check_var(struct fb_info *info)
- 		info->transp.length = 8;
- 		/* fall through */
- 	case 24:
--		if (pdata->lcd_wiring_mode == ATMEL_LCDC_WIRING_RGB) {
-+		if (sinfo->lcd_wiring_mode == ATMEL_LCDC_WIRING_RGB) {
- 			/* RGB:888 mode */
- 			info->red.offset = 16;
- 			info->blue.offset = 0;
-@@ -261,6 +260,8 @@ int atmel_lcdc_register(struct device_d *dev, struct atmel_lcdfb_devdata *data)
- 	sinfo->guard_time = pdata->guard_time;
- 	sinfo->lcdcon2 = pdata->default_lcdcon2;
+-int atmel_lcdc_register(struct device_d *dev, struct atmel_lcdfb_devdata *data)
++static int lcdfb_pdata_init(struct device_d *dev, struct atmel_lcdfb_info *sinfo)
+ {
+-	struct resource *iores;
+-	struct atmel_lcdfb_info *sinfo;
+-	struct atmel_lcdfb_platform_data *pdata = dev->platform_data;
+-	int ret = 0;
+-	int gpio;
++	struct atmel_lcdfb_platform_data *pdata;
+ 	struct fb_info *info;
++	bool active_low;
++	int gpio;
++	int ret;
+ 
+-	if (!pdata) {
+-		dev_err(dev, "missing platform_data\n");
+-		return -EINVAL;
+-	}
+-
+-	sinfo = xzalloc(sizeof(*sinfo));
++	pdata = dev->platform_data;
+ 
+ 	/* If gpio == 0 (default in pdata) then we assume no power control */
+ 	gpio = pdata->gpio_power_control;
+ 	if (gpio == 0)
+ 		gpio = -1;
+ 
+-	ret = power_control_init(dev,
+-				 sinfo,
+-				 gpio,
+-				 pdata->gpio_power_control_active_low);
++	active_low = pdata->gpio_power_control_active_low;
++	ret = power_control_init(dev, sinfo, gpio, active_low);
+ 	if (ret)
+ 		goto err;
+ 
+@@ -311,23 +303,48 @@ int atmel_lcdc_register(struct device_d *dev, struct atmel_lcdfb_devdata *data)
  	sinfo->dmacon = pdata->default_dmacon;
-+	sinfo->lcd_wiring_mode = pdata->lcd_wiring_mode;
-+	sinfo->have_intensity_bit = pdata->have_intensity_bit;
+ 	sinfo->lcd_wiring_mode = pdata->lcd_wiring_mode;
+ 	sinfo->have_intensity_bit = pdata->have_intensity_bit;
++
++	info = &sinfo->info;
++	info->modes.modes = pdata->mode_list;
++	info->modes.num_modes = pdata->num_modes;
++	info->mode = &info->modes.modes[0];
++	info->xres = info->mode->xres;
++	info->yres = info->mode->yres;
++	info->bits_per_pixel = pdata->default_bpp;
++
++err:
++	return ret;
++}
++
++int atmel_lcdc_register(struct device_d *dev, struct atmel_lcdfb_devdata *data)
++{
++	struct resource *iores;
++	struct atmel_lcdfb_info *sinfo;
++	struct fb_info *info;
++	int ret = 0;
++
  	iores = dev_request_mem_resource(dev, 0);
  	if (IS_ERR(iores))
  		return PTR_ERR(iores);
+-	sinfo->mmio = IOMEM(iores->start);
+ 
++	sinfo = xzalloc(sizeof(*sinfo));
+ 	sinfo->dev_data = data;
++	sinfo->mmio = IOMEM(iores->start);
+ 
+-	/* just init */
+ 	info = &sinfo->info;
+ 	info->priv = sinfo;
+ 	info->fbops = &atmel_lcdc_ops;
+-	info->modes.modes = pdata->mode_list;
+-	info->modes.num_modes = pdata->num_modes;
+-	info->mode = &info->modes.modes[0];
+-	info->xres = info->mode->xres;
+-	info->yres = info->mode->yres;
+-	info->bits_per_pixel = pdata->default_bpp;
++
++	if (dev->platform_data) {
++		ret = lcdfb_pdata_init(dev, sinfo);
++		if (ret) {
++			dev_err(dev, "failed to init lcdfb from pdata\n");
++			goto err;
++		}
++	} else {
++		dev_err(dev, "missing platform_data\n");
++		return -EINVAL;
++	}
+ 
+ 	/* Enable LCDC Clocks */
+ 	sinfo->bus_clk = clk_get(dev, "hck1");
 -- 
 2.12.0
 
