@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dXwPu-0001Ot-2V
- for barebox@lists.infradead.org; Wed, 19 Jul 2017 21:22:03 +0000
-From: Sam Ravnborg <sam@ravnborg.org>
-Date: Wed, 19 Jul 2017 23:21:04 +0200
-Message-Id: <20170719212104.2613-6-sam@ravnborg.org>
+ id 1dYB9Z-0002su-JU
+ for barebox@lists.infradead.org; Thu, 20 Jul 2017 13:06:07 +0000
+Message-ID: <1500555943.26680.8.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 20 Jul 2017 15:05:43 +0200
 In-Reply-To: <20170719212013.GA1675@ravnborg.org>
 References: <20170719212013.GA1675@ravnborg.org>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,54 +17,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] atmel_lcdfb: fix so the correct guard_time is used
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>
+Subject: Re: [PATCH 0/6] assorted fixes, mainly at91 related
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-guard_time is set in platform data but was never copied
-to atmel_lcdfb_info thus a guard_time of 0 have always been used.
+Am Mittwoch, den 19.07.2017, 23:20 +0200 schrieb Sam Ravnborg:
+> While working on enabling DT support for at91sam9263ek
+> I have stumbled over a fev issues that are
+> all fixed in the following patches.
+> 
+> Some of the issues may only be relevant when we have more at91
+> boards supporting DT.
+> None of the fixes are critical and are thus mainly -next material.
+> 
+> 	Sam
+> 
+> Sam Ravnborg (6):
+>       arm: at91 bootstrap: declare local function static
+>       macb: fix clock probing with DT
+>       clk: at91: fix clk-main
+>       pinctrl: at91: move initcalls to postcore_initcall
+>       mci: atmel_mci: fix devinfo DEV with OF enabled
+>       atmel_lcdfb: fix so the correct guard_time is used
 
-This issue was found during code inspection and no know
-bugs is fixed by this.
+Thanks, applied on -next.
 
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
----
- drivers/video/atmel_lcdfb.c      | 2 +-
- drivers/video/atmel_lcdfb_core.c | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/video/atmel_lcdfb.c b/drivers/video/atmel_lcdfb.c
-index 20204c1dd..a0e41d10c 100644
---- a/drivers/video/atmel_lcdfb.c
-+++ b/drivers/video/atmel_lcdfb.c
-@@ -85,7 +85,7 @@ static void atmel_lcdfb_start(struct atmel_lcdfb_info *sinfo)
- 
- 	lcdc_writel(sinfo, ATMEL_LCDC_DMACON, pdata->default_dmacon);
- 	lcdc_writel(sinfo, ATMEL_LCDC_PWRCON,
--		(pdata->guard_time << ATMEL_LCDC_GUARDT_OFFSET)
-+		(sinfo->guard_time << ATMEL_LCDC_GUARDT_OFFSET)
- 		| ATMEL_LCDC_PWR);
- }
- 
-diff --git a/drivers/video/atmel_lcdfb_core.c b/drivers/video/atmel_lcdfb_core.c
-index 555799ea4..f6c5d7c05 100644
---- a/drivers/video/atmel_lcdfb_core.c
-+++ b/drivers/video/atmel_lcdfb_core.c
-@@ -258,6 +258,7 @@ int atmel_lcdc_register(struct device_d *dev, struct atmel_lcdfb_devdata *data)
- 
- 	sinfo = xzalloc(sizeof(*sinfo));
- 	sinfo->pdata = pdata;
-+	sinfo->guard_time = pdata->guard_time;
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores))
- 		return PTR_ERR(iores);
--- 
-2.12.0
+Regards,
+Lucas
 
 
 _______________________________________________
