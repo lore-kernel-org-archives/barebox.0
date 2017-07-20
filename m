@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dYHhs-0003UC-DK
- for barebox@lists.infradead.org; Thu, 20 Jul 2017 20:06:00 +0000
+ id 1dYHiF-0003Wt-PB
+ for barebox@lists.infradead.org; Thu, 20 Jul 2017 20:06:26 +0000
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Thu, 20 Jul 2017 22:05:22 +0200
-Message-Id: <20170720200526.19523-2-sam@ravnborg.org>
+Date: Thu, 20 Jul 2017 22:05:26 +0200
+Message-Id: <20170720200526.19523-6-sam@ravnborg.org>
 In-Reply-To: <20170720200103.GA16205@ravnborg.org>
 References: <20170720200103.GA16205@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,102 +21,226 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] atmel_lcdfb: move dmacon, lcdcon2 to local data
+Subject: [PATCH 6/6] atmel_lcdfb: add DT support
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Copy dmacon + lcdcon2 to atmel_lcdfb_info to minimize
-dependency on the atmel_lcdfb_platform_data.
+Some boards use "have_intensity_bit". To support this the
+syntax for lcd_wiring_mode was extended to include this info.
+This is an extension compared to the documented bindings,
+and an extension the kernel does not support (yet).
+
+The binding documents that there can be more than one gpio to
+power on/off the display but current implmentation supports only
+one gpio. There are no users that requires more than one gpio
+so this is good enough.
+
+The clk name used for hclk differs from device trees and
+platform data. We could rename the clocl used in platform data
+but the name "hclk" is not unique.
+
+Configure clockname based on configuration method.
+Devicetree => hclk
+Platform data => hck1
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- drivers/video/atmel_hlcdfb.c     | 5 ++---
- drivers/video/atmel_lcdfb.c      | 7 ++-----
- drivers/video/atmel_lcdfb.h      | 2 ++
- drivers/video/atmel_lcdfb_core.c | 2 ++
- 4 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/video/atmel_lcdfb.c      |  12 ++++
+ drivers/video/atmel_lcdfb_core.c | 130 +++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 138 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/video/atmel_hlcdfb.c b/drivers/video/atmel_hlcdfb.c
-index f7aab7f45..5d130f598 100644
---- a/drivers/video/atmel_hlcdfb.c
-+++ b/drivers/video/atmel_hlcdfb.c
-@@ -178,7 +178,6 @@ static u32 atmel_hlcdfb_get_rgbmode(struct fb_info *info)
- static void atmel_hlcdfb_setup_core_base(struct fb_info *info)
- {
- 	struct atmel_lcdfb_info *sinfo = info->priv;
--	struct atmel_lcdfb_platform_data *pdata = sinfo->pdata;
- 	struct fb_videomode *mode = info->mode;
- 	unsigned long value;
- 	unsigned long clk_value_khz;
-@@ -205,8 +204,8 @@ static void atmel_hlcdfb_setup_core_base(struct fb_info *info)
- 	lcdc_writel(sinfo, ATMEL_LCDC_LCDCFG0, value);
- 
- 	/* Initialize control register 5 */
--	/* In 9x5, the default_lcdcon2 will use for LCDCFG5 */
--	value = pdata->default_lcdcon2;
-+	/* In 9x5, the lcdcon2 will use for LCDCFG5 */
-+	value = sinfo->lcdcon2;
- 	value |= (sinfo->guard_time << LCDC_LCDCFG5_GUARDTIME_OFFSET)
- 		| LCDC_LCDCFG5_DISPDLY
- 		| LCDC_LCDCFG5_VSPDLYS;
 diff --git a/drivers/video/atmel_lcdfb.c b/drivers/video/atmel_lcdfb.c
-index a0e41d10c..770cf0497 100644
+index 770cf0497..7c05e857b 100644
 --- a/drivers/video/atmel_lcdfb.c
 +++ b/drivers/video/atmel_lcdfb.c
-@@ -81,9 +81,7 @@ static void atmel_lcdfb_stop(struct atmel_lcdfb_info *sinfo, u32 flags)
+@@ -243,8 +243,20 @@ static int atmel_lcdc_probe(struct device_d *dev)
+ 	return atmel_lcdc_register(dev, &atmel_lcdfb_data);
+ }
  
- static void atmel_lcdfb_start(struct atmel_lcdfb_info *sinfo)
- {
--	struct atmel_lcdfb_platform_data *pdata = sinfo->pdata;
--
--	lcdc_writel(sinfo, ATMEL_LCDC_DMACON, pdata->default_dmacon);
-+	lcdc_writel(sinfo, ATMEL_LCDC_DMACON, sinfo->dmacon);
- 	lcdc_writel(sinfo, ATMEL_LCDC_PWRCON,
- 		(sinfo->guard_time << ATMEL_LCDC_GUARDT_OFFSET)
- 		| ATMEL_LCDC_PWR);
-@@ -123,7 +121,6 @@ static void atmel_lcdfb_limit_screeninfo(struct fb_videomode *mode)
- static void atmel_lcdfb_setup_core(struct fb_info *info)
- {
- 	struct atmel_lcdfb_info *sinfo = info->priv;
--	struct atmel_lcdfb_platform_data *pdata = sinfo->pdata;
- 	struct fb_videomode *mode = info->mode;
- 	unsigned long clk_value_khz;
- 	unsigned long pix_factor = 2;
-@@ -159,7 +156,7 @@ static void atmel_lcdfb_setup_core(struct fb_info *info)
- 	}
- 
- 	/* Initialize control register 2 */
--	value = pdata->default_lcdcon2;
-+	value = sinfo->lcdcon2;
- 
- 	if (!(mode->sync & FB_SYNC_HOR_HIGH_ACT))
- 		value |= ATMEL_LCDC_INVLINE_INVERTED;
-diff --git a/drivers/video/atmel_lcdfb.h b/drivers/video/atmel_lcdfb.h
-index ea4c7e647..1be9cccd9 100644
---- a/drivers/video/atmel_lcdfb.h
-+++ b/drivers/video/atmel_lcdfb.h
-@@ -21,6 +21,8 @@ struct atmel_lcdfb_info {
- 
- 	unsigned int		guard_time;
- 	unsigned int		smem_len;
-+	unsigned int		lcdcon2;
-+	unsigned int		dmacon;
- 	struct clk		*bus_clk;
- 	struct clk		*lcdc_clk;
- 
++static __maybe_unused struct of_device_id atmel_lcdfb_compatible[] = {
++	{ .compatible = "atmel,at91sam9261-lcdc", },
++	{ .compatible = "atmel,at91sam9263-lcdc", },
++	{ .compatible = "atmel,at91sam9g10-lcdc", },
++	{ .compatible = "atmel,at91sam9g45-lcdc", },
++	{ .compatible = "atmel,at91sam9g45es-lcdc", },
++	{ .compatible = "atmel,at91sam9rl-lcdc", },
++	{ .compatible = "atmel,at32ap-lcdc", },
++	{ /* sentinel */ }
++};
++
+ static struct driver_d atmel_lcdc_driver = {
+ 	.name	= "atmel_lcdfb",
+ 	.probe	= atmel_lcdc_probe,
++	.of_compatible = DRV_OF_COMPAT(atmel_lcdfb_compatible),
+ };
+ device_platform_driver(atmel_lcdc_driver);
 diff --git a/drivers/video/atmel_lcdfb_core.c b/drivers/video/atmel_lcdfb_core.c
-index f6c5d7c05..a79c31ae4 100644
+index 87bddade4..45b0c63d0 100644
 --- a/drivers/video/atmel_lcdfb_core.c
 +++ b/drivers/video/atmel_lcdfb_core.c
-@@ -259,6 +259,8 @@ int atmel_lcdc_register(struct device_d *dev, struct atmel_lcdfb_devdata *data)
- 	sinfo = xzalloc(sizeof(*sinfo));
- 	sinfo->pdata = pdata;
- 	sinfo->guard_time = pdata->guard_time;
-+	sinfo->lcdcon2 = pdata->default_lcdcon2;
-+	sinfo->dmacon = pdata->default_dmacon;
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores))
- 		return PTR_ERR(iores);
+@@ -19,6 +19,7 @@
+  */
+ 
+ #include <common.h>
++#include <of_gpio.h>
+ #include <gpio.h>
+ #include <dma.h>
+ #include <io.h>
+@@ -278,6 +279,118 @@ static int power_control_init(struct device_d *dev,
+ 	return ret;
+ }
+ 
++/*
++ * Syntax: atmel,lcd-wiring-mode: lcd wiring mode "RGB", "BRG", "IRGB", "IBRG"
++ * The optional "I" indicates that green has an intensity bit as used by some
++ * older displays
++ */
++static int of_get_wiring_mode(struct device_node *np,
++			      struct atmel_lcdfb_info *sinfo)
++{
++	const char *mode;
++	int ret;
++
++	ret = of_property_read_string(np, "atmel,lcd-wiring-mode", &mode);
++	if (ret < 0) {
++		/* Not present, use defaults */
++		sinfo->lcd_wiring_mode = ATMEL_LCDC_WIRING_BGR;
++		sinfo->have_intensity_bit = false;
++		return 0;
++	}
++
++	if (!strcasecmp(mode, "BGR")) {
++		sinfo->lcd_wiring_mode = ATMEL_LCDC_WIRING_BGR;
++		sinfo->have_intensity_bit = false;
++	} else if (!strcasecmp(mode, "RGB")) {
++		sinfo->lcd_wiring_mode = ATMEL_LCDC_WIRING_RGB;
++		sinfo->have_intensity_bit = false;
++	} else if (!strcasecmp(mode, "IBGR")) {
++		sinfo->lcd_wiring_mode = ATMEL_LCDC_WIRING_BGR;
++		sinfo->have_intensity_bit = true;
++	} else if (!strcasecmp(mode, "IRGB")) {
++		sinfo->lcd_wiring_mode = ATMEL_LCDC_WIRING_RGB;
++		sinfo->have_intensity_bit = true;
++	} else {
++		return -ENODEV;
++	}
++	return 0;
++}
++
++static int of_get_power_control(struct device_d *dev,
++				struct device_node *np,
++				struct atmel_lcdfb_info *sinfo)
++{
++	enum of_gpio_flags flags;
++	bool active_low;
++	int gpio;
++
++	gpio = of_get_named_gpio_flags(np, "atmel,power-control-gpio", 0, &flags);
++	if (!gpio_is_valid(gpio)) {
++		/* No power control - ignore */
++		return 0;
++	}
++	active_low = (flags & OF_GPIO_ACTIVE_LOW ? true : false);
++	return power_control_init(dev, sinfo, gpio, active_low);
++}
++
++static int lcdfb_of_init(struct device_d *dev, struct atmel_lcdfb_info *sinfo)
++{
++	struct fb_info *info = &sinfo->info;
++	struct display_timings *modes;
++	struct device_node *display;
++	int ret;
++
++	/* Required properties */
++	display = of_parse_phandle(dev->device_node, "display", 0);
++	if (!display) {
++		dev_err(dev, "no display phandle\n");
++		return -ENOENT;
++	}
++	ret = of_property_read_u32(display, "atmel,guard-time", &sinfo->guard_time);
++	if (ret < 0) {
++		dev_err(dev, "failed to get atmel,guard-time property\n");
++		goto err;
++	}
++	ret = of_property_read_u32(display, "atmel,lcdcon2", &sinfo->lcdcon2);
++	if (ret < 0) {
++		dev_err(dev, "failed to get atmel,lcdcon2 property\n");
++		goto err;
++	}
++	ret = of_property_read_u32(display, "atmel,dmacon", &sinfo->dmacon);
++	if (ret < 0) {
++		dev_err(dev, "failed to get atmel,dmacon property\n");
++		goto err;
++	}
++	ret = of_property_read_u32(display, "bits-per-pixel", &info->bits_per_pixel);
++	if (ret < 0) {
++		dev_err(dev, "failed to get bits-per-pixel property\n");
++		goto err;
++	}
++	modes = of_get_display_timings(display);
++	if (IS_ERR(modes)) {
++		dev_err(dev, "unable to parse display timings\n");
++		ret = PTR_ERR(modes);
++		goto err;
++	}
++	info->modes.modes = modes->modes;
++	info->modes.num_modes = modes->num_modes;
++
++	/* Optional properties */
++	ret = of_get_wiring_mode(display, sinfo);
++	if (ret < 0) {
++		dev_err(dev, "failed to get atmel,lcd-wiring-mode property\n");
++		goto err;
++	}
++	ret = of_get_power_control(dev, display, sinfo);
++	if (ret < 0) {
++		dev_err(dev, "failed to get power control gpio\n");
++		goto err;
++	}
++	return 0;
++err:
++	return ret;
++}
++
+ static int lcdfb_pdata_init(struct device_d *dev, struct atmel_lcdfb_info *sinfo)
+ {
+ 	struct atmel_lcdfb_platform_data *pdata;
+@@ -318,8 +431,9 @@ err:
+ 
+ int atmel_lcdc_register(struct device_d *dev, struct atmel_lcdfb_devdata *data)
+ {
+-	struct resource *iores;
+ 	struct atmel_lcdfb_info *sinfo;
++	const char *bus_clk_name;
++	struct resource *iores;
+ 	struct fb_info *info;
+ 	int ret = 0;
+ 
+@@ -341,13 +455,21 @@ int atmel_lcdc_register(struct device_d *dev, struct atmel_lcdfb_devdata *data)
+ 			dev_err(dev, "failed to init lcdfb from pdata\n");
+ 			goto err;
+ 		}
++		bus_clk_name = "hck1";
+ 	} else {
+-		dev_err(dev, "missing platform_data\n");
+-		return -EINVAL;
++		if (!IS_ENABLED(CONFIG_OFDEVICE) || !dev->device_node)
++			return -EINVAL;
++
++		ret = lcdfb_of_init(dev, sinfo);
++		if (ret) {
++			dev_err(dev, "failed to init lcdfb from DT\n");
++			goto err;
++		}
++		bus_clk_name = "hclk";
+ 	}
+ 
+ 	/* Enable LCDC Clocks */
+-	sinfo->bus_clk = clk_get(dev, "hck1");
++	sinfo->bus_clk = clk_get(dev, bus_clk_name);
+ 	if (IS_ERR(sinfo->bus_clk)) {
+ 		ret = PTR_ERR(sinfo->bus_clk);
+ 		goto err;
 -- 
 2.12.0
 
