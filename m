@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dYHhs-0003UH-DM
+ id 1dYHhs-0003UC-DK
  for barebox@lists.infradead.org; Thu, 20 Jul 2017 20:06:00 +0000
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Thu, 20 Jul 2017 22:05:24 +0200
-Message-Id: <20170720200526.19523-4-sam@ravnborg.org>
+Date: Thu, 20 Jul 2017 22:05:22 +0200
+Message-Id: <20170720200526.19523-2-sam@ravnborg.org>
 In-Reply-To: <20170720200103.GA16205@ravnborg.org>
 References: <20170720200103.GA16205@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,408 +21,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] atmel_lcdfb: define power_control gpio in platform_data
+Subject: [PATCH 2/6] atmel_lcdfb: move dmacon, lcdcon2 to local data
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Simplify board specific code by specifying the power_control
-gpio direct in platform data.
-Move registration of the GPIO to the driver so we no longer
-need to duplicate this for each board.
-
-As an intended side-effect there is no longer
-any references to platform_data outside atmel_lcdc_register()
-so remove it from struct atmel_lcdfb_info
-
-The implementation assumes that GPIO=0 is the same as no power control.
-This prevents us from using any GPIO=0 for power control,
-but this is not considered a problem for current users.
-Future DT users will not have this limitation.
-
-This commit include a fix so we will actually power
-down if requested. Previously this was hardcoded to ON.
+Copy dmacon + lcdcon2 to atmel_lcdfb_info to minimize
+dependency on the atmel_lcdfb_platform_data.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- arch/arm/boards/at91sam9261ek/init.c  | 35 ++-------------------
- arch/arm/boards/at91sam9263ek/init.c  | 26 +--------------
- arch/arm/boards/at91sam9m10ihd/init.c | 26 +--------------
- arch/arm/boards/at91sam9n12ek/init.c  | 28 ++---------------
- drivers/video/atmel_lcdfb.h           |  4 ++-
- drivers/video/atmel_lcdfb_core.c      | 59 ++++++++++++++++++++++++++++++++---
- include/video/atmel_lcdc.h            |  3 +-
- 7 files changed, 65 insertions(+), 116 deletions(-)
+ drivers/video/atmel_hlcdfb.c     | 5 ++---
+ drivers/video/atmel_lcdfb.c      | 7 ++-----
+ drivers/video/atmel_lcdfb.h      | 2 ++
+ drivers/video/atmel_lcdfb_core.c | 2 ++
+ 4 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
-index 72716b818..58f253b1a 100644
---- a/arch/arm/boards/at91sam9261ek/init.c
-+++ b/arch/arm/boards/at91sam9261ek/init.c
-@@ -158,22 +158,6 @@ static void ek_add_device_udc(void) {}
-  * LCD Controller
-  */
- #if defined(CONFIG_DRIVER_VIDEO_ATMEL)
--static int ek_gpio_request_output(int gpio, const char *name)
--{
--	int ret;
--
--	ret = gpio_request(gpio, name);
--	if (ret) {
--		pr_err("%s: can not request gpio %d (%d)\n", name, gpio, ret);
--		return ret;
--	}
--
--	ret = gpio_direction_output(gpio, 1);
--	if (ret)
--		pr_err("%s: can not configure gpio %d as output (%d)\n", name, gpio, ret);
--	return ret;
--}
--
- /* TFT */
- static struct fb_videomode at91_tft_vga_modes[] = {
- 	{
-@@ -195,35 +179,20 @@ static struct fb_videomode at91_tft_vga_modes[] = {
- 					| ATMEL_LCDC_DISTYPE_TFT    \
- 					| ATMEL_LCDC_CLKMOD_ALWAYSACTIVE)
- 
--static void at91_lcdc_tft_power_control(int on)
--{
--	if (on)
--		gpio_set_value(AT91_PIN_PA12, 0);	/* power up */
--	else
--		gpio_set_value(AT91_PIN_PA12, 1);	/* power down */
--}
--
- static struct atmel_lcdfb_platform_data ek_lcdc_data = {
- 	.lcdcon_is_backlight		= true,
- 	.default_bpp			= 16,
- 	.default_dmacon			= ATMEL_LCDC_DMAEN,
- 	.default_lcdcon2		= AT91SAM9261_DEFAULT_TFT_LCDCON2,
- 	.guard_time			= 1,
--	.atmel_lcdfb_power_control	= at91_lcdc_tft_power_control,
-+	.gpio_power_control		= AT91_PIN_PA12,
-+	.gpio_power_control_active_low	= true,
- 	.mode_list			= at91_tft_vga_modes,
- 	.num_modes			= ARRAY_SIZE(at91_tft_vga_modes),
- };
- 
--static int at91_lcdc_gpio(void)
--{
--	return ek_gpio_request_output(AT91_PIN_PA12, "lcdc_tft_power");
--}
--
- static void ek_add_device_lcdc(void)
+diff --git a/drivers/video/atmel_hlcdfb.c b/drivers/video/atmel_hlcdfb.c
+index f7aab7f45..5d130f598 100644
+--- a/drivers/video/atmel_hlcdfb.c
++++ b/drivers/video/atmel_hlcdfb.c
+@@ -178,7 +178,6 @@ static u32 atmel_hlcdfb_get_rgbmode(struct fb_info *info)
+ static void atmel_hlcdfb_setup_core_base(struct fb_info *info)
  {
--	if (at91_lcdc_gpio())
--		return;
--
- 	if (machine_is_at91sam9g10ek())
- 		ek_lcdc_data.lcd_wiring_mode = ATMEL_LCDC_WIRING_RGB;
+ 	struct atmel_lcdfb_info *sinfo = info->priv;
+-	struct atmel_lcdfb_platform_data *pdata = sinfo->pdata;
+ 	struct fb_videomode *mode = info->mode;
+ 	unsigned long value;
+ 	unsigned long clk_value_khz;
+@@ -205,8 +204,8 @@ static void atmel_hlcdfb_setup_core_base(struct fb_info *info)
+ 	lcdc_writel(sinfo, ATMEL_LCDC_LCDCFG0, value);
  
-diff --git a/arch/arm/boards/at91sam9263ek/init.c b/arch/arm/boards/at91sam9263ek/init.c
-index 682449b7b..b71cc5517 100644
---- a/arch/arm/boards/at91sam9263ek/init.c
-+++ b/arch/arm/boards/at91sam9263ek/init.c
-@@ -156,22 +156,6 @@ static void ek_add_device_udc(void) {}
-  * LCD Controller
-  */
- #if defined(CONFIG_DRIVER_VIDEO_ATMEL)
--static int ek_gpio_request_output(int gpio, const char *name)
--{
--	int ret;
--
--	ret = gpio_request(gpio, name);
--	if (ret) {
--		pr_err("%s: can not request gpio %d (%d)\n", name, gpio, ret);
--		return ret;
--	}
--
--	ret = gpio_direction_output(gpio, 1);
--	if (ret)
--		pr_err("%s: can not configure gpio %d as output (%d)\n", name, gpio, ret);
--	return ret;
--}
--
- static struct fb_videomode at91_tft_vga_modes[] = {
- 	{
- 		.name		= "TX09D50VM1CCA @ 60",
-@@ -192,11 +176,6 @@ static struct fb_videomode at91_tft_vga_modes[] = {
- 					| ATMEL_LCDC_DISTYPE_TFT \
- 					| ATMEL_LCDC_CLKMOD_ALWAYSACTIVE)
+ 	/* Initialize control register 5 */
+-	/* In 9x5, the default_lcdcon2 will use for LCDCFG5 */
+-	value = pdata->default_lcdcon2;
++	/* In 9x5, the lcdcon2 will use for LCDCFG5 */
++	value = sinfo->lcdcon2;
+ 	value |= (sinfo->guard_time << LCDC_LCDCFG5_GUARDTIME_OFFSET)
+ 		| LCDC_LCDCFG5_DISPDLY
+ 		| LCDC_LCDCFG5_VSPDLYS;
+diff --git a/drivers/video/atmel_lcdfb.c b/drivers/video/atmel_lcdfb.c
+index a0e41d10c..770cf0497 100644
+--- a/drivers/video/atmel_lcdfb.c
++++ b/drivers/video/atmel_lcdfb.c
+@@ -81,9 +81,7 @@ static void atmel_lcdfb_stop(struct atmel_lcdfb_info *sinfo, u32 flags)
  
--static void at91_lcdc_power_control(int on)
--{
--	gpio_set_value(AT91_PIN_PA30, on);
--}
--
- /* Driver datas */
- static struct atmel_lcdfb_platform_data ek_lcdc_data = {
- 	.lcdcon_is_backlight		= true,
-@@ -204,16 +183,13 @@ static struct atmel_lcdfb_platform_data ek_lcdc_data = {
- 	.default_dmacon			= ATMEL_LCDC_DMAEN,
- 	.default_lcdcon2		= AT91SAM9263_DEFAULT_LCDCON2,
- 	.guard_time			= 1,
--	.atmel_lcdfb_power_control	= at91_lcdc_power_control,
-+	.gpio_power_control		= AT91_PIN_PA30,
- 	.mode_list			= at91_tft_vga_modes,
- 	.num_modes			= ARRAY_SIZE(at91_tft_vga_modes),
- };
- 
- static void ek_add_device_lcdc(void)
+ static void atmel_lcdfb_start(struct atmel_lcdfb_info *sinfo)
  {
--	if (ek_gpio_request_output(AT91_PIN_PA30, "lcdc_power"))
--		return;
+-	struct atmel_lcdfb_platform_data *pdata = sinfo->pdata;
 -
- 	at91_add_device_lcdc(&ek_lcdc_data);
- }
- 
-diff --git a/arch/arm/boards/at91sam9m10ihd/init.c b/arch/arm/boards/at91sam9m10ihd/init.c
-index dcd93c10b..de601d53b 100644
---- a/arch/arm/boards/at91sam9m10ihd/init.c
-+++ b/arch/arm/boards/at91sam9m10ihd/init.c
-@@ -177,22 +177,6 @@ static int at91sam9m10g45ek_mem_init(void)
- mem_initcall(at91sam9m10g45ek_mem_init);
- 
- #if defined(CONFIG_DRIVER_VIDEO_ATMEL)
--static int ek_gpio_request_output(int gpio, const char *name)
--{
--	int ret;
--
--	ret = gpio_request(gpio, name);
--	if (ret) {
--		pr_err("%s: can not request gpio %d (%d)\n", name, gpio, ret);
--		return ret;
--	}
--
--	ret = gpio_direction_output(gpio, 1);
--	if (ret)
--		pr_err("%s: can not configure gpio %d as output (%d)\n", name, gpio, ret);
--	return ret;
--}
--
- static struct fb_videomode at91fb_default_monspecs[] = {
- 	{
- 		.name		= "MULTEK",
-@@ -213,11 +197,6 @@ static struct fb_videomode at91fb_default_monspecs[] = {
- 					| ATMEL_LCDC_DISTYPE_TFT \
- 					| ATMEL_LCDC_CLKMOD_ALWAYSACTIVE)
- 
--static void at91_lcdc_power_control(int on)
--{
--	gpio_set_value(AT91_PIN_PE6, on);
--}
--
- /* Driver datas */
- static struct atmel_lcdfb_platform_data ek_lcdc_data = {
- 	.lcdcon_is_backlight		= true,
-@@ -226,16 +205,13 @@ static struct atmel_lcdfb_platform_data ek_lcdc_data = {
- 	.default_lcdcon2		= AT91SAM9G45_DEFAULT_LCDCON2,
- 	.guard_time			= 9,
- 	.lcd_wiring_mode		= ATMEL_LCDC_WIRING_RGB,
--	.atmel_lcdfb_power_control	= at91_lcdc_power_control,
-+	.gpio_power_control		= AT91_PIN_PE6,
- 	.mode_list			= at91fb_default_monspecs,
- 	.num_modes			= ARRAY_SIZE(at91fb_default_monspecs),
- };
- 
- static void ek_add_device_lcd(void)
+-	lcdc_writel(sinfo, ATMEL_LCDC_DMACON, pdata->default_dmacon);
++	lcdc_writel(sinfo, ATMEL_LCDC_DMACON, sinfo->dmacon);
+ 	lcdc_writel(sinfo, ATMEL_LCDC_PWRCON,
+ 		(sinfo->guard_time << ATMEL_LCDC_GUARDT_OFFSET)
+ 		| ATMEL_LCDC_PWR);
+@@ -123,7 +121,6 @@ static void atmel_lcdfb_limit_screeninfo(struct fb_videomode *mode)
+ static void atmel_lcdfb_setup_core(struct fb_info *info)
  {
--	if (ek_gpio_request_output(AT91_PIN_PE6, "lcdc_power"))
--		return;
--
- 	at91_add_device_lcdc(&ek_lcdc_data);
- }
- #else
-diff --git a/arch/arm/boards/at91sam9n12ek/init.c b/arch/arm/boards/at91sam9n12ek/init.c
-index b9431b2ee..bc3fb8e08 100644
---- a/arch/arm/boards/at91sam9n12ek/init.c
-+++ b/arch/arm/boards/at91sam9n12ek/init.c
-@@ -127,23 +127,6 @@ static void __init ek_add_device_ks8851(void) {}
- #endif /* CONFIG_DRIVER_NET_KS8851_MLL */
+ 	struct atmel_lcdfb_info *sinfo = info->priv;
+-	struct atmel_lcdfb_platform_data *pdata = sinfo->pdata;
+ 	struct fb_videomode *mode = info->mode;
+ 	unsigned long clk_value_khz;
+ 	unsigned long pix_factor = 2;
+@@ -159,7 +156,7 @@ static void atmel_lcdfb_setup_core(struct fb_info *info)
+ 	}
  
- #if defined(CONFIG_DRIVER_VIDEO_ATMEL_HLCD)
--static int ek_gpio_request_output(int gpio, const char *name)
--{
--	int ret;
--
--	ret = gpio_request(gpio, name);
--	if (ret) {
--		pr_err("%s: can not request gpio %d (%d)\n", name, gpio, ret);
--		return ret;
--	}
--
--	ret = gpio_direction_output(gpio, 1);
--	if (ret)
--		pr_err("%s: can not configure gpio %d as output (%d)\n", name, gpio, ret);
--	return ret;
--}
--
--
- /*
-  * LCD Controller
-  */
-@@ -166,11 +149,6 @@ static struct fb_videomode at91_tft_vga_modes[] = {
- /* Default output mode is TFT 24 bit */
- #define BPP_OUT_DEFAULT_LCDCFG5	(LCDC_LCDCFG5_MODE_OUTPUT_24BPP)
+ 	/* Initialize control register 2 */
+-	value = pdata->default_lcdcon2;
++	value = sinfo->lcdcon2;
  
--static void at91_lcdc_power_control(int on)
--{
--	gpio_set_value(AT91_PIN_PC25, !on);
--}
--
- /* Driver datas */
- static struct atmel_lcdfb_platform_data ek_lcdc_data = {
- 	.lcdcon_is_backlight		= true,
-@@ -179,16 +157,14 @@ static struct atmel_lcdfb_platform_data ek_lcdc_data = {
- 	.default_lcdcon2		= BPP_OUT_DEFAULT_LCDCFG5,
- 	.guard_time			= 9,
- 	.lcd_wiring_mode		= ATMEL_LCDC_WIRING_RGB,
--	.atmel_lcdfb_power_control	= at91_lcdc_power_control,
-+	.gpio_power_control		= AT91_PIN_PC25,
-+	.gpio_power_control_active_low	= true,
- 	.mode_list			= at91_tft_vga_modes,
- 	.num_modes			= ARRAY_SIZE(at91_tft_vga_modes),
- };
- 
- static void ek_add_device_lcdc(void)
- {
--	if (ek_gpio_request_output(AT91_PIN_PC25, "lcdc_power"))
--		return;
--
- 	at91_add_device_lcdc(&ek_lcdc_data);
- }
- #else
+ 	if (!(mode->sync & FB_SYNC_HOR_HIGH_ACT))
+ 		value |= ATMEL_LCDC_INVLINE_INVERTED;
 diff --git a/drivers/video/atmel_lcdfb.h b/drivers/video/atmel_lcdfb.h
-index 90992df02..a011d4201 100644
+index ea4c7e647..1be9cccd9 100644
 --- a/drivers/video/atmel_lcdfb.h
 +++ b/drivers/video/atmel_lcdfb.h
-@@ -25,10 +25,12 @@ struct atmel_lcdfb_info {
- 	unsigned int		dmacon;
- 	unsigned int		lcd_wiring_mode;
- 	bool			have_intensity_bit;
-+
-+	int			gpio_power_control;
-+	bool			gpio_power_control_active_low;
+@@ -21,6 +21,8 @@ struct atmel_lcdfb_info {
+ 
+ 	unsigned int		guard_time;
+ 	unsigned int		smem_len;
++	unsigned int		lcdcon2;
++	unsigned int		dmacon;
  	struct clk		*bus_clk;
  	struct clk		*lcdc_clk;
  
--	struct atmel_lcdfb_platform_data *pdata;
- 	struct atmel_lcdfb_devdata *dev_data;
- 	void			*dma_desc;
- };
 diff --git a/drivers/video/atmel_lcdfb_core.c b/drivers/video/atmel_lcdfb_core.c
-index cdeb927ad..cc065397d 100644
+index f6c5d7c05..a79c31ae4 100644
 --- a/drivers/video/atmel_lcdfb_core.c
 +++ b/drivers/video/atmel_lcdfb_core.c
-@@ -19,6 +19,7 @@
-  */
- 
- #include <common.h>
-+#include <gpio.h>
- #include <dma.h>
- #include <io.h>
- #include <linux/err.h>
-@@ -39,13 +40,17 @@ static void atmel_lcdfb_stop_clock(struct atmel_lcdfb_info *sinfo)
- 	clk_disable(sinfo->lcdc_clk);
- }
- 
--static void atmel_lcdc_power_controller(struct fb_info *fb_info, int i)
-+static void atmel_lcdc_power_controller(struct fb_info *fb_info, int on)
- {
- 	struct atmel_lcdfb_info *sinfo = fb_info->priv;
--	struct atmel_lcdfb_platform_data *pdata = sinfo->pdata;
- 
--	if (pdata->atmel_lcdfb_power_control)
--		pdata->atmel_lcdfb_power_control(1);
-+	if (sinfo->gpio_power_control < 0)
-+		return;
-+
-+	if (sinfo->gpio_power_control_active_low)
-+		gpio_set_value(sinfo->gpio_power_control, !on);
-+	else
-+		gpio_set_value(sinfo->gpio_power_control, on);
- }
- 
- /**
-@@ -242,12 +247,44 @@ static struct fb_ops atmel_lcdc_ops = {
- 	.fb_disable = atmel_lcdc_disable_controller,
- };
- 
-+static int power_control_init(struct device_d *dev,
-+			      struct atmel_lcdfb_info *sinfo,
-+			      int gpio,
-+			      bool active_low)
-+{
-+	int ret;
-+	const char *name = "lcdc_power";
-+
-+	sinfo->gpio_power_control = gpio;
-+	sinfo->gpio_power_control_active_low = active_low;
-+
-+	/* If no GPIO specified then stop */
-+	if (!gpio_is_valid(gpio))
-+		return 0;
-+
-+	ret = gpio_request(gpio, name);
-+	if (ret) {
-+		dev_err(dev, "%s: can not request gpio %d (%d)\n",
-+			name, gpio, ret);
-+		return ret;
-+	}
-+	ret = gpio_direction_output(gpio, 1);
-+	if (ret) {
-+		dev_err(dev, "%s: can not configure gpio %d as output (%d)\n",
-+			name, gpio, ret);
-+		return ret;
-+	}
-+
-+	return ret;
-+}
-+
- int atmel_lcdc_register(struct device_d *dev, struct atmel_lcdfb_devdata *data)
- {
- 	struct resource *iores;
- 	struct atmel_lcdfb_info *sinfo;
- 	struct atmel_lcdfb_platform_data *pdata = dev->platform_data;
- 	int ret = 0;
-+	int gpio;
- 	struct fb_info *info;
- 
- 	if (!pdata) {
-@@ -256,7 +293,19 @@ int atmel_lcdc_register(struct device_d *dev, struct atmel_lcdfb_devdata *data)
- 	}
- 
+@@ -259,6 +259,8 @@ int atmel_lcdc_register(struct device_d *dev, struct atmel_lcdfb_devdata *data)
  	sinfo = xzalloc(sizeof(*sinfo));
--	sinfo->pdata = pdata;
-+
-+	/* If gpio == 0 (default in pdata) then we assume no power control */
-+	gpio = pdata->gpio_power_control;
-+	if (gpio == 0)
-+		gpio = -1;
-+
-+	ret = power_control_init(dev,
-+				 sinfo,
-+				 gpio,
-+				 pdata->gpio_power_control_active_low);
-+	if (ret)
-+		goto err;
-+
+ 	sinfo->pdata = pdata;
  	sinfo->guard_time = pdata->guard_time;
- 	sinfo->lcdcon2 = pdata->default_lcdcon2;
- 	sinfo->dmacon = pdata->default_dmacon;
-diff --git a/include/video/atmel_lcdc.h b/include/video/atmel_lcdc.h
-index 132ee598a..07a30e2e6 100644
---- a/include/video/atmel_lcdc.h
-+++ b/include/video/atmel_lcdc.h
-@@ -44,7 +44,8 @@ struct atmel_lcdfb_platform_data {
- 	u8			lcd_wiring_mode;
- 	unsigned int		default_lcdcon2;
- 	unsigned int		default_dmacon;
--	void (*atmel_lcdfb_power_control)(int on);
-+	int			gpio_power_control;
-+	bool			gpio_power_control_active_low;
- 	struct fb_videomode	*mode_list;
- 	unsigned		num_modes;
- 
++	sinfo->lcdcon2 = pdata->default_lcdcon2;
++	sinfo->dmacon = pdata->default_dmacon;
+ 	iores = dev_request_mem_resource(dev, 0);
+ 	if (IS_ERR(iores))
+ 		return PTR_ERR(iores);
 -- 
 2.12.0
 
