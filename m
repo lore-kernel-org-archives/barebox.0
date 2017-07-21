@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from mail-wm0-x229.google.com ([2a00:1450:400c:c09::229])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dYD2G-00054t-Fl
- for barebox@lists.infradead.org; Thu, 20 Jul 2017 15:06:43 +0000
-Date: Thu, 20 Jul 2017 17:06:14 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170720150614.GA29320@ravnborg.org>
-References: <a4ee1a13786643a29c3ae0c998da3511@itk-engineering.de>
+ id 1dYRiP-0002eJ-5v
+ for barebox@lists.infradead.org; Fri, 21 Jul 2017 06:47:11 +0000
+Received: by mail-wm0-x229.google.com with SMTP id e131so5626703wme.0
+ for <barebox@lists.infradead.org>; Thu, 20 Jul 2017 23:46:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <a4ee1a13786643a29c3ae0c998da3511@itk-engineering.de>
+In-Reply-To: <20170720150614.GA29320@ravnborg.org>
+References: <a4ee1a13786643a29c3ae0c998da3511@itk-engineering.de>
+ <20170720150614.GA29320@ravnborg.org>
+From: =?UTF-8?B?w4dhxJ9sYXIgS2lsaW1jaQ==?= <ckilimci@gmail.com>
+Date: Fri, 21 Jul 2017 09:46:46 +0300
+Message-ID: <CAGUZs0=SjEOwtjx5V6z9BvutFUxuAc26PV5aaJMoHTrApircuQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,88 +20,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Barebox state on am335x-phytec-phycore-som
-To: Martin Hollingsworth <Martin.Hollingsworth@itk-engineering.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: Martin Hollingsworth <Martin.Hollingsworth@itk-engineering.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Martin.
-
-On Thu, Jul 20, 2017 at 01:09:54PM +0000, Martin Hollingsworth wrote:
-> Hi,
-> I am trying to enable the barebox state framework and use it to
-> store the bootchooser variables on the am335x-phytec-phycore-som
-> board. I want to do that, so that the variables can be stored
-> in EEPROM rather than in NAND (due to write/erase cycles).
-> 
-> I am following the steps from the documentation and from
-> the mailing list from 2016
-> (http://lists.infradead.org/pipermail/barebox/2016-October/028312.html).
-> However, all entries I try to add to the DTS/DTSI files fail
-> to compile with a syntax error, even the example dtsi entry
-> from the documentation.
-> 
-> Has anyone running a similar configuration and could help
-> with some advice what has to be adapted?
-> Can anyone recommend a good example code of the barebox state placed on EEPROM?
-
-The following builds. Maybe this is a small step in the right direction.
-Just added from state-example.dts and from the documentation.
-
-	Sam
-
-diff --git a/arch/arm/dts/am335x-phytec-phycore-som.dts b/arch/arm/dts/am335x-phytec-phycore-som.dts
-index f13e0d6bd..f62620be0 100644
---- a/arch/arm/dts/am335x-phytec-phycore-som.dts
-+++ b/arch/arm/dts/am335x-phytec-phycore-som.dts
-@@ -13,12 +13,41 @@
- / {
- 	model = "Phytec phyCORE AM335x";
- 	compatible = "phytec,phycore-am335x-som", "phytec,am335x-som", "ti,am33xx";
-+
-+	state: state {
-+		magic = <0x27031977>;
-+		compatible = "barebox,state";
-+		backend-type = "raw";
-+		backend = <&backend_state_eeprom>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		foo {
-+			reg = <0x00 0x4>;
-+			type = "uint32";
-+			default = <0x0>;
-+		};
-+
-+		bar {
-+			reg = <0x10 0x4>;
-+			type = "enum32";
-+			names = "baz", "qux";
-+			default = <1>;
-+		};
-+	};
- };
- 
- &spi0 {
- 	status = "okay";
- };
--
- &eeprom {
- 	status = "okay";
-+		partitions {
-+			compatible = "fixed-partitions";
-+			#size-cells = <1>;
-+			#address-cells = <1>;
-+			backend_state_eeprom: state@400 {
-+				reg = <0x400 0x400>;
-+				label = "state-eeprom";
-+			};
-+		};
- };
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgYWxsLAoKMjAxNy0wNy0yMCAxODowNiBHTVQrMDM6MDAgU2FtIFJhdm5ib3JnIDxzYW1AcmF2
+bmJvcmcub3JnPjoKPiBIaSBNYXJ0aW4uCj4KPiBPbiBUaHUsIEp1bCAyMCwgMjAxNyBhdCAwMTow
+OTo1NFBNICswMDAwLCBNYXJ0aW4gSG9sbGluZ3N3b3J0aCB3cm90ZToKPj4gSGksCj4+IEkgYW0g
+dHJ5aW5nIHRvIGVuYWJsZSB0aGUgYmFyZWJveCBzdGF0ZSBmcmFtZXdvcmsgYW5kIHVzZSBpdCB0
+bwo+PiBzdG9yZSB0aGUgYm9vdGNob29zZXIgdmFyaWFibGVzIG9uIHRoZSBhbTMzNXgtcGh5dGVj
+LXBoeWNvcmUtc29tCj4+IGJvYXJkLiBJIHdhbnQgdG8gZG8gdGhhdCwgc28gdGhhdCB0aGUgdmFy
+aWFibGVzIGNhbiBiZSBzdG9yZWQKPj4gaW4gRUVQUk9NIHJhdGhlciB0aGFuIGluIE5BTkQgKGR1
+ZSB0byB3cml0ZS9lcmFzZSBjeWNsZXMpLgoKSSB3YXMgZXhhY3RseSB0cnlpbmcgdG8gZG8gdGhl
+IHNhbWUgdGhpbmcsIDMtNCBtb250aHMgYWdvLiBUaGVyZSBpcwpzb21ldGhpbmcgbWlzc2luZyBv
+ciBtaXNzbGVhZGluZyBpbiB0aGUgZG9jdW1lbnRhdGlvbi4gRmlyc3Qgb2YgYWxsLAp5b3UgbmVl
+ZCB0byBjb21waWxlIGR0cyBmb3IgYm90aCBiYXJlYm94IGFuZCBrZXJuZWwuIEVhY2ggdGltZSBJ
+IHdvdWxkCmxpa2UgdG8gbWFrZSBhIGNoYW5nZSwgSSBjaGFuZ2UgYm90aCBiYXJlYm94IGR0cyBh
+bmQga2VybmVsIGR0cy4gVGhlc2UKYXJlIHR3byBzaW1pbGFyIGJ1dCBhY3R1YWxseSB0d28gZGlm
+ZmVyZW50IGR0cyBmaWxlcy4gQXMgYW4gZXhhbXBsZSwKaW4gYW0zMzV4LXBoeXRlYy1waHljb3Jl
+LXNvbS5kdHNpIGVlcHJvbSBkZXZpY2UgbmFtZSBpcyAiZWVwcm9tIiBidXQKImkyY19lZXByb20i
+IGluIGtlcm5lbCdzIGR0cy4gU2Vjb25kbHksIGJhY2tlbmQtc3RvcmFnZS10eXBlIGFuZApiYWNr
+ZW5kLXN0cmlkZXNpemUgaGF2ZSBzb21lIGltcG9ydGFuY2UuIEV2ZW4gaWYgdGhleSBhcmUgd3Jp
+dHRlbgpvcHRpb25hbCBpbiB0aGUgZG9jdW1lbnRhdGlvbiwgSSBjb3VsZCBub3QgcnVuIHdpdGhv
+dXQgdGhlbS4gWW91IG5lZWQKdG8gY2FsY3VsYXRlICJiYWNrZW5kLXN0cmlkZXNpemUiLiBMYXN0
+bHksIGJhY2tlbmQgc2hvdWxkIGJlIGxpa2UgdGhpcwoiYmFja2VuZCA9IDwmZWVwcm9tPjsiLiBI
+ZXJlIGlzIHRoZSBiYXJlYm94IHBhdGNoIEkgdXNlOgoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0
+cy9hbTMzNXgtcGh5dGVjLXBoeWNvcmUtc29tLmR0c2kKYi9hcmNoL2FybS9kdHMvYW0zMzV4LXBo
+eXRlYy1waHljb3JlLXNvbS5kdHNpCmluZGV4IDBiOGM0NTQuLjYyNTk4Y2QgMTAwNjQ0Ci0tLSBh
+L2FyY2gvYXJtL2R0cy9hbTMzNXgtcGh5dGVjLXBoeWNvcmUtc29tLmR0c2kKKysrIGIvYXJjaC9h
+cm0vZHRzL2FtMzM1eC1waHl0ZWMtcGh5Y29yZS1zb20uZHRzaQpAQCAtMTQsNiArMTQsODYgQEAK
+ICBzdGF0dXMgPSAiZGlzYWJsZWQiOwogIH07CiAgfTsKKworIHN0YXRlIHsKKyBtYWdpYyA9IDww
+eDRhYWVmOTkzPjsKKyBjb21wYXRpYmxlID0gImJhcmVib3gsc3RhdGUiOworIGJhY2tlbmQtdHlw
+ZSA9ICJyYXciOworIGJhY2tlbmQgPSA8JmVlcHJvbT47CisgYmFja2VuZC1zdG9yYWdlLXR5cGUg
+PSAiZGlyZWN0IjsKKyBiYWNrZW5kLXN0cmlkZXNpemUgPSA8MHhmMD47CisgICAgICAgIGJvb3Rj
+aG9vc2VyIHsKKyAgICAgICAgICAgIHN5c3RlbTEgeworICAgICAgICAgICAgICAgIGJvb3R7Cisg
+ICAgICAgICAgICAgICAgICAgIHJlZyA9IDwweDAgMHgxMD47CisgICAgICAgICAgICAgICAgICAg
+IHR5cGUgPSAic3RyaW5nIjsKKyAgICAgICAgICAgICAgICAgICAgZGVmYXVsdCA9ICJzeXN0ZW0x
+IjsKKyAgICAgICAgICAgICAgICB9OworICAgICAgICAgICAgICAgIGRlZmF1bHRfYXR0ZW1wdHMg
+eworICAgICAgICAgICAgICAgICAgICByZWcgPSA8MHgxMCAweDQ+OworICAgICAgICAgICAgICAg
+ICAgICB0eXBlID0gInVpbnQzMiI7CisgICAgICAgICAgICAgICAgICAgIGRlZmF1bHQgPSA8MHgw
+Mz47CisgICAgICAgICAgICAgICAgfTsKKyAgICAgICAgICAgICAgICBkZWZhdWx0X3ByaW9yaXR5
+IHsKKyAgICAgICAgICAgICAgICAgICAgcmVnID0gPDB4MTQgMHg0PjsKKyAgICAgICAgICAgICAg
+ICAgICAgdHlwZSA9ICJ1aW50MzIiOworICAgICAgICAgICAgICAgICAgICBkZWZhdWx0ID0gPDB4
+MTA+OworICAgICAgICAgICAgICAgIH07CisgICAgICAgICAgICAgICAgcmVtYWluaW5nX2F0dGVt
+cHRzIHsKKyAgICAgICAgICAgICAgICAgICAgcmVnID0gPDB4MTggMHg0PjsKKyAgICAgICAgICAg
+ICAgICAgICAgdHlwZSA9ICJ1aW50MzIiOworICAgICAgICAgICAgICAgICAgICBkZWZhdWx0ID0g
+PDB4MDM+OworICAgICAgICAgICAgICAgIH07CisgICAgICAgICAgICAgICAgcHJpb3JpdHkgewor
+ICAgICAgICAgICAgICAgICAgICByZWcgPSA8MHgxYyAweDQ+OworICAgICAgICAgICAgICAgICAg
+ICB0eXBlID0gInVpbnQzMiI7CisgICAgICAgICAgICAgICAgICAgIGRlZmF1bHQgPSA8MHgxMD47
+CisgICAgICAgICAgICAgICAgfTsKKyAgICAgICAgICAgIH07CisgICAgICAgICAgICBzeXN0ZW0y
+IHsKKyAgICAgICAgICAgICAgICBib290eworICAgICAgICAgICAgICAgICAgICByZWcgPSA8MHgy
+MCAweDEwPjsKKyAgICAgICAgICAgICAgICAgICAgdHlwZSA9ICJzdHJpbmciOworICAgICAgICAg
+ICAgICAgICAgICBkZWZhdWx0ID0gInN5c3RlbTIiOworICAgICAgICAgICAgICAgIH07CisgICAg
+ICAgICAgICAgICAgZGVmYXVsdF9hdHRlbXB0cyB7CisgICAgICAgICAgICAgICAgICAgIHJlZyA9
+IDwweDMwIDB4ND47CisgICAgICAgICAgICAgICAgICAgIHR5cGUgPSAidWludDMyIjsKKyAgICAg
+ICAgICAgICAgICAgICAgZGVmYXVsdCA9IDwweDAzPjsKKyAgICAgICAgICAgICAgICB9OworICAg
+ICAgICAgICAgICAgIGRlZmF1bHRfcHJpb3JpdHkgeworICAgICAgICAgICAgICAgICAgICByZWcg
+PSA8MHgzNCAweDQ+OworICAgICAgICAgICAgICAgICAgICB0eXBlID0gInVpbnQzMiI7CisgICAg
+ICAgICAgICAgICAgICAgIGRlZmF1bHQgPSA8MHgwZj47CisgICAgICAgICAgICAgICAgfTsKKyAg
+ICAgICAgICAgICAgICByZW1haW5pbmdfYXR0ZW1wdHMgeworICAgICAgICAgICAgICAgICAgICBy
+ZWcgPSA8MHgzOCAweDQ+OworICAgICAgICAgICAgICAgICAgICB0eXBlID0gInVpbnQzMiI7Cisg
+ICAgICAgICAgICAgICAgICAgIGRlZmF1bHQgPSA8MHgwMz47CisgICAgICAgICAgICAgICAgfTsK
+KyAgICAgICAgICAgICAgICBwcmlvcml0eSB7CisgICAgICAgICAgICAgICAgICAgIHJlZyA9IDww
+eDNjIDB4ND47CisgICAgICAgICAgICAgICAgICAgIHR5cGUgPSAidWludDMyIjsKKyAgICAgICAg
+ICAgICAgICAgICAgZGVmYXVsdCA9IDwweDBmPjsKKyAgICAgICAgICAgICAgICB9OworICAgICAg
+ICAgICAgfTsKKyAgICAgICAgICAgIGxhc3RfY2hvc2VuIHsKKyAgICAgICAgICAgICAgICByZWcg
+PSA8MHg0MCAweDQ+OworICAgICAgICAgICAgICAgIHR5cGUgPSAidWludDMyIjsKKyAgICAgICAg
+ICAgICAgICBkZWZhdWx0ID0gPDB4MDE+OworICAgICAgICAgICAgfTsKKyAgICAgICAgICAgIGJv
+b3RfdG9fYmUgeworICAgICAgICAgICAgICAgIHJlZyA9IDwweDUwIDB4MTA+OworICAgICAgICAg
+ICAgICAgIHR5cGUgPSAic3RyaW5nIjsKKyAgICAgICAgICAgICAgICBkZWZhdWx0ID0gIm5vbmUi
+OworICAgICAgICAgICAgfTsKKyAgICAgICAgICAgIHVwZGF0ZV9pZCB7CisgICAgICAgICAgICAg
+ICAgcmVnID0gPDB4NjAgMHgxMD47CisgICAgICAgICAgICAgICAgdHlwZSA9ICJzdHJpbmciOwor
+ICAgICAgICAgICAgICAgIGRlZmF1bHQgPSAibm9uZSI7CisgICAgICAgICAgICB9OworICAgICAg
+ICB9OworIH07CiB9OwoKICZhbTMzeHhfcGlubXV4IHsKCgpIb3BlLCB0aGlzIGhlbHBzLgoKU2lu
+Y2VyZWx5LAotLSAKw4dhxJ9sYXIgS2lsaW1jaQoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
+bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
+YmFyZWJveAo=
