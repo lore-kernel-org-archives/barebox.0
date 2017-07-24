@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dZfqi-0004lz-Fh
- for barebox@lists.infradead.org; Mon, 24 Jul 2017 16:04:50 +0000
-Date: Mon, 24 Jul 2017 18:04:25 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170724160425.GD18294@ravnborg.org>
+ id 1dZZw2-0005jX-VZ
+ for barebox@lists.infradead.org; Mon, 24 Jul 2017 09:45:56 +0000
+Date: Mon, 24 Jul 2017 11:45:33 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20170724094533.a7nwwxjcaertmyw4@pengutronix.de>
 References: <20170724091559.7777-1-u.kleine-koenig@pengutronix.de>
  <20170724093707.nu7wlklphp6hidzb@pengutronix.de>
 MIME-Version: 1.0
@@ -25,7 +25,9 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] ARM: i.MX7: provide DDR register definitions
 To: Robert Schwebel <r.schwebel@pengutronix.de>
-Cc: barebox@lists.infradead.org, Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
+
+Hello Robert,
 
 On Mon, Jul 24, 2017 at 11:37:07AM +0200, Robert Schwebel wrote:
 > On Mon, Jul 24, 2017 at 11:15:58AM +0200, Uwe Kleine-K=F6nig wrote:
@@ -54,12 +56,15 @@ mach-imx/include/mach/imx7-ddr-regs.h
 
 > Sure?
 
-If the content is copy'n'pasted then (to my limited understanding) this is =
-not
-enough to grant any copyright. And copyright should be from the source?
-Not that I care much, but just a random thought.
+That's what I copied from our internal license template ... *sigh* I
+will resend.
 
-	Sam
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
