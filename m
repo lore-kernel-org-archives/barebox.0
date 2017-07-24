@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dZZD7-0003Py-Kp
- for barebox@lists.infradead.org; Mon, 24 Jul 2017 08:59:31 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Mon, 24 Jul 2017 10:59:04 +0200
-Message-Id: <20170724085904.1349-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1dZe6S-0004v2-8A
+ for barebox@lists.infradead.org; Mon, 24 Jul 2017 14:12:58 +0000
+From: Bastian Stender <bst@pengutronix.de>
+Date: Mon, 24 Jul 2017 16:12:01 +0200
+Message-Id: <20170724141201.8709-1-bst@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,72 +14,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] scripts: Provide script that helps using cpp defines in
- dcd tables
+Subject: [PATCH] video/ssd1307fb: add support for VBAT
 To: barebox@lists.infradead.org
+Cc: Bastian Stender <bst@pengutronix.de>
 
-VGhpcyBzY3JpcHQgd2FzIHVzZWQgdG8gaGVscCBjcmVhdGUgY29tbWl0IDhmNDI2OTkyYzU2MiAo
-IkFSTTogaW14OiB1c2UKcmVnaXN0ZXIgZGVmaW5lcyBpbiBpbXhjZmcgZmlsZXMgaW5zdGVhZCBv
-ZiBwbGFpbiBudW1iZXJzIikuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5r
-bGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KQ2hhbmdlcyBzaW5jZSB2MToKCiAtIGV4
-cGxhaW4gcGVybCBQb2QgaW4gdGhlIGZpbGUgaW5zdGVhZCBvZiB0aGUgY29tbWl0IGxvZwogLSBt
-aW5vciB3aGl0ZXNwYWNlIGNsZWFudXAKCiBzY3JpcHRzL3JlZ3N1YnN0LnBsIHwgMTI5ICsrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKIDEgZmlsZSBj
-aGFuZ2VkLCAxMjkgaW5zZXJ0aW9ucygrKQogY3JlYXRlIG1vZGUgMTAwNzU1IHNjcmlwdHMvcmVn
-c3Vic3QucGwKCmRpZmYgLS1naXQgYS9zY3JpcHRzL3JlZ3N1YnN0LnBsIGIvc2NyaXB0cy9yZWdz
-dWJzdC5wbApuZXcgZmlsZSBtb2RlIDEwMDc1NQppbmRleCAwMDAwMDAwMDAwMDAuLjk2MjFhNThj
-NDdjNgotLS0gL2Rldi9udWxsCisrKyBiL3NjcmlwdHMvcmVnc3Vic3QucGwKQEAgLTAsMCArMSwx
-MjkgQEAKKyMhL3Vzci9iaW4vcGVybAorIworIyBUaGlzIHNjcmlwdCBpcyBkb2N1bWVudGVkIGlu
-IFBlcmwgUG9kLCB5b3UgY2FuIHByZXR0eS1wcmludCBpdCB1c2luZworIworIyAJJCBwZXJsZG9j
-IHNjcmlwdHMvcmVnc3Vic3QucGwuCisjCisjIFRoZSByZWFsIGNvZGUgc3RhcnRzIGFmdGVyICI9
-Y3V0IiBiZWxvdy4KKworPWhlYWQxIE5BTUUKKworcmVnc3Vic3QucGwgLSBoZWxwZXIgc2NyaXB0
-IHRvIG1ha2UgdXNlIG9mIGRlZmluZXMKKworPWhlYWQxIFNZTk9QU0lTCisKK0I8cmVnc3Vic3Qu
-cGw+IFtCPC1JPiBJPGluY2x1ZGVwYXRoPl0gSTxmaWxlbmFtZT4KKworPWhlYWQxIERFU0NSSVBU
-SU9OCisKK0I8cmVnc3Vic3QucGw+IHBhcnNlcyB0aGUgZ2l2ZW4gZmlsZSByZWN1cnNpdmVseSBm
-b3IgI2luY2x1ZGUgZGlyZWN0aXZlcyBhbmQKK3RoZW4gc3Vic3RpdHV0ZXMgcmF3IGhleCB2YWx1
-ZXMgaW4gSTxmaWxlbmFtZT4gYnkgZGVmaW5pdGlvbnMgZm91bmQgYW5kIHByaW50cwordGhlIHJl
-c3VsdCB0byBzdGRvdXQuCisKK1RoaXMgaXMgdGFyZ2V0ZWQgdG8gbWFrZSBpLk1YIERDRCB0YWJs
-ZXMgbW9yZSByZWFkYWJsZSBidXQgZm9yIHN1cmUgY2FuIGJlIHVzZWQKK2Vsc2V3aGVyZSB0b28u
-CisKKz1oZWFkMSBCVUdTCisKK0I8cmVnc3Vic3QucGw+IGlzIGR1bWIgYW5kIHNvIG1pZ2h0IHJl
-cGxhY2UgdmFsdWVzIHRvIGFnZ3Jlc3NpdmVseS4gU28gYmV0dGVyCitkb3VibGUgY2hlY2sgdGhl
-IHJlc3VsdC4KKworPWhlYWQxIE9QVElPTlMKKworPW92ZXIgNAorCis9aXRlbSBCPC1JPiBJPGlu
-Y2x1ZGVwYXRoPgorCitBZGQgSTxpbmNsdWRlcGF0aD4gdG8gdGhlIGxpc3Qgb2Ygc2VhcmNoIHBh
-dGhzIGZvciBpbmNsdWRlIGZpbGVzLgorCis9YmFjaworCis9aGVhZDEgRVhBTVBMRQorCitGaXJz
-dCB5b3UgaGF2ZSB0byBhZGQgdGhlIHJpZ2h0ICNpbmNsdWRlIGRpcmVjdGl2ZXMgdG8geW91ciBm
-aWxlOgorCisgJCBjYXQgZmxhc2gtaGVhZGVyLW15Ym9hcmQuaW14Y2ZnCisgc29jIGlteDYKKyBs
-b2FkYWRkciAweDIwMDAwMDAwCisgZGNkb2ZzIDB4NDAwCisgCisgI2luY2x1ZGUgPG1hY2gvaW14
-Ni1kZHItcmVncy5oPgorICNpbmNsdWRlIDxtYWNoL2lteDZkbC1kZHItcmVncy5oPgorIAorIHdt
-IDMyIDB4MDIwZTA3NzQgMHgwMDBDMDAwMAorIHdtIDMyIDB4MDIwZTA3NTQgMHgwMDAwMDAwMAor
-IC4uLgorCitUaGVuIHlvdSBjYW4gcHJvY2VzcyB0aGUgZmlsZSB3aXRoIEI8cmVnc3Vic3QucGw+
-OgorCisgJCBzY3JpcHRzL3JlZ3N1YnN0LnBsIC1JIGFyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUg
-Zmxhc2gtaGVhZGVyLW15Ym9hcmQuaW14Y2ZnCisgc29jIGlteDYKKyBsb2FkYWRkciAweDIwMDAw
-MDAwCisgZGNkb2ZzIDB4NDAwCisgCisgI2luY2x1ZGUgPG1hY2gvaW14Ni1kZHItcmVncy5oPgor
-ICNpbmNsdWRlIDxtYWNoL2lteDZkbC1kZHItcmVncy5oPgorIAorIHdtIDMyIE1YNl9JT01fR1JQ
-X0REUl9UWVBFIDB4MDAwQzAwMDAKKyB3bSAzMiBNWDZfSU9NX0dSUF9ERFJQS0UgMHgwMDAwMDAw
-MAorIC4uLgorCitJZiB0aGUgcmVzdWx0IGxvb2tzIG9rLCB5b3UgY2FuIHJlcGxhY2UgdGhlIGZp
-bGU6CisKKyAkIHNjcmlwdHMvcmVnc3Vic3QucGwgLUkgYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVk
-ZSBmbGFzaC1oZWFkZXItbXlib2FyZC5pbXhjZmcgPiB1CisgJCBtb3YgdSBmbGFzaC1oZWFkZXIt
-bXlib2FyZC5pbXhjZmcKKworPWN1dAorCit1c2Ugc3RyaWN0OwordXNlIHdhcm5pbmdzOwordXNl
-IEdldG9wdDo6TG9uZyBxdyhHZXRPcHRpb25zKTsKKworbXkgQGluY2x1ZGVwYXRoczsKKworR2V0
-T3B0aW9ucygnST1zJyA9PiBcQGluY2x1ZGVwYXRocyk7CisKK215ICVyZWduYW1lbWFwOworCitz
-dWIgc2NhbiB7CisJbXkgQGluY2ZpbGVzOworCisJcHVzaCBAaW5jZmlsZXMsIEBfOworCisJZm9y
-ZWFjaCBteSAkaSAoQGluY2ZpbGVzKSB7CisJCWZvcmVhY2ggbXkgJGluY3BhdGggKEBpbmNsdWRl
-cGF0aHMpIHsKKwkJCWlmICgtZSAiJGluY3BhdGgvJGkiKSB7CisJCQkJb3BlbihteSAkZmQsICI8
-IiwgIiRpbmNwYXRoLyRpIikgfHwgZGllICJGYWlsZWQgdG8gb3BlbiBpbmNsdWRlIGZpbGUgJGlu
-Y3BhdGgvJGkiOworCisJCQkJd2hpbGUgKDwkZmQ+KSB7CisJCQkJCWlmICgvXlxzKiNccyppbmNs
-dWRlXHMrWyI8XSguKilbIj5dLykgeworCQkJCQkJcHVzaCBAaW5jZmlsZXMsICQxOworCQkJCQl9
-OworCisJCQkJCWlmICgvXlxzKiNccypkZWZpbmVccysoW0EtWl8wLTldKilccysoMHhbMC05YS1m
-XSspLykgeworCQkJCQkJbXkgJHJlZ25hbWUgPSAkMTsKKwkJCQkJCW15ICRyZWdhZGRycmUgPSAk
-MiA9fiBzL14weDAqLzB4MFwqL3I7CisJCQkJCQkkcmVnbmFtZW1hcHskcmVnYWRkcnJlfSA9ICRy
-ZWduYW1lOworCQkJCQl9OworCQkJCX07CisKKwkJCQljbG9zZSgkZmQpOworCisJCQkJbGFzdDsK
-KwkJCX0KKwkJfQorCX0KK30KKword2hpbGUgKDw+KSB7CisJbXkgJGxpbmUgPSAkXzsKKworCWlm
-ICgvI2luY2x1ZGUgWyI8XSguKilbIj5dLykgeworCQlzY2FuICQxOworCX0KKworCWZvcmVhY2gg
-bXkgJHJlZ2FkZHIgKGtleXMgJXJlZ25hbWVtYXApIHsKKwkJJGxpbmUgPX4gcy8kcmVnYWRkci8k
-cmVnbmFtZW1hcHskcmVnYWRkcn0vZWk7CisJfQorCXByaW50ICRsaW5lOworfTsKLS0gCjIuMTEu
-MAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Adds support to the driver to enable VBAT regulator at init time.
+
+This is similar to ba14301e0356 ("fbdev/ssd1307fb: add support to enable
+VBAT") and cfc5b2b551d8 ("fbdev/ssd1307fb: fix optional VBAT support")
+in Linux kernel.
+
+Signed-off-by: Bastian Stender <bst@pengutronix.de>
+---
+ drivers/video/ssd1307fb.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/drivers/video/ssd1307fb.c b/drivers/video/ssd1307fb.c
+index 7437d340ee..54e02e7220 100644
+--- a/drivers/video/ssd1307fb.c
++++ b/drivers/video/ssd1307fb.c
+@@ -24,6 +24,7 @@
+ #include <of_device.h>
+ #include <gpio.h>
+ #include <of_gpio.h>
++#include <regulator.h>
+ 
+ #define SSD1307FB_DATA                          0x40
+ #define SSD1307FB_COMMAND                       0x80
+@@ -70,6 +71,7 @@ struct ssd1307fb_par {
+ 	u32 prechargep1;
+ 	u32 prechargep2;
+ 	int reset;
++	struct regulator *vbat;
+ 	u32 seg_remap;
+ 	u32 vcomh;
+ 	u32 width;
+@@ -422,6 +424,12 @@ static int ssd1307fb_probe(struct device_d *dev)
+ 		goto fb_alloc_error;
+ 	}
+ 
++	par->vbat = regulator_get(&client->dev, "vbat-supply");
++	if (IS_ERR(par->vbat)) {
++		dev_info(&client->dev, "Will not use VBAT");
++		par->vbat = NULL;
++	}
++
+ 	ret = of_property_read_u32(node, "solomon,width", &par->width);
+ 	if (ret) {
+ 		dev_err(&client->dev,
+@@ -505,11 +513,26 @@ static int ssd1307fb_probe(struct device_d *dev)
+ 		goto reset_oled_error;
+ 	}
+ 
++	if (par->vbat) {
++		ret = regulator_disable(par->vbat);
++		if (ret < 0)
++			goto reset_oled_error;
++	}
++
+ 	i2c_set_clientdata(client, info);
+ 
+ 	/* Reset the screen */
+ 	gpio_set_value(par->reset, 0);
+ 	udelay(4);
++
++	if (par->vbat) {
++		ret = regulator_enable(par->vbat);
++		if (ret < 0)
++			goto reset_oled_error;
++	}
++
++	mdelay(100);
++
+ 	gpio_set_value(par->reset, 1);
+ 	udelay(4);
+ 
+@@ -548,6 +571,7 @@ static int ssd1307fb_probe(struct device_d *dev)
+ panel_init_error:
+ reset_oled_error:
+ fb_alloc_error:
++	regulator_disable(par->vbat);
+ 	free(info);
+ 	return ret;
+ }
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
