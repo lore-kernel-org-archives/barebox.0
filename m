@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ua0-x22d.google.com ([2607:f8b0:400c:c08::22d])
+Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dZj2g-0002qA-TM
- for barebox@lists.infradead.org; Mon, 24 Jul 2017 19:29:24 +0000
-Received: by mail-ua0-x22d.google.com with SMTP id f9so86807872uaf.4
- for <barebox@lists.infradead.org>; Mon, 24 Jul 2017 12:29:02 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20170724160158.GC18294@ravnborg.org>
-References: <20170724145400.2279-1-andrew.smirnov@gmail.com>
- <20170724160158.GC18294@ravnborg.org>
+ id 1dZekz-0003Rv-5O
+ for barebox@lists.infradead.org; Mon, 24 Jul 2017 14:54:53 +0000
+Received: by mail-pg0-x243.google.com with SMTP id 123so1364271pgj.0
+ for <barebox@lists.infradead.org>; Mon, 24 Jul 2017 07:54:26 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 24 Jul 2017 12:29:00 -0700
-Message-ID: <CAHQ1cqGbTRq_a=rM0Dq=yw8w+By7n=oFHxvRs4Damy7oX9vi0g@mail.gmail.com>
+Date: Mon, 24 Jul 2017 07:53:52 -0700
+Message-Id: <20170724145400.2279-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20170724145400.2279-1-andrew.smirnov@gmail.com>
+References: <20170724145400.2279-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,45 +18,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/9] i.MX7 SabreSD support
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 1/9] gpiolib: Fix buggy flag detection code
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Mon, Jul 24, 2017 at 9:01 AM, Sam Ravnborg <sam@ravnborg.org> wrote:
-> Hi Andrey.
->
->> Also, note, that for a reason I haven't been able to track down yet,
->> compiling Barebox + this patchset without support for FEC will cause
->> upstream kernel (at least 4.12-rc1) to hang during boot while trying
->> to access FEC's register file. I suspect clock initialization issue,
->> but, as I said, I did not find that out conclusively.
-> Maybe you should include this explanation in the patch that
-> enables this option?
->
+Both GPIOF_ACTIVE_LOW and GPIOF_INIT_ACTIVE are multi-bit constants so
+detecting their assertion using simple bit-wise and is incorrect and
+would lead to false positives.
 
-I seemed like a kernel problem, so there's no code in the patchset
-that reflects this "limitation", meaning FEC driver is not
-automatically enabled if i.MX7 SabreSD is selected, so I don't know if
-there's a better place to put this note.
+Fixes: bbc499914 ("gpiolib: Add code to support "active low" GPIOs")
 
->>
->> Anyway, as usual, any feedback is wellcome.
->
-> I have browsed the patches, and provided a little feedback.
-> Apart form this the series looks good to me.
->
-> But then for most parts I am not intiminate with the
-> code so do not assume too much based on this.
->
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/gpio/gpiolib.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-Regardless, it was still useful feedback.
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 1a373ef14..6337a3a47 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -119,12 +119,13 @@ void gpio_free(unsigned gpio)
+ int gpio_request_one(unsigned gpio, unsigned long flags, const char *label)
+ {
+ 	int err;
++	const bool active_low = (flags & GPIOF_ACTIVE_LOW) == GPIOF_ACTIVE_LOW;
+ 
+ 	err = gpio_request(gpio, label);
+ 	if (err)
+ 		return err;
+ 
+-	if (flags & GPIOF_ACTIVE_LOW) {
++	if (active_low) {
+ 		struct gpio_info *gi = gpio_to_desc(gpio);
+ 		gi->active_low = true;
+ 	}
+@@ -132,8 +133,9 @@ int gpio_request_one(unsigned gpio, unsigned long flags, const char *label)
+ 	if (flags & GPIOF_DIR_IN) {
+ 		err = gpio_direction_input(gpio);
+ 	} else if (flags & GPIOF_LOGICAL) {
+-		err = gpio_direction_active(gpio,
+-					    !!(flags & GPIOF_INIT_ACTIVE));
++		const bool value =
++			(flags & GPIOF_INIT_ACTIVE) == GPIOF_INIT_ACTIVE;
++		err = gpio_direction_active(gpio, value);
+ 	} else {
+ 		err = gpio_direction_output(gpio,
+ 					    !!(flags & GPIOF_INIT_HIGH));
+-- 
+2.13.3
 
-Thanks!
-Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
