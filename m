@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1db6Vn-0003Qp-Ib
- for barebox@lists.infradead.org; Fri, 28 Jul 2017 14:45:13 +0000
-Received: by mail-pg0-x244.google.com with SMTP id v190so23824561pgv.1
- for <barebox@lists.infradead.org>; Fri, 28 Jul 2017 07:44:47 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 28 Jul 2017 07:44:16 -0700
-Message-Id: <20170728144427.14007-1-andrew.smirnov@gmail.com>
+ id 1dZZTb-0002CB-90
+ for barebox@lists.infradead.org; Mon, 24 Jul 2017 09:16:33 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Mon, 24 Jul 2017 11:15:59 +0200
+Message-Id: <20170724091559.7777-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170724091559.7777-1-u.kleine-koenig@pengutronix.de>
+References: <20170724091559.7777-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,110 +17,90 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 00/11] i.MX7 SabreSD support
+Subject: [PATCH 2/2] ARM: use register defines in the dcd table of the WaRP7
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hi everyone,
-
-This is a v3 of the patch series to add support for NXP's i.MX7
-SabreSD board. It's most likely lacking some advanced features, but
-basics such as SD card, Ethernet and, of course, booting Linux seem to
-work OK.
-
-The patchset is updated to use defenitions from Uwe's most recent
-submission ("ARM: i.MX7: provide DDR register definitions") so this
-series has that as a dependency.
-
-Patch 1/9 contains a fix for a pretty serious screw-up on my part, so
-I think it should be applied to master as well.
-
-Also, note, that for a reason I haven't been able to track down yet,
-compiling Barebox + this patchset without support for FEC will cause
-upstream kernel (at least 4.12-rc1) to hang during boot while trying
-to access FEC's register file. I suspect clock initialization issue,
-but, as I said, I did not find that out conclusively.
-
-Anyway, as usual, any feedback is wellcome.
-
-Thanks,
-Andrey Smirnov
-
-Changes since [v2]:
-
- - Fix incorrect alphabetical order in two Makefiles
-
- - Collecdt Acked-by for the series from Sam Ravnborg
-
-Changes since [v1]:
-
- - Convert GPIO fix to use (val & mask) == mask idiom for all bit
-   fields
-
- - Add a patch simplifying code of gpio_request_gpio()
- 
- - Move PHY_ID constant to a separate file
-
- - Make sure that all board init code is placed behing appropriated
-   of_compatible guard
-
- - Reference the source of DCD data
-
- - Add minor changes (help text, adherence to alphabetical order, etc.)
-
-[v1] http://lists.infradead.org/pipermail/barebox/2017-July/030782.html
-
-Andrey Smirnov (11):
-  gpiolib: Fix buggy flag detection code
-  gpiolib: Simplify code of gpio_request_one()
-  clk: i.MX7: Remove unused UART clocks array
-  ARM: i.MX: Import mx7d_pins.h from U-Boot
-  ARM: i.MX: Add mx7_setup_pad()
-  ARM: i.MX: Add imx7_uart_setup_ll()
-  ARM: i.MX: Add minimal imx7-ccm-regs.h
-  ARM: i.MX: Add ARCH_HAD_FEC_IMX to ARCH_IMX7
-  ARM: i.MX: Import imx7-iomuxc-gpr.h from Linux kernel
-  include: Add phy-id-list.h
-  ARM: i.MX: Add support for NXP i.MX7 SABRESD board
-
- arch/arm/boards/Makefile                           |    1 +
- arch/arm/boards/freescale-mx7-sabresd/Makefile     |    2 +
- arch/arm/boards/freescale-mx7-sabresd/board.c      |   58 +
- .../flash-header-mx7-sabresd.imxcfg                |   82 ++
- arch/arm/boards/freescale-mx7-sabresd/lowlevel.c   |   46 +
- arch/arm/dts/Makefile                              |    2 +-
- arch/arm/dts/imx7d-sdb.dts                         |   70 ++
- arch/arm/mach-imx/Kconfig                          |   13 +
- arch/arm/mach-imx/include/mach/debug_ll.h          |    7 +
- arch/arm/mach-imx/include/mach/imx7-ccm-regs.h     |   32 +
- arch/arm/mach-imx/include/mach/iomux-mx7.h         | 1328 ++++++++++++++++++++
- arch/arm/mach-imx/include/mach/iomux-v3.h          |    1 +
- drivers/clk/imx/clk-imx7.c                         |   11 -
- drivers/gpio/gpiolib.c                             |   35 +-
- images/Makefile.imx                                |    5 +
- include/mfd/imx7-iomuxc-gpr.h                      |   51 +
- include/phy-id-list.h                              |   12 +
- 17 files changed, 1727 insertions(+), 29 deletions(-)
- create mode 100644 arch/arm/boards/freescale-mx7-sabresd/Makefile
- create mode 100644 arch/arm/boards/freescale-mx7-sabresd/board.c
- create mode 100644 arch/arm/boards/freescale-mx7-sabresd/flash-header-mx7-sabresd.imxcfg
- create mode 100644 arch/arm/boards/freescale-mx7-sabresd/lowlevel.c
- create mode 100644 arch/arm/dts/imx7d-sdb.dts
- create mode 100644 arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
- create mode 100644 arch/arm/mach-imx/include/mach/iomux-mx7.h
- create mode 100644 include/mfd/imx7-iomuxc-gpr.h
- create mode 100644 include/phy-id-list.h
-
--- 
-2.13.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyB3YXMgZ2VuZXJhdGVkIHdpdGggdGhlIGZvbGxvd2luZyBjb21tYW5kIGFmdGVyIGFkZGlu
+ZyB0aGUgaW5jbHVkZQpkaXJlY3RpdmUgdG8gdGhlIGZpbGU6CgoJc2NyaXB0cy9yZWdzdWJzdC5w
+bCAtSSBhcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlIGFyY2gvYXJtL2JvYXJkcy9lbGVtZW50MTQt
+d2FycDcvZmxhc2gtaGVhZGVyLW14Ny13YXJwLmlteGNmZwoKU2lnbmVkLW9mZi1ieTogVXdlIEts
+ZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiAuLi4vZWxl
+bWVudDE0LXdhcnA3L2ZsYXNoLWhlYWRlci1teDctd2FycC5pbXhjZmcgICB8IDEwMiArKysrKysr
+KysrKy0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA1MiBpbnNlcnRpb25zKCspLCA1MCBkZWxl
+dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvZWxlbWVudDE0LXdhcnA3L2Zs
+YXNoLWhlYWRlci1teDctd2FycC5pbXhjZmcgYi9hcmNoL2FybS9ib2FyZHMvZWxlbWVudDE0LXdh
+cnA3L2ZsYXNoLWhlYWRlci1teDctd2FycC5pbXhjZmcKaW5kZXggYTMzODkyMThkNTk3Li5kNTRi
+M2VhODUxOGEgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9lbGVtZW50MTQtd2FycDcvZmxh
+c2gtaGVhZGVyLW14Ny13YXJwLmlteGNmZworKysgYi9hcmNoL2FybS9ib2FyZHMvZWxlbWVudDE0
+LXdhcnA3L2ZsYXNoLWhlYWRlci1teDctd2FycC5pbXhjZmcKQEAgLTEzLDY5ICsxMyw3MSBAQCBz
+b2MgaW14NwogbG9hZGFkZHIgMHg4MDAwMDAwMAogZGNkb2ZzIDB4NDAwCiAKKyNpbmNsdWRlIDxt
+YWNoL2lteDctZGRyLXJlZ3MuaD4KKwogd20gMzIgMHgzMDM0MDAwNCAweDRGNDAwMDA1CiAKIHdt
+IDMyIDB4MzAzOTEwMDAgMHgwMDAwMDAwMgotd20gMzIgMHgzMDdhMDAwMCAweDAzMDQwMDA4Ci13
+bSAzMiAweDMwN2EwMDY0IDB4MDAyMDAwMzgKLXdtIDMyIDB4MzA3YTA0OTAgMHgwMDAwMDAwMQot
+d20gMzIgMHgzMDdhMDBkMCAweDAwMzUwMDAxCi13bSAzMiAweDMwN2EwMGRjIDB4MDBjMzAwMGEK
+LXdtIDMyIDB4MzA3YTAwZTAgMHgwMDAxMDAwMAotd20gMzIgMHgzMDdhMDBlNCAweDAwMTEwMDA2
+Ci13bSAzMiAweDMwN2EwMGY0IDB4MDAwMDAzM2YKLXdtIDMyIDB4MzA3YTAxMDAgMHgwYTBlMTEw
+Ygotd20gMzIgMHgzMDdhMDEwNCAweDAwMDIwMjExCi13bSAzMiAweDMwN2EwMTA4IDB4MDMwNjA3
+MDgKLXdtIDMyIDB4MzA3YTAxMGMgMHgwMGEwNTAwYwotd20gMzIgMHgzMDdhMDExMCAweDA1MDIw
+MzA3Ci13bSAzMiAweDMwN2EwMTE0IDB4MDIwMjA0MDQKLXdtIDMyIDB4MzA3YTAxMTggMHgwMjAy
+MDAwMwotd20gMzIgMHgzMDdhMDExYyAweDAwMDAwMjAyCi13bSAzMiAweDMwN2EwMTIwIDB4MDAw
+MDAyMDIKK3dtIDMyIE1YN19ERFJDX01TVFIgMHgwMzA0MDAwOAord20gMzIgTVg3X0REUkNfUkZT
+SFRNRyAweDAwMjAwMDM4Cit3bSAzMiBNWDdfRERSQ19NUF9QQ1RSTF8wIDB4MDAwMDAwMDEKK3dt
+IDMyIE1YN19ERFJDX0lOSVQwIDB4MDAzNTAwMDEKK3dtIDMyIE1YN19ERFJDX0lOSVQzIDB4MDBj
+MzAwMGEKK3dtIDMyIE1YN19ERFJDX0lOSVQ0IDB4MDAwMTAwMDAKK3dtIDMyIE1YN19ERFJDX0lO
+SVQ1IDB4MDAxMTAwMDYKK3dtIDMyIE1YN19ERFJDX1JBTktDVEwgMHgwMDAwMDMzZgord20gMzIg
+TVg3X0REUkNfRFJBTVRNRzAgMHgwYTBlMTEwYgord20gMzIgTVg3X0REUkNfRFJBTVRNRzEgMHgw
+MDAyMDIxMQord20gMzIgTVg3X0REUkNfRFJBTVRNRzIgMHgwMzA2MDcwOAord20gMzIgTVg3X0RE
+UkNfRFJBTVRNRzMgMHgwMGEwNTAwYword20gMzIgTVg3X0REUkNfRFJBTVRNRzQgMHgwNTAyMDMw
+Nword20gMzIgTVg3X0REUkNfRFJBTVRNRzUgMHgwMjAyMDQwNAord20gMzIgTVg3X0REUkNfRFJB
+TVRNRzYgMHgwMjAyMDAwMword20gMzIgTVg3X0REUkNfRFJBTVRNRzcgMHgwMDAwMDIwMgord20g
+MzIgTVg3X0REUkNfRFJBTVRNRzggMHgwMDAwMDIwMgogCi13bSAzMiAweDMwN2EwMTgwIDB4MDA2
+MDAwMTgKLXdtIDMyIDB4MzA3YTAxODQgMHgwMGUwMDEwMAotd20gMzIgMHgzMDdhMDE5MCAweDAy
+MDk4MjA1Ci13bSAzMiAweDMwN2EwMTk0IDB4MDAwNjAzMDMKLXdtIDMyIDB4MzA3YTAxYTAgMHg4
+MDQwMDAwMwotd20gMzIgMHgzMDdhMDFhNCAweDAwMTAwMDIwCi13bSAzMiAweDMwN2EwMWE4IDB4
+ODAxMDAwMDQKK3dtIDMyIE1YN19ERFJDX1pRQ1RMMCAweDAwNjAwMDE4Cit3bSAzMiBNWDdfRERS
+Q19aUUNUTDEgMHgwMGUwMDEwMAord20gMzIgTVg3X0REUkNfREZJVE1HMCAweDAyMDk4MjA1Cit3
+bSAzMiBNWDdfRERSQ19ERklUTUcxIDB4MDAwNjAzMDMKK3dtIDMyIE1YN19ERFJDX0RGSVVQRDAg
+MHg4MDQwMDAwMword20gMzIgTVg3X0REUkNfREZJVVBEMSAweDAwMTAwMDIwCit3bSAzMiBNWDdf
+RERSQ19ERklVUEQyIDB4ODAxMDAwMDQKIAotd20gMzIgMHgzMDdhMDIwMCAweDAwMDAwMDE1Ci13
+bSAzMiAweDMwN2EwMjA0IDB4MDAxNjE2MTYKLXdtIDMyIDB4MzA3YTAyMTAgMHgwMDAwMGYwZgot
+d20gMzIgMHgzMDdhMDIxNCAweDA0MDQwNDA0Ci13bSAzMiAweDMwN2EwMjE4IDB4MGYwZjA0MDQK
+K3dtIDMyIE1YN19ERFJDX0FERFJNQVAwIDB4MDAwMDAwMTUKK3dtIDMyIE1YN19ERFJDX0FERFJN
+QVAxIDB4MDAxNjE2MTYKK3dtIDMyIE1YN19ERFJDX0FERFJNQVA0IDB4MDAwMDBmMGYKK3dtIDMy
+IE1YN19ERFJDX0FERFJNQVA1IDB4MDQwNDA0MDQKK3dtIDMyIE1YN19ERFJDX0FERFJNQVA2IDB4
+MGYwZjA0MDQKIAotd20gMzIgMHgzMDdhMDI0MCAweDA2MDAwNjAwCi13bSAzMiAweDMwN2EwMjQ0
+IDB4MDAwMDAwMDAKK3dtIDMyIE1YN19ERFJDX09EVENGRyAweDA2MDAwNjAwCit3bSAzMiBNWDdf
+RERSQ19PRFRNQVAgMHgwMDAwMDAwMAogd20gMzIgMHgzMDM5MTAwMCAweDAwMDAwMDAwCi13bSAz
+MiAweDMwNzkwMDAwIDB4MTc0MjFlNDAKLXdtIDMyIDB4MzA3OTAwMDQgMHgxMDIxMDEwMAotd20g
+MzIgMHgzMDc5MDAwOCAweDAwMDEwMDAwCi13bSAzMiAweDMwNzkwMDEwIDB4MDAwNzA4MGMKLXdt
+IDMyIDB4MzA3OTAwYjAgMHgxMDEwMDA3ZQord20gMzIgTVg3X0REUl9QSFlfUEhZX0NPTjAgMHgx
+NzQyMWU0MAord20gMzIgTVg3X0REUl9QSFlfUEhZX0NPTjEgMHgxMDIxMDEwMAord20gMzIgTVg3
+X0REUl9QSFlfUEhZX0NPTjIgMHgwMDAxMDAwMAord20gMzIgTVg3X0REUl9QSFlfUEhZX0NPTjQg
+MHgwMDA3MDgwYword20gMzIgTVg3X0REUl9QSFlfTURMTF9DT04wIDB4MTAxMDAwN2UKIAotd20g
+MzIgMHgzMDc5MDAxQyAweDAxMDEwMDAwCi13bSAzMiAweDMwNzkwMDljIDB4MDAwMDBkNmUKK3dt
+IDMyIE1YN19ERFJfUEhZX1JPRFRfQ09OMCAweDAxMDEwMDAwCit3bSAzMiBNWDdfRERSX1BIWV9E
+UlZEU19DT04wIDB4MDAwMDBkNmUKIAotd20gMzIgMHgzMDc5MDAzMCAweDA2MDYwNjA2Ci13bSAz
+MiAweDMwNzkwMDIwIDB4MGEwYTBhMGEKLXdtIDMyIDB4MzA3OTAwNTAgMHgwMTAwMDAwOAotd20g
+MzIgMHgzMDc5MDA1MCAweDAwMDAwMDA4Ci13bSAzMiAweDMwNzkwMDE4IDB4MDAwMDAwMGYKLXdt
+IDMyIDB4MzA3OTAwYzAgMHgwZTQ4NzMwNAotd20gMzIgMHgzMDc5MDBjMCAweDBlNGM3MzA0Ci13
+bSAzMiAweDMwNzkwMGMwIDB4MGU0YzczMDYKLXdtIDMyIDB4MzA3OTAwYzAgMHgwZTRjNzMwNAor
+d20gMzIgTVg3X0REUl9QSFlfT0ZGU0VUX1dSX0NPTjAgMHgwNjA2MDYwNgord20gMzIgTVg3X0RE
+Ul9QSFlfT0ZGU0VUX1JEX0NPTjAgMHgwYTBhMGEwYQord20gMzIgTVg3X0REUl9QSFlfQ01EX1NE
+TExfQ09OMCAweDAxMDAwMDA4Cit3bSAzMiBNWDdfRERSX1BIWV9DTURfU0RMTF9DT04wIDB4MDAw
+MDAwMDgKK3dtIDMyIE1YN19ERFJfUEhZX0xQX0NPTjAgMHgwMDAwMDAwZgord20gMzIgTVg3X0RE
+Ul9QSFlfWlFfQ09OMCAweDBlNDg3MzA0Cit3bSAzMiBNWDdfRERSX1BIWV9aUV9DT04wIDB4MGU0
+YzczMDQKK3dtIDMyIE1YN19ERFJfUEhZX1pRX0NPTjAgMHgwZTRjNzMwNgord20gMzIgTVg3X0RE
+Ul9QSFlfWlFfQ09OMCAweDBlNGM3MzA0CiAKLWNoZWNrIDMyIHdoaWxlX2FueV9iaXRfY2xlYXIg
+MHgzMDc5MDBjNCAweDEKK2NoZWNrIDMyIHdoaWxlX2FueV9iaXRfY2xlYXIgTVg3X0REUl9QSFlf
+WlFfQ09OMSAweDEKIAotd20gMzIgMHgzMDc5MDBjMCAweDBlNDg3MzA0Cit3bSAzMiBNWDdfRERS
+X1BIWV9aUV9DT04wIDB4MGU0ODczMDQKIAogd20gMzIgMHgzMDM4NDEzMCAweDAwMDAwMDAwCiB3
+bSAzMiAweDMwMzQwMDIwIDB4MDAwMDAxNzgKIHdtIDMyIDB4MzAzODQxMzAgMHgwMDAwMDAwMgog
+Ci1jaGVjayAzMiB3aGlsZV9hbnlfYml0X2NsZWFyIDB4MzA3YTAwMDQgMHgxCitjaGVjayAzMiB3
+aGlsZV9hbnlfYml0X2NsZWFyIE1YN19ERFJDX1NUQVQgMHgxCi0tIAoyLjExLjAKCgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
+bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
