@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dZt2j-0004CS-Rp
- for barebox@lists.infradead.org; Tue, 25 Jul 2017 06:10:20 +0000
-Date: Tue, 25 Jul 2017 08:09:39 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170725060939.GA10720@ravnborg.org>
-References: <20170710092942.13037-1-l.stach@pengutronix.de>
- <20170724192300.lfbvphhwpoltbbmd@pengutronix.de>
- <20170724205625.GA19867@ravnborg.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170724205625.GA19867@ravnborg.org>
+ id 1daOaD-0006Zn-M5
+ for barebox@lists.infradead.org; Wed, 26 Jul 2017 15:50:47 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Wed, 26 Jul 2017 17:50:14 +0200
+Message-Id: <20170726155014.20014-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,42 +14,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: imx: remove DCD files from Makefiles
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v1] usb: gadget: autostart: properly release f_multi_opts
+To: l.stach@pengutronix.de
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org
 
-Hi all.
+the same as for usb gadget autostarter.
 
-> diff --git a/defaultenv/Makefile b/defaultenv/Makefile
-> index 33e0eceef..f313b04e8 100644
-> --- a/defaultenv/Makefile
-> +++ b/defaultenv/Makefile
-> @@ -14,7 +14,7 @@ quiet_cmd_env_default = ENV     $@
->  cmd_env_default = ($(srctree)/scripts/genenv $(srctree) $(objtree) $@ $(CONFIG_DEFAULT_ENVIRONMENT_PATH))
->  
->  $(obj)/barebox_default_env: FORCE
-> -	$(call cmd,env_default)
-> +	$(call if_changed,env_default)
->  
->  quiet_cmd_env_h = ENVH    $@
->  cmd_env_h = cat $< | (cd $(obj) && $(objtree)/scripts/bin2c "__aligned(4) default_environment") > $@; \
-> @@ -27,4 +27,4 @@ quiet_cmd_env_zero = ENVZ    $@
->  cmd_env_zero = ($(objtree)/scripts/bareboxenv -z $(CONFIG_DEFAULT_ENVIRONMENT_PATH) $@)
->  
->  $(obj)/barebox_zero_env: FORCE
-> -	$(call cmd,env_zero)
-> +	$(call if_changed,env_zero)
+|commit 2b9bcff79a02f770fa730e2689ba35cc03c0da7d
+|Author: Sascha Hauer <s.hauer@pengutronix.de>
+|Date:   Fri Jan 20 10:03:45 2017 +0100
+|
+|    usb: gadget: properly release f_multi_opts
+|
+|    The usbgadget commands uses statically allocated f_multi_opts and passes
+|    this to usb_multi_register(). These f_multi_opts are of course no
+|    longer valid when we leave the usbgadget command. Luckily we do not use
+|    the data after we left the usbgadget command, so this never has been a
+|    problem. However, f_multi_opts has some allocated members which we can
+|    not free anymore on gadget unregistration because we no longer have the
+|    pointer to them.
+|
+|    Fix this by adding a release function to struct f_multi_opts. This way
+|    we can allocate all memory dynamically and properly free it when not
+|    used anymore.
+|
+|    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-Before anyome jumps to try this out...
-The above changes are bogus - as we fail to detect when we change a file
-within defaultenv/.
-Will try to come up with something that works.
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/usb/gadget/autostart.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-	Sam
+diff --git a/drivers/usb/gadget/autostart.c b/drivers/usb/gadget/autostart.c
+index 4ad1dd6be1..465d8fd380 100644
+--- a/drivers/usb/gadget/autostart.c
++++ b/drivers/usb/gadget/autostart.c
+@@ -31,19 +31,28 @@ static char *fastboot_function;
+ 
+ static int usbgadget_autostart(void)
+ {
+-	struct f_multi_opts opts = {};
++	struct f_multi_opts *opts;
++	int ret;
+ 
+ 	if (!autostart)
+ 		return 0;
+ 
+ 	setenv("otg.mode", "peripheral");
+ 
++	opts = xzalloc(sizeof(*opts));
++	opts->release = usb_multi_opts_release;
++
+ 	if (fastboot_function)
+-		opts.fastboot_opts.files = file_list_parse(fastboot_function);
++		opts->fastboot_opts.files = file_list_parse(fastboot_function);
++
++	opts->create_acm = acm;
++
+ 
+-	opts.create_acm = acm;
++	ret = usb_multi_register(opts);
++	if (ret)
++		usb_multi_opts_release(opts);
+ 
+-	return usb_multi_register(&opts);
++	return ret;
+ }
+ postenvironment_initcall(usbgadget_autostart);
+ 
+-- 
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
