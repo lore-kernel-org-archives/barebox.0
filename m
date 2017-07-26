@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1daPDy-0002UC-R1
- for barebox@lists.infradead.org; Wed, 26 Jul 2017 16:31:52 +0000
-Received: by mail-pf0-x241.google.com with SMTP id g69so6857765pfe.1
- for <barebox@lists.infradead.org>; Wed, 26 Jul 2017 09:31:34 -0700 (PDT)
+ id 1daPDz-0002UB-RN
+ for barebox@lists.infradead.org; Wed, 26 Jul 2017 16:31:53 +0000
+Received: by mail-pg0-x241.google.com with SMTP id d193so17798952pgc.2
+ for <barebox@lists.infradead.org>; Wed, 26 Jul 2017 09:31:33 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 26 Jul 2017 09:31:12 -0700
-Message-Id: <20170726163120.25952-4-andrew.smirnov@gmail.com>
+Date: Wed, 26 Jul 2017 09:31:11 -0700
+Message-Id: <20170726163120.25952-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20170726163120.25952-1-andrew.smirnov@gmail.com>
 References: <20170726163120.25952-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,40 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 03/11] clk: i.MX7: Remove unused UART clocks array
+Subject: [PATCH v2 02/11] gpiolib: Simplify code of gpio_request_one()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Remove what looks like unused leftover from analogous Linux kernel
-code.
+Looks like we can get rid of an 'if' and 'goto', so do it to simplify
+the code.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/clk/imx/clk-imx7.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ drivers/gpio/gpiolib.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx7.c b/drivers/clk/imx/clk-imx7.c
-index d3a036c0c..b79c8c301 100644
---- a/drivers/clk/imx/clk-imx7.c
-+++ b/drivers/clk/imx/clk-imx7.c
-@@ -364,17 +364,6 @@ static int const clks_init_on[] __initconst = {
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index d081e02fd..67d771bae 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -119,6 +119,7 @@ void gpio_free(unsigned gpio)
+ int gpio_request_one(unsigned gpio, unsigned long flags, const char *label)
+ {
+ 	int err;
++	struct gpio_info *gi = gpio_to_desc(gpio);
  
- static struct clk_onecell_data clk_data;
+ 	/*
+ 	 * Not all of the flags below are mulit-bit, but, for the sake
+@@ -134,10 +135,7 @@ int gpio_request_one(unsigned gpio, unsigned long flags, const char *label)
+ 	if (err)
+ 		return err;
  
--static struct clk ** const uart_clks[] __initconst = {
--	&clks[IMX7D_UART1_ROOT_CLK],
--	&clks[IMX7D_UART2_ROOT_CLK],
--	&clks[IMX7D_UART3_ROOT_CLK],
--	&clks[IMX7D_UART4_ROOT_CLK],
--	&clks[IMX7D_UART5_ROOT_CLK],
--	&clks[IMX7D_UART6_ROOT_CLK],
--	&clks[IMX7D_UART7_ROOT_CLK],
--	NULL
--};
+-	if (active_low) {
+-		struct gpio_info *gi = gpio_to_desc(gpio);
+-		gi->active_low = true;
+-	}
++	gi->active_low = active_low;
+ 
+ 	if (dir_in)
+ 		err = gpio_direction_input(gpio);
+@@ -147,12 +145,8 @@ int gpio_request_one(unsigned gpio, unsigned long flags, const char *label)
+ 		err = gpio_direction_output(gpio, init_high);
+ 
+ 	if (err)
+-		goto free_gpio;
 -
- static int imx7_clk_initialized;
+-	return 0;
++		gpio_free(gpio);
  
- static int imx7_ccm_probe(struct device_d *dev)
+- free_gpio:
+-	gpio_free(gpio);
+ 	return err;
+ }
+ EXPORT_SYMBOL_GPL(gpio_request_one);
 -- 
 2.13.3
 
