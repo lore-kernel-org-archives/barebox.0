@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1daPE4-0002UE-SI
- for barebox@lists.infradead.org; Wed, 26 Jul 2017 16:31:59 +0000
-Received: by mail-pf0-x244.google.com with SMTP id k72so12466731pfj.0
- for <barebox@lists.infradead.org>; Wed, 26 Jul 2017 09:31:36 -0700 (PDT)
+ id 1daPE2-0002UG-QC
+ for barebox@lists.infradead.org; Wed, 26 Jul 2017 16:32:01 +0000
+Received: by mail-pf0-x241.google.com with SMTP id m21so1520081pfj.3
+ for <barebox@lists.infradead.org>; Wed, 26 Jul 2017 09:31:38 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 26 Jul 2017 09:31:14 -0700
-Message-Id: <20170726163120.25952-6-andrew.smirnov@gmail.com>
+Date: Wed, 26 Jul 2017 09:31:15 -0700
+Message-Id: <20170726163120.25952-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20170726163120.25952-1-andrew.smirnov@gmail.com>
 References: <20170726163120.25952-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,46 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 05/11] ARM: i.MX: Add mx7_setup_pad()
+Subject: [PATCH v2 06/11] ARM: i.MX: Add imx7_uart_setup_ll()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add mx7_setup_pad() low-level convenience function for setting up
-pinmux in PBL code.
+Add imx7_uart_setup_ll() for setting up UART selected for DEBUG_LL.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/iomux-mx7.h | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/arm/mach-imx/include/mach/debug_ll.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm/mach-imx/include/mach/iomux-mx7.h b/arch/arm/mach-imx/include/mach/iomux-mx7.h
-index 378e73a74..2667dc3eb 100644
---- a/arch/arm/mach-imx/include/mach/iomux-mx7.h
-+++ b/arch/arm/mach-imx/include/mach/iomux-mx7.h
-@@ -1306,4 +1306,23 @@ enum {
- 	MX7D_PAD_ENET1_COL__CSU_INT_DEB                          = IOMUX_PAD(0x04D8, 0x0268, 7, 0x0000, 0, 0),
- };
+diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
+index 39d710f7d..b7c0690d8 100644
+--- a/arch/arm/mach-imx/include/mach/debug_ll.h
++++ b/arch/arm/mach-imx/include/mach/debug_ll.h
+@@ -81,6 +81,13 @@ static inline void imx6_uart_setup_ll(void)
+ 	imx6_uart_setup(base);
+ }
  
-+static inline void mx7_setup_pad(void __iomem *iomux, iomux_v3_cfg_t pad)
++static inline void imx7_uart_setup_ll(void)
 +{
-+	unsigned int flags = 0;
-+	uint32_t mode = IOMUX_MODE(pad);
++	void *base = IOMEM(IMX_UART_BASE(IMX_DEBUG_SOC, CONFIG_DEBUG_IMX_UART_PORT));
 +
-+	if (mode & IOMUX_CONFIG_LPSR) {
-+		mode &= ~IOMUX_CONFIG_LPSR;
-+		flags = ZERO_OFFSET_VALID | IMX7_PINMUX_LPSR;
-+	}
-+
-+	iomux_v3_setup_pad(iomux, flags,
-+			   IOMUX_CTRL_OFS(pad),
-+			   IOMUX_PAD_CTRL_OFS(pad),
-+			   IOMUX_SEL_INPUT_OFS(pad),
-+			   mode,
-+			   IOMUX_PAD_CTRL(pad),
-+			   IOMUX_SEL_INPUT(pad));
++	imx7_uart_setup(base);
 +}
 +
- #endif
+ static inline void vf610_uart_setup_ll(void)
+ {
+ 	void *base = IOMEM(IMX_UART_BASE(IMX_DEBUG_SOC, CONFIG_DEBUG_IMX_UART_PORT));
 -- 
 2.13.3
 
