@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.kymetacorp.com ([208.187.125.9])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dadV3-0004l4-3P
- for barebox@lists.infradead.org; Thu, 27 Jul 2017 07:46:27 +0000
-References: <20170727055908.2715-1-o.rempel@pengutronix.de>
- <20170727073906.GA12578@ravnborg.org>
-From: Oleksij Rempel <ore@pengutronix.de>
-Message-ID: <f14f2f29-9b28-cff3-e67b-7793b01238d2@pengutronix.de>
-Date: Thu, 27 Jul 2017 09:46:02 +0200
+ id 1danJb-00027r-5O
+ for barebox@lists.infradead.org; Thu, 27 Jul 2017 18:15:16 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Thu, 27 Jul 2017 18:14:46 +0000
+Message-ID: <1501179286.5146.463.camel@kymetacorp.com>
+References: <CAArhposKY9Ai1OFPX+w2f4ajuw_D8jRTc2tttdiJcO8djj01eg@mail.gmail.com>
+In-Reply-To: <CAArhposKY9Ai1OFPX+w2f4ajuw_D8jRTc2tttdiJcO8djj01eg@mail.gmail.com>
+Content-Language: en-US
+Content-ID: <4523FB3B26EB0949B5322E9A8FEEADC8@kymetacorp.com>
 MIME-Version: 1.0
-In-Reply-To: <20170727073906.GA12578@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,83 +19,114 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1] MIPS: add 74Kc info
-To: Sam Ravnborg <sam@ravnborg.org>, Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] Add new command fs2bridge for socfpga
+To: "thepusherpushes@gmail.com" <thepusherpushes@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Sam,
+On Thu, 2017-07-27 at 18:20 +0200, Mabcded Babcde wrote:
+> Hi,
+> this patch adds a new command to barebox. It is used to enable or
+> disable the fpga-to-sdram bridges on socfpgas. The patch is based on a
+> manual from altera
 
-i assumed, every one who maintains MIPS arch, knows it :)
+I wonder if this might be better as a settable parameter of the fpga
+device?
 
-ok. I'll keep it in mind.
+> +
+> +#define SOCFPGA_SYSMGR_ADDRESS    0xFFD08000
+> +#define SOCFPGA_SDR_ADDRESS    0xFFC20000
+> +
+> +#define SDR_CTRLGRP_FPGAPORTRST_ADDRESS    0x5080
+> +#define SDR_CTRLGRP_STATICCFG_ADDRESS    0x505C
+> +#define SDR_CTRLGRP_STATICCFG_APPLYCFG_MASK    0x00000008
+> +
+> +#define SYSMGR_FPGAINTF_MODULE    (SOCFPGA_SYSMGR_ADDRESS + 0x28)
 
-On 27.07.2017 09:39, Sam Ravnborg wrote:
-> Hi Oleksij.
->
-> Nitpick...
-> It would be nice to have the subject indicating this is a MIPS CPU.
-> There may be a few people that do not recognize that 74Kc is
-> a MIPS CPU (me at least).
->
-> 	Sam
->
-> On Thu, Jul 27, 2017 at 07:59:08AM +0200, Oleksij Rempel wrote:
->> This patch is preparation for SoC QCA AR9344
->>
->> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
->> ---
->>  arch/mips/include/asm/cpu.h | 2 ++
->>  arch/mips/lib/cpu-probe.c   | 4 ++++
->>  2 files changed, 6 insertions(+)
->>
->> diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
->> index 572cabba34..e0bb78ea61 100644
->> --- a/arch/mips/include/asm/cpu.h
->> +++ b/arch/mips/include/asm/cpu.h
->> @@ -51,6 +51,7 @@
->>
->>  #define PRID_IMP_24K		0x9300
->>  #define PRID_IMP_24KE		0x9600
->> +#define PRID_IMP_74K		0x9700
->>
->>  /*
->>   * These are the PRID's for when 23:16 == PRID_COMP_BROADCOM
->> @@ -105,6 +106,7 @@ enum cpu_type_enum {
->>  	 * MIPS32 class processors
->>  	 */
->>  	CPU_24K,
->> +	CPU_74K,
->>  	CPU_BMIPS3300,
->>  	CPU_JZRISC,
->>  	CPU_LOONGSON1,
->> diff --git a/arch/mips/lib/cpu-probe.c b/arch/mips/lib/cpu-probe.c
->> index 71dbaf6382..b5d63db189 100644
->> --- a/arch/mips/lib/cpu-probe.c
->> +++ b/arch/mips/lib/cpu-probe.c
->> @@ -106,6 +106,10 @@ static inline void cpu_probe_mips(struct cpuinfo_mips *c)
->>  		c->cputype = CPU_24K;
->>  		__cpu_name = "MIPS 24Kc";
->>  		break;
->> +	case PRID_IMP_74K:
->> +		c->cputype = CPU_74K;
->> +		__cpu_name = "MIPS 74Kc";
->> +		break;
->>  	}
->>  }
->>
->> --
->> 2.11.0
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->
+You should be able to get these addresses from socfpga-regs.h and
+system-manager.h
+
+> +
+> +
+> +static void socfpga_sdram_apply_staticcfg(void)
+> +{
+> +    const uint32_t staticcfg = SOCFPGA_SDR_ADDRESS +
+> SDR_CTRLGRP_STATICCFG_ADDRESS;
+> +    const uint32_t applymask = SDR_CTRLGRP_STATICCFG_APPLYCFG_MASK;
+> +    uint32_t val = readl(staticcfg) | applymask;
+> +
+> +    /*
+> +     * SDRAM staticcfg register specific:
+> +     * When applying the register setting, the CPU must not access
+> +     * SDRAM. Luckily for us, we can abuse i-cache here to help us
+> +     * circumvent the SDRAM access issue. The idea is to make sure
+> +     * that the code is in one full i-cache line by branching past
+> +     * it and back. Once it is in the i-cache, we execute the core
+> +     * of the code and apply the register settings.
+> +     *
+> +     * The code below uses 7 instructions, while the Cortex-A9 has
+> +     * 32-byte cachelines, thus the limit is 8 instructions total.
+> +     */
+> +    asm volatile(
+> +        ".align    5            \n"
+> +        "    b    2f        \n"
+> +        "1:    str    %0,    [%1]    \n"
+> +        "    dsb            \n"
+> +        "    isb            \n"
+> +        "    b    3f        \n"
+> +        "2:    b    1b        \n"
+> +        "3:    nop            \n"
+> +    : : "r"(val), "r"(staticcfg) : "memory", "cc");
+> +}
+> +
+> +
+> +int do_f2sbridge(int argc, char *argv[])
+> +{
+> +    if (argc != 2)
+> +        return COMMAND_ERROR_USAGE;
+> +
+> +    switch (*argv[1]) {
+> +    case 'e':    // Enable
+> +        // hps peripheral controller to fpga
+> +        iowrite32(0, SYSMGR_FPGAINTF_MODULE);
+
+Why disable FPGA access to the emacs?  Is that required too?
+
+> +        socfpga_sdram_apply_staticcfg();
+> +        // enable all fpga2sdram bridge ports
+> +        iowrite32(0x3fff, SOCFPGA_SDR_ADDRESS +
+> SDR_CTRLGRP_FPGAPORTRST_ADDRESS);
+> +
+> +        break;
+> +    case 'd':    // Disable
+> +        iowrite32(0, SYSMGR_FPGAINTF_MODULE);
+> +        iowrite32(0, SOCFPGA_SDR_ADDRESS + SDR_CTRLGRP_FPGAPORTRST_ADDRESS);
+> +        socfpga_sdram_apply_staticcfg();
+> +
+> +        break;
+> +    default:
+> +        return COMMAND_ERROR_USAGE;
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> +
+> +BAREBOX_CMD_HELP_START(f2sbridge)
+> +BAREBOX_CMD_HELP_TEXT("Options:")
+> +BAREBOX_CMD_HELP_OPT ("-e \t",  "enable f2s bridge")
+> +BAREBOX_CMD_HELP_OPT ("-d \t",  "disable f2s bridge")
+> +BAREBOX_CMD_HELP_END
+> +
+> +BAREBOX_CMD_START(f2sbridge)
+> +    .cmd        = do_f2sbridge,
+> +    BAREBOX_CMD_DESC("Enables or disables the fpga2sdram bridge.")
+> +    BAREBOX_CMD_GROUP(CMD_GRP_MISC)
+> +    BAREBOX_CMD_HELP(cmd_f2sbridge_help)
+> +BAREBOX_CMD_END
 
 _______________________________________________
 barebox mailing list
