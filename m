@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1daPcE-0007h0-Gu
- for barebox@lists.infradead.org; Wed, 26 Jul 2017 16:56:56 +0000
-Date: Wed, 26 Jul 2017 18:56:31 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170726165631.GB28124@ravnborg.org>
-References: <20170726163120.25952-1-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170726163120.25952-1-andrew.smirnov@gmail.com>
+ id 1daavM-00026q-M8
+ for barebox@lists.infradead.org; Thu, 27 Jul 2017 05:01:27 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Thu, 27 Jul 2017 07:00:54 +0200
+Message-Id: <20170727050055.14188-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,47 +14,97 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 00/11] i.MX7 SabreSD support
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v1 1/2] of: base: port of_device_is_big_endian from linux
+To: l.stach@pengutronix.de
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org
 
-Hi Andrey.
+|commit 37786c7fee40771d13901de129af7e084ed48b55
+|Author: Kevin Cernekee <cernekee@gmail.com>
+|Date:   Thu Apr 9 13:05:14 2015 -0700
+|
+|    of: Add helper function to check MMIO register endianness
+|
+|    SoC peripherals can come in several different flavors:
+|
+|     - little-endian: registers always need to be accessed in LE mode (so the
+|       kernel should perform a swap if the CPU is running BE)
+|
+|     - big-endian: registers always need to be accessed in BE mode (so the
+|       kernel should perform a swap if the CPU is running LE)
+|
+|     - native-endian: the bus will automatically swap accesses, so the kernel
+|       should never swap
+|
+|    Introduce a function that checks an OF device node to see whether it
+|    contains a "big-endian" or "native-endian" property.  For the former case,
+|    always return true.  For the latter case, return true iff the kernel was
+|    built for BE (implying that the BE MMIO accessors do not perform a swap).
+|    Otherwise return false, assuming LE registers.
+|
+|    LE registers are assumed by default because most existing drivers (libahci,
+|    serial8250, usb) always use readl/writel in the absence of instructions
+|    to the contrary, so that will be our fallback.
 
-On Wed, Jul 26, 2017 at 09:31:09AM -0700, Andrey Smirnov wrote:
-> Hi everyone,
-> 
-> This is a v2 of the patch series to add support for NXP's i.MX7
-> SabreSD board. It's most likely lacking some advanced features, but
-> basics such as SD card, Ethernet and, of course, booting Linux seem to
-> work OK.
-> 
-> The patchset is updated to use defenitions from Uwe's most recent
-> submission ("ARM: i.MX7: provide DDR register definitions") so this
-> series has that as a dependency.
-> 
-> Patch 1/9 contains a fix for a pretty serious screw-up on my part, so
-> I think it should be applied to master as well.
-> 
-> Also, note, that for a reason I haven't been able to track down yet,
-> compiling Barebox + this patchset without support for FEC will cause
-> upstream kernel (at least 4.12-rc1) to hang during boot while trying
-> to access FEC's register file. I suspect clock initialization issue,
-> but, as I said, I did not find that out conclusively.
-> 
-> Anyway, as usual, any feedback is wellcome.
-> 
-> Thanks,
-> Andrey Smirnov
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/of/base.c | 23 +++++++++++++++++++++++
+ include/of.h      |  1 +
+ 2 files changed, 24 insertions(+)
 
-Other than a notpick comment everything looks good to me.
-For the whole series:
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index ea330d1310..95bea4ee83 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1622,6 +1622,29 @@ int of_device_is_available(const struct device_node *device)
+ EXPORT_SYMBOL(of_device_is_available);
+ 
+ /**
++ *  of_device_is_big_endian - check if a device has BE registers
++ *
++ *  @device: Node to check for endianness
++ *
++ *  Returns true if the device has a "big-endian" property, or if the kernel
++ *  was compiled for BE *and* the device has a "native-endian" property.
++ *  Returns false otherwise.
++ *
++ *  Callers would nominally use ioread32be/iowrite32be if
++ *  of_device_is_big_endian() == true, or readl/writel otherwise.
++ */
++bool of_device_is_big_endian(const struct device_node *device)
++{
++	if (of_property_read_bool(device, "big-endian"))
++		return true;
++	if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN) &&
++	    of_property_read_bool(device, "native-endian"))
++		return true;
++	return false;
++}
++EXPORT_SYMBOL(of_device_is_big_endian);
++
++/**
+  *	of_get_parent - Get a node's parent if any
+  *	@node:	Node to get parent
+  *
+diff --git a/include/of.h b/include/of.h
+index 0ba73f197f..4563cbeddd 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -150,6 +150,7 @@ extern int of_machine_is_compatible(const char *compat);
+ extern int of_device_is_compatible(const struct device_node *device,
+ 		const char *compat);
+ extern int of_device_is_available(const struct device_node *device);
++extern bool of_device_is_big_endian(const struct device_node *device);
+ 
+ extern struct device_node *of_get_parent(const struct device_node *node);
+ extern struct device_node *of_get_next_available_child(
+-- 
+2.11.0
 
-	Sam
 
 _______________________________________________
 barebox mailing list
