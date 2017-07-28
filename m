@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dbBlk-0001TS-ST
- for barebox@lists.infradead.org; Fri, 28 Jul 2017 20:21:58 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri, 28 Jul 2017 22:21:30 +0200
-Message-Id: <20170728202130.3891-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1db6Vp-0003RE-Lq
+ for barebox@lists.infradead.org; Fri, 28 Jul 2017 14:45:18 +0000
+Received: by mail-pg0-x243.google.com with SMTP id 125so10359361pgi.5
+ for <barebox@lists.infradead.org>; Fri, 28 Jul 2017 07:44:52 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Fri, 28 Jul 2017 07:44:21 -0700
+Message-Id: <20170728144427.14007-6-andrew.smirnov@gmail.com>
+In-Reply-To: <20170728144427.14007-1-andrew.smirnov@gmail.com>
+References: <20170728144427.14007-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,36 +18,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX7: Warp7: Add some code comments
+Subject: [PATCH v3 05/11] ARM: i.MX: Add mx7_setup_pad()
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-VGhpcyBtYWtlcyBpdCBlYXNpZXIgdG8gdW5kZXJzdGFuZCB3aGF0IGlzIGRvbmUgYW5kIGFkYXB0
-IHRoaXMgY29kZSBmb3IKb3RoZXIgYm9hcmRzLiBNeSBlZGl0b3IgYWxzbyBhZGRlZCBhIG5ld2xp
-bmUgYXQgZW9mIHdoaWNoIGlzIGdvb2QuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5p
-ZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGFyY2gvYXJtL2JvYXJkcy9l
-bGVtZW50MTQtd2FycDcvbG93bGV2ZWwuYyB8IDggKysrKysrKy0KIDEgZmlsZSBjaGFuZ2VkLCA3
-IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2Fy
-ZHMvZWxlbWVudDE0LXdhcnA3L2xvd2xldmVsLmMgYi9hcmNoL2FybS9ib2FyZHMvZWxlbWVudDE0
-LXdhcnA3L2xvd2xldmVsLmMKaW5kZXggMzhiNzc0NWY2NGVhLi44OWE3N2QyZjg4ZWEgMTAwNjQ0
-Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9lbGVtZW50MTQtd2FycDcvbG93bGV2ZWwuYworKysgYi9h
-cmNoL2FybS9ib2FyZHMvZWxlbWVudDE0LXdhcnA3L2xvd2xldmVsLmMKQEAgLTE3LDEwICsxNywx
-NiBAQCBzdGF0aWMgbm9pbmxpbmUgdm9pZCB3YXJwN19zdGFydCh2b2lkKQogCXZvaWQgX19pb21l
-bSAqY2NtYmFzZSA9IElPTUVNKE1YN19DQ01fQkFTRV9BRERSKTsKIAl2b2lkICpmZHQ7CiAKKwkv
-KiBDQ01fQ0NHUjE0OF9DTFIsIHVhcnQxICovCiAJd3JpdGVsKDB4MywgY2NtYmFzZSArIDB4NDAw
-MCArIDE2ICogMTQ4ICsgMHg4KTsKKwkvKiBDQ01fVEFSR0VUX1JPT1Q5NSA9IFVBUlQxX0NMS19S
-T09UICovCiAJd3JpdGVsKDB4MTAwMDAwMDAsIGNjbWJhc2UgKyAweDgwMDAgKyAxMjggKiA5NSk7
-CisJLyogQ0NNX0NDR1IxNDhfU0VULCB1YXJ0MSAqLwogCXdyaXRlbCgweDMsIGNjbWJhc2UgKyAw
-eDQwMDAgKyAxNiAqIDE0OCArIDB4NCk7CisKKwkvKiBNWDdEX1BBRF9VQVJUMV9SWF9EQVRBX19V
-QVJUMV9EQ0VfUlggd2l0aG91dCBkYWlzeSBjaGFpbmluZyAqLwogCXdyaXRlbCgweDAsIGlvbXV4
-YmFzZSArIDB4MTI4KTsKKwkvKiBNWDdEX1BBRF9VQVJUMV9UWF9EQVRBX19VQVJUMV9EQ0VfVFgg
-Ki8KIAl3cml0ZWwoMHgwLCBpb211eGJhc2UgKyAweDEyYyk7CiAKIAlpbXg3X3VhcnRfc2V0dXAo
-dWFydCk7CkBAIC00NSw0ICs1MSw0IEBAIEVOVFJZX0ZVTkNUSU9OKHN0YXJ0X2lteDdzX2VsZW1l
-bnQxNF93YXJwNywgcjAsIHIxLCByMikKIAliYXJyaWVyKCk7CiAKIAl3YXJwN19zdGFydCgpOwot
-fQpcIE5vIG5ld2xpbmUgYXQgZW5kIG9mIGZpbGUKK30KLS0gCjIuMTEuMAoKCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
-CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Add mx7_setup_pad() low-level convenience function for setting up
+pinmux in PBL code.
+
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/mach-imx/include/mach/iomux-mx7.h | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/arch/arm/mach-imx/include/mach/iomux-mx7.h b/arch/arm/mach-imx/include/mach/iomux-mx7.h
+index 378e73a74..2667dc3eb 100644
+--- a/arch/arm/mach-imx/include/mach/iomux-mx7.h
++++ b/arch/arm/mach-imx/include/mach/iomux-mx7.h
+@@ -1306,4 +1306,23 @@ enum {
+ 	MX7D_PAD_ENET1_COL__CSU_INT_DEB                          = IOMUX_PAD(0x04D8, 0x0268, 7, 0x0000, 0, 0),
+ };
+ 
++static inline void mx7_setup_pad(void __iomem *iomux, iomux_v3_cfg_t pad)
++{
++	unsigned int flags = 0;
++	uint32_t mode = IOMUX_MODE(pad);
++
++	if (mode & IOMUX_CONFIG_LPSR) {
++		mode &= ~IOMUX_CONFIG_LPSR;
++		flags = ZERO_OFFSET_VALID | IMX7_PINMUX_LPSR;
++	}
++
++	iomux_v3_setup_pad(iomux, flags,
++			   IOMUX_CTRL_OFS(pad),
++			   IOMUX_PAD_CTRL_OFS(pad),
++			   IOMUX_SEL_INPUT_OFS(pad),
++			   mode,
++			   IOMUX_PAD_CTRL(pad),
++			   IOMUX_SEL_INPUT(pad));
++}
++
+ #endif
+-- 
+2.13.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
