@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1db6Vn-0003RB-Ic
- for barebox@lists.infradead.org; Fri, 28 Jul 2017 14:45:11 +0000
-Received: by mail-pg0-x244.google.com with SMTP id 125so10359294pgi.5
- for <barebox@lists.infradead.org>; Fri, 28 Jul 2017 07:44:50 -0700 (PDT)
+ id 1db6Vt-0003Rb-6O
+ for barebox@lists.infradead.org; Fri, 28 Jul 2017 14:45:24 +0000
+Received: by mail-pg0-x242.google.com with SMTP id k190so8093201pgk.4
+ for <barebox@lists.infradead.org>; Fri, 28 Jul 2017 07:44:55 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 28 Jul 2017 07:44:19 -0700
-Message-Id: <20170728144427.14007-4-andrew.smirnov@gmail.com>
+Date: Fri, 28 Jul 2017 07:44:24 -0700
+Message-Id: <20170728144427.14007-9-andrew.smirnov@gmail.com>
 In-Reply-To: <20170728144427.14007-1-andrew.smirnov@gmail.com>
 References: <20170728144427.14007-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,41 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 03/11] clk: i.MX7: Remove unused UART clocks array
+Subject: [PATCH v3 08/11] ARM: i.MX: Add ARCH_HAD_FEC_IMX to ARCH_IMX7
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
-
-Remove what looks like unused leftover from analogous Linux kernel
-code.
 
 Acked-by: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/clk/imx/clk-imx7.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ arch/arm/mach-imx/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/imx/clk-imx7.c b/drivers/clk/imx/clk-imx7.c
-index d3a036c0c..b79c8c301 100644
---- a/drivers/clk/imx/clk-imx7.c
-+++ b/drivers/clk/imx/clk-imx7.c
-@@ -364,17 +364,6 @@ static int const clks_init_on[] __initconst = {
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 6110924af..9ab27b42d 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -168,6 +168,7 @@ config ARCH_IMX7
+ 	select PINCTRL_IMX_IOMUX_V3
+ 	select OFTREE
+ 	select COMMON_CLK_OF_PROVIDER
++	select ARCH_HAS_FEC_IMX
  
- static struct clk_onecell_data clk_data;
- 
--static struct clk ** const uart_clks[] __initconst = {
--	&clks[IMX7D_UART1_ROOT_CLK],
--	&clks[IMX7D_UART2_ROOT_CLK],
--	&clks[IMX7D_UART3_ROOT_CLK],
--	&clks[IMX7D_UART4_ROOT_CLK],
--	&clks[IMX7D_UART5_ROOT_CLK],
--	&clks[IMX7D_UART6_ROOT_CLK],
--	&clks[IMX7D_UART7_ROOT_CLK],
--	NULL
--};
--
- static int imx7_clk_initialized;
- 
- static int imx7_ccm_probe(struct device_d *dev)
+ config ARCH_VF610
+ 	bool
 -- 
 2.13.3
 
