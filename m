@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x243.google.com ([2607:f8b0:4003:c06::243])
+Received: from mail-oi0-x242.google.com ([2607:f8b0:4003:c06::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1db5D7-0006NG-G1
- for barebox@lists.infradead.org; Fri, 28 Jul 2017 13:21:47 +0000
-Received: by mail-oi0-x243.google.com with SMTP id q70so14554896oic.2
- for <barebox@lists.infradead.org>; Fri, 28 Jul 2017 06:21:23 -0700 (PDT)
+ id 1db5Fm-0007NN-RZ
+ for barebox@lists.infradead.org; Fri, 28 Jul 2017 13:24:32 +0000
+Received: by mail-oi0-x242.google.com with SMTP id j194so12469901oib.4
+ for <barebox@lists.infradead.org>; Fri, 28 Jul 2017 06:24:10 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1501179286.5146.463.camel@kymetacorp.com>
+In-Reply-To: <CAHQ1cqHjrpK34E=zWGQYp_koRA6yTqHGhm0P4v=K59ieyC7qnA@mail.gmail.com>
 References: <CAArhposKY9Ai1OFPX+w2f4ajuw_D8jRTc2tttdiJcO8djj01eg@mail.gmail.com>
- <1501179286.5146.463.camel@kymetacorp.com>
+ <CAHQ1cqHjrpK34E=zWGQYp_koRA6yTqHGhm0P4v=K59ieyC7qnA@mail.gmail.com>
 From: Mabcded Babcde <thepusherpushes@gmail.com>
-Date: Fri, 28 Jul 2017 15:21:22 +0200
-Message-ID: <CAArhpovhMqzH-fgWQbyP89-WV96Noin-v-M8xyUHYKwpXFD5yw@mail.gmail.com>
+Date: Fri, 28 Jul 2017 15:24:08 +0200
+Message-ID: <CAArhpoukunr4DBJhy2etw4svK9+yCdY98oMc1ANUJdrqmNsyTQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,22 +25,130 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] Add new command fs2bridge for socfpga
-To: Trent Piepho <tpiepho@kymetacorp.com>
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-2017-07-27 20:14 GMT+02:00 Trent Piepho <tpiepho@kymetacorp.com>:
-> On Thu, 2017-07-27 at 18:20 +0200, Mabcded Babcde wrote:
+2017-07-27 20:49 GMT+02:00 Andrey Smirnov <andrew.smirnov@gmail.com>:
+> On Thu, Jul 27, 2017 at 9:20 AM, Mabcded Babcde
+> <thepusherpushes@gmail.com> wrote:
 >> Hi,
 >> this patch adds a new command to barebox. It is used to enable or
 >> disable the fpga-to-sdram bridges on socfpgas. The patch is based on a
 >> manual from altera
+>> (https://www.altera.com/support/support-resources/knowledge-base/embedded/2016/how-and-when-can-i-enable-the-fpga2sdram-bridge-on-cyclone-v-soc.html)
+>> and a implementation for u-boot
+>> (https://github.com/rogerq/u-boot/blob/master/arch/arm/mach-socfpga/misc.c).
+>> The fpga2sdram fpga configuration can only be set when the SDRAM
+>> interface is idle. So it is necessary to use the on-chip ram.
 >
-> I wonder if this might be better as a settable parameter of the fpga
-> device?
+> And by "on-chip ram" you mean i-cache and not SRAM block used by first
+> stage bootloader, correct? I am just a bit confused by the wording.
 >
 
-Ok, but how can I then ensure that the SDRAM is completly idle?
+Sorry, my fault. I meant i-cache.
 
+>> To bring all fpga2sdram bridges out of reset it is necessary to write 0x3FFF to
+>> the register. Only the fpga2sdram bridges are enabled or disabled but
+>> no other bridges like the axi bridges.
+>
+> Linux kernel already has:
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/fpga/altera-fpga2sdram-bridge.txt?h=v4.13-rc2
+>
+> so, IMHO, it would be better to implement  a compatible driver and, if
+> ability to change the value at run-time is needed, add "enable"
+> property to it rather than introducing a separate command.
+>
+
+But how can I ensure that the SDRAM is idle? I quote Altera:
+"First time enabling of the FPGA2SDRAM bridge within Linux is not
+supported as the SDRAM subsystem cannot be easily put into a
+guaranteed idle state."
+
+
+>> I'm a beginner to embedded and
+>> open-source software. This is the reason why I don't know to which
+>> branch I have to push this patch and I don't know which license should
+>> be applied here because I used some code from another source (see
+>> above GPL License / Altera). Nevertheless I would be happy to
+>> contribute to Barebox.
+>> Thanks, Mathieu
+>>
+>>
+>> ---
+>
+> Just in case you didn't know this already, text below this line will
+> be ignored when the patch is applied, so this is a great place to put
+> some technical or personal notes that might not necessarily belong to
+> the commit message.
+>
+
+Thanks!
+
+>
+>>  commands/Kconfig     |  7 ++++
+>>  commands/Makefile    |  1 +
+>>  commands/f2sbridge.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>>  3 files changed, 100 insertions(+)
+>>  create mode 100644 commands/f2sbridge.c
+>>
+>> diff --git a/commands/Kconfig b/commands/Kconfig
+>> index ae2dc4b..328ab1b 100644
+>> --- a/commands/Kconfig
+>> +++ b/commands/Kconfig
+>> @@ -2127,6 +2127,13 @@ config CMD_SEED
+>>      help
+>>        Seed the pseudo random number generator (PRNG)
+>>
+>> +config CMD_F2SBRIDGE
+>> +    bool
+>> +    depends on ARCH_SOCFPGA
+>> +    prompt "f2sbridge"
+>> +    help
+>> +      Enables or disables the fpga2sdram bridge
+>> +
+>>  # end Miscellaneous commands
+>>  endmenu
+>>
+>> diff --git a/commands/Makefile b/commands/Makefile
+>> index 37486dc..2006bca 100644
+>> --- a/commands/Makefile
+>> +++ b/commands/Makefile
+>> @@ -123,3 +123,4 @@ obj-$(CONFIG_CMD_SPD_DECODE)    += spd_decode.o
+>>  obj-$(CONFIG_CMD_MMC_EXTCSD)    += mmc_extcsd.o
+>>  obj-$(CONFIG_CMD_NAND_BITFLIP)    += nand-bitflip.o
+>>  obj-$(CONFIG_CMD_SEED)        += seed.o
+>> +obj-$(CONFIG_CMD_F2SBRIDGE)    += f2sbridge.o
+>> diff --git a/commands/f2sbridge.c b/commands/f2sbridge.c
+>> new file mode 100644
+>> index 0000000..8d3bbcc
+>> --- /dev/null
+>> +++ b/commands/f2sbridge.c
+>> @@ -0,0 +1,92 @@
+>> +/*
+>> + *  Copyright (C) ???
+>
+> Maybe:
+>
+> Copyright (C) 2017 Your Name
+>
+> Based on the code form U-Boot
+>
+>  Copyright (C) Year, Altera
+>
+> ?
+
+Thanks!
+
+>
+>> + *
+>> + * SPDX-License-Identifier:    GPL-2.0+
+>> + */
+>> +
+>> +
+>> +#include <common.h>
+>> +#include <io.h>
+>> +#include <command.h>
 >> +
 >> +#define SOCFPGA_SYSMGR_ADDRESS    0xFFD08000
 >> +#define SOCFPGA_SDR_ADDRESS    0xFFC20000
@@ -50,15 +158,6 @@ Ok, but how can I then ensure that the SDRAM is completly idle?
 >> +#define SDR_CTRLGRP_STATICCFG_APPLYCFG_MASK    0x00000008
 >> +
 >> +#define SYSMGR_FPGAINTF_MODULE    (SOCFPGA_SYSMGR_ADDRESS + 0x28)
->
-> You should be able to get these addresses from socfpga-regs.h and
-> system-manager.h
->
-
-Thanks for the hint, I included mach/cyclone5-regs,
-mach/cyclone5-sdram.h and cyclone5-system-manager.
-But I did't find socfpga-regs.h and system-manager.h.
-
 >> +
 >> +
 >> +static void socfpga_sdram_apply_staticcfg(void)
@@ -103,45 +202,15 @@ But I did't find socfpga-regs.h and system-manager.h.
 >> +        // hps peripheral controller to fpga
 >> +        iowrite32(0, SYSMGR_FPGAINTF_MODULE);
 >
-> Why disable FPGA access to the emacs?  Is that required too?
->
+> You use readl() above but iowrite32() (as opposed to writel()) here,
+> is that on purpose?
 
-In the altera code it is also disabled. But I tried it without the
-line and the bridges seem to be enabled.
+That was a mistake. I changed it to ioread32.
 
->> +        socfpga_sdram_apply_staticcfg();
->> +        // enable all fpga2sdram bridge ports
->> +        iowrite32(0x3fff, SOCFPGA_SDR_ADDRESS +
->> SDR_CTRLGRP_FPGAPORTRST_ADDRESS);
->> +
->> +        break;
->> +    case 'd':    // Disable
->> +        iowrite32(0, SYSMGR_FPGAINTF_MODULE);
->> +        iowrite32(0, SOCFPGA_SDR_ADDRESS + SDR_CTRLGRP_FPGAPORTRST_ADDRESS);
->> +        socfpga_sdram_apply_staticcfg();
->> +
->> +        break;
->> +    default:
->> +        return COMMAND_ERROR_USAGE;
->> +    }
->> +
->> +    return 0;
->> +}
->> +
->> +
->> +BAREBOX_CMD_HELP_START(f2sbridge)
->> +BAREBOX_CMD_HELP_TEXT("Options:")
->> +BAREBOX_CMD_HELP_OPT ("-e \t",  "enable f2s bridge")
->> +BAREBOX_CMD_HELP_OPT ("-d \t",  "disable f2s bridge")
->> +BAREBOX_CMD_HELP_END
->> +
->> +BAREBOX_CMD_START(f2sbridge)
->> +    .cmd        = do_f2sbridge,
->> +    BAREBOX_CMD_DESC("Enables or disables the fpga2sdram bridge.")
->> +    BAREBOX_CMD_GROUP(CMD_GRP_MISC)
->> +    BAREBOX_CMD_HELP(cmd_f2sbridge_help)
->> +BAREBOX_CMD_END
 >
+> Thank you for the contribution!
+>
+> Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
