@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ua0-x243.google.com ([2607:f8b0:400c:c08::243])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dcDr9-0001tI-1r
- for barebox@lists.infradead.org; Mon, 31 Jul 2017 16:47:49 +0000
-Received: by mail-ua0-x243.google.com with SMTP id q25so21619643uah.0
- for <barebox@lists.infradead.org>; Mon, 31 Jul 2017 09:47:26 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <CAArhposCe9LMLSvYc5026KK9no8U1aV7Er2OiANWKr=xPWUAFw@mail.gmail.com>
-References: <CAArhposKY9Ai1OFPX+w2f4ajuw_D8jRTc2tttdiJcO8djj01eg@mail.gmail.com>
- <CAHQ1cqHjrpK34E=zWGQYp_koRA6yTqHGhm0P4v=K59ieyC7qnA@mail.gmail.com>
- <CAArhpoukunr4DBJhy2etw4svK9+yCdY98oMc1ANUJdrqmNsyTQ@mail.gmail.com>
- <CAHQ1cqEp1X49ODABcz9nb3t7i5PhnN0oRBtA_O5DACFnwdUq1w@mail.gmail.com>
- <CAArhposCe9LMLSvYc5026KK9no8U1aV7Er2OiANWKr=xPWUAFw@mail.gmail.com>
+ id 1db6Vn-0003Qp-Ib
+ for barebox@lists.infradead.org; Fri, 28 Jul 2017 14:45:13 +0000
+Received: by mail-pg0-x244.google.com with SMTP id v190so23824561pgv.1
+ for <barebox@lists.infradead.org>; Fri, 28 Jul 2017 07:44:47 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 31 Jul 2017 09:47:24 -0700
-Message-ID: <CAHQ1cqHroKuwj8bKNKjMXiuNiMe_=JBmiONJ_ymNHaGmFv-XMw@mail.gmail.com>
+Date: Fri, 28 Jul 2017 07:44:16 -0700
+Message-Id: <20170728144427.14007-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,112 +16,108 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add new command fs2bridge for socfpga
-To: Mabcded Babcde <thepusherpushes@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH v3 00/11] i.MX7 SabreSD support
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Sun, Jul 30, 2017 at 2:17 PM, Mabcded Babcde
-<thepusherpushes@gmail.com> wrote:
-> 2017-07-28 15:42 GMT+02:00 Andrey Smirnov <andrew.smirnov@gmail.com>:
->> On Fri, Jul 28, 2017 at 6:24 AM, Mabcded Babcde
->> <thepusherpushes@gmail.com> wrote:
->>> 2017-07-27 20:49 GMT+02:00 Andrey Smirnov <andrew.smirnov@gmail.com>:
->>>> On Thu, Jul 27, 2017 at 9:20 AM, Mabcded Babcde
->>>> <thepusherpushes@gmail.com> wrote:
->>>>> Hi,
->>>>> this patch adds a new command to barebox. It is used to enable or
->>>>> disable the fpga-to-sdram bridges on socfpgas. The patch is based on a
->>>>> manual from altera
->>>>> (https://www.altera.com/support/support-resources/knowledge-base/embedded/2016/how-and-when-can-i-enable-the-fpga2sdram-bridge-on-cyclone-v-soc.html)
->>>>> and a implementation for u-boot
->>>>> (https://github.com/rogerq/u-boot/blob/master/arch/arm/mach-socfpga/misc.c).
->>>>> The fpga2sdram fpga configuration can only be set when the SDRAM
->>>>> interface is idle. So it is necessary to use the on-chip ram.
->>>>
->>>> And by "on-chip ram" you mean i-cache and not SRAM block used by first
->>>> stage bootloader, correct? I am just a bit confused by the wording.
->>>>
->>>
->>> Sorry, my fault. I meant i-cache.
->>>
->>>>> To bring all fpga2sdram bridges out of reset it is necessary to write 0x3FFF to
->>>>> the register. Only the fpga2sdram bridges are enabled or disabled but
->>>>> no other bridges like the axi bridges.
->>>>
->>>> Linux kernel already has:
->>>>
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/fpga/altera-fpga2sdram-bridge.txt?h=v4.13-rc2
->>>>
->>>> so, IMHO, it would be better to implement  a compatible driver and, if
->>>> ability to change the value at run-time is needed, add "enable"
->>>> property to it rather than introducing a separate command.
->>>>
->>>
->>> But how can I ensure that the SDRAM is idle? I quote Altera:
->>> "First time enabling of the FPGA2SDRAM bridge within Linux is not
->>> supported as the SDRAM subsystem cannot be easily put into a
->>> guaranteed idle state."
->>>
->>
->> I feel like we are talking about different things. What I am trying to
->> say that instead of adding this functionality to Barebox as a
->> standalone command, it would be better to add it _to Barebox_ as a
->> driver that claims compatibility with "altr,socfpga-fpga2sdram-bridge"
->> and implements all of the necessary logic there. It would be the same
->> code running in the boot-loader but triggered to executed via
->> different means, so it should literally be the same in terms of SDRAM
->> access quiescence. A somewhat relative example of that approach would
->> be "drivers/firmware/socfpga.c".
->
-> Ok, I hardcoded my code from the command to drivers/firmware/socfpga.c
-> for testing purposes. That didn't seem to work.
+Hi everyone,
 
-I'd double check that CONFIG_FIRMWARE and
-CONFIG_FIRMWARE_ALTERA_SOCFPGA are set to "y".
+This is a v3 of the patch series to add support for NXP's i.MX7
+SabreSD board. It's most likely lacking some advanced features, but
+basics such as SD card, Ethernet and, of course, booting Linux seem to
+work OK.
 
-> However how would I
-> enable or disable the bridge? With a parameter? Where can I add it and
-> change it?
->
->>
+The patchset is updated to use defenitions from Uwe's most recent
+submission ("ARM: i.MX7: provide DDR register definitions") so this
+series has that as a dependency.
 
-The driver in firmware/socfpga.c should create a "fpga0" device, after
-which, you cat set that device's variables/attributes by simply doing:
+Patch 1/9 contains a fix for a pretty serious screw-up on my part, so
+I think it should be applied to master as well.
 
-fpga0.variable_name = value
+Also, note, that for a reason I haven't been able to track down yet,
+compiling Barebox + this patchset without support for FEC will cause
+upstream kernel (at least 4.12-rc1) to hang during boot while trying
+to access FEC's register file. I suspect clock initialization issue,
+but, as I said, I did not find that out conclusively.
 
-and get them via
-
-echo ${fpga0.variable_name}
-
-Commit https://git.pengutronix.de/cgit/barebox/commit/?id=48aecb409dcbff1d13008de72a2c42af8069aec6
-where "programmed" attribute for that driver was added should be a
-pretty good example.
-
->>>> You use readl() above but iowrite32() (as opposed to writel()) here,
->>>> is that on purpose?
->>>
->>> That was a mistake. I changed it to ioread32.
->>>
->>
->> I'd maybe convert it the other around since there are very few users
->> of "ioread32" in the codebase and readl()/writel() seem to be more
->> idiomatic.
->
-> Ok, but I thought readl()/writel() are less safe?
->
-
-I might be missing something, but, to the best of my knowledge, they
-are not. Ioread32/iowrite32 are defined to expand into readl/writel in
-include/asm-generic/io.h, so I'd say they should be the same in all
-aspects.
+Anyway, as usual, any feedback is wellcome.
 
 Thanks,
 Andrey Smirnov
+
+Changes since [v2]:
+
+ - Fix incorrect alphabetical order in two Makefiles
+
+ - Collecdt Acked-by for the series from Sam Ravnborg
+
+Changes since [v1]:
+
+ - Convert GPIO fix to use (val & mask) == mask idiom for all bit
+   fields
+
+ - Add a patch simplifying code of gpio_request_gpio()
+ 
+ - Move PHY_ID constant to a separate file
+
+ - Make sure that all board init code is placed behing appropriated
+   of_compatible guard
+
+ - Reference the source of DCD data
+
+ - Add minor changes (help text, adherence to alphabetical order, etc.)
+
+[v1] http://lists.infradead.org/pipermail/barebox/2017-July/030782.html
+
+Andrey Smirnov (11):
+  gpiolib: Fix buggy flag detection code
+  gpiolib: Simplify code of gpio_request_one()
+  clk: i.MX7: Remove unused UART clocks array
+  ARM: i.MX: Import mx7d_pins.h from U-Boot
+  ARM: i.MX: Add mx7_setup_pad()
+  ARM: i.MX: Add imx7_uart_setup_ll()
+  ARM: i.MX: Add minimal imx7-ccm-regs.h
+  ARM: i.MX: Add ARCH_HAD_FEC_IMX to ARCH_IMX7
+  ARM: i.MX: Import imx7-iomuxc-gpr.h from Linux kernel
+  include: Add phy-id-list.h
+  ARM: i.MX: Add support for NXP i.MX7 SABRESD board
+
+ arch/arm/boards/Makefile                           |    1 +
+ arch/arm/boards/freescale-mx7-sabresd/Makefile     |    2 +
+ arch/arm/boards/freescale-mx7-sabresd/board.c      |   58 +
+ .../flash-header-mx7-sabresd.imxcfg                |   82 ++
+ arch/arm/boards/freescale-mx7-sabresd/lowlevel.c   |   46 +
+ arch/arm/dts/Makefile                              |    2 +-
+ arch/arm/dts/imx7d-sdb.dts                         |   70 ++
+ arch/arm/mach-imx/Kconfig                          |   13 +
+ arch/arm/mach-imx/include/mach/debug_ll.h          |    7 +
+ arch/arm/mach-imx/include/mach/imx7-ccm-regs.h     |   32 +
+ arch/arm/mach-imx/include/mach/iomux-mx7.h         | 1328 ++++++++++++++++++++
+ arch/arm/mach-imx/include/mach/iomux-v3.h          |    1 +
+ drivers/clk/imx/clk-imx7.c                         |   11 -
+ drivers/gpio/gpiolib.c                             |   35 +-
+ images/Makefile.imx                                |    5 +
+ include/mfd/imx7-iomuxc-gpr.h                      |   51 +
+ include/phy-id-list.h                              |   12 +
+ 17 files changed, 1727 insertions(+), 29 deletions(-)
+ create mode 100644 arch/arm/boards/freescale-mx7-sabresd/Makefile
+ create mode 100644 arch/arm/boards/freescale-mx7-sabresd/board.c
+ create mode 100644 arch/arm/boards/freescale-mx7-sabresd/flash-header-mx7-sabresd.imxcfg
+ create mode 100644 arch/arm/boards/freescale-mx7-sabresd/lowlevel.c
+ create mode 100644 arch/arm/dts/imx7d-sdb.dts
+ create mode 100644 arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
+ create mode 100644 arch/arm/mach-imx/include/mach/iomux-mx7.h
+ create mode 100644 include/mfd/imx7-iomuxc-gpr.h
+ create mode 100644 include/phy-id-list.h
+
+-- 
+2.13.3
+
 
 _______________________________________________
 barebox mailing list
