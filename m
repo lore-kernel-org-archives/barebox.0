@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1db6Vt-0003Rb-6O
- for barebox@lists.infradead.org; Fri, 28 Jul 2017 14:45:24 +0000
-Received: by mail-pg0-x242.google.com with SMTP id k190so8093201pgk.4
- for <barebox@lists.infradead.org>; Fri, 28 Jul 2017 07:44:55 -0700 (PDT)
+ id 1db6Vw-0003Rl-Md
+ for barebox@lists.infradead.org; Fri, 28 Jul 2017 14:45:25 +0000
+Received: by mail-pf0-x244.google.com with SMTP id 72so405283pfl.4
+ for <barebox@lists.infradead.org>; Fri, 28 Jul 2017 07:44:56 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 28 Jul 2017 07:44:24 -0700
-Message-Id: <20170728144427.14007-9-andrew.smirnov@gmail.com>
+Date: Fri, 28 Jul 2017 07:44:25 -0700
+Message-Id: <20170728144427.14007-10-andrew.smirnov@gmail.com>
 In-Reply-To: <20170728144427.14007-1-andrew.smirnov@gmail.com>
 References: <20170728144427.14007-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,28 +23,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 08/11] ARM: i.MX: Add ARCH_HAD_FEC_IMX to ARCH_IMX7
+Subject: [PATCH v3 09/11] ARM: i.MX: Import imx7-iomuxc-gpr.h from Linux kernel
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Acked-by: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ include/mfd/imx7-iomuxc-gpr.h | 51 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
+ create mode 100644 include/mfd/imx7-iomuxc-gpr.h
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 6110924af..9ab27b42d 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -168,6 +168,7 @@ config ARCH_IMX7
- 	select PINCTRL_IMX_IOMUX_V3
- 	select OFTREE
- 	select COMMON_CLK_OF_PROVIDER
-+	select ARCH_HAS_FEC_IMX
- 
- config ARCH_VF610
- 	bool
+diff --git a/include/mfd/imx7-iomuxc-gpr.h b/include/mfd/imx7-iomuxc-gpr.h
+new file mode 100644
+index 000000000..abbd52466
+--- /dev/null
++++ b/include/mfd/imx7-iomuxc-gpr.h
+@@ -0,0 +1,51 @@
++/*
++ * Copyright (C) 2015 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#ifndef __LINUX_IMX7_IOMUXC_GPR_H
++#define __LINUX_IMX7_IOMUXC_GPR_H
++
++#define IOMUXC_GPR0	0x00
++#define IOMUXC_GPR1	0x04
++#define IOMUXC_GPR2	0x08
++#define IOMUXC_GPR3	0x0c
++#define IOMUXC_GPR4	0x10
++#define IOMUXC_GPR5	0x14
++#define IOMUXC_GPR6	0x18
++#define IOMUXC_GPR7	0x1c
++#define IOMUXC_GPR8	0x20
++#define IOMUXC_GPR9	0x24
++#define IOMUXC_GPR10	0x28
++#define IOMUXC_GPR11	0x2c
++#define IOMUXC_GPR12	0x30
++#define IOMUXC_GPR13	0x34
++#define IOMUXC_GPR14	0x38
++#define IOMUXC_GPR15	0x3c
++#define IOMUXC_GPR16	0x40
++#define IOMUXC_GPR17	0x44
++#define IOMUXC_GPR18	0x48
++#define IOMUXC_GPR19	0x4c
++#define IOMUXC_GPR20	0x50
++#define IOMUXC_GPR21	0x54
++#define IOMUXC_GPR22	0x58
++
++/* For imx7d iomux gpr register field define */
++#define IMX7D_GPR1_IRQ_MASK			(0x1 << 12)
++#define IMX7D_GPR1_ENET1_TX_CLK_SEL_MASK	(0x1 << 13)
++#define IMX7D_GPR1_ENET2_TX_CLK_SEL_MASK	(0x1 << 14)
++#define IMX7D_GPR1_ENET_TX_CLK_SEL_MASK		(0x3 << 13)
++#define IMX7D_GPR1_ENET1_CLK_DIR_MASK		(0x1 << 17)
++#define IMX7D_GPR1_ENET2_CLK_DIR_MASK		(0x1 << 18)
++#define IMX7D_GPR1_ENET_CLK_DIR_MASK		(0x3 << 17)
++
++#define IMX7D_GPR5_CSI_MUX_CONTROL_MIPI		(0x1 << 4)
++
++#define IMX7D_GPR12_PCIE_PHY_REFCLK_SEL		BIT(5)
++
++#define IMX7D_GPR22_PCIE_PHY_PLL_LOCKED		BIT(31)
++
++#endif /* __LINUX_IMX7_IOMUXC_GPR_H */
 -- 
 2.13.3
 
