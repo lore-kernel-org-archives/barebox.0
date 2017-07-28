@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x242.google.com ([2607:f8b0:4003:c06::242])
+Received: from mail-ua0-x244.google.com ([2607:f8b0:400c:c08::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1db5Fm-0007NN-RZ
- for barebox@lists.infradead.org; Fri, 28 Jul 2017 13:24:32 +0000
-Received: by mail-oi0-x242.google.com with SMTP id j194so12469901oib.4
- for <barebox@lists.infradead.org>; Fri, 28 Jul 2017 06:24:10 -0700 (PDT)
+ id 1db5XG-0006dj-7K
+ for barebox@lists.infradead.org; Fri, 28 Jul 2017 13:42:36 +0000
+Received: by mail-ua0-x244.google.com with SMTP id 80so19658774uas.4
+ for <barebox@lists.infradead.org>; Fri, 28 Jul 2017 06:42:12 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAHQ1cqHjrpK34E=zWGQYp_koRA6yTqHGhm0P4v=K59ieyC7qnA@mail.gmail.com>
+In-Reply-To: <CAArhpoukunr4DBJhy2etw4svK9+yCdY98oMc1ANUJdrqmNsyTQ@mail.gmail.com>
 References: <CAArhposKY9Ai1OFPX+w2f4ajuw_D8jRTc2tttdiJcO8djj01eg@mail.gmail.com>
  <CAHQ1cqHjrpK34E=zWGQYp_koRA6yTqHGhm0P4v=K59ieyC7qnA@mail.gmail.com>
-From: Mabcded Babcde <thepusherpushes@gmail.com>
-Date: Fri, 28 Jul 2017 15:24:08 +0200
-Message-ID: <CAArhpoukunr4DBJhy2etw4svK9+yCdY98oMc1ANUJdrqmNsyTQ@mail.gmail.com>
+ <CAArhpoukunr4DBJhy2etw4svK9+yCdY98oMc1ANUJdrqmNsyTQ@mail.gmail.com>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Fri, 28 Jul 2017 06:42:11 -0700
+Message-ID: <CAHQ1cqEp1X49ODABcz9nb3t7i5PhnN0oRBtA_O5DACFnwdUq1w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,192 +26,208 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] Add new command fs2bridge for socfpga
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+To: Mabcded Babcde <thepusherpushes@gmail.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-2017-07-27 20:49 GMT+02:00 Andrey Smirnov <andrew.smirnov@gmail.com>:
-> On Thu, Jul 27, 2017 at 9:20 AM, Mabcded Babcde
-> <thepusherpushes@gmail.com> wrote:
->> Hi,
->> this patch adds a new command to barebox. It is used to enable or
->> disable the fpga-to-sdram bridges on socfpgas. The patch is based on a
->> manual from altera
->> (https://www.altera.com/support/support-resources/knowledge-base/embedded/2016/how-and-when-can-i-enable-the-fpga2sdram-bridge-on-cyclone-v-soc.html)
->> and a implementation for u-boot
->> (https://github.com/rogerq/u-boot/blob/master/arch/arm/mach-socfpga/misc.c).
->> The fpga2sdram fpga configuration can only be set when the SDRAM
->> interface is idle. So it is necessary to use the on-chip ram.
->
-> And by "on-chip ram" you mean i-cache and not SRAM block used by first
-> stage bootloader, correct? I am just a bit confused by the wording.
->
-
-Sorry, my fault. I meant i-cache.
-
->> To bring all fpga2sdram bridges out of reset it is necessary to write 0x3FFF to
->> the register. Only the fpga2sdram bridges are enabled or disabled but
->> no other bridges like the axi bridges.
->
-> Linux kernel already has:
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/fpga/altera-fpga2sdram-bridge.txt?h=v4.13-rc2
->
-> so, IMHO, it would be better to implement  a compatible driver and, if
-> ability to change the value at run-time is needed, add "enable"
-> property to it rather than introducing a separate command.
->
-
-But how can I ensure that the SDRAM is idle? I quote Altera:
-"First time enabling of the FPGA2SDRAM bridge within Linux is not
-supported as the SDRAM subsystem cannot be easily put into a
-guaranteed idle state."
-
-
->> I'm a beginner to embedded and
->> open-source software. This is the reason why I don't know to which
->> branch I have to push this patch and I don't know which license should
->> be applied here because I used some code from another source (see
->> above GPL License / Altera). Nevertheless I would be happy to
->> contribute to Barebox.
->> Thanks, Mathieu
+On Fri, Jul 28, 2017 at 6:24 AM, Mabcded Babcde
+<thepusherpushes@gmail.com> wrote:
+> 2017-07-27 20:49 GMT+02:00 Andrey Smirnov <andrew.smirnov@gmail.com>:
+>> On Thu, Jul 27, 2017 at 9:20 AM, Mabcded Babcde
+>> <thepusherpushes@gmail.com> wrote:
+>>> Hi,
+>>> this patch adds a new command to barebox. It is used to enable or
+>>> disable the fpga-to-sdram bridges on socfpgas. The patch is based on a
+>>> manual from altera
+>>> (https://www.altera.com/support/support-resources/knowledge-base/embedded/2016/how-and-when-can-i-enable-the-fpga2sdram-bridge-on-cyclone-v-soc.html)
+>>> and a implementation for u-boot
+>>> (https://github.com/rogerq/u-boot/blob/master/arch/arm/mach-socfpga/misc.c).
+>>> The fpga2sdram fpga configuration can only be set when the SDRAM
+>>> interface is idle. So it is necessary to use the on-chip ram.
 >>
+>> And by "on-chip ram" you mean i-cache and not SRAM block used by first
+>> stage bootloader, correct? I am just a bit confused by the wording.
 >>
->> ---
 >
-> Just in case you didn't know this already, text below this line will
-> be ignored when the patch is applied, so this is a great place to put
-> some technical or personal notes that might not necessarily belong to
-> the commit message.
+> Sorry, my fault. I meant i-cache.
 >
-
-Thanks!
-
->
->>  commands/Kconfig     |  7 ++++
->>  commands/Makefile    |  1 +
->>  commands/f2sbridge.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++++
->>  3 files changed, 100 insertions(+)
->>  create mode 100644 commands/f2sbridge.c
+>>> To bring all fpga2sdram bridges out of reset it is necessary to write 0x3FFF to
+>>> the register. Only the fpga2sdram bridges are enabled or disabled but
+>>> no other bridges like the axi bridges.
 >>
->> diff --git a/commands/Kconfig b/commands/Kconfig
->> index ae2dc4b..328ab1b 100644
->> --- a/commands/Kconfig
->> +++ b/commands/Kconfig
->> @@ -2127,6 +2127,13 @@ config CMD_SEED
->>      help
->>        Seed the pseudo random number generator (PRNG)
+>> Linux kernel already has:
 >>
->> +config CMD_F2SBRIDGE
->> +    bool
->> +    depends on ARCH_SOCFPGA
->> +    prompt "f2sbridge"
->> +    help
->> +      Enables or disables the fpga2sdram bridge
->> +
->>  # end Miscellaneous commands
->>  endmenu
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/fpga/altera-fpga2sdram-bridge.txt?h=v4.13-rc2
 >>
->> diff --git a/commands/Makefile b/commands/Makefile
->> index 37486dc..2006bca 100644
->> --- a/commands/Makefile
->> +++ b/commands/Makefile
->> @@ -123,3 +123,4 @@ obj-$(CONFIG_CMD_SPD_DECODE)    += spd_decode.o
->>  obj-$(CONFIG_CMD_MMC_EXTCSD)    += mmc_extcsd.o
->>  obj-$(CONFIG_CMD_NAND_BITFLIP)    += nand-bitflip.o
->>  obj-$(CONFIG_CMD_SEED)        += seed.o
->> +obj-$(CONFIG_CMD_F2SBRIDGE)    += f2sbridge.o
->> diff --git a/commands/f2sbridge.c b/commands/f2sbridge.c
->> new file mode 100644
->> index 0000000..8d3bbcc
->> --- /dev/null
->> +++ b/commands/f2sbridge.c
->> @@ -0,0 +1,92 @@
->> +/*
->> + *  Copyright (C) ???
+>> so, IMHO, it would be better to implement  a compatible driver and, if
+>> ability to change the value at run-time is needed, add "enable"
+>> property to it rather than introducing a separate command.
+>>
 >
-> Maybe:
+> But how can I ensure that the SDRAM is idle? I quote Altera:
+> "First time enabling of the FPGA2SDRAM bridge within Linux is not
+> supported as the SDRAM subsystem cannot be easily put into a
+> guaranteed idle state."
 >
-> Copyright (C) 2017 Your Name
->
-> Based on the code form U-Boot
->
->  Copyright (C) Year, Altera
->
-> ?
 
-Thanks!
+I feel like we are talking about different things. What I am trying to
+say that instead of adding this functionality to Barebox as a
+standalone command, it would be better to add it _to Barebox_ as a
+driver that claims compatibility with "altr,socfpga-fpga2sdram-bridge"
+and implements all of the necessary logic there. It would be the same
+code running in the boot-loader but triggered to executed via
+different means, so it should literally be the same in terms of SDRAM
+access quiescence. A somewhat relative example of that approach would
+be "drivers/firmware/socfpga.c".
 
 >
->> + *
->> + * SPDX-License-Identifier:    GPL-2.0+
->> + */
->> +
->> +
->> +#include <common.h>
->> +#include <io.h>
->> +#include <command.h>
->> +
->> +#define SOCFPGA_SYSMGR_ADDRESS    0xFFD08000
->> +#define SOCFPGA_SDR_ADDRESS    0xFFC20000
->> +
->> +#define SDR_CTRLGRP_FPGAPORTRST_ADDRESS    0x5080
->> +#define SDR_CTRLGRP_STATICCFG_ADDRESS    0x505C
->> +#define SDR_CTRLGRP_STATICCFG_APPLYCFG_MASK    0x00000008
->> +
->> +#define SYSMGR_FPGAINTF_MODULE    (SOCFPGA_SYSMGR_ADDRESS + 0x28)
->> +
->> +
->> +static void socfpga_sdram_apply_staticcfg(void)
->> +{
->> +    const uint32_t staticcfg = SOCFPGA_SDR_ADDRESS +
->> SDR_CTRLGRP_STATICCFG_ADDRESS;
->> +    const uint32_t applymask = SDR_CTRLGRP_STATICCFG_APPLYCFG_MASK;
->> +    uint32_t val = readl(staticcfg) | applymask;
->> +
->> +    /*
->> +     * SDRAM staticcfg register specific:
->> +     * When applying the register setting, the CPU must not access
->> +     * SDRAM. Luckily for us, we can abuse i-cache here to help us
->> +     * circumvent the SDRAM access issue. The idea is to make sure
->> +     * that the code is in one full i-cache line by branching past
->> +     * it and back. Once it is in the i-cache, we execute the core
->> +     * of the code and apply the register settings.
->> +     *
->> +     * The code below uses 7 instructions, while the Cortex-A9 has
->> +     * 32-byte cachelines, thus the limit is 8 instructions total.
->> +     */
->> +    asm volatile(
->> +        ".align    5            \n"
->> +        "    b    2f        \n"
->> +        "1:    str    %0,    [%1]    \n"
->> +        "    dsb            \n"
->> +        "    isb            \n"
->> +        "    b    3f        \n"
->> +        "2:    b    1b        \n"
->> +        "3:    nop            \n"
->> +    : : "r"(val), "r"(staticcfg) : "memory", "cc");
->> +}
->> +
->> +
->> +int do_f2sbridge(int argc, char *argv[])
->> +{
->> +    if (argc != 2)
->> +        return COMMAND_ERROR_USAGE;
->> +
->> +    switch (*argv[1]) {
->> +    case 'e':    // Enable
->> +        // hps peripheral controller to fpga
->> +        iowrite32(0, SYSMGR_FPGAINTF_MODULE);
+>>> I'm a beginner to embedded and
+>>> open-source software. This is the reason why I don't know to which
+>>> branch I have to push this patch and I don't know which license should
+>>> be applied here because I used some code from another source (see
+>>> above GPL License / Altera). Nevertheless I would be happy to
+>>> contribute to Barebox.
+>>> Thanks, Mathieu
+>>>
+>>>
+>>> ---
+>>
+>> Just in case you didn't know this already, text below this line will
+>> be ignored when the patch is applied, so this is a great place to put
+>> some technical or personal notes that might not necessarily belong to
+>> the commit message.
+>>
 >
-> You use readl() above but iowrite32() (as opposed to writel()) here,
-> is that on purpose?
+> Thanks!
+>
+>>
+>>>  commands/Kconfig     |  7 ++++
+>>>  commands/Makefile    |  1 +
+>>>  commands/f2sbridge.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>>>  3 files changed, 100 insertions(+)
+>>>  create mode 100644 commands/f2sbridge.c
+>>>
+>>> diff --git a/commands/Kconfig b/commands/Kconfig
+>>> index ae2dc4b..328ab1b 100644
+>>> --- a/commands/Kconfig
+>>> +++ b/commands/Kconfig
+>>> @@ -2127,6 +2127,13 @@ config CMD_SEED
+>>>      help
+>>>        Seed the pseudo random number generator (PRNG)
+>>>
+>>> +config CMD_F2SBRIDGE
+>>> +    bool
+>>> +    depends on ARCH_SOCFPGA
+>>> +    prompt "f2sbridge"
+>>> +    help
+>>> +      Enables or disables the fpga2sdram bridge
+>>> +
+>>>  # end Miscellaneous commands
+>>>  endmenu
+>>>
+>>> diff --git a/commands/Makefile b/commands/Makefile
+>>> index 37486dc..2006bca 100644
+>>> --- a/commands/Makefile
+>>> +++ b/commands/Makefile
+>>> @@ -123,3 +123,4 @@ obj-$(CONFIG_CMD_SPD_DECODE)    += spd_decode.o
+>>>  obj-$(CONFIG_CMD_MMC_EXTCSD)    += mmc_extcsd.o
+>>>  obj-$(CONFIG_CMD_NAND_BITFLIP)    += nand-bitflip.o
+>>>  obj-$(CONFIG_CMD_SEED)        += seed.o
+>>> +obj-$(CONFIG_CMD_F2SBRIDGE)    += f2sbridge.o
+>>> diff --git a/commands/f2sbridge.c b/commands/f2sbridge.c
+>>> new file mode 100644
+>>> index 0000000..8d3bbcc
+>>> --- /dev/null
+>>> +++ b/commands/f2sbridge.c
+>>> @@ -0,0 +1,92 @@
+>>> +/*
+>>> + *  Copyright (C) ???
+>>
+>> Maybe:
+>>
+>> Copyright (C) 2017 Your Name
+>>
+>> Based on the code form U-Boot
+>>
+>>  Copyright (C) Year, Altera
+>>
+>> ?
+>
+> Thanks!
+>
+>>
+>>> + *
+>>> + * SPDX-License-Identifier:    GPL-2.0+
+>>> + */
+>>> +
+>>> +
+>>> +#include <common.h>
+>>> +#include <io.h>
+>>> +#include <command.h>
+>>> +
+>>> +#define SOCFPGA_SYSMGR_ADDRESS    0xFFD08000
+>>> +#define SOCFPGA_SDR_ADDRESS    0xFFC20000
+>>> +
+>>> +#define SDR_CTRLGRP_FPGAPORTRST_ADDRESS    0x5080
+>>> +#define SDR_CTRLGRP_STATICCFG_ADDRESS    0x505C
+>>> +#define SDR_CTRLGRP_STATICCFG_APPLYCFG_MASK    0x00000008
+>>> +
+>>> +#define SYSMGR_FPGAINTF_MODULE    (SOCFPGA_SYSMGR_ADDRESS + 0x28)
+>>> +
+>>> +
+>>> +static void socfpga_sdram_apply_staticcfg(void)
+>>> +{
+>>> +    const uint32_t staticcfg = SOCFPGA_SDR_ADDRESS +
+>>> SDR_CTRLGRP_STATICCFG_ADDRESS;
+>>> +    const uint32_t applymask = SDR_CTRLGRP_STATICCFG_APPLYCFG_MASK;
+>>> +    uint32_t val = readl(staticcfg) | applymask;
+>>> +
+>>> +    /*
+>>> +     * SDRAM staticcfg register specific:
+>>> +     * When applying the register setting, the CPU must not access
+>>> +     * SDRAM. Luckily for us, we can abuse i-cache here to help us
+>>> +     * circumvent the SDRAM access issue. The idea is to make sure
+>>> +     * that the code is in one full i-cache line by branching past
+>>> +     * it and back. Once it is in the i-cache, we execute the core
+>>> +     * of the code and apply the register settings.
+>>> +     *
+>>> +     * The code below uses 7 instructions, while the Cortex-A9 has
+>>> +     * 32-byte cachelines, thus the limit is 8 instructions total.
+>>> +     */
+>>> +    asm volatile(
+>>> +        ".align    5            \n"
+>>> +        "    b    2f        \n"
+>>> +        "1:    str    %0,    [%1]    \n"
+>>> +        "    dsb            \n"
+>>> +        "    isb            \n"
+>>> +        "    b    3f        \n"
+>>> +        "2:    b    1b        \n"
+>>> +        "3:    nop            \n"
+>>> +    : : "r"(val), "r"(staticcfg) : "memory", "cc");
+>>> +}
+>>> +
+>>> +
+>>> +int do_f2sbridge(int argc, char *argv[])
+>>> +{
+>>> +    if (argc != 2)
+>>> +        return COMMAND_ERROR_USAGE;
+>>> +
+>>> +    switch (*argv[1]) {
+>>> +    case 'e':    // Enable
+>>> +        // hps peripheral controller to fpga
+>>> +        iowrite32(0, SYSMGR_FPGAINTF_MODULE);
+>>
+>> You use readl() above but iowrite32() (as opposed to writel()) here,
+>> is that on purpose?
+>
+> That was a mistake. I changed it to ioread32.
+>
 
-That was a mistake. I changed it to ioread32.
+I'd maybe convert it the other around since there are very few users
+of "ioread32" in the codebase and readl()/writel() seem to be more
+idiomatic.
 
->
-> Thank you for the contribution!
->
-> Andrey Smirnov
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
