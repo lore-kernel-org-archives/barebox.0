@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1db6Vu-0003RT-UT
- for barebox@lists.infradead.org; Fri, 28 Jul 2017 14:45:25 +0000
-Received: by mail-pf0-x241.google.com with SMTP id u17so2447517pfa.1
- for <barebox@lists.infradead.org>; Fri, 28 Jul 2017 07:44:54 -0700 (PDT)
+ id 1db6Vw-0003TM-Mc
+ for barebox@lists.infradead.org; Fri, 28 Jul 2017 14:45:36 +0000
+Received: by mail-pf0-x244.google.com with SMTP id e3so3318641pfc.5
+ for <barebox@lists.infradead.org>; Fri, 28 Jul 2017 07:44:58 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 28 Jul 2017 07:44:23 -0700
-Message-Id: <20170728144427.14007-8-andrew.smirnov@gmail.com>
+Date: Fri, 28 Jul 2017 07:44:27 -0700
+Message-Id: <20170728144427.14007-12-andrew.smirnov@gmail.com>
 In-Reply-To: <20170728144427.14007-1-andrew.smirnov@gmail.com>
 References: <20170728144427.14007-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,58 +23,387 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 07/11] ARM: i.MX: Add minimal imx7-ccm-regs.h
+Subject: [PATCH v3 11/11] ARM: i.MX: Add support for NXP i.MX7 SABRESD board
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add minimal imx7-ccm-regs.h that contains bare minimum definitions
-needed for early UART setup.
+Add minimal code to support NXP i.MX7 SABRESD board. Tested to have
+working SD card and first Ethernet port as well as being able to boot
+upstream Linux kernel (4.12+).
 
 Acked-by: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/imx7-ccm-regs.h | 32 ++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
- create mode 100644 arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
+ arch/arm/boards/Makefile                           |  1 +
+ arch/arm/boards/freescale-mx7-sabresd/Makefile     |  2 +
+ arch/arm/boards/freescale-mx7-sabresd/board.c      | 58 +++++++++++++++
+ .../flash-header-mx7-sabresd.imxcfg                | 82 ++++++++++++++++++++++
+ arch/arm/boards/freescale-mx7-sabresd/lowlevel.c   | 46 ++++++++++++
+ arch/arm/dts/Makefile                              |  2 +-
+ arch/arm/dts/imx7d-sdb.dts                         | 70 ++++++++++++++++++
+ arch/arm/mach-imx/Kconfig                          | 12 ++++
+ images/Makefile.imx                                |  5 ++
+ 9 files changed, 277 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/boards/freescale-mx7-sabresd/Makefile
+ create mode 100644 arch/arm/boards/freescale-mx7-sabresd/board.c
+ create mode 100644 arch/arm/boards/freescale-mx7-sabresd/flash-header-mx7-sabresd.imxcfg
+ create mode 100644 arch/arm/boards/freescale-mx7-sabresd/lowlevel.c
+ create mode 100644 arch/arm/dts/imx7d-sdb.dts
 
-diff --git a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 9bbdd684f..6f73200e3 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -46,6 +46,7 @@ obj-$(CONFIG_MACH_FREESCALE_MX51_PDK)		+= freescale-mx51-babbage/
+ obj-$(CONFIG_MACH_FREESCALE_MX53_LOCO)		+= freescale-mx53-qsb/
+ obj-$(CONFIG_MACH_FREESCALE_MX53_SMD)		+= freescale-mx53-smd/
+ obj-$(CONFIG_MACH_FREESCALE_MX53_VMX53)		+= freescale-mx53-vmx53/
++obj-$(CONFIG_MACH_FREESCALE_MX7_SABRESD)	+= freescale-mx7-sabresd/
+ obj-$(CONFIG_MACH_GE863)			+= telit-evk-pro3/
+ obj-$(CONFIG_MACH_GK802)			+= gk802/
+ obj-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG)		+= globalscale-guruplug/
+diff --git a/arch/arm/boards/freescale-mx7-sabresd/Makefile b/arch/arm/boards/freescale-mx7-sabresd/Makefile
 new file mode 100644
-index 000000000..a4217cca5
+index 000000000..01c7a259e
 --- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-@@ -0,0 +1,32 @@
-+#ifndef __MACH_IMX7_CCM_REGS_H__
-+#define __MACH_IMX7_CCM_REGS_H__
-+
-+/* 0 <= n <= 190 */
-+#define CCM_CCGRn_SET(n)	(0x4004 + 16 * (n))
-+#define CCM_CCGRn_CLR(n)	(0x4008 + 16 * (n))
-+
-+#define CCM_CCGR_UART1		148
-+
-+#define CCM_CCGR_SETTINGn(n, s)  ((s) << ((n) * 4))
-+#define CCM_CCGR_SETTINGn_NOT_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b00)
-+#define CCM_CCGR_SETTINGn_NEEDED_RUN(n)		CCM_CCGR_SETTINGn(n, 0b01)
-+#define CCM_CCGR_SETTINGn_NEEDED_RUN_WAIT(n)	CCM_CCGR_SETTINGn(n, 0b10)
-+#define CCM_CCGR_SETTINGn_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b11)
-+
-+/* 0 <= n <= 120 */
-+#define CCM_TARGET_ROOTn(n)	(0x8000 + 128 * (n))
-+
-+#define CCM_TARGET_ROOTn_MUX(x)		((x) << 24)
-+#define CCM_TARGET_ROOTn_ENABLE		BIT(28)
-+
-+#define CLOCK_ROOT_INDEX(x)	(((x) - 0x8000) / 128)
-+
++++ b/arch/arm/boards/freescale-mx7-sabresd/Makefile
+@@ -0,0 +1,2 @@
++obj-y += board.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/freescale-mx7-sabresd/board.c b/arch/arm/boards/freescale-mx7-sabresd/board.c
+new file mode 100644
+index 000000000..37941efdb
+--- /dev/null
++++ b/arch/arm/boards/freescale-mx7-sabresd/board.c
+@@ -0,0 +1,58 @@
 +/*
-+ * Taken from "Table 5-11. Clock Root Table" from i.MX7 Dual Processor
-+ * Reference Manual
++ * Copyright (C) 2017 Zodiac Inflight Innovation
++ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
 + */
-+#define UART1_CLK_ROOT		CLOCK_ROOT_INDEX(0xaf80)
-+#define UART1_CLK_ROOT__OSC_24M CCM_TARGET_ROOTn_MUX(0b000)
 +
++#include <common.h>
++#include <init.h>
++#include <io.h>
++#include <mach/imx7-regs.h>
++#include <linux/phy.h>
++#include <mfd/imx7-iomuxc-gpr.h>
 +
-+#endif
++#include <phy-id-list.h>
++
++static int bcm54220_phy_fixup(struct phy_device *dev)
++{
++	phy_write(dev, 0x1e, 0x21);
++	phy_write(dev, 0x1f, 0x7ea8);
++	phy_write(dev, 0x1e, 0x2f);
++	phy_write(dev, 0x1f, 0x71b7);
++
++	return 0;
++}
++
++static void mx7_sabresd_init_fec1(void)
++{
++	void __iomem *gpr = IOMEM(MX7_IOMUXC_GPR_BASE_ADDR);
++	uint32_t gpr1;
++
++	gpr1 = readl(gpr + IOMUXC_GPR1);
++	gpr1 &= ~(IMX7D_GPR1_ENET1_TX_CLK_SEL_MASK |
++		  IMX7D_GPR1_ENET1_CLK_DIR_MASK);
++	writel(gpr1, gpr + IOMUXC_GPR1);
++}
++
++static int mx7_sabresd_coredevices_init(void)
++{
++	if (!of_machine_is_compatible("fsl,imx7d-sdb"))
++		return 0;
++
++	mx7_sabresd_init_fec1();
++
++	phy_register_fixup_for_uid(PHY_ID_BCM54220, 0xffffffff,
++				   bcm54220_phy_fixup);
++
++	return 0;
++}
++coredevice_initcall(mx7_sabresd_coredevices_init);
+diff --git a/arch/arm/boards/freescale-mx7-sabresd/flash-header-mx7-sabresd.imxcfg b/arch/arm/boards/freescale-mx7-sabresd/flash-header-mx7-sabresd.imxcfg
+new file mode 100644
+index 000000000..fd4861153
+--- /dev/null
++++ b/arch/arm/boards/freescale-mx7-sabresd/flash-header-mx7-sabresd.imxcfg
+@@ -0,0 +1,82 @@
++/*
++ * Copyright (C) 2016 NXP Semiconductors
++ *
++ * SPDX-License-Identifier:	GPL-2.0
++ *
++ * Refer docs/README.imxmage for more details about how-to configure
++ * and create imximage boot image
++ *
++ * The syntax is taken as close as possible with the kwbimage
++ *
++ * Taken from upstream U-Boot git://git.denx.de/u-boot.git, commit
++ * 1a8150d4b16fbafa6f1d207ddb85eda7dc399e2d
++ */
++
++soc imx7
++loadaddr 0x80000000
++dcdofs 0x400
++
++#include <mach/imx7-ddr-regs.h>
++
++wm 32 0x30340004 0x4F400005
++
++wm 32 0x30391000 0x00000002
++
++wm 32 MX7_DDRC_MSTR 0x01040001
++wm 32 MX7_DDRC_DFIUPD0 0x80400003
++wm 32 MX7_DDRC_DFIUPD1 0x00100020
++wm 32 MX7_DDRC_DFIUPD2 0x80100004
++wm 32 MX7_DDRC_RFSHTMG 0x00400046
++wm 32 MX7_DDRC_MP_PCTRL_0 0x00000001
++wm 32 MX7_DDRC_INIT0 0x00020083
++wm 32 MX7_DDRC_INIT1 0x00690000
++wm 32 MX7_DDRC_INIT3 0x09300004
++wm 32 MX7_DDRC_INIT4 0x04080000
++wm 32 MX7_DDRC_INIT5 0x00100004
++wm 32 MX7_DDRC_RANKCTL 0x0000033f
++wm 32 MX7_DDRC_DRAMTMG0 0x09081109
++wm 32 MX7_DDRC_DRAMTMG1 0x0007020d
++wm 32 MX7_DDRC_DRAMTMG2 0x03040407
++wm 32 MX7_DDRC_DRAMTMG3 0x00002006
++wm 32 MX7_DDRC_DRAMTMG4 0x04020205
++wm 32 MX7_DDRC_DRAMTMG5 0x03030202
++wm 32 MX7_DDRC_DRAMTMG8 0x00000803
++wm 32 MX7_DDRC_ZQCTL0 0x00800020
++wm 32 MX7_DDRC_ZQCTL1 0x02000100
++wm 32 MX7_DDRC_DFITMG0 0x02098204
++wm 32 MX7_DDRC_DFITMG1 0x00030303
++wm 32 MX7_DDRC_ADDRMAP0 0x00000016
++wm 32 MX7_DDRC_ADDRMAP1 0x00171717
++wm 32 MX7_DDRC_ADDRMAP5 0x04040404
++wm 32 MX7_DDRC_ADDRMAP6 0x0f040404
++wm 32 MX7_DDRC_ODTCFG 0x06000604
++wm 32 MX7_DDRC_ODTMAP 0x00000001
++
++wm 32 0x30391000 0x00000000
++
++wm 32 MX7_DDR_PHY_PHY_CON0 0x17420f40
++wm 32 MX7_DDR_PHY_PHY_CON1 0x10210100
++wm 32 MX7_DDR_PHY_PHY_CON4 0x00060807
++wm 32 MX7_DDR_PHY_MDLL_CON0 0x1010007e
++wm 32 MX7_DDR_PHY_DRVDS_CON0 0x00000d6e
++wm 32 MX7_DDR_PHY_OFFSET_RD_CON0 0x08080808
++wm 32 MX7_DDR_PHY_OFFSET_WR_CON0 0x08080808
++wm 32 MX7_DDR_PHY_CMD_SDLL_CON0 0x01000010
++wm 32 MX7_DDR_PHY_CMD_SDLL_CON0 0x00000010
++
++wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e407304
++wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e447304
++wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e447306
++
++check 32 while_any_bit_clear MX7_DDR_PHY_ZQ_CON1 0x1
++
++wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e447304
++wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e407304
++
++wm 32 0x30384130 0x00000000
++wm 32 0x30340020 0x00000178
++wm 32 0x30384130 0x00000002
++
++wm 32 MX7_DDR_PHY_LP_CON0 0x0000000f
++
++check 32 while_any_bit_clear MX7_DDRC_STAT 0x1
+diff --git a/arch/arm/boards/freescale-mx7-sabresd/lowlevel.c b/arch/arm/boards/freescale-mx7-sabresd/lowlevel.c
+new file mode 100644
+index 000000000..96ccbbfeb
+--- /dev/null
++++ b/arch/arm/boards/freescale-mx7-sabresd/lowlevel.c
+@@ -0,0 +1,46 @@
++#include <debug_ll.h>
++#include <io.h>
++#include <common.h>
++#include <linux/sizes.h>
++#include <mach/generic.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/imx7-ccm-regs.h>
++#include <mach/iomux-mx7.h>
++#include <mach/debug_ll.h>
++#include <asm/cache.h>
++
++extern char __dtb_imx7d_sdb_start[];
++
++static inline void setup_uart(void)
++{
++	void __iomem *iomux = IOMEM(MX7_IOMUXC_BASE_ADDR);
++	void __iomem *ccm   = IOMEM(MX7_CCM_BASE_ADDR);
++
++	writel(CCM_CCGR_SETTINGn_NEEDED(0),
++	       ccm + CCM_CCGRn_CLR(CCM_CCGR_UART1));
++	writel(CCM_TARGET_ROOTn_ENABLE | UART1_CLK_ROOT__OSC_24M,
++	       ccm + CCM_TARGET_ROOTn(UART1_CLK_ROOT));
++	writel(CCM_CCGR_SETTINGn_NEEDED(0),
++	       ccm + CCM_CCGRn_SET(CCM_CCGR_UART1));
++
++	mx7_setup_pad(iomux, MX7D_PAD_UART1_TX_DATA__UART1_DCE_TX);
++
++	imx7_uart_setup_ll();
++
++	putc_ll('>');
++}
++
++ENTRY_FUNCTION(start_imx7d_sabresd, r0, r1, r2)
++{
++	void *fdt;
++
++	imx7_cpu_lowlevel_init();
++
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart();
++
++	fdt = __dtb_imx7d_sdb_start - get_runtime_offset();
++
++	barebox_arm_entry(0x80000000, SZ_1G, fdt);
++}
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index d8abe452b..0efeb12d3 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -21,6 +21,7 @@ pbl-dtb-$(CONFIG_MACH_FREESCALE_MX51_PDK) += imx51-babbage.dtb.o
+ pbl-dtb-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += imx53-qsb.dtb.o imx53-qsrb.dtb.o
+ pbl-dtb-$(CONFIG_MACH_CCMX53) += imx53-ccxmx53.dtb.o
+ pbl-dtb-$(CONFIG_MACH_FREESCALE_MX53_VMX53) += imx53-voipac-bsb.dtb.o
++pbl-dtb-$(CONFIG_MACH_FREESCALE_MX7_SABRESD) += imx7d-sdb.dtb.o
+ pbl-dtb-$(CONFIG_MACH_GK802) += imx6q-gk802.dtb.o
+ pbl-dtb-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG) += kirkwood-guruplug-server-plus-bb.dtb.o
+ pbl-dtb-$(CONFIG_MACH_GLOBALSCALE_MIRABOX) += armada-370-mirabox-bb.dtb.o
+@@ -100,5 +101,4 @@ pbl-dtb-$(CONFIG_MACH_ZII_VF610_DEV) += \
+ 
+ pbl-dtb-$(CONFIG_MACH_AT91SAM9X5EK) += at91sam9x5ek.dtb.o
+ 
+-
+ clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.lzo
+diff --git a/arch/arm/dts/imx7d-sdb.dts b/arch/arm/dts/imx7d-sdb.dts
+new file mode 100644
+index 000000000..2e48196f9
+--- /dev/null
++++ b/arch/arm/dts/imx7d-sdb.dts
+@@ -0,0 +1,70 @@
++/*
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
++
++#include <arm/imx7d-sdb.dts>
++#include "imx7s.dtsi"
++
++/ {
++	chosen {
++		stdout-path = &uart1;
++	};
++
++	memory {
++		device_type = "memory";
++		reg = <0x80000000 0x40000000>;
++	};
++
++	/*
++	 * This definition is present in the latest kernel DTS file,
++	 * and could be removed once Barebox catches up.
++	 *
++	 * Ditto for pinctrl_spi4
++	 */
++	spi4 {
++		compatible = "spi-gpio";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_spi4>;
++		gpio-sck = <&gpio1 13 GPIO_ACTIVE_HIGH>;
++		gpio-mosi = <&gpio1 9 GPIO_ACTIVE_HIGH>;
++		cs-gpios = <&gpio1 12 GPIO_ACTIVE_HIGH>;
++		num-chipselects = <1>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		extended_io: gpio-expander@0 {
++			compatible = "fairchild,74hc595";
++			gpio-controller;
++			#gpio-cells = <2>;
++			reg = <0>;
++			registers-number = <1>;
++			spi-max-frequency = <100000>;
++		};
++	};
++};
++
++&extended_io {
++	q5 {
++		gpio-hog;
++		gpios = <5 GPIO_ACTIVE_HIGH>;
++		output-high;
++		line-name = "enet-rst-b";
++	};
++};
++
++&iomuxc {
++	imx7d-sdb {
++		pinctrl_spi4: spi4grp {
++			fsl,pins = <
++				MX7D_PAD_GPIO1_IO09__GPIO1_IO9	0x59
++				MX7D_PAD_GPIO1_IO12__GPIO1_IO12	0x59
++				MX7D_PAD_GPIO1_IO13__GPIO1_IO13	0x59
++			>;
++		};
++	};
++};
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 9ab27b42d..e8089b20b 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -396,6 +396,18 @@ config MACH_ZII_VF610_DEV
+ 	select ARCH_VF610
+ 	select CLKDEV_LOOKUP
+ 
++config MACH_FREESCALE_MX7_SABRESD
++	bool "NXP i.MX7 SabreSD Board"
++	select ARCH_IMX7
++	# Nedded to de-assert reset on Ethernet PHY
++	select DRIVER_SPI_GPIO if DRIVER_NET_FEC_IMX
++	select GPIO_74164 if DRIVER_NET_FEC_IMX
++	help
++	  Support for NXP i.MX7 SabreSD board - one of the official
++	  i.MX7 evaluation boards from NXP.
++
++	  https://goo.gl/6EKGdk
++
+ endif
+ 
+ # ----------------------------------------------------------
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 88d3e5e33..679e9368c 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -484,3 +484,8 @@ pblx-$(CONFIG_MACH_ZII_VF610_DEV) += start_zii_vf610_dev
+ CFG_start_zii_vf610_dev.pblx.imximg = $(board)/zii-vf610-dev/flash-header-zii-vf610-dev.imxcfg
+ FILE_barebox-zii-vf610-dev.img = start_zii_vf610_dev.pblx.imximg
+ image-$(CONFIG_MACH_ZII_VF610_DEV) += barebox-zii-vf610-dev.img
++
++pblx-$(CONFIG_MACH_FREESCALE_MX7_SABRESD) += start_imx7d_sabresd
++CFG_start_imx7d_sabresd.pblx.imximg = $(board)/freescale-mx7-sabresd/flash-header-mx7-sabresd.imxcfg
++FILE_barebox-freescale-mx7-sabresd.img = start_imx7d_sabresd.pblx.imximg
++image-$(CONFIG_MACH_FREESCALE_MX7_SABRESD) += barebox-freescale-mx7-sabresd.img
 -- 
 2.13.3
 
