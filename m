@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-oi0-x244.google.com ([2607:f8b0:4003:c06::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dcFJA-0004RI-0y
- for barebox@lists.infradead.org; Mon, 31 Jul 2017 18:20:50 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=localhost)
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
- (envelope-from <l.stach@pengutronix.de>) id 1dcFIl-0002qm-08
- for barebox@lists.infradead.org; Mon, 31 Jul 2017 20:20:23 +0200
-Message-ID: <1501525216.5056.1.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 31 Jul 2017 20:20:16 +0200
-Mime-Version: 1.0
+ id 1dbvbL-0002AK-8v
+ for barebox@lists.infradead.org; Sun, 30 Jul 2017 21:18:17 +0000
+Received: by mail-oi0-x244.google.com with SMTP id v11so23012136oif.1
+ for <barebox@lists.infradead.org>; Sun, 30 Jul 2017 14:17:53 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <CAHQ1cqEp1X49ODABcz9nb3t7i5PhnN0oRBtA_O5DACFnwdUq1w@mail.gmail.com>
+References: <CAArhposKY9Ai1OFPX+w2f4ajuw_D8jRTc2tttdiJcO8djj01eg@mail.gmail.com>
+ <CAHQ1cqHjrpK34E=zWGQYp_koRA6yTqHGhm0P4v=K59ieyC7qnA@mail.gmail.com>
+ <CAArhpoukunr4DBJhy2etw4svK9+yCdY98oMc1ANUJdrqmNsyTQ@mail.gmail.com>
+ <CAHQ1cqEp1X49ODABcz9nb3t7i5PhnN0oRBtA_O5DACFnwdUq1w@mail.gmail.com>
+From: Mabcded Babcde <thepusherpushes@gmail.com>
+Date: Sun, 30 Jul 2017 23:17:52 +0200
+Message-ID: <CAArhposCe9LMLSvYc5026KK9no8U1aV7Er2OiANWKr=xPWUAFw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,160 +22,228 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============5770033858025035654=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: v2017.08.0
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] Add new command fs2bridge for socfpga
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
+2017-07-28 15:42 GMT+02:00 Andrey Smirnov <andrew.smirnov@gmail.com>:
+> On Fri, Jul 28, 2017 at 6:24 AM, Mabcded Babcde
+> <thepusherpushes@gmail.com> wrote:
+>> 2017-07-27 20:49 GMT+02:00 Andrey Smirnov <andrew.smirnov@gmail.com>:
+>>> On Thu, Jul 27, 2017 at 9:20 AM, Mabcded Babcde
+>>> <thepusherpushes@gmail.com> wrote:
+>>>> Hi,
+>>>> this patch adds a new command to barebox. It is used to enable or
+>>>> disable the fpga-to-sdram bridges on socfpgas. The patch is based on a
+>>>> manual from altera
+>>>> (https://www.altera.com/support/support-resources/knowledge-base/embedded/2016/how-and-when-can-i-enable-the-fpga2sdram-bridge-on-cyclone-v-soc.html)
+>>>> and a implementation for u-boot
+>>>> (https://github.com/rogerq/u-boot/blob/master/arch/arm/mach-socfpga/misc.c).
+>>>> The fpga2sdram fpga configuration can only be set when the SDRAM
+>>>> interface is idle. So it is necessary to use the on-chip ram.
+>>>
+>>> And by "on-chip ram" you mean i-cache and not SRAM block used by first
+>>> stage bootloader, correct? I am just a bit confused by the wording.
+>>>
+>>
+>> Sorry, my fault. I meant i-cache.
+>>
+>>>> To bring all fpga2sdram bridges out of reset it is necessary to write 0x3FFF to
+>>>> the register. Only the fpga2sdram bridges are enabled or disabled but
+>>>> no other bridges like the axi bridges.
+>>>
+>>> Linux kernel already has:
+>>>
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/fpga/altera-fpga2sdram-bridge.txt?h=v4.13-rc2
+>>>
+>>> so, IMHO, it would be better to implement  a compatible driver and, if
+>>> ability to change the value at run-time is needed, add "enable"
+>>> property to it rather than introducing a separate command.
+>>>
+>>
+>> But how can I ensure that the SDRAM is idle? I quote Altera:
+>> "First time enabling of the FPGA2SDRAM bridge within Linux is not
+>> supported as the SDRAM subsystem cannot be easily put into a
+>> guaranteed idle state."
+>>
+>
+> I feel like we are talking about different things. What I am trying to
+> say that instead of adding this functionality to Barebox as a
+> standalone command, it would be better to add it _to Barebox_ as a
+> driver that claims compatibility with "altr,socfpga-fpga2sdram-bridge"
+> and implements all of the necessary logic there. It would be the same
+> code running in the boot-loader but triggered to executed via
+> different means, so it should literally be the same in terms of SDRAM
+> access quiescence. A somewhat relative example of that approach would
+> be "drivers/firmware/socfpga.c".
 
---===============5770033858025035654==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-fwFGoa9++ehiOQRM7dsk"
+Ok, I hardcoded my code from the command to drivers/firmware/socfpga.c
+for testing purposes. That didn't seem to work. However how would I
+enable or disable the bridge? With a parameter? Where can I add it and
+change it?
 
+>
+>>
+>>>> I'm a beginner to embedded and
+>>>> open-source software. This is the reason why I don't know to which
+>>>> branch I have to push this patch and I don't know which license should
+>>>> be applied here because I used some code from another source (see
+>>>> above GPL License / Altera). Nevertheless I would be happy to
+>>>> contribute to Barebox.
+>>>> Thanks, Mathieu
+>>>>
+>>>>
+>>>> ---
+>>>
+>>> Just in case you didn't know this already, text below this line will
+>>> be ignored when the patch is applied, so this is a great place to put
+>>> some technical or personal notes that might not necessarily belong to
+>>> the commit message.
+>>>
+>>
+>> Thanks!
+>>
+>>>
+>>>>  commands/Kconfig     |  7 ++++
+>>>>  commands/Makefile    |  1 +
+>>>>  commands/f2sbridge.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>>>>  3 files changed, 100 insertions(+)
+>>>>  create mode 100644 commands/f2sbridge.c
+>>>>
+>>>> diff --git a/commands/Kconfig b/commands/Kconfig
+>>>> index ae2dc4b..328ab1b 100644
+>>>> --- a/commands/Kconfig
+>>>> +++ b/commands/Kconfig
+>>>> @@ -2127,6 +2127,13 @@ config CMD_SEED
+>>>>      help
+>>>>        Seed the pseudo random number generator (PRNG)
+>>>>
+>>>> +config CMD_F2SBRIDGE
+>>>> +    bool
+>>>> +    depends on ARCH_SOCFPGA
+>>>> +    prompt "f2sbridge"
+>>>> +    help
+>>>> +      Enables or disables the fpga2sdram bridge
+>>>> +
+>>>>  # end Miscellaneous commands
+>>>>  endmenu
+>>>>
+>>>> diff --git a/commands/Makefile b/commands/Makefile
+>>>> index 37486dc..2006bca 100644
+>>>> --- a/commands/Makefile
+>>>> +++ b/commands/Makefile
+>>>> @@ -123,3 +123,4 @@ obj-$(CONFIG_CMD_SPD_DECODE)    += spd_decode.o
+>>>>  obj-$(CONFIG_CMD_MMC_EXTCSD)    += mmc_extcsd.o
+>>>>  obj-$(CONFIG_CMD_NAND_BITFLIP)    += nand-bitflip.o
+>>>>  obj-$(CONFIG_CMD_SEED)        += seed.o
+>>>> +obj-$(CONFIG_CMD_F2SBRIDGE)    += f2sbridge.o
+>>>> diff --git a/commands/f2sbridge.c b/commands/f2sbridge.c
+>>>> new file mode 100644
+>>>> index 0000000..8d3bbcc
+>>>> --- /dev/null
+>>>> +++ b/commands/f2sbridge.c
+>>>> @@ -0,0 +1,92 @@
+>>>> +/*
+>>>> + *  Copyright (C) ???
+>>>
+>>> Maybe:
+>>>
+>>> Copyright (C) 2017 Your Name
+>>>
+>>> Based on the code form U-Boot
+>>>
+>>>  Copyright (C) Year, Altera
+>>>
+>>> ?
+>>
+>> Thanks!
+>>
+>>>
+>>>> + *
+>>>> + * SPDX-License-Identifier:    GPL-2.0+
+>>>> + */
+>>>> +
+>>>> +
+>>>> +#include <common.h>
+>>>> +#include <io.h>
+>>>> +#include <command.h>
+>>>> +
+>>>> +#define SOCFPGA_SYSMGR_ADDRESS    0xFFD08000
+>>>> +#define SOCFPGA_SDR_ADDRESS    0xFFC20000
+>>>> +
+>>>> +#define SDR_CTRLGRP_FPGAPORTRST_ADDRESS    0x5080
+>>>> +#define SDR_CTRLGRP_STATICCFG_ADDRESS    0x505C
+>>>> +#define SDR_CTRLGRP_STATICCFG_APPLYCFG_MASK    0x00000008
+>>>> +
+>>>> +#define SYSMGR_FPGAINTF_MODULE    (SOCFPGA_SYSMGR_ADDRESS + 0x28)
+>>>> +
+>>>> +
+>>>> +static void socfpga_sdram_apply_staticcfg(void)
+>>>> +{
+>>>> +    const uint32_t staticcfg = SOCFPGA_SDR_ADDRESS +
+>>>> SDR_CTRLGRP_STATICCFG_ADDRESS;
+>>>> +    const uint32_t applymask = SDR_CTRLGRP_STATICCFG_APPLYCFG_MASK;
+>>>> +    uint32_t val = readl(staticcfg) | applymask;
+>>>> +
+>>>> +    /*
+>>>> +     * SDRAM staticcfg register specific:
+>>>> +     * When applying the register setting, the CPU must not access
+>>>> +     * SDRAM. Luckily for us, we can abuse i-cache here to help us
+>>>> +     * circumvent the SDRAM access issue. The idea is to make sure
+>>>> +     * that the code is in one full i-cache line by branching past
+>>>> +     * it and back. Once it is in the i-cache, we execute the core
+>>>> +     * of the code and apply the register settings.
+>>>> +     *
+>>>> +     * The code below uses 7 instructions, while the Cortex-A9 has
+>>>> +     * 32-byte cachelines, thus the limit is 8 instructions total.
+>>>> +     */
+>>>> +    asm volatile(
+>>>> +        ".align    5            \n"
+>>>> +        "    b    2f        \n"
+>>>> +        "1:    str    %0,    [%1]    \n"
+>>>> +        "    dsb            \n"
+>>>> +        "    isb            \n"
+>>>> +        "    b    3f        \n"
+>>>> +        "2:    b    1b        \n"
+>>>> +        "3:    nop            \n"
+>>>> +    : : "r"(val), "r"(staticcfg) : "memory", "cc");
+>>>> +}
+>>>> +
+>>>> +
+>>>> +int do_f2sbridge(int argc, char *argv[])
+>>>> +{
+>>>> +    if (argc != 2)
+>>>> +        return COMMAND_ERROR_USAGE;
+>>>> +
+>>>> +    switch (*argv[1]) {
+>>>> +    case 'e':    // Enable
+>>>> +        // hps peripheral controller to fpga
+>>>> +        iowrite32(0, SYSMGR_FPGAINTF_MODULE);
+>>>
+>>> You use readl() above but iowrite32() (as opposed to writel()) here,
+>>> is that on purpose?
+>>
+>> That was a mistake. I changed it to ioread32.
+>>
+>
+> I'd maybe convert it the other around since there are very few users
+> of "ioread32" in the codebase and readl()/writel() seem to be more
+> idiomatic.
 
---=-fwFGoa9++ehiOQRM7dsk
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Ok, but I thought readl()/writel() are less safe?
 
-Hi all,
+>
+> Thanks,
+> Andrey Smirnov
 
-I've just released barebox 2017.08.0. Just like the last release we are
- one day early, this time due to me going back to enjoy my vacations
-for the rest of the week.
-
-We don't have any major new feature, but a good bunch of fixes, with
-the majority of them being targeted at the RATP implementation. One
-notable addition is support for the Turris Omnia, so you can now run
-your favorite bootloader on a nice open-hardware router.
-
-I'll also merge -next to master in a few minutes. I think I picked up
-most of the patches floating around, aside from the AT91 conversion to
-multi-image, which I haven't had the time to look at properly yet. So
-if anything you expected to go in is missing, please reach out to me.
-
-Shortlog of the changes in this release is below.
-
-Regards,
-Lucas
-
------------------------------------------------------------------------
-Aleksander Morgado (16):
-      ratp: add missing transition to SYN-RECEIVED in behavior B
-      ratp: avoid unnecessary variable initializations
-      ratp: send missing RST in behavior C2
-      ratp: add missing RST flag in behavior G
-      ratp: completely ignore RST flagged packets in behavior G
-      ratp: fix data presence check
-      ratp: fix single byte sending flagged with SO
-      ratp: remove bogus data checks in behavior C2
-      ratp: remove FIXME comment: FIN always requires ACK
-      ratp: fix sending ACKs without data
-      ratp: consolidate ratp_sn_expected() and ratp_an_expected()
-      ratp: prefer using ratp_send_ack() in behaviour I1
-      ratp: send initial data in behaviour B if any pending
-      ratp: don't ignore data that may arrive in behaviour H1
-      ratp: consolidate setting the next AN or SN flags
-      ratp: user close may happen in SYN-RECEIVED state
-
-Andrey Smirnov (9):
-      mtd: dataflash: Replace C99 types with their kernel counterparts
-      mtd: dataflash: Improve coding style in jedec_probe()
-      mtd: dataflash: Replace pr_debug, printk with dev_* functions
-      mtd: dataflash: Get rid of loop counter in jedec_probe()
-      mtd: dataflash: Make use of "extened device information"
-      mtd: dataflash: Add flash_info for AT45DB641E
-      ARM: Update zii_vf610_dev_defconfig
-      gpiolib: Fix buggy flag detection code
-      gpiolib: Simplify code of gpio_request_one()
-
-Daniel Schultz (1):
-      arm: boards: phytec-som-am335x: Update boot scripts
-
-Lucas Stach (3):
-      Revert "param: fix stub prototype of dev_add_param"
-      gpio: move active state function stubs to GPIOLIB
-      Release v2017.08.0
-
-Oleksij Rempel (1):
-      crypto: caam: use dma_alloc_coherent instead of dma_alloc
-
-Philipp Zabel (2):
-      i.MX: clk-pllv3: Initially disable PLL_BYPASS bit
-      state: backend_bucket_circular: fix old state reads
-
-Sam Ravnborg (2):
-      clk: fix clk_get error handling
-      gpio: fix null pointer exception when there is no oftree
-
-Sascha Hauer (16):
-      dts: update to v4.12-rc5
-      state: backend: always pass backend type to Linux dtb
-      dts: update to v4.12-rc6
-      dts: update to v4.12-rc7
-      fs: Make locally used function canonicalize_dir() static
-      ARM: omap: phytec-phycore-omap4460: Fix compiler warning
-      ARM: omap: Fix error printing
-      Merge branch 'for-next/arm'
-      Merge branch 'for-next/clk'
-      Merge branch 'for-next/dts'
-      Merge branch 'for-next/imx'
-      Merge branch 'for-next/misc'
-      Merge branch 'for-next/mtd'
-      Merge branch 'for-next/mvebu'
-      Merge branch 'for-next/ratp'
-      Merge branch 'for-next/state'
-
-Steffen Trumtrar (1):
-      ARM: socfpga: remove unused fpgaintf setup
-
-Sven Schneider (1):
-      lib/fonts: add 6x8 font
-
-Uwe Kleine-K=C3=B6nig (13):
-      clk: let clk_get return errors from of_clk_get_by_name
-      scripts/kwbimage: support empty binary.0 files
-      serial: ns16550: emit an error message if getting the clock fails
-      of_device_is_stdout_path: simplify
-      of_device_is_stdout_path: split off options and support aliases
-      mtd: spi-nor: sync definition of Spansion chips from Linux
-      ARM: mvebu: initial support for Armada 38x
-      clk: mvebu: Add support for Armada 38x's coreclk
-      ARM: mvebu: Add initial support for Turris Omnia
-      scripts/kwboot: document -n option
-      docs: mvebu: describe -n more accurately in the sphinx document
-      enable LFS support for host programs
-      crypto: digest: Fix digesting over memory chunks > 4096 bytes
---=-fwFGoa9++ehiOQRM7dsk
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEz9DmVLy+XdLQMNIiz8wpfG0KEgsFAll/dOAACgkQz8wpfG0K
-EgtZ5Af9HOwEJaHvbLftmJWwKvLzeZIlxws2wFfvGo0F+4TcpoWBC0aIemKWPC3V
-WYpqysyd9p0UDE2vAgaqCUzdDDqWcfuhH6Yv5J87PCpA/RDHRsuoRxjRCi0vt2wB
-kluLAFXAL5NNsXP2uloMLXy9Ud89XKjNazyChSHGEtWu6UBkljOpCP3mNaftF+nk
-MroyjYUK6lNxFC41IRrnktbbVTdoSbLIjkrQ14sJKnR8Y/ZAp8xyOzpA2sUhcP9m
-HJqvkfQAYS9ldFeL2yz6c5wnWhaPbeT5ktqIsUa7LxrrGUT+trJiFoxd+aHhAl5H
-BlZkISA/jqk7z3d0xua4ZQoA/1sY+Q==
-=vt9a
------END PGP SIGNATURE-----
-
---=-fwFGoa9++ehiOQRM7dsk--
-
-
-
---===============5770033858025035654==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Thanks,
+Mathieu
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============5770033858025035654==--
