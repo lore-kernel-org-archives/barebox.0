@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dc7X5-0008Pq-5T
- for barebox@lists.infradead.org; Mon, 31 Jul 2017 10:02:41 +0000
-Message-ID: <1501495333.2431.1.camel@pengutronix.de>
+ id 1dc7YV-000068-LB
+ for barebox@lists.infradead.org; Mon, 31 Jul 2017 10:04:09 +0000
+Message-ID: <1501495425.2431.3.camel@pengutronix.de>
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 31 Jul 2017 12:02:13 +0200
-In-Reply-To: <20170727050055.14188-1-o.rempel@pengutronix.de>
+Date: Mon, 31 Jul 2017 12:03:45 +0200
+In-Reply-To: <20170727050055.14188-2-o.rempel@pengutronix.de>
 References: <20170727050055.14188-1-o.rempel@pengutronix.de>
+ <20170727050055.14188-2-o.rempel@pengutronix.de>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,106 +22,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 1/2] of: base: port of_device_is_big_endian from linux
+Subject: Re: [PATCH v1 2/2] serial: ns16550: provide big-endian support
 To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
 Am Donnerstag, den 27.07.2017, 07:00 +0200 schrieb Oleksij Rempel:
-> > commit 37786c7fee40771d13901de129af7e084ed48b55
-> > Author: Kevin Cernekee <cernekee@gmail.com>
-> > Date:   Thu Apr 9 13:05:14 2015 -0700
-> > 
-> >    of: Add helper function to check MMIO register endianness
-> > 
-> >    SoC peripherals can come in several different flavors:
-> > 
-> >     - little-endian: registers always need to be accessed in LE
-> > mode (so the
-> >       kernel should perform a swap if the CPU is running BE)
-> > 
-> >     - big-endian: registers always need to be accessed in BE mode
-> > (so the
-> >       kernel should perform a swap if the CPU is running LE)
-> > 
-> >     - native-endian: the bus will automatically swap accesses, so
-> > the kernel
-> >       should never swap
-> > 
-> >    Introduce a function that checks an OF device node to see
-> > whether it
-> >    contains a "big-endian" or "native-endian" property.  For the
-> > former case,
-> >    always return true.  For the latter case, return true iff the
-> > kernel was
-> >    built for BE (implying that the BE MMIO accessors do not perform
-> > a swap).
-> >    Otherwise return false, assuming LE registers.
-> > 
-> >    LE registers are assumed by default because most existing
-> > drivers (libahci,
-> >    serial8250, usb) always use readl/writel in the absence of
-> > instructions
-> >    to the contrary, so that will be our fallback.
+> we need it at least for QCA AR9344
 > 
 > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-
-I guess this should be your private mail address?
-
 > ---
->  drivers/of/base.c | 23 +++++++++++++++++++++++
->  include/of.h      |  1 +
->  2 files changed, 24 insertions(+)
+>  drivers/serial/serial_ns16550.c | 19 +++++++++++++++++--
+>  1 file changed, 17 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index ea330d1310..95bea4ee83 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -1622,6 +1622,29 @@ int of_device_is_available(const struct
-> device_node *device)
->  EXPORT_SYMBOL(of_device_is_available);
+> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+> index a8953cd99d..4d73ea8b87 100644
+> --- a/drivers/serial/serial_ns16550.c
+> +++ b/drivers/serial/serial_ns16550.c
+> @@ -94,6 +94,16 @@ static void ns16550_write_reg_mmio_32(struct ns16550_priv *priv, uint8_t val, un
+>  	writel(val, priv->mmiobase + offset);
+>  }
 >  
->  /**
-> + *  of_device_is_big_endian - check if a device has BE registers
-> + *
-> + *  @device: Node to check for endianness
-> + *
-> + *  Returns true if the device has a "big-endian" property, or if
-> the kernel
-> + *  was compiled for BE *and* the device has a "native-endian"
-> property.
-> + *  Returns false otherwise.
-> + *
-> + *  Callers would nominally use ioread32be/iowrite32be if
-> + *  of_device_is_big_endian() == true, or readl/writel otherwise.
-> + */
-> +bool of_device_is_big_endian(const struct device_node *device)
+> +static uint8_t ns16550_read_reg_mmio_32be(struct ns16550_priv *priv, unsigned offset)
 > +{
-> +	if (of_property_read_bool(device, "big-endian"))
-> +		return true;
-> +	if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN) &&
-> +	    of_property_read_bool(device, "native-endian"))
-> +		return true;
-> +	return false;
+> +	return ioread32be(priv->mmiobase + offset);
 > +}
-> +EXPORT_SYMBOL(of_device_is_big_endian);
 > +
-> +/**
->   *	of_get_parent - Get a node's parent if any
->   *	@node:	Node to get parent
->   *
-> diff --git a/include/of.h b/include/of.h
-> index 0ba73f197f..4563cbeddd 100644
-> --- a/include/of.h
-> +++ b/include/of.h
-> @@ -150,6 +150,7 @@ extern int of_machine_is_compatible(const char
-> *compat);
->  extern int of_device_is_compatible(const struct device_node *device,
->  		const char *compat);
->  extern int of_device_is_available(const struct device_node *device);
-> +extern bool of_device_is_big_endian(const struct device_node
-> *device);
+> +static void ns16550_write_reg_mmio_32be(struct ns16550_priv *priv, uint8_t val, unsigned offset)
+> +{
+> +	iowrite32be(val, priv->mmiobase + offset);
+> +}
 
-This misses a stub implementation for !CONFIG_OFTREE
+This doesn't work on PPC and x86, as those 2 architectures are missing
+the "be" variants of the iowrite/ioread functions.
+
+> +
+>  static uint8_t ns16550_read_reg_ioport_8(struct ns16550_priv *priv, unsigned offset)
+>  {
+>  	return inb(priv->iobase + offset);
+> @@ -305,8 +315,13 @@ static void ns16550_probe_dt(struct device_d *dev, struct ns16550_priv *priv)
+>  			priv->write_reg = ns16550_write_reg_mmio_16;
+>  			break;
+>  		case 4:
+> -			priv->read_reg = ns16550_read_reg_mmio_32;
+> -			priv->write_reg = ns16550_write_reg_mmio_32;
+> +			if (of_device_is_big_endian(np)) {
+> +				priv->read_reg = ns16550_read_reg_mmio_32be;
+> +				priv->write_reg = ns16550_write_reg_mmio_32be;
+> +			} else {
+> +				priv->read_reg = ns16550_read_reg_mmio_32;
+> +				priv->write_reg = ns16550_write_reg_mmio_32;
+> +			}
+>  			break;
+>  		default:
+>  			dev_err(dev, "unsupported reg-io-width (%d)\n",
 
 _______________________________________________
 barebox mailing list
