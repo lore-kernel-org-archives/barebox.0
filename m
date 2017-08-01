@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from wp303.webpack.hosteurope.de ([80.237.133.72])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dczUg-0005vI-6J
- for barebox@lists.infradead.org; Wed, 02 Aug 2017 19:39:47 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Wed,  2 Aug 2017 21:39:05 +0200
-Message-Id: <20170802193907.4317-1-u.kleine-koenig@pengutronix.de>
+ id 1dcXnG-00012A-Eq
+ for barebox@lists.infradead.org; Tue, 01 Aug 2017 14:05:15 +0000
+Date: Tue, 1 Aug 2017 16:02:32 +0200 (CEST)
+From: Norbert Wiedmann <info@n-wiedmann.de>
+Message-ID: <240826535.22013.1501596152202@ox.hosteurope.de>
+In-Reply-To: <462439994.27865.1500895721159@ox.hosteurope.de>
+References: <462439994.27865.1500895721159@ox.hosteurope.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,22 +17,138 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/2] spi: imx: don't loop endlessly
+Subject: Re: Bootchooser has unexpected changes of variable
+ 'remaining_attempts'
 To: barebox@lists.infradead.org
 
-SGVsbG8sCgpkdXJpbmcgYnJpbmd1cCBvZiBhbiBpLk1YNyBib2FyZCBJIGFtIGZhY2VkIHdpdGgg
-Y3NwaV8yXzNfeGNoZ19zaW5nbGUgbm90CnJldHVybmluZy4gSSBkb24ndCBrbm93IHlldCB3aHkg
-dGhpcyBoYXBwZW5zLCBidXQgd2l0aCB0aGlzIHBhdGNoIHNldCBpdCBhdCBsZWFzdApkb2Vzbid0
-IGJsb2NrIGJhcmVib3guCgpJIGRpZG4ndCB0ZXN0IG9uIGEgd29ya2luZyBib2FyZCwgbWF5YmUg
-dGhlIHRpbWVvdXQgKDEwIMK1cykgSSBjaG9zZSBpcyB0b28gdGlnaHQ/CgpCZXN0IHJlZ2FyZHMK
-VXdlCgpVd2UgS2xlaW5lLUvDtm5pZyAoMik6CiAgc3BpOiBpbXg6IGFkZCBlcnJvciBjaGVja2lu
-ZwogIHNwaTogaW14OiBhZGQgdGltZW91dCB0byB4Y2hnX3NpbmdsZQoKIGRyaXZlcnMvc3BpL2lt
-eF9zcGkuYyB8IDEwNSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0t
-LS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDcyIGluc2VydGlvbnMoKyksIDMzIGRlbGV0aW9ucygt
-KQoKLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi again,
+after debugging a while, I found the reason:
+In file bootchooser.c, in funktion bootchooser_save(..) the call of
+
+ret = pr_setenv(bc, "%s.remaining_attempts=%d",
+                target->state_prefix,
+                target->remaining_attempts);
+creates a "xxx.remaining_attempts=-1" if the variable 'remaining_attempts'
+is 0xffffffff, for example.
+
+The type of remaining_attempts is unsigned int.
+
+After changing the function call to
+ 
+ret = pr_setenv(bc, "%s.remaining_attempts=%lu",   /* changed %d to %lu */
+                target->state_prefix,
+                target->remaining_attempts);
+it works fine.
+Maybe this could be fixed..., thank you.
+
+Best regards
+Norbert Wiedmann
+
+
+> Norbert Wiedmann <info@n-wiedmann.de> hat am 24. Juli 2017 um 13:28
+> geschrieben:
+>
+>
+> Hi everyone,
+> I have an unexpected behaviour with my bootchooser framework since
+> barebox version 2017.05.
+>
+> After reflashing barebox, and cleaning the environment and the state
+> partition,
+> the boot message shows:
+>
+> stMyBoot: New state registered 'stMyBoot'
+> stMyBoot: Failed to find any valid state copy in any bucket
+> stMyBoot: Failed to read state with format dtb, -2
+> state stMyBoot.14: Failed to load persistent state, continuing with
+> defaults,-2
+>
+> Barebox continues with defaults, this seems OK.
+> I double checked this by printing the variables (default is 0xffffffff)
+>
+> printenv stMyBoot.bootchooser.factory.remaining_attempts
+> stMyBoot.bootchooser.factory.remaining_attempts=4294967295
+>
+> printenv stMyBoot.bootchooser.system1.remaining_attempts
+> stMyBoot.bootchooser.system1.remaining_attempts=4294967295
+>
+> printenv stMyBoot.bootchooser.system2.remaining_attempts
+> stMyBoot.bootchooser.system2.remaining_attempts=4294967295
+>
+> Next, I call boot, and everything works fine, the target with the highest
+> priority, which is 'system1', boots.
+>
+> booting 'bootchooser'
+> booting 'system1'
+>
+> The system boots as expected. I have no modification within my linux.
+>
+> The problem starts with the second boot, which fails:
+>
+> barebox outputs:
+> stMyBoot: New state registered 'stMyBoot'
+> stMyBoot: Using bucket 0@0x00000000
+>
+> This is OK, the bucket was written during the first boot, because the
+> remaining_attempts should be decreased. But, unexpectly, the bootchooser
+> is completly deactivated, all three boot targets have remaining_attempts=0
+>
+> booting 'bootchooser'
+> bootchooser: No valid targets found:
+> system1
+> id: 1
+> priority: 22
+> default_priority: 1
+> remaining attempts: 0
+> default attempts: 3
+> boot: 'system1'
+> disabled due to remaining attempts = 0
+> system2
+> id: 2
+> priority: 21
+> default_priority: 1
+> remaining attempts: 0
+> default attempts: 3
+> boot: 'system2'
+> disabled due to remaining attempts = 0
+> factory
+> id: 3
+> priority: 10
+> default_priority: 1
+> remaining attempts: 0
+> default attempts: 3
+> boot: 'factory'
+> disabled due to remaining attempts = 0
+> booting 'bootchooser' failed: No such file or directory
+>
+> I placed a printenv in my boot entry file and, when booting the first time
+> after a new reflashing, the output is
+> stMyBoot.bootchooser.system1.remaining_attempts=0
+>
+> I looks like the bootchooser doesn't use the default/actual value for
+> 'remaining_attempts' when saving the variables after he has decided which
+> boot target he will use.
+>
+> Everything worked fine up to 2017.04
+> Behaviour as descriped tested with 2017.05, 2017.07.1
+>
+> What is going wrong?
+> Thanks for your consideration in this matter.
+>
+> Best regards
+> Norbert Wiedmann
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+>
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
