@@ -1,22 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x241.google.com ([2607:f8b0:4003:c06::241])
+Received: from mout.gmx.net ([212.227.17.20])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dcYCF-0008Vs-MA
- for barebox@lists.infradead.org; Tue, 01 Aug 2017 14:30:57 +0000
-Received: by mail-oi0-x241.google.com with SMTP id b130so2423856oii.3
- for <barebox@lists.infradead.org>; Tue, 01 Aug 2017 07:30:34 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <7360e7wsyx.fsf@pengutronix.de>
-References: <CAArhposKY9Ai1OFPX+w2f4ajuw_D8jRTc2tttdiJcO8djj01eg@mail.gmail.com>
- <CAHQ1cqHjrpK34E=zWGQYp_koRA6yTqHGhm0P4v=K59ieyC7qnA@mail.gmail.com>
- <CAArhpoukunr4DBJhy2etw4svK9+yCdY98oMc1ANUJdrqmNsyTQ@mail.gmail.com>
- <CAHQ1cqEp1X49ODABcz9nb3t7i5PhnN0oRBtA_O5DACFnwdUq1w@mail.gmail.com>
- <CAArhposCe9LMLSvYc5026KK9no8U1aV7Er2OiANWKr=xPWUAFw@mail.gmail.com>
- <CAHQ1cqHroKuwj8bKNKjMXiuNiMe_=JBmiONJ_ymNHaGmFv-XMw@mail.gmail.com>
- <7360e7wsyx.fsf@pengutronix.de>
-From: Mabcded Babcde <thepusherpushes@gmail.com>
-Date: Tue, 1 Aug 2017 16:30:33 +0200
-Message-ID: <CAArhpoubJXTqUM0hYUTW8Q=tC8ftga4_D8D5ozjw_wqatuH6KA@mail.gmail.com>
+ id 1dcbZQ-0004Qp-BF
+ for barebox@lists.infradead.org; Tue, 01 Aug 2017 18:07:06 +0000
+From: Oleksij Rempel <linux@rempel-privat.de>
+Date: Tue,  1 Aug 2017 20:06:18 +0200
+Message-Id: <20170801180621.25325-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,123 +14,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add new command fs2bridge for socfpga
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH v1 0/3] provide QCA AR9344 support
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-2017-08-01 11:13 GMT+02:00 Steffen Trumtrar <s.trumtrar@pengutronix.de>:
->
-> Hi!
->
-> Andrey Smirnov <andrew.smirnov@gmail.com> writes:
->
->> On Sun, Jul 30, 2017 at 2:17 PM, Mabcded Babcde
->> <thepusherpushes@gmail.com> wrote:
->>> 2017-07-28 15:42 GMT+02:00 Andrey Smirnov <andrew.smirnov@gmail.com>:
->>>> On Fri, Jul 28, 2017 at 6:24 AM, Mabcded Babcde
->>>> <thepusherpushes@gmail.com> wrote:
->>>>> 2017-07-27 20:49 GMT+02:00 Andrey Smirnov <andrew.smirnov@gmail.com>:
->>>>>> On Thu, Jul 27, 2017 at 9:20 AM, Mabcded Babcde
->>>>>> <thepusherpushes@gmail.com> wrote:
->>>>>>> Hi,
->>>>>>> this patch adds a new command to barebox. It is used to enable or
->>>>>>> disable the fpga-to-sdram bridges on socfpgas. The patch is based on a
->>>>>>> manual from altera
->>>>>>> (https://www.altera.com/support/support-resources/knowledge-base/embedded/2016/how-and-when-can-i-enable-the-fpga2sdram-bridge-on-cyclone-v-soc.html)
->>>>>>> and a implementation for u-boot
->>>>>>> (https://github.com/rogerq/u-boot/blob/master/arch/arm/mach-socfpga/misc.c).
->>>>>>> The fpga2sdram fpga configuration can only be set when the SDRAM
->>>>>>> interface is idle. So it is necessary to use the on-chip ram.
->>>>>>
->>>>>> And by "on-chip ram" you mean i-cache and not SRAM block used by first
->>>>>> stage bootloader, correct? I am just a bit confused by the wording.
->>>>>>
->>>>>
->>>>> Sorry, my fault. I meant i-cache.
->>>>>
->>>>>>> To bring all fpga2sdram bridges out of reset it is necessary to write 0x3FFF to
->>>>>>> the register. Only the fpga2sdram bridges are enabled or disabled but
->>>>>>> no other bridges like the axi bridges.
->>>>>>
->>>>>> Linux kernel already has:
->>>>>>
->>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/fpga/altera-fpga2sdram-bridge.txt?h=v4.13-rc2
->>>>>>
->>>>>> so, IMHO, it would be better to implement  a compatible driver and, if
->>>>>> ability to change the value at run-time is needed, add "enable"
->>>>>> property to it rather than introducing a separate command.
->>>>>>
->>>>>
->>>>> But how can I ensure that the SDRAM is idle? I quote Altera:
->>>>> "First time enabling of the FPGA2SDRAM bridge within Linux is not
->>>>> supported as the SDRAM subsystem cannot be easily put into a
->>>>> guaranteed idle state."
->>>>>
->>>>
->>>> I feel like we are talking about different things. What I am trying to
->>>> say that instead of adding this functionality to Barebox as a
->>>> standalone command, it would be better to add it _to Barebox_ as a
->>>> driver that claims compatibility with "altr,socfpga-fpga2sdram-bridge"
->>>> and implements all of the necessary logic there. It would be the same
->>>> code running in the boot-loader but triggered to executed via
->>>> different means, so it should literally be the same in terms of SDRAM
->>>> access quiescence. A somewhat relative example of that approach would
->>>> be "drivers/firmware/socfpga.c".
->>>
->>> Ok, I hardcoded my code from the command to drivers/firmware/socfpga.c
->>> for testing purposes. That didn't seem to work.
->>
->> I'd double check that CONFIG_FIRMWARE and
->> CONFIG_FIRMWARE_ALTERA_SOCFPGA are set to "y".
->>
->>> However how would I
->>> enable or disable the bridge? With a parameter? Where can I add it and
->>> change it?
->>>
->>>>
->>
->> The driver in firmware/socfpga.c should create a "fpga0" device, after
->> which, you cat set that device's variables/attributes by simply doing:
->>
->> fpga0.variable_name = value
->>
->> and get them via
->>
->> echo ${fpga0.variable_name}
->>
->
-> The right approach should be adding a proper bridge driver like in the
-> kernel. Then in the fpgamgr_program_finish enable all registered
-> bridges. And set the APPFLYCFG bit in the bridge driver.
-> Or do I miss something?
+This patch set is providing initial support for QCA AR9344 SoC.
+So far it provides PLL and DDR2 initialization.
+UART and SPI controller should work as well.
 
-I retried it and it works with my application.
+Following variants was tested:
+- load PBL to SRAM over JTAG for PLL and DDR2 initialization or configure
+  them with JTAG.
+- load and start complete zbarebox.bin or barebox.bin to previously configured
+  DDR2 RAM. Both variants are working.
+- start zbarebox.bin from SPI flash
 
->
-> The cacheline magic seems rather fragile and therefore just running a
-> function (with almost the same assembler code) from OCRAM seems to be the
-> more robust option.
->
-> As a matter of fact, I already have the bridge drivers ported to
-> barebox. I can post the series as an RFC as I haven't tested it since I
-> rebased it to v2017.07.0.
+JTAG config for OpenOCD can be found here:
+https://github.com/olerem/openocd/commits/ar9344
+or maybe later upstrean in OpenOCD directly.
 
-Perfect, thank you!
+Oleksij Rempel (3):
+  MIPS: ath79: provide CONFIG_SOC_QCA_AR9331 option
+  MIPS: ath79: add initial QCA AR9344 SoC support
+  MIPS: ath79: add TP-Link WDR4300 board support
 
->
->
-> Regards,
-> Steffen
->
-> --
-> Pengutronix e.K.                           | Steffen Trumtrar            |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+ arch/mips/Makefile                                 |   1 +
+ arch/mips/boards/tplink-wdr4300/Makefile           |   1 +
+ arch/mips/boards/tplink-wdr4300/board.c            |  28 ++
+ .../tplink-wdr4300/include/board/board_pbl_start.h |  62 +++
+ arch/mips/configs/tplink-wdr4300_defconfig         |  50 ++
+ arch/mips/dts/ar9344.dtsi                          |  53 ++
+ arch/mips/dts/ar9344_tl_wdr3400.dts                |  47 ++
+ arch/mips/mach-ath79/Kconfig                       |  15 +
+ arch/mips/mach-ath79/include/mach/ar71xx_regs.h    |   9 +
+ arch/mips/mach-ath79/include/mach/debug_ll.h       | 167 +------
+ .../mips/mach-ath79/include/mach/debug_ll_ar9331.h | 176 +++++++
+ .../mips/mach-ath79/include/mach/debug_ll_ar9344.h | 191 ++++++++
+ .../include/mach/pbl_ll_init_ar9344_1.1.h          | 540 +++++++++++++++++++++
+ 13 files changed, 1182 insertions(+), 158 deletions(-)
+ create mode 100644 arch/mips/boards/tplink-wdr4300/Makefile
+ create mode 100644 arch/mips/boards/tplink-wdr4300/board.c
+ create mode 100644 arch/mips/boards/tplink-wdr4300/include/board/board_pbl_start.h
+ create mode 100644 arch/mips/configs/tplink-wdr4300_defconfig
+ create mode 100644 arch/mips/dts/ar9344.dtsi
+ create mode 100644 arch/mips/dts/ar9344_tl_wdr3400.dts
+ create mode 100644 arch/mips/mach-ath79/include/mach/debug_ll_ar9331.h
+ create mode 100644 arch/mips/mach-ath79/include/mach/debug_ll_ar9344.h
+ create mode 100644 arch/mips/mach-ath79/include/mach/pbl_ll_init_ar9344_1.1.h
+
+-- 
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
