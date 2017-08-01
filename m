@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.15.19])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dcUqa-0008QF-Ew
- for barebox@lists.infradead.org; Tue, 01 Aug 2017 10:56:22 +0000
-References: <20170727050055.14188-1-o.rempel@pengutronix.de>
- <20170727050055.14188-2-o.rempel@pengutronix.de>
- <1501495425.2431.3.camel@pengutronix.de>
-From: Oleksij Rempel <linux@rempel-privat.de>
-Message-ID: <19bb648d-0842-75e0-e26b-9d2ace501087@rempel-privat.de>
-Date: Tue, 1 Aug 2017 12:55:39 +0200
+ id 1dcdvT-0002Bq-O7
+ for barebox@lists.infradead.org; Tue, 01 Aug 2017 20:38:01 +0000
+Date: Tue, 1 Aug 2017 22:37:37 +0200
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Message-ID: <20170801203737.epwm5qbhgxkvuiyb@pengutronix.de>
+References: <462439994.27865.1500895721159@ox.hosteurope.de>
+ <240826535.22013.1501596152202@ox.hosteurope.de>
 MIME-Version: 1.0
-In-Reply-To: <1501495425.2431.3.camel@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <240826535.22013.1501596152202@ox.hosteurope.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,117 +19,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1380572011371890146=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 2/2] serial: ns16550: provide big-endian support
-To: Lucas Stach <l.stach@pengutronix.de>, Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: Bootchooser has unexpected changes of variable
+ 'remaining_attempts'
+To: Norbert Wiedmann <info@n-wiedmann.de>
 Cc: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============1380572011371890146==
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="S9OdwR5skvscJi5ko1MAP9sQ5Vc56WcaF"
+Hi,
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---S9OdwR5skvscJi5ko1MAP9sQ5Vc56WcaF
-Content-Type: multipart/mixed; boundary="Kt6iVGfNGtw8rIqH6OgdGBASCI6Vd98oK";
- protected-headers="v1"
-From: Oleksij Rempel <linux@rempel-privat.de>
-To: Lucas Stach <l.stach@pengutronix.de>,
- Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <19bb648d-0842-75e0-e26b-9d2ace501087@rempel-privat.de>
-Subject: Re: [PATCH v1 2/2] serial: ns16550: provide big-endian support
-References: <20170727050055.14188-1-o.rempel@pengutronix.de>
- <20170727050055.14188-2-o.rempel@pengutronix.de>
- <1501495425.2431.3.camel@pengutronix.de>
-In-Reply-To: <1501495425.2431.3.camel@pengutronix.de>
+On Tue, Aug 01, 2017 at 04:02:32PM +0200, Norbert Wiedmann wrote:
+> after debugging a while, I found the reason:
+> In file bootchooser.c, in funktion bootchooser_save(..) the call of
+> 
+> ret = pr_setenv(bc, "%s.remaining_attempts=%d",
+>                 target->state_prefix,
+>                 target->remaining_attempts);
+> creates a "xxx.remaining_attempts=-1" if the variable 'remaining_attempts'
+> is 0xffffffff, for example.
+> 
+> The type of remaining_attempts is unsigned int.
+> 
+> After changing the function call to
+>  
+> ret = pr_setenv(bc, "%s.remaining_attempts=%lu",   /* changed %d to %lu */
+>                 target->state_prefix,
+>                 target->remaining_attempts);
+> it works fine.
+> Maybe this could be fixed..., thank you.
 
---Kt6iVGfNGtw8rIqH6OgdGBASCI6Vd98oK
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Could you make a proper patch out of your proposal and send it here to
+the mailing list? This is the usual way how change requests are reviewed
+and discussed in barebox.
 
-Am 31.07.2017 um 12:03 schrieb Lucas Stach:
-> Am Donnerstag, den 27.07.2017, 07:00 +0200 schrieb Oleksij Rempel:
->> we need it at least for QCA AR9344
->>
->> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
->> ---
->>  drivers/serial/serial_ns16550.c | 19 +++++++++++++++++--
->>  1 file changed, 17 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_n=
-s16550.c
->> index a8953cd99d..4d73ea8b87 100644
->> --- a/drivers/serial/serial_ns16550.c
->> +++ b/drivers/serial/serial_ns16550.c
->> @@ -94,6 +94,16 @@ static void ns16550_write_reg_mmio_32(struct ns1655=
-0_priv *priv, uint8_t val, un
->>  	writel(val, priv->mmiobase + offset);
->>  }
->> =20
->> +static uint8_t ns16550_read_reg_mmio_32be(struct ns16550_priv *priv, =
-unsigned offset)
->> +{
->> +	return ioread32be(priv->mmiobase + offset);
->> +}
->> +
->> +static void ns16550_write_reg_mmio_32be(struct ns16550_priv *priv, ui=
-nt8_t val, unsigned offset)
->> +{
->> +	iowrite32be(val, priv->mmiobase + offset);
->> +}
->=20
-> This doesn't work on PPC and x86, as those 2 architectures are missing
-> the "be" variants of the iowrite/ioread functions.
+Thank you,
 
-hmm....
-
-include/asm-generic/io.h:#define ioread32be(addr)
-__be32_to_cpu(__raw_readl(addr))
-
-include/linux/byteorder/little_endian.h:#define __be32_to_cpu(x)
-__swab32((__force __u32)(__be32)(x))
-include/linux/byteorder/big_endian.h:#define __be32_to_cpu(x) ((__force
-__u32)(__be32)(x))
-
-i assume it should be available on all platforms. Or do i miss something?=
-
-
---=20
-Regards,
-Oleksij
-
-
---Kt6iVGfNGtw8rIqH6OgdGBASCI6Vd98oK--
-
---S9OdwR5skvscJi5ko1MAP9sQ5Vc56WcaF
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF4EAREIAAYFAlmAXjAACgkQHwImuRkmbWl3ogD+NoKtccNXnd7Rq96jmbQV0nrD
-p+O/ChCddR6aoKqRBSkBAJl5Pyr1jT7/hPFEy7iKcPXEVgSW4WAUM3KqxDPZVm1U
-=qU6S
------END PGP SIGNATURE-----
-
---S9OdwR5skvscJi5ko1MAP9sQ5Vc56WcaF--
-
-
---===============1380572011371890146==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+rsc
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1380572011371890146==--
