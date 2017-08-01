@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dcTLM-0006Sr-S6
+ id 1dcTLM-0006Sq-Qw
  for barebox@lists.infradead.org; Tue, 01 Aug 2017 09:20:06 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue,  1 Aug 2017 11:19:33 +0200
-Message-Id: <20170801091934.3133-3-s.trumtrar@pengutronix.de>
+Date: Tue,  1 Aug 2017 11:19:32 +0200
+Message-Id: <20170801091934.3133-2-s.trumtrar@pengutronix.de>
 In-Reply-To: <20170801091934.3133-1-s.trumtrar@pengutronix.de>
 References: <20170801091934.3133-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,58 +21,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 3/4] drivers: fpga: add socfpga bridges
+Subject: [RFC PATCH 2/4] drivers: add fpga bridge framework
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Import the SoCFPGA bridges drivers from linux v4.10-rc2.
+Import the fpga bridge framework from linux v4.10-rc2.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/fpga/Kconfig                     |   8 ++
- drivers/fpga/Makefile                    |   1 +
- drivers/fpga/socfpga-fpga2sdram-bridge.c | 143 ++++++++++++++++++++++++
- drivers/fpga/socfpga-hps2fpga-bridge.c   | 183 +++++++++++++++++++++++++++++++
- 4 files changed, 335 insertions(+)
- create mode 100644 drivers/fpga/socfpga-fpga2sdram-bridge.c
- create mode 100644 drivers/fpga/socfpga-hps2fpga-bridge.c
+ drivers/Kconfig            |   1 +
+ drivers/Makefile           |   1 +
+ drivers/fpga/Kconfig       |  24 ++++
+ drivers/fpga/Makefile      |   6 +
+ drivers/fpga/fpga-bridge.c | 275 +++++++++++++++++++++++++++++++++++++++++++++
+ include/fpga-bridge.h      |  57 ++++++++++
+ 6 files changed, 364 insertions(+)
+ create mode 100644 drivers/fpga/Kconfig
+ create mode 100644 drivers/fpga/Makefile
+ create mode 100644 drivers/fpga/fpga-bridge.c
+ create mode 100644 include/fpga-bridge.h
 
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index 1e0246da6db1..3635e5a66e09 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -34,6 +34,7 @@ source "drivers/reset/Kconfig"
+ source "drivers/pci/Kconfig"
+ source "drivers/rtc/Kconfig"
+ source "drivers/firmware/Kconfig"
++source "drivers/fpga/Kconfig"
+ source "drivers/phy/Kconfig"
+ source "drivers/crypto/Kconfig"
+ source "drivers/memory/Kconfig"
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 767789d5418f..d76efad5e65e 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -33,6 +33,7 @@ obj-$(CONFIG_RESET_CONTROLLER) += reset/
+ obj-$(CONFIG_PCI) += pci/
+ obj-y += rtc/
+ obj-$(CONFIG_FIRMWARE) += firmware/
++obj-$(CONFIG_FPGA) += fpga/
+ obj-$(CONFIG_GENERIC_PHY) += phy/
+ obj-$(CONFIG_HAB) += hab/
+ obj-$(CONFIG_CRYPTO_HW) += crypto/
 diff --git a/drivers/fpga/Kconfig b/drivers/fpga/Kconfig
-index cd3a5ba42552..77ae52519a50 100644
---- a/drivers/fpga/Kconfig
-+++ b/drivers/fpga/Kconfig
-@@ -19,6 +19,14 @@ config FPGA_BRIDGE
- 	  Say Y here if you want to support bridges connected between host
- 	  processors and FPGAs or between FPGAs.
- 
-+config SOCFPGA_FPGA_BRIDGE
-+	tristate "Altera SoCFPGA FPGA Bridges"
-+	depends on ARCH_SOCFPGA && FPGA_BRIDGE
-+	select RESET_CONTROLLER
-+	help
-+	  Say Y to enable drivers for FPGA bridges for Altera SOCFPGA
-+	  devices.
-+
- endif # FPGA
- 
- endmenu
-diff --git a/drivers/fpga/Makefile b/drivers/fpga/Makefile
-index fc71a29d3b33..86178fe7c078 100644
---- a/drivers/fpga/Makefile
-+++ b/drivers/fpga/Makefile
-@@ -4,3 +4,4 @@
- 
- # FPGA Bridge Drivers
- obj-$(CONFIG_FPGA_BRIDGE)		+= fpga-bridge.o
-+obj-$(CONFIG_SOCFPGA_FPGA_BRIDGE)	+= socfpga-hps2fpga-bridge.o socfpga-fpga2sdram-bridge.o
-diff --git a/drivers/fpga/socfpga-fpga2sdram-bridge.c b/drivers/fpga/socfpga-fpga2sdram-bridge.c
 new file mode 100644
-index 000000000000..ff48248fb63f
+index 000000000000..cd3a5ba42552
 --- /dev/null
-+++ b/drivers/fpga/socfpga-fpga2sdram-bridge.c
-@@ -0,0 +1,143 @@
++++ b/drivers/fpga/Kconfig
+@@ -0,0 +1,24 @@
++#
++# FPGA framework configuration
++#
++
++menu "FPGA Configuration Support"
++
++config FPGA
++	tristate "FPGA Configuration Framework"
++	help
++	  Say Y here if you want support for configuring FPGAs from the
++	  kernel.  The FPGA framework adds a FPGA manager class and FPGA
++	  manager drivers.
++
++if FPGA
++
++config FPGA_BRIDGE
++	tristate "FPGA Bridge Framework"
++	help
++	  Say Y here if you want to support bridges connected between host
++	  processors and FPGAs or between FPGAs.
++
++endif # FPGA
++
++endmenu
+diff --git a/drivers/fpga/Makefile b/drivers/fpga/Makefile
+new file mode 100644
+index 000000000000..fc71a29d3b33
+--- /dev/null
++++ b/drivers/fpga/Makefile
+@@ -0,0 +1,6 @@
++#
++# Makefile for the fpga framework and fpga manager drivers.
++#
++
++# FPGA Bridge Drivers
++obj-$(CONFIG_FPGA_BRIDGE)		+= fpga-bridge.o
+diff --git a/drivers/fpga/fpga-bridge.c b/drivers/fpga/fpga-bridge.c
+new file mode 100644
+index 000000000000..818f4e62cf7c
+--- /dev/null
++++ b/drivers/fpga/fpga-bridge.c
+@@ -0,0 +1,275 @@
 +/*
-+ * FPGA to SDRAM Bridge Driver for Altera SoCFPGA Devices
++ * FPGA Bridge Framework Driver
 + *
 + *  Copyright (C) 2013-2016 Altera Corporation, All Rights Reserved.
 + *
@@ -88,321 +130,327 @@ index 000000000000..ff48248fb63f
 + * You should have received a copy of the GNU General Public License along with
 + * this program.  If not, see <http://www.gnu.org/licenses/>.
 + */
-+
-+/*
-+ * This driver manages a bridge between an FPGA and the SDRAM used by the ARM
-+ * host processor system (HPS).
-+ *
-+ * The bridge contains 4 read ports, 4 write ports, and 6 command ports.
-+ * Reconfiguring these ports requires that no SDRAM transactions occur during
-+ * reconfiguration.  The code reconfiguring the ports cannot run out of SDRAM
-+ * nor can the FPGA access the SDRAM during reconfiguration.  This driver does
-+ * not support reconfiguring the ports.  The ports are configured by code
-+ * running out of on chip ram before Linux is started and the configuration
-+ * is passed in a handoff register in the system manager.
-+ *
-+ * This driver supports enabling and disabling of the configured ports, which
-+ * allows for safe reprogramming of the FPGA, assuming that the new FPGA image
-+ * uses the same port configuration.  Bridges must be disabled before
-+ * reprogramming the FPGA and re-enabled after the FPGA has been programmed.
-+ */
-+
 +#include <common.h>
-+#include <init.h>
-+#include <io.h>
 +#include <fpga-bridge.h>
-+#include <mfd/syscon.h>
-+#include <of_device.h>
-+#include <linux/clk.h>
-+#include <linux/reset.h>
 +
-+#define SOCFPGA_SDRCTL_ADDR			0xffc25000
-+#define ALT_SDR_CTL_FPGAPORTRST_OFST		0x80
-+#define ALT_SDR_CTL_FPGAPORTRST_PORTRSTN_MSK	0x00003fff
-+#define ALT_SDR_CTL_FPGAPORTRST_RD_SHIFT	0
-+#define ALT_SDR_CTL_FPGAPORTRST_WR_SHIFT	4
-+#define ALT_SDR_CTL_FPGAPORTRST_CTRL_SHIFT	8
-+
-+#define SOCFPGA_SYSMGR_ADDR			0xffd08000
-+/*
-+ * From the Cyclone V HPS Memory Map document:
-+ *   These registers are used to store handoff information between the
-+ *   preloader and the OS. These 8 registers can be used to store any
-+ *   information. The contents of these registers have no impact on
-+ *   the state of the HPS hardware.
++/**
++ * fpga_bridge_enable - Enable transactions on the bridge
++ *
++ * @bridge: FPGA bridge
++ *
++ * Return: 0 for success, error code otherwise.
 + */
-+#define SYSMGR_ISWGRP_HANDOFF3          (0x8C)
++int fpga_bridge_enable(struct fpga_bridge *bridge)
++{
++	dev_dbg(&bridge->dev, "enable\n");
 +
-+#define F2S_BRIDGE_NAME "fpga2sdram"
++	if (bridge->br_ops && bridge->br_ops->enable_set)
++		return bridge->br_ops->enable_set(bridge, 1);
 +
-+struct alt_fpga2sdram_data {
++	return 0;
++}
++EXPORT_SYMBOL_GPL(fpga_bridge_enable);
++
++/**
++ * fpga_bridge_disable - Disable transactions on the bridge
++ *
++ * @bridge: FPGA bridge
++ *
++ * Return: 0 for success, error code otherwise.
++ */
++int fpga_bridge_disable(struct fpga_bridge *bridge)
++{
++	dev_dbg(&bridge->dev, "disable\n");
++
++	if (bridge->br_ops && bridge->br_ops->enable_set)
++		return bridge->br_ops->enable_set(bridge, 0);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(fpga_bridge_disable);
++
++/**
++ * of_fpga_bridge_get - get an exclusive reference to a fpga bridge
++ *
++ * @np: node pointer of a FPGA bridge
++ * @info: fpga image specific information
++ *
++ * Return fpga_bridge struct if successful.
++ * Return -EBUSY if someone already has a reference to the bridge.
++ * Return -ENODEV if @np is not a FPGA Bridge.
++ */
++struct fpga_bridge *of_fpga_bridge_get(struct device_node *np,
++				       struct fpga_image_info *info)
++
++{
 +	struct device_d *dev;
-+	int mask;
-+};
++	struct fpga_bridge *bridge;
++	int ret = -ENODEV;
 +
-+static inline int _alt_fpga2sdram_enable_set(struct alt_fpga2sdram_data *priv,
-+					     bool enable)
++	dev = of_find_device_by_node(np);
++	if (!dev)
++		return ERR_PTR(ret);
++
++	bridge = dev->priv;
++
++	bridge->info = info;
++
++	dev_dbg(&bridge->dev, "get\n");
++
++	return bridge;
++}
++EXPORT_SYMBOL_GPL(of_fpga_bridge_get);
++
++/**
++ * fpga_bridge_put - release a reference to a bridge
++ *
++ * @bridge: FPGA bridge
++ */
++void fpga_bridge_put(struct fpga_bridge *bridge)
 +{
-+	int val;
++	dev_dbg(&bridge->dev, "put\n");
 +
-+	val = readl(SOCFPGA_SDRCTL_ADDR + ALT_SDR_CTL_FPGAPORTRST_OFST);
++	bridge->info = NULL;
++}
++EXPORT_SYMBOL_GPL(fpga_bridge_put);
 +
-+	if (enable)
-+		val |= priv->mask;
++/**
++ * fpga_bridges_enable - enable bridges in a list
++ * @bridge_list: list of FPGA bridges
++ *
++ * Enable each bridge in the list.  If list is empty, do nothing.
++ *
++ * Return 0 for success or empty bridge list; return error code otherwise.
++ */
++int fpga_bridges_enable(struct list_head *bridge_list)
++{
++	struct fpga_bridge *bridge;
++	struct list_head *node;
++	int ret;
++
++	list_for_each(node, bridge_list) {
++		bridge = list_entry(node, struct fpga_bridge, node);
++		ret = fpga_bridge_enable(bridge);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(fpga_bridges_enable);
++
++/**
++ * fpga_bridges_disable - disable bridges in a list
++ *
++ * @bridge_list: list of FPGA bridges
++ *
++ * Disable each bridge in the list.  If list is empty, do nothing.
++ *
++ * Return 0 for success or empty bridge list; return error code otherwise.
++ */
++int fpga_bridges_disable(struct list_head *bridge_list)
++{
++	struct fpga_bridge *bridge;
++	struct list_head *node;
++	int ret;
++
++	list_for_each(node, bridge_list) {
++		bridge = list_entry(node, struct fpga_bridge, node);
++		ret = fpga_bridge_disable(bridge);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(fpga_bridges_disable);
++
++/**
++ * fpga_bridges_put - put bridges
++ *
++ * @bridge_list: list of FPGA bridges
++ *
++ * For each bridge in the list, put the bridge and remove it from the list.
++ * If list is empty, do nothing.
++ */
++void fpga_bridges_put(struct list_head *bridge_list)
++{
++	struct fpga_bridge *bridge;
++	struct list_head *node, *next;
++
++	list_for_each_safe(node, next, bridge_list) {
++		bridge = list_entry(node, struct fpga_bridge, node);
++
++		fpga_bridge_put(bridge);
++
++		list_del(&bridge->node);
++	}
++}
++EXPORT_SYMBOL_GPL(fpga_bridges_put);
++
++/**
++ * fpga_bridges_get_to_list - get a bridge, add it to a list
++ *
++ * @np: node pointer of a FPGA bridge
++ * @info: fpga image specific information
++ * @bridge_list: list of FPGA bridges
++ *
++ * Get an exclusive reference to the bridge and and it to the list.
++ *
++ * Return 0 for success, error code from of_fpga_bridge_get() othewise.
++ */
++int fpga_bridge_get_to_list(struct device_node *np,
++			    struct fpga_image_info *info,
++			    struct list_head *bridge_list)
++{
++	struct fpga_bridge *bridge;
++
++	bridge = of_fpga_bridge_get(np, info);
++	if (IS_ERR(bridge))
++		return PTR_ERR(bridge);
++
++	list_add(&bridge->node, bridge_list);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(fpga_bridge_get_to_list);
++
++static int set_enable(struct param_d *p, void *priv)
++{
++	struct fpga_bridge *bridge = priv;
++
++	if (bridge->enable)
++		fpga_bridge_enable(bridge);
 +	else
-+		val = 0;
++		fpga_bridge_disable(bridge);
 +
-+	/* The kernel driver expects this value in this register :-( */
-+	writel(priv->mask, SOCFPGA_SYSMGR_ADDR + SYSMGR_ISWGRP_HANDOFF3);
-+
-+	dev_dbg(priv->dev, "setting fpgaportrst to 0x%08x\n", val);
-+
-+	return writel(val, SOCFPGA_SDRCTL_ADDR + ALT_SDR_CTL_FPGAPORTRST_OFST);
++	return 0;
 +}
 +
-+static int alt_fpga2sdram_enable_set(struct fpga_bridge *bridge, bool enable)
++/**
++ * fpga_bridge_register - register a fpga bridge driver
++ * @dev:	FPGA bridge device from pdev
++ * @name:	FPGA bridge name
++ * @br_ops:	pointer to structure of fpga bridge ops
++ * @priv:	FPGA bridge private data
++ *
++ * Return: 0 for success, error code otherwise.
++ */
++int fpga_bridge_register(struct device_d *dev, const char *name,
++			 const struct fpga_bridge_ops *br_ops, void *priv)
 +{
-+	return _alt_fpga2sdram_enable_set(bridge->priv, enable);
-+}
-+
-+struct prop_map {
-+	char *prop_name;
-+	u32 *prop_value;
-+	u32 prop_max;
-+};
-+
-+static const struct fpga_bridge_ops altera_fpga2sdram_br_ops = {
-+	.enable_set = alt_fpga2sdram_enable_set,
-+};
-+
-+static const struct of_device_id altera_fpga_of_match[] = {
-+	{ .compatible = "altr,socfpga-fpga2sdram-bridge" },
-+	{},
-+};
-+
-+static int alt_fpga_bridge_probe(struct device_d *dev)
-+{
-+	struct alt_fpga2sdram_data *priv;
++	struct fpga_bridge *bridge;
++	struct param_d *p;
 +	int ret = 0;
 +
-+	priv = xzalloc(sizeof(*priv));
-+	if (!priv)
++	if (!name || !strlen(name)) {
++		dev_err(dev, "Attempt to register with no name!\n");
++		return -EINVAL;
++	}
++
++	bridge = xzalloc(sizeof(*bridge));
++	if (!bridge)
 +		return -ENOMEM;
 +
-+	/* enable all ports for now */
-+	priv->mask = 0x3fff;
++	INIT_LIST_HEAD(&bridge->node);
 +
-+	priv->dev = dev;
++	bridge->br_ops = br_ops;
++	bridge->priv = priv;
 +
-+	ret = fpga_bridge_register(dev, F2S_BRIDGE_NAME,
-+				   &altera_fpga2sdram_br_ops, priv);
++	bridge->dev.parent = dev;
++	bridge->dev.device_node = dev->device_node;
++	bridge->dev.id = DEVICE_ID_DYNAMIC;
++
++	strcpy(bridge->dev.name, name);
++
++	ret = register_device(&bridge->dev);
 +	if (ret)
-+		return ret;
++		goto out;
 +
-+	dev_info(dev, "driver initialized with handoff %08x\n", priv->mask);
++	dev->priv = bridge;
++
++	bridge->enable = 0;
++	p = dev_add_param_bool(&bridge->dev, "enable", set_enable,
++			       NULL, &bridge->enable, bridge);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
++
++	of_platform_populate(dev->device_node, NULL, dev);
++
++	dev_info(bridge->dev.parent, "fpga bridge [%s] registered\n",
++		 bridge->dev.name);
++
++	return 0;
++
++out:
++	kfree(bridge);
 +
 +	return ret;
 +}
-+
-+static struct driver_d altera_fpga_driver = {
-+	.probe = alt_fpga_bridge_probe,
-+	.of_compatible = DRV_OF_COMPAT(altera_fpga_of_match),
-+};
-+
-+static int alt_fpga_bridge_init(void)
-+{
-+	return platform_driver_register(&altera_fpga_driver);
-+}
-+postcore_initcall(alt_fpga_bridge_init);
-diff --git a/drivers/fpga/socfpga-hps2fpga-bridge.c b/drivers/fpga/socfpga-hps2fpga-bridge.c
++EXPORT_SYMBOL_GPL(fpga_bridge_register);
+diff --git a/include/fpga-bridge.h b/include/fpga-bridge.h
 new file mode 100644
-index 000000000000..5850ab0bda10
+index 000000000000..91df9fa4b486
 --- /dev/null
-+++ b/drivers/fpga/socfpga-hps2fpga-bridge.c
-@@ -0,0 +1,183 @@
-+/*
-+ * FPGA to/from HPS Bridge Driver for Altera SoCFPGA Devices
-+ *
-+ *  Copyright (C) 2013-2016 Altera Corporation, All Rights Reserved.
-+ *
-+ * Includes this patch from the mailing list:
-+ *   fpga: altera-hps2fpga: fix HPS2FPGA bridge visibility to L3 masters
-+ *   Signed-off-by: Anatolij Gustschin <agust@denx.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+/*
-+ * This driver manages bridges on a Altera SOCFPGA between the ARM host
-+ * processor system (HPS) and the embedded FPGA.
-+ *
-+ * This driver supports enabling and disabling of the configured ports, which
-+ * allows for safe reprogramming of the FPGA, assuming that the new FPGA image
-+ * uses the same port configuration.  Bridges must be disabled before
-+ * reprogramming the FPGA and re-enabled after the FPGA has been programmed.
-+ */
-+
++++ b/include/fpga-bridge.h
+@@ -0,0 +1,57 @@
 +#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <fpga-bridge.h>
-+#include <mfd/syscon.h>
-+#include <of_device.h>
-+#include <linux/clk.h>
-+#include <linux/reset.h>
 +
-+#define SOCFPGA_L3_ADDR				0xff800000
-+#define ALT_L3_REMAP_OFST			0x0
-+#define ALT_L3_REMAP_MPUZERO_MSK		0x00000001
-+#define ALT_L3_REMAP_H2F_MSK			0x00000008
-+#define ALT_L3_REMAP_LWH2F_MSK			0x00000010
++#ifndef _LINUX_FPGA_BRIDGE_H
++#define _LINUX_FPGA_BRIDGE_H
 +
-+#define HPS2FPGA_BRIDGE_NAME			"hps2fpga"
-+#define LWHPS2FPGA_BRIDGE_NAME			"lwhps2fpga"
-+#define FPGA2HPS_BRIDGE_NAME			"fpga2hps"
++struct fpga_bridge;
 +
-+struct altera_hps2fpga_data {
-+	struct device_d *dev;
-+	const char *name;
-+	struct reset_control *bridge_reset;
-+	unsigned int remap_mask;
-+	struct clk *clk;
++/**
++ * struct fpga_bridge_ops - ops for low level FPGA bridge drivers
++ * @enable_show: returns the FPGA bridge's status
++ * @enable_set: set a FPGA bridge as enabled or disabled
++ * @fpga_bridge_remove: set FPGA into a specific state during driver remove
++ */
++struct fpga_bridge_ops {
++	int (*enable_show)(struct fpga_bridge *bridge);
++	int (*enable_set)(struct fpga_bridge *bridge, bool enable);
++	void (*fpga_bridge_remove)(struct fpga_bridge *bridge);
 +};
 +
-+/* The L3 REMAP register is write only, so keep a cached value. */
-+static unsigned int l3_remap_shadow;
-+
-+static int _alt_hps2fpga_enable_set(struct altera_hps2fpga_data *priv,
-+				    bool enable)
-+{
-+	int ret;
-+
-+	/* bring bridge out of reset */
-+	if (enable)
-+		ret = reset_control_deassert(priv->bridge_reset);
-+	else
-+		ret = reset_control_assert(priv->bridge_reset);
-+	if (ret)
-+		return ret;
-+
-+	/* Allow bridge to be visible to L3 masters or not */
-+	if (priv->remap_mask) {
-+		l3_remap_shadow |= ALT_L3_REMAP_MPUZERO_MSK;
-+
-+		if (enable)
-+			l3_remap_shadow |= priv->remap_mask;
-+		else
-+			l3_remap_shadow &= ~priv->remap_mask;
-+
-+		dev_dbg(priv->dev, "setting L3 visibility to 0x%08x\n",
-+			l3_remap_shadow);
-+
-+		writel(l3_remap_shadow, SOCFPGA_L3_ADDR + ALT_L3_REMAP_OFST);
-+	}
-+
-+	return ret;
-+}
-+
-+static int alt_hps2fpga_enable_set(struct fpga_bridge *bridge, bool enable)
-+{
-+	return _alt_hps2fpga_enable_set(bridge->priv, enable);
-+}
-+
-+static const struct fpga_bridge_ops altera_hps2fpga_br_ops = {
-+	.enable_set = alt_hps2fpga_enable_set,
++/**
++ * struct fpga_bridge - FPGA bridge structure
++ * @name: name of low level FPGA bridge
++ * @dev: FPGA bridge device
++ * @mutex: enforces exclusive reference to bridge
++ * @br_ops: pointer to struct of FPGA bridge ops
++ * @info: fpga image specific information
++ * @node: FPGA bridge list node
++ * @priv: low level driver private date
++ */
++struct fpga_bridge {
++	struct device_d dev;
++	const struct fpga_bridge_ops *br_ops;
++	struct fpga_image_info *info;
++	struct list_head node;
++	unsigned int enable;
++	void *priv;
 +};
 +
-+static struct altera_hps2fpga_data hps2fpga_data  = {
-+	.name = HPS2FPGA_BRIDGE_NAME,
-+	.remap_mask = ALT_L3_REMAP_H2F_MSK,
-+};
++#define to_fpga_bridge(d) container_of(d, struct fpga_bridge, dev)
 +
-+static struct altera_hps2fpga_data lwhps2fpga_data  = {
-+	.name = LWHPS2FPGA_BRIDGE_NAME,
-+	.remap_mask = ALT_L3_REMAP_LWH2F_MSK,
-+};
++struct fpga_bridge *of_fpga_bridge_get(struct device_node *node,
++				       struct fpga_image_info *info);
++void fpga_bridge_put(struct fpga_bridge *bridge);
++int fpga_bridge_enable(struct fpga_bridge *bridge);
++int fpga_bridge_disable(struct fpga_bridge *bridge);
 +
-+static struct altera_hps2fpga_data fpga2hps_data  = {
-+	.name = FPGA2HPS_BRIDGE_NAME,
-+};
++int fpga_bridges_enable(struct list_head *bridge_list);
++int fpga_bridges_disable(struct list_head *bridge_list);
++void fpga_bridges_put(struct list_head *bridge_list);
++int fpga_bridge_get_to_list(struct device_node *np,
++			    struct fpga_image_info *info,
++			    struct list_head *bridge_list);
 +
-+static const struct of_device_id altera_fpga_of_match[] = {
-+	{ .compatible = "altr,socfpga-hps2fpga-bridge",
-+	  .data = &hps2fpga_data },
-+	{ .compatible = "altr,socfpga-lwhps2fpga-bridge",
-+	  .data = &lwhps2fpga_data },
-+	{ .compatible = "altr,socfpga-fpga2hps-bridge",
-+	  .data = &fpga2hps_data },
-+	{ /* sentinel */ },
-+};
++int fpga_bridge_register(struct device_d *dev, const char *name,
++			 const struct fpga_bridge_ops *br_ops, void *priv);
 +
-+static int alt_fpga_bridge_probe(struct device_d *dev)
-+{
-+	struct altera_hps2fpga_data *priv;
-+	const struct of_device_id *of_id;
-+	u32 enable;
-+	int ret;
-+
-+	of_id = of_match_device(altera_fpga_of_match, dev);
-+	priv = (struct altera_hps2fpga_data *)of_id->data;
-+
-+	priv->bridge_reset = of_reset_control_get(dev->device_node, NULL);
-+	if (IS_ERR(priv->bridge_reset)) {
-+		dev_err(dev, "Could not get %s reset control\n", priv->name);
-+		return PTR_ERR(priv->bridge_reset);
-+	}
-+
-+	priv->clk = clk_get(dev, NULL);
-+	if (IS_ERR(priv->clk)) {
-+		dev_err(dev, "no clock specified\n");
-+		return PTR_ERR(priv->clk);
-+	}
-+
-+	ret = clk_enable(priv->clk);
-+	if (ret) {
-+		dev_err(dev, "could not enable clock\n");
-+		return -EBUSY;
-+	}
-+
-+	priv->dev = dev;
-+
-+	if (!of_property_read_u32(dev->device_node, "bridge-enable", &enable)) {
-+		if (enable > 1) {
-+			dev_warn(dev, "invalid bridge-enable %u > 1\n", enable);
-+		} else {
-+			dev_info(dev, "%s bridge\n",
-+				 (enable ? "enabling" : "disabling"));
-+
-+			ret = _alt_hps2fpga_enable_set(priv, enable);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+
-+	return fpga_bridge_register(dev, priv->name, &altera_hps2fpga_br_ops,
-+				    priv);
-+}
-+
-+static struct driver_d alt_fpga_bridge_driver = {
-+	.probe = alt_fpga_bridge_probe,
-+	.of_compatible = DRV_OF_COMPAT(altera_fpga_of_match),
-+};
-+
-+static int alt_fpga_bridge_init(void)
-+{
-+	return platform_driver_register(&alt_fpga_bridge_driver);
-+}
-+postcore_initcall(alt_fpga_bridge_init);
++#endif /* _LINUX_FPGA_BRIDGE_H */
 -- 
 2.11.0
 
