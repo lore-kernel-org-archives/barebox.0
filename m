@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout.gmx.net ([212.227.15.19])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dcTpG-0006YK-2a
- for barebox@lists.infradead.org; Tue, 01 Aug 2017 09:50:56 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue,  1 Aug 2017 11:50:30 +0200
-Message-Id: <20170801095030.23714-1-u.kleine-koenig@pengutronix.de>
+ id 1dcUqa-0008QF-Ew
+ for barebox@lists.infradead.org; Tue, 01 Aug 2017 10:56:22 +0000
+References: <20170727050055.14188-1-o.rempel@pengutronix.de>
+ <20170727050055.14188-2-o.rempel@pengutronix.de>
+ <1501495425.2431.3.camel@pengutronix.de>
+From: Oleksij Rempel <linux@rempel-privat.de>
+Message-ID: <19bb648d-0842-75e0-e26b-9d2ace501087@rempel-privat.de>
+Date: Tue, 1 Aug 2017 12:55:39 +0200
 MIME-Version: 1.0
+In-Reply-To: <1501495425.2431.3.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,85 +19,117 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1380572011371890146=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: imx: phyCORE i.MX7: use register defines in dcd table
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v1 2/2] serial: ns16550: provide big-endian support
+To: Lucas Stach <l.stach@pengutronix.de>, Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-VGhpcyB3YXMgZG9uZSB1c2luZyBzY3JpcHRzL3JlZ3N1YnN0LnBsLgoKU2lnbmVkLW9mZi1ieTog
-VXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiAu
-Li4vZmxhc2gtaGVhZGVyLXBoeXRlYy1waHljb3JlLWlteDcuaW14Y2ZnICAgICAgICB8IDk0ICsr
-KysrKysrKysrLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA0OCBpbnNlcnRpb25zKCspLCA0
-NiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNv
-cmUtaW14Ny9mbGFzaC1oZWFkZXItcGh5dGVjLXBoeWNvcmUtaW14Ny5pbXhjZmcgYi9hcmNoL2Fy
-bS9ib2FyZHMvcGh5dGVjLXBoeWNvcmUtaW14Ny9mbGFzaC1oZWFkZXItcGh5dGVjLXBoeWNvcmUt
-aW14Ny5pbXhjZmcKaW5kZXggYjE2MDhkZDljNzMwLi42YzI1NmU4ZmM1MmMgMTAwNjQ0Ci0tLSBh
-L2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1pbXg3L2ZsYXNoLWhlYWRlci1waHl0ZWMt
-cGh5Y29yZS1pbXg3LmlteGNmZworKysgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNvcmUt
-aW14Ny9mbGFzaC1oZWFkZXItcGh5dGVjLXBoeWNvcmUtaW14Ny5pbXhjZmcKQEAgLTEzLDY0ICsx
-Myw2NiBAQCBzb2MgaW14NwogbG9hZGFkZHIgMHg4MDAwMDAwMAogZGNkb2ZzIDB4NDAwCiAKKyNp
-bmNsdWRlIDxtYWNoL2lteDctZGRyLXJlZ3MuaD4KKwogd20gMzIgMHgzMDM0MDAwNCAweDRGNDAw
-MDA1CiAvKiBDbGVhciB0aGVuIHNldCBiaXQzMCB0byBlbnN1cmUgZXhpdCBmcm9tIEREUiByZXRl
-bnRpb24gKi8KIHdtIDMyIDB4MzAzNjAzODggMHg0MDAwMDAwMAogd20gMzIgMHgzMDM2MDM4NCAw
-eDQwMDAwMDAwCiAKIHdtIDMyIDB4MzAzOTEwMDAgMHgwMDAwMDAwMgotd20gMzIgMHgzMDdhMDAw
-MCAweDAxMDQwMDAxCi13bSAzMiAweDMwN2EwMWEwIDB4ODA0MDAwMDMKLXdtIDMyIDB4MzA3YTAx
-YTQgMHgwMDEwMDAyMAotd20gMzIgMHgzMDdhMDFhOCAweDgwMTAwMDA0Ci13bSAzMiAweDMwN2Ew
-MDY0IDB4MDA0MDAwNDYKLXdtIDMyIDB4MzA3YTA0OTAgMHgwMDAwMDAwMQotd20gMzIgMHgzMDdh
-MDBkMCAweDAwMDIwMDgzCi13bSAzMiAweDMwN2EwMGQ0IDB4MDA2OTAwMDAKLXdtIDMyIDB4MzA3
-YTAwZGMgMHgwOTMwMDAwNAotd20gMzIgMHgzMDdhMDBlMCAweDA0MDgwMDAwCi13bSAzMiAweDMw
-N2EwMGU0IDB4MDAxMDAwMDQKLXdtIDMyIDB4MzA3YTAwZjQgMHgwMDAwMDMzZgotd20gMzIgMHgz
-MDdhMDEwMCAweDA5MDgxMTA5Ci13bSAzMiAweDMwN2EwMTA0IDB4MDAwNzAyMGQKLXdtIDMyIDB4
-MzA3YTAxMDggMHgwMzA0MDQwNwotd20gMzIgMHgzMDdhMDEwYyAweDAwMDAyMDA2Ci13bSAzMiAw
-eDMwN2EwMTEwIDB4MDQwMjAyMDUKLXdtIDMyIDB4MzA3YTAxMTQgMHgwMzAzMDIwMgotd20gMzIg
-MHgzMDdhMDEyMCAweDAwMDAwODAzCi13bSAzMiAweDMwN2EwMTgwIDB4MDA4MDAwMjAKLXdtIDMy
-IDB4MzA3YTAxODQgMHgwMjAwMDEwMAotd20gMzIgMHgzMDdhMDE5MCAweDAyMDk4MjA0Ci13bSAz
-MiAweDMwN2EwMTk0IDB4MDAwMzAzMDMKLXdtIDMyIDB4MzA3YTAyMDAgMHgwMDAwMDAxNgotd20g
-MzIgMHgzMDdhMDIwNCAweDAwMTcxNzE3Ci13bSAzMiAweDMwN2EwMjE0IDB4MDQwNDA0MDQKLXdt
-IDMyIDB4MzA3YTAyMTggMHgwZjA0MDQwNAotd20gMzIgMHgzMDdhMDI0MCAweDA2MDAwNjA0Ci13
-bSAzMiAweDMwN2EwMjQ0IDB4MDAwMDAwMDEKK3dtIDMyIE1YN19ERFJDX01TVFIgMHgwMTA0MDAw
-MQord20gMzIgTVg3X0REUkNfREZJVVBEMCAweDgwNDAwMDAzCit3bSAzMiBNWDdfRERSQ19ERklV
-UEQxIDB4MDAxMDAwMjAKK3dtIDMyIE1YN19ERFJDX0RGSVVQRDIgMHg4MDEwMDAwNAord20gMzIg
-TVg3X0REUkNfUkZTSFRNRyAweDAwNDAwMDQ2Cit3bSAzMiBNWDdfRERSQ19NUF9QQ1RSTF8wIDB4
-MDAwMDAwMDEKK3dtIDMyIE1YN19ERFJDX0lOSVQwIDB4MDAwMjAwODMKK3dtIDMyIE1YN19ERFJD
-X0lOSVQxIDB4MDA2OTAwMDAKK3dtIDMyIE1YN19ERFJDX0lOSVQzIDB4MDkzMDAwMDQKK3dtIDMy
-IE1YN19ERFJDX0lOSVQ0IDB4MDQwODAwMDAKK3dtIDMyIE1YN19ERFJDX0lOSVQ1IDB4MDAxMDAw
-MDQKK3dtIDMyIE1YN19ERFJDX1JBTktDVEwgMHgwMDAwMDMzZgord20gMzIgTVg3X0REUkNfRFJB
-TVRNRzAgMHgwOTA4MTEwOQord20gMzIgTVg3X0REUkNfRFJBTVRNRzEgMHgwMDA3MDIwZAord20g
-MzIgTVg3X0REUkNfRFJBTVRNRzIgMHgwMzA0MDQwNword20gMzIgTVg3X0REUkNfRFJBTVRNRzMg
-MHgwMDAwMjAwNgord20gMzIgTVg3X0REUkNfRFJBTVRNRzQgMHgwNDAyMDIwNQord20gMzIgTVg3
-X0REUkNfRFJBTVRNRzUgMHgwMzAzMDIwMgord20gMzIgTVg3X0REUkNfRFJBTVRNRzggMHgwMDAw
-MDgwMword20gMzIgTVg3X0REUkNfWlFDVEwwIDB4MDA4MDAwMjAKK3dtIDMyIE1YN19ERFJDX1pR
-Q1RMMSAweDAyMDAwMTAwCit3bSAzMiBNWDdfRERSQ19ERklUTUcwIDB4MDIwOTgyMDQKK3dtIDMy
-IE1YN19ERFJDX0RGSVRNRzEgMHgwMDAzMDMwMword20gMzIgTVg3X0REUkNfQUREUk1BUDAgMHgw
-MDAwMDAxNgord20gMzIgTVg3X0REUkNfQUREUk1BUDEgMHgwMDE3MTcxNword20gMzIgTVg3X0RE
-UkNfQUREUk1BUDUgMHgwNDA0MDQwNAord20gMzIgTVg3X0REUkNfQUREUk1BUDYgMHgwZjA0MDQw
-NAord20gMzIgTVg3X0REUkNfT0RUQ0ZHIDB4MDYwMDA2MDQKK3dtIDMyIE1YN19ERFJDX09EVE1B
-UCAweDAwMDAwMDAxCiB3bSAzMiAweDMwMzkxMDAwIDB4MDAwMDAwMDAKLXdtIDMyIDB4MzA3OTAw
-MDAgMHgxNzQyMGY0MAotd20gMzIgMHgzMDc5MDAwNCAweDEwMjEwMTAwCi13bSAzMiAweDMwNzkw
-MDEwIDB4MDAwNjA4MDcKLXdtIDMyIDB4MzA3OTAwYjAgMHgxMDEwMDA3ZQotd20gMzIgMHgzMDc5
-MDA5YyAweDAwMDAwZDZlCi13bSAzMiAweDMwNzkwMDIwIDB4MDgwODA4MDgKLXdtIDMyIDB4MzA3
-OTAwMzAgMHgwODA4MDgwOAotd20gMzIgMHgzMDc5MDA1MCAweDAxMDAwMDEwCi13bSAzMiAweDMw
-NzkwMDUwIDB4MDAwMDAwMTAKK3dtIDMyIE1YN19ERFJfUEhZX1BIWV9DT04wIDB4MTc0MjBmNDAK
-K3dtIDMyIE1YN19ERFJfUEhZX1BIWV9DT04xIDB4MTAyMTAxMDAKK3dtIDMyIE1YN19ERFJfUEhZ
-X1BIWV9DT040IDB4MDAwNjA4MDcKK3dtIDMyIE1YN19ERFJfUEhZX01ETExfQ09OMCAweDEwMTAw
-MDdlCit3bSAzMiBNWDdfRERSX1BIWV9EUlZEU19DT04wIDB4MDAwMDBkNmUKK3dtIDMyIE1YN19E
-RFJfUEhZX09GRlNFVF9SRF9DT04wIDB4MDgwODA4MDgKK3dtIDMyIE1YN19ERFJfUEhZX09GRlNF
-VF9XUl9DT04wIDB4MDgwODA4MDgKK3dtIDMyIE1YN19ERFJfUEhZX0NNRF9TRExMX0NPTjAgMHgw
-MTAwMDAxMAord20gMzIgTVg3X0REUl9QSFlfQ01EX1NETExfQ09OMCAweDAwMDAwMDEwCiAKLXdt
-IDMyIDB4MzA3OTAwYzAgMHgwZTQwNzMwNAotd20gMzIgMHgzMDc5MDBjMCAweDBlNDQ3MzA0Ci13
-bSAzMiAweDMwNzkwMGMwIDB4MGU0NDczMDYKK3dtIDMyIE1YN19ERFJfUEhZX1pRX0NPTjAgMHgw
-ZTQwNzMwNAord20gMzIgTVg3X0REUl9QSFlfWlFfQ09OMCAweDBlNDQ3MzA0Cit3bSAzMiBNWDdf
-RERSX1BIWV9aUV9DT04wIDB4MGU0NDczMDYKIAotY2hlY2sgMzIgd2hpbGVfYW55X2JpdF9jbGVh
-ciAweDMwNzkwMGM0IDB4MQorY2hlY2sgMzIgd2hpbGVfYW55X2JpdF9jbGVhciBNWDdfRERSX1BI
-WV9aUV9DT04xIDB4MQogCi13bSAzMiAweDMwNzkwMGMwIDB4MGU0NDczMDQKLXdtIDMyIDB4MzA3
-OTAwYzAgMHgwZTQwNzMwNAord20gMzIgTVg3X0REUl9QSFlfWlFfQ09OMCAweDBlNDQ3MzA0Cit3
-bSAzMiBNWDdfRERSX1BIWV9aUV9DT04wIDB4MGU0MDczMDQKIAogd20gMzIgMHgzMDM4NDEzMCAw
-eDAwMDAwMDAwCiB3bSAzMiAweDMwMzQwMDIwIDB4MDAwMDAxNzgKIHdtIDMyIDB4MzAzODQxMzAg
-MHgwMDAwMDAwMgotd20gMzIgMHgzMDc5MDAxOCAweDAwMDAwMDBmCit3bSAzMiBNWDdfRERSX1BI
-WV9MUF9DT04wIDB4MDAwMDAwMGYKIAotY2hlY2sgMzIgd2hpbGVfYW55X2JpdF9jbGVhciAweDMw
-N2EwMDA0IDB4MQorY2hlY2sgMzIgd2hpbGVfYW55X2JpdF9jbGVhciBNWDdfRERSQ19TVEFUIDB4
-MQotLSAKMi4xMS4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
-dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============1380572011371890146==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="S9OdwR5skvscJi5ko1MAP9sQ5Vc56WcaF"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--S9OdwR5skvscJi5ko1MAP9sQ5Vc56WcaF
+Content-Type: multipart/mixed; boundary="Kt6iVGfNGtw8rIqH6OgdGBASCI6Vd98oK";
+ protected-headers="v1"
+From: Oleksij Rempel <linux@rempel-privat.de>
+To: Lucas Stach <l.stach@pengutronix.de>,
+ Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <19bb648d-0842-75e0-e26b-9d2ace501087@rempel-privat.de>
+Subject: Re: [PATCH v1 2/2] serial: ns16550: provide big-endian support
+References: <20170727050055.14188-1-o.rempel@pengutronix.de>
+ <20170727050055.14188-2-o.rempel@pengutronix.de>
+ <1501495425.2431.3.camel@pengutronix.de>
+In-Reply-To: <1501495425.2431.3.camel@pengutronix.de>
+
+--Kt6iVGfNGtw8rIqH6OgdGBASCI6Vd98oK
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+
+Am 31.07.2017 um 12:03 schrieb Lucas Stach:
+> Am Donnerstag, den 27.07.2017, 07:00 +0200 schrieb Oleksij Rempel:
+>> we need it at least for QCA AR9344
+>>
+>> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+>> ---
+>>  drivers/serial/serial_ns16550.c | 19 +++++++++++++++++--
+>>  1 file changed, 17 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_n=
+s16550.c
+>> index a8953cd99d..4d73ea8b87 100644
+>> --- a/drivers/serial/serial_ns16550.c
+>> +++ b/drivers/serial/serial_ns16550.c
+>> @@ -94,6 +94,16 @@ static void ns16550_write_reg_mmio_32(struct ns1655=
+0_priv *priv, uint8_t val, un
+>>  	writel(val, priv->mmiobase + offset);
+>>  }
+>> =20
+>> +static uint8_t ns16550_read_reg_mmio_32be(struct ns16550_priv *priv, =
+unsigned offset)
+>> +{
+>> +	return ioread32be(priv->mmiobase + offset);
+>> +}
+>> +
+>> +static void ns16550_write_reg_mmio_32be(struct ns16550_priv *priv, ui=
+nt8_t val, unsigned offset)
+>> +{
+>> +	iowrite32be(val, priv->mmiobase + offset);
+>> +}
+>=20
+> This doesn't work on PPC and x86, as those 2 architectures are missing
+> the "be" variants of the iowrite/ioread functions.
+
+hmm....
+
+include/asm-generic/io.h:#define ioread32be(addr)
+__be32_to_cpu(__raw_readl(addr))
+
+include/linux/byteorder/little_endian.h:#define __be32_to_cpu(x)
+__swab32((__force __u32)(__be32)(x))
+include/linux/byteorder/big_endian.h:#define __be32_to_cpu(x) ((__force
+__u32)(__be32)(x))
+
+i assume it should be available on all platforms. Or do i miss something?=
+
+
+--=20
+Regards,
+Oleksij
+
+
+--Kt6iVGfNGtw8rIqH6OgdGBASCI6Vd98oK--
+
+--S9OdwR5skvscJi5ko1MAP9sQ5Vc56WcaF
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF4EAREIAAYFAlmAXjAACgkQHwImuRkmbWl3ogD+NoKtccNXnd7Rq96jmbQV0nrD
+p+O/ChCddR6aoKqRBSkBAJl5Pyr1jT7/hPFEy7iKcPXEVgSW4WAUM3KqxDPZVm1U
+=qU6S
+-----END PGP SIGNATURE-----
+
+--S9OdwR5skvscJi5ko1MAP9sQ5Vc56WcaF--
+
+
+--===============1380572011371890146==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============1380572011371890146==--
