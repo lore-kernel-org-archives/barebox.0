@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mx0.itk-engineering.de ([212.121.145.30])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1diFob-00062v-Gu
- for barebox@lists.infradead.org; Thu, 17 Aug 2017 08:06:11 +0000
-Date: Thu, 17 Aug 2017 10:05:43 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20170817080543.ul6ge4awubb6qbo2@pengutronix.de>
-References: <20170816122709.23129-1-jbe@pengutronix.de>
+ id 1dcvti-00027E-CR
+ for barebox@lists.infradead.org; Wed, 02 Aug 2017 15:49:24 +0000
+Received: from vwexchange002.itk.local (vwexchange002.itk.local [10.61.0.115])
+ by mx0.itk-engineering.de (8.14.7/8.14.7) with ESMTP id
+ v72FmpL1032481
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL)
+ for <barebox@lists.infradead.org>; Wed, 2 Aug 2017 17:48:52 +0200
+From: Martin Hollingsworth <Martin.Hollingsworth@itk-engineering.de>
+Date: Wed, 2 Aug 2017 15:48:53 +0000
+Message-ID: <23913c556f6e4adcadbac2190f2a3409@itk-engineering.de>
+Content-Language: de-DE
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170816122709.23129-1-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +21,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] state: provide an error message when an error occurs
-To: Juergen Borleis <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: i2c_read_reg on phytec-som-am335x returns wrong data from EEPROM
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hallo J=FCrgen,
+Hello folks,
+I am having trouble reading from the 4k EEPROM via I2C on the phytec-som-am335x board. What I want to achieve is, that the code in board.c reads a value from EEPROM, evaluates it and then adds the value as globalvar to the userland for scripting. However if I read the data using the function from below, the i2c_read_reg() returns with SUCCESS but the data read to the buffer is incorrect. I use the following snippet of code to read the data within the physom_devices_init() function within the board.c file.
 
-On Wed, Aug 16, 2017 at 02:27:07PM +0200, Juergen Borleis wrote:
-> A simple typo makes the state framework fail, but without an error
-> message the developer is lost in the dark.
-> =
+------------
+struct i2c_adapter *adapter = i2c_get_adapter(0);
+if(adapter)
+{
+    struct i2c_client client;
+    client.adapter = adapter;
+    client.addr = 0x52;
+	char buff[32] = {0xFF};
+    if(i2c_read_reg(&client, 0xFE0, buff, sizeof(buff)) > 0)
+    {
+		for( ii = 0; ii < 32; ii++ )
+		{
+			printf( "%02X", buff[ii] );
+		}
+	[...]
+------------
 
-> Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
-> ---
->  common/state/state.c | 1 +
->  1 file changed, 1 insertion(+)
-> =
+If I compare the EEPROM access in barebox userland, I see similar problems. All access to the EEPROM via I2C commands only work correct, if I set the "-w" (use 16bit word access) flag. In all cases the i2c_read or i2c_write functions return 0 (success) but the read or write was not executed correctly. See the example, where both reads should return the same data:
 
-> diff --git a/common/state/state.c b/common/state/state.c
-> index 121ba0c6d..fc822b21b 100644
-> --- a/common/state/state.c
-> +++ b/common/state/state.c
-> @@ -240,6 +240,7 @@ static int state_convert_node_variable(struct state *=
-state,
->  =
+------------
+barebox@Phytec phyCORE AM335x:/ i2c_read -b 0 -a 0x52 -r 0xFE0 -c 32 -w 
+0xaa 0xff 0xaa 0xff [...] --> OK, DATA is correct
+barebox@Phytec phyCORE AM335x:/ i2c_read -b 0 -a 0x52 -r 0xFE0 -c 32
+0xf3 0xfd 0x54 0x23 [...] --> RETURNVALUE = 0 (SUCCESS), BUT READ DATA IS WRONG
+------------
 
->  	vtype =3D state_find_type_by_name(type_name);
->  	if (!vtype) {
-> +		dev_dbg(&state->dev, "Error: invalid variable type '%s'\n", type_name);
+However if I access the EEPROM using the device definition /dev/eeprom0, as provided by the DTSI file, the usual memory commands in userland - like memset, mw and md - all work just fine.
 
-I think this is only visible if you manually define DEBUG for state.
-Assuming this is right dev_dbg doesn't match your intention.
+What am I overlooking here? How do I configure i2c_read_reg() in C-Code to do WORD access to the EEPROM?
 
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Any suggestion would be appreciated.
+Regards, Martin
 
 _______________________________________________
 barebox mailing list
