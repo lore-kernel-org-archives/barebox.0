@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dccC2-0003zh-CF
- for barebox@lists.infradead.org; Tue, 01 Aug 2017 18:47:01 +0000
-Date: Tue, 1 Aug 2017 20:46:35 +0200
+ id 1ddL42-0004PT-NY
+ for barebox@lists.infradead.org; Thu, 03 Aug 2017 18:41:45 +0000
+Date: Thu, 3 Aug 2017 20:41:18 +0200
 From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20170801184635.synmn7ut2yq52sqz@pengutronix.de>
-References: <20170728144427.14007-1-andrew.smirnov@gmail.com>
+Message-ID: <20170803184118.6mkkhbhi64w2ce72@pengutronix.de>
+References: <20170802193907.4317-1-u.kleine-koenig@pengutronix.de>
+ <20170802195440.GA12893@ravnborg.org>
+ <20170802201923.yq34mtr25ki3j25c@pengutronix.de>
+ <20170802203240.GA21641@ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170728144427.14007-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20170802203240.GA21641@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,29 +21,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 00/11] i.MX7 SabreSD support
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 0/2] spi: imx: don't loop endlessly
+To: Sam Ravnborg <sam@ravnborg.org>
 Cc: barebox@lists.infradead.org
 
-Hello,
-
-a bit unrelated to this patches: I try to setup spi on my imx7d board
-but it hangs in cspi_2_3_xchg_single. So it would be great to know if
-spi works for you.
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gV2VkLCBBdWcgMDIsIDIwMTcgYXQgMTA6MzI6NDBQTSArMDIwMCwgU2FtIFJhdm5ib3JnIHdy
+b3RlOgo+IEhpIFV3ZS4KPiA+IEkgaGF2bid0IGxvb2tlZCBhdCBpdCwgYnV0IGl0IGlzIGluY2x1
+ZGVkIGluIG15IGJhcmVib3ggYXMgSSdtIHVzaW5nCj4gPiAyMDE3LjA4LjAgKyBzb21lIHBhdGNo
+ZXMuCj4gQW5kIEkgZGlkIG5vdCBleHBlY3QgaXQgdG8gc29sdmUgeW91ciBwcm9ibGVtLCBvbmx5
+IHRvIGdpdmUgeW91Cj4gaW5zcGlyYXRpb24gd2hhdCBjb3VsZCBiZSB0aGUgaXNzdWUuCj4gCj4g
+PiAKPiA+IFJlYWRpbmcgdGhyb3VnaCB0aGUgcGF0Y2ggZGVzY3JpcHRpb24sIGl0IGRvZXNuJ3Qg
+bWF0Y2ggbXkgc2l0dWF0aW9uLgo+IE9LCj4gCj4gPiBJJ20gZG9pbmcgVVNCLUJvb3RpbmcgYmVj
+YXVzZSB3aGVuIEkgbWFkZSBlTU1DIHdvcmsgYWxsIG15IGF2YWlsYWJsZQo+ID4gcmVtb3RlIGhh
+bmRzIGFscmVhZHkgY2FsbGVkIGl0IGEgZGF5LiBTbyB1bmxlc3MgdGhlIGJvb3QgUk9NIGRvZXMK
+PiA+IHNvbWV0aGluZyBzdHJhbmdlIChpbXBvc3NpYmxlISkgYmFyZWJveCBpcyB0aGUgZmlyc3Qg
+c3BpIHVzZXIuCj4gPiAKPiA+IFdoYXQgc2VlbXMgdG8gYmUgc2ltaWxhciBpcyB0aGF0IFRFU1RS
+RUcuVFhDTlQgaXMgIT0gMC4gRm9yIG1lIHRoaXMKPiA+IHNtZWxscyBjbGstcmVsYXRlZC4gT24g
+aS5NWDYgSSByZWNlbnRseSBpZGVudGlmaWVkIGEgcHJvYmxlbSAoYnV0IGRpZG4ndAo+ID4gY29t
+ZSBhcm91bmQgeWV0IHRvIG1haW5saW5lIGEgZml4KSB0aGF0IG1pZ2h0IG1hdGNoIGF0IGxlYXN0
+IHlvdXIKPiA+IHByb2JsZW0uCj4gPiAKPiA+IENhbiB5b3Ugc3RpbGwgcmVwcm9kdWNlPwo+IFdl
+IGhhdmUgdXNlZCB0aGUgcGF0Y2ggZnJvbSBTYXNjaGEgZm9yIGEgbG9uZyB0aW1lIG5vdyAoZnJv
+bSBiZWZvcmUgaXQKPiBoaXQgYmFyZWJveC1uZXh0LCBhbmQgb24gb3VyIHByb3ByaWV0YXJ5IElN
+WDYgdGFyZ2V0IHdlIG5ldmVyCj4gc2F3IHRoZSBTUEkgcmVsYXRlZCBlcnJvciBzaW5jZS4KPiAK
+PiAJU2FtCj4gCj4gPiBIb3cgZG9lcyB5b3VyIGNsay10cmVlIGxvb2sgbGlrZSAoY2xrX2R1bXAp
+Pwo+IAo+IFRoaXMgaXMgd2l0aDoKPiAkIHZlcnNpb24KPiBiYXJlYm94IDIwMTcuMDMuMC0xICMx
+IFN1biBNYXkgMTQgMTY6MTc6MjQgQ0VTVCAyMDE3Cj4gKyBzb21lIG9mIG91ciBvd24gcGF0Y2hl
+cyAobm90aGluZyBjbGsgcmVsYXRlZCkuCj4gCj4gJCBjbGtfZHVtcAo+IFsuLi5dCj4gICAgICAg
+ICAgICAgZWNzcGlfcm9vdCAocmF0ZSA2MDAwMDAwMCwgZW5hYmxlZCkKPiAgICAgICAgICAgICAg
+ICAgZWNzcGkxIChyYXRlIDYwMDAwMDAwLCBlbmFibGVkKQo+ICAgICAgICAgICAgICAgICBlY3Nw
+aTIgKHJhdGUgNjAwMDAwMDAsIGVuYWJsZWQpCj4gICAgICAgICAgICAgICAgIGVjc3BpMyAocmF0
+ZSA2MDAwMDAwMCwgZW5hYmxlZCkKPiAgICAgICAgICAgICAgICAgZWNzcGk0IChyYXRlIDYwMDAw
+MDAwLCBlbmFibGVkKQo+ICAgICAgICAgICAgICAgICBlY3NwaTUgKHJhdGUgNjAwMDAwMDAsIGVu
+YWJsZWQpCgplY3NwaV9yb290IGlzIGRlZmluZWQgYXM6CgoJY2xrc1tJTVg2UURMX0NMS19FQ1NQ
+SV9ST09UXSA9IGlteF9jbGtfZGl2aWRlcigiZWNzcGlfcm9vdCIsICJwbGwzXzYwbSIsIGJhc2Ug
+KyAweDM4LCAxOSwgNik7CgpUaGUgUk0gKFJlZmVyZW5jZSBNYW51YWwpIGRlc2NyaWJlcyB0aGlz
+IHJlZ2lzdGVyIGFzIGZvbGxvd3M6CgoJQ0NNX0NTQ0RSMiwgYml0cyAyNOKAkzE5OiAuLi4gTk9U
+RTogRGl2aWRlciBzaG91bGQgYmUgdXBkYXRlZCB3aGVuCglvdXRwdXQgY2xvY2sgaXMgZ2F0ZWQu
+CgpJdCBzZWVtcyB0aGUgQk9PVFJPTSBpbiBzb21lIG9sZGVyIHJldmlzaW9ucyBvZiB0aGUgY2hp
+cHMgZGlkbid0IHJlc3BlY3QKdGhpcyByZXF1aXJlbWVudCAoZm9yIGEgZGlmZmVyZW50IGNsayB0
+aG91Z2gpIHdoaWNoIHJlc3VsdGVkIGluCkVSUjAwNzExNyAoZGVzY3JpYmVkIGluIHRoZSBDaGlw
+RXJyYXRhIGRvY3VtZW50IGZvciB0aGUgaS5YTTZEUSk6CgoJRm9yIHJhdyBOQU5EIGJvb3QsIFJP
+TSBzd2l0Y2hlcyB0aGUgc291cmNlIG9mIGVuZmNfY2xrX3Jvb3QgZnJvbQoJUExMMl9QRkQyIHRv
+IFBMTDMuIFRoZSByb290IGNsb2NrIGlzIHJlcXVpcmVkIHRvIGJlIGdhdGVkIGJlZm9yZQoJc3dp
+dGNoaW5nIHRoZSBzb3VyY2UgY2xvY2suIElmIHRoZSByb290IGNsb2NrIGlzIG5vdCBnYXRlZCwg
+Y2xvY2sKCWdsaXRjaGVzIG1pZ2h0IGJlIHBhc3NlZCB0byB0aGUgZGl2aWRlciB0aGF0IGZvbGxv
+d3MgdGhlIGNsb2NrIG11eCwgYW5kCgl0aGUgZGl2aWRlciBtaWdodCBiZWhhdmUgdW5wcmVkaWN0
+YWJseS4gVGhpcyBjYW4gY2F1c2UgdGhlIGNsb2NrCglnZW5lcmF0aW9uIHRvIGZhaWwgYW5kIHRo
+ZSBjaGlwIHdpbGwgbm90IGJvb3Qgc3VjY2Vzc2Z1bGx5LgoJCglUaGlzIHByb2JsZW0gY2FuIGFs
+c28gb2NjdXIgZWxzZXdoZXJlIGluIGFwcGxpY2F0aW9uIGNvZGUgaWYgdGhlCglyb290IGNsb2Nr
+IGlzIG5vdCBwcm9wZXJseSBnYXRlZCB3aGVuIHRoZSBjbG9jayBjb25maWd1cmF0aW9uIGlzCglj
+aGFuZ2VkLgoKSU1ITyB0aGlzIGZpdHMgbmljZWx5IHRvIHlvdXIgZXJyb3IgZGVzY3JpcHRpb24u
+IGkuTVg2VUwgaXMgYWZmZWN0ZWQgZm9yCnN1cmUgYXMgaXQgZG9lcwoKICAgICAgICBjbGtfc2V0
+X3BhcmVudChjbGtzW0lNWDZVTF9DTEtfRU5GQ19TRUxdLCBjbGtzW0lNWDZVTF9DTEtfUExMMl9Q
+RkQyXSk7Cgp3aXRob3V0IG1ha2luZyBzdXJlIHRoYXQgc29tZSBhZmZlY3RlZCBjbGtzIGFyZSBv
+ZmYuIFRoaXMgcmVzdWx0ZWQgaW4KZmFpbHVyZXMgdG8gcHJvYmUgdGhlIE5BTkQgb2NjYXNpb25h
+bGx5IG9uIGEgY3VzdG9tZXIgbWFjaGluZS4KCkZvciBpLk1YNlNETCBvciBpLk1YNkRRIEkgZG9u
+J3Qgc2VlIGEgbWF0Y2hpbmcgY2hhbmdlIGZvciB0aGUgZWNzcGlfcm9vdApjbGssIGJ1dCBtYXli
+ZSB0aGlzIGlzIHRyaWdnZXJlZCBieSBzZXR0aW5nIHRoZSBmcmVxdWVuY3kgb24gb25lIG9mIHRo
+ZQpjaGlsZCBjbG9ja3M/IQoKQmVzdCByZWdhcmRzClV3ZQoKLS0gClBlbmd1dHJvbml4IGUuSy4g
+ICAgICAgICAgICAgICAgICAgICAgICAgICB8IFV3ZSBLbGVpbmUtS8O2bmlnICAgICAgICAgICAg
+fApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3
+LnBlbmd1dHJvbml4LmRlLyAgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
+b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
