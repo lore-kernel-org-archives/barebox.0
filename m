@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from mout.gmx.net ([212.227.17.21])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dd0KK-00020I-29
- for barebox@lists.infradead.org; Wed, 02 Aug 2017 20:33:10 +0000
-Date: Wed, 2 Aug 2017 22:32:40 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170802203240.GA21641@ravnborg.org>
-References: <20170802193907.4317-1-u.kleine-koenig@pengutronix.de>
- <20170802195440.GA12893@ravnborg.org>
- <20170802201923.yq34mtr25ki3j25c@pengutronix.de>
+ id 1ddH9d-0001er-8W
+ for barebox@lists.infradead.org; Thu, 03 Aug 2017 14:31:16 +0000
+Received: from [192.168.1.241] ([31.18.251.132]) by mail.gmx.com (mrgmx103
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 0LaGfK-1dFjyb2aHG-00m3OJ for
+ <barebox@lists.infradead.org>; Thu, 03 Aug 2017 16:30:47 +0200
+References: <20170801180621.25325-1-linux@rempel-privat.de>
+ <20170801180621.25325-4-linux@rempel-privat.de>
+From: Oleksij Rempel <fishor@gmx.net>
+Message-ID: <7935865f-204f-e965-60ac-51f7d59259ac@gmx.net>
+Date: Thu, 3 Aug 2017 16:30:36 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170802201923.yq34mtr25ki3j25c@pengutronix.de>
+In-Reply-To: <20170801180621.25325-4-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,201 +21,364 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============6682813395363754338=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] spi: imx: don't loop endlessly
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v1 3/3] MIPS: ath79: add TP-Link WDR4300 board support
+To: barebox@lists.infradead.org
 
-Hi Uwe.
-> I havn't looked at it, but it is included in my barebox as I'm using
-> 2017.08.0 + some patches.
-And I did not expect it to solve your problem, only to give you
-inspiration what could be the issue.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============6682813395363754338==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="v6uebn9oV8wdwuJ91DUw9pB2wwHkBCvOk"
 
-> 
-> Reading through the patch description, it doesn't match my situation.
-OK
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--v6uebn9oV8wdwuJ91DUw9pB2wwHkBCvOk
+Content-Type: multipart/mixed; boundary="B8f3KuGa92TxScw1K9j3FfwNDomn2xEok";
+ protected-headers="v1"
+From: Oleksij Rempel <fishor@gmx.net>
+To: barebox@lists.infradead.org
+Message-ID: <7935865f-204f-e965-60ac-51f7d59259ac@gmx.net>
+Subject: Re: [PATCH v1 3/3] MIPS: ath79: add TP-Link WDR4300 board support
+References: <20170801180621.25325-1-linux@rempel-privat.de>
+ <20170801180621.25325-4-linux@rempel-privat.de>
+In-Reply-To: <20170801180621.25325-4-linux@rempel-privat.de>
 
-> I'm doing USB-Booting because when I made eMMC work all my available
-> remote hands already called it a day. So unless the boot ROM does
-> something strange (impossible!) barebox is the first spi user.
-> 
-> What seems to be similar is that TESTREG.TXCNT is != 0. For me this
-> smells clk-related. On i.MX6 I recently identified a problem (but didn't
-> come around yet to mainline a fix) that might match at least your
-> problem.
-> 
-> Can you still reproduce?
-We have used the patch from Sascha for a long time now (from before it
-hit barebox-next, and on our proprietary IMX6 target we never
-saw the SPI related error since.
+--B8f3KuGa92TxScw1K9j3FfwNDomn2xEok
+Content-Type: text/plain; charset=utf-8
+Content-Language: ru
+Content-Transfer-Encoding: quoted-printable
 
-	Sam
+Am 01.08.2017 um 20:06 schrieb Oleksij Rempel:
+> This provides low level initialization of pll and ddr2. Resulting binar=
+y
+> should work from SRAM, DDR2 and SPI flash. If started from DDR2 RAM
+> level initialization will skipped.
+>=20
+> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+> ---
+>  arch/mips/Makefile                                 |  1 +
+>  arch/mips/boards/tplink-wdr4300/Makefile           |  1 +
+>  arch/mips/boards/tplink-wdr4300/board.c            | 28 ++++++++++
+>  .../tplink-wdr4300/include/board/board_pbl_start.h | 62 ++++++++++++++=
+++++++++
+>  arch/mips/configs/tplink-wdr4300_defconfig         | 50 ++++++++++++++=
++++
+>  arch/mips/dts/ar9344_tl_wdr3400.dts                | 47 ++++++++++++++=
+++
+>  arch/mips/mach-ath79/Kconfig                       | 10 ++++
+>  7 files changed, 199 insertions(+)
+>  create mode 100644 arch/mips/boards/tplink-wdr4300/Makefile
+>  create mode 100644 arch/mips/boards/tplink-wdr4300/board.c
+>  create mode 100644 arch/mips/boards/tplink-wdr4300/include/board/board=
+_pbl_start.h
+>  create mode 100644 arch/mips/configs/tplink-wdr4300_defconfi
+>  create mode 100644 arch/mips/dts/ar9344_tl_wdr3400.dts
 
-> How does your clk-tree look like (clk_dump)?
-
-This is with:
-$ version
-barebox 2017.03.0-1 #1 Sun May 14 16:17:24 CEST 2017
-+ some of our own patches (nothing clk related).
-
-$ clk_dump
-lvds2_sel (rate 0, enabled)
-    lvds2_gate (rate 0, disabled)
-osc (rate 24000000, enabled)
-    pll1_sys (rate 792000000, disabled)
-        pll1_sw (rate 792000000, disabled)
-            arm (rate 792000000, disabled)
-                twd (rate 396000000, disabled)
-                cko2_sel (rate 792000000, disabled)
-                    cko2_podf (rate 792000000, disabled)
-                        cko2 (rate 792000000, disabled)
-    pll2_bus (rate 528000000, enabled)
-        pll2_pfd0_352m (rate 306580645, disabled)
-        pll2_pfd1_594m (rate 528000000, disabled)
-        pll2_pfd2_396m (rate 396000000, enabled)
-            pll2_198m (rate 198000000, enabled)
-            step (rate 396000000, enabled)
-            periph_pre (rate 396000000, enabled)
-                periph (rate 396000000, enabled)
-                    axi_sel (rate 396000000, enabled)
-                        axi (rate 198000000, enabled)
-                            eim_sel (rate 198000000, enabled)
-                                eim_podf (rate 99000000, enabled)
-                            eim_slow_sel (rate 198000000, enabled)
-                                eim_slow_podf (rate 99000000, enabled)
-                                    eim_slow (rate 99000000, enabled)
-                            vdo_axi_sel (rate 198000000, enabled)
-                            pcie_axi_sel (rate 198000000, enabled)
-                                pcie_axi (rate 198000000, disabled)
-                    mmdc_ch0_axi_podf (rate 396000000, enabled)
-                        ipu1_sel (rate 396000000, enabled)
-                            ipu1_podf (rate 49500000, enabled)
-                                ipu1 (rate 49500000, enabled)
-                                    2400000.ipu_di0_pixel (rate 33000000, enabled)
-                                    2400000.ipu_di1_pixel (rate 49500000, enabled)
-                        ipu2_sel (rate 396000000, enabled)
-                            ipu2_podf (rate 198000000, enabled)
-                                ipu2 (rate 198000000, enabled)
-                    ahb (rate 132000000, enabled)
-                        ipg (rate 66000000, enabled)
-                            ipg_per (rate 66000000, enabled)
-                                gpt_ipg_per (rate 66000000, enabled)
-                                i2c1 (rate 66000000, enabled)
-                                i2c2 (rate 66000000, enabled)
-                                i2c3 (rate 66000000, enabled)
-                                pwm1 (rate 66000000, enabled)
-                                pwm2 (rate 66000000, enabled)
-                                pwm3 (rate 66000000, enabled)
-                                pwm4 (rate 66000000, enabled)
-                            caam_ipg (rate 66000000, enabled)
-                            enet (rate 66000000, enabled)
-                            gpt_ipg (rate 66000000, enabled)
-                            iim (rate 66000000, enabled)
-                            sata (rate 66000000, enabled)
-                            uart_ipg (rate 66000000, enabled)
-                            usboh3 (rate 66000000, enabled)
-                        caam_mem (rate 132000000, enabled)
-                        caam_aclk (rate 132000000, enabled)
-            periph2_pre (rate 396000000, enabled)
-                periph2 (rate 396000000, enabled)
-                    mmdc_ch1_axi_podf (rate 396000000, enabled)
-            usdhc1_sel (rate 396000000, enabled)
-                usdhc1_podf (rate 198000000, enabled)
-                    usdhc1 (rate 198000000, enabled)
-            usdhc2_sel (rate 396000000, enabled)
-                usdhc2_podf (rate 198000000, enabled)
-                    usdhc2 (rate 198000000, enabled)
-            usdhc3_sel (rate 396000000, enabled)
-                usdhc3_podf (rate 198000000, enabled)
-                    usdhc3 (rate 198000000, enabled)
-                        apbh_dma (rate 198000000, enabled)
-                        per1_bch (rate 198000000, enabled)
-                        gpmi_bch_apb (rate 198000000, enabled)
-                        gpmi_apb (rate 198000000, enabled)
-            usdhc4_sel (rate 396000000, enabled)
-                usdhc4_podf (rate 198000000, enabled)
-                    usdhc4 (rate 198000000, enabled)
-                        gpmi_bch (rate 198000000, enabled)
-        cko1_sel (rate 528000000, enabled)
-            cko1_podf (rate 528000000, enabled)
-                cko1 (rate 528000000, disabled)
-                    cko (rate 528000000, disabled)
-    pll3_usb_otg (rate 480000000, enabled)
-        usbphy1 (rate 480000000, disabled)
-        pll3_pfd0_720m (rate 720000000, disabled)
-        pll3_pfd1_540m (rate 540000000, disabled)
-        pll3_pfd2_508m (rate 508235294, disabled)
-        pll3_pfd3_454m (rate 454736842, disabled)
-        pll3_120m (rate 120000000, enabled)
-        pll3_80m (rate 80000000, enabled)
-            uart_serial_podf (rate 80000000, enabled)
-                uart_serial (rate 80000000, enabled)
-        pll3_60m (rate 60000000, enabled)
-            ecspi_root (rate 60000000, enabled)
-                ecspi1 (rate 60000000, enabled)
-                ecspi2 (rate 60000000, enabled)
-                ecspi3 (rate 60000000, enabled)
-                ecspi4 (rate 60000000, enabled)
-                ecspi5 (rate 60000000, enabled)
-        periph2_clk2_sel (rate 480000000, enabled)
-            periph2_clk2 (rate 480000000, enabled)
-        enfc_sel (rate 480000000, enabled)
-            enfc_pred (rate 96000000, enabled)
-                enfc_podf (rate 96000000, enabled)
-                    enfc (rate 96000000, enabled)
-                        gpmi_io (rate 96000000, enabled)
-        can_root (rate 240000000, enabled)
-    pll4_audio (rate 144000000, disabled)
-    pll5_video (rate 288000000, disabled)
-        pll5_post_div (rate 72000000, disabled)
-            pll5_video_div (rate 72000000, disabled)
-                ldb_di0_sel (rate 72000000, disabled)
-                    ldb_di0_div_3_5 (rate 20571428, disabled)
-                        ldb_di0_podf (rate 10285714, disabled)
-                            ldb_di0 (rate 10285714, disabled)
-                ldb_di1_sel (rate 72000000, disabled)
-                    ldb_di1_div_3_5 (rate 20571428, disabled)
-                        ldb_di1_podf (rate 10285714, disabled)
-                            ldb_di1 (rate 10285714, disabled)
-                ipu1_di0_pre_sel (rate 72000000, disabled)
-                    ipu1_di0_pre (rate 24000000, disabled)
-                        ipu1_di0_sel (rate 24000000, disabled)
-                            ipu1_di0 (rate 24000000, disabled)
-                ipu1_di1_pre_sel (rate 72000000, disabled)
-                    ipu1_di1_pre (rate 24000000, disabled)
-                        ipu1_di1_sel (rate 24000000, disabled)
-                            ipu1_di1 (rate 24000000, disabled)
-                ipu2_di0_pre_sel (rate 72000000, disabled)
-                    ipu2_di0_pre (rate 24000000, disabled)
-                        ipu2_di0_sel (rate 24000000, disabled)
-                            ipu2_di0 (rate 24000000, disabled)
-                ipu2_di1_pre_sel (rate 72000000, disabled)
-                    ipu2_di1_pre (rate 36000000, disabled)
-                        ipu2_di1_sel (rate 36000000, disabled)
-                            ipu2_di1 (rate 36000000, disabled)
-    pll8_mlb (rate 24000000, disabled)
-    pll7_usb_host (rate 480000000, disabled)
-        usbphy2 (rate 480000000, disabled)
-    pll6_enet (rate 500000000, enabled)
-        sata_ref (rate 100000000, enabled)
-            sata_ref_100m (rate 100000000, enabled)
-                lvds1_sel (rate 100000000, enabled)
-                    lvds1_gate (rate 100000000, disabled)
-        pcie_ref (rate 125000000, enabled)
-            pcie_ref_125m (rate 125000000, disabled)
-        enet_ref (rate 50000000, enabled)
-    periph_clk2_sel (rate 24000000, enabled)
-        periph_clk2 (rate 24000000, enabled)
-ckih1 (rate 0, enabled)
-ckil (rate 32768, enabled)
+DTS file has wrong name. Should be wdr4300 instead of wdr3400
 
 
+> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> index 75761b5e7..dd5ceea20 100644
+> --- a/arch/mips/Makefile
+> +++ b/arch/mips/Makefile
+> @@ -80,6 +80,7 @@ board-$(CONFIG_BOARD_NETGEAR_WG102)	:=3D netgear-wg10=
+2
+> =20
+>  machine-$(CONFIG_MACH_MIPS_ATH79)	:=3D ath79
+>  board-$(CONFIG_BOARD_TPLINK_MR3020)	:=3D tplink-mr3020
+> +board-$(CONFIG_BOARD_TPLINK_WDR4300)	:=3D tplink-wdr4300
+>  board-$(CONFIG_BOARD_BLACK_SWIFT)	:=3D black-swift
+> =20
+>  machine-$(CONFIG_MACH_MIPS_BCM47XX)	:=3D bcm47xx
+> diff --git a/arch/mips/boards/tplink-wdr4300/Makefile b/arch/mips/board=
+s/tplink-wdr4300/Makefile
+> new file mode 100644
+> index 000000000..dcfc2937d
+> --- /dev/null
+> +++ b/arch/mips/boards/tplink-wdr4300/Makefile
+> @@ -0,0 +1 @@
+> +obj-y +=3D board.o
+> diff --git a/arch/mips/boards/tplink-wdr4300/board.c b/arch/mips/boards=
+/tplink-wdr4300/board.c
+> new file mode 100644
+> index 000000000..d6126fcb6
+> --- /dev/null
+> +++ b/arch/mips/boards/tplink-wdr4300/board.c
+> @@ -0,0 +1,28 @@
+> +/*
+> + * Copyright (C) 2017 Oleksij Rempel <o.rempel@pengutronix.de>
+> + * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
+> + *
+> + * This file is part of barebox.
+> + * See file CREDITS for list of people who contributed to this project=
+=2E
+> + *
+> + * This program is free software; you can redistribute it and/or modif=
+y
+> + * it under the terms of the GNU General Public License version 2
+> + * as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + */
+> +
+> +#include <common.h>
+> +#include <init.h>
+> +
+> +static int model_hostname_init(void)
+> +{
+> +	barebox_set_hostname("wdr4300");
+> +
+> +	return 0;
+> +}
+> +postcore_initcall(model_hostname_init);
+> diff --git a/arch/mips/boards/tplink-wdr4300/include/board/board_pbl_st=
+art.h b/arch/mips/boards/tplink-wdr4300/include/board/board_pbl_start.h
+> new file mode 100644
+> index 000000000..7d4ee4bab
+> --- /dev/null
+> +++ b/arch/mips/boards/tplink-wdr4300/include/board/board_pbl_start.h
+> @@ -0,0 +1,62 @@
+> +/*
+> + * Copyright (C) 2017 Oleksij Rempel <o.rempel@pengutronix.de>
+> + *
+> + * This file is part of barebox.
+> + * See file CREDITS for list of people who contributed to this project=
+=2E
+> + *
+> + * This program is free software; you can redistribute it and/or modif=
+y
+> + * it under the terms of the GNU General Public License version 2
+> + * as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+> + * GNU General Public License for more details.
+> + *
+> + */
+> +
+> +#include <mach/debug_ll_ar9344.h>
+> +#include <asm/pbl_macros.h>
+> +#include <mach/pbl_macros.h>
+> +#include <mach/pbl_ll_init_ar9344_1.1.h>
+> +#include <asm/pbl_nmon.h>
+> +
+> +	.macro	board_pbl_start
+> +	.set	push
+> +	.set	noreorder
+> +
+> +	mips_barebox_10h
+> +
+> +	debug_ll_ar9344_init
+> +
+> +	debug_ll_outc '1'
+> +
+> +	hornet_mips24k_cp0_setup
+> +	debug_ll_outc '2'
+> +
+> +	/* test if we are in the SRAM */
+> +	pbl_blt 0xbd000000 1f t8
+> +	debug_ll_outc '3'
+> +	b skip_flash_test
+> +	nop
+> +1:
+> +	/* test if we are in the flash */
+> +	pbl_blt 0xbf000000 skip_pll_ram_config t8
+> +	debug_ll_outc '4'
+> +skip_flash_test:
+> +
+> +	pbl_ar9344_v11_pll_config
+> +	debug_ll_outc '5'
+> +
+> +	pbl_ar9344_v11_ddr2_config
+> +
+> +skip_pll_ram_config:
+> +	debug_ll_outc '6'
+> +	debug_ll_outnl
+> +
+> +	mips_nmon
+> +
+> +	copy_to_link_location	pbl_start
+> +
+> +	.set	pop
+> +	.endm
+> diff --git a/arch/mips/configs/tplink-wdr4300_defconfig b/arch/mips/con=
+figs/tplink-wdr4300_defconfig
+> new file mode 100644
+> index 000000000..9114b86db
+> --- /dev/null
+> +++ b/arch/mips/configs/tplink-wdr4300_defconfig
+> @@ -0,0 +1,50 @@
+> +CONFIG_BUILTIN_DTB=3Dy
+> +CONFIG_BUILTIN_DTB_NAME=3D"ar9344_tl_wdr3400"
+> +CONFIG_MACH_MIPS_ATH79=3Dy
+> +CONFIG_BOARD_TPLINK_WDR4300=3Dy
+> +CONFIG_PBL_IMAGE=3Dy
+> +CONFIG_IMAGE_COMPRESSION_XZKERN=3Dy
+> +CONFIG_MMU=3Dy
+> +CONFIG_TEXT_BASE=3D0xbfc00000
+> +CONFIG_MALLOC_TLSF=3Dy
+> +CONFIG_CMDLINE_EDITING=3Dy
+> +CONFIG_AUTO_COMPLETE=3Dy
+> +CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=3Dy
+> +CONFIG_DEBUG_INFO=3Dy
+> +CONFIG_DEBUG_LL=3Dy
+> +CONFIG_DEBUG_INITCALLS=3Dy
+> +CONFIG_LONGHELP=3Dy
+> +CONFIG_CMD_IOMEM=3Dy
+> +CONFIG_CMD_MEMINFO=3Dy
+> +CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=3Dy
+> +# CONFIG_CMD_BOOTM is not set
+> +CONFIG_CMD_GO=3Dy
+> +CONFIG_CMD_LOADB=3Dy
+> +CONFIG_CMD_LOADY=3Dy
+> +CONFIG_CMD_RESET=3Dy
+> +CONFIG_CMD_SHA1SUM=3Dy
+> +CONFIG_CMD_LET=3Dy
+> +CONFIG_CMD_SLEEP=3Dy
+> +CONFIG_CMD_EDIT=3Dy
+> +CONFIG_CMD_MM=3Dy
+> +CONFIG_CMD_CLK=3Dy
+> +CONFIG_CMD_FLASH=3Dy
+> +CONFIG_CMD_GPIO=3Dy
+> +CONFIG_CMD_LED=3Dy
+> +CONFIG_CMD_SPI=3Dy
+> +CONFIG_CMD_LED_TRIGGER=3Dy
+> +CONFIG_CMD_OF_NODE=3Dy
+> +CONFIG_CMD_OF_PROPERTY=3Dy
+> +CONFIG_CMD_OFTREE=3Dy
+> +CONFIG_OFDEVICE=3Dy
+> +CONFIG_DRIVER_SERIAL_NS16550=3Dy
+> +CONFIG_DRIVER_SPI_ATH79=3Dy
+> +CONFIG_MTD=3Dy
+> +# CONFIG_MTD_OOB_DEVICE is not set
+> +CONFIG_MTD_M25P80=3Dy
+> +CONFIG_LED=3Dy
+> +CONFIG_LED_GPIO=3Dy
+> +CONFIG_LED_GPIO_OF=3Dy
+> +CONFIG_LED_TRIGGERS=3Dy
+> +CONFIG_DIGEST_SHA224_GENERIC=3Dy
+> +CONFIG_DIGEST_SHA256_GENERIC=3Dy
+> diff --git a/arch/mips/dts/ar9344_tl_wdr3400.dts b/arch/mips/dts/ar9344=
+_tl_wdr3400.dts
+> new file mode 100644
+> index 000000000..825b4820d
+> --- /dev/null
+> +++ b/arch/mips/dts/ar9344_tl_wdr3400.dts
+> @@ -0,0 +1,47 @@
+> +/dts-v1/;
+> +
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/input/input.h>
+> +
+> +#include "ar9344.dtsi"
+> +
+> +/ {
+> +	model =3D "TP-Link WDR4300";
+> +	compatible =3D "tplink,tl-wdr4300";
+> +
+> +	aliases {
+> +		serial0 =3D &uart0;
+> +	};
+> +
+> +	memory@0 {
+> +		device_type =3D "memory";
+> +		reg =3D <0x0 0x8000000>;
+> +	};
+> +
+> +	chosen {
+> +		stdout-path =3D &uart0;
+> +	};
+> +};
+> +
+> +&ref {
+> +	clock-frequency =3D <40000000>;
+> +};
+> +
+> +&uart0 {
+> +	status =3D "okay";
+> +	clock-frequency =3D <40000000>;
+> +};
+> +
+> +&spi {
+> +	num-chipselects =3D <1>;
+> +	status =3D "okay";
+> +
+> +	/* Winbond W25Q64CV SPI flash */
+> +	spiflash: w25q64cv@0 {
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <1>;
+> +		compatible =3D "winbond,w25q64cv", "jedec,spi-nor";
+> +		spi-max-frequency =3D <104000000>;
+> +		reg =3D <0>;
+> +	};
+> +};
+> diff --git a/arch/mips/mach-ath79/Kconfig b/arch/mips/mach-ath79/Kconfi=
+g
+> index f2eae2532..9fec00c98 100644
+> --- a/arch/mips/mach-ath79/Kconfig
+> +++ b/arch/mips/mach-ath79/Kconfig
+> @@ -7,6 +7,9 @@ config ARCH_TEXT_BASE
+>  config SOC_QCA_AR9331
+>  	bool
+> =20
+> +config SOC_QCA_AR9344
+> +	bool
+> +
+>  choice
+>  	prompt "Board type"
+> =20
+> @@ -17,6 +20,13 @@ config BOARD_TPLINK_MR3020
+>  	select HAVE_IMAGE_COMPRESSION
+>  	select HAS_NMON
+> =20
+> +config BOARD_TPLINK_WDR4300
+> +	bool "TP-LINK WDR4300"
+> +	select SOC_QCA_AR9344
+> +	select HAVE_PBL_IMAGE
+> +	select HAVE_IMAGE_COMPRESSION
+> +	select HAS_NMON
+> +
+>  config BOARD_BLACK_SWIFT
+>  	bool "Black Swift"
+>  	select SOC_QCA_AR9331
+>=20
+
+
+
+--B8f3KuGa92TxScw1K9j3FfwNDomn2xEok--
+
+--v6uebn9oV8wdwuJ91DUw9pB2wwHkBCvOk
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iG4EAREIABYFAlmDM5EPHGZpc2hvckBnbXgubmV0AAoJEB8CJrkZJm1p6YsBAJka
+eMJt71PBJxRe+XCkH1Jvw5qVA3eii7zp87/cMACFAP4vZsMPKRXjOb5arzgChFNG
+iJzqHPeH0r5g9JaYH4q4FQ==
+=A3hS
+-----END PGP SIGNATURE-----
+
+--v6uebn9oV8wdwuJ91DUw9pB2wwHkBCvOk--
+
+
+--===============6682813395363754338==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============6682813395363754338==--
