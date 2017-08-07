@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.21])
+Received: from mout.gmx.net ([212.227.17.22])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dejCI-0003rg-AT
- for barebox@lists.infradead.org; Mon, 07 Aug 2017 14:40:04 +0000
+ id 1dejCI-0003rj-AP
+ for barebox@lists.infradead.org; Mon, 07 Aug 2017 14:40:01 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Mon,  7 Aug 2017 16:39:15 +0200
-Message-Id: <20170807143927.1641-1-linux@rempel-privat.de>
+Date: Mon,  7 Aug 2017 16:39:18 +0200
+Message-Id: <20170807143927.1641-4-linux@rempel-privat.de>
+In-Reply-To: <20170807143927.1641-1-linux@rempel-privat.de>
+References: <20170807143927.1641-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +21,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 01/13] MIPS: ath79: provide CONFIG_SOC_QCA_AR9331 option
+Subject: [PATCH v2 04/13] MIPS: add virt_to_phys() and phys_to_virt()
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-QCA AR9331 and QCA AR9344 have some similar part but different uart engines.
-We need this flag to provide common debug_ll support.
+From: Antony Pavlov <antonynpavlov@gmail.com>
 
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- arch/mips/mach-ath79/Kconfig | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/mips/include/asm/io.h | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/arch/mips/mach-ath79/Kconfig b/arch/mips/mach-ath79/Kconfig
-index 9b8e3946e..f2eae2532 100644
---- a/arch/mips/mach-ath79/Kconfig
-+++ b/arch/mips/mach-ath79/Kconfig
-@@ -4,17 +4,22 @@ config ARCH_TEXT_BASE
- 	hex
- 	default 0xa0800000
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 4bee5913a..993b30e2a 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -12,11 +12,46 @@
  
-+config SOC_QCA_AR9331
-+	bool
+ #include <linux/compiler.h>
+ #include <asm/types.h>
++#include <asm/addrspace.h>
+ #include <asm/byteorder.h>
+ 
+ void dma_flush_range(unsigned long, unsigned long);
+ void dma_inv_range(unsigned long, unsigned long);
+ 
++/*
++ *     virt_to_phys    -       map virtual addresses to physical
++ *     @address: address to remap
++ *
++ *     The returned physical address is the physical (CPU) mapping for
++ *     the memory address given. It is only valid to use this function on
++ *     addresses directly mapped or allocated via kmalloc.
++ *
++ *     This function does not give bus mappings for DMA transfers. In
++ *     almost all conceivable cases a device driver should not be using
++ *     this function
++ */
++static inline unsigned long virt_to_phys(const void *address)
++{
++	return (unsigned long)address & 0x1fffffff;
++}
 +
- choice
- 	prompt "Board type"
++/*
++ *     phys_to_virt    -       map physical address to virtual
++ *     @address: address to remap
++ *
++ *     The returned virtual address is a current CPU mapping for
++ *     the memory address given. It is only valid to use this function on
++ *     addresses that have a kernel mapping
++ *
++ *     This function does not handle bus mappings for DMA transfers. In
++ *     almost all conceivable cases a device driver should not be using
++ *     this function
++ */
++static inline void *phys_to_virt(unsigned long address)
++{
++	return (void *)(KSEG0 | (address & 0x1fffffff));
++}
++
+ #define	IO_SPACE_LIMIT	0
  
- config BOARD_TPLINK_MR3020
- 	bool "TP-LINK MR3020"
-+	select SOC_QCA_AR9331
- 	select HAVE_PBL_IMAGE
- 	select HAVE_IMAGE_COMPRESSION
- 	select HAS_NMON
- 
- config BOARD_BLACK_SWIFT
- 	bool "Black Swift"
-+	select SOC_QCA_AR9331
- 	select HAVE_PBL_IMAGE
- 	select HAVE_IMAGE_COMPRESSION
- 	select HAS_NMON
+ /*****************************************************************************/
 -- 
 2.11.0
 
