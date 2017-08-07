@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dfmVE-0004Zd-2A
- for barebox@lists.infradead.org; Thu, 10 Aug 2017 12:23:53 +0000
-Date: Thu, 10 Aug 2017 14:23:27 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20170810122327.7mbhv25fvxbigqyl@pengutronix.de>
-References: <20170724091559.7777-1-u.kleine-koenig@pengutronix.de>
- <20170724093707.nu7wlklphp6hidzb@pengutronix.de>
- <20170724094533.a7nwwxjcaertmyw4@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170724094533.a7nwwxjcaertmyw4@pengutronix.de>
+ id 1deeJd-0008SZ-Vi
+ for barebox@lists.infradead.org; Mon, 07 Aug 2017 09:27:15 +0000
+Message-ID: <1502098010.2934.1.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 07 Aug 2017 11:26:50 +0200
+In-Reply-To: <20170804090301.12833-1-u.kleine-koenig@pengutronix.de>
+References: <20170804090301.12833-1-u.kleine-koenig@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,60 +17,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: i.MX7: provide DDR register definitions
-To: Robert Schwebel <r.schwebel@pengutronix.de>
+Subject: Re: [PATCH] ARM: imx: imx7 has a fec
+To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jul 24, 2017 at 11:45:33AM +0200, Uwe Kleine-K=F6nig wrote:
-> Hello Robert,
-> =
-
-> On Mon, Jul 24, 2017 at 11:37:07AM +0200, Robert Schwebel wrote:
-> > On Mon, Jul 24, 2017 at 11:15:58AM +0200, Uwe Kleine-K=F6nig wrote:
-> > > This was created using cut'n'paste from the i.MX7D reference manual
-> > > (rev 0.1, 08/2016).
-> > > =
-
-> > > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > > ---
-> > >  arch/arm/mach-imx/include/mach/imx7-ddr-regs.h | 174 +++++++++++++++=
-++++++++++
-> > >  1 file changed, 174 insertions(+)
-> > >  create mode 100644 arch/arm/mach-imx/include/mach/imx7-ddr-regs.h
-> > > =
-
-> > > diff --git a/arch/arm/mach-imx/include/mach/imx7-ddr-regs.h b/arch/ar=
-m/mach-imx/include/mach/imx7-ddr-regs.h
-> > > new file mode 100644
-> > > index 000000000000..e66b2da11ede
-> > > --- /dev/null
-> > > +++ b/arch/arm/mach-imx/include/mach/imx7-ddr-regs.h
-> > > @@ -0,0 +1,174 @@
-> > > +/*
-> > > + * Copyright (C) 2017 Pengutronix, Fridolin Tux <kernel@pengutronix.=
-de>
-> > =
-
-> > Sure?
-> =
-
-> That's what I copied from our internal license template ... *sigh* I
-> will resend.
-
-I think I forgot to resend, but Lucas took my patch anyhow :-)
-
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gRnJlaXRhZywgZGVuIDA0LjA4LjIwMTcsIDExOjAzICswMjAwIHNjaHJpZWIgVXdlIEtsZWlu
+ZS1Lw7ZuaWc6Cj4gVGhpcyBhbGxvd3MgdG8gbWFrZSB1c2Ugb2YgdGhlIGV0aGVybmV0IGRldmlj
+ZSBvbiBpLk1YNyBiYXNlZCBtYWNoaW5lcwo+IGV2ZW4gaWYgbm8gb2xkZXIgaS5NWCBpcyBlbmFi
+bGVkLgoKQSBzaW1pbGFyIHBhdGNoIChBUk06IGkuTVg6IEFkZCBBUkNIX0hBRF9GRUNfSU1YIHRv
+IEFSQ0hfSU1YNykgZnJvbQpBbmRyZXkgaXMgYWxyZWFkeSBpbiAtbmV4dCwgc28gSSdtIG5vdCBn
+b2luZyB0byBhcHBseSB0aGlzIG9uZS4KClJlZ2FyZHMsCkx1Y2FzCgo+IFNpZ25lZC1vZmYtYnk6
+IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Cj4gLS0t
+Cj4gIGFyY2gvYXJtL21hY2gtaW14L0tjb25maWcgfCAxICsKPiAgMSBmaWxlIGNoYW5nZWQsIDEg
+aW5zZXJ0aW9uKCspCj4gCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtaW14L0tjb25maWcg
+Yi9hcmNoL2FybS9tYWNoLWlteC9LY29uZmlnCj4gaW5kZXggZmE3NjAxODQ1OTRhLi4xZTdlYzBj
+NjU5ZWIgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvS2NvbmZpZwo+ICsrKyBiL2Fy
+Y2gvYXJtL21hY2gtaW14L0tjb25maWcKPiBAQCAtMTY1LDYgKzE2NSw3IEBAIGNvbmZpZyBBUkNI
+X0lNWDZVTAo+ICBjb25maWcgQVJDSF9JTVg3Cj4gIAlib29sCj4gIAlzZWxlY3QgQ1BVX1Y3Cj4g
+KwlzZWxlY3QgQVJDSF9IQVNfRkVDX0lNWAo+ICAJc2VsZWN0IFBJTkNUUkxfSU1YX0lPTVVYX1Yz
+Cj4gIAlzZWxlY3QgT0ZUUkVFCj4gIAlzZWxlY3QgQ09NTU9OX0NMS19PRl9QUk9WSURFUgoKCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
