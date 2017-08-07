@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mout.gmx.net ([212.227.17.20])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dejCI-0003rk-S6
- for barebox@lists.infradead.org; Mon, 07 Aug 2017 14:40:13 +0000
+ id 1dejCI-0003ri-EZ
+ for barebox@lists.infradead.org; Mon, 07 Aug 2017 14:40:19 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Mon,  7 Aug 2017 16:39:19 +0200
-Message-Id: <20170807143927.1641-5-linux@rempel-privat.de>
+Date: Mon,  7 Aug 2017 16:39:16 +0200
+Message-Id: <20170807143927.1641-2-linux@rempel-privat.de>
 In-Reply-To: <20170807143927.1641-1-linux@rempel-privat.de>
 References: <20170807143927.1641-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,633 +21,1226 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 05/13] net: ath79: add ag71xx Ethernet driver
+Subject: [PATCH v2 02/13] MIPS: ath79: add initial QCA AR9344 SoC support
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-From: Yegor Yefremov <yegorslists@googlemail.com>
+According to the documentation:
+"The AR9344 is a highly integrated and feature-rich IEEE 802.11n 2x2 2.4/5 GHz
+System-on-a-Chip (SoC) for advanced WLAN platforms.
 
-Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+It includes a MIPS 74Kc processor, PCI Express 1.1 Root Complex and Endpoint
+interfaces, five port IEEE 802.3 Fast Ethernet Switch with MAC/PHY,
+one MII/RMII/RGMII interface, one USB 2.0 MAC/PHY, and external memory
+interface for serial Flash, SDRAM, DDR1 or DDR2, I2S/SPDIF-Out audio interface,
+SLIC VOIP/PCM interface, two UARTs, and GPIOs that can be used for LED
+controls or other general purpose interface configurations.
+The AR9344 supports 802.11n operations up to 144 Mbps for 20 MHz and 300 Mbps
+for 40 MHz respectively, and 802.11a/b/g data rates.
+Additional features include Maximal Likelihood (ML) decoding, Low-Density
+Parity Check (LDPC), Maximal Ratio Combining (MRC), Tx Beamforming (TxBF), and
+On-Chip One-Time Programmable (OTP) memory."
+
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- Documentation/boards/mips/tplink-mr3020.rst     |   7 +
- arch/mips/mach-ath79/include/mach/ar71xx_regs.h |  12 +
- drivers/net/Kconfig                             |   7 +
- drivers/net/Makefile                            |   1 +
- drivers/net/ag71xx.c                            | 530 ++++++++++++++++++++++++
- 5 files changed, 557 insertions(+)
- create mode 100644 drivers/net/ag71xx.c
+ arch/mips/dts/ar9344.dtsi                          |  53 ++
+ arch/mips/mach-ath79/include/mach/ar71xx_regs.h    |   9 +
+ arch/mips/mach-ath79/include/mach/debug_ll.h       | 167 +------
+ .../mips/mach-ath79/include/mach/debug_ll_ar9331.h | 176 +++++++
+ .../mips/mach-ath79/include/mach/debug_ll_ar9344.h | 191 ++++++++
+ .../include/mach/pbl_ll_init_ar9344_1.1.h          | 540 +++++++++++++++++++++
+ 6 files changed, 978 insertions(+), 158 deletions(-)
+ create mode 100644 arch/mips/dts/ar9344.dtsi
+ create mode 100644 arch/mips/mach-ath79/include/mach/debug_ll_ar9331.h
+ create mode 100644 arch/mips/mach-ath79/include/mach/debug_ll_ar9344.h
+ create mode 100644 arch/mips/mach-ath79/include/mach/pbl_ll_init_ar9344_1.1.h
 
-diff --git a/Documentation/boards/mips/tplink-mr3020.rst b/Documentation/boards/mips/tplink-mr3020.rst
-index 99101c337..4119c1e7e 100644
---- a/Documentation/boards/mips/tplink-mr3020.rst
-+++ b/Documentation/boards/mips/tplink-mr3020.rst
-@@ -60,6 +60,13 @@ Next, setup network on MR3020 and run ``6F01A8C0.img``, e.g.:
-   hornet> tftpboot 0x81000000 6F01A8C0.img
-   hornet> bootm 0x81000000
- 
-+WIP: Short form:
-+  hornet> set ipaddr 192.168.0.2; set serverip 192.168.0.1
-+  hornet> tftpboot 0x81000000 6F01A8C0.img; bootm 0x81000000
+diff --git a/arch/mips/dts/ar9344.dtsi b/arch/mips/dts/ar9344.dtsi
+new file mode 100644
+index 000000000..0838e8d7f
+--- /dev/null
++++ b/arch/mips/dts/ar9344.dtsi
+@@ -0,0 +1,53 @@
++#include <dt-bindings/clock/ath79-clk.h>
 +
-+u-boot_mod:
-+  uboot> setenv ipaddr 192.168.1.12; setenv serverip 192.168.1.2
-+  uboot> tftpboot 0x81000000 6F01A8C0.img; bootm 0x81000000
- 
- Links
- -----
++/ {
++	compatible = "qca,ar9344";
++
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	cpus {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		cpu@0 {
++			device_type = "cpu";
++			compatible = "mips,mips74Kc";
++			reg = <0>;
++		};
++	};
++
++	ref: ref {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++	};
++
++	ahb {
++		compatible = "simple-bus";
++		ranges;
++
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		uart0: uart@18020000 {
++			compatible = "ns16550a", "qca,ar9344-uart0";
++			reg = <0x18020000 0x20>;
++
++			reg-shift = <2>;
++			reg-io-width = <4>;
++			big-endian;
++
++			status = "disabled";
++		};
++
++		spi: spi@1f000000 {
++			compatible = "qca,ar7100-spi", "qca,ar9344-spi";
++			reg = <0x1f000000 0x1c>;
++
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			status = "disabled";
++		};
++	};
++};
 diff --git a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-index f56c3f724..31d33b3c4 100644
+index de96c565a..f56c3f724 100644
 --- a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
 +++ b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-@@ -102,6 +102,8 @@
- #define AR933X_PLL_CLOCK_CTRL_REG	0x08
- #define AR933X_PLL_DITHER_FRAC_REG	0x10
- #define AR933X_PLL_DITHER_REG		0x14
-+#define AR933X_ETHSW_CLOCK_CONTROL_REG	0x24
-+#define AR933X_ETH_XMII_CONTROL_REG	0x2c
+@@ -37,6 +37,15 @@
+ #define AR933X_UART_BASE	(AR71XX_APB_BASE + 0x00020000)
+ #define AR933X_UART_SIZE	0x14
  
- #define AR933X_PLL_CPU_CONFIG_NINT_SHIFT	10
- #define AR933X_PLL_CPU_CONFIG_NINT_MASK		0x3f
-@@ -125,6 +127,16 @@
- #define AR933X_RESET_REG_RESET_MODULE		0x1c
- #define AR933X_RESET_REG_BOOTSTRAP		0xac
- 
-+#define AR933X_RESET_GE1_MDIO           BIT(23)
-+#define AR933X_RESET_GE0_MDIO           BIT(22)
-+#define AR933X_RESET_GE1_MAC            BIT(13)
-+#define AR933X_RESET_WMAC               BIT(11)
-+#define AR933X_RESET_GE0_MAC            BIT(9)
-+#define AR933X_RESET_SWITCH             BIT(8)
-+#define AR933X_RESET_USB_HOST           BIT(5)
-+#define AR933X_RESET_USB_PHY            BIT(4)
-+#define AR933X_RESET_USBSUS_OVERRIDE    BIT(3)
++#define AR934X_UART0_BASE	(AR71XX_APB_BASE + 0x00020000)
++#define AR934X_UART0_SIZE	0x18
++#define AR934X_UART0_SHIFT	2
 +
- #define AR71XX_RESET_FULL_CHIP		BIT(24)
- 
- #define AR933X_BOOTSTRAP_REF_CLK_40	BIT(0)
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index c3980e78f..9d69b6aeb 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -204,6 +204,13 @@ config DRIVER_NET_EFI_SNP
- 	bool "EFI SNP ethernet driver"
- 	depends on EFI_BOOTUP
- 
-+config DRIVER_NET_AG71XX
-+	bool "Atheros AG71xx ethernet driver"
-+	depends on MACH_MIPS_ATH79
-+	select PHYLIB
-+	help
-+	  This option enables support for Atheros AG71XX ethernet chip.
++/* WASP BootStrap Register */
++#define WASP_BOOTSTRAP_REG		(AR71XX_RESET_BASE + 0xb0)
++#define WASP_REF_CLK_25			(1 << 4) /* 0 - 25MHz	1 - 40 MHz */
++#define WASP_RAM_TYPE(a)		((a) & 0x3)
 +
- config DRIVER_NET_TSE
- 	depends on NIOS2
- 	bool "Altera TSE ethernet driver"
-diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-index 42ea208e3..86c8ac32f 100644
---- a/drivers/net/Makefile
-+++ b/drivers/net/Makefile
-@@ -30,3 +30,4 @@ obj-$(CONFIG_DRIVER_NET_SMC91111)	+= smc91111.o
- obj-$(CONFIG_DRIVER_NET_TAP)		+= tap.o
- obj-$(CONFIG_DRIVER_NET_TSE)		+= altera_tse.o
- obj-$(CONFIG_DRIVER_NET_EFI_SNP)	+= efi-snp.o
-+obj-$(CONFIG_DRIVER_NET_AG71XX)		+= ag71xx.o
-diff --git a/drivers/net/ag71xx.c b/drivers/net/ag71xx.c
+ /*
+  * RTC block
+  */
+diff --git a/arch/mips/mach-ath79/include/mach/debug_ll.h b/arch/mips/mach-ath79/include/mach/debug_ll.h
+index 04bd3ea72..73d064a3a 100644
+--- a/arch/mips/mach-ath79/include/mach/debug_ll.h
++++ b/arch/mips/mach-ath79/include/mach/debug_ll.h
+@@ -1,5 +1,5 @@
+ /*
+- * based on linux.git/drivers/tty/serial/ar933x_uart.c
++ * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
+  *
+  * This file is part of barebox.
+  * See file CREDITS for list of people who contributed to this project.
+@@ -15,162 +15,13 @@
+  *
+  */
+ 
+-#ifndef __AR933X_DEBUG_LL__
+-#define __AR933X_DEBUG_LL__
++#ifndef __MACH_ATH79_DEBUG_LL__
++#define __MACH_ATH79_DEBUG_LL__
+ 
+-#include <asm/addrspace.h>
+-#include <mach/ar71xx_regs.h>
++#if defined(CONFIG_SOC_QCA_AR9331)
++#include <mach/debug_ll_ar9331.h>
++#elif defined(CONFIG_SOC_QCA_AR9344)
++#include <mach/debug_ll_ar9344.h>
++#endif
+ 
+-#define DEBUG_LL_UART_ADDR	KSEG1ADDR(AR933X_UART_BASE)
+-
+-#define AR933X_UART_DATA_REG            0x00
+-#define AR933X_UART_DATA_TX_RX_MASK     0xff
+-#define AR933X_UART_DATA_TX_CSR		0x200
+-#define AR933X_UART_DATA_RX_CSR		0x100
+-
+-#ifndef __ASSEMBLY__
+-
+-#include <io.h>
+-
+-/*
+- * C macros
+- */
+-
+-static inline void ar933x_debug_ll_writel(u32 b, int offset)
+-{
+-	__raw_writel(b, (u8 *)DEBUG_LL_UART_ADDR + offset);
+-}
+-
+-static inline u32 ar933x_debug_ll_readl(int offset)
+-{
+-	return __raw_readl((u8 *)DEBUG_LL_UART_ADDR + offset);
+-}
+-
+-static inline void PUTC_LL(int ch)
+-{
+-	u32 data;
+-
+-	/* wait transmitter ready */
+-	data = ar933x_debug_ll_readl(AR933X_UART_DATA_REG);
+-	while (!(data & AR933X_UART_DATA_TX_CSR))
+-		data = ar933x_debug_ll_readl(AR933X_UART_DATA_REG);
+-
+-	data = (ch & AR933X_UART_DATA_TX_RX_MASK) | AR933X_UART_DATA_TX_CSR;
+-	ar933x_debug_ll_writel(data, AR933X_UART_DATA_REG);
+-}
+-#else /* __ASSEMBLY__ */
+-/*
+- * Macros for use in assembly language code
+- */
+-
+-#define AR933X_UART_CS_REG		0x04
+-#define UART_CS_REG	((KSEG1 | AR933X_UART_BASE) | AR933X_UART_CS_REG)
+-#define AR933X_UART_CS_IF_MODE_S	2
+-#define	  AR933X_UART_CS_IF_MODE_DCE	2
+-#define AR933X_UART_CS_TX_READY_ORIDE	BIT(7)
+-#define AR933X_UART_CS_RX_READY_ORIDE	BIT(8)
+-
+-/*
+- * simple uart clock setup
+- * from u-boot_mod/u-boot/cpu/mips/ar7240/hornet_serial.c
+- */
+-#define BAUD_CLOCK 25000000
+-#define CLOCK_SCALE ((BAUD_CLOCK / (16 * CONFIG_BAUDRATE)) - 1)
+-#define CLOCK_STEP 0x2000
+-
+-#define AR933X_UART_CLOCK_REG		0x08
+-#define CLOCK_REG	((KSEG1 | AR933X_UART_BASE) | AR933X_UART_CLOCK_REG)
+-
+-.macro debug_ll_ar9331_init
+-#ifdef CONFIG_DEBUG_LL
+-
+-	pbl_reg_writel ((AR933X_UART_CS_IF_MODE_DCE << AR933X_UART_CS_IF_MODE_S) \
+-			| AR933X_UART_CS_TX_READY_ORIDE \
+-			| AR933X_UART_CS_RX_READY_ORIDE), UART_CS_REG
+-	pbl_reg_writel ((CLOCK_SCALE << 16) | CLOCK_STEP), CLOCK_REG
+-
+-#endif /* CONFIG_DEBUG_LL */
+-.endm
+-
+-/*
+- * output a character in a0
+- */
+-.macro	debug_ll_outc_a0
+-#ifdef CONFIG_DEBUG_LL
+-	.set	push
+-	.set	reorder
+-
+-	la	t0, DEBUG_LL_UART_ADDR
+-201:
+-	lw	t1, AR933X_UART_DATA_REG(t0)	/* get line status */
+-	andi	t1, t1, AR933X_UART_DATA_TX_CSR	/* check for transmitter empty */
+-	beqz	t1, 201b	/* try again */
+-	andi	a0, a0, AR933X_UART_DATA_TX_RX_MASK
+-	ori	a0, a0, AR933X_UART_DATA_TX_CSR
+-	sw	a0, 0(t0)	/* write the character */
+-	.set	pop
+-#endif /* CONFIG_DEBUG_LL */
+-.endm
+-
+-/*
+- * output a character
+- */
+-.macro	debug_ll_outc chr
+-#ifdef CONFIG_DEBUG_LL
+-	li	a0, \chr
+-	debug_ll_outc_a0
+-#endif /* CONFIG_DEBUG_LL */
+-.endm
+-
+-/*
+- * check character in input buffer
+- * return value:
+- *  v0 = 0   no character in input buffer
+- *  v0 != 0  character in input buffer
+- */
+-/* FIXME: use tstc */
+-.macro	debug_ll_tstc
+-#ifdef CONFIG_DEBUG_LL
+-	.set	push
+-	.set	reorder
+-
+-	la	t0, DEBUG_LL_UART_ADDR
+-
+-	/* get line status and check for data present */
+-	lw	v0, AR933X_UART_DATA_REG(t0)
+-	andi	v0, v0, AR933X_UART_DATA_RX_CSR
+-
+-	.set	pop
+-#endif /* CONFIG_DEBUG_LL */
+-.endm
+-
+-/*
+- * get character to v0
+- */
+-.macro	debug_ll_getc
+-#ifdef CONFIG_DEBUG_LL
+-	.set	push
+-	.set	reorder
+-
+-	la	t0, DEBUG_LL_UART_ADDR
+-204:
+-	lw	v0, AR933X_UART_DATA_REG(t0)
+-	andi	v0, v0, AR933X_UART_DATA_RX_CSR
+-
+-	/* try again */
+-	beqz	v0, 204b
+-
+-	/* read a character */
+-	lw	v0, AR933X_UART_DATA_REG(t0)
+-	andi	v0, v0, AR933X_UART_DATA_TX_RX_MASK
+-
+-	/* remove the character from the FIFO */
+-	li	t1, AR933X_UART_DATA_RX_CSR
+-	sw  t1, AR933X_UART_DATA_REG(t0)
+-
+-	.set	pop
+-#endif /* CONFIG_DEBUG_LL */
+-.endm
+-#endif /* __ASSEMBLY__ */
+-
+-#endif /* __AR933X_DEBUG_LL__ */
++#endif /* __MACH_AR9344_DEBUG_LL_H__ */
+diff --git a/arch/mips/mach-ath79/include/mach/debug_ll_ar9331.h b/arch/mips/mach-ath79/include/mach/debug_ll_ar9331.h
 new file mode 100644
-index 000000000..b2e066be3
+index 000000000..04bd3ea72
 --- /dev/null
-+++ b/drivers/net/ag71xx.c
-@@ -0,0 +1,530 @@
++++ b/arch/mips/mach-ath79/include/mach/debug_ll_ar9331.h
+@@ -0,0 +1,176 @@
 +/*
-+ *  Atheros AR71xx built-in ethernet mac driver
++ * based on linux.git/drivers/tty/serial/ar933x_uart.c
 + *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
 + *
-+ *  Based on Atheros' AG7100 driver
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
 + *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
 + */
 +
-+#include <common.h>
-+#include <net.h>
-+#include <dma.h>
-+#include <init.h>
++#ifndef __AR933X_DEBUG_LL__
++#define __AR933X_DEBUG_LL__
++
++#include <asm/addrspace.h>
++#include <mach/ar71xx_regs.h>
++
++#define DEBUG_LL_UART_ADDR	KSEG1ADDR(AR933X_UART_BASE)
++
++#define AR933X_UART_DATA_REG            0x00
++#define AR933X_UART_DATA_TX_RX_MASK     0xff
++#define AR933X_UART_DATA_TX_CSR		0x200
++#define AR933X_UART_DATA_RX_CSR		0x100
++
++#ifndef __ASSEMBLY__
++
 +#include <io.h>
-+#include <linux/err.h>
-+#include <linux/phy.h>
-+#include <of_net.h>
-+#include <of_address.h>
-+
-+#include <mach/ath79.h>
-+
-+/* Register offsets */
-+#define AG71XX_REG_MAC_CFG1	0x0000
-+#define AG71XX_REG_MAC_CFG2	0x0004
-+#define AG71XX_REG_MAC_IPG	0x0008
-+#define AG71XX_REG_MAC_HDX	0x000c
-+#define AG71XX_REG_MAC_MFL	0x0010
-+#define AG71XX_REG_MII_CFG	0x0020
-+#define AG71XX_REG_MII_CMD	0x0024
-+#define AG71XX_REG_MII_ADDR	0x0028
-+#define AG71XX_REG_MII_CTRL	0x002c
-+#define AG71XX_REG_MII_STATUS	0x0030
-+#define AG71XX_REG_MII_IND	0x0034
-+#define AG71XX_REG_MAC_IFCTL	0x0038
-+#define AG71XX_REG_MAC_ADDR1	0x0040
-+#define AG71XX_REG_MAC_ADDR2	0x0044
-+#define AG71XX_REG_FIFO_CFG0	0x0048
-+#define AG71XX_REG_FIFO_CFG1	0x004c
-+#define AG71XX_REG_FIFO_CFG2	0x0050
-+#define AG71XX_REG_FIFO_CFG3	0x0054
-+#define AG71XX_REG_FIFO_CFG4	0x0058
-+#define AG71XX_REG_FIFO_CFG5	0x005c
-+#define AG71XX_REG_FIFO_RAM0	0x0060
-+#define AG71XX_REG_FIFO_RAM1	0x0064
-+#define AG71XX_REG_FIFO_RAM2	0x0068
-+#define AG71XX_REG_FIFO_RAM3	0x006c
-+#define AG71XX_REG_FIFO_RAM4	0x0070
-+#define AG71XX_REG_FIFO_RAM5	0x0074
-+#define AG71XX_REG_FIFO_RAM6	0x0078
-+#define AG71XX_REG_FIFO_RAM7	0x007c
-+
-+#define AG71XX_REG_TX_CTRL	0x0180
-+#define AG71XX_REG_TX_DESC	0x0184
-+#define AG71XX_REG_TX_STATUS	0x0188
-+#define AG71XX_REG_RX_CTRL	0x018c
-+#define AG71XX_REG_RX_DESC	0x0190
-+#define AG71XX_REG_RX_STATUS	0x0194
-+#define AG71XX_REG_INT_ENABLE	0x0198
-+#define AG71XX_REG_INT_STATUS	0x019c
-+
-+#define AG71XX_REG_FIFO_DEPTH	0x01a8
-+#define AG71XX_REG_RX_SM	0x01b0
-+#define AG71XX_REG_TX_SM	0x01b4
-+
-+#define MAC_CFG1_TXE		BIT(0)	/* Tx Enable */
-+#define MAC_CFG1_STX		BIT(1)	/* Synchronize Tx Enable */
-+#define MAC_CFG1_RXE		BIT(2)	/* Rx Enable */
-+#define MAC_CFG1_SRX		BIT(3)	/* Synchronize Rx Enable */
-+#define MAC_CFG1_TFC		BIT(4)	/* Tx Flow Control Enable */
-+#define MAC_CFG1_RFC		BIT(5)	/* Rx Flow Control Enable */
-+#define MAC_CFG1_LB		BIT(8)	/* Loopback mode */
-+#define MAC_CFG1_TX_RST		BIT(18)	/* Tx Reset */
-+#define MAC_CFG1_RX_RST		BIT(19)	/* Rx Reset */
-+#define MAC_CFG1_SR		BIT(31)	/* Soft Reset */
-+
-+#define MAC_CFG2_FDX		BIT(0)
-+#define MAC_CFG2_CRC_EN		BIT(1)
-+#define MAC_CFG2_PAD_CRC_EN	BIT(2)
-+#define MAC_CFG2_LEN_CHECK	BIT(4)
-+#define MAC_CFG2_HUGE_FRAME_EN	BIT(5)
-+#define MAC_CFG2_IF_1000	BIT(9)
-+#define MAC_CFG2_IF_10_100	BIT(8)
-+
-+#define FIFO_CFG0_WTM		BIT(0)	/* Watermark Module */
-+#define FIFO_CFG0_RXS		BIT(1)	/* Rx System Module */
-+#define FIFO_CFG0_RXF		BIT(2)	/* Rx Fabric Module */
-+#define FIFO_CFG0_TXS		BIT(3)	/* Tx System Module */
-+#define FIFO_CFG0_TXF		BIT(4)	/* Tx Fabric Module */
-+#define FIFO_CFG0_ALL	(FIFO_CFG0_WTM | FIFO_CFG0_RXS | FIFO_CFG0_RXF \
-+			| FIFO_CFG0_TXS | FIFO_CFG0_TXF)
-+
-+#define FIFO_CFG0_ENABLE_SHIFT	8
-+
-+#define FIFO_CFG4_DE		BIT(0)	/* Drop Event */
-+#define FIFO_CFG4_DV		BIT(1)	/* RX_DV Event */
-+#define FIFO_CFG4_FC		BIT(2)	/* False Carrier */
-+#define FIFO_CFG4_CE		BIT(3)	/* Code Error */
-+#define FIFO_CFG4_CR		BIT(4)	/* CRC error */
-+#define FIFO_CFG4_LM		BIT(5)	/* Length Mismatch */
-+#define FIFO_CFG4_LO		BIT(6)	/* Length out of range */
-+#define FIFO_CFG4_OK		BIT(7)	/* Packet is OK */
-+#define FIFO_CFG4_MC		BIT(8)	/* Multicast Packet */
-+#define FIFO_CFG4_BC		BIT(9)	/* Broadcast Packet */
-+#define FIFO_CFG4_DR		BIT(10)	/* Dribble */
-+#define FIFO_CFG4_LE		BIT(11)	/* Long Event */
-+#define FIFO_CFG4_CF		BIT(12)	/* Control Frame */
-+#define FIFO_CFG4_PF		BIT(13)	/* Pause Frame */
-+#define FIFO_CFG4_UO		BIT(14)	/* Unsupported Opcode */
-+#define FIFO_CFG4_VT		BIT(15)	/* VLAN tag detected */
-+#define FIFO_CFG4_FT		BIT(16)	/* Frame Truncated */
-+#define FIFO_CFG4_UC		BIT(17)	/* Unicast Packet */
-+
-+#define FIFO_CFG5_DE		BIT(0)	/* Drop Event */
-+#define FIFO_CFG5_DV		BIT(1)	/* RX_DV Event */
-+#define FIFO_CFG5_FC		BIT(2)	/* False Carrier */
-+#define FIFO_CFG5_CE		BIT(3)	/* Code Error */
-+#define FIFO_CFG5_LM		BIT(4)	/* Length Mismatch */
-+#define FIFO_CFG5_LO		BIT(5)	/* Length Out of Range */
-+#define FIFO_CFG5_OK		BIT(6)	/* Packet is OK */
-+#define FIFO_CFG5_MC		BIT(7)	/* Multicast Packet */
-+#define FIFO_CFG5_BC		BIT(8)	/* Broadcast Packet */
-+#define FIFO_CFG5_DR		BIT(9)	/* Dribble */
-+#define FIFO_CFG5_CF		BIT(10)	/* Control Frame */
-+#define FIFO_CFG5_PF		BIT(11)	/* Pause Frame */
-+#define FIFO_CFG5_UO		BIT(12)	/* Unsupported Opcode */
-+#define FIFO_CFG5_VT		BIT(13)	/* VLAN tag detected */
-+#define FIFO_CFG5_LE		BIT(14)	/* Long Event */
-+#define FIFO_CFG5_FT		BIT(15)	/* Frame Truncated */
-+#define FIFO_CFG5_16		BIT(16)	/* unknown */
-+#define FIFO_CFG5_17		BIT(17)	/* unknown */
-+#define FIFO_CFG5_SF		BIT(18)	/* Short Frame */
-+#define FIFO_CFG5_BM		BIT(19)	/* Byte Mode */
-+
-+#define AG71XX_INT_TX_PS	BIT(0)
-+#define AG71XX_INT_TX_UR	BIT(1)
-+#define AG71XX_INT_TX_BE	BIT(3)
-+#define AG71XX_INT_RX_PR	BIT(4)
-+#define AG71XX_INT_RX_OF	BIT(6)
-+#define AG71XX_INT_RX_BE	BIT(7)
-+
-+#define MAC_IFCTL_SPEED		BIT(16)
-+
-+#define MII_CFG_CLK_DIV_4	0
-+#define MII_CFG_CLK_DIV_6	2
-+#define MII_CFG_CLK_DIV_8	3
-+#define MII_CFG_CLK_DIV_10	4
-+#define MII_CFG_CLK_DIV_14	5
-+#define MII_CFG_CLK_DIV_20	6
-+#define MII_CFG_CLK_DIV_28	7
-+#define MII_CFG_CLK_DIV_34	8
-+#define MII_CFG_CLK_DIV_42	9
-+#define MII_CFG_CLK_DIV_50	10
-+#define MII_CFG_CLK_DIV_58	11
-+#define MII_CFG_CLK_DIV_66	12
-+#define MII_CFG_CLK_DIV_74	13
-+#define MII_CFG_CLK_DIV_82	14
-+#define MII_CFG_CLK_DIV_98	15
-+#define MII_CFG_RESET		BIT(31)
-+
-+#define MII_CMD_WRITE		0x0
-+#define MII_CMD_READ		0x1
-+#define MII_ADDR_SHIFT		8
-+#define MII_IND_BUSY		BIT(0)
-+#define MII_IND_INVALID		BIT(2)
-+
-+#define TX_CTRL_TXE		BIT(0)	/* Tx Enable */
-+
-+#define TX_STATUS_PS		BIT(0)	/* Packet Sent */
-+#define TX_STATUS_UR		BIT(1)	/* Tx Underrun */
-+#define TX_STATUS_BE		BIT(3)	/* Bus Error */
-+
-+#define RX_CTRL_RXE		BIT(0)	/* Rx Enable */
-+
-+#define RX_STATUS_PR		BIT(0)	/* Packet Received */
-+#define RX_STATUS_OF		BIT(2)	/* Rx Overflow */
-+#define RX_STATUS_BE		BIT(3)	/* Bus Error */
 +
 +/*
-+ * GMAC register macros
++ * C macros
 + */
-+#define AG71XX_ETH_CFG_RGMII_GE0        (1<<0)
-+#define AG71XX_ETH_CFG_MII_GE0_SLAVE    (1<<4)
++
++static inline void ar933x_debug_ll_writel(u32 b, int offset)
++{
++	__raw_writel(b, (u8 *)DEBUG_LL_UART_ADDR + offset);
++}
++
++static inline u32 ar933x_debug_ll_readl(int offset)
++{
++	return __raw_readl((u8 *)DEBUG_LL_UART_ADDR + offset);
++}
++
++static inline void PUTC_LL(int ch)
++{
++	u32 data;
++
++	/* wait transmitter ready */
++	data = ar933x_debug_ll_readl(AR933X_UART_DATA_REG);
++	while (!(data & AR933X_UART_DATA_TX_CSR))
++		data = ar933x_debug_ll_readl(AR933X_UART_DATA_REG);
++
++	data = (ch & AR933X_UART_DATA_TX_RX_MASK) | AR933X_UART_DATA_TX_CSR;
++	ar933x_debug_ll_writel(data, AR933X_UART_DATA_REG);
++}
++#else /* __ASSEMBLY__ */
++/*
++ * Macros for use in assembly language code
++ */
++
++#define AR933X_UART_CS_REG		0x04
++#define UART_CS_REG	((KSEG1 | AR933X_UART_BASE) | AR933X_UART_CS_REG)
++#define AR933X_UART_CS_IF_MODE_S	2
++#define	  AR933X_UART_CS_IF_MODE_DCE	2
++#define AR933X_UART_CS_TX_READY_ORIDE	BIT(7)
++#define AR933X_UART_CS_RX_READY_ORIDE	BIT(8)
 +
 +/*
-+ * h/w descriptor
++ * simple uart clock setup
++ * from u-boot_mod/u-boot/cpu/mips/ar7240/hornet_serial.c
 + */
-+typedef struct {
-+	uint32_t    pkt_start_addr;
++#define BAUD_CLOCK 25000000
++#define CLOCK_SCALE ((BAUD_CLOCK / (16 * CONFIG_BAUDRATE)) - 1)
++#define CLOCK_STEP 0x2000
 +
-+	uint32_t    is_empty       :  1;
-+	uint32_t    res1           : 10;
-+	uint32_t    ftpp_override  :  5;
-+	uint32_t    res2           :  4;
-+	uint32_t    pkt_size       : 12;
++#define AR933X_UART_CLOCK_REG		0x08
++#define CLOCK_REG	((KSEG1 | AR933X_UART_BASE) | AR933X_UART_CLOCK_REG)
 +
-+	uint32_t    next_desc      ;
-+} ag7240_desc_t;
++.macro debug_ll_ar9331_init
++#ifdef CONFIG_DEBUG_LL
 +
-+#define NO_OF_TX_FIFOS  8
-+#define NO_OF_RX_FIFOS  8
-+#define TX_RING_SZ (NO_OF_TX_FIFOS * sizeof(ag7240_desc_t))
-+#define MAX_RBUFF_SZ	0x600		/* 1518 rounded up */
++	pbl_reg_writel ((AR933X_UART_CS_IF_MODE_DCE << AR933X_UART_CS_IF_MODE_S) \
++			| AR933X_UART_CS_TX_READY_ORIDE \
++			| AR933X_UART_CS_RX_READY_ORIDE), UART_CS_REG
++	pbl_reg_writel ((CLOCK_SCALE << 16) | CLOCK_STEP), CLOCK_REG
 +
-+#define MAX_WAIT        1000
++#endif /* CONFIG_DEBUG_LL */
++.endm
 +
-+struct ag71xx {
-+	struct device_d *dev;
-+	struct eth_device netdev;
-+	void __iomem *regs;
-+	void __iomem *regs_gmac;
-+	struct mii_bus miibus;
++/*
++ * output a character in a0
++ */
++.macro	debug_ll_outc_a0
++#ifdef CONFIG_DEBUG_LL
++	.set	push
++	.set	reorder
 +
-+	void *rx_buffer;
++	la	t0, DEBUG_LL_UART_ADDR
++201:
++	lw	t1, AR933X_UART_DATA_REG(t0)	/* get line status */
++	andi	t1, t1, AR933X_UART_DATA_TX_CSR	/* check for transmitter empty */
++	beqz	t1, 201b	/* try again */
++	andi	a0, a0, AR933X_UART_DATA_TX_RX_MASK
++	ori	a0, a0, AR933X_UART_DATA_TX_CSR
++	sw	a0, 0(t0)	/* write the character */
++	.set	pop
++#endif /* CONFIG_DEBUG_LL */
++.endm
 +
-+	unsigned char *rx_pkt[NO_OF_RX_FIFOS];
-+	ag7240_desc_t *fifo_tx;
-+	ag7240_desc_t *fifo_rx;
++/*
++ * output a character
++ */
++.macro	debug_ll_outc chr
++#ifdef CONFIG_DEBUG_LL
++	li	a0, \chr
++	debug_ll_outc_a0
++#endif /* CONFIG_DEBUG_LL */
++.endm
 +
-+	int next_tx;
-+	int next_rx;
-+};
++/*
++ * check character in input buffer
++ * return value:
++ *  v0 = 0   no character in input buffer
++ *  v0 != 0  character in input buffer
++ */
++/* FIXME: use tstc */
++.macro	debug_ll_tstc
++#ifdef CONFIG_DEBUG_LL
++	.set	push
++	.set	reorder
 +
-+static inline void ag71xx_check_reg_offset(struct ag71xx *priv, int reg)
++	la	t0, DEBUG_LL_UART_ADDR
++
++	/* get line status and check for data present */
++	lw	v0, AR933X_UART_DATA_REG(t0)
++	andi	v0, v0, AR933X_UART_DATA_RX_CSR
++
++	.set	pop
++#endif /* CONFIG_DEBUG_LL */
++.endm
++
++/*
++ * get character to v0
++ */
++.macro	debug_ll_getc
++#ifdef CONFIG_DEBUG_LL
++	.set	push
++	.set	reorder
++
++	la	t0, DEBUG_LL_UART_ADDR
++204:
++	lw	v0, AR933X_UART_DATA_REG(t0)
++	andi	v0, v0, AR933X_UART_DATA_RX_CSR
++
++	/* try again */
++	beqz	v0, 204b
++
++	/* read a character */
++	lw	v0, AR933X_UART_DATA_REG(t0)
++	andi	v0, v0, AR933X_UART_DATA_TX_RX_MASK
++
++	/* remove the character from the FIFO */
++	li	t1, AR933X_UART_DATA_RX_CSR
++	sw  t1, AR933X_UART_DATA_REG(t0)
++
++	.set	pop
++#endif /* CONFIG_DEBUG_LL */
++.endm
++#endif /* __ASSEMBLY__ */
++
++#endif /* __AR933X_DEBUG_LL__ */
+diff --git a/arch/mips/mach-ath79/include/mach/debug_ll_ar9344.h b/arch/mips/mach-ath79/include/mach/debug_ll_ar9344.h
+new file mode 100644
+index 000000000..d156ce9f3
+--- /dev/null
++++ b/arch/mips/mach-ath79/include/mach/debug_ll_ar9344.h
+@@ -0,0 +1,191 @@
++/*
++ * Copyright (C) 2017 Oleksij Rempel <o.rempel@pengutronix.de>
++ * Copyright (C) 2012, 2013 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#ifndef __AR9344_DEBUG_LL__
++#define __AR9344_DEBUG_LL__
++
++#include <asm/addrspace.h>
++#include <mach/ar71xx_regs.h>
++
++#define DEBUG_LL_UART_ADDR		KSEG1ADDR(AR934X_UART0_BASE)
++#define DEBUG_LL_UART_SHIFT		AR934X_UART0_SHIFT
++
++#define DEBUG_LL_UART_DIVISOR_40	(40000000 / (16 * CONFIG_BAUDRATE))
++#define DEBUG_LL_UART_DIVISOR_25	(25000000 / (16 * CONFIG_BAUDRATE))
++
++#define UART_THR			(0x0 << DEBUG_LL_UART_SHIFT)
++#define UART_RBR			(0x0 << DEBUG_LL_UART_SHIFT)
++#define UART_DLL			(0x0 << DEBUG_LL_UART_SHIFT)
++#define UART_IER			(0x1 << DEBUG_LL_UART_SHIFT)
++#define UART_DLM			(0x1 << DEBUG_LL_UART_SHIFT)
++#define UART_FCR			(0x2 << DEBUG_LL_UART_SHIFT)
++#define UART_LCR			(0x3 << DEBUG_LL_UART_SHIFT)
++#define UART_LSR			(0x5 << DEBUG_LL_UART_SHIFT)
++
++#define UART_LCR_W			0x07	/* Set UART to 8,N,2 & DLAB = 0 */
++#define UART_LCR_DLAB			0x87	/* Set UART to 8,N,2 & DLAB = 1 */
++
++#define UART_LSR_DR     		0x01    /* UART received data present */
++#define UART_LSR_THRE			0x20	/* Xmit holding register empty */
++
++#define UART_FCR_RST			0x07	/* FIFO_EN | RCVR_FIFO_RST | XMIT_FIFO_RST */
++
++#ifndef __ASSEMBLY__
++
++/*
++ * C macros
++ */
++
++#include <asm/io.h>
++
++static inline void PUTC_LL(char ch)
 +{
-+	switch (reg) {
-+	case AG71XX_REG_MAC_CFG1 ... AG71XX_REG_MAC_MFL:
-+	case AG71XX_REG_MAC_IFCTL ... AG71XX_REG_TX_SM:
-+	case AG71XX_REG_MII_CFG:
-+		break;
-+
-+	default:
-+		BUG();
-+	}
-+}
-+
-+static inline u32 ag71xx_gmac_rr(struct ag71xx *dev, int reg)
-+{
-+	return __raw_readl(dev->regs_gmac + reg);
-+}
-+
-+static inline void ag71xx_gmac_wr(struct ag71xx *dev, int reg, u32 val)
-+{
-+	__raw_writel(val, dev->regs_gmac + reg);
-+}
-+
-+static inline u32 ag71xx_rr(struct ag71xx *priv, int reg)
-+{
-+	ag71xx_check_reg_offset(priv, reg);
-+
-+	return __raw_readl(priv->regs + reg);
-+}
-+
-+static inline void ag71xx_wr(struct ag71xx *priv, int reg, u32 val)
-+{
-+	ag71xx_check_reg_offset(priv, reg);
-+
-+	__raw_writel(val, priv->regs + reg);
-+	/* flush write */
-+	(void)__raw_readl(priv->regs + reg);
-+}
-+
-+static int ag71xx_ether_mii_read(struct mii_bus *miidev, int addr, int reg)
-+{
-+	return 0xffff;
-+}
-+
-+static int ag71xx_ether_mii_write(struct mii_bus *miidev, int addr, int reg, u16 val)
-+{
-+	return 0;
-+}
-+
-+static int ag71xx_ether_set_ethaddr(struct eth_device *edev, const unsigned char *adr)
-+{
-+	return 0;
-+}
-+
-+static int ag71xx_ether_get_ethaddr(struct eth_device *edev, unsigned char *adr)
-+{
-+	/* We have no eeprom */
-+	return -1;
-+}
-+
-+static void ag71xx_ether_halt(struct eth_device *edev)
-+{
-+	struct ag71xx *priv = edev->priv;
-+
-+	ag71xx_wr(priv, AG71XX_REG_RX_CTRL, 0);
-+	while (ag71xx_rr(priv, AG71XX_REG_RX_CTRL))
++#ifdef CONFIG_DEBUG_LL
++	while (!(__raw_readl((u8 *)DEBUG_LL_UART_ADDR + UART_LSR) & UART_LSR_THRE))
 +		;
++	__raw_writel(ch, (u8 *)DEBUG_LL_UART_ADDR + UART_THR);
++#endif /* CONFIG_DEBUG_LL */
 +}
++#else /* __ASSEMBLY__ */
++/*
++ * Macros for use in assembly language code
++ */
 +
-+static int ag71xx_ether_rx(struct eth_device *edev)
-+{
-+	struct ag71xx *priv = edev->priv;
-+	ag7240_desc_t *f;
-+	unsigned int work_done;
++.macro	debug_ll_ar9344_init
++#ifdef CONFIG_DEBUG_LL
 +
-+	for (work_done = 0; work_done < NO_OF_RX_FIFOS; work_done++) {
-+		unsigned int pktlen;
-+		unsigned char *rx_pkt;
++	/* find out the ref clock */
++	li	t5,	KSEG1ADDR(WASP_BOOTSTRAP_REG);
++	li	t6,	WASP_REF_CLK_25
++	lw	t7,	0(t5);
++	and	t6,	t7,	t6
++	beq	zero,	t6,	uart_setup_ref25_val
++	nop
++uart_setup_ref40_val:
++	li	t5, DEBUG_LL_UART_DIVISOR_40
++	b	1f
++	nop
 +
-+		f = &priv->fifo_rx[priv->next_rx];
++uart_setup_ref25_val:
++	li	t5, DEBUG_LL_UART_DIVISOR_25
++1:
 +
-+		if (f->is_empty)
-+			break;
++	la	t0, DEBUG_LL_UART_ADDR
 +
-+		pktlen = f->pkt_size;
-+		rx_pkt = priv->rx_pkt[priv->next_rx];
++	li	t1, UART_LCR_DLAB		/* DLAB on */
++	sw	t1, UART_LCR(t0)		/* Write it out */
 +
-+		/* invalidate */
-+		dma_sync_single_for_cpu((unsigned long)rx_pkt, pktlen,
-+						DMA_FROM_DEVICE);
++	sw	t5, UART_DLL(t0)		/* write low order byte */
++	li	t1, 0
++	sw	t1, UART_DLM(t0)		/* write high order byte */
 +
-+		net_receive(edev, rx_pkt, pktlen - 4);
++	li	t1, UART_LCR_W			/* DLAB off */
++	sw	t1, UART_LCR(t0)		/* Write it out */
 +
-+		f->is_empty = 1;
++	li	t1, UART_FCR_RST		/* reset FIFOs */
++	sw	t1, UART_FCR(t0)		/* Write it out */
 +
-+		priv->next_rx = (priv->next_rx + 1) % NO_OF_RX_FIFOS;
-+	}
++	li	t1, 0				/* disable interrupts */
++	sw	t1, UART_IER(t0)		/* Write it out */
++#endif /* CONFIG_DEBUG_LL */
++.endm
 +
-+	if (!(ag71xx_rr(priv, AG71XX_REG_RX_CTRL) & RX_CTRL_RXE)) {
-+		f = &priv->fifo_rx[priv->next_rx];
-+		ag71xx_wr(priv, AG71XX_REG_RX_DESC, virt_to_phys(f));
-+		ag71xx_wr(priv, AG71XX_REG_RX_CTRL, RX_CTRL_RXE);
-+	}
++/*
++ * output a character in a0
++ */
++.macro	debug_ll_outc_a0
++#ifdef CONFIG_DEBUG_LL
++	.set	push
++	.set	reorder
 +
-+	return work_done;
-+}
++	la	t0, DEBUG_LL_UART_ADDR
 +
-+static int ag71xx_ether_send(struct eth_device *edev, void *packet, int length)
-+{
-+	struct ag71xx *priv = edev->priv;
-+	struct device_d *dev = priv->dev;
-+	ag7240_desc_t *f = &priv->fifo_tx[priv->next_tx];
-+	int i;
++201:	lw	t1, UART_LSR(t0)	/* get line status */
++	andi	t1, t1, UART_LSR_THRE	/* check for transmitter empty */
++	beqz	t1, 201b			/* try again */
 +
-+	/* flush */
-+	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
++	sw	a0, UART_THR(t0)	/* write the character */
 +
-+	f->pkt_start_addr = virt_to_phys(packet);
-+	f->res1 = 0;
-+	f->pkt_size = length;
-+	f->is_empty = 0;
-+	ag71xx_wr(priv, AG71XX_REG_TX_DESC, virt_to_phys(f));
-+	ag71xx_wr(priv, AG71XX_REG_TX_CTRL, TX_CTRL_TXE);
++	.set	pop
++#endif /* CONFIG_DEBUG_LL */
++.endm
 +
-+	/* flush again?! */
-+	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
++/*
++ * output a character
++ */
++.macro	debug_ll_outc chr
++#ifdef CONFIG_DEBUG_LL
++	li	a0, \chr
++	debug_ll_outc_a0
++#endif /* CONFIG_DEBUG_LL */
++.endm
 +
-+	for (i = 0; i < MAX_WAIT; i++) {
-+		udelay(100);
-+		if (f->is_empty) {
-+			break;
-+		}
-+	}
++/*
++ * output CR + NL
++ */
++.macro	debug_ll_outnl
++#ifdef CONFIG_DEBUG_LL
++	debug_ll_outc '\r'
++	debug_ll_outc '\n'
++#endif /* CONFIG_DEBUG_LL */
++.endm
 +
-+	if (i == MAX_WAIT) {
-+		dev_err(dev, "Tx Timed out\n");
-+	}
++/*
++ * check character in input buffer
++ * return value:
++ *  v0 = 0   no character in input buffer
++ *  v0 != 0  character in input buffer
++ */
++.macro	debug_ll_tstc
++#ifdef CONFIG_DEBUG_LL
++	.set	push
++	.set	reorder
 +
-+	f->pkt_start_addr = 0;
-+	f->pkt_size = 0;
++	la      t0, DEBUG_LL_UART_ADDR
 +
-+	priv->next_tx = (priv->next_tx + 1) % NO_OF_TX_FIFOS;
++	/* get line status and check for data present */
++	lw	t1, UART_LSR(t0)
++	andi	v0, t1, UART_LSR_DR
 +
-+	return 0;
-+}
++	.set	pop
++#endif /* CONFIG_DEBUG_LL */
++.endm
 +
-+static int ag71xx_ether_open(struct eth_device *edev)
-+{
-+	return 0;
-+}
++/*
++ * get character to v0
++ */
++.macro	debug_ll_getc
++#ifdef CONFIG_DEBUG_LL
++	.set	push
++	.set	reorder
 +
-+static int ag71xx_ether_init(struct eth_device *edev)
-+{
-+	struct ag71xx *priv = edev->priv;
-+	int i;
-+	void *rxbuf = priv->rx_buffer;
++204:
++	debug_ll_tstc
 +
-+	priv->next_rx = 0;
++	/* try again */
++	beqz	v0, 204b
 +
-+	for (i = 0; i < NO_OF_RX_FIFOS; i++) {
-+		ag7240_desc_t *fr = &priv->fifo_rx[i];
++	/* read a character */
++	lw	v0, UART_RBR(t0)
 +
-+		priv->rx_pkt[i] = rxbuf;
-+		fr->pkt_start_addr = virt_to_phys(rxbuf);
-+		fr->pkt_size = MAX_RBUFF_SZ;
-+		fr->is_empty = 1;
-+		fr->next_desc = virt_to_phys(&priv->fifo_rx[(i + 1) % NO_OF_RX_FIFOS]);
++	.set	pop
++#endif /* CONFIG_DEBUG_LL */
++.endm
++#endif /* __ASSEMBLY__ */
 +
-+		/* invalidate */
-+		dma_sync_single_for_device((unsigned long)rxbuf, MAX_RBUFF_SZ,
-+					DMA_FROM_DEVICE);
++#endif /* __INCLUDE_MIPS_ASM_DEBUG_LL_NS16550_H__ */
+diff --git a/arch/mips/mach-ath79/include/mach/pbl_ll_init_ar9344_1.1.h b/arch/mips/mach-ath79/include/mach/pbl_ll_init_ar9344_1.1.h
+new file mode 100644
+index 000000000..594ec1155
+--- /dev/null
++++ b/arch/mips/mach-ath79/include/mach/pbl_ll_init_ar9344_1.1.h
+@@ -0,0 +1,540 @@
++#ifndef __ASM_MACH_ATH79_PBL_LL_INIT_AR9344_1_1_H
++#define __ASM_MACH_ATH79_PBL_LL_INIT_AR9344_1_1_H
 +
-+		rxbuf += MAX_RBUFF_SZ;
-+	}
++#include <asm/addrspace.h>
++#include <asm/regdef.h>
 +
-+	/* Clean Tx BD's */
-+	memset(priv->fifo_tx, 0, TX_RING_SZ);
++#define AR7240_APB_BASE			(KSEG1 | 0x18000000)  /* 384M */
++#define AR7240_DDR_CTL_BASE		AR7240_APB_BASE+0x00000000
++#define AR7240_PLL_BASE			AR7240_APB_BASE+0x00050000
 +
-+	ag71xx_wr(priv, AG71XX_REG_RX_DESC, virt_to_phys(priv->fifo_rx));
-+	ag71xx_wr(priv, AG71XX_REG_RX_CTRL, RX_CTRL_RXE);
++#define	ATH_DDR_COUNT_LOC		(KSEG1 | 0x1d000000)
++#define	ATH_CPU_COUNT_LOC		(KSEG1 | 0x1d000004)
 +
-+	return 1;
-+}
++/*
++ * DDR block
++ */
++#define AR7240_DDR_CONFIG		AR7240_DDR_CTL_BASE+0
++#define AR7240_DDR_CONFIG2		AR7240_DDR_CTL_BASE+4
++#define AR7240_DDR_MODE			AR7240_DDR_CTL_BASE+0x08
++#define AR7240_DDR_EXT_MODE		AR7240_DDR_CTL_BASE+0x0c
++#define AR7240_DDR_CONTROL		AR7240_DDR_CTL_BASE+0x10
++#define AR7240_DDR_REFRESH		AR7240_DDR_CTL_BASE+0x14
++#define AR7240_DDR_RD_DATA_THIS_CYCLE	AR7240_DDR_CTL_BASE+0x18
++#define AR7240_DDR_TAP_CONTROL0		AR7240_DDR_CTL_BASE+0x1c
++#define AR7240_DDR_TAP_CONTROL1		AR7240_DDR_CTL_BASE+0x20
++#define AR7240_DDR_TAP_CONTROL2		AR7240_DDR_CTL_BASE+0x24
++#define AR7240_DDR_TAP_CONTROL3		AR7240_DDR_CTL_BASE+0x28
++#define AR7240_DDR_DDR2_CONFIG		AR7240_DDR_CTL_BASE+0x8c
++#define AR7240_DDR_BURST		AR7240_DDR_CTL_BASE+0xc4
++#define AR7240_DDR_BURST2		AR7240_DDR_CTL_BASE+0xc8
++#define AR7240_AHB_MASTER_TIMEOUT	AR7240_DDR_CTL_BASE+0xcc
++#define AR7240_DDR_CTL_CONFIG		AR7240_DDR_CTL_BASE+0x108
++#define AR7240_DDR_DEBUG_RD_CNTL	AR7240_DDR_CTL_BASE+0x118
 +
-+static int ag71xx_mii_setup(struct ag71xx *priv)
-+{
-+	u32 rd;
++#define AR934X_CPU_PLL_DITHER		AR7240_PLL_BASE+0x0048
 +
-+	rd = ag71xx_gmac_rr(priv, 0);
-+	rd |= AG71XX_ETH_CFG_MII_GE0_SLAVE;
-+	ag71xx_gmac_wr(priv, 0, rd);
++#define AR934X_CPU_PLL_CONFIG		AR7240_PLL_BASE+0x0000
++#define AR934X_DDR_PLL_CONFIG		AR7240_PLL_BASE+0x0004
++#define AR934X_CPU_DDR_CLOCK_CONTROL	AR7240_PLL_BASE+0x0008
++#define AR934X_DDR_PLL_DITHER		AR7240_PLL_BASE+0x0044
 +
-+	return 0;
-+}
++#define CPU_DPLL3_ADDRESS		(KSEG1 | 0x181161c8)
++#define CPU_DPLL4_ADDRESS		(KSEG1 | 0x181161cc)
++#define DDR_DPLL3_ADDRESS		(KSEG1 | 0x18116248)
++#define DDR_DPLL4_ADDRESS		(KSEG1 | 0x1811624c)
 +
-+static int ag71xx_probe(struct device_d *dev)
-+{
-+	void __iomem *regs, *regs_gmac;
-+	struct mii_bus *miibus;
-+	struct eth_device *edev;
-+	struct ag71xx *priv;
-+	u32 mac_h, mac_l;
-+	u32 rd;
++#define DPLL2_ADDRESS_c4		(KSEG1 | 0x181161c4)
++#define DPLL2_ADDRESS_44		(KSEG1 | 0x18116244)
++#define DPLL3_ADDRESS_88		(KSEG1 | 0x18116188)
 +
-+	regs_gmac = dev_request_mem_region_by_name(dev, "gmac");
-+	if (IS_ERR(regs_gmac))
-+		return PTR_ERR(regs_gmac);
++#define CPU_PLL_CONFIG_NINT_VAL_40	0x380
++#define DDR_PLL_CONFIG_NINT_VAL_40	0x3000
++#define CPU_PLL_NFRAC_40		0
++#define DDR_PLL_NFRAC_40		0
 +
-+	regs = dev_request_mem_region_by_name(dev, "ge0");
-+	if (IS_ERR(regs))
-+		return PTR_ERR(regs);
++#define CPU_PLL_CONFIG_NINT_VAL_25	0x580
++#define DDR_PLL_CONFIG_NINT_VAL_25	0x4c00
++#define CPU_PLL_NFRAC_25		0x659
++#define DDR_PLL_NFRAC_25		0x330cc
 +
-+	priv = xzalloc(sizeof(struct ag71xx));
-+	edev = &priv->netdev;
-+	miibus = &priv->miibus;
-+	edev->priv = priv;
++#define CPU_PLL_DITHER_DITHER_EN_LSB		31
++#define CPU_PLL_DITHER_DITHER_EN_MASK		0x80000000
++#define CPU_PLL_DITHER_DITHER_EN_SET(x)	\
++	(((x) << CPU_PLL_DITHER_DITHER_EN_LSB) \
++	  & CPU_PLL_DITHER_DITHER_EN_MASK)
 +
-+	edev->init = ag71xx_ether_init;
-+	edev->open = ag71xx_ether_open;
-+	edev->send = ag71xx_ether_send;
-+	edev->recv = ag71xx_ether_rx;
-+	edev->halt = ag71xx_ether_halt;
-+	edev->get_ethaddr = ag71xx_ether_get_ethaddr;
-+	edev->set_ethaddr = ag71xx_ether_set_ethaddr;
++#define CPU_PLL_DITHER_NFRAC_STEP_LSB		12
++#define CPU_PLL_DITHER_NFRAC_STEP_MASK		0x0003f000
++#define CPU_PLL_DITHER_NFRAC_STEP_SET(x) \
++	(((x) << CPU_PLL_DITHER_NFRAC_STEP_LSB) \
++	  & CPU_PLL_DITHER_NFRAC_STEP_MASK)
 +
-+	priv->dev = dev;
-+	priv->regs = regs;
-+	priv->regs_gmac = regs_gmac;
++#define CPU_PLL_DITHER_UPDATE_COUNT_LSB		18
++#define CPU_PLL_DITHER_UPDATE_COUNT_MASK	0x00fc0000
++#define CPU_PLL_DITHER_UPDATE_COUNT_SET(x) \
++	(((x) << CPU_PLL_DITHER_UPDATE_COUNT_LSB) \
++	  & CPU_PLL_DITHER_UPDATE_COUNT_MASK)
 +
-+	miibus->read = ag71xx_ether_mii_read;
-+	miibus->write = ag71xx_ether_mii_write;
-+	miibus->priv = priv;
++#define DDR_PLL_DITHER_DITHER_EN_LSB		31
++#define DDR_PLL_DITHER_DITHER_EN_MASK		0x80000000
++#define DDR_PLL_DITHER_DITHER_EN_SET(x)	\
++	(((x) << DDR_PLL_DITHER_DITHER_EN_LSB) \
++	  & DDR_PLL_DITHER_DITHER_EN_MASK)
 +
-+	/* enable switch core */
-+	rd = __raw_readl((char *)KSEG1ADDR(AR71XX_PLL_BASE + AR933X_ETHSW_CLOCK_CONTROL_REG)) & ~(0x1f);
-+	rd |= 0x10;
-+	__raw_writel(rd, (char *)KSEG1ADDR(AR71XX_PLL_BASE + AR933X_ETHSW_CLOCK_CONTROL_REG));
++#define DDR_PLL_DITHER_NFRAC_STEP_LSB		20
++#define DDR_PLL_DITHER_NFRAC_STEP_MASK		0x07f00000
++#define DDR_PLL_DITHER_NFRAC_STEP_SET(x) \
++	(((x) << DDR_PLL_DITHER_NFRAC_STEP_LSB) \
++	  & DDR_PLL_DITHER_NFRAC_STEP_MASK)
 +
-+	if (ath79_reset_rr(AR933X_RESET_REG_RESET_MODULE) != 0)
-+		ath79_reset_wr(AR933X_RESET_REG_RESET_MODULE, 0);
++#define DDR_PLL_DITHER_UPDATE_COUNT_LSB		27
++#define DDR_PLL_DITHER_UPDATE_COUNT_MASK	0x78000000
++#define DDR_PLL_DITHER_UPDATE_COUNT_SET(x) \
++	(((x) << DDR_PLL_DITHER_UPDATE_COUNT_LSB) \
++	  & DDR_PLL_DITHER_UPDATE_COUNT_MASK)
 +
-+	/* reset GE0 MAC and MDIO */
-+	rd = ath79_reset_rr(AR933X_RESET_REG_RESET_MODULE);
-+	rd |= AR933X_RESET_GE0_MAC | AR933X_RESET_GE0_MDIO | AR933X_RESET_SWITCH;
-+	ath79_reset_wr(AR933X_RESET_REG_RESET_MODULE, rd);
-+	mdelay(100);
++#define CPU_DDR_CLOCK_CONTROL_CPU_PLL_BYPASS_LSB	2
++#define CPU_DDR_CLOCK_CONTROL_CPU_PLL_BYPASS_MASK	0x00000004
++#define CPU_DDR_CLOCK_CONTROL_CPU_PLL_BYPASS_SET(x) \
++	 (((x) << CPU_DDR_CLOCK_CONTROL_CPU_PLL_BYPASS_LSB) \
++	   & CPU_DDR_CLOCK_CONTROL_CPU_PLL_BYPASS_MASK)
 +
-+	rd = ath79_reset_rr(AR933X_RESET_REG_RESET_MODULE);
-+	rd &= ~(AR933X_RESET_GE0_MAC | AR933X_RESET_GE0_MDIO | AR933X_RESET_SWITCH);
-+	ath79_reset_wr(AR933X_RESET_REG_RESET_MODULE, rd);
-+	mdelay(100);
++#define CPU_DDR_CLOCK_CONTROL_DDR_PLL_BYPASS_LSB	3
++#define CPU_DDR_CLOCK_CONTROL_DDR_PLL_BYPASS_MASK	0x00000008
++#define CPU_DDR_CLOCK_CONTROL_DDR_PLL_BYPASS_SET(x) \
++	(((x) << CPU_DDR_CLOCK_CONTROL_DDR_PLL_BYPASS_LSB) \
++	  & CPU_DDR_CLOCK_CONTROL_DDR_PLL_BYPASS_MASK)
 +
-+	ag71xx_wr(priv, AG71XX_REG_MAC_CFG1, (MAC_CFG1_SR | MAC_CFG1_TX_RST | MAC_CFG1_RX_RST));
-+	ag71xx_wr(priv, AG71XX_REG_MAC_CFG1, (MAC_CFG1_RXE | MAC_CFG1_TXE));
++#define CPU_DDR_CLOCK_CONTROL_AHB_PLL_BYPASS_LSB	4
++#define CPU_DDR_CLOCK_CONTROL_AHB_PLL_BYPASS_MASK	0x00000010
++#define CPU_DDR_CLOCK_CONTROL_AHB_PLL_BYPASS_SET(x) \
++	(((x) << CPU_DDR_CLOCK_CONTROL_AHB_PLL_BYPASS_LSB) \
++	  & CPU_DDR_CLOCK_CONTROL_AHB_PLL_BYPASS_MASK)
 +
-+	rd = ag71xx_rr(priv, AG71XX_REG_MAC_CFG2);
-+	rd |= (MAC_CFG2_PAD_CRC_EN | MAC_CFG2_LEN_CHECK | MAC_CFG2_IF_10_100);
-+	ag71xx_wr(priv, AG71XX_REG_MAC_CFG2, rd);
++#define CPU_DPLL3_DO_MEAS_LSB			30
++#define CPU_DPLL3_DO_MEAS_MASK			0x40000000
++#define CPU_DPLL3_DO_MEAS_SET(x) \
++	(((x) << CPU_DPLL3_DO_MEAS_LSB) & CPU_DPLL3_DO_MEAS_MASK)
 +
-+	/* config FIFOs */
-+	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG0, 0x1f00);
++#define CPU_DPLL3_SQSUM_DVC_LSB			3
++#define CPU_DPLL3_SQSUM_DVC_MASK		0x007ffff8
++#define CPU_DPLL3_SQSUM_DVC_SET(x) \
++	(((x) << CPU_DPLL3_SQSUM_DVC_LSB) & CPU_DPLL3_SQSUM_DVC_MASK)
 +
-+	ag71xx_mii_setup(priv);
++#define CPU_DPLL4_MEAS_DONE_LSB			3
++#define CPU_DPLL4_MEAS_DONE_MASK		0x00000008
++#define CPU_DPLL4_MEAS_DONE_SET(x) \
++	(((x) << CPU_DPLL4_MEAS_DONE_LSB) & CPU_DPLL4_MEAS_DONE_MASK)
 +
-+	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG1, 0x10ffff);
-+	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG2, 0xAAA0555);
++#define CPU_PLL_CONFIG_PLLPWD_LSB		30
++#define CPU_PLL_CONFIG_PLLPWD_MASK		0x40000000
++#define CPU_PLL_CONFIG_PLLPWD_SET(x) \
++	(((x) << CPU_PLL_CONFIG_PLLPWD_LSB) & CPU_PLL_CONFIG_PLLPWD_MASK)
 +
-+	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG4, 0x3ffff);
-+	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG5, 0x66b82);
-+	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG3, 0x1f00140);
++#define DDR_DPLL3_DO_MEAS_LSB			30
++#define DDR_DPLL3_DO_MEAS_MASK			0x40000000
++#define DDR_DPLL3_DO_MEAS_SET(x) \
++	(((x) << DDR_DPLL3_DO_MEAS_LSB) & DDR_DPLL3_DO_MEAS_MASK)
 +
-+	priv->rx_buffer = xmemalign(PAGE_SIZE, NO_OF_RX_FIFOS * MAX_RBUFF_SZ);
-+	priv->fifo_tx = dma_alloc_coherent(NO_OF_TX_FIFOS * sizeof(ag7240_desc_t), DMA_ADDRESS_BROKEN);
-+	priv->fifo_rx = dma_alloc_coherent(NO_OF_RX_FIFOS * sizeof(ag7240_desc_t), DMA_ADDRESS_BROKEN);
-+	priv->next_tx = 0;
++#define DDR_DPLL3_SQSUM_DVC_LSB			3
++#define DDR_DPLL3_SQSUM_DVC_MASK		0x007ffff8
++#define DDR_DPLL3_SQSUM_DVC_SET(x) \
++	(((x) << DDR_DPLL3_SQSUM_DVC_LSB) & DDR_DPLL3_SQSUM_DVC_MASK)
 +
-+	mac_l = 0x3344;
-+	mac_h = 0x0004d980;
++#define DDR_DPLL4_MEAS_DONE_LSB			3
++#define DDR_DPLL4_MEAS_DONE_MASK		0x00000008
++#define DDR_DPLL4_MEAS_DONE_SET(x) \
++	(((x) << DDR_DPLL4_MEAS_DONE_LSB) & DDR_DPLL4_MEAS_DONE_MASK)
 +
-+	ag71xx_wr(priv, AG71XX_REG_MAC_ADDR1, mac_l);
-+	ag71xx_wr(priv, AG71XX_REG_MAC_ADDR2, mac_h);
++#define DDR_PLL_CONFIG_PLLPWD_LSB		30
++#define DDR_PLL_CONFIG_PLLPWD_MASK		0x40000000
++#define DDR_PLL_CONFIG_PLLPWD_SET(x) \
++	(((x) << DDR_PLL_CONFIG_PLLPWD_LSB) & DDR_PLL_CONFIG_PLLPWD_MASK)
 +
-+	mdiobus_register(miibus);
-+	eth_register(edev);
++/*
++ * Helper macros.
++ * These Clobber t7, t8 and t9
++ */
++#define set_val(_reg, _mask, _val)		\
++	li	t7,	KSEG1ADDR(_reg);	\
++	lw	t8,	0(t7);			\
++	li	t9,	~_mask;			\
++	and	t8,	t8,	t9;		\
++	li	t9,	_val;			\
++	or	t8,	t8,	t9;		\
++	sw	t8,	0(t7)
 +
-+	dev_info(dev, "network device registered\n");
++#define cpu_ddr_control_set(_mask, _val)	\
++	set_val(AR934X_CPU_DDR_CLOCK_CONTROL, _mask, _val)
 +
-+	return 0;
-+}
++#define set_srif_pll_reg(reg, _r)	\
++	li	t7,	KSEG1ADDR(reg);	\
++	sw	_r,	0(t7);
 +
-+static __maybe_unused struct of_device_id ag71xx_dt_ids[] = {
-+	{
-+		.compatible = "qca,ar7100-gmac",
-+	}, {
-+		/* sentinel */
-+	}
-+};
++#define inc_loop_count(loc)		\
++	li	t9,	loc;		\
++	lw	t7,	0(t9);		\
++	addi	t7,	t7,	1;	\
++	sw	t7,	0(t9);
 +
-+static struct driver_d ag71xx_driver = {
-+	.name	= "ag71xx-gmac",
-+	.probe		= ag71xx_probe,
-+	.of_compatible = DRV_OF_COMPAT(ag71xx_dt_ids),
-+};
-+device_platform_driver(ag71xx_driver);
++#define clear_loop_count(loc)	\
++	li	t9,	loc;	\
++	sw	zero,	0(t9);
++
++/******************************************************************************
++ * first level initialization:
++ *
++ * 0) If clock cntrl reset switch is already set, we're recovering from
++ *	"divider reset"; goto 3.
++ * 1) Setup divide ratios.
++ * 2) Reset.
++ * 3) Setup pll's, wait for lock.
++ *
++ *****************************************************************************/
++
++.macro	pbl_ar9344_v11_pll_config
++	.set	push
++	.set	noreorder
++
++	pbl_reg_writel	0x13210f00, DPLL2_ADDRESS_c4
++	pbl_reg_writel	0x03000000, CPU_DPLL3_ADDRESS
++	pbl_reg_writel	0x13210f00, DPLL2_ADDRESS_44
++	pbl_reg_writel	0x03000000, DDR_DPLL3_ADDRESS
++	pbl_reg_writel	0x03000000, DPLL3_ADDRESS_88
++
++	li	t5,	KSEG1ADDR(WASP_BOOTSTRAP_REG);
++	li	t6,	WASP_REF_CLK_25
++	lw	t7,	0(t5);
++	and	t6,	t7,	t6
++	beq	zero,	t6,	setup_ref25_val
++	nop
++
++setup_ref40_val:
++	li	t5,	CPU_PLL_CONFIG_NINT_VAL_40
++	li	t6,	DDR_PLL_CONFIG_NINT_VAL_40
++	li	t7,	CPU_PLL_NFRAC_40
++	li	t9,	DDR_PLL_NFRAC_40
++	b	1f
++	nop
++
++setup_ref25_val:
++	li	t5,	CPU_PLL_CONFIG_NINT_VAL_25
++	li	t6,	DDR_PLL_CONFIG_NINT_VAL_25
++	li	t7,	CPU_PLL_NFRAC_25
++	li	t9,	DDR_PLL_NFRAC_25
++
++1:
++	li	t4,	(CPU_PLL_DITHER_DITHER_EN_SET(0) | \
++			CPU_PLL_DITHER_NFRAC_STEP_SET(1) | \
++			CPU_PLL_DITHER_UPDATE_COUNT_SET(0xf));
++	or	t4,	t4,	t7
++
++	li	t8,	0x21000;
++	or	t5,	t5,	t8
++
++	li	t8,	0x210000;
++	or	t6,	t6,	t8
++
++	li	t3,	(DDR_PLL_DITHER_DITHER_EN_SET(0) | \
++			DDR_PLL_DITHER_NFRAC_STEP_SET(1) | \
++			DDR_PLL_DITHER_UPDATE_COUNT_SET(0xf));
++
++	or	t3,	t3,	t9
++
++pll_bypass_set:
++	/* reg, mask, val  */
++	/* 0xb8050008, 0xfffffffb, 0x4 */
++	cpu_ddr_control_set(CPU_DDR_CLOCK_CONTROL_CPU_PLL_BYPASS_MASK, \
++		CPU_DDR_CLOCK_CONTROL_CPU_PLL_BYPASS_SET(1));
++	/* 0xb8050008, 0xfffffff7, 0x8 */
++	cpu_ddr_control_set(CPU_DDR_CLOCK_CONTROL_DDR_PLL_BYPASS_MASK, \
++		CPU_DDR_CLOCK_CONTROL_DDR_PLL_BYPASS_SET(1));
++	/* 0xb8050008, 0xffffffef, 0x10 */
++	cpu_ddr_control_set(CPU_DDR_CLOCK_CONTROL_AHB_PLL_BYPASS_MASK, \
++		CPU_DDR_CLOCK_CONTROL_AHB_PLL_BYPASS_SET(1));
++
++init_cpu_pll:
++	li	t7,	AR934X_CPU_PLL_CONFIG
++	li	t8,	CPU_PLL_CONFIG_PLLPWD_SET(1)
++	or	t8,	t8,	t5
++	sw	t8,	0(t7);
++
++init_ddr_pll:
++	li	t7,	AR934X_DDR_PLL_CONFIG
++	li	t8,	DDR_PLL_CONFIG_PLLPWD_SET(1)
++	or	t8,	t8,	t6
++	sw	t8,	0(t7);
++
++init_ahb_pll:
++	pbl_reg_writel	0x0130801C, AR934X_CPU_DDR_CLOCK_CONTROL
++
++srif_set:
++	/* Use built in values, based on ref clock */
++	li	t5,	KSEG1ADDR(WASP_BOOTSTRAP_REG);
++	li	t6,	WASP_REF_CLK_25
++	lw	t7,	0(t5);
++	and	t6,	t7,	t6
++	/* jump to 25ref clk */
++	beq	zero,	t6,	1f
++	nop
++
++	/*		refdiv		nint		nfrac */
++	/* cpu freq = (40 MHz refclk/refdiv 8) * Nint */
++	li	t4,	((0x8 << 27) | (112 << 18) | 0);
++	/* ddr freq = (40 MHz refclk/refdiv 8) * Nint */
++	li	t5,	((0x8 << 27) | (90 << 18) | 0);
++	b	2f
++	nop
++1:
++
++	/* cpu freq = (25 MHz refclk/refdiv 5) * Nint */
++	li	t4,	((0x5 << 27) | (112 << 18) | 0);
++	/* ddr freq = (25 MHz refclk/refdiv 5) * Nint */
++	li	t5,	((0x5 << 27) | (90 << 18) | 0);
++
++2:
++
++	/* 0 to 0xbd000004 */
++	clear_loop_count(ATH_CPU_COUNT_LOC);
++
++cpu_pll_is_not_locked:
++	inc_loop_count(ATH_CPU_COUNT_LOC);
++
++	pbl_reg_writel 0x10810F00, DPLL2_ADDRESS_c4
++
++	set_srif_pll_reg(0xb81161c0, t4);
++
++	pbl_reg_writel 0xd0810f00, DPLL2_ADDRESS_c4
++	pbl_reg_writel 0x03000000, CPU_DPLL3_ADDRESS
++	pbl_reg_writel 0xd0800f00, DPLL2_ADDRESS_c4
++
++cpu_clear_do_meas1:
++	li	t7,	KSEG1ADDR(CPU_DPLL3_ADDRESS)
++	lw	t8,	0(t7)
++	li	t9,	~CPU_DPLL3_DO_MEAS_SET(1)
++	and	t8,	t8,	t9
++	sw	t8,	0(t7)
++
++cpu_set_do_meas:
++	li	t7,	KSEG1ADDR(CPU_DPLL3_ADDRESS)
++	lw	t8,	0(t7)
++	li	t9,	CPU_DPLL3_DO_MEAS_SET(1)
++	or	t8,	t8,	t9
++	sw	t8,	0(t7)
++
++	li	t7,	KSEG1ADDR(CPU_DPLL4_ADDRESS)
++cpu_wait_for_meas_done:
++	lw	t8,	0(t7)
++	andi	t8,	t8,	CPU_DPLL4_MEAS_DONE_SET(1)
++	beqz	t8,	cpu_wait_for_meas_done
++	nop
++
++cpu_clear_do_meas2:
++	li	t7,	KSEG1ADDR(CPU_DPLL3_ADDRESS)
++	lw	t8,	0(t7)
++	li	t9,	~CPU_DPLL3_DO_MEAS_SET(1)
++	and	t8,	t8,	t9
++	sw	t8,	0(t7)
++
++cpu_read_sqsum_dvc:
++	li	t7,	KSEG1ADDR(CPU_DPLL3_ADDRESS)
++	lw	t8,	0(t7)
++	li	t9,	CPU_DPLL3_SQSUM_DVC_MASK
++	and	t8,	t8,	t9
++	sra	t8,	t8,	CPU_DPLL3_SQSUM_DVC_LSB
++	li	t9,	0x40000
++	subu	t8,	t8,	t9
++	bgez	t8,	cpu_pll_is_not_locked
++	nop
++
++	/* DDR */
++	clear_loop_count(ATH_DDR_COUNT_LOC)
++
++ddr_pll_is_not_locked:
++
++	inc_loop_count(ATH_DDR_COUNT_LOC)
++
++	pbl_reg_writel 0x10810F00, DPLL2_ADDRESS_44
++
++	set_srif_pll_reg(0xb8116240, t5);
++
++	pbl_reg_writel 0xD0810F00, DPLL2_ADDRESS_44
++	pbl_reg_writel 0x03000000, DDR_DPLL3_ADDRESS
++	pbl_reg_writel 0xD0800F00, DPLL2_ADDRESS_44
++
++ddr_clear_do_meas1:
++	li	t7,	DDR_DPLL3_ADDRESS
++	lw	t8,	0(t7)
++	li	t9,	~DDR_DPLL3_DO_MEAS_SET(1)
++	and	t8,	t8,	t9
++	sw	t8,	0(t7)
++
++
++ddr_set_do_meas:
++	li	t7,	DDR_DPLL3_ADDRESS
++	lw	t8,	0(t7)
++	li	t9,	DDR_DPLL3_DO_MEAS_SET(1)
++	or	t8,	t8,	t9
++	sw	t8,	0(t7)
++
++	li	t7,	KSEG1ADDR(DDR_DPLL4_ADDRESS)
++ddr_wait_for_meas_done:
++	lw	t8,	0(t7)
++	andi	t8,	t8,	DDR_DPLL4_MEAS_DONE_SET(1)
++	beqz	t8,	ddr_wait_for_meas_done
++	nop
++
++ddr_clear_do_meas2:
++	li	t7,	DDR_DPLL3_ADDRESS
++	lw	t8,	0(t7)
++	li	t9,	~DDR_DPLL3_DO_MEAS_SET(1)
++	and	t8,	t8,	t9
++	sw	t8,	0(t7)
++
++ddr_read_sqsum_dvc:
++	li	t7,	DDR_DPLL3_ADDRESS
++	lw	t8,	0(t7)
++	li	t9,	DDR_DPLL3_SQSUM_DVC_MASK
++	and	t8,	t8,	t9
++	sra	t8,	t8,	DDR_DPLL3_SQSUM_DVC_LSB
++	li	t9,	0x40000
++	subu	t8,	t8,	t9
++	bgez	t8,	ddr_pll_is_not_locked
++	nop
++
++pll_bypass_unset:
++	cpu_ddr_control_set(CPU_DDR_CLOCK_CONTROL_CPU_PLL_BYPASS_MASK, \
++		CPU_DDR_CLOCK_CONTROL_CPU_PLL_BYPASS_SET(0));
++	cpu_ddr_control_set(CPU_DDR_CLOCK_CONTROL_DDR_PLL_BYPASS_MASK, \
++		CPU_DDR_CLOCK_CONTROL_DDR_PLL_BYPASS_SET(0));
++	cpu_ddr_control_set(CPU_DDR_CLOCK_CONTROL_AHB_PLL_BYPASS_MASK, \
++		CPU_DDR_CLOCK_CONTROL_AHB_PLL_BYPASS_SET(0));
++
++ddr_pll_dither_unset:
++	pbl_reg_writel	0x78180200, AR934X_DDR_PLL_DITHER
++
++cpu_pll_dither_unset:
++	li	t7,	AR934X_CPU_PLL_DITHER
++	sw	t4,	0(t7)
++
++	.set	pop
++.endm
++
++#define AR9344_DDR_DDR2_CONFIG			AR7240_DDR_CTL_BASE+0xb8
++#define CFG_934X_DDR2_EN_TWL_VAL		0x0e59
++#define USEC_MULT				1
++#define CFG_934X_DDR2_CONFIG_VAL		0xc7d48cd0
++#define CFG_934X_DDR2_CONFIG2_VAL		0x9dd0e6a8
++#define CFG_934X_DDR2_MODE_VAL_INIT		0x133
++#define CFG_934X_DDR2_EXT_MODE_VAL_INIT		0x382
++#define CFG_934X_DDR2_EXT_MODE_VAL		0x402
++#define CFG_934X_DDR2_MODE_VAL			0x33
++#define CFG_DDR_REFRESH_VAL			0x4270
++#define CFG_934X_DDR2_TAP_VAL			0x10012
++#define CFG_DDR2_RD_DATA_THIS_CYCLE_VAL_32	0xff
++#define CFG_DDR2_RD_DATA_THIS_CYCLE_VAL_16	0xffff
++
++.macro	pbl_ar9344_v11_ddr2_config
++	.set	push
++	.set	noreorder
++
++	pbl_reg_writel	CFG_934X_DDR2_EN_TWL_VAL, AR9344_DDR_DDR2_CONFIG
++	pbl_sleep	t2, 100 * USEC_MULT
++
++	pbl_reg_writel	0x10, AR7240_DDR_CONTROL
++	pbl_sleep	t2, 10 * USEC_MULT
++
++	pbl_reg_writel	0x20, AR7240_DDR_CONTROL
++	pbl_sleep	t2, 10 * USEC_MULT
++
++	li	t5,	KSEG1ADDR(WASP_BOOTSTRAP_REG);
++	li	t6,	BIT(3)
++	lw	t7,	0(t5);
++	and	t6,	t7,	t6
++	beq	zero,	t6,	setup_16bit_1
++	nop
++setup_32bit_1:
++	pbl_reg_writel	BIT(6), AR7240_DDR_CTL_CONFIG
++	b	1f
++	nop
++setup_16bit_1:
++	pbl_reg_clr	BIT(6), AR7240_DDR_CTL_CONFIG
++1:
++
++	pbl_sleep	t2, 10 * USEC_MULT
++
++	pbl_reg_writel	CFG_934X_DDR2_CONFIG_VAL, AR7240_DDR_CONFIG
++	pbl_sleep	t2, 100 * USEC_MULT
++
++	pbl_reg_writel	CFG_934X_DDR2_CONFIG2_VAL, AR7240_DDR_CONFIG2
++	pbl_sleep	t2, 100 * USEC_MULT
++
++	pbl_reg_writel	0x8, AR7240_DDR_CONTROL
++	pbl_sleep	t2, 10 * USEC_MULT
++
++	pbl_reg_writel	CFG_934X_DDR2_MODE_VAL_INIT, AR7240_DDR_MODE
++	pbl_sleep	t2, 1000 * USEC_MULT
++
++	pbl_reg_writel	0x1, AR7240_DDR_CONTROL
++	pbl_sleep	t2, 10 * USEC_MULT
++
++	pbl_reg_writel	CFG_934X_DDR2_EXT_MODE_VAL_INIT, AR7240_DDR_EXT_MODE
++	pbl_sleep	t2, 100 * USEC_MULT
++
++	pbl_reg_writel	0x2, AR7240_DDR_CONTROL
++	pbl_sleep	t2, 10 * USEC_MULT
++
++	pbl_reg_writel	CFG_934X_DDR2_EXT_MODE_VAL, AR7240_DDR_EXT_MODE
++	pbl_sleep	t2, 100 * USEC_MULT
++
++	pbl_reg_writel	0x2, AR7240_DDR_CONTROL
++	pbl_sleep	t2, 10 * USEC_MULT
++
++	pbl_reg_writel	0x8, AR7240_DDR_CONTROL
++	pbl_sleep	t2, 10 * USEC_MULT
++
++	pbl_reg_writel	CFG_934X_DDR2_MODE_VAL, AR7240_DDR_MODE
++	pbl_sleep	t2, 100 * USEC_MULT
++
++	pbl_reg_writel	0x1, AR7240_DDR_CONTROL
++	pbl_sleep	t2, 10 * USEC_MULT
++
++	pbl_reg_writel	CFG_DDR_REFRESH_VAL, AR7240_DDR_REFRESH
++	pbl_sleep	t2, 100 * USEC_MULT
++
++	pbl_reg_writel	CFG_934X_DDR2_TAP_VAL, AR7240_DDR_TAP_CONTROL0
++	pbl_reg_writel	CFG_934X_DDR2_TAP_VAL, AR7240_DDR_TAP_CONTROL1
++
++
++	li	t5,	KSEG1ADDR(WASP_BOOTSTRAP_REG);
++	li	t6,	BIT(3)
++	lw	t7,	0(t5);
++	and	t6,	t7,	t6
++	beq	zero,	t6,	setup_16bit_2
++	nop
++setup_32bit_2:
++	pbl_reg_writel	CFG_934X_DDR2_TAP_VAL, AR7240_DDR_TAP_CONTROL2
++	pbl_reg_writel	CFG_934X_DDR2_TAP_VAL, AR7240_DDR_TAP_CONTROL3
++	pbl_reg_writel	CFG_DDR2_RD_DATA_THIS_CYCLE_VAL_32, AR7240_DDR_RD_DATA_THIS_CYCLE
++	b	1f
++	nop
++setup_16bit_2:
++	pbl_reg_writel	CFG_DDR2_RD_DATA_THIS_CYCLE_VAL_16, AR7240_DDR_RD_DATA_THIS_CYCLE
++
++1:
++	pbl_sleep	t2, 100 * USEC_MULT
++
++	pbl_reg_writel	0x74444444, AR7240_DDR_BURST
++	pbl_sleep	t2, 100 * USEC_MULT
++
++	pbl_reg_writel	0x222, AR7240_DDR_BURST2
++	pbl_sleep	t2, 100 * USEC_MULT
++
++	pbl_reg_writel 0xfffff, AR7240_AHB_MASTER_TIMEOUT
++	pbl_sleep	t2, 100 * USEC_MULT
++
++	.set	pop
++.endm
++
++#endif /* __ASM_MACH_ATH79_PBL_LL_INIT_AR9344_1_1_H */
 -- 
 2.11.0
 
