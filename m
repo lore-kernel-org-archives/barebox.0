@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1deiUw-00014n-5p
- for barebox@lists.infradead.org; Mon, 07 Aug 2017 13:55:11 +0000
+ id 1deid2-0005Mq-Lx
+ for barebox@lists.infradead.org; Mon, 07 Aug 2017 14:03:34 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
- (envelope-from <l.stach@pengutronix.de>) id 1deiUZ-0001PZ-Iz
- for barebox@lists.infradead.org; Mon, 07 Aug 2017 15:54:47 +0200
+ (envelope-from <l.stach@pengutronix.de>) id 1deich-0002ro-4A
+ for barebox@lists.infradead.org; Mon, 07 Aug 2017 16:03:11 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon,  7 Aug 2017 15:54:47 +0200
-Message-Id: <20170807135447.11161-3-l.stach@pengutronix.de>
-In-Reply-To: <20170807135447.11161-1-l.stach@pengutronix.de>
-References: <20170807135447.11161-1-l.stach@pengutronix.de>
+Date: Mon,  7 Aug 2017 16:03:10 +0200
+Message-Id: <20170807140311.3515-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,28 +24,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] ARM: imx: ccmx53: select I2C
+Subject: [PATCH 1/2] ARM: imx: add stub for imx7_uart_setup_ll
 To: barebox@lists.infradead.org
 
-The board file needs i2c support to enable a regulator.
-
+Fixes: 28e8db159f25 (ARM: i.MX: Add imx7_uart_setup_ll())
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/mach-imx/Kconfig | 1 +
+ arch/arm/mach-imx/include/mach/debug_ll.h | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 0d1b09034baa..06a6aeee43a4 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -253,6 +253,7 @@ config MACH_FREESCALE_MX51_PDK
- config MACH_CCMX53
- 	bool "Digi ConnectCore i.MX53"
- 	select ARCH_IMX53
-+	select I2C
- 	help
- 	  Say Y here if you are using the Digi ConnectCore ccxmx53
- 	  series SoM
+diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
+index b7c0690d8120..d54d601db0da 100644
+--- a/arch/arm/mach-imx/include/mach/debug_ll.h
++++ b/arch/arm/mach-imx/include/mach/debug_ll.h
+@@ -115,6 +115,7 @@ static inline void imx50_uart_setup_ll(void) {}
+ static inline void imx51_uart_setup_ll(void) {}
+ static inline void imx53_uart_setup_ll(void) {}
+ static inline void imx6_uart_setup_ll(void)  {}
++static inline void imx7_uart_setup_ll(void)  {}
+ static inline void vf610_uart_setup_ll(void) {}
+ 
+ #endif /* CONFIG_DEBUG_LL */
 -- 
 2.11.0
 
