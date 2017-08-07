@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
+Received: from mout.gmx.net ([212.227.17.20])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dejCI-0003rh-Af
- for barebox@lists.infradead.org; Mon, 07 Aug 2017 14:40:09 +0000
+ id 1dejCI-0003rk-S6
+ for barebox@lists.infradead.org; Mon, 07 Aug 2017 14:40:13 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Mon,  7 Aug 2017 16:39:17 +0200
-Message-Id: <20170807143927.1641-3-linux@rempel-privat.de>
+Date: Mon,  7 Aug 2017 16:39:19 +0200
+Message-Id: <20170807143927.1641-5-linux@rempel-privat.de>
 In-Reply-To: <20170807143927.1641-1-linux@rempel-privat.de>
 References: <20170807143927.1641-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,332 +21,633 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 03/13] MIPS: ath79: add TP-Link WDR4300 board support
+Subject: [PATCH v2 05/13] net: ath79: add ag71xx Ethernet driver
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-This provides low level initialization of pll and ddr2. Resulting binary
-should work from SRAM, DDR2 and SPI flash. If started from DDR2 RAM
-level initialization will skipped.
+From: Yegor Yefremov <yegorslists@googlemail.com>
 
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/Makefile                                 |  1 +
- arch/mips/boards/tplink-wdr4300/Makefile           |  1 +
- arch/mips/boards/tplink-wdr4300/board.c            | 28 ++++++++
- .../tplink-wdr4300/include/board/board_pbl_start.h | 62 +++++++++++++++++
- arch/mips/configs/tplink-wdr4300_defconfig         | 78 ++++++++++++++++++++++
- arch/mips/dts/ar9344_tl_wdr4300.dts                | 63 +++++++++++++++++
- arch/mips/mach-ath79/Kconfig                       | 10 +++
- 7 files changed, 243 insertions(+)
- create mode 100644 arch/mips/boards/tplink-wdr4300/Makefile
- create mode 100644 arch/mips/boards/tplink-wdr4300/board.c
- create mode 100644 arch/mips/boards/tplink-wdr4300/include/board/board_pbl_start.h
- create mode 100644 arch/mips/configs/tplink-wdr4300_defconfig
- create mode 100644 arch/mips/dts/ar9344_tl_wdr4300.dts
+ Documentation/boards/mips/tplink-mr3020.rst     |   7 +
+ arch/mips/mach-ath79/include/mach/ar71xx_regs.h |  12 +
+ drivers/net/Kconfig                             |   7 +
+ drivers/net/Makefile                            |   1 +
+ drivers/net/ag71xx.c                            | 530 ++++++++++++++++++++++++
+ 5 files changed, 557 insertions(+)
+ create mode 100644 drivers/net/ag71xx.c
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 75761b5e7..dd5ceea20 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -80,6 +80,7 @@ board-$(CONFIG_BOARD_NETGEAR_WG102)	:= netgear-wg102
+diff --git a/Documentation/boards/mips/tplink-mr3020.rst b/Documentation/boards/mips/tplink-mr3020.rst
+index 99101c337..4119c1e7e 100644
+--- a/Documentation/boards/mips/tplink-mr3020.rst
++++ b/Documentation/boards/mips/tplink-mr3020.rst
+@@ -60,6 +60,13 @@ Next, setup network on MR3020 and run ``6F01A8C0.img``, e.g.:
+   hornet> tftpboot 0x81000000 6F01A8C0.img
+   hornet> bootm 0x81000000
  
- machine-$(CONFIG_MACH_MIPS_ATH79)	:= ath79
- board-$(CONFIG_BOARD_TPLINK_MR3020)	:= tplink-mr3020
-+board-$(CONFIG_BOARD_TPLINK_WDR4300)	:= tplink-wdr4300
- board-$(CONFIG_BOARD_BLACK_SWIFT)	:= black-swift
++WIP: Short form:
++  hornet> set ipaddr 192.168.0.2; set serverip 192.168.0.1
++  hornet> tftpboot 0x81000000 6F01A8C0.img; bootm 0x81000000
++
++u-boot_mod:
++  uboot> setenv ipaddr 192.168.1.12; setenv serverip 192.168.1.2
++  uboot> tftpboot 0x81000000 6F01A8C0.img; bootm 0x81000000
  
- machine-$(CONFIG_MACH_MIPS_BCM47XX)	:= bcm47xx
-diff --git a/arch/mips/boards/tplink-wdr4300/Makefile b/arch/mips/boards/tplink-wdr4300/Makefile
+ Links
+ -----
+diff --git a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
+index f56c3f724..31d33b3c4 100644
+--- a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
++++ b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
+@@ -102,6 +102,8 @@
+ #define AR933X_PLL_CLOCK_CTRL_REG	0x08
+ #define AR933X_PLL_DITHER_FRAC_REG	0x10
+ #define AR933X_PLL_DITHER_REG		0x14
++#define AR933X_ETHSW_CLOCK_CONTROL_REG	0x24
++#define AR933X_ETH_XMII_CONTROL_REG	0x2c
+ 
+ #define AR933X_PLL_CPU_CONFIG_NINT_SHIFT	10
+ #define AR933X_PLL_CPU_CONFIG_NINT_MASK		0x3f
+@@ -125,6 +127,16 @@
+ #define AR933X_RESET_REG_RESET_MODULE		0x1c
+ #define AR933X_RESET_REG_BOOTSTRAP		0xac
+ 
++#define AR933X_RESET_GE1_MDIO           BIT(23)
++#define AR933X_RESET_GE0_MDIO           BIT(22)
++#define AR933X_RESET_GE1_MAC            BIT(13)
++#define AR933X_RESET_WMAC               BIT(11)
++#define AR933X_RESET_GE0_MAC            BIT(9)
++#define AR933X_RESET_SWITCH             BIT(8)
++#define AR933X_RESET_USB_HOST           BIT(5)
++#define AR933X_RESET_USB_PHY            BIT(4)
++#define AR933X_RESET_USBSUS_OVERRIDE    BIT(3)
++
+ #define AR71XX_RESET_FULL_CHIP		BIT(24)
+ 
+ #define AR933X_BOOTSTRAP_REF_CLK_40	BIT(0)
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index c3980e78f..9d69b6aeb 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -204,6 +204,13 @@ config DRIVER_NET_EFI_SNP
+ 	bool "EFI SNP ethernet driver"
+ 	depends on EFI_BOOTUP
+ 
++config DRIVER_NET_AG71XX
++	bool "Atheros AG71xx ethernet driver"
++	depends on MACH_MIPS_ATH79
++	select PHYLIB
++	help
++	  This option enables support for Atheros AG71XX ethernet chip.
++
+ config DRIVER_NET_TSE
+ 	depends on NIOS2
+ 	bool "Altera TSE ethernet driver"
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index 42ea208e3..86c8ac32f 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -30,3 +30,4 @@ obj-$(CONFIG_DRIVER_NET_SMC91111)	+= smc91111.o
+ obj-$(CONFIG_DRIVER_NET_TAP)		+= tap.o
+ obj-$(CONFIG_DRIVER_NET_TSE)		+= altera_tse.o
+ obj-$(CONFIG_DRIVER_NET_EFI_SNP)	+= efi-snp.o
++obj-$(CONFIG_DRIVER_NET_AG71XX)		+= ag71xx.o
+diff --git a/drivers/net/ag71xx.c b/drivers/net/ag71xx.c
 new file mode 100644
-index 000000000..dcfc2937d
+index 000000000..b2e066be3
 --- /dev/null
-+++ b/arch/mips/boards/tplink-wdr4300/Makefile
-@@ -0,0 +1 @@
-+obj-y += board.o
-diff --git a/arch/mips/boards/tplink-wdr4300/board.c b/arch/mips/boards/tplink-wdr4300/board.c
-new file mode 100644
-index 000000000..d6126fcb6
---- /dev/null
-+++ b/arch/mips/boards/tplink-wdr4300/board.c
-@@ -0,0 +1,28 @@
++++ b/drivers/net/ag71xx.c
+@@ -0,0 +1,530 @@
 +/*
-+ * Copyright (C) 2017 Oleksij Rempel <o.rempel@pengutronix.de>
-+ * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
++ *  Atheros AR71xx built-in ethernet mac driver
 + *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
++ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
++ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
++ *  Based on Atheros' AG7100 driver
 + *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
 + */
 +
 +#include <common.h>
++#include <net.h>
++#include <dma.h>
 +#include <init.h>
++#include <io.h>
++#include <linux/err.h>
++#include <linux/phy.h>
++#include <of_net.h>
++#include <of_address.h>
 +
-+static int model_hostname_init(void)
++#include <mach/ath79.h>
++
++/* Register offsets */
++#define AG71XX_REG_MAC_CFG1	0x0000
++#define AG71XX_REG_MAC_CFG2	0x0004
++#define AG71XX_REG_MAC_IPG	0x0008
++#define AG71XX_REG_MAC_HDX	0x000c
++#define AG71XX_REG_MAC_MFL	0x0010
++#define AG71XX_REG_MII_CFG	0x0020
++#define AG71XX_REG_MII_CMD	0x0024
++#define AG71XX_REG_MII_ADDR	0x0028
++#define AG71XX_REG_MII_CTRL	0x002c
++#define AG71XX_REG_MII_STATUS	0x0030
++#define AG71XX_REG_MII_IND	0x0034
++#define AG71XX_REG_MAC_IFCTL	0x0038
++#define AG71XX_REG_MAC_ADDR1	0x0040
++#define AG71XX_REG_MAC_ADDR2	0x0044
++#define AG71XX_REG_FIFO_CFG0	0x0048
++#define AG71XX_REG_FIFO_CFG1	0x004c
++#define AG71XX_REG_FIFO_CFG2	0x0050
++#define AG71XX_REG_FIFO_CFG3	0x0054
++#define AG71XX_REG_FIFO_CFG4	0x0058
++#define AG71XX_REG_FIFO_CFG5	0x005c
++#define AG71XX_REG_FIFO_RAM0	0x0060
++#define AG71XX_REG_FIFO_RAM1	0x0064
++#define AG71XX_REG_FIFO_RAM2	0x0068
++#define AG71XX_REG_FIFO_RAM3	0x006c
++#define AG71XX_REG_FIFO_RAM4	0x0070
++#define AG71XX_REG_FIFO_RAM5	0x0074
++#define AG71XX_REG_FIFO_RAM6	0x0078
++#define AG71XX_REG_FIFO_RAM7	0x007c
++
++#define AG71XX_REG_TX_CTRL	0x0180
++#define AG71XX_REG_TX_DESC	0x0184
++#define AG71XX_REG_TX_STATUS	0x0188
++#define AG71XX_REG_RX_CTRL	0x018c
++#define AG71XX_REG_RX_DESC	0x0190
++#define AG71XX_REG_RX_STATUS	0x0194
++#define AG71XX_REG_INT_ENABLE	0x0198
++#define AG71XX_REG_INT_STATUS	0x019c
++
++#define AG71XX_REG_FIFO_DEPTH	0x01a8
++#define AG71XX_REG_RX_SM	0x01b0
++#define AG71XX_REG_TX_SM	0x01b4
++
++#define MAC_CFG1_TXE		BIT(0)	/* Tx Enable */
++#define MAC_CFG1_STX		BIT(1)	/* Synchronize Tx Enable */
++#define MAC_CFG1_RXE		BIT(2)	/* Rx Enable */
++#define MAC_CFG1_SRX		BIT(3)	/* Synchronize Rx Enable */
++#define MAC_CFG1_TFC		BIT(4)	/* Tx Flow Control Enable */
++#define MAC_CFG1_RFC		BIT(5)	/* Rx Flow Control Enable */
++#define MAC_CFG1_LB		BIT(8)	/* Loopback mode */
++#define MAC_CFG1_TX_RST		BIT(18)	/* Tx Reset */
++#define MAC_CFG1_RX_RST		BIT(19)	/* Rx Reset */
++#define MAC_CFG1_SR		BIT(31)	/* Soft Reset */
++
++#define MAC_CFG2_FDX		BIT(0)
++#define MAC_CFG2_CRC_EN		BIT(1)
++#define MAC_CFG2_PAD_CRC_EN	BIT(2)
++#define MAC_CFG2_LEN_CHECK	BIT(4)
++#define MAC_CFG2_HUGE_FRAME_EN	BIT(5)
++#define MAC_CFG2_IF_1000	BIT(9)
++#define MAC_CFG2_IF_10_100	BIT(8)
++
++#define FIFO_CFG0_WTM		BIT(0)	/* Watermark Module */
++#define FIFO_CFG0_RXS		BIT(1)	/* Rx System Module */
++#define FIFO_CFG0_RXF		BIT(2)	/* Rx Fabric Module */
++#define FIFO_CFG0_TXS		BIT(3)	/* Tx System Module */
++#define FIFO_CFG0_TXF		BIT(4)	/* Tx Fabric Module */
++#define FIFO_CFG0_ALL	(FIFO_CFG0_WTM | FIFO_CFG0_RXS | FIFO_CFG0_RXF \
++			| FIFO_CFG0_TXS | FIFO_CFG0_TXF)
++
++#define FIFO_CFG0_ENABLE_SHIFT	8
++
++#define FIFO_CFG4_DE		BIT(0)	/* Drop Event */
++#define FIFO_CFG4_DV		BIT(1)	/* RX_DV Event */
++#define FIFO_CFG4_FC		BIT(2)	/* False Carrier */
++#define FIFO_CFG4_CE		BIT(3)	/* Code Error */
++#define FIFO_CFG4_CR		BIT(4)	/* CRC error */
++#define FIFO_CFG4_LM		BIT(5)	/* Length Mismatch */
++#define FIFO_CFG4_LO		BIT(6)	/* Length out of range */
++#define FIFO_CFG4_OK		BIT(7)	/* Packet is OK */
++#define FIFO_CFG4_MC		BIT(8)	/* Multicast Packet */
++#define FIFO_CFG4_BC		BIT(9)	/* Broadcast Packet */
++#define FIFO_CFG4_DR		BIT(10)	/* Dribble */
++#define FIFO_CFG4_LE		BIT(11)	/* Long Event */
++#define FIFO_CFG4_CF		BIT(12)	/* Control Frame */
++#define FIFO_CFG4_PF		BIT(13)	/* Pause Frame */
++#define FIFO_CFG4_UO		BIT(14)	/* Unsupported Opcode */
++#define FIFO_CFG4_VT		BIT(15)	/* VLAN tag detected */
++#define FIFO_CFG4_FT		BIT(16)	/* Frame Truncated */
++#define FIFO_CFG4_UC		BIT(17)	/* Unicast Packet */
++
++#define FIFO_CFG5_DE		BIT(0)	/* Drop Event */
++#define FIFO_CFG5_DV		BIT(1)	/* RX_DV Event */
++#define FIFO_CFG5_FC		BIT(2)	/* False Carrier */
++#define FIFO_CFG5_CE		BIT(3)	/* Code Error */
++#define FIFO_CFG5_LM		BIT(4)	/* Length Mismatch */
++#define FIFO_CFG5_LO		BIT(5)	/* Length Out of Range */
++#define FIFO_CFG5_OK		BIT(6)	/* Packet is OK */
++#define FIFO_CFG5_MC		BIT(7)	/* Multicast Packet */
++#define FIFO_CFG5_BC		BIT(8)	/* Broadcast Packet */
++#define FIFO_CFG5_DR		BIT(9)	/* Dribble */
++#define FIFO_CFG5_CF		BIT(10)	/* Control Frame */
++#define FIFO_CFG5_PF		BIT(11)	/* Pause Frame */
++#define FIFO_CFG5_UO		BIT(12)	/* Unsupported Opcode */
++#define FIFO_CFG5_VT		BIT(13)	/* VLAN tag detected */
++#define FIFO_CFG5_LE		BIT(14)	/* Long Event */
++#define FIFO_CFG5_FT		BIT(15)	/* Frame Truncated */
++#define FIFO_CFG5_16		BIT(16)	/* unknown */
++#define FIFO_CFG5_17		BIT(17)	/* unknown */
++#define FIFO_CFG5_SF		BIT(18)	/* Short Frame */
++#define FIFO_CFG5_BM		BIT(19)	/* Byte Mode */
++
++#define AG71XX_INT_TX_PS	BIT(0)
++#define AG71XX_INT_TX_UR	BIT(1)
++#define AG71XX_INT_TX_BE	BIT(3)
++#define AG71XX_INT_RX_PR	BIT(4)
++#define AG71XX_INT_RX_OF	BIT(6)
++#define AG71XX_INT_RX_BE	BIT(7)
++
++#define MAC_IFCTL_SPEED		BIT(16)
++
++#define MII_CFG_CLK_DIV_4	0
++#define MII_CFG_CLK_DIV_6	2
++#define MII_CFG_CLK_DIV_8	3
++#define MII_CFG_CLK_DIV_10	4
++#define MII_CFG_CLK_DIV_14	5
++#define MII_CFG_CLK_DIV_20	6
++#define MII_CFG_CLK_DIV_28	7
++#define MII_CFG_CLK_DIV_34	8
++#define MII_CFG_CLK_DIV_42	9
++#define MII_CFG_CLK_DIV_50	10
++#define MII_CFG_CLK_DIV_58	11
++#define MII_CFG_CLK_DIV_66	12
++#define MII_CFG_CLK_DIV_74	13
++#define MII_CFG_CLK_DIV_82	14
++#define MII_CFG_CLK_DIV_98	15
++#define MII_CFG_RESET		BIT(31)
++
++#define MII_CMD_WRITE		0x0
++#define MII_CMD_READ		0x1
++#define MII_ADDR_SHIFT		8
++#define MII_IND_BUSY		BIT(0)
++#define MII_IND_INVALID		BIT(2)
++
++#define TX_CTRL_TXE		BIT(0)	/* Tx Enable */
++
++#define TX_STATUS_PS		BIT(0)	/* Packet Sent */
++#define TX_STATUS_UR		BIT(1)	/* Tx Underrun */
++#define TX_STATUS_BE		BIT(3)	/* Bus Error */
++
++#define RX_CTRL_RXE		BIT(0)	/* Rx Enable */
++
++#define RX_STATUS_PR		BIT(0)	/* Packet Received */
++#define RX_STATUS_OF		BIT(2)	/* Rx Overflow */
++#define RX_STATUS_BE		BIT(3)	/* Bus Error */
++
++/*
++ * GMAC register macros
++ */
++#define AG71XX_ETH_CFG_RGMII_GE0        (1<<0)
++#define AG71XX_ETH_CFG_MII_GE0_SLAVE    (1<<4)
++
++/*
++ * h/w descriptor
++ */
++typedef struct {
++	uint32_t    pkt_start_addr;
++
++	uint32_t    is_empty       :  1;
++	uint32_t    res1           : 10;
++	uint32_t    ftpp_override  :  5;
++	uint32_t    res2           :  4;
++	uint32_t    pkt_size       : 12;
++
++	uint32_t    next_desc      ;
++} ag7240_desc_t;
++
++#define NO_OF_TX_FIFOS  8
++#define NO_OF_RX_FIFOS  8
++#define TX_RING_SZ (NO_OF_TX_FIFOS * sizeof(ag7240_desc_t))
++#define MAX_RBUFF_SZ	0x600		/* 1518 rounded up */
++
++#define MAX_WAIT        1000
++
++struct ag71xx {
++	struct device_d *dev;
++	struct eth_device netdev;
++	void __iomem *regs;
++	void __iomem *regs_gmac;
++	struct mii_bus miibus;
++
++	void *rx_buffer;
++
++	unsigned char *rx_pkt[NO_OF_RX_FIFOS];
++	ag7240_desc_t *fifo_tx;
++	ag7240_desc_t *fifo_rx;
++
++	int next_tx;
++	int next_rx;
++};
++
++static inline void ag71xx_check_reg_offset(struct ag71xx *priv, int reg)
 +{
-+	barebox_set_hostname("wdr4300");
++	switch (reg) {
++	case AG71XX_REG_MAC_CFG1 ... AG71XX_REG_MAC_MFL:
++	case AG71XX_REG_MAC_IFCTL ... AG71XX_REG_TX_SM:
++	case AG71XX_REG_MII_CFG:
++		break;
++
++	default:
++		BUG();
++	}
++}
++
++static inline u32 ag71xx_gmac_rr(struct ag71xx *dev, int reg)
++{
++	return __raw_readl(dev->regs_gmac + reg);
++}
++
++static inline void ag71xx_gmac_wr(struct ag71xx *dev, int reg, u32 val)
++{
++	__raw_writel(val, dev->regs_gmac + reg);
++}
++
++static inline u32 ag71xx_rr(struct ag71xx *priv, int reg)
++{
++	ag71xx_check_reg_offset(priv, reg);
++
++	return __raw_readl(priv->regs + reg);
++}
++
++static inline void ag71xx_wr(struct ag71xx *priv, int reg, u32 val)
++{
++	ag71xx_check_reg_offset(priv, reg);
++
++	__raw_writel(val, priv->regs + reg);
++	/* flush write */
++	(void)__raw_readl(priv->regs + reg);
++}
++
++static int ag71xx_ether_mii_read(struct mii_bus *miidev, int addr, int reg)
++{
++	return 0xffff;
++}
++
++static int ag71xx_ether_mii_write(struct mii_bus *miidev, int addr, int reg, u16 val)
++{
++	return 0;
++}
++
++static int ag71xx_ether_set_ethaddr(struct eth_device *edev, const unsigned char *adr)
++{
++	return 0;
++}
++
++static int ag71xx_ether_get_ethaddr(struct eth_device *edev, unsigned char *adr)
++{
++	/* We have no eeprom */
++	return -1;
++}
++
++static void ag71xx_ether_halt(struct eth_device *edev)
++{
++	struct ag71xx *priv = edev->priv;
++
++	ag71xx_wr(priv, AG71XX_REG_RX_CTRL, 0);
++	while (ag71xx_rr(priv, AG71XX_REG_RX_CTRL))
++		;
++}
++
++static int ag71xx_ether_rx(struct eth_device *edev)
++{
++	struct ag71xx *priv = edev->priv;
++	ag7240_desc_t *f;
++	unsigned int work_done;
++
++	for (work_done = 0; work_done < NO_OF_RX_FIFOS; work_done++) {
++		unsigned int pktlen;
++		unsigned char *rx_pkt;
++
++		f = &priv->fifo_rx[priv->next_rx];
++
++		if (f->is_empty)
++			break;
++
++		pktlen = f->pkt_size;
++		rx_pkt = priv->rx_pkt[priv->next_rx];
++
++		/* invalidate */
++		dma_sync_single_for_cpu((unsigned long)rx_pkt, pktlen,
++						DMA_FROM_DEVICE);
++
++		net_receive(edev, rx_pkt, pktlen - 4);
++
++		f->is_empty = 1;
++
++		priv->next_rx = (priv->next_rx + 1) % NO_OF_RX_FIFOS;
++	}
++
++	if (!(ag71xx_rr(priv, AG71XX_REG_RX_CTRL) & RX_CTRL_RXE)) {
++		f = &priv->fifo_rx[priv->next_rx];
++		ag71xx_wr(priv, AG71XX_REG_RX_DESC, virt_to_phys(f));
++		ag71xx_wr(priv, AG71XX_REG_RX_CTRL, RX_CTRL_RXE);
++	}
++
++	return work_done;
++}
++
++static int ag71xx_ether_send(struct eth_device *edev, void *packet, int length)
++{
++	struct ag71xx *priv = edev->priv;
++	struct device_d *dev = priv->dev;
++	ag7240_desc_t *f = &priv->fifo_tx[priv->next_tx];
++	int i;
++
++	/* flush */
++	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
++
++	f->pkt_start_addr = virt_to_phys(packet);
++	f->res1 = 0;
++	f->pkt_size = length;
++	f->is_empty = 0;
++	ag71xx_wr(priv, AG71XX_REG_TX_DESC, virt_to_phys(f));
++	ag71xx_wr(priv, AG71XX_REG_TX_CTRL, TX_CTRL_TXE);
++
++	/* flush again?! */
++	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
++
++	for (i = 0; i < MAX_WAIT; i++) {
++		udelay(100);
++		if (f->is_empty) {
++			break;
++		}
++	}
++
++	if (i == MAX_WAIT) {
++		dev_err(dev, "Tx Timed out\n");
++	}
++
++	f->pkt_start_addr = 0;
++	f->pkt_size = 0;
++
++	priv->next_tx = (priv->next_tx + 1) % NO_OF_TX_FIFOS;
 +
 +	return 0;
 +}
-+postcore_initcall(model_hostname_init);
-diff --git a/arch/mips/boards/tplink-wdr4300/include/board/board_pbl_start.h b/arch/mips/boards/tplink-wdr4300/include/board/board_pbl_start.h
-new file mode 100644
-index 000000000..7d4ee4bab
---- /dev/null
-+++ b/arch/mips/boards/tplink-wdr4300/include/board/board_pbl_start.h
-@@ -0,0 +1,62 @@
-+/*
-+ * Copyright (C) 2017 Oleksij Rempel <o.rempel@pengutronix.de>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-+ * GNU General Public License for more details.
-+ *
-+ */
 +
-+#include <mach/debug_ll_ar9344.h>
-+#include <asm/pbl_macros.h>
-+#include <mach/pbl_macros.h>
-+#include <mach/pbl_ll_init_ar9344_1.1.h>
-+#include <asm/pbl_nmon.h>
++static int ag71xx_ether_open(struct eth_device *edev)
++{
++	return 0;
++}
 +
-+	.macro	board_pbl_start
-+	.set	push
-+	.set	noreorder
++static int ag71xx_ether_init(struct eth_device *edev)
++{
++	struct ag71xx *priv = edev->priv;
++	int i;
++	void *rxbuf = priv->rx_buffer;
 +
-+	mips_barebox_10h
++	priv->next_rx = 0;
 +
-+	debug_ll_ar9344_init
++	for (i = 0; i < NO_OF_RX_FIFOS; i++) {
++		ag7240_desc_t *fr = &priv->fifo_rx[i];
 +
-+	debug_ll_outc '1'
++		priv->rx_pkt[i] = rxbuf;
++		fr->pkt_start_addr = virt_to_phys(rxbuf);
++		fr->pkt_size = MAX_RBUFF_SZ;
++		fr->is_empty = 1;
++		fr->next_desc = virt_to_phys(&priv->fifo_rx[(i + 1) % NO_OF_RX_FIFOS]);
 +
-+	hornet_mips24k_cp0_setup
-+	debug_ll_outc '2'
++		/* invalidate */
++		dma_sync_single_for_device((unsigned long)rxbuf, MAX_RBUFF_SZ,
++					DMA_FROM_DEVICE);
 +
-+	/* test if we are in the SRAM */
-+	pbl_blt 0xbd000000 1f t8
-+	debug_ll_outc '3'
-+	b skip_flash_test
-+	nop
-+1:
-+	/* test if we are in the flash */
-+	pbl_blt 0xbf000000 skip_pll_ram_config t8
-+	debug_ll_outc '4'
-+skip_flash_test:
++		rxbuf += MAX_RBUFF_SZ;
++	}
 +
-+	pbl_ar9344_v11_pll_config
-+	debug_ll_outc '5'
++	/* Clean Tx BD's */
++	memset(priv->fifo_tx, 0, TX_RING_SZ);
 +
-+	pbl_ar9344_v11_ddr2_config
++	ag71xx_wr(priv, AG71XX_REG_RX_DESC, virt_to_phys(priv->fifo_rx));
++	ag71xx_wr(priv, AG71XX_REG_RX_CTRL, RX_CTRL_RXE);
 +
-+skip_pll_ram_config:
-+	debug_ll_outc '6'
-+	debug_ll_outnl
++	return 1;
++}
 +
-+	mips_nmon
++static int ag71xx_mii_setup(struct ag71xx *priv)
++{
++	u32 rd;
 +
-+	copy_to_link_location	pbl_start
++	rd = ag71xx_gmac_rr(priv, 0);
++	rd |= AG71XX_ETH_CFG_MII_GE0_SLAVE;
++	ag71xx_gmac_wr(priv, 0, rd);
 +
-+	.set	pop
-+	.endm
-diff --git a/arch/mips/configs/tplink-wdr4300_defconfig b/arch/mips/configs/tplink-wdr4300_defconfig
-new file mode 100644
-index 000000000..a277e35b1
---- /dev/null
-+++ b/arch/mips/configs/tplink-wdr4300_defconfig
-@@ -0,0 +1,78 @@
-+CONFIG_BUILTIN_DTB=y
-+CONFIG_BUILTIN_DTB_NAME="ar9344_tl_wdr3400"
-+CONFIG_MACH_MIPS_ATH79=y
-+CONFIG_BOARD_TPLINK_WDR4300=y
-+CONFIG_PBL_IMAGE=y
-+CONFIG_IMAGE_COMPRESSION_XZKERN=y
-+CONFIG_MMU=y
-+CONFIG_TEXT_BASE=0x81000000
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_CMD_DMESG=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_IMD=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_LOADB=y
-+CONFIG_CMD_LOADY=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_DEFAULTENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_SHA1SUM=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_LET=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_READF=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_MEMTEST=y
-+CONFIG_CMD_MM=y
-+CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_LED=y
-+CONFIG_CMD_POWEROFF=y
-+CONFIG_CMD_SPI=y
-+CONFIG_CMD_LED_TRIGGER=y
-+CONFIG_CMD_BAREBOX_UPDATE=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_TIME=y
-+CONFIG_NET=y
-+CONFIG_NET_NFS=y
-+CONFIG_NET_NETCONSOLE=y
-+CONFIG_NET_RESOLV=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_SNTP=y
-+CONFIG_OFDEVICE=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
-+CONFIG_OF_BAREBOX_ENV_IN_FS=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_DRIVER_NET_AG71XX=y
-+CONFIG_AT803X_PHY=y
-+CONFIG_MDIO_BITBANG=y
-+CONFIG_MDIO_GPIO=y
-+CONFIG_DRIVER_SPI_ATH79=y
-+CONFIG_MTD=y
-+# CONFIG_MTD_OOB_DEVICE is not set
-+CONFIG_MTD_M25P80=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_LED_GPIO_OF=y
-+CONFIG_LED_TRIGGERS=y
-+CONFIG_DIGEST_SHA224_GENERIC=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/mips/dts/ar9344_tl_wdr4300.dts b/arch/mips/dts/ar9344_tl_wdr4300.dts
-new file mode 100644
-index 000000000..b02c1d730
---- /dev/null
-+++ b/arch/mips/dts/ar9344_tl_wdr4300.dts
-@@ -0,0 +1,63 @@
-+/dts-v1/;
++	return 0;
++}
 +
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
++static int ag71xx_probe(struct device_d *dev)
++{
++	void __iomem *regs, *regs_gmac;
++	struct mii_bus *miibus;
++	struct eth_device *edev;
++	struct ag71xx *priv;
++	u32 mac_h, mac_l;
++	u32 rd;
 +
-+#include "ar9344.dtsi"
++	regs_gmac = dev_request_mem_region_by_name(dev, "gmac");
++	if (IS_ERR(regs_gmac))
++		return PTR_ERR(regs_gmac);
 +
-+/ {
-+	model = "TP-Link WDR4300";
-+	compatible = "tplink,tl-wdr4300";
++	regs = dev_request_mem_region_by_name(dev, "ge0");
++	if (IS_ERR(regs))
++		return PTR_ERR(regs);
 +
-+	aliases {
-+		serial0 = &uart0;
-+	};
++	priv = xzalloc(sizeof(struct ag71xx));
++	edev = &priv->netdev;
++	miibus = &priv->miibus;
++	edev->priv = priv;
 +
-+	memory@0 {
-+		device_type = "memory";
-+		reg = <0x0 0x8000000>;
-+	};
++	edev->init = ag71xx_ether_init;
++	edev->open = ag71xx_ether_open;
++	edev->send = ag71xx_ether_send;
++	edev->recv = ag71xx_ether_rx;
++	edev->halt = ag71xx_ether_halt;
++	edev->get_ethaddr = ag71xx_ether_get_ethaddr;
++	edev->set_ethaddr = ag71xx_ether_set_ethaddr;
 +
-+	chosen {
-+		stdout-path = &uart0;
++	priv->dev = dev;
++	priv->regs = regs;
++	priv->regs_gmac = regs_gmac;
 +
-+		environment@0 {
-+			compatible = "barebox,environment";
-+			device-path = &spiflash, "partname:barebox-environment";
-+		};
-+	};
++	miibus->read = ag71xx_ether_mii_read;
++	miibus->write = ag71xx_ether_mii_write;
++	miibus->priv = priv;
++
++	/* enable switch core */
++	rd = __raw_readl((char *)KSEG1ADDR(AR71XX_PLL_BASE + AR933X_ETHSW_CLOCK_CONTROL_REG)) & ~(0x1f);
++	rd |= 0x10;
++	__raw_writel(rd, (char *)KSEG1ADDR(AR71XX_PLL_BASE + AR933X_ETHSW_CLOCK_CONTROL_REG));
++
++	if (ath79_reset_rr(AR933X_RESET_REG_RESET_MODULE) != 0)
++		ath79_reset_wr(AR933X_RESET_REG_RESET_MODULE, 0);
++
++	/* reset GE0 MAC and MDIO */
++	rd = ath79_reset_rr(AR933X_RESET_REG_RESET_MODULE);
++	rd |= AR933X_RESET_GE0_MAC | AR933X_RESET_GE0_MDIO | AR933X_RESET_SWITCH;
++	ath79_reset_wr(AR933X_RESET_REG_RESET_MODULE, rd);
++	mdelay(100);
++
++	rd = ath79_reset_rr(AR933X_RESET_REG_RESET_MODULE);
++	rd &= ~(AR933X_RESET_GE0_MAC | AR933X_RESET_GE0_MDIO | AR933X_RESET_SWITCH);
++	ath79_reset_wr(AR933X_RESET_REG_RESET_MODULE, rd);
++	mdelay(100);
++
++	ag71xx_wr(priv, AG71XX_REG_MAC_CFG1, (MAC_CFG1_SR | MAC_CFG1_TX_RST | MAC_CFG1_RX_RST));
++	ag71xx_wr(priv, AG71XX_REG_MAC_CFG1, (MAC_CFG1_RXE | MAC_CFG1_TXE));
++
++	rd = ag71xx_rr(priv, AG71XX_REG_MAC_CFG2);
++	rd |= (MAC_CFG2_PAD_CRC_EN | MAC_CFG2_LEN_CHECK | MAC_CFG2_IF_10_100);
++	ag71xx_wr(priv, AG71XX_REG_MAC_CFG2, rd);
++
++	/* config FIFOs */
++	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG0, 0x1f00);
++
++	ag71xx_mii_setup(priv);
++
++	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG1, 0x10ffff);
++	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG2, 0xAAA0555);
++
++	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG4, 0x3ffff);
++	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG5, 0x66b82);
++	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG3, 0x1f00140);
++
++	priv->rx_buffer = xmemalign(PAGE_SIZE, NO_OF_RX_FIFOS * MAX_RBUFF_SZ);
++	priv->fifo_tx = dma_alloc_coherent(NO_OF_TX_FIFOS * sizeof(ag7240_desc_t), DMA_ADDRESS_BROKEN);
++	priv->fifo_rx = dma_alloc_coherent(NO_OF_RX_FIFOS * sizeof(ag7240_desc_t), DMA_ADDRESS_BROKEN);
++	priv->next_tx = 0;
++
++	mac_l = 0x3344;
++	mac_h = 0x0004d980;
++
++	ag71xx_wr(priv, AG71XX_REG_MAC_ADDR1, mac_l);
++	ag71xx_wr(priv, AG71XX_REG_MAC_ADDR2, mac_h);
++
++	mdiobus_register(miibus);
++	eth_register(edev);
++
++	dev_info(dev, "network device registered\n");
++
++	return 0;
++}
++
++static __maybe_unused struct of_device_id ag71xx_dt_ids[] = {
++	{
++		.compatible = "qca,ar7100-gmac",
++	}, {
++		/* sentinel */
++	}
 +};
 +
-+&ref {
-+	clock-frequency = <40000000>;
++static struct driver_d ag71xx_driver = {
++	.name	= "ag71xx-gmac",
++	.probe		= ag71xx_probe,
++	.of_compatible = DRV_OF_COMPAT(ag71xx_dt_ids),
 +};
-+
-+&uart0 {
-+	status = "okay";
-+	clock-frequency = <40000000>;
-+};
-+
-+&spi {
-+	num-chipselects = <1>;
-+	status = "okay";
-+
-+	/* Winbond W25Q64CV SPI flash */
-+	spiflash: w25q64cv@0 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "jedec,spi-nor", "winbond,w25q64cv";
-+		spi-max-frequency = <104000000>;
-+		reg = <0>;
-+
-+		partition@0 {
-+			label = "barebox";
-+			reg = <0 0x80000>;
-+			read-only;
-+		};
-+
-+		partition@80000 {
-+			label = "barebox-environment";
-+			reg = <0x80000 0x10000>;
-+		};
-+	};
-+};
-diff --git a/arch/mips/mach-ath79/Kconfig b/arch/mips/mach-ath79/Kconfig
-index f2eae2532..9fec00c98 100644
---- a/arch/mips/mach-ath79/Kconfig
-+++ b/arch/mips/mach-ath79/Kconfig
-@@ -7,6 +7,9 @@ config ARCH_TEXT_BASE
- config SOC_QCA_AR9331
- 	bool
- 
-+config SOC_QCA_AR9344
-+	bool
-+
- choice
- 	prompt "Board type"
- 
-@@ -17,6 +20,13 @@ config BOARD_TPLINK_MR3020
- 	select HAVE_IMAGE_COMPRESSION
- 	select HAS_NMON
- 
-+config BOARD_TPLINK_WDR4300
-+	bool "TP-LINK WDR4300"
-+	select SOC_QCA_AR9344
-+	select HAVE_PBL_IMAGE
-+	select HAVE_IMAGE_COMPRESSION
-+	select HAS_NMON
-+
- config BOARD_BLACK_SWIFT
- 	bool "Black Swift"
- 	select SOC_QCA_AR9331
++device_platform_driver(ag71xx_driver);
 -- 
 2.11.0
 
