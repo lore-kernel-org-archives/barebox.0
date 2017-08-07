@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.21])
+Received: from mout.gmx.net ([212.227.17.22])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dejCI-0003rl-Ao
- for barebox@lists.infradead.org; Mon, 07 Aug 2017 14:40:03 +0000
+ id 1dejCI-0003ro-Ai
+ for barebox@lists.infradead.org; Mon, 07 Aug 2017 14:40:04 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Mon,  7 Aug 2017 16:39:20 +0200
-Message-Id: <20170807143927.1641-6-linux@rempel-privat.de>
+Date: Mon,  7 Aug 2017 16:39:23 +0200
+Message-Id: <20170807143927.1641-9-linux@rempel-privat.de>
 In-Reply-To: <20170807143927.1641-1-linux@rempel-privat.de>
 References: <20170807143927.1641-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,97 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 06/13] net: ag71xx: bit 19 should be set to 1 for GE0
+Subject: [PATCH v2 09/13] MIPS: tplink-mr3020_defconfig: enable more options
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-From: Antony Pavlov <antonynpavlov@gmail.com>
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- drivers/net/ag71xx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/configs/tplink-mr3020_defconfig | 40 +++++++++++++++++++++++++++++--
+ 1 file changed, 38 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ag71xx.c b/drivers/net/ag71xx.c
-index b2e066be3..d13bf9171 100644
---- a/drivers/net/ag71xx.c
-+++ b/drivers/net/ag71xx.c
-@@ -492,7 +492,8 @@ static int ag71xx_probe(struct device_d *dev)
- 	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG2, 0xAAA0555);
- 
- 	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG4, 0x3ffff);
--	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG5, 0x66b82);
-+	/* bit 19 should be set to 1 for GE0 */
-+	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG5, (0x66b82) | (1 << 19));
- 	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG3, 0x1f00140);
- 
- 	priv->rx_buffer = xmemalign(PAGE_SIZE, NO_OF_RX_FIFOS * MAX_RBUFF_SZ);
+diff --git a/arch/mips/configs/tplink-mr3020_defconfig b/arch/mips/configs/tplink-mr3020_defconfig
+index 93fb10ddd..4193bd628 100644
+--- a/arch/mips/configs/tplink-mr3020_defconfig
++++ b/arch/mips/configs/tplink-mr3020_defconfig
+@@ -6,33 +6,67 @@ CONFIG_IMAGE_COMPRESSION_XZKERN=y
+ CONFIG_MMU=y
+ CONFIG_TEXT_BASE=0x81000000
+ CONFIG_MALLOC_TLSF=y
++CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
++CONFIG_CMD_IMD=y
+ CONFIG_CMD_MEMINFO=y
+-# CONFIG_CMD_BOOTM is not set
+ CONFIG_CMD_GO=y
+ CONFIG_CMD_LOADB=y
+ CONFIG_CMD_LOADY=y
+ CONFIG_CMD_RESET=y
+-CONFIG_CMD_GLOBAL=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_DEFAULTENV=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
++CONFIG_CMD_SAVEENV=y
+ CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_UNCOMPRESS=y
+ CONFIG_CMD_LET=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_READF=y
+ CONFIG_CMD_SLEEP=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_HOST=y
++CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_ECHO_E=y
+ CONFIG_CMD_EDIT=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_CRC=y
++CONFIG_CMD_MEMTEST=y
+ CONFIG_CMD_MM=y
+ CONFIG_CMD_CLK=y
++CONFIG_CMD_DETECT=y
+ CONFIG_CMD_FLASH=y
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_LED=y
++CONFIG_CMD_POWEROFF=y
+ CONFIG_CMD_SPI=y
+ CONFIG_CMD_LED_TRIGGER=y
++CONFIG_CMD_BAREBOX_UPDATE=y
+ CONFIG_CMD_OF_NODE=y
+ CONFIG_CMD_OF_PROPERTY=y
+ CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
++CONFIG_NET=y
++CONFIG_NET_NFS=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_NET_SNTP=y
+ CONFIG_OFDEVICE=y
++CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_OF_BAREBOX_ENV_IN_FS=y
+ CONFIG_DRIVER_SERIAL_AR933X=y
++CONFIG_DRIVER_NET_AG71XX=y
++CONFIG_AT803X_PHY=y
++CONFIG_MDIO_BITBANG=y
++CONFIG_MDIO_GPIO=y
+ CONFIG_DRIVER_SPI_ATH79=y
+ CONFIG_MTD=y
+ # CONFIG_MTD_OOB_DEVICE is not set
+@@ -41,5 +75,7 @@ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
+ CONFIG_LED_GPIO_OF=y
+ CONFIG_LED_TRIGGERS=y
++CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
+ CONFIG_DIGEST_SHA224_GENERIC=y
+ CONFIG_DIGEST_SHA256_GENERIC=y
 -- 
 2.11.0
 
