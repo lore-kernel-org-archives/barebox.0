@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
+Received: from mout.gmx.net ([212.227.17.21])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dejCI-0003rq-BD
- for barebox@lists.infradead.org; Mon, 07 Aug 2017 14:40:01 +0000
+ id 1dejCI-0003rl-Ao
+ for barebox@lists.infradead.org; Mon, 07 Aug 2017 14:40:03 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Mon,  7 Aug 2017 16:39:25 +0200
-Message-Id: <20170807143927.1641-11-linux@rempel-privat.de>
+Date: Mon,  7 Aug 2017 16:39:20 +0200
+Message-Id: <20170807143927.1641-6-linux@rempel-privat.de>
 In-Reply-To: <20170807143927.1641-1-linux@rempel-privat.de>
 References: <20170807143927.1641-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,34 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 11/13] MIPS: ar9344.dtsi: add ag71xx Ethernet driver
+Subject: [PATCH v2 06/13] net: ag71xx: bit 19 should be set to 1 for GE0
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+From: Antony Pavlov <antonynpavlov@gmail.com>
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/dts/ar9344.dtsi | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/ag71xx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/dts/ar9344.dtsi b/arch/mips/dts/ar9344.dtsi
-index 0838e8d7f..431273c36 100644
---- a/arch/mips/dts/ar9344.dtsi
-+++ b/arch/mips/dts/ar9344.dtsi
-@@ -49,5 +49,14 @@
+diff --git a/drivers/net/ag71xx.c b/drivers/net/ag71xx.c
+index b2e066be3..d13bf9171 100644
+--- a/drivers/net/ag71xx.c
++++ b/drivers/net/ag71xx.c
+@@ -492,7 +492,8 @@ static int ag71xx_probe(struct device_d *dev)
+ 	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG2, 0xAAA0555);
  
- 			status = "disabled";
- 		};
-+
-+		mac0: mac@19000000 {
-+			compatible = "qca,ar7100-gmac", "qca,ar9344-gmac";
-+			reg = <0x18070000 0x00000100>,
-+				<0x19000000 0x01000000>;
-+			reg-names = "gmac", "ge0";
-+			phy-mode = "mii";
-+			status = "disabled";
-+		};
- 	};
- };
+ 	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG4, 0x3ffff);
+-	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG5, 0x66b82);
++	/* bit 19 should be set to 1 for GE0 */
++	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG5, (0x66b82) | (1 << 19));
+ 	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG3, 0x1f00140);
+ 
+ 	priv->rx_buffer = xmemalign(PAGE_SIZE, NO_OF_RX_FIFOS * MAX_RBUFF_SZ);
 -- 
 2.11.0
 
