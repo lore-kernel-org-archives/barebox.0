@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.savoirfairelinux.com ([208.88.110.44])
- by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1df7iS-0004SH-O4
- for barebox@lists.infradead.org; Tue, 08 Aug 2017 16:50:49 +0000
-Date: Tue, 8 Aug 2017 12:49:49 -0400
-From: =?iso-8859-1?Q?Ga=EBl?= PORTAY <gael.portay@savoirfairelinux.com>
-Message-ID: <20170808164949.zgkj7vxz7urddcc5@gportay>
-References: <20170807221042.19700-1-gael.portay@savoirfairelinux.com>
- <20170807221042.19700-2-gael.portay@savoirfairelinux.com>
- <1502178714.2934.21.camel@pengutronix.de>
- <20170808152049.njl24tcwafccebwt@gportay>
- <1502206574.2934.93.camel@pengutronix.de>
- <c72bc837-b2e0-2d95-ed1d-39b6a51befec@mev.co.uk>
+Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1deo96-0006qa-Ax
+ for barebox@lists.infradead.org; Mon, 07 Aug 2017 19:57:02 +0000
+Received: by mail-lf0-x244.google.com with SMTP id o85so1001894lff.1
+ for <barebox@lists.infradead.org>; Mon, 07 Aug 2017 12:56:37 -0700 (PDT)
+Date: Mon, 7 Aug 2017 22:56:21 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20170807195621.myx26ctlfm4jllie@zacate>
+References: <20170807143927.1641-1-linux@rempel-privat.de>
+ <20170807143927.1641-4-linux@rempel-privat.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <c72bc837-b2e0-2d95-ed1d-39b6a51befec@mev.co.uk>
+In-Reply-To: <20170807143927.1641-4-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,75 +21,88 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] readline_simple: return -1 if getc fails
-To: Ian Abbott <abbotti@mev.co.uk>
+Subject: Re: [PATCH v2 04/13] MIPS: add virt_to_phys() and phys_to_virt()
+To: Oleksij Rempel <linux@rempel-privat.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Aug 08, 2017 at 05:05:35PM +0100, Ian Abbott wrote:
-> On 08/08/17 16:36, Lucas Stach wrote:
-> > Am Dienstag, den 08.08.2017, 11:20 -0400 schrieb Ga=EBl PORTAY:
-> > > Hi Lucas,
-> > > =
+Hi Oleksij,
 
-> > > On Tue, Aug 08, 2017 at 09:51:54AM +0200, Lucas Stach wrote:
-> > > > (...)
-> > > > I don't like made up error codes. Is there any reason why we couldn=
-'t
-> > > > just pass through the negative error code from getchar?
-> > > > =
+On Mon, Aug 07, 2017 at 04:39:18PM +0200, Oleksij Rempel wrote:
+> From: Antony Pavlov <antonynpavlov@gmail.com>
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> ---
+>  arch/mips/include/asm/io.h | 35 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 35 insertions(+)
+> 
+> diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+> index 4bee5913a..993b30e2a 100644
+> --- a/arch/mips/include/asm/io.h
+> +++ b/arch/mips/include/asm/io.h
+> @@ -12,11 +12,46 @@
+>  
+>  #include <linux/compiler.h>
+>  #include <asm/types.h>
+> +#include <asm/addrspace.h>
+>  #include <asm/byteorder.h>
+>  
+>  void dma_flush_range(unsigned long, unsigned long);
+>  void dma_inv_range(unsigned long, unsigned long);
+>  
+> +/*
+> + *     virt_to_phys    -       map virtual addresses to physical
+> + *     @address: address to remap
+> + *
+> + *     The returned physical address is the physical (CPU) mapping for
+> + *     the memory address given. It is only valid to use this function on
+> + *     addresses directly mapped or allocated via kmalloc.
+> + *
+> + *     This function does not give bus mappings for DMA transfers. In
+> + *     almost all conceivable cases a device driver should not be using
+> + *     this function
+> + */
+> +static inline unsigned long virt_to_phys(const void *address)
+> +{
+> +	return (unsigned long)address & 0x1fffffff;
 
-> > > =
+Guess we can use CPHYSADDR() macros here, which is available in barebox.
 
-> > > The thing here is that getchar() may return an error, and that error =
-is not
-> > > tested. This causes readline to print the character 0xea (-EINVAL) wh=
-ich is not
-> > > printable.
-> > =
+> +}
+> +
+> +/*
+> + *     phys_to_virt    -       map physical address to virtual
+> + *     @address: address to remap
+> + *
+> + *     The returned virtual address is a current CPU mapping for
+> + *     the memory address given. It is only valid to use this function on
+> + *     addresses that have a kernel mapping
+> + *
+> + *     This function does not handle bus mappings for DMA transfers. In
+> + *     almost all conceivable cases a device driver should not be using
+> + *     this function
+> + */
+> +static inline void *phys_to_virt(unsigned long address)
+> +{
+> +	return (void *)(KSEG0 | (address & 0x1fffffff));
 
-> > So why wouldn't the following fix the issue?
-> > =
+Same here: there is a CKSEG0ADDR() macros available in barebox.
 
-> > signed char c;
-> =
+> +}
+> +
+>  #define	IO_SPACE_LIMIT	0
+>  
+>  /*****************************************************************************/
+> -- 
+> 2.11.0
+> 
 
-> `int` would be better to allow non-ASCII characters.
-> =
-
-> > =
-
-> > if (c < 0)
-> > 	return c;
-> =
-
-> There are places where the return value is checked for `-1` for example in
-> get_user_input() ("common/hush.c"), and in run_shell() ("common/parser.c"=
-).
-> =
-
-> I think Ga=EBl's patch is reasonable, although perhaps it should also set
-> `line[0] =3D '\0';` before returning.
-> =
-
-
-Indeed, or `line[n] =3D '\0';` to preserve characters already entered.
-
-BTW, it already performed by get_user_input in hush.c (n is reset to 0).
-
-console_buffer[n] =3D '\n';
-console_buffer[n + 1]=3D '\0';
-
-> Off topic: there is another oddity in the the "simple" version of
-> readline(). It ignores the `len` parameter and uses `CONFIG_CBSIZE` inste=
-ad.
-> =
-
-
-I made a patch for this; but I have not tested yet all cases.
+Regards,
+Peter
 
 _______________________________________________
 barebox mailing list
