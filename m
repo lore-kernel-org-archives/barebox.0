@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.savoirfairelinux.com ([208.88.110.44])
+Received: from smtp125.ord1c.emailsrvr.com ([108.166.43.125])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1df79M-0004r9-Tg
- for barebox@lists.infradead.org; Tue, 08 Aug 2017 16:14:34 +0000
-Date: Tue, 8 Aug 2017 12:14:09 -0400
-From: =?iso-8859-1?Q?Ga=EBl?= PORTAY <gael.portay@savoirfairelinux.com>
-Message-ID: <20170808161409.3cfg6vpta2auit36@gportay>
+ id 1df714-0001C8-8R
+ for barebox@lists.infradead.org; Tue, 08 Aug 2017 16:06:00 +0000
 References: <20170807221042.19700-1-gael.portay@savoirfairelinux.com>
  <20170807221042.19700-2-gael.portay@savoirfairelinux.com>
  <1502178714.2934.21.camel@pengutronix.de>
  <20170808152049.njl24tcwafccebwt@gportay>
  <1502206574.2934.93.camel@pengutronix.de>
+From: Ian Abbott <abbotti@mev.co.uk>
+Message-ID: <c72bc837-b2e0-2d95-ed1d-39b6a51befec@mev.co.uk>
+Date: Tue, 8 Aug 2017 17:05:35 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
 In-Reply-To: <1502206574.2934.93.camel@pengutronix.de>
+Content-Language: en-GB
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +22,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] readline_simple: return -1 if getc fails
-To: Lucas Stach <l.stach@pengutronix.de>
+To: Lucas Stach <l.stach@pengutronix.de>, =?UTF-8?Q?Ga=c3=abl_PORTAY?= <gael.portay@savoirfairelinux.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Aug 08, 2017 at 05:36:14PM +0200, Lucas Stach wrote:
-> Am Dienstag, den 08.08.2017, 11:20 -0400 schrieb Ga=EBl PORTAY:
-> > Hi Lucas,
-> > =
-
-> > On Tue, Aug 08, 2017 at 09:51:54AM +0200, Lucas Stach wrote:
-> > > > diff --git a/lib/readline_simple.c b/lib/readline_simple.c
-> > > > index c4d3d240e..1283c9602 100644
-> > > > --- a/lib/readline_simple.c
-> > > > +++ b/lib/readline_simple.c
-> > > > @@ -58,6 +58,8 @@ int readline (const char *prompt, char *line, int=
- len)
-> > > >  =
-
-> > > >  	for (;;) {
-> > > >  		c =3D getchar();
-> > > > +		if (c < 0)
-> > > > +			return (-1);
-> > > =
-
-> > > I don't like made up error codes. Is there any reason why we couldn't
-> > > just pass through the negative error code from getchar?
-> > > =
-
-> > =
-
-> > The thing here is that getchar() may return an error, and that error is=
- not
-> > tested. This causes readline to print the character 0xea (-EINVAL) whic=
-h is not
-> > printable.
-> =
-
-> So why wouldn't the following fix the issue?
-> =
-
-> signed char c;
-> =
-
-> if (c < 0)
-> 	return c;
-> =
-
-
-Okay. I do prefer your solution.
-
-I returned -1 mainly because the function comment says it returns -1 when it
-breaks; and because parser.c and hush.c test readline function against -1 a=
-nd
-not against a negative value.
-
-Also readline returns -1 if character is 0x03. Maybe it should return -EINT=
-R;
--1 is EPERM: Operation not permitted.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMDgvMDgvMTcgMTY6MzYsIEx1Y2FzIFN0YWNoIHdyb3RlOgo+IEFtIERpZW5zdGFnLCBkZW4g
+MDguMDguMjAxNywgMTE6MjAgLTA0MDAgc2NocmllYiBHYcOrbCBQT1JUQVk6Cj4+IEhpIEx1Y2Fz
+LAo+Pgo+PiBPbiBUdWUsIEF1ZyAwOCwgMjAxNyBhdCAwOTo1MTo1NEFNICswMjAwLCBMdWNhcyBT
+dGFjaCB3cm90ZToKPj4+IEFtIE1vbnRhZywgZGVuIDA3LjA4LjIwMTcsIDE4OjEwIC0wNDAwIHNj
+aHJpZWIgR2HDq2wgUE9SVEFZOgo+Pj4+IFRoZSBnZXRjIGZ1bmN0aW9uIG1heSByZXR1cm4gYW4g
+ZXJybm8gY29kZSBpZiBhbiBlcnJvciBoYXBwZW5zLgo+Pj4+Cj4+Pj4gVGhpcyBwYXRjaCBwcmV2
+ZW50cyByZWFkbGluZSBmcm9tIHByaW50aW5nIGEgbm9uIHByaW50YWJsZSBjaGFyYWN0ZXIgYW5k
+Cj4+Pj4gZnJvbSBsb29waW5nIHRvIGluZmluaXR5IGFuZCBiZXlvbmcuCj4+Pj4KPj4+PiBTaWdu
+ZWQtb2ZmLWJ5OiBHYcOrbCBQT1JUQVkgPGdhZWwucG9ydGF5QHNhdm9pcmZhaXJlbGludXguY29t
+Pgo+Pj4+IC0tLQo+Pj4+ICAgbGliL3JlYWRsaW5lX3NpbXBsZS5jIHwgMiArKwo+Pj4+ICAgMSBm
+aWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKQo+Pj4+Cj4+Pj4gZGlmZiAtLWdpdCBhL2xpYi9y
+ZWFkbGluZV9zaW1wbGUuYyBiL2xpYi9yZWFkbGluZV9zaW1wbGUuYwo+Pj4+IGluZGV4IGM0ZDNk
+MjQwZS4uMTI4M2M5NjAyIDEwMDY0NAo+Pj4+IC0tLSBhL2xpYi9yZWFkbGluZV9zaW1wbGUuYwo+
+Pj4+ICsrKyBiL2xpYi9yZWFkbGluZV9zaW1wbGUuYwo+Pj4+IEBAIC01OCw2ICs1OCw4IEBAIGlu
+dCByZWFkbGluZSAoY29uc3QgY2hhciAqcHJvbXB0LCBjaGFyICpsaW5lLCBpbnQgbGVuKQo+Pj4+
+ICAgCj4+Pj4gICAJZm9yICg7Oykgewo+Pj4+ICAgCQljID0gZ2V0Y2hhcigpOwo+Pj4+ICsJCWlm
+IChjIDwgMCkKPj4+PiArCQkJcmV0dXJuICgtMSk7Cj4+Pgo+Pj4gSSBkb24ndCBsaWtlIG1hZGUg
+dXAgZXJyb3IgY29kZXMuIElzIHRoZXJlIGFueSByZWFzb24gd2h5IHdlIGNvdWxkbid0Cj4+PiBq
+dXN0IHBhc3MgdGhyb3VnaCB0aGUgbmVnYXRpdmUgZXJyb3IgY29kZSBmcm9tIGdldGNoYXI/Cj4+
+Pgo+Pgo+PiBUaGUgdGhpbmcgaGVyZSBpcyB0aGF0IGdldGNoYXIoKSBtYXkgcmV0dXJuIGFuIGVy
+cm9yLCBhbmQgdGhhdCBlcnJvciBpcyBub3QKPj4gdGVzdGVkLiBUaGlzIGNhdXNlcyByZWFkbGlu
+ZSB0byBwcmludCB0aGUgY2hhcmFjdGVyIDB4ZWEgKC1FSU5WQUwpIHdoaWNoIGlzIG5vdAo+PiBw
+cmludGFibGUuCj4gCj4gU28gd2h5IHdvdWxkbid0IHRoZSBmb2xsb3dpbmcgZml4IHRoZSBpc3N1
+ZT8KPiAKPiBzaWduZWQgY2hhciBjOwoKYGludGAgd291bGQgYmUgYmV0dGVyIHRvIGFsbG93IG5v
+bi1BU0NJSSBjaGFyYWN0ZXJzLgoKPiAKPiBpZiAoYyA8IDApCj4gCXJldHVybiBjOwoKVGhlcmUg
+YXJlIHBsYWNlcyB3aGVyZSB0aGUgcmV0dXJuIHZhbHVlIGlzIGNoZWNrZWQgZm9yIGAtMWAgZm9y
+IGV4YW1wbGUgCmluIGdldF91c2VyX2lucHV0KCkgKCJjb21tb24vaHVzaC5jIiksIGFuZCBpbiBy
+dW5fc2hlbGwoKSAKKCJjb21tb24vcGFyc2VyLmMiKS4KCkkgdGhpbmsgR2HDq2wncyBwYXRjaCBp
+cyByZWFzb25hYmxlLCBhbHRob3VnaCBwZXJoYXBzIGl0IHNob3VsZCBhbHNvIHNldCAKYGxpbmVb
+MF0gPSAnXDAnO2AgYmVmb3JlIHJldHVybmluZy4KCk9mZiB0b3BpYzogdGhlcmUgaXMgYW5vdGhl
+ciBvZGRpdHkgaW4gdGhlIHRoZSAic2ltcGxlIiB2ZXJzaW9uIG9mIApyZWFkbGluZSgpLiBJdCBp
+Z25vcmVzIHRoZSBgbGVuYCBwYXJhbWV0ZXIgYW5kIHVzZXMgYENPTkZJR19DQlNJWkVgIGluc3Rl
+YWQuCgotLSAKLT0oIElhbiBBYmJvdHQgQCBNRVYgTHRkLiAgICBFLW1haWw6IDxhYmJvdHRpQG1l
+di5jby51az4gKT0tCi09KCAgICAgICAgICAgICAgICAgICAgICAgICAgV2ViOiBodHRwOi8vd3d3
+Lm1ldi5jby51ay8gICk9LQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
