@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.15.19])
+Received: from mail.savoirfairelinux.com ([208.88.110.44])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dfUE4-0001C5-Vn
- for barebox@lists.infradead.org; Wed, 09 Aug 2017 16:53:01 +0000
-From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Wed,  9 Aug 2017 18:52:15 +0200
-Message-Id: <20170809165217.11865-2-linux@rempel-privat.de>
-In-Reply-To: <20170809165217.11865-1-linux@rempel-privat.de>
-References: <20170809165217.11865-1-linux@rempel-privat.de>
+ id 1dfIO8-0000pP-Qs
+ for barebox@lists.infradead.org; Wed, 09 Aug 2017 04:14:38 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by mail.savoirfairelinux.com (Postfix) with ESMTP id A9F9E9C2927
+ for <barebox@lists.infradead.org>; Wed,  9 Aug 2017 00:13:23 -0400 (EDT)
+From: =?UTF-8?q?Ga=C3=ABl=20PORTAY?= <gael.portay@savoirfairelinux.com>
+Date: Wed,  9 Aug 2017 00:13:18 -0400
+Message-Id: <20170809041320.28874-1-gael.portay@savoirfairelinux.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,45 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 2/4] MIPS: tplink-mr3020: pbl: move
- hornet_mips24k_cp0_setup after flash addr test
+Subject: [PATCH 0/2] readline_simple: return -1 if getc fails
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
+Cc: =?UTF-8?q?Ga=C3=ABl=20PORTAY?= <gael.portay@savoirfairelinux.com>
 
-this is needed to start zbarebox.bin from running barebox.
-
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
----
- arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h b/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
-index 1774556a8..e70f55e87 100644
---- a/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
-+++ b/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
-@@ -26,10 +26,10 @@
- 
- 	mips_barebox_10h
- 
--	hornet_mips24k_cp0_setup
--
- 	pbl_blt 0xbf000000 skip_pll_ram_config t8
- 
-+	hornet_mips24k_cp0_setup
-+
- 	pbl_ar9331_wmac_enable
- 
- 	hornet_1_1_war
--- 
-2.11.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RGVhciBtYWludGFpbmVycywKCkkgY2FtZSBhY2Nyb3NzIHRoaXMgaXNzdWUgd2hlbiBJIHdhcyB0
+cnlpbmcgdG8gYWRkIHN1cHBvcnQgZm9yIGEgbmV3IE1JUFMKYm9hcmQuCgpUaGUgZ2V0YygpIGZ1
+bmN0aW9uIGZyb20gY29uc29sZV9zaW1wbGUuYyByZXR1cm5zIC1FSU5WQUwgd2hlbiBubyBjb25z
+b2xlIGlzCnJlZ2lzdGVyZWQuCgpJdCBjYXVzZXMgcmVhZGxpbmVfc2ltcGxlIHRvIHByaW50IGEg
+bm9uLXByaW50YWJsZSBjaGFyYWN0ZXIgKC1FSU5WQUwgaW4gdGhpcwpjYXNlKS4gRnVydGhlcm1v
+cmUsIGl0IGNhdXNlcyBhbiBpbmZpbml0ZSBsb29wOiByZWFkbGluZSBuZXZlciByZXR1cm5zLgoK
+CWJhcmVib3g6LyDvv73vv73vv70oLi4uKe+/ve+/ve+/vQoKV2l0aCB0aGlzIHBhdGNoLCB0aGUg
+ZXJyb3IgaXMgbm8gbW9yZSBleHBsaWNpdCBidXQgdGhlIHJlYWRsaW5lIGZ1bmN0aW9uIHN0b3Bz
+CnRvIHByaW50IGEgZHVtbXkgY2hhcmFjdGVyIGFuZCByZXR1cm5zIHRvIHNoZWxsLgoKCWJhcmVi
+b3g6LyA8SU5URVJSVVBUPgoJYmFyZWJveDovIDxJTlRFUlJVUFQ+CgliYXJlYm94Oi8gPElOVEVS
+UlVQVD4KCSguLi4pCgliYXJlYm94Oi8gPElOVEVSUlVQVD4KCWJhcmVib3g6LyA8SU5URVJSVVBU
+PgoJYmFyZWJveDovIDxJTlRFUlJVUFQ+CgpUaGUgc2Vjb25kIHBhdGNoIGlzIGEgc2ltcGxlIGNs
+ZWFudXAgb2YgdGhlIGluLWZpbGUgZG9jdW1lbnRhdGlvbi4KCkNoYW5nZXMgc2luY2UgdjE6CiAt
+IGNoYW5nZSBjIHZhcmlhYmxlIHR5cGUgZnJvbSBjaGFyIGluIGludAogLSBzZXQgKnAgdG8gTlVM
+IGJlZm9yZSByZXR1cm5pbmcgLTEgd2hlbiBnZXRjaGFyIHJldHVybnMgYW4gZXJyb3IKIC0gdXBk
+YXRlIGZ1bmN0aW9uIGRvY3VtZW50YXRpb24KClJlZ2FyZHMsCkdhw6tsIFBPUlRBWSAoMik6CiAg
+cmVhZGxpbmVfc2ltcGxlOiByZXR1cm4gLTEgaWYgZ2V0YyBmYWlscwogIHJlYWRsaW5lX3NpbXBs
+ZTogcmVtb3ZlIG9ic29sZXRlIGRvY3VtZW50YXRpb24KCiBsaWIvcmVhZGxpbmVfc2ltcGxlLmMg
+fCAxMSArKysrKystLS0tLQogMSBmaWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwgNSBkZWxl
+dGlvbnMoLSkKCi0tIAoyLjEzLjIKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
+ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
+Cg==
