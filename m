@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from wp303.webpack.hosteurope.de ([80.237.133.72])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dcXnG-00012A-Eq
- for barebox@lists.infradead.org; Tue, 01 Aug 2017 14:05:15 +0000
-Date: Tue, 1 Aug 2017 16:02:32 +0200 (CEST)
-From: Norbert Wiedmann <info@n-wiedmann.de>
-Message-ID: <240826535.22013.1501596152202@ox.hosteurope.de>
-In-Reply-To: <462439994.27865.1500895721159@ox.hosteurope.de>
-References: <462439994.27865.1500895721159@ox.hosteurope.de>
+ id 1dfmVE-0004Zd-2A
+ for barebox@lists.infradead.org; Thu, 10 Aug 2017 12:23:53 +0000
+Date: Thu, 10 Aug 2017 14:23:27 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20170810122327.7mbhv25fvxbigqyl@pengutronix.de>
+References: <20170724091559.7777-1-u.kleine-koenig@pengutronix.de>
+ <20170724093707.nu7wlklphp6hidzb@pengutronix.de>
+ <20170724094533.a7nwwxjcaertmyw4@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170724094533.a7nwwxjcaertmyw4@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,136 +20,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Bootchooser has unexpected changes of variable
- 'remaining_attempts'
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] ARM: i.MX7: provide DDR register definitions
+To: Robert Schwebel <r.schwebel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi again,
-after debugging a while, I found the reason:
-In file bootchooser.c, in funktion bootchooser_save(..) the call of
+On Mon, Jul 24, 2017 at 11:45:33AM +0200, Uwe Kleine-K=F6nig wrote:
+> Hello Robert,
+> =
 
-ret = pr_setenv(bc, "%s.remaining_attempts=%d",
-                target->state_prefix,
-                target->remaining_attempts);
-creates a "xxx.remaining_attempts=-1" if the variable 'remaining_attempts'
-is 0xffffffff, for example.
+> On Mon, Jul 24, 2017 at 11:37:07AM +0200, Robert Schwebel wrote:
+> > On Mon, Jul 24, 2017 at 11:15:58AM +0200, Uwe Kleine-K=F6nig wrote:
+> > > This was created using cut'n'paste from the i.MX7D reference manual
+> > > (rev 0.1, 08/2016).
+> > > =
 
-The type of remaining_attempts is unsigned int.
+> > > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > > ---
+> > >  arch/arm/mach-imx/include/mach/imx7-ddr-regs.h | 174 +++++++++++++++=
+++++++++++
+> > >  1 file changed, 174 insertions(+)
+> > >  create mode 100644 arch/arm/mach-imx/include/mach/imx7-ddr-regs.h
+> > > =
 
-After changing the function call to
- 
-ret = pr_setenv(bc, "%s.remaining_attempts=%lu",   /* changed %d to %lu */
-                target->state_prefix,
-                target->remaining_attempts);
-it works fine.
-Maybe this could be fixed..., thank you.
+> > > diff --git a/arch/arm/mach-imx/include/mach/imx7-ddr-regs.h b/arch/ar=
+m/mach-imx/include/mach/imx7-ddr-regs.h
+> > > new file mode 100644
+> > > index 000000000000..e66b2da11ede
+> > > --- /dev/null
+> > > +++ b/arch/arm/mach-imx/include/mach/imx7-ddr-regs.h
+> > > @@ -0,0 +1,174 @@
+> > > +/*
+> > > + * Copyright (C) 2017 Pengutronix, Fridolin Tux <kernel@pengutronix.=
+de>
+> > =
 
-Best regards
-Norbert Wiedmann
+> > Sure?
+> =
 
+> That's what I copied from our internal license template ... *sigh* I
+> will resend.
 
-> Norbert Wiedmann <info@n-wiedmann.de> hat am 24. Juli 2017 um 13:28
-> geschrieben:
->
->
-> Hi everyone,
-> I have an unexpected behaviour with my bootchooser framework since
-> barebox version 2017.05.
->
-> After reflashing barebox, and cleaning the environment and the state
-> partition,
-> the boot message shows:
->
-> stMyBoot: New state registered 'stMyBoot'
-> stMyBoot: Failed to find any valid state copy in any bucket
-> stMyBoot: Failed to read state with format dtb, -2
-> state stMyBoot.14: Failed to load persistent state, continuing with
-> defaults,-2
->
-> Barebox continues with defaults, this seems OK.
-> I double checked this by printing the variables (default is 0xffffffff)
->
-> printenv stMyBoot.bootchooser.factory.remaining_attempts
-> stMyBoot.bootchooser.factory.remaining_attempts=4294967295
->
-> printenv stMyBoot.bootchooser.system1.remaining_attempts
-> stMyBoot.bootchooser.system1.remaining_attempts=4294967295
->
-> printenv stMyBoot.bootchooser.system2.remaining_attempts
-> stMyBoot.bootchooser.system2.remaining_attempts=4294967295
->
-> Next, I call boot, and everything works fine, the target with the highest
-> priority, which is 'system1', boots.
->
-> booting 'bootchooser'
-> booting 'system1'
->
-> The system boots as expected. I have no modification within my linux.
->
-> The problem starts with the second boot, which fails:
->
-> barebox outputs:
-> stMyBoot: New state registered 'stMyBoot'
-> stMyBoot: Using bucket 0@0x00000000
->
-> This is OK, the bucket was written during the first boot, because the
-> remaining_attempts should be decreased. But, unexpectly, the bootchooser
-> is completly deactivated, all three boot targets have remaining_attempts=0
->
-> booting 'bootchooser'
-> bootchooser: No valid targets found:
-> system1
-> id: 1
-> priority: 22
-> default_priority: 1
-> remaining attempts: 0
-> default attempts: 3
-> boot: 'system1'
-> disabled due to remaining attempts = 0
-> system2
-> id: 2
-> priority: 21
-> default_priority: 1
-> remaining attempts: 0
-> default attempts: 3
-> boot: 'system2'
-> disabled due to remaining attempts = 0
-> factory
-> id: 3
-> priority: 10
-> default_priority: 1
-> remaining attempts: 0
-> default attempts: 3
-> boot: 'factory'
-> disabled due to remaining attempts = 0
-> booting 'bootchooser' failed: No such file or directory
->
-> I placed a printenv in my boot entry file and, when booting the first time
-> after a new reflashing, the output is
-> stMyBoot.bootchooser.system1.remaining_attempts=0
->
-> I looks like the bootchooser doesn't use the default/actual value for
-> 'remaining_attempts' when saving the variables after he has decided which
-> boot target he will use.
->
-> Everything worked fine up to 2017.04
-> Behaviour as descriped tested with 2017.05, 2017.07.1
->
-> What is going wrong?
-> Thanks for your consideration in this matter.
->
-> Best regards
-> Norbert Wiedmann
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
->
+I think I forgot to resend, but Lucas took my patch anyhow :-)
+
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
