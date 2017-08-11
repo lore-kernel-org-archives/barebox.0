@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+Received: from mout.gmx.net ([212.227.15.18])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dfgDc-00007c-HP
- for barebox@lists.infradead.org; Thu, 10 Aug 2017 05:41:19 +0000
-Received: by mail-lf0-x243.google.com with SMTP id t128so5721621lff.3
- for <barebox@lists.infradead.org>; Wed, 09 Aug 2017 22:40:55 -0700 (PDT)
-Date: Thu, 10 Aug 2017 08:51:46 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20170810085146.f7d28709750f2181bad6e45c@gmail.com>
-In-Reply-To: <20170809185853.lvlar7vyder6supt@gportay>
-References: <20170809041320.28874-1-gael.portay@savoirfairelinux.com>
- <0ec3c31c-1ede-6108-28bc-af15ab67d0f9@rempel-privat.de>
- <20170809185853.lvlar7vyder6supt@gportay>
-Mime-Version: 1.0
+ id 1dgAPw-0005Id-QJ
+ for barebox@lists.infradead.org; Fri, 11 Aug 2017 13:56:09 +0000
+From: Oleksij Rempel <linux@rempel-privat.de>
+Date: Fri, 11 Aug 2017 15:55:25 +0200
+Message-Id: <20170811135525.19034-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,114 +14,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] readline_simple: return -1 if getc fails
-To: =?ISO-8859-1?Q?Ga=EBl?= PORTAY <gael.portay@savoirfairelinux.com>
-Cc: barebox@lists.infradead.org, Oleksij Rempel <linux@rempel-privat.de>
+Subject: [PATCH v2] MIPS: add virt_to_phys() and phys_to_virt()
+To: barebox@lists.infradead.org
+Cc: Peter Mamonov <pmamonov@gmail.com>, Oleksij Rempel <linux@rempel-privat.de>
 
-On Wed, 9 Aug 2017 14:58:53 -0400
-Ga=EBl PORTAY <gael.portay@savoirfairelinux.com> wrote:
+From: Antony Pavlov <antonynpavlov@gmail.com>
 
-> Hi,
-> =
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+---
+changes.
+v2:
+ - make use of use CPHYSADDR and CKSEG0ADDR
 
-> On Wed, Aug 09, 2017 at 08:05:57AM +0200, Oleksij Rempel wrote:
-> > Am 09.08.2017 um 06:13 schrieb Ga=EBl PORTAY:
-> > > Dear maintainers,
-> > > =
+ arch/mips/include/asm/io.h | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-> > > I came accross this issue when I was trying to add support for a new =
-MIPS
-> > > board.
-> > =
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 4bee5913a..d4eb623c3 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -12,11 +12,46 @@
+ 
+ #include <linux/compiler.h>
+ #include <asm/types.h>
++#include <asm/addrspace.h>
+ #include <asm/byteorder.h>
+ 
+ void dma_flush_range(unsigned long, unsigned long);
+ void dma_inv_range(unsigned long, unsigned long);
+ 
++/*
++ *     virt_to_phys    -       map virtual addresses to physical
++ *     @address: address to remap
++ *
++ *     The returned physical address is the physical (CPU) mapping for
++ *     the memory address given. It is only valid to use this function on
++ *     addresses directly mapped or allocated via kmalloc.
++ *
++ *     This function does not give bus mappings for DMA transfers. In
++ *     almost all conceivable cases a device driver should not be using
++ *     this function
++ */
++static inline unsigned long virt_to_phys(const void *address)
++{
++	return (unsigned long)CPHYSADDR(address);
++}
++
++/*
++ *     phys_to_virt    -       map physical address to virtual
++ *     @address: address to remap
++ *
++ *     The returned virtual address is a current CPU mapping for
++ *     the memory address given. It is only valid to use this function on
++ *     addresses that have a kernel mapping
++ *
++ *     This function does not handle bus mappings for DMA transfers. In
++ *     almost all conceivable cases a device driver should not be using
++ *     this function
++ */
++static inline void *phys_to_virt(unsigned long address)
++{
++	return (void *)CKSEG0ADDR(address);
++}
++
+ #define	IO_SPACE_LIMIT	0
+ 
+ /*****************************************************************************/
+-- 
+2.11.0
 
-> > Just out of curiosity, what MIPS board are you working on? If it is not
-> > a secret :)
-> > =
-
-> =
-
-> I am working on VoCore2[1]; it is a board based on a mediatek mt7628 CPU.
-> =
-
-> I am doing this to learn myself how works barebox =
-
-
-Please see this branch for mt7628:
-
-  https://github.com/frantony/barebox/tree/20160815.mediatek
-
-
-
-> =
-
-> Offtopic: For now it is booting on a really really old version of u-boot.=
- I am
-> able de boot barebox from u-boot. I had to hack the mips_disable_interrup=
-ts to
-> remove the reset of flag ERL in CP0; but I don't know why yet. This flag =
-is
-> supposed to be set when CPU reboots; but because I am running barebox fro=
-m a the
-> command go of u-boot, this flag is unset.
-> =
-
-> Are you able to re-run barebox from barebox on your MIPS board?
-> =
-
-> 	.macro	mips_disable_interrupts
-> 	.set	push
-> 	.set	noreorder
-> 	mfc0	k0, CP0_STATUS
-> -	li	k1, ~(ST0_ERL | ST0_IE)
-> +	li	k1, ~ST0_IE
-> 	and	k0, k1
-> 	mtc0	k0, CP0_STATUS
-> 	.set	pop
-> 	.endm
-> =
-
-> For now, I have splitted mips_disable_interrupts into two macros. The sec=
-ond
-> macro mips_reset_error_level checks if the ERL flag is armed before reset=
-ting it
-> to 0.
-> =
-
-> 	.macro	mips_reset_error_level
-> 	.set	push
-> 	.set	noreorder
-> 	mfc0	k0, CP0_STATUS
-> 	li	k1, ST0_ERL
-> 	and	k1, k0
-> 	bne	k1, zero, 1f
-> 	li	k1, ~(ST0_ERL)
-> 	and	k0, k1
-> 	mtc0	k0, CP0_STATUS
-> 1:	.set	pop
-> 	.endm
-> =
-
-> But I don't know if this is the right thing to do.
->  =
-
-> [1]: https://www.indiegogo.com/projects/vocore2-4-coin-sized-linux-comput=
-er-with-wifi#/
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
