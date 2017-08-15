@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dhcBU-0002qM-7o
- for barebox@lists.infradead.org; Tue, 15 Aug 2017 13:47:06 +0000
+ id 1dhcBU-0002qJ-T6
+ for barebox@lists.infradead.org; Tue, 15 Aug 2017 13:47:08 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
- (envelope-from <jbe@pengutronix.de>) id 1dhcB6-0007jF-4o
+ (envelope-from <jbe@pengutronix.de>) id 1dhcB6-0007jD-3h
  for barebox@lists.infradead.org; Tue, 15 Aug 2017 15:46:40 +0200
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <jbe@pengutronix.de>) id 1dhcB5-00040K-Rt
+ (envelope-from <jbe@pengutronix.de>) id 1dhcB5-0003za-QK
  for barebox@lists.infradead.org; Tue, 15 Aug 2017 15:46:39 +0200
 From: Juergen Borleis <jbe@pengutronix.de>
-Date: Tue, 15 Aug 2017 15:46:35 +0200
-Message-Id: <20170815134636.21236-7-jbe@pengutronix.de>
+Date: Tue, 15 Aug 2017 15:46:33 +0200
+Message-Id: <20170815134636.21236-5-jbe@pengutronix.de>
 In-Reply-To: <20170815134636.21236-1-jbe@pengutronix.de>
 References: <20170815134636.21236-1-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -29,71 +29,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] state: add debugging help
+Subject: [PATCH 4/7] bootchooser: allow an empty namespace
 To: barebox@lists.infradead.org
 
-While working on the state documentation it turns out to be helpful to have
-more debug messages while a developer implements a 'state' variable set
-and tries to configure it correctly.
+The bootchooser's documentation states the 'namespace' for the state
+storage backend is optional. This change makes it really optional to allow
+a flat state variable set definition for the 'bootchooser' as well.
 
 Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 ---
- common/state/backend_storage.c | 7 ++++++-
- common/state/state.c           | 2 ++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ common/bootchooser.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/common/state/backend_storage.c b/common/state/backend_storage.c
-index d6e7adcf5..2e2478cb6 100644
---- a/common/state/backend_storage.c
-+++ b/common/state/backend_storage.c
-@@ -146,6 +146,7 @@ int state_storage_read(struct state_backend_storage *storage,
- 	struct state_backend_storage_bucket *bucket, *bucket_used = NULL;
- 	int ret;
+diff --git a/common/bootchooser.c b/common/bootchooser.c
+index 69d980d6f..83b15e0f7 100644
+--- a/common/bootchooser.c
++++ b/common/bootchooser.c
+@@ -367,12 +367,10 @@ struct bootchooser *bootchooser_get(void)
+ 			char *state_devname;
  
-+	dev_dbg(storage->dev, "Checking redundant buckets...\n");
- 	/*
- 	 * Iterate over all buckets. The first valid one we find is the
- 	 * one we want to use.
-@@ -164,8 +165,12 @@ int state_storage_read(struct state_backend_storage *storage,
- 		ret = format->verify(format, magic, bucket->buf, &bucket->len, flags);
- 		if (!ret && !bucket_used)
- 			bucket_used = bucket;
-+		if (ret)
-+			dev_info(storage->dev, "Ignoring broken bucket %d@0x%08lx...\n", bucket->num, bucket->offset);
- 	}
- 
-+	dev_dbg(storage->dev, "Checking redundant buckets finished.\n");
-+
- 	if (!bucket_used) {
- 		dev_err(storage->dev, "Failed to find any valid state copy in any bucket\n");
- 
-@@ -386,7 +391,7 @@ int state_storage_init(struct state *state, const char *path,
- 			dev_warn(storage->dev, "using old format circular storage type.\n");
- 			circular = false;
- 		} else {
--			dev_warn(storage->dev, "unknown storage type '%s'\n", storagetype);
-+			dev_dbg(storage->dev, "unknown storage type '%s'\n", storagetype);
- 			return -EINVAL;
- 		}
- 		return state_storage_mtd_buckets_init(storage, &meminfo, circular);
-diff --git a/common/state/state.c b/common/state/state.c
-index 121ba0c6d..18ffbe29a 100644
---- a/common/state/state.c
-+++ b/common/state/state.c
-@@ -608,11 +608,13 @@ struct state *state_new_from_node(struct device_node *node, char *path,
- 
- 	ret = of_property_read_string(node, "backend-type", &backend_type);
- 	if (ret) {
-+		dev_dbg(&state->dev, "Missing 'backend-type' property\n");
- 		goto out_release_state;
- 	}
- 
- 	ret = of_property_read_u32(node, "backend-stridesize", &stridesize);
- 	if (ret) {
-+		dev_dbg(&state->dev, "'backend-stridesize' property undefined, trying to continue without\n");
- 		stridesize = 0;
- 	}
- 
+ 			delim = strchr(state_prefix, '.');
+-			if (!delim) {
+-				pr_err("state_prefix '%s' has invalid format\n",
+-				       state_prefix);
+-				goto err;
+-			}
+-			state_devname = xstrndup(state_prefix, delim - state_prefix);
++			if (delim)
++				state_devname = xstrndup(state_prefix, delim - state_prefix);
++			else
++				state_devname = xstrdup(state_prefix);
+ 			bc->state_prefix = xstrdup(state_prefix);
+ 			bc->state = state_by_name(state_devname);
+ 			if (!bc->state) {
 -- 
 2.11.0
 
