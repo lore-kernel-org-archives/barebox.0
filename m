@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dhvv9-0000A5-Gf
- for barebox@lists.infradead.org; Wed, 16 Aug 2017 10:51:35 +0000
-Message-ID: <1502880666.5286.18.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Wed, 16 Aug 2017 12:51:06 +0200
-In-Reply-To: <20170816081741.bcoctdw4dtai3tb4@pengutronix.de>
-References: <20170815094737.27407-1-jlu@pengutronix.de>
- <20170816081741.bcoctdw4dtai3tb4@pengutronix.de>
-Mime-Version: 1.0
+ by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dhxQ7-0002Xd-Fo
+ for barebox@lists.infradead.org; Wed, 16 Aug 2017 12:27:36 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
+ (envelope-from <jbe@pengutronix.de>) id 1dhxPi-0003JR-7y
+ for barebox@lists.infradead.org; Wed, 16 Aug 2017 14:27:10 +0200
+Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.89)
+ (envelope-from <jbe@pengutronix.de>) id 1dhxPi-00061j-0T
+ for barebox@lists.infradead.org; Wed, 16 Aug 2017 14:27:10 +0200
+From: Juergen Borleis <jbe@pengutronix.de>
+Date: Wed, 16 Aug 2017 14:27:07 +0200
+Message-Id: <20170816122709.23129-1-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,85 +22,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: mvebu: armada-xp: configure PLL and PHY register
-To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] state: provide an error message when an error occurs
+To: barebox@lists.infradead.org
 
-T24gV2VkLCAyMDE3LTA4LTE2IGF0IDEwOjE3ICswMjAwLCBVd2UgS2xlaW5lLUvDtm5pZyB3cm90
-ZToKPiBIYWxsbyBKYW4sCj4gCj4gT24gVHVlLCBBdWcgMTUsIDIwMTcgYXQgMTE6NDc6MzdBTSAr
-MDIwMCwgSmFuIEx1ZWJiZSB3cm90ZToKPiA+IFRoZSBQTEwgc2V0dXAgaXMgbmVlZGVkIHRvIHVz
-ZSB0aGUgVVNCIHBvcnRzIGluIExpbnV4Lgo+ID4gCj4gPiBUaGlzIGNvZGUgaXMgcG9ydGVkIGZy
-b20gbWFpbmxpbmUgVS1Cb290IGFyY2gvYXJtL21hY2gtbXZlYnUvY3B1LmMuCj4gCj4gQWN0dWFs
-bHkgdGhpcyBpcyBhIHdvcmsgYXJvdW5kIGJlY2F1c2UgTGludXggZG9lc24ndCBkbyB0aGUgbmVj
-ZXNzYXJ5Cj4gc2V0dXAgYmVmb3JlIG1ha2luZyB1c2Ugb2YgdGhlIGhhcmR3YXJlLCByaWdodD8K
-PiAKPiBJZiBzbywgd291bGRuJ3QgaXQgYmUgYmV0dGVyIHRvIHRlYWNoIExpbnV4IGFib3V0IHRo
-ZSBuZWVkZWQgc2V0dXA/CgpJdCB3b3VsZCBzdGlsbCBiZSBuZWVkZWQgZm9yIGJhcmVib3ggVVNC
-IHN1cHBvcnQuCgo+ID4gK3N0YXRpYyB2b2lkIHNldHVwX3VzYl9waHlzKHZvaWQpCj4gPiArewo+
-ID4gKwlpbnQgZGV2Owo+ID4gKwo+ID4gKwkvKgo+ID4gKwnCoCogVVNCIFBMTCBpbml0Cj4gPiAr
-CcKgKi8KPiA+ICsKPiA+ICsJLyogU2V0dXAgUExMIGZyZXF1ZW5jeSAqLwo+ID4gKwkvKiBVU0Ig
-UkVGIGZyZXF1ZW5jeSA9IDI1IE1IeiAqLwo+ID4gKwljbHJzZXRiaXRzX2xlMzIoTVZfVVNCX1BI
-WV9QTExfUkVHKDEpLCAweDNmZiwgMHg2MDUpOwo+ID4gKwo+ID4gKwkvKiBQb3dlciB1cCBQTEwg
-YW5kIFBIWSBjaGFubmVsICovCj4gPiArCXNldGJpdHNfbGUzMihNVl9VU0JfUEhZX1BMTF9SRUco
-MiksIEJJVCg5KSk7Cj4gPiArwqAKPiA+ICsJLyogQXNzZXJ0IFZDT0NBTF9TVEFSVCAqLwo+ID4g
-KwlzZXRiaXRzX2xlMzIoTVZfVVNCX1BIWV9QTExfUkVHKDEpLCBCSVQoMjEpKTsKPiA+ICvCoAo+
-ID4gKwltZGVsYXkoMSk7Cj4gPiArwqAKPiA+ICsJLyoKPiA+ICsJwqAqIFVTQiBQSFkgaW5pdCAo
-Y2hhbmdlIGZyb20gZGVmYXVsdHMpIHNwZWNpZmljIGZvciA0MG5tCj4gPiAoNzhYMzAgNzhYNjAp
-Cj4gCj4gSSBhc3N1bWUgdGhpcyBjb21tZW50IGFsc28gY29tZXMgZnJvbSBVLUJvb3QuIFN0aWxs
-IEkgd29uZGVyIGlmIGl0Cj4gbWFrZXMgc2Vuc2UgdG8gdXNlIHRoZSBtb3JlIGNvbW1vbiBuYW1l
-cyBpbnN0ZWFkIG9mICI3OFgzMCA3OFg2MCIuCj4gVGhhdCB3b3VsZCBiZSAiQXJtYWRhIFhQIiBi
-dXQgbm90ICJBcm1hZGEgMzcwIiwgd291bGRuJ3QgaXQ/IChBcm1hZGEKPiAzNzAgPSA4OEY2NzEw
-LCA4OEY2NzA3LCBhbmQgODhGNlcxMSkuIElmIHNvLCB0aGlzIGNvZGUgc2hvdWxkbid0IGJlCj4g
-cmVhY2hlZCBvbiBBcm1hZGEgMzcwPwo+IAo+IFNvbWUgb3RoZXIgcGxhY2VzIGluIGJhcmVib3gg
-c3VnZ2VzdCwgdGhhdCBNVjc4eHgwIGlzIG5laXRoZXIgWFAgbm9yCj4gMzcwIChlLmcuCj4gCWR0
-cy9CaW5kaW5ncy9uZXQvbWFydmVsbC1vcmlvbi1tZGlvLnR4dAo+IAlkdHMvQmluZGluZ3MvYXJt
-L21hcnZlbGwvbXZlYnUtc3lzdGVtLWNvbnRyb2xsZXIudHh0Cj4gCWRyaXZlcnMvYnVzL0tjb25m
-aWcKPiAJZHJpdmVycy9zcGkvbXZlYnVfc3BpLmMKPiApCgpBcyBmYXIgYXMgSSBjYW4gc2VlLCB0
-aGVyZSBpcyBubyBhdXRob3JpdGF0aXZlIHNvdXJjZSBvbiB0aGUgbmFtaW5nLiBTbwogSSdkIGxp
-a2UgdG8gYXZvaWQgbWFraW5nIGNoYW5nZXMgd2l0aG91dCBiZWluZyBzdXJlIHRoYXQgaXQgaXMK
-YWN0dWFsbHkgY29ycmVjdC4KCj4gPiArCcKgKi8KPiA+ICsKPiA+ICsJZm9yIChkZXYgPSAwOyBk
-ZXYgPCAzOyBkZXYrKykgewo+ID4gKwkJc2V0Yml0c19sZTMyKE1WX1VTQl9YM19QSFlfQ0hBTk5F
-TChkZXYsIDMpLAo+ID4gQklUKDE1KSk7Cj4gPiArCj4gPiArCQkvKiBBc3NlcnQgUkVHX1JDQUxf
-U1RBUlQgaW4gY2hhbm5lbCBSRUcgMSAqLwo+ID4gKwkJc2V0Yml0c19sZTMyKE1WX1VTQl9YM19Q
-SFlfQ0hBTk5FTChkZXYsIDEpLAo+ID4gQklUKDEyKSk7Cj4gPiArCQl1ZGVsYXkoNDApOwo+ID4g
-KwkJY2xyYml0c19sZTMyKE1WX1VTQl9YM19QSFlfQ0hBTk5FTChkZXYsIDEpLAo+ID4gQklUKDEy
-KSk7Cj4gPiArCX0KPiAKPiBDYW4gdGhpcyBiZSBtYWRlIHF1aWNrZXIgdXNpbmc6Cj4gCj4gCWZv
-ciAoZGV2ID0gMDsgZGV2IDwgMzsgZGV2KyspIHsKPiAJCXNldGJpdHNfbGUzMihNVl9VU0JfWDNf
-UEhZX0NIQU5ORUwoZGV2LCAzKSwgQklUKDE1KSk7Cj4gCj4gCQkvKiBBc3NlcnQgUkVHX1JDQUxf
-U1RBUlQgaW4gY2hhbm5lbCBSRUcgMSAqLwo+IAkJc2V0Yml0c19sZTMyKE1WX1VTQl9YM19QSFlf
-Q0hBTk5FTChkZXYsIDEpLCBCSVQoMTIpKTsKPiAJfQo+IAo+IAl1ZGVsYXkoNDA7Cj4gCj4gCWZv
-ciAoZGV2ID0gMDsgZGV2IDwgMzsgZGV2KyspCj4gCQljbHJiaXRzX2xlMzIoTVZfVVNCX1gzX1BI
-WV9DSEFOTkVMKGRldiwgMSksIEJJVCgxMikpOwo+IAo+ID8KClBvc3NpYmx5LiBOZXZlcnRoZWxl
-c3MgSSdkIHByZWZlciB0byBrZWVwIHRoZSBjb2RlIGlkZW50aWNhbCB0byB0aGUgb25lCmZyb20g
-VS1Cb290LCBhdCBsZWFzdCB1bnRpbCBzb21lb25lIGlzIGludGVyZXN0ZWQgaW4gcmVmYWN0b3Jp
-bmcgdGhpcwpvbiBhIGxhcmdlciBzY2FsZS4KCj4gPiArfQo+ID4gKwo+ID4gwqBzdGF0aWMgaW50
-IGFybWFkYV8zNzBfeHBfaW5pdF9zb2Modm9pZCkKPiA+IMKgewo+ID4gwqAJdTMyIHJlZzsKPiA+
-IEBAIC0xMDksNiArMTUxLDkgQEAgc3RhdGljIGludCBhcm1hZGFfMzcwX3hwX2luaXRfc29jKHZv
-aWQpCj4gPiDCoAkJcmVnID0gcmVhZGwoQVJNQURBX1hQX1BVUF9FTkFCTEUpOwo+ID4gwqAJCXJl
-ZyB8PSBHRTBfUFVQX0VOIHwgR0UxX1BVUF9FTiB8IExDRF9QVVBfRU4gfAo+ID4gTkFORF9QVVBf
-RU4gfCBTUElfUFVQX0VOOwo+ID4gwqAJCXdyaXRlbChyZWcsIEFSTUFEQV9YUF9QVVBfRU5BQkxF
-KTsKPiA+ICsKPiA+ICsJCS8qIENvbmZpZ3VyZSBVU0IgUExMIGFuZCBQSFlzIG9uIEFYUCAqLwo+
-ID4gKwkJc2V0dXBfdXNiX3BoeXMoKTsKPiA+IMKgCX0KPiA+IMKgCj4gPiDCoAlyZXR1cm4gMDsK
-PiA+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW12ZWJ1L2luY2x1ZGUvbWFjaC9hcm1hZGEt
-MzcwLXhwLXJlZ3MuaAo+ID4gYi9hcmNoL2FybS9tYWNoLW12ZWJ1L2luY2x1ZGUvbWFjaC9hcm1h
-ZGEtMzcwLXhwLXJlZ3MuaAo+ID4gaW5kZXggMWRhZDA1MzE3MjExLi5iOTcyZGYxNTFhNzQgMTAw
-NjQ0Cj4gPiAtLS0gYS9hcmNoL2FybS9tYWNoLW12ZWJ1L2luY2x1ZGUvbWFjaC9hcm1hZGEtMzcw
-LXhwLXJlZ3MuaAo+ID4gKysrIGIvYXJjaC9hcm0vbWFjaC1tdmVidS9pbmNsdWRlL21hY2gvYXJt
-YWRhLTM3MC14cC1yZWdzLmgKPiA+IEBAIC03Miw0ICs3Miw2IEBACj4gPiDCoAnCoCgoKHBvcnQp
-ICUgNCkgKiBBUk1BREFfMzcwX1hQX1BDSUVfUE9SVF9PRkZTRVQpKQo+ID4gwqAjZGVmaW5lwqDC
-oFBDSUVfREVWSUNFX1ZFTkRPUl9JRAkJMHgwMDAKPiA+IMKgCj4gPiArI2RlZmluZSBBUk1BREFf
-MzcwX1hQX1VTQl9CQVNFCQkoQVJNQURBXzM3MF9YUF9JTlRfUgo+ID4gRUdTX0JBU0UgKyAweDUw
-MDAwKQo+IAo+IEluc3RlYWQgb2YgaGFyZGNvZGluZyB0aGlzIGFkZHJlc3MsIHRoaXMgY291bGQg
-YmUgZG9uZSBkZXBlbmRpbmcgb24KPiB0aGUgZGV2aWNlIGF0IHRoZSBzYW1lIGFkZHJlc3Mgc3Bl
-Y2lmaWVkIGluIHRoZSBkZXZpY2UgdHJlZS4KPiAKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAg
-ICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVz
-dHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0
-cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8
-IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhS
-QSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
-bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
-cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+A simple typo makes the state framework fail, but without an error
+message the developer is lost in the dark.
+
+Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
+---
+ common/state/state.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/common/state/state.c b/common/state/state.c
+index 121ba0c6d..fc822b21b 100644
+--- a/common/state/state.c
++++ b/common/state/state.c
+@@ -240,6 +240,7 @@ static int state_convert_node_variable(struct state *state,
+ 
+ 	vtype = state_find_type_by_name(type_name);
+ 	if (!vtype) {
++		dev_dbg(&state->dev, "Error: invalid variable type '%s'\n", type_name);
+ 		ret = -ENOENT;
+ 		goto out_free;
+ 	}
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
