@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dhtkR-0003DB-Qg
- for barebox@lists.infradead.org; Wed, 16 Aug 2017 08:32:21 +0000
-Message-ID: <1502872315.19806.0.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 16 Aug 2017 10:31:55 +0200
-In-Reply-To: <87valnrk6z.fsf@gmail.com>
-References: <874ltanmak.fsf@gmail.com>
- <CALHxSV7KdxseT72B=-+MwAeTtZ9neeg7URpFtK17dxyqVaMfCA@mail.gmail.com>
- <87valnrk6z.fsf@gmail.com>
-Mime-Version: 1.0
+ id 1dhvNu-0003et-JQ
+ for barebox@lists.infradead.org; Wed, 16 Aug 2017 10:17:12 +0000
+From: Bastian Stender <bst@pengutronix.de>
+Date: Wed, 16 Aug 2017 12:16:44 +0200
+Message-Id: <20170816101644.20022-1-bst@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +14,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox and ext4 ? problems
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] i2c: mv64xxx: add timeout waiting for bus ready
+To: barebox@lists.infradead.org
+Cc: Bastian Stender <bst@pengutronix.de>
 
-Hi Holger,
+This prevents barebox hanging e.g. in case the i2c clock is accidentally
+connected to GND.
 
-Am Mittwoch, den 16.08.2017, 10:27 +0200 schrieb Holger Schurig:
-> Simon Aittamaa <simon.aittamaa@gmail.com> writes:
-> 
-> > I think it was metadata_csum and 64bit...
-> 
-> You're right.
-> 
-> My SDCard was formatted months ago, I only used rsync for the updates.
-> But the eMMC was formatted afresh by a script from me. I found out with
-> the feature command "debugfs" that the partitions have different
-> features enables. In my case it was only 64bit, not metadata_csum.
-> 
-> I now use
-> 
-> 	mkfs.ext4 -O ^64bit -F -j -L $label /dev/mmcblk0p$partition
-> 
-> to format it. It spits out some ugly warning that 64bit is the best
-> thing since sliced bread, but if you ignore this, then everything is
-> fine!
-> 
-> To get rid of this uglyness, I use:
-> 
-> 	mkfs.ext4 -O ^64bit -F -j -L $label /dev/mmcblk0p$partition | \
-> 		grep -v 64-bit | \
-> 		grep -v 64bit
-> 
-> I think I'll post a patch to Barebox that either allows it to mount
-> partions with the 64bit feature. Or to refuse the mount with a proper
-> error message.
+Signed-off-by: Bastian Stender <bst@pengutronix.de>
+---
+ drivers/i2c/busses/i2c-mv64xxx.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-That would be much appreciated.
-
-Regards,
-Lucas
+diff --git a/drivers/i2c/busses/i2c-mv64xxx.c b/drivers/i2c/busses/i2c-mv64xxx.c
+index fd1665bebb..f54d81608f 100644
+--- a/drivers/i2c/busses/i2c-mv64xxx.c
++++ b/drivers/i2c/busses/i2c-mv64xxx.c
+@@ -37,6 +37,8 @@
+ #define	REG_CONTROL_TWSIEN			0x00000040
+ #define	REG_CONTROL_INTEN			0x00000080
+ 
++#define MV46XXX_I2C_TIMEOUT			(100 * MSECOND) /* transfer timeout */
++
+ /* Ctlr status values */
+ #define	STATUS_MAST_START			0x08
+ #define	STATUS_MAST_REPEAT_START		0x10
+@@ -421,10 +423,11 @@ mv64xxx_i2c_do_action(struct mv64xxx_i2c_data *drv_data)
+  *
+  *****************************************************************************
+  */
+-static void
++static int
+ mv64xxx_i2c_wait_for_completion(struct mv64xxx_i2c_data *drv_data)
+ {
+ 	u32 status;
++	uint64_t start = get_time_ns();
+ 	do {
+ 		if (mv64xxx_read(drv_data, drv_data->reg_offsets.control) &
+ 							REG_CONTROL_IFLG) {
+@@ -432,6 +435,11 @@ mv64xxx_i2c_wait_for_completion(struct mv64xxx_i2c_data *drv_data)
+ 					      drv_data->reg_offsets.status);
+ 			mv64xxx_i2c_fsm(drv_data, status);
+ 			mv64xxx_i2c_do_action(drv_data);
++		} else {
++			if (is_timeout(start, MV46XXX_I2C_TIMEOUT)) {
++				dev_warn(&drv_data->adapter.dev, "timeout waiting for bus ready\n");
++				return -ETIMEDOUT;
++			}
+ 		}
+ 		if (drv_data->rc) {
+ 			drv_data->state = STATE_IDLE;
+@@ -440,6 +448,8 @@ mv64xxx_i2c_wait_for_completion(struct mv64xxx_i2c_data *drv_data)
+ 			drv_data->block = false;
+ 		}
+ 	} while (drv_data->block);
++
++	return 0;
+ }
+ 
+ /*
+@@ -453,7 +463,7 @@ static int
+ mv64xxx_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
+ {
+ 	struct mv64xxx_i2c_data *drv_data = container_of(adap, struct mv64xxx_i2c_data, adapter);
+-	int ret = num;
++	int ret;
+ 
+ 	BUG_ON(drv_data->msgs != NULL);
+ 
+@@ -463,15 +473,15 @@ mv64xxx_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
+ 	drv_data->send_stop = (num == 1);
+ 	drv_data->block = true;
+ 	mv64xxx_i2c_send_start(drv_data);
+-	mv64xxx_i2c_wait_for_completion(drv_data);
++	ret = mv64xxx_i2c_wait_for_completion(drv_data);
+ 
+-	if (drv_data->rc < 0)
++	if (!ret && drv_data->rc < 0)
+ 		ret = drv_data->rc;
+ 
+ 	drv_data->num_msgs = 0;
+ 	drv_data->msgs = NULL;
+ 
+-	return ret;
++	return (ret < 0) ? ret : num;
+ }
+ 
+ /*
+-- 
+2.11.0
 
 
 _______________________________________________
