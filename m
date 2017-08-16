@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dhvNu-0003et-JQ
- for barebox@lists.infradead.org; Wed, 16 Aug 2017 10:17:12 +0000
-From: Bastian Stender <bst@pengutronix.de>
-Date: Wed, 16 Aug 2017 12:16:44 +0200
-Message-Id: <20170816101644.20022-1-bst@pengutronix.de>
+ id 1dhvv9-0000A5-Gf
+ for barebox@lists.infradead.org; Wed, 16 Aug 2017 10:51:35 +0000
+Message-ID: <1502880666.5286.18.camel@pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Wed, 16 Aug 2017 12:51:06 +0200
+In-Reply-To: <20170816081741.bcoctdw4dtai3tb4@pengutronix.de>
+References: <20170815094737.27407-1-jlu@pengutronix.de>
+ <20170816081741.bcoctdw4dtai3tb4@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,103 +18,85 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i2c: mv64xxx: add timeout waiting for bus ready
-To: barebox@lists.infradead.org
-Cc: Bastian Stender <bst@pengutronix.de>
+Subject: Re: [PATCH] ARM: mvebu: armada-xp: configure PLL and PHY register
+To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This prevents barebox hanging e.g. in case the i2c clock is accidentally
-connected to GND.
-
-Signed-off-by: Bastian Stender <bst@pengutronix.de>
----
- drivers/i2c/busses/i2c-mv64xxx.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/i2c/busses/i2c-mv64xxx.c b/drivers/i2c/busses/i2c-mv64xxx.c
-index fd1665bebb..f54d81608f 100644
---- a/drivers/i2c/busses/i2c-mv64xxx.c
-+++ b/drivers/i2c/busses/i2c-mv64xxx.c
-@@ -37,6 +37,8 @@
- #define	REG_CONTROL_TWSIEN			0x00000040
- #define	REG_CONTROL_INTEN			0x00000080
- 
-+#define MV46XXX_I2C_TIMEOUT			(100 * MSECOND) /* transfer timeout */
-+
- /* Ctlr status values */
- #define	STATUS_MAST_START			0x08
- #define	STATUS_MAST_REPEAT_START		0x10
-@@ -421,10 +423,11 @@ mv64xxx_i2c_do_action(struct mv64xxx_i2c_data *drv_data)
-  *
-  *****************************************************************************
-  */
--static void
-+static int
- mv64xxx_i2c_wait_for_completion(struct mv64xxx_i2c_data *drv_data)
- {
- 	u32 status;
-+	uint64_t start = get_time_ns();
- 	do {
- 		if (mv64xxx_read(drv_data, drv_data->reg_offsets.control) &
- 							REG_CONTROL_IFLG) {
-@@ -432,6 +435,11 @@ mv64xxx_i2c_wait_for_completion(struct mv64xxx_i2c_data *drv_data)
- 					      drv_data->reg_offsets.status);
- 			mv64xxx_i2c_fsm(drv_data, status);
- 			mv64xxx_i2c_do_action(drv_data);
-+		} else {
-+			if (is_timeout(start, MV46XXX_I2C_TIMEOUT)) {
-+				dev_warn(&drv_data->adapter.dev, "timeout waiting for bus ready\n");
-+				return -ETIMEDOUT;
-+			}
- 		}
- 		if (drv_data->rc) {
- 			drv_data->state = STATE_IDLE;
-@@ -440,6 +448,8 @@ mv64xxx_i2c_wait_for_completion(struct mv64xxx_i2c_data *drv_data)
- 			drv_data->block = false;
- 		}
- 	} while (drv_data->block);
-+
-+	return 0;
- }
- 
- /*
-@@ -453,7 +463,7 @@ static int
- mv64xxx_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
- {
- 	struct mv64xxx_i2c_data *drv_data = container_of(adap, struct mv64xxx_i2c_data, adapter);
--	int ret = num;
-+	int ret;
- 
- 	BUG_ON(drv_data->msgs != NULL);
- 
-@@ -463,15 +473,15 @@ mv64xxx_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
- 	drv_data->send_stop = (num == 1);
- 	drv_data->block = true;
- 	mv64xxx_i2c_send_start(drv_data);
--	mv64xxx_i2c_wait_for_completion(drv_data);
-+	ret = mv64xxx_i2c_wait_for_completion(drv_data);
- 
--	if (drv_data->rc < 0)
-+	if (!ret && drv_data->rc < 0)
- 		ret = drv_data->rc;
- 
- 	drv_data->num_msgs = 0;
- 	drv_data->msgs = NULL;
- 
--	return ret;
-+	return (ret < 0) ? ret : num;
- }
- 
- /*
--- 
-2.11.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gV2VkLCAyMDE3LTA4LTE2IGF0IDEwOjE3ICswMjAwLCBVd2UgS2xlaW5lLUvDtm5pZyB3cm90
+ZToKPiBIYWxsbyBKYW4sCj4gCj4gT24gVHVlLCBBdWcgMTUsIDIwMTcgYXQgMTE6NDc6MzdBTSAr
+MDIwMCwgSmFuIEx1ZWJiZSB3cm90ZToKPiA+IFRoZSBQTEwgc2V0dXAgaXMgbmVlZGVkIHRvIHVz
+ZSB0aGUgVVNCIHBvcnRzIGluIExpbnV4Lgo+ID4gCj4gPiBUaGlzIGNvZGUgaXMgcG9ydGVkIGZy
+b20gbWFpbmxpbmUgVS1Cb290IGFyY2gvYXJtL21hY2gtbXZlYnUvY3B1LmMuCj4gCj4gQWN0dWFs
+bHkgdGhpcyBpcyBhIHdvcmsgYXJvdW5kIGJlY2F1c2UgTGludXggZG9lc24ndCBkbyB0aGUgbmVj
+ZXNzYXJ5Cj4gc2V0dXAgYmVmb3JlIG1ha2luZyB1c2Ugb2YgdGhlIGhhcmR3YXJlLCByaWdodD8K
+PiAKPiBJZiBzbywgd291bGRuJ3QgaXQgYmUgYmV0dGVyIHRvIHRlYWNoIExpbnV4IGFib3V0IHRo
+ZSBuZWVkZWQgc2V0dXA/CgpJdCB3b3VsZCBzdGlsbCBiZSBuZWVkZWQgZm9yIGJhcmVib3ggVVNC
+IHN1cHBvcnQuCgo+ID4gK3N0YXRpYyB2b2lkIHNldHVwX3VzYl9waHlzKHZvaWQpCj4gPiArewo+
+ID4gKwlpbnQgZGV2Owo+ID4gKwo+ID4gKwkvKgo+ID4gKwnCoCogVVNCIFBMTCBpbml0Cj4gPiAr
+CcKgKi8KPiA+ICsKPiA+ICsJLyogU2V0dXAgUExMIGZyZXF1ZW5jeSAqLwo+ID4gKwkvKiBVU0Ig
+UkVGIGZyZXF1ZW5jeSA9IDI1IE1IeiAqLwo+ID4gKwljbHJzZXRiaXRzX2xlMzIoTVZfVVNCX1BI
+WV9QTExfUkVHKDEpLCAweDNmZiwgMHg2MDUpOwo+ID4gKwo+ID4gKwkvKiBQb3dlciB1cCBQTEwg
+YW5kIFBIWSBjaGFubmVsICovCj4gPiArCXNldGJpdHNfbGUzMihNVl9VU0JfUEhZX1BMTF9SRUco
+MiksIEJJVCg5KSk7Cj4gPiArwqAKPiA+ICsJLyogQXNzZXJ0IFZDT0NBTF9TVEFSVCAqLwo+ID4g
+KwlzZXRiaXRzX2xlMzIoTVZfVVNCX1BIWV9QTExfUkVHKDEpLCBCSVQoMjEpKTsKPiA+ICvCoAo+
+ID4gKwltZGVsYXkoMSk7Cj4gPiArwqAKPiA+ICsJLyoKPiA+ICsJwqAqIFVTQiBQSFkgaW5pdCAo
+Y2hhbmdlIGZyb20gZGVmYXVsdHMpIHNwZWNpZmljIGZvciA0MG5tCj4gPiAoNzhYMzAgNzhYNjAp
+Cj4gCj4gSSBhc3N1bWUgdGhpcyBjb21tZW50IGFsc28gY29tZXMgZnJvbSBVLUJvb3QuIFN0aWxs
+IEkgd29uZGVyIGlmIGl0Cj4gbWFrZXMgc2Vuc2UgdG8gdXNlIHRoZSBtb3JlIGNvbW1vbiBuYW1l
+cyBpbnN0ZWFkIG9mICI3OFgzMCA3OFg2MCIuCj4gVGhhdCB3b3VsZCBiZSAiQXJtYWRhIFhQIiBi
+dXQgbm90ICJBcm1hZGEgMzcwIiwgd291bGRuJ3QgaXQ/IChBcm1hZGEKPiAzNzAgPSA4OEY2NzEw
+LCA4OEY2NzA3LCBhbmQgODhGNlcxMSkuIElmIHNvLCB0aGlzIGNvZGUgc2hvdWxkbid0IGJlCj4g
+cmVhY2hlZCBvbiBBcm1hZGEgMzcwPwo+IAo+IFNvbWUgb3RoZXIgcGxhY2VzIGluIGJhcmVib3gg
+c3VnZ2VzdCwgdGhhdCBNVjc4eHgwIGlzIG5laXRoZXIgWFAgbm9yCj4gMzcwIChlLmcuCj4gCWR0
+cy9CaW5kaW5ncy9uZXQvbWFydmVsbC1vcmlvbi1tZGlvLnR4dAo+IAlkdHMvQmluZGluZ3MvYXJt
+L21hcnZlbGwvbXZlYnUtc3lzdGVtLWNvbnRyb2xsZXIudHh0Cj4gCWRyaXZlcnMvYnVzL0tjb25m
+aWcKPiAJZHJpdmVycy9zcGkvbXZlYnVfc3BpLmMKPiApCgpBcyBmYXIgYXMgSSBjYW4gc2VlLCB0
+aGVyZSBpcyBubyBhdXRob3JpdGF0aXZlIHNvdXJjZSBvbiB0aGUgbmFtaW5nLiBTbwogSSdkIGxp
+a2UgdG8gYXZvaWQgbWFraW5nIGNoYW5nZXMgd2l0aG91dCBiZWluZyBzdXJlIHRoYXQgaXQgaXMK
+YWN0dWFsbHkgY29ycmVjdC4KCj4gPiArCcKgKi8KPiA+ICsKPiA+ICsJZm9yIChkZXYgPSAwOyBk
+ZXYgPCAzOyBkZXYrKykgewo+ID4gKwkJc2V0Yml0c19sZTMyKE1WX1VTQl9YM19QSFlfQ0hBTk5F
+TChkZXYsIDMpLAo+ID4gQklUKDE1KSk7Cj4gPiArCj4gPiArCQkvKiBBc3NlcnQgUkVHX1JDQUxf
+U1RBUlQgaW4gY2hhbm5lbCBSRUcgMSAqLwo+ID4gKwkJc2V0Yml0c19sZTMyKE1WX1VTQl9YM19Q
+SFlfQ0hBTk5FTChkZXYsIDEpLAo+ID4gQklUKDEyKSk7Cj4gPiArCQl1ZGVsYXkoNDApOwo+ID4g
+KwkJY2xyYml0c19sZTMyKE1WX1VTQl9YM19QSFlfQ0hBTk5FTChkZXYsIDEpLAo+ID4gQklUKDEy
+KSk7Cj4gPiArCX0KPiAKPiBDYW4gdGhpcyBiZSBtYWRlIHF1aWNrZXIgdXNpbmc6Cj4gCj4gCWZv
+ciAoZGV2ID0gMDsgZGV2IDwgMzsgZGV2KyspIHsKPiAJCXNldGJpdHNfbGUzMihNVl9VU0JfWDNf
+UEhZX0NIQU5ORUwoZGV2LCAzKSwgQklUKDE1KSk7Cj4gCj4gCQkvKiBBc3NlcnQgUkVHX1JDQUxf
+U1RBUlQgaW4gY2hhbm5lbCBSRUcgMSAqLwo+IAkJc2V0Yml0c19sZTMyKE1WX1VTQl9YM19QSFlf
+Q0hBTk5FTChkZXYsIDEpLCBCSVQoMTIpKTsKPiAJfQo+IAo+IAl1ZGVsYXkoNDA7Cj4gCj4gCWZv
+ciAoZGV2ID0gMDsgZGV2IDwgMzsgZGV2KyspCj4gCQljbHJiaXRzX2xlMzIoTVZfVVNCX1gzX1BI
+WV9DSEFOTkVMKGRldiwgMSksIEJJVCgxMikpOwo+IAo+ID8KClBvc3NpYmx5LiBOZXZlcnRoZWxl
+c3MgSSdkIHByZWZlciB0byBrZWVwIHRoZSBjb2RlIGlkZW50aWNhbCB0byB0aGUgb25lCmZyb20g
+VS1Cb290LCBhdCBsZWFzdCB1bnRpbCBzb21lb25lIGlzIGludGVyZXN0ZWQgaW4gcmVmYWN0b3Jp
+bmcgdGhpcwpvbiBhIGxhcmdlciBzY2FsZS4KCj4gPiArfQo+ID4gKwo+ID4gwqBzdGF0aWMgaW50
+IGFybWFkYV8zNzBfeHBfaW5pdF9zb2Modm9pZCkKPiA+IMKgewo+ID4gwqAJdTMyIHJlZzsKPiA+
+IEBAIC0xMDksNiArMTUxLDkgQEAgc3RhdGljIGludCBhcm1hZGFfMzcwX3hwX2luaXRfc29jKHZv
+aWQpCj4gPiDCoAkJcmVnID0gcmVhZGwoQVJNQURBX1hQX1BVUF9FTkFCTEUpOwo+ID4gwqAJCXJl
+ZyB8PSBHRTBfUFVQX0VOIHwgR0UxX1BVUF9FTiB8IExDRF9QVVBfRU4gfAo+ID4gTkFORF9QVVBf
+RU4gfCBTUElfUFVQX0VOOwo+ID4gwqAJCXdyaXRlbChyZWcsIEFSTUFEQV9YUF9QVVBfRU5BQkxF
+KTsKPiA+ICsKPiA+ICsJCS8qIENvbmZpZ3VyZSBVU0IgUExMIGFuZCBQSFlzIG9uIEFYUCAqLwo+
+ID4gKwkJc2V0dXBfdXNiX3BoeXMoKTsKPiA+IMKgCX0KPiA+IMKgCj4gPiDCoAlyZXR1cm4gMDsK
+PiA+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW12ZWJ1L2luY2x1ZGUvbWFjaC9hcm1hZGEt
+MzcwLXhwLXJlZ3MuaAo+ID4gYi9hcmNoL2FybS9tYWNoLW12ZWJ1L2luY2x1ZGUvbWFjaC9hcm1h
+ZGEtMzcwLXhwLXJlZ3MuaAo+ID4gaW5kZXggMWRhZDA1MzE3MjExLi5iOTcyZGYxNTFhNzQgMTAw
+NjQ0Cj4gPiAtLS0gYS9hcmNoL2FybS9tYWNoLW12ZWJ1L2luY2x1ZGUvbWFjaC9hcm1hZGEtMzcw
+LXhwLXJlZ3MuaAo+ID4gKysrIGIvYXJjaC9hcm0vbWFjaC1tdmVidS9pbmNsdWRlL21hY2gvYXJt
+YWRhLTM3MC14cC1yZWdzLmgKPiA+IEBAIC03Miw0ICs3Miw2IEBACj4gPiDCoAnCoCgoKHBvcnQp
+ICUgNCkgKiBBUk1BREFfMzcwX1hQX1BDSUVfUE9SVF9PRkZTRVQpKQo+ID4gwqAjZGVmaW5lwqDC
+oFBDSUVfREVWSUNFX1ZFTkRPUl9JRAkJMHgwMDAKPiA+IMKgCj4gPiArI2RlZmluZSBBUk1BREFf
+MzcwX1hQX1VTQl9CQVNFCQkoQVJNQURBXzM3MF9YUF9JTlRfUgo+ID4gRUdTX0JBU0UgKyAweDUw
+MDAwKQo+IAo+IEluc3RlYWQgb2YgaGFyZGNvZGluZyB0aGlzIGFkZHJlc3MsIHRoaXMgY291bGQg
+YmUgZG9uZSBkZXBlbmRpbmcgb24KPiB0aGUgZGV2aWNlIGF0IHRoZSBzYW1lIGFkZHJlc3Mgc3Bl
+Y2lmaWVkIGluIHRoZSBkZXZpY2UgdHJlZS4KPiAKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAg
+ICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVz
+dHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0
+cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8
+IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhS
+QSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
+bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
