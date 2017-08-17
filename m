@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1diFyp-0003VR-KL
- for barebox@lists.infradead.org; Thu, 17 Aug 2017 08:16:41 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1diHAf-0005vr-Mx
+ for barebox@lists.infradead.org; Thu, 17 Aug 2017 09:32:59 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
+ (envelope-from <jbe@pengutronix.de>) id 1diHAH-0006RI-Kn
+ for barebox@lists.infradead.org; Thu, 17 Aug 2017 11:32:33 +0200
+Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.89)
+ (envelope-from <jbe@pengutronix.de>) id 1diHAH-0000HC-Dn
+ for barebox@lists.infradead.org; Thu, 17 Aug 2017 11:32:33 +0200
 From: Juergen Borleis <jbe@pengutronix.de>
-Date: Thu, 17 Aug 2017 10:16:17 +0200
-References: <20170816122709.23129-1-jbe@pengutronix.de>
- <20170817080543.ul6ge4awubb6qbo2@pengutronix.de>
-In-Reply-To: <20170817080543.ul6ge4awubb6qbo2@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201708171016.17905.jbe@pengutronix.de>
+Date: Thu, 17 Aug 2017 11:32:32 +0200
+Message-Id: <20170817093233.979-1-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,55 +22,98 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] state: provide an error message when an error occurs
+Subject: [PATCH 1/2] state: use the given backend storage type name
 To: barebox@lists.infradead.org
-Cc: Uwe =?iso-8859-1?q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 
-Hi Uwe,
+Change 119f92b27e131a0cb506fe8d8bffe8010fb14a3d already tried to fix it, but
+forgets the 'direct' usecase.
 
-On Thursday 17 August 2017 10:05:43 Uwe Kleine-K=F6nig wrote:
-> On Wed, Aug 16, 2017 at 02:27:07PM +0200, Juergen Borleis wrote:
-> > A simple typo makes the state framework fail, but without an error
-> > message the developer is lost in the dark.
-> >
-> > Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
-> > ---
-> >  common/state/state.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/common/state/state.c b/common/state/state.c
-> > index 121ba0c6d..fc822b21b 100644
-> > --- a/common/state/state.c
-> > +++ b/common/state/state.c
-> > @@ -240,6 +240,7 @@ static int state_convert_node_variable(struct state
-> > *state,
-> >
-> >  	vtype =3D state_find_type_by_name(type_name);
-> >  	if (!vtype) {
-> > +		dev_dbg(&state->dev, "Error: invalid variable type '%s'\n", type_nam=
-e);
->
-> I think this is only visible if you manually define DEBUG for state.
-> Assuming this is right dev_dbg doesn't match your intention.
+The 'backend-storage-type' node is optional. Its default depends on the
+capability of the used backend memory, which means "circular" or NULL.
+The latter defaults to 'direct' in the routines.
+If it is NULL, the devicetree fixup routine skips exporting a
+'backend-storage-type' node to the kernel's devicetree.
 
-My intention is to enlighten the developer when she/he adds the state featu=
-re
-to her/his machine. Its not intended for the enduser (which means the
-developer already has made a bad work). So the required "#define DEBUG" is
-intended.
+But currently if the 'backend-storage-type' node is explicitly given as
+'direct', it will be skipped silently and set to NULL instead. In this
+case the user of the 'barebox-state' tool then ends up with the warning:
 
-J=FCrgen
+"No backend-storage-type found, using default"
 
--- =
+which is annoying, because it was given.
 
-Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=A0 =A0=
-| Juergen Borleis =A0 =A0 =A0 =A0 =A0 =A0 |
-Industrial Linux Solutions =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=A0 =A0| http://w=
-ww.pengutronix.de/ =A0|
+Storing the given value will still use a NULL if the
+'backend-storage-type' node isn't defined, but stores everything else if
+it is defined. Then the 'backend-storage-type' node is present in the
+kernel's devicetree as well.
+
+Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
+---
+ Documentation/devicetree/bindings/barebox/barebox,state.rst | 6 ++++--
+ common/state/backend_storage.c                              | 9 +++++----
+ 2 files changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/barebox/barebox,state.rst b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+index 4b1aade66..cebb5f828 100644
+--- a/Documentation/devicetree/bindings/barebox/barebox,state.rst
++++ b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+@@ -48,8 +48,10 @@ Optional Properties
+ ###################
+ 
+ * ``backend-stridesize``: stride counted in bytes. See note below.
+-* ``backend-storage-type``: Defines the backend storage type to ``direct`` or
+-  ``circular``. Defaults to ``circular`` for media which requires erase cycles.
++* ``backend-storage-type``: Defines the backend storage type to ``direct``,
++  ``circular`` or ``noncircular``. If the backend memory needs to be erased
++  prior a write it defaults to the ``circular`` storage backend type, for backend
++  memories like RAMs or EEPROMs it defaults to the ``direct`` storage backend type.
+ * ``algo``: A HMAC algorithm used to detect manipulation of the data
+   or header, sensible values follow this pattern ``hmac(<HASH>)``,
+   e.g. ``hmac(sha256)``. Only available for the ``backend-type`` ``raw``.
+diff --git a/common/state/backend_storage.c b/common/state/backend_storage.c
+index 2e2478cb6..825db824b 100644
+--- a/common/state/backend_storage.c
++++ b/common/state/backend_storage.c
+@@ -357,11 +357,12 @@ static int state_storage_file_buckets_init(struct state_backend_storage *storage
+  * @param dev_offset Offset in the device to start writing at.
+  * @param max_size Maximum size of the data. May be 0 for infinite.
+  * @param stridesize Distance between two copies of the data. Not relevant for MTD
+- * @param storagetype Type of the storage backend. This may be NULL where we
+- * autoselect some backwardscompatible backend options
++ * @param storagetype Type of the storage backend. May be NULL for autoselection.
+  * @return 0 on success, -errno otherwise
+  *
+- * Depending on the filetype, we create mtd buckets or normal file buckets.
++ * If the backend memory needs to be erased prior a write, the @b storagetype
++ * defaults to 'circular' storage backend type, for backend memories like RAMs
++ * or EEPROMs @b storagetype defaults to the 'direct' storage backend type.
+  */
+ int state_storage_init(struct state *state, const char *path,
+ 		       off_t offset, size_t max_size, uint32_t stridesize,
+@@ -373,6 +374,7 @@ int state_storage_init(struct state *state, const char *path,
+ 
+ 	INIT_LIST_HEAD(&storage->buckets);
+ 	storage->dev = &state->dev;
++	storage->name = storagetype;
+ 	storage->stridesize = stridesize;
+ 	storage->offset = offset;
+ 	storage->max_size = max_size;
+@@ -387,7 +389,6 @@ int state_storage_init(struct state *state, const char *path,
+ 			storage->name = "circular";
+ 			circular = true;
+ 		} else if (!strcmp(storagetype, "noncircular")) {
+-			storage->name = "noncircular";
+ 			dev_warn(storage->dev, "using old format circular storage type.\n");
+ 			circular = false;
+ 		} else {
+-- 
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
