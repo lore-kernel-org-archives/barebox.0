@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
+Received: from mout.gmx.net ([212.227.17.21])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dihmY-000153-30
- for barebox@lists.infradead.org; Fri, 18 Aug 2017 13:57:55 +0000
+ id 1dihxC-0002Ix-Bg
+ for barebox@lists.infradead.org; Fri, 18 Aug 2017 14:08:59 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Fri, 18 Aug 2017 15:57:05 +0200
-Message-Id: <20170818135707.17578-3-linux@rempel-privat.de>
-In-Reply-To: <20170818135707.17578-1-linux@rempel-privat.de>
-References: <20170818135707.17578-1-linux@rempel-privat.de>
+Date: Fri, 18 Aug 2017 16:02:59 +0200
+Message-Id: <20170818140301.18749-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,288 +19,614 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/4] asm-generic: partially sync io.h with linux kernel
+Subject: [PATCH v1 1/3] net: ath79: add ag71xx Ethernet driver
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- include/asm-generic/io.h | 229 +++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 201 insertions(+), 28 deletions(-)
+ arch/mips/mach-ath79/include/mach/ar71xx_regs.h |  12 +
+ drivers/net/Kconfig                             |   7 +
+ drivers/net/Makefile                            |   1 +
+ drivers/net/ag71xx.c                            | 530 ++++++++++++++++++++++++
+ 4 files changed, 550 insertions(+)
+ create mode 100644 drivers/net/ag71xx.c
 
-diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-index 8d83d6806..a3192bae6 100644
---- a/include/asm-generic/io.h
-+++ b/include/asm-generic/io.h
-@@ -69,50 +69,114 @@ static inline void __raw_writeq(u64 b, volatile void __iomem *addr)
- #endif
+diff --git a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
+index f56c3f724..31d33b3c4 100644
+--- a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
++++ b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
+@@ -102,6 +102,8 @@
+ #define AR933X_PLL_CLOCK_CTRL_REG	0x08
+ #define AR933X_PLL_DITHER_FRAC_REG	0x10
+ #define AR933X_PLL_DITHER_REG		0x14
++#define AR933X_ETHSW_CLOCK_CONTROL_REG	0x24
++#define AR933X_ETH_XMII_CONTROL_REG	0x2c
  
- #ifndef PCI_IOBASE
--#define PCI_IOBASE ((void __iomem *) 0)
-+#define PCI_IOBASE ((void __iomem *)0)
-+#endif
-+
-+#ifndef IO_SPACE_LIMIT
-+#define IO_SPACE_LIMIT 0xffff
- #endif
+ #define AR933X_PLL_CPU_CONFIG_NINT_SHIFT	10
+ #define AR933X_PLL_CPU_CONFIG_NINT_MASK		0x3f
+@@ -125,6 +127,16 @@
+ #define AR933X_RESET_REG_RESET_MODULE		0x1c
+ #define AR933X_RESET_REG_BOOTSTRAP		0xac
  
--/*****************************************************************************/
- /*
-- * traditional input/output functions
-+ * {in,out}{b,w,l}() access little endian I/O. {in,out}{b,w,l}_p() can be
-+ * implemented on hardware that needs an additional delay for I/O accesses to
-+ * take effect.
-  */
++#define AR933X_RESET_GE1_MDIO           BIT(23)
++#define AR933X_RESET_GE0_MDIO           BIT(22)
++#define AR933X_RESET_GE1_MAC            BIT(13)
++#define AR933X_RESET_WMAC               BIT(11)
++#define AR933X_RESET_GE0_MAC            BIT(9)
++#define AR933X_RESET_SWITCH             BIT(8)
++#define AR933X_RESET_USB_HOST           BIT(5)
++#define AR933X_RESET_USB_PHY            BIT(4)
++#define AR933X_RESET_USBSUS_OVERRIDE    BIT(3)
++
+ #define AR71XX_RESET_FULL_CHIP		BIT(24)
  
-+#ifndef inb
-+#define inb inb
- static inline u8 inb(unsigned long addr)
- {
--	return readb(addr + PCI_IOBASE);
-+	return readb(PCI_IOBASE + addr);
- }
-+#endif
+ #define AR933X_BOOTSTRAP_REF_CLK_40	BIT(0)
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index c3980e78f..9d69b6aeb 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -204,6 +204,13 @@ config DRIVER_NET_EFI_SNP
+ 	bool "EFI SNP ethernet driver"
+ 	depends on EFI_BOOTUP
  
-+#ifndef inw
-+#define inw inw
- static inline u16 inw(unsigned long addr)
- {
--	return readw(addr + PCI_IOBASE);
-+	return readw(PCI_IOBASE + addr);
- }
-+#endif
- 
-+#ifndef inl
-+#define inl inl
- static inline u32 inl(unsigned long addr)
- {
--	return readl(addr + PCI_IOBASE);
-+	return readl(PCI_IOBASE + addr);
-+}
-+#endif
++config DRIVER_NET_AG71XX
++	bool "Atheros AG71xx ethernet driver"
++	depends on MACH_MIPS_ATH79
++	select PHYLIB
++	help
++	  This option enables support for Atheros AG71XX ethernet chip.
 +
-+#ifndef outb
-+#define outb outb
-+static inline void outb(u8 value, unsigned long addr)
-+{
-+	writeb(value, PCI_IOBASE + addr);
-+}
-+#endif
+ config DRIVER_NET_TSE
+ 	depends on NIOS2
+ 	bool "Altera TSE ethernet driver"
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index 42ea208e3..86c8ac32f 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -30,3 +30,4 @@ obj-$(CONFIG_DRIVER_NET_SMC91111)	+= smc91111.o
+ obj-$(CONFIG_DRIVER_NET_TAP)		+= tap.o
+ obj-$(CONFIG_DRIVER_NET_TSE)		+= altera_tse.o
+ obj-$(CONFIG_DRIVER_NET_EFI_SNP)	+= efi-snp.o
++obj-$(CONFIG_DRIVER_NET_AG71XX)		+= ag71xx.o
+diff --git a/drivers/net/ag71xx.c b/drivers/net/ag71xx.c
+new file mode 100644
+index 000000000..b2e066be3
+--- /dev/null
++++ b/drivers/net/ag71xx.c
+@@ -0,0 +1,530 @@
++/*
++ *  Atheros AR71xx built-in ethernet mac driver
++ *
++ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
++ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
++ *
++ *  Based on Atheros' AG7100 driver
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ */
 +
-+#ifndef outw
-+#define outw outw
-+static inline void outw(u16 value, unsigned long addr)
-+{
-+	writew(value, PCI_IOBASE + addr);
-+}
-+#endif
++#include <common.h>
++#include <net.h>
++#include <dma.h>
++#include <init.h>
++#include <io.h>
++#include <linux/err.h>
++#include <linux/phy.h>
++#include <of_net.h>
++#include <of_address.h>
 +
-+#ifndef outl
-+#define outl outl
-+static inline void outl(u32 value, unsigned long addr)
-+{
-+	writel(value, PCI_IOBASE + addr);
-+}
-+#endif
++#include <mach/ath79.h>
 +
-+#ifndef inb_p
-+#define inb_p inb_p
-+static inline u8 inb_p(unsigned long addr)
-+{
-+	return inb(addr);
-+}
-+#endif
++/* Register offsets */
++#define AG71XX_REG_MAC_CFG1	0x0000
++#define AG71XX_REG_MAC_CFG2	0x0004
++#define AG71XX_REG_MAC_IPG	0x0008
++#define AG71XX_REG_MAC_HDX	0x000c
++#define AG71XX_REG_MAC_MFL	0x0010
++#define AG71XX_REG_MII_CFG	0x0020
++#define AG71XX_REG_MII_CMD	0x0024
++#define AG71XX_REG_MII_ADDR	0x0028
++#define AG71XX_REG_MII_CTRL	0x002c
++#define AG71XX_REG_MII_STATUS	0x0030
++#define AG71XX_REG_MII_IND	0x0034
++#define AG71XX_REG_MAC_IFCTL	0x0038
++#define AG71XX_REG_MAC_ADDR1	0x0040
++#define AG71XX_REG_MAC_ADDR2	0x0044
++#define AG71XX_REG_FIFO_CFG0	0x0048
++#define AG71XX_REG_FIFO_CFG1	0x004c
++#define AG71XX_REG_FIFO_CFG2	0x0050
++#define AG71XX_REG_FIFO_CFG3	0x0054
++#define AG71XX_REG_FIFO_CFG4	0x0058
++#define AG71XX_REG_FIFO_CFG5	0x005c
++#define AG71XX_REG_FIFO_RAM0	0x0060
++#define AG71XX_REG_FIFO_RAM1	0x0064
++#define AG71XX_REG_FIFO_RAM2	0x0068
++#define AG71XX_REG_FIFO_RAM3	0x006c
++#define AG71XX_REG_FIFO_RAM4	0x0070
++#define AG71XX_REG_FIFO_RAM5	0x0074
++#define AG71XX_REG_FIFO_RAM6	0x0078
++#define AG71XX_REG_FIFO_RAM7	0x007c
 +
-+#ifndef inw_p
-+#define inw_p inw_p
-+static inline u16 inw_p(unsigned long addr)
-+{
-+	return inw(addr);
- }
-+#endif
- 
--static inline void outb(u8 b, unsigned long addr)
-+#ifndef inl_p
-+#define inl_p inl_p
-+static inline u32 inl_p(unsigned long addr)
- {
--	writeb(b, addr + PCI_IOBASE);
-+	return inl(addr);
- }
-+#endif
- 
--static inline void outw(u16 b, unsigned long addr)
-+#ifndef outb_p
-+#define outb_p outb_p
-+static inline void outb_p(u8 value, unsigned long addr)
- {
--	writew(b, addr + PCI_IOBASE);
-+	outb(value, addr);
- }
-+#endif
- 
--static inline void outl(u32 b, unsigned long addr)
-+#ifndef outw_p
-+#define outw_p outw_p
-+static inline void outw_p(u16 value, unsigned long addr)
- {
--	writel(b, addr + PCI_IOBASE);
-+	outw(value, addr);
- }
-+#endif
- 
--#define inb_p(addr)	inb(addr)
--#define inw_p(addr)	inw(addr)
--#define inl_p(addr)	inl(addr)
--#define outb_p(x, addr)	outb((x), (addr))
--#define outw_p(x, addr)	outw((x), (addr))
--#define outl_p(x, addr)	outl((x), (addr))
-+#ifndef outl_p
-+#define outl_p outl_p
-+static inline void outl_p(u32 value, unsigned long addr)
-+{
-+	outl(value, addr);
-+}
-+#endif
- 
- #ifndef insb
- static inline void insb(unsigned long addr, void *buffer, int count)
-@@ -219,16 +283,125 @@ static inline void writesb(const void __iomem *addr, const void *buf, int len)
- 	outsb(addr - PCI_IOBASE, buf, len);
- }
- 
--#define ioread8(addr)		readb(addr)
--#define ioread16(addr)		readw(addr)
--#define ioread16be(addr)	__be16_to_cpu(__raw_readw(addr))
--#define ioread32(addr)		readl(addr)
--#define ioread32be(addr)	__be32_to_cpu(__raw_readl(addr))
- 
--#define iowrite8(v, addr)	writeb((v), (addr))
--#define iowrite16(v, addr)	writew((v), (addr))
--#define iowrite16be(v, addr)	__raw_writew(__cpu_to_be16(v), addr)
--#define iowrite32(v, addr)	writel((v), (addr))
--#define iowrite32be(v, addr)	__raw_writel(__cpu_to_be32(v), addr)
-+#ifndef ioread8
-+#define ioread8 ioread8
-+static inline u8 ioread8(const volatile void __iomem *addr)
-+{
-+	return readb(addr);
-+}
-+#endif
++#define AG71XX_REG_TX_CTRL	0x0180
++#define AG71XX_REG_TX_DESC	0x0184
++#define AG71XX_REG_TX_STATUS	0x0188
++#define AG71XX_REG_RX_CTRL	0x018c
++#define AG71XX_REG_RX_DESC	0x0190
++#define AG71XX_REG_RX_STATUS	0x0194
++#define AG71XX_REG_INT_ENABLE	0x0198
++#define AG71XX_REG_INT_STATUS	0x019c
 +
-+#ifndef ioread16
-+#define ioread16 ioread16
-+static inline u16 ioread16(const volatile void __iomem *addr)
-+{
-+	return readw(addr);
-+}
-+#endif
++#define AG71XX_REG_FIFO_DEPTH	0x01a8
++#define AG71XX_REG_RX_SM	0x01b0
++#define AG71XX_REG_TX_SM	0x01b4
 +
-+#ifndef ioread32
-+#define ioread32 ioread32
-+static inline u32 ioread32(const volatile void __iomem *addr)
-+{
-+	return readl(addr);
-+}
-+#endif
++#define MAC_CFG1_TXE		BIT(0)	/* Tx Enable */
++#define MAC_CFG1_STX		BIT(1)	/* Synchronize Tx Enable */
++#define MAC_CFG1_RXE		BIT(2)	/* Rx Enable */
++#define MAC_CFG1_SRX		BIT(3)	/* Synchronize Rx Enable */
++#define MAC_CFG1_TFC		BIT(4)	/* Tx Flow Control Enable */
++#define MAC_CFG1_RFC		BIT(5)	/* Rx Flow Control Enable */
++#define MAC_CFG1_LB		BIT(8)	/* Loopback mode */
++#define MAC_CFG1_TX_RST		BIT(18)	/* Tx Reset */
++#define MAC_CFG1_RX_RST		BIT(19)	/* Rx Reset */
++#define MAC_CFG1_SR		BIT(31)	/* Soft Reset */
 +
-+#ifdef CONFIG_64BIT
-+#ifndef ioread64
-+#define ioread64 ioread64
-+static inline u64 ioread64(const volatile void __iomem *addr)
-+{
-+	return readq(addr);
-+}
-+#endif
-+#endif /* CONFIG_64BIT */
++#define MAC_CFG2_FDX		BIT(0)
++#define MAC_CFG2_CRC_EN		BIT(1)
++#define MAC_CFG2_PAD_CRC_EN	BIT(2)
++#define MAC_CFG2_LEN_CHECK	BIT(4)
++#define MAC_CFG2_HUGE_FRAME_EN	BIT(5)
++#define MAC_CFG2_IF_1000	BIT(9)
++#define MAC_CFG2_IF_10_100	BIT(8)
 +
-+#ifndef iowrite8
-+#define iowrite8 iowrite8
-+static inline void iowrite8(u8 value, volatile void __iomem *addr)
-+{
-+	writeb(value, addr);
-+}
-+#endif
++#define FIFO_CFG0_WTM		BIT(0)	/* Watermark Module */
++#define FIFO_CFG0_RXS		BIT(1)	/* Rx System Module */
++#define FIFO_CFG0_RXF		BIT(2)	/* Rx Fabric Module */
++#define FIFO_CFG0_TXS		BIT(3)	/* Tx System Module */
++#define FIFO_CFG0_TXF		BIT(4)	/* Tx Fabric Module */
++#define FIFO_CFG0_ALL	(FIFO_CFG0_WTM | FIFO_CFG0_RXS | FIFO_CFG0_RXF \
++			| FIFO_CFG0_TXS | FIFO_CFG0_TXF)
 +
-+#ifndef iowrite16
-+#define iowrite16 iowrite16
-+static inline void iowrite16(u16 value, volatile void __iomem *addr)
-+{
-+	writew(value, addr);
-+}
-+#endif
++#define FIFO_CFG0_ENABLE_SHIFT	8
 +
-+#ifndef iowrite32
-+#define iowrite32 iowrite32
-+static inline void iowrite32(u32 value, volatile void __iomem *addr)
-+{
-+	writel(value, addr);
-+}
-+#endif
++#define FIFO_CFG4_DE		BIT(0)	/* Drop Event */
++#define FIFO_CFG4_DV		BIT(1)	/* RX_DV Event */
++#define FIFO_CFG4_FC		BIT(2)	/* False Carrier */
++#define FIFO_CFG4_CE		BIT(3)	/* Code Error */
++#define FIFO_CFG4_CR		BIT(4)	/* CRC error */
++#define FIFO_CFG4_LM		BIT(5)	/* Length Mismatch */
++#define FIFO_CFG4_LO		BIT(6)	/* Length out of range */
++#define FIFO_CFG4_OK		BIT(7)	/* Packet is OK */
++#define FIFO_CFG4_MC		BIT(8)	/* Multicast Packet */
++#define FIFO_CFG4_BC		BIT(9)	/* Broadcast Packet */
++#define FIFO_CFG4_DR		BIT(10)	/* Dribble */
++#define FIFO_CFG4_LE		BIT(11)	/* Long Event */
++#define FIFO_CFG4_CF		BIT(12)	/* Control Frame */
++#define FIFO_CFG4_PF		BIT(13)	/* Pause Frame */
++#define FIFO_CFG4_UO		BIT(14)	/* Unsupported Opcode */
++#define FIFO_CFG4_VT		BIT(15)	/* VLAN tag detected */
++#define FIFO_CFG4_FT		BIT(16)	/* Frame Truncated */
++#define FIFO_CFG4_UC		BIT(17)	/* Unicast Packet */
 +
-+#ifdef CONFIG_64BIT
-+#ifndef iowrite64
-+#define iowrite64 iowrite64
-+static inline void iowrite64(u64 value, volatile void __iomem *addr)
-+{
-+	writeq(value, addr);
-+}
-+#endif
-+#endif /* CONFIG_64BIT */
++#define FIFO_CFG5_DE		BIT(0)	/* Drop Event */
++#define FIFO_CFG5_DV		BIT(1)	/* RX_DV Event */
++#define FIFO_CFG5_FC		BIT(2)	/* False Carrier */
++#define FIFO_CFG5_CE		BIT(3)	/* Code Error */
++#define FIFO_CFG5_LM		BIT(4)	/* Length Mismatch */
++#define FIFO_CFG5_LO		BIT(5)	/* Length Out of Range */
++#define FIFO_CFG5_OK		BIT(6)	/* Packet is OK */
++#define FIFO_CFG5_MC		BIT(7)	/* Multicast Packet */
++#define FIFO_CFG5_BC		BIT(8)	/* Broadcast Packet */
++#define FIFO_CFG5_DR		BIT(9)	/* Dribble */
++#define FIFO_CFG5_CF		BIT(10)	/* Control Frame */
++#define FIFO_CFG5_PF		BIT(11)	/* Pause Frame */
++#define FIFO_CFG5_UO		BIT(12)	/* Unsupported Opcode */
++#define FIFO_CFG5_VT		BIT(13)	/* VLAN tag detected */
++#define FIFO_CFG5_LE		BIT(14)	/* Long Event */
++#define FIFO_CFG5_FT		BIT(15)	/* Frame Truncated */
++#define FIFO_CFG5_16		BIT(16)	/* unknown */
++#define FIFO_CFG5_17		BIT(17)	/* unknown */
++#define FIFO_CFG5_SF		BIT(18)	/* Short Frame */
++#define FIFO_CFG5_BM		BIT(19)	/* Byte Mode */
 +
-+#ifndef ioread16be
-+#define ioread16be ioread16be
-+static inline u16 ioread16be(const volatile void __iomem *addr)
-+{
-+	return swab16(readw(addr));
-+}
-+#endif
++#define AG71XX_INT_TX_PS	BIT(0)
++#define AG71XX_INT_TX_UR	BIT(1)
++#define AG71XX_INT_TX_BE	BIT(3)
++#define AG71XX_INT_RX_PR	BIT(4)
++#define AG71XX_INT_RX_OF	BIT(6)
++#define AG71XX_INT_RX_BE	BIT(7)
 +
-+#ifndef ioread32be
-+#define ioread32be ioread32be
-+static inline u32 ioread32be(const volatile void __iomem *addr)
-+{
-+	return swab32(readl(addr));
-+}
-+#endif
++#define MAC_IFCTL_SPEED		BIT(16)
 +
-+#ifdef CONFIG_64BIT
-+#ifndef ioread64be
-+#define ioread64be ioread64be
-+static inline u64 ioread64be(const volatile void __iomem *addr)
-+{
-+	return swab64(readq(addr));
-+}
-+#endif
-+#endif /* CONFIG_64BIT */
++#define MII_CFG_CLK_DIV_4	0
++#define MII_CFG_CLK_DIV_6	2
++#define MII_CFG_CLK_DIV_8	3
++#define MII_CFG_CLK_DIV_10	4
++#define MII_CFG_CLK_DIV_14	5
++#define MII_CFG_CLK_DIV_20	6
++#define MII_CFG_CLK_DIV_28	7
++#define MII_CFG_CLK_DIV_34	8
++#define MII_CFG_CLK_DIV_42	9
++#define MII_CFG_CLK_DIV_50	10
++#define MII_CFG_CLK_DIV_58	11
++#define MII_CFG_CLK_DIV_66	12
++#define MII_CFG_CLK_DIV_74	13
++#define MII_CFG_CLK_DIV_82	14
++#define MII_CFG_CLK_DIV_98	15
++#define MII_CFG_RESET		BIT(31)
 +
-+#ifndef iowrite16be
-+#define iowrite16be iowrite16be
-+static inline void iowrite16be(u16 value, void volatile __iomem *addr)
-+{
-+	writew(swab16(value), addr);
-+}
-+#endif
++#define MII_CMD_WRITE		0x0
++#define MII_CMD_READ		0x1
++#define MII_ADDR_SHIFT		8
++#define MII_IND_BUSY		BIT(0)
++#define MII_IND_INVALID		BIT(2)
 +
-+#ifndef iowrite32be
-+#define iowrite32be iowrite32be
-+static inline void iowrite32be(u32 value, volatile void __iomem *addr)
-+{
-+	writel(swab32(value), addr);
-+}
-+#endif
++#define TX_CTRL_TXE		BIT(0)	/* Tx Enable */
 +
-+#ifdef CONFIG_64BIT
-+#ifndef iowrite64be
-+#define iowrite64be iowrite64be
-+static inline void iowrite64be(u64 value, volatile void __iomem *addr)
++#define TX_STATUS_PS		BIT(0)	/* Packet Sent */
++#define TX_STATUS_UR		BIT(1)	/* Tx Underrun */
++#define TX_STATUS_BE		BIT(3)	/* Bus Error */
++
++#define RX_CTRL_RXE		BIT(0)	/* Rx Enable */
++
++#define RX_STATUS_PR		BIT(0)	/* Packet Received */
++#define RX_STATUS_OF		BIT(2)	/* Rx Overflow */
++#define RX_STATUS_BE		BIT(3)	/* Bus Error */
++
++/*
++ * GMAC register macros
++ */
++#define AG71XX_ETH_CFG_RGMII_GE0        (1<<0)
++#define AG71XX_ETH_CFG_MII_GE0_SLAVE    (1<<4)
++
++/*
++ * h/w descriptor
++ */
++typedef struct {
++	uint32_t    pkt_start_addr;
++
++	uint32_t    is_empty       :  1;
++	uint32_t    res1           : 10;
++	uint32_t    ftpp_override  :  5;
++	uint32_t    res2           :  4;
++	uint32_t    pkt_size       : 12;
++
++	uint32_t    next_desc      ;
++} ag7240_desc_t;
++
++#define NO_OF_TX_FIFOS  8
++#define NO_OF_RX_FIFOS  8
++#define TX_RING_SZ (NO_OF_TX_FIFOS * sizeof(ag7240_desc_t))
++#define MAX_RBUFF_SZ	0x600		/* 1518 rounded up */
++
++#define MAX_WAIT        1000
++
++struct ag71xx {
++	struct device_d *dev;
++	struct eth_device netdev;
++	void __iomem *regs;
++	void __iomem *regs_gmac;
++	struct mii_bus miibus;
++
++	void *rx_buffer;
++
++	unsigned char *rx_pkt[NO_OF_RX_FIFOS];
++	ag7240_desc_t *fifo_tx;
++	ag7240_desc_t *fifo_rx;
++
++	int next_tx;
++	int next_rx;
++};
++
++static inline void ag71xx_check_reg_offset(struct ag71xx *priv, int reg)
 +{
-+	writeq(swab64(value), addr);
++	switch (reg) {
++	case AG71XX_REG_MAC_CFG1 ... AG71XX_REG_MAC_MFL:
++	case AG71XX_REG_MAC_IFCTL ... AG71XX_REG_TX_SM:
++	case AG71XX_REG_MII_CFG:
++		break;
++
++	default:
++		BUG();
++	}
 +}
-+#endif
-+#endif /* CONFIG_64BIT */
- 
- #endif /* __ASM_GENERIC_IO_H */
++
++static inline u32 ag71xx_gmac_rr(struct ag71xx *dev, int reg)
++{
++	return __raw_readl(dev->regs_gmac + reg);
++}
++
++static inline void ag71xx_gmac_wr(struct ag71xx *dev, int reg, u32 val)
++{
++	__raw_writel(val, dev->regs_gmac + reg);
++}
++
++static inline u32 ag71xx_rr(struct ag71xx *priv, int reg)
++{
++	ag71xx_check_reg_offset(priv, reg);
++
++	return __raw_readl(priv->regs + reg);
++}
++
++static inline void ag71xx_wr(struct ag71xx *priv, int reg, u32 val)
++{
++	ag71xx_check_reg_offset(priv, reg);
++
++	__raw_writel(val, priv->regs + reg);
++	/* flush write */
++	(void)__raw_readl(priv->regs + reg);
++}
++
++static int ag71xx_ether_mii_read(struct mii_bus *miidev, int addr, int reg)
++{
++	return 0xffff;
++}
++
++static int ag71xx_ether_mii_write(struct mii_bus *miidev, int addr, int reg, u16 val)
++{
++	return 0;
++}
++
++static int ag71xx_ether_set_ethaddr(struct eth_device *edev, const unsigned char *adr)
++{
++	return 0;
++}
++
++static int ag71xx_ether_get_ethaddr(struct eth_device *edev, unsigned char *adr)
++{
++	/* We have no eeprom */
++	return -1;
++}
++
++static void ag71xx_ether_halt(struct eth_device *edev)
++{
++	struct ag71xx *priv = edev->priv;
++
++	ag71xx_wr(priv, AG71XX_REG_RX_CTRL, 0);
++	while (ag71xx_rr(priv, AG71XX_REG_RX_CTRL))
++		;
++}
++
++static int ag71xx_ether_rx(struct eth_device *edev)
++{
++	struct ag71xx *priv = edev->priv;
++	ag7240_desc_t *f;
++	unsigned int work_done;
++
++	for (work_done = 0; work_done < NO_OF_RX_FIFOS; work_done++) {
++		unsigned int pktlen;
++		unsigned char *rx_pkt;
++
++		f = &priv->fifo_rx[priv->next_rx];
++
++		if (f->is_empty)
++			break;
++
++		pktlen = f->pkt_size;
++		rx_pkt = priv->rx_pkt[priv->next_rx];
++
++		/* invalidate */
++		dma_sync_single_for_cpu((unsigned long)rx_pkt, pktlen,
++						DMA_FROM_DEVICE);
++
++		net_receive(edev, rx_pkt, pktlen - 4);
++
++		f->is_empty = 1;
++
++		priv->next_rx = (priv->next_rx + 1) % NO_OF_RX_FIFOS;
++	}
++
++	if (!(ag71xx_rr(priv, AG71XX_REG_RX_CTRL) & RX_CTRL_RXE)) {
++		f = &priv->fifo_rx[priv->next_rx];
++		ag71xx_wr(priv, AG71XX_REG_RX_DESC, virt_to_phys(f));
++		ag71xx_wr(priv, AG71XX_REG_RX_CTRL, RX_CTRL_RXE);
++	}
++
++	return work_done;
++}
++
++static int ag71xx_ether_send(struct eth_device *edev, void *packet, int length)
++{
++	struct ag71xx *priv = edev->priv;
++	struct device_d *dev = priv->dev;
++	ag7240_desc_t *f = &priv->fifo_tx[priv->next_tx];
++	int i;
++
++	/* flush */
++	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
++
++	f->pkt_start_addr = virt_to_phys(packet);
++	f->res1 = 0;
++	f->pkt_size = length;
++	f->is_empty = 0;
++	ag71xx_wr(priv, AG71XX_REG_TX_DESC, virt_to_phys(f));
++	ag71xx_wr(priv, AG71XX_REG_TX_CTRL, TX_CTRL_TXE);
++
++	/* flush again?! */
++	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
++
++	for (i = 0; i < MAX_WAIT; i++) {
++		udelay(100);
++		if (f->is_empty) {
++			break;
++		}
++	}
++
++	if (i == MAX_WAIT) {
++		dev_err(dev, "Tx Timed out\n");
++	}
++
++	f->pkt_start_addr = 0;
++	f->pkt_size = 0;
++
++	priv->next_tx = (priv->next_tx + 1) % NO_OF_TX_FIFOS;
++
++	return 0;
++}
++
++static int ag71xx_ether_open(struct eth_device *edev)
++{
++	return 0;
++}
++
++static int ag71xx_ether_init(struct eth_device *edev)
++{
++	struct ag71xx *priv = edev->priv;
++	int i;
++	void *rxbuf = priv->rx_buffer;
++
++	priv->next_rx = 0;
++
++	for (i = 0; i < NO_OF_RX_FIFOS; i++) {
++		ag7240_desc_t *fr = &priv->fifo_rx[i];
++
++		priv->rx_pkt[i] = rxbuf;
++		fr->pkt_start_addr = virt_to_phys(rxbuf);
++		fr->pkt_size = MAX_RBUFF_SZ;
++		fr->is_empty = 1;
++		fr->next_desc = virt_to_phys(&priv->fifo_rx[(i + 1) % NO_OF_RX_FIFOS]);
++
++		/* invalidate */
++		dma_sync_single_for_device((unsigned long)rxbuf, MAX_RBUFF_SZ,
++					DMA_FROM_DEVICE);
++
++		rxbuf += MAX_RBUFF_SZ;
++	}
++
++	/* Clean Tx BD's */
++	memset(priv->fifo_tx, 0, TX_RING_SZ);
++
++	ag71xx_wr(priv, AG71XX_REG_RX_DESC, virt_to_phys(priv->fifo_rx));
++	ag71xx_wr(priv, AG71XX_REG_RX_CTRL, RX_CTRL_RXE);
++
++	return 1;
++}
++
++static int ag71xx_mii_setup(struct ag71xx *priv)
++{
++	u32 rd;
++
++	rd = ag71xx_gmac_rr(priv, 0);
++	rd |= AG71XX_ETH_CFG_MII_GE0_SLAVE;
++	ag71xx_gmac_wr(priv, 0, rd);
++
++	return 0;
++}
++
++static int ag71xx_probe(struct device_d *dev)
++{
++	void __iomem *regs, *regs_gmac;
++	struct mii_bus *miibus;
++	struct eth_device *edev;
++	struct ag71xx *priv;
++	u32 mac_h, mac_l;
++	u32 rd;
++
++	regs_gmac = dev_request_mem_region_by_name(dev, "gmac");
++	if (IS_ERR(regs_gmac))
++		return PTR_ERR(regs_gmac);
++
++	regs = dev_request_mem_region_by_name(dev, "ge0");
++	if (IS_ERR(regs))
++		return PTR_ERR(regs);
++
++	priv = xzalloc(sizeof(struct ag71xx));
++	edev = &priv->netdev;
++	miibus = &priv->miibus;
++	edev->priv = priv;
++
++	edev->init = ag71xx_ether_init;
++	edev->open = ag71xx_ether_open;
++	edev->send = ag71xx_ether_send;
++	edev->recv = ag71xx_ether_rx;
++	edev->halt = ag71xx_ether_halt;
++	edev->get_ethaddr = ag71xx_ether_get_ethaddr;
++	edev->set_ethaddr = ag71xx_ether_set_ethaddr;
++
++	priv->dev = dev;
++	priv->regs = regs;
++	priv->regs_gmac = regs_gmac;
++
++	miibus->read = ag71xx_ether_mii_read;
++	miibus->write = ag71xx_ether_mii_write;
++	miibus->priv = priv;
++
++	/* enable switch core */
++	rd = __raw_readl((char *)KSEG1ADDR(AR71XX_PLL_BASE + AR933X_ETHSW_CLOCK_CONTROL_REG)) & ~(0x1f);
++	rd |= 0x10;
++	__raw_writel(rd, (char *)KSEG1ADDR(AR71XX_PLL_BASE + AR933X_ETHSW_CLOCK_CONTROL_REG));
++
++	if (ath79_reset_rr(AR933X_RESET_REG_RESET_MODULE) != 0)
++		ath79_reset_wr(AR933X_RESET_REG_RESET_MODULE, 0);
++
++	/* reset GE0 MAC and MDIO */
++	rd = ath79_reset_rr(AR933X_RESET_REG_RESET_MODULE);
++	rd |= AR933X_RESET_GE0_MAC | AR933X_RESET_GE0_MDIO | AR933X_RESET_SWITCH;
++	ath79_reset_wr(AR933X_RESET_REG_RESET_MODULE, rd);
++	mdelay(100);
++
++	rd = ath79_reset_rr(AR933X_RESET_REG_RESET_MODULE);
++	rd &= ~(AR933X_RESET_GE0_MAC | AR933X_RESET_GE0_MDIO | AR933X_RESET_SWITCH);
++	ath79_reset_wr(AR933X_RESET_REG_RESET_MODULE, rd);
++	mdelay(100);
++
++	ag71xx_wr(priv, AG71XX_REG_MAC_CFG1, (MAC_CFG1_SR | MAC_CFG1_TX_RST | MAC_CFG1_RX_RST));
++	ag71xx_wr(priv, AG71XX_REG_MAC_CFG1, (MAC_CFG1_RXE | MAC_CFG1_TXE));
++
++	rd = ag71xx_rr(priv, AG71XX_REG_MAC_CFG2);
++	rd |= (MAC_CFG2_PAD_CRC_EN | MAC_CFG2_LEN_CHECK | MAC_CFG2_IF_10_100);
++	ag71xx_wr(priv, AG71XX_REG_MAC_CFG2, rd);
++
++	/* config FIFOs */
++	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG0, 0x1f00);
++
++	ag71xx_mii_setup(priv);
++
++	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG1, 0x10ffff);
++	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG2, 0xAAA0555);
++
++	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG4, 0x3ffff);
++	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG5, 0x66b82);
++	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG3, 0x1f00140);
++
++	priv->rx_buffer = xmemalign(PAGE_SIZE, NO_OF_RX_FIFOS * MAX_RBUFF_SZ);
++	priv->fifo_tx = dma_alloc_coherent(NO_OF_TX_FIFOS * sizeof(ag7240_desc_t), DMA_ADDRESS_BROKEN);
++	priv->fifo_rx = dma_alloc_coherent(NO_OF_RX_FIFOS * sizeof(ag7240_desc_t), DMA_ADDRESS_BROKEN);
++	priv->next_tx = 0;
++
++	mac_l = 0x3344;
++	mac_h = 0x0004d980;
++
++	ag71xx_wr(priv, AG71XX_REG_MAC_ADDR1, mac_l);
++	ag71xx_wr(priv, AG71XX_REG_MAC_ADDR2, mac_h);
++
++	mdiobus_register(miibus);
++	eth_register(edev);
++
++	dev_info(dev, "network device registered\n");
++
++	return 0;
++}
++
++static __maybe_unused struct of_device_id ag71xx_dt_ids[] = {
++	{
++		.compatible = "qca,ar7100-gmac",
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct driver_d ag71xx_driver = {
++	.name	= "ag71xx-gmac",
++	.probe		= ag71xx_probe,
++	.of_compatible = DRV_OF_COMPAT(ag71xx_dt_ids),
++};
++device_platform_driver(ag71xx_driver);
 -- 
 2.11.0
 
