@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
+Received: from mout.gmx.net ([212.227.17.21])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dihxC-0002Hz-8C
+ id 1dihxC-0002Ij-Bi
  for barebox@lists.infradead.org; Fri, 18 Aug 2017 14:08:52 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Fri, 18 Aug 2017 16:03:00 +0200
-Message-Id: <20170818140301.18749-2-linux@rempel-privat.de>
+Date: Fri, 18 Aug 2017 16:03:01 +0200
+Message-Id: <20170818140301.18749-3-linux@rempel-privat.de>
 In-Reply-To: <20170818140301.18749-1-linux@rempel-privat.de>
 References: <20170818140301.18749-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 2/3] net: ag71xx: bit 19 should be set to 1 for GE0
+Subject: [PATCH v1 3/3] add ar9331.dtsi and enable mac0
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-From: Antony Pavlov <antonynpavlov@gmail.com>
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- drivers/net/ag71xx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/dts/ar9331.dtsi       | 12 ++++++++++++
+ arch/mips/dts/tplink-mr3020.dts |  5 +++++
+ 2 files changed, 17 insertions(+)
+ create mode 100644 arch/mips/dts/ar9331.dtsi
 
-diff --git a/drivers/net/ag71xx.c b/drivers/net/ag71xx.c
-index b2e066be3..d13bf9171 100644
---- a/drivers/net/ag71xx.c
-+++ b/drivers/net/ag71xx.c
-@@ -492,7 +492,8 @@ static int ag71xx_probe(struct device_d *dev)
- 	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG2, 0xAAA0555);
+diff --git a/arch/mips/dts/ar9331.dtsi b/arch/mips/dts/ar9331.dtsi
+new file mode 100644
+index 000000000..109af8664
+--- /dev/null
++++ b/arch/mips/dts/ar9331.dtsi
+@@ -0,0 +1,12 @@
++/ {
++	ahb {
++		mac0: mac@19000000 {
++			compatible = "qca,ar7100-gmac", "qca,ar9331-gmac";
++			reg = <0x18070000 0x00000100>,
++			      <0x19000000 0x01000000>;
++			reg-names = "gmac", "ge0";
++			phy-mode = "mii";
++			status = "disabled";
++               };
++	};
++};
+diff --git a/arch/mips/dts/tplink-mr3020.dts b/arch/mips/dts/tplink-mr3020.dts
+index eaae11edd..6f1ad1350 100644
+--- a/arch/mips/dts/tplink-mr3020.dts
++++ b/arch/mips/dts/tplink-mr3020.dts
+@@ -1,4 +1,5 @@
+ #include <mips/qca/ar9331_tl_mr3020.dts>
++#include "ar9331.dtsi"
  
- 	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG4, 0x3ffff);
--	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG5, 0x66b82);
-+	/* bit 19 should be set to 1 for GE0 */
-+	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG5, (0x66b82) | (1 << 19));
- 	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG3, 0x1f00140);
- 
- 	priv->rx_buffer = xmemalign(PAGE_SIZE, NO_OF_RX_FIFOS * MAX_RBUFF_SZ);
+ / {
+ 	aliases {
+@@ -24,3 +25,7 @@
+ 		reg = <0x80000 0x10000>;
+ 	};
+ };
++
++&mac0 {
++	status = "okay";
++};
 -- 
 2.11.0
 
