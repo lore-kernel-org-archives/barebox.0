@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dkSV7-0004J4-Ga
- for barebox@lists.infradead.org; Wed, 23 Aug 2017 10:03:07 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
- (envelope-from <jbe@pengutronix.de>) id 1dkSUj-00043e-Mt
- for barebox@lists.infradead.org; Wed, 23 Aug 2017 12:02:41 +0200
-Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <jbe@pengutronix.de>) id 1dkSUj-0001Qu-Fh
- for barebox@lists.infradead.org; Wed, 23 Aug 2017 12:02:41 +0200
+ id 1dkSkE-0004kl-9A
+ for barebox@lists.infradead.org; Wed, 23 Aug 2017 10:18:45 +0000
+Received: from ginster.hi.pengutronix.de
+ ([2001:67c:670:100:2e4d:54ff:fe67:bfa5] helo=ginster)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
+ (envelope-from <jbe@pengutronix.de>) id 1dkSjs-0006cj-3y
+ for barebox@lists.infradead.org; Wed, 23 Aug 2017 12:18:20 +0200
 From: Juergen Borleis <jbe@pengutronix.de>
-Date: Wed, 23 Aug 2017 12:02:41 +0200
-Message-Id: <20170823100241.5347-1-jbe@pengutronix.de>
+Date: Wed, 23 Aug 2017 12:18:18 +0200
+References: <20170823100241.5347-1-jbe@pengutronix.de>
+In-Reply-To: <20170823100241.5347-1-jbe@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201708231218.18889.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +23,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] docs: mention the correct default values for the
+Subject: Re: [PATCH] docs: mention the correct default values for the
  'backend-storage-type'
 To: barebox@lists.infradead.org
 
-Different memory types defaults to different backend storage types.
+On Wednesday 23 August 2017 12:02:41 Juergen Borleis wrote:
+> Different memory types defaults to different backend storage types.
+> [...]
 
-Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
----
- Documentation/devicetree/bindings/barebox/barebox,state.rst | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Typo alert, don't use. Will send V2 immediately..
 
-diff --git a/Documentation/devicetree/bindings/barebox/barebox,state.rst b/Documentation/devicetree/bindings/barebox/barebox,state.rst
-index 4b1aade66..41ae5c0bc 100644
---- a/Documentation/devicetree/bindings/barebox/barebox,state.rst
-+++ b/Documentation/devicetree/bindings/barebox/barebox,state.rst
-@@ -49,7 +49,8 @@ Optional Properties
- 
- * ``backend-stridesize``: stride counted in bytes. See note below.
- * ``backend-storage-type``: Defines the backend storage type to ``direct`` or
--  ``circular``. Defaults to ``circular`` for media which requires erase cycles.
-+  ``circular``. Defaults to ``direct`` for media which don't requires erase cycles,
-+  and to ``circular`` for media which requires erase cycles.
- * ``algo``: A HMAC algorithm used to detect manipulation of the data
-   or header, sensible values follow this pattern ``hmac(<HASH>)``,
-   e.g. ``hmac(sha256)``. Only available for the ``backend-type`` ``raw``.
--- 
-2.11.0
+jb
+-- =
 
+Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=A0 =A0=
+| Juergen Borleis =A0 =A0 =A0 =A0 =A0 =A0 |
+Industrial Linux Solutions =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=A0 =A0| http://w=
+ww.pengutronix.de/ =A0|
 
 _______________________________________________
 barebox mailing list
