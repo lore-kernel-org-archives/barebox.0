@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
+Received: from mout.gmx.net ([212.227.17.20])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dlrb9-0002ZE-7m
- for barebox@lists.infradead.org; Sun, 27 Aug 2017 07:03:09 +0000
+ id 1dlrb9-0002Zx-8P
+ for barebox@lists.infradead.org; Sun, 27 Aug 2017 07:03:10 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Sun, 27 Aug 2017 09:02:23 +0200
-Message-Id: <20170827070230.13382-4-linux@rempel-privat.de>
+Date: Sun, 27 Aug 2017 09:02:28 +0200
+Message-Id: <20170827070230.13382-9-linux@rempel-privat.de>
 In-Reply-To: <20170827070230.13382-1-linux@rempel-privat.de>
 References: <20170827070230.13382-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,38 +21,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 03/10] MIPS: dts: ar9344: add mac0 node
+Subject: [PATCH v1 08/10] rename tplink devicetree
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-this node is supported by ag71xx driver
-
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- arch/mips/dts/ar9344.dtsi | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/mips/configs/tplink-wdr4300_defconfig                          | 2 +-
+ arch/mips/dts/{ar9344_tl_wdr4300.dts => ar9344-tl-wdr4300-v1.7.dts} | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+ rename arch/mips/dts/{ar9344_tl_wdr4300.dts => ar9344-tl-wdr4300-v1.7.dts} (91%)
 
-diff --git a/arch/mips/dts/ar9344.dtsi b/arch/mips/dts/ar9344.dtsi
-index 0838e8d7f..858751112 100644
---- a/arch/mips/dts/ar9344.dtsi
-+++ b/arch/mips/dts/ar9344.dtsi
-@@ -40,6 +40,16 @@
- 			status = "disabled";
- 		};
+diff --git a/arch/mips/configs/tplink-wdr4300_defconfig b/arch/mips/configs/tplink-wdr4300_defconfig
+index 63189b754..b5be221f6 100644
+--- a/arch/mips/configs/tplink-wdr4300_defconfig
++++ b/arch/mips/configs/tplink-wdr4300_defconfig
+@@ -1,5 +1,5 @@
+ CONFIG_BUILTIN_DTB=y
+-CONFIG_BUILTIN_DTB_NAME="ar9344_tl_wdr4300"
++CONFIG_BUILTIN_DTB_NAME="ar9344-tl-wdr4300-v1.7"
+ CONFIG_MACH_MIPS_ATH79=y
+ CONFIG_BOARD_TPLINK_WDR4300=y
+ CONFIG_PBL_IMAGE=y
+diff --git a/arch/mips/dts/ar9344_tl_wdr4300.dts b/arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts
+similarity index 91%
+rename from arch/mips/dts/ar9344_tl_wdr4300.dts
+rename to arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts
+index 139717a6b..d16cab005 100644
+--- a/arch/mips/dts/ar9344_tl_wdr4300.dts
++++ b/arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts
+@@ -6,8 +6,8 @@
+ #include "ar9344.dtsi"
  
-+		mac0: mac@19000000 {
-+			compatible = "qca,ar9344-gmac0";
-+			reg = <0x18070000 0x00000100>,
-+			      <0x19000000 0x01000000>;
-+			reg-names = "gmac", "ge0";
-+			phy-mode = "rgmii";
-+
-+			status = "disabled";
-+		};
-+
- 		spi: spi@1f000000 {
- 			compatible = "qca,ar7100-spi", "qca,ar9344-spi";
- 			reg = <0x1f000000 0x1c>;
+ / {
+-	model = "TP-Link WDR4300";
+-	compatible = "tplink,tl-wdr4300";
++	model = "TP-Link WDR4300 v1.7";
++	compatible = "tplink,tl-wdr4300", "tplink,tl-wdr4300-v1.7";
+ 
+ 	aliases {
+ 		serial0 = &uart0;
 -- 
 2.11.0
 
