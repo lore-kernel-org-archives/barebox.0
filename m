@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.21])
+Received: from mout.gmx.net ([212.227.17.20])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dlrRI-0005PF-Fy
- for barebox@lists.infradead.org; Sun, 27 Aug 2017 06:52:58 +0000
+ id 1dlrb9-0002Z6-8S
+ for barebox@lists.infradead.org; Sun, 27 Aug 2017 07:03:14 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Sun, 27 Aug 2017 08:52:00 +0200
-Message-Id: <20170827065200.11205-1-linux@rempel-privat.de>
+Date: Sun, 27 Aug 2017 09:02:20 +0200
+Message-Id: <20170827070230.13382-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +19,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] phy: don't crush if we have no parent
+Subject: [PATCH v1 00/10] provide ethernet support for ar9344 and TP-LINK
+ TL-WDR4300
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-current code will crash if DT has no PHY entry. With this patch
-we will test if parent exist, before testing the parent device node.
+This patches should go on top of my previous set "[PATCH v1 1/3] net: ath79: add ag71xx Ethernet driver"
+It is enabling networking support for ar9344 on TP-LINK TL-WDR4300 router.
 
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
----
- drivers/net/phy/phy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Oleksij Rempel (10):
+  net: ath79: add ar9344 support
+  MIPS: dts: ar9331: update compatible for mac0 node
+  MIPS: dts: ar9344: add mac0 node
+  MIPS: dts: tl_wdr4300: enable mac0
+  MIPS: dts: tl_wdr4300: add alias for spiflash
+  MIPS: dts: tl_wdr4300: remove RO flag from barebox partition
+  add phy: ar8327 driver
+  rename tplink devicetree
+  MIPS: tplink-wdr4300_defconfig: add network support
+  MIPS: dts: ar9344: add APB bus
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 7132516aa..25ae40233 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -323,7 +323,7 @@ static struct phy_device *of_mdio_find_phy(struct eth_device *edev)
- 	if (!IS_ENABLED(CONFIG_OFDEVICE))
- 		return NULL;
- 
--	if (!edev->parent->device_node)
-+	if (!edev->parent || !edev->parent->device_node)
- 		return NULL;
- 
- 	phy_node = of_parse_phandle(edev->parent->device_node, "phy-handle", 0);
+ arch/mips/configs/tplink-wdr4300_defconfig         |  12 +-
+ arch/mips/dts/ar9331.dtsi                          |   2 +-
+ ...4_tl_wdr4300.dts => ar9344-tl-wdr4300-v1.7.dts} |  10 +-
+ arch/mips/dts/ar9344.dtsi                          |  44 +++-
+ drivers/net/ag71xx.c                               | 192 ++++++++++++--
+ drivers/net/phy/Kconfig                            |   5 +
+ drivers/net/phy/Makefile                           |   1 +
+ drivers/net/phy/ar8327.c                           | 276 +++++++++++++++++++++
+ 8 files changed, 494 insertions(+), 48 deletions(-)
+ rename arch/mips/dts/{ar9344_tl_wdr4300.dts => ar9344-tl-wdr4300-v1.7.dts} (85%)
+ create mode 100644 drivers/net/phy/ar8327.c
+
 -- 
 2.11.0
 
