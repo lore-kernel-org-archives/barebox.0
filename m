@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
+Received: from mail-lf0-x22f.google.com ([2a00:1450:4010:c07::22f])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dmxjR-0002Ck-Oc
- for barebox@lists.infradead.org; Wed, 30 Aug 2017 07:48:15 +0000
+ id 1dn0WX-0004S8-Ak
+ for barebox@lists.infradead.org; Wed, 30 Aug 2017 10:47:07 +0000
+Received: by mail-lf0-x22f.google.com with SMTP id d202so22954315lfd.5
+ for <barebox@lists.infradead.org>; Wed, 30 Aug 2017 03:46:44 -0700 (PDT)
+Date: Wed, 30 Aug 2017 13:58:00 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20170830135800.20317756ed3e6a1651d29cdd@gmail.com>
+In-Reply-To: <a92bc086-740e-8c41-5f47-3aa646696bdf@rempel-privat.de>
 References: <20170830061940.GB65925@ubuntu>
-From: Oleksij Rempel <linux@rempel-privat.de>
-Message-ID: <a92bc086-740e-8c41-5f47-3aa646696bdf@rempel-privat.de>
-Date: Wed, 30 Aug 2017 09:47:37 +0200
-MIME-Version: 1.0
-In-Reply-To: <20170830061940.GB65925@ubuntu>
+ <a92bc086-740e-8c41-5f47-3aa646696bdf@rempel-privat.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,74 +20,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1744622086404811853=="
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: TCP
-To: barebox@lists.infradead.org, "antonynpavlov@gmail.com" <antonynpavlov@gmail.com>, jianhuizhao.329@gmail.com
+To: Oleksij Rempel <linux@rempel-privat.de>
+Cc: barebox@lists.infradead.org, jianhuizhao.329@gmail.com
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============1744622086404811853==
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="hL3Ohd7KFE2IR35Gg1QhvfdMU6uAjHc1g"
+On Wed, 30 Aug 2017 09:47:37 +0200
+Oleksij Rempel <linux@rempel-privat.de> wrote:
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---hL3Ohd7KFE2IR35Gg1QhvfdMU6uAjHc1g
-Content-Type: multipart/mixed; boundary="woBwWnctmbNa74uD2KGiCoxmpjgf6t5ib";
- protected-headers="v1"
-From: Oleksij Rempel <linux@rempel-privat.de>
-To: barebox@lists.infradead.org,
- "antonynpavlov@gmail.com" <antonynpavlov@gmail.com>,
- jianhuizhao.329@gmail.com
-Message-ID: <a92bc086-740e-8c41-5f47-3aa646696bdf@rempel-privat.de>
-Subject: Re: TCP
-References: <20170830061940.GB65925@ubuntu>
-In-Reply-To: <20170830061940.GB65925@ubuntu>
+> some of the work seems to be done by Anthony:
+> https://github.com/frantony/barebox/commits/20150719.picotcp
+> =
 
---woBwWnctmbNa74uD2KGiCoxmpjgf6t5ib
-Content-Type: text/plain; charset=utf-8
-Content-Language: ru
-Content-Transfer-Encoding: quoted-printable
+> I don't know if it is wokring.
+> =
 
-some of the work seems to be done by Anthony:
-https://github.com/frantony/barebox/commits/20150719.picotcp
+> @Anthony, ping
 
-I don't know if it is wokring.
+I have not checked it for several months.
 
-@Anthony, ping
+AFAIR There were big-endian issues.
 
---=20
-Regards,
-Oleksij
+I have not added any TCP-related demo for picotcp-driven barebox.
+
+Any suggestions for TCP demo?
+telnet?
+http?
+
+> -- =
+
+> Regards,
+> Oleksij
+> =
 
 
---woBwWnctmbNa74uD2KGiCoxmpjgf6t5ib--
 
---hL3Ohd7KFE2IR35Gg1QhvfdMU6uAjHc1g
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
+-- =
 
------BEGIN PGP SIGNATURE-----
-
-iF4EAREIAAYFAlmmbZ4ACgkQHwImuRkmbWlriwD9Hy7OAOnK/A58AYnZVShSSRbW
-fXfHWl0lYiYicCPzLxsA/3kbI1ih+thAs3Sc3sIhLt/ZRdY3lZJonwL9lMMNVpz5
-=8KoB
------END PGP SIGNATURE-----
-
---hL3Ohd7KFE2IR35Gg1QhvfdMU6uAjHc1g--
-
-
---===============1744622086404811853==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1744622086404811853==--
