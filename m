@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22f.google.com ([2a00:1450:4010:c07::22f])
+Received: from mout.gmx.net ([212.227.17.22])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dn0WX-0004S8-Ak
- for barebox@lists.infradead.org; Wed, 30 Aug 2017 10:47:07 +0000
-Received: by mail-lf0-x22f.google.com with SMTP id d202so22954315lfd.5
- for <barebox@lists.infradead.org>; Wed, 30 Aug 2017 03:46:44 -0700 (PDT)
-Date: Wed, 30 Aug 2017 13:58:00 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20170830135800.20317756ed3e6a1651d29cdd@gmail.com>
-In-Reply-To: <a92bc086-740e-8c41-5f47-3aa646696bdf@rempel-privat.de>
+ id 1dn1de-0005yw-FY
+ for barebox@lists.infradead.org; Wed, 30 Aug 2017 11:58:36 +0000
 References: <20170830061940.GB65925@ubuntu>
  <a92bc086-740e-8c41-5f47-3aa646696bdf@rempel-privat.de>
-Mime-Version: 1.0
+ <20170830135800.20317756ed3e6a1651d29cdd@gmail.com>
+From: Oleksij Rempel <linux@rempel-privat.de>
+Message-ID: <39e1b11b-d202-a2c9-4fd0-a60dd14c7b2e@rempel-privat.de>
+Date: Wed, 30 Aug 2017 13:52:59 +0200
+MIME-Version: 1.0
+In-Reply-To: <20170830135800.20317756ed3e6a1651d29cdd@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,50 +19,95 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="===============2363905566098248614=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: TCP
-To: Oleksij Rempel <linux@rempel-privat.de>
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org, jianhuizhao.329@gmail.com
 
-On Wed, 30 Aug 2017 09:47:37 +0200
-Oleksij Rempel <linux@rempel-privat.de> wrote:
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============2363905566098248614==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="6p0Q6knAWBB2evck2eDg1fqEbUlr80qks"
 
-> some of the work seems to be done by Anthony:
-> https://github.com/frantony/barebox/commits/20150719.picotcp
-> =
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--6p0Q6knAWBB2evck2eDg1fqEbUlr80qks
+Content-Type: multipart/mixed; boundary="a1hbBCg3ionxrQO0OKsu6xp9lg5EjGKhp";
+ protected-headers="v1"
+From: Oleksij Rempel <linux@rempel-privat.de>
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org, jianhuizhao.329@gmail.com
+Message-ID: <39e1b11b-d202-a2c9-4fd0-a60dd14c7b2e@rempel-privat.de>
+Subject: Re: TCP
+References: <20170830061940.GB65925@ubuntu>
+ <a92bc086-740e-8c41-5f47-3aa646696bdf@rempel-privat.de>
+ <20170830135800.20317756ed3e6a1651d29cdd@gmail.com>
+In-Reply-To: <20170830135800.20317756ed3e6a1651d29cdd@gmail.com>
 
-> I don't know if it is wokring.
-> =
+--a1hbBCg3ionxrQO0OKsu6xp9lg5EjGKhp
+Content-Type: text/plain; charset=utf-8
+Content-Language: ru
+Content-Transfer-Encoding: quoted-printable
 
-> @Anthony, ping
+Am 30.08.2017 um 12:58 schrieb Antony Pavlov:
+> On Wed, 30 Aug 2017 09:47:37 +0200
+> Oleksij Rempel <linux@rempel-privat.de> wrote:
+>=20
+>> some of the work seems to be done by Anthony:
+>> https://github.com/frantony/barebox/commits/20150719.picotcp
+>>
+>> I don't know if it is wokring.
+>>
+>> @Anthony, ping
+>=20
+> I have not checked it for several months.
+>=20
+> AFAIR There were big-endian issues.
+>=20
+> I have not added any TCP-related demo for picotcp-driven barebox.
+>=20
+> Any suggestions for TCP demo?
+> telnet?
+> http?
 
-I have not checked it for several months.
+I assume, wonted use case is httpd from u-boot_mod. I would prefer some
+thing light wight as telnet.
 
-AFAIR There were big-endian issues.
+https://github.com/pepe2k/u-boot_mod/tree/master/u-boot/httpd
 
-I have not added any TCP-related demo for picotcp-driven barebox.
-
-Any suggestions for TCP demo?
-telnet?
-http?
-
-> -- =
-
-> Regards,
-> Oleksij
-> =
+--=20
+Regards,
+Oleksij
 
 
+--a1hbBCg3ionxrQO0OKsu6xp9lg5EjGKhp--
 
--- =
+--6p0Q6knAWBB2evck2eDg1fqEbUlr80qks
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
-Best regards,
-=A0 Antony Pavlov
+-----BEGIN PGP SIGNATURE-----
+
+iF4EAREIAAYFAlmmpxsACgkQHwImuRkmbWlNgQEAlegtiQL77B4TNOgruiclstyw
+5g6pUh53U6fZ6+xo7cIA/20BImR9eGKSUWJICfeVOxOzkodskJh2Y1VpDJ9Df0BK
+=MXUy
+-----END PGP SIGNATURE-----
+
+--6p0Q6knAWBB2evck2eDg1fqEbUlr80qks--
+
+
+--===============2363905566098248614==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============2363905566098248614==--
