@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout02.posteo.de ([185.67.36.66])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1doZdu-0002dx-CJ
- for barebox@lists.infradead.org; Sun, 03 Sep 2017 18:29:13 +0000
-Received: from submission (posteo.de [89.146.220.130]) 
- by mout02.posteo.de (Postfix) with ESMTPS id BCF8E20CF6
- for <barebox@lists.infradead.org>; Sun,  3 Sep 2017 20:28:45 +0200 (CEST)
-References: <626198c2-50fc-2e86-1abd-8a92cd2d448e@posteo.de>
- <20170903154544.08f72353310a25eafa3c341c@gmail.com>
-From: Dennis Menschel <menschel-d@posteo.de>
-Message-ID: <e302a697-df8b-4719-0370-81483624905f@posteo.de>
-Date: Sun, 3 Sep 2017 20:28:43 +0200
+ id 1domKO-0007Nt-JM
+ for barebox@lists.infradead.org; Mon, 04 Sep 2017 08:02:19 +0000
+Date: Mon, 4 Sep 2017 10:01:26 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170904080126.tn2j6anazjqqili2@pengutronix.de>
+References: <20170818135707.17578-1-linux@rempel-privat.de>
+ <20170818135707.17578-3-linux@rempel-privat.de>
 MIME-Version: 1.0
-In-Reply-To: <20170903154544.08f72353310a25eafa3c341c@gmail.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20170818135707.17578-3-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,59 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [BUG] TFTP: No access to subdirectories
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH v2 2/4] asm-generic: partially sync io.h with linux kernel
+To: Oleksij Rempel <linux@rempel-privat.de>
 Cc: barebox@lists.infradead.org
 
-Am 03.09.2017 um 14:45 schrieb Antony Pavlov:
-> On Sun, 3 Sep 2017 10:49:21 +0200
-> Dennis Menschel <menschel-d@posteo.de> wrote:
-> 
->> Hello,
->>
->> I've noticed that since barebox version 2017.07.0, accessing files via TFTP only works for files that are located in the root directory of the TFTP server.
->> Accessing files that reside in subdirectories doesn't work anymore.
->> The bug affects both access via /mnt/tftp/ and via the tftp shell command.
->>
->> I've tested the following versions of barebox:
->>
->> - 2017.05.0: works
->> - 2017.06.0: works
->> - 2017.07.0: doesn't work anymore
->> - 2017.08.0: doesn't work anymore
->>
->> Below follows the test scenario I've used to reproduce the bug:
->>
->>
->> Scenario
->> ========
->>
->> For the server, I'm using a Raspberry Pi 2 with:
->> - a DHCP server (isc-dhcp-server) and
->> - a TFTP server (tftpd-hpa).
-> 
-> I have seen the same problem, please see this message:
-> 
-> http://lists.infradead.org/pipermail/barebox/2017-July/030587.html
-> 
-> I use tftpd-hpa too.
-> 
-> I want to note again that reverting 944bf0e1 ('fixup! fs: Implement links to directories') and
-> a602bebc ('fs: Implement links to directories') fixes the problem.
-> 
->> [...]
+Hi Oleksij,
 
-Thanks for the info, Antony!
+On Fri, Aug 18, 2017 at 03:57:05PM +0200, Oleksij Rempel wrote:
+> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+> ---
+>  include/asm-generic/io.h | 229 +++++++++++++++++++++++++++++++++++++++++------
+>  1 file changed, 201 insertions(+), 28 deletions(-)
+> 
+> diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
+> index 8d83d6806..a3192bae6 100644
+> --- a/include/asm-generic/io.h
+> +++ b/include/asm-generic/io.h
+> @@ -69,50 +69,114 @@ static inline void __raw_writeq(u64 b, volatile void __iomem *addr)
+>  #endif
+>  
+>  #ifndef PCI_IOBASE
+> -#define PCI_IOBASE ((void __iomem *) 0)
+> +#define PCI_IOBASE ((void __iomem *)0)
+> +#endif
+> +
+> +#ifndef IO_SPACE_LIMIT
+> +#define IO_SPACE_LIMIT 0xffff
+>  #endif
 
-I must admit that I was only searching the mailing list archive for the
-subject concerning "bug" or "tftp", but not the content of the residual
-mails before I wrote my bug report.
+When compiling imx_v7_defconfig this change results in tons of:
 
-Good to see that you've already found that commits that cause the
-problem. Hopefully it will be fixed in one of the next releases.
+arch/arm/include/asm/io.h:6:0: warning: "IO_SPACE_LIMIT" redefined
+#define IO_SPACE_LIMIT 0
+^
 
-Best regards,
-Dennis Menschel
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
