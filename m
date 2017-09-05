@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dpZaC-0006Lk-TG
- for barebox@lists.infradead.org; Wed, 06 Sep 2017 12:37:32 +0000
-Date: Wed, 6 Sep 2017 14:37:06 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170906123706.lcw6wsqjwhuv52tk@pengutronix.de>
-References: <20170905072237.2268-1-antonynpavlov@gmail.com>
- <20170905072237.2268-2-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170905072237.2268-2-antonynpavlov@gmail.com>
+ id 1dp84u-0002gG-Ch
+ for barebox@lists.infradead.org; Tue, 05 Sep 2017 07:15:26 +0000
+Received: by mail-lf0-x241.google.com with SMTP id y15so1294253lfd.0
+ for <barebox@lists.infradead.org>; Tue, 05 Sep 2017 00:14:59 -0700 (PDT)
+Date: Tue, 5 Sep 2017 10:26:23 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20170905102623.5d51a26597a87a31177e49c2@gmail.com>
+In-Reply-To: <20170804131045.29427-1-antonynpavlov@gmail.com>
+References: <20170802122512.GA16652@ravnborg.org>
+ <20170804131045.29427-1-antonynpavlov@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +20,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] gpio: gpio-generic: fix bgpio_map()
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH v2] gpio: clps711x: clps711x_gpio_dt_ids: add missing
+ sentinel entry
+To: Sascha Hauer <s.hauer@pengutronix.de>, Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 05, 2017 at 10:22:36AM +0300, Antony Pavlov wrote:
+On Fri,  4 Aug 2017 16:10:45 +0300
+Antony Pavlov <antonynpavlov@gmail.com> wrote:
+
+I can't find this patch neither in the master branch nor in the next branch
+of the pengutronix public repo.
+
+Please apply it!
+
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Cc: Alexander Shiyan <shc_work@mail.ru>
 > ---
->  drivers/gpio/gpio-generic.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpio/gpio-generic.c b/drivers/gpio/gpio-generic.c
-> index c6202fc651..164aaed97a 100644
-> --- a/drivers/gpio/gpio-generic.c
-> +++ b/drivers/gpio/gpio-generic.c
-> @@ -327,7 +327,7 @@ static void __iomem *bgpio_map(struct device_d *dev, const char *name,
->  		return NULL;
->  	}
->  
-> -	return ret;
-> +	return IOMEM(r->start);
->  }
+> =
 
-This still looks wrong. We have:
+> Changes since v1:
+> =
 
-	void __iomem *ret;
+>   * change formatting
+> =
 
-	...
+>  drivers/gpio/gpio-clps711x.c | 1 +
+>  1 file changed, 1 insertion(+)
+> =
 
-	ret = request_iomem_region(dev_name(dev), r->start, r->end);
+> diff --git a/drivers/gpio/gpio-clps711x.c b/drivers/gpio/gpio-clps711x.c
+> index d71c606690..769e6ca4f7 100644
+> --- a/drivers/gpio/gpio-clps711x.c
+> +++ b/drivers/gpio/gpio-clps711x.c
+> @@ -74,6 +74,7 @@ out_err:
+>  =
 
-request_iomem_region() returns a struct resource * from which you should
-return the start element.
+>  static struct of_device_id __maybe_unused clps711x_gpio_dt_ids[] =3D {
+>  	{ .compatible =3D "cirrus,clps711x-gpio", },
+> +	{ /* sentinel */ }
+>  };
+>  =
 
-Sascha
+>  static struct driver_d clps711x_gpio_driver =3D {
+> -- =
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 2.13.3
+> =
+
+
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
