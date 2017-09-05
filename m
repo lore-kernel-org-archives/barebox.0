@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dp8CQ-0006mu-Jf
- for barebox@lists.infradead.org; Tue, 05 Sep 2017 07:23:08 +0000
-Received: by mail-lf0-x243.google.com with SMTP id c8so1296746lfe.2
- for <barebox@lists.infradead.org>; Tue, 05 Sep 2017 00:22:46 -0700 (PDT)
+ id 1dp8CP-0006ma-CR
+ for barebox@lists.infradead.org; Tue, 05 Sep 2017 07:23:09 +0000
+Received: by mail-lf0-x244.google.com with SMTP id c8so1296731lfe.2
+ for <barebox@lists.infradead.org>; Tue, 05 Sep 2017 00:22:44 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue,  5 Sep 2017 10:22:37 +0300
-Message-Id: <20170905072237.2268-3-antonynpavlov@gmail.com>
+Date: Tue,  5 Sep 2017 10:22:36 +0300
+Message-Id: <20170905072237.2268-2-antonynpavlov@gmail.com>
 In-Reply-To: <20170905072237.2268-1-antonynpavlov@gmail.com>
 References: <20170905072237.2268-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,37 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] gpio: gpio-generic: add dt support
+Subject: [PATCH 1/2] gpio: gpio-generic: fix bgpio_map()
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/gpio/gpio-generic.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpio/gpio-generic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/gpio/gpio-generic.c b/drivers/gpio/gpio-generic.c
-index 164aaed97a..4d8f14c879 100644
+index c6202fc651..164aaed97a 100644
 --- a/drivers/gpio/gpio-generic.c
 +++ b/drivers/gpio/gpio-generic.c
-@@ -410,9 +410,18 @@ static struct platform_device_id bgpio_id_table[] = {
- 	{ }
- };
+@@ -327,7 +327,7 @@ static void __iomem *bgpio_map(struct device_d *dev, const char *name,
+ 		return NULL;
+ 	}
  
-+static struct of_device_id __maybe_unused bgpio_of_match[] = {
-+	{
-+		.compatible = "wd,mbl-gpio",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
- static struct driver_d bgpio_driver = {
- 	.name		= "basic-mmio-gpio",
- 	.id_table	= bgpio_id_table,
-+	.of_compatible	= DRV_OF_COMPAT(bgpio_of_match),
- 	.probe		= bgpio_dev_probe,
- 	.remove		= bgpio_dev_remove,
- };
+-	return ret;
++	return IOMEM(r->start);
+ }
+ 
+ static int bgpio_dev_probe(struct device_d *dev)
 -- 
 2.13.3
 
