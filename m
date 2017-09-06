@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout.gmx.net ([212.227.17.22])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dqCeN-0004T2-F3
- for barebox@lists.infradead.org; Fri, 08 Sep 2017 06:20:27 +0000
-Date: Fri, 8 Sep 2017 08:20:02 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170908062002.xfrpyyxjplzps2uz@pengutronix.de>
-References: <20170906124008.26582-1-linux@rempel-privat.de>
+ id 1dpbJV-0004dh-5C
+ for barebox@lists.infradead.org; Wed, 06 Sep 2017 14:28:29 +0000
+From: Oleksij Rempel <linux@rempel-privat.de>
+Date: Wed,  6 Sep 2017 16:27:37 +0200
+Message-Id: <20170906142737.28539-1-linux@rempel-privat.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170906124008.26582-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,72 +15,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] efi: make sure efi-fs is started in the right order
-To: Oleksij Rempel <linux@rempel-privat.de>
-Cc: barebox@lists.infradead.org, Michael Olbrich <m.olbrich@pengutronix.de>, Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: [PATCH] efi: add iBASE MI991AF documentation.
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-On Wed, Sep 06, 2017 at 02:40:08PM +0200, Oleksij Rempel wrote:
-> From: Michael Olbrich <m.olbrich@pengutronix.de>
-> 
-> with this parch, EFI System partition will be mounted to /boot
-> instead of /mnt/diskXX.
-> 
-> Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  fs/efi.c                 | 2 +-
->  include/efi/efi-device.h | 2 ++
->  2 files changed, 3 insertions(+), 1 deletion(-)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/fs/efi.c b/fs/efi.c
-> index 85ff91429..692556b26 100644
-> --- a/fs/efi.c
-> +++ b/fs/efi.c
-> @@ -558,4 +558,4 @@ static struct efi_driver efi_fs_driver = {
->          .probe = efi_fs_probe,
->  	.guid = EFI_SIMPLE_FILE_SYSTEM_PROTOCOL_GUID,
->  };
-> -device_efi_driver(efi_fs_driver);
-> +fs_efi_driver(efi_fs_driver);
-> diff --git a/include/efi/efi-device.h b/include/efi/efi-device.h
-> index 8f5f1f3f1..15c293bb1 100644
-> --- a/include/efi/efi-device.h
-> +++ b/include/efi/efi-device.h
-> @@ -33,6 +33,8 @@ static inline struct efi_driver *to_efi_driver(struct driver_d *drv)
->  #define device_efi_driver(drv)	\
->  	register_driver_macro(device, efi, drv)
->  
-> +#define fs_efi_driver(drv)	\
-> +	register_driver_macro(fs, efi, drv)
->  static inline int efi_driver_register(struct efi_driver *efidrv)
->  {
->  	efidrv->driver.bus = &efi_bus;
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogT2xla3NpaiBSZW1wZWwgPG8ucmVtcGVsQHBlbmd1dHJvbml4LmRlPgoKU2lnbmVkLW9m
+Zi1ieTogT2xla3NpaiBSZW1wZWwgPG8ucmVtcGVsQHBlbmd1dHJvbml4LmRlPgotLS0KIERvY3Vt
+ZW50YXRpb24vYm9hcmRzL2VmaS5yc3QgICAgICAgICAgIHwgIDIgKysKIERvY3VtZW50YXRpb24v
+Ym9hcmRzL2liYXNlLW1pOTkxYWYucnN0IHwgNDMgKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKwogMiBmaWxlcyBjaGFuZ2VkLCA0NSBpbnNlcnRpb25zKCspCiBjcmVhdGUgbW9kZSAx
+MDA2NDQgRG9jdW1lbnRhdGlvbi9ib2FyZHMvaWJhc2UtbWk5OTFhZi5yc3QKCmRpZmYgLS1naXQg
+YS9Eb2N1bWVudGF0aW9uL2JvYXJkcy9lZmkucnN0IGIvRG9jdW1lbnRhdGlvbi9ib2FyZHMvZWZp
+LnJzdAppbmRleCA2YzkwZTZjZGYuLmY1OWJiMWQ1YiAxMDA2NDQKLS0tIGEvRG9jdW1lbnRhdGlv
+bi9ib2FyZHMvZWZpLnJzdAorKysgYi9Eb2N1bWVudGF0aW9uL2JvYXJkcy9lZmkucnN0CkBAIC0x
+LDMgKzEsNSBAQAorLi4gX2JhcmVib3hfb25fdWVmaToKKwogYmFyZWJveCBvbiAoVSlFRkkKID09
+PT09PT09PT09PT09PT09CiAKZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vYm9hcmRzL2liYXNl
+LW1pOTkxYWYucnN0IGIvRG9jdW1lbnRhdGlvbi9ib2FyZHMvaWJhc2UtbWk5OTFhZi5yc3QKbmV3
+IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAwLi5hMjJlNWZjZjcKLS0tIC9kZXYvbnVs
+bAorKysgYi9Eb2N1bWVudGF0aW9uL2JvYXJkcy9pYmFzZS1taTk5MWFmLnJzdApAQCAtMCwwICsx
+LDQzIEBACitpQkFTRSBNSTk5MUFGCis9PT09PT09PT09PT09CisKK1RoZSBpQkFTRSBNSTk5MUFG
+IE1pbmktSVRYIG1vdGhlcmJvYXJkIGhhcworCisgICogN3RoLzZ0aCBHZW5lcmF0aW9uIEludGVs
+wq4gWGVvbsKuIEUzIC8gQ29yZeKEoiBpNyAvIGk1IC9pMyAvIFBlbnRpdW3CriAvIENlbGVyb27C
+riBRQy9EQyBwcm9jZXNzb3JzLCB1cCB0byA0R0h6CisgICogMnggRERSNCBTTy1ESU1NLCBNYXgu
+IDMyR0IsIEVDQyBjb21wYXRpYmxlCisgICogSW50ZWzCriBQcm9jZXNzb3IgaW50ZWdyYXRlZCBn
+cmFwaGljcyBkZXZpY2UsIHN1cHBvcnRzIERWSS1ELCBIRE1JIGFuZCBEaXNwbGF5UG9ydAorICAq
+IER1YWwgSW50ZWzCriBHaWdhYml0IExBTgorICAqIDJ4IFVTQiAyLjAsIDZ4IFVTQiAzLjAsIDR4
+IENPTSwgNHggU0FUQUlJSQorICAqIDJ4IE1pbmkgUENJLUUgc2xvdHMsIDF4IG1TQVRBLCAxeCBQ
+Q0ktRSh4MTYpCisgICogV2F0Y2hkb2cgdGltZXIsIERpZ2l0YWwgSS9PLCBpQU1UICgxMS4wKSwg
+VFBNICgxLjIpLCBpU01BUlQKKworUnVubmluZyBiYXJlYm94CistLS0tLS0tLS0tLS0tLS0KKwor
+QnVpbGRpbmcgdGhlIGJhcmVib3ggaW1hZ2UgZm9yIHRoaXMgdGFyZ2V0IGlzIGNvdmVyZWQgYnkg
+dGhlIGBgZWZpX2RlZmNvbmZpZ2BgCisKK0JJT1Mgc2hvdWxkIGJlIGNvbmZpZ3VyZWQgYXMgZm9s
+bG93OgorCisgICogV2hlbiB5b3UgdHVybiBvbiB0aGUgY29tcHV0ZXIsIHRoZSBCSU9TIGlzIGlt
+bWVkaWF0ZWx5IGFjdGl2YXRlZC4gUHJlc3NpbmcKKyAgICB0aGUgPERlbD4ga2V5IGltbWVkaWF0
+ZWx5IGFsbG93cyB5b3UgdG8gZW50ZXIgdGhlIEJJT1MgU2V0dXAgdXRpbGl0eS4gSWYgeW91IGFy
+ZQorICAgIGEgbGl0dGxlIGJpdCBsYXRlIHByZXNzaW5nIHRoZSA8RGVsPiBrZXksIFBPU1QgKFBv
+d2VyIE9uIFNlbGYgVGVzdCkgd2lsbAorICAgIGNvbnRpbnVlIHdpdGggaXRzIHRlc3Qgcm91dGlu
+ZXMsIHRodXMgcHJldmVudGluZyB5b3UgZnJvbSBpbnZva2luZyB0aGUgU2V0dXAuCisgICAgSW4g
+dGhpcyBjYXNlIHJlc3RhcnQgdGhlIHN5c3RlbSBieSBwcmVzc2luZyB0aGUg4oCdUmVzZXTigJ0g
+YnV0dG9uIG9yIHNpbXVsdGFuZW91c2x5CisgICAgcHJlc3NpbmcgdGhlIDxDdHJsPiwgPEFsdD4g
+YW5kIDxEZWxldGU+IGtleXMuIFlvdSBjYW4gYWxzbyByZXN0YXJ0IGJ5IHR1cm5pbmcgdGhlCisg
+ICAgc3lzdGVtIE9mZiBhbmQgYmFjayBPbiBhZ2Fpbi4KKyAgKiBSZXNldCBCSU9TIHNldHRpbmdz
+LiBXaXRoIHRoaXMgc3RlcCB3ZSB3b250IHRvIG1ha2Ugc3VyZSBCSU9TIGhhcyBkZWZpbmVkIGNv
+bW1vbiBzdGF0ZSB0byBhdm9pZAorICAgIHVuZG9jdW1lbnRlZCBpc3N1ZXMuIFN3aXRjaCB0byAi
+U2F2ZSAmIEV4aXQiIHRhYiwgY2hvaWNlICJSZXN0b3JlIERlZmF1bHRzIgorICAgIGFuZCBwcmVz
+cyBFbnRlci4gQW5zd2VyICJZZXMiIGFuZCBwcmVzcyBFbnRlciBhZ2Fpbi4gVGhlbiBjaG9pY2Ug
+IlNhdmUgQ2hhbmdlcyBhbmQgRXhpdCIKKyAgICBhbmQgcHJlc3MgRW50ZXIuCisgICogRW5hYmxl
+IFVFRkkgc3VwcG9ydC4gU3dpdGNoIHRvICJCb290IiB0YWIuIENob2ljZSAiQm9vdCBtb2RlIHNl
+bGVjdCIgYW5kIHNldCBpdCB0byAiVUVGSSIuCisgICAgU3dpdGNoIGluIHRoZSAiU2F2ZSAmIEV4
+aXQiIHRhYiB0byAiU2F2ZSBDaGFuZ2VzIGFuZCBFeGl0IiBhbmQgcHJlc3MgRW50ZXIuCisKK1Rv
+IG1ha2UgbmV0d29yayB3b3JrIGluIGJhcmVib3ggeW91IHdpbGwgbmVlZCB0byBwcmVwYXJlIGVm
+aSBiaW5hcnkgbmV0d29yayBkcml2ZXJzIGFuZCBwdXQgdGhlbSBpbiB0bworIm5ldHdvcmstZHJp
+dmVycyIgZGlyZWN0b3J5LgorCitUbyBjb250aW51ZSBwbGVhc2UgcHJvY2VlZCB3aXRoIGJhcmVi
+b3ggOnJlZjpgYmFyZWJveF9vbl91ZWZpYCBkb2N1bWVudGF0aW9uLgorCitMaW5rcworLS0tLS0K
+KworICAqIGh0dHBzOi8vd3d3LmliYXNlLmNvbS50dy9lbmdsaXNoL1Byb2R1Y3REZXRhaWwvRW1i
+ZWRkZWRDb21wdXRpbmcvTUk5OTEgCi0tIAoyLjExLjAKCgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
+c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9iYXJlYm94Cg==
