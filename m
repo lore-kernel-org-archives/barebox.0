@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1drIxU-0006WU-3H
- for barebox@lists.infradead.org; Mon, 11 Sep 2017 07:16:43 +0000
-Date: Mon, 11 Sep 2017 09:16:14 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20170911071614.ubhmelfunysejs4a@pengutronix.de>
-References: <6e6e8b7d-3fe7-04ca-c275-efbf89cec410@gr13.net>
+ by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dpZJT-0005gk-HS
+ for barebox@lists.infradead.org; Wed, 06 Sep 2017 12:20:14 +0000
+Date: Wed, 6 Sep 2017 14:19:49 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170906121949.5posvds6j7uevprg@pengutronix.de>
+References: <20170815134636.21236-1-jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <6e6e8b7d-3fe7-04ca-c275-efbf89cec410@gr13.net>
+In-Reply-To: <20170815134636.21236-1-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,76 +18,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: boot problem w/ barebox
-To: "Enrico Weigelt, metux IT consult" <enrico.weigelt@gr13.net>
-Cc: d.schultz@phytec.de, barebox@lists.infradead.org, ptxdist@pengutronix.de
+Subject: Re: Rework of the state/bootchooser feature documentaiton
+To: Juergen Borleis <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Sat, Sep 09, 2017 at 11:01:34AM +0200, Enrico Weigelt, metux IT consult =
-wrote:
-> Hi folks,
-> =
+On Tue, Aug 15, 2017 at 03:46:29PM +0200, Juergen Borleis wrote:
+> This is a rework of the documentation for the 'state framework' and
+> 'bootchooser' feature. While at it, some fixes are included as well.
+> 
+> Comments are welcome.
+> 
 
-> =
+Applied, thanks
 
-> I've got a really strange booting problem on an phycore-imx6
-> based board (pretty much the same as mira):
-> =
+Sascha
 
-> * barebox v2017.06.1-phy2 comes up properly, but cant boot
->   the kernel (v4.13) - just hangs w/o any output (not even
->   uncompression message)
-> * putting the kernel manually into the factory-image (sdcard)
->   w/ old 2015 barebox boots the kernel
-> * w/ DEBUG_LL + earlyprintk it doesn't even does that, just
->   hangs like w/ new barebox
-> =
 
-> =
-
-> Here's the last output I've got: (added few more debug outputs)
-> =
-
-> > Loading ARM Linux zImage '/mnt/mmc/boot/zImage'
-> > Loading devicetree from '/mnt/mmc/boot/imx6q-phytec-mira-rdk-emmc.dtb'
-> > Updating DT commandline:  console=3Dttymxc1,115200n8 root=3D/dev/mmcblk=
-0p2
-> rootwait rw earlyprintk=3D1
-> > DT commandline:  console=3Dttymxc1,115200n8  root=3D/dev/mmcblk0p2 root=
-wait rw
-> earlyprintk=3D1
-> > booting kernel with devicetree
-> > start_linux: kernel entry point: 12000000
-> >                            dtb: 18000000
-> >                           swap: 0
-> >                           arch: 0
-> > shutting down barebox
-> =
-
-> My first suspicion was zero'ed DT memory node (which OTOH doesn't
-> explain why earlyprintk doesn't work), but fixing that didn't help.
-> =
-
-> Could there be any vital low-level init missing in the new bbx ?
-> Maybe the entry point correct ?
-> =
-
-> Any ideas where I could have a deeper look at ?
-
-Try adding a #define DEBUG in linux-4.13/arch/arm/boot/compressed/head.S
-and make sure enabled DEBUG_LL and selected the right UART in your
-.config.
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+-- 
+Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
