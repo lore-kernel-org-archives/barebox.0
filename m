@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dpYyX-0003bl-5K
- for barebox@lists.infradead.org; Wed, 06 Sep 2017 11:58:35 +0000
-Date: Wed, 6 Sep 2017 13:58:11 +0200
+ id 1dpYzm-0003vJ-43
+ for barebox@lists.infradead.org; Wed, 06 Sep 2017 11:59:54 +0000
+Date: Wed, 6 Sep 2017 13:59:28 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170906115811.3kyz6zulvh33ljrj@pengutronix.de>
-References: <20170825140507.17500-1-l.stach@pengutronix.de>
+Message-ID: <20170906115928.wihqcpmoelctajrk@pengutronix.de>
+References: <20170827065200.11205-1-linux@rempel-privat.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170825140507.17500-1-l.stach@pengutronix.de>
+In-Reply-To: <20170827065200.11205-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: phycore-imx6ul: use MAC address from OCOTP
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH] phy: don't crush if we have no parent
+To: Oleksij Rempel <linux@rempel-privat.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Aug 25, 2017 at 04:05:07PM +0200, Lucas Stach wrote:
-> The Phycore MX6UL modules are correctly fused with a MAC address.
-> Use this for the Barebox network connection and fixing up the kernel
-> DT.
+On Sun, Aug 27, 2017 at 08:52:00AM +0200, Oleksij Rempel wrote:
+> current code will crash if DT has no PHY entry. With this patch
+> we will test if parent exist, before testing the parent device node.
 > 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 > ---
->  arch/arm/dts/imx6ul-phytec-phycore-som.dtsi | 4 ++++
->  1 file changed, 4 insertions(+)
+>  drivers/net/phy/phy.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/dts/imx6ul-phytec-phycore-som.dtsi b/arch/arm/dts/imx6ul-phytec-phycore-som.dtsi
-> index 96beef4e72f7..8cec1296a7f4 100644
-> --- a/arch/arm/dts/imx6ul-phytec-phycore-som.dtsi
-> +++ b/arch/arm/dts/imx6ul-phytec-phycore-som.dtsi
-> @@ -176,3 +176,7 @@
->  		};
->  	};
->  };
-> +
-> +&ocotp {
-> +	barebox,provide-mac-address = <&fec1 0x620 &fec2 0x632>;
-> +};
+> diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+> index 7132516aa..25ae40233 100644
+> --- a/drivers/net/phy/phy.c
+> +++ b/drivers/net/phy/phy.c
+> @@ -323,7 +323,7 @@ static struct phy_device *of_mdio_find_phy(struct eth_device *edev)
+>  	if (!IS_ENABLED(CONFIG_OFDEVICE))
+>  		return NULL;
+>  
+> -	if (!edev->parent->device_node)
+> +	if (!edev->parent || !edev->parent->device_node)
+>  		return NULL;
+>  
+>  	phy_node = of_parse_phandle(edev->parent->device_node, "phy-handle", 0);
 > -- 
 > 2.11.0
 > 
