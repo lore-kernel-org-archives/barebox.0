@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dpZeL-0000VA-RP
- for barebox@lists.infradead.org; Wed, 06 Sep 2017 12:41:56 +0000
-Date: Wed, 6 Sep 2017 14:41:23 +0200
+ by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dpZUr-0006E3-En
+ for barebox@lists.infradead.org; Wed, 06 Sep 2017 12:31:59 +0000
+Date: Wed, 6 Sep 2017 14:31:36 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170906124123.vq4zz5tssgrrx46f@pengutronix.de>
-References: <20170707220621.GA28540@ravnborg.org>
+Message-ID: <20170906123136.po6ksxc4arcrrcsq@pengutronix.de>
+References: <1503384247-43167-1-git-send-email-d.schultz@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170707220621.GA28540@ravnborg.org>
+In-Reply-To: <1503384247-43167-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,73 +22,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] at91: sync mach/barebox-arm-head.h
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/4] arm: dts: am335x: Add emmc node to phycore-som
+To: Daniel Schultz <d.schultz@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On Sat, Jul 08, 2017 at 12:06:21AM +0200, Sam Ravnborg wrote:
-> From 308f9f62554feaffaf3e2a0c7203e57b6fde8abc Mon Sep 17 00:00:00 2001
-> From: Sam Ravnborg <sam@ravnborg.org>
-> Date: Fri, 7 Jul 2017 17:53:59 +0200
-> Subject: [PATCH 1/2] at91: sync mach/barebox-arm-head.h
+On Tue, Aug 22, 2017 at 08:44:04AM +0200, Daniel Schultz wrote:
+> Add the EMMC node to the phycore-som device tree. It's by default
+> disabled, because NAND is the primary boot device.
 > 
-> To prepare for multi image support synch the barebox-arm-head.h
-> header with the arm version.
-> This include the reservation of a small area for board specific use
-> 
-> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 > ---
->  arch/arm/mach-at91/include/mach/barebox-arm-head.h | 18 +++++++++++++++---
->  1 file changed, 15 insertions(+), 3 deletions(-)
-> 
+>  arch/arm/dts/am335x-phytec-phycore-som.dtsi | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
 
 Applied, thanks
 
 Sascha
 
-> diff --git a/arch/arm/mach-at91/include/mach/barebox-arm-head.h b/arch/arm/mach-at91/include/mach/barebox-arm-head.h
-> index d4bb96f63..e0e07500a 100644
-> --- a/arch/arm/mach-at91/include/mach/barebox-arm-head.h
-> +++ b/arch/arm/mach-at91/include/mach/barebox-arm-head.h
-> @@ -7,13 +7,13 @@
->  #define AT91_EXV6	".word _barebox_bare_init_size\n"
->  #endif
+> 
+> diff --git a/arch/arm/dts/am335x-phytec-phycore-som.dtsi b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+> index 0b8c454..0025bc7 100644
+> --- a/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+> +++ b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+> @@ -58,6 +58,21 @@
+>  		>;
+>  	};
 >  
-> -static inline void barebox_arm_head(void)
-> +static inline void __barebox_arm_head(void)
->  {
->  	__asm__ __volatile__ (
->  #ifdef CONFIG_THUMB2_BAREBOX
->  #error Thumb2 is not supported
->  #else
-> -		"b barebox_arm_reset_vector\n"
-> +		"b 2f\n"
->  		"1: b 1b\n"
->  		"1: b 1b\n"
->  		"1: b 1b\n"
-> @@ -27,7 +27,19 @@ static inline void barebox_arm_head(void)
->  							 * barebox can skip relocation
->  							 */
->  		".word _barebox_image_size\n"		/* image size to copy */
-> +		".rept 8\n"
-> +		".word 0x55555555\n"
-> +		".endr\n"
-> +		"2:\n"
-> +	);
-> +}
+> +	emmc_pins: pinmux_emmc_pins {
+> +		pinctrl-single,pins = <
+> +			0x80 (PIN_INPUT_PULLUP | MUX_MODE2) /* gpmc_csn1.mmc1_clk */
+> +			0x84 (PIN_INPUT_PULLUP | MUX_MODE2) /* gpmc_csn2.mmc1_cmd */
+> +			0x00 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad0.mmc1_dat0 */
+> +			0x04 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad1.mmc1_dat1 */
+> +			0x08 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad2.mmc1_dat2 */
+> +			0x0c (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad3.mmc1_dat3 */
+> +			0x10 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad4.mmc1_dat4 */
+> +			0x14 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad5.mmc1_dat5 */
+> +			0x18 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad6.mmc1_dat6 */
+> +			0x1c (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad7.mmc1_dat7 */
+> +		>;
+> +	};
 > +
-> +static inline void barebox_arm_head(void)
-> +{
-> +	__barebox_arm_head();
-> +	__asm__ __volatile__ (
-> +		"b barebox_arm_reset_vector\n"
->  	);
->  }
+>  	emac_rmii1_pins: pinmux_emac_rmii1_pins {
+>  		pinctrl-single,pins = <
+>  			0x10c (PIN_INPUT_PULLDOWN | MUX_MODE1)	/* mii1_crs.rmii1_crs_dv */
+> @@ -157,6 +172,15 @@
+>  	status = "okay";
+>  };
 >  
-> -#endif /* __ASM_ARM_HEAD_H */
-> +#endif /* __MACH_ARM_HEAD_H */
+> +&mmc2 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&emmc_pins>;
+> +	bus-width = <8>;
+> +	status = "disabled";
+> +	ti,vcc-aux-disable-is-sleep;
+> +	non-removable;
+> +};
+> +
+>  &spi0 {
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&spi0_pins>;
 > -- 
-> 2.12.0
+> 2.7.4
 > 
 > 
 > _______________________________________________
