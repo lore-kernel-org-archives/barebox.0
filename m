@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dpZbl-0006ze-4f
- for barebox@lists.infradead.org; Wed, 06 Sep 2017 12:39:07 +0000
-Date: Wed, 6 Sep 2017 14:38:43 +0200
+ id 1dpZeL-0000VA-RP
+ for barebox@lists.infradead.org; Wed, 06 Sep 2017 12:41:56 +0000
+Date: Wed, 6 Sep 2017 14:41:23 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170906123843.h6hwlrnurgxa4d44@pengutronix.de>
-References: <20170802122512.GA16652@ravnborg.org>
- <20170804131045.29427-1-antonynpavlov@gmail.com>
+Message-ID: <20170906124123.vq4zz5tssgrrx46f@pengutronix.de>
+References: <20170707220621.GA28540@ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170804131045.29427-1-antonynpavlov@gmail.com>
+In-Reply-To: <20170707220621.GA28540@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,43 +22,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] gpio: clps711x: clps711x_gpio_dt_ids: add missing
- sentinel entry
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Sam Ravnborg <sam@ravnborg.org>
+Subject: Re: [PATCH 1/2] at91: sync mach/barebox-arm-head.h
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Fri, Aug 04, 2017 at 04:10:45PM +0300, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> Cc: Alexander Shiyan <shc_work@mail.ru>
+On Sat, Jul 08, 2017 at 12:06:21AM +0200, Sam Ravnborg wrote:
+> From 308f9f62554feaffaf3e2a0c7203e57b6fde8abc Mon Sep 17 00:00:00 2001
+> From: Sam Ravnborg <sam@ravnborg.org>
+> Date: Fri, 7 Jul 2017 17:53:59 +0200
+> Subject: [PATCH 1/2] at91: sync mach/barebox-arm-head.h
+> 
+> To prepare for multi image support synch the barebox-arm-head.h
+> header with the arm version.
+> This include the reservation of a small area for board specific use
+> 
+> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 > ---
+>  arch/arm/mach-at91/include/mach/barebox-arm-head.h | 18 +++++++++++++++---
+>  1 file changed, 15 insertions(+), 3 deletions(-)
 > 
-> Changes since v1:
-> 
->   * change formatting
-> 
->  drivers/gpio/gpio-clps711x.c | 1 +
->  1 file changed, 1 insertion(+)
 
 Applied, thanks
 
 Sascha
 
-> 
-> diff --git a/drivers/gpio/gpio-clps711x.c b/drivers/gpio/gpio-clps711x.c
-> index d71c606690..769e6ca4f7 100644
-> --- a/drivers/gpio/gpio-clps711x.c
-> +++ b/drivers/gpio/gpio-clps711x.c
-> @@ -74,6 +74,7 @@ out_err:
+> diff --git a/arch/arm/mach-at91/include/mach/barebox-arm-head.h b/arch/arm/mach-at91/include/mach/barebox-arm-head.h
+> index d4bb96f63..e0e07500a 100644
+> --- a/arch/arm/mach-at91/include/mach/barebox-arm-head.h
+> +++ b/arch/arm/mach-at91/include/mach/barebox-arm-head.h
+> @@ -7,13 +7,13 @@
+>  #define AT91_EXV6	".word _barebox_bare_init_size\n"
+>  #endif
 >  
->  static struct of_device_id __maybe_unused clps711x_gpio_dt_ids[] = {
->  	{ .compatible = "cirrus,clps711x-gpio", },
-> +	{ /* sentinel */ }
->  };
+> -static inline void barebox_arm_head(void)
+> +static inline void __barebox_arm_head(void)
+>  {
+>  	__asm__ __volatile__ (
+>  #ifdef CONFIG_THUMB2_BAREBOX
+>  #error Thumb2 is not supported
+>  #else
+> -		"b barebox_arm_reset_vector\n"
+> +		"b 2f\n"
+>  		"1: b 1b\n"
+>  		"1: b 1b\n"
+>  		"1: b 1b\n"
+> @@ -27,7 +27,19 @@ static inline void barebox_arm_head(void)
+>  							 * barebox can skip relocation
+>  							 */
+>  		".word _barebox_image_size\n"		/* image size to copy */
+> +		".rept 8\n"
+> +		".word 0x55555555\n"
+> +		".endr\n"
+> +		"2:\n"
+> +	);
+> +}
+> +
+> +static inline void barebox_arm_head(void)
+> +{
+> +	__barebox_arm_head();
+> +	__asm__ __volatile__ (
+> +		"b barebox_arm_reset_vector\n"
+>  	);
+>  }
 >  
->  static struct driver_d clps711x_gpio_driver = {
+> -#endif /* __ASM_ARM_HEAD_H */
+> +#endif /* __MACH_ARM_HEAD_H */
 > -- 
-> 2.13.3
+> 2.12.0
 > 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
