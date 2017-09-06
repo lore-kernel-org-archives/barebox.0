@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dpZBe-0001Ix-B7
- for barebox@lists.infradead.org; Wed, 06 Sep 2017 12:12:08 +0000
-Date: Wed, 6 Sep 2017 14:11:44 +0200
+ by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dpZHq-00005E-KE
+ for barebox@lists.infradead.org; Wed, 06 Sep 2017 12:18:31 +0000
+Date: Wed, 6 Sep 2017 14:18:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170906121144.r2lkljg5ugbhnxg2@pengutronix.de>
-References: <20170817093233.979-1-jbe@pengutronix.de>
+Message-ID: <20170906121804.qiwc764pjlg6jntl@pengutronix.de>
+References: <20170816122709.23129-1-jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170817093233.979-1-jbe@pengutronix.de>
+In-Reply-To: <20170816122709.23129-1-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,97 +22,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] state: use the given backend storage type name
+Subject: Re: [PATCH 1/3] state: provide an error message when an error occurs
 To: Juergen Borleis <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Aug 17, 2017 at 11:32:32AM +0200, Juergen Borleis wrote:
-> Change 119f92b27e131a0cb506fe8d8bffe8010fb14a3d already tried to fix it, but
-> forgets the 'direct' usecase.
-> 
-> The 'backend-storage-type' node is optional. Its default depends on the
-> capability of the used backend memory, which means "circular" or NULL.
-> The latter defaults to 'direct' in the routines.
-> If it is NULL, the devicetree fixup routine skips exporting a
-> 'backend-storage-type' node to the kernel's devicetree.
-> 
-> But currently if the 'backend-storage-type' node is explicitly given as
-> 'direct', it will be skipped silently and set to NULL instead. In this
-> case the user of the 'barebox-state' tool then ends up with the warning:
-> 
-> "No backend-storage-type found, using default"
-> 
-> which is annoying, because it was given.
-> 
-> Storing the given value will still use a NULL if the
-> 'backend-storage-type' node isn't defined, but stores everything else if
-> it is defined. Then the 'backend-storage-type' node is present in the
-> kernel's devicetree as well.
+On Wed, Aug 16, 2017 at 02:27:07PM +0200, Juergen Borleis wrote:
+> A simple typo makes the state framework fail, but without an error
+> message the developer is lost in the dark.
 > 
 > Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
+> ---
+>  common/state/state.c | 1 +
+>  1 file changed, 1 insertion(+)
 
 Applied, thanks
 
 Sascha
 
-> ---
->  Documentation/devicetree/bindings/barebox/barebox,state.rst | 6 ++++--
->  common/state/backend_storage.c                              | 9 +++++----
->  2 files changed, 9 insertions(+), 6 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/barebox/barebox,state.rst b/Documentation/devicetree/bindings/barebox/barebox,state.rst
-> index 4b1aade66..cebb5f828 100644
-> --- a/Documentation/devicetree/bindings/barebox/barebox,state.rst
-> +++ b/Documentation/devicetree/bindings/barebox/barebox,state.rst
-> @@ -48,8 +48,10 @@ Optional Properties
->  ###################
+> diff --git a/common/state/state.c b/common/state/state.c
+> index 121ba0c6d..fc822b21b 100644
+> --- a/common/state/state.c
+> +++ b/common/state/state.c
+> @@ -240,6 +240,7 @@ static int state_convert_node_variable(struct state *state,
 >  
->  * ``backend-stridesize``: stride counted in bytes. See note below.
-> -* ``backend-storage-type``: Defines the backend storage type to ``direct`` or
-> -  ``circular``. Defaults to ``circular`` for media which requires erase cycles.
-> +* ``backend-storage-type``: Defines the backend storage type to ``direct``,
-> +  ``circular`` or ``noncircular``. If the backend memory needs to be erased
-> +  prior a write it defaults to the ``circular`` storage backend type, for backend
-> +  memories like RAMs or EEPROMs it defaults to the ``direct`` storage backend type.
->  * ``algo``: A HMAC algorithm used to detect manipulation of the data
->    or header, sensible values follow this pattern ``hmac(<HASH>)``,
->    e.g. ``hmac(sha256)``. Only available for the ``backend-type`` ``raw``.
-> diff --git a/common/state/backend_storage.c b/common/state/backend_storage.c
-> index 2e2478cb6..825db824b 100644
-> --- a/common/state/backend_storage.c
-> +++ b/common/state/backend_storage.c
-> @@ -357,11 +357,12 @@ static int state_storage_file_buckets_init(struct state_backend_storage *storage
->   * @param dev_offset Offset in the device to start writing at.
->   * @param max_size Maximum size of the data. May be 0 for infinite.
->   * @param stridesize Distance between two copies of the data. Not relevant for MTD
-> - * @param storagetype Type of the storage backend. This may be NULL where we
-> - * autoselect some backwardscompatible backend options
-> + * @param storagetype Type of the storage backend. May be NULL for autoselection.
->   * @return 0 on success, -errno otherwise
->   *
-> - * Depending on the filetype, we create mtd buckets or normal file buckets.
-> + * If the backend memory needs to be erased prior a write, the @b storagetype
-> + * defaults to 'circular' storage backend type, for backend memories like RAMs
-> + * or EEPROMs @b storagetype defaults to the 'direct' storage backend type.
->   */
->  int state_storage_init(struct state *state, const char *path,
->  		       off_t offset, size_t max_size, uint32_t stridesize,
-> @@ -373,6 +374,7 @@ int state_storage_init(struct state *state, const char *path,
->  
->  	INIT_LIST_HEAD(&storage->buckets);
->  	storage->dev = &state->dev;
-> +	storage->name = storagetype;
->  	storage->stridesize = stridesize;
->  	storage->offset = offset;
->  	storage->max_size = max_size;
-> @@ -387,7 +389,6 @@ int state_storage_init(struct state *state, const char *path,
->  			storage->name = "circular";
->  			circular = true;
->  		} else if (!strcmp(storagetype, "noncircular")) {
-> -			storage->name = "noncircular";
->  			dev_warn(storage->dev, "using old format circular storage type.\n");
->  			circular = false;
->  		} else {
+>  	vtype = state_find_type_by_name(type_name);
+>  	if (!vtype) {
+> +		dev_dbg(&state->dev, "Error: invalid variable type '%s'\n", type_name);
+>  		ret = -ENOENT;
+>  		goto out_free;
+>  	}
 > -- 
 > 2.11.0
 > 
