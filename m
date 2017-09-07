@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dqCjq-0008Mg-IX
- for barebox@lists.infradead.org; Fri, 08 Sep 2017 06:26:05 +0000
-Date: Fri, 8 Sep 2017 08:25:40 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170908062540.pyy66cjgzsamhd6x@pengutronix.de>
-References: <20170906144410.525-1-linux@rempel-privat.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170906144410.525-1-linux@rempel-privat.de>
+ id 1dptDJ-0004wC-8Z
+ for barebox@lists.infradead.org; Thu, 07 Sep 2017 09:35:11 +0000
+Received: by mail-lf0-x243.google.com with SMTP id c8so4172772lfe.2
+ for <barebox@lists.infradead.org>; Thu, 07 Sep 2017 02:34:47 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu,  7 Sep 2017 12:34:36 +0300
+Message-Id: <20170907093438.30895-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,59 +16,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/4] privide ns16550 support for AR9344
-To: Oleksij Rempel <linux@rempel-privat.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 0/2] gpio: gpio-generic: add dt support
+To: barebox@lists.infradead.org
 
-On Wed, Sep 06, 2017 at 04:44:06PM +0200, Oleksij Rempel wrote:
-> changes:
-> v3:
->  - fix compile for ppc, arm and sandbox.
-> 
-> v2:
->  - fix compile if OF is not set.
->  - fix compile for x86
+Changes since v1:
 
-Applied, thanks
+  * fix 'gpio: gpio-generic: fix bgpio_map()' according to Sascha's remark
+    see http://lists.infradead.org/pipermail/barebox/2017-September/031044.html for details.
 
-Sascha
 
-> 
-> Oleksij Rempel (4):
->   of: base: port of_device_is_big_endian from linux
->   asm-generic: partially sync io.h with linux kernel
->   x86: asm: include asm-generic.h
->   serial: ns16550: provide big-endian support
-> 
->  arch/arm/include/asm/io.h       |   4 +-
->  arch/ppc/include/asm/io.h       |   2 +
->  arch/sandbox/include/asm/io.h   |   3 +-
->  arch/x86/include/asm/io.h       |  15 +++
->  drivers/of/base.c               |  23 ++++
->  drivers/serial/serial_ns16550.c |  19 +++-
->  include/asm-generic/io.h        | 245 +++++++++++++++++++++++++++++++++++-----
->  include/of.h                    |   6 +
->  8 files changed, 284 insertions(+), 33 deletions(-)
-> 
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Antony Pavlov (2):
+  gpio: gpio-generic: fix bgpio_map()
+  gpio: gpio-generic: add dt support
+
+ drivers/gpio/gpio-generic.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.14.1
+
 
 _______________________________________________
 barebox mailing list
