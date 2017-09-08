@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dptDK-0004yi-Fi
- for barebox@lists.infradead.org; Thu, 07 Sep 2017 09:35:12 +0000
-Received: by mail-lf0-x241.google.com with SMTP id l196so4160289lfl.3
- for <barebox@lists.infradead.org>; Thu, 07 Sep 2017 02:34:49 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  7 Sep 2017 12:34:38 +0300
-Message-Id: <20170907093438.30895-3-antonynpavlov@gmail.com>
-In-Reply-To: <20170907093438.30895-1-antonynpavlov@gmail.com>
+ id 1dqClZ-0000K9-JC
+ for barebox@lists.infradead.org; Fri, 08 Sep 2017 06:27:51 +0000
+Date: Fri, 8 Sep 2017 08:27:27 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170908062727.2pzamg5xhao2nsl7@pengutronix.de>
 References: <20170907093438.30895-1-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20170907093438.30895-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,45 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/2] gpio: gpio-generic: add dt support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 0/2] gpio: gpio-generic: add dt support
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/gpio/gpio-generic.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+On Thu, Sep 07, 2017 at 12:34:36PM +0300, Antony Pavlov wrote:
+> Changes since v1:
+> 
+>   * fix 'gpio: gpio-generic: fix bgpio_map()' according to Sascha's remark
+>     see http://lists.infradead.org/pipermail/barebox/2017-September/031044.html for details.
+> 
+> 
+> Antony Pavlov (2):
+>   gpio: gpio-generic: fix bgpio_map()
+>   gpio: gpio-generic: add dt support
+> 
+>  drivers/gpio/gpio-generic.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
+> 
 
-diff --git a/drivers/gpio/gpio-generic.c b/drivers/gpio/gpio-generic.c
-index 01a66d6645..14b451bfff 100644
---- a/drivers/gpio/gpio-generic.c
-+++ b/drivers/gpio/gpio-generic.c
-@@ -410,9 +410,18 @@ static struct platform_device_id bgpio_id_table[] = {
- 	{ }
- };
- 
-+static struct of_device_id __maybe_unused bgpio_of_match[] = {
-+	{
-+		.compatible = "wd,mbl-gpio",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
- static struct driver_d bgpio_driver = {
- 	.name		= "basic-mmio-gpio",
- 	.id_table	= bgpio_id_table,
-+	.of_compatible	= DRV_OF_COMPAT(bgpio_of_match),
- 	.probe		= bgpio_dev_probe,
- 	.remove		= bgpio_dev_remove,
- };
+Applied, thanks
+
+Sascha
+
 -- 
-2.14.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
