@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dptyJ-0004Ld-F9
- for barebox@lists.infradead.org; Thu, 07 Sep 2017 10:23:45 +0000
-Date: Thu, 7 Sep 2017 12:23:19 +0200
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Message-ID: <20170907102319.nu2dbusaznkaw7r3@pengutronix.de>
+ id 1dqCjq-0008Mg-IX
+ for barebox@lists.infradead.org; Fri, 08 Sep 2017 06:26:05 +0000
+Date: Fri, 8 Sep 2017 08:25:40 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20170908062540.pyy66cjgzsamhd6x@pengutronix.de>
 References: <20170906144410.525-1-linux@rempel-privat.de>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -26,8 +26,6 @@ Subject: Re: [PATCH 0/4] privide ns16550 support for AR9344
 To: Oleksij Rempel <linux@rempel-privat.de>
 Cc: barebox@lists.infradead.org
 
-Subject -> provide
-             ~
 On Wed, Sep 06, 2017 at 04:44:06PM +0200, Oleksij Rempel wrote:
 > changes:
 > v3:
@@ -36,6 +34,11 @@ On Wed, Sep 06, 2017 at 04:44:06PM +0200, Oleksij Rempel wrote:
 > v2:
 >  - fix compile if OF is not set.
 >  - fix compile for x86
+
+Applied, thanks
+
+Sascha
+
 > 
 > Oleksij Rempel (4):
 >   of: base: port of_device_is_big_endian from linux
