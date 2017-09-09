@@ -1,21 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra.gr13.net ([46.4.151.110])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dqD8T-0002fo-M1
- for barebox@lists.infradead.org; Fri, 08 Sep 2017 06:51:31 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.84_2)
- (envelope-from <sha@pengutronix.de>) id 1dqD87-00026F-Uj
- for barebox@lists.infradead.org; Fri, 08 Sep 2017 08:51:07 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.84_2)
- (envelope-from <sha@pengutronix.de>) id 1dqD87-0002j5-O5
- for barebox@lists.infradead.org; Fri, 08 Sep 2017 08:51:07 +0200
-Date: Fri, 8 Sep 2017 08:51:07 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170908065107.h4yliy26nv36b4ee@pengutronix.de>
+ id 1dqbel-0007zS-Jd
+ for barebox@lists.infradead.org; Sat, 09 Sep 2017 09:02:29 +0000
+From: "Enrico Weigelt, metux IT consult" <enrico.weigelt@gr13.net>
+Message-ID: <6e6e8b7d-3fe7-04ca-c275-efbf89cec410@gr13.net>
+Date: Sat, 9 Sep 2017 11:01:34 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,159 +16,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: v2017.09.0
-To: Barebox List <barebox@lists.infradead.org>
+Subject: boot problem w/ barebox
+To: ptxdist@pengutronix.de, barebox@lists.infradead.org, d.schultz@phytec.de, c.hemp@phytec.de
 
-
-Hi All,
-
-I just released barebox-v2017.09.0. By now I hopefully kept up with the
-mails and patches on the list. If I missed any patches or mails that
-require my attention please ping me.
-
-Also there is a stable release for August outstanding with tftp-hpa
-support fixed. I'll release it shortly, but some feedback if the patches
-are working as expected would be appreciated before the release.
-
-See below for a list of patches that went into this release.
-
-Sascha
-
-----------------------------------------------------------------
-Andrey Gusakov (10):
-      video: tc358767: fix EDID read for DP displays
-      video: tc358767: fix DP0_MISC register set
-      video: tc358767: fix timing calculation
-      video: tc358767: fix AUXDATAn registers access during write
-      video: tc358767: do not fail if sink supports more than 2 lanes
-      video: tc358767: support newer DPCD revisions and higher data rates
-      video: tc358767: optimize aux i2c bus checks
-      video: tc358767: optimize DPCD register write
-      video: tc358767: filter out modes with too high pixelclock
-      video: tc358767: accept any hsync and vsync polatiry
-
-Andrey Smirnov (9):
-      clk: i.MX7: Remove unused UART clocks array
-      ARM: i.MX: Import mx7d_pins.h from U-Boot
-      ARM: i.MX: Add mx7_setup_pad()
-      ARM: i.MX: Add imx7_uart_setup_ll()
-      ARM: i.MX: Add minimal imx7-ccm-regs.h
-      ARM: i.MX: Add ARCH_HAD_FEC_IMX to ARCH_IMX7
-      ARM: i.MX: Import imx7-iomuxc-gpr.h from Linux kernel
-      include: Add phy-id-list.h
-      ARM: i.MX: Add support for NXP i.MX7 SABRESD board
-
-Antony Pavlov (1):
-      gpio: clps711x: clps711x_gpio_dt_ids: add missing sentinel entry
-
-Bastian Stender (1):
-      video/ssd1307fb: add support for VBAT
-
-Ian Abbott (1):
-      readlink: Improve -f handling
-
-Lucas Stach (29):
-      ARM: rdu2: use the upstream accepted DT
-      ARM: rdu2: remove USB VBUS GPIO init
-      ARM: rdu2: remove unecessary includes
-      ARM: rdu2: include defaultenv from board
-      ARM: imx: remove DCD files from Makefiles
-      ARM: imx6: move MX6UL enet setup out of CPU string setting
-      ARM: imx6: add static annotation to locally used functions
-      video: tc358767: demote ASSR enable failure to debug level
-      video: IPUv3-LDB: fix dual-channel mode
-      clk: clk-fixed-factor: remove leftover debugging
-      ARM: imx: kindle: select ARM_LINUX
-      ARM: imx: hab: depend on OFDEVICE
-      ARM: at91: animeo: depend on !CONSOLE_NONE
-      dts: update to v4.13-rc2
-      Merge branch 'for-next/at91'
-      Merge branch 'for-next/dts'
-      Merge branch 'for-next/efi'
-      Merge branch 'for-next/imx'
-      Merge branch 'for-next/misc'
-      Merge branch 'for-next/mmc'
-      Merge branch 'for-next/nvmem'
-      Merge branch 'for-next/socfpga'
-      Merge branch 'for-next/state'
-      Merge branch 'for-next/tc358767'
-      ARM: imx: fix phyBOARD-Zeta pinfunc typo
-      ARM: imx: build imx6.o as ARMv7
-      ARM: imx: ccmx53: select I2C
-      ARM: imx: add stub for imx7_uart_setup_ll
-      ARM: imx7: sabreSD: remove duplicate DT nodes
-
-Oleksij Rempel (6):
-      nvmem: snvs_lpgpr: sync with latest version for kernel
-      dts: arm: imx6qdl: provide snvs-lpgpr device
-      ARM: riotboard: provide standby on power off option
-      ARM: i.MX: provide handler for power off over standby
-      regulator: pfuze: provide power over standby handler
-      MIPS: add 74Kc info
-
-Peter Seiderer (1):
-      mmc: add eMMC v5 and V5.1 detection support
-
-Philipp Zabel (2):
-      state: backend_bucket_circular: promote old state debug message to in=
-fo
-      state: backend_storage: remove unreachable error message
-
-Sam Ravnborg (6):
-      arm: at91 bootstrap: declare local function static
-      macb: fix clock probing with DT
-      clk: at91: fix clk-main
-      pinctrl: at91: move initcalls to postcore_initcall
-      mci: atmel_mci: fix devinfo DEV with OF enabled
-      atmel_lcdfb: fix so the correct guard_time is used
-
-Sascha Hauer (7):
-      mmc: Consistently use EXT_CSD_* names from eMMC 5.1 spec
-      mmc_extcsd command: Fix multiline prints
-      mmc_extcsd command: rework
-      ARM: imx: phyCORE i.MX7 on phyBOARD-Zeta support
-      fs: avoid pathes with '//' in __canonicalize_path()
-      fs: Don't bother filesystems without link support with additional sta=
-t() calls
-      Release v2017.09.0
-
-Steffen Trumtrar (11):
-      state: fix compile warnings for dev_err expansion
-      common: efi: do not use undefined kconfig option
-      fs: efi: return with correct error code in efifs_stat
-      devfs-core: add function to find cdev by partuuid
-      of: of_path: find device via partuuid
-      scripts: socfpga_get_sequencer: update importer
-      Documentation: socfpga: update sequencer documentation
-      efi: efi: load state from devicetree
-      blspec: skip all devicetree tests if entry doesn't specify one
-      efi: efi: register barebox-update handler
-      efi_defconfig: enable STATE
-
-Uwe Kleine-K=F6nig (9):
-      ARM: imx: use register defines in imxcfg files instead of plain numbe=
-rs
-      scripts: Provide script that helps using cpp defines in dcd tables
-      ARM: i.MX7: provide DDR register definitions
-      ARM: use register defines in the dcd table of the WaRP7
-      ARM: imx: clocksource: Use per clock for determining parent freq
-      ARM: imx: clocksource: error out if clk freq is 0
-      ARM: imx: clocksource: make warning a bit more helpful
-      ARM: i.MX7: drop now useless imx7s.dtsi
-      ARM: i.MX7: Warp7: Add some code comments
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgZm9sa3MsCgoKSSd2ZSBnb3QgYSByZWFsbHkgc3RyYW5nZSBib290aW5nIHByb2JsZW0gb24g
+YW4gcGh5Y29yZS1pbXg2CmJhc2VkIGJvYXJkIChwcmV0dHkgbXVjaCB0aGUgc2FtZSBhcyBtaXJh
+KToKCiogYmFyZWJveCB2MjAxNy4wNi4xLXBoeTIgY29tZXMgdXAgcHJvcGVybHksIGJ1dCBjYW50
+IGJvb3QKICAgdGhlIGtlcm5lbCAodjQuMTMpIC0ganVzdCBoYW5ncyB3L28gYW55IG91dHB1dCAo
+bm90IGV2ZW4KICAgdW5jb21wcmVzc2lvbiBtZXNzYWdlKQoqIHB1dHRpbmcgdGhlIGtlcm5lbCBt
+YW51YWxseSBpbnRvIHRoZSBmYWN0b3J5LWltYWdlIChzZGNhcmQpCiAgIHcvIG9sZCAyMDE1IGJh
+cmVib3ggYm9vdHMgdGhlIGtlcm5lbAoqIHcvIERFQlVHX0xMICsgZWFybHlwcmludGsgaXQgZG9l
+c24ndCBldmVuIGRvZXMgdGhhdCwganVzdAogICBoYW5ncyBsaWtlIHcvIG5ldyBiYXJlYm94CgoK
+SGVyZSdzIHRoZSBsYXN0IG91dHB1dCBJJ3ZlIGdvdDogKGFkZGVkIGZldyBtb3JlIGRlYnVnIG91
+dHB1dHMpCgogPiBMb2FkaW5nIEFSTSBMaW51eCB6SW1hZ2UgJy9tbnQvbW1jL2Jvb3QvekltYWdl
+JwogPiBMb2FkaW5nIGRldmljZXRyZWUgZnJvbSAnL21udC9tbWMvYm9vdC9pbXg2cS1waHl0ZWMt
+bWlyYS1yZGstZW1tYy5kdGInCiA+IFVwZGF0aW5nIERUIGNvbW1hbmRsaW5lOiAgY29uc29sZT10
+dHlteGMxLDExNTIwMG44IApyb290PS9kZXYvbW1jYmxrMHAyIHJvb3R3YWl0IHJ3IGVhcmx5cHJp
+bnRrPTEKID4gRFQgY29tbWFuZGxpbmU6ICBjb25zb2xlPXR0eW14YzEsMTE1MjAwbjggIHJvb3Q9
+L2Rldi9tbWNibGswcDIgCnJvb3R3YWl0IHJ3IGVhcmx5cHJpbnRrPTEKID4gYm9vdGluZyBrZXJu
+ZWwgd2l0aCBkZXZpY2V0cmVlCiA+IHN0YXJ0X2xpbnV4OiBrZXJuZWwgZW50cnkgcG9pbnQ6IDEy
+MDAwMDAwCiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIGR0YjogMTgwMDAwMDAKID4gICAg
+ICAgICAgICAgICAgICAgICAgICAgICBzd2FwOiAwCiA+ICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgYXJjaDogMAogPiBzaHV0dGluZyBkb3duIGJhcmVib3gKCk15IGZpcnN0IHN1c3BpY2lvbiB3
+YXMgemVybydlZCBEVCBtZW1vcnkgbm9kZSAod2hpY2ggT1RPSCBkb2Vzbid0CmV4cGxhaW4gd2h5
+IGVhcmx5cHJpbnRrIGRvZXNuJ3Qgd29yayksIGJ1dCBmaXhpbmcgdGhhdCBkaWRuJ3QgaGVscC4K
+CkNvdWxkIHRoZXJlIGJlIGFueSB2aXRhbCBsb3ctbGV2ZWwgaW5pdCBtaXNzaW5nIGluIHRoZSBu
+ZXcgYmJ4ID8KTWF5YmUgdGhlIGVudHJ5IHBvaW50IGNvcnJlY3QgPwoKQW55IGlkZWFzIHdoZXJl
+IEkgY291bGQgaGF2ZSBhIGRlZXBlciBsb29rIGF0ID8KCgp0aHguCgotLW10eAoKLS0gCgptaXQg
+ZnJldW5kbGljaGVuIEdyw7zDn2VuCi0tCkVucmljbywgU29obiB2b24gV2lsZnJpZWQsIGEuZC5G
+LiBXZWlnZWx0LAptZXR1eCBJVCBjb25zdWx0aW5nCis0OS0xNTEtMjc1NjUyODcKCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
+aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
