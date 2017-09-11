@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from zimbra.gr13.net ([46.4.151.110])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dczjZ-00036q-Iu
- for barebox@lists.infradead.org; Wed, 02 Aug 2017 19:55:11 +0000
-Date: Wed, 2 Aug 2017 21:54:40 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20170802195440.GA12893@ravnborg.org>
-References: <20170802193907.4317-1-u.kleine-koenig@pengutronix.de>
+ id 1drTk8-0003V5-PN
+ for barebox@lists.infradead.org; Mon, 11 Sep 2017 18:47:39 +0000
+References: <6e6e8b7d-3fe7-04ca-c275-efbf89cec410@gr13.net>
+ <20170911071614.ubhmelfunysejs4a@pengutronix.de>
+From: "Enrico Weigelt, metux IT consult" <enrico.weigelt@gr13.net>
+Message-ID: <207dcf09-6116-29e2-e854-aa3e02cc0c10@gr13.net>
+Date: Mon, 11 Sep 2017 20:47:03 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170802193907.4317-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170911071614.ubhmelfunysejs4a@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,38 +19,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] spi: imx: don't loop endlessly
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: boot problem w/ barebox
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: d.schultz@phytec.de, barebox@lists.infradead.org, ptxdist@pengutronix.de
 
-Hi Uwe.
-
-On Wed, Aug 02, 2017 at 09:39:05PM +0200, Uwe Kleine-K=F6nig wrote:
-> Hello,
-> =
-
-> during bringup of an i.MX7 board I am faced with cspi_2_3_xchg_single not
-> returning. I don't know yet why this happens, but with this patch set it =
-at least
-> doesn't block barebox.
-
-Your description reminded me of a similar issue we hit with SPI transfer.
-Back then Sascha fixed it but with some open question marks.
-
-See 9da7e18573c725eaa6123c401df57d6a4f6a0ea2
-("spi: i.MX: reset controller on init")
-
-But as this is the latest patch to the imx_spi.c file you likely
-have already looked at it.
-But mentioned just in case..
-
-	Sam
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMTEuMDkuMjAxNyAwOToxNiwgVXdlIEtsZWluZS1Lw7ZuaWcgd3JvdGU6Cgo+IFRyeSBhZGRp
+bmcgYSAjZGVmaW5lIERFQlVHIGluIGxpbnV4LTQuMTMvYXJjaC9hcm0vYm9vdC9jb21wcmVzc2Vk
+L2hlYWQuUyA+IGFuZCBtYWtlIHN1cmUgZW5hYmxlZCBERUJVR19MTCBhbmQgc2VsZWN0ZWQgdGhl
+IHJpZ2h0IFVBUlQgaW4geW91cj4gCi5jb25maWcuCkFmdGVyIGRlZXAgZGlnZ2luZyBpbiB0aGUg
+aW5pdCBjb2RlLCBJJ3ZlIG1lYW53aGlsZSBmaXhlZCBpdCAoYXQgbGVhc3QKd2l0aCBzZWxmLWNv
+bXBpbGVkIDIwMTUgYmJ4IC0gZGlkbid0IHRyeSBuZXdlciB2ZXJzaW9ucyB5ZXQpLiBJbiB0aGUg
+ZW5kCndhcyBqdXN0IGR0IG1pc2NvbmZpZ3VyYXRpb24gKHRoYXQgd2Fzbid0IG9idmlvdXMgaW4g
+dGhpcyBkdHMgd29vZCwKd2hpY2ggSSBwb3J0ZWQgZnJvbSB0aGUgb2xkIDQuMS1waHkgdHJlZSk6
+IHRoZSBkZWJ1ZyB1YXJ0IHdhcyBkaXNhYmxlZC4KClRoaXMgbGVhZCB0byBzb21lIGZ1bm55IHNp
+dHVhdGlvbnM6CgoqIERFQlVHX2xsIHdvcmtlZCBhZnRlciBmaXhpbmcgdGhlIHBvcnQgbnVtYmVy
+ICh0aGUgY291bnRpbmcgaXMgYSBiaXQKICAgY29uZnVzaW5nOiB0dHlteGMxIGlzICMyKQoqIGNv
+bnNvbGUgd29ya3MgdXAgdG8gdGhlIHBvaW50IHdoZXJlIHRoZSB1YXJ0cyB0dHkgZHJpdmVycyBh
+cmUKICAgY29uZmlndXJlZC4gYXMgdGhlIHVhcnQgd2FzIGRpc2FibGVkIGluIGR0LCBubyB0dHkg
+ZHJpdmVyIHdhcwogICBhc3NvY2lhdGVkICh3aGlsZSBsbCBkcml2ZXIgd2FzIHN0aWxsIGFjdGl2
+ZSksIHNvIHRoZSBjbG9jayB3YXMKICAgZGlzYWJsZWQgb24gc29tZSBwb2ludCwgbGVhZGluZyB0
+byBzdXBwb3NlZGx5IGhhbmd1cCAoYWN0dWFsbHksCiAgIGp1c3QgdGhlIGNvbnNvbGUgd2FzIGdv
+bmUpCiogaGFja2luZyBvdXQgdGhlIGNsb2NrIGRpc2FibGUgbGVhZCBmdXJ0aGVyIHRvIHRoZSBw
+b2ludCB3aGVyZSByb290ZnMKICAgaXMgbW91bnRlZCBhbmQgaW5pdCBzdGFydGVkCiogaW5pdCBj
+b3VsZG4ndCBkbyBtdWNoLCBhcyBpdCBkaWRuJ3QgZ2V0IGEgY29uc29sZS4gZmlyc3QgSSBzdXNw
+ZWN0ZWQKICAgcm9vdGZzIHdvdWxkIGJlIG1vdW50ZWQgdG9vIGxhdGUsIGJ1dCB0aGVuIHR1cm5l
+ZCBvdXQgdGhhdAogICAvZGV2L2NvbnNvbGUgaW5kZWVkIHdhcyB0aGVyZSAoaW4gdGhlIGludGVy
+bmFsIGluaXRyYW1mcyksIGJ1dCBvcGVuKCkKICAgcmV0dXJuZWQgRU5PREVWIChobW0sIHdlIHNo
+b3VsZCBoYXZlIHZlcmJvc2UgZXJybm8gcHJpbnRvdXRzIC0gYWxyZWFkeQogICBnb3Qgc29tZSBw
+YXRjaGVzIGZvciB0aGF0IGluIHNvbWUgb3RoZXIgdHJlZXMgLi4uKQoqIHRoZSByZWFzb24gZm9y
+IEVOT0RFViB3YXMgdGhlIGxhY2sgb2YgYW4gdHR5IGRyaXZlciBmb3IgdGhlIHVhcnQKICAgKHBy
+aW50aygpIHN0aWxsIHdlbnQgdGhyb3VnaCBsbCBkcml2ZXIpIC0tIG1heSB3ZSBzaG91bGQgYWRk
+IGEgcHJvcGVyCiAgIHdhcm5pbmcgZm9yIHRoYXQgLi4uCgoKLS1tdHgKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
