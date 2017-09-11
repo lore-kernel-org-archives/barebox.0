@@ -1,13 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra.gr13.net ([46.4.151.110])
+Received: from mail-pf0-x230.google.com ([2607:f8b0:400e:c00::230])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dqbel-0007zS-Jd
- for barebox@lists.infradead.org; Sat, 09 Sep 2017 09:02:29 +0000
-From: "Enrico Weigelt, metux IT consult" <enrico.weigelt@gr13.net>
-Message-ID: <6e6e8b7d-3fe7-04ca-c275-efbf89cec410@gr13.net>
-Date: Sat, 9 Sep 2017 11:01:34 +0200
+ id 1drEzQ-0008VA-7i
+ for barebox@lists.infradead.org; Mon, 11 Sep 2017 03:02:25 +0000
+Received: by mail-pf0-x230.google.com with SMTP id g13so12097744pfm.2
+ for <barebox@lists.infradead.org>; Sun, 10 Sep 2017 20:02:02 -0700 (PDT)
+Received: from ubuntu ([218.6.242.42])
+ by smtp.gmail.com with ESMTPSA id 20sm13294380pft.109.2017.09.10.20.01.59
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Sun, 10 Sep 2017 20:02:01 -0700 (PDT)
+From: zjh <jianhuizhao.329@gmail.com>
+Date: Mon, 11 Sep 2017 11:01:56 +0800
+Message-ID: <20170911025933.GA58774@ubuntu>
 MIME-Version: 1.0
-Content-Language: en-US
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,39 +23,17 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: boot problem w/ barebox
-To: ptxdist@pengutronix.de, barebox@lists.infradead.org, d.schultz@phytec.de, c.hemp@phytec.de
+Subject: PBL using xz
+To: barebox@lists.infradead.org
 
-SGkgZm9sa3MsCgoKSSd2ZSBnb3QgYSByZWFsbHkgc3RyYW5nZSBib290aW5nIHByb2JsZW0gb24g
-YW4gcGh5Y29yZS1pbXg2CmJhc2VkIGJvYXJkIChwcmV0dHkgbXVjaCB0aGUgc2FtZSBhcyBtaXJh
-KToKCiogYmFyZWJveCB2MjAxNy4wNi4xLXBoeTIgY29tZXMgdXAgcHJvcGVybHksIGJ1dCBjYW50
-IGJvb3QKICAgdGhlIGtlcm5lbCAodjQuMTMpIC0ganVzdCBoYW5ncyB3L28gYW55IG91dHB1dCAo
-bm90IGV2ZW4KICAgdW5jb21wcmVzc2lvbiBtZXNzYWdlKQoqIHB1dHRpbmcgdGhlIGtlcm5lbCBt
-YW51YWxseSBpbnRvIHRoZSBmYWN0b3J5LWltYWdlIChzZGNhcmQpCiAgIHcvIG9sZCAyMDE1IGJh
-cmVib3ggYm9vdHMgdGhlIGtlcm5lbAoqIHcvIERFQlVHX0xMICsgZWFybHlwcmludGsgaXQgZG9l
-c24ndCBldmVuIGRvZXMgdGhhdCwganVzdAogICBoYW5ncyBsaWtlIHcvIG5ldyBiYXJlYm94CgoK
-SGVyZSdzIHRoZSBsYXN0IG91dHB1dCBJJ3ZlIGdvdDogKGFkZGVkIGZldyBtb3JlIGRlYnVnIG91
-dHB1dHMpCgogPiBMb2FkaW5nIEFSTSBMaW51eCB6SW1hZ2UgJy9tbnQvbW1jL2Jvb3QvekltYWdl
-JwogPiBMb2FkaW5nIGRldmljZXRyZWUgZnJvbSAnL21udC9tbWMvYm9vdC9pbXg2cS1waHl0ZWMt
-bWlyYS1yZGstZW1tYy5kdGInCiA+IFVwZGF0aW5nIERUIGNvbW1hbmRsaW5lOiAgY29uc29sZT10
-dHlteGMxLDExNTIwMG44IApyb290PS9kZXYvbW1jYmxrMHAyIHJvb3R3YWl0IHJ3IGVhcmx5cHJp
-bnRrPTEKID4gRFQgY29tbWFuZGxpbmU6ICBjb25zb2xlPXR0eW14YzEsMTE1MjAwbjggIHJvb3Q9
-L2Rldi9tbWNibGswcDIgCnJvb3R3YWl0IHJ3IGVhcmx5cHJpbnRrPTEKID4gYm9vdGluZyBrZXJu
-ZWwgd2l0aCBkZXZpY2V0cmVlCiA+IHN0YXJ0X2xpbnV4OiBrZXJuZWwgZW50cnkgcG9pbnQ6IDEy
-MDAwMDAwCiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIGR0YjogMTgwMDAwMDAKID4gICAg
-ICAgICAgICAgICAgICAgICAgICAgICBzd2FwOiAwCiA+ICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgYXJjaDogMAogPiBzaHV0dGluZyBkb3duIGJhcmVib3gKCk15IGZpcnN0IHN1c3BpY2lvbiB3
-YXMgemVybydlZCBEVCBtZW1vcnkgbm9kZSAod2hpY2ggT1RPSCBkb2Vzbid0CmV4cGxhaW4gd2h5
-IGVhcmx5cHJpbnRrIGRvZXNuJ3Qgd29yayksIGJ1dCBmaXhpbmcgdGhhdCBkaWRuJ3QgaGVscC4K
-CkNvdWxkIHRoZXJlIGJlIGFueSB2aXRhbCBsb3ctbGV2ZWwgaW5pdCBtaXNzaW5nIGluIHRoZSBu
-ZXcgYmJ4ID8KTWF5YmUgdGhlIGVudHJ5IHBvaW50IGNvcnJlY3QgPwoKQW55IGlkZWFzIHdoZXJl
-IEkgY291bGQgaGF2ZSBhIGRlZXBlciBsb29rIGF0ID8KCgp0aHguCgotLW10eAoKLS0gCgptaXQg
-ZnJldW5kbGljaGVuIEdyw7zDn2VuCi0tCkVucmljbywgU29obiB2b24gV2lsZnJpZWQsIGEuZC5G
-LiBXZWlnZWx0LAptZXR1eCBJVCBjb25zdWx0aW5nCis0OS0xNTEtMjc1NjUyODcKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
-aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+When I chose PBL and XZ, the boot decompression failed and prompted 'XZ-compressed data is corrupt'.
+Could you tell me how to solve this problem?
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
