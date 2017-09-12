@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dreZU-0005S8-4I
- for barebox@lists.infradead.org; Tue, 12 Sep 2017 06:21:22 +0000
-Date: Tue, 12 Sep 2017 08:20:58 +0200
+ id 1drekJ-0002Ks-Tz
+ for barebox@lists.infradead.org; Tue, 12 Sep 2017 06:32:40 +0000
+Date: Tue, 12 Sep 2017 08:32:08 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170912062058.zwrs42is6w4b7afm@pengutronix.de>
-References: <20170827070230.13382-1-linux@rempel-privat.de>
- <20170827070230.13382-9-linux@rempel-privat.de>
+Message-ID: <20170912063208.t34njjp6ebmsvnux@pengutronix.de>
+References: <20170818140301.18749-1-linux@rempel-privat.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170827070230.13382-9-linux@rempel-privat.de>
+In-Reply-To: <20170818140301.18749-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,61 +22,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 08/10] rename tplink devicetree
+Subject: Re: [PATCH v1 1/3] net: ath79: add ag71xx Ethernet driver
 To: Oleksij Rempel <linux@rempel-privat.de>
 Cc: barebox@lists.infradead.org
 
-On Sun, Aug 27, 2017 at 09:02:28AM +0200, Oleksij Rempel wrote:
-> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+On Fri, Aug 18, 2017 at 04:02:59PM +0200, Oleksij Rempel wrote:
+> From: Yegor Yefremov <yegorslists@googlemail.com>
+> 
+> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  arch/mips/configs/tplink-wdr4300_defconfig                          | 2 +-
->  arch/mips/dts/{ar9344_tl_wdr4300.dts => ar9344-tl-wdr4300-v1.7.dts} | 4 ++--
->  2 files changed, 3 insertions(+), 3 deletions(-)
->  rename arch/mips/dts/{ar9344_tl_wdr4300.dts => ar9344-tl-wdr4300-v1.7.dts} (91%)
+>  arch/mips/mach-ath79/include/mach/ar71xx_regs.h |  12 +
+>  drivers/net/Kconfig                             |   7 +
+>  drivers/net/Makefile                            |   1 +
+>  drivers/net/ag71xx.c                            | 530 ++++++++++++++++++++++++
+>  4 files changed, 550 insertions(+)
+>  create mode 100644 drivers/net/ag71xx.c
+> 
+> +static int ag71xx_ether_send(struct eth_device *edev, void *packet, int length)
+> +{
+> +	struct ag71xx *priv = edev->priv;
+> +	struct device_d *dev = priv->dev;
+> +	ag7240_desc_t *f = &priv->fifo_tx[priv->next_tx];
+> +	int i;
+> +
+> +	/* flush */
+> +	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
+> +
+> +	f->pkt_start_addr = virt_to_phys(packet);
+> +	f->res1 = 0;
+> +	f->pkt_size = length;
+> +	f->is_empty = 0;
+> +	ag71xx_wr(priv, AG71XX_REG_TX_DESC, virt_to_phys(f));
+> +	ag71xx_wr(priv, AG71XX_REG_TX_CTRL, TX_CTRL_TXE);
+> +
+> +	/* flush again?! */
+> +	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
+> +
+> +	for (i = 0; i < MAX_WAIT; i++) {
+> +		udelay(100);
+> +		if (f->is_empty) {
+> +			break;
+> +		}
+> +	}
+> +
 
-Why do you rename it? The answer should be in the commit message.
+Use a is_timeout() loop. With this you won't have a minimum delay of
+100us and also not a granularity of 100us.
 
-Sascha
-
-> 
-> diff --git a/arch/mips/configs/tplink-wdr4300_defconfig b/arch/mips/configs/tplink-wdr4300_defconfig
-> index 63189b754..b5be221f6 100644
-> --- a/arch/mips/configs/tplink-wdr4300_defconfig
-> +++ b/arch/mips/configs/tplink-wdr4300_defconfig
-> @@ -1,5 +1,5 @@
->  CONFIG_BUILTIN_DTB=y
-> -CONFIG_BUILTIN_DTB_NAME="ar9344_tl_wdr4300"
-> +CONFIG_BUILTIN_DTB_NAME="ar9344-tl-wdr4300-v1.7"
->  CONFIG_MACH_MIPS_ATH79=y
->  CONFIG_BOARD_TPLINK_WDR4300=y
->  CONFIG_PBL_IMAGE=y
-> diff --git a/arch/mips/dts/ar9344_tl_wdr4300.dts b/arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts
-> similarity index 91%
-> rename from arch/mips/dts/ar9344_tl_wdr4300.dts
-> rename to arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts
-> index 139717a6b..d16cab005 100644
-> --- a/arch/mips/dts/ar9344_tl_wdr4300.dts
-> +++ b/arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts
-> @@ -6,8 +6,8 @@
->  #include "ar9344.dtsi"
->  
->  / {
-> -	model = "TP-Link WDR4300";
-> -	compatible = "tplink,tl-wdr4300";
-> +	model = "TP-Link WDR4300 v1.7";
-> +	compatible = "tplink,tl-wdr4300", "tplink,tl-wdr4300-v1.7";
->  
->  	aliases {
->  		serial0 = &uart0;
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+> +	if (i == MAX_WAIT) {
+> +		dev_err(dev, "Tx Timed out\n");
+> +	}
+> +
 
 -- 
 Pengutronix e.K.                           |                             |
