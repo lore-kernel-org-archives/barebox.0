@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mout.gmx.net ([212.227.17.22])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ds8T5-0000zr-U0
+ id 1ds8T5-0000zQ-Op
  for barebox@lists.infradead.org; Wed, 13 Sep 2017 14:16:48 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Wed, 13 Sep 2017 16:16:06 +0200
-Message-Id: <20170913141606.14508-11-linux@rempel-privat.de>
+Date: Wed, 13 Sep 2017 16:15:59 +0200
+Message-Id: <20170913141606.14508-4-linux@rempel-privat.de>
 In-Reply-To: <20170913141606.14508-1-linux@rempel-privat.de>
 References: <20170913141606.14508-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,78 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 10/10] MIPS: dts: ar9344: add APB bus
+Subject: [PATCH v2 03/10] MIPS: dts: ar9344: add mac0 node
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-and move nodes which belong to APB.
+this node is supported by ag71xx driver
 
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- arch/mips/dts/ar9344.dtsi | 42 +++++++++++++++++++++++++-----------------
- 1 file changed, 25 insertions(+), 17 deletions(-)
+ arch/mips/dts/ar9344.dtsi | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/arch/mips/dts/ar9344.dtsi b/arch/mips/dts/ar9344.dtsi
-index 858751112..3e105174d 100644
+index 0838e8d7f..858751112 100644
 --- a/arch/mips/dts/ar9344.dtsi
 +++ b/arch/mips/dts/ar9344.dtsi
-@@ -29,15 +29,33 @@
- 		#address-cells = <1>;
- 		#size-cells = <1>;
- 
--		uart0: uart@18020000 {
--			compatible = "ns16550a", "qca,ar9344-uart0";
--			reg = <0x18020000 0x20>;
-+		apb {
-+			compatible = "simple-bus";
-+			ranges;
- 
--			reg-shift = <2>;
--			reg-io-width = <4>;
--			big-endian;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
- 
--			status = "disabled";
-+			uart0: uart@18020000 {
-+				compatible = "ns16550a", "qca,ar9344-uart0";
-+				reg = <0x18020000 0x20>;
-+
-+				reg-shift = <2>;
-+				reg-io-width = <4>;
-+				big-endian;
-+
-+				status = "disabled";
-+			};
-+
-+			spi: spi@1f000000 {
-+				compatible = "qca,ar7100-spi", "qca,ar9344-spi";
-+				reg = <0x1f000000 0x1c>;
-+
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				status = "disabled";
-+			};
- 		};
- 
- 		mac0: mac@19000000 {
-@@ -49,15 +67,5 @@
- 
+@@ -40,6 +40,16 @@
  			status = "disabled";
  		};
--
--		spi: spi@1f000000 {
--			compatible = "qca,ar7100-spi", "qca,ar9344-spi";
--			reg = <0x1f000000 0x1c>;
--
--			#address-cells = <1>;
--			#size-cells = <0>;
--
--			status = "disabled";
--		};
- 	};
- };
+ 
++		mac0: mac@19000000 {
++			compatible = "qca,ar9344-gmac0";
++			reg = <0x18070000 0x00000100>,
++			      <0x19000000 0x01000000>;
++			reg-names = "gmac", "ge0";
++			phy-mode = "rgmii";
++
++			status = "disabled";
++		};
++
+ 		spi: spi@1f000000 {
+ 			compatible = "qca,ar7100-spi", "qca,ar9344-spi";
+ 			reg = <0x1f000000 0x1c>;
 -- 
 2.11.0
 
