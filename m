@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
+Received: from mout.gmx.net ([212.227.17.21])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ds8T5-0000zQ-Op
- for barebox@lists.infradead.org; Wed, 13 Sep 2017 14:16:48 +0000
+ id 1ds8T5-0000zP-TS
+ for barebox@lists.infradead.org; Wed, 13 Sep 2017 14:16:49 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Wed, 13 Sep 2017 16:15:59 +0200
-Message-Id: <20170913141606.14508-4-linux@rempel-privat.de>
+Date: Wed, 13 Sep 2017 16:15:58 +0200
+Message-Id: <20170913141606.14508-3-linux@rempel-privat.de>
 In-Reply-To: <20170913141606.14508-1-linux@rempel-privat.de>
 References: <20170913141606.14508-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,38 +21,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 03/10] MIPS: dts: ar9344: add mac0 node
+Subject: [PATCH v2 02/10] add ar9331.dtsi and enable mac0
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-this node is supported by ag71xx driver
-
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- arch/mips/dts/ar9344.dtsi | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/mips/dts/ar9331.dtsi       | 12 ++++++++++++
+ arch/mips/dts/tplink-mr3020.dts |  5 +++++
+ 2 files changed, 17 insertions(+)
+ create mode 100644 arch/mips/dts/ar9331.dtsi
 
-diff --git a/arch/mips/dts/ar9344.dtsi b/arch/mips/dts/ar9344.dtsi
-index 0838e8d7f..858751112 100644
---- a/arch/mips/dts/ar9344.dtsi
-+++ b/arch/mips/dts/ar9344.dtsi
-@@ -40,6 +40,16 @@
- 			status = "disabled";
- 		};
- 
+diff --git a/arch/mips/dts/ar9331.dtsi b/arch/mips/dts/ar9331.dtsi
+new file mode 100644
+index 000000000..b4b8b766b
+--- /dev/null
++++ b/arch/mips/dts/ar9331.dtsi
+@@ -0,0 +1,12 @@
++/ {
++	ahb {
 +		mac0: mac@19000000 {
-+			compatible = "qca,ar9344-gmac0";
++			compatible = "qca,ar9331-ge0";
 +			reg = <0x18070000 0x00000100>,
 +			      <0x19000000 0x01000000>;
 +			reg-names = "gmac", "ge0";
-+			phy-mode = "rgmii";
-+
++			phy-mode = "mii";
 +			status = "disabled";
-+		};
++               };
++	};
++};
+diff --git a/arch/mips/dts/tplink-mr3020.dts b/arch/mips/dts/tplink-mr3020.dts
+index eaae11edd..6f1ad1350 100644
+--- a/arch/mips/dts/tplink-mr3020.dts
++++ b/arch/mips/dts/tplink-mr3020.dts
+@@ -1,4 +1,5 @@
+ #include <mips/qca/ar9331_tl_mr3020.dts>
++#include "ar9331.dtsi"
+ 
+ / {
+ 	aliases {
+@@ -24,3 +25,7 @@
+ 		reg = <0x80000 0x10000>;
+ 	};
+ };
 +
- 		spi: spi@1f000000 {
- 			compatible = "qca,ar7100-spi", "qca,ar9344-spi";
- 			reg = <0x1f000000 0x1c>;
++&mac0 {
++	status = "okay";
++};
 -- 
 2.11.0
 
