@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ds6iH-0007Ys-MF
- for barebox@lists.infradead.org; Wed, 13 Sep 2017 12:24:24 +0000
+ id 1ds6iH-0007Yt-Md
+ for barebox@lists.infradead.org; Wed, 13 Sep 2017 12:24:26 +0000
 From: Enrico Jorns <ejo@pengutronix.de>
-Date: Wed, 13 Sep 2017 14:23:32 +0200
-Message-Id: <20170913122332.17585-6-ejo@pengutronix.de>
+Date: Wed, 13 Sep 2017 14:23:31 +0200
+Message-Id: <20170913122332.17585-5-ejo@pengutronix.de>
 In-Reply-To: <20170913122332.17585-1-ejo@pengutronix.de>
 References: <20170913122332.17585-1-ejo@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] common: globvar: let nvvar_remove() report non-existing
- variable
+Subject: [PATCH 4/5] commands: nv: fail if required var arguments are missing
 To: barebox@lists.infradead.org
 Cc: Enrico Jorns <ejo@pengutronix.de>
 
-The former implementation did not allow to detect whether the call to
-nvvar_remove() succeeded or failed and always returned 0.
-
-This changes the implementation to return 0 only if a variable with the
-given name was found and return ENOENT otherwise.
-
 Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
 ---
- common/globalvar.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ commands/nv.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/common/globalvar.c b/common/globalvar.c
-index fdfaf76fae..ee756e5140 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -261,9 +261,11 @@ int nvvar_remove(const char *name)
+diff --git a/commands/nv.c b/commands/nv.c
+index d391f9e6b4..bb13ed1db0 100644
+--- a/commands/nv.c
++++ b/commands/nv.c
+@@ -56,6 +56,11 @@ static int do_nv(int argc, char *argv[])
+ 	argc -= optind;
+ 	argv += optind;
  
- 		unlink(fname);
- 		free(fname);
++	if (argc == 0) {
++		printf("Invalid usage: Missing argument");
++		return COMMAND_ERROR_USAGE;
++	}
 +
-+		return 0;
- 	}
- 
--	return 0;
-+	return -ENOENT;
- }
- 
- int nvvar_load(void)
+ 	for (i = 0; i < argc; i++) {
+ 		int ret;
+ 		value = strchr(argv[0], '=');
 -- 
 2.11.0
 
