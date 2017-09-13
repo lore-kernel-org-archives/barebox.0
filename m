@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.21])
+Received: from mout.gmx.net ([212.227.17.22])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ds8T5-0000zP-TS
- for barebox@lists.infradead.org; Wed, 13 Sep 2017 14:16:49 +0000
+ id 1ds8T5-0000zq-RB
+ for barebox@lists.infradead.org; Wed, 13 Sep 2017 14:16:50 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Wed, 13 Sep 2017 16:15:58 +0200
-Message-Id: <20170913141606.14508-3-linux@rempel-privat.de>
+Date: Wed, 13 Sep 2017 16:16:05 +0200
+Message-Id: <20170913141606.14508-10-linux@rempel-privat.de>
 In-Reply-To: <20170913141606.14508-1-linux@rempel-privat.de>
 References: <20170913141606.14508-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,53 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 02/10] add ar9331.dtsi and enable mac0
+Subject: [PATCH v2 09/10] MIPS: tplink-wdr4300_defconfig: add network support
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- arch/mips/dts/ar9331.dtsi       | 12 ++++++++++++
- arch/mips/dts/tplink-mr3020.dts |  5 +++++
- 2 files changed, 17 insertions(+)
- create mode 100644 arch/mips/dts/ar9331.dtsi
+ arch/mips/configs/tplink-wdr4300_defconfig | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/dts/ar9331.dtsi b/arch/mips/dts/ar9331.dtsi
-new file mode 100644
-index 000000000..b4b8b766b
---- /dev/null
-+++ b/arch/mips/dts/ar9331.dtsi
-@@ -0,0 +1,12 @@
-+/ {
-+	ahb {
-+		mac0: mac@19000000 {
-+			compatible = "qca,ar9331-ge0";
-+			reg = <0x18070000 0x00000100>,
-+			      <0x19000000 0x01000000>;
-+			reg-names = "gmac", "ge0";
-+			phy-mode = "mii";
-+			status = "disabled";
-+               };
-+	};
-+};
-diff --git a/arch/mips/dts/tplink-mr3020.dts b/arch/mips/dts/tplink-mr3020.dts
-index eaae11edd..6f1ad1350 100644
---- a/arch/mips/dts/tplink-mr3020.dts
-+++ b/arch/mips/dts/tplink-mr3020.dts
-@@ -1,4 +1,5 @@
- #include <mips/qca/ar9331_tl_mr3020.dts>
-+#include "ar9331.dtsi"
- 
- / {
- 	aliases {
-@@ -24,3 +25,7 @@
- 		reg = <0x80000 0x10000>;
- 	};
- };
-+
-+&mac0 {
-+	status = "okay";
-+};
+diff --git a/arch/mips/configs/tplink-wdr4300_defconfig b/arch/mips/configs/tplink-wdr4300_defconfig
+index b5be221f6..46093d243 100644
+--- a/arch/mips/configs/tplink-wdr4300_defconfig
++++ b/arch/mips/configs/tplink-wdr4300_defconfig
+@@ -32,6 +32,10 @@ CONFIG_CMD_LET=y
+ CONFIG_CMD_MSLEEP=y
+ CONFIG_CMD_READF=y
+ CONFIG_CMD_SLEEP=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_HOST=y
++CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_PING=y
+ CONFIG_CMD_ECHO_E=y
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_READLINE=y
+@@ -55,15 +59,13 @@ CONFIG_CMD_TIME=y
+ CONFIG_NET=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_NETCONSOLE=y
+-CONFIG_NET_RESOLV=y
+-CONFIG_NET_DHCP=y
+ CONFIG_NET_SNTP=y
+ CONFIG_OFDEVICE=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_OF_BAREBOX_ENV_IN_FS=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_NET_AG71XX=y
+-CONFIG_AT803X_PHY=y
++CONFIG_AR8327N_PHY=y
+ CONFIG_MDIO_BITBANG=y
+ CONFIG_MDIO_GPIO=y
+ CONFIG_DRIVER_SPI_ATH79=y
+@@ -74,5 +76,7 @@ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
+ CONFIG_LED_GPIO_OF=y
+ CONFIG_LED_TRIGGERS=y
++CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
+ CONFIG_DIGEST_SHA224_GENERIC=y
+ CONFIG_DIGEST_SHA256_GENERIC=y
 -- 
 2.11.0
 
