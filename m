@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.20])
+Received: from mout.gmx.net ([212.227.17.22])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ds8T9-0000zi-Dg
- for barebox@lists.infradead.org; Wed, 13 Sep 2017 14:16:54 +0000
+ id 1ds8T5-0000zh-Se
+ for barebox@lists.infradead.org; Wed, 13 Sep 2017 14:16:56 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Wed, 13 Sep 2017 16:16:01 +0200
-Message-Id: <20170913141606.14508-6-linux@rempel-privat.de>
+Date: Wed, 13 Sep 2017 16:16:02 +0200
+Message-Id: <20170913141606.14508-7-linux@rempel-privat.de>
 In-Reply-To: <20170913141606.14508-1-linux@rempel-privat.de>
 References: <20170913141606.14508-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,29 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 05/10] MIPS: dts: tl_wdr4300: add alias for spiflash
+Subject: [PATCH v2 06/10] MIPS: dts: tl_wdr4300: remove RO flag from barebox
+ partition
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-to unify the naming with TP-Link TL-MR3020.
+we need it RW for barebox updates.
 
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- arch/mips/dts/ar9344_tl_wdr4300.dts | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/dts/ar9344_tl_wdr4300.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/arch/mips/dts/ar9344_tl_wdr4300.dts b/arch/mips/dts/ar9344_tl_wdr4300.dts
-index 5a4a6f379..c784e6cb4 100644
+index c784e6cb4..139717a6b 100644
 --- a/arch/mips/dts/ar9344_tl_wdr4300.dts
 +++ b/arch/mips/dts/ar9344_tl_wdr4300.dts
-@@ -11,6 +11,7 @@
+@@ -53,7 +53,6 @@
+ 		partition@0 {
+ 			label = "barebox";
+ 			reg = <0 0x80000>;
+-			read-only;
+ 		};
  
- 	aliases {
- 		serial0 = &uart0;
-+		spiflash = &spiflash;
- 	};
- 
- 	memory@0 {
+ 		partition@80000 {
 -- 
 2.11.0
 
