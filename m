@@ -1,20 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x235.google.com ([2607:f8b0:4001:c06::235])
+Received: from f404.i.mail.ru ([185.5.136.75])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dsQkN-00060J-5Y
- for barebox@lists.infradead.org; Thu, 14 Sep 2017 09:47:48 +0000
-Received: by mail-io0-x235.google.com with SMTP id n69so16698973ioi.5
- for <barebox@lists.infradead.org>; Thu, 14 Sep 2017 02:47:26 -0700 (PDT)
-Received: from ubuntu ([218.6.242.42])
- by smtp.gmail.com with ESMTPSA id o71sm791113itb.15.2017.09.14.02.47.24
- for <barebox@lists.infradead.org>
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 14 Sep 2017 02:47:25 -0700 (PDT)
-From: zjh <jianhuizhao.329@gmail.com>
-Date: Thu, 14 Sep 2017 17:46:52 +0800
-Message-ID: <20170914094428.GA2479@ubuntu>
+ id 1dsQpM-0000Cc-Nu
+ for barebox@lists.infradead.org; Thu, 14 Sep 2017 09:52:59 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 MIME-Version: 1.0
-Content-Disposition: inline
+Date: Thu, 14 Sep 2017 12:52:32 +0300
+Message-ID: <1505382752.30182793@f404.i.mail.ru>
+In-Reply-To: <20170914094428.GA2479@ubuntu>
+References: <20170914094428.GA2479@ubuntu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,16 +17,19 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: move to github
-To: barebox@lists.infradead.org
+Subject: =?UTF-8?B?UmU6IG1vdmUgdG8gZ2l0aHVi?=
+To: =?UTF-8?B?empo?= <jianhuizhao.329@gmail.com>
+Cc: barebox@lists.infradead.org
 
-I suggest that Barebox migrate to GitHub, which makes it easier to develop.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8uCgo+0KfQtdGC0LLQtdGA0LMsIDE0INGB0LXQvdGC0Y/QsdGA0Y8gMjAxNywgMTI6NDgg
+KzAzOjAwINC+0YIgempoIDxqaWFuaHVpemhhby4zMjlAZ21haWwuY29tPjoKPgo+SSBzdWdnZXN0
+IHRoYXQgQmFyZWJveCBtaWdyYXRlIHRvIEdpdEh1Yiwgd2hpY2ggbWFrZXMgaXQgZWFzaWVyIHRv
+IGRldmVsb3AuCgpodHRwczovL2dpdGh1Yi5jb20vc2FzY2hhaGF1ZXIvYmFyZWJveAoKLS0tCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
+bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
