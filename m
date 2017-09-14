@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dsOa0-0005Hw-N7
- for barebox@lists.infradead.org; Thu, 14 Sep 2017 07:28:58 +0000
-References: <20170913122332.17585-1-ejo@pengutronix.de>
- <20170913122332.17585-2-ejo@pengutronix.de>
- <20170914062754.ssohtnuhds4rpav3@pengutronix.de>
-From: Enrico Joerns <ejo@pengutronix.de>
-Message-ID: <8bf4b4e2-db3e-ef66-4f64-ee0d5d730862@pengutronix.de>
-Date: Thu, 14 Sep 2017 09:28:34 +0200
+Received: from mail.high-consulting.de ([62.245.247.194])
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1dsP6Z-0000Wi-1O
+ for barebox@lists.infradead.org; Thu, 14 Sep 2017 08:02:37 +0000
+Received: from [10.1.1.22] (gp-desktop.dyn.high-con.de [10.1.1.22])
+ (using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+ (No client certificate requested) (Authenticated sender: gp)
+ by mail.high-consulting.de (Postfix) with ESMTPSA id A9EC63003B
+ for <barebox@lists.infradead.org>; Thu, 14 Sep 2017 09:33:40 +0200 (CEST)
+From: Gerd Pauli <gp@high-consulting.de>
+Message-ID: <b9903114-97cd-9140-c83e-1303cbcfe845@high-consulting.de>
+Date: Thu, 14 Sep 2017 10:02:14 +0200
 MIME-Version: 1.0
-In-Reply-To: <20170914062754.ssohtnuhds4rpav3@pengutronix.de>
-Content-Language: en-US
+Content-Type: multipart/mixed; boundary="------------09D00F0A8744D380C9F1B43A"
+Content-Language: de-DE
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,31 +22,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] commands: nv: argc cannot be < 1
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: yubikey and aes support for barebox
+To: barebox@lists.infradead.org
 
-T24gMDkvMTQvMjAxNyAwODoyNyBBTSwgU2FzY2hhIEhhdWVyIHdyb3RlOgo+IE9uIFdlZCwgU2Vw
-IDEzLCAyMDE3IGF0IDAyOjIzOjI4UE0gKzAyMDAsIEVucmljbyBKb3JucyB3cm90ZToKPj4gYXJn
-YyA9PSAxIHdpbGwgb25seSBjb250YWluIHRoZSBuYW1lIG9mIHRoZSBwcm9ncmFtIGl0c2VsZiB3
-aGljaCBtdXN0IGJlCj4+IHByZXNlbnQgd2hlbiBpbnZva2luZyBudiBjb21tYW5kIGNvZGUuCj4g
-Cj4gVGhpcyByZWFzb25pbmcgaXMgbm90IHF1aXRlIHJpZ2h0LiBZb3UgbWlzcyB0aGUgYXJnYyAt
-PSBvcHRpbmQgYWJvdmUgdGhlCj4gYXJnYyA8IDEgdGVzdC4gSW4gZmFjdCBpbiBwYXRjaCA0LzUg
-eW91IHJlLWFkZCB0aGUgc2FtZSB0ZXN0IGFnYWluCj4gKHdyaXR0ZW4gYXMgYXJnYyA9PSAwIHRo
-aXMgdGltZSkuCj4gCj4gU2hvdWxkbid0IHRoaXMgcGF0Y2ggc2ltcGx5IGJlIG1lcmdlZCB3aXRo
-IDQvNT8KCkluIGZhY3QsIHlvdSdyZSByaWdodC4gU2VlbXMgYXMgaWYgSSBzcGxpdHRlZCB1cCBj
-aGFuZ2VzIGEgYml0IHRvbyBtdWNoIAphbmQgY29uZnVzZWQgbXlzZWxmLiBNZXJnaW5nIGl0IHdp
-dGggNC81IHNvdW5kIG1vcmUgcmVhc29uYWJsZSAob3IgCnNpbXBseSBkcm9wIGJvdGggb2YgdGhl
-bSkuCgpFbnJpY28KCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgfCBFbnJpY28gSsO2cm5zICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1
-dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVp
-bmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIx
-LTIwNjkxNy01MDgwIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAg
-IHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
-c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9iYXJlYm94Cg==
+This is a multi-part message in MIME format.
+--------------09D00F0A8744D380C9F1B43A
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+i'm currently working with barebox and added some ( for me ) usefull
+commands and additions:
+
+- yubikey password authentication for barebox (OTP )
+- command writef
+- command ccrypt ( compatible with
+https://sourceforge.net/projects/ccrypt/ )
+- CRYPTO_AES Support
+
+wana share this stuff with the community if anyone is interested.
+
+-- 
+Regards
+Gerd Pauli
+
+Die gesetzlichen Pflichtangaben finden Sie unter:
+https://www.crsm.biz/impressum/
+
+
+--------------09D00F0A8744D380C9F1B43A
+Content-Type: text/x-vcard; charset=utf-8;
+ name="gp.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="gp.vcf"
+
+begin:vcard
+fn:Gerd Pauli
+n:Pauli;Gerd
+org:HighConsulting GmbH & Co. KG
+adr;quoted-printable:Peter-D=C3=B6rfler-Str. 19;;;Gessertshausen;Bayern;86459;Deutschland
+email;internet:gp@high-consulting.de
+tel;work:+49 821 450788 14
+tel;fax:+49 821 450788 24
+tel;cell:+49 172 8150144
+x-mozilla-html:FALSE
+url:http://www.high-consulting.de
+version:2.1
+end:vcard
+
+
+--------------09D00F0A8744D380C9F1B43A
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--------------09D00F0A8744D380C9F1B43A--
