@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dsNto-0007lQ-5B
- for barebox@lists.infradead.org; Thu, 14 Sep 2017 06:45:22 +0000
-Date: Thu, 14 Sep 2017 08:44:58 +0200
+ id 1dsNdL-0007X2-RV
+ for barebox@lists.infradead.org; Thu, 14 Sep 2017 06:28:29 +0000
+Date: Thu, 14 Sep 2017 08:27:54 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170914064458.3o4cgp6x4vb4opop@pengutronix.de>
-References: <20170913141606.14508-1-linux@rempel-privat.de>
- <20170913141606.14508-2-linux@rempel-privat.de>
+Message-ID: <20170914062754.ssohtnuhds4rpav3@pengutronix.de>
+References: <20170913122332.17585-1-ejo@pengutronix.de>
+ <20170913122332.17585-2-ejo@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170913141606.14508-2-linux@rempel-privat.de>
+In-Reply-To: <20170913122332.17585-2-ejo@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,63 +23,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 01/10] net: ath79: add ag71xx Ethernet driver
-To: Oleksij Rempel <linux@rempel-privat.de>
+Subject: Re: [PATCH 1/5] commands: nv: argc cannot be < 1
+To: Enrico Jorns <ejo@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 13, 2017 at 04:15:57PM +0200, Oleksij Rempel wrote:
-> +static void ag71xx_ether_halt(struct eth_device *edev)
-> +{
-> +	struct ag71xx *priv = edev->priv;
-> +	struct device_d *dev = priv->dev;
-> +	uint64_t start;
-> +
-> +	ag71xx_wr(priv, AG71XX_REG_RX_CTRL, 0);
-> +	start = get_time_ns();
-> +	while (ag71xx_rr(priv, AG71XX_REG_RX_CTRL)) {
-> +		if (!is_timeout_non_interruptible(start, 100 * USECOND)) {
-> +			dev_err(dev, "error: filed to stop device!\n");
+On Wed, Sep 13, 2017 at 02:23:28PM +0200, Enrico Jorns wrote:
+> argc == 1 will only contain the name of the program itself which must be
+> present when invoking nv command code.
 
-s/filed/failed/
+This reasoning is not quite right. You miss the argc -= optind above the
+argc < 1 test. In fact in patch 4/5 you re-add the same test again
+(written as argc == 0 this time).
 
-Also the test seems to be the wrong way round.
-
-> +static int ag71xx_ether_init(struct eth_device *edev)
-> +{
-> +	struct ag71xx *priv = edev->priv;
-> +	int i;
-> +	void *rxbuf = priv->rx_buffer;
-> +
-> +	priv->next_rx = 0;
-> +
-> +	for (i = 0; i < NO_OF_RX_FIFOS; i++) {
-> +		ag7240_desc_t *fr = &priv->fifo_rx[i];
-> +
-> +		priv->rx_pkt[i] = rxbuf;
-> +		fr->pkt_start_addr = virt_to_phys(rxbuf);
-> +		fr->pkt_size = MAX_RBUFF_SZ;
-> +		fr->is_empty = 1;
-> +		fr->next_desc = virt_to_phys(&priv->fifo_rx[(i + 1) % NO_OF_RX_FIFOS]);
-> +
-> +		/* invalidate */
-> +		dma_sync_single_for_device((unsigned long)rxbuf, MAX_RBUFF_SZ,
-> +					DMA_FROM_DEVICE);
-> +
-> +		rxbuf += MAX_RBUFF_SZ;
-> +	}
-> +
-> +	/* Clean Tx BD's */
-> +	memset(priv->fifo_tx, 0, TX_RING_SZ);
-> +
-> +	ag71xx_wr(priv, AG71XX_REG_RX_DESC, virt_to_phys(priv->fifo_rx));
-> +	ag71xx_wr(priv, AG71XX_REG_RX_CTRL, RX_CTRL_RXE);
-> +
-> +	return 1;
-
-Although the return code is not tested by the caller, this function
-should return 0 for success.
+Shouldn't this patch simply be merged with 4/5?
 
 Sascha
+
+> 
+> Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
+> ---
+>  commands/nv.c | 3 ---
+>  1 file changed, 3 deletions(-)
+> 
+> diff --git a/commands/nv.c b/commands/nv.c
+> index 37cdb96647..eb396bfd9b 100644
+> --- a/commands/nv.c
+> +++ b/commands/nv.c
+> @@ -55,9 +55,6 @@ static int do_nv(int argc, char *argv[])
+>  	argc -= optind;
+>  	argv += optind;
+>  
+> -	if (argc < 1)
+> -		return COMMAND_ERROR_USAGE;
+> -
+>  	for (i = 0; i < argc; i++) {
+>  		value = strchr(argv[0], '=');
+>  		if (value) {
+> -- 
+> 2.11.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
