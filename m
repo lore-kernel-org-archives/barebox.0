@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dsNdL-0007X2-RV
- for barebox@lists.infradead.org; Thu, 14 Sep 2017 06:28:29 +0000
-Date: Thu, 14 Sep 2017 08:27:54 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170914062754.ssohtnuhds4rpav3@pengutronix.de>
+ id 1dsOa0-0005Hw-N7
+ for barebox@lists.infradead.org; Thu, 14 Sep 2017 07:28:58 +0000
 References: <20170913122332.17585-1-ejo@pengutronix.de>
  <20170913122332.17585-2-ejo@pengutronix.de>
+ <20170914062754.ssohtnuhds4rpav3@pengutronix.de>
+From: Enrico Joerns <ejo@pengutronix.de>
+Message-ID: <8bf4b4e2-db3e-ef66-4f64-ee0d5d730862@pengutronix.de>
+Date: Thu, 14 Sep 2017 09:28:34 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170913122332.17585-2-ejo@pengutronix.de>
+In-Reply-To: <20170914062754.ssohtnuhds4rpav3@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,63 +20,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/5] commands: nv: argc cannot be < 1
-To: Enrico Jorns <ejo@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 13, 2017 at 02:23:28PM +0200, Enrico Jorns wrote:
-> argc == 1 will only contain the name of the program itself which must be
-> present when invoking nv command code.
-
-This reasoning is not quite right. You miss the argc -= optind above the
-argc < 1 test. In fact in patch 4/5 you re-add the same test again
-(written as argc == 0 this time).
-
-Shouldn't this patch simply be merged with 4/5?
-
-Sascha
-
-> 
-> Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
-> ---
->  commands/nv.c | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> diff --git a/commands/nv.c b/commands/nv.c
-> index 37cdb96647..eb396bfd9b 100644
-> --- a/commands/nv.c
-> +++ b/commands/nv.c
-> @@ -55,9 +55,6 @@ static int do_nv(int argc, char *argv[])
->  	argc -= optind;
->  	argv += optind;
->  
-> -	if (argc < 1)
-> -		return COMMAND_ERROR_USAGE;
-> -
->  	for (i = 0; i < argc; i++) {
->  		value = strchr(argv[0], '=');
->  		if (value) {
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMDkvMTQvMjAxNyAwODoyNyBBTSwgU2FzY2hhIEhhdWVyIHdyb3RlOgo+IE9uIFdlZCwgU2Vw
+IDEzLCAyMDE3IGF0IDAyOjIzOjI4UE0gKzAyMDAsIEVucmljbyBKb3JucyB3cm90ZToKPj4gYXJn
+YyA9PSAxIHdpbGwgb25seSBjb250YWluIHRoZSBuYW1lIG9mIHRoZSBwcm9ncmFtIGl0c2VsZiB3
+aGljaCBtdXN0IGJlCj4+IHByZXNlbnQgd2hlbiBpbnZva2luZyBudiBjb21tYW5kIGNvZGUuCj4g
+Cj4gVGhpcyByZWFzb25pbmcgaXMgbm90IHF1aXRlIHJpZ2h0LiBZb3UgbWlzcyB0aGUgYXJnYyAt
+PSBvcHRpbmQgYWJvdmUgdGhlCj4gYXJnYyA8IDEgdGVzdC4gSW4gZmFjdCBpbiBwYXRjaCA0LzUg
+eW91IHJlLWFkZCB0aGUgc2FtZSB0ZXN0IGFnYWluCj4gKHdyaXR0ZW4gYXMgYXJnYyA9PSAwIHRo
+aXMgdGltZSkuCj4gCj4gU2hvdWxkbid0IHRoaXMgcGF0Y2ggc2ltcGx5IGJlIG1lcmdlZCB3aXRo
+IDQvNT8KCkluIGZhY3QsIHlvdSdyZSByaWdodC4gU2VlbXMgYXMgaWYgSSBzcGxpdHRlZCB1cCBj
+aGFuZ2VzIGEgYml0IHRvbyBtdWNoIAphbmQgY29uZnVzZWQgbXlzZWxmLiBNZXJnaW5nIGl0IHdp
+dGggNC81IHNvdW5kIG1vcmUgcmVhc29uYWJsZSAob3IgCnNpbXBseSBkcm9wIGJvdGggb2YgdGhl
+bSkuCgpFbnJpY28KCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgfCBFbnJpY28gSsO2cm5zICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1
+dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVp
+bmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIx
+LTIwNjkxNy01MDgwIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAg
+IHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
+c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9iYXJlYm94Cg==
