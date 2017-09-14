@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
+Received: from mout.gmx.net ([212.227.17.20])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dsPSv-0005Tn-Nn
+ id 1dsPSv-0005U2-Nu
  for barebox@lists.infradead.org; Thu, 14 Sep 2017 08:25:47 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Thu, 14 Sep 2017 10:25:01 +0200
-Message-Id: <20170914082509.23583-3-linux@rempel-privat.de>
+Date: Thu, 14 Sep 2017 10:25:04 +0200
+Message-Id: <20170914082509.23583-6-linux@rempel-privat.de>
 In-Reply-To: <20170914082509.23583-1-linux@rempel-privat.de>
 References: <20170914082509.23583-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,53 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 02/10] add ar9331.dtsi and enable mac0
+Subject: [PATCH v3 05/10] MIPS: dts: tl_wdr4300: add alias for spiflash
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
+to unify the naming with TP-Link TL-MR3020.
+
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- arch/mips/dts/ar9331.dtsi       | 12 ++++++++++++
- arch/mips/dts/tplink-mr3020.dts |  5 +++++
- 2 files changed, 17 insertions(+)
- create mode 100644 arch/mips/dts/ar9331.dtsi
+ arch/mips/dts/ar9344_tl_wdr4300.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/dts/ar9331.dtsi b/arch/mips/dts/ar9331.dtsi
-new file mode 100644
-index 000000000..b4b8b766b
---- /dev/null
-+++ b/arch/mips/dts/ar9331.dtsi
-@@ -0,0 +1,12 @@
-+/ {
-+	ahb {
-+		mac0: mac@19000000 {
-+			compatible = "qca,ar9331-ge0";
-+			reg = <0x18070000 0x00000100>,
-+			      <0x19000000 0x01000000>;
-+			reg-names = "gmac", "ge0";
-+			phy-mode = "mii";
-+			status = "disabled";
-+               };
-+	};
-+};
-diff --git a/arch/mips/dts/tplink-mr3020.dts b/arch/mips/dts/tplink-mr3020.dts
-index eaae11edd..6f1ad1350 100644
---- a/arch/mips/dts/tplink-mr3020.dts
-+++ b/arch/mips/dts/tplink-mr3020.dts
-@@ -1,4 +1,5 @@
- #include <mips/qca/ar9331_tl_mr3020.dts>
-+#include "ar9331.dtsi"
+diff --git a/arch/mips/dts/ar9344_tl_wdr4300.dts b/arch/mips/dts/ar9344_tl_wdr4300.dts
+index 5a4a6f379..c784e6cb4 100644
+--- a/arch/mips/dts/ar9344_tl_wdr4300.dts
++++ b/arch/mips/dts/ar9344_tl_wdr4300.dts
+@@ -11,6 +11,7 @@
  
- / {
  	aliases {
-@@ -24,3 +25,7 @@
- 		reg = <0x80000 0x10000>;
+ 		serial0 = &uart0;
++		spiflash = &spiflash;
  	};
- };
-+
-+&mac0 {
-+	status = "okay";
-+};
+ 
+ 	memory@0 {
 -- 
 2.11.0
 
