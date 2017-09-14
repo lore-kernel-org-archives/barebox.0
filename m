@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.20])
+Received: from mout.gmx.net ([212.227.17.22])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dsPSv-0005U7-Nv
- for barebox@lists.infradead.org; Thu, 14 Sep 2017 08:25:52 +0000
+ id 1dsPSv-0005UJ-Ns
+ for barebox@lists.infradead.org; Thu, 14 Sep 2017 08:25:53 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Thu, 14 Sep 2017 10:25:05 +0200
-Message-Id: <20170914082509.23583-7-linux@rempel-privat.de>
+Date: Thu, 14 Sep 2017 10:25:09 +0200
+Message-Id: <20170914082509.23583-11-linux@rempel-privat.de>
 In-Reply-To: <20170914082509.23583-1-linux@rempel-privat.de>
 References: <20170914082509.23583-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 06/10] MIPS: dts: tl_wdr4300: remove RO flag from barebox
- partition
+Subject: [PATCH v3 10/10] MIPS: dts: ar9344: add APB bus
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-we need it RW for barebox updates.
+and move nodes which belong to APB.
 
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- arch/mips/dts/ar9344_tl_wdr4300.dts | 1 -
- 1 file changed, 1 deletion(-)
+ arch/mips/dts/ar9344.dtsi | 42 +++++++++++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 17 deletions(-)
 
-diff --git a/arch/mips/dts/ar9344_tl_wdr4300.dts b/arch/mips/dts/ar9344_tl_wdr4300.dts
-index c784e6cb4..139717a6b 100644
---- a/arch/mips/dts/ar9344_tl_wdr4300.dts
-+++ b/arch/mips/dts/ar9344_tl_wdr4300.dts
-@@ -53,7 +53,6 @@
- 		partition@0 {
- 			label = "barebox";
- 			reg = <0 0x80000>;
--			read-only;
+diff --git a/arch/mips/dts/ar9344.dtsi b/arch/mips/dts/ar9344.dtsi
+index 858751112..3e105174d 100644
+--- a/arch/mips/dts/ar9344.dtsi
++++ b/arch/mips/dts/ar9344.dtsi
+@@ -29,15 +29,33 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 
+-		uart0: uart@18020000 {
+-			compatible = "ns16550a", "qca,ar9344-uart0";
+-			reg = <0x18020000 0x20>;
++		apb {
++			compatible = "simple-bus";
++			ranges;
+ 
+-			reg-shift = <2>;
+-			reg-io-width = <4>;
+-			big-endian;
++			#address-cells = <1>;
++			#size-cells = <1>;
+ 
+-			status = "disabled";
++			uart0: uart@18020000 {
++				compatible = "ns16550a", "qca,ar9344-uart0";
++				reg = <0x18020000 0x20>;
++
++				reg-shift = <2>;
++				reg-io-width = <4>;
++				big-endian;
++
++				status = "disabled";
++			};
++
++			spi: spi@1f000000 {
++				compatible = "qca,ar7100-spi", "qca,ar9344-spi";
++				reg = <0x1f000000 0x1c>;
++
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				status = "disabled";
++			};
  		};
  
- 		partition@80000 {
+ 		mac0: mac@19000000 {
+@@ -49,15 +67,5 @@
+ 
+ 			status = "disabled";
+ 		};
+-
+-		spi: spi@1f000000 {
+-			compatible = "qca,ar7100-spi", "qca,ar9344-spi";
+-			reg = <0x1f000000 0x1c>;
+-
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-
+-			status = "disabled";
+-		};
+ 	};
+ };
 -- 
 2.11.0
 
