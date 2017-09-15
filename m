@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dsmA5-0006Nn-2y
+ id 1dsmA5-0006Nk-4W
  for barebox@lists.infradead.org; Fri, 15 Sep 2017 08:39:48 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
- (envelope-from <l.stach@pengutronix.de>) id 1dsm9i-0005Jd-VE
+ (envelope-from <l.stach@pengutronix.de>) id 1dsm9i-0005Jd-QV
  for barebox@lists.infradead.org; Fri, 15 Sep 2017 10:39:22 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 15 Sep 2017 10:39:22 +0200
-Message-Id: <20170915083922.25134-13-l.stach@pengutronix.de>
+Date: Fri, 15 Sep 2017 10:39:17 +0200
+Message-Id: <20170915083922.25134-8-l.stach@pengutronix.de>
 In-Reply-To: <20170915083922.25134-1-l.stach@pengutronix.de>
 References: <20170915083922.25134-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -26,63 +26,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/12] ARM: vexpress: add fixup handler for 'virtio,
- mmio' devices
+Subject: [PATCH 07/12] ARM: vexpress: regenerate config
 To: barebox@lists.infradead.org
 
-From: Michael Olbrich <m.olbrich@pengutronix.de>
+Enable some more features, so the default configuration gets more
+in line with other platforms.
 
-Qemu adds 'virtio,mmio' nodes to the device tree. Before passing it to the
-bootloader or the Linux kernel. This fixup handler copies these nodes to
-the new device tree.
-
-v2:
-- move from general to platform specific init
-
-Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/boards/vexpress/init.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ arch/arm/configs/vexpress_defconfig | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boards/vexpress/init.c b/arch/arm/boards/vexpress/init.c
-index 1bbc8c347638..946385393f44 100644
---- a/arch/arm/boards/vexpress/init.c
-+++ b/arch/arm/boards/vexpress/init.c
-@@ -45,3 +45,32 @@ static int vexpress_core_init(void)
- 	return 0;
- }
- postcore_initcall(vexpress_core_init);
-+
-+static int of_fixup_virtio_mmio(struct device_node *root, void *unused)
-+{
-+	struct device_node *barebox_root, *np, *parent;
-+
-+	barebox_root = of_get_root_node();
-+	if (root == barebox_root)
-+		return 0;
-+
-+	for_each_compatible_node_from(np, barebox_root, NULL, "virtio,mmio") {
-+		if (of_get_parent(np) == barebox_root)
-+			parent = root;
-+		else
-+			parent = of_find_node_by_path_from(root,
-+							   of_get_parent(np)->full_name);
-+		if (!parent)
-+			return -EINVAL;
-+
-+		of_copy_node(parent, np);
-+	}
-+
-+	return 0;
-+}
-+
-+static int of_register_virtio_mmio_fixup(void)
-+{
-+	return of_register_fixup(of_fixup_virtio_mmio, NULL);
-+}
-+late_initcall(of_register_virtio_mmio_fixup);
+diff --git a/arch/arm/configs/vexpress_defconfig b/arch/arm/configs/vexpress_defconfig
+index e31da4a8c668..f6a57de75cd9 100644
+--- a/arch/arm/configs/vexpress_defconfig
++++ b/arch/arm/configs/vexpress_defconfig
+@@ -4,7 +4,6 @@ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_MALLOC_SIZE=0x0
+ CONFIG_MALLOC_TLSF=y
+ CONFIG_PROMPT="vexpress: "
+-CONFIG_GLOB=y
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+@@ -12,9 +11,10 @@ CONFIG_MENU=y
+ CONFIG_BOOTM_SHOW_TYPE=y
+ CONFIG_BOOTM_VERBOSE=y
+ CONFIG_BOOTM_INITRD=y
+-CONFIG_PARTITION=y
+-CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
+ CONFIG_CMD_MEMINFO=y
+ # CONFIG_CMD_BOOTU is not set
+ CONFIG_CMD_GO=y
+@@ -38,15 +38,25 @@ CONFIG_CMD_MENU_MANAGEMENT=y
+ CONFIG_CMD_PASSWD=y
+ CONFIG_CMD_READLINE=y
+ CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_CRC=y
++CONFIG_CMD_CRC_CMP=y
+ CONFIG_CMD_CLK=y
++CONFIG_CMD_DETECT=y
+ CONFIG_CMD_OFTREE=y
+ CONFIG_NET=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
++CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_SERIAL_AMBA_PL011=y
+ CONFIG_DRIVER_NET_SMC91111=y
+ # CONFIG_SPI is not set
++CONFIG_MTD=y
++CONFIG_MTD_CONCAT=y
++CONFIG_DRIVER_CFI=y
++CONFIG_MCI=y
++CONFIG_MCI_MMCI=y
++# CONFIG_PINCTRL is not set
+ CONFIG_FS_TFTP=y
+ CONFIG_DIGEST_SHA1_GENERIC=y
+ CONFIG_DIGEST_SHA256_GENERIC=y
 -- 
 2.11.0
 
