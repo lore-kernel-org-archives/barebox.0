@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dsmA5-0006No-3C
- for barebox@lists.infradead.org; Fri, 15 Sep 2017 08:39:46 +0000
+ by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dsmA8-0001ot-Sc
+ for barebox@lists.infradead.org; Fri, 15 Sep 2017 08:39:49 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
- (envelope-from <l.stach@pengutronix.de>) id 1dsm9i-0005Jd-Ur
+ (envelope-from <l.stach@pengutronix.de>) id 1dsm9i-0005Jd-T4
  for barebox@lists.infradead.org; Fri, 15 Sep 2017 10:39:22 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 15 Sep 2017 10:39:21 +0200
-Message-Id: <20170915083922.25134-12-l.stach@pengutronix.de>
+Date: Fri, 15 Sep 2017 10:39:20 +0200
+Message-Id: <20170915083922.25134-11-l.stach@pengutronix.de>
 In-Reply-To: <20170915083922.25134-1-l.stach@pengutronix.de>
 References: <20170915083922.25134-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -26,7 +26,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/12] of: base: add funtion to copy a device tree node
+Subject: [PATCH 10/12] vexpress: add bootstate node to the device tree
 To: barebox@lists.infradead.org
 
 From: Michael Olbrich <m.olbrich@pengutronix.de>
@@ -34,63 +34,90 @@ From: Michael Olbrich <m.olbrich@pengutronix.de>
 Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- drivers/of/base.c | 16 ++++++++++++++++
- include/of.h      |  8 ++++++++
- 2 files changed, 24 insertions(+)
+ arch/arm/dts/vexpress-v2p-ca9.dts | 63 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 63 insertions(+)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index fb4d2c03946e..3ca13ae44e5c 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1988,6 +1988,22 @@ out:
- 	return dn;
- }
+diff --git a/arch/arm/dts/vexpress-v2p-ca9.dts b/arch/arm/dts/vexpress-v2p-ca9.dts
+index 541840ae22dc..d0975330f205 100644
+--- a/arch/arm/dts/vexpress-v2p-ca9.dts
++++ b/arch/arm/dts/vexpress-v2p-ca9.dts
+@@ -6,6 +6,10 @@
+ 		device-path = &barebox_env;
+ 	};
  
-+struct device_node *of_copy_node(struct device_node *parent, const struct device_node *other)
-+{
-+	struct device_node *np, *child;
-+	struct property *pp;
++	aliases {
++		state = &state;
++	};
 +
-+	np = of_new_node(parent, other->name);
+ 	smb@4000000 {
+ 		motherboard {
+ 			flash@0,00000000 {
+@@ -21,6 +25,65 @@
+ 					label = "barebox-environment";
+ 					reg = <0x80000 0x80000>;
+ 				};
 +
-+	list_for_each_entry(pp, &other->properties, list)
-+		of_new_property(np, pp->name, pp->value, pp->length);
++				state_storage: partition@100000 {
++					label = "barebox-state";
++					reg = <0x100000 0x100000>;
++				};
++			};
++		};
++	};
 +
-+	for_each_child_of_node(other, child)
-+		of_copy_node(np, child);
++	/* State: mutable part */
++	state: state {
++		magic = <0x4d433230>;
++		compatible = "barebox,state";
++		backend-type = "raw";
++		backend = <&state_storage>;
++		backend-stridesize = <0x40>;
++		backend-storage-type = "circular";
++		#address-cells = <1>;
++		#size-cells = <1>;
 +
-+	return np;
-+}
++		bootstate {
++			#address-cells = <1>;
++			#size-cells = <1>;
 +
- void of_delete_node(struct device_node *node)
- {
- 	struct device_node *n, *nt;
-diff --git a/include/of.h b/include/of.h
-index 9ba771a395b8..c21a1e95dda8 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -144,6 +144,8 @@ extern struct device_node *of_new_node(struct device_node *parent,
- 				const char *name);
- extern struct device_node *of_create_node(struct device_node *root,
- 					const char *path);
-+extern struct device_node *of_copy_node(struct device_node *parent,
-+				const struct device_node *other);
- extern void of_delete_node(struct device_node *node);
- 
- extern int of_machine_is_compatible(const char *compat);
-@@ -576,6 +578,12 @@ static inline struct device_node *of_create_node(struct device_node *root,
- 	return NULL;
- }
- 
-+static inline struct device_node *of_copy_node(struct device_node *parent,
-+					       const struct device_node *other)
-+{
-+	return NULL;
-+}
++			system0 { /* the node's name here must match the subnode's name in the 'bootstate' node */
++				#address-cells = <1>;
++				#size-cells = <1>;
 +
- static inline void of_delete_node(struct device_node *node)
- {
- }
++				remaining_attempts@0 {
++					reg = <0x0 0x4>;
++					type = "uint32";
++					default = <3>;
++				};
++				priority@4 {
++					reg = <0x4 0x4>;
++					type = "uint32";
++					default = <20>;
++				};
++			};
++
++			system1 { /* the node's name here must match the subnode's name in the 'bootstate' node */
++				#address-cells = <1>;
++				#size-cells = <1>;
++
++				remaining_attempts@8 {
++					reg = <0x8 0x4>;
++					type = "uint32";
++					default = <3>;
++				};
++				priority@c {
++					reg = <0xC 0x4>;
++					type = "uint32";
++					default = <20>;
++				};
++			};
++
++			last_chosen@10 {
++				reg = <0x10 0x4>;
++				type = "uint32";
+ 			};
+ 		};
+ 	};
 -- 
 2.11.0
 
