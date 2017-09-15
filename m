@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dsmA5-0006Nk-4W
- for barebox@lists.infradead.org; Fri, 15 Sep 2017 08:39:48 +0000
+ id 1dsmA5-0006No-3C
+ for barebox@lists.infradead.org; Fri, 15 Sep 2017 08:39:46 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
- (envelope-from <l.stach@pengutronix.de>) id 1dsm9i-0005Jd-QV
+ (envelope-from <l.stach@pengutronix.de>) id 1dsm9i-0005Jd-Ur
  for barebox@lists.infradead.org; Fri, 15 Sep 2017 10:39:22 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 15 Sep 2017 10:39:17 +0200
-Message-Id: <20170915083922.25134-8-l.stach@pengutronix.de>
+Date: Fri, 15 Sep 2017 10:39:21 +0200
+Message-Id: <20170915083922.25134-12-l.stach@pengutronix.de>
 In-Reply-To: <20170915083922.25134-1-l.stach@pengutronix.de>
 References: <20170915083922.25134-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -26,68 +26,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/12] ARM: vexpress: regenerate config
+Subject: [PATCH 11/12] of: base: add funtion to copy a device tree node
 To: barebox@lists.infradead.org
 
-Enable some more features, so the default configuration gets more
-in line with other platforms.
+From: Michael Olbrich <m.olbrich@pengutronix.de>
 
+Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/configs/vexpress_defconfig | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/of/base.c | 16 ++++++++++++++++
+ include/of.h      |  8 ++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/arch/arm/configs/vexpress_defconfig b/arch/arm/configs/vexpress_defconfig
-index e31da4a8c668..f6a57de75cd9 100644
---- a/arch/arm/configs/vexpress_defconfig
-+++ b/arch/arm/configs/vexpress_defconfig
-@@ -4,7 +4,6 @@ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_MALLOC_SIZE=0x0
- CONFIG_MALLOC_TLSF=y
- CONFIG_PROMPT="vexpress: "
--CONFIG_GLOB=y
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
-@@ -12,9 +11,10 @@ CONFIG_MENU=y
- CONFIG_BOOTM_SHOW_TYPE=y
- CONFIG_BOOTM_VERBOSE=y
- CONFIG_BOOTM_INITRD=y
--CONFIG_PARTITION=y
--CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_CMD_DMESG=y
- CONFIG_LONGHELP=y
-+CONFIG_CMD_IOMEM=y
- CONFIG_CMD_MEMINFO=y
- # CONFIG_CMD_BOOTU is not set
- CONFIG_CMD_GO=y
-@@ -38,15 +38,25 @@ CONFIG_CMD_MENU_MANAGEMENT=y
- CONFIG_CMD_PASSWD=y
- CONFIG_CMD_READLINE=y
- CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
- CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
- CONFIG_CMD_OFTREE=y
- CONFIG_NET=y
- CONFIG_NET_NFS=y
- CONFIG_NET_NETCONSOLE=y
- CONFIG_NET_RESOLV=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
- CONFIG_SERIAL_AMBA_PL011=y
- CONFIG_DRIVER_NET_SMC91111=y
- # CONFIG_SPI is not set
-+CONFIG_MTD=y
-+CONFIG_MTD_CONCAT=y
-+CONFIG_DRIVER_CFI=y
-+CONFIG_MCI=y
-+CONFIG_MCI_MMCI=y
-+# CONFIG_PINCTRL is not set
- CONFIG_FS_TFTP=y
- CONFIG_DIGEST_SHA1_GENERIC=y
- CONFIG_DIGEST_SHA256_GENERIC=y
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index fb4d2c03946e..3ca13ae44e5c 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1988,6 +1988,22 @@ out:
+ 	return dn;
+ }
+ 
++struct device_node *of_copy_node(struct device_node *parent, const struct device_node *other)
++{
++	struct device_node *np, *child;
++	struct property *pp;
++
++	np = of_new_node(parent, other->name);
++
++	list_for_each_entry(pp, &other->properties, list)
++		of_new_property(np, pp->name, pp->value, pp->length);
++
++	for_each_child_of_node(other, child)
++		of_copy_node(np, child);
++
++	return np;
++}
++
+ void of_delete_node(struct device_node *node)
+ {
+ 	struct device_node *n, *nt;
+diff --git a/include/of.h b/include/of.h
+index 9ba771a395b8..c21a1e95dda8 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -144,6 +144,8 @@ extern struct device_node *of_new_node(struct device_node *parent,
+ 				const char *name);
+ extern struct device_node *of_create_node(struct device_node *root,
+ 					const char *path);
++extern struct device_node *of_copy_node(struct device_node *parent,
++				const struct device_node *other);
+ extern void of_delete_node(struct device_node *node);
+ 
+ extern int of_machine_is_compatible(const char *compat);
+@@ -576,6 +578,12 @@ static inline struct device_node *of_create_node(struct device_node *root,
+ 	return NULL;
+ }
+ 
++static inline struct device_node *of_copy_node(struct device_node *parent,
++					       const struct device_node *other)
++{
++	return NULL;
++}
++
+ static inline void of_delete_node(struct device_node *node)
+ {
+ }
 -- 
 2.11.0
 
