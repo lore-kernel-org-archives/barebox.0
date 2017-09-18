@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dtqH9-0006db-DO
- for barebox@lists.infradead.org; Mon, 18 Sep 2017 07:15:30 +0000
-Date: Mon, 18 Sep 2017 09:14:58 +0200
+ id 1dtqKl-0000WC-OP
+ for barebox@lists.infradead.org; Mon, 18 Sep 2017 07:19:13 +0000
+Date: Mon, 18 Sep 2017 09:18:49 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170918071458.yzbde6tqae6buwsa@pengutronix.de>
-References: <20170914094428.GA2479@ubuntu>
+Message-ID: <20170918071849.dh7wllzdjbp7ffc6@pengutronix.de>
+References: <20170915023353.GA6298@ubuntu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170914094428.GA2479@ubuntu>
+In-Reply-To: <20170915023353.GA6298@ubuntu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,19 +22,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: move to github
+Subject: Re: Load environment variables earlier
 To: zjh <jianhuizhao.329@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Sep 14, 2017 at 05:46:52PM +0800, zjh wrote:
-> I suggest that Barebox migrate to GitHub, which makes it easier to develop.
+On Fri, Sep 15, 2017 at 10:33:53AM +0800, zjh wrote:
+>  think the environment variables should be loaded before the device is registered,
+>  so when the device is registered, it can be initialized according to the environment variable.
 
-Well it makes it easier for some people, but not for others (including
-me atm). I may be convinced if I get more feedback like this in the
-future, but until this is the case: No, sorry.
+When devices are influenced by environment variables they must be
+prepared that these variables are changed *after* registration. Note
+that environment variables are loaded from storage media that are
+devices themselves, so that's a catch 22.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
