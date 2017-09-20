@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.15.19])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dujOi-0001xO-KS
- for barebox@lists.infradead.org; Wed, 20 Sep 2017 18:06:58 +0000
-From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Wed, 20 Sep 2017 20:05:56 +0200
-Message-Id: <20170920180557.22857-2-linux@rempel-privat.de>
-In-Reply-To: <20170920180557.22857-1-linux@rempel-privat.de>
-References: <20170920180557.22857-1-linux@rempel-privat.de>
+ id 1dukLW-0002N9-M8
+ for barebox@lists.infradead.org; Wed, 20 Sep 2017 19:07:44 +0000
+Received: by mail-pg0-x244.google.com with SMTP id i130so2125832pgc.0
+ for <barebox@lists.infradead.org>; Wed, 20 Sep 2017 12:07:21 -0700 (PDT)
+From: Aleksander Morgado <aleksander@aleksander.es>
+Date: Wed, 20 Sep 2017 12:07:16 -0700
+Message-Id: <20170920190716.25768-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,48 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 2/3] MIPS: dts: tl_wdr4300: add Atheros ART partition
+Subject: [PATCH] console_countdown: ignore errors in getchar()
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
+Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-and define it as source of MAC address for ag71xx driver
+The getchar() call may return an error reported as a -1, e.g. when the
+console detects a RATP message and switches to RATP mode.
 
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+In general it probably is a good idea to ignore these errors in the
+console countdown operation; and in particular for the RATP usecase,
+this also prevents from interfering with the countdown and menu just
+when switching one of the consoles to RATP mode.
+
+As a hint, this is what the standard console was printing due to this
+issue when the RATP console was activated:
+
+   Hit m for menu or any other key to stop autoboot: [: missing `]'
+
+Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
- arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ common/console_countdown.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts b/arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts
-index d16cab005..3733ad5b7 100644
---- a/arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts
-+++ b/arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts
-@@ -26,6 +26,12 @@
- 			compatible = "barebox,environment";
- 			device-path = &spiflash, "partname:barebox-environment";
- 		};
-+
-+		art@0 {
-+			compatible = "qca,art", "qca,art-ar9344";
-+			device-path = &spiflash, "partname:art";
-+			barebox,provide-mac-address = <&mac0>;
-+		};
- 	};
- };
- 
-@@ -59,6 +65,11 @@
- 			label = "barebox-environment";
- 			reg = <0x80000 0x10000>;
- 		};
-+
-+		partition@7f0000 {
-+			label = "art";
-+			reg = <0x7f0000 0x10000>;
-+		};
- 	};
- };
- 
+diff --git a/common/console_countdown.c b/common/console_countdown.c
+index 03b9b3353..36da1ce57 100644
+--- a/common/console_countdown.c
++++ b/common/console_countdown.c
+@@ -47,12 +47,14 @@ int console_countdown(int timeout_s, unsigned flags, char *out_key)
+ 	do {
+ 		if (tstc()) {
+ 			key = getchar();
+-			if (flags & CONSOLE_COUNTDOWN_ANYKEY)
+-				goto out;
+-			if (flags & CONSOLE_COUNTDOWN_RETURN && key == '\n')
+-				goto out;
+-			if (flags & CONSOLE_COUNTDOWN_CTRLC && key == 3)
+-				goto out;
++			if (key >= 0) {
++				if (flags & CONSOLE_COUNTDOWN_ANYKEY)
++					goto out;
++				if (flags & CONSOLE_COUNTDOWN_RETURN && key == '\n')
++					goto out;
++				if (flags & CONSOLE_COUNTDOWN_CTRLC && key == 3)
++					goto out;
++			}
+ 			key = 0;
+ 		}
+ 		if ((flags & CONSOLE_COUNTDOWN_EXTERN) &&
 -- 
-2.11.0
+2.14.1
 
 
 _______________________________________________
