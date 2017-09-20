@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout.gmx.net ([212.227.15.15])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1duhHK-00036u-5J
- for barebox@lists.infradead.org; Wed, 20 Sep 2017 15:51:12 +0000
-From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Wed, 20 Sep 2017 17:50:44 +0200
-Message-Id: <20170920155044.1841-1-p.zabel@pengutronix.de>
+ id 1dujON-0001vb-Ps
+ for barebox@lists.infradead.org; Wed, 20 Sep 2017 18:06:37 +0000
+From: Oleksij Rempel <linux@rempel-privat.de>
+Date: Wed, 20 Sep 2017 20:05:55 +0200
+Message-Id: <20170920180557.22857-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,61 +19,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mmc: allow skipping SD card initialization
+Subject: [PATCH v1 1/3] net: ag71xx: define parent devices
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-This patch allows to skip SD card initialization for eMMCs by setting
-the "no-sd" property in the host controller device tree node. Avoiding
-two SD command timeouts speeds up detection time by well over 200 ms.
+without it we are not able to set mac address from other driver.
 
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- drivers/mci/mci-core.c | 12 ++++++++----
- include/mci.h          |  1 +
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/ag71xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 07911d43d..208b7666d 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -1682,10 +1682,13 @@ static int mci_card_probe(struct mci *mci)
- 	}
+diff --git a/drivers/net/ag71xx.c b/drivers/net/ag71xx.c
+index 1cec26360..a422aacdd 100644
+--- a/drivers/net/ag71xx.c
++++ b/drivers/net/ag71xx.c
+@@ -580,6 +580,7 @@ static int ag71xx_probe(struct device_d *dev)
+ 	miibus = &priv->miibus;
+ 	dev->priv = edev;
+ 	edev->priv = priv;
++	edev->parent = dev;
  
- 	/* Check if this card can handle the "SD Card Physical Layer Specification 2.0" */
--	rc = sd_send_if_cond(mci);
--	rc = sd_send_op_cond(mci);
--	if (rc && rc == -ETIMEDOUT) {
--		/* If the command timed out, we check for an MMC card */
-+	if (!host->no_sd) {
-+		rc = sd_send_if_cond(mci);
-+		rc = sd_send_op_cond(mci);
-+	}
-+	if (host->no_sd || rc == -ETIMEDOUT) {
-+		/* If SD card initialization was skipped or if it timed out,
-+		 * we check for an MMC card */
- 		dev_dbg(&mci->dev, "Card seems to be a MultiMediaCard\n");
- 		rc = mmc_send_op_cond(mci);
- 	}
-@@ -1904,6 +1907,7 @@ void mci_of_parse_node(struct mci_host *host,
- 	}
+ 	edev->init = ag71xx_ether_init;
+ 	edev->open = ag71xx_ether_open;
+@@ -597,6 +598,7 @@ static int ag71xx_probe(struct device_d *dev)
+ 	miibus->read = ag71xx_ether_mii_read;
+ 	miibus->write = ag71xx_ether_mii_write;
+ 	miibus->priv = priv;
++	miibus->parent = dev;
  
- 	host->non_removable = of_property_read_bool(np, "non-removable");
-+	host->no_sd = of_property_read_bool(np, "no-sd");
- }
- 
- void mci_of_parse(struct mci_host *host)
-diff --git a/include/mci.h b/include/mci.h
-index d3115e8cc..1f6533391 100644
---- a/include/mci.h
-+++ b/include/mci.h
-@@ -403,6 +403,7 @@ struct mci_host {
- 	unsigned dsr_val;	/**< optional dsr value */
- 	int use_dsr;		/**< optional dsr usage flag */
- 	bool non_removable;	/**< device is non removable */
-+	bool no_sd;		/**< do not send SD commands during initialization */
- 	struct regulator *supply;
- 
- 	/** init the host interface */
+ 	/* enable switch core */
+ 	rd = ar7240_reg_rd(AR71XX_PLL_BASE + AR933X_ETHSW_CLOCK_CONTROL_REG);
 -- 
 2.11.0
 
