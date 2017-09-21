@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dukLW-0002N9-M8
- for barebox@lists.infradead.org; Wed, 20 Sep 2017 19:07:44 +0000
-Received: by mail-pg0-x244.google.com with SMTP id i130so2125832pgc.0
- for <barebox@lists.infradead.org>; Wed, 20 Sep 2017 12:07:21 -0700 (PDT)
-From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Wed, 20 Sep 2017 12:07:16 -0700
-Message-Id: <20170920190716.25768-1-aleksander@aleksander.es>
+ id 1dv8IQ-0001xf-8C
+ for barebox@lists.infradead.org; Thu, 21 Sep 2017 20:42:08 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu, 21 Sep 2017 22:41:39 +0200
+Message-Id: <20170921204139.16052-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,63 +15,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] console_countdown: ignore errors in getchar()
+Subject: [PATCH] gpiolib: check validity for gpio_info in *_active()
 To: barebox@lists.infradead.org
-Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-The getchar() call may return an error reported as a -1, e.g. when the
-console detects a RATP message and switches to RATP mode.
-
-In general it probably is a good idea to ignore these errors in the
-console countdown operation; and in particular for the RATP usecase,
-this also prevents from interfering with the countdown and menu just
-when switching one of the consoles to RATP mode.
-
-As a hint, this is what the standard console was printing due to this
-issue when the RATP console was activated:
-
-   Hit m for menu or any other key to stop autoboot: [: missing `]'
-
-Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
----
- common/console_countdown.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/common/console_countdown.c b/common/console_countdown.c
-index 03b9b3353..36da1ce57 100644
---- a/common/console_countdown.c
-+++ b/common/console_countdown.c
-@@ -47,12 +47,14 @@ int console_countdown(int timeout_s, unsigned flags, char *out_key)
- 	do {
- 		if (tstc()) {
- 			key = getchar();
--			if (flags & CONSOLE_COUNTDOWN_ANYKEY)
--				goto out;
--			if (flags & CONSOLE_COUNTDOWN_RETURN && key == '\n')
--				goto out;
--			if (flags & CONSOLE_COUNTDOWN_CTRLC && key == 3)
--				goto out;
-+			if (key >= 0) {
-+				if (flags & CONSOLE_COUNTDOWN_ANYKEY)
-+					goto out;
-+				if (flags & CONSOLE_COUNTDOWN_RETURN && key == '\n')
-+					goto out;
-+				if (flags & CONSOLE_COUNTDOWN_CTRLC && key == 3)
-+					goto out;
-+			}
- 			key = 0;
- 		}
- 		if ((flags & CONSOLE_COUNTDOWN_EXTERN) &&
--- 
-2.14.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Z3Bpb19zZXRfYWN0aXZlLCBncGlvX2lzX2FjdGl2ZSBhbmQgZ3Bpb19kaXJlY3Rpb25fYWN0aXZl
+IGFyZSBwdWJsaWMKZnVuY3Rpb25zLCBhY2NvcmRpbmdseSB0aGVyZSBzaG91bGQgYmUgZXJyb3Ig
+Y2hlY2tpbmcuCgpJZiBhbiBpbnZhbGlkIGdwaW8gbnVtYmVyIGlzIGdpdmVuIHRvIHRoZXNlIGZ1
+bmN0aW9ucyB3aXRob3V0IGNoZWNraW5nCmdwaW9fYWRqdXN0X3ZhbHVlIGlzIGNhbGxlZCB3aXRo
+IGdpID09IE5VTEwgd2hpY2ggdGhlbiBkZXJlZmVyZW5jZXMgdGhpcwpwb2ludGVyLgoKU2lnbmVk
+LW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5k
+ZT4KLS0tCiBkcml2ZXJzL2dwaW8vZ3Bpb2xpYi5jIHwgMTIgKysrKysrKysrKysrCiAxIGZpbGUg
+Y2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3Bpby9ncGlv
+bGliLmMgYi9kcml2ZXJzL2dwaW8vZ3Bpb2xpYi5jCmluZGV4IDY3ZDc3MWJhZTNhOC4uYzE3Y2Zk
+YmIzMzUwIDEwMDY0NAotLS0gYS9kcml2ZXJzL2dwaW8vZ3Bpb2xpYi5jCisrKyBiL2RyaXZlcnMv
+Z3Bpby9ncGlvbGliLmMKQEAgLTIwNCw2ICsyMDQsMTAgQEAgRVhQT1JUX1NZTUJPTChncGlvX3Nl
+dF92YWx1ZSk7CiB2b2lkIGdwaW9fc2V0X2FjdGl2ZSh1bnNpZ25lZCBncGlvLCBib29sIHZhbHVl
+KQogewogCXN0cnVjdCBncGlvX2luZm8gKmdpID0gZ3Bpb190b19kZXNjKGdwaW8pOworCisJaWYg
+KCFnaSkKKwkJcmV0dXJuOworCiAJZ3Bpb19zZXRfdmFsdWUoZ3BpbywgZ3Bpb19hZGp1c3RfdmFs
+dWUoZ2ksIHZhbHVlKSk7CiB9CiBFWFBPUlRfU1lNQk9MKGdwaW9fc2V0X2FjdGl2ZSk7CkBAIC0y
+MjksNiArMjMzLDEwIEBAIEVYUE9SVF9TWU1CT0woZ3Bpb19nZXRfdmFsdWUpOwogaW50IGdwaW9f
+aXNfYWN0aXZlKHVuc2lnbmVkIGdwaW8pCiB7CiAJc3RydWN0IGdwaW9faW5mbyAqZ2kgPSBncGlv
+X3RvX2Rlc2MoZ3Bpbyk7CisKKwlpZiAoIWdpKQorCQlyZXR1cm47CisKIAlyZXR1cm4gZ3Bpb19h
+ZGp1c3RfdmFsdWUoZ2ksIGdwaW9fZ2V0X3ZhbHVlKGdwaW8pKTsKIH0KIEVYUE9SVF9TWU1CT0wo
+Z3Bpb19pc19hY3RpdmUpOwpAQCAtMjU1LDYgKzI2MywxMCBAQCBFWFBPUlRfU1lNQk9MKGdwaW9f
+ZGlyZWN0aW9uX291dHB1dCk7CiBpbnQgZ3Bpb19kaXJlY3Rpb25fYWN0aXZlKHVuc2lnbmVkIGdw
+aW8sIGJvb2wgdmFsdWUpCiB7CiAJc3RydWN0IGdwaW9faW5mbyAqZ2kgPSBncGlvX3RvX2Rlc2Mo
+Z3Bpbyk7CisKKwlpZiAoIWdpKQorCQlyZXR1cm47CisKIAlyZXR1cm4gZ3Bpb19kaXJlY3Rpb25f
+b3V0cHV0KGdwaW8sIGdwaW9fYWRqdXN0X3ZhbHVlKGdpLCB2YWx1ZSkpOwogfQogRVhQT1JUX1NZ
+TUJPTChncGlvX2RpcmVjdGlvbl9hY3RpdmUpOwotLSAKMi4xMS4wCgoKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
+ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
+YW4vbGlzdGluZm8vYmFyZWJveAo=
