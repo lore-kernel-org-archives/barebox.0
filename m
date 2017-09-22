@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dvKg8-0000jP-1A
- for barebox@lists.infradead.org; Fri, 22 Sep 2017 09:55:26 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri, 22 Sep 2017 11:54:59 +0200
-Message-Id: <20170922095459.32629-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1dvOLz-0006hm-CR
+ for barebox@lists.infradead.org; Fri, 22 Sep 2017 13:50:54 +0000
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Fri, 22 Sep 2017 15:50:23 +0200
+Message-Id: <20170922135023.12255-1-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,36 +14,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX53 QSB: drop phy reset handling in board file
+Subject: [PATCH] imx-bbu-nand-fcb: read_firmware_all(): Spell "Secondary
+ firmware" with a capital "S"
 To: barebox@lists.infradead.org
 
-U2luY2UgY29tbWl0CgoJNWMxODQ2YjYyNTI0ICgiQVJNOiBpLm14NTM6IFBhcnNlIFJlc2V0IEdQ
-SU8gcGluIGluIEZFQyBkcml2ZXIgZnJvbSBEZXZpY2V0cmVlIikKCnRoZSBmZWMgZHJpdmVyIGVu
-c3VyZXMgYSBwaHkgcmVzZXQuIEFzIHRoZXJlIGlzIGxpdHRsZSB1c2UgaW4gcmVzZXR0aW5nCnR3
-aWNlLCBkcm9wIHRoZSByZXNldCBmcm9tIHRoZSBib2FyZCBmaWxlLgoKU2lnbmVkLW9mZi1ieTog
-VXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBh
-cmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14NTMtcXNiL2JvYXJkLmMgfCAxMSAtLS0tLS0tLS0t
-LQogMSBmaWxlIGNoYW5nZWQsIDExIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJt
-L2JvYXJkcy9mcmVlc2NhbGUtbXg1My1xc2IvYm9hcmQuYyBiL2FyY2gvYXJtL2JvYXJkcy9mcmVl
-c2NhbGUtbXg1My1xc2IvYm9hcmQuYwppbmRleCBmNzVjOWQxMmNkNmIuLjBiMWM5MjdiODFkNCAx
-MDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDUzLXFzYi9ib2FyZC5jCisr
-KyBiL2FyY2gvYXJtL2JvYXJkcy9mcmVlc2NhbGUtbXg1My1xc2IvYm9hcmQuYwpAQCAtNjQsMTUg
-KzY0LDYgQEAgc3RhdGljIHZvaWQgc2V0X2JvYXJkX3JldihpbnQgcmV2KQogCWxvY29fc3lzdGVt
-X3JldiA9ICAobG9jb19zeXN0ZW1fcmV2ICYgfigweEYgPDwgOCkpIHwgKHJldiAmIDB4RikgPDwg
-ODsKIH0KIAotI2RlZmluZSBMT0NPX0ZFQ19QSFlfUlNUCQlJTVhfR1BJT19OUig3LCA2KQotCi1z
-dGF0aWMgdm9pZCBsb2NvX2ZlY19yZXNldCh2b2lkKQotewotCWdwaW9fZGlyZWN0aW9uX291dHB1
-dChMT0NPX0ZFQ19QSFlfUlNULCAwKTsKLQltZGVsYXkoMSk7Ci0JZ3Bpb19zZXRfdmFsdWUoTE9D
-T19GRUNfUEhZX1JTVCwgMSk7Ci19Ci0KICNkZWZpbmUgTVg1M19MT0NPX1VTQl9QV1JFTgkJSU1Y
-X0dQSU9fTlIoNywgOCkKIAogc3RhdGljIGludCBsb2NvX2xhdGVfaW5pdCh2b2lkKQpAQCAtMTQ4
-LDggKzEzOSw2IEBAIHN0YXRpYyBpbnQgbG9jb19sYXRlX2luaXQodm9pZCkKIAlncGlvX2RpcmVj
-dGlvbl9vdXRwdXQoTVg1M19MT0NPX1VTQl9QV1JFTiwgMCk7CiAJZ3Bpb19zZXRfdmFsdWUoTVg1
-M19MT0NPX1VTQl9QV1JFTiwgMSk7CiAKLQlsb2NvX2ZlY19yZXNldCgpOwotCiAJc2V0X3NpbGlj
-b25fcmV2KGlteF9zaWxpY29uX3JldmlzaW9uKCkpOwogCiAJYXJtbGludXhfc2V0X2FyY2hpdGVj
-dHVyZShNQUNIX1RZUEVfTVg1M19MT0NPKTsKLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+"Primary firmware" is writte with a capital "P" so adjust "Secondary firmware"
+to use a capital "S".
+
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ common/imx-bbu-nand-fcb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
+index 7218c5e1ccda..89b404884ae8 100644
+--- a/common/imx-bbu-nand-fcb.c
++++ b/common/imx-bbu-nand-fcb.c
+@@ -1126,7 +1126,7 @@ static void read_firmware_all(struct mtd_info *mtd, struct fcb_block *fcb, void
+ 		fcb->Firmware1_startingPage + fcb->PagesInFirmware1, primary ? "" : "in",
+ 		primary_refresh ? "needs cleanup" : "clean");
+ 
+-	pr_info("secondary firmware is on pages %d-%d, %svalid, %s\n", fcb->Firmware2_startingPage,
++	pr_info("Secondary firmware is on pages %d-%d, %svalid, %s\n", fcb->Firmware2_startingPage,
+ 		fcb->Firmware2_startingPage + fcb->PagesInFirmware2, secondary ? "" : "in",
+ 		secondary_refresh ? "needs cleanup" : "clean");
+ 
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
