@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dwjeU-0003XA-BM
- for barebox@lists.infradead.org; Tue, 26 Sep 2017 06:47:32 +0000
-Date: Tue, 26 Sep 2017 08:47:08 +0200
+ id 1dwjf2-0004Fr-MX
+ for barebox@lists.infradead.org; Tue, 26 Sep 2017 06:48:06 +0000
+Date: Tue, 26 Sep 2017 08:47:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170926064708.iilzdfv2agqj7hun@pengutronix.de>
-References: <20170921204455.21403-1-u.kleine-koenig@pengutronix.de>
+Message-ID: <20170926064742.w3c6rldd5awd7gx3@pengutronix.de>
+References: <20170922095459.32629-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170921204455.21403-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170922095459.32629-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,75 +22,67 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] gpiolib: check validity for gpio_info in *_active()
+Subject: Re: [PATCH] ARM: i.MX53 QSB: drop phy reset handling in board file
 To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Sep 21, 2017 at 10:44:55PM +0200, Uwe Kleine-K=F6nig wrote:
-> gpio_set_active, gpio_is_active and gpio_direction_active are public
-> functions, accordingly there should be error checking.
+On Fri, Sep 22, 2017 at 11:54:59AM +0200, Uwe Kleine-K=F6nig wrote:
+> Since commit
 > =
 
-> If an invalid gpio number is given to these functions without checking
-> gpio_adjust_value is called with gi =3D=3D NULL which then dereferences t=
-his
-> pointer.
+> 	5c1846b62524 ("ARM: i.mx53: Parse Reset GPIO pin in FEC driver from Devi=
+cetree")
+> =
+
+> the fec driver ensures a phy reset. As there is little use in resetting
+> twice, drop the reset from the board file.
 > =
 
 > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > ---
-> Changes since (implicit) v1:
-> =
+>  arch/arm/boards/freescale-mx53-qsb/board.c | 11 -----------
+>  1 file changed, 11 deletions(-)
 
->  - make it compile (sigh)
-
-Took this one instead.
+Applied, thanks
 
 Sascha
 
 > =
 
->  drivers/gpio/gpiolib.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> =
+> diff --git a/arch/arm/boards/freescale-mx53-qsb/board.c b/arch/arm/boards=
+/freescale-mx53-qsb/board.c
+> index f75c9d12cd6b..0b1c927b81d4 100644
+> --- a/arch/arm/boards/freescale-mx53-qsb/board.c
+> +++ b/arch/arm/boards/freescale-mx53-qsb/board.c
+> @@ -64,15 +64,6 @@ static void set_board_rev(int rev)
+>  	loco_system_rev =3D  (loco_system_rev & ~(0xF << 8)) | (rev & 0xF) << 8;
+>  }
+>  =
 
-> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> index 67d771bae3a8..b83a27de7d21 100644
-> --- a/drivers/gpio/gpiolib.c
-> +++ b/drivers/gpio/gpiolib.c
-> @@ -204,6 +204,10 @@ EXPORT_SYMBOL(gpio_set_value);
->  void gpio_set_active(unsigned gpio, bool value)
->  {
->  	struct gpio_info *gi =3D gpio_to_desc(gpio);
-> +
-> +	if (!gi)
-> +		return;
-> +
->  	gpio_set_value(gpio, gpio_adjust_value(gi, value));
->  }
->  EXPORT_SYMBOL(gpio_set_active);
-> @@ -229,6 +233,10 @@ EXPORT_SYMBOL(gpio_get_value);
->  int gpio_is_active(unsigned gpio)
->  {
->  	struct gpio_info *gi =3D gpio_to_desc(gpio);
-> +
-> +	if (!gi)
-> +		return -ENODEV;
-> +
->  	return gpio_adjust_value(gi, gpio_get_value(gpio));
->  }
->  EXPORT_SYMBOL(gpio_is_active);
-> @@ -255,6 +263,10 @@ EXPORT_SYMBOL(gpio_direction_output);
->  int gpio_direction_active(unsigned gpio, bool value)
->  {
->  	struct gpio_info *gi =3D gpio_to_desc(gpio);
-> +
-> +	if (!gi)
-> +		return -ENODEV;
-> +
->  	return gpio_direction_output(gpio, gpio_adjust_value(gi, value));
->  }
->  EXPORT_SYMBOL(gpio_direction_active);
+> -#define LOCO_FEC_PHY_RST		IMX_GPIO_NR(7, 6)
+> -
+> -static void loco_fec_reset(void)
+> -{
+> -	gpio_direction_output(LOCO_FEC_PHY_RST, 0);
+> -	mdelay(1);
+> -	gpio_set_value(LOCO_FEC_PHY_RST, 1);
+> -}
+> -
+>  #define MX53_LOCO_USB_PWREN		IMX_GPIO_NR(7, 8)
+>  =
+
+>  static int loco_late_init(void)
+> @@ -148,8 +139,6 @@ static int loco_late_init(void)
+>  	gpio_direction_output(MX53_LOCO_USB_PWREN, 0);
+>  	gpio_set_value(MX53_LOCO_USB_PWREN, 1);
+>  =
+
+> -	loco_fec_reset();
+> -
+>  	set_silicon_rev(imx_silicon_revision());
+>  =
+
+>  	armlinux_set_architecture(MACH_TYPE_MX53_LOCO);
 > -- =
 
 > 2.11.0
