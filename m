@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dyGDy-0008Uh-9e
- for barebox@lists.infradead.org; Sat, 30 Sep 2017 11:46:28 +0000
-Received: by mail-lf0-x242.google.com with SMTP id k23so1845079lfi.11
- for <barebox@lists.infradead.org>; Sat, 30 Sep 2017 04:46:03 -0700 (PDT)
-Date: Sat, 30 Sep 2017 14:57:55 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20170930145755.9a68a3fffe61c58eda5c7263@gmail.com>
-In-Reply-To: <6767ad4e-80b7-2c69-49ff-ecfb64ab19e0@rempel-privat.de>
-References: <20170928231249.4158-1-antonynpavlov@gmail.com>
- <20170928231249.4158-2-antonynpavlov@gmail.com>
- <6767ad4e-80b7-2c69-49ff-ecfb64ab19e0@rempel-privat.de>
-Mime-Version: 1.0
+ id 1dwxNs-0006xj-RH
+ for barebox@lists.infradead.org; Tue, 26 Sep 2017 21:27:20 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue, 26 Sep 2017 23:26:44 +0200
+Message-Id: <20170926212646.2968-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170926212646.2968-1-u.kleine-koenig@pengutronix.de>
+References: <20170926212646.2968-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,183 +17,103 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC v4 01/10] Add initial RISC-V architecture support
-To: Oleksij Rempel <linux@rempel-privat.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] gpiolib: reorder functions
+To: barebox@lists.infradead.org
 
-On Fri, 29 Sep 2017 14:07:09 +0200
-Oleksij Rempel <linux@rempel-privat.de> wrote:
-
-> Hi,
-> =
-
-> hm... mostly looks identical with existing arch
-
-What do you mean when you say "existing arch"?
-
-...
-
-> Am 29.09.2017 um 01:12 schrieb Antony Pavlov:
-...
-> > diff --git a/arch/riscv/boot/start.S b/arch/riscv/boot/start.S
-> > new file mode 100644
-> > index 000000000..2fd00f63d
-> > --- /dev/null
-> > +++ b/arch/riscv/boot/start.S
-> > @@ -0,0 +1,74 @@
-> > +/*
-> > + * Startup Code for MIPS CPU
-> > + *
-> > + * based on coreboot/src/arch/riscv/bootblock.S
-> > + *
-> > + * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
-> > + *
-> > + * This file is part of barebox.
-> > + * See file CREDITS for list of people who contributed to this project.
-> > + *
-> > + * This program is free software; you can redistribute it and/or modify
-> > + * it under the terms of the GNU General Public License version 2
-> > + * as published by the Free Software Foundation.
-> > + *
-> > + * This program is distributed in the hope that it will be useful,
-> > + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> > + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> > + * GNU General Public License for more details.
-> > + *
-> > + */
-> > +
-> > +#include <asm-generic/memory_layout.h>
-> > +
-> > +	.text
-> > +	.section ".text_entry"
-> > +	.align 2
-> > +
-> > +.globl _start
-> > +_start:
-> > +	li sp, STACK_BASE + STACK_SIZE
-> > +
-> > +	# make room for HLS and initialize it
-> > +	addi sp, sp, -64 /* MENTRY_FRAME_SIZE */
-> > +
-> > +	# poison the stack
-> > +	li t1, STACK_BASE
-> > +	li t0, 0xdeadbeef
-> > +	sw t0, 0(t1)
-> > +
-> > +	# clear any pending interrupts
-> > +	//csrwi mip, 0
-> =
-
-> should be removed.
-
-Actually not!
-
-I have imported this code from coreboot.
-
-I have commented this line because csrwi does not worked in some cases.
-
-But I have to make additional investigations on csrwi.
-
-> =
-
-> > +	/* copy barebox to link location */
-> > +
-> > +	la	a0, _start	/* a0 <- _start actual address */
-> > +	li	a1, CONFIG_TEXT_BASE	/* a1 <- _start link address */
-> > +
-> > +	beq	a0, a1, main_entry
-> > +
-> > +	la	a2, __bss_start
-> > +
-> > +#define LONGSIZE 4
-> > +
-> > +copy_loop:
-> > +	/* copy from source address [a0] */
-> > +	lw	t0, LONGSIZE * 0(a0)
-> > +	lw	t1, LONGSIZE * 1(a0)
-> > +	lw	t2, LONGSIZE * 2(a0)
-> > +	lw	t3, LONGSIZE * 3(a0)
-> > +	/* copy to target address [a1] */
-> > +	sw	t0, LONGSIZE * 0(a1)
-> > +	sw	t1, LONGSIZE * 1(a1)
-> > +	sw	t2, LONGSIZE * 2(a1)
-> > +	sw	t3, LONGSIZE * 3(a1)
-> > +	addi	a0, a0, LONGSIZE * 2
-> > +	addi	a1, a1, LONGSIZE * 2
-> > +	bgeu	a2, a0, copy_loop
-> > +
-> > +	/* Alas! At the moment I can't load main_entry __link__ address
-> > +	   into a0 with la. Use CONFIG_TEXT_BASE instead. This solution
-> > +	   leads to extra cycles for repeat sp initialization. */
-> > +
-> > +	li	a0, CONFIG_TEXT_BASE
-> > +	jalr	a0
-> > diff --git a/arch/riscv/dts/.gitignore b/arch/riscv/dts/.gitignore
-> > new file mode 100644
-> > index 000000000..077903c50
-> > --- /dev/null
-> > +++ b/arch/riscv/dts/.gitignore
-> > @@ -0,0 +1 @@
-> > +*dtb*
-> > diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
-> > new file mode 100644
-> > index 000000000..f8380b11c
-> > --- /dev/null
-> > +++ b/arch/riscv/dts/Makefile
-> > @@ -0,0 +1,9 @@
-> > +BUILTIN_DTB :=3D $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
-> > +obj-$(CONFIG_BUILTIN_DTB) +=3D $(BUILTIN_DTB).dtb.o
-> > +
-> > +# just to build a built-in.o. Otherwise compilation fails when no devi=
-cetree is
-> > +# created.
-> > +obj- +=3D dummy.o
-> > +
-> > +always :=3D $(dtb-y)
-> > +clean-files :=3D *.dtb *.dtb.S .*.dtc .*.pre .*.dts
-> > diff --git a/arch/riscv/dts/skeleton.dtsi b/arch/riscv/dts/skeleton.dtsi
-> > new file mode 100644
-> > index 000000000..38ead821b
-> > --- /dev/null
-> > +++ b/arch/riscv/dts/skeleton.dtsi
-> > @@ -0,0 +1,13 @@
-> > +/*
-> > + * Skeleton device tree; the bare minimum needed to boot; just include=
- and
-> > + * add a compatible value.  The bootloader will typically populate the=
- memory
-> > + * node.
-> > + */
-> > +
-> > +/ {
-> > +	#address-cells =3D <2>;
-> > +	#size-cells =3D <1>;
-> > +	chosen { };
-> > +	aliases { };
-> > +	memory { device_type =3D "memory"; reg =3D <0 0 0>; };
-> =
-
-> "reg =3D <0 0>" instead?
-
-no.
-
-We have
-
-  #address-cells =3D <2>;
-  #size-cells =3D <1>;
-
-here.
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Z3Bpb19yZXF1ZXN0X29uZSgpIGFuZCBncGlvX3JlcXVlc3RfYXJyYXkoKSBtYWtlIHVzZSBvZgpn
+cGlvX2RpcmVjdGlvbl8qLCBzbyBpdCBpcyBuYXR1cmFsIHRvIGRlZmluZSB0aGUgZm9ybWVyIHRo
+ZW0gZnVydGhlciBsb3cKaW4gdGhlIGZpbGUuIEl0IGRvZXNuJ3QgbWF0dGVyIGZvciB0aGUgY29t
+cGlsZXIgaGVyZSBhcyBhbGwgZnVuY3Rpb25zCmFyZSBkZWNsYXJlZCBpbiBhIGhlYWRlciwgYnV0
+IHRoZSBuZXh0IGNvbW1pdCBhZGRzIGEgZmV3IG1vcmUgZnVuY3Rpb25zCnRoYXQgbmVlZCB0aGlz
+IHJlb3JkZXJpbmcgdG8gbm8gbmVlZCBhZGRpdGlvbmFsIGZvcndhcmQgZGVjbGFyYXRpb25zLgoK
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
+b25peC5kZT4KLS0tCiBkcml2ZXJzL2dwaW8vZ3Bpb2xpYi5jIHwgMTUyICsrKysrKysrKysrKysr
+KysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA3NiBp
+bnNlcnRpb25zKCspLCA3NiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2dwaW8v
+Z3Bpb2xpYi5jIGIvZHJpdmVycy9ncGlvL2dwaW9saWIuYwppbmRleCBiODNhMjdkZTdkMjEuLmI4
+Njg5ODZkZDQ0OSAxMDA2NDQKLS0tIGEvZHJpdmVycy9ncGlvL2dwaW9saWIuYworKysgYi9kcml2
+ZXJzL2dwaW8vZ3Bpb2xpYi5jCkBAIC0xMTAsODIgKzExMCw2IEBAIHZvaWQgZ3Bpb19mcmVlKHVu
+c2lnbmVkIGdwaW8pCiAJZ2ktPmxhYmVsID0gTlVMTDsKIH0KIAotLyoqCi0gKiBncGlvX3JlcXVl
+c3Rfb25lIC0gcmVxdWVzdCBhIHNpbmdsZSBHUElPIHdpdGggaW5pdGlhbCBjb25maWd1cmF0aW9u
+Ci0gKiBAZ3BpbzoJdGhlIEdQSU8gbnVtYmVyCi0gKiBAZmxhZ3M6CUdQSU8gY29uZmlndXJhdGlv
+biBhcyBzcGVjaWZpZWQgYnkgR1BJT0ZfKgotICogQGxhYmVsOglhIGxpdGVyYWwgZGVzY3JpcHRp
+b24gc3RyaW5nIG9mIHRoaXMgR1BJTwotICovCi1pbnQgZ3Bpb19yZXF1ZXN0X29uZSh1bnNpZ25l
+ZCBncGlvLCB1bnNpZ25lZCBsb25nIGZsYWdzLCBjb25zdCBjaGFyICpsYWJlbCkKLXsKLQlpbnQg
+ZXJyOwotCXN0cnVjdCBncGlvX2luZm8gKmdpID0gZ3Bpb190b19kZXNjKGdwaW8pOwotCi0JLyoK
+LQkgKiBOb3QgYWxsIG9mIHRoZSBmbGFncyBiZWxvdyBhcmUgbXVsaXQtYml0LCBidXQsIGZvciB0
+aGUgc2FrZQotCSAqIG9mIGNvbnNpc3RlbmN5LCB0aGUgY29kZSBpcyB3cml0dGVuIGFzIGlmIGFs
+bCBvZiB0aGVtIHdlcmUuCi0JICovCi0JY29uc3QgYm9vbCBhY3RpdmVfbG93ICA9IChmbGFncyAm
+IEdQSU9GX0FDVElWRV9MT1cpID09IEdQSU9GX0FDVElWRV9MT1c7Ci0JY29uc3QgYm9vbCBkaXJf
+aW4gICAgICA9IChmbGFncyAmIEdQSU9GX0RJUl9JTikgPT0gR1BJT0ZfRElSX0lOOwotCWNvbnN0
+IGJvb2wgbG9naWNhbCAgICAgPSAoZmxhZ3MgJiBHUElPRl9MT0dJQ0FMKSA9PSBHUElPRl9MT0dJ
+Q0FMOwotCWNvbnN0IGJvb2wgaW5pdF9hY3RpdmUgPSAoZmxhZ3MgJiBHUElPRl9JTklUX0FDVElW
+RSkgPT0gR1BJT0ZfSU5JVF9BQ1RJVkU7Ci0JY29uc3QgYm9vbCBpbml0X2hpZ2ggICA9IChmbGFn
+cyAmIEdQSU9GX0lOSVRfSElHSCkgPT0gR1BJT0ZfSU5JVF9ISUdIOwotCi0JZXJyID0gZ3Bpb19y
+ZXF1ZXN0KGdwaW8sIGxhYmVsKTsKLQlpZiAoZXJyKQotCQlyZXR1cm4gZXJyOwotCi0JZ2ktPmFj
+dGl2ZV9sb3cgPSBhY3RpdmVfbG93OwotCi0JaWYgKGRpcl9pbikKLQkJZXJyID0gZ3Bpb19kaXJl
+Y3Rpb25faW5wdXQoZ3Bpbyk7Ci0JZWxzZSBpZiAobG9naWNhbCkKLQkJZXJyID0gZ3Bpb19kaXJl
+Y3Rpb25fYWN0aXZlKGdwaW8sIGluaXRfYWN0aXZlKTsKLQllbHNlCi0JCWVyciA9IGdwaW9fZGly
+ZWN0aW9uX291dHB1dChncGlvLCBpbml0X2hpZ2gpOwotCi0JaWYgKGVycikKLQkJZ3Bpb19mcmVl
+KGdwaW8pOwotCi0JcmV0dXJuIGVycjsKLX0KLUVYUE9SVF9TWU1CT0xfR1BMKGdwaW9fcmVxdWVz
+dF9vbmUpOwotCi0vKioKLSAqIGdwaW9fcmVxdWVzdF9hcnJheSAtIHJlcXVlc3QgbXVsdGlwbGUg
+R1BJT3MgaW4gYSBzaW5nbGUgY2FsbAotICogQGFycmF5OglhcnJheSBvZiB0aGUgJ3N0cnVjdCBn
+cGlvJwotICogQG51bToJaG93IG1hbnkgR1BJT3MgaW4gdGhlIGFycmF5Ci0gKi8KLWludCBncGlv
+X3JlcXVlc3RfYXJyYXkoY29uc3Qgc3RydWN0IGdwaW8gKmFycmF5LCBzaXplX3QgbnVtKQotewot
+CWludCBpLCBlcnI7Ci0KLQlmb3IgKGkgPSAwOyBpIDwgbnVtOyBpKyssIGFycmF5KyspIHsKLQkJ
+ZXJyID0gZ3Bpb19yZXF1ZXN0X29uZShhcnJheS0+Z3BpbywgYXJyYXktPmZsYWdzLCBhcnJheS0+
+bGFiZWwpOwotCQlpZiAoZXJyKQotCQkJZ290byBlcnJfZnJlZTsKLQl9Ci0JcmV0dXJuIDA7Ci0K
+LWVycl9mcmVlOgotCXdoaWxlIChpLS0pCi0JCWdwaW9fZnJlZSgoLS1hcnJheSktPmdwaW8pOwot
+CXJldHVybiBlcnI7Ci19Ci1FWFBPUlRfU1lNQk9MX0dQTChncGlvX3JlcXVlc3RfYXJyYXkpOwot
+Ci0vKioKLSAqIGdwaW9fZnJlZV9hcnJheSAtIHJlbGVhc2UgbXVsdGlwbGUgR1BJT3MgaW4gYSBz
+aW5nbGUgY2FsbAotICogQGFycmF5OglhcnJheSBvZiB0aGUgJ3N0cnVjdCBncGlvJwotICogQG51
+bToJaG93IG1hbnkgR1BJT3MgaW4gdGhlIGFycmF5Ci0gKi8KLXZvaWQgZ3Bpb19mcmVlX2FycmF5
+KGNvbnN0IHN0cnVjdCBncGlvICphcnJheSwgc2l6ZV90IG51bSkKLXsKLQl3aGlsZSAobnVtLS0p
+Ci0JCWdwaW9fZnJlZSgoYXJyYXkrKyktPmdwaW8pOwotfQotRVhQT1JUX1NZTUJPTF9HUEwoZ3Bp
+b19mcmVlX2FycmF5KTsKLQogdm9pZCBncGlvX3NldF92YWx1ZSh1bnNpZ25lZCBncGlvLCBpbnQg
+dmFsdWUpCiB7CiAJc3RydWN0IGdwaW9faW5mbyAqZ2kgPSBncGlvX3RvX2Rlc2MoZ3Bpbyk7CkBA
+IC0yODksNiArMjEzLDgyIEBAIGludCBncGlvX2RpcmVjdGlvbl9pbnB1dCh1bnNpZ25lZCBncGlv
+KQogfQogRVhQT1JUX1NZTUJPTChncGlvX2RpcmVjdGlvbl9pbnB1dCk7CiAKKy8qKgorICogZ3Bp
+b19yZXF1ZXN0X29uZSAtIHJlcXVlc3QgYSBzaW5nbGUgR1BJTyB3aXRoIGluaXRpYWwgY29uZmln
+dXJhdGlvbgorICogQGdwaW86CXRoZSBHUElPIG51bWJlcgorICogQGZsYWdzOglHUElPIGNvbmZp
+Z3VyYXRpb24gYXMgc3BlY2lmaWVkIGJ5IEdQSU9GXyoKKyAqIEBsYWJlbDoJYSBsaXRlcmFsIGRl
+c2NyaXB0aW9uIHN0cmluZyBvZiB0aGlzIEdQSU8KKyAqLworaW50IGdwaW9fcmVxdWVzdF9vbmUo
+dW5zaWduZWQgZ3BpbywgdW5zaWduZWQgbG9uZyBmbGFncywgY29uc3QgY2hhciAqbGFiZWwpCit7
+CisJaW50IGVycjsKKwlzdHJ1Y3QgZ3Bpb19pbmZvICpnaSA9IGdwaW9fdG9fZGVzYyhncGlvKTsK
+KworCS8qCisJICogTm90IGFsbCBvZiB0aGUgZmxhZ3MgYmVsb3cgYXJlIG11bGl0LWJpdCwgYnV0
+LCBmb3IgdGhlIHNha2UKKwkgKiBvZiBjb25zaXN0ZW5jeSwgdGhlIGNvZGUgaXMgd3JpdHRlbiBh
+cyBpZiBhbGwgb2YgdGhlbSB3ZXJlLgorCSAqLworCWNvbnN0IGJvb2wgYWN0aXZlX2xvdyAgPSAo
+ZmxhZ3MgJiBHUElPRl9BQ1RJVkVfTE9XKSA9PSBHUElPRl9BQ1RJVkVfTE9XOworCWNvbnN0IGJv
+b2wgZGlyX2luICAgICAgPSAoZmxhZ3MgJiBHUElPRl9ESVJfSU4pID09IEdQSU9GX0RJUl9JTjsK
+Kwljb25zdCBib29sIGxvZ2ljYWwgICAgID0gKGZsYWdzICYgR1BJT0ZfTE9HSUNBTCkgPT0gR1BJ
+T0ZfTE9HSUNBTDsKKwljb25zdCBib29sIGluaXRfYWN0aXZlID0gKGZsYWdzICYgR1BJT0ZfSU5J
+VF9BQ1RJVkUpID09IEdQSU9GX0lOSVRfQUNUSVZFOworCWNvbnN0IGJvb2wgaW5pdF9oaWdoICAg
+PSAoZmxhZ3MgJiBHUElPRl9JTklUX0hJR0gpID09IEdQSU9GX0lOSVRfSElHSDsKKworCWVyciA9
+IGdwaW9fcmVxdWVzdChncGlvLCBsYWJlbCk7CisJaWYgKGVycikKKwkJcmV0dXJuIGVycjsKKwor
+CWdpLT5hY3RpdmVfbG93ID0gYWN0aXZlX2xvdzsKKworCWlmIChkaXJfaW4pCisJCWVyciA9IGdw
+aW9fZGlyZWN0aW9uX2lucHV0KGdwaW8pOworCWVsc2UgaWYgKGxvZ2ljYWwpCisJCWVyciA9IGdw
+aW9fZGlyZWN0aW9uX2FjdGl2ZShncGlvLCBpbml0X2FjdGl2ZSk7CisJZWxzZQorCQllcnIgPSBn
+cGlvX2RpcmVjdGlvbl9vdXRwdXQoZ3BpbywgaW5pdF9oaWdoKTsKKworCWlmIChlcnIpCisJCWdw
+aW9fZnJlZShncGlvKTsKKworCXJldHVybiBlcnI7Cit9CitFWFBPUlRfU1lNQk9MX0dQTChncGlv
+X3JlcXVlc3Rfb25lKTsKKworLyoqCisgKiBncGlvX3JlcXVlc3RfYXJyYXkgLSByZXF1ZXN0IG11
+bHRpcGxlIEdQSU9zIGluIGEgc2luZ2xlIGNhbGwKKyAqIEBhcnJheToJYXJyYXkgb2YgdGhlICdz
+dHJ1Y3QgZ3BpbycKKyAqIEBudW06CWhvdyBtYW55IEdQSU9zIGluIHRoZSBhcnJheQorICovCitp
+bnQgZ3Bpb19yZXF1ZXN0X2FycmF5KGNvbnN0IHN0cnVjdCBncGlvICphcnJheSwgc2l6ZV90IG51
+bSkKK3sKKwlpbnQgaSwgZXJyOworCisJZm9yIChpID0gMDsgaSA8IG51bTsgaSsrLCBhcnJheSsr
+KSB7CisJCWVyciA9IGdwaW9fcmVxdWVzdF9vbmUoYXJyYXktPmdwaW8sIGFycmF5LT5mbGFncywg
+YXJyYXktPmxhYmVsKTsKKwkJaWYgKGVycikKKwkJCWdvdG8gZXJyX2ZyZWU7CisJfQorCXJldHVy
+biAwOworCitlcnJfZnJlZToKKwl3aGlsZSAoaS0tKQorCQlncGlvX2ZyZWUoKC0tYXJyYXkpLT5n
+cGlvKTsKKwlyZXR1cm4gZXJyOworfQorRVhQT1JUX1NZTUJPTF9HUEwoZ3Bpb19yZXF1ZXN0X2Fy
+cmF5KTsKKworLyoqCisgKiBncGlvX2ZyZWVfYXJyYXkgLSByZWxlYXNlIG11bHRpcGxlIEdQSU9z
+IGluIGEgc2luZ2xlIGNhbGwKKyAqIEBhcnJheToJYXJyYXkgb2YgdGhlICdzdHJ1Y3QgZ3BpbycK
+KyAqIEBudW06CWhvdyBtYW55IEdQSU9zIGluIHRoZSBhcnJheQorICovCit2b2lkIGdwaW9fZnJl
+ZV9hcnJheShjb25zdCBzdHJ1Y3QgZ3BpbyAqYXJyYXksIHNpemVfdCBudW0pCit7CisJd2hpbGUg
+KG51bS0tKQorCQlncGlvX2ZyZWUoKGFycmF5KyspLT5ncGlvKTsKK30KK0VYUE9SVF9TWU1CT0xf
+R1BMKGdwaW9fZnJlZV9hcnJheSk7CisKIHN0YXRpYyBpbnQgZ3Bpb2NoaXBfZmluZF9iYXNlKGlu
+dCBzdGFydCwgaW50IG5ncGlvKQogewogCWludCBpOwotLSAKMi4xMS4wCgoKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
+YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
