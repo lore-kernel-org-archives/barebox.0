@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dwjgE-0005Kp-Dj
- for barebox@lists.infradead.org; Tue, 26 Sep 2017 06:49:20 +0000
-Date: Tue, 26 Sep 2017 08:48:56 +0200
+ id 1dwjgk-0005kw-IO
+ for barebox@lists.infradead.org; Tue, 26 Sep 2017 06:49:52 +0000
+Date: Tue, 26 Sep 2017 08:49:28 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170926064856.dxbepok3hzt3yzxj@pengutronix.de>
-References: <20170920190716.25768-1-aleksander@aleksander.es>
+Message-ID: <20170926064928.qpldxtcdqxkof22d@pengutronix.de>
+References: <20170922135023.12255-1-mkl@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170920190716.25768-1-aleksander@aleksander.es>
+In-Reply-To: <20170922135023.12255-1-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,62 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] console_countdown: ignore errors in getchar()
-To: Aleksander Morgado <aleksander@aleksander.es>
+Subject: Re: [PATCH] imx-bbu-nand-fcb: read_firmware_all(): Spell "Secondary
+ firmware" with a capital "S"
+To: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 20, 2017 at 12:07:16PM -0700, Aleksander Morgado wrote:
-> The getchar() call may return an error reported as a -1, e.g. when the
-> console detects a RATP message and switches to RATP mode.
+On Fri, Sep 22, 2017 at 03:50:23PM +0200, Marc Kleine-Budde wrote:
+> "Primary firmware" is writte with a capital "P" so adjust "Secondary firmware"
+> to use a capital "S".
 > 
-> In general it probably is a good idea to ignore these errors in the
-> console countdown operation; and in particular for the RATP usecase,
-> this also prevents from interfering with the countdown and menu just
-> when switching one of the consoles to RATP mode.
-> 
-> As a hint, this is what the standard console was printing due to this
-> issue when the RATP console was activated:
-> 
->    Hit m for menu or any other key to stop autoboot: [: missing `]'
-> 
-> Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 > ---
->  common/console_countdown.c | 14 ++++++++------
->  1 file changed, 8 insertions(+), 6 deletions(-)
+>  common/imx-bbu-nand-fcb.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/common/console_countdown.c b/common/console_countdown.c
-> index 03b9b3353..36da1ce57 100644
-> --- a/common/console_countdown.c
-> +++ b/common/console_countdown.c
-> @@ -47,12 +47,14 @@ int console_countdown(int timeout_s, unsigned flags, char *out_key)
->  	do {
->  		if (tstc()) {
->  			key = getchar();
-> -			if (flags & CONSOLE_COUNTDOWN_ANYKEY)
-> -				goto out;
-> -			if (flags & CONSOLE_COUNTDOWN_RETURN && key == '\n')
-> -				goto out;
-> -			if (flags & CONSOLE_COUNTDOWN_CTRLC && key == 3)
-> -				goto out;
-> +			if (key >= 0) {
-> +				if (flags & CONSOLE_COUNTDOWN_ANYKEY)
-> +					goto out;
-> +				if (flags & CONSOLE_COUNTDOWN_RETURN && key == '\n')
-> +					goto out;
-> +				if (flags & CONSOLE_COUNTDOWN_CTRLC && key == 3)
-> +					goto out;
-> +			}
->  			key = 0;
->  		}
->  		if ((flags & CONSOLE_COUNTDOWN_EXTERN) &&
+> diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
+> index 7218c5e1ccda..89b404884ae8 100644
+> --- a/common/imx-bbu-nand-fcb.c
+> +++ b/common/imx-bbu-nand-fcb.c
+> @@ -1126,7 +1126,7 @@ static void read_firmware_all(struct mtd_info *mtd, struct fcb_block *fcb, void
+>  		fcb->Firmware1_startingPage + fcb->PagesInFirmware1, primary ? "" : "in",
+>  		primary_refresh ? "needs cleanup" : "clean");
+>  
+> -	pr_info("secondary firmware is on pages %d-%d, %svalid, %s\n", fcb->Firmware2_startingPage,
+> +	pr_info("Secondary firmware is on pages %d-%d, %svalid, %s\n", fcb->Firmware2_startingPage,
+>  		fcb->Firmware2_startingPage + fcb->PagesInFirmware2, secondary ? "" : "in",
+>  		secondary_refresh ? "needs cleanup" : "clean");
+>  
 > -- 
-> 2.14.1
+> 2.11.0
 > 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
