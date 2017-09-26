@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dx8P2-0000qZ-CH
- for barebox@lists.infradead.org; Wed, 27 Sep 2017 09:13:16 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 27 Sep 2017 11:12:41 +0200
-Message-Id: <20170927091245.9476-1-s.hauer@pengutronix.de>
+ id 1dwwwg-0000gR-Lf
+ for barebox@lists.infradead.org; Tue, 26 Sep 2017 20:59:12 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue, 26 Sep 2017 22:58:43 +0200
+Message-Id: <20170926205843.5910-3-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170926205843.5910-1-u.kleine-koenig@pengutronix.de>
+References: <20170926205843.5910-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,32 +17,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: usbgadget fix some crashes
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Oleksij Rempel <ore@pengutronix.de>
+Subject: [PATCH 2/2] state: storage: direct: skip writing meta data if this
+ makes data fit
+To: barebox@lists.infradead.org
 
-The following fixes some crashes I stumbled upon when trying to use
-the usbgadget autostart feature.
-
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (4):
-      usbgadget: autostart: Handle errors in file list gracefully
-      usbgadget: do not register when no functions present
-      usbgadget: only set to peripheral mode when error checking is done
-      usbgadget: unregister when usb_composite_probe() fails
-
- drivers/usb/gadget/autostart.c | 18 +++++++++++++++---
- drivers/usb/gadget/multi.c     | 10 +++++++++-
- 2 files changed, 24 insertions(+), 4 deletions(-)
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+V2hlbiBhIGRpcmVjdCBidWNrZXQgaXMgcmVhZCBpdCBoYW5kbGVzIG1pc3NpbmcgbWV0YSBkYXRh
+IGp1c3QgZmluZSBmb3IKY29tcGF0aWJpbGl0eSByZWFzb25zLiBUaGlzIGFsbG93cyB0byBza2lw
+IHdyaXRpbmcgbWV0YSBkYXRhIGlmIHRoYXQKbWFrZXMgdGhlIGRhdGEgc21hbGwgZW5vdWdoIHRv
+IGZpdCBpbiB0aGUgYnVja2V0IHRvIGJlIHdyaXR0ZW4uCgpUaGUgbW90aXZhdGlvbiBmb3IgdGhp
+cyBjaGFuZ2UgaXMgdGhhdCB0aGUgc3RvcmFnZSBmb3JtYXQgaW4KcHJlLW1haW5saW5lIHN0YXRl
+IGRpZG4ndCB1c2UgbWV0YSBkYXRhIGFuZCBzb21lIG1hY2hpbmVzIHN0aWxsIGhhdmUgdG8Kc3Rp
+Y2sgdG8gdGhpcyBmb3JtYXQuIEZvciB0aGVzZSB0aGUgc3RyaWRlIHNpemUgZXhhY3RseSBmaXRz
+IHRoZSBkYXRhCnNpemUgc3VjaCB0aGF0IHRoZXJlIGlzIG5vIHBsYWNlIGZvciBhZGRpdGlvbmFs
+IG1ldGEgZGF0YSBhbmQgc28gdGhlCmRhdGEgaXMgd3JpdHRlbiBpbiB0aGUgb2xkIGZvcm1hdC4K
+ClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0
+cm9uaXguZGU+Ci0tLQogY29tbW9uL3N0YXRlL2JhY2tlbmRfYnVja2V0X2RpcmVjdC5jIHwgMjMg
+KysrKysrKysrKysrKysrKy0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAxNiBpbnNlcnRpb25zKCsp
+LCA3IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX2J1Y2tl
+dF9kaXJlY3QuYyBiL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX2J1Y2tldF9kaXJlY3QuYwppbmRleCA0
+NDY1ZWQwZTQxMTUuLjhiZjlhOTQ1NjQzYyAxMDA2NDQKLS0tIGEvY29tbW9uL3N0YXRlL2JhY2tl
+bmRfYnVja2V0X2RpcmVjdC5jCisrKyBiL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX2J1Y2tldF9kaXJl
+Y3QuYwpAQCAtMTAyLDggKzEwMiwxNCBAQCBzdGF0aWMgaW50IHN0YXRlX2JhY2tlbmRfYnVja2V0
+X2RpcmVjdF93cml0ZShzdHJ1Y3Qgc3RhdGVfYmFja2VuZF9zdG9yYWdlX2J1Y2tldAogCSAgICBn
+ZXRfYnVja2V0X2RpcmVjdChidWNrZXQpOwogCWludCByZXQ7CiAJc3RydWN0IHN0YXRlX2JhY2tl
+bmRfc3RvcmFnZV9idWNrZXRfZGlyZWN0X21ldGEgbWV0YTsKKwlpbnQgd3JpdGVfbWV0YSA9IDE7
+CiAKLQlpZiAobGVuID4gZGlyZWN0LT5tYXhfc2l6ZSAtIHNpemVvZihtZXRhKSkKKwlpZiAobGVu
+ID4gZGlyZWN0LT5tYXhfc2l6ZSAtIHNpemVvZihtZXRhKSkgeworCQlkZXZfaW5mbyhkaXJlY3Qt
+PmRldiwgInNraXAgd3JpdGluZyBtZXRhZGF0YSBiZWNhdXNlIG9mIHNpemUgY29uc3RyYWludHNc
+biIpOworCQl3cml0ZV9tZXRhID0gMDsKKwl9CisKKwlpZiAobGVuID4gZGlyZWN0LT5tYXhfc2l6
+ZSkKIAkJcmV0dXJuIC1FMkJJRzsKIAogCXJldCA9IGxzZWVrKGRpcmVjdC0+ZmQsIGRpcmVjdC0+
+b2Zmc2V0LCBTRUVLX1NFVCk7CkBAIC0xMTIsMTIgKzExOCwxNSBAQCBzdGF0aWMgaW50IHN0YXRl
+X2JhY2tlbmRfYnVja2V0X2RpcmVjdF93cml0ZShzdHJ1Y3Qgc3RhdGVfYmFja2VuZF9zdG9yYWdl
+X2J1Y2tldAogCQlyZXR1cm4gcmV0OwogCX0KIAotCW1ldGEubWFnaWMgPSBkaXJlY3RfbWFnaWM7
+Ci0JbWV0YS53cml0dGVuX2xlbmd0aCA9IGxlbjsKLQlyZXQgPSB3cml0ZV9mdWxsKGRpcmVjdC0+
+ZmQsICZtZXRhLCBzaXplb2YobWV0YSkpOwotCWlmIChyZXQgPCAwKSB7Ci0JCWRldl9lcnIoZGly
+ZWN0LT5kZXYsICJGYWlsZWQgdG8gd3JpdGUgbWV0YWRhdGEgdG8gZmlsZSwgJWRcbiIsIHJldCk7
+Ci0JCXJldHVybiByZXQ7CisJaWYgKHdyaXRlX21ldGEpIHsKKwkJbWV0YS5tYWdpYyA9IGRpcmVj
+dF9tYWdpYzsKKwkJbWV0YS53cml0dGVuX2xlbmd0aCA9IGxlbjsKKwkJcmV0ID0gd3JpdGVfZnVs
+bChkaXJlY3QtPmZkLCAmbWV0YSwgc2l6ZW9mKG1ldGEpKTsKKwkJaWYgKHJldCA8IDApIHsKKwkJ
+CWRldl9lcnIoZGlyZWN0LT5kZXYsCisJCQkJIkZhaWxlZCB0byB3cml0ZSBtZXRhZGF0YSB0byBm
+aWxlLCAlZFxuIiwgcmV0KTsKKwkJCXJldHVybiByZXQ7CisJCX0KIAl9CiAKIAlyZXQgPSB3cml0
+ZV9mdWxsKGRpcmVjdC0+ZmQsIGJ1ZiwgbGVuKTsKLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
