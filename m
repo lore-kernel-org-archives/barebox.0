@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dpZJT-0005gk-HS
- for barebox@lists.infradead.org; Wed, 06 Sep 2017 12:20:14 +0000
-Date: Wed, 6 Sep 2017 14:19:49 +0200
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1dwjdr-0002dt-FX
+ for barebox@lists.infradead.org; Tue, 26 Sep 2017 06:46:53 +0000
+Date: Tue, 26 Sep 2017 08:46:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170906121949.5posvds6j7uevprg@pengutronix.de>
-References: <20170815134636.21236-1-jbe@pengutronix.de>
+Message-ID: <20170926064626.zhcmcvwfhuvjgga4@pengutronix.de>
+References: <20170921204139.16052-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20170815134636.21236-1-jbe@pengutronix.de>
+In-Reply-To: <20170921204139.16052-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,27 +18,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Rework of the state/bootchooser feature documentaiton
-To: Juergen Borleis <jbe@pengutronix.de>
+Subject: Re: [PATCH] gpiolib: check validity for gpio_info in *_active()
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Aug 15, 2017 at 03:46:29PM +0200, Juergen Borleis wrote:
-> This is a rework of the documentation for the 'state framework' and
-> 'bootchooser' feature. While at it, some fixes are included as well.
-> 
-> Comments are welcome.
-> 
+On Thu, Sep 21, 2017 at 10:41:39PM +0200, Uwe Kleine-K=F6nig wrote:
+> gpio_set_active, gpio_is_active and gpio_direction_active are public
+> functions, accordingly there should be error checking.
+> =
+
+> If an invalid gpio number is given to these functions without checking
+> gpio_adjust_value is called with gi =3D=3D NULL which then dereferences t=
+his
+> pointer.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  drivers/gpio/gpiolib.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 
 Applied, thanks
 
 Sascha
 
+> =
 
--- 
+> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> index 67d771bae3a8..c17cfdbb3350 100644
+> --- a/drivers/gpio/gpiolib.c
+> +++ b/drivers/gpio/gpiolib.c
+> @@ -204,6 +204,10 @@ EXPORT_SYMBOL(gpio_set_value);
+>  void gpio_set_active(unsigned gpio, bool value)
+>  {
+>  	struct gpio_info *gi =3D gpio_to_desc(gpio);
+> +
+> +	if (!gi)
+> +		return;
+> +
+>  	gpio_set_value(gpio, gpio_adjust_value(gi, value));
+>  }
+>  EXPORT_SYMBOL(gpio_set_active);
+> @@ -229,6 +233,10 @@ EXPORT_SYMBOL(gpio_get_value);
+>  int gpio_is_active(unsigned gpio)
+>  {
+>  	struct gpio_info *gi =3D gpio_to_desc(gpio);
+> +
+> +	if (!gi)
+> +		return;
+> +
+>  	return gpio_adjust_value(gi, gpio_get_value(gpio));
+>  }
+>  EXPORT_SYMBOL(gpio_is_active);
+> @@ -255,6 +263,10 @@ EXPORT_SYMBOL(gpio_direction_output);
+>  int gpio_direction_active(unsigned gpio, bool value)
+>  {
+>  	struct gpio_info *gi =3D gpio_to_desc(gpio);
+> +
+> +	if (!gi)
+> +		return;
+> +
+>  	return gpio_direction_output(gpio, gpio_adjust_value(gi, value));
+>  }
+>  EXPORT_SYMBOL(gpio_direction_active);
+> -- =
+
+> 2.11.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
