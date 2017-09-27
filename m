@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dxB9j-0004GI-5O
- for barebox@lists.infradead.org; Wed, 27 Sep 2017 12:09:44 +0000
+ id 1dxB9j-0004GH-5H
+ for barebox@lists.infradead.org; Wed, 27 Sep 2017 12:09:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 27 Sep 2017 14:09:04 +0200
-Message-Id: <20170927120910.10516-7-s.hauer@pengutronix.de>
+Date: Wed, 27 Sep 2017 14:09:01 +0200
+Message-Id: <20170927120910.10516-4-s.hauer@pengutronix.de>
 In-Reply-To: <20170927120910.10516-1-s.hauer@pengutronix.de>
 References: <20170927120910.10516-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,63 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/12] file_list: Add error messages
+Subject: [PATCH 03/12] file_list: Allow only unique names on list
 To: Barebox List <barebox@lists.infradead.org>
 
-Add error messages when file list parsing fails. Also, forward the error
-from file_list_parse_one() instead of using -EINVAL for every error.
+The key to a file_list is it's name, so ensure it's unique.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/file-list.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ common/file-list.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/common/file-list.c b/common/file-list.c
-index 0c3cb0a4e7..8d61b76cbb 100644
+index 0b760c1aec..e13d5af659 100644
 --- a/common/file-list.c
 +++ b/common/file-list.c
-@@ -9,6 +9,8 @@
-  * General Public License for more details.
-  */
- 
-+#define pr_fmt(fmt)	"file_list: " fmt
+@@ -23,7 +23,13 @@ struct file_list_entry *file_list_entry_by_name(struct file_list *files, const c
+ int file_list_add_entry(struct file_list *files, const char *name, const char *filename,
+ 			unsigned long flags)
+ {
+-	struct file_list_entry *entry = xzalloc(sizeof(*entry));
++	struct file_list_entry *entry;
 +
- #include <common.h>
- #include <malloc.h>
- #include <fs.h>
-@@ -91,6 +93,7 @@ static int file_list_parse_one(struct file_list *files, const char *partstr, con
- 				flags |= FILE_LIST_FLAG_CREATE;
- 				break;
- 			default:
-+				pr_err("Unknown flag '%c'\n", *partstr);
- 				return -EINVAL;
- 			}
- 			break;
-@@ -100,8 +103,10 @@ static int file_list_parse_one(struct file_list *files, const char *partstr, con
- 		partstr++;
- 	}
++	entry = file_list_entry_by_name(files, name);
++	if (entry)
++		return -EEXIST;
++
++	entry = xzalloc(sizeof(*entry));
  
--	if (state != PARSE_FLAGS)
-+	if (state != PARSE_FLAGS) {
-+		pr_err("Missing ')'\n");
- 		return -EINVAL;
-+	}
- 
- 	if (*partstr == ',')
- 		partstr++;
-@@ -121,9 +126,9 @@ struct file_list *file_list_parse(const char *str)
- 	INIT_LIST_HEAD(&files->list);
- 
- 	while (*str) {
--		if (file_list_parse_one(files, str, &endptr)) {
--			printf("parse error\n");
--			ret = -EINVAL;
-+		ret = file_list_parse_one(files, str, &endptr);
-+		if (ret) {
-+			pr_err("parse error\n");
- 			goto out;
- 		}
- 		str = endptr;
+ 	entry->name = xstrdup(name);
+ 	entry->filename = xstrdup(filename);
 -- 
 2.11.0
 
