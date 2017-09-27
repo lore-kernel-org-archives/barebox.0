@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dx8P2-0000qg-Cg
+ id 1dx8P5-0000yJ-0q
  for barebox@lists.infradead.org; Wed, 27 Sep 2017 09:13:17 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 27 Sep 2017 11:12:44 +0200
-Message-Id: <20170927091245.9476-4-s.hauer@pengutronix.de>
+Date: Wed, 27 Sep 2017 11:12:45 +0200
+Message-Id: <20170927091245.9476-5-s.hauer@pengutronix.de>
 In-Reply-To: <20170927091245.9476-1-s.hauer@pengutronix.de>
 References: <20170927091245.9476-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,41 +21,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] usbgadget: only set to peripheral mode when error
- checking is done
+Subject: [PATCH 4/4] usbgadget: unregister when usb_composite_probe() fails
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Oleksij Rempel <ore@pengutronix.de>
 
-Only begin to modify the hardware when the obious errors have been
-checked.
+When usb_multi_register() returns an error it can't be called again
+as we do not unregister the driver properly. Fix this.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/gadget/autostart.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/multi.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/autostart.c b/drivers/usb/gadget/autostart.c
-index a27be899c3..2ca979057e 100644
---- a/drivers/usb/gadget/autostart.c
-+++ b/drivers/usb/gadget/autostart.c
-@@ -39,8 +39,6 @@ static int usbgadget_autostart(void)
- 	if (!autostart)
- 		return 0;
+diff --git a/drivers/usb/gadget/multi.c b/drivers/usb/gadget/multi.c
+index 6385c16186..6eeeb4e982 100644
+--- a/drivers/usb/gadget/multi.c
++++ b/drivers/usb/gadget/multi.c
+@@ -234,6 +234,8 @@ static struct usb_composite_driver multi_driver = {
  
--	setenv("otg.mode", "peripheral");
--
- 	opts = xzalloc(sizeof(*opts));
- 	opts->release = usb_multi_opts_release;
- 
-@@ -60,6 +58,8 @@ static int usbgadget_autostart(void)
- 		return 0;
- 	}
- 
-+	setenv("otg.mode", "peripheral");
+ int usb_multi_register(struct f_multi_opts *opts)
+ {
++	int ret;
 +
- 	ret = usb_multi_register(opts);
- 	if (ret)
- 		usb_multi_opts_release(opts);
+ 	if (gadget_multi_opts) {
+ 		pr_err("USB multi gadget already registered\n");
+ 		return -EBUSY;
+@@ -241,7 +243,13 @@ int usb_multi_register(struct f_multi_opts *opts)
+ 
+ 	gadget_multi_opts = opts;
+ 
+-	return usb_composite_probe(&multi_driver);
++	ret = usb_composite_probe(&multi_driver);
++	if (ret) {
++		usb_composite_unregister(&multi_driver);
++		gadget_multi_opts = NULL;
++	}
++
++	return ret;
+ }
+ 
+ void usb_multi_unregister(void)
 -- 
 2.11.0
 
