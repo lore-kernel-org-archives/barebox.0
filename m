@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dx8P5-0000yJ-0q
- for barebox@lists.infradead.org; Wed, 27 Sep 2017 09:13:17 +0000
+ id 1dx8P5-0000yI-13
+ for barebox@lists.infradead.org; Wed, 27 Sep 2017 09:13:22 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 27 Sep 2017 11:12:45 +0200
-Message-Id: <20170927091245.9476-5-s.hauer@pengutronix.de>
+Date: Wed, 27 Sep 2017 11:12:43 +0200
+Message-Id: <20170927091245.9476-3-s.hauer@pengutronix.de>
 In-Reply-To: <20170927091245.9476-1-s.hauer@pengutronix.de>
 References: <20170927091245.9476-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,46 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] usbgadget: unregister when usb_composite_probe() fails
+Subject: [PATCH 2/4] usbgadget: do not register when no functions present
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Oleksij Rempel <ore@pengutronix.de>
 
-When usb_multi_register() returns an error it can't be called again
-as we do not unregister the driver properly. Fix this.
+registering a multifunction device makes only sense when there's
+at least one function configured. Just return otherwise.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/gadget/multi.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/autostart.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/usb/gadget/multi.c b/drivers/usb/gadget/multi.c
-index 6385c16186..6eeeb4e982 100644
---- a/drivers/usb/gadget/multi.c
-+++ b/drivers/usb/gadget/multi.c
-@@ -234,6 +234,8 @@ static struct usb_composite_driver multi_driver = {
+diff --git a/drivers/usb/gadget/autostart.c b/drivers/usb/gadget/autostart.c
+index 3fa43137fa..a27be899c3 100644
+--- a/drivers/usb/gadget/autostart.c
++++ b/drivers/usb/gadget/autostart.c
+@@ -55,6 +55,10 @@ static int usbgadget_autostart(void)
  
- int usb_multi_register(struct f_multi_opts *opts)
- {
-+	int ret;
-+
- 	if (gadget_multi_opts) {
- 		pr_err("USB multi gadget already registered\n");
- 		return -EBUSY;
-@@ -241,7 +243,13 @@ int usb_multi_register(struct f_multi_opts *opts)
+ 	opts->create_acm = acm;
  
- 	gadget_multi_opts = opts;
- 
--	return usb_composite_probe(&multi_driver);
-+	ret = usb_composite_probe(&multi_driver);
-+	if (ret) {
-+		usb_composite_unregister(&multi_driver);
-+		gadget_multi_opts = NULL;
++	if (!opts->fastboot_opts.files && !opts->create_acm) {
++		pr_warn("No functions to register\n");
++		return 0;
 +	}
-+
-+	return ret;
- }
  
- void usb_multi_unregister(void)
+ 	ret = usb_multi_register(opts);
+ 	if (ret)
 -- 
 2.11.0
 
