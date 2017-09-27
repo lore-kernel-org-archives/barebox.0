@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vsmx009.vodafonemail.xion.oxcs.net ([153.92.174.87])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dx7iU-00024o-Ak
- for barebox@lists.infradead.org; Wed, 27 Sep 2017 08:29:17 +0000
-Date: Wed, 27 Sep 2017 10:28:45 +0200 (CEST)
-From: Giorgio Dal Molin <iw3gtf@arcor.de>
-Message-ID: <2068226802.92408.1506500925602@mail.vodafone.de>
-In-Reply-To: <40bfec7f-1874-a29e-74c0-44d35e95ca06@rempel-privat.de>
-References: <1905880803.90654.1506495106339@mail.vodafone.de>
- <40bfec7f-1874-a29e-74c0-44d35e95ca06@rempel-privat.de>
-MIME-Version: 1.0
+ id 1dx8P2-0000qb-CD
+ for barebox@lists.infradead.org; Wed, 27 Sep 2017 09:13:17 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 27 Sep 2017 11:12:42 +0200
+Message-Id: <20170927091245.9476-2-s.hauer@pengutronix.de>
+In-Reply-To: <20170927091245.9476-1-s.hauer@pengutronix.de>
+References: <20170927091245.9476-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,70 +16,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox on an intel efi system
-To: Oleksij Rempel <linux@rempel-privat.de>, barebox@lists.infradead.org
+Subject: [PATCH 1/4] usbgadget: autostart: Handle errors in file list
+ gracefully
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Oleksij Rempel <ore@pengutronix.de>
 
-Hi Oleksij,
+file_list_parse() can fail and returns an error pointer. Print
+an error message when it fails and also set to NULL again so
+that usb_multi_register() does not stumble upon the error pointer.
 
-this was the solution to my problems,
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/gadget/autostart.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-thank you very much.
+diff --git a/drivers/usb/gadget/autostart.c b/drivers/usb/gadget/autostart.c
+index 465d8fd380..3fa43137fa 100644
+--- a/drivers/usb/gadget/autostart.c
++++ b/drivers/usb/gadget/autostart.c
+@@ -11,6 +11,8 @@
+  * GNU General Public License for more details.
+  *
+  */
++#define pr_fmt(fmt) "usbgadget autostart: " fmt
++
+ #include <common.h>
+ #include <command.h>
+ #include <errno.h>
+@@ -42,8 +44,14 @@ static int usbgadget_autostart(void)
+ 	opts = xzalloc(sizeof(*opts));
+ 	opts->release = usb_multi_opts_release;
+ 
+-	if (fastboot_function)
++	if (fastboot_function) {
+ 		opts->fastboot_opts.files = file_list_parse(fastboot_function);
++		if (IS_ERR(opts->fastboot_opts.files)) {
++			pr_err("Parsing file list \"%s\" failed: %s\n", fastboot_function,
++			       strerrorp(opts->fastboot_opts.files));
++			opts->fastboot_opts.files = NULL;
++		}
++	}
+ 
+ 	opts->create_acm = acm;
+ 
+-- 
+2.11.0
 
-giorgio
-
-> Oleksij Rempel hat am 27. September 2017 um 09:11 geschrieben:
-> 
-> Hi,
-> 
-> you probably need this fix:
-> https://git.pengutronix.de/cgit/barebox/commit/?h=next&id=fc7c42ff3c889ccc993061ee183b0cf1621e3f1c
-> 
-> It is in barebox/next.
-> 
-> Am 27.09.2017 um 08:51 schrieb Giorgio Dal Molin:
-> > Hi,
-> > 
-> > I'm currently working with an embedded system based on a "normal"
-> > intel (atom) PC with an AMI Bios on it supporting EFI.
-> > 
-> > I've built a barebox for it based on the 'arch/x86/configs/efi_defconfig'
-> > and it basically runs on the target: I get a prompt on the screen, the
-> > keyboard works and I can issue commands and boot a kernel.
-> > 
-> > My problem is now that the '/boot' and '/efi' dirs do not automatically
-> > appear as described in http://www.barebox.org/doc/latest/boards/efi.html
-> > 
-> > After a bit of grepping and browsing in the barebox sources I've found
-> > the file:
-> > 
-> >  fs/efi.c
-> > 
-> > At the end of it there is the 'efi_fs_driver' and its probe function;
-> > I think the driver is registered with the core but the probe function
-> > is never called on my system.
-> > 
-> > Could this be OK on an EFI system or is it an indication that something
-> > is not properly configured ?
-> > 
-> > giorgio
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> 
-> -- 
-> Regards,
-> Oleksij
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
