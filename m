@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dxB9m-0004KN-QX
- for barebox@lists.infradead.org; Wed, 27 Sep 2017 12:09:56 +0000
+ id 1dxB9w-0004Lx-SS
+ for barebox@lists.infradead.org; Wed, 27 Sep 2017 12:09:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 27 Sep 2017 14:09:00 +0200
-Message-Id: <20170927120910.10516-3-s.hauer@pengutronix.de>
+Date: Wed, 27 Sep 2017 14:09:03 +0200
+Message-Id: <20170927120910.10516-6-s.hauer@pengutronix.de>
 In-Reply-To: <20170927120910.10516-1-s.hauer@pengutronix.de>
 References: <20170927120910.10516-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,51 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/12] file_list: Add function to get entry by its name
+Subject: [PATCH 05/12] file_list: Add GPL header to file
 To: Barebox List <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/file-list.c  | 12 ++++++++++++
- include/file-list.h |  2 ++
- 2 files changed, 14 insertions(+)
+ common/file-list.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/common/file-list.c b/common/file-list.c
-index 010f8f0617..0b760c1aec 100644
+index be8f53bd89..0c3cb0a4e7 100644
 --- a/common/file-list.c
 +++ b/common/file-list.c
-@@ -8,6 +8,18 @@
- #define PARSE_NAME	1
- #define PARSE_FLAGS	2
- 
-+struct file_list_entry *file_list_entry_by_name(struct file_list *files, const char *name)
-+{
-+	struct file_list_entry *entry;
+@@ -1,3 +1,14 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; version 2.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License for more details.
++ */
 +
-+	file_list_for_each_entry(files, entry) {
-+		if (!strcmp(entry->name, name))
-+			return entry;
-+	}
-+
-+	return NULL;
-+}
-+
- int file_list_add_entry(struct file_list *files, const char *name, const char *filename,
- 			unsigned long flags)
- {
-diff --git a/include/file-list.h b/include/file-list.h
-index ccdc2b5efd..1e02539d4d 100644
---- a/include/file-list.h
-+++ b/include/file-list.h
-@@ -23,6 +23,8 @@ void file_list_free(struct file_list *);
- int file_list_add_entry(struct file_list *files, const char *name, const char *filename,
- 			unsigned long flags);
- 
-+struct file_list_entry *file_list_entry_by_name(struct file_list *files, const char *name);
-+
- #define file_list_for_each_entry(files, entry) \
- 	list_for_each_entry(entry, &files->list, list)
- 
+ #include <common.h>
+ #include <malloc.h>
+ #include <fs.h>
 -- 
 2.11.0
 
