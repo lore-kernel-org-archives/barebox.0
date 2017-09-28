@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x244.google.com ([2a00:1450:400c:c0c::244])
+Received: from mail-wr0-x242.google.com ([2a00:1450:400c:c0c::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dxhzc-0004Sv-D9
- for barebox@lists.infradead.org; Thu, 28 Sep 2017 23:13:22 +0000
-Received: by mail-wr0-x244.google.com with SMTP id r74so5329250wrb.13
- for <barebox@lists.infradead.org>; Thu, 28 Sep 2017 16:12:59 -0700 (PDT)
+ id 1dxhze-0004T8-Ef
+ for barebox@lists.infradead.org; Thu, 28 Sep 2017 23:13:26 +0000
+Received: by mail-wr0-x242.google.com with SMTP id 97so3469498wrb.0
+ for <barebox@lists.infradead.org>; Thu, 28 Sep 2017 16:13:01 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 29 Sep 2017 02:12:41 +0300
-Message-Id: <20170928231249.4158-3-antonynpavlov@gmail.com>
+Date: Fri, 29 Sep 2017 02:12:43 +0300
+Message-Id: <20170928231249.4158-5-antonynpavlov@gmail.com>
 In-Reply-To: <20170928231249.4158-1-antonynpavlov@gmail.com>
 References: <20170928231249.4158-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,89 +23,111 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v4 02/10] RISC-V: add Erizo SoC support
+Subject: [RFC v4 04/10] RISC-V: add nmon nano-monitor
 To: barebox@lists.infradead.org
 
-Erizo is an opensource hardware SoC for FPGA.
+nmon is a tiny (<1024 bytes) monitor program
+for the RV32I processors.
+
+It can operate with NO working RAM at all!
+
+It uses only the processor registers and NS16550-compatible
+UART port for operation, so it can be used for a memory
+controller setup code debugging.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/riscv/Kconfig                         | 11 +++++++
- arch/riscv/Makefile                        |  3 ++
- arch/riscv/boards/erizo-generic/.gitignore |  1 +
- arch/riscv/boards/erizo-generic/Makefile   |  1 +
- arch/riscv/boards/erizo-generic/board.c    | 28 ++++++++++++++++++
- arch/riscv/dts/erizo.dtsi                  | 46 ++++++++++++++++++++++++++++++
- arch/riscv/dts/erizo_generic.dts           | 31 ++++++++++++++++++++
- arch/riscv/mach-erizo/Kconfig              | 11 +++++++
- arch/riscv/mach-erizo/Makefile             |  3 ++
- 9 files changed, 135 insertions(+)
+ arch/riscv/Kconfig                  |  24 ++++
+ arch/riscv/boot/start.S             |  14 +++
+ arch/riscv/include/asm/riscv_nmon.h | 234 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 272 insertions(+)
 
 diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index b2f0817ef..f4bfbea7c 100644
+index f4bfbea7c..ce5f317cf 100644
 --- a/arch/riscv/Kconfig
 +++ b/arch/riscv/Kconfig
-@@ -20,6 +20,15 @@ config GENERIC_LINKER_SCRIPT
+@@ -75,6 +75,30 @@ source arch/riscv/mach-erizo/Kconfig
  
- menu "Machine selection"
- 
-+choice
-+	prompt "System type"
-+	default MACH_ERIZO
-+
-+config MACH_ERIZO
-+	bool "erizo family"
-+
-+endchoice
-+
- choice
- 	prompt "CPU selection"
- 	default CPU_RV_GENERIC
-@@ -62,6 +71,8 @@ config BUILTIN_DTB_NAME
- 	string "DTB to build into the barebox image"
- 	depends on BUILTIN_DTB
- 
-+source arch/riscv/mach-erizo/Kconfig
-+
  endmenu
  
- source common/Kconfig
-diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-index 4e3318cf1..8947a1860 100644
---- a/arch/riscv/Makefile
-+++ b/arch/riscv/Makefile
-@@ -7,6 +7,9 @@ cflags-y += -Wall -Wmissing-prototypes -Wstrict-prototypes \
- LDFLAGS += $(ldflags-y)
- LDFLAGS_barebox += -nostdlib
- 
-+machine-$(CONFIG_MACH_ERIZO)	:= erizo
-+board-$(CONFIG_BOARD_ERIZO_GENERIC)	:= erizo-generic
++menu "RISC-V specific settings"
 +
- TEXT_BASE = $(CONFIG_TEXT_BASE)
- CPPFLAGS += -DTEXT_BASE=$(CONFIG_TEXT_BASE)
++config HAS_NMON
++	bool
++
++config NMON
++	bool "nmon"
++	depends on HAS_NMON
++	depends on DEBUG_LL
++	help
++	  Say yes here to add the nmon to pbl.
++	  nmon -- nano-monitor program for the RISC-V processors.
++	  It can operate with NO working RAM, using only
++	  the processor registers.
++
++config NMON_HELP
++	bool "nmon help message"
++	depends on NMON
++	help
++	  Say yes here to get the nmon commands message on
++	  every nmon start.
++
++endmenu
++
+ source common/Kconfig
+ source commands/Kconfig
+ source net/Kconfig
+diff --git a/arch/riscv/boot/start.S b/arch/riscv/boot/start.S
+index 2fd00f63d..c2ca6f9a1 100644
+--- a/arch/riscv/boot/start.S
++++ b/arch/riscv/boot/start.S
+@@ -21,12 +21,21 @@
  
-diff --git a/arch/riscv/boards/erizo-generic/.gitignore b/arch/riscv/boards/erizo-generic/.gitignore
+ #include <asm-generic/memory_layout.h>
+ 
++#include "mach/debug_ll.h"
++
++#include "asm/riscv_nmon.h"
++
+ 	.text
+ 	.section ".text_entry"
+ 	.align 2
+ 
+ .globl _start
+ _start:
++
++	debug_ll_ns16550_init
++
++	riscv_nmon
++
+ 	li sp, STACK_BASE + STACK_SIZE
+ 
+ 	# make room for HLS and initialize it
+@@ -66,9 +75,14 @@ copy_loop:
+ 	addi	a1, a1, LONGSIZE * 2
+ 	bgeu	a2, a0, copy_loop
+ 
++	nmon_outs copy_loop_done_message
++
+ 	/* Alas! At the moment I can't load main_entry __link__ address
+ 	   into a0 with la. Use CONFIG_TEXT_BASE instead. This solution
+ 	   leads to extra cycles for repeat sp initialization. */
+ 
+ 	li	a0, CONFIG_TEXT_BASE
+ 	jalr	a0
++
++copy_loop_done_message:
++	.asciz "\r\ncopy loop done\r\nrestarting...\r\n"
+diff --git a/arch/riscv/include/asm/riscv_nmon.h b/arch/riscv/include/asm/riscv_nmon.h
 new file mode 100644
-index 000000000..d1165788c
+index 000000000..717f61334
 --- /dev/null
-+++ b/arch/riscv/boards/erizo-generic/.gitignore
-@@ -0,0 +1 @@
-+barebox.lds
-diff --git a/arch/riscv/boards/erizo-generic/Makefile b/arch/riscv/boards/erizo-generic/Makefile
-new file mode 100644
-index 000000000..dcfc2937d
---- /dev/null
-+++ b/arch/riscv/boards/erizo-generic/Makefile
-@@ -0,0 +1 @@
-+obj-y += board.o
-diff --git a/arch/riscv/boards/erizo-generic/board.c b/arch/riscv/boards/erizo-generic/board.c
-new file mode 100644
-index 000000000..ecda85001
---- /dev/null
-+++ b/arch/riscv/boards/erizo-generic/board.c
-@@ -0,0 +1,28 @@
++++ b/arch/riscv/include/asm/riscv_nmon.h
+@@ -0,0 +1,234 @@
 +/*
-+ * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
++ * nano-monitor for RISC-V CPU
++ *
++ * Copyright (C) 2016, 2017 Antony Pavlov <antonynpavlov@gmail.com>
 + *
 + * This file is part of barebox.
 + * See file CREDITS for list of people who contributed to this project.
@@ -116,137 +138,226 @@ index 000000000..ecda85001
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 + * GNU General Public License for more details.
 + *
 + */
 +
-+#include <common.h>
-+#include <driver.h>
-+#include <init.h>
++#ifndef __ASM_RISCV_NMON_H
++#define __ASM_RISCV_NMON_H
 +
-+static int hostname_init(void)
-+{
-+	barebox_set_hostname("barebox");
++#define CODE_ESC	0x1b
 +
-+	return 0;
-+}
-+postcore_initcall(hostname_init);
-diff --git a/arch/riscv/dts/erizo.dtsi b/arch/riscv/dts/erizo.dtsi
-new file mode 100644
-index 000000000..1660ad104
---- /dev/null
-+++ b/arch/riscv/dts/erizo.dtsi
-@@ -0,0 +1,46 @@
-+/dts-v1/;
++.macro nmon_outs msg
 +
-+#include "skeleton.dtsi"
++	la	a1, \msg
 +
-+/ {
-+	compatible = "miet-riscv-workgroup,erizo";
++	jal	_nmon_outs
 +
-+	#address-cells = <1>;
-+	#size-cells = <1>;
++.endm
 +
-+	clocks {
-+		ref_clk: ref_clk {
-+			#clock-cells = <0>;
-+			compatible = "fixed-clock";
-+			clock-frequency = <24000000>;
-+		};
-+	};
++/*
++ * output a 32-bit value in hex
++ */
++.macro debug_ll_outhexw
++#ifdef CONFIG_DEBUG_LL
++	move	t6, a0
++	li	t5, 32
 +
-+	cpus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
++202:
++	addi	t5, t5, -4
++	srl	a0, t6, t5
 +
-+		cpu@0 {
-+			device_type = "cpu";
-+			compatible = "cliffordwolf,picorv32";
-+			clocks = <&ref_clk>;
-+			reg = <0>;
-+		};
-+	};
++	/* output one hex digit */
++	andi	a0, a0, 15
++	li	t4, 10
++	blt	a0, t4, 203f
 +
-+	uart0: uart@90000000 {
-+		compatible = "ns16550a";
-+		reg = <0x90000000 0x20>;
-+		reg-shift = <2>;
-+		clocks = <&ref_clk>;
-+	};
++	addi	a0, a0, ('a' - '9' - 1)
 +
-+	gpio0: gpio@91000000 {
-+		compatible = "wd,mbl-gpio";
-+		reg-names = "dat", "dirout";
-+		reg = <0x91000000 0x4>,
-+			<0x91000004 0x4>;
-+		#gpio-cells = <2>;
-+		gpio-controller;
-+	};
-+};
-diff --git a/arch/riscv/dts/erizo_generic.dts b/arch/riscv/dts/erizo_generic.dts
-new file mode 100644
-index 000000000..b2b1bdda5
---- /dev/null
-+++ b/arch/riscv/dts/erizo_generic.dts
-@@ -0,0 +1,31 @@
-+#include "erizo.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
++203:
++	addi	a0, a0, '0'
 +
-+/ {
-+	model = "generic Erizo SoC board";
-+	compatible = "miet-riscv-workgroup,erizo-generic-board";
++	debug_ll_outc_a0
 +
-+	memory {
-+		device_type = "memory";
-+		reg = <0x80000000 0x00800000>;
-+	};
++	li	t4, 1
++	bge	t5, t4, 202b
 +
-+	spi0 {
-+		compatible = "spi-gpio";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		gpio-sck  = <&gpio0 0 GPIO_ACTIVE_HIGH>;
-+		gpio-miso = <&gpio0 1 GPIO_ACTIVE_HIGH>;
-+		gpio-mosi = <&gpio0 2 GPIO_ACTIVE_HIGH>;
-+		cs-gpios  = <&gpio0 3 GPIO_ACTIVE_LOW>;
-+		num-chipselects = <1>;
++#endif /* CONFIG_DEBUG_LL */
++.endm
 +
-+		m25p128@0 {
-+			compatible = "m25p128", "jedec,spi-nor";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			reg = <0>;
-+			spi-max-frequency = <1000000>;
-+		};
-+	};
-+};
-diff --git a/arch/riscv/mach-erizo/Kconfig b/arch/riscv/mach-erizo/Kconfig
-new file mode 100644
-index 000000000..2400b4437
---- /dev/null
-+++ b/arch/riscv/mach-erizo/Kconfig
-@@ -0,0 +1,11 @@
-+if MACH_ERIZO
++.macro riscv_nmon
 +
-+choice
-+	prompt "Board type"
++nmon_main_help:
++#ifdef CONFIG_NMON_HELP
++	nmon_outs	msg_nmon_help
++#endif /* CONFIG_NMON_HELP */
 +
-+config BOARD_ERIZO_GENERIC
-+	bool "erizo generic board"
++nmon_main:
++	nmon_outs	msg_prompt
 +
-+endchoice
++	debug_ll_getc
 +
-+endif
-diff --git a/arch/riscv/mach-erizo/Makefile b/arch/riscv/mach-erizo/Makefile
-new file mode 100644
-index 000000000..d9c51e74c
---- /dev/null
-+++ b/arch/riscv/mach-erizo/Makefile
-@@ -0,0 +1,3 @@
-+# just to build a built-in.o. Otherwise compilation fails when no o-files is
-+# created.
-+obj- += dummy.o
++	li	a0, 'q'
++	bne	s0, a0, 3f
++
++	jal	_nmon_outc_a0
++
++	j	nmon_exit
++
++3:
++	li	a0, 'd'
++	beq	s0, a0, nmon_cmd_d
++
++	li	a0, 'w'
++	beq	s0, a0, nmon_cmd_w
++
++	li	a0, 'g'
++	beq	s0, a0, nmon_cmd_g
++
++	j	nmon_main_help
++
++nmon_cmd_d:
++	jal	_nmon_outc_a0
++
++	li	a0, ' '
++	jal	_nmon_outc_a0
++
++	jal	_nmon_gethexw
++
++	nmon_outs	msg_nl
++
++	lw	a0, (s0)
++	debug_ll_outhexw
++
++	j	nmon_main
++
++nmon_cmd_w:
++	jal	_nmon_outc_a0
++
++	li	a0, ' '
++	jal	_nmon_outc_a0
++
++	jal	_nmon_gethexw
++	move	s2, s0
++
++	li	a0, ' '
++	jal	_nmon_outc_a0
++	jal	_nmon_gethexw
++
++	sw	s0, 0(s2)
++	j	nmon_main
++
++nmon_cmd_g:
++	jal	_nmon_outc_a0
++
++	li	a0, ' '
++	jal	_nmon_outc_a0
++
++	jal	_nmon_gethexw
++	move	s2, s0
++
++	nmon_outs	msg_nl
++
++	jalr	s2
++	j	nmon_main
++
++_nmon_outc_a0:
++	debug_ll_outc_a0
++	jr	ra
++
++_nmon_outs:
++
++	lb	a0, 0(a1)
++	addi	a1, a1, 1
++	beqz	a0, _nmon_jr_ra_exit
++
++	debug_ll_outc_a0
++
++	j	_nmon_outs
++
++_nmon_gethexw:
++
++	li	t3, 8
++	li	t2, 0
++
++_get_hex_digit:
++	debug_ll_getc
++
++	li	s1, CODE_ESC
++	beq	s0, s1, nmon_main
++
++	li	s1, '0'
++	bge	s0, s1, 0f
++	j	_get_hex_digit
++
++0:
++	li	s1, '9'
++	ble	s0, s1, 9f
++
++	li	s1, 'f'
++	ble	s0, s1, 1f
++	j	_get_hex_digit
++
++1:
++	li	s1, 'a'
++	bge	s0, s1, 8f
++
++	j	_get_hex_digit
++
++8: /* s0 \in {'a', 'b' ... 'f'} */
++	sub	a3, s0, s1
++	addi	a3, a3, 0xa
++	j	0f
++
++9: /* s0 \in {'0', '1' ... '9'} */
++	li	a3, '0'
++	sub	a3, s0, a3
++
++0:	move	a0, s0
++	debug_ll_outc_a0
++
++	sll	t2, t2, 4
++	or	t2, t2, a3
++	li	t0, 1
++	sub	t3, t3, t0
++
++	beqz	t3, 0f
++
++	j	_get_hex_digit
++
++0:
++	move	s0, t2
++
++_nmon_jr_ra_exit:
++	jr	ra
++
++msg_prompt:
++	.asciz "\r\nnmon> "
++
++msg_nl:
++	.asciz "\r\n"
++
++msg_bsp:
++	.asciz "\b \b"
++
++#ifdef CONFIG_NMON_HELP
++msg_nmon_help:
++	.ascii "\r\n\r\nnmon commands:\r\n"
++	.ascii " q - quit\r\n"
++	.ascii " d <addr> - read 32-bit word from <addr>\r\n"
++	.ascii " w <addr> <val> - write 32-bit word to <addr>\r\n"
++	.ascii " g <addr> - jump to <addr>\r\n"
++	.asciz "   use <ESC> key to interrupt current command\r\n"
++#endif /* CONFIG_NMON_HELP */
++
++	.align 2
++nmon_exit:
++	nmon_outs	msg_nl
++
++.endm
++
++#endif /* __ASM_RISCV_NMON_H */
 -- 
 2.14.1
 
