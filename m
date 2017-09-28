@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x241.google.com ([2a00:1450:400c:c0c::241])
+Received: from mail-wr0-x243.google.com ([2a00:1450:400c:c0c::243])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dxhzc-0004T1-Fs
- for barebox@lists.infradead.org; Thu, 28 Sep 2017 23:13:25 +0000
-Received: by mail-wr0-x241.google.com with SMTP id b21so5346558wrg.7
- for <barebox@lists.infradead.org>; Thu, 28 Sep 2017 16:13:00 -0700 (PDT)
+ id 1dxhzf-0004TC-HG
+ for barebox@lists.infradead.org; Thu, 28 Sep 2017 23:13:26 +0000
+Received: by mail-wr0-x243.google.com with SMTP id 97so3469520wrb.0
+ for <barebox@lists.infradead.org>; Thu, 28 Sep 2017 16:13:02 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 29 Sep 2017 02:12:42 +0300
-Message-Id: <20170928231249.4158-4-antonynpavlov@gmail.com>
+Date: Fri, 29 Sep 2017 02:12:44 +0300
+Message-Id: <20170928231249.4158-6-antonynpavlov@gmail.com>
 In-Reply-To: <20170928231249.4158-1-antonynpavlov@gmail.com>
 References: <20170928231249.4158-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,26 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v4 03/10] RISC-V: add low-level debug macros for ns16550
+Subject: [RFC v4 05/10] RISC-V: erizo: add DEBUG_LL support
 To: barebox@lists.infradead.org
-
-This patch adds macros for ns16550 port initialisation
-and single char output. The macros can be used in
-MIPS asm pbl code.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/riscv/include/asm/debug_ll_ns16550.h | 186 ++++++++++++++++++++++++++++++
- 1 file changed, 186 insertions(+)
+ arch/riscv/Kconfig                            |  1 +
+ arch/riscv/mach-erizo/include/mach/debug_ll.h | 37 +++++++++++++++++++++++++++
+ 2 files changed, 38 insertions(+)
 
-diff --git a/arch/riscv/include/asm/debug_ll_ns16550.h b/arch/riscv/include/asm/debug_ll_ns16550.h
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index ce5f317cf..cf02ecf27 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -26,6 +26,7 @@ choice
+ 
+ config MACH_ERIZO
+ 	bool "erizo family"
++	select HAS_DEBUG_LL
+ 
+ endchoice
+ 
+diff --git a/arch/riscv/mach-erizo/include/mach/debug_ll.h b/arch/riscv/mach-erizo/include/mach/debug_ll.h
 new file mode 100644
-index 000000000..6929453b1
+index 000000000..913b323d9
 --- /dev/null
-+++ b/arch/riscv/include/asm/debug_ll_ns16550.h
-@@ -0,0 +1,186 @@
++++ b/arch/riscv/mach-erizo/include/mach/debug_ll.h
+@@ -0,0 +1,37 @@
 +/*
-+ * Copyright (C) 2016, 2017 Antony Pavlov <antonynpavlov@gmail.com>
++ * Copyright (C) 2017 Antony Pavlov <antonynpavlov@gmail.com>
 + *
 + * This file is part of barebox.
 + * See file CREDITS for list of people who contributed to this project.
@@ -58,175 +67,26 @@ index 000000000..6929453b1
 + *
 + */
 +
++#ifndef __MACH_ERIZO_DEBUG_LL__
++#define __MACH_ERIZO_DEBUG_LL__
++
 +/** @file
-+ *  This file contains declaration for early output support
++ *  This File contains declaration for early output support
 + */
-+#ifndef __INCLUDE_RISCV_ASM_DEBUG_LL_NS16550_H__
-+#define __INCLUDE_RISCV_ASM_DEBUG_LL_NS16550_H__
 +
 +#include <linux/kconfig.h>
 +
-+#ifdef CONFIG_DEBUG_LL
++#define DEBUG_LL_UART_ADDR	0x90000000
++#define DEBUG_LL_UART_SHIFT	2
++#define DEBUG_LL_UART_IOSIZE32
 +
-+#ifndef DEBUG_LL_UART_ADDR
-+#error DEBUG_LL_UART_ADDR is undefined!
-+#endif
++#define DEBUG_LL_UART_CLK       (24000000 / 16)
++#define DEBUG_LL_UART_BPS       CONFIG_BAUDRATE
++#define DEBUG_LL_UART_DIVISOR   (DEBUG_LL_UART_CLK / DEBUG_LL_UART_BPS)
 +
-+#ifndef DEBUG_LL_UART_SHIFT
-+#error DEBUG_LL_UART_SHIFT is undefined!
-+#endif
++#include <asm/debug_ll_ns16550.h>
 +
-+#ifndef DEBUG_LL_UART_DIVISOR
-+#error DEBUG_LL_UART_DIVISOR is undefined!
-+#endif
-+
-+#endif /* CONFIG_DEBUG_LL */
-+
-+#define UART_THR	(0x0 << DEBUG_LL_UART_SHIFT)
-+#define UART_RBR	(0x0 << DEBUG_LL_UART_SHIFT)
-+#define UART_DLL	(0x0 << DEBUG_LL_UART_SHIFT)
-+#define UART_DLM	(0x1 << DEBUG_LL_UART_SHIFT)
-+#define UART_LCR	(0x3 << DEBUG_LL_UART_SHIFT)
-+#define UART_LSR	(0x5 << DEBUG_LL_UART_SHIFT)
-+
-+#define UART_LCR_W	0x07	/* Set UART to 8,N,2 & DLAB = 0 */
-+#define UART_LCR_DLAB	0x87	/* Set UART to 8,N,2 & DLAB = 1 */
-+
-+#define UART_LSR_DR	0x01    /* UART received data present */
-+#define UART_LSR_THRE	0x20	/* Xmit holding register empty */
-+
-+#if defined(DEBUG_LL_UART_IOSIZE32)
-+#define UART_REG_L	lw
-+#define UART_REG_S	sw
-+#elif defined(DEBUG_LL_UART_IOSIZE8)
-+#define UART_REG_L	lbu
-+#define UART_REG_S	sb
-+#else
-+#error "Please define DEBUG_LL_UART_IOSIZE{8,32}"
-+#endif
-+
-+#ifndef __ASSEMBLY__
-+/*
-+ * C macros
-+ */
-+
-+#include <asm/io.h>
-+
-+static inline void PUTC_LL(char ch)
-+{
-+#ifdef CONFIG_DEBUG_LL
-+	while (!(__raw_readl((u8 *)DEBUG_LL_UART_ADDR + UART_LSR) & UART_LSR_THRE))
-+		;
-+	__raw_writel(ch, (u8 *)DEBUG_LL_UART_ADDR + UART_THR);
-+#endif /* CONFIG_DEBUG_LL */
-+}
-+
-+static inline void debug_ll_ns16550_init(void)
-+{
-+#ifdef CONFIG_DEBUG_LL
-+	__raw_writel(UART_LCR_DLAB, (u8 *)DEBUG_LL_UART_ADDR + UART_LCR);
-+	__raw_writel(DEBUG_LL_UART_DIVISOR & 0xff, (u8 *)DEBUG_LL_UART_ADDR + UART_DLL);
-+	__raw_writel((DEBUG_LL_UART_DIVISOR >> 8) & 0xff, (u8 *)DEBUG_LL_UART_ADDR + UART_DLM);
-+	__raw_writel(UART_LCR_W, (u8 *)DEBUG_LL_UART_ADDR + UART_LCR);
-+#endif /* CONFIG_DEBUG_LL */
-+}
-+#else /* __ASSEMBLY__ */
-+/*
-+ * Macros for use in assembly language code
-+ */
-+
-+.macro	debug_ll_ns16550_init
-+#ifdef CONFIG_DEBUG_LL
-+	li	t0, DEBUG_LL_UART_ADDR
-+
-+	li	t1, UART_LCR_DLAB		/* DLAB on */
-+	UART_REG_S	t1, UART_LCR(t0)		/* Write it out */
-+
-+	li	t1, DEBUG_LL_UART_DIVISOR
-+	UART_REG_S	t1, UART_DLL(t0)		/* write low order byte */
-+	srl	t1, t1, 8
-+	UART_REG_S	t1, UART_DLM(t0)		/* write high order byte */
-+
-+	li	t1, UART_LCR_W			/* DLAB off */
-+	UART_REG_S	t1, UART_LCR(t0)		/* Write it out */
-+#endif /* CONFIG_DEBUG_LL */
-+.endm
-+
-+/*
-+ * output a character in a0
-+ */
-+.macro	debug_ll_outc_a0
-+#ifdef CONFIG_DEBUG_LL
-+
-+	li	t0, DEBUG_LL_UART_ADDR
-+
-+201:
-+	UART_REG_L	t1, UART_LSR(t0)	/* get line status */
-+	andi	t1, t1, UART_LSR_THRE	/* check for transmitter empty */
-+	beqz	t1, 201b			/* try again */
-+
-+	UART_REG_S	a0, UART_THR(t0)	/* write the character */
-+
-+#endif /* CONFIG_DEBUG_LL */
-+.endm
-+
-+/*
-+ * output a character
-+ */
-+.macro	debug_ll_outc chr
-+#ifdef CONFIG_DEBUG_LL
-+	li	a0, \chr
-+	debug_ll_outc_a0
-+#endif /* CONFIG_DEBUG_LL */
-+.endm
-+
-+/*
-+ * output CR + NL
-+ */
-+.macro	debug_ll_ns16550_outnl
-+#ifdef CONFIG_DEBUG_LL
-+	debug_ll_outc '\r'
-+	debug_ll_outc '\n'
-+#endif /* CONFIG_DEBUG_LL */
-+.endm
-+
-+/*
-+ * check character in input buffer
-+ * return value:
-+ *  v0 = 0   no character in input buffer
-+ *  v0 != 0  character in input buffer
-+ */
-+.macro	debug_ll_tstc
-+#ifdef CONFIG_DEBUG_LL
-+	li      t0, DEBUG_LL_UART_ADDR
-+
-+	/* get line status and check for data present */
-+	UART_REG_L	s0, UART_LSR(t0)
-+	andi	s0, s0, UART_LSR_DR
-+
-+#endif /* CONFIG_DEBUG_LL */
-+.endm
-+
-+/*
-+ * get character to v0
-+ */
-+.macro	debug_ll_getc
-+#ifdef CONFIG_DEBUG_LL
-+
-+204:
-+	debug_ll_tstc
-+
-+	/* try again */
-+	beqz	s0, 204b
-+
-+	/* read a character */
-+	UART_REG_L	s0, UART_RBR(t0)
-+
-+#endif /* CONFIG_DEBUG_LL */
-+.endm
-+#endif /* __ASSEMBLY__ */
-+
-+#endif /* __INCLUDE_RISCV_ASM_DEBUG_LL_NS16550_H__ */
++#endif /* __MACH_ERIZO_DEBUG_LL__ */
 -- 
 2.14.1
 
