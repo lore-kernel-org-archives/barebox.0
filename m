@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx009.vodafonemail.xion.oxcs.net ([153.92.174.39])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dxBeP-0005DD-87
- for barebox@lists.infradead.org; Wed, 27 Sep 2017 12:41:20 +0000
-Received: from vsmx002.vodafonemail.xion.oxcs.net (unknown [192.168.75.192])
- by mta-6-out.mta.xion.oxcs.net (Postfix) with ESMTP id 2CA37D9B09C
- for <barebox@lists.infradead.org>; Wed, 27 Sep 2017 12:40:45 +0000 (UTC)
-Received: from null (app-47.app.xion.oxcs.net [10.10.1.47])
- by mta-6-out.mta.xion.oxcs.net (Postfix) with ESMTPA id 1464E19AC20
- for <barebox@lists.infradead.org>; Wed, 27 Sep 2017 12:40:43 +0000 (UTC)
-Date: Wed, 27 Sep 2017 14:40:42 +0200 (CEST)
-From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-Message-ID: <73569970.96767.1506516042956@mail.vodafone.de>
+ id 1dxUjd-0005PZ-Id
+ for barebox@lists.infradead.org; Thu, 28 Sep 2017 09:04:04 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu, 28 Sep 2017 11:03:29 +0200
+Message-Id: <20170928090329.28006-4-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20170928090329.28006-1-u.kleine-koenig@pengutronix.de>
+References: <20170928090329.28006-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,43 +17,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox fb console on an EFI system
+Subject: [PATCH v2 3/3] state: storage: direct: skip writing meta data if this
+ makes data fit
 To: barebox@lists.infradead.org
 
-Hi,
-
-I'm working on an EFI embedded system, actually a standard PC, with a
-display and a USB keyboard connected to it.
-
-The bootloader I'm using is a barebox 2017.09.0 configured with
-'arch/x86/configs/efi_defconfig'.
-
-What I notice is that if both config options:
-
-FRAMEBUFFER_CONSOLE and DRIVER_VIDEO_EFI_GOP
-
-are enabled then, at runtime, I see two video consoles at the same time
-on the display: one console takes the whole display area, the other is smaller.
-
-If I just activate one of the previous options or if I disable both then I just see
-the smaller console on the display.
-
-Moreover, if I disable the option
-
- DRIVER_SERIAL_EFI_STDIO
-
-then I just see the 'bigger' console, as I want to, but unfortunately the
-keyboard does not work anymore.
-
-I think here there is some unwanted interaction at play.
-
-giorgio
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+V2hlbiBhIGRpcmVjdCBidWNrZXQgaXMgcmVhZCBpdCBoYW5kbGVzIG1pc3NpbmcgbWV0YSBkYXRh
+IGp1c3QgZmluZSBmb3IKY29tcGF0aWJpbGl0eSByZWFzb25zLiBUaGlzIGFsbG93cyB0byBza2lw
+IHdyaXRpbmcgbWV0YSBkYXRhIGlmIHRoYXQKbWFrZXMgdGhlIGRhdGEgc21hbGwgZW5vdWdoIHRv
+IGZpdCBpbiB0aGUgYnVja2V0IHRvIGJlIHdyaXR0ZW4uCgpUaGUgbW90aXZhdGlvbiBmb3IgdGhp
+cyBjaGFuZ2UgaXMgdGhhdCB0aGUgc3RvcmFnZSBmb3JtYXQgaW4KcHJlLW1haW5saW5lIHN0YXRl
+IGRpZG4ndCB1c2UgbWV0YSBkYXRhIGFuZCBzb21lIG1hY2hpbmVzIHN0aWxsIGhhdmUgdG8Kc3Rp
+Y2sgdG8gdGhpcyBmb3JtYXQuIEZvciB0aGVzZSB0aGUgc3RyaWRlIHNpemUgZXhhY3RseSBmaXRz
+IHRoZSBkYXRhCnNpemUgc3VjaCB0aGF0IHRoZXJlIGlzIG5vIHBsYWNlIGZvciBhZGRpdGlvbmFs
+IG1ldGEgZGF0YSBhbmQgc28gdGhlCmRhdGEgaXMgd3JpdHRlbiBpbiB0aGUgb2xkIGZvcm1hdC4K
+ClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0
+cm9uaXguZGU+Ci0tLQogY29tbW9uL3N0YXRlL2JhY2tlbmRfYnVja2V0X2RpcmVjdC5jIHwgMjMg
+KysrKysrKysrKysrKysrKy0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAxNiBpbnNlcnRpb25zKCsp
+LCA3IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX2J1Y2tl
+dF9kaXJlY3QuYyBiL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX2J1Y2tldF9kaXJlY3QuYwppbmRleCA0
+NDY1ZWQwZTQxMTUuLjhiZjlhOTQ1NjQzYyAxMDA2NDQKLS0tIGEvY29tbW9uL3N0YXRlL2JhY2tl
+bmRfYnVja2V0X2RpcmVjdC5jCisrKyBiL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX2J1Y2tldF9kaXJl
+Y3QuYwpAQCAtMTAyLDggKzEwMiwxNCBAQCBzdGF0aWMgaW50IHN0YXRlX2JhY2tlbmRfYnVja2V0
+X2RpcmVjdF93cml0ZShzdHJ1Y3Qgc3RhdGVfYmFja2VuZF9zdG9yYWdlX2J1Y2tldAogCSAgICBn
+ZXRfYnVja2V0X2RpcmVjdChidWNrZXQpOwogCWludCByZXQ7CiAJc3RydWN0IHN0YXRlX2JhY2tl
+bmRfc3RvcmFnZV9idWNrZXRfZGlyZWN0X21ldGEgbWV0YTsKKwlpbnQgd3JpdGVfbWV0YSA9IDE7
+CiAKLQlpZiAobGVuID4gZGlyZWN0LT5tYXhfc2l6ZSAtIHNpemVvZihtZXRhKSkKKwlpZiAobGVu
+ID4gZGlyZWN0LT5tYXhfc2l6ZSAtIHNpemVvZihtZXRhKSkgeworCQlkZXZfaW5mbyhkaXJlY3Qt
+PmRldiwgInNraXAgd3JpdGluZyBtZXRhZGF0YSBiZWNhdXNlIG9mIHNpemUgY29uc3RyYWludHNc
+biIpOworCQl3cml0ZV9tZXRhID0gMDsKKwl9CisKKwlpZiAobGVuID4gZGlyZWN0LT5tYXhfc2l6
+ZSkKIAkJcmV0dXJuIC1FMkJJRzsKIAogCXJldCA9IGxzZWVrKGRpcmVjdC0+ZmQsIGRpcmVjdC0+
+b2Zmc2V0LCBTRUVLX1NFVCk7CkBAIC0xMTIsMTIgKzExOCwxNSBAQCBzdGF0aWMgaW50IHN0YXRl
+X2JhY2tlbmRfYnVja2V0X2RpcmVjdF93cml0ZShzdHJ1Y3Qgc3RhdGVfYmFja2VuZF9zdG9yYWdl
+X2J1Y2tldAogCQlyZXR1cm4gcmV0OwogCX0KIAotCW1ldGEubWFnaWMgPSBkaXJlY3RfbWFnaWM7
+Ci0JbWV0YS53cml0dGVuX2xlbmd0aCA9IGxlbjsKLQlyZXQgPSB3cml0ZV9mdWxsKGRpcmVjdC0+
+ZmQsICZtZXRhLCBzaXplb2YobWV0YSkpOwotCWlmIChyZXQgPCAwKSB7Ci0JCWRldl9lcnIoZGly
+ZWN0LT5kZXYsICJGYWlsZWQgdG8gd3JpdGUgbWV0YWRhdGEgdG8gZmlsZSwgJWRcbiIsIHJldCk7
+Ci0JCXJldHVybiByZXQ7CisJaWYgKHdyaXRlX21ldGEpIHsKKwkJbWV0YS5tYWdpYyA9IGRpcmVj
+dF9tYWdpYzsKKwkJbWV0YS53cml0dGVuX2xlbmd0aCA9IGxlbjsKKwkJcmV0ID0gd3JpdGVfZnVs
+bChkaXJlY3QtPmZkLCAmbWV0YSwgc2l6ZW9mKG1ldGEpKTsKKwkJaWYgKHJldCA8IDApIHsKKwkJ
+CWRldl9lcnIoZGlyZWN0LT5kZXYsCisJCQkJIkZhaWxlZCB0byB3cml0ZSBtZXRhZGF0YSB0byBm
+aWxlLCAlZFxuIiwgcmV0KTsKKwkJCXJldHVybiByZXQ7CisJCX0KIAl9CiAKIAlyZXQgPSB3cml0
+ZV9mdWxsKGRpcmVjdC0+ZmQsIGJ1ZiwgbGVuKTsKLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
