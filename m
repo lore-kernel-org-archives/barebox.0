@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x244.google.com ([2a00:1450:400c:c0c::244])
+Received: from mail-wr0-x242.google.com ([2a00:1450:400c:c0c::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dxhzg-0004TE-Lt
- for barebox@lists.infradead.org; Thu, 28 Sep 2017 23:13:30 +0000
-Received: by mail-wr0-x244.google.com with SMTP id 97so3469582wrb.0
- for <barebox@lists.infradead.org>; Thu, 28 Sep 2017 16:13:05 -0700 (PDT)
+ id 1dxhzj-0004TO-9I
+ for barebox@lists.infradead.org; Thu, 28 Sep 2017 23:13:31 +0000
+Received: by mail-wr0-x242.google.com with SMTP id 108so5337170wra.5
+ for <barebox@lists.infradead.org>; Thu, 28 Sep 2017 16:13:07 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 29 Sep 2017 02:12:46 +0300
-Message-Id: <20170928231249.4158-8-antonynpavlov@gmail.com>
+Date: Fri, 29 Sep 2017 02:12:48 +0300
+Message-Id: <20170928231249.4158-10-antonynpavlov@gmail.com>
 In-Reply-To: <20170928231249.4158-1-antonynpavlov@gmail.com>
 References: <20170928231249.4158-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,43 +23,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v4 07/10] RISC-V: erizo: add nmon image creation
+Subject: [RFC v4 09/10] scripts: add nmon-loader
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/riscv/Makefile      | 11 +++++++++++
- scripts/erizo-nmon-image |  3 +++
- 2 files changed, 14 insertions(+)
+ scripts/nmon-loader | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-index 8947a1860..0b282538a 100644
---- a/arch/riscv/Makefile
-+++ b/arch/riscv/Makefile
-@@ -69,3 +69,14 @@ CFLAGS += $(cflags-y)
- lds-y	:= arch/riscv/lib/barebox.lds
- 
- CLEAN_FILES += arch/riscv/lib/barebox.lds
-+
-+ifeq ($(CONFIG_MACH_ERIZO),y)
-+KBUILD_IMAGE := barebox.erizo.nmon
-+endif
-+
-+quiet_cmd_erizo_nmon_image = MKIMAGE $@
-+      cmd_erizo_nmon_image = $(srctree)/scripts/erizo-nmon-image $< $@ || \
-+	echo "WARNING: Couldn't create erizo nmon image due to previous errors."
-+
-+barebox.erizo.nmon: $(KBUILD_BINARY) FORCE
-+	$(call if_changed,erizo_nmon_image)
-diff --git a/scripts/erizo-nmon-image b/scripts/erizo-nmon-image
+diff --git a/scripts/nmon-loader b/scripts/nmon-loader
 new file mode 100755
-index 000000000..4f0185b6d
+index 000000000..d80a53097
 --- /dev/null
-+++ b/scripts/erizo-nmon-image
-@@ -0,0 +1,3 @@
-+#!/bin/sh
++++ b/scripts/nmon-loader
+@@ -0,0 +1,31 @@
++#!/usr/bin/expect -f
 +
-+hexdump -v -e '/4 "%08x\n"' $1 | perl -e '$a = 0x80000000; while (<>) { chop; printf("expect \"nmon> \"\n"); printf("send \"w%08x$_\"\n", $a); $a = $a + 4; }' > $2
++# device
++set image [lindex $argv 0];
++set modem [lindex $argv 1];
++set speed [lindex $argv 2];
++
++if {$argc != 3} {
++    puts "Usage:"
++    puts "    nmon-loader.expect <file> <device> <speed>"
++    exit 2
++}
++
++# keep it open
++exec sh -c "sleep 3 < $modem" &
++
++# serial port parameters
++exec stty -F $modem $speed raw -clocal -echo -istrip -hup
++
++# connect
++send_user "connecting to $modem, exit with ~.\n"
++spawn -open [open $modem w+]
++send_user "connected\n"
++send "\r"
++
++source $image
++
++interact {
++    ~- exit
++    ~~ {send "\034"}
++}
 -- 
 2.14.1
 
