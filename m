@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dxuuJ-0001i8-Hn
- for barebox@lists.infradead.org; Fri, 29 Sep 2017 13:00:50 +0000
-Date: Fri, 29 Sep 2017 15:00:20 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20170929130020.joavcynokhjid3wg@pengutronix.de>
-References: <1043852685.129432.1506673503086@mail.vodafone.de>
- <20170929113543.p2unhzcdk4knwpvx@pengutronix.de>
- <1240553302.113348.1506688301119@mail.vodafone.de>
+ id 1dxuwW-0002p9-3K
+ for barebox@lists.infradead.org; Fri, 29 Sep 2017 13:03:05 +0000
+Date: Fri, 29 Sep 2017 15:02:36 +0200
+From: Oleksij Rempel <ore@pengutronix.de>
+Message-ID: <20170929130236.z4pomza4utr654um@pengutronix.de>
+References: <20170927091245.9476-1-s.hauer@pengutronix.de>
+ <20170927091245.9476-2-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1240553302.113348.1506688301119@mail.vodafone.de>
+In-Reply-To: <20170927091245.9476-2-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,32 +23,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: how to persistently save config values
-To: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/4] usbgadget: autostart: Handle errors in file list
+ gracefully
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Fri, Sep 29, 2017 at 02:31:40PM +0200, Giorgio Dal Molin wrote:
-> Hi Sascha,
+On Wed, Sep 27, 2017 at 11:12:42AM +0200, Sascha Hauer wrote:
+> file_list_parse() can fail and returns an error pointer. Print
+> an error message when it fails and also set to NULL again so
+> that usb_multi_register() does not stumble upon the error pointer.
 > 
-> thank you for the answer.
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/usb/gadget/autostart.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
 > 
-> I just experimented a bit with the environment and the nv vars
-> and I think I'll go this way.
-> 
-> I was a bit surprised by the saveenv command though: my understanding
-> of the (default) environment was that it was a read only blob
-> hardcoded in the barebox image
+> diff --git a/drivers/usb/gadget/autostart.c b/drivers/usb/gadget/autostart.c
+> index 465d8fd380..3fa43137fa 100644
+> --- a/drivers/usb/gadget/autostart.c
+> +++ b/drivers/usb/gadget/autostart.c
+> @@ -11,6 +11,8 @@
+>   * GNU General Public License for more details.
+>   *
+>   */
+> +#define pr_fmt(fmt) "usbgadget autostart: " fmt
+> +
+>  #include <common.h>
+>  #include <command.h>
+>  #include <errno.h>
+> @@ -42,8 +44,14 @@ static int usbgadget_autostart(void)
+>  	opts = xzalloc(sizeof(*opts));
+>  	opts->release = usb_multi_opts_release;
+>  
+> -	if (fastboot_function)
+> +	if (fastboot_function) {
+>  		opts->fastboot_opts.files = file_list_parse(fastboot_function);
+> +		if (IS_ERR(opts->fastboot_opts.files)) {
+> +			pr_err("Parsing file list \"%s\" failed: %s\n", fastboot_function,
+> +			       strerrorp(opts->fastboot_opts.files));
+> +			opts->fastboot_opts.files = NULL;
+> +		}
+> +	}
+>  
+>  	opts->create_acm = acm;
 
-Yes, it is.
-
-> I thought if I want some new/dynamic
-> env content to be saved for the next reboot I have to explicitly provide
-> a storage disk/cf/mtd partition to the saveenv and then to the loadenv.
-
-Yes, true. Normally the board code provides a storage place. In case of
-UEFI the storage place is set to a EFI Variable in common/efi/efi.c:305
-
-Sascha
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
 
 -- 
 Pengutronix e.K.                           |                             |
