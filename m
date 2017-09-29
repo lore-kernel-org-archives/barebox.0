@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.21])
+Received: from mout.gmx.net ([212.227.15.18])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dy3X6-0006MA-Me
- for barebox@lists.infradead.org; Fri, 29 Sep 2017 22:13:22 +0000
+ id 1dy3Z3-0006hu-VH
+ for barebox@lists.infradead.org; Fri, 29 Sep 2017 22:15:23 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Sat, 30 Sep 2017 00:12:45 +0200
-Message-Id: <20170929221245.8653-2-linux@rempel-privat.de>
-In-Reply-To: <20170929221245.8653-1-linux@rempel-privat.de>
-References: <20170929221245.8653-1-linux@rempel-privat.de>
+Date: Sat, 30 Sep 2017 00:14:47 +0200
+Message-Id: <20170929221447.8744-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,44 +19,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 2/2] MIPS: dts: ar9344: add pll node
+Subject: [PATCH v1] MIPS: tplink-wdr4300_defconfig: enable RATP
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
+In some cases, if we have cache issues, it is useful to have
+good connection to the target. RATP seems to be a good protocol
+for this case.
+
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- arch/mips/dts/ar9344.dtsi | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/mips/configs/tplink-wdr4300_defconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/dts/ar9344.dtsi b/arch/mips/dts/ar9344.dtsi
-index 3e105174d..0a7171b8d 100644
---- a/arch/mips/dts/ar9344.dtsi
-+++ b/arch/mips/dts/ar9344.dtsi
-@@ -13,6 +13,7 @@
- 		cpu@0 {
- 			device_type = "cpu";
- 			compatible = "mips,mips74Kc";
-+			clocks = <&pll ATH79_CLK_CPU>;
- 			reg = <0>;
- 		};
- 	};
-@@ -47,6 +48,16 @@
- 				status = "disabled";
- 			};
- 
-+			pll: pll-controller@18050000 {
-+				compatible = "qca,ar9344-pll";
-+				reg = <0x18050000 0x100>;
-+
-+				clocks = <&ref>;
-+				clock-names = "ref";
-+
-+				#clock-cells = <1>;
-+			};
-+
- 			spi: spi@1f000000 {
- 				compatible = "qca,ar7100-spi", "qca,ar9344-spi";
- 				reg = <0x1f000000 0x1c>;
+diff --git a/arch/mips/configs/tplink-wdr4300_defconfig b/arch/mips/configs/tplink-wdr4300_defconfig
+index 46093d243..8d5084006 100644
+--- a/arch/mips/configs/tplink-wdr4300_defconfig
++++ b/arch/mips/configs/tplink-wdr4300_defconfig
+@@ -10,6 +10,7 @@ CONFIG_MALLOC_TLSF=y
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
++CONFIG_CONSOLE_RATP=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
+@@ -78,5 +79,6 @@ CONFIG_LED_GPIO_OF=y
+ CONFIG_LED_TRIGGERS=y
+ CONFIG_FS_TFTP=y
+ CONFIG_FS_NFS=y
++CONFIG_FS_RATP=y
+ CONFIG_DIGEST_SHA224_GENERIC=y
+ CONFIG_DIGEST_SHA256_GENERIC=y
 -- 
 2.11.0
 
