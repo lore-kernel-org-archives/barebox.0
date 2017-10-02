@@ -1,17 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1dyvNy-000126-0R
- for barebox@lists.infradead.org; Mon, 02 Oct 2017 07:43:32 +0000
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1dyxal-0004dY-04
+ for barebox@lists.infradead.org; Mon, 02 Oct 2017 10:04:53 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 986F3A0031A
+ for <barebox@lists.infradead.org>; Mon,  2 Oct 2017 12:06:06 +0200 (CEST)
 References: <20170928231249.4158-1-antonynpavlov@gmail.com>
  <20170928231249.4158-2-antonynpavlov@gmail.com>
  <6767ad4e-80b7-2c69-49ff-ecfb64ab19e0@rempel-privat.de>
  <20170930145755.9a68a3fffe61c58eda5c7263@gmail.com>
-From: Oleksij Rempel <linux@rempel-privat.de>
-Message-ID: <a29251d2-b2a8-52f9-d510-74ee1890f048@rempel-privat.de>
-Date: Mon, 2 Oct 2017 09:43:02 +0200
+From: Daniel Schultz <d.schultz@phytec.de>
+Message-ID: <cbe5730e-5da4-6379-6cd0-c75feeeafb1a@phytec.de>
+Date: Mon, 2 Oct 2017 12:04:30 +0200
 MIME-Version: 1.0
 In-Reply-To: <20170930145755.9a68a3fffe61c58eda5c7263@gmail.com>
+Content-Language: de-DE
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,104 +24,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1914405357316809546=="
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [RFC v4 01/10] Add initial RISC-V architecture support
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============1914405357316809546==
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="SEbrvD4KHwcOQrf0WaIhnLBTw3lRI06Aa"
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---SEbrvD4KHwcOQrf0WaIhnLBTw3lRI06Aa
-Content-Type: multipart/mixed; boundary="SSfn1wAwonNKC5bq0sssTHJtVpJo5lW8I";
- protected-headers="v1"
-From: Oleksij Rempel <linux@rempel-privat.de>
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <a29251d2-b2a8-52f9-d510-74ee1890f048@rempel-privat.de>
-Subject: Re: [RFC v4 01/10] Add initial RISC-V architecture support
-References: <20170928231249.4158-1-antonynpavlov@gmail.com>
- <20170928231249.4158-2-antonynpavlov@gmail.com>
- <6767ad4e-80b7-2c69-49ff-ecfb64ab19e0@rempel-privat.de>
- <20170930145755.9a68a3fffe61c58eda5c7263@gmail.com>
-In-Reply-To: <20170930145755.9a68a3fffe61c58eda5c7263@gmail.com>
-
---SSfn1wAwonNKC5bq0sssTHJtVpJo5lW8I
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-Am 30.09.2017 um 13:57 schrieb Antony Pavlov:
-> On Fri, 29 Sep 2017 14:07:09 +0200
-> Oleksij Rempel <linux@rempel-privat.de> wrote:
->=20
->> Hi,
->>
->> hm... mostly looks identical with existing arch
->=20
-> What do you mean when you say "existing arch"?
-
-it is a note for me. I just compared it with MIPS
-> ...
->=20
->> Am 29.09.2017 um 01:12 schrieb Antony Pavlov:
-> ...
->>> diff --git a/arch/riscv/boot/start.S b/arch/riscv/boot/start.S
->>> new file mode 100644
->>> index 000000000..2fd00f63d
->>> --- /dev/null
->>> +++ b/arch/riscv/boot/start.S
->>> @@ -0,0 +1,74 @@
->>> +/*
->>> + * Startup Code for MIPS CPU
-
-Beside here is a copy paste ^^^ artefact :)
-
->>> + * based on coreboot/src/arch/riscv/bootblock.S
->>> + *
->>> + * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
->>> + *
-
---=20
-Regards,
-Oleksij
-
-
---SSfn1wAwonNKC5bq0sssTHJtVpJo5lW8I--
-
---SEbrvD4KHwcOQrf0WaIhnLBTw3lRI06Aa
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iF4EAREIAAYFAlnR7gcACgkQHwImuRkmbWn3bAD6AjmCKMcwJreyeVwgNf/Od0o7
-Xsqs+9yjChmkD8RlkscA/iN6rh60yatVfPJYKdOTaOSfhcTssYv26MQoeOxX+/Nb
-=XkHx
------END PGP SIGNATURE-----
-
---SEbrvD4KHwcOQrf0WaIhnLBTw3lRI06Aa--
-
-
---===============1914405357316809546==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1914405357316809546==--
+SGksCgoKT24gMDkvMzAvMjAxNyAwMTo1NyBQTSwgQW50b255IFBhdmxvdiB3cm90ZToKPiBPbiBG
+cmksIDI5IFNlcCAyMDE3IDE0OjA3OjA5ICswMjAwCj4gT2xla3NpaiBSZW1wZWwgPGxpbnV4QHJl
+bXBlbC1wcml2YXQuZGU+IHdyb3RlOgo+Cj4+IEhpLAo+Pgo+PiBobS4uLiBtb3N0bHkgbG9va3Mg
+aWRlbnRpY2FsIHdpdGggZXhpc3RpbmcgYXJjaAo+IFdoYXQgZG8geW91IG1lYW4gd2hlbiB5b3Ug
+c2F5ICJleGlzdGluZyBhcmNoIj8KPgo+IC4uLgo+Cj4+IEFtIDI5LjA5LjIwMTcgdW0gMDE6MTIg
+c2NocmllYiBBbnRvbnkgUGF2bG92Ogo+IC4uLgo+Pj4gZGlmZiAtLWdpdCBhL2FyY2gvcmlzY3Yv
+Ym9vdC9zdGFydC5TIGIvYXJjaC9yaXNjdi9ib290L3N0YXJ0LlMKPj4+IG5ldyBmaWxlIG1vZGUg
+MTAwNjQ0Cj4+PiBpbmRleCAwMDAwMDAwMDAuLjJmZDAwZjYzZAo+Pj4gLS0tIC9kZXYvbnVsbAo+
+Pj4gKysrIGIvYXJjaC9yaXNjdi9ib290L3N0YXJ0LlMKPj4+IEBAIC0wLDAgKzEsNzQgQEAKPj4+
+ICsvKgo+Pj4gKyAqIFN0YXJ0dXAgQ29kZSBmb3IgTUlQUyBDUFUKPj4+ICsgKgo+Pj4gKyAqIGJh
+c2VkIG9uIGNvcmVib290L3NyYy9hcmNoL3Jpc2N2L2Jvb3RibG9jay5TCj4+PiArICoKPj4+ICsg
+KiBDb3B5cmlnaHQgKEMpIDIwMTYgQW50b255IFBhdmxvdiA8YW50b255bnBhdmxvdkBnbWFpbC5j
+b20+Cj4+PiArICoKPj4+ICsgKiBUaGlzIGZpbGUgaXMgcGFydCBvZiBiYXJlYm94Lgo+Pj4gKyAq
+IFNlZSBmaWxlIENSRURJVFMgZm9yIGxpc3Qgb2YgcGVvcGxlIHdobyBjb250cmlidXRlZCB0byB0
+aGlzIHByb2plY3QuCj4+PiArICoKPj4+ICsgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2Fy
+ZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29yIG1vZGlmeQo+Pj4gKyAqIGl0IHVuZGVy
+IHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgdmVyc2lvbiAyCj4+
+PiArICogYXMgcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb24uCj4+PiAr
+ICoKPj4+ICsgKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBp
+dCB3aWxsIGJlIHVzZWZ1bCwKPj4+ICsgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhv
+dXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgo+Pj4gKyAqIE1FUkNIQU5UQUJJTElUWSBv
+ciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGUKPj4+ICsgKiBHTlUg
+R2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgo+Pj4gKyAqCj4+PiArICov
+Cj4+PiArCj4+PiArI2luY2x1ZGUgPGFzbS1nZW5lcmljL21lbW9yeV9sYXlvdXQuaD4KPj4+ICsK
+Pj4+ICsJLnRleHQKPj4+ICsJLnNlY3Rpb24gIi50ZXh0X2VudHJ5Igo+Pj4gKwkuYWxpZ24gMgo+
+Pj4gKwo+Pj4gKy5nbG9ibCBfc3RhcnQKPj4+ICtfc3RhcnQ6Cj4+PiArCWxpIHNwLCBTVEFDS19C
+QVNFICsgU1RBQ0tfU0laRQo+Pj4gKwo+Pj4gKwkjIG1ha2Ugcm9vbSBmb3IgSExTIGFuZCBpbml0
+aWFsaXplIGl0Cj4+PiArCWFkZGkgc3AsIHNwLCAtNjQgLyogTUVOVFJZX0ZSQU1FX1NJWkUgKi8K
+Pj4+ICsKPj4+ICsJIyBwb2lzb24gdGhlIHN0YWNrCj4+PiArCWxpIHQxLCBTVEFDS19CQVNFCj4+
+PiArCWxpIHQwLCAweGRlYWRiZWVmCj4+PiArCXN3IHQwLCAwKHQxKQo+Pj4gKwo+Pj4gKwkjIGNs
+ZWFyIGFueSBwZW5kaW5nIGludGVycnVwdHMKPj4+ICsJLy9jc3J3aSBtaXAsIDAKPj4gc2hvdWxk
+IGJlIHJlbW92ZWQuCj4gQWN0dWFsbHkgbm90IQo+Cj4gSSBoYXZlIGltcG9ydGVkIHRoaXMgY29k
+ZSBmcm9tIGNvcmVib290Lgo+Cj4gSSBoYXZlIGNvbW1lbnRlZCB0aGlzIGxpbmUgYmVjYXVzZSBj
+c3J3aSBkb2VzIG5vdCB3b3JrZWQgaW4gc29tZSBjYXNlcy4KPgo+IEJ1dCBJIGhhdmUgdG8gbWFr
+ZSBhZGRpdGlvbmFsIGludmVzdGlnYXRpb25zIG9uIGNzcndpLgo+CkNTUlJXSSBpcyBwYXJ0IG9m
+IHRoZSBiYXNlIGludGVnZXIgaW5zdHJ1Y3Rpb24gc2V0IGFuZCB0aGUgbWFjaGluZSBtb2RlIApp
+cyBtYW5kYXRvcnkuIElmIHRoZXJlIGFyZSB0cm91YmxlcyB3aXRoIHRoaXMgaW5zdHJ1Y3Rpb24s
+IHRoZSBjb3JlIGhhcyAKYSBmYXVsdHkgZGVzaWduLiBTbyBleGVjdXRpbmcgdGhpcyBsaW5lIHNo
+b3VsZCBiZSBva2F5IGV2ZW4gaWYgdGhlcmUgaXMgCm5vIGludGVycnVwdCBjb250cm9sbGVyLgoK
+LS0gCk1pdCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4sCldpdGggYmVzdCByZWdhcmRzLAogICBEYW5p
+ZWwgU2NodWx0egoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
+Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
