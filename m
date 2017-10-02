@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qt0-x241.google.com ([2607:f8b0:400d:c0d::241])
+Received: from mail-lf0-x234.google.com ([2a00:1450:4010:c07::234])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e1caT-0005tq-2e
- for barebox@lists.infradead.org; Mon, 09 Oct 2017 18:15:34 +0000
-Received: by mail-qt0-x241.google.com with SMTP id a43so38864711qta.0
- for <barebox@lists.infradead.org>; Mon, 09 Oct 2017 11:15:11 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20171009142408.2g7k4mrfjq3tffwa@pengutronix.de>
-References: <20171009093616.12686-1-u.kleine-koenig@pengutronix.de>
- <20171009093616.12686-4-u.kleine-koenig@pengutronix.de>
- <20171009142408.2g7k4mrfjq3tffwa@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 9 Oct 2017 11:15:09 -0700
-Message-ID: <CAHQ1cqE5qGSNQr+sHbCbhoCCYGiVV6F5aZb-T74hb4rC4ip8=Q@mail.gmail.com>
+ id 1dz1DU-0003So-FS
+ for barebox@lists.infradead.org; Mon, 02 Oct 2017 13:57:08 +0000
+Received: by mail-lf0-x234.google.com with SMTP id a18so6104206lfl.13
+ for <barebox@lists.infradead.org>; Mon, 02 Oct 2017 06:56:43 -0700 (PDT)
+Date: Mon, 2 Oct 2017 17:08:40 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20171002170840.5e394556156dfc0aba9a4d0a@gmail.com>
+In-Reply-To: <a29251d2-b2a8-52f9-d510-74ee1890f048@rempel-privat.de>
+References: <20170928231249.4158-1-antonynpavlov@gmail.com>
+ <20170928231249.4158-2-antonynpavlov@gmail.com>
+ <6767ad4e-80b7-2c69-49ff-ecfb64ab19e0@rempel-privat.de>
+ <20170930145755.9a68a3fffe61c58eda5c7263@gmail.com>
+ <a29251d2-b2a8-52f9-d510-74ee1890f048@rempel-privat.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,61 +23,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] HACK: e1000: don't check for FLSWCTL.GLDONE when
- waiting for idle
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [RFC v4 01/10] Add initial RISC-V architecture support
+To: Oleksij Rempel <linux@rempel-privat.de>
+Cc: barebox@lists.infradead.org
 
-T24gTW9uLCBPY3QgOSwgMjAxNyBhdCA3OjI0IEFNLCBVd2UgS2xlaW5lLUvDtm5pZwo8dS5rbGVp
-bmUta29lbmlnQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPiBPbiBNb24sIE9jdCAwOSwgMjAxNyBh
-dCAxMTozNjoxNkFNICswMjAwLCBVd2UgS2xlaW5lLUvDtm5pZyB3cm90ZToKPj4gSSBkb24ndCB1
-bmRlcnN0YW5kIGFsbCB0aGUgY29uc2VxdWVuY2VzIG9mIHRoaXMgcGF0Y2ggeWV0LCBidXQgdGhp
-cyBtYWtlcyByZWFkaW5nCj4+IG91dCB0aGUgZmxhc2ggY2hpcCBjb25uZWN0ZWQgdG8gYW4gaTIx
-MCB3b3JrIGZvciBtZS4KPj4gLS0tCj4+ICBkcml2ZXJzL25ldC9lMTAwMC9lZXByb20uYyB8IDQg
-KystLQo+PiAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkK
-Pj4KPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L2UxMDAwL2VlcHJvbS5jIGIvZHJpdmVycy9u
-ZXQvZTEwMDAvZWVwcm9tLmMKPj4gaW5kZXggNzM5YmMxN2E1MTllLi40ODJhOTY5ZjhkNTYgMTAw
-NjQ0Cj4+IC0tLSBhL2RyaXZlcnMvbmV0L2UxMDAwL2VlcHJvbS5jCj4+ICsrKyBiL2RyaXZlcnMv
-bmV0L2UxMDAwL2VlcHJvbS5jCj4+IEBAIC03MDksOCArNzA5LDggQEAgc3RhdGljIGludCBlMTAw
-MF9mbGFzaF9tb2RlX3dhaXRfZm9yX2lkbGUoc3RydWN0IGUxMDAwX2h3ICpodykKPj4gICAgICAg
-ICogZXhlY3V0aW9uIGJ5IHBvbGxpbmcgb25seSBGTFNXQ1RMLkRPTkUgKi8KPj4KPj4gICAgICAg
-Y29uc3QgaW50IHJldCA9IGUxMDAwX3BvbGxfcmVnKGh3LCBFMTAwMF9GTFNXQ1RMLAo+PiAtICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgRTEwMDBfRkxTV0NUTF9ET05FIHwgRTEw
-MDBfRkxTV0NUTF9HTERPTkUsCj4+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICBFMTAwMF9GTFNXQ1RMX0RPTkUgfCBFMTAwMF9GTFNXQ1RMX0dMRE9ORSwKPj4gKyAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIEUxMDAwX0ZMU1dDVExfRE9ORSwKPj4gKyAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEUxMDAwX0ZMU1dDVExfRE9ORSwKPgo+IEkg
-dGVzdGVkIGEgYml0IHdpdGggYW5kIHdpdGhvdXQgdGhpcyBjaGFuZ2UgYXQgaXQgc2VlbXMgYXMg
-bG9uZyBhcwo+IG5vdGhpbmcgInN0cmFuZ2UiIGhhcHBlbnMsIHRlc3RpbmcgZm9yIGJvdGggRkxT
-V0NUTC5ET05FIGFuZAo+IEZMU1dDVEwuR0xET05FIChpLmUuIG5vdCBhcHBseWluZyBteSBIQUNL
-IHBhdGNoKSB3b3JrcyBmaW5lLgo+Cj4gU3RpbGwgSSB0aGluayBvbmx5IHRlc3RpbmcgZm9yIEZM
-U1dDVEwuRE9ORSBpcyBiZXR0ZXIgYmVjYXVzZSBpdCB3b3Jrcwo+IHdlbGwgZXZlbiBpZiB0aGUg
-c3RhdGUgbWFjaGluZSBpcyBpbiB0aGUgbWlkZGxlIG9mIGEgcmVhZCByZXF1ZXN0IGFuZAo+IHRo
-ZW4gY2hhbmdpbmcgdGhlIGNvbW1hbmQgKHdoaWNoIGlzIGFsd2F5cyBkb25lIGFmdGVyCj4gZTEw
-MDBfZmxhc2hfbW9kZV93YWl0X2Zvcl9pZGxlKCkpIHNob3VsZCB3b3JrIHdlbGwuCj4KPiBJJ2xs
-IHJlc2VuZCB3aXRoIGEgYmV0dGVyIGNvbW1pdCBsb2cgb25jZSBJIHRlc3RlZCB0aGlzLgo+Cj4g
-QWxleGV5OiBJIGRpZG4ndCB1bmRlcnN0YW5kIHRoZSBjb21tZW50IGFib3ZlIHRoZSBwYXRjaGVk
-IGxpbmUsIG1heWJlCj4gSSdtIG1pc3Npbmcgc29tZXRoaW5nPwo+CgpBc3N1bWluZyB0aGlzIHF1
-ZXN0aW9uIGlzIGZvciBtZTogd2hhdCBJIG1lYW50IGJ5IHRoYXQgY29tbWVudCBpcyB0aGF0CmFs
-bCBvZiB0aGUgZmxhc2ggcmVsYXRlZCBvcGVyYXRpb25zIChyZWFkLCB3cml0ZSwgZXJhc2UpIGFs
-cmVhZHkgcG9sbApmb3IgRTEwMDBfRkxTV0NUTF9ET05FIGFzIHRoZWlyIGxhc3Qgc3RlcCwgc28g
-dGhlIG9ubHkgdGltZSB0aGF0IHRoZQpzdGF0ZSBvZiB0aGF0IGJpdCB3b3VsZCBiZSB1bmtub3du
-IHdvdWxkIGJlIHJpZ2h0IGFmdGVyIHJlc2V0LCB0aGUKZmlyc3QgdGltZSBhbnkgb2YgdGhvc2Ug
-ZnVuY3Rpb25zIGlzIGV4ZWN1dGVkLgoKQXMgZm9yIEdMRE9ORSBiaXQsIEkgdHJpZWQgdG8gc3Rp
-Y2sgdG8gYWxnb3JpdGhtcyBkZXNjcmliZWQgaW4KIjMuMy41LjUgU29mdHdhcmUgRmxhc2ggUHJv
-Z3JhbSBGbG93IHZpYSB0aGUgRmxhc2gtTW9kZSBJbnRlcmZhY2UiIGFuZAoiMy4zLjUuNiBTb2Z0
-d2FyZSBGbGFzaCBSZWFkIEZsb3cgdmlhIHRoZSBGbGFzaC1Nb2RlIEludGVyZmFjZSIgb2YgUmV2
-CjIuOCBvZiB0aGUgZGF0YXNoZWV0IGFuZCB0aGF0J3Mgd2hlcmUgdGhhdCAicmVxdXJlbWVudCIg
-aXMgY29taW5nCmZyb20uCgpJIGhhdmVuJ3QgdG91Y2hlZCB0aGlzIHBhcnRpY3VsYXIgSFcvYXJl
-YSBpbiBtb3JlIHRoYW4gYSB5ZWFyLCBzbywKc2luY2UgeW91IGFjdHVhbGx5IHdvcmsgd2l0aCBp
-dCBhbmQgY2FuIGFjdHVhbGx5IHRlc3QgdGhpbmdzIG91dCBJJ2xsCmRlZmVyIHRvIHlvdSB0byBq
-dWRnZSBpZiBjZXJ0YWluIEhXIGNoZWNrcyBhcmUgbmVlZGVkIG9yIG5vdC4gTXkgY29kZQppcyBi
-eSBubyBtZWFucyBjb21wbGV0ZSBvciBleGhhdXN0aXZlbHkgdGVzdGVkLCBzbyBJIGhhdmUgbm8g
-cHJvYmxlbQpiZWxpZXZpbmcgdGhhdCBJIGdvdCBzb21lIG9mIHRoZSBwYXJ0cyB3cm9uZy4KClRo
-YW5rcywKQW5kcmV5IFNtaXJub3YKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Mon, 2 Oct 2017 09:43:02 +0200
+Oleksij Rempel <linux@rempel-privat.de> wrote:
+
+> Hi,
+> =
+
+> Am 30.09.2017 um 13:57 schrieb Antony Pavlov:
+> > On Fri, 29 Sep 2017 14:07:09 +0200
+> > Oleksij Rempel <linux@rempel-privat.de> wrote:
+> > =
+
+> >> Hi,
+> >>
+> >> hm... mostly looks identical with existing arch
+> > =
+
+> > What do you mean when you say "existing arch"?
+> =
+
+> it is a note for me. I just compared it with MIPS
+> > ...
+> > =
+
+> >> Am 29.09.2017 um 01:12 schrieb Antony Pavlov:
+> > ...
+> >>> diff --git a/arch/riscv/boot/start.S b/arch/riscv/boot/start.S
+> >>> new file mode 100644
+> >>> index 000000000..2fd00f63d
+> >>> --- /dev/null
+> >>> +++ b/arch/riscv/boot/start.S
+> >>> @@ -0,0 +1,74 @@
+> >>> +/*
+> >>> + * Startup Code for MIPS CPU
+> =
+
+> Beside here is a copy paste ^^^ artefact :)
+
+Thanks! I have just fixed this.
+
+> =
+
+> >>> + * based on coreboot/src/arch/riscv/bootblock.S
+> >>> + *
+> >>> + * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
+> >>> + *
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
