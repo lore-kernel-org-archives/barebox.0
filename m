@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e6XZX-00050e-31
- for barebox@lists.infradead.org; Mon, 23 Oct 2017 07:54:57 +0000
-Date: Mon, 23 Oct 2017 09:54:33 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20171023075433.tfhz5odczkrlbyrd@pengutronix.de>
-References: <20171018134117.20289-1-uwe@kleine-koenig.org>
- <20171018134117.20289-2-uwe@kleine-koenig.org>
- <20171023072036.23nneaapd7orpopv@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20171023072036.23nneaapd7orpopv@pengutronix.de>
+Received: from mail.high-consulting.de ([62.245.247.194])
+ by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1e0NvC-0002b1-LJ
+ for barebox@lists.infradead.org; Fri, 06 Oct 2017 08:23:54 +0000
+From: Gerd Pauli <gp@high-consulting.de>
+Date: Fri,  6 Oct 2017 10:23:16 +0200
+Message-Id: <1507278196-15424-1-git-send-email-gp@high-consulting.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,70 +14,142 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] ARM: i.MX: bbu-internal: new handler to make use of
- mmc boot partitions
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v1] writef: added command to write content of variable to file
+To: barebox@lists.infradead.org
+Cc: Gerd Pauli <gp@high-consulting.de>
 
-On Mon, Oct 23, 2017 at 09:20:36AM +0200, Sascha Hauer wrote:
-> On Wed, Oct 18, 2017 at 03:41:16PM +0200, Uwe Kleine-K=F6nig wrote:
-> > From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > =
+writef: added command to write content of variable to file.
+        Adds a newline at the emd of the string.
 
-> > This handler updates the non-active MMC boot partition and after a
-> > successful update makes the updated partition the active one. This way
-> > the machine should continue to be bootable when the update fails.
-> =
+Usage: writef VAR FILE
 
-> Adding something like this as a comment above
-> imx6_bbu_internal_mmcboot_register_handler() would be nice.
+Signed-off-by: Gerd Pauli <gp@high-consulting.de>
+---
+ commands/Kconfig  | 11 +++++++++
+ commands/Makefile |  1 +
+ commands/writef.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 83 insertions(+)
+ create mode 100644 commands/writef.c
 
-ok.
+diff --git a/commands/Kconfig b/commands/Kconfig
+index ae2dc4b..af2b215 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -1082,6 +1082,17 @@ config CMD_READF
+ 	  whitespaces are removed, nonvisible characters are stripped. Input is
+ 	  limited to 1024 characters.
+ 
++config CMD_WRITEF
++        tristate
++        prompt "writef"
++        help
++          Write variable into file
++
++          Usage: writef VAR FILE
++
++          Write Content of VARiable to FILE. A Newline is added
++          at the end of the String.
++
+ config CMD_SLEEP
+ 	tristate
+ 	prompt "sleep"
+diff --git a/commands/Makefile b/commands/Makefile
+index 37486dc..16c1768 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -103,6 +103,7 @@ obj-$(CONFIG_CMD_BOOT)		+= boot.o
+ obj-$(CONFIG_CMD_DEVINFO)	+= devinfo.o
+ obj-$(CONFIG_CMD_DRVINFO)	+= drvinfo.o
+ obj-$(CONFIG_CMD_READF)		+= readf.o
++obj-$(CONFIG_CMD_WRITEF)	+= writef.o
+ obj-$(CONFIG_CMD_MENUTREE)	+= menutree.o
+ obj-$(CONFIG_CMD_2048)		+= 2048.o
+ obj-$(CONFIG_CMD_REGULATOR)	+= regulator.o
+diff --git a/commands/writef.c b/commands/writef.c
+new file mode 100644
+index 0000000..dea18b0
+--- /dev/null
++++ b/commands/writef.c
+@@ -0,0 +1,71 @@
++/* -*- Mode:C; c-file-style:"linux"; -*- */
++
++/*
++ * writef.c - Write Content of Variable to File
++ *
++ * Copyright (c) 2017 Gerd Pauli <gp@high-consulting.de>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <command.h>
++#include <fs.h>
++#include <libfile.h>
++#include <malloc.h>
++#include <linux/stat.h>
++#include <linux/ctype.h>
++#include <environment.h>
++
++static int do_writef(int argc, char *argv[])
++{
++	const char *val;
++	char *variable, *filename;
++	size_t size;
++	void *buf;
++	int ret;
++
++	if (argc != 3)
++		return COMMAND_ERROR_USAGE;
++
++	variable = argv[1];
++	filename = argv[2];
++
++	val = getenv(variable);
++	if (val == NULL)
++		return COMMAND_ERROR;
++
++	size = strlen(val);
++	size++;
++
++	buf = xmalloc(size+1);
++	sprintf(buf, "%s\n", val);
++
++	ret = write_file(filename, buf, size);
++	free(buf);
++	return ret;
++}
++
++BAREBOX_CMD_HELP_START(writef)
++BAREBOX_CMD_HELP_TEXT("Write Content of VARiable to FILE. A Newline is added")
++BAREBOX_CMD_HELP_TEXT("at the end of the String.")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(writef)
++.cmd		= do_writef,
++	BAREBOX_CMD_DESC("write variable into file")
++	BAREBOX_CMD_OPTS("VAR FILE")
++	BAREBOX_CMD_GROUP(CMD_GRP_SCRIPT)
++	BAREBOX_CMD_HELP(cmd_writef_help)
++	BAREBOX_CMD_END
+-- 
+1.9.1
 
-> > +static int imx_bbu_internal_v2_mmcboot_update(struct bbu_handler *hand=
-ler,
-> > +					      struct bbu_data *data)
-> > +{
-> > +	struct imx_internal_bbu_handler *imx_handler =3D
-> > +		container_of(handler, struct imx_internal_bbu_handler, handler);
-> > +	int ret;
-> > +	uint32_t *barker;
-> > +	char *bootpartvar;
-> > +	const char *bootpart;
-> > +	char *devicefile;
-> > +
-> > +	barker =3D data->image + imx_handler->flash_header_offset;
-> > +
-> > +	if (*barker !=3D IVT_BARKER) {
-> > +		printf("Board does not provide DCD data and this image is no imximag=
-e\n");
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	ret =3D asprintf(&bootpartvar, "%s.boot", data->devicefile);
-> > +	if (ret < 0) {
-> > +		printf("Failed to allocate string for boot variable\n");
-> =
-
-> I think messages for failed memory allocations which eat more space than
-> the actual allocation should be avoided. Just return -ENOMEM without a
-> message.
-
-In general not giving an error message makes the problem harder to
-locate. But maybe if I'm unable to allocate 20 Bytes the problem is
-obvious.
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
