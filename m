@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from qmail.e-mind.com ([188.94.192.42])
- by bombadil.infradead.org with smtp (Exim 4.87 #1 (Red Hat Linux))
- id 1e0QRR-0003Mo-PE
- for barebox@lists.infradead.org; Fri, 06 Oct 2017 11:05:20 +0000
+Received: from v-smtpout3.han.skanova.net ([81.236.60.156])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1e0RIx-0004ds-N3
+ for barebox@lists.infradead.org; Fri, 06 Oct 2017 12:00:43 +0000
+From: Marcel Hamer <marcel@solidxs.nl>
 References: <6f652c2e-d971-052d-8e96-3ae7ad984500@solidxs.nl>
  <20171006041153.xgrjynzwido3mjfj@pengutronix.de>
  <4201a4ed-f5ae-2cae-e07c-1e95dbb538df@solidxs.nl>
  <4cda0e44-6ac4-8186-2453-0d55919727ef@mev.co.uk>
  <0ad15ca1-bad1-a631-89fa-53ddc4ba224e@solidxs.nl>
-From: gianluca <gianlucarenzi@eurekelettronica.it>
-Message-ID: <724ccd1e-493c-b6dd-e0aa-ea65828fb6bf@eurekelettronica.it>
-Date: Fri, 6 Oct 2017 13:04:36 +0200
+ <724ccd1e-493c-b6dd-e0aa-ea65828fb6bf@eurekelettronica.it>
+Message-ID: <4003f255-1257-fefe-fbcf-814f7c025755@solidxs.nl>
+Date: Fri, 6 Oct 2017 14:00:10 +0200
 MIME-Version: 1.0
-In-Reply-To: <0ad15ca1-bad1-a631-89fa-53ddc4ba224e@solidxs.nl>
+In-Reply-To: <724ccd1e-493c-b6dd-e0aa-ea65828fb6bf@eurekelettronica.it>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,66 +23,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Kernel device tree gets modified with bootm command when
  CONFIG_OFDEVICE is enabled
-To: barebox@lists.infradead.org
+To: gianluca <gianlucarenzi@eurekelettronica.it>, barebox@lists.infradead.org
 
-On 10/06/2017 12:28 PM, Marcel Hamer wrote:
-> Hello Ian,
->
->> There is a magic variable setting to leave the partition entries alone:
->>
->>   global.of_partition_binding="donttouch"
->>
->> (Other meaningful values for this variable are "new" and "legacy",
->> which controls whether the individual partitions are placed within a
->> "partitions" node ("new") or not ("legacy").)
->>
->
-> Thank you for pointing that option out, I will certainly have a look at
-> that.
->
-> I took the partitioning as an example, because it gave me the biggest
-> burden. But I guess in general I think the principle of fixing up the
-> kernel device tree should be optional to my opinion.
->
-
-IMHO you Marcel, are missing the point.
-
-Do not changing device tree and passing it as-is to the kernel has the 
-reason on systems non upgradable, non changeable during their life-time. 
-i.e. routers and or smartphones.
-
-Usually they are provided with all stuff attached and normally everyting 
-is working out-of-the-box.
-
-To my experience, we have a bunch of boards, and they are different each 
-other by little stuff, such as number of uarts, gpios, screens/lcd, 
-memory and storage size.
-
-I am letting BareBox to adapt a "generic-all-inclusive" device-tree with 
-the correct "device-tree" to the kernel, so it can be used without 
-hassle having and managing a single device-tree in our develpement studio.
-
-It is simpler to have a single device-tree which can be used over a 
-plethora of boards based on the same root-hardware, than having a 
-plethora of device-trees perfectly adapted with your plethora of devices.
-
-Do you agree?
-
-Regards,
-Gianluca
--- 
-Eurek s.r.l.                          |
-Electronic Engineering                | http://www.eurek.it
-via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
-p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sCgoKT24gMTAvMDYvMjAxNyAwMTowNCBQTSwgZ2lhbmx1Y2Egd3JvdGU6Cj4gT24gMTAv
+MDYvMjAxNyAxMjoyOCBQTSwgTWFyY2VsIEhhbWVyIHdyb3RlOgo+PiBIZWxsbyBJYW4sCj4+Cj4+
+PiBUaGVyZSBpcyBhIG1hZ2ljIHZhcmlhYmxlIHNldHRpbmcgdG8gbGVhdmUgdGhlIHBhcnRpdGlv
+biBlbnRyaWVzIGFsb25lOgo+Pj4KPj4+IMKgIGdsb2JhbC5vZl9wYXJ0aXRpb25fYmluZGluZz0i
+ZG9udHRvdWNoIgo+Pj4KPj4+IChPdGhlciBtZWFuaW5nZnVsIHZhbHVlcyBmb3IgdGhpcyB2YXJp
+YWJsZSBhcmUgIm5ldyIgYW5kICJsZWdhY3kiLAo+Pj4gd2hpY2ggY29udHJvbHMgd2hldGhlciB0
+aGUgaW5kaXZpZHVhbCBwYXJ0aXRpb25zIGFyZSBwbGFjZWQgd2l0aGluIGEKPj4+ICJwYXJ0aXRp
+b25zIiBub2RlICgibmV3Iikgb3Igbm90ICgibGVnYWN5IikuKQo+Pj4KPj4KPj4gVGhhbmsgeW91
+IGZvciBwb2ludGluZyB0aGF0IG9wdGlvbiBvdXQsIEkgd2lsbCBjZXJ0YWlubHkgaGF2ZSBhIGxv
+b2sgYXQKPj4gdGhhdC4KPj4KPj4gSSB0b29rIHRoZSBwYXJ0aXRpb25pbmcgYXMgYW4gZXhhbXBs
+ZSwgYmVjYXVzZSBpdCBnYXZlIG1lIHRoZSBiaWdnZXN0Cj4+IGJ1cmRlbi4gQnV0IEkgZ3Vlc3Mg
+aW4gZ2VuZXJhbCBJIHRoaW5rIHRoZSBwcmluY2lwbGUgb2YgZml4aW5nIHVwIHRoZQo+PiBrZXJu
+ZWwgZGV2aWNlIHRyZWUgc2hvdWxkIGJlIG9wdGlvbmFsIHRvIG15IG9waW5pb24uCj4+Cj4KPiBJ
+TUhPIHlvdSBNYXJjZWwsIGFyZSBtaXNzaW5nIHRoZSBwb2ludC4KPgo+IERvIG5vdCBjaGFuZ2lu
+ZyBkZXZpY2UgdHJlZSBhbmQgcGFzc2luZyBpdCBhcy1pcyB0byB0aGUga2VybmVsIGhhcyB0aGUg
+Cj4gcmVhc29uIG9uIHN5c3RlbXMgbm9uIHVwZ3JhZGFibGUsIG5vbiBjaGFuZ2VhYmxlIGR1cmlu
+ZyB0aGVpciAKPiBsaWZlLXRpbWUuIGkuZS4gcm91dGVycyBhbmQgb3Igc21hcnRwaG9uZXMuCj4K
+PiBVc3VhbGx5IHRoZXkgYXJlIHByb3ZpZGVkIHdpdGggYWxsIHN0dWZmIGF0dGFjaGVkIGFuZCBu
+b3JtYWxseSAKPiBldmVyeXRpbmcgaXMgd29ya2luZyBvdXQtb2YtdGhlLWJveC4KPgo+IFRvIG15
+IGV4cGVyaWVuY2UsIHdlIGhhdmUgYSBidW5jaCBvZiBib2FyZHMsIGFuZCB0aGV5IGFyZSBkaWZm
+ZXJlbnQgCj4gZWFjaCBvdGhlciBieSBsaXR0bGUgc3R1ZmYsIHN1Y2ggYXMgbnVtYmVyIG9mIHVh
+cnRzLCBncGlvcywgCj4gc2NyZWVucy9sY2QsIG1lbW9yeSBhbmQgc3RvcmFnZSBzaXplLgo+Cj4g
+SSBhbSBsZXR0aW5nIEJhcmVCb3ggdG8gYWRhcHQgYSAiZ2VuZXJpYy1hbGwtaW5jbHVzaXZlIiBk
+ZXZpY2UtdHJlZSAKPiB3aXRoIHRoZSBjb3JyZWN0ICJkZXZpY2UtdHJlZSIgdG8gdGhlIGtlcm5l
+bCwgc28gaXQgY2FuIGJlIHVzZWQgCj4gd2l0aG91dCBoYXNzbGUgaGF2aW5nIGFuZCBtYW5hZ2lu
+ZyBhIHNpbmdsZSBkZXZpY2UtdHJlZSBpbiBvdXIgCj4gZGV2ZWxwZW1lbnQgc3R1ZGlvLgo+Cj4g
+SXQgaXMgc2ltcGxlciB0byBoYXZlIGEgc2luZ2xlIGRldmljZS10cmVlIHdoaWNoIGNhbiBiZSB1
+c2VkIG92ZXIgYSAKPiBwbGV0aG9yYSBvZiBib2FyZHMgYmFzZWQgb24gdGhlIHNhbWUgcm9vdC1o
+YXJkd2FyZSwgdGhhbiBoYXZpbmcgYSAKPiBwbGV0aG9yYSBvZiBkZXZpY2UtdHJlZXMgcGVyZmVj
+dGx5IGFkYXB0ZWQgd2l0aCB5b3VyIHBsZXRob3JhIG9mIGRldmljZXMuCj4KPiBEbyB5b3UgYWdy
+ZWU/Cj4KPiBSZWdhcmRzLAo+IEdpYW5sdWNhCgpCdXQgdGhhdCBpcyBtb3JlIGEgbWF0dGVyIG9m
+IGhvdyB5b3UgZGVjaWRlIHRvIG1hbmFnZSB5b3VyIGRldmljZSB0cmVlcyAKaW4geW91ciBkZXZl
+bG9wbWVudCBwcm9jZXNzLCByaWdodD8gWW91IGNhbiBkbyB0aGF0IGluIG1hbnkgd2F5cyBhbmQg
+eW91IApoYXZlIHRoZSBmcmVlZG9tIG9mIGNob2ljZSB0aGVyZSwgSSBkb24ndCBkaXJlY3RseSBz
+ZWUgdGhlIHJlbGF0aW9uIHRvIApteSBxdWVzdGlvbiB0byBiZSBob25lc3QuIEl0IGlzIG5vdCBh
+IG1hdHRlciBvZiB3aGF0IGRldmljZXMgYXJlIGNvdmVyZWQgCmluIHRoZSBkZXZpY2UgdHJlZS4K
+CldpdGggc3lzdGVtcyB0aGF0IGhhdmUgcm9vdCBmaWxlIHN5c3RlbXMgYW5kIExpbnV4IGtlcm5l
+bHMgdGhhdCBjYW4gYmUgCnVwZGF0ZWQsIGZvciBpbnN0YW5jZSBpbiBhIFJhdWMga2luZCBvZiBz
+ZXR1cCwgeW91IHdhbnQgdG8gYmUgYWJsZSB0byAKY29udHJvbCB5b3VyIGR0YiBhcyB3ZWxsLiBX
+aGF0IGlmIHlvdSB1cGdyYWRlIHRvIGEgTGludXgga2VybmVsIHZlcnNpb24gCnRoYXQgaGFzIGlu
+Y29tcGF0aWJsZSBjaGFuZ2VzIGluIHNvbWUgYXJlYXMsIHlvdSBtaWdodCBpbiB0aGVvcnkgZW5k
+IHVwIAp0byBiZSBmb3JjZWQgdG8gdXBkYXRlIHlvdXIgYm9vdCBsb2FkZXIgYXMgd2VsbD8gSSB3
+b3VsZCBwcmVmZXIgdG8gYmUgCmFibGUgdG8gdXBkYXRlIG15IGtlcm5lbCBkdGIgaW5kZXBlbmRl
+bnQgb2YgdGhlIGJvb3QgbG9hZGVyLCBiZWNhdXNlIEkgCmNhbiBkbyB0aGF0IHJlZHVuZGFudGx5
+LiBBbmQgaW4gdGhhdCBjYXNlIEkgZG9uJ3Qgd2FudCB0byBiZSBkZXBlbmRlbnQgCm9uIHRoZSBi
+b290IGxvYWRlciBzb3VyY2UgY29kZS4KCktpbmQgcmVnYXJkcywKCk1hcmNlbAoKCgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
+bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
