@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e0PJu-0000k2-Hz
- for barebox@lists.infradead.org; Fri, 06 Oct 2017 09:53:28 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri,  6 Oct 2017 11:53:02 +0200
-Message-Id: <20171006095302.9602-1-s.trumtrar@pengutronix.de>
+ id 1e0Jzk-0002cu-5W
+ for barebox@lists.infradead.org; Fri, 06 Oct 2017 04:12:18 +0000
+Date: Fri, 6 Oct 2017 06:11:53 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20171006041153.xgrjynzwido3mjfj@pengutronix.de>
+References: <6f652c2e-d971-052d-8e96-3ae7ad984500@solidxs.nl>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <6f652c2e-d971-052d-8e96-3ae7ad984500@solidxs.nl>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,79 +18,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] regmap: port regmap_update_bits from linux
-To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: Kernel device tree gets modified with bootm command when
+ CONFIG_OFDEVICE is enabled
+To: Marcel Hamer <marcel@solidxs.nl>
+Cc: barebox@lists.infradead.org
 
-Port the regmap_update_bits function from linux v4.14-rc1 to barebox.
+Hi Marcel,
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- drivers/base/regmap/regmap.c | 29 +++++++++++++++++++++++++++++
- include/regmap.h             |  3 ++-
- 2 files changed, 31 insertions(+), 1 deletion(-)
+On Tue, Oct 03, 2017 at 11:36:49AM +0200, Marcel Hamer wrote:
+> Hello,
+> =
 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 52b7d88c74ed..67d95fe30a0b 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -137,6 +137,35 @@ int regmap_read(struct regmap *map, unsigned int reg, unsigned int *val)
- }
- 
- /**
-+ * regmap_update_bits() - Perform a read/modify/write cycle on a register
-+ *
-+ * @map: Register map to update
-+ * @reg: Register to update
-+ * @mask: Bitmask to change
-+ * @val: New value for bitmask
-+ *
-+ * Returns zero for success, a negative number on error.
-+ */
-+int regmap_update_bits(struct regmap *map, unsigned int reg,
-+		       unsigned int mask, unsigned int val)
-+{
-+	int ret;
-+	unsigned int tmp, orig;
-+
-+	ret = regmap_read(map, reg, &orig);
-+	if (ret != 0)
-+		return ret;
-+
-+	tmp = orig & ~mask;
-+	tmp |= val & mask;
-+
-+	if (tmp != orig)
-+		ret = regmap_write(map, reg, tmp);
-+
-+	return ret;
-+}
-+
-+/**
-  * regmap_write_bits - write bits of a register in a map
-  *
-  * @map:	The map
-diff --git a/include/regmap.h b/include/regmap.h
-index 9675a17b9641..09b7b57d52f3 100644
---- a/include/regmap.h
-+++ b/include/regmap.h
-@@ -62,6 +62,7 @@ int regmap_get_reg_stride(struct regmap *map);
- 
- int regmap_write_bits(struct regmap *map, unsigned int reg,
- 		      unsigned int mask, unsigned int val);
--
-+int regmap_update_bits(struct regmap *map, unsigned int reg,
-+		       unsigned int mask, unsigned int val);
- 
- #endif /* __REGMAP_H */
--- 
-2.11.0
+> When passing a custom device tree to the kernel using the 'bootm' command=
+ I
+> see the device tree gets 'fixed up' when the CONFIG_OFDEVICE option is
+> enabled. Probably this should not be the case when the dtb is passed to t=
+he
+> kernel?
+> =
 
+> This happens on line common/bootm.c:395:
+> =
+
+> =A0=A0=A0 oftree =3D of_get_fixed_tree(data->of_root_node);
+> =
+
+> Should this not be changed to:
+> =
+
+> =A0=A0=A0 oftree =3D of_flatten_db(data->of_root_node);
+
+No. Getting the fixed up tree is exactly what we want here. There are
+some cases in which it's absolutely mandatory to use the fixed tree
+(memory banks, they are oftem empty in the Linux provided dts files)
+and other in which is convenient (mtd, to make sure the kernel sees the
+same partitions as the bootloader).
+There might be some cases where we want to have more control over which
+fixups run and which don't, but generally we want to have the fixed tree
+here.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
