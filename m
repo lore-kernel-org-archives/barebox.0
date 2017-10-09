@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-qt0-x241.google.com ([2607:f8b0:400d:c0d::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e0KGI-0001IG-17
- for barebox@lists.infradead.org; Fri, 06 Oct 2017 04:29:24 +0000
-Date: Fri, 6 Oct 2017 06:29:00 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171006042900.nqfe5vsmgogcoxxh@pengutronix.de>
-References: <20170926212646.2968-1-u.kleine-koenig@pengutronix.de>
+ id 1e1caT-0005tq-2e
+ for barebox@lists.infradead.org; Mon, 09 Oct 2017 18:15:34 +0000
+Received: by mail-qt0-x241.google.com with SMTP id a43so38864711qta.0
+ for <barebox@lists.infradead.org>; Mon, 09 Oct 2017 11:15:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20170926212646.2968-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20171009142408.2g7k4mrfjq3tffwa@pengutronix.de>
+References: <20171009093616.12686-1-u.kleine-koenig@pengutronix.de>
+ <20171009093616.12686-4-u.kleine-koenig@pengutronix.de>
+ <20171009142408.2g7k4mrfjq3tffwa@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 9 Oct 2017 11:15:09 -0700
+Message-ID: <CAHQ1cqE5qGSNQr+sHbCbhoCCYGiVV6F5aZb-T74hb4rC4ip8=Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,45 +21,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] gpiolib: introduce gpio initializer
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/3] HACK: e1000: don't check for FLSWCTL.GLDONE when
+ waiting for idle
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
-
-On Tue, Sep 26, 2017 at 11:26:43PM +0200, Uwe Kleine-K=F6nig wrote:
-> Hello,
-> =
-
-> the target of this series is to allow gpios to be initialized but
-> without the side effect that the gpios are unusable then (as is the case
-> with gpio-hogs).
-> =
-
-> This can for example be used to prevent debug pins from floating when
-> unused or keep a chip in reset until a matching driver is available.
-> =
-
-> I already tried to fix the binding, no feedback so far.
-> See http://patchwork.ozlabs.org/patch/817695/ .
-
-I'm delaying this for some time in the hope that upstream settles to
-some solution.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW9uLCBPY3QgOSwgMjAxNyBhdCA3OjI0IEFNLCBVd2UgS2xlaW5lLUvDtm5pZwo8dS5rbGVp
+bmUta29lbmlnQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPiBPbiBNb24sIE9jdCAwOSwgMjAxNyBh
+dCAxMTozNjoxNkFNICswMjAwLCBVd2UgS2xlaW5lLUvDtm5pZyB3cm90ZToKPj4gSSBkb24ndCB1
+bmRlcnN0YW5kIGFsbCB0aGUgY29uc2VxdWVuY2VzIG9mIHRoaXMgcGF0Y2ggeWV0LCBidXQgdGhp
+cyBtYWtlcyByZWFkaW5nCj4+IG91dCB0aGUgZmxhc2ggY2hpcCBjb25uZWN0ZWQgdG8gYW4gaTIx
+MCB3b3JrIGZvciBtZS4KPj4gLS0tCj4+ICBkcml2ZXJzL25ldC9lMTAwMC9lZXByb20uYyB8IDQg
+KystLQo+PiAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkK
+Pj4KPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L2UxMDAwL2VlcHJvbS5jIGIvZHJpdmVycy9u
+ZXQvZTEwMDAvZWVwcm9tLmMKPj4gaW5kZXggNzM5YmMxN2E1MTllLi40ODJhOTY5ZjhkNTYgMTAw
+NjQ0Cj4+IC0tLSBhL2RyaXZlcnMvbmV0L2UxMDAwL2VlcHJvbS5jCj4+ICsrKyBiL2RyaXZlcnMv
+bmV0L2UxMDAwL2VlcHJvbS5jCj4+IEBAIC03MDksOCArNzA5LDggQEAgc3RhdGljIGludCBlMTAw
+MF9mbGFzaF9tb2RlX3dhaXRfZm9yX2lkbGUoc3RydWN0IGUxMDAwX2h3ICpodykKPj4gICAgICAg
+ICogZXhlY3V0aW9uIGJ5IHBvbGxpbmcgb25seSBGTFNXQ1RMLkRPTkUgKi8KPj4KPj4gICAgICAg
+Y29uc3QgaW50IHJldCA9IGUxMDAwX3BvbGxfcmVnKGh3LCBFMTAwMF9GTFNXQ1RMLAo+PiAtICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgRTEwMDBfRkxTV0NUTF9ET05FIHwgRTEw
+MDBfRkxTV0NUTF9HTERPTkUsCj4+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICBFMTAwMF9GTFNXQ1RMX0RPTkUgfCBFMTAwMF9GTFNXQ1RMX0dMRE9ORSwKPj4gKyAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIEUxMDAwX0ZMU1dDVExfRE9ORSwKPj4gKyAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEUxMDAwX0ZMU1dDVExfRE9ORSwKPgo+IEkg
+dGVzdGVkIGEgYml0IHdpdGggYW5kIHdpdGhvdXQgdGhpcyBjaGFuZ2UgYXQgaXQgc2VlbXMgYXMg
+bG9uZyBhcwo+IG5vdGhpbmcgInN0cmFuZ2UiIGhhcHBlbnMsIHRlc3RpbmcgZm9yIGJvdGggRkxT
+V0NUTC5ET05FIGFuZAo+IEZMU1dDVEwuR0xET05FIChpLmUuIG5vdCBhcHBseWluZyBteSBIQUNL
+IHBhdGNoKSB3b3JrcyBmaW5lLgo+Cj4gU3RpbGwgSSB0aGluayBvbmx5IHRlc3RpbmcgZm9yIEZM
+U1dDVEwuRE9ORSBpcyBiZXR0ZXIgYmVjYXVzZSBpdCB3b3Jrcwo+IHdlbGwgZXZlbiBpZiB0aGUg
+c3RhdGUgbWFjaGluZSBpcyBpbiB0aGUgbWlkZGxlIG9mIGEgcmVhZCByZXF1ZXN0IGFuZAo+IHRo
+ZW4gY2hhbmdpbmcgdGhlIGNvbW1hbmQgKHdoaWNoIGlzIGFsd2F5cyBkb25lIGFmdGVyCj4gZTEw
+MDBfZmxhc2hfbW9kZV93YWl0X2Zvcl9pZGxlKCkpIHNob3VsZCB3b3JrIHdlbGwuCj4KPiBJJ2xs
+IHJlc2VuZCB3aXRoIGEgYmV0dGVyIGNvbW1pdCBsb2cgb25jZSBJIHRlc3RlZCB0aGlzLgo+Cj4g
+QWxleGV5OiBJIGRpZG4ndCB1bmRlcnN0YW5kIHRoZSBjb21tZW50IGFib3ZlIHRoZSBwYXRjaGVk
+IGxpbmUsIG1heWJlCj4gSSdtIG1pc3Npbmcgc29tZXRoaW5nPwo+CgpBc3N1bWluZyB0aGlzIHF1
+ZXN0aW9uIGlzIGZvciBtZTogd2hhdCBJIG1lYW50IGJ5IHRoYXQgY29tbWVudCBpcyB0aGF0CmFs
+bCBvZiB0aGUgZmxhc2ggcmVsYXRlZCBvcGVyYXRpb25zIChyZWFkLCB3cml0ZSwgZXJhc2UpIGFs
+cmVhZHkgcG9sbApmb3IgRTEwMDBfRkxTV0NUTF9ET05FIGFzIHRoZWlyIGxhc3Qgc3RlcCwgc28g
+dGhlIG9ubHkgdGltZSB0aGF0IHRoZQpzdGF0ZSBvZiB0aGF0IGJpdCB3b3VsZCBiZSB1bmtub3du
+IHdvdWxkIGJlIHJpZ2h0IGFmdGVyIHJlc2V0LCB0aGUKZmlyc3QgdGltZSBhbnkgb2YgdGhvc2Ug
+ZnVuY3Rpb25zIGlzIGV4ZWN1dGVkLgoKQXMgZm9yIEdMRE9ORSBiaXQsIEkgdHJpZWQgdG8gc3Rp
+Y2sgdG8gYWxnb3JpdGhtcyBkZXNjcmliZWQgaW4KIjMuMy41LjUgU29mdHdhcmUgRmxhc2ggUHJv
+Z3JhbSBGbG93IHZpYSB0aGUgRmxhc2gtTW9kZSBJbnRlcmZhY2UiIGFuZAoiMy4zLjUuNiBTb2Z0
+d2FyZSBGbGFzaCBSZWFkIEZsb3cgdmlhIHRoZSBGbGFzaC1Nb2RlIEludGVyZmFjZSIgb2YgUmV2
+CjIuOCBvZiB0aGUgZGF0YXNoZWV0IGFuZCB0aGF0J3Mgd2hlcmUgdGhhdCAicmVxdXJlbWVudCIg
+aXMgY29taW5nCmZyb20uCgpJIGhhdmVuJ3QgdG91Y2hlZCB0aGlzIHBhcnRpY3VsYXIgSFcvYXJl
+YSBpbiBtb3JlIHRoYW4gYSB5ZWFyLCBzbywKc2luY2UgeW91IGFjdHVhbGx5IHdvcmsgd2l0aCBp
+dCBhbmQgY2FuIGFjdHVhbGx5IHRlc3QgdGhpbmdzIG91dCBJJ2xsCmRlZmVyIHRvIHlvdSB0byBq
+dWRnZSBpZiBjZXJ0YWluIEhXIGNoZWNrcyBhcmUgbmVlZGVkIG9yIG5vdC4gTXkgY29kZQppcyBi
+eSBubyBtZWFucyBjb21wbGV0ZSBvciBleGhhdXN0aXZlbHkgdGVzdGVkLCBzbyBJIGhhdmUgbm8g
+cHJvYmxlbQpiZWxpZXZpbmcgdGhhdCBJIGdvdCBzb21lIG9mIHRoZSBwYXJ0cyB3cm9uZy4KClRo
+YW5rcywKQW5kcmV5IFNtaXJub3YKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
