@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-qk0-x241.google.com ([2607:f8b0:400d:c09::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e1czS-0008JV-3y
- for barebox@lists.infradead.org; Mon, 09 Oct 2017 18:41:24 +0000
-Date: Mon, 9 Oct 2017 20:41:00 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20171009184100.obdgbcj4acz6efyy@pengutronix.de>
-References: <20171009093616.12686-1-u.kleine-koenig@pengutronix.de>
- <20171009093616.12686-4-u.kleine-koenig@pengutronix.de>
- <20171009142408.2g7k4mrfjq3tffwa@pengutronix.de>
- <CAHQ1cqE5qGSNQr+sHbCbhoCCYGiVV6F5aZb-T74hb4rC4ip8=Q@mail.gmail.com>
+ id 1e1chc-0000NC-DH
+ for barebox@lists.infradead.org; Mon, 09 Oct 2017 18:22:59 +0000
+Received: by mail-qk0-x241.google.com with SMTP id a12so14214304qka.4
+ for <barebox@lists.infradead.org>; Mon, 09 Oct 2017 11:22:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqE5qGSNQr+sHbCbhoCCYGiVV6F5aZb-T74hb4rC4ip8=Q@mail.gmail.com>
+In-Reply-To: <20171009093616.12686-2-u.kleine-koenig@pengutronix.de>
+References: <20171009093616.12686-1-u.kleine-koenig@pengutronix.de>
+ <20171009093616.12686-2-u.kleine-koenig@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 9 Oct 2017 11:22:34 -0700
+Message-ID: <CAHQ1cqF8gPKEzW_SR_NQv0ZPnL+KWfTi-pEQE7PvVvu2VpEgYg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,109 +20,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] HACK: e1000: don't check for FLSWCTL.GLDONE when
- waiting for idle
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 1/3] e1000: implement register mapping for E1000_{EERD,
+ FLSW{CTL, DATA, CNT}}
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Mon, Oct 09, 2017 at 11:15:09AM -0700, Andrey Smirnov wrote:
-> On Mon, Oct 9, 2017 at 7:24 AM, Uwe Kleine-K=F6nig
-> <u.kleine-koenig@pengutronix.de> wrote:
-> > On Mon, Oct 09, 2017 at 11:36:16AM +0200, Uwe Kleine-K=F6nig wrote:
-> >> I don't understand all the consequences of this patch yet, but this ma=
-kes reading
-> >> out the flash chip connected to an i210 work for me.
-> >> ---
-> >>  drivers/net/e1000/eeprom.c | 4 ++--
-> >>  1 file changed, 2 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-> >> index 739bc17a519e..482a969f8d56 100644
-> >> --- a/drivers/net/e1000/eeprom.c
-> >> +++ b/drivers/net/e1000/eeprom.c
-> >> @@ -709,8 +709,8 @@ static int e1000_flash_mode_wait_for_idle(struct e=
-1000_hw *hw)
-> >>        * execution by polling only FLSWCTL.DONE */
-> >>
-> >>       const int ret =3D e1000_poll_reg(hw, E1000_FLSWCTL,
-> >> -                                    E1000_FLSWCTL_DONE | E1000_FLSWCT=
-L_GLDONE,
-> >> -                                    E1000_FLSWCTL_DONE | E1000_FLSWCT=
-L_GLDONE,
-> >> +                                    E1000_FLSWCTL_DONE,
-> >> +                                    E1000_FLSWCTL_DONE,
-> >
-> > I tested a bit with and without this change at it seems as long as
-> > nothing "strange" happens, testing for both FLSWCTL.DONE and
-> > FLSWCTL.GLDONE (i.e. not applying my HACK patch) works fine.
-> >
-> > Still I think only testing for FLSWCTL.DONE is better because it works
-> > well even if the state machine is in the middle of a read request and
-> > then changing the command (which is always done after
-> > e1000_flash_mode_wait_for_idle()) should work well.
-> >
-> > I'll resend with a better commit log once I tested this.
-> >
-> > Alexey: I didn't understand the comment above the patched line, maybe
-> > I'm missing something?
-> >
-> =
-
-> Assuming this question is for me: what I meant by that comment is that
-
-Ah yes, sorry. It seems I have to participate in the cut'n'paste
-seminar, too.
-
-> all of the flash related operations (read, write, erase) already poll
-> for E1000_FLSWCTL_DONE as their last step, so the only time that the
-> state of that bit would be unknown would be right after reset, the
-> first time any of those functions is executed.
-
-Right after reset or when someone poked in the hardware using mw/md, or
-if a previous transaction was not completed (nor sure this can happen
-though).
- =
-
-> As for GLDONE bit, I tried to stick to algorithms described in
-> "3.3.5.5 Software Flash Program Flow via the Flash-Mode Interface" and
-> "3.3.5.6 Software Flash Read Flow via the Flash-Mode Interface" of Rev
-> 2.8 of the datasheet and that's where that "requrement" is coming
-> from.
-
-3.3.5.5 and 3.3.5.6 in Rev 3.1 only check .DONE at the start and for the
-last step tell (for 3.3.5.5): =
-
-
-	FLSWCTL.GLDONE bit is set by hardware when the last byte
-	programmed has been written.
-
-So I'd not use that to check if I can start. Still more as there is:
-
-	But software can stop the transaction in the middle as long as
-	it got the DONE bit read as 1b.
-
-> I haven't touched this particular HW/area in more than a year, so,
-> since you actually work with it and can actually test things out I'll
-> defer to you to judge if certain HW checks are needed or not. My code
-> is by no means complete or exhaustively tested, so I have no problem
-> believing that I got some of the parts wrong.
-
-OK. So I will send a v2 that drops checking for GLDONE.
-
-Thanks for your replies.
-
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW9uLCBPY3QgOSwgMjAxNyBhdCAyOjM2IEFNLCBVd2UgS2xlaW5lLUvDtm5pZwo8dS5rbGVp
+bmUta29lbmlnQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPiBGaXhlczogNGZmMzI2OWE3MGI1ICgi
+ZTEwMDA6IEV4cG9zZSBpMjEwJ3MgZXh0ZXJuYWwgZmxhc2ggYXMgTVREIikKPiBTaWduZWQtb2Zm
+LWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgo+
+IC0tLQo+ICBkcml2ZXJzL25ldC9lMTAwMC9lMTAwMC5oIHwgIDkgKysrKystLS0tCj4gIGRyaXZl
+cnMvbmV0L2UxMDAwL3JlZ2lvLmMgfCAxMiArKysrKysrKysrKysKPiAgMiBmaWxlcyBjaGFuZ2Vk
+LCAxNyBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQo+Cj4gZGlmZiAtLWdpdCBhL2RyaXZl
+cnMvbmV0L2UxMDAwL2UxMDAwLmggYi9kcml2ZXJzL25ldC9lMTAwMC9lMTAwMC5oCj4gaW5kZXgg
+ZTZiNDkzYzg0Y2MxLi4yYTI5ZWY0N2U4MTggMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9uZXQvZTEw
+MDAvZTEwMDAuaAo+ICsrKyBiL2RyaXZlcnMvbmV0L2UxMDAwL2UxMDAwLmgKPiBAQCAtNDEwLDcg
+KzQxMCw4IEBAIHN0cnVjdCBlMTAwMF90eF9kZXNjIHsKPiAgI2RlZmluZSBFMTAwMF9DVFJMICAg
+ICAweDAwMDAwIC8qIERldmljZSBDb250cm9sIC0gUlcgKi8KPiAgI2RlZmluZSBFMTAwMF9TVEFU
+VVMgICAweDAwMDA4IC8qIERldmljZSBTdGF0dXMgLSBSTyAqLwo+ICAjZGVmaW5lIEUxMDAwX0VF
+Q0QgICAgIDB4MDAwMTAgLyogRUVQUk9NL0ZsYXNoIENvbnRyb2wgLSBSVyAqLwo+IC0jZGVmaW5l
+IEUxMDAwX0VFUkQgICAgIDB4MDAwMTQgLyogRUVQUk9NIFJlYWQgLSBSVyAqLwo+ICsjZGVmaW5l
+IEUxMDAwX0VFUkQgICAgIChFMTAwMF9NSUdIVF9CRV9SRU1BUFBFRCB8IDB4MDAwMTQpICAgICAv
+KiBFRVBST00gUmVhZCAtIFJXICovCj4gKyNkZWZpbmUgRTEwMDBfSTIxMF9FRVJEICAgICAweDEy
+MDE0ICAgIC8qIEVFUFJPTSBSZWFkIC0gUlcgKi8KPiAgI2RlZmluZSBFMTAwMF9DVFJMX0VYVCAw
+eDAwMDE4IC8qIEV4dGVuZGVkIERldmljZSBDb250cm9sIC0gUlcgKi8KPiAgI2RlZmluZSBFMTAw
+MF9NRElDICAgICAweDAwMDIwIC8qIE1ESSBDb250cm9sIC0gUlcgKi8KPiAgI2RlZmluZSBFMTAw
+MF9GQ0FMICAgICAweDAwMDI4IC8qIEZsb3cgQ29udHJvbCBBZGRyZXNzIExvdyAtIFJXICovCj4g
+QEAgLTQ0NywxMSArNDQ4LDExIEBAIHN0cnVjdCBlMTAwMF90eF9kZXNjIHsKPiAgI2RlZmluZSBF
+MTAwMF9GTEFTSFQgICAweDAxMDI4ICAvKiBGTEFTSCBUaW1lciBSZWdpc3RlciAqLwo+ICAjZGVm
+aW5lIEUxMDAwX0VFV1IgICAgIChFMTAwMF9NSUdIVF9CRV9SRU1BUFBFRCB8IDB4MDEwMkMpICAv
+KiBFRVBST00gV3JpdGUgUmVnaXN0ZXIgLSBSVyAqLwo+ICAjZGVmaW5lIEUxMDAwX0kyMTBfRUVX
+UiAgICAgMHgxMjAxOCAgLyogRUVQUk9NIFdyaXRlIFJlZ2lzdGVyIC0gUlcgKi8KPiAtI2RlZmlu
+ZSBFMTAwMF9GTFNXQ1RMICAweDAxMDMwICAvKiBGTEFTSCBjb250cm9sIHJlZ2lzdGVyICovCj4g
+KyNkZWZpbmUgRTEwMDBfRkxTV0NUTCAgKEUxMDAwX01JR0hUX0JFX1JFTUFQUEVEIHwgMHgwMTAz
+MCkgIC8qIEZMQVNIIGNvbnRyb2wgcmVnaXN0ZXIgKi8KPiAgI2RlZmluZSBFMTAwMF9JMjEwX0ZM
+U1dDVEwgMHgxMjA0OCAgLyogRkxBU0ggY29udHJvbCByZWdpc3RlciAqLwo+IC0jZGVmaW5lIEUx
+MDAwX0ZMU1dEQVRBIDB4MDEwMzQgIC8qIEZMQVNIIGRhdGEgcmVnaXN0ZXIgKi8KPiArI2RlZmlu
+ZSBFMTAwMF9GTFNXREFUQSAoRTEwMDBfTUlHSFRfQkVfUkVNQVBQRUQgfCAweDAxMDM0KSAgLyog
+RkxBU0ggZGF0YSByZWdpc3RlciAqLwo+ICAjZGVmaW5lIEUxMDAwX0kyMTBfRkxTV0RBVEEgMHgx
+MjA0QyAgLyogRkxBU0ggZGF0YSByZWdpc3RlciAqLwo+IC0jZGVmaW5lIEUxMDAwX0ZMU1dDTlQg
+IDB4MDEwMzggIC8qIEZMQVNIIEFjY2VzcyBDb3VudGVyICovCj4gKyNkZWZpbmUgRTEwMDBfRkxT
+V0NOVCAgKEUxMDAwX01JR0hUX0JFX1JFTUFQUEVEIHwgMHgwMTAzOCkgIC8qIEZMQVNIIEFjY2Vz
+cyBDb3VudGVyICovCj4gICNkZWZpbmUgRTEwMDBfSTIxMF9GTFNXQ05UICAweDEyMDUwICAvKiBG
+TEFTSCBBY2Nlc3MgQ291bnRlciAqLwo+ICAjZGVmaW5lIEUxMDAwX0ZMT1AgICAgIDB4MDEwM0Mg
+IC8qIEZMQVNIIE9wY29kZSBSZWdpc3RlciAqLwo+ICAjZGVmaW5lIEUxMDAwX0VSVCAgICAgIDB4
+MDIwMDggIC8qIEVhcmx5IFJ4IFRocmVzaG9sZCAtIFJXICovCj4gZGlmZiAtLWdpdCBhL2RyaXZl
+cnMvbmV0L2UxMDAwL3JlZ2lvLmMgYi9kcml2ZXJzL25ldC9lMTAwMC9yZWdpby5jCj4gaW5kZXgg
+MTYxMGQ1ODUxZjA1Li45ZWYzMjVmYjg1ODEgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9uZXQvZTEw
+MDAvcmVnaW8uYwo+ICsrKyBiL2RyaXZlcnMvbmV0L2UxMDAwL3JlZ2lvLmMKPiBAQCAtNyw2ICs3
+LDkgQEAgc3RhdGljIHVpbnQzMl90IGUxMDAwX3RydWVfb2Zmc2V0KHN0cnVjdCBlMTAwMF9odyAq
+aHcsIHVpbnQzMl90IHJlZykKPiAgICAgICAgIGlmIChyZWcgJiBFMTAwMF9NSUdIVF9CRV9SRU1B
+UFBFRCkgewo+ICAgICAgICAgICAgICAgICBpZiAoaHctPm1hY190eXBlID09IGUxMDAwX2lnYikg
+ewo+ICAgICAgICAgICAgICAgICAgICAgICAgIHN3aXRjaCAocmVnKSB7Cj4gKyAgICAgICAgICAg
+ICAgICAgICAgICAgY2FzZSBFMTAwMF9FRVJEOgo+ICsgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgcmVnID0gRTEwMDBfSTIxMF9FRVJEOwo+ICsgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgYnJlYWs7CgpSZXYuIDIuOCBsaXN0cyAweDAwMDE0IGFzIGFsaWFzIGZvciAweDEyMDE0
+ICh0aGF0J3Mgd2h5IEkgZGlkbid0IGRvCmFueSAicmUtbWFwcGluZyIgaGVyZSkgaXMgaXQgbm90
+IHRydWU/Cgo+ICAgICAgICAgICAgICAgICAgICAgICAgIGNhc2UgRTEwMDBfRUVXUjoKPiAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJlZyA9IEUxMDAwX0kyMTBfRUVXUjsKPiAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOwo+IEBAIC0xNiw2ICsxOSwxNSBAQCBz
+dGF0aWMgdWludDMyX3QgZTEwMDBfdHJ1ZV9vZmZzZXQoc3RydWN0IGUxMDAwX2h3ICpodywgdWlu
+dDMyX3QgcmVnKQo+ICAgICAgICAgICAgICAgICAgICAgICAgIGNhc2UgRTEwMDBfRUVNTkdDVEw6
+Cj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZWcgPSBFMTAwMF9JMjEwX0VFTU5H
+Q1RMOwo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7Cj4gKyAgICAgICAg
+ICAgICAgICAgICAgICAgY2FzZSBFMTAwMF9GTFNXQ1RMOgo+ICsgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgcmVnID0gRTEwMDBfSTIxMF9GTFNXQ1RMOwo+ICsgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgYnJlYWs7Cj4gKyAgICAgICAgICAgICAgICAgICAgICAgY2FzZSBFMTAw
+MF9GTFNXQ05UOgo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVnID0gRTEwMDBf
+STIxMF9GTFNXQ05UOwo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7Cj4g
+KyAgICAgICAgICAgICAgICAgICAgICAgY2FzZSBFMTAwMF9GTFNXREFUQToKPiArICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIHJlZyA9IEUxMDAwX0kyMTBfRkxTV0RBVEE7Cj4gKyAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICBicmVhazsKClNvbWVob3cgbWlzc2VkIHRoZXNlIGd1
+eXMsIHNvcnJ5IGFib3V0IHRoYXQuCgpBY2tlZC1ieTogQW5kcmV5IFNtaXJub3YgPGFuZHJldy5z
+bWlybm92QGdtYWlsLmNvbT4KClRoYW5rcywKQW5kcmV5IFNtaXJub3YKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
