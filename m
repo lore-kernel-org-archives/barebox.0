@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.mo4.mail-out.ovh.net ([178.33.251.8])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e7ygD-0002R4-FE
- for barebox@lists.infradead.org; Fri, 27 Oct 2017 07:03:47 +0000
-Received: from player798.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo4.mail-out.ovh.net (Postfix) with ESMTP id 7D0BCEB055
- for <barebox@lists.infradead.org>; Fri, 27 Oct 2017 09:03:21 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 27 Oct 2017 09:05:48 +0200
-Message-Id: <1509087948-15969-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1509087948-15969-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1509087948-15969-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1e1czS-0008JV-3y
+ for barebox@lists.infradead.org; Mon, 09 Oct 2017 18:41:24 +0000
+Date: Mon, 9 Oct 2017 20:41:00 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20171009184100.obdgbcj4acz6efyy@pengutronix.de>
+References: <20171009093616.12686-1-u.kleine-koenig@pengutronix.de>
+ <20171009093616.12686-4-u.kleine-koenig@pengutronix.de>
+ <20171009142408.2g7k4mrfjq3tffwa@pengutronix.de>
+ <CAHQ1cqE5qGSNQr+sHbCbhoCCYGiVV6F5aZb-T74hb4rC4ip8=Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAHQ1cqE5qGSNQr+sHbCbhoCCYGiVV6F5aZb-T74hb4rC4ip8=Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,62 +21,107 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] efi-block: detect when the block device is a USB Disk
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/3] HACK: e1000: don't check for FLSWCTL.GLDONE when
+ waiting for idle
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-use usbdisk as a basename
+On Mon, Oct 09, 2017 at 11:15:09AM -0700, Andrey Smirnov wrote:
+> On Mon, Oct 9, 2017 at 7:24 AM, Uwe Kleine-K=F6nig
+> <u.kleine-koenig@pengutronix.de> wrote:
+> > On Mon, Oct 09, 2017 at 11:36:16AM +0200, Uwe Kleine-K=F6nig wrote:
+> >> I don't understand all the consequences of this patch yet, but this ma=
+kes reading
+> >> out the flash chip connected to an i210 work for me.
+> >> ---
+> >>  drivers/net/e1000/eeprom.c | 4 ++--
+> >>  1 file changed, 2 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
+> >> index 739bc17a519e..482a969f8d56 100644
+> >> --- a/drivers/net/e1000/eeprom.c
+> >> +++ b/drivers/net/e1000/eeprom.c
+> >> @@ -709,8 +709,8 @@ static int e1000_flash_mode_wait_for_idle(struct e=
+1000_hw *hw)
+> >>        * execution by polling only FLSWCTL.DONE */
+> >>
+> >>       const int ret =3D e1000_poll_reg(hw, E1000_FLSWCTL,
+> >> -                                    E1000_FLSWCTL_DONE | E1000_FLSWCT=
+L_GLDONE,
+> >> -                                    E1000_FLSWCTL_DONE | E1000_FLSWCT=
+L_GLDONE,
+> >> +                                    E1000_FLSWCTL_DONE,
+> >> +                                    E1000_FLSWCTL_DONE,
+> >
+> > I tested a bit with and without this change at it seems as long as
+> > nothing "strange" happens, testing for both FLSWCTL.DONE and
+> > FLSWCTL.GLDONE (i.e. not applying my HACK patch) works fine.
+> >
+> > Still I think only testing for FLSWCTL.DONE is better because it works
+> > well even if the state machine is in the middle of a read request and
+> > then changing the command (which is always done after
+> > e1000_flash_mode_wait_for_idle()) should work well.
+> >
+> > I'll resend with a better commit log once I tested this.
+> >
+> > Alexey: I didn't understand the comment above the patched line, maybe
+> > I'm missing something?
+> >
+> =
 
-This will be usefull as example when we want to search for a usb disk for
-failsafe update or install.
+> Assuming this question is for me: what I meant by that comment is that
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/block/efi-block-io.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+Ah yes, sorry. It seems I have to participate in the cut'n'paste
+seminar, too.
 
-diff --git a/drivers/block/efi-block-io.c b/drivers/block/efi-block-io.c
-index a4d9d3a95..2bbeb99e6 100644
---- a/drivers/block/efi-block-io.c
-+++ b/drivers/block/efi-block-io.c
-@@ -130,6 +130,18 @@ static void efi_bio_print_info(struct efi_bio_priv *priv)
- 			media->optimal_transfer_length_granularity);
- }
- 
-+static int is_bio_usbdev(struct efi_device *efidev)
-+{
-+	int i;
-+
-+	for (i = 0; i < efidev->num_guids; i++) {
-+		if (!efi_guidcmp(efidev->guids[i], EFI_USB_IO_PROTOCOL_GUID))
-+			return 1;
-+	}
-+
-+	return 0;
-+}
-+
- int efi_bio_probe(struct efi_device *efidev)
- {
- 	int ret;
-@@ -147,7 +159,10 @@ int efi_bio_probe(struct efi_device *efidev)
- 	efi_bio_print_info(priv);
- 	priv->dev = &efidev->dev;
- 
--	priv->blk.cdev.name = xasprintf("disk%d", cdev_find_free_index("disk"));
-+	if (is_bio_usbdev(efidev))
-+		priv->blk.cdev.name = xasprintf("usbdisk%d", cdev_find_free_index("usbdisk"));
-+	else
-+		priv->blk.cdev.name = xasprintf("disk%d", cdev_find_free_index("disk"));
- 	priv->blk.blockbits = ffs(media->block_size) - 1;
- 	priv->blk.num_blocks = media->last_block + 1;
- 	priv->blk.ops = &efi_bio_ops;
--- 
-2.11.0
+> all of the flash related operations (read, write, erase) already poll
+> for E1000_FLSWCTL_DONE as their last step, so the only time that the
+> state of that bit would be unknown would be right after reset, the
+> first time any of those functions is executed.
 
+Right after reset or when someone poked in the hardware using mw/md, or
+if a previous transaction was not completed (nor sure this can happen
+though).
+ =
+
+> As for GLDONE bit, I tried to stick to algorithms described in
+> "3.3.5.5 Software Flash Program Flow via the Flash-Mode Interface" and
+> "3.3.5.6 Software Flash Read Flow via the Flash-Mode Interface" of Rev
+> 2.8 of the datasheet and that's where that "requrement" is coming
+> from.
+
+3.3.5.5 and 3.3.5.6 in Rev 3.1 only check .DONE at the start and for the
+last step tell (for 3.3.5.5): =
+
+
+	FLSWCTL.GLDONE bit is set by hardware when the last byte
+	programmed has been written.
+
+So I'd not use that to check if I can start. Still more as there is:
+
+	But software can stop the transaction in the middle as long as
+	it got the DONE bit read as 1b.
+
+> I haven't touched this particular HW/area in more than a year, so,
+> since you actually work with it and can actually test things out I'll
+> defer to you to judge if certain HW checks are needed or not. My code
+> is by no means complete or exhaustively tested, so I have no problem
+> believing that I got some of the parts wrong.
+
+OK. So I will send a v2 that drops checking for GLDONE.
+
+Thanks for your replies.
+
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
