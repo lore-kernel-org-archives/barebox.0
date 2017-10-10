@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
+Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e1gHw-0006nm-5H
- for barebox@lists.infradead.org; Mon, 09 Oct 2017 22:12:42 +0000
-Received: by mail-lf0-x244.google.com with SMTP id a132so2649086lfa.2
- for <barebox@lists.infradead.org>; Mon, 09 Oct 2017 15:12:19 -0700 (PDT)
+ id 1e1tci-0002Z9-5Y
+ for barebox@lists.infradead.org; Tue, 10 Oct 2017 12:27:03 +0000
+Received: by mail-lf0-x242.google.com with SMTP id a132so3399975lfa.2
+ for <barebox@lists.infradead.org>; Tue, 10 Oct 2017 05:26:39 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 10 Oct 2017 01:12:12 +0300
-Message-Id: <20171009221212.24377-1-antonynpavlov@gmail.com>
-MIME-Version: 1.0
+Date: Tue, 10 Oct 2017 15:26:26 +0300
+Message-Id: <20171010122631.9421-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,32 +16,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] eeprom: at24: fix 'assignment from incompatible pointer type'
- warning
+Subject: [PATCH 0/5] sandbox: add gpio support with libftdi1
 To: barebox@lists.infradead.org
 
-VGhlIHBhdGNoIGZpeGVzIHRoaXMgY29tcGlsZXIncyB3YXJuaW5nOgoKICAgICAgQ0MgICAgICBk
-cml2ZXJzL2VlcHJvbS9hdDI0Lm8KICAgIGRyaXZlcnMvZWVwcm9tL2F0MjQuYzogSW4gZnVuY3Rp
-b24g4oCYYXQyNF9wcm9iZeKAmToKICAgIGRyaXZlcnMvZWVwcm9tL2F0MjQuYzo0NTM6MjE6IHdh
-cm5pbmc6IGFzc2lnbm1lbnQgZnJvbSBpbmNvbXBhdGlibGUKICAgIHBvaW50ZXIgdHlwZSBbLVdp
-bmNvbXBhdGlibGUtcG9pbnRlci10eXBlc10KICAgICAgYXQyNC0+Zm9wcy5wcm90ZWN0ID0gYXQy
-NF9jZGV2X3Byb3RlY3QsCiAgICAgICAgICAgICAgICAgICAgICAgICBeCgpTaWduZWQtb2ZmLWJ5
-OiBBbnRvbnkgUGF2bG92IDxhbnRvbnlucGF2bG92QGdtYWlsLmNvbT4KLS0tCiBkcml2ZXJzL2Vl
-cHJvbS9hdDI0LmMgfCAyICstCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVs
-ZXRpb24oLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2VlcHJvbS9hdDI0LmMgYi9kcml2ZXJzL2Vl
-cHJvbS9hdDI0LmMKaW5kZXggMDUwYTM1YWVkOC4uMTFmMjMzMTliNiAxMDA2NDQKLS0tIGEvZHJp
-dmVycy9lZXByb20vYXQyNC5jCisrKyBiL2RyaXZlcnMvZWVwcm9tL2F0MjQuYwpAQCAtMzUyLDcg
-KzM1Miw3IEBAIHN0YXRpYyBzc2l6ZV90IGF0MjRfY2Rldl93cml0ZShzdHJ1Y3QgY2RldiAqY2Rl
-diwgY29uc3Qgdm9pZCAqYnVmLCBzaXplX3QgY291bnQsCiAJcmV0dXJuIGF0MjRfd3JpdGUoYXQy
-NCwgYnVmLCBvZmYsIGNvdW50KTsKIH0KIAotc3RhdGljIHNzaXplX3QgYXQyNF9jZGV2X3Byb3Rl
-Y3Qoc3RydWN0IGNkZXYgKmNkZXYsIHNpemVfdCBjb3VudCwgbG9mZl90IG9mZnNldCwKK3N0YXRp
-YyBpbnQgYXQyNF9jZGV2X3Byb3RlY3Qoc3RydWN0IGNkZXYgKmNkZXYsIHNpemVfdCBjb3VudCwg
-bG9mZl90IG9mZnNldCwKIAkJaW50IHByb3QpCiB7CiAJc3RydWN0IGF0MjRfZGF0YSAqYXQyNCA9
-IGNkZXYtPnByaXY7Ci0tIAoyLjE0LjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
-ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
-Ym94Cg==
+This patch series makes it possible to use FT2232H ACBUS[7:0]
+pins as gpio pins from sandbox barebox.
+
+The main goal of adding gpio functionality to sandbox barebox
+is using it for connecting real i2c and spi devices to sandbox barebox.
+
+Sample dts-file for at24 i2c eeprom and at25 spi flash is included.
+
+Alas bit-bang i2c via libftdi1 works too slow and ds1307 i2c rtc driver
+does not work correctly.
+
+Changes since RFC v1 patch series (http://lists.infradead.org/pipermail/barebox/2017-February/029106.html):
+
+  * rebase on top barebox v2017.10.0;
+  * libftdi cmdline options are added;
+  * device tree support is added.
+
+Antony Pavlov (5):
+  sandbox: avoid symbol conflict for {open,read,close}dir
+  sandbox: add gpio support with libftdi1
+  sandbox: parse libftdi options
+  sandbox_defconfig: enable gpio, spi, i2c and led stuff
+  sandbox: dts: add i2c and spi libftdi1 bit-bang example
+
+ arch/sandbox/Kconfig                           |   1 +
+ arch/sandbox/Makefile                          |  10 +-
+ arch/sandbox/configs/sandbox_defconfig         |  24 ++-
+ arch/sandbox/dts/sandbox.dts                   |  47 +++++
+ arch/sandbox/mach-sandbox/include/mach/linux.h |  11 ++
+ arch/sandbox/os/Makefile                       |   3 +
+ arch/sandbox/os/common.c                       |  12 +-
+ arch/sandbox/os/ftdi.c                         | 250 +++++++++++++++++++++++++
+ drivers/gpio/Kconfig                           |   4 +
+ drivers/gpio/Makefile                          |   1 +
+ drivers/gpio/gpio-libftdi1.c                   | 125 +++++++++++++
+ 11 files changed, 483 insertions(+), 5 deletions(-)
+ create mode 100644 arch/sandbox/os/ftdi.c
+ create mode 100644 drivers/gpio/gpio-libftdi1.c
+
+-- 
+2.14.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
