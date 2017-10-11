@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e1v90-0006T2-JM
- for barebox@lists.infradead.org; Tue, 10 Oct 2017 14:04:32 +0000
-Message-ID: <1507644242.7645.6.camel@pengutronix.de>
-From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Tue, 10 Oct 2017 16:04:02 +0200
-In-Reply-To: <20170928101345.ohpxhicbbmkvkmce@pengutronix.de>
-References: <20170927121657.16274-1-s.hauer@pengutronix.de>
- <20170927121657.16274-2-s.hauer@pengutronix.de>
- <1506590175.2283.9.camel@pengutronix.de>
- <20170928092657.jc7f4eqxqbuu5ul5@pengutronix.de>
- <1506591212.2283.11.camel@pengutronix.de>
- <20170928101345.ohpxhicbbmkvkmce@pengutronix.de>
-Mime-Version: 1.0
+ id 1e2GyH-0004nx-6C
+ for barebox@lists.infradead.org; Wed, 11 Oct 2017 13:22:54 +0000
+From: Enrico Jorns <ejo@pengutronix.de>
+Date: Wed, 11 Oct 2017 15:20:42 +0200
+Message-Id: <20171011132042.3564-1-ejo@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +14,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] i.MX6ull evk support
-To: Sascha Hauer <s.hauer@pengutronix.de>, Lucas Stach <l.stach@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] efi: add missing Kconfig selects
+To: barebox@lists.infradead.org
+Cc: Enrico Jorns <ejo@pengutronix.de>
 
-T24gVGh1LCAyMDE3LTA5LTI4IGF0IDEyOjEzICswMjAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4g
-T24gVGh1LCBTZXAgMjgsIDIwMTcgYXQgMTE6MzM6MzJBTSArMDIwMCwgTHVjYXMgU3RhY2ggd3Jv
-dGU6Cj4gPiBBbSBEb25uZXJzdGFnLCBkZW4gMjguMDkuMjAxNywgMTE6MjYgKzAyMDAgc2Nocmll
-YiBTYXNjaGEgSGF1ZXI6Cj4gPiA+IE9uIFRodSwgU2VwIDI4LCAyMDE3IGF0IDExOjE2OjE1QU0g
-KzAyMDAsIEx1Y2FzIFN0YWNoIHdyb3RlOgo+ID4gPiA+IEFtIE1pdHR3b2NoLCBkZW4gMjcuMDku
-MjAxNywgMTQ6MTYgKzAyMDAgc2NocmllYiBTYXNjaGEgSGF1ZXI6Cj4gPiA+ID4gPiBkaWZmIC0t
-Z2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvS2NvbmZpZyBiL2FyY2gvYXJtL21hY2gtCj4gPiA+ID4g
-PiBpbXgvS2NvbmZpZwo+ID4gPiA+ID4gaW5kZXggOTI0NDBlM2E3NS4uZGFiMTlhMzNlYyAxMDA2
-NDQKPiA+ID4gPiA+IC0tLSBhL2FyY2gvYXJtL21hY2gtaW14L0tjb25maWcKPiA+ID4gPiA+ICsr
-KyBiL2FyY2gvYXJtL21hY2gtaW14L0tjb25maWcKPiA+ID4gPiA+IEBAIC0xNjIsNiArMTYyLDEw
-IEBAIGNvbmZpZyBBUkNIX0lNWDZVTAo+ID4gPiA+ID4gwqAJYm9vbAo+ID4gPiA+ID4gwqAJc2Vs
-ZWN0IEFSQ0hfSU1YNgo+ID4gPiA+ID4gwqAKPiA+ID4gPiA+ICtjb25maWcgQVJDSF9JTVg2VUxM
-Cj4gPiA+ID4gPiArCWJvb2wKPiA+ID4gPiA+ICsJc2VsZWN0IEFSQ0hfSU1YNgo+ID4gPiA+ID4g
-Kwo+ID4gPiA+IAo+ID4gPiA+IERvIHdlIHJlYWxseSBuZWVkIHRoaXM/IFNlZW1zIHRoZSBNWDZV
-TEwgaXMganVzdCBhIHN0cmlwcGVkIGRvd24KPiA+ID4gPiB2ZXJzaW9uIG9mIHRoZSBNWDZVTC4K
-PiA+ID4gCj4gPiA+IFdlIHByb2JhYmx5IGRvIG5vdCBuZWVkIHRoaXMsIGJ1dCBJIHN1Z2dlc3Qg
-dG8ga2VlcCBpdCBhbnl3YXkuIEkKPiA+ID4gdGhpbmsKPiA+ID4gaXQgbWFrZXMgaXQgYSBiaXQg
-Y2xlYXJlciB0aGF0IHRoZXJlIGFyZSBpbmRlZWQgaS5NWDZ1bCAqYW5kKgo+ID4gPiBpLk1YNnVs
-bAo+ID4gPiBhbmQgYm90aCBhcmUgc3VwcG9ydGVkLgo+ID4gCj4gPiBZZWFoLCB5b3VyIGRlY2lz
-aW9uLCBidXQgSSdsbCBub3RpY2UgdGhhdCB3ZSBkb24ndCBoYXZlIHNlcGFyYXRlCj4gPiBLY29u
-ZmlnIHN5bWJvbHMgZm9yIE1YNlEvREwsIHdoaWNoIHByb2JhYmx5IGV4cG9zZSBtb3JlIHNvZnR3
-YXJlCj4gPiB2aXNpYmxlIGRpZmZlcmVuY2VzIHRoYW4gTVg2VUwvVUxMLgo+IAo+IFdoaWxlIHJl
-ZmFjdG9yaW5nIHRoZSBwYXRjaGVzIEkgcmVhbGl6ZWQgdGhhdCBoYXZpbmcgYSBpLk1YNnVsbCBm
-dW5jdGlvbgo+IHdoaWNoIGp1c3QgY2FsbHMgdGhlIGNvcnJlc3BvbmRpbmcgaS5NWDZ1bCBmdW5j
-dGlvbiBkb2Vzbid0IGxvb2sgdG9vCj4gbmljZSB3aGVuIGFkZGl0aW9uYWxseSB3ZSBoYXZlIGEg
-Ym9hcmQgd2hpY2ggZWl0aGVyIGhhcyBvbmUgb2YgYm90aAo+IFNvQ3MgY2FsbGluZyB0aGUgaS5N
-WDZ1bCB2ZXJzaW9uIGFuZCBuZWVkcyBhIGNvbW1lbnQgdGhhdCB0aGlzIGlzIHRoZQo+IHNhbWUg
-YXMgdGhlIGkuTVg2dWxsIHZhcmlhbnQuCj4gCj4gSSBkcm9wcGVkIHRoZSBJTVg2VUxMIHN5bWJv
-bC4KCkluIG5leHQsIEFSQ0hfSU1YNlVMTCBpcyBzdGlsbCBzZXBhcmF0ZSBmcm9tIEFSQ0hfSU1Y
-NlVMLCBhbmQgaXQKY3VycmVudGx5IGJyZWFrcyBpLk1YNlVMTCBzdXBwb3J0IHdoZW4gYnVpbGRp
-bmcgYSBiYXJlYm94IHdpdGhvdXQKYW55IGkuTVg2VUwgYm9hcmQgZW5hYmxlZCwgYmVjYXVzZSBv
-ZiB0aGUgbWlzc2luZyBjbG9jayBkcml2ZXIuCgpJJ2QgcHJlZmVyIHRvIGp1c3Q6CgotLS0tLS0t
-LS0tODwtLS0tLS0tLS0tCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9LY29uZmlnIGIv
-YXJjaC9hcm0vbWFjaC1pbXgvS2NvbmZpZwppbmRleCBkYWIxOWEzM2VjLi4xNTc4ODc1ZTk1IDEw
-MDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLWlteC9LY29uZmlnCisrKyBiL2FyY2gvYXJtL21hY2gt
-aW14L0tjb25maWcKQEAgLTE2MiwxMCArMTYyLDYgQEAgY29uZmlnIEFSQ0hfSU1YNlVMCsKgCWJv
-b2wKwqAJc2VsZWN0IEFSQ0hfSU1YNgrCoAotY29uZmlnIEFSQ0hfSU1YNlVMTAotCWJvb2wKLQlz
-ZWxlY3QgQVJDSF9JTVg2Ci0KwqBjb25maWcgQVJDSF9JTVg3CsKgCWJvb2wKwqAJc2VsZWN0IENQ
-VV9WNwpAQCAtNDIwLDcgKzQxNiw3IEBAIGNvbmZpZyBNQUNIX0ZSRUVTQ0FMRV9NWDdfU0FCUkVT
-RArCoArCoGNvbmZpZyBNQUNIX05YUF9JTVg2VUxMX0VWSwrCoAlib29sICJOWFAgaS5NWDZ1bGwg
-RVZLIEJvYXJkIgotCXNlbGVjdCBBUkNIX0lNWDZVTEwKKwlzZWxlY3QgQVJDSF9JTVg2VUwKwqAK
-wqBlbmRpZgotLS0tLS0tLS0tPjgtLS0tLS0tLS0twqAKCnJlZ2FyZHMKUGhpbGlwcAoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
-IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Building EFI code without block device and partition support enabled
+will fail with:
+
+| drivers/built-in.o: In function `efi_bio_probe':
+| (.text+0x125d): undefined reference to `blockdevice_register'
+| drivers/built-in.o: In function `efi_bio_probe':
+| (.text+0x126c): undefined reference to `parse_partition_table'
+| Makefile:766: recipe for target 'barebox' failed
+
+Thus always select BLOCK and PARTITION_DISK when enabling EFI_BOOTUP.
+
+Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
+---
+ drivers/efi/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/efi/Kconfig b/drivers/efi/Kconfig
+index 2cd9dd504f..cca1a2e1d6 100644
+--- a/drivers/efi/Kconfig
++++ b/drivers/efi/Kconfig
+@@ -1,2 +1,4 @@
+ config EFI_BOOTUP
+ 	bool
++	select BLOCK
++	select PARTITION_DISK
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
