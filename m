@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
+Received: from mail-lf0-x22b.google.com ([2a00:1450:4010:c07::22b])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e2gg7-0003Vj-GV
- for barebox@lists.infradead.org; Thu, 12 Oct 2017 16:49:49 +0000
-Received: by mail-lf0-x241.google.com with SMTP id n69so6636592lfn.2
- for <barebox@lists.infradead.org>; Thu, 12 Oct 2017 09:49:23 -0700 (PDT)
-Date: Thu, 12 Oct 2017 20:01:33 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20171012200133.e29635ee3fb961c12a6650b5@gmail.com>
-In-Reply-To: <20170428135727.22c87f114377fac81b1c7a66@gmail.com>
-References: <20170426141734.18670-1-antonynpavlov@gmail.com>
- <20170428081848.bvfttqhjhfpewjqi@pengutronix.de>
- <20170428135727.22c87f114377fac81b1c7a66@gmail.com>
-Mime-Version: 1.0
+ id 1e2hfd-0007Do-94
+ for barebox@lists.infradead.org; Thu, 12 Oct 2017 17:53:27 +0000
+Received: by mail-lf0-x22b.google.com with SMTP id r129so6836726lff.8
+ for <barebox@lists.infradead.org>; Thu, 12 Oct 2017 10:53:00 -0700 (PDT)
+From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Date: Thu, 12 Oct 2017 20:52:26 +0300
+Message-Id: <20171012175228.16710-1-nikita.yoush@cogentembedded.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,65 +16,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: m25p80: make it possible to use 4K erase block
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH 1/3] 2d-primitives: fix missing pixel in gu_draw_line()
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org, Chris Healy <cphealy@gmail.com>, Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 
-On Fri, 28 Apr 2017 13:57:27 +0300
-Antony Pavlov <antonynpavlov@gmail.com> wrote:
+When drawing line from (x1, y1) to (x2, y2), pixel at (x2, y2) should
+be included.
 
-> On Fri, 28 Apr 2017 10:18:48 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> =
+Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+---
+ lib/gui/2d-primitives.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> > On Wed, Apr 26, 2017 at 05:17:34PM +0300, Antony Pavlov wrote:
-> > > We already have the MTD_SPI_NOR_USE_4K_SECTORS option handling in C c=
-ode
-> > > for 4K erase block support. Alas this 4K erase block support code
-> > > can't be used because the MTD_SPI_NOR_USE_4K_SECTORS option support
-> > > is missed in Kconfig.
-> > > =
+diff --git a/lib/gui/2d-primitives.c b/lib/gui/2d-primitives.c
+index 0f29b32ba..89acc092d 100644
+--- a/lib/gui/2d-primitives.c
++++ b/lib/gui/2d-primitives.c
+@@ -61,7 +61,7 @@ static void draw_simple_line(struct screen *sc,
+ 		swap(y1, y2);
+ 	}
+ 
+-	for (x = x1; x < x2 - 1; x++) {
++	for (x = x1; x <= x2; x++) {
+ 		if (!dash ||
+ 		    (++pixel % (2 * dash)) < dash)
+ 			illuminate(sc->info,
+@@ -137,7 +137,7 @@ void gu_draw_line(struct screen *sc,
+ 	j   = y1;
+ 	eps = dy - dx;
+ 
+-	for (i = x1; i <= x2 - 1; i++) {
++	for (i = x1; i <= x2; i++) {
+ 		if (!dash ||
+ 		    (++pixel % (2 * dash)) > dash) {
+ 			illuminate(sc->info,
+-- 
+2.11.0
 
-> > > This patch imports necessary Kconfig MTD_SPI_NOR_USE_4K_SECTORS option
-> > > declaration from linux v4.11-rc8.
-> > > =
-
-> > > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > > ---
-> > >  drivers/mtd/spi-nor/Kconfig | 14 ++++++++++++++
-> > >  1 file changed, 14 insertions(+)
-> > > =
-
-> > > diff --git a/drivers/mtd/spi-nor/Kconfig b/drivers/mtd/spi-nor/Kconfig
-> > > index a84591fdd1..8ede3c90be 100644
-> > > --- a/drivers/mtd/spi-nor/Kconfig
-> > > +++ b/drivers/mtd/spi-nor/Kconfig
-> > > @@ -7,6 +7,20 @@ menuconfig MTD_SPI_NOR
-> > >  =
-
-> > >  if MTD_SPI_NOR
-> > >  =
-
-> > > +config MTD_SPI_NOR_USE_4K_SECTORS
-> > > +	bool "Use small 4096 B erase sectors"
-> > > +	default y
-> > =
-
-> > This changes the default which breaks existing UBI users. Can you drop
-> > this?
-> =
-
-> Yes, we can drop this 'default y'.
-
-ping
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
