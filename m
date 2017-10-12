@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e2ai3-0004I7-IL
+ id 1e2ai3-0004I1-MH
  for barebox@lists.infradead.org; Thu, 12 Oct 2017 10:27:25 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
- (envelope-from <l.stach@pengutronix.de>) id 1e2ahe-0003Lx-N4
+ (envelope-from <l.stach@pengutronix.de>) id 1e2ahe-0003Lx-Il
  for barebox@lists.infradead.org; Thu, 12 Oct 2017 12:26:58 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu, 12 Oct 2017 12:26:58 +0200
-Message-Id: <20171012102658.17104-12-l.stach@pengutronix.de>
+Date: Thu, 12 Oct 2017 12:26:54 +0200
+Message-Id: <20171012102658.17104-8-l.stach@pengutronix.de>
 In-Reply-To: <20171012102658.17104-1-l.stach@pengutronix.de>
 References: <20171012102658.17104-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -26,60 +26,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 12/12] ARM: vexpress: add fixup handler for 'virtio,
- mmio' devices
+Subject: [PATCH v2 08/12] docs: add qemu vexpress
 To: barebox@lists.infradead.org
 
-From: Michael Olbrich <m.olbrich@pengutronix.de>
+Add a basic command line for QEMU vexpress.
 
-Qemu adds 'virtio,mmio' nodes to the device tree. Before passing it to the
-bootloader or the Linux kernel. This fixup handler copies these nodes to
-the new device tree.
-
-Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/boards/vexpress/init.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ Documentation/boards/arm-qemu-vexpress.rst | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+ create mode 100644 Documentation/boards/arm-qemu-vexpress.rst
 
-diff --git a/arch/arm/boards/vexpress/init.c b/arch/arm/boards/vexpress/init.c
-index 1bbc8c347638..946385393f44 100644
---- a/arch/arm/boards/vexpress/init.c
-+++ b/arch/arm/boards/vexpress/init.c
-@@ -45,3 +45,32 @@ static int vexpress_core_init(void)
- 	return 0;
- }
- postcore_initcall(vexpress_core_init);
+diff --git a/Documentation/boards/arm-qemu-vexpress.rst b/Documentation/boards/arm-qemu-vexpress.rst
+new file mode 100644
+index 000000000000..dcbac8e62557
+--- /dev/null
++++ b/Documentation/boards/arm-qemu-vexpress.rst
+@@ -0,0 +1,20 @@
++QEMU vexpress
++=======
 +
-+static int of_fixup_virtio_mmio(struct device_node *root, void *unused)
-+{
-+	struct device_node *barebox_root, *np, *parent;
++ARM Qemu vexpress
++-----------------
 +
-+	barebox_root = of_get_root_node();
-+	if (root == barebox_root)
-+		return 0;
++Running barebox on QEMU vexpress machine
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 +
-+	for_each_compatible_node_from(np, barebox_root, NULL, "virtio,mmio") {
-+		if (of_get_parent(np) == barebox_root)
-+			parent = root;
-+		else
-+			parent = of_find_node_by_path_from(root,
-+							   of_get_parent(np)->full_name);
-+		if (!parent)
-+			return -EINVAL;
++Usage::
 +
-+		of_copy_node(parent, np);
-+	}
++	$ qemu-system-arm -m 1024M \
++		-machine vexpress-a9 -cpu cortex-a9 \
++		-nographic -no-reboot \
++		-kernel images/barebox-vexpress-ca9.img
 +
-+	return 0;
-+}
-+
-+static int of_register_virtio_mmio_fixup(void)
-+{
-+	return of_register_fixup(of_fixup_virtio_mmio, NULL);
-+}
-+late_initcall(of_register_virtio_mmio_fixup);
++	$ qemu-system-arm -m 1024M \
++		-machine vexpress-a15 -cpu cortex-a15 \
++		-nographic -no-reboot \
++		-kernel images/barebox-vexpress-ca15.img
 -- 
 2.11.0
 
