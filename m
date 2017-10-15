@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x242.google.com ([2607:f8b0:4001:c06::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e2iFZ-00018Q-UR
- for barebox@lists.infradead.org; Thu, 12 Oct 2017 18:30:35 +0000
-Received: by mail-io0-x242.google.com with SMTP id h70so6455854ioi.4
- for <barebox@lists.infradead.org>; Thu, 12 Oct 2017 11:30:13 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20171012175228.16710-1-nikita.yoush@cogentembedded.com>
-References: <20171012175228.16710-1-nikita.yoush@cogentembedded.com>
-From: Chris Healy <cphealy@gmail.com>
-Date: Thu, 12 Oct 2017 11:30:11 -0700
-Message-ID: <CAFXsbZr9Td2HwJ+Ki7965O9feG7cYvfj+ca40juxmUgUeHDKXg@mail.gmail.com>
+ id 1e3guh-0001UQ-FA
+ for barebox@lists.infradead.org; Sun, 15 Oct 2017 11:17:01 +0000
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Sun, 15 Oct 2017 13:16:31 +0200
+Message-Id: <20171015111631.4506-1-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,55 +14,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] 2d-primitives: fix missing pixel in gu_draw_line()
-To: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Subject: [PATCH] UBI: attach: add missing newline at end of pr_err()
+To: barebox@lists.infradead.org
 
-Full series is:
+This patch adds the missing newline at the end of the pr_err()
+statement.
 
-Tested-by: Chris Healy <cphealy@gmail.com>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/mtd/ubi/attach.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Was tested on sandbox with various resolutions between 320x200 up to 1280x768.
+diff --git a/drivers/mtd/ubi/attach.c b/drivers/mtd/ubi/attach.c
+index b49842be3948..ff4b4e7acb76 100644
+--- a/drivers/mtd/ubi/attach.c
++++ b/drivers/mtd/ubi/attach.c
+@@ -782,7 +782,7 @@ static int check_corruption(struct ubi_device *ubi, struct ubi_vid_hdr *vid_hdr,
+ 		pnum);
+ 	ubi_err(ubi, "this may be a non-UBI PEB or a severe VID header corruption which requires manual inspection");
+ 	ubi_dump_vid_hdr(vid_hdr);
+-	pr_err("hexdump of PEB %d offset %d, length %d",
++	pr_err("hexdump of PEB %d offset %d, length %d\n",
+ 	       pnum, ubi->leb_start, ubi->leb_size);
+ 	ubi_dbg_print_hex_dump(KERN_DEBUG, "", DUMP_PREFIX_OFFSET, 32, 1,
+ 			       ubi->peb_buf, ubi->leb_size, 1);
+-- 
+2.14.2
 
-On Thu, Oct 12, 2017 at 10:52 AM, Nikita Yushchenko
-<nikita.yoush@cogentembedded.com> wrote:
-> When drawing line from (x1, y1) to (x2, y2), pixel at (x2, y2) should
-> be included.
->
-> Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-> ---
->  lib/gui/2d-primitives.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/lib/gui/2d-primitives.c b/lib/gui/2d-primitives.c
-> index 0f29b32ba..89acc092d 100644
-> --- a/lib/gui/2d-primitives.c
-> +++ b/lib/gui/2d-primitives.c
-> @@ -61,7 +61,7 @@ static void draw_simple_line(struct screen *sc,
->                 swap(y1, y2);
->         }
->
-> -       for (x = x1; x < x2 - 1; x++) {
-> +       for (x = x1; x <= x2; x++) {
->                 if (!dash ||
->                     (++pixel % (2 * dash)) < dash)
->                         illuminate(sc->info,
-> @@ -137,7 +137,7 @@ void gu_draw_line(struct screen *sc,
->         j   = y1;
->         eps = dy - dx;
->
-> -       for (i = x1; i <= x2 - 1; i++) {
-> +       for (i = x1; i <= x2; i++) {
->                 if (!dash ||
->                     (++pixel % (2 * dash)) > dash) {
->                         illuminate(sc->info,
-> --
-> 2.11.0
->
 
 _______________________________________________
 barebox mailing list
