@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e40gW-00058o-T9
- for barebox@lists.infradead.org; Mon, 16 Oct 2017 08:23:42 +0000
-Date: Mon, 16 Oct 2017 10:23:18 +0200
+ id 1e40jv-0007pc-JE
+ for barebox@lists.infradead.org; Mon, 16 Oct 2017 08:27:13 +0000
+Date: Mon, 16 Oct 2017 10:26:49 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171016082318.tvxuqq2h2aqrh4w4@pengutronix.de>
-References: <20171009221212.24377-1-antonynpavlov@gmail.com>
+Message-ID: <20171016082649.g5fjmdqrxypxkxa6@pengutronix.de>
+References: <20171009134053.28215-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20171009221212.24377-1-antonynpavlov@gmail.com>
+In-Reply-To: <20171009134053.28215-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,41 +18,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] eeprom: at24: fix 'assignment from incompatible pointer
- type' warning
+Subject: Re: [PATCH] elf.h: Use EI_NIDENT instead of numeric value
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-T24gVHVlLCBPY3QgMTAsIDIwMTcgYXQgMDE6MTI6MTJBTSArMDMwMCwgQW50b255IFBhdmxvdiB3
-cm90ZToKPiBUaGUgcGF0Y2ggZml4ZXMgdGhpcyBjb21waWxlcidzIHdhcm5pbmc6Cj4gCj4gICAg
-ICAgQ0MgICAgICBkcml2ZXJzL2VlcHJvbS9hdDI0Lm8KPiAgICAgZHJpdmVycy9lZXByb20vYXQy
-NC5jOiBJbiBmdW5jdGlvbiDigJhhdDI0X3Byb2Jl4oCZOgo+ICAgICBkcml2ZXJzL2VlcHJvbS9h
-dDI0LmM6NDUzOjIxOiB3YXJuaW5nOiBhc3NpZ25tZW50IGZyb20gaW5jb21wYXRpYmxlCj4gICAg
-IHBvaW50ZXIgdHlwZSBbLVdpbmNvbXBhdGlibGUtcG9pbnRlci10eXBlc10KPiAgICAgICBhdDI0
-LT5mb3BzLnByb3RlY3QgPSBhdDI0X2NkZXZfcHJvdGVjdCwKPiAgICAgICAgICAgICAgICAgICAg
-ICAgICAgXgo+IAo+IFNpZ25lZC1vZmYtYnk6IEFudG9ueSBQYXZsb3YgPGFudG9ueW5wYXZsb3ZA
-Z21haWwuY29tPgo+IC0tLQo+ICBkcml2ZXJzL2VlcHJvbS9hdDI0LmMgfCAyICstCj4gIDEgZmls
-ZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQoKQXBwbGllZCwgdGhhbmtz
-CgpTYXNjaGEKCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvZWVwcm9tL2F0MjQuYyBiL2RyaXZl
-cnMvZWVwcm9tL2F0MjQuYwo+IGluZGV4IDA1MGEzNWFlZDguLjExZjIzMzE5YjYgMTAwNjQ0Cj4g
-LS0tIGEvZHJpdmVycy9lZXByb20vYXQyNC5jCj4gKysrIGIvZHJpdmVycy9lZXByb20vYXQyNC5j
-Cj4gQEAgLTM1Miw3ICszNTIsNyBAQCBzdGF0aWMgc3NpemVfdCBhdDI0X2NkZXZfd3JpdGUoc3Ry
-dWN0IGNkZXYgKmNkZXYsIGNvbnN0IHZvaWQgKmJ1Ziwgc2l6ZV90IGNvdW50LAo+ICAJcmV0dXJu
-IGF0MjRfd3JpdGUoYXQyNCwgYnVmLCBvZmYsIGNvdW50KTsKPiAgfQo+ICAKPiAtc3RhdGljIHNz
-aXplX3QgYXQyNF9jZGV2X3Byb3RlY3Qoc3RydWN0IGNkZXYgKmNkZXYsIHNpemVfdCBjb3VudCwg
-bG9mZl90IG9mZnNldCwKPiArc3RhdGljIGludCBhdDI0X2NkZXZfcHJvdGVjdChzdHJ1Y3QgY2Rl
-diAqY2Rldiwgc2l6ZV90IGNvdW50LCBsb2ZmX3Qgb2Zmc2V0LAo+ICAJCWludCBwcm90KQo+ICB7
-Cj4gIAlzdHJ1Y3QgYXQyNF9kYXRhICphdDI0ID0gY2Rldi0+cHJpdjsKPiAtLSAKPiAyLjE0LjEK
-PiAKPiAKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAg
-ICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3Ry
-LiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3
-LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6
-ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+On Mon, Oct 09, 2017 at 04:40:53PM +0300, Antony Pavlov wrote:
+> This is an adoption of the linux kernel commit
+> 
+> | commit eb6900fbfa43cb50391b80b38608e25280705693
+> | Author: Cyrill Gorcunov <gorcunov@gmail.com>
+> | Date:   Tue Apr 29 01:01:17 2008 -0700
+> |
+> |     ELF: Use EI_NIDENT instead of numeric value
+> |
+> |     Signed-off-by: Cyrill Gorcunov <gorcunov@gmail.com>
+> |     Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> |     Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  include/elf.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/include/elf.h b/include/elf.h
+> index a749bec34e..ebcec7db0d 100644
+> --- a/include/elf.h
+> +++ b/include/elf.h
+> @@ -207,7 +207,7 @@ typedef struct elf32_hdr{
+>  } Elf32_Ehdr;
+>  
+>  typedef struct elf64_hdr {
+> -  unsigned char	e_ident[16];		/* ELF "magic number" */
+> +  unsigned char	e_ident[EI_NIDENT];	/* ELF "magic number" */
+>    Elf64_Half e_type;
+>    Elf64_Half e_machine;
+>    Elf64_Word e_version;
+> -- 
+> 2.14.1
+> 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
