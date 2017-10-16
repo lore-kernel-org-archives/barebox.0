@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e40Gv-0004hv-OX
- for barebox@lists.infradead.org; Mon, 16 Oct 2017 07:57:16 +0000
-Date: Mon, 16 Oct 2017 09:56:51 +0200
+ id 1e40fF-0004sZ-0Y
+ for barebox@lists.infradead.org; Mon, 16 Oct 2017 08:22:22 +0000
+Date: Mon, 16 Oct 2017 10:21:58 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171016075651.xgcx7umvhf4cvg5k@pengutronix.de>
+Message-ID: <20171016082158.mclujzfzsdvhjcvq@pengutronix.de>
 References: <20171010122631.9421-1-antonynpavlov@gmail.com>
- <20171010122631.9421-3-antonynpavlov@gmail.com>
+ <20171010122631.9421-4-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20171010122631.9421-3-antonynpavlov@gmail.com>
+In-Reply-To: <20171010122631.9421-4-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,107 +23,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] sandbox: add gpio support with libftdi1
+Subject: Re: [PATCH 3/5] sandbox: parse libftdi options
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Antony,
-
-On Tue, Oct 10, 2017 at 03:26:28PM +0300, Antony Pavlov wrote:
+On Tue, Oct 10, 2017 at 03:26:29PM +0300, Antony Pavlov wrote:
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  arch/sandbox/Kconfig                           |   1 +
->  arch/sandbox/Makefile                          |   6 +-
->  arch/sandbox/mach-sandbox/include/mach/linux.h |  11 ++
->  arch/sandbox/os/Makefile                       |   3 +
->  arch/sandbox/os/ftdi.c                         | 173 +++++++++++++++++++++++++
->  drivers/gpio/Kconfig                           |   4 +
->  drivers/gpio/Makefile                          |   1 +
->  drivers/gpio/gpio-libftdi1.c                   | 125 ++++++++++++++++++
->  8 files changed, 323 insertions(+), 1 deletion(-)
+>  arch/sandbox/Makefile    |  2 +-
+>  arch/sandbox/os/common.c | 12 ++++++--
+>  arch/sandbox/os/ftdi.c   | 79 +++++++++++++++++++++++++++++++++++++++++++++++-
+>  3 files changed, 89 insertions(+), 4 deletions(-)
 > 
-
-...
-
-> +static struct ft2232_bitbang ftbb;
+> diff --git a/arch/sandbox/os/ftdi.c b/arch/sandbox/os/ftdi.c
+> index 34e9165787..e3e46ed12d 100644
+> --- a/arch/sandbox/os/ftdi.c
+> +++ b/arch/sandbox/os/ftdi.c
+> @@ -20,6 +20,7 @@
+>  #include <unistd.h>
+>  #include <ftdi.h>
+>  #include <errno.h>
+> +#include <string.h>
+>  #include <mach/linux.h>
+>  
+>  #define FTDI_VID		0x0403	/* Vendor Id */
+> @@ -38,6 +39,8 @@ struct ft2232_bitbang {
+>  
+>  static struct ft2232_bitbang ftbb;
+>  
+> +extern const char *libftdi_options;
 > +
-
-...
-
-> +
-> +int barebox_libftdi1_init(void)
+>  static inline int ftdi_flush(struct ftdi_context *ftdi)
+>  {
+>  	uint8_t buf[1];
+> @@ -116,6 +119,67 @@ void barebox_libftdi1_gpio_set_value(struct ft2232_bitbang *ftbb,
+>  		ftbb->odata &= ~BIT(off);
+>  }
+>  
+> +/* This is a somewhat hacked function similar in some ways to strtok().
+> + * It will look for needle with a subsequent '=' in haystack, return a copy of
+> + * needle and remove everything from the first occurrence of needle to the next
+> + * delimiter from haystack.
+> + */
+> +static char *extract_param(const char *const *haystack, const char *needle,
+> +			const char *delim)
 > +{
-> +	struct ftdi_context *ftdi;
-> +	int ret;
-> +	/* default FT2232 values */
-> +	uint16_t vendor_id = FTDI_VID;
-> +	uint16_t device_id = FTDI_8U2232C_PID;
-> +
-> +	ftdi = ftdi_new();
-> +	if (!ftdi) {
-> +		fprintf(stderr, "ftdi_new failed\n");
-> +		goto error;
-> +	}
-> +
-> +	ret = ftdi_usb_open(ftdi, vendor_id, device_id);
-> +	if (ret < 0 && ret != -5) {
-> +		fprintf(stderr, "unable to open ftdi device: %d (%s)\n",
-> +			ret, ftdi_get_error_string(ftdi));
-> +		goto error;
-> +	}
 
-What does a return value of -5 mean? Isn't that an error?
-
-> +
-> +	ftdi_set_interface(ftdi, INTERFACE_A);
-> +	ftdi_set_bitmode(ftdi, 0x00, BITMODE_MPSSE);
-> +
-> +	ftbb.ftdi = ftdi;
-> +
-> +	/* reset pins to default neutral state */
-> +	ftbb.dir = 0;
-> +	ftbb.odata = 0;
-> +	ftdi_set_high_byte_data_dir(&ftbb);
-> +
-> +	return 0;
-> +
-> +error:
-> +	return -1;
-> +}
-> +
-> +struct ft2232_bitbang *barebox_libftdi1_open(void)
-> +{
-> +	if (barebox_libftdi1_init() < 0) {
-> +		printf("Could not initialize ftdi\n");
-> +		return NULL;
-> +	}
-> +
-> +	return &ftbb;
-> +}
-
-Somethings fishy here. Do you want to create a new struct ft2232_bitbang
-instance for each caller or do you want to return the same instance for
-every call to barebox_libftdi1_open()? If you want to do the former you
-shouldn't create a static struct ft2232_bitbang, but instead allocate it
-dynamically. If you want to do the latter then you should do a "if
-(initialized) return existing_instance".
-
-> +	gpio->chip.dev = dev;
-> +	gpio->chip.ops = &libftdi1_gpio_ops;
-> +	gpio->chip.base = 0;
-> +	gpio->chip.ngpio = 8;
-> +
-> +	ret = gpiochip_add(&gpio->chip);
-> +
-> +	dev_dbg(dev, "%d: probed gpio%d with base %d\n",
-> +			ret, dev->id, gpio->chip.base);
-> +
-> +	return 0;
-
-Would be good to actually check 'ret' for errors.
+Parsing comma separated option lists is something we do more than once.
+Right now we already have parseopt_b and parseopt_hu. Would be nice to
+have this function alongside with the existing functions. Also
+parseopt_* look simpler to follow, it may be worth adopting the code for
+this function.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
