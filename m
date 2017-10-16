@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e45pC-00023Q-Ng
- for barebox@lists.infradead.org; Mon, 16 Oct 2017 13:53:01 +0000
-Received: by mail-lf0-x241.google.com with SMTP id a16so17115570lfk.0
- for <barebox@lists.infradead.org>; Mon, 16 Oct 2017 06:52:38 -0700 (PDT)
-Date: Mon, 16 Oct 2017 17:04:54 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20171016170454.8d75791094b2d5a9412614b9@gmail.com>
-In-Reply-To: <20171016072600.j4dkifbwu4xiqt5y@pengutronix.de>
-References: <20170426141734.18670-1-antonynpavlov@gmail.com>
- <20170428081848.bvfttqhjhfpewjqi@pengutronix.de>
- <20170428135727.22c87f114377fac81b1c7a66@gmail.com>
- <20171012200133.e29635ee3fb961c12a6650b5@gmail.com>
- <20171016072600.j4dkifbwu4xiqt5y@pengutronix.de>
-Mime-Version: 1.0
+ id 1e40Gv-0004hv-OX
+ for barebox@lists.infradead.org; Mon, 16 Oct 2017 07:57:16 +0000
+Date: Mon, 16 Oct 2017 09:56:51 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20171016075651.xgcx7umvhf4cvg5k@pengutronix.de>
+References: <20171010122631.9421-1-antonynpavlov@gmail.com>
+ <20171010122631.9421-3-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20171010122631.9421-3-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,84 +19,117 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: m25p80: make it possible to use 4K erase block
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 2/5] sandbox: add gpio support with libftdi1
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, 16 Oct 2017 09:26:00 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Hi Antony,
 
-> On Thu, Oct 12, 2017 at 08:01:33PM +0300, Antony Pavlov wrote:
-> > On Fri, 28 Apr 2017 13:57:27 +0300
-> > Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> > =
+On Tue, Oct 10, 2017 at 03:26:28PM +0300, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/sandbox/Kconfig                           |   1 +
+>  arch/sandbox/Makefile                          |   6 +-
+>  arch/sandbox/mach-sandbox/include/mach/linux.h |  11 ++
+>  arch/sandbox/os/Makefile                       |   3 +
+>  arch/sandbox/os/ftdi.c                         | 173 +++++++++++++++++++++++++
+>  drivers/gpio/Kconfig                           |   4 +
+>  drivers/gpio/Makefile                          |   1 +
+>  drivers/gpio/gpio-libftdi1.c                   | 125 ++++++++++++++++++
+>  8 files changed, 323 insertions(+), 1 deletion(-)
+> 
 
-> > > On Fri, 28 Apr 2017 10:18:48 +0200
-> > > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > > =
+...
 
-> > > > On Wed, Apr 26, 2017 at 05:17:34PM +0300, Antony Pavlov wrote:
-> > > > > We already have the MTD_SPI_NOR_USE_4K_SECTORS option handling in=
- C code
-> > > > > for 4K erase block support. Alas this 4K erase block support code
-> > > > > can't be used because the MTD_SPI_NOR_USE_4K_SECTORS option suppo=
-rt
-> > > > > is missed in Kconfig.
-> > > > > =
+> +static struct ft2232_bitbang ftbb;
+> +
 
-> > > > > This patch imports necessary Kconfig MTD_SPI_NOR_USE_4K_SECTORS o=
-ption
-> > > > > declaration from linux v4.11-rc8.
-> > > > > =
+...
 
-> > > > > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > > > > ---
-> > > > >  drivers/mtd/spi-nor/Kconfig | 14 ++++++++++++++
-> > > > >  1 file changed, 14 insertions(+)
-> > > > > =
+> +
+> +int barebox_libftdi1_init(void)
+> +{
+> +	struct ftdi_context *ftdi;
+> +	int ret;
+> +	/* default FT2232 values */
+> +	uint16_t vendor_id = FTDI_VID;
+> +	uint16_t device_id = FTDI_8U2232C_PID;
+> +
+> +	ftdi = ftdi_new();
+> +	if (!ftdi) {
+> +		fprintf(stderr, "ftdi_new failed\n");
+> +		goto error;
+> +	}
+> +
+> +	ret = ftdi_usb_open(ftdi, vendor_id, device_id);
+> +	if (ret < 0 && ret != -5) {
+> +		fprintf(stderr, "unable to open ftdi device: %d (%s)\n",
+> +			ret, ftdi_get_error_string(ftdi));
+> +		goto error;
+> +	}
 
-> > > > > diff --git a/drivers/mtd/spi-nor/Kconfig b/drivers/mtd/spi-nor/Kc=
-onfig
-> > > > > index a84591fdd1..8ede3c90be 100644
-> > > > > --- a/drivers/mtd/spi-nor/Kconfig
-> > > > > +++ b/drivers/mtd/spi-nor/Kconfig
-> > > > > @@ -7,6 +7,20 @@ menuconfig MTD_SPI_NOR
-> > > > >  =
+What does a return value of -5 mean? Isn't that an error?
 
-> > > > >  if MTD_SPI_NOR
-> > > > >  =
+> +
+> +	ftdi_set_interface(ftdi, INTERFACE_A);
+> +	ftdi_set_bitmode(ftdi, 0x00, BITMODE_MPSSE);
+> +
+> +	ftbb.ftdi = ftdi;
+> +
+> +	/* reset pins to default neutral state */
+> +	ftbb.dir = 0;
+> +	ftbb.odata = 0;
+> +	ftdi_set_high_byte_data_dir(&ftbb);
+> +
+> +	return 0;
+> +
+> +error:
+> +	return -1;
+> +}
+> +
+> +struct ft2232_bitbang *barebox_libftdi1_open(void)
+> +{
+> +	if (barebox_libftdi1_init() < 0) {
+> +		printf("Could not initialize ftdi\n");
+> +		return NULL;
+> +	}
+> +
+> +	return &ftbb;
+> +}
 
-> > > > > +config MTD_SPI_NOR_USE_4K_SECTORS
-> > > > > +	bool "Use small 4096 B erase sectors"
-> > > > > +	default y
-> > > > =
+Somethings fishy here. Do you want to create a new struct ft2232_bitbang
+instance for each caller or do you want to return the same instance for
+every call to barebox_libftdi1_open()? If you want to do the former you
+shouldn't create a static struct ft2232_bitbang, but instead allocate it
+dynamically. If you want to do the latter then you should do a "if
+(initialized) return existing_instance".
 
-> > > > This changes the default which breaks existing UBI users. Can you d=
-rop
-> > > > this?
-> > > =
+> +	gpio->chip.dev = dev;
+> +	gpio->chip.ops = &libftdi1_gpio_ops;
+> +	gpio->chip.base = 0;
+> +	gpio->chip.ngpio = 8;
+> +
+> +	ret = gpiochip_add(&gpio->chip);
+> +
+> +	dev_dbg(dev, "%d: probed gpio%d with base %d\n",
+> +			ret, dev->id, gpio->chip.base);
+> +
+> +	return 0;
 
-> > > Yes, we can drop this 'default y'.
-> > =
+Would be good to actually check 'ret' for errors.
 
-> > ping
-> =
+Sascha
 
-> ping? I expected to see a new version of the patch. Well, I fixed this
-> up and applied for now, to get this topic done.
 
-Sorry!
-
-I have been confused. The patch has been too long in my local branch.
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
