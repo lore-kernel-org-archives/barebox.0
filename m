@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e4Rjn-0000O4-3i
- for barebox@lists.infradead.org; Tue, 17 Oct 2017 13:16:51 +0000
-From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
-Date: Tue, 17 Oct 2017 15:16:24 +0200
-Message-Id: <20171017131625.23837-2-u.oelmann@pengutronix.de>
-In-Reply-To: <20171017131625.23837-1-u.oelmann@pengutronix.de>
+ id 1e4SHo-0000e2-48
+ for barebox@lists.infradead.org; Tue, 17 Oct 2017 13:52:05 +0000
+Date: Tue, 17 Oct 2017 15:51:37 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20171017135137.4z7dj7zy4furcos7@pengutronix.de>
 References: <20171017131625.23837-1-u.oelmann@pengutronix.de>
+ <20171017131625.23837-2-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20171017131625.23837-2-u.oelmann@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,26 +19,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] commands: i2c: do not restrict i2c_write's data to be
- hex-formatted
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/2] commands: i2c: do not restrict i2c_write's data to
+ be hex-formatted
+To: Ulrich =?iso-8859-1?Q?=D6lmann?= <u.oelmann@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-VGhlIHByaWNlIHRvIHBheSBpcyBuZWVkaW5nIHRoZSB1c3VhbCBwcmVmaXggIjB4IiBmb3IgZWFj
-aCBoZXgtZm9ybWF0dGVkIG51bWJlci4KClNpZ25lZC1vZmYtYnk6IFVscmljaCDDlmxtYW5uIDx1
-Lm9lbG1hbm5AcGVuZ3V0cm9uaXguZGU+Ci0tLQogY29tbWFuZHMvaTJjLmMgfCAyICstCiAxIGZp
-bGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9j
-b21tYW5kcy9pMmMuYyBiL2NvbW1hbmRzL2kyYy5jCmluZGV4IDU3MzAzMmFiMTU4OC4uYjc0YzUz
-NTA5ZjM4IDEwMDY0NAotLS0gYS9jb21tYW5kcy9pMmMuYworKysgYi9jb21tYW5kcy9pMmMuYwpA
-QCAtMTI5LDcgKzEyOSw3IEBAIHN0YXRpYyBpbnQgZG9faTJjX3dyaXRlKGludCBhcmdjLCBjaGFy
-ICphcmd2W10pCiAKIAlidWYgPSB4bWFsbG9jKGNvdW50KTsKIAlmb3IgKGkgPSAwOyBpIDwgY291
-bnQ7IGkrKykKLQkJKihidWYgKyBpKSA9IChjaGFyKSBzaW1wbGVfc3RydG9sKGFyZ3Zbb3B0aW5k
-K2ldLCBOVUxMLCAxNik7CisJCSooYnVmICsgaSkgPSAoY2hhcikgc2ltcGxlX3N0cnRvbChhcmd2
-W29wdGluZCtpXSwgTlVMTCwgMCk7CiAKIAlyZXQgPSBpMmNfd3JpdGVfcmVnKCZjbGllbnQsIHJl
-ZyB8IHdpZGUsIGJ1ZiwgY291bnQpOwogCWlmIChyZXQgIT0gY291bnQpIHsKLS0gCjIuMTEuMAoK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hello,
+
+On Tue, Oct 17, 2017 at 03:16:24PM +0200, Ulrich =D6lmann wrote:
+> The price to pay is needing the usual prefix "0x" for each hex-formatted =
+number.
+> =
+
+> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
+
+ack for the change. I'd like to see the motivation (i.e. consistency with
+the other commands in barebox as mentioned in the cover letter) in the
+commit log, though.
+
+> ---
+>  commands/i2c.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> =
+
+> diff --git a/commands/i2c.c b/commands/i2c.c
+> index 573032ab1588..b74c53509f38 100644
+> --- a/commands/i2c.c
+> +++ b/commands/i2c.c
+> @@ -129,7 +129,7 @@ static int do_i2c_write(int argc, char *argv[])
+>  =
+
+>  	buf =3D xmalloc(count);
+>  	for (i =3D 0; i < count; i++)
+> -		*(buf + i) =3D (char) simple_strtol(argv[optind+i], NULL, 16);
+> +		*(buf + i) =3D (char) simple_strtol(argv[optind+i], NULL, 0);
+
+Maybe change that to:
+
+		buf[i] =3D simple_strtol(...);
+
+which is a bit easier to read and drops an unnecessary cast? (Or should
+that better go in a separate change?)
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
