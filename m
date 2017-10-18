@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp101.iad3a.emailsrvr.com ([173.203.187.101])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e59NY-0006Yk-2s
- for barebox@lists.infradead.org; Thu, 19 Oct 2017 11:52:50 +0000
-Date: Thu, 19 Oct 2017 13:52:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171019115225.ohwrhrx4sjitu64i@pengutronix.de>
-References: <20171010122631.9421-1-antonynpavlov@gmail.com>
- <20171010122631.9421-4-antonynpavlov@gmail.com>
- <20171016082158.mclujzfzsdvhjcvq@pengutronix.de>
- <20171016171011.934b4475b230c7ccaca5f88c@gmail.com>
- <20171016140618.n6z7ndpfm3ucxl5x@pengutronix.de>
- <20171019145540.27c3a3b9752b836f97043e1c@gmail.com>
+ id 1e4rZi-0002qD-MS
+ for barebox@lists.infradead.org; Wed, 18 Oct 2017 16:52:13 +0000
+Received: from smtp13.relay.iad3a.emailsrvr.com (localhost [127.0.0.1])
+ by smtp13.relay.iad3a.emailsrvr.com (SMTP Server) with ESMTP id C6A4C55C8
+ for <barebox@lists.infradead.org>; Wed, 18 Oct 2017 12:51:45 -0400 (EDT)
+Received: by smtp13.relay.iad3a.emailsrvr.com (Authenticated sender:
+ siepeng-AT-mev.co.uk) with ESMTPSA id 75F2A5654
+ for <barebox@lists.infradead.org>; Wed, 18 Oct 2017 12:51:45 -0400 (EDT)
+From: Ian Abbott <abbotti@mev.co.uk>
+Message-ID: <3f726d4d-d6b8-e89b-805b-6a0ebfa5227a@mev.co.uk>
+Date: Wed, 18 Oct 2017 17:51:44 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20171019145540.27c3a3b9752b836f97043e1c@gmail.com>
+Content-Language: en-GB
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,95 +22,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] sandbox: parse libftdi options
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Terasic DE0 Nano SoC / SoCkit confusion
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Thu, Oct 19, 2017 at 02:55:40PM +0300, Antony Pavlov wrote:
-> On Mon, 16 Oct 2017 16:06:18 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> > On Mon, Oct 16, 2017 at 05:10:11PM +0300, Antony Pavlov wrote:
-> > > On Mon, 16 Oct 2017 10:21:58 +0200
-> > > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > > 
-> > > > On Tue, Oct 10, 2017 at 03:26:29PM +0300, Antony Pavlov wrote:
-> > > > > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > > > > ---
-> > > > >  arch/sandbox/Makefile    |  2 +-
-> > > > >  arch/sandbox/os/common.c | 12 ++++++--
-> > > > >  arch/sandbox/os/ftdi.c   | 79 +++++++++++++++++++++++++++++++++++++++++++++++-
-> > > > >  3 files changed, 89 insertions(+), 4 deletions(-)
-> > > > > 
-> > > > > diff --git a/arch/sandbox/os/ftdi.c b/arch/sandbox/os/ftdi.c
-> > > > > index 34e9165787..e3e46ed12d 100644
-> > > > > --- a/arch/sandbox/os/ftdi.c
-> > > > > +++ b/arch/sandbox/os/ftdi.c
-> > > > > @@ -20,6 +20,7 @@
-> > > > >  #include <unistd.h>
-> > > > >  #include <ftdi.h>
-> > > > >  #include <errno.h>
-> > > > > +#include <string.h>
-> > > > >  #include <mach/linux.h>
-> > > > >  
-> > > > >  #define FTDI_VID		0x0403	/* Vendor Id */
-> > > > > @@ -38,6 +39,8 @@ struct ft2232_bitbang {
-> > > > >  
-> > > > >  static struct ft2232_bitbang ftbb;
-> > > > >  
-> > > > > +extern const char *libftdi_options;
-> > > > > +
-> > > > >  static inline int ftdi_flush(struct ftdi_context *ftdi)
-> > > > >  {
-> > > > >  	uint8_t buf[1];
-> > > > > @@ -116,6 +119,67 @@ void barebox_libftdi1_gpio_set_value(struct ft2232_bitbang *ftbb,
-> > > > >  		ftbb->odata &= ~BIT(off);
-> > > > >  }
-> > > > >  
-> > > > > +/* This is a somewhat hacked function similar in some ways to strtok().
-> > > > > + * It will look for needle with a subsequent '=' in haystack, return a copy of
-> > > > > + * needle and remove everything from the first occurrence of needle to the next
-> > > > > + * delimiter from haystack.
-> > > > > + */
-> > > > > +static char *extract_param(const char *const *haystack, const char *needle,
-> > > > > +			const char *delim)
-> > > > > +{
-> > > > 
-> > > > Parsing comma separated option lists is something we do more than once.
-> > > > Right now we already have parseopt_b and parseopt_hu. Would be nice to
-> > > > have this function alongside with the existing functions. Also
-> > > > parseopt_* look simpler to follow, it may be worth adopting the code for
-> > > > this function.
-> > > 
-> > > At the moment the parseopt_* functions are in the fs/parseopt.c file.
-> > > Adding the parseopt_ul() for parsing u32 option value in arch/sandbox/os/ftdi.c
-> > > will lead to moving fs/parseopt.c file to common code, e.g. to lib/.
-> > > 
-> > > Is it ok to add 'obj-y += parseopt.o' to the lib/Makefile file?
-> > 
-> > obj-y should be fine. ATM fs/parseopt.c is always compiled aswell.
-> 
-> Currently parseopt_hu() returns void and has no explicit flag for parsing error
-> situation. I think that it is reasonable to use explicit error flag in new
-> parseopt_ul() for parsing u32 option value, e.g. use function return value
-> as an error flag.
-> 
-> Any suggestion?
+Hi,
 
-Yes, returning an error is a good idea and given that the return value
-is currently unused this is a good place.
+I have a Terasic DE0-Nano-SoC Kit / Atlas-SoC Kit board:
 
-Sascha
+http://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&CategoryNo=205&No=941
+https://rocketboards.org/foswiki/Documentation/AtlasSoCDevelopmentPlatform
+
+In the barebox menuconfig, if I select "Terasic DE0-NANO-SoC aka Atlas" 
+(MACH_SOCFPGA_TERASIC_DE0_NANO_SOC) for the preloader configuration, the 
+preloader image boot fails at the SDRAM calibration stage.  I need to 
+select "Terasic SoCKit" (MACH_SOCFPGA_TERASIC_SOCKIT) instead, which 
+seems to work fine.  Indeed, when using the 
+"scripts/socfpga_import_preloader" script to import settings from 
+Terasic's FPGA handoff files for DE0-Nano-SoC, the results are a much 
+better match to barebox's "arch/arm/boards/terasic-sockit/" than they 
+are to "arch/arm/boards/terasic-de0-nano-soc/". I got the handoff files 
+from Terasic's CD-ROM zip files at
+http://www.terasic.com/downloads/cd-rom/de0-nano-soc/ .
+There are two CD-ROM zip files for different board revisions, but the 
+handoff files are all the same across both CD-ROM zip files.
+
+I'm currently using "Terasic SoCKit" for the preloader and "Terasic 
+DE0-NANO-SoC aka Atlas" for the main barebox.
+
+My other problem is that there are differences in the "compatible" 
+strings that Linux devicetrees use compared to barebox, which causes the 
+blspec loader to fail to load entries containing devicetree files with 
+different "compatible" strings for what should be the same board.
+
+For MACH_SOCFPGA_TERASIC_DE0_NANO_SOC:
+
+    barebox:
+
+	compatible = "terasic,de0-nano-soc","altr,socfpga-cyclone5", 
+"altr,socfpga";
+
+    (closest match in) Linux:
+
+	compatible = "terasic,de0-atlas", "altr,socfpga-cyclone5", "altr,socfpga";
+
+For MACH_SOCFPGA_TERASIC_SOCKIT:
+
+     barebox:
+
+	compatible = "terasic,sockit", "altr,socfpga";
+
+     Linux:
+
+         compatible = "terasic,socfpga-cyclone5-sockit", 
+"altr,socfpga-cyclone5", "altr,socfpga";
+
+For MACH_SOCFPGA_ALTERA_SOCDK:
+
+     barebox:
+
+	compatible = "altr,socdk", "altr,socfpga-cyclone5", "altr,socfpga";
+
+     Linux:
+
+	compatible = "altr,socfpga-cyclone5-socdk", "altr,socfpga-cyclone5", 
+"altr,socfpga";
+
+
+Would the best fix for those be to replace the existing compatible 
+strings, or use a union between the current barebox and Linux strings?
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=-
+-=(                          Web: http://www.mev.co.uk/  )=-
 
 _______________________________________________
 barebox mailing list
