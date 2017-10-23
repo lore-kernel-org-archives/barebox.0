@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qk0-x243.google.com ([2607:f8b0:400d:c09::243])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e1cjZ-0000xR-9c
- for barebox@lists.infradead.org; Mon, 09 Oct 2017 18:24:58 +0000
-Received: by mail-qk0-x243.google.com with SMTP id z14so16889088qkg.3
- for <barebox@lists.infradead.org>; Mon, 09 Oct 2017 11:24:36 -0700 (PDT)
+ id 1e6Xk3-0002VV-Sv
+ for barebox@lists.infradead.org; Mon, 23 Oct 2017 08:05:49 +0000
+Date: Mon, 23 Oct 2017 10:05:24 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20171023080524.yp3hskyrcia7ao2m@pengutronix.de>
+References: <20171018134117.20289-1-uwe@kleine-koenig.org>
+ <20171018134117.20289-3-uwe@kleine-koenig.org>
+ <20171023072356.o43u72jsrq7xbngu@pengutronix.de>
+ <20171023075520.3wmzpqemg5eqffzu@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20171009093616.12686-3-u.kleine-koenig@pengutronix.de>
-References: <20171009093616.12686-1-u.kleine-koenig@pengutronix.de>
- <20171009093616.12686-3-u.kleine-koenig@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 9 Oct 2017 11:24:35 -0700
-Message-ID: <CAHQ1cqFGVfnZ78u827d0DV9Epcco0QzXwRKud37H3+87w774Uw@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20171023075520.3wmzpqemg5eqffzu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,58 +21,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] e1000: implement support for smaller flash chips
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 3/3] ARM: i.MX: bbu-internal: update board files to make
+ use of new bbu handler
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-T24gTW9uLCBPY3QgOSwgMjAxNyBhdCAyOjM2IEFNLCBVd2UgS2xlaW5lLUvDtm5pZwo8dS5rbGVp
-bmUta29lbmlnQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPiBJbiBvbGRlciByZXZpc2lvbnMgb2Yg
-dGhlIGkyMTAgZGF0YSBzaGVldCAocmV2IDIuOCkgTTI1UEU4MCAoMSBNaUIpIGlzIHN0aWxsCj4g
-bGlzdGVkIGFzIHN1cHBvcnRlZC4gU28gY2hlY2sgdGhlIGZ1bGwgcmFuZ2Ugb2YgRkxBLkZMX1NJ
-WkUgd2hpY2ggYWxzbwo+IHNpbXBsaWZpZXMgdGhlIGNvZGUuCj4KCkxvb2tzIGdvb2QgdG8gbWU6
-CgpBY2tlZC1ieTogQW5kcmV5IFNtaXJub3YgPGFuZHJldy5zbWlybm92QGdtYWlsLmNvbT4KCj4g
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KPiAtLS0KPiAgZHJpdmVycy9uZXQvZTEwMDAvZTEwMDAuaCAgfCAgMyAtLS0KPiAg
-ZHJpdmVycy9uZXQvZTEwMDAvZWVwcm9tLmMgfCAxNCArKystLS0tLS0tLS0tLQo+ICAyIGZpbGVz
-IGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMTQgZGVsZXRpb25zKC0pCj4KPiBkaWZmIC0tZ2l0
-IGEvZHJpdmVycy9uZXQvZTEwMDAvZTEwMDAuaCBiL2RyaXZlcnMvbmV0L2UxMDAwL2UxMDAwLmgK
-PiBpbmRleCAyYTI5ZWY0N2U4MTguLjFiYzU3YmYyNzYwYyAxMDA2NDQKPiAtLS0gYS9kcml2ZXJz
-L25ldC9lMTAwMC9lMTAwMC5oCj4gKysrIGIvZHJpdmVycy9uZXQvZTEwMDAvZTEwMDAuaAo+IEBA
-IC0yMTA2LDkgKzIxMDYsNiBAQCBzdHJ1Y3QgZTEwMDBfZWVwcm9tX2luZm8gewo+ICAjZGVmaW5l
-IEUxMDAwX0ZMQSAgICAgICAgICAgICAgICAgICAgICAweDEyMDFDCj4gICNkZWZpbmUgRTEwMDBf
-RkxBX0ZMX1NJWkVfU0hJRlQgICAgICAgICAgICAgICAgMTcKPiAgI2RlZmluZSBFMTAwMF9GTEFf
-RkxfU0laRV9NQVNLICAgICAgICAgKDBiMTExIDw8IEUxMDAwX0ZMQV9GTF9TSVpFX1NISUZUKSAv
-KiBFRXByb20gU2l6ZSAqLwo+IC0jZGVmaW5lIEUxMDAwX0ZMQV9GTF9TSVpFXzJNQiAgICAgICAg
-ICAwYjEwMQo+IC0jZGVmaW5lIEUxMDAwX0ZMQV9GTF9TSVpFXzRNQiAgICAgICAgICAwYjExMAo+
-IC0jZGVmaW5lIEUxMDAwX0ZMQV9GTF9TSVpFXzhNQiAgICAgICAgICAwYjExMQo+Cj4KPiAgI2Rl
-ZmluZSBFMTAwMF9GTFNXQ1RMX0FERFIoYSkgICAgICAgICAgKChhKSAmIDB4MDBGRkZGRkYpCj4g
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L2UxMDAwL2VlcHJvbS5jIGIvZHJpdmVycy9uZXQvZTEw
-MDAvZWVwcm9tLmMKPiBpbmRleCAxYTBjNmUxNWFiZWYuLjczOWJjMTdhNTE5ZSAxMDA2NDQKPiAt
-LS0gYS9kcml2ZXJzL25ldC9lMTAwMC9lZXByb20uYwo+ICsrKyBiL2RyaXZlcnMvbmV0L2UxMDAw
-L2VlcHJvbS5jCj4gQEAgLTQxNCwxNyArNDE0LDkgQEAgaW50MzJfdCBlMTAwMF9pbml0X2VlcHJv
-bV9wYXJhbXMoc3RydWN0IGUxMDAwX2h3ICpodykKPiAgICAgICAgICAgICAgICAgICAgICAgICBm
-bGEgJj0gRTEwMDBfRkxBX0ZMX1NJWkVfTUFTSzsKPiAgICAgICAgICAgICAgICAgICAgICAgICBm
-bGEgPj49IEUxMDAwX0ZMQV9GTF9TSVpFX1NISUZUOwo+Cj4gLSAgICAgICAgICAgICAgICAgICAg
-ICAgc3dpdGNoIChmbGEpIHsKPiAtICAgICAgICAgICAgICAgICAgICAgICBjYXNlIEUxMDAwX0ZM
-QV9GTF9TSVpFXzhNQjoKPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGVlcHJvbS0+
-d29yZF9zaXplID0gU1pfOE0gLyAyOwo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-YnJlYWs7Cj4gLSAgICAgICAgICAgICAgICAgICAgICAgY2FzZSBFMTAwMF9GTEFfRkxfU0laRV80
-TUI6Cj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBlZXByb20tPndvcmRfc2l6ZSA9
-IFNaXzRNIC8gMjsKPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOwo+IC0g
-ICAgICAgICAgICAgICAgICAgICAgIGNhc2UgRTEwMDBfRkxBX0ZMX1NJWkVfMk1COgo+IC0gICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgZWVwcm9tLT53b3JkX3NpemUgPSBTWl8yTSAvIDI7
-Cj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBicmVhazsKPiAtICAgICAgICAgICAg
-ICAgICAgICAgICBkZWZhdWx0Ogo+ICsgICAgICAgICAgICAgICAgICAgICAgIGlmIChmbGEpIHsK
-PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGVlcHJvbS0+d29yZF9zaXplID0gKFNa
-XzY0SyA8PCBmbGEpIC8gMjsKPiArICAgICAgICAgICAgICAgICAgICAgICB9IGVsc2Ugewo+ICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZWVwcm9tLT53b3JkX3NpemUgPSAyMDQ4Owo+
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGV2X2luZm8oaHctPmRldiwgIlVucHJv
-Z3JhbW1lZCBGbGFzaCBkZXRlY3RlZCwgIgo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgImxpbWl0aW5nIGFjY2VzcyB0byBmaXJzdCA0S0JcbiIpOwo+IC0tCj4gMi4x
-MS4wCj4KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
-cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
-dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Mon, Oct 23, 2017 at 09:55:20AM +0200, Uwe Kleine-K=F6nig wrote:
+> Hello Sascha,
+> =
+
+> On Mon, Oct 23, 2017 at 09:23:56AM +0200, Sascha Hauer wrote:
+> > On Wed, Oct 18, 2017 at 03:41:17PM +0200, Uwe Kleine-K=F6nig wrote:
+> > > diff --git a/arch/arm/boards/dfi-fs700-m60/board.c b/arch/arm/boards/=
+dfi-fs700-m60/board.c
+> > > index bef4612d9e66..c2c73db8e547 100644
+> > > --- a/arch/arm/boards/dfi-fs700-m60/board.c
+> > > +++ b/arch/arm/boards/dfi-fs700-m60/board.c
+> > > @@ -110,8 +110,7 @@ static int dfi_fs700_m60_init(void)
+> > >  	else
+> > >  		flag_mmc |=3D BBU_HANDLER_FLAG_DEFAULT;
+> > >  =
+
+> > > -	imx6_bbu_internal_mmc_register_handler("mmc", "/dev/mmc3.boot0",
+> > > -		flag_mmc);
+> > > +	imx6_bbu_internal_mmcboot_register_handler("mmc", "mmc3", flag_mmc);
+> > =
+
+> > This board at least uses the boot1 partition for the environment, so we
+> > can't use your new handler without moving the environment first.
+> =
+
+> Good catch, I will drop this board's modifications then.
+
+I haven't checked the other boards, they may or may not do the same.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
