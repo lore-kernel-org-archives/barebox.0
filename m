@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e1UUP-0003Ep-Dr
- for barebox@lists.infradead.org; Mon, 09 Oct 2017 09:36:47 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Mon,  9 Oct 2017 11:36:16 +0200
-Message-Id: <20171009093616.12686-4-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20171009093616.12686-1-u.kleine-koenig@pengutronix.de>
-References: <20171009093616.12686-1-u.kleine-koenig@pengutronix.de>
+ id 1e6XaI-0006cI-J4
+ for barebox@lists.infradead.org; Mon, 23 Oct 2017 07:55:46 +0000
+Date: Mon, 23 Oct 2017 09:55:20 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20171023075520.3wmzpqemg5eqffzu@pengutronix.de>
+References: <20171018134117.20289-1-uwe@kleine-koenig.org>
+ <20171018134117.20289-3-uwe@kleine-koenig.org>
+ <20171023072356.o43u72jsrq7xbngu@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20171023072356.o43u72jsrq7xbngu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,40 +20,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] HACK: e1000: don't check for FLSWCTL.GLDONE when waiting
- for idle
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 3/3] ARM: i.MX: bbu-internal: update board files to make
+ use of new bbu handler
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-I don't understand all the consequences of this patch yet, but this makes reading
-out the flash chip connected to an i210 work for me.
----
- drivers/net/e1000/eeprom.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Hello Sascha,
 
-diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-index 739bc17a519e..482a969f8d56 100644
---- a/drivers/net/e1000/eeprom.c
-+++ b/drivers/net/e1000/eeprom.c
-@@ -709,8 +709,8 @@ static int e1000_flash_mode_wait_for_idle(struct e1000_hw *hw)
- 	 * execution by polling only FLSWCTL.DONE */
- 
- 	const int ret = e1000_poll_reg(hw, E1000_FLSWCTL,
--				       E1000_FLSWCTL_DONE | E1000_FLSWCTL_GLDONE,
--				       E1000_FLSWCTL_DONE | E1000_FLSWCTL_GLDONE,
-+				       E1000_FLSWCTL_DONE,
-+				       E1000_FLSWCTL_DONE,
- 				       SECOND);
- 	if (ret < 0)
- 		dev_err(hw->dev,
--- 
-2.11.0
+On Mon, Oct 23, 2017 at 09:23:56AM +0200, Sascha Hauer wrote:
+> On Wed, Oct 18, 2017 at 03:41:17PM +0200, Uwe Kleine-K=F6nig wrote:
+> > diff --git a/arch/arm/boards/dfi-fs700-m60/board.c b/arch/arm/boards/df=
+i-fs700-m60/board.c
+> > index bef4612d9e66..c2c73db8e547 100644
+> > --- a/arch/arm/boards/dfi-fs700-m60/board.c
+> > +++ b/arch/arm/boards/dfi-fs700-m60/board.c
+> > @@ -110,8 +110,7 @@ static int dfi_fs700_m60_init(void)
+> >  	else
+> >  		flag_mmc |=3D BBU_HANDLER_FLAG_DEFAULT;
+> >  =
 
+> > -	imx6_bbu_internal_mmc_register_handler("mmc", "/dev/mmc3.boot0",
+> > -		flag_mmc);
+> > +	imx6_bbu_internal_mmcboot_register_handler("mmc", "mmc3", flag_mmc);
+> =
+
+> This board at least uses the boot1 partition for the environment, so we
+> can't use your new handler without moving the environment first.
+
+Good catch, I will drop this board's modifications then.
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
