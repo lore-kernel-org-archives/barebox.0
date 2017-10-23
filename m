@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qk0-x241.google.com ([2607:f8b0:400d:c09::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e1chc-0000NC-DH
- for barebox@lists.infradead.org; Mon, 09 Oct 2017 18:22:59 +0000
-Received: by mail-qk0-x241.google.com with SMTP id a12so14214304qka.4
- for <barebox@lists.infradead.org>; Mon, 09 Oct 2017 11:22:35 -0700 (PDT)
+ id 1e6X2g-0005Q6-D3
+ for barebox@lists.infradead.org; Mon, 23 Oct 2017 07:21:00 +0000
+Date: Mon, 23 Oct 2017 09:20:36 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20171023072036.23nneaapd7orpopv@pengutronix.de>
+References: <20171018134117.20289-1-uwe@kleine-koenig.org>
+ <20171018134117.20289-2-uwe@kleine-koenig.org>
 MIME-Version: 1.0
-In-Reply-To: <20171009093616.12686-2-u.kleine-koenig@pengutronix.de>
-References: <20171009093616.12686-1-u.kleine-koenig@pengutronix.de>
- <20171009093616.12686-2-u.kleine-koenig@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 9 Oct 2017 11:22:34 -0700
-Message-ID: <CAHQ1cqF8gPKEzW_SR_NQv0ZPnL+KWfTi-pEQE7PvVvu2VpEgYg@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20171018134117.20289-2-uwe@kleine-koenig.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,83 +19,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] e1000: implement register mapping for E1000_{EERD,
- FLSW{CTL, DATA, CNT}}
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 2/3] ARM: i.MX: bbu-internal: new handler to make use of
+ mmc boot partitions
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>
+Cc: barebox@lists.infradead.org, Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 
-T24gTW9uLCBPY3QgOSwgMjAxNyBhdCAyOjM2IEFNLCBVd2UgS2xlaW5lLUvDtm5pZwo8dS5rbGVp
-bmUta29lbmlnQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPiBGaXhlczogNGZmMzI2OWE3MGI1ICgi
-ZTEwMDA6IEV4cG9zZSBpMjEwJ3MgZXh0ZXJuYWwgZmxhc2ggYXMgTVREIikKPiBTaWduZWQtb2Zm
-LWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgo+
-IC0tLQo+ICBkcml2ZXJzL25ldC9lMTAwMC9lMTAwMC5oIHwgIDkgKysrKystLS0tCj4gIGRyaXZl
-cnMvbmV0L2UxMDAwL3JlZ2lvLmMgfCAxMiArKysrKysrKysrKysKPiAgMiBmaWxlcyBjaGFuZ2Vk
-LCAxNyBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQo+Cj4gZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvbmV0L2UxMDAwL2UxMDAwLmggYi9kcml2ZXJzL25ldC9lMTAwMC9lMTAwMC5oCj4gaW5kZXgg
-ZTZiNDkzYzg0Y2MxLi4yYTI5ZWY0N2U4MTggMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9uZXQvZTEw
-MDAvZTEwMDAuaAo+ICsrKyBiL2RyaXZlcnMvbmV0L2UxMDAwL2UxMDAwLmgKPiBAQCAtNDEwLDcg
-KzQxMCw4IEBAIHN0cnVjdCBlMTAwMF90eF9kZXNjIHsKPiAgI2RlZmluZSBFMTAwMF9DVFJMICAg
-ICAweDAwMDAwIC8qIERldmljZSBDb250cm9sIC0gUlcgKi8KPiAgI2RlZmluZSBFMTAwMF9TVEFU
-VVMgICAweDAwMDA4IC8qIERldmljZSBTdGF0dXMgLSBSTyAqLwo+ICAjZGVmaW5lIEUxMDAwX0VF
-Q0QgICAgIDB4MDAwMTAgLyogRUVQUk9NL0ZsYXNoIENvbnRyb2wgLSBSVyAqLwo+IC0jZGVmaW5l
-IEUxMDAwX0VFUkQgICAgIDB4MDAwMTQgLyogRUVQUk9NIFJlYWQgLSBSVyAqLwo+ICsjZGVmaW5l
-IEUxMDAwX0VFUkQgICAgIChFMTAwMF9NSUdIVF9CRV9SRU1BUFBFRCB8IDB4MDAwMTQpICAgICAv
-KiBFRVBST00gUmVhZCAtIFJXICovCj4gKyNkZWZpbmUgRTEwMDBfSTIxMF9FRVJEICAgICAweDEy
-MDE0ICAgIC8qIEVFUFJPTSBSZWFkIC0gUlcgKi8KPiAgI2RlZmluZSBFMTAwMF9DVFJMX0VYVCAw
-eDAwMDE4IC8qIEV4dGVuZGVkIERldmljZSBDb250cm9sIC0gUlcgKi8KPiAgI2RlZmluZSBFMTAw
-MF9NRElDICAgICAweDAwMDIwIC8qIE1ESSBDb250cm9sIC0gUlcgKi8KPiAgI2RlZmluZSBFMTAw
-MF9GQ0FMICAgICAweDAwMDI4IC8qIEZsb3cgQ29udHJvbCBBZGRyZXNzIExvdyAtIFJXICovCj4g
-QEAgLTQ0NywxMSArNDQ4LDExIEBAIHN0cnVjdCBlMTAwMF90eF9kZXNjIHsKPiAgI2RlZmluZSBF
-MTAwMF9GTEFTSFQgICAweDAxMDI4ICAvKiBGTEFTSCBUaW1lciBSZWdpc3RlciAqLwo+ICAjZGVm
-aW5lIEUxMDAwX0VFV1IgICAgIChFMTAwMF9NSUdIVF9CRV9SRU1BUFBFRCB8IDB4MDEwMkMpICAv
-KiBFRVBST00gV3JpdGUgUmVnaXN0ZXIgLSBSVyAqLwo+ICAjZGVmaW5lIEUxMDAwX0kyMTBfRUVX
-UiAgICAgMHgxMjAxOCAgLyogRUVQUk9NIFdyaXRlIFJlZ2lzdGVyIC0gUlcgKi8KPiAtI2RlZmlu
-ZSBFMTAwMF9GTFNXQ1RMICAweDAxMDMwICAvKiBGTEFTSCBjb250cm9sIHJlZ2lzdGVyICovCj4g
-KyNkZWZpbmUgRTEwMDBfRkxTV0NUTCAgKEUxMDAwX01JR0hUX0JFX1JFTUFQUEVEIHwgMHgwMTAz
-MCkgIC8qIEZMQVNIIGNvbnRyb2wgcmVnaXN0ZXIgKi8KPiAgI2RlZmluZSBFMTAwMF9JMjEwX0ZM
-U1dDVEwgMHgxMjA0OCAgLyogRkxBU0ggY29udHJvbCByZWdpc3RlciAqLwo+IC0jZGVmaW5lIEUx
-MDAwX0ZMU1dEQVRBIDB4MDEwMzQgIC8qIEZMQVNIIGRhdGEgcmVnaXN0ZXIgKi8KPiArI2RlZmlu
-ZSBFMTAwMF9GTFNXREFUQSAoRTEwMDBfTUlHSFRfQkVfUkVNQVBQRUQgfCAweDAxMDM0KSAgLyog
-RkxBU0ggZGF0YSByZWdpc3RlciAqLwo+ICAjZGVmaW5lIEUxMDAwX0kyMTBfRkxTV0RBVEEgMHgx
-MjA0QyAgLyogRkxBU0ggZGF0YSByZWdpc3RlciAqLwo+IC0jZGVmaW5lIEUxMDAwX0ZMU1dDTlQg
-IDB4MDEwMzggIC8qIEZMQVNIIEFjY2VzcyBDb3VudGVyICovCj4gKyNkZWZpbmUgRTEwMDBfRkxT
-V0NOVCAgKEUxMDAwX01JR0hUX0JFX1JFTUFQUEVEIHwgMHgwMTAzOCkgIC8qIEZMQVNIIEFjY2Vz
-cyBDb3VudGVyICovCj4gICNkZWZpbmUgRTEwMDBfSTIxMF9GTFNXQ05UICAweDEyMDUwICAvKiBG
-TEFTSCBBY2Nlc3MgQ291bnRlciAqLwo+ICAjZGVmaW5lIEUxMDAwX0ZMT1AgICAgIDB4MDEwM0Mg
-IC8qIEZMQVNIIE9wY29kZSBSZWdpc3RlciAqLwo+ICAjZGVmaW5lIEUxMDAwX0VSVCAgICAgIDB4
-MDIwMDggIC8qIEVhcmx5IFJ4IFRocmVzaG9sZCAtIFJXICovCj4gZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvbmV0L2UxMDAwL3JlZ2lvLmMgYi9kcml2ZXJzL25ldC9lMTAwMC9yZWdpby5jCj4gaW5kZXgg
-MTYxMGQ1ODUxZjA1Li45ZWYzMjVmYjg1ODEgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9uZXQvZTEw
-MDAvcmVnaW8uYwo+ICsrKyBiL2RyaXZlcnMvbmV0L2UxMDAwL3JlZ2lvLmMKPiBAQCAtNyw2ICs3
-LDkgQEAgc3RhdGljIHVpbnQzMl90IGUxMDAwX3RydWVfb2Zmc2V0KHN0cnVjdCBlMTAwMF9odyAq
-aHcsIHVpbnQzMl90IHJlZykKPiAgICAgICAgIGlmIChyZWcgJiBFMTAwMF9NSUdIVF9CRV9SRU1B
-UFBFRCkgewo+ICAgICAgICAgICAgICAgICBpZiAoaHctPm1hY190eXBlID09IGUxMDAwX2lnYikg
-ewo+ICAgICAgICAgICAgICAgICAgICAgICAgIHN3aXRjaCAocmVnKSB7Cj4gKyAgICAgICAgICAg
-ICAgICAgICAgICAgY2FzZSBFMTAwMF9FRVJEOgo+ICsgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgcmVnID0gRTEwMDBfSTIxMF9FRVJEOwo+ICsgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgYnJlYWs7CgpSZXYuIDIuOCBsaXN0cyAweDAwMDE0IGFzIGFsaWFzIGZvciAweDEyMDE0
-ICh0aGF0J3Mgd2h5IEkgZGlkbid0IGRvCmFueSAicmUtbWFwcGluZyIgaGVyZSkgaXMgaXQgbm90
-IHRydWU/Cgo+ICAgICAgICAgICAgICAgICAgICAgICAgIGNhc2UgRTEwMDBfRUVXUjoKPiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJlZyA9IEUxMDAwX0kyMTBfRUVXUjsKPiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOwo+IEBAIC0xNiw2ICsxOSwxNSBAQCBz
-dGF0aWMgdWludDMyX3QgZTEwMDBfdHJ1ZV9vZmZzZXQoc3RydWN0IGUxMDAwX2h3ICpodywgdWlu
-dDMyX3QgcmVnKQo+ICAgICAgICAgICAgICAgICAgICAgICAgIGNhc2UgRTEwMDBfRUVNTkdDVEw6
-Cj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZWcgPSBFMTAwMF9JMjEwX0VFTU5H
-Q1RMOwo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7Cj4gKyAgICAgICAg
-ICAgICAgICAgICAgICAgY2FzZSBFMTAwMF9GTFNXQ1RMOgo+ICsgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgcmVnID0gRTEwMDBfSTIxMF9GTFNXQ1RMOwo+ICsgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgYnJlYWs7Cj4gKyAgICAgICAgICAgICAgICAgICAgICAgY2FzZSBFMTAw
-MF9GTFNXQ05UOgo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVnID0gRTEwMDBf
-STIxMF9GTFNXQ05UOwo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7Cj4g
-KyAgICAgICAgICAgICAgICAgICAgICAgY2FzZSBFMTAwMF9GTFNXREFUQToKPiArICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHJlZyA9IEUxMDAwX0kyMTBfRkxTV0RBVEE7Cj4gKyAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICBicmVhazsKClNvbWVob3cgbWlzc2VkIHRoZXNlIGd1
-eXMsIHNvcnJ5IGFib3V0IHRoYXQuCgpBY2tlZC1ieTogQW5kcmV5IFNtaXJub3YgPGFuZHJldy5z
-bWlybm92QGdtYWlsLmNvbT4KClRoYW5rcywKQW5kcmV5IFNtaXJub3YKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Wed, Oct 18, 2017 at 03:41:16PM +0200, Uwe Kleine-K=F6nig wrote:
+> From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> =
+
+> This handler updates the non-active MMC boot partition and after a
+> successful update makes the updated partition the active one. This way
+> the machine should continue to be bootable when the update fails.
+
+Adding something like this as a comment above
+imx6_bbu_internal_mmcboot_register_handler() would be nice.
+
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  arch/arm/mach-imx/imx-bbu-internal.c | 71 ++++++++++++++++++++++++++++++=
+++++++
+>  1 file changed, 71 insertions(+)
+> =
+
+> diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx=
+-bbu-internal.c
+> index 254ccb6369e6..c8a8b5b689fc 100644
+> --- a/arch/arm/mach-imx/imx-bbu-internal.c
+> +++ b/arch/arm/mach-imx/imx-bbu-internal.c
+> @@ -29,6 +29,7 @@
+>  #include <linux/mtd/mtd-abi.h>
+>  #include <linux/stat.h>
+>  #include <ioctl.h>
+> +#include <environment.h>
+>  #include <mach/bbu.h>
+>  =
+
+>  #define FLASH_HEADER_OFFSET_MMC		0x400
+> @@ -369,6 +370,63 @@ static int imx_bbu_internal_v2_update(struct bbu_han=
+dler *handler, struct bbu_da
+>  	return ret;
+>  }
+>  =
+
+> +static int imx_bbu_internal_v2_mmcboot_update(struct bbu_handler *handle=
+r,
+> +					      struct bbu_data *data)
+> +{
+> +	struct imx_internal_bbu_handler *imx_handler =3D
+> +		container_of(handler, struct imx_internal_bbu_handler, handler);
+> +	int ret;
+> +	uint32_t *barker;
+> +	char *bootpartvar;
+> +	const char *bootpart;
+> +	char *devicefile;
+> +
+> +	barker =3D data->image + imx_handler->flash_header_offset;
+> +
+> +	if (*barker !=3D IVT_BARKER) {
+> +		printf("Board does not provide DCD data and this image is no imximage\=
+n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	ret =3D asprintf(&bootpartvar, "%s.boot", data->devicefile);
+> +	if (ret < 0) {
+> +		printf("Failed to allocate string for boot variable\n");
+
+I think messages for failed memory allocations which eat more space than
+the actual allocation should be avoided. Just return -ENOMEM without a
+message.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
