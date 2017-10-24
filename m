@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e6X9P-0007JB-DY
- for barebox@lists.infradead.org; Mon, 23 Oct 2017 07:27:57 +0000
-Date: Mon, 23 Oct 2017 09:27:33 +0200
+ id 1e6y31-00016h-3M
+ for barebox@lists.infradead.org; Tue, 24 Oct 2017 12:11:09 +0000
+Date: Tue, 24 Oct 2017 14:10:37 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171023072733.bcxmpkiqu64qgud2@pengutronix.de>
-References: <20171019065308.2507-1-u.oelmann@pengutronix.de>
+Message-ID: <20171024121037.47o5xvnwxndmjsva@pengutronix.de>
+References: <20171023092103.10023-1-uwe@kleine-koenig.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20171019065308.2507-1-u.oelmann@pengutronix.de>
+In-Reply-To: <20171023092103.10023-1-uwe@kleine-koenig.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +22,27 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] Allow decimally formatted data for the commands
- "i2c_write" and "spi"
-To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2 0/3] ARM: i.MX: bbu-internal: new handler to make use
+ of mmc boot partitions
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>
+Cc: barebox@lists.infradead.org
 
-On Thu, Oct 19, 2017 at 08:53:06AM +0200, Ulrich =D6lmann wrote:
-> Currently both commands set the default base for parsing user supplied da=
-ta to
-> 16 which makes it impossible at all to parse decimal data.
+On Mon, Oct 23, 2017 at 11:21:00AM +0200, Uwe Kleine-K=F6nig wrote:
+> Hello,
 > =
 
-> Presumably this originates from having the convenience to easily copy'n'p=
-aste
-> hex dumped data into these commands without further preprocessing it befo=
-re.
+> this is v2 of the series. I dropped the error messages as requested by
+> Sascha and only use the new function on a single board now as the others
+> have the environment in boot1. Also there is a comment now about what
+> the new handler does and how it should be used.
 > =
 
-> Change the default base to 0 to particularly allow decimally formatted da=
-ta.
-> This is in accordance to what the "mw" command does.
-> =
-
-> Changes since (implicit) v1 (20171017) (http://lists.infradead.org/piperm=
-ail/barebox/2017-October/031356.html):
->   - extended the commit messages to include the motivation for the change
->   - added Uwe's acked-by
-> =
-
-> Ulrich =D6lmann (2):
->   commands: i2c: do not restrict i2c_write's data to be hex-formatted
->   commands: spi: do not restrict spi's data to be hex-formatted
+> Uwe Kleine-K=F6nig (3):
+>   ARM: i.MX: bbu-internal: make filename for device to write to
+>     adaptable
+>   ARM: i.MX: bbu-internal: new handler to make use of mmc boot
+>     partitions
+>   ARM: i.MX: bbu-internal: update tqma6x to make use of new bbu handler
 
 Applied, thanks
 
