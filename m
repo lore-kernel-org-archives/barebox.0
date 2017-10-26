@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo68.mail-out.ovh.net ([46.105.41.146])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e7f1Y-0000AT-Ok
- for barebox@lists.infradead.org; Thu, 26 Oct 2017 10:04:30 +0000
-Received: from player711.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo68.mail-out.ovh.net (Postfix) with ESMTP id 6E92D9836F
- for <barebox@lists.infradead.org>; Thu, 26 Oct 2017 12:04:06 +0200 (CEST)
-Mime-Version: 1.0 (Mac OS X Mail 11.0 \(3445.1.7\))
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <1509011995-15140-1-git-send-email-plagnioj@jcrosoft.com>
-Date: Thu, 26 Oct 2017 18:03:40 +0800
-Message-Id: <027ABFEF-C4EB-430A-B1EC-F89FCE84EA1D@jcrosoft.com>
-References: <1509011995-15140-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1e7ewz-0004m4-Pu
+ for barebox@lists.infradead.org; Thu, 26 Oct 2017 09:59:48 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu, 26 Oct 2017 11:59:17 +0200
+Message-Id: <20171026095917.2688-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,71 +15,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] EFI: add poweroff support
+Subject: [PATCH] usb: imx: implement support for "over-current-active-high"
+ property
 To: barebox@lists.infradead.org
 
-wrong patch sorry
-
-Best Regards,
-J.
-
-> On 26 Oct 2017, at 5:59 PM, Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
-> arch/x86/configs/efi_defconfig | 1 +
-> common/efi/efi.c               | 7 +++++++
-> drivers/efi/Kconfig            | 1 +
-> 3 files changed, 9 insertions(+)
-> 
-> diff --git a/arch/x86/configs/efi_defconfig b/arch/x86/configs/efi_defconfig
-> index 0d9a44a4d..5f11c6c4e 100644
-> --- a/arch/x86/configs/efi_defconfig
-> +++ b/arch/x86/configs/efi_defconfig
-> @@ -55,6 +55,7 @@ CONFIG_CMD_CRC_CMP=y
-> CONFIG_CMD_MM=y
-> CONFIG_CMD_DETECT=y
-> CONFIG_CMD_FLASH=y
-> +CONFIG_CMD_POWEROFF=y
-> CONFIG_CMD_2048=y
-> CONFIG_CMD_BAREBOX_UPDATE=y
-> CONFIG_CMD_OF_NODE=y
-> diff --git a/common/efi/efi.c b/common/efi/efi.c
-> index cd4f5f029..96601cfce 100644
-> --- a/common/efi/efi.c
-> +++ b/common/efi/efi.c
-> @@ -289,6 +289,13 @@ static int restart_register_feature(void)
-> }
-> coredevice_initcall(restart_register_feature);
-> 
-> +void __noreturn poweroff(void)
-> +{
-> +	RT->reset_system(EFI_RESET_SHUTDOWN, EFI_SUCCESS, 0, NULL);
-> +
-> +	hang();
-> +}
-> +
-> extern char image_base[];
-> extern initcall_t __barebox_initcalls_start[], __barebox_early_initcalls_end[],
-> 		  __barebox_initcalls_end[];
-> diff --git a/drivers/efi/Kconfig b/drivers/efi/Kconfig
-> index 2cd9dd504..5c988d2e1 100644
-> --- a/drivers/efi/Kconfig
-> +++ b/drivers/efi/Kconfig
-> @@ -1,2 +1,3 @@
-> config EFI_BOOTUP
-> 	bool
-> +	select HAS_POWEROFF
-> -- 
-> 2.11.0
-> 
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBwcm9wZXJ0eSBpcyBhbHJlYWR5IGRvY3VtZW50ZWQgaW4gdGhlIGJpbmRpbmdzIGFuZCBz
+dXBwb3J0ZWQgYnkKTGludXguIEFzIG9uIGkuTVgyNSB0aGUgSFcgZGVmYXVsdCBpcyBhY3RpdmUg
+aGlnaCBhbmQgdXAgdG8gbm93IGJhcmVib3gKZGlkbid0IGZvcmNlIHRoaXMgdG8gbG93ICh3aGlj
+aCBpcyB0aGUgZGVmYXVsdCBmb3IgZS5nLiBpLk1YNiksIGFkZCB0aGUKcHJvcGVydHkgdG8gYmFy
+ZWJveCcgaW14MjUuZHRzaSB0byBrZWVwIGV4aXN0aW5nIGJlaGF2aW91ci4gSWYgb24gYQpib2Fy
+ZCB0aGUgT0MgcGluIGlzIGFjdGl2ZSBsb3csIHlvdSBuZWVkIHRvIGFkZAoKCS9kZWxldGUtcHJv
+cGVydHkvIG92ZXItY3VycmVudC1hY3RpdmUtaGlnaDsKCmluIHRoZSBib2FyZC5kdHMuCgpTaWdu
+ZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4
+LmRlPgotLS0KIGFyY2gvYXJtL2R0cy9pbXgyNS5kdHNpICAgICAgICB8IDggKysrKysrKysKIGRy
+aXZlcnMvdXNiL2lteC9jaGlwaWRlYS1pbXguYyB8IDQgKysrKwogMiBmaWxlcyBjaGFuZ2VkLCAx
+MiBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL2lteDI1LmR0c2kgYi9h
+cmNoL2FybS9kdHMvaW14MjUuZHRzaQppbmRleCAxM2ZiY2M0ZjhkYTYuLjJlMDY5ZTZmMDMxNCAx
+MDA2NDQKLS0tIGEvYXJjaC9hcm0vZHRzL2lteDI1LmR0c2kKKysrIGIvYXJjaC9hcm0vZHRzL2lt
+eDI1LmR0c2kKQEAgLTI5LDMgKzI5LDExIEBACiAmdXNibWlzYyB7CiAJc3RhdHVzID0gIm9rYXki
+OwogfTsKKworJnVzYm90ZyB7CisJb3Zlci1jdXJyZW50LWFjdGl2ZS1oaWdoOworfTsKKworJnVz
+Ymhvc3QxIHsKKwlvdmVyLWN1cnJlbnQtYWN0aXZlLWhpZ2g7Cit9OwpkaWZmIC0tZ2l0IGEvZHJp
+dmVycy91c2IvaW14L2NoaXBpZGVhLWlteC5jIGIvZHJpdmVycy91c2IvaW14L2NoaXBpZGVhLWlt
+eC5jCmluZGV4IDMwOWQ1MzUzMDM3Yy4uNWY2OTg4NTQwZmNiIDEwMDY0NAotLS0gYS9kcml2ZXJz
+L3VzYi9pbXgvY2hpcGlkZWEtaW14LmMKKysrIGIvZHJpdmVycy91c2IvaW14L2NoaXBpZGVhLWlt
+eC5jCkBAIC0xNjAsNiArMTYwLDEwIEBAIHN0YXRpYyBpbnQgaW14X2NoaXBpZGVhX3Byb2JlX2R0
+KHN0cnVjdCBpbXhfY2hpcGlkZWEgKmNpKQogCQkJCSJkaXNhYmxlLW92ZXItY3VycmVudCIsIE5V
+TEwpKQogCQljaS0+ZmxhZ3MgfD0gTVhDX0VIQ0lfRElTQUJMRV9PVkVSQ1VSUkVOVDsKIAorCWVs
+c2UgaWYgKCFvZl9maW5kX3Byb3BlcnR5KGNpLT5kZXYtPmRldmljZV9ub2RlLAorCQkJCSAgICJv
+dmVyLWN1cnJlbnQtYWN0aXZlLWhpZ2giLCBOVUxMKSkKKwkJY2ktPmZsYWdzIHw9IE1YQ19FSENJ
+X09DX1BJTl9BQ1RJVkVfTE9XOworCiAJcmV0dXJuIDA7CiB9CiAKLS0gCjIuMTEuMAoKCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
+ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
