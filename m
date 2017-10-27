@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
- by casper.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1e85ll-0004JQ-D7
- for barebox@lists.infradead.org; Fri, 27 Oct 2017 14:38:01 +0000
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1e85lq-0006SU-AM
+ for barebox@lists.infradead.org; Fri, 27 Oct 2017 14:38:04 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 690DAA0098B
- for <barebox@lists.infradead.org>; Fri, 27 Oct 2017 16:39:27 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 9F1B4A005D7
+ for <barebox@lists.infradead.org>; Fri, 27 Oct 2017 16:39:26 +0200 (CEST)
 From: Daniel Schultz <d.schultz@phytec.de>
-Date: Fri, 27 Oct 2017 16:37:32 +0200
-Message-Id: <1509115052-4331-5-git-send-email-d.schultz@phytec.de>
+Date: Fri, 27 Oct 2017 16:37:29 +0200
+Message-Id: <1509115052-4331-2-git-send-email-d.schultz@phytec.de>
 In-Reply-To: <1509115052-4331-1-git-send-email-d.schultz@phytec.de>
 References: <1509115052-4331-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,68 +24,116 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] ARM: phytec-som-am335x: Set MAC addresses from state
+Subject: [PATCH 2/5] ARM: dts: AM335x: Add state framework
 To: barebox@lists.infradead.org
 
-If a state with the name 'am335x_phytec_mac_state' is available, valid MAC
-addresses from this state get registerd to their ethernet device.
+This patch adds the state framework with an EEPROM partition and two
+nodes for MAC addresses. It will be available for all phycore AM335x
+images with EEPROMs.
 
 Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 ---
- arch/arm/boards/phytec-som-am335x/board.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ arch/arm/dts/am335x-phytec-phycore-som-emmc.dts    |  1 +
+ .../dts/am335x-phytec-phycore-som-nand-no-spi.dts  |  1 +
+ arch/arm/dts/am335x-phytec-phycore-som-nand.dts    |  1 +
+ arch/arm/dts/am335x-phytec-state.dtsi              | 52 ++++++++++++++++++++++
+ 4 files changed, 55 insertions(+)
+ create mode 100644 arch/arm/dts/am335x-phytec-state.dtsi
 
-diff --git a/arch/arm/boards/phytec-som-am335x/board.c b/arch/arm/boards/phytec-som-am335x/board.c
-index dc3b84a..34d4df1 100644
---- a/arch/arm/boards/phytec-som-am335x/board.c
-+++ b/arch/arm/boards/phytec-som-am335x/board.c
-@@ -21,10 +21,12 @@
- #include <bootsource.h>
- #include <common.h>
- #include <nand.h>
-+#include <net.h>
- #include <init.h>
- #include <io.h>
- #include <linux/sizes.h>
- #include <envfs.h>
-+#include <state.h>
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
- #include <linux/phy.h>
-@@ -67,6 +69,10 @@ static char *nandslots[] = {
+diff --git a/arch/arm/dts/am335x-phytec-phycore-som-emmc.dts b/arch/arm/dts/am335x-phytec-phycore-som-emmc.dts
+index 880700e..f264498 100644
+--- a/arch/arm/dts/am335x-phytec-phycore-som-emmc.dts
++++ b/arch/arm/dts/am335x-phytec-phycore-som-emmc.dts
+@@ -16,6 +16,7 @@
  
- static int physom_devices_init(void)
- {
-+	struct state *state;
-+	struct state_variable *sv;
-+	struct state_mac *mac;
+ #include "am33xx.dtsi"
+ #include "am335x-phytec-phycore-som.dtsi"
++#include "am335x-phytec-state.dtsi"
+ 
+ / {
+ 	model = "Phytec phyCORE EMMC AM335x";
+diff --git a/arch/arm/dts/am335x-phytec-phycore-som-nand-no-spi.dts b/arch/arm/dts/am335x-phytec-phycore-som-nand-no-spi.dts
+index 2c2fab0..b35294c 100644
+--- a/arch/arm/dts/am335x-phytec-phycore-som-nand-no-spi.dts
++++ b/arch/arm/dts/am335x-phytec-phycore-som-nand-no-spi.dts
+@@ -9,6 +9,7 @@
+ 
+ #include "am33xx.dtsi"
+ #include "am335x-phytec-phycore-som.dtsi"
++#include "am335x-phytec-state.dtsi"
+ 
+ / {
+ 	model = "Phytec phyCORE AM335x";
+diff --git a/arch/arm/dts/am335x-phytec-phycore-som-nand.dts b/arch/arm/dts/am335x-phytec-phycore-som-nand.dts
+index 6ff2447..4d7606b 100644
+--- a/arch/arm/dts/am335x-phytec-phycore-som-nand.dts
++++ b/arch/arm/dts/am335x-phytec-phycore-som-nand.dts
+@@ -9,6 +9,7 @@
+ 
+ #include "am33xx.dtsi"
+ #include "am335x-phytec-phycore-som.dtsi"
++#include "am335x-phytec-state.dtsi"
+ 
+ / {
+ 	model = "Phytec phyCORE AM335x";
+diff --git a/arch/arm/dts/am335x-phytec-state.dtsi b/arch/arm/dts/am335x-phytec-state.dtsi
+new file mode 100644
+index 0000000..fbc35b9
+--- /dev/null
++++ b/arch/arm/dts/am335x-phytec-state.dtsi
+@@ -0,0 +1,52 @@
++/*
++ * Copyright (C) 2017 PHYTEC Messtechnik GmbH,
++ * Author: Daniel Schultz <d.schultz@phytec.de>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * version 2 as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
 +
- 	if (!of_machine_is_compatible("phytec,am335x-som"))
- 		return 0;
- 
-@@ -114,6 +120,22 @@ static int physom_devices_init(void)
- 				ARRAY_SIZE(nandslots));
- 	am33xx_bbu_emmc_mlo_register_handler("MLO.emmc", "/dev/mmc1");
- 
-+	if (IS_ENABLED(CONFIG_STATE)) {
-+		state = state_by_name("am335x_phytec_mac_state");
-+		if (state) {
-+			sv = state_find_var(state, "mac0");
-+			if (!IS_ERR(sv)) {
-+				mac = to_state_mac(sv);
-+				eth_register_ethaddr(0, mac->value);
-+			}
-+			sv = state_find_var(state, "mac1");
-+			if (!IS_ERR(sv)) {
-+				mac = to_state_mac(sv);
-+				eth_register_ethaddr(1, mac->value);
-+			}
-+		}
-+	}
++/ {
++	aliases {
++		am335x_phytec_mac_state = &am335x_phytec_mac_state;
++	};
 +
- 	if (IS_ENABLED(CONFIG_SHELL_NONE))
- 		return am33xx_of_register_bootdevice();
- 
++	am335x_phytec_mac_state: am335x_phytec_mac_state {
++		magic = <0x3f45620e>;
++		compatible = "barebox,state";
++		backend-type = "raw";
++		backend = <&backend_state_eeprom>;
++		backend-stridesize = <40>;
++
++		#address-cells = <1>;
++		#size-cells = <1>;
++		mac0 {
++			reg = <0x0 0x6>;
++			type = "mac";
++		};
++		mac1 {
++			reg = <0x6 0x6>;
++			type = "mac";
++		};
++
++	};
++};
++
++&eeprom {
++	status = "okay";
++	partitions {
++		compatible = "fixed-partitions";
++		#size-cells = <1>;
++		#address-cells = <1>;
++		backend_state_eeprom: state@0 {
++			reg = <0x000 0x120>;
++			label = "state-eeprom";
++		};
++	};
++};
 -- 
 2.7.4
 
