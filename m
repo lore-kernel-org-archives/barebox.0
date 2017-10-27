@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
- by casper.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1e85mA-0004Oy-Fn
- for barebox@lists.infradead.org; Fri, 27 Oct 2017 14:38:26 +0000
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
+ id 1e85mA-0006T3-0Q
+ for barebox@lists.infradead.org; Fri, 27 Oct 2017 14:38:22 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id D45F6A009D8
+ by root.phytec.de (Postfix) with ESMTP id 9DC58A009D7
  for <barebox@lists.infradead.org>; Fri, 27 Oct 2017 16:39:35 +0200 (CEST)
 From: Daniel Schultz <d.schultz@phytec.de>
-Date: Fri, 27 Oct 2017 16:37:41 +0200
-Message-Id: <1509115061-4385-3-git-send-email-d.schultz@phytec.de>
+Date: Fri, 27 Oct 2017 16:37:40 +0200
+Message-Id: <1509115061-4385-2-git-send-email-d.schultz@phytec.de>
 In-Reply-To: <1509115061-4385-1-git-send-email-d.schultz@phytec.de>
 References: <1509115061-4385-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,47 +24,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] ARM: phytec-som-am335x: Add autoenable
+Subject: [PATCH 2/3] ARM: dts: AM335x: Add dummy i2c nodes
 To: barebox@lists.infradead.org
 
-Add autoenable for components, which can be populated on an AM335x
-phyCORE SoM.
+These i2c nodes are needed for autoenable of i2c clients, because
+the autoenable API searches for device tree nodes to get the client
+address.
 
 Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 ---
- arch/arm/boards/phytec-som-am335x/board.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/arm/dts/am335x-phytec-phycore-som.dtsi | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/arm/boards/phytec-som-am335x/board.c b/arch/arm/boards/phytec-som-am335x/board.c
-index 34d4df1..5d13471 100644
---- a/arch/arm/boards/phytec-som-am335x/board.c
-+++ b/arch/arm/boards/phytec-som-am335x/board.c
-@@ -26,6 +26,7 @@
- #include <io.h>
- #include <linux/sizes.h>
- #include <envfs.h>
-+#include <autoenable.h>
- #include <state.h>
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
-@@ -136,6 +137,17 @@ static int physom_devices_init(void)
- 		}
- 	}
- 
-+	/* Enable NAND */
-+	autoenable_device_by_path("/ocp/gpmc@50000000");
-+	/* Enable eMMC */
-+	autoenable_device_by_path("/ocp/mmc@481d8000");
-+	/* Enable SPI NOR */
-+	autoenable_device_by_path("/ocp/spi@48030000/m25p80@0");
+diff --git a/arch/arm/dts/am335x-phytec-phycore-som.dtsi b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+index dbc6424..cf2eef3 100644
+--- a/arch/arm/dts/am335x-phytec-phycore-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+@@ -164,6 +164,20 @@
+ 		pagesize = <32>;
+ 		reg = <0x52>;
+ 	};
 +
-+	autoenable_i2c_by_path("/ocp/i2c@44e0b000/temp@4b");
-+	autoenable_i2c_by_path("/ocp/i2c@44e0b000/eeprom@52");
-+	autoenable_i2c_by_path("/ocp/i2c@44e0b000/rtc@68");
++	/* The following i2c nodes are for the autoenable */
++	i2c_tmp102: temp@4b {
++		compatible = "ti,tmp102";
++		reg = <0x4b>;
++		status = "disabled";
++	};
 +
- 	if (IS_ENABLED(CONFIG_SHELL_NONE))
- 		return am33xx_of_register_bootdevice();
++	i2c_rtc: rtc@68 {
++		compatible = "rv4162";
++		reg = <0x68>;
++		status = "disabled";
++	};
++
+ };
  
+ &mmc1 {
 -- 
 2.7.4
 
