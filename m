@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e6YvK-0004mf-6E
- for barebox@lists.infradead.org; Mon, 23 Oct 2017 09:21:34 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
-Date: Mon, 23 Oct 2017 11:21:02 +0200
-Message-Id: <20171023092103.10023-3-uwe@kleine-koenig.org>
-In-Reply-To: <20171023092103.10023-1-uwe@kleine-koenig.org>
-References: <20171023092103.10023-1-uwe@kleine-koenig.org>
+ id 1e80JG-0000lZ-Nj
+ for barebox@lists.infradead.org; Fri, 27 Oct 2017 08:48:13 +0000
+Date: Fri, 27 Oct 2017 10:47:45 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20171027084745.aeieqd6tsy3gpxnn@pengutronix.de>
+References: <20171026095917.2688-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20171026095917.2688-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,76 +18,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/3] ARM: i.MX: bbu-internal: new handler to make use of
- mmc boot partitions
-To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] usb: imx: implement support for
+ "over-current-active-high" property
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-RnJvbTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4K
-ClRoaXMgaGFuZGxlciB1cGRhdGVzIHRoZSBub24tYWN0aXZlIE1NQyBib290IHBhcnRpdGlvbiBh
-bmQgYWZ0ZXIgYQpzdWNjZXNzZnVsIHVwZGF0ZSBtYWtlcyB0aGUgdXBkYXRlZCBwYXJ0aXRpb24g
-dGhlIGFjdGl2ZSBvbmUuIFRoaXMgd2F5CnRoZSBtYWNoaW5lIHNob3VsZCBjb250aW51ZSB0byBi
-ZSBib290YWJsZSB3aGVuIHRoZSB1cGRhdGUgZmFpbHMuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xl
-aW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGFyY2gvYXJt
-L21hY2gtaW14L2lteC1iYnUtaW50ZXJuYWwuYyB8IDc2ICsrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKwogMSBmaWxlIGNoYW5nZWQsIDc2IGluc2VydGlvbnMoKykKCmRpZmYgLS1n
-aXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbXgtYmJ1LWludGVybmFsLmMgYi9hcmNoL2FybS9tYWNo
-LWlteC9pbXgtYmJ1LWludGVybmFsLmMKaW5kZXggMjU0Y2NiNjM2OWU2Li5lMzQ2Mzg3MTMxNTEg
-MTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2lteC1iYnUtaW50ZXJuYWwuYworKysgYi9h
-cmNoL2FybS9tYWNoLWlteC9pbXgtYmJ1LWludGVybmFsLmMKQEAgLTI5LDYgKzI5LDcgQEAKICNp
-bmNsdWRlIDxsaW51eC9tdGQvbXRkLWFiaS5oPgogI2luY2x1ZGUgPGxpbnV4L3N0YXQuaD4KICNp
-bmNsdWRlIDxpb2N0bC5oPgorI2luY2x1ZGUgPGVudmlyb25tZW50Lmg+CiAjaW5jbHVkZSA8bWFj
-aC9iYnUuaD4KIAogI2RlZmluZSBGTEFTSF9IRUFERVJfT0ZGU0VUX01NQwkJMHg0MDAKQEAgLTM2
-OSw2ICszNzAsNTkgQEAgc3RhdGljIGludCBpbXhfYmJ1X2ludGVybmFsX3YyX3VwZGF0ZShzdHJ1
-Y3QgYmJ1X2hhbmRsZXIgKmhhbmRsZXIsIHN0cnVjdCBiYnVfZGEKIAlyZXR1cm4gcmV0OwogfQog
-CitzdGF0aWMgaW50IGlteF9iYnVfaW50ZXJuYWxfdjJfbW1jYm9vdF91cGRhdGUoc3RydWN0IGJi
-dV9oYW5kbGVyICpoYW5kbGVyLAorCQkJCQkgICAgICBzdHJ1Y3QgYmJ1X2RhdGEgKmRhdGEpCit7
-CisJc3RydWN0IGlteF9pbnRlcm5hbF9iYnVfaGFuZGxlciAqaW14X2hhbmRsZXIgPQorCQljb250
-YWluZXJfb2YoaGFuZGxlciwgc3RydWN0IGlteF9pbnRlcm5hbF9iYnVfaGFuZGxlciwgaGFuZGxl
-cik7CisJaW50IHJldDsKKwl1aW50MzJfdCAqYmFya2VyOworCWNoYXIgKmJvb3RwYXJ0dmFyOwor
-CWNvbnN0IGNoYXIgKmJvb3RwYXJ0OworCWNoYXIgKmRldmljZWZpbGU7CisKKwliYXJrZXIgPSBk
-YXRhLT5pbWFnZSArIGlteF9oYW5kbGVyLT5mbGFzaF9oZWFkZXJfb2Zmc2V0OworCisJaWYgKCpi
-YXJrZXIgIT0gSVZUX0JBUktFUikgeworCQlwcmludGYoIkJvYXJkIGRvZXMgbm90IHByb3ZpZGUg
-RENEIGRhdGEgYW5kIHRoaXMgaW1hZ2UgaXMgbm8gaW14aW1hZ2VcbiIpOworCQlyZXR1cm4gLUVJ
-TlZBTDsKKwl9CisKKwlyZXQgPSBhc3ByaW50ZigmYm9vdHBhcnR2YXIsICIlcy5ib290IiwgZGF0
-YS0+ZGV2aWNlZmlsZSk7CisJaWYgKHJldCA8IDApCisJCXJldHVybiByZXQ7CisKKwlib290cGFy
-dCA9IGdldGVudihib290cGFydHZhcik7CisKKwlpZiAoIXN0cmNtcChib290cGFydCwgImJvb3Qw
-IikpIHsKKwkJYm9vdHBhcnQgPSAiYm9vdDEiOworCX0gZWxzZSB7CisJCWJvb3RwYXJ0ID0gImJv
-b3QwIjsKKwl9CisKKwlyZXQgPSBhc3ByaW50ZigmZGV2aWNlZmlsZSwgIi9kZXYvJXMuJXMiLCBk
-YXRhLT5kZXZpY2VmaWxlLCBib290cGFydCk7CisJaWYgKHJldCA8IDApCisJCWdvdG8gZnJlZV9i
-b290cGFydHZhcjsKKworCXJldCA9IGlteF9iYnVfY2hlY2tfcHJlcmVxKGRldmljZWZpbGUsIGRh
-dGEpOworCWlmIChyZXQpCisJCWdvdG8gZnJlZV9kZXZpY2VmaWxlOworCisJcmV0ID0gaW14X2Ji
-dV93cml0ZV9kZXZpY2UoaW14X2hhbmRsZXIsIGRldmljZWZpbGUsIGRhdGEsIGRhdGEtPmltYWdl
-LCBkYXRhLT5sZW4pOworCisJaWYgKCFyZXQpCisJCS8qIG9uIHN1Y2Nlc3Mgc3dpdGNoIGJvb3Qg
-c291cmNlICovCisJCXJldCA9IHNldGVudihib290cGFydHZhciwgYm9vdHBhcnQpOworCitmcmVl
-X2RldmljZWZpbGU6CisJZnJlZShkZXZpY2VmaWxlKTsKKworZnJlZV9ib290cGFydHZhcjoKKwlm
-cmVlKGJvb3RwYXJ0dmFyKTsKKworCXJldHVybiByZXQ7Cit9CisKIHN0YXRpYyBpbnQgaW14X2Ji
-dV9leHRlcm5hbF91cGRhdGUoc3RydWN0IGJidV9oYW5kbGVyICpoYW5kbGVyLCBzdHJ1Y3QgYmJ1
-X2RhdGEgKmRhdGEpCiB7CiAJc3RydWN0IGlteF9pbnRlcm5hbF9iYnVfaGFuZGxlciAqaW14X2hh
-bmRsZXIgPQpAQCAtNDk4LDYgKzU1MiwyOCBAQCBpbnQgaW14Nl9iYnVfaW50ZXJuYWxfbW1jX3Jl
-Z2lzdGVyX2hhbmRsZXIoY29uc3QgY2hhciAqbmFtZSwgY2hhciAqZGV2aWNlZmlsZSwKIAlyZXR1
-cm4gX19yZWdpc3Rlcl9oYW5kbGVyKGlteF9oYW5kbGVyKTsKIH0KIAorLyoKKyAqIFJlZ2lzdGVy
-IGEgaGFuZGxlciB0aGF0IHdyaXRlcyB0byB0aGUgbm9uLWFjdGl2ZSBib290IHBhcnRpdGlvbiBv
-ZiBhbiBtbWMKKyAqIG1lZGl1bSBhbmQgb24gc3VjY2VzcyBhY3RpdmF0ZXMgdGhlIHdyaXR0ZW4t
-dG8gcGFydGl0aW9uLiBTbyB0aGUgbWFjaGluZSBjYW4KKyAqIHN0aWxsIGJvb3QgZXZlbiBhZnRl
-ciBhIGZhaWxlZCB0cnkgdG8gd3JpdGUgYSBib290IGltYWdlLgorICoKKyAqIFBhc3MgImRldmlj
-ZWZpbGUiIHdpdGhvdXQgcGFydGl0aW9uIG5hbWUgYW5kIC9kZXYvIHByZWZpeC4gZS5nLiBqdXN0
-ICJtbWMyIi4KKyAqIE5vdGUgdGhhdCBubyBmdXJ0aGVyIHBhcnRpdGlvbmluZyBvZiB0aGUgYm9v
-dCBwYXJ0aXRpb24gaXMgc3VwcG9ydGVkIHVwIHRvCisgKiBub3cuCisgKi8KK2ludCBpbXg2X2Ji
-dV9pbnRlcm5hbF9tbWNib290X3JlZ2lzdGVyX2hhbmRsZXIoY29uc3QgY2hhciAqbmFtZSwgY2hh
-ciAqZGV2aWNlZmlsZSwKKwkJCQkJICAgICAgIHVuc2lnbmVkIGxvbmcgZmxhZ3MpCit7CisJc3Ry
-dWN0IGlteF9pbnRlcm5hbF9iYnVfaGFuZGxlciAqaW14X2hhbmRsZXI7CisKKwlpbXhfaGFuZGxl
-ciA9IF9faW5pdF9oYW5kbGVyKG5hbWUsIGRldmljZWZpbGUsIGZsYWdzKTsKKwlpbXhfaGFuZGxl
-ci0+Zmxhc2hfaGVhZGVyX29mZnNldCA9IEZMQVNIX0hFQURFUl9PRkZTRVRfTU1DOworCisJaW14
-X2hhbmRsZXItPmhhbmRsZXIuaGFuZGxlciA9IGlteF9iYnVfaW50ZXJuYWxfdjJfbW1jYm9vdF91
-cGRhdGU7CisKKwlyZXR1cm4gX19yZWdpc3Rlcl9oYW5kbGVyKGlteF9oYW5kbGVyKTsKK30KKwog
-LyoKICAqIFJlZ2lzdGVyIGEgaS5NWDUzIGludGVybmFsIGJvb3QgdXBkYXRlIGhhbmRsZXIgZm9y
-IGkyYy9zcGkKICAqIEVFUFJPTXMgLyBmbGFzaGVzLiBOZWFybHkgdGhlIHNhbWUgYXMgTU1DL1NE
-LCBidXQgd2UgZG8gbm90IG5lZWQgdG8KLS0gCjIuMTQuMgoKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
-bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2JhcmVib3gK
+On Thu, Oct 26, 2017 at 11:59:17AM +0200, Uwe Kleine-K=F6nig wrote:
+> This property is already documented in the bindings and supported by
+> Linux. As on i.MX25 the HW default is active high and up to now barebox
+> didn't force this to low (which is the default for e.g. i.MX6), add the
+> property to barebox' imx25.dtsi to keep existing behaviour. If on a
+> board the OC pin is active low, you need to add
+> =
+
+> 	/delete-property/ over-current-active-high;
+> =
+
+> in the board.dts.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+
+Applied, thanks
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
