@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e7ewz-0004m4-Pu
- for barebox@lists.infradead.org; Thu, 26 Oct 2017 09:59:48 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu, 26 Oct 2017 11:59:17 +0200
-Message-Id: <20171026095917.2688-1-u.kleine-koenig@pengutronix.de>
+ id 1e80Qd-0005E6-A0
+ for barebox@lists.infradead.org; Fri, 27 Oct 2017 08:55:49 +0000
+Date: Fri, 27 Oct 2017 10:55:25 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20171027085525.3n23ywatb7ygcvrw@pengutronix.de>
+References: <1509012350-15255-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1509012350-15255-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,39 +18,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usb: imx: implement support for "over-current-active-high"
- property
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] EFI: add poweroff support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-VGhpcyBwcm9wZXJ0eSBpcyBhbHJlYWR5IGRvY3VtZW50ZWQgaW4gdGhlIGJpbmRpbmdzIGFuZCBz
-dXBwb3J0ZWQgYnkKTGludXguIEFzIG9uIGkuTVgyNSB0aGUgSFcgZGVmYXVsdCBpcyBhY3RpdmUg
-aGlnaCBhbmQgdXAgdG8gbm93IGJhcmVib3gKZGlkbid0IGZvcmNlIHRoaXMgdG8gbG93ICh3aGlj
-aCBpcyB0aGUgZGVmYXVsdCBmb3IgZS5nLiBpLk1YNiksIGFkZCB0aGUKcHJvcGVydHkgdG8gYmFy
-ZWJveCcgaW14MjUuZHRzaSB0byBrZWVwIGV4aXN0aW5nIGJlaGF2aW91ci4gSWYgb24gYQpib2Fy
-ZCB0aGUgT0MgcGluIGlzIGFjdGl2ZSBsb3csIHlvdSBuZWVkIHRvIGFkZAoKCS9kZWxldGUtcHJv
-cGVydHkvIG92ZXItY3VycmVudC1hY3RpdmUtaGlnaDsKCmluIHRoZSBib2FyZC5kdHMuCgpTaWdu
-ZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4
-LmRlPgotLS0KIGFyY2gvYXJtL2R0cy9pbXgyNS5kdHNpICAgICAgICB8IDggKysrKysrKysKIGRy
-aXZlcnMvdXNiL2lteC9jaGlwaWRlYS1pbXguYyB8IDQgKysrKwogMiBmaWxlcyBjaGFuZ2VkLCAx
-MiBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL2lteDI1LmR0c2kgYi9h
-cmNoL2FybS9kdHMvaW14MjUuZHRzaQppbmRleCAxM2ZiY2M0ZjhkYTYuLjJlMDY5ZTZmMDMxNCAx
-MDA2NDQKLS0tIGEvYXJjaC9hcm0vZHRzL2lteDI1LmR0c2kKKysrIGIvYXJjaC9hcm0vZHRzL2lt
-eDI1LmR0c2kKQEAgLTI5LDMgKzI5LDExIEBACiAmdXNibWlzYyB7CiAJc3RhdHVzID0gIm9rYXki
-OwogfTsKKworJnVzYm90ZyB7CisJb3Zlci1jdXJyZW50LWFjdGl2ZS1oaWdoOworfTsKKworJnVz
-Ymhvc3QxIHsKKwlvdmVyLWN1cnJlbnQtYWN0aXZlLWhpZ2g7Cit9OwpkaWZmIC0tZ2l0IGEvZHJp
-dmVycy91c2IvaW14L2NoaXBpZGVhLWlteC5jIGIvZHJpdmVycy91c2IvaW14L2NoaXBpZGVhLWlt
-eC5jCmluZGV4IDMwOWQ1MzUzMDM3Yy4uNWY2OTg4NTQwZmNiIDEwMDY0NAotLS0gYS9kcml2ZXJz
-L3VzYi9pbXgvY2hpcGlkZWEtaW14LmMKKysrIGIvZHJpdmVycy91c2IvaW14L2NoaXBpZGVhLWlt
-eC5jCkBAIC0xNjAsNiArMTYwLDEwIEBAIHN0YXRpYyBpbnQgaW14X2NoaXBpZGVhX3Byb2JlX2R0
-KHN0cnVjdCBpbXhfY2hpcGlkZWEgKmNpKQogCQkJCSJkaXNhYmxlLW92ZXItY3VycmVudCIsIE5V
-TEwpKQogCQljaS0+ZmxhZ3MgfD0gTVhDX0VIQ0lfRElTQUJMRV9PVkVSQ1VSUkVOVDsKIAorCWVs
-c2UgaWYgKCFvZl9maW5kX3Byb3BlcnR5KGNpLT5kZXYtPmRldmljZV9ub2RlLAorCQkJCSAgICJv
-dmVyLWN1cnJlbnQtYWN0aXZlLWhpZ2giLCBOVUxMKSkKKwkJY2ktPmZsYWdzIHw9IE1YQ19FSENJ
-X09DX1BJTl9BQ1RJVkVfTE9XOworCiAJcmV0dXJuIDA7CiB9CiAKLS0gCjIuMTEuMAoKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
-ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Thu, Oct 26, 2017 at 12:05:50PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/x86/configs/efi_defconfig |  1 +
+>  common/efi/efi.c               | 10 ++++++++++
+>  drivers/efi/Kconfig            |  1 +
+>  3 files changed, 12 insertions(+)
+> 
+> diff --git a/arch/x86/configs/efi_defconfig b/arch/x86/configs/efi_defconfig
+> index 3e83fd92d..fdf092e9b 100644
+> --- a/arch/x86/configs/efi_defconfig
+> +++ b/arch/x86/configs/efi_defconfig
+> @@ -55,6 +55,7 @@ CONFIG_CMD_CRC_CMP=y
+>  CONFIG_CMD_MM=y
+>  CONFIG_CMD_DETECT=y
+>  CONFIG_CMD_FLASH=y
+> +CONFIG_CMD_POWEROFF=y
+>  CONFIG_CMD_2048=y
+>  CONFIG_CMD_BAREBOX_UPDATE=y
+>  CONFIG_CMD_OF_NODE=y
+> diff --git a/common/efi/efi.c b/common/efi/efi.c
+> index 4b42f5d67..561ce4c08 100644
+> --- a/common/efi/efi.c
+> +++ b/common/efi/efi.c
+> @@ -25,6 +25,7 @@
+>  #include <magicvar.h>
+>  #include <init.h>
+>  #include <restart.h>
+> +#include <poweroff.h>
+>  #include <driver.h>
+>  #include <platform_data/serial-ns16550.h>
+>  #include <io.h>
+> @@ -283,9 +284,18 @@ static void __noreturn efi_restart_system(struct restart_handler *rst)
+>  	hang();
+>  }
+>  
+> +static void __noreturn efi_poweroff_system(struct poweroff_handler *handler)
+> +{
+> +	shutdown_barebox();
+> +	RT->reset_system(EFI_RESET_SHUTDOWN, EFI_SUCCESS, 0, NULL);
+> +
+> +	hang();
+> +}
+> +
+>  static int restart_register_feature(void)
+>  {
+>  	restart_handler_register_fn(efi_restart_system);
+> +	poweroff_handler_register_fn(efi_poweroff_system);
+>  
+>  	return 0;
+>  }
+> diff --git a/drivers/efi/Kconfig b/drivers/efi/Kconfig
+> index 2cd9dd504..5c988d2e1 100644
+> --- a/drivers/efi/Kconfig
+> +++ b/drivers/efi/Kconfig
+> @@ -1,2 +1,3 @@
+>  config EFI_BOOTUP
+>  	bool
+> +	select HAS_POWEROFF
+
+Dropped this hunk since while applying since HAS_POWEROFF is not used
+anywhere in the tree.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
