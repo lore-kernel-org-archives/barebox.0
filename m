@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1e85mA-0006T3-0Q
- for barebox@lists.infradead.org; Fri, 27 Oct 2017 14:38:22 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 9DC58A009D7
- for <barebox@lists.infradead.org>; Fri, 27 Oct 2017 16:39:35 +0200 (CEST)
-From: Daniel Schultz <d.schultz@phytec.de>
-Date: Fri, 27 Oct 2017 16:37:40 +0200
-Message-Id: <1509115061-4385-2-git-send-email-d.schultz@phytec.de>
-In-Reply-To: <1509115061-4385-1-git-send-email-d.schultz@phytec.de>
-References: <1509115061-4385-1-git-send-email-d.schultz@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1e97PJ-0002Q1-Nc
+ for barebox@lists.infradead.org; Mon, 30 Oct 2017 10:35:11 +0000
+From: Enrico Jorns <ejo@pengutronix.de>
+Date: Mon, 30 Oct 2017 11:34:16 +0100
+Message-Id: <20171030103421.15353-1-ejo@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,45 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: dts: AM335x: Add dummy i2c nodes
+Subject: [PATCH v2 0/5] Fixes for nv command handling
 To: barebox@lists.infradead.org
+Cc: Enrico Jorns <ejo@pengutronix.de>
 
-These i2c nodes are needed for autoenable of i2c clients, because
-the autoenable API searches for device tree nodes to get the client
-address.
+This series adds a couple of fixes and enhancement in option parsing and error
+handling for the 'nv' command.
 
-Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
----
- arch/arm/dts/am335x-phytec-phycore-som.dtsi | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+CHANGES:
 
-diff --git a/arch/arm/dts/am335x-phytec-phycore-som.dtsi b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
-index dbc6424..cf2eef3 100644
---- a/arch/arm/dts/am335x-phytec-phycore-som.dtsi
-+++ b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
-@@ -164,6 +164,20 @@
- 		pagesize = <32>;
- 		reg = <0x52>;
- 	};
-+
-+	/* The following i2c nodes are for the autoenable */
-+	i2c_tmp102: temp@4b {
-+		compatible = "ti,tmp102";
-+		reg = <0x4b>;
-+		status = "disabled";
-+	};
-+
-+	i2c_rtc: rtc@68 {
-+		compatible = "rv4162";
-+		reg = <0x68>;
-+		status = "disabled";
-+	};
-+
- };
- 
- &mmc1 {
+* Merged 1/5 and 4/5 of old series into 1/5
+* added patch: 'common: globvar: let nvvar_remove() report non-existing variable'
+
+Enrico Jorns (5):
+  commands: nv: fail with verbose message if invoked without args
+  commands: nv: call nvvar_print() only if no argument is given
+  commands: nv: assure error code will be returned when an error
+    occurred
+  common: globvar: let nvvar_remove() report non-existing variable
+  commands: nv: adjust command help
+
+ commands/nv.c      | 36 ++++++++++++++++++++++++------------
+ common/globalvar.c |  4 +++-
+ 2 files changed, 27 insertions(+), 13 deletions(-)
+
 -- 
-2.7.4
+2.11.0
 
 
 _______________________________________________
