@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e97PJ-0002Py-Qb
- for barebox@lists.infradead.org; Mon, 30 Oct 2017 10:35:12 +0000
+ id 1e97PJ-0002Q2-NS
+ for barebox@lists.infradead.org; Mon, 30 Oct 2017 10:35:10 +0000
 From: Enrico Jorns <ejo@pengutronix.de>
-Date: Mon, 30 Oct 2017 11:34:19 +0100
-Message-Id: <20171030103421.15353-4-ejo@pengutronix.de>
+Date: Mon, 30 Oct 2017 11:34:21 +0100
+Message-Id: <20171030103421.15353-6-ejo@pengutronix.de>
 In-Reply-To: <20171030103421.15353-1-ejo@pengutronix.de>
 References: <20171030103421.15353-1-ejo@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,71 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] commands: nv: assure error code will be returned when an
- error occurred
+Subject: [PATCH 5/5] commands: nv: adjust command help
 To: barebox@lists.infradead.org
 Cc: Enrico Jorns <ejo@pengutronix.de>
 
-Due to iteration over possibly multiple variables, the return value of
-an individual call to nvvar_remove() / nvvar_add() gets lost.
-
-This will result in do_nv() returning success (0) if any variable
-processing failed as long as processing of the last variable succeeded.
-
-Processing will not be aborted on individual errors, such as the 'cp'
-handles it for invalid files.
+Help did not point out that -r option requires n arguments and did not
+mention support for removing variables in help text.
 
 Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
 ---
- commands/nv.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ commands/nv.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/commands/nv.c b/commands/nv.c
-index 2ee18187e0..2229adde17 100644
+index 2229adde17..f15b75fe69 100644
 --- a/commands/nv.c
 +++ b/commands/nv.c
-@@ -28,7 +28,7 @@ static int do_nv(int argc, char *argv[])
- {
- 	int opt;
- 	int do_remove = 0, do_save = 0;
--	int ret, i;
-+	int failed = 0, i;
- 	char *value;
- 
- 	while ((opt = getopt(argc, argv, "rs")) > 0) {
-@@ -61,19 +61,29 @@ static int do_nv(int argc, char *argv[])
- 		return COMMAND_ERROR_USAGE;
- 
- 	for (i = 0; i < argc; i++) {
-+		int ret;
- 		value = strchr(argv[0], '=');
- 		if (value) {
- 			*value = 0;
- 			value++;
- 		}
- 
--		if (do_remove)
-+		if (do_remove) {
- 			ret = nvvar_remove(argv[i]);
--		else
-+			if (ret) {
-+				printf("Failed removing %s: %s\n", argv[i], strerror(-ret));
-+				failed = 1;
-+			}
-+		} else {
- 			ret = nvvar_add(argv[i], value);
-+			if (ret) {
-+				printf("Failed adding %s: %s\n", argv[i], strerror(-ret));
-+				failed = 1;
-+			}
-+		}
- 	}
- 
--	return ret;
-+	return failed;
- }
+@@ -88,18 +88,18 @@ static int do_nv(int argc, char *argv[])
  
  BAREBOX_CMD_HELP_START(nv)
+ BAREBOX_CMD_HELP_TEXT("Add a new non volatile variable named VAR, optionally set to VALUE.")
+-BAREBOX_CMD_HELP_TEXT("non volatile variables are persistent variables that overwrite the")
++BAREBOX_CMD_HELP_TEXT("Non volatile variables are persistent variables that overwrite the")
+ BAREBOX_CMD_HELP_TEXT("global variables of the same name. Their value is saved implicitly with")
+ BAREBOX_CMD_HELP_TEXT("'saveenv' or explicitly with 'nv -s'")
+ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("Options:")
+-BAREBOX_CMD_HELP_OPT("-r", "remove non volatile variables")
+-BAREBOX_CMD_HELP_OPT("-s", "Save NV variables")
++BAREBOX_CMD_HELP_OPT("-r VAR1 ...", "remove non volatile variable(s)")
++BAREBOX_CMD_HELP_OPT("-s\t", "save NV variables")
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(nv)
+ 	.cmd		= do_nv,
+-	BAREBOX_CMD_DESC("create or set non volatile variables")
++	BAREBOX_CMD_DESC("create, set or remove non volatile variables")
+ 	BAREBOX_CMD_OPTS("[-r] VAR[=VALUE] ...")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_ENV)
+ 	BAREBOX_CMD_HELP(cmd_nv_help)
 -- 
 2.11.0
 
