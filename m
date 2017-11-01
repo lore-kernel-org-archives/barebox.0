@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1e9nRp-00047N-Kc
+ id 1e9nRp-00047J-KZ
  for barebox@lists.infradead.org; Wed, 01 Nov 2017 07:28:27 +0000
 From: Enrico Jorns <ejo@pengutronix.de>
-Date: Wed,  1 Nov 2017 08:27:06 +0100
-Message-Id: <20171101072710.31518-3-ejo@pengutronix.de>
+Date: Wed,  1 Nov 2017 08:27:08 +0100
+Message-Id: <20171101072710.31518-5-ejo@pengutronix.de>
 In-Reply-To: <20171101072710.31518-1-ejo@pengutronix.de>
 References: <20171101072710.31518-1-ejo@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,43 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] commands: nv: call nvvar_print() only if no argument is
- given
+Subject: [PATCH 4/6] common: globvar: let nvvar_remove() report non-existing
+ variable
 To: barebox@lists.infradead.org
 Cc: Enrico Jorns <ejo@pengutronix.de>
 
-Printing the nv variables (before performing any modification!) is useless
-and irritating.
+The former implementation did not allow to detect whether the call to
+nvvar_remove() succeeded or failed and always returned 0.
+
+This changes the implementation to return 0 only if a variable with the
+given name was found and return ENOENT otherwise.
 
 Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
 ---
- commands/nv.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ common/globalvar.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/commands/nv.c b/commands/nv.c
-index 798b1eaa04..2e6d079357 100644
---- a/commands/nv.c
-+++ b/commands/nv.c
-@@ -44,14 +44,15 @@ static int do_nv(int argc, char *argv[])
- 		}
- 	}
+diff --git a/common/globalvar.c b/common/globalvar.c
+index fdfaf76fae..ee756e5140 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -261,9 +261,11 @@ int nvvar_remove(const char *name)
  
--	if (do_save)
--		return nvvar_save();
--
--	if (argc == optind) {
-+	if (argc == 1) {
- 		nvvar_print();
- 		return 0;
- 	}
- 
-+	if (do_save) {
-+		return nvvar_save();
-+	}
+ 		unlink(fname);
+ 		free(fname);
 +
- 	argc -= optind;
- 	argv += optind;
++		return 0;
+ 	}
  
+-	return 0;
++	return -ENOENT;
+ }
+ 
+ int nvvar_load(void)
 -- 
 2.11.0
 
