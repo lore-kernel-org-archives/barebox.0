@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1eAEpy-00036b-JU
- for barebox@lists.infradead.org; Thu, 02 Nov 2017 12:43:18 +0000
+ id 1eAEqM-00039c-RM
+ for barebox@lists.infradead.org; Thu, 02 Nov 2017 12:43:44 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 7BC16A008AA
- for <barebox@lists.infradead.org>; Thu,  2 Nov 2017 13:44:41 +0100 (CET)
+ by root.phytec.de (Postfix) with ESMTP id 77891A008F6
+ for <barebox@lists.infradead.org>; Thu,  2 Nov 2017 13:44:42 +0100 (CET)
 From: Daniel Schultz <d.schultz@phytec.de>
-Date: Thu, 2 Nov 2017 13:42:41 +0100
-Message-Id: <1509626565-3722-2-git-send-email-d.schultz@phytec.de>
+Date: Thu, 2 Nov 2017 13:42:45 +0100
+Message-Id: <1509626565-3722-6-git-send-email-d.schultz@phytec.de>
 In-Reply-To: <1509626565-3722-1-git-send-email-d.schultz@phytec.de>
 References: <1509626565-3722-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,116 +24,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/6] ARM: dts: AM335x: Add state framework
+Subject: [PATCH v2 6/6] ARM: phytec-som-am335x: Set MAC addresses from state
 To: barebox@lists.infradead.org
 
-This patch adds the state framework with an EEPROM partition and two
-nodes for MAC addresses. It will be available for all phycore AM335x
-images with EEPROMs.
+If a state with the name 'am335x_phytec_mac_state' is available, valid
+MAC addresses from this state get registerd to their ethernet device.
 
 Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 ---
- arch/arm/dts/am335x-phytec-phycore-som-emmc.dts    |  1 +
- .../dts/am335x-phytec-phycore-som-nand-no-spi.dts  |  1 +
- arch/arm/dts/am335x-phytec-phycore-som-nand.dts    |  1 +
- arch/arm/dts/am335x-phytec-state.dtsi              | 52 ++++++++++++++++++++++
- 4 files changed, 55 insertions(+)
- create mode 100644 arch/arm/dts/am335x-phytec-state.dtsi
+Changes:
+	v2: Changed to new 'state_read_mac' function
 
-diff --git a/arch/arm/dts/am335x-phytec-phycore-som-emmc.dts b/arch/arm/dts/am335x-phytec-phycore-som-emmc.dts
-index 880700e..f264498 100644
---- a/arch/arm/dts/am335x-phytec-phycore-som-emmc.dts
-+++ b/arch/arm/dts/am335x-phytec-phycore-som-emmc.dts
-@@ -16,6 +16,7 @@
+ arch/arm/boards/phytec-som-am335x/board.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/arch/arm/boards/phytec-som-am335x/board.c b/arch/arm/boards/phytec-som-am335x/board.c
+index dc3b84a..9f74981 100644
+--- a/arch/arm/boards/phytec-som-am335x/board.c
++++ b/arch/arm/boards/phytec-som-am335x/board.c
+@@ -21,10 +21,12 @@
+ #include <bootsource.h>
+ #include <common.h>
+ #include <nand.h>
++#include <net.h>
+ #include <init.h>
+ #include <io.h>
+ #include <linux/sizes.h>
+ #include <envfs.h>
++#include <state.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+ #include <linux/phy.h>
+@@ -65,8 +67,16 @@ static char *nandslots[] = {
+ 	"/dev/nand0.barebox_backup.bb",
+ };
  
- #include "am33xx.dtsi"
- #include "am335x-phytec-phycore-som.dtsi"
-+#include "am335x-phytec-state.dtsi"
- 
- / {
- 	model = "Phytec phyCORE EMMC AM335x";
-diff --git a/arch/arm/dts/am335x-phytec-phycore-som-nand-no-spi.dts b/arch/arm/dts/am335x-phytec-phycore-som-nand-no-spi.dts
-index 2c2fab0..b35294c 100644
---- a/arch/arm/dts/am335x-phytec-phycore-som-nand-no-spi.dts
-+++ b/arch/arm/dts/am335x-phytec-phycore-som-nand-no-spi.dts
-@@ -9,6 +9,7 @@
- 
- #include "am33xx.dtsi"
- #include "am335x-phytec-phycore-som.dtsi"
-+#include "am335x-phytec-state.dtsi"
- 
- / {
- 	model = "Phytec phyCORE AM335x";
-diff --git a/arch/arm/dts/am335x-phytec-phycore-som-nand.dts b/arch/arm/dts/am335x-phytec-phycore-som-nand.dts
-index 6ff2447..4d7606b 100644
---- a/arch/arm/dts/am335x-phytec-phycore-som-nand.dts
-+++ b/arch/arm/dts/am335x-phytec-phycore-som-nand.dts
-@@ -9,6 +9,7 @@
- 
- #include "am33xx.dtsi"
- #include "am335x-phytec-phycore-som.dtsi"
-+#include "am335x-phytec-state.dtsi"
- 
- / {
- 	model = "Phytec phyCORE AM335x";
-diff --git a/arch/arm/dts/am335x-phytec-state.dtsi b/arch/arm/dts/am335x-phytec-state.dtsi
-new file mode 100644
-index 0000000..fbc35b9
---- /dev/null
-+++ b/arch/arm/dts/am335x-phytec-state.dtsi
-@@ -0,0 +1,52 @@
-+/*
-+ * Copyright (C) 2017 PHYTEC Messtechnik GmbH,
-+ * Author: Daniel Schultz <d.schultz@phytec.de>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * version 2 as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
++#define ETH_COUNT 2
++static const char *eth_names[ETH_COUNT] = {"mac0", "mac1"};
 +
-+/ {
-+	aliases {
-+		am335x_phytec_mac_state = &am335x_phytec_mac_state;
-+	};
+ static int physom_devices_init(void)
+ {
++	struct state *state;
++	u8 mac[6];
++	int state_ret;
++	int state_i;
 +
-+	am335x_phytec_mac_state: am335x_phytec_mac_state {
-+		magic = <0x3f45620e>;
-+		compatible = "barebox,state";
-+		backend-type = "raw";
-+		backend = <&backend_state_eeprom>;
-+		backend-stridesize = <40>;
+ 	if (!of_machine_is_compatible("phytec,am335x-som"))
+ 		return 0;
+ 
+@@ -114,6 +124,17 @@ static int physom_devices_init(void)
+ 				ARRAY_SIZE(nandslots));
+ 	am33xx_bbu_emmc_mlo_register_handler("MLO.emmc", "/dev/mmc1");
+ 
++	if (IS_ENABLED(CONFIG_STATE)) {
++		state = state_by_name("am335x_phytec_mac_state");
++		if (state)
++			for (state_i = 0; state_i < 2; state_i++) {
++				state_ret = state_read_mac(state,
++						      eth_names[state_i], &mac[0]);
++				if (state_ret == 6)
++					eth_register_ethaddr(state_i, mac);
++			}
++	}
 +
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		mac0 {
-+			reg = <0x0 0x6>;
-+			type = "mac";
-+		};
-+		mac1 {
-+			reg = <0x6 0x6>;
-+			type = "mac";
-+		};
-+
-+	};
-+};
-+
-+&eeprom {
-+	status = "okay";
-+	partitions {
-+		compatible = "fixed-partitions";
-+		#size-cells = <1>;
-+		#address-cells = <1>;
-+		backend_state_eeprom: state@0 {
-+			reg = <0x000 0x120>;
-+			label = "state-eeprom";
-+		};
-+	};
-+};
+ 	if (IS_ENABLED(CONFIG_SHELL_NONE))
+ 		return am33xx_of_register_bootdevice();
+ 
 -- 
 2.7.4
 
