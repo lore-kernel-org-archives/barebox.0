@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1eAIXF-0002K4-5n
- for barebox@lists.infradead.org; Thu, 02 Nov 2017 16:40:12 +0000
+ id 1eAIXF-0002K7-5o
+ for barebox@lists.infradead.org; Thu, 02 Nov 2017 16:40:10 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 7236EA0033E
+ by root.phytec.de (Postfix) with ESMTP id C8427A005C1
  for <barebox@lists.infradead.org>; Thu,  2 Nov 2017 17:41:38 +0100 (CET)
 From: Daniel Schultz <d.schultz@phytec.de>
-Date: Thu, 2 Nov 2017 17:39:40 +0100
-Message-Id: <1509640782-8765-1-git-send-email-d.schultz@phytec.de>
+Date: Thu, 2 Nov 2017 17:39:42 +0100
+Message-Id: <1509640782-8765-3-git-send-email-d.schultz@phytec.de>
+In-Reply-To: <1509640782-8765-1-git-send-email-d.schultz@phytec.de>
+References: <1509640782-8765-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +24,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/3] ARM: dts: AM335x: Add dummy i2c nodes
+Subject: [PATCH v2 3/3] ARM: phytec-som-am335x: Add autoenable
 To: barebox@lists.infradead.org
 
-These i2c nodes are needed for autoenable of i2c clients, because
-the autoenable API searches for device tree nodes to get the client
-address.
+Add autoenable for components, which can be populated on an AM335x
+phyCORE SoM.
 
 Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 ---
- arch/arm/dts/am335x-phytec-phycore-som.dtsi | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Changes:
+	v2: Created Phytec AM335x Kconfig PHYTEC_SOM_AM335X_OF_AUTOENABLE
+	    Changed function names
 
-diff --git a/arch/arm/dts/am335x-phytec-phycore-som.dtsi b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
-index dbc6424..cf2eef3 100644
---- a/arch/arm/dts/am335x-phytec-phycore-som.dtsi
-+++ b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
-@@ -164,6 +164,20 @@
- 		pagesize = <32>;
- 		reg = <0x52>;
- 	};
+ arch/arm/boards/phytec-som-am335x/Kconfig | 13 +++++++++++++
+ arch/arm/boards/phytec-som-am335x/board.c | 13 +++++++++++++
+ arch/arm/mach-omap/Kconfig                |  2 ++
+ 3 files changed, 28 insertions(+)
+ create mode 100644 arch/arm/boards/phytec-som-am335x/Kconfig
+
+diff --git a/arch/arm/boards/phytec-som-am335x/Kconfig b/arch/arm/boards/phytec-som-am335x/Kconfig
+new file mode 100644
+index 0000000..52fa723
+--- /dev/null
++++ b/arch/arm/boards/phytec-som-am335x/Kconfig
+@@ -0,0 +1,13 @@
 +
-+	/* The following i2c nodes are for the autoenable */
-+	i2c_tmp102: temp@4b {
-+		compatible = "ti,tmp102";
-+		reg = <0x4b>;
-+		status = "disabled";
-+	};
++if MACH_PHYTEC_SOM_AM335X
 +
-+	i2c_rtc: rtc@68 {
-+		compatible = "rv4162";
-+		reg = <0x68>;
-+		status = "disabled";
-+	};
++config PHYTEC_SOM_AM335X_OF_AUTOENABLE
++	bool
++	prompt "Autoenable of components"
++	help
++	  Say Y to unlock an API for automatically enable either hardware
++	  components with existing device drivers or i2c clients. All functions
++	  take a device tree path to find the hardware and will fix up the node
++	  status in the kernel device tree, if it's accessible.
 +
- };
++endif
+diff --git a/arch/arm/boards/phytec-som-am335x/board.c b/arch/arm/boards/phytec-som-am335x/board.c
+index 9f74981..0e9bf5f 100644
+--- a/arch/arm/boards/phytec-som-am335x/board.c
++++ b/arch/arm/boards/phytec-som-am335x/board.c
+@@ -135,6 +135,19 @@ static int physom_devices_init(void)
+ 			}
+ 	}
  
- &mmc1 {
++	if (IS_ENABLED(PHYTEC_SOM_AM335X_OF_AUTOENABLE)) {
++		/* Enable NAND */
++		of_autoenable_device_by_path("/ocp/gpmc@50000000");
++		/* Enable eMMC */
++		of_autoenable_device_by_path("/ocp/mmc@481d8000");
++		/* Enable SPI NOR */
++		of_autoenable_device_by_path("/ocp/spi@48030000/m25p80@0");
++
++		of_autoenable_i2c_by_component("/ocp/i2c@44e0b000/temp@4b");
++		of_autoenable_i2c_by_component("/ocp/i2c@44e0b000/eeprom@52");
++		of_autoenable_i2c_by_component("/ocp/i2c@44e0b000/rtc@68");
++	}
++
+ 	if (IS_ENABLED(CONFIG_SHELL_NONE))
+ 		return am33xx_of_register_bootdevice();
+ 
+diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+index 9c41741..e8fc4b8 100644
+--- a/arch/arm/mach-omap/Kconfig
++++ b/arch/arm/mach-omap/Kconfig
+@@ -192,6 +192,8 @@ config MACH_VSCOM_BALTOS
+ 
+ endif
+ 
++source arch/arm/boards/phytec-som-am335x/Kconfig
++
+ choice
+ 	prompt "Select OMAP board"
+ 	depends on !OMAP_MULTI_BOARDS
 -- 
 2.7.4
 
