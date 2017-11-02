@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eAXdX-0006Cg-Ex
- for barebox@lists.infradead.org; Fri, 03 Nov 2017 08:47:37 +0000
-Date: Fri, 3 Nov 2017 09:47:13 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171103084713.xhmeukxxqqrt5jje@pengutronix.de>
-References: <1509640782-8765-1-git-send-email-d.schultz@phytec.de>
- <1509640782-8765-2-git-send-email-d.schultz@phytec.de>
+ id 1eADHV-0000Hg-HE
+ for barebox@lists.infradead.org; Thu, 02 Nov 2017 11:03:33 +0000
+Date: Thu, 2 Nov 2017 12:03:03 +0100
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Message-ID: <20171102110303.xl4hdyjw2lzlrwye@pengutronix.de>
+References: <1509087948-15969-1-git-send-email-plagnioj@jcrosoft.com>
+ <1509087948-15969-2-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1509640782-8765-2-git-send-email-d.schultz@phytec.de>
+In-Reply-To: <1509087948-15969-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,77 +23,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/3] common: oftree: Add autoenable functionality
-To: Daniel Schultz <d.schultz@phytec.de>
+Subject: Re: [PATCH 2/2] efi-block: detect when the block device is a USB Disk
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Nov 02, 2017 at 05:39:41PM +0100, Daniel Schultz wrote:
-> This patch adds an API to automatically enable either hardware components
-> with existing device drivers or i2c clients. All functions take a device
-> tree path to find the hardware and will fix up the node status in the
-> kernel device tree, if it's accessible.
+On Fri, Oct 27, 2017 at 09:05:48AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> use usbdisk as a basename
 > 
-> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+> This will be usefull as example when we want to search for a usb disk for
+> failsafe update or install.
+
+I understand the use-case, but this breaks a different setup: Until now
+'disk0' is usually the 'boot' device (the one barebox was loaded from). So
+it was rather simple to create one image with bootloader, kernel and rootfs
+that can be booted from USB and SATA.
+
+Regards,
+Michael
+
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
-> Changes:
-> 	v2: Moved from standalone file to oftree.c
-> 	    Added of_device_is_available, if a driver is disabled
-> 	    Added of_property_read_u32
-> 	    Removed Kconfig
-> 	    Added of_ prefix to function names
-> 	    Renamed of_autoenable_i2c_by_path to of_autoenable_i2c_by_component
+>  drivers/block/efi-block-io.c | 17 ++++++++++++++++-
+>  1 file changed, 16 insertions(+), 1 deletion(-)
 > 
->  common/oftree.c | 92 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  include/of.h    | 14 +++++++++
->  2 files changed, 106 insertions(+)
-> 
-> diff --git a/common/oftree.c b/common/oftree.c
-> index 09a4455..3b77a7e 100644
-> --- a/common/oftree.c
-> +++ b/common/oftree.c
-> @@ -11,6 +11,7 @@
->  #include <getopt.h>
->  #include <init.h>
->  #include <boot.h>
-> +#include <i2c/i2c.h>
->  
->  #define MAX_LEVEL	32		/* how deeply nested we will go */
->  
-> @@ -260,3 +261,94 @@ struct fdt_header *of_get_fixed_tree(struct device_node *node)
->  
->  	return fdt;
+> diff --git a/drivers/block/efi-block-io.c b/drivers/block/efi-block-io.c
+> index a4d9d3a95..2bbeb99e6 100644
+> --- a/drivers/block/efi-block-io.c
+> +++ b/drivers/block/efi-block-io.c
+> @@ -130,6 +130,18 @@ static void efi_bio_print_info(struct efi_bio_priv *priv)
+>  			media->optimal_transfer_length_granularity);
 >  }
-> +
-> +/**
-> + * of_autoenable_device_by_path() - Autoenable a device by a device tree path
-> + * @param path Device tree path up from the root to the device
-> + * @return 0 on success, -enodev on failure. If no device found in the device
-> + * tree.
-> + *
-> + * This function will search for a device and will enable it in the kernel
-> + * device tree, if it exists and is loaded.
-> + */
-> +int of_autoenable_device_by_path(char *path)
+>  
+> +static int is_bio_usbdev(struct efi_device *efidev)
 > +{
-> +	struct device_d *device;
-> +	struct device_node *node;
-> +	int ret;
+> +	int i;
 > +
-> +	node = of_find_node_by_name(NULL, path);
-> +	if (!node)
-> +		node = of_find_node_by_path(path);
+> +	for (i = 0; i < efidev->num_guids; i++) {
+> +		if (!efi_guidcmp(efidev->guids[i], EFI_USB_IO_PROTOCOL_GUID))
+> +			return 1;
+> +	}
 > +
-> +	if (!node)
-> +		return -ENODEV;
+> +	return 0;
+> +}
 > +
-> +	device = of_find_device_by_node(node);
-> +	if (!device)
-> +		if (!of_device_is_available(node))
-> +			return -ENODEV;
-
-Is the of_find_device_by_node(node) test still necessary? In which case?
-
-Sascha
+>  int efi_bio_probe(struct efi_device *efidev)
+>  {
+>  	int ret;
+> @@ -147,7 +159,10 @@ int efi_bio_probe(struct efi_device *efidev)
+>  	efi_bio_print_info(priv);
+>  	priv->dev = &efidev->dev;
+>  
+> -	priv->blk.cdev.name = xasprintf("disk%d", cdev_find_free_index("disk"));
+> +	if (is_bio_usbdev(efidev))
+> +		priv->blk.cdev.name = xasprintf("usbdisk%d", cdev_find_free_index("usbdisk"));
+> +	else
+> +		priv->blk.cdev.name = xasprintf("disk%d", cdev_find_free_index("disk"));
+>  	priv->blk.blockbits = ffs(media->block_size) - 1;
+>  	priv->blk.num_blocks = media->last_block + 1;
+>  	priv->blk.ops = &efi_bio_ops;
+> -- 
+> 2.11.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
