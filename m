@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1eAEpy-00036d-KY
- for barebox@lists.infradead.org; Thu, 02 Nov 2017 12:43:17 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 0D0A2A008AC
- for <barebox@lists.infradead.org>; Thu,  2 Nov 2017 13:44:42 +0100 (CET)
-From: Daniel Schultz <d.schultz@phytec.de>
-Date: Thu, 2 Nov 2017 13:42:43 +0100
-Message-Id: <1509626565-3722-4-git-send-email-d.schultz@phytec.de>
-In-Reply-To: <1509626565-3722-1-git-send-email-d.schultz@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1eAX6I-0005vY-7G
+ for barebox@lists.infradead.org; Fri, 03 Nov 2017 08:13:16 +0000
+Date: Fri, 3 Nov 2017 09:12:50 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20171103081250.iwd7wtb4ywabaxjy@pengutronix.de>
 References: <1509626565-3722-1-git-send-email-d.schultz@phytec.de>
+ <1509626565-3722-4-git-send-email-d.schultz@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1509626565-3722-4-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,85 +19,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/6] common: state: Add variable_type to state_variable
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 4/6] common: state: Add variable_type to state_variable
+To: Daniel Schultz <d.schultz@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Add a pointer in state_variable to the corresponding variable_type array
-element.
+On Thu, Nov 02, 2017 at 01:42:43PM +0100, Daniel Schultz wrote:
+> Add a pointer in state_variable to the corresponding variable_type array
+> element.
+> 
+> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+> ---
+> Changes:
+> 	v2: New patch
+> 
+>  common/state/state.h           | 1 +
+>  common/state/state_variables.c | 5 +++++
+>  2 files changed, 6 insertions(+)
+> 
+> diff --git a/common/state/state.h b/common/state/state.h
+> index 81aaec2..14b54aa 100644
+> --- a/common/state/state.h
+> +++ b/common/state/state.h
+> @@ -132,6 +132,7 @@ struct variable_type {
+>  struct state_variable {
+>  	struct state *state;
+>  	struct list_head list;
+> +	struct variable_type *type;
+>  	const char *name;
+>  	unsigned int start;
+>  	unsigned int size;
+> diff --git a/common/state/state_variables.c b/common/state/state_variables.c
+> index 56bcd95..e6571be 100644
+> --- a/common/state/state_variables.c
+> +++ b/common/state/state_variables.c
+> @@ -116,6 +116,7 @@ static struct state_variable *state_uint8_create(struct state *state,
+>  	}
+>  
+>  	su32->param = param;
+> +	su32->var.type = state_find_type_by_name("uint8");
 
-Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
----
-Changes:
-	v2: New patch
+Please pass the struct variable_type * into the ->create callback. It is
+known by the caller, so we can easily avoid iterating over the array of
+types again.
 
- common/state/state.h           | 1 +
- common/state/state_variables.c | 5 +++++
- 2 files changed, 6 insertions(+)
+Sascha
 
-diff --git a/common/state/state.h b/common/state/state.h
-index 81aaec2..14b54aa 100644
---- a/common/state/state.h
-+++ b/common/state/state.h
-@@ -132,6 +132,7 @@ struct variable_type {
- struct state_variable {
- 	struct state *state;
- 	struct list_head list;
-+	struct variable_type *type;
- 	const char *name;
- 	unsigned int start;
- 	unsigned int size;
-diff --git a/common/state/state_variables.c b/common/state/state_variables.c
-index 56bcd95..e6571be 100644
---- a/common/state/state_variables.c
-+++ b/common/state/state_variables.c
-@@ -116,6 +116,7 @@ static struct state_variable *state_uint8_create(struct state *state,
- 	}
- 
- 	su32->param = param;
-+	su32->var.type = state_find_type_by_name("uint8");
- 	su32->var.size = sizeof(uint8_t);
- #ifdef __LITTLE_ENDIAN
- 	su32->var.raw = &su32->value;
-@@ -144,6 +145,7 @@ static struct state_variable *state_uint32_create(struct state *state,
- 	}
- 
- 	su32->param = param;
-+	su32->var.type = state_find_type_by_name("uint32");
- 	su32->var.size = sizeof(uint32_t);
- 	su32->var.raw = &su32->value;
- 	su32->var.state = state;
-@@ -234,6 +236,7 @@ static struct state_variable *state_enum32_create(struct state *state,
- 
- 	enum32->names = xzalloc(sizeof(char *) * num_names);
- 	enum32->num_names = num_names;
-+	enum32->var.type = state_find_type_by_name("enum32");
- 	enum32->var.size = sizeof(uint32_t);
- 	enum32->var.raw = &enum32->value;
- 	enum32->var.state = state;
-@@ -307,6 +310,7 @@ static struct state_variable *state_mac_create(struct state *state,
- 
- 	mac = xzalloc(sizeof(*mac));
- 
-+	mac->var.type = state_find_type_by_name("mac");
- 	mac->var.size = ARRAY_SIZE(mac->value);
- 	mac->var.raw = mac->value;
- 	mac->var.state = state;
-@@ -420,6 +424,7 @@ static struct state_variable *state_string_create(struct state *state,
- 		return ERR_PTR(-EILSEQ);
- 
- 	string = xzalloc(sizeof(*string) + start_size[1]);
-+	string->var.type = state_find_type_by_name("string");
- 	string->var.size = start_size[1];
- 	string->var.raw = &string->raw;
- 	string->var.state = state;
 -- 
-2.7.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
