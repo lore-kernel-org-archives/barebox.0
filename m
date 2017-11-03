@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.87 #1 (Red Hat Linux))
- id 1eAZWr-0005gl-8t
- for barebox@lists.infradead.org; Fri, 03 Nov 2017 10:48:56 +0000
+ id 1eAZX1-0005iD-Av
+ for barebox@lists.infradead.org; Fri, 03 Nov 2017 10:49:03 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 24457A008AF
- for <barebox@lists.infradead.org>; Fri,  3 Nov 2017 11:50:26 +0100 (CET)
+ by root.phytec.de (Postfix) with ESMTP id 23756A0098B
+ for <barebox@lists.infradead.org>; Fri,  3 Nov 2017 11:50:27 +0100 (CET)
 From: Daniel Schultz <d.schultz@phytec.de>
-Date: Fri, 3 Nov 2017 11:48:24 +0100
-Message-Id: <1509706109-41478-2-git-send-email-d.schultz@phytec.de>
+Date: Fri, 3 Nov 2017 11:48:28 +0100
+Message-Id: <1509706109-41478-6-git-send-email-d.schultz@phytec.de>
 In-Reply-To: <1509706109-41478-1-git-send-email-d.schultz@phytec.de>
 References: <1509706109-41478-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,116 +24,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 2/7] ARM: dts: AM335x: Add state framework
+Subject: [PATCH v3 6/7] common: state: Add function to read state MAC
 To: barebox@lists.infradead.org
 
-This patch adds the state framework with an EEPROM partition and two
-nodes for MAC addresses. It will be available for all phycore AM335x
-images with EEPROMs.
+This API function allows to receive a copy of a MAC address from
+variables in a state.
 
 Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 ---
- arch/arm/dts/am335x-phytec-phycore-som-emmc.dts    |  1 +
- .../dts/am335x-phytec-phycore-som-nand-no-spi.dts  |  1 +
- arch/arm/dts/am335x-phytec-phycore-som-nand.dts    |  1 +
- arch/arm/dts/am335x-phytec-state.dtsi              | 52 ++++++++++++++++++++++
- 4 files changed, 55 insertions(+)
- create mode 100644 arch/arm/dts/am335x-phytec-state.dtsi
+Changes:
+	v2: New patch
+	v3: Changed return values
+	    Switched to the new STATE_VARIABLE_TYPE_* field
+	    Changed to memcpy function, instead of own loop
 
-diff --git a/arch/arm/dts/am335x-phytec-phycore-som-emmc.dts b/arch/arm/dts/am335x-phytec-phycore-som-emmc.dts
-index 880700e..f264498 100644
---- a/arch/arm/dts/am335x-phytec-phycore-som-emmc.dts
-+++ b/arch/arm/dts/am335x-phytec-phycore-som-emmc.dts
-@@ -16,6 +16,7 @@
+ common/state/state.c | 21 +++++++++++++++++++++
+ include/state.h      |  2 ++
+ 2 files changed, 23 insertions(+)
+
+diff --git a/common/state/state.c b/common/state/state.c
+index 98a7db3..6399bd3 100644
+--- a/common/state/state.c
++++ b/common/state/state.c
+@@ -693,6 +693,27 @@ int state_get_name(const struct state *state, char const **name)
+ 	return 0;
+ }
  
- #include "am33xx.dtsi"
- #include "am335x-phytec-phycore-som.dtsi"
-+#include "am335x-phytec-state.dtsi"
- 
- / {
- 	model = "Phytec phyCORE EMMC AM335x";
-diff --git a/arch/arm/dts/am335x-phytec-phycore-som-nand-no-spi.dts b/arch/arm/dts/am335x-phytec-phycore-som-nand-no-spi.dts
-index 2c2fab0..b35294c 100644
---- a/arch/arm/dts/am335x-phytec-phycore-som-nand-no-spi.dts
-+++ b/arch/arm/dts/am335x-phytec-phycore-som-nand-no-spi.dts
-@@ -9,6 +9,7 @@
- 
- #include "am33xx.dtsi"
- #include "am335x-phytec-phycore-som.dtsi"
-+#include "am335x-phytec-state.dtsi"
- 
- / {
- 	model = "Phytec phyCORE AM335x";
-diff --git a/arch/arm/dts/am335x-phytec-phycore-som-nand.dts b/arch/arm/dts/am335x-phytec-phycore-som-nand.dts
-index 6ff2447..4d7606b 100644
---- a/arch/arm/dts/am335x-phytec-phycore-som-nand.dts
-+++ b/arch/arm/dts/am335x-phytec-phycore-som-nand.dts
-@@ -9,6 +9,7 @@
- 
- #include "am33xx.dtsi"
- #include "am335x-phytec-phycore-som.dtsi"
-+#include "am335x-phytec-state.dtsi"
- 
- / {
- 	model = "Phytec phyCORE AM335x";
-diff --git a/arch/arm/dts/am335x-phytec-state.dtsi b/arch/arm/dts/am335x-phytec-state.dtsi
-new file mode 100644
-index 0000000..fbc35b9
---- /dev/null
-+++ b/arch/arm/dts/am335x-phytec-state.dtsi
-@@ -0,0 +1,52 @@
-+/*
-+ * Copyright (C) 2017 PHYTEC Messtechnik GmbH,
-+ * Author: Daniel Schultz <d.schultz@phytec.de>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * version 2 as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
++int state_read_mac(struct state *state, const char *name, u8 *buf)
++{
++	struct state_variable *svar;
++	struct state_mac *mac;
 +
-+/ {
-+	aliases {
-+		am335x_phytec_mac_state = &am335x_phytec_mac_state;
-+	};
++	if (!state || !name || !buf)
++		return -EINVAL;
 +
-+	am335x_phytec_mac_state: am335x_phytec_mac_state {
-+		magic = <0x3f45620e>;
-+		compatible = "barebox,state";
-+		backend-type = "raw";
-+		backend = <&backend_state_eeprom>;
-+		backend-stridesize = <40>;
++	svar = state_find_var(state, name);
++	if (IS_ERR(svar))
++		return PTR_ERR(svar);
 +
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		mac0 {
-+			reg = <0x0 0x6>;
-+			type = "mac";
-+		};
-+		mac1 {
-+			reg = <0x6 0x6>;
-+			type = "mac";
-+		};
++	if (svar->type->type != STATE_VARIABLE_TYPE_MAC)
++		return -EINVAL;
 +
-+	};
-+};
++	mac = to_state_mac(svar);
++	memcpy(buf, mac->value, 6);
 +
-+&eeprom {
-+	status = "okay";
-+	partitions {
-+		compatible = "fixed-partitions";
-+		#size-cells = <1>;
-+		#address-cells = <1>;
-+		backend_state_eeprom: state@0 {
-+			reg = <0x000 0x120>;
-+			label = "state-eeprom";
-+		};
-+	};
-+};
++	return 0;
++}
++
+ void state_info(void)
+ {
+ 	struct state *state;
+diff --git a/include/state.h b/include/state.h
+index 63164f9..f1882ae 100644
+--- a/include/state.h
++++ b/include/state.h
+@@ -23,4 +23,6 @@ int state_load(struct state *state);
+ int state_save(struct state *state);
+ void state_info(void);
+ 
++int state_read_mac(struct state *state, const char *name, u8 *buf);
++
+ #endif /* __STATE_H */
 -- 
 2.7.4
 
