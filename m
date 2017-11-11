@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.15.15])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eDREN-0000d9-AB
- for barebox@lists.infradead.org; Sat, 11 Nov 2017 08:33:38 +0000
-References: <201711111528455018932@gmail.com>
-From: Oleksij Rempel <linux@rempel-privat.de>
-Message-ID: <9a6c4e72-ab02-731c-ffa8-9f30022d1af2@rempel-privat.de>
-Date: Sat, 11 Nov 2017 09:32:58 +0100
-MIME-Version: 1.0
-In-Reply-To: <201711111528455018932@gmail.com>
+ id 1eDSGq-0005Vw-Bw
+ for barebox@lists.infradead.org; Sat, 11 Nov 2017 09:40:14 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Sat, 11 Nov 2017 10:39:44 +0100
+Message-Id: <20171111093944.10094-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,80 +14,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1038322260439795943=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: support mt7620
-To: "jianhuizhao329@gmail.com" <jianhuizhao.329@gmail.com>, barebox <barebox@lists.infradead.org>
+Subject: [PATCH v1] i.MX: esdhc: wait until SDSTB is asserted,
+ not other way arround
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============1038322260439795943==
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="U149gwB4KmiodNknwSS8AVhXtqV9M2rx0"
+this added 10msec on each sd/mmc clock switch request.
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---U149gwB4KmiodNknwSS8AVhXtqV9M2rx0
-Content-Type: multipart/mixed; boundary="SXEPFODOmCXLIoowHbU1lvV3QuHLeVRmh";
- protected-headers="v1"
-From: Oleksij Rempel <linux@rempel-privat.de>
-To: "jianhuizhao329@gmail.com" <jianhuizhao.329@gmail.com>,
- barebox <barebox@lists.infradead.org>
-Message-ID: <9a6c4e72-ab02-731c-ffa8-9f30022d1af2@rempel-privat.de>
-Subject: Re: support mt7620
-References: <201711111528455018932@gmail.com>
-In-Reply-To: <201711111528455018932@gmail.com>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/mci/imx-esdhc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---SXEPFODOmCXLIoowHbU1lvV3QuHLeVRmh
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 141d715c90..55e8371dd8 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -454,7 +454,7 @@ static void set_sysctl(struct mci_host *mci, u32 clock)
+ 			SYSCTL_CLOCK_MASK, clk);
+ 
+ 	wait_on_timeout(10 * MSECOND,
+-			!(esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_SDSTB));
++			esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_SDSTB);
+ 
+ 	clk = SYSCTL_PEREN | SYSCTL_CKEN;
+ 
+-- 
+2.11.0
 
-Hi,
-
-Am 11.11.2017 um 08:51 schrieb jianhuizhao329@gmail.com:
-> I hope barebox can support mt7620.
-
-why?
-Patches are welcome! :)
-It potentially would be supported, but I don't feel motivated to do it.
-I have no docs, no hw, and this SoC is not used by Freifunk.
-If you have some sort of motivation, I would suggest to start your own
-investigation and provide patches for barebox. It is exact the way I
-learned Barebox, MIPS and WiFi. OSS community need more people who can
-do so and not more SoCs on shoulders of one developer.
-
---=20
-Regards,
-Oleksij
-
-
---SXEPFODOmCXLIoowHbU1lvV3QuHLeVRmh--
-
---U149gwB4KmiodNknwSS8AVhXtqV9M2rx0
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF4EAREIAAYFAloGtb8ACgkQHwImuRkmbWmUnQD7BOvRv8Q/L/3nJ5DgFScdAz0E
-NC0JaFqchKtvx/IM8rMBAJYrUKChO2QVMmICjb0RACL/NpBZvbdD+osfjGWsWLGp
-=0rzW
------END PGP SIGNATURE-----
-
---U149gwB4KmiodNknwSS8AVhXtqV9M2rx0--
-
-
---===============1038322260439795943==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1038322260439795943==--
