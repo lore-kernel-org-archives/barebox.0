@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf0-x231.google.com ([2607:f8b0:400e:c00::231])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eD3K8-0006qs-NY
- for barebox@lists.infradead.org; Fri, 10 Nov 2017 07:02:02 +0000
-Date: Fri, 10 Nov 2017 08:01:34 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171110070134.j2ydxid2j22nakvt@pengutronix.de>
-References: <20171108180747.16208-1-m.grzeschik@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20171108180747.16208-1-m.grzeschik@pengutronix.de>
+ id 1eDQZu-0003SZ-KK
+ for barebox@lists.infradead.org; Sat, 11 Nov 2017 07:51:48 +0000
+Received: by mail-pf0-x231.google.com with SMTP id m88so1052688pfi.9
+ for <barebox@lists.infradead.org>; Fri, 10 Nov 2017 23:51:25 -0800 (PST)
+Received: from DESKTOP-SN2TGES ([171.212.139.243])
+ by smtp.gmail.com with ESMTPSA id t4sm13509318pgp.49.2017.11.10.23.51.23
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=AES128-GCM-SHA256 bits=128/128);
+ Fri, 10 Nov 2017 23:51:24 -0800 (PST)
+From: "jianhuizhao329@gmail.com" <jianhuizhao.329@gmail.com>
+Date: Sat, 11 Nov 2017 15:51:21 +0800
+Mime-Version: 1.0
+Message-ID: <201711111528455018932@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,112 +26,10 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] uimage: fix: add can_lseek_backward and use in
- uimage_open
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: support mt7620
+To: barebox <barebox@lists.infradead.org>
 
-On Wed, Nov 08, 2017 at 07:07:47PM +0100, Michael Grzeschik wrote:
-> Since commit ce0cc7fe we support forward seek on tftpfs. This feature
-> breaks the condition to check rather we open an uimage over tftp. Since
-> backward seeking is the problem here, we add the function
-> can_lseek_backward and check for it instead of the simple lseek.
-> 
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> ---
-> v1 -> v2: - added can_lseek_backward
->           - also fixed check in uimagefs
->           - aligned comments to check
-> 
-> common/uimage.c |  4 ++--
->  fs/uimagefs.c   |  4 ++--
->  include/fs.h    | 20 ++++++++++++++++++++
->  3 files changed, 24 insertions(+), 4 deletions(-)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/common/uimage.c b/common/uimage.c
-> index 28a25bba2d..b6f0f109ca 100644
-> --- a/common/uimage.c
-> +++ b/common/uimage.c
-> @@ -111,9 +111,9 @@ again:
->  	/*
->  	 * Hack around tftp fs. We need lseek for uImage support, but
->  	 * this cannot be implemented in tftp fs, so we detect this
-> -	 * by doing a test lseek and copy the file to ram if it fails
-> +	 * and copy the file to ram if it fails
->  	 */
-> -	if (IS_BUILTIN(CONFIG_FS_TFTP) && lseek(fd, 0, SEEK_SET)) {
-> +	if (IS_BUILTIN(CONFIG_FS_TFTP) && !can_lseek_backward(fd)) {
->  		close(fd);
->  		ret = copy_file(filename, uimage_tmp, 0);
->  		if (ret)
-> diff --git a/fs/uimagefs.c b/fs/uimagefs.c
-> index 13c1fbac05..c0c5750c2c 100644
-> --- a/fs/uimagefs.c
-> +++ b/fs/uimagefs.c
-> @@ -374,9 +374,9 @@ again:
->  	/*
->  	 * Hack around tftp fs. We need lseek for uImage support, but
->  	 * this cannot be implemented in tftp fs, so we detect this
-> -	 * by doing a test lseek and copy the file to ram if it fails
-> +	 * and copy the file to ram if it fails
->  	 */
-> -	if (IS_BUILTIN(CONFIG_FS_TFTP) && lseek(fd, 0, SEEK_SET)) {
-> +	if (IS_BUILTIN(CONFIG_FS_TFTP) && !can_lseek_backward(fd)) {
->  		close(fd);
->  		ret = copy_file(priv->filename, priv->tmp, 0);
->  		if (ret)
-> diff --git a/include/fs.h b/include/fs.h
-> index d7fa7714b4..f8a3b8bda4 100644
-> --- a/include/fs.h
-> +++ b/include/fs.h
-> @@ -100,6 +100,26 @@ struct fs_device_d {
->  	char *linux_rootarg;
->  };
->  
-> +/*
-> + * Some filesystems i.e. tftpfs only support lseek into one direction.
-> + * To detect this limited functionality we add this extra function.
-> + * Additionaly we also return 0 if we even can not seek forward.
-> + */
-> +static inline int can_lseek_backward(int fd)
-> +{
-> +	int ret;
-> +
-> +	ret = lseek(fd, 1, SEEK_SET);
-> +	if (ret < 0)
-> +		return 0;
-> +
-> +	ret = lseek(fd, 0, SEEK_SET);
-> +	if (ret < 0)
-> +		return 0;
-> +
-> +	return ret;
-> +}
-> +
->  #define drv_to_fs_driver(d) container_of(d, struct fs_driver_d, drv)
->  
->  int flush(int fd);
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+I hope barebox can support mt7620.
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
