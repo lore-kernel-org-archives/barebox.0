@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x22f.google.com ([2a00:1450:4010:c07::22f])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eDSGq-0005Vw-Bw
- for barebox@lists.infradead.org; Sat, 11 Nov 2017 09:40:14 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Sat, 11 Nov 2017 10:39:44 +0100
-Message-Id: <20171111093944.10094-1-o.rempel@pengutronix.de>
+ id 1eDorb-0003zA-6G
+ for barebox@lists.infradead.org; Sun, 12 Nov 2017 09:47:41 +0000
+Received: by mail-lf0-x22f.google.com with SMTP id k66so3201858lfg.3
+ for <barebox@lists.infradead.org>; Sun, 12 Nov 2017 01:47:15 -0800 (PST)
+Date: Sun, 12 Nov 2017 13:00:06 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20171112130006.3e059c6bb309890ec70999ba@gmail.com>
+In-Reply-To: <201711111528455018932@gmail.com>
+References: <201711111528455018932@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,39 +19,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1] i.MX: esdhc: wait until SDSTB is asserted,
- not other way arround
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: support mt7620
+To: "jianhuizhao329@gmail.com" <jianhuizhao.329@gmail.com>
+Cc: barebox <barebox@lists.infradead.org>, Oleksij Rempel <linux@rempel-privat.de>
 
-this added 10msec on each sd/mmc clock switch request.
+On Sat, 11 Nov 2017 15:51:21 +0800
+"jianhuizhao329@gmail.com" <jianhuizhao.329@gmail.com> wrote:
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/mci/imx-esdhc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> I hope barebox can support mt7620.
 
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index 141d715c90..55e8371dd8 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -454,7 +454,7 @@ static void set_sysctl(struct mci_host *mci, u32 clock)
- 			SYSCTL_CLOCK_MASK, clk);
- 
- 	wait_on_timeout(10 * MSECOND,
--			!(esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_SDSTB));
-+			esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_SDSTB);
- 
- 	clk = SYSCTL_PEREN | SYSCTL_CKEN;
- 
--- 
-2.11.0
+Please see my 20160209.mt7620 and 20160815.mediatek branches
+(https://github.com/frantony/barebox/tree/20160209.mt7620
+and https://github.com/frantony/barebox/tree/20160815.mediatek respectively=
+).
 
+MT7620 is an unpromising chip. Actually it is RT5350 with few software visi=
+ble changes,
+see https://wiki.openwrt.org/doc/hardware/soc/soc.mediatek for details.
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
