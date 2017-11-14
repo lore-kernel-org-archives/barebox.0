@@ -1,11 +1,29 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eEW9r-0003tI-Dy
- for barebox@lists.infradead.org; Tue, 14 Nov 2017 08:01:25 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue, 14 Nov 2017 09:00:56 +0100
-Message-Id: <20171114080056.26290-1-o.rempel@pengutronix.de>
+Received: from zimbra1.kalray.eu ([92.103.151.219])
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1eEbN1-0007uD-AU
+ for barebox@lists.infradead.org; Tue, 14 Nov 2017 13:35:21 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra1.kalray.eu (Postfix) with ESMTP id 76C1128107C
+ for <barebox@lists.infradead.org>; Tue, 14 Nov 2017 14:34:52 +0100 (CET)
+Received: from zimbra1.kalray.eu ([127.0.0.1])
+ by localhost (zimbra1.kalray.eu [127.0.0.1]) (amavisd-new, port 10032)
+ with ESMTP id zGn82U9QJop1 for <barebox@lists.infradead.org>;
+ Tue, 14 Nov 2017 14:34:51 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra1.kalray.eu (Postfix) with ESMTP id DEB5628107D
+ for <barebox@lists.infradead.org>; Tue, 14 Nov 2017 14:34:51 +0100 (CET)
+Received: from zimbra1.kalray.eu ([127.0.0.1])
+ by localhost (zimbra1.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id EvA7OBlIAtnR for <barebox@lists.infradead.org>;
+ Tue, 14 Nov 2017 14:34:51 +0100 (CET)
+Received: from zimbra1.kalray.eu (localhost [127.0.0.1])
+ by zimbra1.kalray.eu (Postfix) with ESMTP id CBDB428107B
+ for <barebox@lists.infradead.org>; Tue, 14 Nov 2017 14:34:51 +0100 (CET)
+Date: Tue, 14 Nov 2017 14:34:51 +0100 (CET)
+From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
+Message-ID: <221136220.35006899.1510666491764.JavaMail.zimbra@kalray.eu>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,81 +32,116 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1] usbgadget command: provide -m option to set usb mode
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: [PATCH] Net: add mdio_i2c driver.
+To: Barebox List <barebox@lists.infradead.org>
 
-if we optimize barebox for speed, then we can't use usbgadget autostart,
-which would set otg.mode automatically.
-Provide an option for usbgadget command to set otg.mode.
-
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- commands/usbgadget.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/commands/usbgadget.c b/commands/usbgadget.c
-index 507871edd2..e5109f99cb 100644
---- a/commands/usbgadget.c
-+++ b/commands/usbgadget.c
-@@ -34,15 +34,19 @@ static int do_usbgadget(int argc, char *argv[])
- {
- 	int opt, ret;
- 	int acm = 1, create_serial = 0, fastboot_set = 0, fastboot_export_bbu = 0;
-+	int usb_mode_set = 0;
- 	const char *fastboot_opts = NULL, *dfu_opts = NULL;
- 	struct f_multi_opts *opts;
- 
--	while ((opt = getopt(argc, argv, "asdA::D:b")) > 0) {
-+	while ((opt = getopt(argc, argv, "amsdA::D:b")) > 0) {
- 		switch (opt) {
- 		case 'a':
- 			acm = 1;
- 			create_serial = 1;
- 			break;
-+		case 'm':
-+			usb_mode_set = 1;
-+			break;
- 		case 's':
- 			acm = 0;
- 			create_serial = 1;
-@@ -101,6 +105,9 @@ static int do_usbgadget(int argc, char *argv[])
- 		opts->create_acm = acm;
- 	}
- 
-+	if (usb_mode_set)
-+		setenv("otg.mode", "peripheral");
-+
- 	ret = usb_multi_register(opts);
- 	if (ret)
- 		usb_multi_opts_release(opts);
-@@ -120,6 +127,7 @@ BAREBOX_CMD_HELP_TEXT("Enable / disable a USB composite gadget on the USB device
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT ("-a",   "Create CDC ACM function")
-+BAREBOX_CMD_HELP_OPT ("-m",   "Automatically set USB OTG mode to peripheral")
- BAREBOX_CMD_HELP_OPT ("-s",   "Create Generic Serial function")
- BAREBOX_CMD_HELP_OPT ("-A [desc]",	"Create Android Fastboot function. If 'desc' is not provided,")
- BAREBOX_CMD_HELP_OPT ("",		"trying to use 'global.usbgadget.fastboot_function' variable.")
-@@ -131,7 +139,7 @@ BAREBOX_CMD_HELP_END
- BAREBOX_CMD_START(usbgadget)
- 	.cmd		= do_usbgadget,
- 	BAREBOX_CMD_DESC("Create USB Gadget multifunction device")
--	BAREBOX_CMD_OPTS("[-asdAD]")
-+	BAREBOX_CMD_OPTS("[-amsdAD]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
- 	BAREBOX_CMD_HELP(cmd_usbgadget_help)
- BAREBOX_CMD_END
--- 
-2.11.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbSAxMjM4YjVjNzBkMjk3NjIwNzRiYzcxYWMyNTYyM2I5NThhZjkwMTBhIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBDbGVtZW50IExlZ2VyIDxjbGVtZW50LmxlZ2VyQGthbHJheS5l
+dT4KRGF0ZTogV2VkLCA4IE5vdiAyMDE3IDA5OjEzOjEwICswMTAwClN1YmplY3Q6IFtQQVRDSF0g
+TmV0OiBhZGQgbWRpb19pMmMgZHJpdmVyIChpMmMgdG8gbWRpbyBicmlkZ2UpLgoKU29tZSBwaHlz
+IChNYXJ2ZWxscykgY2FuIGJlIGNvbm5lY3RlZCB1c2luZyBhbmQgaTJjIGJ1cyBpbnN0ZWFkIG9m
+IGEgbWRpbyBidXMuClRoZSBjb21tdW5pY2F0aW9uIGZvcm1hdCBpcyB0aGVuIHNsaWdodGx5IGRp
+ZmZlcmVudCB0aGFuIHN0YW5kYXJkIG1kaW8uClRoaXMgcGF0Y2ggYWRkIGEgaTJjIHRvIG1kaW8g
+YnJpZGdlIHdoaWNoIGFsbG93cyB0byBjb21tdW5pY2F0ZSB3aXRoCnRoZXNlIHBoeXMuCgotLS0K
+IGRyaXZlcnMvbmV0L3BoeS9LY29uZmlnICAgICAgIHwgICA4ICsrKwogZHJpdmVycy9uZXQvcGh5
+L01ha2VmaWxlICAgICAgfCAgIDEgKwogZHJpdmVycy9uZXQvcGh5L21kaW8taTJjLmMgICAgfCAx
+NDggKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCiBkdHMvQmluZGlu
+Z3MvbmV0L21kaW8taTJjLnR4dCB8ICAxOSArKysrKysKIDQgZmlsZXMgY2hhbmdlZCwgMTc2IGlu
+c2VydGlvbnMoKykKIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL25ldC9waHkvbWRpby1pMmMu
+YwogY3JlYXRlIG1vZGUgMTAwNjQ0IGR0cy9CaW5kaW5ncy9uZXQvbWRpby1pMmMudHh0CgpkaWZm
+IC0tZ2l0IGEvZHJpdmVycy9uZXQvcGh5L0tjb25maWcgYi9kcml2ZXJzL25ldC9waHkvS2NvbmZp
+ZwppbmRleCBlYTJlMDYyLi5mMDU4ZjM4IDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC9waHkvS2Nv
+bmZpZworKysgYi9kcml2ZXJzL25ldC9waHkvS2NvbmZpZwpAQCAtNjAsNiArNjAsMTQgQEAgY29u
+ZmlnIE1ESU9fQklUQkFORwogCiAgICAgICAgICAgSWYgaW4gZG91YnQsIHNheSBOLgogCitjb25m
+aWcgTURJT19JMkMKKwlib29sICJTdXBwb3J0IGZvciBJMkMgYmFzZWQgTURJTyBidXNlcyIKKwlk
+ZXBlbmRzIG9uIEkyQworCS0tLWhlbHAtLS0KKwkgIFN1cHBvcnQgSTJDIGJhc2VkIFBIWXMuIFRo
+aXMgcHJvdmlkZXMgYSBNRElPIGJ1cyBicmlkZ2VkCisJICB0byBJMkMgdG8gYWxsb3cgUEhZcyBj
+b25uZWN0ZWQgaW4gSTJDIG1vZGUgdG8gYmUgYWNjZXNzZWQKKwkgIHVzaW5nIHRoZSBleGlzdGlu
+ZyBpbmZyYXN0cnVjdHVyZS4KKwogY29uZmlnIE1ESU9fR1BJTwogCWJvb2wgIlN1cHBvcnQgZm9y
+IEdQSU8gbGliLWJhc2VkIGJpdGJhbmdlZCBNRElPIGJ1c2VzIgogCWRlcGVuZHMgb24gTURJT19C
+SVRCQU5HICYmIEdQSU9MSUIKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3BoeS9NYWtlZmlsZSBi
+L2RyaXZlcnMvbmV0L3BoeS9NYWtlZmlsZQppbmRleCAxM2I4ZjY1Li45ZjYxYWU2IDEwMDY0NAot
+LS0gYS9kcml2ZXJzL25ldC9waHkvTWFrZWZpbGUKKysrIGIvZHJpdmVycy9uZXQvcGh5L01ha2Vm
+aWxlCkBAIC0xMCwzICsxMCw0IEBAIG9iai0kKENPTkZJR19TTVNDX1BIWSkJCSs9IHNtc2Mubwog
+b2JqLSQoQ09ORklHX01ESU9fTVZFQlUpCSs9IG1kaW8tbXZlYnUubwogb2JqLSQoQ09ORklHX01E
+SU9fQklUQkFORykJKz0gbWRpby1iaXRiYW5nLm8KIG9iai0kKENPTkZJR19NRElPX0dQSU8pCQkr
+PSBtZGlvLWdwaW8ubworb2JqLSQoQ09ORklHX01ESU9fSTJDKQkJKz0gbWRpby1pMmMubwpkaWZm
+IC0tZ2l0IGEvZHJpdmVycy9uZXQvcGh5L21kaW8taTJjLmMgYi9kcml2ZXJzL25ldC9waHkvbWRp
+by1pMmMuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwLi5mY2M1NTYyCi0tLSAv
+ZGV2L251bGwKKysrIGIvZHJpdmVycy9uZXQvcGh5L21kaW8taTJjLmMKQEAgLTAsMCArMSwxNDgg
+QEAKKy8qCisgKiBNRElPIEkyQyBicmlkZ2UKKyAqCisgKiBDb3B5cmlnaHQgKEMpIDIwMTcgQ2zD
+qW1lbnQgTMOpZ2VyCisgKgorICogQmFzZWQgb24gY29kZSBieSBSdXNzZWxsIEtpbmcgZnJvbSBM
+aW51eAorICogQ29weXJpZ2h0IChDKSAyMDE1IFJ1c3NlbGwgS2luZworICoKKyAqIFRoaXMgcHJv
+Z3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9k
+aWZ5CisgKiBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNl
+bnNlIHZlcnNpb24gMiBhcworICogcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5k
+YXRpb24uCisgKi8KKworI2luY2x1ZGUgPGNvbW1vbi5oPgorI2luY2x1ZGUgPGRyaXZlci5oPgor
+I2luY2x1ZGUgPGluaXQuaD4KKyNpbmNsdWRlIDxpby5oPgorI2luY2x1ZGUgPG9mLmg+CisjaW5j
+bHVkZSA8b2ZfZ3Bpby5oPgorI2luY2x1ZGUgPGxpbnV4L3BoeS5oPgorI2luY2x1ZGUgPGdwaW8u
+aD4KKyNpbmNsdWRlIDxtYWxsb2MuaD4KKyNpbmNsdWRlIDx4ZnVuY3MuaD4KKworI2luY2x1ZGUg
+PGkyYy9pMmMuaD4KKworLyoKKyAqIEkyQyBidXMgYWRkcmVzc2VzIDB4NTAgYW5kIDB4NTEgYXJl
+IG5vcm1hbGx5IGFuIEVFUFJPTSwgd2hpY2ggaXMKKyAqIHNwZWNpZmllZCB0byBiZSBwcmVzZW50
+IGluIFNGUCBtb2R1bGVzLiAgVGhlc2UgY29ycmVzcG9uZCB3aXRoIFBIWQorICogYWRkcmVzc2Vz
+IDE2IGFuZCAxNy4gIERpc2FsbG93IGFjY2VzcyB0byB0aGVzZSAicGh5IiBhZGRyZXNzZXMuCisg
+Ki8KK3N0YXRpYyBib29sIGkyY19taWlfdmFsaWRfcGh5X2lkKGludCBwaHlfaWQpCit7CisJcmV0
+dXJuIHBoeV9pZCAhPSAweDEwICYmIHBoeV9pZCAhPSAweDExOworfQorCitzdGF0aWMgdW5zaWdu
+ZWQgaW50IGkyY19taWlfcGh5X2FkZHIoaW50IHBoeV9pZCkKK3sKKwlyZXR1cm4gcGh5X2lkICsg
+MHg0MDsKK30KKworc3RhdGljIGludCBpMmNfbWlpX3JlYWQoc3RydWN0IG1paV9idXMgKmJ1cywg
+aW50IHBoeV9pZCwgaW50IHJlZykKK3sKKwlzdHJ1Y3QgaTJjX2FkYXB0ZXIgKmkyYyA9IGJ1cy0+
+cHJpdjsKKwlzdHJ1Y3QgaTJjX21zZyBtc2dzWzJdOworCXU4IGRhdGFbMl0sIGRldl9hZGRyID0g
+cmVnOworCWludCBidXNfYWRkciwgcmV0OworCisJaWYgKCFpMmNfbWlpX3ZhbGlkX3BoeV9pZChw
+aHlfaWQpKQorCQlyZXR1cm4gMHhmZmZmOworCisJYnVzX2FkZHIgPSBpMmNfbWlpX3BoeV9hZGRy
+KHBoeV9pZCk7CisJbXNnc1swXS5hZGRyID0gYnVzX2FkZHI7CisJbXNnc1swXS5mbGFncyA9IDA7
+CisJbXNnc1swXS5sZW4gPSAxOworCW1zZ3NbMF0uYnVmID0gJmRldl9hZGRyOworCW1zZ3NbMV0u
+YWRkciA9IGJ1c19hZGRyOworCW1zZ3NbMV0uZmxhZ3MgPSBJMkNfTV9SRDsKKwltc2dzWzFdLmxl
+biA9IHNpemVvZihkYXRhKTsKKwltc2dzWzFdLmJ1ZiA9IGRhdGE7CisKKwlyZXQgPSBpMmNfdHJh
+bnNmZXIoaTJjLCBtc2dzLCBBUlJBWV9TSVpFKG1zZ3MpKTsKKwlpZiAocmV0ICE9IEFSUkFZX1NJ
+WkUobXNncykpCisJCXJldHVybiAweGZmZmY7CisKKwlyZXR1cm4gZGF0YVswXSA8PCA4IHwgZGF0
+YVsxXTsKK30KKworc3RhdGljIGludCBpMmNfbWlpX3dyaXRlKHN0cnVjdCBtaWlfYnVzICpidXMs
+IGludCBwaHlfaWQsIGludCByZWcsIHUxNiB2YWwpCit7CisJc3RydWN0IGkyY19hZGFwdGVyICpp
+MmMgPSBidXMtPnByaXY7CisJc3RydWN0IGkyY19tc2cgbXNnOworCWludCByZXQ7CisJdTggZGF0
+YVszXTsKKworCWlmICghaTJjX21paV92YWxpZF9waHlfaWQocGh5X2lkKSkKKwkJcmV0dXJuIDA7
+CisKKwlkYXRhWzBdID0gcmVnOworCWRhdGFbMV0gPSB2YWwgPj4gODsKKwlkYXRhWzJdID0gdmFs
+OworCisJbXNnLmFkZHIgPSBpMmNfbWlpX3BoeV9hZGRyKHBoeV9pZCk7CisJbXNnLmZsYWdzID0g
+MDsKKwltc2cubGVuID0gMzsKKwltc2cuYnVmID0gZGF0YTsKKworCXJldCA9IGkyY190cmFuc2Zl
+cihpMmMsICZtc2csIDEpOworCisJcmV0dXJuIHJldCA8IDAgPyByZXQgOiAwOworfQorCitzdGF0
+aWMgaW50IG1kaW9faTJjX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQoreworCXN0cnVjdCBt
+aWlfYnVzICptaWk7CisJc3RydWN0IGkyY19hZGFwdGVyICppMmNfYWRhcDsKKwlzdHJ1Y3QgZGV2
+aWNlX25vZGUgKmkyY19ub2RlOworCisJaTJjX25vZGUgPSBvZl9wYXJzZV9waGFuZGxlKGRldi0+
+ZGV2aWNlX25vZGUsICJpMmMtYnVzIiwgMCk7CisJaWYgKCFpMmNfbm9kZSkgeworCQlkZXZfZXJy
+KGRldiwgIk1pc3NpbmcgaTJjLWJ1cyBwcm9wZXJ0eSBmb3IgbWRpby1pMmNcbiIpOworCQlyZXR1
+cm4gLUVJTlZBTDsKKwl9CisKKwlpMmNfYWRhcCA9IG9mX2ZpbmRfaTJjX2FkYXB0ZXJfYnlfbm9k
+ZShpMmNfbm9kZSk7CisJaWYgKCFpMmNfYWRhcCkgeworCQlkZXZfZGJnKGRldiwgImkyYyBidXMg
+bm90IHlldCBwcm9iZWRcbiIpOworCQlyZXR1cm4gLUVQUk9CRV9ERUZFUjsKKwl9CisKKwltaWkg
+PSB4emFsbG9jKHNpemVvZigqbWlpKSk7CisKKwltaWktPnBhcmVudCA9IGRldjsKKwltaWktPmRl
+di5kZXZpY2Vfbm9kZSA9IGRldi0+ZGV2aWNlX25vZGU7CisKKwltaWktPnBhcmVudCA9IGRldjsK
+KwltaWktPnJlYWQgPSBpMmNfbWlpX3JlYWQ7CisJbWlpLT53cml0ZSA9IGkyY19taWlfd3JpdGU7
+CisJbWlpLT5wcml2ID0gaTJjX2FkYXA7CisKKwlkZXYtPnByaXYgPSBtaWk7CisKKwlkZXZfaW5m
+byhkZXYsICJJMkMgbWRpbyByZWdpc3RlclxuIik7CisKKwlyZXR1cm4gbWRpb2J1c19yZWdpc3Rl
+cihtaWkpOworfQorCitzdGF0aWMgdm9pZCBtZGlvX2kyY19yZW1vdmUoc3RydWN0IGRldmljZV9k
+ICpkZXYpCit7CisJc3RydWN0IG1paV9idXMgKm1paSA9IGRldi0+cHJpdjsKKworCW1kaW9idXNf
+dW5yZWdpc3RlcihtaWkpOworCWtmcmVlKG1paSk7Cit9CisKK3N0YXRpYyBjb25zdCBzdHJ1Y3Qg
+b2ZfZGV2aWNlX2lkIGkyY19tZGlvX2R0X2lkc1tdID0geworCXsgLmNvbXBhdGlibGUgPSAidmly
+dHVhbCxtZGlvLWkyYyIsIH0sCisJeyAvKiBzZW50aW5lbCAqLyB9Cit9OworCitzdGF0aWMgc3Ry
+dWN0IGRyaXZlcl9kIG1kaW9faTJjX2RyaXZlciA9IHsKKwkubmFtZSA9ICJtZGlvLWkyYyIsCisJ
+LnByb2JlID0gbWRpb19pMmNfcHJvYmUsCisJLnJlbW92ZSA9IG1kaW9faTJjX3JlbW92ZSwKKwku
+b2ZfY29tcGF0aWJsZSA9IERSVl9PRl9DT01QQVQoaTJjX21kaW9fZHRfaWRzKSwKK307CisKK2Rl
+dmljZV9wbGF0Zm9ybV9kcml2ZXIobWRpb19pMmNfZHJpdmVyKTsKZGlmZiAtLWdpdCBhL2R0cy9C
+aW5kaW5ncy9uZXQvbWRpby1pMmMudHh0IGIvZHRzL0JpbmRpbmdzL25ldC9tZGlvLWkyYy50eHQK
+bmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uNjRlMjBlMQotLS0gL2Rldi9udWxs
+CisrKyBiL2R0cy9CaW5kaW5ncy9uZXQvbWRpby1pMmMudHh0CkBAIC0wLDAgKzEsMTkgQEAKK01E
+SU8gb24gSTJDIEJ1cworVGhpcyBjb21wYXRpYmxlIGFsbG93cyB0byB1c2UgcGh5IGRldmljZXMg
+Y29ubmVjdGVkIHRvIGFuIGkyYyBidXMKK2FuZCBleHBlY3RpbmcgdG8gYmUgdXNlIHdpdGggbWRp
+byBwcm90b2NvbC4KKworQ3VycmVudGx5IGRlZmluZWQgY29tcGF0aWJsZXM6CistIHZpcnR1YWws
+bWRpby1pMmMKKworUmVxdWlyZWQgcHJvcGVydGllczoKKy0gaTJjLWJ1czogQSBwaGFuZGxlIG9u
+IHRoZSBJMkMgYnVzIGFjdGluZyBhcyBhIE1ESU8gYnJpZGdlIHdoZXJlIHBoeXMKKyAgICAgICAg
+ICAgYXJlIGNvbm5lY3RlZCB0by4KKworRXhhbXBsZToKKworbWRpbzBAaTJjIHsKKwljb21wYXRp
+YmxlID0gInZpcnR1YWwsbWRpby1pMmMiOworCSNhZGRyZXNzLWNlbGxzID0gPDE+OworCSNzaXpl
+LWNlbGxzID0gPDA+OworCWkyYy1idXMgPSA8JmkyY19idXM+OworfTsKLS0gCjEuOC4zLjEKCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
