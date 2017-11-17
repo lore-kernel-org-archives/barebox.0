@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eFd0i-0005xQ-SH
- for barebox@lists.infradead.org; Fri, 17 Nov 2017 09:32:35 +0000
-Date: Fri, 17 Nov 2017 10:32:11 +0100
-From: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-Message-ID: <20171117093211.z5h3vpthvn6b7o4w@pengutronix.de>
-References: <20171108150517.130503-1-g.schenk@eckelmann.de>
- <20171110070008.p6gsmknadybwq6ug@pengutronix.de>
- <1510816812.1406.2.camel@eckelmann.de>
+ id 1eFd7U-0003ls-3O
+ for barebox@lists.infradead.org; Fri, 17 Nov 2017 09:39:34 +0000
+Date: Fri, 17 Nov 2017 10:39:10 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20171117093910.5g2i3bwvboxrw5b2@pengutronix.de>
+References: <221136220.35006899.1510666491764.JavaMail.zimbra@kalray.eu>
+ <20171117083340.6jtpf2dix5pukaks@pengutronix.de>
+ <1782166044.55530197.1510908734299.JavaMail.zimbra@kalray.eu>
+ <20171117090657.mux43ro5gkrtfeor@pengutronix.de>
+ <1996437973.55908008.1510911247927.JavaMail.zimbra@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1510816812.1406.2.camel@eckelmann.de>
+In-Reply-To: <1996437973.55908008.1510911247927.JavaMail.zimbra@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,60 +26,72 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Configure network device for nfsboot via nv var
-To: "Schenk, Gavin" <G.Schenk@eckelmann.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] Net: add mdio_i2c driver.
+To: =?iso-8859-15?Q?Cl=E9ment?= Leger <cleger@kalray.eu>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Nov 16, 2017 at 07:20:14AM +0000, Schenk, Gavin wrote:
-> Hi,
+On Fri, Nov 17, 2017 at 10:34:07AM +0100, Cl=E9ment Leger wrote:
 > =
 
-> > On Wed, Nov 08, 2017 at 04:05:17PM +0100, Gavin Schenk wrote:
-> > > When you have a static network environment but more than one
-> > > network
-> > > device on your machine it is necessary to provide the <device>
-> > > parameter to the ip parameter at kernel cmd line.
-> > > =
+> ----- Mail original -----
+> > De: "Sascha Hauer" <s.hauer@pengutronix.de>
+> > =C0: "Cl=E9ment Leger" <cleger@kalray.eu>
+> > Cc: "Barebox List" <barebox@lists.infradead.org>
+> > Envoy=E9: Vendredi 17 Novembre 2017 10:06:58
+> > Objet: Re: [PATCH] Net: add mdio_i2c driver.
+> =
 
-> > > The device name assigned by Linux cannot in general be predicted as
-> > > it
-> > > depends on driver bind order.
-> > > =
+> > On Fri, Nov 17, 2017 at 09:52:14AM +0100, Cl=E9ment Leger wrote:
+> >> Hi Sascha,
+> >> =
 
-> > > This patch introduces a new global variable
-> > > "global.linux.nfsroot.device" which when set is feed to the ip=3D
-> > > kernel
-> > > parameter as device name.
+> >> Indeed, I though about that and I was facing another problem.
+> >> The mdio to i2c driver does not have a specific address.
+> >> ie, it is not a device but rather a bus.
+> >> If I put the mdio_i2c  node under the i2c bus, then I should assign
+> >> it an i2c address. This address should represent the phy address.
+> >> However, this would means I would have one mdio-i2c driver per phy.
 > > =
 
-> > Maybe we should rather add a linuxname property to the ethernet
-> > device
-> > instead. That way we could specify multiple names in case we have
-> > multiple ethernet devices in barebox aswell.
-> > =
-
+> > Some AT24 EEPROMs have the same problem, they also use multiple
+> > addresses. AFAIK for them only the first address is provided in the
+> > "reg" property. See drivers/eeprom/at24c.c how the driver handles this
+> > situation.
 > =
 
-> maybe I am missing something important, but is this useful for anything
-> besides nfsboot?
+> From what I see, they just create a bunch of i2c device according to
+> the number of address to take.
+> In the case of mdio-i2c, we do not know in advance how many phy will
+> be hidden behind the bus. I think I will have to go with the double
+> address description.
+> This will also avoid spurious i2c write by bus scanning done by phy
+> detection layer.
 > =
 
-> If linuxname is a property of the device, how do we decide between
-> eth0.linuxname and eth1.linuxname when doing a "boot /mnt/nfs"?=A0
-> In this case we need additionally a global variable like nfsboot-
-> device=3Deth0 to switch between nfsboot devices and to make the decision
-> when filling the ip parameter?
+> > Normally I think multi address devices should simply provide their
+> > reg space as reg =3D <start size>; like other devices do aswell. I don't
+> > know what the I2C core maked from this though.
+> =
 
-Look again at the code. The code you patched in your patch does not
-add anything directly to the kernel commandline. Instead, it fills the
-network device specific variable ethx.linux.bootargs with a kernel
-commandline snippet needed to boot from this particular device. So
-during boot barebox will add the snippet from the actual boot device
-to the commandline.
-With eth0.linuxname and eth1.linuxname you will get two
-eth[01].linux.bootargs variables containing the corresponding linuxname.
-Depending on the ethernet device being active during boot barebox will
-pick the correct string.
+> It will not work and will not even compile (with dtc errors activated)
+> since the i2c controllers are almost always describe as:
+> =
+
+>   #address-cells =3D <1>;
+>   #size-cells =3D <0>;
+> =
+
+> So no size cell.
+> =
+
+> If you agree, I will go with the double device address (both in mdio-i2c =
+and phy)
+
+Ok, fine. BTW you do not have to instantiate all phy devices during
+i2c device probe. Instead, you can instantiate it on demand when a phy
+device is first accessed. This is common for other mdio devices aswell
+(i.e. only the device used by the network controller will be
+instantiated. Once you call the miitool command the others will show up)
 
 Sascha
 
