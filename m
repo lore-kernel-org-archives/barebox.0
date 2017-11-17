@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra1.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eFd2b-00086p-Sz
- for barebox@lists.infradead.org; Fri, 17 Nov 2017 09:34:32 +0000
-Date: Fri, 17 Nov 2017 10:34:07 +0100 (CET)
-From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
-Message-ID: <1996437973.55908008.1510911247927.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <20171117090657.mux43ro5gkrtfeor@pengutronix.de>
-References: <221136220.35006899.1510666491764.JavaMail.zimbra@kalray.eu>
- <20171117083340.6jtpf2dix5pukaks@pengutronix.de>
- <1782166044.55530197.1510908734299.JavaMail.zimbra@kalray.eu>
- <20171117090657.mux43ro5gkrtfeor@pengutronix.de>
+ id 1eFcvR-0001av-Ti
+ for barebox@lists.infradead.org; Fri, 17 Nov 2017 09:27:07 +0000
+Date: Fri, 17 Nov 2017 10:26:41 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20171117092641.cbrszaoh4cfz5eku@pengutronix.de>
+References: <20171108150517.130503-1-g.schenk@eckelmann.de>
+ <20171110070008.p6gsmknadybwq6ug@pengutronix.de>
+ <1510816812.1406.2.camel@eckelmann.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1510816812.1406.2.camel@eckelmann.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,51 +20,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Net: add mdio_i2c driver.
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] Configure network device for nfsboot via nv var
+To: "Schenk, Gavin" <G.Schenk@eckelmann.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Ci0tLS0tIE1haWwgb3JpZ2luYWwgLS0tLS0KPiBEZTogIlNhc2NoYSBIYXVlciIgPHMuaGF1ZXJA
-cGVuZ3V0cm9uaXguZGU+Cj4gw4A6ICJDbMOpbWVudCBMZWdlciIgPGNsZWdlckBrYWxyYXkuZXU+
-Cj4gQ2M6ICJCYXJlYm94IExpc3QiIDxiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmc+Cj4gRW52
-b3nDqTogVmVuZHJlZGkgMTcgTm92ZW1icmUgMjAxNyAxMDowNjo1OAo+IE9iamV0OiBSZTogW1BB
-VENIXSBOZXQ6IGFkZCBtZGlvX2kyYyBkcml2ZXIuCgo+IE9uIEZyaSwgTm92IDE3LCAyMDE3IGF0
-IDA5OjUyOjE0QU0gKzAxMDAsIENsw6ltZW50IExlZ2VyIHdyb3RlOgo+PiBIaSBTYXNjaGEsCj4+
-IAo+PiBJbmRlZWQsIEkgdGhvdWdoIGFib3V0IHRoYXQgYW5kIEkgd2FzIGZhY2luZyBhbm90aGVy
-IHByb2JsZW0uCj4+IFRoZSBtZGlvIHRvIGkyYyBkcml2ZXIgZG9lcyBub3QgaGF2ZSBhIHNwZWNp
-ZmljIGFkZHJlc3MuCj4+IGllLCBpdCBpcyBub3QgYSBkZXZpY2UgYnV0IHJhdGhlciBhIGJ1cy4K
-Pj4gSWYgSSBwdXQgdGhlIG1kaW9faTJjICBub2RlIHVuZGVyIHRoZSBpMmMgYnVzLCB0aGVuIEkg
-c2hvdWxkIGFzc2lnbgo+PiBpdCBhbiBpMmMgYWRkcmVzcy4gVGhpcyBhZGRyZXNzIHNob3VsZCBy
-ZXByZXNlbnQgdGhlIHBoeSBhZGRyZXNzLgo+PiBIb3dldmVyLCB0aGlzIHdvdWxkIG1lYW5zIEkg
-d291bGQgaGF2ZSBvbmUgbWRpby1pMmMgZHJpdmVyIHBlciBwaHkuCj4gCj4gU29tZSBBVDI0IEVF
-UFJPTXMgaGF2ZSB0aGUgc2FtZSBwcm9ibGVtLCB0aGV5IGFsc28gdXNlIG11bHRpcGxlCj4gYWRk
-cmVzc2VzLiBBRkFJSyBmb3IgdGhlbSBvbmx5IHRoZSBmaXJzdCBhZGRyZXNzIGlzIHByb3ZpZGVk
-IGluIHRoZQo+ICJyZWciIHByb3BlcnR5LiBTZWUgZHJpdmVycy9lZXByb20vYXQyNGMuYyBob3cg
-dGhlIGRyaXZlciBoYW5kbGVzIHRoaXMKPiBzaXR1YXRpb24uCgpGcm9tIHdoYXQgSSBzZWUsIHRo
-ZXkganVzdCBjcmVhdGUgYSBidW5jaCBvZiBpMmMgZGV2aWNlIGFjY29yZGluZyB0bwp0aGUgbnVt
-YmVyIG9mIGFkZHJlc3MgdG8gdGFrZS4KSW4gdGhlIGNhc2Ugb2YgbWRpby1pMmMsIHdlIGRvIG5v
-dCBrbm93IGluIGFkdmFuY2UgaG93IG1hbnkgcGh5IHdpbGwKYmUgaGlkZGVuIGJlaGluZCB0aGUg
-YnVzLiBJIHRoaW5rIEkgd2lsbCBoYXZlIHRvIGdvIHdpdGggdGhlIGRvdWJsZQphZGRyZXNzIGRl
-c2NyaXB0aW9uLgpUaGlzIHdpbGwgYWxzbyBhdm9pZCBzcHVyaW91cyBpMmMgd3JpdGUgYnkgYnVz
-IHNjYW5uaW5nIGRvbmUgYnkgcGh5CmRldGVjdGlvbiBsYXllci4KCj4gTm9ybWFsbHkgSSB0aGlu
-ayBtdWx0aSBhZGRyZXNzIGRldmljZXMgc2hvdWxkIHNpbXBseSBwcm92aWRlIHRoZWlyCj4gcmVn
-IHNwYWNlIGFzIHJlZyA9IDxzdGFydCBzaXplPjsgbGlrZSBvdGhlciBkZXZpY2VzIGRvIGFzd2Vs
-bC4gSSBkb24ndAo+IGtub3cgd2hhdCB0aGUgSTJDIGNvcmUgbWFrZWQgZnJvbSB0aGlzIHRob3Vn
-aC4KCkl0IHdpbGwgbm90IHdvcmsgYW5kIHdpbGwgbm90IGV2ZW4gY29tcGlsZSAod2l0aCBkdGMg
-ZXJyb3JzIGFjdGl2YXRlZCkKc2luY2UgdGhlIGkyYyBjb250cm9sbGVycyBhcmUgYWxtb3N0IGFs
-d2F5cyBkZXNjcmliZSBhczoKCiAgI2FkZHJlc3MtY2VsbHMgPSA8MT47CiAgI3NpemUtY2VsbHMg
-PSA8MD47CgpTbyBubyBzaXplIGNlbGwuCgpJZiB5b3UgYWdyZWUsIEkgd2lsbCBnbyB3aXRoIHRo
-ZSBkb3VibGUgZGV2aWNlIGFkZHJlc3MgKGJvdGggaW4gbWRpby1pMmMgYW5kIHBoeSkKCkNsw6lt
-ZW50Cgo+IAo+IFNhc2NoYQo+IAo+IAo+IC0tCj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKPiBJbmR1c3Ry
-aWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJv
-bml4LmRlLyAgfAo+IFBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8
-IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8Cj4gQW10c2dlcmljaHQgSGlsZGVzaGVpbSwg
-SFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
-ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hello,
+
+On Thu, Nov 16, 2017 at 07:20:14AM +0000, Schenk, Gavin wrote:
+> > On Wed, Nov 08, 2017 at 04:05:17PM +0100, Gavin Schenk wrote:
+> > > When you have a static network environment but more than one
+> > > network
+> > > device on your machine it is necessary to provide the <device>
+> > > parameter to the ip parameter at kernel cmd line.
+> > > =
+
+> > > The device name assigned by Linux cannot in general be predicted as
+> > > it
+> > > depends on driver bind order.
+> > > =
+
+> > > This patch introduces a new global variable
+> > > "global.linux.nfsroot.device" which when set is feed to the ip=3D
+> > > kernel
+> > > parameter as device name.
+> > =
+
+> > Maybe we should rather add a linuxname property to the ethernet
+> > device
+> > instead. That way we could specify multiple names in case we have
+> > multiple ethernet devices in barebox aswell.
+> > =
+
+> =
+
+> maybe I am missing something important, but is this useful for anything
+> besides nfsboot?
+> =
+
+> If linuxname is a property of the device, how do we decide between
+> eth0.linuxname and eth1.linuxname when doing a "boot /mnt/nfs"?=A0
+> In this case we need additionally a global variable like nfsboot-
+> device=3Deth0 to switch between nfsboot devices and to make the decision
+> when filling the ip parameter?
+
+IMHO this is unnecessary complicated and the suggested patch is fine.
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
