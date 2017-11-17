@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eFci2-0001qw-Tl
- for barebox@lists.infradead.org; Fri, 17 Nov 2017 09:13:17 +0000
-Date: Fri, 17 Nov 2017 10:12:52 +0100
+ id 1eFcjd-00022z-3h
+ for barebox@lists.infradead.org; Fri, 17 Nov 2017 09:14:55 +0000
+Date: Fri, 17 Nov 2017 10:14:30 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171117091252.5jgull7xy3pyavrv@pengutronix.de>
-References: <20171116211946.17902-1-l.stach@pengutronix.de>
+Message-ID: <20171117091430.ifee3xoai4xatqyg@pengutronix.de>
+References: <20171117045814.16164-1-gael.portay@savoirfairelinux.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20171116211946.17902-1-l.stach@pengutronix.de>
+In-Reply-To: <20171117045814.16164-1-gael.portay@savoirfairelinux.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,104 +18,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] clk: sp810: hardwire parent to 1MHz clock
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH] readline_simple: use len instead of CONFIG_CBSIZE
+To: =?iso-8859-15?Q?Ga=EBl?= PORTAY <gael.portay@savoirfairelinux.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Nov 16, 2017 at 10:19:46PM +0100, Lucas Stach wrote:
-> This works around a limitation in our handling of the vexpress
-> config bus. For now just hardcode the clock parent to the 1MHz
-> clock, which is the default as emulated by QEMU and also the
-> setting the Linux kernel will configure later.
-> 
-> This fixes the vexpress clocksource running at a wrong rate
-> leading to bogus delays and sleep times.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+On Thu, Nov 16, 2017 at 11:58:14PM -0500, Ga=EBl PORTAY wrote:
+> It is safier to use the length given in parameter instead of using the
+> preprocessor CONFIG_CBSIZE value.
+> =
+
+> Signed-off-by: Ga=EBl PORTAY <gael.portay@savoirfairelinux.com>
 > ---
 
 Applied, thanks
 
 Sascha
 
->  drivers/clk/vexpress/clk-sp810.c | 20 +++++++-------------
->  1 file changed, 7 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/clk/vexpress/clk-sp810.c b/drivers/clk/vexpress/clk-sp810.c
-> index af72c7402..959661e19 100644
-> --- a/drivers/clk/vexpress/clk-sp810.c
-> +++ b/drivers/clk/vexpress/clk-sp810.c
-> @@ -44,10 +44,7 @@ struct clk_sp810 {
->  
->  static int clk_sp810_timerclken_get_parent(struct clk *hw)
->  {
-> -	struct clk_sp810_timerclken *timerclken = to_clk_sp810_timerclken(hw);
-> -	u32 val = readl(timerclken->sp810->base + SCCTRL);
-> -
-> -	return !!(val & (1 << SCCTRL_TIMERENnSEL_SHIFT(timerclken->channel)));
-> +	return 1;
->  }
->  
->  static int clk_sp810_timerclken_set_parent(struct clk *hw, u8 index)
-> @@ -59,6 +56,9 @@ static int clk_sp810_timerclken_set_parent(struct clk *hw, u8 index)
->  	if (WARN_ON(index > 1))
->  		return -EINVAL;
->  
-> +	if (index == 0)
-> +		return -EINVAL;
-> +
->  	val = readl(sp810->base + SCCTRL);
->  	val &= ~(1 << shift);
->  	val |= index << shift;
-> @@ -92,7 +92,6 @@ static void clk_sp810_of_setup(struct device_node *node)
->  	char name[12];
->  	static int instance;
->  	int i;
-> -	bool deprecated;
->  
->  	if (!sp810)
->  		return;
-> @@ -106,8 +105,6 @@ static void clk_sp810_of_setup(struct device_node *node)
->  	sp810->node = node;
->  	sp810->base = of_iomap(node, 0);
->  
-> -	deprecated = !of_find_property(node, "assigned-clock-parents", NULL);
-> -
->  	for (i = 0; i < ARRAY_SIZE(sp810->timerclken); i++) {
->  		snprintf(name, sizeof(name), "sp810_%d_%d", instance, i);
->  
-> @@ -119,13 +116,10 @@ static void clk_sp810_of_setup(struct device_node *node)
->  		sp810->timerclken[i].hw.ops = &clk_sp810_timerclken_ops;
->  
->  		/*
-> -		 * If DT isn't setting the parent, force it to be
-> -		 * the 1 MHz clock without going through the framework.
-> -		 * We do this before clk_register() so that it can determine
-> -		 * the parent and setup the tree properly.
-> +		 * Always set parent to 1MHz clock to match QEMU emulation
-> +		 * and satisfy requirements on real HW.
->  		 */
-> -		if (deprecated)
-> -			clk_sp810_timerclken_set_parent(&sp810->timerclken[i].hw, 1);
-> +		clk_sp810_timerclken_set_parent(&sp810->timerclken[i].hw, 1);
->  
->  		clk_register(&sp810->timerclken[i].hw);
->  	}
-> -- 
-> 2.13.6
-> 
-> 
+>  lib/readline_simple.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> =
+
+> diff --git a/lib/readline_simple.c b/lib/readline_simple.c
+> index 80e075bc5..fcdbca41a 100644
+> --- a/lib/readline_simple.c
+> +++ b/lib/readline_simple.c
+> @@ -100,7 +100,7 @@ int readline (const char *prompt, char *line, int len)
+>  			/*
+>  			 * Must be a normal character then
+>  			 */
+> -			if (n < CONFIG_CBSIZE-2) {
+> +			if (n < len-2) {
+>  				if (c =3D=3D '\t') {	/* expand TABs		*/
+>  					puts (tab_seq+(col&07));
+>  					col +=3D 8 - (col&07);
+> -- =
+
+> 2.15.0
+> =
+
+> =
+
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
--- 
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
