@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra1.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eFcO6-0001j8-MW
- for barebox@lists.infradead.org; Fri, 17 Nov 2017 08:52:41 +0000
-Date: Fri, 17 Nov 2017 09:52:14 +0100 (CET)
-From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
-Message-ID: <1782166044.55530197.1510908734299.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <20171117083340.6jtpf2dix5pukaks@pengutronix.de>
+ id 1eFccN-0008VC-K0
+ for barebox@lists.infradead.org; Fri, 17 Nov 2017 09:07:25 +0000
+Date: Fri, 17 Nov 2017 10:06:58 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20171117090657.mux43ro5gkrtfeor@pengutronix.de>
 References: <221136220.35006899.1510666491764.JavaMail.zimbra@kalray.eu>
  <20171117083340.6jtpf2dix5pukaks@pengutronix.de>
+ <1782166044.55530197.1510908734299.JavaMail.zimbra@kalray.eu>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1782166044.55530197.1510908734299.JavaMail.zimbra@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,64 +20,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] Net: add mdio_i2c driver.
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: =?iso-8859-15?Q?Cl=E9ment?= Leger <cleger@kalray.eu>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-SGkgU2FzY2hhLAoKSW5kZWVkLCBJIHRob3VnaCBhYm91dCB0aGF0IGFuZCBJIHdhcyBmYWNpbmcg
-YW5vdGhlciBwcm9ibGVtLgpUaGUgbWRpbyB0byBpMmMgZHJpdmVyIGRvZXMgbm90IGhhdmUgYSBz
-cGVjaWZpYyBhZGRyZXNzLgppZSwgaXQgaXMgbm90IGEgZGV2aWNlIGJ1dCByYXRoZXIgYSBidXMu
-CklmIEkgcHV0IHRoZSBtZGlvX2kyYyAgbm9kZSB1bmRlciB0aGUgaTJjIGJ1cywgdGhlbiBJIHNo
-b3VsZCBhc3NpZ24KaXQgYW4gaTJjIGFkZHJlc3MuIFRoaXMgYWRkcmVzcyBzaG91bGQgcmVwcmVz
-ZW50IHRoZSBwaHkgYWRkcmVzcy4KSG93ZXZlciwgdGhpcyB3b3VsZCBtZWFucyBJIHdvdWxkIGhh
-dmUgb25lIG1kaW8taTJjIGRyaXZlciBwZXIgcGh5LgoKaWU6CmkyY19idXMgewogIG1kaW9faTJj
-MSB7CiAgICByZWcgPSA8MHgwPjsKICAgIGNvbXBhdGlibGUgPSA8dmlydHVhbCxtZGlvLWkyYz47
-CiAgICBwaHkxIHsKICAgICAgcmVnID0gPDB4MD47IC8vPwogICAgfTsKICBtZGlvX2kyYzEgewog
-ICAgcmVnID0gPDB4MT47CiAgICBjb21wYXRpYmxlID0gPHZpcnR1YWwsbWRpby1pMmM+OwogICAg
-cGh5MSB7CiAgICAgIHJlZyA9IDwweDE+OyAvLyA/CiAgICB9OwogIH07CiAgbWlzY19kZXZpY2Ug
-ewogICAgcmVnID0gPDB4Mz47CiAgfTsKICAuLi4KfTsKCm15X25ldF93b3JrX2RldmljZSB7CiAg
-cGh5LWhhbmRsZSA9IDwmbXlwaHk+Owp9CgpOb3RlIHRoYXQgSSBkb24ndCBoYXZlIGEgcGFydGlj
-dWxhciBwcmVmZXJlbmNlIGJ1dCBJIHdhcyBqdXN0IG5vdCBmdW5kCm9mIGFzc2lnbmluZyB0d2lj
-ZSB0aGUgc2FtZSBhZGRyZXNzLiBJZiB5b3UgcHJlZmVyIHRoaXMgd2F5IEkgCm1vZGlmeSBpdC4g
-CgpDbMOpbWVudAoKLS0tLS0gTWFpbCBvcmlnaW5hbCAtLS0tLQpEZTogIlNhc2NoYSBIYXVlciIg
-PHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+CsOAOiAiQ2zDqW1lbnQgTGVnZXIiIDxjbGVnZXJAa2Fs
-cmF5LmV1PgpDYzogIkJhcmVib3ggTGlzdCIgPGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZz4K
-RW52b3nDqTogVmVuZHJlZGkgMTcgTm92ZW1icmUgMjAxNyAwOTozMzo0MApPYmpldDogUmU6IFtQ
-QVRDSF0gTmV0OiBhZGQgbWRpb19pMmMgZHJpdmVyLgoKSGkgQ2zDqW1lbnQsCgpPbiBUdWUsIE5v
-diAxNCwgMjAxNyBhdCAwMjozNDo1MVBNICswMTAwLCBDbMOpbWVudCBMZWdlciB3cm90ZToKPiBG
-cm9tIDEyMzhiNWM3MGQyOTc2MjA3NGJjNzFhYzI1NjIzYjk1OGFmOTAxMGEgTW9uIFNlcCAxNyAw
-MDowMDowMCAyMDAxCj4gRnJvbTogQ2xlbWVudCBMZWdlciA8Y2xlbWVudC5sZWdlckBrYWxyYXku
-ZXU+Cj4gRGF0ZTogV2VkLCA4IE5vdiAyMDE3IDA5OjEzOjEwICswMTAwCj4gU3ViamVjdDogW1BB
-VENIXSBOZXQ6IGFkZCBtZGlvX2kyYyBkcml2ZXIgKGkyYyB0byBtZGlvIGJyaWRnZSkuCj4gCj4g
-KysrIGIvZHRzL0JpbmRpbmdzL25ldC9tZGlvLWkyYy50eHQKPiBAQCAtMCwwICsxLDE5IEBACj4g
-K01ESU8gb24gSTJDIEJ1cwo+ICtUaGlzIGNvbXBhdGlibGUgYWxsb3dzIHRvIHVzZSBwaHkgZGV2
-aWNlcyBjb25uZWN0ZWQgdG8gYW4gaTJjIGJ1cwo+ICthbmQgZXhwZWN0aW5nIHRvIGJlIHVzZSB3
-aXRoIG1kaW8gcHJvdG9jb2wuCj4gKwo+ICtDdXJyZW50bHkgZGVmaW5lZCBjb21wYXRpYmxlczoK
-PiArLSB2aXJ0dWFsLG1kaW8taTJjCj4gKwo+ICtSZXF1aXJlZCBwcm9wZXJ0aWVzOgo+ICstIGky
-Yy1idXM6IEEgcGhhbmRsZSBvbiB0aGUgSTJDIGJ1cyBhY3RpbmcgYXMgYSBNRElPIGJyaWRnZSB3
-aGVyZSBwaHlzCj4gKyAgICAgICAgICAgYXJlIGNvbm5lY3RlZCB0by4KPiArCj4gK0V4YW1wbGU6
-Cj4gKwo+ICttZGlvMEBpMmMgewo+ICsJY29tcGF0aWJsZSA9ICJ2aXJ0dWFsLG1kaW8taTJjIjsK
-PiArCSNhZGRyZXNzLWNlbGxzID0gPDE+Owo+ICsJI3NpemUtY2VsbHMgPSA8MD47Cj4gKwlpMmMt
-YnVzID0gPCZpMmNfYnVzPjsKPiArfTsKClRoZSBiaW5kaW5nIGxvb2tzIHRoZSB3cm9uZyB3YXkg
-cm91bmQuIEV0aGVybmV0IHBoeXMgc2hvdWxkIGJlIGNoaWxkCm5vZGVzIG9mIHRoZSBidXMgcHJv
-dmlkaW5nIHRoZSBjb250cm9sIHBvcnQgdG8gdGhlbS4gU28sIHRoZSBtZGlvLWkyYwpkZXZpY2Ug
-c2hvdWxkIGJlIGEgY2hpbGQgbm9kZSBvZiB0aGUgaTJjIGJ1cyBvbiB3aGljaCBpdCBpcyBhdHRh
-Y2hlZC4KSW5zdGVhZCBvZiBwcm92aWRpbmcgYSBwaGFuZGxlIGZyb20gdGhlIG1kaW8gcGh5IHRv
-IHRoZSBpMmMgYnVzIHlvdQp0aGVuIHByb3ZpZGUgYSAicGh5LWhhbmRsZSIgcGhhbmRsZSBmcm9t
-IHRoZSBuZXR3b3JrIGNvbnRyb2xsZXIgdG8gdGhlCm1kaW8taTJjLiBUaGUgInBoeS1oYW5kbGUi
-IHBoYW5kbGUgaXMgZXZhbHVhdGVkIGZyb20gdGhlIGJhcmVib3ggcGh5CmNvZGUgYWxyZWFkeSwg
-c28gb25jZSB5b3UgcmVnaXN0ZXIgYSBtZGlvLWJ1cyB0aGUgY29ubmVjdGlvbiBiZXR3ZWVuIHRo
-ZQpldGhlcm5ldCBkZXZpY2UgYW5kIHRoZSBtZGlvIGJ1cyBzaG91bGQganVzdCB3b3JrLgoKU2Fz
-Y2hhCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAg
-ICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4g
-Ni04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0w
-ICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAg
-ICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+On Fri, Nov 17, 2017 at 09:52:14AM +0100, Cl=E9ment Leger wrote:
+> Hi Sascha,
+> =
+
+> Indeed, I though about that and I was facing another problem.
+> The mdio to i2c driver does not have a specific address.
+> ie, it is not a device but rather a bus.
+> If I put the mdio_i2c  node under the i2c bus, then I should assign
+> it an i2c address. This address should represent the phy address.
+> However, this would means I would have one mdio-i2c driver per phy.
+
+Some AT24 EEPROMs have the same problem, they also use multiple
+addresses. AFAIK for them only the first address is provided in the
+"reg" property. See drivers/eeprom/at24c.c how the driver handles this
+situation.
+Normally I think multi address devices should simply provide their
+reg space as reg =3D <start size>; like other devices do aswell. I don't
+know what the I2C core maked from this though.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
