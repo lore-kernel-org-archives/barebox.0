@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra1.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eFd7U-0003ls-3O
- for barebox@lists.infradead.org; Fri, 17 Nov 2017 09:39:34 +0000
-Date: Fri, 17 Nov 2017 10:39:10 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171117093910.5g2i3bwvboxrw5b2@pengutronix.de>
+ id 1eFdXH-0001n0-1s
+ for barebox@lists.infradead.org; Fri, 17 Nov 2017 10:06:13 +0000
+Date: Fri, 17 Nov 2017 11:05:47 +0100 (CET)
+From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
+Message-ID: <1096627431.57033033.1510913147707.JavaMail.zimbra@kalray.eu>
+In-Reply-To: <20171117093910.5g2i3bwvboxrw5b2@pengutronix.de>
 References: <221136220.35006899.1510666491764.JavaMail.zimbra@kalray.eu>
  <20171117083340.6jtpf2dix5pukaks@pengutronix.de>
  <1782166044.55530197.1510908734299.JavaMail.zimbra@kalray.eu>
  <20171117090657.mux43ro5gkrtfeor@pengutronix.de>
  <1996437973.55908008.1510911247927.JavaMail.zimbra@kalray.eu>
+ <20171117093910.5g2i3bwvboxrw5b2@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1996437973.55908008.1510911247927.JavaMail.zimbra@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,87 +22,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] Net: add mdio_i2c driver.
-To: =?iso-8859-15?Q?Cl=E9ment?= Leger <cleger@kalray.eu>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Fri, Nov 17, 2017 at 10:34:07AM +0100, Cl=E9ment Leger wrote:
-> =
-
-> ----- Mail original -----
-> > De: "Sascha Hauer" <s.hauer@pengutronix.de>
-> > =C0: "Cl=E9ment Leger" <cleger@kalray.eu>
-> > Cc: "Barebox List" <barebox@lists.infradead.org>
-> > Envoy=E9: Vendredi 17 Novembre 2017 10:06:58
-> > Objet: Re: [PATCH] Net: add mdio_i2c driver.
-> =
-
-> > On Fri, Nov 17, 2017 at 09:52:14AM +0100, Cl=E9ment Leger wrote:
-> >> Hi Sascha,
-> >> =
-
-> >> Indeed, I though about that and I was facing another problem.
-> >> The mdio to i2c driver does not have a specific address.
-> >> ie, it is not a device but rather a bus.
-> >> If I put the mdio_i2c  node under the i2c bus, then I should assign
-> >> it an i2c address. This address should represent the phy address.
-> >> However, this would means I would have one mdio-i2c driver per phy.
-> > =
-
-> > Some AT24 EEPROMs have the same problem, they also use multiple
-> > addresses. AFAIK for them only the first address is provided in the
-> > "reg" property. See drivers/eeprom/at24c.c how the driver handles this
-> > situation.
-> =
-
-> From what I see, they just create a bunch of i2c device according to
-> the number of address to take.
-> In the case of mdio-i2c, we do not know in advance how many phy will
-> be hidden behind the bus. I think I will have to go with the double
-> address description.
-> This will also avoid spurious i2c write by bus scanning done by phy
-> detection layer.
-> =
-
-> > Normally I think multi address devices should simply provide their
-> > reg space as reg =3D <start size>; like other devices do aswell. I don't
-> > know what the I2C core maked from this though.
-> =
-
-> It will not work and will not even compile (with dtc errors activated)
-> since the i2c controllers are almost always describe as:
-> =
-
->   #address-cells =3D <1>;
->   #size-cells =3D <0>;
-> =
-
-> So no size cell.
-> =
-
-> If you agree, I will go with the double device address (both in mdio-i2c =
-and phy)
-
-Ok, fine. BTW you do not have to instantiate all phy devices during
-i2c device probe. Instead, you can instantiate it on demand when a phy
-device is first accessed. This is common for other mdio devices aswell
-(i.e. only the device used by the network controller will be
-instantiated. Once you call the miitool command the others will show up)
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T2ssCgpJIHdpbGwgZG8gdGhhdCwgdGhhbmtzIGZvciB0aGUgcmV2aWV3ICEKCkNsw6ltZW50Cgot
+LS0tLSBNYWlsIG9yaWdpbmFsIC0tLS0tCkRlOiAiU2FzY2hhIEhhdWVyIiA8cy5oYXVlckBwZW5n
+dXRyb25peC5kZT4Kw4A6ICJDbMOpbWVudCBMZWdlciIgPGNsZWdlckBrYWxyYXkuZXU+CkNjOiAi
+QmFyZWJveCBMaXN0IiA8YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnPgpFbnZvecOpOiBWZW5k
+cmVkaSAxNyBOb3ZlbWJyZSAyMDE3IDEwOjM5OjEwCk9iamV0OiBSZTogW1BBVENIXSBOZXQ6IGFk
+ZCBtZGlvX2kyYyBkcml2ZXIuCgpPbiBGcmksIE5vdiAxNywgMjAxNyBhdCAxMDozNDowN0FNICsw
+MTAwLCBDbMOpbWVudCBMZWdlciB3cm90ZToKPiAKPiAtLS0tLSBNYWlsIG9yaWdpbmFsIC0tLS0t
+Cj4gPiBEZTogIlNhc2NoYSBIYXVlciIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Cj4gPiDDgDog
+IkNsw6ltZW50IExlZ2VyIiA8Y2xlZ2VyQGthbHJheS5ldT4KPiA+IENjOiAiQmFyZWJveCBMaXN0
+IiA8YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnPgo+ID4gRW52b3nDqTogVmVuZHJlZGkgMTcg
+Tm92ZW1icmUgMjAxNyAxMDowNjo1OAo+ID4gT2JqZXQ6IFJlOiBbUEFUQ0hdIE5ldDogYWRkIG1k
+aW9faTJjIGRyaXZlci4KPiAKPiA+IE9uIEZyaSwgTm92IDE3LCAyMDE3IGF0IDA5OjUyOjE0QU0g
+KzAxMDAsIENsw6ltZW50IExlZ2VyIHdyb3RlOgo+ID4+IEhpIFNhc2NoYSwKPiA+PiAKPiA+PiBJ
+bmRlZWQsIEkgdGhvdWdoIGFib3V0IHRoYXQgYW5kIEkgd2FzIGZhY2luZyBhbm90aGVyIHByb2Js
+ZW0uCj4gPj4gVGhlIG1kaW8gdG8gaTJjIGRyaXZlciBkb2VzIG5vdCBoYXZlIGEgc3BlY2lmaWMg
+YWRkcmVzcy4KPiA+PiBpZSwgaXQgaXMgbm90IGEgZGV2aWNlIGJ1dCByYXRoZXIgYSBidXMuCj4g
+Pj4gSWYgSSBwdXQgdGhlIG1kaW9faTJjICBub2RlIHVuZGVyIHRoZSBpMmMgYnVzLCB0aGVuIEkg
+c2hvdWxkIGFzc2lnbgo+ID4+IGl0IGFuIGkyYyBhZGRyZXNzLiBUaGlzIGFkZHJlc3Mgc2hvdWxk
+IHJlcHJlc2VudCB0aGUgcGh5IGFkZHJlc3MuCj4gPj4gSG93ZXZlciwgdGhpcyB3b3VsZCBtZWFu
+cyBJIHdvdWxkIGhhdmUgb25lIG1kaW8taTJjIGRyaXZlciBwZXIgcGh5Lgo+ID4gCj4gPiBTb21l
+IEFUMjQgRUVQUk9NcyBoYXZlIHRoZSBzYW1lIHByb2JsZW0sIHRoZXkgYWxzbyB1c2UgbXVsdGlw
+bGUKPiA+IGFkZHJlc3Nlcy4gQUZBSUsgZm9yIHRoZW0gb25seSB0aGUgZmlyc3QgYWRkcmVzcyBp
+cyBwcm92aWRlZCBpbiB0aGUKPiA+ICJyZWciIHByb3BlcnR5LiBTZWUgZHJpdmVycy9lZXByb20v
+YXQyNGMuYyBob3cgdGhlIGRyaXZlciBoYW5kbGVzIHRoaXMKPiA+IHNpdHVhdGlvbi4KPiAKPiBG
+cm9tIHdoYXQgSSBzZWUsIHRoZXkganVzdCBjcmVhdGUgYSBidW5jaCBvZiBpMmMgZGV2aWNlIGFj
+Y29yZGluZyB0bwo+IHRoZSBudW1iZXIgb2YgYWRkcmVzcyB0byB0YWtlLgo+IEluIHRoZSBjYXNl
+IG9mIG1kaW8taTJjLCB3ZSBkbyBub3Qga25vdyBpbiBhZHZhbmNlIGhvdyBtYW55IHBoeSB3aWxs
+Cj4gYmUgaGlkZGVuIGJlaGluZCB0aGUgYnVzLiBJIHRoaW5rIEkgd2lsbCBoYXZlIHRvIGdvIHdp
+dGggdGhlIGRvdWJsZQo+IGFkZHJlc3MgZGVzY3JpcHRpb24uCj4gVGhpcyB3aWxsIGFsc28gYXZv
+aWQgc3B1cmlvdXMgaTJjIHdyaXRlIGJ5IGJ1cyBzY2FubmluZyBkb25lIGJ5IHBoeQo+IGRldGVj
+dGlvbiBsYXllci4KPiAKPiA+IE5vcm1hbGx5IEkgdGhpbmsgbXVsdGkgYWRkcmVzcyBkZXZpY2Vz
+IHNob3VsZCBzaW1wbHkgcHJvdmlkZSB0aGVpcgo+ID4gcmVnIHNwYWNlIGFzIHJlZyA9IDxzdGFy
+dCBzaXplPjsgbGlrZSBvdGhlciBkZXZpY2VzIGRvIGFzd2VsbC4gSSBkb24ndAo+ID4ga25vdyB3
+aGF0IHRoZSBJMkMgY29yZSBtYWtlZCBmcm9tIHRoaXMgdGhvdWdoLgo+IAo+IEl0IHdpbGwgbm90
+IHdvcmsgYW5kIHdpbGwgbm90IGV2ZW4gY29tcGlsZSAod2l0aCBkdGMgZXJyb3JzIGFjdGl2YXRl
+ZCkKPiBzaW5jZSB0aGUgaTJjIGNvbnRyb2xsZXJzIGFyZSBhbG1vc3QgYWx3YXlzIGRlc2NyaWJl
+IGFzOgo+IAo+ICAgI2FkZHJlc3MtY2VsbHMgPSA8MT47Cj4gICAjc2l6ZS1jZWxscyA9IDwwPjsK
+PiAKPiBTbyBubyBzaXplIGNlbGwuCj4gCj4gSWYgeW91IGFncmVlLCBJIHdpbGwgZ28gd2l0aCB0
+aGUgZG91YmxlIGRldmljZSBhZGRyZXNzIChib3RoIGluIG1kaW8taTJjIGFuZCBwaHkpCgpPaywg
+ZmluZS4gQlRXIHlvdSBkbyBub3QgaGF2ZSB0byBpbnN0YW50aWF0ZSBhbGwgcGh5IGRldmljZXMg
+ZHVyaW5nCmkyYyBkZXZpY2UgcHJvYmUuIEluc3RlYWQsIHlvdSBjYW4gaW5zdGFudGlhdGUgaXQg
+b24gZGVtYW5kIHdoZW4gYSBwaHkKZGV2aWNlIGlzIGZpcnN0IGFjY2Vzc2VkLiBUaGlzIGlzIGNv
+bW1vbiBmb3Igb3RoZXIgbWRpbyBkZXZpY2VzIGFzd2VsbAooaS5lLiBvbmx5IHRoZSBkZXZpY2Ug
+dXNlZCBieSB0aGUgbmV0d29yayBjb250cm9sbGVyIHdpbGwgYmUKaW5zdGFudGlhdGVkLiBPbmNl
+IHlvdSBjYWxsIHRoZSBtaWl0b29sIGNvbW1hbmQgdGhlIG90aGVycyB3aWxsIHNob3cgdXApCgpT
+YXNjaGEKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAg
+ICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3Ry
+LiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3
+LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6
+ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
+YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
+ZWJveAo=
