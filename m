@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout.gmx.net ([212.227.17.21])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKMWN-0001du-JH
- for barebox@lists.infradead.ORG; Thu, 30 Nov 2017 10:56:49 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 30 Nov 2017 11:56:20 +0100
-Message-Id: <20171130105620.10126-1-o.rempel@pengutronix.de>
+ id 1eHEn9-00017I-Ay
+ for barebox@lists.infradead.org; Tue, 21 Nov 2017 20:05:13 +0000
+From: Oleksij Rempel <linux@rempel-privat.de>
+Date: Tue, 21 Nov 2017 21:04:33 +0100
+Message-Id: <1511294675-14438-1-git-send-email-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,114 +19,192 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] of: base: use root_node compatible as suggestion for a
- hostname
+Subject: [PATCH v1 1/3] watchdog: add ar9344-wdt driver
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-on some SoCs we can use generic PLL and RAM initialization. In this
-cases we create board file only to provide a host name.
-With this patch host name will be created from device tree compatible.
-For example:
- compatible = "board_vendor,board", "chip_vendor,soc"
-the host name will be:
- "board"
+this driver was developed and tested on QCA AR9344 WiSoC
+but it may work on most know Atheros/QCA WiSoCs.
 
-This function will not overwrite a host name which is already set by
-board or machine code.
-
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- common/misc.c     |  7 +++++++
- drivers/of/base.c | 32 ++++++++++++++++++++++++++++++++
- include/common.h  |  1 +
- include/of.h      |  1 +
- 4 files changed, 41 insertions(+)
+ drivers/watchdog/Kconfig      |   6 ++
+ drivers/watchdog/Makefile     |   1 +
+ drivers/watchdog/ar9344_wdt.c | 136 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 143 insertions(+)
+ create mode 100644 drivers/watchdog/ar9344_wdt.c
 
-diff --git a/common/misc.c b/common/misc.c
-index c5d3704c82..0888f1f4f6 100644
---- a/common/misc.c
-+++ b/common/misc.c
-@@ -187,6 +187,13 @@ const char *barebox_get_hostname(void)
- }
- EXPORT_SYMBOL(barebox_get_hostname);
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index 83b6528..1f04c7f 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -10,6 +10,12 @@ menuconfig WATCHDOG
  
-+void barebox_set_hostname_no_overwrite(const char *__hostname)
-+{
-+	if (!barebox_get_hostname())
-+		barebox_set_hostname(__hostname);
-+}
-+EXPORT_SYMBOL(barebox_set_hostname_no_overwrite);
-+
- BAREBOX_MAGICVAR_NAMED(global_hostname, global.hostname,
- 		"shortname of the board. Also used as hostname for DHCP requests");
+ if WATCHDOG
  
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index eabbf3d957..6a582177bf 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -2360,3 +2360,35 @@ int of_graph_port_is_available(struct device_node *node)
- 	return available;
- }
- EXPORT_SYMBOL(of_graph_port_is_available);
++config WATCHDOG_AR9344
++	bool "QCA AR9344"
++	depends on SOC_QCA_AR9344
++	help
++	  Add support for watchdog on the QCA AR9344 SoC.
 +
-+/**
-+ * of_get_machine_compatible - get first compatible string from the root node.
+ config WATCHDOG_DAVINCI
+ 	bool "TI Davinci"
+ 	depends on ARCH_DAVINCI
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index a3b2667..c607f75 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -1,4 +1,5 @@
+ obj-$(CONFIG_WATCHDOG) += wd_core.o
++obj-$(CONFIG_WATCHDOG_AR9344) += ar9344_wdt.o
+ obj-$(CONFIG_WATCHDOG_DAVINCI) += davinci_wdt.o
+ obj-$(CONFIG_WATCHDOG_OMAP) += omap_wdt.o
+ obj-$(CONFIG_WATCHDOG_MXS28) += im28wd.o
+diff --git a/drivers/watchdog/ar9344_wdt.c b/drivers/watchdog/ar9344_wdt.c
+new file mode 100644
+index 0000000..1f44604
+--- /dev/null
++++ b/drivers/watchdog/ar9344_wdt.c
+@@ -0,0 +1,136 @@
++/*
++ *  AR9344 Watchdog driver
 + *
-+ * Returns the string or NULL.
++ *  Copyright (C) 2017 Oleksij Rempel <linux@rempel-privat.de>
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under  the terms of the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the License, or (at your
++ *  option) any later version.
++ *
 + */
-+const char *of_get_machine_compatible(void)
++
++#include <common.h>
++#include <errno.h>
++#include <init.h>
++#include <io.h>
++#include <linux/clk.h>
++#include <of.h>
++#include <reset_source.h>
++#include <watchdog.h>
++
++#define AR9344_WD_REG_CTRL		0x00
++#define AR9344_WD_CTRL_LAST_RESET	BIT(31)
++#define AR9344_WD_CTRL_ACTION_MASK	3
++#define AR9344_WD_CTRL_ACTION_NONE	0	/* no action */
++#define AR9344_WD_CTRL_ACTION_GPI	1	/* general purpose interrupt */
++#define AR9344_WD_CTRL_ACTION_NMI	2	/* NMI */
++#define AR9344_WD_CTRL_ACTION_FCR	3	/* full chip reset */
++
++#define AR9344_WD_REG_TIMER		0x04
++
++#define to_ar9344_wd(h) container_of(h, struct ar9344_wd, wd)
++
++struct ar9344_wd {
++	struct watchdog		wd;
++	void __iomem		*base;
++	struct clk		*clk;
++	struct device_d		*dev;
++};
++
++static int ar9344_watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
 +{
-+	struct property *prop;
-+	const char *name, *p;
++	struct ar9344_wd *priv = (struct ar9344_wd *)to_ar9344_wd(wd);
++	u32 val, ctrl, rate, max_timout;
 +
-+	if (!root_node)
-+		return NULL;
++	rate = clk_get_rate(priv->clk);
++	max_timout = U32_MAX / rate;
 +
-+	prop = of_find_property(root_node, "compatible", NULL);
-+	name = of_prop_next_string(prop, NULL);
++	if (timeout > max_timout) {
++		dev_err(priv->dev, "timeout value out of range: %d > %d\n",
++			timeout, max_timout);
++		return -EINVAL;
++	}
 +
-+	p = strchr(name, ',');
-+	return p ? p + 1 : name;
-+}
-+EXPORT_SYMBOL(of_get_machine_compatible);
++	if (timeout) {
++		ctrl = AR9344_WD_CTRL_ACTION_FCR;
++		val = timeout * rate;
++	} else {
++		ctrl = AR9344_WD_CTRL_ACTION_NONE;
++		val = U32_MAX;
++	}
 +
-+static int of_init_hostname(void)
-+{
-+	const char *name;
++	dev_dbg(priv->dev, "%s: %d, timer:%x, ctrl: %x \n", __func__,
++		timeout, val, ctrl);
 +
-+	name = of_get_machine_compatible();
-+	barebox_set_hostname_no_overwrite(name ?: "barebox");
++	iowrite32be(val, priv->base + AR9344_WD_REG_TIMER);
++	iowrite32be(ctrl, priv->base + AR9344_WD_REG_CTRL);
 +
 +	return 0;
 +}
-+late_initcall(of_init_hostname);
-diff --git a/include/common.h b/include/common.h
-index dd7445e9b6..a9b8610af8 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -139,6 +139,7 @@ const char *barebox_get_model(void);
- void barebox_set_model(const char *);
- const char *barebox_get_hostname(void);
- void barebox_set_hostname(const char *);
-+void barebox_set_hostname_no_overwrite(const char *);
- 
- #if defined(CONFIG_MIPS)
- #include <asm/addrspace.h>
-diff --git a/include/of.h b/include/of.h
-index 18a423241b..edcc854f7b 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -148,6 +148,7 @@ extern struct device_node *of_copy_node(struct device_node *parent,
- 				const struct device_node *other);
- extern void of_delete_node(struct device_node *node);
- 
-+extern const char *of_get_machine_compatible(void);
- extern int of_machine_is_compatible(const char *compat);
- extern int of_device_is_compatible(const struct device_node *device,
- 		const char *compat);
++
++static void ar9344_watchdog_detect_reset_source(struct ar9344_wd *priv)
++{
++	u32 val = readw(priv->base + AR9344_WD_REG_CTRL);
++
++	if (val & AR9344_WD_CTRL_LAST_RESET)
++		reset_source_set(RESET_WDG);
++
++	/* else keep the default 'unknown' state */
++}
++
++static int ar9344_wdt_probe(struct device_d *dev)
++{
++	struct resource *iores;
++	struct ar9344_wd *priv;
++	int ret;
++
++	priv = xzalloc(sizeof(struct ar9344_wd));
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores)) {
++		dev_err(dev, "could not get memory region\n");
++		return PTR_ERR(iores);
++	}
++
++	priv->base = IOMEM(iores->start);
++	priv->wd.set_timeout = ar9344_watchdog_set_timeout;
++	priv->wd.dev = dev;
++	priv->dev = dev;
++
++	dev->priv = priv;
++
++	ar9344_watchdog_detect_reset_source(priv);
++
++	priv->clk = clk_get(dev, NULL);
++	if (WARN_ON(IS_ERR(priv->clk))) {
++		ret = PTR_ERR(priv->clk);
++		goto on_error;
++	}
++
++	clk_enable(priv->clk);
++
++	ret = watchdog_register(&priv->wd);
++	if (ret)
++		goto on_error;
++
++	return 0;
++
++on_error:
++	free(priv);
++	return ret;
++}
++
++static __maybe_unused struct of_device_id ar9344_wdt_dt_ids[] = {
++	{
++		.compatible = "qca,ar9344-wdt",
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct driver_d ar9344_wdt_driver = {
++	.name   = "ar9344-wdt",
++	.probe  = ar9344_wdt_probe,
++	.of_compatible = DRV_OF_COMPAT(ar9344_wdt_dt_ids),
++};
++device_platform_driver(ar9344_wdt_driver);
 -- 
-2.11.0
+2.7.4
 
 
 _______________________________________________
