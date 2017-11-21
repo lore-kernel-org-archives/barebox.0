@@ -1,16 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns1.richard-wolf.com ([217.6.229.210])
+Received: from mail2.eckelmann.de ([217.19.183.90])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKRsS-000617-4R
- for barebox@lists.infradead.org; Thu, 30 Nov 2017 16:39:58 +0000
-References: <4b8105c0-5c24-7ba8-da30-37f414ff5207@richard-wolf.com>
- <1512053584.17442.19.camel@pengutronix.de>
-From: Andre Wagner <andre.wagner@richard-wolf.com>
-Message-ID: <0b235055-1329-a855-49c9-6bf7b4cefb72@richard-wolf.com>
-Date: Thu, 30 Nov 2017 17:39:30 +0100
+ id 1eHAfu-0005IL-A6
+ for barebox@lists.infradead.org; Tue, 21 Nov 2017 15:41:35 +0000
+Received: from mail2.eckelmann.de (localhost.localdomain [127.0.0.1])
+ by localhost (Email Security Appliance) with SMTP id 47D151BF8DE3_A14490AB
+ for <barebox@lists.infradead.org>; Tue, 21 Nov 2017 15:40:58 +0000 (GMT)
+Received: from smtp.eckelmann.de (ex-srv1.eckelmann.group [172.18.35.4])
+ (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ (Client CN "oa.eckelmann.de", Issuer "Eckelmann Gruppe CA" (not verified))
+ by mail2.eckelmann.de (Sophos Email Appliance) with ESMTPS id
+ 02E1D1BF6045_A14490AF
+ for <barebox@lists.infradead.org>; Tue, 21 Nov 2017 15:40:58 +0000 (GMT)
+From: Gavin Schenk <g.schenk@eckelmann.de>
+Date: Tue, 21 Nov 2017 16:40:47 +0100
+Message-ID: <20171121154047.27334-1-g.schenk@eckelmann.de>
 MIME-Version: 1.0
-In-Reply-To: <1512053584.17442.19.camel@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,53 +24,153 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Support for QEMU virt ARM 32
-To: Lucas Stach <l.stach@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH] Add linux.devname property to eth device
+To: barebox@lists.infradead.org
+Cc: Gavin Schenk <g.schenk@eckelmann.de>
 
-CgpPbiAzMC4xMS4yMDE3IDE1OjUzLCBMdWNhcyBTdGFjaCB3cm90ZToKPiBIaSBBbmRyw6ksCj4K
-PiBBbSBEb25uZXJzdGFnLCBkZW4gMzAuMTEuMjAxNywgMTU6MjkgKzAxMDAgc2NocmllYiBBbmRy
-ZSBXYWduZXI6Cj4+IEhlbGxvIGV2ZXJ5b25lLAo+Pgo+PiBJJ20gdHJ5aW5nIHRvIGFkZCBzdXBw
-b3J0IGZvciB0aGUgUWVtdSB2aXJ0IEFSTTMyIG1hY2hpbmUgKHFlbXUKPj4gdmVyc2lvbgo+PiAy
-LjEwKSBiYXNlZCBvbiB0aGUgZXhpc3RpbmcgUWVtdSB2aXJ0IEFSTTY0IHN1cHBvcnQuIEluIG15
-Cj4+IHVuZGVyc3RhbmRpbmcKPj4gdGhlIGVtdWxhdGVkIENQVSBpcyBvbmx5IGEgQVJNdjcgQ1BV
-IGluc3RlYWQgb2YgYSBBUk12OCBDUFUuIElzIHRoaXMKPj4gY29ycmVjdD8KPiBWRXhwcmVzcyBp
-cyB0aGUgZ2VuZXJpYyBBUk0zMiBRRU1VIHBsYXRmb3JtLiBCYXJlYm94IGFscmVhZHkgc3VwcG9y
-dHMKPiB0aGF0LiBDaGVjayBvdXQgdGhlIGxhc3QgcmVsZWFzZSAoYXMgaXQgaGFzIHNvbWUgaW1w
-cm92ZW1lbnRzIGluIHRoYXQKPiBhcmVhKSwgYW5kIGJ1aWxkIHRoZSB2ZXhwcmVzc19kZWZjb25m
-aWcuCj4KPiBUbyBydW4gdGhlIGVtdWxhdGVkIHBsYXRmb3JtIHRha2UgYSBsb29rIGF0IERvY3Vt
-ZW50YXRpb24vYm9hcmRzL2FybS0KPiBxZW11LXZleHByZXNzLnJzdAo+Cj4gUmVnYXJkcywKPiBM
-dWNhcwpUaGFuayB5b3UgdmVyeSBtdWNoIGZvciB0aGUgZmFzdCByZXBseSwgSSBnb3QgYSBiYXJl
-Ym94IHdvcmtpbmcgd2l0aCAKdmV4cHJlc3Mgb24gUWVtdSBub3chIEp1c3QgYSBxdWVzdGlvbiAo
-bGl0dGxlIGJpdCBvZmYgdG9waWMpOiBUaGUgUWVtdSAKdmlydCBBUk02NCBiYXJlYm94IHZlcnNp
-b24gaXMgY2FsbGVkIHdpdGg6IHFlbXUtc3lzdGVtLWFhcmNoNjQgLW0gMjA0OE0gCi1jcHUgY29y
-dGV4LWE1NyAtbWFjaGluZSB2aXJ0IC1kaXNwbGF5IG5vbmUgLXNlcmlhbCBzdGRpbyAta2VybmVs
-IAouLi9iYXJlYm94L2JhcmVib3ggKGFjY29yZGluZyB0byAKaHR0cDovL2JhcmVib3gub3JnL2Rv
-Yy9sYXRlc3QvYm9hcmRzL2FhcmNoNjQtcWVtdS12aXJ0Lmh0bWwpLiBUaGUgZmlyc3QgCnRlc3Rz
-IEkgZGlkIHdlcmUgc3RhcnRpbmcgbXkgYnJva2VuIGJhcmVib3ggdmVyc2lvbiB3aXRoIHFlbXUt
-c3lzdGVtLWFybSAKLW0gMjA0OE0gLWNwdSBjb3J0ZXgtYTE1IC1tYWNoaW5lIHZpcnQgLWRpc3Bs
-YXkgbm9uZSAtc2VyaWFsIHN0ZGlvIAota2VybmVsIC4uL2JhcmVib3gvYmFyZWJveC4gSXMgdGhp
-cyAndmlydCcgbWFjaGluZSBub3QgdGhlIF9yZWFsXyBRZW11IAp2aXJ0IEFSTTMyPwoKR3JlZXRp
-bmdzLApBbmRyw6kKCisrKwpSaWNoYXJkIFdvbGYgR21iSCwgUGZvcnpoZWltZXIgU3RyYXNzZSAz
-MiwgNzU0MzggS25pdHRsaW5nZW4KTWFuYWdpbmcgRGlyZWN0b3JzOiBKdWVyZ2VuIFBmYWIsIEp1
-ZXJnZW4gU3RlaW5iZWNrLiBUcmFkZSBSZWdpc3RlcjogTWFubmhlaW0gSFJCIDUxMDAzMSAKKysr
-ClJpY2hhcmQgV29sZiBHbWJIIHJvdXRpbmVseSBtb25pdG9ycyB0aGUgY29udGVudCBvZiBlLW1h
-aWwgc2VudCBhbmQgcmVjZWl2ZWQgdmlhIGl0cyBuZXR3b3JrIGZvciB0aGUgcHVycG9zZXMgb2Yg
-ZW5zdXJpbmcgY29tcGxpYW5jZSB3aXRoIGl0cyBwb2xpY2llcyBhbmQgcHJvY2VkdXJlcy4gUmlj
-aGFyZCBXb2xmIEdtYkggaXMgbm90IHJlc3BvbnNpYmxlIGZvciBhbnkgY2hhbmdlcyBtYWRlIHRv
-IHRoZSBtZXNzYWdlIGFmdGVyIGl0IGhhcyBiZWVuIHNlbnQuIFdoZXJlIG9waW5pb25zIGFyZSBl
-eHByZXNzZWQsIHRoZXkgYXJlIG5vdCBuZWNlc3NhcmlseSB0aG9zZSBvZiBSaWNoYXJkIFdvbGYg
-R21iSC4gVGhpcyBlLW1haWwgYW5kIGFueSBmaWxlcyB0cmFuc21pdHRlZCB3aXRoIGl0IGFyZSBj
-b25maWRlbnRpYWwgYW5kIGludGVuZGVkIHNvbGVseSBmb3IgdGhlIHVzZSBvZiB0aGUgaW5kaXZp
-ZHVhbCBvciBlbnRpdHkgdG8gd2hpY2ggdGhleSBhcmUgYWRkcmVzc2VkLiBJZiB5b3UgYXJlIG5v
-dCB0aGUgaW50ZW5kZWQgYWRkcmVzc2VlLCBvciB0aGUgcGVyc29uIHJlc3BvbnNpYmxlIGZvciBk
-ZWxpdmVyaW5nIGl0IHRvIHRoZW0sIHlvdSBtYXkgbm90IGNvcHksIGZvcndhcmQsIGRpc2Nsb3Nl
-LCBvciBvdGhlcndpc2UgdXNlIGl0IG9yIGFueSBwYXJ0IG9mIGl0IGluIGFueSB3YXkuIFRvIGRv
-IHNvIG1heSBiZSB1bmxhd2Z1bC4gSWYgeW91IHJlY2VpdmUgdGhpcyBlLW1haWwgYnkgbWlzdGFr
-ZSwgcGxlYXNlIGFkdmlzZSB0aGUgc2VuZGVyIGltbWVkaWF0ZWx5LgorKysKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
-YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+When you have a static network environment but more than one network
+device on your machine it is necessary to provide the <device> parameter
+to the ip parameter at kernel cmd line.
+
+The device name assigned by Linux cannot in general be predicted as it
+depends on driver bind order.
+
+This patch introduces a new property linux.devname to eth devices.
+The value is added to bootargs per interface and can be changed in
+env/network/INTF
+
+Note that the device name is also used when dhcp is in use.
+
+Signed-off-by: Gavin Schenk <g.schenk@eckelmann.de>
+---
+
+This is V2 of "[PATCH] Configure network device for nfsboot via nv var"
+
+ include/net.h |  1 +
+ net/eth.c     |  2 ++
+ net/ifup.c    | 19 +++++++++++++++----
+ 3 files changed, 18 insertions(+), 4 deletions(-)
+
+diff --git a/include/net.h b/include/net.h
+index 632b6d541..0aa5569e0 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -62,6 +62,7 @@ struct eth_device {
+ 	IPaddr_t netmask;
+ 	IPaddr_t gateway;
+ 	char ethaddr[6];
++	char *linuxdevname;
+ 	char *bootarg;
+ };
+ =
+
+diff --git a/net/eth.c b/net/eth.c
+index dac2400b8..fe661c832 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -384,6 +384,8 @@ int eth_register(struct eth_device *edev)
+ 	dev_add_param_ip(dev, "netmask", NULL, NULL, &edev->netmask, edev);
+ 	dev_add_param_mac(dev, "ethaddr", eth_param_set_ethaddr, NULL,
+ 			edev->ethaddr, edev);
++	edev->linuxdevname =3D xstrdup("");
++	dev_add_param_string(dev, "linux.devname", NULL, NULL, &edev->linuxdevnam=
+e, NULL);
+ 	edev->bootarg =3D xstrdup("");
+ 	dev_add_param_string(dev, "linux.bootargs", NULL, NULL, &edev->bootarg, N=
+ULL);
+ =
+
+diff --git a/net/ifup.c b/net/ifup.c
+index 5113d1383..106700e2e 100644
+--- a/net/ifup.c
++++ b/net/ifup.c
+@@ -50,6 +50,7 @@ int ifup(const char *name, unsigned flags)
+ 	int ret;
+ 	char *cmd, *cmd_discover;
+ 	const char *ip;
++	const char *linuxdevname;
+ 	struct stat s;
+ 	int i;
+ 	struct device_d *dev;
+@@ -63,6 +64,7 @@ int ifup(const char *name, unsigned flags)
+ 	env_push_context();
+ =
+
+ 	setenv("ip", "");
++	setenv("linuxdevname", "");
+ =
+
+ 	for (i =3D 0; i < ARRAY_SIZE(vars); i++)
+ 		setenv(vars[i], "");
+@@ -95,6 +97,13 @@ int ifup(const char *name, unsigned flags)
+ 	if (ret)
+ 		goto out;
+ =
+
++	linuxdevname =3D getenv("linuxdevname");
++	if (!linuxdevname)
++		linuxdevname =3D "";
++	ret =3D dev_set_param(dev, "linux.devname", linuxdevname);
++	if (ret)
++		goto out;
++
+ 	ip =3D getenv("ip");
+ 	if (!ip)
+ 		ip =3D "";
+@@ -114,11 +123,12 @@ int ifup(const char *name, unsigned flags)
+ 			if (ret)
+ 				goto out;
+ 		}
+-		bootarg =3D basprintf("ip=3D%pI4:%pI4:%pI4:%pI4:::",
++		bootarg =3D basprintf("ip=3D%pI4:%pI4:%pI4:%pI4::%s:",
+ 				&edev->ipaddr,
+ 				&edev->serverip,
+ 				&edev->gateway,
+-				&edev->netmask);
++				&edev->netmask,
++				edev->linuxdevname);
+ 		dev_set_param(dev, "linux.bootargs", bootarg);
+ 		free(bootarg);
+ 	} else {
+@@ -194,8 +204,9 @@ static int do_ifup(int argc, char *argv[])
+ BAREBOX_CMD_HELP_START(ifup)
+ BAREBOX_CMD_HELP_TEXT("Each INTF must have a script /env/network/INTF that=
+ set the variables")
+ BAREBOX_CMD_HELP_TEXT("ip (to 'static' or 'dynamic'), ipaddr, netmask, gat=
+eway, serverip and/or")
+-BAREBOX_CMD_HELP_TEXT("ethaddr. A script /env/network/INTF-discover can co=
+ntains for discovering")
+-BAREBOX_CMD_HELP_TEXT("the ethernet device, e.g. 'usb'.")
++BAREBOX_CMD_HELP_TEXT("ethaddr, linuxdevname. A script /env/network/INTF-d=
+iscover can contains")
++BAREBOX_CMD_HELP_TEXT("for discovering the ethernet device, e.g. 'usb'. If=
+ set, linuxdevname is")
++BAREBOX_CMD_HELP_TEXT("added to bootargs as device parameter.")
+ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT ("-a",  "bring up all interfaces")
+-- =
+
+2.15.0
+
+
+Eckelmann AG
+Vorstand: Dipl.-Ing. Peter Frankenbach (Sprecher) Dipl.-Wi.-Ing. Philipp Ec=
+kelmann
+Dr.-Ing. Marco M=FCnchhof Dr.-Ing. Frank Uhlemann
+Vorsitzender des Aufsichtsrats: Hubertus G. Krossa
+Stv. Vorsitzender des Aufsichtsrats: Dr.-Ing. Gerd Eckelmann
+Sitz der Gesellschaft: Berliner Str. 161, 65205 Wiesbaden, Amtsgericht Wies=
+baden HRB 12636
+http://www.eckelmann.de =
+
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
