@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKMsy-00060i-S0
- for barebox@lists.infradead.ORG; Thu, 30 Nov 2017 11:20:13 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 30 Nov 2017 12:19:44 +0100
-Message-Id: <20171130111944.25665-1-s.hauer@pengutronix.de>
+ id 1eHSBO-0007Gm-8m
+ for barebox@lists.infradead.org; Wed, 22 Nov 2017 10:23:09 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Wed, 22 Nov 2017 11:22:26 +0100
+Message-Id: <20171122102231.16872-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20171122102231.16872-1-u.kleine-koenig@pengutronix.de>
+References: <20171122102231.16872-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,56 +17,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] common: globalvar: fix removing multiple nvvars with wildcards
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/6] net/e1000: fix coding style at a few locations
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-nvvar_remove takes wildcards, so it can remove multiple variables. This
-means we cannot return after the first loop iteration, but instead must
-continue.
-
-Fixes: 609d3edc3ad9 (common: globvar: let nvvar_remove() report non-existing variable)
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Cc:
----
- common/globalvar.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/common/globalvar.c b/common/globalvar.c
-index ee756e5140..77b89c1791 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -247,6 +247,7 @@ int nvvar_remove(const char *name)
- {
- 	struct param_d *p, *tmp;
- 	char *fname;
-+	int ret = -ENOENT;
- 
- 	if (!IS_ENABLED(CONFIG_NVVAR))
- 		return -ENOSYS;
-@@ -262,10 +263,10 @@ int nvvar_remove(const char *name)
- 		unlink(fname);
- 		free(fname);
- 
--		return 0;
-+		ret = 0;
- 	}
- 
--	return -ENOENT;
-+	return ret;
- }
- 
- int nvvar_load(void)
--- 
-2.11.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+V2hpbGUgd29ya2luZyBvbiB0aGUgZTEwMDAgZHJpdmVyIEkgbm90aWNlZCBhIGZldyBjb2Rpbmcg
+c3R5bGUgbWlzZGVlZHMuClRoZXNlIGFyZSBmaXhlZCBoZXJlLgoKU2lnbmVkLW9mZi1ieTogVXdl
+IEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBkcml2
+ZXJzL25ldC9lMTAwMC9lZXByb20uYyB8IDE1ICsrKysrKysrKysrKy0tLQogZHJpdmVycy9uZXQv
+ZTEwMDAvbWFpbi5jICAgfCAgNCArKy0tCiAyIGZpbGVzIGNoYW5nZWQsIDE0IGluc2VydGlvbnMo
+KyksIDUgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvZTEwMDAvZWVwcm9t
+LmMgYi9kcml2ZXJzL25ldC9lMTAwMC9lZXByb20uYwppbmRleCAyYTcxZmIxYjE1OWMuLjE1MGU0
+MTQ3YzQ2OSAxMDA2NDQKLS0tIGEvZHJpdmVycy9uZXQvZTEwMDAvZWVwcm9tLmMKKysrIGIvZHJp
+dmVycy9uZXQvZTEwMDAvZWVwcm9tLmMKQEAgLTM2Niw3ICszNjYsOCBAQCBpbnQzMl90IGUxMDAw
+X2luaXRfZWVwcm9tX3BhcmFtcyhzdHJ1Y3QgZTEwMDBfaHcgKmh3KQogCWNhc2UgZTEwMDBfODI1
+NDM6CiAJY2FzZSBlMTAwMF84MjU0NDoKIAkJZTEwMDBfZWVwcm9tX3VzZXNfbWljcm93aXJlKGVl
+cHJvbSwgMCk7Ci0JYnJlYWs7CisJCWJyZWFrOworCiAJY2FzZSBlMTAwMF84MjU0MDoKIAljYXNl
+IGUxMDAwXzgyNTQ1OgogCWNhc2UgZTEwMDBfODI1NDVfcmV2XzM6CkBAIC0zNzQsNiArMzc1LDcg
+QEAgaW50MzJfdCBlMTAwMF9pbml0X2VlcHJvbV9wYXJhbXMoc3RydWN0IGUxMDAwX2h3ICpodykK
+IAljYXNlIGUxMDAwXzgyNTQ2X3Jldl8zOgogCQllMTAwMF9lZXByb21fdXNlc19taWNyb3dpcmUo
+ZWVwcm9tLCBlZWNkKTsKIAkJYnJlYWs7CisKIAljYXNlIGUxMDAwXzgyNTQxOgogCWNhc2UgZTEw
+MDBfODI1NDFfcmV2XzI6CiAJY2FzZSBlMTAwMF84MjU0NzoKQEAgLTM4MywxMCArMzg1LDEyIEBA
+IGludDMyX3QgZTEwMDBfaW5pdF9lZXByb21fcGFyYW1zKHN0cnVjdCBlMTAwMF9odyAqaHcpCiAJ
+CWVsc2UKIAkJCWUxMDAwX2VlcHJvbV91c2VzX21pY3Jvd2lyZShlZXByb20sIGVlY2QpOwogCQli
+cmVhazsKKwogCWNhc2UgZTEwMDBfODI1NzE6CiAJY2FzZSBlMTAwMF84MjU3MjoKIAkJZTEwMDBf
+ZWVwcm9tX3VzZXNfc3BpKGVlcHJvbSwgZWVjZCk7CiAJCWJyZWFrOworCiAJY2FzZSBlMTAwMF84
+MjU3MzoKIAljYXNlIGUxMDAwXzgyNTc0OgogCQlpZiAoZTEwMDBfaXNfb25ib2FyZF9udm1fZWVw
+cm9tKGh3KSkgewpAQCAtMzk2LDE2ICs0MDAsMjAgQEAgaW50MzJfdCBlMTAwMF9pbml0X2VlcHJv
+bV9wYXJhbXMoc3RydWN0IGUxMDAwX2h3ICpodykKIAkJCWVlcHJvbS0+dHlwZSA9IGUxMDAwX2Vl
+cHJvbV9mbGFzaDsKIAkJCWVlcHJvbS0+d29yZF9zaXplID0gMjA0ODsKIAotCQkvKiBFbnN1cmUg
+dGhhdCB0aGUgQXV0b25vbW91cyBGTEFTSCB1cGRhdGUgYml0IGlzIGNsZWFyZWQgZHVlIHRvCi0J
+CSAqIEZsYXNoIHVwZGF0ZSBpc3N1ZSBvbiBwYXJ0cyB3aGljaCB1c2UgYSBGTEFTSCBmb3IgTlZN
+LiAqLworCQkJLyoKKwkJCSAqIEVuc3VyZSB0aGF0IHRoZSBBdXRvbm9tb3VzIEZMQVNIIHVwZGF0
+ZSBiaXQgaXMgY2xlYXJlZCBkdWUgdG8KKwkJCSAqIEZsYXNoIHVwZGF0ZSBpc3N1ZSBvbiBwYXJ0
+cyB3aGljaCB1c2UgYSBGTEFTSCBmb3IgTlZNLgorCQkJICovCiAJCQllZWNkICY9IH5FMTAwMF9F
+RUNEX0FVUERFTjsKIAkJCWUxMDAwX3dyaXRlX3JlZyhodywgRTEwMDBfRUVDRCwgZWVjZCk7CiAJ
+CX0KIAkJYnJlYWs7CisKIAljYXNlIGUxMDAwXzgwMDAzZXMybGFuOgogCQllZXByb20tPnR5cGUg
+PSBlMTAwMF9lZXByb21fc3BpOwogCQllZXByb20tPnJlYWQgPSBlMTAwMF9yZWFkX2VlcHJvbV9l
+ZXJkOwogCQlicmVhazsKKwogCWNhc2UgZTEwMDBfaWdiOgogCQlpZiAoZWVjZCAmIEUxMDAwX0VF
+Q0RfSTIxMF9GTEFTSF9ERVRFQ1RFRCkgewogCQkJdWludDMyX3QgZmxhOwpAQCAtNDMxLDYgKzQz
+OSw3IEBAIGludDMyX3QgZTEwMDBfaW5pdF9lZXByb21fcGFyYW1zKHN0cnVjdCBlMTAwMF9odyAq
+aHcpCiAKIAkJZWVwcm9tLT5yZWFkID0gZTEwMDBfcmVhZF9lZXByb21fZWVyZDsKIAkJYnJlYWs7
+CisKIAlkZWZhdWx0OgogCQlicmVhazsKIAl9CmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9lMTAw
+MC9tYWluLmMgYi9kcml2ZXJzL25ldC9lMTAwMC9tYWluLmMKaW5kZXggMDBkMThhZGZmMTExLi42
+NDkxNjIzMTA0YzMgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbmV0L2UxMDAwL21haW4uYworKysgYi9k
+cml2ZXJzL25ldC9lMTAwMC9tYWluLmMKQEAgLTE0Miw4ICsxNDIsOCBAQCBzdGF0aWMgaW50MzJf
+dCBlMTAwMF9zZXRfcGh5X21vZGUoc3RydWN0IGUxMDAwX2h3ICpodykKICAqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKiovCiBzdGF0aWMgaW50MzJfdCBlMTAwMF9nZXRfc29mdHdhcmVfc2VtYXBob3JlKHN0cnVj
+dCBlMTAwMF9odyAqaHcpCiB7Ci0JIGludDMyX3QgdGltZW91dCA9IGh3LT5lZXByb20ud29yZF9z
+aXplICsgMTsKLQkgdWludDMyX3Qgc3dzbTsKKwlpbnQzMl90IHRpbWVvdXQgPSBody0+ZWVwcm9t
+LndvcmRfc2l6ZSArIDE7CisJdWludDMyX3Qgc3dzbTsKIAogCURFQlVHRlVOQygpOwogCi0tIAoy
+LjExLjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
+YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
+c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
