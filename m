@@ -1,11 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eHpJU-0002yn-VI
- for barebox@lists.infradead.ORG; Thu, 23 Nov 2017 11:05:03 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 23 Nov 2017 12:04:38 +0100
-Message-Id: <20171123110438.24380-1-s.hauer@pengutronix.de>
+ id 1eHSBO-0007Gl-8S
+ for barebox@lists.infradead.org; Wed, 22 Nov 2017 10:23:12 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Wed, 22 Nov 2017 11:22:25 +0100
+Message-Id: <20171122102231.16872-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,42 +15,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] globalvar: When a globalvar is created with a NULL value,
- use empty string
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 0/6] net/e1000: more cleanups and ways to access i210 storage
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-As a convenience for users of globalvar_add_simple_string() create an
-empty value for the variable when passed a NULL pointer as value.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/globalvar.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/common/globalvar.c b/common/globalvar.c
-index ee756e5140..1db6bd9a41 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -459,6 +459,9 @@ int globalvar_add_simple_string(const char *name, char **value)
- 
- 	globalvar_nv_sync(name);
- 
-+	if (!*value)
-+		*value = xstrdup("");
-+
- 	return 0;
- }
- 
--- 
-2.11.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sCgp0aGVzZSBhcmUgYSBmZXcgcGF0Y2hlcyB0aGF0IGN1bXVsYXRlZCBoZXJlIHJlbGF0
+ZWQgdG8gdGhlIGkyMTAgbmV0d29yawpjb250cm9sbGVyLgoKVGhlc2UgYXJlIG5lYXJseSBnb29k
+IGVub3VnaCB0byBwb3B1bGF0ZSB0aGUgYXR0YWNoZWQgZmxhc2ggd2l0aCBhIHZhbGlkCmZpcm13
+YXJlICh3aGljaCB5b3Ugc3RpbGwgbmVlZCB0byBoYXZlIHlvdXJzZWxmKSBvbiBhbGwgbWFjaGlu
+ZXMgSSBoYXZlCmFjY2VzcyB0by4KClRoZXJlIGlzIHN0aWxsIG9uZSAodG8gbWUpIGtub3duIHBy
+b2JsZW06IFdoZW4gdGhlIGZsYXNoIGRvZXNuJ3QgY29udGFpbgphIHZhbGlkIGltYWdlLCBhY2Nl
+c3NpbmcgdGhlIGVlcHJvbSAod2hpY2ggaXMgYSBzaW11bGF0ZWQgZGV2aWNlIG9uIGkyMTAKdGhh
+dCBpcyBiYWNrZWQgdXAgYnkgc2hhZG93IFJBTSBhbmQgdGhlIHR3byBmaXJzdCBwYWdlcyBvZiBm
+bGFzaCkgZ2l2ZXMKdGhlIGNvbnRlbnRzIG9mIGlOVk0gaW5zdGVhZCBvZiB0aGUgZXhwZWN0ZWQg
+ZGVmYXVsdCBlZXByb20uIFRoYXQKcmVzdWx0cyBpbiBhIGZldyB3cm9uZyB0dXJucyBpbiB0aGUg
+Y29kZSBidXQgdGhleSBhcmUgbm90IGdyYXZlIGVub3VnaAp0byBzdG9wIGJlaW5nIGFibGUgdG8g
+d3JpdGUgYSB2YWxpZCBmaXJtd2FyZSBpbWFnZS4KCkEgYml0IHRoYXQgaXMgc3RpbGwgbWlzc2lu
+ZyBpcyB0aGF0IGEgY3VzdG9tZXIgbWFjaGluZSB1c2VzIGFuIGZsYXNoCnRoYXQgaXMgd3JpdGUg
+cHJvdGVjdGVkIGF0IHBvd2VyIG9uLiBBbiBpMjEwIHdpdGggYW4gcHJvZ3JhbW1lZCBmbGFzaCBp
+cwpjbGV2ZXIgZW5vdWdoIHRvIHJlbW92ZSB0aGUgd3JpdGUgcHJvdGVjdGlvbiBiZWZvcmUgd3Jp
+dGluZyB0byBpdCwgYnV0CnRoYXQgZG9lc24ndCBoZWxwIHdoZW4gdGhlIGZsYXNoIGlzIG5vdCBw
+cm9ncmFtbWVkICh0aW4gb3BlbmVyIGluc2lkZSkuCkkgaGF2ZSBhIHByb3RvdHlwZSB0aGF0IGNh
+biByZW1vdmUgdGhlIHdyaXRlIHByb3RlY3Rpb24gd2l0aCBhCmNyeXB0aWMgY29tbWFuZCBidXQg
+dGhhdCdzIG5vdCByZWFkeSBmb3IgcHJpbWUgdGltZSB5ZXQuCgpCZXN0IHJlZ2FyZHMKVXdlCgpV
+d2UgS2xlaW5lLUvDtm5pZyAoNik6CiAgbmV0L2UxMDAwOiBmaXggY29kaW5nIHN0eWxlIGF0IGEg
+ZmV3IGxvY2F0aW9ucwogIG5ldC9lMTAwMDogZG9uJ3QgdXNlIHRoZSBlZXByb20gd29yZCBzaXpl
+IGFzIHRpbWVvdXQgdG8gZ2V0IGEKICAgIHNlbWFwaG9yZQogIG5ldC9lMTAwMDogcmVvcmRlciBm
+dW5jdGlvbnMKICBuZXQvZTEwMDA6IHByb3ZpZGUgYWNjZXNzIHRvIGlOVk0gZXZlbiBpZiBhIGZs
+YXNoIGlzIHByZXNlbnQKICBuZXQvZTEwMDA6IGZpeCBzaXplIG9mIGludm0gZGV2aWNlCiAgbmV0
+L2UxMDAwOiBwcm92aWRlIGRldmljZSBmb3IgYWNjZXNzaW5nIGVtdWxhdGVkIGVlcHJvbQoKIGRy
+aXZlcnMvbmV0L2UxMDAwL2UxMDAwLmggIHwgICA4ICstCiBkcml2ZXJzL25ldC9lMTAwMC9lZXBy
+b20uYyB8IDMyNCArKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0K
+IGRyaXZlcnMvbmV0L2UxMDAwL21haW4uYyAgIHwgICA2ICstCiAzIGZpbGVzIGNoYW5nZWQsIDE5
+NiBpbnNlcnRpb25zKCspLCAxNDIgZGVsZXRpb25zKC0pCgotLSAKMi4xMS4wCgoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
+c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
