@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mout.gmx.net ([212.227.17.22])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eHX7f-0000PA-EN
+ id 1eHX7f-0000PG-EM
  for barebox@lists.infradead.org; Wed, 22 Nov 2017 15:39:37 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Wed, 22 Nov 2017 16:38:58 +0100
-Message-Id: <1511365141-21693-1-git-send-email-linux@rempel-privat.de>
+Date: Wed, 22 Nov 2017 16:39:00 +0100
+Message-Id: <1511365141-21693-3-git-send-email-linux@rempel-privat.de>
+In-Reply-To: <1511365141-21693-1-git-send-email-linux@rempel-privat.de>
+References: <1511365141-21693-1-git-send-email-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/3] provide watchdog support on ar9344 SoC
+Subject: [PATCH v2 2/3] MIPS: dts: ar9344: add watchdog node
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-This patch set is providing watchdog driver for QCA/Atheros AR9344 WiSoC
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+---
+ arch/mips/dts/ar9344.dtsi | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-changes v2:
-- spell fixes
-- remove casting from container_of
-- release priv if dev_request_mem_resource filed
-- provide error message if clk_get filed
-
-Oleksij Rempel (3):
-  watchdog: add ar9344-wdt driver
-  MIPS: dts: ar9344: add watchdog node
-  MIPS: dts: tl_wdr4300: enable watchdog node
-
- arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts |   4 +
- arch/mips/dts/ar9344.dtsi                |   7 ++
- drivers/watchdog/Kconfig                 |   6 ++
- drivers/watchdog/Makefile                |   1 +
- drivers/watchdog/ar9344_wdt.c            | 138 +++++++++++++++++++++++++++++++
- 5 files changed, 156 insertions(+)
- create mode 100644 drivers/watchdog/ar9344_wdt.c
-
+diff --git a/arch/mips/dts/ar9344.dtsi b/arch/mips/dts/ar9344.dtsi
+index 0a7171b..009ff6f 100644
+--- a/arch/mips/dts/ar9344.dtsi
++++ b/arch/mips/dts/ar9344.dtsi
+@@ -58,6 +58,13 @@
+ 				#clock-cells = <1>;
+ 			};
+ 
++			wdt0: wdt@18060008 {
++				compatible = "qca,ar9344-wdt";
++				reg = <0x18060008 0x8>;
++				clocks = <&pll ATH79_CLK_CPU>;
++				status = "disabled";
++			};
++
+ 			spi: spi@1f000000 {
+ 				compatible = "qca,ar7100-spi", "qca,ar9344-spi";
+ 				reg = <0x1f000000 0x1c>;
 -- 
 2.7.4
 
