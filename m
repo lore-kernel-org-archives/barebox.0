@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eHSBO-0007Gp-A5
- for barebox@lists.infradead.org; Wed, 22 Nov 2017 10:23:15 +0000
+ id 1eHpRM-0006Pc-KD
+ for barebox@lists.infradead.ORG; Thu, 23 Nov 2017 11:13:15 +0000
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Wed, 22 Nov 2017 11:22:30 +0100
-Message-Id: <20171122102231.16872-6-u.kleine-koenig@pengutronix.de>
+Date: Thu, 23 Nov 2017 12:12:33 +0100
+Message-Id: <20171123111237.10245-1-u.kleine-koenig@pengutronix.de>
 In-Reply-To: <20171122102231.16872-1-u.kleine-koenig@pengutronix.de>
 References: <20171122102231.16872-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
@@ -21,23 +21,25 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/6] net/e1000: fix size of invm device
+Subject: [PATCH 7/6] net/e1000: don't fail to bind on uninitialized flash
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-VGhlIGlOVk0gc3RvcmFnZSBpcyAyIEtpYiBjb250YWluaW5nIDY0IDMyYml0IHdvcmRzICgwLTYz
-KS4KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVu
-Z3V0cm9uaXguZGU+Ci0tLQogZHJpdmVycy9uZXQvZTEwMDAvZWVwcm9tLmMgfCAyICstCiAxIGZp
-bGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9k
-cml2ZXJzL25ldC9lMTAwMC9lZXByb20uYyBiL2RyaXZlcnMvbmV0L2UxMDAwL2VlcHJvbS5jCmlu
-ZGV4IGU1ZDFjNTkyMWY1ZS4uNWVlNTQ1ZDhmZDVkIDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC9l
-MTAwMC9lZXByb20uYworKysgYi9kcml2ZXJzL25ldC9lMTAwMC9lZXByb20uYwpAQCAtMTM5OSw3
-ICsxMzk5LDcgQEAgaW50IGUxMDAwX3JlZ2lzdGVyX2ludm0oc3RydWN0IGUxMDAwX2h3ICpodykK
-IAlody0+aW52bS5jZGV2Lm9wcyA9ICZlMTAwMF9pbnZtX29wczsKIAlody0+aW52bS5jZGV2LnBy
-aXYgPSBodzsKIAlody0+aW52bS5jZGV2Lm5hbWUgPSB4YXNwcmludGYoImUxMDAwLWludm0lZCIs
-IGh3LT5kZXYtPmlkKTsKLQlody0+aW52bS5jZGV2LnNpemUgPSAzMiAqIEUxMDAwX0lOVk1fREFU
-QV9NQVhfTjsKKwlody0+aW52bS5jZGV2LnNpemUgPSA0ICogKEUxMDAwX0lOVk1fREFUQV9NQVhf
-TiArIDEpOwogCiAJcmV0ID0gZGV2ZnNfY3JlYXRlKCZody0+aW52bS5jZGV2KTsKIAlpZiAocmV0
-IDwgMCkKLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
-ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+V2hlbiB0aGUgZmxhc2ggZG9lc24ndCBob2xkIGEgdmFsaWQgZmlybXdhcmUgaW1hZ2UgdGhlcmUg
+YXJlIHN0aWxsCnNvbWUgdGhpbmdzIChsaWtlIGFjY2Vzc2luZyB0aGUgZmxhc2gpIHBvc3NpYmxl
+LiBEb24ndCByZXR1cm4gYW4gZXJyb3IKY29kZSBpbiB0aGlzIGNhc2UgYnV0IHJldHVybiAwIGlu
+c3RlYWQuIFRoaXMgd2F5IHRoZSBkcml2ZXIgaXMKcmVndWxhcmlseSBib3VuZCBhbmQganVzdCBk
+b2Vzbid0IHByb3ZpZGUgYSBuZXR3b3JrIGludGVyZmFjZS4KClNpZ25lZC1vZmYtYnk6IFV3ZSBL
+bGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogZHJpdmVy
+cy9uZXQvZTEwMDAvbWFpbi5jIHwgMiArLQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCsp
+LCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvZTEwMDAvbWFpbi5jIGIv
+ZHJpdmVycy9uZXQvZTEwMDAvbWFpbi5jCmluZGV4IDAxYzlmMzlhMjVmNC4uYmI2YWI0ZWIwMzYw
+IDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC9lMTAwMC9tYWluLmMKKysrIGIvZHJpdmVycy9uZXQv
+ZTEwMDAvbWFpbi5jCkBAIC0zNTk4LDcgKzM1OTgsNyBAQCBzdGF0aWMgaW50IGUxMDAwX3Byb2Jl
+KHN0cnVjdCBwY2lfZGV2ICpwZGV2LCBjb25zdCBzdHJ1Y3QgcGNpX2RldmljZV9pZCAqaWQpCiAJ
+fQogCiAJaWYgKGUxMDAwX3ZhbGlkYXRlX2VlcHJvbV9jaGVja3N1bShodykpCi0JCXJldHVybiAt
+RUlOVkFMOworCQlyZXR1cm4gMDsKIAogCWUxMDAwX2dldF9ldGhhZGRyKGVkZXYsIGVkZXYtPmV0
+aGFkZHIpOwogCi0tIAoyLjExLjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
+ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
+Cg==
