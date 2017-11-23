@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail1.bemta5.messagelabs.com ([195.245.231.142])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eHrp5-0000Kb-6G
- for barebox@lists.infradead.org; Thu, 23 Nov 2017 13:45:50 +0000
-From: =?iso-8859-1?Q?Kjell_Ove_R=F8te?= <kjellove.rote@zenitel.com>
-Date: Thu, 23 Nov 2017 13:45:22 +0000
-Message-ID: <d8583e62109f4b9ebc7030799343b662@nooslMX1.zenitelcss.com>
-Content-Language: en-US
+ id 1eHv3M-0003YJ-E9
+ for barebox@lists.infradead.ORG; Thu, 23 Nov 2017 17:12:46 +0000
+Date: Thu, 23 Nov 2017 18:12:19 +0100
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Message-ID: <20171123171219.ngzi66uf5lhikji5@pengutronix.de>
+References: <d8583e62109f4b9ebc7030799343b662@nooslMX1.zenitelcss.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <d8583e62109f4b9ebc7030799343b662@nooslMX1.zenitelcss.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,46 +18,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: FW: Handling boot on NAND Bad Blocks 
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: FW: Handling boot on NAND Bad Blocks
+To: Kjell Ove =?utf-8?B?UsO4dGU=?= <kjellove.rote@zenitel.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi
-
-We have a product on the Freescale imx28 booting from a NAND Flash.
-Lately we have seen high numbers of boards failing, and find we have received batches with marked bad blocks in lower boot addresses of Flash.
-Typically we see bad blocks in partition where Barebox are located. 
-
-We do also use the barebox command "bcb" to create the Boot Control Block. 
-I did just test that using two partitions for the bootstream, and adding these to BCB handles my problem with bad block in one bootstream partition.
-
-I realize we will get into same problem for bareboxenv, kernel and devicetree partitions.
-Is there any sort of built-in mechanism or best practice dealing with this? 
-Or do I need to make redundant copy of all partition and verifications before load?
-
-We are currently using a rather old Barebox 2013.01.0, which has been working perfectly fine for many years.
-
-Example running an update command on a partition with one bad block below.
-
-barebox@Stentofon Turbine:/ update -t bootstream -d nand -f sti_boot
-host 10.5.2.152 is alive
-
-erasing partition /dev/nand0.bootstream.bb
-
-Skipping bad block at 0x00140000
-
-flashing sti_boot to /dev/nand0.bootstream.bb
-
-Regards, 
-Kjell Ove
-
-DISCLAIMER:
-This e-mail may contain confidential and privileged material for the sole use of the intended recipient. Any review, use, distribution or disclosure by others is strictly prohibited. If you are not the intended recipient (or authorized to receive for the recipient), please contact the sender by reply e-mail and delete all copies of this message.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgS2plbGwsCgpPbiBUaHUsIE5vdiAyMywgMjAxNyBhdCAwMTo0NToyMlBNICswMDAwLCBLamVs
+bCBPdmUgUsO4dGUgd3JvdGU6Cj4gV2UgaGF2ZSBhIHByb2R1Y3Qgb24gdGhlIEZyZWVzY2FsZSBp
+bXgyOCBib290aW5nIGZyb20gYSBOQU5EIEZsYXNoLgo+IExhdGVseSB3ZSBoYXZlIHNlZW4gaGln
+aCBudW1iZXJzIG9mIGJvYXJkcyBmYWlsaW5nLCBhbmQgZmluZCB3ZSBoYXZlCj4gcmVjZWl2ZWQg
+YmF0Y2hlcyB3aXRoIG1hcmtlZCBiYWQgYmxvY2tzIGluIGxvd2VyIGJvb3QgYWRkcmVzc2VzIG9m
+Cj4gRmxhc2guCgpJcyBpdCBwb3NzaWJsZSB0byBoYXZlIGEgbG9vayBhdCB0aGUgZmFpbHM/IExv
+ZyBvdXRwdXQsIG1heWJlIGR1bXBzLi4uCgpyc2MKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAg
+ICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVz
+dHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0
+cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8
+IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhS
+QSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
+bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
