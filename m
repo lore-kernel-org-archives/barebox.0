@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eI96k-0008KD-2v
+ id 1eI96q-0008Kd-Mm
  for barebox@lists.infradead.ORG; Fri, 24 Nov 2017 08:13:31 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 24 Nov 2017 09:12:33 +0100
-Message-Id: <20171124081237.6830-18-s.hauer@pengutronix.de>
+Date: Fri, 24 Nov 2017 09:12:24 +0100
+Message-Id: <20171124081237.6830-9-s.hauer@pengutronix.de>
 In-Reply-To: <20171124081237.6830-1-s.hauer@pengutronix.de>
 References: <20171124081237.6830-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,420 +21,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/21] net: Provide new way to configure network devices
+Subject: [PATCH 08/21] net: allow udp connections on specified network device
 To: Barebox List <barebox@lists.infradead.org>
 
-This provides a new way to configure network interfaces based
-on nvvars. A network interface can now be configured with variables
-in the nv.dev.<ethname>.* namespace. There is a new network device
-parameter "mode" which specifies the mode used to obtain IP settings.
-The mode can be "dhcp", "static" or "disabled":
-
-nv.dev.eth0.mode=dhcp
-(ipaddr, netmask are ignored in this setting)
-
-nv.dev.eth0.mode=static
-nv.dev.eth0.ipaddr=192.168.0.17
-nv.dev.eth0.netmask=255.255.0.0
-
-nv.dev.eth0.mode=disabled
+This allows the DHCP code to configure specific network
+devices so that DHCP no longer depends on any "current"
+network device.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/net.h |   6 ++
- net/eth.c     |  15 ++++
- net/ifup.c    | 235 +++++++++++++++++++++++++++++++++++++---------------------
- 3 files changed, 172 insertions(+), 84 deletions(-)
+ include/net.h |  4 ++++
+ net/net.c     | 32 ++++++++++++++++++++------------
+ 2 files changed, 24 insertions(+), 12 deletions(-)
 
 diff --git a/include/net.h b/include/net.h
-index c72197b2f0..9b57dad909 100644
+index e75f64fe75..6788f14cb0 100644
 --- a/include/net.h
 +++ b/include/net.h
-@@ -61,6 +61,11 @@ struct eth_device {
- 	IPaddr_t netmask;
- 	char ethaddr[6];
- 	char *bootarg;
+@@ -443,6 +443,10 @@ static inline char *net_alloc_packet(void)
+ struct net_connection *net_udp_new(IPaddr_t dest, uint16_t dport,
+ 		rx_handler_f *handler, void *ctx);
+ 
++struct net_connection *net_udp_eth_new(struct eth_device *edev, IPaddr_t dest,
++                                       uint16_t dport, rx_handler_f *handler,
++                                       void *ctx);
 +
-+#define ETH_MODE_DHCP 0
-+#define ETH_MODE_STATIC 1
-+#define ETH_MODE_DISABLED 2
-+	unsigned int global_mode;
- };
+ struct net_connection *net_icmp_new(IPaddr_t dest, rx_handler_f *handler,
+ 		void *ctx);
  
- #define dev_to_edev(d) container_of(d, struct eth_device, dev)
-@@ -469,6 +474,7 @@ void led_trigger_network(enum led_trigger trigger);
+diff --git a/net/net.c b/net/net.c
+index 5f9535fc40..1d47bb449a 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -141,9 +141,8 @@ static void arp_handler(struct arprequest *arp)
+ 	}
+ }
  
- #define IFUP_FLAG_FORCE		(1 << 0)
- 
-+int ifup_edev(struct eth_device *edev);
- int ifup(const char *name, unsigned flags);
- int ifup_all(unsigned flags);
- 
-diff --git a/net/eth.c b/net/eth.c
-index a8f21b2277..a9869f7d9d 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -21,12 +21,18 @@
- #include <command.h>
- #include <complete.h>
- #include <driver.h>
-+#include <unistd.h>
- #include <init.h>
-+#include <dhcp.h>
- #include <net.h>
- #include <of.h>
- #include <linux/phy.h>
- #include <errno.h>
- #include <malloc.h>
-+#include <globalvar.h>
-+#include <environment.h>
-+#include <linux/ctype.h>
-+#include <linux/stat.h>
- 
- static uint64_t last_link_check;
- 
-@@ -340,6 +346,12 @@ late_initcall(eth_register_of_fixup);
- extern IPaddr_t net_serverip;
- extern IPaddr_t net_gateway;
- 
-+static const char * const eth_mode_names[] = {
-+	[ETH_MODE_DHCP] = "dhcp",
-+	[ETH_MODE_STATIC] = "static",
-+	[ETH_MODE_DISABLED] = "disabled",
-+};
-+
- int eth_register(struct eth_device *edev)
+-static int arp_request(IPaddr_t dest, unsigned char *ether)
++static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *ether)
  {
- 	struct device_d *dev = &edev->dev;
-@@ -378,6 +390,9 @@ int eth_register(struct eth_device *edev)
- 			edev->ethaddr, edev);
- 	edev->bootarg = xstrdup("");
- 	dev_add_param_string(dev, "linux.bootargs", NULL, NULL, &edev->bootarg, NULL);
-+	dev_add_param_enum(dev, "mode", NULL, NULL, &edev->global_mode,
-+				  eth_mode_names, ARRAY_SIZE(eth_mode_names),
-+				  NULL);
+-	struct eth_device *edev = eth_get_current();
+ 	char *pkt;
+ 	struct arprequest *arp;
+ 	uint64_t arp_start;
+@@ -288,15 +287,17 @@ IPaddr_t net_get_gateway(void)
  
- 	if (edev->init)
- 		edev->init(edev);
-diff --git a/net/ifup.c b/net/ifup.c
-index a65956bba1..7df9f587cd 100644
---- a/net/ifup.c
-+++ b/net/ifup.c
-@@ -25,116 +25,147 @@
- #include <dhcp.h>
- #include <net.h>
- #include <fs.h>
-+#include <globalvar.h>
-+#include <string.h>
-+#include <driver.h>
- #include <linux/stat.h>
+ static LIST_HEAD(connection_list);
  
--static int eth_discover(const char *name)
-+static int eth_discover(char *file)
+-static struct net_connection *net_new(IPaddr_t dest, rx_handler_f *handler,
+-		void *ctx)
++static struct net_connection *net_new(struct eth_device *edev, IPaddr_t dest,
++				      rx_handler_f *handler, void *ctx)
  {
--	char *cmd_discover;
- 	struct stat s;
+-	struct eth_device *edev = eth_get_current();
+ 	struct net_connection *con;
  	int ret;
  
--	cmd_discover = basprintf("/env/network/%s-discover", name);
--
--	ret = stat(cmd_discover, &s);
--	if (ret)
-+	ret = stat(file, &s);
-+	if (ret) {
-+		ret = 0;
- 		goto out;
+-	if (!edev)
+-		return ERR_PTR(-ENETDOWN);
++	if (!edev) {
++		edev = eth_get_current();
++		if (!edev)
++			return ERR_PTR(-ENETDOWN);
 +	}
  
--	ret = run_command(cmd_discover);
-+	ret = run_command(file);
- 	if (ret) {
--		pr_err("Running '%s' failed with %d\n", cmd_discover, ret);
-+		pr_err("Running '%s' failed with %d\n", file, ret);
- 		goto out;
+ 	if (!is_valid_ether_addr(edev->ethaddr)) {
+ 		char str[sizeof("xx:xx:xx:xx:xx:xx")];
+@@ -325,7 +326,7 @@ static struct net_connection *net_new(IPaddr_t dest, rx_handler_f *handler,
+ 	if (dest == 0xffffffff) {
+ 		memset(con->et->et_dest, 0xff, 6);
+ 	} else {
+-		ret = arp_request(dest, con->et->et_dest);
++		ret = arp_request(edev, dest, con->et->et_dest);
+ 		if (ret)
+ 			goto out;
  	}
- 
- out:
--	free(cmd_discover);
-+	free(file);
- 
- 	return ret;
+@@ -349,10 +350,11 @@ out:
+ 	return ERR_PTR(ret);
  }
  
--static char *vars[] = {
--	"ipaddr",
--	"netmask",
--	"gateway",
--	"serverip",
--};
--
--static int eth_set_param(struct device_d *dev, const char *param)
-+static int eth_discover_ethname(const char *ethname)
+-struct net_connection *net_udp_new(IPaddr_t dest, uint16_t dport,
+-		rx_handler_f *handler, void *ctx)
++struct net_connection *net_udp_eth_new(struct eth_device *edev, IPaddr_t dest,
++				       uint16_t dport, rx_handler_f *handler,
++				       void *ctx)
  {
--	const char *value = getenv(param);
--
--	if (!value)
--		return 0;
--	if (!*value)
--		return 0;
-+	return eth_discover(basprintf("/env/network/%s-discover", ethname));
-+}
+-	struct net_connection *con = net_new(dest, handler, ctx);
++	struct net_connection *con = net_new(edev, 0xffffffff, handler, ctx);
  
--	return dev_set_param(dev, param, value);
-+static int eth_discover_file(const char *filename)
-+{
-+	return eth_discover(basprintf("/env/network/%s", filename));
+ 	if (IS_ERR(con))
+ 		return con;
+@@ -365,10 +367,16 @@ struct net_connection *net_udp_new(IPaddr_t dest, uint16_t dport,
+ 	return con;
  }
  
--int ifup(const char *name, unsigned flags)
-+static int source_env_network(struct eth_device *edev)
++struct net_connection *net_udp_new(IPaddr_t dest, uint16_t dport,
++		rx_handler_f *handler, void *ctx)
++{
++	return net_udp_eth_new(NULL, dest, dport, handler, ctx);
++}
++
+ struct net_connection *net_icmp_new(IPaddr_t dest, rx_handler_f *handler,
+ 		void *ctx)
  {
--	int ret;
--	char *cmd;
--	const char *ip;
--	int i;
--	struct device_d *dev;
--	struct eth_device *edev = eth_get_byname(name);
-+	char *vars[] = {
-+		"ipaddr",
-+		"netmask",
-+		"gateway",
-+		"serverip",
-+		"ethaddr",
-+		"ip",
-+	};
-+	IPaddr_t ipaddr, netmask, gateway, serverip;
-+	unsigned char ethaddr[6];
-+	char *file, *cmd;
-+	const char *ethaddrstr, *modestr;
-+	int ret, mode, ethaddr_valid = 0, i;
-+	struct stat s;
+-	struct net_connection *con = net_new(dest, handler, ctx);
++	struct net_connection *con = net_new(NULL, dest, handler, ctx);
  
--	if (edev && edev->ipaddr && !(flags & IFUP_FLAG_FORCE))
-+	file = basprintf("/env/network/%s", edev->devname);
-+	ret = stat(file, &s);
-+	if (ret) {
-+		free(file);
- 		return 0;
-+	}
- 
--	env_push_context();
-+	dev_info(&edev->dev, "/env/network/%s is deprecated.\n"
-+		 "Use nv.dev.%s.* nvvars to configure your network device instead\n",
-+		 edev->devname, edev->devname);
- 
--	setenv("ip", "");
-+	env_push_context();
- 
- 	for (i = 0; i < ARRAY_SIZE(vars); i++)
- 		setenv(vars[i], "");
- 
--	cmd = basprintf("source /env/network/%s", name);
--
-+	cmd = basprintf("source /env/network/%s", edev->devname);
- 	ret = run_command(cmd);
- 	if (ret) {
- 		pr_err("Running '%s' failed with %d\n", cmd, ret);
- 		goto out;
- 	}
- 
--	eth_discover(name);
-+	ipaddr = getenv_ip("ipaddr");
-+	netmask = getenv_ip("netmask");
-+	gateway = getenv_ip("gateway");
-+	serverip = getenv_ip("serverip");
-+	ethaddrstr = getenv("ethaddr");
-+	if (ethaddrstr && *ethaddrstr) {
-+		ret = string_to_ethaddr(ethaddrstr, ethaddr);
-+		if (ret) {
-+			dev_err(&edev->dev, "Cannot parse ethaddr \"%s\"\n", ethaddrstr);
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+		ethaddr_valid = 1;
-+	}
- 
--	dev = get_device_by_name(name);
--	if (!dev) {
--		pr_err("Cannot find device %s\n", name);
-+	modestr = getenv("ip");
-+	if (!modestr) {
-+		dev_err(&edev->dev, "No mode specified in \"ip\" variable\n");
-+		ret = -EINVAL;
- 		goto out;
- 	}
- 
--	ret = eth_set_param(dev, "ethaddr");
--	if (ret)
-+	if (!strcmp(modestr, "static")) {
-+		mode = ETH_MODE_STATIC;
-+	} else if (!strcmp(modestr, "dhcp")) {
-+		mode = ETH_MODE_DHCP;
-+	} else {
-+		dev_err(&edev->dev, "Invalid ip mode \"%s\" found\n", modestr);
-+		ret = -EINVAL;
- 		goto out;
-+	}
- 
--	ip = getenv("ip");
--	if (!ip)
--		ip = "";
-+	edev->global_mode = mode;
- 
--	if (!strcmp(ip, "dhcp")) {
--		IPaddr_t serverip;
-+	if (ethaddr_valid)
-+		memcpy(edev->ethaddr, ethaddr, 6);
- 
--		serverip = getenv_ip("serverip");
-+	if (mode == ETH_MODE_STATIC) {
-+		edev->ipaddr = ipaddr;
-+		edev->netmask = netmask;
-+		if (gateway)
-+			net_set_gateway(gateway);
- 		if (serverip)
--			net_set_serverip(serverip, false);
-+			net_set_serverip(serverip, true);
-+	}
- 
--		ret = dhcp(edev, NULL);
--		if (ret)
--			goto out;
--		dev_set_param(dev, "linux.bootargs", "ip=dhcp");
--	} else if (!strcmp(ip, "static")) {
-+	ret = 0;
-+
-+out:
-+	env_pop_context();
-+	free(cmd);
-+	free(file);
-+
-+	return ret;
-+}
-+
-+static void set_linux_bootarg(struct eth_device *edev)
-+{
-+	if (edev->global_mode == ETH_MODE_STATIC) {
- 		char *bootarg;
- 		IPaddr_t serverip;
- 		IPaddr_t gateway;
- 
--		for (i = 0; i < ARRAY_SIZE(vars); i++) {
--			ret = eth_set_param(dev, vars[i]);
--			if (ret)
--				goto out;
--		}
--
- 		serverip = net_get_serverip();
- 		gateway = net_get_gateway();
- 
-@@ -143,46 +174,82 @@ int ifup(const char *name, unsigned flags)
- 				&serverip,
- 				&gateway,
- 				&edev->netmask);
--		dev_set_param(dev, "linux.bootargs", bootarg);
-+		dev_set_param(&edev->dev, "linux.bootargs", bootarg);
- 		free(bootarg);
--	} else {
--		pr_err("unknown ip type: %s\n", ip);
--		ret = -EINVAL;
--		goto out;
-+	} else if (edev->global_mode == ETH_MODE_DHCP) {
-+		dev_set_param(&edev->dev, "linux.bootargs", "ip=dhcp");
- 	}
-+}
- 
--	ret = 0;
--out:
--	env_pop_context();
--	free(cmd);
-+int ifup_edev(struct eth_device *edev)
-+{
-+	int ret;
- 
--	return ret;
-+	if (edev->global_mode == ETH_MODE_DISABLED)
-+		return 0;
-+
-+	ret = source_env_network(edev);
-+	if (ret)
-+		return ret;
-+
-+	if (edev->global_mode == ETH_MODE_DHCP) {
-+		if (IS_ENABLED(CONFIG_NET_DHCP)) {
-+			ret = dhcp(edev, NULL);
-+		} else {
-+			dev_err(&edev->dev, "DHCP support not available\n");
-+			ret = -ENOSYS;
-+		}
-+		if (ret)
-+			return ret;
-+	}
-+
-+	set_linux_bootarg(edev);
-+
-+	return 0;
-+}
-+
-+int ifup(const char *ethname, unsigned flags)
-+{
-+	struct eth_device *edev;
-+	int ret;
-+
-+	ret = eth_discover_ethname(ethname);
-+	if (ret)
-+		return ret;
-+
-+	edev = eth_get_byname(ethname);
-+	if (!edev)
-+		return -ENODEV;
-+
-+	return ifup_edev(edev);
- }
- 
- int ifup_all(unsigned flags)
- {
-+	struct eth_device *edev;
- 	DIR *dir;
- 	struct dirent *d;
- 
- 	dir = opendir("/env/network");
--	if (!dir)
--		return -ENOENT;
--
--	while ((d = readdir(dir))) {
--		if (*d->d_name == '.')
--			continue;
--		/*
--		 * Skip xxx-discover files since these are no
--		 * network configuration files, but scripts to bring
--		 * up network interface xxx.
--		 */
--		if (strstr(d->d_name, "-discover"))
--			continue;
--		ifup(d->d_name, flags);
-+	if (dir) {
-+
-+		while ((d = readdir(dir))) {
-+			if (*d->d_name == '.')
-+				continue;
-+			if (!strstr(d->d_name, "-discover"))
-+				continue;
-+
-+			eth_discover_file(d->d_name);
-+		}
- 	}
- 
- 	closedir(dir);
- 
-+	device_detect_all();
-+
-+	for_each_netdev(edev)
-+		ifup_edev(edev);
-+
- 	return 0;
- }
- 
+ 	if (IS_ERR(con))
+ 		return con;
 -- 
 2.11.0
 
