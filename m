@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail1.bemta3.messagelabs.com ([195.245.230.168])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eI9J6-0000HH-Cm
- for barebox@lists.infradead.ORG; Fri, 24 Nov 2017 08:25:58 +0000
-Date: Fri, 24 Nov 2017 09:25:33 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171124082533.tp2pqnefj6y6hbgo@pengutronix.de>
-References: <1511365141-21693-1-git-send-email-linux@rempel-privat.de>
+ id 1eI9gD-00058r-3o
+ for barebox@lists.infradead.org; Fri, 24 Nov 2017 08:49:51 +0000
+From: =?utf-8?B?S2plbGwgT3ZlIFLDuHRl?= <kjellove.rote@zenitel.com>
+Date: Fri, 24 Nov 2017 08:49:22 +0000
+Message-ID: <9f24493b88f3412b86d192783708f813@nooslMX1.zenitelcss.com>
+References: <d8583e62109f4b9ebc7030799343b662@nooslMX1.zenitelcss.com>
+ <20171123171219.ngzi66uf5lhikji5@pengutronix.de>
+In-Reply-To: <20171123171219.ngzi66uf5lhikji5@pengutronix.de>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1511365141-21693-1-git-send-email-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,58 +19,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/3] provide watchdog support on ar9344 SoC
-To: Oleksij Rempel <linux@rempel-privat.de>
-Cc: barebox@lists.infradead.org
+Subject: RE: FW: Handling boot on NAND Bad Blocks
+To: Robert Schwebel <r.schwebel@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, Nov 22, 2017 at 04:38:58PM +0100, Oleksij Rempel wrote:
-> This patch set is providing watchdog driver for QCA/Atheros AR9344 WiSoC
-> 
-> changes v2:
-> - spell fixes
-> - remove casting from container_of
-> - release priv if dev_request_mem_resource filed
-> - provide error message if clk_get filed
-> 
-> Oleksij Rempel (3):
->   watchdog: add ar9344-wdt driver
->   MIPS: dts: ar9344: add watchdog node
->   MIPS: dts: tl_wdr4300: enable watchdog node
-
-Applied, thanks
-
-Sascha
-
-> 
->  arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts |   4 +
->  arch/mips/dts/ar9344.dtsi                |   7 ++
->  drivers/watchdog/Kconfig                 |   6 ++
->  drivers/watchdog/Makefile                |   1 +
->  drivers/watchdog/ar9344_wdt.c            | 138 +++++++++++++++++++++++++++++++
->  5 files changed, 156 insertions(+)
->  create mode 100644 drivers/watchdog/ar9344_wdt.c
-> 
-> -- 
-> 2.7.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgUm9iZXJ0CgpJbiB0aGUgb3JpZ2luYWwgY2FzZSB0aGUgYm9hcmQganVzdCByZWJvb3RzIHdo
+ZW4gdGhlIEJhcmVib3ggaXMgdG8gYmUgbG9hZGVkIGZyb20gdGhlIGJvb3RzdHJlYW0gaW1hZ2Uu
+IApJbiBsb2cgYmVsb3cgeW91IHNlZSB0aGF0IHRoZSBwb3dlcl9wcmVwIGFuZCBib290X3ByZXAg
+aXMgcnVuIGJ1dCB0aGUgQmFyZWJveCBpcyBub3Qgc3RhcnRlZCBhdCBhbGwuIApTbywgaW4gdGhp
+cyBjYXNlIHRoZXJlIGlzIG5vIEJhcmVib3ggaXNzdWUsIGJ1dCBJIHdhcyBsb29raW5nIGZvciBp
+ZiB0aGVyZSBhcmUgc29tZSBtZWNoYW5pc20gZm9yIGhhbmRsaW5nIGJvb3QgZW52aXJvbm1lbnQs
+IGtlcm5lbCBsb2FkIGV0YyB3aXRoIEJhZCBibG9jayBtYW5hZ2VtZW50LiAKRm9yIGV4YW1wbGUg
+c29tZXRoaW5nIGxpa2Ugd3JpdGluZyBhbmQgbG9hZGluZyBhIGtlcm5lbCBpbWFnZSwgdXNpbmcg
+c2tpcCBibG9jayBtZXRob2QsIGZyb20gYSBwYXJ0aXRpb24gd2l0aCBiYWQgYmxvY2tzIGFuZCBp
+bWFnZSBjYW5ub3QgYmUgc3RvcmVkIG92ZXIgbGluZWFyIGFkZHJlc3Nlcy4KCkJvb3RpbmcgYW4g
+aW1hZ2Ugd2hlcmUgQmFyZWJveCBpcyBzdG9yZWQgaW4gYSBOQU5EIEJhZCBCbG9jazoKClBvd2Vy
+UHJlcCBzdGFydCBpbml0aWFsaXplIHBvd2VyLi4uCgpDb25maWd1cmVkIGZvciA1diBvbmx5IHBv
+d2VyIHNvdXJjZS4gQmF0dGVyeSBwb3dlcmVkIG9wZXJhdGlvbiBkaXNhYmxlZC4KClR1cmJpbmUg
+UG93ZXJQcmVwIFBPV0VSIFJFU0VULCBFTUMgaGFyZG5lc3MKRGlzYWJsZSB0aGUgY2hpcCBzaHV0
+dGluZyBkb3duIGJ5IGEgZmFzdCBmYWxsaW5nIGVkZ2Ugb2YgUFNXSVRDSApOb3YgMjQgMjAxNjA4
+OjU3OjI4CkZSQUMgMHg5MjkyNTU1MgpXYWl0IGZvciBkZHIgcmVhZHkgMXBvd2VyIDB4MDA4MjA2
+MTYKRnJhYyAweDkyOTI1NTUyCnN0YXJ0IGNoYW5nZSBjcHUgZnJlcQpoYnVzIDB4MDAwMDAwMDMK
+Y3B1IDB4MDAwMTAwMDEKc3RhcnQgdGVzdCBtZW1vcnkgYWNjcmVzcwpkZHIyIDB4NDAwMDAwMDAK
+ZmluaXNoIHNpbXBsZSB0ZXN0CjB4ODA1MDEwMGIKMHg4MDUwODAwZgoKIAoKS0pFTEwgT1ZFIFLD
+mFRFClNFTklPUiBTT0ZUV0FSRSBFTkdJTkVFUgpaRU5JVEVMIE5PUldBWSBBUwoKVGVsOiArNDcg
+NDAwIDAyIDU3MwpramVsbG92ZS5yb3RlQHplbml0ZWwuY29tCgpTYW5kYWtlcnZlaWVuIDI0Qywg
+MDQ3MyBPc2xvLCBOb3J3YXkKUC5PLkJveCAxMDY4IEJla2tham9yZGV0LCBOTy0zMTk0IEhvcnRl
+biwgTm9yd2F5ClN3aXRjaGJvYXJkOiArNDcgNDAwMCAyNTAwCnd3dy56ZW5pdGVsLmNvbQoKLS0t
+LS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0KRnJvbTogUm9iZXJ0IFNjaHdlYmVsIFttYWlsdG86ci5z
+Y2h3ZWJlbEBwZW5ndXRyb25peC5kZV0gClNlbnQ6IHRvcnNkYWcgMjMuIG5vdmVtYmVyIDIwMTcg
+MTguMTIKVG86IEtqZWxsIE92ZSBSw7h0ZSA8a2plbGxvdmUucm90ZUB6ZW5pdGVsLmNvbT4KQ2M6
+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpTdWJqZWN0OiBSZTogRlc6IEhhbmRsaW5nIGJv
+b3Qgb24gTkFORCBCYWQgQmxvY2tzCgpIaSBLamVsbCwKCk9uIFRodSwgTm92IDIzLCAyMDE3IGF0
+IDAxOjQ1OjIyUE0gKzAwMDAsIEtqZWxsIE92ZSBSw7h0ZSB3cm90ZToKPiBXZSBoYXZlIGEgcHJv
+ZHVjdCBvbiB0aGUgRnJlZXNjYWxlIGlteDI4IGJvb3RpbmcgZnJvbSBhIE5BTkQgRmxhc2guCj4g
+TGF0ZWx5IHdlIGhhdmUgc2VlbiBoaWdoIG51bWJlcnMgb2YgYm9hcmRzIGZhaWxpbmcsIGFuZCBm
+aW5kIHdlIGhhdmUgCj4gcmVjZWl2ZWQgYmF0Y2hlcyB3aXRoIG1hcmtlZCBiYWQgYmxvY2tzIGlu
+IGxvd2VyIGJvb3QgYWRkcmVzc2VzIG9mIAo+IEZsYXNoLgoKSXMgaXQgcG9zc2libGUgdG8gaGF2
+ZSBhIGxvb2sgYXQgdGhlIGZhaWxzPyBMb2cgb3V0cHV0LCBtYXliZSBkdW1wcy4uLgoKcnNjCi0t
+IApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAg
+ICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMx
+MTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApB
+bXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUx
+MjEtMjA2OTE3LTU1NTUgfAoKRElTQ0xBSU1FUjoKVGhpcyBlLW1haWwgbWF5IGNvbnRhaW4gY29u
+ZmlkZW50aWFsIGFuZCBwcml2aWxlZ2VkIG1hdGVyaWFsIGZvciB0aGUgc29sZSB1c2Ugb2YgdGhl
+IGludGVuZGVkIHJlY2lwaWVudC4gQW55IHJldmlldywgdXNlLCBkaXN0cmlidXRpb24gb3IgZGlz
+Y2xvc3VyZSBieSBvdGhlcnMgaXMgc3RyaWN0bHkgcHJvaGliaXRlZC4gSWYgeW91IGFyZSBub3Qg
+dGhlIGludGVuZGVkIHJlY2lwaWVudCAob3IgYXV0aG9yaXplZCB0byByZWNlaXZlIGZvciB0aGUg
+cmVjaXBpZW50KSwgcGxlYXNlIGNvbnRhY3QgdGhlIHNlbmRlciBieSByZXBseSBlLW1haWwgYW5k
+IGRlbGV0ZSBhbGwgY29waWVzIG9mIHRoaXMgbWVzc2FnZS4KX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
+aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
+dGluZm8vYmFyZWJveAo=
