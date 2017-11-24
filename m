@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eJaJc-0000IM-PF
- for barebox@lists.infradead.ORG; Tue, 28 Nov 2017 07:28:27 +0000
-Date: Tue, 28 Nov 2017 08:28:02 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171128072802.sin7whmcfmdfruqc@pengutronix.de>
-References: <20171124085037.19139-1-u.oelmann@pengutronix.de>
+ id 1eIFCH-0005Fc-JK
+ for barebox@lists.infradead.ORG; Fri, 24 Nov 2017 14:43:19 +0000
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Date: Fri, 24 Nov 2017 15:42:51 +0100
+Message-Id: <20171124144251.14694-1-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20171124085037.19139-1-u.oelmann@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,73 +15,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: devicetree: m25p80: fix referenced filename
-To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] mtd: spi-nor: mx25l3205d/mx25l6405d: append SECT_4K
+To: Barebox List <barebox@lists.infradead.org>
 
-On Fri, Nov 24, 2017 at 09:50:37AM +0100, Ulrich =D6lmann wrote:
-> Linux changed the filename in commit 8947e396a829 ("Documentation: dt: mt=
-d:
-> replace "nor-jedec" binding with "jedec, spi-nor"") and barebox imported =
-this
-> change in commit 8ed978b79062 ("dts: update to v4.1-rc4").
-> =
-
-> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
-> ---
->  Documentation/devicetree/bindings/mtd/m25p80.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Applied, thanks
-
-Sascha
-
-> =
-
-> diff --git a/Documentation/devicetree/bindings/mtd/m25p80.rst b/Documenta=
-tion/devicetree/bindings/mtd/m25p80.rst
-> index d7c8914ec5d7..09e8b8eff606 100644
-> --- a/Documentation/devicetree/bindings/mtd/m25p80.rst
-> +++ b/Documentation/devicetree/bindings/mtd/m25p80.rst
-> @@ -1,7 +1,7 @@
->  MTD SPI driver for ST M25Pxx (and similar) serial flash chips
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->  =
-
-> -Additionally to the Linux bindings in ``dts/Bindings/mtd/m25p80.txt``
-> +Additionally to the Linux bindings in ``dts/Bindings/mtd/jedec,spi-nor.t=
-xt``
->  the barebox driver has the following optional properties:
->  =
-
->  - use-large-blocks : Use large blocks rather than the 4K blocks some dev=
-ices
-> -- =
-
-> 2.11.0
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBpcyBhIHBvcnQgb2YgTGludXgga2VybmVsIGNvbW1pdAoKICAgIHwgY29tbWl0IDA1MDFm
+MmU1ZmYyOGEwMjI5NWU0MmZjOWU3MTY0YTIwZWY0YzMwZDUKICAgIHwgQXV0aG9yOiBBbmRyZWFz
+IEZlbmthcnQgPGFmZW5rYXJ0QGdtYWlsLmNvbT4KICAgIHwgRGF0ZTogICBUaHUgTm92IDUgMTA6
+MDQ6MjMgMjAxNSArMDEwMAogICAgfAogICAgfCAgICAgbXRkOiBzcGktbm9yOiBteDI1bDMyMDVk
+L214MjVsNjQwNWQ6IGFwcGVuZCBTRUNUXzRLCiAgICB8CiAgICB8ICAgICBhY2NvcmRpbmcgZGF0
+YXNoZWV0IGJvdGggY2hpcHMgY2FuIGVyYXNlIDRrQnl0ZSBzZWN0b3JzIGluZGl2aWR1YWxseQog
+ICAgfAogICAgfCAgICAgU2lnbmVkLW9mZi1ieTogQW5kcmVhcyBGZW5rYXJ0IDxhbmRyZWFzLmZl
+bmthcnRAZGV2LmRpZ2l0YWxzdHJvbS5vcmc+CiAgICB8ICAgICBTaWduZWQtb2ZmLWJ5OiBCcmlh
+biBOb3JyaXMgPGNvbXB1dGVyc2ZvcnBlYWNlQGdtYWlsLmNvbT4KClNpZ25lZC1vZmYtYnk6IFVs
+cmljaCDDlmxtYW5uIDx1Lm9lbG1hbm5AcGVuZ3V0cm9uaXguZGU+Ci0tLQogZHJpdmVycy9tdGQv
+c3BpLW5vci9zcGktbm9yLmMgfCA0ICsrLS0KIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMo
+KyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvc3BpLW5vci9zcGkt
+bm9yLmMgYi9kcml2ZXJzL210ZC9zcGktbm9yL3NwaS1ub3IuYwppbmRleCBmYjEzY2QxMjY5NGEu
+LjVjZjY1MGMwZTIzMCAxMDA2NDQKLS0tIGEvZHJpdmVycy9tdGQvc3BpLW5vci9zcGktbm9yLmMK
+KysrIGIvZHJpdmVycy9tdGQvc3BpLW5vci9zcGktbm9yLmMKQEAgLTUyNCw5ICs1MjQsOSBAQCBz
+dGF0aWMgY29uc3Qgc3RydWN0IHNwaV9kZXZpY2VfaWQgc3BpX25vcl9pZHNbXSA9IHsKIAl7ICJt
+eDI1bDQwMDVhIiwgIElORk8oMHhjMjIwMTMsIDAsIDY0ICogMTAyNCwgICA4LCBTRUNUXzRLKSB9
+LAogCXsgIm14MjVsODAwNSIsICAgSU5GTygweGMyMjAxNCwgMCwgNjQgKiAxMDI0LCAgMTYsIDAp
+IH0sCiAJeyAibXgyNWwxNjA2ZSIsICBJTkZPKDB4YzIyMDE1LCAwLCA2NCAqIDEwMjQsICAzMiwg
+U0VDVF80SykgfSwKLQl7ICJteDI1bDMyMDVkIiwgIElORk8oMHhjMjIwMTYsIDAsIDY0ICogMTAy
+NCwgIDY0LCAwKSB9LAorCXsgIm14MjVsMzIwNWQiLCAgSU5GTygweGMyMjAxNiwgMCwgNjQgKiAx
+MDI0LCAgNjQsIFNFQ1RfNEspIH0sCiAJeyAibXgyNWwzMjU1ZSIsICBJTkZPKDB4YzI5ZTE2LCAw
+LCA2NCAqIDEwMjQsICA2NCwgU0VDVF80SykgfSwKLQl7ICJteDI1bDY0MDVkIiwgIElORk8oMHhj
+MjIwMTcsIDAsIDY0ICogMTAyNCwgMTI4LCAwKSB9LAorCXsgIm14MjVsNjQwNWQiLCAgSU5GTygw
+eGMyMjAxNywgMCwgNjQgKiAxMDI0LCAxMjgsIFNFQ1RfNEspIH0sCiAJeyAibXgyNXUyMDMzZSIs
+ICBJTkZPKDB4YzIyNTMyLCAwLCA2NCAqIDEwMjQsICAgNCwgU0VDVF80SykgfSwKIAl7ICJteDI1
+dTQwMzUiLCAgIElORk8oMHhjMjI1MzMsIDAsIDY0ICogMTAyNCwgICA4LCBTRUNUXzRLKSB9LAog
+CXsgIm14MjV1ODAzNSIsICAgSU5GTygweGMyMjUzNCwgMCwgNjQgKiAxMDI0LCAgMTYsIFNFQ1Rf
+NEspIH0sCi0tIAoyLjExLjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
+cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
