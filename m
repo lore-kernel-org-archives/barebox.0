@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eI96c-0008Jk-1S
+ id 1eI96c-0008Jh-1Z
  for barebox@lists.infradead.ORG; Fri, 24 Nov 2017 08:13:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 24 Nov 2017 09:12:19 +0100
-Message-Id: <20171124081237.6830-4-s.hauer@pengutronix.de>
+Date: Fri, 24 Nov 2017 09:12:23 +0100
+Message-Id: <20171124081237.6830-8-s.hauer@pengutronix.de>
 In-Reply-To: <20171124081237.6830-1-s.hauer@pengutronix.de>
 References: <20171124081237.6830-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,123 +21,142 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/21] net: Make domainname and nameserver globalvars
+Subject: [PATCH 07/21] net: Use a single gateway
 To: Barebox List <barebox@lists.infradead.org>
 
-Register domainname and nameserver as globalvars rather than attaching
-them to a dedicated net device. the global device already exists and
-already contains much of the barebox configuration, so no need to add
-an extra device for network config.
+There is not much point in having a network device specific
+gateway. If barebox really is part of such a complicated network
+in which it needs multiple gateways, then we probably need a
+real routing table. Until this happens, a single gateway should
+be enough.
+
+This introduces global.net.gateway which holds the gateway ip. The
+previously used device specific <ethx>.gateway variables still exist,
+but are only aliases for the single gateway.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/dhcp.c |  4 ++--
- net/dns.c  |  4 ++--
- net/net.c  | 25 ++++++++++---------------
- 3 files changed, 14 insertions(+), 19 deletions(-)
+ include/net.h |  2 +-
+ net/eth.c     |  3 ++-
+ net/ifup.c    |  4 +++-
+ net/net.c     | 13 +++++++++----
+ 4 files changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/net/dhcp.c b/net/dhcp.c
-index c5386fe942..dfa593a7d1 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -242,7 +242,7 @@ struct dhcp_opt dhcp_options[] = {
- 	}, {
- 		.option = 6,
- 		.handle = env_ip_handle,
--		.barebox_var_name = "net.nameserver",
-+		.barebox_var_name = "global.net.nameserver",
- 	}, {
- 		.option = DHCP_HOSTNAME,
- 		.copy_only_if_valid = 1,
-@@ -252,7 +252,7 @@ struct dhcp_opt dhcp_options[] = {
- 	}, {
- 		.option = 15,
- 		.handle = env_str_handle,
--		.barebox_var_name = "net.domainname",
-+		.barebox_var_name = "global.net.domainname",
- 	}, {
- 		.option = 17,
- 		.handle = env_str_handle,
-diff --git a/net/dns.c b/net/dns.c
-index 700c6b0259..69b8a24861 100644
---- a/net/dns.c
-+++ b/net/dns.c
-@@ -77,7 +77,7 @@ static int dns_send(const char *name)
- 	header->nauth    = 0;
- 	header->nother   = 0;
+diff --git a/include/net.h b/include/net.h
+index 7818bd7145..e75f64fe75 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -59,7 +59,6 @@ struct eth_device {
  
--	domain = getenv("net.domainname");
-+	domain = getenv("global.net.domainname");
+ 	IPaddr_t ipaddr;
+ 	IPaddr_t netmask;
+-	IPaddr_t gateway;
+ 	char ethaddr[6];
+ 	char *bootarg;
+ };
+@@ -221,6 +220,7 @@ void net_set_nameserver(IPaddr_t ip);
+ void net_set_domainname(const char *name);
+ IPaddr_t net_get_ip(void);
+ IPaddr_t net_get_serverip(void);
++IPaddr_t net_get_gateway(void);
+ IPaddr_t net_get_nameserver(void);
+ const char *net_get_domainname(void);
  
- 	if (!strchr(name, '.') && domain && *domain)
- 		fullname = basprintf(".%s.%s.", name, domain);
-@@ -211,7 +211,7 @@ IPaddr_t resolv(const char *host)
+diff --git a/net/eth.c b/net/eth.c
+index 74666bbf22..6dae6b9feb 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -349,6 +349,7 @@ late_initcall(eth_register_of_fixup);
+ #endif
  
- 	dns_state = STATE_INIT;
+ extern IPaddr_t net_serverip;
++extern IPaddr_t net_gateway;
  
--	ns = getenv("net.nameserver");
-+	ns = getenv("global.net.nameserver");
- 	if (!ns || !*ns) {
- 		printk("%s: no nameserver specified in $net.nameserver\n",
- 				__func__);
+ int eth_register(struct eth_device *edev)
+ {
+@@ -382,7 +383,7 @@ int eth_register(struct eth_device *edev)
+ 
+ 	dev_add_param_ip(dev, "ipaddr", NULL, NULL, &edev->ipaddr, edev);
+ 	dev_add_param_ip(dev, "serverip", NULL, NULL, &net_serverip, edev);
+-	dev_add_param_ip(dev, "gateway", NULL, NULL, &edev->gateway, edev);
++	dev_add_param_ip(dev, "gateway", NULL, NULL, &net_gateway, edev);
+ 	dev_add_param_ip(dev, "netmask", NULL, NULL, &edev->netmask, edev);
+ 	dev_add_param_mac(dev, "ethaddr", eth_param_set_ethaddr, NULL,
+ 			edev->ethaddr, edev);
+diff --git a/net/ifup.c b/net/ifup.c
+index 1e14b0f61c..70ecf9c717 100644
+--- a/net/ifup.c
++++ b/net/ifup.c
+@@ -113,6 +113,7 @@ int ifup(const char *name, unsigned flags)
+ 	} else if (!strcmp(ip, "static")) {
+ 		char *bootarg;
+ 		IPaddr_t serverip;
++		IPaddr_t gateway;
+ 
+ 		for (i = 0; i < ARRAY_SIZE(vars); i++) {
+ 			ret = eth_set_param(dev, vars[i]);
+@@ -121,11 +122,12 @@ int ifup(const char *name, unsigned flags)
+ 		}
+ 
+ 		serverip = net_get_serverip();
++		gateway = net_get_gateway();
+ 
+ 		bootarg = basprintf("ip=%pI4:%pI4:%pI4:%pI4:::",
+ 				&edev->ipaddr,
+ 				&serverip,
+-				&edev->gateway,
++				&gateway,
+ 				&edev->netmask);
+ 		dev_set_param(dev, "linux.bootargs", bootarg);
+ 		free(bootarg);
 diff --git a/net/net.c b/net/net.c
-index 19b081f6cf..ea302ce0b0 100644
+index 28aeb4417a..5f9535fc40 100644
 --- a/net/net.c
 +++ b/net/net.c
-@@ -33,12 +33,17 @@
- #include <errno.h>
- #include <malloc.h>
- #include <init.h>
-+#include <globalvar.h>
-+#include <magicvar.h>
- #include <linux/ctype.h>
- #include <linux/err.h>
- 
- unsigned char *NetRxPackets[PKTBUFSRX]; /* Receive packets		*/
+@@ -42,6 +42,7 @@ unsigned char *NetRxPackets[PKTBUFSRX]; /* Receive packets		*/
  static unsigned int net_ip_id;
  
-+static IPaddr_t net_nameserver;
-+static char *net_domainname;
-+
- int net_checksum_ok(unsigned char *ptr, int len)
+ IPaddr_t net_serverip;
++IPaddr_t net_gateway;
+ static IPaddr_t net_nameserver;
+ static char *net_domainname;
+ 
+@@ -181,10 +182,10 @@ static int arp_request(IPaddr_t dest, unsigned char *ether)
+ 	memset(arp->ar_data + 10, 0, 6);	/* dest ET addr = 0     */
+ 
+ 	if ((dest & edev->netmask) != (edev->ipaddr & edev->netmask)) {
+-		if (!edev->gateway)
++		if (!net_gateway)
+ 			arp_wait_ip = dest;
+ 		else
+-			arp_wait_ip = edev->gateway;
++			arp_wait_ip = net_gateway;
+ 	} else {
+ 		arp_wait_ip = dest;
+ 	}
+@@ -277,9 +278,12 @@ void net_set_netmask(IPaddr_t nm)
+ 
+ void net_set_gateway(IPaddr_t gw)
  {
- 	return net_checksum(ptr, len) == 0xffff;
-@@ -568,14 +573,6 @@ out:
- 	return ret;
+-	struct eth_device *edev = eth_get_current();
++	net_gateway = gw;
++}
+ 
+-	edev->gateway = gw;
++IPaddr_t net_get_gateway(void)
++{
++	return net_gateway;
  }
  
--static struct device_d net_device = {
--	.name = "net",
--	.id = DEVICE_ID_SINGLE,
--};
--
--static char *net_nameserver;
--static char *net_domainname;
--
- static int net_init(void)
- {
- 	int i;
-@@ -583,15 +580,13 @@ static int net_init(void)
- 	for (i = 0; i < PKTBUFSRX; i++)
- 		NetRxPackets[i] = net_alloc_packet();
- 
--	register_device(&net_device);
--	net_nameserver = xstrdup("");
--	dev_add_param_string(&net_device, "nameserver", NULL, NULL,
--			     &net_nameserver, NULL);
--	net_domainname = xstrdup("");
--	dev_add_param_string(&net_device, "domainname", NULL, NULL,
--			     &net_domainname, NULL);
-+	globalvar_add_simple_ip("net.nameserver", &net_nameserver);
-+	globalvar_add_simple_string("net.domainname", &net_domainname);
+ static LIST_HEAD(connection_list);
+@@ -607,6 +611,7 @@ static int net_init(void)
+ 	globalvar_add_simple_ip("net.nameserver", &net_nameserver);
+ 	globalvar_add_simple_string("net.domainname", &net_domainname);
+ 	globalvar_add_simple_ip("net.server", &net_serverip);
++	globalvar_add_simple_ip("net.gateway", &net_gateway);
  
  	return 0;
  }
- 
- postcore_initcall(net_init);
-+
-+BAREBOX_MAGICVAR_NAMED(global_net_nameserver, global.net.nameserver, "The DNS server used for resolving host names");
-+BAREBOX_MAGICVAR_NAMED(global_net_domainname, global.net.domainname, "Domain name used for DNS requests");
 -- 
 2.11.0
 
