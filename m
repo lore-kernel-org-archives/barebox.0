@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eI96c-0008JQ-1h
- for barebox@lists.infradead.ORG; Fri, 24 Nov 2017 08:13:08 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
- (envelope-from <sha@pengutronix.de>) id 1eI96F-000498-Hl
- for barebox@lists.infradead.org; Fri, 24 Nov 2017 09:12:39 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <sha@pengutronix.de>) id 1eI96F-0004z2-7G
- for barebox@lists.infradead.org; Fri, 24 Nov 2017 09:12:39 +0100
+ id 1eI96c-0008Jo-1W
+ for barebox@lists.infradead.ORG; Fri, 24 Nov 2017 08:13:04 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 24 Nov 2017 09:12:16 +0100
-Message-Id: <20171124081237.6830-1-s.hauer@pengutronix.de>
+Date: Fri, 24 Nov 2017 09:12:34 +0100
+Message-Id: <20171124081237.6830-19-s.hauer@pengutronix.de>
+In-Reply-To: <20171124081237.6830-1-s.hauer@pengutronix.de>
+References: <20171124081237.6830-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,109 +21,146 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Networking updates
+Subject: [PATCH 18/21] net: update network docs
 To: Barebox List <barebox@lists.infradead.org>
 
-s series solves some issues that have been nagging me for some
-time now.
+The network configuration has changed in the previous patches. Update
+the documentation accordingly.
 
-First of all the manual selection of the current ethernet device is
-unnecessary since the interface can be picked by the networking code
-automatically based on the IP settings of the interface. With this
-series the "ethact" command is gone and users of boards with multiple
-network interfaces no longer have to worry about picking the right
-one.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ Documentation/user/networking.rst | 99 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 94 insertions(+), 5 deletions(-)
 
-Then the network device configuration can now be done with nvvars.
-This makes it unnecessary to edit scripts on the device (which may
-be cumbersome on some devices which lose characters on serial ports)
-and it makes it also easier for scripts or setup code to modify
-the network config.
+diff --git a/Documentation/user/networking.rst b/Documentation/user/networking.rst
+index 8afb433837..53fa5b3c40 100644
+--- a/Documentation/user/networking.rst
++++ b/Documentation/user/networking.rst
+@@ -7,6 +7,49 @@ barebox has IPv4 networking support. Several protocols such as :ref:`DHCP
+ Network configuration
+ ---------------------
+ 
++Lowlevel network device configuration
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++
++Network devices are configured with a set of device specific variables:
++
+++-------------------+--------------+----------------------------------------------------+
++| name              | type         |                                                    |
+++===================+==============+====================================================+
++| <devname>.mode    | enum         | "dhcp": DHCP is used to get IP address and netmask |
++|                   |              | "static": Static IP setup described by variables   |
++|                   |              | below                                              |
++|                   |              | "disabled": Interface unused                       |
+++===================+==============+====================================================+
++| <devname>.ipaddr  | ipv4 address | The IP address when using static configuration     |
+++-------------------+--------------+----------------------------------------------------+
++| <devname>.netmask | ipv4 address | The netmask when using static configuration        |
+++-------------------+--------------+----------------------------------------------------+
++| <devname>.gateway | ipv4 address | Alias for global.net.gateway. For                  |
++|                   |              | compatibility, do not use.                         |
+++-------------------+--------------+----------------------------------------------------+
++| <devname>.serverip| ipv4 address | Alias for global.net.server. For                   |
++|                   |              | compatibility, do not use.                         |
+++-------------------+--------------+----------------------------------------------------+
++| <devname>.ethaddr | MAC address  | The MAC address of this device                     |
+++-------------------+--------------+----------------------------------------------------+
++
++Additionally there are some more variables that are not specific to a
++device:
++
+++------------------------------+--------------+------------------------------------------------+
++| name                         | type         |                                                |
+++==============================+==============+================================================+
++| global.net.gateway           | ipv4 host    | The network gateway used when a host is not in |
++|                              |              | any directly visible subnet. May be set        |
++|                              |              | automatically by DHCP.                         |
+++------------------------------+--------------+------------------------------------------------+
++| global.net.server            | ipv4 host    | The default server address. If unspecified, may|
++|                              |              | be set by DHCP                                 |
+++------------------------------+--------------+------------------------------------------------+
++| global.net.nameserver        | ipv4 address | The DNS server used for resolving host names.  |
++|                              |              | May be set by DHCP                             |
+++------------------------------+--------------+------------------------------------------------+
++
+ The first step for networking is configuring the network device. The network
+ device is usually ``eth0``. The current configuration can be viewed with the
+ :ref:`devinfo <command_devinfo>` command:
+@@ -16,10 +59,9 @@ device is usually ``eth0``. The current configuration can be viewed with the
+   barebox:/ devinfo eth0
+   Parameters:
+     ethaddr: 00:1c:49:01:03:4b
+-    gateway: 192.168.23.1
+     ipaddr: 192.168.23.197
+     netmask: 255.255.0.0
+-    serverip: 192.168.23.1
++    [...]
+ 
+ The configuration can be changed on the command line with:
+ 
+@@ -30,9 +72,56 @@ The configuration can be changed on the command line with:
+ The :ref:`dhcp command <command_dhcp>` will change the settings based on the answer
+ from the DHCP server.
+ 
+-This low-level configuration of the network interface is often not necessary. Normally
+-the network settings should be edited in ``/env/network/eth0``, then the network interface
+-can be brought up using the :ref:`ifup command <command_ifup>`.
++To make the network device settings persistent across reboots there is a nonvolatile
++variable (nvvar) for each of the varariables above. The network device specific variables
++are:
++
++.. code-block:: sh
++
++  nv.dev.<devname>.mode
++  nv.dev.<devname>.ipaddr
++  nv.dev.<devname>.netmask
++  nv.dev.<devname>.ethaddr
++
++The others are:
++
++.. code-block:: sh
++
++  nv.net.gateway
++  nv.net.server
++  nv.net.nameserver
++
++A typical simple network setting is to use DHCP. Provided the network interface is eth0
++then this would configure the network device for DHCP:
++
++.. code-block:: sh
++
++  nv dev.eth0.mode=dhcp
++
++(In fact DHCP is the default, so the above is not necessary)
++
++A static setup would look like:
++
++.. code-block:: sh
++
++  nv dev.eth0.mode=static
++  nv dev.eth0.ipaddr=192.168.0.17
++  nv dev.eth0.netmask=255.255.0.0
++  nv net.server=192.168.0.1
++
++The settings can be activated with the :ref:`ifup command <command_ifup>`:
++
++.. code-block:: sh
++
++  ifup eth0
++
++or:
++
++.. code-block:: sh
++
++  ifup -a
++
++'ifup -a' will activate all ethernet interfaces, also the ones on USB.
+ 
+ Network filesystems
+ -------------------
+-- 
+2.11.0
 
-Finally the DHCP code is cleaned up, primarily to be able to pass
-in the network interface that shall be used, but also to make more
-clear which variables are input and which are output.
-
-For DHCP users the configuration is simple: It is the default. A static
-IP setup can now be done with the variables:
-
-nv.net.server
-nv.net.nameserver
-nv.net.gateway
-
-and the network device specific variables (assuming "eth0" as network device):
-
-nv.dev.eth0.ipaddr
-nv.dev.eth0.netmask
-
-(For those who are not already familiar with it: It's the normal way to store
-device parameters in nvvars, like already possible for example with NAND
-partitioning, i.e. nv.dev.nand0.partitions=4M(barebox),-(root), see
-http://www.barebox.org/doc/latest/user/variables.html#non-volatile-device-variables)
-
-As usual, all comments are welcome.
-
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (21):
-      driver: Add device_detect_all() function
-      nvvar: when setting a nvvar to NULL just free the content
-      net: Make domainname and nameserver globalvars
-      net: Add functions to get/set nameserver and domainname
-      net: introduce global.net.server
-      net: dhcp: Do not overwrite serverip if it is valid
-      net: Use a single gateway
-      net: allow udp connections on specified network device
-      net: dhcp: Allow to specify network device
-      net: dhcp: avoid unnecessary casts
-      net: dhcp: Coding style fixes
-      net: dhcp: rework
-      net: Pick network device based on IP settings
-      net: remove "current" network device
-      net: ifup: Factor out a eth_discover function
-      ifup: Use dhcp C API rather than running command
-      net: Provide new way to configure network devices
-      net: update network docs
-      net: environment: remove ethx setup files
-      net: environment: update automounts
-      defaultenv: Add README for new network config
-
- Documentation/user/automount.rst                   |   2 +-
- Documentation/user/networking.rst                  |  99 +++-
- .../arm/boards/afi-gf/defaultenv-gf/init/automount |  10 -
- arch/arm/boards/afi-gf/defaultenv-gf/network/eth1  |  18 -
- .../defaultenv-pico-hobbit/init/automount          |  11 -
- .../defaultenv-pico-hobbit/network/eth1            |  18 -
- .../zii-imx6q-rdu2/defaultenv-rdu2/init/automount  |  17 -
- .../zii-imx6q-rdu2/defaultenv-rdu2/network/eth1    |  18 -
- commands/Makefile                                  |   1 -
- commands/detect.c                                  |   6 +-
- commands/dhcp.c                                    |  29 +-
- commands/net.c                                     |  66 ---
- common/globalvar.c                                 |   6 +-
- defaultenv/defaultenv-2-base/init/automount        |   4 +-
- defaultenv/defaultenv-2-base/network/README        |   3 +
- defaultenv/defaultenv-2-base/network/eth0          |  18 -
- drivers/base/driver.c                              |   8 +
- include/dhcp.h                                     |  24 +-
- include/driver.h                                   |   1 +
- include/net.h                                      |  27 +-
- net/dhcp.c                                         | 568 +++++++++------------
- net/dns.c                                          |  10 +-
- net/eth.c                                          |  39 +-
- net/ifup.c                                         | 252 ++++++---
- net/net.c                                          | 143 ++++--
- 25 files changed, 692 insertions(+), 706 deletions(-)
- delete mode 100644 arch/arm/boards/afi-gf/defaultenv-gf/init/automount
- delete mode 100644 arch/arm/boards/afi-gf/defaultenv-gf/network/eth1
- delete mode 100644 arch/arm/boards/technexion-pico-hobbit/defaultenv-pico-hobbit/init/automount
- delete mode 100644 arch/arm/boards/technexion-pico-hobbit/defaultenv-pico-hobbit/network/eth1
- delete mode 100644 arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/init/automount
- delete mode 100644 arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/network/eth1
- delete mode 100644 commands/net.c
- create mode 100644 defaultenv/defaultenv-2-base/network/README
- delete mode 100644 defaultenv/defaultenv-2-base/network/eth0
 
 _______________________________________________
 barebox mailing list
