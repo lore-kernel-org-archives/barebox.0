@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eI99p-0003tF-D2
- for barebox@lists.infradead.ORG; Fri, 24 Nov 2017 08:16:24 +0000
-Date: Fri, 24 Nov 2017 09:15:59 +0100
+ id 1eI9Aw-0005LD-Ee
+ for barebox@lists.infradead.ORG; Fri, 24 Nov 2017 08:17:33 +0000
+Date: Fri, 24 Nov 2017 09:17:08 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171124081559.ttdrfnx2kbv7j6yu@pengutronix.de>
-References: <20171121154047.27334-1-g.schenk@eckelmann.de>
+Message-ID: <20171124081708.pvbrqsloppreqzsl@pengutronix.de>
+References: <20171122095400.13335-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20171121154047.27334-1-g.schenk@eckelmann.de>
+In-Reply-To: <20171122095400.13335-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +22,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add linux.devname property to eth device
-To: Gavin Schenk <g.schenk@eckelmann.de>
+Subject: Re: [PATCH] ARM: rdu2: build a single image for both Quad and
+ QuadPlus variants
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Gavin,
+On Wed, Nov 22, 2017 at 10:54:00AM +0100, Lucas Stach wrote:
+> This allows for easier deployments on the different units, as there is no
+> need to flash different images to the Quad and QuadPlus units anymore.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 
-On Tue, Nov 21, 2017 at 04:40:47PM +0100, Gavin Schenk wrote:
-> When you have a static network environment but more than one network
-> device on your machine it is necessary to provide the <device> parameter
-> to the ip parameter at kernel cmd line.
-> 
-> The device name assigned by Linux cannot in general be predicted as it
-> depends on driver bind order.
-> 
-> This patch introduces a new property linux.devname to eth devices.
-> The value is added to bootargs per interface and can be changed in
-> env/network/INTF
-> 
-> Note that the device name is also used when dhcp is in use.
-> 
-> Signed-off-by: Gavin Schenk <g.schenk@eckelmann.de>
-
-Looks much better now. This needs some updates to fit into the
-networking update series I just sent, but I'll handle that soon
-when I see if this series can be taken or not.
+Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
