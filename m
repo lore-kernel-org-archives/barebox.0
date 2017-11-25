@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eJafo-0006Pb-JG
- for barebox@lists.infradead.ORG; Tue, 28 Nov 2017 07:51:25 +0000
-Date: Tue, 28 Nov 2017 08:50:58 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171128075058.l4jv4jbq5zoswbi4@pengutronix.de>
+ id 1eIdrI-0002qE-0f
+ for barebox@lists.infradead.org; Sat, 25 Nov 2017 17:03:18 +0000
+Date: Sat, 25 Nov 2017 18:02:51 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20171125170251.GC25425@ravnborg.org>
 References: <20171124081237.6830-1-s.hauer@pengutronix.de>
- <20171124081237.6830-10-s.hauer@pengutronix.de>
- <20171125164647.GB25425@ravnborg.org>
+ <20171124081237.6830-13-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20171125164647.GB25425@ravnborg.org>
+In-Reply-To: <20171124081237.6830-13-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,31 +23,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 09/21] net: dhcp: Allow to specify network device
-To: Sam Ravnborg <sam@ravnborg.org>
+Subject: Re: [PATCH 12/21] net: dhcp: rework
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi Sam,
+Hi Sasha.
 
-On Sat, Nov 25, 2017 at 05:46:47PM +0100, Sam Ravnborg wrote:
-> Hi Sasha.
+On Fri, Nov 24, 2017 at 09:12:28AM +0100, Sascha Hauer wrote:
+> The DHCP code is a mess. It is not clear which options are sent to the
+> server and which options are returned from the server. Also environment
+> variables are read from and written to all over the place.
 > 
-> >  
-> > -	dhcp_con = net_udp_new(0xffffffff, PORT_BOOTPS, dhcp_handler, NULL);
-> > +	dhcp_con = net_udp_eth_new(edev, 0xffffffff, PORT_BOOTPS, dhcp_handler, NULL);
-> 
-> The constant 0xffffffff appears in a few places.
-> A proper define would properly be better.
+> This patch cleans this up. There now is struct dhcp_req_param which is
+> used for options sent to the server and struct dhcp_result which contains
+> the values sent from the server. The values from the server are written
+> to the barebox variables in a single place. Also it's now possible to
+> call the dhcp code without modifying barebox variables at all, storing
+> the result only in the dhcp result struct.
 
-Ok, added a patch for it.
+Browsing the code gave a nice impression that things
+got much simpler.
+Noticed one thing.
 
-Sascha
+This struct is not the smallest..
+> +
+> +struct dhcp_result {
+> +	IPaddr_t ip;
+> +	IPaddr_t netmask;
+> +	IPaddr_t gateway;
+> +	IPaddr_t nameserver;
+> +	IPaddr_t serverip;
+> +	char *hostname;
+> +	char *domainname;
+> +	char *rootpath;
+> +	char *devicetree;
+> +	char *bootfile;
+> +	char *tftp_server_name;
+> +	uint32_t leasetime;
+>  };
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> +struct dhcp_req_param dhcp_param;
+> +struct dhcp_result *dhcp_result;
+Is this why the struct is xalloc()'er and not a static variable like dhcp_param?
+Maybe the lifetime of the two differs - which may also explain it.
+
+	Sam
 
 _______________________________________________
 barebox mailing list
