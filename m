@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wr0-x231.google.com ([2a00:1450:400c:c0c::231])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eJaoW-0000tE-Em
- for barebox@lists.infradead.ORG; Tue, 28 Nov 2017 08:00:23 +0000
-Date: Tue, 28 Nov 2017 08:59:58 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171128075958.ldvyyw2x64d5gbxk@pengutronix.de>
-References: <20171127213156.24187-1-u.kleine-koenig@pengutronix.de>
+ id 1eJMuo-0006VA-Qk
+ for barebox@lists.infradead.org; Mon, 27 Nov 2017 17:09:56 +0000
+Received: by mail-wr0-x231.google.com with SMTP id 55so10818863wrx.0
+ for <barebox@lists.infradead.org>; Mon, 27 Nov 2017 09:09:32 -0800 (PST)
+Received: from [192.168.10.55] (pd95b3e8c.dip0.t-ipconnect.de. [217.91.62.140])
+ by smtp.gmail.com with ESMTPSA id x13sm5273828wre.65.2017.11.27.09.01.18
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 27 Nov 2017 09:01:18 -0800 (PST)
+From: Holger Birkmeyer <holger.birkmeyer@ebee.berlin>
+Message-ID: <311f4693-85fc-e2bc-6e07-7714cd89c522@ebee.berlin>
+Date: Mon, 27 Nov 2017 18:01:15 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20171127213156.24187-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,192 +22,124 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="===============1476244305545135610=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net/e1000: implement protect and unprotect for attached
- flash
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: ASIX USB dongle problem: asix_rx_fixup() Bad Header Length
+To: barebox@lists.infradead.org
 
-On Mon, Nov 27, 2017 at 10:31:56PM +0100, Uwe Kleine-K=F6nig wrote:
-> Some supported flash devices (e.g. SST25VF040) are write protected after
-> power up. If the device holds a valid firmware image the i210 can handle
-> that just fine. If however there is no firmware programmed, a procedure
-> is needed to remove this protection before an image can be flashed.
-> =
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============1476244305545135610==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="udDaREhv4JRIP4841Ag8Wqax3imi2U746"
 
-> So implement the needed callbacks to make the commands protect and
-> unprotect do the right thing.
-> =
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--udDaREhv4JRIP4841Ag8Wqax3imi2U746
+Content-Type: multipart/mixed; boundary="4Bep58ieTpaGueUPP3GGWMxRDbMqmTW1R";
+ protected-headers="v1"
+From: Holger Birkmeyer <holger.birkmeyer@ebee.berlin>
+To: barebox@lists.infradead.org
+Message-ID: <311f4693-85fc-e2bc-6e07-7714cd89c522@ebee.berlin>
+Subject: ASIX USB dongle problem: asix_rx_fixup() Bad Header Length
 
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+--4Bep58ieTpaGueUPP3GGWMxRDbMqmTW1R
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
 
-Applied, thanks
+Dear all,
 
-Sascha
+I am struggling to get networking up and running on my Atmel at91sam9260-=
+ek.
 
-> ---
-> Hello,
-> =
+I am trying to use an ASIX USB dongle. I got pretty far. Here is the
+console log:
 
-> this is the last patch (for now at least) for my quest to improve flashin=
-g a
-> firmware image for i210. Up to today I was convinced I need to implement =
-the
-> spi bitbanging access mode for the flash. But after I got this implemente=
-d up
-> to a working prototype I noticed that the already used flash burst mode c=
-an
-> also access the status register which results in less and prettier code.
-> =
+=2E..snip...
 
-> Best regards
-> Uwe
->  =
+barebox 2017.11.0-gdf1d493-dirty #50 Mon Nov 27 17:20:57 CET 2017
 
->  drivers/net/e1000/e1000.h  |  2 ++
->  drivers/net/e1000/eeprom.c | 70 ++++++++++++++++++++++++++++++++++++++++=
-++++++
->  2 files changed, 72 insertions(+)
-> =
+=2E..snip...
 
-> diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
-> index b49e1198160a..50d49118f5e4 100644
-> --- a/drivers/net/e1000/e1000.h
-> +++ b/drivers/net/e1000/e1000.h
-> @@ -2110,6 +2110,8 @@ struct e1000_eeprom_info {
->  #define E1000_FLSWCTL_CMD_WRITE		0b0001
->  #define E1000_FLSWCTL_CMD_ERASE_SECTOR	0b0010
->  #define E1000_FLSWCTL_CMD_ERASE_DEVICE	0b0011
-> +#define E1000_FLSWCTL_CMD_RDSR		0b0100
-> +#define E1000_FLSWCTL_CMD_WRSR		0b0101
->  #define E1000_FLSWCTL_CMD(c)		((0b1111 & (c)) << 24)
->  =
+Board: Atmel at91sam9260-ek
+AT91: Detected soc type: at91sam9260
+AT91: Detected soc subtype: Unknown
 
->  #define E1000_FLSWCTL_CMD_ADDR_MASK	0x0FFFFFFF
-> diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-> index 0f1305c8499b..eeae318dcdfa 100644
-> --- a/drivers/net/e1000/eeprom.c
-> +++ b/drivers/net/e1000/eeprom.c
-> @@ -3,6 +3,7 @@
->  #include <malloc.h>
->  #include <linux/math64.h>
->  #include <linux/sizes.h>
-> +#include <linux/mtd/spi-nor.h>
->  =
+=2E..snip...
 
->  #include "e1000.h"
->  =
+usb: USB: scanning bus for devices...
+usb: Bus 001 Device 001: ID 0000:0000 OHCI Root Hub
+usb: Bus 001 Device 002: ID 0b95:7720 AX88772A
+mdio_bus: miibus1: probed
+eth1: got preset MAC address: 8c:ae:4c:eb:1f:83
+usb: 2 USB Device(s) found
 
-> @@ -1410,6 +1411,73 @@ fail:
->  	return ret;
->  }
->  =
+But as soon as I start using the device eth1, the following error
+messages appear in the serial console and the dongle LEDs will turn dark.=
 
-> +static int e1000_mtd_sr_rmw(struct mtd_info *mtd, u8 mask, u8 val)
-> +{
-> +	struct e1000_hw *hw =3D container_of(mtd, struct e1000_hw, mtd);
-> +	uint32_t flswdata;
-> +	int ret;
-> +
-> +	ret =3D e1000_flash_mode_wait_for_idle(hw);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	e1000_write_reg(hw, E1000_FLSWCNT, 1);
-> +	e1000_flash_cmd(hw, E1000_FLSWCTL_CMD_RDSR, 0);
-> +
-> +	ret =3D e1000_flash_mode_check_command_valid(hw);
-> +	if (ret < 0)
-> +		return -EIO;
-> +
-> +	ret =3D e1000_poll_reg(hw, E1000_FLSWCTL,
-> +			     E1000_FLSWCTL_DONE, E1000_FLSWCTL_DONE,
-> +			     SECOND);
-> +	if (ret < 0) {
-> +		dev_err(hw->dev,
-> +			"Timeout waiting for FLSWCTL.DONE to be set (RDSR)\n");
-> +		return ret;
-> +	}
-> +
-> +	flswdata =3D e1000_read_reg(hw, E1000_FLSWDATA);
-> +
-> +	flswdata =3D (flswdata & ~mask) | val;
-> +
-> +	e1000_write_reg(hw, E1000_FLSWCNT, 1);
-> +	e1000_flash_cmd(hw, E1000_FLSWCTL_CMD_WRSR, 0);
-> +
-> +	ret =3D e1000_flash_mode_check_command_valid(hw);
-> +	if (ret < 0)
-> +		return -EIO;
-> +
-> +	e1000_write_reg(hw, E1000_FLSWDATA, flswdata);
-> +
-> +	ret =3D e1000_poll_reg(hw, E1000_FLSWCTL,
-> +			     E1000_FLSWCTL_DONE, E1000_FLSWCTL_DONE,
-> +			     SECOND);
-> +	if (ret < 0) {
-> +		dev_err(hw->dev,
-> +			"Timeout waiting for FLSWCTL.DONE to be set (WRSR)\n");
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +/*
-> + * The available spi nor devices are very different in how the block pro=
-tection
-> + * bits affect which sectors to be protected. So take the simple approac=
-h and
-> + * only use BP[012] =3D b000 (unprotected) and BP[012] =3D b111 (protect=
-ed).
-> + */
-> +#define SR_BPALL (SR_BP0 | SR_BP1 | SR_BP2)
-> +
-> +static int e1000_mtd_lock(struct mtd_info *mtd, loff_t ofs, size_t len)
-> +{
-> +	return e1000_mtd_sr_rmw(mtd, SR_BPALL, SR_BPALL);
-> +}
-> +
-> +static int e1000_mtd_unlock(struct mtd_info *mtd, loff_t ofs, size_t len)
-> +{
-> +	return e1000_mtd_sr_rmw(mtd, SR_BPALL, 0x0);
-> +}
-> +
->  int e1000_register_invm(struct e1000_hw *hw)
->  {
->  	int ret;
-> @@ -1521,6 +1589,8 @@ int e1000_register_eeprom(struct e1000_hw *hw)
->  			hw->mtd.read =3D e1000_mtd_read;
->  			hw->mtd.write =3D e1000_mtd_write;
->  			hw->mtd.erase =3D e1000_mtd_erase;
-> +			hw->mtd.lock =3D e1000_mtd_lock;
-> +			hw->mtd.unlock =3D e1000_mtd_unlock;
->  			hw->mtd.size =3D eeprom->word_size * 2;
->  			hw->mtd.writesize =3D 1;
->  			hw->mtd.subpage_sft =3D 0;
-> -- =
 
-> 2.11.0
-> =
+ping 8.8.8.8
+eth1: 100Mbps full duplex link detected
+eth1: asix_rx_fixup() Bad Header Length 0xffffffc3, offset 4
+eth1: asix_rx_fixup() Bad Header Length 0xd526003c, offset 514
+eth1: asix_rx_fixup() Bad Header Length 0x97001127, offset 4
+eth1: asix_rx_fixup() Bad Header Length 0xffffffc3, offset 4
+T ERROR: OHCI Unrecoverable Error, controller usb-ohci disabled
+ERROR: sohci_submit_job failed with -32
 
-> =
+Could anyone give me a hint, what to do?
 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Best regards,
 
--- =
+Holger
 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--=20
+Holger Birkmeyer
+Ebee Smart Technologies GmbH
+Torgauer Str. 12-15
+10829 Berlin
+Phone: +49 30 6098371-52
+Mail: holger.birkmeyer@ebee.berlin
+
+
+
+--4Bep58ieTpaGueUPP3GGWMxRDbMqmTW1R--
+
+--udDaREhv4JRIP4841Ag8Wqax3imi2U746
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJaHETbAAoJEHk8IiZD620JL74P/j9qsmsf4RX6YyAGpWAiUnWN
+1HNETKXt8Z9U1dlf2vLpSOyekWFuzI5csuKifn3lU4X/nAYj1e9AlEeikssbT82A
+0LhqAMDpE3fY3VCYUdBJqDWFrGgVn32g9KJbvITc8UEUmy7zFMmWGOX3gNPLx647
+zTjwu2O5eXSSVLpoQ4rkMdwKEmHvHWrxlJwtgw5G1D/BdERPXXvF0gfxPvSZoj+P
+mYpcS8TYP52XPsBS7vg0E07dFfUm4AQEhjhoFnJtIPYsPKq9luggKpFzfLov4QFq
+bJygC4EjD/1eE+25EVwo20mf1h53ZvgPytzWgFh33GkiG+w12vSSlZgJbT8/Iybn
++XYxsXjHfMrHycr2mELue7+Q/UVFwFzNMLGqVfPaTvozc39FQnbsQowE+UA0hqGc
+t6PlOGvYRHbRzmr6uhVn6PTwed3c2djieEFYJqJGIXnsNZtqj8AR5MEwc95E4Q2O
+3XavSqpPivM1ds9V6E91mcMAUFQ8VVGbKAJpCknxnFVUO+bQP/x9dFlH3Ea5BfMi
+sQK09dw70bNx0znBfxp5HlL8Rv0WdiT7KoeMuxyfjlGgx1XAcyajJL//tFvQG1On
+OYjju+zcOVYnGK3ZnT+ixueL6qVKf1paBeQ3jgWPCbS1rJCMfa/rC9JagSCvd+GZ
+28BJOdtaJ/w01uVDz7AA
+=FWm4
+-----END PGP SIGNATURE-----
+
+--udDaREhv4JRIP4841Ag8Wqax3imi2U746--
+
+
+--===============1476244305545135610==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============1476244305545135610==--
