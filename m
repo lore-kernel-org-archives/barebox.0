@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eFl9U-00004s-JW
- for barebox@lists.infradead.org; Fri, 17 Nov 2017 18:14:10 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
- helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
- (envelope-from <l.stach@pengutronix.de>) id 1eFl97-0001vS-B3
- for barebox@lists.infradead.org; Fri, 17 Nov 2017 19:13:45 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 17 Nov 2017 19:13:45 +0100
-Message-Id: <20171117181345.27141-1-l.stach@pengutronix.de>
+ id 1eJokh-0005Nf-E6
+ for barebox@lists.infradead.org; Tue, 28 Nov 2017 22:53:21 +0000
+Date: Tue, 28 Nov 2017 23:52:56 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20171128225256.GA31221@ravnborg.org>
+References: <20171124081237.6830-1-s.hauer@pengutronix.de>
+ <20171124081237.6830-2-s.hauer@pengutronix.de>
+ <20171124233427.GA22830@ravnborg.org>
+ <20171128075812.wld6er2vuhbprgje@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20171128075812.wld6er2vuhbprgje@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,38 +21,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: imx: santaro: select i2c
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 01/21] driver: Add device_detect_all() function
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-The board support tries to access a i2c bus to find out which
-touchscreen is connected.
+> > >  
+> > >  	if (option_all) {
+> > > -		for_each_device(dev) {
+> > > -			ret = device_detect(dev);
+> > > -			if (ret && ret != -ENOSYS && option_error)
+> > > -				return ret;
+> > > -		}
+> > > +		device_detect_all();
+> > 
+> > With this change there is no longer any checks
+> > if device_detect() fails.
+> > so the option "-e" is no longer useful in combination
+> > with option "-a" (which uses the patched code).
+> 
+> Of course we could bail out of device_detect_all() when an error
+> occurs, I'm not sure though how useful this is. I mean when your
+> SATA drivers detect function returns an error because there is no
+> drive connected, why would you want to bail out of the detection of
+> other devices?
+> 
+> In an earlier version of this series I completely removed the -e
+> option. Maybe that would be better?
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- arch/arm/mach-imx/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+My comment was solely on the inconsistency.
+When I want to stop if an error occur I specify -e, otherwise
+I expect it to run to the end.
+So we should either respect -e always or drop it.
+Waht is the best I do not know, but the current middel ground
+where -e only have effect in some cases is confusing and should be avoided.
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index dc67afac238f..dce24ab90dd3 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -301,6 +301,8 @@ config MACH_DFI_FS700_M60
- config MACH_GUF_SANTARO
- 	bool "Garz+Fricke Santaro Board"
- 	select ARCH_IMX6
-+	select I2C
-+	select I2C_IMX
- 
- config MACH_REALQ7
- 	bool "DataModul i.MX6Q Real Qseven Board"
--- 
-2.11.0
-
+	Sam
 
 _______________________________________________
 barebox mailing list
