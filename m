@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra1.kalray.eu ([92.103.151.219])
+Received: from mail-wm0-x22d.google.com ([2a00:1450:400c:c09::22d])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eFdXH-0001n0-1s
- for barebox@lists.infradead.org; Fri, 17 Nov 2017 10:06:13 +0000
-Date: Fri, 17 Nov 2017 11:05:47 +0100 (CET)
-From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
-Message-ID: <1096627431.57033033.1510913147707.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <20171117093910.5g2i3bwvboxrw5b2@pengutronix.de>
-References: <221136220.35006899.1510666491764.JavaMail.zimbra@kalray.eu>
- <20171117083340.6jtpf2dix5pukaks@pengutronix.de>
- <1782166044.55530197.1510908734299.JavaMail.zimbra@kalray.eu>
- <20171117090657.mux43ro5gkrtfeor@pengutronix.de>
- <1996437973.55908008.1510911247927.JavaMail.zimbra@kalray.eu>
- <20171117093910.5g2i3bwvboxrw5b2@pengutronix.de>
+ id 1eJg0c-0007fr-Af
+ for barebox@lists.infradead.org; Tue, 28 Nov 2017 13:33:12 +0000
+Received: by mail-wm0-x22d.google.com with SMTP id r68so1888155wmr.3
+ for <barebox@lists.infradead.org>; Tue, 28 Nov 2017 05:32:48 -0800 (PST)
+References: <311f4693-85fc-e2bc-6e07-7714cd89c522@ebee.berlin>
+ <20171128084351.wcdzcp7m43iijsun@pengutronix.de>
+ <51e9790a-364c-782d-cd81-721dcba52d78@ebee.berlin>
+ <20171128132006.cbcplw7rr2lqvme3@pengutronix.de>
+From: Holger Birkmeyer <holger.birkmeyer@ebee.berlin>
+Message-ID: <3c3039a6-f5f3-b39f-9887-ca55b464a071@ebee.berlin>
+Date: Tue, 28 Nov 2017 14:32:44 +0100
 MIME-Version: 1.0
+In-Reply-To: <20171128132006.cbcplw7rr2lqvme3@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,65 +22,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============5407383471733705823=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Net: add mdio_i2c driver.
+Subject: Re: ASIX USB dongle problem: asix_rx_fixup() Bad Header Length
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
 
-T2ssCgpJIHdpbGwgZG8gdGhhdCwgdGhhbmtzIGZvciB0aGUgcmV2aWV3ICEKCkNsw6ltZW50Cgot
-LS0tLSBNYWlsIG9yaWdpbmFsIC0tLS0tCkRlOiAiU2FzY2hhIEhhdWVyIiA8cy5oYXVlckBwZW5n
-dXRyb25peC5kZT4Kw4A6ICJDbMOpbWVudCBMZWdlciIgPGNsZWdlckBrYWxyYXkuZXU+CkNjOiAi
-QmFyZWJveCBMaXN0IiA8YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnPgpFbnZvecOpOiBWZW5k
-cmVkaSAxNyBOb3ZlbWJyZSAyMDE3IDEwOjM5OjEwCk9iamV0OiBSZTogW1BBVENIXSBOZXQ6IGFk
-ZCBtZGlvX2kyYyBkcml2ZXIuCgpPbiBGcmksIE5vdiAxNywgMjAxNyBhdCAxMDozNDowN0FNICsw
-MTAwLCBDbMOpbWVudCBMZWdlciB3cm90ZToKPiAKPiAtLS0tLSBNYWlsIG9yaWdpbmFsIC0tLS0t
-Cj4gPiBEZTogIlNhc2NoYSBIYXVlciIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Cj4gPiDDgDog
-IkNsw6ltZW50IExlZ2VyIiA8Y2xlZ2VyQGthbHJheS5ldT4KPiA+IENjOiAiQmFyZWJveCBMaXN0
-IiA8YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnPgo+ID4gRW52b3nDqTogVmVuZHJlZGkgMTcg
-Tm92ZW1icmUgMjAxNyAxMDowNjo1OAo+ID4gT2JqZXQ6IFJlOiBbUEFUQ0hdIE5ldDogYWRkIG1k
-aW9faTJjIGRyaXZlci4KPiAKPiA+IE9uIEZyaSwgTm92IDE3LCAyMDE3IGF0IDA5OjUyOjE0QU0g
-KzAxMDAsIENsw6ltZW50IExlZ2VyIHdyb3RlOgo+ID4+IEhpIFNhc2NoYSwKPiA+PiAKPiA+PiBJ
-bmRlZWQsIEkgdGhvdWdoIGFib3V0IHRoYXQgYW5kIEkgd2FzIGZhY2luZyBhbm90aGVyIHByb2Js
-ZW0uCj4gPj4gVGhlIG1kaW8gdG8gaTJjIGRyaXZlciBkb2VzIG5vdCBoYXZlIGEgc3BlY2lmaWMg
-YWRkcmVzcy4KPiA+PiBpZSwgaXQgaXMgbm90IGEgZGV2aWNlIGJ1dCByYXRoZXIgYSBidXMuCj4g
-Pj4gSWYgSSBwdXQgdGhlIG1kaW9faTJjICBub2RlIHVuZGVyIHRoZSBpMmMgYnVzLCB0aGVuIEkg
-c2hvdWxkIGFzc2lnbgo+ID4+IGl0IGFuIGkyYyBhZGRyZXNzLiBUaGlzIGFkZHJlc3Mgc2hvdWxk
-IHJlcHJlc2VudCB0aGUgcGh5IGFkZHJlc3MuCj4gPj4gSG93ZXZlciwgdGhpcyB3b3VsZCBtZWFu
-cyBJIHdvdWxkIGhhdmUgb25lIG1kaW8taTJjIGRyaXZlciBwZXIgcGh5Lgo+ID4gCj4gPiBTb21l
-IEFUMjQgRUVQUk9NcyBoYXZlIHRoZSBzYW1lIHByb2JsZW0sIHRoZXkgYWxzbyB1c2UgbXVsdGlw
-bGUKPiA+IGFkZHJlc3Nlcy4gQUZBSUsgZm9yIHRoZW0gb25seSB0aGUgZmlyc3QgYWRkcmVzcyBp
-cyBwcm92aWRlZCBpbiB0aGUKPiA+ICJyZWciIHByb3BlcnR5LiBTZWUgZHJpdmVycy9lZXByb20v
-YXQyNGMuYyBob3cgdGhlIGRyaXZlciBoYW5kbGVzIHRoaXMKPiA+IHNpdHVhdGlvbi4KPiAKPiBG
-cm9tIHdoYXQgSSBzZWUsIHRoZXkganVzdCBjcmVhdGUgYSBidW5jaCBvZiBpMmMgZGV2aWNlIGFj
-Y29yZGluZyB0bwo+IHRoZSBudW1iZXIgb2YgYWRkcmVzcyB0byB0YWtlLgo+IEluIHRoZSBjYXNl
-IG9mIG1kaW8taTJjLCB3ZSBkbyBub3Qga25vdyBpbiBhZHZhbmNlIGhvdyBtYW55IHBoeSB3aWxs
-Cj4gYmUgaGlkZGVuIGJlaGluZCB0aGUgYnVzLiBJIHRoaW5rIEkgd2lsbCBoYXZlIHRvIGdvIHdp
-dGggdGhlIGRvdWJsZQo+IGFkZHJlc3MgZGVzY3JpcHRpb24uCj4gVGhpcyB3aWxsIGFsc28gYXZv
-aWQgc3B1cmlvdXMgaTJjIHdyaXRlIGJ5IGJ1cyBzY2FubmluZyBkb25lIGJ5IHBoeQo+IGRldGVj
-dGlvbiBsYXllci4KPiAKPiA+IE5vcm1hbGx5IEkgdGhpbmsgbXVsdGkgYWRkcmVzcyBkZXZpY2Vz
-IHNob3VsZCBzaW1wbHkgcHJvdmlkZSB0aGVpcgo+ID4gcmVnIHNwYWNlIGFzIHJlZyA9IDxzdGFy
-dCBzaXplPjsgbGlrZSBvdGhlciBkZXZpY2VzIGRvIGFzd2VsbC4gSSBkb24ndAo+ID4ga25vdyB3
-aGF0IHRoZSBJMkMgY29yZSBtYWtlZCBmcm9tIHRoaXMgdGhvdWdoLgo+IAo+IEl0IHdpbGwgbm90
-IHdvcmsgYW5kIHdpbGwgbm90IGV2ZW4gY29tcGlsZSAod2l0aCBkdGMgZXJyb3JzIGFjdGl2YXRl
-ZCkKPiBzaW5jZSB0aGUgaTJjIGNvbnRyb2xsZXJzIGFyZSBhbG1vc3QgYWx3YXlzIGRlc2NyaWJl
-IGFzOgo+IAo+ICAgI2FkZHJlc3MtY2VsbHMgPSA8MT47Cj4gICAjc2l6ZS1jZWxscyA9IDwwPjsK
-PiAKPiBTbyBubyBzaXplIGNlbGwuCj4gCj4gSWYgeW91IGFncmVlLCBJIHdpbGwgZ28gd2l0aCB0
-aGUgZG91YmxlIGRldmljZSBhZGRyZXNzIChib3RoIGluIG1kaW8taTJjIGFuZCBwaHkpCgpPaywg
-ZmluZS4gQlRXIHlvdSBkbyBub3QgaGF2ZSB0byBpbnN0YW50aWF0ZSBhbGwgcGh5IGRldmljZXMg
-ZHVyaW5nCmkyYyBkZXZpY2UgcHJvYmUuIEluc3RlYWQsIHlvdSBjYW4gaW5zdGFudGlhdGUgaXQg
-b24gZGVtYW5kIHdoZW4gYSBwaHkKZGV2aWNlIGlzIGZpcnN0IGFjY2Vzc2VkLiBUaGlzIGlzIGNv
-bW1vbiBmb3Igb3RoZXIgbWRpbyBkZXZpY2VzIGFzd2VsbAooaS5lLiBvbmx5IHRoZSBkZXZpY2Ug
-dXNlZCBieSB0aGUgbmV0d29yayBjb250cm9sbGVyIHdpbGwgYmUKaW5zdGFudGlhdGVkLiBPbmNl
-IHlvdSBjYWxsIHRoZSBtaWl0b29sIGNvbW1hbmQgdGhlIG90aGVycyB3aWxsIHNob3cgdXApCgpT
-YXNjaGEKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAg
-ICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3Ry
-LiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3
-LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6
-ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============5407383471733705823==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="jSJfdHQdNEd0EbGwp5ihsfOpEUuX2g8fx"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--jSJfdHQdNEd0EbGwp5ihsfOpEUuX2g8fx
+Content-Type: multipart/mixed; boundary="g00XwFjq5mRpqBRNCRk76ajRWgHv09hH4";
+ protected-headers="v1"
+From: Holger Birkmeyer <holger.birkmeyer@ebee.berlin>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <3c3039a6-f5f3-b39f-9887-ca55b464a071@ebee.berlin>
+Subject: Re: ASIX USB dongle problem: asix_rx_fixup() Bad Header Length
+References: <311f4693-85fc-e2bc-6e07-7714cd89c522@ebee.berlin>
+ <20171128084351.wcdzcp7m43iijsun@pengutronix.de>
+ <51e9790a-364c-782d-cd81-721dcba52d78@ebee.berlin>
+ <20171128132006.cbcplw7rr2lqvme3@pengutronix.de>
+In-Reply-To: <20171128132006.cbcplw7rr2lqvme3@pengutronix.de>
+
+--g00XwFjq5mRpqBRNCRk76ajRWgHv09hH4
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+
+
+> Hm, comparing that to the traffic my device receives that may look
+> somewhat shifted. Do you have CONFIG_MMU enabled? If yes, please try
+> with MMU disabled.=20
+#CONFIG_MMU is not set
+> Also, maybe the buffer is not sufficiently aligned.
+> Could you print the pointer address of buf?
+>
+> The buffer is statically allocated in drivers/net/usb/usbnet.c:
+>
+> static char rx_buf[4096];
+rx_buf addr 0x23f52a8c
+
+
+--=20
+Holger Birkmeyer
+Ebee Smart Technologies GmbH
+Torgauer Str. 12-15
+10829 Berlin
+Phone: +49 30 6098371-52
+Mail: holger.birkmeyer@ebee.berlin
+
+
+
+--g00XwFjq5mRpqBRNCRk76ajRWgHv09hH4--
+
+--jSJfdHQdNEd0EbGwp5ihsfOpEUuX2g8fx
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJaHWV8AAoJEHk8IiZD620JjlcP/ipuyRKyIt9rfCDU9jpA1wxv
+ZwxLLSxqZPg7yThZJxIrrXL/6Un0MKxGzCuOs8/tHpEWDLzNgmXL8lI1fhpHIell
+5CCc7uoQT3wMuoA0v8oOcJiyOTFS4eawYvZINAcfqTb4SRXHzOlzqVVOzwNzP1Gq
+tPBWvEdGnmmmdU3/wylIEZI5pluLZ5UOwT7+XAZoHF7J1vBKPYlbLDiCUJKfKgh8
+O5m8pMfhjpflwqUTd4DG+fw/SesqRPzX8B6sBualgx/qrOuxneg9C81vWswRCITd
++m3RUmUejkwiWSf/JjBIylPV75vw95V3YRHegEgH9C4iN3ICpjFhVIgUno9uxN21
+3XfuFgfIPs+mLHRHjPIwExScc5CiuDa8KdU0ooOAfhKK87ZZ7dVXoguclUma6Y3h
+/JWkKUuBuGwEqr3/u/ziumkvkqYosJH9lY6DsdTNERdRhfhWBIRK8Vj1YJIDurs6
+j0i+GAdl5sK7qj7/NKXdJakjpG2sx0EJOwNcrksMM5rfCrJCp4rhFv0VhRxTpmPt
+tpyX9UtqrLtsv4qcI4OOVX7LYk8196qc1KvzXeL0Qp7w7OLNiwtIrqAFmsJhIsjs
+NzSR6gviwEgTCUDfEasXFKyI0Q0VdtQVKecvOG/NVUuR4xUMwAS/zGzTF1SOnm2U
+S/0QwVJ3ViWD8AAXuiam
+=MS0J
+-----END PGP SIGNATURE-----
+
+--jSJfdHQdNEd0EbGwp5ihsfOpEUuX2g8fx--
+
+
+--===============5407383471733705823==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============5407383471733705823==--
