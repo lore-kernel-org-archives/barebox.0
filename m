@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eINUk-0005vL-Fv
- for barebox@lists.infradead.org; Fri, 24 Nov 2017 23:34:57 +0000
-Date: Sat, 25 Nov 2017 00:34:27 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20171124233427.GA22830@ravnborg.org>
+ id 1eJamo-0000j2-HQ
+ for barebox@lists.infradead.ORG; Tue, 28 Nov 2017 07:58:36 +0000
+Date: Tue, 28 Nov 2017 08:58:12 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20171128075812.wld6er2vuhbprgje@pengutronix.de>
 References: <20171124081237.6830-1-s.hauer@pengutronix.de>
  <20171124081237.6830-2-s.hauer@pengutronix.de>
+ <20171124233427.GA22830@ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20171124081237.6830-2-s.hauer@pengutronix.de>
+In-Reply-To: <20171124233427.GA22830@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,83 +25,60 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 01/21] driver: Add device_detect_all() function
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Sam Ravnborg <sam@ravnborg.org>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi Sasha.
-
-On Fri, Nov 24, 2017 at 09:12:17AM +0100, Sascha Hauer wrote:
-> Add a device_detect_all function to detect all devices and use it
-> in the detect command. This makes the functionality reusable in other
-> code.
+On Sat, Nov 25, 2017 at 12:34:27AM +0100, Sam Ravnborg wrote:
+> Hi Sasha.
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  commands/detect.c     | 6 +-----
->  drivers/base/driver.c | 8 ++++++++
->  include/driver.h      | 1 +
->  3 files changed, 10 insertions(+), 5 deletions(-)
+> On Fri, Nov 24, 2017 at 09:12:17AM +0100, Sascha Hauer wrote:
+> > Add a device_detect_all function to detect all devices and use it
+> > in the detect command. This makes the functionality reusable in other
+> > code.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  commands/detect.c     | 6 +-----
+> >  drivers/base/driver.c | 8 ++++++++
+> >  include/driver.h      | 1 +
+> >  3 files changed, 10 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/commands/detect.c b/commands/detect.c
+> > index 1586a6fb54..42e111419f 100644
+> > --- a/commands/detect.c
+> > +++ b/commands/detect.c
+> > @@ -56,11 +56,7 @@ static int do_detect(int argc, char *argv[])
+> >  	}
+> >  
+> >  	if (option_all) {
+> > -		for_each_device(dev) {
+> > -			ret = device_detect(dev);
+> > -			if (ret && ret != -ENOSYS && option_error)
+> > -				return ret;
+> > -		}
+> > +		device_detect_all();
 > 
-> diff --git a/commands/detect.c b/commands/detect.c
-> index 1586a6fb54..42e111419f 100644
-> --- a/commands/detect.c
-> +++ b/commands/detect.c
-> @@ -56,11 +56,7 @@ static int do_detect(int argc, char *argv[])
->  	}
->  
->  	if (option_all) {
-> -		for_each_device(dev) {
-> -			ret = device_detect(dev);
-> -			if (ret && ret != -ENOSYS && option_error)
-> -				return ret;
-> -		}
-> +		device_detect_all();
+> With this change there is no longer any checks
+> if device_detect() fails.
+> so the option "-e" is no longer useful in combination
+> with option "-a" (which uses the patched code).
 
-With this change there is no longer any checks
-if device_detect() fails.
-so the option "-e" is no longer useful in combination
-with option "-a" (which uses the patched code).
+Of course we could bail out of device_detect_all() when an error
+occurs, I'm not sure though how useful this is. I mean when your
+SATA drivers detect function returns an error because there is no
+drive connected, why would you want to bail out of the detection of
+other devices?
 
-Should the code check for any errors or should
-the help text be updated?
+In an earlier version of this series I completely removed the -e
+option. Maybe that would be better?
 
+Sascha
 
->  		return 0;
->  	}
->  
-> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-> index 83260990af..c43a4bde2a 100644
-> --- a/drivers/base/driver.c
-> +++ b/drivers/base/driver.c
-> @@ -140,6 +140,14 @@ int device_detect_by_name(const char *__devname)
->  	return ret;
->  }
->  
-> +void device_detect_all(void)
-> +{
-> +	struct device_d *dev;
-> +
-> +	for_each_device(dev)
-> +		device_detect(dev);
-> +}
-> +
->  static int match(struct driver_d *drv, struct device_d *dev)
->  {
->  	int ret;
-> diff --git a/include/driver.h b/include/driver.h
-> index 8617872053..e571fbbec5 100644
-> --- a/include/driver.h
-> +++ b/include/driver.h
-> @@ -134,6 +134,7 @@ int device_probe(struct device_d *dev);
->  /* detect devices attached to this device (cards, disks,...) */
->  int device_detect(struct device_d *dev);
->  int device_detect_by_name(const char *devname);
-> +void device_detect_all(void);
->  
->  /* Unregister a device. This function can fail, e.g. when the device
->   * has children.
-
-	Sam
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
