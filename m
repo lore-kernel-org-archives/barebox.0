@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eIFCH-0005Fc-JK
- for barebox@lists.infradead.ORG; Fri, 24 Nov 2017 14:43:19 +0000
-From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
-Date: Fri, 24 Nov 2017 15:42:51 +0100
-Message-Id: <20171124144251.14694-1-u.oelmann@pengutronix.de>
+ id 1eJaKC-0000PK-Mu
+ for barebox@lists.infradead.ORG; Tue, 28 Nov 2017 07:29:02 +0000
+Date: Tue, 28 Nov 2017 08:28:39 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20171128072839.bmaphuqkpshpslib@pengutronix.de>
+References: <20171124144251.14694-1-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20171124144251.14694-1-u.oelmann@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,41 +18,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: spi-nor: mx25l3205d/mx25l6405d: append SECT_4K
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] mtd: spi-nor: mx25l3205d/mx25l6405d: append SECT_4K
+To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-VGhpcyBpcyBhIHBvcnQgb2YgTGludXgga2VybmVsIGNvbW1pdAoKICAgIHwgY29tbWl0IDA1MDFm
-MmU1ZmYyOGEwMjI5NWU0MmZjOWU3MTY0YTIwZWY0YzMwZDUKICAgIHwgQXV0aG9yOiBBbmRyZWFz
-IEZlbmthcnQgPGFmZW5rYXJ0QGdtYWlsLmNvbT4KICAgIHwgRGF0ZTogICBUaHUgTm92IDUgMTA6
-MDQ6MjMgMjAxNSArMDEwMAogICAgfAogICAgfCAgICAgbXRkOiBzcGktbm9yOiBteDI1bDMyMDVk
-L214MjVsNjQwNWQ6IGFwcGVuZCBTRUNUXzRLCiAgICB8CiAgICB8ICAgICBhY2NvcmRpbmcgZGF0
-YXNoZWV0IGJvdGggY2hpcHMgY2FuIGVyYXNlIDRrQnl0ZSBzZWN0b3JzIGluZGl2aWR1YWxseQog
-ICAgfAogICAgfCAgICAgU2lnbmVkLW9mZi1ieTogQW5kcmVhcyBGZW5rYXJ0IDxhbmRyZWFzLmZl
-bmthcnRAZGV2LmRpZ2l0YWxzdHJvbS5vcmc+CiAgICB8ICAgICBTaWduZWQtb2ZmLWJ5OiBCcmlh
-biBOb3JyaXMgPGNvbXB1dGVyc2ZvcnBlYWNlQGdtYWlsLmNvbT4KClNpZ25lZC1vZmYtYnk6IFVs
-cmljaCDDlmxtYW5uIDx1Lm9lbG1hbm5AcGVuZ3V0cm9uaXguZGU+Ci0tLQogZHJpdmVycy9tdGQv
-c3BpLW5vci9zcGktbm9yLmMgfCA0ICsrLS0KIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMo
-KyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvc3BpLW5vci9zcGkt
-bm9yLmMgYi9kcml2ZXJzL210ZC9zcGktbm9yL3NwaS1ub3IuYwppbmRleCBmYjEzY2QxMjY5NGEu
-LjVjZjY1MGMwZTIzMCAxMDA2NDQKLS0tIGEvZHJpdmVycy9tdGQvc3BpLW5vci9zcGktbm9yLmMK
-KysrIGIvZHJpdmVycy9tdGQvc3BpLW5vci9zcGktbm9yLmMKQEAgLTUyNCw5ICs1MjQsOSBAQCBz
-dGF0aWMgY29uc3Qgc3RydWN0IHNwaV9kZXZpY2VfaWQgc3BpX25vcl9pZHNbXSA9IHsKIAl7ICJt
-eDI1bDQwMDVhIiwgIElORk8oMHhjMjIwMTMsIDAsIDY0ICogMTAyNCwgICA4LCBTRUNUXzRLKSB9
-LAogCXsgIm14MjVsODAwNSIsICAgSU5GTygweGMyMjAxNCwgMCwgNjQgKiAxMDI0LCAgMTYsIDAp
-IH0sCiAJeyAibXgyNWwxNjA2ZSIsICBJTkZPKDB4YzIyMDE1LCAwLCA2NCAqIDEwMjQsICAzMiwg
-U0VDVF80SykgfSwKLQl7ICJteDI1bDMyMDVkIiwgIElORk8oMHhjMjIwMTYsIDAsIDY0ICogMTAy
-NCwgIDY0LCAwKSB9LAorCXsgIm14MjVsMzIwNWQiLCAgSU5GTygweGMyMjAxNiwgMCwgNjQgKiAx
-MDI0LCAgNjQsIFNFQ1RfNEspIH0sCiAJeyAibXgyNWwzMjU1ZSIsICBJTkZPKDB4YzI5ZTE2LCAw
-LCA2NCAqIDEwMjQsICA2NCwgU0VDVF80SykgfSwKLQl7ICJteDI1bDY0MDVkIiwgIElORk8oMHhj
-MjIwMTcsIDAsIDY0ICogMTAyNCwgMTI4LCAwKSB9LAorCXsgIm14MjVsNjQwNWQiLCAgSU5GTygw
-eGMyMjAxNywgMCwgNjQgKiAxMDI0LCAxMjgsIFNFQ1RfNEspIH0sCiAJeyAibXgyNXUyMDMzZSIs
-ICBJTkZPKDB4YzIyNTMyLCAwLCA2NCAqIDEwMjQsICAgNCwgU0VDVF80SykgfSwKIAl7ICJteDI1
-dTQwMzUiLCAgIElORk8oMHhjMjI1MzMsIDAsIDY0ICogMTAyNCwgICA4LCBTRUNUXzRLKSB9LAog
-CXsgIm14MjV1ODAzNSIsICAgSU5GTygweGMyMjUzNCwgMCwgNjQgKiAxMDI0LCAgMTYsIFNFQ1Rf
-NEspIH0sCi0tIAoyLjExLjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Fri, Nov 24, 2017 at 03:42:51PM +0100, Ulrich =D6lmann wrote:
+> This is a port of Linux kernel commit
+> =
+
+>     | commit 0501f2e5ff28a02295e42fc9e7164a20ef4c30d5
+>     | Author: Andreas Fenkart <afenkart@gmail.com>
+>     | Date:   Thu Nov 5 10:04:23 2015 +0100
+>     |
+>     |     mtd: spi-nor: mx25l3205d/mx25l6405d: append SECT_4K
+>     |
+>     |     according datasheet both chips can erase 4kByte sectors individ=
+ually
+>     |
+>     |     Signed-off-by: Andreas Fenkart <andreas.fenkart@dev.digitalstro=
+m.org>
+>     |     Signed-off-by: Brian Norris <computersforpeace@gmail.com>
+> =
+
+> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
+> ---
+>  drivers/mtd/spi-nor/spi-nor.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+> =
+
+> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+> index fb13cd12694a..5cf650c0e230 100644
+> --- a/drivers/mtd/spi-nor/spi-nor.c
+> +++ b/drivers/mtd/spi-nor/spi-nor.c
+> @@ -524,9 +524,9 @@ static const struct spi_device_id spi_nor_ids[] =3D {
+>  	{ "mx25l4005a",  INFO(0xc22013, 0, 64 * 1024,   8, SECT_4K) },
+>  	{ "mx25l8005",   INFO(0xc22014, 0, 64 * 1024,  16, 0) },
+>  	{ "mx25l1606e",  INFO(0xc22015, 0, 64 * 1024,  32, SECT_4K) },
+> -	{ "mx25l3205d",  INFO(0xc22016, 0, 64 * 1024,  64, 0) },
+> +	{ "mx25l3205d",  INFO(0xc22016, 0, 64 * 1024,  64, SECT_4K) },
+>  	{ "mx25l3255e",  INFO(0xc29e16, 0, 64 * 1024,  64, SECT_4K) },
+> -	{ "mx25l6405d",  INFO(0xc22017, 0, 64 * 1024, 128, 0) },
+> +	{ "mx25l6405d",  INFO(0xc22017, 0, 64 * 1024, 128, SECT_4K) },
+>  	{ "mx25u2033e",  INFO(0xc22532, 0, 64 * 1024,   4, SECT_4K) },
+>  	{ "mx25u4035",   INFO(0xc22533, 0, 64 * 1024,   8, SECT_4K) },
+>  	{ "mx25u8035",   INFO(0xc22534, 0, 64 * 1024,  16, SECT_4K) },
+> -- =
+
+> 2.11.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
