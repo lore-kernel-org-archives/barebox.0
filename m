@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
+Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eJuPT-0007iz-PX
- for barebox@lists.infradead.org; Wed, 29 Nov 2017 04:55:49 +0000
-Received: by mail-pg0-x241.google.com with SMTP id q20so992038pgv.2
- for <barebox@lists.infradead.org>; Tue, 28 Nov 2017 20:55:27 -0800 (PST)
+ id 1eJuPW-0007jO-2z
+ for barebox@lists.infradead.org; Wed, 29 Nov 2017 04:55:52 +0000
+Received: by mail-pl0-x242.google.com with SMTP id s10so1382219plj.5
+ for <barebox@lists.infradead.org>; Tue, 28 Nov 2017 20:55:29 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 28 Nov 2017 20:55:03 -0800
-Message-Id: <20171129045506.17149-2-andrew.smirnov@gmail.com>
+Date: Tue, 28 Nov 2017 20:55:05 -0800
+Message-Id: <20171129045506.17149-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20171129045506.17149-1-andrew.smirnov@gmail.com>
 References: <20171129045506.17149-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,70 +23,205 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] mdio_bus: Port of_mdio_find_bus() from Linux kernel
+Subject: [PATCH 4/5] net: phy: Port GPIO controlled MDIO multiplexer driver
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of_mdio_find_bus() from Linux kernel. This function is used in
-MDIO multiplexor infrastructure added in following commit.
+Port Linux version driver to Barebox, to support such device found in
+various revisions of ZII's VF610 development board.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/phy/mdio_bus.c | 27 +++++++++++++++++++++++++++
- include/linux/phy.h        |  2 ++
- 2 files changed, 29 insertions(+)
+ drivers/net/phy/Kconfig         |  10 +++
+ drivers/net/phy/Makefile        |   1 +
+ drivers/net/phy/mdio-mux-gpio.c | 147 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 158 insertions(+)
+ create mode 100644 drivers/net/phy/mdio-mux-gpio.c
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 012b90e83..6ae85692d 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -206,6 +206,33 @@ struct mii_bus *mdiobus_get_bus(int busnum)
- 	return NULL;
- }
+diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+index f423d9ba3..0bf91e5e0 100644
+--- a/drivers/net/phy/Kconfig
++++ b/drivers/net/phy/Kconfig
+@@ -74,6 +74,16 @@ config MDIO_BUS_MUX
+ 	  to a parent bus.  Switching between child busses is done by
+ 	  device specific drivers.
  
-+/**
-+ * of_mdio_find_bus - Given an mii_bus node, find the mii_bus.
-+ * @mdio_bus_np: Pointer to the mii_bus.
++config MDIO_BUS_MUX_GPIO
++	bool "GPIO controlled MDIO bus multiplexers"
++	depends on OF_GPIO
++	select MDIO_BUS_MUX
++	help
++	  This module provides a driver for MDIO bus multiplexers that
++	  are controlled via GPIO lines.  The multiplexer connects one of
++	  several child MDIO busses to a parent bus.  Child bus
++	  selection is under the control of GPIO lines.
++
+ endif
+ 
+ endmenu
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+index 89b4b80be..30b20f8ee 100644
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -11,4 +11,5 @@ obj-$(CONFIG_MDIO_MVEBU)	+= mdio-mvebu.o
+ obj-$(CONFIG_MDIO_BITBANG)	+= mdio-bitbang.o
+ obj-$(CONFIG_MDIO_GPIO)		+= mdio-gpio.o
+ obj-$(CONFIG_MDIO_BUS_MUX)	+= mdio-mux.o
++obj-$(CONFIG_MDIO_BUS_MUX_GPIO)	+= mdio-mux-gpio.o
+ 
+diff --git a/drivers/net/phy/mdio-mux-gpio.c b/drivers/net/phy/mdio-mux-gpio.c
+new file mode 100644
+index 000000000..221353cbc
+--- /dev/null
++++ b/drivers/net/phy/mdio-mux-gpio.c
+@@ -0,0 +1,147 @@
++/*
++ * Copyright (c) 2017 Zodiac Inflight Innovation
++ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
 + *
-+ * Returns a reference to the mii_bus, or NULL if none found.
++ * Based on analogous code from Linux kernel
 + *
-+ * Because the association of a device_node and mii_bus is made via
-+ * mdiobus_register(), the mii_bus cannot be found before it is
-+ * registered with mdiobus_register().
++ * Copyright (C) 2011, 2012 Cavium, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
 + *
 + */
-+struct mii_bus *of_mdio_find_bus(struct device_node *mdio_bus_np)
++#include <common.h>
++#include <driver.h>
++#include <init.h>
++#include <linux/mdio-mux.h>
++#include <gpio.h>
++#include <of_gpio.h>
++
++
++struct mdio_mux_gpio_state {
++	struct gpio *gpios;
++	int gpios_num;
++};
++
++static void mdio_mux_gpio_set_active(struct mdio_mux_gpio_state *s,
++				     unsigned int mask, int value)
 +{
-+	struct mii_bus *mii;
++	while (mask) {
++		const int n = __ffs(mask);
++		mask >>= n + 1;
 +
-+	if (!mdio_bus_np)
-+		return NULL;
++		if (WARN_ON(n >= s->gpios_num))
++			break;
 +
-+	for_each_mii_bus(mii)
-+		if (mii->dev.device_node == mdio_bus_np)
-+			return mii;
-+
-+	return NULL;
++		gpio_set_active(s->gpios[n].gpio, value);
++	}
 +}
-+EXPORT_SYMBOL(of_mdio_find_bus);
++
++static int mdio_mux_gpio_switch_fn(int current_child, int desired_child,
++				   void *data)
++{
++	if (current_child < 0)
++		current_child = 0;
++
++	if (current_child != desired_child) {
++		struct mdio_mux_gpio_state *s = data;
++		/*
++		 * GPIOs that are set in both current and desired
++		 * states can be left untouched. So we calculate them
++		 * and clear corresponding bits in both states.
++		 */
++		const int unchanged = current_child & desired_child;
++
++		current_child &= ~unchanged;
++		desired_child &= ~unchanged;
++
++		/*
++		 * First step: disable all of the currently selected
++		 * bits that are no loger needed
++		 */
++		mdio_mux_gpio_set_active(s, current_child, 0);
++		/*
++		 * Second step: enable all of the GPIOs that are
++		 * desired to be selected
++		 */
++		mdio_mux_gpio_set_active(s, desired_child, 1);
++	}
++
++	return 0;
++}
++
++static int mdio_mux_gpio_probe(struct device_d *dev)
++{
++	struct mdio_mux_gpio_state *s;
++	int i, r;
++
++	s = xzalloc(sizeof(*s));
++
++	s->gpios_num = of_gpio_count(dev->device_node);
++	if (s->gpios_num <= 0) {
++		dev_err(dev, "No GPIOs specified\n");
++		r = -EINVAL;
++		goto free_mem;
++	}
++
++	s->gpios = xzalloc(s->gpios_num * sizeof(s->gpios[0]));
++
++	for (i = 0; i < s->gpios_num; i++) {
++		enum of_gpio_flags flags;
++
++		r = of_get_gpio_flags(dev->device_node, i, &flags);
++		if (!gpio_is_valid(r)) {
++			r = (r < 0) ? r : -EINVAL;
++			goto free_mem;
++		}
++
++		s->gpios[i].gpio  = r;
++		s->gpios[i].label = dev_name(dev);
++		s->gpios[i].flags = GPIOF_OUT_INIT_INACTIVE;
++
++		if (flags & OF_GPIO_ACTIVE_LOW)
++			s->gpios[i].flags |= GPIOF_ACTIVE_LOW;
++	}
++
++	r = gpio_request_array(s->gpios, s->gpios_num);
++	if (r < 0)
++		goto free_gpios;
 +
 +
- /**
-  * mdio_bus_match - determine if given PHY driver supports the given PHY device
-  * @dev: target PHY device
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index d7b10afbc..809f06fb1 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -116,6 +116,8 @@ int mdiobus_detect(struct device_d *dev);
- 
- struct mii_bus *mdiobus_get_bus(int busnum);
- 
-+struct mii_bus *of_mdio_find_bus(struct device_node *mdio_bus_np);
++	r = mdio_mux_init(dev, dev->device_node,
++			  mdio_mux_gpio_switch_fn, s, NULL);
++	if (r < 0)
++		goto free_gpios;
 +
- /**
-  * mdiobus_read - Convenience function for reading a given MII mgmt register
-  * @bus: the mii_bus struct
++	return 0;
++
++free_gpios:
++	gpio_free_array(s->gpios, s->gpios_num);
++free_mem:
++	free(s->gpios);
++	free(s);
++	return r;
++}
++
++static const struct of_device_id mdio_mux_gpio_match[] = {
++	{
++		.compatible = "mdio-mux-gpio",
++	},
++	{},
++};
++
++static struct driver_d mdio_mux_gpio_driver = {
++	.name	       = "mdio-mux-gpio",
++	.probe         = mdio_mux_gpio_probe,
++	.of_compatible = mdio_mux_gpio_match,
++};
++device_platform_driver(mdio_mux_gpio_driver);
 -- 
 2.14.3
 
