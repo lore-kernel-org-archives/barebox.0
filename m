@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eJfoK-0001Yx-OT
- for barebox@lists.infradead.ORG; Tue, 28 Nov 2017 13:20:30 +0000
-Date: Tue, 28 Nov 2017 14:20:06 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171128132006.cbcplw7rr2lqvme3@pengutronix.de>
-References: <311f4693-85fc-e2bc-6e07-7714cd89c522@ebee.berlin>
- <20171128084351.wcdzcp7m43iijsun@pengutronix.de>
- <51e9790a-364c-782d-cd81-721dcba52d78@ebee.berlin>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <51e9790a-364c-782d-cd81-721dcba52d78@ebee.berlin>
+ id 1eKS1I-0006wD-Qn
+ for barebox@lists.infradead.ORG; Thu, 30 Nov 2017 16:49:10 +0000
+Message-ID: <1512060522.17442.26.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 30 Nov 2017 17:48:42 +0100
+In-Reply-To: <0b235055-1329-a855-49c9-6bf7b4cefb72@richard-wolf.com>
+References: <4b8105c0-5c24-7ba8-da30-37f414ff5207@richard-wolf.com>
+ <1512053584.17442.19.camel@pengutronix.de>
+ <0b235055-1329-a855-49c9-6bf7b4cefb72@richard-wolf.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,43 +19,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: ASIX USB dongle problem: asix_rx_fixup() Bad Header Length
-To: Holger Birkmeyer <holger.birkmeyer@ebee.berlin>
-Cc: barebox@lists.infradead.org
+Subject: Re: Support for QEMU virt ARM 32
+To: Andre Wagner <andre.wagner@richard-wolf.com>, barebox@lists.infradead.org
 
-On Tue, Nov 28, 2017 at 01:40:28PM +0100, Holger Birkmeyer wrote:
-> Dear Sascha,
-> 
-> the ASIX USB dongle is working on the same hardware running a 4.4
-> vanilla kernel. The dongle also works on my Linux PC with a 4.13 kernel.
-> 
-> I added memory_display(buf, 0, len, 4, 0) to asix_rx_fixup(). Here are
-> the logs:
-
-Hm, comparing that to the traffic my device receives that may look
-somewhat shifted. Do you have CONFIG_MMU enabled? If yes, please try
-with MMU disabled. Also, maybe the buffer is not sufficiently aligned.
-Could you print the pointer address of buf?
-
-The buffer is statically allocated in drivers/net/usb/usbnet.c:
-
-static char rx_buf[4096];
-
-This looks fishy. It should be allocated with dma_alloc() instead.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gRG9ubmVyc3RhZywgZGVuIDMwLjExLjIwMTcsIDE3OjM5ICswMTAwIHNjaHJpZWIgQW5kcmUg
+V2FnbmVyOgo+IAo+IE9uIDMwLjExLjIwMTcgMTU6NTMsIEx1Y2FzIFN0YWNoIHdyb3RlOgo+ID4g
+SGkgQW5kcsOpLAo+ID4gCj4gPiBBbSBEb25uZXJzdGFnLCBkZW4gMzAuMTEuMjAxNywgMTU6Mjkg
+KzAxMDAgc2NocmllYiBBbmRyZSBXYWduZXI6Cj4gPiA+IEhlbGxvIGV2ZXJ5b25lLAo+ID4gPiAK
+PiA+ID4gSSdtIHRyeWluZyB0byBhZGQgc3VwcG9ydCBmb3IgdGhlIFFlbXUgdmlydCBBUk0zMiBt
+YWNoaW5lIChxZW11Cj4gPiA+IHZlcnNpb24KPiA+ID4gMi4xMCkgYmFzZWQgb24gdGhlIGV4aXN0
+aW5nIFFlbXUgdmlydCBBUk02NCBzdXBwb3J0LiBJbiBteQo+ID4gPiB1bmRlcnN0YW5kaW5nCj4g
+PiA+IHRoZSBlbXVsYXRlZCBDUFUgaXMgb25seSBhIEFSTXY3IENQVSBpbnN0ZWFkIG9mIGEgQVJN
+djggQ1BVLiBJcwo+ID4gPiB0aGlzCj4gPiA+IGNvcnJlY3Q/Cj4gPiAKPiA+IFZFeHByZXNzIGlz
+IHRoZSBnZW5lcmljIEFSTTMyIFFFTVUgcGxhdGZvcm0uIEJhcmVib3ggYWxyZWFkeQo+ID4gc3Vw
+cG9ydHMKPiA+IHRoYXQuIENoZWNrIG91dCB0aGUgbGFzdCByZWxlYXNlIChhcyBpdCBoYXMgc29t
+ZSBpbXByb3ZlbWVudHMgaW4KPiA+IHRoYXQKPiA+IGFyZWEpLCBhbmQgYnVpbGQgdGhlIHZleHBy
+ZXNzX2RlZmNvbmZpZy4KPiA+IAo+ID4gVG8gcnVuIHRoZSBlbXVsYXRlZCBwbGF0Zm9ybSB0YWtl
+IGEgbG9vayBhdAo+ID4gRG9jdW1lbnRhdGlvbi9ib2FyZHMvYXJtLQo+ID4gcWVtdS12ZXhwcmVz
+cy5yc3QKPiA+IAo+ID4gUmVnYXJkcywKPiA+IEx1Y2FzCj4gCj4gVGhhbmsgeW91IHZlcnkgbXVj
+aCBmb3IgdGhlIGZhc3QgcmVwbHksIEkgZ290IGEgYmFyZWJveCB3b3JraW5nIHdpdGjCoAo+IHZl
+eHByZXNzIG9uIFFlbXUgbm93ISBKdXN0IGEgcXVlc3Rpb24gKGxpdHRsZSBiaXQgb2ZmIHRvcGlj
+KTogVGhlCj4gUWVtdcKgCj4gdmlydCBBUk02NCBiYXJlYm94IHZlcnNpb24gaXMgY2FsbGVkIHdp
+dGg6IHFlbXUtc3lzdGVtLWFhcmNoNjQgLW0KPiAyMDQ4TcKgCj4gLWNwdSBjb3J0ZXgtYTU3IC1t
+YWNoaW5lIHZpcnQgLWRpc3BsYXkgbm9uZSAtc2VyaWFsIHN0ZGlvIC1rZXJuZWzCoAo+IC4uL2Jh
+cmVib3gvYmFyZWJveCAoYWNjb3JkaW5nIHRvwqAKPiBodHRwOi8vYmFyZWJveC5vcmcvZG9jL2xh
+dGVzdC9ib2FyZHMvYWFyY2g2NC1xZW11LXZpcnQuaHRtbCkuIFRoZQo+IGZpcnN0wqAKPiB0ZXN0
+cyBJIGRpZCB3ZXJlIHN0YXJ0aW5nIG15IGJyb2tlbiBiYXJlYm94IHZlcnNpb24gd2l0aCBxZW11
+LXN5c3RlbS0KPiBhcm3CoAo+IC1tIDIwNDhNIC1jcHUgY29ydGV4LWExNSAtbWFjaGluZSB2aXJ0
+IC1kaXNwbGF5IG5vbmUgLXNlcmlhbCBzdGRpb8KgCj4gLWtlcm5lbCAuLi9iYXJlYm94L2JhcmVi
+b3guIElzIHRoaXMgJ3ZpcnQnIG1hY2hpbmUgbm90IHRoZSBfcmVhbF8KPiBRZW11wqAKPiB2aXJ0
+IEFSTTMyPwoKdmlydCBpcyBhIGdlbmVyaWMgdmlydHVhbCBwbGF0Zm9ybSBhbmQgZG9lc24ndCBy
+ZXNlbWJsZSBhbnkgcmVhbApoYXJkd2FyZS4gVGhpcyBpcyBuaWNlIGZvciBzb21lIHVzZS1jYXNl
+cywgYXMgaXQgZG9lc24ndCBoYXZlIHRoZQpyZXN0cmljdGlvbnMgb2YgcmVhbCBoYXJkd2FyZSBz
+eXN0ZW1zLCBidXQgdGhlbiBtb3N0IG9mIHRoZSBwZXJpcGhlcmFscwphcmUgdmlydGlvIG9yIG1h
+cHBlZCBvbiBhIHZpcnR1YWwgUENJIGJ1cy4gQmFyZWJveCBpcyBsYWNraW5nIGRyaXZlcgpzdXBw
+b3J0IGZvciBtb3N0IG9mIHRob3NlIHBlcmlwaGVyYWxzLCBzbyB0aGUgdXNlZnVsbmVzcyBvZiB0
+aGlzCm1hY2hpbmUgaXMgbGltaXRlZCB3aGVuIHVzZWQgd2l0aCBCYXJlYm94LgoKU2VlIGFsc286
+IGh0dHBzOi8vd2lraS5xZW11Lm9yZy9Eb2N1bWVudGF0aW9uL1BsYXRmb3Jtcy9BUk0KClJlZ2Fy
+ZHMsCkx1Y2FzCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
+L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
