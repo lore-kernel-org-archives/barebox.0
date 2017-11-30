@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.20])
+Received: from ns1.richard-wolf.com ([217.6.229.210])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eHX7g-0000PB-Ps
- for barebox@lists.infradead.org; Wed, 22 Nov 2017 15:39:40 +0000
-From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Wed, 22 Nov 2017 16:38:59 +0100
-Message-Id: <1511365141-21693-2-git-send-email-linux@rempel-privat.de>
-In-Reply-To: <1511365141-21693-1-git-send-email-linux@rempel-privat.de>
-References: <1511365141-21693-1-git-send-email-linux@rempel-privat.de>
+ id 1eKRsS-000617-4R
+ for barebox@lists.infradead.org; Thu, 30 Nov 2017 16:39:58 +0000
+References: <4b8105c0-5c24-7ba8-da30-37f414ff5207@richard-wolf.com>
+ <1512053584.17442.19.camel@pengutronix.de>
+From: Andre Wagner <andre.wagner@richard-wolf.com>
+Message-ID: <0b235055-1329-a855-49c9-6bf7b4cefb72@richard-wolf.com>
+Date: Thu, 30 Nov 2017 17:39:30 +0100
+MIME-Version: 1.0
+In-Reply-To: <1512053584.17442.19.camel@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,202 +19,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/3] watchdog: add ar9344-wdt driver
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
+Subject: Re: Support for QEMU virt ARM 32
+To: Lucas Stach <l.stach@pengutronix.de>, barebox@lists.infradead.org
 
-This driver was developed and tested on QCA AR9344 WiSoC
-but it may work on most known Atheros/QCA WiSoCs.
-
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
----
- drivers/watchdog/Kconfig      |   6 ++
- drivers/watchdog/Makefile     |   1 +
- drivers/watchdog/ar9344_wdt.c | 138 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 145 insertions(+)
- create mode 100644 drivers/watchdog/ar9344_wdt.c
-
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index 83b6528..1f04c7f 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -10,6 +10,12 @@ menuconfig WATCHDOG
- 
- if WATCHDOG
- 
-+config WATCHDOG_AR9344
-+	bool "QCA AR9344"
-+	depends on SOC_QCA_AR9344
-+	help
-+	  Add support for watchdog on the QCA AR9344 SoC.
-+
- config WATCHDOG_DAVINCI
- 	bool "TI Davinci"
- 	depends on ARCH_DAVINCI
-diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-index a3b2667..c607f75 100644
---- a/drivers/watchdog/Makefile
-+++ b/drivers/watchdog/Makefile
-@@ -1,4 +1,5 @@
- obj-$(CONFIG_WATCHDOG) += wd_core.o
-+obj-$(CONFIG_WATCHDOG_AR9344) += ar9344_wdt.o
- obj-$(CONFIG_WATCHDOG_DAVINCI) += davinci_wdt.o
- obj-$(CONFIG_WATCHDOG_OMAP) += omap_wdt.o
- obj-$(CONFIG_WATCHDOG_MXS28) += im28wd.o
-diff --git a/drivers/watchdog/ar9344_wdt.c b/drivers/watchdog/ar9344_wdt.c
-new file mode 100644
-index 0000000..d570cb4
---- /dev/null
-+++ b/drivers/watchdog/ar9344_wdt.c
-@@ -0,0 +1,138 @@
-+/*
-+ *  AR9344 Watchdog driver
-+ *
-+ *  Copyright (C) 2017 Oleksij Rempel <linux@rempel-privat.de>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under  the terms of the GNU General  Public License as published by the
-+ *  Free Software Foundation;  either version 2 of the License, or (at your
-+ *  option) any later version.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <errno.h>
-+#include <init.h>
-+#include <io.h>
-+#include <linux/clk.h>
-+#include <of.h>
-+#include <reset_source.h>
-+#include <watchdog.h>
-+
-+#define AR9344_WD_REG_CTRL		0x00
-+#define AR9344_WD_CTRL_LAST_RESET	BIT(31)
-+#define AR9344_WD_CTRL_ACTION_MASK	3
-+#define AR9344_WD_CTRL_ACTION_NONE	0	/* no action */
-+#define AR9344_WD_CTRL_ACTION_GPI	1	/* general purpose interrupt */
-+#define AR9344_WD_CTRL_ACTION_NMI	2	/* NMI */
-+#define AR9344_WD_CTRL_ACTION_FCR	3	/* full chip reset */
-+
-+#define AR9344_WD_REG_TIMER		0x04
-+
-+#define to_ar9344_wd(h) container_of(h, struct ar9344_wd, wd)
-+
-+struct ar9344_wd {
-+	struct watchdog		wd;
-+	void __iomem		*base;
-+	struct clk		*clk;
-+	struct device_d		*dev;
-+};
-+
-+static int ar9344_watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
-+{
-+	struct ar9344_wd *priv = to_ar9344_wd(wd);
-+	u32 val, ctrl, rate, max_timout;
-+
-+	rate = clk_get_rate(priv->clk);
-+	max_timout = U32_MAX / rate;
-+
-+	if (timeout > max_timout) {
-+		dev_err(priv->dev, "timeout value out of range: %d > %d\n",
-+			timeout, max_timout);
-+		return -EINVAL;
-+	}
-+
-+	if (timeout) {
-+		ctrl = AR9344_WD_CTRL_ACTION_FCR;
-+		val = timeout * rate;
-+	} else {
-+		ctrl = AR9344_WD_CTRL_ACTION_NONE;
-+		val = U32_MAX;
-+	}
-+
-+	dev_dbg(priv->dev, "%s: %d, timer:%x, ctrl: %x \n", __func__,
-+		timeout, val, ctrl);
-+
-+	iowrite32be(val, priv->base + AR9344_WD_REG_TIMER);
-+	iowrite32be(ctrl, priv->base + AR9344_WD_REG_CTRL);
-+
-+	return 0;
-+}
-+
-+static void ar9344_watchdog_detect_reset_source(struct ar9344_wd *priv)
-+{
-+	u32 val = readw(priv->base + AR9344_WD_REG_CTRL);
-+
-+	if (val & AR9344_WD_CTRL_LAST_RESET)
-+		reset_source_set(RESET_WDG);
-+
-+	/* else keep the default 'unknown' state */
-+}
-+
-+static int ar9344_wdt_probe(struct device_d *dev)
-+{
-+	struct resource *iores;
-+	struct ar9344_wd *priv;
-+	int ret;
-+
-+	priv = xzalloc(sizeof(struct ar9344_wd));
-+	iores = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(iores)) {
-+		dev_err(dev, "could not get memory region\n");
-+		ret = PTR_ERR(iores);
-+		goto on_error;
-+	}
-+
-+	priv->base = IOMEM(iores->start);
-+	priv->wd.set_timeout = ar9344_watchdog_set_timeout;
-+	priv->wd.dev = dev;
-+	priv->dev = dev;
-+
-+	dev->priv = priv;
-+
-+	ar9344_watchdog_detect_reset_source(priv);
-+
-+	priv->clk = clk_get(dev, NULL);
-+	if (IS_ERR(priv->clk)) {
-+		dev_err(dev, "could not get clk\n");
-+		ret = PTR_ERR(priv->clk);
-+		goto on_error;
-+	}
-+
-+	clk_enable(priv->clk);
-+
-+	ret = watchdog_register(&priv->wd);
-+	if (ret)
-+		goto on_error;
-+
-+	return 0;
-+
-+on_error:
-+	free(priv);
-+	return ret;
-+}
-+
-+static __maybe_unused struct of_device_id ar9344_wdt_dt_ids[] = {
-+	{
-+		.compatible = "qca,ar9344-wdt",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
-+static struct driver_d ar9344_wdt_driver = {
-+	.name   = "ar9344-wdt",
-+	.probe  = ar9344_wdt_probe,
-+	.of_compatible = DRV_OF_COMPAT(ar9344_wdt_dt_ids),
-+};
-+device_platform_driver(ar9344_wdt_driver);
--- 
-2.7.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+CgpPbiAzMC4xMS4yMDE3IDE1OjUzLCBMdWNhcyBTdGFjaCB3cm90ZToKPiBIaSBBbmRyw6ksCj4K
+PiBBbSBEb25uZXJzdGFnLCBkZW4gMzAuMTEuMjAxNywgMTU6MjkgKzAxMDAgc2NocmllYiBBbmRy
+ZSBXYWduZXI6Cj4+IEhlbGxvIGV2ZXJ5b25lLAo+Pgo+PiBJJ20gdHJ5aW5nIHRvIGFkZCBzdXBw
+b3J0IGZvciB0aGUgUWVtdSB2aXJ0IEFSTTMyIG1hY2hpbmUgKHFlbXUKPj4gdmVyc2lvbgo+PiAy
+LjEwKSBiYXNlZCBvbiB0aGUgZXhpc3RpbmcgUWVtdSB2aXJ0IEFSTTY0IHN1cHBvcnQuIEluIG15
+Cj4+IHVuZGVyc3RhbmRpbmcKPj4gdGhlIGVtdWxhdGVkIENQVSBpcyBvbmx5IGEgQVJNdjcgQ1BV
+IGluc3RlYWQgb2YgYSBBUk12OCBDUFUuIElzIHRoaXMKPj4gY29ycmVjdD8KPiBWRXhwcmVzcyBp
+cyB0aGUgZ2VuZXJpYyBBUk0zMiBRRU1VIHBsYXRmb3JtLiBCYXJlYm94IGFscmVhZHkgc3VwcG9y
+dHMKPiB0aGF0LiBDaGVjayBvdXQgdGhlIGxhc3QgcmVsZWFzZSAoYXMgaXQgaGFzIHNvbWUgaW1w
+cm92ZW1lbnRzIGluIHRoYXQKPiBhcmVhKSwgYW5kIGJ1aWxkIHRoZSB2ZXhwcmVzc19kZWZjb25m
+aWcuCj4KPiBUbyBydW4gdGhlIGVtdWxhdGVkIHBsYXRmb3JtIHRha2UgYSBsb29rIGF0IERvY3Vt
+ZW50YXRpb24vYm9hcmRzL2FybS0KPiBxZW11LXZleHByZXNzLnJzdAo+Cj4gUmVnYXJkcywKPiBM
+dWNhcwpUaGFuayB5b3UgdmVyeSBtdWNoIGZvciB0aGUgZmFzdCByZXBseSwgSSBnb3QgYSBiYXJl
+Ym94IHdvcmtpbmcgd2l0aCAKdmV4cHJlc3Mgb24gUWVtdSBub3chIEp1c3QgYSBxdWVzdGlvbiAo
+bGl0dGxlIGJpdCBvZmYgdG9waWMpOiBUaGUgUWVtdSAKdmlydCBBUk02NCBiYXJlYm94IHZlcnNp
+b24gaXMgY2FsbGVkIHdpdGg6IHFlbXUtc3lzdGVtLWFhcmNoNjQgLW0gMjA0OE0gCi1jcHUgY29y
+dGV4LWE1NyAtbWFjaGluZSB2aXJ0IC1kaXNwbGF5IG5vbmUgLXNlcmlhbCBzdGRpbyAta2VybmVs
+IAouLi9iYXJlYm94L2JhcmVib3ggKGFjY29yZGluZyB0byAKaHR0cDovL2JhcmVib3gub3JnL2Rv
+Yy9sYXRlc3QvYm9hcmRzL2FhcmNoNjQtcWVtdS12aXJ0Lmh0bWwpLiBUaGUgZmlyc3QgCnRlc3Rz
+IEkgZGlkIHdlcmUgc3RhcnRpbmcgbXkgYnJva2VuIGJhcmVib3ggdmVyc2lvbiB3aXRoIHFlbXUt
+c3lzdGVtLWFybSAKLW0gMjA0OE0gLWNwdSBjb3J0ZXgtYTE1IC1tYWNoaW5lIHZpcnQgLWRpc3Bs
+YXkgbm9uZSAtc2VyaWFsIHN0ZGlvIAota2VybmVsIC4uL2JhcmVib3gvYmFyZWJveC4gSXMgdGhp
+cyAndmlydCcgbWFjaGluZSBub3QgdGhlIF9yZWFsXyBRZW11IAp2aXJ0IEFSTTMyPwoKR3JlZXRp
+bmdzLApBbmRyw6kKCisrKwpSaWNoYXJkIFdvbGYgR21iSCwgUGZvcnpoZWltZXIgU3RyYXNzZSAz
+MiwgNzU0MzggS25pdHRsaW5nZW4KTWFuYWdpbmcgRGlyZWN0b3JzOiBKdWVyZ2VuIFBmYWIsIEp1
+ZXJnZW4gU3RlaW5iZWNrLiBUcmFkZSBSZWdpc3RlcjogTWFubmhlaW0gSFJCIDUxMDAzMSAKKysr
+ClJpY2hhcmQgV29sZiBHbWJIIHJvdXRpbmVseSBtb25pdG9ycyB0aGUgY29udGVudCBvZiBlLW1h
+aWwgc2VudCBhbmQgcmVjZWl2ZWQgdmlhIGl0cyBuZXR3b3JrIGZvciB0aGUgcHVycG9zZXMgb2Yg
+ZW5zdXJpbmcgY29tcGxpYW5jZSB3aXRoIGl0cyBwb2xpY2llcyBhbmQgcHJvY2VkdXJlcy4gUmlj
+aGFyZCBXb2xmIEdtYkggaXMgbm90IHJlc3BvbnNpYmxlIGZvciBhbnkgY2hhbmdlcyBtYWRlIHRv
+IHRoZSBtZXNzYWdlIGFmdGVyIGl0IGhhcyBiZWVuIHNlbnQuIFdoZXJlIG9waW5pb25zIGFyZSBl
+eHByZXNzZWQsIHRoZXkgYXJlIG5vdCBuZWNlc3NhcmlseSB0aG9zZSBvZiBSaWNoYXJkIFdvbGYg
+R21iSC4gVGhpcyBlLW1haWwgYW5kIGFueSBmaWxlcyB0cmFuc21pdHRlZCB3aXRoIGl0IGFyZSBj
+b25maWRlbnRpYWwgYW5kIGludGVuZGVkIHNvbGVseSBmb3IgdGhlIHVzZSBvZiB0aGUgaW5kaXZp
+ZHVhbCBvciBlbnRpdHkgdG8gd2hpY2ggdGhleSBhcmUgYWRkcmVzc2VkLiBJZiB5b3UgYXJlIG5v
+dCB0aGUgaW50ZW5kZWQgYWRkcmVzc2VlLCBvciB0aGUgcGVyc29uIHJlc3BvbnNpYmxlIGZvciBk
+ZWxpdmVyaW5nIGl0IHRvIHRoZW0sIHlvdSBtYXkgbm90IGNvcHksIGZvcndhcmQsIGRpc2Nsb3Nl
+LCBvciBvdGhlcndpc2UgdXNlIGl0IG9yIGFueSBwYXJ0IG9mIGl0IGluIGFueSB3YXkuIFRvIGRv
+IHNvIG1heSBiZSB1bmxhd2Z1bC4gSWYgeW91IHJlY2VpdmUgdGhpcyBlLW1haWwgYnkgbWlzdGFr
+ZSwgcGxlYXNlIGFkdmlzZSB0aGUgc2VuZGVyIGltbWVkaWF0ZWx5LgorKysKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
+YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
