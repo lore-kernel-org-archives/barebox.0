@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKjPe-0003o8-D7
+ id 1eKjPe-0003o4-DB
  for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:26 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Dec 2017 12:22:42 +0100
-Message-Id: <20171201112256.20196-14-s.hauer@pengutronix.de>
+Date: Fri,  1 Dec 2017 12:22:34 +0100
+Message-Id: <20171201112256.20196-6-s.hauer@pengutronix.de>
 In-Reply-To: <20171201112256.20196-1-s.hauer@pengutronix.de>
 References: <20171201112256.20196-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,96 +21,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/27] net: dhcp: avoid unnecessary casts
+Subject: [PATCH 05/27] net: Add and use IP_BROADCAST
 To: Barebox List <barebox@lists.infradead.org>
 
-Drop explicit casts to/from void pointers.
+Rather than using the hardcoded value 0xffffffff in several places
+add a define for the broadcast IP.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/dhcp.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ include/net.h | 2 ++
+ net/dhcp.c    | 2 +-
+ net/net.c     | 6 +++---
+ 3 files changed, 6 insertions(+), 4 deletions(-)
 
+diff --git a/include/net.h b/include/net.h
+index 632b6d5410..4649947916 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -114,6 +114,8 @@ struct ethernet {
+ #define IPPROTO_ICMP	 1	/* Internet Control Message Protocol	*/
+ #define IPPROTO_UDP	17	/* User Datagram Protocol		*/
+ 
++#define IP_BROADCAST    0xffffffff /* Broadcast IP aka 255.255.255.255 */
++
+ /*
+  *	Internet Protocol (IP) header.
+  */
 diff --git a/net/dhcp.c b/net/dhcp.c
-index 82f60f0535..ffb3842882 100644
+index c5386fe942..4d74733d37 100644
 --- a/net/dhcp.c
 +++ b/net/dhcp.c
-@@ -447,14 +447,13 @@ static int bootp_request(void)
- 	struct bootp *bp;
- 	int ext_len;
- 	int ret;
--	unsigned char *payload = net_udp_get_payload(dhcp_con);
- 	const char *bfile;
+@@ -661,7 +661,7 @@ int dhcp(int retries, struct dhcp_req_param *param)
+ 	if (!retries)
+ 		retries = DHCP_DEFAULT_RETRY;
  
- 	dhcp_state = INIT;
+-	dhcp_con = net_udp_new(0xffffffff, PORT_BOOTPS, dhcp_handler, NULL);
++	dhcp_con = net_udp_new(IP_BROADCAST, PORT_BOOTPS, dhcp_handler, NULL);
+ 	if (IS_ERR(dhcp_con)) {
+ 		ret = PTR_ERR(dhcp_con);
+ 		goto out;
+diff --git a/net/net.c b/net/net.c
+index 12e63c664e..205543a425 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -276,7 +276,7 @@ static struct net_connection *net_new(IPaddr_t dest, rx_handler_f *handler,
+ 	}
  
- 	debug("BOOTP broadcast\n");
+ 	/* If we don't have an ip only broadcast is allowed */
+-	if (!edev->ipaddr && dest != 0xffffffff)
++	if (!edev->ipaddr && dest != IP_BROADCAST)
+ 		return ERR_PTR(-ENETDOWN);
  
--	bp = (struct bootp *)payload;
-+	bp = net_udp_get_payload(dhcp_con);;
- 	bp->bp_op = OP_BOOTREQUEST;
- 	bp->bp_htype = HWT_ETHER;
- 	bp->bp_hlen = HWL_ETHER;
-@@ -471,7 +470,7 @@ static int bootp_request(void)
- 		safe_strncpy (bp->bp_file, bfile, sizeof(bp->bp_file));
+ 	con = xzalloc(sizeof(*con));
+@@ -291,7 +291,7 @@ static struct net_connection *net_new(IPaddr_t dest, rx_handler_f *handler,
+ 	con->icmp = (struct icmphdr *)(con->packet + ETHER_HDR_SIZE + sizeof(struct iphdr));
+ 	con->handler = handler;
  
- 	/* Request additional information from the BOOTP/DHCP server */
--	ext_len = dhcp_extended((u8 *)bp->bp_vend, DHCP_DISCOVER, 0, 0);
-+	ext_len = dhcp_extended(bp->bp_vend, DHCP_DISCOVER, 0, 0);
+-	if (dest == 0xffffffff) {
++	if (dest == IP_BROADCAST) {
+ 		memset(con->et->et_dest, 0xff, 6);
+ 	} else {
+ 		ret = arp_request(dest, con->et->et_dest);
+@@ -525,7 +525,7 @@ static int net_handle_ip(struct eth_device *edev, unsigned char *pkt, int len)
+ 		goto bad;
  
- 	Bootp_id = (uint32_t)get_time_ns();
- 	net_copy_uint32(&bp->bp_id, &Bootp_id);
-@@ -483,7 +482,7 @@ static int bootp_request(void)
- 	return ret;
- }
+ 	tmp = net_read_ip(&ip->daddr);
+-	if (edev->ipaddr && tmp != edev->ipaddr && tmp != 0xffffffff)
++	if (edev->ipaddr && tmp != edev->ipaddr && tmp != IP_BROADCAST)
+ 		return 0;
  
--static void dhcp_options_handle(unsigned char option, unsigned char *popt,
-+static void dhcp_options_handle(unsigned char option, void *popt,
- 			       int optlen, struct bootp *bp)
- {
- 	int i;
-@@ -537,11 +536,10 @@ static void dhcp_send_request_packet(struct bootp *bp_offer)
- 	struct bootp *bp;
- 	int extlen;
- 	IPaddr_t OfferedIP;
--	unsigned char *payload = net_udp_get_payload(dhcp_con);
- 
- 	debug("%s: Sending DHCPREQUEST\n", __func__);
- 
--	bp = (struct bootp *)payload;
-+	bp = net_udp_get_payload(dhcp_con);
- 	bp->bp_op = OP_BOOTREQUEST;
- 	bp->bp_htype = HWT_ETHER;
- 	bp->bp_hlen = HWL_ETHER;
-@@ -566,7 +564,7 @@ static void dhcp_send_request_packet(struct bootp *bp_offer)
- 	 * Copy options from OFFER packet if present
- 	 */
- 	net_copy_ip(&OfferedIP, &bp_offer->bp_yiaddr);
--	extlen = dhcp_extended((u8 *)bp->bp_vend, DHCP_REQUEST, net_dhcp_server_ip,
-+	extlen = dhcp_extended(bp->bp_vend, DHCP_REQUEST, net_dhcp_server_ip,
- 				OfferedIP);
- 
- 	debug("Transmitting DHCPREQUEST packet\n");
-@@ -601,7 +599,7 @@ static void dhcp_handler(void *ctx, char *packet, unsigned int len)
- 		debug ("%s: state SELECTING, bp_file: \"%s\"\n", __func__, bp->bp_file);
- 		dhcp_state = REQUESTING;
- 
--		if (net_read_uint32((uint32_t *)&bp->bp_vend[0]) == htonl(BOOTP_VENDOR_MAGIC))
-+		if (net_read_uint32(&bp->bp_vend[0]) == htonl(BOOTP_VENDOR_MAGIC))
- 			dhcp_options_process((u8 *)&bp->bp_vend[4], bp);
- 
- 		bootp_copy_net_params(bp); /* Store net params from reply */
-@@ -615,8 +613,8 @@ static void dhcp_handler(void *ctx, char *packet, unsigned int len)
- 
- 		if (dhcp_message_type((u8 *)bp->bp_vend) == DHCP_ACK ) {
- 			IPaddr_t ip;
--			if (net_read_uint32((uint32_t *)&bp->bp_vend[0]) == htonl(BOOTP_VENDOR_MAGIC))
--				dhcp_options_process((u8 *)&bp->bp_vend[4], bp);
-+			if (net_read_uint32(&bp->bp_vend[0]) == htonl(BOOTP_VENDOR_MAGIC))
-+				dhcp_options_process(&bp->bp_vend[4], bp);
- 			bootp_copy_net_params(bp); /* Store net params from reply */
- 			dhcp_state = BOUND;
- 			ip = net_get_ip(dhcp_edev);
+ 	switch (ip->protocol) {
 -- 
 2.11.0
 
