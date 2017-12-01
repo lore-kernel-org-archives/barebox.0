@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKjPs-0002bm-CN
- for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:37 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1eKjPm-0003oY-WA
+ for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Dec 2017 12:22:52 +0100
-Message-Id: <20171201112256.20196-24-s.hauer@pengutronix.de>
+Date: Fri,  1 Dec 2017 12:22:45 +0100
+Message-Id: <20171201112256.20196-17-s.hauer@pengutronix.de>
 In-Reply-To: <20171201112256.20196-1-s.hauer@pengutronix.de>
 References: <20171201112256.20196-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,116 +21,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 23/27] net: environment: update automounts
+Subject: [PATCH 16/27] net: Pick network device based on IP settings
 To: Barebox List <barebox@lists.infradead.org>
 
-Instead of using "ifup ethx" use "ifup -a" which works with all
-network interfaces. Also replace "$ethx.serverip" with
-"$global.net.server". This makes the automount independent of
-the actual network interface. Remove all board specific
-/env/init/automount files which were only there to use eth1 instead
-of the previously hardcoded eth0.
+The IP/netmask/gateway settings contain all informations
+needed to pick the correct network device. This patch
+adds support for that and makes specifying the "current"
+network interface using the ethact command unnecessary.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/user/automount.rst                        |  2 +-
- arch/arm/boards/afi-gf/defaultenv-gf/init/automount     | 10 ----------
- .../defaultenv-pico-hobbit/init/automount               | 11 -----------
- .../zii-imx6q-rdu2/defaultenv-rdu2/init/automount       | 17 -----------------
- defaultenv/defaultenv-2-base/init/automount             |  4 ++--
- 5 files changed, 3 insertions(+), 41 deletions(-)
- delete mode 100644 arch/arm/boards/afi-gf/defaultenv-gf/init/automount
- delete mode 100644 arch/arm/boards/technexion-pico-hobbit/defaultenv-pico-hobbit/init/automount
- delete mode 100644 arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/init/automount
+ include/net.h |  1 +
+ net/net.c     | 30 ++++++++++++++++++++++++++++--
+ 2 files changed, 29 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/user/automount.rst b/Documentation/user/automount.rst
-index a5e4313576..7de8261354 100644
---- a/Documentation/user/automount.rst
-+++ b/Documentation/user/automount.rst
-@@ -13,7 +13,7 @@ Typical usage is for accessing the TFTP server. To set up an automount for a
- TFTP server, the following is required::
+diff --git a/include/net.h b/include/net.h
+index b7555c0de6..3faecff5d7 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -226,6 +226,7 @@ IPaddr_t net_get_serverip(void);
+ IPaddr_t net_get_gateway(void);
+ IPaddr_t net_get_nameserver(void);
+ const char *net_get_domainname(void);
++struct eth_device *net_route(IPaddr_t ip);
  
-   mkdir -p /mnt/tftp
--  automount /mnt/tftp 'ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp'
-+  automount /mnt/tftp 'ifup -a && mount -t tftp $global.net.server /mnt/tftp'
+ /* Do the work */
+ void net_poll(void);
+diff --git a/net/net.c b/net/net.c
+index 33d6e2c5b0..94954677c5 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -144,6 +144,27 @@ static void arp_handler(struct arprequest *arp)
+ 	}
+ }
  
- This creates an automountpoint on ``/mnt/tftp``. Whenever this directory is accessed,
- the command ``ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp`` is executed.
-diff --git a/arch/arm/boards/afi-gf/defaultenv-gf/init/automount b/arch/arm/boards/afi-gf/defaultenv-gf/init/automount
-deleted file mode 100644
-index 560bdb7975..0000000000
---- a/arch/arm/boards/afi-gf/defaultenv-gf/init/automount
-+++ /dev/null
-@@ -1,10 +0,0 @@
--#!/bin/sh
--
--# automount tftp server based on $eth1.serverip
--
--mkdir -p /mnt/tftp
--automount /mnt/tftp 'ifup eth1 && mount -t tftp $eth1.serverip /mnt/tftp'
--
--# eth0 is on the mezzanine board
--mkdir -p /mnt/tftp-eth0
--automount /mnt/tftp-eth0 'ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp'
-diff --git a/arch/arm/boards/technexion-pico-hobbit/defaultenv-pico-hobbit/init/automount b/arch/arm/boards/technexion-pico-hobbit/defaultenv-pico-hobbit/init/automount
-deleted file mode 100644
-index fdcfa36045..0000000000
---- a/arch/arm/boards/technexion-pico-hobbit/defaultenv-pico-hobbit/init/automount
-+++ /dev/null
-@@ -1,11 +0,0 @@
--#!/bin/sh
--
--# automount tftp server based on $eth1.serverip
--
--mkdir -p /mnt/tftp
--automount /mnt/tftp 'ifup eth1 && mount -t tftp $eth1.serverip /mnt/tftp'
--
--# automount nfs server's nfsroot
--
--mkdir -p /mnt/nfs
--automount /mnt/nfs 'ifup eth1 && mount -t nfs ${eth1.serverip}:/home/${global.user}/nfsroot/${global.hostname} /mnt/nfs'
-diff --git a/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/init/automount b/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/init/automount
-deleted file mode 100644
-index 6c04eb48a1..0000000000
---- a/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/init/automount
-+++ /dev/null
-@@ -1,17 +0,0 @@
--#!/bin/sh
--
--# automount tftp server based on $eth0.serverip
--
--mkdir -p /mnt/tftp
--automount /mnt/tftp 'ifup eth1 && mount -t tftp $eth1.serverip /mnt/tftp'
--
--# automount nfs server's nfsroot
--
--mkdir -p /mnt/nfs
--automount /mnt/nfs 'ifup eth1 && mount -t nfs ${eth1.serverip}:/home/${global.user}/nfsroot/${global.hostname} /mnt/nfs'
--
--
--# FAT on usb disk example
--
--#mkdir -p /mnt/fat
--#automount -d /mnt/fat 'usb && [ -e /dev/disk0.0 ] && mount /dev/disk0.0 /mnt/fat'
-diff --git a/defaultenv/defaultenv-2-base/init/automount b/defaultenv/defaultenv-2-base/init/automount
-index 959b2c148e..5e0cb4d938 100644
---- a/defaultenv/defaultenv-2-base/init/automount
-+++ b/defaultenv/defaultenv-2-base/init/automount
-@@ -3,12 +3,12 @@
- # automount tftp server based on $eth0.serverip
++struct eth_device *net_route(IPaddr_t dest)
++{
++	struct eth_device *edev;
++
++	for_each_netdev(edev) {
++		if (!edev->ipaddr)
++			continue;
++
++		if ((dest & edev->netmask) == (edev->ipaddr & edev->netmask)) {
++			pr_debug("Route: Using %s (ip=%pI4, nm=%pI4) to reach %pI4\n",
++			      dev_name(&edev->dev), &edev->ipaddr, &edev->netmask,
++				       &dest);
++			return edev;
++		}
++	}
++
++	pr_debug("Route: No device found for %pI4\n", &dest);
++
++	return NULL;
++}
++
+ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *ether)
+ {
+ 	char *pkt;
+@@ -154,6 +175,9 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
+ 	unsigned retries = 0;
+ 	int ret;
  
- mkdir -p /mnt/tftp
--automount /mnt/tftp 'ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp'
-+automount /mnt/tftp 'ifup -a && mount -t tftp $global.net.server /mnt/tftp'
++	if (!edev)
++		return -EHOSTUNREACH;
++
+ 	if (!arp_packet) {
+ 		arp_packet = net_alloc_packet();
+ 		if (!arp_packet)
+@@ -295,9 +319,11 @@ static struct net_connection *net_new(struct eth_device *edev, IPaddr_t dest,
+ 	int ret;
  
- # automount nfs server's nfsroot
+ 	if (!edev) {
+-		edev = eth_get_current();
++		edev = net_route(dest);
++		if (!edev && net_gateway)
++			edev = net_route(net_gateway);
+ 		if (!edev)
+-			return ERR_PTR(-ENETDOWN);
++			return ERR_PTR(-EHOSTUNREACH);
+ 	}
  
- mkdir -p /mnt/nfs
--automount /mnt/nfs 'ifup eth0 && mount -t nfs ${eth0.serverip}:/home/${global.user}/nfsroot/${global.hostname} /mnt/nfs'
-+automount /mnt/nfs 'ifup -a && mount -t nfs ${global.net.server}:/home/${global.user}/nfsroot/${global.hostname} /mnt/nfs'
- 
- 
- # FAT on usb disk example
+ 	if (!is_valid_ether_addr(edev->ethaddr)) {
 -- 
 2.11.0
 
