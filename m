@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKjQ5-0003ue-S2
- for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:55 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1eKjPz-0003ON-Ot
+ for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 25/27] net: Add linuxdevname property
-Date: Fri,  1 Dec 2017 12:22:54 +0100
-Message-Id: <20171201112256.20196-26-s.hauer@pengutronix.de>
+Subject: [PATCH 18/27] net: ifup: Factor out a eth_discover function
+Date: Fri,  1 Dec 2017 12:22:47 +0100
+Message-Id: <20171201112256.20196-19-s.hauer@pengutronix.de>
 In-Reply-To: <20171201112256.20196-1-s.hauer@pengutronix.de>
 References: <20171201112256.20196-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,104 +24,89 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: Barebox List <barebox@lists.infradead.org>
 
-When you have a static network environment but more than one network
-device on your machine it is necessary to provide the <device> parameter
-to the ip parameter at kernel cmd line.
-
-The device name assigned by Linux cannot in general be predicted as it
-depends on driver bind order.
-
-This patch introduces a new property linux.devname to eth devices.
-The value is added to bootargs per interface and can be changed in
-env/network/INTF
-
-Based on patch by Gavin Schenk <g.schenk@eckelmann.de>.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/net.h |  1 +
- net/eth.c     |  2 ++
- net/ifup.c    | 14 +++++++++++---
- 3 files changed, 14 insertions(+), 3 deletions(-)
+ net/ifup.c | 38 ++++++++++++++++++++++++++------------
+ 1 file changed, 26 insertions(+), 12 deletions(-)
 
-diff --git a/include/net.h b/include/net.h
-index 926d817802..a09cb155a8 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -61,6 +61,7 @@ struct eth_device {
- 	IPaddr_t netmask;
- 	char ethaddr[6];
- 	char *bootarg;
-+	char *linuxdevname;
- 
- 	bool ifup;
- #define ETH_MODE_DHCP 0
-diff --git a/net/eth.c b/net/eth.c
-index a9869f7d9d..5d45a04612 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -390,6 +390,8 @@ int eth_register(struct eth_device *edev)
- 			edev->ethaddr, edev);
- 	edev->bootarg = xstrdup("");
- 	dev_add_param_string(dev, "linux.bootargs", NULL, NULL, &edev->bootarg, NULL);
-+	edev->linuxdevname = xstrdup("");
-+	dev_add_param_string(dev, "linux.devname", NULL, NULL, &edev->linuxdevname, NULL);
- 	dev_add_param_enum(dev, "mode", NULL, NULL, &edev->global_mode,
- 				  eth_mode_names, ARRAY_SIZE(eth_mode_names),
- 				  NULL);
 diff --git a/net/ifup.c b/net/ifup.c
-index dc41c47f24..827c5c03d1 100644
+index 423712e19c..f6ccd70378 100644
 --- a/net/ifup.c
 +++ b/net/ifup.c
-@@ -72,11 +72,12 @@ static int source_env_network(struct eth_device *edev)
- 		"serverip",
- 		"ethaddr",
- 		"ip",
-+		"linuxdevname",
- 	};
- 	IPaddr_t ipaddr, netmask, gateway, serverip;
- 	unsigned char ethaddr[6];
- 	char *file, *cmd;
--	const char *ethaddrstr, *modestr;
-+	const char *ethaddrstr, *modestr, *linuxdevname;
- 	int ret, mode, ethaddr_valid = 0, i;
- 	struct stat s;
+@@ -26,6 +26,30 @@
+ #include <fs.h>
+ #include <linux/stat.h>
  
-@@ -107,6 +108,7 @@ static int source_env_network(struct eth_device *edev)
- 	netmask = getenv_ip("netmask");
- 	gateway = getenv_ip("gateway");
- 	serverip = getenv_ip("serverip");
-+	linuxdevname = getenv("linuxdevname");
- 	ethaddrstr = getenv("ethaddr");
- 	if (ethaddrstr && *ethaddrstr) {
- 		ret = string_to_ethaddr(ethaddrstr, ethaddr);
-@@ -149,6 +151,11 @@ static int source_env_network(struct eth_device *edev)
- 			net_set_serverip(serverip);
- 	}
- 
-+	if (linuxdevname) {
-+		free(edev->linuxdevname);
-+		edev->linuxdevname = xstrdup(linuxdevname);
++static int eth_discover(const char *name)
++{
++	char *cmd_discover;
++	struct stat s;
++	int ret;
++
++	cmd_discover = basprintf("/env/network/%s-discover", name);
++
++	ret = stat(cmd_discover, &s);
++	if (ret)
++		goto out;
++
++	ret = run_command(cmd_discover);
++	if (ret) {
++		pr_err("Running '%s' failed with %d\n", cmd_discover, ret);
++		goto out;
 +	}
 +
- 	ret = 0;
++out:
++	free(cmd_discover);
++
++	return ret;
++}
++
+ static char *vars[] = {
+ 	"ipaddr",
+ 	"netmask",
+@@ -48,9 +72,8 @@ static int eth_set_param(struct device_d *dev, const char *param)
+ int ifup(const char *name, unsigned flags)
+ {
+ 	int ret;
+-	char *cmd, *cmd_discover;
++	char *cmd;
+ 	const char *ip;
+-	struct stat s;
+ 	int i;
+ 	struct device_d *dev;
+ 	struct eth_device *edev = eth_get_byname(name);
+@@ -66,7 +89,6 @@ int ifup(const char *name, unsigned flags)
+ 		setenv(vars[i], "");
  
+ 	cmd = basprintf("source /env/network/%s", name);
+-	cmd_discover = basprintf("/env/network/%s-discover", name);
+ 
+ 	ret = run_command(cmd);
+ 	if (ret) {
+@@ -74,14 +96,7 @@ int ifup(const char *name, unsigned flags)
+ 		goto out;
+ 	}
+ 
+-	ret = stat(cmd_discover, &s);
+-	if (!ret) {
+-		ret = run_command(cmd_discover);
+-		if (ret) {
+-			pr_err("Running '%s' failed with %d\n", cmd, ret);
+-			goto out;
+-		}
+-	}
++	eth_discover(name);
+ 
+ 	dev = get_device_by_name(name);
+ 	if (!dev) {
+@@ -142,7 +157,6 @@ int ifup(const char *name, unsigned flags)
  out:
-@@ -169,11 +176,12 @@ static void set_linux_bootarg(struct eth_device *edev)
- 		serverip = net_get_serverip();
- 		gateway = net_get_gateway();
+ 	env_pop_context();
+ 	free(cmd);
+-	free(cmd_discover);
  
--		bootarg = basprintf("ip=%pI4:%pI4:%pI4:%pI4:::",
-+		bootarg = basprintf("ip=%pI4:%pI4:%pI4:%pI4::%s:",
- 				&edev->ipaddr,
- 				&serverip,
- 				&gateway,
--				&edev->netmask);
-+				&edev->netmask,
-+				edev->linuxdevname ? edev->linuxdevname : "");
- 		dev_set_param(&edev->dev, "linux.bootargs", bootarg);
- 		free(bootarg);
- 	} else if (edev->global_mode == ETH_MODE_DHCP) {
+ 	return ret;
+ }
 -- 
 2.11.0
 
