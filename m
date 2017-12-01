@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKj9G-0003JS-Q2
- for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:06:28 +0000
-Date: Fri, 1 Dec 2017 12:06:04 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171201110604.xc2ukpfazjwzdpqf@pengutronix.de>
-References: <20171128130521.26270-1-u.kleine-koenig@pengutronix.de>
+ id 1eKjDU-0006Eu-3v
+ for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:10:50 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri,  1 Dec 2017 12:10:17 +0100
+Message-Id: <20171201111017.29098-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20171128130521.26270-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,61 +15,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net/e1000: add missing \n in error message
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] net/e1000: indicate at boot time if flash is in secure mode
+To: barebox@lists.infradead.org
 
-On Tue, Nov 28, 2017 at 02:05:21PM +0100, Uwe Kleine-K=F6nig wrote:
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  drivers/net/e1000/eeprom.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> =
-
-
-Applied, thanks
-
-Sascha
-
-> diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-> index 6ee850c7808d..6251c6cecc94 100644
-> --- a/drivers/net/e1000/eeprom.c
-> +++ b/drivers/net/e1000/eeprom.c
-> @@ -717,7 +717,7 @@ static int e1000_flash_mode_check_command_valid(struc=
-t e1000_hw *hw)
->  {
->  	const uint32_t flswctl =3D e1000_read_reg(hw, E1000_FLSWCTL);
->  	if (!(flswctl & E1000_FLSWCTL_CMDV)) {
-> -		dev_err(hw->dev, "FLSWCTL.CMDV was cleared");
-> +		dev_err(hw->dev, "FLSWCTL.CMDV was cleared\n");
->  		return -EIO;
->  	}
->  =
-
-> -- =
-
-> 2.11.0
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SWYgdGhlIGZsYXNoIGlzIGluIHNlY3VyZSBtb2RlIGl0IGlzIG5vdCBwb3NzaWJsZSB0byBtb2Rp
+ZnkgaXRzCmNvbnRlbnRzLiBTbyBsb2cgdGhhdCB1c2VmdWwgaW5mb3JtYXRpb24gYXQgcHJvYmUg
+dGltZS4KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdA
+cGVuZ3V0cm9uaXguZGU+Ci0tLQogZHJpdmVycy9uZXQvZTEwMDAvZTEwMDAuaCAgfCAgMSArCiBk
+cml2ZXJzL25ldC9lMTAwMC9lZXByb20uYyB8IDEwICsrKysrKystLS0KIDIgZmlsZXMgY2hhbmdl
+ZCwgOCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMv
+bmV0L2UxMDAwL2UxMDAwLmggYi9kcml2ZXJzL25ldC9lMTAwMC9lMTAwMC5oCmluZGV4IDUwZDQ5
+MTE4ZjVlNC4uMTU1OGIzYzdmNWM3IDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC9lMTAwMC9lMTAw
+MC5oCisrKyBiL2RyaXZlcnMvbmV0L2UxMDAwL2UxMDAwLmgKQEAgLTIxMDEsNiArMjEwMSw3IEBA
+IHN0cnVjdCBlMTAwMF9lZXByb21faW5mbyB7CiAJCQkJCQkJYWZ0ZXIgSU1TIGNsZWFyICovCiAK
+ICNkZWZpbmUgRTEwMDBfRkxBCQkJMHgxMjAxQworI2RlZmluZSBFMTAwMF9GTEFfTE9DS0VECQko
+MSA8PCA2KQogI2RlZmluZSBFMTAwMF9GTEFfRkxfU0laRV9TSElGVAkJMTcKICNkZWZpbmUgRTEw
+MDBfRkxBX0ZMX1NJWkVfTUFTSwkJKDBiMTExIDw8IEUxMDAwX0ZMQV9GTF9TSVpFX1NISUZUKSAv
+KiBFRXByb20gU2l6ZSAqLwogCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9lMTAwMC9lZXByb20u
+YyBiL2RyaXZlcnMvbmV0L2UxMDAwL2VlcHJvbS5jCmluZGV4IDYyNTFjNmNlY2M5NC4uNTFlMGYy
+OGM3ZDQ0IDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC9lMTAwMC9lZXByb20uYworKysgYi9kcml2
+ZXJzL25ldC9lMTAwMC9lZXByb20uYwpAQCAtMTU4NCwxMCArMTU4NCwxNCBAQCBpbnQgZTEwMDBf
+cmVnaXN0ZXJfZWVwcm9tKHN0cnVjdCBlMTAwMF9odyAqaHcpCiAKIAkJaWYgKGVlY2QgJiBFMTAw
+MF9FRUNEX0FVVE9fUkQpIHsKIAkJCWlmIChlZWNkICYgRTEwMDBfRUVDRF9FRV9QUkVTKSB7Ci0J
+CQkJaWYgKGVlY2QgJiBFMTAwMF9FRUNEX0ZMQVNIX0lOX1VTRSkKLQkJCQkJZGV2X2luZm8oaHct
+PmRldiwgIkhhcmR3YXJlIHByb2dyYW1tZWQgZnJvbSBmbGFzaFxuIik7Ci0JCQkJZWxzZQorCQkJ
+CWlmIChlZWNkICYgRTEwMDBfRUVDRF9GTEFTSF9JTl9VU0UpIHsKKwkJCQkJdWludDMyX3QgZmxh
+ID0gZTEwMDBfcmVhZF9yZWcoaHcsIEUxMDAwX0ZMQSk7CisJCQkJCWRldl9pbmZvKGh3LT5kZXYs
+CisJCQkJCQkgIkhhcmR3YXJlIHByb2dyYW1tZWQgZnJvbSBmbGFzaCAoJXNzZWN1cmUpXG4iLAor
+CQkJCQkJIGZsYSAmIEUxMDAwX0ZMQV9MT0NLRUQgPyAiIiA6ICJ1biIpOworCQkJCX0gZWxzZSB7
+CiAJCQkJCWRldl9pbmZvKGh3LT5kZXYsICJIYXJkd2FyZSBwcm9ncmFtbWVkIGZyb20gaU5WTVxu
+Iik7CisJCQkJfQogCQkJfSBlbHNlIHsKIAkJCQlkZXZfd2Fybihody0+ZGV2LCAiU2hhZG93IFJB
+TSBpbnZhbGlkXG4iKTsKIAkJCX0KLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2JhcmVib3gK
