@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKjPe-0003o9-Cz
- for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:25 +0000
+ id 1eKjPe-0003ny-DD
+ for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:26 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Dec 2017 12:22:48 +0100
-Message-Id: <20171201112256.20196-20-s.hauer@pengutronix.de>
+Date: Fri,  1 Dec 2017 12:22:31 +0100
+Message-Id: <20171201112256.20196-3-s.hauer@pengutronix.de>
 In-Reply-To: <20171201112256.20196-1-s.hauer@pengutronix.de>
 References: <20171201112256.20196-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,45 +21,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 19/27] ifup: Use dhcp C API rather than running command
+Subject: [PATCH 02/27] driver: Add device_detect_all() function
 To: Barebox List <barebox@lists.infradead.org>
 
-DHCP has a C API, so use it instead of running as command.
+Add a device_detect_all function to detect all devices and use it
+in the detect command. This makes the functionality reusable in other
+code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/ifup.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ commands/detect.c     | 4 +---
+ drivers/base/driver.c | 8 ++++++++
+ include/driver.h      | 1 +
+ 3 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/net/ifup.c b/net/ifup.c
-index f6ccd70378..0f5d2772e8 100644
---- a/net/ifup.c
-+++ b/net/ifup.c
-@@ -22,6 +22,7 @@
- #include <command.h>
- #include <common.h>
- #include <getopt.h>
-+#include <dhcp.h>
- #include <net.h>
- #include <fs.h>
- #include <linux/stat.h>
-@@ -114,15 +115,12 @@ int ifup(const char *name, unsigned flags)
+diff --git a/commands/detect.c b/commands/detect.c
+index d68d738453..48bab4d020 100644
+--- a/commands/detect.c
++++ b/commands/detect.c
+@@ -54,9 +54,7 @@ static int do_detect(int argc, char *argv[])
+ 	}
  
- 	if (!strcmp(ip, "dhcp")) {
- 		IPaddr_t serverip;
--		char *dhcp_cmd;
+ 	if (option_all) {
+-		for_each_device(dev)
+-			device_detect(dev);
+-
++		device_detect_all();
+ 		return 0;
+ 	}
  
- 		serverip = getenv_ip("serverip");
- 		if (serverip)
- 			net_set_serverip_empty(serverip);
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 83260990af..c43a4bde2a 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -140,6 +140,14 @@ int device_detect_by_name(const char *__devname)
+ 	return ret;
+ }
  
--		dhcp_cmd = basprintf("dhcp %s", name);
--		ret = run_command(dhcp_cmd);
--		free(dhcp_cmd);
-+		ret = dhcp(edev, NULL);
- 		if (ret)
- 			goto out;
- 		dev_set_param(dev, "linux.bootargs", "ip=dhcp");
++void device_detect_all(void)
++{
++	struct device_d *dev;
++
++	for_each_device(dev)
++		device_detect(dev);
++}
++
+ static int match(struct driver_d *drv, struct device_d *dev)
+ {
+ 	int ret;
+diff --git a/include/driver.h b/include/driver.h
+index 8617872053..e571fbbec5 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -134,6 +134,7 @@ int device_probe(struct device_d *dev);
+ /* detect devices attached to this device (cards, disks,...) */
+ int device_detect(struct device_d *dev);
+ int device_detect_by_name(const char *devname);
++void device_detect_all(void);
+ 
+ /* Unregister a device. This function can fail, e.g. when the device
+  * has children.
 -- 
 2.11.0
 
