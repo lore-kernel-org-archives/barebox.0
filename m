@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ePkNV-0002L7-Ib
- for barebox@lists.infradead.org; Fri, 15 Dec 2017 07:25:56 +0000
-Date: Fri, 15 Dec 2017 08:25:31 +0100
+ id 1eKj6o-0000mQ-D2
+ for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:03:57 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
+ (envelope-from <sha@pengutronix.de>) id 1eKj6P-0001Lx-J6
+ for barebox@lists.infradead.org; Fri, 01 Dec 2017 12:03:29 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.89)
+ (envelope-from <sha@pengutronix.de>) id 1eKj6O-0002Mm-0g
+ for barebox@lists.infradead.org; Fri, 01 Dec 2017 12:03:28 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171215072531.zas5242xsgrsctoq@pengutronix.de>
-References: <1513241754-1754-1-git-send-email-akurz@blala.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1513241754-1754-1-git-send-email-akurz@blala.de>
+Date: Fri,  1 Dec 2017 12:03:19 +0100
+Message-Id: <20171201110326.31598-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,65 +22,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] spi: imx: make xchg_single timeout value compatible for
- older boards
-To: Alexander Kurz <akurz@blala.de>
-Cc: barebox@lists.infradead.org, Uwe Kleine-Koenig <u.kleine-koenig@pengutronix.de>
+Subject: Fix Documentation build warnings
+To: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Dec 14, 2017 at 09:55:54AM +0100, Alexander Kurz wrote:
-> A call of xchg_single will issue the transfer of 24 data bits with a given
-> maximum frequency. Since there exist some i.MX based boards with
-> spi-max-frequency = <100000>, change the xchg_single timeout to still
-> support those boards.
-> 
-> Fixes: 1439cdf7c6fc ("spi: imx: add timeout to xchg_single")
-> Signed-off-by: Alexander Kurz <akurz@blala.de>
-> ---
->  drivers/spi/imx_spi.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-
-Applied, thanks
+There are so many warnings during build of the documentation
+that one probably doesn't realize when he adds even more. Fix
+all these.
 
 Sascha
 
-> 
-> diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-> index 7819879..0827de7 100644
-> --- a/drivers/spi/imx_spi.c
-> +++ b/drivers/spi/imx_spi.c
-> @@ -32,8 +32,11 @@
->  #include <linux/err.h>
->  #include <clock.h>
->  
-> -/* time to wait for STAT_RR getting set */
-> -#define IMX_SPI_RR_TIMEOUT	10000 /* ns */
-> +/*
-> + * time to wait for STAT_RR getting set, should allow the transfer
-> + * of 24 bits at spi-max-frequency of 100kHz
-> + */
-> +#define IMX_SPI_RR_TIMEOUT	250000 /* ns */
->  
->  struct imx_spi {
->  	struct spi_master	master;
-> -- 
-> 2.1.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+----------------------------------------------------------------
+Sascha Hauer (7):
+      Documentation: arm-qemu-vexpress: Fix too short underline
+      Documentation: Change many code blocks to no highlight
+      Documentation: socfpga: Fix numbered list
+      Documentation: change default highlight language to shell
+      Documentation: defaultenv-2: Change highlight to make
+      Documentation: remove :numbered: from lower level toctrees
+      ARM: psci command: Add to misc group
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+ Documentation/boards/am335x.rst                    |  1 -
+ Documentation/boards/arm-qemu-vexpress.rst         |  2 +-
+ Documentation/boards/cirrus-logic.rst              |  1 -
+ Documentation/boards/imx.rst                       |  1 -
+ Documentation/boards/mips.rst                      |  1 -
+ Documentation/boards/mvebu.rst                     |  1 -
+ Documentation/boards/mxs.rst                       |  1 -
+ Documentation/boards/openrisc.rst                  |  4 ++-
+ Documentation/boards/powerpc.rst                   |  1 -
+ Documentation/boards/pxa.rst                       |  1 -
+ Documentation/boards/rk3288.rst                    |  1 -
+ Documentation/boards/samsung.rst                   |  1 -
+ Documentation/boards/socfpga.rst                   | 22 ++++++------
+ Documentation/boards/x86.rst                       | 18 ++++++----
+ Documentation/conf.py                              |  2 +-
+ .../bindings/barebox/barebox,environment.rst       |  4 ++-
+ .../devicetree/bindings/misc/fsl,imx-iim.rst       |  4 ++-
+ .../devicetree/bindings/misc/fsl,imx-ocotp.rst     |  4 ++-
+ Documentation/devicetree/index.rst                 |  1 -
+ Documentation/filesystems/pstore.rst               | 40 +++++++++++++---------
+ Documentation/user/defaultenv-2.rst                |  4 ++-
+ Documentation/user/user-manual.rst                 |  1 -
+ arch/arm/cpu/psci.c                                |  5 +--
+ 23 files changed, 66 insertions(+), 55 deletions(-)
 
 _______________________________________________
 barebox mailing list
