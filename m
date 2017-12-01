@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKjPe-0003o0-D8
- for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:26 +0000
+ id 1eKjPf-0003oC-1u
+ for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Dec 2017 12:22:32 +0100
-Message-Id: <20171201112256.20196-4-s.hauer@pengutronix.de>
+Date: Fri,  1 Dec 2017 12:22:56 +0100
+Message-Id: <20171201112256.20196-28-s.hauer@pengutronix.de>
 In-Reply-To: <20171201112256.20196-1-s.hauer@pengutronix.de>
 References: <20171201112256.20196-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,38 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/27] nvvar: when setting a nvvar to NULL just free the
- content
+Subject: [PATCH 27/27] defaultenv-2: set bootargs correctly for network boot
 To: Barebox List <barebox@lists.infradead.org>
 
-When a nvvar is about to be removed then it is set to NULL
-by barebox. This means for the variable to free it's memory.
-In this case also do not pass the value to the corresponding
-globalvar, since that would set the globalvar to NULL aswell,
-but we want to keep its current value.
+The defaultenv-2 network boot script uses bootargs-ip which
+hardcodes eth0 as network device. To make this work with
+other nwetork devices use the "ip_route_get" command to determine
+the network device used to reach the server.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/globalvar.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ defaultenv/defaultenv-2-base/bin/bootargs-ip | 11 -----------
+ defaultenv/defaultenv-2-base/boot/net        |  3 ++-
+ 2 files changed, 2 insertions(+), 12 deletions(-)
+ delete mode 100644 defaultenv/defaultenv-2-base/bin/bootargs-ip
 
-diff --git a/common/globalvar.c b/common/globalvar.c
-index 77b89c1791..11cf6ce3fe 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -167,8 +167,10 @@ static int nv_set(struct device_d *dev, struct param_d *p, const char *val)
- {
- 	int ret;
+diff --git a/defaultenv/defaultenv-2-base/bin/bootargs-ip b/defaultenv/defaultenv-2-base/bin/bootargs-ip
+deleted file mode 100644
+index 2d4486caf8..0000000000
+--- a/defaultenv/defaultenv-2-base/bin/bootargs-ip
++++ /dev/null
+@@ -1,11 +0,0 @@
+-#!/bin/sh
+-
+-# pass either static ip or dhcp to kernel based on barebox settings
+-
+-. /env/network/eth0
+-
+-if [ $ip = dhcp ]; then
+-	global.linux.bootargs.dyn.ip="ip=dhcp"
+-else
+-	global.linux.bootargs.dyn.ip="ip=$ipaddr:$serverip:$gateway:$netmask::eth0:"
+-fi
+diff --git a/defaultenv/defaultenv-2-base/boot/net b/defaultenv/defaultenv-2-base/boot/net
+index af096410b7..aaa5394f27 100644
+--- a/defaultenv/defaultenv-2-base/boot/net
++++ b/defaultenv/defaultenv-2-base/boot/net
+@@ -10,7 +10,8 @@ if [ -f "${oftree}" ]; then
+ fi
  
--	if (!val)
--		val = "";
-+	if (!val) {
-+		free(p->value);
-+		return 0;
-+	}
+ nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
+-bootargs-ip
++
++ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
  
- 	ret = dev_set_param(&global_device, p->name, val);
- 	if (ret)
+ initramfs="${path}/${global.user}-initramfs-${global.hostname}"
+ if [ -f "${initramfs}" ]; then
 -- 
 2.11.0
 
