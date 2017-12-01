@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKjPe-0003nw-DE
- for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:27 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
- (envelope-from <sha@pengutronix.de>) id 1eKjPI-00054g-CB
- for barebox@lists.infradead.org; Fri, 01 Dec 2017 12:23:00 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <sha@pengutronix.de>) id 1eKjPI-0007nS-13
- for barebox@lists.infradead.org; Fri, 01 Dec 2017 12:23:00 +0100
+ id 1eKjPe-0003o1-DA
+ for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Dec 2017 12:22:29 +0100
-Message-Id: <20171201112256.20196-1-s.hauer@pengutronix.de>
+Date: Fri,  1 Dec 2017 12:22:33 +0100
+Message-Id: <20171201112256.20196-5-s.hauer@pengutronix.de>
+In-Reply-To: <20171201112256.20196-1-s.hauer@pengutronix.de>
+References: <20171201112256.20196-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,57 +21,116 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] Networking updates
+Subject: [PATCH 04/27] net: use pr_* functions for messages
 To: Barebox List <barebox@lists.infradead.org>
 
-This series solves some issues that have been nagging me for some
-time now.
+Use pr_* functions in the networking code rather than printf() and
+debug(). Also Add a "net: " prefix to messages to give them some more
+context.
 
-First of all the manual selection of the current ethernet device is
-unnecessary since the interface can be picked by the networking code
-automatically based on the IP settings of the interface. With this
-series the "ethact" command is gone and users of boards with multiple
-network interfaces no longer have to worry about picking the right
-one.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ net/net.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-Then the network device configuration can now be done with nvvars.
-This makes it unnecessary to edit scripts on the device (which may
-be cumbersome on some devices which lose characters on serial ports)
-and it makes it also easier for scripts or setup code to modify
-the network config.
-
-Finally the DHCP code is cleaned up, primarily to be able to pass
-in the network interface that shall be used, but also to make more
-clear which variables are input and which are output.
-
-For DHCP users the configuration is simple: It is the default. A static
-IP setup can now be done with the variables:
-
-nv.net.server
-nv.net.nameserver
-nv.net.gateway
-
-and the network device specific variables (assuming "eth0" as network device):
-
-nv.dev.eth0.ipaddr
-nv.dev.eth0.netmask
-
-(For those who are not already familiar with it: It's the normal way to store
-device parameters in nvvars, like already possible for example with NAND
-partitioning, i.e. nv.dev.nand0.partitions=4M(barebox),-(root), see
-http://www.barebox.org/doc/latest/user/variables.html#non-volatile-device-variables)
-
-As usual, all comments are welcome.
-
-Changes since v1:
-- incorporate Sams review comments for v1
-- fix setting of ip= bootargs for network boot
-- fix routing when a network device does not have an IP
-- More Documentation updates
-- Fix hardcoded usage of eth0 in defaultenv-2 network boot
-- integrate Gavins linux devname patch
-
-Sascha
+diff --git a/net/net.c b/net/net.c
+index 19b081f6cf..12e63c664e 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -23,6 +23,9 @@
+  * GNU General Public License for more details.
+  *
+  */
++
++#define pr_fmt(fmt) "net: " fmt
++
+ #include <common.h>
+ #include <clock.h>
+ #include <command.h>
+@@ -132,7 +135,7 @@ static int arp_request(IPaddr_t dest, unsigned char *ether)
+ 
+ 	arp_wait_ip = dest;
+ 
+-	pr_debug("ARP broadcast\n");
++	pr_debug("send ARP broadcast for %pI4\n", &dest);
+ 
+ 	memset(et->et_dest, 0xff, 6);
+ 	memcpy(et->et_src, edev->ethaddr, 6);
+@@ -187,10 +190,9 @@ static int arp_request(IPaddr_t dest, unsigned char *ether)
+ 		net_poll();
+ 	}
+ 
+-	pr_debug("Got ARP REPLY, set server/gtwy eth addr (%02x:%02x:%02x:%02x:%02x:%02x)\n",
+-		ether[0], ether[1],
+-		ether[2], ether[3],
+-		ether[4], ether[5]);
++	pr_debug("Got ARP REPLY for %pI4: %02x:%02x:%02x:%02x:%02x:%02x\n",
++		 &dest, ether[0], ether[1], ether[2], ether[3], ether[4],
++		 ether[5]);
+ 	return 0;
+ }
+ 
+@@ -269,7 +271,7 @@ static struct net_connection *net_new(IPaddr_t dest, rx_handler_f *handler,
+ 		char str[sizeof("xx:xx:xx:xx:xx:xx")];
+ 		random_ether_addr(edev->ethaddr);
+ 		ethaddr_to_string(edev->ethaddr, str);
+-		printf("warning: No MAC address set. Using random address %s\n", str);
++		pr_warn("warning: No MAC address set. Using random address %s\n", str);
+ 		eth_set_ethaddr(edev, edev->ethaddr);
+ 	}
+ 
+@@ -386,7 +388,7 @@ static int net_answer_arp(struct eth_device *edev, unsigned char *pkt, int len)
+ 	unsigned char *packet;
+ 	int ret;
+ 
+-	debug("%s\n", __func__);
++	pr_debug("%s\n", __func__);
+ 
+ 	memcpy (et->et_dest, et->et_src, 6);
+ 	memcpy (et->et_src, edev->ethaddr, 6);
+@@ -423,7 +425,7 @@ static int net_handle_arp(struct eth_device *edev, unsigned char *pkt, int len)
+ {
+ 	struct arprequest *arp;
+ 
+-	debug("%s: got arp\n", __func__);
++	pr_debug("%s: got arp\n", __func__);
+ 
+ 	/*
+ 	 * We have to deal with two types of ARP packets:
+@@ -490,7 +492,7 @@ static int net_handle_icmp(unsigned char *pkt, int len)
+ {
+ 	struct net_connection *con;
+ 
+-	debug("%s\n", __func__);
++	pr_debug("%s\n", __func__);
+ 
+ 	list_for_each_entry(con, &connection_list, list) {
+ 		if (con->proto == IPPROTO_ICMP) {
+@@ -506,11 +508,11 @@ static int net_handle_ip(struct eth_device *edev, unsigned char *pkt, int len)
+ 	struct iphdr *ip = (struct iphdr *)(pkt + ETHER_HDR_SIZE);
+ 	IPaddr_t tmp;
+ 
+-	debug("%s\n", __func__);
++	pr_debug("%s\n", __func__);
+ 
+ 	if (len < sizeof(struct ethernet) + sizeof(struct iphdr) ||
+ 		len < ETHER_HDR_SIZE + ntohs(ip->tot_len)) {
+-		debug("%s: bad len\n", __func__);
++		pr_debug("%s: bad len\n", __func__);
+ 		goto bad;
+ 	}
+ 
+@@ -560,7 +562,7 @@ int net_receive(struct eth_device *edev, unsigned char *pkt, int len)
+ 		ret = net_handle_ip(edev, pkt, len);
+ 		break;
+ 	default:
+-		debug("%s: got unknown protocol type: %d\n", __func__, et_protlen);
++		pr_debug("%s: got unknown protocol type: %d\n", __func__, et_protlen);
+ 		ret = 1;
+ 		break;
+ 	}
+-- 
+2.11.0
 
 
 _______________________________________________
