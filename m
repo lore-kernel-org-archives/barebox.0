@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKWd1-00075g-K0
- for barebox@lists.infradead.ORG; Thu, 30 Nov 2017 21:44:21 +0000
-Date: Thu, 30 Nov 2017 22:43:54 +0100
-From: Robert Schwebel <robert@schwebel.de>
-Message-ID: <20171130214354.dyuew52qyyio2j4l@pengutronix.de>
-References: <d8583e62109f4b9ebc7030799343b662@nooslMX1.zenitelcss.com>
- <20171123171219.ngzi66uf5lhikji5@pengutronix.de>
- <9f24493b88f3412b86d192783708f813@nooslMX1.zenitelcss.com>
+ id 1eKj9G-0003JS-Q2
+ for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:06:28 +0000
+Date: Fri, 1 Dec 2017 12:06:04 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20171201110604.xc2ukpfazjwzdpqf@pengutronix.de>
+References: <20171128130521.26270-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <9f24493b88f3412b86d192783708f813@nooslMX1.zenitelcss.com>
+In-Reply-To: <20171128130521.26270-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,41 +18,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: FW: Handling boot on NAND Bad Blocks
-To: Kjell Ove =?utf-8?B?UsO4dGU=?= <kjellove.rote@zenitel.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] net/e1000: add missing \n in error message
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-T24gRnJpLCBOb3YgMjQsIDIwMTcgYXQgMDg6NDk6MjJBTSArMDAwMCwgS2plbGwgT3ZlIFLDuHRl
-IHdyb3RlOgo+IEluIHRoZSBvcmlnaW5hbCBjYXNlIHRoZSBib2FyZCBqdXN0IHJlYm9vdHMgd2hl
-biB0aGUgQmFyZWJveCBpcyB0byBiZSBsb2FkZWQgZnJvbSB0aGUgYm9vdHN0cmVhbSBpbWFnZS4g
-Cj4gSW4gbG9nIGJlbG93IHlvdSBzZWUgdGhhdCB0aGUgcG93ZXJfcHJlcCBhbmQgYm9vdF9wcmVw
-IGlzIHJ1biBidXQgdGhlIEJhcmVib3ggaXMgbm90IHN0YXJ0ZWQgYXQgYWxsLiAKPiBTbywgaW4g
-dGhpcyBjYXNlIHRoZXJlIGlzIG5vIEJhcmVib3ggaXNzdWUsIGJ1dCBJIHdhcyBsb29raW5nIGZv
-ciBpZiB0aGVyZSBhcmUgc29tZSBtZWNoYW5pc20gZm9yIGhhbmRsaW5nIGJvb3QgZW52aXJvbm1l
-bnQsIGtlcm5lbCBsb2FkIGV0YyB3aXRoIEJhZCBibG9jayBtYW5hZ2VtZW50LiAKPiBGb3IgZXhh
-bXBsZSBzb21ldGhpbmcgbGlrZSB3cml0aW5nIGFuZCBsb2FkaW5nIGEga2VybmVsIGltYWdlLCB1
-c2luZyBza2lwIGJsb2NrIG1ldGhvZCwgZnJvbSBhIHBhcnRpdGlvbiB3aXRoIGJhZCBibG9ja3Mg
-YW5kIGltYWdlIGNhbm5vdCBiZSBzdG9yZWQgb3ZlciBsaW5lYXIgYWRkcmVzc2VzLgo+IAo+IEJv
-b3RpbmcgYW4gaW1hZ2Ugd2hlcmUgQmFyZWJveCBpcyBzdG9yZWQgaW4gYSBOQU5EIEJhZCBCbG9j
-azoKPiAKPiBQb3dlclByZXAgc3RhcnQgaW5pdGlhbGl6ZSBwb3dlci4uLgo+IAo+IENvbmZpZ3Vy
-ZWQgZm9yIDV2IG9ubHkgcG93ZXIgc291cmNlLiBCYXR0ZXJ5IHBvd2VyZWQgb3BlcmF0aW9uIGRp
-c2FibGVkLgo+IAo+IFR1cmJpbmUgUG93ZXJQcmVwIFBPV0VSIFJFU0VULCBFTUMgaGFyZG5lc3MK
-PiBEaXNhYmxlIHRoZSBjaGlwIHNodXR0aW5nIGRvd24gYnkgYSBmYXN0IGZhbGxpbmcgZWRnZSBv
-ZiBQU1dJVENICj4gTm92IDI0IDIwMTYwODo1NzoyOAo+IEZSQUMgMHg5MjkyNTU1Mgo+IFdhaXQg
-Zm9yIGRkciByZWFkeSAxcG93ZXIgMHgwMDgyMDYxNgo+IEZyYWMgMHg5MjkyNTU1Mgo+IHN0YXJ0
-IGNoYW5nZSBjcHUgZnJlcQo+IGhidXMgMHgwMDAwMDAwMwo+IGNwdSAweDAwMDEwMDAxCj4gc3Rh
-cnQgdGVzdCBtZW1vcnkgYWNjcmVzcwo+IGRkcjIgMHg0MDAwMDAwMAo+IGZpbmlzaCBzaW1wbGUg
-dGVzdAo+IDB4ODA1MDEwMGIKPiAweDgwNTA4MDBmCgpIbW0sIHRoYXQgZG9lc24ndCBsb29rIGZh
-bWlsaWFyIHRvIG1lICh3ZSBoYWQgb3RoZXIgTkFORCBpc3N1ZXMKcmVjZW50bHkpLgoKcnNjCi0t
-IApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAg
-ICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMx
-MTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApB
-bXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUx
-MjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Tue, Nov 28, 2017 at 02:05:21PM +0100, Uwe Kleine-K=F6nig wrote:
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  drivers/net/e1000/eeprom.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> =
+
+
+Applied, thanks
+
+Sascha
+
+> diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
+> index 6ee850c7808d..6251c6cecc94 100644
+> --- a/drivers/net/e1000/eeprom.c
+> +++ b/drivers/net/e1000/eeprom.c
+> @@ -717,7 +717,7 @@ static int e1000_flash_mode_check_command_valid(struc=
+t e1000_hw *hw)
+>  {
+>  	const uint32_t flswctl =3D e1000_read_reg(hw, E1000_FLSWCTL);
+>  	if (!(flswctl & E1000_FLSWCTL_CMDV)) {
+> -		dev_err(hw->dev, "FLSWCTL.CMDV was cleared");
+> +		dev_err(hw->dev, "FLSWCTL.CMDV was cleared\n");
+>  		return -EIO;
+>  	}
+>  =
+
+> -- =
+
+> 2.11.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
