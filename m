@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKjPw-0003OI-C6
- for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:42 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1eKjQ1-0003tU-TT
+ for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:53 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 24/27] defaultenv: Add README for new network config
-Date: Fri,  1 Dec 2017 12:22:53 +0100
-Message-Id: <20171201112256.20196-25-s.hauer@pengutronix.de>
+Subject: [PATCH 14/27] net: dhcp: Coding style fixes
+Date: Fri,  1 Dec 2017 12:22:43 +0100
+Message-Id: <20171201112256.20196-15-s.hauer@pengutronix.de>
 In-Reply-To: <20171201112256.20196-1-s.hauer@pengutronix.de>
 References: <20171201112256.20196-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,25 +24,73 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: Barebox List <barebox@lists.infradead.org>
 
-Network configuration has changed. In case somebody looks
-to the old /env/network/ directoy place a README there to add
-a pointer how the new configuration is done.
+Fix some spaces-before-function-opening-brackets and duplicate empty
+lines.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- defaultenv/defaultenv-2-base/network/README | 3 +++
- 1 file changed, 3 insertions(+)
- create mode 100644 defaultenv/defaultenv-2-base/network/README
+ net/dhcp.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/defaultenv/defaultenv-2-base/network/README b/defaultenv/defaultenv-2-base/network/README
-new file mode 100644
-index 0000000000..4b47807a1a
---- /dev/null
-+++ b/defaultenv/defaultenv-2-base/network/README
-@@ -0,0 +1,3 @@
-+Network configuration is now done with nvvars, see
-+Documentation/user/networking.rst. Files in this directory are not needed
-+anymore.
+diff --git a/net/dhcp.c b/net/dhcp.c
+index ffb3842882..08eb407d22 100644
+--- a/net/dhcp.c
++++ b/net/dhcp.c
+@@ -389,7 +389,7 @@ static void bootp_copy_net_params(struct bootp *bp)
+ /*
+  * Initialize BOOTP extension fields in the request.
+  */
+-static int dhcp_extended (u8 *e, int message_type, IPaddr_t ServerID,
++static int dhcp_extended(u8 *e, int message_type, IPaddr_t ServerID,
+ 			  IPaddr_t RequestedIP)
+ {
+ 	struct dhcp_opt *opt;
+@@ -411,7 +411,6 @@ static int dhcp_extended (u8 *e, int message_type, IPaddr_t ServerID,
+ 	*e++ = (576 - 312 + OPT_SIZE) >> 8;
+ 	*e++ = (576 - 312 + OPT_SIZE) & 0xff;
+ 
+-
+ 	e += dhcp_set_ip_options(50, e, RequestedIP);
+ 	e += dhcp_set_ip_options(54, e, ServerID);
+ 
+@@ -467,7 +466,7 @@ static int bootp_request(void)
+ 
+ 	bfile = getenv("bootfile");
+ 	if (bfile)
+-		safe_strncpy (bp->bp_file, bfile, sizeof(bp->bp_file));
++		safe_strncpy(bp->bp_file, bfile, sizeof(bp->bp_file));
+ 
+ 	/* Request additional information from the BOOTP/DHCP server */
+ 	ext_len = dhcp_extended(bp->bp_vend, DHCP_DISCOVER, 0, 0);
+@@ -523,8 +522,8 @@ static int dhcp_message_type(unsigned char *popt)
+ 		return -1;
+ 
+ 	popt += 4;
+-	while ( *popt != 0xff ) {
+-		if ( *popt == 53 )	/* DHCP Message Type */
++	while (*popt != 0xff) {
++		if (*popt == 53)	/* DHCP Message Type */
+ 			return *(popt + 2);
+ 		popt += *(popt + 1) + 2;	/* Scan through all options */
+ 	}
+@@ -596,7 +595,7 @@ static void dhcp_handler(void *ctx, char *packet, unsigned int len)
+ 		 * If filename is in format we recognize, assume it is a valid
+ 		 * OFFER from a server we want.
+ 		 */
+-		debug ("%s: state SELECTING, bp_file: \"%s\"\n", __func__, bp->bp_file);
++		debug("%s: state SELECTING, bp_file: \"%s\"\n", __func__, bp->bp_file);
+ 		dhcp_state = REQUESTING;
+ 
+ 		if (net_read_uint32(&bp->bp_vend[0]) == htonl(BOOTP_VENDOR_MAGIC))
+@@ -609,7 +608,7 @@ static void dhcp_handler(void *ctx, char *packet, unsigned int len)
+ 
+ 		break;
+ 	case REQUESTING:
+-		debug ("%s: State REQUESTING\n", __func__);
++		debug("%s: State REQUESTING\n", __func__);
+ 
+ 		if (dhcp_message_type((u8 *)bp->bp_vend) == DHCP_ACK ) {
+ 			IPaddr_t ip;
 -- 
 2.11.0
 
