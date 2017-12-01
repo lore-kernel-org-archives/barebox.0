@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout.gmx.net ([212.227.17.21])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKjQ1-0003tU-TT
- for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:53 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 14/27] net: dhcp: Coding style fixes
-Date: Fri,  1 Dec 2017 12:22:43 +0100
-Message-Id: <20171201112256.20196-15-s.hauer@pengutronix.de>
-In-Reply-To: <20171201112256.20196-1-s.hauer@pengutronix.de>
-References: <20171201112256.20196-1-s.hauer@pengutronix.de>
+ id 1eKkp9-0003yd-Pu
+ for barebox@lists.infradead.org; Fri, 01 Dec 2017 12:53:51 +0000
+From: Oleksij Rempel <linux@rempel-privat.de>
+Date: Fri,  1 Dec 2017 13:52:48 +0100
+Message-Id: <20171201125251.23520-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,77 +19,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v1 1/4] MIPS: ath79: ar9331: add generic RAM macro
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-Fix some spaces-before-function-opening-brackets and duplicate empty
-lines.
+with this macro, we should be able to cover most of existing
+ar9331 based boards.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- net/dhcp.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ arch/mips/mach-ath79/include/mach/ar71xx_regs.h |  1 +
+ arch/mips/mach-ath79/include/mach/pbl_macros.h  | 37 +++++++++++++++++++++++--
+ 2 files changed, 35 insertions(+), 3 deletions(-)
 
-diff --git a/net/dhcp.c b/net/dhcp.c
-index ffb3842882..08eb407d22 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -389,7 +389,7 @@ static void bootp_copy_net_params(struct bootp *bp)
- /*
-  * Initialize BOOTP extension fields in the request.
-  */
--static int dhcp_extended (u8 *e, int message_type, IPaddr_t ServerID,
-+static int dhcp_extended(u8 *e, int message_type, IPaddr_t ServerID,
- 			  IPaddr_t RequestedIP)
- {
- 	struct dhcp_opt *opt;
-@@ -411,7 +411,6 @@ static int dhcp_extended (u8 *e, int message_type, IPaddr_t ServerID,
- 	*e++ = (576 - 312 + OPT_SIZE) >> 8;
- 	*e++ = (576 - 312 + OPT_SIZE) & 0xff;
+diff --git a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
+index 31d33b3c4..f73700b5b 100644
+--- a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
++++ b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
+@@ -139,6 +139,7 @@
  
+ #define AR71XX_RESET_FULL_CHIP		BIT(24)
+ 
++#define AR933X_BOOTSTRAP_MEM_TYPE	BIT(13)
+ #define AR933X_BOOTSTRAP_REF_CLK_40	BIT(0)
+ 
+ #endif /* __ASM_MACH_AR71XX_REGS_H */
+diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+index 680fcbb86..9e4859b19 100644
+--- a/arch/mips/mach-ath79/include/mach/pbl_macros.h
++++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+@@ -172,6 +172,40 @@
+ 	.set	pop
+ .endm
+ 
++#define RESET_REG_BOOTSTRAP	((KSEG1 | AR71XX_RESET_BASE) \
++					| AR933X_RESET_REG_BOOTSTRAP)
++
++.macro	pbl_ar9331_ram_generic_config
++	.set	push
++	.set	noreorder
++
++	li	t5,	RESET_REG_BOOTSTRAP
++	/* Documentation and source code of existing boot loaders disagree at
++	 * this place. Doc says: MEM_TYPE[13:12]:
++	 * - 00 = SDRAM
++	 * - 01 = DDR1
++	 * - 10 = DDR2
++	 * The source code of most loaders do not care about BIT(12). So we do
++	 * the same.
++	 */
++	li	t6,	AR933X_BOOTSTRAP_MEM_TYPE
++	lw	t7,	0(t5);
++	and	t6,	t7,	t6
++	beq	zero,	t6,	pbl_ar9331_ram_generic_ddr1
++	nop
++
++pbl_ar9331_ram_generic_ddr2:
++	pbl_ar9331_ddr2_config
++	b	pbl_ar9331_ram_generic_config
++	nop
++
++pbl_ar9331_ram_generic_ddr1:
++	pbl_ar9331_ddr1_config
++
++pbl_ar9331_ram_generic_config:
++	.set	pop
++.endm
++
+ #define GPIO_FUNC	((KSEG1 | AR71XX_GPIO_BASE) | AR71XX_GPIO_REG_FUNC)
+ 
+ .macro	pbl_ar9331_uart_enable
+@@ -179,9 +213,6 @@
+ 			| AR933X_GPIO_FUNC_RSRV15, GPIO_FUNC
+ .endm
+ 
+-#define RESET_REG_BOOTSTRAP	((KSEG1 | AR71XX_RESET_BASE) \
+-					| AR933X_RESET_REG_BOOTSTRAP)
 -
- 	e += dhcp_set_ip_options(50, e, RequestedIP);
- 	e += dhcp_set_ip_options(54, e, ServerID);
- 
-@@ -467,7 +466,7 @@ static int bootp_request(void)
- 
- 	bfile = getenv("bootfile");
- 	if (bfile)
--		safe_strncpy (bp->bp_file, bfile, sizeof(bp->bp_file));
-+		safe_strncpy(bp->bp_file, bfile, sizeof(bp->bp_file));
- 
- 	/* Request additional information from the BOOTP/DHCP server */
- 	ext_len = dhcp_extended(bp->bp_vend, DHCP_DISCOVER, 0, 0);
-@@ -523,8 +522,8 @@ static int dhcp_message_type(unsigned char *popt)
- 		return -1;
- 
- 	popt += 4;
--	while ( *popt != 0xff ) {
--		if ( *popt == 53 )	/* DHCP Message Type */
-+	while (*popt != 0xff) {
-+		if (*popt == 53)	/* DHCP Message Type */
- 			return *(popt + 2);
- 		popt += *(popt + 1) + 2;	/* Scan through all options */
- 	}
-@@ -596,7 +595,7 @@ static void dhcp_handler(void *ctx, char *packet, unsigned int len)
- 		 * If filename is in format we recognize, assume it is a valid
- 		 * OFFER from a server we want.
- 		 */
--		debug ("%s: state SELECTING, bp_file: \"%s\"\n", __func__, bp->bp_file);
-+		debug("%s: state SELECTING, bp_file: \"%s\"\n", __func__, bp->bp_file);
- 		dhcp_state = REQUESTING;
- 
- 		if (net_read_uint32(&bp->bp_vend[0]) == htonl(BOOTP_VENDOR_MAGIC))
-@@ -609,7 +608,7 @@ static void dhcp_handler(void *ctx, char *packet, unsigned int len)
- 
- 		break;
- 	case REQUESTING:
--		debug ("%s: State REQUESTING\n", __func__);
-+		debug("%s: State REQUESTING\n", __func__);
- 
- 		if (dhcp_message_type((u8 *)bp->bp_vend) == DHCP_ACK ) {
- 			IPaddr_t ip;
+ .macro	pbl_ar9331_mdio_gpio_enable
+ 	/* Bit 18 enables MDC and MDIO function on GPIO26 and GPIO28 */
+ 	pbl_reg_set (1 << 18), RESET_REG_BOOTSTRAP
 -- 
-2.11.0
+2.14.1
 
 
 _______________________________________________
