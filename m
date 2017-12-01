@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKjPe-0003o4-DB
+ id 1eKjPe-0003o0-D8
  for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:26 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Dec 2017 12:22:34 +0100
-Message-Id: <20171201112256.20196-6-s.hauer@pengutronix.de>
+Date: Fri,  1 Dec 2017 12:22:32 +0100
+Message-Id: <20171201112256.20196-4-s.hauer@pengutronix.de>
 In-Reply-To: <20171201112256.20196-1-s.hauer@pengutronix.de>
 References: <20171201112256.20196-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,76 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/27] net: Add and use IP_BROADCAST
+Subject: [PATCH 03/27] nvvar: when setting a nvvar to NULL just free the
+ content
 To: Barebox List <barebox@lists.infradead.org>
 
-Rather than using the hardcoded value 0xffffffff in several places
-add a define for the broadcast IP.
+When a nvvar is about to be removed then it is set to NULL
+by barebox. This means for the variable to free it's memory.
+In this case also do not pass the value to the corresponding
+globalvar, since that would set the globalvar to NULL aswell,
+but we want to keep its current value.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/net.h | 2 ++
- net/dhcp.c    | 2 +-
- net/net.c     | 6 +++---
- 3 files changed, 6 insertions(+), 4 deletions(-)
+ common/globalvar.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/net.h b/include/net.h
-index 632b6d5410..4649947916 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -114,6 +114,8 @@ struct ethernet {
- #define IPPROTO_ICMP	 1	/* Internet Control Message Protocol	*/
- #define IPPROTO_UDP	17	/* User Datagram Protocol		*/
+diff --git a/common/globalvar.c b/common/globalvar.c
+index 77b89c1791..11cf6ce3fe 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -167,8 +167,10 @@ static int nv_set(struct device_d *dev, struct param_d *p, const char *val)
+ {
+ 	int ret;
  
-+#define IP_BROADCAST    0xffffffff /* Broadcast IP aka 255.255.255.255 */
-+
- /*
-  *	Internet Protocol (IP) header.
-  */
-diff --git a/net/dhcp.c b/net/dhcp.c
-index c5386fe942..4d74733d37 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -661,7 +661,7 @@ int dhcp(int retries, struct dhcp_req_param *param)
- 	if (!retries)
- 		retries = DHCP_DEFAULT_RETRY;
+-	if (!val)
+-		val = "";
++	if (!val) {
++		free(p->value);
++		return 0;
++	}
  
--	dhcp_con = net_udp_new(0xffffffff, PORT_BOOTPS, dhcp_handler, NULL);
-+	dhcp_con = net_udp_new(IP_BROADCAST, PORT_BOOTPS, dhcp_handler, NULL);
- 	if (IS_ERR(dhcp_con)) {
- 		ret = PTR_ERR(dhcp_con);
- 		goto out;
-diff --git a/net/net.c b/net/net.c
-index 12e63c664e..205543a425 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -276,7 +276,7 @@ static struct net_connection *net_new(IPaddr_t dest, rx_handler_f *handler,
- 	}
- 
- 	/* If we don't have an ip only broadcast is allowed */
--	if (!edev->ipaddr && dest != 0xffffffff)
-+	if (!edev->ipaddr && dest != IP_BROADCAST)
- 		return ERR_PTR(-ENETDOWN);
- 
- 	con = xzalloc(sizeof(*con));
-@@ -291,7 +291,7 @@ static struct net_connection *net_new(IPaddr_t dest, rx_handler_f *handler,
- 	con->icmp = (struct icmphdr *)(con->packet + ETHER_HDR_SIZE + sizeof(struct iphdr));
- 	con->handler = handler;
- 
--	if (dest == 0xffffffff) {
-+	if (dest == IP_BROADCAST) {
- 		memset(con->et->et_dest, 0xff, 6);
- 	} else {
- 		ret = arp_request(dest, con->et->et_dest);
-@@ -525,7 +525,7 @@ static int net_handle_ip(struct eth_device *edev, unsigned char *pkt, int len)
- 		goto bad;
- 
- 	tmp = net_read_ip(&ip->daddr);
--	if (edev->ipaddr && tmp != edev->ipaddr && tmp != 0xffffffff)
-+	if (edev->ipaddr && tmp != edev->ipaddr && tmp != IP_BROADCAST)
- 		return 0;
- 
- 	switch (ip->protocol) {
+ 	ret = dev_set_param(&global_device, p->name, val);
+ 	if (ret)
 -- 
 2.11.0
 
