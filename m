@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKjPe-0003o5-D4
- for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:33 +0000
+ id 1eKjPf-0003o7-Cz
+ for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Dec 2017 12:22:40 +0100
-Message-Id: <20171201112256.20196-12-s.hauer@pengutronix.de>
+Date: Fri,  1 Dec 2017 12:22:38 +0100
+Message-Id: <20171201112256.20196-10-s.hauer@pengutronix.de>
 In-Reply-To: <20171201112256.20196-1-s.hauer@pengutronix.de>
 References: <20171201112256.20196-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,114 +21,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/27] net: allow udp connections on specified network device
+Subject: [PATCH 09/27] net: dhcp: Do not overwrite serverip if it is valid
 To: Barebox List <barebox@lists.infradead.org>
 
-This allows the DHCP code to configure specific network
-devices so that DHCP no longer depends on any "current"
-network device.
+Some DHCP servers provide the wrong serverip in which case
+it is desired to specify it manually and won't let the dhcp
+command overwrite it.
+This has previously been done by setting the serverip again
+to the desired value after dhcp has been executed. With this
+patch we do not overwrite it in the first place if it is valid
+already. This is necessary when the serverip is not set via
+/env/network/eth* but via nv.net.server.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/net.h |  4 ++++
- net/net.c     | 32 ++++++++++++++++++++------------
- 2 files changed, 24 insertions(+), 12 deletions(-)
+ include/net.h | 1 +
+ net/dhcp.c    | 4 ++--
+ net/ifup.c    | 9 ++++++---
+ net/net.c     | 8 ++++++++
+ 4 files changed, 17 insertions(+), 5 deletions(-)
 
 diff --git a/include/net.h b/include/net.h
-index 95fa828e84..8e3b0aff5a 100644
+index 37ddf2db18..06390732fb 100644
 --- a/include/net.h
 +++ b/include/net.h
-@@ -446,6 +446,10 @@ static inline char *net_alloc_packet(void)
- struct net_connection *net_udp_new(IPaddr_t dest, uint16_t dport,
- 		rx_handler_f *handler, void *ctx);
+@@ -217,6 +217,7 @@ extern unsigned char *NetRxPackets[PKTBUFSRX];/* Receive packets		*/
  
-+struct net_connection *net_udp_eth_new(struct eth_device *edev, IPaddr_t dest,
-+                                       uint16_t dport, rx_handler_f *handler,
-+                                       void *ctx);
-+
- struct net_connection *net_icmp_new(IPaddr_t dest, rx_handler_f *handler,
- 		void *ctx);
+ void net_set_ip(IPaddr_t ip);
+ void net_set_serverip(IPaddr_t ip);
++void net_set_serverip_empty(IPaddr_t ip);
+ void net_set_netmask(IPaddr_t ip);
+ void net_set_gateway(IPaddr_t ip);
+ void net_set_nameserver(IPaddr_t ip);
+diff --git a/net/dhcp.c b/net/dhcp.c
+index 68696d69e8..37aad8f1ff 100644
+--- a/net/dhcp.c
++++ b/net/dhcp.c
+@@ -373,7 +373,7 @@ static void bootp_copy_net_params(struct bootp *bp)
  
-diff --git a/net/net.c b/net/net.c
-index f63d25531e..6cdffa4b8d 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -144,9 +144,8 @@ static void arp_handler(struct arprequest *arp)
+ 	tmp_ip = net_read_ip(&bp->bp_siaddr);
+ 	if (tmp_ip != 0)
+-		net_set_serverip(tmp_ip);
++		net_set_serverip_empty(tmp_ip);
+ 
+ 	if (strlen(bp->bp_file) > 0) {
+ 		if (IS_ENABLED(CONFIG_ENVIRONMENT_VARIABLES))
+@@ -702,7 +702,7 @@ int dhcp(int retries, struct dhcp_req_param *param)
+ 	if (dhcp_tftpname[0] != 0) {
+ 		IPaddr_t tftpserver = resolv(dhcp_tftpname);
+ 		if (tftpserver)
+-			net_set_serverip(tftpserver);
++			net_set_serverip_empty(tftpserver);
  	}
- }
  
--static int arp_request(IPaddr_t dest, unsigned char *ether)
-+static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *ether)
- {
--	struct eth_device *edev = eth_get_current();
- 	char *pkt;
- 	struct arprequest *arp;
- 	uint64_t arp_start;
-@@ -295,15 +294,17 @@ IPaddr_t net_get_gateway(void)
+ out1:
+diff --git a/net/ifup.c b/net/ifup.c
+index 2b13a9f140..2d1feeb74a 100644
+--- a/net/ifup.c
++++ b/net/ifup.c
+@@ -100,12 +100,15 @@ int ifup(const char *name, unsigned flags)
+ 		ip = "";
  
- static LIST_HEAD(connection_list);
- 
--static struct net_connection *net_new(IPaddr_t dest, rx_handler_f *handler,
--		void *ctx)
-+static struct net_connection *net_new(struct eth_device *edev, IPaddr_t dest,
-+				      rx_handler_f *handler, void *ctx)
- {
--	struct eth_device *edev = eth_get_current();
- 	struct net_connection *con;
- 	int ret;
- 
--	if (!edev)
--		return ERR_PTR(-ENETDOWN);
-+	if (!edev) {
-+		edev = eth_get_current();
-+		if (!edev)
-+			return ERR_PTR(-ENETDOWN);
-+	}
- 
- 	if (!is_valid_ether_addr(edev->ethaddr)) {
- 		char str[sizeof("xx:xx:xx:xx:xx:xx")];
-@@ -332,7 +333,7 @@ static struct net_connection *net_new(IPaddr_t dest, rx_handler_f *handler,
- 	if (dest == IP_BROADCAST) {
- 		memset(con->et->et_dest, 0xff, 6);
- 	} else {
--		ret = arp_request(dest, con->et->et_dest);
-+		ret = arp_request(edev, dest, con->et->et_dest);
+ 	if (!strcmp(ip, "dhcp")) {
++		IPaddr_t serverip;
++
++		serverip = getenv_ip("serverip");
++		if (serverip)
++			net_set_serverip_empty(serverip);
++
+ 		ret = run_command("dhcp");
  		if (ret)
  			goto out;
- 	}
-@@ -356,10 +357,11 @@ out:
- 	return ERR_PTR(ret);
+-		ret = eth_set_param(dev, "serverip");
+-		if (ret)
+-			goto out;
+ 		dev_set_param(dev, "linux.bootargs", "ip=dhcp");
+ 	} else if (!strcmp(ip, "static")) {
+ 		char *bootarg;
+diff --git a/net/net.c b/net/net.c
+index 5e6e8f1940..10ddd61879 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -253,6 +253,14 @@ void net_set_serverip(IPaddr_t ip)
+ 	net_serverip = ip;
  }
  
--struct net_connection *net_udp_new(IPaddr_t dest, uint16_t dport,
--		rx_handler_f *handler, void *ctx)
-+struct net_connection *net_udp_eth_new(struct eth_device *edev, IPaddr_t dest,
-+				       uint16_t dport, rx_handler_f *handler,
-+				       void *ctx)
- {
--	struct net_connection *con = net_new(dest, handler, ctx);
-+	struct net_connection *con = net_new(edev, dest, handler, ctx);
- 
- 	if (IS_ERR(con))
- 		return con;
-@@ -372,10 +374,16 @@ struct net_connection *net_udp_new(IPaddr_t dest, uint16_t dport,
- 	return con;
- }
- 
-+struct net_connection *net_udp_new(IPaddr_t dest, uint16_t dport,
-+		rx_handler_f *handler, void *ctx)
++void net_set_serverip_empty(IPaddr_t ip)
 +{
-+	return net_udp_eth_new(NULL, dest, dport, handler, ctx);
++	if (net_serverip)
++		return;
++
++	net_set_serverip(ip);
 +}
 +
- struct net_connection *net_icmp_new(IPaddr_t dest, rx_handler_f *handler,
- 		void *ctx)
+ void net_set_ip(IPaddr_t ip)
  {
--	struct net_connection *con = net_new(dest, handler, ctx);
-+	struct net_connection *con = net_new(NULL, dest, handler, ctx);
- 
- 	if (IS_ERR(con))
- 		return con;
+ 	struct eth_device *edev = eth_get_current();
 -- 
 2.11.0
 
