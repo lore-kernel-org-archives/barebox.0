@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKj6o-0000mS-D1
- for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:03:56 +0000
+ id 1eKj6q-0000pr-Jm
+ for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:03:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Dec 2017 12:03:24 +0100
-Message-Id: <20171201110326.31598-6-s.hauer@pengutronix.de>
+Date: Fri,  1 Dec 2017 12:03:26 +0100
+Message-Id: <20171201110326.31598-8-s.hauer@pengutronix.de>
 In-Reply-To: <20171201110326.31598-1-s.hauer@pengutronix.de>
 References: <20171201110326.31598-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,31 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] Documentation: defaultenv-2: Change highlight to make
+Subject: [PATCH 7/7] ARM: psci command: Add to misc group
 To: Barebox List <barebox@lists.infradead.org>
 
-It's a make snippet, so change highlighting accordingly.
+Explicitly add psci command to the misc group to get rid of
+the warning that the command has no group.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/user/defaultenv-2.rst | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/cpu/psci.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/user/defaultenv-2.rst b/Documentation/user/defaultenv-2.rst
-index faeeb81fbd..db74176b03 100644
---- a/Documentation/user/defaultenv-2.rst
-+++ b/Documentation/user/defaultenv-2.rst
-@@ -30,7 +30,9 @@ same file exists in a later overlay, it will overwrite the preceding one.
- Note that not all of the above directories will necessarily be
- included in your default environment, it depends on your barebox
- configuration settings. You can see the configuration variables
--and their respective included directories in ``defaultenv/Makefile``::
-+and their respective included directories in ``defaultenv/Makefile``:
-+
-+.. code-block:: make
+diff --git a/arch/arm/cpu/psci.c b/arch/arm/cpu/psci.c
+index eafb361a0a..0a7e48f8fe 100644
+--- a/arch/arm/cpu/psci.c
++++ b/arch/arm/cpu/psci.c
+@@ -303,7 +303,8 @@ BAREBOX_CMD_HELP_OPT ("-z",  "Turn off secondary CPU core")
+ BAREBOX_CMD_HELP_END
  
-   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW) += defaultenv-2-base
-   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU) += defaultenv-2-menu
+ BAREBOX_CMD_START(smc)
+-        .cmd            = do_smc,
+-        BAREBOX_CMD_DESC("secure monitor test command")
++	.cmd = do_smc,
++	BAREBOX_CMD_DESC("secure monitor test command")
++	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
+ BAREBOX_CMD_END
+ #endif
+\ No newline at end of file
 -- 
 2.11.0
 
