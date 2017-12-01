@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKjFA-0006it-63
- for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:12:35 +0000
-Date: Fri, 1 Dec 2017 12:12:10 +0100
+ id 1eKjPe-0003nw-DE
+ for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:27 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
+ (envelope-from <sha@pengutronix.de>) id 1eKjPI-00054g-CB
+ for barebox@lists.infradead.org; Fri, 01 Dec 2017 12:23:00 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.89)
+ (envelope-from <sha@pengutronix.de>) id 1eKjPI-0007nS-13
+ for barebox@lists.infradead.org; Fri, 01 Dec 2017 12:23:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171201111210.3t2xzyrpfrzvkp72@pengutronix.de>
-References: <20171129045506.17149-1-andrew.smirnov@gmail.com>
- <20171129045506.17149-3-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20171129045506.17149-3-andrew.smirnov@gmail.com>
+Date: Fri,  1 Dec 2017 12:22:29 +0100
+Message-Id: <20171201112256.20196-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,75 +22,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] net: phy: Port MDIO bus miltiplexer framework from
- Linux kernel
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] Networking updates
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Nov 28, 2017 at 08:55:04PM -0800, Andrey Smirnov wrote:
-> Port mdio-mux.c from Linux kernel to Barebox, to support adding
-> dirvers that rely on that infrastructure/API.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  drivers/net/phy/Kconfig    |   8 +++
->  drivers/net/phy/Makefile   |   2 +
->  drivers/net/phy/mdio-mux.c | 145 +++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/mdio-mux.h   |  30 ++++++++++
->  4 files changed, 185 insertions(+)
->  create mode 100644 drivers/net/phy/mdio-mux.c
->  create mode 100644 include/linux/mdio-mux.h
-> 
-> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-> index ea2e06265..f423d9ba3 100644
-> --- a/drivers/net/phy/Kconfig
-> +++ b/drivers/net/phy/Kconfig
-> @@ -66,6 +66,14 @@ config MDIO_GPIO
->  	---help---
->  	  Supports GPIO lib-based MDIO busses.
->  
-> +config MDIO_BUS_MUX
-> +       	bool
+This series solves some issues that have been nagging me for some
+time now.
 
-Indentation gone wrong here.
+First of all the manual selection of the current ethernet device is
+unnecessary since the interface can be picked by the networking code
+automatically based on the IP settings of the interface. With this
+series the "ethact" command is gone and users of boards with multiple
+network interfaces no longer have to worry about picking the right
+one.
 
-> +	help
-> +	  This module provides a driver framework for MDIO bus
-> +	  multiplexers which connect one of several child MDIO busses
-> +	  to a parent bus.  Switching between child busses is done by
-> +	  device specific drivers.
-> +
+Then the network device configuration can now be done with nvvars.
+This makes it unnecessary to edit scripts on the device (which may
+be cumbersome on some devices which lose characters on serial ports)
+and it makes it also easier for scripts or setup code to modify
+the network config.
 
-...
+Finally the DHCP code is cleaned up, primarily to be able to pass
+in the network interface that shall be used, but also to make more
+clear which variables are input and which are output.
 
-> +	for_each_available_child_of_node(mux_node, child_bus_node) {
-> +		int v;
-> +
-> +		r = of_property_read_u32(child_bus_node, "reg", &v);
-> +		if (r) {
-> +			dev_err(dev,
-> +				"Error: Failed to find reg for child %pOF\n",
-> +				child_bus_node);
-> +			continue;
-> +		}
-> +
-> +		/*
-> +		  FIXME:
-> +		 */
+For DHCP users the configuration is simple: It is the default. A static
+IP setup can now be done with the variables:
 
-What do you have to fix here?
+nv.net.server
+nv.net.nameserver
+nv.net.gateway
+
+and the network device specific variables (assuming "eth0" as network device):
+
+nv.dev.eth0.ipaddr
+nv.dev.eth0.netmask
+
+(For those who are not already familiar with it: It's the normal way to store
+device parameters in nvvars, like already possible for example with NAND
+partitioning, i.e. nv.dev.nand0.partitions=4M(barebox),-(root), see
+http://www.barebox.org/doc/latest/user/variables.html#non-volatile-device-variables)
+
+As usual, all comments are welcome.
+
+Changes since v1:
+- incorporate Sams review comments for v1
+- fix setting of ip= bootargs for network boot
+- fix routing when a network device does not have an IP
+- More Documentation updates
+- Fix hardcoded usage of eth0 in defaultenv-2 network boot
+- integrate Gavins linux devname patch
 
 Sascha
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
