@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKjPm-0003oX-SQ
- for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:47 +0000
+ id 1eKjPn-0003oZ-EL
+ for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:23:49 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Dec 2017 12:22:39 +0100
-Message-Id: <20171201112256.20196-11-s.hauer@pengutronix.de>
+Date: Fri,  1 Dec 2017 12:22:46 +0100
+Message-Id: <20171201112256.20196-18-s.hauer@pengutronix.de>
 In-Reply-To: <20171201112256.20196-1-s.hauer@pengutronix.de>
 References: <20171201112256.20196-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,142 +21,179 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/27] net: Use a single gateway
+Subject: [PATCH 17/27] net: remove "current" network device
 To: Barebox List <barebox@lists.infradead.org>
 
-There is not much point in having a network device specific
-gateway. If barebox really is part of such a complicated network
-in which it needs multiple gateways, then we probably need a
-real routing table. Until this happens, a single gateway should
-be enough.
-
-This introduces global.net.gateway which holds the gateway ip. The
-previously used device specific <ethx>.gateway variables still exist,
-but are only aliases for the single gateway.
+Now that we can do routing we no longer need a "current"
+network device. Remove it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/net.h |  2 +-
- net/eth.c     |  3 ++-
- net/ifup.c    |  4 +++-
- net/net.c     | 13 +++++++++----
- 4 files changed, 15 insertions(+), 7 deletions(-)
+ commands/Makefile |  1 -
+ commands/net.c    | 66 -------------------------------------------------------
+ include/net.h     |  2 --
+ net/eth.c         | 17 --------------
+ net/ifup.c        |  2 --
+ 5 files changed, 88 deletions(-)
+ delete mode 100644 commands/net.c
 
+diff --git a/commands/Makefile b/commands/Makefile
+index 37486dceb1..582175f631 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -22,7 +22,6 @@ obj-$(CONFIG_CMD_MSLEEP)	+= msleep.o
+ obj-$(CONFIG_CMD_RESET)		+= reset.o
+ obj-$(CONFIG_CMD_POWEROFF)	+= poweroff.o
+ obj-$(CONFIG_CMD_GO)		+= go.o
+-obj-$(CONFIG_NET)		+= net.o
+ obj-$(CONFIG_CMD_PARTITION)	+= partition.o
+ obj-$(CONFIG_CMD_LS)		+= ls.o
+ obj-$(CONFIG_CMD_CD)		+= cd.o
+diff --git a/commands/net.c b/commands/net.c
+deleted file mode 100644
+index 219c7efcda..0000000000
+--- a/commands/net.c
++++ /dev/null
+@@ -1,66 +0,0 @@
+-/*
+- * (C) Copyright 2000
+- * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-/**
+- * @file
+- * @brief tftp, rarpboot, dhcp, nfs, cdp - Boot support
+- */
+-
+-#include <common.h>
+-#include <command.h>
+-#include <complete.h>
+-#include <environment.h>
+-#include <driver.h>
+-#include <net.h>
+-#include <fs.h>
+-#include <errno.h>
+-#include <libbb.h>
+-
+-static int do_ethact(int argc, char *argv[])
+-{
+-	struct eth_device *edev;
+-
+-	if (argc == 1) {
+-		edev = eth_get_current();
+-		if (edev)
+-			printf("%s%d\n", edev->dev.name, edev->dev.id);
+-		return 0;
+-	}
+-
+-	if (argc != 2)
+-		return COMMAND_ERROR_USAGE;
+-
+-	edev = eth_get_byname(argv[1]);
+-	if (edev)
+-		eth_set_current(edev);
+-	else {
+-		printf("no such net device: %s\n", argv[1]);
+-		return 1;
+-	}
+-
+-	return 0;
+-}
+-
+-BAREBOX_CMD_START(ethact)
+-	.cmd		= do_ethact,
+-	BAREBOX_CMD_DESC("get or set current ethernet device")
+-	BAREBOX_CMD_OPTS("[ETHX]")
+-	BAREBOX_CMD_GROUP(CMD_GRP_NET)
+-	BAREBOX_CMD_COMPLETE(eth_complete)
+-BAREBOX_CMD_END
 diff --git a/include/net.h b/include/net.h
-index 06390732fb..95fa828e84 100644
+index 3faecff5d7..9f98b6f4df 100644
 --- a/include/net.h
 +++ b/include/net.h
-@@ -59,7 +59,6 @@ struct eth_device {
+@@ -413,8 +413,6 @@ static inline int is_valid_ether_addr(const u8 *addr)
  
- 	IPaddr_t ipaddr;
- 	IPaddr_t netmask;
--	IPaddr_t gateway;
- 	char ethaddr[6];
- 	char *bootarg;
- };
-@@ -224,6 +223,7 @@ void net_set_nameserver(IPaddr_t ip);
- void net_set_domainname(const char *name);
- IPaddr_t net_get_ip(void);
- IPaddr_t net_get_serverip(void);
-+IPaddr_t net_get_gateway(void);
- IPaddr_t net_get_nameserver(void);
- const char *net_get_domainname(void);
+ typedef void rx_handler_f(void *ctx, char *packet, unsigned int len);
  
+-void eth_set_current(struct eth_device *eth);
+-struct eth_device *eth_get_current(void);
+ struct eth_device *eth_get_byname(const char *name);
+ 
+ /**
 diff --git a/net/eth.c b/net/eth.c
-index 74666bbf22..6dae6b9feb 100644
+index 6dae6b9feb..a8f21b2277 100644
 --- a/net/eth.c
 +++ b/net/eth.c
-@@ -349,6 +349,7 @@ late_initcall(eth_register_of_fixup);
- #endif
+@@ -28,7 +28,6 @@
+ #include <errno.h>
+ #include <malloc.h>
  
- extern IPaddr_t net_serverip;
-+extern IPaddr_t net_gateway;
+-static struct eth_device *eth_current;
+ static uint64_t last_link_check;
  
- int eth_register(struct eth_device *edev)
- {
-@@ -382,7 +383,7 @@ int eth_register(struct eth_device *edev)
- 
- 	dev_add_param_ip(dev, "ipaddr", NULL, NULL, &edev->ipaddr, edev);
- 	dev_add_param_ip(dev, "serverip", NULL, NULL, &net_serverip, edev);
--	dev_add_param_ip(dev, "gateway", NULL, NULL, &edev->gateway, edev);
-+	dev_add_param_ip(dev, "gateway", NULL, NULL, &net_gateway, edev);
- 	dev_add_param_ip(dev, "netmask", NULL, NULL, &edev->netmask, edev);
- 	dev_add_param_mac(dev, "ethaddr", eth_param_set_ethaddr, NULL,
- 			edev->ethaddr, edev);
-diff --git a/net/ifup.c b/net/ifup.c
-index 2d1feeb74a..c3ea1b6a45 100644
---- a/net/ifup.c
-+++ b/net/ifup.c
-@@ -113,6 +113,7 @@ int ifup(const char *name, unsigned flags)
- 	} else if (!strcmp(ip, "static")) {
- 		char *bootarg;
- 		IPaddr_t serverip;
-+		IPaddr_t gateway;
- 
- 		for (i = 0; i < ARRAY_SIZE(vars); i++) {
- 			ret = eth_set_param(dev, vars[i]);
-@@ -121,11 +122,12 @@ int ifup(const char *name, unsigned flags)
- 		}
- 
- 		serverip = net_get_serverip();
-+		gateway = net_get_gateway();
- 
- 		bootarg = basprintf("ip=%pI4:%pI4:%pI4:%pI4:::",
- 				&edev->ipaddr,
- 				&serverip,
--				&edev->gateway,
-+				&gateway,
- 				&edev->netmask);
- 		dev_set_param(dev, "linux.bootargs", bootarg);
- 		free(bootarg);
-diff --git a/net/net.c b/net/net.c
-index 10ddd61879..f63d25531e 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -45,6 +45,7 @@ unsigned char *NetRxPackets[PKTBUFSRX]; /* Receive packets		*/
- static unsigned int net_ip_id;
- 
- IPaddr_t net_serverip;
-+IPaddr_t net_gateway;
- static IPaddr_t net_nameserver;
- static char *net_domainname;
- 
-@@ -184,10 +185,10 @@ static int arp_request(IPaddr_t dest, unsigned char *ether)
- 	memset(arp->ar_data + 10, 0, 6);	/* dest ET addr = 0     */
- 
- 	if ((dest & edev->netmask) != (edev->ipaddr & edev->netmask)) {
--		if (!edev->gateway)
-+		if (!net_gateway)
- 			arp_wait_ip = dest;
- 		else
--			arp_wait_ip = edev->gateway;
-+			arp_wait_ip = net_gateway;
- 	} else {
- 		arp_wait_ip = dest;
- 	}
-@@ -284,9 +285,12 @@ void net_set_netmask(IPaddr_t nm)
- 
- void net_set_gateway(IPaddr_t gw)
- {
--	struct eth_device *edev = eth_get_current();
-+	net_gateway = gw;
-+}
- 
--	edev->gateway = gw;
-+IPaddr_t net_get_gateway(void)
-+{
-+	return net_gateway;
+ LIST_HEAD(netdev_list);
+@@ -149,16 +148,6 @@ void of_eth_register_ethaddr(struct device_node *node, const char *ethaddr)
+ 	list_add_tail(&addr->list, &ethaddr_list);
  }
  
- static LIST_HEAD(connection_list);
-@@ -614,6 +618,7 @@ static int net_init(void)
- 	globalvar_add_simple_ip("net.nameserver", &net_nameserver);
- 	globalvar_add_simple_string("net.domainname", &net_domainname);
- 	globalvar_add_simple_ip("net.server", &net_serverip);
-+	globalvar_add_simple_ip("net.gateway", &net_gateway);
+-void eth_set_current(struct eth_device *eth)
+-{
+-	eth_current = eth;
+-}
+-
+-struct eth_device * eth_get_current(void)
+-{
+-	return eth_current;
+-}
+-
+ struct eth_device *eth_get_byname(const char *ethname)
+ {
+ 	struct eth_device *edev;
+@@ -412,17 +401,11 @@ int eth_register(struct eth_device *edev)
+ 			edev->parent->device_node)
+ 		edev->nodepath = xstrdup(edev->parent->device_node->full_name);
  
+-	if (!eth_current)
+-		eth_current = edev;
+-
  	return 0;
  }
+ 
+ void eth_unregister(struct eth_device *edev)
+ {
+-	if (edev == eth_current)
+-		eth_current = NULL;
+-
+ 	if (edev->active)
+ 		edev->halt(edev);
+ 
+diff --git a/net/ifup.c b/net/ifup.c
+index 2160e3ae46..423712e19c 100644
+--- a/net/ifup.c
++++ b/net/ifup.c
+@@ -58,8 +58,6 @@ int ifup(const char *name, unsigned flags)
+ 	if (edev && edev->ipaddr && !(flags & IFUP_FLAG_FORCE))
+ 		return 0;
+ 
+-	eth_set_current(edev);
+-
+ 	env_push_context();
+ 
+ 	setenv("ip", "");
 -- 
 2.11.0
 
