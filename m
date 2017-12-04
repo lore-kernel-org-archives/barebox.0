@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eLsf4-0001tr-DE
- for barebox@lists.infradead.org; Mon, 04 Dec 2017 15:28:11 +0000
-Received: by mail-pg0-x244.google.com with SMTP id q20so8421859pgv.2
- for <barebox@lists.infradead.org>; Mon, 04 Dec 2017 07:27:42 -0800 (PST)
+ id 1eLsf5-0001tu-P4
+ for barebox@lists.infradead.org; Mon, 04 Dec 2017 15:28:13 +0000
+Received: by mail-pg0-x242.google.com with SMTP id j9so8411864pgc.11
+ for <barebox@lists.infradead.org>; Mon, 04 Dec 2017 07:27:43 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  4 Dec 2017 07:27:16 -0800
-Message-Id: <20171204152718.10674-5-andrew.smirnov@gmail.com>
+Date: Mon,  4 Dec 2017 07:27:18 -0800
+Message-Id: <20171204152718.10674-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20171204152718.10674-1-andrew.smirnov@gmail.com>
 References: <20171204152718.10674-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,205 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/6] net: phy: Port GPIO controlled MDIO multiplexer driver
+Subject: [PATCH v2 6/6] zii_vf610_dev_defconfig: Select MDIO bus GPIO
+ multiplexer
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port Linux version driver to Barebox, to support such device found in
-various revisions of ZII's VF610 development board.
+Select MDIO bus GPIO multiplexer to support hardware present on the
+board.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/phy/Kconfig         |  10 +++
- drivers/net/phy/Makefile        |   1 +
- drivers/net/phy/mdio-mux-gpio.c | 147 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 158 insertions(+)
- create mode 100644 drivers/net/phy/mdio-mux-gpio.c
+ arch/arm/configs/zii_vf610_dev_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 08ffd2d45..cda752b65 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -74,6 +74,16 @@ config MDIO_BUS_MUX
- 	  to a parent bus.  Switching between child busses is done by
- 	  device specific drivers.
- 
-+config MDIO_BUS_MUX_GPIO
-+	bool "GPIO controlled MDIO bus multiplexers"
-+	depends on OF_GPIO
-+	select MDIO_BUS_MUX
-+	help
-+	  This module provides a driver for MDIO bus multiplexers that
-+	  are controlled via GPIO lines.  The multiplexer connects one of
-+	  several child MDIO busses to a parent bus.  Child bus
-+	  selection is under the control of GPIO lines.
-+
- endif
- 
- endmenu
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index 89b4b80be..30b20f8ee 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -11,4 +11,5 @@ obj-$(CONFIG_MDIO_MVEBU)	+= mdio-mvebu.o
- obj-$(CONFIG_MDIO_BITBANG)	+= mdio-bitbang.o
- obj-$(CONFIG_MDIO_GPIO)		+= mdio-gpio.o
- obj-$(CONFIG_MDIO_BUS_MUX)	+= mdio-mux.o
-+obj-$(CONFIG_MDIO_BUS_MUX_GPIO)	+= mdio-mux-gpio.o
- 
-diff --git a/drivers/net/phy/mdio-mux-gpio.c b/drivers/net/phy/mdio-mux-gpio.c
-new file mode 100644
-index 000000000..221353cbc
---- /dev/null
-+++ b/drivers/net/phy/mdio-mux-gpio.c
-@@ -0,0 +1,147 @@
-+/*
-+ * Copyright (c) 2017 Zodiac Inflight Innovation
-+ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-+ *
-+ * Based on analogous code from Linux kernel
-+ *
-+ * Copyright (C) 2011, 2012 Cavium, Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ */
-+#include <common.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <linux/mdio-mux.h>
-+#include <gpio.h>
-+#include <of_gpio.h>
-+
-+
-+struct mdio_mux_gpio_state {
-+	struct gpio *gpios;
-+	int gpios_num;
-+};
-+
-+static void mdio_mux_gpio_set_active(struct mdio_mux_gpio_state *s,
-+				     unsigned int mask, int value)
-+{
-+	while (mask) {
-+		const int n = __ffs(mask);
-+		mask >>= n + 1;
-+
-+		if (WARN_ON(n >= s->gpios_num))
-+			break;
-+
-+		gpio_set_active(s->gpios[n].gpio, value);
-+	}
-+}
-+
-+static int mdio_mux_gpio_switch_fn(int current_child, int desired_child,
-+				   void *data)
-+{
-+	if (current_child < 0)
-+		current_child = 0;
-+
-+	if (current_child != desired_child) {
-+		struct mdio_mux_gpio_state *s = data;
-+		/*
-+		 * GPIOs that are set in both current and desired
-+		 * states can be left untouched. So we calculate them
-+		 * and clear corresponding bits in both states.
-+		 */
-+		const int unchanged = current_child & desired_child;
-+
-+		current_child &= ~unchanged;
-+		desired_child &= ~unchanged;
-+
-+		/*
-+		 * First step: disable all of the currently selected
-+		 * bits that are no loger needed
-+		 */
-+		mdio_mux_gpio_set_active(s, current_child, 0);
-+		/*
-+		 * Second step: enable all of the GPIOs that are
-+		 * desired to be selected
-+		 */
-+		mdio_mux_gpio_set_active(s, desired_child, 1);
-+	}
-+
-+	return 0;
-+}
-+
-+static int mdio_mux_gpio_probe(struct device_d *dev)
-+{
-+	struct mdio_mux_gpio_state *s;
-+	int i, r;
-+
-+	s = xzalloc(sizeof(*s));
-+
-+	s->gpios_num = of_gpio_count(dev->device_node);
-+	if (s->gpios_num <= 0) {
-+		dev_err(dev, "No GPIOs specified\n");
-+		r = -EINVAL;
-+		goto free_mem;
-+	}
-+
-+	s->gpios = xzalloc(s->gpios_num * sizeof(s->gpios[0]));
-+
-+	for (i = 0; i < s->gpios_num; i++) {
-+		enum of_gpio_flags flags;
-+
-+		r = of_get_gpio_flags(dev->device_node, i, &flags);
-+		if (!gpio_is_valid(r)) {
-+			r = (r < 0) ? r : -EINVAL;
-+			goto free_mem;
-+		}
-+
-+		s->gpios[i].gpio  = r;
-+		s->gpios[i].label = dev_name(dev);
-+		s->gpios[i].flags = GPIOF_OUT_INIT_INACTIVE;
-+
-+		if (flags & OF_GPIO_ACTIVE_LOW)
-+			s->gpios[i].flags |= GPIOF_ACTIVE_LOW;
-+	}
-+
-+	r = gpio_request_array(s->gpios, s->gpios_num);
-+	if (r < 0)
-+		goto free_gpios;
-+
-+
-+	r = mdio_mux_init(dev, dev->device_node,
-+			  mdio_mux_gpio_switch_fn, s, NULL);
-+	if (r < 0)
-+		goto free_gpios;
-+
-+	return 0;
-+
-+free_gpios:
-+	gpio_free_array(s->gpios, s->gpios_num);
-+free_mem:
-+	free(s->gpios);
-+	free(s);
-+	return r;
-+}
-+
-+static const struct of_device_id mdio_mux_gpio_match[] = {
-+	{
-+		.compatible = "mdio-mux-gpio",
-+	},
-+	{},
-+};
-+
-+static struct driver_d mdio_mux_gpio_driver = {
-+	.name	       = "mdio-mux-gpio",
-+	.probe         = mdio_mux_gpio_probe,
-+	.of_compatible = mdio_mux_gpio_match,
-+};
-+device_platform_driver(mdio_mux_gpio_driver);
+diff --git a/arch/arm/configs/zii_vf610_dev_defconfig b/arch/arm/configs/zii_vf610_dev_defconfig
+index e2cb658d9..ee77f4000 100644
+--- a/arch/arm/configs/zii_vf610_dev_defconfig
++++ b/arch/arm/configs/zii_vf610_dev_defconfig
+@@ -92,6 +92,7 @@ CONFIG_LM75=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ CONFIG_MARVELL_PHY=y
+ CONFIG_MICREL_PHY=y
++CONFIG_MDIO_BUS_MUX_GPIO=y
+ CONFIG_NET_USB=y
+ CONFIG_NET_USB_ASIX=y
+ CONFIG_NET_USB_SMSC95XX=y
 -- 
 2.14.3
 
