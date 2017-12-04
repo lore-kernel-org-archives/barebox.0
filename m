@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
+Received: from mail-pg0-f67.google.com ([74.125.83.67])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eLsoY-0006Dq-Nw
- for barebox@lists.infradead.org; Mon, 04 Dec 2017 15:37:52 +0000
-Received: by mail-pf0-x244.google.com with SMTP id j28so8774280pfk.8
- for <barebox@lists.infradead.org>; Mon, 04 Dec 2017 07:37:34 -0800 (PST)
+ id 1eLsof-0006FE-Qp
+ for barebox@lists.infradead.org; Mon, 04 Dec 2017 15:38:02 +0000
+Received: by mail-pg0-f67.google.com with SMTP id o2so8428805pgc.8
+ for <barebox@lists.infradead.org>; Mon, 04 Dec 2017 07:37:37 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  4 Dec 2017 07:37:22 -0800
-Message-Id: <20171204153726.11479-1-andrew.smirnov@gmail.com>
+Date: Mon,  4 Dec 2017 07:37:24 -0800
+Message-Id: <20171204153726.11479-3-andrew.smirnov@gmail.com>
+In-Reply-To: <20171204153726.11479-1-andrew.smirnov@gmail.com>
+References: <20171204153726.11479-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4] A bit more consistent interface for "miitool"
+Subject: [PATCH 2/4] fs: Introduce devpath_to_name()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hi everyone,
+Add a simple function to simplify the task of accepting both full path
+in "/dev" and just device name as a parameter.
 
-This patchset is intended to make miitools's -s option a bit more
-consistnet with the rest of Barebox commands. It is inspired mostly by
-users's feedback and personal frustration with inability to use
-autocomplete in that command.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ include/fs.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-It's nice to have, IMHO, but if we decide not to have this change
-that's fine too.
-
-Thanks,
-Andrey Smirnov
-
-Andrey Smirnov (4):
-  commands: miitool: Constify 'phydevname' in mdiobus_show()
-  fs: Introduce devpath_to_name()
-  i.MX: imu-bbu-internal: Make use of devpath_to_name()
-  commands/miitool: Allow specifying PHY by their full path
-
- arch/arm/mach-imx/imx-bbu-internal.c | 3 +--
- commands/miitool.c                   | 9 ++++++---
- include/fs.h                         | 9 +++++++++
- 3 files changed, 16 insertions(+), 5 deletions(-)
-
+diff --git a/include/fs.h b/include/fs.h
+index d7fa7714b..79ae404bb 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -10,6 +10,7 @@
+ #include <driver.h>
+ #include <filetype.h>
+ #include <linux/fs.h>
++#include <linux/string.h>
+ 
+ #define PATH_MAX       1024        /* include/linux/limits.h */
+ 
+@@ -151,4 +152,12 @@ void mount_all(void);
+ void fsdev_set_linux_rootarg(struct fs_device_d *fsdev, const char *str);
+ char *path_get_linux_rootarg(const char *path);
+ 
++static inline const char *devpath_to_name(const char *devpath)
++{
++	if (devpath && !strncmp(devpath, "/dev/", 5))
++		return devpath + 5;
++
++	return devpath;
++}
++
+ #endif /* __FS_H */
 -- 
 2.14.3
 
