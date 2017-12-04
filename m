@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qt0-x241.google.com ([2607:f8b0:400d:c0d::241])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eLsR2-0002Ag-NU
- for barebox@lists.infradead.org; Mon, 04 Dec 2017 15:13:34 +0000
-Received: by mail-qt0-x241.google.com with SMTP id e2so21615619qti.0
- for <barebox@lists.infradead.org>; Mon, 04 Dec 2017 07:13:09 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20171201111210.3t2xzyrpfrzvkp72@pengutronix.de>
-References: <20171129045506.17149-1-andrew.smirnov@gmail.com>
- <20171129045506.17149-3-andrew.smirnov@gmail.com>
- <20171201111210.3t2xzyrpfrzvkp72@pengutronix.de>
+ id 1eLsez-0001tk-C9
+ for barebox@lists.infradead.org; Mon, 04 Dec 2017 15:27:59 +0000
+Received: by mail-pf0-x241.google.com with SMTP id a90so8769527pfk.1
+ for <barebox@lists.infradead.org>; Mon, 04 Dec 2017 07:27:37 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 4 Dec 2017 07:13:08 -0800
-Message-ID: <CAHQ1cqHQbMoz4Ab66ENvO-440oPJbOAyi+qUsOEerRMa2U4Edw@mail.gmail.com>
+Date: Mon,  4 Dec 2017 07:27:12 -0800
+Message-Id: <20171204152718.10674-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,78 +16,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] net: phy: Port MDIO bus miltiplexer framework from
- Linux kernel
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH v2 0/6] MDIO bus multiplexer support
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Fri, Dec 1, 2017 at 3:12 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Tue, Nov 28, 2017 at 08:55:04PM -0800, Andrey Smirnov wrote:
->> Port mdio-mux.c from Linux kernel to Barebox, to support adding
->> dirvers that rely on that infrastructure/API.
->>
->> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
->> ---
->>  drivers/net/phy/Kconfig    |   8 +++
->>  drivers/net/phy/Makefile   |   2 +
->>  drivers/net/phy/mdio-mux.c | 145 +++++++++++++++++++++++++++++++++++++++++++++
->>  include/linux/mdio-mux.h   |  30 ++++++++++
->>  4 files changed, 185 insertions(+)
->>  create mode 100644 drivers/net/phy/mdio-mux.c
->>  create mode 100644 include/linux/mdio-mux.h
->>
->> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
->> index ea2e06265..f423d9ba3 100644
->> --- a/drivers/net/phy/Kconfig
->> +++ b/drivers/net/phy/Kconfig
->> @@ -66,6 +66,14 @@ config MDIO_GPIO
->>       ---help---
->>         Supports GPIO lib-based MDIO busses.
->>
->> +config MDIO_BUS_MUX
->> +             bool
->
-> Indentation gone wrong here.
->
+Hi everyone,
 
-Missed that. Will fix in v2.
+This is the second version of my original, with few modifications and
+fixes.
 
->> +     help
->> +       This module provides a driver framework for MDIO bus
->> +       multiplexers which connect one of several child MDIO busses
->> +       to a parent bus.  Switching between child busses is done by
->> +       device specific drivers.
->> +
->
-> ...
->
->> +     for_each_available_child_of_node(mux_node, child_bus_node) {
->> +             int v;
->> +
->> +             r = of_property_read_u32(child_bus_node, "reg", &v);
->> +             if (r) {
->> +                     dev_err(dev,
->> +                             "Error: Failed to find reg for child %pOF\n",
->> +                             child_bus_node);
->> +                     continue;
->> +             }
->> +
->> +             /*
->> +               FIXME:
->> +              */
->
-> What do you have to fix here?
->
+Changes since [v1]:
 
-That's a leftover from earlier version of the code that I forgot to
-remove. Will do in v2.
+ - Addressed smalle issues pointed out by Sascha (leftover comment,
+   bad identation)
 
-Thanks,
-Andrey Smirnov
+ - Added patch enabling MDIO GPIO mux driver for ZII VF610 boards
+   since the are the HW this patchset targets.
+   
+[v1] http://lists.infradead.org/pipermail/barebox/2017-November/031589.html
+
+Andrey Smirnov (6):
+  ARM: vybrid: zii: Make use of DT code from Linux kernel
+  mdio_bus: Port of_mdio_find_bus() from Linux kernel
+  net: phy: Port MDIO bus miltiplexer framework from Linux kernel
+  net: phy: Port GPIO controlled MDIO multiplexer driver
+  net: mdio-mux: Avoid probing multiplexed busses
+  zii_vf610_dev_defconfig: Select MDIO bus GPIO multiplexer
+
+ arch/arm/configs/zii_vf610_dev_defconfig  |   1 +
+ arch/arm/dts/vf610-zii-cfu1-rev-a.dts     |   3 +-
+ arch/arm/dts/vf610-zii-dev-rev-b.dts      | 386 +----------------------------
+ arch/arm/dts/vf610-zii-dev-rev-c.dts      | 391 +-----------------------------
+ arch/arm/dts/vf610-zii-dev.dtsi           | 354 ---------------------------
+ arch/arm/dts/vf610-zii-scu4-aib-rev-c.dts |   2 +
+ arch/arm/dts/vf610-zii-spu3-rev-a.dts     |   4 +-
+ drivers/net/phy/Kconfig                   |  18 ++
+ drivers/net/phy/Makefile                  |   3 +
+ drivers/net/phy/mdio-mux-gpio.c           | 147 +++++++++++
+ drivers/net/phy/mdio-mux.c                | 143 +++++++++++
+ drivers/net/phy/mdio_bus.c                |  30 +++
+ include/linux/mdio-mux.h                  |  30 +++
+ include/linux/phy.h                       |   4 +
+ 14 files changed, 385 insertions(+), 1131 deletions(-)
+ create mode 100644 drivers/net/phy/mdio-mux-gpio.c
+ create mode 100644 drivers/net/phy/mdio-mux.c
+ create mode 100644 include/linux/mdio-mux.h
+
+-- 
+2.14.3
+
 
 _______________________________________________
 barebox mailing list
