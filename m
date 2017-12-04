@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
+Received: from mail1.bemta3.messagelabs.com ([195.245.230.164])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKkp9-0003yc-SG
- for barebox@lists.infradead.org; Fri, 01 Dec 2017 12:53:51 +0000
-From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Fri,  1 Dec 2017 13:52:49 +0100
-Message-Id: <20171201125251.23520-2-linux@rempel-privat.de>
-In-Reply-To: <20171201125251.23520-1-linux@rempel-privat.de>
-References: <20171201125251.23520-1-linux@rempel-privat.de>
+ id 1eLmSK-0005FD-6l
+ for barebox@lists.infradead.org; Mon, 04 Dec 2017 08:50:30 +0000
+From: =?utf-8?B?S2plbGwgT3ZlIFLDuHRl?= <kjellove.rote@zenitel.com>
+Date: Mon, 4 Dec 2017 08:49:56 +0000
+Message-ID: <4b948dadc18b48ff822f24f7e1fac737@nooslMX1.zenitelcss.com>
+References: <d8583e62109f4b9ebc7030799343b662@nooslMX1.zenitelcss.com>
+ <20171123171219.ngzi66uf5lhikji5@pengutronix.de>
+ <9f24493b88f3412b86d192783708f813@nooslMX1.zenitelcss.com>
+ <20171130214354.dyuew52qyyio2j4l@pengutronix.de>
+In-Reply-To: <20171130214354.dyuew52qyyio2j4l@pengutronix.de>
+Content-Language: en-US
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,137 +21,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 2/4] MIPS: add generic QCA AR9331 board
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
+Subject: RE: FW: Handling boot on NAND Bad Blocks
+To: Robert Schwebel <robert@schwebel.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-this board may cover most of existing ar9331 boards
-
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
----
- arch/mips/Makefile                                 |  1 +
- arch/mips/boards/qca-ar9331-generic/Makefile       |  1 +
- arch/mips/boards/qca-ar9331-generic/board.c        |  8 ++++
- .../include/board/board_pbl_start.h                | 46 ++++++++++++++++++++++
- arch/mips/mach-ath79/Kconfig                       |  7 ++++
- 5 files changed, 63 insertions(+)
- create mode 100644 arch/mips/boards/qca-ar9331-generic/Makefile
- create mode 100644 arch/mips/boards/qca-ar9331-generic/board.c
- create mode 100644 arch/mips/boards/qca-ar9331-generic/include/board/board_pbl_start.h
-
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index dd5ceea20..c40ae6604 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -79,6 +79,7 @@ machine-$(CONFIG_MACH_MIPS_AR231X)	:= ar231x
- board-$(CONFIG_BOARD_NETGEAR_WG102)	:= netgear-wg102
- 
- machine-$(CONFIG_MACH_MIPS_ATH79)	:= ath79
-+board-$(CONFIG_BOARC_QCA_AR9331_GENERIC)	:= qca-ar9331-generic
- board-$(CONFIG_BOARD_TPLINK_MR3020)	:= tplink-mr3020
- board-$(CONFIG_BOARD_TPLINK_WDR4300)	:= tplink-wdr4300
- board-$(CONFIG_BOARD_BLACK_SWIFT)	:= black-swift
-diff --git a/arch/mips/boards/qca-ar9331-generic/Makefile b/arch/mips/boards/qca-ar9331-generic/Makefile
-new file mode 100644
-index 000000000..dcfc2937d
---- /dev/null
-+++ b/arch/mips/boards/qca-ar9331-generic/Makefile
-@@ -0,0 +1 @@
-+obj-y += board.o
-diff --git a/arch/mips/boards/qca-ar9331-generic/board.c b/arch/mips/boards/qca-ar9331-generic/board.c
-new file mode 100644
-index 000000000..7ec7ef8a5
---- /dev/null
-+++ b/arch/mips/boards/qca-ar9331-generic/board.c
-@@ -0,0 +1,8 @@
-+#include <common.h>
-+#include <init.h>
-+
-+static int dummy_init(void)
-+{
-+	return 0;
-+}
-+postcore_initcall(dummy_init);
-diff --git a/arch/mips/boards/qca-ar9331-generic/include/board/board_pbl_start.h b/arch/mips/boards/qca-ar9331-generic/include/board/board_pbl_start.h
-new file mode 100644
-index 000000000..87c6a39e6
---- /dev/null
-+++ b/arch/mips/boards/qca-ar9331-generic/include/board/board_pbl_start.h
-@@ -0,0 +1,46 @@
-+/*
-+ * Copyright (C) 2017 Oleksij Rempel <linux@rempel-privat.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ */
-+
-+#include <asm/pbl_macros.h>
-+#include <mach/pbl_macros.h>
-+#include <asm/pbl_nmon.h>
-+
-+	.macro	board_pbl_start
-+	.set	push
-+	.set	noreorder
-+
-+	mips_barebox_10h
-+
-+	pbl_blt 0xbf000000 skip_pll_ram_config t8
-+
-+	hornet_mips24k_cp0_setup
-+
-+	pbl_ar9331_wmac_enable
-+
-+	hornet_1_1_war
-+
-+	pbl_ar9331_pll
-+	pbl_ar9331_ram_generic_config
-+
-+	/* Initialize caches... */
-+	mips_cache_reset
-+
-+	/* ... and enable them */
-+	dcache_enable
-+
-+skip_pll_ram_config:
-+	pbl_ar9331_uart_enable
-+	debug_ll_ar9331_init
-+	mips_nmon
-+
-+	pbl_ar9331_mdio_gpio_enable
-+
-+	copy_to_link_location	pbl_start
-+
-+	.set	pop
-+	.endm
-diff --git a/arch/mips/mach-ath79/Kconfig b/arch/mips/mach-ath79/Kconfig
-index 9fec00c98..0015fe029 100644
---- a/arch/mips/mach-ath79/Kconfig
-+++ b/arch/mips/mach-ath79/Kconfig
-@@ -13,6 +13,13 @@ config SOC_QCA_AR9344
- choice
- 	prompt "Board type"
- 
-+config BOARC_QCA_AR9331_GENERIC
-+	bool "Generic QCA AR9331"
-+	select SOC_QCA_AR9331
-+	select HAVE_PBL_IMAGE
-+	select HAVE_IMAGE_COMPRESSION
-+	select HAS_NMON
-+
- config BOARD_TPLINK_MR3020
- 	bool "TP-LINK MR3020"
- 	select SOC_QCA_AR9331
--- 
-2.14.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgUm9iZXJ0CgpEaWQgbG9va3VwIHRoZSBCb290IFJPTSBlcnJvciBjb2RlczoKCjB4ODA1MDEw
+MEIgTG9hZCBjb21tYW5kIHBheWxvYWQgQ1JDIGZhaWxlZC4KMHg4MDUwODAwRiBFQ0MgZmFpbGVk
+IC0gZGF0YSBpcyBub3QgdmFsaWQuCgpTbywgSSBhc3N1bWUgaW4gb3VyIGNhc2UgdGhhdCBpdCBp
+cyBzdG9yZWQgYSBDUkMgb2YgYm9vdHN0cmVhbSBpbiB0aGUgQkNCIGltYWdlICh3aXRoIGNvbW1h
+bmQgYmNiIG5hbmQwLmJvb3RzdHJlYW0pClRoZSBNWFMgQm9vdHJvbSBjb2RlIENSQyBjaGVjayBm
+YWlscyBzaW5jZSBpbWFnZSBpcyB3cml0dGVuIG92ZXIgYSBiYWQgYmxvY2suIFdlIGRvIHdyaXRl
+IGJvb3RzdHJlYW0gaW1hZ2Ugd2l0aCBCYXJlYm94IGRvaW5nIGEgY29weSB0byBhIGJhZGJsb2Nr
+IGF3YXJlIGRldmljZSAobmFuZDAuYm9vdHN0cmVhbS5iYiksIHNvIEkgZ3Vlc3MgdGhlIHByb2Js
+ZW0gaXMgdGhhdCB0aGUgUk9NIGJvb3QgY29kZSBpcyBub3Qgc2tpcHBpbmcgYmFkIGJsb2NrIG9u
+IHJlYWQuIApQYXJ0aXRpb25pbmcgd2l0aCB0d28gYm9vdHN0cmVhbXMsIGFuZCB1c2luZyBjb21t
+YW5kICJiY2IgbmFuZDAuYm9vdHN0cmVhbSBuYW5kMC5ib290c3RyZWFtMiIsIHdlIGRvIGhhbmRs
+ZSBiYWQgYmxvY2sgb24gb25lIG9mIHRoZSBib290c3RyZWFtIHBhcnRpdGlvbnMsIGJ1dCBpZiBv
+bmUgYmFkIGJsb2NrIGluIGVhY2ggd2UgYXJlIHN0dWNrLgoKT24gbXkgb3RoZXIgcXVlc3Rpb25z
+IG9uIHRoZSBvdGhlciBib290IGltYWdlcyBsaWtlIGtlcm5lbCBhbmQgZW52aXJvbm1lbnQgSSBk
+byBub3cgc2VlIGhvdyBpdCB3b3JrcyB3aXRoIHRoZSBiYWQgYmxvY2sgZGV2aWNlcywgYW5kIGhh
+bmRsaW5nIG9mIHNraXBwaW5nIGJhZCBibG9ja3MuIEFkanVzdGluZyBzb21lIG9uIHRoZSBwYXJ0
+aXRpb24gc2l6ZXMgYWxsb2NhdGluZyBlbm91Z2ggZnJlZSBlcmFzZSBibG9ja3MsIHdlIGdldCBn
+b29kIHJvYnVzdG5lc3Mgb24gYmFkIGJsb2NrcyBpbiB0aGUgcmVzdCBvZiB0aGUgTkFORC4KCgpC
+ZXN0IHJlCgoKIAoKS0pFTEwgT1ZFIFLDmFRFClNFTklPUiBTT0ZUV0FSRSBFTkdJTkVFUgpaRU5J
+VEVMIE5PUldBWSBBUwoKVGVsOiArNDcgNDAwIDAyIDU3MwpramVsbG92ZS5yb3RlQHplbml0ZWwu
+Y29tCgpTYW5kYWtlcnZlaWVuIDI0QywgMDQ3MyBPc2xvLCBOb3J3YXkKUC5PLkJveCAxMDY4IEJl
+a2tham9yZGV0LCBOTy0zMTk0IEhvcnRlbiwgTm9yd2F5ClN3aXRjaGJvYXJkOiArNDcgNDAwMCAy
+NTAwCnd3dy56ZW5pdGVsLmNvbQoKLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0KRnJvbTogUm9i
+ZXJ0IFNjaHdlYmVsIFttYWlsdG86cm9iZXJ0QHNjaHdlYmVsLmRlXSAKU2VudDogdG9yc2RhZyAz
+MC4gbm92ZW1iZXIgMjAxNyAyMi40NApUbzogS2plbGwgT3ZlIFLDuHRlIDxramVsbG92ZS5yb3Rl
+QHplbml0ZWwuY29tPgpDYzogYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnClN1YmplY3Q6IFJl
+OiBGVzogSGFuZGxpbmcgYm9vdCBvbiBOQU5EIEJhZCBCbG9ja3MKCk9uIEZyaSwgTm92IDI0LCAy
+MDE3IGF0IDA4OjQ5OjIyQU0gKzAwMDAsIEtqZWxsIE92ZSBSw7h0ZSB3cm90ZToKPiBJbiB0aGUg
+b3JpZ2luYWwgY2FzZSB0aGUgYm9hcmQganVzdCByZWJvb3RzIHdoZW4gdGhlIEJhcmVib3ggaXMg
+dG8gYmUgbG9hZGVkIGZyb20gdGhlIGJvb3RzdHJlYW0gaW1hZ2UuIAo+IEluIGxvZyBiZWxvdyB5
+b3Ugc2VlIHRoYXQgdGhlIHBvd2VyX3ByZXAgYW5kIGJvb3RfcHJlcCBpcyBydW4gYnV0IHRoZSBC
+YXJlYm94IGlzIG5vdCBzdGFydGVkIGF0IGFsbC4gCj4gU28sIGluIHRoaXMgY2FzZSB0aGVyZSBp
+cyBubyBCYXJlYm94IGlzc3VlLCBidXQgSSB3YXMgbG9va2luZyBmb3IgaWYgdGhlcmUgYXJlIHNv
+bWUgbWVjaGFuaXNtIGZvciBoYW5kbGluZyBib290IGVudmlyb25tZW50LCBrZXJuZWwgbG9hZCBl
+dGMgd2l0aCBCYWQgYmxvY2sgbWFuYWdlbWVudC4gCj4gRm9yIGV4YW1wbGUgc29tZXRoaW5nIGxp
+a2Ugd3JpdGluZyBhbmQgbG9hZGluZyBhIGtlcm5lbCBpbWFnZSwgdXNpbmcgc2tpcCBibG9jayBt
+ZXRob2QsIGZyb20gYSBwYXJ0aXRpb24gd2l0aCBiYWQgYmxvY2tzIGFuZCBpbWFnZSBjYW5ub3Qg
+YmUgc3RvcmVkIG92ZXIgbGluZWFyIGFkZHJlc3Nlcy4KPiAKPiBCb290aW5nIGFuIGltYWdlIHdo
+ZXJlIEJhcmVib3ggaXMgc3RvcmVkIGluIGEgTkFORCBCYWQgQmxvY2s6Cj4gCj4gUG93ZXJQcmVw
+IHN0YXJ0IGluaXRpYWxpemUgcG93ZXIuLi4KPiAKPiBDb25maWd1cmVkIGZvciA1diBvbmx5IHBv
+d2VyIHNvdXJjZS4gQmF0dGVyeSBwb3dlcmVkIG9wZXJhdGlvbiBkaXNhYmxlZC4KPiAKPiBUdXJi
+aW5lIFBvd2VyUHJlcCBQT1dFUiBSRVNFVCwgRU1DIGhhcmRuZXNzIERpc2FibGUgdGhlIGNoaXAg
+c2h1dHRpbmcgCj4gZG93biBieSBhIGZhc3QgZmFsbGluZyBlZGdlIG9mIFBTV0lUQ0ggTm92IDI0
+IDIwMTYwODo1NzoyOCBGUkFDIAo+IDB4OTI5MjU1NTIgV2FpdCBmb3IgZGRyIHJlYWR5IDFwb3dl
+ciAweDAwODIwNjE2IEZyYWMgMHg5MjkyNTU1MiBzdGFydCAKPiBjaGFuZ2UgY3B1IGZyZXEgaGJ1
+cyAweDAwMDAwMDAzIGNwdSAweDAwMDEwMDAxIHN0YXJ0IHRlc3QgbWVtb3J5IAo+IGFjY3Jlc3MK
+PiBkZHIyIDB4NDAwMDAwMDAKPiBmaW5pc2ggc2ltcGxlIHRlc3QKPiAweDgwNTAxMDBiCj4gMHg4
+MDUwODAwZgoKSG1tLCB0aGF0IGRvZXNuJ3QgbG9vayBmYW1pbGlhciB0byBtZSAod2UgaGFkIG90
+aGVyIE5BTkQgaXNzdWVzIHJlY2VudGx5KS4KCnJzYwotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5k
+dXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5n
+dXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55
+IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwg
+SFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCkRJU0NM
+QUlNRVI6ClRoaXMgZS1tYWlsIG1heSBjb250YWluIGNvbmZpZGVudGlhbCBhbmQgcHJpdmlsZWdl
+ZCBtYXRlcmlhbCBmb3IgdGhlIHNvbGUgdXNlIG9mIHRoZSBpbnRlbmRlZCByZWNpcGllbnQuIEFu
+eSByZXZpZXcsIHVzZSwgZGlzdHJpYnV0aW9uIG9yIGRpc2Nsb3N1cmUgYnkgb3RoZXJzIGlzIHN0
+cmljdGx5IHByb2hpYml0ZWQuIElmIHlvdSBhcmUgbm90IHRoZSBpbnRlbmRlZCByZWNpcGllbnQg
+KG9yIGF1dGhvcml6ZWQgdG8gcmVjZWl2ZSBmb3IgdGhlIHJlY2lwaWVudCksIHBsZWFzZSBjb250
+YWN0IHRoZSBzZW5kZXIgYnkgcmVwbHkgZS1tYWlsIGFuZCBkZWxldGUgYWxsIGNvcGllcyBvZiB0
+aGlzIG1lc3NhZ2UuCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
+Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
