@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
- by casper.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eLsoi-00077N-Li
- for barebox@lists.infradead.org; Mon, 04 Dec 2017 15:38:02 +0000
-Received: by mail-pg0-x242.google.com with SMTP id j9so8431562pgc.11
- for <barebox@lists.infradead.org>; Mon, 04 Dec 2017 07:37:40 -0800 (PST)
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
+ by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1eLson-0002h7-8z
+ for barebox@lists.infradead.org; Mon, 04 Dec 2017 15:38:07 +0000
+Received: by mail-pf0-x241.google.com with SMTP id n6so8782529pfa.4
+ for <barebox@lists.infradead.org>; Mon, 04 Dec 2017 07:37:42 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  4 Dec 2017 07:37:26 -0800
-Message-Id: <20171204153726.11479-5-andrew.smirnov@gmail.com>
+Date: Mon,  4 Dec 2017 07:37:23 -0800
+Message-Id: <20171204153726.11479-2-andrew.smirnov@gmail.com>
 In-Reply-To: <20171204153726.11479-1-andrew.smirnov@gmail.com>
 References: <20171204153726.11479-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,44 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] commands/miitool: Allow specifying PHY by their full path
+Subject: [PATCH 1/4] commands: miitool: Constify 'phydevname' in mdiobus_show()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Make -s option to be a bit more consistent with how it is used in
-other commands by allowing PHY device to be specified by either its
-name of full path in /dev. This change also allows us to leverage
-autocompletion since it will work as expected for paths in /dev.
+It seems like mdiobus_show() doesn't need more than read-only to
+'phydevname', so constify it to allow passing const stings in.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- commands/miitool.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ commands/miitool.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/commands/miitool.c b/commands/miitool.c
-index 1a46037f2..dea4f853c 100644
+index 07bce1865..1a46037f2 100644
 --- a/commands/miitool.c
 +++ b/commands/miitool.c
-@@ -338,7 +338,9 @@ static int do_miitool(int argc, char *argv[])
- 	case MIITOOL_SHOW:
- 		for_each_mii_bus(mii) {
- 			mdiobus_detect(&mii->dev);
--			mdiobus_show(&mii->dev, phydevname, verbose);
-+			mdiobus_show(&mii->dev,
-+				     devpath_to_name(phydevname),
-+				     verbose);
- 		}
- 		break;
- 	}
-@@ -358,7 +360,7 @@ BAREBOX_CMD_HELP_TEXT("adapters use an MII to autonegotiate link speed and duple
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT("-v", "increase verbosity")
--BAREBOX_CMD_HELP_OPT("-s <devname>", "show PHY status (not providing PHY prints status of all)")
-+BAREBOX_CMD_HELP_OPT("-s <devpath/devname>", "show PHY status (not providing PHY prints status of all)")
- BAREBOX_CMD_HELP_OPT("-r <busno>:<adr>", "register a PHY")
- BAREBOX_CMD_HELP_END
+@@ -225,7 +225,8 @@ static int show_basic_mii(struct mii_bus *mii, struct phy_device *phydev,
+ 	return 0;
+ }
  
+-static void mdiobus_show(struct device_d *dev, char *phydevname, int verbose)
++static void mdiobus_show(struct device_d *dev, const char *phydevname,
++			 int verbose)
+ {
+ 	struct mii_bus *mii = to_mii_bus(dev);
+ 	int i;
 -- 
 2.14.3
 
