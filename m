@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eLsf0-0001tl-Bm
- for barebox@lists.infradead.org; Mon, 04 Dec 2017 15:28:05 +0000
-Received: by mail-pg0-x243.google.com with SMTP id b11so8409464pgu.13
- for <barebox@lists.infradead.org>; Mon, 04 Dec 2017 07:27:38 -0800 (PST)
+ id 1eLsf3-0001to-3H
+ for barebox@lists.infradead.org; Mon, 04 Dec 2017 15:28:10 +0000
+Received: by mail-pf0-x244.google.com with SMTP id p84so8760591pfd.3
+ for <barebox@lists.infradead.org>; Mon, 04 Dec 2017 07:27:41 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  4 Dec 2017 07:27:13 -0800
-Message-Id: <20171204152718.10674-2-andrew.smirnov@gmail.com>
+Date: Mon,  4 Dec 2017 07:27:15 -0800
+Message-Id: <20171204152718.10674-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20171204152718.10674-1-andrew.smirnov@gmail.com>
 References: <20171204152718.10674-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,1235 +23,237 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/6] ARM: vybrid: zii: Make use of DT code from Linux kernel
+Subject: [PATCH v2 3/6] net: phy: Port MDIO bus miltiplexer framework from
+ Linux kernel
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Now that vf610-zii-dev.dts, vf610-zii-dev-rev-b.dts and
-vf610-zii-dev-rev-c.dts made their way from Linux to Barebox, convert
-all relevant code to make use of them.
+Port mdio-mux.c from Linux kernel to Barebox, to support adding
+dirvers that rely on that infrastructure/API.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/vf610-zii-cfu1-rev-a.dts     |   3 +-
- arch/arm/dts/vf610-zii-dev-rev-b.dts      | 386 +----------------------------
- arch/arm/dts/vf610-zii-dev-rev-c.dts      | 391 +-----------------------------
- arch/arm/dts/vf610-zii-dev.dtsi           | 354 ---------------------------
- arch/arm/dts/vf610-zii-scu4-aib-rev-c.dts |   2 +
- arch/arm/dts/vf610-zii-spu3-rev-a.dts     |   4 +-
- 6 files changed, 9 insertions(+), 1131 deletions(-)
+ drivers/net/phy/Kconfig    |   8 +++
+ drivers/net/phy/Makefile   |   2 +
+ drivers/net/phy/mdio-mux.c | 142 +++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/mdio-mux.h   |  30 ++++++++++
+ 4 files changed, 182 insertions(+)
+ create mode 100644 drivers/net/phy/mdio-mux.c
+ create mode 100644 include/linux/mdio-mux.h
 
-diff --git a/arch/arm/dts/vf610-zii-cfu1-rev-a.dts b/arch/arm/dts/vf610-zii-cfu1-rev-a.dts
-index 4147d138b..7e87a15c1 100644
---- a/arch/arm/dts/vf610-zii-cfu1-rev-a.dts
-+++ b/arch/arm/dts/vf610-zii-cfu1-rev-a.dts
-@@ -42,9 +42,10 @@
-  *     OTHER DEALINGS IN THE SOFTWARE.
-  */
+diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+index ea2e06265..08ffd2d45 100644
+--- a/drivers/net/phy/Kconfig
++++ b/drivers/net/phy/Kconfig
+@@ -66,6 +66,14 @@ config MDIO_GPIO
+ 	---help---
+ 	  Supports GPIO lib-based MDIO busses.
  
-+/dts-v1/;
- 
-+#include <arm/vf610-zii-dev.dtsi>
- 
--/dts-v1/;
- #include "vf610-zii-dev.dtsi"
- 
- / {
-diff --git a/arch/arm/dts/vf610-zii-dev-rev-b.dts b/arch/arm/dts/vf610-zii-dev-rev-b.dts
-index bf0a01021..1eb01f44a 100644
---- a/arch/arm/dts/vf610-zii-dev-rev-b.dts
-+++ b/arch/arm/dts/vf610-zii-dev-rev-b.dts
-@@ -42,390 +42,6 @@
-  *     OTHER DEALINGS IN THE SOFTWARE.
-  */
- 
--/dts-v1/;
-+#include <arm/vf610-zii-dev-rev-b.dts>
- 
- #include "vf610-zii-dev.dtsi"
--
--/*
-- * =============================================================
-- *  The following code is shared with Linux kernel and should be
-- *  removed once it trickles down from there eventually
-- * =============================================================
-- */
--
--/ {
--	model = "ZII VF610 Development Board, Rev B";
--	compatible = "zii,vf610dev-b", "zii,vf610dev", "fsl,vf610";
--
--	mdio-mux {
--		compatible = "mdio-mux-gpio";
--		pinctrl-0 = <&pinctrl_mdio_mux>;
--		pinctrl-names = "default";
--		gpios = <&gpio0 8  GPIO_ACTIVE_HIGH
--			 &gpio0 9  GPIO_ACTIVE_HIGH
--			 &gpio0 24 GPIO_ACTIVE_HIGH
--			 &gpio0 25 GPIO_ACTIVE_HIGH>;
--		mdio-parent-bus = <&mdio1>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		mdio_mux_1: mdio@1 {
--			reg = <1>;
--			#address-cells = <1>;
--			#size-cells = <0>;
--
--			switch0: switch0@0 {
--				compatible = "marvell,mv88e6085";
--				#address-cells = <1>;
--				#size-cells = <0>;
--				reg = <0>;
--				dsa,member = <0 0>;
--
--				ports {
--					#address-cells = <1>;
--					#size-cells = <0>;
--					port@0 {
--						reg = <0>;
--						label = "lan0";
--					};
--
--					port@1 {
--						reg = <1>;
--						label = "lan1";
--					};
--
--					port@2 {
--						reg = <2>;
--						label = "lan2";
--					};
--
--					switch0port5: port@5 {
--						reg = <5>;
--						label = "dsa";
--						phy-mode = "rgmii-txid";
--						link = <&switch1port6
--							&switch2port9>;
--					};
--
--					port@6 {
--						reg = <6>;
--						label = "cpu";
--						ethernet = <&fec1>;
--						fixed-link {
--							speed = <100>;
--							full-duplex;
--						};
--					};
--				};
--			};
--		};
--
--		mdio_mux_2: mdio@2 {
--			reg = <2>;
--			#address-cells = <1>;
--			#size-cells = <0>;
--
--			switch1: switch1@0 {
--				compatible = "marvell,mv88e6085";
--				#address-cells = <1>;
--				#size-cells = <0>;
--				reg = <0>;
--				dsa,member = <0 1>;
--
--				ports {
--					#address-cells = <1>;
--					#size-cells = <0>;
--					port@0 {
--						reg = <0>;
--						label = "lan3";
--						phy-handle = <&switch1phy0>;
--					};
--
--					port@1 {
--						reg = <1>;
--						label = "lan4";
--						phy-handle = <&switch1phy1>;
--					};
--
--					port@2 {
--						reg = <2>;
--						label = "lan5";
--						phy-handle = <&switch1phy2>;
--					};
--
--					switch1port5: port@5 {
--						reg = <5>;
--						label = "dsa";
--						link = <&switch2port9>;
--						phy-mode = "rgmii-txid";
--						fixed-link {
--							speed = <1000>;
--							full-duplex;
--						};
--					};
--
--					switch1port6: port@6 {
--						reg = <6>;
--						label = "dsa";
--						phy-mode = "rgmii-txid";
--						link = <&switch0port5>;
--					};
--				};
--				mdio {
--					#address-cells = <1>;
--					#size-cells = <0>;
--					switch1phy0: switch1phy0@0 {
--						reg = <0>;
--					};
--					switch1phy1: switch1phy0@1 {
--						reg = <1>;
--					};
--					switch1phy2: switch1phy0@2 {
--						reg = <2>;
--					};
--				};
--			};
--		};
--
--		mdio_mux_4: mdio@4 {
--			#address-cells = <1>;
--			#size-cells = <0>;
--			reg = <4>;
--
--			switch2: switch2@0 {
--				compatible = "marvell,mv88e6085";
--				#address-cells = <1>;
--				#size-cells = <0>;
--				reg = <0>;
--				dsa,member = <0 2>;
--
--				ports {
--					#address-cells = <1>;
--					#size-cells = <0>;
--					port@0 {
--						reg = <0>;
--						label = "lan6";
--					};
--
--					port@1 {
--						reg = <1>;
--						label = "lan7";
--					};
--
--					port@2 {
--						reg = <2>;
--						label = "lan8";
--					};
--
--					port@3 {
--						reg = <3>;
--						label = "optical3";
--						fixed-link {
--							speed = <1000>;
--							full-duplex;
--							link-gpios = <&gpio6 2
--							      GPIO_ACTIVE_HIGH>;
--						};
--					};
--
--					port@4 {
--						reg = <4>;
--						label = "optical4";
--						fixed-link {
--							speed = <1000>;
--							full-duplex;
--							link-gpios = <&gpio6 3
--							      GPIO_ACTIVE_HIGH>;
--						};
--					};
--
--					switch2port9: port@9 {
--						reg = <9>;
--						label = "dsa";
--						phy-mode = "rgmii-txid";
--						link = <&switch1port5
--							&switch0port5>;
--						fixed-link {
--							speed = <1000>;
--							full-duplex;
--						};
--					};
--				};
--			};
--		};
--
--		mdio_mux_8: mdio@8 {
--			reg = <8>;
--			#address-cells = <1>;
--			#size-cells = <0>;
--		};
--	};
--
--	spi0 {
--		compatible = "spi-gpio";
--		pinctrl-0 = <&pinctrl_gpio_spi0>;
--		pinctrl-names = "default";
--		#address-cells = <1>;
--		#size-cells = <0>;
--		gpio-sck  = <&gpio1 12 GPIO_ACTIVE_HIGH>;
--		gpio-mosi = <&gpio1 11 GPIO_ACTIVE_HIGH>;
--		gpio-miso = <&gpio1 10 GPIO_ACTIVE_HIGH>;
--		cs-gpios  = <&gpio1  9 GPIO_ACTIVE_HIGH
--			     &gpio1  8 GPIO_ACTIVE_HIGH>;
--		num-chipselects = <2>;
--
--		m25p128@0 {
--			compatible = "m25p128", "jedec,spi-nor";
--			#address-cells = <1>;
--			#size-cells = <1>;
--			reg = <0>;
--			spi-max-frequency = <1000000>;
--		};
--
--		at93c46d@1 {
--			compatible = "atmel,at93c46d";
--			pinctrl-0 = <&pinctrl_gpio_e6185_eeprom_sel>;
--			pinctrl-names = "default";
--			#address-cells = <0>;
--			#size-cells = <0>;
--			reg = <1>;
--			spi-max-frequency = <500000>;
--			spi-cs-high;
--			data-size = <16>;
--			select-gpios = <&gpio4 4 GPIO_ACTIVE_HIGH>;
--		};
--	};
--};
--
--&i2c0 {
--	clock-frequency = <100000>;
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_i2c0>;
--	status = "okay";
--
--	gpio5: pca9554@20 {
--		compatible = "nxp,pca9554";
--		reg = <0x20>;
--		gpio-controller;
--		#gpio-cells = <2>;
--
--	};
--
--	gpio6: pca9554@22 {
--		compatible = "nxp,pca9554";
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_pca9554_22>;
--		reg = <0x22>;
--		gpio-controller;
--		#gpio-cells = <2>;
--		interrupt-parent = <&gpio2>;
--		interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
--	};
--};
--
--&i2c2 {
--	clock-frequency = <100000>;
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_i2c2>;
--	status = "okay";
--
--	tca9548@70 {
--		compatible = "nxp,pca9548";
--		pinctrl-0 = <&pinctrl_i2c_mux_reset>;
--		pinctrl-names = "default";
--		#address-cells = <1>;
--		#size-cells = <0>;
--		reg = <0x70>;
--		reset-gpios = <&gpio3 23 GPIO_ACTIVE_LOW>;
--
--		i2c@0 {
--			#address-cells = <1>;
--			#size-cells = <0>;
--			reg = <0>;
--
--			sfp1: at24c04@50 {
--				compatible = "atmel,24c02";
--				reg = <0x50>;
--			};
--		};
--
--		i2c@1 {
--			#address-cells = <1>;
--			#size-cells = <0>;
--			reg = <1>;
--
--			sfp2: at24c04@50 {
--				compatible = "atmel,24c02";
--				reg = <0x50>;
--			};
--		};
--
--		i2c@2 {
--			#address-cells = <1>;
--			#size-cells = <0>;
--			reg = <2>;
--
--			sfp3: at24c04@50 {
--				compatible = "atmel,24c02";
--				reg = <0x50>;
--			};
--		};
--
--		i2c@3 {
--			#address-cells = <1>;
--			#size-cells = <0>;
--			reg = <3>;
--
--			sfp4: at24c04@50 {
--				compatible = "atmel,24c02";
--				reg = <0x50>;
--			};
--		};
--
--		i2c@4 {
--			#address-cells = <1>;
--			#size-cells = <0>;
--			reg = <4>;
--		};
--	};
--};
--
--
--&iomuxc {
--	pinctrl_gpio_e6185_eeprom_sel: pinctrl-gpio-e6185-eeprom-spi0 {
--		fsl,pins = <
--			VF610_PAD_PTE27__GPIO_132	0x33e2
--		>;
--	};
--
--	pinctrl_gpio_spi0: pinctrl-gpio-spi0 {
--		fsl,pins = <
--			VF610_PAD_PTB22__GPIO_44	0x33e2
--			VF610_PAD_PTB21__GPIO_43	0x33e2
--			VF610_PAD_PTB20__GPIO_42	0x33e1
--			VF610_PAD_PTB19__GPIO_41	0x33e2
--			VF610_PAD_PTB18__GPIO_40	0x33e2
--		>;
--	};
--
--	pinctrl_mdio_mux: pinctrl-mdio-mux {
--		fsl,pins = <
--			VF610_PAD_PTA18__GPIO_8		0x31c2
--			VF610_PAD_PTA19__GPIO_9		0x31c2
--			VF610_PAD_PTB2__GPIO_24		0x31c2
--			VF610_PAD_PTB3__GPIO_25		0x31c2
--		>;
--	};
--
--	pinctrl_pca9554_22: pinctrl-pca95540-22 {
--		fsl,pins = <
--			VF610_PAD_PTB28__GPIO_98	0x219d
--		>;
--	};
--};
--
--/*
-- * =============================================================
-- *                    End of shared part
-- * =============================================================
--*/
-diff --git a/arch/arm/dts/vf610-zii-dev-rev-c.dts b/arch/arm/dts/vf610-zii-dev-rev-c.dts
-index 522894263..797b31bef 100644
---- a/arch/arm/dts/vf610-zii-dev-rev-c.dts
-+++ b/arch/arm/dts/vf610-zii-dev-rev-c.dts
-@@ -42,399 +42,10 @@
-  *     OTHER DEALINGS IN THE SOFTWARE.
-  */
- 
--/dts-v1/;
-+#include <arm/vf610-zii-dev-rev-c.dts>
- 
- #include "vf610-zii-dev.dtsi"
- 
--/*
-- * =============================================================
-- *  The following code is shared with Linux kernel and should be
-- *  removed once it trickles down from there eventually
-- * =============================================================
-- */
--
--/ {
--	model = "ZII VF610 Development Board, Rev C";
--	compatible = "zii,vf610dev-c", "zii,vf610dev", "fsl,vf610";
--
--	mdio-mux {
--		compatible = "mdio-mux-gpio";
--		pinctrl-0 = <&pinctrl_mdio_mux>;
--		pinctrl-names = "default";
--		gpios = <&gpio0 8  GPIO_ACTIVE_HIGH
--			 &gpio0 9  GPIO_ACTIVE_HIGH
--			 &gpio0 25 GPIO_ACTIVE_HIGH>;
--		mdio-parent-bus = <&mdio1>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		mdio_mux_1: mdio@1 {
--			reg = <1>;
--			#address-cells = <1>;
--			#size-cells = <0>;
--
--			switch0: switch0@0 {
--				compatible = "marvell,mv88e6190";
--				#address-cells = <1>;
--				#size-cells = <0>;
--				reg = <0>;
--				dsa,member = <0 0>;
--
--				ports {
--					#address-cells = <1>;
--					#size-cells = <0>;
--
--					port@0 {
--						reg = <0>;
--						label = "cpu";
--						ethernet = <&fec1>;
--						fixed-link {
--							speed = <100>;
--							full-duplex;
--						};
--					};
--
--					port@1 {
--						reg = <1>;
--						label = "lan1";
--					};
--
--					port@2 {
--						reg = <2>;
--						label = "lan2";
--					};
--
--					port@3 {
--						reg = <3>;
--						label = "lan3";
--					};
--
--					port@4 {
--						reg = <4>;
--						label = "lan4";
--					};
--
--					switch0port10: port@10 {
--						reg = <10>;
--						label = "dsa";
--						phy-mode = "xgmii";
--						link = <&switch1port10>;
--					};
--				};
--			};
--		};
--
--		mdio_mux_2: mdio@2 {
--			reg = <2>;
--			#address-cells = <1>;
--			#size-cells = <0>;
--
--			switch1: switch1@0 {
--				compatible = "marvell,mv88e6190";
--				#address-cells = <1>;
--				#size-cells = <0>;
--				reg = <0>;
--				dsa,member = <0 1>;
--
--				ports {
--					#address-cells = <1>;
--					#size-cells = <0>;
--
--					port@1 {
--						reg = <1>;
--						label = "lan5";
--					};
--
--					port@2 {
--						reg = <2>;
--						label = "lan6";
--					};
--
--					port@3 {
--						reg = <3>;
--						label = "lan7";
--					};
--
--					port@4 {
--						reg = <4>;
--						label = "lan8";
--					};
--
--
--					switch1port10: port@10 {
--						reg = <10>;
--						label = "dsa";
--						phy-mode = "xgmii";
--						link = <&switch0port10>;
--					};
--				};
--			};
--		};
--
--		mdio_mux_4: mdio@4 {
--			reg = <4>;
--			#address-cells = <1>;
--			#size-cells = <0>;
--		};
--	};
--};
--
--&dspi0 {
--	bus-num = <0>;
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_dspi0>;
--	status = "okay";
--	spi-num-chipselects = <2>;
--
--	m25p128@0 {
--		compatible = "m25p128", "jedec,spi-nor";
--		#address-cells = <1>;
--		#size-cells = <1>;
--		reg = <0>;
--		spi-max-frequency = <50000000>;
--	};
--
--	atzb-rf-233@1 {
--		compatible = "atmel,at86rf233";
--
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctr_atzb_rf_233>;
--
--		spi-max-frequency = <7500000>;
--		reg = <1>;
--		interrupts = <4 IRQ_TYPE_LEVEL_HIGH>;
--		interrupt-parent = <&gpio3>;
--		xtal-trim = /bits/ 8 <0x06>;
--
--		sleep-gpio = <&gpio0 24 GPIO_ACTIVE_HIGH>;
--		reset-gpio = <&gpio6 10 GPIO_ACTIVE_HIGH>;
--
--		fsl,spi-cs-sck-delay = <180>;
--		fsl,spi-sck-cs-delay = <250>;
--	};
--};
--
--&dspi2 {
--	bus-num = <2>;
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_dspi2>;
--	status = "okay";
--	spi-num-chipselects = <2>;
--};
--
--&i2c0 {
--	/*
--	 * U712
--	 *
--	 * Exposed signals:
--	 *    P1 - WE2_CMD
--	 *    P2 - WE2_CLK
--	 */
--	gpio5: pca9557@18 {
--		compatible = "nxp,pca9557";
--		reg = <0x18>;
--		gpio-controller;
--		#gpio-cells = <2>;
--	};
--
--	/*
--	 * U121
--	 *
--	 * Exposed signals:
--	 *    I/O0  - ENET_SWR_EN
--	 *    I/O1  - ESW1_RESETn
--	 *    I/O2  - ARINC_RESET
--	 *    I/O3  - DD1_IO_RESET
--	 *    I/O4  - ESW2_RESETn
--	 *    I/O5  - ESW3_RESETn
--	 *    I/O6  - ESW4_RESETn
--	 *    I/O8  - TP909
--	 *    I/O9  - FEM_SEL
--	 *    I/O10 - WIFI_RESETn
--	 *    I/O11 - PHY_RSTn
--	 *    I/O12 - OPT1_SD
--	 *    I/O13 - OPT2_SD
--	 *    I/O14 - OPT1_TX_DIS
--	 *    I/O15 - OPT2_TX_DIS
--	 */
--	gpio6: sx1503@20 {
--		compatible = "semtech,sx1503q";
--
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_sx1503_20>;
--		#gpio-cells = <2>;
--		#interrupt-cells = <2>;
--		reg = <0x20>;
--		interrupt-parent = <&gpio0>;
--		interrupts = <23 IRQ_TYPE_EDGE_FALLING>;
--		gpio-controller;
--		interrupt-controller;
--
--		enet_swr_en {
--			gpio-hog;
--			gpios = <0 GPIO_ACTIVE_HIGH>;
--			output-high;
--			line-name = "enet-swr-en";
--		};
--	};
--
--	/*
--	 * U715
--	 *
--	 * Exposed signals:
--	 *     IO0 - WE1_CLK
--	 *     IO1 - WE1_CMD
--	 */
--	gpio7: pca9554@22 {
--		compatible = "nxp,pca9554";
--		reg = <0x22>;
--		gpio-controller;
--		#gpio-cells = <2>;
--
--	};
--};
--
--&i2c1 {
--	at24mac602@00 {
--		compatible = "atmel,24c02";
--		reg = <0x50>;
--		read-only;
--	};
--};
--
--&i2c2 {
--	tca9548@70 {
--		compatible = "nxp,pca9548";
--		pinctrl-0 = <&pinctrl_i2c_mux_reset>;
--		pinctrl-names = "default";
--		#address-cells = <1>;
--		#size-cells = <0>;
--		reg = <0x70>;
--		reset-gpios = <&gpio3 23 GPIO_ACTIVE_LOW>;
--
--		i2c@0 {
--			#address-cells = <1>;
--			#size-cells = <0>;
--			reg = <0>;
--		};
--
--		i2c@1 {
--			#address-cells = <1>;
--			#size-cells = <0>;
--			reg = <1>;
--
--			sfp2: at24c04@50 {
--				compatible = "atmel,24c02";
--				reg = <0x50>;
--			};
--		};
--
--		i2c@2 {
--			#address-cells = <1>;
--			#size-cells = <0>;
--			reg = <2>;
--
--			sfp3: at24c04@50 {
--				compatible = "atmel,24c02";
--				reg = <0x50>;
--			};
--		};
--
--		i2c@3 {
--			#address-cells = <1>;
--			#size-cells = <0>;
--			reg = <3>;
--		};
--	};
--};
--
--&uart3 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_uart3>;
--	status = "okay";
--};
--
--&gpio0 {
--	eth0_intrp {
--		gpio-hog;
--		gpios = <23 GPIO_ACTIVE_HIGH>;
--		input;
--		line-name = "sx1503-irq";
--	};
--};
--
--&gpio3 {
--	eth0_intrp {
--		gpio-hog;
--		gpios = <2 GPIO_ACTIVE_HIGH>;
--		input;
--		line-name = "eth0-intrp";
--	};
--};
--
--&fec0 {
--	mdio {
--		#address-cells = <1>;
--		#size-cells = <0>;
--		status = "okay";
--
--		ethernet-phy@0 {
--			compatible = "ethernet-phy-ieee802.3-c22";
--
--			pinctrl-names = "default";
--			pinctrl-0 = <&pinctrl_fec0_phy_int>;
--
--			interrupt-parent = <&gpio3>;
--			interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
--			reg = <0>;
--		};
--	};
--};
--
--&iomuxc {
--	pinctr_atzb_rf_233: pinctrl-atzb-rf-233 {
--		fsl,pins = <
--			VF610_PAD_PTB2__GPIO_24		0x31c2
--			VF610_PAD_PTE27__GPIO_132	0x33e2
--		>;
--	};
--
--
--	pinctrl_sx1503_20: pinctrl-sx1503-20 {
--		fsl,pins = <
--			VF610_PAD_PTB1__GPIO_23		0x219d
--		>;
--	};
--
--	pinctrl_uart3: uart3grp {
--		fsl,pins = <
--			VF610_PAD_PTA20__UART3_TX	0x21a2
--			VF610_PAD_PTA21__UART3_RX	0x21a1
--		>;
--	};
--
--	pinctrl_mdio_mux: pinctrl-mdio-mux {
--		fsl,pins = <
--			VF610_PAD_PTA18__GPIO_8		0x31c2
--			VF610_PAD_PTA19__GPIO_9		0x31c2
--			VF610_PAD_PTB3__GPIO_25		0x31c2
--		>;
--	};
--
--	pinctrl_fec0_phy_int: pinctrl-fec0-phy-int {
--		fsl,pins = <
--			VF610_PAD_PTB28__GPIO_98	0x219d
--		>;
--	};
--};
--
--/*
-- * =============================================================
-- *                    End of shared part
-- * =============================================================
-- */
--
--
- &dspi0 {
- 	m25p128@0 {
- 		partition@0 {
-diff --git a/arch/arm/dts/vf610-zii-dev.dtsi b/arch/arm/dts/vf610-zii-dev.dtsi
-index dae077ced..4bf81451a 100644
---- a/arch/arm/dts/vf610-zii-dev.dtsi
-+++ b/arch/arm/dts/vf610-zii-dev.dtsi
-@@ -42,360 +42,6 @@ n *     copy, modify, merge, publish, distribute, sublicense, and/or
-  *     OTHER DEALINGS IN THE SOFTWARE.
-  */
- 
--
--/*
-- * =============================================================
-- *  The following code is shared with Linux kernel and should be
-- *  removed once it trickles down from there eventually
-- * =============================================================
-- */
--
--#include <arm/vf610.dtsi>
--
--/ {
--	chosen {
--		stdout-path = "serial0:115200n8";
--	};
--
--	memory {
--		reg = <0x80000000 0x20000000>;
--	};
--
--	gpio-leds {
--		compatible = "gpio-leds";
--		pinctrl-0 = <&pinctrl_leds_debug>;
--		pinctrl-names = "default";
--
--		debug {
--			label = "zii:green:debug1";
--			gpios = <&gpio2 10 GPIO_ACTIVE_HIGH>;
--			linux,default-trigger = "heartbeat";
--		};
--	};
--
--	reg_vcc_3v3_mcu: regulator-vcc-3v3-mcu {
--		compatible = "regulator-fixed";
--		regulator-name = "vcc_3v3_mcu";
--		regulator-min-microvolt = <3300000>;
--		regulator-max-microvolt = <3300000>;
--	};
--
--	usb0_vbus: regulator-usb0-vbus {
--		compatible = "regulator-fixed";
--		pinctrl-0 = <&pinctrl_usb_vbus>;
--		regulator-name = "usb_vbus";
--		regulator-min-microvolt = <5000000>;
--		regulator-max-microvolt = <5000000>;
--		enable-active-high;
--		regulator-always-on;
--		regulator-boot-on;
--		gpio = <&gpio0 6 0>;
--	};
--};
--
--&adc0 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_adc0_ad5>;
--	vref-supply = <&reg_vcc_3v3_mcu>;
--	status = "okay";
--};
--
--&edma0 {
--	status = "okay";
--};
--
--&esdhc1 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_esdhc1>;
--	bus-width = <4>;
--	status = "okay";
--};
--
--&fec0 {
--	phy-mode = "rmii";
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_fec0>;
--	status = "okay";
--};
--
--&fec1 {
--	phy-mode = "rmii";
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_fec1>;
--	status = "okay";
--
--	fixed-link {
--		   speed = <100>;
--		   full-duplex;
--	};
--
--	mdio1: mdio {
--		#address-cells = <1>;
--		#size-cells = <0>;
--		status = "okay";
--	};
--};
--
--&i2c0 {
--	clock-frequency = <100000>;
--	pinctrl-names = "default", "gpio";
--	pinctrl-0 = <&pinctrl_i2c0>;
--	pinctrl-1 = <&pinctrl_i2c0_gpio>;
--	scl-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
--	sda-gpios = <&gpio1 5 GPIO_ACTIVE_HIGH>;
--	status = "okay";
--
--	lm75@48 {
--		compatible = "national,lm75";
--		reg = <0x48>;
--	};
--
--	at24c04@50 {
--		compatible = "atmel,24c04";
--		reg = <0x50>;
--	};
--
--	at24c04@52 {
--		compatible = "atmel,24c04";
--		reg = <0x52>;
--	};
--
--	ds1682@6b {
--		compatible = "dallas,ds1682";
--		reg = <0x6b>;
--	};
--};
--
--&i2c1 {
--	clock-frequency = <100000>;
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_i2c1>;
--	status = "okay";
--};
--
--&i2c2 {
--	clock-frequency = <100000>;
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_i2c2>;
--	status = "okay";
--};
--
--&uart0 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_uart0>;
--	status = "okay";
--};
--
--&uart1 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_uart1>;
--	status = "okay";
--};
--
--&uart2 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_uart2>;
--	status = "okay";
--};
--
--&usbdev0 {
--	disable-over-current;
--	vbus-supply = <&usb0_vbus>;
--	dr_mode = "host";
--	status = "okay";
--};
--
--&usbh1 {
--	disable-over-current;
--	status = "okay";
--};
--
--&usbmisc0 {
--	status = "okay";
--};
--
--&usbmisc1 {
--	status = "okay";
--};
--
--&usbphy0 {
--	status = "okay";
--};
--
--&usbphy1 {
--	status = "okay";
--};
--
--&iomuxc {
--	pinctrl_adc0_ad5: adc0ad5grp {
--		fsl,pins = <
--			VF610_PAD_PTC30__ADC0_SE5	0x00a1
--		>;
--	};
--
--	pinctrl_dspi0: dspi0grp {
--		fsl,pins = <
--			VF610_PAD_PTB18__DSPI0_CS1	0x1182
--			VF610_PAD_PTB19__DSPI0_CS0	0x1182
--			VF610_PAD_PTB20__DSPI0_SIN	0x1181
--			VF610_PAD_PTB21__DSPI0_SOUT	0x1182
--			VF610_PAD_PTB22__DSPI0_SCK	0x1182
--		>;
--	};
--
--	pinctrl_dspi2: dspi2grp {
--		fsl,pins = <
--			VF610_PAD_PTD31__DSPI2_CS1	0x1182
--			VF610_PAD_PTD30__DSPI2_CS0	0x1182
--			VF610_PAD_PTD29__DSPI2_SIN	0x1181
--			VF610_PAD_PTD28__DSPI2_SOUT	0x1182
--			VF610_PAD_PTD27__DSPI2_SCK	0x1182
--		>;
--	};
--
--	pinctrl_esdhc1: esdhc1grp {
--		fsl,pins = <
--			VF610_PAD_PTA24__ESDHC1_CLK	0x31ef
--			VF610_PAD_PTA25__ESDHC1_CMD	0x31ef
--			VF610_PAD_PTA26__ESDHC1_DAT0	0x31ef
--			VF610_PAD_PTA27__ESDHC1_DAT1	0x31ef
--			VF610_PAD_PTA28__ESDHC1_DATA2	0x31ef
--			VF610_PAD_PTA29__ESDHC1_DAT3	0x31ef
--			VF610_PAD_PTA7__GPIO_134	0x219d
--		>;
--	};
--
--	pinctrl_fec0: fec0grp {
--		fsl,pins = <
--			VF610_PAD_PTC0__ENET_RMII0_MDC	0x30d2
--			VF610_PAD_PTC1__ENET_RMII0_MDIO	0x30d3
--			VF610_PAD_PTC2__ENET_RMII0_CRS	0x30d1
--			VF610_PAD_PTC3__ENET_RMII0_RXD1	0x30d1
--			VF610_PAD_PTC4__ENET_RMII0_RXD0	0x30d1
--			VF610_PAD_PTC5__ENET_RMII0_RXER	0x30d1
--			VF610_PAD_PTC6__ENET_RMII0_TXD1	0x30d2
--			VF610_PAD_PTC7__ENET_RMII0_TXD0	0x30d2
--			VF610_PAD_PTC8__ENET_RMII0_TXEN	0x30d2
--		>;
--	};
--
--	pinctrl_fec1: fec1grp {
--		fsl,pins = <
--			VF610_PAD_PTA6__RMII_CLKIN		0x30d1
--			VF610_PAD_PTC9__ENET_RMII1_MDC		0x30d2
--			VF610_PAD_PTC10__ENET_RMII1_MDIO	0x30d3
--			VF610_PAD_PTC11__ENET_RMII1_CRS		0x30d1
--			VF610_PAD_PTC12__ENET_RMII1_RXD1	0x30d1
--			VF610_PAD_PTC13__ENET_RMII1_RXD0	0x30d1
--			VF610_PAD_PTC14__ENET_RMII1_RXER	0x30d1
--			VF610_PAD_PTC15__ENET_RMII1_TXD1	0x30d2
--			VF610_PAD_PTC16__ENET_RMII1_TXD0	0x30d2
--			VF610_PAD_PTC17__ENET_RMII1_TXEN	0x30d2
--		>;
--	};
--
--	pinctrl_gpio_spi0: pinctrl-gpio-spi0 {
--		fsl,pins = <
--			VF610_PAD_PTB22__GPIO_44	0x33e2
--			VF610_PAD_PTB21__GPIO_43	0x33e2
--			VF610_PAD_PTB20__GPIO_42	0x33e1
--			VF610_PAD_PTB19__GPIO_41	0x33e2
--			VF610_PAD_PTB18__GPIO_40	0x33e2
--		>;
--	};
--
--	pinctrl_i2c_mux_reset: pinctrl-i2c-mux-reset {
--		fsl,pins = <
--			 VF610_PAD_PTE14__GPIO_119	0x31c2
--			 >;
--	};
--
--	pinctrl_i2c0: i2c0grp {
--		fsl,pins = <
--			VF610_PAD_PTB14__I2C0_SCL	0x37ff
--			VF610_PAD_PTB15__I2C0_SDA	0x37ff
--		>;
--	};
--
--	pinctrl_i2c0_gpio: i2c0grp-gpio {
--		fsl,pins = <
--			VF610_PAD_PTB14__GPIO_36	0x31c2
--			VF610_PAD_PTB15__GPIO_37	0x31c2
--		>;
--	};
--
--
--	pinctrl_i2c1: i2c1grp {
--		fsl,pins = <
--			VF610_PAD_PTB16__I2C1_SCL	0x37ff
--			VF610_PAD_PTB17__I2C1_SDA	0x37ff
--		>;
--	};
--
--	pinctrl_i2c2: i2c2grp {
--		fsl,pins = <
--			VF610_PAD_PTA22__I2C2_SCL	0x37ff
--			VF610_PAD_PTA23__I2C2_SDA	0x37ff
--		>;
--	};
--
--	pinctrl_leds_debug: pinctrl-leds-debug {
--		fsl,pins = <
--			 VF610_PAD_PTD20__GPIO_74	0x31c2
--			 >;
--	};
--
--	pinctrl_qspi0: qspi0grp {
--		fsl,pins = <
--			VF610_PAD_PTD7__QSPI0_B_QSCK	0x31c3
--			VF610_PAD_PTD8__QSPI0_B_CS0	0x31ff
--			VF610_PAD_PTD9__QSPI0_B_DATA3	0x31c3
--			VF610_PAD_PTD10__QSPI0_B_DATA2	0x31c3
--			VF610_PAD_PTD11__QSPI0_B_DATA1	0x31c3
--			VF610_PAD_PTD12__QSPI0_B_DATA0	0x31c3
--		>;
--	};
--
--	pinctrl_uart0: uart0grp {
--		fsl,pins = <
--			VF610_PAD_PTB10__UART0_TX	0x21a2
--			VF610_PAD_PTB11__UART0_RX	0x21a1
--		>;
--	};
--
--	pinctrl_uart1: uart1grp {
--		fsl,pins = <
--			VF610_PAD_PTB23__UART1_TX	0x21a2
--			VF610_PAD_PTB24__UART1_RX	0x21a1
--		>;
--	};
--
--	pinctrl_uart2: uart2grp {
--		fsl,pins = <
--			VF610_PAD_PTD0__UART2_TX	0x21a2
--			VF610_PAD_PTD1__UART2_RX	0x21a1
--		>;
--	};
--
--	pinctrl_usb_vbus: pinctrl-usb-vbus {
--		fsl,pins = <
--			VF610_PAD_PTA16__GPIO_6	0x31c2
--		>;
--	};
--
--	pinctrl_usb0_host: usb0-host-grp {
--		fsl,pins = <
--			VF610_PAD_PTD6__GPIO_85		0x0062
--		>;
--	};
--};
--
--/*
-- * =============================================================
-- *                    End of shared part
-- * =============================================================
-- */
--
- / {
- 	audio_ext: mclk_osc {
- 		compatible = "fixed-clock";
-diff --git a/arch/arm/dts/vf610-zii-scu4-aib-rev-c.dts b/arch/arm/dts/vf610-zii-scu4-aib-rev-c.dts
-index d10f460e3..12c2568bc 100644
---- a/arch/arm/dts/vf610-zii-scu4-aib-rev-c.dts
-+++ b/arch/arm/dts/vf610-zii-scu4-aib-rev-c.dts
-@@ -44,6 +44,8 @@
- 
- /dts-v1/;
- 
-+#include <arm/vf610-zii-dev.dtsi>
++config MDIO_BUS_MUX
++	bool
++	help
++	  This module provides a driver framework for MDIO bus
++	  multiplexers which connect one of several child MDIO busses
++	  to a parent bus.  Switching between child busses is done by
++	  device specific drivers.
 +
- #include "vf610-zii-dev.dtsi"
+ endif
  
- / {
-diff --git a/arch/arm/dts/vf610-zii-spu3-rev-a.dts b/arch/arm/dts/vf610-zii-spu3-rev-a.dts
-index 25ab26ddf..f362e7f0b 100644
---- a/arch/arm/dts/vf610-zii-spu3-rev-a.dts
-+++ b/arch/arm/dts/vf610-zii-spu3-rev-a.dts
-@@ -43,8 +43,10 @@
-  */
- 
- /dts-v1/;
--#include "vf610-zii-dev.dtsi"
- 
-+#include <arm/vf610-zii-dev.dtsi>
+ endmenu
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+index 13b8f6545..89b4b80be 100644
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -10,3 +10,5 @@ obj-$(CONFIG_SMSC_PHY)		+= smsc.o
+ obj-$(CONFIG_MDIO_MVEBU)	+= mdio-mvebu.o
+ obj-$(CONFIG_MDIO_BITBANG)	+= mdio-bitbang.o
+ obj-$(CONFIG_MDIO_GPIO)		+= mdio-gpio.o
++obj-$(CONFIG_MDIO_BUS_MUX)	+= mdio-mux.o
 +
-+#include "vf610-zii-dev.dtsi"
- 
- / {
- 	model = "ZII VF610 SPU3 Switch Management Board";
+diff --git a/drivers/net/phy/mdio-mux.c b/drivers/net/phy/mdio-mux.c
+new file mode 100644
+index 000000000..4e924e586
+--- /dev/null
++++ b/drivers/net/phy/mdio-mux.c
+@@ -0,0 +1,142 @@
++/*
++ * Copyright (c) 2017 Zodiac Inflight Innovation
++ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
++ *
++ * Based on analogous code from Linux kernel
++ *
++ * Copyright (C) 2011, 2012 Cavium, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++#include <common.h>
++#include <linux/mdio-mux.h>
++#include <linux/phy.h>
++
++struct mdio_mux_parent_bus {
++	struct mii_bus *mii_bus;
++	int current_child;
++	int parent_id;
++	void *switch_data;
++	int (*switch_fn)(int current_child, int desired_child, void *data);
++};
++
++struct mdio_mux_child_bus {
++	struct mii_bus mii_bus;
++	struct mdio_mux_parent_bus *parent;
++	struct mdio_mux_child_bus *next;
++	int bus_number;
++};
++
++static int mdio_mux_read_or_write(struct mii_bus *bus, int phy_id,
++		       int regnum, u16 *val)
++{
++	struct mdio_mux_child_bus *cb = bus->priv;
++	struct mdio_mux_parent_bus *pb = cb->parent;
++	int r;
++
++	r = pb->switch_fn(pb->current_child, cb->bus_number, pb->switch_data);
++	if (!r) {
++		pb->current_child = cb->bus_number;
++		if (val)
++			r = pb->mii_bus->write(pb->mii_bus, phy_id,
++					       regnum, *val);
++		else
++			r = pb->mii_bus->read(pb->mii_bus, phy_id,
++					      regnum);
++	}
++	return r;
++}
++
++static int mdio_mux_read(struct mii_bus *bus, int phy_id, int regnum)
++{
++	return mdio_mux_read_or_write(bus, phy_id, regnum, NULL);
++}
++
++static int mdio_mux_write(struct mii_bus *bus, int phy_id,
++			  int regnum, u16 val)
++{
++	return mdio_mux_read_or_write(bus, phy_id, regnum, &val);
++}
++
++int mdio_mux_init(struct device_d *dev,
++		  struct device_node *mux_node,
++		  int (*switch_fn)(int cur, int desired, void *data),
++		  void *data,
++		  struct mii_bus *mux_bus)
++{
++	static int parent_count = 0;
++
++	struct device_node *parent_bus_node;
++	struct device_node *child_bus_node;
++	struct mdio_mux_parent_bus *pb;
++	struct mdio_mux_child_bus *cb;
++	struct mii_bus *parent_bus;
++	int r;
++
++	if (!mux_node)
++		return -ENODEV;
++
++	if (!mux_bus) {
++		parent_bus_node = of_parse_phandle(mux_node,
++						   "mdio-parent-bus", 0);
++
++		if (!parent_bus_node)
++			return -ENODEV;
++
++		parent_bus = of_mdio_find_bus(parent_bus_node);
++
++		if (!parent_bus)
++			return -EPROBE_DEFER;
++	} else {
++		parent_bus_node = NULL;
++		parent_bus = mux_bus;
++	}
++
++	pb = xzalloc(sizeof(*pb));
++
++	pb->switch_data   = data;
++	pb->switch_fn     = switch_fn;
++	pb->current_child = -1;
++	pb->parent_id     = parent_count++;
++	pb->mii_bus       = parent_bus;
++
++	for_each_available_child_of_node(mux_node, child_bus_node) {
++		int v;
++
++		r = of_property_read_u32(child_bus_node, "reg", &v);
++		if (r) {
++			dev_err(dev,
++				"Error: Failed to find reg for child %pOF\n",
++				child_bus_node);
++			continue;
++		}
++
++		cb = xzalloc(sizeof(*cb));
++		cb->bus_number = v;
++		cb->parent     = pb;
++
++		cb->mii_bus.priv   = cb;
++		cb->mii_bus.parent = dev;
++		cb->mii_bus.read   = mdio_mux_read;
++		cb->mii_bus.write  = mdio_mux_write;
++		cb->mii_bus.dev.device_node = child_bus_node;
++
++		r = mdiobus_register(&cb->mii_bus);
++		if (r) {
++			dev_err(dev,
++				"Error: Failed to register MDIO bus for child %pOF\n",
++				child_bus_node);
++		}
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(mdio_mux_init);
+diff --git a/include/linux/mdio-mux.h b/include/linux/mdio-mux.h
+new file mode 100644
+index 000000000..1730939bf
+--- /dev/null
++++ b/include/linux/mdio-mux.h
+@@ -0,0 +1,30 @@
++/*
++ * MDIO bus multiplexer framwork.
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2011, 2012 Cavium, Inc.
++ */
++#ifndef __LINUX_MDIO_MUX_H
++#define __LINUX_MDIO_MUX_H
++#include <driver.h>
++#include <linux/phy.h>
++
++/* mdio_mux_init() - Initialize a MDIO mux
++ * @dev		The device owning the MDIO mux
++ * @mux_node	The device node of the MDIO mux
++ * @switch_fn	The function called for switching target MDIO child
++ * @data	Private data used by switch_fn()
++ * @mux_bus	An optional parent bus (Other case are to use parent_bus property)
++ */
++int mdio_mux_init(struct device_d *dev,
++		  struct device_node *mux_node,
++		  int (*switch_fn) (int cur, int desired, void *data),
++		  void *data,
++		  struct mii_bus *mux_bus);
++
++void mdio_mux_uninit(void *mux_handle);
++
++#endif /* __LINUX_MDIO_MUX_H */
 -- 
 2.14.3
 
