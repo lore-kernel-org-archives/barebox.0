@@ -1,25 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from idris.smile.fr ([91.216.209.19])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eMYrr-0001eG-0W
- for barebox@lists.infradead.org; Wed, 06 Dec 2017 12:32:04 +0000
-Received: from localhost (localhost [127.0.0.1])
- by idris.smile.fr (Postfix) with ESMTP id 748911EE2455
- for <barebox@lists.infradead.org>; Wed,  6 Dec 2017 13:31:41 +0100 (CET)
-Received: from idris.smile.fr ([127.0.0.1])
- by localhost (bluemind-mta.prod.vitry.intranet [127.0.0.1]) (amavisd-new,
- port 10024)
- with ESMTP id StM4nXZeBKeL for <barebox@lists.infradead.org>;
- Wed,  6 Dec 2017 13:31:41 +0100 (CET)
-Received: from [10.5.75.30] (glo44-1-82-67-130-147.fbx.proxad.net
- [82.67.130.147])
- by idris.smile.fr (Postfix) with ESMTPSA id E9B171EE244B
- for <barebox@lists.infradead.org>; Wed,  6 Dec 2017 13:31:40 +0100 (CET)
-From: David GARRIOU <david.garriou@smile.fr>
-Message-ID: <1b31cc71-eae5-8124-1144-318902661e85@smile.fr>
-Date: Wed, 6 Dec 2017 13:31:39 +0100
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
+ id 1eMb6Z-0000ii-SD
+ for barebox@lists.infradead.ORG; Wed, 06 Dec 2017 14:55:25 +0000
+Date: Wed, 6 Dec 2017 15:55:02 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20171206145502.pvfsvntfnp4urvq5@pengutronix.de>
+References: <20171204153726.11479-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20171204153726.11479-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,33 +18,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: bootchooser and state (again)
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/4] A bit more consistent interface for "miitool"
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi All,
+On Mon, Dec 04, 2017 at 07:37:22AM -0800, Andrey Smirnov wrote:
+> Hi everyone,
+> 
+> This patchset is intended to make miitools's -s option a bit more
+> consistnet with the rest of Barebox commands. It is inspired mostly by
+> users's feedback and personal frustration with inability to use
+> autocomplete in that command.
+> 
+> It's nice to have, IMHO, but if we decide not to have this change
+> that's fine too.
 
-I am currently using barebox 2016.11 with a board from Phytec.
+Applied, thanks
 
-I have problems with state framework and bootchooser.
+Sascha
 
-I have seen some threads dealing with this subject but with latest 
-versions of barebox.
+> 
+> Thanks,
+> Andrey Smirnov
+> 
+> Andrey Smirnov (4):
+>   commands: miitool: Constify 'phydevname' in mdiobus_show()
+>   fs: Introduce devpath_to_name()
+>   i.MX: imu-bbu-internal: Make use of devpath_to_name()
+>   commands/miitool: Allow specifying PHY by their full path
+> 
+>  arch/arm/mach-imx/imx-bbu-internal.c | 3 +--
+>  commands/miitool.c                   | 9 ++++++---
+>  include/fs.h                         | 9 +++++++++
+>  3 files changed, 16 insertions(+), 5 deletions(-)
+> 
+> -- 
+> 2.14.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-My first question deals with my version of barebox (2016.11), does it 
-support well bootchooser and state framework ?
-
-Indeed it seems to me that there is a big gap between 2016.11 and latest 
-version.
-
-Thanks a lot,
-
-David
-
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
