@@ -1,23 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eOPZI-0001DR-Df
- for barebox@lists.infradead.org; Mon, 11 Dec 2017 15:00:34 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.84_2)
- (envelope-from <sha@pengutronix.de>) id 1eOPYw-0003WL-Km
- for barebox@lists.infradead.org; Mon, 11 Dec 2017 16:00:10 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.84_2)
- (envelope-from <sha@pengutronix.de>) id 1eOPYw-0006qg-DC
- for barebox@lists.infradead.org; Mon, 11 Dec 2017 16:00:10 +0100
-Date: Mon, 11 Dec 2017 16:00:10 +0100
+ id 1eOeCH-0003ni-I2
+ for barebox@lists.infradead.org; Tue, 12 Dec 2017 06:37:48 +0000
+Date: Tue, 12 Dec 2017 07:37:19 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171211150010.cyxrkws3kw6vopaw@pengutronix.de>
-References: <20171211144936.10443-1-s.hauer@pengutronix.de>
+Message-ID: <20171212063719.zhy4agt4vh7jhwby@pengutronix.de>
+References: <C315E0B1-4F4E-4814-9106-85C7E1363C2D@jens-maus.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20171211144936.10443-1-s.hauer@pengutronix.de>
+In-Reply-To: <C315E0B1-4F4E-4814-9106-85C7E1363C2D@jens-maus.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,62 +18,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: state: mention SD/eMMC devices
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: barebox on RaspberryPi2 and Pi3
+To: Jens Maus <mail@jens-maus.de>
+Cc: barebox@lists.infradead.org, Lucas Stach <lst@pengutronix.de>
 
-On Mon, Dec 11, 2017 at 03:49:36PM +0100, Sascha Hauer wrote:
-> The state framework also has support for SD/eMMC devices, so mention
-> them in the documentation.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  Documentation/user/state.rst | 46 ++++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 44 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/user/state.rst b/Documentation/user/state.rst
-> index 7d6c5770d5..af55d0837d 100644
-> --- a/Documentation/user/state.rst
-> +++ b/Documentation/user/state.rst
-> @@ -39,8 +39,8 @@ Backends (e.g. Supported Memory Types)
->  
->  Some non-volatile memory is need for storing a *state* variable set:
->  
-> -- all kinds of NOR flash memories
-> -- all kinds of NAND flash memories
-> +- Disk like devices: SD, (e)MMC, ATA
-> +- all kinds of NAND and NOR flash memories (mtd)
->  - MRAM
->  - EEPROM
->  - all kind of SRAMs (backup battery assumed)
-> @@ -531,6 +531,48 @@ content, its backend-type and *state* variable layout.
->  		};
->  	};
->  
-> +SD/eMMC and ATA
-> +###############
-> +
-> +The following devicetree node entry defines some kind of SD/eMMC memory and
-> +a partition at a specific offset inside it to be used as the backend for the
-> +*state* variable set. Note that currently there is no support for on-disk
-> +partition tables. Instead, a ofpart partition description must be used. You
-> +have to make sure that this partition does not conflict with any other partiion
-
-Just bought the missing 't' in partition.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgSmVucywKCk9uIFNhdCwgRGVjIDA5LCAyMDE3IGF0IDExOjMyOjEzUE0gKzAxMDAsIEplbnMg
+TWF1cyB3cm90ZToKPiBIZWxsbyBCYXJlYm94IGRldmVsb3BlcnMsCj4gCj4gSSBhbSBjdXJyZW50
+bHkgdHJ5aW5nIHRvIHVzZSBiYXJlYm94IGZvciBvbmUgb2YgbXkgZW1iZWRkZWQgbGludXgKPiBw
+cm9qZWN0cyB3aGljaCBpcyBtYWlubHkgdGFyZ2V0ZWQgZm9yIHRoZSBSYXNwYmVycnlQaSBoYXJk
+d2FyZQo+IHBsYXRmb3JtLiBJIHdhcyBhbHJlYWR5IGFibGUgdG8gY29tcGlsZSBiYXJlYm94ICh2
+MjAxNy4xMSB1c2luZwo+IHJwaV9kZWZjb25maWcpIGFuZCBzdWNjZXNzZnVsbHkgcnVuIGl0IG9u
+IGFuIG9sZCBSYXNwYmVycnlQaTEgTW9kZWwgQgo+IHZlcnNpb24gdXNpbmcgdGhlIOKAnmJhcmVi
+b3gtcmFzcGJlcnJ5LXBpLTEuaW1n4oCcIGZpbGUgYXMgYSBrZXJuZWwgaW1hZ2UuCj4gSXQgc2hv
+d3MgdXAgb24gbXkgc2VyaWFsIGNvbnNvbGUgdXNpbmcgMTE1MjAwLzhOMSBhbmQgSSBhbSBhYmxl
+IHRvCj4gcGxheSBhcm91bmQgd2l0aCB0aGUgY29uc29sZSBjb21tYW5kcy4KPiAKPiBIb3dldmVy
+LCB3aGVuIEkgdXNlIHRoZSDigJ5iYXJlYm94LXJhc3BiZXJyeS1waS0yLmltZ+KAnCBmaWxlIHRv
+Z2V0aGVyCj4gd2l0aCBhIFJhc3BiZXJyeVBpMiBub3RoaW5nIHNob3dzIHVwIG9uIHRoZSBzZXJp
+YWwgY29uc29sZS4gQWxzbyB1c2luZwo+IGFuIG9sZCB2ZXJzaW9uICh2MjAxNy4wOSkgZG9lc27i
+gJl0IHNob3cgdXAgYW55dGhpbmcgYW5kIHRoZSBncmVlbiBMRUQKPiBvbiB0aGUgUGkyIGp1c3Qg
+Zmxhc2hlcyBpbiBhIDEgc2Vjb25kIGludGVydmFsLiBUaGUgc2FtZSBoYXBwZW5zIHdpdGgKPiBh
+IFBpMyBhbmQgbm90aGluZyBzaG93cyB1cCBvbiB0aGUgc2VyaWFsIGNvbnNvbGUgb3IgdGhlIEhE
+TUkKPiBjb25uZWN0aW9uLgo+IAo+IEFzIHRoZSBjaGFuZ2Vsb2cgc3RhdGVzIHRoYXQgYXQgbGVh
+c3QgdGhlIFBpMiBzaG91bGQgYmUgc3VwcG9ydGVkIEkKPiB3b25kZXIgd2hhdCBjb3VsZCBiZSB0
+aGUgcmVhc29uIHdoeSBJIGFtIG9ubHkgYWJsZSB0byBnZXQgYmFyZWJveAo+IHJ1bm5pbmcgb24g
+dGhlIG9sZCBSYXNwYmVycnlQaTEgTW9kZWwgQiBoYXJkd2FyZSBidXQgbm90IG9uIG5ld2VyCj4g
+UmFzcGJlcnJ5UGkgbW9kZWxzLgoKSSBkb24ndCBoYXZlIGFueSBoYXJkd2FyZSBoZXJlLCBzbyBh
+bGwgSSBjYW4gc2F5IGlzOiBJdCBzaG91bGQgd29yaywgYXQKbGVhc3Qgb24gdGhlIFBpMi4gQ291
+bGQgeW91IG1heWJlIHRyeSBhbiBvbGRlciB2ZXJzaW9uPyBMdWNhcyBpbnRyb2R1Y2VkCm11bHRp
+aW1hZ2Ugc3VwcG9ydCB3aXRoIGU4ZmFiMTg4MzVhMSwgc28gSSBiZWxpZXZlIGEgY29tbWl0IGNs
+b3NlIHRvCnRoaXMgb25lIHNob3VsZCB3b3JrIHNpbmNlIEx1Y2FzIHRlc3RlZCBpdC4KClNhc2No
+YQoKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAg
+ICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2
+LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAg
+ICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAg
+KzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
+YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
+eAo=
