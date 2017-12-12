@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mout.gmx.net ([212.227.17.21])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eOonF-0004xm-4r
- for barebox@lists.infradead.org; Tue, 12 Dec 2017 17:56:40 +0000
+ id 1eOonB-0004xJ-IB
+ for barebox@lists.infradead.org; Tue, 12 Dec 2017 17:56:35 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Tue, 12 Dec 2017 18:55:54 +0100
-Message-Id: <20171212175557.20067-3-linux@rempel-privat.de>
+Date: Tue, 12 Dec 2017 18:55:53 +0100
+Message-Id: <20171212175557.20067-2-linux@rempel-privat.de>
 In-Reply-To: <20171212175557.20067-1-linux@rempel-privat.de>
 References: <20171212175557.20067-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,44 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/5] MIPS: ar9331: add watchdog support
+Subject: [PATCH v2 1/5] MIPS: provide HAS_NO_BOARD_HL_CODE
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
+some boards have PBL code, but no board specific
+high level code.
+Instead of creating dummy.c files, better provide
+config to avoid compiling of board code.
+
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- arch/mips/dts/ar9331.dtsi | 6 ++++++
- drivers/watchdog/Kconfig  | 2 +-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ arch/mips/Kconfig  | 3 +++
+ arch/mips/Makefile | 6 +++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/dts/ar9331.dtsi b/arch/mips/dts/ar9331.dtsi
-index b4b8b766b..42baae1e8 100644
---- a/arch/mips/dts/ar9331.dtsi
-+++ b/arch/mips/dts/ar9331.dtsi
-@@ -1,5 +1,11 @@
- / {
- 	ahb {
-+		wdt0: wdt@18060008 {
-+			compatible = "qca,ar9331-wdt", "qca,ar9344-wdt";
-+			reg = <0x18060008 0x8>;
-+			clocks = <&pll ATH79_CLK_CPU>;
-+		};
-+
- 		mac0: mac@19000000 {
- 			compatible = "qca,ar9331-ge0";
- 			reg = <0x18070000 0x00000100>,
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index 1f04c7fba..a8f9492ac 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -12,7 +12,7 @@ if WATCHDOG
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 06a516d70..c2c555dc3 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -22,6 +22,9 @@ config GENERIC_LINKER_SCRIPT
+ 	bool
+ 	default y
  
- config WATCHDOG_AR9344
- 	bool "QCA AR9344"
--	depends on SOC_QCA_AR9344
-+	depends on SOC_QCA_AR9344 || SOC_QCA_AR9331
- 	help
- 	  Add support for watchdog on the QCA AR9344 SoC.
++config HAS_NO_BOARD_HL_CODE
++	bool
++
+ menu "Machine selection"
+ 
+ config BUILTIN_DTB
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index dd5ceea20..ecc91111b 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -124,7 +124,11 @@ else
+ MACH  :=
+ endif
+ 
+-common-y += $(BOARD) $(MACH)
++ifndef CONFIG_HAS_NO_BOARD_HL_CODE
++common-y += $(BOARD)
++endif
++
++common-y += $(MACH)
+ common-y += arch/mips/lib/
+ common-y += arch/mips/boot/
  
 -- 
 2.14.1
