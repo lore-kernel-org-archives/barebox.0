@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eOeCH-0003ni-I2
- for barebox@lists.infradead.org; Tue, 12 Dec 2017 06:37:48 +0000
-Date: Tue, 12 Dec 2017 07:37:19 +0100
+ id 1eOeOs-0000V5-1x
+ for barebox@lists.infradead.org; Tue, 12 Dec 2017 06:50:48 +0000
+Date: Tue, 12 Dec 2017 07:50:23 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171212063719.zhy4agt4vh7jhwby@pengutronix.de>
-References: <C315E0B1-4F4E-4814-9106-85C7E1363C2D@jens-maus.de>
+Message-ID: <20171212065023.lm3byrk22lc2lflu@pengutronix.de>
+References: <20171209095938.30160-1-linux@rempel-privat.de>
+ <20171209095938.30160-4-linux@rempel-privat.de>
+ <20171209195448.aab27cc3fc8eb0cd1de05611@gmail.com>
+ <73ee3115-bff4-7a0f-e8b0-cc14db2d1b86@rempel-privat.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <C315E0B1-4F4E-4814-9106-85C7E1363C2D@jens-maus.de>
+In-Reply-To: <73ee3115-bff4-7a0f-e8b0-cc14db2d1b86@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,45 +21,91 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox on RaspberryPi2 and Pi3
-To: Jens Maus <mail@jens-maus.de>
-Cc: barebox@lists.infradead.org, Lucas Stach <lst@pengutronix.de>
+Subject: Re: [PATCH v1 4/4] MIPS: add support for DPTechnics DPT-Module v1
+To: Oleksij Rempel <linux@rempel-privat.de>
+Cc: barebox@lists.infradead.org
 
-SGkgSmVucywKCk9uIFNhdCwgRGVjIDA5LCAyMDE3IGF0IDExOjMyOjEzUE0gKzAxMDAsIEplbnMg
-TWF1cyB3cm90ZToKPiBIZWxsbyBCYXJlYm94IGRldmVsb3BlcnMsCj4gCj4gSSBhbSBjdXJyZW50
-bHkgdHJ5aW5nIHRvIHVzZSBiYXJlYm94IGZvciBvbmUgb2YgbXkgZW1iZWRkZWQgbGludXgKPiBw
-cm9qZWN0cyB3aGljaCBpcyBtYWlubHkgdGFyZ2V0ZWQgZm9yIHRoZSBSYXNwYmVycnlQaSBoYXJk
-d2FyZQo+IHBsYXRmb3JtLiBJIHdhcyBhbHJlYWR5IGFibGUgdG8gY29tcGlsZSBiYXJlYm94ICh2
-MjAxNy4xMSB1c2luZwo+IHJwaV9kZWZjb25maWcpIGFuZCBzdWNjZXNzZnVsbHkgcnVuIGl0IG9u
-IGFuIG9sZCBSYXNwYmVycnlQaTEgTW9kZWwgQgo+IHZlcnNpb24gdXNpbmcgdGhlIOKAnmJhcmVi
-b3gtcmFzcGJlcnJ5LXBpLTEuaW1n4oCcIGZpbGUgYXMgYSBrZXJuZWwgaW1hZ2UuCj4gSXQgc2hv
-d3MgdXAgb24gbXkgc2VyaWFsIGNvbnNvbGUgdXNpbmcgMTE1MjAwLzhOMSBhbmQgSSBhbSBhYmxl
-IHRvCj4gcGxheSBhcm91bmQgd2l0aCB0aGUgY29uc29sZSBjb21tYW5kcy4KPiAKPiBIb3dldmVy
-LCB3aGVuIEkgdXNlIHRoZSDigJ5iYXJlYm94LXJhc3BiZXJyeS1waS0yLmltZ+KAnCBmaWxlIHRv
-Z2V0aGVyCj4gd2l0aCBhIFJhc3BiZXJyeVBpMiBub3RoaW5nIHNob3dzIHVwIG9uIHRoZSBzZXJp
-YWwgY29uc29sZS4gQWxzbyB1c2luZwo+IGFuIG9sZCB2ZXJzaW9uICh2MjAxNy4wOSkgZG9lc27i
-gJl0IHNob3cgdXAgYW55dGhpbmcgYW5kIHRoZSBncmVlbiBMRUQKPiBvbiB0aGUgUGkyIGp1c3Qg
-Zmxhc2hlcyBpbiBhIDEgc2Vjb25kIGludGVydmFsLiBUaGUgc2FtZSBoYXBwZW5zIHdpdGgKPiBh
-IFBpMyBhbmQgbm90aGluZyBzaG93cyB1cCBvbiB0aGUgc2VyaWFsIGNvbnNvbGUgb3IgdGhlIEhE
-TUkKPiBjb25uZWN0aW9uLgo+IAo+IEFzIHRoZSBjaGFuZ2Vsb2cgc3RhdGVzIHRoYXQgYXQgbGVh
-c3QgdGhlIFBpMiBzaG91bGQgYmUgc3VwcG9ydGVkIEkKPiB3b25kZXIgd2hhdCBjb3VsZCBiZSB0
-aGUgcmVhc29uIHdoeSBJIGFtIG9ubHkgYWJsZSB0byBnZXQgYmFyZWJveAo+IHJ1bm5pbmcgb24g
-dGhlIG9sZCBSYXNwYmVycnlQaTEgTW9kZWwgQiBoYXJkd2FyZSBidXQgbm90IG9uIG5ld2VyCj4g
-UmFzcGJlcnJ5UGkgbW9kZWxzLgoKSSBkb24ndCBoYXZlIGFueSBoYXJkd2FyZSBoZXJlLCBzbyBh
-bGwgSSBjYW4gc2F5IGlzOiBJdCBzaG91bGQgd29yaywgYXQKbGVhc3Qgb24gdGhlIFBpMi4gQ291
-bGQgeW91IG1heWJlIHRyeSBhbiBvbGRlciB2ZXJzaW9uPyBMdWNhcyBpbnRyb2R1Y2VkCm11bHRp
-aW1hZ2Ugc3VwcG9ydCB3aXRoIGU4ZmFiMTg4MzVhMSwgc28gSSBiZWxpZXZlIGEgY29tbWl0IGNs
-b3NlIHRvCnRoaXMgb25lIHNob3VsZCB3b3JrIHNpbmNlIEx1Y2FzIHRlc3RlZCBpdC4KClNhc2No
-YQoKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAg
-ICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2
-LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAg
-ICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAg
-KzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
-YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
-eAo=
+On Mon, Dec 11, 2017 at 06:53:25AM +0100, Oleksij Rempel wrote:
+> Am 09.12.2017 um 17:54 schrieb Antony Pavlov:
+> > On Sat,  9 Dec 2017 10:59:38 +0100
+> > Oleksij Rempel <linux@rempel-privat.de> wrote:
+> > 
+> >> This product can be found here:
+> >> https://dptechnics.com/en/products/dpt-module-v1.html
+> >>
+> >> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+> >> ---
+> >>  arch/mips/Makefile                                 |  1 +
+> >>  arch/mips/boards/dptechnics-dpt-module/Makefile    |  1 +
+> >>  arch/mips/boards/dptechnics-dpt-module/board.c     |  8 ++
+> >>  .../include/board/board_pbl_start.h                | 20 +++++
+> >>  arch/mips/configs/dptechnics-dpt-module_defconfig  | 89 ++++++++++++++++++++++
+> >>  arch/mips/dts/ar9331-dptechnics-dpt-module.dts     | 31 ++++++++
+> >>  arch/mips/mach-ath79/Kconfig                       |  7 ++
+> >>  7 files changed, 157 insertions(+)
+> >>  create mode 100644 arch/mips/boards/dptechnics-dpt-module/Makefile
+> >>  create mode 100644 arch/mips/boards/dptechnics-dpt-module/board.c
+> >>  create mode 100644 arch/mips/boards/dptechnics-dpt-module/include/board/board_pbl_start.h
+> >>  create mode 100644 arch/mips/configs/dptechnics-dpt-module_defconfig
+> >>  create mode 100644 arch/mips/dts/ar9331-dptechnics-dpt-module.dts
+> >>
+> >> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> >> index dd5ceea20..b965a9c17 100644
+> >> --- a/arch/mips/Makefile
+> >> +++ b/arch/mips/Makefile
+> >> @@ -79,6 +79,7 @@ machine-$(CONFIG_MACH_MIPS_AR231X)	:= ar231x
+> >>  board-$(CONFIG_BOARD_NETGEAR_WG102)	:= netgear-wg102
+> >>  
+> >>  machine-$(CONFIG_MACH_MIPS_ATH79)	:= ath79
+> >> +board-$(CONFIG_BOARC_DPTECHNICS_DPT_MODULE)	:= dptechnics-dpt-module
+> >>  board-$(CONFIG_BOARD_TPLINK_MR3020)	:= tplink-mr3020
+> >>  board-$(CONFIG_BOARD_TPLINK_WDR4300)	:= tplink-wdr4300
+> >>  board-$(CONFIG_BOARD_BLACK_SWIFT)	:= black-swift
+> >> diff --git a/arch/mips/boards/dptechnics-dpt-module/Makefile b/arch/mips/boards/dptechnics-dpt-module/Makefile
+> >> new file mode 100644
+> >> index 000000000..dcfc2937d
+> >> --- /dev/null
+> >> +++ b/arch/mips/boards/dptechnics-dpt-module/Makefile
+> >> @@ -0,0 +1 @@
+> >> +obj-y += board.o
+> >> diff --git a/arch/mips/boards/dptechnics-dpt-module/board.c b/arch/mips/boards/dptechnics-dpt-module/board.c
+> >> new file mode 100644
+> >> index 000000000..7ec7ef8a5
+> >> --- /dev/null
+> >> +++ b/arch/mips/boards/dptechnics-dpt-module/board.c
+> >> @@ -0,0 +1,8 @@
+> >> +#include <common.h>
+> >> +#include <init.h>
+> >> +
+> >> +static int dummy_init(void)
+> >> +{
+> >> +	return 0;
+> >> +}
+> >> +postcore_initcall(dummy_init);
+> > 
+> > 
+> > Do we really need this dummy_init()?
+> 
+> No, but other ways we need to fix the build system. And right now i have
+> no time for that :(
+
+Are you sure you need the dummy_init()? I just gave it a test and I
+indeed needed a C file to get it through the linker, but that C file
+can equally well be empty.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
