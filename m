@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
+Received: from mout.gmx.net ([212.227.17.21])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eOon7-0004x3-Ak
- for barebox@lists.infradead.org; Tue, 12 Dec 2017 17:56:31 +0000
+ id 1eOonF-0004xm-4r
+ for barebox@lists.infradead.org; Tue, 12 Dec 2017 17:56:40 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Tue, 12 Dec 2017 18:55:52 +0100
-Message-Id: <20171212175557.20067-1-linux@rempel-privat.de>
+Date: Tue, 12 Dec 2017 18:55:54 +0100
+Message-Id: <20171212175557.20067-3-linux@rempel-privat.de>
+In-Reply-To: <20171212175557.20067-1-linux@rempel-privat.de>
+References: <20171212175557.20067-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,36 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/5] add support for DPTechnics DPT-Module v1
+Subject: [PATCH v2 2/5] MIPS: ar9331: add watchdog support
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-changes v2:
-- remove dummy board code.
-- provide HAS_NO_BOARD_HL_CODE option
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+---
+ arch/mips/dts/ar9331.dtsi | 6 ++++++
+ drivers/watchdog/Kconfig  | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-Oleksij Rempel (5):
-  MIPS: provide HAS_NO_BOARD_HL_CODE
-  MIPS: ar9331: add watchdog support
-  MIPS: ath79: ar9331: add generic RAM macro
-  MIPS: ath79: ar9331: add ar9331_pbl_generic_start macro
-  MIPS: add support for DPTechnics DPT-Module v1
-
- arch/mips/Kconfig                                  |  3 +
- arch/mips/Makefile                                 |  7 +-
- .../include/board/board_pbl_start.h                | 20 +++++
- arch/mips/configs/dptechnics-dpt-module_defconfig  | 89 ++++++++++++++++++++++
- arch/mips/dts/ar9331-dptechnics-dpt-module.dts     | 31 ++++++++
- arch/mips/dts/ar9331.dtsi                          |  6 ++
- arch/mips/mach-ath79/Kconfig                       |  8 ++
- arch/mips/mach-ath79/include/mach/ar71xx_regs.h    |  1 +
- arch/mips/mach-ath79/include/mach/pbl_macros.h     | 72 ++++++++++++++++-
- drivers/watchdog/Kconfig                           |  2 +-
- 10 files changed, 234 insertions(+), 5 deletions(-)
- create mode 100644 arch/mips/boards/dptechnics-dpt-module/include/board/board_pbl_start.h
- create mode 100644 arch/mips/configs/dptechnics-dpt-module_defconfig
- create mode 100644 arch/mips/dts/ar9331-dptechnics-dpt-module.dts
-
+diff --git a/arch/mips/dts/ar9331.dtsi b/arch/mips/dts/ar9331.dtsi
+index b4b8b766b..42baae1e8 100644
+--- a/arch/mips/dts/ar9331.dtsi
++++ b/arch/mips/dts/ar9331.dtsi
+@@ -1,5 +1,11 @@
+ / {
+ 	ahb {
++		wdt0: wdt@18060008 {
++			compatible = "qca,ar9331-wdt", "qca,ar9344-wdt";
++			reg = <0x18060008 0x8>;
++			clocks = <&pll ATH79_CLK_CPU>;
++		};
++
+ 		mac0: mac@19000000 {
+ 			compatible = "qca,ar9331-ge0";
+ 			reg = <0x18070000 0x00000100>,
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index 1f04c7fba..a8f9492ac 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -12,7 +12,7 @@ if WATCHDOG
+ 
+ config WATCHDOG_AR9344
+ 	bool "QCA AR9344"
+-	depends on SOC_QCA_AR9344
++	depends on SOC_QCA_AR9344 || SOC_QCA_AR9331
+ 	help
+ 	  Add support for watchdog on the QCA AR9344 SoC.
+ 
 -- 
 2.14.1
 
