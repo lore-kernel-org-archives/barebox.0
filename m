@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mout.gmx.net ([212.227.17.21])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eOonB-0004xJ-IB
- for barebox@lists.infradead.org; Tue, 12 Dec 2017 17:56:35 +0000
+ id 1eOonF-0004xo-4r
+ for barebox@lists.infradead.org; Tue, 12 Dec 2017 17:56:41 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Tue, 12 Dec 2017 18:55:53 +0100
-Message-Id: <20171212175557.20067-2-linux@rempel-privat.de>
+Date: Tue, 12 Dec 2017 18:55:56 +0100
+Message-Id: <20171212175557.20067-5-linux@rempel-privat.de>
 In-Reply-To: <20171212175557.20067-1-linux@rempel-privat.de>
 References: <20171212175557.20067-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,52 +21,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/5] MIPS: provide HAS_NO_BOARD_HL_CODE
+Subject: [PATCH v2 4/5] MIPS: ath79: ar9331: add ar9331_pbl_generic_start macro
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-some boards have PBL code, but no board specific
-high level code.
-Instead of creating dummy.c files, better provide
-config to avoid compiling of board code.
+Most of ar9331 boards have identical PBL. So we can sync the code
+to single macro.
 
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- arch/mips/Kconfig  | 3 +++
- arch/mips/Makefile | 6 +++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ arch/mips/mach-ath79/include/mach/pbl_macros.h | 35 ++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 06a516d70..c2c555dc3 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -22,6 +22,9 @@ config GENERIC_LINKER_SCRIPT
- 	bool
- 	default y
+diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+index 9e4859b19..906d73e8c 100644
+--- a/arch/mips/mach-ath79/include/mach/pbl_macros.h
++++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+@@ -368,4 +368,39 @@ normal_path:
+ 	.set	pop
+ .endm
  
-+config HAS_NO_BOARD_HL_CODE
-+	bool
++	.macro	ar9331_pbl_generic_start
++	.set	push
++	.set	noreorder
 +
- menu "Machine selection"
- 
- config BUILTIN_DTB
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index dd5ceea20..ecc91111b 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -124,7 +124,11 @@ else
- MACH  :=
- endif
- 
--common-y += $(BOARD) $(MACH)
-+ifndef CONFIG_HAS_NO_BOARD_HL_CODE
-+common-y += $(BOARD)
-+endif
++	mips_barebox_10h
 +
-+common-y += $(MACH)
- common-y += arch/mips/lib/
- common-y += arch/mips/boot/
- 
++	pbl_blt 0xbf000000 skip_pll_ram_config t8
++
++	hornet_mips24k_cp0_setup
++
++	pbl_ar9331_wmac_enable
++
++	hornet_1_1_war
++
++	pbl_ar9331_pll
++	pbl_ar9331_ram_generic_config
++
++skip_pll_ram_config:
++	/* Initialize caches... */
++	mips_cache_reset
++
++	/* ... and enable them */
++	dcache_enable
++
++	pbl_ar9331_uart_enable
++	debug_ll_ar9331_init
++	mips_nmon
++
++	pbl_ar9331_mdio_gpio_enable
++
++	copy_to_link_location	pbl_start
++
++	.set	pop
++	.endm
++
+ #endif /* __ASM_MACH_ATH79_PBL_MACROS_H */
 -- 
 2.14.1
 
