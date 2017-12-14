@@ -1,15 +1,29 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra1.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ePkKY-00080M-3m
- for barebox@lists.infradead.org; Fri, 15 Dec 2017 07:22:52 +0000
-Date: Fri, 15 Dec 2017 08:22:27 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171215072227.2claf5mygvvkadps@pengutronix.de>
-References: <20171212175557.20067-1-linux@rempel-privat.de>
+ id 1ePSpH-0004IH-5L
+ for barebox@lists.infradead.org; Thu, 14 Dec 2017 12:41:25 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra1.kalray.eu (Postfix) with ESMTP id CAFA82808A8
+ for <barebox@lists.infradead.org>; Thu, 14 Dec 2017 13:40:56 +0100 (CET)
+Received: from zimbra1.kalray.eu ([127.0.0.1])
+ by localhost (zimbra1.kalray.eu [127.0.0.1]) (amavisd-new, port 10032)
+ with ESMTP id P85pnXxLBF6J for <barebox@lists.infradead.org>;
+ Thu, 14 Dec 2017 13:40:56 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra1.kalray.eu (Postfix) with ESMTP id 33CEC281147
+ for <barebox@lists.infradead.org>; Thu, 14 Dec 2017 13:40:56 +0100 (CET)
+Received: from zimbra1.kalray.eu ([127.0.0.1])
+ by localhost (zimbra1.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id 05H7lofLBRfO for <barebox@lists.infradead.org>;
+ Thu, 14 Dec 2017 13:40:56 +0100 (CET)
+Received: from zimbra1.kalray.eu (localhost [127.0.0.1])
+ by zimbra1.kalray.eu (Postfix) with ESMTP id 219FA2808A8
+ for <barebox@lists.infradead.org>; Thu, 14 Dec 2017 13:40:56 +0100 (CET)
+Date: Thu, 14 Dec 2017 13:40:56 +0100 (CET)
+From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
+Message-ID: <438665629.65151347.1513255256053.JavaMail.zimbra@kalray.eu>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20171212175557.20067-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,57 +36,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/5] add support for DPTechnics DPT-Module v1
-To: Oleksij Rempel <linux@rempel-privat.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Bootm: remove uimage_close done later in bootm_boot
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Dec 12, 2017 at 06:55:52PM +0100, Oleksij Rempel wrote:
-> changes v2:
-> - remove dummy board code.
-> - provide HAS_NO_BOARD_HL_CODE option
-> 
-> Oleksij Rempel (5):
->   MIPS: provide HAS_NO_BOARD_HL_CODE
->   MIPS: ar9331: add watchdog support
->   MIPS: ath79: ar9331: add generic RAM macro
->   MIPS: ath79: ar9331: add ar9331_pbl_generic_start macro
->   MIPS: add support for DPTechnics DPT-Module v1
+From 24e24f9998342b23cd8de4145c8098f93c60cdc7 Mon Sep 17 00:00:00 2001
+From: Clement Leger <clement.leger@kalray.eu>
+Date: Thu, 14 Dec 2017 13:29:50 +0100
+Subject: [PATCH] Bootm: fix double uimage_close
 
-Applied, thanks
+When uimage crc fails, the error handling path call uimage_close in
+bootm_open_os_uimage and also in bootm_boot. This leads to crash/exception.
+Keep the main error handling path in bootm_boot and remove uimage_close from
+bootm_open_os_uimage to avoid double uimage_close.
+---
+ common/bootm.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Sascha
-
-> 
->  arch/mips/Kconfig                                  |  3 +
->  arch/mips/Makefile                                 |  7 +-
->  .../include/board/board_pbl_start.h                | 20 +++++
->  arch/mips/configs/dptechnics-dpt-module_defconfig  | 89 ++++++++++++++++++++++
->  arch/mips/dts/ar9331-dptechnics-dpt-module.dts     | 31 ++++++++
->  arch/mips/dts/ar9331.dtsi                          |  6 ++
->  arch/mips/mach-ath79/Kconfig                       |  8 ++
->  arch/mips/mach-ath79/include/mach/ar71xx_regs.h    |  1 +
->  arch/mips/mach-ath79/include/mach/pbl_macros.h     | 72 ++++++++++++++++-
->  drivers/watchdog/Kconfig                           |  2 +-
->  10 files changed, 234 insertions(+), 5 deletions(-)
->  create mode 100644 arch/mips/boards/dptechnics-dpt-module/include/board/board_pbl_start.h
->  create mode 100644 arch/mips/configs/dptechnics-dpt-module_defconfig
->  create mode 100644 arch/mips/dts/ar9331-dptechnics-dpt-module.dts
-> 
-> -- 
-> 2.14.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/common/bootm.c b/common/bootm.c
+index eebaa799f..c23898bea 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -455,7 +455,6 @@ static int bootm_open_os_uimage(struct image_data *data)
+ 		if (ret) {
+ 			printf("Checking data crc failed with %s\n",
+ 					strerror(-ret));
+-			uimage_close(data->os);
+ 			return ret;
+ 		}
+ 	}
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.15.0.276.g89ea799
 
 _______________________________________________
 barebox mailing list
