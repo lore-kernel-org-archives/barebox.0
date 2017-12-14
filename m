@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vs81.iboxed.net ([185.82.85.146])
  by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1eKjDU-0006Eu-3v
- for barebox@lists.infradead.ORG; Fri, 01 Dec 2017 11:10:50 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri,  1 Dec 2017 12:10:17 +0100
-Message-Id: <20171201111017.29098-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1ePPLw-0003mm-Mz
+ for barebox@lists.infradead.org; Thu, 14 Dec 2017 08:58:55 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Thu, 14 Dec 2017 09:55:54 +0100
+Message-Id: <1513241754-1754-1-git-send-email-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,41 +14,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net/e1000: indicate at boot time if flash is in secure mode
+Subject: [PATCH] spi: imx: make xchg_single timeout value compatible for older
+ boards
 To: barebox@lists.infradead.org
+Cc: Alexander Kurz <akurz@blala.de>, Uwe Kleine-Koenig <u.kleine-koenig@pengutronix.de>
 
-SWYgdGhlIGZsYXNoIGlzIGluIHNlY3VyZSBtb2RlIGl0IGlzIG5vdCBwb3NzaWJsZSB0byBtb2Rp
-ZnkgaXRzCmNvbnRlbnRzLiBTbyBsb2cgdGhhdCB1c2VmdWwgaW5mb3JtYXRpb24gYXQgcHJvYmUg
-dGltZS4KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdA
-cGVuZ3V0cm9uaXguZGU+Ci0tLQogZHJpdmVycy9uZXQvZTEwMDAvZTEwMDAuaCAgfCAgMSArCiBk
-cml2ZXJzL25ldC9lMTAwMC9lZXByb20uYyB8IDEwICsrKysrKystLS0KIDIgZmlsZXMgY2hhbmdl
-ZCwgOCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMv
-bmV0L2UxMDAwL2UxMDAwLmggYi9kcml2ZXJzL25ldC9lMTAwMC9lMTAwMC5oCmluZGV4IDUwZDQ5
-MTE4ZjVlNC4uMTU1OGIzYzdmNWM3IDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC9lMTAwMC9lMTAw
-MC5oCisrKyBiL2RyaXZlcnMvbmV0L2UxMDAwL2UxMDAwLmgKQEAgLTIxMDEsNiArMjEwMSw3IEBA
-IHN0cnVjdCBlMTAwMF9lZXByb21faW5mbyB7CiAJCQkJCQkJYWZ0ZXIgSU1TIGNsZWFyICovCiAK
-ICNkZWZpbmUgRTEwMDBfRkxBCQkJMHgxMjAxQworI2RlZmluZSBFMTAwMF9GTEFfTE9DS0VECQko
-MSA8PCA2KQogI2RlZmluZSBFMTAwMF9GTEFfRkxfU0laRV9TSElGVAkJMTcKICNkZWZpbmUgRTEw
-MDBfRkxBX0ZMX1NJWkVfTUFTSwkJKDBiMTExIDw8IEUxMDAwX0ZMQV9GTF9TSVpFX1NISUZUKSAv
-KiBFRXByb20gU2l6ZSAqLwogCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9lMTAwMC9lZXByb20u
-YyBiL2RyaXZlcnMvbmV0L2UxMDAwL2VlcHJvbS5jCmluZGV4IDYyNTFjNmNlY2M5NC4uNTFlMGYy
-OGM3ZDQ0IDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC9lMTAwMC9lZXByb20uYworKysgYi9kcml2
-ZXJzL25ldC9lMTAwMC9lZXByb20uYwpAQCAtMTU4NCwxMCArMTU4NCwxNCBAQCBpbnQgZTEwMDBf
-cmVnaXN0ZXJfZWVwcm9tKHN0cnVjdCBlMTAwMF9odyAqaHcpCiAKIAkJaWYgKGVlY2QgJiBFMTAw
-MF9FRUNEX0FVVE9fUkQpIHsKIAkJCWlmIChlZWNkICYgRTEwMDBfRUVDRF9FRV9QUkVTKSB7Ci0J
-CQkJaWYgKGVlY2QgJiBFMTAwMF9FRUNEX0ZMQVNIX0lOX1VTRSkKLQkJCQkJZGV2X2luZm8oaHct
-PmRldiwgIkhhcmR3YXJlIHByb2dyYW1tZWQgZnJvbSBmbGFzaFxuIik7Ci0JCQkJZWxzZQorCQkJ
-CWlmIChlZWNkICYgRTEwMDBfRUVDRF9GTEFTSF9JTl9VU0UpIHsKKwkJCQkJdWludDMyX3QgZmxh
-ID0gZTEwMDBfcmVhZF9yZWcoaHcsIEUxMDAwX0ZMQSk7CisJCQkJCWRldl9pbmZvKGh3LT5kZXYs
-CisJCQkJCQkgIkhhcmR3YXJlIHByb2dyYW1tZWQgZnJvbSBmbGFzaCAoJXNzZWN1cmUpXG4iLAor
-CQkJCQkJIGZsYSAmIEUxMDAwX0ZMQV9MT0NLRUQgPyAiIiA6ICJ1biIpOworCQkJCX0gZWxzZSB7
-CiAJCQkJCWRldl9pbmZvKGh3LT5kZXYsICJIYXJkd2FyZSBwcm9ncmFtbWVkIGZyb20gaU5WTVxu
-Iik7CisJCQkJfQogCQkJfSBlbHNlIHsKIAkJCQlkZXZfd2Fybihody0+ZGV2LCAiU2hhZG93IFJB
-TSBpbnZhbGlkXG4iKTsKIAkJCX0KLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+A call of xchg_single will issue the transfer of 24 data bits with a given
+maximum frequency. Since there exist some i.MX based boards with
+spi-max-frequency = <100000>, change the xchg_single timeout to still
+support those boards.
+
+Fixes: 1439cdf7c6fc ("spi: imx: add timeout to xchg_single")
+Signed-off-by: Alexander Kurz <akurz@blala.de>
+---
+ drivers/spi/imx_spi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+index 7819879..0827de7 100644
+--- a/drivers/spi/imx_spi.c
++++ b/drivers/spi/imx_spi.c
+@@ -32,8 +32,11 @@
+ #include <linux/err.h>
+ #include <clock.h>
+ 
+-/* time to wait for STAT_RR getting set */
+-#define IMX_SPI_RR_TIMEOUT	10000 /* ns */
++/*
++ * time to wait for STAT_RR getting set, should allow the transfer
++ * of 24 bits at spi-max-frequency of 100kHz
++ */
++#define IMX_SPI_RR_TIMEOUT	250000 /* ns */
+ 
+ struct imx_spi {
+ 	struct spi_master	master;
+-- 
+2.1.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
