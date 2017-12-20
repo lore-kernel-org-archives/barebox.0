@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from mail-lf0-x22d.google.com ([2a00:1450:4010:c07::22d])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eVaSK-00055m-A4
- for barebox@lists.infradead.org; Sun, 31 Dec 2017 10:03:02 +0000
-Date: Sun, 31 Dec 2017 11:02:44 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20171231100244.GA16379@ravnborg.org>
+ id 1eRbvL-00077c-91
+ for barebox@lists.infradead.org; Wed, 20 Dec 2017 10:48:32 +0000
+Received: by mail-lf0-x22d.google.com with SMTP id y78so17819328lfd.1
+ for <barebox@lists.infradead.org>; Wed, 20 Dec 2017 02:48:19 -0800 (PST)
+Received: from localhost.localdomain (t109.niisi.ras.ru. [193.232.173.109])
+ by smtp.gmail.com with ESMTPSA id j63sm3760707lfg.95.2017.12.20.02.48.16
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Wed, 20 Dec 2017 02:48:17 -0800 (PST)
+Date: Wed, 20 Dec 2017 13:48:14 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20171220104814.4snxmloobeywnuwb@localhost.localdomain>
 MIME-Version: 1.0
 Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
@@ -20,111 +27,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/4] Enable DT support for AT91SAM9263EK
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Sam Ravnborg <sam@ravnborg.org>
+Subject: command: hashsum: md5sum reports wrong sum for the file named 4k.bin
+To: barebox@lists.infradead.org
 
-This is version 2 of a patchset to enable
-device tree support for AT91SAM9263EK.
+Hi,
 
-On the quest towards getting so far several drivers was
-converted to support DT.
-These patches went in around august.
+The md5sum command reports wrong sum for a file named 4k.bin and, I guess, for 
+other files named alike. Here are the commands to reproduce the bug:
 
-There was also issues with mach-at91 calling code
-in the board directory (dependency in the
-wrong direction).
-This was fixed in "at91: move reset .." which is
-pending (already posted).
+	barebox@barebox sandbox:/ memcpy -s /dev/zero -d _4k.bin 0 0 4k
+	barebox@barebox sandbox:/ md5sum _4k.bin
+	620f0b67a91f7f74151bc5be745b7110  _4k.bin
+	
+	barebox@barebox sandbox:/ cp _4k.bin 4k.bin
+	barebox@barebox sandbox:/ md5sum 4k.bin
+	d41d8cd98f00b204e9800998ecf8427e  4k.bin
+	
+	barebox@barebox sandbox:/ cp 4k.bin __4k.bin
+	barebox@barebox sandbox:/ md5sum __4k.bin 
+	620f0b67a91f7f74151bc5be745b7110  __4k.bin
+	
+	barebox@barebox sandbox:/ version
+	
+	barebox 2017.12.0 #4 Wed Dec 20 12:26:57 MSK 2017
+	
+	barebox@barebox sandbox:/ Terminated
+	
+	$ dd if=/dev/zero bs=4k count=1 | md5sum
+	...
+	620f0b67a91f7f74151bc5be745b7110  -
 
-I have failed to get the bootstrap mode to work.
-It stops somewhere - and I have not invested enough
-time to figure out where and why things goes wrong.
-bootstrap mode was also broken before these patches.
-No JTAG debugger available to help me.
-And then I have at91bootstrap that works so motivation
-was not too high.
-
-I do not think the NAND support works either.
-The device tree introduces some nand-controller
-stuff that is not supported by barebox (at least I assume so).
-And this part I did not look further into.
-
-Next step is to get a proprietary board up and
-running (which uses NOR flash).
-But I wanted this patchset out in the open first.
-
-Any fedback highly appreciated!
-
-	Sam
-
-v1 => v2
-Based on feedback from Andrey (thanks!)
-Patches reworked and combined as a result of this
-
-- Included two patches that makes some general
-  improvements to mach-at91.
-  (Updated since the RFC versions sent yesterday)
-
-  - Move irq_fixup, thus allowing us to call this
-    from board code. This makes it possible to have
-    less dependencies between board code and the processor
-    specific files in mach-at91.
-
-  - Simplified soc setup. With this change setup.c
-    no longer requires that at least one of the
-    processor specific files are built.
-
-- Create a minimal dts file, based on top of the
-  dts file supplied from the kernel.
-
-- Utilise gpio-hog - to setup gpio for PHY.
-
-- Simpler Makefile logic in board Makefile
-  It is now obvious that init.c is only used for
-  bootstrap
-
-- Processor specific files in mach-at91 no longer
-  used when DT is enabled
-
-- Use IS_ENABLED() when it makes code simpler
-
-
-
-
-Sam Ravnborg (4):
-      arm: at91: move irq_fixup to header file
-      arm: at91: simplify soc setup
-      at91sam9263ek: enable multi-image build
-      at91sam9263ek: enable DT support
-
- arch/arm/boards/at91sam9263ek/Makefile        |  4 +-
- arch/arm/boards/at91sam9263ek/lowlevel_init.c | 17 +++--
- arch/arm/boards/at91sam9263ek/of_init.c       | 93 +++++++++++++++++++++++++++
- arch/arm/configs/at91sam9263ek_defconfig      | 10 ++-
- arch/arm/dts/Makefile                         |  2 +-
- arch/arm/dts/at91sam9263ek.dts                | 48 ++++++++++++++
- arch/arm/mach-at91/Kconfig                    | 30 ++++++---
- arch/arm/mach-at91/Makefile                   |  6 +-
- arch/arm/mach-at91/at91rm9200.c               | 10 +--
- arch/arm/mach-at91/at91sam9260.c              | 10 +--
- arch/arm/mach-at91/at91sam9260_devices.c      |  1 +
- arch/arm/mach-at91/at91sam9261.c              | 10 +--
- arch/arm/mach-at91/at91sam9261_devices.c      |  1 +
- arch/arm/mach-at91/at91sam9263.c              | 10 +--
- arch/arm/mach-at91/at91sam9263_devices.c      |  1 +
- arch/arm/mach-at91/at91sam9g45.c              | 10 +--
- arch/arm/mach-at91/at91sam9g45_devices.c      |  1 +
- arch/arm/mach-at91/at91sam9n12.c              | 10 +--
- arch/arm/mach-at91/generic.h                  | 11 +++-
- arch/arm/mach-at91/include/mach/at91_rtt.h    | 16 +++++
- arch/arm/mach-at91/irq_fixup.c                | 22 -------
- arch/arm/mach-at91/sama5d3.c                  | 10 +--
- arch/arm/mach-at91/sama5d4.c                  | 10 +--
- arch/arm/mach-at91/setup.c                    | 26 ++------
- arch/arm/mach-at91/soc.h                      | 76 ----------------------
- images/Makefile.at91                          |  4 ++
- 26 files changed, 277 insertions(+), 172 deletions(-)
+Regards,
+Peter
 
 _______________________________________________
 barebox mailing list
