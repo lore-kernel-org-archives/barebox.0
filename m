@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conuserg-09.nifty.com ([210.131.2.76])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eRbkB-0001j5-UO
- for barebox@lists.infradead.org; Wed, 20 Dec 2017 10:37:02 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Wed, 20 Dec 2017 11:36:44 +0100
-Message-Id: <20171220103644.10918-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1eRsVr-0000YW-1C
+ for barebox@lists.infradead.org; Thu, 21 Dec 2017 04:31:21 +0000
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Thu, 21 Dec 2017 13:30:35 +0900
+Message-Id: <1513830635-24496-1-git-send-email-yamada.masahiro@socionext.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,38 +14,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] string.h: Implement strndup
+Subject: [PATCH] linux/kernel.h: move ALIGN_DOWN() to include/linux/kernel.h
 To: barebox@lists.infradead.org
 
-SSBpbXBsZW1lbnRlZCB0aGlzIHdoaWxlIHRyeWluZyB0byBpbXBvcnQgbW1jLXV0aWxzIGludG8g
-YmFyZWJveC4gV2hpbGUKSSBkaWRuJ3QgZmluaXNoIHRoaXMgaW1wb3J0IHRoaXMgZnVuY3Rpb24g
-bWlnaHQgc3RpbGwgYmUgdXNlZnVsIGZvcgpzb21lb25lPyEKClNpZ25lZC1vZmYtYnk6IFV3ZSBL
-bGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogaW5jbHVk
-ZS9saW51eC9zdHJpbmcuaCB8ICAzICsrKwogbGliL3N0cmluZy5jICAgICAgICAgICB8IDIwICsr
-KysrKysrKysrKysrKysrKysrCiAyIGZpbGVzIGNoYW5nZWQsIDIzIGluc2VydGlvbnMoKykKCmRp
-ZmYgLS1naXQgYS9pbmNsdWRlL2xpbnV4L3N0cmluZy5oIGIvaW5jbHVkZS9saW51eC9zdHJpbmcu
-aAppbmRleCA1ZGY4YzUwZTU3OWEuLmVkNGVlYjU1MTllNiAxMDA2NDQKLS0tIGEvaW5jbHVkZS9s
-aW51eC9zdHJpbmcuaAorKysgYi9pbmNsdWRlL2xpbnV4L3N0cmluZy5oCkBAIC04MCw2ICs4MCw5
-IEBAIGV4dGVybiBfX2tlcm5lbF9zaXplX3Qgc3Rybmxlbihjb25zdCBjaGFyICosX19rZXJuZWxf
-c2l6ZV90KTsKICNpZm5kZWYgX19IQVZFX0FSQ0hfU1RSRFVQCiBleHRlcm4gY2hhciAqIHN0cmR1
-cChjb25zdCBjaGFyICopOwogI2VuZGlmCisjaWZuZGVmIF9fSEFWRV9BUkNIX1NUUk5EVVAKK2V4
-dGVybiBjaGFyICpzdHJuZHVwKGNvbnN0IGNoYXIgKiwgc2l6ZV90KTsKKyNlbmRpZgogI2lmbmRl
-ZiBfX0hBVkVfQVJDSF9TVFJTV0FCCiBleHRlcm4gY2hhciAqIHN0cnN3YWIoY29uc3QgY2hhciAq
-KTsKICNlbmRpZgpkaWZmIC0tZ2l0IGEvbGliL3N0cmluZy5jIGIvbGliL3N0cmluZy5jCmluZGV4
-IDFkNDkxYzljMmZiNS4uZjU4ODkzM2U4MTkxIDEwMDY0NAotLS0gYS9saWIvc3RyaW5nLmMKKysr
-IGIvbGliL3N0cmluZy5jCkBAIC0zMjMsNiArMzIzLDI2IEBAIGNoYXIgKiBzdHJkdXAoY29uc3Qg
-Y2hhciAqcykKICNlbmRpZgogRVhQT1JUX1NZTUJPTChzdHJkdXApOwogCisjaWZuZGVmIF9fSEFW
-RV9BUkNIX1NUUk5EVVAKK2NoYXIgKnN0cm5kdXAoY29uc3QgY2hhciAqcywgc2l6ZV90IG4pCit7
-CisJY2hhciAqbmV3OworCXNpemVfdCBsZW4gPSBzdHJubGVuKHMsIG4pOworCisJaWYgKChzID09
-IE5VTEwpIHx8CisJICAgICgobmV3ID0gbWFsbG9jKGxlbiArIDEpKSA9PSBOVUxMKSkgeworCQly
-ZXR1cm4gTlVMTDsKKwl9CisKKwltZW1jcHkobmV3LCBzLCBsZW4pOworCW5ld1tsZW5dID0gJ1ww
-JzsKKworCXJldHVybiBuZXc7Cit9CisKKyNlbmRpZgorRVhQT1JUX1NZTUJPTChzdHJuZHVwKTsK
-KwogI2lmbmRlZiBfX0hBVkVfQVJDSF9TVFJTUE4KIC8qKgogICogc3Ryc3BuIC0gQ2FsY3VsYXRl
-IHRoZSBsZW5ndGggb2YgdGhlIGluaXRpYWwgc3Vic3RyaW5nIG9mIEBzIHdoaWNoIG9ubHkKLS0g
-CjIuMTEuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Linux commit ed067d4a859f ("linux/kernel.h: Add ALIGN_DOWN macro")
+moved ALIGN_MACRO to include/linux/kernel.h.
+
+Let's do likewise.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+
+ include/common.h       | 2 --
+ include/linux/kernel.h | 1 +
+ 2 files changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/include/common.h b/include/common.h
+index dd7445e..54c76d4 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -93,8 +93,6 @@ extern int (*barebox_main)(void);
+ void __noreturn start_barebox(void);
+ void shutdown_barebox(void);
+ 
+-#define ALIGN_DOWN(x, a)	((x) & ~((typeof(x))(a) - 1))
+-
+ #define ARRAY_AND_SIZE(x)	(x), ARRAY_SIZE(x)
+ 
+ /*
+diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+index b4d2f09..ab713f2 100644
+--- a/include/linux/kernel.h
++++ b/include/linux/kernel.h
+@@ -33,6 +33,7 @@
+ #define S64_MIN		((s64)(-S64_MAX - 1))
+ 
+ #define ALIGN(x, a)		__ALIGN_MASK(x, (typeof(x))(a) - 1)
++#define ALIGN_DOWN(x, a)	ALIGN((x) - ((a) - 1), (a))
+ #define __ALIGN_MASK(x, mask)	(((x) + (mask)) & ~(mask))
+ #define PTR_ALIGN(p, a)		((typeof(p))ALIGN((unsigned long)(p), (a)))
+ #define IS_ALIGNED(x, a)		(((x) & ((typeof(x))(a) - 1)) == 0)
+-- 
+2.7.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
