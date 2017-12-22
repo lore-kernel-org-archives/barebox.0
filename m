@@ -1,20 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conssluserg-04.nifty.com ([210.131.2.83])
- by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eRsdM-0002j1-1N
- for barebox@lists.infradead.org; Thu, 21 Dec 2017 04:39:06 +0000
-Received: from mail-ua0-f173.google.com (mail-ua0-f173.google.com
- [209.85.217.173]) (authenticated)
- by conssluserg-04.nifty.com with ESMTP id vBL4cR9o006173
- for <barebox@lists.infradead.org>; Thu, 21 Dec 2017 13:38:28 +0900
-Received: by mail-ua0-f173.google.com with SMTP id a25so9420098uak.3
- for <barebox@lists.infradead.org>; Wed, 20 Dec 2017 20:38:28 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <1513830635-24496-1-git-send-email-yamada.masahiro@socionext.com>
-References: <1513830635-24496-1-git-send-email-yamada.masahiro@socionext.com>
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Thu, 21 Dec 2017 13:37:46 +0900
-Message-ID: <CAK7LNAQgp=cu8+jvGooDMrXPOqzbt2TTrEGsXcPVvf-Q3iguYw@mail.gmail.com>
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.89 #1 (Red Hat Linux))
+ id 1eSIJP-0003FQ-NT
+ for barebox@lists.infradead.org; Fri, 22 Dec 2017 08:04:13 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id BEC65A002FD
+ for <barebox@lists.infradead.org>; Fri, 22 Dec 2017 09:06:13 +0100 (CET)
+From: Daniel Schultz <d.schultz@phytec.de>
+Date: Fri, 22 Dec 2017 09:03:54 +0100
+Message-Id: <1513929834-38500-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,74 +17,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] linux/kernel.h: move ALIGN_DOWN() to
- include/linux/kernel.h
+Subject: [PATCH] ARM: boards: phytec-som-am335x: Revert unified MLO for 1GB
 To: barebox@lists.infradead.org
 
-2017-12-21 13:30 GMT+09:00 Masahiro Yamada <yamada.masahiro@socionext.com>:
-> Linux commit ed067d4a859f ("linux/kernel.h: Add ALIGN_DOWN macro")
-> moved ALIGN_MACRO to include/linux/kernel.h.
+There is a problem in the data path between 1GB RAM devices and the
+core, which leads to wrong read operations after DDR initialization
+in soft resets. This needs more investigation, but until we didn't
+found the problem, we will return to the origin MLO for 1GB RAM devices
+with static RAM timings and without memory access.
 
+Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+---
+ arch/arm/boards/phytec-som-am335x/lowlevel.c | 1 +
+ images/Makefile.am33xx                       | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
-This is a typo.
-
-ALIGN_MACRO -> ALIGN_DOWN
-
-
-
-
-> Let's do likewise.
->
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> ---
->
->  include/common.h       | 2 --
->  include/linux/kernel.h | 1 +
->  2 files changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/include/common.h b/include/common.h
-> index dd7445e..54c76d4 100644
-> --- a/include/common.h
-> +++ b/include/common.h
-> @@ -93,8 +93,6 @@ extern int (*barebox_main)(void);
->  void __noreturn start_barebox(void);
->  void shutdown_barebox(void);
->
-> -#define ALIGN_DOWN(x, a)       ((x) & ~((typeof(x))(a) - 1))
-> -
->  #define ARRAY_AND_SIZE(x)      (x), ARRAY_SIZE(x)
->
->  /*
-> diff --git a/include/linux/kernel.h b/include/linux/kernel.h
-> index b4d2f09..ab713f2 100644
-> --- a/include/linux/kernel.h
-> +++ b/include/linux/kernel.h
-> @@ -33,6 +33,7 @@
->  #define S64_MIN                ((s64)(-S64_MAX - 1))
->
->  #define ALIGN(x, a)            __ALIGN_MASK(x, (typeof(x))(a) - 1)
-> +#define ALIGN_DOWN(x, a)       ALIGN((x) - ((a) - 1), (a))
->  #define __ALIGN_MASK(x, mask)  (((x) + (mask)) & ~(mask))
->  #define PTR_ALIGN(p, a)                ((typeof(p))ALIGN((unsigned long)(p), (a)))
->  #define IS_ALIGNED(x, a)               (((x) & ((typeof(x))(a) - 1)) == 0)
-> --
-> 2.7.4
->
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-
-
+diff --git a/arch/arm/boards/phytec-som-am335x/lowlevel.c b/arch/arm/boards/phytec-som-am335x/lowlevel.c
+index bdd7b30..4b74789 100644
+--- a/arch/arm/boards/phytec-som-am335x/lowlevel.c
++++ b/arch/arm/boards/phytec-som-am335x/lowlevel.c
+@@ -245,6 +245,7 @@ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_128mb, am335x_phytec_phycore_s
+ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_256mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J128M16125IT_256MB);
+ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_512mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J256M16HA15EIT_512MB);
+ PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_sram_2x512mb, am335x_phytec_phycore_som_mlo, PHYCORE_MT41J512M8125IT_2x512MB);
++PHYTEC_ENTRY_MLO(start_am33xx_phytec_phycore_r2_sram_1024mb, am335x_phytec_phycore_som_mlo, PHYCORE_R2_MT41K512M16HA125IT_1024MB);
+ PHYTEC_ENTRY_UNIFIED_MLO(start_am33xx_phytec_phycore_r2_sram, am335x_phytec_phycore_som_mlo, PHYCORE_R2);
+ PHYTEC_ENTRY(start_am33xx_phytec_phycore_nand_sdram, am335x_phytec_phycore_som_nand);
+ PHYTEC_ENTRY(start_am33xx_phytec_phycore_emmc_sdram, am335x_phytec_phycore_som_emmc);
+diff --git a/images/Makefile.am33xx b/images/Makefile.am33xx
+index 3f29143..50fa019 100644
+--- a/images/Makefile.am33xx
++++ b/images/Makefile.am33xx
+@@ -51,6 +51,12 @@ FILE_barebox-am33xx-phytec-phycore-r2-mlo.spi.img = start_am33xx_phytec_phycore_
+ am33xx-mlo-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-r2-mlo.img
+ am33xx-mlospi-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-r2-mlo.spi.img
+ 
++pblx-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += start_am33xx_phytec_phycore_r2_sram_1024mb
++FILE_barebox-am33xx-phytec-phycore-r2-mlo-1024mb.img = start_am33xx_phytec_phycore_r2_sram_1024mb.pblx.mlo
++FILE_barebox-am33xx-phytec-phycore-r2-mlo-1024mb.spi.img = start_am33xx_phytec_phycore_r2_sram_1024mb.pblx.mlospi
++am33xx-mlo-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-r2-mlo-1024mb.img
++am33xx-mlospi-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += barebox-am33xx-phytec-phycore-r2-mlo-1024mb.spi.img
++
+ pblx-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += start_am33xx_phytec_phycore_sram_256mb
+ FILE_barebox-am33xx-phytec-phycore-mlo-256mb.img = start_am33xx_phytec_phycore_sram_256mb.pblx.mlo
+ FILE_barebox-am33xx-phytec-phycore-mlo-256mb.spi.img = start_am33xx_phytec_phycore_sram_256mb.pblx.mlospi
 -- 
-Best Regards
-Masahiro Yamada
+2.7.4
+
 
 _______________________________________________
 barebox mailing list
