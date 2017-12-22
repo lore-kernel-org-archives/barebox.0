@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.87 #1 (Red Hat Linux))
- id 1ePkku-0006Os-27
- for barebox@lists.infradead.org; Fri, 15 Dec 2017 07:50:06 +0000
-Date: Fri, 15 Dec 2017 08:49:42 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20171215074942.7uptifeszea6r6hc@pengutronix.de>
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.89 #1 (Red Hat Linux))
+ id 1eSINv-000511-Um
+ for barebox@lists.infradead.org; Fri, 22 Dec 2017 08:08:54 +0000
 References: <1513266675-49103-1-git-send-email-d.schultz@phytec.de>
+ <20171215074942.7uptifeszea6r6hc@pengutronix.de>
+From: Daniel Schultz <d.schultz@phytec.de>
+Message-ID: <3e39e4d7-04fb-e2cd-7084-df5a79d31c91@phytec.de>
+Date: Fri, 22 Dec 2017 09:09:39 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1513266675-49103-1-git-send-email-d.schultz@phytec.de>
+In-Reply-To: <20171215074942.7uptifeszea6r6hc@pengutronix.de>
+Content-Language: en-GB
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,65 +19,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM: boards: phytec-som-am335x: Fallback ram timings
-To: Daniel Schultz <d.schultz@phytec.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Daniel,
-
-On Thu, Dec 14, 2017 at 04:51:15PM +0100, Daniel Schultz wrote:
-> The 'get_ram_size' function can return false values with 1GB RAMs during
-> warm reset. If a not-existing RAM size will be returned, the fallback
-> RAM timings get loaded to prevent hangs.
-
-Just continuing with wrong ram size and fallback timing is not really an
-option. It doesn't help the user and only changes the bug reports you
-get.
-
-Sascha
-
-> 
-> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
-> ---
->  arch/arm/boards/phytec-som-am335x/lowlevel.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boards/phytec-som-am335x/lowlevel.c b/arch/arm/boards/phytec-som-am335x/lowlevel.c
-> index b1576ee..5030966 100644
-> --- a/arch/arm/boards/phytec-som-am335x/lowlevel.c
-> +++ b/arch/arm/boards/phytec-som-am335x/lowlevel.c
-> @@ -174,8 +174,9 @@ static noinline void physom_board_init(void *fdt, int sdram, int module_family)
->  		/* Find the ram size and set up the correct ram timings */
->  		ramsize = get_ram_size((long *) 0x80000000, SZ_1G);
->  		timing = get_timings_by_size(module_family, ramsize);
-> +		/* In case of a failure, load generic ram timings as fallback */
->  		if (!timing)
-> -			hang();
-> +			timing = get_minimal_timings(module_family);
->  	}
->  
->  	am335x_sdram_init(DDR_IOCTRL, &physom_cmd,
-> -- 
-> 2.7.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgoKT24gMTIvMTUvMjAxNyAwODo0OSBBTSwgU2FzY2hhIEhhdWVyIHdyb3RlOgo+IEhpIERh
+bmllbCwKPgo+IE9uIFRodSwgRGVjIDE0LCAyMDE3IGF0IDA0OjUxOjE1UE0gKzAxMDAsIERhbmll
+bCBTY2h1bHR6IHdyb3RlOgo+PiBUaGUgJ2dldF9yYW1fc2l6ZScgZnVuY3Rpb24gY2FuIHJldHVy
+biBmYWxzZSB2YWx1ZXMgd2l0aCAxR0IgUkFNcyBkdXJpbmcKPj4gd2FybSByZXNldC4gSWYgYSBu
+b3QtZXhpc3RpbmcgUkFNIHNpemUgd2lsbCBiZSByZXR1cm5lZCwgdGhlIGZhbGxiYWNrCj4+IFJB
+TSB0aW1pbmdzIGdldCBsb2FkZWQgdG8gcHJldmVudCBoYW5ncy4KPiBKdXN0IGNvbnRpbnVpbmcg
+d2l0aCB3cm9uZyByYW0gc2l6ZSBhbmQgZmFsbGJhY2sgdGltaW5nIGlzIG5vdCByZWFsbHkgYW4K
+PiBvcHRpb24uIEl0IGRvZXNuJ3QgaGVscCB0aGUgdXNlciBhbmQgb25seSBjaGFuZ2VzIHRoZSBi
+dWcgcmVwb3J0cyB5b3UKPiBnZXQuCj4KPiBTYXNjaGEKPgp5ZXMsIHNvcnJ5LiBJIHNlbnQgYSBu
+ZXcgcGF0Y2ggdG8gcmVtb3ZlIHRoZSBidWcgZnJvbSBvdXIgTUxPIGFuZCBJIHdpbGwgCmludmVz
+dGlnYXRlIGZvciB0aGlzIHByb2JsZW0gbmV4dCB5ZWFyLCBiZWNhdXNlIHRoaXMgc2VlbXMgdG8g
+YmUgYSAKbGl0dGxlIG1vcmUgdHJpY2tpZXIuCgpEYW5pZWwKPj4gU2lnbmVkLW9mZi1ieTogRGFu
+aWVsIFNjaHVsdHogPGQuc2NodWx0ekBwaHl0ZWMuZGU+Cj4+IC0tLQo+PiAgIGFyY2gvYXJtL2Jv
+YXJkcy9waHl0ZWMtc29tLWFtMzM1eC9sb3dsZXZlbC5jIHwgMyArKy0KPj4gICAxIGZpbGUgY2hh
+bmdlZCwgMiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCj4+Cj4+IGRpZmYgLS1naXQgYS9h
+cmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvbG93bGV2ZWwuYyBiL2FyY2gvYXJtL2Jv
+YXJkcy9waHl0ZWMtc29tLWFtMzM1eC9sb3dsZXZlbC5jCj4+IGluZGV4IGIxNTc2ZWUuLjUwMzA5
+NjYgMTAwNjQ0Cj4+IC0tLSBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9sb3ds
+ZXZlbC5jCj4+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9sb3dsZXZl
+bC5jCj4+IEBAIC0xNzQsOCArMTc0LDkgQEAgc3RhdGljIG5vaW5saW5lIHZvaWQgcGh5c29tX2Jv
+YXJkX2luaXQodm9pZCAqZmR0LCBpbnQgc2RyYW0sIGludCBtb2R1bGVfZmFtaWx5KQo+PiAgIAkJ
+LyogRmluZCB0aGUgcmFtIHNpemUgYW5kIHNldCB1cCB0aGUgY29ycmVjdCByYW0gdGltaW5ncyAq
+Lwo+PiAgIAkJcmFtc2l6ZSA9IGdldF9yYW1fc2l6ZSgobG9uZyAqKSAweDgwMDAwMDAwLCBTWl8x
+Ryk7Cj4+ICAgCQl0aW1pbmcgPSBnZXRfdGltaW5nc19ieV9zaXplKG1vZHVsZV9mYW1pbHksIHJh
+bXNpemUpOwo+PiArCQkvKiBJbiBjYXNlIG9mIGEgZmFpbHVyZSwgbG9hZCBnZW5lcmljIHJhbSB0
+aW1pbmdzIGFzIGZhbGxiYWNrICovCj4+ICAgCQlpZiAoIXRpbWluZykKPj4gLQkJCWhhbmcoKTsK
+Pj4gKwkJCXRpbWluZyA9IGdldF9taW5pbWFsX3RpbWluZ3MobW9kdWxlX2ZhbWlseSk7Cj4+ICAg
+CX0KPj4gICAKPj4gICAJYW0zMzV4X3NkcmFtX2luaXQoRERSX0lPQ1RSTCwgJnBoeXNvbV9jbWQs
+Cj4+IC0tIAo+PiAyLjcuNAo+Pgo+Pgo+PiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwo+PiBiYXJlYm94IG1haWxpbmcgbGlzdAo+PiBiYXJlYm94QGxpc3Rz
+LmluZnJhZGVhZC5vcmcKPj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9iYXJlYm94Cj4+CgotLSAKTWl0IGZyZXVuZGxpY2hlbiBHcsO8w59lbiwKV2l0aCBiZXN0
+IHJlZ2FyZHMsCiAgIERhbmllbCBTY2h1bHR6CgotIEVudHdpY2tsdW5nIC0KVGVsLjogCSs0OSA2
+MTMxIDkyIDIxIDQ1NwpkLnNjaHVsdHpAcGh5dGVjLmRlCnd3dy5waHl0ZWMuZGUKClNpZSBmaW5k
+ZW4gdW5zIGF1Y2ggYXVmOiBGYWNlYm9vaywgTGlua2VkSW4sIFhpbmcsIFlvdVR1YmUKClBIWVRF
+QyBNZXNzdGVjaG5payBHbWJIIHwgUm9iZXJ0LUtvY2gtU3RyLiAzOSB8IDU1MTI5IE1haW56LCBH
+ZXJtYW55Ckdlc2Now6RmdHNmw7xocmVyOiBEaXBsLi1JbmcuIE1pY2hhZWwgTWl0ZXpraSwgRGlw
+bC4tSW5nLiBCb2RvIEh1YmVyIHwKSGFuZGVsc3JlZ2lzdGVyIE1haW56IEhSQiA0NjU2IHwgRmlu
+YW56YW10IE1haW56LU1pdHRlIHwgU3QuTnIuIDI2NjUwMDYwOCwKREUgMTQ5MDU5ODU1ClRoaXMg
+RS1NYWlsIG1heSBjb250YWluIGNvbmZpZGVudGlhbCBvciBwcml2aWxlZ2VkIGluZm9ybWF0aW9u
+LiBJZiB5b3UgYXJlCm5vdCB0aGUgaW50ZW5kZWQgcmVjaXBpZW50IChvciBoYXZlIHJlY2VpdmVk
+IHRoaXMgRS1NYWlsIGluIGVycm9yKSBwbGVhc2UKbm90aWZ5IHRoZSBzZW5kZXIgaW1tZWRpYXRl
+bHkgYW5kIGRlc3Ryb3kgdGhpcyBFLU1haWwuIEFueSB1bmF1dGhvcml6ZWQKY29weWluZywgZGlz
+Y2xvc3VyZSBvciBkaXN0cmlidXRpb24gb2YgdGhlIG1hdGVyaWFsIGluIHRoaXMgRS1NYWlsIGlz
+CnN0cmljdGx5IGZvcmJpZGRlbi4KCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
+ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
+Cg==
