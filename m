@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+Received: from mout.gmx.net ([212.227.15.19])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eTXdf-0007tV-D3
- for barebox@lists.infradead.org; Mon, 25 Dec 2017 18:38:19 +0000
-Received: by mail-lf0-x243.google.com with SMTP id u84so18052198lff.7
- for <barebox@lists.infradead.org>; Mon, 25 Dec 2017 10:38:04 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 25 Dec 2017 21:37:58 +0300
-Message-Id: <20171225183758.7773-1-antonynpavlov@gmail.com>
+ id 1eTpCY-0000rk-GA
+ for barebox@lists.infradead.org; Tue, 26 Dec 2017 13:23:28 +0000
+Received: from [192.168.1.241] ([31.18.254.73]) by mail.gmx.com (mrgmx001
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 0LgptO-1fGxVh06J4-00oIeB for
+ <barebox@lists.infradead.org>; Tue, 26 Dec 2017 14:23:11 +0100
+References: <20171225183758.7773-1-antonynpavlov@gmail.com>
+From: Oleksij Rempel <linux@rempel-privat.de>
+Message-ID: <204d58fc-0628-ddb9-1494-b836bf616f43@rempel-privat.de>
+Date: Tue, 26 Dec 2017 14:23:02 +0100
+MIME-Version: 1.0
+In-Reply-To: <20171225183758.7773-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,92 +20,159 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============8018835625453231219=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: make struct bootp __packed to prevent unaligned store on
- MIPS
+Subject: Re: [PATCH] net: make struct bootp __packed to prevent unaligned
+ store on MIPS
 To: barebox@lists.infradead.org
 
-How to repropduce the unaligned store problem
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============8018835625453231219==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="OrXIbI5NHoiWCfoUP24BhC0N553BHIJjf"
 
-    qemu-system-mips -nodefaults -M malta -m 256 \
-                     -nographic -serial stdio -monitor null \
-                     -bios barebox-flash-image \
-                     -net user -net nic,model=rtl8139
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--OrXIbI5NHoiWCfoUP24BhC0N553BHIJjf
+Content-Type: multipart/mixed; boundary="VHTxwJi2252DBmFBvilFchLPXbr2Un5TI";
+ protected-headers="v1"
+From: Oleksij Rempel <linux@rempel-privat.de>
+To: barebox@lists.infradead.org
+Message-ID: <204d58fc-0628-ddb9-1494-b836bf616f43@rempel-privat.de>
+Subject: Re: [PATCH] net: make struct bootp __packed to prevent unaligned
+ store on MIPS
+References: <20171225183758.7773-1-antonynpavlov@gmail.com>
+In-Reply-To: <20171225183758.7773-1-antonynpavlov@gmail.com>
 
-    ...
+--VHTxwJi2252DBmFBvilFchLPXbr2Un5TI
+Content-Type: text/plain; charset=utf-8
+Content-Language: ru
+Content-Transfer-Encoding: quoted-printable
 
-    barebox:/ dhcp
+Am 25.12.2017 um 19:37 schrieb Antony Pavlov:
+> How to repropduce the unaligned store problem
+>=20
+>     qemu-system-mips -nodefaults -M malta -m 256 \
+>                      -nographic -serial stdio -monitor null \
+>                      -bios barebox-flash-image \
+>                      -net user -net nic,model=3Drtl8139
+>=20
+>     ...
+>=20
+>     barebox:/ dhcp
+>=20
+>     Ooops, address error on store!
+>=20
+>     $ 0   : 00000000 00000000 01010600 697f2a2e
+>     $ 4   : a0850000 00000000 0000001c a040c1b8
+>     $ 8   : 00000000 00000002 00000002 00000000
+>     $12   : 00000000 00000040 00000100 00000001
+>     $16   : a040bba0 a0850000 a0850000 a0850000
+>     $20   : 00000000 00000075 00000076 a040ba20
+>     $24   : 00000002 a080f210
+>     $28   : 00000000 a03ffce0 fffffffd a0833b8c
+>     Hi    : 000154f8
+>     Lo    : 20000000
+>     epc   : a0833b84
+>     ra    : a0833b8c
+>     Status: 00000002
+>     Cause : 80000414
+>     Config: 80008482
+>=20
+>     ### ERROR ### Please RESET the board ###
+>=20
+> The unaligned store instruction is located in the bootp_request() from =
+net/dhcp.c:
+>=20
+> a0833b50 <bootp_request>:
+> ..
+> a0833b7c:       3c020101        lui     v0,0x101
+> a0833b80:       24420600        addiu   v0,v0,1536 /* 0x1010600 -> v0 *=
+/
+> a0833b84:       0c20024a        jal     a0800928 <get_time_ns>
+> a0833b88:       ae02002a        sw      v0,42(s0) /* store 0x1010600 to=
+ addr s0 + 42 */
+>=20
+> This assembler code is generated by mips-linux-gnu-gcc (Debian 7.2.0-11=
+) 7.2.0
+> from this:
+>=20
+>     bp =3D (struct bootp *)payload;
+>     bp->bp_op =3D OP_BOOTREQUEST; /* 0x01 */
+>     bp->bp_htype =3D HWT_ETHER; /* 0x01 */
+>     bp->bp_hlen =3D HWL_ETHER; /* 0x06 */
+>     bp->bp_hops =3D 0;
+>=20
+> Compiler replaces four 'store byte' instruction by one 'store 32-bit wo=
+rd'
+> instruction. Alas sometimes this leads to unaligned store situation.
+>=20
+> Making struct bootp __packed prevents this optimization and fixes the p=
+roblem.
+>=20
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
-    Ooops, address error on store!
+Tested-by: Oleksij Rempel <linux@rempel-privat.de>
 
-    $ 0   : 00000000 00000000 01010600 697f2a2e
-    $ 4   : a0850000 00000000 0000001c a040c1b8
-    $ 8   : 00000000 00000002 00000002 00000000
-    $12   : 00000000 00000040 00000100 00000001
-    $16   : a040bba0 a0850000 a0850000 a0850000
-    $20   : 00000000 00000075 00000076 a040ba20
-    $24   : 00000002 a080f210
-    $28   : 00000000 a03ffce0 fffffffd a0833b8c
-    Hi    : 000154f8
-    Lo    : 20000000
-    epc   : a0833b84
-    ra    : a0833b8c
-    Status: 00000002
-    Cause : 80000414
-    Config: 80008482
+This patch solves similar crash on Atheros AR9331.
 
-    ### ERROR ### Please RESET the board ###
 
-The unaligned store instruction is located in the bootp_request() from net/dhcp.c:
+> ---
+>  net/dhcp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/net/dhcp.c b/net/dhcp.c
+> index c5386fe942..4177220410 100644
+> --- a/net/dhcp.c
+> +++ b/net/dhcp.c
+> @@ -45,7 +45,7 @@ struct bootp {
+>  	char		bp_sname[64];	/* Server host name			*/
+>  	char		bp_file[128];	/* Boot file name			*/
+>  	char		bp_vend[0];	/* Vendor information			*/
+> -};
+> +} __packed;
+> =20
+>  /* DHCP States */
+>  typedef enum {
+>=20
 
-a0833b50 <bootp_request>:
-..
-a0833b7c:       3c020101        lui     v0,0x101
-a0833b80:       24420600        addiu   v0,v0,1536 /* 0x1010600 -> v0 */
-a0833b84:       0c20024a        jal     a0800928 <get_time_ns>
-a0833b88:       ae02002a        sw      v0,42(s0) /* store 0x1010600 to addr s0 + 42 */
 
-This assembler code is generated by mips-linux-gnu-gcc (Debian 7.2.0-11) 7.2.0
-from this:
+--=20
+Regards,
+Oleksij
 
-    bp = (struct bootp *)payload;
-    bp->bp_op = OP_BOOTREQUEST; /* 0x01 */
-    bp->bp_htype = HWT_ETHER; /* 0x01 */
-    bp->bp_hlen = HWL_ETHER; /* 0x06 */
-    bp->bp_hops = 0;
 
-Compiler replaces four 'store byte' instruction by one 'store 32-bit word'
-instruction. Alas sometimes this leads to unaligned store situation.
+--VHTxwJi2252DBmFBvilFchLPXbr2Un5TI--
 
-Making struct bootp __packed prevents this optimization and fixes the problem.
+--OrXIbI5NHoiWCfoUP24BhC0N553BHIJjf
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- net/dhcp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/net/dhcp.c b/net/dhcp.c
-index c5386fe942..4177220410 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -45,7 +45,7 @@ struct bootp {
- 	char		bp_sname[64];	/* Server host name			*/
- 	char		bp_file[128];	/* Boot file name			*/
- 	char		bp_vend[0];	/* Vendor information			*/
--};
-+} __packed;
- 
- /* DHCP States */
- typedef enum {
--- 
-2.15.0
+iQEcBAEBCAAGBQJaQk02AAoJEHUDokh1SO+06YUH/33M0Y0Yj1x4tWptNP39geqQ
+yDgNw9WQIAE3HOvAN78bHhpZYFt5ZKOC1gNePy9otOU1PNuCcG9G9+8TjNPD62uG
+wzaRRd33JwsSgplOXHcEPlHBemCJDIivJbuxx1lfwj24c9yiYwOfYmwec6+Kr6YC
+vwN6Id1J73uIsYepV/V5pxXtiC/UcVm+CuO42Yhds2zLLU57l+ji/JiHzAn1Rrb5
+ggz3i2jDITPpVt3U2l1BPHy2PyUXW5mpkuPkfkqZn6W54vGcdeJ3QQTgGPR1Z5SS
+VAFQjiyPH5DpbFS3+PUF++OB13Y1qVOM0SFITeM/l9lh4KcCJ6WhjLf++3DjdKY=
+=7R9B
+-----END PGP SIGNATURE-----
 
+--OrXIbI5NHoiWCfoUP24BhC0N553BHIJjf--
+
+
+--===============8018835625453231219==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============8018835625453231219==--
