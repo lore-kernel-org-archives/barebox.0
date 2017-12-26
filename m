@@ -1,19 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eTu20-0000sn-Sn
- for barebox@lists.infradead.org; Tue, 26 Dec 2017 18:32:55 +0000
+ id 1eTu4m-0002Uz-J0
+ for barebox@lists.infradead.org; Tue, 26 Dec 2017 18:35:46 +0000
 Received: from ravnborg.org (126.158-248-196.customer.lyse.net
  [158.248.196.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by asavdk3.altibox.net (Postfix) with ESMTPS id 2317320033
- for <barebox@lists.infradead.org>; Tue, 26 Dec 2017 19:32:38 +0100 (CET)
-Date: Tue, 26 Dec 2017 19:32:36 +0100
+ by asavdk4.altibox.net (Postfix) with ESMTPS id 7496D8024D
+ for <barebox@lists.infradead.org>; Tue, 26 Dec 2017 19:35:31 +0100 (CET)
+Date: Tue, 26 Dec 2017 19:35:30 +0100
 From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20171226183236.GA26708@ravnborg.org>
+Message-ID: <20171226183530.GA28706@ravnborg.org>
+References: <20171226183236.GA26708@ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <20171226183236.GA26708@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,32 +28,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4] build: minimize rebuilds
+Subject: [PATCH 1/4] build: fix that defaultenv is always rebuilt
 To: Barebox List <barebox@lists.infradead.org>
 
-Following patchset minimizes re-builds.
-With the setup I use at the moment where I run
-build tests on 100+ arm related boards I see that the
-build time is reduced to half - for an otherwise
-clean build with no changes.
-In other words - the wall clock time for a
-simple "try to build all boards" where nothing
-has changed goes from ~2:35 minutes to 1:21 minutes
+From fcffd0176b3394cc664d9bf5b31b053253323bfb Mon Sep 17 00:00:00 2001
+From: Sam Ravnborg <sam@ravnborg.org>
+Date: Tue, 26 Dec 2017 16:47:16 +0100
+Subject: [PATCH 1/4] build: fix that defaultenv is always rebuilt
 
-The patches has been tested in my local setup - and
-no missing rebuilds was seen.
+Using following pattern:
 
-Sam Ravnborg (4):
-      build: fix that defaultenv is always rebuilt
-      build: fix that passwd.h is always built
-      build: fix that the bbenv file is always rebuilt
-      build: fix that LZO file is always rebuilt
+	target: prerequisite FORCE
+		$(call cmd,foo)
 
- common/Makefile        | 28 +++++++++++++++-------------
- defaultenv/Makefile    |  4 ++--
- scripts/Kbuild.include | 12 +++++++-----
- scripts/Makefile.lib   |  2 +-
- 4 files changed, 25 insertions(+), 21 deletions(-)
+is almost always wrong. Due to FORCE target will be rebuilt
+using cmd_foo no mater the timestamps.
+
+The following pattern:
+
+	target: prerequisite FORCE
+        	$(call if_changed,foo)
+
+Will call cmd_foo only if:
+- target is not updated
+- or command to built target has changed
+
+But to make this work target must be added to the
+list af targets built.
+This can be done by assigning target to extra-y or targets.
+
+Use the latter pattern for defaultenv to avoid rebuilding
+the environmentt for each build.
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+---
+ defaultenv/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/defaultenv/Makefile b/defaultenv/Makefile
+index 33e0eceef..f313b04e8 100644
+--- a/defaultenv/Makefile
++++ b/defaultenv/Makefile
+@@ -14,7 +14,7 @@ quiet_cmd_env_default = ENV     $@
+ cmd_env_default = ($(srctree)/scripts/genenv $(srctree) $(objtree) $@ $(CONFIG_DEFAULT_ENVIRONMENT_PATH))
+ 
+ $(obj)/barebox_default_env: FORCE
+-	$(call cmd,env_default)
++	$(call if_changed,env_default)
+ 
+ quiet_cmd_env_h = ENVH    $@
+ cmd_env_h = cat $< | (cd $(obj) && $(objtree)/scripts/bin2c "__aligned(4) default_environment") > $@; \
+@@ -27,4 +27,4 @@ quiet_cmd_env_zero = ENVZ    $@
+ cmd_env_zero = ($(objtree)/scripts/bareboxenv -z $(CONFIG_DEFAULT_ENVIRONMENT_PATH) $@)
+ 
+ $(obj)/barebox_zero_env: FORCE
+-	$(call cmd,env_zero)
++	$(call if_changed,env_zero)
+-- 
+2.12.0
+
 
 _______________________________________________
 barebox mailing list
