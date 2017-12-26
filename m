@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eTu4m-0002Uz-J0
- for barebox@lists.infradead.org; Tue, 26 Dec 2017 18:35:46 +0000
+ id 1eTu5F-0002f6-2Z
+ for barebox@lists.infradead.org; Tue, 26 Dec 2017 18:36:17 +0000
 Received: from ravnborg.org (126.158-248-196.customer.lyse.net
  [158.248.196.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by asavdk4.altibox.net (Postfix) with ESMTPS id 7496D8024D
- for <barebox@lists.infradead.org>; Tue, 26 Dec 2017 19:35:31 +0100 (CET)
-Date: Tue, 26 Dec 2017 19:35:30 +0100
+ by asavdk4.altibox.net (Postfix) with ESMTPS id 8CB538024D
+ for <barebox@lists.infradead.org>; Tue, 26 Dec 2017 19:36:01 +0100 (CET)
+Date: Tue, 26 Dec 2017 19:36:00 +0100
 From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20171226183530.GA28706@ravnborg.org>
+Message-ID: <20171226183600.GB28706@ravnborg.org>
 References: <20171226183236.GA26708@ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -28,62 +28,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] build: fix that defaultenv is always rebuilt
+Subject: [PATCH 2/4] build: fix that passwd.h is always built
 To: Barebox List <barebox@lists.infradead.org>
 
-From fcffd0176b3394cc664d9bf5b31b053253323bfb Mon Sep 17 00:00:00 2001
+From 48fe20e2bf2249b2f89d96c9787e0b489c015054 Mon Sep 17 00:00:00 2001
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Tue, 26 Dec 2017 16:47:16 +0100
-Subject: [PATCH 1/4] build: fix that defaultenv is always rebuilt
+Date: Tue, 26 Dec 2017 18:02:17 +0100
+Subject: [PATCH 2/4] build: fix that passwd.h is always built
 
-Using following pattern:
-
-	target: prerequisite FORCE
-		$(call cmd,foo)
-
-is almost always wrong. Due to FORCE target will be rebuilt
-using cmd_foo no mater the timestamps.
-
-The following pattern:
-
-	target: prerequisite FORCE
-        	$(call if_changed,foo)
-
-Will call cmd_foo only if:
-- target is not updated
-- or command to built target has changed
-
-But to make this work target must be added to the
-list af targets built.
-This can be done by assigning target to extra-y or targets.
-
-Use the latter pattern for defaultenv to avoid rebuilding
-the environmentt for each build.
+Use the kbuild provided support for generated
+files to avoid that passwd.h is always generated
+thus triggering further re-builds
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- defaultenv/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ common/Makefile | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/defaultenv/Makefile b/defaultenv/Makefile
-index 33e0eceef..f313b04e8 100644
---- a/defaultenv/Makefile
-+++ b/defaultenv/Makefile
-@@ -14,7 +14,7 @@ quiet_cmd_env_default = ENV     $@
- cmd_env_default = ($(srctree)/scripts/genenv $(srctree) $(objtree) $@ $(CONFIG_DEFAULT_ENVIRONMENT_PATH))
+diff --git a/common/Makefile b/common/Makefile
+index 8cd0ab300..5351ef0f7 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -63,27 +63,29 @@ obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
+ obj-$(CONFIG_CONSOLE_RATP)	+= ratp.o
+ obj-$(CONFIG_BOOT)		+= boot.o
  
- $(obj)/barebox_default_env: FORCE
--	$(call cmd,env_default)
-+	$(call if_changed,env_default)
+-quiet_cmd_pwd_h = PWDH    $@
+ ifdef CONFIG_PASSWORD
+-ifneq ($(CONFIG_PASSWORD_DEFAULT),"")
+-PASSWD_FILE := $(shell cd $(srctree); find $(CONFIG_PASSWORD_DEFAULT) -type f)
+-cmd_pwd_h = echo -n "static const char default_passwd[] = \"" > $@; \
+-	cat $< | tr -d '\n' >> $@; \
+-	echo "\";" >> $@
  
- quiet_cmd_env_h = ENVH    $@
- cmd_env_h = cat $< | (cd $(obj) && $(objtree)/scripts/bin2c "__aligned(4) default_environment") > $@; \
-@@ -27,4 +27,4 @@ quiet_cmd_env_zero = ENVZ    $@
- cmd_env_zero = ($(objtree)/scripts/bareboxenv -z $(CONFIG_DEFAULT_ENVIRONMENT_PATH) $@)
+-include/generated/passwd.h: $(PASSWD_FILE)
+-	$(call if_changed,pwd_h)
++ifeq ($(CONFIG_PASSWORD_DEFAULT),"")
++define filechk_passwd
++	echo "static const char default_passwd[] = \"\";"
++endef
+ else
+-cmd_pwd_h = echo "static const char default_passwd[] = \"\";" > $@
+-
+-include/generated/passwd.h: FORCE
+-	$(call if_changed,pwd_h)
++define filechk_passwd
++(							\
++echo -n "static const char default_passwd[] = \"";	\
++cat $(shell find $(srctree) -name $(CONFIG_PASSWORD_DEFAULT) -type f) | tr -d '\n';\
++echo "\";"						\
++)
++endef
+ endif
  
- $(obj)/barebox_zero_env: FORCE
--	$(call cmd,env_zero)
-+	$(call if_changed,env_zero)
++include/generated/passwd.h: $(srctree)/$(src)/Makefile FORCE
++	$(call filechk,passwd)
++
+ targets += include/generated/passwd.h
+ 
+ $(obj)/password.o: include/generated/passwd.h
+-endif
++endif # CONFIG_PASSWORD
+ 
+ # dependencies on generated files need to be listed explicitly
+ $(obj)/version.o: include/generated/compile.h
 -- 
 2.12.0
 
