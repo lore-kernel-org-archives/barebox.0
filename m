@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.89 #1 (Red Hat Linux))
- id 1eSINv-000511-Um
- for barebox@lists.infradead.org; Fri, 22 Dec 2017 08:08:54 +0000
-References: <1513266675-49103-1-git-send-email-d.schultz@phytec.de>
- <20171215074942.7uptifeszea6r6hc@pengutronix.de>
-From: Daniel Schultz <d.schultz@phytec.de>
-Message-ID: <3e39e4d7-04fb-e2cd-7084-df5a79d31c91@phytec.de>
-Date: Fri, 22 Dec 2017 09:09:39 +0100
-MIME-Version: 1.0
-In-Reply-To: <20171215074942.7uptifeszea6r6hc@pengutronix.de>
-Content-Language: en-GB
+Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+ by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
+ id 1eTnxP-0002xh-9t
+ for barebox@lists.infradead.org; Tue, 26 Dec 2017 12:03:44 +0000
+Received: by mail-lf0-x243.google.com with SMTP id g63so17397599lfl.11
+ for <barebox@lists.infradead.org>; Tue, 26 Dec 2017 04:03:33 -0800 (PST)
+Date: Tue, 26 Dec 2017 15:17:19 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20171226151719.64bb8ea85146420105e6f438@gmail.com>
+In-Reply-To: <1509012350-15255-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1509012350-15255-1-git-send-email-plagnioj@jcrosoft.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,59 +19,92 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: boards: phytec-som-am335x: Fallback ram timings
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] EFI: add poweroff support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-SGksCgoKT24gMTIvMTUvMjAxNyAwODo0OSBBTSwgU2FzY2hhIEhhdWVyIHdyb3RlOgo+IEhpIERh
-bmllbCwKPgo+IE9uIFRodSwgRGVjIDE0LCAyMDE3IGF0IDA0OjUxOjE1UE0gKzAxMDAsIERhbmll
-bCBTY2h1bHR6IHdyb3RlOgo+PiBUaGUgJ2dldF9yYW1fc2l6ZScgZnVuY3Rpb24gY2FuIHJldHVy
-biBmYWxzZSB2YWx1ZXMgd2l0aCAxR0IgUkFNcyBkdXJpbmcKPj4gd2FybSByZXNldC4gSWYgYSBu
-b3QtZXhpc3RpbmcgUkFNIHNpemUgd2lsbCBiZSByZXR1cm5lZCwgdGhlIGZhbGxiYWNrCj4+IFJB
-TSB0aW1pbmdzIGdldCBsb2FkZWQgdG8gcHJldmVudCBoYW5ncy4KPiBKdXN0IGNvbnRpbnVpbmcg
-d2l0aCB3cm9uZyByYW0gc2l6ZSBhbmQgZmFsbGJhY2sgdGltaW5nIGlzIG5vdCByZWFsbHkgYW4K
-PiBvcHRpb24uIEl0IGRvZXNuJ3QgaGVscCB0aGUgdXNlciBhbmQgb25seSBjaGFuZ2VzIHRoZSBi
-dWcgcmVwb3J0cyB5b3UKPiBnZXQuCj4KPiBTYXNjaGEKPgp5ZXMsIHNvcnJ5LiBJIHNlbnQgYSBu
-ZXcgcGF0Y2ggdG8gcmVtb3ZlIHRoZSBidWcgZnJvbSBvdXIgTUxPIGFuZCBJIHdpbGwgCmludmVz
-dGlnYXRlIGZvciB0aGlzIHByb2JsZW0gbmV4dCB5ZWFyLCBiZWNhdXNlIHRoaXMgc2VlbXMgdG8g
-YmUgYSAKbGl0dGxlIG1vcmUgdHJpY2tpZXIuCgpEYW5pZWwKPj4gU2lnbmVkLW9mZi1ieTogRGFu
-aWVsIFNjaHVsdHogPGQuc2NodWx0ekBwaHl0ZWMuZGU+Cj4+IC0tLQo+PiAgIGFyY2gvYXJtL2Jv
-YXJkcy9waHl0ZWMtc29tLWFtMzM1eC9sb3dsZXZlbC5jIHwgMyArKy0KPj4gICAxIGZpbGUgY2hh
-bmdlZCwgMiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCj4+Cj4+IGRpZmYgLS1naXQgYS9h
-cmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvbG93bGV2ZWwuYyBiL2FyY2gvYXJtL2Jv
-YXJkcy9waHl0ZWMtc29tLWFtMzM1eC9sb3dsZXZlbC5jCj4+IGluZGV4IGIxNTc2ZWUuLjUwMzA5
-NjYgMTAwNjQ0Cj4+IC0tLSBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9sb3ds
-ZXZlbC5jCj4+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9sb3dsZXZl
-bC5jCj4+IEBAIC0xNzQsOCArMTc0LDkgQEAgc3RhdGljIG5vaW5saW5lIHZvaWQgcGh5c29tX2Jv
-YXJkX2luaXQodm9pZCAqZmR0LCBpbnQgc2RyYW0sIGludCBtb2R1bGVfZmFtaWx5KQo+PiAgIAkJ
-LyogRmluZCB0aGUgcmFtIHNpemUgYW5kIHNldCB1cCB0aGUgY29ycmVjdCByYW0gdGltaW5ncyAq
-Lwo+PiAgIAkJcmFtc2l6ZSA9IGdldF9yYW1fc2l6ZSgobG9uZyAqKSAweDgwMDAwMDAwLCBTWl8x
-Ryk7Cj4+ICAgCQl0aW1pbmcgPSBnZXRfdGltaW5nc19ieV9zaXplKG1vZHVsZV9mYW1pbHksIHJh
-bXNpemUpOwo+PiArCQkvKiBJbiBjYXNlIG9mIGEgZmFpbHVyZSwgbG9hZCBnZW5lcmljIHJhbSB0
-aW1pbmdzIGFzIGZhbGxiYWNrICovCj4+ICAgCQlpZiAoIXRpbWluZykKPj4gLQkJCWhhbmcoKTsK
-Pj4gKwkJCXRpbWluZyA9IGdldF9taW5pbWFsX3RpbWluZ3MobW9kdWxlX2ZhbWlseSk7Cj4+ICAg
-CX0KPj4gICAKPj4gICAJYW0zMzV4X3NkcmFtX2luaXQoRERSX0lPQ1RSTCwgJnBoeXNvbV9jbWQs
-Cj4+IC0tIAo+PiAyLjcuNAo+Pgo+Pgo+PiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwo+PiBiYXJlYm94IG1haWxpbmcgbGlzdAo+PiBiYXJlYm94QGxpc3Rz
-LmluZnJhZGVhZC5vcmcKPj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9iYXJlYm94Cj4+CgotLSAKTWl0IGZyZXVuZGxpY2hlbiBHcsO8w59lbiwKV2l0aCBiZXN0
-IHJlZ2FyZHMsCiAgIERhbmllbCBTY2h1bHR6CgotIEVudHdpY2tsdW5nIC0KVGVsLjogCSs0OSA2
-MTMxIDkyIDIxIDQ1NwpkLnNjaHVsdHpAcGh5dGVjLmRlCnd3dy5waHl0ZWMuZGUKClNpZSBmaW5k
-ZW4gdW5zIGF1Y2ggYXVmOiBGYWNlYm9vaywgTGlua2VkSW4sIFhpbmcsIFlvdVR1YmUKClBIWVRF
-QyBNZXNzdGVjaG5payBHbWJIIHwgUm9iZXJ0LUtvY2gtU3RyLiAzOSB8IDU1MTI5IE1haW56LCBH
-ZXJtYW55Ckdlc2Now6RmdHNmw7xocmVyOiBEaXBsLi1JbmcuIE1pY2hhZWwgTWl0ZXpraSwgRGlw
-bC4tSW5nLiBCb2RvIEh1YmVyIHwKSGFuZGVsc3JlZ2lzdGVyIE1haW56IEhSQiA0NjU2IHwgRmlu
-YW56YW10IE1haW56LU1pdHRlIHwgU3QuTnIuIDI2NjUwMDYwOCwKREUgMTQ5MDU5ODU1ClRoaXMg
-RS1NYWlsIG1heSBjb250YWluIGNvbmZpZGVudGlhbCBvciBwcml2aWxlZ2VkIGluZm9ybWF0aW9u
-LiBJZiB5b3UgYXJlCm5vdCB0aGUgaW50ZW5kZWQgcmVjaXBpZW50IChvciBoYXZlIHJlY2VpdmVk
-IHRoaXMgRS1NYWlsIGluIGVycm9yKSBwbGVhc2UKbm90aWZ5IHRoZSBzZW5kZXIgaW1tZWRpYXRl
-bHkgYW5kIGRlc3Ryb3kgdGhpcyBFLU1haWwuIEFueSB1bmF1dGhvcml6ZWQKY29weWluZywgZGlz
-Y2xvc3VyZSBvciBkaXN0cmlidXRpb24gb2YgdGhlIG1hdGVyaWFsIGluIHRoaXMgRS1NYWlsIGlz
-CnN0cmljdGx5IGZvcmJpZGRlbi4KCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
-ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
-Cg==
+On Thu, 26 Oct 2017 12:05:50 +0200
+Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
+
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/x86/configs/efi_defconfig |  1 +
+>  common/efi/efi.c               | 10 ++++++++++
+>  drivers/efi/Kconfig            |  1 +
+>  3 files changed, 12 insertions(+)
+> =
+
+> diff --git a/arch/x86/configs/efi_defconfig b/arch/x86/configs/efi_defcon=
+fig
+> index 3e83fd92d..fdf092e9b 100644
+> --- a/arch/x86/configs/efi_defconfig
+> +++ b/arch/x86/configs/efi_defconfig
+> @@ -55,6 +55,7 @@ CONFIG_CMD_CRC_CMP=3Dy
+>  CONFIG_CMD_MM=3Dy
+>  CONFIG_CMD_DETECT=3Dy
+>  CONFIG_CMD_FLASH=3Dy
+> +CONFIG_CMD_POWEROFF=3Dy
+>  CONFIG_CMD_2048=3Dy
+>  CONFIG_CMD_BAREBOX_UPDATE=3Dy
+>  CONFIG_CMD_OF_NODE=3Dy
+> diff --git a/common/efi/efi.c b/common/efi/efi.c
+> index 4b42f5d67..561ce4c08 100644
+> --- a/common/efi/efi.c
+> +++ b/common/efi/efi.c
+> @@ -25,6 +25,7 @@
+>  #include <magicvar.h>
+>  #include <init.h>
+>  #include <restart.h>
+> +#include <poweroff.h>
+>  #include <driver.h>
+>  #include <platform_data/serial-ns16550.h>
+>  #include <io.h>
+> @@ -283,9 +284,18 @@ static void __noreturn efi_restart_system(struct res=
+tart_handler *rst)
+>  	hang();
+>  }
+>  =
+
+> +static void __noreturn efi_poweroff_system(struct poweroff_handler *hand=
+ler)
+> +{
+> +	shutdown_barebox();
+> +	RT->reset_system(EFI_RESET_SHUTDOWN, EFI_SUCCESS, 0, NULL);
+> +
+> +	hang();
+> +}
+> +
+>  static int restart_register_feature(void)
+>  {
+>  	restart_handler_register_fn(efi_restart_system);
+> +	poweroff_handler_register_fn(efi_poweroff_system);
+>  =
+
+>  	return 0;
+>  }
+> diff --git a/drivers/efi/Kconfig b/drivers/efi/Kconfig
+> index 2cd9dd504..5c988d2e1 100644
+> --- a/drivers/efi/Kconfig
+> +++ b/drivers/efi/Kconfig
+> @@ -1,2 +1,3 @@
+>  config EFI_BOOTUP
+>  	bool
+> +	select HAS_POWEROFF
+
+Hmmm. It looks like current barebox master and next branches know nothing a=
+bout HAS_POWEROFF.
+
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
