@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eUIfK-0003ch-Bg
- for barebox@lists.infradead.org; Wed, 27 Dec 2017 20:51:18 +0000
+ id 1eUIfK-0003bi-BC
+ for barebox@lists.infradead.org; Wed, 27 Dec 2017 20:51:17 +0000
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Wed, 27 Dec 2017 21:50:24 +0100
-Message-Id: <20171227205033.26012-15-sam@ravnborg.org>
+Date: Wed, 27 Dec 2017 21:50:17 +0100
+Message-Id: <20171227205033.26012-8-sam@ravnborg.org>
 In-Reply-To: <20171227204842.GA20040@ravnborg.org>
 References: <20171227204842.GA20040@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,74 +21,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/24] haba-knx: move reset vector to board code
+Subject: [PATCH 08/24] pm9263: move reset vector to board code
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Create new file lowlevel.c that contains the reset vector.
-
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- arch/arm/boards/haba-knx/Makefile   |  3 +++
- arch/arm/boards/haba-knx/lowlevel.c | 26 ++++++++++++++++++++++++++
- arch/arm/mach-at91/Kconfig          |  1 -
- 3 files changed, 29 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/boards/haba-knx/lowlevel.c
+ arch/arm/boards/pm9263/lowlevel_init.c | 43 +++++++++++++++++++++++++---------
+ arch/arm/mach-at91/Kconfig             |  3 +--
+ 2 files changed, 33 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm/boards/haba-knx/Makefile b/arch/arm/boards/haba-knx/Makefile
-index d9db6aba6..b1c469dcf 100644
---- a/arch/arm/boards/haba-knx/Makefile
-+++ b/arch/arm/boards/haba-knx/Makefile
-@@ -1,2 +1,5 @@
- obj-y += init.o
+diff --git a/arch/arm/boards/pm9263/lowlevel_init.c b/arch/arm/boards/pm9263/lowlevel_init.c
+index 6336d5106..6849f0a5b 100644
+--- a/arch/arm/boards/pm9263/lowlevel_init.c
++++ b/arch/arm/boards/pm9263/lowlevel_init.c
+@@ -4,22 +4,18 @@
+  * Under GPLv2
+  */
+ 
+-#include <common.h>
+-#include <init.h>
+-#include <mach/hardware.h>
+-#include <mach/at91_rstc.h>
+-#include <mach/at91_wdt.h>
+-#include <mach/at91_pmc.h>
+-#include <mach/at91sam9_smc.h>
+-#include <mach/at91sam9_sdramc.h>
+-#include <mach/at91sam9_matrix.h>
+-#include <mach/at91_lowlevel_init.h>
++#include <linux/sizes.h>
 +
-+lwl-y += lowlevel.o
-+
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-haba-knx
-diff --git a/arch/arm/boards/haba-knx/lowlevel.c b/arch/arm/boards/haba-knx/lowlevel.c
-new file mode 100644
-index 000000000..02896856d
---- /dev/null
-+++ b/arch/arm/boards/haba-knx/lowlevel.c
-@@ -0,0 +1,26 @@
-+/*
-+ * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+  */
-+
-+#include <common.h>
-+#include <init.h>
-+
-+#include <asm/barebox-arm-head.h>
 +#include <asm/barebox-arm.h>
 +
-+#include <mach/at91sam9_sdramc.h>
-+#include <mach/at91sam9260.h>
-+#include <mach/hardware.h>
++#include <mach/at91sam926x_board_init.h>
++#include <mach/at91sam9263_matrix.h>
+ 
+ #define MASTER_PLL_DIV		6
+ #define MASTER_PLL_MUL		65
+ #define MAIN_PLL_DIV		2	/* 2 or 4 */
+ 
+-void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_cfg *cfg)
++static void __bare_init pm9263_board_config(struct at91sam926x_board_cfg *cfg)
+ {
+ 	/* Disable Watchdog */
+ 	cfg->wdt_mr =
+@@ -119,3 +115,28 @@ void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_c
+ 		AT91_RSTC_RSTTYP_WAKEUP |
+ 		AT91_RSTC_RSTTYP_WATCHDOG;
+ }
++
++static void __bare_init pm9263_board_init(void)
++{
++	struct at91sam926x_board_cfg cfg;
++
++	cfg.pio = IOMEM(AT91SAM9263_BASE_PIOD);
++	cfg.sdramc = IOMEM(AT91SAM9263_BASE_SDRAMC0);
++	cfg.ebi_pio_is_peripha = true;
++	cfg.matrix_csa = AT91_MATRIX_EBI0CSA;
++
++	pm9263_board_config(&cfg);
++	at91sam926x_board_init(&cfg);
++
++	barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(cfg.sdramc),
++	                  NULL);
++}
 +
 +void __naked __bare_init barebox_arm_reset_vector(void)
 +{
 +	arm_cpu_lowlevel_init();
 +
-+	arm_setup_stack(AT91SAM9260_SRAM_BASE + AT91SAM9260_SRAM_SIZE - 16);
++	arm_setup_stack(AT91SAM9263_SRAM0_BASE + AT91SAM9263_SRAM0_SIZE - 16);
 +
-+	barebox_arm_entry(AT91_CHIPSELECT_1,
-+			  at91_get_sdram_size(IOMEM(AT91SAM9260_BASE_SDRAMC)),
-+			  NULL);
++	pm9263_board_init();
 +}
 diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 1604b8d43..4ca99282a 100644
+index ced75d762..a622279d7 100644
 --- a/arch/arm/mach-at91/Kconfig
 +++ b/arch/arm/mach-at91/Kconfig
-@@ -412,7 +412,6 @@ config MACH_QIL_A9G20
- 
- config MACH_HABA_KNX_LITE
- 	bool "CALAO HABA-KNX-LITE"
--	select AT91SAM9260_LWL
+@@ -450,8 +450,7 @@ config MACH_MMCCPU
+ config MACH_PM9263
+ 	bool "Ronetix PM9263"
+ 	select HAVE_AT91_BOOTSTRAP
+-	select AT91SAM9263_LWL
+-	select AT91SAM926X_LWL
++	select AT91SAM926X_BOARD_INIT
  	help
- 	  Select this if you are using a Calao Systems HABA-KNX-LITE.
- 	  <http://www.calao-systems.com>
+ 	  Say y here if you are using the Ronetix PM9263 Board
+ 
 -- 
 2.12.0
 
