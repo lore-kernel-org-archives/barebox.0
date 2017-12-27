@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eUIfK-0003c7-BC
- for barebox@lists.infradead.org; Wed, 27 Dec 2017 20:51:34 +0000
+ id 1eUIfK-0003bk-Bj
+ for barebox@lists.infradead.org; Wed, 27 Dec 2017 20:51:37 +0000
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Wed, 27 Dec 2017 21:50:19 +0100
-Message-Id: <20171227205033.26012-10-sam@ravnborg.org>
+Date: Wed, 27 Dec 2017 21:50:18 +0100
+Message-Id: <20171227205033.26012-9-sam@ravnborg.org>
 In-Reply-To: <20171227204842.GA20040@ravnborg.org>
 References: <20171227204842.GA20040@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,38 +21,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/24] mmccpu: delete unused lowlevel_init
+Subject: [PATCH 09/24] usb-a926x: move reset vector to board code
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
+For all Calao USB boards move reset vector to board code.
+Introduce two different lowlevel.c files, one
+for each processor.
+Include a rename to make filenames similar.
+
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- arch/arm/boards/mmccpu/Makefile        |   3 -
- arch/arm/boards/mmccpu/lowlevel_init.c | 135 ---------------------------------
- 2 files changed, 138 deletions(-)
- delete mode 100644 arch/arm/boards/mmccpu/lowlevel_init.c
+ arch/arm/boards/usb-a926x/Makefile                 |  4 +-
+ arch/arm/boards/usb-a926x/usb_a9260_lowlevel.c     | 26 +++++++++++++
+ ..._a9263_lowlevel_init.c => usb_a9263_lowlevel.c} | 43 ++++++++++++++++------
+ arch/arm/mach-at91/Kconfig                         |  5 +--
+ 4 files changed, 62 insertions(+), 16 deletions(-)
+ create mode 100644 arch/arm/boards/usb-a926x/usb_a9260_lowlevel.c
+ rename arch/arm/boards/usb-a926x/{usb_a9263_lowlevel_init.c => usb_a9263_lowlevel.c} (76%)
 
-diff --git a/arch/arm/boards/mmccpu/Makefile b/arch/arm/boards/mmccpu/Makefile
-index d8289a341..eb072c016 100644
---- a/arch/arm/boards/mmccpu/Makefile
-+++ b/arch/arm/boards/mmccpu/Makefile
-@@ -1,4 +1 @@
- obj-y += init.o
--
--# Not used, documented by a lwl-n assignment
--lwl-n += lowlevel_init.o
-diff --git a/arch/arm/boards/mmccpu/lowlevel_init.c b/arch/arm/boards/mmccpu/lowlevel_init.c
-deleted file mode 100644
-index c193eae58..000000000
---- a/arch/arm/boards/mmccpu/lowlevel_init.c
-+++ /dev/null
-@@ -1,135 +0,0 @@
--/*
-- * Copyright (C) 2009-2011 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-- *
-- * Under GPLv2
-- */
--
+diff --git a/arch/arm/boards/usb-a926x/Makefile b/arch/arm/boards/usb-a926x/Makefile
+index a4eae1844..65cc4082f 100644
+--- a/arch/arm/boards/usb-a926x/Makefile
++++ b/arch/arm/boards/usb-a926x/Makefile
+@@ -2,6 +2,8 @@ obj-y += init.o
+ 
+ obj-$(CONFIG_AT91_BOOTSTRAP) += usb_a9263_bootstrap.o
+ 
+-lwl-$(CONFIG_AT91SAM926X_LWL) += usb_a9263_lowlevel_init.o
++lwl-$(CONFIG_MACH_USB_A9260) += usb_a9260_lowlevel.o
++lwl-$(CONFIG_MACH_USB_A9G20) += usb_a9260_lowlevel.o
++lwl-$(CONFIG_MACH_USB_A9263) += usb_a9263_lowlevel.o
+ 
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-usb-a926x
+diff --git a/arch/arm/boards/usb-a926x/usb_a9260_lowlevel.c b/arch/arm/boards/usb-a926x/usb_a9260_lowlevel.c
+new file mode 100644
+index 000000000..02896856d
+--- /dev/null
++++ b/arch/arm/boards/usb-a926x/usb_a9260_lowlevel.c
+@@ -0,0 +1,26 @@
++/*
++ * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * Under GPLv2
++  */
++
++#include <common.h>
++#include <init.h>
++
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++
++#include <mach/at91sam9_sdramc.h>
++#include <mach/at91sam9260.h>
++#include <mach/hardware.h>
++
++void __naked __bare_init barebox_arm_reset_vector(void)
++{
++	arm_cpu_lowlevel_init();
++
++	arm_setup_stack(AT91SAM9260_SRAM_BASE + AT91SAM9260_SRAM_SIZE - 16);
++
++	barebox_arm_entry(AT91_CHIPSELECT_1,
++			  at91_get_sdram_size(IOMEM(AT91SAM9260_BASE_SDRAMC)),
++			  NULL);
++}
+diff --git a/arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c b/arch/arm/boards/usb-a926x/usb_a9263_lowlevel.c
+similarity index 76%
+rename from arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c
+rename to arch/arm/boards/usb-a926x/usb_a9263_lowlevel.c
+index f6dc58e3f..066452b95 100644
+--- a/arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c
++++ b/arch/arm/boards/usb-a926x/usb_a9263_lowlevel.c
+@@ -4,16 +4,12 @@
+  * Under GPLv2
+  */
+ 
 -#include <common.h>
 -#include <init.h>
 -#include <mach/hardware.h>
@@ -63,125 +107,83 @@ index c193eae58..000000000
 -#include <mach/at91sam9_sdramc.h>
 -#include <mach/at91sam9_matrix.h>
 -#include <mach/at91_lowlevel_init.h>
--
--#define MASTER_PLL_MUL		54
--#define MASTER_PLL_DIV		4
--
++#include <linux/sizes.h>
++
++#include <asm/barebox-arm.h>
++
++#include <mach/at91sam926x_board_init.h>
++#include <mach/at91sam9263_matrix.h>
+ 
+ #define MASTER_CLOCK		180
+ 
+@@ -24,7 +20,7 @@
+ #endif
+ #define MASTER_PLL_DIV		6
+ 
 -void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_cfg *cfg)
--{
--	/* Disable Watchdog */
--	cfg->wdt_mr =
--		AT91_WDT_WDIDLEHLT | AT91_WDT_WDDBGHLT |
--		AT91_WDT_WDV |
--		AT91_WDT_WDDIS |
--		AT91_WDT_WDD;
--
--	/* define PDC[31:16] as DATA[31:16] */
--	cfg->ebi_pio_pdr = 0xFFFF0000;
--	/* no pull-up for D[31:16] */
--	cfg->ebi_pio_ppudr = 0xFFFF0000;
--	/* EBI0_CSA, CS1 SDRAM, CS3 NAND Flash, 3.3V memories */
--	cfg->ebi_csa =
--		AT91_MATRIX_EBI0_DBPUC | AT91_MATRIX_EBI0_VDDIOMSEL_1_8V |
--		AT91_MATRIX_EBI0_CS1A_SDRAMC |
--		AT91_MATRIX_EBI0_CS3A_SMC_SMARTMEDIA;
--
--	cfg->smc_cs = 0;
--#if 1
--	cfg->smc_mode =
--		AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
--		AT91_SMC_DBW_16 |
--		AT91_SMC_TDFMODE |
--		AT91_SMC_TDF_(6);
--	cfg->smc_cycle =
--		AT91_SMC_NWECYCLE_(16) | AT91_SMC_NRDCYCLE_(16);
--	cfg->smc_pulse =
--		AT91_SMC_NWEPULSE_(5) | AT91_SMC_NCS_WRPULSE_(7) |
--		AT91_SMC_NRDPULSE_(5) | AT91_SMC_NCS_RDPULSE_(13);
--	cfg->smc_setup =
--		AT91_SMC_NWESETUP_(3) | AT91_SMC_NCS_WRSETUP_(2) |
--		AT91_SMC_NRDSETUP_(8) | AT91_SMC_NCS_RDSETUP_(0);
--#elif 0	/* slow setup */
--	cfg->smc_mode =
--		AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
--		AT91_SMC_DBW_16 |
--		AT91_SMC_TDFMODE |
--		AT91_SMC_TDF_(1);
--	cfg->smc_cycle =
--		AT91_SMC_NWECYCLE_(0xd00) | AT91_SMC_NRDCYCLE_(0xd00);
--	cfg->smc_pulse =
--		AT91_SMC_NWEPULSE_(5) | AT91_SMC_NCS_WRPULSE_(7) |
--		AT91_SMC_NRDPULSE_(5) | AT91_SMC_NCS_RDPULSE_(13);
--	cfg->smc_setup =
--		AT91_SMC_NWESETUP_(3) | AT91_SMC_NCS_WRSETUP_(2) |
--		AT91_SMC_NRDSETUP_(8) | AT91_SMC_NCS_RDSETUP_(0);
--#else	/* RONETIX' original values */
--	cfg->smc_mode =
--		AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
--		AT91_SMC_DBW_16 |
--		AT91_SMC_TDFMODE |
--		AT91_SMC_TDF_(6);
--	cfg->smc_cycle =
--		AT91_SMC_NWECYCLE_(22) | AT91_SMC_NRDCYCLE_(22);
--	cfg->smc_pulse =
--		AT91_SMC_NWEPULSE_(11) | AT91_SMC_NCS_WRPULSE_(11) |
--		AT91_SMC_NRDPULSE_(11) | AT91_SMC_NCS_RDPULSE_(11);
--	cfg->smc_setup =
--		AT91_SMC_NWESETUP_(10) | AT91_SMC_NCS_WRSETUP_(10) |
--		AT91_SMC_NRDSETUP_(10) | AT91_SMC_NCS_RDSETUP_(10);
--#endif
--
--	cfg->pmc_mor =
--		AT91_PMC_MOSCEN |
--		(255 << 8);		/* Main Oscillator Start-up Time */
--	cfg->pmc_pllar =
--		AT91_PMC_PLLA_WR_ERRATA | /* Bit 29 must be 1 when prog */
--		AT91_PMC_OUT |
--		AT91_PMC_PLLCOUNT |	/* PLL Counter */
--		(2 << 28) |		/* PLL Clock Frequency Range */
--		((MASTER_PLL_MUL - 1) << 16) | (MASTER_PLL_DIV);
--	/* PCK/2 = MCK Master Clock from PLLA */
--	cfg->pmc_mckr1 =
--		AT91_PMC_CSS_SLOW |
--		AT91_PMC_PRES_1 |
--		AT91SAM9_PMC_MDIV_2 |
--		AT91_PMC_PDIV_1;
--	/* PCK/2 = MCK Master Clock from PLLA */
--	cfg->pmc_mckr2 =
--		AT91_PMC_CSS_PLLA |
--		AT91_PMC_PRES_1 |
--		AT91SAM9_PMC_MDIV_2 |
--		AT91_PMC_PDIV_1;
--
--	/* SDRAM */
--	/* SDRAMC_TR - Refresh Timer register */
--	cfg->sdrc_tr1 = 0x13C;
--	/* SDRAMC_CR - Configuration register*/
--	cfg->sdrc_cr =
--		AT91_SDRAMC_NC_9 |
--		AT91_SDRAMC_NR_13 |
--		AT91_SDRAMC_NB_4 |
--		AT91_SDRAMC_CAS_3 |
--		AT91_SDRAMC_DBW_32 |
--		(2 <<  8) |	/* tWR -  Write Recovery Delay */
--		(8 << 12) |	/* tRC -  Row Cycle Delay */
--		(2 << 16) |	/* tRP -  Row Precharge Delay */
--		(2 << 20) |	/* tRCD - Row to Column Delay */
--		(5 << 24) |	/* tRAS - Active to Precharge Delay */
--		(12 << 28);	/* tXSR - Exit Self Refresh to Active Delay */
--
--	/* Memory Device Register -> SDRAM */
--	cfg->sdrc_mdr = AT91_SDRAMC_MD_SDRAM;
--	/* SDRAM_TR */
--	cfg->sdrc_tr2 = 780;
--
--	/* user reset enable */
--	cfg->rstc_rmr =
--		AT91_RSTC_KEY |
--		AT91_RSTC_PROCRST |
--		AT91_RSTC_RSTTYP_WAKEUP |
--		AT91_RSTC_RSTTYP_WATCHDOG;
--}
++static void __bare_init usb_a9263_board_config(struct at91sam926x_board_cfg *cfg)
+ {
+ 	/* Disable Watchdog */
+ 	cfg->wdt_mr =
+@@ -109,3 +105,28 @@ void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_c
+ 		AT91_RSTC_RSTTYP_WAKEUP |
+ 		AT91_RSTC_RSTTYP_WATCHDOG;
+ }
++
++static void __bare_init usb_a9263_init(void)
++{
++	struct at91sam926x_board_cfg cfg;
++
++	cfg.pio = IOMEM(AT91SAM9263_BASE_PIOD);
++	cfg.sdramc = IOMEM(AT91SAM9263_BASE_SDRAMC0);
++	cfg.ebi_pio_is_peripha = true;
++	cfg.matrix_csa = AT91_MATRIX_EBI0CSA;
++
++	usb_a9263_board_config(&cfg);
++	at91sam926x_board_init(&cfg);
++
++	barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(cfg.sdramc),
++	                  NULL);
++}
++
++void __naked __bare_init barebox_arm_reset_vector(void)
++{
++	arm_cpu_lowlevel_init();
++
++	arm_setup_stack(AT91SAM9263_SRAM0_BASE + AT91SAM9263_SRAM0_SIZE - 16);
++
++	usb_a9263_init();
++}
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index a622279d7..306f82497 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -305,7 +305,6 @@ config MACH_TNY_A9260
+ config MACH_USB_A9260
+ 	bool "CALAO USB-A9260"
+ 	select SUPPORT_CALAO_DAB_MMX
+-	select AT91SAM9260_LWL
+ 	help
+ 	  Select this if you are using a Calao Systems USB-A9260.
+ 	  <http://www.calao-systems.com>
+@@ -396,7 +395,6 @@ config MACH_TNY_A9G20
+ config MACH_USB_A9G20
+ 	bool "CALAO USB-A9G20"
+ 	select SUPPORT_CALAO_DAB_MMX
+-	select AT91SAM9260_LWL
+ 	help
+ 	  Select this if you are using a Calao Systems USB-A9G20.
+ 	  <http://www.calao-systems.com>
+@@ -466,8 +464,7 @@ config MACH_TNY_A9263
+ config MACH_USB_A9263
+ 	bool "CALAO USB-A9263"
+ 	select HAVE_AT91_BOOTSTRAP
+-	select AT91SAM9263_LWL
+-	select AT91SAM926X_LWL
++	select AT91SAM926X_BOARD_INIT
+ 	help
+ 	  Select this if you are using a Calao Systems USB-A9263.
+ 	  <http://www.calao-systems.com>
 -- 
 2.12.0
 
