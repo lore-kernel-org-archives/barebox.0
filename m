@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eUIfK-0003c8-B7
- for barebox@lists.infradead.org; Wed, 27 Dec 2017 20:51:13 +0000
+ id 1eUIfK-0003bh-Bf
+ for barebox@lists.infradead.org; Wed, 27 Dec 2017 20:51:19 +0000
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Wed, 27 Dec 2017 21:50:20 +0100
-Message-Id: <20171227205033.26012-11-sam@ravnborg.org>
+Date: Wed, 27 Dec 2017 21:50:16 +0100
+Message-Id: <20171227205033.26012-7-sam@ravnborg.org>
 In-Reply-To: <20171227204842.GA20040@ravnborg.org>
 References: <20171227204842.GA20040@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,72 +21,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/24] mmccpu: move reset vector to board code
+Subject: [PATCH 07/24] at91: drop unused at91sam9261_lowlevel_init
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Introduce lowlevel.c to hold the reser vector code for the board.
+All at91sam9261 based boards uses board specific
+reset vectors so the mach-at91 provided version is
+no longer in use.
+Delete unused CONFIG symbols too.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- arch/arm/boards/mmccpu/Makefile   |  2 ++
- arch/arm/boards/mmccpu/lowlevel.c | 26 ++++++++++++++++++++++++++
- arch/arm/mach-at91/Kconfig        |  1 -
- 3 files changed, 28 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/boards/mmccpu/lowlevel.c
+ arch/arm/mach-at91/Kconfig                     |  2 --
+ arch/arm/mach-at91/Makefile                    |  1 -
+ arch/arm/mach-at91/at91sam9261_lowlevel_init.c | 48 --------------------------
+ 3 files changed, 51 deletions(-)
+ delete mode 100644 arch/arm/mach-at91/at91sam9261_lowlevel_init.c
 
-diff --git a/arch/arm/boards/mmccpu/Makefile b/arch/arm/boards/mmccpu/Makefile
-index eb072c016..e11fd5b69 100644
---- a/arch/arm/boards/mmccpu/Makefile
-+++ b/arch/arm/boards/mmccpu/Makefile
-@@ -1 +1,3 @@
- obj-y += init.o
-+
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/mmccpu/lowlevel.c b/arch/arm/boards/mmccpu/lowlevel.c
-new file mode 100644
-index 000000000..3ba24ce4c
---- /dev/null
-+++ b/arch/arm/boards/mmccpu/lowlevel.c
-@@ -0,0 +1,26 @@
-+/*
-+ * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+  */
-+
-+#include <common.h>
-+#include <init.h>
-+
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+
-+#include <mach/at91sam9_sdramc.h>
-+#include <mach/at91sam9263.h>
-+#include <mach/hardware.h>
-+
-+void __naked __bare_init barebox_arm_reset_vector(void)
-+{
-+	arm_cpu_lowlevel_init();
-+
-+	arm_setup_stack(AT91SAM9263_SRAM0_BASE + AT91SAM9263_SRAM0_SIZE - 16);
-+
-+	barebox_arm_entry(AT91_CHIPSELECT_1,
-+			  at91_get_sdram_size(IOMEM(AT91SAM9263_BASE_SDRAMC0)),
-+	                  NULL);
-+}
 diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 306f82497..4dd608f0e 100644
+index 14ea5e4e2..ced75d762 100644
 --- a/arch/arm/mach-at91/Kconfig
 +++ b/arch/arm/mach-at91/Kconfig
-@@ -441,7 +441,6 @@ config MACH_AT91SAM9263EK
+@@ -45,8 +45,6 @@ config AT91SAM926X_LWL
+ # as implemented in the *lowlevel_init.c files
+ config AT91SAM9260_LWL
+ 	bool
+-config AT91SAM9261_LWL
+-	bool
+ config AT91SAM9263_LWL
+ 	bool
+ config AT91SAM9G45_LWL
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 66b83000a..1c7921914 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -12,7 +12,6 @@ lwl-$(CONFIG_AT91SAM926X_LWL)	+= at91sam926x_lowlevel_init.o
  
- config MACH_MMCCPU
- 	bool "Bucyrus MMC-CPU"
--	select AT91SAM9263_LWL
- 	help
- 	  Say y here if you are using the Bucyrus MMC-CPU
- 
+ lwl-$(CONFIG_AT91RM9200_LWL)	+= at91rm9200_lowlevel_init.o
+ lwl-$(CONFIG_AT91SAM9260_LWL)	+= at91sam9260_lowlevel_init.o
+-lwl-$(CONFIG_AT91SAM9261_LWL)	+= at91sam9261_lowlevel_init.o
+ lwl-$(CONFIG_AT91SAM9263_LWL)	+= at91sam9263_lowlevel_init.o
+ lwl-$(CONFIG_AT91SAM9G45_LWL)	+= at91sam9g45_lowlevel_init.o
+ lwl-$(CONFIG_AT91SAM9N12_LWL)	+= at91sam9n12_lowlevel_init.o
+diff --git a/arch/arm/mach-at91/at91sam9261_lowlevel_init.c b/arch/arm/mach-at91/at91sam9261_lowlevel_init.c
+deleted file mode 100644
+index 0ad7f0a0c..000000000
+--- a/arch/arm/mach-at91/at91sam9261_lowlevel_init.c
++++ /dev/null
+@@ -1,48 +0,0 @@
+-/*
+- * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+- *
+- * Under GPLv2
+-  */
+-
+-#define __LOWLEVEL_INIT__
+-
+-#include <common.h>
+-#include <asm/system.h>
+-#include <asm/barebox-arm.h>
+-#include <asm/barebox-arm-head.h>
+-#include <mach/hardware.h>
+-#include <mach/at91_pmc.h>
+-#include <mach/at91_pio.h>
+-#include <mach/at91_rstc.h>
+-#include <mach/at91_wdt.h>
+-#include <mach/at91sam9_matrix.h>
+-#include <mach/at91sam9_sdramc.h>
+-#include <mach/at91sam9_smc.h>
+-#include <mach/at91_lowlevel_init.h>
+-#include <mach/io.h>
+-#include <init.h>
+-#include <linux/sizes.h>
+-
+-void __bare_init at91sam9261_lowlevel_init(void)
+-{
+-	struct at91sam926x_lowlevel_cfg cfg;
+-
+-	cfg.pio = IOMEM(AT91SAM9261_BASE_PIOC);
+-	cfg.sdramc = IOMEM(AT91SAM9261_BASE_SDRAMC);
+-	cfg.ebi_pio_is_peripha = false;
+-	cfg.matrix_csa = AT91_MATRIX_EBICSA;
+-
+-	at91sam926x_lowlevel_init(&cfg);
+-
+-	barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(cfg.sdramc),
+-	                  NULL);
+-}
+-
+-void __naked __bare_init barebox_arm_reset_vector(void)
+-{
+-	arm_cpu_lowlevel_init();
+-
+-	arm_setup_stack(AT91SAM9261_SRAM_BASE + AT91SAM9261_SRAM_SIZE - 16);
+-
+-	at91sam9261_lowlevel_init();
+-}
 -- 
 2.12.0
 
