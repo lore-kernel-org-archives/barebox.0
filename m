@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eUJ5K-0006u6-3X
- for barebox@lists.infradead.org; Wed, 27 Dec 2017 21:18:05 +0000
-Date: Wed, 27 Dec 2017 22:17:43 +0100
+ id 1eUJ6O-0007Ow-77
+ for barebox@lists.infradead.org; Wed, 27 Dec 2017 21:19:06 +0000
 From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20171227211743.GA1084@ravnborg.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Wed, 27 Dec 2017 22:18:37 +0100
+Message-Id: <20171227211839.2359-3-sam@ravnborg.org>
+In-Reply-To: <20171227211743.GA1084@ravnborg.org>
+References: <20171227211743.GA1084@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,66 +16,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] Enable DT support for AT91SAM9263EK
+Subject: [PATCH 3/5] at91sam9263ek: fix SD card in DT
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-This patchset enabledevice tree support for AT91SAM9263EK.
+The DT file from the linux kernel uses mmc0 for SD card,
+but the evaluation board uses mmc1.
+Fix DT file so it has same behaviour like the non-DT
+version where mmc1 is used.
 
-On the quest towards getting so far several drivers was
-converted to support DT.
-These patches went in around august.
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+---
+ arch/arm/dts/at91sam9263ek.dts | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-There was also issues with mach-at91 calling code
-in the board directory (dependency in the
-wrong direction).
-This was fixed in "at91: move reset .." which is
-pending (already posted).
+diff --git a/arch/arm/dts/at91sam9263ek.dts b/arch/arm/dts/at91sam9263ek.dts
+index 224748ecc..7d0ae0447 100644
+--- a/arch/arm/dts/at91sam9263ek.dts
++++ b/arch/arm/dts/at91sam9263ek.dts
+@@ -55,12 +55,13 @@
+ 				status = "okay";
+ 			};
+ 
+-			mmc0: mmc@fff80000 {
++			mmc1: mmc@fff84000 {
+ 				pinctrl-0 = <
+-					&pinctrl_board_mmc0
+-					&pinctrl_mmc0_clk
+-					&pinctrl_mmc0_slot0_cmd_dat0
+-					&pinctrl_mmc0_slot0_dat1_3>;
++					&pinctrl_board_mmc1
++					&pinctrl_mmc1_clk
++					&pinctrl_mmc1_slot0_cmd_dat0
++					&pinctrl_mmc1_slot0_dat1_3>;
++				cd-gpios = <&pioE 18 GPIO_ACTIVE_HIGH>;
+ 				status = "okay";
+ 				slot@0 {
+ 					reg = <0>;
+@@ -71,8 +72,8 @@
+ 			};
+ 
+ 			pinctrl@fffff200 {
+-				mmc0 {
+-					pinctrl_board_mmc0: mmc0-board {
++				mmc1 {
++					pinctrl_board_mmc1: mmc1-board {
+ 						atmel,pins =
+ 							<AT91_PIOE 18 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_UP_DEGLITCH 	/* PE18 gpio CD pin pull up and deglitch */
+ 							 AT91_PIOE 19 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_UP>;	/* PE19 gpio WP pin pull up */
+-- 
+2.12.0
 
-I have failed to get the bootstrap mode to work.
-It stops somewhere - and I have not invested enough
-time to figure out where and why things goes wrong.
-bootstrap mode was also broken before these patches.
-No JTAG debugger available to help me.
-And then I have at91bootstrap that works so motivation
-was not too high.
-
-I do not think the NAND support works either.
-The device tree introduces some nand-controller
-stuff that is not supported by barebox (at least I assume so).
-And this part I did not look further into.
-
-Next step is to get a proprietary board up and
-running (which uses NOR flash).
-But I wanted this patchset out in the open first.
-
-Any fedback highly appreciated!
-
-	Sam
-
-Sam Ravnborg (5):
-      at91sam9263ek: enable multi-image build
-      at91sam9263ek: add DT file from Linux kernel v4.14-rc4
-      at91sam9263ek: fix SD card in DT
-      arm: at91: enable CPU specific init with OF
-      at91sam9263ek: enable devicetree
-
- arch/arm/boards/at91sam9263ek/Makefile        |   5 +
- arch/arm/boards/at91sam9263ek/lowlevel_init.c |  24 ++-
- arch/arm/boards/at91sam9263ek/of_init.c       |  98 ++++++++++
- arch/arm/configs/at91sam9263ek_defconfig      |  10 +-
- arch/arm/dts/Makefile                         |   2 +-
- arch/arm/dts/at91sam9263ek.dts                | 253 ++++++++++++++++++++++++++
- arch/arm/mach-at91/Kconfig                    |  30 ++-
- arch/arm/mach-at91/at91sam9263.c              |   8 +
- arch/arm/mach-at91/generic.h                  |   4 +
- arch/arm/mach-at91/setup.c                    |   6 -
- images/Makefile.at91                          |   4 +
- 11 files changed, 424 insertions(+), 20 deletions(-)
 
 _______________________________________________
 barebox mailing list
