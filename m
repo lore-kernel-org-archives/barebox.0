@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eTnxP-0002xh-9t
- for barebox@lists.infradead.org; Tue, 26 Dec 2017 12:03:44 +0000
-Received: by mail-lf0-x243.google.com with SMTP id g63so17397599lfl.11
- for <barebox@lists.infradead.org>; Tue, 26 Dec 2017 04:03:33 -0800 (PST)
-Date: Tue, 26 Dec 2017 15:17:19 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20171226151719.64bb8ea85146420105e6f438@gmail.com>
-In-Reply-To: <1509012350-15255-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1509012350-15255-1-git-send-email-plagnioj@jcrosoft.com>
-Mime-Version: 1.0
+ id 1eUIdH-00024k-3Q
+ for barebox@lists.infradead.org; Wed, 27 Dec 2017 20:49:06 +0000
+Date: Wed, 27 Dec 2017 21:48:42 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20171227204842.GA20040@ravnborg.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,90 +16,138 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] EFI: add poweroff support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v3 0/24] at91: move reset vector to board code
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Sam Ravnborg <sam@ravnborg.org>
 
-On Thu, 26 Oct 2017 12:05:50 +0200
-Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
+The following patchset moves the reset vector
+for at91 boards from mach-at91 to board code.
+This is similar to what other boards do and is done to
+prepare for multi-image and DT support.
 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/x86/configs/efi_defconfig |  1 +
->  common/efi/efi.c               | 10 ++++++++++
->  drivers/efi/Kconfig            |  1 +
->  3 files changed, 12 insertions(+)
-> =
+The patchset convert all boards and thus clean up the
+old code that resided in mach-at91/
 
-> diff --git a/arch/x86/configs/efi_defconfig b/arch/x86/configs/efi_defcon=
-fig
-> index 3e83fd92d..fdf092e9b 100644
-> --- a/arch/x86/configs/efi_defconfig
-> +++ b/arch/x86/configs/efi_defconfig
-> @@ -55,6 +55,7 @@ CONFIG_CMD_CRC_CMP=3Dy
->  CONFIG_CMD_MM=3Dy
->  CONFIG_CMD_DETECT=3Dy
->  CONFIG_CMD_FLASH=3Dy
-> +CONFIG_CMD_POWEROFF=3Dy
->  CONFIG_CMD_2048=3Dy
->  CONFIG_CMD_BAREBOX_UPDATE=3Dy
->  CONFIG_CMD_OF_NODE=3Dy
-> diff --git a/common/efi/efi.c b/common/efi/efi.c
-> index 4b42f5d67..561ce4c08 100644
-> --- a/common/efi/efi.c
-> +++ b/common/efi/efi.c
-> @@ -25,6 +25,7 @@
->  #include <magicvar.h>
->  #include <init.h>
->  #include <restart.h>
-> +#include <poweroff.h>
->  #include <driver.h>
->  #include <platform_data/serial-ns16550.h>
->  #include <io.h>
-> @@ -283,9 +284,18 @@ static void __noreturn efi_restart_system(struct res=
-tart_handler *rst)
->  	hang();
->  }
->  =
+The first patch have minimal impact, but prepares for a
+board-by-board conversion.
+All temporary CONFIG symbols are gone at the end of this series.
 
-> +static void __noreturn efi_poweroff_system(struct poweroff_handler *hand=
-ler)
-> +{
-> +	shutdown_barebox();
-> +	RT->reset_system(EFI_RESET_SHUTDOWN, EFI_SUCCESS, 0, NULL);
-> +
-> +	hang();
-> +}
-> +
->  static int restart_register_feature(void)
->  {
->  	restart_handler_register_fn(efi_restart_system);
-> +	poweroff_handler_register_fn(efi_poweroff_system);
->  =
+I kept Jean-Christophe PLAGNIOL-VILLARD and others
+copyright in all the created files and did not add
+copyright myself. The patchset does IMO not add any
+copyrightable material from my side as this is
+in reality just moving around code.
 
->  	return 0;
->  }
-> diff --git a/drivers/efi/Kconfig b/drivers/efi/Kconfig
-> index 2cd9dd504..5c988d2e1 100644
-> --- a/drivers/efi/Kconfig
-> +++ b/drivers/efi/Kconfig
-> @@ -1,2 +1,3 @@
->  config EFI_BOOTUP
->  	bool
-> +	select HAS_POWEROFF
+With this patchset applied we no longer have any
+places where we call board code from mach-at91/
+thus allowing us to introduce multi-images.
+And we are also on the right track to introduce
+DT support for additional AT91 based boards.
 
-Hmmm. It looks like current barebox master and next branches know nothing a=
-bout HAS_POWEROFF.
+The patchset was successfully booted on a AT91SAM9263EK,
+and all defconfigs was built (expect the ones that failed
+to build before this patchset was applied).
 
+I consider the patchset ready for barebox-next.
 
--- =
+Changes v2 => v3
+  v2 was posted in July - but I have lacked spare time until now
+  to give it a proper respin
+  - respin of all patches on top of v2017.12.0
+  - fix bogus handling of at91sam926x_board_init
+  - Introduce new CONFIG symbol for at91sam926x_board_init to allow bisects
 
-Best regards,
-=A0 Antony Pavlov
+Changes v1 => v2
+  - converted all boards over
+  - fixed author info
+
+Sam Ravnborg (24):
+      arm: at91: refactor lowlevel_init selection
+      arm: at91: drop unused at91sam9x5_lowlevel_init.c
+      arm: at91: add at91sam926x_board_init.h
+      at91sam9263ek: move reset vector to board code
+      at91sam9261ek, at91sam9g10ek: move reset vector to board code
+      pm9261: move reset vector to board code
+      at91: drop unused at91sam9261_lowlevel_init
+      pm9263: move reset vector to board code
+      usb-a926x: move reset vector to board code
+      mmccpu: delete unused lowlevel_init
+      mmccpu: move reset vector to board code
+      tny-a926x: delete unused tny_a9263_lowlevel_init.c
+      tny-a926x: move reset vector to board code
+      qil-a926x: move reset vector to board code
+      haba-knx: move reset vector to board code
+      sama5d{3,4}{xek,xplained}: move reset vector to board code
+      at91sam9n12ek: move reset vector to board code
+      at91sam9260ek, at91sam9g20ek: move reset vector to board code
+      at91sam9m10g45ek, at91sam9m10ihd, pm9g45: move reset vector to board code
+      animeo: move reset vector to board code
+      telit-evk-pro3: move reset vector to board code
+      dss11: move reset vector to board code
+      at91rm9200ek: move reset vector to board code
+      arm: at91: remove leftovers from moving reset code in mach-at91
+
+# git diff --stat=200 -M -C
+ arch/arm/boards/animeo_ip/Makefile                                                        |   3 +++
+ arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/animeo_ip/lowlevel.c}               |  17 +++++++------
+ arch/arm/boards/at91rm9200ek/Makefile                                                     |   3 +++
+ arch/arm/{mach-at91/at91rm9200_lowlevel_init.c => boards/at91rm9200ek/lowlevel.c}         |  14 +++++------
+ arch/arm/boards/at91sam9260ek/Makefile                                                    |   3 +++
+ arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/at91sam9260ek/lowlevel.c}           |  17 +++++++------
+ arch/arm/boards/at91sam9261ek/Makefile                                                    |   2 +-
+ arch/arm/boards/at91sam9261ek/lowlevel_init.c                                             |  41 ++++++++++++++++++++++---------
+ arch/arm/boards/at91sam9263ek/Makefile                                                    |   2 +-
+ arch/arm/boards/at91sam9263ek/lowlevel_init.c                                             |  43 ++++++++++++++++++++++++---------
+ arch/arm/boards/at91sam9m10g45ek/Makefile                                                 |   3 +++
+ arch/arm/{mach-at91/at91sam9g45_lowlevel_init.c => boards/at91sam9m10g45ek/lowlevel.c}    |  11 +++------
+ arch/arm/boards/at91sam9m10ihd/Makefile                                                   |   2 ++
+ arch/arm/{mach-at91/at91sam9x5_lowlevel_init.c => boards/at91sam9m10ihd/lowlevel.c}       |  19 +++++++--------
+ arch/arm/boards/at91sam9n12ek/Makefile                                                    |   3 +++
+ arch/arm/{mach-at91/at91sam9n12_lowlevel_init.c => boards/at91sam9n12ek/lowlevel.c}       |  13 ++++------
+ arch/arm/boards/dss11/Makefile                                                            |   2 ++
+ arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/dss11/lowlevel.c}                   |  17 +++++++------
+ arch/arm/boards/haba-knx/Makefile                                                         |   3 +++
+ arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/haba-knx/lowlevel.c}                |  17 +++++++------
+ arch/arm/boards/mmccpu/Makefile                                                           |   2 +-
+ arch/arm/{mach-at91/at91sam9n12_lowlevel_init.c => boards/mmccpu/lowlevel.c}              |  19 +++++++--------
+ arch/arm/boards/mmccpu/lowlevel_init.c                                                    | 135 ------------------------------------------------------------------------------------------------------
+ arch/arm/boards/pm9261/Makefile                                                           |   2 +-
+ arch/arm/boards/pm9261/lowlevel_init.c                                                    |  39 ++++++++++++++++++++++--------
+ arch/arm/boards/pm9263/Makefile                                                           |   2 +-
+ arch/arm/boards/pm9263/lowlevel_init.c                                                    |  43 ++++++++++++++++++++++++---------
+ arch/arm/boards/pm9g45/Makefile                                                           |   3 +++
+ arch/arm/{mach-at91/at91sam9g45_lowlevel_init.c => boards/pm9g45/lowlevel.c}              |  13 ++++------
+ arch/arm/boards/qil-a926x/Makefile                                                        |   3 +++
+ arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/qil-a926x/lowlevel.c}               |  17 +++++++------
+ arch/arm/boards/sama5d3_xplained/Makefile                                                 |   1 +
+ arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/sama5d3_xplained/lowlevel.c}        |  10 +++-----
+ arch/arm/boards/sama5d3xek/Makefile                                                       |   1 +
+ arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/sama5d3xek/lowlevel.c}              |  10 +++-----
+ arch/arm/boards/sama5d4_xplained/Makefile                                                 |   1 +
+ arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/sama5d4_xplained/lowlevel.c}        |  10 +++-----
+ arch/arm/boards/sama5d4ek/Makefile                                                        |   1 +
+ arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/sama5d4ek/lowlevel.c}               |  10 +++-----
+ arch/arm/boards/telit-evk-pro3/Makefile                                                   |   2 ++
+ arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/telit-evk-pro3/lowlevel.c}          |  17 +++++++------
+ arch/arm/boards/tny-a926x/Makefile                                                        |   8 +++---
+ arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/tny-a926x/tny_a9260_lowlevel.c}     |  17 +++++++------
+ arch/arm/{mach-at91/at91sam9n12_lowlevel_init.c => boards/tny-a926x/tny_a9263_lowlevel.c} |  19 +++++++--------
+ arch/arm/boards/tny-a926x/tny_a9263_lowlevel_init.c                                       | 107 ---------------------------------------------------------------------------------
+ arch/arm/boards/usb-a926x/Makefile                                                        |   8 +++---
+ arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/usb-a926x/usb_a9260_lowlevel.c}     |  17 +++++++------
+ arch/arm/boards/usb-a926x/{usb_a9263_lowlevel_init.c => usb_a9263_lowlevel.c}             |  43 ++++++++++++++++++++++++---------
+ arch/arm/mach-at91/Kconfig                                                                |  31 ++++++++++++++----------
+ arch/arm/mach-at91/Makefile                                                               |  14 +----------
+ arch/arm/mach-at91/at91sam9260_lowlevel_init.c                                            |  48 ------------------------------------
+ arch/arm/mach-at91/at91sam9261_lowlevel_init.c                                            |  48 ------------------------------------
+ arch/arm/mach-at91/at91sam9263_lowlevel_init.c                                            |  48 ------------------------------------
+ arch/arm/mach-at91/include/mach/at91_lowlevel_init.h                                      |  46 -----------------------------------
+ arch/arm/mach-at91/{at91sam926x_lowlevel_init.c => include/mach/at91sam926x_board_init.h} |  82 +++++++++++++++++++++++++++++++++++++++++++-------------------
+ 55 files changed, 413 insertions(+), 699 deletions(-)
 
 _______________________________________________
 barebox mailing list
