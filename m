@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qt0-x242.google.com ([2607:f8b0:400d:c0d::242])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eV6eX-0002G8-2p
- for barebox@lists.infradead.org; Sat, 30 Dec 2017 02:13:39 +0000
-Received: by mail-qt0-x242.google.com with SMTP id d4so55893809qtj.5
- for <barebox@lists.infradead.org>; Fri, 29 Dec 2017 18:13:26 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20171227211839.2359-2-sam@ravnborg.org>
+ id 1eUJ6O-0007Oy-6u
+ for barebox@lists.infradead.org; Wed, 27 Dec 2017 21:19:09 +0000
+From: Sam Ravnborg <sam@ravnborg.org>
+Date: Wed, 27 Dec 2017 22:18:39 +0100
+Message-Id: <20171227211839.2359-5-sam@ravnborg.org>
+In-Reply-To: <20171227211743.GA1084@ravnborg.org>
 References: <20171227211743.GA1084@ravnborg.org>
- <20171227211839.2359-2-sam@ravnborg.org>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 29 Dec 2017 18:13:24 -0800
-Message-ID: <CAHQ1cqHsBOoM27k7tkDgKdNAnUyXyg4VqeDnARprXYZnb+1m9g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,392 +16,445 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] at91sam9263ek: add DT file from Linux kernel v4.14-rc4
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 5/5] at91sam9263ek: enable devicetree
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Sam Ravnborg <sam@ravnborg.org>
 
-On Wed, Dec 27, 2017 at 1:18 PM, Sam Ravnborg <sam@ravnborg.org> wrote:
-> Include the at91sam9263ek.dts file from
-> linux kernel v4.14-rc4 and wire it up in the build.
->
-> Prepare at91sam9263ek lowlevel_init.c to use DT.
->
-> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> ---
->  arch/arm/boards/at91sam9263ek/lowlevel_init.c |  22 ++-
->  arch/arm/dts/Makefile                         |   2 +-
->  arch/arm/dts/at91sam9263ek.dts                | 246 ++++++++++++++++++++++++++
->  arch/arm/mach-at91/Kconfig                    |   7 +
->  4 files changed, 273 insertions(+), 4 deletions(-)
->  create mode 100644 arch/arm/dts/at91sam9263ek.dts
->
-> diff --git a/arch/arm/boards/at91sam9263ek/lowlevel_init.c b/arch/arm/boards/at91sam9263ek/lowlevel_init.c
-> index 3138bc7ca..86d7a79e9 100644
-> --- a/arch/arm/boards/at91sam9263ek/lowlevel_init.c
-> +++ b/arch/arm/boards/at91sam9263ek/lowlevel_init.c
-> @@ -99,7 +99,7 @@ static void __bare_init at91sam9263ek_board_config(struct at91sam926x_board_cfg
->                 AT91_RSTC_RSTTYP_WATCHDOG;
->  }
->
-> -static void __bare_init at91sam9263ek_init(void)
-> +static void __bare_init at91sam9263ek_init(void *fdt)
->  {
->         struct at91sam926x_board_cfg cfg;
->
-> @@ -112,14 +112,30 @@ static void __bare_init at91sam9263ek_init(void)
->         at91sam926x_board_init(&cfg);
->
->         barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(cfg.sdramc),
-> -                         NULL);
-> +                         fdt);
->  }
->
-> +#ifdef CONFIG_MACH_AT91SAM9263EK_DT
-> +extern char __dtb_at91sam9263ek_start[];
-> +
-> +ENTRY_FUNCTION(start_at91sam9263ek, r0, r1, r2)
-> +{
-> +       void *fdt;
-> +
-> +       arm_cpu_lowlevel_init();
-> +
-> +       arm_setup_stack(AT91SAM9263_SRAM0_BASE + AT91SAM9263_SRAM0_SIZE - 16);
-> +       fdt = __dtb_at91sam9263ek_start - get_runtime_offset();
-> +
-> +       at91sam9263ek_init(fdt);
-> +}
-> +#else
->  ENTRY_FUNCTION(start_at91sam9263ek, r0, r1, r2)
->  {
->         arm_cpu_lowlevel_init();
->
->         arm_setup_stack(AT91SAM9263_SRAM0_BASE + AT91SAM9263_SRAM0_SIZE - 16);
->
-> -       at91sam9263ek_init();
-> +       at91sam9263ek_init(NULL);
->  }
-> +#endif
+Following is tested and works with DT:
+- GPIO LEDs
+- GPIO buttons
+- UART
+- nand probe
+- macb probe
+- SD card (mci1)
+- network
+- loading environment
+- loading kernel
 
-I think you can get away with defining this function once if you do:
+Following is not tested:
+- i2c
+- USB
 
-if (IS_ENABLED(CONFIG_MACH_AT91SAM9263EK_DT))
-    fdt = __dtb_at91sam9263ek_start - get_runtime_offset();
-else
-    fdt = NULL;
+Changes:
+- Added of_init.c, simpler than using ifdefs in the existing init.c
+- Selected relevant symbols in Kconfig to enable use of DT
+- Added additional commands (used for debugging)
+  - iomem, clk*
+- Extended DT with:
+  - environment,barebox, to tell where to find the enviroment
 
-at91sam9263ek_init(fdt);
+The log below shows:
+- barebox-environment environment.6: probe failed: No such device
+  Likely something with setup od NAND
+  But not something that has been looked into
 
+barebox 2017.12.0-00033-g0c8627b65 #6 Wed Dec 27 21:14:40 CET 2017
 
-> diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-> index 4f13d4e37..0526a6f40 100644
-> --- a/arch/arm/dts/Makefile
-> +++ b/arch/arm/dts/Makefile
-> @@ -104,7 +104,7 @@ pbl-dtb-$(CONFIG_MACH_ZII_VF610_DEV) += \
->         vf610-zii-cfu1-rev-a.dtb.o      \
->         vf610-zii-spu3-rev-a.dtb.o      \
->         vf610-zii-scu4-aib-rev-c.dtb.o
-> -
-> +pbl-dtb-$(CONFIG_MACH_AT91SAM9263EK_DT) += at91sam9263ek.dtb.o
->  pbl-dtb-$(CONFIG_MACH_AT91SAM9X5EK) += at91sam9x5ek.dtb.o
->
->  clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.lzo
-> diff --git a/arch/arm/dts/at91sam9263ek.dts b/arch/arm/dts/at91sam9263ek.dts
-> new file mode 100644
-> index 000000000..224748ecc
-> --- /dev/null
-> +++ b/arch/arm/dts/at91sam9263ek.dts
-> @@ -0,0 +1,246 @@
-> +/*
-> + * at91sam9263ek.dts - Device Tree file for Atmel at91sam9263 reference board
-> + *
-> + *  Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> + *
-> + * Licensed under GPLv2 only
-> + */
-> +/dts-v1/;
-> +#include "arm/at91sam9263.dtsi"
-> +
+Board: Atmel at91sam9263ek
+gpio-at91 fffff200.gpio: AT91 gpio driver registered
+gpio-at91 fffff400.gpio: AT91 gpio driver registered
+gpio-at91 fffff600.gpio: AT91 gpio driver registered
+gpio-at91 fffff800.gpio: AT91 gpio driver registered
+gpio-at91 fffffa00.gpio: AT91 gpio driver registered
+pinctrl-at91 pinctrl.2: AT91 pinctrl registered
+initcall 0x23e44540 failed: error -1073741823
+AT91: Detected soc type: at91sam9263
+AT91: Detected soc subtype: Unknown
+mdio_bus: miibus0: probed
+macb fffbc000.ethernet: Cadence MACB at 0xfffbc000
+at91_udc fff78000.gadget: at91_udc version 3 May 2006
+atmel_mci fff84000.mmc: version: 0x210
+atmel_mci fff84000.mmc: registered as fff84000.mmc
+malloc space: 0x239facc0 -> 0x23dfacbf (size 4 MiB)
+barebox-environment environment.6: probe failed: No such device
+environment load /dev/env0: No such file or directory
+Maybe you have to create the partition.
+running /env/bin/init...
+No USB Device cable plugged, normal boot
+\e[?25h
+Hit any key to stop autoboot:    2
 
-AFAIU you are including this from the "dts/" directory, so you may as
-well use angle brackets to indicate that, e.g. #include
-<arm/at91sam9263.dtsi>.
+barebox@Atmel at91sam9263ek:/ iomem
+0x00000000 - 0xffffffff (size 0x00000000) iomem
+  0x00300000 - 0x00313fff (size 0x00014000) 300000.sram
+  0x00500000 - 0x00503fff (size 0x00004000) 500000.sram
+  0x00700000 - 0x00700fff (size 0x00001000) 700000.fb
+  0x20000000 - 0x23ffffff (size 0x04000000) ram0
+    0x239facc0 - 0x23dfacbf (size 0x00400000) malloc space
+    0x23dfacc0 - 0x23dfffef (size 0x00005330) board data
+    0x23e00000 - 0x23e54008 (size 0x00054009) barebox
+    0x23e54009 - 0x23e64cf7 (size 0x00010cef) barebox data
+    0x23e64cf8 - 0x23e681f7 (size 0x00003500) bss
+    0x23fe4000 - 0x23fe7fff (size 0x00004000) ttb
+    0x23fe8000 - 0x23feffff (size 0x00008000) stack
+  0xfff78000 - 0xfff7bfff (size 0x00004000) fff78000.gadget
+  0xfff84000 - 0xfff845ff (size 0x00000600) fff84000.mmc
+  0xfff8c000 - 0xfff8c1ff (size 0x00000200) fff8c000.serial
+  0xfffbc000 - 0xfffbc0ff (size 0x00000100) fffbc000.ethernet
+  0xffffe400 - 0xffffe5ff (size 0x00000200) at91sam9-smc0
+  0xffffea00 - 0xffffebff (size 0x00000200) at91sam9-smc1
+  0xffffee00 - 0xffffefff (size 0x00000200) ffffee00.serial
+  0xfffff200 - 0xfffff3ff (size 0x00000200) fffff200.gpio
+  0xfffff400 - 0xfffff5ff (size 0x00000200) fffff400.gpio
+  0xfffff600 - 0xfffff7ff (size 0x00000200) fffff600.gpio
+  0xfffff800 - 0xfffff9ff (size 0x00000200) fffff800.gpio
+  0xfffffa00 - 0xfffffbff (size 0x00000200) fffffa00.gpio
+  0xfffffd30 - 0xfffffd3e (size 0x0000000f) fffffd30.timer
 
-But more importantly, is there a way you can use <arm/at91sam9263.dts>
-and avoid bringing all of the code below in? The only reason I didn't
-do that for 9x5ek was because the kernel doesn't have a generic
-9x5ek.dts and instead it has specific files for every value of "x", so
-to speak (9g45ek, 9g15ek, etc).
+barebox@Atmel at91sam9263ek:/ clk_dump
+slow_xtal (rate 32768, enabled)
+    prog0 (rate 32768, enabled)
+        pck0 (rate 32768, disabled)
+    prog1 (rate 32768, enabled)
+        pck1 (rate 32768, disabled)
+    prog2 (rate 32768, enabled)
+        pck2 (rate 32768, disabled)
+    prog3 (rate 32768, enabled)
+        pck3 (rate 32768, disabled)
+main_xtal (rate 16367660, enabled)
+    main_osc (rate 16367660, enabled)
+        mainck (rate 16367660, enabled)
+            pllbck (rate 98205960, enabled)
+                usbck (rate 49102980, enabled)
+                    uhpck (rate 49102980, disabled)
+                    udpck (rate 49102980, disabled)
+            pllack (rate 204595750, enabled)
+                masterck (rate 102297875, enabled)
+                    pioA_clk (rate 102297875, enabled)
+                    pioB_clk (rate 102297875, enabled)
+                    pioCDE_clk (rate 102297875, enabled)
+                    usart0_clk (rate 102297875, enabled)
+                    usart1_clk (rate 102297875, disabled)
+                    usart2_clk (rate 102297875, disabled)
+                    mci0_clk (rate 102297875, disabled)
+                    mci1_clk (rate 102297875, disabled)
+                    can_clk (rate 102297875, disabled)
+                    twi0_clk (rate 102297875, disabled)
+                    spi0_clk (rate 102297875, disabled)
+                    spi1_clk (rate 102297875, disabled)
+                    ssc0_clk (rate 102297875, disabled)
+                    ssc1_clk (rate 102297875, disabled)
+                    ac97_clk (rate 102297875, disabled)
+                    tcb_clk (rate 102297875, disabled)
+                    pwm_clk (rate 102297875, disabled)
+                    macb0_clk (rate 102297875, enabled)
+                    g2de_clk (rate 102297875, disabled)
+                    udc_clk (rate 102297875, disabled)
+                    isi_clk (rate 102297875, disabled)
+                    lcd_clk (rate 102297875, enabled)
+                    dma_clk (rate 102297875, disabled)
+                    ohci_clk (rate 102297875, disabled)
 
-E.g. something like this:
+barebox@Atmel at91sam9263ek:/ devinfo
+`-- global
+`-- nv
+`-- platform
+   `-- mem0
+      `-- 0x00000000-0x03ffffff (    64 MiB): /dev/ram0
+   `-- 300000.sram
+      `-- 0x00000000-0x00013fff (    80 KiB): /dev/sram0
+   `-- 500000.sram
+      `-- 0x00000000-0x00003fff (    16 KiB): /dev/sram1
+   `-- ahb.0
+      `-- apb.1
+         `-- fffff000.interrupt-controller
+         `-- fffffc00.pmc
+         `-- ffffe200.ramc
+         `-- ffffe400.smc
+         `-- ffffe800.ramc
+         `-- ffffea00.smc
+         `-- ffffec00.matrix
+         `-- fffffd30.timer
+         `-- fff7c000.timer
+         `-- fffffd00.rstc
+         `-- fffffd10.shdwc
+         `-- pinctrl.2
+            `-- fffff200.gpio
+            `-- fffff400.gpio
+            `-- fffff600.gpio
+            `-- fffff800.gpio
+            `-- fffffa00.gpio
+         `-- ffffee00.serial
+            `-- cs0
+               `-- 0x00000000-0xffffffffffffffff (   0 Bytes): /dev/cs0
+         `-- fff8c000.serial
+            `-- cs1
+               `-- 0x00000000-0xffffffffffffffff (   0 Bytes): /dev/cs1
+         `-- fffbc000.ethernet
+            `-- miibus0
+            `-- eth0
+         `-- fff78000.gadget
+            `-- usbgadget
+         `-- fff84000.mmc
+            `-- mci0
+         `-- fffffd40.watchdog
+         `-- fffa4000.spi
+         `-- fffac000.can
+      `-- 700000.fb
+      `-- a00000.ohci
+      `-- 10000000.ebi
+   `-- i2c-gpio-0.3
+   `-- leds.4
+   `-- gpio_keys.5
+   `-- at91sam9-smc0
+   `-- at91sam9-smc1
+   `-- cs2
+      `-- 0x00000000-0xffffffffffffffff (   0 Bytes): /dev/cs2
+   `-- soc
+   `-- mem1
+      `-- 0x00000000-0xfffffffe (     4 GiB): /dev/mem
+   `-- environment.6
+`-- mdio_bus
+`-- fs
+   `-- ramfs0
+   `-- devfs0
+`-- net
+`-- udc0
+`-- fb0
+   `-- 0x00000000-0x000257ff (   150 KiB): /dev/fb0
 
-https://git.pengutronix.de/cgit/barebox/tree/arch/arm/dts/vf610-zii-dev-rev-c.dts?h=next
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+---
+ arch/arm/boards/at91sam9263ek/Makefile   |  5 ++
+ arch/arm/boards/at91sam9263ek/of_init.c  | 98 ++++++++++++++++++++++++++++++++
+ arch/arm/configs/at91sam9263ek_defconfig |  6 ++
+ arch/arm/dts/at91sam9263ek.dts           |  6 ++
+ arch/arm/mach-at91/Kconfig               |  3 +
+ arch/arm/mach-at91/at91sam9263.c         |  8 +++
+ 6 files changed, 126 insertions(+)
+ create mode 100644 arch/arm/boards/at91sam9263ek/of_init.c
 
-> +/ {
-> +       model = "Atmel at91sam9263ek";
-> +       compatible = "atmel,at91sam9263ek", "atmel,at91sam9263", "atmel,at91sam9";
-> +
-> +       chosen {
-> +               bootargs = "mem=64M root=/dev/mtdblock5 rw rootfstype=ubifs";
-> +               stdout-path = "serial0:115200n8";
-> +       };
-> +
-> +       memory {
-> +               reg = <0x20000000 0x4000000>;
-> +       };
-> +
-> +       clocks {
-> +               slow_xtal {
-> +                       clock-frequency = <32768>;
-> +               };
-> +
-> +               main_xtal {
-> +                       clock-frequency = <16367660>;
-> +               };
-> +       };
-> +
-> +       ahb {
-> +               apb {
-> +                       dbgu: serial@ffffee00 {
-> +                               status = "okay";
-> +                       };
-> +
-> +                       usart0: serial@fff8c000 {
-> +                               pinctrl-0 = <
-> +                                       &pinctrl_usart0
-> +                                       &pinctrl_usart0_rts
-> +                                       &pinctrl_usart0_cts>;
-> +                               status = "okay";
-> +                       };
-> +
-> +                       macb0: ethernet@fffbc000 {
-> +                               phy-mode = "rmii";
-> +                               status = "okay";
-> +                       };
-> +
-> +                       usb1: gadget@fff78000 {
-> +                               atmel,vbus-gpio = <&pioA 25 GPIO_ACTIVE_HIGH>;
-> +                               status = "okay";
-> +                       };
-> +
-> +                       mmc0: mmc@fff80000 {
-> +                               pinctrl-0 = <
-> +                                       &pinctrl_board_mmc0
-> +                                       &pinctrl_mmc0_clk
-> +                                       &pinctrl_mmc0_slot0_cmd_dat0
-> +                                       &pinctrl_mmc0_slot0_dat1_3>;
-> +                               status = "okay";
-> +                               slot@0 {
-> +                                       reg = <0>;
-> +                                       bus-width = <4>;
-> +                                       cd-gpios = <&pioE 18 GPIO_ACTIVE_HIGH>;
-> +                                       wp-gpios = <&pioE 19 GPIO_ACTIVE_HIGH>;
-> +                               };
-> +                       };
-> +
-> +                       pinctrl@fffff200 {
-> +                               mmc0 {
-> +                                       pinctrl_board_mmc0: mmc0-board {
-> +                                               atmel,pins =
-> +                                                       <AT91_PIOE 18 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_UP_DEGLITCH    /* PE18 gpio CD pin pull up and deglitch */
-> +                                                        AT91_PIOE 19 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_UP>;   /* PE19 gpio WP pin pull up */
-> +                                       };
-> +                               };
-> +                       };
-> +
-> +                       spi0: spi@fffa4000 {
-> +                               status = "okay";
-> +                               cs-gpios = <&pioA 5 0>, <0>, <0>, <0>;
-> +                               mtd_dataflash@0 {
-> +                                       compatible = "atmel,at45", "atmel,dataflash";
-> +                                       spi-max-frequency = <50000000>;
-> +                                       reg = <0>;
-> +                               };
-> +                       };
-> +
-> +                       watchdog@fffffd40 {
-> +                               status = "okay";
-> +                       };
-> +               };
-> +
-> +               fb0: fb@0x00700000 {
-> +                       display = <&display0>;
-> +                       status = "okay";
-> +
-> +                       display0: display {
-> +                               bits-per-pixel = <16>;
-> +                               atmel,lcdcon-backlight;
-> +                               atmel,dmacon = <0x1>;
-> +                               atmel,lcdcon2 = <0x80008002>;
-> +                               atmel,guard-time = <1>;
-> +
-> +                               display-timings {
-> +                                       native-mode = <&timing0>;
-> +                                       timing0: timing0 {
-> +                                               clock-frequency = <4965000>;
-> +                                               hactive = <240>;
-> +                                               vactive = <320>;
-> +                                               hback-porch = <1>;
-> +                                               hfront-porch = <33>;
-> +                                               vback-porch = <1>;
-> +                                               vfront-porch = <0>;
-> +                                               hsync-len = <5>;
-> +                                               vsync-len = <1>;
-> +                                               hsync-active = <1>;
-> +                                               vsync-active = <1>;
-> +                                       };
-> +                               };
-> +                       };
-> +               };
-> +
-> +               ebi0: ebi@10000000 {
-> +                       status = "okay";
-> +
-> +                       nand_controller: nand-controller {
-> +                               status = "okay";
-> +                               pinctrl-0 = <&pinctrl_nand_cs &pinctrl_nand_rb>;
-> +                               pinctrl-names = "default";
-> +
-> +                               nand@3 {
-> +                                       reg = <0x3 0x0 0x800000>;
-> +                                       rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
-> +                                       cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
-> +                                       nand-bus-width = <8>;
-> +                                       nand-ecc-mode = "soft";
-> +                                       nand-on-flash-bbt;
-> +                                       label = "atmel_nand";
-> +
-> +                                       partitions {
-> +                                               compatible = "fixed-partitions";
-> +                                               #address-cells = <1>;
-> +                                               #size-cells = <1>;
-> +
-> +                                               at91bootstrap@0 {
-> +                                                       label = "at91bootstrap";
-> +                                                       reg = <0x0 0x20000>;
-> +                                               };
-> +
-> +                                               barebox@20000 {
-> +                                                       label = "barebox";
-> +                                                       reg = <0x20000 0x40000>;
-> +                                               };
-> +
-> +                                               bareboxenv@60000 {
-> +                                                       label = "bareboxenv";
-> +                                                       reg = <0x60000 0x20000>;
-> +                                               };
-> +
-> +                                               bareboxenv2@80000 {
-> +                                                       label = "bareboxenv2";
-> +                                                       reg = <0x80000 0x20000>;
-> +                                               };
-> +
-> +                                               oftree@80000 {
-> +                                                       label = "oftree";
-> +                                                       reg = <0xa0000 0x20000>;
-> +                                               };
-> +
-> +                                               kernel@a0000 {
-> +                                                       label = "kernel";
-> +                                                       reg = <0xc0000 0x400000>;
-> +                                               };
-> +
-> +                                               rootfs@4a0000 {
-> +                                                       label = "rootfs";
-> +                                                       reg = <0x4c0000 0x7800000>;
-> +                                               };
-> +
-> +                                               data@7ca0000 {
-> +                                                       label = "data";
-> +                                                       reg = <0x7cc0000 0x8340000>;
-> +                                               };
-> +                                       };
-> +                               };
-> +                       };
-> +               };
-> +
-> +               usb0: ohci@00a00000 {
-> +                       num-ports = <2>;
-> +                       status = "okay";
-> +                       atmel,vbus-gpio = <&pioA 24 GPIO_ACTIVE_HIGH
-> +                                          &pioA 21 GPIO_ACTIVE_HIGH
-> +                                         >;
-> +               };
-> +       };
-> +
-> +       leds {
-> +               compatible = "gpio-leds";
-> +
-> +               d3 {
-> +                       label = "d3";
-> +                       gpios = <&pioB 7 GPIO_ACTIVE_HIGH>;
-> +                       linux,default-trigger = "heartbeat";
-> +               };
-> +
-> +               d2 {
-> +                       label = "d2";
-> +                       gpios = <&pioC 29 GPIO_ACTIVE_LOW>;
-> +                       linux,default-trigger = "nand-disk";
-> +               };
-> +       };
-> +
-> +       gpio_keys {
-> +               compatible = "gpio-keys";
-> +
-> +               left_click {
-> +                       label = "left_click";
-> +                       gpios = <&pioC 5 GPIO_ACTIVE_LOW>;
-> +                       linux,code = <272>;
-> +                       wakeup-source;
-> +               };
-> +
-> +               right_click {
-> +                       label = "right_click";
-> +                       gpios = <&pioC 4 GPIO_ACTIVE_LOW>;
-> +                       linux,code = <273>;
-> +                       wakeup-source;
-> +               };
-> +       };
-> +
-> +       i2c-gpio-0 {
-> +               status = "okay";
-> +
-> +               24c512@50 {
-> +                       compatible = "24c512";
-> +                       reg = <0x50>;
-> +                       pagesize = <128>;
-> +               };
-> +       };
-> +};
-> diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-> index f5160ade1..5e9c575cc 100644
-> --- a/arch/arm/mach-at91/Kconfig
-> +++ b/arch/arm/mach-at91/Kconfig
-> @@ -20,6 +20,13 @@ config COMMON_CLK_AT91
->         select COMMON_CLK
->         select MFD_SYSCON
->
-> +config MACH_AT91SAM9263EK_DT
-> +       def_bool y
-> +       depends on MACH_AT91SAM9263EK && OFDEVICE
-> +       help
-> +         Enabled for at91sam9263ek - evaluation kit.
-> +         But only if we need the device tree (bootstrap do not use DT)
-> +
->  config HAVE_AT91_SMD
->         bool
->
-> --
-> 2.12.0
->
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+diff --git a/arch/arm/boards/at91sam9263ek/Makefile b/arch/arm/boards/at91sam9263ek/Makefile
+index de4d75690..85b6ba0a5 100644
+--- a/arch/arm/boards/at91sam9263ek/Makefile
++++ b/arch/arm/boards/at91sam9263ek/Makefile
+@@ -1,4 +1,9 @@
++
++ifeq ($(CONFIG_OFDEVICE),)
+ obj-y += init.o
++else
++obj-y += of_init.o
++endif
+ 
+ lwl-y += lowlevel_init.o
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-at91sam9263ek
+diff --git a/arch/arm/boards/at91sam9263ek/of_init.c b/arch/arm/boards/at91sam9263ek/of_init.c
+new file mode 100644
+index 000000000..155659124
+--- /dev/null
++++ b/arch/arm/boards/at91sam9263ek/of_init.c
+@@ -0,0 +1,98 @@
++/*
++ * Copyright (C) 2017 Sam Ravnborg <sam@ravnborg.org>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
++#include <envfs.h>
++#include <init.h>
++#include <gpio.h>
++
++#include <mach/at91sam9263_matrix.h>
++#include <mach/at91sam9_smc.h>
++#include <mach/hardware.h>
++#include <mach/iomux.h>
++#include <mach/io.h>
++
++static int check_fdt(void)
++{
++	return of_machine_is_compatible("atmel,at91sam9263ek");
++}
++postcore_initcall(check_fdt);
++
++static struct sam9_smc_config ek_nand_smc_config = {
++	.ncs_read_setup		= 0,
++	.nrd_setup		= 1,
++	.ncs_write_setup	= 0,
++	.nwe_setup		= 1,
++
++	.ncs_read_pulse		= 3,
++	.nrd_pulse		= 3,
++	.ncs_write_pulse	= 3,
++	.nwe_pulse		= 3,
++
++	.read_cycle		= 5,
++	.write_cycle		= 5,
++
++	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE | AT91_SMC_EXNWMODE_DISABLE,
++	.tdf_cycles		= 2,
++};
++
++/*
++ * Initialize of SMC must come after we
++ * probe the at91sam9_smc_driver.
++ * But is required before we start the other drives.
++ * Use fs_initcall() to maintain this order.
++ */
++static int at91sam9263_smc_init(void)
++{
++	unsigned long csa;
++
++	/* setup bus-width (8 or 16) */
++#if defined(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)
++	ek_nand_smc_config.mode |= AT91_SMC_DBW_16;
++#else
++	ek_nand_smc_config.mode |= AT91_SMC_DBW_8;
++#endif
++
++	csa = at91_sys_read(AT91_MATRIX_EBI0CSA);
++	csa |= AT91_MATRIX_EBI0_CS3A_SMC_SMARTMEDIA;
++	at91_sys_write(AT91_MATRIX_EBI0CSA, csa);
++
++	/* configure chip-select 3 (NAND) */
++	sam9_smc_configure(0, 3, &ek_nand_smc_config);
++
++	return 0;
++}
++fs_initcall(at91sam9263_smc_init);
++
++static int at91sam9263ek_phy_init(void)
++{
++	/*
++	 * PB27 enables the 50MHz oscillator for Ethernet PHY
++	 * 1 - enable
++	 * 0 - disable
++	 */
++	at91_set_gpio_output(AT91_PIN_PB27, 1);
++	gpio_set_value(AT91_PIN_PB27, 1); /* 1- enable, 0 - disable */
++	return 0;
++}
++device_initcall(at91sam9263ek_phy_init);
++
++static int at91sam9263ek_env_init(void)
++{
++	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC))
++		defaultenv_append_directory(defaultenv_at91sam9263ek);
++
++	return 0;
++}
++late_initcall(at91sam9263ek_env_init);
+diff --git a/arch/arm/configs/at91sam9263ek_defconfig b/arch/arm/configs/at91sam9263ek_defconfig
+index fc92615eb..e8ad841fa 100644
+--- a/arch/arm/configs/at91sam9263ek_defconfig
++++ b/arch/arm/configs/at91sam9263ek_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CONSOLE_ACTIVATE_ALL=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+ CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
+ CONFIG_CMD_MEMINFO=y
+ # CONFIG_CMD_BOOTU is not set
+ CONFIG_CMD_GO=y
+@@ -38,6 +39,7 @@ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_SPLASH=y
+ CONFIG_CMD_READLINE=y
+ CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_CLK=y
+ CONFIG_CMD_FLASH=y
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_LED=y
+@@ -45,6 +47,7 @@ CONFIG_CMD_LED_TRIGGER=y
+ CONFIG_CMD_OFTREE=y
+ CONFIG_NET=y
+ CONFIG_NET_NFS=y
++CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_DRIVER_NET_MACB=y
+ # CONFIG_SPI is not set
+ CONFIG_MTD=y
+@@ -64,9 +67,12 @@ CONFIG_VIDEO=y
+ CONFIG_DRIVER_VIDEO_ATMEL=y
+ CONFIG_MCI=y
+ CONFIG_MCI_ATMEL=y
++CONFIG_SRAM=y
+ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
++CONFIG_LED_GPIO_OF=y
+ CONFIG_LED_TRIGGERS=y
++CONFIG_KEYBOARD_GPIO=y
+ CONFIG_FS_TFTP=y
+ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_LFN=y
+diff --git a/arch/arm/dts/at91sam9263ek.dts b/arch/arm/dts/at91sam9263ek.dts
+index 7d0ae0447..f4b3098ac 100644
+--- a/arch/arm/dts/at91sam9263ek.dts
++++ b/arch/arm/dts/at91sam9263ek.dts
+@@ -15,6 +15,11 @@
+ 	chosen {
+ 		bootargs = "mem=64M root=/dev/mtdblock5 rw rootfstype=ubifs";
+ 		stdout-path = "serial0:115200n8";
++
++		environment@0 {
++			compatible = "barebox,environment";
++			device-path = &nand_controller, "partname:bareboxenv";
++		};
+ 	};
+ 
+ 	memory {
+@@ -106,6 +111,7 @@
+ 				atmel,dmacon = <0x1>;
+ 				atmel,lcdcon2 = <0x80008002>;
+ 				atmel,guard-time = <1>;
++				atmel,lcd-wiring-mode = "IBGR";
+ 
+ 				display-timings {
+ 					native-mode = <&timing0>;
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 5e9c575cc..a4fc024c1 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -538,6 +538,9 @@ if AT91_MULTI_BOARDS
+ config MACH_AT91SAM9263EK
+ 	bool "Atmel AT91SAM9263-EK"
+ 	depends on ARCH_AT91SAM9263
++	select OFDEVICE
++	select COMMON_CLK_OF_PROVIDER
++	select HAVE_AT91_USB_CLK
+ 	select HAVE_NAND_ATMEL_BUSWIDTH_16
+ 	select HAVE_AT91_BOOTSTRAP
+ 	select AT91SAM926X_BOARD_INIT
+diff --git a/arch/arm/mach-at91/at91sam9263.c b/arch/arm/mach-at91/at91sam9263.c
+index 35d187b4b..9d7b78dc7 100644
+--- a/arch/arm/mach-at91/at91sam9263.c
++++ b/arch/arm/mach-at91/at91sam9263.c
+@@ -12,6 +12,13 @@
+  *  Clocks
+  * -------------------------------------------------------------------- */
+ 
++#if defined(CONFIG_COMMON_CLK_AT91)
++static void at91sam9263_initialize(void)
++{
++	at91_add_sam9_smc(0, AT91SAM9263_BASE_SMC0, 0x200);
++	at91_add_sam9_smc(1, AT91SAM9263_BASE_SMC1, 0x200);
++}
++#else
+ /*
+  * The peripheral clocks.
+  */
+@@ -248,6 +255,7 @@ static void at91sam9263_initialize(void)
+ 	at91_add_sam9_smc(0, AT91SAM9263_BASE_SMC0, 0x200);
+ 	at91_add_sam9_smc(1, AT91SAM9263_BASE_SMC1, 0x200);
+ }
++#endif
+ 
+ AT91_SOC_START(sam9263)
+ 	.init = at91sam9263_initialize,
+-- 
+2.12.0
+
 
 _______________________________________________
 barebox mailing list
