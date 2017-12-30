@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eVOcV-0001GK-54
- for barebox@lists.infradead.org; Sat, 30 Dec 2017 21:24:45 +0000
-Date: Sat, 30 Dec 2017 22:24:27 +0100
+ id 1eVQ5D-00034d-8w
+ for barebox@lists.infradead.org; Sat, 30 Dec 2017 22:58:29 +0000
+Date: Sat, 30 Dec 2017 23:58:12 +0100
 From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20171230212427.GA27962@ravnborg.org>
+Message-ID: <20171230225812.GA3900@ravnborg.org>
 References: <20171227211743.GA1084@ravnborg.org>
  <20171227211839.2359-5-sam@ravnborg.org>
  <CAHQ1cqGiUdFNbAGc_ce5E9cuxu4Ts7oW=XXCOu=Vg34J4yvykg@mail.gmail.com>
+ <20171230212427.GA27962@ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAHQ1cqGiUdFNbAGc_ce5E9cuxu4Ts7oW=XXCOu=Vg34J4yvykg@mail.gmail.com>
+In-Reply-To: <20171230212427.GA27962@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,103 +25,165 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/5] at91sam9263ek: enable devicetree
+Subject: [RFC PATCH 1/2] arm: at91: move irq_fixup to header file
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi Andrey.
+From 8ef36be7ab518c2c61b60665cad0777f6f2398a6 Mon Sep 17 00:00:00 2001
+From: Sam Ravnborg <sam@ravnborg.org>
+Date: Sat, 30 Dec 2017 22:15:18 +0100
+Subject: [PATCH 1/2] arm: at91: move irq_fixup to header file
 
-> > +static int check_fdt(void)
-> > +{
-> > +       return of_machine_is_compatible("atmel,at91sam9263ek");
-> > +}
-> > +postcore_initcall(check_fdt);
-> > +
-> 
-> Reading this I realized that I wrote buggy initcalls in my original
-> AT91SAM9x5EK patches and set a bad example/precedent (I'll submit
-> patches to fix that). That check above is just going to print a error
-> message, but it wouldn't prevent the code for wrong board from being
-> executed (say if you are running image that supports both
-> at91sam9263ek and at91sam9g45 on either). IMHO, what you want to do,
-> and what I should've done as well, is to add
-> 
-> if (!of_machine_is_compatible("atmel,at91sam9263ek"))
->     return 0;
-> 
-> early exit code to the start of very *_callback call. Here's a decent
-> example where I didn't screw this up:
-> 
-> https://git.pengutronix.de/cgit/barebox/tree/arch/arm/boards/zii-vf610-dev/board.c#n55
+This allows at91_rtt_irq_fixup() to be used outside
+of the mach-at91/ directory.
+Adjust all call sites to include the at91_rtt header
 
-Lucas Stach already told me so in another mail some months ago.
-But I somehow missed it when re-spinning the patches.
-So very good that you noticed this.
+Deleting one .c file is another nice side effect of this move.
 
-If you do a respin of the AT91SAM9x5EK then consider if the current
-DT support for the display can replace what is used today.
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+---
+ arch/arm/mach-at91/Makefile                |  2 +-
+ arch/arm/mach-at91/at91sam9260_devices.c   |  1 +
+ arch/arm/mach-at91/at91sam9261_devices.c   |  1 +
+ arch/arm/mach-at91/at91sam9263_devices.c   |  1 +
+ arch/arm/mach-at91/at91sam9g45_devices.c   |  1 +
+ arch/arm/mach-at91/generic.h               |  2 --
+ arch/arm/mach-at91/include/mach/at91_rtt.h | 16 ++++++++++++++++
+ arch/arm/mach-at91/irq_fixup.c             | 22 ----------------------
+ 8 files changed, 21 insertions(+), 25 deletions(-)
+ delete mode 100644 arch/arm/mach-at91/irq_fixup.c
 
-> > +       /* setup bus-width (8 or 16) */
-> > +#if defined(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)
-> > +       ek_nand_smc_config.mode |= AT91_SMC_DBW_16;
-> > +#else
-> > +       ek_nand_smc_config.mode |= AT91_SMC_DBW_8;
-> > +#endif
-> > +
-> 
-> You already use IS_ENABLED below, so it might be more consistent to
-> use it here as well.
-Agreed, much nicer.
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 8462cba60..8adeee9bc 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -1,4 +1,4 @@
+-obj-y += setup.o irq_fixup.o
++obj-y += setup.o
+ 
+ ifeq ($(CONFIG_COMMON_CLK_OF_PROVIDER),)
+ obj-y += clock.o
+diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
+index 99919b3f8..1cb898351 100644
+--- a/arch/arm/mach-at91/at91sam9260_devices.c
++++ b/arch/arm/mach-at91/at91sam9260_devices.c
+@@ -19,6 +19,7 @@
+ #include <mach/at91_pmc.h>
+ #include <mach/at91sam9260_matrix.h>
+ #include <mach/at91sam9_sdramc.h>
++#include <mach/at91_rtt.h>
+ #include <mach/iomux.h>
+ #include <mach/io.h>
+ #include <mach/cpu.h>
+diff --git a/arch/arm/mach-at91/at91sam9261_devices.c b/arch/arm/mach-at91/at91sam9261_devices.c
+index e63e0e751..6be390937 100644
+--- a/arch/arm/mach-at91/at91sam9261_devices.c
++++ b/arch/arm/mach-at91/at91sam9261_devices.c
+@@ -18,6 +18,7 @@
+ #include <mach/at91_pmc.h>
+ #include <mach/at91sam9261_matrix.h>
+ #include <mach/at91sam9_sdramc.h>
++#include <mach/at91_rtt.h>
+ #include <mach/board.h>
+ #include <mach/iomux.h>
+ #include <mach/io.h>
+diff --git a/arch/arm/mach-at91/at91sam9263_devices.c b/arch/arm/mach-at91/at91sam9263_devices.c
+index 559b77e9d..6302684b2 100644
+--- a/arch/arm/mach-at91/at91sam9263_devices.c
++++ b/arch/arm/mach-at91/at91sam9263_devices.c
+@@ -18,6 +18,7 @@
+ #include <mach/at91_pmc.h>
+ #include <mach/at91sam9263_matrix.h>
+ #include <mach/at91sam9_sdramc.h>
++#include <mach/at91_rtt.h>
+ #include <mach/board.h>
+ #include <mach/iomux.h>
+ #include <mach/io.h>
+diff --git a/arch/arm/mach-at91/at91sam9g45_devices.c b/arch/arm/mach-at91/at91sam9g45_devices.c
+index bc4132040..67ca3590c 100644
+--- a/arch/arm/mach-at91/at91sam9g45_devices.c
++++ b/arch/arm/mach-at91/at91sam9g45_devices.c
+@@ -18,6 +18,7 @@
+ #include <mach/at91_pmc.h>
+ #include <mach/at91sam9g45_matrix.h>
+ #include <mach/at91sam9_ddrsdr.h>
++#include <mach/at91_rtt.h>
+ #include <mach/board.h>
+ #include <mach/iomux.h>
+ #include <mach/io.h>
+diff --git a/arch/arm/mach-at91/generic.h b/arch/arm/mach-at91/generic.h
+index a47bcb2c5..deba01924 100644
+--- a/arch/arm/mach-at91/generic.h
++++ b/arch/arm/mach-at91/generic.h
+@@ -35,5 +35,3 @@ static inline struct device_d *at91_add_sam9_smc(int id, resource_size_t start,
+ 	return add_generic_device("at91sam9-smc", id, NULL, start, size,
+ 				  IORESOURCE_MEM, NULL);
+ }
+-
+-void at91_rtt_irq_fixup(void *base);
+diff --git a/arch/arm/mach-at91/include/mach/at91_rtt.h b/arch/arm/mach-at91/include/mach/at91_rtt.h
+index 7ec75de8b..85a302858 100644
+--- a/arch/arm/mach-at91/include/mach/at91_rtt.h
++++ b/arch/arm/mach-at91/include/mach/at91_rtt.h
+@@ -16,6 +16,8 @@
+ #ifndef AT91_RTT_H
+ #define AT91_RTT_H
+ 
++#include <io.h>
++
+ #define AT91_RTT_MR		0x00			/* Real-time Mode Register */
+ #define		AT91_RTT_RTPRES		(0xffff << 0)		/* Real-time Timer Prescaler Value */
+ #define		AT91_RTT_ALMIEN		(1 << 16)		/* Alarm Interrupt Enable */
+@@ -32,4 +34,18 @@
+ #define		AT91_RTT_ALMS		(1 << 0)		/* Real-time Alarm Status */
+ #define		AT91_RTT_RTTINC		(1 << 1)		/* Real-time Timer Increment */
+ 
++
++/*
++ * As the RTT is powered by the backup power so if the interrupt
++ * is still on when the kernel start, the kernel will end up with
++ * dead lock interrupt that it can not clear. Because the interrupt line is
++ * shared with the basic timer (PIT) on AT91_ID_SYS.
++ */
++static void at91_rtt_irq_fixup(void *base)
++{
++        void __iomem *reg = base + AT91_RTT_MR;
++        u32 mr = readl(reg);
++
++        writel(mr & ~(AT91_RTT_ALMIEN | AT91_RTT_RTTINCIEN), reg);
++}
+ #endif
+diff --git a/arch/arm/mach-at91/irq_fixup.c b/arch/arm/mach-at91/irq_fixup.c
+deleted file mode 100644
+index 9815ac2ca..000000000
+--- a/arch/arm/mach-at91/irq_fixup.c
++++ /dev/null
+@@ -1,22 +0,0 @@
+-/*
+- * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+- *
+- * Under GPLv2 only
+- */
+-
+-#include <io.h>
+-#include <mach/at91_rtt.h>
+-
+-/*
+- * As the RTT is powered by the backup power so if the interrupt
+- * is still on when the kernel start, the kernel will end up with
+- * dead lock interrupt that it can not clear. Because the interrupt line is
+- * shared with the basic timer (PIT) on AT91_ID_SYS.
+- */
+-void at91_rtt_irq_fixup(void *base)
+-{
+-	void __iomem *reg = base + AT91_RTT_MR;
+-	u32 mr = readl(reg);
+-
+-	writel(mr & ~(AT91_RTT_ALMIEN | AT91_RTT_RTTINCIEN), reg);
+-}
+-- 
+2.12.0
 
-> > +static int at91sam9263ek_phy_init(void)
-> > +{
-> > +       /*
-> > +        * PB27 enables the 50MHz oscillator for Ethernet PHY
-> > +        * 1 - enable
-> > +        * 0 - disable
-> > +        */
-> > +       at91_set_gpio_output(AT91_PIN_PB27, 1);
-> > +       gpio_set_value(AT91_PIN_PB27, 1); /* 1- enable, 0 - disable */
-> > +       return 0;
-> > +}
-> > +device_initcall(at91sam9263ek_phy_init);
-> > +
-> 
-> This is fine as it is, but you can probably drop the code above in
-> favor of gpio-hog in DT file.
-Did not know of the hog thingy. Done, thanks,
-
-> >
-> > +#if defined(CONFIG_COMMON_CLK_AT91)
-> > +static void at91sam9263_initialize(void)
-> > +{
-> > +       at91_add_sam9_smc(0, AT91SAM9263_BASE_SMC0, 0x200);
-> > +       at91_add_sam9_smc(1, AT91SAM9263_BASE_SMC1, 0x200);
-> > +}
-> > +#else
-> >  /*
-> >   * The peripheral clocks.
-> >   */
-> > @@ -248,6 +255,7 @@ static void at91sam9263_initialize(void)
-> >         at91_add_sam9_smc(0, AT91SAM9263_BASE_SMC0, 0x200);
-> >         at91_add_sam9_smc(1, AT91SAM9263_BASE_SMC1, 0x200);
-> >  }
-> > +#endif
-> 
-> Is it too much work to move those two SMC-related calls into board
-> file and not compile mach-at91/at91sam9263.c for DT enabled build at
-> all?
-This is more work than what one would think looking at this diff.
-And if done right then both at91sam9263.c and at91sam9263_devices.c
-should no longer be used.
-
-But...
-- The code uses at91_rtt_irq_fixup() which can only be called from mach-at91.
-- setup.c has the at91_init_soc thing that must be defined
-
-so looking into solving these in a nice way as a preparation.
-
-	Sam
 
 _______________________________________________
 barebox mailing list
