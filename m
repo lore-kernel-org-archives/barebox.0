@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eW0vN-0004FF-UI
- for barebox@lists.infradead.org; Mon, 01 Jan 2018 14:18:51 +0000
+ id 1eW0wS-0004dS-Qe
+ for barebox@lists.infradead.org; Mon, 01 Jan 2018 14:19:55 +0000
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Mon,  1 Jan 2018 15:18:19 +0100
-Message-Id: <20180101141831.20120-3-sam@ravnborg.org>
+Date: Mon,  1 Jan 2018 15:19:33 +0100
+Message-Id: <20180101141939.20606-3-sam@ravnborg.org>
 In-Reply-To: <20171231083407.GA16645@ravnborg.org>
 References: <20171231083407.GA16645@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,142 +21,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/25] tny-a926x: delete unused tny_a9263_lowlevel_init.c
+Subject: [PATCH 19/25] at91sam9260ek,
+ at91sam9g20ek: move reset vector to board code
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
+Create new lowlevel.c that contains the reset vector.
+Drop unused CONFIG symbols
+
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- arch/arm/boards/tny-a926x/Makefile                 |   3 -
- .../arm/boards/tny-a926x/tny_a9263_lowlevel_init.c | 107 ---------------------
- 2 files changed, 110 deletions(-)
- delete mode 100644 arch/arm/boards/tny-a926x/tny_a9263_lowlevel_init.c
+ arch/arm/boards/at91sam9260ek/Makefile   |  3 +++
+ arch/arm/boards/at91sam9260ek/lowlevel.c | 26 ++++++++++++++++++++++++++
+ arch/arm/mach-at91/Kconfig               |  2 --
+ 3 files changed, 29 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/boards/at91sam9260ek/lowlevel.c
 
-diff --git a/arch/arm/boards/tny-a926x/Makefile b/arch/arm/boards/tny-a926x/Makefile
-index 24bbf2356..49e0d4649 100644
---- a/arch/arm/boards/tny-a926x/Makefile
-+++ b/arch/arm/boards/tny-a926x/Makefile
-@@ -2,7 +2,4 @@ obj-y += init.o
+diff --git a/arch/arm/boards/at91sam9260ek/Makefile b/arch/arm/boards/at91sam9260ek/Makefile
+index 6e07f189f..9cc933a28 100644
+--- a/arch/arm/boards/at91sam9260ek/Makefile
++++ b/arch/arm/boards/at91sam9260ek/Makefile
+@@ -1,2 +1,5 @@
+ obj-y += init.o
++
++lwl-y += lowlevel.o
++
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-at91sam9260ek
+diff --git a/arch/arm/boards/at91sam9260ek/lowlevel.c b/arch/arm/boards/at91sam9260ek/lowlevel.c
+new file mode 100644
+index 000000000..02896856d
+--- /dev/null
++++ b/arch/arm/boards/at91sam9260ek/lowlevel.c
+@@ -0,0 +1,26 @@
++/*
++ * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * Under GPLv2
++  */
++
++#include <common.h>
++#include <init.h>
++
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++
++#include <mach/at91sam9_sdramc.h>
++#include <mach/at91sam9260.h>
++#include <mach/hardware.h>
++
++void __naked __bare_init barebox_arm_reset_vector(void)
++{
++	arm_cpu_lowlevel_init();
++
++	arm_setup_stack(AT91SAM9260_SRAM_BASE + AT91SAM9260_SRAM_SIZE - 16);
++
++	barebox_arm_entry(AT91_CHIPSELECT_1,
++			  at91_get_sdram_size(IOMEM(AT91SAM9260_BASE_SDRAMC)),
++			  NULL);
++}
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 94d85dbcf..69d6d6fc1 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -276,7 +276,6 @@ config MACH_ANIMEO_IP
  
- obj-$(CONFIG_AT91_BOOTSTRAP) += tny_a9263_bootstrap.o
- 
--# Not used, documented with a lwl-n assignment
--lwl-n += tny_a9263_lowlevel_init.o
--
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-tny-a926x
-diff --git a/arch/arm/boards/tny-a926x/tny_a9263_lowlevel_init.c b/arch/arm/boards/tny-a926x/tny_a9263_lowlevel_init.c
-deleted file mode 100644
-index 1b146da62..000000000
---- a/arch/arm/boards/tny-a926x/tny_a9263_lowlevel_init.c
-+++ /dev/null
-@@ -1,107 +0,0 @@
--/*
-- * Copyright (C) 2009-2011 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-- *
-- * Under GPLv2
-- */
--
--#include <common.h>
--#include <init.h>
--#include <mach/hardware.h>
--#include <mach/at91_rstc.h>
--#include <mach/at91_wdt.h>
--#include <mach/at91_pmc.h>
--#include <mach/at91sam9_smc.h>
--#include <mach/at91sam9_sdramc.h>
--#include <mach/at91sam9_matrix.h>
--#include <mach/at91_lowlevel_init.h>
--
--#define MASTER_CLOCK		180
--
--#if MASTER_CLOCK == 200
--#define MASTER_PLL_MUL		100
--#else
--#define MASTER_PLL_MUL		90
--#endif
--#define MASTER_PLL_DIV		6
--
--void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_cfg *cfg)
--{
--	/* Disable Watchdog */
--	cfg->wdt_mr =
--		AT91_WDT_WDIDLEHLT | AT91_WDT_WDDBGHLT |
--		AT91_WDT_WDV |
--		AT91_WDT_WDDIS |
--		AT91_WDT_WDD;
--
--	/* define PDC[31:16] as DATA[31:16] */
--	cfg->ebi_pio_pdr = 0xFFFF0000;
--	/* no pull-up for D[31:16] */
--	cfg->ebi_pio_ppudr = 0xFFFF0000;
--	/* EBI0_CSA, CS1 SDRAM, CS3 NAND Flash, 3.3V memories */
--	cfg->ebi_csa =
--		AT91_MATRIX_EBI0_DBPUC | AT91_MATRIX_EBI0_VDDIOMSEL_3_3V |
--		AT91_MATRIX_EBI0_CS1A_SDRAMC;
--
--	cfg->smc_cs = 3;
--	cfg->smc_mode =
--		AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
--		AT91_SMC_DBW_8 |
--		AT91_SMC_EXNWMODE_DISABLE |
--		AT91_SMC_TDF_(2);
--	cfg->smc_cycle =
--		AT91_SMC_NWECYCLE_(5) | AT91_SMC_NRDCYCLE_(5);
--	cfg->smc_pulse =
--		AT91_SMC_NWEPULSE_(3) | AT91_SMC_NCS_WRPULSE_(3) |
--		AT91_SMC_NRDPULSE_(3) | AT91_SMC_NCS_RDPULSE_(3);
--	cfg->smc_setup =
--		AT91_SMC_NWESETUP_(1) | AT91_SMC_NCS_WRSETUP_(0) |
--		AT91_SMC_NRDSETUP_(1) | AT91_SMC_NCS_RDSETUP_(0);
--
--	cfg->pmc_mor = AT91_PMC_OSCBYPASS;
--	cfg->pmc_pllar =
--		AT91_PMC_PLLA_WR_ERRATA | /* Bit 29 must be 1 when prog */
--		AT91_PMC_PLLCOUNT |	/* PLL Counter */
--		(0 << 28) |		/* PLL Clock Frequency Range */
--		((MASTER_PLL_MUL - 1) << 16) | (MASTER_PLL_DIV);
--	/* PCK/2 = MCK Master Clock from PLLA */
--	cfg->pmc_mckr1 =
--		AT91_PMC_CSS_SLOW |
--		AT91_PMC_PRES_1 |
--		AT91SAM9_PMC_MDIV_2 |
--		AT91_PMC_PDIV_1;
--	/* PCK/2 = MCK Master Clock from PLLA */
--	cfg->pmc_mckr2 =
--		AT91_PMC_CSS_PLLA |
--		AT91_PMC_PRES_1 |
--		AT91SAM9_PMC_MDIV_2 |
--		AT91_PMC_PDIV_1;
--
--	/* SDRAM */
--	/* SDRAMC_TR - Refresh Timer register */
--	cfg->sdrc_tr1 = 0x13C;
--	/* SDRAMC_CR - Configuration register*/
--	cfg->sdrc_cr =
--		AT91_SDRAMC_NR_13 |
--		AT91_SDRAMC_NC_9 |
--		AT91_SDRAMC_NB_4 |
--		AT91_SDRAMC_CAS_2 |
--		AT91_SDRAMC_DBW_32 |
--		(2 <<  8) |		/* Write Recovery Delay */
--		(7 << 12) |		/* Row Cycle Delay */
--		(2 << 16) |		/* Row Precharge Delay */
--		(2 << 20) |		/* Row to Column Delay */
--		(5 << 24) |		/* Active to Precharge Delay */
--		(8 << 28);		/* Exit Self Refresh to Active Delay */
--
--	/* Memory Device Register -> SDRAM */
--	cfg->sdrc_mdr = AT91_SDRAMC_MD_SDRAM;
--	/* SDRAM_TR */
--	cfg->sdrc_tr2 = (MASTER_CLOCK * 7);
--
--	/* user reset enable */
--	cfg->rstc_rmr =
--		AT91_RSTC_KEY |
--		AT91_RSTC_PROCRST |
--		AT91_RSTC_RSTTYP_WAKEUP |
--		AT91_RSTC_RSTTYP_WATCHDOG;
--}
+ config MACH_AT91SAM9260EK
+ 	bool "Atmel AT91SAM9260-EK"
+-	select AT91SAM9260_LWL
+ 	select HAVE_NAND_ATMEL_BUSWIDTH_16
+ 	help
+ 	  Say y here if you are using Atmel's AT91SAM9260-EK Evaluation board
+@@ -371,7 +370,6 @@ choice
+ config MACH_AT91SAM9G20EK
+ 	bool "Atmel AT91SAM9G20-EK Evaluation Kit"
+ 	select HAVE_NAND_ATMEL_BUSWIDTH_16
+-	select AT91SAM9260_LWL
+ 	help
+ 	  Select this if you are using Atmel's AT91SAM9G20-EK Evaluation Kit
+ 	  that embeds only one SD/MMC slot.
 -- 
 2.12.0
 
