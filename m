@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
+Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eW3GI-0001xF-By
+ id 1eW3GG-0001xA-My
  for barebox@lists.infradead.org; Mon, 01 Jan 2018 16:48:33 +0000
-Received: by mail-lf0-x241.google.com with SMTP id w196so35798390lff.5
- for <barebox@lists.infradead.org>; Mon, 01 Jan 2018 08:48:19 -0800 (PST)
+Received: by mail-lf0-x244.google.com with SMTP id u84so33796913lff.7
+ for <barebox@lists.infradead.org>; Mon, 01 Jan 2018 08:48:18 -0800 (PST)
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Mon,  1 Jan 2018 17:48:08 +0100
-Message-Id: <20180101164808.32371-5-sam@ravnborg.org>
+Date: Mon,  1 Jan 2018 17:48:06 +0100
+Message-Id: <20180101164808.32371-3-sam@ravnborg.org>
 In-Reply-To: <20171231083407.GA16645@ravnborg.org>
 References: <20171231083407.GA16645@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -23,35 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 16/25] haba-knx: move reset vector to board code
+Subject: [PATCH 14/25] tny-a926x: move reset vector to board code
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Create new file lowlevel.c that contains the reset vector.
+Create two files (one for each CPU type) that
+contains the reset vector.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- arch/arm/boards/haba-knx/Makefile   |  3 +++
- arch/arm/boards/haba-knx/lowlevel.c | 26 ++++++++++++++++++++++++++
- arch/arm/mach-at91/Kconfig          |  1 -
- 3 files changed, 29 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/boards/haba-knx/lowlevel.c
+ arch/arm/boards/tny-a926x/Makefile             |  4 ++++
+ arch/arm/boards/tny-a926x/tny_a9260_lowlevel.c | 26 ++++++++++++++++++++++++++
+ arch/arm/boards/tny-a926x/tny_a9263_lowlevel.c | 26 ++++++++++++++++++++++++++
+ arch/arm/mach-at91/Kconfig                     |  3 ---
+ 4 files changed, 56 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm/boards/tny-a926x/tny_a9260_lowlevel.c
+ create mode 100644 arch/arm/boards/tny-a926x/tny_a9263_lowlevel.c
 
-diff --git a/arch/arm/boards/haba-knx/Makefile b/arch/arm/boards/haba-knx/Makefile
-index d9db6aba6..b1c469dcf 100644
---- a/arch/arm/boards/haba-knx/Makefile
-+++ b/arch/arm/boards/haba-knx/Makefile
-@@ -1,2 +1,5 @@
- obj-y += init.o
+diff --git a/arch/arm/boards/tny-a926x/Makefile b/arch/arm/boards/tny-a926x/Makefile
+index 49e0d4649..a96d02061 100644
+--- a/arch/arm/boards/tny-a926x/Makefile
++++ b/arch/arm/boards/tny-a926x/Makefile
+@@ -2,4 +2,8 @@ obj-y += init.o
+ 
+ obj-$(CONFIG_AT91_BOOTSTRAP) += tny_a9263_bootstrap.o
+ 
++lwl-$(CONFIG_MACH_TNY_A9260) += tny_a9260_lowlevel.o
++lwl-$(CONFIG_MACH_TNY_A9G20) += tny_a9260_lowlevel.o
++lwl-$(CONFIG_MACH_TNY_A9263) += tny_a9263_lowlevel.o
 +
-+lwl-y += lowlevel.o
-+
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-haba-knx
-diff --git a/arch/arm/boards/haba-knx/lowlevel.c b/arch/arm/boards/haba-knx/lowlevel.c
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-tny-a926x
+diff --git a/arch/arm/boards/tny-a926x/tny_a9260_lowlevel.c b/arch/arm/boards/tny-a926x/tny_a9260_lowlevel.c
 new file mode 100644
 index 000000000..02896856d
 --- /dev/null
-+++ b/arch/arm/boards/haba-knx/lowlevel.c
++++ b/arch/arm/boards/tny-a926x/tny_a9260_lowlevel.c
 @@ -0,0 +1,26 @@
 +/*
 + * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
@@ -79,17 +85,65 @@ index 000000000..02896856d
 +			  at91_get_sdram_size(IOMEM(AT91SAM9260_BASE_SDRAMC)),
 +			  NULL);
 +}
+diff --git a/arch/arm/boards/tny-a926x/tny_a9263_lowlevel.c b/arch/arm/boards/tny-a926x/tny_a9263_lowlevel.c
+new file mode 100644
+index 000000000..3ba24ce4c
+--- /dev/null
++++ b/arch/arm/boards/tny-a926x/tny_a9263_lowlevel.c
+@@ -0,0 +1,26 @@
++/*
++ * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * Under GPLv2
++  */
++
++#include <common.h>
++#include <init.h>
++
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++
++#include <mach/at91sam9_sdramc.h>
++#include <mach/at91sam9263.h>
++#include <mach/hardware.h>
++
++void __naked __bare_init barebox_arm_reset_vector(void)
++{
++	arm_cpu_lowlevel_init();
++
++	arm_setup_stack(AT91SAM9263_SRAM0_BASE + AT91SAM9263_SRAM0_SIZE - 16);
++
++	barebox_arm_entry(AT91_CHIPSELECT_1,
++			  at91_get_sdram_size(IOMEM(AT91SAM9263_BASE_SDRAMC0)),
++	                  NULL);
++}
 diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 1604b8d43..4ca99282a 100644
+index 4dd608f0e..2410ff8a9 100644
 --- a/arch/arm/mach-at91/Kconfig
 +++ b/arch/arm/mach-at91/Kconfig
-@@ -412,7 +412,6 @@ config MACH_QIL_A9G20
- 
- config MACH_HABA_KNX_LITE
- 	bool "CALAO HABA-KNX-LITE"
+@@ -297,7 +297,6 @@ config MACH_QIL_A9260
+ config MACH_TNY_A9260
+ 	bool "CALAO TNY-A9260"
+ 	select SUPPORT_CALAO_MOB_TNY_MD2
 -	select AT91SAM9260_LWL
  	help
- 	  Select this if you are using a Calao Systems HABA-KNX-LITE.
+ 	  Select this if you are using a Calao Systems TNY-A9260.
+ 	  <http://www.calao-systems.com>
+@@ -387,7 +386,6 @@ config MACH_AT91SAM9G20EK
+ config MACH_TNY_A9G20
+ 	select SUPPORT_CALAO_MOB_TNY_MD2
+ 	bool "CALAO TNY-A9G20"
+-	select AT91SAM9260_LWL
+ 	help
+ 	  Select this if you are using a Calao Systems TNY-A9G20.
+ 	  <http://www.calao-systems.com>
+@@ -455,7 +453,6 @@ config MACH_TNY_A9263
+ 	bool "CALAO TNY-A9263"
+ 	select SUPPORT_CALAO_MOB_TNY_MD2
+ 	select HAVE_AT91_BOOTSTRAP
+-	select AT91SAM9263_LWL
+ 	help
+ 	  Select this if you are using a Calao Systems TNY-A9263.
  	  <http://www.calao-systems.com>
 -- 
 2.12.0
