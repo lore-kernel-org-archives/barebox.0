@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eW3GG-0001xA-My
- for barebox@lists.infradead.org; Mon, 01 Jan 2018 16:48:33 +0000
-Received: by mail-lf0-x244.google.com with SMTP id u84so33796913lff.7
- for <barebox@lists.infradead.org>; Mon, 01 Jan 2018 08:48:18 -0800 (PST)
+ id 1eVvY7-0003UQ-Fa
+ for barebox@lists.infradead.org; Mon, 01 Jan 2018 08:34:25 +0000
+Date: Mon, 1 Jan 2018 09:34:07 +0100
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Mon,  1 Jan 2018 17:48:06 +0100
-Message-Id: <20180101164808.32371-3-sam@ravnborg.org>
-In-Reply-To: <20171231083407.GA16645@ravnborg.org>
+Message-ID: <20180101083407.GA9460@ravnborg.org>
 References: <20171231083407.GA16645@ravnborg.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20171231083407.GA16645@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,136 +18,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/25] tny-a926x: move reset vector to board code
+Subject: Mails lost towards barebox mailing list [Was: [PATCH v4 0/25] at91:
+ move ...]
 To: Barebox List <barebox@lists.infradead.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+
+Good morning - and happy new year!
+
+Something seems fishy here.
+Yesterday when trying to send out this patchset my ISP said
+[PATCH 01/25] ... was spam and rejected the mail.
+
+So I used an alternative smtp provider (also my POP3 provider).
+
+And tested this towards my work mail - OK.
+And when sent to barebox mailing list I got the cc: mails.
+
+But I can see that no mails have reached the Barebox mailing
+list for this or the following patch-set.
+(Checked the web version) So something is not OK.
+
+I tried again this morning, and mails sent using git send-email
+will reach my work mail.
+The mails leave my smtp provider, but are lost somewhere
+on the way to the barebox mailing list.
+
+Mail header looks like this (mail copied to myself):
+
+From SRS0=M5gI=D3=ravnborg.org=sam@mail01.mxhotel.dk  Sun Dec 31 10:43:50 2017
+Return-Path: <SRS0=M5gI=D3=ravnborg.org=sam@mail01.mxhotel.dk>
+Delivered-To: unknown
+Received: from mail01.mxhotel.dk (91.221.196.236:995) by
+        localhost.localdomain with POP3-SSL; 31 Dec 2017 09:43:50 -0000
+X-Original-To: sam@ravnborg.org
+Delivered-To: sam@ravnborg.org
+Received: from jupiter.lan (126.158-248-196.customer.lyse.net [158.248.196.126])
+        (Authenticated sender: sam@ravnborg.org)
+        by mail01.mxhotel.dk (Postfix) with ESMTPA id 74379194B34;
+       	Sun, 31 Dec 2017 10:35:41 +0100 (CET)
+X-Report-Abuse-To: abuse@mxhotel.dk
+From: Sam Ravnborg <sam@ravnborg.org>
+To: Sam Ravnborg <srn@skov.dk>
 Cc: Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH 01/25] arm: at91: refactor lowlevel_init selection
+Date: Sun, 31 Dec 2017 10:35:11 +0100
+Message-Id: <20171231093511.8111-1-sam@ravnborg.org>
+X-Mailer: git-send-email 2.12.0
+In-Reply-To: <20171231083407.GA16645@ravnborg.org>
+References: <20171231083407.GA16645@ravnborg.org>
+Status: O
+Content-Length: 15597
+Lines: 478
 
-Create two files (one for each CPU type) that
-contains the reset vector.
+If you have any hints what to look for, I would be glad to know.
 
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
----
- arch/arm/boards/tny-a926x/Makefile             |  4 ++++
- arch/arm/boards/tny-a926x/tny_a9260_lowlevel.c | 26 ++++++++++++++++++++++++++
- arch/arm/boards/tny-a926x/tny_a9263_lowlevel.c | 26 ++++++++++++++++++++++++++
- arch/arm/mach-at91/Kconfig                     |  3 ---
- 4 files changed, 56 insertions(+), 3 deletions(-)
- create mode 100644 arch/arm/boards/tny-a926x/tny_a9260_lowlevel.c
- create mode 100644 arch/arm/boards/tny-a926x/tny_a9263_lowlevel.c
-
-diff --git a/arch/arm/boards/tny-a926x/Makefile b/arch/arm/boards/tny-a926x/Makefile
-index 49e0d4649..a96d02061 100644
---- a/arch/arm/boards/tny-a926x/Makefile
-+++ b/arch/arm/boards/tny-a926x/Makefile
-@@ -2,4 +2,8 @@ obj-y += init.o
- 
- obj-$(CONFIG_AT91_BOOTSTRAP) += tny_a9263_bootstrap.o
- 
-+lwl-$(CONFIG_MACH_TNY_A9260) += tny_a9260_lowlevel.o
-+lwl-$(CONFIG_MACH_TNY_A9G20) += tny_a9260_lowlevel.o
-+lwl-$(CONFIG_MACH_TNY_A9263) += tny_a9263_lowlevel.o
-+
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-tny-a926x
-diff --git a/arch/arm/boards/tny-a926x/tny_a9260_lowlevel.c b/arch/arm/boards/tny-a926x/tny_a9260_lowlevel.c
-new file mode 100644
-index 000000000..02896856d
---- /dev/null
-+++ b/arch/arm/boards/tny-a926x/tny_a9260_lowlevel.c
-@@ -0,0 +1,26 @@
-+/*
-+ * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+  */
-+
-+#include <common.h>
-+#include <init.h>
-+
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+
-+#include <mach/at91sam9_sdramc.h>
-+#include <mach/at91sam9260.h>
-+#include <mach/hardware.h>
-+
-+void __naked __bare_init barebox_arm_reset_vector(void)
-+{
-+	arm_cpu_lowlevel_init();
-+
-+	arm_setup_stack(AT91SAM9260_SRAM_BASE + AT91SAM9260_SRAM_SIZE - 16);
-+
-+	barebox_arm_entry(AT91_CHIPSELECT_1,
-+			  at91_get_sdram_size(IOMEM(AT91SAM9260_BASE_SDRAMC)),
-+			  NULL);
-+}
-diff --git a/arch/arm/boards/tny-a926x/tny_a9263_lowlevel.c b/arch/arm/boards/tny-a926x/tny_a9263_lowlevel.c
-new file mode 100644
-index 000000000..3ba24ce4c
---- /dev/null
-+++ b/arch/arm/boards/tny-a926x/tny_a9263_lowlevel.c
-@@ -0,0 +1,26 @@
-+/*
-+ * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+  */
-+
-+#include <common.h>
-+#include <init.h>
-+
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+
-+#include <mach/at91sam9_sdramc.h>
-+#include <mach/at91sam9263.h>
-+#include <mach/hardware.h>
-+
-+void __naked __bare_init barebox_arm_reset_vector(void)
-+{
-+	arm_cpu_lowlevel_init();
-+
-+	arm_setup_stack(AT91SAM9263_SRAM0_BASE + AT91SAM9263_SRAM0_SIZE - 16);
-+
-+	barebox_arm_entry(AT91_CHIPSELECT_1,
-+			  at91_get_sdram_size(IOMEM(AT91SAM9263_BASE_SDRAMC0)),
-+	                  NULL);
-+}
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 4dd608f0e..2410ff8a9 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -297,7 +297,6 @@ config MACH_QIL_A9260
- config MACH_TNY_A9260
- 	bool "CALAO TNY-A9260"
- 	select SUPPORT_CALAO_MOB_TNY_MD2
--	select AT91SAM9260_LWL
- 	help
- 	  Select this if you are using a Calao Systems TNY-A9260.
- 	  <http://www.calao-systems.com>
-@@ -387,7 +386,6 @@ config MACH_AT91SAM9G20EK
- config MACH_TNY_A9G20
- 	select SUPPORT_CALAO_MOB_TNY_MD2
- 	bool "CALAO TNY-A9G20"
--	select AT91SAM9260_LWL
- 	help
- 	  Select this if you are using a Calao Systems TNY-A9G20.
- 	  <http://www.calao-systems.com>
-@@ -455,7 +453,6 @@ config MACH_TNY_A9263
- 	bool "CALAO TNY-A9263"
- 	select SUPPORT_CALAO_MOB_TNY_MD2
- 	select HAVE_AT91_BOOTSTRAP
--	select AT91SAM9263_LWL
- 	help
- 	  Select this if you are using a Calao Systems TNY-A9263.
- 	  <http://www.calao-systems.com>
--- 
-2.12.0
-
+	Sam
 
 _______________________________________________
 barebox mailing list
