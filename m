@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eW0tz-0003Md-KT
- for barebox@lists.infradead.org; Mon, 01 Jan 2018 14:17:21 +0000
+ id 1eW0tz-0003Mf-KX
+ for barebox@lists.infradead.org; Mon, 01 Jan 2018 14:17:24 +0000
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Mon,  1 Jan 2018 15:16:36 +0100
-Message-Id: <20180101141659.19554-1-sam@ravnborg.org>
+Date: Mon,  1 Jan 2018 15:16:38 +0100
+Message-Id: <20180101141659.19554-3-sam@ravnborg.org>
 In-Reply-To: <20171231083407.GA16645@ravnborg.org>
 References: <20171231083407.GA16645@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,80 +21,174 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/25] arm: at91: drop unused at91sam9x5_lowlevel_init.c
+Subject: [PATCH 04/25] arm: at91: code cleanup in at91sam926x_board_init
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Sam Ravnborg <sam@ravnborg.org>
 
-After refactoring of how we select lowlevel_init
-it was apparent that at91sam9x5_lowlevel_init.c was no
-longer used.
-Delete the file and the now unused CONFIG symbol and it uses
+- drop dead code (CONFIG_SYS_MATRIX_MCFG_REMAP not defined)
+- drop use of macros for simple __read/__write functions
+- delete extra lines
+- Trivial comments kept on a single line
 
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- arch/arm/mach-at91/Kconfig                    |  2 --
- arch/arm/mach-at91/Makefile                   |  1 -
- arch/arm/mach-at91/at91sam9x5_lowlevel_init.c | 26 --------------------------
- 3 files changed, 29 deletions(-)
- delete mode 100644 arch/arm/mach-at91/at91sam9x5_lowlevel_init.c
+ .../include/mach/at91sam926x_board_init.h          | 73 +++++-----------------
+ 1 file changed, 17 insertions(+), 56 deletions(-)
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index e94c5b0a8..670ef1a39 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -51,8 +51,6 @@ config AT91SAM9263_LWL
- 	bool
- config AT91SAM9G45_LWL
- 	bool
--config AT91SAM9X5_LWL
--	bool
- config AT91SAM9N12_LWL
- 	bool
- config AT91RM9200_LWL
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 71851d26c..66b83000a 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -15,7 +15,6 @@ lwl-$(CONFIG_AT91SAM9260_LWL)	+= at91sam9260_lowlevel_init.o
- lwl-$(CONFIG_AT91SAM9261_LWL)	+= at91sam9261_lowlevel_init.o
- lwl-$(CONFIG_AT91SAM9263_LWL)	+= at91sam9263_lowlevel_init.o
- lwl-$(CONFIG_AT91SAM9G45_LWL)	+= at91sam9g45_lowlevel_init.o
--lwl-$(CONFIG_AT91SAM9X5_LWL)	+= at91sam9x5_lowlevel_init.o
- lwl-$(CONFIG_AT91SAM9N12_LWL)	+= at91sam9n12_lowlevel_init.o
- lwl-$(CONFIG_SAMA5D3_LWL)	+= sama5d3_lowlevel_init.o
- lwl-$(CONFIG_SAMA5D4_LWL)	+= sama5d3_lowlevel_init.o
-diff --git a/arch/arm/mach-at91/at91sam9x5_lowlevel_init.c b/arch/arm/mach-at91/at91sam9x5_lowlevel_init.c
-deleted file mode 100644
-index 48e69f947..000000000
---- a/arch/arm/mach-at91/at91sam9x5_lowlevel_init.c
-+++ /dev/null
-@@ -1,26 +0,0 @@
--/*
-- * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-- *
-- * Under GPLv2
--  */
+diff --git a/arch/arm/mach-at91/include/mach/at91sam926x_board_init.h b/arch/arm/mach-at91/include/mach/at91sam926x_board_init.h
+index 54d67404c..70ae90337 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam926x_board_init.h
++++ b/arch/arm/mach-at91/include/mach/at91sam926x_board_init.h
+@@ -70,66 +70,50 @@ static int __always_inline running_in_sram(void)
+ 	return addr == 0;
+ }
+ 
+-#define at91_sdramc_read(field) \
+-	__raw_readl(cfg->sdramc + field)
 -
--#define __LOWLEVEL_INIT__
+-#define at91_sdramc_write(field, value) \
+-	__raw_writel(value, cfg->sdramc + field)
 -
--#include <common.h>
--#include <asm/system.h>
--#include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
--#include <mach/hardware.h>
--#include <mach/io.h>
--#include <mach/at91sam9_ddrsdr.h>
--#include <init.h>
--#include <linux/sizes.h>
+ static void __always_inline at91sam926x_sdramc_init(struct at91sam926x_board_cfg *cfg)
+ {
+ 	u32 r;
+ 	int i;
+ 	int in_sram = running_in_sram();
+ 
+-	/*
+-	 * SDRAMC Check if Refresh Timer Counter is already initialized
+-	 */
+-	r = at91_sdramc_read(AT91_SDRAMC_TR);
++	/* SDRAMC Check if Refresh Timer Counter is already initialized */
++	r = __raw_readl(cfg->sdramc + AT91_SDRAMC_TR);
+ 	if (r && !in_sram)
+ 		return;
+ 
+ 	/* SDRAMC_MR : Normal Mode */
+-	at91_sdramc_write(AT91_SDRAMC_MR, AT91_SDRAMC_MODE_NORMAL);
++	__raw_writel(AT91_SDRAMC_MR, cfg->sdramc + AT91_SDRAMC_MODE_NORMAL);
+ 
+ 	/* SDRAMC_TR - Refresh Timer register */
+-	at91_sdramc_write(AT91_SDRAMC_TR, cfg->sdrc_tr1);
++	__raw_writel(AT91_SDRAMC_TR, cfg->sdramc + cfg->sdrc_tr1);
+ 
+ 	/* SDRAMC_CR - Configuration register*/
+-	at91_sdramc_write(AT91_SDRAMC_CR, cfg->sdrc_cr);
++	__raw_writel(AT91_SDRAMC_CR, cfg->sdramc + cfg->sdrc_cr);
+ 
+ 	/* Memory Device Type */
+-	at91_sdramc_write(AT91_SDRAMC_MDR, cfg->sdrc_mdr);
++	__raw_writel(AT91_SDRAMC_MDR, cfg->sdramc + cfg->sdrc_mdr);
+ 
+ 	/* SDRAMC_MR : Precharge All */
+-	at91_sdramc_write(AT91_SDRAMC_MR, AT91_SDRAMC_MODE_PRECHARGE);
 -
--void __naked __bare_init barebox_arm_reset_vector(void)
--{
--	arm_cpu_lowlevel_init();
+-	/* access SDRAM */
++	__raw_writel(AT91_SDRAMC_MR, cfg->sdramc + AT91_SDRAMC_MODE_PRECHARGE);
+ 	access_sdram();
+ 
+ 	/* SDRAMC_MR : refresh */
+-	at91_sdramc_write(AT91_SDRAMC_MR, AT91_SDRAMC_MODE_REFRESH);
++	__raw_writel(AT91_SDRAMC_MR, cfg->sdramc + AT91_SDRAMC_MODE_REFRESH);
+ 
+ 	/* access SDRAM 8 times */
+ 	for (i = 0; i < 8; i++)
+ 		access_sdram();
+ 
+ 	/* SDRAMC_MR : Load Mode Register */
+-	at91_sdramc_write(AT91_SDRAMC_MR, AT91_SDRAMC_MODE_LMR);
 -
--	arm_setup_stack(AT91SAM9X5_SRAM_BASE + AT91SAM9X5_SRAM_SIZE - 16);
+-	/* access SDRAM */
++	__raw_writel(AT91_SDRAMC_MR, cfg->sdramc + AT91_SDRAMC_MODE_LMR);
+ 	access_sdram();
+ 
+ 	/* SDRAMC_MR : Normal Mode */
+-	at91_sdramc_write(AT91_SDRAMC_MR, AT91_SDRAMC_MODE_NORMAL);
 -
--	barebox_arm_entry(AT91_CHIPSELECT_1, at91sam9x5_get_ddram_size(), NULL);
--}
+-	/* access SDRAM */
++	__raw_writel(AT91_SDRAMC_MR, cfg->sdramc + AT91_SDRAMC_MODE_NORMAL);
+ 	access_sdram();
+ 
+ 	/* SDRAMC_TR : Refresh Timer Counter */
+-	at91_sdramc_write(AT91_SDRAMC_TR, cfg->sdrc_tr2);
+-
+-	/* access SDRAM */
++	__raw_writel(AT91_SDRAMC_TR, cfg->sdramc + cfg->sdrc_tr2);
+ 	access_sdram();
+ }
+ 
+@@ -152,64 +136,41 @@ static void __always_inline at91sam926x_board_init(struct at91sam926x_board_cfg
+ 
+ 	/* flash */
+ 	at91_smc_write(cfg->smc_cs, AT91_SAM9_SMC_MODE, cfg->smc_mode);
+-
+ 	at91_smc_write(cfg->smc_cs, AT91_SMC_CYCLE, cfg->smc_cycle);
+-
+ 	at91_smc_write(cfg->smc_cs, AT91_SMC_PULSE, cfg->smc_pulse);
+-
+ 	at91_smc_write(cfg->smc_cs, AT91_SMC_SETUP, cfg->smc_setup);
+ 
+-	/*
+-	 * PMC Check if the PLL is already initialized
+-	 */
++	/* PMC Check if the PLL is already initialized */
+ 	r = at91_pmc_read(AT91_PMC_MCKR);
+ 	if ((r & AT91_PMC_CSS) && !running_in_sram())
+ 		return;
+ 
+-	/*
+-	 * Enable the Main Oscillator
+-	 */
++	/* Enable the Main Oscillator */
+ 	at91_pmc_write(AT91_CKGR_MOR, cfg->pmc_mor);
+-
+ 	do {
+ 		r = at91_pmc_read(AT91_PMC_SR);
+ 	} while (!(r & AT91_PMC_MOSCS));
+ 
+-	/*
+-	 * PLLAR: x MHz for PCK
+-	 */
++	/* PLLAR: x MHz for PCK */
+ 	at91_pmc_write(AT91_CKGR_PLLAR, cfg->pmc_pllar);
+-
+ 	do {
+ 		r = at91_pmc_read(AT91_PMC_SR);
+ 	} while (!(r & AT91_PMC_LOCKA));
+ 
+-	/*
+-	 * PCK/x = MCK Master Clock from SLOW
+-	 */
++	/* PCK/x = MCK Master Clock from SLOW */
+ 	at91_pmc_write(AT91_PMC_MCKR, cfg->pmc_mckr1);
+-
+ 	pmc_check_mckrdy();
+ 
+-	/*
+-	 * PCK/x = MCK Master Clock from PLLA
+-	 */
++	/* PCK/x = MCK Master Clock from PLLA */
+ 	at91_pmc_write(AT91_PMC_MCKR, cfg->pmc_mckr2);
+-
+ 	pmc_check_mckrdy();
+ 
+-	/*
+-	 * Init SDRAM
+-	 */
++	/* Init SDRAM */
+ 	at91sam926x_sdramc_init(cfg);
+ 
+ 	/* User reset enable*/
+ 	at91_sys_write(AT91_RSTC_MR, cfg->rstc_rmr);
+ 
+-#ifdef CONFIG_SYS_MATRIX_MCFG_REMAP
+-	/* MATRIX_MCFG - REMAP all masters */
+-	at91_sys_write(AT91_MATRIX_MCFG0, 0x1FF);
+-#endif
+ 	/*
+ 	 * When boot from external boot
+ 	 * we need to enable mck and ohter clock
 -- 
 2.12.0
 
