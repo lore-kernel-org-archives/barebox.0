@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eW3GF-0001xD-Pk
- for barebox@lists.infradead.org; Mon, 01 Jan 2018 16:48:30 +0000
-Received: by mail-lf0-x242.google.com with SMTP id j143so8506664lfg.0
- for <barebox@lists.infradead.org>; Mon, 01 Jan 2018 08:48:19 -0800 (PST)
+ id 1eW3GF-0001x7-Ph
+ for barebox@lists.infradead.org; Mon, 01 Jan 2018 16:48:32 +0000
+Received: by mail-lf0-x242.google.com with SMTP id c19so33873421lfg.3
+ for <barebox@lists.infradead.org>; Mon, 01 Jan 2018 08:48:17 -0800 (PST)
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Mon,  1 Jan 2018 17:48:07 +0100
-Message-Id: <20180101164808.32371-4-sam@ravnborg.org>
+Date: Mon,  1 Jan 2018 17:48:05 +0100
+Message-Id: <20180101164808.32371-2-sam@ravnborg.org>
 In-Reply-To: <20171231083407.GA16645@ravnborg.org>
 References: <20171231083407.GA16645@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -23,35 +23,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/25] qil-a926x: move reset vector to board code
+Subject: [PATCH 10/25] usb-a926x: move reset vector to board code
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Create new file lowlevel.c that contains the reset vector.
+For all Calao USB boards move reset vector to board code.
+Introduce two different lowlevel.c files, one
+for each processor.
+Include a rename to make filenames similar.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- arch/arm/boards/qil-a926x/Makefile   |  3 +++
- arch/arm/boards/qil-a926x/lowlevel.c | 26 ++++++++++++++++++++++++++
- arch/arm/mach-at91/Kconfig           |  2 --
- 3 files changed, 29 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/boards/qil-a926x/lowlevel.c
+ arch/arm/boards/usb-a926x/Makefile                 |  4 +-
+ arch/arm/boards/usb-a926x/usb_a9260_lowlevel.c     | 26 +++++++++++++
+ ..._a9263_lowlevel_init.c => usb_a9263_lowlevel.c} | 43 ++++++++++++++++------
+ arch/arm/mach-at91/Kconfig                         |  5 +--
+ 4 files changed, 62 insertions(+), 16 deletions(-)
+ create mode 100644 arch/arm/boards/usb-a926x/usb_a9260_lowlevel.c
+ rename arch/arm/boards/usb-a926x/{usb_a9263_lowlevel_init.c => usb_a9263_lowlevel.c} (76%)
 
-diff --git a/arch/arm/boards/qil-a926x/Makefile b/arch/arm/boards/qil-a926x/Makefile
-index 0c7bc3f04..82e46b369 100644
---- a/arch/arm/boards/qil-a926x/Makefile
-+++ b/arch/arm/boards/qil-a926x/Makefile
-@@ -1,2 +1,5 @@
- obj-y += init.o
-+
-+lwl-y += lowlevel.o
-+
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-qil-a926x
-diff --git a/arch/arm/boards/qil-a926x/lowlevel.c b/arch/arm/boards/qil-a926x/lowlevel.c
+diff --git a/arch/arm/boards/usb-a926x/Makefile b/arch/arm/boards/usb-a926x/Makefile
+index a4eae1844..65cc4082f 100644
+--- a/arch/arm/boards/usb-a926x/Makefile
++++ b/arch/arm/boards/usb-a926x/Makefile
+@@ -2,6 +2,8 @@ obj-y += init.o
+ 
+ obj-$(CONFIG_AT91_BOOTSTRAP) += usb_a9263_bootstrap.o
+ 
+-lwl-$(CONFIG_AT91SAM926X_LWL) += usb_a9263_lowlevel_init.o
++lwl-$(CONFIG_MACH_USB_A9260) += usb_a9260_lowlevel.o
++lwl-$(CONFIG_MACH_USB_A9G20) += usb_a9260_lowlevel.o
++lwl-$(CONFIG_MACH_USB_A9263) += usb_a9263_lowlevel.o
+ 
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-usb-a926x
+diff --git a/arch/arm/boards/usb-a926x/usb_a9260_lowlevel.c b/arch/arm/boards/usb-a926x/usb_a9260_lowlevel.c
 new file mode 100644
 index 000000000..02896856d
 --- /dev/null
-+++ b/arch/arm/boards/qil-a926x/lowlevel.c
++++ b/arch/arm/boards/usb-a926x/usb_a9260_lowlevel.c
 @@ -0,0 +1,26 @@
 +/*
 + * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
@@ -79,25 +88,103 @@ index 000000000..02896856d
 +			  at91_get_sdram_size(IOMEM(AT91SAM9260_BASE_SDRAMC)),
 +			  NULL);
 +}
+diff --git a/arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c b/arch/arm/boards/usb-a926x/usb_a9263_lowlevel.c
+similarity index 76%
+rename from arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c
+rename to arch/arm/boards/usb-a926x/usb_a9263_lowlevel.c
+index f6dc58e3f..066452b95 100644
+--- a/arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c
++++ b/arch/arm/boards/usb-a926x/usb_a9263_lowlevel.c
+@@ -4,16 +4,12 @@
+  * Under GPLv2
+  */
+ 
+-#include <common.h>
+-#include <init.h>
+-#include <mach/hardware.h>
+-#include <mach/at91_rstc.h>
+-#include <mach/at91_wdt.h>
+-#include <mach/at91_pmc.h>
+-#include <mach/at91sam9_smc.h>
+-#include <mach/at91sam9_sdramc.h>
+-#include <mach/at91sam9_matrix.h>
+-#include <mach/at91_lowlevel_init.h>
++#include <linux/sizes.h>
++
++#include <asm/barebox-arm.h>
++
++#include <mach/at91sam926x_board_init.h>
++#include <mach/at91sam9263_matrix.h>
+ 
+ #define MASTER_CLOCK		180
+ 
+@@ -24,7 +20,7 @@
+ #endif
+ #define MASTER_PLL_DIV		6
+ 
+-void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_cfg *cfg)
++static void __bare_init usb_a9263_board_config(struct at91sam926x_board_cfg *cfg)
+ {
+ 	/* Disable Watchdog */
+ 	cfg->wdt_mr =
+@@ -109,3 +105,28 @@ void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_c
+ 		AT91_RSTC_RSTTYP_WAKEUP |
+ 		AT91_RSTC_RSTTYP_WATCHDOG;
+ }
++
++static void __bare_init usb_a9263_init(void)
++{
++	struct at91sam926x_board_cfg cfg;
++
++	cfg.pio = IOMEM(AT91SAM9263_BASE_PIOD);
++	cfg.sdramc = IOMEM(AT91SAM9263_BASE_SDRAMC0);
++	cfg.ebi_pio_is_peripha = true;
++	cfg.matrix_csa = AT91_MATRIX_EBI0CSA;
++
++	usb_a9263_board_config(&cfg);
++	at91sam926x_board_init(&cfg);
++
++	barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(cfg.sdramc),
++	                  NULL);
++}
++
++void __naked __bare_init barebox_arm_reset_vector(void)
++{
++	arm_cpu_lowlevel_init();
++
++	arm_setup_stack(AT91SAM9263_SRAM0_BASE + AT91SAM9263_SRAM0_SIZE - 16);
++
++	usb_a9263_init();
++}
 diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 2410ff8a9..1604b8d43 100644
+index a622279d7..306f82497 100644
 --- a/arch/arm/mach-at91/Kconfig
 +++ b/arch/arm/mach-at91/Kconfig
-@@ -289,7 +289,6 @@ config MACH_AT91SAM9260EK
- 
- config MACH_QIL_A9260
- 	bool "CALAO QIL-A9260 board"
+@@ -305,7 +305,6 @@ config MACH_TNY_A9260
+ config MACH_USB_A9260
+ 	bool "CALAO USB-A9260"
+ 	select SUPPORT_CALAO_DAB_MMX
 -	select AT91SAM9260_LWL
  	help
- 	  Select this if you are using a Calao Systems QIL-A9260 Board.
+ 	  Select this if you are using a Calao Systems USB-A9260.
  	  <http://www.calao-systems.com>
-@@ -407,7 +406,6 @@ config MACH_DSS11
- 
- config MACH_QIL_A9G20
- 	bool "CALAO QIL-A9G20 board"
+@@ -396,7 +395,6 @@ config MACH_TNY_A9G20
+ config MACH_USB_A9G20
+ 	bool "CALAO USB-A9G20"
+ 	select SUPPORT_CALAO_DAB_MMX
 -	select AT91SAM9260_LWL
  	help
- 	  Select this if you are using a Calao Systems QIL-A9G20 Board.
+ 	  Select this if you are using a Calao Systems USB-A9G20.
+ 	  <http://www.calao-systems.com>
+@@ -466,8 +464,7 @@ config MACH_TNY_A9263
+ config MACH_USB_A9263
+ 	bool "CALAO USB-A9263"
+ 	select HAVE_AT91_BOOTSTRAP
+-	select AT91SAM9263_LWL
+-	select AT91SAM926X_LWL
++	select AT91SAM926X_BOARD_INIT
+ 	help
+ 	  Select this if you are using a Calao Systems USB-A9263.
  	  <http://www.calao-systems.com>
 -- 
 2.12.0
