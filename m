@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eW0wS-0004dR-Qd
- for barebox@lists.infradead.org; Mon, 01 Jan 2018 14:19:55 +0000
+ id 1eW0wS-0004dU-Qe
+ for barebox@lists.infradead.org; Mon, 01 Jan 2018 14:19:57 +0000
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Mon,  1 Jan 2018 15:19:32 +0100
-Message-Id: <20180101141939.20606-2-sam@ravnborg.org>
+Date: Mon,  1 Jan 2018 15:19:35 +0100
+Message-Id: <20180101141939.20606-5-sam@ravnborg.org>
 In-Reply-To: <20171231083407.GA16645@ravnborg.org>
 References: <20171231083407.GA16645@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,95 +21,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/25] at91sam9n12ek: move reset vector to board code
+Subject: [PATCH 21/25] animeo: move reset vector to board code
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Delete the unused at91sam9n12_lowlevel_init.c
-Create new lowlevel.c that contains the reset vector.
-
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- arch/arm/boards/at91sam9n12ek/Makefile                      |  3 +++
- .../at91sam9n12ek/lowlevel.c}                               | 13 +++++--------
- arch/arm/mach-at91/Kconfig                                  |  3 ---
- arch/arm/mach-at91/Makefile                                 |  1 -
- 4 files changed, 8 insertions(+), 12 deletions(-)
- rename arch/arm/{mach-at91/at91sam9n12_lowlevel_init.c => boards/at91sam9n12ek/lowlevel.c} (84%)
+ arch/arm/boards/animeo_ip/Makefile   |  3 +++
+ arch/arm/boards/animeo_ip/lowlevel.c | 26 ++++++++++++++++++++++++++
+ arch/arm/mach-at91/Kconfig           |  1 -
+ 3 files changed, 29 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/boards/animeo_ip/lowlevel.c
 
-diff --git a/arch/arm/boards/at91sam9n12ek/Makefile b/arch/arm/boards/at91sam9n12ek/Makefile
-index f5d125a0e..458b05591 100644
---- a/arch/arm/boards/at91sam9n12ek/Makefile
-+++ b/arch/arm/boards/at91sam9n12ek/Makefile
+diff --git a/arch/arm/boards/animeo_ip/Makefile b/arch/arm/boards/animeo_ip/Makefile
+index 510b142ff..61c714b45 100644
+--- a/arch/arm/boards/animeo_ip/Makefile
++++ b/arch/arm/boards/animeo_ip/Makefile
 @@ -1,2 +1,5 @@
  obj-y += init.o
 +
 +lwl-y += lowlevel.o
 +
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-at91sam9n12ek
-diff --git a/arch/arm/mach-at91/at91sam9n12_lowlevel_init.c b/arch/arm/boards/at91sam9n12ek/lowlevel.c
-similarity index 84%
-rename from arch/arm/mach-at91/at91sam9n12_lowlevel_init.c
-rename to arch/arm/boards/at91sam9n12ek/lowlevel.c
-index 2b5cb158b..3c5234eb5 100644
---- a/arch/arm/mach-at91/at91sam9n12_lowlevel_init.c
-+++ b/arch/arm/boards/at91sam9n12ek/lowlevel.c
-@@ -4,17 +4,14 @@
-  * Under GPLv2
-   */
- 
--#define __LOWLEVEL_INIT__
--
- #include <common.h>
--#include <asm/system.h>
--#include <asm/barebox-arm.h>
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-animeo_ip
+diff --git a/arch/arm/boards/animeo_ip/lowlevel.c b/arch/arm/boards/animeo_ip/lowlevel.c
+new file mode 100644
+index 000000000..02896856d
+--- /dev/null
++++ b/arch/arm/boards/animeo_ip/lowlevel.c
+@@ -0,0 +1,26 @@
++/*
++ * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * Under GPLv2
++  */
++
++#include <common.h>
 +#include <init.h>
 +
- #include <asm/barebox-arm-head.h>
--#include <mach/hardware.h>
--#include <mach/io.h>
++#include <asm/barebox-arm-head.h>
 +#include <asm/barebox-arm.h>
 +
- #include <mach/at91sam9_ddrsdr.h>
--#include <init.h>
--#include <linux/sizes.h>
++#include <mach/at91sam9_sdramc.h>
++#include <mach/at91sam9260.h>
 +#include <mach/hardware.h>
- 
- void __naked __bare_init barebox_arm_reset_vector(void)
- {
++
++void __naked __bare_init barebox_arm_reset_vector(void)
++{
++	arm_cpu_lowlevel_init();
++
++	arm_setup_stack(AT91SAM9260_SRAM_BASE + AT91SAM9260_SRAM_SIZE - 16);
++
++	barebox_arm_entry(AT91_CHIPSELECT_1,
++			  at91_get_sdram_size(IOMEM(AT91SAM9260_BASE_SDRAMC)),
++			  NULL);
++}
 diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 991600fe4..94d85dbcf 100644
+index 9571b199c..8cd85f7b9 100644
 --- a/arch/arm/mach-at91/Kconfig
 +++ b/arch/arm/mach-at91/Kconfig
-@@ -49,8 +49,6 @@ config AT91SAM9263_LWL
- 	bool
- config AT91SAM9G45_LWL
- 	bool
--config AT91SAM9N12_LWL
--	bool
- config AT91RM9200_LWL
- 	bool
+@@ -269,7 +269,6 @@ choice
  
-@@ -501,7 +499,6 @@ choice
+ config MACH_ANIMEO_IP
+ 	bool "Somfy Animeo IP"
+-	select AT91SAM9260_LWL
+ 	depends on !CONSOLE_NONE
  
- config MACH_AT91SAM9N12EK
- 	bool "Atmel AT91SAM9N12 Evaluation Kit"
--	select AT91SAM9N12_LWL
- 	help
- 	  Select this if you are using Atmel's AT91SAM9N12-EK Evaluation Kit.
- 
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index cb8dade6d..b51f1873b 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -14,7 +14,6 @@ lwl-$(CONFIG_AT91RM9200_LWL)	+= at91rm9200_lowlevel_init.o
- lwl-$(CONFIG_AT91SAM9260_LWL)	+= at91sam9260_lowlevel_init.o
- lwl-$(CONFIG_AT91SAM9263_LWL)	+= at91sam9263_lowlevel_init.o
- lwl-$(CONFIG_AT91SAM9G45_LWL)	+= at91sam9g45_lowlevel_init.o
--lwl-$(CONFIG_AT91SAM9N12_LWL)	+= at91sam9n12_lowlevel_init.o
- 
- obj-$(CONFIG_AT91SAM9_RESET) += at91sam9_reset.o
- obj-$(CONFIG_AT91SAM9G45_RESET) += at91sam9g45_reset.o
+ config MACH_AT91SAM9260EK
 -- 
 2.12.0
 
