@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from mail-qt0-x244.google.com ([2607:f8b0:400d:c0d::244])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eWndj-0000yJ-8Z
- for barebox@lists.infradead.org; Wed, 03 Jan 2018 18:19:49 +0000
-Date: Wed, 3 Jan 2018 19:19:27 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20180103181927.GA13201@ravnborg.org>
-References: <20171231083407.GA16645@ravnborg.org>
- <20180101083407.GA9460@ravnborg.org>
- <20180101170528.GA4087@ravnborg.org>
+ id 1eX93x-0000Hp-0o
+ for barebox@lists.infradead.org; Thu, 04 Jan 2018 17:12:18 +0000
+Received: by mail-qt0-x244.google.com with SMTP id i40so2661815qti.8
+ for <barebox@lists.infradead.org>; Thu, 04 Jan 2018 09:12:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180101170528.GA4087@ravnborg.org>
+In-Reply-To: <20171231083407.GA16645@ravnborg.org>
+References: <20171231083407.GA16645@ravnborg.org>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu, 4 Jan 2018 09:12:03 -0800
+Message-ID: <CAHQ1cqGrWvbfY-Y=OouEYKorVLCMspz7uz+Ca7vGrjO+pVCoyQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,50 +23,148 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Mails lost towards barebox mailing list [Was: [PATCH v4 0/25]
- at91: move ...]
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH v4 0/25] at91: move reset vector to board code
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi all.
+On Sun, Dec 31, 2017 at 12:34 AM, Sam Ravnborg <sam@ravnborg.org> wrote:
+> The following patchset moves the reset vector
+> for at91 boards from mach-at91 to board code.
+> This is similar to what other boards do and is done to
+> prepare for multi-image and DT support.
+>
+> The patchset convert all boards and thus clean up the
+> old code that resided in mach-at91/
+>
+> The first patch have minimal impact, but prepares for a
+> board-by-board conversion.
+> All temporary CONFIG symbols are gone at the end of this series.
+>
+> I kept Jean-Christophe PLAGNIOL-VILLARD and others
+> copyright in all the created files and did not add
+> copyright myself. The patchset does IMO not add any
+> copyrightable material from my side as this is
+> in reality just moving around code.
+>
+> With this patchset applied we no longer have any
+> places where we call board code from mach-at91/
+> thus allowing us to introduce multi-images.
+> And we are also on the right track to introduce
+> DT support for additional AT91 based boards.
+>
+> The patchset was successfully booted on a AT91SAM9263EK,
+> and all defconfigs was built (expect the ones that failed
+> to build before this patchset was applied).
+>
+> I consider the patchset ready for barebox-next.
+>
+>         Sam
+>
+> Changes v4 => v3
+>   Updated at91sam926x_board_init.h based on feedback from Andrey Smirnov
+>
+> Changes v2 => v3
+>   v2 was posted in July - but I have lacked spare time until now
+>   to give it a proper respin
+>   - respin of all patches on top of v2017.12.0
+>   - fix bogus handling of at91sam926x_board_init
+>   - Introduce new CONFIG symbol for at91sam926x_board_init to allow bisects
+>
+> Changes v1 => v2
+>   - converted all boards over
+>   - fixed author info
+>
 
-Continuing my monolouge :-)
 
-On Mon, Jan 01, 2018 at 06:05:28PM +0100, Sam Ravnborg wrote:
-> On Mon, Jan 01, 2018 at 09:34:07AM +0100, Sam Ravnborg wrote:
-> > Good morning - and happy new year!
-> > 
-> > Something seems fishy here.
-> ...
-> > But I can see that no mails have reached the Barebox mailing
-> > list for this or the following patch-set.
-> > (Checked the web version) So something is not OK.
-> I managed to send most mail out using my normal smtp server.
-> And then I used Google smtp to send the remaining mails.
-> So they are out order - sorry.
-> 
-> This was not what I had planned to start the new year with.
+Reviewed-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-I have tracked down the culprint.
-If my mails include following address:
-<http : // www . calao-systems . com>
-then they are marked as spam.
-
-My first mail to ISP helpdesk was answered by a less skilled person.
-Hopefully the second mail reaches a person that at least can read
-all of my mail.
-
-I have no clue what kind of blacklisting they use.
-
-I checked here:
-https://mxtoolbox.com/blacklists.aspx
-
-and all reported OK.
-
-I hope they find a way to fix it.
-Until then I may have to revert to the Google smtp solution.
-
-	Sam
+>
+> Sam Ravnborg (25):
+>       arm: at91: refactor lowlevel_init selection
+>       arm: at91: drop unused at91sam9x5_lowlevel_init.c
+>       arm: at91: add at91sam926x_board_init.h
+>       arm: at91: code cleanup in at91sam926x_board_init
+>       at91sam9263ek: move reset vector to board code
+>       at91sam9261ek, at91sam9g10ek: move reset vector to board code
+>       pm9261: move reset vector to board code
+>       at91: drop unused at91sam9261_lowlevel_init
+>       pm9263: move reset vector to board code
+>       usb-a926x: move reset vector to board code
+>       mmccpu: delete unused lowlevel_init
+>       mmccpu: move reset vector to board code
+>       tny-a926x: delete unused tny_a9263_lowlevel_init.c
+>       tny-a926x: move reset vector to board code
+>       qil-a926x: move reset vector to board code
+>       haba-knx: move reset vector to board code
+>       sama5d{3,4}{xek,xplained}: move reset vector to board code
+>       at91sam9n12ek: move reset vector to board code
+>       at91sam9260ek, at91sam9g20ek: move reset vector to board code
+>       at91sam9m10g45ek, at91sam9m10ihd, pm9g45: move reset vector to board code
+>       animeo: move reset vector to board code
+>       telit-evk-pro3: move reset vector to board code
+>       dss11: move reset vector to board code
+>       at91rm9200ek: move reset vector to board code
+>       arm: at91: remove leftovers from moving reset code in mach-at91
+>
+>
+> # git diff --stat=120 -M -C HEAD~36..HEAD~11
+> # Note options above to let git track copies/renames
+>  arch/arm/boards/animeo_ip/Makefile                                          |   3 +
+>  arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/animeo_ip/lowlevel.c} |  17 +++--
+>  arch/arm/boards/at91rm9200ek/Makefile                                       |   3 +
+>  .../at91rm9200_lowlevel_init.c => boards/at91rm9200ek/lowlevel.c}           |  14 ++--
+>  arch/arm/boards/at91sam9260ek/Makefile                                      |   3 +
+>  .../{mach-at91/sama5d3_lowlevel_init.c => boards/at91sam9260ek/lowlevel.c}  |  17 +++--
+>  arch/arm/boards/at91sam9261ek/Makefile                                      |   2 +-
+>  arch/arm/boards/at91sam9261ek/lowlevel_init.c                               |  41 +++++++---
+>  arch/arm/boards/at91sam9263ek/Makefile                                      |   2 +-
+>  arch/arm/boards/at91sam9263ek/lowlevel_init.c                               |  43 ++++++++---
+>  arch/arm/boards/at91sam9m10g45ek/Makefile                                   |   3 +
+>  .../at91sam9g45_lowlevel_init.c => boards/at91sam9m10g45ek/lowlevel.c}      |  11 +--
+>  arch/arm/boards/at91sam9m10ihd/Makefile                                     |   2 +
+>  .../at91sam9x5_lowlevel_init.c => boards/at91sam9m10ihd/lowlevel.c}         |  19 +++--
+>  arch/arm/boards/at91sam9n12ek/Makefile                                      |   3 +
+>  .../at91sam9n12_lowlevel_init.c => boards/at91sam9n12ek/lowlevel.c}         |  13 ++--
+>  arch/arm/boards/dss11/Makefile                                              |   2 +
+>  arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/dss11/lowlevel.c}     |  17 +++--
+>  arch/arm/boards/haba-knx/Makefile                                           |   3 +
+>  arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/haba-knx/lowlevel.c}  |  17 +++--
+>  arch/arm/boards/mmccpu/Makefile                                             |   2 +-
+>  .../arm/{mach-at91/at91sam9n12_lowlevel_init.c => boards/mmccpu/lowlevel.c} |  19 +++--
+>  arch/arm/boards/mmccpu/lowlevel_init.c                                      | 135 --------------------------------
+>  arch/arm/boards/pm9261/Makefile                                             |   2 +-
+>  arch/arm/boards/pm9261/lowlevel_init.c                                      |  39 +++++++---
+>  arch/arm/boards/pm9263/Makefile                                             |   2 +-
+>  arch/arm/boards/pm9263/lowlevel_init.c                                      |  43 ++++++++---
+>  arch/arm/boards/pm9g45/Makefile                                             |   3 +
+>  .../arm/{mach-at91/at91sam9g45_lowlevel_init.c => boards/pm9g45/lowlevel.c} |  13 ++--
+>  arch/arm/boards/qil-a926x/Makefile                                          |   3 +
+>  arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/qil-a926x/lowlevel.c} |  17 +++--
+>  arch/arm/boards/sama5d3_xplained/Makefile                                   |   1 +
+>  .../sama5d3_lowlevel_init.c => boards/sama5d3_xplained/lowlevel.c}          |  10 +--
+>  arch/arm/boards/sama5d3xek/Makefile                                         |   1 +
+>  .../arm/{mach-at91/sama5d3_lowlevel_init.c => boards/sama5d3xek/lowlevel.c} |  10 +--
+>  arch/arm/boards/sama5d4_xplained/Makefile                                   |   1 +
+>  .../sama5d3_lowlevel_init.c => boards/sama5d4_xplained/lowlevel.c}          |  10 +--
+>  arch/arm/boards/sama5d4ek/Makefile                                          |   1 +
+>  arch/arm/{mach-at91/sama5d3_lowlevel_init.c => boards/sama5d4ek/lowlevel.c} |  10 +--
+>  arch/arm/boards/telit-evk-pro3/Makefile                                     |   2 +
+>  .../{mach-at91/sama5d3_lowlevel_init.c => boards/telit-evk-pro3/lowlevel.c} |  17 +++--
+>  arch/arm/boards/tny-a926x/Makefile                                          |   8 +-
+>  .../sama5d3_lowlevel_init.c => boards/tny-a926x/tny_a9260_lowlevel.c}       |  17 +++--
+>  .../at91sam9n12_lowlevel_init.c => boards/tny-a926x/tny_a9263_lowlevel.c}   |  19 +++--
+>  arch/arm/boards/tny-a926x/tny_a9263_lowlevel_init.c                         | 107 --------------------------
+>  arch/arm/boards/usb-a926x/Makefile                                          |   8 +-
+>  .../sama5d3_lowlevel_init.c => boards/usb-a926x/usb_a9260_lowlevel.c}       |  17 +++--
+>  .../boards/usb-a926x/{usb_a9263_lowlevel_init.c => usb_a9263_lowlevel.c}    |  43 ++++++++---
+>  arch/arm/mach-at91/Kconfig                                                  |  31 ++++----
+>  arch/arm/mach-at91/Makefile                                                 |  14 +---
+>  arch/arm/mach-at91/at91sam9260_lowlevel_init.c                              |  48 ------------
+>  arch/arm/mach-at91/at91sam9261_lowlevel_init.c                              |  48 ------------
+>  arch/arm/mach-at91/at91sam9263_lowlevel_init.c                              |  48 ------------
+>  arch/arm/mach-at91/include/mach/at91_lowlevel_init.h                        |  46 -----------
+>  .../{at91sam926x_lowlevel_init.c => include/mach/at91sam926x_board_init.h}  | 148 ++++++++++++++++--------------------
+>  55 files changed, 422 insertions(+), 756 deletions(-)
 
 _______________________________________________
 barebox mailing list
