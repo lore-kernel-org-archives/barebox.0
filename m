@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eXPZX-00077U-H1
- for barebox@lists.infradead.org; Fri, 05 Jan 2018 10:50:01 +0000
-Date: Fri, 5 Jan 2018 11:49:46 +0100
+ id 1eXTR3-0000G1-Al
+ for barebox@lists.infradead.org; Fri, 05 Jan 2018 14:57:31 +0000
+Date: Fri, 5 Jan 2018 15:57:17 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180105104946.m24p2h6ho774s5i4@pengutronix.de>
+Message-ID: <20180105145717.by52sqmg55vfkjbf@pengutronix.de>
 References: <20171226183236.GA26708@ravnborg.org>
  <20171226183653.GD28706@ravnborg.org>
+ <20180105104946.m24p2h6ho774s5i4@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20171226183653.GD28706@ravnborg.org>
+In-Reply-To: <20180105104946.m24p2h6ho774s5i4@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,51 +28,64 @@ Subject: Re: [PATCH 4/4] build: fix that LZO file is always rebuilt
 To: Sam Ravnborg <sam@ravnborg.org>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi Sam,
-
-On Tue, Dec 26, 2017 at 07:36:53PM +0100, Sam Ravnborg wrote:
-> From e398a00f84db33ea5ae7f6ee12c54511ef7a94fc Mon Sep 17 00:00:00 2001
-> From: Sam Ravnborg <sam@ravnborg.org>
-> Date: Tue, 26 Dec 2017 18:09:35 +0100
-> Subject: [PATCH 4/4] build: fix that LZO file is always rebuilt
+On Fri, Jan 05, 2018 at 11:49:46AM +0100, Sascha Hauer wrote:
+> Hi Sam,
 > 
-> Port the make-cmd from linux kernel.
-> with the updated version $$ is porperly escaped, thus
-> the LZO rule works as intended.
-> And we avoid rebuilds when not required
+> On Tue, Dec 26, 2017 at 07:36:53PM +0100, Sam Ravnborg wrote:
+> > From e398a00f84db33ea5ae7f6ee12c54511ef7a94fc Mon Sep 17 00:00:00 2001
+> > From: Sam Ravnborg <sam@ravnborg.org>
+> > Date: Tue, 26 Dec 2017 18:09:35 +0100
+> > Subject: [PATCH 4/4] build: fix that LZO file is always rebuilt
+> > 
+> > Port the make-cmd from linux kernel.
+> > with the updated version $$ is porperly escaped, thus
+> > the LZO rule works as intended.
+> > And we avoid rebuilds when not required
+> > 
+> > Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> > ---
+> >  scripts/Kbuild.include | 12 +++++++-----
+> >  1 file changed, 7 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
+> > index 310dcdc94..fb3fa88fb 100644
+> > --- a/scripts/Kbuild.include
+> > +++ b/scripts/Kbuild.include
+> > @@ -205,11 +205,13 @@ else
+> >  arg-check = $(if $(strip $(cmd_$@)),,1)
+> >  endif
+> >  
+> > -# >'< substitution is for echo to work,
+> > -# >$< substitution to preserve $ when reloading .cmd file
+> > -# note: when using inline perl scripts [perl -e '...$$t=1;...']
+> > -# in $(cmd_xxx) double $$ your perl vars
+> > -make-cmd = $(subst \\,\\\\,$(subst \#,\\\#,$(subst $$,$$$$,$(call escsq,$(cmd_$(1))))))
+> > +# Replace >$< with >$$< to preserve $ when reloading the .cmd file
+> > +# (needed for make)
+> > +# Replace >#< with >\#< to avoid starting a comment in the .cmd file
+> > +# (needed for make)
+> > +# Replace >'< with >'\''< to be able to enclose the whole string in '...'
+> > +# (needed for the shell)
+> > +make-cmd = $(call escsq,$(subst \#,\\\#,$(subst $$,$$$$,$(cmd_$(1)))))
+> >  
 > 
-> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> ---
->  scripts/Kbuild.include | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
+> This doesn't work for me. Without this patch I do not see any rebuilds
+> of lzo files, but with this patch I do.
 > 
-> diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
-> index 310dcdc94..fb3fa88fb 100644
-> --- a/scripts/Kbuild.include
-> +++ b/scripts/Kbuild.include
-> @@ -205,11 +205,13 @@ else
->  arg-check = $(if $(strip $(cmd_$@)),,1)
->  endif
->  
-> -# >'< substitution is for echo to work,
-> -# >$< substitution to preserve $ when reloading .cmd file
-> -# note: when using inline perl scripts [perl -e '...$$t=1;...']
-> -# in $(cmd_xxx) double $$ your perl vars
-> -make-cmd = $(subst \\,\\\\,$(subst \#,\\\#,$(subst $$,$$$$,$(call escsq,$(cmd_$(1))))))
-> +# Replace >$< with >$$< to preserve $ when reloading the .cmd file
-> +# (needed for make)
-> +# Replace >#< with >\#< to avoid starting a comment in the .cmd file
-> +# (needed for make)
-> +# Replace >'< with >'\''< to be able to enclose the whole string in '...'
-> +# (needed for the shell)
-> +make-cmd = $(call escsq,$(subst \#,\\\#,$(subst $$,$$$$,$(cmd_$(1)))))
->  
+> Seems you are using another shell, dash vs. bash? Porting the second
+> hunk of the kernel commit 164f0d2efaaef83 fixes it for me.
 
-This doesn't work for me. Without this patch I do not see any rebuilds
-of lzo files, but with this patch I do.
+Ok, applied with the missing hunk from 164f0d2efaaef83:
 
-Seems you are using another shell, dash vs. bash? Porting the second
-hunk of the kernel commit 164f0d2efaaef83 fixes it for me.
+@@ -220,7 +222,7 @@ any-prereq = $(filter-out $(PHONY),$?) $(filter-out $(PHONY) $(wildcard $^),$^)
+ if_changed = $(if $(strip $(any-prereq) $(arg-check)),                       \
+        @set -e;                                                             \
+        $(echo-cmd) $(cmd_$(1));                                             \
+-       echo 'cmd_$@ := $(make-cmd)' > $(dot-target).cmd)
++       printf '%s\n' 'cmd_$@ := $(make-cmd)' > $(dot-target).cmd)
+ 
+
+Please let me know if I have overlooked something.
 
 Sascha
 
