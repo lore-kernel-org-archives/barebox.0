@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x229.google.com ([2a00:1450:4010:c07::229])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eRyOq-0005Vb-4h
- for barebox@lists.infradead.org; Thu, 21 Dec 2017 10:48:29 +0000
-Received: by mail-lf0-x229.google.com with SMTP id j124so27377722lfg.2
- for <barebox@lists.infradead.org>; Thu, 21 Dec 2017 02:48:17 -0800 (PST)
-Received: from localhost.localdomain (t109.niisi.ras.ru. [193.232.173.109])
- by smtp.gmail.com with ESMTPSA id h21sm4029584lja.56.2017.12.21.02.48.14
- for <barebox@lists.infradead.org>
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Thu, 21 Dec 2017 02:48:14 -0800 (PST)
-Date: Thu, 21 Dec 2017 13:48:11 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20171221104811.3o2tesuqfr7ej477@localhost.localdomain>
-References: <20171220104814.4snxmloobeywnuwb@localhost.localdomain>
+ id 1eXTIm-0002OM-GZ
+ for barebox@lists.infradead.org; Fri, 05 Jan 2018 14:48:59 +0000
+Date: Fri, 5 Jan 2018 15:48:43 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180105144843.rtr3ht5vikftwdnl@pengutronix.de>
+References: <20171220103644.10918-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20171220104814.4snxmloobeywnuwb@localhost.localdomain>
+In-Reply-To: <20171220103644.10918-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,60 +18,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: command: hashsum: md5sum reports wrong sum for the file named
- 4k.bin
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] string.h: Implement strndup
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Wed, Dec 20, 2017 at 01:48:14PM +0300, Peter Mamonov wrote:
-> Hi,
-> 
-> The md5sum command reports wrong sum for a file named 4k.bin and, I guess, for 
-> other files named alike. Here are the commands to reproduce the bug:
+On Wed, Dec 20, 2017 at 11:36:44AM +0100, Uwe Kleine-K=F6nig wrote:
+> I implemented this while trying to import mmc-utils into barebox. While
+> I didn't finish this import this function might still be useful for
+> someone?!
+> =
 
-The problem lays in __do_digest() function: 
- - it initializes variables `start` and `size` at commands/digest.c:38
- - then it calls parse_area_spec(*argv, &start, &size) at commands/digest.c:42
- - parse_area_spec() returns error as it should, however it changes the value 
- of the `start` at lib/misc.c:87.
- - this causes digest algo to skip leading 4k of the data from the file.
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 
-I'm not quite sure what is the best solution:
- - prevent parse_area_spec() from setting start if it fails?
- - reinitialize start/size after unsuccessfull call to parse_area_spec()?
+I find it useful, so:
 
-Regards,
-Peter
+Applied, thanks
 
+Sascha
 
-> 
-> 	barebox@barebox sandbox:/ memcpy -s /dev/zero -d _4k.bin 0 0 4k
-> 	barebox@barebox sandbox:/ md5sum _4k.bin
-> 	620f0b67a91f7f74151bc5be745b7110  _4k.bin
-> 	
-> 	barebox@barebox sandbox:/ cp _4k.bin 4k.bin
-> 	barebox@barebox sandbox:/ md5sum 4k.bin
-> 	d41d8cd98f00b204e9800998ecf8427e  4k.bin
-> 	
-> 	barebox@barebox sandbox:/ cp 4k.bin __4k.bin
-> 	barebox@barebox sandbox:/ md5sum __4k.bin 
-> 	620f0b67a91f7f74151bc5be745b7110  __4k.bin
-> 	
-> 	barebox@barebox sandbox:/ version
-> 	
-> 	barebox 2017.12.0 #4 Wed Dec 20 12:26:57 MSK 2017
-> 	
-> 	barebox@barebox sandbox:/ Terminated
-> 	
-> 	$ dd if=/dev/zero bs=4k count=1 | md5sum
-> 	...
-> 	620f0b67a91f7f74151bc5be745b7110  -
-> 
-> Regards,
-> Peter
+> ---
+>  include/linux/string.h |  3 +++
+>  lib/string.c           | 20 ++++++++++++++++++++
+>  2 files changed, 23 insertions(+)
+> =
+
+> diff --git a/include/linux/string.h b/include/linux/string.h
+> index 5df8c50e579a..ed4eeb5519e6 100644
+> --- a/include/linux/string.h
+> +++ b/include/linux/string.h
+> @@ -80,6 +80,9 @@ extern __kernel_size_t strnlen(const char *,__kernel_si=
+ze_t);
+>  #ifndef __HAVE_ARCH_STRDUP
+>  extern char * strdup(const char *);
+>  #endif
+> +#ifndef __HAVE_ARCH_STRNDUP
+> +extern char *strndup(const char *, size_t);
+> +#endif
+>  #ifndef __HAVE_ARCH_STRSWAB
+>  extern char * strswab(const char *);
+>  #endif
+> diff --git a/lib/string.c b/lib/string.c
+> index 1d491c9c2fb5..f588933e8191 100644
+> --- a/lib/string.c
+> +++ b/lib/string.c
+> @@ -323,6 +323,26 @@ char * strdup(const char *s)
+>  #endif
+>  EXPORT_SYMBOL(strdup);
+>  =
+
+> +#ifndef __HAVE_ARCH_STRNDUP
+> +char *strndup(const char *s, size_t n)
+> +{
+> +	char *new;
+> +	size_t len =3D strnlen(s, n);
+> +
+> +	if ((s =3D=3D NULL) ||
+> +	    ((new =3D malloc(len + 1)) =3D=3D NULL)) {
+> +		return NULL;
+> +	}
+> +
+> +	memcpy(new, s, len);
+> +	new[len] =3D '\0';
+> +
+> +	return new;
+> +}
+> +
+> +#endif
+> +EXPORT_SYMBOL(strndup);
+> +
+>  #ifndef __HAVE_ARCH_STRSPN
+>  /**
+>   * strspn - Calculate the length of the initial substring of @s which on=
+ly
+> -- =
+
+> 2.11.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
