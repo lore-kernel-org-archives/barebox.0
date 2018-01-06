@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eXvkr-0007rG-St
- for barebox@lists.infradead.org; Sat, 06 Jan 2018 21:12:17 +0000
-Received: by mail-lf0-x241.google.com with SMTP id d19so177995lfj.5
- for <barebox@lists.infradead.org>; Sat, 06 Jan 2018 13:11:43 -0800 (PST)
+ id 1eXvkr-0007pu-Sn
+ for barebox@lists.infradead.org; Sat, 06 Jan 2018 21:12:24 +0000
+Received: by mail-lf0-x241.google.com with SMTP id m8so2393293lfc.6
+ for <barebox@lists.infradead.org>; Sat, 06 Jan 2018 13:11:39 -0800 (PST)
 From: Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH v5 13/22] haba-knx: move reset vector to board code
-Date: Sat,  6 Jan 2018 22:11:09 +0100
-Message-Id: <20180106211118.24249-13-sam@ravnborg.org>
+Date: Sat,  6 Jan 2018 22:11:05 +0100
+Message-Id: <20180106211118.24249-9-sam@ravnborg.org>
 In-Reply-To: <20180106210450.GA21127@ravnborg.org>
 References: <20180106210450.GA21127@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -24,74 +23,103 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
+Subject: [PATCH v5 09/22] at91: drop unused at91sam9261_lowlevel_init
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Create new file lowlevel.c that contains the reset vector.
+All at91sam9261 based boards uses board specific
+reset vectors so the mach-at91 provided version is
+no longer in use.
+Delete unused CONFIG symbols too.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 Reviewed-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/haba-knx/Makefile   |  3 +++
- arch/arm/boards/haba-knx/lowlevel.c | 26 ++++++++++++++++++++++++++
- arch/arm/mach-at91/Kconfig          |  1 -
- 3 files changed, 29 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/boards/haba-knx/lowlevel.c
+ arch/arm/mach-at91/Kconfig                     |  2 --
+ arch/arm/mach-at91/Makefile                    |  1 -
+ arch/arm/mach-at91/at91sam9261_lowlevel_init.c | 48 --------------------------
+ 3 files changed, 51 deletions(-)
+ delete mode 100644 arch/arm/mach-at91/at91sam9261_lowlevel_init.c
 
-diff --git a/arch/arm/boards/haba-knx/Makefile b/arch/arm/boards/haba-knx/Makefile
-index d9db6aba6..b1c469dcf 100644
---- a/arch/arm/boards/haba-knx/Makefile
-+++ b/arch/arm/boards/haba-knx/Makefile
-@@ -1,2 +1,5 @@
- obj-y += init.o
-+
-+lwl-y += lowlevel.o
-+
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-haba-knx
-diff --git a/arch/arm/boards/haba-knx/lowlevel.c b/arch/arm/boards/haba-knx/lowlevel.c
-new file mode 100644
-index 000000000..b16ef31bf
---- /dev/null
-+++ b/arch/arm/boards/haba-knx/lowlevel.c
-@@ -0,0 +1,26 @@
-+/*
-+ * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+
-+#include <mach/at91sam9_sdramc.h>
-+#include <mach/at91sam9260.h>
-+#include <mach/hardware.h>
-+
-+void __naked __bare_init barebox_arm_reset_vector(void)
-+{
-+	arm_cpu_lowlevel_init();
-+
-+	arm_setup_stack(AT91SAM9260_SRAM_BASE + AT91SAM9260_SRAM_SIZE - 16);
-+
-+	barebox_arm_entry(AT91_CHIPSELECT_1,
-+			  at91_get_sdram_size(IOMEM(AT91SAM9260_BASE_SDRAMC)),
-+			  NULL);
-+}
 diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 1d614074e..4f8a22cc5 100644
+index abedbf762..242e21022 100644
 --- a/arch/arm/mach-at91/Kconfig
 +++ b/arch/arm/mach-at91/Kconfig
-@@ -412,7 +412,6 @@ config MACH_QIL_A9G20
+@@ -45,8 +45,6 @@ config AT91SAM926X_LWL
+ # as implemented in the *lowlevel_init.c files
+ config AT91SAM9260_LWL
+ 	bool
+-config AT91SAM9261_LWL
+-	bool
+ config AT91SAM9263_LWL
+ 	bool
+ config AT91SAM9G45_LWL
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 66b83000a..1c7921914 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -12,7 +12,6 @@ lwl-$(CONFIG_AT91SAM926X_LWL)	+= at91sam926x_lowlevel_init.o
  
- config MACH_HABA_KNX_LITE
- 	bool "CALAO HABA-KNX-LITE"
--	select AT91SAM9260_LWL
- 	help
- 	  Select this if you are using a Calao Systems HABA-KNX-LITE.
- 	  <http://www.calao-systems.com>
+ lwl-$(CONFIG_AT91RM9200_LWL)	+= at91rm9200_lowlevel_init.o
+ lwl-$(CONFIG_AT91SAM9260_LWL)	+= at91sam9260_lowlevel_init.o
+-lwl-$(CONFIG_AT91SAM9261_LWL)	+= at91sam9261_lowlevel_init.o
+ lwl-$(CONFIG_AT91SAM9263_LWL)	+= at91sam9263_lowlevel_init.o
+ lwl-$(CONFIG_AT91SAM9G45_LWL)	+= at91sam9g45_lowlevel_init.o
+ lwl-$(CONFIG_AT91SAM9N12_LWL)	+= at91sam9n12_lowlevel_init.o
+diff --git a/arch/arm/mach-at91/at91sam9261_lowlevel_init.c b/arch/arm/mach-at91/at91sam9261_lowlevel_init.c
+deleted file mode 100644
+index 0ad7f0a0c..000000000
+--- a/arch/arm/mach-at91/at91sam9261_lowlevel_init.c
++++ /dev/null
+@@ -1,48 +0,0 @@
+-/*
+- * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+- *
+- * Under GPLv2
+-  */
+-
+-#define __LOWLEVEL_INIT__
+-
+-#include <common.h>
+-#include <asm/system.h>
+-#include <asm/barebox-arm.h>
+-#include <asm/barebox-arm-head.h>
+-#include <mach/hardware.h>
+-#include <mach/at91_pmc.h>
+-#include <mach/at91_pio.h>
+-#include <mach/at91_rstc.h>
+-#include <mach/at91_wdt.h>
+-#include <mach/at91sam9_matrix.h>
+-#include <mach/at91sam9_sdramc.h>
+-#include <mach/at91sam9_smc.h>
+-#include <mach/at91_lowlevel_init.h>
+-#include <mach/io.h>
+-#include <init.h>
+-#include <linux/sizes.h>
+-
+-void __bare_init at91sam9261_lowlevel_init(void)
+-{
+-	struct at91sam926x_lowlevel_cfg cfg;
+-
+-	cfg.pio = IOMEM(AT91SAM9261_BASE_PIOC);
+-	cfg.sdramc = IOMEM(AT91SAM9261_BASE_SDRAMC);
+-	cfg.ebi_pio_is_peripha = false;
+-	cfg.matrix_csa = AT91_MATRIX_EBICSA;
+-
+-	at91sam926x_lowlevel_init(&cfg);
+-
+-	barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(cfg.sdramc),
+-	                  NULL);
+-}
+-
+-void __naked __bare_init barebox_arm_reset_vector(void)
+-{
+-	arm_cpu_lowlevel_init();
+-
+-	arm_setup_stack(AT91SAM9261_SRAM_BASE + AT91SAM9261_SRAM_SIZE - 16);
+-
+-	at91sam9261_lowlevel_init();
+-}
 -- 
 2.12.0
 
