@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eXQ2I-0007Xn-O5
- for barebox@lists.infradead.org; Fri, 05 Jan 2018 11:19:44 +0000
-Date: Fri, 5 Jan 2018 12:19:30 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180105111930.m6l7oklzjevsw7ly@pengutronix.de>
+ id 1eXiux-0007qS-QG
+ for barebox@lists.infradead.org; Sat, 06 Jan 2018 07:29:26 +0000
+Date: Sat, 6 Jan 2018 08:29:03 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20180106072903.GA9286@ravnborg.org>
 References: <20180101213332.GA7937@ravnborg.org>
+ <20180105111930.m6l7oklzjevsw7ly@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180101213332.GA7937@ravnborg.org>
+In-Reply-To: <20180105111930.m6l7oklzjevsw7ly@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,40 +24,39 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [RFC PATCH] pwm: add pwm-atmel from Linux kernel 4.14
-To: Sam Ravnborg <sam@ravnborg.org>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Jan 01, 2018 at 10:33:32PM +0100, Sam Ravnborg wrote:
-> Following patch is more or less untested.
+Hi Sascha.
+
+> > While working with this I get the impression that the core
+> > should know about pwm channels and device_d pointer
+> > should be part of the core data.
 > 
-> It is posted to get feedback if this is the right way to
-> implement support for pwms in at91sam9263 & friends.
-> 
-> In the kernel there is also a file named pwm-atmel-tcb.
-> I dunno which is the better starting point.
+> I know it's done like this in Linux. Any good reason to do this in
+> barebox aswell besides of "do it as in Linux"?
 
-Looks good, but I don't know the hardware and can't say what
-pwm-atmel-tcb is for.
+The overall structure is something like this:
 
-> 
-> The patch will recognize pwm0 on the at91sam9263ek board
-> (if status = "okay") so it has seen minimal testing.
-> But I have yet to utilize any of the pwm's.
-> 
-> While working with this I get the impression that the core
-> should know about pwm channels and device_d pointer
-> should be part of the core data.
+  PWM Controller       PWM Channel
+  +------------+
+  |            |     +------------+
+  |  pwm_chip  |====>| pwm_device |+
+  |            |     +------------+|
+  +------------+      +------------+
 
-I know it's done like this in Linux. Any good reason to do this in
-barebox aswell besides of "do it as in Linux"?
+And with the current core support each implementation
+needs to provide their owm implementation of this.
+And I can see the core has data I think belongs
+on another level.
 
-Sascha
+So having better core support should simplify the individual
+implementations a bit - I think.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+When I get pwm-atmel working I may try to give it a shot.
+If things turns out positivie I will post patches.
+
+	Sam
 
 _______________________________________________
 barebox mailing list
