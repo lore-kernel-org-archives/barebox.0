@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
- by casper.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eXvl2-0005gC-Jr
- for barebox@lists.infradead.org; Sat, 06 Jan 2018 21:12:02 +0000
-Received: by mail-lf0-x244.google.com with SMTP id u84so8482633lff.7
- for <barebox@lists.infradead.org>; Sat, 06 Jan 2018 13:11:50 -0800 (PST)
+ by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
+ id 1eXvkq-0007q4-Na
+ for barebox@lists.infradead.org; Sat, 06 Jan 2018 21:12:07 +0000
+Received: by mail-lf0-x244.google.com with SMTP id f3so8487999lfe.4
+ for <barebox@lists.infradead.org>; Sat, 06 Jan 2018 13:11:40 -0800 (PST)
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Sat,  6 Jan 2018 22:11:17 +0100
-Message-Id: <20180106211118.24249-21-sam@ravnborg.org>
+Date: Sat,  6 Jan 2018 22:11:06 +0100
+Message-Id: <20180106211118.24249-10-sam@ravnborg.org>
 In-Reply-To: <20180106210450.GA21127@ravnborg.org>
 References: <20180106210450.GA21127@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -23,98 +23,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 21/22] at91rm9200ek: move reset vector to board code
+Subject: [PATCH v5 10/22] pm9263: move reset vector to board code
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
-
-Include deletion of now unused at91rm9200_lowlevel_init.c
-and related CONFIG symbols
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 Reviewed-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/at91rm9200ek/Makefile                      |  3 +++
- .../at91rm9200ek/lowlevel.c}                               | 14 ++++++--------
- arch/arm/mach-at91/Kconfig                                 |  3 ---
- arch/arm/mach-at91/Makefile                                |  1 -
- 4 files changed, 9 insertions(+), 12 deletions(-)
- rename arch/arm/{mach-at91/at91rm9200_lowlevel_init.c => boards/at91rm9200ek/lowlevel.c} (97%)
+ arch/arm/boards/pm9263/lowlevel_init.c | 43 +++++++++++++++++++++++++---------
+ arch/arm/mach-at91/Kconfig             |  3 +--
+ 2 files changed, 33 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm/boards/at91rm9200ek/Makefile b/arch/arm/boards/at91rm9200ek/Makefile
-index dec1c5045..a07c06a6d 100644
---- a/arch/arm/boards/at91rm9200ek/Makefile
-+++ b/arch/arm/boards/at91rm9200ek/Makefile
-@@ -1,2 +1,5 @@
- obj-y += init.o
-+
-+lwl-y += lowlevel.o
-+
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-at91rm9200ek
-diff --git a/arch/arm/mach-at91/at91rm9200_lowlevel_init.c b/arch/arm/boards/at91rm9200ek/lowlevel.c
-similarity index 97%
-rename from arch/arm/mach-at91/at91rm9200_lowlevel_init.c
-rename to arch/arm/boards/at91rm9200ek/lowlevel.c
-index f78e36808..a85a22e79 100644
---- a/arch/arm/mach-at91/at91rm9200_lowlevel_init.c
-+++ b/arch/arm/boards/at91rm9200ek/lowlevel.c
-@@ -4,19 +4,17 @@
+diff --git a/arch/arm/boards/pm9263/lowlevel_init.c b/arch/arm/boards/pm9263/lowlevel_init.c
+index 6336d5106..6849f0a5b 100644
+--- a/arch/arm/boards/pm9263/lowlevel_init.c
++++ b/arch/arm/boards/pm9263/lowlevel_init.c
+@@ -4,22 +4,18 @@
   * Under GPLv2
   */
  
--#define __LOWLEVEL_INIT__
--
- #include <common.h>
--#include <asm/system.h>
--#include <asm/barebox-arm.h>
-+#include <init.h>
-+
- #include <asm/barebox-arm-head.h>
+-#include <common.h>
+-#include <init.h>
 -#include <mach/hardware.h>
--#include <mach/at91rm9200.h>
+-#include <mach/at91_rstc.h>
+-#include <mach/at91_wdt.h>
+-#include <mach/at91_pmc.h>
+-#include <mach/at91sam9_smc.h>
+-#include <mach/at91sam9_sdramc.h>
+-#include <mach/at91sam9_matrix.h>
+-#include <mach/at91_lowlevel_init.h>
++#include <linux/sizes.h>
++
 +#include <asm/barebox-arm.h>
 +
- #include <mach/at91rm9200_mc.h>
-+#include <mach/at91rm9200.h>
- #include <mach/at91_pio.h>
- #include <mach/at91_pmc.h>
--#include <mach/io.h>
--#include <init.h>
-+#include <mach/hardware.h>
++#include <mach/at91sam926x_board_init.h>
++#include <mach/at91sam9263_matrix.h>
  
- void static inline access_sdram(void)
+ #define MASTER_PLL_DIV		6
+ #define MASTER_PLL_MUL		65
+ #define MAIN_PLL_DIV		2	/* 2 or 4 */
+ 
+-void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_cfg *cfg)
++static void __bare_init pm9263_board_config(struct at91sam926x_board_cfg *cfg)
  {
+ 	/* Disable Watchdog */
+ 	cfg->wdt_mr =
+@@ -119,3 +115,28 @@ void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_c
+ 		AT91_RSTC_RSTTYP_WAKEUP |
+ 		AT91_RSTC_RSTTYP_WATCHDOG;
+ }
++
++static void __bare_init pm9263_board_init(void)
++{
++	struct at91sam926x_board_cfg cfg;
++
++	cfg.pio = IOMEM(AT91SAM9263_BASE_PIOD);
++	cfg.sdramc = IOMEM(AT91SAM9263_BASE_SDRAMC0);
++	cfg.ebi_pio_is_peripha = true;
++	cfg.matrix_csa = AT91_MATRIX_EBI0CSA;
++
++	pm9263_board_config(&cfg);
++	at91sam926x_board_init(&cfg);
++
++	barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(cfg.sdramc),
++	                  NULL);
++}
++
++void __naked __bare_init barebox_arm_reset_vector(void)
++{
++	arm_cpu_lowlevel_init();
++
++	arm_setup_stack(AT91SAM9263_SRAM0_BASE + AT91SAM9263_SRAM0_SIZE - 16);
++
++	pm9263_board_init();
++}
 diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 1d2ac085d..74e1a862b 100644
+index 242e21022..5fb17658a 100644
 --- a/arch/arm/mach-at91/Kconfig
 +++ b/arch/arm/mach-at91/Kconfig
-@@ -47,8 +47,6 @@ config AT91SAM9260_LWL
- 	bool
- config AT91SAM9263_LWL
- 	bool
--config AT91RM9200_LWL
--	bool
- 
- config AT91SAM9_SMC
- 	bool
-@@ -251,7 +249,6 @@ choice
- config MACH_AT91RM9200EK
- 	bool "Atmel AT91RM9200-EK Evaluation Kit"
- 	select HAVE_AT91_DATAFLASH_CARD
--	select AT91RM9200_LWL
+@@ -444,8 +444,7 @@ config MACH_AT91SAM9263EK
+ config MACH_PM9263
+ 	bool "Ronetix PM9263"
+ 	select HAVE_AT91_BOOTSTRAP
+-	select AT91SAM9263_LWL
+-	select AT91SAM926X_LWL
++	select AT91SAM926X_BOARD_INIT
  	help
- 	  Select this if you are using Atmel's AT91RM9200-EK Evaluation Kit.
- 	  <http://www.atmel.com/dyn/products/tools_card.asp?tool_id=3507>
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index c430498ff..7193b8690 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -10,7 +10,6 @@ obj-$(CONFIG_AT91_BOOTSTRAP)	+= bootstrap.o
- 
- lwl-$(CONFIG_AT91SAM926X_LWL)	+= at91sam926x_lowlevel_init.o
- 
--lwl-$(CONFIG_AT91RM9200_LWL)	+= at91rm9200_lowlevel_init.o
- lwl-$(CONFIG_AT91SAM9260_LWL)	+= at91sam9260_lowlevel_init.o
- lwl-$(CONFIG_AT91SAM9263_LWL)	+= at91sam9263_lowlevel_init.o
+ 	  Say y here if you are using the Ronetix PM9263 Board
  
 -- 
 2.12.0
