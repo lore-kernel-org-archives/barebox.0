@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eYrnH-0008Bg-T5
- for barebox@lists.infradead.org; Tue, 09 Jan 2018 11:10:13 +0000
-Date: Tue, 9 Jan 2018 12:10:00 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180109111000.redcxmlavhxbgcnm@pengutronix.de>
-References: <20171220104814.4snxmloobeywnuwb@localhost.localdomain>
- <20171221104811.3o2tesuqfr7ej477@localhost.localdomain>
- <20180105114419.pfb3ouxfogen4y6f@pengutronix.de>
- <20180105181730.q65oevjnuixvn5k2@localhost>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180105181730.q65oevjnuixvn5k2@localhost>
+Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+ by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
+ id 1eYumi-0004GI-OF
+ for barebox@lists.infradead.org; Tue, 09 Jan 2018 14:21:51 +0000
+Received: by mail-lf0-x243.google.com with SMTP id f3so16130408lfe.4
+ for <barebox@lists.infradead.org>; Tue, 09 Jan 2018 06:21:37 -0800 (PST)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Tue,  9 Jan 2018 17:21:20 +0300
+Message-Id: <20180109142120.5498-1-pmamonov@gmail.com>
+In-Reply-To: <20180109111000.redcxmlavhxbgcnm@pengutronix.de>
+References: <20180109111000.redcxmlavhxbgcnm@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,57 +18,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: command: hashsum: md5sum reports wrong sum for the file named
- 4k.bin
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] lib: parse_area_spec: don't modify *start and *size values if
+ parse failed
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-On Fri, Jan 05, 2018 at 09:17:30PM +0300, Peter Mamonov wrote:
-> On Fri, Jan 05, 2018 at 12:44:19PM +0100, Sascha Hauer wrote:
-> > Hi Peter,
-> > 
-> > On Thu, Dec 21, 2017 at 01:48:11PM +0300, Peter Mamonov wrote:
-> > > On Wed, Dec 20, 2017 at 01:48:14PM +0300, Peter Mamonov wrote:
-> > > > Hi,
-> > > > 
-> > > > The md5sum command reports wrong sum for a file named 4k.bin and, I guess, for 
-> > > > other files named alike. Here are the commands to reproduce the bug:
-> > > 
-> > > The problem lays in __do_digest() function: 
-> > >  - it initializes variables `start` and `size` at commands/digest.c:38
-> > >  - then it calls parse_area_spec(*argv, &start, &size) at commands/digest.c:42
-> > >  - parse_area_spec() returns error as it should, however it changes the value 
-> > >  of the `start` at lib/misc.c:87.
-> > >  - this causes digest algo to skip leading 4k of the data from the file.
-> > > 
-> > > I'm not quite sure what is the best solution:
-> > >  - prevent parse_area_spec() from setting start if it fails?
-> > >  - reinitialize start/size after unsuccessfull call to parse_area_spec()?
-> > 
-> > preventing parse_area_spec() from modifying start and size if it fails
-> > seems like a good idea.
-> > 
-> > However, this doesn't solve the problem, does it? parse_area_spec()
-> > only fails because the dot in 4k.bin is not valid, but if you name
-> > the file only '4k' then parse_area_spec() won't fail.
-> > The problem is that we cannot know whether '4k' is a file or an area.
-> 
-> You are right. However, there is no ambiguity in the "4k.bin" and similar 
-> cases, so we can fix at least this obvious problem.
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+---
+ lib/misc.c | 46 ++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 32 insertions(+), 14 deletions(-)
 
-Indeed, so a patch for parse_area_spec() would be welcomed.
-
-Sascha
-
+diff --git a/lib/misc.c b/lib/misc.c
+index 62ddd6677..c7d5a0ca5 100644
+--- a/lib/misc.c
++++ b/lib/misc.c
+@@ -79,38 +79,56 @@ EXPORT_SYMBOL(strtoul_suffix);
+ int parse_area_spec(const char *str, loff_t *start, loff_t *size)
+ {
+ 	char *endp;
+-	loff_t end;
++	loff_t end, _start, _size;
++	int ret = -1;
+ 
+ 	if (!isdigit(*str))
+ 		return -1;
+ 
+-	*start = strtoull_suffix(str, &endp, 0);
++	_start = strtoull_suffix(str, &endp, 0);
+ 
+ 	str = endp;
+ 
+ 	if (!*str) {
+ 		/* beginning given, but no size, assume maximum size */
+-		*size = ~0;
+-		return 0;
++		_size = ~0;
++		ret = 0;
+ 	}
+ 
+-	if (*str == '-') {
++	if (ret && *str == '-') {
+ 		/* beginning and end given */
+-		end = strtoull_suffix(str + 1, NULL, 0);
+-		if (end < *start) {
++		if (!isdigit(*(str + 1)))
++			return ret;
++
++		end = strtoull_suffix(str + 1, &endp, 0);
++		str = endp;
++		if (end < _start) {
+ 			printf("end < start\n");
+-			return -1;
++			return ret;
+ 		}
+-		*size = end - *start + 1;
+-		return 0;
++		_size = end - _start + 1;
++		ret = 0;
+ 	}
+ 
+-	if (*str == '+') {
++	if (ret && *str == '+') {
+ 		/* beginning and size given */
+-		*size = strtoull_suffix(str + 1, NULL, 0);
+-		return 0;
++		if (!isdigit(*(str + 1)))
++			return ret;
++
++		_size = strtoull_suffix(str + 1, &endp, 0);
++		str = endp;
++		ret = 0;
++	}
++
++	if (!ret && *str)
++		/* trailing symbols indicate invalid area spec */
++		ret = -1;
++
++	if (!ret) {
++		*start = _start;
++		*size = _size;
+ 	}
+ 
+-	return -1;
++	return ret;
+ }
+ EXPORT_SYMBOL(parse_area_spec);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
