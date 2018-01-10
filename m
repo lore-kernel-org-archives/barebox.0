@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.4.pengutronix.de ([92.198.50.35])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eZBbZ-00032g-2U
- for barebox@lists.infradead.org; Wed, 10 Jan 2018 08:19:26 +0000
+ id 1eZBnL-0006EH-FJ
+ for barebox@lists.infradead.org; Wed, 10 Jan 2018 08:31:37 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed, 10 Jan 2018 09:19:12 +0100
-Message-Id: <20180110081912.21808-2-s.trumtrar@pengutronix.de>
-In-Reply-To: <20180110081912.21808-1-s.trumtrar@pengutronix.de>
-References: <20180110081912.21808-1-s.trumtrar@pengutronix.de>
+Date: Wed, 10 Jan 2018 09:31:21 +0100
+Message-Id: <20180110083121.4540-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,112 +19,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: socfpga: move environment from dtsi to board dts
+Subject: [PATCH] reset: reset-socfpga: sync driver with linux
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Currently all upstream boards use the same barebox-environment setup.
-It is however problematic to add new boards, that have a different setup.
-Instead of having to /delete-node/ the file-path property in those boards,
-move the environment to the specific board files.
-This also has the charme of - maybe one day - getting rid of a barebox-version
-of socfpga.dtsi :-)
+Sync the SoCFPGA reset driver with Linux v4.14-rc1.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/dts/socfpga.dtsi                      | 8 --------
- arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts | 6 ++++++
- arch/arm/dts/socfpga_cyclone5_socdk.dts        | 8 ++++++++
- arch/arm/dts/socfpga_cyclone5_sockit.dts       | 6 ++++++
- arch/arm/dts/socfpga_cyclone5_socrates.dts     | 6 ++++++
- 5 files changed, 26 insertions(+), 8 deletions(-)
+ drivers/reset/reset-socfpga.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/dts/socfpga.dtsi b/arch/arm/dts/socfpga.dtsi
-index 2fe8f8687593..7789c9d3b5c2 100644
---- a/arch/arm/dts/socfpga.dtsi
-+++ b/arch/arm/dts/socfpga.dtsi
-@@ -1,12 +1,4 @@
- / {
--	chosen {
--		environment@0 {
--			compatible = "barebox,environment";
--			device-path = &mmc, "partname:1";
--			file-path = "barebox.env";
--		};
--	};
--
- 	aliases {
- 		mmc0 = &mmc;
- 	};
-diff --git a/arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts b/arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts
-index 087fc71e60ef..8854ade43468 100644
---- a/arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts
-+++ b/arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts
-@@ -24,6 +24,12 @@
+diff --git a/drivers/reset/reset-socfpga.c b/drivers/reset/reset-socfpga.c
+index 9214197e627d..dd081ee84f72 100644
+--- a/drivers/reset/reset-socfpga.c
++++ b/drivers/reset/reset-socfpga.c
+@@ -22,12 +22,12 @@
+ #include <linux/spinlock.h>
+ #include <linux/types.h>
  
- 	chosen {
- 		stdout-path = &uart0;
-+
-+		environment@0 {
-+			compatible = "barebox,environment";
-+			device-path = &mmc, "partname:1";
-+			file-path = "barebox.env";
-+		};
- 	};
+-#define NR_BANKS		4
++#define BANK_INCREMENT		4
++#define NR_BANKS		8
  
- 	leds: gpio-leds {
-diff --git a/arch/arm/dts/socfpga_cyclone5_socdk.dts b/arch/arm/dts/socfpga_cyclone5_socdk.dts
-index f93ac105c46f..dfb6273cae15 100644
---- a/arch/arm/dts/socfpga_cyclone5_socdk.dts
-+++ b/arch/arm/dts/socfpga_cyclone5_socdk.dts
-@@ -21,6 +21,14 @@
- / {
- 	model = "Altera SOCFPGA Cyclone V SoC Development Kit";
- 	compatible = "altr,socdk", "altr,socfpga-cyclone5", "altr,socfpga";
-+
-+	chosen {
-+		environment@0 {
-+			compatible = "barebox,environment";
-+			device-path = &mmc, "partname:1";
-+			file-path = "barebox.env";
-+		};
-+	};
+ struct socfpga_reset_data {
+ 	spinlock_t			lock;
+ 	void __iomem			*membase;
+-	u32				modrst_offset;
+ 	struct reset_controller_dev	rcdev;
  };
  
- &qspi {
-diff --git a/arch/arm/dts/socfpga_cyclone5_sockit.dts b/arch/arm/dts/socfpga_cyclone5_sockit.dts
-index 7cb9b9600563..8830afeb9a6b 100644
---- a/arch/arm/dts/socfpga_cyclone5_sockit.dts
-+++ b/arch/arm/dts/socfpga_cyclone5_sockit.dts
-@@ -24,5 +24,11 @@
+@@ -44,9 +44,8 @@ static int socfpga_reset_assert(struct reset_controller_dev *rcdev,
  
- 	chosen {
- 		stdout-path = &uart0;
-+
-+		environment@0 {
-+			compatible = "barebox,environment";
-+			device-path = &mmc, "partname:1";
-+			file-path = "barebox.env";
-+		};
- 	};
- };
-diff --git a/arch/arm/dts/socfpga_cyclone5_socrates.dts b/arch/arm/dts/socfpga_cyclone5_socrates.dts
-index ea7e6cc102bd..93253af7ec0f 100644
---- a/arch/arm/dts/socfpga_cyclone5_socrates.dts
-+++ b/arch/arm/dts/socfpga_cyclone5_socrates.dts
-@@ -21,6 +21,12 @@
- / {
- 	chosen {
- 		stdout-path = &uart0;
-+
-+		environment@0 {
-+			compatible = "barebox,environment";
-+			device-path = &mmc, "partname:1";
-+			file-path = "barebox.env";
-+		};
- 	};
+ 	spin_lock_irqsave(&data->lock, flags);
  
- 	aliases {
+-	reg = readl(data->membase + data->modrst_offset + (bank * NR_BANKS));
+-	writel(reg | BIT(offset), data->membase + data->modrst_offset +
+-				 (bank * NR_BANKS));
++	reg = readl(data->membase + (bank * BANK_INCREMENT));
++	writel(reg | BIT(offset), data->membase + (bank * BANK_INCREMENT));
+ 	spin_unlock_irqrestore(&data->lock, flags);
+ 
+ 	return 0;
+@@ -66,9 +65,8 @@ static int socfpga_reset_deassert(struct reset_controller_dev *rcdev,
+ 
+ 	spin_lock_irqsave(&data->lock, flags);
+ 
+-	reg = readl(data->membase + data->modrst_offset + (bank * NR_BANKS));
+-	writel(reg & ~BIT(offset), data->membase + data->modrst_offset +
+-				  (bank * NR_BANKS));
++	reg = readl(data->membase + (bank * BANK_INCREMENT));
++	writel(reg & ~BIT(offset), data->membase + (bank * BANK_INCREMENT));
+ 
+ 	spin_unlock_irqrestore(&data->lock, flags);
+ 
+@@ -85,6 +83,7 @@ static int socfpga_reset_probe(struct device_d *dev)
+ 	struct socfpga_reset_data *data;
+ 	struct resource *res;
+ 	struct device_node *np = dev->device_node;
++	u32 modrst_offset;
+ 
+ 	data = xzalloc(sizeof(*data));
+ 
+@@ -93,10 +92,11 @@ static int socfpga_reset_probe(struct device_d *dev)
+ 	if (IS_ERR(data->membase))
+ 		return PTR_ERR(data->membase);
+ 
+-	if (of_property_read_u32(np, "altr,modrst-offset", &data->modrst_offset)) {
++	if (of_property_read_u32(np, "altr,modrst-offset", &modrst_offset)) {
+ 		dev_warn(dev, "missing altr,modrst-offset property, assuming 0x10!\n");
+-		data->modrst_offset = 0x10;
++		modrst_offset = 0x10;
+ 	}
++	data->membase += modrst_offset;
+ 
+ 	spin_lock_init(&data->lock);
+ 
 -- 
 2.11.0
 
