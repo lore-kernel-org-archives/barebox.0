@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eZBBN-0000kN-6Y
- for barebox@lists.infradead.org; Wed, 10 Jan 2018 07:52:23 +0000
+ id 1eZBX6-00077H-Gu
+ for barebox@lists.infradead.org; Wed, 10 Jan 2018 08:15:43 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed, 10 Jan 2018 08:52:02 +0100
-Message-Id: <20180110075202.4867-1-s.trumtrar@pengutronix.de>
+Date: Wed, 10 Jan 2018 09:14:19 +0100
+Message-Id: <20180110081420.10722-3-s.trumtrar@pengutronix.de>
+In-Reply-To: <20180110081420.10722-1-s.trumtrar@pengutronix.de>
+References: <20180110081420.10722-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,110 +21,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i2c: designware: evaluate i2c-sda-hold-time property
+Subject: [PATCH 3/4] ARM: SoCFPGA: remove emac init code
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Newer designware i2c controllers allow setting the SDA hold time.
-Evaluate the devicetree property "i2c-sda-hold-time" and set the
-value accordingly.
-The code is an adaption of the Linux v4.12 driver.
+There is a proper driver now that handles the PHY setup for SoCFPGA.
+Get rid of the code from mach-socfpga.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/i2c/busses/i2c-designware.c | 40 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ arch/arm/mach-socfpga/cyclone5-generic.c | 35 --------------------------------
+ 1 file changed, 35 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-designware.c b/drivers/i2c/busses/i2c-designware.c
-index 0b022afd30f8..33f89148f0cc 100644
---- a/drivers/i2c/busses/i2c-designware.c
-+++ b/drivers/i2c/busses/i2c-designware.c
-@@ -32,6 +32,7 @@
- #include <xfuncs.h>
- #include <linux/clk.h>
- #include <linux/err.h>
-+#include <linux/math64.h>
- 
- #include <io.h>
- #include <i2c/i2c.h>
-@@ -75,6 +76,7 @@
- #define DW_IC_TX_TL			0x3c
- #define DW_IC_CLR_INTR			0x40
- #define DW_IC_CLR_TX_ABRT		0x54
-+#define DW_IC_SDA_HOLD			0x7c
- 
- #define DW_IC_ENABLE			0x6c
- #define DW_IC_ENABLE_ENABLE		(1 << 0)
-@@ -90,6 +92,8 @@
- #define DW_IC_ENABLE_STATUS		0x9c
- #define DW_IC_ENABLE_STATUS_IC_EN	(1 << 0)
- 
-+#define DW_IC_COMP_VERSION		0xf8
-+#define DW_IC_SDA_HOLD_MIN_VERS		0x3131312A
- #define DW_IC_COMP_TYPE			0xfc
- #define DW_IC_COMP_TYPE_VALUE		0x44570140
- 
-@@ -99,10 +103,15 @@
- #define DW_TIMEOUT_TX			(2 * MSECOND)
- #define DW_TIMEOUT_RX			(2 * MSECOND)
- 
-+#define DW_IC_SDA_HOLD_RX_SHIFT		16
-+#define DW_IC_SDA_HOLD_RX_MASK		GENMASK(23, DW_IC_SDA_HOLD_RX_SHIFT)
-+
-+
- struct dw_i2c_dev {
- 	void __iomem *base;
- 	struct clk *clk;
- 	struct i2c_adapter adapter;
-+	u32 sda_hold_time;
- };
- 
- static inline struct dw_i2c_dev *to_dw_i2c_dev(struct i2c_adapter *a)
-@@ -202,6 +211,7 @@ i2c_dw_scl_lcnt(uint32_t ic_clk, uint32_t tLOW, uint32_t tf, int offset)
- static void i2c_dw_setup_timings(struct dw_i2c_dev *dw)
- {
- 	uint32_t hcnt, lcnt;
-+	u32 reg;
- 
- 	const uint32_t sda_falling_time = 300; /* ns */
- 	const uint32_t scl_falling_time = 300; /* ns */
-@@ -234,6 +244,36 @@ static void i2c_dw_setup_timings(struct dw_i2c_dev *dw)
- 
- 	writel(hcnt, dw->base + DW_IC_FS_SCL_HCNT);
- 	writel(lcnt, dw->base + DW_IC_FS_SCL_LCNT);
-+
-+	/* Configure SDA Hold Time if required */
-+	reg = readl(dw->base + DW_IC_COMP_VERSION);
-+	if (reg >= DW_IC_SDA_HOLD_MIN_VERS) {
-+		u32 ht;
-+		int ret;
-+
-+		ret = of_property_read_u32(dw->adapter.dev.device_node,
-+					   "i2c-sda-hold-time-ns", &ht);
-+		if (ret) {
-+			/* Keep previous hold time setting if no one set it */
-+			dw->sda_hold_time = readl(dw->base + DW_IC_SDA_HOLD);
-+		} else if (ht) {
-+			dw->sda_hold_time = div_u64((u64)input_clock_khz * ht + 500000,
-+						    1000000);
-+		}
-+
-+		/*
-+		 * Workaround for avoiding TX arbitration lost in case I2C
-+		 * slave pulls SDA down "too quickly" after falling egde of
-+		 * SCL by enabling non-zero SDA RX hold. Specification says it
-+		 * extends incoming SDA low to high transition while SCL is
-+		 * high but it apprears to help also above issue.
-+		 */
-+		if (!(dw->sda_hold_time & DW_IC_SDA_HOLD_RX_MASK))
-+			dw->sda_hold_time |= 1 << DW_IC_SDA_HOLD_RX_SHIFT;
-+
-+		dev_dbg(&dw->adapter.dev, "adjust SDA hold time.\n");
-+		writel(dw->sda_hold_time, dw->base + DW_IC_SDA_HOLD);
-+	}
+diff --git a/arch/arm/mach-socfpga/cyclone5-generic.c b/arch/arm/mach-socfpga/cyclone5-generic.c
+index 73a8ad03b738..dfb1f49e4d36 100644
+--- a/arch/arm/mach-socfpga/cyclone5-generic.c
++++ b/arch/arm/mach-socfpga/cyclone5-generic.c
+@@ -161,43 +161,8 @@ static int socfpga_detect_sdram(void)
+ 	return 0;
  }
  
- static int i2c_dw_wait_for_bits(struct dw_i2c_dev *dw, uint32_t offset,
+-/* Some initialization for the EMAC */
+-static void socfpga_init_emac(void)
+-{
+-	uint32_t rst, val;
+-
+-	/* No need for this without network support, e.g. xloader build */
+-	if (!IS_ENABLED(CONFIG_NET))
+-		return;
+-
+-	/* According to Cyclone V datasheet, 17-60 "EMAC HPS Interface
+-	 * Initialization", changing PHYSEL should be done with EMAC in reset
+-	 * via permodrst.  */
+-
+-	/* Everything, except L4WD0/1, is out of reset via socfpga_lowlevel_init() */
+-	rst = readl(CYCLONE5_RSTMGR_ADDRESS + RESET_MGR_PER_MOD_RESET_OFS);
+-	rst |= RSTMGR_PERMODRST_EMAC0 | RSTMGR_PERMODRST_EMAC1;
+-	writel(rst, CYCLONE5_RSTMGR_ADDRESS + RESET_MGR_PER_MOD_RESET_OFS);
+-
+-	/* Set emac0/1 PHY interface select to RGMII.  We could read phy-mode
+-	 * from the device tree, if it was desired to support interfaces other
+-	 * than RGMII. */
+-	val = readl(CONFIG_SYSMGR_EMAC_CTRL);
+-	val &= ~(SYSMGR_EMACGRP_CTRL_PHYSEL_MASK << SYSMGR_EMACGRP_CTRL_PHYSEL0_LSB);
+-	val &= ~(SYSMGR_EMACGRP_CTRL_PHYSEL_MASK << SYSMGR_EMACGRP_CTRL_PHYSEL1_LSB);
+-	val |= SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_RGMII << SYSMGR_EMACGRP_CTRL_PHYSEL0_LSB;
+-	val |= SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_RGMII << SYSMGR_EMACGRP_CTRL_PHYSEL1_LSB;
+-	writel(val, CONFIG_SYSMGR_EMAC_CTRL);
+-
+-	/* Take emac0 and emac1 out of reset */
+-	rst &= ~(RSTMGR_PERMODRST_EMAC0 | RSTMGR_PERMODRST_EMAC1);
+-	writel(rst, CYCLONE5_RSTMGR_ADDRESS + RESET_MGR_PER_MOD_RESET_OFS);
+-}
+-
+ static int socfpga_init(void)
+ {
+-	socfpga_init_emac();
+-
+ 	writel(SYSMGR_SDMMC_CTRL_DRVSEL(3) | SYSMGR_SDMMC_CTRL_SMPLSEL(0),
+ 		SYSMGR_SDMMCGRP_CTRL_REG);
+ 
 -- 
 2.11.0
 
