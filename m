@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eZBX8-0006Md-Dt
- for barebox@lists.infradead.org; Wed, 10 Jan 2018 08:14:51 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed, 10 Jan 2018 09:14:20 +0100
-Message-Id: <20180110081420.10722-4-s.trumtrar@pengutronix.de>
-In-Reply-To: <20180110081420.10722-1-s.trumtrar@pengutronix.de>
-References: <20180110081420.10722-1-s.trumtrar@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
+ id 1eZHxm-0001g6-N3
+ for barebox@lists.infradead.org; Wed, 10 Jan 2018 15:06:48 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 10 Jan 2018 16:06:33 +0100
+Message-Id: <20180110150633.30359-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +19,97 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] net: designware: add warning for drvdata
-To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: [PATCH] device parameters: Allow dots in device names for setenv
+ aswell
+To: Barebox List <barebox@lists.infradead.org>
 
-Instead of silently using a wrong value, check if drvdata is defined
-before use.
-Print a warning if there is no drvdata found.
+Since
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+f5d77d80f5 Allow device parameters for devices with dots in name
+
+Devices can have dots in their name and we can still read its
+device parameters. Do the same change for writing parameters so
+they can be written aswell.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/designware.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ common/env.c | 54 +++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 35 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/designware.c b/drivers/net/designware.c
-index ec20da09b388..862ee2f0463e 100644
---- a/drivers/net/designware.c
-+++ b/drivers/net/designware.c
-@@ -434,7 +434,11 @@ struct dw_eth_dev *dwc_drv_probe(struct device_d *dev)
- 	if (ret)
- 		return ERR_PTR(ret);
+diff --git a/common/env.c b/common/env.c
+index df8a4dff60..80d3f7ab50 100644
+--- a/common/env.c
++++ b/common/env.c
+@@ -223,34 +223,50 @@ static int setenv_raw(struct list_head *l, const char *name, const char *value)
+ 	return 0;
+ }
  
--	priv->enh_desc = drvdata->enh_desc;
-+	if (drvdata && drvdata->enh_desc)
-+		priv->enh_desc = drvdata->enh_desc;
-+	else
-+		dev_warn(dev, "No drvdata specified\n");
+-int setenv(const char *_name, const char *value)
++static int dev_setenv(const char *name, const char *val)
+ {
+-	char *name = strdup(_name);
+-	char *par;
+-	int ret = 0;
+-	struct list_head *list;
++	const char *pos, *dot, *varname;
++	char *devname;
++	struct device_d *dev;
+ 
+-	if (value && !*value)
+-		value = NULL;
++	pos = name;
 +
++	while (1) {
++		dot = strchr(pos, '.');
++		if (!dot)
++			break;
++
++		devname = xstrndup(name, dot - name);
++		varname = dot + 1;
  
- 	if (pdata) {
- 		priv->phy_addr = pdata->phy_addr;
++		dev = get_device_by_name(devname);
+ 
+-	if ((par = strchr(name, '.'))) {
+-		struct device_d *dev;
++		free(devname);
+ 
+-		*par++ = 0;
+-		dev = get_device_by_name(name);
+ 		if (dev) {
+-			ret = dev_set_param(dev, par, value);
+-			if (ret)
+-				eprintf("%s: set parameter %s: %s\n",
+-						dev_name(dev), par, strerror(-ret));
+-		} else {
+-			ret = -ENODEV;
+-			eprintf("set parameter: no such device %s\n", name);
++			if (get_param_by_name(dev, varname))
++				return dev_set_param(dev, varname, val);
+ 		}
+ 
+-		errno = -ret;
++		pos = dot + 1;
++	}
++
++	return -ENODEV;
++}
++
++int setenv(const char *_name, const char *value)
++{
++	char *name = strdup(_name);
++	int ret = 0;
++	struct list_head *list;
++
++	if (value && !*value)
++		value = NULL;
+ 
++	if (strchr(name, '.')) {
++		ret = dev_setenv(name, value);
++		if (ret)
++			eprintf("Cannot set parameter: %s\n", strerror(-ret));
+ 		goto out;
+ 	}
+ 
 -- 
 2.11.0
 
