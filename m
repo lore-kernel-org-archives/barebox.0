@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eZYRa-0004ox-Sn
- for barebox@lists.infradead.org; Thu, 11 Jan 2018 08:42:40 +0000
-Date: Thu, 11 Jan 2018 09:42:26 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180111084226.yjfenmavsjw7mlat@pengutronix.de>
-References: <20180110122136.8037-1-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180110122136.8037-1-antonynpavlov@gmail.com>
+ id 1eZJI8-0000iY-DA
+ for barebox@lists.infradead.org; Wed, 10 Jan 2018 16:31:53 +0000
+Received: by mail-pg0-x241.google.com with SMTP id c194so10231732pga.12
+ for <barebox@lists.infradead.org>; Wed, 10 Jan 2018 08:31:42 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 10 Jan 2018 08:31:14 -0800
+Message-Id: <20180110163115.16226-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,46 +16,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Kconfig: drop unused HAS_POWEROFF
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] i.MX: Fix MX7_UART2_BASE_ADDR
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Wed, Jan 10, 2018 at 03:21:36PM +0300, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  drivers/efi/Kconfig | 1 -
->  1 file changed, 1 deletion(-)
+Despite what the Reference Manual says, experiment on i.MX7 SabreSD
+shows that that UART2's base is located at offset 0x90000. This is
+also corroborated by the offset used in dts/src/arm/imx7s.dtsi in
+uart2.
 
-Applied, thanks
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/mach-imx/include/mach/imx7-regs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
-> 
-> diff --git a/drivers/efi/Kconfig b/drivers/efi/Kconfig
-> index d6beeb07ce..cca1a2e1d6 100644
-> --- a/drivers/efi/Kconfig
-> +++ b/drivers/efi/Kconfig
-> @@ -1,5 +1,4 @@
->  config EFI_BOOTUP
->  	bool
-> -	select HAS_POWEROFF
->  	select BLOCK
->  	select PARTITION_DISK
-> -- 
-> 2.15.1
-> 
-> 
-
+diff --git a/arch/arm/mach-imx/include/mach/imx7-regs.h b/arch/arm/mach-imx/include/mach/imx7-regs.h
+index 8774c32d7..8625d0b61 100644
+--- a/arch/arm/mach-imx/include/mach/imx7-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx7-regs.h
+@@ -78,7 +78,7 @@
+ #define MX7_ECSPI2_BASE_ADDR		(MX7_AIPS3_BASE_ADDR + 0x30000)
+ #define MX7_ECSPI3_BASE_ADDR		(MX7_AIPS3_BASE_ADDR + 0x40000)
+ #define MX7_UART1_BASE_ADDR		(MX7_AIPS3_BASE_ADDR + 0x60000)
+-#define MX7_UART2_BASE_ADDR		(MX7_AIPS3_BASE_ADDR + 0x70000)
++#define MX7_UART2_BASE_ADDR		(MX7_AIPS3_BASE_ADDR + 0x90000)
+ #define MX7_UART3_BASE_ADDR		(MX7_AIPS3_BASE_ADDR + 0x80000)
+ #define MX7_SAI1_BASE_ADDR		(MX7_AIPS3_BASE_ADDR + 0xA0000)
+ #define MX7_SAI2_BASE_ADDR		(MX7_AIPS3_BASE_ADDR + 0xB0000)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.14.3
+
 
 _______________________________________________
 barebox mailing list
