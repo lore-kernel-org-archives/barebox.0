@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eYumi-0004GI-OF
- for barebox@lists.infradead.org; Tue, 09 Jan 2018 14:21:51 +0000
-Received: by mail-lf0-x243.google.com with SMTP id f3so16130408lfe.4
- for <barebox@lists.infradead.org>; Tue, 09 Jan 2018 06:21:37 -0800 (PST)
-From: Peter Mamonov <pmamonov@gmail.com>
-Date: Tue,  9 Jan 2018 17:21:20 +0300
-Message-Id: <20180109142120.5498-1-pmamonov@gmail.com>
-In-Reply-To: <20180109111000.redcxmlavhxbgcnm@pengutronix.de>
-References: <20180109111000.redcxmlavhxbgcnm@pengutronix.de>
+ id 1eZBBN-0000kN-6Y
+ for barebox@lists.infradead.org; Wed, 10 Jan 2018 07:52:23 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Wed, 10 Jan 2018 08:52:02 +0100
+Message-Id: <20180110075202.4867-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,91 +19,110 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] lib: parse_area_spec: don't modify *start and *size values if
- parse failed
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
+Subject: [PATCH] i2c: designware: evaluate i2c-sda-hold-time property
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+Newer designware i2c controllers allow setting the SDA hold time.
+Evaluate the devicetree property "i2c-sda-hold-time" and set the
+value accordingly.
+The code is an adaption of the Linux v4.12 driver.
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- lib/misc.c | 46 ++++++++++++++++++++++++++++++++--------------
- 1 file changed, 32 insertions(+), 14 deletions(-)
+ drivers/i2c/busses/i2c-designware.c | 40 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/lib/misc.c b/lib/misc.c
-index 62ddd6677..c7d5a0ca5 100644
---- a/lib/misc.c
-+++ b/lib/misc.c
-@@ -79,38 +79,56 @@ EXPORT_SYMBOL(strtoul_suffix);
- int parse_area_spec(const char *str, loff_t *start, loff_t *size)
+diff --git a/drivers/i2c/busses/i2c-designware.c b/drivers/i2c/busses/i2c-designware.c
+index 0b022afd30f8..33f89148f0cc 100644
+--- a/drivers/i2c/busses/i2c-designware.c
++++ b/drivers/i2c/busses/i2c-designware.c
+@@ -32,6 +32,7 @@
+ #include <xfuncs.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
++#include <linux/math64.h>
+ 
+ #include <io.h>
+ #include <i2c/i2c.h>
+@@ -75,6 +76,7 @@
+ #define DW_IC_TX_TL			0x3c
+ #define DW_IC_CLR_INTR			0x40
+ #define DW_IC_CLR_TX_ABRT		0x54
++#define DW_IC_SDA_HOLD			0x7c
+ 
+ #define DW_IC_ENABLE			0x6c
+ #define DW_IC_ENABLE_ENABLE		(1 << 0)
+@@ -90,6 +92,8 @@
+ #define DW_IC_ENABLE_STATUS		0x9c
+ #define DW_IC_ENABLE_STATUS_IC_EN	(1 << 0)
+ 
++#define DW_IC_COMP_VERSION		0xf8
++#define DW_IC_SDA_HOLD_MIN_VERS		0x3131312A
+ #define DW_IC_COMP_TYPE			0xfc
+ #define DW_IC_COMP_TYPE_VALUE		0x44570140
+ 
+@@ -99,10 +103,15 @@
+ #define DW_TIMEOUT_TX			(2 * MSECOND)
+ #define DW_TIMEOUT_RX			(2 * MSECOND)
+ 
++#define DW_IC_SDA_HOLD_RX_SHIFT		16
++#define DW_IC_SDA_HOLD_RX_MASK		GENMASK(23, DW_IC_SDA_HOLD_RX_SHIFT)
++
++
+ struct dw_i2c_dev {
+ 	void __iomem *base;
+ 	struct clk *clk;
+ 	struct i2c_adapter adapter;
++	u32 sda_hold_time;
+ };
+ 
+ static inline struct dw_i2c_dev *to_dw_i2c_dev(struct i2c_adapter *a)
+@@ -202,6 +211,7 @@ i2c_dw_scl_lcnt(uint32_t ic_clk, uint32_t tLOW, uint32_t tf, int offset)
+ static void i2c_dw_setup_timings(struct dw_i2c_dev *dw)
  {
- 	char *endp;
--	loff_t end;
-+	loff_t end, _start, _size;
-+	int ret = -1;
+ 	uint32_t hcnt, lcnt;
++	u32 reg;
  
- 	if (!isdigit(*str))
- 		return -1;
+ 	const uint32_t sda_falling_time = 300; /* ns */
+ 	const uint32_t scl_falling_time = 300; /* ns */
+@@ -234,6 +244,36 @@ static void i2c_dw_setup_timings(struct dw_i2c_dev *dw)
  
--	*start = strtoull_suffix(str, &endp, 0);
-+	_start = strtoull_suffix(str, &endp, 0);
- 
- 	str = endp;
- 
- 	if (!*str) {
- 		/* beginning given, but no size, assume maximum size */
--		*size = ~0;
--		return 0;
-+		_size = ~0;
-+		ret = 0;
- 	}
- 
--	if (*str == '-') {
-+	if (ret && *str == '-') {
- 		/* beginning and end given */
--		end = strtoull_suffix(str + 1, NULL, 0);
--		if (end < *start) {
-+		if (!isdigit(*(str + 1)))
-+			return ret;
+ 	writel(hcnt, dw->base + DW_IC_FS_SCL_HCNT);
+ 	writel(lcnt, dw->base + DW_IC_FS_SCL_LCNT);
 +
-+		end = strtoull_suffix(str + 1, &endp, 0);
-+		str = endp;
-+		if (end < _start) {
- 			printf("end < start\n");
--			return -1;
-+			return ret;
- 		}
--		*size = end - *start + 1;
--		return 0;
-+		_size = end - _start + 1;
-+		ret = 0;
- 	}
- 
--	if (*str == '+') {
-+	if (ret && *str == '+') {
- 		/* beginning and size given */
--		*size = strtoull_suffix(str + 1, NULL, 0);
--		return 0;
-+		if (!isdigit(*(str + 1)))
-+			return ret;
++	/* Configure SDA Hold Time if required */
++	reg = readl(dw->base + DW_IC_COMP_VERSION);
++	if (reg >= DW_IC_SDA_HOLD_MIN_VERS) {
++		u32 ht;
++		int ret;
 +
-+		_size = strtoull_suffix(str + 1, &endp, 0);
-+		str = endp;
-+		ret = 0;
++		ret = of_property_read_u32(dw->adapter.dev.device_node,
++					   "i2c-sda-hold-time-ns", &ht);
++		if (ret) {
++			/* Keep previous hold time setting if no one set it */
++			dw->sda_hold_time = readl(dw->base + DW_IC_SDA_HOLD);
++		} else if (ht) {
++			dw->sda_hold_time = div_u64((u64)input_clock_khz * ht + 500000,
++						    1000000);
++		}
++
++		/*
++		 * Workaround for avoiding TX arbitration lost in case I2C
++		 * slave pulls SDA down "too quickly" after falling egde of
++		 * SCL by enabling non-zero SDA RX hold. Specification says it
++		 * extends incoming SDA low to high transition while SCL is
++		 * high but it apprears to help also above issue.
++		 */
++		if (!(dw->sda_hold_time & DW_IC_SDA_HOLD_RX_MASK))
++			dw->sda_hold_time |= 1 << DW_IC_SDA_HOLD_RX_SHIFT;
++
++		dev_dbg(&dw->adapter.dev, "adjust SDA hold time.\n");
++		writel(dw->sda_hold_time, dw->base + DW_IC_SDA_HOLD);
 +	}
-+
-+	if (!ret && *str)
-+		/* trailing symbols indicate invalid area spec */
-+		ret = -1;
-+
-+	if (!ret) {
-+		*start = _start;
-+		*size = _size;
- 	}
- 
--	return -1;
-+	return ret;
  }
- EXPORT_SYMBOL(parse_area_spec);
+ 
+ static int i2c_dw_wait_for_bits(struct dw_i2c_dev *dw, uint32_t offset,
 -- 
 2.11.0
 
