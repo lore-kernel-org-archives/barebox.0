@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eZY2f-0002hl-ND
- for barebox@lists.infradead.org; Thu, 11 Jan 2018 08:16:56 +0000
-Date: Thu, 11 Jan 2018 09:16:41 +0100
+ id 1eZYKD-0006lC-6Z
+ for barebox@lists.infradead.org; Thu, 11 Jan 2018 08:35:03 +0000
+Date: Thu, 11 Jan 2018 09:34:47 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180111081641.wqec5kqjhqsgwpay@pengutronix.de>
-References: <20180110075202.4867-1-s.trumtrar@pengutronix.de>
+Message-ID: <20180111083447.afei3ebbcrohvqwk@pengutronix.de>
+References: <20180110081420.10722-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180110075202.4867-1-s.trumtrar@pengutronix.de>
+In-Reply-To: <20180110081420.10722-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,116 +22,281 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i2c: designware: evaluate i2c-sda-hold-time property
+Subject: Re: [PATCH 1/4] net: designware: move probe to generic driver
 To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jan 10, 2018 at 08:52:02AM +0100, Steffen Trumtrar wrote:
-> Newer designware i2c controllers allow setting the SDA hold time.
-> Evaluate the devicetree property "i2c-sda-hold-time" and set the
-> value accordingly.
-> The code is an adaption of the Linux v4.12 driver.
+On Wed, Jan 10, 2018 at 09:14:17AM +0100, Steffen Trumtrar wrote:
+> The designware ethernet core is used on multiple different SoCs.
+> The linux kernel has a generic driver and SoC-specific drivers.
+> Do the same here.
 > 
 > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > ---
->  drivers/i2c/busses/i2c-designware.c | 40 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 40 insertions(+)
+>  drivers/net/Kconfig              | 12 +++++++-
+>  drivers/net/Makefile             |  1 +
+>  drivers/net/designware.c         | 60 ++++------------------------------------
+>  drivers/net/designware.h         | 33 ++++++++++++++++++++++
+>  drivers/net/designware_generic.c | 59 +++++++++++++++++++++++++++++++++++++++
+>  5 files changed, 110 insertions(+), 55 deletions(-)
+>  create mode 100644 drivers/net/designware_generic.c
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/i2c/busses/i2c-designware.c b/drivers/i2c/busses/i2c-designware.c
-> index 0b022afd30f8..33f89148f0cc 100644
-> --- a/drivers/i2c/busses/i2c-designware.c
-> +++ b/drivers/i2c/busses/i2c-designware.c
-> @@ -32,6 +32,7 @@
->  #include <xfuncs.h>
->  #include <linux/clk.h>
+> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+> index 9d69b6aeb09c..36b257f43e8a 100644
+> --- a/drivers/net/Kconfig
+> +++ b/drivers/net/Kconfig
+> @@ -64,13 +64,23 @@ config DRIVER_NET_DAVINCI_EMAC
+>  	select PHYLIB
+>  
+>  config DRIVER_NET_DESIGNWARE
+> -	bool "Designware Universal MAC ethernet driver"
+> +	bool "Designware Universal MAC ethernet platform support"
+>  	depends on HAS_DMA
+>  	select PHYLIB
+>  	help
+>  	  This option enables support for the Synopsys
+>  	  Designware Core Univesal MAC 10M/100M/1G ethernet IP.
+>  
+> +if DRIVER_NET_DESIGNWARE
+> +
+> +config DRIVER_NET_DESIGNWARE_GENERIC
+> +	bool "Designware Universal MAC ethernet generic driver"
+> +	help
+> +	  This option enables support for the Synopsys
+> +	  Designware Core Univesal MAC 10M/100M/1G ethernet IP on SoCFPGA.
+> +
+> +endif
+> +
+>  config DRIVER_NET_DM9K
+>  	bool "Davicom dm9k[E|A|B] ethernet driver"
+>  	depends on HAS_DM9000
+> diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+> index 86c8ac32f93e..eb07434ab42c 100644
+> --- a/drivers/net/Makefile
+> +++ b/drivers/net/Makefile
+> @@ -9,6 +9,7 @@ obj-$(CONFIG_DRIVER_NET_CS8900)		+= cs8900.o
+>  obj-$(CONFIG_DRIVER_NET_CPSW)		+= cpsw.o
+>  obj-$(CONFIG_DRIVER_NET_DAVINCI_EMAC)	+= davinci_emac.o
+>  obj-$(CONFIG_DRIVER_NET_DESIGNWARE)	+= designware.o
+> +obj-$(CONFIG_DRIVER_NET_DESIGNWARE_GENERIC) += designware_generic.o
+>  obj-$(CONFIG_DRIVER_NET_DM9K)		+= dm9k.o
+>  obj-$(CONFIG_DRIVER_NET_E1000)		+= e1000/regio.o e1000/main.o e1000/eeprom.o
+>  obj-$(CONFIG_DRIVER_NET_ENC28J60)	+= enc28j60.o
+> diff --git a/drivers/net/designware.c b/drivers/net/designware.c
+> index 1d3a68384edb..ec20da09b388 100644
+> --- a/drivers/net/designware.c
+> +++ b/drivers/net/designware.c
+> @@ -32,36 +32,6 @@
 >  #include <linux/err.h>
-> +#include <linux/math64.h>
+>  #include "designware.h"
 >  
->  #include <io.h>
->  #include <i2c/i2c.h>
-> @@ -75,6 +76,7 @@
->  #define DW_IC_TX_TL			0x3c
->  #define DW_IC_CLR_INTR			0x40
->  #define DW_IC_CLR_TX_ABRT		0x54
-> +#define DW_IC_SDA_HOLD			0x7c
->  
->  #define DW_IC_ENABLE			0x6c
->  #define DW_IC_ENABLE_ENABLE		(1 << 0)
-> @@ -90,6 +92,8 @@
->  #define DW_IC_ENABLE_STATUS		0x9c
->  #define DW_IC_ENABLE_STATUS_IC_EN	(1 << 0)
->  
-> +#define DW_IC_COMP_VERSION		0xf8
-> +#define DW_IC_SDA_HOLD_MIN_VERS		0x3131312A
->  #define DW_IC_COMP_TYPE			0xfc
->  #define DW_IC_COMP_TYPE_VALUE		0x44570140
->  
-> @@ -99,10 +103,15 @@
->  #define DW_TIMEOUT_TX			(2 * MSECOND)
->  #define DW_TIMEOUT_RX			(2 * MSECOND)
->  
-> +#define DW_IC_SDA_HOLD_RX_SHIFT		16
-> +#define DW_IC_SDA_HOLD_RX_MASK		GENMASK(23, DW_IC_SDA_HOLD_RX_SHIFT)
-> +
-> +
->  struct dw_i2c_dev {
->  	void __iomem *base;
->  	struct clk *clk;
->  	struct i2c_adapter adapter;
-> +	u32 sda_hold_time;
->  };
->  
->  static inline struct dw_i2c_dev *to_dw_i2c_dev(struct i2c_adapter *a)
-> @@ -202,6 +211,7 @@ i2c_dw_scl_lcnt(uint32_t ic_clk, uint32_t tLOW, uint32_t tf, int offset)
->  static void i2c_dw_setup_timings(struct dw_i2c_dev *dw)
->  {
->  	uint32_t hcnt, lcnt;
-> +	u32 reg;
->  
->  	const uint32_t sda_falling_time = 300; /* ns */
->  	const uint32_t scl_falling_time = 300; /* ns */
-> @@ -234,6 +244,36 @@ static void i2c_dw_setup_timings(struct dw_i2c_dev *dw)
->  
->  	writel(hcnt, dw->base + DW_IC_FS_SCL_HCNT);
->  	writel(lcnt, dw->base + DW_IC_FS_SCL_LCNT);
-> +
-> +	/* Configure SDA Hold Time if required */
-> +	reg = readl(dw->base + DW_IC_COMP_VERSION);
-> +	if (reg >= DW_IC_SDA_HOLD_MIN_VERS) {
-> +		u32 ht;
-> +		int ret;
-> +
-> +		ret = of_property_read_u32(dw->adapter.dev.device_node,
-> +					   "i2c-sda-hold-time-ns", &ht);
-> +		if (ret) {
-> +			/* Keep previous hold time setting if no one set it */
-> +			dw->sda_hold_time = readl(dw->base + DW_IC_SDA_HOLD);
-> +		} else if (ht) {
-> +			dw->sda_hold_time = div_u64((u64)input_clock_khz * ht + 500000,
-> +						    1000000);
-> +		}
-> +
-> +		/*
-> +		 * Workaround for avoiding TX arbitration lost in case I2C
-> +		 * slave pulls SDA down "too quickly" after falling egde of
-> +		 * SCL by enabling non-zero SDA RX hold. Specification says it
-> +		 * extends incoming SDA low to high transition while SCL is
-> +		 * high but it apprears to help also above issue.
-> +		 */
-> +		if (!(dw->sda_hold_time & DW_IC_SDA_HOLD_RX_MASK))
-> +			dw->sda_hold_time |= 1 << DW_IC_SDA_HOLD_RX_SHIFT;
-> +
-> +		dev_dbg(&dw->adapter.dev, "adjust SDA hold time.\n");
-> +		writel(dw->sda_hold_time, dw->base + DW_IC_SDA_HOLD);
-> +	}
+> -struct dw_eth_dev {
+> -	struct eth_device netdev;
+> -	struct mii_bus miibus;
+> -
+> -	void (*fix_mac_speed)(int speed);
+> -	u8 macaddr[6];
+> -	u32 tx_currdescnum;
+> -	u32 rx_currdescnum;
+> -
+> -	struct dmamacdescr *tx_mac_descrtable;
+> -	struct dmamacdescr *rx_mac_descrtable;
+> -
+> -	u8 *txbuffs;
+> -	u8 *rxbuffs;
+> -
+> -	struct eth_mac_regs *mac_regs_p;
+> -	struct eth_dma_regs *dma_regs_p;
+> -	int phy_addr;
+> -	phy_interface_t interface;
+> -	int enh_desc;
+> -};
+> -
+> -struct dw_eth_drvdata {
+> -	bool enh_desc;
+> -};
+> -
+> -static struct dw_eth_drvdata dwmac_370a_drvdata = {
+> -	.enh_desc = 1,
+> -};
+> -
+>  /* Speed specific definitions */
+>  #define SPEED_10M		1
+>  #define SPEED_100M		2
+> @@ -447,7 +417,7 @@ static int dwc_probe_dt(struct device_d *dev, struct dw_eth_dev *priv)
+>  	return 0;
 >  }
 >  
->  static int i2c_dw_wait_for_bits(struct dw_i2c_dev *dw, uint32_t offset,
+> -static int dwc_ether_probe(struct device_d *dev)
+> +struct dw_eth_dev *dwc_drv_probe(struct device_d *dev)
+>  {
+>  	struct resource *iores;
+>  	struct dw_eth_dev *priv;
+> @@ -462,7 +432,7 @@ static int dwc_ether_probe(struct device_d *dev)
+>  
+>  	ret = dev_get_drvdata(dev, (const void **)&drvdata);
+>  	if (ret)
+> -		return ret;
+> +		return ERR_PTR(ret);
+>  
+>  	priv->enh_desc = drvdata->enh_desc;
+>  
+> @@ -473,12 +443,12 @@ static int dwc_ether_probe(struct device_d *dev)
+>  	} else {
+>  		ret = dwc_probe_dt(dev, priv);
+>  		if (ret)
+> -			return ret;
+> +			return ERR_PTR(ret);
+>  	}
+>  
+>  	iores = dev_request_mem_resource(dev, 0);
+>  	if (IS_ERR(iores))
+> -		return PTR_ERR(iores);
+> +		return ERR_CAST(iores);
+>  	base = IOMEM(iores->start);
+>  
+>  	priv->mac_regs_p = base;
+> @@ -512,24 +482,6 @@ static int dwc_ether_probe(struct device_d *dev)
+>  
+>  	mdiobus_register(miibus);
+>  	eth_register(edev);
+> -	return 0;
+> -}
+>  
+> -static __maybe_unused struct of_device_id dwc_ether_compatible[] = {
+> -	{
+> -		.compatible = "snps,dwmac-3.70a",
+> -		.data = &dwmac_370a_drvdata,
+> -	}, {
+> -		.compatible = "snps,dwmac-3.72a",
+> -		.data = &dwmac_370a_drvdata,
+> -	}, {
+> -		/* sentinel */
+> -	}
+> -};
+> -
+> -static struct driver_d dwc_ether_driver = {
+> -	.name = "designware_eth",
+> -	.probe = dwc_ether_probe,
+> -	.of_compatible = DRV_OF_COMPAT(dwc_ether_compatible),
+> -};
+> -device_platform_driver(dwc_ether_driver);
+> +	return priv;
+> +}
+> diff --git a/drivers/net/designware.h b/drivers/net/designware.h
+> index c36ba787790b..c9dc27a59474 100644
+> --- a/drivers/net/designware.h
+> +++ b/drivers/net/designware.h
+> @@ -20,6 +20,39 @@
+>  #ifndef __DESIGNWARE_ETH_H
+>  #define __DESIGNWARE_ETH_H
+>  
+> +struct eth_device;
+> +struct mii_bus;
+> +
+> +struct dw_eth_dev {
+> +	struct eth_device netdev;
+> +	struct mii_bus miibus;
+> +
+> +	void (*fix_mac_speed)(int speed);
+> +	u8 macaddr[6];
+> +	u32 tx_currdescnum;
+> +	u32 rx_currdescnum;
+> +
+> +	struct dmamacdescr *tx_mac_descrtable;
+> +	struct dmamacdescr *rx_mac_descrtable;
+> +
+> +	u8 *txbuffs;
+> +	u8 *rxbuffs;
+> +
+> +	struct eth_mac_regs *mac_regs_p;
+> +	struct eth_dma_regs *dma_regs_p;
+> +	int phy_addr;
+> +	phy_interface_t interface;
+> +	int enh_desc;
+> +
+> +	struct reset_control	*rst;
+> +};
+> +
+> +struct dw_eth_drvdata {
+> +	bool enh_desc;
+> +};
+> +
+> +struct dw_eth_dev *dwc_drv_probe(struct device_d *dev);
+> +
+>  #define CONFIG_TX_DESCR_NUM	16
+>  #define CONFIG_RX_DESCR_NUM	16
+>  #define CONFIG_ETH_BUFSIZE	2048
+> diff --git a/drivers/net/designware_generic.c b/drivers/net/designware_generic.c
+> new file mode 100644
+> index 000000000000..0e5b9c067b6b
+> --- /dev/null
+> +++ b/drivers/net/designware_generic.c
+> @@ -0,0 +1,59 @@
+> +/*
+> + * (C) Copyright 2010
+> + * Vipin Kumar, ST Micoelectronics, vipin.kumar@st.com.
+> + *
+> + * See file CREDITS for list of people who contributed to this
+> + * project.
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + */
+> +
+> +/*
+> + * Designware ethernet IP driver for u-boot
+> + */
+> +
+> +#include <common.h>
+> +#include "designware.h"
+> +
+> +static struct dw_eth_drvdata dwmac_370a_drvdata = {
+> +	.enh_desc = 1,
+> +};
+> +
+> +static int dwc_ether_probe(struct device_d *dev)
+> +{
+> +	struct dw_eth_dev *dwc;
+> +
+> +	dwc = dwc_drv_probe(dev);
+> +	if (IS_ERR(dwc))
+> +		return PTR_ERR(dwc);
+> +
+> +	return 0;
+> +}
+> +
+> +static __maybe_unused struct of_device_id dwc_ether_compatible[] = {
+> +	{
+> +		.compatible = "snps,dwmac-3.70a",
+> +		.data = &dwmac_370a_drvdata,
+> +	}, {
+> +		.compatible = "snps,dwmac-3.72a",
+> +		.data = &dwmac_370a_drvdata,
+> +	}, {
+> +		/* sentinel */
+> +	}
+> +};
+> +
+> +static struct driver_d dwc_ether_driver = {
+> +	.name = "designware_eth",
+> +	.probe = dwc_ether_probe,
+> +	.of_compatible = DRV_OF_COMPAT(dwc_ether_compatible),
+> +};
+> +device_platform_driver(dwc_ether_driver);
 > -- 
 > 2.11.0
 > 
