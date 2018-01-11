@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eZXd4-0003l6-Bn
- for barebox@lists.infradead.org; Thu, 11 Jan 2018 07:50:28 +0000
+ id 1eZXd4-0003kQ-Bp
+ for barebox@lists.infradead.org; Thu, 11 Jan 2018 07:50:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 11 Jan 2018 08:50:08 +0100
-Message-Id: <20180111075012.9050-4-s.hauer@pengutronix.de>
+Date: Thu, 11 Jan 2018 08:50:10 +0100
+Message-Id: <20180111075012.9050-6-s.hauer@pengutronix.de>
 In-Reply-To: <20180111075012.9050-1-s.hauer@pengutronix.de>
 References: <20180111075012.9050-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,84 +21,377 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/7] Documentation: USB gadget: Add section for partition
- description
+Subject: [PATCH 5/7] Add support for fastboot sparse images
 To: Barebox List <barebox@lists.infradead.org>
 
-Partition descriptions are used with both fastboot and DFU, so add
-a separate section describing them and remove it from the DFU section.
+This adds support for reading Android fastboot sparse images. This
+code is based on the corresponding U-Boot code, but has been heavily
+modified to provide a read-like API which better fits into barebox.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/user/usb.rst | 48 ++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 38 insertions(+), 10 deletions(-)
+ include/image-sparse.h |  67 +++++++++++++
+ lib/Kconfig            |   3 +
+ lib/Makefile           |   1 +
+ lib/image-sparse.c     | 249 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 320 insertions(+)
+ create mode 100644 include/image-sparse.h
+ create mode 100644 lib/image-sparse.c
 
-diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
-index ec219cfbe4..3844e7941a 100644
---- a/Documentation/user/usb.rst
-+++ b/Documentation/user/usb.rst
-@@ -35,6 +35,42 @@ command, they show up as ``/dev/diskx`` and can be used like any other device.
- USB device support
- ------------------
+diff --git a/include/image-sparse.h b/include/image-sparse.h
+new file mode 100644
+index 0000000000..29242f4fd5
+--- /dev/null
++++ b/include/image-sparse.h
+@@ -0,0 +1,67 @@
++/*
++ * This is from the Android Project,
++ * Repository: https://android.googlesource.com/platform/system/core
++ * File: libsparse/sparse_format.h
++ * Commit: 28fa5bc347390480fe190294c6c385b6a9f0d68b
++ * Copyright (C) 2010 The Android Open Source Project
++ *
++ * SPDX-License-Identifier: BSD-3-Clause
++ */
++
++#ifndef _IMAGE_SPARSE_H
++#define _IMAGE_SPARSE_H
++
++struct sparse_header {
++  __le32	magic;		/* 0xed26ff3a */
++  __le16	major_version;	/* (0x1) - reject images with higher major versions */
++  __le16	minor_version;	/* (0x0) - allow images with higer minor versions */
++  __le16	file_hdr_sz;	/* 28 bytes for first revision of the file format */
++  __le16	chunk_hdr_sz;	/* 12 bytes for first revision of the file format */
++  __le32	blk_sz;		/* block size in bytes, must be a multiple of 4 (4096) */
++  __le32	total_blks;	/* total blocks in the non-sparse output image */
++  __le32	total_chunks;	/* total chunks in the sparse input image */
++  __le32	image_checksum; /* CRC32 checksum of the original data, counting "don't care" */
++				/* as 0. Standard 802.3 polynomial, use a Public Domain */
++				/* table implementation */
++};
++
++#define SPARSE_HEADER_MAGIC	0xed26ff3a
++
++#define CHUNK_TYPE_RAW		0xCAC1
++#define CHUNK_TYPE_FILL		0xCAC2
++#define CHUNK_TYPE_DONT_CARE	0xCAC3
++#define CHUNK_TYPE_CRC32    0xCAC4
++
++struct chunk_header {
++  __le16	chunk_type;	/* 0xCAC1 -> raw; 0xCAC2 -> fill; 0xCAC3 -> don't care */
++  __le16	reserved1;
++  __le32	chunk_sz;	/* in blocks in output image */
++  __le32	total_sz;	/* in bytes of chunk input file including chunk header and data */
++};
++
++/* Following a Raw or Fill or CRC32 chunk is data.
++ *  For a Raw chunk, it's the data in chunk_sz * blk_sz.
++ *  For a Fill chunk, it's 4 bytes of the fill data.
++ *  For a CRC32 chunk, it's 4 bytes of CRC32
++ */
++
++static inline int is_sparse_image(const void *buf)
++{
++	const struct sparse_header *s = buf;
++
++	if ((le32_to_cpu(s->magic) == SPARSE_HEADER_MAGIC) &&
++	    (le16_to_cpu(s->major_version) == 1))
++		return 1;
++
++	return 0;
++}
++
++struct sparse_image_ctx;
++
++struct sparse_image_ctx *sparse_image_open(const char *path);
++int sparse_image_read(struct sparse_image_ctx *si, void *buf,
++		      loff_t *pos, size_t len, int *retlen);
++void sparse_image_close(struct sparse_image_ctx *si);
++loff_t sparse_image_size(struct sparse_image_ctx *si);
++
++#endif /* _IMAGE_SPARSE_H */
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 9562b1b8c2..637b3f1003 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -79,6 +79,9 @@ config LIBSCAN
+ config LIBUBIGEN
+ 	bool
  
-+barebox supports several different USB gadget drivers:
++config IMAGE_SPARSE
++	bool
 +
-+- Device Firmware Upgrade (DFU)
-+- Android Fastboot
-+- serial gadget
-+
-+The recommended way to use USB gadget is with the :ref:`command_usbgadget` command.
-+While there are individual commands for :ref:`command_dfu` and :ref:`command_usbserial`,
-+the :ref:`command_usbgadget` commands supports registering composite gadgets.
-+
-+Partition description
-+^^^^^^^^^^^^^^^^^^^^^
-+
-+The USB gadget commands for Android Fastboot and DFU take a partition description
-+which describes which barebox partitions are exported via USB. The partition
-+description is referred to as ``<desc>`` in the command help texts. It has
-+the general form ``partition(name)flags,partition(name)flags,...``.
-+
-+The **partition** field is the partition as accessible in barebox. This can be a
-+path in ``/dev/``, but could also be a regular file.
-+
-+The **name** field is the name under which the partition shall be exported. This
-+is the name under which the partition can be found with the host tool.
-+
-+Several **flags** are supported, each denoted by a single character:
-+
-+* ``s`` Safe mode. The file is downloaded completely before it is written (DFU specific)
-+* ``r`` Readback. The partition is allowed to be read back (DFU specific)
-+* ``c`` The file shall be created if it doesn't exist. Needed when a regular file is exported.
-+
-+Example:
-+
-+.. code-block:: sh
-+
-+  /dev/nand0.barebox.bb(barebox)sr,/kernel(kernel)rc
-+
- DFU
- ^^^
+ config STMP_DEVICE
+ 	bool
  
-@@ -43,16 +79,8 @@ Implementers Forum. It provides a vendor-independent way to update the firmware
- devices. The current specification is version 1.1 and can be downloaded here:
- http://www.usb.org/developers/devclass_docs/DFU_1.1.pdf
- 
--On the barebox side, the update is handled with the :ref:`command_dfu` command.
--It is passed a list of partitions to provide to the host. The partition list
--has the form ``<file>(<name>)<flags>``.  ``file`` is the path to the device or
--regular file which shall be updated. ``name`` is the name under which the partition
--shall be provided to the host. For the possible ``flags`` see
--:ref:`command_dfu`. A typical ``dfu`` command could look like this:
--
--.. code-block:: sh
--
--  dfu "/dev/nand0.barebox.bb(barebox)sr,/dev/nand0.kernel.bb(kernel)r,/dev/nand0.root.bb(root)r"
-+On the barebox side, the update is handled with the :ref:`command_usbgadget` or the
-+:ref:`command_dfu` command.
- 
- On the host side, the tool `dfu-util <http://dfu-util.gnumonks.org/>`_ can be used
- to update the partitions. It is available for most distributions and typically
+diff --git a/lib/Makefile b/lib/Makefile
+index 1be1742499..0d5ac6586c 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -32,6 +32,7 @@ obj-$(CONFIG_GENERIC_FIND_NEXT_BIT) += find_next_bit.o
+ obj-y			+= glob.o
+ obj-y			+= notifier.o
+ obj-y			+= random.o
++obj-$(CONFIG_IMAGE_SPARSE) += image-sparse.o
+ obj-y			+= lzo/
+ obj-$(CONFIG_LZ4_DECOMPRESS) += lz4/
+ obj-y			+= show_progress.o
+diff --git a/lib/image-sparse.c b/lib/image-sparse.c
+new file mode 100644
+index 0000000000..7137d15fd0
+--- /dev/null
++++ b/lib/image-sparse.c
+@@ -0,0 +1,249 @@
++/*
++ * Copyright (c) 2009, Google Inc.
++ * All rights reserved.
++ *
++ * Copyright (c) 2009-2014, The Linux Foundation. All rights reserved.
++ * Portions Copyright 2014 Broadcom Corporation.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *     * Redistributions of source code must retain the above copyright
++ *       notice, this list of conditions and the following disclaimer.
++ *     * Redistributions in binary form must reproduce the above copyright
++ *       notice, this list of conditions and the following disclaimer in the
++ *       documentation and/or other materials provided with the distribution.
++ *     * Neither the name of The Linux Foundation nor
++ *       the names of its contributors may be used to endorse or promote
++ *       products derived from this software without specific prior written
++ *       permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NON-INFRINGEMENT ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
++ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
++ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
++ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
++ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ * NOTE:
++ *   Although it is very similar, this license text is not identical
++ *   to the "BSD-3-Clause", therefore, DO NOT MODIFY THIS LICENSE TEXT!
++ */
++#define pr_fmt(fmt)  "image-sparse: " fmt
++
++#include <config.h>
++#include <common.h>
++#include <image-sparse.h>
++#include <unistd.h>
++#include <malloc.h>
++#include <fs.h>
++#include <libfile.h>
++#include <linux/sizes.h>
++
++#include <linux/math64.h>
++
++#ifndef CONFIG_FASTBOOT_FLASH_FILLBUF_SIZE
++#define CONFIG_FASTBOOT_FLASH_FILLBUF_SIZE (1024 * 512)
++#endif
++
++struct sparse_image_ctx {
++	int fd;
++	struct sparse_header sparse;
++	int processed_chunks;
++	struct chunk_header chunk;
++	loff_t pos;
++	size_t remaining;
++	uint32_t fill_val;
++};
++
++int sparse_seek(struct sparse_image_ctx *si)
++{
++	unsigned int chunk_data_sz, payload;
++	loff_t offs;
++	int ret;
++
++again:
++	if (si->processed_chunks == si->sparse.total_chunks)
++		return 0;
++
++	/* Read and skip over chunk header */
++	ret = read_full(si->fd, &si->chunk,
++			sizeof(struct chunk_header));
++	if (ret < 0)
++		return ret;
++	if (ret < sizeof(struct chunk_header))
++		return -EINVAL;
++
++	pr_debug("=== Chunk Header ===\n");
++	pr_debug("chunk_type: 0x%x\n", si->chunk.chunk_type);
++	pr_debug("chunk_data_sz: 0x%x\n", si->chunk.chunk_sz);
++	pr_debug("total_size: 0x%x\n", si->chunk.total_sz);
++
++	if (si->sparse.chunk_hdr_sz > sizeof(struct chunk_header)) {
++		/*
++		 * Skip the remaining bytes in a header that is longer
++		 * than we expected.
++		 */
++		offs = lseek(si->fd, si->sparse.chunk_hdr_sz -
++			 sizeof(struct chunk_header), SEEK_CUR);
++		if (offs == -1)
++			return -errno;
++	}
++
++	chunk_data_sz = si->sparse.blk_sz * si->chunk.chunk_sz;
++	payload = si->chunk.total_sz - si->sparse.chunk_hdr_sz;
++
++	si->processed_chunks++;
++
++	switch (si->chunk.chunk_type) {
++	case CHUNK_TYPE_RAW:
++		if (payload != chunk_data_sz)
++			return -EINVAL;
++
++		si->remaining = payload;
++
++		break;
++
++	case CHUNK_TYPE_FILL:
++		if (payload != sizeof(uint32_t))
++			return -EINVAL;
++
++		ret = read_full(si->fd, &si->fill_val, sizeof(uint32_t));
++		if (ret < 0)
++			return ret;
++		if (ret < sizeof(uint32_t))
++			return -EINVAL;
++
++		si->remaining = chunk_data_sz;
++
++		break;
++
++	case CHUNK_TYPE_DONT_CARE:
++		si->pos += chunk_data_sz;
++		goto again;
++
++	case CHUNK_TYPE_CRC32:
++		if (payload != sizeof(uint32_t))
++			return -EINVAL;
++
++		offs = lseek(si->fd, chunk_data_sz, SEEK_CUR);
++		if (offs == -1)
++			return -EINVAL;
++		goto again;
++
++	default:
++		pr_err("Unknown chunk type 0x%04x",
++				si->chunk.chunk_type);
++		return -EINVAL;
++	}
++
++	return 1;
++}
++
++loff_t sparse_image_size(struct sparse_image_ctx *si)
++{
++	return (loff_t)si->sparse.blk_sz * si->sparse.total_blks;
++}
++
++struct sparse_image_ctx *sparse_image_open(const char *path)
++{
++	struct sparse_image_ctx *si;
++	loff_t offs;
++	int ret;
++
++	si = xzalloc(sizeof(*si));
++
++	si->fd = open(path, O_RDONLY);
++	if (si->fd < 0) {
++		ret = -errno;
++		goto out;
++	}
++
++	/* Read and skip over sparse image header */
++	read(si->fd, &si->sparse, sizeof(struct sparse_header));
++
++	if (si->sparse.file_hdr_sz > sizeof(struct sparse_header)) {
++		/*
++		 * Skip the remaining bytes in a header that is longer than
++		 * we expected.
++		 */
++		offs = lseek(si->fd, si->sparse.file_hdr_sz, SEEK_SET);
++		if (offs == -1) {
++			ret = -errno;
++			goto out;
++		}
++	}
++
++	ret = sparse_seek(si);
++	if (ret < 0)
++		goto out;
++
++	return si;
++out:
++	free(si);
++
++	return ERR_PTR(ret);
++}
++
++int sparse_image_read(struct sparse_image_ctx *si, void *buf, loff_t *pos,
++		      size_t len, int *retlen)
++{
++	size_t now;
++	int ret, i;
++
++	if (si->remaining == 0) {
++		ret = sparse_seek(si);
++		if (ret < 0)
++			return ret;
++		if (ret == 0) {
++			*retlen = 0;
++			return 0;
++		}
++	}
++
++	*pos = si->pos;
++
++	now = min(si->remaining, len);
++
++	switch (si->chunk.chunk_type) {
++	case CHUNK_TYPE_RAW:
++		ret = read_full(si->fd, buf, now);
++		if (ret < 0)
++			return ret;
++		if (ret < now)
++			return -EINVAL;
++
++		break;
++
++	case CHUNK_TYPE_FILL:
++		if (now & 3)
++			return -EINVAL;
++
++		for (i = 0; i < now / sizeof(uint32_t); i++) {
++			uint32_t *buf32 = buf;
++
++			buf32[i] = si->fill_val;
++		}
++
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	si->pos += now;
++	si->remaining -= now;
++
++	*retlen = now;
++
++	return 0;
++}
++
++void sparse_image_close(struct sparse_image_ctx *si)
++{
++	close(si->fd);
++	free(si);
++}
 -- 
 2.11.0
 
