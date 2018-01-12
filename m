@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eZXdJ-000455-V8
- for barebox@lists.infradead.org; Thu, 11 Jan 2018 07:50:45 +0000
+ id 1eZuJg-0000uK-FD
+ for barebox@lists.infradead.org; Fri, 12 Jan 2018 08:03:59 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 11 Jan 2018 08:50:12 +0100
-Message-Id: <20180111075012.9050-8-s.hauer@pengutronix.de>
-In-Reply-To: <20180111075012.9050-1-s.hauer@pengutronix.de>
-References: <20180111075012.9050-1-s.hauer@pengutronix.de>
+Date: Fri, 12 Jan 2018 09:03:42 +0100
+Message-Id: <20180112080342.13017-1-s.hauer@pengutronix.de>
+In-Reply-To: <20180111075012.9050-8-s.hauer@pengutronix.de>
+References: <20180111075012.9050-8-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,7 +21,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] usb: gadget: fastboot: Add sparse image support
+Subject: [PATCH] usb: gadget: fastboot: Add sparse image support
 To: Barebox List <barebox@lists.infradead.org>
 
 Sparse images are needed for fastboot to flash images that do not
@@ -57,8 +57,8 @@ Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
  Documentation/user/usb.rst      |   1 +
  drivers/usb/gadget/Kconfig      |   1 +
- drivers/usb/gadget/f_fastboot.c | 235 ++++++++++++++++++++++++++++++++++++----
- 3 files changed, 214 insertions(+), 23 deletions(-)
+ drivers/usb/gadget/f_fastboot.c | 243 ++++++++++++++++++++++++++++++++++++----
+ 3 files changed, 222 insertions(+), 23 deletions(-)
 
 diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
 index 3844e7941a..8396f3897c 100644
@@ -85,7 +85,7 @@ index 64347f0d18..b612d39a8e 100644
  
  endif
 diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-index 85c64c05c8..4df87b9335 100644
+index 85c64c05c8..4f4f3fff26 100644
 --- a/drivers/usb/gadget/f_fastboot.c
 +++ b/drivers/usb/gadget/f_fastboot.c
 @@ -32,11 +32,14 @@
@@ -138,7 +138,7 @@ index 85c64c05c8..4df87b9335 100644
  {
  	char buf[64];
  	va_list ap;
-@@ -687,6 +695,179 @@ static void __maybe_unused cb_boot(struct usb_ep *ep, struct usb_request *req,
+@@ -687,6 +695,187 @@ static void __maybe_unused cb_boot(struct usb_ep *ep, struct usb_request *req,
  	fastboot_tx_print(f_fb, "OKAY");
  }
  
@@ -198,11 +198,20 @@ index 85c64c05c8..4df87b9335 100644
 +		    fastboot_tx_print(f_fb, "INFOwriting UBI image to MTD device, "
 +					    "add the 'u' ");
 +		    fastboot_tx_print(f_fb, "INFOflag to the partition description");
++		    return 0;
++	}
++
++	if (!(fentry->flags & FILE_LIST_FLAG_UBI))
++		return 0;
++
++	if (IS_ERR(mtd)) {
++		fastboot_tx_print(f_fb, "FAILUBI flag given on non-MTD device");
++		return -EINVAL;
 +	}
 +
 +	if (filetype == filetype_ubi) {
 +		fastboot_tx_print(f_fb, "INFOThis is an UBI image...");
-+		return 0;
++		return 1;
 +	} else {
 +		fastboot_tx_print(f_fb, "FAILThis is no UBI image but %s",
 +			file_type_to_string(filetype));
@@ -276,13 +285,12 @@ index 85c64c05c8..4df87b9335 100644
 +
 +		if (pos == 0) {
 +			ret = check_ubi(f_fb, fentry, file_detect_type(buf, retlen));
-+			if (ret)
++			if (ret < 0)
 +				goto out;
 +		}
 +
 +		if (fentry->flags & FILE_LIST_FLAG_UBI) {
 +			if (pos == 0) {
-+
 +				ret = do_ubiformat(f_fb, mtd, NULL);
 +				if (ret)
 +					goto out;
@@ -318,7 +326,7 @@ index 85c64c05c8..4df87b9335 100644
  static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd)
  {
  	struct f_fastboot *f_fb = req->context;
-@@ -706,33 +887,27 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
+@@ -706,33 +895,27 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
  
  	filename = fentry->filename;
  
@@ -358,7 +366,7 @@ index 85c64c05c8..4df87b9335 100644
 -			fastboot_tx_print(f_fb, "FAILubiformat is not available");
 -			return;
 -		}
-+	if (ret) {
++	if (ret > 0) {
 +		struct mtd_info *mtd;
  
 -		ret = ubiformat(meminfo.mtd, &args);
@@ -368,7 +376,7 @@ index 85c64c05c8..4df87b9335 100644
  		if (ret) {
  			fastboot_tx_print(f_fb, "FAILwrite partition: %s", strerror(-ret));
  			return;
-@@ -973,3 +1148,17 @@ static void rx_handler_command(struct usb_ep *ep, struct usb_request *req)
+@@ -973,3 +1156,17 @@ static void rx_handler_command(struct usb_ep *ep, struct usb_request *req)
  	memset(req->buf, 0, EP_BUFFER_SIZE);
  	usb_ep_queue(ep, req);
  }
