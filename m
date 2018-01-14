@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eaIwU-00031v-2z
- for barebox@lists.infradead.org; Sat, 13 Jan 2018 10:21:40 +0000
-Date: Sat, 13 Jan 2018 11:21:19 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20180113102119.GA29458@ravnborg.org>
-References: <20180106211938.GA25955@ravnborg.org>
- <20180109110404.r7i2tb6tilbl5wzx@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180109110404.r7i2tb6tilbl5wzx@pengutronix.de>
+ id 1eapkI-0005tI-G4
+ for barebox@lists.infradead.org; Sun, 14 Jan 2018 21:23:16 +0000
+Received: by mail-lf0-x242.google.com with SMTP id h92so817400lfi.7
+ for <barebox@lists.infradead.org>; Sun, 14 Jan 2018 13:23:03 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon, 15 Jan 2018 00:22:45 +0300
+Message-Id: <20180114212252.29682-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,57 +16,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] atmel_lcdfb: introduce driver data
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2 0/7] sandbox: add gpio support with libftdi1
+To: barebox@lists.infradead.org
 
-Hi Sasha.
+This patch series makes it possible to use FT2232H ACBUS[7:0]
+pins as gpio pins from sandbox barebox.
 
-> > +
-> >  static __maybe_unused struct of_device_id atmel_lcdfb_compatible[] = {
-> > -	{ .compatible = "atmel,at91sam9261-lcdc", },
-> > -	{ .compatible = "atmel,at91sam9263-lcdc", },
-> > -	{ .compatible = "atmel,at91sam9g10-lcdc", },
-> > -	{ .compatible = "atmel,at91sam9g45-lcdc", },
-> > +	{ .compatible = "atmel,at91sam9261-lcdc",	.data = &at91sam9261_config, },
-> > +	{ .compatible = "atmel,at91sam9263-lcdc",	.data = &at91sam9263_config, },
-> > +	{ .compatible = "atmel,at91sam9g10-lcdc",	.data = &at91sam9g10_config, },
-> > +	{ .compatible = "atmel,at91sam9g45-lcdc",	.data = &at91sam9g45_config, },
-> >  	{ .compatible = "atmel,at91sam9g45es-lcdc", },
-> > -	{ .compatible = "atmel,at91sam9rl-lcdc", },
-> > -	{ .compatible = "atmel,at32ap-lcdc", },
-> > +	{ .compatible = "atmel,at91sam9rl-lcdc",	.data = &at91sam9rl_config, },
-> > +	{ .compatible = "atmel,at32ap-lcdc",		.data = &at32ap_config, },
-> >  	{ /* sentinel */ }
-> >  };
-> 
-> Note that we can match on different platform_device_ids aswell, so you
-> could also attach driver_data to platform devices aswell. For an example
-> see drivers/serial/serial_imx.c.
-> 
-> I leave it up to you if you change this patch accordingly, I can also
-> apply it as is.
+There are ready-to-use FT2232H-based boards:
 
-I took a look at it today.
-With these Atmel CPUs we have different behaviour of each IP block
-depending on what CPU it is included in which is why I have added
-all these _config blocks (I could have re-used a few).
+  * FT2232H-56Q Mini-Module (http://www.ftdichip.com/Products/Modules/DevelopmentModules.htm#FT2232H-56_Mini)
+  * FT2232 breakout board (http://dangerousprototypes.com/docs/FT2232_breakout_board)
 
-So it is not that we see that for example at91sam9rl-lcdc
-is used in many CPU's.
-Adding the platform_id in this case resulted in extra code with no
-added benefit - or at least no benefit I could see.
-I had to maintain both a of_device_id table and a platform_device_id table,
-so it also looked like a duplicate.
+The main goal of adding gpio functionality to sandbox barebox
+is using it for connecting real i2c and spi devices to sandbox barebox.
 
-So unless I miss something then the original patch is the best
-solution.
+Sample dts-file for at24 i2c eeprom and at25 spi flash is included.
 
-	Sam
+Changes since v1 patch series (http://lists.infradead.org/pipermail/barebox/2017-October/031306.html):
+
+  * rebase on top barebox v2017.12.0;
+  * ds1307 i2c rtc driver works fine (i2c-gpio,scl-output-only is used);
+  * parseopt_* functions are used for cmdline parsing.
+
+Changes since RFC v1 patch series (http://lists.infradead.org/pipermail/barebox/2017-February/029106.html):
+
+  * rebase on top barebox v2017.10.0;
+  * libftdi cmdline options are added;
+  * device tree support is added.
+
+Antony Pavlov (7):
+  sandbox: avoid symbol conflict for {open,read,close}dir
+  sandbox: add gpio support with libftdi1
+  sandbox: add i2c and spi libftdi1 bit-bang example
+  move parseopt to lib/
+  include/parseopt.h: add guard macro
+  parseopt: introduce parseopt_u16() and parseopt_str()
+  sandbox: parse libftdi options
+
+ arch/sandbox/Kconfig                           |   1 +
+ arch/sandbox/Makefile                          |  10 +-
+ arch/sandbox/configs/sandbox_defconfig         |  26 +++-
+ arch/sandbox/dts/sandbox.dts                   |  52 +++++++
+ arch/sandbox/mach-sandbox/include/mach/linux.h |  11 ++
+ arch/sandbox/os/Makefile                       |   3 +
+ arch/sandbox/os/common.c                       |  12 +-
+ arch/sandbox/os/ftdi.c                         | 181 +++++++++++++++++++++++++
+ drivers/gpio/Kconfig                           |   4 +
+ drivers/gpio/Makefile                          |   1 +
+ drivers/gpio/gpio-libftdi1.c                   | 125 +++++++++++++++++
+ fs/Makefile                                    |   2 +-
+ fs/fs.c                                        |   3 +-
+ fs/nfs.c                                       |   3 +-
+ fs/parseopt.c                                  |  60 --------
+ fs/parseopt.h                                  |   2 -
+ include/parseopt.h                             |   9 ++
+ lib/Makefile                                   |   1 +
+ lib/parseopt.c                                 | 124 +++++++++++++++++
+ 19 files changed, 558 insertions(+), 72 deletions(-)
+ create mode 100644 arch/sandbox/os/ftdi.c
+ create mode 100644 drivers/gpio/gpio-libftdi1.c
+ delete mode 100644 fs/parseopt.c
+ delete mode 100644 fs/parseopt.h
+ create mode 100644 include/parseopt.h
+ create mode 100644 lib/parseopt.c
+
+-- 
+2.15.1
+
 
 _______________________________________________
 barebox mailing list
