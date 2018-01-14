@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eapkK-0005td-G0
+ id 1eapkK-0005tg-G2
  for barebox@lists.infradead.org; Sun, 14 Jan 2018 21:23:18 +0000
-Received: by mail-lf0-x244.google.com with SMTP id y71so11151691lfd.12
- for <barebox@lists.infradead.org>; Sun, 14 Jan 2018 13:23:08 -0800 (PST)
+Received: by mail-lf0-x244.google.com with SMTP id h140so11184521lfg.1
+ for <barebox@lists.infradead.org>; Sun, 14 Jan 2018 13:23:10 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 15 Jan 2018 00:22:49 +0300
-Message-Id: <20180114212252.29682-5-antonynpavlov@gmail.com>
+Date: Mon, 15 Jan 2018 00:22:51 +0300
+Message-Id: <20180114212252.29682-7-antonynpavlov@gmail.com>
 In-Reply-To: <20180114212252.29682-1-antonynpavlov@gmail.com>
 References: <20180114212252.29682-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,77 +23,99 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/7] move parseopt to lib/
+Subject: [PATCH v2 6/7] parseopt: introduce parseopt_u16() and parseopt_str()
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- fs/Makefile                | 2 +-
- fs/fs.c                    | 3 +--
- fs/nfs.c                   | 3 +--
- {fs => include}/parseopt.h | 0
- lib/Makefile               | 1 +
- {fs => lib}/parseopt.c     | 0
- 6 files changed, 4 insertions(+), 5 deletions(-)
+ include/parseopt.h |  2 ++
+ lib/parseopt.c     | 64 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 66 insertions(+)
 
-diff --git a/fs/Makefile b/fs/Makefile
-index b3f929f506..8e3fd78e92 100644
---- a/fs/Makefile
-+++ b/fs/Makefile
-@@ -4,7 +4,7 @@ obj-$(CONFIG_FS_RAMFS)	+= ramfs.o
- obj-y			+= devfs-core.o
- obj-$(CONFIG_FS_DEVFS)	+= devfs.o
- obj-$(CONFIG_FS_FAT)	+= fat/
--obj-y	+= fs.o parseopt.o
-+obj-y	+= fs.o
- obj-$(CONFIG_FS_UBIFS)	+= ubifs/
- obj-$(CONFIG_FS_TFTP)	+= tftp.o
- obj-$(CONFIG_FS_OMAP4_USBBOOT)	+= omap4_usbbootfs.o
-diff --git a/fs/fs.c b/fs/fs.c
-index f61ee091b5..ccb4943669 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -35,8 +35,7 @@
- #include <libgen.h>
- #include <block.h>
- #include <libfile.h>
--
--#include "parseopt.h"
-+#include <parseopt.h>
+diff --git a/include/parseopt.h b/include/parseopt.h
+index becc734c2b..1f9763f8c9 100644
+--- a/include/parseopt.h
++++ b/include/parseopt.h
+@@ -3,5 +3,7 @@
  
- char *mkmodestr(unsigned long mode, char *str)
- {
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 97f01cfb34..75cd127eeb 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -36,8 +36,7 @@
- #include <linux/sizes.h>
- #include <byteorder.h>
- #include <globalvar.h>
--
--#include "parseopt.h"
-+#include <parseopt.h>
+ void parseopt_b(const char *options, const char *opt, bool *val);
+ void parseopt_hu(const char *options, const char *opt, unsigned short *val);
++void parseopt_u16(const char *options, const char *opt, uint16_t *val);
++void parseopt_str(const char *options, const char *opt, char **val);
  
- #define SUNRPC_PORT     111
- 
-diff --git a/fs/parseopt.h b/include/parseopt.h
-similarity index 100%
-rename from fs/parseopt.h
-rename to include/parseopt.h
-diff --git a/lib/Makefile b/lib/Makefile
-index 1be1742499..8f7ef4e4ed 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -59,3 +59,4 @@ obj-y			+= reed_solomon/
- obj-$(CONFIG_RATP)	+= ratp.o
- obj-y			+= list_sort.o
- obj-y			+= int_sqrt.o
-+obj-y			+= parseopt.o
-diff --git a/fs/parseopt.c b/lib/parseopt.c
-similarity index 100%
-rename from fs/parseopt.c
-rename to lib/parseopt.c
+ #endif /* __PARSEOPT_H__ */
+diff --git a/lib/parseopt.c b/lib/parseopt.c
+index 8ff83019a7..8211733e3b 100644
+--- a/lib/parseopt.c
++++ b/lib/parseopt.c
+@@ -58,3 +58,67 @@ again:
+ 	if (*endp == ',' || *endp == '\0')
+ 		*val = v;
+ }
++
++void parseopt_u16(const char *options, const char *opt, uint16_t *val)
++{
++	const char *start;
++	size_t optlen = strlen(opt);
++	ulong v;
++	char *endp;
++
++again:
++	start = strstr(options, opt);
++
++	if (!start)
++		return;
++
++	if (start > options && start[-1] != ',') {
++		options = start;
++		goto again;
++	}
++
++	if (start[optlen] != '=') {
++		options = start;
++		goto again;
++	}
++
++	v = simple_strtoul(start + optlen + 1, &endp, 0);
++	if (v > U16_MAX)
++		return;
++
++	if (*endp == ',' || *endp == '\0')
++		*val = v;
++}
++
++void parseopt_str(const char *options, const char *opt, char **val)
++{
++	const char *start;
++	size_t optlen = strlen(opt);
++	char *endp;
++	char *parsed;
++
++again:
++	start = strstr(options, opt);
++
++	if (!start)
++		return;
++
++	if (start > options && start[-1] != ',') {
++		options = start;
++		goto again;
++	}
++
++	if (start[optlen] != '=') {
++		options = start;
++		goto again;
++	}
++
++	parsed = (char *)start + optlen + 1;
++	endp = parsed;
++	while (*endp != '\0' && *endp != ',') {
++
++		endp++;
++	}
++
++	*val = xstrndup(parsed, endp - parsed);
++}
 -- 
 2.15.1
 
