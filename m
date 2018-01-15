@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.89 #1 (Red Hat Linux))
- id 1eb5BB-00063x-9o
- for barebox@lists.infradead.org; Mon, 15 Jan 2018 13:52:03 +0000
-References: <1513266697-324-1-git-send-email-d.schultz@phytec.de>
-From: Daniel Schultz <d.schultz@phytec.de>
-Message-ID: <7a777aba-c88f-91c0-1b13-8aceee7313a3@phytec.de>
-Date: Mon, 15 Jan 2018 14:52:55 +0100
+Received: from asavdk4.altibox.net ([109.247.116.15])
+ by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
+ id 1ebCUG-0002Uq-Ea
+ for barebox@lists.infradead.org; Mon, 15 Jan 2018 21:40:14 +0000
+Date: Mon, 15 Jan 2018 22:39:51 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20180115213951.GA32669@ravnborg.org>
 MIME-Version: 1.0
-In-Reply-To: <1513266697-324-1-git-send-email-d.schultz@phytec.de>
-Content-Language: en-GB
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,112 +16,126 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] common: state: Add property to protect existing data
-To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH v3 0/3] Enable DT support for AT91SAM9263EK
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Sam Ravnborg <sam@ravnborg.org>
 
-SGksCgpqdXN0IHdhbnRlZCB0byByZW1pbmQgeW91IHRvIHRoZXNlIHBhdGNoZXMuCgpEYW5pZWwK
-CgpPbiAxMi8xNC8yMDE3IDA0OjUxIFBNLCBEYW5pZWwgU2NodWx0eiB3cm90ZToKPiBBZnRlciBh
-biB1cGRhdGUgdG8gYSBuZXdlciBiYXJlYm94IHZlcnNpb24gd2l0aCBhbiBlbmFibGVkIHN0YXRl
-Cj4gZnJhbWV3b3JrLCBleGlzdGluZyBkYXRhIGluIHN0b3JhZ2UgbWVtb3JpZXMgY291bGQgYmUg
-b3ZlcndyaXR0ZW4uCj4KPiBBZGQgYSBuZXcgcHJvcGVydHkgdG8gY2hlY2sgaW4gZnJvbnQgb2Yg
-ZXZlcnkgd3JpdGUgdGFzaywgaWYgdGhlIG1ldGEKPiBtYWdpYyBmaWVsZCBvbmx5IGNvbnRhaW5z
-IHRoZSBtYWdpYyBudW1iZXIsIHplcm9zIG9yIG9uZXMuCj4KPiBTaWduZWQtb2ZmLWJ5OiBEYW5p
-ZWwgU2NodWx0eiA8ZC5zY2h1bHR6QHBoeXRlYy5kZT4KPiAtLS0KPiAgIC4uLi9kZXZpY2V0cmVl
-L2JpbmRpbmdzL2JhcmVib3gvYmFyZWJveCxzdGF0ZS5yc3QgICAgIHwgIDMgKysrCj4gICBjb21t
-b24vc3RhdGUvYmFja2VuZF9idWNrZXRfZGlyZWN0LmMgICAgICAgICAgICAgICAgICB8ICAyICsr
-Cj4gICBjb21tb24vc3RhdGUvYmFja2VuZF9zdG9yYWdlLmMgICAgICAgICAgICAgICAgICAgICAg
-ICB8ICAxICsKPiAgIGNvbW1vbi9zdGF0ZS9zdGF0ZS5jICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwgMTkgKysrKysrKysrKysrKysrKysrLQo+ICAgY29tbW9uL3N0YXRlL3N0YXRl
-LmggICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMiArKwo+ICAgNSBmaWxlcyBj
-aGFuZ2VkLCAyNiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCj4KPiBkaWZmIC0tZ2l0IGEv
-RG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2JhcmVib3gvYmFyZWJveCxzdGF0ZS5y
-c3QgYi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvYmFyZWJveC9iYXJlYm94LHN0
-YXRlLnJzdAo+IGluZGV4IGNlYmI1ZjguLmRiNWIwNDEgMTAwNjQ0Cj4gLS0tIGEvRG9jdW1lbnRh
-dGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2JhcmVib3gvYmFyZWJveCxzdGF0ZS5yc3QKPiArKysg
-Yi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvYmFyZWJveC9iYXJlYm94LHN0YXRl
-LnJzdAo+IEBAIC01NSw2ICs1NSw5IEBAIE9wdGlvbmFsIFByb3BlcnRpZXMKPiAgICogYGBhbGdv
-YGA6IEEgSE1BQyBhbGdvcml0aG0gdXNlZCB0byBkZXRlY3QgbWFuaXB1bGF0aW9uIG9mIHRoZSBk
-YXRhCj4gICAgIG9yIGhlYWRlciwgc2Vuc2libGUgdmFsdWVzIGZvbGxvdyB0aGlzIHBhdHRlcm4g
-YGBobWFjKDxIQVNIPilgYCwKPiAgICAgZS5nLiBgYGhtYWMoc2hhMjU2KWBgLiBPbmx5IGF2YWls
-YWJsZSBmb3IgdGhlIGBgYmFja2VuZC10eXBlYGAgYGByYXdgYC4KPiArKiBgYGtlZXAtcHJldmlv
-dXMtY29udGVudGBgOiBDaGVjayBpZiBhIHRoZSBidWNrZXQgbWV0YSBtYWdpYyBmaWVsZCBjb250
-YWlucwo+ICsgIG90aGVyIGRhdGEgdGhhbiB0aGUgbWFnaWMgdmFsdWUuIElmIHNvLCB0aGUgYmFj
-a2VuZCB3aWxsIG5vdCB3cml0ZSB0aGUgc3RhdGUKPiArICB0byBwcmV2ZW50IHVuY29uZGl0aW9u
-YWxseSBvdmVyd3JpdGVzIG9mIGV4aXN0aW5nIGRhdGEuCj4gICAKPiAgIC4uIG5vdGU6OiBGb3Ig
-dGhlIGBgYmFja2VuZC1zdG9yYWdlLXR5cGVgYCB0aGUga2V5d29yZCBgYG5vbmNpcmN1bGFyYGAg
-aXMgc3RpbGwKPiAgICAgIHN1cHBvcnRlZCBhcyBhIGZhbGwgYmFjayB0byBhbiBvbGQgc3RvcmFn
-ZSBmb3JtYXQuIFJlY29tbWVuZGF0aW9uIGlzIHRvIG5vdAo+IGRpZmYgLS1naXQgYS9jb21tb24v
-c3RhdGUvYmFja2VuZF9idWNrZXRfZGlyZWN0LmMgYi9jb21tb24vc3RhdGUvYmFja2VuZF9idWNr
-ZXRfZGlyZWN0LmMKPiBpbmRleCA5NTg2OTZlLi45ZDZhMzM3IDEwMDY0NAo+IC0tLSBhL2NvbW1v
-bi9zdGF0ZS9iYWNrZW5kX2J1Y2tldF9kaXJlY3QuYwo+ICsrKyBiL2NvbW1vbi9zdGF0ZS9iYWNr
-ZW5kX2J1Y2tldF9kaXJlY3QuYwo+IEBAIC02OSw2ICs2OSw4IEBAIHN0YXRpYyBpbnQgc3RhdGVf
-YmFja2VuZF9idWNrZXRfZGlyZWN0X3JlYWQoc3RydWN0IHN0YXRlX2JhY2tlbmRfc3RvcmFnZV9i
-dWNrZXQKPiAgIAlpZiAobWV0YS5tYWdpYyA9PSBkaXJlY3RfbWFnaWMpIHsKPiAgIAkJcmVhZF9s
-ZW4gPSBtZXRhLndyaXR0ZW5fbGVuZ3RoOwo+ICAgCX0gZWxzZSB7Cj4gKwkJaWYgKG1ldGEubWFn
-aWMgIT0gfjAgJiYgISFtZXRhLm1hZ2ljKQo+ICsJCQlidWNrZXQtPndyb25nX21hZ2ljID0gMTsK
-PiAgIAkJaWYgKCFJU19FTkFCTEVEKENPTkZJR19TVEFURV9CQUNLV0FSRF9DT01QQVRJQkxFKSkg
-ewo+ICAgCQkJZGV2X2VycihkaXJlY3QtPmRldiwgIk5vIG1ldGEgZGF0YSBoZWFkZXIgZm91bmRc
-biIpOwo+ICAgCQkJZGV2X2RiZyhkaXJlY3QtPmRldiwgIkVuYWJsZSBiYWNrd2FyZCBjb21wYXRp
-YmlsaXR5IG9yIGluY3JlYXNlIHN0cmlkZSBzaXplXG4iKTsKPiBkaWZmIC0tZ2l0IGEvY29tbW9u
-L3N0YXRlL2JhY2tlbmRfc3RvcmFnZS5jIGIvY29tbW9uL3N0YXRlL2JhY2tlbmRfc3RvcmFnZS5j
-Cj4gaW5kZXggYzZlYmU4Ni4uZjBhMTY5ZCAxMDA2NDQKPiAtLS0gYS9jb21tb24vc3RhdGUvYmFj
-a2VuZF9zdG9yYWdlLmMKPiArKysgYi9jb21tb24vc3RhdGUvYmFja2VuZF9zdG9yYWdlLmMKPiBA
-QCAtMTUyLDYgKzE1Miw3IEBAIGludCBzdGF0ZV9zdG9yYWdlX3JlYWQoc3RydWN0IHN0YXRlX2Jh
-Y2tlbmRfc3RvcmFnZSAqc3RvcmFnZSwKPiAgIAkgKiBvbmUgd2Ugd2FudCB0byB1c2UuCj4gICAJ
-ICovCj4gICAJbGlzdF9mb3JfZWFjaF9lbnRyeShidWNrZXQsICZzdG9yYWdlLT5idWNrZXRzLCBi
-dWNrZXRfbGlzdCkgewo+ICsJCWJ1Y2tldC0+d3JvbmdfbWFnaWMgPSAwOwo+ICAgCQlyZXQgPSBi
-dWNrZXQtPnJlYWQoYnVja2V0LCAmYnVja2V0LT5idWYsICZidWNrZXQtPmxlbik7Cj4gICAJCWlm
-IChyZXQgPT0gLUVVQ0xFQU4pCj4gICAJCQlidWNrZXQtPm5lZWRzX3JlZnJlc2ggPSAxOwo+IGRp
-ZmYgLS1naXQgYS9jb21tb24vc3RhdGUvc3RhdGUuYyBiL2NvbW1vbi9zdGF0ZS9zdGF0ZS5jCj4g
-aW5kZXggNjM5OWJkMy4uZTExMDU0MiAxMDA2NDQKPiAtLS0gYS9jb21tb24vc3RhdGUvc3RhdGUu
-Ywo+ICsrKyBiL2NvbW1vbi9zdGF0ZS9zdGF0ZS5jCj4gQEAgLTQ0LDYgKzQ0LDkgQEAgaW50IHN0
-YXRlX3NhdmUoc3RydWN0IHN0YXRlICpzdGF0ZSkKPiAgIAl2b2lkICpidWY7Cj4gICAJc3NpemVf
-dCBsZW47Cj4gICAJaW50IHJldDsKPiArCXN0cnVjdCBzdGF0ZV9iYWNrZW5kX3N0b3JhZ2VfYnVj
-a2V0ICpidWNrZXQ7Cj4gKwlzdHJ1Y3Qgc3RhdGVfYmFja2VuZF9zdG9yYWdlICpzdG9yYWdlOwo+
-ICsJYm9vbCBoYXNfY29udGVudDsKPiAgIAo+ICAgCWlmICghc3RhdGUtPmRpcnR5KQo+ICAgCQly
-ZXR1cm4gMDsKPiBAQCAtNTUsNyArNTgsMTggQEAgaW50IHN0YXRlX3NhdmUoc3RydWN0IHN0YXRl
-ICpzdGF0ZSkKPiAgIAkJcmV0dXJuIHJldDsKPiAgIAl9Cj4gICAKPiAtCXJldCA9IHN0YXRlX3N0
-b3JhZ2Vfd3JpdGUoJnN0YXRlLT5zdG9yYWdlLCBidWYsIGxlbik7Cj4gKwlzdG9yYWdlID0gJnN0
-YXRlLT5zdG9yYWdlOwo+ICsJaWYgKHN0YXRlLT5rZWVwX3ByZXZfY29udGVudCkgewo+ICsJCWhh
-c19jb250ZW50ID0gMDsKPiArCQlsaXN0X2Zvcl9lYWNoX2VudHJ5KGJ1Y2tldCwgJnN0b3JhZ2Ut
-PmJ1Y2tldHMsIGJ1Y2tldF9saXN0KQo+ICsJCQloYXNfY29udGVudCB8PSBidWNrZXQtPndyb25n
-X21hZ2ljOwo+ICsJCWlmIChoYXNfY29udGVudCkgewo+ICsJCQlkZXZfZGJnKCZzdGF0ZS0+ZGV2
-LCAiRm91bmQgY29udGVudCBvbiBhIGJhY2tlbmQuXG4iKTsKPiArCQkJZ290byBvdXQ7Cj4gKwkJ
-fQo+ICsJfQo+ICsKPiArCXJldCA9IHN0YXRlX3N0b3JhZ2Vfd3JpdGUoc3RvcmFnZSwgYnVmLCBs
-ZW4pOwo+ICAgCWlmIChyZXQpIHsKPiAgIAkJZGV2X2Vycigmc3RhdGUtPmRldiwgIkZhaWxlZCB0
-byB3cml0ZSBwYWNrZWQgc3RhdGUsICVkXG4iLCByZXQpOwo+ICAgCQlnb3RvIG91dDsKPiBAQCAt
-NjA1LDYgKzYxOSw5IEBAIHN0cnVjdCBzdGF0ZSAqc3RhdGVfbmV3X2Zyb21fbm9kZShzdHJ1Y3Qg
-ZGV2aWNlX25vZGUgKm5vZGUsIGNoYXIgKnBhdGgsCj4gICAJCX0KPiAgIAl9Cj4gICAKPiArCXN0
-YXRlLT5rZWVwX3ByZXZfY29udGVudCA9IG9mX3Byb3BlcnR5X3JlYWRfYm9vbChub2RlLAo+ICsJ
-CQkJCQkJImtlZXAtcHJldmlvdXMtY29udGVudCIpOwo+ICsKPiAgIAlzdGF0ZS0+YmFja2VuZF9w
-YXRoID0geHN0cmR1cChwYXRoKTsKPiAgIAo+ICAgCXJldCA9IG9mX3Byb3BlcnR5X3JlYWRfc3Ry
-aW5nKG5vZGUsICJiYWNrZW5kLXR5cGUiLCAmYmFja2VuZF90eXBlKTsKPiBkaWZmIC0tZ2l0IGEv
-Y29tbW9uL3N0YXRlL3N0YXRlLmggYi9jb21tb24vc3RhdGUvc3RhdGUuaAo+IGluZGV4IGZjYzZi
-OWYuLmE0MTFiOTYgMTAwNjQ0Cj4gLS0tIGEvY29tbW9uL3N0YXRlL3N0YXRlLmgKPiArKysgYi9j
-b21tb24vc3RhdGUvc3RhdGUuaAo+IEBAIC00Niw2ICs0Niw3IEBAIHN0cnVjdCBzdGF0ZV9iYWNr
-ZW5kX3N0b3JhZ2VfYnVja2V0IHsKPiAgIAl2b2lkICpidWY7Cj4gICAJc3NpemVfdCBsZW47Cj4g
-ICAJYm9vbCBuZWVkc19yZWZyZXNoOwo+ICsJYm9vbCB3cm9uZ19tYWdpYzsKPiAgIH07Cj4gICAK
-PiAgIC8qKgo+IEBAIC0xMDUsNiArMTA2LDcgQEAgc3RydWN0IHN0YXRlIHsKPiAgIAljaGFyICpv
-Zl9wYXRoOwo+ICAgCWNvbnN0IGNoYXIgKm5hbWU7Cj4gICAJdWludDMyX3QgbWFnaWM7Cj4gKwli
-b29sIGtlZXBfcHJldl9jb250ZW50Owo+ICAgCj4gICAJc3RydWN0IGxpc3RfaGVhZCB2YXJpYWJs
-ZXM7IC8qIFNvcnRlZCBsaXN0IG9mIHZhcmlhYmxlcyAqLwo+ICAgCXVuc2lnbmVkIGludCBkaXJ0
-eTsKCi0tIApNaXQgZnJldW5kbGljaGVuIEdyw7zDn2VuLApXaXRoIGJlc3QgcmVnYXJkcywKICAg
-RGFuaWVsIFNjaHVsdHoKCi0gRW50d2lja2x1bmcgLQpUZWwuOiAJKzQ5IDYxMzEgOTIgMjEgNDU3
-CmQuc2NodWx0ekBwaHl0ZWMuZGUKd3d3LnBoeXRlYy5kZQoKU2llIGZpbmRlbiB1bnMgYXVjaCBh
-dWY6IEZhY2Vib29rLCBMaW5rZWRJbiwgWGluZywgWW91VHViZQoKUEhZVEVDIE1lc3N0ZWNobmlr
-IEdtYkggfCBSb2JlcnQtS29jaC1TdHIuIDM5IHwgNTUxMjkgTWFpbnosIEdlcm1hbnkKR2VzY2jD
-pGZ0c2bDvGhyZXI6IERpcGwuLUluZy4gTWljaGFlbCBNaXRlemtpLCBEaXBsLi1JbmcuIEJvZG8g
-SHViZXIgfApIYW5kZWxzcmVnaXN0ZXIgTWFpbnogSFJCIDQ2NTYgfCBGaW5hbnphbXQgTWFpbnot
-TWl0dGUgfCBTdC5Oci4gMjY2NTAwNjA4LApERSAxNDkwNTk4NTUKVGhpcyBFLU1haWwgbWF5IGNv
-bnRhaW4gY29uZmlkZW50aWFsIG9yIHByaXZpbGVnZWQgaW5mb3JtYXRpb24uIElmIHlvdSBhcmUK
-bm90IHRoZSBpbnRlbmRlZCByZWNpcGllbnQgKG9yIGhhdmUgcmVjZWl2ZWQgdGhpcyBFLU1haWwg
-aW4gZXJyb3IpIHBsZWFzZQpub3RpZnkgdGhlIHNlbmRlciBpbW1lZGlhdGVseSBhbmQgZGVzdHJv
-eSB0aGlzIEUtTWFpbC4gQW55IHVuYXV0aG9yaXplZApjb3B5aW5nLCBkaXNjbG9zdXJlIG9yIGRp
-c3RyaWJ1dGlvbiBvZiB0aGUgbWF0ZXJpYWwgaW4gdGhpcyBFLU1haWwgaXMKc3RyaWN0bHkgZm9y
-YmlkZGVuLgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+This is version 3 of a patchset to enable
+device tree support for AT91SAM9263EK.
+
+The patchset is made on top of previous
+patches posted that move reset code to
+the board files for at91 boards.
+(Which are already part of -next)
+
+On the quest towards getting so far several drivers was
+converted to support DT.
+These patches went in around august.
+
+There was also issues with mach-at91 calling code
+in the board directory (dependency in the
+wrong direction).
+This was fixed in "at91: move reset .." which is
+pending (already posted).
+
+I have failed to get the bootstrap mode to work.
+It stops somewhere - and I have not invested enough
+time to figure out where and why things goes wrong.
+bootstrap mode was also broken before these patches.
+No JTAG debugger available to help me.
+And then I have at91bootstrap that works so motivation
+was not too high.
+
+I do not think the NAND support works either.
+The device tree introduces some nand-controller
+stuff that is not supported by barebox (at least I assume so).
+And this part I did not look further into.
+
+Next step is to get a proprietary board up and
+running (which uses NOR flash).
+But I wanted this patchset out in the open first.
+
+Thanks for feedback so far - especially from Andrey.
+
+	Sam
+
+v2 => v3
+- Squashed commit introducing support for multi image
+  with the commit to add DT support
+- Fixed init of smc
+
+
+v1 => v2
+Based on feedback from Andrey (thanks!)
+Patches reworked and combined as a result of this
+
+- Included two patches that makes some general
+  improvements to mach-at91.
+  (Updated since the RFC versions sent yesterday)
+
+  - Move irq_fixup, thus allowing us to call this
+    from board code. This makes it possible to have
+    less dependencies between board code and the processor
+    specific files in mach-at91.
+
+  - Simplified soc setup. With this change setup.c
+    no longer requires that at least one of the
+    processor specific files are built.
+
+- Create a minimal dts file, based on top of the
+  dts file supplied from the kernel.
+
+- Utilise gpio-hog - to setup gpio for PHY.
+
+- Simpler Makefile logic in board Makefile
+  It is now obvious that init.c is only used for
+  bootstrap
+
+- Processor specific files in mach-at91 no longer
+  used when DT is enabled
+
+- Use IS_ENABLED() when it makes code simpler
+
+
+Sam Ravnborg (3):
+      arm: at91: move irq_fixup to header file
+      arm: at91: simplify soc setup
+      at91sam9263ek: enable DT support
+
+ arch/arm/boards/at91sam9263ek/Makefile        |  4 +-
+ arch/arm/boards/at91sam9263ek/lowlevel_init.c | 17 +++--
+ arch/arm/boards/at91sam9263ek/of_init.c       | 93 +++++++++++++++++++++++++++
+ arch/arm/configs/at91sam9263ek_defconfig      | 10 ++-
+ arch/arm/dts/Makefile                         |  2 +-
+ arch/arm/dts/at91sam9263ek.dts                | 48 ++++++++++++++
+ arch/arm/mach-at91/Kconfig                    | 30 ++++++---
+ arch/arm/mach-at91/Makefile                   |  6 +-
+ arch/arm/mach-at91/at91rm9200.c               | 10 +--
+ arch/arm/mach-at91/at91sam9260.c              | 10 +--
+ arch/arm/mach-at91/at91sam9260_devices.c      |  1 +
+ arch/arm/mach-at91/at91sam9261.c              | 10 +--
+ arch/arm/mach-at91/at91sam9261_devices.c      |  1 +
+ arch/arm/mach-at91/at91sam9263.c              | 10 +--
+ arch/arm/mach-at91/at91sam9263_devices.c      |  1 +
+ arch/arm/mach-at91/at91sam9g45.c              | 10 +--
+ arch/arm/mach-at91/at91sam9g45_devices.c      |  1 +
+ arch/arm/mach-at91/at91sam9n12.c              | 10 +--
+ arch/arm/mach-at91/generic.h                  | 11 +++-
+ arch/arm/mach-at91/include/mach/at91_rtt.h    | 16 +++++
+ arch/arm/mach-at91/irq_fixup.c                | 22 -------
+ arch/arm/mach-at91/sama5d3.c                  | 10 +--
+ arch/arm/mach-at91/sama5d4.c                  | 10 +--
+ arch/arm/mach-at91/setup.c                    | 26 ++------
+ arch/arm/mach-at91/soc.h                      | 76 ----------------------
+ images/Makefile.at91                          |  4 ++
+ 26 files changed, 277 insertions(+), 172 deletions(-)
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
