@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ebigo-0005t7-Fp
- for barebox@lists.infradead.org; Wed, 17 Jan 2018 08:03:21 +0000
-Date: Wed, 17 Jan 2018 09:03:01 +0100
+ id 1ebika-0001OT-06
+ for barebox@lists.infradead.org; Wed, 17 Jan 2018 08:07:13 +0000
+Date: Wed, 17 Jan 2018 09:06:59 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180117080301.3hjfa34nizla4sxs@pengutronix.de>
-References: <20180111090326.32724-1-u.kleine-koenig@pengutronix.de>
+Message-ID: <20180117080659.zg24mtfiy6roaahv@pengutronix.de>
+References: <20180106211938.GA25955@ravnborg.org>
+ <20180109110404.r7i2tb6tilbl5wzx@pengutronix.de>
+ <20180113102119.GA29458@ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180111090326.32724-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20180113102119.GA29458@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,69 +20,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net/e1000: fix driver probing in the presence of two
- e1000 devices
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] atmel_lcdfb: introduce driver data
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Jan 11, 2018 at 10:03:26AM +0100, Uwe Kleine-K=F6nig wrote:
-> The .id member of the struct device for the invm device is not
-> initialized and so implicitly zero. This yields:
-> =
+On Sat, Jan 13, 2018 at 11:21:19AM +0100, Sam Ravnborg wrote:
+> Hi Sasha.
+> 
+> > > +
+> > >  static __maybe_unused struct of_device_id atmel_lcdfb_compatible[] = {
+> > > -	{ .compatible = "atmel,at91sam9261-lcdc", },
+> > > -	{ .compatible = "atmel,at91sam9263-lcdc", },
+> > > -	{ .compatible = "atmel,at91sam9g10-lcdc", },
+> > > -	{ .compatible = "atmel,at91sam9g45-lcdc", },
+> > > +	{ .compatible = "atmel,at91sam9261-lcdc",	.data = &at91sam9261_config, },
+> > > +	{ .compatible = "atmel,at91sam9263-lcdc",	.data = &at91sam9263_config, },
+> > > +	{ .compatible = "atmel,at91sam9g10-lcdc",	.data = &at91sam9g10_config, },
+> > > +	{ .compatible = "atmel,at91sam9g45-lcdc",	.data = &at91sam9g45_config, },
+> > >  	{ .compatible = "atmel,at91sam9g45es-lcdc", },
+> > > -	{ .compatible = "atmel,at91sam9rl-lcdc", },
+> > > -	{ .compatible = "atmel,at32ap-lcdc", },
+> > > +	{ .compatible = "atmel,at91sam9rl-lcdc",	.data = &at91sam9rl_config, },
+> > > +	{ .compatible = "atmel,at32ap-lcdc",		.data = &at32ap_config, },
+> > >  	{ /* sentinel */ }
+> > >  };
+> > 
+> > Note that we can match on different platform_device_ids aswell, so you
+> > could also attach driver_data to platform devices aswell. For an example
+> > see drivers/serial/serial_imx.c.
+> > 
+> > I leave it up to you if you change this patch accordingly, I can also
+> > apply it as is.
+> 
+> I took a look at it today.
+> With these Atmel CPUs we have different behaviour of each IP block
+> depending on what CPU it is included in which is why I have added
+> all these _config blocks (I could have re-used a few).
+> 
+> So it is not that we see that for example at91sam9rl-lcdc
+> is used in many CPU's.
+> Adding the platform_id in this case resulted in extra code with no
+> added benefit - or at least no benefit I could see.
+> I had to maintain both a of_device_id table and a platform_device_id table,
+> so it also looked like a duplicate.
+> 
+> So unless I miss something then the original patch is the best
+> solution.
 
-> 	register_device: already registered invm0
-> =
-
-> for the second i210 during probe.
-> =
-
-> So use the parent's id to initialize the id for invm, too, as is already
-> done for the corresponding e1000-nor device.
-> =
-
-> Fixes: a74b97f009c6 ("e1000: Expose i210's iNVM as a cdev")
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-
-Applied, thanks
+I see your point, so applied your original patch.
 
 Sascha
 
-> ---
->  drivers/net/e1000/eeprom.c | 1 +
->  1 file changed, 1 insertion(+)
-> =
-
-> diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-> index 23fb05ec72bc..748d8afe7922 100644
-> --- a/drivers/net/e1000/eeprom.c
-> +++ b/drivers/net/e1000/eeprom.c
-> @@ -1504,6 +1504,7 @@ int e1000_register_invm(struct e1000_hw *hw)
->  		return ret;
->  =
-
->  	strcpy(hw->invm.dev.name, "invm");
-> +	hw->invm.dev.id =3D hw->dev->id;
->  	hw->invm.dev.parent =3D hw->dev;
->  	ret =3D register_device(&hw->invm.dev);
->  	if (ret < 0) {
-> -- =
-
-> 2.11.0
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
