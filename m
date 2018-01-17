@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ebk3w-0000e5-HI
- for barebox@lists.infradead.org; Wed, 17 Jan 2018 09:31:18 +0000
-Received: by mail-lf0-x242.google.com with SMTP id h137so21035292lfe.8
- for <barebox@lists.infradead.org>; Wed, 17 Jan 2018 01:31:05 -0800 (PST)
-Date: Wed, 17 Jan 2018 12:31:00 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20180117093059.mjfdgy3jve4wkcon@localhost.localdomain>
-References: <20180111081531.l4yu7xdxyxrtl7gx@pengutronix.de>
- <20180115113233.30610-1-pmamonov@gmail.com>
- <20180117081112.hir6nitsmckvdjw7@pengutronix.de>
+ id 1ebkdK-0006HW-VS
+ for barebox@lists.infradead.org; Wed, 17 Jan 2018 10:07:53 +0000
+Date: Wed, 17 Jan 2018 11:07:37 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180117100737.bxtbjuojetes7dsf@pengutronix.de>
+References: <20180115213951.GA32669@ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180117081112.hir6nitsmckvdjw7@pengutronix.de>
+In-Reply-To: <20180115213951.GA32669@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,68 +22,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] lib: parse_area_spec: don't modify *start value
- if parse failed
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v3 0/3] Enable DT support for AT91SAM9263EK
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Barebox List <barebox@lists.infradead.org>
 
-On Wed, Jan 17, 2018 at 09:11:12AM +0100, Sascha Hauer wrote:
-> On Mon, Jan 15, 2018 at 02:32:31PM +0300, Peter Mamonov wrote:
-> > Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> > ---
-> >  lib/misc.c | 14 +++++++++-----
-> >  1 file changed, 9 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/lib/misc.c b/lib/misc.c
-> > index 62ddd6677..1767043d1 100644
-> > --- a/lib/misc.c
-> > +++ b/lib/misc.c
-> > @@ -79,19 +79,19 @@ EXPORT_SYMBOL(strtoul_suffix);
-> >  int parse_area_spec(const char *str, loff_t *start, loff_t *size)
-> >  {
-> >  	char *endp;
-> > -	loff_t end;
-> > +	loff_t end, _start;
-> >  
-> >  	if (!isdigit(*str))
-> >  		return -1;
-> >  
-> > -	*start = strtoull_suffix(str, &endp, 0);
-> > +	_start = strtoull_suffix(str, &endp, 0);
-> >  
-> >  	str = endp;
-> >  
-> >  	if (!*str) {
-> >  		/* beginning given, but no size, assume maximum size */
-> >  		*size = ~0;
-> > -		return 0;
-> > +		goto success;
-> >  	}
-> >  
-> >  	if (*str == '-') {
-> > @@ -102,15 +102,19 @@ int parse_area_spec(const char *str, loff_t *start, loff_t *size)
-> >  			return -1;
-> >  		}
-> >  		*size = end - *start + 1;
+On Mon, Jan 15, 2018 at 10:39:51PM +0100, Sam Ravnborg wrote:
+> This is version 3 of a patchset to enable
+> device tree support for AT91SAM9263EK.
 > 
-> Applied with two little changes: It must be _start above and in another
-> case not visible in the patch. *start is not yet initialized.
+> The patchset is made on top of previous
+> patches posted that move reset code to
+> the board files for at91 boards.
+> (Which are already part of -next)
+> 
+> On the quest towards getting so far several drivers was
+> converted to support DT.
+> These patches went in around august.
+> 
+> There was also issues with mach-at91 calling code
+> in the board directory (dependency in the
+> wrong direction).
+> This was fixed in "at91: move reset .." which is
+> pending (already posted).
+> 
+> I have failed to get the bootstrap mode to work.
+> It stops somewhere - and I have not invested enough
+> time to figure out where and why things goes wrong.
+> bootstrap mode was also broken before these patches.
+> No JTAG debugger available to help me.
+> And then I have at91bootstrap that works so motivation
+> was not too high.
+> 
+> I do not think the NAND support works either.
+> The device tree introduces some nand-controller
+> stuff that is not supported by barebox (at least I assume so).
+> And this part I did not look further into.
+> 
+> Next step is to get a proprietary board up and
+> running (which uses NOR flash).
+> But I wanted this patchset out in the open first.
+> 
+> Thanks for feedback so far - especially from Andrey.
+> 
+> 	Sam
+> 
+> v2 => v3
+> - Squashed commit introducing support for multi image
+>   with the commit to add DT support
+> - Fixed init of smc
 
-Thanks for correction. Actually these changes were present in the original
-patch, but I've missed them while rearranging it.
+Applied, thanks
 
-Regards,
-Peter
+Sascha
 
-> 
-> Sascha
-> 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
