@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ebika-0001OT-06
- for barebox@lists.infradead.org; Wed, 17 Jan 2018 08:07:13 +0000
-Date: Wed, 17 Jan 2018 09:06:59 +0100
+ id 1ebixK-0008D0-2S
+ for barebox@lists.infradead.org; Wed, 17 Jan 2018 08:20:24 +0000
+Date: Wed, 17 Jan 2018 09:20:09 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180117080659.zg24mtfiy6roaahv@pengutronix.de>
-References: <20180106211938.GA25955@ravnborg.org>
- <20180109110404.r7i2tb6tilbl5wzx@pengutronix.de>
- <20180113102119.GA29458@ravnborg.org>
+Message-ID: <20180117082009.d5yebfrzensbcjl4@pengutronix.de>
+References: <20171130105620.10126-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180113102119.GA29458@ravnborg.org>
+In-Reply-To: <20171130105620.10126-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,56 +22,127 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] atmel_lcdfb: introduce driver data
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] of: base: use root_node compatible as suggestion for a
+ hostname
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Sat, Jan 13, 2018 at 11:21:19AM +0100, Sam Ravnborg wrote:
-> Hi Sasha.
+On Thu, Nov 30, 2017 at 11:56:20AM +0100, Oleksij Rempel wrote:
+> on some SoCs we can use generic PLL and RAM initialization. In this
+> cases we create board file only to provide a host name.
+> With this patch host name will be created from device tree compatible.
+> For example:
+>  compatible = "board_vendor,board", "chip_vendor,soc"
+> the host name will be:
+>  "board"
 > 
-> > > +
-> > >  static __maybe_unused struct of_device_id atmel_lcdfb_compatible[] = {
-> > > -	{ .compatible = "atmel,at91sam9261-lcdc", },
-> > > -	{ .compatible = "atmel,at91sam9263-lcdc", },
-> > > -	{ .compatible = "atmel,at91sam9g10-lcdc", },
-> > > -	{ .compatible = "atmel,at91sam9g45-lcdc", },
-> > > +	{ .compatible = "atmel,at91sam9261-lcdc",	.data = &at91sam9261_config, },
-> > > +	{ .compatible = "atmel,at91sam9263-lcdc",	.data = &at91sam9263_config, },
-> > > +	{ .compatible = "atmel,at91sam9g10-lcdc",	.data = &at91sam9g10_config, },
-> > > +	{ .compatible = "atmel,at91sam9g45-lcdc",	.data = &at91sam9g45_config, },
-> > >  	{ .compatible = "atmel,at91sam9g45es-lcdc", },
-> > > -	{ .compatible = "atmel,at91sam9rl-lcdc", },
-> > > -	{ .compatible = "atmel,at32ap-lcdc", },
-> > > +	{ .compatible = "atmel,at91sam9rl-lcdc",	.data = &at91sam9rl_config, },
-> > > +	{ .compatible = "atmel,at32ap-lcdc",		.data = &at32ap_config, },
-> > >  	{ /* sentinel */ }
-> > >  };
-> > 
-> > Note that we can match on different platform_device_ids aswell, so you
-> > could also attach driver_data to platform devices aswell. For an example
-> > see drivers/serial/serial_imx.c.
-> > 
-> > I leave it up to you if you change this patch accordingly, I can also
-> > apply it as is.
+> This function will not overwrite a host name which is already set by
+> board or machine code.
 > 
-> I took a look at it today.
-> With these Atmel CPUs we have different behaviour of each IP block
-> depending on what CPU it is included in which is why I have added
-> all these _config blocks (I could have re-used a few).
-> 
-> So it is not that we see that for example at91sam9rl-lcdc
-> is used in many CPU's.
-> Adding the platform_id in this case resulted in extra code with no
-> added benefit - or at least no benefit I could see.
-> I had to maintain both a of_device_id table and a platform_device_id table,
-> so it also looked like a duplicate.
-> 
-> So unless I miss something then the original patch is the best
-> solution.
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
 
-I see your point, so applied your original patch.
+Applied, thanks
 
 Sascha
+
+>  common/misc.c     |  7 +++++++
+>  drivers/of/base.c | 32 ++++++++++++++++++++++++++++++++
+>  include/common.h  |  1 +
+>  include/of.h      |  1 +
+>  4 files changed, 41 insertions(+)
+> 
+> diff --git a/common/misc.c b/common/misc.c
+> index c5d3704c82..0888f1f4f6 100644
+> --- a/common/misc.c
+> +++ b/common/misc.c
+> @@ -187,6 +187,13 @@ const char *barebox_get_hostname(void)
+>  }
+>  EXPORT_SYMBOL(barebox_get_hostname);
+>  
+> +void barebox_set_hostname_no_overwrite(const char *__hostname)
+> +{
+> +	if (!barebox_get_hostname())
+> +		barebox_set_hostname(__hostname);
+> +}
+> +EXPORT_SYMBOL(barebox_set_hostname_no_overwrite);
+> +
+>  BAREBOX_MAGICVAR_NAMED(global_hostname, global.hostname,
+>  		"shortname of the board. Also used as hostname for DHCP requests");
+>  
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index eabbf3d957..6a582177bf 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -2360,3 +2360,35 @@ int of_graph_port_is_available(struct device_node *node)
+>  	return available;
+>  }
+>  EXPORT_SYMBOL(of_graph_port_is_available);
+> +
+> +/**
+> + * of_get_machine_compatible - get first compatible string from the root node.
+> + *
+> + * Returns the string or NULL.
+> + */
+> +const char *of_get_machine_compatible(void)
+> +{
+> +	struct property *prop;
+> +	const char *name, *p;
+> +
+> +	if (!root_node)
+> +		return NULL;
+> +
+> +	prop = of_find_property(root_node, "compatible", NULL);
+> +	name = of_prop_next_string(prop, NULL);
+> +
+> +	p = strchr(name, ',');
+> +	return p ? p + 1 : name;
+> +}
+> +EXPORT_SYMBOL(of_get_machine_compatible);
+> +
+> +static int of_init_hostname(void)
+> +{
+> +	const char *name;
+> +
+> +	name = of_get_machine_compatible();
+> +	barebox_set_hostname_no_overwrite(name ?: "barebox");
+> +
+> +	return 0;
+> +}
+> +late_initcall(of_init_hostname);
+> diff --git a/include/common.h b/include/common.h
+> index dd7445e9b6..a9b8610af8 100644
+> --- a/include/common.h
+> +++ b/include/common.h
+> @@ -139,6 +139,7 @@ const char *barebox_get_model(void);
+>  void barebox_set_model(const char *);
+>  const char *barebox_get_hostname(void);
+>  void barebox_set_hostname(const char *);
+> +void barebox_set_hostname_no_overwrite(const char *);
+>  
+>  #if defined(CONFIG_MIPS)
+>  #include <asm/addrspace.h>
+> diff --git a/include/of.h b/include/of.h
+> index 18a423241b..edcc854f7b 100644
+> --- a/include/of.h
+> +++ b/include/of.h
+> @@ -148,6 +148,7 @@ extern struct device_node *of_copy_node(struct device_node *parent,
+>  				const struct device_node *other);
+>  extern void of_delete_node(struct device_node *node);
+>  
+> +extern const char *of_get_machine_compatible(void);
+>  extern int of_machine_is_compatible(const char *compat);
+>  extern int of_device_is_compatible(const struct device_node *device,
+>  		const char *compat);
+> -- 
+> 2.11.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
