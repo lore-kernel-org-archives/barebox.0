@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ec9ig-00026n-FP
- for barebox@lists.infradead.org; Thu, 18 Jan 2018 12:55:05 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 18 Jan 2018 13:54:46 +0100
-Message-Id: <20180118125446.29535-1-s.hauer@pengutronix.de>
+ id 1ecB2d-0006cU-3M
+ for barebox@lists.infradead.org; Thu, 18 Jan 2018 14:19:45 +0000
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Thu, 18 Jan 2018 15:19:30 +0100
+Message-Id: <20180118141930.28780-1-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,211 +19,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] FIT: export fit_open_configuration() and fit_open_image()
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] blspec: fix crash when trying to boot from loop mounts
+To: barebox@lists.infradead.org
 
-Currently only fit_open() is exported which only opens the predefined
-images "kernel", "dtb" and "ramdisk". To make the FIT code more usable
-for other code which may want to open other images export
-fit_open_configuration() and fit_open_image().
+When trying to boot from a loop mount path, the blspec code passes a
+NULL pointer to dev_name, because cdev->dev is not set for loop mounts:
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+  unable to handle NULL pointer dereference at address 0x00000020
+  pc : [<4fe09e28>]    lr : [<4fe02305>]
+  sp : 4ffef7c0  ip : 31b75c78  fp : 31b6a388
+  r10: 31b6a368  r9 : 315a4cac  r8 : 00000001
+  r7 : 00000001  r6 : 311b8540  r5 : ffffffea  r4 : 31b6a3f8
+  r3 : 00000000  r2 : 10000000  r1 : 00000001  r0 : 00000000
+  Flags: nzcv  IRQs off  FIQs off  Mode SVC_32
+  [<4fe09e28>] (dev_id+0xc/0x38) from [<4fe02305>] (blspec_scan_directory+0x3e1/0x484)
+  [<4fe02305>] (blspec_scan_directory+0x3e1/0x484) from [<4fe02551>] (blspec_bootentry_provider+0x1d/0x3c)
+  [<4fe02551>] (blspec_bootentry_provider+0x1d/0x3c) from [<4fe0984b>] (bootentry_create_from_name+0x23/0xdc)
+  [<4fe0984b>] (bootentry_create_from_name+0x23/0xdc) from [<4fe246f9>] (do_boot+0x95/0x160)
+  [<4fe246f9>] (do_boot+0x95/0x160) from [<4fe032e9>] (execute_command+0x21/0x48)
+  [<4fe032e9>] (execute_command+0x21/0x48) from [<4fe088e3>] (run_list_real+0x56b/0x634)
+  [<4fe088e3>] (run_list_real+0x56b/0x634) from [<4fe08249>] (parse_stream_outer+0xd9/0x164)
+  [<4fe08249>] (parse_stream_outer+0xd9/0x164) from [<4fe08b6d>] (run_shell+0x31/0x60)
+  [<4fe08b6d>] (run_shell+0x31/0x60) from [<4fe032e9>] (execute_command+0x21/0x48)
+  [<4fe032e9>] (execute_command+0x21/0x48) from [<4fe088e3>] (run_list_real+0x56b/0x634)
+  [<4fe088e3>] (run_list_real+0x56b/0x634) from [<4fe085fd>] (run_list_real+0x285/0x634)
+  [<4fe444b9>] (unwind_backtrace+0x1/0x58) from [<4fe00b7d>] (panic+0x1d/0x34)
+  [<4fe00b7d>] (panic+0x1d/0x34) from [<4fe42a75>] (do_exception+0xd/0x10)
+  [<4fe42a75>] (do_exception+0xd/0x10) from [<4fe42ad5>] (do_data_abort+0x21/0x2c)
+  [<4fe42ad5>] (do_data_abort+0x21/0x2c) from [<4fe42394>] (do_abort_6+0x48/0x54)
+
+Fix this by checking cdev->dev as well as cdev before calling dev_name.
+
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
- common/bootm.c      |  9 ++++++-
- common/image-fit.c  | 77 ++++++++++++++++++++++++++++++++++++++---------------
- include/image-fit.h |  8 +++++-
- 3 files changed, 71 insertions(+), 23 deletions(-)
+ common/blspec.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/common/bootm.c b/common/bootm.c
-index c23898bea7..05314a0a10 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -568,7 +568,7 @@ int bootm_boot(struct bootm_data *bootm_data)
- 	if (IS_ENABLED(CONFIG_FITIMAGE) && os_type == filetype_oftree) {
- 		struct fit_handle *fit;
- 
--		fit = fit_open(data->os_file, data->os_part, data->verbose, data->verify);
-+		fit = fit_open(data->os_file, data->verbose, data->verify);
- 		if (IS_ERR(fit)) {
- 			printf("Loading FIT image %s failed with: %s\n", data->os_file,
- 			       strerrorp(fit));
-@@ -577,6 +577,13 @@ int bootm_boot(struct bootm_data *bootm_data)
- 		}
- 
- 		data->os_fit = fit;
-+
-+		ret = fit_open_configuration(data->os_fit, data->os_part);
-+		if (ret) {
-+			printf("Cannot open FIT image configuration '%s'\n",
-+			       data->os_part ? data->os_part : "default");
-+			goto err_out;
-+		}
+diff --git a/common/blspec.c b/common/blspec.c
+index b258e6600b..6171461a72 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -107,7 +107,8 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
  	}
  
- 	if (os_type == filetype_uimage) {
-diff --git a/common/image-fit.c b/common/image-fit.c
-index 81433e6ecf..4d4b29ac26 100644
---- a/common/image-fit.c
-+++ b/common/image-fit.c
-@@ -397,14 +397,37 @@ err_digest_free:
- 	return ret;
- }
+ 	pr_info("booting %s from %s\n", blspec_entry_var_get(entry, "title"),
+-			entry->cdev ? dev_name(entry->cdev->dev) : "none");
++			(entry->cdev && entry->cdev->dev) ?
++			dev_name(entry->cdev->dev) : "none");
  
--static int fit_open_image(struct fit_handle *handle, const char *unit, const void **outdata,
--	unsigned long *outsize)
-+int fit_has_image(struct fit_handle *handle, const char *name)
-+{
-+	const char *unit;
-+	struct device_node *conf_node = handle->conf_node;
-+
-+	if (!conf_node)
-+		return -EINVAL;
-+
-+	if (of_property_read_string(conf_node, name, &unit))
-+		return 0;
-+
-+	return 1;
-+}
-+
-+int fit_open_image(struct fit_handle *handle, const char *name,
-+		   const void **outdata, unsigned long *outsize)
- {
- 	struct device_node *image = NULL, *hash;
--	const char *type = NULL, *desc= "(no description)";
-+	const char *unit, *type = NULL, *desc= "(no description)";
- 	const void *data;
- 	int data_len;
- 	int ret = 0;
-+	struct device_node *conf_node = handle->conf_node;
-+
-+	if (!conf_node)
-+		return -EINVAL;
-+
-+	if (of_property_read_string(conf_node, name, &unit)) {
-+		pr_err("No image named '%s'\n", name);
-+		return -ENOENT;
-+	}
- 
- 	image = of_get_child_by_name(handle->root, "images");
- 	if (!image)
-@@ -523,7 +546,7 @@ default_unit:
- 	return -ENOENT;
- }
- 
--static int fit_open_configuration(struct fit_handle *handle, const char *name)
-+int fit_open_configuration(struct fit_handle *handle, const char *name)
- {
- 	struct device_node *conf_node = NULL;
- 	const char *unit, *desc = "(no description)";
-@@ -556,22 +579,25 @@ static int fit_open_configuration(struct fit_handle *handle, const char *name)
+ 	ret = bootm_boot(&data);
  	if (ret)
- 		return ret;
+@@ -505,7 +506,7 @@ int blspec_scan_directory(struct bootentries *bootentries, const char *root)
  
--	if (of_property_read_string(conf_node, "kernel", &unit) == 0) {
--		ret = fit_open_image(handle, unit, &handle->kernel, &handle->kernel_size);
-+	handle->conf_node = conf_node;
-+
-+	if (fit_has_image(handle, "kernel")) {
-+		ret = fit_open_image(handle, "kernel", &handle->kernel,
-+				     &handle->kernel_size);
- 		if (ret)
- 			return ret;
--	} else {
--		return -ENOENT;
- 	}
+ 		found++;
  
--	if (of_property_read_string(conf_node, "fdt", &unit) == 0) {
--		ret = fit_open_image(handle, unit, &handle->oftree, &handle->oftree_size);
-+	if (fit_has_image(handle, "ramdisk")) {
-+		ret = fit_open_image(handle, "ramdisk", &handle->initrd,
-+				     &handle->initrd_size);
- 		if (ret)
- 			return ret;
- 	}
- 
--	if (of_property_read_string(conf_node, "ramdisk", &unit) == 0) {
--		ret = fit_open_image(handle, unit, &handle->initrd, &handle->initrd_size);
-+	if (fit_has_image(handle, "fdt")) {
-+		ret = fit_open_image(handle, "fdt", &handle->oftree,
-+				     &handle->oftree_size);
- 		if (ret)
- 			return ret;
- 	}
-@@ -579,7 +605,7 @@ static int fit_open_configuration(struct fit_handle *handle, const char *name)
- 	return 0;
- }
- 
--struct fit_handle *fit_open(const char *filename, const char *config, bool verbose,
-+struct fit_handle *fit_open(const char *filename, bool verbose,
- 			    enum bootm_verify verify)
- {
- 	struct fit_handle *handle = NULL;
-@@ -607,10 +633,6 @@ struct fit_handle *fit_open(const char *filename, const char *config, bool verbo
- 	of_property_read_string(handle->root, "description", &desc);
- 	pr_info("'%s': %s\n", filename, desc);
- 
--	ret = fit_open_configuration(handle, config);
--	if (ret)
--		goto err;
--
- 	return handle;
-  err:
- 	if (handle->root)
-@@ -634,10 +656,23 @@ void fit_close(struct fit_handle *handle)
- static int do_bootm_sandbox_fit(struct image_data *data)
- {
- 	struct fit_handle *handle;
--	handle = fit_open(data->os_file, data->os_part, data->verbose);
--	if (handle)
--		fit_close(handle);
--	return 0;
-+	int ret;
-+	void *kernel;
-+	unsigned long kernel_size;
-+
-+	handle = fit_open(data->os_file, data->verbose);
-+	if (IS_ERR(handle))
-+		return PTR_ERR(handle);
-+
-+	ret = fit_open_configuration(handle, data->os_part);
-+	if (ret)
-+		goto out;
-+
-+	ret = 0;
-+out:
-+	fit_close(handle);
-+
-+	return ret;
- }
- 
- static struct image_handler sandbox_fit_handler = {
-diff --git a/include/image-fit.h b/include/image-fit.h
-index c49f958268..62f44dcc8d 100644
---- a/include/image-fit.h
-+++ b/include/image-fit.h
-@@ -29,6 +29,7 @@ struct fit_handle {
- 	enum bootm_verify verify;
- 
- 	struct device_node *root;
-+	struct device_node *conf_node;
- 
- 	const void *kernel;
- 	unsigned long kernel_size;
-@@ -38,8 +39,13 @@ struct fit_handle {
- 	unsigned long initrd_size;
- };
- 
--struct fit_handle *fit_open(const char *filename, const char *config, bool verbose,
-+struct fit_handle *fit_open(const char *filename, bool verbose,
- 			    enum bootm_verify verify);
-+int fit_open_configuration(struct fit_handle *handle, const char *name);
-+int fit_has_image(struct fit_handle *handle, const char *name);
-+int fit_open_image(struct fit_handle *handle, const char *name,
-+		   const void **outdata, unsigned long *outsize);
-+
- void fit_close(struct fit_handle *handle);
- 
- #endif	/* __IMAGE_FIT_H__ */
+-		if (entry->cdev) {
++		if (entry->cdev && entry->cdev->dev) {
+ 			devname = xstrdup(dev_name(entry->cdev->dev));
+ 			if (entry->cdev->dev->parent)
+ 				hwdevname = xstrdup(dev_name(entry->cdev->dev->parent));
 -- 
 2.11.0
 
