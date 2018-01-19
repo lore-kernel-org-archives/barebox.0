@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1egCK3-0002y7-Fl
- for barebox@lists.infradead.org; Mon, 29 Jan 2018 16:30:23 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
- helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1egCJo-0001SG-Aa
- for barebox@lists.infradead.org; Mon, 29 Jan 2018 17:30:04 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Subject: [PATCH 04/10] ARM: add file for HYP mode related setup
-Date: Mon, 29 Jan 2018 17:29:58 +0100
-Message-Id: <20180129163004.10512-5-l.stach@pengutronix.de>
-In-Reply-To: <20180129163004.10512-1-l.stach@pengutronix.de>
-References: <20180129163004.10512-1-l.stach@pengutronix.de>
+ id 1ecWim-0007RC-NS
+ for barebox@lists.infradead.org; Fri, 19 Jan 2018 13:28:42 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri, 19 Jan 2018 14:28:25 +0100
+Message-Id: <20180119132825.26662-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20180119132825.26662-1-u.kleine-koenig@pengutronix.de>
+References: <20180119132825.26662-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,203 +17,136 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
+Subject: [PATCH v2 2/2] mci: implement command to switch a mmc device to
+ enhanced mode
 To: barebox@lists.infradead.org
 
-This adds routines to add hyp mode vectors and switch back to HYP
-mode from SVC. This is needed in both the PBL and Barebox proper.
-
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- arch/arm/cpu/Makefile         |   4 ++
- arch/arm/cpu/hyp.S            | 115 ++++++++++++++++++++++++++++++++++++++++++
- arch/arm/cpu/sm_as.S          |  11 ----
- arch/arm/include/asm/secure.h |   2 +
- 4 files changed, 121 insertions(+), 11 deletions(-)
- create mode 100644 arch/arm/cpu/hyp.S
-
-diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-index 13fe12c31f6f..537fe5b9bb8d 100644
---- a/arch/arm/cpu/Makefile
-+++ b/arch/arm/cpu/Makefile
-@@ -9,6 +9,10 @@ obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions.o
- obj-$(CONFIG_MMU) += mmu.o mmu-early.o
- pbl-$(CONFIG_MMU) += mmu-early.o
- lwl-y += lowlevel.o
-+obj-y += hyp.o
-+AFLAGS_hyp.o :=-Wa,-march=armv7-a
-+pbl-y += hyp.o
-+AFLAGS_pbl-hyp.o :=-Wa,-march=armv7-a
- endif
- 
- obj-$(CONFIG_ARM_EXCEPTIONS) += interrupts.o
-diff --git a/arch/arm/cpu/hyp.S b/arch/arm/cpu/hyp.S
-new file mode 100644
-index 000000000000..435d416f980a
---- /dev/null
-+++ b/arch/arm/cpu/hyp.S
-@@ -0,0 +1,115 @@
-+#include <linux/linkage.h>
-+#include <asm/system.h>
-+#include <asm/opcodes-virt.h>
-+
-+.arch_extension sec
-+.arch_extension virt
-+
-+.section ".text_bare_init_","ax"
-+
-+.data
-+	.align  2
-+ENTRY(__boot_cpu_mode)
-+	.long   0
-+.text
-+
-+ENTRY(__hyp_install)
-+	mrs	r12, cpsr
-+	and	r12, r12, #MODE_MASK
-+
-+	@ Save the initial CPU state
-+	adr	r0, .L__boot_cpu_mode_offset
-+	ldr	r1, [r0]
-+	str	r12, [r0, r1]
-+
-+	cmp	r12, #HYP_MODE
-+	movne	pc, lr			@ give up if the CPU is not in HYP mode
-+
-+	@ Now install the hypervisor stub:
-+	adr	r12, __hyp_vectors
-+	mcr	p15, 4, r12, c12, c0, 0	@ set hypervisor vector base (HVBAR)
-+
-+	@ Disable all traps, so we don't get any nasty surprise
-+	mov	r12, #0
-+	mcr	p15, 4, r12, c1, c1, 0	@ HCR
-+	mcr	p15, 4, r12, c1, c1, 2	@ HCPTR
-+	mcr	p15, 4, r12, c1, c1, 3	@ HSTR
-+
-+THUMB(	orr	r12, #(1 << 30)	)	@ HSCTLR.TE
-+	mcr	p15, 4, r12, c1, c0, 0	@ HSCTLR
-+
-+	mrc	p15, 4, r12, c1, c1, 1	@ HDCR
-+	and	r12, #0x1f		@ Preserve HPMN
-+	mcr	p15, 4, r12, c1, c1, 1	@ HDCR
-+
-+	@ Make sure NS-SVC is initialised appropriately
-+	mrc	p15, 0, r12, c1, c0, 0	@ SCTLR
-+	orr	r12, #(1 << 5)		@ CP15 barriers enabled
-+	bic	r12, #(3 << 7)		@ Clear SED/ITD for v8 (RES0 for v7)
-+	bic	r12, #(3 << 19)		@ WXN and UWXN disabled
-+	mcr	p15, 0, r12, c1, c0, 0	@ SCTLR
-+
-+	mrc	p15, 0, r12, c0, c0, 0	@ MIDR
-+	mcr	p15, 4, r12, c0, c0, 0	@ VPIDR
-+
-+	mrc	p15, 0, r12, c0, c0, 5	@ MPIDR
-+	mcr	p15, 4, r12, c0, c0, 5	@ VMPIDR
-+	bx	lr
-+ENDPROC(__hyp_install)
-+
-+ENTRY(armv7_hyp_install)
-+	mov	r2, lr
-+
-+	bl	__hyp_install
-+
-+	/* set the cpu to SVC32 mode, mask irq and fiq */
-+	mrs	r12 , cpsr
-+	eor	r12, r12, #HYP_MODE
-+	tst	r12, #MODE_MASK
-+	bic	r12 , r12 , #MODE_MASK
-+	orr	r12 , r12 , #(PSR_I_BIT | PSR_F_BIT | SVC_MODE)
-+THUMB(	orr	r12 , r12 , #PSR_T_BIT	)
-+	bne	1f
-+	orr	r12, r12, #PSR_A_BIT
-+	adr	lr, 2f
-+	msr	spsr_cxsf, r12
-+	__MSR_ELR_HYP(14)
-+	__ERET
-+1:	msr	cpsr_c, r12
-+2:
-+	mov	pc, r2
-+ENDPROC(armv7_hyp_install)
-+
-+ENTRY(armv7_switch_to_hyp)
-+	mov	r0, lr
-+	mov	r1, sp		@ save SVC copy of LR and SP
-+	isb
-+	hvc #0			@ for older asm: .byte 0x70, 0x00, 0x40, 0xe1
-+	mov	sp, r1
-+	mov	lr, r0		@ restore SVC copy of LR and SP
-+
-+	bx	lr
-+ENDPROC(armv7_switch_to_hyp)
-+
-+.align 2
-+.L__boot_cpu_mode_offset:
-+	.long	__boot_cpu_mode - .
-+
-+/* The HYP trap is crafted to match armv7_switch_to_hyp() */
-+__hyp_do_trap:
-+	mov lr, r0
-+	mov sp, r1
-+	bx  lr
-+ENDPROC(__hyp_do_trap)
-+
-+.align 5
-+__hyp_vectors:
-+__hyp_reset:	W(b)	.
-+__hyp_und:	W(b)	.
-+__hyp_svc:	W(b)	.
-+__hyp_pabort:	W(b)	.
-+__hyp_dabort:	W(b)	.
-+__hyp_trap:	W(b)	__hyp_do_trap
-+__hyp_irq:	W(b)	.
-+__hyp_fiq:	W(b)	.
-+ENDPROC(__hyp_vectors)
-diff --git a/arch/arm/cpu/sm_as.S b/arch/arm/cpu/sm_as.S
-index 0d01e1bf2435..de6cd0406f4f 100644
---- a/arch/arm/cpu/sm_as.S
-+++ b/arch/arm/cpu/sm_as.S
-@@ -148,17 +148,6 @@ hyp_trap:
-         mov pc, lr                              @ do no switch modes, but
-                                                 @ return to caller
- 
--ENTRY(armv7_switch_to_hyp)
--	mov	r0, lr
--	mov	r1, sp		@ save SVC copy of LR and SP
--	isb
--	hvc #0			@ for older asm: .byte 0x70, 0x00, 0x40, 0xe1
--	mov	sp, r1
--	mov	lr, r0		@ restore SVC copy of LR and SP
--
--	bx	lr
--ENDPROC(armv7_switch_to_hyp)
--
- ENTRY(psci_cpu_entry)
- 	mrc	p15, 0, r0, c1, c0, 1	@ ACTLR
- 	orr	r0, r0, #(1 << 6)	@ Set SMP bit
-diff --git a/arch/arm/include/asm/secure.h b/arch/arm/include/asm/secure.h
-index a4cb1f6c1c44..54cc052b0cf9 100644
---- a/arch/arm/include/asm/secure.h
-+++ b/arch/arm/include/asm/secure.h
-@@ -6,8 +6,10 @@
- int armv7_secure_monitor_install(void);
- int __armv7_secure_monitor_install(void);
- void armv7_switch_to_hyp(void);
-+void armv7_hyp_install(void);
- 
- extern unsigned char secure_monitor_init_vectors[];
-+extern int __boot_cpu_mode;
- 
- enum arm_security_state {
- 	ARM_STATE_SECURE,
--- 
-2.15.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGNvbW1hbmQgc3RydWN0dXJlIGFsbG93cyBhZGRpbmcgbW9yZSBzdWJjb21tYW5kcyBhbmQg
+aXMgZGVzaWduZWQgdG8KbWF0Y2ggdGhlIExpbnV4IHByb2dyYW0gbW1jIGZyb20gdGhlIG1tYy11
+dGlscy4gU28gbGF0ZXIgbW9yZSBjb21tYW5kcwpjYW4gZWFzaWx5IGJlIGFkZGVkIGlmIG5lZWQg
+YmUuCgpDb21wYXJlZCB0byBtbWMtdXRpbHMnCgoJbW1jIGVuaF9hcmVhIHNldCA8LXl8LW58LWM+
+IDxzdGFydCBLaUI+IDxsZW5ndGggS2lCPiA8ZGV2aWNlPgoKdGhlIGNvbW1hbmQgdGhhdCBpcyBp
+bXBsZW1lbnRlZCBoZXJlICgKCgltbWMgZW5oX2FyZWEgc2V0bWF4IDwteXwtbnwtYz4gPGRldmlj
+ZT4KCikgaXMgZWFzaWVyIHRvIHVzZSAoYmVjYXVzZSB5b3UgZG9uJ3QgaGF2ZSB0byBjaGVjayB0
+aGUgbWF4aW1hbCBhbGxvd2VkCnNpemUgYnkgcmVhZGluZyBzb21lIHJlZ2lzdGVycyBhbmQgY2Fs
+Y3VsYXRlIHRoZSBhdmFpbGFibGUgc2l6ZSBmcm9tCnRoZW0gKHdoaWNoIHRoZW4gbXVzdCBiZSBj
+YWxjdWxhdGVkIGJhY2sgdG8gcmVnaXN0ZXIgdmFsdWVzIGJ5IHRoZSBtbWMKY29tbWFuZCkpIGJ1
+dCBsZXNzIGZsZXhpYmxlIGFzIGl0IGRvZXNuJ3QgYWxsb3cgYWxsIHRoZSBjcmF6eQpwb3NzaWJp
+bGl0aWVzIHNwZWNpZmllZCBpbiB0aGUgZU1NQyBzdGFuZGFyZCBidXQganVzdCBjcmVhdGVzIGFu
+CmVuaGFuY2VkIGFyZWEgd2l0aCBtYXhpbWFsIHNpemUuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xl
+aW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGNvbW1hbmRz
+L0tjb25maWcgIHwgICA1ICsrCiBjb21tYW5kcy9NYWtlZmlsZSB8ICAgMSArCiBjb21tYW5kcy9t
+bWMuYyAgICB8IDE3MSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysKIGluY2x1ZGUvbWNpLmggICAgIHwgICA3ICsrKwogNCBmaWxlcyBjaGFuZ2Vk
+LCAxODQgaW5zZXJ0aW9ucygrKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGNvbW1hbmRzL21tYy5jCgpk
+aWZmIC0tZ2l0IGEvY29tbWFuZHMvS2NvbmZpZyBiL2NvbW1hbmRzL0tjb25maWcKaW5kZXggYWUy
+ZGM0YjA5NDdiLi4xYjI5MzY1YTA2ZjIgMTAwNjQ0Ci0tLSBhL2NvbW1hbmRzL0tjb25maWcKKysr
+IGIvY29tbWFuZHMvS2NvbmZpZwpAQCAtMjM4LDYgKzIzOCwxMSBAQCBjb25maWcgQ01EX1ZFUlNJ
+T04KIAogCSAgYmFyZWJveCAyMDE0LjA1LjAtMDAxNDItZ2IyODkzNzMgIzE3NyBNb24gTWF5IDEy
+IDIwOjM1OjU1IENFU1QgMjAxNAogCitjb25maWcgQ01EX01NQworCXRyaXN0YXRlCisJcHJvbXB0
+ICJtbWMgY29tbWFuZCBhbGxvd2luZyB0byBzZXQgZW5oYW5jZWQgYXJlYSIKKwlkZXBlbmRzIG9u
+IE1DSQorCiBjb25maWcgQ01EX01NQ19FWFRDU0QKIAl0cmlzdGF0ZQogCXByb21wdCAicmVhZC93
+cml0ZSBlTU1DIGV4dC4gQ1NEIHJlZ2lzdGVyIgpkaWZmIC0tZ2l0IGEvY29tbWFuZHMvTWFrZWZp
+bGUgYi9jb21tYW5kcy9NYWtlZmlsZQppbmRleCAzNzQ4NmRjZWIxODEuLmJjZDA2NjVjZmU4OCAx
+MDA2NDQKLS0tIGEvY29tbWFuZHMvTWFrZWZpbGUKKysrIGIvY29tbWFuZHMvTWFrZWZpbGUKQEAg
+LTEyMCw2ICsxMjAsNyBAQCBvYmotJChDT05GSUdfQ01EX0RIQ1ApCQkrPSBkaGNwLm8KIG9iai0k
+KENPTkZJR19DTURfQk9PVENIT09TRVIpCSs9IGJvb3RjaG9vc2VyLm8KIG9iai0kKENPTkZJR19D
+TURfREhSWVNUT05FKQkrPSBkaHJ5c3RvbmUubwogb2JqLSQoQ09ORklHX0NNRF9TUERfREVDT0RF
+KQkrPSBzcGRfZGVjb2RlLm8KK29iai0kKENPTkZJR19DTURfTU1DKQkJKz0gbW1jLm8KIG9iai0k
+KENPTkZJR19DTURfTU1DX0VYVENTRCkJKz0gbW1jX2V4dGNzZC5vCiBvYmotJChDT05GSUdfQ01E
+X05BTkRfQklURkxJUCkJKz0gbmFuZC1iaXRmbGlwLm8KIG9iai0kKENPTkZJR19DTURfU0VFRCkJ
+CSs9IHNlZWQubwpkaWZmIC0tZ2l0IGEvY29tbWFuZHMvbW1jLmMgYi9jb21tYW5kcy9tbWMuYwpu
+ZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAuLjJmNWM3YWQ2OWEzNwotLS0g
+L2Rldi9udWxsCisrKyBiL2NvbW1hbmRzL21tYy5jCkBAIC0wLDAgKzEsMTcxIEBACisjaW5jbHVk
+ZSA8Y29tbWFuZC5oPgorI2luY2x1ZGUgPG1jaS5oPgorI2luY2x1ZGUgPHN0ZGlvLmg+CisjaW5j
+bHVkZSA8c3RyaW5nLmg+CisKKy8qIGVuaF9hcmVhIHNldG1heCA8LXl8LW58LWM+IC9kZXYvbW1j
+WCAqLworc3RhdGljIGludCBkb19tbWNfZW5oX2FyZWEoaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkK
+K3sKKwljaGFyICpkZXZuYW1lOworCXN0cnVjdCBtY2kgKm1jaTsKKwl1OCAqZXh0X2NzZDsKKwlp
+bnQgc2V0X2NvbXBsZXRlZCA9IDA7CisJaW50IHJldDsKKworCWlmIChhcmdjICE9IDQgfHwgc3Ry
+Y21wKGFyZ3ZbMV0sICJzZXRtYXgiKSB8fAorCSAgICBhcmd2WzJdWzBdICE9ICctJyB8fAorCSAg
+ICAoYXJndlsyXVsxXSAhPSAneScgJiYgYXJndlsyXVsxXSAhPSAnbicgJiYgYXJndlsyXVsxXSAh
+PSAnYycpKSB7CisJCXByaW50ZigiVXNhZ2U6IG1tYyBlbmhfYXJlYSBzZXRtYXggPC15fC1ufC1j
+PiAvZGV2L21tY1hcbiIpOworCQlyZXR1cm4gMTsKKwl9CisKKwlpZiAoYXJndlsyXVsxXSA9PSAn
+eScpCisJCXNldF9jb21wbGV0ZWQgPSAxOworCisJZGV2bmFtZSA9IGFyZ3ZbM107CisJaWYgKCFz
+dHJuY21wKGRldm5hbWUsICIvZGV2LyIsIDUpKQorCQlkZXZuYW1lICs9IDU7CisKKwltY2kgPSBt
+Y2lfZ2V0X2RldmljZV9ieV9uYW1lKGRldm5hbWUpOworCWlmICghbWNpKSB7CisJCXByaW50Zigi
+RmFpbHVyZSB0byBvcGVuICVzIGFzIG1jaSBkZXZpY2VcbiIsIGRldm5hbWUpOworCQlyZXR1cm4g
+LUVOT0VOVDsKKwl9CisJLyogZ2V0IGV4dGNzZCAqLworCWV4dF9jc2QgPSB4bWFsbG9jKDUxMik7
+CisKKwlyZXQgPSBtY2lfc2VuZF9leHRfY3NkKG1jaSwgZXh0X2NzZCk7CisJaWYgKHJldCkgewor
+CQlwcmludGYoIkZhaWx1cmUgdG8gcmVhZCBFWFRfQ1NEIHJlZ2lzdGVyXG4iKTsKKwkJZ290byBl
+cnJvcjsKKwl9CisKKwlpZiAoIShleHRfY3NkW0VYVF9DU0RfUEFSVElUSU9OSU5HX1NVUFBPUlRd
+ICYgRVhUX0NTRF9FTkhfQVRUUklCVVRFX0VOX01BU0spKSB7CisJCXByaW50ZigiRGV2aWNlIGRv
+ZXNuJ3Qgc3VwcG9ydCBlbmhhbmNlZCBhcmVhXG4iKTsKKwkJcmV0ID0gLUVJTzsKKwkJZ290byBl
+cnJvcjsKKwl9CisKKwlpZiAoZXh0X2NzZFtFWFRfQ1NEX1BBUlRJVElPTl9TRVRUSU5HX0NPTVBM
+RVRFRF0pIHsKKwkJcHJpbnRmKCJQYXJ0aXRpb25pbmcgYWxyZWFkeSBmaW5hbGl6ZWRcbiIpOwor
+CQlyZXQgPSAtRUlPOworCQlnb3RvIGVycm9yOworCX0KKworCXJldCA9IG1jaV9zd2l0Y2gobWNp
+LCBFWFRfQ1NEX0VSQVNFX0dST1VQX0RFRiwgMSk7CisJaWYgKHJldCkgeworCQlwcmludGYoIkZh
+aWx1cmUgdG8gd3JpdGUgdG8gRVhUX0NTRF9FUkFTRV9HUk9VUF9ERUZcbiIpOworCQlnb3RvIGVy
+cm9yOworCX0KKworCXJldCA9IG1jaV9zd2l0Y2gobWNpLCBFWFRfQ1NEX0VOSF9TVEFSVF9BRERS
+LCAwKTsKKwlpZiAocmV0KSB7CisJCXByaW50ZigiRmFpbHVyZSB0byB3cml0ZSB0byBFWFRfQ1NE
+X0VOSF9TVEFSVF9BRERSWzBdXG4iKTsKKwkJZ290byBlcnJvcjsKKwl9CisKKwlyZXQgPSBtY2lf
+c3dpdGNoKG1jaSwgRVhUX0NTRF9FTkhfU1RBUlRfQUREUiArIDEsIDApOworCWlmIChyZXQpIHsK
+KwkJcHJpbnRmKCJGYWlsdXJlIHRvIHdyaXRlIHRvIEVYVF9DU0RfRU5IX1NUQVJUX0FERFJbMV1c
+biIpOworCQlnb3RvIGVycm9yOworCX0KKworCXJldCA9IG1jaV9zd2l0Y2gobWNpLCBFWFRfQ1NE
+X0VOSF9TVEFSVF9BRERSICsgMiwgMCk7CisJaWYgKHJldCkgeworCQlwcmludGYoIkZhaWx1cmUg
+dG8gd3JpdGUgdG8gRVhUX0NTRF9FTkhfU1RBUlRfQUREUlsyXVxuIik7CisJCWdvdG8gZXJyb3I7
+CisJfQorCisJcmV0ID0gbWNpX3N3aXRjaChtY2ksIEVYVF9DU0RfRU5IX1NUQVJUX0FERFIgKyAz
+LCAwKTsKKwlpZiAocmV0KSB7CisJCXByaW50ZigiRmFpbHVyZSB0byB3cml0ZSB0byBFWFRfQ1NE
+X0VOSF9TVEFSVF9BRERSWzNdXG4iKTsKKwkJZ290byBlcnJvcjsKKwl9CisKKwlyZXQgPSBtY2lf
+c3dpdGNoKG1jaSwgRVhUX0NTRF9FTkhfU0laRV9NVUxULCBleHRfY3NkW0VYVF9DU0RfTUFYX0VO
+SF9TSVpFX01VTFRdKTsKKwlpZiAocmV0KSB7CisJCXByaW50ZigiRmFpbHVyZSB0byB3cml0ZSB0
+byBFWFRfQ1NEX0VOSF9TSVpFX01VTFRbMF1cbiIpOworCQlnb3RvIGVycm9yOworCX0KKworCXJl
+dCA9IG1jaV9zd2l0Y2gobWNpLCBFWFRfQ1NEX0VOSF9TSVpFX01VTFQgKyAxLCBleHRfY3NkW0VY
+VF9DU0RfTUFYX0VOSF9TSVpFX01VTFQgKyAxXSk7CisJaWYgKHJldCkgeworCQlwcmludGYoIkZh
+aWx1cmUgdG8gd3JpdGUgdG8gRVhUX0NTRF9FTkhfU0laRV9NVUxUWzFdXG4iKTsKKwkJZ290byBl
+cnJvcjsKKwl9CisKKwlyZXQgPSBtY2lfc3dpdGNoKG1jaSwgRVhUX0NTRF9FTkhfU0laRV9NVUxU
+ICsgMiwgZXh0X2NzZFtFWFRfQ1NEX01BWF9FTkhfU0laRV9NVUxUICsgMl0pOworCWlmIChyZXQp
+IHsKKwkJcHJpbnRmKCJGYWlsdXJlIHRvIHdyaXRlIHRvIEVYVF9DU0RfRU5IX1NJWkVfTVVMVFsy
+XVxuIik7CisJCWdvdG8gZXJyb3I7CisJfQorCisJcmV0ID0gbWNpX3N3aXRjaChtY2ksIEVYVF9D
+U0RfUEFSVElUSU9OU19BVFRSSUJVVEUsIGV4dF9jc2RbRVhUX0NTRF9QQVJUSVRJT05TX0FUVFJJ
+QlVURV0gfCBFWFRfQ1NEX0VOSF9VU1JfTUFTSyk7CisJaWYgKHJldCkgeworCQlwcmludGYoIkZh
+aWx1cmUgdG8gd3JpdGUgdG8gRVhUX0NTRF9QQVJUSVRJT05TX0FUVFJJQlVURVxuIik7CisJCWdv
+dG8gZXJyb3I7CisJfQorCisJaWYgKHNldF9jb21wbGV0ZWQpIHsKKwkJcmV0ID0gbWNpX3N3aXRj
+aChtY2ksIEVYVF9DU0RfUEFSVElUSU9OX1NFVFRJTkdfQ09NUExFVEVELCAxKTsKKwkJaWYgKHJl
+dCkgeworCQkJcHJpbnRmKCJGYWlsdXJlIHRvIHdyaXRlIHRvIEVYVF9DU0RfUEFSVElUSU9OX1NF
+VFRJTkdfQ09NUExFVEVEXG4iKTsKK2Vycm9yOgorCQkJZnJlZShleHRfY3NkKTsKKwkJfSBlbHNl
+IHsKKwkJCXByaW50ZigiTm93IHBvd2VyIGN5Y2xlIHRoZSBkZXZpY2UgdG8gbGV0IGl0IHJlY29u
+ZmlndXJlIGl0c2VsZi5cbiIpOworCQl9CisJfQorCisJcmV0dXJuIHJldDsKK30KKworc3RhdGlj
+IHN0cnVjdCB7CisJY29uc3QgY2hhciAqY21kOworCWludCAoKmZ1bmMpKGludCBhcmdjLCBjaGFy
+ICphcmd2W10pOworfSBtbWNfc3ViY21kc1tdID0geworCXsKKwkJLmNtZCA9ICJlbmhfYXJlYSIs
+CisJCS5mdW5jID0gZG9fbW1jX2VuaF9hcmVhLAorCX0KK307CisKK3N0YXRpYyBpbnQgZG9fbW1j
+KGludCBhcmdjLCBjaGFyICphcmd2W10pCit7CisJc2l6ZV90IGksIHN1YmNtZGxlbjsKKwlpbnQg
+KCpmdW5jKShpbnQgYXJnYywgY2hhciAqYXJndltdKSA9IE5VTEw7CisKKwlpZiAoYXJnYyA8IDIp
+IHsKKwkJcHJpbnRmKCJtbWM6IHJlcXVpcmVkIHN1YmNvbW1hbmQgbWlzc2luZ1xuIik7CisJCXJl
+dHVybiAxOworCX0KKworCXN1YmNtZGxlbiA9IHN0cmxlbihhcmd2WzFdKTsKKwlmb3IgKGkgPSAw
+OyBpIDwgQVJSQVlfU0laRShtbWNfc3ViY21kcyk7ICsraSkgeworCQlpZiAoc3RybmNtcChtbWNf
+c3ViY21kc1tpXS5jbWQsIGFyZ3ZbMV0sIHN1YmNtZGxlbikgPT0gMCkgeworCQkJaWYgKHN1YmNt
+ZGxlbiA9PSBzdHJsZW4obW1jX3N1YmNtZHNbaV0uY21kKSkgeworCQkJCS8qIGV4YWN0IG1hdGNo
+ICovCisJCQkJZnVuYyA9IG1tY19zdWJjbWRzW2ldLmZ1bmM7CisJCQkJYnJlYWs7CisJCQl9IGVs
+c2UgaWYgKGZ1bmMpIHsKKwkJCQlwcmludGYoIm1tYzogYW1iaWd1b3VzbHkgYWJicmV2aWF0ZWQg
+c3ViY29tbWFuZCIpOworCQkJCXJldHVybiAxOworCQkJfSBlbHNlIHsKKwkJCQlmdW5jID0gbW1j
+X3N1YmNtZHNbaV0uZnVuYzsKKwkJCX0KKwkJfQorCX0KKworCWlmIChmdW5jKSB7CisJCWludCBy
+ZXQgPSBmdW5jKGFyZ2MgLSAxLCBhcmd2ICsgMSk7CisJCXJldHVybiByZXQgPCAwOworCX0gZWxz
+ZSB7CisJCXByaW50ZigibW1jOiBzdWJjb21tYW5kIFwiJXNcIiBub3QgZm91bmRcbiIsIGFyZ3Zb
+MV0pOworCQlyZXR1cm4gMTsKKwl9Cit9CisKK0JBUkVCT1hfQ01EX1NUQVJUKG1tYykKKwkuY21k
+ID0gZG9fbW1jLAorCUJBUkVCT1hfQ01EX09QVFMoImVuaF9hcmVhIHNldG1heCA8LXl8LW58LWM+
+IC9kZXYvbW1jWCIpCitCQVJFQk9YX0NNRF9FTkQKZGlmZiAtLWdpdCBhL2luY2x1ZGUvbWNpLmgg
+Yi9pbmNsdWRlL21jaS5oCmluZGV4IDgyN2VlY2QzOWY4ZC4uNzc5ZGE5YzE1NmRiIDEwMDY0NAot
+LS0gYS9pbmNsdWRlL21jaS5oCisrKyBiL2luY2x1ZGUvbWNpLmgKQEAgLTMwNCw2ICszMDQsMTMg
+QEAKICNkZWZpbmUgRVhUX0NTRF9DQVJEX1RZUEVfU0RSXzFfMlYJKDE8PDUpCS8qIENhcmQgY2Fu
+IHJ1biBhdCAyMDBNSHogKi8KIAkJCQkJCS8qIFNEUiBtb2RlIEAxLjJWIEkvTyAqLwogCisvKiBy
+ZWdpc3RlciBQQVJUSVRJT05TX0FUVFJJQlVURSBbMTU2XSAqLworI2RlZmluZSBFWFRfQ1NEX0VO
+SF9VU1JfTUFTSwkJKDEgPDwgMCkKKworLyogcmVnaXN0ZXIgUEFSVElUSU9OSU5HX1NVUFBPUlQg
+WzE2MF0gKi8KKyNkZWZpbmUgRVhUX0NTRF9FTkhfQVRUUklCVVRFX0VOX01BU0sJKDEgPDwgMCkK
+KworLyogcmVnaXN0ZXIgQlVTX1dJRFRIIFsxODNdLCBmaWVsZCBCdXMgTW9kZSBTZWxlY3Rpb24g
+WzQ6MF0gKi8KICNkZWZpbmUgRVhUX0NTRF9CVVNfV0lEVEhfMQkwCS8qIENhcmQgaXMgaW4gMSBi
+aXQgbW9kZSAqLwogI2RlZmluZSBFWFRfQ1NEX0JVU19XSURUSF80CTEJLyogQ2FyZCBpcyBpbiA0
+IGJpdCBtb2RlICovCiAjZGVmaW5lIEVYVF9DU0RfQlVTX1dJRFRIXzgJMgkvKiBDYXJkIGlzIGlu
+IDggYml0IG1vZGUgKi8KLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
+cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
+cmVib3gK
