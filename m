@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ecUPv-0002Ym-M8
- for barebox@lists.infradead.org; Fri, 19 Jan 2018 11:01:06 +0000
-From: Bastian Stender <bst@pengutronix.de>
-Date: Fri, 19 Jan 2018 12:00:43 +0100
-Message-Id: <20180119110043.9910-1-bst@pengutronix.de>
+ id 1ecRAS-0007GL-Vn
+ for barebox@lists.infradead.org; Fri, 19 Jan 2018 07:32:56 +0000
+Date: Fri, 19 Jan 2018 08:32:37 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180119073237.pxbnvtvzqhplpqpp@pengutronix.de>
+References: <20180114212252.29682-1-antonynpavlov@gmail.com>
+ <20180118211350.06c661f55ea37e8071dd07c3@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180118211350.06c661f55ea37e8071dd07c3@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,36 +19,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: Bootchooser: fix typo
-To: barebox@lists.infradead.org
-Cc: Bastian Stender <bst@pengutronix.de>
+Subject: Re: [PATCH v2 0/7] sandbox: add gpio support with libftdi1
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Bastian Stender <bst@pengutronix.de>
----
- Documentation/user/bootchooser.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Antony,
 
-diff --git a/Documentation/user/bootchooser.rst b/Documentation/user/bootchooser.rst
-index 3d473b5969..9a75afbf5e 100644
---- a/Documentation/user/bootchooser.rst
-+++ b/Documentation/user/bootchooser.rst
-@@ -353,7 +353,7 @@ node. It then looks like:
- It could makes sense to store the result of the last *bootchooser* operation
- in the *state* variable set as well. In order to do so, add a node with the name
- ``last_chosen`` to the *state* variable set. *bootchooser* will use it if present.
--The *state' variable set definition then looks like:
-+The *state* variable set definition then looks like:
- 
- .. code-block:: text
- 
+On Thu, Jan 18, 2018 at 09:13:50PM +0300, Antony Pavlov wrote:
+> On Mon, 15 Jan 2018 00:22:45 +0300
+> Antony Pavlov <antonynpavlov@gmail.com> wrote:
+> 
+> > This patch series makes it possible to use FT2232H ACBUS[7:0]
+> > pins as gpio pins from sandbox barebox.
+> 
+> Hi Sascha!
+> 
+> Please review this patch series!
+
+I did On January 17 here:
+
+http://lists.infradead.org/pipermail/barebox/2018-January/031909.html
+
+Sascha
+
 -- 
-2.11.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
