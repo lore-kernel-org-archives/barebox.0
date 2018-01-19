@@ -1,24 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ecWgZ-00077H-AK
- for barebox@lists.infradead.org; Fri, 19 Jan 2018 13:26:28 +0000
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <ukl@pengutronix.de>) id 1ecWgL-0003gC-25
- for barebox@lists.infradead.org; Fri, 19 Jan 2018 14:26:09 +0100
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <ukl@pengutronix.de>) id 1ecWgK-00058R-Q2
- for barebox@lists.infradead.org; Fri, 19 Jan 2018 14:26:08 +0100
-Date: Fri, 19 Jan 2018 14:26:08 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20180119132608.ql6qrqwl6xwazc4c@pengutronix.de>
-References: <20180119105004.12204-1-u.kleine-koenig@pengutronix.de>
- <20180119105004.12204-2-u.kleine-koenig@pengutronix.de>
+ id 1ecUFZ-0004oc-D9
+ for barebox@lists.infradead.org; Fri, 19 Jan 2018 10:50:23 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri, 19 Jan 2018 11:50:03 +0100
+Message-Id: <20180119105004.12204-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180119105004.12204-2-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,33 +15,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] mci: implement command to switch a mmc device to
- enhanced mode
+Subject: [PATCH 1/2] mci: drop unused parameter from mci_switch()
 To: barebox@lists.infradead.org
 
-On Fri, Jan 19, 2018 at 11:50:04AM +0100, Uwe Kleine-K=F6nig wrote:
-> @@ -236,7 +236,10 @@ config CMD_VERSION
->  	help
->  	  Pring barebox version. Example:
->  =
-
-> -	  barebox 2014.05.0-00142-gb289373 #177 Mon May 12 20:35:55 CEST 2014
-
-This was an accident, will send v2.
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIFNXSVRDSCBjb21tYW5kIGhhcyB0d28gcHVycG9zZXM6CiBhKSBzd2l0Y2ggdGhlIGNvbW1h
+bmQgc2V0CiBiKSBXcml0ZSB0byB0aGUgRVhUX0NTRCByZWdpc3RlcgoKSWYgdGhlIGFjY2VzcyBm
+aWVsZCAoYml0cyBbMjU6MjRdKSBpbiB0aGUgYXJndW1lbnQgYXJlIGIwMCwgd2UncmUgaW4KY2Fz
+ZSBhKSwgb3RoZXJ3aXNlIGluIGIpLiBBcyBtY2lfc3dpdGNoKCkgYWx3YXlzIHBhc3NlcwpNTUNf
+U1dJVENIX01PREVfV1JJVEVfQllURSAoMGIzKSBpbiB0aGUgYWNjZXNzIGZpZWxkLCBvbmx5IGNh
+c2UgYikgaXMKcmVsZXZhbnQgaGVyZS4gQWNjb3JkaW5nIHRvIHRoZSBlTU1DIHNwZWNpZmljYXRp
+b25bMV0gdGhlIGNvbW1hbmQgc2V0CmZpZWxkIGlzIGlnbm9yZWQgaW4gY2FzZSBiKSBhbmQgc28g
+dGhlIHJlc3BlY3RpdmUgcGFyYW1ldGVyICh0aGF0IGlzCnVudXNlZCBhbHJlYWR5IG5vdykgY2Fu
+IGJlIGRyb3BwZWQuCgpbMV0gRW1iZWRkZWQgTXVsdGktTWVkaWEgQ2FyZCAoZeKAok1NQykgRWxl
+Y3RyaWNhbCBTdGFuZGFyZCAoNS4xKSwKICAgIEZlYnJ1YXJ5IDIwMTU7IHBhcmFncmFwaCA2LjYu
+MQoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5n
+dXRyb25peC5kZT4KLS0tCiBjb21tYW5kcy9tbWNfZXh0Y3NkLmMgIHwgIDIgKy0KIGRyaXZlcnMv
+bWNpL21jaS1jb3JlLmMgfCAxNiArKysrKystLS0tLS0tLS0tCiBpbmNsdWRlL21jaS5oICAgICAg
+ICAgIHwgIDMgKy0tCiAzIGZpbGVzIGNoYW5nZWQsIDggaW5zZXJ0aW9ucygrKSwgMTMgZGVsZXRp
+b25zKC0pCgpkaWZmIC0tZ2l0IGEvY29tbWFuZHMvbW1jX2V4dGNzZC5jIGIvY29tbWFuZHMvbW1j
+X2V4dGNzZC5jCmluZGV4IDdhNmQzOTA3NWRhMC4uYWNkMjNhNDY2YmNiIDEwMDY0NAotLS0gYS9j
+b21tYW5kcy9tbWNfZXh0Y3NkLmMKKysrIGIvY29tbWFuZHMvbW1jX2V4dGNzZC5jCkBAIC0yMzU3
+LDcgKzIzNTcsNyBAQCBzdGF0aWMgdm9pZCB3cml0ZV9maWVsZChzdHJ1Y3QgbWNpICptY2ksIHU4
+ICpyZWcsIHUxNiBpbmRleCwgdTggdmFsdWUsCiAJCWJyZWFrOwogCX0KIAotCW1jaV9zd2l0Y2go
+bWNpLCAwLCBpbmRleCwgdmFsdWUpOworCW1jaV9zd2l0Y2gobWNpLCBpbmRleCwgdmFsdWUpOwog
+CiBvdXQ6CiAJcmV0dXJuOwpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tY2kvbWNpLWNvcmUuYyBiL2Ry
+aXZlcnMvbWNpL21jaS1jb3JlLmMKaW5kZXggMDc5MTFkNDNkNzAzLi4zZGE5NmY0MmFhZjkgMTAw
+NjQ0Ci0tLSBhL2RyaXZlcnMvbWNpL21jaS1jb3JlLmMKKysrIGIvZHJpdmVycy9tY2kvbWNpLWNv
+cmUuYwpAQCAtMzk2LDggKzM5Niw3IEBAIGludCBtY2lfc2VuZF9leHRfY3NkKHN0cnVjdCBtY2kg
+Km1jaSwgY2hhciAqZXh0X2NzZCkKICAqIEBwYXJhbSB2YWx1ZSBGSVhNRQogICogQHJldHVybiBU
+cmFuc2FjdGlvbiBzdGF0dXMgKDAgb24gc3VjY2VzcykKICAqLwotaW50IG1jaV9zd2l0Y2goc3Ry
+dWN0IG1jaSAqbWNpLCB1bnNpZ25lZCBzZXQsIHVuc2lnbmVkIGluZGV4LAotCQkJdW5zaWduZWQg
+dmFsdWUpCitpbnQgbWNpX3N3aXRjaChzdHJ1Y3QgbWNpICptY2ksIHVuc2lnbmVkIGluZGV4LCB1
+bnNpZ25lZCB2YWx1ZSkKIHsKIAlzdHJ1Y3QgbWNpX2NtZCBjbWQ7CiAKQEAgLTQ3MSw3ICs0NzAs
+NyBAQCBzdGF0aWMgaW50IG1tY19jaGFuZ2VfZnJlcShzdHJ1Y3QgbWNpICptY2kpCiAKIAljYXJk
+dHlwZSA9IG1jaS0+ZXh0X2NzZFtFWFRfQ1NEX0RFVklDRV9UWVBFXSAmIEVYVF9DU0RfQ0FSRF9U
+WVBFX01BU0s7CiAKLQllcnIgPSBtY2lfc3dpdGNoKG1jaSwgRVhUX0NTRF9DTURfU0VUX05PUk1B
+TCwgRVhUX0NTRF9IU19USU1JTkcsIDEpOworCWVyciA9IG1jaV9zd2l0Y2gobWNpLCBFWFRfQ1NE
+X0hTX1RJTUlORywgMSk7CiAKIAlpZiAoZXJyKSB7CiAJCWRldl9kYmcoJm1jaS0+ZGV2LCAiTU1D
+IGZyZXF1ZW5jeSBjaGFuZ2luZyBmYWlsZWQ6ICVkXG4iLCBlcnIpOwpAQCAtMTA0NCw5ICsxMDQz
+LDcgQEAgc3RhdGljIGludCBtY2lfc3RhcnR1cF9tbWMoc3RydWN0IG1jaSAqbWNpKQogCQkgKiA0
+Yml0IHRyYW5zZmVyIG1vZGUuIE9uIHN1Y2Nlc3Mgc2V0IHRoZSBjb3JyZXNwb25kaW5nCiAJCSAq
+IGJ1cyB3aWR0aCBvbiB0aGUgaG9zdC4KIAkJICovCi0JCWVyciA9IG1jaV9zd2l0Y2gobWNpLCBF
+WFRfQ1NEX0NNRF9TRVRfTk9STUFMLAotCQkJCSBFWFRfQ1NEX0JVU19XSURUSCwKLQkJCQkgZXh0
+X2NzZF9iaXRzW2lkeF0pOworCQllcnIgPSBtY2lfc3dpdGNoKG1jaSwgRVhUX0NTRF9CVVNfV0lE
+VEgsIGV4dF9jc2RfYml0c1tpZHhdKTsKIAkJaWYgKGVycikgewogCQkJaWYgKGlkeCA9PSAwKQog
+CQkJCWRldl93YXJuKCZtY2ktPmRldiwgIkNoYW5naW5nIE1NQyBidXMgd2lkdGggZmFpbGVkOiAl
+ZFxuIiwgZXJyKTsKQEAgLTEyNTMsOCArMTI1MCw3IEBAIHN0YXRpYyBpbnQgbWNpX2Jsa19wYXJ0
+X3N3aXRjaChzdHJ1Y3QgbWNpX3BhcnQgKnBhcnQpCiAJCXBhcnRfY29uZmlnICY9IH5FWFRfQ1NE
+X1BBUlRfQ09ORklHX0FDQ19NQVNLOwogCQlwYXJ0X2NvbmZpZyB8PSBwYXJ0LT5wYXJ0X2NmZzsK
+IAotCQlyZXQgPSBtY2lfc3dpdGNoKG1jaSwgRVhUX0NTRF9DTURfU0VUX05PUk1BTCwKLQkJCQlF
+WFRfQ1NEX1BBUlRJVElPTl9DT05GSUcsIHBhcnRfY29uZmlnKTsKKwkJcmV0ID0gbWNpX3N3aXRj
+aChtY2ksIEVYVF9DU0RfUEFSVElUSU9OX0NPTkZJRywgcGFydF9jb25maWcpOwogCQlpZiAocmV0
+KQogCQkJcmV0dXJuIHJldDsKIApAQCAtMTU2OCw4ICsxNTY0LDggQEAgc3RhdGljIGludCBtY2lf
+c2V0X2Jvb3Qoc3RydWN0IHBhcmFtX2QgKnBhcmFtLCB2b2lkICpwcml2KQogCW1jaS0+ZXh0X2Nz
+ZF9wYXJ0X2NvbmZpZyAmPSB+KDcgPDwgMyk7CiAJbWNpLT5leHRfY3NkX3BhcnRfY29uZmlnIHw9
+IG1jaS0+Ym9vdHBhcnQgPDwgMzsKIAotCXJldHVybiBtY2lfc3dpdGNoKG1jaSwgRVhUX0NTRF9D
+TURfU0VUX05PUk1BTCwKLQkJCUVYVF9DU0RfUEFSVElUSU9OX0NPTkZJRywgbWNpLT5leHRfY3Nk
+X3BhcnRfY29uZmlnKTsKKwlyZXR1cm4gbWNpX3N3aXRjaChtY2ksCisJCQkgIEVYVF9DU0RfUEFS
+VElUSU9OX0NPTkZJRywgbWNpLT5leHRfY3NkX3BhcnRfY29uZmlnKTsKIH0KIAogc3RhdGljIGNv
+bnN0IGNoYXIgKm1jaV9ib290X25hbWVzW10gPSB7CmRpZmYgLS1naXQgYS9pbmNsdWRlL21jaS5o
+IGIvaW5jbHVkZS9tY2kuaAppbmRleCBkMzExNWU4Y2M2OGYuLjgyN2VlY2QzOWY4ZCAxMDA2NDQK
+LS0tIGEvaW5jbHVkZS9tY2kuaAorKysgYi9pbmNsdWRlL21jaS5oCkBAIC00NzcsOCArNDc3LDcg
+QEAgdm9pZCBtY2lfb2ZfcGFyc2Uoc3RydWN0IG1jaV9ob3N0ICpob3N0KTsKIHZvaWQgbWNpX29m
+X3BhcnNlX25vZGUoc3RydWN0IG1jaV9ob3N0ICpob3N0LCBzdHJ1Y3QgZGV2aWNlX25vZGUgKm5w
+KTsKIGludCBtY2lfZGV0ZWN0X2NhcmQoc3RydWN0IG1jaV9ob3N0ICopOwogaW50IG1jaV9zZW5k
+X2V4dF9jc2Qoc3RydWN0IG1jaSAqbWNpLCBjaGFyICpleHRfY3NkKTsKLWludCBtY2lfc3dpdGNo
+KHN0cnVjdCBtY2kgKm1jaSwgdW5zaWduZWQgc2V0LCB1bnNpZ25lZCBpbmRleCwKLQkJCXVuc2ln
+bmVkIHZhbHVlKTsKK2ludCBtY2lfc3dpdGNoKHN0cnVjdCBtY2kgKm1jaSwgdW5zaWduZWQgaW5k
+ZXgsIHVuc2lnbmVkIHZhbHVlKTsKIAogc3RhdGljIGlubGluZSBpbnQgbW1jX2hvc3RfaXNfc3Bp
+KHN0cnVjdCBtY2lfaG9zdCAqaG9zdCkKIHsKLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
