@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ecWim-0007RC-NS
- for barebox@lists.infradead.org; Fri, 19 Jan 2018 13:28:42 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri, 19 Jan 2018 14:28:25 +0100
-Message-Id: <20180119132825.26662-2-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20180119132825.26662-1-u.kleine-koenig@pengutronix.de>
+ id 1edXDl-0002g5-Qi
+ for barebox@lists.infradead.org; Mon, 22 Jan 2018 08:12:52 +0000
+Date: Mon, 22 Jan 2018 09:12:34 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180122081234.jxgbiblpvgaoeou4@pengutronix.de>
 References: <20180119132825.26662-1-u.kleine-koenig@pengutronix.de>
+ <20180119132825.26662-2-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180119132825.26662-2-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,136 +19,299 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/2] mci: implement command to switch a mmc device to
+Subject: Re: [PATCH v2 2/2] mci: implement command to switch a mmc device to
  enhanced mode
-To: barebox@lists.infradead.org
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-VGhlIGNvbW1hbmQgc3RydWN0dXJlIGFsbG93cyBhZGRpbmcgbW9yZSBzdWJjb21tYW5kcyBhbmQg
-aXMgZGVzaWduZWQgdG8KbWF0Y2ggdGhlIExpbnV4IHByb2dyYW0gbW1jIGZyb20gdGhlIG1tYy11
-dGlscy4gU28gbGF0ZXIgbW9yZSBjb21tYW5kcwpjYW4gZWFzaWx5IGJlIGFkZGVkIGlmIG5lZWQg
-YmUuCgpDb21wYXJlZCB0byBtbWMtdXRpbHMnCgoJbW1jIGVuaF9hcmVhIHNldCA8LXl8LW58LWM+
-IDxzdGFydCBLaUI+IDxsZW5ndGggS2lCPiA8ZGV2aWNlPgoKdGhlIGNvbW1hbmQgdGhhdCBpcyBp
-bXBsZW1lbnRlZCBoZXJlICgKCgltbWMgZW5oX2FyZWEgc2V0bWF4IDwteXwtbnwtYz4gPGRldmlj
-ZT4KCikgaXMgZWFzaWVyIHRvIHVzZSAoYmVjYXVzZSB5b3UgZG9uJ3QgaGF2ZSB0byBjaGVjayB0
-aGUgbWF4aW1hbCBhbGxvd2VkCnNpemUgYnkgcmVhZGluZyBzb21lIHJlZ2lzdGVycyBhbmQgY2Fs
-Y3VsYXRlIHRoZSBhdmFpbGFibGUgc2l6ZSBmcm9tCnRoZW0gKHdoaWNoIHRoZW4gbXVzdCBiZSBj
-YWxjdWxhdGVkIGJhY2sgdG8gcmVnaXN0ZXIgdmFsdWVzIGJ5IHRoZSBtbWMKY29tbWFuZCkpIGJ1
-dCBsZXNzIGZsZXhpYmxlIGFzIGl0IGRvZXNuJ3QgYWxsb3cgYWxsIHRoZSBjcmF6eQpwb3NzaWJp
-bGl0aWVzIHNwZWNpZmllZCBpbiB0aGUgZU1NQyBzdGFuZGFyZCBidXQganVzdCBjcmVhdGVzIGFu
-CmVuaGFuY2VkIGFyZWEgd2l0aCBtYXhpbWFsIHNpemUuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xl
-aW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGNvbW1hbmRz
-L0tjb25maWcgIHwgICA1ICsrCiBjb21tYW5kcy9NYWtlZmlsZSB8ICAgMSArCiBjb21tYW5kcy9t
-bWMuYyAgICB8IDE3MSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysKIGluY2x1ZGUvbWNpLmggICAgIHwgICA3ICsrKwogNCBmaWxlcyBjaGFuZ2Vk
-LCAxODQgaW5zZXJ0aW9ucygrKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGNvbW1hbmRzL21tYy5jCgpk
-aWZmIC0tZ2l0IGEvY29tbWFuZHMvS2NvbmZpZyBiL2NvbW1hbmRzL0tjb25maWcKaW5kZXggYWUy
-ZGM0YjA5NDdiLi4xYjI5MzY1YTA2ZjIgMTAwNjQ0Ci0tLSBhL2NvbW1hbmRzL0tjb25maWcKKysr
-IGIvY29tbWFuZHMvS2NvbmZpZwpAQCAtMjM4LDYgKzIzOCwxMSBAQCBjb25maWcgQ01EX1ZFUlNJ
-T04KIAogCSAgYmFyZWJveCAyMDE0LjA1LjAtMDAxNDItZ2IyODkzNzMgIzE3NyBNb24gTWF5IDEy
-IDIwOjM1OjU1IENFU1QgMjAxNAogCitjb25maWcgQ01EX01NQworCXRyaXN0YXRlCisJcHJvbXB0
-ICJtbWMgY29tbWFuZCBhbGxvd2luZyB0byBzZXQgZW5oYW5jZWQgYXJlYSIKKwlkZXBlbmRzIG9u
-IE1DSQorCiBjb25maWcgQ01EX01NQ19FWFRDU0QKIAl0cmlzdGF0ZQogCXByb21wdCAicmVhZC93
-cml0ZSBlTU1DIGV4dC4gQ1NEIHJlZ2lzdGVyIgpkaWZmIC0tZ2l0IGEvY29tbWFuZHMvTWFrZWZp
-bGUgYi9jb21tYW5kcy9NYWtlZmlsZQppbmRleCAzNzQ4NmRjZWIxODEuLmJjZDA2NjVjZmU4OCAx
-MDA2NDQKLS0tIGEvY29tbWFuZHMvTWFrZWZpbGUKKysrIGIvY29tbWFuZHMvTWFrZWZpbGUKQEAg
-LTEyMCw2ICsxMjAsNyBAQCBvYmotJChDT05GSUdfQ01EX0RIQ1ApCQkrPSBkaGNwLm8KIG9iai0k
-KENPTkZJR19DTURfQk9PVENIT09TRVIpCSs9IGJvb3RjaG9vc2VyLm8KIG9iai0kKENPTkZJR19D
-TURfREhSWVNUT05FKQkrPSBkaHJ5c3RvbmUubwogb2JqLSQoQ09ORklHX0NNRF9TUERfREVDT0RF
-KQkrPSBzcGRfZGVjb2RlLm8KK29iai0kKENPTkZJR19DTURfTU1DKQkJKz0gbW1jLm8KIG9iai0k
-KENPTkZJR19DTURfTU1DX0VYVENTRCkJKz0gbW1jX2V4dGNzZC5vCiBvYmotJChDT05GSUdfQ01E
-X05BTkRfQklURkxJUCkJKz0gbmFuZC1iaXRmbGlwLm8KIG9iai0kKENPTkZJR19DTURfU0VFRCkJ
-CSs9IHNlZWQubwpkaWZmIC0tZ2l0IGEvY29tbWFuZHMvbW1jLmMgYi9jb21tYW5kcy9tbWMuYwpu
-ZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAuLjJmNWM3YWQ2OWEzNwotLS0g
-L2Rldi9udWxsCisrKyBiL2NvbW1hbmRzL21tYy5jCkBAIC0wLDAgKzEsMTcxIEBACisjaW5jbHVk
-ZSA8Y29tbWFuZC5oPgorI2luY2x1ZGUgPG1jaS5oPgorI2luY2x1ZGUgPHN0ZGlvLmg+CisjaW5j
-bHVkZSA8c3RyaW5nLmg+CisKKy8qIGVuaF9hcmVhIHNldG1heCA8LXl8LW58LWM+IC9kZXYvbW1j
-WCAqLworc3RhdGljIGludCBkb19tbWNfZW5oX2FyZWEoaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkK
-K3sKKwljaGFyICpkZXZuYW1lOworCXN0cnVjdCBtY2kgKm1jaTsKKwl1OCAqZXh0X2NzZDsKKwlp
-bnQgc2V0X2NvbXBsZXRlZCA9IDA7CisJaW50IHJldDsKKworCWlmIChhcmdjICE9IDQgfHwgc3Ry
-Y21wKGFyZ3ZbMV0sICJzZXRtYXgiKSB8fAorCSAgICBhcmd2WzJdWzBdICE9ICctJyB8fAorCSAg
-ICAoYXJndlsyXVsxXSAhPSAneScgJiYgYXJndlsyXVsxXSAhPSAnbicgJiYgYXJndlsyXVsxXSAh
-PSAnYycpKSB7CisJCXByaW50ZigiVXNhZ2U6IG1tYyBlbmhfYXJlYSBzZXRtYXggPC15fC1ufC1j
-PiAvZGV2L21tY1hcbiIpOworCQlyZXR1cm4gMTsKKwl9CisKKwlpZiAoYXJndlsyXVsxXSA9PSAn
-eScpCisJCXNldF9jb21wbGV0ZWQgPSAxOworCisJZGV2bmFtZSA9IGFyZ3ZbM107CisJaWYgKCFz
-dHJuY21wKGRldm5hbWUsICIvZGV2LyIsIDUpKQorCQlkZXZuYW1lICs9IDU7CisKKwltY2kgPSBt
-Y2lfZ2V0X2RldmljZV9ieV9uYW1lKGRldm5hbWUpOworCWlmICghbWNpKSB7CisJCXByaW50Zigi
-RmFpbHVyZSB0byBvcGVuICVzIGFzIG1jaSBkZXZpY2VcbiIsIGRldm5hbWUpOworCQlyZXR1cm4g
-LUVOT0VOVDsKKwl9CisJLyogZ2V0IGV4dGNzZCAqLworCWV4dF9jc2QgPSB4bWFsbG9jKDUxMik7
-CisKKwlyZXQgPSBtY2lfc2VuZF9leHRfY3NkKG1jaSwgZXh0X2NzZCk7CisJaWYgKHJldCkgewor
-CQlwcmludGYoIkZhaWx1cmUgdG8gcmVhZCBFWFRfQ1NEIHJlZ2lzdGVyXG4iKTsKKwkJZ290byBl
-cnJvcjsKKwl9CisKKwlpZiAoIShleHRfY3NkW0VYVF9DU0RfUEFSVElUSU9OSU5HX1NVUFBPUlRd
-ICYgRVhUX0NTRF9FTkhfQVRUUklCVVRFX0VOX01BU0spKSB7CisJCXByaW50ZigiRGV2aWNlIGRv
-ZXNuJ3Qgc3VwcG9ydCBlbmhhbmNlZCBhcmVhXG4iKTsKKwkJcmV0ID0gLUVJTzsKKwkJZ290byBl
-cnJvcjsKKwl9CisKKwlpZiAoZXh0X2NzZFtFWFRfQ1NEX1BBUlRJVElPTl9TRVRUSU5HX0NPTVBM
-RVRFRF0pIHsKKwkJcHJpbnRmKCJQYXJ0aXRpb25pbmcgYWxyZWFkeSBmaW5hbGl6ZWRcbiIpOwor
-CQlyZXQgPSAtRUlPOworCQlnb3RvIGVycm9yOworCX0KKworCXJldCA9IG1jaV9zd2l0Y2gobWNp
-LCBFWFRfQ1NEX0VSQVNFX0dST1VQX0RFRiwgMSk7CisJaWYgKHJldCkgeworCQlwcmludGYoIkZh
-aWx1cmUgdG8gd3JpdGUgdG8gRVhUX0NTRF9FUkFTRV9HUk9VUF9ERUZcbiIpOworCQlnb3RvIGVy
-cm9yOworCX0KKworCXJldCA9IG1jaV9zd2l0Y2gobWNpLCBFWFRfQ1NEX0VOSF9TVEFSVF9BRERS
-LCAwKTsKKwlpZiAocmV0KSB7CisJCXByaW50ZigiRmFpbHVyZSB0byB3cml0ZSB0byBFWFRfQ1NE
-X0VOSF9TVEFSVF9BRERSWzBdXG4iKTsKKwkJZ290byBlcnJvcjsKKwl9CisKKwlyZXQgPSBtY2lf
-c3dpdGNoKG1jaSwgRVhUX0NTRF9FTkhfU1RBUlRfQUREUiArIDEsIDApOworCWlmIChyZXQpIHsK
-KwkJcHJpbnRmKCJGYWlsdXJlIHRvIHdyaXRlIHRvIEVYVF9DU0RfRU5IX1NUQVJUX0FERFJbMV1c
-biIpOworCQlnb3RvIGVycm9yOworCX0KKworCXJldCA9IG1jaV9zd2l0Y2gobWNpLCBFWFRfQ1NE
-X0VOSF9TVEFSVF9BRERSICsgMiwgMCk7CisJaWYgKHJldCkgeworCQlwcmludGYoIkZhaWx1cmUg
-dG8gd3JpdGUgdG8gRVhUX0NTRF9FTkhfU1RBUlRfQUREUlsyXVxuIik7CisJCWdvdG8gZXJyb3I7
-CisJfQorCisJcmV0ID0gbWNpX3N3aXRjaChtY2ksIEVYVF9DU0RfRU5IX1NUQVJUX0FERFIgKyAz
-LCAwKTsKKwlpZiAocmV0KSB7CisJCXByaW50ZigiRmFpbHVyZSB0byB3cml0ZSB0byBFWFRfQ1NE
-X0VOSF9TVEFSVF9BRERSWzNdXG4iKTsKKwkJZ290byBlcnJvcjsKKwl9CisKKwlyZXQgPSBtY2lf
-c3dpdGNoKG1jaSwgRVhUX0NTRF9FTkhfU0laRV9NVUxULCBleHRfY3NkW0VYVF9DU0RfTUFYX0VO
-SF9TSVpFX01VTFRdKTsKKwlpZiAocmV0KSB7CisJCXByaW50ZigiRmFpbHVyZSB0byB3cml0ZSB0
-byBFWFRfQ1NEX0VOSF9TSVpFX01VTFRbMF1cbiIpOworCQlnb3RvIGVycm9yOworCX0KKworCXJl
-dCA9IG1jaV9zd2l0Y2gobWNpLCBFWFRfQ1NEX0VOSF9TSVpFX01VTFQgKyAxLCBleHRfY3NkW0VY
-VF9DU0RfTUFYX0VOSF9TSVpFX01VTFQgKyAxXSk7CisJaWYgKHJldCkgeworCQlwcmludGYoIkZh
-aWx1cmUgdG8gd3JpdGUgdG8gRVhUX0NTRF9FTkhfU0laRV9NVUxUWzFdXG4iKTsKKwkJZ290byBl
-cnJvcjsKKwl9CisKKwlyZXQgPSBtY2lfc3dpdGNoKG1jaSwgRVhUX0NTRF9FTkhfU0laRV9NVUxU
-ICsgMiwgZXh0X2NzZFtFWFRfQ1NEX01BWF9FTkhfU0laRV9NVUxUICsgMl0pOworCWlmIChyZXQp
-IHsKKwkJcHJpbnRmKCJGYWlsdXJlIHRvIHdyaXRlIHRvIEVYVF9DU0RfRU5IX1NJWkVfTVVMVFsy
-XVxuIik7CisJCWdvdG8gZXJyb3I7CisJfQorCisJcmV0ID0gbWNpX3N3aXRjaChtY2ksIEVYVF9D
-U0RfUEFSVElUSU9OU19BVFRSSUJVVEUsIGV4dF9jc2RbRVhUX0NTRF9QQVJUSVRJT05TX0FUVFJJ
-QlVURV0gfCBFWFRfQ1NEX0VOSF9VU1JfTUFTSyk7CisJaWYgKHJldCkgeworCQlwcmludGYoIkZh
-aWx1cmUgdG8gd3JpdGUgdG8gRVhUX0NTRF9QQVJUSVRJT05TX0FUVFJJQlVURVxuIik7CisJCWdv
-dG8gZXJyb3I7CisJfQorCisJaWYgKHNldF9jb21wbGV0ZWQpIHsKKwkJcmV0ID0gbWNpX3N3aXRj
-aChtY2ksIEVYVF9DU0RfUEFSVElUSU9OX1NFVFRJTkdfQ09NUExFVEVELCAxKTsKKwkJaWYgKHJl
-dCkgeworCQkJcHJpbnRmKCJGYWlsdXJlIHRvIHdyaXRlIHRvIEVYVF9DU0RfUEFSVElUSU9OX1NF
-VFRJTkdfQ09NUExFVEVEXG4iKTsKK2Vycm9yOgorCQkJZnJlZShleHRfY3NkKTsKKwkJfSBlbHNl
-IHsKKwkJCXByaW50ZigiTm93IHBvd2VyIGN5Y2xlIHRoZSBkZXZpY2UgdG8gbGV0IGl0IHJlY29u
-ZmlndXJlIGl0c2VsZi5cbiIpOworCQl9CisJfQorCisJcmV0dXJuIHJldDsKK30KKworc3RhdGlj
-IHN0cnVjdCB7CisJY29uc3QgY2hhciAqY21kOworCWludCAoKmZ1bmMpKGludCBhcmdjLCBjaGFy
-ICphcmd2W10pOworfSBtbWNfc3ViY21kc1tdID0geworCXsKKwkJLmNtZCA9ICJlbmhfYXJlYSIs
-CisJCS5mdW5jID0gZG9fbW1jX2VuaF9hcmVhLAorCX0KK307CisKK3N0YXRpYyBpbnQgZG9fbW1j
-KGludCBhcmdjLCBjaGFyICphcmd2W10pCit7CisJc2l6ZV90IGksIHN1YmNtZGxlbjsKKwlpbnQg
-KCpmdW5jKShpbnQgYXJnYywgY2hhciAqYXJndltdKSA9IE5VTEw7CisKKwlpZiAoYXJnYyA8IDIp
-IHsKKwkJcHJpbnRmKCJtbWM6IHJlcXVpcmVkIHN1YmNvbW1hbmQgbWlzc2luZ1xuIik7CisJCXJl
-dHVybiAxOworCX0KKworCXN1YmNtZGxlbiA9IHN0cmxlbihhcmd2WzFdKTsKKwlmb3IgKGkgPSAw
-OyBpIDwgQVJSQVlfU0laRShtbWNfc3ViY21kcyk7ICsraSkgeworCQlpZiAoc3RybmNtcChtbWNf
-c3ViY21kc1tpXS5jbWQsIGFyZ3ZbMV0sIHN1YmNtZGxlbikgPT0gMCkgeworCQkJaWYgKHN1YmNt
-ZGxlbiA9PSBzdHJsZW4obW1jX3N1YmNtZHNbaV0uY21kKSkgeworCQkJCS8qIGV4YWN0IG1hdGNo
-ICovCisJCQkJZnVuYyA9IG1tY19zdWJjbWRzW2ldLmZ1bmM7CisJCQkJYnJlYWs7CisJCQl9IGVs
-c2UgaWYgKGZ1bmMpIHsKKwkJCQlwcmludGYoIm1tYzogYW1iaWd1b3VzbHkgYWJicmV2aWF0ZWQg
-c3ViY29tbWFuZCIpOworCQkJCXJldHVybiAxOworCQkJfSBlbHNlIHsKKwkJCQlmdW5jID0gbW1j
-X3N1YmNtZHNbaV0uZnVuYzsKKwkJCX0KKwkJfQorCX0KKworCWlmIChmdW5jKSB7CisJCWludCBy
-ZXQgPSBmdW5jKGFyZ2MgLSAxLCBhcmd2ICsgMSk7CisJCXJldHVybiByZXQgPCAwOworCX0gZWxz
-ZSB7CisJCXByaW50ZigibW1jOiBzdWJjb21tYW5kIFwiJXNcIiBub3QgZm91bmRcbiIsIGFyZ3Zb
-MV0pOworCQlyZXR1cm4gMTsKKwl9Cit9CisKK0JBUkVCT1hfQ01EX1NUQVJUKG1tYykKKwkuY21k
-ID0gZG9fbW1jLAorCUJBUkVCT1hfQ01EX09QVFMoImVuaF9hcmVhIHNldG1heCA8LXl8LW58LWM+
-IC9kZXYvbW1jWCIpCitCQVJFQk9YX0NNRF9FTkQKZGlmZiAtLWdpdCBhL2luY2x1ZGUvbWNpLmgg
-Yi9pbmNsdWRlL21jaS5oCmluZGV4IDgyN2VlY2QzOWY4ZC4uNzc5ZGE5YzE1NmRiIDEwMDY0NAot
-LS0gYS9pbmNsdWRlL21jaS5oCisrKyBiL2luY2x1ZGUvbWNpLmgKQEAgLTMwNCw2ICszMDQsMTMg
-QEAKICNkZWZpbmUgRVhUX0NTRF9DQVJEX1RZUEVfU0RSXzFfMlYJKDE8PDUpCS8qIENhcmQgY2Fu
-IHJ1biBhdCAyMDBNSHogKi8KIAkJCQkJCS8qIFNEUiBtb2RlIEAxLjJWIEkvTyAqLwogCisvKiBy
-ZWdpc3RlciBQQVJUSVRJT05TX0FUVFJJQlVURSBbMTU2XSAqLworI2RlZmluZSBFWFRfQ1NEX0VO
-SF9VU1JfTUFTSwkJKDEgPDwgMCkKKworLyogcmVnaXN0ZXIgUEFSVElUSU9OSU5HX1NVUFBPUlQg
-WzE2MF0gKi8KKyNkZWZpbmUgRVhUX0NTRF9FTkhfQVRUUklCVVRFX0VOX01BU0sJKDEgPDwgMCkK
-KworLyogcmVnaXN0ZXIgQlVTX1dJRFRIIFsxODNdLCBmaWVsZCBCdXMgTW9kZSBTZWxlY3Rpb24g
-WzQ6MF0gKi8KICNkZWZpbmUgRVhUX0NTRF9CVVNfV0lEVEhfMQkwCS8qIENhcmQgaXMgaW4gMSBi
-aXQgbW9kZSAqLwogI2RlZmluZSBFWFRfQ1NEX0JVU19XSURUSF80CTEJLyogQ2FyZCBpcyBpbiA0
-IGJpdCBtb2RlICovCiAjZGVmaW5lIEVYVF9DU0RfQlVTX1dJRFRIXzgJMgkvKiBDYXJkIGlzIGlu
-IDggYml0IG1vZGUgKi8KLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
-cmVib3gK
+On Fri, Jan 19, 2018 at 02:28:25PM +0100, Uwe Kleine-K=F6nig wrote:
+> The command structure allows adding more subcommands and is designed to
+> match the Linux program mmc from the mmc-utils. So later more commands
+> can easily be added if need be.
+> =
+
+> Compared to mmc-utils'
+> =
+
+> 	mmc enh_area set <-y|-n|-c> <start KiB> <length KiB> <device>
+> =
+
+> the command that is implemented here (
+> =
+
+> 	mmc enh_area setmax <-y|-n|-c> <device>
+> =
+
+> ) is easier to use (because you don't have to check the maximal allowed
+> size by reading some registers and calculate the available size from
+> them (which then must be calculated back to register values by the mmc
+> command)) but less flexible as it doesn't allow all the crazy
+> possibilities specified in the eMMC standard but just creates an
+> enhanced area with maximal size.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  commands/Kconfig  |   5 ++
+>  commands/Makefile |   1 +
+>  commands/mmc.c    | 171 ++++++++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  include/mci.h     |   7 +++
+>  4 files changed, 184 insertions(+)
+>  create mode 100644 commands/mmc.c
+> =
+
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index ae2dc4b0947b..1b29365a06f2 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -238,6 +238,11 @@ config CMD_VERSION
+>  =
+
+>  	  barebox 2014.05.0-00142-gb289373 #177 Mon May 12 20:35:55 CEST 2014
+>  =
+
+> +config CMD_MMC
+> +	tristate
+> +	prompt "mmc command allowing to set enhanced area"
+> +	depends on MCI
+
+Could you mention that this command is designed to control eMMC cards
+like the mmc_extcsd command, but on a higher abstraction level, similar
+to the userspace mmc utility. Just something like that, to give the user
+a hint what the difference between both commands is?
+
+> +
+>  config CMD_MMC_EXTCSD
+>  	tristate
+>  	prompt "read/write eMMC ext. CSD register"
+> diff --git a/commands/Makefile b/commands/Makefile
+> index 37486dceb181..bcd0665cfe88 100644
+> --- a/commands/Makefile
+> +++ b/commands/Makefile
+> @@ -120,6 +120,7 @@ obj-$(CONFIG_CMD_DHCP)		+=3D dhcp.o
+>  obj-$(CONFIG_CMD_BOOTCHOOSER)	+=3D bootchooser.o
+>  obj-$(CONFIG_CMD_DHRYSTONE)	+=3D dhrystone.o
+>  obj-$(CONFIG_CMD_SPD_DECODE)	+=3D spd_decode.o
+> +obj-$(CONFIG_CMD_MMC)		+=3D mmc.o
+>  obj-$(CONFIG_CMD_MMC_EXTCSD)	+=3D mmc_extcsd.o
+>  obj-$(CONFIG_CMD_NAND_BITFLIP)	+=3D nand-bitflip.o
+>  obj-$(CONFIG_CMD_SEED)		+=3D seed.o
+> diff --git a/commands/mmc.c b/commands/mmc.c
+
+Experience shows that we want to use such code independent of commands
+some day. Could you put the flesh of the subcommands somewhere else, maybe
+to drivers/mci/?
+
+> new file mode 100644
+> index 000000000000..2f5c7ad69a37
+> --- /dev/null
+> +++ b/commands/mmc.c
+> @@ -0,0 +1,171 @@
+> +#include <command.h>
+> +#include <mci.h>
+> +#include <stdio.h>
+> +#include <string.h>
+> +
+> +/* enh_area setmax <-y|-n|-c> /dev/mmcX */
+> +static int do_mmc_enh_area(int argc, char *argv[])
+> +{
+> +	char *devname;
+> +	struct mci *mci;
+> +	u8 *ext_csd;
+> +	int set_completed =3D 0;
+> +	int ret;
+> +
+> +	if (argc !=3D 4 || strcmp(argv[1], "setmax") ||
+> +	    argv[2][0] !=3D '-' ||
+> +	    (argv[2][1] !=3D 'y' && argv[2][1] !=3D 'n' && argv[2][1] !=3D 'c')=
+) {
+> +		printf("Usage: mmc enh_area setmax <-y|-n|-c> /dev/mmcX\n");
+> +		return 1;
+> +	}
+
+I assume 'y' means 'yes', 'n' means 'no', but what does 'c' mean? It
+doesn't seem to be implemented and none of these options is documented.
+
+> +
+> +	if (argv[2][1] =3D=3D 'y')
+> +		set_completed =3D 1;
+> +
+> +	devname =3D argv[3];
+> +	if (!strncmp(devname, "/dev/", 5))
+> +		devname +=3D 5;
+> +
+> +	mci =3D mci_get_device_by_name(devname);
+> +	if (!mci) {
+> +		printf("Failure to open %s as mci device\n", devname);
+> +		return -ENOENT;
+> +	}
+
+This part is probably needed by all other future subcommands aswell.
+Should it be an extra function?
+
+> +	/* get extcsd */
+> +	ext_csd =3D xmalloc(512);
+> +
+> +	ret =3D mci_send_ext_csd(mci, ext_csd);
+> +	if (ret) {
+> +		printf("Failure to read EXT_CSD register\n");
+> +		goto error;
+> +	}
+
+Also for reusability for other subcommands at would be good to allocate and=
+ fill
+in ext_csd somewhere else.
+
+> +
+> +	if (!(ext_csd[EXT_CSD_PARTITIONING_SUPPORT] & EXT_CSD_ENH_ATTRIBUTE_EN_=
+MASK)) {
+> +		printf("Device doesn't support enhanced area\n");
+> +		ret =3D -EIO;
+> +		goto error;
+> +	}
+> +
+> +	if (ext_csd[EXT_CSD_PARTITION_SETTING_COMPLETED]) {
+> +		printf("Partitioning already finalized\n");
+> +		ret =3D -EIO;
+> +		goto error;
+> +	}
+> +
+> +	ret =3D mci_switch(mci, EXT_CSD_ERASE_GROUP_DEF, 1);
+> +	if (ret) {
+> +		printf("Failure to write to EXT_CSD_ERASE_GROUP_DEF\n");
+> +		goto error;
+
+This command is *very* verbose in the error path. Would it be enough to
+just write the register number of the failed access instead of the name?
+
+> +	}
+> +
+> +	ret =3D mci_switch(mci, EXT_CSD_ENH_START_ADDR, 0);
+> +	if (ret) {
+> +		printf("Failure to write to EXT_CSD_ENH_START_ADDR[0]\n");
+> +		goto error;
+> +	}
+> +
+> +	ret =3D mci_switch(mci, EXT_CSD_ENH_START_ADDR + 1, 0);
+> +	if (ret) {
+> +		printf("Failure to write to EXT_CSD_ENH_START_ADDR[1]\n");
+> +		goto error;
+> +	}
+> +
+> +	ret =3D mci_switch(mci, EXT_CSD_ENH_START_ADDR + 2, 0);
+> +	if (ret) {
+> +		printf("Failure to write to EXT_CSD_ENH_START_ADDR[2]\n");
+> +		goto error;
+> +	}
+> +
+> +	ret =3D mci_switch(mci, EXT_CSD_ENH_START_ADDR + 3, 0);
+> +	if (ret) {
+> +		printf("Failure to write to EXT_CSD_ENH_START_ADDR[3]\n");
+> +		goto error;
+> +	}
+> +
+> +	ret =3D mci_switch(mci, EXT_CSD_ENH_SIZE_MULT, ext_csd[EXT_CSD_MAX_ENH_=
+SIZE_MULT]);
+> +	if (ret) {
+> +		printf("Failure to write to EXT_CSD_ENH_SIZE_MULT[0]\n");
+> +		goto error;
+> +	}
+> +
+> +	ret =3D mci_switch(mci, EXT_CSD_ENH_SIZE_MULT + 1, ext_csd[EXT_CSD_MAX_=
+ENH_SIZE_MULT + 1]);
+> +	if (ret) {
+> +		printf("Failure to write to EXT_CSD_ENH_SIZE_MULT[1]\n");
+> +		goto error;
+> +	}
+> +
+> +	ret =3D mci_switch(mci, EXT_CSD_ENH_SIZE_MULT + 2, ext_csd[EXT_CSD_MAX_=
+ENH_SIZE_MULT + 2]);
+> +	if (ret) {
+> +		printf("Failure to write to EXT_CSD_ENH_SIZE_MULT[2]\n");
+> +		goto error;
+> +	}
+> +
+> +	ret =3D mci_switch(mci, EXT_CSD_PARTITIONS_ATTRIBUTE, ext_csd[EXT_CSD_P=
+ARTITIONS_ATTRIBUTE] | EXT_CSD_ENH_USR_MASK);
+> +	if (ret) {
+> +		printf("Failure to write to EXT_CSD_PARTITIONS_ATTRIBUTE\n");
+> +		goto error;
+> +	}
+> +
+> +	if (set_completed) {
+> +		ret =3D mci_switch(mci, EXT_CSD_PARTITION_SETTING_COMPLETED, 1);
+> +		if (ret) {
+> +			printf("Failure to write to EXT_CSD_PARTITION_SETTING_COMPLETED\n");
+> +error:
+> +			free(ext_csd);
+> +		} else {
+> +			printf("Now power cycle the device to let it reconfigure itself.\n");
+> +		}
+> +	}
+
+You lose memory when the 'y' option is not given.
+
+> +
+> +	return ret;
+> +}
+> +
+> +static struct {
+> +	const char *cmd;
+> +	int (*func)(int argc, char *argv[]);
+> +} mmc_subcmds[] =3D {
+> +	{
+> +		.cmd =3D "enh_area",
+> +		.func =3D do_mmc_enh_area,
+> +	}
+> +};
+> +
+> +static int do_mmc(int argc, char *argv[])
+> +{
+> +	size_t i, subcmdlen;
+> +	int (*func)(int argc, char *argv[]) =3D NULL;
+> +
+> +	if (argc < 2) {
+> +		printf("mmc: required subcommand missing\n");
+> +		return 1;
+> +	}
+> +
+> +	subcmdlen =3D strlen(argv[1]);
+> +	for (i =3D 0; i < ARRAY_SIZE(mmc_subcmds); ++i) {
+> +		if (strncmp(mmc_subcmds[i].cmd, argv[1], subcmdlen) =3D=3D 0) {
+> +			if (subcmdlen =3D=3D strlen(mmc_subcmds[i].cmd)) {
+> +				/* exact match */
+> +				func =3D mmc_subcmds[i].func;
+> +				break;
+> +			} else if (func) {
+> +				printf("mmc: ambiguously abbreviated subcommand");
+> +				return 1;
+> +			} else {
+> +				func =3D mmc_subcmds[i].func;
+> +			}
+> +		}
+> +	}
+
+Do we really need abbreviated subcommands here? abbreviated command
+shouldn't be used in script and I hope this command does not become a
+command that people use that frequently that they miss abbreviated
+command support. I would just drop it.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
