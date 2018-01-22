@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ef47c-00038J-Ih
- for barebox@lists.infradead.org; Fri, 26 Jan 2018 13:32:52 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
- helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1ef47M-0005M4-JH
- for barebox@lists.infradead.org; Fri, 26 Jan 2018 14:32:32 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 26 Jan 2018 14:32:32 +0100
-Message-Id: <20180126133232.4992-5-l.stach@pengutronix.de>
-In-Reply-To: <20180126133232.4992-1-l.stach@pengutronix.de>
-References: <20180126133232.4992-1-l.stach@pengutronix.de>
+ id 1edYt7-0001v9-1b
+ for barebox@lists.infradead.org; Mon, 22 Jan 2018 09:59:38 +0000
+Received: by mail-lf0-x241.google.com with SMTP id f3so9833194lfe.4
+ for <barebox@lists.infradead.org>; Mon, 22 Jan 2018 01:59:25 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon, 22 Jan 2018 12:59:15 +0300
+Message-Id: <20180122095918.11721-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,88 +21,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 5/5] net/e1000: don't register EERPOM device if the content
- is invalid
+Subject: [PATCH v3 0/3] sandbox: add gpio support with libftdi1
 To: barebox@lists.infradead.org
 
-If the EEPROM content isn't valid, there is no point in registering the
-EEPROM device, as it will reject any read attempt anyway.
+This patch series makes it possible to use FT2232H ACBUS[7:0]
+pins as gpio pins from sandbox barebox.
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- drivers/net/e1000/eeprom.c | 41 ++++++++++++++++++++++++-----------------
- 1 file changed, 24 insertions(+), 17 deletions(-)
+There are ready-to-use FT2232H-based boards:
 
-diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-index b0408107bbdd..319910103eee 100644
---- a/drivers/net/e1000/eeprom.c
-+++ b/drivers/net/e1000/eeprom.c
-@@ -1556,15 +1556,6 @@ int e1000_register_eeprom(struct e1000_hw *hw)
- 
- 	eecd = e1000_read_reg(hw, E1000_EECD);
- 
--	hw->eepromcdev.dev = hw->dev;
--	hw->eepromcdev.ops = &e1000_eeprom_ops;
--	hw->eepromcdev.name = xasprintf("e1000-eeprom%d", hw->dev->id);
--	hw->eepromcdev.size = 0x1000;
--
--	ret = devfs_create(&hw->eepromcdev);
--	if (ret < 0)
--		return ret;
--
- 	if (eecd & E1000_EECD_AUTO_RD) {
- 		if (eecd & E1000_EECD_EE_PRES) {
- 			if (eecd & E1000_EECD_FLASH_IN_USE) {
-@@ -1587,6 +1578,18 @@ int e1000_register_eeprom(struct e1000_hw *hw)
- 		dev_err(hw->dev, "Flash Auto-Read not done\n");
- 	}
- 
-+	if (e1000_eeprom_valid(hw)) {
-+		hw->eepromcdev.dev = hw->dev;
-+		hw->eepromcdev.ops = &e1000_eeprom_ops;
-+		hw->eepromcdev.name = xasprintf("e1000-eeprom%d",
-+						hw->dev->id);
-+		hw->eepromcdev.size = 0x1000;
-+
-+		ret = devfs_create(&hw->eepromcdev);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
- 	if (eecd & E1000_EECD_I210_FLASH_DETECTED) {
- 		hw->mtd.parent = hw->dev;
- 		hw->mtd.read = e1000_mtd_read;
-@@ -1609,18 +1612,22 @@ int e1000_register_eeprom(struct e1000_hw *hw)
- 
- 		ret = add_mtd_device(&hw->mtd, "e1000-nor",
- 				     DEVICE_ID_DYNAMIC);
--		if (ret) {
--			devfs_remove(&hw->eepromcdev);
--			return ret;
--		}
-+		if (ret)
-+			goto out_eeprom;
- 	}
- 
- 	ret = e1000_register_invm(hw);
--	if (ret < 0) {
--		if (eecd & E1000_EECD_I210_FLASH_DETECTED)
--			del_mtd_device(&hw->mtd);
-+	if (ret < 0)
-+		goto out_mtd;
-+
-+	return E1000_SUCCESS;
-+
-+out_mtd:
-+	if (eecd & E1000_EECD_I210_FLASH_DETECTED)
-+		del_mtd_device(&hw->mtd);
-+out_eeprom:
-+	if (e1000_eeprom_valid(hw))
- 		devfs_remove(&hw->eepromcdev);
--	}
- 
- 	return ret;
- }
+  * FT2232H-56Q Mini-Module (http://www.ftdichip.com/Products/Modules/DevelopmentModules.htm#FT2232H-56_Mini)
+  * FT2232 breakout board (http://dangerousprototypes.com/docs/FT2232_breakout_board)
+
+The main goal of adding gpio functionality to sandbox barebox
+is using it for connecting real i2c and spi devices to sandbox barebox.
+
+Sample dts-file for at24 i2c eeprom and at25 spi flash is included.
+
+Changes since v2 patch series (http://lists.infradead.org/pipermail/barebox/2018-January/031887.html):
+
+  * ftdi USB IDs are moved to dts, parseopt_* functions are unused;
+  * dts stuff moved to sandbox-libftdi-example.dtsi;
+  * led example is added.
+
+Changes since v1 patch series (http://lists.infradead.org/pipermail/barebox/2017-October/031306.html):
+
+  * rebase on top barebox v2017.12.0;
+  * ds1307 i2c rtc driver works fine (i2c-gpio,scl-output-only is used);
+  * parseopt_* functions are used for cmdline parsing.
+
+Changes since RFC v1 patch series (http://lists.infradead.org/pipermail/barebox/2017-February/029106.html):
+
+  * rebase on top barebox v2017.10.0;
+  * libftdi cmdline options are added;
+  * device tree support is added.
+
+Antony Pavlov (3):
+  sandbox: avoid symbol conflict for {open,read,close}dir
+  sandbox: add gpio support with libftdi1
+  sandbox: add i2c and spi libftdi1 bit-bang example
+
+ arch/sandbox/Kconfig                           |   1 +
+ arch/sandbox/Makefile                          |  10 +-
+ arch/sandbox/configs/sandbox_defconfig         |  21 +++-
+ arch/sandbox/dts/sandbox-libftdi-example.dtsi  |  80 +++++++++++++
+ arch/sandbox/mach-sandbox/include/mach/linux.h |  12 ++
+ arch/sandbox/os/Makefile                       |   3 +
+ arch/sandbox/os/ftdi.c                         | 154 +++++++++++++++++++++++++
+ drivers/gpio/Kconfig                           |   4 +
+ drivers/gpio/Makefile                          |   1 +
+ drivers/gpio/gpio-libftdi1.c                   | 137 ++++++++++++++++++++++
+ 10 files changed, 420 insertions(+), 3 deletions(-)
+ create mode 100644 arch/sandbox/dts/sandbox-libftdi-example.dtsi
+ create mode 100644 arch/sandbox/os/ftdi.c
+ create mode 100644 drivers/gpio/gpio-libftdi1.c
+
 -- 
 2.15.1
 
