@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eebiM-0002K1-9D
- for barebox@lists.infradead.org; Thu, 25 Jan 2018 07:12:52 +0000
-Date: Thu, 25 Jan 2018 08:12:36 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180125071236.q7ce2jwqnhrngmm6@pengutronix.de>
-References: <20180122095918.11721-1-antonynpavlov@gmail.com>
- <20180122095918.11721-4-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180122095918.11721-4-antonynpavlov@gmail.com>
+ id 1edYvE-0004Ru-1U
+ for barebox@lists.infradead.org; Mon, 22 Jan 2018 10:01:53 +0000
+Received: by mail-lf0-x243.google.com with SMTP id w23so9828170lfd.11
+ for <barebox@lists.infradead.org>; Mon, 22 Jan 2018 02:01:37 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon, 22 Jan 2018 13:01:31 +0300
+Message-Id: <20180122100131.11820-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,86 +16,108 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 3/3] sandbox: add i2c and spi libftdi1 bit-bang example
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] sandbox: use 'poweroff' command for exit
+To: barebox@lists.infradead.org
 
-On Mon, Jan 22, 2018 at 12:59:18PM +0300, Antony Pavlov wrote:
-> Make necessary changes in sandbox_defconfig:
-> enable gpio, spi, i2c and led stuff.
-> 
-> Usage:
-> 
->   barebox$ make sandbox_defconfig
->   barebox$ sed -i "s/# CONFIG_GPIO_LIBFTDI1.*$/CONFIG_GPIO_LIBFTDI1=y/" .config
-> 
->   # edit arch/sandbox/dts/sandbox-libftdi-example.dtsi
-> 
->   barebox$ echo '#include "sandbox-libftdi-example.dtsi"' >> arch/sandbox/dts/sandbox.dts
->   barebox$ make
->   barebox$ sudo ./barebox -d arch/sandbox/dts/sandbox.dtb
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  arch/sandbox/configs/sandbox_defconfig        | 21 ++++++-
->  arch/sandbox/dts/sandbox-libftdi-example.dtsi | 80 +++++++++++++++++++++++++++
->  2 files changed, 100 insertions(+), 1 deletion(-)
-> 
-> +++ b/arch/sandbox/dts/sandbox-libftdi-example.dtsi
-> @@ -0,0 +1,80 @@
-> +#include <dt-bindings/gpio/gpio.h>
-> +
-> +/ {
-> +	gpio0: gpio@0 {
-> +		compatible = "barebox,libftdi1-gpio";
-> +		usb,id_vendor = <0x0403>;
-> +		usb,id_product = <0x6010>;
-> +
-> +		/*
-> +		 * The serial number can be used to select
-> +		 * a specific device in case more than
-> +		 * one is connected to the host.
-> +		 */
-> +		/* usb,i_serial_number = "20180120"; */
-> +
-> +		/* use ACBUS[7:0] */
-> +		gpio-controller;
-> +		#gpio-cells = <2>;
-> +
-> +		status = "okay";
-> +	};
-> +
-> +	spi0: spi0 {
-> +		compatible = "spi-gpio";
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		gpio-sck  = <&gpio0 0 GPIO_ACTIVE_HIGH>;
-> +		gpio-mosi = <&gpio0 1 GPIO_ACTIVE_HIGH>;
-> +		gpio-miso = <&gpio0 2 GPIO_ACTIVE_HIGH>;
-> +		cs-gpios  = <&gpio0 3 GPIO_ACTIVE_HIGH>;
-> +
-> +		num-chipselects = <1>;
-> +
-> +		status = "disabled";
+The 'poweroff' command is more appropriate for exit
+barebox than 'reset'.
 
-Given that this is an example which is not used unless you include it
-manually I think you can remove the status properties.
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/sandbox/board/Makefile            |  2 +-
+ arch/sandbox/board/poweroff.c          | 17 +++++++++++++++++
+ arch/sandbox/board/restart.c           | 17 -----------------
+ arch/sandbox/configs/sandbox_defconfig |  2 +-
+ 4 files changed, 19 insertions(+), 19 deletions(-)
+ create mode 100644 arch/sandbox/board/poweroff.c
+ delete mode 100644 arch/sandbox/board/restart.c
 
-Otherwise this series looks fine to me. I can remove the properties
-while applying if you like.
-
-Sascha
-
+diff --git a/arch/sandbox/board/Makefile b/arch/sandbox/board/Makefile
+index 333638ced6..b6c271c858 100644
+--- a/arch/sandbox/board/Makefile
++++ b/arch/sandbox/board/Makefile
+@@ -4,6 +4,6 @@ obj-y += hostfile.o
+ obj-y += console.o
+ obj-y += devices.o
+ obj-y += dtb.o
+-obj-y += restart.o
++obj-y += poweroff.o
+ 
+ extra-y += barebox.lds
+diff --git a/arch/sandbox/board/poweroff.c b/arch/sandbox/board/poweroff.c
+new file mode 100644
+index 0000000000..6b5a6dff15
+--- /dev/null
++++ b/arch/sandbox/board/poweroff.c
+@@ -0,0 +1,17 @@
++#include <common.h>
++#include <init.h>
++#include <poweroff.h>
++#include <mach/linux.h>
++
++static void sandbox_poweroff(struct poweroff_handler *poweroff)
++{
++	linux_exit();
++}
++
++static int poweroff_register_feature(void)
++{
++	poweroff_handler_register_fn(sandbox_poweroff);
++
++	return 0;
++}
++coredevice_initcall(poweroff_register_feature);
+diff --git a/arch/sandbox/board/restart.c b/arch/sandbox/board/restart.c
+deleted file mode 100644
+index 79bf79a556..0000000000
+--- a/arch/sandbox/board/restart.c
++++ /dev/null
+@@ -1,17 +0,0 @@
+-#include <common.h>
+-#include <init.h>
+-#include <restart.h>
+-#include <mach/linux.h>
+-
+-static void sandbox_restart_cpu(struct restart_handler *restart)
+-{
+-	linux_exit();
+-}
+-
+-static int restart_register_feature(void)
+-{
+-	restart_handler_register_fn(sandbox_restart_cpu);
+-
+-	return 0;
+-}
+-coredevice_initcall(restart_register_feature);
+diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
+index dbaff12bfb..12b2479435 100644
+--- a/arch/sandbox/configs/sandbox_defconfig
++++ b/arch/sandbox/configs/sandbox_defconfig
+@@ -13,7 +13,6 @@ CONFIG_CMD_IMD=y
+ CONFIG_CMD_MEMINFO=y
+ # CONFIG_CMD_BOOTM is not set
+ CONFIG_CMD_GO=y
+-CONFIG_CMD_RESET=y
+ CONFIG_CMD_UIMAGE=y
+ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_EXPORT=y
+@@ -53,6 +52,7 @@ CONFIG_CMD_CRC_CMP=y
+ CONFIG_CMD_MM=y
+ CONFIG_CMD_DETECT=y
+ CONFIG_CMD_FLASH=y
++CONFIG_CMD_POWEROFF=y
+ CONFIG_CMD_2048=y
+ CONFIG_CMD_OF_NODE=y
+ CONFIG_CMD_OF_PROPERTY=y
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.15.1
+
 
 _______________________________________________
 barebox mailing list
