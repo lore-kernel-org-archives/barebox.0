@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1edWg3-0002kv-RH
- for barebox@lists.infradead.org; Mon, 22 Jan 2018 07:38:01 +0000
-From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
-Date: Mon, 22 Jan 2018 08:37:48 +0100
-Message-Id: <20180122073748.8696-1-u.oelmann@pengutronix.de>
+ id 1edWZ1-0008AL-8g
+ for barebox@lists.infradead.org; Mon, 22 Jan 2018 07:30:45 +0000
+Date: Mon, 22 Jan 2018 08:30:31 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180122073031.nz2cp3ykedyx5xdy@pengutronix.de>
+References: <20180119102026.7456-1-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180119102026.7456-1-u.oelmann@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,33 +18,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] state: Documentation: fix typo
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] state: Documentation: fix typo
+To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-U2lnbmVkLW9mZi1ieTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4K
-LS0tCiBEb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvYmFyZWJveC9iYXJlYm94LHN0
-YXRlLnJzdCB8IDQgKystLQogMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxl
-dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3Mv
-YmFyZWJveC9iYXJlYm94LHN0YXRlLnJzdCBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5k
-aW5ncy9iYXJlYm94L2JhcmVib3gsc3RhdGUucnN0CmluZGV4IGNlYmI1ZjgyODc5YS4uODcyYmFj
-MDYxYjQ0IDEwMDY0NAotLS0gYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvYmFy
-ZWJveC9iYXJlYm94LHN0YXRlLnJzdAorKysgYi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmlu
-ZGluZ3MvYmFyZWJveC9iYXJlYm94LHN0YXRlLnJzdApAQCAtNjMsOCArNjMsOCBAQCBPcHRpb25h
-bCBQcm9wZXJ0aWVzCiAuLiBfYmFyZWJveCxzdGF0ZV9iYWNrZW5kX3N0cmlkZXNpemU6CiAKIFRo
-ZSBgYGJhY2tlbmQtc3RyaWRlc2l6ZWBgIGlzIHN0aWxsIG9wdGlvbmFsIGJ1dCByZXF1aXJlZCB3
-aGVuZXZlciB0aGUKLXVuZGVybGF5aW5nIGJhY2tlbmQgZG9lc24ndCBwcm92aWRlIGFuIGluZm9y
-bWF0aW9uIGhvdyB0byBwYWQgYW4gaW5zdGFuY2Ugb2YgYQotKnN0YXRlKiB2YXJpYWJsZSBzZXQu
-IFRoaXMgaXMgdmFsaWQgZm9yIGFsbCB1bmRlcmxheWluZyBiYWNrZW5kcyB3aGljaCBzdXBwb3J0
-cwordW5kZXJseWluZyBiYWNrZW5kIGRvZXNuJ3QgcHJvdmlkZSBhbiBpbmZvcm1hdGlvbiBob3cg
-dG8gcGFkIGFuIGluc3RhbmNlIG9mIGEKKypzdGF0ZSogdmFyaWFibGUgc2V0LiBUaGlzIGlzIHZh
-bGlkIGZvciBhbGwgdW5kZXJseWluZyBiYWNrZW5kcyB3aGljaCBzdXBwb3J0CiB3cml0ZXMgb24g
-YSBieXRlLWJ5LWJ5dGUgbWFubmVyIG9yIGRvbid0IGhhdmUgZXJhc2VibG9ja3MgKEVFUFJPTSwg
-U1JBTSBhbmQgTk9SCiB0eXBlIGZsYXNoIGJhY2tlbmRzKS4KIFRoZSBgYGJhY2tlbmQtc3RyaWRl
-c2l6ZWBgIHZhbHVlIGlzIHVzZWQgYnkgdGhlIGBgZGlyZWN0YGAgYmFja2VuZCBzdG9yYWdlIHR5
-cGUKLS0gCjIuMTEuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Fri, Jan 19, 2018 at 11:20:26AM +0100, Ulrich =D6lmann wrote:
+> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
+> ---
+>  Documentation/devicetree/bindings/barebox/barebox,state.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> =
+
+> diff --git a/Documentation/devicetree/bindings/barebox/barebox,state.rst =
+b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+> index cebb5f82879a..4be5f2f6bd7e 100644
+> --- a/Documentation/devicetree/bindings/barebox/barebox,state.rst
+> +++ b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+> @@ -64,7 +64,7 @@ Optional Properties
+>  =
+
+>  The ``backend-stridesize`` is still optional but required whenever the
+>  underlaying backend doesn't provide an information how to pad an instanc=
+e of a
+> -*state* variable set. This is valid for all underlaying backends which s=
+upports
+> +*state* variable set. This is valid for all underlaying backends which s=
+upport
+
+Applied, thanks
+
+Fixed underlaying -> underlying in another patch.
+
+Sascha
+
+>  writes on a byte-by-byte manner or don't have eraseblocks (EEPROM, SRAM =
+and NOR
+>  type flash backends).
+>  The ``backend-stridesize`` value is used by the ``direct`` backend stora=
+ge type
+> -- =
+
+> 2.11.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
