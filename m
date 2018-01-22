@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1edWUl-0005Ba-4p
- for barebox@lists.infradead.org; Mon, 22 Jan 2018 07:26:21 +0000
-Date: Mon, 22 Jan 2018 08:26:01 +0100
+ id 1edWVm-0005au-K0
+ for barebox@lists.infradead.org; Mon, 22 Jan 2018 07:27:24 +0000
+Date: Mon, 22 Jan 2018 08:27:10 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180122072601.jpgwryttdmqbcavd@pengutronix.de>
-References: <20180117154941.32175-1-andrew.smirnov@gmail.com>
+Message-ID: <20180122072710.xufy2nfdsyxhbeps@pengutronix.de>
+References: <20180118141930.28780-1-p.zabel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180117154941.32175-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20180118141930.28780-1-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,82 +22,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] partitions: dos: Treat all extended partition types
- equally
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH] blspec: fix crash when trying to boot from loop mounts
+To: Philipp Zabel <p.zabel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jan 17, 2018 at 07:49:41AM -0800, Andrey Smirnov wrote:
-> Creating logical DOS partitions with fdisk (Fedora 27, fdisk from
-> util-linux 2.30.2) results in extended partition of type 0x05 being
-> created on the device. Partitioned like this, device is succesfully
-> recognized by Linux, but, due to algorithm in dos_partition(), not
-> Barebox.
+On Thu, Jan 18, 2018 at 03:19:30PM +0100, Philipp Zabel wrote:
+> When trying to boot from a loop mount path, the blspec code passes a
+> NULL pointer to dev_name, because cdev->dev is not set for loop mounts:
 > 
-> Looking closer at the actual contents of MBR shows that while marked
-> as "Extended partition with CHS addressing" that partition still have
-> all of the LBA adressed fields filled correctly.
+>   unable to handle NULL pointer dereference at address 0x00000020
+>   pc : [<4fe09e28>]    lr : [<4fe02305>]
+>   sp : 4ffef7c0  ip : 31b75c78  fp : 31b6a388
+>   r10: 31b6a368  r9 : 315a4cac  r8 : 00000001
+>   r7 : 00000001  r6 : 311b8540  r5 : ffffffea  r4 : 31b6a3f8
+>   r3 : 00000000  r2 : 10000000  r1 : 00000001  r0 : 00000000
+>   Flags: nzcv  IRQs off  FIQs off  Mode SVC_32
+>   [<4fe09e28>] (dev_id+0xc/0x38) from [<4fe02305>] (blspec_scan_directory+0x3e1/0x484)
+>   [<4fe02305>] (blspec_scan_directory+0x3e1/0x484) from [<4fe02551>] (blspec_bootentry_provider+0x1d/0x3c)
+>   [<4fe02551>] (blspec_bootentry_provider+0x1d/0x3c) from [<4fe0984b>] (bootentry_create_from_name+0x23/0xdc)
+>   [<4fe0984b>] (bootentry_create_from_name+0x23/0xdc) from [<4fe246f9>] (do_boot+0x95/0x160)
+>   [<4fe246f9>] (do_boot+0x95/0x160) from [<4fe032e9>] (execute_command+0x21/0x48)
+>   [<4fe032e9>] (execute_command+0x21/0x48) from [<4fe088e3>] (run_list_real+0x56b/0x634)
+>   [<4fe088e3>] (run_list_real+0x56b/0x634) from [<4fe08249>] (parse_stream_outer+0xd9/0x164)
+>   [<4fe08249>] (parse_stream_outer+0xd9/0x164) from [<4fe08b6d>] (run_shell+0x31/0x60)
+>   [<4fe08b6d>] (run_shell+0x31/0x60) from [<4fe032e9>] (execute_command+0x21/0x48)
+>   [<4fe032e9>] (execute_command+0x21/0x48) from [<4fe088e3>] (run_list_real+0x56b/0x634)
+>   [<4fe088e3>] (run_list_real+0x56b/0x634) from [<4fe085fd>] (run_list_real+0x285/0x634)
+>   [<4fe444b9>] (unwind_backtrace+0x1/0x58) from [<4fe00b7d>] (panic+0x1d/0x34)
+>   [<4fe00b7d>] (panic+0x1d/0x34) from [<4fe42a75>] (do_exception+0xd/0x10)
+>   [<4fe42a75>] (do_exception+0xd/0x10) from [<4fe42ad5>] (do_data_abort+0x21/0x2c)
+>   [<4fe42ad5>] (do_data_abort+0x21/0x2c) from [<4fe42394>] (do_abort_6+0x48/0x54)
 > 
-> Given the above and the fact that similar code in Linux
-> kernel (block/partitions/msdos.c) does not make a distinction between
-> types 0x0f and 0x05, port Linux's is_extended_partition() and convert
-> the code to treat types 0x05, 0x0f and 0x85 the same way.
+> Fix this by checking cdev->dev as well as cdev before calling dev_name.
 > 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 > ---
->  common/partitions/dos.c | 25 ++++++++++++++++++-------
->  1 file changed, 18 insertions(+), 7 deletions(-)
+>  common/blspec.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/common/partitions/dos.c b/common/partitions/dos.c
-> index 91b539907..488c2936f 100644
-> --- a/common/partitions/dos.c
-> +++ b/common/partitions/dos.c
-> @@ -21,6 +21,22 @@
+> diff --git a/common/blspec.c b/common/blspec.c
+> index b258e6600b..6171461a72 100644
+> --- a/common/blspec.c
+> +++ b/common/blspec.c
+> @@ -107,7 +107,8 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
+>  	}
 >  
->  #include "parser.h"
+>  	pr_info("booting %s from %s\n", blspec_entry_var_get(entry, "title"),
+> -			entry->cdev ? dev_name(entry->cdev->dev) : "none");
+> +			(entry->cdev && entry->cdev->dev) ?
+> +			dev_name(entry->cdev->dev) : "none");
 >  
-> +
-> +enum {
-> +/* These three have identical behaviour; use the second one if DOS FDISK gets
-> +   confused about extended/logical partitions starting past cylinder 1023. */
-> +	DOS_EXTENDED_PARTITION = 5,
-> +	LINUX_EXTENDED_PARTITION = 0x85,
-> +	WIN98_EXTENDED_PARTITION = 0x0f,
-> +};
-> +
-> +static inline int is_extended_partition(struct partition *p)
-> +{
-> +	return (p->dos_partition_type == DOS_EXTENDED_PARTITION ||
-> +	        p->dos_partition_type == WIN98_EXTENDED_PARTITION ||
-> +		p->dos_partition_type == LINUX_EXTENDED_PARTITION);
-> +}
-> +
->  /**
->   * Guess the size of the disk, based on the partition table entries
->   * @param dev device to create partitions for
-> @@ -212,13 +228,8 @@ static void dos_partition(void *buf, struct block_device *blk,
->  				sprintf(pd->parts[n].partuuid, "%08x-%02d",
->  						signature, i + 1);
->  			pd->used_entries++;
-> -			/*
-> -			 * Partitions of type 0x05 and 0x0f (and some more)
-> -			 * contain extended partitions. Only check for type 0x0f
-> -			 * here as this is the easiest to parse and common
-> -			 * enough.
-> -			 */
-> -			if (pentry.dos_partition_type == 0x0f) {
-> +
-> +			if (is_extended_partition(&pentry)) {
->  				if (!extended_partition)
->  					extended_partition = &pd->parts[n];
->  				else
+>  	ret = bootm_boot(&data);
+>  	if (ret)
+> @@ -505,7 +506,7 @@ int blspec_scan_directory(struct bootentries *bootentries, const char *root)
+>  
+>  		found++;
+>  
+> -		if (entry->cdev) {
+> +		if (entry->cdev && entry->cdev->dev) {
+>  			devname = xstrdup(dev_name(entry->cdev->dev));
+>  			if (entry->cdev->dev->parent)
+>  				hwdevname = xstrdup(dev_name(entry->cdev->dev->parent));
 > -- 
-> 2.14.3
+> 2.11.0
 > 
 > 
 > _______________________________________________
