@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22a.google.com ([2a00:1450:4010:c07::22a])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1edcYH-00086L-6t
- for barebox@lists.infradead.org; Mon, 22 Jan 2018 13:54:23 +0000
-Received: by mail-lf0-x22a.google.com with SMTP id t79so10677382lfe.3
- for <barebox@lists.infradead.org>; Mon, 22 Jan 2018 05:54:10 -0800 (PST)
-Date: Mon, 22 Jan 2018 17:08:31 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20180122170831.684ce2c7b0d5421311d41528@gmail.com>
-In-Reply-To: <20180122134020.GA22403@ravnborg.org>
+ id 1edd4A-0001X7-1w
+ for barebox@lists.infradead.org; Mon, 22 Jan 2018 14:27:19 +0000
+Date: Mon, 22 Jan 2018 15:27:04 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20180122142704.GA3349@ravnborg.org>
 References: <20180122100131.11820-1-antonynpavlov@gmail.com>
  <20180122134020.GA22403@ravnborg.org>
-Mime-Version: 1.0
+ <20180122170831.684ce2c7b0d5421311d41528@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180122170831.684ce2c7b0d5421311d41528@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,49 +20,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] sandbox: use 'poweroff' command for exit
-To: Sam Ravnborg <sam@ravnborg.org>
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, 22 Jan 2018 14:40:20 +0100
-Sam Ravnborg <sam@ravnborg.org> wrote:
+On Mon, Jan 22, 2018 at 05:08:31PM +0300, Antony Pavlov wrote:
+> On Mon, 22 Jan 2018 14:40:20 +0100
+> Sam Ravnborg <sam@ravnborg.org> wrote:
+> 
+> > Hi Antony
+> > 
+> > On Mon, Jan 22, 2018 at 01:01:31PM +0300, Antony Pavlov wrote:
+> > > The 'poweroff' command is more appropriate for exit
+> > > barebox than 'reset'.
+> > 
+> > Changelog says "reset" but code says "restart".
+> 
+> The command name is 'reset'.
+> No matter what is the file's name.
+> I can't see 'restart' command in barebox mainline master branch.
 
-> Hi Antony
-> =
+Sorry - I messed it up somehow.
+The changelog said command and I did not see that this was
+not a barebox command but a board thing.
 
-> On Mon, Jan 22, 2018 at 01:01:31PM +0300, Antony Pavlov wrote:
-> > The 'poweroff' command is more appropriate for exit
-> > barebox than 'reset'.
-> =
+So everything looks fine.
 
-> Changelog says "reset" but code says "restart".
+This is what happens writing mails with some lingering flu I guess.
 
-The command name is 'reset'.
-No matter what is the file's name.
-I can't see 'restart' command in barebox mainline master branch.
-
-> Could the restart command be useful for others than sandbox?
-> In other words, is it correct to delete this command?
-
-I see no reason for dropping 'reset' command.
-Sometimes 'reset' and 'poweroff' commands are very handy.
-
-> 	=
-
-> 	Sam
-> =
-
-> >  arch/sandbox/board/restart.c           | 17 -----------------
-
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
+	Sam
 
 _______________________________________________
 barebox mailing list
