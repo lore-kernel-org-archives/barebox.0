@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ecZTi-0004WW-0J
- for barebox@lists.infradead.org; Fri, 19 Jan 2018 16:25:20 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.89)
- (envelope-from <r.hieber@pengutronix.de>) id 1ecZTT-0007Rl-4n
- for barebox@lists.infradead.org; Fri, 19 Jan 2018 17:25:03 +0100
-References: <20180119102026.7456-1-u.oelmann@pengutronix.de>
-From: Roland Hieber <r.hieber@pengutronix.de>
-Message-ID: <5262c9ab-3a91-936d-1126-d6e253938b91@pengutronix.de>
-Date: Fri, 19 Jan 2018 17:25:02 +0100
+ id 1edWUl-0005Ba-4p
+ for barebox@lists.infradead.org; Mon, 22 Jan 2018 07:26:21 +0000
+Date: Mon, 22 Jan 2018 08:26:01 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180122072601.jpgwryttdmqbcavd@pengutronix.de>
+References: <20180117154941.32175-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20180119102026.7456-1-u.oelmann@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20180117154941.32175-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,39 +18,101 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] state: Documentation: fix typo
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] partitions: dos: Treat all extended partition types
+ equally
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-T24gMTkuMDEuMjAxOCAxMToyMCwgVWxyaWNoIMOWbG1hbm4gd3JvdGU6Cj4gU2lnbmVkLW9mZi1i
-eTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4KPiAtLS0KPiAgRG9j
-dW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2JhcmVib3gvYmFyZWJveCxzdGF0ZS5yc3Qg
-fCAyICstCj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQo+
-IAo+IGRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvYmFyZWJv
-eC9iYXJlYm94LHN0YXRlLnJzdCBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9i
-YXJlYm94L2JhcmVib3gsc3RhdGUucnN0Cj4gaW5kZXggY2ViYjVmODI4NzlhLi40YmU1ZjJmNmJk
-N2UgMTAwNjQ0Cj4gLS0tIGEvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2JhcmVi
-b3gvYmFyZWJveCxzdGF0ZS5yc3QKPiArKysgYi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmlu
-ZGluZ3MvYmFyZWJveC9iYXJlYm94LHN0YXRlLnJzdAo+IEBAIC02NCw3ICs2NCw3IEBAIE9wdGlv
-bmFsIFByb3BlcnRpZXMKPiAgCj4gIFRoZSBgYGJhY2tlbmQtc3RyaWRlc2l6ZWBgIGlzIHN0aWxs
-IG9wdGlvbmFsIGJ1dCByZXF1aXJlZCB3aGVuZXZlciB0aGUKPiAgdW5kZXJsYXlpbmcgYmFja2Vu
-ZCBkb2Vzbid0IHByb3ZpZGUgYW4gaW5mb3JtYXRpb24gaG93IHRvIHBhZCBhbiBpbnN0YW5jZSBv
-ZiBhCj4gLSpzdGF0ZSogdmFyaWFibGUgc2V0LiBUaGlzIGlzIHZhbGlkIGZvciBhbGwgdW5kZXJs
-YXlpbmcgYmFja2VuZHMgd2hpY2ggc3VwcG9ydHMKPiArKnN0YXRlKiB2YXJpYWJsZSBzZXQuIFRo
-aXMgaXMgdmFsaWQgZm9yIGFsbCB1bmRlcmxheWluZyBiYWNrZW5kcyB3aGljaCBzdXBwb3J0CgpD
-b3VsZCBwbGVhc2UgYWxzbyBmaXggdGhpcyBsaW5lIHNvIGl0IHNheXMgInVuZGVybHlpbmciPyA6
-LSkKCiAtIFJvbGFuZAoKPiAgd3JpdGVzIG9uIGEgYnl0ZS1ieS1ieXRlIG1hbm5lciBvciBkb24n
-dCBoYXZlIGVyYXNlYmxvY2tzIChFRVBST00sIFNSQU0gYW5kIE5PUgo+ICB0eXBlIGZsYXNoIGJh
-Y2tlbmRzKS4KPiAgVGhlIGBgYmFja2VuZC1zdHJpZGVzaXplYGAgdmFsdWUgaXMgdXNlZCBieSB0
-aGUgYGBkaXJlY3RgYCBiYWNrZW5kIHN0b3JhZ2UgdHlwZQo+IAoKCi0tIApQZW5ndXRyb25peCBl
-LksuICAgICAgICAgICAgICAgICAgfCBSb2xhbmQgSGllYmVyICAgICAgICAgICAgICAgfApJbmR1
-c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRl
-LyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0gfCBQaG9uZTogKzQ5LTUxMjEt
-MjA2OTE3LTUwODYgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgfCBGYXg6ICAg
-KzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
-YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
-eAo=
+On Wed, Jan 17, 2018 at 07:49:41AM -0800, Andrey Smirnov wrote:
+> Creating logical DOS partitions with fdisk (Fedora 27, fdisk from
+> util-linux 2.30.2) results in extended partition of type 0x05 being
+> created on the device. Partitioned like this, device is succesfully
+> recognized by Linux, but, due to algorithm in dos_partition(), not
+> Barebox.
+> 
+> Looking closer at the actual contents of MBR shows that while marked
+> as "Extended partition with CHS addressing" that partition still have
+> all of the LBA adressed fields filled correctly.
+> 
+> Given the above and the fact that similar code in Linux
+> kernel (block/partitions/msdos.c) does not make a distinction between
+> types 0x0f and 0x05, port Linux's is_extended_partition() and convert
+> the code to treat types 0x05, 0x0f and 0x85 the same way.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  common/partitions/dos.c | 25 ++++++++++++++++++-------
+>  1 file changed, 18 insertions(+), 7 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/common/partitions/dos.c b/common/partitions/dos.c
+> index 91b539907..488c2936f 100644
+> --- a/common/partitions/dos.c
+> +++ b/common/partitions/dos.c
+> @@ -21,6 +21,22 @@
+>  
+>  #include "parser.h"
+>  
+> +
+> +enum {
+> +/* These three have identical behaviour; use the second one if DOS FDISK gets
+> +   confused about extended/logical partitions starting past cylinder 1023. */
+> +	DOS_EXTENDED_PARTITION = 5,
+> +	LINUX_EXTENDED_PARTITION = 0x85,
+> +	WIN98_EXTENDED_PARTITION = 0x0f,
+> +};
+> +
+> +static inline int is_extended_partition(struct partition *p)
+> +{
+> +	return (p->dos_partition_type == DOS_EXTENDED_PARTITION ||
+> +	        p->dos_partition_type == WIN98_EXTENDED_PARTITION ||
+> +		p->dos_partition_type == LINUX_EXTENDED_PARTITION);
+> +}
+> +
+>  /**
+>   * Guess the size of the disk, based on the partition table entries
+>   * @param dev device to create partitions for
+> @@ -212,13 +228,8 @@ static void dos_partition(void *buf, struct block_device *blk,
+>  				sprintf(pd->parts[n].partuuid, "%08x-%02d",
+>  						signature, i + 1);
+>  			pd->used_entries++;
+> -			/*
+> -			 * Partitions of type 0x05 and 0x0f (and some more)
+> -			 * contain extended partitions. Only check for type 0x0f
+> -			 * here as this is the easiest to parse and common
+> -			 * enough.
+> -			 */
+> -			if (pentry.dos_partition_type == 0x0f) {
+> +
+> +			if (is_extended_partition(&pentry)) {
+>  				if (!extended_partition)
+>  					extended_partition = &pd->parts[n];
+>  				else
+> -- 
+> 2.14.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
