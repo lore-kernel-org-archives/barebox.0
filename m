@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22d.google.com ([2a00:1450:4010:c07::22d])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ecUnf-0005GX-Mk
- for barebox@lists.infradead.org; Fri, 19 Jan 2018 11:25:37 +0000
-Received: by mail-lf0-x22d.google.com with SMTP id h92so1680743lfi.7
- for <barebox@lists.infradead.org>; Fri, 19 Jan 2018 03:25:24 -0800 (PST)
-Date: Fri, 19 Jan 2018 14:39:40 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20180119143940.d1d9548f464ff98ecff94372@gmail.com>
-In-Reply-To: <20180119094008.6g6otppxgtqgo3rb@pengutronix.de>
-References: <20180114212252.29682-1-antonynpavlov@gmail.com>
- <20180117095314.rwdrslwpnkcwa6ey@pengutronix.de>
- <20180119122901.d58ed91f24057139b2d4239c@gmail.com>
- <20180119094008.6g6otppxgtqgo3rb@pengutronix.de>
-Mime-Version: 1.0
+ id 1edXmn-0006Oo-Sl
+ for barebox@lists.infradead.org; Mon, 22 Jan 2018 08:49:04 +0000
+Date: Mon, 22 Jan 2018 09:48:49 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180122084849.h54g77ajaj5rtazg@pengutronix.de>
+References: <20180119132825.26662-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180119132825.26662-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,116 +18,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/7] sandbox: add gpio support with libftdi1
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v2 1/2] mci: drop unused parameter from mci_switch()
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, 19 Jan 2018 10:40:08 +0100
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
-
-> On Fri, Jan 19, 2018 at 12:29:01PM +0300, Antony Pavlov wrote:
-> > On Wed, 17 Jan 2018 10:53:14 +0100
-> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > =
-
-> > > Hi Antony,
-> > > =
-
-> > > On Mon, Jan 15, 2018 at 12:22:45AM +0300, Antony Pavlov wrote:
-> > > > This patch series makes it possible to use FT2232H ACBUS[7:0]
-> > > > pins as gpio pins from sandbox barebox.
-> > > > =
-
-> > > > There are ready-to-use FT2232H-based boards:
-> > > > =
-
-> > > >   * FT2232H-56Q Mini-Module (http://www.ftdichip.com/Products/Modul=
-es/DevelopmentModules.htm#FT2232H-56_Mini)
-> > > >   * FT2232 breakout board (http://dangerousprototypes.com/docs/FT22=
-32_breakout_board)
-> > > > =
-
-> > > > The main goal of adding gpio functionality to sandbox barebox
-> > > > is using it for connecting real i2c and spi devices to sandbox bare=
-box.
-> > > =
-
-> > > I applied the parseopt patches for now since they don't need any furt=
-her
-> > > discussions.
-> > > =
-
-> > =
-
-> > There are three common parseopt-related patches:
-> > =
-
-> >   move parseopt to lib/
-> >   include/parseopt.h: add guard macro
-> >   parseopt: introduce parseopt_u16() and parseopt_str()
-> > =
-
-> > Please confirm that you have got all three patches.
-> > =
-
-> > > What puzzles me a bit is that the libftdi gpio controller is
-> > > instantiated from the device tree but configured through the
-> > > commandline. It probably has to be like this since we need the
-> > > device tree for using the gpios.
-> > =
-
-> > Getting FTDI chip vendorID and deviceID from device tree is reasonable.
-> > However hardcoding FTDI chip serialnumber into device tree is not so go=
-od idea.
-> > In addition dropping cmdline FTDI options parsing makes parseopt_u16() =
-and parseopt_str() unused.
-> > =
-
-> > I propose add FTDI chip vendorID, deviceID and serial options to device=
- tree
-> > and keep parsing the same options from cmdline so once can override FTD=
-I chip
-> > serial number from cmdline.
-> =
-
-> How would you handle multiple FTDI chips then if you want to make use
-> of more than one at a time?
-
-Good question. My current code gives no good means to add more than one FT2=
-232 chip.
-I suppose that after adding option-passing-via-dt feature it will be possib=
-le =
-
-to add more than one FT2232 chip and ... cmdline option passing will interf=
-ere with
-multi-FT2232 dt in a bad way. Now I think that dropping cmdline parsing is =
-not so bad idea.
-
-> =
-
-> Sascha
-> =
-
-> =
-
-> -- =
-
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBKYW4gMTksIDIwMTggYXQgMDI6Mjg6MjRQTSArMDEwMCwgVXdlIEtsZWluZS1Lw7Zu
+aWcgd3JvdGU6Cj4gVGhlIFNXSVRDSCBjb21tYW5kIGhhcyB0d28gcHVycG9zZXM6Cj4gIGEpIHN3
+aXRjaCB0aGUgY29tbWFuZCBzZXQKPiAgYikgV3JpdGUgdG8gdGhlIEVYVF9DU0QgcmVnaXN0ZXIK
+PiAKPiBJZiB0aGUgYWNjZXNzIGZpZWxkIChiaXRzIFsyNToyNF0pIGluIHRoZSBhcmd1bWVudCBh
+cmUgYjAwLCB3ZSdyZSBpbgo+IGNhc2UgYSksIG90aGVyd2lzZSBpbiBiKS4gQXMgbWNpX3N3aXRj
+aCgpIGFsd2F5cyBwYXNzZXMKPiBNTUNfU1dJVENIX01PREVfV1JJVEVfQllURSAoMGIzKSBpbiB0
+aGUgYWNjZXNzIGZpZWxkLCBvbmx5IGNhc2UgYikgaXMKPiByZWxldmFudCBoZXJlLiBBY2NvcmRp
+bmcgdG8gdGhlIGVNTUMgc3BlY2lmaWNhdGlvblsxXSB0aGUgY29tbWFuZCBzZXQKPiBmaWVsZCBp
+cyBpZ25vcmVkIGluIGNhc2UgYikgYW5kIHNvIHRoZSByZXNwZWN0aXZlIHBhcmFtZXRlciAodGhh
+dCBpcwo+IHVudXNlZCBhbHJlYWR5IG5vdykgY2FuIGJlIGRyb3BwZWQuCj4gCj4gWzFdIEVtYmVk
+ZGVkIE11bHRpLU1lZGlhIENhcmQgKGXigKJNTUMpIEVsZWN0cmljYWwgU3RhbmRhcmQgKDUuMSks
+Cj4gICAgIEZlYnJ1YXJ5IDIwMTU7IHBhcmFncmFwaCA2LjYuMQo+IAo+IFNpZ25lZC1vZmYtYnk6
+IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Cj4gLS0t
+CgpBcHBsaWVkIHRoaXMgb25lLgoKU2FzY2hhCgo+ICBjb21tYW5kcy9tbWNfZXh0Y3NkLmMgIHwg
+IDIgKy0KPiAgZHJpdmVycy9tY2kvbWNpLWNvcmUuYyB8IDE2ICsrKysrKy0tLS0tLS0tLS0KPiAg
+aW5jbHVkZS9tY2kuaCAgICAgICAgICB8ICAzICstLQo+ICAzIGZpbGVzIGNoYW5nZWQsIDggaW5z
+ZXJ0aW9ucygrKSwgMTMgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2NvbW1hbmRzL21t
+Y19leHRjc2QuYyBiL2NvbW1hbmRzL21tY19leHRjc2QuYwo+IGluZGV4IDdhNmQzOTA3NWRhMC4u
+YWNkMjNhNDY2YmNiIDEwMDY0NAo+IC0tLSBhL2NvbW1hbmRzL21tY19leHRjc2QuYwo+ICsrKyBi
+L2NvbW1hbmRzL21tY19leHRjc2QuYwo+IEBAIC0yMzU3LDcgKzIzNTcsNyBAQCBzdGF0aWMgdm9p
+ZCB3cml0ZV9maWVsZChzdHJ1Y3QgbWNpICptY2ksIHU4ICpyZWcsIHUxNiBpbmRleCwgdTggdmFs
+dWUsCj4gIAkJYnJlYWs7Cj4gIAl9Cj4gIAo+IC0JbWNpX3N3aXRjaChtY2ksIDAsIGluZGV4LCB2
+YWx1ZSk7Cj4gKwltY2lfc3dpdGNoKG1jaSwgaW5kZXgsIHZhbHVlKTsKPiAgCj4gIG91dDoKPiAg
+CXJldHVybjsKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tY2kvbWNpLWNvcmUuYyBiL2RyaXZlcnMv
+bWNpL21jaS1jb3JlLmMKPiBpbmRleCAwNzkxMWQ0M2Q3MDMuLjNkYTk2ZjQyYWFmOSAxMDA2NDQK
+PiAtLS0gYS9kcml2ZXJzL21jaS9tY2ktY29yZS5jCj4gKysrIGIvZHJpdmVycy9tY2kvbWNpLWNv
+cmUuYwo+IEBAIC0zOTYsOCArMzk2LDcgQEAgaW50IG1jaV9zZW5kX2V4dF9jc2Qoc3RydWN0IG1j
+aSAqbWNpLCBjaGFyICpleHRfY3NkKQo+ICAgKiBAcGFyYW0gdmFsdWUgRklYTUUKPiAgICogQHJl
+dHVybiBUcmFuc2FjdGlvbiBzdGF0dXMgKDAgb24gc3VjY2VzcykKPiAgICovCj4gLWludCBtY2lf
+c3dpdGNoKHN0cnVjdCBtY2kgKm1jaSwgdW5zaWduZWQgc2V0LCB1bnNpZ25lZCBpbmRleCwKPiAt
+CQkJdW5zaWduZWQgdmFsdWUpCj4gK2ludCBtY2lfc3dpdGNoKHN0cnVjdCBtY2kgKm1jaSwgdW5z
+aWduZWQgaW5kZXgsIHVuc2lnbmVkIHZhbHVlKQo+ICB7Cj4gIAlzdHJ1Y3QgbWNpX2NtZCBjbWQ7
+Cj4gIAo+IEBAIC00NzEsNyArNDcwLDcgQEAgc3RhdGljIGludCBtbWNfY2hhbmdlX2ZyZXEoc3Ry
+dWN0IG1jaSAqbWNpKQo+ICAKPiAgCWNhcmR0eXBlID0gbWNpLT5leHRfY3NkW0VYVF9DU0RfREVW
+SUNFX1RZUEVdICYgRVhUX0NTRF9DQVJEX1RZUEVfTUFTSzsKPiAgCj4gLQllcnIgPSBtY2lfc3dp
+dGNoKG1jaSwgRVhUX0NTRF9DTURfU0VUX05PUk1BTCwgRVhUX0NTRF9IU19USU1JTkcsIDEpOwo+
+ICsJZXJyID0gbWNpX3N3aXRjaChtY2ksIEVYVF9DU0RfSFNfVElNSU5HLCAxKTsKPiAgCj4gIAlp
+ZiAoZXJyKSB7Cj4gIAkJZGV2X2RiZygmbWNpLT5kZXYsICJNTUMgZnJlcXVlbmN5IGNoYW5naW5n
+IGZhaWxlZDogJWRcbiIsIGVycik7Cj4gQEAgLTEwNDQsOSArMTA0Myw3IEBAIHN0YXRpYyBpbnQg
+bWNpX3N0YXJ0dXBfbW1jKHN0cnVjdCBtY2kgKm1jaSkKPiAgCQkgKiA0Yml0IHRyYW5zZmVyIG1v
+ZGUuIE9uIHN1Y2Nlc3Mgc2V0IHRoZSBjb3JyZXNwb25kaW5nCj4gIAkJICogYnVzIHdpZHRoIG9u
+IHRoZSBob3N0Lgo+ICAJCSAqLwo+IC0JCWVyciA9IG1jaV9zd2l0Y2gobWNpLCBFWFRfQ1NEX0NN
+RF9TRVRfTk9STUFMLAo+IC0JCQkJIEVYVF9DU0RfQlVTX1dJRFRILAo+IC0JCQkJIGV4dF9jc2Rf
+Yml0c1tpZHhdKTsKPiArCQllcnIgPSBtY2lfc3dpdGNoKG1jaSwgRVhUX0NTRF9CVVNfV0lEVEgs
+IGV4dF9jc2RfYml0c1tpZHhdKTsKPiAgCQlpZiAoZXJyKSB7Cj4gIAkJCWlmIChpZHggPT0gMCkK
+PiAgCQkJCWRldl93YXJuKCZtY2ktPmRldiwgIkNoYW5naW5nIE1NQyBidXMgd2lkdGggZmFpbGVk
+OiAlZFxuIiwgZXJyKTsKPiBAQCAtMTI1Myw4ICsxMjUwLDcgQEAgc3RhdGljIGludCBtY2lfYmxr
+X3BhcnRfc3dpdGNoKHN0cnVjdCBtY2lfcGFydCAqcGFydCkKPiAgCQlwYXJ0X2NvbmZpZyAmPSB+
+RVhUX0NTRF9QQVJUX0NPTkZJR19BQ0NfTUFTSzsKPiAgCQlwYXJ0X2NvbmZpZyB8PSBwYXJ0LT5w
+YXJ0X2NmZzsKPiAgCj4gLQkJcmV0ID0gbWNpX3N3aXRjaChtY2ksIEVYVF9DU0RfQ01EX1NFVF9O
+T1JNQUwsCj4gLQkJCQlFWFRfQ1NEX1BBUlRJVElPTl9DT05GSUcsIHBhcnRfY29uZmlnKTsKPiAr
+CQlyZXQgPSBtY2lfc3dpdGNoKG1jaSwgRVhUX0NTRF9QQVJUSVRJT05fQ09ORklHLCBwYXJ0X2Nv
+bmZpZyk7Cj4gIAkJaWYgKHJldCkKPiAgCQkJcmV0dXJuIHJldDsKPiAgCj4gQEAgLTE1NjgsOCAr
+MTU2NCw4IEBAIHN0YXRpYyBpbnQgbWNpX3NldF9ib290KHN0cnVjdCBwYXJhbV9kICpwYXJhbSwg
+dm9pZCAqcHJpdikKPiAgCW1jaS0+ZXh0X2NzZF9wYXJ0X2NvbmZpZyAmPSB+KDcgPDwgMyk7Cj4g
+IAltY2ktPmV4dF9jc2RfcGFydF9jb25maWcgfD0gbWNpLT5ib290cGFydCA8PCAzOwo+ICAKPiAt
+CXJldHVybiBtY2lfc3dpdGNoKG1jaSwgRVhUX0NTRF9DTURfU0VUX05PUk1BTCwKPiAtCQkJRVhU
+X0NTRF9QQVJUSVRJT05fQ09ORklHLCBtY2ktPmV4dF9jc2RfcGFydF9jb25maWcpOwo+ICsJcmV0
+dXJuIG1jaV9zd2l0Y2gobWNpLAo+ICsJCQkgIEVYVF9DU0RfUEFSVElUSU9OX0NPTkZJRywgbWNp
+LT5leHRfY3NkX3BhcnRfY29uZmlnKTsKPiAgfQo+ICAKPiAgc3RhdGljIGNvbnN0IGNoYXIgKm1j
+aV9ib290X25hbWVzW10gPSB7Cj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbWNpLmggYi9pbmNsdWRl
+L21jaS5oCj4gaW5kZXggZDMxMTVlOGNjNjhmLi44MjdlZWNkMzlmOGQgMTAwNjQ0Cj4gLS0tIGEv
+aW5jbHVkZS9tY2kuaAo+ICsrKyBiL2luY2x1ZGUvbWNpLmgKPiBAQCAtNDc3LDggKzQ3Nyw3IEBA
+IHZvaWQgbWNpX29mX3BhcnNlKHN0cnVjdCBtY2lfaG9zdCAqaG9zdCk7Cj4gIHZvaWQgbWNpX29m
+X3BhcnNlX25vZGUoc3RydWN0IG1jaV9ob3N0ICpob3N0LCBzdHJ1Y3QgZGV2aWNlX25vZGUgKm5w
+KTsKPiAgaW50IG1jaV9kZXRlY3RfY2FyZChzdHJ1Y3QgbWNpX2hvc3QgKik7Cj4gIGludCBtY2lf
+c2VuZF9leHRfY3NkKHN0cnVjdCBtY2kgKm1jaSwgY2hhciAqZXh0X2NzZCk7Cj4gLWludCBtY2lf
+c3dpdGNoKHN0cnVjdCBtY2kgKm1jaSwgdW5zaWduZWQgc2V0LCB1bnNpZ25lZCBpbmRleCwKPiAt
+CQkJdW5zaWduZWQgdmFsdWUpOwo+ICtpbnQgbWNpX3N3aXRjaChzdHJ1Y3QgbWNpICptY2ksIHVu
+c2lnbmVkIGluZGV4LCB1bnNpZ25lZCB2YWx1ZSk7Cj4gIAo+ICBzdGF0aWMgaW5saW5lIGludCBt
+bWNfaG9zdF9pc19zcGkoc3RydWN0IG1jaV9ob3N0ICpob3N0KQo+ICB7Cj4gLS0gCj4gMi4xMS4w
+Cj4gCj4gCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+PiBiYXJlYm94IG1haWxpbmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0
+dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKLS0gClBl
+bmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAg
+ICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcg
+SGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNn
+ZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0y
+MDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
