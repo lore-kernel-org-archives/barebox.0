@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1edZpm-0001KQ-Oi
- for barebox@lists.infradead.org; Mon, 22 Jan 2018 11:00:20 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Mon, 22 Jan 2018 11:59:58 +0100
-Message-Id: <20180122105958.15354-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1edzbh-0007QT-4p
+ for barebox@lists.infradead.org; Tue, 23 Jan 2018 14:31:27 +0000
+Received: by mail-pf0-x241.google.com with SMTP id e11so450401pff.6
+ for <barebox@lists.infradead.org>; Tue, 23 Jan 2018 06:31:15 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 23 Jan 2018 06:30:53 -0800
+Message-Id: <20180123143053.20623-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,36 +16,89 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i2c: read/write_reg: don't assume client->dev to be valid
+Subject: [PATCH] at91sam9x5ek: Add appropriate compatibility guards to all
+ initcalls
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-V2hlbiB1c2luZyB0aGUgYmFyZWJveCBjb21tYW5kcyBpMmNfcmVhZCBvciBpMmNfd3JpdGUgdGhl
-IGNsaWVudCBwb2ludGVyCnBhc3NlZCB0byB0aGUgcmVzcGVjdGl2ZSBmdW5jdGlvbiBpc24ndCBj
-b21wbGV0ZWx5IGluaXRpYWxpemVkLiBUaGlzCm1ha2VzCgoJZGV2X2RiZygmY2xpZW50LT5kZXYs
-IC4uLik7CgpjaG9rZSBhcyBpdCBkZXJlZmVyZW5jZXMgY2xpZW50LT5kZXYuZHJpdmVyLT5uYW1l
-IHdpdGgKY2xpZW50LT5kZXYuZHJpdmVyIGJlaW5nIGEgcmFuZG9tIHZhbHVlLgoKU2lnbmVkLW9m
-Zi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4K
-LS0tCiBkcml2ZXJzL2kyYy9pMmMuYyB8IDQgKystLQogMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0
-aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2kyYy9pMmMuYyBi
-L2RyaXZlcnMvaTJjL2kyYy5jCmluZGV4IGZhMmMwY2QxMzY5Ny4uZTllNzU3NTU4NTYxIDEwMDY0
-NAotLS0gYS9kcml2ZXJzL2kyYy9pMmMuYworKysgYi9kcml2ZXJzL2kyYy9pMmMuYwpAQCAtMTg0
-LDcgKzE4NCw3IEBAIGludCBpMmNfcmVhZF9yZWcoc3RydWN0IGkyY19jbGllbnQgKmNsaWVudCwg
-dTMyIGFkZHIsIHU4ICpidWYsIHUxNiBjb3VudCkKIAltc2ctPmxlbiA9IGk7CiAKIAlzdGF0dXMg
-PSBpMmNfdHJhbnNmZXIoY2xpZW50LT5hZGFwdGVyLCBtc2csIEFSUkFZX1NJWkUobXNnKSk7Ci0J
-ZGV2X2RiZygmY2xpZW50LT5kZXYsICIlczogJXVAJXUgLS0+ICVkXG4iLCBfX2Z1bmNfXywKKwlk
-ZXZfZGJnKCZjbGllbnQtPmFkYXB0ZXItPmRldiwgIiVzOiAldUAldSAtLT4gJWRcbiIsIF9fZnVu
-Y19fLAogCQljb3VudCwgYWRkciwgc3RhdHVzKTsKIAogCWlmIChzdGF0dXMgPT0gQVJSQVlfU0la
-RShtc2cpKQpAQCAtMjE3LDcgKzIxNyw3IEBAIGludCBpMmNfd3JpdGVfcmVnKHN0cnVjdCBpMmNf
-Y2xpZW50ICpjbGllbnQsIHUzMiBhZGRyLCBjb25zdCB1OCAqYnVmLCB1MTYgY291bnQpCiAJbWVt
-Y3B5KG1zZy0+YnVmICsgaSwgYnVmLCBjb3VudCk7CiAKIAlzdGF0dXMgPSBpMmNfdHJhbnNmZXIo
-Y2xpZW50LT5hZGFwdGVyLCBtc2csIEFSUkFZX1NJWkUobXNnKSk7Ci0JZGV2X2RiZygmY2xpZW50
-LT5kZXYsICIlczogJXVAJXUgLS0+ICVkXG4iLCBfX2Z1bmNfXywKKwlkZXZfZGJnKCZjbGllbnQt
-PmFkYXB0ZXItPmRldiwgIiVzOiAldUAldSAtLT4gJWRcbiIsIF9fZnVuY19fLAogCQljb3VudCwg
-YWRkciwgc3RhdHVzKTsKIAogCWlmIChzdGF0dXMgPT0gQVJSQVlfU0laRShtc2cpKQotLSAKMi4x
-MS4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
-ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
-cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Add appropriate calls to of_machine_is_compatible() to all initcalls
+to avoid having those executed for wrong boards in multi-board build.
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/boards/at91sam9x5ek/hw_version.c |  3 +++
+ arch/arm/boards/at91sam9x5ek/init.c       | 13 +++++++++++++
+ 2 files changed, 16 insertions(+)
+
+diff --git a/arch/arm/boards/at91sam9x5ek/hw_version.c b/arch/arm/boards/at91sam9x5ek/hw_version.c
+index 10563cf98..f15cd3dc0 100644
+--- a/arch/arm/boards/at91sam9x5ek/hw_version.c
++++ b/arch/arm/boards/at91sam9x5ek/hw_version.c
+@@ -253,6 +253,9 @@ static int cm_cogent_fixup(struct device_node *root, void *unused)
+ 
+ static int at91sam9x5ek_devices_detect_hw(void)
+ {
++	if (!of_machine_is_compatible("atmel,at91sam9x5ek"))
++		return 0;
++
+ 	at91sam9x5ek_devices_detect_one("/dev/ds24310");
+ 	at91sam9x5ek_devices_detect_one("/dev/ds24311");
+ 	at91sam9x5ek_devices_detect_one("/dev/ds24330");
+diff --git a/arch/arm/boards/at91sam9x5ek/init.c b/arch/arm/boards/at91sam9x5ek/init.c
+index 646cff5d6..649545e8a 100644
+--- a/arch/arm/boards/at91sam9x5ek/init.c
++++ b/arch/arm/boards/at91sam9x5ek/init.c
+@@ -66,6 +66,10 @@ static struct sam9_smc_config cm_nand_smc_config = {
+ static int ek_add_device_smc(void)
+ {
+ 	unsigned long csa;
++
++	if (!of_machine_is_compatible("atmel,at91sam9x5ek"))
++		return 0;
++
+ 	csa = at91_sys_read(AT91_MATRIX_EBICSA);
+ 
+ 	/* Enable CS3 */
+@@ -105,6 +109,9 @@ static int ek_register_mac_address(void)
+ {
+ 	int ret;
+ 
++	if (!of_machine_is_compatible("atmel,at91sam9x5ek"))
++		return 0;
++
+ 	ret = w1_local_mac_address_register(0, "tml", "w1-2d-0");
+ 	if (!ret)
+ 		return ret;
+@@ -158,6 +165,9 @@ static void ek_add_device_lcdc(void) {}
+ 
+ static int at91sam9x5ek_devices_init(void)
+ {
++	if (!of_machine_is_compatible("atmel,at91sam9x5ek"))
++		return 0;
++
+ 	ek_add_device_lcdc();
+ 
+ 	armlinux_set_architecture(CONFIG_MACH_AT91SAM9X5EK);
+@@ -171,6 +181,9 @@ device_initcall(at91sam9x5ek_devices_init);
+ 
+ static int at91sam9x5ek_console_init(void)
+ {
++	if (!of_machine_is_compatible("atmel,at91sam9x5ek"))
++		return 0;
++
+ 	barebox_set_model("Atmel at91sam9x5-ek");
+ 	barebox_set_hostname("at91sam9x5-ek");
+ 
+-- 
+2.14.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
