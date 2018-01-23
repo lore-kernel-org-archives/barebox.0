@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eebnK-0007ti-0u
- for barebox@lists.infradead.org; Thu, 25 Jan 2018 07:17:59 +0000
-Date: Thu, 25 Jan 2018 08:17:45 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180125071745.mv5r7jkom7snuz5t@pengutronix.de>
-References: <20180123143053.20623-1-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180123143053.20623-1-andrew.smirnov@gmail.com>
+ id 1edznV-0005lI-F8
+ for barebox@lists.infradead.org; Tue, 23 Jan 2018 14:43:39 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1edznJ-0008Lg-Q2
+ for barebox@lists.infradead.org; Tue, 23 Jan 2018 15:43:25 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue, 23 Jan 2018 15:43:25 +0100
+Message-Id: <20180123144325.28926-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,104 +19,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] at91sam9x5ek: Add appropriate compatibility guards to
- all initcalls
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] net: phy: scan PHYs referenced by phandle
+To: barebox@lists.infradead.org
 
-On Tue, Jan 23, 2018 at 06:30:53AM -0800, Andrey Smirnov wrote:
-> Add appropriate calls to of_machine_is_compatible() to all initcalls
-> to avoid having those executed for wrong boards in multi-board build.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  arch/arm/boards/at91sam9x5ek/hw_version.c |  3 +++
->  arch/arm/boards/at91sam9x5ek/init.c       | 13 +++++++++++++
->  2 files changed, 16 insertions(+)
+If we point to a PHY node by phandle, that PHY might well be on a MDIO
+bus that hasn't been scanned when we look for the PHY. Fortunately we
+know exactly where to look for the PHY, so make sure to scan the bus
+at the right address.
 
-Applied, thanks
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+v2: Only enter MII bus loop when the address property was found.
+---
+ drivers/net/phy/phy.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-Sascha
-
-> 
-> diff --git a/arch/arm/boards/at91sam9x5ek/hw_version.c b/arch/arm/boards/at91sam9x5ek/hw_version.c
-> index 10563cf98..f15cd3dc0 100644
-> --- a/arch/arm/boards/at91sam9x5ek/hw_version.c
-> +++ b/arch/arm/boards/at91sam9x5ek/hw_version.c
-> @@ -253,6 +253,9 @@ static int cm_cogent_fixup(struct device_node *root, void *unused)
->  
->  static int at91sam9x5ek_devices_detect_hw(void)
->  {
-> +	if (!of_machine_is_compatible("atmel,at91sam9x5ek"))
-> +		return 0;
-> +
->  	at91sam9x5ek_devices_detect_one("/dev/ds24310");
->  	at91sam9x5ek_devices_detect_one("/dev/ds24311");
->  	at91sam9x5ek_devices_detect_one("/dev/ds24330");
-> diff --git a/arch/arm/boards/at91sam9x5ek/init.c b/arch/arm/boards/at91sam9x5ek/init.c
-> index 646cff5d6..649545e8a 100644
-> --- a/arch/arm/boards/at91sam9x5ek/init.c
-> +++ b/arch/arm/boards/at91sam9x5ek/init.c
-> @@ -66,6 +66,10 @@ static struct sam9_smc_config cm_nand_smc_config = {
->  static int ek_add_device_smc(void)
->  {
->  	unsigned long csa;
-> +
-> +	if (!of_machine_is_compatible("atmel,at91sam9x5ek"))
-> +		return 0;
-> +
->  	csa = at91_sys_read(AT91_MATRIX_EBICSA);
->  
->  	/* Enable CS3 */
-> @@ -105,6 +109,9 @@ static int ek_register_mac_address(void)
->  {
->  	int ret;
->  
-> +	if (!of_machine_is_compatible("atmel,at91sam9x5ek"))
-> +		return 0;
-> +
->  	ret = w1_local_mac_address_register(0, "tml", "w1-2d-0");
->  	if (!ret)
->  		return ret;
-> @@ -158,6 +165,9 @@ static void ek_add_device_lcdc(void) {}
->  
->  static int at91sam9x5ek_devices_init(void)
->  {
-> +	if (!of_machine_is_compatible("atmel,at91sam9x5ek"))
-> +		return 0;
-> +
->  	ek_add_device_lcdc();
->  
->  	armlinux_set_architecture(CONFIG_MACH_AT91SAM9X5EK);
-> @@ -171,6 +181,9 @@ device_initcall(at91sam9x5ek_devices_init);
->  
->  static int at91sam9x5ek_console_init(void)
->  {
-> +	if (!of_machine_is_compatible("atmel,at91sam9x5ek"))
-> +		return 0;
-> +
->  	barebox_set_model("Atmel at91sam9x5-ek");
->  	barebox_set_hostname("at91sam9x5-ek");
->  
-> -- 
-> 2.14.3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index 35a9ce7ea823..2b8fa63c0641 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -319,6 +319,8 @@ static struct phy_device *of_mdio_find_phy(struct eth_device *edev)
+ {
+ 	struct device_d *dev;
+ 	struct device_node *phy_node;
++	struct mii_bus *bus;
++	int addr;
+ 
+ 	if (!IS_ENABLED(CONFIG_OFDEVICE))
+ 		return NULL;
+@@ -340,6 +342,16 @@ static struct phy_device *of_mdio_find_phy(struct eth_device *edev)
+ 	if (!phy_node)
+ 		return NULL;
+ 
++	if (!of_property_read_u32(phy_node, "reg", &addr)) {
++		for_each_mii_bus(bus) {
++			if (bus->parent->device_node == phy_node->parent) {
++				struct phy_device *phy = mdiobus_scan(bus, addr);
++				if (!IS_ERR(phy))
++					return phy;
++			}
++		}
++	}
++
+ 	bus_for_each_device(&mdio_bus_type, dev) {
+ 		if (dev->device_node == phy_node)
+ 			return container_of(dev, struct phy_device, dev);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
