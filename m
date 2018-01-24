@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eeFkr-0005Th-TC
+ id 1eeFkr-0005Ti-Si
  for barebox@lists.infradead.org; Wed, 24 Jan 2018 07:46:01 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 24 Jan 2018 08:45:27 +0100
-Message-Id: <20180124074534.7966-1-s.hauer@pengutronix.de>
+Date: Wed, 24 Jan 2018 08:45:28 +0100
+Message-Id: <20180124074534.7966-2-s.hauer@pengutronix.de>
+In-Reply-To: <20180124074534.7966-1-s.hauer@pengutronix.de>
+References: <20180124074534.7966-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/7] Make TFTP detection more convenient
+Subject: [PATCH 1/7] startup: create /tmp
 To: Barebox List <barebox@lists.infradead.org>
 
-We can't lseek on files provided by TFTP, so some code copies the file
-to operate on from TFTP to RAM before continuing. Make this a bit easier
-by providing some helper code. We now create /tmp/, provide make_temp()
-to create temporary files and also a single function to create a copy
-of a file in /tmp/.
+Some commands create temporary files in /. Create /tmp to offer
+these commands an appropriate place for storing temporary files.
 
-Sascha Hauer (7):
-  startup: create /tmp
-  fs: implement is_tftp_fs()
-  libfile: implement make_temp
-  libfile: implement a function to cache a file
-  uimage: Use is_tftp_fs() and cache_file() to ease TFTP workaround
-  fs/uimagefs: Use is_tftp_fs() and cache_file() to ease TFTP workaround
-  fs: remove now unused function can_lseek_backward()
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/startup.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- common/startup.c   |  1 +
- common/uimage.c    | 47 ++++++++++++++++++++++-------------------------
- fs/fs.c            | 22 ++++++++++++++++++++++
- fs/uimagefs.c      | 33 ++++++++++-----------------------
- include/fs.h       | 20 +++++---------------
- include/image.h    |  1 +
- include/libfile.h  |  4 ++++
- include/uimagefs.h |  2 +-
- lib/libfile.c      | 54 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 9 files changed, 120 insertions(+), 64 deletions(-)
-
+diff --git a/common/startup.c b/common/startup.c
+index 432be67cd6..8553849cb3 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -54,6 +54,7 @@ static int mount_root(void)
+ {
+ 	mount("none", "ramfs", "/", NULL);
+ 	mkdir("/dev", 0);
++	mkdir("/tmp", 0);
+ 	mount("none", "devfs", "/dev", NULL);
+ 
+ 	if (IS_ENABLED(CONFIG_FS_EFIVARFS)) {
 -- 
 2.11.0
 
