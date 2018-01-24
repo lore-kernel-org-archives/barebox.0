@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from stcim.de ([2a01:4f8:120:63a3::2])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eeQtb-0004Nd-QG
- for barebox@lists.infradead.org; Wed, 24 Jan 2018 19:39:45 +0000
-Date: Wed, 24 Jan 2018 20:39:28 +0100
+ id 1eeR9r-0003Dj-97
+ for barebox@lists.infradead.org; Wed, 24 Jan 2018 19:56:33 +0000
+Date: Wed, 24 Jan 2018 20:56:17 +0100
 From: Stefan Lengfeld <contact@stefanchrist.eu>
-Message-ID: <20180124193928.GC521@porty>
+Message-ID: <20180124195617.GD521@porty>
 References: <20180124074534.7966-1-s.hauer@pengutronix.de>
- <20180124074534.7966-6-s.hauer@pengutronix.de>
+ <20180124074534.7966-7-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180124074534.7966-6-s.hauer@pengutronix.de>
+In-Reply-To: <20180124074534.7966-7-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,60 +23,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/7] uimage: Use is_tftp_fs() and cache_file() to ease
- TFTP workaround
+Subject: Re: [PATCH 6/7] fs/uimagefs: Use is_tftp_fs() and cache_file() to
+ ease TFTP workaround
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: Barebox List <barebox@lists.infradead.org>
 
 Hi Sascha,
 
-On Wed, Jan 24, 2018 at 08:45:32AM +0100, Sascha Hauer wrote:
+On Wed, Jan 24, 2018 at 08:45:33AM +0100, Sascha Hauer wrote:
 > We have helper functions now to ease file caching when a file
 > is on TFTP. Use them.
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  common/uimage.c | 47 ++++++++++++++++++++++-------------------------
->  include/image.h |  1 +
->  2 files changed, 23 insertions(+), 25 deletions(-)
+>  fs/uimagefs.c      | 33 ++++++++++-----------------------
+>  include/uimagefs.h |  2 +-
+>  2 files changed, 11 insertions(+), 24 deletions(-)
 > 
-> diff --git a/common/uimage.c b/common/uimage.c
-> index b6f0f109ca..18bc2e5d7b 100644
-> --- a/common/uimage.c
-> +++ b/common/uimage.c
-> @@ -85,8 +85,6 @@ ssize_t uimage_get_size(struct uimage_handle *handle, unsigned int image_no)
->  }
->  EXPORT_SYMBOL(uimage_get_size);
->  
-> -static const char uimage_tmp[] = "/.uImage_tmp";
-> -
->  /*
->   * open a uimage. This will check the header contents and
->   * return a handle to the uImage
-> @@ -99,32 +97,26 @@ struct uimage_handle *uimage_open(const char *filename)
->  	struct image_header *header;
->  	int i;
->  	int ret;
+> diff --git a/fs/uimagefs.c b/fs/uimagefs.c
+> index c0c5750c2c..2607d285f1 100644
+> --- a/fs/uimagefs.c
+> +++ b/fs/uimagefs.c
+> @@ -196,7 +196,6 @@ static void uimagefs_remove(struct device_d *dev)
+>  {
+>  	struct uimagefs_handle *priv = dev->priv;
+>  	struct uimagefs_handle_data *d, *tmp;
 > -	struct stat s;
-> +	char *copy = NULL;
-> +
-> +	if (is_tftp_fs(filename)) {
-> +		ret = cache_file(filename, &copy);
-> +		if (ret)
-> +			return NULL;
-> +		filename = copy;
+>  
+>  	list_for_each_entry_safe(d, tmp, &priv->list, list) {
+>  		free(d->name);
+> @@ -204,10 +203,11 @@ static void uimagefs_remove(struct device_d *dev)
+>  		free(d);
+>  	}
+>  
+> -	if (IS_BUILTIN(CONFIG_FS_TFTP) && !stat(priv->tmp, &s))
+> -		unlink(priv->tmp);
+> +	if (priv->copy) {
+> +		unlink(priv->copy);
+> +		free(priv->copy);
 > +	}
 >  
+> -	free(priv->tmp);
+>  	free(priv);
+>  }
+>  
+> @@ -364,27 +364,18 @@ static int __uimage_open(struct uimagefs_handle *priv)
+>  	size_t offset = 0;
+>  	size_t data_offset = 0;
+>  
 > -again:
->  	fd = open(filename, O_RDONLY);
+> +	if (is_tftp_fs(priv->filename)) {
+> +		ret = cache_file(priv->filename, &priv->copy);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+>  	fd = open(priv->filename, O_RDONLY);
+
+Same pattern as in the previous patch, but slightly different code :-)
+
+The open() call must use the newly created file in 'priv->copy' and not
+open the non-seekable file in 'priv-filename' again (if the file was not
+seekable of course). Maybe copy the contents of priv->filename to
+priv->copy in the seekable case.
+
++1 for removing the backwards jumping goto-statement that hides this
+   magic.
+
 >  	if (fd < 0) {
 >  		printf("could not open: %s\n", errno_str());
+>  		return fd;
 
-Leaking the allocated string in 'copy' here. Missing code:
+Just a note: Since the struct uimagefs_handle is caller allocated, the
+caller takes care of freeing the priv->copy string with function
+uimagefs_remove() in case of an error. So no leaking string here.
 
-                free(copy);
 
->  		return NULL;
+All in all. Nice cleanup work.
+
+Kind regards,
+Stefan
+
 >  	}
 >  
 > -	/*
@@ -86,81 +113,40 @@ Leaking the allocated string in 'copy' here. Missing code:
 > -	 */
 > -	if (IS_BUILTIN(CONFIG_FS_TFTP) && !can_lseek_backward(fd)) {
 > -		close(fd);
-> -		ret = copy_file(filename, uimage_tmp, 0);
+> -		ret = copy_file(priv->filename, priv->tmp, 0);
 > -		if (ret)
-> -			return NULL;
-> -		filename = uimage_tmp;
+> -			return ret;
+> -		priv->filename = priv->tmp;
 > -		goto again;
 > -	}
 > -
->  	handle = xzalloc(sizeof(struct uimage_handle));
->  	header = &handle->header;
+>  	header = &priv->header;
 >  
-> +	handle->copy = copy;
-> +
->  	if (read(fd, header, sizeof(*header)) < 0) {
->  		printf("could not read: %s\n", errno_str());
->  		goto err_out;
-> @@ -202,9 +194,13 @@ again:
->  	return handle;
->  err_out:
->  	close(fd);
-> +
-> +	if (handle->copy) {
-> +		unlink(handle->copy);
-> +		free(handle->copy);
-> +	}
-
-Not introduced by this patch, but here the line 
-
-        free(handle->name);
-
-is missing. The function uimage_close() below frees the string in 'name'
-correctly, but the free call is absent in this error path.
-
-Kind regards,
-Stefan
-
->  	free(handle);
-> -	if (IS_BUILTIN(CONFIG_FS_TFTP) && !stat(uimage_tmp, &s))
-> -		unlink(uimage_tmp);
-> +
->  	return NULL;
->  }
->  EXPORT_SYMBOL(uimage_open);
-> @@ -214,14 +210,15 @@ EXPORT_SYMBOL(uimage_open);
->   */
->  void uimage_close(struct uimage_handle *handle)
->  {
-> -	struct stat s;
-> -
->  	close(handle->fd);
-> +
-> +	if (handle->copy) {
-> +		unlink(handle->copy);
-> +		free(handle->copy);
-> +	}
-> +
->  	free(handle->name);
->  	free(handle);
-> -
-> -	if (IS_BUILTIN(CONFIG_FS_TFTP) && !stat(uimage_tmp, &s))
-> -		unlink(uimage_tmp);
->  }
->  EXPORT_SYMBOL(uimage_close);
+>  	ret = read(fd, header, sizeof(*header));
+> @@ -514,10 +505,6 @@ static int uimagefs_probe(struct device_d *dev)
+>  	priv->filename = fsdev->backingstore;
+>  	dev_dbg(dev, "mount: %s\n", fsdev->backingstore);
 >  
-> diff --git a/include/image.h b/include/image.h
-> index 3e75d49b88..add9c85874 100644
-> --- a/include/image.h
-> +++ b/include/image.h
-> @@ -246,6 +246,7 @@ struct resource *file_to_sdram(const char *filename, unsigned long adr);
->  struct uimage_handle {
+> -	if (IS_BUILTIN(CONFIG_FS_TFTP))
+> -		priv->tmp = basprintf("/.uImage_tmp_%08x",
+> -					crc32(0, fsdev->path, strlen(fsdev->path)));
+> -
+>  	ret = __uimage_open(priv);
+>  	if (ret)
+>  		goto err;
+> diff --git a/include/uimagefs.h b/include/uimagefs.h
+> index 81b32310ad..3f58589b73 100644
+> --- a/include/uimagefs.h
+> +++ b/include/uimagefs.h
+> @@ -45,7 +45,7 @@ struct uimagefs_handle {
 >  	struct image_header header;
->  	char *name;
-> +	char *copy;
->  	struct uimage_handle_data ihd[MAX_MULTI_IMAGE_COUNT];
 >  	int nb_data_entries;
->  	size_t data_offset;
+>  	char *filename;
+> -	char *tmp;
+> +	char *copy;
+>  
+>  	struct list_head list;
+>  };
 > -- 
 > 2.11.0
 > 
