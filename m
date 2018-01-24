@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from stcim.de ([2a01:4f8:120:63a3::2])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eeQeW-0005i6-Gi
- for barebox@lists.infradead.org; Wed, 24 Jan 2018 19:24:10 +0000
-Date: Wed, 24 Jan 2018 20:23:51 +0100
+ id 1eeQtb-0004Nd-QG
+ for barebox@lists.infradead.org; Wed, 24 Jan 2018 19:39:45 +0000
+Date: Wed, 24 Jan 2018 20:39:28 +0100
 From: Stefan Lengfeld <contact@stefanchrist.eu>
-Message-ID: <20180124192351.GB521@porty>
+Message-ID: <20180124193928.GC521@porty>
 References: <20180124074534.7966-1-s.hauer@pengutronix.de>
- <20180124074534.7966-5-s.hauer@pengutronix.de>
+ <20180124074534.7966-6-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180124074534.7966-5-s.hauer@pengutronix.de>
+In-Reply-To: <20180124074534.7966-6-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,83 +23,144 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/7] libfile: implement a function to cache a file
+Subject: Re: [PATCH 5/7] uimage: Use is_tftp_fs() and cache_file() to ease
+ TFTP workaround
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
 
 Hi Sascha,
 
-On Wed, Jan 24, 2018 at 08:45:31AM +0100, Sascha Hauer wrote:
-> Due to the nature of TFTP which can't lseek and due to the silliness
-> of our filesystem implementation which can't cache accesses we have to
-> manually cache files on TFTP filesystems sometimes. Make it easier
-> for them by providing a cache_file() function which copies the file
-> from TFTP to RAM.
+On Wed, Jan 24, 2018 at 08:45:32AM +0100, Sascha Hauer wrote:
+> We have helper functions now to ease file caching when a file
+> is on TFTP. Use them.
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  include/libfile.h |  2 ++
->  lib/libfile.c     | 27 +++++++++++++++++++++++++++
->  2 files changed, 29 insertions(+)
+>  common/uimage.c | 47 ++++++++++++++++++++++-------------------------
+>  include/image.h |  1 +
+>  2 files changed, 23 insertions(+), 25 deletions(-)
 > 
-> diff --git a/include/libfile.h b/include/libfile.h
-> index 6dbb81a241..beec7cff79 100644
-> --- a/include/libfile.h
-> +++ b/include/libfile.h
-> @@ -28,4 +28,6 @@ int unlink_recursive(const char *path, char **failedpath);
->  
->  char *make_temp(const char *template);
->  
-> +int cache_file(const char *path, char **newpath);
-> +
->  #endif /* __LIBFILE_H */
-> diff --git a/lib/libfile.c b/lib/libfile.c
-> index 79054eb5ac..738ff1287d 100644
-> --- a/lib/libfile.c
-> +++ b/lib/libfile.c
-> @@ -512,3 +512,30 @@ char *make_temp(const char *template)
->  
->  	return name;
+> diff --git a/common/uimage.c b/common/uimage.c
+> index b6f0f109ca..18bc2e5d7b 100644
+> --- a/common/uimage.c
+> +++ b/common/uimage.c
+> @@ -85,8 +85,6 @@ ssize_t uimage_get_size(struct uimage_handle *handle, unsigned int image_no)
 >  }
+>  EXPORT_SYMBOL(uimage_get_size);
+>  
+> -static const char uimage_tmp[] = "/.uImage_tmp";
+> -
+>  /*
+>   * open a uimage. This will check the header contents and
+>   * return a handle to the uImage
+> @@ -99,32 +97,26 @@ struct uimage_handle *uimage_open(const char *filename)
+>  	struct image_header *header;
+>  	int i;
+>  	int ret;
+> -	struct stat s;
+> +	char *copy = NULL;
 > +
-> +/**
-> + * cache_file - Cache a file in /tmp
-> + * @path:	The file to cache
-> + * @newpath:	The return path where the file is copied to
-> + *
-> + * This function copies a given file to /tmp and returns its name in @newpath.
+> +	if (is_tftp_fs(filename)) {
+> +		ret = cache_file(filename, &copy);
+> +		if (ret)
+> +			return NULL;
+> +		filename = copy;
+> +	}
+>  
+> -again:
+>  	fd = open(filename, O_RDONLY);
+>  	if (fd < 0) {
+>  		printf("could not open: %s\n", errno_str());
 
-Maybe add an additional note here that the caller is responsible for
-freeing the string returned in @newpath when the function exists
-successfully. The string is allocated by the make_temp() function.
+Leaking the allocated string in 'copy' here. Missing code:
 
-> + *
-> + * Return: 0 for success, negative error code otherwise.
-> + */
-> +int cache_file(const char *path, char **newpath)
-> +{
-> +	char *npath;
-> +	int ret;
+                free(copy);
+
+>  		return NULL;
+>  	}
+>  
+> -	/*
+> -	 * Hack around tftp fs. We need lseek for uImage support, but
+> -	 * this cannot be implemented in tftp fs, so we detect this
+> -	 * and copy the file to ram if it fails
+> -	 */
+> -	if (IS_BUILTIN(CONFIG_FS_TFTP) && !can_lseek_backward(fd)) {
+> -		close(fd);
+> -		ret = copy_file(filename, uimage_tmp, 0);
+> -		if (ret)
+> -			return NULL;
+> -		filename = uimage_tmp;
+> -		goto again;
+> -	}
+> -
+>  	handle = xzalloc(sizeof(struct uimage_handle));
+>  	header = &handle->header;
+>  
+> +	handle->copy = copy;
 > +
-> +	npath = make_temp("filecache-");
+>  	if (read(fd, header, sizeof(*header)) < 0) {
+>  		printf("could not read: %s\n", errno_str());
+>  		goto err_out;
+> @@ -202,9 +194,13 @@ again:
+>  	return handle;
+>  err_out:
+>  	close(fd);
+> +
+> +	if (handle->copy) {
+> +		unlink(handle->copy);
+> +		free(handle->copy);
+> +	}
 
-No dash suffix needed in "filecache-". The make_temp() function already
-adds a dash separator.
+Not introduced by this patch, but here the line 
+
+        free(handle->name);
+
+is missing. The function uimage_close() below frees the string in 'name'
+correctly, but the free call is absent in this error path.
 
 Kind regards,
 Stefan
 
+>  	free(handle);
+> -	if (IS_BUILTIN(CONFIG_FS_TFTP) && !stat(uimage_tmp, &s))
+> -		unlink(uimage_tmp);
 > +
-> +	ret = copy_file(path, npath, 0);
-> +	if (ret) {
-> +		free(npath);
-> +		return ret;
+>  	return NULL;
+>  }
+>  EXPORT_SYMBOL(uimage_open);
+> @@ -214,14 +210,15 @@ EXPORT_SYMBOL(uimage_open);
+>   */
+>  void uimage_close(struct uimage_handle *handle)
+>  {
+> -	struct stat s;
+> -
+>  	close(handle->fd);
+> +
+> +	if (handle->copy) {
+> +		unlink(handle->copy);
+> +		free(handle->copy);
 > +	}
 > +
-> +	*newpath = npath;
-> +
-> +	return 0;
-> +}
+>  	free(handle->name);
+>  	free(handle);
+> -
+> -	if (IS_BUILTIN(CONFIG_FS_TFTP) && !stat(uimage_tmp, &s))
+> -		unlink(uimage_tmp);
+>  }
+>  EXPORT_SYMBOL(uimage_close);
+>  
+> diff --git a/include/image.h b/include/image.h
+> index 3e75d49b88..add9c85874 100644
+> --- a/include/image.h
+> +++ b/include/image.h
+> @@ -246,6 +246,7 @@ struct resource *file_to_sdram(const char *filename, unsigned long adr);
+>  struct uimage_handle {
+>  	struct image_header header;
+>  	char *name;
+> +	char *copy;
+>  	struct uimage_handle_data ihd[MAX_MULTI_IMAGE_COUNT];
+>  	int nb_data_entries;
+>  	size_t data_offset;
 > -- 
 > 2.11.0
 > 
