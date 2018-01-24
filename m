@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eeFkr-0005Ti-Si
+ id 1eeFkr-0005TU-TC
  for barebox@lists.infradead.org; Wed, 24 Jan 2018 07:46:01 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 24 Jan 2018 08:45:28 +0100
-Message-Id: <20180124074534.7966-2-s.hauer@pengutronix.de>
+Date: Wed, 24 Jan 2018 08:45:34 +0100
+Message-Id: <20180124074534.7966-8-s.hauer@pengutronix.de>
 In-Reply-To: <20180124074534.7966-1-s.hauer@pengutronix.de>
 References: <20180124074534.7966-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,29 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] startup: create /tmp
+Subject: [PATCH 7/7] fs: remove now unused function can_lseek_backward()
 To: Barebox List <barebox@lists.infradead.org>
-
-Some commands create temporary files in /. Create /tmp to offer
-these commands an appropriate place for storing temporary files.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/startup.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/fs.h | 20 --------------------
+ 1 file changed, 20 deletions(-)
 
-diff --git a/common/startup.c b/common/startup.c
-index 432be67cd6..8553849cb3 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -54,6 +54,7 @@ static int mount_root(void)
- {
- 	mount("none", "ramfs", "/", NULL);
- 	mkdir("/dev", 0);
-+	mkdir("/tmp", 0);
- 	mount("none", "devfs", "/dev", NULL);
+diff --git a/include/fs.h b/include/fs.h
+index 5a50d9b9e4..2d08add01a 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -101,26 +101,6 @@ struct fs_device_d {
+ 	char *linux_rootarg;
+ };
  
- 	if (IS_ENABLED(CONFIG_FS_EFIVARFS)) {
+-/*
+- * Some filesystems i.e. tftpfs only support lseek into one direction.
+- * To detect this limited functionality we add this extra function.
+- * Additionaly we also return 0 if we even can not seek forward.
+- */
+-static inline int can_lseek_backward(int fd)
+-{
+-	int ret;
+-
+-	ret = lseek(fd, 1, SEEK_SET);
+-	if (ret < 0)
+-		return 0;
+-
+-	ret = lseek(fd, 0, SEEK_SET);
+-	if (ret < 0)
+-		return 0;
+-
+-	return 1;
+-}
+-
+ bool __is_tftp_fs(const char *path);
+ 
+ static inline bool is_tftp_fs(const char *path)
 -- 
 2.11.0
 
