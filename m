@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from stcim.de ([2a01:4f8:120:63a3::2])
+Received: from stcim.de ([78.46.90.227])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eeR9r-0003Dj-97
- for barebox@lists.infradead.org; Wed, 24 Jan 2018 19:56:33 +0000
-Date: Wed, 24 Jan 2018 20:56:17 +0100
+ id 1eeQU6-0001Xr-CA
+ for barebox@lists.infradead.org; Wed, 24 Jan 2018 19:13:24 +0000
+Date: Wed, 24 Jan 2018 20:12:38 +0100
 From: Stefan Lengfeld <contact@stefanchrist.eu>
-Message-ID: <20180124195617.GD521@porty>
+Message-ID: <20180124191238.GA521@porty>
 References: <20180124074534.7966-1-s.hauer@pengutronix.de>
- <20180124074534.7966-7-s.hauer@pengutronix.de>
+ <20180124074534.7966-3-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180124074534.7966-7-s.hauer@pengutronix.de>
+In-Reply-To: <20180124074534.7966-3-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,139 +23,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/7] fs/uimagefs: Use is_tftp_fs() and cache_file() to
- ease TFTP workaround
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 2/7] fs: implement is_tftp_fs()
+To: barebox@lists.infradead.org
 
 Hi Sascha,
 
-On Wed, Jan 24, 2018 at 08:45:33AM +0100, Sascha Hauer wrote:
-> We have helper functions now to ease file caching when a file
-> is on TFTP. Use them.
+On Wed, Jan 24, 2018 at 08:45:29AM +0100, Sascha Hauer wrote:
+> Some commands need files in which they can lseek backwards which
+> is particularly not possible on TFTP. Instead of hiding this
+> behind can_lseek_backward() create a function for it which tests
+> if the file is on TFTP directly rather than using different
+> lseek operations.
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  fs/uimagefs.c      | 33 ++++++++++-----------------------
->  include/uimagefs.h |  2 +-
->  2 files changed, 11 insertions(+), 24 deletions(-)
+>  fs/fs.c      | 22 ++++++++++++++++++++++
+>  include/fs.h | 10 ++++++++++
+>  2 files changed, 32 insertions(+)
 > 
-> diff --git a/fs/uimagefs.c b/fs/uimagefs.c
-> index c0c5750c2c..2607d285f1 100644
-> --- a/fs/uimagefs.c
-> +++ b/fs/uimagefs.c
-> @@ -196,7 +196,6 @@ static void uimagefs_remove(struct device_d *dev)
->  {
->  	struct uimagefs_handle *priv = dev->priv;
->  	struct uimagefs_handle_data *d, *tmp;
-> -	struct stat s;
+> diff --git a/fs/fs.c b/fs/fs.c
+> index 6f15e93ba9..e073e3577d 100644
+> --- a/fs/fs.c
+> +++ b/fs/fs.c
+> @@ -1906,3 +1906,25 @@ char *path_get_linux_rootarg(const char *path)
 >  
->  	list_for_each_entry_safe(d, tmp, &priv->list, list) {
->  		free(d->name);
-> @@ -204,10 +203,11 @@ static void uimagefs_remove(struct device_d *dev)
->  		free(d);
->  	}
->  
-> -	if (IS_BUILTIN(CONFIG_FS_TFTP) && !stat(priv->tmp, &s))
-> -		unlink(priv->tmp);
-> +	if (priv->copy) {
-> +		unlink(priv->copy);
-> +		free(priv->copy);
-> +	}
->  
-> -	free(priv->tmp);
->  	free(priv);
+>  	return xstrdup(str);
+>  }
+> +
+> +/**
+> + * __is_tftp_fs() - return true when path is mounted on TFTP
+> + * @path: The path
+> + *
+> + * Do not use directly, use is_tftp_fs instead.
+> + *
+> + * Return: true when @path is on TFTP, false otherwise
+> + */
+> +bool __is_tftp_fs(const char *path)
+> +{
+> +	struct fs_device_d *fsdev;
+> +
+> +	fsdev = get_fsdevice_by_path(path);
+> +	if (!fsdev)
+> +		return false;
+> +
+> +	if (strcmp(fsdev->driver->drv.name, "tftp"))
+> +		return false;
+> +
+> +	return true;
+> +}
+> diff --git a/include/fs.h b/include/fs.h
+> index 3d88bfad4a..5a50d9b9e4 100644
+> --- a/include/fs.h
+> +++ b/include/fs.h
+> @@ -121,6 +121,16 @@ static inline int can_lseek_backward(int fd)
+>  	return 1;
 >  }
 >  
-> @@ -364,27 +364,18 @@ static int __uimage_open(struct uimagefs_handle *priv)
->  	size_t offset = 0;
->  	size_t data_offset = 0;
->  
-> -again:
-> +	if (is_tftp_fs(priv->filename)) {
-> +		ret = cache_file(priv->filename, &priv->copy);
-> +		if (ret)
-> +			return ret;
-> +	}
+> +bool __is_tftp_fs(const char *path);
 > +
->  	fd = open(priv->filename, O_RDONLY);
+> +static inline bool is_tftp_fs(const char *path)
+> +{
+> +	if (!IS_ENABLED(CONFIG_FS_TFTP))
+> +		return 0;
 
-Same pattern as in the previous patch, but slightly different code :-)
-
-The open() call must use the newly created file in 'priv->copy' and not
-open the non-seekable file in 'priv-filename' again (if the file was not
-seekable of course). Maybe copy the contents of priv->filename to
-priv->copy in the seekable case.
-
-+1 for removing the backwards jumping goto-statement that hides this
-   magic.
-
->  	if (fd < 0) {
->  		printf("could not open: %s\n", errno_str());
->  		return fd;
-
-Just a note: Since the struct uimagefs_handle is caller allocated, the
-caller takes care of freeing the priv->copy string with function
-uimagefs_remove() in case of an error. So no leaking string here.
-
-
-All in all. Nice cleanup work.
+Nitpick: Maybe use 'false' instead of '0', because return value is a
+boolean.
 
 Kind regards,
 Stefan
-
->  	}
->  
-> -	/*
-> -	 * Hack around tftp fs. We need lseek for uImage support, but
-> -	 * this cannot be implemented in tftp fs, so we detect this
-> -	 * and copy the file to ram if it fails
-> -	 */
-> -	if (IS_BUILTIN(CONFIG_FS_TFTP) && !can_lseek_backward(fd)) {
-> -		close(fd);
-> -		ret = copy_file(priv->filename, priv->tmp, 0);
-> -		if (ret)
-> -			return ret;
-> -		priv->filename = priv->tmp;
-> -		goto again;
-> -	}
-> -
->  	header = &priv->header;
->  
->  	ret = read(fd, header, sizeof(*header));
-> @@ -514,10 +505,6 @@ static int uimagefs_probe(struct device_d *dev)
->  	priv->filename = fsdev->backingstore;
->  	dev_dbg(dev, "mount: %s\n", fsdev->backingstore);
->  
-> -	if (IS_BUILTIN(CONFIG_FS_TFTP))
-> -		priv->tmp = basprintf("/.uImage_tmp_%08x",
-> -					crc32(0, fsdev->path, strlen(fsdev->path)));
-> -
->  	ret = __uimage_open(priv);
->  	if (ret)
->  		goto err;
-> diff --git a/include/uimagefs.h b/include/uimagefs.h
-> index 81b32310ad..3f58589b73 100644
-> --- a/include/uimagefs.h
-> +++ b/include/uimagefs.h
-> @@ -45,7 +45,7 @@ struct uimagefs_handle {
->  	struct image_header header;
->  	int nb_data_entries;
->  	char *filename;
-> -	char *tmp;
-> +	char *copy;
->  
->  	struct list_head list;
->  };
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 _______________________________________________
 barebox mailing list
