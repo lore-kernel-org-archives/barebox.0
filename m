@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ecWrD-0003hL-KF
- for barebox@lists.infradead.org; Fri, 19 Jan 2018 13:37:25 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri, 19 Jan 2018 14:37:09 +0100
-Message-Id: <20180119133709.27477-1-u.kleine-koenig@pengutronix.de>
+ id 1eebkr-0005RJ-6t
+ for barebox@lists.infradead.org; Thu, 25 Jan 2018 07:15:27 +0000
+Date: Thu, 25 Jan 2018 08:15:13 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180125071513.3o27lvaxwtnmph64@pengutronix.de>
+References: <20180122105958.15354-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180122105958.15354-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,23 +18,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands/Kconfig: Fix tpyo
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] i2c: read/write_reg: don't assume client->dev to be valid
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-cy9QcmluZy9QcmludC8KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWlu
-ZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogY29tbWFuZHMvS2NvbmZpZyB8IDIgKy0KIDEg
-ZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBh
-L2NvbW1hbmRzL0tjb25maWcgYi9jb21tYW5kcy9LY29uZmlnCmluZGV4IGVlZTRiNmFlZTg3Mi4u
-NzJmYWRiNmM3MDNhIDEwMDY0NAotLS0gYS9jb21tYW5kcy9LY29uZmlnCisrKyBiL2NvbW1hbmRz
-L0tjb25maWcKQEAgLTIzNCw3ICsyMzQsNyBAQCBjb25maWcgQ01EX1ZFUlNJT04KIAlkZXBlbmRz
-IG9uIEJBTk5FUgogCXByb21wdCAidmVyc2lvbiIKIAloZWxwCi0JICBQcmluZyBiYXJlYm94IHZl
-cnNpb24uIEV4YW1wbGU6CisJICBQcmludCBiYXJlYm94IHZlcnNpb24uIEV4YW1wbGU6CiAKIAkg
-IGJhcmVib3ggMjAxNC4wNS4wLTAwMTQyLWdiMjg5MzczICMxNzcgTW9uIE1heSAxMiAyMDozNTo1
-NSBDRVNUIDIwMTQKIAotLSAKMi4xMS4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+On Mon, Jan 22, 2018 at 11:59:58AM +0100, Uwe Kleine-K=F6nig wrote:
+> When using the barebox commands i2c_read or i2c_write the client pointer
+> passed to the respective function isn't completely initialized. This
+> makes
+> =
+
+> 	dev_dbg(&client->dev, ...);
+> =
+
+> choke as it dereferences client->dev.driver->name with
+> client->dev.driver being a random value.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  drivers/i2c/i2c.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+> =
+
+> diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
+> index fa2c0cd13697..e9e757558561 100644
+> --- a/drivers/i2c/i2c.c
+> +++ b/drivers/i2c/i2c.c
+> @@ -184,7 +184,7 @@ int i2c_read_reg(struct i2c_client *client, u32 addr,=
+ u8 *buf, u16 count)
+>  	msg->len =3D i;
+>  =
+
+>  	status =3D i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
+> -	dev_dbg(&client->dev, "%s: %u@%u --> %d\n", __func__,
+> +	dev_dbg(&client->adapter->dev, "%s: %u@%u --> %d\n", __func__,
+>  		count, addr, status);
+>  =
+
+>  	if (status =3D=3D ARRAY_SIZE(msg))
+> @@ -217,7 +217,7 @@ int i2c_write_reg(struct i2c_client *client, u32 addr=
+, const u8 *buf, u16 count)
+>  	memcpy(msg->buf + i, buf, count);
+>  =
+
+>  	status =3D i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
+> -	dev_dbg(&client->dev, "%s: %u@%u --> %d\n", __func__,
+> +	dev_dbg(&client->adapter->dev, "%s: %u@%u --> %d\n", __func__,
+>  		count, addr, status);
+>  =
+
+>  	if (status =3D=3D ARRAY_SIZE(msg))
+> -- =
+
+> 2.11.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
