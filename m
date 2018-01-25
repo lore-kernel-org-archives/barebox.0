@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eecE2-0005gY-DQ
- for barebox@lists.infradead.org; Thu, 25 Jan 2018 07:45:41 +0000
+ id 1eecE2-0005h0-DN
+ for barebox@lists.infradead.org; Thu, 25 Jan 2018 07:45:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 25 Jan 2018 08:45:15 +0100
-Message-Id: <20180125074520.10320-4-s.hauer@pengutronix.de>
+Date: Thu, 25 Jan 2018 08:45:20 +0100
+Message-Id: <20180125074520.10320-9-s.hauer@pengutronix.de>
 In-Reply-To: <20180125074520.10320-1-s.hauer@pengutronix.de>
 References: <20180125074520.10320-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,74 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] libfile: implement make_temp
+Subject: [PATCH 8/8] fs: remove now unused function can_lseek_backward()
 To: Barebox List <barebox@lists.infradead.org>
-
-Create a make_temp() function which creates a name for a temporary file.
-Since we do not have any concurrency in barebox we do not need to create
-the file right away and can leave that to the caller. Unlike unix
-mktemp the resulting filename is dynamically allocated and must be
-freed by the caller.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/libfile.h |  2 ++
- lib/libfile.c     | 27 +++++++++++++++++++++++++++
- 2 files changed, 29 insertions(+)
+ include/fs.h | 20 --------------------
+ 1 file changed, 20 deletions(-)
 
-diff --git a/include/libfile.h b/include/libfile.h
-index dd0b00f988..6dbb81a241 100644
---- a/include/libfile.h
-+++ b/include/libfile.h
-@@ -26,4 +26,6 @@ int make_directory(const char *pathname);
+diff --git a/include/fs.h b/include/fs.h
+index d75a1ef644..e6fcd044dd 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -101,26 +101,6 @@ struct fs_device_d {
+ 	char *linux_rootarg;
+ };
  
- int unlink_recursive(const char *path, char **failedpath);
+-/*
+- * Some filesystems i.e. tftpfs only support lseek into one direction.
+- * To detect this limited functionality we add this extra function.
+- * Additionaly we also return 0 if we even can not seek forward.
+- */
+-static inline int can_lseek_backward(int fd)
+-{
+-	int ret;
+-
+-	ret = lseek(fd, 1, SEEK_SET);
+-	if (ret < 0)
+-		return 0;
+-
+-	ret = lseek(fd, 0, SEEK_SET);
+-	if (ret < 0)
+-		return 0;
+-
+-	return 1;
+-}
+-
+ bool __is_tftp_fs(const char *path);
  
-+char *make_temp(const char *template);
-+
- #endif /* __LIBFILE_H */
-diff --git a/lib/libfile.c b/lib/libfile.c
-index 6b70306dbd..79054eb5ac 100644
---- a/lib/libfile.c
-+++ b/lib/libfile.c
-@@ -20,6 +20,7 @@
- #include <malloc.h>
- #include <libfile.h>
- #include <progress.h>
-+#include <stdlib.h>
- #include <linux/stat.h>
- 
- /*
-@@ -485,3 +486,29 @@ int open_and_lseek(const char *filename, int mode, loff_t pos)
- 
- 	return fd;
- }
-+
-+/**
-+ * make_temp - create a name for a temporary file
-+ * @template:	The filename prefix
-+ *
-+ * This function creates a name for a temporary file. @template is used as a
-+ * template for the name which gets appended a 8-digit hexadecimal number to
-+ * create a unique filename.
-+ *
-+ * Return: This function returns a filename which can be used as a temporary
-+ *         file lateron. The returned filename must be freed by the caller.
-+ */
-+char *make_temp(const char *template)
-+{
-+	char *name = NULL;
-+	struct stat s;
-+	int ret;
-+
-+	do {
-+		free(name);
-+		name = basprintf("/tmp/%s-%08x", template, random32());
-+		ret = stat(name, &s);
-+	} while (!ret);
-+
-+	return name;
-+}
+ static inline bool is_tftp_fs(const char *path)
 -- 
 2.15.1
 
