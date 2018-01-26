@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x242.google.com ([2a00:1450:400c:c0c::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1efuXX-0000Au-0l
- for barebox@lists.infradead.org; Sun, 28 Jan 2018 21:31:04 +0000
-Received: by mail-wr0-x242.google.com with SMTP id f11so5128367wre.4
- for <barebox@lists.infradead.org>; Sun, 28 Jan 2018 13:30:52 -0800 (PST)
-From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Sun, 28 Jan 2018 22:30:48 +0100
-Message-Id: <20180128213048.14450-1-aleksander@aleksander.es>
+ id 1ef9tZ-0004bz-EH
+ for barebox@lists.infradead.org; Fri, 26 Jan 2018 19:42:42 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 26 Jan 2018 20:42:27 +0100
+Message-Id: <20180126194227.32088-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +19,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ratp: remove unused list pointer from ratp_bb_pkt
-To: barebox@lists.infradead.org
-Cc: Aleksander Morgado <aleksander@aleksander.es>
+Subject: [PATCH] fs: Fix memory leak in mount()
+To: Barebox List <barebox@lists.infradead.org>
 
-This struct type is used in the RATP FS implementation, but was never
-used as a list element anywhere.
+"path" is allocated by normalise_path() and thus must be
+freed. This was done in the error path, but not in the success
+path.
 
-Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/ratp_bb.h | 2 --
- 1 file changed, 2 deletions(-)
+ fs/fs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/ratp_bb.h b/include/ratp_bb.h
-index 70fd58a67..f485f7d8a 100644
---- a/include/ratp_bb.h
-+++ b/include/ratp_bb.h
-@@ -2,8 +2,6 @@
- #define __RATP_BB_H
+diff --git a/fs/fs.c b/fs/fs.c
+index 6f15e93ba9..7d0d97906d 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -1392,6 +1392,8 @@ int mount(const char *device, const char *fsname, const char *_path,
+ 		fsdev_set_linux_rootarg(fsdev, str);
+ 	}
  
- struct ratp_bb_pkt {
--	struct list_head list;
--
- 	unsigned int len;
- 	uint8_t data[];
- };
++	free(path);
++
+ 	return 0;
+ 
+ err_no_driver:
 -- 
 2.15.1
 
