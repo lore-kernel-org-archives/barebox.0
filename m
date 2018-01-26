@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eeFkr-0005TW-Mg
- for barebox@lists.infradead.org; Wed, 24 Jan 2018 07:45:59 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 24 Jan 2018 08:45:33 +0100
-Message-Id: <20180124074534.7966-7-s.hauer@pengutronix.de>
-In-Reply-To: <20180124074534.7966-1-s.hauer@pengutronix.de>
-References: <20180124074534.7966-1-s.hauer@pengutronix.de>
+ id 1ef47c-00038J-Ih
+ for barebox@lists.infradead.org; Fri, 26 Jan 2018 13:32:52 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1ef47M-0005M4-JH
+ for barebox@lists.infradead.org; Fri, 26 Jan 2018 14:32:32 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Fri, 26 Jan 2018 14:32:32 +0100
+Message-Id: <20180126133232.4992-5-l.stach@pengutronix.de>
+In-Reply-To: <20180126133232.4992-1-l.stach@pengutronix.de>
+References: <20180126133232.4992-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,106 +26,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] fs/uimagefs: Use is_tftp_fs() and cache_file() to ease
- TFTP workaround
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v3 5/5] net/e1000: don't register EERPOM device if the content
+ is invalid
+To: barebox@lists.infradead.org
 
-We have helper functions now to ease file caching when a file
-is on TFTP. Use them.
+If the EEPROM content isn't valid, there is no point in registering the
+EEPROM device, as it will reject any read attempt anyway.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- fs/uimagefs.c      | 33 ++++++++++-----------------------
- include/uimagefs.h |  2 +-
- 2 files changed, 11 insertions(+), 24 deletions(-)
+ drivers/net/e1000/eeprom.c | 41 ++++++++++++++++++++++++-----------------
+ 1 file changed, 24 insertions(+), 17 deletions(-)
 
-diff --git a/fs/uimagefs.c b/fs/uimagefs.c
-index c0c5750c2c..2607d285f1 100644
---- a/fs/uimagefs.c
-+++ b/fs/uimagefs.c
-@@ -196,7 +196,6 @@ static void uimagefs_remove(struct device_d *dev)
- {
- 	struct uimagefs_handle *priv = dev->priv;
- 	struct uimagefs_handle_data *d, *tmp;
--	struct stat s;
+diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
+index b0408107bbdd..319910103eee 100644
+--- a/drivers/net/e1000/eeprom.c
++++ b/drivers/net/e1000/eeprom.c
+@@ -1556,15 +1556,6 @@ int e1000_register_eeprom(struct e1000_hw *hw)
  
- 	list_for_each_entry_safe(d, tmp, &priv->list, list) {
- 		free(d->name);
-@@ -204,10 +203,11 @@ static void uimagefs_remove(struct device_d *dev)
- 		free(d);
+ 	eecd = e1000_read_reg(hw, E1000_EECD);
+ 
+-	hw->eepromcdev.dev = hw->dev;
+-	hw->eepromcdev.ops = &e1000_eeprom_ops;
+-	hw->eepromcdev.name = xasprintf("e1000-eeprom%d", hw->dev->id);
+-	hw->eepromcdev.size = 0x1000;
+-
+-	ret = devfs_create(&hw->eepromcdev);
+-	if (ret < 0)
+-		return ret;
+-
+ 	if (eecd & E1000_EECD_AUTO_RD) {
+ 		if (eecd & E1000_EECD_EE_PRES) {
+ 			if (eecd & E1000_EECD_FLASH_IN_USE) {
+@@ -1587,6 +1578,18 @@ int e1000_register_eeprom(struct e1000_hw *hw)
+ 		dev_err(hw->dev, "Flash Auto-Read not done\n");
  	}
  
--	if (IS_BUILTIN(CONFIG_FS_TFTP) && !stat(priv->tmp, &s))
--		unlink(priv->tmp);
-+	if (priv->copy) {
-+		unlink(priv->copy);
-+		free(priv->copy);
-+	}
- 
--	free(priv->tmp);
- 	free(priv);
- }
- 
-@@ -364,27 +364,18 @@ static int __uimage_open(struct uimagefs_handle *priv)
- 	size_t offset = 0;
- 	size_t data_offset = 0;
- 
--again:
-+	if (is_tftp_fs(priv->filename)) {
-+		ret = cache_file(priv->filename, &priv->copy);
-+		if (ret)
++	if (e1000_eeprom_valid(hw)) {
++		hw->eepromcdev.dev = hw->dev;
++		hw->eepromcdev.ops = &e1000_eeprom_ops;
++		hw->eepromcdev.name = xasprintf("e1000-eeprom%d",
++						hw->dev->id);
++		hw->eepromcdev.size = 0x1000;
++
++		ret = devfs_create(&hw->eepromcdev);
++		if (ret < 0)
 +			return ret;
 +	}
 +
- 	fd = open(priv->filename, O_RDONLY);
- 	if (fd < 0) {
- 		printf("could not open: %s\n", errno_str());
- 		return fd;
+ 	if (eecd & E1000_EECD_I210_FLASH_DETECTED) {
+ 		hw->mtd.parent = hw->dev;
+ 		hw->mtd.read = e1000_mtd_read;
+@@ -1609,18 +1612,22 @@ int e1000_register_eeprom(struct e1000_hw *hw)
+ 
+ 		ret = add_mtd_device(&hw->mtd, "e1000-nor",
+ 				     DEVICE_ID_DYNAMIC);
+-		if (ret) {
+-			devfs_remove(&hw->eepromcdev);
+-			return ret;
+-		}
++		if (ret)
++			goto out_eeprom;
  	}
  
--	/*
--	 * Hack around tftp fs. We need lseek for uImage support, but
--	 * this cannot be implemented in tftp fs, so we detect this
--	 * and copy the file to ram if it fails
--	 */
--	if (IS_BUILTIN(CONFIG_FS_TFTP) && !can_lseek_backward(fd)) {
--		close(fd);
--		ret = copy_file(priv->filename, priv->tmp, 0);
--		if (ret)
--			return ret;
--		priv->filename = priv->tmp;
--		goto again;
+ 	ret = e1000_register_invm(hw);
+-	if (ret < 0) {
+-		if (eecd & E1000_EECD_I210_FLASH_DETECTED)
+-			del_mtd_device(&hw->mtd);
++	if (ret < 0)
++		goto out_mtd;
++
++	return E1000_SUCCESS;
++
++out_mtd:
++	if (eecd & E1000_EECD_I210_FLASH_DETECTED)
++		del_mtd_device(&hw->mtd);
++out_eeprom:
++	if (e1000_eeprom_valid(hw))
+ 		devfs_remove(&hw->eepromcdev);
 -	}
--
- 	header = &priv->header;
  
- 	ret = read(fd, header, sizeof(*header));
-@@ -514,10 +505,6 @@ static int uimagefs_probe(struct device_d *dev)
- 	priv->filename = fsdev->backingstore;
- 	dev_dbg(dev, "mount: %s\n", fsdev->backingstore);
- 
--	if (IS_BUILTIN(CONFIG_FS_TFTP))
--		priv->tmp = basprintf("/.uImage_tmp_%08x",
--					crc32(0, fsdev->path, strlen(fsdev->path)));
--
- 	ret = __uimage_open(priv);
- 	if (ret)
- 		goto err;
-diff --git a/include/uimagefs.h b/include/uimagefs.h
-index 81b32310ad..3f58589b73 100644
---- a/include/uimagefs.h
-+++ b/include/uimagefs.h
-@@ -45,7 +45,7 @@ struct uimagefs_handle {
- 	struct image_header header;
- 	int nb_data_entries;
- 	char *filename;
--	char *tmp;
-+	char *copy;
- 
- 	struct list_head list;
- };
+ 	return ret;
+ }
 -- 
-2.11.0
+2.15.1
 
 
 _______________________________________________
