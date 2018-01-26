@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eg3oZ-0004sh-SG
- for barebox@lists.infradead.org; Mon, 29 Jan 2018 07:25:18 +0000
-Date: Mon, 29 Jan 2018 08:24:59 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180129072459.gnpmuyowbnzdebwo@pengutronix.de>
-References: <20180126194227.32088-1-s.hauer@pengutronix.de>
- <20180126211025.GB3317@ravnborg.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180126211025.GB3317@ravnborg.org>
+ id 1eezIK-0008As-6Y
+ for barebox@lists.infradead.org; Fri, 26 Jan 2018 08:23:33 +0000
+Received: by mail-lf0-x242.google.com with SMTP id q17so13156088lfa.9
+ for <barebox@lists.infradead.org>; Fri, 26 Jan 2018 00:23:21 -0800 (PST)
+Date: Fri, 26 Jan 2018 11:37:46 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20180126113746.1e553bd2ecf343bb0676988e@gmail.com>
+In-Reply-To: <20180125071236.q7ce2jwqnhrngmm6@pengutronix.de>
+References: <20180122095918.11721-1-antonynpavlov@gmail.com>
+ <20180122095918.11721-4-antonynpavlov@gmail.com>
+ <20180125071236.q7ce2jwqnhrngmm6@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,82 +21,104 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fs: Fix memory leak in mount()
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v3 3/3] sandbox: add i2c and spi libftdi1 bit-bang example
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Sam,
+On Thu, 25 Jan 2018 08:12:36 +0100
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-On Fri, Jan 26, 2018 at 10:10:25PM +0100, Sam Ravnborg wrote:
-> Hi Sasha.
-> 
-> On Fri, Jan 26, 2018 at 08:42:27PM +0100, Sascha Hauer wrote:
-> > "path" is allocated by normalise_path() and thus must be
-> > freed. This was done in the error path, but not in the success
-> > path.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> On Mon, Jan 22, 2018 at 12:59:18PM +0300, Antony Pavlov wrote:
+> > Make necessary changes in sandbox_defconfig:
+> > enable gpio, spi, i2c and led stuff.
+> > =
+
+> > Usage:
+> > =
+
+> >   barebox$ make sandbox_defconfig
+> >   barebox$ sed -i "s/# CONFIG_GPIO_LIBFTDI1.*$/CONFIG_GPIO_LIBFTDI1=3Dy=
+/" .config
+> > =
+
+> >   # edit arch/sandbox/dts/sandbox-libftdi-example.dtsi
+> > =
+
+> >   barebox$ echo '#include "sandbox-libftdi-example.dtsi"' >> arch/sandb=
+ox/dts/sandbox.dts
+> >   barebox$ make
+> >   barebox$ sudo ./barebox -d arch/sandbox/dts/sandbox.dtb
+> > =
+
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > > ---
-> >  fs/fs.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/fs/fs.c b/fs/fs.c
-> > index 6f15e93ba9..7d0d97906d 100644
-> > --- a/fs/fs.c
-> > +++ b/fs/fs.c
-> > @@ -1392,6 +1392,8 @@ int mount(const char *device, const char *fsname, const char *_path,
-> >  		fsdev_set_linux_rootarg(fsdev, str);
-> >  	}
-> >  
-> > +	free(path);
+> >  arch/sandbox/configs/sandbox_defconfig        | 21 ++++++-
+> >  arch/sandbox/dts/sandbox-libftdi-example.dtsi | 80 +++++++++++++++++++=
+++++++++
+> >  2 files changed, 100 insertions(+), 1 deletion(-)
+> > =
+
+> > +++ b/arch/sandbox/dts/sandbox-libftdi-example.dtsi
+> > @@ -0,0 +1,80 @@
+> > +#include <dt-bindings/gpio/gpio.h>
 > > +
-> >  	return 0;
-> >  
-> >  err_no_driver:
-> An out: label so we only called free once was also an option.
-> Both patterns are used in this file - so either should be OK.
-> 
-> 
-> While browsing this file I think there is a few similar
-> cases involving normalise_path():
-> 
-> automount_remove()
-> path is assigned, but never freed.
-> 
-> automount_add()
-> am is allocated, but not freed if we return -ENOTDIR. And thus all of path, cmd, and am is leaked
-> 
-> 
-> I also noticed:
-> opendir()
-> No check for PTR_ERR after calling canonalize_path()
-> 
-> unlink()
-> No check for PTR_ERR after call to canonalize_dir()
-> 
-> readlink()
-> No check for PTR_ERR after call to canonalize_dir()
+> > +/ {
+> > +	gpio0: gpio@0 {
+> > +		compatible =3D "barebox,libftdi1-gpio";
+> > +		usb,id_vendor =3D <0x0403>;
+> > +		usb,id_product =3D <0x6010>;
+> > +
+> > +		/*
+> > +		 * The serial number can be used to select
+> > +		 * a specific device in case more than
+> > +		 * one is connected to the host.
+> > +		 */
+> > +		/* usb,i_serial_number =3D "20180120"; */
+> > +
+> > +		/* use ACBUS[7:0] */
+> > +		gpio-controller;
+> > +		#gpio-cells =3D <2>;
+> > +
+> > +		status =3D "okay";
+> > +	};
+> > +
+> > +	spi0: spi0 {
+> > +		compatible =3D "spi-gpio";
+> > +		#address-cells =3D <1>;
+> > +		#size-cells =3D <0>;
+> > +
+> > +		gpio-sck  =3D <&gpio0 0 GPIO_ACTIVE_HIGH>;
+> > +		gpio-mosi =3D <&gpio0 1 GPIO_ACTIVE_HIGH>;
+> > +		gpio-miso =3D <&gpio0 2 GPIO_ACTIVE_HIGH>;
+> > +		cs-gpios  =3D <&gpio0 3 GPIO_ACTIVE_HIGH>;
+> > +
+> > +		num-chipselects =3D <1>;
+> > +
+> > +		status =3D "disabled";
+> =
 
-Yes, the result should be checked.
+> Given that this is an example which is not used unless you include it
+> manually I think you can remove the status properties.
+> =
 
-> 
-> I can create patch for these - but I cannot do any thrustworthy testing.
-> And for the canonalize() I am uncertain if the check is requied.
-> Let me know your preference and I will take care.
+> Otherwise this series looks fine to me. I can remove the properties
+> while applying if you like.
 
-Patches would be very welcomed. Thanks Sam.
+Without status properties this file will be more fail-safe.
+Please remove the properties and apply the patches.
 
-Sascha
+Please note that this patcheseries does not use parseopt_*() functions
+so nobody uses the commit 'parseopt: introduce parseopt_u16() and parseopt_=
+str()'.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
