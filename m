@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eeFkr-0005Tg-VH
- for barebox@lists.infradead.org; Wed, 24 Jan 2018 07:46:01 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 24 Jan 2018 08:45:29 +0100
-Message-Id: <20180124074534.7966-3-s.hauer@pengutronix.de>
-In-Reply-To: <20180124074534.7966-1-s.hauer@pengutronix.de>
-References: <20180124074534.7966-1-s.hauer@pengutronix.de>
+ id 1ef47c-00038I-D3
+ for barebox@lists.infradead.org; Fri, 26 Jan 2018 13:32:50 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1ef47M-0005M4-Ix
+ for barebox@lists.infradead.org; Fri, 26 Jan 2018 14:32:32 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Fri, 26 Jan 2018 14:32:31 +0100
+Message-Id: <20180126133232.4992-4-l.stach@pengutronix.de>
+In-Reply-To: <20180126133232.4992-1-l.stach@pengutronix.de>
+References: <20180126133232.4992-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,74 +26,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] fs: implement is_tftp_fs()
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v3 4/5] net/e1000: don't check EEPROM signature if populated
+ from iNVM
+To: barebox@lists.infradead.org
 
-Some commands need files in which they can lseek backwards which
-is particularly not possible on TFTP. Instead of hiding this
-behind can_lseek_backward() create a function for it which tests
-if the file is on TFTP directly rather than using different
-lseek operations.
+The EEPROM device will contain an invalid signature if it has been
+populated from iNVM. Since the iNVM enum type has been removed, the
+only way to tell if a signature check makes sense is to look at the
+EEPROM valid status.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- fs/fs.c      | 22 ++++++++++++++++++++++
- include/fs.h | 10 ++++++++++
- 2 files changed, 32 insertions(+)
+ drivers/net/e1000/eeprom.c | 10 ++++------
+ drivers/net/e1000/main.c   |  2 +-
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 6f15e93ba9..e073e3577d 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -1906,3 +1906,25 @@ char *path_get_linux_rootarg(const char *path)
+diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
+index 0a28dfdd8868..b0408107bbdd 100644
+--- a/drivers/net/e1000/eeprom.c
++++ b/drivers/net/e1000/eeprom.c
+@@ -1006,12 +1006,10 @@ int e1000_validate_eeprom_checksum(struct e1000_hw *hw)
+ 	DEBUGFUNC();
  
- 	return xstrdup(str);
- }
-+
-+/**
-+ * __is_tftp_fs() - return true when path is mounted on TFTP
-+ * @path: The path
-+ *
-+ * Do not use directly, use is_tftp_fs instead.
-+ *
-+ * Return: true when @path is on TFTP, false otherwise
-+ */
-+bool __is_tftp_fs(const char *path)
-+{
-+	struct fs_device_d *fsdev;
-+
-+	fsdev = get_fsdevice_by_path(path);
-+	if (!fsdev)
-+		return false;
-+
-+	if (strcmp(fsdev->driver->drv.name, "tftp"))
-+		return false;
-+
-+	return true;
-+}
-diff --git a/include/fs.h b/include/fs.h
-index 3d88bfad4a..5a50d9b9e4 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -121,6 +121,16 @@ static inline int can_lseek_backward(int fd)
- 	return 1;
- }
+ 	/*
+-	  Only the following three 'types' of EEPROM can be expected
+-	  to have correct EEPROM checksum
+-	*/
+-	if (hw->eeprom.type != e1000_eeprom_spi &&
+-	    hw->eeprom.type != e1000_eeprom_microwire &&
+-	    hw->eeprom.type != e1000_eeprom_flash)
++	 * If the EEPROM device content isn't valid there is no point in
++	 * checking the signature.
++	 */
++	if (!e1000_eeprom_valid(hw))
+ 		return 0;
  
-+bool __is_tftp_fs(const char *path);
-+
-+static inline bool is_tftp_fs(const char *path)
-+{
-+	if (!IS_ENABLED(CONFIG_FS_TFTP))
-+		return 0;
-+
-+	return __is_tftp_fs(path);
-+}
-+
- #define drv_to_fs_driver(d) container_of(d, struct fs_driver_d, drv)
+ 	/* Read the EEPROM */
+diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
+index 0139c4a6d758..bb6ab4eb0360 100644
+--- a/drivers/net/e1000/main.c
++++ b/drivers/net/e1000/main.c
+@@ -3597,7 +3597,7 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		}
+ 	}
  
- int flush(int fd);
+-	if (!e1000_eeprom_valid(hw) || e1000_validate_eeprom_checksum(hw))
++	if (e1000_validate_eeprom_checksum(hw))
+ 		return 0;
+ 
+ 	e1000_get_ethaddr(edev, edev->ethaddr);
 -- 
-2.11.0
+2.15.1
 
 
 _______________________________________________
