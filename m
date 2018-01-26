@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eeFl1-0005UB-3S
- for barebox@lists.infradead.org; Wed, 24 Jan 2018 07:46:09 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 24 Jan 2018 08:45:31 +0100
-Message-Id: <20180124074534.7966-5-s.hauer@pengutronix.de>
-In-Reply-To: <20180124074534.7966-1-s.hauer@pengutronix.de>
-References: <20180124074534.7966-1-s.hauer@pengutronix.de>
+ id 1ef47c-00038G-H6
+ for barebox@lists.infradead.org; Fri, 26 Jan 2018 13:32:50 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1ef47M-0005M4-H0
+ for barebox@lists.infradead.org; Fri, 26 Jan 2018 14:32:32 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Fri, 26 Jan 2018 14:32:29 +0100
+Message-Id: <20180126133232.4992-2-l.stach@pengutronix.de>
+In-Reply-To: <20180126133232.4992-1-l.stach@pengutronix.de>
+References: <20180126133232.4992-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,69 +26,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] libfile: implement a function to cache a file
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v3 2/5] net/e1000: use correct bit for flash detection
+To: barebox@lists.infradead.org
 
-Due to the nature of TFTP which can't lseek and due to the silliness
-of our filesystem implementation which can't cache accesses we have to
-manually cache files on TFTP filesystems sometimes. Make it easier
-for them by providing a cache_file() function which copies the file
-from TFTP to RAM.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Fixes: 95c346ccaa6d (net/e1000: don't access the (simulated)
+                     eeprom when it is invalid)
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- include/libfile.h |  2 ++
- lib/libfile.c     | 27 +++++++++++++++++++++++++++
- 2 files changed, 29 insertions(+)
+ drivers/net/e1000/e1000.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/libfile.h b/include/libfile.h
-index 6dbb81a241..beec7cff79 100644
---- a/include/libfile.h
-+++ b/include/libfile.h
-@@ -28,4 +28,6 @@ int unlink_recursive(const char *path, char **failedpath);
- 
- char *make_temp(const char *template);
- 
-+int cache_file(const char *path, char **newpath);
-+
- #endif /* __LIBFILE_H */
-diff --git a/lib/libfile.c b/lib/libfile.c
-index 79054eb5ac..738ff1287d 100644
---- a/lib/libfile.c
-+++ b/lib/libfile.c
-@@ -512,3 +512,30 @@ char *make_temp(const char *template)
- 
- 	return name;
- }
-+
-+/**
-+ * cache_file - Cache a file in /tmp
-+ * @path:	The file to cache
-+ * @newpath:	The return path where the file is copied to
-+ *
-+ * This function copies a given file to /tmp and returns its name in @newpath.
-+ *
-+ * Return: 0 for success, negative error code otherwise.
-+ */
-+int cache_file(const char *path, char **newpath)
-+{
-+	char *npath;
-+	int ret;
-+
-+	npath = make_temp("filecache-");
-+
-+	ret = copy_file(path, npath, 0);
-+	if (ret) {
-+		free(npath);
-+		return ret;
-+	}
-+
-+	*newpath = npath;
-+
-+	return 0;
-+}
+diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
+index 1558b3c7f5c7..4a1a1aa33694 100644
+--- a/drivers/net/e1000/e1000.h
++++ b/drivers/net/e1000/e1000.h
+@@ -794,7 +794,7 @@ struct e1000_eeprom_info {
+ #ifndef E1000_EEPROM_GRANT_ATTEMPTS
+ #define E1000_EEPROM_GRANT_ATTEMPTS 1000 /* EEPROM # attempts to gain grant */
+ #endif
+-#define E1000_EECD_FLASH_IN_USE     0x00000100  /* Flash is present with a valid signature */
++#define E1000_EECD_FLASH_IN_USE     0x00000040  /* Flash is present with a valid signature */
+ #define E1000_EECD_EE_PRES          0x00000100
+ #define E1000_EECD_AUTO_RD          0x00000200  /* EEPROM Auto Read done */
+ #define E1000_EECD_SIZE_EX_MASK     0x00007800  /* EEprom Size */
 -- 
-2.11.0
+2.15.1
 
 
 _______________________________________________
