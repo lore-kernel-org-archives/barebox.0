@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eeFkr-0005TP-SG
- for barebox@lists.infradead.org; Wed, 24 Jan 2018 07:45:59 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 24 Jan 2018 08:45:32 +0100
-Message-Id: <20180124074534.7966-6-s.hauer@pengutronix.de>
-In-Reply-To: <20180124074534.7966-1-s.hauer@pengutronix.de>
-References: <20180124074534.7966-1-s.hauer@pengutronix.de>
+ id 1ef47c-00038H-Jj
+ for barebox@lists.infradead.org; Fri, 26 Jan 2018 13:32:52 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1ef47M-0005M4-Ic
+ for barebox@lists.infradead.org; Fri, 26 Jan 2018 14:32:32 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Fri, 26 Jan 2018 14:32:30 +0100
+Message-Id: <20180126133232.4992-3-l.stach@pengutronix.de>
+In-Reply-To: <20180126133232.4992-1-l.stach@pengutronix.de>
+References: <20180126133232.4992-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,126 +26,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] uimage: Use is_tftp_fs() and cache_file() to ease TFTP
- workaround
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v3 3/5] net/e1000: EEPROM isn't valid if only iNVM is available
+To: barebox@lists.infradead.org
 
-We have helper functions now to ease file caching when a file
-is on TFTP. Use them.
+There is no point in registering the emulated EEPROM device if only the
+iNVM is available with no external flash attached to the i210, as in
+practice it's only shadowing the iNVM.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+When the EEPROM is populated from iNVM, the signature is not valid, which
+causes other parts of the driver to fall over. To fix this just ignore
+the EEPROM in that case.
+
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- common/uimage.c | 47 ++++++++++++++++++++++-------------------------
- include/image.h |  1 +
- 2 files changed, 23 insertions(+), 25 deletions(-)
+ drivers/net/e1000/eeprom.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/common/uimage.c b/common/uimage.c
-index b6f0f109ca..18bc2e5d7b 100644
---- a/common/uimage.c
-+++ b/common/uimage.c
-@@ -85,8 +85,6 @@ ssize_t uimage_get_size(struct uimage_handle *handle, unsigned int image_no)
- }
- EXPORT_SYMBOL(uimage_get_size);
+diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
+index ddac7de8a0e9..0a28dfdd8868 100644
+--- a/drivers/net/e1000/eeprom.c
++++ b/drivers/net/e1000/eeprom.c
+@@ -1525,20 +1525,18 @@ int e1000_register_invm(struct e1000_hw *hw)
  
--static const char uimage_tmp[] = "/.uImage_tmp";
--
- /*
-  * open a uimage. This will check the header contents and
-  * return a handle to the uImage
-@@ -99,32 +97,26 @@ struct uimage_handle *uimage_open(const char *filename)
- 	struct image_header *header;
- 	int i;
- 	int ret;
--	struct stat s;
-+	char *copy = NULL;
-+
-+	if (is_tftp_fs(filename)) {
-+		ret = cache_file(filename, &copy);
-+		if (ret)
-+			return NULL;
-+		filename = copy;
-+	}
- 
--again:
- 	fd = open(filename, O_RDONLY);
- 	if (fd < 0) {
- 		printf("could not open: %s\n", errno_str());
- 		return NULL;
- 	}
- 
--	/*
--	 * Hack around tftp fs. We need lseek for uImage support, but
--	 * this cannot be implemented in tftp fs, so we detect this
--	 * and copy the file to ram if it fails
--	 */
--	if (IS_BUILTIN(CONFIG_FS_TFTP) && !can_lseek_backward(fd)) {
--		close(fd);
--		ret = copy_file(filename, uimage_tmp, 0);
--		if (ret)
--			return NULL;
--		filename = uimage_tmp;
--		goto again;
--	}
--
- 	handle = xzalloc(sizeof(struct uimage_handle));
- 	header = &handle->header;
- 
-+	handle->copy = copy;
-+
- 	if (read(fd, header, sizeof(*header)) < 0) {
- 		printf("could not read: %s\n", errno_str());
- 		goto err_out;
-@@ -202,9 +194,13 @@ again:
- 	return handle;
- err_out:
- 	close(fd);
-+
-+	if (handle->copy) {
-+		unlink(handle->copy);
-+		free(handle->copy);
-+	}
- 	free(handle);
--	if (IS_BUILTIN(CONFIG_FS_TFTP) && !stat(uimage_tmp, &s))
--		unlink(uimage_tmp);
-+
- 	return NULL;
- }
- EXPORT_SYMBOL(uimage_open);
-@@ -214,14 +210,15 @@ EXPORT_SYMBOL(uimage_open);
-  */
- void uimage_close(struct uimage_handle *handle)
+ int e1000_eeprom_valid(struct e1000_hw *hw)
  {
--	struct stat s;
--
- 	close(handle->fd);
-+
-+	if (handle->copy) {
-+		unlink(handle->copy);
-+		free(handle->copy);
-+	}
-+
- 	free(handle->name);
- 	free(handle);
--
--	if (IS_BUILTIN(CONFIG_FS_TFTP) && !stat(uimage_tmp, &s))
--		unlink(uimage_tmp);
- }
- EXPORT_SYMBOL(uimage_close);
+-	uint32_t eecd;
++	uint32_t valid_mask = E1000_EECD_FLASH_IN_USE |
++			      E1000_EECD_AUTO_RD | E1000_EECD_EE_PRES;
  
-diff --git a/include/image.h b/include/image.h
-index 3e75d49b88..add9c85874 100644
---- a/include/image.h
-+++ b/include/image.h
-@@ -246,6 +246,7 @@ struct resource *file_to_sdram(const char *filename, unsigned long adr);
- struct uimage_handle {
- 	struct image_header header;
- 	char *name;
-+	char *copy;
- 	struct uimage_handle_data ihd[MAX_MULTI_IMAGE_COUNT];
- 	int nb_data_entries;
- 	size_t data_offset;
+ 	if (hw->mac_type != e1000_igb)
+ 		return 1;
+ 
+ 	/*
+-	 * if AUTO_RD or EE_PRES are not set in EECD, the shadow RAM is invalid
+-	 * (and in practise seems to contain the contents of iNVM).
++	 * If there is no flash in use or AUTO_RD or EE_PRES are not set in
++	 * EECD, the shadow RAM is invalid (and in practise seems to contain
++	 * the contents of iNVM).
+ 	 */
+-	eecd = e1000_read_reg(hw, E1000_EECD);
+-	if (!(eecd & E1000_EECD_AUTO_RD))
+-		return 0;
+-
+-	if (!(eecd & E1000_EECD_EE_PRES))
++	if ((e1000_read_reg(hw, E1000_EECD) & valid_mask) != valid_mask)
+ 		return 0;
+ 
+ 	return 1;
 -- 
-2.11.0
+2.15.1
 
 
 _______________________________________________
