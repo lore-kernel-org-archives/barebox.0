@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wr0-x243.google.com ([2a00:1450:400c:c0c::243])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1efBgG-0004OY-0H
- for barebox@lists.infradead.org; Fri, 26 Jan 2018 21:37:05 +0000
-Date: Fri, 26 Jan 2018 22:36:51 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180126213651.nz7jslj4tkb4aewb@pengutronix.de>
-References: <20180126192644.5434-1-s.hauer@pengutronix.de>
- <20180126204632.GA3317@ravnborg.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180126204632.GA3317@ravnborg.org>
+ id 1efkHb-0006Nc-5p
+ for barebox@lists.infradead.org; Sun, 28 Jan 2018 10:33:57 +0000
+Received: by mail-wr0-x243.google.com with SMTP id d9so4129946wre.3
+ for <barebox@lists.infradead.org>; Sun, 28 Jan 2018 02:33:42 -0800 (PST)
+From: Aleksander Morgado <aleksander@aleksander.es>
+Date: Sun, 28 Jan 2018 11:33:26 +0100
+Message-Id: <20180128103326.16447-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +16,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] Make finding fixup nodes more robust
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] bbremote: rename command subparser variables
+To: barebox@lists.infradead.org
+Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-Hi Sam,
+Don't reuse unrelated subparser variables for new command subparsers,
+make each subparser have its own variable.
 
-On Fri, Jan 26, 2018 at 09:46:32PM +0100, Sam Ravnborg wrote:
-> Hi Sasha.
-> 
-> On Fri, Jan 26, 2018 at 08:26:42PM +0100, Sascha Hauer wrote:
-> > Recently the node names in i.MX6 device tree files have changed. The
-> > leading zeroes were removed from the addresses. With this a newer
-> > barebox doesn't find the nodes to fixup in an old device tree and
-> > an older barebox doesn't find the nodes in a new device tree. To
-> > fix this we create new names of the nodes based on things that hopefully
-> > don't change: We iterate up to a node which is MMIO space mappable
-> > and get a name that starts with "[adr]". For the remaining parts of
-> > a node we add "<reg>" when the hierarchy level has a "reg" property
-> > and only as last fallback we add "{nodename}" in curly brackets.
-> > This name is safe against node name changes and also against adding
-> > a new hierarchy level in the device tree (when for example a bus level
-> > is added).
-> I think I was bitten by something similar while toying with display
-> timings.
-> 
-> So I think commands/of_display_timings.c would benefit
-> from a conversion to this new scheme too - as well as the mtd stuff
-> in of/partition.c
+Just for consistency really, not a bugfix.
 
-of/partition.c is fixed in this series. I haven't looked around what
-else could benefit from this. Could you try it for the display timing?
+Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
+---
+ scripts/remote/main.py | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-Sascha
-
+diff --git a/scripts/remote/main.py b/scripts/remote/main.py
+index bd304723b..79203df05 100644
+--- a/scripts/remote/main.py
++++ b/scripts/remote/main.py
+@@ -139,15 +139,15 @@ parser_run.set_defaults(func=handle_run)
+ parser_ping = subparsers.add_parser('ping', help="test connection")
+ parser_ping.set_defaults(func=handle_ping)
+ 
+-parser_ping = subparsers.add_parser('getenv', help="get a barebox environment variable")
+-parser_ping.add_argument('arg', nargs='+', help="variable name")
+-parser_ping.set_defaults(func=handle_getenv)
++parser_getenv = subparsers.add_parser('getenv', help="get a barebox environment variable")
++parser_getenv.add_argument('arg', nargs='+', help="variable name")
++parser_getenv.set_defaults(func=handle_getenv)
+ 
+-parser_run = subparsers.add_parser('listen', help="listen for an incoming connection")
+-parser_run.set_defaults(func=handle_listen)
++parser_listen = subparsers.add_parser('listen', help="listen for an incoming connection")
++parser_listen.set_defaults(func=handle_listen)
+ 
+-parser_run = subparsers.add_parser('console', help="connect to the console")
+-parser_run.set_defaults(func=handle_console)
++parser_console = subparsers.add_parser('console', help="connect to the console")
++parser_console.set_defaults(func=handle_console)
+ 
+ args = parser.parse_args()
+ logging.basicConfig(level=VERBOSITY[args.verbose],
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.15.1
+
 
 _______________________________________________
 barebox mailing list
