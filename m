@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x243.google.com ([2a00:1450:400c:c0c::243])
+Received: from mail-wr0-x244.google.com ([2a00:1450:400c:c0c::244])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1efkHb-0006Nc-5p
- for barebox@lists.infradead.org; Sun, 28 Jan 2018 10:33:57 +0000
-Received: by mail-wr0-x243.google.com with SMTP id d9so4129946wre.3
- for <barebox@lists.infradead.org>; Sun, 28 Jan 2018 02:33:42 -0800 (PST)
+ id 1efmha-0000BI-EY
+ for barebox@lists.infradead.org; Sun, 28 Jan 2018 13:08:56 +0000
+Received: by mail-wr0-x244.google.com with SMTP id v31so4311404wrc.11
+ for <barebox@lists.infradead.org>; Sun, 28 Jan 2018 05:08:43 -0800 (PST)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Sun, 28 Jan 2018 11:33:26 +0100
-Message-Id: <20180128103326.16447-1-aleksander@aleksander.es>
+Date: Sun, 28 Jan 2018 14:08:28 +0100
+Message-Id: <20180128130828.10357-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,47 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] bbremote: rename command subparser variables
+Subject: [PATCH] of: base: fix segfault in of_get_machine_compatible()
 To: barebox@lists.infradead.org
 Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-Don't reuse unrelated subparser variables for new command subparsers,
-make each subparser have its own variable.
+This is running the barebox sandbox:
 
-Just for consistency really, not a bugfix.
+  Thread 1 "barebox" received signal SIGSEGV, Segmentation fault.
+  0x0000555555579e2b in _strchr (s=s@entry=0x0, c=c@entry=44) at lib/string.c:251
+  251		for(; *s != (char) c; ++s)
+  (gdb) bt
+  #0  0x0000555555579e2b in _strchr (s=s@entry=0x0, c=c@entry=44) at lib/string.c:251
+  #1  0x000055555556fd91 in of_get_machine_compatible () at drivers/of/base.c:2380
+  #2  0x000055555556fda8 in of_init_hostname () at drivers/of/base.c:2389
+  #3  0x000055555555f9e6 in start_barebox () at common/startup.c:106
+  #4  0x00005555555a291a in main ()
+  (gdb) fr 1
+  #1  0x000055555556fd91 in of_get_machine_compatible () at drivers/of/base.c:2380
+  2380		p = strchr(name, ',');
 
 Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
- scripts/remote/main.py | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/of/base.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/scripts/remote/main.py b/scripts/remote/main.py
-index bd304723b..79203df05 100644
---- a/scripts/remote/main.py
-+++ b/scripts/remote/main.py
-@@ -139,15 +139,15 @@ parser_run.set_defaults(func=handle_run)
- parser_ping = subparsers.add_parser('ping', help="test connection")
- parser_ping.set_defaults(func=handle_ping)
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 6a582177b..10b62890b 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2376,6 +2376,8 @@ const char *of_get_machine_compatible(void)
  
--parser_ping = subparsers.add_parser('getenv', help="get a barebox environment variable")
--parser_ping.add_argument('arg', nargs='+', help="variable name")
--parser_ping.set_defaults(func=handle_getenv)
-+parser_getenv = subparsers.add_parser('getenv', help="get a barebox environment variable")
-+parser_getenv.add_argument('arg', nargs='+', help="variable name")
-+parser_getenv.set_defaults(func=handle_getenv)
+ 	prop = of_find_property(root_node, "compatible", NULL);
+ 	name = of_prop_next_string(prop, NULL);
++	if (!name)
++		return NULL;
  
--parser_run = subparsers.add_parser('listen', help="listen for an incoming connection")
--parser_run.set_defaults(func=handle_listen)
-+parser_listen = subparsers.add_parser('listen', help="listen for an incoming connection")
-+parser_listen.set_defaults(func=handle_listen)
- 
--parser_run = subparsers.add_parser('console', help="connect to the console")
--parser_run.set_defaults(func=handle_console)
-+parser_console = subparsers.add_parser('console', help="connect to the console")
-+parser_console.set_defaults(func=handle_console)
- 
- args = parser.parse_args()
- logging.basicConfig(level=VERBOSITY[args.verbose],
+ 	p = strchr(name, ',');
+ 	return p ? p + 1 : name;
 -- 
 2.15.1
 
