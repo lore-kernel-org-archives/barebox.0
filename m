@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1egCK3-0002vK-9j
+ id 1egCK3-00032V-8H
  for barebox@lists.infradead.org; Mon, 29 Jan 2018 16:30:21 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1egCJo-0001SG-3W
+ (envelope-from <l.stach@pengutronix.de>) id 1egCJo-0001SG-LY
  for barebox@lists.infradead.org; Mon, 29 Jan 2018 17:30:04 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Subject: [PATCH 00/10] HYP mode handling and RasPi 3 support
-Date: Mon, 29 Jan 2018 17:29:54 +0100
-Message-Id: <20180129163004.10512-1-l.stach@pengutronix.de>
+Date: Mon, 29 Jan 2018 17:30:04 +0100
+Message-Id: <20180129163004.10512-11-l.stach@pengutronix.de>
+In-Reply-To: <20180129163004.10512-1-l.stach@pengutronix.de>
+References: <20180129163004.10512-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,63 +26,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
+Subject: [PATCH 10/10] ARM: rpi: autosize malloc area
 To: barebox@lists.infradead.org
 
-Hi,
+Autosize the malloc area according to the available RAM size.
 
-this series allows Barebox to be entered in HYP mode. As the HYP mode
-is a whole different world it just makes sure to install the hooks
-needed to get back into HYP and then switches to SVC mode as fast as
-it can. The kernel is then started in HYP mode by default.
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/configs/rpi_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-This is needed in order to get RasPi 3 support in place, where the
-firmware opts to hand us the CPUs in HYP mode.
-
-I've tested this series on another ARMv7 board, to make sure I didn't
-break something obvious, but I would still welcome some eyeballs on
-this code, as it touches a good deal of the lowlevel code.
- 
-Enrico Joerns (1):
-  ARM: rpi: add revision IDs for Pi 3 Model B and Pi Zero
-
-Lucas Stach (9):
-  ARM: import opcode helpers from Linux kernel
-  ARM: safely switch from HYP to SVC mode if required
-  ARM: allow secure monitor code to be built without PSCI
-  ARM: add file for HYP mode related setup
-  ARM: don't try to install secure monitor when entered in HYP mode
-  ARM: default to starting kernel in HYP mode when entered in HYP
-  ARM: install HYP vectors at PBL and Barebox entry
-  ARM: rpi: add raspberry pi 3 support
-  ARM: rpi: autosize malloc area
-
- arch/arm/boards/raspberry-pi/lowlevel.c   |  14 +-
- arch/arm/boards/raspberry-pi/rpi-common.c |   2 +
- arch/arm/configs/rpi_defconfig            |   3 +
- arch/arm/cpu/Makefile                     |   4 +
- arch/arm/cpu/hyp.S                        | 115 +++++++++++++++
- arch/arm/cpu/lowlevel.S                   |  23 ++-
- arch/arm/cpu/sm.c                         |   6 +
- arch/arm/cpu/sm_as.S                      |  15 +-
- arch/arm/cpu/start-pbl.c                  |   3 +
- arch/arm/cpu/start.c                      |   3 +
- arch/arm/cpu/uncompress.c                 |   4 +
- arch/arm/dts/Makefile                     |   1 +
- arch/arm/dts/bcm2837-rpi-3.dts            |  15 ++
- arch/arm/include/asm/opcodes-virt.h       |  39 +++++
- arch/arm/include/asm/opcodes.h            | 231 ++++++++++++++++++++++++++++++
- arch/arm/include/asm/secure.h             |   2 +
- arch/arm/include/asm/system.h             |  26 ++++
- arch/arm/mach-bcm283x/Kconfig             |   6 +
- arch/arm/mach-bcm283x/core.c              |   1 +
- arch/arm/mach-bcm283x/include/mach/mbox.h |   4 +
- images/Makefile.bcm283x                   |   4 +
- 21 files changed, 504 insertions(+), 17 deletions(-)
- create mode 100644 arch/arm/cpu/hyp.S
- create mode 100644 arch/arm/dts/bcm2837-rpi-3.dts
- create mode 100644 arch/arm/include/asm/opcodes-virt.h
- create mode 100644 arch/arm/include/asm/opcodes.h
-
+diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
+index 34070a05abe7..ddd1a5970f9e 100644
+--- a/arch/arm/configs/rpi_defconfig
++++ b/arch/arm/configs/rpi_defconfig
+@@ -7,6 +7,7 @@ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_UNWIND=y
+ CONFIG_IMAGE_COMPRESSION_NONE=y
+ CONFIG_MMU=y
++CONFIG_MALLOC_SIZE=0x0
+ CONFIG_MALLOC_TLSF=y
+ CONFIG_KALLSYMS=y
+ CONFIG_PROMPT="R-Pi> "
 -- 
 2.15.1
 
