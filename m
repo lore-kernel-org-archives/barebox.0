@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.89 #1 (Red Hat Linux))
- id 1eg96n-0008Dc-I7
- for barebox@lists.infradead.org; Mon, 29 Jan 2018 13:04:29 +0000
+ id 1eg96n-0008Di-I8
+ for barebox@lists.infradead.org; Mon, 29 Jan 2018 13:04:28 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id D2C7EA004B1
- for <barebox@lists.infradead.org>; Mon, 29 Jan 2018 14:04:23 +0100 (CET)
+ by root.phytec.de (Postfix) with ESMTP id 13E0CA0050F
+ for <barebox@lists.infradead.org>; Mon, 29 Jan 2018 14:04:24 +0100 (CET)
 From: Daniel Schultz <d.schultz@phytec.de>
-Date: Mon, 29 Jan 2018 14:04:10 +0100
-Message-Id: <1517231051-12129-2-git-send-email-d.schultz@phytec.de>
+Date: Mon, 29 Jan 2018 14:04:11 +0100
+Message-Id: <1517231051-12129-3-git-send-email-d.schultz@phytec.de>
 In-Reply-To: <1517231051-12129-1-git-send-email-d.schultz@phytec.de>
 References: <1517231051-12129-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,58 +24,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: configs: am335x_defconfig: Reorder configs
+Subject: [PATCH 3/3] drivers: mtd: nand: omap: Return stat value
 To: barebox@lists.infradead.org
 
-These configs were added directly in the config file and not with
-menuconfig. Reorder these like menuconfig would place them.
+The read page function should return the total count of flipped bits,
+otherwise the caller always thinks no bitflip occured.
 
 Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 ---
- arch/arm/configs/am335x_defconfig | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/mtd/nand/nand_omap_gpmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/configs/am335x_defconfig b/arch/arm/configs/am335x_defconfig
-index 5a236fb..09dde90 100644
---- a/arch/arm/configs/am335x_defconfig
-+++ b/arch/arm/configs/am335x_defconfig
-@@ -29,12 +29,14 @@ CONFIG_BOOTM_OFTREE=y
- CONFIG_BLSPEC=y
- CONFIG_CONSOLE_ACTIVATE_NONE=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_STATE=y
- CONFIG_RESET_SOURCE=y
- CONFIG_DEBUG_INFO=y
- CONFIG_LONGHELP=y
- CONFIG_CMD_IOMEM=y
- CONFIG_CMD_MEMINFO=y
- CONFIG_CMD_ARM_MMUINFO=y
-+CONFIG_CMD_MMC_EXTCSD=y
- # CONFIG_CMD_BOOTU is not set
- CONFIG_CMD_BOOTZ=y
- CONFIG_CMD_GO=y
-@@ -87,7 +89,6 @@ CONFIG_CMD_OF_DISPLAY_TIMINGS=y
- CONFIG_CMD_OF_FIXUP_STATUS=y
- CONFIG_CMD_OFTREE=y
- CONFIG_CMD_TIME=y
--CONFIG_CMD_MMC_EXTCSD=y
- CONFIG_CMD_STATE=y
- CONFIG_NET=y
- CONFIG_NET_NFS=y
-@@ -124,6 +125,7 @@ CONFIG_USB_MUSB_GADGET=y
- CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
- CONFIG_MCI_OMAP_HSMMC=y
-+CONFIG_STATE_DRV=y
- CONFIG_LED=y
- CONFIG_LED_GPIO=y
- CONFIG_LED_GPIO_OF=y
-@@ -143,5 +145,3 @@ CONFIG_FS_FAT_LFN=y
- CONFIG_FS_UBIFS=y
- CONFIG_FS_UBIFS_COMPRESSION_LZO=y
- CONFIG_FS_UBIFS_COMPRESSION_ZLIB=y
--CONFIG_STATE=y
--CONFIG_STATE_DRV=y
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index e18ce63..38f4960 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -712,7 +712,7 @@ static int omap_gpmc_read_page_bch_rom_mode(struct mtd_info *mtd,
+ 	else
+ 		mtd->ecc_stats.corrected += stat;
+ 
+-	return 0;
++	return stat;
+ }
+ 
+ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
 -- 
 2.7.4
 
