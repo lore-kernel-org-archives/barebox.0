@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1egPt8-00064W-3j
- for barebox@lists.infradead.org; Tue, 30 Jan 2018 06:59:27 +0000
-Date: Tue, 30 Jan 2018 07:59:13 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180130065913.a2iuhg5e4qpifcqq@pengutronix.de>
-References: <20180128213048.14450-1-aleksander@aleksander.es>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180128213048.14450-1-aleksander@aleksander.es>
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.89 #1 (Red Hat Linux))
+ id 1eg96n-0008Db-I6
+ for barebox@lists.infradead.org; Mon, 29 Jan 2018 13:04:27 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id BA4D7A0022F
+ for <barebox@lists.infradead.org>; Mon, 29 Jan 2018 14:04:23 +0100 (CET)
+From: Daniel Schultz <d.schultz@phytec.de>
+Date: Mon, 29 Jan 2018 14:04:09 +0100
+Message-Id: <1517231051-12129-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,51 +17,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ratp: remove unused list pointer from ratp_bb_pkt
-To: Aleksander Morgado <aleksander@aleksander.es>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] commands: ubi: ubiupdatevol: Reduce error code to 0 or 1
+To: barebox@lists.infradead.org
 
-On Sun, Jan 28, 2018 at 10:30:48PM +0100, Aleksander Morgado wrote:
-> This struct type is used in the RATP FS implementation, but was never
-> used as a list element anywhere.
-> 
-> Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
-> ---
->  include/ratp_bb.h | 2 --
->  1 file changed, 2 deletions(-)
+do_ubiupdatevol can either return 0 or the ioctl return value. This is
+not in conformity with the other ubi comannds return values.
 
-Applied, thanks
+Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+---
+ commands/ubi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
-> 
-> diff --git a/include/ratp_bb.h b/include/ratp_bb.h
-> index 70fd58a67..f485f7d8a 100644
-> --- a/include/ratp_bb.h
-> +++ b/include/ratp_bb.h
-> @@ -2,8 +2,6 @@
->  #define __RATP_BB_H
->  
->  struct ratp_bb_pkt {
-> -	struct list_head list;
-> -
->  	unsigned int len;
->  	uint8_t data[];
->  };
-> -- 
-> 2.15.1
-> 
-> 
-
+diff --git a/commands/ubi.c b/commands/ubi.c
+index 5e27584..de5633c 100644
+--- a/commands/ubi.c
++++ b/commands/ubi.c
+@@ -82,7 +82,7 @@ error:
+ 	close(fd_vol);
+ error_img:
+ 	close(fd_img);
+-	return ret;
++	return ret ? 1 : 0;
+ }
+ 
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.4
+
 
 _______________________________________________
 barebox mailing list
