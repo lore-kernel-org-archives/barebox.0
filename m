@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wr0-x242.google.com ([2a00:1450:400c:c0c::242])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1egQ6i-00035F-Ps
- for barebox@lists.infradead.org; Tue, 30 Jan 2018 07:13:34 +0000
-Date: Tue, 30 Jan 2018 08:13:16 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180130071316.cvizrambsdp6amnr@pengutronix.de>
-References: <1517231051-12129-1-git-send-email-d.schultz@phytec.de>
- <20180130070509.33fle5vsktlkkoqx@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180130070509.33fle5vsktlkkoqx@pengutronix.de>
+ id 1egCIN-00025E-IC
+ for barebox@lists.infradead.org; Mon, 29 Jan 2018 16:28:37 +0000
+Received: by mail-wr0-x242.google.com with SMTP id t16so7884705wrc.10
+ for <barebox@lists.infradead.org>; Mon, 29 Jan 2018 08:28:24 -0800 (PST)
+From: Aleksander Morgado <aleksander@aleksander.es>
+Date: Mon, 29 Jan 2018 17:28:15 +0100
+Message-Id: <20180129162815.32166-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,75 +16,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] commands: ubi: ubiupdatevol: Reduce error code to 0
- or 1
-To: Daniel Schultz <d.schultz@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ratp: remove unused context fields
+To: barebox@lists.infradead.org
+Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-On Tue, Jan 30, 2018 at 08:05:09AM +0100, Sascha Hauer wrote:
-> On Mon, Jan 29, 2018 at 02:04:09PM +0100, Daniel Schultz wrote:
-> > do_ubiupdatevol can either return 0 or the ioctl return value. This is
-> > not in conformity with the other ubi comannds return values.
-> > 
-> > Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
-> > ---
-> >  commands/ubi.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> Applied, thanks
+Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
+---
+ common/ratp.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-I meant I Applied 1 & 2.
-
-Sascha
-
-> 
-> Sascha
-> 
-> > 
-> > diff --git a/commands/ubi.c b/commands/ubi.c
-> > index 5e27584..de5633c 100644
-> > --- a/commands/ubi.c
-> > +++ b/commands/ubi.c
-> > @@ -82,7 +82,7 @@ error:
-> >  	close(fd_vol);
-> >  error_img:
-> >  	close(fd_img);
-> > -	return ret;
-> > +	return ret ? 1 : 0;
-> >  }
-> >  
-> >  
-> > -- 
-> > 2.7.4
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> > 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/common/ratp.c b/common/ratp.c
+index 6db4df870..80863f81f 100644
+--- a/common/ratp.c
++++ b/common/ratp.c
+@@ -54,14 +54,8 @@ struct ratp_bb_command_return {
+ struct ratp_ctx {
+ 	struct console_device *cdev;
+ 	struct ratp ratp;
+-	int ratp_status;
+ 	struct console_device ratp_console;
+ 	int have_synch;
+-	int in_ratp_console;
+-
+-	u8 sendbuf[256];
+-	u8 sendbuf_len;
+-
+ 	int old_active;
+ 
+ 	struct kfifo *console_recv_fifo;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.15.1
+
 
 _______________________________________________
 barebox mailing list
