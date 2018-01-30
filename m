@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1egRZQ-00076a-I0
+ id 1egRZQ-00076X-I2
  for barebox@lists.infradead.org; Tue, 30 Jan 2018 08:47:20 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 30 Jan 2018 09:46:56 +0100
-Message-Id: <20180130084657.31943-6-s.hauer@pengutronix.de>
+Date: Tue, 30 Jan 2018 09:46:54 +0100
+Message-Id: <20180130084657.31943-4-s.hauer@pengutronix.de>
 In-Reply-To: <20180130084657.31943-1-s.hauer@pengutronix.de>
 References: <20180130084657.31943-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,51 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/6] usb: gadget: fastboot: allow data.image to be const
+Subject: [PATCH 3/6] bbu: command: create temporary variable holding the
+ pointer to the image
 To: Barebox List <barebox@lists.infradead.org>
 
-Do not directly store the dynamically allocated memory in data.image
-as we want to make that pointer const and then no longer can call
-free() on it.
+Create variable to hold the pointer to the image so that we can
+make the data.image pointer const later.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/gadget/f_fastboot.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ commands/barebox-update.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-index 2ba5977239..87a43cc60e 100644
---- a/drivers/usb/gadget/f_fastboot.c
-+++ b/drivers/usb/gadget/f_fastboot.c
-@@ -935,6 +935,7 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
- 	}
+diff --git a/commands/barebox-update.c b/commands/barebox-update.c
+index c2f2b68e08..84798ab0d9 100644
+--- a/commands/barebox-update.c
++++ b/commands/barebox-update.c
+@@ -28,6 +28,7 @@ static int do_barebox_update(int argc, char *argv[])
+ {
+ 	int opt, ret, repair = 0;
+ 	struct bbu_data data = {};
++	void *image = NULL;
  
- 	if (IS_ENABLED(CONFIG_BAREBOX_UPDATE) && filetype_is_barebox_image(filetype)) {
-+		void *image;
- 		struct bbu_data data = {
- 			.devicefile = filename,
- 			.imagefile = FASTBOOT_TMPFILE,
-@@ -946,15 +947,17 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd
- 
- 		fastboot_tx_print(f_fb, "INFOThis is a barebox image...");
+ 	while ((opt = getopt(argc, argv, "t:yf:ld:r")) > 0) {
+ 		switch (opt) {
+@@ -59,9 +60,10 @@ static int do_barebox_update(int argc, char *argv[])
+ 	if (argc - optind > 0) {
+ 		data.imagefile = argv[optind];
  
 -		data.image = read_file(data.imagefile, &data.len);
--		if (!data.image) {
+-		if (!data.image)
 +		image = read_file(data.imagefile, &data.len);
-+		if (!image) {
- 			fastboot_tx_print(f_fb, "FAILreading barebox");
- 			return;
- 		}
- 
++		if (!image)
+ 			return -errno;
 +		data.image = image;
-+
- 		ret = barebox_update(&data);
+ 	} else {
+ 		if (!repair)
+ 			return COMMAND_ERROR_USAGE;
+@@ -69,7 +71,7 @@ static int do_barebox_update(int argc, char *argv[])
  
--		free(data.image);
-+		free(image);
+ 	ret = barebox_update(&data);
  
- 		if (ret) {
- 			fastboot_tx_print(f_fb, "FAILupdate barebox: %s", strerror(-ret));
+-	free(data.image);
++	free(image);
+ 
+ 	return ret;
+ }
 -- 
 2.15.1
 
