@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1egPrT-0005oQ-Hi
- for barebox@lists.infradead.org; Tue, 30 Jan 2018 06:57:45 +0000
-Date: Tue, 30 Jan 2018 07:57:31 +0100
+ id 1egPsi-0005xb-KC
+ for barebox@lists.infradead.org; Tue, 30 Jan 2018 06:59:02 +0000
+Date: Tue, 30 Jan 2018 07:58:48 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180130065731.dmaouhu6ko6k5ap3@pengutronix.de>
-References: <20180128212959.14319-1-aleksander@aleksander.es>
+Message-ID: <20180130065848.fv3emic4hwxu4yaf@pengutronix.de>
+References: <20180128213023.14383-1-aleksander@aleksander.es>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180128212959.14319-1-aleksander@aleksander.es>
+In-Reply-To: <20180128213023.14383-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,20 +22,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ratp: rename global context variable
+Subject: Re: [PATCH] ratp: move barebox-specific command to ratp_bb.h
 To: Aleksander Morgado <aleksander@aleksander.es>
 Cc: barebox@lists.infradead.org
 
-On Sun, Jan 28, 2018 at 10:29:59PM +0100, Aleksander Morgado wrote:
-> The 'ratp_command_ctx' seems to specify that this variable is only
-> used to process command operations, but it really is used in every
-> async operation (e.g. also in FS), so just rename it to a more generic
-> name for clarity.
+On Sun, Jan 28, 2018 at 10:30:23PM +0100, Aleksander Morgado wrote:
+> The ratp_run_command() is really an implementation detail of the
+> barebox ratp 'command' operation support. Move it to the barebox
+> specific header and rename it with the correct prefix.
 > 
 > Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 > ---
->  common/ratp.c | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
+>  common/ratp.c     | 2 +-
+>  include/ratp.h    | 2 --
+>  include/ratp_bb.h | 7 ++++---
+>  lib/readline.c    | 4 ++--
+>  4 files changed, 7 insertions(+), 8 deletions(-)
 
 Applied, thanks
 
@@ -43,70 +45,69 @@ Sascha
 
 > 
 > diff --git a/common/ratp.c b/common/ratp.c
-> index 7be86d49a..c5eae2e2c 100644
+> index c5eae2e2c..6db4df870 100644
 > --- a/common/ratp.c
 > +++ b/common/ratp.c
-> @@ -204,7 +204,7 @@ static int ratp_bb_send_getenv_return(struct ratp_ctx *ctx, const char *val)
+> @@ -323,7 +323,7 @@ static int ratp_console_register(struct ratp_ctx *ctx)
+>  	return 0;
 >  }
 >  
->  static char *ratp_command;
-> -static struct ratp_ctx *ratp_command_ctx;
-> +static struct ratp_ctx *ratp_ctx;
->  
->  static int ratp_bb_dispatch(struct ratp_ctx *ctx, const void *buf, int len)
+> -void ratp_run_command(void)
+> +void barebox_ratp_command_run(void)
 >  {
-> @@ -220,7 +220,7 @@ static int ratp_bb_dispatch(struct ratp_ctx *ctx, const void *buf, int len)
->  			return 0;
+>  	int ret;
 >  
->  		ratp_command = xmemdup_add_zero(&rbb->data, dlen);
-> -		ratp_command_ctx = ctx;
-> +		ratp_ctx = ctx;
->  		pr_debug("got command: %s\n", ratp_command);
+> diff --git a/include/ratp.h b/include/ratp.h
+> index 94fd004f4..6f4cf8a6f 100644
+> --- a/include/ratp.h
+> +++ b/include/ratp.h
+> @@ -17,6 +17,4 @@ int ratp_poll(struct ratp *ratp);
+>  bool ratp_closed(struct ratp *ratp);
+>  bool ratp_busy(struct ratp *ratp);
 >  
->  		break;
-> @@ -337,7 +337,7 @@ void ratp_run_command(void)
->  	free(ratp_command);
->  	ratp_command = NULL;
+> -void ratp_run_command(void);
+> -
+>  #endif /* __RATP_H */
+> \ No newline at end of file
+> diff --git a/include/ratp_bb.h b/include/ratp_bb.h
+> index 52ecaff37..70fd58a67 100644
+> --- a/include/ratp_bb.h
+> +++ b/include/ratp_bb.h
+> @@ -8,8 +8,9 @@ struct ratp_bb_pkt {
+>  	uint8_t data[];
+>  };
 >  
-> -	ratp_bb_send_command_return(ratp_command_ctx, ret);
-> +	ratp_bb_send_command_return(ratp_ctx, ret);
->  }
+> -int barebox_ratp(struct console_device *cdev);
+> -int barebox_ratp_fs_call(struct ratp_bb_pkt *tx, struct ratp_bb_pkt **rx);
+> -int barebox_ratp_fs_mount(const char *path);
+> +int  barebox_ratp(struct console_device *cdev);
+> +void barebox_ratp_command_run(void);
+> +int  barebox_ratp_fs_call(struct ratp_bb_pkt *tx, struct ratp_bb_pkt **rx);
+> +int  barebox_ratp_fs_mount(const char *path);
 >  
->  static const char *ratpfs_mount_path;
-> @@ -400,7 +400,7 @@ out:
+>  #endif /* __RATP_BB_H */
+> diff --git a/lib/readline.c b/lib/readline.c
+> index b5d99ca18..1e380abec 100644
+> --- a/lib/readline.c
+> +++ b/lib/readline.c
+> @@ -3,7 +3,7 @@
+>  #include <init.h>
+>  #include <libbb.h>
+>  #include <poller.h>
+> -#include <ratp.h>
+> +#include <ratp_bb.h>
+>  #include <xfuncs.h>
+>  #include <complete.h>
+>  #include <linux/ctype.h>
+> @@ -203,7 +203,7 @@ int readline(const char *prompt, char *buf, int len)
+>  		while (!tstc()) {
+>  			poller_call();
+>  			if (IS_ENABLED(CONFIG_RATP))
+> -				ratp_run_command();
+> +				barebox_ratp_command_run();
+>  		}
 >  
->  int barebox_ratp_fs_call(struct ratp_bb_pkt *tx, struct ratp_bb_pkt **rx)
->  {
-> -	struct ratp_ctx *ctx = ratp_command_ctx;
-> +	struct ratp_ctx *ctx = ratp_ctx;
->  	struct ratp_bb *rbb;
->  	int len;
->  	u64 start;
-> @@ -446,11 +446,11 @@ int barebox_ratp(struct console_device *cdev)
->  	if (!cdev->getc || !cdev->putc)
->  		return -EINVAL;
->  
-> -	if (ratp_command_ctx) {
-> -		ctx = ratp_command_ctx;
-> +	if (ratp_ctx) {
-> +		ctx = ratp_ctx;
->  	} else {
->  		ctx = xzalloc(sizeof(*ctx));
-> -		ratp_command_ctx = ctx;
-> +		ratp_ctx = ctx;
->  		ctx->ratp.send = console_send;
->  		ctx->ratp.recv = console_recv;
->  		ctx->console_recv_fifo = kfifo_alloc(512);
-> @@ -494,7 +494,7 @@ out:
->  
->  static void barebox_ratp_close(void)
->  {
-> -	if (ratp_command_ctx && ratp_command_ctx->cdev)
-> -		ratp_console_unregister(ratp_command_ctx);
-> +	if (ratp_ctx && ratp_ctx->cdev)
-> +		ratp_console_unregister(ratp_ctx);
->  }
->  predevshutdown_exitcall(barebox_ratp_close);
+>  		ichar = read_key();
 > -- 
 > 2.15.1
 > 
