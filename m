@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1egRZQ-00076b-Hz
- for barebox@lists.infradead.org; Tue, 30 Jan 2018 08:47:15 +0000
+ id 1egRZQ-00076Z-I3
+ for barebox@lists.infradead.org; Tue, 30 Jan 2018 08:47:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 30 Jan 2018 09:46:57 +0100
-Message-Id: <20180130084657.31943-7-s.hauer@pengutronix.de>
+Date: Tue, 30 Jan 2018 09:46:55 +0100
+Message-Id: <20180130084657.31943-5-s.hauer@pengutronix.de>
 In-Reply-To: <20180130084657.31943-1-s.hauer@pengutronix.de>
 References: <20180130084657.31943-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,29 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] ARM: am33xx: bbu: Make pointers to image const
+Subject: [PATCH 4/6] bbu: Make pointer to image const
 To: Barebox List <barebox@lists.infradead.org>
+
+Make pointer to image in bbu data const so that we can put
+const pointers into that.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/am33xx_bbu_spi_mlo.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/bbu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c b/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
-index 69a73ffb06..03477dbaf1 100644
---- a/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
-+++ b/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
-@@ -32,8 +32,8 @@ static int spi_nor_mlo_handler(struct bbu_handler *handler,
- 	int ret = 0;
- 	uint32_t readbuf;
- 	int size = data->len;
--	void *image = data->image;
--	uint32_t *header;
-+	const void *image = data->image;
-+	const uint32_t *header;
- 	int swap = 0;
- 	struct stat s;
- 
+diff --git a/include/bbu.h b/include/bbu.h
+index a3824e11cf..def568e498 100644
+--- a/include/bbu.h
++++ b/include/bbu.h
+@@ -11,7 +11,7 @@ struct bbu_data {
+ #define BBU_FLAG_YES	(1 << 1)
+ 	unsigned long flags;
+ 	int force;
+-	void *image;
++	const void *image;
+ 	const char *imagefile;
+ 	const char *devicefile;
+ 	size_t len;
 -- 
 2.15.1
 
