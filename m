@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1egRZQ-00076d-I4
+ id 1egRZQ-00076b-Hz
  for barebox@lists.infradead.org; Tue, 30 Jan 2018 08:47:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 30 Jan 2018 09:46:52 +0100
-Message-Id: <20180130084657.31943-2-s.hauer@pengutronix.de>
+Date: Tue, 30 Jan 2018 09:46:57 +0100
+Message-Id: <20180130084657.31943-7-s.hauer@pengutronix.de>
 In-Reply-To: <20180130084657.31943-1-s.hauer@pengutronix.de>
 References: <20180130084657.31943-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,60 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] bbu: imx-bbu-internal: Do not modify image
+Subject: [PATCH 6/6] ARM: am33xx: bbu: Make pointers to image const
 To: Barebox List <barebox@lists.infradead.org>
-
-Instead of copying the existing partition table into the image
-to be flashed, modify the temporary buffer and write from this
-one. This makes it unnecessary to modify the input image which
-can be made const then in a later step.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/imx-bbu-internal.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ arch/arm/mach-omap/am33xx_bbu_spi_mlo.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-index 5783da6102..d40bde5339 100644
---- a/arch/arm/mach-imx/imx-bbu-internal.c
-+++ b/arch/arm/mach-imx/imx-bbu-internal.c
-@@ -54,6 +54,7 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
- 		void *buf, int image_len)
- {
- 	int fd, ret;
-+	int written = 0;
- 
- 	fd = open(devicefile, O_RDWR | O_CREAT);
- 	if (fd < 0)
-@@ -90,15 +91,25 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
- 			goto err_close;
- 		}
- 
--		memcpy(buf + 0x1b8, mbr + 0x1b8, 0x48);
--		free(mbr);
-+		memcpy(mbr, buf, 0x1b8);
- 
- 		ret = lseek(fd, 0, SEEK_SET);
--		if (ret)
-+		if (ret) {
-+			free(mbr);
-+			goto err_close;
-+		}
-+
-+		ret = write(fd, mbr, 512);
-+
-+		free(mbr);
-+
-+		if (ret < 0)
- 			goto err_close;
-+
-+		written = 512;
- 	}
- 
--	ret = write(fd, buf, image_len);
-+	ret = write(fd, buf + written, image_len - written);
- 	if (ret < 0)
- 		goto err_close;
+diff --git a/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c b/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
+index 69a73ffb06..03477dbaf1 100644
+--- a/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
++++ b/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
+@@ -32,8 +32,8 @@ static int spi_nor_mlo_handler(struct bbu_handler *handler,
+ 	int ret = 0;
+ 	uint32_t readbuf;
+ 	int size = data->len;
+-	void *image = data->image;
+-	uint32_t *header;
++	const void *image = data->image;
++	const uint32_t *header;
+ 	int swap = 0;
+ 	struct stat s;
  
 -- 
 2.15.1
