@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout.gmx.net ([212.227.15.18])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1egY1L-00012I-EA
- for barebox@lists.infradead.org; Tue, 30 Jan 2018 15:40:31 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
- helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1egY17-0007Xl-Ub
- for barebox@lists.infradead.org; Tue, 30 Jan 2018 16:40:13 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 30 Jan 2018 16:40:13 +0100
-Message-Id: <20180130154013.8446-2-l.stach@pengutronix.de>
-In-Reply-To: <20180130154013.8446-1-l.stach@pengutronix.de>
-References: <20180130154013.8446-1-l.stach@pengutronix.de>
+ id 1egc7C-0006ed-22
+ for barebox@lists.infradead.org; Tue, 30 Jan 2018 20:02:48 +0000
+From: Oleksij Rempel <linux@rempel-privat.de>
+Date: Tue, 30 Jan 2018 21:02:21 +0100
+Message-Id: <20180130200221.12785-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,35 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] reset: add missing stub for reset_control_get
+Subject: [PATCH] net: phy: ar8327: fix ar8327n_reg_read
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-Fixes: 45b95b50cd0b (reset: add reset controller framework)
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Actual read value was lost and only by accident worked properly.
+
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- include/linux/reset.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/phy/ar8327.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/reset.h b/include/linux/reset.h
-index be0d1bb5a621..a22bcf9a5d64 100644
---- a/include/linux/reset.h
-+++ b/include/linux/reset.h
-@@ -37,6 +37,13 @@ static inline int reset_control_deassert(struct reset_control *rstc)
- 	return 0;
- }
+diff --git a/drivers/net/phy/ar8327.c b/drivers/net/phy/ar8327.c
+index a0b10021d..e9ac3d49e 100644
+--- a/drivers/net/phy/ar8327.c
++++ b/drivers/net/phy/ar8327.c
+@@ -83,7 +83,7 @@ static u32 ar8327n_reg_read(struct phy_device *phydev, u32 reg_addr)
+ 	reg_word_addr++;
+ 	phy_addr = 0x10 | ((reg_word_addr >> 5) & 0x7); /* bit7-5 of reg address */
+ 	phy_reg = (u8) (reg_word_addr & 0x1f);   /* bit4-0 of reg address */
+-	reg_val = (u32) mdiobus_read(phydev->bus, phy_addr, phy_reg);
++	tmp_val = (u32) mdiobus_read(phydev->bus, phy_addr, phy_reg);
+ 	reg_val |= (tmp_val << 16);
  
-+static inline struct reset_control *
-+reset_control_get(struct device_d *dev, const char *id)
-+{
-+	WARN_ON(1);
-+	return NULL;
-+}
-+
- static inline void reset_control_put(struct reset_control *rstc)
- {
- 	WARN_ON(1);
+ 	return reg_val;
 -- 
-2.15.1
+2.14.1
 
 
 _______________________________________________
