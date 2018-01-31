@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1egqIc-0005bZ-IQ
- for barebox@lists.infradead.org; Wed, 31 Jan 2018 11:11:32 +0000
+ id 1egqIc-0005bO-IN
+ for barebox@lists.infradead.org; Wed, 31 Jan 2018 11:11:33 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 31 Jan 2018 12:11:14 +0100
-Message-Id: <20180131111116.9638-7-s.hauer@pengutronix.de>
+Date: Wed, 31 Jan 2018 12:11:09 +0100
+Message-Id: <20180131111116.9638-2-s.hauer@pengutronix.de>
 In-Reply-To: <20180131111116.9638-1-s.hauer@pengutronix.de>
 References: <20180131111116.9638-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,206 +21,135 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/8] FIT: factor out some helper functions
+Subject: [PATCH 1/8] bootm: FIT: do not depend on FIT pre-opened images
 To: Barebox List <barebox@lists.infradead.org>
 
-Create and use fit_alloc_digest() and fit_read_rsa_public_key()
-which we can use a second time in the next step.
+When calling fit_open_configuration the FIT code already opens
+the images "kernel", "ramdisk" and "dtb". This does not fit well
+into the FIT code, so make the bootm code independent of these
+pre-opened images so that we can drop the opening from the FIT
+code in the next step.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/image-fit.c | 121 ++++++++++++++++++++++++++++++++---------------------
- 1 file changed, 74 insertions(+), 47 deletions(-)
+ common/bootm.c  | 46 ++++++++++++++++++++++++++++++++--------------
+ include/bootm.h |  3 +++
+ 2 files changed, 35 insertions(+), 14 deletions(-)
 
-diff --git a/common/image-fit.c b/common/image-fit.c
-index 9948c1fa77..86516f0ba9 100644
---- a/common/image-fit.c
-+++ b/common/image-fit.c
-@@ -230,28 +230,18 @@ static int fit_digest(void *fit, struct digest *digest,
- 	return 0;
- }
+diff --git a/common/bootm.c b/common/bootm.c
+index 05314a0a10..8961c58c8b 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -111,13 +111,14 @@ int bootm_load_os(struct image_data *data, unsigned long load_address)
+ 		return -EINVAL;
  
--/*
-- * The consistency of the FTD structure was already checked by of_unflatten_dtb()
-- */
--static int fit_verify_signature(struct device_node *sig_node, void *fit)
-+static struct digest *fit_alloc_digest(struct device_node *sig_node,
-+				       enum hash_algo *algo_out)
- {
--	uint32_t hashed_strings_start, hashed_strings_size;
--	struct string_list inc_nodes, exc_props;
--	struct rsa_public_key key = {};
- 	struct digest *digest;
--	int sig_len;
--	const char *algo_name, *key_name, *sig_value;
--	char *key_path;
--	struct device_node *key_node;
- 	enum hash_algo algo;
--	void *hash;
--	int ret;
-+	const char *algo_name;
- 
- 	if (of_property_read_string(sig_node, "algo", &algo_name)) {
--		pr_err("algo not found\n");
--		ret = -EINVAL;
--		goto out;
-+		pr_err("algo property not found\n");
-+		return ERR_PTR(-EINVAL);
- 	}
+ 	if (data->os_fit) {
++		const void *kernel = data->fit_kernel;
++		unsigned long kernel_size = data->fit_kernel_size;
 +
- 	if (strcmp(algo_name, "sha1,rsa2048") == 0) {
- 		algo = HASH_ALGO_SHA1;
- 	} else if (strcmp(algo_name, "sha256,rsa2048") == 0) {
-@@ -260,53 +250,87 @@ static int fit_verify_signature(struct device_node *sig_node, void *fit)
- 		algo = HASH_ALGO_SHA256;
- 	} else	{
- 		pr_err("unknown algo %s\n", algo_name);
--		ret = -EINVAL;
--		goto out;
-+		return ERR_PTR(-EINVAL);
- 	}
-+
- 	digest = digest_alloc_by_algo(algo);
- 	if (!digest) {
- 		pr_err("unsupported algo %s\n", algo_name);
--		ret = -EINVAL;
--		goto out;
-+		return ERR_PTR(-EINVAL);
+ 		data->os_res = request_sdram_region("kernel",
+-				load_address,
+-				data->os_fit->kernel_size);
++				load_address, kernel_size);
+ 		if (!data->os_res)
+ 			return -ENOMEM;
+-		memcpy((void *)load_address, data->os_fit->kernel,
+-		       data->os_fit->kernel_size);
++		memcpy((void *)load_address, kernel, kernel_size);
+ 		return 0;
  	}
  
-+	digest_init(digest);
+@@ -150,7 +151,8 @@ bool bootm_has_initrd(struct image_data *data)
+ 	if (!IS_ENABLED(CONFIG_BOOTM_INITRD))
+ 		return false;
+ 
+-	if (data->os_fit && data->os_fit->initrd)
++	if (IS_ENABLED(CONFIG_FITIMAGE) && data->os_fit &&
++	    fit_has_image(data->os_fit, "ramdisk"))
+ 		return true;
+ 
+ 	if (data->initrd_file)
+@@ -211,14 +213,20 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
+ 	if (data->initrd_res)
+ 		return 0;
+ 
+-	if (data->os_fit && data->os_fit->initrd) {
++	if (IS_ENABLED(CONFIG_FITIMAGE) && data->os_fit &&
++	    fit_has_image(data->os_fit, "ramdisk")) {
++		const void *initrd;
++		unsigned long initrd_size;
 +
-+	*algo_out = algo;
++		ret = fit_open_image(data->os_fit, "ramdisk", &initrd,
++				     &initrd_size);
 +
-+	return digest;
-+}
+ 		data->initrd_res = request_sdram_region("initrd",
+ 				load_address,
+-				data->os_fit->initrd_size);
++				initrd_size);
+ 		if (!data->initrd_res)
+ 			return -ENOMEM;
+-		memcpy((void *)load_address, data->os_fit->initrd,
+-		       data->os_fit->initrd_size);
++		memcpy((void *)load_address, initrd, initrd_size);
+ 		printf("Loaded initrd from FIT image\n");
+ 		goto done1;
+ 	}
+@@ -335,11 +343,16 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
+ 	if (!IS_ENABLED(CONFIG_OFTREE))
+ 		return 0;
+ 
+-	if (data->os_fit && data->os_fit->oftree) {
+-		data->of_root_node = of_unflatten_dtb(data->os_fit->oftree);
++	if (IS_ENABLED(CONFIG_FITIMAGE) && data->os_fit &&
++	    fit_has_image(data->os_fit, "dtb")) {
++		const void *of_tree;
++		unsigned long of_size;
+ 
+-		if (IS_ERR(data->of_root_node))
+-			data->of_root_node = NULL;
++		ret = fit_open_image(data->os_fit, "dtb", &of_tree, &of_size);
++		if (ret)
++			return ret;
 +
-+static int fit_check_rsa_signature(struct device_node *sig_node,
-+				   enum hash_algo algo, void *hash)
-+{
-+	struct rsa_public_key key = {};
-+	const char *key_name;
-+	char *key_path;
-+	struct device_node *key_node;
-+	int sig_len;
-+	const char *sig_value;
-+	int ret;
++		data->of_root_node = of_unflatten_dtb(of_tree);
+ 	} else if (data->oftree_file) {
+ 		size_t size;
+ 
+@@ -429,7 +442,7 @@ int bootm_get_os_size(struct image_data *data)
+ 	if (data->os)
+ 		return uimage_get_size(data->os, uimage_part_num(data->os_part));
+ 	if (data->os_fit)
+-		return data->os_fit->kernel_size;
++		return data->fit_kernel_size;
+ 
+ 	if (data->os_file) {
+ 		struct stat s;
+@@ -584,6 +597,11 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 			       data->os_part ? data->os_part : "default");
+ 			goto err_out;
+ 		}
 +
- 	sig_value = of_get_property(sig_node, "value", &sig_len);
- 	if (!sig_value) {
- 		pr_err("signature value not found in %s\n", sig_node->full_name);
--		ret = -EINVAL;
--		goto out_free_digest;
-+		return -EINVAL;
++		ret = fit_open_image(data->os_fit, "kernel", &data->fit_kernel,
++				     &data->fit_kernel_size);
++		if (ret)
++			goto err_out;;
  	}
  
- 	if (of_property_read_string(sig_node, "key-name-hint", &key_name)) {
- 		pr_err("key name not found in %s\n", sig_node->full_name);
--		ret = -EINVAL;
--		goto out_free_digest;
-+		return -EINVAL;
- 	}
- 	key_path = xasprintf("/signature/key-%s", key_name);
- 	key_node = of_find_node_by_path(key_path);
- 	free(key_path);
- 	if (!key_node) {
- 		pr_info("failed to find key node\n");
--		ret = -ENOENT;
--		goto out_free_digest;
-+		return -ENOENT;
- 	}
+ 	if (os_type == filetype_uimage) {
+diff --git a/include/bootm.h b/include/bootm.h
+index 6e9777a9ac..7ba7b8b96f 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -73,6 +73,9 @@ struct image_data {
+ 	char *oftree_file;
+ 	char *oftree_part;
  
- 	ret = rsa_of_read_key(key_node, &key);
- 	if (ret) {
- 		pr_info("failed to read key in %s\n", key_node->full_name);
--		ret = -ENOENT;
--		goto out_free_digest;
-+		return -ENOENT;
- 	}
- 
--	if (of_property_read_u32_index(sig_node, "hashed-strings", 0, &hashed_strings_start)) {
-+	ret = rsa_verify(&key, sig_value, sig_len, hash, algo);
-+	if (ret)
-+		pr_err("image signature BAD\n");
-+	else
-+		pr_info("image signature OK\n");
++	const void *fit_kernel;
++	unsigned long fit_kernel_size;
 +
-+	return ret;
-+}
-+
-+/*
-+ * The consistency of the FTD structure was already checked by of_unflatten_dtb()
-+ */
-+static int fit_verify_signature(struct device_node *sig_node, void *fit)
-+{
-+	uint32_t hashed_strings_start, hashed_strings_size;
-+	struct string_list inc_nodes, exc_props;
-+	struct digest *digest;
-+	void *hash;
-+	enum hash_algo algo = 0;
-+	int ret;
-+
-+	if (of_property_read_u32_index(sig_node, "hashed-strings", 0,
-+	    &hashed_strings_start)) {
- 		pr_err("hashed-strings start not found in %s\n", sig_node->full_name);
--		ret = -EINVAL;
--		goto out_free_digest;
-+		return -EINVAL;
- 	}
--	if (of_property_read_u32_index(sig_node, "hashed-strings", 1, &hashed_strings_size)) {
-+	if (of_property_read_u32_index(sig_node, "hashed-strings", 1,
-+	    &hashed_strings_size)) {
- 		pr_err("hashed-strings size not found in %s\n", sig_node->full_name);
--		ret = -EINVAL;
--		goto out_free_digest;
-+		return -EINVAL;
- 	}
- 
- 	string_list_init(&inc_nodes);
-@@ -320,27 +344,30 @@ static int fit_verify_signature(struct device_node *sig_node, void *fit)
- 
- 	string_list_add(&exc_props, "data");
- 
--	digest_init(digest);
--	ret = fit_digest(fit, digest, &inc_nodes, &exc_props, hashed_strings_start, hashed_strings_size);
-+	digest = fit_alloc_digest(sig_node, &algo);
-+	if (IS_ERR(digest)) {
-+		ret = PTR_ERR(digest);
-+		goto out_sl;
-+	}
-+
-+	ret = fit_digest(fit, digest, &inc_nodes, &exc_props, hashed_strings_start,
-+			 hashed_strings_size);
- 	hash = xzalloc(digest_length(digest));
- 	digest_final(digest, hash);
- 
--	ret = rsa_verify(&key, sig_value, sig_len, hash, algo);
--	if (ret) {
--		pr_info("image signature BAD\n");
--		ret = -EBADMSG;
--	} else {
--		pr_info("image signature OK\n");
--		ret = 0;
--	}
-+	ret = fit_check_rsa_signature(sig_node, algo, hash);
-+	if (ret)
-+		goto out_free_hash;
- 
-+	ret = 0;
-+
-+ out_free_hash:
- 	free(hash);
-+	digest_free(digest);
-  out_sl:
- 	string_list_free(&inc_nodes);
- 	string_list_free(&exc_props);
-- out_free_digest:
--	digest_free(digest);
-- out:
-+ 
- 	return ret;
- }
- 
+ 	struct device_node *of_root_node;
+ 	struct fdt_header *oftree;
+ 	struct resource *oftree_res;
 -- 
 2.15.1
 
