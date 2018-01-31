@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1egqIc-0005bO-IN
- for barebox@lists.infradead.org; Wed, 31 Jan 2018 11:11:33 +0000
+ id 1egqIc-0005bL-IM
+ for barebox@lists.infradead.org; Wed, 31 Jan 2018 11:11:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 31 Jan 2018 12:11:09 +0100
-Message-Id: <20180131111116.9638-2-s.hauer@pengutronix.de>
+Date: Wed, 31 Jan 2018 12:11:13 +0100
+Message-Id: <20180131111116.9638-6-s.hauer@pengutronix.de>
 In-Reply-To: <20180131111116.9638-1-s.hauer@pengutronix.de>
 References: <20180131111116.9638-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,135 +21,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] bootm: FIT: do not depend on FIT pre-opened images
+Subject: [PATCH 5/8] FIT: move handle->verify check to fit_verify_hash()
 To: Barebox List <barebox@lists.infradead.org>
 
-When calling fit_open_configuration the FIT code already opens
-the images "kernel", "ramdisk" and "dtb". This does not fit well
-into the FIT code, so make the bootm code independent of these
-pre-opened images so that we can drop the opening from the FIT
-code in the next step.
+Preparation for the next step which will allow to open
+images which are not part of a configuration.
+
+This has one change inside: We used to iterate over all
+subnodes of a image expecting all of them containing a hash,
+so it could happen that we check multiple hashes if more exist
+or that we falsely interpret some unrelated subnode as hash node.
+With this patch we expect the hash in a subnode named "hash@1"
+as required by the FIT image format description.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/bootm.c  | 46 ++++++++++++++++++++++++++++++++--------------
- include/bootm.h |  3 +++
- 2 files changed, 35 insertions(+), 14 deletions(-)
+ common/image-fit.c | 45 +++++++++++++++++++++++++--------------------
+ 1 file changed, 25 insertions(+), 20 deletions(-)
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 05314a0a10..8961c58c8b 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -111,13 +111,14 @@ int bootm_load_os(struct image_data *data, unsigned long load_address)
+diff --git a/common/image-fit.c b/common/image-fit.c
+index 21b547a1da..9948c1fa77 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -344,13 +344,33 @@ static int fit_verify_signature(struct device_node *sig_node, void *fit)
+ 	return ret;
+ }
+ 
+-static int fit_verify_hash(struct device_node *hash, const void *data, int data_len)
++static int fit_verify_hash(struct fit_handle *handle, struct device_node *image,
++			   const void *data, int data_len)
+ {
+ 	struct digest *d;
+ 	const char *algo;
+ 	const char *value_read;
+ 	char *value_calc;
+ 	int hash_len, ret;
++	struct device_node *hash;
++
++	switch (handle->verify) {
++	case BOOTM_VERIFY_NONE:
++		return 0;
++	case BOOTM_VERIFY_AVAILABLE:
++		ret = 0;
++		break;
++	default:
++		ret = -EINVAL;
++	}
++
++	hash = of_get_child_by_name(image, "hash@1");
++	if (!hash) {
++		if (ret)
++			pr_err("image %s does not have hashes\n",
++			       image->full_name);
++		return ret;
++	}
+ 
+ 	value_read = of_get_property(hash, "value", &hash_len);
+ 	if (!value_read) {
+@@ -416,7 +436,7 @@ int fit_open_image(struct fit_handle *handle, void *configuration,
+ 		   const char *name, const void **outdata,
+ 		   unsigned long *outsize)
+ {
+-	struct device_node *image, *hash;
++	struct device_node *image;
+ 	const char *unit, *type = NULL, *desc= "(no description)";
+ 	const void *data;
+ 	int data_len;
+@@ -450,24 +470,9 @@ int fit_open_image(struct fit_handle *handle, void *configuration,
  		return -EINVAL;
- 
- 	if (data->os_fit) {
-+		const void *kernel = data->fit_kernel;
-+		unsigned long kernel_size = data->fit_kernel_size;
-+
- 		data->os_res = request_sdram_region("kernel",
--				load_address,
--				data->os_fit->kernel_size);
-+				load_address, kernel_size);
- 		if (!data->os_res)
- 			return -ENOMEM;
--		memcpy((void *)load_address, data->os_fit->kernel,
--		       data->os_fit->kernel_size);
-+		memcpy((void *)load_address, kernel, kernel_size);
- 		return 0;
  	}
  
-@@ -150,7 +151,8 @@ bool bootm_has_initrd(struct image_data *data)
- 	if (!IS_ENABLED(CONFIG_BOOTM_INITRD))
- 		return false;
+-	if (handle->verify > BOOTM_VERIFY_NONE) {
+-		if (handle->verify == BOOTM_VERIFY_AVAILABLE)
+-			ret = 0;
+-		else
+-			ret = -EINVAL;
+-		for_each_child_of_node(image, hash) {
+-			if (handle->verbose)
+-				of_print_nodes(hash, 0);
+-			ret = fit_verify_hash(hash, data, data_len);
+-			if (ret < 0)
+-				return ret;
+-		}
+-
+-		if (ret < 0) {
+-			pr_err("image '%s': '%s' does not have hashes\n", unit, desc);
+-			return ret;
+-		}
+-	}
++	ret = fit_verify_hash(handle, image, data, data_len);
++	if (ret < 0)
++		return ret;
  
--	if (data->os_fit && data->os_fit->initrd)
-+	if (IS_ENABLED(CONFIG_FITIMAGE) && data->os_fit &&
-+	    fit_has_image(data->os_fit, "ramdisk"))
- 		return true;
- 
- 	if (data->initrd_file)
-@@ -211,14 +213,20 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
- 	if (data->initrd_res)
- 		return 0;
- 
--	if (data->os_fit && data->os_fit->initrd) {
-+	if (IS_ENABLED(CONFIG_FITIMAGE) && data->os_fit &&
-+	    fit_has_image(data->os_fit, "ramdisk")) {
-+		const void *initrd;
-+		unsigned long initrd_size;
-+
-+		ret = fit_open_image(data->os_fit, "ramdisk", &initrd,
-+				     &initrd_size);
-+
- 		data->initrd_res = request_sdram_region("initrd",
- 				load_address,
--				data->os_fit->initrd_size);
-+				initrd_size);
- 		if (!data->initrd_res)
- 			return -ENOMEM;
--		memcpy((void *)load_address, data->os_fit->initrd,
--		       data->os_fit->initrd_size);
-+		memcpy((void *)load_address, initrd, initrd_size);
- 		printf("Loaded initrd from FIT image\n");
- 		goto done1;
- 	}
-@@ -335,11 +343,16 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
- 	if (!IS_ENABLED(CONFIG_OFTREE))
- 		return 0;
- 
--	if (data->os_fit && data->os_fit->oftree) {
--		data->of_root_node = of_unflatten_dtb(data->os_fit->oftree);
-+	if (IS_ENABLED(CONFIG_FITIMAGE) && data->os_fit &&
-+	    fit_has_image(data->os_fit, "dtb")) {
-+		const void *of_tree;
-+		unsigned long of_size;
- 
--		if (IS_ERR(data->of_root_node))
--			data->of_root_node = NULL;
-+		ret = fit_open_image(data->os_fit, "dtb", &of_tree, &of_size);
-+		if (ret)
-+			return ret;
-+
-+		data->of_root_node = of_unflatten_dtb(of_tree);
- 	} else if (data->oftree_file) {
- 		size_t size;
- 
-@@ -429,7 +442,7 @@ int bootm_get_os_size(struct image_data *data)
- 	if (data->os)
- 		return uimage_get_size(data->os, uimage_part_num(data->os_part));
- 	if (data->os_fit)
--		return data->os_fit->kernel_size;
-+		return data->fit_kernel_size;
- 
- 	if (data->os_file) {
- 		struct stat s;
-@@ -584,6 +597,11 @@ int bootm_boot(struct bootm_data *bootm_data)
- 			       data->os_part ? data->os_part : "default");
- 			goto err_out;
- 		}
-+
-+		ret = fit_open_image(data->os_fit, "kernel", &data->fit_kernel,
-+				     &data->fit_kernel_size);
-+		if (ret)
-+			goto err_out;;
- 	}
- 
- 	if (os_type == filetype_uimage) {
-diff --git a/include/bootm.h b/include/bootm.h
-index 6e9777a9ac..7ba7b8b96f 100644
---- a/include/bootm.h
-+++ b/include/bootm.h
-@@ -73,6 +73,9 @@ struct image_data {
- 	char *oftree_file;
- 	char *oftree_part;
- 
-+	const void *fit_kernel;
-+	unsigned long fit_kernel_size;
-+
- 	struct device_node *of_root_node;
- 	struct fdt_header *oftree;
- 	struct resource *oftree_res;
+ 	*outdata = data;
+ 	*outsize = data_len;
 -- 
 2.15.1
 
