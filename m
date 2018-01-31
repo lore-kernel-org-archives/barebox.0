@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1egqIc-0005bM-IJ
- for barebox@lists.infradead.org; Wed, 31 Jan 2018 11:11:35 +0000
+ id 1egqIc-0005bQ-IL
+ for barebox@lists.infradead.org; Wed, 31 Jan 2018 11:11:38 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 31 Jan 2018 12:11:15 +0100
-Message-Id: <20180131111116.9638-8-s.hauer@pengutronix.de>
+Date: Wed, 31 Jan 2018 12:11:16 +0100
+Message-Id: <20180131111116.9638-9-s.hauer@pengutronix.de>
 In-Reply-To: <20180131111116.9638-1-s.hauer@pengutronix.de>
 References: <20180131111116.9638-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,141 +21,207 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] FIT: Implement opening images with no configuration
+Subject: [PATCH 8/8] FIT: Allow to open buffer as FIT image
 To: Barebox List <barebox@lists.infradead.org>
 
-different images can be grouped together to build a FIT configuration.
-So far we only supported opening images as parts of configurations.
-This patch adds support for opening images that are not part of a
-configuration. This mode is used when the configuration parameter of
-fit_open_image is NULL.
-
-The main difference is in the way the RSA signature is checked. When
-being part of a configuration all involved nodes (including the hash
-nodes of the images, but not the image itself) are covered by the
-signature, thus during opening an image only the validity of the image
-data hash has to be checked. When not being part of a configuration,
-the image data itself is signed and must be checked.
+This adds fit_open_buf() which can open a buffer as FIT image.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/image-fit.c | 82 +++++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 75 insertions(+), 7 deletions(-)
+ common/image-fit.c  | 113 +++++++++++++++++++++++++++++++++++++---------------
+ include/image-fit.h |   5 ++-
+ 2 files changed, 85 insertions(+), 33 deletions(-)
 
 diff --git a/common/image-fit.c b/common/image-fit.c
-index 86516f0ba9..4ebd4b8c42 100644
+index 4ebd4b8c42..3fab52db2e 100644
 --- a/common/image-fit.c
 +++ b/common/image-fit.c
-@@ -444,6 +444,52 @@ err_digest_free:
- 	return ret;
+@@ -74,11 +74,11 @@ static int of_read_string_list(struct device_node *np, const char *name, struct
+ 	return prop ? 0 : -EINVAL;
  }
  
-+static int fit_image_verify_signature(struct fit_handle *handle,
-+				      struct device_node *image,
-+				      const void *data, int data_len)
-+{
-+	struct digest *digest;
-+	struct device_node *sig_node;
-+	enum hash_algo algo = 0;
-+	void *hash;
-+	int ret;
+-static int fit_digest(void *fit, struct digest *digest,
++static int fit_digest(const void *fit, struct digest *digest,
+ 		      struct string_list *inc_nodes, struct string_list *exc_props,
+ 		      uint32_t hashed_strings_start, uint32_t hashed_strings_size)
+ {
+-	struct fdt_header *fdt = fit;
++	const struct fdt_header *fdt = fit;
+ 	uint32_t dt_struct;
+ 	void *dt_strings;
+ 	struct fdt_header f = {};
+@@ -313,7 +313,7 @@ static int fit_check_rsa_signature(struct device_node *sig_node,
+ /*
+  * The consistency of the FTD structure was already checked by of_unflatten_dtb()
+  */
+-static int fit_verify_signature(struct device_node *sig_node, void *fit)
++static int fit_verify_signature(struct device_node *sig_node, const void *fit)
+ {
+ 	uint32_t hashed_strings_start, hashed_strings_size;
+ 	struct string_list inc_nodes, exc_props;
+@@ -690,61 +690,110 @@ void *fit_open_configuration(struct fit_handle *handle, const char *name)
+ 	return conf_node;
+ }
+ 
+-struct fit_handle *fit_open(const char *filename, bool verbose,
+-			    enum bootm_verify verify)
++static int fit_do_open(struct fit_handle *handle)
+ {
+-	struct fit_handle *handle = NULL;
+ 	const char *desc = "(no description)";
+ 	struct device_node *root;
 +
-+	if (!IS_ENABLED(CONFIG_FITIMAGE_SIGNATURE))
-+		return 0;
++	root = of_unflatten_dtb(handle->fit);
++	if (IS_ERR(root))
++		return PTR_ERR(root);
 +
-+	switch (handle->verify) {
-+	case BOOTM_VERIFY_NONE:
-+		return 0;
-+	case BOOTM_VERIFY_AVAILABLE:
-+		ret = 0;
-+		break;
-+	default:
-+		ret = -EINVAL;
-+	}
++	handle->root = root;
 +
-+	sig_node = of_get_child_by_name(image, "signature@1");
-+	if (!sig_node) {
-+		pr_err("Image %s has no signature\n", image->full_name);
-+		return ret;
-+	}
++	handle->images = of_get_child_by_name(handle->root, "images");
++	if (!handle->images)
++		return -ENOENT;
 +
-+	digest = fit_alloc_digest(sig_node, &algo);
-+	if (IS_ERR(digest))
-+		return PTR_ERR(digest);
++	handle->configurations = of_get_child_by_name(handle->root,
++						      "configurations");
 +
-+	digest_update(digest, data, data_len);
-+	hash = xzalloc(digest_length(digest));
-+	digest_final(digest, hash);
++	of_property_read_string(handle->root, "description", &desc);
++	pr_info("Opened FIT image: %s\n", desc);
 +
-+	ret = fit_check_rsa_signature(sig_node, algo, hash);
-+
-+	free(hash);
-+
-+	digest_free(digest);
-+
-+	return ret;
++	return 0;
 +}
 +
- int fit_has_image(struct fit_handle *handle, void *configuration,
- 		  const char *name)
- {
-@@ -459,6 +505,23 @@ int fit_has_image(struct fit_handle *handle, void *configuration,
- 	return 1;
++/**
++ * fit_open_buf - open a FIT image from a buffer
++ * @buf:	The buffer containing the FIT image
++ * @size:	Size of the FIT image
++ * @verbose:	If true, be more verbose
++ * @verify:	The verify mode
++ *
++ * This opens a FIT image found in buf. The returned handle is used as
++ * context for the other FIT functions.
++ *
++ * Return: A handle to a FIT image or a ERR_PTR
++ */
++struct fit_handle *fit_open_buf(const void *buf, size_t size, bool verbose,
++				enum bootm_verify verify)
++{
++	struct fit_handle *handle;
+ 	int ret;
+ 
+ 	handle = xzalloc(sizeof(struct fit_handle));
+ 
+ 	handle->verbose = verbose;
++	handle->fit = buf;
++	handle->size = size;
++	handle->verify = verify;
+ 
+-	ret = read_file_2(filename, &handle->size, &handle->fit, FILESIZE_MAX);
++	ret = fit_do_open(handle);
+ 	if (ret) {
+-		pr_err("unable to read %s: %s\n", filename, strerror(-ret));
+-		goto err;
++		fit_close(handle);
++		return ERR_PTR(ret);
+ 	}
+ 
+-	root = of_unflatten_dtb(handle->fit);
+-	if (IS_ERR(root)) {
+-		ret = PTR_ERR(root);
+-		goto err;
+-	}
++	return handle;
++}
+ 
+-	handle->root = root;
++/**
++ * fit_open - open a FIT image
++ * @filename:	The filename of the FIT image
++ * @verbose:	If true, be more verbose
++ * @verify:	The verify mode
++ *
++ * This opens a FIT image found in @filename. The returned handle is used as
++ * context for the other FIT functions.
++ *
++ * Return: A handle to a FIT image or a ERR_PTR
++ */
++struct fit_handle *fit_open(const char *filename, bool verbose,
++			    enum bootm_verify verify)
++{
++	struct fit_handle *handle;
++	int ret;
++
++	handle = xzalloc(sizeof(struct fit_handle));
++
++	handle->verbose = verbose;
+ 	handle->verify = verify;
+ 
+-	handle->images = of_get_child_by_name(handle->root, "images");
+-	if (!handle->images) {
+-		ret = -ENOENT;
+-		goto err;
++	ret = read_file_2(filename, &handle->size, &handle->fit_alloc,
++			  FILESIZE_MAX);
++	if (ret) {
++		pr_err("unable to read %s: %s\n", filename, strerror(-ret));
++		return ERR_PTR(ret);
+ 	}
+ 
+-	handle->configurations = of_get_child_by_name(handle->root,
+-						      "configurations");
++	handle->fit = handle->fit_alloc;
+ 
+-	of_property_read_string(handle->root, "description", &desc);
+-	pr_info("'%s': %s\n", filename, desc);
++	ret = fit_do_open(handle);
++	if (ret) {
++		fit_close(handle);
++		return ERR_PTR(ret);
++	}
+ 
+ 	return handle;
+- err:
+-	if (handle->root)
+-		of_delete_node(handle->root);
+-	free(handle->fit);
+-	free(handle);
+-
+-	return ERR_PTR(ret);
  }
  
-+/**
-+ * fit_open_image - Open an image in a FIT image
-+ * @handle: The FIT image handle
-+ * @name: The name of the image to open
-+ * @outdata: The returned image
-+ * @outsize: Size of the returned image
-+ *
-+ * Open an image in a FIT image. The returned image is freed during fit_close().
-+ * @configuration holds the cookie returned from fit_open_configuration() if
-+ * the image is opened as part of a configuration, or NULL if the image is
-+ * opened without a configuration. If @configuration is NULL then the RSA
-+ * signature of the image is checked if desired, if @configuration is non NULL,
-+ * then only the hash is checked (because opening the configuration already
-+ * checks the RSA signature of all involved nodes).
-+ *
-+ * Return: 0 for success, negative error code otherwise
-+ */
- int fit_open_image(struct fit_handle *handle, void *configuration,
- 		   const char *name, const void **outdata,
- 		   unsigned long *outsize)
-@@ -470,12 +533,13 @@ int fit_open_image(struct fit_handle *handle, void *configuration,
- 	int ret = 0;
- 	struct device_node *conf_node = configuration;
- 
--	if (!conf_node)
--		return -EINVAL;
--
--	if (of_property_read_string(conf_node, name, &unit)) {
--		pr_err("No image named '%s'\n", name);
--		return -ENOENT;
-+	if (conf_node) {
-+		if (of_property_read_string(conf_node, name, &unit)) {
-+			pr_err("No image named '%s'\n", name);
-+			return -ENOENT;
-+		}
-+	} else {
-+		unit = name;
- 	}
- 
- 	image = of_get_child_by_name(handle->images, unit);
-@@ -497,7 +561,11 @@ int fit_open_image(struct fit_handle *handle, void *configuration,
- 		return -EINVAL;
- 	}
- 
--	ret = fit_verify_hash(handle, image, data, data_len);
-+	if (conf_node)
-+		ret = fit_verify_hash(handle, image, data, data_len);
-+	else
-+		ret = fit_image_verify_signature(handle, image, data, data_len);
+ void fit_close(struct fit_handle *handle)
+ {
+ 	if (handle->root)
+ 		of_delete_node(handle->root);
+-	if (handle->fit)
+-		free(handle->fit);
 +
- 	if (ret < 0)
- 		return ret;
++	free(handle->fit_alloc);
+ 	free(handle);
+ }
  
+diff --git a/include/image-fit.h b/include/image-fit.h
+index 79b8101b83..fc0883b5dc 100644
+--- a/include/image-fit.h
++++ b/include/image-fit.h
+@@ -22,7 +22,8 @@
+ #include <bootm.h>
+ 
+ struct fit_handle {
+-	void *fit;
++	const void *fit;
++	void *fit_alloc;
+ 	size_t size;
+ 
+ 	bool verbose;
+@@ -35,6 +36,8 @@ struct fit_handle {
+ 
+ struct fit_handle *fit_open(const char *filename, bool verbose,
+ 			    enum bootm_verify verify);
++struct fit_handle *fit_open_buf(const void *buf, size_t len, bool verbose,
++				enum bootm_verify verify);
+ void *fit_open_configuration(struct fit_handle *handle, const char *name);
+ int fit_has_image(struct fit_handle *handle, void *configuration,
+ 		  const char *name);
 -- 
 2.15.1
 
