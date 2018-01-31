@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1egqIc-0005bL-IM
+ id 1egqIc-0005bY-Ki
  for barebox@lists.infradead.org; Wed, 31 Jan 2018 11:11:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 31 Jan 2018 12:11:13 +0100
-Message-Id: <20180131111116.9638-6-s.hauer@pengutronix.de>
+Date: Wed, 31 Jan 2018 12:11:10 +0100
+Message-Id: <20180131111116.9638-3-s.hauer@pengutronix.de>
 In-Reply-To: <20180131111116.9638-1-s.hauer@pengutronix.de>
 References: <20180131111116.9638-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,100 +21,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] FIT: move handle->verify check to fit_verify_hash()
+Subject: [PATCH 2/8] FIT: Do not pre-open images
 To: Barebox List <barebox@lists.infradead.org>
 
-Preparation for the next step which will allow to open
-images which are not part of a configuration.
-
-This has one change inside: We used to iterate over all
-subnodes of a image expecting all of them containing a hash,
-so it could happen that we check multiple hashes if more exist
-or that we falsely interpret some unrelated subnode as hash node.
-With this patch we expect the hash in a subnode named "hash@1"
-as required by the FIT image format description.
+Only do what fit_open_configuration() suggests: open the configuration,
+but not the images in it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/image-fit.c | 45 +++++++++++++++++++++++++--------------------
- 1 file changed, 25 insertions(+), 20 deletions(-)
+ common/image-fit.c  | 21 ---------------------
+ include/image-fit.h |  7 -------
+ 2 files changed, 28 deletions(-)
 
 diff --git a/common/image-fit.c b/common/image-fit.c
-index 21b547a1da..9948c1fa77 100644
+index 12379a67ff..8715689cfb 100644
 --- a/common/image-fit.c
 +++ b/common/image-fit.c
-@@ -344,13 +344,33 @@ static int fit_verify_signature(struct device_node *sig_node, void *fit)
- 	return ret;
+@@ -581,27 +581,6 @@ int fit_open_configuration(struct fit_handle *handle, const char *name)
+ 
+ 	handle->conf_node = conf_node;
+ 
+-	if (fit_has_image(handle, "kernel")) {
+-		ret = fit_open_image(handle, "kernel", &handle->kernel,
+-				     &handle->kernel_size);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	if (fit_has_image(handle, "ramdisk")) {
+-		ret = fit_open_image(handle, "ramdisk", &handle->initrd,
+-				     &handle->initrd_size);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	if (fit_has_image(handle, "fdt")) {
+-		ret = fit_open_image(handle, "fdt", &handle->oftree,
+-				     &handle->oftree_size);
+-		if (ret)
+-			return ret;
+-	}
+-
+ 	return 0;
  }
  
--static int fit_verify_hash(struct device_node *hash, const void *data, int data_len)
-+static int fit_verify_hash(struct fit_handle *handle, struct device_node *image,
-+			   const void *data, int data_len)
- {
- 	struct digest *d;
- 	const char *algo;
- 	const char *value_read;
- 	char *value_calc;
- 	int hash_len, ret;
-+	struct device_node *hash;
-+
-+	switch (handle->verify) {
-+	case BOOTM_VERIFY_NONE:
-+		return 0;
-+	case BOOTM_VERIFY_AVAILABLE:
-+		ret = 0;
-+		break;
-+	default:
-+		ret = -EINVAL;
-+	}
-+
-+	hash = of_get_child_by_name(image, "hash@1");
-+	if (!hash) {
-+		if (ret)
-+			pr_err("image %s does not have hashes\n",
-+			       image->full_name);
-+		return ret;
-+	}
+diff --git a/include/image-fit.h b/include/image-fit.h
+index 62f44dcc8d..0e26a40ef7 100644
+--- a/include/image-fit.h
++++ b/include/image-fit.h
+@@ -30,13 +30,6 @@ struct fit_handle {
  
- 	value_read = of_get_property(hash, "value", &hash_len);
- 	if (!value_read) {
-@@ -416,7 +436,7 @@ int fit_open_image(struct fit_handle *handle, void *configuration,
- 		   const char *name, const void **outdata,
- 		   unsigned long *outsize)
- {
--	struct device_node *image, *hash;
-+	struct device_node *image;
- 	const char *unit, *type = NULL, *desc= "(no description)";
- 	const void *data;
- 	int data_len;
-@@ -450,24 +470,9 @@ int fit_open_image(struct fit_handle *handle, void *configuration,
- 		return -EINVAL;
- 	}
- 
--	if (handle->verify > BOOTM_VERIFY_NONE) {
--		if (handle->verify == BOOTM_VERIFY_AVAILABLE)
--			ret = 0;
--		else
--			ret = -EINVAL;
--		for_each_child_of_node(image, hash) {
--			if (handle->verbose)
--				of_print_nodes(hash, 0);
--			ret = fit_verify_hash(hash, data, data_len);
--			if (ret < 0)
--				return ret;
--		}
+ 	struct device_node *root;
+ 	struct device_node *conf_node;
 -
--		if (ret < 0) {
--			pr_err("image '%s': '%s' does not have hashes\n", unit, desc);
--			return ret;
--		}
--	}
-+	ret = fit_verify_hash(handle, image, data, data_len);
-+	if (ret < 0)
-+		return ret;
+-	const void *kernel;
+-	unsigned long kernel_size;
+-	const void *oftree;
+-	unsigned long oftree_size;
+-	const void *initrd;
+-	unsigned long initrd_size;
+ };
  
- 	*outdata = data;
- 	*outsize = data_len;
+ struct fit_handle *fit_open(const char *filename, bool verbose,
 -- 
 2.15.1
 
