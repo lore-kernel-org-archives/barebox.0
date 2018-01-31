@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1egqCD-0002Rh-4K
+ id 1egqCD-0002Rg-4H
  for barebox@lists.infradead.org; Wed, 31 Jan 2018 11:04:55 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 31 Jan 2018 12:04:38 +0100
-Message-Id: <20180131110438.22620-4-s.hauer@pengutronix.de>
+Date: Wed, 31 Jan 2018 12:04:36 +0100
+Message-Id: <20180131110438.22620-2-s.hauer@pengutronix.de>
 In-Reply-To: <20180131110438.22620-1-s.hauer@pengutronix.de>
 References: <20180131110438.22620-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,92 +21,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] of: fdt: add of_unflatten_dtb_const
+Subject: [PATCH 1/3] pinctrl: do not dereference a device tree property
+ directly
 To: Barebox List <barebox@lists.infradead.org>
 
-This adds a variant of of_unflatten_dtb() which uses the property data
-directly from the input tree rather than copying it. This is mainly
-useful for a single user: FIT images.
+Use of_get_property() rather than of_find_property() to avoid
+dereferencing a struct property directly.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/fdt.c | 36 ++++++++++++++++++++++++++++++++++--
- include/of.h     |  1 +
- 2 files changed, 35 insertions(+), 2 deletions(-)
+ drivers/pinctrl/pinctrl.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index 614e136de6..1edb35f3d6 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -117,7 +117,7 @@ static int of_unflatten_reservemap(struct device_node *root,
-  * Parse a flat device tree binary blob and return a pointer to the
-  * unflattened tree.
-  */
--struct device_node *of_unflatten_dtb(const void *infdt)
-+struct device_node *__of_unflatten_dtb(const void *infdt, bool constprops)
+diff --git a/drivers/pinctrl/pinctrl.c b/drivers/pinctrl/pinctrl.c
+index bef4fcdba1..0e42a31474 100644
+--- a/drivers/pinctrl/pinctrl.c
++++ b/drivers/pinctrl/pinctrl.c
+@@ -99,8 +99,7 @@ static int pinctrl_config_one(struct device_node *np)
+ int of_pinctrl_select_state(struct device_node *np, const char *name)
  {
- 	const void *nodep;	/* property node pointer */
- 	uint32_t tag;		/* tag */
-@@ -221,7 +221,11 @@ struct device_node *of_unflatten_dtb(const void *infdt)
+ 	int state, ret;
+-	char *propname;
+-	struct property *prop;
++	char propname[sizeof("pinctrl-4294967295")];
+ 	const __be32 *list;
+ 	int size, config;
+ 	phandle phandle;
+@@ -113,18 +112,13 @@ int of_pinctrl_select_state(struct device_node *np, const char *name)
+ 	/* For each defined state ID */
+ 	for (state = 0; ; state++) {
+ 		/* Retrieve the pinctrl-* property */
+-		propname = basprintf("pinctrl-%d", state);
+-		prop = of_find_property(np, propname, NULL);
+-		free(propname);
+-
+-		if (!prop) {
++		sprintf(propname, "pinctrl-%d", state);
++		list = of_get_property(np, propname, &size);
++		if (!list) {
+ 			ret = -ENODEV;
+ 			break;
+ 		}
+ 
+-		size = prop->length;
+-
+-		list = prop->value;
+ 		size /= sizeof(*list);
+ 
+ 		/* Determine whether pinctrl-names property names the state */
+@@ -137,7 +131,7 @@ int of_pinctrl_select_state(struct device_node *np, const char *name)
+ 		 */
+ 		if (ret < 0) {
+ 			/* strlen("pinctrl-") == 8 */
+-			statename = prop->name + 8;
++			statename = &propname[8];
+ 		}
+ 
+ 		if (strcmp(name, statename))
+@@ -151,7 +145,7 @@ int of_pinctrl_select_state(struct device_node *np, const char *name)
+ 			np_config = of_find_node_by_phandle(phandle);
+ 			if (!np_config) {
+ 				pr_err("prop %s %s index %i invalid phandle\n",
+-					np->full_name, prop->name, config);
++					np->full_name, propname, config);
+ 				ret = -EINVAL;
  				goto err;
  			}
- 
--			p = of_new_property(node, name, nodep, len);
-+			if (constprops)
-+				p = of_new_property_const(node, name, nodep, len);
-+			else
-+				p = of_new_property(node, name, nodep, len);
-+
- 			if (!strcmp(name, "phandle") && len == 4)
- 				node->phandle = be32_to_cpup(p->value);
- 
-@@ -255,6 +259,34 @@ err:
- 	return ERR_PTR(ret);
- }
- 
-+/**
-+ * of_unflatten_dtb - unflatten a dtb binary blob
-+ * @infdt - the fdt blob to unflatten
-+ *
-+ * Parse a flat device tree binary blob and return a pointer to the unflattened
-+ * tree. The tree must be freed after use with of_delete_node().
-+ */
-+struct device_node *of_unflatten_dtb(const void *infdt)
-+{
-+	return __of_unflatten_dtb(infdt, false);
-+}
-+
-+/**
-+ * of_unflatten_dtb_const - unflatten a dtb binary blob
-+ * @infdt - the fdt blob to unflatten
-+ *
-+ * Parse a flat device tree binary blob and return a pointer to the unflattened
-+ * tree. The tree must be freed after use with of_delete_node(). Unlike the
-+ * above version this function uses the property data directly from the input
-+ * flattened tree instead of copying the data, thus @infdt must be valid for the
-+ * whole lifetime of the returned tree. This is normally not what you want, so
-+ * use of_unflatten_dtb() instead.
-+ */
-+struct device_node *of_unflatten_dtb_const(const void *infdt)
-+{
-+	return __of_unflatten_dtb(infdt, true);
-+}
-+
- struct fdt {
- 	void *dt;
- 	uint32_t dt_nextofs;
-diff --git a/include/of.h b/include/of.h
-index d3b92328a5..421e038adb 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -101,6 +101,7 @@ void of_print_nodes(struct device_node *node, int indent);
- int of_probe(void);
- int of_parse_dtb(struct fdt_header *fdt);
- struct device_node *of_unflatten_dtb(const void *fdt);
-+struct device_node *of_unflatten_dtb_const(const void *infdt);
- 
- struct cdev;
- 
 -- 
 2.15.1
 
