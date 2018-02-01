@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ehCO1-0006Bd-95
- for barebox@lists.infradead.org; Thu, 01 Feb 2018 10:47:03 +0000
+ id 1ehCO1-0006Bf-95
+ for barebox@lists.infradead.org; Thu, 01 Feb 2018 10:47:06 +0000
 From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Thu,  1 Feb 2018 11:46:13 +0100
-Message-Id: <20180201104615.19524-3-p.zabel@pengutronix.de>
+Date: Thu,  1 Feb 2018 11:46:14 +0100
+Message-Id: <20180201104615.19524-4-p.zabel@pengutronix.de>
 In-Reply-To: <20180201104615.19524-1-p.zabel@pengutronix.de>
 References: <20180201104615.19524-1-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,7 +21,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] lib: Add zstd decompression module
+Subject: [PATCH 3/4] lib: Add zstd modules
 To: barebox@lists.infradead.org
 
 Based on kernel commit 73f3d1b48f50 ("lib: Add zstd modules").
