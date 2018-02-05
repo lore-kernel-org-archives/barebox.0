@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eib7r-0005nq-8i
- for barebox@lists.infradead.org; Mon, 05 Feb 2018 07:23:41 +0000
-Date: Mon, 5 Feb 2018 08:23:24 +0100
+ id 1eib8T-0005yL-BI
+ for barebox@lists.infradead.org; Mon, 05 Feb 2018 07:24:19 +0000
+Date: Mon, 5 Feb 2018 08:24:05 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180205072324.xap3xxejr6elc674@pengutronix.de>
-References: <20180130154013.8446-1-l.stach@pengutronix.de>
+Message-ID: <20180205072405.z4flefs7om4qd26q@pengutronix.de>
+References: <20180130200221.12785-1-linux@rempel-privat.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180130154013.8446-1-l.stach@pengutronix.de>
+In-Reply-To: <20180130200221.12785-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,54 +22,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] net: designware: add missing headers
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH] net: phy: ar8327: fix ar8327n_reg_read
+To: Oleksij Rempel <linux@rempel-privat.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jan 30, 2018 at 04:40:12PM +0100, Lucas Stach wrote:
-> As the eth_device and mii_bus structs are allocated inside the
-> dw_eth_dev struct a forward declaration isn't enough.
+On Tue, Jan 30, 2018 at 09:02:21PM +0100, Oleksij Rempel wrote:
+> Actual read value was lost and only by accident worked properly.
 > 
-> Fixes: c1f902841ce3 (net: designware: move probe to generic driver)
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 > ---
->  drivers/net/designware.h         | 3 +--
->  drivers/net/designware_generic.c | 1 +
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  drivers/net/phy/ar8327.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/net/designware.h b/drivers/net/designware.h
-> index c9dc27a59474..4a99fa2aa60b 100644
-> --- a/drivers/net/designware.h
-> +++ b/drivers/net/designware.h
-> @@ -20,8 +20,7 @@
->  #ifndef __DESIGNWARE_ETH_H
->  #define __DESIGNWARE_ETH_H
+> diff --git a/drivers/net/phy/ar8327.c b/drivers/net/phy/ar8327.c
+> index a0b10021d..e9ac3d49e 100644
+> --- a/drivers/net/phy/ar8327.c
+> +++ b/drivers/net/phy/ar8327.c
+> @@ -83,7 +83,7 @@ static u32 ar8327n_reg_read(struct phy_device *phydev, u32 reg_addr)
+>  	reg_word_addr++;
+>  	phy_addr = 0x10 | ((reg_word_addr >> 5) & 0x7); /* bit7-5 of reg address */
+>  	phy_reg = (u8) (reg_word_addr & 0x1f);   /* bit4-0 of reg address */
+> -	reg_val = (u32) mdiobus_read(phydev->bus, phy_addr, phy_reg);
+> +	tmp_val = (u32) mdiobus_read(phydev->bus, phy_addr, phy_reg);
+>  	reg_val |= (tmp_val << 16);
 >  
-> -struct eth_device;
-> -struct mii_bus;
-> +#include <net.h>
->  
->  struct dw_eth_dev {
->  	struct eth_device netdev;
-> diff --git a/drivers/net/designware_generic.c b/drivers/net/designware_generic.c
-> index 0e5b9c067b6b..29269deac9e9 100644
-> --- a/drivers/net/designware_generic.c
-> +++ b/drivers/net/designware_generic.c
-> @@ -22,6 +22,7 @@
->   */
->  
->  #include <common.h>
-> +#include <init.h>
->  #include "designware.h"
->  
->  static struct dw_eth_drvdata dwmac_370a_drvdata = {
+>  	return reg_val;
 > -- 
-> 2.15.1
+> 2.14.1
 > 
 > 
 > _______________________________________________
