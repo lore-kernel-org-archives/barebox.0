@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qt0-x243.google.com ([2607:f8b0:400d:c0d::243])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1emgGW-0000Uf-KZ
- for barebox@lists.infradead.org; Fri, 16 Feb 2018 13:41:34 +0000
-Received: by mail-qt0-x243.google.com with SMTP id v90so998239qte.12
- for <barebox@lists.infradead.org>; Fri, 16 Feb 2018 05:41:17 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20180205171815.19272-1-andrew.smirnov@gmail.com>
-References: <20180205171815.19272-1-andrew.smirnov@gmail.com>
+ id 1eikak-0005sQ-Bh
+ for barebox@lists.infradead.org; Mon, 05 Feb 2018 17:30:07 +0000
+Received: by mail-pg0-x242.google.com with SMTP id f6so2514909pgs.10
+ for <barebox@lists.infradead.org>; Mon, 05 Feb 2018 09:29:56 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 16 Feb 2018 05:41:15 -0800
-Message-ID: <CAHQ1cqHnh5Trq6DxPFUbL4LwVJ2npFMuLF7yEG-bzKOiFMYu6A@mail.gmail.com>
+Date: Mon,  5 Feb 2018 09:29:32 -0800
+Message-Id: <20180205172935.25232-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,117 +16,137 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] partitions: Align partition numbering with that of Linux
- kernel
-To: Barebox List <barebox@lists.infradead.org>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: [PATCH 1/4] 2d-primitives: Introduce gu_draw_text()
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 
-On Mon, Feb 5, 2018 at 9:18 AM, Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
-> Change the way Barebox numbers DOS/EFI partitions, such that it would
-> be consistent with how Linux kernel does it. With this change:
->
->   - Both types of partitions are numbered starting from 1, not 0
->
->   - Extended DOS partitions always start from 5, leaving first 4 to
->     non-extended ones.
->
+Add code to draw characters/string on a display.
 
-Sascha, any opinion on this patch?
+Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ include/gui/2d-primitives.h | 12 ++++++++
+ lib/gui/2d-primitives.c     | 67 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 79 insertions(+)
 
-Thanks,
-Andrey Smirnov
+diff --git a/include/gui/2d-primitives.h b/include/gui/2d-primitives.h
+index 06216bb03..f97c5eb61 100644
+--- a/include/gui/2d-primitives.h
++++ b/include/gui/2d-primitives.h
+@@ -2,6 +2,7 @@
+ #define __2D_PRIMITIVES__
+ 
+ #include <fb.h>
++#include <linux/font.h>
+ 
+ void gu_draw_line(struct screen *sc,
+ 		  int x1, int y1, int x2, int y2,
+@@ -12,4 +13,15 @@ void gu_draw_circle(struct screen *sc,
+ 		    int x0, int y0, int radius,
+ 		    u8 r, u8 g, u8 b, u8 a);
+ 
++#ifdef CONFIG_FONTS
++void gu_draw_text(struct screen *sc, const struct font_desc *font,
++                 int x, int y, const char *text,
++                 u8 fr, u8 fg, u8 fb, u8 fa,
++                 u8 br, u8 bg, u8 bb, u8 ba);
++#else
++static inline void gu_draw_text(struct screen *sc, const struct font_desc *font,
++				int x, int y, const char *text,
++				u8 fr, u8 fg, u8 fb, u8 fa,
++				u8 br, u8 bg, u8 bb, u8 ba) {}
++#endif
+ #endif
+diff --git a/lib/gui/2d-primitives.c b/lib/gui/2d-primitives.c
+index 82e59d9a6..8cb316b4d 100644
+--- a/lib/gui/2d-primitives.c
++++ b/lib/gui/2d-primitives.c
+@@ -6,6 +6,8 @@
+ #include <errno.h>
+ #include <fs.h>
+ #include <malloc.h>
++#include <linux/font.h>
++#include <linux/ctype.h>
+ 
+ static void __illuminate(struct fb_info *info,
+ 			 int x, int y,
+@@ -200,3 +202,68 @@ void gu_draw_circle(struct screen *sc,
+ 		 }
+ 	}
+ }
++
++#ifdef CONFIG_FONTS
++static void gu_draw_char(struct screen *sc, const struct font_desc *font,
++			 int ch, int x0, int y0,
++			 u8 fr, u8 fg, u8 fb, u8 fa,
++			 u8 br, u8 bg, u8 bb, u8 ba)
++{
++       const u8 *bitmap = font->data + find_font_index(font, ch);
++       int x, y;
++
++       for (y = 0; y < font->height; y++) {
++               for (x = 0; x < font->width; x++) {
++		       const unsigned index  = y * font->width + x;
++		       const unsigned byte   = index / 8;
++		       const unsigned bit    = 8 - (index % 8);
++		       const bool foreground = bitmap[byte] & BIT(bit);
++
++		       const u8 r = (foreground) ? fr : br;
++		       const u8 g = (foreground) ? fg : bg;
++		       const u8 b = (foreground) ? fb : bb;
++		       const u8 a = (foreground) ? fa : ba;
++
++		       __illuminate(sc->info, x0 + x, y0 + y, r, g, b, a);
++               }
++       }
++}
++
++/**
++ * gu_draw_text - display text at (x0, y0)
++ *
++ * @sc: screen to draw on
++ * @font: font used to render the text
++ * @x0, @y0: coordinates of top left corner of the text "box"
++ * @text: text to render
++ * @fr, @fg, @fb, @fa: foreground color information
++ * @fr, @fg, @fb, @fa: background color information
++ *
++ * gu_draw_text() implements basic algorithm capable of rendering
++ * textual information to a frambuffer. Resulting text is produced to
++ * be a single line and no attempt to do wrapping/text layout is made.
++ */
++void gu_draw_text(struct screen *sc, const struct font_desc *font,
++		  int x0, int y0, const char *text,
++		  u8 fr, u8 fg, u8 fb, u8 fa,
++		  u8 br, u8 bg, u8 bb, u8 ba)
++{
++	char c;
++	int x = x0;
++	int y = y0;
++
++	BUG_ON(x0 < 0 || y0 < 0);
++
++	while ((c = *text++)) {
++		/*
++		 * Just skip all non-printable characters
++		 */
++		if (isprint(c)) {
++			gu_draw_char(sc, font, c, x, y,
++				     fr, fg, fb, fa, br, bg, bb, ba);
++			x += font->width;
++		}
++	}
++}
++#endif
++
+-- 
+2.14.3
 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  common/partitions.c        | 7 +++----
->  common/partitions/dos.c    | 2 ++
->  common/partitions/efi.c    | 1 +
->  common/partitions/parser.h | 1 +
->  4 files changed, 7 insertions(+), 4 deletions(-)
->
-> diff --git a/common/partitions.c b/common/partitions.c
-> index 574b31fbb..53d55a49a 100644
-> --- a/common/partitions.c
-> +++ b/common/partitions.c
-> @@ -42,8 +42,7 @@ static LIST_HEAD(partition_parser_list);
->   * @param no Partition number
->   * @return 0 on success
->   */
-> -static int register_one_partition(struct block_device *blk,
-> -                                       struct partition *part, int no)
-> +static int register_one_partition(struct block_device *blk, struct partition *part)
->  {
->         char *partition_name;
->         int ret;
-> @@ -51,7 +50,7 @@ static int register_one_partition(struct block_device *blk,
->         uint64_t size = part->size * SECTOR_SIZE;
->         struct cdev *cdev;
->
-> -       partition_name = basprintf("%s.%d", blk->cdev.name, no);
-> +       partition_name = basprintf("%s.%d", blk->cdev.name, part->number);
->         if (!partition_name)
->                 return -ENOMEM;
->         dev_dbg(blk->dev, "Registering partition %s on drive %s\n",
-> @@ -150,7 +149,7 @@ int parse_partition_table(struct block_device *blk)
->
->         /* at least one partition description found */
->         for (i = 0; i < pdesc->used_entries; i++) {
-> -               rc = register_one_partition(blk, &pdesc->parts[i], i);
-> +               rc = register_one_partition(blk, &pdesc->parts[i]);
->                 if (rc != 0)
->                         dev_err(blk->dev,
->                                 "Failed to register partition %d on %s (%d)\n",
-> diff --git a/common/partitions/dos.c b/common/partitions/dos.c
-> index 488c2936f..2ee9b2bd6 100644
-> --- a/common/partitions/dos.c
-> +++ b/common/partitions/dos.c
-> @@ -170,6 +170,7 @@ static void dos_extended_partition(struct block_device *blk, struct partition_de
->                         get_unaligned_le32(&table[0].partition_start);
->                 pd->parts[n].size = get_unaligned_le32(&table[0].partition_size);
->                 pd->parts[n].dos_partition_type = table[0].type;
-> +               pd->parts[n].number = partno;
->                 if (signature)
->                         sprintf(pd->parts[n].partuuid, "%08x-%02u",
->                                 signature, partno);
-> @@ -224,6 +225,7 @@ static void dos_partition(void *buf, struct block_device *blk,
->                         pd->parts[n].first_sec = pentry.first_sec;
->                         pd->parts[n].size = pentry.size;
->                         pd->parts[n].dos_partition_type = pentry.dos_partition_type;
-> +                       pd->parts[n].number = i + 1;
->                         if (signature)
->                                 sprintf(pd->parts[n].partuuid, "%08x-%02d",
->                                                 signature, i + 1);
-> diff --git a/common/partitions/efi.c b/common/partitions/efi.c
-> index 88734f166..5dc9e1ad8 100644
-> --- a/common/partitions/efi.c
-> +++ b/common/partitions/efi.c
-> @@ -456,6 +456,7 @@ static void efi_partition(void *buf, struct block_device *blk,
->                 pentry = &pd->parts[pd->used_entries];
->                 pentry->first_sec = le64_to_cpu(ptes[i].starting_lba);
->                 pentry->size = le64_to_cpu(ptes[i].ending_lba) - pentry->first_sec;
-> +               pentry->number = pd->used_entries + 1;
->                 pentry->size++;
->                 part_set_efi_name(&ptes[i], pentry->name);
->                 snprintf(pentry->partuuid, sizeof(pentry->partuuid), "%pUl", &ptes[i].unique_partition_guid);
-> diff --git a/common/partitions/parser.h b/common/partitions/parser.h
-> index 8ad134a9a..713933794 100644
-> --- a/common/partitions/parser.h
-> +++ b/common/partitions/parser.h
-> @@ -20,6 +20,7 @@ struct partition {
->         char partuuid[MAX_PARTUUID_STR];
->         uint64_t first_sec;
->         uint64_t size;
-> +       int number;
->  };
->
->  struct partition_desc {
-> --
-> 2.14.3
->
 
 _______________________________________________
 barebox mailing list
