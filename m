@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ejL41-0003C4-7e
- for barebox@lists.infradead.org; Wed, 07 Feb 2018 08:26:47 +0000
-Date: Wed, 7 Feb 2018 09:26:26 +0100
+ id 1eizUi-00007b-1A
+ for barebox@lists.infradead.org; Tue, 06 Feb 2018 09:24:53 +0000
+Date: Tue, 6 Feb 2018 10:24:39 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180207082626.msowyuuk2ysltc2h@pengutronix.de>
+Message-ID: <20180206092439.vt3h5us4z2d3zywq@pengutronix.de>
 References: <20180202111442.12444-1-aleksander@aleksander.es>
- <20180202111442.12444-8-aleksander@aleksander.es>
- <20180206093338.v5j5r2b3yha2ctju@pengutronix.de>
- <CAAP7uc+M7v33r2MRtUpRtm4SWGHPGJK9Gfvacs2r1ZDzzEJMxQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAAP7uc+M7v33r2MRtUpRtm4SWGHPGJK9Gfvacs2r1ZDzzEJMxQ@mail.gmail.com>
+In-Reply-To: <20180202111442.12444-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,38 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 07/10] ratp: implement ping as a standard ratp command
+Subject: Re: [RFC PATCH 00/10] ratp: new generic RATP command support
 To: Aleksander Morgado <aleksander@aleksander.es>
 Cc: barebox@lists.infradead.org
 
-On Tue, Feb 06, 2018 at 05:51:59PM +0100, Aleksander Morgado wrote:
-> On Tue, Feb 6, 2018 at 10:33 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > On Fri, Feb 02, 2018 at 12:14:39PM +0100, Aleksander Morgado wrote:
-> >> Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
-> >> ---
-> >>  commands/Makefile    |  1 +
-> >>  commands/ratp-ping.c | 38 ++++++++++++++++++++++++++++++++++++++
-> >>  common/ratp.c        | 27 ---------------------------
-> >
-> > Can we put the ratp commands to a separate directory like
-> > common/ratp/commands/ or similar?
-> > There doesn't seem to be very much code sharing between the regular
-> > commands and their ratp correspondents. Most good commands are written
-> > in the way that the functionality is in common code outside the command
-> > file itself anyway.
-> >
-> 
-> I actually did that originally, but then implemented "md" for RATP and
-> decided I could reuse part of the code doing the memory dump. But then
-> no other command I implemented shared anything with the console
-> counterpart... so yes, totally agree changing that would be much
-> better. I did think of moving them to commands/ratp/* instead of
-> common/ratp/commands/* though. Why do you suggest to have them in
-> common/? Shouldn't they be closer to the console commands in the
-> hierarchy?
+Hi Aleksander,
 
-My idea probably was to have the ratp commands close to the ratp code,
-thus moving ratp.c to common/ratp/ also.
+On Fri, Feb 02, 2018 at 12:14:32PM +0100, Aleksander Morgado wrote:
+> Until now, the barebox-specific RATP commands were all defined and
+> implemented in common/ratp.c. This series of patches allow ratp
+> commands to be defined in a similar way to console commands.
+
+I like the idea.
+
+> 
+> The first patches (1-5) break the current RATP API, by introducing
+> the concept of requests, responses and indications:
+>  * Requests sent to one endpoint are expected to be replied with
+>    a response by the peer endpoint.
+>  * Indications are messages sent from one endpoint to another which
+>    are not expected to be replied.
+
+I do not see why we have to break the RATP API. I mean currently we
+have BB_RATP_TYPE_COMMAND and BB_RATP_TYPE_COMMAND_RETURN which you
+convert to .type = BB_RATP_TYPE_COMMAND, .flags = 0 | RESPONSE.
+
+I see that using flags looks somewhat nicer, but besides of that,
+what is your selling point to break the API?
 
 Sascha
 
