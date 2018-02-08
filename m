@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
+Received: from mail-wr0-x244.google.com ([2a00:1450:400c:c0c::244])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ejmAi-0002MU-7u
+ id 1ejmAh-0002MN-C9
  for barebox@lists.infradead.org; Thu, 08 Feb 2018 13:23:31 +0000
-Received: by mail-wm0-x243.google.com with SMTP id r78so9946707wme.0
- for <barebox@lists.infradead.org>; Thu, 08 Feb 2018 05:23:21 -0800 (PST)
+Received: by mail-wr0-x244.google.com with SMTP id s5so4698687wra.0
+ for <barebox@lists.infradead.org>; Thu, 08 Feb 2018 05:23:16 -0800 (PST)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Thu,  8 Feb 2018 14:23:01 +0100
-Message-Id: <20180208132301.24921-9-aleksander@aleksander.es>
+Date: Thu,  8 Feb 2018 14:22:58 +0100
+Message-Id: <20180208132301.24921-6-aleksander@aleksander.es>
 In-Reply-To: <20180208132301.24921-1-aleksander@aleksander.es>
 References: <20180208132301.24921-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
@@ -23,37 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH v2 8/8] ratp: new reset command
+Subject: [RFC PATCH v2 5/8] ratp: implement getenv as a standard ratp command
 To: barebox@lists.infradead.org
 Cc: Aleksander Morgado <aleksander@aleksander.es>
+
+Also, use xstrndup() instead of the custom xmemdup_add_zero() as we're
+working with strings anyway.
 
 Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
  common/ratp/Makefile |  1 +
- common/ratp/reset.c  | 55 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/ratp_bb.h    |  1 +
- 3 files changed, 57 insertions(+)
- create mode 100644 common/ratp/reset.c
+ common/ratp/getenv.c | 51 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ common/ratp/ratp.c   | 30 ------------------------------
+ 3 files changed, 52 insertions(+), 30 deletions(-)
+ create mode 100644 common/ratp/getenv.c
 
 diff --git a/common/ratp/Makefile b/common/ratp/Makefile
-index d4cfdf95f..2c6d674f6 100644
+index acad61ee5..2fa9d63c0 100644
 --- a/common/ratp/Makefile
 +++ b/common/ratp/Makefile
-@@ -3,3 +3,4 @@ obj-y += ping.o
- obj-y += getenv.o
- obj-y += md.o
- obj-y += mw.o
-+obj-y += reset.o
-diff --git a/common/ratp/reset.c b/common/ratp/reset.c
+@@ -1,2 +1,3 @@
+ obj-y += ratp.o
+ obj-y += ping.o
++obj-y += getenv.o
+diff --git a/common/ratp/getenv.c b/common/ratp/getenv.c
 new file mode 100644
-index 000000000..ca8be4e62
+index 000000000..b40963488
 --- /dev/null
-+++ b/common/ratp/reset.c
-@@ -0,0 +1,55 @@
++++ b/common/ratp/getenv.c
+@@ -0,0 +1,51 @@
 +/*
-+ * reset.c - reset the cpu
-+ *
-+ * Copyright (c) 2007 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ * Copyright (c) 2018 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
 + *
 + * See file CREDITS for list of people who contributed to this
 + * project.
@@ -69,54 +69,95 @@ index 000000000..ca8be4e62
 + *
 + */
 +
++/*
++ * RATP getenv
++ */
++
 +#include <common.h>
-+#include <command.h>
 +#include <ratp_bb.h>
-+#include <complete.h>
-+#include <getopt.h>
-+#include <restart.h>
++#include <malloc.h>
++#include <environment.h>
 +
-+struct ratp_bb_reset {
-+	struct ratp_bb header;
-+	uint8_t        force;
-+} __attribute__((packed));
-+
-+static int ratp_cmd_reset(const struct ratp_bb *req, int req_len,
-+			  struct ratp_bb **rsp, int *rsp_len)
++static int ratp_cmd_getenv(const struct ratp_bb *req, int req_len,
++			   struct ratp_bb **rsp, int *rsp_len)
 +{
-+	struct ratp_bb_reset *reset_req = (struct ratp_bb_reset *)req;
++	int dlen = req_len - sizeof (struct ratp_bb);
++	char *varname;
++	const char *value;
 +
-+	if (req_len < sizeof (*reset_req)) {
-+		printf ("ratp reset ignored: size mismatch (%d < %zu)\n", req_len, sizeof (*reset_req));
-+		return 2;
-+	}
++	varname = xstrndup ((const char *)req->data, dlen);
++	value = getenv (varname);
++	free (varname);
 +
-+	debug("running reset %s\n", reset_req->force ? "(forced)" : "");
++	dlen = strlen (value);
 +
-+	if (!reset_req->force)
-+		shutdown_barebox();
-+
-+	restart_machine();
-+	/* Not reached */
-+	return 1;
++	*rsp_len = sizeof(struct ratp_bb) + dlen;
++	*rsp = xzalloc(*rsp_len);
++	(*rsp)->type = cpu_to_be16(BB_RATP_TYPE_GETENV_RETURN);
++	memcpy ((*rsp)->data, value, dlen);
++	return 0;
 +}
 +
-+BAREBOX_RATP_CMD_START(RESET)
-+	.request_id = BB_RATP_TYPE_RESET,
-+	.cmd = ratp_cmd_reset
++BAREBOX_RATP_CMD_START(GETENV)
++	.request_id = BB_RATP_TYPE_GETENV,
++	.response_id = BB_RATP_TYPE_GETENV_RETURN,
++	.cmd = ratp_cmd_getenv
 +BAREBOX_RATP_CMD_END
-diff --git a/include/ratp_bb.h b/include/ratp_bb.h
-index 00b165f77..3a80cf6ae 100644
---- a/include/ratp_bb.h
-+++ b/include/ratp_bb.h
-@@ -16,6 +16,7 @@
- #define BB_RATP_TYPE_MD_RETURN		11
- #define BB_RATP_TYPE_MW			12
- #define BB_RATP_TYPE_MW_RETURN		13
-+#define BB_RATP_TYPE_RESET		14
+diff --git a/common/ratp/ratp.c b/common/ratp/ratp.c
+index 965c67a0a..1e9c65179 100644
+--- a/common/ratp/ratp.c
++++ b/common/ratp/ratp.c
+@@ -189,29 +189,6 @@ static int ratp_bb_send_command_return(struct ratp_ctx *ctx, uint32_t errno)
+ 	return ret;
+ }
 
- struct ratp_bb {
- 	uint16_t type;
+-static int ratp_bb_send_getenv_return(struct ratp_ctx *ctx, const char *val)
+-{
+-	void *buf;
+-	struct ratp_bb *rbb;
+-	int len, ret;
+-
+-	if (!val)
+-	    val = "";
+-
+-	len = sizeof(*rbb) + strlen(val);
+-	buf = xzalloc(len);
+-	rbb = buf;
+-	strcpy(rbb->data, val);
+-
+-	rbb->type = cpu_to_be16(BB_RATP_TYPE_GETENV_RETURN);
+-
+-	ret = ratp_send(&ctx->ratp, buf, len);
+-
+-	free(buf);
+-
+-	return ret;
+-}
+-
+ static char *ratp_command;
+ static struct ratp_ctx *ratp_ctx;
+
+@@ -220,7 +197,6 @@ static int ratp_bb_dispatch(struct ratp_ctx *ctx, const void *buf, int len)
+ 	const struct ratp_bb *rbb = buf;
+ 	struct ratp_bb_pkt *pkt;
+ 	int dlen = len - sizeof(struct ratp_bb);
+-	char *varname;
+ 	int ret = 0;
+ 	uint16_t type = be16_to_cpu(rbb->type);
+ 	struct ratp_command *cmd;
+@@ -260,12 +236,6 @@ static int ratp_bb_dispatch(struct ratp_ctx *ctx, const void *buf, int len)
+ 		kfifo_put(ctx->console_recv_fifo, rbb->data, dlen);
+ 		break;
+
+-	case BB_RATP_TYPE_GETENV:
+-		varname = xmemdup_add_zero(&rbb->data, dlen);
+-
+-		ret = ratp_bb_send_getenv_return(ctx, getenv(varname));
+-		break;
+-
+ 	case BB_RATP_TYPE_FS_RETURN:
+ 		pkt = xzalloc(sizeof(*pkt) + dlen);
+ 		pkt->len = dlen;
 --
 2.15.1
 
