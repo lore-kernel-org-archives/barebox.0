@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ek6NZ-0005Kn-Jm
- for barebox@lists.infradead.org; Fri, 09 Feb 2018 10:58:07 +0000
-References: <20180209094500.29685-1-s.hauer@pengutronix.de>
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Message-ID: <42d2fcdb-2143-f44e-097c-9b763d7c051f@pengutronix.de>
-Date: Fri, 9 Feb 2018 11:57:14 +0100
-MIME-Version: 1.0
-In-Reply-To: <20180209094500.29685-1-s.hauer@pengutronix.de>
+ id 1ejmAd-0002MB-3m
+ for barebox@lists.infradead.org; Thu, 08 Feb 2018 13:23:25 +0000
+Received: by mail-wm0-x242.google.com with SMTP id v71so9924917wmv.2
+ for <barebox@lists.infradead.org>; Thu, 08 Feb 2018 05:23:11 -0800 (PST)
+From: Aleksander Morgado <aleksander@aleksander.es>
+Date: Thu,  8 Feb 2018 14:22:53 +0100
+Message-Id: <20180208132301.24921-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,87 +16,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1524519535797297234=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Makefile.lib: imx hab: fix hab files with embedded
- variables
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Subject: [RFC PATCH v2 0/8] ratp: new generic RATP command support
+To: barebox@lists.infradead.org
+Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============1524519535797297234==
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="7lXpE0I1JQUdwR5cU1vZCD7iCq6Wg2DNM"
+This updated patchset doesn't break the RATP API. It keeps the separate IDs for requests and responses, and doesn't try to flag responses or indications in a different way.
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---7lXpE0I1JQUdwR5cU1vZCD7iCq6Wg2DNM
-Content-Type: multipart/mixed; boundary="nL1aHbcWfL2co4WEYzLBxCMNws5PoDHPn";
- protected-headers="v1"
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-Message-ID: <42d2fcdb-2143-f44e-097c-9b763d7c051f@pengutronix.de>
-Subject: Re: [PATCH] Makefile.lib: imx hab: fix hab files with embedded
- variables
-References: <20180209094500.29685-1-s.hauer@pengutronix.de>
-In-Reply-To: <20180209094500.29685-1-s.hauer@pengutronix.de>
+The command definition logic is also updated so that the request and response IDs associated to each command are defined in the body of the command, instead of magically constructing the id fields with macro glues.
 
---nL1aHbcWfL2co4WEYzLBxCMNws5PoDHPn
-Content-Type: text/plain; charset=utf-8
-Content-Language: de-DE
-Content-Transfer-Encoding: quoted-printable
+All the RATP specific commands are now implemented in files completely separated from the console commands, and they are all kept in common/ratp, along with the core ratp implementation itself.
 
-On 02/09/2018 10:45 AM, Sascha Hauer wrote:
-> From: Marc Kleine-Budde <mkl@pengutronix.de>
->=20
-> When passing variables this way, all embedded variables are expanded, s=
-o that
-> the path in the .config file can be kept relative.
->=20
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-S-o-b: sha?
+As additional changes w.r.t. v1, this patchset also includes a change to make it possible building the RATP logic without full console support (e.g. making it possible to enable CONFIG_RATP with CONFIG_CONSOLE_RATP disabled).
 
-Marc
+The new commands were tested with the libratp-barebox library
+(wip2/md-mw branch) in https://github.com/aleksander0m/libratp-barebox
 
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+Aleksander Morgado (8):
+  ratp: implement generic command support
+  ratp: moved logic to its own subdirectory
+  ratp: allow building without full console support
+  ratp: implement ping as a standard ratp command
+  ratp: implement getenv as a standard ratp command
+  ratp: use xstrndup() instead of a custom xmemdup_add_zero()
+  ratp: new md and mw commands
+  ratp: new reset command
 
+ arch/arm/lib32/barebox.lds.S              |   4 +
+ arch/arm/lib64/barebox.lds.S              |   4 +
+ arch/blackfin/boards/ipe337/barebox.lds.S |   5 +-
+ arch/mips/lib/barebox.lds.S               |   4 +
+ arch/nios2/cpu/barebox.lds.S              |   5 +-
+ arch/openrisc/cpu/barebox.lds.S           |   4 +
+ arch/ppc/boards/pcm030/barebox.lds.S      |   4 +
+ arch/ppc/mach-mpc85xx/barebox.lds.S       |   4 +
+ arch/sandbox/board/barebox.lds.S          |   5 +
+ arch/x86/lib/barebox.lds.S                |   7 ++
+ arch/x86/mach-efi/elf_ia32_efi.lds.S      |   5 +
+ arch/x86/mach-efi/elf_x86_64_efi.lds.S    |   5 +
+ common/Kconfig                            |  13 +-
+ common/Makefile                           |   3 +-
+ common/module.lds.S                       |   2 +
+ common/ratp/Kconfig                       |  14 +++
+ common/ratp/Makefile                      |   6 +
+ common/ratp/getenv.c                      |  51 ++++++++
+ common/ratp/md.c                          | 202 ++++++++++++++++++++++++++++++
+ common/ratp/mw.c                          | 173 +++++++++++++++++++++++++
+ common/ratp/ping.c                        |  40 ++++++
+ common/{ => ratp}/ratp.c                  | 156 +++++++++++------------
+ common/ratp/reset.c                       |  55 ++++++++
+ fs/Kconfig                                |   2 +-
+ include/asm-generic/barebox.lds.h         |   2 +
+ include/ratp_bb.h                         |  52 ++++++++
+ lib/Kconfig                               |   2 +-
+ lib/readline.c                            |   2 +-
+ 28 files changed, 728 insertions(+), 103 deletions(-)
+ create mode 100644 common/ratp/Kconfig
+ create mode 100644 common/ratp/Makefile
+ create mode 100644 common/ratp/getenv.c
+ create mode 100644 common/ratp/md.c
+ create mode 100644 common/ratp/mw.c
+ create mode 100644 common/ratp/ping.c
+ rename common/{ => ratp}/ratp.c (81%)
+ create mode 100644 common/ratp/reset.c
 
---nL1aHbcWfL2co4WEYzLBxCMNws5PoDHPn--
-
---7lXpE0I1JQUdwR5cU1vZCD7iCq6Wg2DNM
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEENrCndlB/VnAEWuH5k9IU1zQoZfEFAlp9fooACgkQk9IU1zQo
-ZfFK8AgA0uPdiUZXEBP2KIdmimnZ4W5b+3JVLy0EDrYt+O70TqD04iNyy07+hMMA
-PUdQUG1lY0SpyVMgGGBNAJTOo05HGd1Lr1Da7aHm4pHNqwlhjEqzEqmXfLH5DaMK
-hqkKPCzgW4xPc2zEsJHFsv6oqL1k62xINiNyfvozMk2wMInWyyi67YF/BtlOWicq
-eKx0RawWXp+hKjIBhNBK2dhH0JOC9153MYWsUqLiQFH2eknzmfhyDXJGzqvHOP3l
-Dxpl0mCewpE4/NijqKGti8FbpxImv0BTyknMo/6b59GSPM1v2uxeEtH2bp+cc6/p
-MFBf++QEjUL0HVFxp+f6M8uv8vKE/A==
-=MENW
------END PGP SIGNATURE-----
-
---7lXpE0I1JQUdwR5cU1vZCD7iCq6Wg2DNM--
-
-
---===============1524519535797297234==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+--
+2.15.1
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1524519535797297234==--
