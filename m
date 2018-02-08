@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ejLBD-00065D-VB
- for barebox@lists.infradead.org; Wed, 07 Feb 2018 08:34:13 +0000
-Date: Wed, 7 Feb 2018 09:34:00 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180207083359.rox4jc3bifqa3mix@pengutronix.de>
-References: <20180202111442.12444-1-aleksander@aleksander.es>
- <20180202111442.12444-7-aleksander@aleksander.es>
- <20180206093002.nzokloyjtn7g46l5@pengutronix.de>
- <CAAP7uc+Mt=u1Tnua3Dgq3-5nHs8C6jFX6JnqwsFKcMcJt4vOkw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAAP7uc+Mt=u1Tnua3Dgq3-5nHs8C6jFX6JnqwsFKcMcJt4vOkw@mail.gmail.com>
+ id 1ejgge-0007kg-37
+ for barebox@lists.infradead.org; Thu, 08 Feb 2018 07:32:05 +0000
+Received: by mail-lf0-x244.google.com with SMTP id f137so5010351lfe.4
+ for <barebox@lists.infradead.org>; Wed, 07 Feb 2018 23:31:52 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu,  8 Feb 2018 10:31:45 +0300
+Message-Id: <20180208073145.2644-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,52 +16,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 06/10] ratp: implement generic command support
-To: Aleksander Morgado <aleksander@aleksander.es>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] i2c: i2c_master_send(): don't leave flags uninitialized
+To: barebox@lists.infradead.org
 
-On Tue, Feb 06, 2018 at 05:49:10PM +0100, Aleksander Morgado wrote:
-> >> +
-> >> +#define BAREBOX_RATP_CMD_START(_name)                                                        \
-> >> +extern const struct ratp_command __barebox_cmd_##_name;                                      \
-> >
-> > You shouldn't use the same name as the existing barebox commands,
-> > otherwise there might be name clashes. Add some _ratp_ to it.
-> >
-> 
-> Ah, sure.
-> 
-> >> +const struct ratp_command __barebox_cmd_##_name                                              \
-> >> +     __attribute__ ((unused,section (".barebox_ratp_cmd_" __stringify(_name)))) = {  \
-> >> +     .id             = BB_RATP_TYPE_##_name,
-> >
-> > I am not sure if I like the magic construction of the id field. Being
-> > able to grep for BB_RATP_TYPE_PING and finding the user has advantages.
-> > How about manually setting the field in the body of the command instead
-> > of constructing it?
-> >
-> 
-> You mean doing this instead?
-> 
-> BAREBOX_RATP_CMD_START(PING)
->     .cmd = ratp_cmd_ping,
->     .id = BB_RATP_TYPE_PING
-> BAREBOX_RATP_CMD_END
+Leaving the flags field unitialized can lead to performing
+read operation instead of write operation.
 
-Yes, that's what I meant.
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/i2c/i2c.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Sascha
-
-
+diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
+index e9e7575585..608f8289bf 100644
+--- a/drivers/i2c/i2c.c
++++ b/drivers/i2c/i2c.c
+@@ -117,6 +117,7 @@ int i2c_master_send(struct i2c_client *client, const char *buf, int count)
+ 	int ret;
+ 
+ 	msg.addr = client->addr;
++	msg.flags = 0;
+ 	msg.len = count;
+ 	msg.buf = (char *)buf;
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.15.1
+
 
 _______________________________________________
 barebox mailing list
