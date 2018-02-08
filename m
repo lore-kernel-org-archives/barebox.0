@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x241.google.com ([2a00:1450:400c:c0c::241])
+Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ejmAe-0002ME-DJ
+ id 1ejmAg-0002ML-A2
  for barebox@lists.infradead.org; Thu, 08 Feb 2018 13:23:27 +0000
-Received: by mail-wr0-x241.google.com with SMTP id a43so4676413wrc.4
- for <barebox@lists.infradead.org>; Thu, 08 Feb 2018 05:23:13 -0800 (PST)
+Received: by mail-wm0-x244.google.com with SMTP id f71so9442883wmf.0
+ for <barebox@lists.infradead.org>; Thu, 08 Feb 2018 05:23:15 -0800 (PST)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Thu,  8 Feb 2018 14:22:55 +0100
-Message-Id: <20180208132301.24921-3-aleksander@aleksander.es>
+Date: Thu,  8 Feb 2018 14:22:57 +0100
+Message-Id: <20180208132301.24921-5-aleksander@aleksander.es>
 In-Reply-To: <20180208132301.24921-1-aleksander@aleksander.es>
 References: <20180208132301.24921-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
@@ -23,102 +23,120 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH v2 2/8] ratp: moved logic to its own subdirectory
+Subject: [RFC PATCH v2 4/8] ratp: implement ping as a standard ratp command
 To: barebox@lists.infradead.org
 Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-We are going to add new RATP command implementations in separate files
-within this subdirectory.
-
 Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
- common/Kconfig           | 13 +------------
- common/Makefile          |  4 ++--
- common/ratp/Kconfig      | 14 ++++++++++++++
- common/ratp/Makefile     |  1 +
- common/{ => ratp}/ratp.c |  0
- 5 files changed, 18 insertions(+), 14 deletions(-)
- create mode 100644 common/ratp/Kconfig
- create mode 100644 common/ratp/Makefile
- rename common/{ => ratp}/ratp.c (100%)
+ common/ratp/Makefile |  1 +
+ common/ratp/ping.c   | 40 ++++++++++++++++++++++++++++++++++++++++
+ common/ratp/ratp.c   | 24 ------------------------
+ 3 files changed, 41 insertions(+), 24 deletions(-)
+ create mode 100644 common/ratp/ping.c
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 57418cadc..a96c6ef20 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -755,18 +755,7 @@ config PBL_CONSOLE
- 	  must be running at the address it's linked at and bss must
- 	  be cleared. On ARM that would be after setup_c().
-
--config CONSOLE_RATP
--	bool
--	select RATP
--	select CRC16
--	select POLLER
--	depends on CONSOLE_FULL
--	prompt "RATP console support"
--	help
--	  This option adds support for remote controlling barebox via serial
--	  port. The regular console is designed for human interaction whereas
--	  this option adds a machine readable interface for controlling barebox.
--	  Say yes here if you want to control barebox from a remote host.
-+source common/ratp/Kconfig
-
- config PARTITION
- 	bool
-diff --git a/common/Makefile b/common/Makefile
-index 8cd0ab300..90d5f19ec 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -46,7 +46,8 @@ obj-$(CONFIG_RESET_SOURCE)	+= reset_source.o
- obj-$(CONFIG_SHELL_HUSH)	+= hush.o
- obj-$(CONFIG_SHELL_SIMPLE)	+= parser.o
- obj-$(CONFIG_STATE)		+= state/
--obj-$(CONFIG_RATP)		+= ratp.o
-+obj-$(CONFIG_RATP)		+= ratp/
-+obj-$(CONFIG_CONSOLE_RATP)	+= ratp/
- obj-$(CONFIG_BOOTCHOOSER)	+= bootchooser.o
- obj-$(CONFIG_UIMAGE)		+= image.o uimage.o
- obj-$(CONFIG_FITIMAGE)		+= image-fit.o
-@@ -60,7 +61,6 @@ obj-$(CONFIG_FILE_LIST)		+= file-list.o
- obj-$(CONFIG_FIRMWARE)		+= firmware.o
- obj-$(CONFIG_UBIFORMAT)		+= ubiformat.o
- obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
--obj-$(CONFIG_CONSOLE_RATP)	+= ratp.o
- obj-$(CONFIG_BOOT)		+= boot.o
-
- quiet_cmd_pwd_h = PWDH    $@
-diff --git a/common/ratp/Kconfig b/common/ratp/Kconfig
-new file mode 100644
-index 000000000..93ff75d64
---- /dev/null
-+++ b/common/ratp/Kconfig
-@@ -0,0 +1,14 @@
-+
-+config CONSOLE_RATP
-+	bool
-+	select RATP
-+	select CRC16
-+	select POLLER
-+	depends on CONSOLE_FULL
-+	prompt "RATP console support"
-+	help
-+	  This option adds support for remote controlling barebox via serial
-+	  port. The regular console is designed for human interaction whereas
-+	  this option adds a machine readable interface for controlling barebox.
-+	  Say yes here if you want to control barebox from a remote host.
-+
 diff --git a/common/ratp/Makefile b/common/ratp/Makefile
-new file mode 100644
-index 000000000..cab14c6fb
---- /dev/null
+index cab14c6fb..acad61ee5 100644
+--- a/common/ratp/Makefile
 +++ b/common/ratp/Makefile
-@@ -0,0 +1 @@
-+obj-y += ratp.o
-diff --git a/common/ratp.c b/common/ratp/ratp.c
-similarity index 100%
-rename from common/ratp.c
-rename to common/ratp/ratp.c
+@@ -1 +1,2 @@
+ obj-y += ratp.o
++obj-y += ping.o
+diff --git a/common/ratp/ping.c b/common/ratp/ping.c
+new file mode 100644
+index 000000000..cc29ea36c
+--- /dev/null
++++ b/common/ratp/ping.c
+@@ -0,0 +1,40 @@
++/*
++ * Copyright (c) 2018 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++/*
++ * RATP ping
++ */
++
++#include <common.h>
++#include <ratp_bb.h>
++#include <malloc.h>
++
++static int ratp_cmd_ping(const struct ratp_bb *req, int req_len,
++			 struct ratp_bb **rsp, int *rsp_len)
++{
++	/* Just build response */
++	*rsp_len = sizeof(struct ratp_bb);
++	*rsp = xzalloc(*rsp_len);
++	(*rsp)->type = cpu_to_be16(BB_RATP_TYPE_PONG);
++	return 0;
++}
++
++BAREBOX_RATP_CMD_START(PING)
++	.request_id = BB_RATP_TYPE_PING,
++	.response_id = BB_RATP_TYPE_PONG,
++	.cmd = ratp_cmd_ping
++BAREBOX_RATP_CMD_END
+diff --git a/common/ratp/ratp.c b/common/ratp/ratp.c
+index 7c8a2f6f5..965c67a0a 100644
+--- a/common/ratp/ratp.c
++++ b/common/ratp/ratp.c
+@@ -189,25 +189,6 @@ static int ratp_bb_send_command_return(struct ratp_ctx *ctx, uint32_t errno)
+ 	return ret;
+ }
+
+-static int ratp_bb_send_pong(struct ratp_ctx *ctx)
+-{
+-	void *buf;
+-	struct ratp_bb *rbb;
+-	int len = sizeof(*rbb);
+-	int ret;
+-
+-	buf = xzalloc(len);
+-	rbb = buf;
+-
+-	rbb->type = cpu_to_be16(BB_RATP_TYPE_PONG);
+-
+-	ret = ratp_send(&ctx->ratp, buf, len);
+-
+-	free(buf);
+-
+-	return ret;
+-}
+-
+ static int ratp_bb_send_getenv_return(struct ratp_ctx *ctx, const char *val)
+ {
+ 	void *buf;
+@@ -270,7 +251,6 @@ static int ratp_bb_dispatch(struct ratp_ctx *ctx, const void *buf, int len)
+ 		break;
+
+ 	case BB_RATP_TYPE_COMMAND_RETURN:
+-	case BB_RATP_TYPE_PONG:
+ 		break;
+
+ 	case BB_RATP_TYPE_CONSOLEMSG:
+@@ -280,10 +260,6 @@ static int ratp_bb_dispatch(struct ratp_ctx *ctx, const void *buf, int len)
+ 		kfifo_put(ctx->console_recv_fifo, rbb->data, dlen);
+ 		break;
+
+-	case BB_RATP_TYPE_PING:
+-		ret = ratp_bb_send_pong(ctx);
+-		break;
+-
+ 	case BB_RATP_TYPE_GETENV:
+ 		varname = xmemdup_add_zero(&rbb->data, dlen);
+
 --
 2.15.1
 
