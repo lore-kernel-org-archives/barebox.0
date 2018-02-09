@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ek46D-0007eJ-B7
- for barebox@lists.infradead.org; Fri, 09 Feb 2018 08:32:03 +0000
-Date: Fri, 9 Feb 2018 09:31:49 +0100
+ id 1ek4Bb-0000ya-PI
+ for barebox@lists.infradead.org; Fri, 09 Feb 2018 08:37:37 +0000
+Date: Fri, 9 Feb 2018 09:37:19 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180209083149.luvp4odgc6rtxyqh@pengutronix.de>
-References: <20180208073145.2644-1-antonynpavlov@gmail.com>
+Message-ID: <20180209083719.4pf646aqpdllaqun@pengutronix.de>
+References: <20180206104324.21698-1-m.olbrich@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180208073145.2644-1-antonynpavlov@gmail.com>
+In-Reply-To: <20180206104324.21698-1-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +22,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i2c: i2c_master_send(): don't leave flags uninitialized
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] scripts/compiler.h: inline functions in headers must be
+ static
+To: Michael Olbrich <m.olbrich@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Feb 08, 2018 at 10:31:45AM +0300, Antony Pavlov wrote:
-> Leaving the flags field unitialized can lead to performing
-> read operation instead of write operation.
+On Tue, Feb 06, 2018 at 11:43:24AM +0100, Michael Olbrich wrote:
+> Without this building bareboxenv-target with gcc 7.3 fails with:
 > 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+>   CC      scripts/bareboxenv-target
+> /tmp/cc9G2oOY.o: In function `file_action':
+> bareboxenv.c:(.text+0x14): undefined reference to `xzalloc'
+> /tmp/cc9G2oOY.o: In function `concat_path_file':
+> bareboxenv.c:(.text+0xf4): undefined reference to `xmalloc'
+> /tmp/cc9G2oOY.o: In function `envfs_save':
+> bareboxenv.c:(.text+0x5b4): undefined reference to `xzalloc'
+> /tmp/cc9G2oOY.o: In function `envfs_load':
+> bareboxenv.c:(.text+0x7d8): undefined reference to `xmalloc'
+> collect2: error: ld returned 1 exit status
+> 
+> Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 > ---
->  drivers/i2c/i2c.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
+>  scripts/compiler.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
 Applied, thanks
 
 Sascha
 
-> diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-> index e9e7575585..608f8289bf 100644
-> --- a/drivers/i2c/i2c.c
-> +++ b/drivers/i2c/i2c.c
-> @@ -117,6 +117,7 @@ int i2c_master_send(struct i2c_client *client, const char *buf, int count)
->  	int ret;
->  
->  	msg.addr = client->addr;
-> +	msg.flags = 0;
->  	msg.len = count;
->  	msg.buf = (char *)buf;
->  
-> -- 
-> 2.15.1
 > 
+> diff --git a/scripts/compiler.h b/scripts/compiler.h
+> index 0891c3bfa6fa..4cf179bb9b13 100644
+> --- a/scripts/compiler.h
+> +++ b/scripts/compiler.h
+> @@ -113,7 +113,7 @@ typedef uint32_t __u32;
+>  	(void) (&_min1 == &_min2);              \
+>  	_min1 < _min2 ? _min1 : _min2; })
+>  
+> -inline void *xmalloc(size_t size)
+> +static inline void *xmalloc(size_t size)
+>  {
+>  	void *p = NULL;
+>  
+> @@ -125,7 +125,7 @@ inline void *xmalloc(size_t size)
+>  	return p;
+>  }
+>  
+> -inline void *xzalloc(size_t size)
+> +static inline void *xzalloc(size_t size)
+>  {
+>  	void *p = xmalloc(size);
+>  	memset(p, 0, size);
+> -- 
+> 2.16.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
