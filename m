@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ek4Bb-0000ya-PI
- for barebox@lists.infradead.org; Fri, 09 Feb 2018 08:37:37 +0000
-Date: Fri, 9 Feb 2018 09:37:19 +0100
+ id 1ek5DO-0005xD-UX
+ for barebox@lists.infradead.org; Fri, 09 Feb 2018 09:43:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180209083719.4pf646aqpdllaqun@pengutronix.de>
-References: <20180206104324.21698-1-m.olbrich@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180206104324.21698-1-m.olbrich@pengutronix.de>
+Date: Fri,  9 Feb 2018 10:43:07 +0100
+Message-Id: <20180209094316.8523-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,76 +14,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts/compiler.h: inline functions in headers must be
- static
-To: Michael Olbrich <m.olbrich@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/9] Fastboot customization support
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Feb 06, 2018 at 11:43:24AM +0100, Michael Olbrich wrote:
-> Without this building bareboxenv-target with gcc 7.3 fails with:
-> 
->   CC      scripts/bareboxenv-target
-> /tmp/cc9G2oOY.o: In function `file_action':
-> bareboxenv.c:(.text+0x14): undefined reference to `xzalloc'
-> /tmp/cc9G2oOY.o: In function `concat_path_file':
-> bareboxenv.c:(.text+0xf4): undefined reference to `xmalloc'
-> /tmp/cc9G2oOY.o: In function `envfs_save':
-> bareboxenv.c:(.text+0x5b4): undefined reference to `xzalloc'
-> /tmp/cc9G2oOY.o: In function `envfs_load':
-> bareboxenv.c:(.text+0x7d8): undefined reference to `xmalloc'
-> collect2: error: ld returned 1 exit status
-> 
-> Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
-> ---
->  scripts/compiler.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+In a customer project we have to do some customization to the fastboot
+support. In particular, we have to check signatures in uploaded images,
+which requires us to upload the whole image before it can be flashed.
+This contradicts Fastboot sparse support, so we make Sparse support
+optional in this series.
 
-Applied, thanks
+We decided to use FIT images as format to the signed images, so now we
+are in the situation that we want to hold big FIT images in memory and
+not unnecessarily copy it. Normally Fastboot temporarily stores a file
+in RAMFS. This file can't be directly used by the FIT image code though,
+so we add a compile time option to store the temporary fastboot image as
+a buffer. This can be directly reused by the FIT image code (thanks to
+recent FIT image changes).
+
+Last not least we add hooks to the fastboot code. These can be used
+to handle commands in a special way, like for example to deny certain
+commands or to implement special commands. Also there is a "flash"
+hook which can be used to add a custom flash operation, like for example
+for our customer to implement signature checking of the FIT images.
 
 Sascha
 
-> 
-> diff --git a/scripts/compiler.h b/scripts/compiler.h
-> index 0891c3bfa6fa..4cf179bb9b13 100644
-> --- a/scripts/compiler.h
-> +++ b/scripts/compiler.h
-> @@ -113,7 +113,7 @@ typedef uint32_t __u32;
->  	(void) (&_min1 == &_min2);              \
->  	_min1 < _min2 ? _min1 : _min2; })
->  
-> -inline void *xmalloc(size_t size)
-> +static inline void *xmalloc(size_t size)
->  {
->  	void *p = NULL;
->  
-> @@ -125,7 +125,7 @@ inline void *xmalloc(size_t size)
->  	return p;
->  }
->  
-> -inline void *xzalloc(size_t size)
-> +static inline void *xzalloc(size_t size)
->  {
->  	void *p = xmalloc(size);
->  	memset(p, 0, size);
-> -- 
-> 2.16.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+
+Sascha Hauer (9):
+  ubiformat: Allow to ubiformat with a buffer given
+  usb: gadget: fastboot: Make sparse support optional
+  usb: gadget: fastboot: pass struct f_fastboot * around
+  usb: gadget: fastboot: use read_file_2
+  usb: gadget: fastboot: Always remove temporary file
+  usb: gadget: fastboot: fix typo
+  usb: gadget: fastboot: beautify fb_run_command()
+  usb: gadget: fastboot: Add option to download to a buffer
+  usb: gadget: fastboot: Add external command execution support
+
+ common/ubiformat.c              |  55 ++++++----
+ drivers/usb/gadget/Kconfig      |  22 +++-
+ drivers/usb/gadget/f_fastboot.c | 216 ++++++++++++++++++++++++++--------------
+ drivers/usb/gadget/multi.c      |   2 +
+ include/ubiformat.h             |   7 ++
+ include/usb/fastboot.h          |  17 ++++
+ 6 files changed, 222 insertions(+), 97 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.15.1
+
 
 _______________________________________________
 barebox mailing list
