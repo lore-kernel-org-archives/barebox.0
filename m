@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ejh6U-0000ce-Io
- for barebox@lists.infradead.org; Thu, 08 Feb 2018 07:58:48 +0000
+ id 1ek37r-0006Lx-K2
+ for barebox@lists.infradead.org; Fri, 09 Feb 2018 07:29:42 +0000
+Date: Fri, 9 Feb 2018 08:29:24 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  8 Feb 2018 08:58:33 +0100
-Message-Id: <20180208075833.11564-1-s.hauer@pengutronix.de>
+Message-ID: <20180209072924.4zpt7e7vhbe2nfux@pengutronix.de>
+References: <20180205172935.25232-1-andrew.smirnov@gmail.com>
+ <20180205172935.25232-4-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180205172935.25232-4-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,38 +19,162 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] env: Add more context to error message
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 4/4] commands: version: Add framebuffer output support
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-When setenv complains that it can't set a device parameter, then print
-which parameter it tried to set.
+Hi Andrey,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/env.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, Feb 05, 2018 at 09:29:35AM -0800, Andrey Smirnov wrote:
+> Extend "version" command to be capable of rendeing version information
+> on framebuffer devices.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  commands/Kconfig   |   8 +++
+>  commands/version.c | 198 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 204 insertions(+), 2 deletions(-)
+> 
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index 095536849..1cad5d608 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -238,6 +238,14 @@ config CMD_VERSION
+>  
+>  	  barebox 2014.05.0-00142-gb289373 #177 Mon May 12 20:35:55 CEST 2014
+>  
+> +config CMD_VERSION_OUTPUT_TO_FRAMEBUFFER
+> +       bool
+> +       depends on CMD_VERSION
+> +       prompt "support displaying version via framebuffer"
+> +       help
+> +         Selecting this option will enable version command to output
+> +         version information onto display backed by a frambuffer
+> +
+>  config CMD_MMC_EXTCSD
+>  	tristate
+>  	prompt "read/write eMMC ext. CSD register"
+> diff --git a/commands/version.c b/commands/version.c
+> index 090f2dd13..ba74a993c 100644
+> --- a/commands/version.c
+> +++ b/commands/version.c
+> @@ -20,16 +20,210 @@
+>  #include <common.h>
+>  #include <command.h>
+>  #include <complete.h>
+> +#include <getopt.h>
+> +#include <fb.h>
+> +#include <gui/graphic_utils.h>
+> +#include <gui/2d-primitives.h>
+> +
+> +#define FRAME_SIZE	8
+> +
+> +struct placement {
+> +	int x, y;
+> +};
+> +
+> +typedef struct placement placement_function_t (struct screen *, int, int);
+> +
+> +struct placement
+> +placement_center(struct screen *sc, int text_width, int text_height)
+> +{
+> +	struct placement p;
+> +
+> +	p.x = (sc->info->xres - text_width) / 2;
+> +	p.y = (sc->info->yres - text_height) / 2;
+> +
+> +	return p;
+> +}
+> +
+> +struct placement
+> +placement_upper_left(struct screen *sc, int text_width, int text_height)
+> +{
+> +	struct placement p;
+> +
+> +	p.x = FRAME_SIZE;
+> +	p.y = FRAME_SIZE;
+> +
+> +	return p;
+> +}
+> +
+> +struct placement
+> +placement_upper_right(struct screen *sc, int text_width, int text_height)
+> +{
+> +	struct placement p;
+> +
+> +	p.x = sc->info->xres - 1 - text_width - FRAME_SIZE;
+> +	p.y = FRAME_SIZE;
+> +
+> +	return p;
+> +}
+> +
+> +struct placement
+> +placement_lower_left(struct screen *sc, int text_width, int text_height)
+> +{
+> +	struct placement p;
+> +
+> +	p.x = FRAME_SIZE;
+> +	p.y = sc->info->yres - 1 - text_height - FRAME_SIZE;
+> +
+> +	return p;
+> +}
+> +
+> +struct placement
+> +placement_lower_right(struct screen *sc, int text_width, int text_height)
+> +{
+> +	struct placement p;
+> +
+> +	p.x = sc->info->xres - 1 - text_width  - FRAME_SIZE;
+> +	p.y = sc->info->yres - 1 - text_height - FRAME_SIZE;
+> +
+> +	return p;
+> +}
+>  
+>  static int do_version(int argc, char *argv[])
+>  {
+> -	printf ("\n%s\n", version_string);
+> +	const struct font_desc *font;
+> +	const char *fbdev = NULL;
+> +	struct screen *sc;
+> +	u8 fg[3], bg[3];
+> +	int text_width;
+> +	int text_height;
+> +
+> +	placement_function_t *place;
+> +	struct placement placement;
+> +
+> +	if (IS_ENABLED(CONFIG_CMD_VERSION_OUTPUT_TO_FRAMEBUFFER)) {
 
-diff --git a/common/env.c b/common/env.c
-index 80d3f7ab50..323a82223e 100644
---- a/common/env.c
-+++ b/common/env.c
-@@ -266,7 +266,7 @@ int setenv(const char *_name, const char *value)
- 	if (strchr(name, '.')) {
- 		ret = dev_setenv(name, value);
- 		if (ret)
--			eprintf("Cannot set parameter: %s\n", strerror(-ret));
-+			eprintf("Cannot set parameter %s: %s\n", name, strerror(-ret));
- 		goto out;
- 	}
- 
+This is quite much code added to the version command, given that the
+command previously only was a one-liner. I think this should rather be a
+separate command. This could depend on framebuffer and other needed
+stuff which would make the first two patches unnecessary. I think
+stubbing away graphics functions when the user is graphics-only code is
+a bit over the top.
+
+The placement functions look as if they should be moved to some font
+handling generic code.
+
+Also it's always nice to have a C API for anything we also have as
+command. It has proven to be useful so many times.
+
+> +BAREBOX_CMD_HELP_OPT ("-f color\t", "foreground color, in hex RRGGBB format")
+> +BAREBOX_CMD_HELP_OPT ("-b color\t", "background color, in hex RRGGBB format")
+
+I'm not sure how useful these are as parameters to a command. How about
+a nv variable? This could be used by the framebuffer console aswell.
+
+Sascha
+
 -- 
-2.15.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
