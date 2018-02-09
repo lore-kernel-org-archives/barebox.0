@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ek5DO-0005x0-UZ
- for barebox@lists.infradead.org; Fri, 09 Feb 2018 09:43:36 +0000
+ id 1ek5DO-0005x6-Ue
+ for barebox@lists.infradead.org; Fri, 09 Feb 2018 09:43:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  9 Feb 2018 10:43:08 +0100
-Message-Id: <20180209094316.8523-2-s.hauer@pengutronix.de>
+Date: Fri,  9 Feb 2018 10:43:16 +0100
+Message-Id: <20180209094316.8523-10-s.hauer@pengutronix.de>
 In-Reply-To: <20180209094316.8523-1-s.hauer@pengutronix.de>
 References: <20180209094316.8523-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,167 +21,138 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] ubiformat: Allow to ubiformat with a buffer given
+Subject: [PATCH 9/9] usb: gadget: fastboot: Add external command execution
+ support
 To: Barebox List <barebox@lists.infradead.org>
 
-So far ubiformat can only handle files. Make it possible to pass
-a buffer into ubiformat.
+Custom projects may need vendor specific expansions to the fastboot
+command execution. Allow these to be implemented without messing in
+the fastboot code directly.
+We have a hook for all commands and also one for the "flash" command.
+Each hook can decide if the generic command parser is executed
+afterwards (return value FASTBOOT_CMD_FALLTHROUGH) or if the generic
+parser shall be skipped (return value 0 or negative error code).
+
+This allows board code to implement vendor specific "oem" commands
+or to handle the downloaded image in a special way (i.e. do signature
+checks on them)
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/ubiformat.c  | 55 +++++++++++++++++++++++++++++++++++------------------
- include/ubiformat.h |  7 +++++++
- 2 files changed, 43 insertions(+), 19 deletions(-)
+ drivers/usb/gadget/f_fastboot.c | 21 ++++++++++++++++++++-
+ drivers/usb/gadget/multi.c      |  2 ++
+ include/usb/fastboot.h          | 17 +++++++++++++++++
+ 3 files changed, 39 insertions(+), 1 deletion(-)
 
-diff --git a/common/ubiformat.c b/common/ubiformat.c
-index f728119b9a..9fe1c7c501 100644
---- a/common/ubiformat.c
-+++ b/common/ubiformat.c
-@@ -187,16 +187,22 @@ static int mark_bad(struct ubiformat_args *args, struct mtd_info *mtd,
- static int flash_image(struct ubiformat_args *args, struct mtd_info *mtd,
- 		       const struct ubigen_info *ui, struct ubi_scan_info *si)
- {
--	int fd, img_ebs, eb, written_ebs = 0, ret = -1, eb_cnt;
-+	int fd = 0, img_ebs, eb, written_ebs = 0, ret = -1, eb_cnt;
- 	off_t st_size;
- 	char *buf = NULL;
- 	uint64_t lastprint = 0;
-+	const void *inbuf = NULL;
+diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
+index b851e8d1c3..787b1205ec 100644
+--- a/drivers/usb/gadget/f_fastboot.c
++++ b/drivers/usb/gadget/f_fastboot.c
+@@ -75,6 +75,9 @@ struct f_fastboot {
+ 	struct usb_ep *in_ep, *out_ep;
+ 	struct usb_request *in_req, *out_req;
+ 	struct file_list *files;
++	int (*cmd_exec)(struct f_fastboot *, const char *cmd);
++	int (*cmd_flash)(struct f_fastboot *, struct file_list_entry *entry,
++			 const char *filename, const void *buf, size_t len);
+ 	int download_fd;
+ 	void *buf;
  
- 	eb_cnt = mtd_num_pebs(mtd);
+@@ -327,6 +330,8 @@ static int fastboot_bind(struct usb_configuration *c, struct usb_function *f)
+ 	struct fb_variable *var;
  
--	fd = open_file(args->image, &st_size);
--	if (fd < 0)
--		return fd;
-+	if (args->image) {
-+		fd = open_file(args->image, &st_size);
-+		if (fd < 0)
-+			return fd;
-+	} else {
-+		inbuf = args->image_buf;
-+		st_size = args->image_size;
+ 	f_fb->files = opts->files;
++	f_fb->cmd_exec = opts->cmd_exec;
++	f_fb->cmd_flash = opts->cmd_flash;
+ 
+ 	var = fb_addvar(f_fb, "version");
+ 	fb_setvar(var, "0.4");
+@@ -932,6 +937,13 @@ static void cb_flash(struct f_fastboot *f_fb, const char *cmd)
+ 		goto out;
+ 	}
+ 
++	if (f_fb->cmd_flash) {
++		ret = f_fb->cmd_flash(f_fb, fentry, sourcefile, f_fb->buf,
++				      f_fb->download_size);
++		if (ret != FASTBOOT_CMD_FALLTHROUGH)
++			goto out;
 +	}
- 
- 	buf = malloc(mtd->erasesize);
- 	if (!buf) {
-@@ -207,20 +213,20 @@ static int flash_image(struct ubiformat_args *args, struct mtd_info *mtd,
- 	img_ebs = st_size / mtd->erasesize;
- 
- 	if (img_ebs > si->good_cnt) {
--		sys_errmsg("file \"%s\" is too large (%lld bytes)",
--			   args->image, (long long)st_size);
-+		sys_errmsg("image is too large (%lld bytes)",
-+			   (long long)st_size);
- 		goto out_close;
- 	}
- 
- 	if (st_size % mtd->erasesize) {
--		sys_errmsg("file \"%s\" (size %lld bytes) is not multiple of "
-+		sys_errmsg("image (size %lld bytes) is not multiple of "
- 			   "eraseblock size (%d bytes)",
--			   args->image, (long long)st_size, mtd->erasesize);
-+			   (long long)st_size, mtd->erasesize);
- 		goto out_close;
- 	}
- 
- 	if (st_size == 0) {
--		sys_errmsg("file \"%s\" has size 0 bytes", args->image);
-+		sys_errmsg("image has size 0 bytes");
- 		goto out_close;
- 	}
- 
-@@ -260,11 +266,16 @@ static int flash_image(struct ubiformat_args *args, struct mtd_info *mtd,
- 			continue;
- 		}
- 
--		err = read_full(fd, buf, mtd->erasesize);
--		if (err < 0) {
--			sys_errmsg("failed to read eraseblock %d from \"%s\"",
--				   written_ebs, args->image);
--			goto out_close;
-+		if (args->image) {
-+			err = read_full(fd, buf, mtd->erasesize);
-+			if (err < 0) {
-+				sys_errmsg("failed to read eraseblock %d from image",
-+					   written_ebs);
-+				goto out_close;
-+			}
-+		} else {
-+			memcpy(buf, inbuf, mtd->erasesize);
-+			inbuf += mtd->erasesize;
- 		}
- 
- 		if (args->override_ec)
-@@ -280,8 +291,8 @@ static int flash_image(struct ubiformat_args *args, struct mtd_info *mtd,
- 
- 		err = change_ech((struct ubi_ec_hdr *)buf, ui->image_seq, ec);
- 		if (err) {
--			errmsg("bad EC header at eraseblock %d of \"%s\"",
--			       written_ebs, args->image);
-+			errmsg("bad EC header at eraseblock %d of image",
-+			       written_ebs);
- 			goto out_close;
- 		}
- 
-@@ -317,7 +328,8 @@ static int flash_image(struct ubiformat_args *args, struct mtd_info *mtd,
- 
- out_close:
- 	free(buf);
--	close(fd);
-+	if (args->image)
-+		close(fd);
- 	return ret;
- }
- 
-@@ -454,6 +466,11 @@ out_free:
- 	return -1;
- }
- 
-+static bool ubiformat_has_image(struct ubiformat_args *args)
-+{
-+	return args->image || args->image_buf;
-+}
 +
- int ubiformat(struct mtd_info *mtd, struct ubiformat_args *args)
+ 	filename = fentry->filename;
+ 
+ 	if (filetype == filetype_android_sparse) {
+@@ -1197,15 +1209,22 @@ static void rx_handler_command(struct usb_ep *ep, struct usb_request *req)
  {
- 	int err, verbose, eb_cnt;
-@@ -555,7 +572,7 @@ int ubiformat(struct mtd_info *mtd, struct ubiformat_args *args)
- 		goto out_free;
- 	}
+ 	char *cmdbuf = req->buf;
+ 	struct f_fastboot *f_fb = req->context;
++	int ret;
  
--	if (si->good_cnt < 2 && (!args->novtbl || args->image)) {
-+	if (si->good_cnt < 2 && (!args->novtbl || ubiformat_has_image(args))) {
- 		errmsg("too few non-bad eraseblocks (%d) on %s",
- 		       si->good_cnt, mtd->name);
- 		err = -EINVAL;
-@@ -654,7 +671,7 @@ int ubiformat(struct mtd_info *mtd, struct ubiformat_args *args)
- 		}
- 	}
+ 	if (req->status != 0)
+ 		return;
  
--	if (args->image) {
-+	if (ubiformat_has_image(args)) {
- 		err = flash_image(args, mtd, &ui, si);
- 		if (err < 0)
- 			goto out_free;
-diff --git a/include/ubiformat.h b/include/ubiformat.h
-index 8305a853c7..8a7a16ac18 100644
---- a/include/ubiformat.h
-+++ b/include/ubiformat.h
-@@ -15,7 +15,14 @@ struct ubiformat_args {
- 	int ubi_ver;
- 	uint32_t image_seq;
- 	long long ec;
+ 	*(cmdbuf + req->actual) = 0;
+ 
++	if (f_fb->cmd_exec) {
++		ret = f_fb->cmd_exec(f_fb, cmdbuf);
++		if (ret != FASTBOOT_CMD_FALLTHROUGH)
++			goto done;
++	}
 +
-+	/*
-+	 * Either set image if you have a file or set image_buf / image_size
-+	 * if you have a buffer.
-+	 */
- 	const char *image;
-+	const void *image_buf;
-+	loff_t image_size;
+ 	fb_run_command(f_fb, cmdbuf, cmd_dispatch_info,
+ 				ARRAY_SIZE(cmd_dispatch_info));
+-
++done:
+ 	*cmdbuf = '\0';
+ 	req->actual = 0;
+ 	memset(req->buf, 0, EP_BUFFER_SIZE);
+diff --git a/drivers/usb/gadget/multi.c b/drivers/usb/gadget/multi.c
+index 44969be0c9..d6edfb8cf2 100644
+--- a/drivers/usb/gadget/multi.c
++++ b/drivers/usb/gadget/multi.c
+@@ -128,6 +128,8 @@ static int multi_bind_fastboot(struct usb_composite_dev *cdev)
+ 
+ 	opts = container_of(fi_fastboot, struct f_fastboot_opts, func_inst);
+ 	opts->files = gadget_multi_opts->fastboot_opts.files;
++	opts->cmd_exec = gadget_multi_opts->fastboot_opts.cmd_exec;
++	opts->cmd_flash = gadget_multi_opts->fastboot_opts.cmd_flash;
+ 	opts->export_bbu = gadget_multi_opts->fastboot_opts.export_bbu;
+ 
+ 	f_fastboot = usb_get_function(fi_fastboot);
+diff --git a/include/usb/fastboot.h b/include/usb/fastboot.h
+index ced890c9ab..00c9d00df5 100644
+--- a/include/usb/fastboot.h
++++ b/include/usb/fastboot.h
+@@ -5,6 +5,8 @@
+ #include <file-list.h>
+ #include <usb/composite.h>
+ 
++struct f_fastboot;
++
+ /**
+  * struct f_fastboot_opts - options to configure the fastboot gadget
+  * @func_inst:	The USB function instance to register on
+@@ -15,6 +17,21 @@ struct f_fastboot_opts {
+ 	struct usb_function_instance func_inst;
+ 	struct file_list *files;
+ 	bool export_bbu;
++	int (*cmd_exec)(struct f_fastboot *, const char *cmd);
++	int (*cmd_flash)(struct f_fastboot *, struct file_list_entry *entry,
++			 const char *filename, const void *buf, size_t len);
  };
  
- int ubiformat(struct mtd_info *mtd, struct ubiformat_args *args);
++/*
++ * Return codes for the exec_cmd callback above:
++ *
++ * FASTBOOT_CMD_FALLTHROUGH - Not handled by the external command dispatcher,
++ *                            handle it with internal dispatcher
++ * Other than these negative error codes mean errors handling the command and
++ * zero means the command has been successfully handled.
++ */
++#define FASTBOOT_CMD_FALLTHROUGH	1
++
++int fastboot_tx_print(struct f_fastboot *f_fb, const char *fmt, ...);
++
+ #endif /* _USB_FASTBOOT_H */
 -- 
 2.15.1
 
