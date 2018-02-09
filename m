@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+Received: from mail.jumo.net ([193.24.15.13])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1elqBC-0006ji-E5
- for barebox@lists.infradead.org; Wed, 14 Feb 2018 06:04:32 +0000
-Received: by mail-lf0-x243.google.com with SMTP id t79so27913815lfe.3
- for <barebox@lists.infradead.org>; Tue, 13 Feb 2018 22:04:17 -0800 (PST)
-Date: Wed, 14 Feb 2018 09:19:06 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20180214091906.c73556ec3657ac331603485b@gmail.com>
-In-Reply-To: <20180213081943.cj2ty4e2u746ntja@pengutronix.de>
-References: <20180208074856.3701-1-antonynpavlov@gmail.com>
- <20180209083636.oipcpwnnflbqcdzb@pengutronix.de>
- <20180209142224.ba82057f3efc4a88a82fc2d8@gmail.com>
- <20180213081943.cj2ty4e2u746ntja@pengutronix.de>
-Mime-Version: 1.0
+ id 1ek7o4-000071-Dq
+ for barebox@lists.infradead.org; Fri, 09 Feb 2018 12:29:34 +0000
+Received: from dentln03.jumo.net ([10.10.0.23]:1395)
+ by mail.jumo.net with esmtp (Exim 4.82_1-5b7a7c0-XX)
+ (envelope-from <eugen.wiens@jumo.net>) id 1ek7nm-0000Vu-1r
+ for barebox@lists.infradead.org; Fri, 09 Feb 2018 13:29:14 +0100
+MIME-Version: 1.0
+From: Eugen Wiens <eugen.wiens@jumo.net>
+Date: Fri, 9 Feb 2018 13:28:45 +0100
+Message-Id: <20180209122845.4113-1-eugen.wiens@jumo.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,85 +19,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] commands: i2c_write: enable raw write to address
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] added colored print out of log levels
+To: barebox@lists.infradead.org
+Cc: Eugen Wiens <eugen.wiens@jumo.net>
 
-On Tue, 13 Feb 2018 09:19:43 +0100
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
-
-> On Fri, Feb 09, 2018 at 02:22:24PM +0300, Antony Pavlov wrote:
-> > On Fri, 9 Feb 2018 09:36:36 +0100
-> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > =
-
-> > > Hi Antony,
-> > > =
-
-> > > On Thu, Feb 08, 2018 at 10:48:56AM +0300, Antony Pavlov wrote:
-> > > > Sometimes for communication with a simple I2C devices
-> > > > (e.g. PCF8574 or TM1650) it's necessary to send only
-> > > > one data byte into the I2C device.
-> > > > Current i2c_write command makes this impossible because
-> > > > you can't just pass 'device address' and 'register number'
-> > > > (or 'device address' and 'one data byte') to the command.
-> > > > You always have to pass all three parameters:
-> > > > 'device address', 'register number' and 'data'.
-> > > > =
-
-> > > > This commit fixes the problem.
-> > > > =
-
-> > > > Sample usage:
-> > > > =
-
-> > > >   barebox@barebox sandbox:/ i2c_write -a 0x24 0x01
-> > > > =
-
-> > > > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > > > ---
-> > > >  commands/i2c.c | 8 ++++++--
-> > > >  1 file changed, 6 insertions(+), 2 deletions(-)
-> > > =
-
-> > > Looks good to me.
-> > > =
-
-> > > I applied this one despite the [RFC] tag. If for some reason you want=
- to
-> > > resend this, feel free to do so, but otherwise consider this applied.
-> > =
-
-> > Thanks!
-> > =
-
-> > The patch is short, it's understandable and it fixes the problem.
-> > I prefere to apply this patch as is.
-> > =
-
-> > I see some inconsistency in drivers/i2c/i2c.c.
-> > We have i2c_master_send() and i2c_write_reg() functions.
-> > These functions are intended to make similar work but they are
-> > written in very different style. I suppose that we can rewrite
-> > i2c_master_send() (e.g. drop FIXME) and make i2c_write_reg()
-> > work on top of i2c_master_send(). Any comments?
-> =
-
-> Rewrite i2c_master_send()? Do you mean rewrite i2c_write_reg() instead?
-
-You are right, of course I propose rewrite i2c_write_reg() (there is no
-FIXME comment inside i2c_master_send()).
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+V2hlbiB0aGUgc3lzdGVtIGlzIGJvb3RpbmcgdGhlIHdhcm5pbmdzIGFuZCBlcnJvcnMgYXJlIG5v
+dCBiZSBxdWlja2x5IGRpc2NvdmVyZWQuDQpXaXRoIHRoaXMgaW1wcm92ZW1lbnQgdGhlIGVycm9y
+cyBhcmUgY29sb3JlZCByZWQsIHRoZSB3YXJuaW5ncyB5ZWxsb3cgYW5kIHRoZSBub3RpY2VzIGJs
+dWUuDQoNClNpZ25lZC1vZmYtYnk6IEV1Z2VuIFdpZW5zIDxldWdlbi53aWVuc0BqdW1vLm5ldD4N
+Ci0tLQ0KIGNvbW1vbi9LY29uZmlnICAgICAgICAgIHwgIDggKysrKysrKysNCiBjb21tb24vY29u
+c29sZV9jb21tb24uYyB8IDI5ICsrKysrKysrKysrKysrKysrKysrKysrKysrKystDQogMiBmaWxl
+cyBjaGFuZ2VkLCAzNiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQoNCmRpZmYgLS1naXQg
+YS9jb21tb24vS2NvbmZpZyBiL2NvbW1vbi9LY29uZmlnDQppbmRleCA1NzQxOGNhLi40NjFhZDM1
+IDEwMDY0NA0KLS0tIGEvY29tbW9uL0tjb25maWcNCisrKyBiL2NvbW1vbi9LY29uZmlnDQpAQCAt
+MTAwMCw2ICsxMDAwLDE0IEBAIGNvbmZpZyBERUZBVUxUX0xPR0xFVkVMDQogCSAgNyAgICBkZWJ1
+Zy1sZXZlbCBtZXNzYWdlcyAoZGVidWcpDQogCSAgOCAgICB2ZXJib3NlIGRlYnVnIG1lc3NhZ2Vz
+ICh2ZGVidWcpDQogDQorY29uZmlnIFBSSU5UX0NPTE9SRURfTE9HX0xFVkVMDQorCXByb21wdCAi
+ZW5hYmxlIGNvbG9yZWQgcHJpbnRpbmcgb2YgdGhlIGxvZyBsZXZlbCINCisJYm9vbA0KKwlkZWZh
+dWx0IG4NCisJaGVscA0KKwkJRW5hYmxlIHRoZSBwcmludCBvdXQgb2YgdGhlIGNvbG9yZWQgbG9n
+IGxldmVsLg0KKw0KKw0KIGNvbmZpZyBERUJVR19JTkZPDQogCWJvb2wNCiAJcHJvbXB0ICJlbmFi
+bGUgZGVidWcgc3ltYm9scyINCmRpZmYgLS1naXQgYS9jb21tb24vY29uc29sZV9jb21tb24uYyBi
+L2NvbW1vbi9jb25zb2xlX2NvbW1vbi5jDQppbmRleCBkMDUxNDU4Li4xOWIxODNmIDEwMDY0NA0K
+LS0tIGEvY29tbW9uL2NvbnNvbGVfY29tbW9uLmMNCisrKyBiL2NvbW1vbi9jb25zb2xlX2NvbW1v
+bi5jDQpAQCAtMzEsNyArMzEsMjEgQEANCiAjaW5jbHVkZSA8bWFsbG9jLmg+DQogI2luY2x1ZGUg
+PGFzbS1nZW5lcmljL2RpdjY0Lmg+DQogDQotI2lmbmRlZiBDT05GSUdfQ09OU09MRV9OT05FDQor
+I2lmbmRlZiBDT05GSUdfQ09ORklHX0NPTlNPTEVfTk9ORQ0KKw0KKyNpZmRlZiBDT05GSUdfUFJJ
+TlRfQ09MT1JFRF9MT0dfTEVWRUwNCisjZGVmaW5lIE1BWF9DSEFSQUNURVJTX0NPTE9SRURfTE9H
+X0xFVkVMIAkzMA0KKyNkZWZpbmUgTUFYX0xPR19MRVZFTCAJCQkJCQlNU0dfTk9USUNFDQorDQor
+c3RhdGljIGNvbnN0IGNoYXIgY29sb3JlZF9sb2dfbGV2ZWxbTUFYX0xPR19MRVZFTCsyXVtNQVhf
+Q0hBUkFDVEVSU19DT0xPUkVEX0xPR19MRVZFTF0gPSB7DQorCSJcMDMzWzMxbUVNRVJHOlwwMzNb
+MG0gIiwJCS8qIGNvbG9yIHJlZCBmb3IgbG9nIGxldmVsIE1TR19FTUVSRyAqLw0KKwkiXDAzM1sz
+MW1BTEVSVDpcMDMzWzBtICIsCQkvKiBjb2xvciByZWQgZm9yIGxvZyBsZXZlbCBNU0dfQUxFUlQg
+Ki8NCisJIlwwMzNbMzFtQ1JJVElDQUw6XDAzM1swbSAiLAkvKiBjb2xvciByZWQgZm9yIGxvZyBs
+ZXZlbCBNU0dfQ1JJVCAqLw0KKwkiXDAzM1szMW1FUlJPUjpcMDMzWzBtICIsCQkvKiBjb2xvciBy
+ZWQgZm9yIGxvZyBsZXZlbCBNU0dfRVJSICovDQorCSJcMDMzWzMzbVdBUk5JTkc6XDAzM1swbSAi
+LAkJLyogY29sb3IgeWVsbG93IGZvciBsb2cgbGV2ZWwgTVNHX1dBUk5JTkcgKi8NCisJIlwwMzNb
+MzRtTk9USUNFOlwwMzNbMG0gIiwgCQkvKiBjb2xvciBibHVlIGZvciBsb2cgbGV2ZWwgTVNHX05P
+VElDRSAqLw0KK307DQorI2VuZGlmDQogDQogaW50IGJhcmVib3hfbG9nbGV2ZWwgPSBDT05GSUdf
+REVGQVVMVF9MT0dMRVZFTDsNCiANCkBAIC0xMDIsNiArMTE2LDE1IEBAIG5vbG9nOg0KIAlwdXRz
+KHN0cik7DQogfQ0KIA0KK3N0YXRpYyB2b2lkIHByaW50X2NvbG9yZWRfbG9nX2xldmVsKGNvbnN0
+IGludCBsZXZlbCkNCit7DQorI2lmZGVmIENPTkZJR19QUklOVF9DT0xPUkVEX0xPR19MRVZFTA0K
+KwlpZiAobGV2ZWwgPD0gTUFYX0xPR19MRVZFTCkgew0KKwkJcHJfcHV0cyhsZXZlbCwgY29sb3Jl
+ZF9sb2dfbGV2ZWxbbGV2ZWxdKTsNCisJfQ0KKyNlbmRpZg0KK30NCisNCiBpbnQgcHJfcHJpbnQo
+aW50IGxldmVsLCBjb25zdCBjaGFyICpmbXQsIC4uLikNCiB7DQogCXZhX2xpc3QgYXJnczsNCkBA
+IC0xMTEsNiArMTM0LDggQEAgaW50IHByX3ByaW50KGludCBsZXZlbCwgY29uc3QgY2hhciAqZm10
+LCAuLi4pDQogCWlmICghSVNfRU5BQkxFRChDT05GSUdfTE9HQlVGKSAmJiBsZXZlbCA+IGJhcmVi
+b3hfbG9nbGV2ZWwpDQogCQlyZXR1cm4gMDsNCiANCisJcHJpbnRfY29sb3JlZF9sb2dfbGV2ZWwo
+bGV2ZWwpOw0KKw0KIAl2YV9zdGFydChhcmdzLCBmbXQpOw0KIAlpID0gdnNwcmludGYocHJpbnRi
+dWZmZXIsIGZtdCwgYXJncyk7DQogCXZhX2VuZChhcmdzKTsNCkBAIC0xMjksNiArMTU0LDggQEAg
+aW50IGRldl9wcmludGYoaW50IGxldmVsLCBjb25zdCBzdHJ1Y3QgZGV2aWNlX2QgKmRldiwgY29u
+c3QgY2hhciAqZm9ybWF0LCAuLi4pDQogCWlmICghSVNfRU5BQkxFRChDT05GSUdfTE9HQlVGKSAm
+JiBsZXZlbCA+IGJhcmVib3hfbG9nbGV2ZWwpDQogCQlyZXR1cm4gMDsNCiANCisJcHJpbnRfY29s
+b3JlZF9sb2dfbGV2ZWwobGV2ZWwpOw0KKw0KIAlpZiAoZGV2LT5kcml2ZXIgJiYgZGV2LT5kcml2
+ZXItPm5hbWUpDQogCQlyZXQgKz0gc3ByaW50ZihwcmludGJ1ZmZlciwgIiVzICIsIGRldi0+ZHJp
+dmVyLT5uYW1lKTsNCiANCi0tIA0KMi43LjQNCg0KDQpEaWVzZSBFLU1haWwga2FubiB2ZXJ0cmF1
+bGljaGUgdW5kL29kZXIgcmVjaHRsaWNoIGdlc2Now7x0enRlIEluZm9ybWF0aW9uZW4gYmVpbmhh
+bHRlbiB1bmQgaXN0IGF1c3NjaGxpZcOfbGljaCBmw7xyIGRpZSBpbSBWZXJ0ZWlsZXIgZ2VuYW5u
+dGVuIFBlcnNvbmVuIGJlc3RpbW10LiBEYXMgdW5lcmxhdWJ0ZSBLb3BpZXJlbiBzb3dpZSBkaWUg
+dW5iZWZ1Z3RlIFdlaXRlcmdhYmUgZGllc2VyIE1haWwgc2luZCBuaWNodCBnZXN0YXR0ZXQuIEJp
+dHRlIGJlbmFjaHJpY2h0aWdlbiBTaWUgdW5zIGdlZ2ViZW5lbmZhbGxzIHRlbGVmb25pc2NoIG9k
+ZXIgbWl0IEFudHdvcnQtTWFpbCwgZmFsbHMgU2llIG5pY2h0IGRlciByaWNodGlnZSBBZHJlc3Nh
+dCBkaWVzZXIgRS1NYWlsIHNpbmQuIEJpdHRlIGzDtnNjaGVuIFNpZSBkaWVzZSBOYWNocmljaHQg
+dW5kIGFsbGUgQW5ow6RuZ2UgZGF6dSB1bnZlcnrDvGdsaWNoLiBGYWxscyBuaWNodCBhdXNkcsO8
+Y2tsaWNoIHZlcm1lcmt0LCBpc3QgZGllc2UgRS1NYWlsIGtlaW5lIHJlY2h0bGljaCBiaW5kZW5k
+ZSBWZXJlaW5iYXJ1bmcuIA0KDQpLb21tYW5kaXRnZXNlbGxzY2hhZnQ6IEpVTU8gR21iSCAmIENv
+LiBLRywgU2l0ejogMzYwMzkgRnVsZGEsIEFtdHNnZXJpY2h0IEZ1bGRhIEhSQSAzMDIsIFBlcnPD
+tm5saWNoIGhhZnRlbmRlIEdlc2VsbHNjaGFmdGVyaW46IE0uIEsuIEpVQ0hIRUlNIEdtYkgsIFNp
+dHo6IDM2MDM5IEZ1bGRhLCBBbXRzZ2VyaWNodCBGdWxkYSBIUkIgMTcsIEdlc2Now6RmdHNmw7xo
+cmVyOiBEaXBsLi1JbmcuIEJlcm5oYXJkIEp1Y2hoZWltLCBEaXBsLi1LZm0uIE1pY2hhZWwgSnVj
+aGhlaW0gDQpVc3QuLUlkLi1Oci46IERFIDExMjQxMTIzNCAKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
+aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
+dGluZm8vYmFyZWJveAo=
