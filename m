@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ek5DO-0005xD-UX
- for barebox@lists.infradead.org; Fri, 09 Feb 2018 09:43:34 +0000
+ id 1ek5DO-0005x1-UU
+ for barebox@lists.infradead.org; Fri, 09 Feb 2018 09:43:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  9 Feb 2018 10:43:07 +0100
-Message-Id: <20180209094316.8523-1-s.hauer@pengutronix.de>
+Date: Fri,  9 Feb 2018 10:43:11 +0100
+Message-Id: <20180209094316.8523-5-s.hauer@pengutronix.de>
+In-Reply-To: <20180209094316.8523-1-s.hauer@pengutronix.de>
+References: <20180209094316.8523-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,51 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/9] Fastboot customization support
+Subject: [PATCH 4/9] usb: gadget: fastboot: use read_file_2
 To: Barebox List <barebox@lists.infradead.org>
 
-In a customer project we have to do some customization to the fastboot
-support. In particular, we have to check signatures in uploaded images,
-which requires us to upload the whole image before it can be flashed.
-This contradicts Fastboot sparse support, so we make Sparse support
-optional in this series.
+read_file_2 gives us a proper error code and allows us
+to specify a maximum size which in this case we happen to know.
 
-We decided to use FIT images as format to the signed images, so now we
-are in the situation that we want to hold big FIT images in memory and
-not unnecessarily copy it. Normally Fastboot temporarily stores a file
-in RAMFS. This file can't be directly used by the FIT image code though,
-so we add a compile time option to store the temporary fastboot image as
-a buffer. This can be directly reused by the FIT image code (thanks to
-recent FIT image changes).
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/gadget/f_fastboot.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Last not least we add hooks to the fastboot code. These can be used
-to handle commands in a special way, like for example to deny certain
-commands or to implement special commands. Also there is a "flash"
-hook which can be used to add a custom flash operation, like for example
-for our customer to implement signature checking of the FIT images.
-
-Sascha
-
-
-Sascha Hauer (9):
-  ubiformat: Allow to ubiformat with a buffer given
-  usb: gadget: fastboot: Make sparse support optional
-  usb: gadget: fastboot: pass struct f_fastboot * around
-  usb: gadget: fastboot: use read_file_2
-  usb: gadget: fastboot: Always remove temporary file
-  usb: gadget: fastboot: fix typo
-  usb: gadget: fastboot: beautify fb_run_command()
-  usb: gadget: fastboot: Add option to download to a buffer
-  usb: gadget: fastboot: Add external command execution support
-
- common/ubiformat.c              |  55 ++++++----
- drivers/usb/gadget/Kconfig      |  22 +++-
- drivers/usb/gadget/f_fastboot.c | 216 ++++++++++++++++++++++++++--------------
- drivers/usb/gadget/multi.c      |   2 +
- include/ubiformat.h             |   7 ++
- include/usb/fastboot.h          |  17 ++++
- 6 files changed, 222 insertions(+), 97 deletions(-)
-
+diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
+index 81522cbba6..62b13bcb8c 100644
+--- a/drivers/usb/gadget/f_fastboot.c
++++ b/drivers/usb/gadget/f_fastboot.c
+@@ -947,8 +947,9 @@ static void cb_flash(struct f_fastboot *f_fb, const char *cmd)
+ 
+ 		fastboot_tx_print(f_fb, "INFOThis is a barebox image...");
+ 
+-		image = read_file(data.imagefile, &data.len);
+-		if (!image) {
++		ret = read_file_2(data.imagefile, &data.len, &image,
++				  f_fb->download_size);
++		if (ret) {
+ 			fastboot_tx_print(f_fb, "FAILreading barebox");
+ 			return;
+ 		}
 -- 
 2.15.1
 
