@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns1.lah-a2.de ([84.19.186.99] helo=lah-a2.de)
+Received: from vsmx012.vodafonemail.xion.oxcs.net ([153.92.174.90])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eliRO-00066j-Dz
- for barebox@lists.infradead.org; Tue, 13 Feb 2018 21:48:44 +0000
-Received: from localhost (p508514AE.dip0.t-ipconnect.de [80.133.20.174])
- by lah-a2.de (Postfix) with ESMTPSA id 4BF4C408737D
- for <barebox@lists.infradead.org>; Tue, 13 Feb 2018 22:46:03 +0100 (CET)
-From: Andreas Schmidt <mail@schmidt-andreas.de>
-Date: Tue, 13 Feb 2018 22:48:16 +0100
-Message-Id: <20180213214816.28520-1-mail@schmidt-andreas.de>
+ id 1elipO-0004KA-G4
+ for barebox@lists.infradead.org; Tue, 13 Feb 2018 22:13:32 +0000
+Received: from vsmx004.vodafonemail.xion.oxcs.net (unknown [192.168.75.198])
+ by mta-8-out.mta.xion.oxcs.net (Postfix) with ESMTP id E2B138CDB08
+ for <barebox@lists.infradead.org>; Tue, 13 Feb 2018 22:13:06 +0000 (UTC)
+Received: from [192.168.178.23] (unknown [84.154.203.160])
+ by mta-8-out.mta.xion.oxcs.net (Postfix) with ESMTPA id 6EE56CDF93
+ for <barebox@lists.infradead.org>; Tue, 13 Feb 2018 22:13:04 +0000 (UTC)
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Message-ID: <ba32e817-48b6-9266-ffd7-d2397d103f7a@arcor.de>
+Date: Tue, 13 Feb 2018 23:12:54 +0100
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,104 +21,91 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============7973844648992484026=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: cpsw: fix probe with fixed-link
+Subject: barebox for a ti am335x based board
 To: barebox@lists.infradead.org
 
-If cpsw slave is set to fixed-link cpsw probe still try to probe and use
-a phy. This patch fix cpsw probe in case of fixed-link.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============7973844648992484026==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="OIJQWq2E85NM1dS5QPLRt4kGPEjB7B1eo"
 
-Signed-off-by: Andreas Schmidt <mail@schmidt-andreas.de>
----
- drivers/net/cpsw.c | 41 +++++++++++++++++++++++++++--------------
- 1 file changed, 27 insertions(+), 14 deletions(-)
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--OIJQWq2E85NM1dS5QPLRt4kGPEjB7B1eo
+Content-Type: multipart/mixed; boundary="KDngIqF9vnNmUd1fIKw1hxamUfILiHahB";
+ protected-headers="v1"
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+To: barebox@lists.infradead.org
+Message-ID: <ba32e817-48b6-9266-ffd7-d2397d103f7a@arcor.de>
+Subject: barebox for a ti am335x based board
 
-diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
-index d11ca33f7..37e480248 100644
---- a/drivers/net/cpsw.c
-+++ b/drivers/net/cpsw.c
-@@ -184,6 +184,7 @@ struct cpsw_slave {
- 	struct eth_device		edev;
- 	struct cpsw_priv		*cpsw;
- 	struct device_d			dev;
-+	int				fixed_link;
- };
- 
- struct cpdma_desc {
-@@ -913,18 +914,20 @@ static int cpsw_slave_setup(struct cpsw_slave *slave, int slave_num,
- 	struct eth_device	*edev = &slave->edev;
- 	struct device_d		*dev = &slave->dev;
- 	int ret;
--	struct phy_device *phy;
-+	struct phy_device *phy = NULL;
- 
--	phy = mdiobus_scan(&priv->miibus, priv->slaves[slave_num].phy_id);
--	if (IS_ERR(phy)) {
--		ret = PTR_ERR(phy);
--		goto err_out;
--	}
-+	if (!slave->fixed_link) {
-+		phy = mdiobus_scan(&priv->miibus, priv->slaves[slave_num].phy_id);
-+		if (IS_ERR(phy)) {
-+			ret = PTR_ERR(phy);
-+			goto err_out;
-+		}
- 
--	phy->dev.device_node = priv->slaves[slave_num].dev.device_node;
--	ret = phy_register_device(phy);
--	if (ret)
--		goto err_out;
-+		phy->dev.device_node = priv->slaves[slave_num].dev.device_node;
-+		ret = phy_register_device(phy);
-+		if (ret)
-+			goto err_out;
-+	}
- 
- 	sprintf(dev->name, "cpsw-slave");
- 	dev->id = slave->slave_num;
-@@ -957,7 +960,8 @@ static int cpsw_slave_setup(struct cpsw_slave *slave, int slave_num,
- 	return 0;
- 
- err_register_dev:
--	phy_unregister_device(phy);
-+	if (!slave->fixed_link)
-+		phy_unregister_device(phy);
- err_register_edev:
- 	unregister_device(dev);
- err_out:
-@@ -1103,11 +1107,20 @@ static int cpsw_probe_dt(struct cpsw_priv *priv)
- 			uint32_t phy_id[2];
- 
- 			ret = of_property_read_u32_array(child, "phy_id", phy_id, 2);
--			if (ret)
--				return ret;
-+			if (!ret) {
-+				slave->phy_id = phy_id[1];
-+				slave->fixed_link = 0;
-+			} else {
-+				struct device_node *fl_np;
-+				fl_np = of_find_node_by_name(child, "fixed-link");
-+				if (fl_np) {
-+					slave->phy_id = -1;
-+					slave->fixed_link = 1;
-+				} else
-+					return ret;
-+			}
- 
- 			slave->dev.device_node = child;
--			slave->phy_id = phy_id[1];
- 			slave->phy_if = of_get_phy_mode(child);
- 			slave->slave_num = i;
- 
--- 
-2.14.1
+--KDngIqF9vnNmUd1fIKw1hxamUfILiHahB
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
+Hi all,
+
+I'm trying to add board code for an am335x based HW project.
+I had a look at similar boards like 'boards/phytec-som-am335x'
+or 'boards/beaglebone'.
+I understand that I need two images: the (little) MLO and the
+(bigger) barebox.
+
+What it's not really clear is how the MLO loads and starts the
+barebox.
+
+Moreover I saw there's always a call to:
+
+ am33xx_save_bootinfo((void *)bootinfo);
+
+in the MLO lowlevel entry function; I suspect the argument
+'bootinfo' is the register r0 left by the function __barebox_arm_head()
+but I cannot really understand the logic behind it.
+
+giorgio
+
+
+--KDngIqF9vnNmUd1fIKw1hxamUfILiHahB--
+
+--OIJQWq2E85NM1dS5QPLRt4kGPEjB7B1eo
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iQIzBAEBCAAdFiEE9QinPTH0TNNuN3rvP2UgThicmOcFAlqDYu4ACgkQP2UgThic
+mOcc7xAAsJTVYIdZEUt4NwTLauj3RxcNfuOQ8ktvhNnWT+h0I8+g6WHo66Czp+iq
+lCmv10rGtQxxWBdzclS/ODkYtxO98CM+4nBrBNCm3XnuhhIyHm5C0Rapc38yi4GA
+AXT1Y+T4FHbIKOBExPqZpDSGz1xA2IkVzVBASmVy9SwBaW2lTUE2bL4ohEALzjfe
+kOiZzZYZwkl56ejcsl3tiesgquvnvy0rrH/Y2nZZenPl0SlvYKPPFMt2n4RxXT6o
+c8Zq1Uv1HVgXKFC7JpuT7u7PZvUC3UJCnbUtSB822J34pZIJF5kCGA/Vi9bCLCvl
+CC7+o7nB2unne34Q4NpacbSBnwJndX7dmPorYvH5IMsHVxEBnnVbhv6TOLk0flSl
+Rjbsgjh0L5aXNe4HeMh/RLALc02NAwcuNgHGCtlQj7bJ99dU2ddHFd1+74amD1oH
+CGlC1nUlJEVslJZFio0Ls49wgtQurODiDxmQL4PXN9tF/hLAgnp0WI4jlnsHumR1
+Se7aA7POaX3Zt/JFRGdTsGlg5BYEEGYFTfnKB7o7uHfMkykbgm0EcoYE2R2lzWxV
+YWNdx8XcJYJle0rewM59KmMKjWLUQRzo1XVsv82zdXaebnh/vdrEjgzW5v6Ir01s
+eoqj+rjvAduKGaCmiFZ8ZR2Fde/tPMO+s4eSOHdTXmOmnVqbfpo=
+=nK+U
+-----END PGP SIGNATURE-----
+
+--OIJQWq2E85NM1dS5QPLRt4kGPEjB7B1eo--
+
+
+--===============7973844648992484026==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============7973844648992484026==--
